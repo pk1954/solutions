@@ -1,0 +1,851 @@
+SetGenerationDelay 50
+PostRefresh
+PostSetEditMode 6
+PostRefresh
+MonitorConfiguration
+1   # monitor number
+ -2560   0     0 1080    # monitor rectangle
+ -2560   0     0 1040    # work area rectangle
+0   # 1: primary monitor, 0: secondary monitor
+2   # monitor number
+   0   0   1920 1080    # monitor rectangle
+   0   0   1920 1040    # work area rectangle
+1   # 1: primary monitor, 0: secondary monitor
+0   # end of MonitorConfiguration
+MoveWindow IDM_MINI_WINDOW -233 41 216 139
+MoveWindow IDM_DISP_WINDOW -234 188 211 219
+MoveWindow IDM_EDIT_WINDOW -230 411 211 559
+MoveWindow IDM_STAT_WINDOW 6 324 400 400
+MoveWindow IDM_HIST_WINDOW 0 988 1920 30
+MoveWindow IDM_CRSR_WINDOW 0 170 260 150
+MoveWindow IDM_PERF_WINDOW 0 50 260 120
+
+PostDoEdit  120  49 
+PostRefresh
+PostDoEdit  119  49 
+PostRefresh
+PostDoEdit  119  49 
+PostRefresh
+PostDoEdit  118  49 
+PostRefresh
+PostDoEdit  118  49 
+PostRefresh
+PostDoEdit  117  49 
+PostRefresh
+PostDoEdit  117  49 
+PostRefresh
+PostDoEdit  116  49 
+PostRefresh
+PostDoEdit  115  49 
+PostRefresh
+PostDoEdit  114  49 
+PostRefresh
+PostDoEdit  114  49 
+PostRefresh
+PostDoEdit  113  49 
+PostRefresh
+PostDoEdit  113  48 
+PostRefresh
+PostDoEdit  112  48 
+PostRefresh
+PostDoEdit  112  48 
+PostRefresh
+PostDoEdit  111  48 
+PostRefresh
+PostDoEdit  111  48 
+PostRefresh
+PostDoEdit  110  48 
+PostRefresh
+PostDoEdit  110  47 
+PostRefresh
+PostDoEdit  110  47 
+PostRefresh
+PostDoEdit  109  47 
+PostRefresh
+PostDoEdit  109  46 
+PostRefresh
+PostDoEdit  109  46 
+PostRefresh
+PostDoEdit  109  46 
+PostRefresh
+PostDoEdit  109  46 
+PostRefresh
+PostDoEdit  109  45 
+PostRefresh
+PostDoEdit  109  45 
+PostRefresh
+PostDoEdit  109  45 
+PostRefresh
+PostDoEdit  110  44 
+PostRefresh
+PostDoEdit  110  44 
+PostRefresh
+PostDoEdit  111  43 
+PostRefresh
+PostDoEdit  112  43 
+PostRefresh
+PostDoEdit  113  42 
+PostRefresh
+PostDoEdit  114  42 
+PostRefresh
+PostDoEdit  115  42 
+PostRefresh
+PostDoEdit  116  42 
+PostRefresh
+PostDoEdit  117  41 
+PostRefresh
+PostDoEdit  118  41 
+PostRefresh
+PostDoEdit  119  41 
+PostRefresh
+PostDoEdit  119  41 
+PostRefresh
+PostDoEdit  119  41 
+PostRefresh
+PostDoEdit  119  41 
+PostRefresh
+PostDoEdit  119  41 
+PostRefresh
+PostDoEdit  119  42 
+PostRefresh
+PostDoEdit  120  42 
+PostRefresh
+PostDoEdit  120  42 
+PostRefresh
+PostDoEdit  120  42 
+PostRefresh
+PostDoEdit  120  42 
+PostRefresh
+PostDoEdit  120  42 
+PostRefresh
+PostDoEdit  120  42 
+PostRefresh
+PostDoEdit  120  42 
+PostRefresh
+PostDoEdit  120  42 
+PostRefresh
+PostDoEdit  120  43 
+PostRefresh
+PostSetEditMode 7
+PostRefresh
+PostDoEdit  126  47 
+PostRefresh
+PostDoEdit  126  47 
+PostRefresh
+PostDoEdit  126  47 
+PostRefresh
+PostDoEdit  125  47 
+PostRefresh
+PostDoEdit  124  47 
+PostRefresh
+PostDoEdit  123  47 
+PostRefresh
+PostDoEdit  121  47 
+PostRefresh
+PostDoEdit  120  47 
+PostRefresh
+PostDoEdit  119  47 
+PostRefresh
+PostDoEdit  117  47 
+PostRefresh
+PostDoEdit  116  46 
+PostRefresh
+PostDoEdit  114  46 
+PostRefresh
+PostDoEdit  112  46 
+PostRefresh
+PostDoEdit  111  46 
+PostRefresh
+PostDoEdit  110  46 
+PostRefresh
+PostDoEdit  109  46 
+PostRefresh
+PostDoEdit  107  45 
+PostRefresh
+PostDoEdit  107  45 
+PostRefresh
+PostDoEdit  106  45 
+PostRefresh
+PostDoEdit  105  45 
+PostRefresh
+PostDoEdit  104  45 
+PostRefresh
+PostDoEdit  104  44 
+PostRefresh
+PostDoEdit  103  44 
+PostRefresh
+PostDoEdit  102  44 
+PostRefresh
+PostDoEdit  102  44 
+PostRefresh
+PostDoEdit  101  44 
+PostRefresh
+PostDoEdit  101  44 
+PostRefresh
+PostDoEdit  100  44 
+PostRefresh
+PostDoEdit   99  44 
+PostRefresh
+PostDoEdit   98  43 
+PostRefresh
+PostDoEdit   98  43 
+PostRefresh
+PostDoEdit   97  43 
+PostRefresh
+PostDoEdit   96  43 
+PostRefresh
+PostDoEdit   96  43 
+PostRefresh
+PostDoEdit   95  43 
+PostRefresh
+PostDoEdit   94  43 
+PostRefresh
+PostDoEdit   93  43 
+PostRefresh
+PostDoEdit   92  43 
+PostRefresh
+PostDoEdit   91  43 
+PostRefresh
+PostDoEdit   90  42 
+PostRefresh
+PostDoEdit   89  42 
+PostRefresh
+PostDoEdit   88  42 
+PostRefresh
+PostDoEdit   86  42 
+PostRefresh
+PostDoEdit   85  42 
+PostRefresh
+PostDoEdit   84  42 
+PostRefresh
+PostDoEdit   83  42 
+PostRefresh
+PostDoEdit   82  42 
+PostRefresh
+PostDoEdit   81  41 
+PostRefresh
+PostDoEdit   79  41 
+PostRefresh
+PostDoEdit   79  41 
+PostRefresh
+PostDoEdit   78  41 
+PostRefresh
+PostDoEdit   77  41 
+PostRefresh
+PostDoEdit   76  41 
+PostRefresh
+PostDoEdit   75  41 
+PostRefresh
+PostDoEdit   75  41 
+PostRefresh
+PostDoEdit   74  41 
+PostRefresh
+PostDoEdit   74  41 
+PostRefresh
+PostDoEdit   73  41 
+PostRefresh
+PostDoEdit   73  41 
+PostRefresh
+PostDoEdit   72  40 
+PostRefresh
+PostDoEdit   72  40 
+PostRefresh
+PostDoEdit   72  40 
+PostRefresh
+PostDoEdit   71  40 
+PostRefresh
+PostDoEdit   71  40 
+PostRefresh
+PostDoEdit   70  40 
+PostRefresh
+PostDoEdit   70  40 
+PostRefresh
+PostDoEdit   69  40 
+PostRefresh
+PostDoEdit   68  40 
+PostRefresh
+PostDoEdit   68  40 
+PostRefresh
+PostDoEdit   67  40 
+PostRefresh
+PostDoEdit   66  40 
+PostRefresh
+PostDoEdit   65  40 
+PostRefresh
+PostDoEdit   65  40 
+PostRefresh
+PostDoEdit   64  39 
+PostRefresh
+PostDoEdit   63  39 
+PostRefresh
+PostDoEdit   63  39 
+PostRefresh
+PostDoEdit   62  39 
+PostRefresh
+PostDoEdit   62  39 
+PostRefresh
+PostDoEdit   61  39 
+PostRefresh
+PostDoEdit   61  39 
+PostRefresh
+PostDoEdit   60  39 
+PostRefresh
+PostDoEdit   60  39 
+PostRefresh
+PostDoEdit   60  39 
+PostRefresh
+PostDoEdit   59  39 
+PostRefresh
+PostDoEdit   59  39 
+PostRefresh
+PostDoEdit   59  39 
+PostRefresh
+PostDoEdit   59  39 
+PostRefresh
+PostDoEdit   59  39 
+PostRefresh
+PostDoEdit   59  39 
+PostRefresh
+PostDoEdit   58  39 
+PostRefresh
+PostDoEdit   58  39 
+PostRefresh
+PostDoEdit   58  38 
+PostRefresh
+PostDoEdit   58  38 
+PostRefresh
+PostDoEdit   58  38 
+PostRefresh
+PostDoEdit   58  38 
+PostRefresh
+PostDoEdit   57  38 
+PostRefresh
+PostDoEdit   57  38 
+PostRefresh
+PostDoEdit   57  38 
+PostRefresh
+PostDoEdit   57  38 
+PostRefresh
+PostDoEdit   57  38 
+PostRefresh
+PostDoEdit   57  38 
+PostRefresh
+PostDoEdit   57  38 
+PostRefresh
+PostDoEdit   56  38 
+PostRefresh
+PostDoEdit   56  38 
+PostRefresh
+PostDoEdit   56  38 
+PostRefresh
+PostDoEdit   56  38 
+PostRefresh
+PostDoEdit   56  38 
+PostRefresh
+PostDoEdit   56  38 
+PostRefresh
+PostDoEdit   56  38 
+PostRefresh
+PostDoEdit   55  38 
+PostRefresh
+PostDoEdit   55  38 
+PostRefresh
+PostDoEdit   55  38 
+PostRefresh
+PostDoEdit   55  38 
+PostRefresh
+PostDoEdit   55  38 
+PostRefresh
+PostDoEdit   54  38 
+PostRefresh
+PostDoEdit   54  38 
+PostRefresh
+PostDoEdit   54  38 
+PostRefresh
+PostDoEdit   54  38 
+PostRefresh
+PostDoEdit   54  38 
+PostRefresh
+PostDoEdit   53  38 
+PostRefresh
+PostDoEdit   53  38 
+PostRefresh
+PostDoEdit   53  38 
+PostRefresh
+PostDoEdit   53  38 
+PostRefresh
+PostDoEdit   52  38 
+PostRefresh
+PostDoEdit   52  38 
+PostRefresh
+PostDoEdit   52  38 
+PostRefresh
+PostDoEdit   51  38 
+PostRefresh
+PostDoEdit   51  38 
+PostRefresh
+PostDoEdit   51  38 
+PostRefresh
+PostDoEdit   51  38 
+PostRefresh
+PostDoEdit   50  37 
+PostRefresh
+PostDoEdit   50  37 
+PostRefresh
+PostDoEdit   50  37 
+PostRefresh
+PostDoEdit   49  37 
+PostRefresh
+PostDoEdit   49  37 
+PostRefresh
+PostDoEdit   49  37 
+PostRefresh
+PostDoEdit   48  37 
+PostRefresh
+PostDoEdit   48  36 
+PostRefresh
+PostDoEdit   48  36 
+PostRefresh
+PostDoEdit   47  36 
+PostRefresh
+PostDoEdit   47  36 
+PostRefresh
+PostDoEdit   47  36 
+PostRefresh
+PostDoEdit   47  36 
+PostRefresh
+PostDoEdit   47  36 
+PostRefresh
+PostDoEdit   47  36 
+PostRefresh
+PostDoEdit   47  36 
+PostRefresh
+PostDoEdit   46  36 
+PostRefresh
+PostDoEdit   46  36 
+PostRefresh
+PostDoEdit   46  36 
+PostRefresh
+PostDoEdit   46  36 
+PostRefresh
+PostDoEdit   46  37 
+PostRefresh
+PostDoEdit  140  83 
+PostRefresh
+PostDoEdit  140  83 
+PostRefresh
+PostDoEdit  140  82 
+PostRefresh
+PostDoEdit  141  82 
+PostRefresh
+PostDoEdit  141  81 
+PostRefresh
+PostDoEdit  141  81 
+PostRefresh
+PostDoEdit  142  80 
+PostRefresh
+PostDoEdit  142  79 
+PostRefresh
+PostDoEdit  143  78 
+PostRefresh
+PostDoEdit  143  78 
+PostRefresh
+PostDoEdit  144  77 
+PostRefresh
+PostDoEdit  145  76 
+PostRefresh
+PostDoEdit  146  75 
+PostRefresh
+PostDoEdit  146  74 
+PostRefresh
+PostDoEdit  147  73 
+PostRefresh
+PostDoEdit  147  73 
+PostRefresh
+PostDoEdit  148  72 
+PostRefresh
+PostDoEdit  148  72 
+PostRefresh
+PostDoEdit  148  71 
+PostRefresh
+PostDoEdit  149  71 
+PostRefresh
+PostDoEdit  149  70 
+PostRefresh
+PostDoEdit  149  70 
+PostRefresh
+PostDoEdit  149  69 
+PostRefresh
+PostDoEdit  149  69 
+PostRefresh
+PostDoEdit  150  68 
+PostRefresh
+PostDoEdit  150  68 
+PostRefresh
+PostDoEdit  150  68 
+PostRefresh
+PostDoEdit  150  67 
+PostRefresh
+PostDoEdit  151  66 
+PostRefresh
+PostDoEdit  151  66 
+PostRefresh
+PostDoEdit  151  65 
+PostRefresh
+PostDoEdit  152  65 
+PostRefresh
+PostDoEdit  152  64 
+PostRefresh
+PostDoEdit  152  63 
+PostRefresh
+PostDoEdit  153  63 
+PostRefresh
+PostDoEdit  153  63 
+PostRefresh
+PostDoEdit  153  62 
+PostRefresh
+PostDoEdit  153  62 
+PostRefresh
+PostDoEdit  154  61 
+PostRefresh
+PostDoEdit  154  61 
+PostRefresh
+PostDoEdit  154  60 
+PostRefresh
+PostDoEdit  154  60 
+PostRefresh
+PostDoEdit  154  59 
+PostRefresh
+PostDoEdit  155  59 
+PostRefresh
+PostDoEdit  155  58 
+PostRefresh
+PostDoEdit  155  58 
+PostRefresh
+PostDoEdit  155  57 
+PostRefresh
+PostDoEdit  155  56 
+PostRefresh
+PostDoEdit  156  55 
+PostRefresh
+PostDoEdit  156  55 
+PostRefresh
+PostDoEdit  156  54 
+PostRefresh
+PostDoEdit  156  53 
+PostRefresh
+PostDoEdit  157  53 
+PostRefresh
+PostDoEdit  157  52 
+PostRefresh
+PostDoEdit  157  52 
+PostRefresh
+PostDoEdit  157  51 
+PostRefresh
+PostDoEdit  157  50 
+PostRefresh
+PostDoEdit  158  50 
+PostRefresh
+PostDoEdit  158  49 
+PostRefresh
+PostDoEdit  158  48 
+PostRefresh
+PostDoEdit  158  48 
+PostRefresh
+PostDoEdit  158  47 
+PostRefresh
+PostDoEdit  158  47 
+PostRefresh
+PostDoEdit  158  46 
+PostRefresh
+PostDoEdit  159  46 
+PostRefresh
+PostDoEdit  159  45 
+PostRefresh
+PostDoEdit  159  45 
+PostRefresh
+PostDoEdit  159  44 
+PostRefresh
+PostDoEdit  159  43 
+PostRefresh
+PostDoEdit  159  43 
+PostRefresh
+PostDoEdit  159  42 
+PostRefresh
+PostDoEdit  159  41 
+PostRefresh
+PostDoEdit  159  41 
+PostRefresh
+PostDoEdit  159  40 
+PostRefresh
+PostDoEdit  159  40 
+PostRefresh
+PostDoEdit  159  40 
+PostRefresh
+PostDoEdit  159  39 
+PostRefresh
+PostDoEdit  159  39 
+PostRefresh
+PostDoEdit  159  39 
+PostRefresh
+PostDoEdit  159  38 
+PostRefresh
+PostDoEdit  159  38 
+PostRefresh
+PostDoEdit  159  38 
+PostRefresh
+PostDoEdit  159  37 
+PostRefresh
+PostDoEdit  159  37 
+PostRefresh
+PostDoEdit  159  36 
+PostRefresh
+PostDoEdit  159  35 
+PostRefresh
+PostDoEdit  159  34 
+PostRefresh
+PostDoEdit  159  33 
+PostRefresh
+PostDoEdit  158  33 
+PostRefresh
+PostDoEdit  158  32 
+PostRefresh
+PostDoEdit  158  31 
+PostRefresh
+PostDoEdit  158  31 
+PostRefresh
+PostDoEdit  158  30 
+PostRefresh
+PostDoEdit  158  30 
+PostRefresh
+PostDoEdit  158  29 
+PostRefresh
+PostDoEdit  158  29 
+PostRefresh
+PostDoEdit  157  28 
+PostRefresh
+PostDoEdit  157  28 
+PostRefresh
+PostDoEdit  157  28 
+PostRefresh
+PostDoEdit  157  27 
+PostRefresh
+PostDoEdit  157  27 
+PostRefresh
+PostDoEdit  157  26 
+PostRefresh
+PostDoEdit  157  25 
+PostRefresh
+PostDoEdit  157  25 
+PostRefresh
+PostDoEdit  157  25 
+PostRefresh
+PostDoEdit  157  24 
+PostRefresh
+PostDoEdit  157  24 
+PostRefresh
+PostDoEdit  157  24 
+PostRefresh
+PostDoEdit  157  23 
+PostRefresh
+PostDoEdit  157  23 
+PostRefresh
+PostDoEdit  157  23 
+PostRefresh
+PostDoEdit  157  23 
+PostRefresh
+PostDoEdit  157  23 
+PostRefresh
+PostDoEdit  157  22 
+PostRefresh
+PostDoEdit  157  22 
+PostRefresh
+PostDoEdit  157  22 
+PostRefresh
+PostDoEdit  157  22 
+PostRefresh
+PostDoEdit  157  22 
+PostRefresh
+PostDoEdit  157  22 
+PostRefresh
+PostDoEdit  158  22 
+PostRefresh
+PostDoEdit  158  22 
+PostRefresh
+PostDoEdit  158  22 
+PostRefresh
+PostDoEdit  158  22 
+PostRefresh
+PostDoEdit  158  22 
+PostRefresh
+PostDoEdit  158  22 
+PostRefresh
+PostDoEdit  158  23 
+PostRefresh
+PostDoEdit  158  23 
+PostRefresh
+PostDoEdit  158  23 
+PostRefresh
+PostDoEdit  158  23 
+PostRefresh
+PostDoEdit  158  23 
+PostRefresh
+PostDoEdit  159  24 
+PostRefresh
+PostDoEdit  159  24 
+PostRefresh
+PostDoEdit  159  24 
+PostRefresh
+PostDoEdit  159  24 
+PostRefresh
+PostDoEdit  159  24 
+PostRefresh
+PostDoEdit  159  24 
+PostRefresh
+PostDoEdit  159  25 
+PostRefresh
+PostDoEdit  159  25 
+PostRefresh
+PostDoEdit  160  25 
+PostRefresh
+PostDoEdit  160  25 
+PostRefresh
+PostDoEdit  160  25 
+PostRefresh
+PostDoEdit  160  26 
+PostRefresh
+PostDoEdit  160  26 
+PostRefresh
+PostDoEdit  160  26 
+PostRefresh
+PostDoEdit  160  26 
+PostRefresh
+PostDoEdit  160  26 
+PostRefresh
+PostDoEdit  160  26 
+PostRefresh
+PostDoEdit  160  26 
+PostRefresh
+PostDoEdit  160  27 
+PostRefresh
+PostDoEdit  160  27 
+PostRefresh
+PostSetEditMode 3
+PostDoEdit  116  48 
+PostRefresh
+PostDoEdit  116  47 
+PostRefresh
+PostDoEdit  116  47 
+PostRefresh
+PostDoEdit  116  47 
+PostRefresh
+PostDoEdit  115  47 
+PostRefresh
+PostDoEdit  115  47 
+PostRefresh
+PostDoEdit  115  46 
+PostRefresh
+PostDoEdit  115  46 
+PostRefresh
+PostDoEdit  115  46 
+PostRefresh
+PostDoEdit  115  46 
+PostRefresh
+PostDoEdit  115  46 
+PostRefresh
+PostDoEdit  115  45 
+PostRefresh
+PostDoEdit  120  45 
+PostRefresh
+PostDoEdit  120  45 
+PostRefresh
+PostDoEdit  121  45 
+PostRefresh
+PostDoEdit  121  45 
+PostRefresh
+PostDoEdit  121  45 
+PostRefresh
+PostDoEdit  121  45 
+PostRefresh
+PostDoEdit  122  45 
+PostRefresh
+PostDoEdit  122  45 
+PostRefresh
+PostDoEdit  122  45 
+PostRefresh
+PostDoEdit  122  45 
+PostRefresh
+PostDoEdit  123  45 
+PostRefresh
+PostDoEdit  123  46 
+PostRefresh
+PostDoEdit  123  46 
+PostRefresh
+PostDoEdit  124  46 
+PostRefresh
+PostDoEdit  124  46 
+PostRefresh
+PostDoEdit  125  46 
+PostRefresh
+PostDoEdit  125  46 
+PostRefresh
+PostSetEditMode 2
+PostDoEdit   46  37 
+PostRefresh
+PostDoEdit   46  37 
+PostRefresh
+PostDoEdit   46  37 
+PostRefresh
+PostDoEdit   46  37 
+PostRefresh
+PostDoEdit   46  37 
+PostRefresh
+PostDoEdit   47  36 
+PostRefresh
+PostDoEdit   47  36 
+PostRefresh
+PostDoEdit   47  36 
+PostRefresh
+PostDoEdit   48  36 
+PostRefresh
+PostDoEdit   48  35 
+PostRefresh
+PostDoEdit   49  35 
+PostRefresh
+PostDoEdit   49  35 
+PostRefresh
+PostDoEdit   50  35 
+PostRefresh
+PostDoEdit   51  35 
+PostRefresh
+PostDoEdit   51  35 
+PostRefresh
+PostDoEdit   52  35 
+PostRefresh
+PostDoEdit   52  35 
+PostRefresh
+PostDoEdit   53  35 
+PostRefresh
+PostDoEdit   53  35 
+PostRefresh
+PostDoEdit   53  35 
+PostRefresh
+PostDoEdit   53  35 
+PostRefresh
+PostDoEdit   53  35 
+PostRefresh
+PostSetEditMode 4
+PostDoEdit  154  54 
+PostRefresh
+PostDoEdit  154  54 
+PostRefresh
+PostDoEdit  154  54 
+PostRefresh
+PostDoEdit  154  54 
+PostRefresh
+PostGoForwards
+PostGoForwards
+PostGoForwards
+PostGoForwards
+PostGoForwards
+PostGoForwards

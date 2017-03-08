@@ -1,0 +1,274 @@
+SetGenerationDelay 50
+PostSetEditMode CMD_EDIT_STATE_MUT_RATE 
+PostSetBrushIntensity 50
+PostSetEditMode CMD_EDIT_STATE_FERTILITY
+PostSetBrushIntensity 1
+PostSetEditMode CMD_EDIT_STATE_FOOD
+PostSetBrushIntensity 200
+EditorCommand IDM_MOVE
+EditorCommand IDM_MOVE
+PostSetBrushSize 17
+PostSetBrushIntensity 50
+PostSetBrushShape SHAPE_CIRCLE
+PostRefresh 
+EditorCommand IDM_MUT_RATE
+PostSetEditMode CMD_EDIT_STATE_MUT_RATE 
+PostRefresh 
+PostDoEdit  162 50
+PostRefresh 
+PostDoEdit  154 50
+PostRefresh 
+PostDoEdit  150 50
+PostRefresh 
+PostDoEdit  144 50
+PostRefresh 
+PostDoEdit  137 50
+PostRefresh 
+PostDoEdit  132 50
+PostRefresh 
+PostDoEdit  126 49
+PostRefresh 
+PostDoEdit  121 49
+PostRefresh 
+PostDoEdit  116 48
+PostRefresh 
+PostDoEdit  111 48
+PostRefresh 
+PostDoEdit  106 47
+PostRefresh 
+PostDoEdit  101 47
+PostRefresh 
+PostDoEdit  98 46
+PostRefresh 
+PostDoEdit  92 46
+PostRefresh 
+PostDoEdit  85 45
+PostRefresh 
+PostDoEdit  80 45
+PostRefresh 
+PostDoEdit  76 45
+PostRefresh 
+PostDoEdit  73 45
+PostRefresh 
+PostDoEdit  67 45
+PostRefresh 
+PostDoEdit  62 44
+PostRefresh 
+PostDoEdit  59 44
+PostRefresh 
+PostDoEdit  57 44
+PostRefresh 
+PostDoEdit  56 44
+PostRefresh 
+PostDoEdit  54 45
+PostRefresh 
+PostDoEdit  53 45
+PostRefresh 
+PostDoEdit  53 45
+PostRefresh 
+PostDoEdit  51 47
+PostRefresh 
+PostDoEdit  50 48
+PostRefresh 
+PostDoEdit  50 48
+PostRefresh 
+PostDoEdit  50 48
+PostRefresh 
+PostDoEdit  50 48
+PostRefresh 
+PostDoEdit  50 48
+PostRefresh 
+PostDoEdit  49 48
+PostRefresh 
+PostDoEdit  48 48
+PostRefresh 
+PostDoEdit  47 48
+PostRefresh 
+PostDoEdit  47 48
+PostRefresh 
+Include "inc1.in"
+EditorCommand IDM_DEFECT
+PostSetEditMode CMD_EDIT_STATE_RANDOM
+PostDoEdit  160 21
+PostRefresh 
+PostDoEdit  160 21
+PostRefresh 
+PostDoEdit  160 21
+PostRefresh 
+PostDoEdit  159 21
+PostRefresh 
+PostDoEdit  159 20
+PostRefresh 
+PostDoEdit  158 20
+PostRefresh 
+PostDoEdit  158 20
+PostRefresh 
+PostDoEdit  158 19
+PostRefresh 
+PostDoEdit  158 19
+PostRefresh 
+PostDoEdit  157 18
+PostRefresh 
+PostDoEdit  157 18
+PostRefresh 
+PostDoEdit  159 20
+PostRefresh 
+PostDoEdit  160 17
+PostRefresh 
+PostDoEdit  160 17
+PostRefresh 
+PostDoEdit  160 18
+PostRefresh 
+PostDoEdit  157 15
+PostRefresh 
+PostDoEdit  165 18
+PostRefresh 
+PostDoEdit  164 13
+PostRefresh 
+PostDoEdit  164 14
+PostRefresh 
+PostDoEdit  163 17
+PostRefresh 
+PostDoEdit  159 20
+PostRefresh 
+PostDoEdit  158 18
+PostRefresh 
+PostDoEdit  167 16
+PostRefresh 
+PostDoEdit  161 14
+PostRefresh 
+PostDoEdit  161 14
+PostRefresh 
+PostDoEdit  160 13
+PostRefresh 
+PostDoEdit  161 14
+PostRefresh 
+PostDoEdit  159 18
+PostRefresh 
+PostDoEdit  157 14
+PostRefresh 
+PostDoEdit  154 19
+PostRefresh 
+PostDoEdit  154 18
+PostRefresh 
+PostDoEdit  157 16
+PostRefresh 
+PostDoEdit  156 19
+PostRefresh 
+PostDoEdit  159 16
+PostRefresh 
+PostDoEdit  156 18
+PostRefresh 
+PostDoEdit  156 18
+PostRefresh 
+PostDoEdit  156 17
+PostRefresh 
+PostDoEdit  156 16
+PostRefresh 
+PostDoEdit  156 15
+PostRefresh 
+PostDoEdit  157 15
+PostRefresh 
+PostDoEdit  158 13
+PostRefresh 
+PostRefresh 
+EditorCommand IDM_MOVE
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration

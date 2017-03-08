@@ -1,0 +1,7 @@
+SetGenerationDelay 50
+PostRefresh
+PostSetEditMode CMD_EDIT_STATE_MUT_RATE
+PostRefresh
+PostGotoGeneration 0
+PostRefresh
+PostDoEdit   83 61 
