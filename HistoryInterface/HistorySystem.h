@@ -39,7 +39,7 @@ public:
         BasicHistCacheItem *
     );
 
-    void SetAskHistoryCutFunctor( DisplayFunctor const * const f ) { m_pAskHistoryCutFunctor   = f; }
+    void SetAskHistoryCutFunctor( DisplayFunctor const * const f ) { m_pAskHistoryCutFunctor = f; }
 
     int               GetNrOfHistCacheSlots( ) const;
     HIST_GENERATION   GetNrOfGenerations( )    const;

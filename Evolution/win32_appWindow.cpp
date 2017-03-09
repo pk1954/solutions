@@ -138,8 +138,7 @@ void AppWindow::Start( LPTSTR lpCmdLine )
 
     ScriptErrorHandler::ScrSetOutputStream( & m_traceStream );
 
-    Script scriptConfiguration;
-    scriptConfiguration.ScrProcess( L"std_configuration.in" );
+	ProcessScript( L"std_configuration.in" );
 
     D3dSystem::Create( hwnd, GridPoint::GRID_WIDTH, GridPoint::GRID_HEIGHT );
 
@@ -172,7 +171,6 @@ void AppWindow::Start( LPTSTR lpCmdLine )
     }
 
     m_pModelWork = ModelData::CreateModelData( );
-    m_pModelWork->InitEditorState( );
     DefineModelWrapperFunctions( m_pModelWork );
 
     if ( Config::UseHistorySystem( ) )
@@ -235,8 +233,7 @@ void AppWindow::Start( LPTSTR lpCmdLine )
     ShowWindow( hwnd, SW_SHOWMAXIMIZED );
     (void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 
-    Script script;
-    script.ScrProcess( L"std_script.in" );
+	ProcessScript( L"std_script.in" );
 }
 
 AppWindow::~AppWindow( )

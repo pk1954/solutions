@@ -16,7 +16,6 @@ public:
 
     static ModelData * CreateModelData( );
 
-    virtual void           InitEditorState( ) = 0;
     virtual void           CopyModelData  ( ModelData const * const ) = 0;
 
     virtual int            GetNrOfLivingIndividuals ( ) const = 0;

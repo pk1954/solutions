@@ -17,13 +17,12 @@ public:
         * this = * static_cast<ModelDataImpl const *>( src );
     }
 
-    virtual void           InitEditorState( ) { m_editorState.InitEditorState( & m_grid ); }
-
     virtual void           SetBrushShape    ( tShape     const shape ) { m_editorState.SetBrushShape    ( shape ); }
     virtual void           SetBrushSize     ( short      const iSize ) { m_editorState.SetBrushSize     ( iSize ); }
     virtual void           SetBrushIntensity( short      const iInt  ) { m_editorState.SetBrushIntensity( iInt  ); }
     virtual void           SetBrushStrategy ( tBrushMode const mode  ) { m_editorState.SetBrushStrategy ( mode  ); }
-    virtual void           DoEdit           ( GridPoint  const gp    ) { m_editorState.DoEdit           ( gp    ); }
+
+    virtual void           DoEdit           ( GridPoint  const gp    ) { m_editorState.DoEdit( & m_grid, gp ); }
 
     virtual EVO_GENERATION GetAge         ( GridPoint const & gp ) const { return m_grid.GetAge( gp ); }
 
