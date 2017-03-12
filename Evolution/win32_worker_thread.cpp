@@ -73,18 +73,13 @@ void WorkThread::ResetModel( )
     m_pEvolutionCore->ResetModel( m_pModelWork );
 }
 
-// GenerationStep - compute next generation
-//                - measure computation time (performance window)
-//                - display new generation number in status bar
-//                - notify all views
-
 void WorkThread::GenerationStep( )
 {
-    m_pPerformanceWindow->ComputationStart( );
-    m_pEvolutionCore->Compute( m_pModelWork );
-    m_pPerformanceWindow->ComputationStop( );
-    m_pStatusBar->DisplayCurrentGeneration( );
-    ( * m_pDisplayGridFunctor )( FALSE );
+    m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
+    m_pEvolutionCore->Compute( m_pModelWork );   // compute next generation
+    m_pPerformanceWindow->ComputationStop( );    // measure computation time
+    m_pStatusBar->DisplayCurrentGeneration( );   // display new generation number in status bar
+    ( * m_pDisplayGridFunctor )( FALSE );        // notify all views
 }
 
 void WorkThread::generationRun( )
@@ -344,4 +339,3 @@ void WorkThread::PostEndThread( HWND const hwndCtl )
     postMsg2WorkThread( THREAD_MSG_STOP, 0, 0 );
     postMsg2WorkThread( THREAD_MSG_EXIT, 0, (LPARAM)hwndCtl );
 }
-

@@ -252,18 +252,18 @@ AppWindow::~AppWindow( )
             delete m_pWorkThread;
         }
 
-        delete m_pMiniGridWindow;  //
-        delete m_pMainGridWindow;  //
-        delete m_pStatusBar;  //
-        delete m_pStatistics;  //
-        delete m_pPerfWindow;  //
-        delete m_pCrsrWindow;   //
-        delete m_pEditorWindow;  //
-        delete m_pDspOptWindow;  //
-        delete m_pGridRectSel;  //
-        delete m_pFocusPoint;  //
-        delete m_pWinManager;  //
-        delete m_pScriptHook;     //
+        delete m_pMiniGridWindow;
+        delete m_pMainGridWindow;
+        delete m_pStatusBar;
+        delete m_pStatistics;
+        delete m_pPerfWindow;
+        delete m_pCrsrWindow; 
+        delete m_pEditorWindow;
+        delete m_pDspOptWindow;
+        delete m_pGridRectSel;
+        delete m_pFocusPoint;
+        delete m_pWinManager;
+        delete m_pScriptHook;
 
         EvolutionCore::DeleteCore( );
     }
