@@ -21,11 +21,11 @@ public:
     HIST_GENERATION operator+ ( HIST_GENERATION const & a ) const { return m_nr + a.m_nr; }
     HIST_GENERATION operator- ( HIST_GENERATION const & a ) const { return m_nr - a.m_nr; }
 
-    HIST_GENERATION operator++ ( ) {                     return ++m_nr; }
-    HIST_GENERATION operator-- ( ) { assert( m_nr > 0 ); return --m_nr; }
+    HIST_GENERATION operator++ ( ) { return ++m_nr; }
+    HIST_GENERATION operator-- ( ) { return --m_nr; }
 
-    HIST_GENERATION operator++ (int) {                     return m_nr++; }
-    HIST_GENERATION operator-- (int) { assert( m_nr > 0 ); return m_nr--; }
+    HIST_GENERATION operator++ (int) { return m_nr++; }
+    HIST_GENERATION operator-- (int) { return m_nr--; }
 
     HIST_GENERATION operator= ( long const l ) { return m_nr = l; }
 

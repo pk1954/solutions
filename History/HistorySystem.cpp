@@ -34,7 +34,7 @@ HistorySystem::~HistorySystem( )
     m_pNextGenerationFunctor = nullptr;
 }
 
-void HistorySystem::InitHistoryComputation
+void HistorySystem::InitHistorySystem
 (
     short           const         sNrOfSlots,
     HIST_GENERATION const         genMaxNrOfGens,
@@ -52,7 +52,7 @@ void HistorySystem::InitHistoryComputation
     save2History( * m_pHistCacheItemWork );
 }
 
-bool HistorySystem::AddHistorySlot( )
+bool HistorySystem::AddHistorySlot( ) const 
 { 
     return m_pHistoryCache->AddCacheSlot( m_pHistCacheItemWork );
 }
@@ -92,27 +92,33 @@ HistoryIterator * HistorySystem::CreateHistoryIterator( ) const
     return new HistoryIterator( m_pHistoryCache ); 
 }
 
-bool HistorySystem::CreateNewGeneration( GenerationCmd const genCmd )
+// ClearHistory
+// Erase all generations starting with genFirst up to youngest generation
+// from m_GenerationCmd and from history slots
+
+void HistorySystem::ClearHistory( HIST_GENERATION const genFirst )
 {
-    // If in history mode: erase all future generations
-    // from m_GenerationCmd and from history slots
+	for ( HIST_GENERATION gen = GetYoungestGeneration(); gen > genFirst; --gen )
+	{
+		if  (m_pGenCmdList->IsCachedGeneration( gen ) )
+			m_pHistoryCache->RemoveHistCacheSlot( ( * m_pGenCmdList)[gen].GetParam( ) );
 
-    if ( GetYoungestGeneration( ) != GetCurrentGeneration( ) )
-    {
-        assert( m_pAskHistoryCutFunctor != nullptr );
-        if ( !( * m_pAskHistoryCutFunctor )( false ) )  // ask user if really cut off history
-            return false;
+		m_pGenCmdList->ResetGenerationCmd(gen);
+	}
+}
 
-        for ( HIST_GENERATION gen = GetYoungestGeneration( ); gen > m_pHistCacheItemWork->GetHistGenCounter( ); --gen )
-        {
-            if ( m_pGenCmdList->IsCachedGeneration( gen ) )
-                m_pHistoryCache->RemoveHistCacheSlot( ( * m_pGenCmdList )[ gen ].GetParam( ) );
+bool HistorySystem::CreateNewGeneration(GenerationCmd const genCmd)
+{
+	if ( GetYoungestGeneration() != GetCurrentGeneration() ) // If in history mode: erase all future generations
+	{
+		assert( m_pAskHistoryCutFunctor != nullptr );
+		if ( ! (  *m_pAskHistoryCutFunctor ) (false  ))  // ask user if really cut off history
+			return false;
 
-            m_pGenCmdList->ResetGenerationCmd( gen );
-        }
-    }
+		ClearHistory( m_pHistCacheItemWork->GetHistGenCounter( ) );
+	}
 
-    CHECK_HISTORY_STRUCTURE;
+	CHECK_HISTORY_STRUCTURE;
     step2NextGeneration( genCmd );
     m_pHistCacheItemWork->SetGenerationCommand( genCmd );
     save2History( * m_pHistCacheItemWork );

@@ -68,13 +68,13 @@ public:
     { }
 };
 
-class WrapDoEdit : public Script_Functor
+class WrapModelDoEdit : public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         GridPoint gp = ScrReadGridPoint( script );
-        m_pModelWork->DoEdit( gp );
+        m_pModelWork->ModelDoEdit( gp );
     }
 };
 
@@ -125,7 +125,7 @@ void DefineModelWrapperFunctions( ModelData * pModel )
 {
     m_pModelWork = pModel;
 
-    DEF_FUNC( DoEdit );
+    DEF_FUNC( ModelDoEdit );
     DEF_FUNC( SetBrushShape );
     DEF_FUNC( SetBrushSize );
     DEF_FUNC( SetBrushIntensity );

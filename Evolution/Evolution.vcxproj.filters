@@ -93,6 +93,9 @@
     <ClInclude Include="EvoGenerationCmd.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="HistAllocThread.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -153,6 +156,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_evoHistWindow.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistAllocThread.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

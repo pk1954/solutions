@@ -13,7 +13,7 @@ public:
     EditorState( );
     virtual ~EditorState( ) { }
 
-    void DoEdit( Grid * const, GridPoint const );
+    void EditorDoEdit( Grid * const, GridPoint const );
 
     void SetBrushStrategy ( tBrushMode const );
 

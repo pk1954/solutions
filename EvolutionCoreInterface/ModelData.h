@@ -52,5 +52,5 @@ public:
     virtual void SetBrushSize     ( short      const ) = 0;
     virtual void SetBrushIntensity( short      const ) = 0;
     virtual void SetBrushStrategy ( tBrushMode const ) = 0;
-    virtual void DoEdit           ( GridPoint  const ) = 0;
+    virtual void ModelDoEdit      ( GridPoint  const ) = 0;
 };

@@ -49,12 +49,16 @@ public:
     void PostEndThread( HWND );
     void PostProcessScript( std::wstring const & );
     void SetGenerationDelay( DWORD );
+	void ResetModel();
 
-    virtual void ResetModel( );
-    virtual void GenerationStep( );
-    virtual void PostNextGeneration( );
+	virtual void GenerationStep();
+
+	virtual void StopComputation();
+	virtual void PostNextGeneration( );
     virtual void PostHistoryAction( UINT const, GridPoint const gp = GridPoint::GP_NULL );
 	virtual void ApplyEditorCommand( tEvoCmd const, short const );
+	virtual void DoEdit( GridPoint const );
+	virtual void DoExit( HWND );
 
 protected:
 
@@ -78,31 +82,31 @@ protected:
 
     void postMsg2WorkThread( UINT, WPARAM, LPARAM );
 
-    virtual DWORD processWorkerMessage( UINT, WPARAM, LPARAM );
     virtual void  generationRun( );
 
-    BOOL                m_bTrace;
-    std::wofstream    * m_pTraceStream;
-    EditorWindow      * m_pEditorWindow;
+	BOOL             m_bTrace;
+    std::wofstream * m_pTraceStream;
+    EditorWindow   * m_pEditorWindow;
+
+private:
+
     StatusBar         * m_pStatusBar;
     DisplayAll  const * m_pDisplayGridFunctor;
     PerformanceWindow * m_pPerformanceWindow;
-
-private:
-    
-    EvolutionCore * m_pEvolutionCore;
-    ModelData     * m_pModelWork;
-    HANDLE          m_hEventThreadStarter;
-    DWORD           m_dwThreadId;
-    GridRect        m_gridRectSelection;
-    HANDLE          m_hTimer;
-    BOOL            m_bContinue;
-    INT             m_iScriptLevel;
-    GridPoint       m_gpEdit;
+    EvolutionCore     * m_pEvolutionCore;
+    ModelData         * m_pModelWork;
+    HANDLE              m_hEventThreadStarter;
+    DWORD               m_dwThreadId;
+    GridRect            m_gridRectSelection;
+    HANDLE              m_hTimer;
+    BOOL                m_bContinue;
+    INT                 m_iScriptLevel;
+    GridPoint           m_gpEdit;
 
     // private member functions
 
-    void  processScript( std::wstring * const );
+	DWORD processWorkerMessage( UINT, WPARAM, LPARAM );
+	void  processScript( std::wstring * const );
 
 friend static DWORD WINAPI WorkerThread( _In_ LPVOID );
 }; 

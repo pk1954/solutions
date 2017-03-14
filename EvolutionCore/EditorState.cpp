@@ -17,7 +17,7 @@ EditorState::EditorState( ) :
     m_sBrushIntensity( 50 )
 { }
 
-void EditorState::DoEdit( Grid * const pGrid, GridPoint const gp )
+void EditorState::EditorDoEdit( Grid * const pGrid, GridPoint const gp )
 {
 	static FoodStock_Functor  m_FoodStock_Functor;
 	static Fertilizer_Functor m_Fertilizer_Functor;

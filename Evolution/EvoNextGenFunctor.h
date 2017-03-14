@@ -38,15 +38,16 @@ public:
             break;
 
         case tGenCmd::reset:
-            m_pWorkThread->ResetModel( );
+            m_pWorkThread->WorkThread::ResetModel( );
             break;
 
         case tGenCmd::undefined:
         case tGenCmd::cached:
             assert( false );
+			break;
 
         default:
-            m_pWorkThread->ApplyEditorCommand( static_cast<tEvoCmd>(genCmd.GetCommand( )), genCmd.GetParam( ) );
+            m_pWorkThread->WorkThread::ApplyEditorCommand( static_cast<tEvoCmd>(genCmd.GetCommand( )), genCmd.GetParam( ) );
         }
     }
 

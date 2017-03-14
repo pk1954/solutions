@@ -31,7 +31,7 @@ public:
     HistorySystem( );
     ~HistorySystem( );
 
-    void InitHistoryComputation
+    void InitHistorySystem
     ( 
         short const, 
         HIST_GENERATION const, 
@@ -48,10 +48,11 @@ public:
     bool              IsInHistoryMode( )       const;
     HistoryIterator * CreateHistoryIterator( ) const;
 
-    bool              AddHistorySlot( );
+    bool              AddHistorySlot( ) const;
     void              ShutDownHistCacheSlot( short const );
 
-    bool              CreateNewGeneration( GenerationCmd const );
+    bool              CreateNewGeneration( GenerationCmd   const );
+	void              ClearHistory       ( HIST_GENERATION const );
     void              ApproachHistGen    ( HIST_GENERATION const );
 
     HIST_GENERATION   FindFirstGenerationWithProperty( GenerationProperty const & ) const;

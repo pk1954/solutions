@@ -4,7 +4,6 @@
 #include <fstream>
 #include <iostream>
 #include "resource.h"
-#include "SYMTAB.h"
 #include "ModelData.h"
 #include "EvolutionCore.h"
 #include "win32_status.h"
@@ -24,9 +23,7 @@ HistWorkThread::HistWorkThread
     m_genDemanded( 0 ),
     m_pEvoHistorySys( pHistorySys ),
     m_pCore( pCore ),
-    m_pModelWork( pModel ),
-    m_hThreadSlotAllocator( nullptr ),
-    m_bContinueSlotAllocation( FALSE )
+    m_pModelWork( pModel )
 { }
 
 HistWorkThread::~HistWorkThread( )
@@ -62,47 +59,41 @@ void HistWorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, short const sPara
     if ( m_pEvoHistorySys->CreateNewGeneration( EvoGenerationCmd( evoCmd, sParam )) )
         m_pCore->SaveEditorState( m_pModelWork );
 }
-
-DWORD HistWorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
+/*
+void HistWorkThread::ResetModel()
 {
-    switch ( uiMsg )
-    {
-    case THREAD_MSG_HIST_GOTO_GEN:
-        m_genDemanded = static_cast<long>( lParam );
-    // fall through!
+	m_pEvoHistorySys->GetHistorySystem()->ApproachHistGen( 0 );
+	m_pEvoHistorySys->GetHistorySystem()->ClearHistory( 0 );
+}
+*/
+void HistWorkThread::StopComputation()
+{
+	m_genDemanded = GetCurrentGeneration();
+	WorkThread::StopComputation();
+}
 
-    case THREAD_MSG_HIST_GOTO_DEM: // separat from THREAD_MSG_HIST_GOTO_GEN to allow THREAD_MSG_STOP
-        generationStep( );
-        if ( GetCurrentGeneration( ) != m_genDemanded )
-            postMsg2WorkThread( THREAD_MSG_HIST_GOTO_DEM, 0, 0 );
-        return 0;
+void HistWorkThread::DoEdit( GridPoint const gp )
+{
+	if ( m_pEvoHistorySys->CreateNewGeneration( EvoGenerationCmd( tEvoCmd::editSetXvalue, gp.x ) ) )
+		 m_pEvoHistorySys->CreateNewGeneration( EvoGenerationCmd( tEvoCmd::editSetYvalue, gp.y ) );
+}
 
-    case THREAD_MSG_STOP:
-        m_genDemanded = GetCurrentGeneration( );
-        break;
+void HistWorkThread::DoExit( HWND hwndApp )
+{
+	WorkThread::DoExit( hwndApp );
+}
 
-    case THREAD_MSG_DO_EDIT:
-        if ( m_pEvoHistorySys->CreateNewGeneration( EvoGenerationCmd( tEvoCmd::editSetXvalue, static_cast<SHORT>( wParam ) ) ) )
-             m_pEvoHistorySys->CreateNewGeneration( EvoGenerationCmd( tEvoCmd::editSetYvalue, static_cast<SHORT>( lParam ) ) );
-        return 0;
-
-    case THREAD_MSG_EXIT:
-        m_bContinueSlotAllocation = FALSE;
-        WaitForSingleObject( m_hThreadSlotAllocator, INFINITE );
-        CloseHandle( m_hThreadSlotAllocator );
-        break;
-
-    default:
-        break;
-    }
-
-    return WorkThread::processWorkerMessage( uiMsg, wParam, lParam );
+void HistWorkThread::gotoGeneration( HIST_GENERATION const gen )
+{
+	m_genDemanded = gen;
+	do 
+		generationStep( );
+	while ( GetCurrentGeneration( ) != m_genDemanded );
 }
 
 void HistWorkThread::PostNextGeneration( )
 {
-	HIST_GENERATION const gen = GetCurrentGeneration( ) + 1;
-	postMsg2WorkThread( THREAD_MSG_HIST_GOTO_GEN, 0, gen.GetLong() );
+	gotoGeneration( GetCurrentGeneration( ) + 1 );
 }
 
 void HistWorkThread::PostHistoryAction( UINT const uiID, GridPoint const gp )
@@ -145,24 +136,5 @@ void HistWorkThread::PostGotoGeneration( HIST_GENERATION const gen )
     assert( gen >= 0 );
     assert( gen <= m_pEvoHistorySys->GetHistorySystem( )->GetYoungestGeneration( ) );
 
-    postMsg2WorkThread( THREAD_MSG_HIST_GOTO_GEN, 0, gen.GetLong( ) );
-}
-
-static DWORD WINAPI HistAllocThread( _In_ LPVOID lpParameter )
-{
-    HistWorkThread * const pWorkThread = static_cast<HistWorkThread *>( lpParameter );
-    EvoHistorySys  * const pHistSys = pWorkThread->GetEvoHistorySys( );
-
-    (void)SetThreadAffinityMask( GetCurrentThread( ), 0x0003 );
-
-    while ( pWorkThread->ContinueSlotAllocation( ) && pHistSys->AddEvoHistorySlot( ) );
-
-    return 0;
-}
-
-void HistWorkThread::PostAllocateHistorySlots( )
-{
-    DWORD m_dwThreadId;
-    m_bContinueSlotAllocation = TRUE;
-    m_hThreadSlotAllocator = Util::MakeThread( HistAllocThread, this, & m_dwThreadId, nullptr );
+	gotoGeneration( gen );
 }

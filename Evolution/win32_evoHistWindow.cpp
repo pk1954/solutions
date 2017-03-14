@@ -6,6 +6,7 @@
 #include "EvolutionCore.h"
 #include "EvoNextGenFunctor.h"
 #include "EvoHistorySys.h"
+#include "HistAllocThread.h"
 #include "win32_focusPoint.h"
 #include "win32_status.h"
 #include "win32_histWorkerThread.h"
@@ -15,16 +16,21 @@ EvoHistWindow::EvoHistWindow( ) :
     HistWindow( ),
     m_pHistWorkThread( nullptr ),
     m_pFocusPoint( nullptr ),
-    m_pStatusBar( nullptr )
+    m_pStatusBar( nullptr ),
+	m_pHistAllocThread( nullptr )
 { }
 
 EvoHistWindow::~EvoHistWindow( )
 {
+	m_pHistAllocThread->ExitHistAllocThread();
     shutDownHistoryCache( );
     delete m_pHistWorkThread;
     delete m_pEvoHistorySys;
+	delete m_pHistAllocThread;
     m_pHistWorkThread = nullptr;
-    m_pFocusPoint = nullptr;
+	m_pEvoHistorySys = nullptr;
+	m_pHistAllocThread = nullptr;
+	m_pFocusPoint = nullptr;
     m_pStatusBar = nullptr;
 }
 
@@ -51,7 +57,8 @@ void EvoHistWindow::Start
     m_pFocusPoint->Start( m_pEvoHistorySys, pEvoModelData->GetModelData( ) );
     m_pStatusBar = pStatusBar;
     Show( bShow );
-    m_pHistWorkThread->PostAllocateHistorySlots( );  // delegate allocation of history slots to work thread
+	m_pHistAllocThread = new HistAllocThread;
+	m_pHistAllocThread->AllocateHistorySlots( m_pEvoHistorySys );  // delegate allocation of history slots to a work thread
 }
 
 HistWorkThread * EvoHistWindow::GetHistWorkThread( )

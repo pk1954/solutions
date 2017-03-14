@@ -17,13 +17,13 @@ public:
     ~EvoHistorySys( ) { };
 
     // EvoApproachHistGen - Get closer to demanded HIST_GENERATION
-    //                 - If several steps are neccessary, function returns after one displayed generation
-    //                   to allow user interaction
-    //                 - But actual history generation as altererd by at least 1
+    //                    - If several steps are neccessary, function returns after one displayed generation
+    //                      to allow user interaction
+    //                    - But actual history generation as altererd by at least 1
 
     void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_HistorySystem.ApproachHistGen( genDemanded ); }
     
-    bool AddEvoHistorySlot    ( )                         { return m_HistorySystem.AddHistorySlot( ); }
+    bool AddEvoHistorySlot    ( ) const                   { return m_HistorySystem.AddHistorySlot( ); }
     int  GetNrOfHistCacheSlots( )                         { return m_HistorySystem.GetNrOfHistCacheSlots( ); }
     void ShutDownHistCacheSlot( int const i )             { return m_HistorySystem.ShutDownHistCacheSlot( i ); }
     bool CreateNewGeneration  ( GenerationCmd const cmd ) { return m_HistorySystem.CreateNewGeneration( cmd ); }

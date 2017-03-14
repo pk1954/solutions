@@ -112,7 +112,7 @@ void WorkThread::ApplyEditorCommand( tEvoCmd const command, short const sParam )
 
     case tEvoCmd::editSetYvalue:
         m_gpEdit.y = sParam;
-        m_pModelWork->DoEdit( m_gpEdit );
+        m_pModelWork->ModelDoEdit( m_gpEdit );
         break;
 
     case tEvoCmd::editSetBrushShape:
@@ -136,13 +136,29 @@ void WorkThread::ApplyEditorCommand( tEvoCmd const command, short const sParam )
     }
 }
 
+void WorkThread::StopComputation()
+{
+	m_bContinue = FALSE;
+}
+
+void WorkThread::DoEdit( GridPoint const gp )
+{
+	m_pModelWork->ModelDoEdit( gp );
+}
+
+void WorkThread::DoExit(HWND hwndApp)
+{
+	m_bContinue = FALSE;
+	PostMessage(hwndApp, WM_DESTROY, 0, 0);
+}
+
 DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 {
     switch (uiMsg)
     {
         
     case THREAD_MSG_RESET_MODEL:
-        m_pEvolutionCore->ResetModel( m_pModelWork );
+        ResetModel( );
         break;
 
     case THREAD_MSG_PROCESS_SCRIPT:
@@ -159,7 +175,7 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
         return 0;
 
     case THREAD_MSG_STOP:
-        m_bContinue = FALSE;
+		StopComputation();
         return 0;
 
     case THREAD_MSG_SET_BRUSH_INTENSITY:
@@ -179,7 +195,7 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
         break;
 
     case THREAD_MSG_DO_EDIT:
-        m_pModelWork->DoEdit( GridPoint( wParam, lParam ) );
+        DoEdit( GridPoint( wParam, lParam ) );
         break;
 
     case THREAD_MSG_REFRESH:

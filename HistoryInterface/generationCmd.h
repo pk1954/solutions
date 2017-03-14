@@ -52,11 +52,11 @@ public:
 
 private:
     tGenCmd m_Cmd;
-    short  m_sParam;
+    short   m_sParam;
 };
 
 static const GenerationCmd GEN_CMD_UNDEFINED = { tGenCmd::undefined, SHRT_MAX };
-static const GenerationCmd GEN_CMD_NEXT_GEN  = { tGenCmd::nextGen,  0 };
+static const GenerationCmd GEN_CMD_NEXT_GEN  = { tGenCmd::nextGen,   0 };
 static const GenerationCmd GEN_CMD_RESET     = { tGenCmd::reset,     0 };
 
 wchar_t const * const GetGenerationCmdNameShort( tGenCmd const );

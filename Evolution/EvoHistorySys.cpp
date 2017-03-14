@@ -28,7 +28,7 @@ EvoHistorySys::EvoHistorySys
     LONG            const lHistEntries         = min( lHistEntriesDemanded, lMaxHistSize ); assert( lHistEntries < SHRT_MAX );
     short                 sNrOfSlots           = static_cast<short>( lHistEntries );
 
-    m_HistorySystem.InitHistoryComputation
+    m_HistorySystem.InitHistorySystem
     (
         sNrOfSlots,
         genMaxNrOfGens,

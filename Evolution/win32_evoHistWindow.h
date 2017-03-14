@@ -11,6 +11,7 @@ class StatusBar;
 class EvoNextGenFunctor;
 class EvoHistorySys;
 class HistWorkThread;
+class HistAllocThread;
 
 class EvoHistWindow : public HistWindow
 {
@@ -31,8 +32,9 @@ private:
     void paintLifeLine( HDC const ) const;
     void shutDownHistoryCache( );
 
-    HistWorkThread * m_pHistWorkThread;
-    FocusPoint     * m_pFocusPoint;
-    StatusBar      * m_pStatusBar;
-    EvoHistorySys  * m_pEvoHistorySys;
+    HistWorkThread  * m_pHistWorkThread;
+    FocusPoint      * m_pFocusPoint;
+    StatusBar       * m_pStatusBar;
+    EvoHistorySys   * m_pEvoHistorySys;
+	HistAllocThread * m_pHistAllocThread;
 };
