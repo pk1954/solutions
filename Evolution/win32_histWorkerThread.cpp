@@ -33,7 +33,7 @@ HistWorkThread::~HistWorkThread( )
 {}
 
 // generationStep - perform one history step towards demanded generation
-//             - update editor state if neccessary
+//                - update editor state if neccessary
 
 void HistWorkThread::generationStep( )
 {
@@ -57,17 +57,10 @@ void HistWorkThread::generationRun( )
     WorkThread::generationRun( );
 }
 
-bool HistWorkThread::setEditParam( EvoGenerationCmd const genCmd )
+void HistWorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, short const sParam )
 {
-    //    _TRACE_FUNCTION_( genCmd.GetEvoCommand( ) );
-
-    if ( m_pEvoHistorySys->CreateNewGeneration( genCmd ) )
-    {
+    if ( m_pEvoHistorySys->CreateNewGeneration( EvoGenerationCmd( evoCmd, sParam )) )
         m_pCore->SaveEditorState( m_pModelWork );
-        return true;
-    }
-
-    return false;
 }
 
 DWORD HistWorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
@@ -93,18 +86,6 @@ DWORD HistWorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lP
              m_pEvoHistorySys->CreateNewGeneration( EvoGenerationCmd( tEvoCmd::editSetYvalue, static_cast<SHORT>( lParam ) ) );
         return 0;
 
-    case THREAD_MSG_SET_BRUSH_INTENSITY:
-        setEditParam( EvoGenerationCmd( tEvoCmd::editSetBrushIntensity, static_cast<SHORT>( wParam ) ) );
-        return 0;
-
-    case THREAD_MSG_SET_BRUSH_SIZE:
-        setEditParam( EvoGenerationCmd( tEvoCmd::editSetBrushSize, static_cast<SHORT>( wParam ) ) );
-        return 0;
-
-    case THREAD_MSG_SET_BRUSH_MODE:
-        setEditParam( EvoGenerationCmd( tEvoCmd::editSetBrushMode, static_cast<SHORT>( wParam ) ) );
-        return 0;
-
     case THREAD_MSG_EXIT:
         m_bContinueSlotAllocation = FALSE;
         WaitForSingleObject( m_hThreadSlotAllocator, INFINITE );
@@ -120,8 +101,8 @@ DWORD HistWorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lP
 
 void HistWorkThread::PostNextGeneration( )
 {
-    m_genDemanded = GetCurrentGeneration( ) + 1;
-    WorkThread::PostNextGeneration( );
+	HIST_GENERATION const gen = GetCurrentGeneration( ) + 1;
+	postMsg2WorkThread( THREAD_MSG_HIST_GOTO_GEN, 0, gen.GetLong() );
 }
 
 void HistWorkThread::PostHistoryAction( UINT const uiID, GridPoint const gp )

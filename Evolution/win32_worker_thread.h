@@ -54,8 +54,7 @@ public:
     virtual void GenerationStep( );
     virtual void PostNextGeneration( );
     virtual void PostHistoryAction( UINT const, GridPoint const gp = GridPoint::GP_NULL );
-
-    void ApplyEditorCommand( tEvoCmd const, short const );
+	virtual void ApplyEditorCommand( tEvoCmd const, short const );
 
 protected:
 

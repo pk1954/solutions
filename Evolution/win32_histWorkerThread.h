@@ -21,11 +21,15 @@ public:
     HIST_GENERATION GetGenDemanded( )       const { return m_genDemanded; }
     HIST_GENERATION GetCurrentGeneration( ) const { return m_pEvoHistorySys->GetCurrentGeneration( ); }
 
-    virtual void    PostHistoryAction( UINT const, GridPoint const );
-    virtual void    PostNextGeneration( );
-    
     EvoHistorySys * GetEvoHistorySys( )       { return m_pEvoHistorySys; }
     BOOL            ContinueSlotAllocation( ) { return m_bContinueSlotAllocation; }
+
+	// overwrite methods from WorkThread
+
+	virtual void    PostHistoryAction( UINT const, GridPoint const );
+	virtual void    PostNextGeneration();
+	virtual void    ApplyEditorCommand(tEvoCmd const, short const);
+
 private:
     enum tHistThreadMessages
     {
@@ -36,7 +40,6 @@ private:
     };
 
     virtual DWORD processWorkerMessage( UINT, WPARAM, LPARAM );
-    virtual bool  setEditParam( EvoGenerationCmd const );
     virtual void  generationRun( );
     virtual void  generationStep( );
 
