@@ -7,6 +7,7 @@
 
 #include "stdafx.h"
 #include "commctrl.h"
+#include "Windowsx.h"
 
 // EvolutionCore interfaces
 
@@ -179,7 +180,8 @@ void AppWindow::Start( LPTSTR lpCmdLine )
         m_pEvoHistWindow     = new EvoHistWindow( );
         m_pEvoNextGenFunctor = new EvoNextGenFunctor( );
         m_pEvoHistWindow->Start( hwnd, & m_traceStream, m_pFocusPoint, m_pStatusBar, m_pEvoNextGenFunctor, m_pEvoModelWork, m_pEvolutionCore );
-        m_pWorkThread = m_pEvoHistWindow->GetHistWorkThread( );
+		m_pHistWorkThread = m_pEvoHistWindow->GetHistWorkThread( );
+		m_pWorkThread = m_pHistWorkThread;
         m_pEvoNextGenFunctor->Start( m_pWorkThread );
         m_pWorkThread->Start( m_pStatusBar, m_pEditorWindow, m_pPerfWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
 
@@ -294,12 +296,20 @@ LRESULT AppWindow::UserProc
         case IDM_GENERATION:
             m_pWorkThread->PostNextGeneration( );
             break;
-        case IDM_BACKWARDS:
-        case IDM_RUN:
-        case IDM_STOP:
-            m_pWorkThread->PostHistoryAction( wmId );
+		case IDM_RUN:
+			m_pWorkThread->PostRunGenerations( );
+			break;
+		case IDM_STOP:
+            m_pWorkThread->PostStopComputation( );
             break;
-        case IDM_MAX_SPEED:
+        case IDM_BACKWARDS:
+			m_pHistWorkThread->PostPrevGeneration( );
+			break;
+		case IDM_GOTO_ORIGIN:
+		case IDM_GOTO_DEATH:
+			m_pHistWorkThread->PostHistoryAction( wmId, GridPoint( GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) ) );
+			break;
+		case IDM_MAX_SPEED:
             m_pWorkThread->SetGenerationDelay( 0 );
             m_pStatusBar->SetSpeedTrackBar( 0 );
             break;

@@ -82,16 +82,6 @@ public:
     }
 };
 
-class WrapPostHistoryAction : public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        UINT const uiID = script.ScrReadUint( );
-        m_pWorkThread->PostHistoryAction( uiID );
-    }
-};
-
 class WrapPostProcessScript : public Script_Functor
 {
 public:
@@ -156,7 +146,6 @@ void DefineWin32WrapperFunctions
     DEF_FUNC( PostRefresh );
     DEF_FUNC( PostReset );
     DEF_FUNC( PostNextGeneration );
-    DEF_FUNC( PostHistoryAction );
     DEF_FUNC( SetGenerationDelay );
     DEF_FUNC( PostProcessScript );
     DEF_FUNC( Break );

@@ -34,7 +34,7 @@ HistWorkThread::~HistWorkThread( )
 
 void HistWorkThread::generationStep( )
 {
-    if ( GetCurrentGeneration( ) != m_genDemanded )
+    if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
     {
         m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );
 
@@ -48,10 +48,10 @@ void HistWorkThread::generationStep( )
     }
 }
 
-void HistWorkThread::generationRun( )
+void HistWorkThread::GenerationRun( )
 {
-    m_genDemanded = GetCurrentGeneration( ) + 1;
-    WorkThread::generationRun( );
+    m_genDemanded = m_pEvoHistorySys->GetCurrentGeneration( ) + 1;
+    WorkThread::GenerationRun( );
 }
 
 void HistWorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, short const sParam )
@@ -59,16 +59,10 @@ void HistWorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, short const sPara
     if ( m_pEvoHistorySys->CreateNewGeneration( EvoGenerationCmd( evoCmd, sParam )) )
         m_pCore->SaveEditorState( m_pModelWork );
 }
-/*
-void HistWorkThread::ResetModel()
-{
-	m_pEvoHistorySys->GetHistorySystem()->ApproachHistGen( 0 );
-	m_pEvoHistorySys->GetHistorySystem()->ClearHistory( 0 );
-}
-*/
+
 void HistWorkThread::StopComputation()
 {
-	m_genDemanded = GetCurrentGeneration();
+	m_genDemanded = m_pEvoHistorySys->GetCurrentGeneration();
 	WorkThread::StopComputation();
 }
 
@@ -88,44 +82,33 @@ void HistWorkThread::gotoGeneration( HIST_GENERATION const gen )
 	m_genDemanded = gen;
 	do 
 		generationStep( );
-	while ( GetCurrentGeneration( ) != m_genDemanded );
+	while (m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded );
 }
 
 void HistWorkThread::PostNextGeneration( )
 {
-	gotoGeneration( GetCurrentGeneration( ) + 1 );
+	gotoGeneration(m_pEvoHistorySys->GetCurrentGeneration( ) + 1 );
 }
 
-void HistWorkThread::PostHistoryAction( UINT const uiID, GridPoint const gp )
+void HistWorkThread::PostPrevGeneration( )
 {
-    switch ( uiID )
-    {
-    case IDM_BACKWARDS:
-        if ( GetCurrentGeneration( ) > 0 )
-            PostGotoGeneration( GetCurrentGeneration( ) - 1 );
-        else
-            (void)MessageBeep( MB_OK );  // first generation reached
-        return;
+	if (m_pEvoHistorySys->GetCurrentGeneration() > 0)
+		PostGotoGeneration(m_pEvoHistorySys->GetCurrentGeneration() - 1);
+	else
+		(void)MessageBeep(MB_OK);  // first generation reached
+}
 
-    case IDM_GOTO_ORIGIN:
-        if ( m_pModelWork->IsAlive( gp ) )
-            PostGotoGeneration( m_pEvoHistorySys->GetFirstGenOfIndividual( m_pModelWork->GetId( gp ) ) );
-        else
-            assert( false );
-        return;
+void HistWorkThread::PostHistoryAction(UINT const uiID, GridPoint const gp)
+{
+	assert( m_pModelWork->IsAlive(gp) );
+	assert( (uiID == IDM_GOTO_ORIGIN) || (uiID == IDM_GOTO_DEATH) );
 
-    case IDM_GOTO_DEATH:
-        if ( m_pModelWork->IsAlive( gp ) )
-            PostGotoGeneration( m_pEvoHistorySys->GetLastGenOfIndividual( m_pModelWork->GetId( gp ) ) );
-        else
-            assert( false );
-        return;
-
-    default:
-        break;
-    }
-
-    WorkThread::PostHistoryAction( uiID, gp );
+	IndId           idTarget  = m_pModelWork->GetId(gp);
+	HIST_GENERATION genTarget = ( uiID == IDM_GOTO_ORIGIN )
+	                            ? m_pEvoHistorySys->GetFirstGenOfIndividual(idTarget)
+		                        : m_pEvoHistorySys->GetLastGenOfIndividual(idTarget);
+	
+	PostGotoGeneration( genTarget );
 }
 
 void HistWorkThread::PostGotoGeneration( HIST_GENERATION const gen )

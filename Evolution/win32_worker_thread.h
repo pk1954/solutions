@@ -54,8 +54,9 @@ public:
 	virtual void GenerationStep();
 
 	virtual void StopComputation();
-	virtual void PostNextGeneration( );
-    virtual void PostHistoryAction( UINT const, GridPoint const gp = GridPoint::GP_NULL );
+	virtual void PostNextGeneration();
+	virtual void PostRunGenerations();
+	virtual void PostStopComputation();
 	virtual void ApplyEditorCommand( tEvoCmd const, short const );
 	virtual void DoEdit( GridPoint const );
 	virtual void DoExit( HWND );
@@ -82,7 +83,7 @@ protected:
 
     void postMsg2WorkThread( UINT, WPARAM, LPARAM );
 
-    virtual void  generationRun( );
+    virtual void  GenerationRun( );
 
 	BOOL             m_bTrace;
     std::wofstream * m_pTraceStream;

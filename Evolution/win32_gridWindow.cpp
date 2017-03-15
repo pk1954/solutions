@@ -257,16 +257,17 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
             case IDM_SET_POI:
                 m_pFrameBuffer->SetPoi( GetCrsrPosFromLparam( lParam ) );
-                m_pWorkThread->PostHistoryAction( IDM_STOP );
+                m_pWorkThread->PostStopComputation( );
                 break;
 
             case IDM_GOTO_ORIGIN:  // commands using cursor pos are handled here
             case IDM_GOTO_DEATH:
             {
                 PixelPoint const ptCrsr( GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
-                GridPoint  const gpCrsr = m_pFrameBuffer->Pixel2GridPos( ptCrsr );
-                m_pWorkThread->PostHistoryAction( uiCmdId, gpCrsr );
-            }
+                GridPoint  const gpCrsr    = m_pFrameBuffer->Pixel2GridPos( ptCrsr );
+				long       const lParamNew = MAKELONG( gpCrsr.x, gpCrsr.y );
+				::PostMessage( GetAncestor(GetWindowHandle(), GA_ROOTOWNER), message, wParam, lParamNew );
+			}
             break;
 
             default:

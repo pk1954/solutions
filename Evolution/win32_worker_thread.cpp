@@ -82,7 +82,7 @@ void WorkThread::GenerationStep( )
     ( * m_pDisplayGridFunctor )( FALSE );        // notify all views
 }
 
-void WorkThread::generationRun( )
+void WorkThread::GenerationRun( )
 {
     GenerationStep( );
 
@@ -171,7 +171,7 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
 
     case THREAD_MSG_GENERATION_RUN:
         assert( m_iScriptLevel == 0 );
-        generationRun( );
+        GenerationRun( );
         return 0;
 
     case THREAD_MSG_STOP:
@@ -320,22 +320,15 @@ void WorkThread::PostNextGeneration(  )
     postMsg2WorkThread( THREAD_MSG_FORWARD_STEP, 0, 0 );
 }
 
-void WorkThread::PostHistoryAction( UINT const uiID, GridPoint const gp )
+void WorkThread::PostRunGenerations( )
 {
-    switch ( uiID )
-    {
-    case IDM_RUN:
-        m_bContinue = TRUE;
-        postMsg2WorkThread( THREAD_MSG_GENERATION_RUN, 0, 0 );
-        break;
+	m_bContinue = TRUE;
+	postMsg2WorkThread(THREAD_MSG_GENERATION_RUN, 0, 0);
+}
 
-    case IDM_STOP:
-        postMsg2WorkThread( THREAD_MSG_STOP, 0, 0 );
-        break;
-
-    default:
-        assert( FALSE );
-    }
+void WorkThread::PostStopComputation( )
+{
+	postMsg2WorkThread(THREAD_MSG_STOP, 0, 0);
 }
 
 void WorkThread::PostProcessScript( wstring const & wstrPath )

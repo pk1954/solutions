@@ -16,24 +16,22 @@ public:
     HistWorkThread( wofstream *, EvolutionCore * const, ModelData * const, EvoHistorySys * const );
     ~HistWorkThread( );
 
-    void            PostGotoGeneration( HIST_GENERATION const );
-    HIST_GENERATION GetGenDemanded( )       const { return m_genDemanded; }
-    HIST_GENERATION GetCurrentGeneration( ) const { return m_pEvoHistorySys->GetCurrentGeneration( ); }
-
-    EvoHistorySys * GetEvoHistorySys( ) { return m_pEvoHistorySys; }
+	void            PostPrevGeneration();
+	void            PostGotoGeneration( HIST_GENERATION const );
+	void            PostHistoryAction( UINT const, GridPoint const );
+	HIST_GENERATION GetGenDemanded( ) const { return m_genDemanded; }
 
 	// overwrite methods from WorkThread
 
-	virtual void StopComputation();
 	virtual void PostNextGeneration();
-	virtual void PostHistoryAction(UINT const, GridPoint const);
-	virtual void ApplyEditorCommand(tEvoCmd const, short const);
-	virtual void DoEdit(GridPoint const);
-	virtual void DoExit( HWND );
 
 private:
 
-	virtual void generationRun( );
+	virtual void ApplyEditorCommand(tEvoCmd const, short const);
+	virtual void StopComputation();
+	virtual void GenerationRun( );
+	virtual void DoEdit(GridPoint const);
+	virtual void DoExit(HWND);
 
     void generationStep( );
 	void gotoGeneration( HIST_GENERATION const );
