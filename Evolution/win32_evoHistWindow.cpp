@@ -24,8 +24,6 @@ EvoHistWindow::~EvoHistWindow( )
 {
 	m_pHistAllocThread->ExitHistAllocThread();
     shutDownHistoryCache( );
-    delete m_pHistWorkThread;
-    delete m_pEvoHistorySys;
 	delete m_pHistAllocThread;
     m_pHistWorkThread = nullptr;
 	m_pEvoHistorySys = nullptr;
@@ -36,50 +34,43 @@ EvoHistWindow::~EvoHistWindow( )
 
 void EvoHistWindow::Start
 (
-    HWND                const hWndParent,
-    wofstream         * const pTraceStream,
-    FocusPoint        * const pFocusPoint,
-    StatusBar         * const pStatusBar,
-    EvoNextGenFunctor * const pEvoNextGenFunctor,
-    EvoModelData      * const pEvoModelData,
-    EvolutionCore     * const pCore
+    HWND             const hWndParent,
+    FocusPoint     * const pFocusPoint,
+    StatusBar      * const pStatusBar,
+    EvoModelData   * const pEvoModelData,
+	EvoHistorySys  * const pEvoHistorySys,
+	HistWorkThread * const pHistWorkThread
 )
 {
     Config::tOnOffAuto const displayMode = static_cast<Config::tOnOffAuto>( Config::GetConfigValue( Config::tId::historyDisplay ) );
-    BOOL               const bShow = ( displayMode == Config::tOnOffAuto::on );
+    BOOL               const bShow       = ( displayMode == Config::tOnOffAuto::on );
 
-    m_pEvoHistorySys  = new EvoHistorySys( pEvoNextGenFunctor, pEvoModelData );
-    m_pHistWorkThread = new HistWorkThread( pTraceStream, pCore, pEvoModelData->GetModelData( ), m_pEvoHistorySys );
+    m_pEvoHistorySys  = pEvoHistorySys;
     HistWindow::Start( hWndParent, m_pEvoHistorySys->GetHistorySystem( ) );
 
-    m_pFocusPoint = pFocusPoint;
+	m_pHistWorkThread = pHistWorkThread;
+	m_pFocusPoint = pFocusPoint;
     m_pFocusPoint->AttachFocusPointObserver( this, 75 );
     m_pFocusPoint->Start( m_pEvoHistorySys, pEvoModelData->GetModelData( ) );
     m_pStatusBar = pStatusBar;
     Show( bShow );
 	m_pHistAllocThread = new HistAllocThread;
-	m_pHistAllocThread->AllocateHistorySlots( m_pEvoHistorySys );  // delegate allocation of history slots to a work thread
+	m_pHistAllocThread->AllocateHistorySlots( m_pEvoHistorySys->GetHistorySystem( )	);  // delegate allocation of history slots to a work thread
 }
 
-HistWorkThread * EvoHistWindow::GetHistWorkThread( )
+void EvoHistWindow::PostGotoGeneration(HIST_GENERATION const gen)
 {
-    return m_pHistWorkThread;
+	m_pHistWorkThread->PostGotoGeneration(gen);
 }
 
-void EvoHistWindow::PostGotoGeneration( HIST_GENERATION const gen )
+HIST_GENERATION EvoHistWindow::GetGenDemanded() const
 {
-    m_pHistWorkThread->PostGotoGeneration( gen );
-}
-
-HIST_GENERATION EvoHistWindow::GetGenDemanded( ) const
-{
-    return m_pHistWorkThread->GetGenDemanded( );
+	return m_pHistWorkThread->GetGenDemanded();
 }
 
 void EvoHistWindow::DoPaint( HDC const hdc )
 {
     HistWindow::DoPaint( hdc );
-
     paintLifeLine( hdc );
 }
 

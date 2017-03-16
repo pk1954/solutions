@@ -82,12 +82,12 @@ void HistWorkThread::gotoGeneration( HIST_GENERATION const gen )
 	m_genDemanded = gen;
 	do 
 		generationStep( );
-	while (m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded );
+	while ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded );
 }
 
 void HistWorkThread::PostNextGeneration( )
 {
-	gotoGeneration(m_pEvoHistorySys->GetCurrentGeneration( ) + 1 );
+	gotoGeneration( m_pEvoHistorySys->GetCurrentGeneration( ) + 1 );
 }
 
 void HistWorkThread::PostPrevGeneration( )
@@ -98,7 +98,7 @@ void HistWorkThread::PostPrevGeneration( )
 		(void)MessageBeep(MB_OK);  // first generation reached
 }
 
-void HistWorkThread::PostHistoryAction(UINT const uiID, GridPoint const gp)
+void HistWorkThread::PostHistoryAction( UINT const uiID, GridPoint const gp )
 {
 	assert( m_pModelWork->IsAlive(gp) );
 	assert( (uiID == IDM_GOTO_ORIGIN) || (uiID == IDM_GOTO_DEATH) );

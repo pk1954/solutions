@@ -27,11 +27,11 @@ public:
 
 private:
 
-	virtual void ApplyEditorCommand(tEvoCmd const, short const);
-	virtual void StopComputation();
 	virtual void GenerationRun( );
-	virtual void DoEdit(GridPoint const);
-	virtual void DoExit(HWND);
+	virtual void StopComputation( );
+	virtual void ApplyEditorCommand( tEvoCmd const, short const );
+	virtual void DoEdit( GridPoint const );
+	virtual void DoExit( HWND) ;
 
     void generationStep( );
 	void gotoGeneration( HIST_GENERATION const );

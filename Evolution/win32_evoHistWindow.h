@@ -19,13 +19,11 @@ public:
     EvoHistWindow( );
     ~EvoHistWindow( );
 
-    void Start( HWND const, wofstream * const, FocusPoint * const, StatusBar * const, EvoNextGenFunctor * const, EvoModelData * const, EvolutionCore * const );
+    void Start( HWND const, FocusPoint * const, StatusBar * const, EvoModelData * const, EvoHistorySys * const, HistWorkThread * const );
 
-    HistWorkThread * GetHistWorkThread( );
-
-    virtual void            PostGotoGeneration( HIST_GENERATION const gen );
-    virtual HIST_GENERATION GetGenDemanded( ) const; 
-    virtual void            DoPaint( HDC const );
+	virtual void            PostGotoGeneration( HIST_GENERATION const );
+	virtual HIST_GENERATION GetGenDemanded( ) const; 
+	virtual void            DoPaint( HDC const );
 
 private:
 

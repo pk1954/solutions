@@ -28,6 +28,7 @@ class EvoNextGenFunctor;
 class HistWorkThread;
 class ScriptHook;
 class ModelData;
+class EvoHistorySys;
 
 //lint -esym( 1712, AppWindow )  no default constructor for class 
 
@@ -67,7 +68,8 @@ private:
     ScriptHook        * m_pScriptHook;
     
     // History 
-    EvoNextGenFunctor * m_pEvoNextGenFunctor;
+	EvoHistorySys     * m_pEvoHistorySys;
+	EvoNextGenFunctor * m_pEvoNextGenFunctor;
     EvoHistWindow     * m_pEvoHistWindow;
     HistWorkThread    * m_pHistWorkThread;
 

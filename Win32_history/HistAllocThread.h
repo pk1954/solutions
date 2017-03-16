@@ -3,16 +3,16 @@
 
 #pragma once
 
-class EvoHistorySys;
+class HistorySystem;
 
 class HistAllocThread
 {
 public:
-	void AllocateHistorySlots( EvoHistorySys const * );
+	void AllocateHistorySlots( HistorySystem const * const );
 	void ExitHistAllocThread();
 
 private:
-	EvoHistorySys const * m_pEvoHistorySys;
+	HistorySystem const * m_pHistorySys;
 
 	HANDLE m_hThreadSlotAllocator;
 	BOOL   m_bContinueSlotAllocation;

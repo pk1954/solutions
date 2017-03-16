@@ -10,14 +10,10 @@ class EvolutionCore;
 class EvoNextGenFunctor : public NextGenFunctor
 {
 public:
-    EvoNextGenFunctor( ) :
-        m_pWorkThread( nullptr )
+    EvoNextGenFunctor( ) : m_pWorkThread( nullptr ) 
     { }
 
-    void Start
-    ( 
-        WorkThread * const pWorkThread
-    )
+    void Start( WorkThread * const pWorkThread )
     {
         m_pWorkThread = pWorkThread;
     }
@@ -34,11 +30,11 @@ public:
         switch ( cmd )
         {
         case tGenCmd::nextGen:
-            m_pWorkThread->WorkThread::GenerationStep( );
+            m_pWorkThread->GenerationStep( );
             break;
 
         case tGenCmd::reset:
-            m_pWorkThread->WorkThread::ResetModel( );
+            m_pWorkThread->ResetModel( );
             break;
 
         case tGenCmd::undefined:

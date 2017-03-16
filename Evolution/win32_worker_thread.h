@@ -48,18 +48,15 @@ public:
     void PostReset( );
     void PostEndThread( HWND );
     void PostProcessScript( std::wstring const & );
+	void PostNextGeneration();
+	void PostRunGenerations();
+	void PostStopComputation();
+
     void SetGenerationDelay( DWORD );
 	void ResetModel();
+	void GenerationStep();
 
-	virtual void GenerationStep();
-
-	virtual void StopComputation();
-	virtual void PostNextGeneration();
-	virtual void PostRunGenerations();
-	virtual void PostStopComputation();
 	virtual void ApplyEditorCommand( tEvoCmd const, short const );
-	virtual void DoEdit( GridPoint const );
-	virtual void DoExit( HWND );
 
 protected:
 
@@ -83,7 +80,11 @@ protected:
 
     void postMsg2WorkThread( UINT, WPARAM, LPARAM );
 
-    virtual void  GenerationRun( );
+    virtual void GenerationRun( );
+	virtual void StopComputation();
+	virtual void DoEdit( GridPoint const );
+	virtual void DoExit( HWND );
+
 
 	BOOL             m_bTrace;
     std::wofstream * m_pTraceStream;

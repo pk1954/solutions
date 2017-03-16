@@ -113,7 +113,7 @@ AppWindow::AppWindow( HINSTANCE const hInstance )
     m_pEvoNextGenFunctor( nullptr ),
     m_pEvoHistWindow( nullptr ),
     m_pHistWorkThread( nullptr ),
-
+	m_pEvoHistorySys( nullptr ),
     m_traceStream( )
 {};
 
@@ -179,15 +179,16 @@ void AppWindow::Start( LPTSTR lpCmdLine )
         m_pEvoModelWork      = new EvoModelData( m_pModelWork );
         m_pEvoHistWindow     = new EvoHistWindow( );
         m_pEvoNextGenFunctor = new EvoNextGenFunctor( );
-        m_pEvoHistWindow->Start( hwnd, & m_traceStream, m_pFocusPoint, m_pStatusBar, m_pEvoNextGenFunctor, m_pEvoModelWork, m_pEvolutionCore );
-		m_pHistWorkThread = m_pEvoHistWindow->GetHistWorkThread( );
+		m_pEvoHistorySys     = new EvoHistorySys( m_pEvoNextGenFunctor, m_pEvoModelWork );
+		m_pHistWorkThread    = new HistWorkThread( & m_traceStream, m_pEvolutionCore, m_pEvoModelWork->GetModelData(), m_pEvoHistorySys );
+		m_pEvoHistWindow->Start( hwnd, m_pFocusPoint, m_pStatusBar, m_pEvoModelWork, m_pEvoHistorySys, m_pHistWorkThread );
 		m_pWorkThread = m_pHistWorkThread;
         m_pEvoNextGenFunctor->Start( m_pWorkThread );
         m_pWorkThread->Start( m_pStatusBar, m_pEditorWindow, m_pPerfWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
 
         m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, 75 );
 
-        DefineWin32HistWrapperFunctions( m_pEvoHistWindow->GetHistWorkThread( ) );
+        DefineWin32HistWrapperFunctions( m_pHistWorkThread );
     }
     else
     {
@@ -247,6 +248,7 @@ AppWindow::~AppWindow( )
             delete m_pEvoHistWindow;
             delete m_pEvoModelWork;
             delete m_pEvoNextGenFunctor;
+			delete m_pEvoHistorySys;
         }
         else
         {
