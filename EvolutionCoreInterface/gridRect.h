@@ -14,6 +14,7 @@ void Apply2Rect( GridPoint_Functor *, GridRect const & );
 class GridRect
 {
 public:
+	GridRect( ) { * this = GRID_RECT_EMPTY; }
     GridRect( GRID_COORD const lLeft, GRID_COORD const lTop, GRID_COORD const lRight, GRID_COORD const lBottom ) : m_lLeft(lLeft), m_lTop(lTop), m_lRight(lRight), m_lBottom(lBottom) {};
     GridRect( GridPoint const & gpStart, GridPoint const & gpEnd ) : m_lLeft(gpStart.x), m_lTop(gpStart.y), m_lRight(gpEnd.x), m_lBottom(gpEnd.y) {};
     GridRect( GridPoint const & gpCenter, GRID_COORD const iSize ) : m_lLeft(gpCenter.x - iSize), m_lTop(gpCenter.y - iSize), m_lRight(gpCenter.x + iSize), m_lBottom(gpCenter.y + iSize) {};

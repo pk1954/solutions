@@ -151,21 +151,21 @@ void AppWindow::Start( LPTSTR lpCmdLine )
 
     // create window objects
 
-    m_pGridRectSel    = new GridRect( GridRect::GRID_RECT_EMPTY );  //
-    m_pFocusPoint     = new FocusPoint( );                          //
-    m_pWinManager     = new WinManager( );                          //
-    m_pStatusBar      = new StatusBar( );                           //
-    m_pCrsrWindow     = new CrsrWindow( );                          //
-    m_pDspOptWindow   = new DspOptWindow( );                        //
-    m_pEditorWindow   = new EditorWindow( );                        //
-    m_pStatistics     = new StatisticsWindow( );                    //
-    m_pMainGridWindow = new GridWindow( );                          //
-    m_pMiniGridWindow = new GridWindow( );                          //
-    m_pPerfWindow     = new PerformanceWindow( );                   //
+    m_pGridRectSel    = new GridRect( );  
+    m_pFocusPoint     = new FocusPoint( );                          
+    m_pWinManager     = new WinManager( );                          
+    m_pStatusBar      = new StatusBar( );       
+    m_pCrsrWindow     = new CrsrWindow( );   
+    m_pDspOptWindow   = new DspOptWindow( );       
+    m_pEditorWindow   = new EditorWindow( );    
+    m_pStatistics     = new StatisticsWindow( );   
+    m_pMainGridWindow = new GridWindow( );   
+    m_pMiniGridWindow = new GridWindow( );   
+    m_pPerfWindow     = new PerformanceWindow( );  
 
     SetMenu( hwnd, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
     {
-        static int   const MAX_LOADSTRING = 100;
+        static int const MAX_LOADSTRING = 100;
         static TCHAR szTitle[ MAX_LOADSTRING ];			// Titelleistentext
         (void)LoadString( hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING );
         SetWindowText( hwnd, szTitle );
@@ -177,27 +177,25 @@ void AppWindow::Start( LPTSTR lpCmdLine )
     if ( Config::UseHistorySystem( ) )
     {
         m_pEvoModelWork      = new EvoModelData( m_pModelWork );
-        m_pEvoHistWindow     = new EvoHistWindow( );
         m_pEvoNextGenFunctor = new EvoNextGenFunctor( );
 		m_pEvoHistorySys     = new EvoHistorySys( m_pEvoNextGenFunctor, m_pEvoModelWork );
 		m_pHistWorkThread    = new HistWorkThread( & m_traceStream, m_pEvolutionCore, m_pEvoModelWork->GetModelData(), m_pEvoHistorySys );
-		m_pEvoHistWindow->Start( hwnd, m_pFocusPoint, m_pStatusBar, m_pEvoModelWork, m_pEvoHistorySys, m_pHistWorkThread );
 		m_pWorkThread = m_pHistWorkThread;
         m_pEvoNextGenFunctor->Start( m_pWorkThread );
-        m_pWorkThread->Start( m_pStatusBar, m_pEditorWindow, m_pPerfWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
-
-        m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, 75 );
-
         DefineWin32HistWrapperFunctions( m_pHistWorkThread );
+
+        m_pEvoHistWindow = new EvoHistWindow( );
+		m_pEvoHistWindow->Start( hwnd, m_pFocusPoint, m_pStatusBar, m_pEvoModelWork, m_pEvoHistorySys, m_pHistWorkThread );
+        m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, 75 );
     }
     else
     {
         m_pWorkThread = new WorkThread( & m_traceStream );
         EnableMenuItem( GetMenu( hwnd ), IDM_BACKWARDS, MF_GRAYED );
-        m_pWorkThread->Start( m_pStatusBar, m_pEditorWindow, m_pPerfWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
     }
 
-    m_pDspOptWindow  ->Start( hwnd, m_pWorkThread, m_pModelWork );
+	m_pWorkThread    ->Start( m_pStatusBar, m_pEditorWindow, m_pPerfWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
+	m_pDspOptWindow  ->Start( hwnd, m_pWorkThread, m_pModelWork );
     m_pEditorWindow  ->Start( hwnd, m_pWorkThread, m_pModelWork, m_pDspOptWindow );
     m_pStatusBar     ->Start( hwnd, m_pWorkThread, m_pModelWork );
     m_pMainGridWindow->Start( hwnd, m_pWorkThread, m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
