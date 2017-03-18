@@ -2,11 +2,12 @@
 
 #pragma once
 
-#include "generationCmd.h"
-
 class NextGenFunctor
 {
 public:
     virtual ~NextGenFunctor( ) {};
-    virtual void operator() ( GenerationCmd ) const = 0;
+	
+	virtual void OnReset( )                            const = 0;
+	virtual void OnNextGeneration( )                   const = 0;
+    virtual void OnAppCommand( unsigned short, short ) const = 0;
 };

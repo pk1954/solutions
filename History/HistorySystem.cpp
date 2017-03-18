@@ -48,7 +48,7 @@ void HistorySystem::InitHistorySystem
     m_pHistoryCache->InitHistoryCache( sNrOfSlots, pHistCacheItemWork );
     m_pNextGenerationFunctor = pNextGenerationFunctor;
     m_pHistCacheItemWork = pHistCacheItemWork;
-    m_pHistCacheItemWork->SetGenerationCommand( GenerationCmd( tGenCmd::reset ) );
+    m_pHistCacheItemWork->SetGenerationCommand( GenerationCmd::RESET );
     save2History( * m_pHistCacheItemWork );
 }
 
@@ -107,24 +107,29 @@ void HistorySystem::ClearHistory( HIST_GENERATION const genFirst )
 	}
 }
 
-bool HistorySystem::CreateNewGeneration(GenerationCmd const genCmd)
+void HistorySystem::createNewGen( GenerationCmd genCmd )
 {
-	if ( GetYoungestGeneration() != GetCurrentGeneration() ) // If in history mode: erase all future generations
-	{
-		assert( m_pAskHistoryCutFunctor != nullptr );
-		if ( ! (  *m_pAskHistoryCutFunctor ) (false  ))  // ask user if really cut off history
-			return false;
-
-		ClearHistory( m_pHistCacheItemWork->GetHistGenCounter( ) );
-	}
-
 	CHECK_HISTORY_STRUCTURE;
     step2NextGeneration( genCmd );
     m_pHistCacheItemWork->SetGenerationCommand( genCmd );
     save2History( * m_pHistCacheItemWork );
     CHECK_HISTORY_STRUCTURE;
+}
 
-    return true;
+bool HistorySystem::CreateNewGeneration( unsigned short const uiCmd, short const sParam )
+{
+	if ( GetYoungestGeneration() != GetCurrentGeneration() ) // If in history mode: erase all future generations
+	{
+		assert( m_pAskHistoryCutFunctor != nullptr );
+		if ( ! (  * m_pAskHistoryCutFunctor ) (false  ))  // ask user if really cut off history
+			return false;
+
+		ClearHistory( m_pHistCacheItemWork->GetHistGenCounter( ) );
+	}
+
+	createNewGen( GenerationCmd( uiCmd, sParam ) );
+
+	return true;
 }
 
 // ApproachHistGen - Get closer to demanded HIST_GENERATION
@@ -140,16 +145,16 @@ void HistorySystem::ApproachHistGen( HIST_GENERATION const genDemanded )
     assert( genDemanded != genActual );
     assert( genDemanded < m_pGenCmdList->GetCmdListSize( ) ); //TODO: find clean solution if max number of generations reached. 
 
-    if ( ( * m_pGenCmdList )[ genDemanded ].GetCommand( ) == tGenCmd::undefined )   // normal forward mode
+    if ( ( * m_pGenCmdList )[ genDemanded ].IsUndefined( ) )   // normal forward mode
     {
         assert( genDemanded == genActual + 1 );
-        (void)CreateNewGeneration( GEN_CMD_NEXT_GEN );                           
+        createNewGen( GenerationCmd::NEXT_GEN );                           
     }
     else   // genDemanded is somewhere in history
     {
         HIST_GENERATION genCached = genDemanded;  // search backwards starting with genDemanded
         
-        while ( ( *m_pGenCmdList )[ genCached ].IsNotCachedGeneration( ) )
+        while ( ( * m_pGenCmdList )[ genCached ].IsNotCachedGeneration( ) )
             --genCached;
 
         // now we have found a cached generation  
@@ -211,7 +216,23 @@ void HistorySystem::step2NextGeneration( GenerationCmd genCmd )
         genCmd = pHistCacheItem->GetGenCmd( );
     }
 
-    ( * m_pNextGenerationFunctor )( genCmd );   // Apply application defined operation to step to next generation
+	switch ( genCmd.GetCommand() )
+	{
+	case tGenCmd::nextGen:
+		m_pNextGenerationFunctor->OnNextGeneration( );
+		break;
+
+	case tGenCmd::reset:
+	    m_pNextGenerationFunctor->OnReset( );
+		break;
+
+	default:
+        m_pNextGenerationFunctor->OnAppCommand   // Apply application defined operation to step to next generation
+		( 
+			genCmd.GetAppCmd( ),
+			genCmd.GetParam( ) 
+		); 
+	}
 
     m_pHistCacheItemWork->IncHistGenCounter( );
 

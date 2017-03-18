@@ -18,33 +18,22 @@ public:
         m_pWorkThread = pWorkThread;
     }
 
-    // operator( ) - apply GenerationCmd to model
-    //               compute next generation or
-    //               reset model or
-    //               or apply editor command
+	virtual void OnNextGeneration() const
+	{
+        m_pWorkThread->GenerationStep( );
+	}
 
-    virtual void operator() ( GenerationCmd genCmd ) const
+	virtual void OnReset() const
+	{
+        m_pWorkThread->ResetModel( );
+	}
+
+    virtual void OnAppCommand ( unsigned short usCmd, short sParam  ) const
     {
-        tGenCmd const cmd = genCmd.GetCommand( );
-
-        switch ( cmd )
-        {
-        case tGenCmd::nextGen:
-            m_pWorkThread->GenerationStep( );
-            break;
-
-        case tGenCmd::reset:
-            m_pWorkThread->ResetModel( );
-            break;
-
-        case tGenCmd::undefined:
-        case tGenCmd::cached:
-            assert( false );
-			break;
-
-        default:
-            m_pWorkThread->WorkThread::ApplyEditorCommand( static_cast<tEvoCmd>(genCmd.GetCommand( )), genCmd.GetParam( ) );
-        }
+        m_pWorkThread->WorkThread::ApplyEditorCommand
+		( 
+			static_cast<tEvoCmd>( usCmd ), sParam
+		);
     }
 
 private:

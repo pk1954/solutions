@@ -6,7 +6,6 @@
 #include "Windowsx.h"
 #include "strsafe.h"
 #include "win32_util.h"
-#include "generationCmd.h"
 #include "HistorySystem.h"
 #include "historyIterator.h"
 #include "win32_askHistoryCut.h"

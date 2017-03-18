@@ -5,38 +5,65 @@
 #include <iostream>
 #include "script.h"
 #include "BasicHistCacheItem.h"
-#include "generationCmd.h"
 #include "NextGenFunctor.h"
 #include "HistorySystem.h"
 
 using namespace std;
+
+class ModelData
+{
+public:
+	ModelData( int iCounter ): 
+		m_iDataTest( iCounter ),
+		m_iDataApp( 0 )
+	{ }
+	
+	void Reset( )   { m_iDataApp = 0; }
+	void Compute( ) { -- m_iDataApp; }
+
+	virtual void CopyModelData( ModelData const * const src )
+    {
+        * this = * src;
+    }
+
+private:
+	int m_iDataTest;
+	int m_iDataApp;
+};
 
 class TestHistCacheItem : public BasicHistCacheItem
 {
 public:
 
 	TestHistCacheItem( ) : 
-		m_iDataTest( m_iCounter ),
-		m_iDataApp( 0 )
+		m_pModelData( new ModelData( m_iCounter ))
 	{ }
 
-	void Reset( )   { m_iDataApp = 0; }
-	void Compute( ) { -- m_iDataApp; }
+	TestHistCacheItem( ModelData * pModel ) : 
+		m_pModelData( pModel )
+	{ }
+
+    ~TestHistCacheItem( )
+    {
+//        if ( m_pModelData != nullptr )
+//            delete m_pModelData;
+    }
+
+	void Reset( )   { GetModelData( )->Reset( ); }
+	void Compute( ) { GetModelData( )->Compute( ); }
 
     virtual BasicHistCacheItem * CreateItem( )
 	{
 		return new TestHistCacheItem( );
 	}
 
-    virtual void CopyCacheItem( BasicHistCacheItem const * const rhs )
+    virtual void CopyModelData( BasicHistCacheItem const * const pSrc )
 	{
-		m_iDataTest = static_cast<TestHistCacheItem const * const>( rhs )->m_iDataTest;
-		m_iDataApp  = static_cast<TestHistCacheItem const * const>( rhs )->m_iDataApp;
+        GetModelData( )->CopyModelData( static_cast<TestHistCacheItem const * const>( pSrc )->GetModelDataC( ) );
 	}
 
 private:
-	int m_iDataTest;
-	int m_iDataApp;
+    ModelData * const m_pModelData;
 
 	static int m_iCounter;
 };
@@ -47,47 +74,39 @@ class TestGenFunctor : public NextGenFunctor
 {
 public:
     TestGenFunctor( ) :
-		m_pItem( nullptr )
+		m_pModel( nullptr )
 	{ }
 
-    TestGenFunctor( TestHistCacheItem * pItem ) :
-		m_pItem( pItem )
+    TestGenFunctor( ModelData * pModel ) :
+		m_pModel( pModel )
 	{ }
 
-    virtual void operator() ( GenerationCmd genCmd ) const
+	virtual void OnNextGeneration() const
+	{
+		m_pModel->Compute( );
+	}
+
+	virtual void OnReset() const
+	{
+    	m_pModel->Reset( );
+	}
+
+    virtual void OnAppCommand ( unsigned short usCmd, short sParam ) const
     {
-        tGenCmd const cmd = genCmd.GetCommand( );
-
-        switch ( cmd )
-        {
-        case tGenCmd::nextGen:
-			m_pItem->Compute( );
-            break;
-
-        case tGenCmd::reset:
-			m_pItem->Reset( );
-            break;
-
-        case tGenCmd::undefined:
-        case tGenCmd::cached:
-            assert( false );
-			break;
-
-        default:
-			break;
-        }
-    }
+		assert( false );
+	}
 
 private:
 
-	TestHistCacheItem * m_pItem;
+	ModelData * m_pModel;
 };
 
 int _tmain( int argc, _TCHAR* argv[] )
 {
 	HistorySystem     historySys;
-	TestHistCacheItem itemWork;
-	TestGenFunctor    genFunctor( & itemWork );
+	ModelData         modelData( 0 );
+	TestHistCacheItem itemWork( & modelData );
+	TestGenFunctor    genFunctor( & modelData );
 
 	historySys.InitHistorySystem
 	( 

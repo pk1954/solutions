@@ -26,17 +26,17 @@ public:
 
     ~EvoModelData( )
     {
-        if ( m_pModelData != nullptr )
-            delete m_pModelData;
+//        if ( m_pModelData != nullptr )
+//            delete m_pModelData;
     }
 
-    ModelData * GetModelData( ) { return m_pModelData; }
+//    ModelData * GetModelData( ) { return m_pModelData; }
 
-    ModelData const * GetModelDataC( ) const { return m_pModelData; }
+//    ModelData const * GetModelDataC( ) const { return m_pModelData; }
 
     GridPoint FindGridPoint( IndId const & id ) const
     { 
-        return m_pModelData->FindGridPoint( id );
+        return GetModelDataC( )->FindGridPoint( id );
     }
 
 // implement abstract interface of BasicHistCacheItem
@@ -46,10 +46,9 @@ public:
         return new EvoModelData( );
     }
 
-    virtual void EvoModelData::CopyCacheItem( BasicHistCacheItem const * const pSrc )
+    virtual void CopyModelData( BasicHistCacheItem const * const pSrc )
     {
-        m_pModelData->CopyModelData( static_cast<EvoModelData const * const>( pSrc )->GetModelDataC( ) );
-        * static_cast<BasicHistCacheItem * const>( this ) = * pSrc;
+        GetModelData( )->CopyModelData( static_cast<EvoModelData const * const>( pSrc )->GetModelDataC( ) );
     }
 
 private:

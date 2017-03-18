@@ -26,7 +26,11 @@ public:
     bool AddEvoHistorySlot    ( ) const                   { return m_HistorySystem.AddHistorySlot( ); }
     int  GetNrOfHistCacheSlots( )                         { return m_HistorySystem.GetNrOfHistCacheSlots( ); }
     void ShutDownHistCacheSlot( int const i )             { return m_HistorySystem.ShutDownHistCacheSlot( i ); }
-    bool CreateNewGeneration  ( GenerationCmd const cmd ) { return m_HistorySystem.CreateNewGeneration( cmd ); }
+
+	bool CreateNewGeneration( tEvoCmd cmd, short sParam ) 
+	{ 
+		return m_HistorySystem.CreateNewGeneration( static_cast< unsigned short >(cmd), sParam ); 
+	}
 
     HIST_GENERATION GetCurrentGeneration( ) const { return m_pEvoModelWork->GetHistGenCounter( ); }
 

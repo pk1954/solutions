@@ -56,7 +56,7 @@ void HistWorkThread::GenerationRun( )
 
 void HistWorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, short const sParam )
 {
-    if ( m_pEvoHistorySys->CreateNewGeneration( EvoGenerationCmd( evoCmd, sParam )) )
+    if ( m_pEvoHistorySys->CreateNewGeneration( evoCmd, sParam ) )
         m_pCore->SaveEditorState( m_pModelWork );
 }
 
@@ -68,8 +68,8 @@ void HistWorkThread::StopComputation()
 
 void HistWorkThread::DoEdit( GridPoint const gp )
 {
-	if ( m_pEvoHistorySys->CreateNewGeneration( EvoGenerationCmd( tEvoCmd::editSetXvalue, gp.x ) ) )
-		 m_pEvoHistorySys->CreateNewGeneration( EvoGenerationCmd( tEvoCmd::editSetYvalue, gp.y ) );
+	if ( m_pEvoHistorySys->CreateNewGeneration( tEvoCmd::editSetXvalue, gp.x ) )
+		 m_pEvoHistorySys->CreateNewGeneration( tEvoCmd::editSetYvalue, gp.y );
 }
 
 void HistWorkThread::DoExit( HWND hwndApp )

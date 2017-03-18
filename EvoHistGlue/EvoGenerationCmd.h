@@ -3,11 +3,9 @@
 
 #pragma once
 
-#include "generationCmd.h"
-
 enum class tEvoCmd : unsigned short // enumeration starts after last tGenCmd value
 {
-    editSetBrushMode = static_cast<int>(tGenCmd::last) + 1,
+    editSetBrushMode,
     editSetBrushShape,
     editSetBrushSize,
     editSetBrushIntensity,
@@ -15,18 +13,22 @@ enum class tEvoCmd : unsigned short // enumeration starts after last tGenCmd val
     editSetYvalue
 };
 
-class EvoGenerationCmd: public GenerationCmd
+class EvoGenerationCmd
 {
 public:
 
     EvoGenerationCmd( tEvoCmd const cmd, short const s ) :
-        GenerationCmd( static_cast<tGenCmd>( cmd ), s )
+        m_Cmd( cmd ),
+		m_sParam( s )
     { }
 
+	tEvoCmd GetEvoCommand( ) const { return m_Cmd; }
+    short   GetParam( )      const { return m_sParam; }
 
-    tEvoCmd GetEvoCommand( ) const { return static_cast<tEvoCmd>(GetCommand( )); }
+private:
+    tEvoCmd m_Cmd;
+    short   m_sParam;
 };
 
 wchar_t const * const GetEvoCommandName     ( tEvoCmd const );
 wchar_t const * const GetEvoCommandNameShort( tEvoCmd const );
-

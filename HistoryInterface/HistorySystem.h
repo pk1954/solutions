@@ -51,7 +51,7 @@ public:
     bool              AddHistorySlot( ) const;
     void              ShutDownHistCacheSlot( short const );
 
-    bool              CreateNewGeneration( GenerationCmd   const );
+    bool              CreateNewGeneration( unsigned short const, short const );
 	void              ClearHistory       ( HIST_GENERATION const );
     void              ApproachHistGen    ( HIST_GENERATION const );
 
@@ -66,6 +66,7 @@ private:
     DisplayFunctor const * m_pAskHistoryCutFunctor;   // GUI callback for asking user if history should be cut off 
     NextGenFunctor const * m_pNextGenerationFunctor;  // application callback for advancing to the next generation
 
+	void createNewGen( GenerationCmd );
     void save2History( BasicHistCacheItem const & );
     void step2NextGeneration( GenerationCmd );
     void checkHistoryStructure( );

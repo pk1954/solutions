@@ -4,10 +4,16 @@
 #pragma once
 
 #include "limits.h"
+#include "assert.h"
 #include <fstream>
 #include <iomanip>
 
 using namespace std;
+
+class GenerationCmdInterface
+{
+
+};
 
 enum class tGenCmd : unsigned short
 {
@@ -36,10 +42,21 @@ public:
         m_sParam( s )
     { }
 
+    GenerationCmd( unsigned int const uiCmd, short const s ) :
+        m_Cmd( static_cast<tGenCmd>( uiCmd + FIRST_APP_CMD ) ),
+        m_sParam( s )
+    { }
+
     tGenCmd GetCommand( ) const { return m_Cmd; }
     short   GetParam( )   const { return m_sParam; }
 
-    bool IsDefined( )             const { return m_Cmd != tGenCmd::undefined; }
+    unsigned short GetAppCmd( ) const 
+	{ 
+		assert( static_cast<unsigned short>(m_Cmd) >= FIRST_APP_CMD ); 
+		return static_cast<unsigned short>(m_Cmd) - FIRST_APP_CMD; 
+	}
+		
+	bool IsDefined( )             const { return m_Cmd != tGenCmd::undefined; }
     bool IsUndefined( )           const { return m_Cmd == tGenCmd::undefined; }
     bool IsCachedGeneration( )    const { return m_Cmd == tGenCmd::cached; }
     bool IsNotCachedGeneration( ) const { return m_Cmd != tGenCmd::cached; }
@@ -50,14 +67,16 @@ public:
         m_sParam = SHRT_MAX;
     }
 
+	static const GenerationCmd UNDEFINED;
+	static const GenerationCmd NEXT_GEN;
+	static const GenerationCmd RESET;
+
 private:
+	static unsigned int const FIRST_APP_CMD = static_cast<unsigned short>(tGenCmd::last) + 1;
+
     tGenCmd m_Cmd;
     short   m_sParam;
 };
-
-static const GenerationCmd GEN_CMD_UNDEFINED = { tGenCmd::undefined, SHRT_MAX };
-static const GenerationCmd GEN_CMD_NEXT_GEN  = { tGenCmd::nextGen,   0 };
-static const GenerationCmd GEN_CMD_RESET     = { tGenCmd::reset,     0 };
 
 wchar_t const * const GetGenerationCmdNameShort( tGenCmd const );
 wchar_t const * const GetGenerationCmdName     ( tGenCmd const );

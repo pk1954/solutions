@@ -44,7 +44,7 @@ public:
     virtual short          GetDistr       ( GridPoint const &, tAction   const ) const = 0;
     virtual long           GetGenotype    ( GridPoint const &, tGeneType const ) const = 0;
 
-    virtual GridPoint FindGridPoint( IndId const & ) = 0;
+    virtual GridPoint FindGridPoint( IndId const & ) const = 0;
 
     // manipulating functions
 
