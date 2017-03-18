@@ -25,5 +25,8 @@
     <ClInclude Include="historyIterator.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="NextGenFunctor.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -18,17 +18,16 @@ EvoHistorySys::EvoHistorySys
 ) :
     m_pEvoModelWork( pEvoModelData )
 {
-    HIST_GENERATION const genMaxNrOfGens       = Config::GetConfigValue( Config::tId::maxGeneration );
-    LONG            const lHistEntriesDemanded = Config::GetConfigValue( Config::tId::nrOfHistorySlots );
-    ULONGLONG       const ramBytes             = Util::GetPhysicalMemory( );                // compute number of bytes
-    ULONGLONG       const ullRam               = ramBytes * 80 / 100;                       //  use only 80% of available memory
-    ULONG           const ulModelSize          = EvolutionCore::GetModelSize( );
-    ULONGLONG       const ullMaxHistSize       = ullRam / ulModelSize;                      assert( ullMaxHistSize < LONG_MAX );
-    LONG            const lMaxHistSize         = static_cast<LONG>( ullMaxHistSize );
-    LONG            const lHistEntries         = min( lHistEntriesDemanded, lMaxHistSize ); assert( lHistEntries < SHRT_MAX );
-    short                 sNrOfSlots           = static_cast<short>( lHistEntries );
+    LONG const lMaxHistSize         = Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) );
+    LONG const lHistEntriesDemanded = Config::GetConfigValue( Config::tId::nrOfHistorySlots );
+	LONG const lHistEntries         = min( lHistEntriesDemanded, lMaxHistSize * 80 / 100 );  // use only 80% of available memory
+	
+	assert( lHistEntries < SHRT_MAX );
+    short sNrOfSlots = static_cast<short>( lHistEntries );
 
-    m_HistorySystem.InitHistorySystem
+    HIST_GENERATION const genMaxNrOfGens = Config::GetConfigValue( Config::tId::maxGeneration );
+
+	m_HistorySystem.InitHistorySystem
     (
         sNrOfSlots,
         genMaxNrOfGens,

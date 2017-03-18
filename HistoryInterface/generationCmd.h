@@ -15,7 +15,7 @@ enum class tGenCmd : unsigned short
     cached,
     nextGen,
     reset,
-    GEN_LAST = reset
+    last = reset
 };
 
 class GenerationCmd

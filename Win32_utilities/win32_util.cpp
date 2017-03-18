@@ -115,3 +115,11 @@ ULONGLONG Util::GetPhysicalMemory( )  // in bytes
     (void)GetPhysicallyInstalledSystemMemory( &ramKB );   // get physical memory in KB
     return ramKB * 1024;                                  // compute number of bytes
 }
+
+LONG Util::GetMaxNrOfSlots(ULONG ulSlotSize)
+{
+	ULONGLONG const ramBytes        = Util::GetPhysicalMemory( );      // compute number of bytes
+    ULONGLONG const ullMaxNrOfSlots = ramBytes / ulSlotSize;               assert( ullMaxNrOfSlots < LONG_MAX );
+    LONG      const lMaxNrOfSlots   = static_cast<LONG>( ullMaxNrOfSlots );
+	return lMaxNrOfSlots;
+}

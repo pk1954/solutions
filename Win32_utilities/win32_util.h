@@ -225,7 +225,8 @@ namespace Util
     void AdjustRight( HWND, int );
     void AdjustLeft( HWND, int );
 
-    HANDLE MakeThread( LPTHREAD_START_ROUTINE, LPVOID, LPDWORD, HANDLE * );
-    DWORD  GetNrOfCPUs( );
+    HANDLE    MakeThread( LPTHREAD_START_ROUTINE, LPVOID, LPDWORD, HANDLE * );
+    DWORD     GetNrOfCPUs( );
     ULONGLONG GetPhysicalMemory( );
+	LONG      GetMaxNrOfSlots( ULONG );
 };

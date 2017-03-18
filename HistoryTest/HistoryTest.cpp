@@ -3,46 +3,99 @@
 
 #include "stdafx.h"
 #include <iostream>
+#include "script.h"
+#include "BasicHistCacheItem.h"
+#include "generationCmd.h"
+#include "NextGenFunctor.h"
 #include "HistorySystem.h"
 
 using namespace std;
 
-static int test( int iMax )
+class TestHistCacheItem : public BasicHistCacheItem
 {
-/*
-    History * hHist = History::GetInstance( (char *)&lGeneration, sizeof(lGeneration), 500 );
-	int iSize = hHist->GetMemorySize();
+public:
 
-	for ( int i = 1; i < iSize + 1000; i++ )
+	TestHistCacheItem( ) : 
+		m_iDataTest( m_iCounter ),
+		m_iDataApp( 0 )
+	{ }
+
+	void Reset( )   { m_iDataApp = 0; }
+	void Compute( ) { -- m_iDataApp; }
+
+    virtual BasicHistCacheItem * CreateItem( )
 	{
-		hHist->Add();
+		return new TestHistCacheItem( );
 	}
 
-	for ( int i = 1; i < 29; i++ ) 
+    virtual void CopyCacheItem( BasicHistCacheItem const * const rhs )
 	{
-		hHist->Backward();
+		m_iDataTest = static_cast<TestHistCacheItem const * const>( rhs )->m_iDataTest;
+		m_iDataApp  = static_cast<TestHistCacheItem const * const>( rhs )->m_iDataApp;
 	}
 
-	hHist->Dump();
+private:
+	int m_iDataTest;
+	int m_iDataApp;
 
-	cout << "Discard: " << endl;
-	hHist->Discard();
-	hHist->Dump();
+	static int m_iCounter;
+};
 
-	for ( int i = 1; i < 100; i++ ) 
-	{
-		hHist->Add();
-		hHist->Dump();
-	}
+int TestHistCacheItem::m_iCounter = 0;
 
-*/	
-	return 0;
-}
-
-int _tmain(int argc, _TCHAR* argv[])
+class TestGenFunctor : public NextGenFunctor
 {
+public:
+    TestGenFunctor( ) :
+		m_pItem( nullptr )
+	{ }
 
-	int iRes = test( 300000 );
+    TestGenFunctor( TestHistCacheItem * pItem ) :
+		m_pItem( pItem )
+	{ }
+
+    virtual void operator() ( GenerationCmd genCmd ) const
+    {
+        tGenCmd const cmd = genCmd.GetCommand( );
+
+        switch ( cmd )
+        {
+        case tGenCmd::nextGen:
+			m_pItem->Compute( );
+            break;
+
+        case tGenCmd::reset:
+			m_pItem->Reset( );
+            break;
+
+        case tGenCmd::undefined:
+        case tGenCmd::cached:
+            assert( false );
+			break;
+
+        default:
+			break;
+        }
+    }
+
+private:
+
+	TestHistCacheItem * m_pItem;
+};
+
+int _tmain( int argc, _TCHAR* argv[] )
+{
+	HistorySystem     historySys;
+	TestHistCacheItem itemWork;
+	TestGenFunctor    genFunctor( & itemWork );
+
+	historySys.InitHistorySystem
+	( 
+		20,    // # of cache slots
+		1000,  // # of generations
+		& genFunctor,
+		& itemWork
+	);
 
 	return 0;
 }

@@ -11,9 +11,9 @@ wchar_t const * const GetGenerationCmdNameShort( tGenCmd const cmd )
 {
     static unordered_map < tGenCmd, wchar_t const * const > mapNames =
     {
-        { tGenCmd::cached,    L"cached" },
-        { tGenCmd::nextGen,   L"NEXT" },
-        { tGenCmd::reset,     L"reset" },
+        { tGenCmd::cached,    L"CACHE" },
+        { tGenCmd::nextGen,   L"NEXT " },
+        { tGenCmd::reset,     L"RESET" },
         { tGenCmd::undefined, L"UNDEF" }
     };
 

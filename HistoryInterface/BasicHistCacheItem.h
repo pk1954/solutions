@@ -17,9 +17,8 @@ public:
 
     virtual ~BasicHistCacheItem( ) { };
 
-    virtual BasicHistCacheItem * CreateItem( ) = 0;
-
-    virtual void CopyCacheItem( BasicHistCacheItem const * const ) = 0;
+    virtual BasicHistCacheItem * CreateItem   ( )                                  = 0;
+    virtual void                 CopyCacheItem( BasicHistCacheItem const * const ) = 0;
 
     HIST_GENERATION GetHistGenCounter( ) const { return m_genHistCounter; }
     GenerationCmd   GetGenCmd( )         const { return m_genCmd; }
