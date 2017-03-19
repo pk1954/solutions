@@ -16,13 +16,14 @@ class HistoryCache;
 class DisplayFunctor;
 class NextGenFunctor;
 class HistoryIterator;
-class BasicHistCacheItem;
+class HistCacheItem;
 class GenCmdList;
+class ModelFactory;
 
 class GenerationProperty
 {
 public:
-    virtual bool operator() ( BasicHistCacheItem const * ) const = 0;
+    virtual bool operator() ( HistCacheItem const * ) const = 0;
 };
 
 class HistorySystem
@@ -36,7 +37,7 @@ public:
         short const, 
         HIST_GENERATION const, 
         NextGenFunctor const * const, 
-        BasicHistCacheItem *
+        ModelFactory *
     );
 
     void SetAskHistoryCutFunctor( DisplayFunctor const * const f ) { m_pAskHistoryCutFunctor = f; }
@@ -62,12 +63,13 @@ private:
 
     GenCmdList           * m_pGenCmdList;
     HistoryCache         * m_pHistoryCache;
-    BasicHistCacheItem   * m_pHistCacheItemWork;      // The reference item, where history system gets and restores  
+    HistCacheItem        * m_pHistCacheItemWork;      // The reference item, where history system gets and restores  
     DisplayFunctor const * m_pAskHistoryCutFunctor;   // GUI callback for asking user if history should be cut off 
     NextGenFunctor const * m_pNextGenerationFunctor;  // application callback for advancing to the next generation
+	ModelFactory   const * m_pModelFactory;
 
 	void createNewGen( GenerationCmd );
-    void save2History( BasicHistCacheItem const & );
+    void save2History( HistCacheItem const & );
     void step2NextGeneration( GenerationCmd );
     void checkHistoryStructure( );
 };

@@ -4,24 +4,26 @@
 #pragma once
 
 #include "gridPoint.h"
-#include "ModelData.h"
+#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
-#include "BasicHistCacheItem.h"
+#include "HistCacheItem.h"
 #include "EvoGenerationCmd.h"
 
-class EvoModelData: public BasicHistCacheItem
+class EvoModelData: public ModelData
 {
 public:
+/*
     EvoModelData( ):
-        BasicHistCacheItem( ),
-        m_pModelData( ModelData::CreateModelData( ) )
+        HistCacheItem( ),
+        m_pModelData( EvolutionModelData::CreateModelData( ) )
     { }
-
-    EvoModelData( ModelData * pModelDataWork ):
-        BasicHistCacheItem( ),
+*/
+/*
+    EvoModelData( EvolutionModelData * pModelDataWork ):
+        HistCacheItem( ),
         m_pModelData( pModelDataWork )
     { }
-
+*/
     EvoModelData & operator= ( EvoModelData const & );  // noncopyable class 
 
     ~EvoModelData( )
@@ -30,28 +32,25 @@ public:
 //            delete m_pModelData;
     }
 
-//    ModelData * GetModelData( ) { return m_pModelData; }
+//    EvolutionModelData * GetModelData( ) { return m_pModelData; }
 
-//    ModelData const * GetModelDataC( ) const { return m_pModelData; }
-
+//    EvolutionModelData const * GetModelDataC( ) const { return m_pModelData; }
+/*
     GridPoint FindGridPoint( IndId const & id ) const
     { 
         return GetModelDataC( )->FindGridPoint( id );
     }
-
-// implement abstract interface of BasicHistCacheItem
-
+*/
+// implement abstract interface of HistCacheItem
+/*
     virtual EvoModelData * CreateItem( ) 
     { 
-        return new EvoModelData( );
+        return EvolutionModelData::CreateModelData( );
     }
-
-    virtual void CopyModelData( BasicHistCacheItem const * const pSrc )
+*/
+    virtual void CopyModelData( ModelData const * const src  )
     {
-        GetModelData( )->CopyModelData( static_cast<EvoModelData const * const>( pSrc )->GetModelDataC( ) );
+        * this = * static_cast< EvoModelData const * const >( src );
     }
-
-private:
-    ModelData * const m_pModelData;
 };
 

@@ -19,7 +19,7 @@ class FrameBuffer;
 class WorkThread;
 class DspOptWindow;
 class EvolutionCore;
-class ModelData;
+class EvolutionModelData;
 class ObserverInterface;
 class PerformanceWindow;
 
@@ -39,7 +39,7 @@ public:
         PerformanceWindow * const, 
         StatusBar         * const,
         EvolutionCore     *, 
-        ModelData         *,
+        EvolutionModelData         *,
         DWORD, 
         short 
     );

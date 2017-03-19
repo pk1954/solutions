@@ -138,7 +138,7 @@
     <ClInclude Include="gridNeighbor.h" />
     <ClInclude Include="gridPoint.h" />
     <ClInclude Include="gridRect.h" />
-    <ClInclude Include="ModelData.h" />
+    <ClInclude Include="EvolutionModelData.h" />
     <ClInclude Include="plannedActivity.h" />
     <ClInclude Include="wrapperHelpers.h" />
     <ClInclude Include="wrappers.h" />

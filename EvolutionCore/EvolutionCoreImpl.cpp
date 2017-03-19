@@ -32,7 +32,7 @@ EvolutionCoreImpl::~EvolutionCoreImpl( )
     m_gridDisplayFunctor = nullptr;
 }
 
-void EvolutionCoreImpl::ResetModel( ModelData * const pModel )
+void EvolutionCoreImpl::ResetModel( EvolutionModelData * const pModel )
 {
     ModelDataImpl * pModelImpl = static_cast< ModelDataImpl * >( pModel );
     pModelImpl->m_grid.ResetGrid( );
@@ -46,7 +46,7 @@ void EvolutionCoreImpl::ResetModel( ModelData * const pModel )
 //           let food grow 
 //           increment generation number
 
-void EvolutionCoreImpl::Compute( ModelData * const pModel )
+void EvolutionCoreImpl::Compute( EvolutionModelData * const pModel )
 {
     ModelDataImpl * pModelImpl = static_cast< ModelDataImpl * >( pModel );
 

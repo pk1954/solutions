@@ -9,13 +9,12 @@
 using namespace std;
 #endif
 
-#include "BasicHistCacheItem.h"
+#include "HistCacheItem.h"
 #include "HistoryGeneration.h"
 #include "hist_slot.h"
 #include "historyCache.h"
 
 HistoryCache::HistoryCache( ) :
-    m_aHistSlot( nullptr ),
     m_pHead( nullptr ),
     m_pUnused( nullptr ),
     m_pStartSearching( nullptr ),
@@ -26,9 +25,6 @@ HistoryCache::HistoryCache( ) :
 
 HistoryCache::~HistoryCache( )
 {
-    delete[ ] m_aHistSlot;
-
-    m_aHistSlot = nullptr;
     m_pHead = nullptr;
     m_pUnused = nullptr;
     m_pStartSearching = nullptr;
@@ -37,8 +33,14 @@ HistoryCache::~HistoryCache( )
     m_sNrOfUsedSlots = 0;
 };
 
-void HistoryCache::InitHistoryCache( short const sNrOfSlots, BasicHistCacheItem * pHistCacheItem )
+void HistoryCache::InitHistoryCache
+( 
+	short                const sNrOfSlots, 
+	ModelFactory const * const pModelFactory
+)
 {
+	HistCacheItem * pNewHistCacheItem = HistCacheItem::CreateItem( pModelFactory );
+
     assert( sNrOfSlots >= 2 );
 
     m_sNrOfRequestedSlots = sNrOfSlots;
@@ -47,46 +49,49 @@ void HistoryCache::InitHistoryCache( short const sNrOfSlots, BasicHistCacheItem 
     if ( m_sNrOfRequestedSlots > 60 )
         m_sNrOfRequestedSlots = 60;
 #endif
-    m_aHistSlot = new HistSlot[ m_sNrOfRequestedSlots ];
+    m_aHistSlot.resize( m_sNrOfRequestedSlots );
 
-    m_aHistSlot[ 0 ].SetHistCacheItem( pHistCacheItem->CreateItem( ) );
+    m_aHistSlot[ 0 ].SetHistCacheItem( pNewHistCacheItem );
     ++m_sNrOfSlots;
 
-    m_pUnused = m_aHistSlot;
+    m_pUnused = & m_aHistSlot[0];
 }
 
 void HistoryCache::ResetHistoryCache( )
 {
     m_pHead = nullptr;
     m_pStartSearching = nullptr;
-    m_pUnused = m_aHistSlot;
+    m_pUnused = & m_aHistSlot[0];
     m_sNrOfUsedSlots = 0;
 
-    HistSlot * pRun = m_aHistSlot;
+    HistSlot * pRun = & m_aHistSlot[0];
     pRun->SetSeniorGen( nullptr );
     pRun->SetJuniorGen( pRun + 1 );
 
-    for ( pRun = m_aHistSlot + 1; pRun < m_aHistSlot + m_sNrOfSlots - 1; ++pRun )
+    for ( pRun = & m_aHistSlot[ 1 ]; pRun < & m_aHistSlot[ m_sNrOfSlots - 1 ]; ++pRun )
     {
         pRun->SetSeniorGen( pRun - 1 );
         pRun->SetJuniorGen( pRun + 1 );
     }
 
-    pRun = m_aHistSlot + m_sNrOfSlots - 1;
-    pRun->SetSeniorGen( pRun - 1 );
+    pRun = & m_aHistSlot[ m_sNrOfSlots - 1 ];
+    pRun->SetSeniorGen( & m_aHistSlot[ m_sNrOfSlots ] );
     pRun->SetJuniorGen( nullptr );
 }
 
-bool HistoryCache::AddCacheSlot( BasicHistCacheItem * pHistCacheItem )
+bool HistoryCache::AddCacheSlot
+( 
+	HistCacheItem      *       pHistCacheItem, 
+	ModelFactory const * const pModelFactory 
+)
 {
-    assert( m_aHistSlot != nullptr );
-
-    HistSlot * pPrev = m_aHistSlot + m_sNrOfSlots - 1;
-    HistSlot * pRun = pPrev + 1;
+    HistSlot * pRun  = & m_aHistSlot[ m_sNrOfSlots ];
+    HistSlot * pPrev = & m_aHistSlot[ m_sNrOfSlots - 1 ];
 
     try
     {
-        pRun->SetHistCacheItem( pHistCacheItem->CreateItem( ) );
+		HistCacheItem * pHistCacheItemNew = pHistCacheItem->CreateItem( pModelFactory );
+        pRun->SetHistCacheItem( pHistCacheItemNew );
     }
     catch ( std::bad_alloc & )
     {
@@ -131,18 +136,14 @@ void HistoryCache::checkConsistency( )
     assert( genNrOfUsedSlots + genNrOfUnusedSlots == m_sNrOfSlots );
 }
 
-BasicHistCacheItem const * HistoryCache::GetHistCacheItemC( short const sSlotNr ) const
+HistCacheItem const * HistoryCache::GetHistCacheItemC( short const sSlotNr ) const
 {
-    assert( sSlotNr < m_sNrOfSlots );
-    HistSlot * pSlot = m_aHistSlot + sSlotNr;
-    return pSlot->GetHistCacheItemC( );
+    return m_aHistSlot[ sSlotNr ].GetHistCacheItemC( );
 };
 
-BasicHistCacheItem * HistoryCache::GetHistCacheItem( short const sSlotNr ) const
+HistCacheItem * HistoryCache::GetHistCacheItem( short const sSlotNr ) const
 {
-    assert( sSlotNr < m_sNrOfSlots );
-    HistSlot * pSlot = m_aHistSlot + sSlotNr;
-    return pSlot->GetHistCacheItem( );
+    return m_aHistSlot[ sSlotNr ].GetHistCacheItem( );
 };
 
 short HistoryCache::GetFreeCacheSlotNr( )
@@ -179,9 +180,9 @@ short HistoryCache::GetFreeCacheSlotNr( )
     m_pHead->SetJuniorGen( nullptr );
     m_pHead->SetSeniorGen( pSenior );
 
-    assert( static_cast<unsigned long>( m_pHead - m_aHistSlot ) <= SHRT_MAX );
+    assert( static_cast<unsigned long>( m_pHead - & m_aHistSlot[ 0 ] ) <= SHRT_MAX );
 
-    return static_cast<short>( m_pHead - m_aHistSlot );
+    return static_cast<short>( m_pHead - & m_aHistSlot[ 0 ] );
 }
 
 // RemoveHistCacheSlot
@@ -231,7 +232,7 @@ void HistoryCache::ResetHistCacheSlot( short const sSlotNr )
 
 void HistoryCache::Save2CacheSlot
 (
-    BasicHistCacheItem const & source,
+    HistCacheItem const & source,
     short              const   sSlotNr
 )
 {

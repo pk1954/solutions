@@ -5,12 +5,13 @@
 #include "assert.h"
 #include "grid_model.h"
 #include "wrappers.h"
+#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "EvolutionCoreImpl.h"
 
 static EvolutionCoreImpl * m_pCore = nullptr;
 
-ModelData * ModelData::CreateModelData( ) 
+EvolutionModelData * EvolutionModelData::CreateModelData( ) 
 { 
     return new ModelDataImpl( ); 
 }

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ModelData.h"
+#include "EvolutionModelData.h"
 #include "grid_model.h"
 #include "EditorState.h"
 
-class ModelDataImpl : public ModelData
+class ModelDataImpl : public EvolutionModelData
 {
 public:
     ModelDataImpl( )
@@ -12,7 +12,7 @@ public:
         m_grid.ResetGrid( );
     };
 
-    virtual void CopyModelData( ModelData const * const src )
+    virtual void CopyModelData( EvolutionModelData const * const src )
     {
         * this = * static_cast<ModelDataImpl const *>( src );
     }

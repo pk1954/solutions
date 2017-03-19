@@ -8,12 +8,12 @@
 
 class EvoHistorySys;
 class EvolutionCore;
-class ModelData;
+class EvolutionModelData;
 
 class HistWorkThread : public WorkThread
 {
 public:
-    HistWorkThread( wofstream *, EvolutionCore * const, ModelData * const, EvoHistorySys * const );
+    HistWorkThread( wofstream *, EvolutionCore * const, EvolutionModelData * const, EvoHistorySys * const );
     ~HistWorkThread( );
 
 	void            PostPrevGeneration();
@@ -39,5 +39,5 @@ private:
     HIST_GENERATION  m_genDemanded;
     EvoHistorySys  * m_pEvoHistorySys;
     EvolutionCore  * m_pCore;
-    ModelData      * m_pModelWork;
+    EvolutionModelData      * m_pModelWork;
 };

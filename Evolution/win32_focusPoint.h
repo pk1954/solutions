@@ -4,7 +4,7 @@
 #include "EvoHistorySys.h"
 #include "win32_viewCollection.h"
 
-class ModelData;
+class EvolutionModelData;
 
 class FocusPoint
 {
@@ -23,7 +23,7 @@ public:
     void Start
     ( 
         EvoHistorySys * pEvoHistorySys,
-        ModelData     * pModel
+        EvolutionModelData     * pModel
     )
     {
         assert( pEvoHistorySys != nullptr );
@@ -64,7 +64,7 @@ public:
 
 private:
     EvoHistorySys * m_pEvoHistorySys;
-    ModelData     * m_pModelWork;
+    EvolutionModelData     * m_pModelWork;
     ViewCollection  m_ViewCol;
     GridPoint       m_gp;
     HIST_GENERATION m_genBirth;

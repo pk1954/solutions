@@ -48,7 +48,7 @@ bool HistoryIterator::IsOldest( ) const
     return m_pHistory->IsEmpty( ) || ( m_phsRun == m_pHistory->GetTail( ) );
 }
 
-BasicHistCacheItem const * HistoryIterator::GetCurrentHistCacheItem( ) const
+HistCacheItem const * HistoryIterator::GetCurrentHistCacheItem( ) const
 {
     assert( m_phsRun != nullptr );
     return m_phsRun->GetHistCacheItemC( );

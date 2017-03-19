@@ -19,13 +19,13 @@
     <ClInclude Include="HistoryGeneration.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="BasicHistCacheItem.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="historyIterator.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="NextGenFunctor.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="HistCacheItem.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

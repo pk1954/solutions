@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "HistCacheItem.h"
 #include "HistorySystem.h"
 #include "EvoModelData.h"
 #include "EvolutionCore.h"
@@ -32,7 +33,7 @@ public:
 		return m_HistorySystem.CreateNewGeneration( static_cast< unsigned short >(cmd), sParam ); 
 	}
 
-    HIST_GENERATION GetCurrentGeneration( ) const { return m_pEvoModelWork->GetHistGenCounter( ); }
+    HIST_GENERATION GetCurrentGeneration( ) const { return m_pHistCacheItem->GetHistGenCounter( ); }
 
     EvoModelData  * GetEvoModelData ( ) { return   m_pEvoModelWork; }
     HistorySystem * GetHistorySystem( ) { return & m_HistorySystem; }
@@ -41,8 +42,9 @@ public:
     HIST_GENERATION GetLastGenOfIndividual ( IndId const & ) const;
 
 private:
-    EvoModelData * const m_pEvoModelWork;
-    HistorySystem        m_HistorySystem;
+    EvoModelData  * const m_pEvoModelWork;
+	HistCacheItem *       m_pHistCacheItem; 
+    HistorySystem         m_HistorySystem;
 
     // private member functions
 

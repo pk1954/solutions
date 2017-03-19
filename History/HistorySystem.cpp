@@ -39,22 +39,23 @@ void HistorySystem::InitHistorySystem
     short           const         sNrOfSlots,
     HIST_GENERATION const         genMaxNrOfGens,
     NextGenFunctor  const * const pNextGenerationFunctor,
-    BasicHistCacheItem    *       pHistCacheItemWork
+    ModelFactory          *       pModelFactory
 )
 {
-    m_pGenCmdList   = new GenCmdList( genMaxNrOfGens );
-    m_pHistoryCache = new HistoryCache;
-
-    m_pHistoryCache->InitHistoryCache( sNrOfSlots, pHistCacheItemWork );
     m_pNextGenerationFunctor = pNextGenerationFunctor;
-    m_pHistCacheItemWork = pHistCacheItemWork;
+	m_pModelFactory          = pModelFactory;
+    m_pGenCmdList            = new GenCmdList( genMaxNrOfGens );
+    m_pHistoryCache          = new HistoryCache;
+	m_pHistCacheItemWork     = HistCacheItem::CreateItem( pModelFactory );
+
+    m_pHistoryCache->InitHistoryCache( sNrOfSlots, pModelFactory );
     m_pHistCacheItemWork->SetGenerationCommand( GenerationCmd::RESET );
     save2History( * m_pHistCacheItemWork );
 }
 
 bool HistorySystem::AddHistorySlot( ) const 
 { 
-    return m_pHistoryCache->AddCacheSlot( m_pHistCacheItemWork );
+    return m_pHistoryCache->AddCacheSlot( m_pHistCacheItemWork, m_pModelFactory );
 }
 
 int HistorySystem::GetNrOfHistCacheSlots( ) const 
@@ -171,7 +172,7 @@ void HistorySystem::ApproachHistGen( HIST_GENERATION const genDemanded )
         {
             GenerationCmd      const         genCmd         = ( * m_pGenCmdList )[ genCached ];
             short              const         sSlotNr        = genCmd.GetParam( );
-            BasicHistCacheItem const * const pHistCacheItem = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
+            HistCacheItem const * const pHistCacheItem = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
             m_pHistCacheItemWork->CopyCacheItem( pHistCacheItem );
         }
     }
@@ -181,11 +182,11 @@ void HistorySystem::ApproachHistGen( HIST_GENERATION const genDemanded )
 
 // save2History - Save Generation data (rule how to get to next generation), current Grid, etc. to new slot
 
-void HistorySystem::save2History( BasicHistCacheItem const & histCacheItem )
+void HistorySystem::save2History( HistCacheItem const & histCacheItem )
 {
-    short              const   sSlotNr         = m_pHistoryCache->GetFreeCacheSlotNr( );
-    BasicHistCacheItem const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
-    GenerationCmd      const   genCmdFromCache = pHistCacheItem->GetGenCmd( );
+    short         const   sSlotNr         = m_pHistoryCache->GetFreeCacheSlotNr( );
+    HistCacheItem const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
+    GenerationCmd const   genCmdFromCache = pHistCacheItem->GetGenCmd( );
 
     if ( genCmdFromCache.IsDefined( ) )       // Hist slot was in use before. Save GenCommand
     {
@@ -212,7 +213,7 @@ void HistorySystem::step2NextGeneration( GenerationCmd genCmd )
     {
         assert( IsInHistoryMode( ) );
         short              const   sSlotNr = genCmd.GetParam( );
-        BasicHistCacheItem const * pHistCacheItem = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
+        HistCacheItem const * pHistCacheItem = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
         genCmd = pHistCacheItem->GetGenCmd( );
     }
 
@@ -279,7 +280,7 @@ void HistorySystem::checkHistoryStructure( )  // used only in debug mode
         if ( generationCmd.IsCachedGeneration( ) )
         {
             short              const   sSlotNrFromList = generationCmd.GetParam( );
-            BasicHistCacheItem const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC( sSlotNrFromList );
+            HistCacheItem const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC( sSlotNrFromList );
             HIST_GENERATION    const   genNrFromCache  = pHistCacheItem->GetHistGenCounter( );
             assert( genNrFromCache == gen );
         }
@@ -291,7 +292,7 @@ void HistorySystem::checkHistoryStructure( )  // used only in debug mode
 
     for ( short sSlotNr = 0; sSlotNr < m_pHistoryCache->GetNrOfHistCacheSlots( ); ++sSlotNr )
     {
-        BasicHistCacheItem const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
+        HistCacheItem const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
         HIST_GENERATION    const   genNrFromCache  = pHistCacheItem->GetHistGenCounter( );
         GenerationCmd      const   genCmdFromCache = pHistCacheItem->GetGenCmd( );
         if ( genCmdFromCache.IsDefined( ) )

@@ -14,7 +14,7 @@
 #include "config.h"
 #include "gridRect.h"
 #include "wrappers.h"
-#include "ModelData.h"
+#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 
 // history system
@@ -171,7 +171,7 @@ void AppWindow::Start( LPTSTR lpCmdLine )
         SetWindowText( hwnd, szTitle );
     }
 
-    m_pModelWork = ModelData::CreateModelData( );
+    m_pModelWork = EvolutionModelData::CreateModelData( );
     DefineModelWrapperFunctions( m_pModelWork );
 
     if ( Config::UseHistorySystem( ) )

@@ -7,7 +7,7 @@
 
 class WorkThread;
 class DspOptWindow;
-class ModelData;
+class EvolutionModelData;
 
 class EditorWindow : public BaseDialog
 {
@@ -15,7 +15,7 @@ public:
     EditorWindow( );
     ~EditorWindow( );
 
-    void Start( HWND const, WorkThread * const, ModelData * const, DspOptWindow * const );
+    void Start( HWND const, WorkThread * const, EvolutionModelData * const, DspOptWindow * const );
 
     void    UpdateControls( );
     void    SetEditMode( BOOL fMode ) { m_editMode = fMode; };
@@ -27,7 +27,7 @@ protected:
 
 private:
 
-    ModelData    * m_pModelWork;
+    EvolutionModelData    * m_pModelWork;
     WorkThread   * m_pWorkThread;
     DspOptWindow * m_pDspOptWindow;
     BOOL           m_editMode;

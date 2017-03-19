@@ -4,7 +4,7 @@
 #pragma once
 
 class EvolutionCore;
-class ModelData;
+class EvolutionModelData;
 
 extern void DefineCoreWrapperFunctions( EvolutionCore * );
-extern void DefineModelWrapperFunctions( ModelData * );
+extern void DefineModelWrapperFunctions( EvolutionModelData * );

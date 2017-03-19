@@ -34,18 +34,18 @@ GridWindow::GridWindow( ) :
 
 void GridWindow::Start
 ( 
-    HWND                const hWndParent,
-    WorkThread        * const pWorkThread,
-    GridRect          * const pSelection,
-    EditorWindow      * const pEditorWindow,
-    FocusPoint        * const pFocusPoint,
-    DspOptWindow      * const pDspOptWindow,
-    PerformanceWindow * const pPerformanceWindow,
-    StatusBar         * const pStatusBar,
-    EvolutionCore     *       pCore,
-    ModelData         *       pModel,
-    DWORD               const dwStyle,
-    short               const sFieldSize
+    HWND                 const hWndParent,
+    WorkThread         * const pWorkThread,
+    GridRect           * const pSelection,
+    EditorWindow       * const pEditorWindow,
+    FocusPoint         * const pFocusPoint,
+    DspOptWindow       * const pDspOptWindow,
+    PerformanceWindow  * const pPerformanceWindow,
+    StatusBar          * const pStatusBar,
+    EvolutionCore      *       pCore,
+    EvolutionModelData *       pModel,
+    DWORD                const dwStyle,
+    short                const sFieldSize
 )
 {
     HWND const hWnd = StartBaseWindow

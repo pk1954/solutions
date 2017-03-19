@@ -3,10 +3,10 @@
 
 #pragma once
 
-#include "BasicHistCacheItem.h"
+#include "HistCacheItem.h"
 #include "HistoryGeneration.h"
 
-class BasicHistCacheItem;
+class HistCacheItem;
 
 class HistSlot
 {
@@ -30,15 +30,15 @@ public:
 
     void SetSeniorGen    ( HistSlot           * const pSenior ) { m_pSenior        = pSenior; }
     void SetJuniorGen    ( HistSlot           * const pJunior ) { m_pJunior        = pJunior; }
-    void SetHistCacheItem( BasicHistCacheItem * const pItem   ) { m_pHistCacheItem = pItem;   }
+    void SetHistCacheItem( HistCacheItem * const pItem   ) { m_pHistCacheItem = pItem;   }
     void ShutDownHistCacheItem( )                                
     { 
         delete m_pHistCacheItem;
         m_pHistCacheItem = nullptr;
     }
 
-    BasicHistCacheItem       * GetHistCacheItem ( ) const { return m_pHistCacheItem; }
-    BasicHistCacheItem const * GetHistCacheItemC( ) const { return m_pHistCacheItem; }
+    HistCacheItem       * GetHistCacheItem ( ) const { return m_pHistCacheItem; }
+    HistCacheItem const * GetHistCacheItemC( ) const { return m_pHistCacheItem; }
 
     HIST_GENERATION GetGridGeneration( ) const { return m_pHistCacheItem->GetHistGenCounter( ); };
 
@@ -47,5 +47,5 @@ public:
 private:
     HistSlot           * m_pSenior;
     HistSlot           * m_pJunior;
-    BasicHistCacheItem * m_pHistCacheItem;
+    HistCacheItem * m_pHistCacheItem;
 };

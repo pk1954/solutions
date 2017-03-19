@@ -11,7 +11,7 @@
 
 class EvoHistorySys;
 class GridRect;
-class ModelData;
+class EvolutionModelData;
 
 //lint -esym( 1712, StatisticsWindow )  no default constructor for class 
 
@@ -21,11 +21,11 @@ public:
     StatisticsWindow( );
     virtual ~StatisticsWindow( );
 
-    void Start( HWND const, ModelData const * const, GridRect * const );
+    void Start( HWND const, EvolutionModelData const * const, GridRect * const );
 
     virtual void DoPaint();
 
 private:
-    ModelData const * m_pModelWork;
+    EvolutionModelData const * m_pModelWork;
     GridRect  const * m_pGridRectSel;
 };

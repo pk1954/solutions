@@ -9,7 +9,7 @@
 
 class HistoryCache;
 class HistSlot;
-class BasicHistCacheItem;
+class HistCacheItem;
 
 class HistoryIterator
 {
@@ -33,7 +33,7 @@ public:
     bool IsNotYoungest( ) const;
     bool IsOldest( )      const;
     
-    BasicHistCacheItem const * GetCurrentHistCacheItem( ) const;
+    HistCacheItem const * GetCurrentHistCacheItem( ) const;
 
     HIST_GENERATION GetCurrentGeneration( ) const;
     HIST_GENERATION GetJuniorGeneration ( ) const;

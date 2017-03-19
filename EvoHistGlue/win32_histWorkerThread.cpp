@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include "resource.h"
-#include "ModelData.h"
+#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "win32_status.h"
 #include "win32_editor.h"
@@ -16,7 +16,7 @@ HistWorkThread::HistWorkThread
 ( 
     wofstream     *       pTraceStream,
     EvolutionCore * const pCore,
-    ModelData     * const pModel,
+    EvolutionModelData     * const pModel,
     EvoHistorySys * const pHistorySys
 ) :
     WorkThread( pTraceStream ),

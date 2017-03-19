@@ -6,7 +6,7 @@
 #include "config.h"
 #include "SCRIPT.H"
 #include "symtab.h"
-#include "ModelData.h"
+#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "EvolutionTypes.h"
 #include "EditorState.h"
@@ -18,7 +18,7 @@
 //lint -esym( 715, script )  // not referenced
 
 static EvolutionCore * m_pCore;
-static ModelData     * m_pModelWork;
+static EvolutionModelData     * m_pModelWork;
 
 class WrapSetConfigValue : public Script_Functor
 {
@@ -121,7 +121,7 @@ public:
     }
 };
 
-void DefineModelWrapperFunctions( ModelData * pModel )
+void DefineModelWrapperFunctions( EvolutionModelData * pModel )
 {
     m_pModelWork = pModel;
 

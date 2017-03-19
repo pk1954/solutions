@@ -1,4 +1,4 @@
-// EvolutionCore.h
+// EvolutionModelData.h
 //
 
 #pragma once
@@ -8,15 +8,15 @@
 class GridPoint;
 class IndId;
 
-class ModelData
+class EvolutionModelData
 {
 public:
 
-    virtual ~ModelData( ) { };
+    virtual ~EvolutionModelData( ) { };
 
-    static ModelData * CreateModelData( );
+    static EvolutionModelData * CreateModelData( );
 
-    virtual void           CopyModelData  ( ModelData const * const ) = 0;
+    virtual void           CopyModelData  ( EvolutionModelData const * const ) = 0;
 
     virtual int            GetNrOfLivingIndividuals ( ) const = 0;
     virtual int            GetAverageFoodGrowth     ( ) const = 0;

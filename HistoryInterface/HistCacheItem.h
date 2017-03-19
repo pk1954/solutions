@@ -1,4 +1,4 @@
-// BasicHistCacheItem.h : 
+// HistCacheItem.h : 
 //
 
 #pragma once
@@ -8,24 +8,42 @@
 
 class ModelData;
 
-class BasicHistCacheItem
+class ModelFactory
+{
+public:
+	virtual ModelData * CreateModelData( ) const = 0;
+};
+
+class ModelData 
+{
+public:
+	virtual void Reset  ( ) = 0;
+    virtual void Compute( ) = 0;
+
+    virtual void CopyModelData( ModelData const * const ) = 0;
+};
+
+class HistCacheItem
 {
 public:
 
-    BasicHistCacheItem( ) :
-		m_pModelData( nullptr ),
+    HistCacheItem( ModelData * const pModelData ) :
+		m_pModelData( pModelData ),
         m_genCmd( ),
         m_genHistCounter( 0L )
     { }
 
-    virtual ~BasicHistCacheItem( ) { };
+    virtual ~HistCacheItem( ) { };
 
-    virtual BasicHistCacheItem * CreateItem   ( )                                  = 0;
-    virtual void                 CopyModelData( BasicHistCacheItem const * const ) = 0;
+	static HistCacheItem * CreateItem( ModelFactory const * const pModelFactory )
+	{
+		ModelData * pModelDataNew = pModelFactory->CreateModelData( );
+		return new HistCacheItem( pModelDataNew );
+	}
 
-	virtual void CopyCacheItem( BasicHistCacheItem const * const pSrc )
+	virtual void CopyCacheItem( HistCacheItem const * const pSrc )
     {
-        CopyModelData( pSrc );
+        m_pModelData->CopyModelData( pSrc->m_pModelData );
         m_genHistCounter = pSrc->m_genHistCounter;
         m_genCmd         = pSrc->m_genCmd;
     }

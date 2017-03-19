@@ -5,7 +5,7 @@
 
 #include "win32_baseDialog.h"
 
-class ModelData;
+class EvolutionModelData;
 class WorkThread;
 
 // The family of GetIntValueFunctor classes provides functors for access to 
@@ -14,14 +14,14 @@ class WorkThread;
 class GetIntValueFunctor
 {
 public:
-    GetIntValueFunctor( ModelData const * pModel ) :
+    GetIntValueFunctor( EvolutionModelData const * pModel ) :
         m_pModelWork( pModel )
     {};
     
     virtual int operator() ( GridPoint const & ) const = 0;
 
 protected:
-    ModelData const * m_pModelWork;
+    EvolutionModelData const * m_pModelWork;
 };
 
 class GetEmptyFunctor;
@@ -36,7 +36,7 @@ public:
     DspOptWindow( );
     ~DspOptWindow( );
 
-    void Start( HWND const, WorkThread * const, ModelData const * const );
+    void Start( HWND const, WorkThread * const, EvolutionModelData const * const );
 
     GetIntValueFunctor const & GetDisplayFunctor( ) const { return * m_pGetIntValueFunctor; }
 

@@ -5,7 +5,7 @@
 #include "gridRect.h"
 #include "SCRIPT.H"
 #include "Resource.h"
-#include "ModelData.h"
+#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "win32_hiResTimer.h"
 #include "win32_script.h"
@@ -43,7 +43,7 @@ void WorkThread::Start
     PerformanceWindow * const pPerformanceWindow,
     DisplayAll  const * const pDisplayGridFunctor,
     EvolutionCore     * const pEvolutionCore,
-    ModelData         * const pModel
+    EvolutionModelData         * const pModel
 )
 {
     HANDLE const hThread  = Util::MakeThread( WorkerThread, this, &m_dwThreadId, &m_hEventThreadStarter );

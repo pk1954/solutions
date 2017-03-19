@@ -6,7 +6,7 @@
 #include <sstream> 
 #include <vector>
 #include "config.h"
-#include "ModelData.h"
+#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "plannedActivity.h"
 #include "win32_util.h"
@@ -44,7 +44,7 @@ class DrawFrame::drawBackground : public drawGridPointFunc
 public:
     drawBackground
     ( 
-        ModelData          const *       pModel,
+        EvolutionModelData          const *       pModel,
         DrawFrame                * const pDraw, 
         GetIntValueFunctor const &       getIntFunctor
     ) :
@@ -71,7 +71,7 @@ DrawFrame::DrawFrame
 ( 
     HWND            const hWnd, 
     EvolutionCore * const pCore,
-    ModelData     * const pModel,
+    EvolutionModelData     * const pModel,
     FrameBuffer   * const pFrameBuffer, 
     DspOptWindow  * const pDspOptWindow, 
     GridRect      * const pGridRectSel

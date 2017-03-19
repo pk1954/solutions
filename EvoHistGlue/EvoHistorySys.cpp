@@ -42,7 +42,7 @@ public:
 
     FindGridPointFunctor( IndId const id ) : m_id( id ) {}
 
-    virtual bool operator() ( BasicHistCacheItem const * pItem ) const
+    virtual bool operator() ( HistCacheItem const * pItem ) const
     {
         EvoModelData const * pEvoModelData = static_cast< EvoModelData const * >( pItem );
         return ( pEvoModelData->FindGridPoint( m_id ).IsNotNull( ) );  // id is alive

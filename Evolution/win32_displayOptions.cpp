@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include "gridNeighbor.h"
-#include "ModelData.h"
+#include "EvolutionModelData.h"
 #include "win32_util.h"
 #include "win32_baseDialog.h"
 #include "win32_worker_thread.h"
@@ -18,7 +18,7 @@
 class GetEmptyFunctor : public GetIntValueFunctor
 {
     public:
-        GetEmptyFunctor( ModelData const * pModel ) :
+        GetEmptyFunctor( EvolutionModelData const * pModel ) :
             GetIntValueFunctor( pModel )
         { }
 
@@ -32,7 +32,7 @@ class FoodStockAverage : public GridPointNeighbor_Functor
 public:
     FoodStockAverage
     (
-        ModelData const * const pModel,
+        EvolutionModelData const * const pModel,
         GridPoint const &       gpCenter, 
         int             * const piSum
     ) : 
@@ -50,7 +50,7 @@ public:
 
 
 private:
-    ModelData const * const m_pModelWork;
+    EvolutionModelData const * const m_pModelWork;
     int             * const m_piSum;
 };
 //lint +e1763 
@@ -58,7 +58,7 @@ private:
 class GetFoodStockFunctor : public GetIntValueFunctor
 {
 public: 
-    GetFoodStockFunctor( ModelData const * pModel ) :
+    GetFoodStockFunctor( EvolutionModelData const * pModel ) :
         GetIntValueFunctor( pModel )
     { }
 
@@ -73,7 +73,7 @@ public:
 class GetFertilityFunctor : public GetIntValueFunctor
 {
     public: 
-        GetFertilityFunctor( ModelData const * pModel ) :
+        GetFertilityFunctor( EvolutionModelData const * pModel ) :
             GetIntValueFunctor( pModel )
         { }
 
@@ -83,7 +83,7 @@ class GetFertilityFunctor : public GetIntValueFunctor
 class GetMutationRateFunctor : public GetIntValueFunctor
 {
     public: 
-        GetMutationRateFunctor( ModelData const * pModel ) :
+        GetMutationRateFunctor( EvolutionModelData const * pModel ) :
             GetIntValueFunctor( pModel )
         { }
 
@@ -93,7 +93,7 @@ class GetMutationRateFunctor : public GetIntValueFunctor
 class GetFertilizerFunctor : public GetIntValueFunctor
 {
     public: 
-        GetFertilizerFunctor( ModelData const * pModel ) :
+        GetFertilizerFunctor( EvolutionModelData const * pModel ) :
             GetIntValueFunctor( pModel )
         { }
 
@@ -120,7 +120,7 @@ void DspOptWindow::Start
 ( 
     HWND         const         hWndParent, 
     WorkThread * const         pWorkThread,
-    ModelData    const * const pModel 
+    EvolutionModelData    const * const pModel 
 )
 {
     StartBaseDialog( hWndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );

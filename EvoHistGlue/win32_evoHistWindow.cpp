@@ -34,12 +34,12 @@ EvoHistWindow::~EvoHistWindow( )
 
 void EvoHistWindow::Start
 (
-    HWND             const hWndParent,
-    FocusPoint     * const pFocusPoint,
-    StatusBar      * const pStatusBar,
-    EvoModelData   * const pEvoModelData,
-	EvoHistorySys  * const pEvoHistorySys,
-	HistWorkThread * const pHistWorkThread
+    HWND                 const hWndParent,
+    FocusPoint         * const pFocusPoint,
+    StatusBar          * const pStatusBar,
+    EvolutionModelData * const pEvoModelData,
+	EvoHistorySys      * const pEvoHistorySys,
+	HistWorkThread     * const pHistWorkThread
 )
 {
     Config::tOnOffAuto const displayMode = static_cast<Config::tOnOffAuto>( Config::GetConfigValue( Config::tId::historyDisplay ) );
@@ -51,7 +51,7 @@ void EvoHistWindow::Start
 	m_pHistWorkThread = pHistWorkThread;
 	m_pFocusPoint = pFocusPoint;
     m_pFocusPoint->AttachFocusPointObserver( this, 75 );
-    m_pFocusPoint->Start( m_pEvoHistorySys, pEvoModelData->GetModelData( ) );
+    m_pFocusPoint->Start( m_pEvoHistorySys, pEvoModelData );
     m_pStatusBar = pStatusBar;
     Show( bShow );
 	m_pHistAllocThread = new HistAllocThread;

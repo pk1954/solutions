@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "gridPoint.h"
 #include "pixelPoint.h"
-#include "ModelData.h"
+#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "win32_util.h"
 #include "win32_status.h"
@@ -16,7 +16,7 @@ FrameBuffer::FrameBuffer
     short           const fs, 
     StatusBar     * const pStatusBar,
     EvolutionCore *       pCore,
-    ModelData     * const pModel
+    EvolutionModelData     * const pModel
 )
   : m_pixOffset( ),
     m_sFieldSize( fs ),

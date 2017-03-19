@@ -18,7 +18,7 @@ class PerformanceWindow;
 class EditorWindow;
 class RootWindow;
 class EvolutionCore;
-class ModelData;
+class EvolutionModelData;
 class StatusBar;
 class WinManager;
 class DisplayAll;
@@ -36,7 +36,7 @@ public:
         PerformanceWindow * const, 
         DisplayAll  const * const, 
         EvolutionCore     * const,
-        ModelData         * const
+        EvolutionModelData         * const
     );
 
     void PostDoEdit( GridPoint const & );
@@ -96,7 +96,7 @@ private:
     DisplayAll  const * m_pDisplayGridFunctor;
     PerformanceWindow * m_pPerformanceWindow;
     EvolutionCore     * m_pEvolutionCore;
-    ModelData         * m_pModelWork;
+    EvolutionModelData         * m_pModelWork;
     HANDLE              m_hEventThreadStarter;
     DWORD               m_dwThreadId;
     GridRect            m_gridRectSelection;

@@ -6,18 +6,18 @@
 #include "win32_textWindow.h"
 
 class FocusPoint;
-class ModelData;
+class EvolutionModelData;
 
 class CrsrWindow: public TextWindow
 {
 public:
     CrsrWindow( );
 
-    void Start( HWND const, FocusPoint * const, ModelData const * const );
+    void Start( HWND const, FocusPoint * const, EvolutionModelData const * const );
 
     virtual void DoPaint( );
 
 private:
     FocusPoint      * m_pFocusPoint;
-    ModelData const * m_pModelWork;
+    EvolutionModelData const * m_pModelWork;
 };

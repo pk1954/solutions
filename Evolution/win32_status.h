@@ -10,7 +10,7 @@
 using namespace std;
 
 class WorkThread;
-class ModelData;
+class EvolutionModelData;
 
 class StatusBar : public BaseDialog
 {
@@ -18,7 +18,7 @@ public:
     StatusBar( );
     ~StatusBar();
 
-    void Start( HWND const, WorkThread * const, ModelData * const );
+    void Start( HWND const, WorkThread * const, EvolutionModelData * const );
 
     int  GetHeight( ) const;
     void Resize( ) const;
@@ -56,7 +56,7 @@ private:
     HWND WINAPI createSpeedControl( );
 
     WorkThread * m_pWorkThread;
-    ModelData  * m_pModelWork;
+    EvolutionModelData  * m_pModelWork;
     GridPoint    m_gp;
     INT          m_iClientHeight;
     INT          m_iBorder;

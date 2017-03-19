@@ -12,7 +12,7 @@
 
 class EvolutionCore;
 class StatusBar;
-class ModelData;
+class EvolutionModelData;
 
 class FrameBuffer
 {
@@ -22,7 +22,7 @@ public:
     static short const DEFAULT_FIELD_SIZE  =    8;
     static short const MAXIMUM_FIELD_SIZE  = 1024;
 
-    FrameBuffer( HWND const, short const, StatusBar * const, EvolutionCore *, ModelData * const );
+    FrameBuffer( HWND const, short const, StatusBar * const, EvolutionCore *, EvolutionModelData * const );
     ~FrameBuffer();
 
     BOOL CenterPoi( );
@@ -72,5 +72,5 @@ private:
     HWND            m_hWnd;               // main thread only
     StatusBar     * m_pStatusBar; 
     EvolutionCore * m_pCore;
-    ModelData     * m_pModelWork;
+    EvolutionModelData     * m_pModelWork;
 };

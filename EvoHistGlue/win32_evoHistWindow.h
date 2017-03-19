@@ -6,6 +6,7 @@
 #include "win32_histWindow.h"
 
 class EvolutionCore;
+class EvolutionModelData;
 class FocusPoint;
 class StatusBar;
 class EvoNextGenFunctor;
@@ -19,7 +20,7 @@ public:
     EvoHistWindow( );
     ~EvoHistWindow( );
 
-    void Start( HWND const, FocusPoint * const, StatusBar * const, EvoModelData * const, EvoHistorySys * const, HistWorkThread * const );
+    void Start( HWND const, FocusPoint * const, StatusBar * const, EvolutionModelData * const, EvoHistorySys * const, HistWorkThread * const );
 
 	virtual void            PostGotoGeneration( HIST_GENERATION const );
 	virtual HIST_GENERATION GetGenDemanded( ) const; 

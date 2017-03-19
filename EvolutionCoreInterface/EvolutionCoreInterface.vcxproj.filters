@@ -43,7 +43,7 @@
     <ClInclude Include="plannedActivity.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="ModelData.h">
+    <ClInclude Include="EvolutionModelData.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -141,7 +141,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BasicHistCacheItem.h" />
+    <ClInclude Include="HistCacheItem.h" />
     <ClInclude Include="generationCmd.h" />
     <ClInclude Include="HistoryGeneration.h" />
     <ClInclude Include="historyIterator.h" />

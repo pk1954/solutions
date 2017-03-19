@@ -6,7 +6,7 @@
 #include "Resource.h"
 #include "commctrl.h"
 #include "config.h"
-#include "ModelData.h"
+#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "win32_worker_thread.h"
 #include "win32_frameBuffer.h"
@@ -170,7 +170,7 @@ void StatusBar::Start
 ( 
     HWND         const hWndParent, 
     WorkThread * const pWorkThread, 
-    ModelData  * const pModel
+    EvolutionModelData  * const pModel
 )
 {
     HWND hWndStatus = CreateWindow

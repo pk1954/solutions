@@ -27,7 +27,7 @@ class NextGenFunctor;
 class EvoNextGenFunctor;
 class HistWorkThread;
 class ScriptHook;
-class ModelData;
+class EvolutionModelData;
 class EvoHistorySys;
 
 //lint -esym( 1712, AppWindow )  no default constructor for class 
@@ -50,28 +50,28 @@ private:
 
     DisplayAll          m_displayGridFunctor;
 
-    GridWindow        * m_pMainGridWindow;
-    GridWindow        * m_pMiniGridWindow;
-    WorkThread        * m_pWorkThread;
-    PerformanceWindow * m_pPerfWindow;
-    EditorWindow      * m_pEditorWindow;
-    CrsrWindow        * m_pCrsrWindow;
-    StatusBar         * m_pStatusBar;
-    StatisticsWindow  * m_pStatistics;
-    DspOptWindow      * m_pDspOptWindow;
-    GridRect          * m_pGridRectSel;
-    FocusPoint        * m_pFocusPoint;
-    WinManager        * m_pWinManager;
-    EvoModelData      * m_pEvoModelWork;
-    ModelData         * m_pModelWork;
-    EvolutionCore     * m_pEvolutionCore;
-    ScriptHook        * m_pScriptHook;
+    GridWindow         * m_pMainGridWindow;
+    GridWindow         * m_pMiniGridWindow;
+    WorkThread         * m_pWorkThread;
+    PerformanceWindow  * m_pPerfWindow;
+    EditorWindow       * m_pEditorWindow;
+    CrsrWindow         * m_pCrsrWindow;
+    StatusBar          * m_pStatusBar;
+    StatisticsWindow   * m_pStatistics;
+    DspOptWindow       * m_pDspOptWindow;
+    GridRect           * m_pGridRectSel;
+    FocusPoint         * m_pFocusPoint;
+    WinManager         * m_pWinManager;
+    EvoModelData       * m_pEvoModelWork;
+    EvolutionModelData * m_pModelWork;
+    EvolutionCore      * m_pEvolutionCore;
+    ScriptHook         * m_pScriptHook;
     
     // History 
-	EvoHistorySys     * m_pEvoHistorySys;
-	EvoNextGenFunctor * m_pEvoNextGenFunctor;
-    EvoHistWindow     * m_pEvoHistWindow;
-    HistWorkThread    * m_pHistWorkThread;
+	EvoHistorySys      * m_pEvoHistorySys;
+	EvoNextGenFunctor  * m_pEvoNextGenFunctor;
+    EvoHistWindow      * m_pEvoHistWindow;
+    HistWorkThread     * m_pHistWorkThread;
 
     std::wofstream m_traceStream;
 };

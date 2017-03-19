@@ -9,7 +9,7 @@ class PlannedActivity;
 class GridPoint;
 class IndId;
 class DisplayFunctor;
-class ModelData;
+class EvolutionModelData;
 
 class EvolutionCore
 {
@@ -23,9 +23,9 @@ public:
     virtual IndId     GetPoiId( )                                     const = 0;
     virtual bool      IsPoiDefined( )                                 const = 0; 
     virtual bool      IsPoiId( IndId       const & )                  const = 0;
-    virtual GridPoint FindPOI( ModelData * const )                    const = 0;
-    virtual bool      IsPoi  ( ModelData * const, GridPoint const & ) const = 0;
-    virtual void      SetPoi ( ModelData * const, GridPoint const & )       = 0;
+    virtual GridPoint FindPOI( EvolutionModelData * const )                    const = 0;
+    virtual bool      IsPoi  ( EvolutionModelData * const, GridPoint const & ) const = 0;
+    virtual void      SetPoi ( EvolutionModelData * const, GridPoint const & )       = 0;
     virtual void      ClearPoi( )                                           = 0;
 
 // debugging functions
@@ -36,11 +36,11 @@ public:
 
     virtual void SetGridDisplayFunctor( DisplayFunctor const * const ) = 0;
 
-    virtual void ResetModel( ModelData * const ) = 0;
-    virtual void Compute   ( ModelData * const ) = 0;
+    virtual void ResetModel( EvolutionModelData * const ) = 0;
+    virtual void Compute   ( EvolutionModelData * const ) = 0;
 
-    virtual void SaveEditorState      ( ModelData * const ) = 0;
-    virtual bool EditorStateHasChanged( ModelData * const ) const = 0;
+    virtual void SaveEditorState      ( EvolutionModelData * const ) = 0;
+    virtual bool EditorStateHasChanged( EvolutionModelData * const ) const = 0;
 
     // static functions
     

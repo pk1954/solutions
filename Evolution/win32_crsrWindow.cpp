@@ -19,7 +19,7 @@ void CrsrWindow::Start
 (
     HWND              const hWndParent,
     FocusPoint      * const pFocusPoint,
-    ModelData const * const pModel
+    EvolutionModelData const * const pModel
 ) 
 {
     HWND hWnd = StartTextWindow( hWndParent, L"CrsrWindow", 100 );

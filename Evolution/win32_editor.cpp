@@ -6,7 +6,7 @@
 #include "commctrl.h"
 #include "Resource.h"
 #include "config.h"
-#include "ModelData.h"
+#include "EvolutionModelData.h"
 #include "win32_util.h"
 #include "win32_worker_thread.h"
 #include "win32_displayOptions.h"
@@ -28,7 +28,7 @@ void EditorWindow::Start
 (  
     HWND           const hWndParent,
     WorkThread   * const pWorkThread,
-    ModelData    * const pModel,
+    EvolutionModelData    * const pModel,
     DspOptWindow * const pDspOptWindow
     )
 {

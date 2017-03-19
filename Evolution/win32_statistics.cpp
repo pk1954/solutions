@@ -5,7 +5,7 @@
 #include "Strsafe.h"
 #include "XArray.h"
 #include "gridRect.h"
-#include "ModelData.h"
+#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "win32_baseWindow.h"
 #include "win32_statistics.h"
@@ -163,7 +163,7 @@ public:
     explicit gridPointStatistics
     ( 
         AllGenesStat        * const pStat, 
-        ModelData const * const pModel
+        EvolutionModelData const * const pModel
     )  : 
         GridPoint_Functor( ),
         m_pModelWork( pModel ),
@@ -187,7 +187,7 @@ public:
         }
     }
 private:
-    ModelData const * m_pModelWork;
+    EvolutionModelData const * m_pModelWork;
     AllGenesStat        * m_pStat;
 };
 
@@ -199,7 +199,7 @@ StatisticsWindow::StatisticsWindow( ):
 void StatisticsWindow::Start
 (
     HWND                  const hWndParent,
-    ModelData const * const pModel,
+    EvolutionModelData const * const pModel,
     GridRect            * const pSel
 ) 
 {
