@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "config.h"
 #include "EvolutionCore.h"
-#include "EvoNextGenFunctor.h"
 #include "EvoHistorySys.h"
 #include "HistAllocThread.h"
 #include "win32_focusPoint.h"

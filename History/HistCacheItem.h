@@ -5,23 +5,7 @@
 
 #include "generationCmd.h"
 #include "HistoryGeneration.h"
-
-class ModelData;
-
-class ModelFactory
-{
-public:
-	virtual ModelData * CreateModelData( ) const = 0;
-};
-
-class ModelData 
-{
-public:
-	virtual void Reset  ( ) = 0;
-    virtual void Compute( ) = 0;
-
-    virtual void CopyModelData( ModelData const * const ) = 0;
-};
+#include "ModelData.h"
 
 class HistCacheItem
 {

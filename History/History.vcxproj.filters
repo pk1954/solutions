@@ -33,12 +33,15 @@
     <ClInclude Include="genCmdList.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="HistorySystemImpl.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="generationCmd.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="HistorySystem.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="historyCache.cpp">
@@ -48,6 +51,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="generationCmd.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistorySystemImpl.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistorySystem.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

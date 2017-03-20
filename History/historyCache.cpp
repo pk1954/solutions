@@ -15,22 +15,22 @@ using namespace std;
 #include "historyCache.h"
 
 HistoryCache::HistoryCache( ) :
-    m_pHead( nullptr ),
-    m_pUnused( nullptr ),
-    m_pStartSearching( nullptr ),
-    m_sNrOfSlots( 0 ),
-    m_sNrOfUsedSlots( 0 ),
+    m_iHead( -1 ),
+    m_iUnused( -1 ),
+    m_iStartSearching( -1 ),
+    m_iNrOfSlots( 0 ),
+    m_iNrOfUsedSlots( 0 ),
     m_bAllocationRunning( true )
 { }
 
 HistoryCache::~HistoryCache( )
 {
-    m_pHead = nullptr;
-    m_pUnused = nullptr;
-    m_pStartSearching = nullptr;
+    m_iHead = -1;
+    m_iUnused = -1;
+    m_iStartSearching = -1;
 
-    m_sNrOfSlots = 0;
-    m_sNrOfUsedSlots = 0;
+    m_iNrOfSlots = 0;
+    m_iNrOfUsedSlots = 0;
 };
 
 void HistoryCache::InitHistoryCache
@@ -43,40 +43,38 @@ void HistoryCache::InitHistoryCache
 
     assert( sNrOfSlots >= 2 );
 
-    m_sNrOfRequestedSlots = sNrOfSlots;
+    m_iNrOfRequestedSlots = sNrOfSlots;
 
 #ifdef _DEBUG
-    if ( m_sNrOfRequestedSlots > 60 )
-        m_sNrOfRequestedSlots = 60;
+    if ( m_iNrOfRequestedSlots > 60 )
+        m_iNrOfRequestedSlots = 60;
 #endif
-    m_aHistSlot.resize( m_sNrOfRequestedSlots );
+    m_aHistSlot.resize( m_iNrOfRequestedSlots );
 
-    m_aHistSlot[ 0 ].SetHistCacheItem( pNewHistCacheItem );
-    ++m_sNrOfSlots;
+    m_aHistSlot.at( 0 ).SetHistCacheItem( pNewHistCacheItem );
+    ++m_iNrOfSlots;
 
-    m_pUnused = & m_aHistSlot[0];
+    m_iUnused = 0;
 }
 
 void HistoryCache::ResetHistoryCache( )
 {
-    m_pHead = nullptr;
-    m_pStartSearching = nullptr;
-    m_pUnused = & m_aHistSlot[0];
-    m_sNrOfUsedSlots = 0;
+    m_iHead           = -1;
+    m_iStartSearching = -1;
+    m_iUnused         =  0;
+    m_iNrOfUsedSlots  =  0;
 
-    HistSlot * pRun = & m_aHistSlot[0];
-    pRun->SetSeniorGen( nullptr );
-    pRun->SetJuniorGen( pRun + 1 );
+    setSenior( 0, -1 );
+    setJunior( 0,  1 );
 
-    for ( pRun = & m_aHistSlot[ 1 ]; pRun < & m_aHistSlot[ m_sNrOfSlots - 1 ]; ++pRun )
+    for ( int iRun = 1; iRun < m_iNrOfSlots - 1; ++iRun )
     {
-        pRun->SetSeniorGen( pRun - 1 );
-        pRun->SetJuniorGen( pRun + 1 );
+        setSenior( iRun, iRun - 1 );
+        setJunior( iRun, iRun + 1 );
     }
 
-    pRun = & m_aHistSlot[ m_sNrOfSlots - 1 ];
-    pRun->SetSeniorGen( & m_aHistSlot[ m_sNrOfSlots ] );
-    pRun->SetJuniorGen( nullptr );
+    setSenior( m_iNrOfSlots - 1, m_iNrOfSlots );
+    setJunior( m_iNrOfSlots - 1,           -1 );
 }
 
 bool HistoryCache::AddCacheSlot
@@ -85,13 +83,10 @@ bool HistoryCache::AddCacheSlot
 	ModelFactory const * const pModelFactory 
 )
 {
-    HistSlot * pRun  = & m_aHistSlot[ m_sNrOfSlots ];
-    HistSlot * pPrev = & m_aHistSlot[ m_sNrOfSlots - 1 ];
-
     try
     {
 		HistCacheItem * pHistCacheItemNew = pHistCacheItem->CreateItem( pModelFactory );
-        pRun->SetHistCacheItem( pHistCacheItemNew );
+        m_aHistSlot.at( m_iNrOfSlots ).SetHistCacheItem( pHistCacheItemNew );
     }
     catch ( std::bad_alloc & )
     {
@@ -100,16 +95,16 @@ bool HistoryCache::AddCacheSlot
 
     if ( m_bAllocationRunning )
     {
-        if ( m_pUnused == nullptr )
-            m_pUnused = pRun;
+        if ( m_iUnused == -1 )
+            m_iUnused = m_iNrOfSlots;
 
-        pRun->SetSeniorGen( pPrev );
-        pPrev->SetJuniorGen( pRun );
-        ++m_sNrOfSlots;
+        setSenior( m_iNrOfSlots,     m_iNrOfSlots - 1 );
+        setJunior( m_iNrOfSlots - 1, m_iNrOfSlots     );
+        ++m_iNrOfSlots;
 
         checkConsistency( );
 
-        m_bAllocationRunning = ( m_sNrOfSlots < m_sNrOfRequestedSlots );
+        m_bAllocationRunning = ( m_iNrOfSlots < m_iNrOfRequestedSlots );
     }
 
     return m_bAllocationRunning;
@@ -120,31 +115,21 @@ void HistoryCache::checkConsistency( )
     HIST_GENERATION genNrOfUsedSlots = 0;
     HIST_GENERATION genNrOfUnusedSlots = 0;
 
-    for ( HistSlot * pRun = m_pHead; pRun != nullptr; pRun = pRun->GetSeniorGen( ) )
+    for ( int iRun = m_iHead; iRun != -1; iRun = GetSenior( iRun ) )
     {
         ++genNrOfUsedSlots;
-        assert( genNrOfUsedSlots <= m_sNrOfSlots );
+        assert( genNrOfUsedSlots <= m_iNrOfSlots );
     }
 
-    for ( HistSlot * pRun = m_pUnused; pRun != nullptr; pRun = pRun->GetJuniorGen( ) )
+    for ( int iRun = m_iUnused; iRun != -1; iRun = GetJunior( iRun ) )
     {
         ++genNrOfUnusedSlots;
-        assert( genNrOfUnusedSlots <= m_sNrOfSlots );
+        assert( genNrOfUnusedSlots <= m_iNrOfSlots );
     }
 
-    assert( genNrOfUsedSlots == m_sNrOfUsedSlots );
-    assert( genNrOfUsedSlots + genNrOfUnusedSlots == m_sNrOfSlots );
+    assert( genNrOfUsedSlots == m_iNrOfUsedSlots );
+    assert( genNrOfUsedSlots + genNrOfUnusedSlots == m_iNrOfSlots );
 }
-
-HistCacheItem const * HistoryCache::GetHistCacheItemC( short const sSlotNr ) const
-{
-    return m_aHistSlot[ sSlotNr ].GetHistCacheItemC( );
-};
-
-HistCacheItem * HistoryCache::GetHistCacheItem( short const sSlotNr ) const
-{
-    return m_aHistSlot[ sSlotNr ].GetHistCacheItem( );
-};
 
 short HistoryCache::GetFreeCacheSlotNr( )
 {
@@ -152,129 +137,133 @@ short HistoryCache::GetFreeCacheSlotNr( )
 
     checkConsistency( );
 
-    while ( m_bAllocationRunning && ( m_sNrOfSlots <= m_sNrOfUsedSlots ) )  // possible race condition during start up
+    while ( m_bAllocationRunning && ( m_iNrOfSlots <= m_iNrOfUsedSlots ) )  // possible race condition during start up
     {                                                                       // slot usage might be faster than slot creation
         Sleep( 10 );                                                        // wait until slots are created
         ++lSleepCounter; 
     }
 
-    HistSlot * const pSenior = m_pHead;
+    int const iSenior = m_iHead;
 
-    if ( m_pUnused != nullptr )         // Unused slots available
+    if ( m_iUnused != -1 )         // Unused slots available
     {
-        assert( m_sNrOfUsedSlots < m_sNrOfSlots );
-        m_pHead = m_pUnused;
-        m_pUnused = m_pUnused->GetJuniorGen( );
-        ++m_sNrOfUsedSlots;
+        assert( m_iNrOfUsedSlots < m_iNrOfSlots );
+        m_iHead = m_iUnused;
+        m_iUnused = GetJunior( m_iUnused );
+        ++m_iNrOfUsedSlots;
     }
     else                                // No unused slots. We have to reuse slots
     {
-        assert( m_sNrOfUsedSlots == m_sNrOfSlots );
-        m_pHead = findSlot4Reuse( );
-        m_pHead->GetJuniorGen( )->SetSeniorGen( m_pHead->GetSeniorGen( ) );   // remove from list
-        m_pHead->GetSeniorGen( )->SetJuniorGen( m_pHead->GetJuniorGen( ) );   // of used slots
+        assert( m_iNrOfUsedSlots == m_iNrOfSlots );
+        m_iHead = findSlot4Reuse( );
+
+        int iJunior = GetJunior( m_iHead );
+		int iSenior = GetSenior( m_iHead );
+
+		setSenior( iJunior, iSenior );   // remove from list
+		setJunior( iSenior, iJunior );   // of used slots
     }
 
-    if ( pSenior != nullptr )               // add to head of list
-        pSenior->SetJuniorGen( m_pHead );
-    m_pHead->SetJuniorGen( nullptr );
-    m_pHead->SetSeniorGen( pSenior );
+    if ( iSenior != -1 )               // add to head of list
+        setJunior( iSenior, m_iHead );
 
-    assert( static_cast<unsigned long>( m_pHead - & m_aHistSlot[ 0 ] ) <= SHRT_MAX );
+    setJunior( m_iHead, -1 );
+    setSenior( m_iHead, iSenior );
 
-    return static_cast<short>( m_pHead - & m_aHistSlot[ 0 ] );
+    return  m_iHead;
 }
 
 // RemoveHistCacheSlot
 // remove slot from list of used history cache slots
 
-void HistoryCache::RemoveHistCacheSlot( short const sSlotNr )
+void HistoryCache::RemoveHistCacheSlot( int const iSlotNr )
 {
-    HistSlot * pHistCacheItem = & m_aHistSlot[ sSlotNr ];
+    int iJunior = GetJunior( iSlotNr );
+    int iSenior = GetSenior( iSlotNr );
 
     // remove from list of used slots
 
-    if ( m_pHead == pHistCacheItem )
-        m_pHead = m_pHead->GetSeniorGen( );
+    if ( m_iHead == iSlotNr )
+        m_iHead =  GetSenior( m_iHead );
 
-    HistSlot * pJunior = pHistCacheItem->GetJuniorGen( );
-    if ( pJunior != nullptr )
-        pJunior->SetSeniorGen( pHistCacheItem->GetSeniorGen( ) );
+    if ( iJunior != -1 )
+        setSenior( iJunior, iSenior );
 
-    HistSlot * pSenior = pHistCacheItem->GetSeniorGen( );
-    if ( pSenior != nullptr )
-        pSenior->SetJuniorGen( pHistCacheItem->GetJuniorGen( ) );
+    if ( iSenior != -1 )
+        setJunior( iSenior, iJunior );
 
     // add to list of unused slots
-    if ( m_pUnused != nullptr )
-        m_pUnused->SetSeniorGen( pHistCacheItem );
+    if ( m_iUnused != -1 )
+        setSenior( m_iUnused, iSlotNr );
 
-    pHistCacheItem->SetJuniorGen( m_pUnused );
-    m_pUnused = pHistCacheItem;
-    m_pUnused->SetSeniorGen( nullptr );
+    setJunior( iSlotNr, m_iUnused );
+    m_iUnused = iSlotNr;
+    setSenior( m_iUnused, -1 );
 
-    if ( m_pStartSearching == pHistCacheItem )
-        m_pStartSearching = nullptr;
+    if ( m_iStartSearching == iSlotNr )
+        m_iStartSearching = -1;
 
-    pHistCacheItem->ResetSlot( );
-    --m_sNrOfUsedSlots;
+    ResetHistCacheSlot( iSlotNr );
+    --m_iNrOfUsedSlots;
 
     checkConsistency( );
-}
-
-// ResetHistCacheSlot
-// reset slot, but leave it in list of used slots
-
-void HistoryCache::ResetHistCacheSlot( short const sSlotNr )
-{
-    m_aHistSlot[ sSlotNr ].ResetSlot( );
 }
 
 void HistoryCache::Save2CacheSlot
 (
     HistCacheItem const & source,
-    short              const   sSlotNr
+    short         const   iSlotNr
 )
 {
-    m_aHistSlot[ sSlotNr ].GetHistCacheItem( )->CopyCacheItem( & source );
+    GetHistCacheItem( iSlotNr )->CopyCacheItem( & source );
 }
 
-HistSlot * HistoryCache::findSlot4Reuse( )
+int HistoryCache::findSlot4Reuse( )
 {
-    HistSlot * pCandidate = m_pHead;
+    int iCandidate = m_iHead;
 
-    if ( m_pStartSearching == nullptr )  // happens only once
+    if ( m_iStartSearching == -1 )  // happens only once
     {
-        assert( pCandidate != nullptr );
-        //lint -esym(613,pCandidate)  possible use of null pointer
-        pCandidate = pCandidate->GetSeniorGen( )->GetSeniorGen( )->GetSeniorGen( );
+        assert( iCandidate != -1 );
+        iCandidate = GetSenior( iCandidate );
+        iCandidate = GetSenior( iCandidate );
+        iCandidate = GetSenior( iCandidate );
     }
-    else // Go 2 steps forward (if possible) to ensure that pCandidate->m_pSenior->m_pSenior exists
+    else // Go 2 steps forward (if possible) to ensure that iCandidate->m_iSenior->m_iSenior exists
     {
-        if ( m_pStartSearching->GetJuniorGen( ) != nullptr )
-        {
-            m_pStartSearching = m_pStartSearching->GetJuniorGen( );
+        if ( GetJunior( m_iStartSearching ) != -1 )
+            m_iStartSearching = GetJunior( m_iStartSearching );
 
-            if ( m_pStartSearching->GetJuniorGen( ) != nullptr )
-                m_pStartSearching = m_pStartSearching->GetJuniorGen( );
-        }
+        if ( GetJunior( m_iStartSearching ) != -1 )
+            m_iStartSearching = GetJunior( m_iStartSearching );
 
-        pCandidate = m_pStartSearching->GetSeniorGen( );
+        iCandidate = GetSenior( m_iStartSearching );
     }
 
-    while ( pCandidate->GetSeniorGen( )->GetSeniorGen( ) != nullptr )
+    while ( true )
     {
-        HIST_GENERATION const thisDiff = pCandidate->GetJuniorGen( )->GetGridGeneration( ) - pCandidate->GetSeniorGen( )->GetGridGeneration( );
-        HIST_GENERATION const lastDiff = pCandidate->GetSeniorGen( )->GetGridGeneration( ) - pCandidate->GetSeniorGen( )->GetSeniorGen( )->GetGridGeneration( );
+		int iJunior       = GetJunior( iCandidate );
+		int iSenior       = GetSenior( iCandidate );
+		int iSeniorSenior = GetSenior( iSenior );
+		
+		if ( iSeniorSenior == -1 )
+			break;
+
+		HIST_GENERATION genJunior       = GetGridGen( iJunior       );
+		HIST_GENERATION genSenior       = GetGridGen( iSenior       );
+		HIST_GENERATION genSeniorSenior = GetGridGen( iSeniorSenior );
+
+        HIST_GENERATION const thisDiff = genJunior - genSenior;
+        HIST_GENERATION const lastDiff = genSenior - genSeniorSenior;
 
         if ( lastDiff == 1 )
-            m_pStartSearching = pCandidate;
+            m_iStartSearching = iCandidate;
 
         if ( thisDiff + 1 <= lastDiff )
             break;
 
-        pCandidate = pCandidate->GetSeniorGen( );
+        iCandidate = iSenior;
     }
 
-    return pCandidate;
+    return iCandidate;
 }

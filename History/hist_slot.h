@@ -12,8 +12,8 @@ class HistSlot
 {
 public: 
     HistSlot( ) :
-        m_pSenior       ( nullptr ),
-        m_pJunior       ( nullptr ),
+        m_iSenior       ( -1 ),
+        m_iJunior       ( -1 ),
         m_pHistCacheItem( nullptr )
     {}
 
@@ -22,14 +22,11 @@ public:
         ShutDownHistCacheItem( );
     }
 
-    HistSlot const * GetSeniorGenC( ) const { return m_pSenior; }
-    HistSlot const * GetJuniorGenC( ) const { return m_pJunior; }
+    int GetSeniorGen( ) const { return m_iSenior; }
+    int GetJuniorGen( ) const { return m_iJunior; }
 
-    HistSlot * GetSeniorGen( ) { return m_pSenior; }
-    HistSlot * GetJuniorGen( ) { return m_pJunior; }
-
-    void SetSeniorGen    ( HistSlot           * const pSenior ) { m_pSenior        = pSenior; }
-    void SetJuniorGen    ( HistSlot           * const pJunior ) { m_pJunior        = pJunior; }
+    void SetSeniorGen    ( int const iSenior ) { m_iSenior = iSenior; }
+    void SetJuniorGen    ( int const iJunior ) { m_iJunior = iJunior; }
     void SetHistCacheItem( HistCacheItem * const pItem   ) { m_pHistCacheItem = pItem;   }
     void ShutDownHistCacheItem( )                                
     { 
@@ -45,7 +42,7 @@ public:
     void ResetSlot( ) { m_pHistCacheItem->InitializeGenCmd( ); }
 
 private:
-    HistSlot           * m_pSenior;
-    HistSlot           * m_pJunior;
+    int             m_iSenior;
+    int             m_iJunior;
     HistCacheItem * m_pHistCacheItem;
 };

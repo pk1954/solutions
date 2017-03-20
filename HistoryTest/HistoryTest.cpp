@@ -4,8 +4,7 @@
 #include "stdafx.h"
 #include <iostream>
 #include "script.h"
-#include "HistCacheItem.h"
-#include "NextGenFunctor.h"
+#include "ModelData.h"
 #include "HistorySystem.h"
 
 using namespace std;
@@ -18,13 +17,25 @@ public:
 		m_iDataApp( 0 )
 	{ }
 	
-	virtual void Reset( )   { m_iDataApp = 0; }
-	virtual void Compute( ) { -- m_iDataApp; }
-
 	virtual void CopyModelData( ModelData const * const src )
     {
         * this = * static_cast< HistTestModelData const * const >( src );
     }
+
+	virtual void OnNextGeneration()
+	{
+		++ m_iDataApp;;
+	}
+
+	virtual void OnReset( )
+	{
+    	 m_iDataApp = 0;;
+	}
+
+    virtual void OnAppCommand ( unsigned short usCmd, short sParam )
+    {
+		assert( false );
+	}
 
 private:
 	int m_iDataTest;
@@ -40,56 +51,24 @@ public:
 	}
 };
 
-class TestGenFunctor : public NextGenFunctor
-{
-public:
-    TestGenFunctor( ) :
-		m_pModel( nullptr )
-	{ }
-
-    TestGenFunctor( HistTestModelData * pModel ) :
-		m_pModel( pModel )
-	{ }
-
-	virtual void OnNextGeneration() const
-	{
-		m_pModel->Compute( );
-	}
-
-	virtual void OnReset() const
-	{
-    	m_pModel->Reset( );
-	}
-
-    virtual void OnAppCommand ( unsigned short usCmd, short sParam ) const
-    {
-		assert( false );
-	}
-
-private:
-
-	HistTestModelData * m_pModel;
-};
-
 int _tmain( int argc, _TCHAR* argv[] )
 {
 	static const int NR_OF_SLOTS = 2;
 
-	HistorySystem        historySys;
+	HistorySystem      * pHistorySys = HistorySystem::CreateHistorySystem( );
 	HistTestModelFactory modelFactory;
 	HistTestModelData    modelData( 0 );
-	TestGenFunctor       genFunctor( & modelData );
 
-	historySys.InitHistorySystem
+	pHistorySys->InitHistorySystem
 	( 
 		NR_OF_SLOTS,    // # of cache slots
 		1000,           // # of generations
-		& genFunctor,
+		& modelData,
 		& modelFactory
 	);
 
-	for ( int i = 0; i < NR_OF_SLOTS; ++i )
-		historySys.AddHistorySlot( );
+	for ( int i = 1; i < NR_OF_SLOTS; ++i )
+		pHistorySys->AddHistorySlot( );
 
 	return 0;
 }

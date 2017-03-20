@@ -20,13 +20,13 @@ public:
 
 // point of interest
 
-    virtual IndId     GetPoiId( )                                     const = 0;
-    virtual bool      IsPoiDefined( )                                 const = 0; 
-    virtual bool      IsPoiId( IndId       const & )                  const = 0;
+    virtual IndId     GetPoiId( )                                              const = 0;
+    virtual bool      IsPoiDefined( )                                          const = 0; 
+    virtual bool      IsPoiId( IndId                const & )                  const = 0;
     virtual GridPoint FindPOI( EvolutionModelData * const )                    const = 0;
     virtual bool      IsPoi  ( EvolutionModelData * const, GridPoint const & ) const = 0;
     virtual void      SetPoi ( EvolutionModelData * const, GridPoint const & )       = 0;
-    virtual void      ClearPoi( )                                           = 0;
+    virtual void      ClearPoi( )                                                    = 0;
 
 // debugging functions
 
@@ -39,7 +39,7 @@ public:
     virtual void ResetModel( EvolutionModelData * const ) = 0;
     virtual void Compute   ( EvolutionModelData * const ) = 0;
 
-    virtual void SaveEditorState      ( EvolutionModelData * const ) = 0;
+    virtual void SaveEditorState      ( EvolutionModelData * const )       = 0;
     virtual bool EditorStateHasChanged( EvolutionModelData * const ) const = 0;
 
     // static functions

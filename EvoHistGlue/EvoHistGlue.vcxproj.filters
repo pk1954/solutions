@@ -33,9 +33,6 @@
     <ClInclude Include="EvoModelData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EvoNextGenFunctor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_evoHistWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>

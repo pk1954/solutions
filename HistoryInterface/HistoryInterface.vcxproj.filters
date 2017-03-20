@@ -13,19 +13,13 @@
     <ClInclude Include="HistorySystem.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="generationCmd.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="HistoryGeneration.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="historyIterator.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="NextGenFunctor.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="HistCacheItem.h">
+    <ClInclude Include="ModelData.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

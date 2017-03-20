@@ -10,11 +10,6 @@
 
 using namespace std;
 
-class GenerationCmdInterface
-{
-
-};
-
 enum class tGenCmd : unsigned short
 {
     undefined,

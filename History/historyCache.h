@@ -29,25 +29,40 @@ public:
     bool AddCacheSlot( HistCacheItem *, ModelFactory const * const );
     void ResetHistoryCache( );
 
-    HistCacheItem       * GetHistCacheItem ( short const ) const;
-    HistCacheItem const * GetHistCacheItemC( short const ) const;
-
     short GetFreeCacheSlotNr( );
 
     void Save2CacheSlot( HistCacheItem const &, short const );
-    void RemoveHistCacheSlot( short const );
-    void ResetHistCacheSlot ( short const );
+    void RemoveHistCacheSlot( int const );
 
-    bool IsEmpty( )    const { return m_pHead == nullptr; };
-    bool IsNotEmpty( ) const { return m_pHead != nullptr; };
+	void HistoryCache::ResetHistCacheSlot( int const iSlotNr )  	// reset slot, but leave it in list of used slots
+	{
+		m_aHistSlot.at( iSlotNr ).ResetSlot( );
+	}
 
-    HistSlot const * GetHead( ) const { return m_pHead; };
-    HistSlot const * GetTail( ) const { return & m_aHistSlot[0]; };
+    bool IsEmpty( )    const { return m_iHead == -1; };
+    bool IsNotEmpty( ) const { return m_iHead != -1; };
 
-    short           GetNrOfHistCacheSlots( ) const { return m_sNrOfSlots; }
-    HIST_GENERATION GetYoungestGeneration( ) const { return IsEmpty( ) ? -1 : m_pHead->GetGridGeneration( ); };
+    int GetHead( ) const { return m_iHead; };
+    int GetTail( ) const { return 0; };
+	int GetSenior( int iSlot ) const { return m_aHistSlot.at( iSlot ).GetSeniorGen( ); }
+	int GetJunior( int iSlot ) const { return m_aHistSlot.at( iSlot ).GetJuniorGen( ); }
+	
+	HIST_GENERATION GetGridGen( int iSlot ) const { return m_aHistSlot.at( iSlot ).GetGridGeneration( ); }
+
+    short           GetNrOfHistCacheSlots( ) const { return m_iNrOfSlots; }
+    HIST_GENERATION GetYoungestGeneration( ) const { return IsEmpty( ) ? -1 : m_aHistSlot.at( m_iHead ).GetGridGeneration( ); };
     
-    void ShutDownHistCacheSlot( short const i ) { m_aHistSlot[ i ].ShutDownHistCacheItem( ); };
+    void ShutDownHistCacheSlot( short const i ) { m_aHistSlot.at( i ).ShutDownHistCacheItem( ); };
+
+    HistCacheItem const * HistoryCache::GetHistCacheItemC( int const iSlotNr ) const
+	{
+		return m_aHistSlot.at( iSlotNr ).GetHistCacheItemC( );
+	};
+
+	HistCacheItem * HistoryCache::GetHistCacheItem( int const iSlotNr ) const
+	{
+		return m_aHistSlot.at( iSlotNr ).GetHistCacheItem( );
+	};
 
 private:
     HistoryCache             ( HistoryCache const & );  // noncopyable class 
@@ -55,17 +70,19 @@ private:
 
     vector< HistSlot > m_aHistSlot;  // is tail of list
 
-    HistSlot * m_pHead;            // slot with youngest generation
-    HistSlot * m_pUnused;          // first unused slot
-    HistSlot * m_pStartSearching;  // for optimization
+	int m_iHead;            // slot with youngest generation
+    int m_iUnused;          // first unused slot
+    int m_iStartSearching;  // for optimization
 
-    short m_sNrOfSlots;
-    short m_sNrOfRequestedSlots;
-    short m_sNrOfUsedSlots;
+    int m_iNrOfSlots;
+    int m_iNrOfRequestedSlots;
+    int m_iNrOfUsedSlots;
     
     bool  m_bAllocationRunning;
 
-    HistSlot * findSlot4Reuse( );
- 
+	void setSenior( int iDst, int iSrc ) { m_aHistSlot.at( iDst ).SetSeniorGen( iSrc ); }
+	void setJunior( int iDst, int iSrc ) { m_aHistSlot.at( iDst ).SetJuniorGen( iSrc ); }
+
+    int  findSlot4Reuse( );
     void checkConsistency( );
 };

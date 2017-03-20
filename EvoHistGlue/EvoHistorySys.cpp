@@ -13,8 +13,8 @@
 
 EvoHistorySys::EvoHistorySys
 (
-    NextGenFunctor * const pNextGenFunctor,
-    EvoModelData   * const pEvoModelData
+	EvoModelFactory * const pEvoModelFactory,
+    EvoModelData    * const pEvoModelData
 ) :
     m_pEvoModelWork( pEvoModelData )
 {
@@ -27,12 +27,14 @@ EvoHistorySys::EvoHistorySys
 
     HIST_GENERATION const genMaxNrOfGens = Config::GetConfigValue( Config::tId::maxGeneration );
 
-	m_HistorySystem.InitHistorySystem
+    m_pHistorySystem = HistorySystem::CreateHistorySystem( );
+
+	m_pHistorySystem->InitHistorySystem
     (
         sNrOfSlots,
         genMaxNrOfGens,
-        pNextGenFunctor,
-        m_pEvoModelWork
+        pEvoModelData,
+        pEvoModelFactory
     );
 }
 
@@ -42,9 +44,9 @@ public:
 
     FindGridPointFunctor( IndId const id ) : m_id( id ) {}
 
-    virtual bool operator() ( HistCacheItem const * pItem ) const
+    virtual bool operator() ( ModelData const * pModelData ) const
     {
-        EvoModelData const * pEvoModelData = static_cast< EvoModelData const * >( pItem );
+        EvoModelData const * pEvoModelData = static_cast< EvoModelData const * >( pModelData );
         return ( pEvoModelData->FindGridPoint( m_id ).IsNotNull( ) );  // id is alive
     }
 
@@ -54,10 +56,10 @@ private:
 
 HIST_GENERATION EvoHistorySys::GetFirstGenOfIndividual( IndId const & id ) const  
 { 
-    return id.IsDefined( ) ? m_HistorySystem.FindFirstGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
+    return id.IsDefined( ) ? m_pHistorySystem->FindFirstGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
 }
 
 HIST_GENERATION EvoHistorySys::GetLastGenOfIndividual ( IndId const & id ) const  
 { 
-    return id.IsDefined( ) ? m_HistorySystem.FindLastGenerationWithProperty ( FindGridPointFunctor( id ) ) : -1; 
+    return id.IsDefined( ) ? m_pHistorySystem->FindLastGenerationWithProperty ( FindGridPointFunctor( id ) ) : -1; 
 }

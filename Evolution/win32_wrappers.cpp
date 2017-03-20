@@ -155,11 +155,6 @@ void DefineWin32WrapperFunctions
     DEF_ULONG_CONST( IDM_RUN );
     DEF_ULONG_CONST( IDM_STOP );
 
-    DEF_ULONG_CONST( tGenCmd::cached );
-    DEF_ULONG_CONST( tGenCmd::reset );
-    DEF_ULONG_CONST( tGenCmd::nextGen );
-    DEF_ULONG_CONST( tGenCmd::undefined );
-
     DEF_ULONG_CONST( tEvoCmd::editSetBrushMode );
     DEF_ULONG_CONST( tEvoCmd::editSetBrushShape );
     DEF_ULONG_CONST( tEvoCmd::editSetBrushSize );

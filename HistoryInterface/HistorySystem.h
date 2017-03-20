@@ -4,72 +4,43 @@
 #pragma once
 
 #include "HistoryGeneration.h"
-#include "generationCmd.h"
 
-#ifndef NDEBUG
-#define CHECK_HISTORY_STRUCTURE checkHistoryStructure( )
-#else
-#define CHECK_HISTORY_STRUCTURE
-#endif
-
-class HistoryCache;
 class DisplayFunctor;
-class NextGenFunctor;
 class HistoryIterator;
-class HistCacheItem;
-class GenCmdList;
 class ModelFactory;
+class ModelData;
 
 class GenerationProperty
 {
 public:
-    virtual bool operator() ( HistCacheItem const * ) const = 0;
+    virtual bool operator() ( ModelData const * ) const = 0;
 };
 
 class HistorySystem
 {
 public:
-    HistorySystem( );
-    ~HistorySystem( );
+	static HistorySystem * CreateHistorySystem( );
 
-    void InitHistorySystem
-    ( 
-        short const, 
-        HIST_GENERATION const, 
-        NextGenFunctor const * const, 
-        ModelFactory *
-    );
+    virtual ~HistorySystem( ) { };
 
-    void SetAskHistoryCutFunctor( DisplayFunctor const * const f ) { m_pAskHistoryCutFunctor = f; }
+    virtual void InitHistorySystem( short const, HIST_GENERATION const, ModelData * const, ModelFactory * const ) = 0;
 
-    int               GetNrOfHistCacheSlots( ) const;
-    HIST_GENERATION   GetNrOfGenerations( )    const;
-    HIST_GENERATION   GetYoungestGeneration( ) const;
-    HIST_GENERATION   GetCurrentGeneration( )  const;
-    bool              IsInHistoryMode( )       const;
-    HistoryIterator * CreateHistoryIterator( ) const;
+    virtual int               GetNrOfHistCacheSlots( ) const = 0;
+    virtual HIST_GENERATION   GetNrOfGenerations( )    const = 0;
+    virtual HIST_GENERATION   GetYoungestGeneration( ) const = 0;
+    virtual HIST_GENERATION   GetCurrentGeneration( )  const = 0;
+    virtual bool              IsInHistoryMode( )       const = 0;
+    virtual HistoryIterator * CreateHistoryIterator( ) const = 0;
 
-    bool              AddHistorySlot( ) const;
-    void              ShutDownHistCacheSlot( short const );
+    virtual bool              AddHistorySlot( )              const = 0;
+    virtual void              ShutDownHistCacheSlot( short const ) = 0;
 
-    bool              CreateNewGeneration( unsigned short const, short const );
-	void              ClearHistory       ( HIST_GENERATION const );
-    void              ApproachHistGen    ( HIST_GENERATION const );
+    virtual bool              CreateAppCommand( unsigned short const, short const ) = 0;
+	virtual void              ClearHistory    ( HIST_GENERATION const ) = 0;
+    virtual void              ApproachHistGen ( HIST_GENERATION const ) = 0;
 
-    HIST_GENERATION   FindFirstGenerationWithProperty( GenerationProperty const & ) const;
-    HIST_GENERATION   FindLastGenerationWithProperty ( GenerationProperty const & ) const;
+    virtual void              SetAskHistoryCutFunctor( DisplayFunctor const * const ) = 0;
 
-private:
-
-    GenCmdList           * m_pGenCmdList;
-    HistoryCache         * m_pHistoryCache;
-    HistCacheItem        * m_pHistCacheItemWork;      // The reference item, where history system gets and restores  
-    DisplayFunctor const * m_pAskHistoryCutFunctor;   // GUI callback for asking user if history should be cut off 
-    NextGenFunctor const * m_pNextGenerationFunctor;  // application callback for advancing to the next generation
-	ModelFactory   const * m_pModelFactory;
-
-	void createNewGen( GenerationCmd );
-    void save2History( HistCacheItem const & );
-    void step2NextGeneration( GenerationCmd );
-    void checkHistoryStructure( );
+    virtual HIST_GENERATION   FindFirstGenerationWithProperty( GenerationProperty const & ) const = 0;
+    virtual HIST_GENERATION   FindLastGenerationWithProperty ( GenerationProperty const & ) const = 0;
 };

@@ -62,7 +62,6 @@
 // application
 
 #include "EvoModelData.h"
-#include "EvoNextGenFunctor.h"
 
 #include "win32_appWindow.h"
 
@@ -110,10 +109,10 @@ AppWindow::AppWindow( HINSTANCE const hInstance )
     m_pModelWork( nullptr ),
     m_pEvolutionCore( nullptr ),
     m_pScriptHook( nullptr ),
-    m_pEvoNextGenFunctor( nullptr ),
     m_pEvoHistWindow( nullptr ),
     m_pHistWorkThread( nullptr ),
 	m_pEvoHistorySys( nullptr ),
+	m_pEvoModelFactory( nullptr ),
     m_traceStream( )
 {};
 
@@ -176,16 +175,17 @@ void AppWindow::Start( LPTSTR lpCmdLine )
 
     if ( Config::UseHistorySystem( ) )
     {
-        m_pEvoModelWork      = new EvoModelData( m_pModelWork );
-        m_pEvoNextGenFunctor = new EvoNextGenFunctor( );
-		m_pEvoHistorySys     = new EvoHistorySys( m_pEvoNextGenFunctor, m_pEvoModelWork );
-		m_pHistWorkThread    = new HistWorkThread( & m_traceStream, m_pEvolutionCore, m_pEvoModelWork->GetModelData(), m_pEvoHistorySys );
-		m_pWorkThread = m_pHistWorkThread;
-        m_pEvoNextGenFunctor->Start( m_pWorkThread );
+		m_pEvoModelFactory = new EvoModelFactory( m_pEvolutionCore );
+        m_pEvoModelWork    = new EvoModelData   ( m_pEvolutionCore, m_pModelWork );
+		m_pEvoHistorySys   = new EvoHistorySys( m_pEvoModelFactory, m_pEvoModelWork );
+		m_pHistWorkThread  = new HistWorkThread( & m_traceStream, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
+		m_pWorkThread      = m_pHistWorkThread;
+		m_pEvoModelFactory->SetWorkThread( m_pWorkThread );
+		m_pEvoModelWork   ->SetWorkThread( m_pWorkThread );
         DefineWin32HistWrapperFunctions( m_pHistWorkThread );
 
         m_pEvoHistWindow = new EvoHistWindow( );
-		m_pEvoHistWindow->Start( hwnd, m_pFocusPoint, m_pStatusBar, m_pEvoModelWork, m_pEvoHistorySys, m_pHistWorkThread );
+		m_pEvoHistWindow->Start( hwnd, m_pFocusPoint, m_pStatusBar, m_pModelWork, m_pEvoHistorySys, m_pHistWorkThread );
         m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, 75 );
     }
     else
@@ -245,8 +245,8 @@ AppWindow::~AppWindow( )
         {
             delete m_pEvoHistWindow;
             delete m_pEvoModelWork;
-            delete m_pEvoNextGenFunctor;
 			delete m_pEvoHistorySys;
+			delete m_pEvoModelFactory;
         }
         else
         {

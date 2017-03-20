@@ -5,8 +5,6 @@
 
 #include "HistoryGeneration.h"
 
-//lint -esym( 613, HistoryIterator::m_phsRun ) Possible use of null pointer
-
 class HistoryCache;
 class HistSlot;
 class HistCacheItem;
@@ -14,20 +12,20 @@ class HistCacheItem;
 class HistoryIterator
 {
 public:
-    explicit HistoryIterator( HistoryCache const * pHistory ) : 
-        m_pHistory( pHistory ),
-        m_phsRun( nullptr )
+    explicit HistoryIterator( HistoryCache const * pHistCache ) : 
+        m_pHistCache( pHistCache ),
+        m_iSlotRun( -1 )
     { }
 
     ~HistoryIterator( )
     {
-        m_phsRun = nullptr;
+        m_iSlotRun = -1;
     }
 
-    HistSlot const * Set2Youngest( );
-    HistSlot const * Set2Oldest( );
-    HistSlot const * Set2Senior( );
-    HistSlot const * Set2Junior( );
+    int Set2Youngest( );
+    int Set2Oldest( );
+    int Set2Senior( );
+    int Set2Junior( );
 
     bool IsYoungest( )    const;
     bool IsNotYoungest( ) const;
@@ -42,6 +40,6 @@ public:
 private:
     HistoryIterator( HistoryIterator const & ); // Disable copy constructor
 
-    HistoryCache const * m_pHistory;
-    HistSlot     const * m_phsRun;
+    HistoryCache const * m_pHistCache;
+    int                  m_iSlotRun;
 };

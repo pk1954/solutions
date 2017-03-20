@@ -24,11 +24,11 @@ class WinManager;
 class EvolutionCore;
 class EvoModelData;
 class NextGenFunctor;
-class EvoNextGenFunctor;
 class HistWorkThread;
 class ScriptHook;
 class EvolutionModelData;
 class EvoHistorySys;
+class EvoModelFactory;
 
 //lint -esym( 1712, AppWindow )  no default constructor for class 
 
@@ -69,9 +69,9 @@ private:
     
     // History 
 	EvoHistorySys      * m_pEvoHistorySys;
-	EvoNextGenFunctor  * m_pEvoNextGenFunctor;
     EvoHistWindow      * m_pEvoHistWindow;
     HistWorkThread     * m_pHistWorkThread;
+	EvoModelFactory    * m_pEvoModelFactory;
 
     std::wofstream m_traceStream;
 };
