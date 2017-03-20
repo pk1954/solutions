@@ -1,9 +1,8 @@
 #pragma once
 
-#include "ModelDataImpl.h"
+#include "EvolutionModelDataImpl.h"
 #include "EvolutionCore.h"
 #include "EditorState.h"
-#include "gridFunctors.h"
 
 class EvolutionCoreImpl : public EvolutionCore
 {
@@ -11,26 +10,72 @@ public:
     explicit EvolutionCoreImpl( );
     ~EvolutionCoreImpl( );
 
-    virtual void      ResetModel           ( EvolutionModelData * const );
-    virtual void      Compute              ( EvolutionModelData * const );
-    virtual void      SetGridDisplayFunctor( DisplayFunctor const * const f ) { m_gridDisplayFunctor = f; }
+    virtual void ResetModel( EvolutionModelData * const );
+    virtual void Compute   ( EvolutionModelData * const );
+    
+	virtual void SetGridDisplayFunctor( DisplayFunctor const * const f ) 
+	{ 
+		m_gridDisplayFunctor = f; 
+	}
 
-    virtual void      SaveEditorState      ( EvolutionModelData * const pModel )       {        m_editorStateLast  = static_cast< ModelDataImpl * >( pModel )->m_editorState; }
-    virtual bool      EditorStateHasChanged( EvolutionModelData * const pModel ) const { return m_editorStateLast != static_cast< ModelDataImpl * >( pModel )->m_editorState; }
+    virtual void SaveEditorState( EvolutionModelData * const pModel )       
+	{ 
+		m_editorStateLast = static_cast< EvolutionModelDataImpl * >( pModel )->m_editorState; 
+	}
+    
+	virtual bool EditorStateHasChanged( EvolutionModelData * const pModel ) const 
+	{ 
+		return m_editorStateLast != static_cast< EvolutionModelDataImpl * >( pModel )->m_editorState; 
+	}
 
-    virtual GridPoint FindPOI( EvolutionModelData * const pModel )                       const { return IsPoiDefined( ) ? static_cast< ModelDataImpl * >( pModel )->m_grid.FindGridPoint( m_idPOI ) : GridPoint::GP_NULL; }
-    virtual IndId     GetPoiId( )                                               const { return m_idPOI; }
-    virtual bool      IsPoiDefined( )                                           const { return m_idPOI.IsDefined( ); }
-    virtual bool      IsPoiId( IndId       const & id )                         const { return m_idPOI == id; }
-    virtual bool      IsPoi  ( EvolutionModelData * const pModel, GridPoint const & gp ) const { return ( gp.IsNotNull( ) && ( pModel->GetId( gp ) == m_idPOI ) ); }
-    virtual void      SetPoi ( EvolutionModelData * const pModel, GridPoint const & gp )       { m_idPOI = static_cast< ModelDataImpl * >( pModel )->m_grid.GetId( gp ); }
-    virtual void      ClearPoi( )                                                     { m_idPOI.ResetIndId( ); }
+    virtual GridPoint FindPOI( EvolutionModelData * const pModel ) const 
+	{ 
+		return IsPoiDefined( ) 
+			   ? static_cast< EvolutionModelDataImpl * >( pModel )->m_grid.FindGridPoint( m_idPOI ) 
+			   : GridPoint::GP_NULL; 
+	}
+    
+	virtual IndId GetPoiId( ) const 
+	{ 
+		return m_idPOI; 
+	}
+    
+	virtual bool IsPoiDefined( ) const 
+	{ 
+		return m_idPOI.IsDefined( ); 
+	}
+    
+	virtual bool IsPoiId( IndId const & id ) const 
+	{ 
+		return m_idPOI == id; 
+	}
+    
+	virtual bool IsPoi( EvolutionModelData * const pModel, GridPoint const & gp ) const 
+	{ 
+		return ( gp.IsNotNull( ) && ( pModel->GetId( gp ) == m_idPOI ) ); 
+	}
+    
+	virtual void SetPoi( EvolutionModelData * const pModel, GridPoint const & gp )       
+	{ 
+		m_idPOI = static_cast< EvolutionModelDataImpl * >( pModel )->m_grid.GetId( gp ); 
+	}
+    
+	virtual void ClearPoi( ) 
+	{ 
+		m_idPOI.ResetIndId( ); 
+	}
 
-    virtual PlannedActivity const & GetPlan( ) const { return m_plan; };
+    virtual PlannedActivity const & GetPlan( ) const 
+	{ 
+		return m_plan; 
+	};
 
     virtual void DumpGridPointList( ) const;
 
-    static  int  GetStdCapacity( ) { return m_iStdCapacity; };
+    static  int  GetStdCapacity( ) 
+	{ 
+		return m_iStdCapacity; 
+	};
 
 private:
     PlannedActivity        m_plan;

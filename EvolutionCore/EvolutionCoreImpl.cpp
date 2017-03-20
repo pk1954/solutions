@@ -16,8 +16,6 @@
 
 using namespace std;
 
-//// EvolutionCoreImpl /////
-
 int EvolutionCoreImpl::m_iStdCapacity;
 
 EvolutionCoreImpl::EvolutionCoreImpl( ) :
@@ -34,7 +32,7 @@ EvolutionCoreImpl::~EvolutionCoreImpl( )
 
 void EvolutionCoreImpl::ResetModel( EvolutionModelData * const pModel )
 {
-    ModelDataImpl * pModelImpl = static_cast< ModelDataImpl * >( pModel );
+    EvolutionModelDataImpl * pModelImpl = static_cast< EvolutionModelDataImpl * >( pModel );
     pModelImpl->m_grid.ResetGrid( );
 
     m_idPOI.ResetIndId( );
@@ -48,7 +46,7 @@ void EvolutionCoreImpl::ResetModel( EvolutionModelData * const pModel )
 
 void EvolutionCoreImpl::Compute( EvolutionModelData * const pModel )
 {
-    ModelDataImpl * pModelImpl = static_cast< ModelDataImpl * >( pModel );
+    EvolutionModelDataImpl * pModelImpl = static_cast< EvolutionModelDataImpl * >( pModel );
 
     GplIterator m_gplIterator( pModelImpl->m_grid );
 

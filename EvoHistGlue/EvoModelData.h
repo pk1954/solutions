@@ -36,7 +36,7 @@ public:
 	virtual void CopyModelData( ModelData const * const src )
     {
 		EvoModelData const * const evoSrc = static_cast< EvoModelData const * const >( src );
-        m_pEvolutionModelData->CopyModelData( evoSrc->m_pEvolutionModelData );
+        m_pEvolutionModelData->CopyEvolutionModelData( evoSrc->m_pEvolutionModelData );
     }
 
 	virtual void OnNextGeneration()	{ m_pWorkThread->GenerationStep( ); }

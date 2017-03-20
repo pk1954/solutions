@@ -13,7 +13,7 @@ static EvolutionCoreImpl * m_pCore = nullptr;
 
 EvolutionModelData * EvolutionModelData::CreateModelData( ) 
 { 
-    return new ModelDataImpl( ); 
+    return new EvolutionModelDataImpl( ); 
 }
 
 void EvolutionCore::InitClass( )

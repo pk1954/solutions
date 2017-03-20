@@ -1,20 +1,23 @@
+// EvolutionDataModelImpl.h
+//
+
 #pragma once
 
 #include "EvolutionModelData.h"
 #include "grid_model.h"
 #include "EditorState.h"
 
-class ModelDataImpl : public EvolutionModelData
+class EvolutionModelDataImpl : public EvolutionModelData
 {
 public:
-    ModelDataImpl( )
+    EvolutionModelDataImpl( )
     {
         m_grid.ResetGrid( );
     };
 
-    virtual void CopyModelData( EvolutionModelData const * const src )
+    virtual void CopyEvolutionModelData( EvolutionModelData const * const src )
     {
-        * this = * static_cast<ModelDataImpl const *>( src );
+        * this = * static_cast<EvolutionModelDataImpl const *>( src );
     }
 
     virtual void           SetBrushShape    ( tShape     const shape ) { m_editorState.SetBrushShape    ( shape ); }
@@ -22,7 +25,7 @@ public:
     virtual void           SetBrushIntensity( short      const iInt  ) { m_editorState.SetBrushIntensity( iInt  ); }
     virtual void           SetBrushStrategy ( tBrushMode const mode  ) { m_editorState.SetBrushStrategy ( mode  ); }
 
-    virtual void           ModelDoEdit    ( GridPoint  const gp    ) { m_editorState.EditorDoEdit( & m_grid, gp ); }
+    virtual void           ModelDoEdit    ( GridPoint  const gp ) { m_editorState.EditorDoEdit( & m_grid, gp ); }
 
     virtual EVO_GENERATION GetAge         ( GridPoint const & gp ) const { return m_grid.GetAge( gp ); }
 

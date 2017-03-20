@@ -63,7 +63,7 @@
     <ClInclude Include="EditorState.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="ModelDataImpl.h">
+    <ClInclude Include="EvolutionModelDataImpl.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

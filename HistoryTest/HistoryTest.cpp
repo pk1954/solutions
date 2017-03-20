@@ -53,11 +53,12 @@ public:
 
 int _tmain( int argc, _TCHAR* argv[] )
 {
-	static const int NR_OF_SLOTS = 2;
+	static const int NR_OF_SLOTS = 10;
 
 	HistorySystem      * pHistorySys = HistorySystem::CreateHistorySystem( );
 	HistTestModelFactory modelFactory;
 	HistTestModelData    modelData( 0 );
+	HIST_GENERATION      histGenDemanded;
 
 	pHistorySys->InitHistorySystem
 	( 
@@ -69,6 +70,13 @@ int _tmain( int argc, _TCHAR* argv[] )
 
 	for ( int i = 1; i < NR_OF_SLOTS; ++i )
 		pHistorySys->AddHistorySlot( );
+
+	assert( pHistorySys->GetNrOfHistCacheSlots( ) == NR_OF_SLOTS );
+
+	for ( histGenDemanded = 1; histGenDemanded < 30; ++histGenDemanded )
+	{
+		pHistorySys->ApproachHistGen( histGenDemanded );
+	}
 
 	return 0;
 }

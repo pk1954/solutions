@@ -140,7 +140,6 @@ bool HistorySystemImpl::CreateAppCommand( unsigned short const uiCmd, short cons
 void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
 {
     HIST_GENERATION genActual = m_pHistCacheItemWork->GetHistGenCounter( );
-    BOOL            bMicrosteps = TRUE;
 
     assert( genDemanded != genActual );
     assert( genDemanded < m_pGenCmdList->GetCmdListSize( ) ); //TODO: find clean solution if max number of generations reached. 
@@ -152,7 +151,8 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
     }
     else   // genDemanded is somewhere in history
     {
-        HIST_GENERATION genCached = genDemanded;  // search backwards starting with genDemanded
+        HIST_GENERATION genCached   = genDemanded;  // search backwards starting with genDemanded
+        BOOL            bMicrosteps = TRUE;
         
         while ( ( * m_pGenCmdList )[ genCached ].IsNotCachedGeneration( ) )
             --genCached;
@@ -169,8 +169,8 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
         }
         else  // get cached generation
         {
-            GenerationCmd      const         genCmd         = ( * m_pGenCmdList )[ genCached ];
-            short              const         sSlotNr        = genCmd.GetParam( );
+            GenerationCmd         const genCmd         = ( * m_pGenCmdList )[ genCached ];
+            short                 const sSlotNr        = genCmd.GetParam( );
             HistCacheItem const * const pHistCacheItem = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
             m_pHistCacheItemWork->CopyCacheItem( pHistCacheItem );
         }

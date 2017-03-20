@@ -16,7 +16,7 @@ public:
 
     static EvolutionModelData * CreateModelData( );
 
-    virtual void           CopyModelData  ( EvolutionModelData const * const ) = 0;
+    virtual void           CopyEvolutionModelData( EvolutionModelData const * const ) = 0;
 
     virtual int            GetNrOfLivingIndividuals ( ) const = 0;
     virtual int            GetAverageFoodGrowth     ( ) const = 0;
