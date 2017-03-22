@@ -275,7 +275,7 @@ void DrawFrame::assembleLeftColumn( GridPoint const & gp, GridPoint const & gpPo
     if ( gp == gpPoi )
         m_wBuffer << L" ** POI ** ";
     m_wBuffer << endl;
-    m_wBuffer << L"ID: "     << m_pModelWork->GetId( gp ).GetLong( )           << endl;
+    m_wBuffer << L"ID: "     << m_pModelWork->GetId( gp )                      << endl;
     m_wBuffer << L"Age: "    << m_pModelWork->GetAge( gp )                     << endl;
     m_wBuffer << L"Origin: " << GetOriginName( m_pModelWork->GetOrigin( gp ) ) << endl;
     m_wBuffer << L"Energy: " << m_pModelWork->GetEnergy( gp )                  << endl;

@@ -5,6 +5,7 @@
 #include <iostream>
 #include "script.h"
 #include "ModelData.h"
+#include "HistoryIterator.h"
 #include "HistorySystem.h"
 
 using namespace std;
@@ -51,6 +52,28 @@ public:
 	}
 };
 
+void showHistorySlots( HistorySystem * const pHistorySys )
+{
+	HistoryIterator * iter = pHistorySys->CreateHistoryIterator( );
+
+    for ( int iRun = iter->Set2Oldest( ); iRun != -1; iRun = iter->Set2Junior( ) )
+        wcout << iter->GetCurrentGeneration( ) << L" ";
+
+	wcout << endl;
+
+	delete iter;
+}
+
+void gotoGeneration( HistorySystem * const pHistorySys, HIST_GENERATION const histGenDemanded )
+{
+	while( histGenDemanded != pHistorySys->GetCurrentGeneration( ) )
+	{
+		pHistorySys->ApproachHistGen( histGenDemanded );
+    	wcout << L"Generation: " << histGenDemanded << L" - " << pHistorySys->GetCurrentGeneration( ) << L" Slots: ";
+		showHistorySlots( pHistorySys );
+	}
+}
+
 int _tmain( int argc, _TCHAR* argv[] )
 {
 	static const int NR_OF_SLOTS = 10;
@@ -68,15 +91,20 @@ int _tmain( int argc, _TCHAR* argv[] )
 		& modelFactory
 	);
 
+	wcout << L"Create " << NR_OF_SLOTS << L" history slots" << endl << endl;
+
 	for ( int i = 1; i < NR_OF_SLOTS; ++i )
 		pHistorySys->AddHistorySlot( );
 
 	assert( pHistorySys->GetNrOfHistCacheSlots( ) == NR_OF_SLOTS );
 
 	for ( histGenDemanded = 1; histGenDemanded < 30; ++histGenDemanded )
-	{
-		pHistorySys->ApproachHistGen( histGenDemanded );
-	}
+		gotoGeneration( pHistorySys, histGenDemanded );
+
+	wcout << endl << L"Now backwards" << endl << endl;
+
+	for ( histGenDemanded = 28; histGenDemanded >= 0; --histGenDemanded )
+		gotoGeneration( pHistorySys, histGenDemanded );
 
 	return 0;
 }

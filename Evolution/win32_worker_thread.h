@@ -26,7 +26,7 @@ class DisplayAll;
 class WorkThread
 {
 public:
-    explicit WorkThread( std::wofstream * );
+    explicit WorkThread( std::wostream * );
     ~WorkThread( );
 
     void Start
@@ -53,9 +53,9 @@ public:
 	void PostStopComputation();
 
     void SetGenerationDelay( DWORD );
-	void ResetModel();
-	void GenerationStep();
 
+	virtual void ResetModel( );
+	virtual void GenerationStep( );
 	virtual void ApplyEditorCommand( tEvoCmd const, short const );
 
 protected:
@@ -85,25 +85,24 @@ protected:
 	virtual void DoEdit( GridPoint const );
 	virtual void DoExit( HWND );
 
-
-	BOOL             m_bTrace;
-    std::wofstream * m_pTraceStream;
-    EditorWindow   * m_pEditorWindow;
+	BOOL            m_bTrace;
+    std::wostream * m_pTraceStream;
+    EditorWindow  * m_pEditorWindow;
 
 private:
 
-    StatusBar         * m_pStatusBar;
-    DisplayAll  const * m_pDisplayGridFunctor;
-    PerformanceWindow * m_pPerformanceWindow;
-    EvolutionCore     * m_pEvolutionCore;
-    EvolutionModelData         * m_pModelWork;
-    HANDLE              m_hEventThreadStarter;
-    DWORD               m_dwThreadId;
-    GridRect            m_gridRectSelection;
-    HANDLE              m_hTimer;
-    BOOL                m_bContinue;
-    INT                 m_iScriptLevel;
-    GridPoint           m_gpEdit;
+    StatusBar          * m_pStatusBar;
+    DisplayAll   const * m_pDisplayGridFunctor;
+    PerformanceWindow  * m_pPerformanceWindow;
+    EvolutionCore      * m_pEvolutionCore;
+    EvolutionModelData * m_pModelWork;
+    HANDLE               m_hEventThreadStarter;
+    DWORD                m_dwThreadId;
+    GridRect             m_gridRectSelection;
+    HANDLE               m_hTimer;
+    BOOL                 m_bContinue;
+    INT                  m_iScriptLevel;
+    GridPoint            m_gpEdit;
 
     // private member functions
 

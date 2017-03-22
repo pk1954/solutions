@@ -5,6 +5,8 @@
 
 #include "assert.h"
 #include "limits.h"
+#include <iostream>
+#include <iomanip>
 
 class HIST_GENERATION
 {
@@ -43,3 +45,5 @@ public:
 private:
     long m_nr;
 };
+
+std::wostream & operator << ( std::wostream &, HIST_GENERATION const & );

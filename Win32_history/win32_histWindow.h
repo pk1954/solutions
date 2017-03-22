@@ -54,7 +54,6 @@ private:
     HistorySystem         * m_pHistSys;  // Do not change the order
     HistoryIterator       * m_pHistIter;  // declarations!
     GenDisplayWindow      * m_pGenDisplay;
-    AskHistoryCut         * m_pAskHistoryCut;
     TRACKMOUSEEVENT         m_trackStruct;
     HIST_GENERATION         m_genSelected;
 };

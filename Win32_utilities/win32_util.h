@@ -220,7 +220,14 @@ namespace Util
         return monInfo;
     }
 
-    void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );
+	inline void StdOutConsole( )
+	{
+		FILE * fp;
+		BOOL bRes = AllocConsole( );
+		freopen_s( &fp, "CONOUT$", "w", stdout );
+	}
+
+void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );
 
     void AdjustRight( HWND, int );
     void AdjustLeft( HWND, int );
@@ -230,3 +237,6 @@ namespace Util
     ULONGLONG GetPhysicalMemory( );
 	LONG      GetMaxNrOfSlots( ULONG );
 };
+
+
+

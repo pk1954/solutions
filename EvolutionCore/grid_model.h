@@ -125,8 +125,7 @@ private:
 
     Random         m_random;                                               //                            16 byte
     IndId          m_idCounter;  // Used only by class Individual.         //                             4 byte
-                                                                           //   sum               3.120.042 byte
-    
+     
     // static members 
 
     static int  m_iFoodGrowthRate;

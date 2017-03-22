@@ -14,10 +14,10 @@ using namespace std;
 
 HistWorkThread::HistWorkThread
 ( 
-    wofstream     *       pTraceStream,
-    EvolutionCore * const pCore,
-    EvolutionModelData     * const pModel,
-    EvoHistorySys * const pHistorySys
+    wostream           *       pTraceStream,
+    EvolutionCore      * const pCore,
+    EvolutionModelData * const pModel,
+    EvoHistorySys      * const pHistorySys
 ) :
     WorkThread( pTraceStream ),
     m_genDemanded( 0 ),
@@ -29,14 +29,17 @@ HistWorkThread::HistWorkThread
 HistWorkThread::~HistWorkThread( )
 {}
 
-// generationStep - perform one history step towards demanded generation
+// GenerationStep - perform one history step towards demanded generation
 //                - update editor state if neccessary
 
-void HistWorkThread::generationStep( )
+void HistWorkThread::GenerationStep( )
 {
+	wcout << __FUNCTION__ << endl;
     if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
     {
         m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );
+
+		wcout << L"Generation: " << m_genDemanded << L" - " << m_pEvoHistorySys->GetCurrentGeneration( ) << endl;
 
         if ( m_pCore->EditorStateHasChanged( m_pModelWork ) )
         {
@@ -56,7 +59,7 @@ void HistWorkThread::GenerationRun( )
 
 void HistWorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, short const sParam )
 {
-    if ( m_pEvoHistorySys->CreateAppCommand( evoCmd, sParam ) )
+    if ( m_pEvoHistorySys->CreateEditorCommand( evoCmd, sParam ) )
         m_pCore->SaveEditorState( m_pModelWork );
 }
 
@@ -68,8 +71,8 @@ void HistWorkThread::StopComputation()
 
 void HistWorkThread::DoEdit( GridPoint const gp )
 {
-	if ( m_pEvoHistorySys->CreateAppCommand( tEvoCmd::editSetXvalue, gp.x ) )
-		 m_pEvoHistorySys->CreateAppCommand( tEvoCmd::editSetYvalue, gp.y );
+	if ( m_pEvoHistorySys->CreateEditorCommand( tEvoCmd::editSetXvalue, gp.x ) )
+		 m_pEvoHistorySys->CreateEditorCommand( tEvoCmd::editSetYvalue, gp.y );
 }
 
 void HistWorkThread::DoExit( HWND hwndApp )
@@ -80,20 +83,24 @@ void HistWorkThread::DoExit( HWND hwndApp )
 void HistWorkThread::gotoGeneration( HIST_GENERATION const gen )
 {
 	m_genDemanded = gen;
-	do 
-		generationStep( );
-	while ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded );
+	do
+	{    
+		wcout << __FUNCTION__ << L" " << gen << endl;
+		GenerationStep( );
+	} while ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded );
 }
 
 void HistWorkThread::PostNextGeneration( )
 {
+    wcout << __FUNCTION__ << L" " << m_pEvoHistorySys->GetCurrentGeneration( ) << endl;
 	gotoGeneration( m_pEvoHistorySys->GetCurrentGeneration( ) + 1 );
 }
 
 void HistWorkThread::PostPrevGeneration( )
 {
+    wcout << __FUNCTION__ << L" " << m_pEvoHistorySys->GetCurrentGeneration( ) << endl;
 	if (m_pEvoHistorySys->GetCurrentGeneration() > 0)
-		PostGotoGeneration(m_pEvoHistorySys->GetCurrentGeneration() - 1);
+		PostGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration() - 1 );
 	else
 		(void)MessageBeep(MB_OK);  // first generation reached
 }
@@ -114,7 +121,7 @@ void HistWorkThread::PostHistoryAction( UINT const uiID, GridPoint const gp )
 void HistWorkThread::PostGotoGeneration( HIST_GENERATION const gen )
 {
     if ( m_bTrace )
-        *m_pTraceStream << "PostGotoGeneration " << gen.GetLong( ) << endl;
+        * m_pTraceStream << __func__ << L" " << gen << endl;
 
     assert( gen >= 0 );
     assert( gen <= m_pEvoHistorySys->GetHistorySystem( )->GetYoungestGeneration( ) );

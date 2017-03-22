@@ -1,1 +1,2 @@
 SetConfigValue Config::tId::moveEnabled 0
+SetConfigValue Config::tId::nrOfHistorySlots 10

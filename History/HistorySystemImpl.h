@@ -36,8 +36,6 @@ public:
         ModelFactory  * const
     );
 
-    virtual void SetAskHistoryCutFunctor( DisplayFunctor const * const f ) { m_pAskHistoryCutFunctor = f; }
-
     virtual int               GetNrOfHistCacheSlots( ) const;
     virtual HIST_GENERATION   GetNrOfGenerations( )    const;
     virtual HIST_GENERATION   GetYoungestGeneration( ) const;
@@ -48,7 +46,7 @@ public:
     virtual bool              AddHistorySlot( ) const;
     virtual void              ShutDownHistCacheSlot( short const );
 
-    virtual bool              CreateAppCommand( unsigned short const, short const );
+    virtual void              CreateAppCommand( unsigned short const, short const );
 	virtual void              ClearHistory    ( HIST_GENERATION const );
     virtual void              ApproachHistGen ( HIST_GENERATION const );
 

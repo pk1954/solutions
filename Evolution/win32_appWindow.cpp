@@ -123,6 +123,8 @@ void AppWindow::Start( LPTSTR lpCmdLine )
     HICON     const hIconBig   = LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) );
     HICON     const hIconSmall = LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL ) );
 
+	Util::StdOutConsole( );
+
     SendMessage( WM_SETICON, ICON_BIG,   (LPARAM)hIconBig   );
     SendMessage( WM_SETICON, ICON_SMALL, (LPARAM)hIconSmall );
 
@@ -136,7 +138,7 @@ void AppWindow::Start( LPTSTR lpCmdLine )
 
     m_pEvolutionCore = EvolutionCore::CreateCore( );
 
-    ScriptErrorHandler::ScrSetOutputStream( & m_traceStream );
+    ScriptErrorHandler::ScrSetOutputStream( & wcout );
 
 	ProcessScript( L"std_configuration.in" );
 

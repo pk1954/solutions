@@ -14,12 +14,12 @@ public:
     GridPoint( ) : x( GP_NULL.x ), y( GP_NULL.y ) {}
 	GridPoint(long long const _x, long long const _y)
 	{
-		assert(_x <= SHRT_MAX);
-		assert(_x >= SHRT_MIN);
-		assert(_y <= SHRT_MAX);
-		assert(_y >= SHRT_MIN);
-		x = static_cast<GRID_COORD>(_x);
-		y = static_cast<GRID_COORD>(_y);
+		assert( _x <= SHRT_MAX );
+		assert( _x >= SHRT_MIN );
+		assert( _y <= SHRT_MAX );
+		assert( _y >= SHRT_MIN );
+		x = static_cast< GRID_COORD >( _x );
+		y = static_cast< GRID_COORD >( _y );
 	}
 
     virtual ~GridPoint() {};
@@ -78,7 +78,7 @@ inline bool      const Neighbors( GridPoint const & a, GridPoint const & b )
     return ((gpDiff.x <= 1) || (gpDiff.x == GridPoint::GRID_WIDTH-1)) && ((gpDiff.y <= 1) || (gpDiff.y == GridPoint::GRID_HEIGHT-1));
 }
 
-std::wostream & operator << ( std::wostream &, GridPoint const & );
+ std::wostream & operator << ( std::wostream &, GridPoint const & );
 
 class Grid;
 

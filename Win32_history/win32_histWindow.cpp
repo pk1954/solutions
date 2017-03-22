@@ -8,7 +8,6 @@
 #include "win32_util.h"
 #include "HistorySystem.h"
 #include "historyIterator.h"
-#include "win32_askHistoryCut.h"
 #include "win32_genDisplayWindow.h"
 #include "win32_histWindow.h"
 
@@ -17,7 +16,6 @@ HistWindow::HistWindow( ) :
     m_pHistSys( nullptr ),
     m_pHistIter( nullptr ),
     m_pGenDisplay( nullptr ),
-    m_pAskHistoryCut( nullptr ),
     m_trackStruct( { sizeof( TRACKMOUSEEVENT ), TME_LEAVE, nullptr, 0L } ),
     m_genSelected( )
 { }
@@ -45,10 +43,6 @@ void HistWindow::Start
 
     m_pGenDisplay = new GenDisplayWindow( );
     m_pGenDisplay->StartGenDisplayWindow( GetWindowHandle( ) );
-
-    m_pAskHistoryCut = new AskHistoryCut;
-    m_pAskHistoryCut->SetHistorySystem( m_pHistSys );
-    m_pHistSys->SetAskHistoryCutFunctor( m_pAskHistoryCut );
 }
 
 HistWindow::~HistWindow( )
@@ -56,12 +50,10 @@ HistWindow::~HistWindow( )
     //lint -e1551   won't throw exception
     delete m_pHistIter;
     delete m_pGenDisplay;
-    delete m_pAskHistoryCut;
     //lint +e1551
     m_pHistSys = nullptr;
     m_pHistIter = nullptr;
     m_pGenDisplay = nullptr;
-    m_pAskHistoryCut = nullptr;
 }
 
 RECT HistWindow::GetGenerationRect( HIST_GENERATION const gen ) const
@@ -81,7 +73,7 @@ RECT HistWindow::GetGenerationRect  // position is relative to client area
     assert( genNrOfGens  > 0 );
 
     RECT pixRect;
-    pixRect.left = MulDiv( genLo.GetLong( ), lPixSize, genNrOfGens.GetLong( ) );
+    pixRect.left  = MulDiv( genLo.GetLong( ), lPixSize, genNrOfGens.GetLong( ) );
     pixRect.right = MulDiv( genHi.GetLong( ), lPixSize, genNrOfGens.GetLong( ) );
     pixRect.top = 0;
     pixRect.bottom = rect.bottom;
@@ -106,13 +98,13 @@ HIST_GENERATION HistWindow::getGenFromXpos( LPARAM const lParam ) const
 
 void HistWindow::dispGenerationWindow( ) const
 {
-    int             const iGenDispWidth = 50;
-    int             const iGenDispHeight = 20;
-    long            const lClientWidth = GetClientWindowWidth( );
-    RECT            const pixRectGen = GetGenerationRect( m_genSelected ); // position is relative to client area
-    PixelPoint      const ptClientPos = GetClientAreaPos( );           // position of client area origin in screen coordinates
-    int             const iYpos = ptClientPos.y - iGenDispHeight;
-    int                   iXpos = ( pixRectGen.left + pixRectGen.right - iGenDispWidth ) / 2 + ptClientPos.x;
+    int        const iGenDispWidth  = 50;
+    int        const iGenDispHeight = 20;
+    long       const lClientWidth   = GetClientWindowWidth( );
+    RECT       const pixRectGen     = GetGenerationRect( m_genSelected ); // position is relative to client area
+    PixelPoint const ptClientPos    = GetClientAreaPos( );                // position of client area origin in screen coordinates
+    int        const iYpos          = ptClientPos.y - iGenDispHeight;
+    int              iXpos          = ( pixRectGen.left + pixRectGen.right - iGenDispWidth ) / 2 + ptClientPos.x;
 
     iXpos = max( iXpos, ptClientPos.x );                                 // do not leave client area on left
     iXpos = min( iXpos, ptClientPos.x + lClientWidth - iGenDispWidth );  // or right side
@@ -133,7 +125,7 @@ void HistWindow::paintPixelPos( HDC const hDC, long const lPixPos ) const
 {
     long            const lClientWidth = GetClientWindowWidth( );
     HIST_GENERATION const genNrOfGens = m_pHistSys->GetNrOfGenerations( );
-    HIST_GENERATION const genMin = MulDiv( lPixPos, genNrOfGens.GetLong( ), lClientWidth ) + 1;
+    HIST_GENERATION const genMin = MulDiv( lPixPos,     genNrOfGens.GetLong( ), lClientWidth ) + 1;
     HIST_GENERATION       genMax = MulDiv( lPixPos + 1, genNrOfGens.GetLong( ), lClientWidth );
     BOOL                  bFoundPos = FALSE;  // Found a pixel pos representing an existing history entry
     BOOL                  bFoundNeg = FALSE;  // Found a pixel pos representing a missing history entry
@@ -197,7 +189,7 @@ void HistWindow::DoPaint( HDC const hDC )
 
     if ( m_pHistSys->GetNrOfGenerations( ) < lPixSize )
     {
-       int iRun = m_pHistIter->Set2Oldest( );
+        int iRun = m_pHistIter->Set2Oldest( );
 
         for ( HIST_GENERATION genRun = 0; iRun != -1; ++genRun )
         {

@@ -37,12 +37,3 @@ wchar_t const * const GetEvoCommandName( tEvoCmd const cmd )
 
     return mapNames.at( cmd );
 }
-
-wostream & operator << ( wostream & out, EvoGenerationCmd const & genCmd )
-{
-    tEvoCmd cmd = genCmd.GetEvoCommand( );
-    out << GetEvoCommandNameShort( cmd );
-    if ( (cmd == tEvoCmd::editSetXvalue) || ( cmd == tEvoCmd::editSetYvalue) )
-        out << L"( " << genCmd.GetParam( ) << L" )";
-    return out;
-};

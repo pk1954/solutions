@@ -116,20 +116,10 @@ void HistorySystemImpl::createNewGen( GenerationCmd genCmd )
     CHECK_HISTORY_STRUCTURE;
 }
 
-bool HistorySystemImpl::CreateAppCommand( unsigned short const uiCmd, short const sParam )
+void HistorySystemImpl::CreateAppCommand( unsigned short const uiCmd, short const sParam )
 {
-	if ( GetYoungestGeneration() != GetCurrentGeneration() ) // If in history mode: erase all future generations
-	{
-		assert( m_pAskHistoryCutFunctor != nullptr );
-		if ( ! (  * m_pAskHistoryCutFunctor ) ( false ) )  // ask user if really cut off history
-			return false;
-
-		ClearHistory( m_pHistCacheItemWork->GetHistGenCounter( ) );
-	}
-
+	ClearHistory( GetCurrentGeneration( ) );
 	createNewGen( GenerationCmd( uiCmd, sParam ) );
-
-	return true;
 }
 
 // ApproachHistGen - Get closer to demanded HIST_GENERATION

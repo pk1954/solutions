@@ -144,7 +144,6 @@
     <ClInclude Include="HistAllocThread.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="win32_askHistoryCut.h" />
     <ClInclude Include="win32_genDisplayWindow.h" />
     <ClInclude Include="win32_histWindow.h" />
   </ItemGroup>

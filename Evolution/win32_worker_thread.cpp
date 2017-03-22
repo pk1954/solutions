@@ -7,6 +7,7 @@
 #include "Resource.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
+#include "EvoGenerationCmd.h"
 #include "win32_hiResTimer.h"
 #include "win32_script.h"
 #include "win32_status.h"
@@ -19,7 +20,7 @@ using namespace std;
 //lint -e849    same enumerator value          
 //lint -esym( 488, tThreadMessages::THREAD_MSG_LAST )  same value as THREAD_MSG_EXIT
 
-WorkThread::WorkThread( wofstream * pTraceStream ) :
+WorkThread::WorkThread( wostream * pTraceStream ) :
     m_hEventThreadStarter( nullptr ),
     m_dwThreadId         ( 0 ),
     m_bTrace             ( TRUE ),
@@ -38,12 +39,12 @@ WorkThread::WorkThread( wofstream * pTraceStream ) :
 
 void WorkThread::Start
 ( 
-    StatusBar         * const pStatus, 
-    EditorWindow      * const pEditorWindow,
-    PerformanceWindow * const pPerformanceWindow,
-    DisplayAll  const * const pDisplayGridFunctor,
-    EvolutionCore     * const pEvolutionCore,
-    EvolutionModelData         * const pModel
+    StatusBar          * const pStatus, 
+    EditorWindow       * const pEditorWindow,
+    PerformanceWindow  * const pPerformanceWindow,
+    DisplayAll   const * const pDisplayGridFunctor,
+    EvolutionCore      * const pEvolutionCore,
+    EvolutionModelData * const pModel
 )
 {
     HANDLE const hThread  = Util::MakeThread( WorkerThread, this, &m_dwThreadId, &m_hEventThreadStarter );
@@ -75,6 +76,7 @@ void WorkThread::ResetModel( )
 
 void WorkThread::GenerationStep( )
 {
+	wcout << __FUNCTION__ << endl;
     m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
     m_pEvolutionCore->Compute( m_pModelWork );   // compute next generation
     m_pPerformanceWindow->ComputationStop( );    // measure computation time
@@ -254,21 +256,21 @@ void WorkThread::postMsg2WorkThread( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 void WorkThread::PostReset( )
 {
     if ( m_bTrace )
-        *m_pTraceStream << __func__ << endl;
+        * m_pTraceStream << __func__ << endl;
     postMsg2WorkThread( THREAD_MSG_RESET_MODEL, 0, 0 );
 }
 
 void WorkThread::PostRefresh( )
 {
     if ( m_bTrace )
-        *m_pTraceStream << __func__ << endl;
+        * m_pTraceStream << __func__ << endl;
     postMsg2WorkThread( THREAD_MSG_REFRESH, 0, 0 );
 }
 
 void WorkThread::SetGenerationDelay( DWORD const dwNewDelay )  // in milliseconds
 {
     if ( m_bTrace )
-        *m_pTraceStream << __func__ << L" " << dwNewDelay << endl;
+        * m_pTraceStream << __func__ << L" " << dwNewDelay << endl;
     m_pPerformanceWindow->SetGenerationDelay( dwNewDelay );
 }
 
@@ -277,7 +279,7 @@ void WorkThread::PostDoEdit( GridPoint const & gp )
     if ( gp.IsInGrid() )
     {
         if ( m_bTrace )
-            *m_pTraceStream << __func__ << L" " << gp << endl;
+            * m_pTraceStream << __func__ << L" " << gp << endl;
         //lint -e571  suspicious cast <WPARAM>
         postMsg2WorkThread( THREAD_MSG_DO_EDIT, static_cast<WPARAM>(gp.x), static_cast<LPARAM>(gp.y) );
         //lint +e571
@@ -287,36 +289,37 @@ void WorkThread::PostDoEdit( GridPoint const & gp )
 void WorkThread::PostSetBrushIntensity( INT const iValue )
 {
     if ( m_bTrace )
-        *m_pTraceStream << __func__ << L" " << iValue << endl;
+        * m_pTraceStream << __func__ << L" " << iValue << endl;
     postMsg2WorkThread( THREAD_MSG_SET_BRUSH_INTENSITY, iValue, 0 );
 }
 
 void WorkThread::PostSetBrushSize( INT const iValue )
 {
     if ( m_bTrace )
-        *m_pTraceStream << __func__ << L" " << iValue << endl;
+        * m_pTraceStream << __func__ << L" " << iValue << endl;
     postMsg2WorkThread( THREAD_MSG_SET_BRUSH_SIZE, iValue, 0 );
 }
 
 void WorkThread::PostSetBrushMode( tBrushMode const mode )
 {
     if ( m_bTrace )
-        *m_pTraceStream << __func__ << L" " << GetBrushModeName( mode ) << endl;
+        * m_pTraceStream << __func__ << L" " << GetBrushModeName( mode ) << endl;
     postMsg2WorkThread( THREAD_MSG_SET_BRUSH_MODE, static_cast<WPARAM>( mode ), 0 );
 }
 
 void WorkThread::PostSetBrushShape( tShape const shape )
 {
     if ( m_bTrace )
-        *m_pTraceStream << __func__ << L" " << GetShapeName( shape ) << endl;
+        * m_pTraceStream << __func__ << L" " << GetShapeName( shape ) << endl;
     postMsg2WorkThread( THREAD_MSG_SET_BRUSH_SHAPE, static_cast<WPARAM>( shape ), 0 );
 }
 
 void WorkThread::PostNextGeneration(  )
 {
     if ( m_bTrace )
-        *m_pTraceStream << __func__ << endl;
+        * m_pTraceStream << __func__ << endl;
 
+    wcout << __FUNCTION__ << endl;
     postMsg2WorkThread( THREAD_MSG_FORWARD_STEP, 0, 0 );
 }
 
@@ -336,7 +339,7 @@ void WorkThread::PostProcessScript( wstring const & wstrPath )
 //lint -esym( 429, pwstr )     not freed here, happens in worker thread
     wstring * const pwstr = new wstring( wstrPath );
     if ( m_bTrace )
-        *m_pTraceStream << __func__ << L" \"" << wstrPath.c_str( )  << "\""<< endl;
+        * m_pTraceStream << __func__ << L" \"" << wstrPath.c_str( )  << "\""<< endl;
 
     postMsg2WorkThread( THREAD_MSG_PROCESS_SCRIPT, 0, (LPARAM)pwstr );
 }

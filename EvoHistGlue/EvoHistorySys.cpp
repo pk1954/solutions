@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <fstream>
 #include <iostream>
+#include <sstream> 
 #include "config.h"
 #include "EvolutionCore.h"
 #include "win32_util.h"
@@ -38,6 +39,8 @@ EvoHistorySys::EvoHistorySys
     );
 }
 
+EvoHistorySys::~EvoHistorySys( ) {};
+
 class FindGridPointFunctor : public GenerationProperty
 {
 public:
@@ -63,3 +66,25 @@ HIST_GENERATION EvoHistorySys::GetLastGenOfIndividual ( IndId const & id ) const
 { 
     return id.IsDefined( ) ? m_pHistorySystem->FindLastGenerationWithProperty ( FindGridPointFunctor( id ) ) : -1; 
 }
+
+bool EvoHistorySys::CreateEditorCommand( tEvoCmd cmd, short sParam ) 
+{ 
+	if ( m_pHistorySystem->GetYoungestGeneration( ) != m_pHistorySystem->GetCurrentGeneration( ) ) // If in history mode: erase all future generations
+	{
+		if ( ! askHistoryCut( m_pHistorySystem ) )
+			return false;
+	}
+	m_pHistorySystem->CreateAppCommand( static_cast< unsigned short >(cmd), sParam ); 
+	return true;
+}
+
+bool EvoHistorySys::askHistoryCut( HistorySystem * pHistSys ) const
+{
+    std::wostringstream wBuffer;
+    HIST_GENERATION  genCurrent  = pHistSys->GetCurrentGeneration( );
+    HIST_GENERATION  genYoungest = pHistSys->GetYoungestGeneration( );
+    assert( genCurrent < genYoungest );
+    wBuffer << L"Gen " << ( genCurrent + 1 ) << L" - " << genYoungest << L" will be deleted.";
+    return IDOK == MessageBox( nullptr, L"Cut off history?", wBuffer.str( ).c_str( ), MB_OKCANCEL | MB_SYSTEMMODAL );
+}
+

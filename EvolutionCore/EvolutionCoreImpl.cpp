@@ -22,8 +22,7 @@ EvolutionCoreImpl::EvolutionCoreImpl( ) :
     m_plan( ),
     m_idPOI( ),
     m_gridDisplayFunctor( nullptr )
-{ 
-}
+{ }
 
 EvolutionCoreImpl::~EvolutionCoreImpl( )
 {

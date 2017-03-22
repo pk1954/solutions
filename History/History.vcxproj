@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClCompile Include="generationCmd.cpp" />
     <ClCompile Include="historyCache.cpp" />
+    <ClCompile Include="HistoryGeneration.cpp" />
     <ClCompile Include="historyIterator.cpp" />
     <ClCompile Include="HistorySystem.cpp" />
     <ClCompile Include="HistorySystemImpl.cpp" />
