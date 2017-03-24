@@ -5,6 +5,7 @@
 
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
+#include "genCmdList.h"
 #include "generationCmd.h"
 
 #ifndef NDEBUG
@@ -18,7 +19,6 @@ class DisplayFunctor;
 class NextGenFunctor;
 class HistoryIterator;
 class HistCacheItem;
-class GenCmdList;
 class ModelFactory;
 class ModelData;
 
@@ -55,7 +55,7 @@ public:
 
 private:
 
-    GenCmdList           * m_pGenCmdList;
+    GenCmdList             m_GenCmdList;
     HistoryCache         * m_pHistoryCache;
     HistCacheItem        * m_pHistCacheItemWork;      // The reference item, where history system gets and restores  
     DisplayFunctor const * m_pAskHistoryCutFunctor;   // GUI callback for asking user if history should be cut off 

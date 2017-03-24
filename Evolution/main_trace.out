@@ -1,21 +1,109 @@
 PostRefresh
 PostSetBrushMode tBrushMode::randomStrategy
-PostDoEdit   86  53 
+PostDoEdit   84  53 
 PostRefresh
-PostDoEdit   73  50 
+PostSetBrushMode tBrushMode::fertility
 PostRefresh
-PostGotoGeneration  4
+PostDoEdit   91  44 
+PostRefresh
 PostNextGeneration
 PostNextGeneration
-PostGotoGeneration  3
 PostNextGeneration
 PostNextGeneration
-PostGotoGeneration  2
 PostNextGeneration
 PostNextGeneration
-PostGotoGeneration  1
 PostNextGeneration
 PostNextGeneration
-PostGotoGeneration  0
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  20
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  19
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  18
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  17
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  16
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  15
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  14
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  13
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  12
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  11
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  10
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  9
+PostNextGeneration
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  8
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  18
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  17
 PostNextGeneration
 PostNextGeneration

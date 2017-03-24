@@ -9,12 +9,11 @@
 #include "HistoryGeneration.h"
 #include "DisplayFunctor.h"
 #include "HistorySystemImpl.h"
-#include "genCmdList.h"
 
 // public member functions
 
 HistorySystemImpl::HistorySystemImpl( ) :
-    m_pGenCmdList( nullptr ),
+    m_GenCmdList( ),
     m_pHistoryCache( nullptr ),
     m_pHistCacheItemWork( nullptr ),
     m_pAskHistoryCutFunctor( nullptr ),
@@ -23,10 +22,8 @@ HistorySystemImpl::HistorySystemImpl( ) :
 
 HistorySystemImpl::~HistorySystemImpl( )
 {
-    delete m_pGenCmdList;
     delete m_pHistoryCache;
 
-    m_pGenCmdList = nullptr;
     m_pHistoryCache = nullptr;
     m_pHistCacheItemWork = nullptr;
     m_pAskHistoryCutFunctor = nullptr;
@@ -43,10 +40,9 @@ void HistorySystemImpl::InitHistorySystem
 {
     m_pModelDataWork     = pModelDataWork;
 	m_pModelFactory      = pModelFactory;
-    m_pGenCmdList        = new GenCmdList( genMaxNrOfGens );
     m_pHistoryCache      = new HistoryCache;
 	m_pHistCacheItemWork = HistCacheItem::CreateItem( pModelFactory );
-
+	m_GenCmdList.Resize( genMaxNrOfGens );
     m_pHistoryCache->InitHistoryCache( sNrOfSlots, pModelFactory );
     m_pHistCacheItemWork->SetGenerationCommand( GenerationCmd::RESET );
     save2History( );
@@ -100,10 +96,10 @@ void HistorySystemImpl::ClearHistory( HIST_GENERATION const genFirst )
 {
 	for ( HIST_GENERATION gen = GetYoungestGeneration(); gen > genFirst; --gen )
 	{
-		if  (m_pGenCmdList->IsCachedGeneration( gen ) )
-			m_pHistoryCache->RemoveHistCacheSlot( ( * m_pGenCmdList)[gen].GetParam( ) );
+		if  ( m_GenCmdList.IsCachedGeneration( gen ) )
+			m_pHistoryCache->RemoveHistCacheSlot( m_GenCmdList[gen].GetParam( ) );
 
-		m_pGenCmdList->ResetGenerationCmd(gen);
+		m_GenCmdList.ResetGenerationCmd( gen );
 	}
 }
 
@@ -132,9 +128,9 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
     HIST_GENERATION genActual = m_pHistCacheItemWork->GetHistGenCounter( );
 
     assert( genDemanded != genActual );
-    assert( genDemanded < m_pGenCmdList->GetCmdListSize( ) ); //TODO: find clean solution if max number of generations reached. 
+    assert( genDemanded < m_GenCmdList.GetCmdListSize( ) ); //TODO: find clean solution if max number of generations reached. 
 
-    if ( ( * m_pGenCmdList )[ genDemanded ].IsUndefined( ) )   // normal forward mode
+    if ( m_GenCmdList[ genDemanded ].IsUndefined( ) )   // normal forward mode
     {
         assert( genDemanded == genActual + 1 );
         createNewGen( GenerationCmd::NEXT_GEN );                           
@@ -144,7 +140,7 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
         HIST_GENERATION genCached   = genDemanded;  // search backwards starting with genDemanded
         BOOL            bMicrosteps = TRUE;
         
-        while ( ( * m_pGenCmdList )[ genCached ].IsNotCachedGeneration( ) )
+        while ( m_GenCmdList[ genCached ].IsNotCachedGeneration( ) )
             --genCached;
 
         // now we have found a cached generation  
@@ -154,13 +150,11 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
               (( genActual == genDemanded - 1 ) && bMicrosteps )
            )
         {
-            GenerationCmd genCmd = ( * m_pGenCmdList )[ genActual + 1 ];
-            step2NextGeneration( genCmd );                              // compute forwards
+            step2NextGeneration( m_GenCmdList[ genActual + 1 ] );   // compute forwards
         }
         else  // get cached generation
         {
-            GenerationCmd         const genCmd         = ( * m_pGenCmdList )[ genCached ];
-            short                 const sSlotNr        = genCmd.GetParam( );
+            short                 const sSlotNr        = m_GenCmdList[ genCached ].GetParam( );
             HistCacheItem const * const pHistCacheItem = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
             m_pHistCacheItemWork->CopyCacheItem( pHistCacheItem );
         }
@@ -180,14 +174,14 @@ void HistorySystemImpl::save2History( )
     if ( genCmdFromCache.IsDefined( ) )       // Hist slot was in use before. Save GenCommand
     {
         HIST_GENERATION const genCached = pHistCacheItem->GetHistGenCounter( );
-        assert( ( * m_pGenCmdList )[ genCached ].IsCachedGeneration( ) );
-        assert( ( * m_pGenCmdList )[ genCached ].GetParam( ) == sSlotNr );
-        m_pGenCmdList->SetGenerationCmd( genCached, genCmdFromCache );
+        assert( m_GenCmdList[ genCached ].IsCachedGeneration( ) );
+        assert( m_GenCmdList[ genCached ].GetParam( ) == sSlotNr );
+        m_GenCmdList.SetGenerationCmd( genCached, genCmdFromCache );
         m_pHistoryCache->ResetHistCacheSlot( sSlotNr );
     }
 
     m_pHistoryCache->Save2CacheSlot( * m_pHistCacheItemWork, sSlotNr );
-    m_pGenCmdList->SetCachedGeneration( m_pHistCacheItemWork->GetHistGenCounter( ), sSlotNr );
+    m_GenCmdList.SetCachedGeneration( m_pHistCacheItemWork->GetHistGenCounter( ), sSlotNr );
 };
 
 // step2NextGeneration - if cached generation: get GenerationCmd from cache
@@ -219,7 +213,7 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
 
     m_pHistCacheItemWork->IncHistGenCounter( );
 
-    assert( m_pHistCacheItemWork->GetHistGenCounter( ) < m_pGenCmdList->GetCmdListSize( ) ); //TODO: find clean solution if max number of generations reached. 
+    assert( m_pHistCacheItemWork->GetHistGenCounter( ) < m_GenCmdList.GetCmdListSize( ) ); //TODO: find clean solution if max number of generations reached. 
 }
 
 HIST_GENERATION HistorySystemImpl::FindFirstGenerationWithProperty( GenerationProperty const & property ) const
@@ -256,9 +250,9 @@ void HistorySystemImpl::checkHistoryStructure( )  // used only in debug mode
 {
      // check generation number of all generations in history cache
 
-    for ( HIST_GENERATION gen = 0; gen < m_pGenCmdList->GetCmdListSize( ); ++gen )
+    for ( HIST_GENERATION gen = 0; gen < m_GenCmdList.GetCmdListSize( ); ++gen )
     {
-        GenerationCmd generationCmd = ( * m_pGenCmdList )[ gen ];
+        GenerationCmd generationCmd = m_GenCmdList[ gen ];
         if ( generationCmd.IsCachedGeneration( ) )
         {
             short              const   sSlotNrFromList = generationCmd.GetParam( );
@@ -279,7 +273,7 @@ void HistorySystemImpl::checkHistoryStructure( )  // used only in debug mode
         GenerationCmd      const   genCmdFromCache = pHistCacheItem->GetGenCmd( );
         if ( genCmdFromCache.IsDefined( ) )
         {
-            GenerationCmd const generationCmd   = ( * m_pGenCmdList )[ genNrFromCache ];
+            GenerationCmd const generationCmd   = m_GenCmdList[ genNrFromCache ];
             short         const sSlotNrFromList = generationCmd.GetParam( );
             assert( generationCmd.IsCachedGeneration( ) );
             assert( sSlotNrFromList == sSlotNr );
