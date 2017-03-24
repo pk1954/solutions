@@ -8,9 +8,9 @@
 #include "gridRect.h"
 #include "gridCircle.h"
 #include "kGridPoint.h"
+#include "EvolutionCore.h"
 #include "SmoothMove.h"
 
-class EvolutionCore;
 class StatusBar;
 class EvolutionModelData;
 

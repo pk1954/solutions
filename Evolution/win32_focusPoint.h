@@ -1,9 +1,12 @@
 #pragma once
 
 #include "GridPoint.h"
-#include "EvoHistorySys.h"
+#include "HistoryGeneration.h"
 #include "EvolutionModelData.h"
 #include "win32_viewCollection.h"
+
+class RootWindow;
+class EvoHistorySys;
 
 class FocusPoint
 {
@@ -19,40 +22,11 @@ public:
 
     virtual ~FocusPoint( ) { };
 
-    void Start
-    ( 
-        EvoHistorySys * pEvoHistorySys,
-        EvolutionModelData     * pModel
-    )
-    {
-        assert( pEvoHistorySys != nullptr );
-        assert( pModel != nullptr );
-        m_pEvoHistorySys = pEvoHistorySys;
-        m_pModelWork = pModel;
-    }
+    void Start( EvoHistorySys *, EvolutionModelData * );
 
-    void SetGridPoint( GridPoint const gpNew )
-    {
-        if ( gpNew != m_gp )
-        {
-            m_gp = gpNew;
-            if ( IsInGrid( ) )
-            {
-                if ( m_pEvoHistorySys != nullptr )
-                {
-                    IndId id = m_pModelWork->GetId( m_gp );
-                    m_genBirth = m_pEvoHistorySys->GetFirstGenOfIndividual( id );
-                    m_genDeath = m_pEvoHistorySys->GetLastGenOfIndividual ( id ) + 1;
-                }
-            }
-            m_ViewCol.NotifyObservers( );
-        }
-    }
+    void SetGridPoint( GridPoint const );
 
-    void AttachFocusPointObserver( RootWindow const * pRootWindow, INT const iMilliSecs )
-    {
-        m_ViewCol.AttachObserver( pRootWindow, iMilliSecs );
-    }
+    void AttachFocusPointObserver( RootWindow const *, INT const );
     
     GridPoint       const GetGridPoint( ) const { return m_gp; }
     HIST_GENERATION const GetGenBirth( )  const { return m_genBirth; }
@@ -62,10 +36,10 @@ public:
     BOOL            const IsDead( )       const { return m_pModelWork->IsDead ( m_gp ); }
 
 private:
-    EvoHistorySys * m_pEvoHistorySys;
-    EvolutionModelData     * m_pModelWork;
-    ViewCollection  m_ViewCol;
-    GridPoint       m_gp;
-    HIST_GENERATION m_genBirth;
-    HIST_GENERATION m_genDeath;
+    EvoHistorySys      * m_pEvoHistorySys;
+    EvolutionModelData * m_pModelWork;
+    ViewCollection       m_ViewCol;
+    GridPoint            m_gp;
+    HIST_GENERATION      m_genBirth;
+    HIST_GENERATION      m_genDeath;
 };

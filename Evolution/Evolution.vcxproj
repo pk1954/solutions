@@ -233,6 +233,7 @@
     <ClCompile Include="win32_editor.cpp" />
     <ClCompile Include="win32_editorWrappers.cpp" />
     <ClCompile Include="win32_evoHistWindow.cpp" />
+    <ClCompile Include="win32_focusPoint.cpp" />
     <ClCompile Include="win32_frameBuffer.cpp" />
     <ClCompile Include="win32_gridWindow.cpp" />
     <ClCompile Include="win32_histWorkerThread.cpp" />

@@ -57,7 +57,6 @@ void EvoHistWindow::Start
 	m_pHistAllocThread->AllocateHistorySlots( m_pEvoHistorySys->GetHistorySystem( )	);  // delegate allocation of history slots to a work thread
 }
 
-
 void EvoHistWindow::DoPaint( HDC const hdc )
 {
     HistWindow::DoPaint( hdc );
