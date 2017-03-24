@@ -15,10 +15,11 @@
 
 EvoHistorySys::EvoHistorySys
 (
-	EvoModelFactory * const pEvoModelFactory,
-    EvoModelData    * const pEvoModelData
+	EvolutionCore      * const pEvolutionCore,
+	EvolutionModelData * const pEvolutionModelData
 ) :
-    m_pEvoModelWork( pEvoModelData )
+    m_pEvoModelWork   ( new EvoModelData ( pEvolutionCore, pEvolutionModelData ) ),
+	m_pEvoModelFactory( new EvoModelFactory( pEvolutionCore ) )
 {
     LONG const lMaxHistSize         = Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) );
     LONG const lHistEntriesDemanded = Config::GetConfigValue( Config::tId::nrOfHistorySlots );
@@ -35,12 +36,16 @@ EvoHistorySys::EvoHistorySys
     (
         sNrOfSlots,
         genMaxNrOfGens,
-        pEvoModelData,
-        pEvoModelFactory
+        m_pEvoModelWork,
+        m_pEvoModelFactory
     );
 }
 
-EvoHistorySys::~EvoHistorySys( ) {};
+EvoHistorySys::~EvoHistorySys( ) 
+{
+	delete m_pEvoModelFactory;
+	delete m_pHistorySystem;
+};
 
 class FindGridPointFunctor : public GenerationProperty
 {

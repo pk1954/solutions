@@ -14,7 +14,7 @@ class EvoHistorySys
 {
 public:
 
-    EvoHistorySys( EvoModelFactory * const, EvoModelData * const );
+    EvoHistorySys( 	EvolutionCore * const, EvolutionModelData * const );
 	virtual ~EvoHistorySys( );
 
     // EvoApproachHistGen - Get closer to demanded HIST_GENERATION
@@ -38,8 +38,9 @@ public:
 	bool CreateEditorCommand( tEvoCmd, short );
 
 private:
-    EvoModelData  * const m_pEvoModelWork;
-    HistorySystem *       m_pHistorySystem;
+    EvoModelData    * const m_pEvoModelWork;
+	EvoModelFactory * const m_pEvoModelFactory;
+    HistorySystem   *       m_pHistorySystem;
 
     // private member functions
 

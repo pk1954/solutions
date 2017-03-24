@@ -22,13 +22,11 @@ class Script;
 class FocusPoint;
 class WinManager;
 class EvolutionCore;
-class EvoModelData;
 class NextGenFunctor;
 class HistWorkThread;
 class ScriptHook;
 class EvolutionModelData;
 class EvoHistorySys;
-class EvoModelFactory;
 class EvoController;
 
 //lint -esym( 1712, AppWindow )  no default constructor for class 
@@ -63,7 +61,6 @@ private:
     GridRect           * m_pGridRectSel;
     FocusPoint         * m_pFocusPoint;
     WinManager         * m_pWinManager;
-    EvoModelData       * m_pEvoModelWork;
     EvolutionModelData * m_pModelWork;
     EvolutionCore      * m_pEvolutionCore;
 	EvoController      * m_pEvoController;
@@ -73,7 +70,6 @@ private:
 	EvoHistorySys      * m_pEvoHistorySys;
     EvoHistWindow      * m_pEvoHistWindow;
     HistWorkThread     * m_pHistWorkThread;
-	EvoModelFactory    * m_pEvoModelFactory;
 
     std::wofstream m_traceStream;
 };

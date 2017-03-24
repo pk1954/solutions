@@ -104,7 +104,6 @@ AppWindow::AppWindow( HINSTANCE const hInstance )
     m_pGridRectSel( nullptr ),
     m_pFocusPoint( nullptr ),
     m_pWinManager( nullptr ),
-    m_pEvoModelWork( nullptr ),
     m_pModelWork( nullptr ),
     m_pEvolutionCore( nullptr ),
     m_pScriptHook( nullptr ),
@@ -112,7 +111,6 @@ AppWindow::AppWindow( HINSTANCE const hInstance )
     m_pHistWorkThread( nullptr ),
 	m_pEvoHistorySys( nullptr ),
 	m_pEvoController( nullptr ),
-	m_pEvoModelFactory( nullptr ),
     m_traceStream( )
 {};
 
@@ -178,9 +176,7 @@ void AppWindow::Start( LPTSTR lpCmdLine )
 
     if ( Config::UseHistorySystem( ) )
     {
-		m_pEvoModelFactory = new EvoModelFactory( m_pEvolutionCore );
-        m_pEvoModelWork    = new EvoModelData   ( m_pEvolutionCore, m_pModelWork );
-		m_pEvoHistorySys   = new EvoHistorySys( m_pEvoModelFactory, m_pEvoModelWork );
+		m_pEvoHistorySys   = new EvoHistorySys( m_pEvolutionCore, m_pModelWork );
 		m_pHistWorkThread  = new HistWorkThread( & m_traceStream, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
 		m_pWorkThread      = m_pHistWorkThread;
         DefineWin32HistWrapperFunctions( m_pHistWorkThread );
@@ -246,9 +242,7 @@ AppWindow::~AppWindow( )
         if ( Config::UseHistorySystem( ) )
         {
             delete m_pEvoHistWindow;
-            delete m_pEvoModelWork;
 			delete m_pEvoHistorySys;
-			delete m_pEvoModelFactory;
         }
         else
         {
