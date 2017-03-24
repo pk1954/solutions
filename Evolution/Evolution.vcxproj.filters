@@ -75,6 +75,12 @@
     <ClInclude Include="win32_histWrappers.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="EvoController.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_histWorkerThread.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -123,6 +129,15 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_histWrappers.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="EvoController.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_histWorkerThread.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_evoHistWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

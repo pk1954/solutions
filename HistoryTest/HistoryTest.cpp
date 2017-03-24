@@ -33,7 +33,7 @@ public:
     	 m_iDataApp = 0;;
 	}
 
-    virtual void OnAppCommand ( unsigned short usCmd, short sParam )
+    virtual void OnAppCommand( unsigned short usCmd, short sParam )
     {
 		assert( false );
 	}

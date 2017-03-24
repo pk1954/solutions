@@ -141,22 +141,20 @@
     <ClInclude Include="EvoGenerationCmd.h" />
     <ClInclude Include="EvoHistorySys.h" />
     <ClInclude Include="EvoModelData.h" />
+    <ClInclude Include="EvoModelFactory.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="win32_evoHistWindow.h" />
-    <ClInclude Include="win32_histWorkerThread.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EvoGenerationCmd.cpp" />
     <ClCompile Include="EvoHistorySys.cpp" />
+    <ClCompile Include="EvoModelData.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="win32_evoHistWindow.cpp" />
-    <ClCompile Include="win32_histWorkerThread.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

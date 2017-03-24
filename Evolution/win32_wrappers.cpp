@@ -9,6 +9,7 @@
 #include "EvoModelData.h"
 #include "wrapperHelpers.h"
 #include "win32_worker_thread.h"
+#include "EvoController.h"
 #include "win32_winManager.h"
 #include "win32_status.h"
 #include "win32_appWindow.h"
@@ -17,9 +18,10 @@
 
 //lint -esym( 715, script )   // not referenced
 
-static WorkThread * m_pWorkThread;
-static StatusBar  * m_pStatusBar;
-static BOOL         m_bMoveWindowActive;
+static WorkThread    * m_pWorkThread;
+static EvoController * m_pEvoController;
+static StatusBar     * m_pStatusBar;
+static BOOL            m_bMoveWindowActive;
 
 class WrapPostDoEdit : public Script_Functor
 {
@@ -116,7 +118,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         DWORD const dwDelay = script.ScrReadUlong( );
-        m_pWorkThread->SetGenerationDelay( dwDelay );
+        m_pEvoController->SetGenerationDelay( dwDelay );
         m_pStatusBar->SetSpeedTrackBar( dwDelay );
     }
 };
@@ -131,8 +133,9 @@ public:
 
 void DefineWin32WrapperFunctions
 ( 
-    WorkThread * const pWorkThread,
-    StatusBar  * const pStatusBar
+    WorkThread    * const pWorkThread,
+	EvoController * const pEvoController,
+    StatusBar     * const pStatusBar
 )
 {
     m_pWorkThread = pWorkThread;

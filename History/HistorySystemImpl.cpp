@@ -49,7 +49,7 @@ void HistorySystemImpl::InitHistorySystem
 
     m_pHistoryCache->InitHistoryCache( sNrOfSlots, pModelFactory );
     m_pHistCacheItemWork->SetGenerationCommand( GenerationCmd::RESET );
-    save2History( * m_pHistCacheItemWork );
+    save2History( );
 }
 
 bool HistorySystemImpl::AddHistorySlot( ) const 
@@ -112,13 +112,13 @@ void HistorySystemImpl::createNewGen( GenerationCmd genCmd )
 	CHECK_HISTORY_STRUCTURE;
     step2NextGeneration( genCmd );
     m_pHistCacheItemWork->SetGenerationCommand( genCmd );
-    save2History( * m_pHistCacheItemWork );
+    save2History( );
     CHECK_HISTORY_STRUCTURE;
 }
 
 void HistorySystemImpl::CreateAppCommand( unsigned short const uiCmd, short const sParam )
 {
-	ClearHistory( GetCurrentGeneration( ) );
+	ClearHistory( GetCurrentGeneration( ) );  // if in history mode: cut off future generations
 	createNewGen( GenerationCmd( uiCmd, sParam ) );
 }
 
@@ -171,7 +171,7 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
 
 // save2History - Save Generation data (rule how to get to next generation), current Grid, etc. to new slot
 
-void HistorySystemImpl::save2History( HistCacheItem const & histCacheItem )
+void HistorySystemImpl::save2History( )
 {
     short         const   sSlotNr         = m_pHistoryCache->GetFreeCacheSlotNr( );
     HistCacheItem const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
@@ -180,17 +180,14 @@ void HistorySystemImpl::save2History( HistCacheItem const & histCacheItem )
     if ( genCmdFromCache.IsDefined( ) )       // Hist slot was in use before. Save GenCommand
     {
         HIST_GENERATION const genCached = pHistCacheItem->GetHistGenCounter( );
-        #ifdef _DEBUG
-            GenerationCmd genCmdInList = ( * m_pGenCmdList )[ genCached ];
-            assert( genCmdInList.IsCachedGeneration( ) );
-            assert( genCmdInList.GetParam( ) == sSlotNr );
-        #endif
+        assert( ( * m_pGenCmdList )[ genCached ].IsCachedGeneration( ) );
+        assert( ( * m_pGenCmdList )[ genCached ].GetParam( ) == sSlotNr );
         m_pGenCmdList->SetGenerationCmd( genCached, genCmdFromCache );
         m_pHistoryCache->ResetHistCacheSlot( sSlotNr );
     }
 
-    m_pHistoryCache->Save2CacheSlot( histCacheItem, sSlotNr );
-    m_pGenCmdList->SetCachedGeneration( histCacheItem.GetHistGenCounter( ), sSlotNr );
+    m_pHistoryCache->Save2CacheSlot( * m_pHistCacheItemWork, sSlotNr );
+    m_pGenCmdList->SetCachedGeneration( m_pHistCacheItemWork->GetHistGenCounter( ), sSlotNr );
 };
 
 // step2NextGeneration - if cached generation: get GenerationCmd from cache
@@ -201,7 +198,7 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
     if ( genCmd.IsCachedGeneration( ) ) // can happen only in history mode
     {
         assert( IsInHistoryMode( ) );
-        short              const   sSlotNr = genCmd.GetParam( );
+        short         const   sSlotNr        = genCmd.GetParam( );
         HistCacheItem const * pHistCacheItem = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
         genCmd = pHistCacheItem->GetGenCmd( );
     }
@@ -216,12 +213,8 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
 	    m_pModelDataWork->OnReset( );
 		break;
 
-	default:
-        m_pModelDataWork->OnAppCommand   // Apply application defined operation to step to next generation
-		( 
-			genCmd.GetAppCmd( ),
-			genCmd.GetParam( ) 
-		); 
+	default: 
+        m_pModelDataWork->OnAppCommand( genCmd.GetAppCmd( ), genCmd.GetParam( ) );    // Apply application defined operation to step to next generation
 	}
 
     m_pHistCacheItemWork->IncHistGenCounter( );

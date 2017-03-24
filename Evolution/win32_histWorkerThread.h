@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "HistoryGeneration.h"
 #include "win32_worker_thread.h"
 #include "EvoHistorySys.h"
 
@@ -16,9 +15,10 @@ public:
     HistWorkThread( wostream *, EvolutionCore * const, EvolutionModelData * const, EvoHistorySys * const );
     ~HistWorkThread( );
 
-	void            PostPrevGeneration();
-	void            PostGotoGeneration( HIST_GENERATION const );
-	void            PostHistoryAction( UINT const, GridPoint const );
+	void PostPrevGeneration();
+	void PostGotoGeneration( HIST_GENERATION const );
+	void PostHistoryAction( UINT const, GridPoint const );
+
 	HIST_GENERATION GetGenDemanded( ) const { return m_genDemanded; }
 
 	// overwrite methods from WorkThread
@@ -32,7 +32,6 @@ private:
 	virtual void StopComputation( );
 	virtual void ApplyEditorCommand( tEvoCmd const, short const );
 	virtual void DoEdit( GridPoint const );
-	virtual void DoExit( HWND) ;
 
 	void gotoGeneration( HIST_GENERATION const );
 

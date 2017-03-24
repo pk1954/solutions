@@ -10,6 +10,7 @@
 #include "win32_util.h"
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
+#include "EvoModelFactory.h"
 #include "EvoHistorySys.h"
 
 EvoHistorySys::EvoHistorySys
@@ -69,11 +70,12 @@ HIST_GENERATION EvoHistorySys::GetLastGenOfIndividual ( IndId const & id ) const
 
 bool EvoHistorySys::CreateEditorCommand( tEvoCmd cmd, short sParam ) 
 { 
-	if ( m_pHistorySystem->GetYoungestGeneration( ) != m_pHistorySystem->GetCurrentGeneration( ) ) // If in history mode: erase all future generations
-	{
-		if ( ! askHistoryCut( m_pHistorySystem ) )
-			return false;
-	}
+	if ( 
+		  m_pHistorySystem->IsInHistoryMode( ) &&  // If in history mode,
+		 ! askHistoryCut( m_pHistorySystem )       // all future generations will be erased
+	   )
+		return false;
+
 	m_pHistorySystem->CreateAppCommand( static_cast< unsigned short >(cmd), sParam ); 
 	return true;
 }

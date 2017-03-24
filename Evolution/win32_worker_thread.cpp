@@ -76,7 +76,6 @@ void WorkThread::ResetModel( )
 
 void WorkThread::GenerationStep( )
 {
-	wcout << __FUNCTION__ << endl;
     m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
     m_pEvolutionCore->Compute( m_pModelWork );   // compute next generation
     m_pPerformanceWindow->ComputationStop( );    // measure computation time
@@ -102,40 +101,6 @@ void WorkThread::processScript( wstring * const pwstr )
         (void)TerminateProcess( GetCurrentProcess(), 2 ); //TODO: find better solution
     --m_iScriptLevel;
     delete pwstr;
-}
-
-void WorkThread::ApplyEditorCommand( tEvoCmd const command, short const sParam )
-{
-    switch ( command )
-    {
-    case tEvoCmd::editSetXvalue:
-        m_gpEdit.x = sParam;
-        break;
-
-    case tEvoCmd::editSetYvalue:
-        m_gpEdit.y = sParam;
-        m_pModelWork->ModelDoEdit( m_gpEdit );
-        break;
-
-    case tEvoCmd::editSetBrushShape:
-        m_pModelWork->SetBrushShape( static_cast<tShape>( sParam ) );
-        break;
-
-    case tEvoCmd::editSetBrushSize:
-        m_pModelWork->SetBrushSize( sParam );
-        break;
-
-    case tEvoCmd::editSetBrushIntensity:
-        m_pModelWork->SetBrushIntensity( sParam );
-        break;
-
-    case tEvoCmd::editSetBrushMode:
-        m_pModelWork->SetBrushStrategy( static_cast<tBrushMode>( sParam ) );
-        break;
-
-    default:
-        assert( false );
-    }
 }
 
 void WorkThread::StopComputation()
@@ -181,19 +146,19 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
         return 0;
 
     case THREAD_MSG_SET_BRUSH_INTENSITY:
-        ApplyEditorCommand( tEvoCmd::editSetBrushIntensity, static_cast<short>( wParam ) );
+        m_pModelWork->SetBrushIntensity( static_cast<short>( wParam ) );
         break;
 
     case THREAD_MSG_SET_BRUSH_SIZE:
-        ApplyEditorCommand( tEvoCmd::editSetBrushSize, static_cast<short>( wParam ) );
+        m_pModelWork->SetBrushSize( static_cast<short>( wParam ) );
         break;
 
     case THREAD_MSG_SET_BRUSH_SHAPE:
-        ApplyEditorCommand( tEvoCmd::editSetBrushShape, static_cast<short>( wParam ) );
+        m_pModelWork->SetBrushShape( static_cast<tShape>( static_cast<short>( wParam ) ) );
         break;
 
     case THREAD_MSG_SET_BRUSH_MODE:
-        ApplyEditorCommand( tEvoCmd::editSetBrushMode, static_cast<short>( wParam ) );
+        m_pModelWork->SetBrushStrategy( static_cast<tBrushMode>( wParam ) );
         break;
 
     case THREAD_MSG_DO_EDIT:
@@ -265,13 +230,6 @@ void WorkThread::PostRefresh( )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
     postMsg2WorkThread( THREAD_MSG_REFRESH, 0, 0 );
-}
-
-void WorkThread::SetGenerationDelay( DWORD const dwNewDelay )  // in milliseconds
-{
-    if ( m_bTrace )
-        * m_pTraceStream << __func__ << L" " << dwNewDelay << endl;
-    m_pPerformanceWindow->SetGenerationDelay( dwNewDelay );
 }
 
 void WorkThread::PostDoEdit( GridPoint const & gp )

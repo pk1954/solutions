@@ -62,8 +62,8 @@ private:
     ModelData            * m_pModelDataWork; 
 	ModelFactory   const * m_pModelFactory;
 
+    void save2History( );
 	void createNewGen( GenerationCmd );
-    void save2History( HistCacheItem const & );
     void step2NextGeneration( GenerationCmd );
     void checkHistoryStructure( );
 };

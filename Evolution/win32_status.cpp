@@ -8,6 +8,7 @@
 #include "config.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
+#include "EvoController.h"
 #include "win32_worker_thread.h"
 #include "win32_frameBuffer.h"
 #include "win32_status.h"
@@ -59,7 +60,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
                 else if ( (HWND)lParam == pStatusBar->m_hWndSpeed )
                 {
                     DWORD const dwDelay = pStatusBar->trackBarPos2SpeedDelay( usLogicalPos );
-                    pStatusBar->m_pWorkThread->SetGenerationDelay( dwDelay );
+                    pStatusBar->m_pEvoController->SetGenerationDelay( dwDelay );
                 }
                 else
                 {
@@ -159,7 +160,7 @@ HWND WINAPI StatusBar::createSpeedControl( )
 //lint +e529
 
 StatusBar::StatusBar( ) : 
-    m_pWorkThread( nullptr ),
+    m_pEvoController( nullptr ),
     m_pModelWork( nullptr ),
     m_gp( ),
     m_hWndSize( nullptr ),
@@ -168,9 +169,9 @@ StatusBar::StatusBar( ) :
 
 void StatusBar::Start
 ( 
-    HWND         const hWndParent, 
-    WorkThread * const pWorkThread, 
-    EvolutionModelData  * const pModel
+    HWND                 const hWndParent, 
+    EvoController      * const pEvoController, 
+    EvolutionModelData * const pModel
 )
 {
     HWND hWndStatus = CreateWindow
@@ -185,7 +186,7 @@ void StatusBar::Start
         nullptr
     ); 
 
-    m_pWorkThread = pWorkThread;
+    m_pEvoController = pEvoController;
     m_pModelWork = pModel;
 
     SetWindowHandle( hWndStatus );
@@ -239,9 +240,9 @@ void StatusBar::SetSpeedTrackBar( DWORD const dwDelay ) const
 
 StatusBar::~StatusBar( )
 {
-    m_pWorkThread = nullptr;
-    m_hWndSize    = nullptr;
-    m_hWndSpeed   = nullptr;
+    m_pEvoController = nullptr;
+    m_hWndSize       = nullptr;
+    m_hWndSpeed      = nullptr;
 }
 
 static double trackBar2Value( USHORT usX ) // f(x) = 2 power (x/1000)

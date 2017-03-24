@@ -33,10 +33,7 @@
     <ClInclude Include="EvoModelData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_evoHistWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_histWorkerThread.h">
+    <ClInclude Include="EvoModelFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,10 +47,7 @@
     <ClCompile Include="EvoHistorySys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_evoHistWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_histWorkerThread.cpp">
+    <ClCompile Include="EvoModelData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

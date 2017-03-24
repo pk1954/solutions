@@ -7,7 +7,6 @@
 
 #include "stdafx.h"
 #include "commctrl.h"
-#include "Windowsx.h"
 
 // EvolutionCore interfaces
 
@@ -50,7 +49,6 @@
 #include "script.h"
 #include "errhndl.h"
 #include "win32_wrappers.h"
-#include "win32_script.h"
 #include "win32_editorWrappers.h"
 #include "win32_histWrappers.h"
 
@@ -62,7 +60,8 @@
 // application
 
 #include "EvoModelData.h"
-
+#include "EvoModelFactory.h"
+#include "EvoController.h"
 #include "win32_appWindow.h"
 
 class ScriptHook : public Script_Functor
@@ -112,6 +111,7 @@ AppWindow::AppWindow( HINSTANCE const hInstance )
     m_pEvoHistWindow( nullptr ),
     m_pHistWorkThread( nullptr ),
 	m_pEvoHistorySys( nullptr ),
+	m_pEvoController( nullptr ),
 	m_pEvoModelFactory( nullptr ),
     m_traceStream( )
 {};
@@ -163,6 +163,7 @@ void AppWindow::Start( LPTSTR lpCmdLine )
     m_pMainGridWindow = new GridWindow( );   
     m_pMiniGridWindow = new GridWindow( );   
     m_pPerfWindow     = new PerformanceWindow( );  
+	m_pEvoController  = new EvoController( );
 
     SetMenu( hwnd, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
     {
@@ -182,8 +183,6 @@ void AppWindow::Start( LPTSTR lpCmdLine )
 		m_pEvoHistorySys   = new EvoHistorySys( m_pEvoModelFactory, m_pEvoModelWork );
 		m_pHistWorkThread  = new HistWorkThread( & m_traceStream, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
 		m_pWorkThread      = m_pHistWorkThread;
-		m_pEvoModelFactory->SetWorkThread( m_pWorkThread );
-		m_pEvoModelWork   ->SetWorkThread( m_pWorkThread );
         DefineWin32HistWrapperFunctions( m_pHistWorkThread );
 
         m_pEvoHistWindow = new EvoHistWindow( );
@@ -197,14 +196,15 @@ void AppWindow::Start( LPTSTR lpCmdLine )
     }
 
 	m_pWorkThread    ->Start( m_pStatusBar, m_pEditorWindow, m_pPerfWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
-	m_pDspOptWindow  ->Start( hwnd, m_pWorkThread, m_pModelWork );
-    m_pEditorWindow  ->Start( hwnd, m_pWorkThread, m_pModelWork, m_pDspOptWindow );
-    m_pStatusBar     ->Start( hwnd, m_pWorkThread, m_pModelWork );
-    m_pMainGridWindow->Start( hwnd, m_pWorkThread, m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
-    m_pMiniGridWindow->Start( hwnd, m_pWorkThread, m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 1 );
-    m_pStatistics    ->Start( hwnd, m_pModelWork, m_pGridRectSel );
-    m_pCrsrWindow    ->Start( hwnd, m_pFocusPoint, m_pModelWork );
+	m_pDspOptWindow  ->Start( hwnd, m_pWorkThread,    m_pModelWork );
+    m_pEditorWindow  ->Start( hwnd, m_pWorkThread,    m_pModelWork, m_pDspOptWindow );
+    m_pStatusBar     ->Start( hwnd, m_pEvoController, m_pModelWork );
+    m_pMainGridWindow->Start( hwnd, m_pWorkThread,    m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
+    m_pMiniGridWindow->Start( hwnd, m_pWorkThread,    m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 1 );
+    m_pStatistics    ->Start( hwnd, m_pModelWork,     m_pGridRectSel );
+    m_pCrsrWindow    ->Start( hwnd, m_pFocusPoint,    m_pModelWork );
     m_pPerfWindow    ->Start( hwnd, 100 );
+	m_pEvoController ->Start( & m_traceStream, m_pWorkThread, m_pHistWorkThread, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow );
 
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,               -1 );
     m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow,    -1 );
@@ -226,7 +226,7 @@ void AppWindow::Start( LPTSTR lpCmdLine )
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
 
-    DefineWin32WrapperFunctions( m_pWorkThread, m_pStatusBar );
+    DefineWin32WrapperFunctions( m_pWorkThread, m_pEvoController, m_pStatusBar );
     DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 
     CheckMenuItem( GetMenu( hwnd ), IDM_STAT_WINDOW, MF_CHECKED );
@@ -268,6 +268,7 @@ AppWindow::~AppWindow( )
         delete m_pFocusPoint;
         delete m_pWinManager;
         delete m_pScriptHook;
+		delete m_pEvoController;
 
         EvolutionCore::DeleteCore( );
     }
@@ -295,70 +296,13 @@ LRESULT AppWindow::UserProc
         case IDM_ABOUT:
             ShowAboutBox( GetWindowHandle( ) );
             break;
-        case IDM_GENERATION:
-            m_pWorkThread->PostNextGeneration( );
-            break;
-		case IDM_RUN:
-			m_pWorkThread->PostRunGenerations( );
-			break;
-		case IDM_STOP:
-            m_pWorkThread->PostStopComputation( );
-            break;
-        case IDM_BACKWARDS:
-			m_pHistWorkThread->PostPrevGeneration( );
-			break;
-		case IDM_GOTO_ORIGIN:
-		case IDM_GOTO_DEATH:
-			m_pHistWorkThread->PostHistoryAction( wmId, GridPoint( GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) ) );
-			break;
-		case IDM_MAX_SPEED:
-            m_pWorkThread->SetGenerationDelay( 0 );
-            m_pStatusBar->SetSpeedTrackBar( 0 );
-            break;
-        case IDM_ESCAPE:
-            m_pMainGridWindow->ResetSelection( );
-            break;
-        case IDD_TOGGLE_STRIP_MODE:
-        case IDD_TOGGLE_CLUT_MODE:
-        case IDM_ZOOM_OUT:
-        case IDM_ZOOM_IN:
-        case IDM_SET_ZOOM:
-        case IDM_FIT_ZOOM:
-            (void)m_pMainGridWindow->SendMessage( message, wParam, lParam );
-            break;
-
-        case IDM_SCRIPT_DIALOG:
-            {
-                // TODO: replace by general solution
-                wchar_t szBuffer[MAX_PATH];
-                DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer);
-                assert( dwRes > 0 );
-                wstring const wstrPath( szBuffer );
-                wstring wstrFile = OpenScriptFile( wstrPath );
-                if ( ! wstrFile.empty( ) )
-                   m_pWorkThread->PostProcessScript( wstrFile );
-            }
-            break;
-                 
-        case IDM_MINI_WINDOW:
-        case IDM_DISP_WINDOW:
-        case IDM_EDIT_WINDOW:
-        case IDM_STAT_WINDOW:
-        case IDM_HIST_WINDOW:
-        case IDM_CRSR_WINDOW:
-        case IDM_PERF_WINDOW:
-            m_pWinManager->Show( wmId, tBoolOp::opToggle );
-            break;
-
-        case IDM_RESET:
-            m_pWorkThread->PostReset( );
-            break;
 
         case IDM_EXIT:
             PostMessage( WM_CLOSE, 0, 0 );
             break;
 
         default:
+			m_pEvoController->ProcessCommand( wParam, lParam );
             break;
         }
     }

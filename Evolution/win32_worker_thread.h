@@ -4,6 +4,7 @@
 
 #include <string>
 #include <fstream>
+#include <wtypes.h>
 #include "gridRect.h"
 #include "gridPoint.h"
 #include "EvolutionTypes.h"
@@ -26,7 +27,9 @@ class DisplayAll;
 class WorkThread
 {
 public:
-    explicit WorkThread( std::wostream * );
+	// called by main thread
+	
+	explicit WorkThread( std::wostream * );
     ~WorkThread( );
 
     void Start
@@ -52,11 +55,10 @@ public:
 	void PostRunGenerations();
 	void PostStopComputation();
 
-    void SetGenerationDelay( DWORD );
+	// functions called by worker thread
 
 	virtual void ResetModel( );
 	virtual void GenerationStep( );
-	virtual void ApplyEditorCommand( tEvoCmd const, short const );
 
 protected:
 
@@ -102,7 +104,6 @@ private:
     HANDLE               m_hTimer;
     BOOL                 m_bContinue;
     INT                  m_iScriptLevel;
-    GridPoint            m_gpEdit;
 
     // private member functions
 

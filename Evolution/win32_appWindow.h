@@ -29,6 +29,7 @@ class ScriptHook;
 class EvolutionModelData;
 class EvoHistorySys;
 class EvoModelFactory;
+class EvoController;
 
 //lint -esym( 1712, AppWindow )  no default constructor for class 
 
@@ -65,6 +66,7 @@ private:
     EvoModelData       * m_pEvoModelWork;
     EvolutionModelData * m_pModelWork;
     EvolutionCore      * m_pEvolutionCore;
+	EvoController      * m_pEvoController;
     ScriptHook         * m_pScriptHook;
     
     // History 

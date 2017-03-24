@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class WorkThread;
+class EvoController;
 class EvolutionModelData;
 
 class StatusBar : public BaseDialog
@@ -18,7 +18,7 @@ public:
     StatusBar( );
     ~StatusBar();
 
-    void Start( HWND const, WorkThread * const, EvolutionModelData * const );
+    void Start( HWND const, EvoController * const, EvolutionModelData * const );
 
     int  GetHeight( ) const;
     void Resize( ) const;
@@ -55,16 +55,16 @@ private:
     HWND WINAPI createSizeControl ( );
     HWND WINAPI createSpeedControl( );
 
-    WorkThread * m_pWorkThread;
-    EvolutionModelData  * m_pModelWork;
-    GridPoint    m_gp;
-    INT          m_iClientHeight;
-    INT          m_iBorder;
-    INT          m_iPosX;
-    HWND         m_hWndSize;
-    HWND         m_hWndSpeed;
-    wstring      m_wstrGeneration;
-    wstring      m_wstrScriptLine;
+    EvoController      * m_pEvoController;
+    EvolutionModelData * m_pModelWork;
+    GridPoint            m_gp;
+    INT                  m_iClientHeight;
+    INT                  m_iBorder;
+    INT                  m_iPosX;
+    HWND                 m_hWndSize;
+    HWND                 m_hWndSpeed;
+    wstring              m_wstrGeneration;
+    wstring              m_wstrScriptLine;
 
 friend static LRESULT CALLBACK OwnerDrawStatusBar( HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR );
 };

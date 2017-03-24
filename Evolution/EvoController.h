@@ -1,0 +1,48 @@
+// EvoController.h
+//
+
+#pragma once
+
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+class PerformanceWindow;
+class StatusBar;
+class WorkThread;
+class HistWorkThread;
+class WinManager;
+class GridWindow;
+
+class EvoController
+{
+public:
+	EvoController( );
+
+	virtual ~EvoController( );
+
+	void EvoController::Start
+	( 
+		wostream *, 
+		WorkThread * const,
+		HistWorkThread * const,
+		WinManager * const,
+		PerformanceWindow * const,
+		StatusBar * const,
+		GridWindow * const
+	);
+
+	void SetGenerationDelay( DWORD const );
+	void ProcessCommand( WPARAM const, LPARAM const );
+
+private:
+	BOOL                 m_bTrace;
+    wostream           * m_pTraceStream;
+	WorkThread         * m_pWorkThread;
+	HistWorkThread     * m_pHistWorkThread;
+	WinManager         * m_pWinManager;
+    PerformanceWindow  * m_pPerformanceWindow;
+	StatusBar          * m_pStatusBar;
+	GridWindow         * m_pGridWindow;
+};

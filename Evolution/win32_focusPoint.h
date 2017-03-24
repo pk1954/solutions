@@ -2,9 +2,8 @@
 
 #include "GridPoint.h"
 #include "EvoHistorySys.h"
+#include "EvolutionModelData.h"
 #include "win32_viewCollection.h"
-
-class EvolutionModelData;
 
 class FocusPoint
 {

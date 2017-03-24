@@ -22,8 +22,9 @@ public:
 
     void Start( HWND const, FocusPoint * const, StatusBar * const, EvolutionModelData * const, EvoHistorySys * const, HistWorkThread * const );
 
-	virtual void            PostGotoGeneration( HIST_GENERATION const );
-	virtual HIST_GENERATION GetGenDemanded( ) const; 
+	virtual void            PostGotoGeneration( HIST_GENERATION const gen ) { m_pHistWorkThread->PostGotoGeneration( gen ); }
+	virtual HIST_GENERATION GetGenDemanded    ()            const           { return m_pHistWorkThread->GetGenDemanded( ); }
+
 	virtual void            DoPaint( HDC const );
 
 private:

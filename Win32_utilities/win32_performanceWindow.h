@@ -57,8 +57,8 @@ private:
     HiResTimer m_hrtimOverall;
     HiResTimer m_hrtimDisplay;
     HiResTimer m_hrtimCompute;
-    DWORD      m_dwModelTime;      // in microseconds
-    DWORD      m_dwDisplayTime;    // in milliseconds
-    DWORD      m_dwGenerationDelay;     // in milliseconds
-    DWORD      m_dwCounter;        // nr of model computations
+    DWORD      m_dwModelTime;        // in microseconds
+    DWORD      m_dwDisplayTime;      // in milliseconds
+    DWORD      m_dwGenerationDelay;  // in milliseconds
+    DWORD      m_dwCounter;          // nr of model computations
 };

@@ -8,6 +8,7 @@
 #include "EvolutionCore.h"
 
 class EvolutionCore;
+class EvoModelFactory;
 
 class EvoHistorySys
 {
@@ -21,11 +22,7 @@ public:
     //                      to allow user interaction
     //                    - But actual history generation as alterered by at least 1
 
-    void EvoApproachHistGen( HIST_GENERATION const genDemanded ) 
-	{ 
-		wcout << __FUNCTION__ << L" " << genDemanded<< endl;
-		m_pHistorySystem->ApproachHistGen( genDemanded ); 
-	}
+    void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); }
 	
     bool            AddEvoHistorySlot    ( )           const { return m_pHistorySystem->AddHistorySlot( ); }
     int             GetNrOfHistCacheSlots( )                 { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }

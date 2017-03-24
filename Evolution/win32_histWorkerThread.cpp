@@ -75,11 +75,6 @@ void HistWorkThread::DoEdit( GridPoint const gp )
 		 m_pEvoHistorySys->CreateEditorCommand( tEvoCmd::editSetYvalue, gp.y );
 }
 
-void HistWorkThread::DoExit( HWND hwndApp )
-{
-	WorkThread::DoExit( hwndApp );
-}
-
 void HistWorkThread::gotoGeneration( HIST_GENERATION const gen )
 {
 	m_genDemanded = gen;
