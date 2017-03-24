@@ -1,22 +1,21 @@
 PostRefresh
 PostSetBrushMode tBrushMode::randomStrategy
-PostDoEdit   64  58 
+PostDoEdit   86  53 
 PostRefresh
-PostDoEdit   64  58 
+PostDoEdit   73  50 
 PostRefresh
-PostDoEdit   80  56 
-PostRefresh
-PostGotoGeneration  20
-PostGotoGeneration  19
-PostGotoGeneration  18
-PostGotoGeneration  17
-PostGotoGeneration  16
-PostGotoGeneration  15
-PostGotoGeneration  14
-PostGotoGeneration  13
-PostGotoGeneration  12
-PostGotoGeneration  11
-PostGotoGeneration  10
-PostGotoGeneration  9
-PostGotoGeneration  8
-PostGotoGeneration  7
+PostGotoGeneration  4
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  3
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  2
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  1
+PostNextGeneration
+PostNextGeneration
+PostGotoGeneration  0
+PostNextGeneration
+PostNextGeneration

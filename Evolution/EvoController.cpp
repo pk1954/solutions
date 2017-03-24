@@ -5,7 +5,6 @@
 #include "Windowsx.h"
 #include "Resource.h"
 #include "win32_script.h"
-#include "win32_worker_thread.h"
 #include "win32_histWorkerThread.h"
 #include "win32_winManager.h"
 #include "win32_performanceWindow.h"
@@ -16,7 +15,6 @@
 EvoController::EvoController() :
     m_bTrace             ( TRUE ),
     m_pTraceStream       ( nullptr ),
-	m_pWorkThread        ( nullptr ),
 	m_pHistWorkThread    ( nullptr ),
 	m_pWinManager        ( nullptr ),
     m_pPerformanceWindow ( nullptr ),
@@ -27,7 +25,6 @@ EvoController::EvoController() :
 EvoController::~EvoController( )
 {
     m_pTraceStream       = nullptr;
-	m_pWorkThread        = nullptr;
 	m_pHistWorkThread    = nullptr;
 	m_pWinManager        = nullptr;
     m_pPerformanceWindow = nullptr;
@@ -38,7 +35,6 @@ EvoController::~EvoController( )
 void EvoController::Start
 ( 
     wostream          *       pTraceStream,
-	WorkThread        * const pWorkThread,
 	HistWorkThread    * const pHistWorkThread,
 	WinManager        * const pWinManager,
     PerformanceWindow * const pPerformanceWindow,
@@ -48,7 +44,6 @@ void EvoController::Start
 )
 {
 	m_pTraceStream       = pTraceStream;
-	m_pWorkThread        = pWorkThread;
 	m_pHistWorkThread    = pHistWorkThread;
 	m_pWinManager        = pWinManager;
     m_pPerformanceWindow = pPerformanceWindow;
@@ -70,19 +65,19 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
     switch (wmId)
     {
         case IDM_GENERATION:
-            m_pWorkThread->PostNextGeneration( );
+            m_pHistWorkThread->PostNextGeneration( );
             break;
 
 		case IDM_RUN:
-			m_pWorkThread->PostRunGenerations( );
+			m_pHistWorkThread->PostRunGenerations( );
 			break;
 
 		case IDM_STOP:
-            m_pWorkThread->PostStopComputation( );
+            m_pHistWorkThread->PostStopComputation( );
             break;
 
         case IDM_RESET:
-            m_pWorkThread->PostReset( );
+            m_pHistWorkThread->PostReset( );
             break;
 
         case IDM_BACKWARDS:
@@ -107,7 +102,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
                 wstring const wstrPath( szBuffer );
                 wstring wstrFile = OpenScriptFile( wstrPath );
                 if ( ! wstrFile.empty( ) )
-                   m_pWorkThread->PostProcessScript( wstrFile );
+                   m_pHistWorkThread->PostProcessScript( wstrFile );
             }
             break;
                  

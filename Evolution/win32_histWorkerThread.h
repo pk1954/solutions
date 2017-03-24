@@ -33,7 +33,7 @@ private:
 	virtual void ApplyEditorCommand( tEvoCmd const, short const );
 	virtual void DoEdit( GridPoint const );
 
-	void gotoGeneration( HIST_GENERATION const );
+	void postGotoGeneration( HIST_GENERATION const );
 
     HIST_GENERATION      m_genDemanded;
     EvoHistorySys      * m_pEvoHistorySys;

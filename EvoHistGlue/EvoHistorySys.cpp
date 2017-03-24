@@ -8,6 +8,8 @@
 #include "config.h"
 #include "EvolutionCore.h"
 #include "win32_util.h"
+#include "win32_status.h"
+#include "HistAllocThread.h"
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
 #include "EvoModelFactory.h"
@@ -16,7 +18,8 @@
 EvoHistorySys::EvoHistorySys
 (
 	EvolutionCore      * const pEvolutionCore,
-	EvolutionModelData * const pEvolutionModelData
+	EvolutionModelData * const pEvolutionModelData,
+    StatusBar          * const pStatusBar
 ) :
     m_pEvoModelWork   ( new EvoModelData ( pEvolutionCore, pEvolutionModelData ) ),
 	m_pEvoModelFactory( new EvoModelFactory( pEvolutionCore ) )
@@ -39,10 +42,18 @@ EvoHistorySys::EvoHistorySys
         m_pEvoModelWork,
         m_pEvoModelFactory
     );
+
+	m_pStatusBar = pStatusBar;
+
+	m_pHistAllocThread = new HistAllocThread;
+	m_pHistAllocThread->AllocateHistorySlots( m_pHistorySystem );  // delegate allocation of history slots to a work thread
 }
 
 EvoHistorySys::~EvoHistorySys( ) 
 {
+	m_pHistAllocThread->ExitHistAllocThread();
+    shutDownHistoryCache( );
+	delete m_pHistAllocThread;
 	delete m_pEvoModelFactory;
 	delete m_pHistorySystem;
 };
@@ -95,3 +106,19 @@ bool EvoHistorySys::askHistoryCut( HistorySystem * pHistSys ) const
     return IDOK == MessageBox( nullptr, L"Cut off history?", wBuffer.str( ).c_str( ), MB_OKCANCEL | MB_SYSTEMMODAL );
 }
 
+void EvoHistorySys::shutDownHistoryCache( )
+{
+    int iMax = GetNrOfHistCacheSlots( ) - 1;
+    int iPercentLast = 0;
+    for ( int iRun = iMax; iRun >= 0; --iRun )
+    {
+        int iPercent = ( iRun * 100 ) / iMax;
+        if ( iPercent != iPercentLast )
+        {
+            std::wstring wstrLine = L"... deleting history buffer: " + to_wstring( iPercent ) + L"%";
+            m_pStatusBar->DisplayStatusLine( wstrLine );
+            iPercentLast = iPercent;
+        }
+        m_pHistorySystem->ShutDownHistCacheSlot( iRun );
+    }
+}

@@ -84,6 +84,7 @@ protected:
 
     virtual void GenerationRun( );
 	virtual void StopComputation();
+	virtual void ApplyEditorCommand( tEvoCmd const, short const );
 	virtual void DoEdit( GridPoint const );
 	virtual void DoExit( HWND );
 

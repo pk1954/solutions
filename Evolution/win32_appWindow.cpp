@@ -176,13 +176,13 @@ void AppWindow::Start( LPTSTR lpCmdLine )
 
     if ( Config::UseHistorySystem( ) )
     {
-		m_pEvoHistorySys   = new EvoHistorySys( m_pEvolutionCore, m_pModelWork );
-		m_pHistWorkThread  = new HistWorkThread( & m_traceStream, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
-		m_pWorkThread      = m_pHistWorkThread;
+		m_pEvoHistorySys  = new EvoHistorySys( m_pEvolutionCore, m_pModelWork, m_pStatusBar );
+		m_pHistWorkThread = new HistWorkThread( & m_traceStream, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
+		m_pWorkThread     = m_pHistWorkThread;
         DefineWin32HistWrapperFunctions( m_pHistWorkThread );
 
         m_pEvoHistWindow = new EvoHistWindow( );
-		m_pEvoHistWindow->Start( hwnd, m_pFocusPoint, m_pStatusBar, m_pModelWork, m_pEvoHistorySys, m_pHistWorkThread );
+		m_pEvoHistWindow->Start( hwnd, m_pFocusPoint, m_pModelWork, m_pEvoHistorySys, m_pHistWorkThread );
         m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, 75 );
     }
     else
@@ -200,7 +200,7 @@ void AppWindow::Start( LPTSTR lpCmdLine )
     m_pStatistics    ->Start( hwnd, m_pModelWork,     m_pGridRectSel );
     m_pCrsrWindow    ->Start( hwnd, m_pFocusPoint,    m_pModelWork );
     m_pPerfWindow    ->Start( hwnd, 100 );
-	m_pEvoController ->Start( & m_traceStream, m_pWorkThread, m_pHistWorkThread, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow );
+	m_pEvoController ->Start( & m_traceStream, m_pHistWorkThread, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow );
 
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,               -1 );
     m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow,    -1 );

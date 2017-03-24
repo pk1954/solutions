@@ -10,7 +10,6 @@ using namespace std;
 
 class PerformanceWindow;
 class StatusBar;
-class WorkThread;
 class HistWorkThread;
 class WinManager;
 class GridWindow;
@@ -25,7 +24,6 @@ public:
 	void EvoController::Start
 	( 
 		wostream *, 
-		WorkThread * const,
 		HistWorkThread * const,
 		WinManager * const,
 		PerformanceWindow * const,
@@ -39,7 +37,6 @@ public:
 private:
 	BOOL                 m_bTrace;
     wostream           * m_pTraceStream;
-	WorkThread         * m_pWorkThread;
 	HistWorkThread     * m_pHistWorkThread;
 	WinManager         * m_pWinManager;
     PerformanceWindow  * m_pPerformanceWindow;

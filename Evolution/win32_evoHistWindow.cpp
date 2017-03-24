@@ -5,37 +5,27 @@
 #include "config.h"
 #include "EvolutionCore.h"
 #include "EvoHistorySys.h"
-#include "HistAllocThread.h"
 #include "win32_focusPoint.h"
-#include "win32_status.h"
 #include "win32_histWorkerThread.h"
 #include "win32_evoHistWindow.h"
 
 EvoHistWindow::EvoHistWindow( ) :
     HistWindow( ),
     m_pHistWorkThread( nullptr ),
-    m_pFocusPoint( nullptr ),
-    m_pStatusBar( nullptr ),
-	m_pHistAllocThread( nullptr )
+    m_pFocusPoint( nullptr )
 { }
 
 EvoHistWindow::~EvoHistWindow( )
 {
-	m_pHistAllocThread->ExitHistAllocThread();
-    shutDownHistoryCache( );
-	delete m_pHistAllocThread;
     m_pHistWorkThread = nullptr;
 	m_pEvoHistorySys = nullptr;
-	m_pHistAllocThread = nullptr;
 	m_pFocusPoint = nullptr;
-    m_pStatusBar = nullptr;
 }
 
 void EvoHistWindow::Start
 (
     HWND                 const hWndParent,
     FocusPoint         * const pFocusPoint,
-    StatusBar          * const pStatusBar,
     EvolutionModelData * const pEvoModelData,
 	EvoHistorySys      * const pEvoHistorySys,
 	HistWorkThread     * const pHistWorkThread
@@ -51,10 +41,7 @@ void EvoHistWindow::Start
 	m_pFocusPoint = pFocusPoint;
     m_pFocusPoint->AttachFocusPointObserver( this, 75 );
     m_pFocusPoint->Start( m_pEvoHistorySys, pEvoModelData );
-    m_pStatusBar = pStatusBar;
     Show( bShow );
-	m_pHistAllocThread = new HistAllocThread;
-	m_pHistAllocThread->AllocateHistorySlots( m_pEvoHistorySys->GetHistorySystem( )	);  // delegate allocation of history slots to a work thread
 }
 
 void EvoHistWindow::DoPaint( HDC const hdc )
@@ -84,19 +71,3 @@ void EvoHistWindow::paintLifeLine( HDC const hDC ) const
     }
 }
 
-void EvoHistWindow::shutDownHistoryCache( )
-{
-    int iMax = m_pEvoHistorySys->GetNrOfHistCacheSlots( ) - 1;
-    int iPercentLast = 0;
-    for ( int iRun = iMax; iRun >= 0; --iRun )
-    {
-        int iPercent = ( iRun * 100 ) / iMax;
-        if ( iPercent != iPercentLast )
-        {
-            std::wstring wstrLine = L"... deleting history buffer: " + to_wstring( iPercent ) + L"%";
-            m_pStatusBar->DisplayStatusLine( wstrLine );
-            iPercentLast = iPercent;
-        }
-        m_pEvoHistorySys->ShutDownHistCacheSlot( iRun );
-    }
-}

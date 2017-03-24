@@ -34,12 +34,9 @@ HistWorkThread::~HistWorkThread( )
 
 void HistWorkThread::GenerationStep( )
 {
-	wcout << __FUNCTION__ << endl;
     if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
     {
         m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );
-
-		wcout << L"Generation: " << m_genDemanded << L" - " << m_pEvoHistorySys->GetCurrentGeneration( ) << endl;
 
         if ( m_pCore->EditorStateHasChanged( m_pModelWork ) )
         {
@@ -48,6 +45,7 @@ void HistWorkThread::GenerationStep( )
         }
 
         postMsg2WorkThread( THREAD_MSG_REFRESH, 0, 0 );
+		WorkThread::PostNextGeneration(  );   // will call indirectly HistWorkThread::GenerationStep
     }
 }
 
@@ -75,20 +73,19 @@ void HistWorkThread::DoEdit( GridPoint const gp )
 		 m_pEvoHistorySys->CreateEditorCommand( tEvoCmd::editSetYvalue, gp.y );
 }
 
-void HistWorkThread::gotoGeneration( HIST_GENERATION const gen )
+void HistWorkThread::postGotoGeneration( HIST_GENERATION const gen )
 {
 	m_genDemanded = gen;
-	do
-	{    
-		wcout << __FUNCTION__ << L" " << gen << endl;
-		GenerationStep( );
-	} while ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded );
+	WorkThread::PostNextGeneration(  );   // will call indirectly HistWorkThread::GenerationStep
 }
 
 void HistWorkThread::PostNextGeneration( )
 {
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << endl;
+
     wcout << __FUNCTION__ << L" " << m_pEvoHistorySys->GetCurrentGeneration( ) << endl;
-	gotoGeneration( m_pEvoHistorySys->GetCurrentGeneration( ) + 1 );
+	postGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration( ) + 1 );
 }
 
 void HistWorkThread::PostPrevGeneration( )
@@ -102,6 +99,9 @@ void HistWorkThread::PostPrevGeneration( )
 
 void HistWorkThread::PostHistoryAction( UINT const uiID, GridPoint const gp )
 {
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << L" " << uiID << L" " << gp << endl;
+
 	assert( m_pModelWork->IsAlive(gp) );
 	assert( (uiID == IDM_GOTO_ORIGIN) || (uiID == IDM_GOTO_DEATH) );
 
@@ -110,7 +110,7 @@ void HistWorkThread::PostHistoryAction( UINT const uiID, GridPoint const gp )
 	                            ? m_pEvoHistorySys->GetFirstGenOfIndividual(idTarget)
 		                        : m_pEvoHistorySys->GetLastGenOfIndividual(idTarget);
 	
-	PostGotoGeneration( genTarget );
+	postGotoGeneration( genTarget );
 }
 
 void HistWorkThread::PostGotoGeneration( HIST_GENERATION const gen )
@@ -121,5 +121,5 @@ void HistWorkThread::PostGotoGeneration( HIST_GENERATION const gen )
     assert( gen >= 0 );
     assert( gen <= m_pEvoHistorySys->GetHistorySystem( )->GetYoungestGeneration( ) );
 
-	gotoGeneration( gen );
+	postGotoGeneration( gen );
 }

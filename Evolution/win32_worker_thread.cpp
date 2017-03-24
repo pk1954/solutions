@@ -74,7 +74,7 @@ void WorkThread::ResetModel( )
     m_pEvolutionCore->ResetModel( m_pModelWork );
 }
 
-void WorkThread::GenerationStep( )
+void WorkThread::GenerationStep( ) // called by worker thread 
 {
     m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
     m_pEvolutionCore->Compute( m_pModelWork );   // compute next generation
@@ -146,19 +146,19 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
         return 0;
 
     case THREAD_MSG_SET_BRUSH_INTENSITY:
-        m_pModelWork->SetBrushIntensity( static_cast<short>( wParam ) );
+		ApplyEditorCommand( tEvoCmd::editSetBrushIntensity, static_cast<short>( wParam ) );
         break;
 
     case THREAD_MSG_SET_BRUSH_SIZE:
-        m_pModelWork->SetBrushSize( static_cast<short>( wParam ) );
+		ApplyEditorCommand( tEvoCmd::editSetBrushSize, static_cast<short>( wParam ) );
         break;
 
     case THREAD_MSG_SET_BRUSH_SHAPE:
-        m_pModelWork->SetBrushShape( static_cast<tShape>( static_cast<short>( wParam ) ) );
+		ApplyEditorCommand( tEvoCmd::editSetBrushShape, static_cast<short>( wParam ) );
         break;
 
     case THREAD_MSG_SET_BRUSH_MODE:
-        m_pModelWork->SetBrushStrategy( static_cast<tBrushMode>( wParam ) );
+		ApplyEditorCommand( tEvoCmd::editSetBrushMode, static_cast<short>( wParam ) );
         break;
 
     case THREAD_MSG_DO_EDIT:
@@ -180,6 +180,31 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
     m_pStatusBar->DisplayCurrentGeneration( );
     ( * m_pDisplayGridFunctor )( FALSE );
     return 0;
+}
+
+void WorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, short const sParam )
+{
+	switch (evoCmd)
+	{
+	case tEvoCmd::editSetBrushMode:
+        m_pModelWork->SetBrushIntensity( sParam );
+        break;
+
+    case tEvoCmd::editSetBrushShape:
+        m_pModelWork->SetBrushShape( static_cast<tShape>( sParam ) );
+		break;
+
+    case tEvoCmd::editSetBrushSize:
+        m_pModelWork->SetBrushSize( sParam );
+		break;
+
+    case tEvoCmd::editSetBrushIntensity:
+        m_pModelWork->SetBrushStrategy( static_cast<tBrushMode>( sParam ) );
+		break;
+
+	default:
+		break;
+	}
 }
 
 static DWORD WINAPI WorkerThread( _In_ LPVOID lpParameter )
