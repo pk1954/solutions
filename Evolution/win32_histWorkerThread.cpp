@@ -45,7 +45,7 @@ void HistWorkThread::GenerationStep( )
         }
 
         postMsg2WorkThread( THREAD_MSG_REFRESH, 0, 0 );
-		WorkThread::PostNextGeneration(  );   // will call indirectly HistWorkThread::GenerationStep
+		WorkThread::PostGenerationStep(  );   // Loop! Will call indirectly HistWorkThread::GenerationStep again
     }
 }
 
@@ -76,10 +76,10 @@ void HistWorkThread::DoEdit( GridPoint const gp )
 void HistWorkThread::postGotoGeneration( HIST_GENERATION const gen )
 {
 	m_genDemanded = gen;
-	WorkThread::PostNextGeneration(  );   // will call indirectly HistWorkThread::GenerationStep
+	WorkThread::PostGenerationStep(  );   // will call indirectly HistWorkThread::GenerationStep
 }
 
-void HistWorkThread::PostNextGeneration( )
+void HistWorkThread::PostGenerationStep( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;

@@ -65,7 +65,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
     switch (wmId)
     {
         case IDM_GENERATION:
-            m_pHistWorkThread->PostNextGeneration( );
+            m_pHistWorkThread->PostGenerationStep( );
             break;
 
 		case IDM_RUN:

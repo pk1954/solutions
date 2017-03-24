@@ -51,7 +51,7 @@ public:
     void PostReset( );
     void PostEndThread( HWND );
     void PostProcessScript( std::wstring const & );
-	void PostNextGeneration();
+	void PostGenerationStep();
 	void PostRunGenerations();
 	void PostStopComputation();
 
@@ -65,7 +65,7 @@ protected:
     enum ThreadMessages
     {
         THREAD_MSG_REFRESH = WM_USER + 1,
-        THREAD_MSG_FORWARD_STEP,
+        THREAD_MSG_STEP,
         THREAD_MSG_GENERATION_RUN,
         THREAD_MSG_DO_EDIT,
         THREAD_MSG_SET_BRUSH_SIZE,

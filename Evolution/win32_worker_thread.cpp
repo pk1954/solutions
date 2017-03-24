@@ -132,7 +132,7 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
         processScript( (wstring *)lParam );
         break;
 
-    case THREAD_MSG_FORWARD_STEP:
+    case THREAD_MSG_STEP:
         GenerationStep( );
         return 0;
 
@@ -297,13 +297,13 @@ void WorkThread::PostSetBrushShape( tShape const shape )
     postMsg2WorkThread( THREAD_MSG_SET_BRUSH_SHAPE, static_cast<WPARAM>( shape ), 0 );
 }
 
-void WorkThread::PostNextGeneration(  )
+void WorkThread::PostGenerationStep(  )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
 
     wcout << __FUNCTION__ << endl;
-    postMsg2WorkThread( THREAD_MSG_FORWARD_STEP, 0, 0 );
+    postMsg2WorkThread( THREAD_MSG_STEP, 0, 0 );
 }
 
 void WorkThread::PostRunGenerations( )

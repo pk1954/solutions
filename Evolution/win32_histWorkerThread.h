@@ -23,7 +23,7 @@ public:
 
 	// overwrite methods from WorkThread
 
-	virtual void PostNextGeneration();
+	virtual void PostGenerationStep();
 
 private:
 
