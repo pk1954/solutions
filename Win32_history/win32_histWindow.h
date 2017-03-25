@@ -47,15 +47,15 @@ protected:
 
 private:
 
-    void paintGeneration          ( HDC const, HIST_GENERATION const, COLORREF const ) const;
-    void paintPixelPos            ( HDC const, long const )                            const;
+    void paintGeneration( HDC const, HIST_GENERATION const, COLORREF const ) const;
+    void paintPixelPos  ( HDC const, long const )                            const;
 
     HIST_GENERATION getGenFromXpos( LPARAM const) const;
     void            dispGenerationWindow( )       const;
 
-    HistorySystem         * m_pHistSys;  // Do not change the order
-    HistoryIterator       * m_pHistIter;  // declarations!
-    GenDisplayWindow      * m_pGenDisplay;
-    TRACKMOUSEEVENT         m_trackStruct;
-    HIST_GENERATION         m_genSelected;
+    HistorySystem    * m_pHistSys;  // Do not change the order
+    HistoryIterator  * m_pHistIter;  // declarations!
+    GenDisplayWindow * m_pGenDisplay;
+    TRACKMOUSEEVENT    m_trackStruct;
+    HIST_GENERATION    m_genSelected;
 };
