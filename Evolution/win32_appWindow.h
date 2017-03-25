@@ -34,8 +34,8 @@ class EvoController;
 class AppWindow : public BaseWindow
 {
 public:
-    explicit AppWindow( HINSTANCE );
-    void Start( LPTSTR );
+    AppWindow( );
+    void Start( HINSTANCE const, LPTSTR const );
     ~AppWindow( );
 
 protected:

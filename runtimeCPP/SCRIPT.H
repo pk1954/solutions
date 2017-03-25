@@ -54,6 +54,7 @@ public:
 
 //// utility functions
 
+	static bool ProcessScript( wstring const & );
     static void ScrSetWrapHook( Script_Functor const * const );
 
 //// script processing
@@ -69,8 +70,6 @@ private:
 
     static Script_Functor const * m_pWrapHook;
 };
-
-bool ProcessScript( wstring const & );
 
 class WrapInclude : public Script_Functor
 {

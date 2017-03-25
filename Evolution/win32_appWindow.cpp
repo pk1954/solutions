@@ -6,7 +6,6 @@
 //   lint -esym( 715, script )  // not referenced
 
 #include "stdafx.h"
-#include "commctrl.h"
 
 // EvolutionCore interfaces
 
@@ -88,8 +87,7 @@ private:
 
 //lint -esym( 715, hInstance )  // not referenced
 
-AppWindow::AppWindow( HINSTANCE const hInstance )
-:
+AppWindow::AppWindow( ) :
     BaseWindow( ),
     m_displayGridFunctor( ),
     m_pMainGridWindow( nullptr ),
@@ -114,40 +112,32 @@ AppWindow::AppWindow( HINSTANCE const hInstance )
     m_traceStream( )
 {};
 
-void AppWindow::Start( LPTSTR lpCmdLine )
+void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 {
-    HWND      const hwnd       = StartBaseWindow( nullptr, CS_HREDRAW | CS_VREDRAW, L"ClassAppWindow", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN );
-    HINSTANCE const hInstance  = GetModuleHandle( nullptr );
-    HICON     const hIconBig   = LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) );
-    HICON     const hIconSmall = LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL ) );
+    HWND const hWndApp = StartBaseWindow( nullptr, CS_HREDRAW | CS_VREDRAW, L"ClassAppWindow", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN );
 
-	Util::StdOutConsole( );
-
-    SendMessage( WM_SETICON, ICON_BIG,   (LPARAM)hIconBig   );
-    SendMessage( WM_SETICON, ICON_SMALL, (LPARAM)hIconSmall );
+    SendMessage( WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
+    SendMessage( WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL     ) ) );
 
     m_traceStream.open( L"main_trace.out", ios::out );
     assert( m_traceStream.good( ) );
 
-    InitCommonControls( ); // loads common control's DLL 
-    
-    Config::InitializeConfig( );
-    EvolutionCore::InitClass( );
-
-    m_pEvolutionCore = EvolutionCore::CreateCore( );
-
-    ScriptErrorHandler::ScrSetOutputStream( & wcout );
-
-	ProcessScript( L"std_configuration.in" );
-
-    D3dSystem::Create( hwnd, GridPoint::GRID_WIDTH, GridPoint::GRID_HEIGHT );
+    Config::SetDefaultConfiguration( );
 
     // evaluate command line parameters
 
     std::wstring const wstrCmdLine( lpCmdLine );
     if ( wstrCmdLine.compare( L"/nohist" ) == 0 )
         Config::SetConfigValue( Config::tId::maxGeneration, 0 );
+    EvolutionCore::InitClass( );
 
+    m_pEvolutionCore = EvolutionCore::CreateCore( );
+
+    ScriptErrorHandler::ScrSetOutputStream( & wcout );
+	Script::ProcessScript( L"std_configuration.in" );
+
+    D3dSystem::Create( hWndApp, GridPoint::GRID_WIDTH, GridPoint::GRID_HEIGHT );
+	
     // create window objects
 
     m_pGridRectSel    = new GridRect( );  
@@ -163,12 +153,12 @@ void AppWindow::Start( LPTSTR lpCmdLine )
     m_pPerfWindow     = new PerformanceWindow( );  
 	m_pEvoController  = new EvoController( );
 
-    SetMenu( hwnd, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
+    SetMenu( hWndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
     {
         static int const MAX_LOADSTRING = 100;
         static TCHAR szTitle[ MAX_LOADSTRING ];			// Titelleistentext
         (void)LoadString( hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING );
-        SetWindowText( hwnd, szTitle );
+        SetWindowText( hWndApp, szTitle );
     }
 
     m_pModelWork = EvolutionModelData::CreateModelData( );
@@ -182,25 +172,25 @@ void AppWindow::Start( LPTSTR lpCmdLine )
         DefineWin32HistWrapperFunctions( m_pHistWorkThread );
 
         m_pEvoHistWindow = new EvoHistWindow( );
-		m_pEvoHistWindow->Start( hwnd, m_pFocusPoint, m_pEvoHistorySys, m_pHistWorkThread );
+		m_pEvoHistWindow->Start( hWndApp, m_pFocusPoint, m_pEvoHistorySys, m_pHistWorkThread );
         m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, 75 );
     }
     else
     {
         m_pWorkThread = new WorkThread( & m_traceStream );
-        EnableMenuItem( GetMenu( hwnd ), IDM_BACKWARDS, MF_GRAYED );
+        EnableMenuItem( GetMenu( hWndApp ), IDM_BACKWARDS, MF_GRAYED );
     }
 
 	m_pFocusPoint    ->Start( m_pEvoHistorySys, m_pModelWork );
 	m_pWorkThread    ->Start( m_pStatusBar, m_pEditorWindow, m_pPerfWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
-	m_pDspOptWindow  ->Start( hwnd, m_pWorkThread,    m_pModelWork );
-    m_pEditorWindow  ->Start( hwnd, m_pWorkThread,    m_pModelWork, m_pDspOptWindow );
-    m_pStatusBar     ->Start( hwnd, m_pEvoController, m_pModelWork );
-    m_pMainGridWindow->Start( hwnd, m_pWorkThread,    m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
-    m_pMiniGridWindow->Start( hwnd, m_pWorkThread,    m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 1 );
-    m_pStatistics    ->Start( hwnd, m_pModelWork,     m_pGridRectSel );
-    m_pCrsrWindow    ->Start( hwnd, m_pFocusPoint,    m_pModelWork );
-    m_pPerfWindow    ->Start( hwnd, 100 );
+	m_pDspOptWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork );
+    m_pEditorWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork, m_pDspOptWindow );
+    m_pStatusBar     ->Start( hWndApp, m_pEvoController, m_pModelWork );
+    m_pMainGridWindow->Start( hWndApp, m_pWorkThread,    m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
+    m_pMiniGridWindow->Start( hWndApp, m_pWorkThread,    m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 1 );
+    m_pStatistics    ->Start( hWndApp, m_pModelWork,     m_pGridRectSel );
+    m_pCrsrWindow    ->Start( hWndApp, m_pFocusPoint,    m_pModelWork );
+    m_pPerfWindow    ->Start( hWndApp, 100 );
 	m_pEvoController ->Start( & m_traceStream, m_pHistWorkThread, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow );
 
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,               -1 );
@@ -226,14 +216,14 @@ void AppWindow::Start( LPTSTR lpCmdLine )
     DefineWin32WrapperFunctions( m_pWorkThread, m_pEvoController, m_pStatusBar );
     DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 
-    CheckMenuItem( GetMenu( hwnd ), IDM_STAT_WINDOW, MF_CHECKED );
+    //  CheckMenuItem( GetMenu( hWndApp ), IDM_STAT_WINDOW, MF_CHECKED );
 
     m_pWinManager->GetWindowConfiguration( );
 
-    ShowWindow( hwnd, SW_SHOWMAXIMIZED );
+    ShowWindow( hWndApp, SW_SHOWMAXIMIZED );
     (void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 
-	ProcessScript( L"std_script.in" );
+	Script::ProcessScript( L"std_script.in" );
 }
 
 AppWindow::~AppWindow( )

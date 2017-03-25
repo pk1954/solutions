@@ -14,11 +14,11 @@
 
 int main( int argc, char *argv [ ], char *envp [ ] )
 {
-    Config::InitializeConfig( );
+    Config::SetDefaultConfiguration( );
     EvolutionCore::InitClass( );
     EvolutionCore::CreateCore( );
 
-    ProcessScript( L"std_configuration.in" );
+    Script::ProcessScript( L"std_configuration.in" );
 
     for ( int iCount = 0; iCount < argc; iCount++ )
     {
@@ -28,7 +28,7 @@ int main( int argc, char *argv [ ], char *envp [ ] )
             Config::SetConfigValue( Config::tId::maxGeneration, 0 );
     }
 
-    ProcessScript( L"std_script.in" );
+    Script::ProcessScript( L"std_script.in" );
 
     return 0;
 }

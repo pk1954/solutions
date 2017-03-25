@@ -462,7 +462,7 @@ wstring const Script::GetActExpectedToken( ) const
    return m_pScanAct->GetExpectedToken( );
 }
 
-bool ProcessScript( wstring const & wstrScript )
+bool Script::ProcessScript( wstring const & wstrScript )
 {
     Script script;
     return script.ScrProcess( wstrScript );

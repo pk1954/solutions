@@ -24,7 +24,7 @@ void Config::defineConfigId( Config::tId const id, wstring const & wstrName, lon
     Config::m_mapConfigData.insert( std::make_pair( id, lInitialValue ) );
 }
 
-void Config::InitializeConfig( )
+void Config::SetDefaultConfiguration( )
 {
      // general
    DEF_CONFIG_ID( Config::tId::maxGeneration,   1000 * 1000 );

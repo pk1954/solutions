@@ -4,6 +4,8 @@
 //lint -esym( 766, Evolution\Resource.h )    header file not used. lint is wrong here
 
 #include "stdafx.h"
+#include "commctrl.h"
+#include "win32_util.h"
 #include "win32_appWindow.h"
 #include "Resource.h"
 
@@ -30,11 +32,14 @@ int APIENTRY _tWinMain
     UNREFERENCED_PARAMETER( lpCmdLine );
     UNREFERENCED_PARAMETER( nCmdShow );
 
-    SetThreadAffinityMask( GetCurrentThread( ), 0x0001 );
+	SetThreadAffinityMask( GetCurrentThread( ), 0x0001 );
 
-    AppWindow App( hInstance );
-    App.Start( lpCmdLine );
+    AppWindow App;
+    App.Start( hInstance, lpCmdLine );
 
+	Util::StdOutConsole( );
+    InitCommonControls( ); // loads common control's DLL 
+    
 //lint -e1924  C-style cast
 
     HACCEL const hAccelTable = LoadAccelerators( hInstance, MAKEINTRESOURCE(IDC_EVOLUTION_MAIN) );
