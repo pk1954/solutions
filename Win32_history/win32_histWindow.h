@@ -22,8 +22,6 @@ public:
 protected:
     void Start( HWND const, HistorySystem * );
 
-    virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
-
     void PaintAllGenerations      ( HDC const );
     void PaintHighlightGenerations( HDC const, HIST_GENERATION const )                                        const;
 	void PaintLifeLine            ( HDC const, HIST_GENERATION const, HIST_GENERATION const ) const;
@@ -34,6 +32,8 @@ protected:
     virtual void GotoGeneration( HIST_GENERATION const ) = 0;
 
 private:
+
+    virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 
     static COLORREF const CLR_GREEN  = RGB( 0, 255, 0 );
     static COLORREF const CLR_YELLOW = RGB( 255, 255, 0 );

@@ -92,7 +92,7 @@ void GridWindow::setSelection( PixelPoint const & pt1, PixelPoint const & pt2 )
     * m_pGridRectSel = rect;
 }
 
-void GridWindow::ResetSelection( )
+void GridWindow::resetSelection( )
 {
     * m_pGridRectSel = GridRect::GRID_RECT_EMPTY;
     m_pWorkThread->PostRefresh( );
@@ -260,6 +260,10 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
                 m_pWorkThread->PostStopComputation( );
                 break;
 
+			case IDM_ESCAPE:
+				resetSelection( );
+				break;
+
             case IDM_GOTO_ORIGIN:  // commands using cursor pos are handled here
             case IDM_GOTO_DEATH:
             {
@@ -286,7 +290,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
                 onMouseMove( lParam, wParam );
         }
         else
-            ResetSelection( );
+            resetSelection( );
         SetFocus( );
         return 1;
 

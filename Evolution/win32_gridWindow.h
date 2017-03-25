@@ -31,15 +31,15 @@ public:
     void Start
     ( 
         HWND, 
-        WorkThread        * const,
-        GridRect          * const,
-        EditorWindow      * const,
-        FocusPoint        * const,
-        DspOptWindow      * const,
-        PerformanceWindow * const, 
-        StatusBar         * const,
-        EvolutionCore     *, 
-        EvolutionModelData         *,
+        WorkThread         * const,
+        GridRect           * const,
+        EditorWindow       * const,
+        FocusPoint         * const,
+        DspOptWindow       * const,
+        PerformanceWindow  * const, 
+        StatusBar          * const,
+        EvolutionCore      *, 
+        EvolutionModelData *,
         DWORD, 
         short 
     );
@@ -47,11 +47,7 @@ public:
     ~GridWindow( );
 
     void Observe( GridWindow * );
-    void ResetSelection( );
     void Size( );
-
-protected:
-    virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 
 private:
     GridWindow             ( GridWindow const & );  // noncopyable class 
@@ -69,7 +65,10 @@ private:
     FocusPoint        * m_pFocusPoint;
     ObserverInterface * m_pObserverInterface;
 
-    void setSelection( PixelPoint const &, PixelPoint  const & );
+    virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+
+	void setSelection( PixelPoint const &, PixelPoint  const & );
+    void resetSelection( );
     BOOL inObservedClientRect( LPARAM );
     void moveGrid( PixelPoint const & );
     void onMouseMove( LPARAM, WPARAM );

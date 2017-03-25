@@ -13,9 +13,9 @@ public:
 
     HWND StartBaseDialog( HWND const, LPCTSTR const );
 
-    virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const ) = 0;
-
 private:
+
+    virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const ) = 0;
 
 friend static INT_PTR CALLBACK BaseDialogProc( HWND const, UINT const, WPARAM const, LPARAM const );
 };

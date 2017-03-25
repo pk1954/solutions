@@ -13,9 +13,9 @@ public:
 
     HWND StartBaseWindow( HWND const, UINT const, LPCTSTR const, DWORD const );
 
-    virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) = 0;
-
 private:
  
+    virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) = 0;
+
 friend static LRESULT CALLBACK BaseWndProc( HWND const, UINT const, WPARAM const, LPARAM const );
 };

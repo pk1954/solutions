@@ -28,10 +28,9 @@ public:
     void DisplayScriptLine( std::wstring const &, int, std::wstring const & );
     void DisplayCurrentGeneration( );
 
-protected:
+private:
     virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
 
-private:
     enum class tPart
     {
         Generation,

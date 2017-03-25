@@ -44,14 +44,13 @@ public:
     void SetIndividualsVisible( );
     BOOL AreIndividualsVisible( ) const;
 
-protected:
-    virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
-
 private:
     DspOptWindow             ( DspOptWindow const & );  // noncopyable class 
     DspOptWindow & operator= ( DspOptWindow const & );  // noncopyable class 
 
-    WorkThread             * m_pWorkThread;
+    virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
+
+	WorkThread             * m_pWorkThread;
     GetFoodStockFunctor    * m_pGetFoodStockFunctor;
     GetFertilityFunctor    * m_pGetFertilityFunctor;
     GetMutationRateFunctor * m_pGetMutationRateFunctor;

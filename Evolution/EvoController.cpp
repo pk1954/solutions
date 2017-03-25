@@ -13,13 +13,13 @@
 #include "EvoController.h"
 
 EvoController::EvoController() :
-    m_bTrace             ( TRUE ),
-    m_pTraceStream       ( nullptr ),
-	m_pHistWorkThread    ( nullptr ),
-	m_pWinManager        ( nullptr ),
-    m_pPerformanceWindow ( nullptr ),
-    m_pStatusBar         ( nullptr ),
-    m_pGridWindow        ( nullptr )
+    m_bTrace            ( TRUE ),
+    m_pTraceStream      ( nullptr ),
+	m_pHistWorkThread   ( nullptr ),
+	m_pWinManager       ( nullptr ),
+    m_pPerformanceWindow( nullptr ),
+    m_pStatusBar        ( nullptr ),
+    m_pGridWindow       ( nullptr )
 { }
 
 EvoController::~EvoController( )
@@ -106,10 +106,6 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             }
             break;
                  
-        case IDM_ESCAPE:
-            m_pGridWindow->ResetSelection( );
-            break;
-
 		case IDM_MINI_WINDOW:
         case IDM_DISP_WINDOW:
         case IDM_EDIT_WINDOW:
@@ -126,6 +122,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
         case IDM_ZOOM_IN:
         case IDM_SET_ZOOM:
         case IDM_FIT_ZOOM:
+        case IDM_ESCAPE:
             (void)m_pGridWindow->SendMessage( WM_COMMAND, wParam, lParam );
             break;
 

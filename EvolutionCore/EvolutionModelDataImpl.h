@@ -55,8 +55,8 @@ public:
 
     virtual GridPoint      FindGridPoint( IndId const & id ) const { return m_grid.FindGridPoint( id ); }
 
-    virtual int  GetAverageFoodGrowth( )     const { return m_grid.GetAverageFoodGrowth( ); }
-    virtual int  GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
+    virtual int GetAverageFoodGrowth( )     const { return m_grid.GetAverageFoodGrowth( ); }
+    virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
 
     Grid        m_grid;
     EditorState m_editorState;

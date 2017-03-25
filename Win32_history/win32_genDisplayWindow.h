@@ -15,10 +15,9 @@ public:
     void StartGenDisplayWindow( HWND const );
     void DisplayGenerationBelowCursor( HIST_GENERATION const );
 
-protected:
+private:
     virtual LRESULT UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam ) override;
 
-private:
     HIST_GENERATION m_genDisplay;
 
     static COLORREF const CLR_BACK = RGB( 255, 255, 0 );

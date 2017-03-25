@@ -34,12 +34,12 @@ public:
 
     void Start
     ( 
-        StatusBar         * const, 
-        EditorWindow      * const,
-        PerformanceWindow * const, 
-        DisplayAll  const * const, 
-        EvolutionCore     * const,
-        EvolutionModelData         * const
+        StatusBar          * const, 
+        EditorWindow       * const,
+        PerformanceWindow  * const, 
+        DisplayAll   const * const, 
+        EvolutionCore      * const,
+        EvolutionModelData * const
     );
 
     void PostDoEdit( GridPoint const & );

@@ -38,11 +38,10 @@ public:
     void Start( HINSTANCE const, LPTSTR const );
     ~AppWindow( );
 
-protected:
+private:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 
-private:
-    AppWindow             ( AppWindow const & );  // noncopyable class 
+	AppWindow             ( AppWindow const & );  // noncopyable class 
     AppWindow & operator= ( AppWindow const & );  // noncopyable class 
 
     void adjustChildWindows( );

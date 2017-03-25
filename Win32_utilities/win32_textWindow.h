@@ -53,9 +53,9 @@ protected:
 
     virtual void DoPaint( ) = 0;
 
+private:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) override;
 
-private:
     COLORREF const CLR_BACK    = RGB( 100, 100, 100 );
     int      const LEFT_MARGIN = 30;
     int      const TOP_MARGIN  =  5;
