@@ -15,11 +15,11 @@ class EvoHistWindow : public HistWindow
 {
 public:
     EvoHistWindow( );
-    ~EvoHistWindow( );
+    virtual ~EvoHistWindow( );
 
     void Start( HWND const, FocusPoint * const, EvoHistorySys * const, HistWorkThread * const );
 
-	virtual void PostGotoGeneration( HIST_GENERATION const gen ) 
+	virtual void GotoGeneration( HIST_GENERATION const gen ) 
 	{ 
 		m_pHistWorkThread->PostGotoGeneration( gen ); 
 	}

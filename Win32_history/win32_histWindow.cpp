@@ -56,12 +56,12 @@ HistWindow::~HistWindow( )
     m_pGenDisplay = nullptr;
 }
 
-RECT HistWindow::GetGenerationRect( HIST_GENERATION const gen ) const
+RECT HistWindow::getGenerationRect( HIST_GENERATION const gen ) const
 {
-    return GetGenerationRect( gen, gen + 1 );
+    return getGenerationRect( gen, gen + 1 );
 }
 
-RECT HistWindow::GetGenerationRect  // position is relative to client area
+RECT HistWindow::getGenerationRect  // position is relative to client area
 (
     HIST_GENERATION const genLo,
     HIST_GENERATION const genHi
@@ -69,7 +69,7 @@ RECT HistWindow::GetGenerationRect  // position is relative to client area
 {
     PixelRect       const rect = GetClRect( );
     long            const lPixSize = rect.right;
-    HIST_GENERATION const genNrOfGens = GetHistComp( )->GetNrOfGenerations( );
+    HIST_GENERATION const genNrOfGens = m_pHistSys->GetNrOfGenerations( );
     assert( genNrOfGens  > 0 );
 
     RECT pixRect;
@@ -101,7 +101,7 @@ void HistWindow::dispGenerationWindow( ) const
     int        const iGenDispWidth  = 50;
     int        const iGenDispHeight = 20;
     long       const lClientWidth   = GetClientWindowWidth( );
-    RECT       const pixRectGen     = GetGenerationRect( m_genSelected ); // position is relative to client area
+    RECT       const pixRectGen     = getGenerationRect( m_genSelected ); // position is relative to client area
     PixelPoint const ptClientPos    = GetClientAreaPos( );                // position of client area origin in screen coordinates
     int        const iYpos          = ptClientPos.y - iGenDispHeight;
     int              iXpos          = ( pixRectGen.left + pixRectGen.right - iGenDispWidth ) / 2 + ptClientPos.x;
@@ -118,7 +118,7 @@ void HistWindow::paintGeneration( HDC const hDC, HIST_GENERATION const gen, COLO
 {
     assert( gen >= 0 );
     SetBkColor( hDC, col );
-    Util::FastFill( hDC, GetGenerationRect( gen ) );
+    Util::FastFill( hDC, getGenerationRect( gen ) );
 }
 
 void HistWindow::paintPixelPos( HDC const hDC, long const lPixPos ) const
@@ -209,7 +209,7 @@ void HistWindow::PaintHighlightGenerations( HDC const hDC, HIST_GENERATION const
 
 void HistWindow::PaintLifeLine( HDC const hDC, HIST_GENERATION const genBirth, HIST_GENERATION const genDeath ) const
 {
-    RECT       pixRect  = GetGenerationRect( genBirth, max( genBirth, genDeath ) );
+    RECT       pixRect  = getGenerationRect( genBirth, max( genBirth, genDeath ) );
     long const lHeight4 = GetClientWindowHeight( ) / 4;
     pixRect.top += lHeight4;
     pixRect.bottom -= lHeight4;
@@ -241,7 +241,7 @@ LRESULT HistWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         (void)TrackMouseEvent( &m_trackStruct );
         m_genSelected = getGenFromXpos( lParam );
         if ( wParam & MK_LBUTTON )                // Left mouse button
-            PostGotoGeneration( m_genSelected );
+            GotoGeneration( m_genSelected );
         else
             Invalidate( FALSE );   // Redraw, do not erase background
         return 0;
@@ -254,7 +254,7 @@ LRESULT HistWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
     case WM_LBUTTONDOWN:
         m_genSelected = getGenFromXpos( lParam );
-        PostGotoGeneration( m_genSelected );
+        GotoGeneration( m_genSelected );
         (void)SetCapture( );
         (void)SetFocus( );
         Invalidate( FALSE );   // Redraw, do not erase background

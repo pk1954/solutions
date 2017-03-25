@@ -17,24 +17,23 @@ class HistWindow : public BaseWindow
 {
 public:
     HistWindow( );
-    ~HistWindow( );
-
-    void Start( HWND const, HistorySystem * );
-
-    virtual void PostGotoGeneration( HIST_GENERATION const ) =  0;
+	virtual ~HistWindow( );
 
 protected:
+    void Start( HWND const, HistorySystem * );
+
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 
-	virtual void DoPaint( HDC const ) = 0;
+    void PaintAllGenerations      ( HDC const );
+    void PaintHighlightGenerations( HDC const, HIST_GENERATION const )                                        const;
+	void PaintLifeLine            ( HDC const, HIST_GENERATION const, HIST_GENERATION const ) const;
 
-    void                  PaintAllGenerations      ( HDC const );
-    void				  PaintHighlightGenerations( HDC const, HIST_GENERATION const )                                        const;
-	void                  PaintLifeLine            ( HDC const, HIST_GENERATION const, HIST_GENERATION const ) const;
-    HistorySystem const * GetHistComp( ) const { return m_pHistSys; }
+	// callbacks
 
-    RECT GetGenerationRect( HIST_GENERATION const ) const;
-    RECT GetGenerationRect( HIST_GENERATION const, HIST_GENERATION const ) const;
+	virtual void DoPaint       ( HDC const )             = 0;
+    virtual void GotoGeneration( HIST_GENERATION const ) = 0;
+
+private:
 
     static COLORREF const CLR_GREEN  = RGB( 0, 255, 0 );
     static COLORREF const CLR_YELLOW = RGB( 255, 255, 0 );
@@ -45,7 +44,8 @@ protected:
     static COLORREF const CLR_POI    = RGB( 32, 32, 255 );
     static COLORREF const CLR_EDIT   = RGB( 255, 128, 0 );
 
-private:
+    RECT getGenerationRect( HIST_GENERATION const ) const;
+    RECT getGenerationRect( HIST_GENERATION const, HIST_GENERATION const ) const;
 
     void paintGeneration( HDC const, HIST_GENERATION const, COLORREF const ) const;
     void paintPixelPos  ( HDC const, long const )                            const;

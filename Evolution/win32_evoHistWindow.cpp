@@ -23,10 +23,10 @@ EvoHistWindow::~EvoHistWindow( )
 
 void EvoHistWindow::Start
 (
-    HWND                 const hWndParent,
-    FocusPoint         * const pFocusPoint,
-	EvoHistorySys      * const pEvoHistorySys,
-	HistWorkThread     * const pHistWorkThread
+    HWND             const hWndParent,
+    FocusPoint     * const pFocusPoint,
+	EvoHistorySys  * const pEvoHistorySys,
+	HistWorkThread * const pHistWorkThread
 )
 {
     Config::tOnOffAuto const displayMode = static_cast<Config::tOnOffAuto>( Config::GetConfigValue( Config::tId::historyDisplay ) );
