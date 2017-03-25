@@ -182,7 +182,7 @@ void AppWindow::Start( LPTSTR lpCmdLine )
         DefineWin32HistWrapperFunctions( m_pHistWorkThread );
 
         m_pEvoHistWindow = new EvoHistWindow( );
-		m_pEvoHistWindow->Start( hwnd, m_pFocusPoint, m_pModelWork, m_pEvoHistorySys, m_pHistWorkThread );
+		m_pEvoHistWindow->Start( hwnd, m_pFocusPoint, m_pEvoHistorySys, m_pHistWorkThread );
         m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, 75 );
     }
     else
@@ -191,6 +191,7 @@ void AppWindow::Start( LPTSTR lpCmdLine )
         EnableMenuItem( GetMenu( hwnd ), IDM_BACKWARDS, MF_GRAYED );
     }
 
+	m_pFocusPoint    ->Start( m_pEvoHistorySys, m_pModelWork );
 	m_pWorkThread    ->Start( m_pStatusBar, m_pEditorWindow, m_pPerfWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
 	m_pDspOptWindow  ->Start( hwnd, m_pWorkThread,    m_pModelWork );
     m_pEditorWindow  ->Start( hwnd, m_pWorkThread,    m_pModelWork, m_pDspOptWindow );

@@ -17,8 +17,8 @@ CrsrWindow::CrsrWindow( ) :
 
 void CrsrWindow::Start
 (
-    HWND              const hWndParent,
-    FocusPoint      * const pFocusPoint,
+    HWND               const         hWndParent,
+    FocusPoint       * const         pFocusPoint,
     EvolutionModelData const * const pModel
 ) 
 {

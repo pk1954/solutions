@@ -81,6 +81,9 @@
     <ClInclude Include="win32_histWorkerThread.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="win32_evoHistWindow.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

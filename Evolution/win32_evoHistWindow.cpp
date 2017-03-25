@@ -18,7 +18,6 @@ EvoHistWindow::EvoHistWindow( ) :
 EvoHistWindow::~EvoHistWindow( )
 {
     m_pHistWorkThread = nullptr;
-	m_pEvoHistorySys = nullptr;
 	m_pFocusPoint = nullptr;
 }
 
@@ -26,7 +25,6 @@ void EvoHistWindow::Start
 (
     HWND                 const hWndParent,
     FocusPoint         * const pFocusPoint,
-    EvolutionModelData * const pEvoModelData,
 	EvoHistorySys      * const pEvoHistorySys,
 	HistWorkThread     * const pHistWorkThread
 )
@@ -34,40 +32,21 @@ void EvoHistWindow::Start
     Config::tOnOffAuto const displayMode = static_cast<Config::tOnOffAuto>( Config::GetConfigValue( Config::tId::historyDisplay ) );
     BOOL               const bShow       = ( displayMode == Config::tOnOffAuto::on );
 
-    m_pEvoHistorySys  = pEvoHistorySys;
-    HistWindow::Start( hWndParent, m_pEvoHistorySys->GetHistorySystem( ) );
-
+    HistWindow::Start( hWndParent, pEvoHistorySys->GetHistorySystem( ) );
 	m_pHistWorkThread = pHistWorkThread;
-	m_pFocusPoint = pFocusPoint;
+	m_pFocusPoint     = pFocusPoint;
     m_pFocusPoint->AttachFocusPointObserver( this, 75 );
-    m_pFocusPoint->Start( m_pEvoHistorySys, pEvoModelData );
     Show( bShow );
 }
 
-void EvoHistWindow::DoPaint( HDC const hdc )
+void EvoHistWindow::DoPaint( HDC const hDC )
 {
-    HistWindow::DoPaint( hdc );
-    paintLifeLine( hdc );
-}
+    PaintAllGenerations( hDC );
 
-void EvoHistWindow::paintLifeLine( HDC const hDC ) const
-{
-    GridPoint const gpFocus = m_pFocusPoint->GetGridPoint( );
+    PaintHighlightGenerations( hDC, m_pHistWorkThread->GetGenDemanded( ) );
 
-    if ( gpFocus.IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
+    if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
     {
-        HIST_GENERATION const genBirth = m_pFocusPoint->GetGenBirth( );
-        HIST_GENERATION       genDeath = m_pFocusPoint->GetGenDeath( );
-        if ( genDeath < genBirth )
-            genDeath = genBirth;
-
-        RECT       pixRect = GetGenerationRect( genBirth, genDeath );
-        long const lHeight4 = GetClientWindowHeight( ) / 4;
-        pixRect.top += lHeight4;
-        pixRect.bottom -= lHeight4;
-
-        SetBkColor( hDC, CLR_POI );
-        Util::FastFill( hDC, pixRect );
-    }
+		PaintLifeLine( hDC, m_pFocusPoint->GetGenBirth( ), m_pFocusPoint->GetGenDeath( ) );
+	}
 }
-

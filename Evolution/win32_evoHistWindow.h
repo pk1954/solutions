@@ -6,7 +6,6 @@
 #include "win32_histWindow.h"
 
 class EvolutionCore;
-class EvolutionModelData;
 class FocusPoint;
 class EvoNextGenFunctor;
 class EvoHistorySys;
@@ -18,18 +17,16 @@ public:
     EvoHistWindow( );
     ~EvoHistWindow( );
 
-    void Start( HWND const, FocusPoint * const, EvolutionModelData * const, EvoHistorySys * const, HistWorkThread * const );
+    void Start( HWND const, FocusPoint * const, EvoHistorySys * const, HistWorkThread * const );
 
-	virtual void            PostGotoGeneration( HIST_GENERATION const gen ) { m_pHistWorkThread->PostGotoGeneration( gen ); }
-	virtual HIST_GENERATION GetGenDemanded    ()            const           { return m_pHistWorkThread->GetGenDemanded( ); }
+	virtual void PostGotoGeneration( HIST_GENERATION const gen ) 
+	{ 
+		m_pHistWorkThread->PostGotoGeneration( gen ); 
+	}
 
-	virtual void            DoPaint( HDC const );
+	virtual void DoPaint( HDC const );
 
 private:
-
-    void paintLifeLine( HDC const ) const;
-
-    HistWorkThread  * m_pHistWorkThread;
-    FocusPoint      * m_pFocusPoint;
-    EvoHistorySys   * m_pEvoHistorySys;
+    HistWorkThread * m_pHistWorkThread;
+    FocusPoint     * m_pFocusPoint;
 };

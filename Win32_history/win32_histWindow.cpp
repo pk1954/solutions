@@ -162,25 +162,7 @@ void HistWindow::paintPixelPos( HDC const hDC, long const lPixPos ) const
     Util::FastFill( hDC, { lPixPos, 0, lPixPos + 1,  GetClientWindowHeight( ) } );
 }
 
-void HistWindow::paintHighlightGenerations( HDC const hDC ) const
-{
-    HIST_GENERATION const genActive = m_pHistSys->GetCurrentGeneration( );
-
-    paintGeneration( hDC, genActive, CLR_RED );
-
-    if ( ( m_genSelected >= 0L ) && ( m_genSelected != genActive ) )
-    {
-        paintGeneration( hDC, m_genSelected, CLR_YELLOW );
-    }
-
-    {
-        HIST_GENERATION const genDemanded = GetGenDemanded( );
-        if ( ( genActive != genDemanded ) && ( m_pHistSys->IsInHistoryMode( ) ) && !genDemanded.IsInfinite( ) )
-            paintGeneration( hDC, genDemanded, CLR_GREEN );
-    }
-}
-
-void HistWindow::DoPaint( HDC const hDC )
+void HistWindow::PaintAllGenerations( HDC const hDC )
 {
     long const lPixSize = GetClientWindowWidth( );
 
@@ -208,8 +190,31 @@ void HistWindow::DoPaint( HDC const hDC )
             paintPixelPos( hDC, lPixPos );
         }
     }
+}
 
-    paintHighlightGenerations( hDC );
+void HistWindow::PaintHighlightGenerations( HDC const hDC, HIST_GENERATION const genDemanded ) const
+{
+    HIST_GENERATION const genActive = m_pHistSys->GetCurrentGeneration( );
+
+    paintGeneration( hDC, genActive, CLR_RED );
+
+    if ( ( m_genSelected >= 0L ) && ( m_genSelected != genActive ) )
+    {
+        paintGeneration( hDC, m_genSelected, CLR_YELLOW );
+    }
+
+    if ( ( genActive != genDemanded ) && ( m_pHistSys->IsInHistoryMode( ) ) && !genDemanded.IsInfinite( ) )
+        paintGeneration( hDC, genDemanded, CLR_GREEN );
+}
+
+void HistWindow::PaintLifeLine( HDC const hDC, HIST_GENERATION const genBirth, HIST_GENERATION const genDeath ) const
+{
+    RECT       pixRect  = GetGenerationRect( genBirth, max( genBirth, genDeath ) );
+    long const lHeight4 = GetClientWindowHeight( ) / 4;
+    pixRect.top += lHeight4;
+    pixRect.bottom -= lHeight4;
+    SetBkColor( hDC, CLR_POI );
+    Util::FastFill( hDC, pixRect );
 }
 
 LRESULT HistWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )

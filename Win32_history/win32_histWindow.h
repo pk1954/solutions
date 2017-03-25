@@ -21,13 +21,16 @@ public:
 
     void Start( HWND const, HistorySystem * );
 
-    virtual void            DoPaint( HDC const );
-    virtual void            PostGotoGeneration( HIST_GENERATION const ) =  0;
-    virtual HIST_GENERATION GetGenDemanded( ) const = 0;
+    virtual void PostGotoGeneration( HIST_GENERATION const ) =  0;
 
 protected:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 
+	virtual void DoPaint( HDC const ) = 0;
+
+    void                  PaintAllGenerations      ( HDC const );
+    void				  PaintHighlightGenerations( HDC const, HIST_GENERATION const )                                        const;
+	void                  PaintLifeLine            ( HDC const, HIST_GENERATION const, HIST_GENERATION const ) const;
     HistorySystem const * GetHistComp( ) const { return m_pHistSys; }
 
     RECT GetGenerationRect( HIST_GENERATION const ) const;
@@ -46,7 +49,6 @@ private:
 
     void paintGeneration          ( HDC const, HIST_GENERATION const, COLORREF const ) const;
     void paintPixelPos            ( HDC const, long const )                            const;
-    void paintHighlightGenerations( HDC const )                                        const;
 
     HIST_GENERATION getGenFromXpos( LPARAM const) const;
     void            dispGenerationWindow( )       const;

@@ -1,111 +1,23 @@
 PostRefresh
 PostSetBrushMode tBrushMode::randomStrategy
-PostDoEdit   84  53 
+PostDoEdit   87  56 
+PostRefresh
+PostDoEdit   87  56 
+PostRefresh
+PostSetBrushMode tBrushMode::mutRate
+PostRefresh
+PostDoEdit   91  53 
 PostRefresh
 PostSetBrushMode tBrushMode::fertility
 PostRefresh
-PostDoEdit   91  44 
+PostDoEdit   79  50 
 PostRefresh
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  20
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  19
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  18
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  17
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  16
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  15
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  14
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  13
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  12
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  11
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  10
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  9
-PostNextGeneration
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  8
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  18
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  17
-PostNextGeneration
-PostNextGeneration
-PostGotoGeneration  16
-PostNextGeneration
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostSetBrushMode tBrushMode::mutRate
+PostRefresh
+PostDoEdit   95  51 
+PostRefresh
+PostDoEdit  102  50 
+PostRefresh
