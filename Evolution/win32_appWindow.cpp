@@ -166,9 +166,10 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
     if ( Config::UseHistorySystem( ) )
     {
-		m_pEvoHistorySys  = new EvoHistorySys( m_pEvolutionCore, m_pModelWork, m_pStatusBar );
+		m_pEvoHistorySys  = new EvoHistorySys( );
 		m_pHistWorkThread = new HistWorkThread( & m_traceStream, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
 		m_pWorkThread     = m_pHistWorkThread;
+		m_pEvoHistorySys->Start( m_pEvolutionCore, m_pModelWork, m_pHistWorkThread, m_pStatusBar );
         DefineWin32HistWrapperFunctions( m_pHistWorkThread );
 
         m_pEvoHistWindow = new EvoHistWindow( );

@@ -11,13 +11,16 @@ class EvolutionCore;
 class EvoModelFactory;
 class HistAllocThread;
 class StatusBar;
+class WorkThread;
 
 class EvoHistorySys
 {
 public:
 
-    EvoHistorySys( 	EvolutionCore * const, EvolutionModelData * const, StatusBar * const );
+    EvoHistorySys( );
 	virtual ~EvoHistorySys( );
+
+    void Start( EvolutionCore * const, EvolutionModelData * const, WorkThread * const, StatusBar * const );
 
     // EvoApproachHistGen - Get closer to demanded HIST_GENERATION
     //                    - If several steps are neccessary, function returns after one displayed generation
@@ -36,14 +39,15 @@ public:
     HIST_GENERATION GetFirstGenOfIndividual( IndId const & ) const;
     HIST_GENERATION GetLastGenOfIndividual ( IndId const & ) const;
 
+	void EvoCreateResetCommand( );                    // Layer
 	bool CreateEditorCommand( tEvoCmd, short );
 
 private:
-    EvoModelData    * const m_pEvoModelWork;
-	EvoModelFactory * const m_pEvoModelFactory;
-    HistorySystem   *       m_pHistorySystem;
-	HistAllocThread *       m_pHistAllocThread;
-    StatusBar       *       m_pStatusBar;
+    EvoModelData    * m_pEvoModelWork;
+	EvoModelFactory * m_pEvoModelFactory;
+    HistorySystem   * m_pHistorySystem;
+	HistAllocThread * m_pHistAllocThread;
+    StatusBar       * m_pStatusBar;
 
     // private member functions
 

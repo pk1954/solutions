@@ -27,6 +27,7 @@ public:
 
 private:
 
+ 	virtual void ResetModel( );       // Layer
     virtual void GenerationStep( );
 	virtual void GenerationRun( );
 	virtual void StopComputation( );

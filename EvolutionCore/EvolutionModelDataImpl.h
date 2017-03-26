@@ -26,6 +26,7 @@ public:
     virtual void           SetBrushStrategy ( tBrushMode const mode  ) { m_editorState.SetBrushStrategy ( mode  ); }
 
     virtual void           ModelDoEdit    ( GridPoint  const gp ) { m_editorState.EditorDoEdit( & m_grid, gp ); }
+	virtual void		   ResetAll       ( )                     { m_grid.ResetGrid( ); }
 
     virtual EVO_GENERATION GetAge         ( GridPoint const & gp ) const { return m_grid.GetAge( gp ); }
 

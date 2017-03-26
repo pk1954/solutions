@@ -15,14 +15,23 @@
 #include "EvoModelFactory.h"
 #include "EvoHistorySys.h"
 
-EvoHistorySys::EvoHistorySys
+class WorkThread;
+
+EvoHistorySys::EvoHistorySys( ) :
+    m_pEvoModelWork   ( nullptr ),
+	m_pEvoModelFactory( nullptr ),
+    m_pHistorySystem  ( nullptr ),
+	m_pHistAllocThread( nullptr ),
+    m_pStatusBar      ( nullptr )
+{}
+
+void EvoHistorySys::Start
 (
 	EvolutionCore      * const pEvolutionCore,
 	EvolutionModelData * const pEvolutionModelData,
+	WorkThread         * const pWorkThread,
     StatusBar          * const pStatusBar
-) :
-    m_pEvoModelWork   ( new EvoModelData ( pEvolutionCore, pEvolutionModelData ) ),
-	m_pEvoModelFactory( new EvoModelFactory( pEvolutionCore ) )
+)
 {
     LONG const lMaxHistSize         = Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) );
     LONG const lHistEntriesDemanded = Config::GetConfigValue( Config::tId::nrOfHistorySlots );
@@ -32,6 +41,9 @@ EvoHistorySys::EvoHistorySys
     short sNrOfSlots = static_cast<short>( lHistEntries );
 
     HIST_GENERATION const genMaxNrOfGens = Config::GetConfigValue( Config::tId::maxGeneration );
+
+    m_pEvoModelWork    = new EvoModelData ( pEvolutionCore, pEvolutionModelData, pWorkThread );
+	m_pEvoModelFactory = new EvoModelFactory( pEvolutionCore, pWorkThread );
 
     m_pHistorySystem = HistorySystem::CreateHistorySystem( );
 
@@ -82,6 +94,11 @@ HIST_GENERATION EvoHistorySys::GetFirstGenOfIndividual( IndId const & id ) const
 HIST_GENERATION EvoHistorySys::GetLastGenOfIndividual ( IndId const & id ) const  
 { 
     return id.IsDefined( ) ? m_pHistorySystem->FindLastGenerationWithProperty ( FindGridPointFunctor( id ) ) : -1; 
+}
+
+void EvoHistorySys::EvoCreateResetCommand( )  // Layer 4 
+{
+	m_pHistorySystem->CreateResetCommand( );
 }
 
 bool EvoHistorySys::CreateEditorCommand( tEvoCmd cmd, short sParam ) 

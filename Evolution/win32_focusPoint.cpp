@@ -12,7 +12,6 @@ void FocusPoint::Start
     EvolutionModelData * pModel
 )
 {
-    assert( pEvoHistorySys != nullptr );
     assert( pModel != nullptr );
     m_pEvoHistorySys = pEvoHistorySys;
     m_pModelWork = pModel;

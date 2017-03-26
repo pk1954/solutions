@@ -27,7 +27,7 @@ class DisplayAll;
 class WorkThread
 {
 public:
-	// called by main thread
+	// Layer : called by main thread
 	
 	explicit WorkThread( std::wostream * );
     ~WorkThread( );
@@ -57,7 +57,7 @@ public:
 
 	// functions called by worker thread
 
-	virtual void ResetModel( );
+	virtual void ResetModel( );       // Layer 
 	virtual void GenerationStep( );
 
 protected:

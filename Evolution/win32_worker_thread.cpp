@@ -69,7 +69,7 @@ WorkThread::~WorkThread( )
     m_pDisplayGridFunctor = nullptr;
 }
 
-void WorkThread::ResetModel( )
+void WorkThread::ResetModel( )  // Layer 1
 {
     m_pEvolutionCore->ResetModel( m_pModelWork );
 }
@@ -125,7 +125,7 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
     {
         
     case THREAD_MSG_RESET_MODEL:
-        ResetModel( );
+        ResetModel( );  // Layer 6/1
         break;
 
     case THREAD_MSG_PROCESS_SCRIPT:
@@ -241,7 +241,7 @@ void WorkThread::postMsg2WorkThread( UINT uiMsg, WPARAM wParam, LPARAM lParam )
     }
 }
 
-// procedural interface of worker thread
+// procedural interface of worker thread (Layer 6)
 
 void WorkThread::PostReset( )
 {

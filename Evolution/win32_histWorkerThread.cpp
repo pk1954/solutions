@@ -29,6 +29,11 @@ HistWorkThread::HistWorkThread
 HistWorkThread::~HistWorkThread( )
 {}
 
+void HistWorkThread::ResetModel( )    // Layer 5
+{
+	m_pEvoHistorySys->EvoCreateResetCommand( );
+}
+
 // GenerationStep - perform one history step towards demanded generation
 //                - update editor state if neccessary
 

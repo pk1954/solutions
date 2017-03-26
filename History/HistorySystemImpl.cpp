@@ -16,7 +16,6 @@ HistorySystemImpl::HistorySystemImpl( ) :
     m_GenCmdList( ),
     m_pHistoryCache( nullptr ),
     m_pHistCacheItemWork( nullptr ),
-    m_pAskHistoryCutFunctor( nullptr ),
     m_pModelDataWork( nullptr )
 { }
 
@@ -26,7 +25,6 @@ HistorySystemImpl::~HistorySystemImpl( )
 
     m_pHistoryCache = nullptr;
     m_pHistCacheItemWork = nullptr;
-    m_pAskHistoryCutFunctor = nullptr;
     m_pModelDataWork = nullptr;
 }
 
@@ -110,6 +108,11 @@ void HistorySystemImpl::createNewGen( GenerationCmd genCmd )
     m_pHistCacheItemWork->SetGenerationCommand( genCmd );
     save2History( );
     CHECK_HISTORY_STRUCTURE;
+}
+
+void HistorySystemImpl::CreateResetCommand( )  // Layer 3 
+{
+    createNewGen( GenerationCmd::RESET );                           
 }
 
 void HistorySystemImpl::CreateAppCommand( unsigned short const uiCmd, short const sParam )
@@ -204,7 +207,7 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
 		break;
 
 	case tGenCmd::reset:
-	    m_pModelDataWork->OnReset( );
+	    m_pModelDataWork->OnReset( );  // call layer 2
 		break;
 
 	default: 
