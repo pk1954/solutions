@@ -126,7 +126,7 @@ void HistorySystemImpl::CreateAppCommand( unsigned short const uiCmd, short cons
 //                   to allow user interaction
 //                 - But actual history generation as alterered by at least 1
 
-void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
+void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )   // Layer 3 
 {
     HIST_GENERATION genActual = m_pHistCacheItemWork->GetHistGenCounter( );
 
@@ -203,7 +203,7 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
 	switch ( genCmd.GetCommand() )
 	{
 	case tGenCmd::nextGen:
-		m_pModelDataWork->OnNextGeneration( );
+		m_pModelDataWork->OnNextGeneration( ); // call layer 2
 		break;
 
 	case tGenCmd::reset:

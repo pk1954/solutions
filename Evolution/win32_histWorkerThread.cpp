@@ -37,21 +37,22 @@ void HistWorkThread::ResetModel( )    // Layer 5
 // GenerationStep - perform one history step towards demanded generation
 //                - update editor state if neccessary
 
-void HistWorkThread::GenerationStep( )
+void HistWorkThread::GenerationStep( )   // Layer 5
 {
-    if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
+    assert( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded );
+
+	m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );
+
+    if ( m_pCore->EditorStateHasChanged( m_pModelWork ) )
     {
-        m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );
-
-        if ( m_pCore->EditorStateHasChanged( m_pModelWork ) )
-        {
-            m_pCore->SaveEditorState( m_pModelWork );
-            m_pEditorWindow->UpdateControls( );
-        }
-
-        postMsg2WorkThread( THREAD_MSG_REFRESH, 0, 0 );
-		WorkThread::PostGenerationStep(  );   // Loop! Will call indirectly HistWorkThread::GenerationStep again
+        m_pCore->SaveEditorState( m_pModelWork );
+        m_pEditorWindow->UpdateControls( );
     }
+
+    postMsg2WorkThread( THREAD_MSG_REFRESH, 0, 0 );
+    
+	if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
+		WorkThread::PostGenerationStep(  );   // Loop! Will call indirectly HistWorkThread::GenerationStep again
 }
 
 void HistWorkThread::GenerationRun( )

@@ -5,9 +5,7 @@
 
 #include "HistorySystem.h"
 #include "EvoModelData.h"
-#include "EvolutionCore.h"
 
-class EvolutionCore;
 class EvoModelFactory;
 class HistAllocThread;
 class StatusBar;
@@ -20,14 +18,14 @@ public:
     EvoHistorySys( );
 	virtual ~EvoHistorySys( );
 
-    void Start( EvolutionCore * const, EvolutionModelData * const, WorkThread * const, StatusBar * const );
+    void Start( EvolutionModelData * const, WorkThread * const, StatusBar * const );
 
     // EvoApproachHistGen - Get closer to demanded HIST_GENERATION
     //                    - If several steps are neccessary, function returns after one displayed generation
     //                      to allow user interaction
     //                    - But actual history generation as alterered by at least 1
 
-    void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); }
+    void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); } // Layer 4
 	
     bool            AddEvoHistorySlot    ( ) const { return m_pHistorySystem->AddHistorySlot( ); }
     int             GetNrOfHistCacheSlots( )       { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
@@ -39,7 +37,7 @@ public:
     HIST_GENERATION GetFirstGenOfIndividual( IndId const & ) const;
     HIST_GENERATION GetLastGenOfIndividual ( IndId const & ) const;
 
-	void EvoCreateResetCommand( );                    // Layer
+	void EvoCreateResetCommand( ) {	m_pHistorySystem->CreateResetCommand( ); }  // Layer 4
 	bool CreateEditorCommand( tEvoCmd, short );
 
 private:

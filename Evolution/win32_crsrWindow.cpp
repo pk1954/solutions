@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "config.h"
 #include "EvoModelData.h"
+#include "EvolutionCore.h"
 #include "win32_crsrWindow.h"
 #include "win32_focusPoint.h"
 

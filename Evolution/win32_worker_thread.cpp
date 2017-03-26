@@ -74,7 +74,7 @@ void WorkThread::ResetModel( )  // Layer 1
     m_pEvolutionCore->ResetModel( m_pModelWork );
 }
 
-void WorkThread::GenerationStep( ) // called by worker thread 
+void WorkThread::GenerationStep( ) // Layer 1
 {
     m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
     m_pEvolutionCore->Compute( m_pModelWork );   // compute next generation
@@ -121,11 +121,11 @@ void WorkThread::DoExit(HWND hwndApp)
 
 DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 {
-    switch (uiMsg)
+    switch (uiMsg)   // Layer 6
     {
         
     case THREAD_MSG_RESET_MODEL:
-        ResetModel( );  // Layer 6/1
+        ResetModel( );  
         break;
 
     case THREAD_MSG_PROCESS_SCRIPT:
@@ -133,7 +133,7 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
         break;
 
     case THREAD_MSG_STEP:
-        GenerationStep( );
+        GenerationStep( );  
         return 0;
 
     case THREAD_MSG_GENERATION_RUN:
@@ -241,7 +241,7 @@ void WorkThread::postMsg2WorkThread( UINT uiMsg, WPARAM wParam, LPARAM lParam )
     }
 }
 
-// procedural interface of worker thread (Layer 6)
+// procedural interface of worker thread (Layer 7)
 
 void WorkThread::PostReset( )
 {
