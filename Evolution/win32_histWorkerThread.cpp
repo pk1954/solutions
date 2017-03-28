@@ -5,7 +5,7 @@
 #include <iostream>
 #include "resource.h"
 #include "EvolutionModelData.h"
-#include "EvolutionCore.h"
+#include "EvoHistorySys.h"
 #include "win32_status.h"
 #include "win32_editor.h"
 #include "win32_histWorkerThread.h"
@@ -15,14 +15,12 @@ using namespace std;
 HistWorkThread::HistWorkThread
 ( 
     wostream           *       pTraceStream,
-    EvolutionCore      * const pCore,
     EvolutionModelData * const pModel,
     EvoHistorySys      * const pHistorySys
 ) :
     WorkThread( pTraceStream ),
     m_genDemanded( 0 ),
     m_pEvoHistorySys( pHistorySys ),
-    m_pCore( pCore ),
     m_pModelWork( pModel )
 { }
 
@@ -39,20 +37,21 @@ void HistWorkThread::ResetModel( )    // Layer 5
 
 void HistWorkThread::GenerationStep( )   // Layer 5
 {
-    assert( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded );
-
-	m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );
-
-    if ( m_pCore->EditorStateHasChanged( m_pModelWork ) )
-    {
-        m_pCore->SaveEditorState( m_pModelWork );
-        m_pEditorWindow->UpdateControls( );
-    }
-
-    postMsg2WorkThread( THREAD_MSG_REFRESH, 0, 0 );
-    
 	if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
-		WorkThread::PostGenerationStep(  );   // Loop! Will call indirectly HistWorkThread::GenerationStep again
+	{
+		m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );
+
+		if ( EditorStateHasChanged( ) )
+		{
+	        SaveEditorState( );
+			m_pEditorWindow->UpdateControls( );
+		}
+
+		postMsg2WorkThread( THREAD_MSG_REFRESH, 0, 0 );
+    
+		if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
+			WorkThread::PostGenerationStep(  );   // Loop! Will call indirectly HistWorkThread::GenerationStep again
+	}
 }
 
 void HistWorkThread::GenerationRun( )
@@ -64,7 +63,7 @@ void HistWorkThread::GenerationRun( )
 void HistWorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, short const sParam )
 {
     if ( m_pEvoHistorySys->CreateEditorCommand( evoCmd, sParam ) )
-        m_pCore->SaveEditorState( m_pModelWork );
+        SaveEditorState( );
 }
 
 void HistWorkThread::StopComputation()

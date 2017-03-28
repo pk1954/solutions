@@ -6,7 +6,6 @@
 #include <iostream>
 #include <sstream> 
 #include "config.h"
-#include "EvolutionCore.h"
 #include "win32_util.h"
 #include "win32_status.h"
 #include "HistAllocThread.h"
@@ -29,10 +28,11 @@ void EvoHistorySys::Start
 (
 	EvolutionModelData * const pEvolutionModelData,
 	WorkThread         * const pWorkThread,
-    StatusBar          * const pStatusBar
+    StatusBar          * const pStatusBar,
+	unsigned long        const ulModelSize
 )
 {
-    LONG const lMaxHistSize         = Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) );
+    LONG const lMaxHistSize         = Util::GetMaxNrOfSlots( ulModelSize );
     LONG const lHistEntriesDemanded = Config::GetConfigValue( Config::tId::nrOfHistorySlots );
 	LONG const lHistEntries         = min( lHistEntriesDemanded, lMaxHistSize * 80 / 100 );  // use only 80% of available memory
 	

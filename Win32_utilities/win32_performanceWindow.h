@@ -44,7 +44,8 @@ public:
 
     void SleepDelay( ) const
     {
-        Sleep( m_dwGenerationDelay );
+		if ( m_dwGenerationDelay > 0 )
+			Sleep( m_dwGenerationDelay );
     };
 
     virtual void DoPaint( );

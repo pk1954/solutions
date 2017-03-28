@@ -5,7 +5,6 @@
 
 #include "gridPoint.h"
 #include "ModelData.h"
-#include "EvoGenerationCmd.h"
 #include "win32_worker_thread.h"
 
 class EvolutionModelData;

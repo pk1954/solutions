@@ -18,7 +18,7 @@ public:
     EvoHistorySys( );
 	virtual ~EvoHistorySys( );
 
-    void Start( EvolutionModelData * const, WorkThread * const, StatusBar * const );
+    void Start( EvolutionModelData * const, WorkThread * const, StatusBar * const, unsigned long const );
 
     // EvoApproachHistGen - Get closer to demanded HIST_GENERATION
     //                    - If several steps are neccessary, function returns after one displayed generation

@@ -55,10 +55,12 @@ public:
 	void PostRunGenerations();
 	void PostStopComputation();
 
-	// functions called by worker thread
+	// functions called by worker thread  ( Layer 1 )
 
-	virtual void ResetModel( );       // Layer 
+	virtual void ResetModel( );       
 	virtual void GenerationStep( );
+	virtual void ApplyEditorCommand( tEvoCmd const, short const );
+	virtual void DoEdit( GridPoint const );
 
 protected:
 
@@ -82,11 +84,11 @@ protected:
 
     void postMsg2WorkThread( UINT, WPARAM, LPARAM );
 
+	BOOL EditorStateHasChanged( );
+	void SaveEditorState( );
+
     virtual void GenerationRun( );
 	virtual void StopComputation();
-	virtual void ApplyEditorCommand( tEvoCmd const, short const );
-	virtual void DoEdit( GridPoint const );
-	virtual void DoExit( HWND );
 
 	BOOL            m_bTrace;
     std::wostream * m_pTraceStream;

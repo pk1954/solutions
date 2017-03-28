@@ -74,6 +74,36 @@ void WorkThread::ResetModel( )  // Layer 1
     m_pEvolutionCore->ResetModel( m_pModelWork );
 }
 
+void WorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, short const sParam )  // Layer 1
+{
+	switch (evoCmd)
+	{
+	case tEvoCmd::editSetBrushMode:
+        m_pModelWork->SetBrushStrategy( static_cast<tBrushMode>( sParam ) );
+        break;
+
+    case tEvoCmd::editSetBrushShape:
+        m_pModelWork->SetBrushShape( static_cast<tShape>( sParam ) );
+		break;
+
+    case tEvoCmd::editSetBrushSize:
+        m_pModelWork->SetBrushSize( sParam );
+		break;
+
+    case tEvoCmd::editSetBrushIntensity:
+        m_pModelWork->SetBrushIntensity( sParam );
+		break;
+
+	default:
+		break;
+	}
+}
+
+void WorkThread::DoEdit( GridPoint const gp )  // Layer 1
+{
+	m_pModelWork->ModelDoEdit( gp );
+}
+
 void WorkThread::GenerationStep( ) // Layer 1
 {
     m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
@@ -83,7 +113,7 @@ void WorkThread::GenerationStep( ) // Layer 1
     ( * m_pDisplayGridFunctor )( FALSE );        // notify all views
 }
 
-void WorkThread::GenerationRun( )
+void WorkThread::GenerationRun( )  // Layer 1
 {
     GenerationStep( );
 
@@ -106,17 +136,6 @@ void WorkThread::processScript( wstring * const pwstr )
 void WorkThread::StopComputation()
 {
 	m_bContinue = FALSE;
-}
-
-void WorkThread::DoEdit( GridPoint const gp )
-{
-	m_pModelWork->ModelDoEdit( gp );
-}
-
-void WorkThread::DoExit(HWND hwndApp)
-{
-	m_bContinue = FALSE;
-	PostMessage(hwndApp, WM_DESTROY, 0, 0);
 }
 
 DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
@@ -182,31 +201,6 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
     return 0;
 }
 
-void WorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, short const sParam )
-{
-	switch (evoCmd)
-	{
-	case tEvoCmd::editSetBrushMode:
-        m_pModelWork->SetBrushIntensity( sParam );
-        break;
-
-    case tEvoCmd::editSetBrushShape:
-        m_pModelWork->SetBrushShape( static_cast<tShape>( sParam ) );
-		break;
-
-    case tEvoCmd::editSetBrushSize:
-        m_pModelWork->SetBrushSize( sParam );
-		break;
-
-    case tEvoCmd::editSetBrushIntensity:
-        m_pModelWork->SetBrushStrategy( static_cast<tBrushMode>( sParam ) );
-		break;
-
-	default:
-		break;
-	}
-}
-
 static DWORD WINAPI WorkerThread( _In_ LPVOID lpParameter )
 {
     WorkThread * const pWT = static_cast<WorkThread *>( lpParameter );
@@ -239,6 +233,16 @@ void WorkThread::postMsg2WorkThread( UINT uiMsg, WPARAM wParam, LPARAM lParam )
         DWORD err = GetLastError( );
         assert( bRes );
     }
+}
+
+BOOL WorkThread::EditorStateHasChanged( ) 
+{ 
+	return m_pEvolutionCore->EditorStateHasChanged( m_pModelWork ); 
+}
+
+void WorkThread::SaveEditorState( ) 
+{ 
+	return m_pEvolutionCore->SaveEditorState( m_pModelWork ); 
 }
 
 // procedural interface of worker thread (Layer 7)

@@ -2,17 +2,16 @@
 
 #pragma once
 
+#include "HistoryGeneration.h"
 #include "win32_worker_thread.h"
-#include "EvoHistorySys.h"
 
 class EvoHistorySys;
-class EvolutionCore;
 class EvolutionModelData;
 
 class HistWorkThread : public WorkThread
 {
 public:
-    HistWorkThread( wostream *, EvolutionCore * const, EvolutionModelData * const, EvoHistorySys * const );
+    HistWorkThread( wostream *, EvolutionModelData * const, EvoHistorySys * const );
     ~HistWorkThread( );
 
 	void PostPrevGeneration();
@@ -38,6 +37,5 @@ private:
 
     HIST_GENERATION      m_genDemanded;
     EvoHistorySys      * m_pEvoHistorySys;
-    EvolutionCore      * m_pCore;
     EvolutionModelData * m_pModelWork;
 };

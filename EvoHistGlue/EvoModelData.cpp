@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "EvoGenerationCmd.h"
 #include "EvolutionModelData.h"
 #include "EvoModelData.h"
 
@@ -23,7 +24,8 @@ void EvoModelData::CopyModelData( ModelData const * const src )
 
 void EvoModelData::OnAppCommand( unsigned short usCmd, short sParam  )
 {
-	switch ( static_cast<tEvoCmd>( usCmd ))
+	tEvoCmd const evoCmd = static_cast<tEvoCmd>( usCmd );
+	switch ( evoCmd )
 	{
 	case tEvoCmd::editSetXvalue:
 		m_gpEdit.x = sParam;
@@ -31,23 +33,14 @@ void EvoModelData::OnAppCommand( unsigned short usCmd, short sParam  )
 
 	case tEvoCmd::editSetYvalue:
 		m_gpEdit.y = sParam;
-		m_pEvolutionModelData->ModelDoEdit( m_gpEdit );
+		m_pWorkThread->WorkThread::DoEdit( m_gpEdit );
 		break;
 
 	case tEvoCmd::editSetBrushShape:
-		m_pEvolutionModelData->SetBrushShape( static_cast<tShape>( sParam ) );
-		break;
-
 	case tEvoCmd::editSetBrushSize:
-		m_pEvolutionModelData->SetBrushSize( sParam );
-		break;
-
 	case tEvoCmd::editSetBrushIntensity:
-		m_pEvolutionModelData->SetBrushIntensity( sParam );
-		break;
-
 	case tEvoCmd::editSetBrushMode:
-		m_pEvolutionModelData->SetBrushStrategy( static_cast<tBrushMode>( sParam ) );
+		m_pWorkThread->WorkThread::ApplyEditorCommand( evoCmd, sParam );
 		break;
 
 	default:
