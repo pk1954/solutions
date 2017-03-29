@@ -62,7 +62,7 @@ public:
         catch ( ScriptErrorHandler::ScriptErrorInfo const & )
         { }
 
-        INT const iCmdShow = script.ScrReadInt( );
+        INT const iCmdShow = script.ScrReadInt( );  // WM_HIDE, WM_SHOW, ...
 
         if ( uiResId > 0 )
         {
@@ -248,10 +248,11 @@ void WinManager::dumpWindowCoordinates( ) const
                  << GetWindowTop    ( hwnd ) << L" "
                  << GetWindowWidth  ( hwnd ) << L" "
                  << GetWindowHeight ( hwnd ) << endl;
-
             ostr << L"ShowWindow " 
                 << it.second.m_wstr << L" "
-                << ( IsWindowVisible( hwnd ) ? L"SW_SHOW" : L"SW_HIDE" ) << endl;
+                << ( IsWindowVisible( hwnd ) 
+					? ( IsZoomed( hwnd ) ? L"SW_MAXIMIZE" : L"SW_SHOWNORMAL" )
+					: L"SW_HIDE" ) << endl;
         }
     }
 
@@ -280,6 +281,9 @@ WinManager::WinManager( ) :
     DEF_WINMAN_FUNC( ShowWindow );
     DEF_WINMAN_FUNC( MonitorConfiguration );
 
+    DEF_ULONG_CONST( SW_RESTORE );
+    DEF_ULONG_CONST( SW_SHOWNORMAL );
+    DEF_ULONG_CONST( SW_MAXIMIZE );
     DEF_ULONG_CONST( SW_SHOW );
     DEF_ULONG_CONST( SW_HIDE );
 

@@ -47,3 +47,4 @@ private:
 };
 
 std::wostream & operator << ( std::wostream &, HIST_GENERATION const & );
+std:: ostream & operator << ( std:: ostream &, HIST_GENERATION const & );

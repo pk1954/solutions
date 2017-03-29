@@ -45,12 +45,12 @@ private:
     HWND const m_hWnd;
     BOOL       m_bDimmIndividuals;   
 
-    EvolutionCore  * const m_pCore;
-    EvolutionModelData      * const m_pModelWork;
-    FrameBuffer    * const m_pFrameBuffer;
-    DspOptWindow   * const m_pDspOptWindow;
-    GridRect const * const m_pGridRectSel;
-    D3dBuffer      *       m_pD3dBuffer;
+    EvolutionCore      * const m_pCore;
+    EvolutionModelData * const m_pModelWork;
+    FrameBuffer        * const m_pFrameBuffer;
+    DspOptWindow       * const m_pDspOptWindow;
+    GridRect const     * const m_pGridRectSel;
+    D3dBuffer          *       m_pD3dBuffer;
 
     static UINT const MAX_BG_COLOR = 255;
 

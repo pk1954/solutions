@@ -306,7 +306,6 @@ void WorkThread::PostGenerationStep(  )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
 
-    wcout << __FUNCTION__ << endl;
     postMsg2WorkThread( THREAD_MSG_STEP, 0, 0 );
 }
 

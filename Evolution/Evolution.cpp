@@ -34,12 +34,12 @@ int APIENTRY _tWinMain
 
 	SetThreadAffinityMask( GetCurrentThread( ), 0x0001 );
 
-    AppWindow App;
-    App.Start( hInstance, lpCmdLine );
-
 	Util::StdOutConsole( );
     InitCommonControls( ); // loads common control's DLL 
     
+    AppWindow App;
+    App.Start( hInstance, lpCmdLine );
+
 //lint -e1924  C-style cast
 
     HACCEL const hAccelTable = LoadAccelerators( hInstance, MAKEINTRESOURCE(IDC_EVOLUTION_MAIN) );

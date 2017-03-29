@@ -221,7 +221,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
     m_pWinManager->GetWindowConfiguration( );
 
-    ShowWindow( hWndApp, SW_SHOWMAXIMIZED );
+//    ShowWindow( hWndApp, SW_SHOWMAXIMIZED );
     (void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 
 	Script::ProcessScript( L"std_script.in" );

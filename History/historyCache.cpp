@@ -215,6 +215,7 @@ void HistoryCache::Save2CacheSlot
     short         const   iSlotNr
 )
 {
+    std::cout << __FUNCTION__ << " " << iSlotNr << endl;
     GetHistCacheItem( iSlotNr )->CopyCacheItem( & source );
 }
 

@@ -27,6 +27,7 @@ public:
 
 	virtual void CopyCacheItem( HistCacheItem const * const pSrc )
     {
+        std::cout << __FUNCTION__ << " Gen" << pSrc->m_genHistCounter << " ->" << m_genHistCounter << endl << flush;
         m_pModelData->CopyModelData( pSrc->m_pModelData );
         m_genHistCounter = pSrc->m_genHistCounter;
         m_genCmd         = pSrc->m_genCmd;
