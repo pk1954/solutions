@@ -71,15 +71,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

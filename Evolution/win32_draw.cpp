@@ -138,12 +138,10 @@ void DrawFrame::DoPaint( KGridRect const &pkgr )
 
         if ( m_pDspOptWindow->AreIndividualsVisible( ) )
         {
-            GridRect rcGrid( m_pFrameBuffer->Pixel2GridRect( Util::GetClRect( m_hWnd ) ) );
-
-            rcGrid.ClipToGrid( );
-
+            GridRect        rcGrid( m_pFrameBuffer->Pixel2GridRect( Util::GetClRect( m_hWnd ) ) );
             GridPoint const gpPoi = m_pCore->FindPOI( m_pModelWork );
             drawPOI( gpPoi );
+            rcGrid.ClipToGrid( );
             drawIndividuals( rcGrid );
             m_pD3dBuffer->RenderRects( ); 
 

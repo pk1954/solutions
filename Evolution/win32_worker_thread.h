@@ -27,7 +27,7 @@ class DisplayAll;
 class WorkThread
 {
 public:
-	// Layer : called by main thread
+	// Layer 7 : called by main thread
 	
 	explicit WorkThread( std::wostream * );
     ~WorkThread( );

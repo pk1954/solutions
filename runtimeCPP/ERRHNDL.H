@@ -26,6 +26,7 @@ public:
     static void numericError( void );
     static void negativeError( void );
     static void symbolError( std::wstring const & );
+	static void semanticError( std::wstring const & );
     static void typeError( void );
     static void funcNameError( void );
     static void inputFileError( void );

@@ -1,0 +1,664 @@
+PostRefresh
+PostSetBrushMode tBrushMode::randomStrategy
+PostDoEdit   64  56 
+PostRefresh
+PostDoEdit  109  53 
+PostRefresh
+PostSetBrushMode tBrushMode::mutRate
+PostRefresh
+PostDoEdit   87  47 
+PostRefresh
+PostDoEdit   77  51 
+PostRefresh
+PostDoEdit   96  51 
+PostRefresh
+PostDoEdit   96  51 
+PostRefresh
+PostSetBrushMode tBrushMode::fertility
+PostRefresh
+PostDoEdit   42  70 
+PostRefresh
+PostDoEdit   42  70 
+PostRefresh
+PostDoEdit   43  68 
+PostRefresh
+PostDoEdit   47  60 
+PostRefresh
+PostDoEdit   48  58 
+PostRefresh
+PostDoEdit   56  46 
+PostRefresh
+PostDoEdit   57  45 
+PostRefresh
+PostDoEdit   65  33 
+PostRefresh
+PostDoEdit   65  32 
+PostRefresh
+PostDoEdit   66  31 
+PostRefresh
+PostDoEdit   70  28 
+PostRefresh
+PostDoEdit   70  27 
+PostRefresh
+PostDoEdit   71  27 
+PostRefresh
+PostDoEdit   71  26 
+PostRefresh
+PostDoEdit   72  26 
+PostRefresh
+PostDoEdit   73  26 
+PostRefresh
+PostDoEdit   74  26 
+PostRefresh
+PostDoEdit   78  25 
+PostRefresh
+PostDoEdit   79  25 
+PostRefresh
+PostDoEdit   82  28 
+PostRefresh
+PostDoEdit   85  33 
+PostRefresh
+PostDoEdit   85  34 
+PostRefresh
+PostDoEdit   86  35 
+PostRefresh
+PostDoEdit   86  36 
+PostRefresh
+PostDoEdit   86  37 
+PostRefresh
+PostDoEdit   86  37 
+PostRefresh
+PostDoEdit   87  38 
+PostRefresh
+PostDoEdit   87  39 
+PostRefresh
+PostDoEdit   87  39 
+PostRefresh
+PostDoEdit   89  44 
+PostRefresh
+PostDoEdit   89  44 
+PostRefresh
+PostDoEdit   89  45 
+PostRefresh
+PostDoEdit   90  45 
+PostRefresh
+PostDoEdit   90  46 
+PostRefresh
+PostDoEdit   90  46 
+PostRefresh
+PostDoEdit   92  48 
+PostRefresh
+PostDoEdit   94  50 
+PostRefresh
+PostDoEdit   97  53 
+PostRefresh
+PostDoEdit   97  54 
+PostRefresh
+PostDoEdit   98  54 
+PostRefresh
+PostDoEdit   98  55 
+PostRefresh
+PostDoEdit   99  55 
+PostRefresh
+PostDoEdit   99  56 
+PostRefresh
+PostDoEdit   99  56 
+PostRefresh
+PostDoEdit  100  57 
+PostRefresh
+PostDoEdit  100  57 
+PostRefresh
+PostDoEdit  102  59 
+PostRefresh
+PostDoEdit  102  60 
+PostRefresh
+PostDoEdit  102  60 
+PostRefresh
+PostDoEdit  102  60 
+PostRefresh
+PostDoEdit  103  61 
+PostRefresh
+PostDoEdit  103  61 
+PostRefresh
+PostDoEdit  105  63 
+PostRefresh
+PostDoEdit  110  66 
+PostRefresh
+PostDoEdit  111  66 
+PostRefresh
+PostDoEdit  111  66 
+PostRefresh
+PostDoEdit  113  67 
+PostRefresh
+PostDoEdit  118  69 
+PostRefresh
+PostDoEdit  118  69 
+PostRefresh
+PostDoEdit  118  69 
+PostRefresh
+PostDoEdit  120  70 
+PostRefresh
+PostDoEdit  124  70 
+PostRefresh
+PostDoEdit  128  69 
+PostRefresh
+PostDoEdit  129  69 
+PostRefresh
+PostDoEdit  130  68 
+PostRefresh
+PostDoEdit  131  68 
+PostRefresh
+PostDoEdit  132  68 
+PostRefresh
+PostDoEdit  133  67 
+PostRefresh
+PostDoEdit  134  67 
+PostRefresh
+PostDoEdit  140  64 
+PostRefresh
+PostDoEdit  142  63 
+PostRefresh
+PostDoEdit  143  63 
+PostRefresh
+PostDoEdit  143  62 
+PostRefresh
+PostDoEdit  144  62 
+PostRefresh
+PostDoEdit  144  62 
+PostRefresh
+PostDoEdit  145  62 
+PostRefresh
+PostDoEdit  145  61 
+PostRefresh
+PostDoEdit  146  61 
+PostRefresh
+PostDoEdit  146  60 
+PostRefresh
+PostDoEdit  147  59 
+PostRefresh
+PostDoEdit  147  59 
+PostRefresh
+PostDoEdit  147  59 
+PostRefresh
+PostDoEdit  147  59 
+PostRefresh
+PostDoEdit  148  59 
+PostRefresh
+PostDoEdit  148  58 
+PostRefresh
+PostDoEdit  149  57 
+PostRefresh
+PostDoEdit  150  57 
+PostRefresh
+PostDoEdit  150  56 
+PostRefresh
+PostDoEdit  150  56 
+PostRefresh
+PostDoEdit  151  56 
+PostRefresh
+PostDoEdit  151  56 
+PostRefresh
+PostDoEdit  152  55 
+PostRefresh
+PostDoEdit  154  51 
+PostRefresh
+PostDoEdit  157  46 
+PostRefresh
+PostDoEdit  158  42 
+PostRefresh
+PostDoEdit  158  41 
+PostRefresh
+PostDoEdit  159  41 
+PostRefresh
+PostDoEdit  159  40 
+PostRefresh
+PostDoEdit  159  40 
+PostRefresh
+PostDoEdit  159  39 
+PostRefresh
+PostDoEdit  159  39 
+PostRefresh
+PostDoEdit  159  39 
+PostRefresh
+PostDoEdit  159  37 
+PostRefresh
+PostDoEdit  159  37 
+PostRefresh
+PostDoEdit  159  37 
+PostRefresh
+PostDoEdit  159  36 
+PostRefresh
+PostDoEdit  159  36 
+PostRefresh
+PostDoEdit  160  35 
+PostRefresh
+PostDoEdit  160  34 
+PostRefresh
+PostDoEdit  161  32 
+PostRefresh
+PostDoEdit  161  31 
+PostRefresh
+PostDoEdit  161  31 
+PostRefresh
+PostDoEdit  161  31 
+PostRefresh
+PostDoEdit  161  31 
+PostRefresh
+PostDoEdit  161  31 
+PostRefresh
+PostDoEdit  161  31 
+PostRefresh
+PostDoEdit  162  28 
+PostRefresh
+PostDoEdit  162  28 
+PostRefresh
+PostDoEdit  162  28 
+PostRefresh
+PostDoEdit  162  28 
+PostRefresh
+PostDoEdit  162  27 
+PostRefresh
+PostDoEdit  162  27 
+PostRefresh
+PostDoEdit  162  26 
+PostRefresh
+PostDoEdit  162  26 
+PostRefresh
+PostDoEdit  163  25 
+PostRefresh
+PostDoEdit  163  24 
+PostRefresh
+PostDoEdit  163  24 
+PostRefresh
+PostDoEdit  163  24 
+PostRefresh
+PostDoEdit  163  23 
+PostRefresh
+PostDoEdit  163  23 
+PostRefresh
+PostDoEdit  163  22 
+PostRefresh
+PostDoEdit  163  21 
+PostRefresh
+PostDoEdit  163  21 
+PostRefresh
+PostDoEdit  163  21 
+PostRefresh
+Break
+PostGotoGeneration  440
+PostGenerationStep
+PostGotoGeneration  440
+PostGenerationStep
+PostGenerationStep
+PostGotoGeneration  189
+PostGenerationStep
+PostGotoGeneration  189
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostRefresh
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostRefresh
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGotoGeneration  129
+PostGenerationStep
+PostGotoGeneration  129
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostRefresh
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostRefresh
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGotoGeneration  479
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep

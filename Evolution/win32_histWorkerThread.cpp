@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include "resource.h"
+#include "errhndl.h"
 #include "EvolutionModelData.h"
 #include "EvoHistorySys.h"
 #include "win32_status.h"
@@ -124,7 +125,8 @@ void HistWorkThread::PostGotoGeneration( HIST_GENERATION const gen )
         * m_pTraceStream << __func__ << L" " << gen << endl;
 
     assert( gen >= 0 );
-    assert( gen <= m_pEvoHistorySys->GetHistorySystem( )->GetYoungestGeneration( ) );
+    if ( gen > m_pEvoHistorySys->GetHistorySystem( )->GetYoungestGeneration( ) )
+		ScriptErrorHandler::semanticError( L"PostGotoGeneration - GenNr too big");
 
 	postGotoGeneration( gen );
 }

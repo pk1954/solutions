@@ -86,7 +86,14 @@ void ScriptErrorHandler::symbolError( wstring const & wstrKey )
 {  
    throwError( 970, L"unknown symbolic name: "  + wstrKey );
 }
-             
+
+//   semanticError
+
+void ScriptErrorHandler::semanticError( std::wstring const & wstrText )
+{  
+   throwError( 1000, L"semantic error: "  + wstrText );
+}
+
 //   ScriptTypeError: Unexpected type of symbolic const in script file
 
 void ScriptErrorHandler::typeError( )
