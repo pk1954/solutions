@@ -35,8 +35,6 @@ public:
     bool operator< ( const Symbol & ) const;
 
     tSTYPE         const   GetSymbolType ( ) const { return m_type; };
-
-    //lint -esym( 613, Symbol::m_pFunc )    Possible use of null pointer
     double         const   GetFloatConst ( ) const { assert( m_type == tSTYPE::FloatConst  ); return   m_dValue;    };
     Script_Functor const & GetFunction   ( ) const { assert( m_type == tSTYPE::Function    ); return * m_pFunc;     };
     wstring        const & GetStringConst( ) const { assert( m_type == tSTYPE::StringConst ); return   m_wstrValue; };

@@ -17,9 +17,6 @@
 
 using namespace std;
 
-//lint -e534                                      ignoring return value of function
-//lint -esym( 613, InputBuffer::m_pwchStart )     possible use of nullptr
-
 InputBuffer::InputBuffer( ) 
   :  m_wstrLine( ),
      m_ifstream( )

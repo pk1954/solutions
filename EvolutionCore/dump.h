@@ -6,7 +6,6 @@
 #include <fstream>
 #include <iostream>
 
-//lint -esym( 763, GridField )    redundant declaration
 class  Grid;
 class  GridField;
 // class  GenerationCmd;

@@ -1,10 +1,6 @@
 // win32_appWindow.cpp
 //
 
-//lint -e1924                // C-style cast
-//lint -e613                 // usage of nullptr
-//   lint -esym( 715, script )  // not referenced
-
 #include "stdafx.h"
 
 // EvolutionCore interfaces
@@ -19,9 +15,6 @@
 
 #include "EvoHistorySys.h"
 #include "win32_histWorkerThread.h"
-
-// DEBUG only
-#include "win32_frameBuffer.h"
 
 // interfaces of various windows
 
@@ -84,8 +77,6 @@ private:
 
     StatusBar * m_pStatusBar;
 };
-
-//lint -esym( 715, hInstance )  // not referenced
 
 AppWindow::AppWindow( ) :
     BaseWindow( ),

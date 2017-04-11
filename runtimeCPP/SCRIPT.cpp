@@ -14,10 +14,7 @@
 #include "scanner.h"
 #include "errhndl.h"
 #include "script.h"
-//lint -e1401  some member variables of class Symbol not initialized
 #include "symtab.h"
-
-//lint -esym( 613, Script::m_pScanAct )   // possible use of nullptr
 
 Script_Functor const * Script::m_pWrapHook = nullptr;
 
