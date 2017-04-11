@@ -90,6 +90,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <LibraryPath>$(SolutionDir)\x64\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
