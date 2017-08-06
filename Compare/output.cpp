@@ -1,4 +1,4 @@
-// output.cpp - output to test protocoll file
+// output.cpp - output to test protocol file
 
 #include "stdafx.h"
 #include "scanner.h"

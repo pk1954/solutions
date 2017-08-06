@@ -9,6 +9,8 @@
 class NegativeList
 {
 public:
+	virtual ~NegativeList( ) {};
+
 	bool    Add      ( unsigned long, wstring const & );
 	bool    SetActive( unsigned long, bool );
 	void    SetAllActive( bool );

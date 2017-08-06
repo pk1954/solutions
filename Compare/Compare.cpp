@@ -10,8 +10,12 @@
 #include "errhndl.h"
 #include "negList.h"
 #include "output.h"
+#include "RTF_output.h"
+#include "text_output.h"
 
 static wstring strVersion = L"COMPARE V1.2";
+
+static OutputDriver * pOut;
 
 static void UpperCase( wstring & str )
 {
@@ -21,16 +25,16 @@ static void UpperCase( wstring & str )
 
 static void Error( wstring const & strMsg, wstring const & strString )
 {
-   Standard();
-   StartParagraph( 2 );
-   Italics( L"comparison failed" );
-   StartParagraph();
-   Italics( strMsg );
-   StartParagraph();
-   Bold( strString );
-   StartParagraph( 2 );
-   Italics( L"+++ not ok" );
-   StartParagraph();
+   pOut->Standard();
+   pOut->StartParagraph( 2 );
+   pOut->Italics( L"comparison failed" );
+   pOut->StartParagraph();
+   pOut->Italics( strMsg );
+   pOut->StartParagraph();
+   pOut->Bold( strString );
+   pOut->StartParagraph( 2 );
+   pOut->Italics( L"+++ not ok" );
+   pOut->StartParagraph();
    exit(4);
 }
 
@@ -69,11 +73,11 @@ static void PrintRestOfResFile( wifstream & ifResults )
 	{
 		getline( ifResults, wstrLine );
    
-		StartParagraph();
-		Output( wstrLine );
+		pOut->StartParagraph();
+		pOut->Output( wstrLine );
 	}        
-	StartParagraph();
-	StartParagraph();
+	pOut->StartParagraph();
+	pOut->StartParagraph();
 }
       
 static wstring GetResLine
@@ -89,15 +93,15 @@ static wstring GetResLine
 		wstring strFound = negList.Check( wstrLine );
 		if ( ! strFound.empty( ) )
 		{
-			std::string::size_type pos = wstrLine.find( strFound );
-			StartParagraph();    	    
-			Output( wstrLine.substr( 0, pos ) );                                       // print faulty line 
-			BoldUnderlined( strFound );                                                // with with accentuation of found negative spec  
-			Output( wstrLine.substr( pos + strFound.length( ), wstrLine.length( ) ) ); // rest of line 
+			string::size_type pos = wstrLine.find( strFound );
+			pOut->StartParagraph();    	    
+			pOut->Output( wstrLine.substr( 0, pos ) );                                       // print faulty line 
+			pOut->BoldUnderlined( strFound );                                                // with with accentuation of found negative spec  
+			pOut->Output( wstrLine.substr( pos + strFound.length( ), wstrLine.length( ) ) ); // rest of line 
 			PrintRestOfResFile( ifResults );
 			Error( L"Following string is not allowed here:", strFound );
 		}
-		StartParagraph();
+		pOut->StartParagraph();
 		return wstrLine;
 	}
 	else
@@ -123,13 +127,13 @@ static void FindString
 
 		if ( wstring::npos == pos )
 		{
-			Output( wstrLine );
+			pOut->Output( wstrLine );
 		}
 		else
 		{   
-			Output( wstrLine.substr( 0, pos ) );                                         // print faulty line 
-			Bold( strPosSpec );                                                          // with with accentuation of found positive spec  
-			Output( wstrLine.substr( pos + strPosSpec.length( ), wstrLine.length( ) ) ); // rest of line 
+			pOut->Output( wstrLine.substr( 0, pos ) );                                         // print faulty line 
+			pOut->Bold( strPosSpec );                                                          // with with accentuation of found positive spec  
+			pOut->Output( wstrLine.substr( pos + strPosSpec.length( ), wstrLine.length( ) ) ); // rest of line 
 			return;            // positive exit
 		}
 	}
@@ -222,11 +226,11 @@ static void ProcessSpecFile
 	    wstring wstrLine = GetResLine( ifResults, negList );
 		if ( wstrLine.empty( ) )
 			break;
-        StartParagraph();
-        Output( wstrLine );
+        pOut->StartParagraph();
+        pOut->Output( wstrLine );
     }        
 
-    StartParagraph( 2 );
+    pOut->StartParagraph( 2 );
 }
 
 int main( int argc, char * argv[] )
@@ -243,30 +247,26 @@ int main( int argc, char * argv[] )
 		wstring strSpecFile = toWstring( argv[2] );
 		wstring strOptions;
 
-		tOUTPUT output = tOUTPUT::Nothing;
-
 		if  ( argc >= 4 )
-		{
 			strOptions = toWstring( argv[3] );
-			if ( L"/RTF" == strOptions )
-				output = tOUTPUT::RTF;
-			if ( L"/Text" == strOptions )
-				output = tOUTPUT::Text;
-		}
+
+		if ( L"/RTF" == strOptions )
+			pOut = new RTFOutput( );
+		else if ( L"/Text" == strOptions )
+			pOut = new TextOutput;
+		else 
+			pOut = new OutputDriver;
 
 		UpperCase( strResFile );
 		UpperCase( strSpecFile );
 
-		InitOutput( output );
-		atexit( TerminateOutput );
-
-		StartParagraph();
-		Italics( strVersion );
-		StartParagraph();
-		Italics( L"Spec file:   " + strSpecFile );
-		StartParagraph( 3 );
-		Italics( L"Result file: " + strResFile );
-		StartParagraph();
+		pOut->StartParagraph();
+		pOut->Italics( strVersion );
+		pOut->StartParagraph();
+		pOut->Italics( L"Spec file:   " + strSpecFile );
+		pOut->StartParagraph( 3 );
+		pOut->Italics( L"Result file: " + strResFile );
+		pOut->StartParagraph();
 
 		wifstream ifResults;
 
@@ -277,12 +277,12 @@ int main( int argc, char * argv[] )
 			return 2;
 		}
 
-		LightGrey();
+		pOut->LightGrey();
 		ProcessSpecFile( ifResults, strSpecFile );
-		Standard();
-		StartParagraph( 2 );
-		Italics( L"+++ ok" );
-		StartParagraph();
+		pOut->Standard();
+		pOut->StartParagraph( 2 );
+		pOut->Italics( L"+++ ok" );
+		pOut->StartParagraph();
 	}
 
 	return 0;

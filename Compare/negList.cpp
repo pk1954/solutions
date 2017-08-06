@@ -17,7 +17,7 @@ bool NegativeList::Add
 	if ( m_negSpecs.end() != m_negSpecs.find( ulIndex ) )
 		return false;
 
-	m_negSpecs[ ulIndex ] = StrInfo( true, wstr );   
+	m_negSpecs.emplace( ulIndex, StrInfo( true, wstr ) );   
 	return true;
 }
 

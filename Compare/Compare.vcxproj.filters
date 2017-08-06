@@ -30,6 +30,12 @@
     <ClInclude Include="negList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="text_output.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RTF_output.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -38,10 +44,13 @@
     <ClCompile Include="Compare.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="output.cpp">
+    <ClCompile Include="negList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="negList.cpp">
+    <ClCompile Include="RTF_output.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="text_output.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
