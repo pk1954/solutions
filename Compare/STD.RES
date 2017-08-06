@@ -1,5 +1,7 @@
 # STD.RES
 
+# F_5_RES.RES - Negativspezifikation an erlaubter Stelle
 abc
-blah blah xyz
-nochwas
+Error
+def
+xyz 

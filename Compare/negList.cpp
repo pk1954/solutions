@@ -47,7 +47,7 @@ wstring NegativeList::Check( wstring const & wsrtTestling ) const
 {
 	for ( auto & i: m_negSpecs )
 	{
-		if ( wstring::npos != wsrtTestling.find( i.second.m_wstrNeg ) )
+		if ( i.second.m_fActive && ( wstring::npos != wsrtTestling.find( i.second.m_wstrNeg ) ) )
 			return i.second.m_wstrNeg;
 	}
 	

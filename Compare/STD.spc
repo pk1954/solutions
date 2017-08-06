@@ -1,9 +1,9 @@
-# E:\pk\_H\Testtool\COMPARE\TEST\F_7.spc
+# STD.spc
 
-# Negative Specs
-1 = "Error"
-
-# Positive Specs
-
-"abc"
-"xyz"
+## F_5_SPC.SPC 
+1 = "Error"  # Darf nicht vorkommen!
+"abc"        # 
+1 -          # Ab hier ist ‘Error’ erlaubt
+"def"        # 
+1 +          # Ab hier ist ‘Error’ wieder verboten
+"xyz"        # 

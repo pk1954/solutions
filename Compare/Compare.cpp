@@ -80,14 +80,13 @@ static void PrintRestOfResFile( wifstream & ifResults )
 	pOut->StartParagraph();
 }
       
-static wstring GetResLine
+static bool GetResLine
 ( 
 	wifstream          & ifResults,
-	NegativeList const & negList 
+	NegativeList const & negList,
+	wstring            & wstrLine 
 )
 {
-	wstring wstrLine;
-
 	if ( getline( ifResults, wstrLine ) )
     {               
 		wstring strFound = negList.Check( wstrLine );
@@ -102,10 +101,10 @@ static wstring GetResLine
 			Error( L"Following string is not allowed here:", strFound );
 		}
 		pOut->StartParagraph();
-		return wstrLine;
+		return true;
 	}
 	else
-		return L"";
+		return false;
 }
 
 static void FindString
@@ -115,13 +114,12 @@ static void FindString
 	NegativeList const & negList	
 )
 {
+    wstring wstrLine;
+
 	for (;;)
 	{
-	    wstring wstrLine = GetResLine( ifResults, negList );
-		if ( wstrLine.empty( ) )
-		{
+		if ( ! GetResLine( ifResults, negList, wstrLine ) )
 			Error( L"Specified string not found:", strPosSpec );
-		}
 
 		wstring::size_type pos = wstrLine.find( strPosSpec );
 
@@ -187,45 +185,47 @@ static void ProcessSpecFile
 
     spec.OpenInputFile( strSpecFile );
       
-    while ( (token = spec.NextToken( false )) != tTOKEN::End )
+	while ( (token = spec.NextToken( false )) != tTOKEN::End )
     {
-       if ( token == tTOKEN::Number )   
-       {                                   
-          unsigned long ulValue = spec.GetUlong( );
-          wchar_t chFound = ReadOneOf( spec, L"+-=" );
-          if ( chFound == '=' )
-		  {
-             spec.NextToken( true );
-             if ( ! negList.Add( ulValue, spec.GetString( ) ) )
-		        SpecError( spec, L"Redefinition of negative Spec", L"" );
-		  }
-          else
-		  {
-             if ( ! negList.SetActive( ulValue, chFound == '+' ) )
-	   	       SpecError( spec, L"Number undefined", L"" );
-		  }
-       }
-       else if ( token == tTOKEN::String )
-       {
-          FindString( ifResults, spec.GetString( ), negList );
-       }
-       else if ( (token == tTOKEN::Special) && (spec.GetCharacter( ) == '*') )  
-       {                               
-          negList.SetAllActive( ReadOneOf( spec, L"+-" ) == '+' );
-       }
-       else
-       {
-          SpecError( spec, L"bad token", L"number, string or '*'" );
-       }
-    }
+		if ( token == tTOKEN::Number )   
+		{                                   
+			unsigned long ulValue = spec.GetUlong( );
+			wchar_t chFound = ReadOneOf( spec, L"+-=" );
+			if ( chFound == '=' )
+			{
+				token = spec.NextToken( true );
+				if ( token != tTOKEN::String )
+					SpecError( spec, L"bad token", L"string" );
+				if ( ! negList.Add( ulValue, spec.GetString( ) ) )
+					SpecError( spec, L"Redefinition of negative Spec", L"" );
+			}
+			else  // + or -
+			{
+				bool bSetActive = (chFound == '+');
+				if ( ! negList.SetActive( ulValue, bSetActive ) )
+	   				SpecError( spec, L"Number undefined", L"" );
+			}
+		}
+		else if ( token == tTOKEN::String )
+		{
+			FindString( ifResults, spec.GetString( ), negList );
+		}
+		else if ( (token == tTOKEN::Special) && (spec.GetCharacter( ) == '*') )  
+		{                               
+			negList.SetAllActive( ReadOneOf( spec, L"+-" ) == '+' );
+		}
+		else
+		{
+			SpecError( spec, L"bad token", L"number, string or '*'" );
+		}
+	}
    
 	spec.CloseInputFile( );
 
-	for (;;)
+    wstring wstrLine;
+
+	while ( GetResLine( ifResults, negList, wstrLine ) )
 	{
-	    wstring wstrLine = GetResLine( ifResults, negList );
-		if ( wstrLine.empty( ) )
-			break;
         pOut->StartParagraph();
         pOut->Output( wstrLine );
     }        
@@ -284,6 +284,8 @@ int main( int argc, char * argv[] )
 		pOut->Italics( L"+++ ok" );
 		pOut->StartParagraph();
 	}
+
+	delete pOut;
 
 	return 0;
 }
