@@ -127,6 +127,21 @@ void ScriptErrorHandler::ScrSetOutputStream( std::wostream * const out )
     m_pScriptTrace = out;
 }
 
+void ScriptErrorHandler::PrintMarkerLine( Scanner const & scanner )
+{
+    int const iStartPos = scanner.GetActStartPos( );
+    int const iEndPos   = scanner.GetActEndPos( );
+    int       iRun;
+
+    for ( iRun = 0; iRun < iStartPos; iRun++ ) 
+        * m_pScriptTrace << L' ' ;                          // leading blanks 
+
+    for ( ; iRun < iEndPos; iRun++ ) 
+        * m_pScriptTrace << L'^';                           // markers for faulty token
+
+    * m_pScriptTrace << L' ' << endl;
+}
+
 void ScriptErrorHandler::handleScriptError
 ( 
     ScriptErrorInfo const & errInfo,
@@ -140,21 +155,9 @@ void ScriptErrorHandler::handleScriptError
     if ( iLineNr > 0 )
         * m_pScriptTrace << L"*** line " << iLineNr << endl;
 
-    * m_pScriptTrace << scanner.GetActLine( );                 // print actual line 
+    * m_pScriptTrace << scanner.GetActLine( );
 
-    {
-        int const iStartPos = scanner.GetActStartPos( );
-        int const iEndPos   = scanner.GetActEndPos( );
-        int       iRun;
-
-        for ( iRun = 0; iRun < iStartPos; iRun++ ) 
-            * m_pScriptTrace << L' ' ;                          // leading blanks 
-
-        for ( ; iRun < iEndPos; iRun++ ) 
-            * m_pScriptTrace << L'^';                           // markers for faulty token
-
-        * m_pScriptTrace << L' ' << endl;
-    }
+	PrintMarkerLine( scanner );
 
     if ( ! errInfo.m_wstrMessage.empty() )
         * m_pScriptTrace << L"*** " << errInfo.m_wstrMessage << endl;

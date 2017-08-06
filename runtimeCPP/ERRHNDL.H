@@ -42,7 +42,7 @@ public:
     };
 
     static void handleScriptError( ScriptErrorInfo const &, Scanner const & );
-
+	static void PrintMarkerLine( Scanner const & );
     static void ScrSetOutputStream( wostream * const );
 
 private:
