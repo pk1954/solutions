@@ -55,6 +55,8 @@ public:
 
     void SetExpectedToken( wstring const & wstrExp ) { m_wstrExpected = wstrExp; }
 
+	wchar_t ReadOneOf ( wstring const & );
+
 private:
     wchar_t SkipSpace    ( );
     tTOKEN  ScanName     ( wchar_t );

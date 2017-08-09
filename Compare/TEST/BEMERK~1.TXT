@@ -1,0 +1,16 @@
+1. In einer Korn shell fragt man mit echo $? den letzten Status eines Komandos ab. Allerdings 
+   ist das Ergebnis immer unabhaengig von den Files 0. Mein Problem mit der Shell oder ein Fehler? 
+   Wie geht das unter NT-Shell? Errorlevel?
+2. siehe tests\*1.txt --> Bedeutet dies, dass Strings mit verschiedenen Zeilenbeziehungen in 
+   einer Zeile der Testspec stehen duerfen. Offensichtlichkeit der Testspec.
+3. Bei langen Testspecs ist es bald schwierig Fehlerzeilen zu finden (Angabe der Fehlerzeile mit Nummer). 
+   (siehe auch tests\*2.txt)
+4. Aehnliches bei negativ Specs, vielleicht die treffende neg.Spec.Nummer mit angeben.
+5. Syntax Fehler? siehe tests\*3.txt
+6. Eine exaktere Beschreibung der Zeile ware von Vorteil. Ein reiner toleranter Stringvergleich 
+   kann leicht zu Fehlern fuehren. Insbesondere falls sich pos und negativ Spec wiedersprechen.
+   Syntax: pattern matching wie bei sed. z.B. ^=Zeilenanfang *=wildcard $=Zeilenende etc.
+
+
+
+

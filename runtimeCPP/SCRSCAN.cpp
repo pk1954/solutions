@@ -207,6 +207,37 @@ tTOKEN Scanner::ScanCharacter( )
    return tTOKEN::Character;
 }
 
+// ReadOneOf: Try to read one of a group of given characters
+   
+wchar_t Scanner::ReadOneOf( wstring const & strValid ) 
+{ 
+	wchar_t chRes = (wchar_t)0;                      
+
+	SetExpectedToken( L"one of \"" + strValid + L"\"" );
+
+	switch ( NextToken( true ) )
+	{
+		case tTOKEN::End:         // end of file reached 
+            ScriptErrorHandler::eofError( );
+			break;
+      
+		case tTOKEN::Special:
+			{
+				chRes = GetCharacter( );                      
+				if ( strValid.find( chRes ) == wstring::npos )
+					ScriptErrorHandler::charError( );
+				break;
+			}
+			break;
+         
+		default: 
+			ScriptErrorHandler::tokenError( );
+			break;
+	}
+
+   return chRes; 
+}
+
 //   NextToken: Try to read next token and return type of token
 //   if Parameter fStartMarker is true, the marker, which is displayed in case
 //   of error is reset, otherwise the marker continues from the previous token.

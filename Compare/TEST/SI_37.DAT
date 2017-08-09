@@ -1,0 +1,45 @@
+# Test SI_37
+# Erfolgt keine Bewegung nach einem Fahrbefehl an die Kamera,
+# 	wird eine Fehlermeldung ausgegeben
+
+SetADC_Justage  0  0 1000 0x100  0xF00 0 
+SetADC_Justage  1  0 1000 0x100  0xF00 0 
+SetADC_Justage  2  0 1000 0x100  0xF00 0 
+SetADC_Justage  3  0 1000 0x100  0xF00 0 
+SetADC_Justage  4  0 1000 0x100  0xF00 0 
+SetADC_Justage  5  0 1000 0x100  0xF00 0 
+SetADC_Justage  6  0 1000 0x100  0xF00 0 
+SetADC_Justage  7  -13000 +13000  0x100  0xF00 0 
+SetADC_Justage  8  0 1000 0x100  0xF00 0 
+SetADC_Justage  9  0 1000 0x100  0xF00 0 
+SetADC_Justage 10  0 1000 0x100  0xF00 0 
+SetADC_Justage 11  0 1000 0x100  0xF00 0 
+SetADC_Justage 12  0 1000 0x100  0xF00 0 
+SetADC_Justage 13  0 1000 0x100  0xF00 0 
+SetADC_Justage 14  -13500 +13500  0x100  0xE00 0 
+SetTableTyp     0  # Koordinat U
+SetTable_Justage 0  0 1000 0x100  0xF00  
+SetTable_Justage 1  0 1000 0x100  0xF00  
+SetTable_Justage 2  0 1000 0x100  0xF00  
+SetTable_Justage 3  0 1000 0x100  0xF00  
+SetTable_Justage 4  0 1000 0x100  0xF00  
+SetADC           0x700 0x900 0x0F
+SetPuckVersion   0
+SetawPort       0x0   0xE000  # D2-Platine alte Bauart
+
+# Waehrend InitADC soll beim ersten Auslesen des Poti-Ports 0x8000
+# 	geliefert werden, danach immer 0x0800
+SetawPort       0x10   0x8000  # Converting bit gesetzt
+SetWPortTrigger 0x10   0x0800  # mittlere AD-Werte liefern
+SetabPort       0x60   0xFF    # DMG aus
+InitADC
+PrintPos_AD  14
+
+SetFSWink     100   # Sollposition
+
+A_Camera   # Fahrbefehl ausloesen
+A_Camera   # Verzoegerung
+A_Camera   # Verzoegerung
+A_Camera   # Verzoegerung
+A_Camera   # Verzoegerung
+A_Camera   # Ueberpruefung

@@ -9,6 +9,7 @@
 #pragma once
 
 #include <string>
+#include <exception>
 #include "scanner.h"
 
 using namespace std;
@@ -35,7 +36,7 @@ public:
     static void hexCharError( void );
     static void numericValueError( void );
 
-    struct ScriptErrorInfo
+    struct ScriptErrorInfo: public std::exception
     {
         short   m_sErrNr;         // error number               
         wstring m_wstrMessage;    // error message              

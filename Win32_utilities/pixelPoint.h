@@ -1,6 +1,8 @@
 // pixelPoint.h
 //
 
+#include "windows.h"
+
 #pragma once
 
 class PixelPoint : /*lint -e1790 */ public POINT  // allow inheritance from non abstract base class 

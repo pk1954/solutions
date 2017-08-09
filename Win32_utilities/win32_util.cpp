@@ -3,6 +3,9 @@
 
 #include "stdafx.h"
 #include <iomanip>
+#include <time.h>
+#include <codecvt>
+#include <sstream>
 #include "script.h"
 #include "win32_util.h"
 
@@ -116,10 +119,24 @@ ULONGLONG Util::GetPhysicalMemory( )  // in bytes
     return ramKB * 1024;                                  // compute number of bytes
 }
 
-LONG Util::GetMaxNrOfSlots(ULONG ulSlotSize)
+LONG Util::GetMaxNrOfSlots( ULONG ulSlotSize )
 {
 	ULONGLONG const ramBytes        = Util::GetPhysicalMemory( );      // compute number of bytes
     ULONGLONG const ullMaxNrOfSlots = ramBytes / ulSlotSize;               assert( ullMaxNrOfSlots < LONG_MAX );
     LONG      const lMaxNrOfSlots   = static_cast<LONG>( ullMaxNrOfSlots );
 	return lMaxNrOfSlots;
+}
+
+wstring Util::GetCurrentDateAndTime( )
+{
+	wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
+    struct tm newtime;  
+    __time64_t long_time;  
+    _time64( & long_time );                                  // Get time as 64-bit integer.  
+    errno_t err = _localtime64_s( & newtime, & long_time );  // Convert to local time.  
+	stringbuf buf;
+	ostream os ( & buf );
+	os << put_time( & newtime, "%c" );
+	wstring wstrTime = converter.from_bytes( buf.str( ) );
+	return wstrTime;
 }

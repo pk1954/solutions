@@ -42,7 +42,7 @@ public:
     unsigned short ScrReadUshort( void );
     wchar_t        ScrReadChar  ( void ); 
     unsigned char  ScrReadUchar ( void ); 
-    wstring const  ScrReadString( void ); 
+    wstring const  ScrReadString( void );
 
 // Helper routines for error handlers 
     wstring const GetActPath         ( void ) const;

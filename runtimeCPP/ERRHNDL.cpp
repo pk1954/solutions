@@ -59,14 +59,14 @@ void ScriptErrorHandler::numericValueError( )
     throwError( 2000, L"illegal numeric value" );
 }
                
-//   ScriptEofError: Unexpected end of file in script file
+//   eofError: Unexpected end of file in script file
 
 void ScriptErrorHandler::eofError( )
 {                    
    throwError( 900, L"unexpected end of file" );
 }                                   
              
-//   ScriptCharError: Unknown character in script file
+//   charError: Unknown character in script file
 
 void ScriptErrorHandler::charError( )
 {                    
@@ -84,7 +84,7 @@ void ScriptErrorHandler::tokenError( )
 
 void ScriptErrorHandler::symbolError( wstring const & wstrKey )
 {  
-   throwError( 970, L"unknown symbolic name: "  + wstrKey );
+   throwError( 970, L"unknown symbolic name: " + wstrKey );
 }
 
 //   semanticError
@@ -94,28 +94,28 @@ void ScriptErrorHandler::semanticError( std::wstring const & wstrText )
    throwError( 1000, L"semantic error: "  + wstrText );
 }
 
-//   ScriptTypeError: Unexpected type of symbolic const in script file
+//   typeError: Unexpected type of symbolic const in script file
 
 void ScriptErrorHandler::typeError( )
 {  
    throwError( 960, L"bad type of symbolic const" );
 }
             
-//   ScriptNumericError: Bad numeric value in script file
+//   numericError: Bad numeric value in script file
 
 void ScriptErrorHandler::numericError( )
 {                    
    throwError( 980, L"number too big" );
 }
              
-//   ScriptNegativeError: Unexpected negative value in script file
+//   negativeError: Unexpected negative value in script file
 
 void ScriptErrorHandler::negativeError( )
 {                    
    throwError( 990, L"negative value found" );
 }
              
-//   ScriptFuncNameError: Unknown function name in script file
+//   funcNameError: Unknown function name in script file
 
 void ScriptErrorHandler::funcNameError( )
 {                    
@@ -148,24 +148,28 @@ void ScriptErrorHandler::handleScriptError
     Scanner         const & scanner
 )
 {
-    wstring actPath( scanner.GetActPath( ) );
-    * m_pScriptTrace << L"*** error " << errInfo.m_sErrNr << L" in file " << actPath.c_str() << endl;
+    * m_pScriptTrace << endl;
+
+	wstring actPath( scanner.GetActPath( ) );
+    * m_pScriptTrace << L"+++ error " << errInfo.m_sErrNr << L" in file " << actPath.c_str() << endl;
 
     int const iLineNr = scanner.GetActLineNr( );
     if ( iLineNr > 0 )
-        * m_pScriptTrace << L"*** line " << iLineNr << endl;
+        * m_pScriptTrace << L"+++ line " << iLineNr << endl;
 
-    * m_pScriptTrace << scanner.GetActLine( );
+	wstring const wstrActLine = scanner.GetActLine( );
+	if ( ! wstrActLine.empty( ) )
+		* m_pScriptTrace << wstrActLine;
 
 	PrintMarkerLine( scanner );
 
     if ( ! errInfo.m_wstrMessage.empty() )
-        * m_pScriptTrace << L"*** " << errInfo.m_wstrMessage << endl;
+        * m_pScriptTrace << L"+++ " << errInfo.m_wstrMessage << endl;
 
     if ( !scanner.GetExpectedToken().empty() )
-        * m_pScriptTrace << L"*** expected " << scanner.GetExpectedToken().c_str() << endl;
+        * m_pScriptTrace << L"+++ expected " << scanner.GetExpectedToken().c_str() << endl;
 
-    * m_pScriptTrace << L"*** error exit ***" << endl;
+    * m_pScriptTrace << L"+++ error exit +++" << endl;
 
     (void)m_pScriptTrace->flush( );
 }

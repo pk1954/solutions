@@ -1,0 +1,15 @@
+
+COMPARE V1.0  Copyright (c) 3SOFT GmbH 1995
+Spec file:   A:/TESTS/SPEC1.TXT
+
+
+Result file: A:/TESTS/RES1.TXT
+
+bbb
+ccc ddd
+
+comparison failed
+Specified string not found:
+ddd
+
++++ not ok

@@ -1,0 +1,13 @@
+
+COMPARE V1.0  Copyright (c) 3SOFT GmbH 1995
+Spec file:   A:/TESTS/SPEC3.TXT
+
+
+Result file: A:/TESTS/RES3.TXT
+*** error 7002 in file A:/TESTS/SPEC3.TXT
+*** line 2:
+1-
+  ^
+*** number, string or '*' expected
+*** error exit ***
+

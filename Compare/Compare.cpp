@@ -5,233 +5,232 @@
 #include <locale>
 #include <codecvt>
 #include <string>
+#include <sstream>
+#include <iostream>
+#include <iomanip>
+#include <ctime>
 #include <stdio.h>
+#include <exception>
 #include "scanner.h"
 #include "errhndl.h"
 #include "negList.h"
 #include "output.h"
 #include "RTF_output.h"
 #include "text_output.h"
+#include "util.h"
+#include "win32_util.h"
 
 static wstring strVersion = L"COMPARE V1.2";
 
-static OutputDriver * pOut;
-
-static void UpperCase( wstring & str )
+class CompareError: public std::exception
 {
-	for ( auto & c: str ) 
-		c = toupper(c);
-}
+public:
+	CompareError
+	( 
+		wstring wstrMsg,
+		wstring wstrSpec,
+		int     iRetCode
+	) :
+		m_wstrMsg( wstrMsg ),
+		m_wstrSpec( wstrSpec ),
+		m_iRetCode( iRetCode )
+	{}
 
-static void Error( wstring const & strMsg, wstring const & strString )
+	wstring m_wstrMsg;
+	wstring m_wstrSpec;
+	int     m_iRetCode;
+};
+
+class CompareEngine
 {
-   pOut->Standard();
-   pOut->StartParagraph( 2 );
-   pOut->Italics( L"comparison failed" );
-   pOut->StartParagraph();
-   pOut->Italics( strMsg );
-   pOut->StartParagraph();
-   pOut->Bold( strString );
-   pOut->StartParagraph( 2 );
-   pOut->Italics( L"+++ not ok" );
-   pOut->StartParagraph();
-   exit(4);
-}
+public:
 
-// ReadOneOf: Try to read one of a group of given characters
-   
-static wchar_t ReadOneOf(
-                           Scanner       & scanner, 
-                           wstring const & strValid // expected characters
-                        ) 
-{ 
-   tTOKEN token = scanner.NextToken( true );
-   
-   if ( token == tTOKEN::Special )
-   {
-      wchar_t chRes = scanner.GetCharacter( );                      
-	  size_t pos = strValid.find( chRes );
-      if ( NULL != wstring::npos )
-         return chRes;
-   }
-
-   scanner.SetExpectedToken( L"one of \"" + strValid + L"\"" );
-
-   if ( token == tTOKEN::End ) 
-      ScriptErrorHandler::eofError( );
-   else
-      ScriptErrorHandler::tokenError( );
-
-   return (wchar_t)0; 
-}
-
-static void PrintRestOfResFile( wifstream & ifResults )
-{
-	wstring wstrLine;
-
-	while ( ! ifResults.eof() )
+	CompareEngine( wstring wstrOutputFormat )
 	{
-		getline( ifResults, wstrLine );
-   
-		pOut->StartParagraph();
-		pOut->Output( wstrLine );
-	}        
-	pOut->StartParagraph();
-	pOut->StartParagraph();
-}
-      
-static bool GetResLine
-( 
-	wifstream          & ifResults,
-	NegativeList const & negList,
-	wstring            & wstrLine 
-)
-{
-	if ( getline( ifResults, wstrLine ) )
-    {               
-		wstring strFound = negList.Check( wstrLine );
-		if ( ! strFound.empty( ) )
-		{
-			string::size_type pos = wstrLine.find( strFound );
-			pOut->StartParagraph();    	    
-			pOut->Output( wstrLine.substr( 0, pos ) );                                       // print faulty line 
-			pOut->BoldUnderlined( strFound );                                                // with with accentuation of found negative spec  
-			pOut->Output( wstrLine.substr( pos + strFound.length( ), wstrLine.length( ) ) ); // rest of line 
-			PrintRestOfResFile( ifResults );
-			Error( L"Following string is not allowed here:", strFound );
-		}
-		pOut->StartParagraph();
-		return true;
+		if ( L"/RTF" == wstrOutputFormat )
+			pOut = new RTFOutput( );
+		else if ( L"/Text" == wstrOutputFormat )
+			pOut = new TextOutput;
+		else 
+			pOut = new OutputDriver;
+
 	}
-	else
-		return false;
-}
 
-static void FindString
-(
-	wifstream          & ifResults,
-	wstring      const & strPosSpec, /* string to be searched for */
-	NegativeList const & negList	
-)
-{
-    wstring wstrLine;
-
-	for (;;)
+	~CompareEngine()
 	{
-		if ( ! GetResLine( ifResults, negList, wstrLine ) )
-			Error( L"Specified string not found:", strPosSpec );
+		delete pOut;
+	}
 
-		wstring::size_type pos = wstrLine.find( strPosSpec );
+	void PrintRestOfResFile( wifstream & ifResults )
+	{
+		wstring wstrLine;
 
-		if ( wstring::npos == pos )
+		while ( ! ifResults.eof() )
 		{
+			getline( ifResults, wstrLine );
+   
+			pOut->StartParagraph();
 			pOut->Output( wstrLine );
-		}
-		else
-		{   
-			pOut->Output( wstrLine.substr( 0, pos ) );                                         // print faulty line 
-			pOut->Bold( strPosSpec );                                                          // with with accentuation of found positive spec  
-			pOut->Output( wstrLine.substr( pos + strPosSpec.length( ), wstrLine.length( ) ) ); // rest of line 
-			return;            // positive exit
-		}
+		}        
+		pOut->StartParagraph();
+		pOut->StartParagraph();
 	}
-}
-
-static void SpecError
-(
-	Scanner       & scanner,
-	wstring const & strMessage, // error message           
-	wstring const & strExpected // expected syntax element
-)
-{                    
-   const int     iLineNr = scanner.GetActLineNr( );
-   const wstring strPath = scanner.GetActPath( );
-
-   wcout << L"*** syntax error in spec file " << strPath << endl;
-
-   if ( iLineNr > 0 )
-      wcout << L"*** line " << iLineNr << endl;
-
-   wcout << scanner.GetActLine( );
-
-   ScriptErrorHandler::PrintMarkerLine( scanner );
-
-   if ( ! strMessage.empty( ) )
-      wcout << L"*** " << strMessage << endl;
-
-   if ( ! strExpected.empty( ) )
-      wcout << L"*** expected " << strExpected << endl;
-
-   wcout << L"*** error exit" << endl << endl;
-   exit( 3 );
-}          
-
-static wstring toWstring(char const * const pch )
-{
-	wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
-	wstring wstr = converter.from_bytes( pch );
-	return wstr;
-}
-
-static void ProcessSpecFile
-( 
-	wifstream     & ifResults,
-	wstring const & strSpecFile 
-)
-{
-	Scanner      spec;
-    tTOKEN       token;
-    NegativeList negList;
-
-    spec.OpenInputFile( strSpecFile );
       
-	while ( (token = spec.NextToken( false )) != tTOKEN::End )
-    {
-		if ( token == tTOKEN::Number )   
-		{                                   
-			unsigned long ulValue = spec.GetUlong( );
-			wchar_t chFound = ReadOneOf( spec, L"+-=" );
-			if ( chFound == '=' )
+	bool GetResLine
+	( 
+		wifstream          & ifResults,
+		NegativeList const & negList
+	)
+	{
+		if ( getline( ifResults, wstrLine ) )
+		{               
+			wstring strFound = negList.Check( wstrLine );
+			if ( ! strFound.empty( ) )
 			{
-				token = spec.NextToken( true );
-				if ( token != tTOKEN::String )
-					SpecError( spec, L"bad token", L"string" );
-				if ( ! negList.Add( ulValue, spec.GetString( ) ) )
-					SpecError( spec, L"Redefinition of negative Spec", L"" );
+				string::size_type pos = wstrLine.find( strFound );
+				pOut->StartParagraph();    	    
+				pOut->Output( wstrLine.substr( 0, pos ) );                                       // print faulty line 
+				pOut->BoldUnderlined( strFound );                                                // emphasize found negative spec  
+				pOut->Output( wstrLine.substr( pos + strFound.length( ), wstrLine.length( ) ) ); // rest of line 
+				PrintRestOfResFile( ifResults );
+				throw CompareError( L"Following string is not allowed here:", strFound, 3 );
 			}
-			else  // + or -
-			{
-				bool bSetActive = (chFound == '+');
-				if ( ! negList.SetActive( ulValue, bSetActive ) )
-	   				SpecError( spec, L"Number undefined", L"" );
-			}
-		}
-		else if ( token == tTOKEN::String )
-		{
-			FindString( ifResults, spec.GetString( ), negList );
-		}
-		else if ( (token == tTOKEN::Special) && (spec.GetCharacter( ) == '*') )  
-		{                               
-			negList.SetAllActive( ReadOneOf( spec, L"+-" ) == '+' );
+			pOut->StartParagraph();
+			return true;
 		}
 		else
+			return false;
+	}
+
+	void FindString
+	(
+		wifstream          & ifResults,
+		wstring      const & strPosSpec, // string to be searched for
+		NegativeList const & negList	
+	)
+	{
+		for (;;)
 		{
-			SpecError( spec, L"bad token", L"number, string or '*'" );
+			if ( wstrLine.empty( ) && ! GetResLine( ifResults, negList ) )
+				throw CompareError( L"Specified string not found:", strPosSpec, 4 );
+
+			wstring::size_type pos = wstrLine.find( strPosSpec );
+
+			if ( wstring::npos == pos )
+			{
+				pOut->Output( wstrLine );
+				wstrLine.clear( );
+			}
+			else // pos spec found
+			{   
+				pOut->Output( wstrLine.substr( 0, pos ) );       // print leading part of line 
+				pOut->Bold( strPosSpec );                        // emphasize found positive spec  
+				wstrLine.erase( 0, pos + strPosSpec.length( ) ); // keep rest of line
+				break;            // positive exit
+			}
 		}
 	}
-   
-	spec.CloseInputFile( );
 
-    wstring wstrLine;
+	void SpecError
+	(
+		Scanner       & scanner,
+		wstring const & strMessage, // error message           
+		wstring const & strExpected // expected syntax element
+	)
+	{                    
+		scanner.SetExpectedToken( strExpected );
+		ScriptErrorHandler::throwError( 125, strMessage );
+	}          
 
-	while ( GetResLine( ifResults, negList, wstrLine ) )
+	int DoCompare
+	( 
+		wstring   const & strSpecFile,
+		wifstream       & ifResults
+	)
 	{
-        pOut->StartParagraph();
-        pOut->Output( wstrLine );
-    }        
+		Scanner spec;
 
-    pOut->StartParagraph( 2 );
-}
+		pOut->LightGrey();
+
+		try 
+		{  
+			tTOKEN       token;
+			NegativeList negList;
+
+			spec.OpenInputFile( strSpecFile );
+      
+			while ( (token = spec.NextToken( false )) != tTOKEN::End )
+			{
+				if ( token == tTOKEN::Number )   
+				{                                   
+					unsigned long ulValue = spec.GetUlong( );
+					wchar_t chFound = spec.ReadOneOf( L"+-=" );
+					if ( chFound == '=' )
+					{
+						if ( spec.NextToken( true ) != tTOKEN::String )
+							SpecError( spec, L"unexpected token", L"string" );
+
+						if ( ! negList.Add( ulValue, spec.GetString( ) ) )
+							SpecError( spec, L"Redefinition of negative Spec", L"" );
+					}
+					else if ( ! negList.SetActive( ulValue, (chFound == '+') ) )    // + or -
+	   					SpecError( spec, L"Number undefined", L"" );
+				}
+				else if ( token == tTOKEN::String )
+				{
+					FindString( ifResults, spec.GetString( ), negList );
+				}
+				else if ( (token == tTOKEN::Special) && (spec.GetCharacter( ) == '*') )  
+				{                               
+					negList.SetAllActive( spec.ReadOneOf( L"+-" ) == '+' );
+				}
+				else
+				{
+					SpecError( spec, L"bad token", L"number, string or '*'" );
+				}
+			}
+   
+			spec.CloseInputFile( );
+
+			pOut->Output( wstrLine );
+			while ( GetResLine( ifResults, negList ) )
+			{
+				pOut->StartParagraph();
+				pOut->Output( wstrLine );
+			}        
+
+			pOut->StartParagraph( 2 );
+		}
+		catch ( ScriptErrorHandler::ScriptErrorInfo const & errInfo )
+		{
+			ScriptErrorHandler::handleScriptError( errInfo, spec );
+			return errInfo.m_sErrNr;
+		}
+		catch ( CompareError err )
+		{
+			pOut->Standard();
+			pOut->StartParagraph( 2 );
+			pOut->Italics( L"+++ comparison failed" );
+			pOut->StartParagraph();
+			pOut->Italics( err.m_wstrMsg );
+			pOut->StartParagraph();
+			pOut->Bold( err.m_wstrSpec );
+			pOut->StartParagraph();
+			pOut->Italics( L"+++ not ok"  );
+			pOut->StartParagraph();
+			return err.m_iRetCode;
+		}
+
+		pOut->Standard();
+		pOut->StartParagraph( 2 );
+		pOut->Italics( L"*** ok"  );
+		pOut->StartParagraph();
+		return 0;
+	}
+
+	OutputDriver * pOut;
+	wstring        wstrLine;
+};
 
 int main( int argc, char * argv[] )
 {             
@@ -241,51 +240,41 @@ int main( int argc, char * argv[] )
 		wcout << L"syntax: compare res spec\n" << endl;
 		return 1;
 	}
-    else
-    {
-		wstring strResFile  = toWstring( argv[1] );
-		wstring strSpecFile = toWstring( argv[2] );
-		wstring strOptions;
 
-		if  ( argc >= 4 )
-			strOptions = toWstring( argv[3] );
+	wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
 
-		if ( L"/RTF" == strOptions )
-			pOut = new RTFOutput( );
-		else if ( L"/Text" == strOptions )
-			pOut = new TextOutput;
-		else 
-			pOut = new OutputDriver;
+	wstring strResFile  = converter.from_bytes( argv[1] );
+	wstring strSpecFile = converter.from_bytes( argv[2] );
 
-		UpperCase( strResFile );
-		UpperCase( strSpecFile );
+	CompareEngine ce( ( argc >= 4 ) ? converter.from_bytes( argv[3] ) : L"" );
 
-		pOut->StartParagraph();
-		pOut->Italics( strVersion );
-		pOut->StartParagraph();
-		pOut->Italics( L"Spec file:   " + strSpecFile );
-		pOut->StartParagraph( 3 );
-		pOut->Italics( L"Result file: " + strResFile );
-		pOut->StartParagraph();
+	ScriptErrorHandler::ScrSetOutputStream( & wcout );
 
-		wifstream ifResults;
+	UpperCase( strResFile );
+	UpperCase( strSpecFile );
 
-		ifResults.open( strResFile, ios::in  );
-		if ( ! ifResults )
-		{
-			wcout << L"+++ Error: Result file not found: " << endl << strResFile << endl;
-			return 2;
-		}
+	ce.pOut->StartParagraph();
+	ce.pOut->Italics( strVersion );
+	ce.pOut->StartParagraph( );
+	ce.pOut->Italics( L"Test performed: " + Util::GetCurrentDateAndTime( ) );
+	ce.pOut->StartParagraph( );
+	ce.pOut->Italics( L"Spec file:   " + strSpecFile );
+	ce.pOut->StartParagraph( );
+	ce.pOut->Italics( L"Result file: " + strResFile );
+	ce.pOut->StartParagraph( );
 
-		pOut->LightGrey();
-		ProcessSpecFile( ifResults, strSpecFile );
-		pOut->Standard();
-		pOut->StartParagraph( 2 );
-		pOut->Italics( L"+++ ok" );
-		pOut->StartParagraph();
+	wifstream ifResults;
+
+	ifResults.open( strResFile, ios::in );
+	if ( ! ifResults )
+	{
+		ce.pOut->StartParagraph( 2 );
+		ce.pOut->Italics( L"+++ Error: Result file not found: " + strResFile  );
+		ce.pOut->StartParagraph();
+		return 2;
 	}
 
-	delete pOut;
-
-	return 0;
+	int iRes = ce.DoCompare( strSpecFile, ifResults );
+	
+	return iRes;
 }

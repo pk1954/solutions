@@ -6,6 +6,7 @@
 #include "pixelPoint.h"
 #include "pixelRect.h"
 
+#include <string>
 #include <iostream>
 
 using namespace std;
@@ -228,7 +229,7 @@ namespace Util
 		std::cout << "console output started" << endl << flush;
 	}
 
-void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );
+	void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );
 
     void AdjustRight( HWND, int );
     void AdjustLeft( HWND, int );
@@ -237,7 +238,5 @@ void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );
     DWORD     GetNrOfCPUs( );
     ULONGLONG GetPhysicalMemory( );
 	LONG      GetMaxNrOfSlots( ULONG );
+	wstring   GetCurrentDateAndTime( );
 };
-
-
-

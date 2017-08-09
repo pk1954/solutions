@@ -1,9 +1,10 @@
 # STD.spc
 
-## F_5_SPC.SPC 
-1 = "Error"  # Darf nicht vorkommen!
-"abc"        # 
-1 -          # Ab hier ist ‘Error’ erlaubt
-"def"        # 
-1 +          # Ab hier ist ‘Error’ wieder verboten
-"xyz"        # 
+# ERR_7_.SPC - Fehlender String in Negativspezifikation
+1 = "Error"     # korrekt
+2 =             # String fehlt
+3 = "Warning"   # korrekt
+
+"xyz"
+
+
