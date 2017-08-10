@@ -73,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)Direct3D;$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Evolution;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_history;$(SolutionDir)EvoHistGlue;$(SolutionDir)runtimeCPP;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Debug;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\Debug;C:\Programme\Microsoft DirectX SDK (June 2010)\Lib\x86;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>BuildCompile</CustomBuildAfterTargets>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -88,7 +88,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)Direct3D;$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Evolution;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_history;$(SolutionDir)EvoHistGlue;$(SolutionDir)runtimeCPP;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Release;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\Release;C:\Programme\Microsoft DirectX SDK (June 2010)\Lib\x86;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>BuildCompile</CustomBuildAfterTargets>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
