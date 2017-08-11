@@ -12,19 +12,17 @@ if ERRORLEVEL 1 (
 	goto ERROR_EXIT
 )
 
-echo *** Building DEBUG version
-devenv Evolution.sln /build Debug%ARCHITECTURE%
-if ERRORLEVEL 1 (
-	echo +++ error building DEBUG
-	goto ERROR_EXIT
-)
+call build_configuration "Debug|x86"
+if ERRORLEVEL 1 goto ERROR_EXIT
 
-echo *** Building RELEASE version
-devenv Evolution.sln /build Release 
-if ERRORLEVEL 1 (
-	echo +++ error building RELEASE%ARCHITECTURE%
-	goto ERROR_EXIT
-)
+call build_configuration "Release|x86"
+if ERRORLEVEL 1 goto ERROR_EXIT
+
+call build_configuration Debug
+if ERRORLEVEL 1 goto ERROR_EXIT
+
+call build_configuration Release
+if ERRORLEVEL 1 goto ERROR_EXIT
 
 echo *** Perform COMPARE tests
 cd Compare\TEST

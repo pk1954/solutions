@@ -115,9 +115,12 @@
       <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9d.lib;runtimeCPP.lib;Direct3D.lib;EvolutionCore.lib;EvoHistGlue.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
-      <Command>call $(SolutionDir)lin.bat $(ProjectDir)*.cpp</Command>
-      <Outputs>$(ProjectDir)_LINT.TMP</Outputs>
-      <Message>Performing lint</Message>
+      <Command>
+      </Command>
+      <Outputs>
+      </Outputs>
+      <Message>
+      </Message>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -162,9 +165,12 @@
       <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;runtimeCPP.lib;Direct3D.lib;EvolutionCore.lib;EvoHistGlue.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
-      <Command>call $(SolutionDir)lin.bat $(ProjectDir)*.cpp</Command>
-      <Outputs>$(ProjectDir)_LINT.TMP</Outputs>
-      <Message>Performing lint</Message>
+      <Command>
+      </Command>
+      <Outputs>
+      </Outputs>
+      <Message>
+      </Message>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
