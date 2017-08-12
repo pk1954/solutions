@@ -1,10 +1,6 @@
-# E:\pk\_H\Testtool\COMPARE\TEST\ERR_10.spc
+# ERR_10_.SPC - Schliessender Apostroph fehlt
+1 = "Error"     
 
-# Negative Specs
-
-
-# Positive Specs
-
-"ERR_10_.SPC"
-"newline or end of file in string constant"
-"error exit"
+"abc   # Hier fehlt der abschliessende Apostroph
+"xyz"
+

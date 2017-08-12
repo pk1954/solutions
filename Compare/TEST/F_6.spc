@@ -1,12 +1,5 @@
-# E:\pk\_H\Testtool\COMPARE\TEST\F_6.spc
+# F_6.SPC 
 
-# Negative Specs
-
-
-# Positive Specs
-
-"# F_6_RES.RES - Der Inhalt dieser Datei muss vollstaendig im Protokoll erscheinen"
-
-"abc"
-"def"
-"xyz"
+"abc"      
+"xyz"     
+

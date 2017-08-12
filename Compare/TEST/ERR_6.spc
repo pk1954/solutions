@@ -1,10 +1,6 @@
-# E:\pk\_H\Testtool\COMPARE\TEST\ERR_6.spc
+# ERR_6_.SPC - Fehlendes Gleichheitszeichen
+1 = "Error"     # korrekt
+2   "Warning"   # Gleichheitszeichen fehlt
 
-# Negative Specs
-
-
-# Positive Specs
-
-"ERR_6_.SPC"
-"unexpected token"
-"error exit"
+"xyz"
+

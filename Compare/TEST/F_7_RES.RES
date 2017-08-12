@@ -1,5 +1,1 @@
-# F_7_RES.RES - Der Inhalt dieser Datei muss vollstaendig im Protokoll erscheinen
-
-abc
-def
-xyz
+{\rtf1\pc{\fonttbl{\f0\fmodern Courier New;}} \f0\fs20\par{\colortbl;\red192\green192\blue192;}\par {\i COMPARE V1.2}\par {\i Test performed: 08/12/17 23:40:43}\par {\i Spec file:   F_7.SPC}\par {\i Result file: F_7.RES}\par \cbpat1 \par # F_7_RES.RES - Der Inhalt dieser Datei muss vollstaendig im Protokoll erscheinen\par \par {\b abc}\par def\par {\b xyz}\par \par \pard \par \par {\i *** Compare: ok}\par \par \sect}

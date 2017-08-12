@@ -1,12 +1,8 @@
-# E:\pk\_H\Testtool\COMPARE\TEST\F_4.spc
+# F_4.SPC 
 
-# Negative Specs
+1 = "Error"  # Darf nicht vorkommen!
 
-
-# Positive Specs
-
-"Result file: F_4_RES.RES"
-"comparison failed"
-"Following string is not allowed here"
-"Error"
-"not ok"
+"abc"        # 
+"def"        # 
+"xyz"        # 
+

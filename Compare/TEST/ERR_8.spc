@@ -1,10 +1,7 @@
-# E:\pk\_H\Testtool\COMPARE\TEST\ERR_8.spc
+# ERR_8_.SPC - Unzulaessiger Steuerbefehl
+1 = "Error"     
+2 = "Warning"   
 
-# Negative Specs
-
-
-# Positive Specs
-
-"ERR_8_.SPC"
-"unexpected token"
-"error exit"
+1   # Hier muesste ‘+’ oder ‘-’ kommen
+"xyz"
+

@@ -1,4 +1,4 @@
-# E:\pk\_H\Testtool\COMPARE\TEST\ERR_4.spc
+# COMPARE\TEST\ERR_4
 
 # Negative Specs
 

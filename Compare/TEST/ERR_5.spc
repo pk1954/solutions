@@ -1,10 +1,6 @@
-# E:\pk\_H\Testtool\COMPARE\TEST\ERR_5.spc
+# ERR_5_.SPC - Fehlendes Gleichheitszeichen
+1 = "Error"     # korrekt
+  = "Warning"   # Nummer fehlt
 
-# Negative Specs
-
-
-# Positive Specs
-
-"ERR_5_.SPC"
-"expected number, string or '*'"
-"error exit"
+"xyz"
+

@@ -1,9 +1,4 @@
-# E:\pk\_H\Testtool\COMPARE\TEST\F_7.spc
-
-# Negative Specs
-
-
-# Positive Specs
-
-"abc"
-"xyz"
+# F_7.SPC - Die folgenden Strings muessen von COMPARE in der ersten Inputdatei gesucht und in der Protokolldatei durch Fettdruck markiert werden.
+"abc"      
+"xyz"     
+

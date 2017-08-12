@@ -1,10 +1,8 @@
-# E:\pk\_H\Testtool\COMPARE\TEST\ERR_9.spc
+# ERR_9_.SPC - Positivspezifikation ohne Apostrophe
+1 = "Error"     
+2 = "Warning"   
 
-# Negative Specs
-
-
-# Positive Specs
-
-"ERR_9_.SPC"
-"expected number, string or '*'"
-"error exit"
+"abc"
+ def    # Hier fehlen die Apostrophe
+"xyz"
+
