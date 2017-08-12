@@ -6,4 +6,4 @@
 # Positive Specs
 
 "F_5_RES.RES"
-"*** ok"
+"*** Compare: ok"
