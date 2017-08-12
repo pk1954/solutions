@@ -1,123 +1,33 @@
-rem @echo off
+@echo off
 
-..\..\Release\compare.exe F_1.RES F_1.SPC /Text > F_1_RES.RES
-..\..\Release\compare.exe F_1_RES.RES F_1_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test F_1
-	goto ERROR_EXIT
-)
+set COMPARE=..\..\Release\compare.exe
 
-..\..\Release\compare.exe F_2.RES F_2.SPC /Text > F_2_RES.RES
-..\..\Release\compare.exe F_2_RES.RES F_2_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test F_2
-	goto ERROR_EXIT
-)
+%COMPARE% > ERR_1_RES.RES
+call :COMPARE_RESULTS ERR_1
 
-..\..\Release\compare.exe F_3.RES F_3.SPC /Text > F_3_RES.RES
-..\..\Release\compare.exe F_3_RES.RES F_3_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test F_3
-	goto ERROR_EXIT
-)
+%COMPARE% XYZ.RES > ERR_2_RES.RES
+call :COMPARE_RESULTS ERR_2
 
-..\..\Release\compare.exe F_4.RES F_4.SPC /Text > F_4_RES.RES
-..\..\Release\compare.exe F_4_RES.RES F_4_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test F_4
-	goto ERROR_EXIT
-)
+%COMPARE% XYZ.RES XYZ.SPC /Text > ERR_3_RES.RES
+call :COMPARE_RESULTS ERR_3
 
-..\..\Release\compare.exe F_5.RES F_5.SPC /Text > F_5_RES.RES
-..\..\Release\compare.exe F_5_RES.RES F_5_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test F_5
-	goto ERROR_EXIT
-)
+%COMPARE% ERR_4.RES XYZ.SPC /Text > ERR_4_RES.RES
+call :COMPARE_RESULTS ERR_4
 
-..\..\Release\compare.exe F_6.RES F_6.SPC /Text > F_6_RES.RES
-..\..\Release\compare.exe F_6_RES.RES F_6_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test F_6
-	goto ERROR_EXIT
-)
+call :TEST_CASE ERR_5 /Text
+call :TEST_CASE ERR_6 /Text
+call :TEST_CASE ERR_7 /Text
+call :TEST_CASE ERR_8 /Text
+call :TEST_CASE ERR_9 /Text
+call :TEST_CASE ERR_10 /Text
 
-..\..\Release\compare.exe F_7.RES F_7.SPC /RTF > F_7_RES.RES
-..\..\Release\compare.exe F_7_RES.RES F_7_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test F_7
-	goto ERROR_EXIT
-)
-
-..\..\Release\compare.exe > ERR_1_RES.RES
-..\..\Release\compare.exe ERR_1_RES.RES ERR_1_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test ERR_1
-	goto ERROR_EXIT
-)
-
-..\..\Release\compare.exe XYZ.RES > ERR_2_RES.RES
-..\..\Release\compare.exe ERR_2_RES.RES ERR_2_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test ERR_2
-	goto ERROR_EXIT
-)
-
-..\..\Release\compare.exe XYZ.RES XYZ.SPC /Text > ERR_3_RES.RES
-..\..\Release\compare.exe ERR_3_RES.RES ERR_3_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test ERR_3
-	goto ERROR_EXIT
-)
-
-..\..\Release\compare.exe ERR_4.RES XYZ.SPC /Text > ERR_4_RES.RES
-..\..\Release\compare.exe ERR_4_RES.RES ERR_4_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test ERR_4
-	goto ERROR_EXIT
-)
-
-..\..\Release\compare.exe ERR_5.RES ERR_5.SPC /Text > ERR_5_RES.RES
-..\..\Release\compare.exe ERR_5_RES.RES ERR_5_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test ERR_5
-	goto ERROR_EXIT
-)
-
-..\..\Release\compare.exe ERR_6.RES ERR_6.SPC /Text > ERR_6_RES.RES
-..\..\Release\compare.exe ERR_6_RES.RES ERR_6_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test ERR_6
-	goto ERROR_EXIT
-)
-
-..\..\Release\compare.exe ERR_7.RES ERR_7.SPC /Text > ERR_7_RES.RES
-..\..\Release\compare.exe ERR_7_RES.RES ERR_7_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test ERR_7
-	goto ERROR_EXIT
-)
-
-..\..\Release\compare.exe ERR_8.RES ERR_8.SPC /Text > ERR_8_RES.RES
-..\..\Release\compare.exe ERR_8_RES.RES ERR_8_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test ERR_8
-	goto ERROR_EXIT
-)
-
-..\..\Release\compare.exe ERR_9.RES ERR_9.SPC /Text > ERR_9_RES.RES
-..\..\Release\compare.exe ERR_9_RES.RES ERR_9_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test ERR_9
-	goto ERROR_EXIT
-)
-
-..\..\Release\compare.exe ERR_10.RES ERR_10.SPC /Text > ERR_10_RES.RES
-..\..\Release\compare.exe ERR_10_RES.RES ERR_10_SPC.SPC
-@if ERRORLEVEL 1 (
-	echo +++ error in Test ERR_10
-	goto ERROR_EXIT
-)
+call :TEST_CASE F_1 /Text 
+call :TEST_CASE F_2 /Text
+call :TEST_CASE F_3 /Text
+call :TEST_CASE F_4 /Text
+call :TEST_CASE F_5 /Text
+call :TEST_CASE F_6 /Text
+call :TEST_CASE F_7 /RTF
 
 echo *** COMPARE tests ok
 pause
@@ -126,3 +36,20 @@ exit /B 0
 :ERROR_EXIT
 pause
 exit /B 99
+
+rem *** subroutines ***
+
+:TEST_CASE
+%COMPARE% %1.RES %1.SPC %2 > %1_RES.RES
+call :COMPARE_RESULTS %1
+exit /B 0
+
+:COMPARE_RESULTS
+echo Test %1
+%COMPARE% %1_RES.RES %1_SPC.SPC
+@if ERRORLEVEL 1 (
+	echo +++ error in Test %1
+	goto ERROR_EXIT
+)
+exit /B 0
+
