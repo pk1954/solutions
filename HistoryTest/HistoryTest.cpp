@@ -56,7 +56,7 @@ void showHistorySlots( HistorySystem * const pHistorySys )
 {
 	HistoryIterator * iter = pHistorySys->CreateHistoryIterator( );
 
-    for ( int iRun = iter->Set2Oldest( ); iRun != -1; iRun = iter->Set2Junior( ) )
+    for ( auto iRun = iter->Set2Oldest( ); iRun != -1; iRun = iter->Set2Junior( ) )
         wcout << iter->GetCurrentGeneration( ) << L" ";
 
 	wcout << endl;
@@ -74,7 +74,7 @@ void gotoGeneration( HistorySystem * const pHistorySys, HIST_GENERATION const hi
 	}
 }
 
-int _tmain( int argc, _TCHAR* argv[] )
+void DoTest( )
 {
 	static const int NR_OF_SLOTS = 10;
 
@@ -91,20 +91,37 @@ int _tmain( int argc, _TCHAR* argv[] )
 		& modelFactory
 	);
 
-	wcout << L"Create " << NR_OF_SLOTS << L" history slots" << endl << endl;
+	wcout << L"*** Create " << NR_OF_SLOTS << L" history slots" << endl;
 
 	for ( int i = 1; i < NR_OF_SLOTS; ++i )
 		pHistorySys->AddHistorySlot( );
 
 	assert( pHistorySys->GetNrOfHistCacheSlots( ) == NR_OF_SLOTS );
 
+	wcout << endl << L"*** Iterate thru generations" << endl << endl;
+
 	for ( histGenDemanded = 1; histGenDemanded < 30; ++histGenDemanded )
 		gotoGeneration( pHistorySys, histGenDemanded );
 
-	wcout << endl << L"Now backwards" << endl << endl;
+	wcout << endl << L"*** Now backwards" << endl << endl;
 
 	for ( histGenDemanded = 28; histGenDemanded >= 0; --histGenDemanded )
 		gotoGeneration( pHistorySys, histGenDemanded );
+
+	wcout << endl << L"*** HistoryTest finished" << endl;
+}
+
+int _tmain( int argc, _TCHAR* argv[] )
+{
+	try
+	{
+		DoTest( );
+	}
+	catch (...)
+	{
+		wcout << endl << L"+++ Error in HistoryTest" << endl;
+		return 1;
+	}
 
 	return 0;
 }

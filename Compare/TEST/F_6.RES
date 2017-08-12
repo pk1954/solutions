@@ -1,6 +1,6 @@
 
 COMPARE V1.2
-Test performed: 08/09/17 23:47:57
+Test performed: 08/12/17 18:58:29
 Spec file:   F_6_SPC.SPC
 Result file: F_6_RES.RES
 

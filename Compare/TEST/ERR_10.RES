@@ -1,6 +1,6 @@
 
 COMPARE V1.2
-Test performed: 08/09/17 23:47:57
+Test performed: 08/12/17 18:58:29
 Spec file:   ERR_10_.SPC
 Result file: ERR_10_.RES
 

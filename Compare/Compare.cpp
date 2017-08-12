@@ -210,7 +210,7 @@ public:
 		{
 			pOut->Standard();
 			pOut->StartParagraph( 2 );
-			pOut->Italics( L"+++ comparison failed" );
+			pOut->Italics( L"+++ Compare: comparison failed" );
 			pOut->StartParagraph();
 			pOut->Italics( err.m_wstrMsg );
 			pOut->StartParagraph();
@@ -223,7 +223,7 @@ public:
 
 		pOut->Standard();
 		pOut->StartParagraph( 2 );
-		pOut->Italics( L"*** ok"  );
+		pOut->Italics( L"*** Compare: ok"  );
 		pOut->StartParagraph();
 		return 0;
 	}
@@ -269,7 +269,7 @@ int main( int argc, char * argv[] )
 	if ( ! ifResults )
 	{
 		ce.pOut->StartParagraph( 2 );
-		ce.pOut->Italics( L"+++ Error: Result file not found: " + strResFile  );
+		ce.pOut->Italics( L"+++ Compare: Error: Result file not found: " + strResFile  );
 		ce.pOut->StartParagraph();
 		return 2;
 	}

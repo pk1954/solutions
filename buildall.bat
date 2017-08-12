@@ -10,13 +10,23 @@ call :SET_BUILD_ENVIRONMENT vcvars64.bat
 for %%C in ( Debug, Release ) do call :BUILD_CONFIGURATION %%C
 )
 
-echo *** Perform COMPARE tests
+echo *** BUILDALL: Perform COMPARE tests
 cd Compare\TEST
 call TEST_ALL
 if ERRORLEVEL 1 (
-	echo +++ error in COMPARE tests
+	echo +++ BUILDALL: error in COMPARE tests
 	goto ERROR_EXIT
 )
+cd ..\..
+
+echo *** BUILDALL: Perform HISTORY tests
+cd HistoryTest\TEST
+call TEST_ALL
+if ERRORLEVEL 1 (
+	echo +++ BUILDALL: error in COMPARE tests
+	goto ERROR_EXIT
+)
+cd ..\..
 
 echo *** BUILDALL ok ***
 :ERROR_EXIT
@@ -30,7 +40,7 @@ set VCVARS=\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\%1
 if exist "C:\Program Files%VCVARS%"       call "C:\Program Files%VCVARS%"
 if exist "C:\Program Files (x86)%VCVARS%" call "C:\Program Files (x86)%VCVARS%"
 if ERRORLEVEL 1 (
-	echo +++ error in calling %1
+	echo +++ BUILDALL: error in calling %1
 	goto ERROR_EXIT
 )
 exit /b
@@ -39,7 +49,7 @@ exit /b
 echo *** Building %1 version
 devenv Evolution.sln /build %1
 if ERRORLEVEL 1 (
-	echo +++ error building %1
+	echo +++ BUILDALL: error building %1
 	goto ERROR_EXIT
 )
 exit /b
