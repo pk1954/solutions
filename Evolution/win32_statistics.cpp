@@ -57,7 +57,7 @@ public:
 
     void scaleAllGenesStat( )
     {
-        for ( auto &g : m_aGeneStat )
+        for ( auto & g : m_aGeneStat )
             g.DivNonZero( m_gsCounter.General( ) );
 
         m_gsAverageAge.DivNonZero( m_gsCounter );
@@ -122,10 +122,18 @@ public:
     void printGeneStat( TextWindow & textWin )
     {
         for ( unsigned int uiOption = 0; uiOption < NR_ACTIONS; ++uiOption )
-            m_axaGenePoolStrategy[ uiOption ].printFloatLine( textWin, GetActionTypeName( (tAction)uiOption ) );
+		{
+			tAction action = static_cast<tAction>( uiOption );
+			if ( EvolutionCore::IsEnabled( action ) )
+				m_axaGenePoolStrategy[ uiOption ].printFloatLine( textWin, GetActionTypeName( action ) );
+		}
 
         for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
-            m_aGeneStat[ uiGene ].printGeneLine( textWin, GetGeneName( (tGeneType)uiGene ) );
+		{
+			tGeneType gene = static_cast<tGeneType>( uiGene );
+			if ( EvolutionCore::IsEnabled( gene ) )
+	            m_aGeneStat[ uiGene ].printGeneLine( textWin, GetGeneName( gene ) );
+		}
     }
 
     void printAvFood( TextWindow & textWin, wchar_t const * const data )
@@ -176,7 +184,8 @@ public:
         {
             tStrategyId const s = m_pModelWork->GetStrategyId( gp );
             for ( unsigned int uiOption = 0; uiOption < NR_ACTIONS; ++uiOption )
-                m_pStat->add2option( s, uiOption, m_pModelWork->GetDistr( gp, static_cast<tAction>( uiOption ) ) );
+				if ( EvolutionCore::IsEnabled( static_cast<tAction>( uiOption ) ) )
+		            m_pStat->add2option( s, uiOption, m_pModelWork->GetDistr( gp, static_cast<tAction>( uiOption ) ) );
 
             for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
                 m_pStat->add2Gene( s, uiGene, m_pModelWork->GetGenotype( gp, static_cast<tGeneType>( uiGene ) ) );
@@ -237,8 +246,11 @@ void StatisticsWindow::DoPaint( )
     genesStat.printCounter ( * this, L"#individuals" );  // number of individuals
     genesStat.printAvAge   ( * this, L"av. age" );       // average age
     genesStat.printGeneStat( * this );                   // percentage numbers for options
-    genesStat.printAvFood  ( * this, L"av. food" );      // average food consumption 
-    genesStat.printMemory  ( * this, L"memory" );        // memory size counters
+
+	if ( EvolutionCore::IsEnabled( tAction::eat ) )
+		genesStat.printAvFood  ( * this, L"av. food" );      // average food consumption 
+
+	genesStat.printMemory  ( * this, L"memory" );        // memory size counters
 
     // maximum memory size
 
@@ -246,21 +258,27 @@ void StatisticsWindow::DoPaint( )
     setHorizontalPos( 4 );
     printNumber( EvolutionCore::GetMaxPartnerMemory( ) );
 
-    // nr of interactions with known culprits (Tit4Tat only)
+	if ( EvolutionCore::IsEnabled( tAction::interact ) )
+	{
+		// nr of interactions with known culprits (Tit4Tat only)
 
-    nextLine( L"known" );
-    setHorizontalPos( 4 );
-    printNumber( EvolutionCore::GetNrInteractionsWithKnownCulprit( ) );
+		nextLine( L"known" );
+		setHorizontalPos( 4 );
+		printNumber( EvolutionCore::GetNrInteractionsWithKnownCulprit( ) );
 
-    // nr of interactions with unknown culprits (Tit4Tat only)
+		// nr of interactions with unknown culprits (Tit4Tat only)
 
-    nextLine( L"unknown" );
-    setHorizontalPos( 4 );
-    printNumber( EvolutionCore::GetNrInteractionsWithUnknownCulprit( ) );
+		nextLine( L"unknown" );
+		setHorizontalPos( 4 );
+		printNumber( EvolutionCore::GetNrInteractionsWithUnknownCulprit( ) );
+	}
 
-    // average food growth
+	if ( EvolutionCore::IsEnabled( tAction::eat ) )
+	{
+		// average food growth
 
-    nextLine( L"food growth" );
-    setHorizontalPos( 4 );
-    printNumber( m_pModelWork->GetAverageFoodGrowth( ) );
+		nextLine( L"food growth" );
+		setHorizontalPos( 4 );
+		printNumber( m_pModelWork->GetAverageFoodGrowth( ) );
+	}
 }

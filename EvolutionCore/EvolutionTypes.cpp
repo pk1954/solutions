@@ -77,6 +77,23 @@ wchar_t const * const GetGeneName( tGeneType const gene )
     return mapTitles.at( gene );
 }
 
+tAction const GetRelatedAction( tGeneType const gene )
+{
+    static unordered_map < tGeneType, tAction const > mapActions =
+    {
+        { tGeneType::appetite,            tAction::eat       },
+        { tGeneType::fertilInvest,        tAction::fertilize },
+        { tGeneType::memSize,             tAction::interact  },
+        { tGeneType::thresholdClone,      tAction::clone     },
+        { tGeneType::thresholdMarry,      tAction::marry     },
+        { tGeneType::thresholdMove,       tAction::move      },
+        { tGeneType::thresholdFertilize,  tAction::fertilize },
+        { tGeneType::maxEat,              tAction::eat       },
+        { tGeneType::cloneDonation,       tAction::clone     }
+    };
+
+    return mapActions.at( gene );
+}
 
 wchar_t const * const GetBrushModeName( tBrushMode const mode )
 {

@@ -27,5 +27,5 @@ public:
 
 private:
     EvolutionModelData const * m_pModelWork;
-    GridRect  const * m_pGridRectSel;
+    GridRect           const * m_pGridRectSel;
 };

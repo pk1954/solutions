@@ -61,3 +61,12 @@ int EvolutionCore::GetStdCapacity( )
     return  EvolutionCoreImpl::GetStdCapacity( );
 };
 
+bool EvolutionCore::IsEnabled( tAction const action )
+{
+	return Genome::IsEnabled( action );
+}
+
+bool EvolutionCore::IsEnabled( tGeneType const gene )
+{
+	return Genome::IsEnabled( GetRelatedAction( gene ) );
+}

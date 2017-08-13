@@ -17,13 +17,7 @@ Genome Genome::m_genomeTemplate;
 
 array< GeneTypeLimits, NR_GENES   > Genome::m_aLimitsGeneral;
 array< GeneTypeLimits, NR_ACTIONS > Genome::m_aLimitsActions;
-
-bool Genome::m_bMoveEnabled;
-bool Genome::m_bFertilizeEnabled;
-bool Genome::m_bCloneEnabled;
-bool Genome::m_bMarryEnabled;
-bool Genome::m_bInteractEnabled;
-bool Genome::m_bEatEnabled;
+array< bool,           NR_ACTIONS > Genome::m_abActionEnabled;
 
 void Genome::setGeneralLimits( tGeneType const gene, long const lLo, long const lHi )
 {
@@ -70,12 +64,12 @@ void Genome::InitClass( )
 
     // static members for caching frequently used configuration items
 
-    m_bMoveEnabled      = Config::GetConfigValue( Config::tId::moveEnabled      ) > 0;
-    m_bFertilizeEnabled = Config::GetConfigValue( Config::tId::fertilizeEnabled ) > 0;
-    m_bCloneEnabled     = Config::GetConfigValue( Config::tId::cloneEnabled     ) > 0;
-    m_bMarryEnabled     = Config::GetConfigValue( Config::tId::marryEnabled     ) > 0;
-    m_bInteractEnabled  = Config::GetConfigValue( Config::tId::interactEnabled  ) > 0;
-    m_bEatEnabled       = Config::GetConfigValue( Config::tId::eatEnabled       ) > 0;
+    enabled( tAction::move      ) = Config::GetConfigValue( Config::tId::moveEnabled      ) > 0;
+    enabled( tAction::fertilize ) = Config::GetConfigValue( Config::tId::fertilizeEnabled ) > 0;
+    enabled( tAction::clone     ) = Config::GetConfigValue( Config::tId::cloneEnabled     ) > 0;
+    enabled( tAction::marry     ) = Config::GetConfigValue( Config::tId::marryEnabled     ) > 0;
+    enabled( tAction::interact  ) = Config::GetConfigValue( Config::tId::interactEnabled  ) > 0;
+    enabled( tAction::eat       ) = Config::GetConfigValue( Config::tId::eatEnabled       ) > 0;
 }
 
 //  nonstatic functions 
@@ -148,14 +142,13 @@ tAction Genome::GetOption
     int iNrOfOptions = 0;
 
     array <bool, NR_ACTIONS > abOptions;
-    //lint -e720     Boolean test of assignment
-    if ( abOptions[ static_cast<int>( tAction::move      ) ] = m_bMoveEnabled      && bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdMove )       ) ) ++iNrOfOptions;
-    if ( abOptions[ static_cast<int>( tAction::fertilize ) ] = m_bFertilizeEnabled &&                                  ( iEnergy >= GetAllele( tGeneType::thresholdFertilize ) ) ) ++iNrOfOptions;
-    if ( abOptions[ static_cast<int>( tAction::clone     ) ] = m_bCloneEnabled     && bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdClone )      ) ) ++iNrOfOptions;
-    if ( abOptions[ static_cast<int>( tAction::marry     ) ] = m_bMarryEnabled     && bHasFreeSpace && bHasNeighbor && ( iEnergy >= GetAllele( tGeneType::thresholdMarry )      ) ) ++iNrOfOptions;
-    if ( abOptions[ static_cast<int>( tAction::interact  ) ] = m_bInteractEnabled  && bHasNeighbor )                                                                          ++iNrOfOptions;
-    if ( abOptions[ static_cast<int>( tAction::eat       ) ] = m_bEatEnabled       && ( iNrOfOptions == 0 ) ||         ( iEnergy <  GetAllele( tGeneType::maxEat )        ) ) ++iNrOfOptions;
-    //lint -e720
+ 
+    if ( abOptions[ static_cast<int>( tAction::move      ) ] = enabled( tAction::move      ) && bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdMove )      ) ) ++iNrOfOptions;
+    if ( abOptions[ static_cast<int>( tAction::fertilize ) ] = enabled( tAction::fertilize ) &&                                  ( iEnergy >= GetAllele( tGeneType::thresholdFertilize ) ) ) ++iNrOfOptions;
+    if ( abOptions[ static_cast<int>( tAction::clone     ) ] = enabled( tAction::clone     ) && bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdClone )     ) ) ++iNrOfOptions;
+    if ( abOptions[ static_cast<int>( tAction::marry     ) ] = enabled( tAction::marry     ) && bHasFreeSpace && bHasNeighbor && ( iEnergy >= GetAllele( tGeneType::thresholdMarry )     ) ) ++iNrOfOptions;
+    if ( abOptions[ static_cast<int>( tAction::interact  ) ] = enabled( tAction::interact  ) && bHasNeighbor )                                                                               ++iNrOfOptions;
+    if ( abOptions[ static_cast<int>( tAction::eat       ) ] = enabled( tAction::eat       ) &&                                  ( iEnergy <  GetAllele( tGeneType::maxEat )             ) ) ++iNrOfOptions;
 
     unsigned int uiSum = 0;
 
@@ -188,8 +181,8 @@ tAction Genome::GetOption
             return g.m_action;
         }
     }
-    assert( false );
-    return static_cast<tAction>( 0 );
+
+	return tAction::undefined;
 }
 
 short Genome::GetDistr( tAction const action ) const

@@ -259,7 +259,10 @@ void Grid::MakePlan
         plan.NoTarget ( );
         break;
 
-    default:
+    case tAction::undefined:
+        break;
+
+	default:
         assert( false );
     }
 }
@@ -359,6 +362,9 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
             gfRun.IncEnergy   ( sReceive );
             deleteIfDead( gfRun );
         }
+        break;
+
+	    case tAction::undefined:
         break;
 
         default:

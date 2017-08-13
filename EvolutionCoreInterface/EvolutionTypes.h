@@ -117,3 +117,5 @@ wchar_t const * const GetActionTypeName    ( tAction     const );
 wchar_t const * const GetGeneName          ( tGeneType   const );
 wchar_t const * const GetBrushModeName     ( tBrushMode  const );
 wchar_t const * const GetBrushModeNameShort( tBrushMode  const );
+
+tAction const GetRelatedAction( tGeneType const );

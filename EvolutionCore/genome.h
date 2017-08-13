@@ -5,6 +5,7 @@
 
 #include <array>
 #include "gene.h"
+#include "config.h"
 #include "EvolutionTypes.h"
 
 using namespace std;
@@ -29,10 +30,15 @@ public:
     short GetDistr ( tAction const   ) const;
     short GetAllele( tGeneType const geneType ) const { return m_aGeneGeneral[ static_cast<int>( geneType ) ].m_gene.GetAllele(); };
 
+	static bool IsEnabled( tAction const action ) { return enabled( action ); };
+
 private:
  
-    void setGeneralGene( tGeneType const, int const );
-    void setActionGene ( tAction   const, int const );
+    struct generalGene
+    {
+        tGeneType m_type;
+        Gene      m_gene;
+    };
 
     struct actionGene
     {
@@ -40,22 +46,18 @@ private:
         Gene    m_gene;
     };
 
-    struct generalGene
-    {
-        tGeneType m_type;
-        Gene      m_gene;
-    };
-
     array< generalGene, NR_GENES   > m_aGeneGeneral;  // 4 * 9 = 36   general genes 
     array< actionGene,  NR_ACTIONS > m_aGeneActions;  // 4 * 6 = 24   genes for choosing next action
                                                       // sum     60
     
-    static bool m_bMoveEnabled;
-    static bool m_bFertilizeEnabled;
-    static bool m_bCloneEnabled;
-    static bool m_bMarryEnabled;
-    static bool m_bInteractEnabled;
-    static bool m_bEatEnabled;
+    void setGeneralGene( tGeneType const, int const );
+    void setActionGene ( tAction   const, int const );
+
+	// static members and functions
+
+	static array< bool, NR_ACTIONS > m_abActionEnabled;
+
+	static bool & enabled( tAction const action ) { return m_abActionEnabled[ static_cast<unsigned short>( action ) ]; 	}
 
     static Genome m_genomeTemplate;
 

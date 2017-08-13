@@ -52,4 +52,6 @@ public:
     static unsigned int    GetNrInteractionsWithUnknownCulprit( );
     static unsigned int    GetMaxPartnerMemory( );
     static int             GetStdCapacity( );
+	static bool            IsEnabled( tAction const );
+	static bool            IsEnabled( tGeneType const );
 };
