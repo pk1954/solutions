@@ -1,3 +1,7 @@
 SetConfigValue Config::tId::moveEnabled 0
-SetConfigValue Config::tId::nrOfHistorySlots 10
+SetConfigValue Config::tId::marryEnabled 0
+SetConfigValue Config::tId::fertilizeEnabled 0
+SetConfigValue Config::tId::eatEnabled 0
+SetConfigValue Config::tId::energyConsumptionBasicRate 0
+# SetConfigValue Config::tId::nrOfHistorySlots 10
 # test
