@@ -93,3 +93,21 @@ void Config::SetConfigValue( tId const id, long const lValue )
 {
     m_mapConfigData.at( id ) = lValue;
 }
+
+class WrapSetConfigValue : public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        unsigned long const ulConfigId = script.ScrReadUlong( );
+        Config::tId   const id         = static_cast<Config::tId>( ulConfigId );
+        long          const lValue     = script.ScrReadLong();
+
+        Config::SetConfigValue( id, lValue );
+    }
+};
+
+void Config::DefineConfigWrapperFunctions( )
+{
+    DEF_FUNC( SetConfigValue );
+}

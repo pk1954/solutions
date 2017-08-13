@@ -15,6 +15,7 @@ public:
     virtual ~Config( ) {};
 
     static void SetDefaultConfiguration( );
+	static void DefineConfigWrapperFunctions( );
 
     enum class tOnOffAuto
     {

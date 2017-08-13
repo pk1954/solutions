@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "assert.h"
-#include "config.h"
 #include "SCRIPT.H"
 #include "symtab.h"
 #include "EvolutionModelData.h"
@@ -17,21 +16,8 @@
 //lint -e534                 // ignoring return value of function
 //lint -esym( 715, script )  // not referenced
 
-static EvolutionCore * m_pCore;
-static EvolutionModelData     * m_pModelWork;
-
-class WrapSetConfigValue : public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        unsigned long const ulConfigId = script.ScrReadUlong( );
-        Config::tId   const id         = static_cast<Config::tId>( ulConfigId );
-        long          const lValue     = script.ScrReadLong();
-
-        Config::SetConfigValue( id, lValue );
-    }
-};
+static EvolutionCore       * m_pCore;
+static EvolutionModelData  * m_pModelWork;
 
 class WrapSetPoi : public Script_Functor
 {
@@ -137,7 +123,6 @@ void DefineCoreWrapperFunctions( EvolutionCore * pCore )
     m_pCore = pCore;
 
     DEF_FUNC( ResetModel );
-    DEF_FUNC( SetConfigValue );
     DEF_FUNC( SetPoi );
     DEF_FUNC( ClearPoi );
     DEF_FUNC( Include );

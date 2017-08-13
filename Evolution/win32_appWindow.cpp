@@ -113,19 +113,22 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_traceStream.open( L"main_trace.out", ios::out );
     assert( m_traceStream.good( ) );
 
-    Config::SetDefaultConfiguration( );
+	ScriptErrorHandler::ScrSetOutputStream( & wcout );
+
+	Config::SetDefaultConfiguration( );
+    Config::DefineConfigWrapperFunctions( );
 
     // evaluate command line parameters
 
     std::wstring const wstrCmdLine( lpCmdLine );
     if ( wstrCmdLine.compare( L"/nohist" ) == 0 )
         Config::SetConfigValue( Config::tId::maxGeneration, 0 );
-    EvolutionCore::InitClass( );
+
+	Script::ProcessScript( L"std_configuration.in" );
+
+	EvolutionCore::InitClass( );
 
     m_pEvolutionCore = EvolutionCore::CreateCore( );
-
-    ScriptErrorHandler::ScrSetOutputStream( & wcout );
-	Script::ProcessScript( L"std_configuration.in" );
 
     D3dSystem::Create( hWndApp, GridPoint::GRID_WIDTH, GridPoint::GRID_HEIGHT );
 	
