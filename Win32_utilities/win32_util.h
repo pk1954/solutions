@@ -143,6 +143,13 @@ namespace Util
         return { rect.left, rect.top };
     }
 
+    inline PixelPoint GetWindowSize( HWND const hWnd )
+    {
+        PixelRect rect;
+        (void)GetWindowRect( hWnd, &rect );
+        return { rect.right  - rect.left, rect.bottom - rect.top };
+    }
+
     inline long GetWindowHeight( HWND const hWnd )
     {
         PixelRect rect;
@@ -234,7 +241,9 @@ namespace Util
     void AdjustRight( HWND, int );
     void AdjustLeft( HWND, int );
 
-    HANDLE    MakeThread( LPTHREAD_START_ROUTINE, LPVOID, LPDWORD, HANDLE * );
+    BOOL MoveWindowAbsolute( HWND const, LONG const, LONG const, LONG const, LONG const, BOOL const bRepaint );
+	
+	HANDLE    MakeThread( LPTHREAD_START_ROUTINE, LPVOID, LPDWORD, HANDLE * );
     DWORD     GetNrOfCPUs( );
     ULONGLONG GetPhysicalMemory( );
 	LONG      GetMaxNrOfSlots( ULONG );

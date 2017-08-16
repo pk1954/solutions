@@ -37,7 +37,12 @@ public:
 
         if ( uiResId > 0 )
         {
-            (void)MoveWindow( m_pWinManager->GetHWND( uiResId ), lXpos, lYpos, lWidth, lHeight, TRUE );
+			HWND hWnd = m_pWinManager->GetHWND( uiResId );
+			BOOL bRes = Util::MoveWindowAbsolute( hWnd, lXpos, lYpos, lWidth, lHeight, TRUE );
+			assert( bRes );
+			PixelPoint pnt = m_pWinManager->GetRootWindow( uiResId )->GetWindowPos( );
+			assert( pnt.x == lXpos );
+			assert( pnt.y == lYpos );
         }
     }
 

@@ -1,62 +1,4 @@
 PostRefresh
-PostSetBrushMode tBrushMode::defect
-PostDoEdit  112  55 
-PostRefresh
-PostDoEdit  112  55 
-PostRefresh
-PostDoEdit  112  55 
-PostRefresh
-PostDoEdit  111  55 
-PostRefresh
-PostDoEdit  109  56 
-PostRefresh
-PostDoEdit   84  59 
-PostRefresh
-PostDoEdit   74  56 
-PostRefresh
-PostDoEdit   74  52 
-PostRefresh
-PostDoEdit   79  46 
-PostRefresh
-PostDoEdit   80  45 
-PostRefresh
-PostDoEdit   85  42 
-PostRefresh
-PostDoEdit   99  41 
-PostRefresh
-PostDoEdit  111  41 
-PostRefresh
-PostDoEdit  116  40 
-PostRefresh
-PostDoEdit  116  40 
-PostRefresh
-PostDoEdit  116  46 
-PostRefresh
-PostDoEdit  110  57 
-PostRefresh
-PostDoEdit  106  61 
-PostRefresh
-PostDoEdit  104  62 
-PostRefresh
-PostDoEdit  101  63 
-PostRefresh
-PostDoEdit  100  64 
-PostRefresh
-PostDoEdit   98  64 
-PostRefresh
-PostDoEdit   93  65 
-PostRefresh
-PostDoEdit   92  64 
-PostRefresh
-PostDoEdit   89  62 
-PostRefresh
-PostDoEdit   87  56 
-PostRefresh
-PostDoEdit   87  54 
-PostRefresh
-PostGenerationStep
-PostGenerationStep
-PostRefresh
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
@@ -68,19 +10,3 @@ PostGenerationStep
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostGenerationStep
-PostGenerationStep
-SetGenerationDelay 0
-PostRefresh

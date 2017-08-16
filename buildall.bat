@@ -23,7 +23,7 @@ echo *** BUILDALL: Perform HISTORY tests
 cd HistoryTest\TEST
 call TEST_ALL
 if ERRORLEVEL 1 (
-	echo +++ BUILDALL: error in COMPARE tests
+	echo +++ BUILDALL: error in HistoryTest
 	goto ERROR_EXIT
 )
 cd ..\..

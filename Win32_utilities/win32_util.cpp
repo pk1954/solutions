@@ -55,19 +55,37 @@ bool Util::operator!= ( RECT const & a, RECT const & b )
 void Util::AdjustRight( HWND hWnd, int iYpos )
 {
     HWND const hWndParent   = GetParent( hWnd );
-    int  const iWidthParent = Util::GetClientWindowWidth( hWndParent );
-    int  const iWidth       = Util::GetWindowWidth( hWnd );
-    int  const iHeight      = Util::GetWindowHeight( hWnd );
+    int  const iWidthParent = GetClientWindowWidth( hWndParent );
+    int  const iWidth       = GetWindowWidth( hWnd );
+    int  const iHeight      = GetWindowHeight( hWnd );
     MoveWindow( hWnd, iWidthParent - iWidth, iYpos, iWidth, iHeight, TRUE );
     (void)BringWindowToTop( hWnd );
 }
 
 void Util::AdjustLeft( HWND hWnd, int iYpos )
 {
-    int  const iWidth  = Util::GetWindowWidth( hWnd );
-    int  const iHeight = Util::GetWindowHeight( hWnd );
-    MoveWindow( hWnd, 0, iYpos, iWidth, iHeight, TRUE );
+	PixelPoint pnt = GetWindowSize( hWnd );
+    MoveWindow( hWnd, 0, iYpos, pnt.x, pnt.y, TRUE );
     (void)BringWindowToTop( hWnd );
+}
+
+BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates 
+(
+	HWND const hWnd,
+	LONG const lXpos,
+	LONG const lYpos,
+	LONG const lWidth,
+	LONG const lHeight,
+	BOOL const bRepaint
+)
+{
+	PixelPoint pos( lXpos, lYpos );
+	HWND       hWndParent = GetAncestor( hWnd, GA_PARENT );
+
+	if ( hWndParent != nullptr )
+		ScreenToClient( hWndParent, & pos );
+
+	return MoveWindow( hWnd, pos.x, pos.y, lWidth, lHeight, bRepaint );
 }
 
 void Util::MakeLayered( HWND const hWnd, BOOL const bMode, COLORREF const crKey, UINT const uiAlpha )
