@@ -243,23 +243,26 @@ void WinManager::dumpWindowCoordinates( ) const
     ostr.open( m_strWindowConfigurationFile, wofstream::out );
     
     for ( const auto & it : m_map )
-    {
-        HWND hwnd = getWindowHandle( it.second );
-        if ( hwnd != nullptr )
-        {
-            ostr << L"MoveWindow "
-                 << it.second.m_wstr << L" "
-                 << GetWindowLeftPos( hwnd ) << L" "
-                 << GetWindowTop    ( hwnd ) << L" "
-                 << GetWindowWidth  ( hwnd ) << L" "
-                 << GetWindowHeight ( hwnd ) << endl;
-            ostr << L"ShowWindow " 
-                << it.second.m_wstr << L" "
-                << ( IsWindowVisible( hwnd ) 
-					? ( IsZoomed( hwnd ) ? L"SW_MAXIMIZE" : L"SW_SHOWNORMAL" )
-					: L"SW_HIDE" ) << endl;
-        }
-    }
+	{
+		if ( it.second.m_bTrackPosition )
+		{
+			HWND hwnd = getWindowHandle( it.second );
+			if ( hwnd != nullptr )
+			{
+				ostr << L"MoveWindow "
+					 << it.second.m_wstr << L" "
+					 << GetWindowLeftPos( hwnd ) << L" "
+					 << GetWindowTop    ( hwnd ) << L" "
+					 << GetWindowWidth  ( hwnd ) << L" "
+					 << GetWindowHeight ( hwnd ) << endl;
+				ostr << L"ShowWindow " 
+					<< it.second.m_wstr << L" "
+					<< ( IsWindowVisible( hwnd ) 
+						? ( IsZoomed( hwnd ) ? L"SW_MAXIMIZE" : L"SW_SHOWNORMAL" )
+						: L"SW_HIDE" ) << endl;
+			}
+		}
+	}
 
     ostr.close( );
 }
@@ -300,12 +303,13 @@ void WinManager::AddWindow
     wstring    const   wstrName, 
     UINT       const   id, 
     RootWindow const * pRootWin, 
+	BOOL       const   bTrackPosition,
     INT        const   iMilliSecs 
 )
 {
     if ( id !=0 )
     {
-        m_map.insert( pair< UINT, MAP_ELEMENT >( id, { wstrName, pRootWin } ) );
+        m_map.insert( pair< UINT, MAP_ELEMENT >( id, { wstrName, pRootWin, bTrackPosition } ) );
         SymbolTable::ScrDefConst( wstrName, static_cast<ULONG>(id) );
     }
 
@@ -319,5 +323,3 @@ HWND const WinManager::getWindowHandle( MAP_ELEMENT const & elem ) const
 {
     return ( elem.m_pRootWin == nullptr ) ? nullptr : elem.m_pRootWin->GetWindowHandle( );
 };
-
-

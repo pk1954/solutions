@@ -202,7 +202,7 @@ namespace Util
 
     inline void FastFill( HDC const hDC, RECT const & rect )
     {
-        (void)ExtTextOut( hDC, 0, 0, ETO_OPAQUE, &rect, L"", 0, 0 );
+        (void)ExtTextOut( hDC, 0, 0, ETO_OPAQUE, & rect, L"", 0, 0 );
     }
 
     inline void AddWindowStyle( HWND const hWnd, DWORD const dwStyle )

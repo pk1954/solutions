@@ -18,7 +18,7 @@ public:
     WinManager( );
     virtual ~WinManager( ) { };
 
-    void AddWindow( wstring const, UINT const, RootWindow const *, INT const );
+    void AddWindow( wstring const, UINT const, RootWindow const *, BOOL const, INT const );
 
     void NotifyObservers( ) const 
     { 
@@ -71,6 +71,7 @@ private:
     {
         wstring    const   m_wstr;
         RootWindow const * m_pRootWin;
+		BOOL       const   m_bTrackPosition;
     };
 
     unordered_map< UINT, MAP_ELEMENT > m_map;

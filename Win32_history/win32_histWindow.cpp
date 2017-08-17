@@ -31,7 +31,7 @@ void HistWindow::Start
         hWndParent,
         CS_OWNDC | CS_DBLCLKS,
         L"ClassHistWindow",
-        WS_POPUP | WS_CLIPSIBLINGS | WS_VISIBLE
+        WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE
     );
 
     Util::AddWindowStyle( hWnd, WS_EX_STATICEDGE );
@@ -39,7 +39,7 @@ void HistWindow::Start
 
     m_pHistSys = pHistSys;
     m_pHistIter = m_pHistSys->CreateHistoryIterator( );
-    Util::MakeLayered( hWnd, TRUE, 0, 100 );  // window is completely opaque (alpha = 100)
+//    Util::MakeLayered( hWnd, TRUE, 0, 100 );  // window is completely opaque (alpha = 100)
 
     m_pGenDisplay = new GenDisplayWindow( );
     m_pGenDisplay->StartGenDisplayWindow( GetWindowHandle( ) );

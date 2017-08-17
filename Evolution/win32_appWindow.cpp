@@ -168,7 +168,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
         m_pEvoHistWindow = new EvoHistWindow( );
 		m_pEvoHistWindow->Start( hWndApp, m_pFocusPoint, m_pEvoHistorySys, m_pHistWorkThread );
-        m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, 75 );
+        m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, FALSE, 75 );
     }
     else
     {
@@ -188,15 +188,14 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pPerfWindow    ->Start( hWndApp, 100 );
 	m_pEvoController ->Start( & m_traceStream, m_pHistWorkThread, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow );
 
-    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,               -1 );
-    m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow,    -1 );
-    m_pWinManager->AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_pEditorWindow,    -1 );
-    m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow,     500 );
-    m_pWinManager->AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_pStatistics,     500 );
-    m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow,     500 );
-    m_pWinManager->AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_pMiniGridWindow, 300 );
-    m_pWinManager->AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_pMainGridWindow, 100 );
-    m_pWinManager->AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_pStatusBar,       -1 );
+    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,              TRUE,  -1 );
+    m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow,   TRUE,  -1 );
+    m_pWinManager->AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_pEditorWindow,   TRUE,  -1 );
+    m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow,     TRUE, 500 );
+    m_pWinManager->AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_pStatistics,     TRUE, 500 );
+    m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow,     TRUE, 500 );
+    m_pWinManager->AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_pMiniGridWindow, TRUE, 300 );
+    m_pWinManager->AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_pMainGridWindow, TRUE, 100 );
 
     m_pMiniGridWindow->Observe( m_pMainGridWindow );
     m_pMiniGridWindow->Size( );
@@ -215,7 +214,6 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
     m_pWinManager->GetWindowConfiguration( );
 
-    ShowWindow( hWndApp, SW_SHOWMAXIMIZED );
     (void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 
 //	Script::ProcessScript( L"std_script.in" );
@@ -313,21 +311,25 @@ void AppWindow::adjustChildWindows( )
 {
     static int const HIST_WINDOW_HEIGHT = 30;
 
-    PixelRectSize pntSize( GetClRectSize( ) );
+    PixelRectSize pntAppClientSize( GetClRectSize( ) );
 
-    if ( ! pntSize.IsEmpty( ) )
+    if ( ! pntAppClientSize.IsEmpty( ) )
     {
         m_pStatusBar->Resize( );
-        pntSize.ReduceHeight( m_pStatusBar->GetHeight( ) );
+        pntAppClientSize.ReduceHeight( m_pStatusBar->GetHeight( ) );
 
         if ( m_pEvoHistWindow != nullptr )
         {
-            PixelPoint pnt( 0, pntSize.GetHeight( ) - HIST_WINDOW_HEIGHT );  // client area coordinates
-            ClientToScreen( GetWindowHandle( ), & pnt );
-            m_pEvoHistWindow->Move( pnt.x, pnt.y, pntSize.GetWidth(), HIST_WINDOW_HEIGHT, TRUE );  // adapt history window to new size
-            pntSize.ReduceHeight( HIST_WINDOW_HEIGHT );
+            m_pEvoHistWindow->Move   // adapt history window to new size
+			( 
+				0, 
+				pntAppClientSize.GetHeight( ) - HIST_WINDOW_HEIGHT, 
+				pntAppClientSize.GetWidth(), 
+				HIST_WINDOW_HEIGHT, 
+				TRUE 
+			); 
         }
 
-        m_pMainGridWindow->Move( 0, 0, pntSize.GetWidth( ), pntSize.GetHeight( ), TRUE );
+        m_pMainGridWindow->Move( 0, 0, pntAppClientSize.GetWidth( ), pntAppClientSize.GetHeight( ), TRUE );
     }
 }
