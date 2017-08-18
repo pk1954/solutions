@@ -66,6 +66,7 @@ private:
     std::wstring const & getOutputString( ) { return m_wString; }
 
     COLORREF getBackgroundColor ( int const ) const;
+	BOOL     isDark             ( COLORREF const ) const;
     BOOL     getIndividualColor ( GridPoint const &, COLORREF & ) const;
     void     assembleLeftColumn ( GridPoint const &, GridPoint const & );
     void     assembleRightColumn( GridPoint const & );

@@ -16,7 +16,6 @@
 //lint -e845                                   0 as right argument to << or |
 
 static COLORREF const CLR_WHITE = D3DCOLOR_ARGB( 255, 255, 255, 255 );
-static COLORREF const CLR_BLACK = D3DCOLOR_ARGB( 255,   0,   0,   0 );
 
 D3DXFONT_DESC D3dBuffer::m_d3dx_font_desc =
 {
@@ -87,18 +86,18 @@ D3dBuffer::~D3dBuffer()
     m_hWnd             = nullptr;
 }
 
-void D3dBuffer::D3D_DrawText( PixelRect rect, wstring const & wstr )
+void D3dBuffer::D3D_DrawText( PixelRect rect, wstring const & wstr, D3DCOLOR col )
 {
     assert( m_id3dx_font != nullptr );
     //lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
     m_id3dx_font->DrawText
     ( 
         nullptr,           // pSprite
-        wstr.c_str( ),    // pString
+        wstr.c_str( ),     // pString
         -1,                // Count
         &rect,             // pRect
         DT_LEFT,           // Format
-        CLR_BLACK          // Color
+        col                // Color
     ); 
     //lint +esym( 613, D3dBuffer::m_id3dx_font ) 
 }

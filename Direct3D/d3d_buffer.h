@@ -26,7 +26,7 @@ public:
     void RenderRects( );
     void RenderVertices( );
     void RenderTranspRect( PixelRect const &, DWORD const );
-    void D3D_DrawText( PixelRect, wstring const & );
+    void D3D_DrawText( PixelRect, wstring const &, D3DCOLOR );
     void EndFrame( );
 
     void SetStripMode( tBoolOp const bOp ) { Util::ApplyOp( m_bStripMode, bOp ); };

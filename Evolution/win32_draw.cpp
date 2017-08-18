@@ -17,6 +17,10 @@
 
 using namespace std;
 
+static COLORREF const CLR_BLACK = D3DCOLOR_ARGB( 255,   0,   0,   0 );
+static COLORREF const CLR_WHITE = D3DCOLOR_ARGB( 255, 255, 255, 255 );
+static COLORREF const CLR_GREY  = D3DCOLOR_ARGB( 128, 128, 128, 128 );
+
 //lint -esym( 768, DrawFrame::drawGridPointFunc )     symbol not referenced
 //lint -esym( 768, DrawFrame::drawBackground )        symbol not referenced
 //lint -e845                                          0 as right argument to << or |
@@ -164,10 +168,6 @@ void DrawFrame::DoPaint( KGridRect const &pkgr )
 
 void DrawFrame::drawPOI( GridPoint const & gpPoi )
 {
-    static COLORREF const CLR_BLACK = D3DCOLOR_ARGB( 255,   0,   0,   0 );
-    static COLORREF const CLR_WHITE = D3DCOLOR_ARGB( 255, 255, 255, 255 );
-    static COLORREF const CLR_GREY  = D3DCOLOR_ARGB( 128, 128, 128, 128 );
-
     if ( gpPoi.IsNotNull( ) )
     {
         PixelPoint const ptCenter = m_pFrameBuffer->Grid2PixelPosCenter( gpPoi );
@@ -223,6 +223,15 @@ void DrawFrame::drawIndividuals( GridRect const & rect  )
 #endif
 }
 
+BOOL DrawFrame::isDark( COLORREF const colBackground ) const
+{
+	DWORD R = (colBackground & 0x00FF0000) >> 16;
+	DWORD G = (colBackground & 0x0000FF00) >>  8;
+	DWORD B = (colBackground & 0x000000FF);
+
+	return ( R + G + B ) < 3 * 0x7F;
+}
+
 void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
 {
     class draw : public drawGridPointFunc
@@ -239,19 +248,24 @@ void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
         {
             if ( m_pDraw->GetEvoCore( )->IsAlive( gp ) )
             {
+				COLORREF   colText      = CLR_BLACK;
                 PixelPoint ptCenter     = m_pFrameBuffer->Grid2PixelPosCenter( gp );
                            ptCenter.y   = m_lHeight - ptCenter.y;            // for DirectX text output
                 long const lHalfSizeInd = (5 * m_sFieldSize) / 16;
                 PixelRect  pixRect( ptCenter - lHalfSizeInd, ptCenter + lHalfSizeInd );
-               
+                COLORREF   colBackground;
+
+				if ( m_pDraw->getIndividualColor( gp, colBackground ) && m_pDraw->isDark( colBackground ) )
+					colText = CLR_WHITE;
+
                 m_pDraw->assembleLeftColumn( gp, m_gpPoi );
-                m_pD3dBuffer->D3D_DrawText( pixRect, m_pDraw->getOutputString( ) );
+                m_pD3dBuffer->D3D_DrawText( pixRect, m_pDraw->getOutputString( ), colText );
 
                 if ( m_sFieldSize >= 256 ) 
                 {
                     pixRect.left += lHalfSizeInd;
                     m_pDraw->assembleRightColumn( gp );
-                    m_pD3dBuffer->D3D_DrawText( pixRect, m_pDraw->getOutputString( ) );
+                    m_pD3dBuffer->D3D_DrawText( pixRect, m_pDraw->getOutputString( ), colText );
                 }
             }
         }
