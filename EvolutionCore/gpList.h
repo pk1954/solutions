@@ -21,8 +21,7 @@ public:
         : m_gpOldest( ),
           m_gpYoungest( ),
           m_iCount( 0 )
-    {
-    };
+    { };
 
     int GetSize( ) const { return m_iCount; }; 
 
@@ -41,7 +40,7 @@ public:
     {
         m_gpOldest  .Set2Null( );
         m_gpYoungest.Set2Null( );
-        m_iCount     = 0;
+        m_iCount = 0;
     };
 
     void AddGridPointToList     ( Grid &, GridField & );

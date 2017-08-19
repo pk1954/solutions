@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <iomanip>     
 #include <iostream>     
 #include <sstream> 
 #include <vector>
@@ -128,10 +129,16 @@ void DrawFrame::SetStripMode( tBoolOp const bOp )
 
 void DrawFrame::Resize( )
 {
-    m_pD3dBuffer->ResetFont( );
+	int const MAX_TEXT_LINES = 20;
+	int       iFontSize = m_pFrameBuffer->GetFieldSize() / MAX_TEXT_LINES;
+	if ( iFontSize < 9 )
+		iFontSize = 9;
+	if ( iFontSize > 16 )
+		iFontSize = 16;
+    m_pD3dBuffer->ResetFont( iFontSize );   
 }
 
-void DrawFrame::DoPaint( KGridRect const &pkgr )
+void DrawFrame::DoPaint( KGridRect const & pkgr )
 {
     if ( IsWindowVisible( m_hWnd ) )
     {
@@ -223,13 +230,22 @@ void DrawFrame::drawIndividuals( GridRect const & rect  )
 #endif
 }
 
-BOOL DrawFrame::isDark( COLORREF const colBackground ) const
+COLORREF DrawFrame::getTextColor( GridPoint const & gp ) const
 {
-	DWORD R = (colBackground & 0x00FF0000) >> 16;
-	DWORD G = (colBackground & 0x0000FF00) >>  8;
-	DWORD B = (colBackground & 0x000000FF);
+	COLORREF colText = CLR_WHITE;
+/*	
+	COLORREF colBackground;
+	if ( getIndividualColor( gp, colBackground ) )
+	{
+		DWORD R = (colBackground & 0x00FF0000) >> 16;
+		DWORD G = (colBackground & 0x0000FF00) >>  8;
+		DWORD B = (colBackground & 0x000000FF);
 
-	return ( R + G + B ) < 3 * 0x7F;
+		if ( ( 3 * R + 2 * G + B ) > 7 * 0x7F )
+			colText = CLR_BLACK;
+	}
+*/
+	return colText;
 }
 
 void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
@@ -248,15 +264,11 @@ void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
         {
             if ( m_pDraw->GetEvoCore( )->IsAlive( gp ) )
             {
-				COLORREF   colText      = CLR_BLACK;
+				COLORREF   colText      = m_pDraw->getTextColor( gp );
                 PixelPoint ptCenter     = m_pFrameBuffer->Grid2PixelPosCenter( gp );
                            ptCenter.y   = m_lHeight - ptCenter.y;            // for DirectX text output
                 long const lHalfSizeInd = (5 * m_sFieldSize) / 16;
                 PixelRect  pixRect( ptCenter - lHalfSizeInd, ptCenter + lHalfSizeInd );
-                COLORREF   colBackground;
-
-				if ( m_pDraw->getIndividualColor( gp, colBackground ) && m_pDraw->isDark( colBackground ) )
-					colText = CLR_WHITE;
 
                 m_pDraw->assembleLeftColumn( gp, m_gpPoi );
                 m_pD3dBuffer->D3D_DrawText( pixRect, m_pDraw->getOutputString( ), colText );
@@ -283,14 +295,11 @@ void DrawFrame::assembleLeftColumn( GridPoint const & gp, GridPoint const & gpPo
 {
     startOutputString( );
 
-    m_wBuffer << gp;
-    if ( gp == gpPoi )
-        m_wBuffer << L" ** POI ** ";
-    m_wBuffer << endl;
-    m_wBuffer << L"ID: "     << m_pModelWork->GetId( gp )                      << endl;
-    m_wBuffer << L"Age: "    << m_pModelWork->GetAge( gp )                     << endl;
-    m_wBuffer << L"Origin: " << GetOriginName( m_pModelWork->GetOrigin( gp ) ) << endl;
-    m_wBuffer << L"Energy: " << m_pModelWork->GetEnergy( gp )                  << endl;
+	m_wBuffer << gp                                                                     << endl;
+    m_wBuffer << L"ID: " << setw( 5 ) << m_pModelWork->GetId( gp )                      << endl;
+    m_wBuffer << L"En: " << setw( 5 ) << m_pModelWork->GetEnergy( gp )                  << endl;
+    m_wBuffer << L"Age:" << setw( 5 ) << m_pModelWork->GetAge( gp )                     << endl;
+    m_wBuffer << L"Or: " << setw( 5 ) << GetOriginName( m_pModelWork->GetOrigin( gp ) ) << endl;
 
     PlannedActivity plan = m_pCore->GetPlan( );
     if ( plan.IsValid( ) )
@@ -298,7 +307,7 @@ void DrawFrame::assembleLeftColumn( GridPoint const & gp, GridPoint const & gpPo
         if ( (gp == plan.GetActor( )) || (gp == plan.GetPartner( )) )
         {
             m_wBuffer << (( gp == plan.GetActor( ) ) ? L"** ACTOR **" : L"** PARTNER **") << endl;
-            m_wBuffer << L"Action: "    << GetActionTypeName( plan.GetActionType( ) )     << endl;
+            m_wBuffer << L"** "  << GetActionTypeName( plan.GetActionType( ) ) << L" **"  << endl;
             m_wBuffer << L"BaseCons: "  << plan.GetBaseConsumption( )                     << endl;
         }
     }
@@ -315,11 +324,11 @@ void DrawFrame::assembleRightColumn( GridPoint const & gp )
         MEM_INDEX const memSize   = m_pModelWork->GetMemSize( gp );  
         MEM_INDEX const memFilled = m_pModelWork->GetMemUsed( gp ); 
         
-        m_wBuffer << L"Memory (" << memFilled << L" of " << memSize << L")" << endl;
+        m_wBuffer << L"  Mem (" << memFilled << L"/" << memSize << L")" << endl;
 
         for	( MEM_INDEX mem = 0; mem < memFilled; ++mem )
         {
-            m_wBuffer << m_pModelWork->GetMemEntry( gp, mem ) << endl;
+            m_wBuffer << setw( 10 ) << m_pModelWork->GetMemEntry( gp, mem ) << endl;
         }
     }
 

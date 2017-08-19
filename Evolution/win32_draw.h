@@ -54,7 +54,7 @@ private:
 
     static UINT const MAX_BG_COLOR = 255;
 
-                CLUT                                                  m_clutBackground;
+                CLUT                 m_clutBackground;
     std::array< CLUT, NR_STRATEGIES> m_aClutStrat;
 
     std::wstring        m_wString;
@@ -66,7 +66,7 @@ private:
     std::wstring const & getOutputString( ) { return m_wString; }
 
     COLORREF getBackgroundColor ( int const ) const;
-	BOOL     isDark             ( COLORREF const ) const;
+    COLORREF getTextColor       ( GridPoint const & ) const;
     BOOL     getIndividualColor ( GridPoint const &, COLORREF & ) const;
     void     assembleLeftColumn ( GridPoint const &, GridPoint const & );
     void     assembleRightColumn( GridPoint const & );

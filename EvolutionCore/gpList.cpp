@@ -118,4 +118,3 @@ void GridPointList::DeleteGridPointFromList( Grid & grid, GridField & gf )
 
     --m_iCount;
 }
-

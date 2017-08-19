@@ -19,7 +19,7 @@ public:
     ~D3dBuffer();
 
     void StartFrame( );
-    void ResetFont( );
+    void ResetFont( int const );
     void AddRect( PixelPoint const &, DWORD const, float const );    
     void AddBackgroundRect( PixelPoint const &, DWORD, float );    
     void AddVertex( PixelPoint const &, DWORD const );

@@ -12,18 +12,18 @@
 
 FrameBuffer::FrameBuffer
 ( 
-    HWND            const hWnd, 
-    short           const fs, 
-    StatusBar     * const pStatusBar,
-    EvolutionCore *       pCore,
-    EvolutionModelData     * const pModel
+    HWND                 const hWnd, 
+    short                const fs, 
+    StatusBar          * const pStatusBar,
+    EvolutionCore      *       pCore,
+    EvolutionModelData * const pModel
 )
-  : m_pixOffset( ),
+  : m_pixOffset ( ),
     m_sFieldSize( fs ),
     m_smoothMove(  ),
-    m_hWnd( hWnd ), 
+    m_hWnd      ( hWnd ), 
     m_pStatusBar( pStatusBar ),
-    m_pCore( pCore ),
+    m_pCore     ( pCore ),
     m_pModelWork( pModel )
 { }
 

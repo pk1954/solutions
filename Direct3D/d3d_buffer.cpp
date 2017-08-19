@@ -27,8 +27,8 @@ D3DXFONT_DESC D3dBuffer::m_d3dx_font_desc =
     DEFAULT_CHARSET,           //  CharSet
     OUT_DEFAULT_PRECIS,        //  OutputPrecision
     ANTIALIASED_QUALITY,       //  Quality
-    DEFAULT_PITCH|FF_DONTCARE, //  PitchAndFamily
-    L"Arial"                   //  FaceName
+    FIXED_PITCH|FF_MODERN,     //  PitchAndFamily
+    L""                        //  FaceName
 };
 
 D3dBuffer::D3dBuffer( HWND const hWnd, ULONG const ulNrOfPoints ) :
@@ -64,7 +64,7 @@ D3dBuffer::D3dBuffer( HWND const hWnd, ULONG const ulNrOfPoints ) :
     m_bStripMode       = TRUE;
     m_id3dx_font       = nullptr;
     m_hWnd             = hWnd;
-    ResetFont( );
+    ResetFont( 9 );
 }
 
 D3dBuffer::~D3dBuffer()
@@ -135,7 +135,7 @@ void D3dBuffer::setFont( )
     assert( m_id3dx_font != nullptr );
 }
 
-void D3dBuffer::ResetFont( )
+void D3dBuffer::ResetFont( int const nPointSize )
 {
     //
     // To create a Windows friendly font using only a point size, an 
@@ -151,11 +151,11 @@ void D3dBuffer::ResetFont( )
     //                          72
     //
 
-    int const nPointSize = 9;
     HDC const hDC = GetDC( nullptr );
     int const iLogPixels = GetDeviceCaps( hDC, LOGPIXELSY );
     ReleaseDC( nullptr, hDC );
     m_d3dx_font_desc.Height = -( MulDiv( nPointSize, iLogPixels, 72 ) );
+	m_d3dx_font_desc.Width  = m_d3dx_font_desc.Height / 2;
     setFont( );   
 }
 

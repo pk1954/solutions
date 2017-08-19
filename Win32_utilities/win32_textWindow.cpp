@@ -22,7 +22,7 @@ TextWindow::TextWindow( ) :
     m_cyChar         = textMetric.tmHeight + textMetric.tmExternalLeading;
     m_iHorizontalPos = 0;
     m_iVerticalPos   = 0;
-    m_iHorRaster     = 3 * (textMetric.tmPitchAndFamily & 1 ? 3 : 2) * m_cxChar;
+    m_iHorRaster     = 3 * (textMetric.tmPitchAndFamily & TMPF_FIXED_PITCH ? 3 : 2) * m_cxChar;
     ReleaseDC( nullptr, hDC );
 }
 

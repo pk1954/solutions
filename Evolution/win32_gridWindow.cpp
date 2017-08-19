@@ -233,18 +233,22 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             {
             case IDM_ZOOM_OUT:
                 (void)m_pFrameBuffer->Zoom( FALSE );
+				m_pDrawFrame->Resize( );
                 break;
 
             case IDM_ZOOM_IN:
                 (void)m_pFrameBuffer->Zoom( TRUE );
+				m_pDrawFrame->Resize( );
                 break;
 
             case IDM_FIT_ZOOM:
                 (void)m_pFrameBuffer->FitToRect( m_pGridRectSel->IsEmpty() ? GridRect::GRID_RECT_FULL : *m_pGridRectSel );
+				m_pDrawFrame->Resize( );
                 break;
 
             case IDM_SET_ZOOM:
                 (void)m_pFrameBuffer->SetFieldSize( static_cast<short>(lParam) );
+				m_pDrawFrame->Resize( );
                 break;
 
             case IDD_TOGGLE_STRIP_MODE:
@@ -281,6 +285,22 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
         m_pWorkThread->PostRefresh( );
         return 1;  //  TODO clarify return code
+
+    case WM_MOUSEWHEEL:
+		{
+			int        iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;
+			BOOL const bDirection = ( iDelta > 0 );
+			iDelta = abs( iDelta );
+			
+			while ( --iDelta >= 0 )
+			{
+                (void)m_pFrameBuffer->Zoom( bDirection );
+			}
+
+			m_pDrawFrame->Resize( );
+            m_pWorkThread->PostRefresh( );
+		}
+        return 0;
 
     case WM_LBUTTONDOWN:
         if ( m_pGridRectSel->IsEmpty() )
