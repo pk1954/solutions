@@ -38,6 +38,7 @@
 
 // scripting and tracing
 
+#include "dump.h"
 #include "trace.h"
 #include "script.h"
 #include "errhndl.h"
@@ -114,6 +115,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_traceStream = OpenTraceStream( L"main_trace.out" );
 
 	ScriptErrorHandler::ScrSetOutputStream( & wcout );
+	DUMP::SetDumpStream( & wcout );
 
 	Config::SetDefaultConfiguration( );
     Config::DefineConfigWrapperFunctions( );

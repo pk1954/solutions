@@ -71,18 +71,15 @@ void EvolutionCoreImpl::Compute( EvolutionModelData * const pModel )
     pModelImpl->m_grid.IncGenNr( );
 }
 
-void EvolutionCoreImpl::DumpGridPointList( ) const
-{
-    //    dumpGridPointList( m_histCacheItem.m_grid );    // TODO: Make configurable 
-}
-
 void EvolutionCoreImpl::dumpGridPointList( Grid const & grid ) const
 {
     int iCount = 0;
     DUMP::Dump( L"#  +++ start dump of GridPoint list" );
+	DUMP::DumpNL( );
     GplIterator iter( grid );
     for ( (void)iter.Begin( ); iter.IsNotAtEnd( ); (void)iter.GotoNext( ) )
     {
+		GridField gf = grid.GetGridField( iter.GetCurrent( ) );
         DUMP::Dump( grid, iter.GetCurrent( ) );
         DUMP::Dump( L"" );
         if ( ++iCount >= 1000 )
@@ -93,3 +90,4 @@ void EvolutionCoreImpl::dumpGridPointList( Grid const & grid ) const
     }
     DUMP::Dump( L"#  +++ end of dump" );
 }
+	

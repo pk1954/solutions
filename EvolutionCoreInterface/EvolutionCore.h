@@ -30,7 +30,7 @@ public:
 
 // debugging functions
 
-    virtual void DumpGridPointList( ) const = 0;
+    virtual void DumpGridPointList( EvolutionModelData * const ) const = 0;
 
 // manipulating functions
 

@@ -70,7 +70,10 @@ public:
 		return m_plan; 
 	};
 
-    virtual void DumpGridPointList( ) const;
+	virtual void DumpGridPointList( EvolutionModelData * const pModel ) const
+	{
+		dumpGridPointList( static_cast< EvolutionModelDataImpl * >( pModel )->m_grid );
+	}
 
     static  int  GetStdCapacity( ) 
 	{ 

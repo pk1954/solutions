@@ -6,27 +6,21 @@
 #include <fstream>
 #include <iostream>
 
-class  Grid;
-class  GridField;
-// class  GenerationCmd;
-// struct PlannedActivity;
+class Grid;
+class GridField;
 class GridPoint;
 
 class DUMP
 {
 public:
-    static void SetDumpStream( std::wofstream * );
+    static void SetDumpStream( std::wostream * const );
 
     static void DumpNL( );
     static void Dump( wchar_t const * );
     static void Dump( GridField const & );
-//    static void Dump( PlannedActivity const & );
     static void Dump( Grid const &, GridPoint const & );
-//    static void Dump( GenerationCmd const & );
     static void Flush( );
 
 private:
-    static std::wofstream * m_pDumpStream;
+    static std::wostream * m_pDumpStream;
 };
-
-

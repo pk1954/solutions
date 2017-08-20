@@ -1,0 +1,10 @@
+PostRefresh
+PostSetBrushSize 6
+PostSetBrushIntensity 16
+PostSetBrushMode tBrushMode::randomStrategy
+PostDoEdit   70  49 
+PostRefresh
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+DumpGridPointList

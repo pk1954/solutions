@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
+    <ClInclude Include="dump.h" />
     <ClInclude Include="EvolutionCore.h" />
     <ClInclude Include="EvolutionTypes.h" />
     <ClInclude Include="gridCircle.h" />

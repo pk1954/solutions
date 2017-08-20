@@ -10,7 +10,7 @@
 
 using namespace std;
 
-wofstream * DUMP::m_pDumpStream;
+wostream * DUMP::m_pDumpStream;
 
 wostream & operator << ( wostream & out, IndId const & id )
 {
@@ -38,7 +38,7 @@ wostream & operator << ( wostream & out, PlannedActivity const & plan )
 //lint +e747 
 }
 
-void DUMP::SetDumpStream( wofstream * const pDumpStream ) 
+void DUMP::SetDumpStream( wostream * const pDumpStream ) 
 {
     m_pDumpStream = pDumpStream;
 };
@@ -69,10 +69,3 @@ void DUMP::Dump( Grid const & grid, GridPoint const & gp )
     *m_pDumpStream << grid.GetGridField( gp );
     *m_pDumpStream << endl;
 }
-/*
-void DUMP::Dump( GenerationCmd const & cmd )
-{
-    *m_pDumpStream << cmd;
-    *m_pDumpStream << endl;
-}
-*/

@@ -222,12 +222,14 @@ void DrawFrame::drawIndividuals( GridRect const & rect  )
                                ( sFieldSize <=  16 ) ? ((3 * sFieldSize) / 8 - 1) : 
                                                        ((3 * sFieldSize) / 8    );
     Apply2Rect( & draw( this, static_cast<float>( lHalfSizeInd ) ), rect );
+/*
 #ifndef NDEBUG
     if ( rect == GridRect::GRID_RECT_FULL )
     {
-        m_pCore->DumpGridPointList( );
+        m_pCore->DumpGridPointList( m_pModelWork );
     }
 #endif
+*/
 }
 
 COLORREF DrawFrame::getTextColor( GridPoint const & gp ) const

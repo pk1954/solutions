@@ -5,7 +5,7 @@
 #include "symtab.h"
 #include "SCRIPT.H"
 #include "Resource.h"
-#include "wrapperHelpers.h"
+#include "EvolutionCoreWrapperHelpers.h"
 #include "EvolutionTypes.h"
 #include "win32_editor.h"
 #include "win32_appWindow.h"
