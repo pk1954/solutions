@@ -42,9 +42,9 @@ void INTERACTION::Interact( Individual &IndA, Individual &IndB )
 	IndA.IncEnergy( rewards.first );
 	IndB.IncEnergy( rewards.second );
 
-	int const TRACE = 0;
+	int const DUMP = 0;
 
-	if /*lint -e774 */ ( TRACE )
+	if /*lint -e774 */ ( DUMP )
 	{
 		cout << IndA.GetId().GetLong() << "[" << GetStrategyName( IndA.GetStrategyId() ) << "]/";
 		cout << IndB.GetId().GetLong() << "[" << GetStrategyName( IndB.GetStrategyId() ) << "]  "; 

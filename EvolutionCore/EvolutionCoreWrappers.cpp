@@ -1,4 +1,4 @@
-// wrappers.cpp : wrapper functions for unit tests and scripting of application
+// EvolutionCoreWrappers.cpp : wrapper functions for unit tests and scripting of application
 //
 
 #include "stdafx.h"
@@ -10,14 +10,13 @@
 #include "EvolutionTypes.h"
 #include "EditorState.h"
 #include "gridCircle.h"
-#include "wrapperHelpers.h"
-#include "wrappers.h"
+#include "EvolutionCoreWrapperHelpers.h"
+#include "EvolutionCoreWrappers.h"
 
-//lint -e534                 // ignoring return value of function
 //lint -esym( 715, script )  // not referenced
 
-static EvolutionCore       * m_pCore;
-static EvolutionModelData  * m_pModelWork;
+static EvolutionCore      * m_pCore;
+static EvolutionModelData * m_pModelWork;
 
 class WrapSetPoi : public Script_Functor
 {
@@ -63,7 +62,6 @@ public:
         m_pModelWork->ModelDoEdit( gp );
     }
 };
-
 
 class WrapSetBrushShape : public Script_Functor
 {

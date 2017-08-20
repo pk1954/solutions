@@ -7,7 +7,7 @@
 #include "config.h"
 #include "SCRIPT.H"
 #include "EvoModelData.h"
-#include "wrapperHelpers.h"
+#include "EvolutionCoreWrapperHelpers.h"
 #include "win32_worker_thread.h"
 #include "EvoController.h"
 #include "win32_winManager.h"

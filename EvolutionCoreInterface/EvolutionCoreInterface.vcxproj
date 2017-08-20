@@ -151,8 +151,8 @@
     <ClInclude Include="gridRect.h" />
     <ClInclude Include="EvolutionModelData.h" />
     <ClInclude Include="plannedActivity.h" />
-    <ClInclude Include="wrapperHelpers.h" />
-    <ClInclude Include="wrappers.h" />
+    <ClInclude Include="EvolutionCoreWrapperHelpers.h" />
+    <ClInclude Include="EvolutionCoreWrappers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

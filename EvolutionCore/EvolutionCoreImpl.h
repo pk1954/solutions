@@ -88,9 +88,9 @@ private:
     EvolutionCoreImpl( EvolutionCoreImpl const & );               // noncopyable class 
     EvolutionCoreImpl & operator= ( EvolutionCoreImpl const & );  // noncopyable class 
 
-    void dumpGridPointList( Grid const & ) const;
+	void dumpGridPointList( Grid const & ) const;
 
-    // static members
+	// static members
 
     static FoodStock_Functor  m_FoodStock_Functor;
     static Fertilizer_Functor m_Fertilizer_Functor;

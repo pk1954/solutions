@@ -7,7 +7,7 @@
 
 #include "config.h"
 #include "gridRect.h"
-#include "wrappers.h"
+#include "EvolutionCoreWrappers.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 
@@ -38,6 +38,7 @@
 
 // scripting and tracing
 
+#include "trace.h"
 #include "script.h"
 #include "errhndl.h"
 #include "win32_wrappers.h"
@@ -110,8 +111,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     SendMessage( WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
     SendMessage( WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL     ) ) );
 
-    m_traceStream.open( L"main_trace.out", ios::out );
-    assert( m_traceStream.good( ) );
+    m_traceStream = OpenTraceStream( L"main_trace.out" );
 
 	ScriptErrorHandler::ScrSetOutputStream( & wcout );
 

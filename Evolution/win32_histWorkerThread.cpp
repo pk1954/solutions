@@ -90,13 +90,14 @@ void HistWorkThread::PostGenerationStep( )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
 
-    std::cout << __FUNCTION__ << m_pEvoHistorySys->GetCurrentGeneration( ) << endl;
 	postGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration( ) + 1 );
 }
 
 void HistWorkThread::PostPrevGeneration( )
 {
-    std::cout << __FUNCTION__ << m_pEvoHistorySys->GetCurrentGeneration( ) << endl;
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << endl;
+
 	if (m_pEvoHistorySys->GetCurrentGeneration() > 0)
 		PostGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration() - 1 );
 	else

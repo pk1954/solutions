@@ -38,9 +38,9 @@ wostream & operator << ( wostream & out, PlannedActivity const & plan )
 //lint +e747 
 }
 
-void DUMP::SetDumpStream( wofstream * const ptraceStream ) 
+void DUMP::SetDumpStream( wofstream * const pDumpStream ) 
 {
-    m_pDumpStream = ptraceStream;
+    m_pDumpStream = pDumpStream;
 };
 
 void DUMP::Flush( ) 

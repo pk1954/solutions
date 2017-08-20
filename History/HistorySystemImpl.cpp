@@ -159,7 +159,6 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )   /
         {
             short                 const sSlotNr        = m_GenCmdList[ genCached ].GetParam( );
             HistCacheItem const * const pHistCacheItem = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
-//		    std::cout << __FUNCTION__ << " " << sSlotNr << endl;
             m_pHistCacheItemWork->CopyCacheItem( pHistCacheItem );
         }
     }

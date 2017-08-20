@@ -24,13 +24,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="dump.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="gplIterator.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="trace.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="EvolutionCoreImpl.h">
@@ -64,6 +58,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="EvolutionModelDataImpl.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="dump.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -122,22 +119,19 @@
     <ClCompile Include="strategy.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="trace.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="wrapperHelpers.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="wrappers.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="EvolutionCoreImpl.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorState.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="dump.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="EditorState.cpp">
+    <ClCompile Include="EvolutionCoreWrapperHelpers.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="EvolutionCoreWrappers.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

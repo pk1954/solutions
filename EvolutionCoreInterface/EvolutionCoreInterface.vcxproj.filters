@@ -25,9 +25,6 @@
     <ClInclude Include="gridRect.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="wrapperHelpers.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="gridCircle.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -37,13 +34,16 @@
     <ClInclude Include="gridNeighbor.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="wrappers.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="plannedActivity.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="EvolutionModelData.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="EvolutionCoreWrapperHelpers.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="EvolutionCoreWrappers.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,7 +7,7 @@
 #include "SCRIPT.H"
 #include "EvolutionTypes.h"
 #include "gridCircle.h"
-#include "wrapperHelpers.h"
+#include "EvolutionCoreWrapperHelpers.h"
 
 GridPoint ScrReadGridPoint( Script & script )
 {

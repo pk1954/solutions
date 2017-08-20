@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "assert.h"
 #include "grid_model.h"
-#include "wrappers.h"
+#include "EvolutionCoreWrappers.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "EvolutionCoreImpl.h"

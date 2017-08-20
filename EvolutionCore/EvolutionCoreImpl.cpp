@@ -5,7 +5,7 @@
 #include "assert.h"
 #include <array>
 #include "dump.h"
-#include "wrappers.h"
+#include "EvolutionCoreWrappers.h"
 #include "config.h"
 #include "strategy.h"
 #include "grid_model.h"
