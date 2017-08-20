@@ -127,9 +127,11 @@ HWND WINAPI StatusBar::createTrackBar( )
 
 HWND WINAPI StatusBar::createSizeControl( )
 { 
-    HWND const hwndTitle     = createStaticControl( L"Size" );
-    HWND const hwndTrackBar  = createTrackBar     (  ); 
-    HWND const hwndFitButton = createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM ); 
+    HWND const hwndTitle       = createStaticControl( L"Size" );
+    HWND const hwndMinusButton = createButton       ( L" - ",     (HMENU)IDM_ZOOM_OUT ); 
+    HWND const hwndTrackBar    = createTrackBar     (  ); 
+    HWND const hwndPlusButton  = createButton       ( L" + ",     (HMENU)IDM_ZOOM_IN  ); 
+    HWND const hwndFitButton   = createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM ); 
 
     USHORT const usMinPos = fieldSize2TrackBarPos( FrameBuffer::MINIMUM_FIELD_SIZE );
     USHORT const usMaxPos = fieldSize2TrackBarPos( FrameBuffer::MAXIMUM_FIELD_SIZE );
@@ -194,7 +196,7 @@ void StatusBar::Start
     static std::array< int, static_cast<int>( tPart::Stop ) + 1> statwidths = 
     { 
         100, // Generation 
-        310, // Size
+        400, // Size
         670, // Speed
         600, // ScriptLine
          -1  // Stop
@@ -297,6 +299,11 @@ int StatusBar::GetHeight( ) const
 void StatusBar::Resize( ) const 
 {
     (void)SendMessage( WM_SIZE, 0, 0 );
+}
+
+void StatusBar::ClearStatusLine( )
+{
+    DisplayStatusLine( L"" );
 }
 
 void StatusBar::DisplayStatusLine( wstring const & wstrLine )

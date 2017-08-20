@@ -213,6 +213,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     //  CheckMenuItem( GetMenu( hWndApp ), IDM_STAT_WINDOW, MF_CHECKED );
 
     m_pWinManager->GetWindowConfiguration( );
+	m_pStatusBar->ClearStatusLine( );
 
     (void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 

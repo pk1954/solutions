@@ -24,6 +24,7 @@ public:
     void Resize( ) const;
     void SetSizeTrackBar ( short const ) const;
     void SetSpeedTrackBar( DWORD const ) const;
+    void ClearStatusLine( );
     void DisplayStatusLine( std::wstring const & );
     void DisplayScriptLine( std::wstring const &, int, std::wstring const & );
     void DisplayCurrentGeneration( );

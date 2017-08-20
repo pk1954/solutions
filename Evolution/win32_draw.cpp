@@ -156,7 +156,7 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
             drawIndividuals( rcGrid );
             m_pD3dBuffer->RenderRects( ); 
 
-            if ( m_pFrameBuffer->GetFieldSize() >= 128 )
+            if ( m_pFrameBuffer->GetFieldSize() >= 96 )
                 drawText( rcGrid, gpPoi );
         }
 
@@ -324,7 +324,7 @@ void DrawFrame::assembleRightColumn( GridPoint const & gp )
         MEM_INDEX const memSize   = m_pModelWork->GetMemSize( gp );  
         MEM_INDEX const memFilled = m_pModelWork->GetMemUsed( gp ); 
         
-        m_wBuffer << L"  Mem (" << memFilled << L"/" << memSize << L")" << endl;
+        m_wBuffer << L"  Mem " << memFilled << L"/" << memSize << endl;
 
         for	( MEM_INDEX mem = 0; mem < memFilled; ++mem )
         {
