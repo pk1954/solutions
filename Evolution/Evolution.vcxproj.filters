@@ -84,6 +84,9 @@
     <ClInclude Include="win32_evoHistWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Version.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -149,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Evolution.rc">
+      <Filter>Ressourcendateien</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="Version.rc">
       <Filter>Ressourcendateien</Filter>
     </ResourceCompile>
   </ItemGroup>

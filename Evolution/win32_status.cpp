@@ -122,9 +122,6 @@ HWND WINAPI StatusBar::createTrackBar( )
     return createControl( TRACKBAR_CLASS, L"   Trackbar Control   ", 0, ID_TRACKBAR );
 };
 
-//lint -e438   symbol not used
-//lint -e529   symbol not used
-
 HWND WINAPI StatusBar::createSizeControl( )
 { 
     HWND const hwndTitle       = createStaticControl( L"Size" );

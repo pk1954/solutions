@@ -1,0 +1,38 @@
+// Version.rc 
+//
+
+#include "Version.h"
+
+#ifdef _DEBUG
+	#define VER_VER_DEBUG   VS_FF_DEBUG
+#else
+	#define VER_VER_DEBUG   0
+#endif
+
+VS_VERSION_INFO VERSIONINFO
+    FILEVERSION        VER_FILE_VERSION
+    PRODUCTVERSION     VER_PRODUCT_VERSION
+    FILEFLAGSMASK      0x3fL
+    FILEFLAGS          VER_VER_DEBUG
+    FILEOS             VOS_NT_WINDOWS32
+    FILETYPE           VFT_APP
+    FILESUBTYPE        0x00L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"  // U.S. English Unicode
+        BEGIN
+            VALUE "FileDescription",  VER_FILE_DESCRIPTION_STR "\0"
+            VALUE "FileVersion",      VER_FILE_VERSION_STR "\0"
+            VALUE "InternalName",     VER_INTERNAL_NAME_STR "\0"
+            VALUE "LegalCopyright",   VER_COPYRIGHT_STR "\0"
+            VALUE "OriginalFilename", VER_ORIGINAL_FILENAME_STR "\0"
+            VALUE "ProductName",      VER_PRODUCTNAME_STR
+            VALUE "ProductVersion",   VER_PRODUCT_VERSION_STR "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200  // U.S. English Unicode
+    END
+END
