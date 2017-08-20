@@ -86,12 +86,14 @@ RECT HistWindow::getGenerationRect  // position is relative to client area
 
 HIST_GENERATION HistWindow::getGenFromXpos( LPARAM const lParam ) const
 {
-    long            const lXpos = GET_X_LPARAM( lParam );
-    long            const lWidth = GetClientWindowWidth( );
+    long            const lXpos     = GET_X_LPARAM( lParam );
+    long            const lWidth    = GetClientWindowWidth( );
     long            const lNrOfGens = m_pHistSys->GetNrOfGenerations( ).GetLong( );
-    HIST_GENERATION const genRes = ( lXpos * lNrOfGens ) / lWidth;
+    HIST_GENERATION const genMax    = lNrOfGens - 1;
+    HIST_GENERATION       genRes    = ( max( 0, lXpos ) * lNrOfGens ) / lWidth;
 
-    assert( genRes >= 0 );
+	if ( genRes > genMax )
+		genRes = genMax;
 
     return genRes;
 }
