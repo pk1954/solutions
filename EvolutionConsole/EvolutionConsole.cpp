@@ -6,7 +6,11 @@
 // EvolutionCore interfaces
 
 #include "config.h"
+#include "trace.h"
+#include "EvolutionCoreWrappers.h"
+#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
+#include "win32_worker_thread.h"
 
 // scripting and tracing
 
@@ -14,11 +18,20 @@
 
 int main( int argc, char *argv [ ], char *envp [ ] )
 {
+    std::wofstream m_traceStream = OpenTraceFile( L"main_trace.out" );
+
     Config::SetDefaultConfiguration( );
-    EvolutionCore::InitClass( );
-    EvolutionCore::CreateCore( );
+    Config::DefineConfigWrapperFunctions( );
 
     Script::ProcessScript( L"std_configuration.in" );
+
+	EvolutionCore::InitClass( );
+    EvolutionCore::CreateCore( );
+
+    EvolutionModelData * m_pModelWork = EvolutionModelData::CreateModelData( );
+    DefineModelWrapperFunctions( m_pModelWork );
+
+    WorkThread * m_pWorkThread = new WorkThread( & m_traceStream );
 
     for ( int iCount = 0; iCount < argc; iCount++ )
     {

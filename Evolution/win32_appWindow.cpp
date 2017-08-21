@@ -96,7 +96,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
 	Util::StdOutConsole( );
 
-	ScriptErrorHandler::ScrSetOutputStream( & wcout );
+//	ScriptErrorHandler::ScrSetOutputStream( & wcout );
 	
 	DUMP::SetDumpStream( & wcout );
 

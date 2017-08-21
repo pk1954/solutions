@@ -89,5 +89,6 @@ void EvolutionCoreImpl::dumpGridPointList( Grid const & grid ) const
         }
     }
     DUMP::Dump( L"#  +++ end of dump" );
+	DUMP::DumpNL( );
 }
 	

@@ -1,29 +1,12 @@
 OpenTraceFile  "main_trace.out"
 PostRefresh
 PostRefresh
-PostRefresh
 PostProcessScript "C:\Users\peter\SW-projects\Evolution\Evolution\test_1.in"
 PostRefresh
 PostSetBrushSize 6
 PostSetBrushIntensity 16
 PostSetBrushMode tBrushMode::randomStrategy
-PostDoEdit   96  56 
+PostDoEdit   70  49 
 PostRefresh
-PostDoEdit   96  56 
-PostRefresh
-PostDoEdit   95  55 
-PostRefresh
-PostDoEdit   95  54 
-PostRefresh
-PostDoEdit   95  54 
-PostRefresh
-PostDoEdit   96  53 
-PostRefresh
-PostDoEdit   96  52 
-PostRefresh
-PostDoEdit  103  49 
-PostRefresh
-PostDoEdit  105  48 
-PostRefresh
-PostDoEdit  105  49 
-PostRefresh
+PostGenerationStep
+PostGenerationStep

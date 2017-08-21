@@ -8,7 +8,6 @@
 #include "EvolutionCoreWrapperHelpers.h"
 #include "EvolutionTypes.h"
 #include "win32_editor.h"
-#include "win32_appWindow.h"
 #include "win32_editorWrappers.h"
 
 static EditorWindow const * m_pEditorWindow;

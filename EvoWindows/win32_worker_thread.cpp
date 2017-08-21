@@ -127,9 +127,7 @@ void WorkThread::GenerationRun( )  // Layer 1
 void WorkThread::processScript( wstring * const pwstr )
 {
     ++m_iScriptLevel;
-    if ( ! Script::ProcessScript( * pwstr ) )
-		;
-   //     (void)TerminateProcess( GetCurrentProcess(), 2 ); //TODO: find better solution
+    Script::ProcessScript( * pwstr );
     --m_iScriptLevel;
     delete pwstr;
 }

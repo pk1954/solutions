@@ -12,7 +12,6 @@
 #include "EvoController.h"
 #include "win32_winManager.h"
 #include "win32_status.h"
-#include "win32_appWindow.h"
 #include "win32_wrappers.h"
 #include "win32_util.h"
 

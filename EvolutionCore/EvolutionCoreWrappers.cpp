@@ -46,6 +46,15 @@ public:
     }
 };
 
+class WrapCompute : public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        m_pCore->Compute( m_pModelWork );
+    }
+};
+
 class WrapResetModel : public Script_Functor
 {
 public:
@@ -129,6 +138,7 @@ void DefineCoreWrapperFunctions( EvolutionCore * pCore )
 {
     m_pCore = pCore;
 
+	DEF_FUNC( Compute );
 	DEF_FUNC( DumpGridPointList );
     DEF_FUNC( ResetModel );
     DEF_FUNC( SetPoi );

@@ -5,6 +5,4 @@ PostSetBrushMode tBrushMode::randomStrategy
 PostDoEdit   70  49 
 PostRefresh
 PostGenerationStep
-PostGenerationStep
-PostGenerationStep
 DumpGridPointList

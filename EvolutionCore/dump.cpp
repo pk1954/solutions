@@ -10,7 +10,7 @@
 
 using namespace std;
 
-wostream * DUMP::m_pDumpStream;
+wostream * DUMP::m_pDumpStream = & wcout;
 
 wostream & operator << ( wostream & out, IndId const & id )
 {

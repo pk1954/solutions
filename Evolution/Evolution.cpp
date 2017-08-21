@@ -5,7 +5,6 @@
 
 #include "stdafx.h"
 #include "commctrl.h"
-#include "win32_util.h"
 #include "win32_appWindow.h"
 #include "Resource.h"
 
@@ -34,7 +33,6 @@ int APIENTRY _tWinMain
 
 	SetThreadAffinityMask( GetCurrentThread( ), 0x0001 );
 
-//	Util::StdOutConsole( );
     InitCommonControls( ); // loads common control's DLL 
     
     AppWindow App;
