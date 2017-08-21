@@ -235,6 +235,7 @@
     <ClInclude Include="win32_focusPoint.h" />
     <ClInclude Include="win32_histWorkerThread.h" />
     <ClInclude Include="win32_histWrappers.h" />
+    <ClInclude Include="win32_scriptHook.h" />
     <ClInclude Include="win32_statistics.h" />
     <ClInclude Include="win32_status.h" />
     <ClInclude Include="win32_worker_thread.h" />

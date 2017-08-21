@@ -31,6 +31,7 @@
 
 // infrastructure
 
+#include "util.h"
 #include "win32_winManager.h"
 #include "win32_worker_thread.h"
 #include "win32_focusPoint.h"
@@ -40,8 +41,9 @@
 
 #include "dump.h"
 #include "trace.h"
-#include "script.h"
 #include "errhndl.h"
+#include "script.h"
+#include "win32_scriptHook.h"
 #include "win32_wrappers.h"
 #include "win32_editorWrappers.h"
 #include "win32_histWrappers.h"
@@ -57,28 +59,6 @@
 #include "EvoModelFactory.h"
 #include "EvoController.h"
 #include "win32_appWindow.h"
-
-class ScriptHook : public Script_Functor
-{
-public:
-
-    explicit ScriptHook( StatusBar * const pStatusBar ) : m_pStatusBar( pStatusBar ) {};
-
-    virtual void operator() ( Script & script ) const
-    {
-        if ( m_pStatusBar != nullptr )
-        {
-            wstring const & wszPath = script.GetActPath( );
-            wstring const & wszLine = script.GetActLine( );
-            int     const   iLineNr = script.GetActLineNr( );
-            m_pStatusBar->DisplayScriptLine( wszPath, iLineNr, wszLine );
-        }
-    }
-
-private:
-
-    StatusBar * m_pStatusBar;
-};
 
 AppWindow::AppWindow( ) :
     BaseWindow( ),
@@ -112,9 +92,12 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     SendMessage( WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
     SendMessage( WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL     ) ) );
 
-    m_traceStream = OpenTraceStream( L"main_trace.out" );
+    m_traceStream = OpenTraceFile( L"main_trace.out" );
+
+	Util::StdOutConsole( );
 
 	ScriptErrorHandler::ScrSetOutputStream( & wcout );
+	
 	DUMP::SetDumpStream( & wcout );
 
 	Config::SetDefaultConfiguration( );

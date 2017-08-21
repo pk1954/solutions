@@ -34,7 +34,7 @@ int APIENTRY _tWinMain
 
 	SetThreadAffinityMask( GetCurrentThread( ), 0x0001 );
 
-	Util::StdOutConsole( );
+//	Util::StdOutConsole( );
     InitCommonControls( ); // loads common control's DLL 
     
     AppWindow App;

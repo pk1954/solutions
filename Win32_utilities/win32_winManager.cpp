@@ -225,10 +225,9 @@ static BOOL CALLBACK DumpMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT 
 
 void WinManager::dumpMonitorConfiguration( ) const
 {
-    wofstream ostr;
-    DUMP_MON_STRUCT monStruct = { 0, &ostr };
-
-    ostr.open( MONITOR_CONFIG_FILE, wofstream::app );
+    wofstream ostr( MONITOR_CONFIG_FILE, wofstream::app );
+	
+	DUMP_MON_STRUCT monStruct = { 0, & ostr };
 
     ostr << L"MonitorConfiguration  \"" << m_strWindowConfigurationFile << L"\"" << endl;
     EnumDisplayMonitors( nullptr, nullptr, DumpMonitorInfo, (LPARAM)&monStruct );
@@ -239,8 +238,7 @@ void WinManager::dumpMonitorConfiguration( ) const
 
 void WinManager::dumpWindowCoordinates( ) const
 {
-    wofstream ostr;
-    ostr.open( m_strWindowConfigurationFile, wofstream::out );
+    wofstream ostr( m_strWindowConfigurationFile, wofstream::out );
     
     for ( const auto & it : m_map )
 	{

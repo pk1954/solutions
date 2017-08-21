@@ -4,5 +4,8 @@
 #pragma once
 
 #include <string>
+#include <streambuf>
 
-extern void UpperCase( std::wstring & );
+using namespace std;
+
+extern void UpperCase( wstring & );

@@ -9,7 +9,7 @@
 
 using namespace std;
 
-wofstream OpenTraceStream( wchar_t const * const wszTraceFileName )
+wofstream OpenTraceFile( wchar_t const * const wszTraceFileName )
 {
     wofstream traceStream;
     traceStream.open( wszTraceFileName, ios::out );
@@ -19,7 +19,7 @@ wofstream OpenTraceStream( wchar_t const * const wszTraceFileName )
         assert( false );
     }
 
-    traceStream << L"OpenTraceStream " << L" \"" << wszTraceFileName << L"\"" << endl;
+    traceStream << L"OpenTraceFile " << L" \"" << wszTraceFileName << L"\"" << endl;
 
     return traceStream;
 }

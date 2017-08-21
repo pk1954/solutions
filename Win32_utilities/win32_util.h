@@ -233,7 +233,7 @@ namespace Util
 		FILE * fp;
 		BOOL bRes = AllocConsole( );
 		_wfreopen_s( &fp, L"CONOUT$", L"w", stdout );
-		std::cout << "console output started" << endl << flush;
+		std::wcout << "console output started" << endl << flush;
 	}
 
 	void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );

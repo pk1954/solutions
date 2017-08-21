@@ -128,7 +128,8 @@ void WorkThread::processScript( wstring * const pwstr )
 {
     ++m_iScriptLevel;
     if ( ! Script::ProcessScript( * pwstr ) )
-        (void)TerminateProcess( GetCurrentProcess(), 2 ); //TODO: find better solution
+		;
+   //     (void)TerminateProcess( GetCurrentProcess(), 2 ); //TODO: find better solution
     --m_iScriptLevel;
     delete pwstr;
 }
@@ -140,7 +141,7 @@ void WorkThread::StopComputation()
 
 DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 {
-    switch (uiMsg)   // Layer 6
+    switch ( uiMsg )   // Layer 6
     {
         
     case THREAD_MSG_RESET_MODEL:
