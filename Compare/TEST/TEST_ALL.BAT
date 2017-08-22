@@ -30,7 +30,6 @@ call :TEST_CASE F_6 /Text
 call :TEST_CASE F_7 /RTF
 
 echo *** COMPARE tests ok
-pause
 exit /B 0
 
 :ERROR_EXIT

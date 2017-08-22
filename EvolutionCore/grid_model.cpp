@@ -154,18 +154,17 @@ public:
     ) : 
         m_grid( grid ),
         m_func( func ),
-        GridPointNeighbor_Functor(gp),
+        GridPointNeighbor_Functor( gp ),
         m_list( list )
     { }
 
     virtual ~getSlots() { };
  
-    virtual bool operator() ( GridPoint const & gpNeighbor, GridPoint const & gpCenter ) const 
+    virtual bool operator() ( GridPoint const & gpNeighbor ) const 
     {
         if ( (m_func)( m_grid.GetGridField( gpNeighbor ) ) )
         {
             m_list.AddToList( gpNeighbor );
-            assert( Neighbors( gpCenter, gpNeighbor ) );
         }
         return false;
     }

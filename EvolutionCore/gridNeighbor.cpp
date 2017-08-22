@@ -36,7 +36,7 @@ void Apply2AllNeighbors( GridPointNeighbor_Functor const & func )
     NeighborhoodIterator iter( gpCenter );
     do
     {
-        if ( (func)( iter.GetNeighbor( ), gpCenter ) )
+        if ( (func)( iter.GetNeighbor( ) ) )
             break;
     } while ( iter.NextNeighbor( ) );
 };

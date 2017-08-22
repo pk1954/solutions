@@ -33,8 +33,8 @@ public:
     FoodStockAverage
     (
         EvolutionModelData const * const pModel,
-        GridPoint const &       gpCenter, 
-        int             * const piSum
+        GridPoint          const &       gpCenter, 
+        int                      * const piSum
     ) : 
         GridPointNeighbor_Functor( gpCenter ),
         m_pModelWork( pModel ),
@@ -42,16 +42,15 @@ public:
     { }
 
 //lint -esym( 715, gpCenter )  not referenced
-    virtual bool operator() ( GridPoint const & gpNeighbor, GridPoint const & gpCenter ) const
+    virtual bool operator() ( GridPoint const & gpNeighbor ) const
     {
         * m_piSum += m_pModelWork->GetFoodStock( gpNeighbor );
         return false;
     }
 
-
 private:
     EvolutionModelData const * const m_pModelWork;
-    int             * const m_piSum;
+    int                      * const m_piSum;
 };
 //lint +e1763 
 

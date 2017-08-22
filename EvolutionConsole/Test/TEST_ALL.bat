@@ -11,8 +11,6 @@ set APP_NAME=EvolutionConsole
 set TESTEE=%APP_PATH%\%APP_NAME%.exe
 set COMPARE=..\..\Release\compare.exe
 
-echo *** start %APP_NAME% tests ***
-
 if not exist %TESTEE% (
 	echo +++ Could not find %TESTEE%
 	goto ERROR_EXIT
@@ -23,10 +21,9 @@ if not exist %COMPARE% (
 	goto ERROR_EXIT
 )
 
-call :TEST_CASE Test_1 /Text || goto ERROR_EXIT
+call :TEST_CASE Test_1 || goto ERROR_EXIT
 
 echo *** %APP_NAME% tests ok
-pause
 exit /B 0
 
 :ERROR_EXIT
@@ -44,7 +41,7 @@ del %1.RES
 	echo +++ error in %APP_NAME% %1.IN
 	exit /B 1
 )
-%COMPARE% %1.RES %1.SPC
+%COMPARE% %1.RES %1.SPC /RTF > %TEST%.PRT
 @if ERRORLEVEL 1 (
 	echo +++ error in %COMPARE% %1.RES %1.SPC
 	exit /B 2

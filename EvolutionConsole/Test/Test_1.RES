@@ -1,5 +1,5 @@
-EvolutionConsoleDebug x64
-VersionVER_FILE_VERSION
+EvolutionConsole Debug x64
+Build at Aug 22 2017 21:46:25
 #  +++ start dump of GridPoint list
   70  45  en=    5051
   72  46  en=    4951

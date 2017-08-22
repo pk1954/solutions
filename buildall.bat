@@ -10,24 +10,6 @@ call :SET_BUILD_ENVIRONMENT vcvars64.bat
 for %%C in ( Debug, Release ) do call :BUILD_CONFIGURATION %%C
 )
 
-echo *** BUILDALL: Perform COMPARE tests
-cd Compare\TEST
-call TEST_ALL
-if ERRORLEVEL 1 (
-	echo +++ BUILDALL: error in COMPARE tests
-	goto ERROR_EXIT
-)
-cd ..\..
-
-echo *** BUILDALL: Perform HISTORY tests
-cd HistoryTest\TEST
-call TEST_ALL
-if ERRORLEVEL 1 (
-	echo +++ BUILDALL: error in HistoryTest
-	goto ERROR_EXIT
-)
-cd ..\..
-
 echo *** BUILDALL ok ***
 :ERROR_EXIT
 pause

@@ -81,7 +81,7 @@ public:
  
     GridPoint const & GetCenter( ) const { return m_gpCenter; }
 
-    virtual bool operator() ( GridPoint const &, GridPoint const & ) const = 0;
+    virtual bool operator() ( GridPoint const & ) const = 0;
 
 private:
     GridPoint const m_gpCenter;
