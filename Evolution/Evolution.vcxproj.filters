@@ -24,70 +24,13 @@
     <ClInclude Include="targetver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Evolution.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_aboutBox.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="win32_appWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_crsrWindow.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_displayOptions.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_draw.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_editor.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_editorWrappers.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_frameBuffer.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_gridWindow.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_statistics.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_status.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_worker_thread.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_wrappers.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_focusPoint.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_histWrappers.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="EvoController.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_histWorkerThread.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_evoHistWindow.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Version.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_scriptHook.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -98,58 +41,7 @@
     <ClCompile Include="Evolution.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_aboutBox.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="win32_appWindow.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_crsrWindow.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_displayOptions.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_draw.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_editor.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_editorWrappers.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_frameBuffer.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_gridWindow.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_statistics.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_status.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_worker_thread.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_wrappers.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_histWrappers.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="EvoController.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_histWorkerThread.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_evoHistWindow.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_focusPoint.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

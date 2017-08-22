@@ -1,5 +1,6 @@
 @echo off
 
+set COMPARE=..\Release\compare.exe
 set EVOLUTION_CONSOLE=..\x64\Release\EvolutionConsole.exe
 
 call :TEST_CASE Test_1 /Text
@@ -15,9 +16,8 @@ exit /B 99
 rem *** subroutines ***
 
 :TEST_CASE
-%EVOLUTION_CONSOLE% %1.IN 
-rem > %1.RES
-rem call :COMPARE_RESULTS %1
+%EVOLUTION_CONSOLE% %1.IN > %1.RES
+call :COMPARE_RESULTS %1
 exit /B 0
 
 :COMPARE_RESULTS

@@ -5,6 +5,7 @@
 
 // EvolutionCore interfaces
 
+#include "version.h"
 #include "config.h"
 #include "trace.h"
 #include "EvolutionCoreWrappers.h"
@@ -16,9 +17,14 @@
 
 #include "script.h"
 
+using namespace std;
+
 int main( int argc, char *argv [ ], char *envp [ ] )
 {
-    std::wofstream m_traceStream = OpenTraceFile( L"main_trace.out" );
+	wcout << VER_PRODUCTNAME_STR << L" " << VER_FILE_DESCRIPTION_STR << endl;
+	wcout << L"Build at " << __DATE__ << L" " << __TIME__ << endl;
+
+	wofstream m_traceStream = OpenTraceFile( L"main_trace.out" );
 
     Config::SetDefaultConfiguration( );
     Config::DefineConfigWrapperFunctions( );
