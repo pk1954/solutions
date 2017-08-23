@@ -24,7 +24,7 @@ rem *** subroutines ***
 echo ***
 echo *** PERFORM_TESTS for %1
 echo ***
-for %%T in ( Compare, HistoryTest, EvolutionConsole ) do (
+for /D %%T in ( * ) do if exist %%T\TEST\TEST_ALL.BAT (
 	echo ***
 	echo *** Start %%T tests ***
     cd %%T\TEST
