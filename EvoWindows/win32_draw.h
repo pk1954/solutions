@@ -74,5 +74,4 @@ private:
     void drawPOI        ( GridPoint const & );
     void drawIndividuals( GridRect const & );
     void drawText       ( GridRect const &, GridPoint const & );
-//    void drawTransparentCone( );
 };

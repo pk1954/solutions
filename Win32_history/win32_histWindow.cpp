@@ -37,10 +37,8 @@ void HistWindow::Start
     Util::AddWindowStyle( hWnd, WS_EX_STATICEDGE );
     m_trackStruct.hwndTrack = hWnd;
 
-    m_pHistSys = pHistSys;
-    m_pHistIter = m_pHistSys->CreateHistoryIterator( );
-//    Util::MakeLayered( hWnd, TRUE, 0, 100 );  // window is completely opaque (alpha = 100)
-
+    m_pHistSys    = pHistSys;
+    m_pHistIter   = m_pHistSys->CreateHistoryIterator( );
     m_pGenDisplay = new GenDisplayWindow( );
     m_pGenDisplay->StartGenDisplayWindow( GetWindowHandle( ) );
 }

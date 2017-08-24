@@ -74,7 +74,7 @@ void SymbolTable::addSymbol( wstring const & wstrName, Symbol const & sym )
     auto const iter = m_SymbolTab.find( wstrName );
 
     assert( iter == m_SymbolTab.end() );  // duplicate definition of symbolic constant
-                                          // TODO: runtime error
+                                        
     m_SymbolTab[ wstrName ] = sym;
     m_ReverseTab[ sym ] = wstrName;
 }

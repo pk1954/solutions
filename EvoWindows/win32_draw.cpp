@@ -166,9 +166,6 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
         if ( pkgr.IsNotEmpty( ) )
             m_pD3dBuffer->RenderTranspRect( m_pFrameBuffer->KGrid2PixelRect( pkgr ), D3DCOLOR_ARGB( 128, 255, 217, 0) );  
 
-//        if ( m_pDspOptWindow-> )            //TODO: display editor cursor
-//            drawTransparentCone( );
-
         m_pD3dBuffer->EndFrame( );  
     }
 }

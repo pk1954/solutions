@@ -405,7 +405,7 @@ void Grid::EditSetStrategy
     };
 }
 
-GridPoint Grid::FindGridPoint( IndId const & id ) const  //TODO: Optimize with hint on previous position
+GridPoint Grid::FindGridPoint( IndId const & id ) const
 {
     GridPoint gp;
     for ( gp.y = GridRect::GRID_RECT_FULL.GetTop ( ); gp.y <= GridRect::GRID_RECT_FULL.GetBottom( ); ++gp.y )
