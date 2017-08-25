@@ -185,8 +185,6 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pMiniGridWindow->Observe( m_pMainGridWindow );
     m_pMiniGridWindow->Size( );
 
-	m_pPerfWindow->Move( 200, 200, 400, 430, TRUE );
-
     m_displayGridFunctor.SetWinManager( m_pWinManager );
 
     m_pEvolutionCore->SetGridDisplayFunctor( & m_displayGridFunctor );   // display callback for core
