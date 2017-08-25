@@ -153,7 +153,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
         m_pEvoHistWindow = new EvoHistWindow( );
 		m_pEvoHistWindow->Start( hWndApp, m_pFocusPoint, m_pEvoHistorySys, m_pHistWorkThread );
-        m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, FALSE, 75 );
+        m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, FALSE, FALSE, 75 );
     }
     else
     {
@@ -167,23 +167,25 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pEditorWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork, m_pDspOptWindow );
     m_pStatusBar     ->Start( hWndApp, m_pEvoController, m_pModelWork );
     m_pMainGridWindow->Start( hWndApp, m_pWorkThread,    m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
-    m_pMiniGridWindow->Start( hWndApp, m_pWorkThread,    m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 1 );
+    m_pMiniGridWindow->Start( hWndApp, m_pWorkThread,    m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
     m_pStatistics    ->Start( hWndApp, m_pModelWork,     m_pGridRectSel );
     m_pCrsrWindow    ->Start( hWndApp, m_pFocusPoint,    m_pModelWork );
     m_pPerfWindow    ->Start( hWndApp, 100 );
 	m_pEvoController ->Start( & m_traceStream, m_pHistWorkThread, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow );
 
-    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,              TRUE,  -1 );
-    m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow,   TRUE,  -1 );
-    m_pWinManager->AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_pEditorWindow,   TRUE,  -1 );
-    m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow,     TRUE, 500 );
-    m_pWinManager->AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_pStatistics,     TRUE, 500 );
-    m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow,     TRUE, 500 );
-    m_pWinManager->AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_pMiniGridWindow, TRUE, 300 );
-    m_pWinManager->AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_pMainGridWindow, TRUE, 100 );
+    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,              TRUE, TRUE,   -1 );
+    m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow,   TRUE, FALSE,  -1 );
+    m_pWinManager->AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_pEditorWindow,   TRUE, FALSE,  -1 );
+    m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow,     TRUE, FALSE, 500 );
+    m_pWinManager->AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_pStatistics,     TRUE, FALSE, 500 );
+    m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow,     TRUE, FALSE, 500 );
+    m_pWinManager->AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_pMiniGridWindow, TRUE, FALSE, 300 );
+    m_pWinManager->AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_pMainGridWindow, TRUE, FALSE, 100 );
 
     m_pMiniGridWindow->Observe( m_pMainGridWindow );
     m_pMiniGridWindow->Size( );
+
+	m_pPerfWindow->Move( 200, 200, 400, 430, TRUE );
 
     m_displayGridFunctor.SetWinManager( m_pWinManager );
 

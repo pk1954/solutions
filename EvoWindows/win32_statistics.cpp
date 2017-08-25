@@ -214,7 +214,7 @@ void StatisticsWindow::Start
 {
     HWND hWnd = StartTextWindow( hWndParent, L"StatisticsWindow", 100 );
     Move( 200, 200, 400, 430, TRUE );
-    m_pModelWork         = pModel;
+    m_pModelWork    = pModel;
     m_pGridRectSel  = pSel;
 }
 

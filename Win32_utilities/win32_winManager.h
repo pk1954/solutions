@@ -18,7 +18,7 @@ public:
     WinManager( );
     virtual ~WinManager( ) { };
 
-    void AddWindow( wstring const, UINT const, RootWindow const *, BOOL const, INT const );
+    void AddWindow( wstring const, UINT const, RootWindow const *, BOOL const, BOOL const, INT const );
 
     void NotifyObservers( ) const 
     { 
@@ -43,6 +43,16 @@ public:
     RootWindow const * const GetRootWindow( UINT const id )  const // can throw out_of_range exception
     {
         return m_map.at( id ).m_pRootWin;
+    }
+
+    BOOL const IsMoveable( UINT const id )  const // can throw out_of_range exception
+    {
+        return m_map.at( id ).m_bTrackPosition;
+    }
+
+    BOOL const IsSizeable( UINT const id )  const // can throw out_of_range exception
+    {
+        return m_map.at( id ).m_bTrackSize;
     }
 
     void Show( UINT const id, tBoolOp const op ) const
@@ -71,7 +81,8 @@ private:
     {
         wstring    const   m_wstr;
         RootWindow const * m_pRootWin;
-		BOOL       const   m_bTrackPosition;
+		BOOL       const   m_bTrackPosition; // if TRUE, winManager sets window position from config file
+		BOOL       const   m_bTrackSize;     // if TRUE, winManager sets window size from config file
     };
 
     unordered_map< UINT, MAP_ELEMENT > m_map;

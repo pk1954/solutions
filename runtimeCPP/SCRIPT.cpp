@@ -381,8 +381,8 @@ bool Script::ScrProcess
     wstring const & wstrPath  // name of test script to be processed
 )
 { 
-    Scanner scan;         //lint -esym( 1414, scan )   Assigning address of auto variable 'scan' to member
-    m_pScanAct = &scan;   // This is save. m_pScanAct is set to nullptr, before leaving the scope of this function
+    Scanner scan;          //lint -esym( 1414, scan )   Assigning address of auto variable 'scan' to member
+    m_pScanAct = & scan;   // This is save. m_pScanAct is set to nullptr, before leaving the scope of this function
     try 
     {  
         scan.OpenInputFile( wstrPath ); // open script file 
@@ -405,8 +405,8 @@ bool Script::ScrProcess
                 if ( symbol.GetSymbolType( ) != tSTYPE::Function )
                    ScriptErrorHandler::typeError( );          // wrong symbol type 
 
-                (symbol.GetFunction( ))( *this );             // call wrapper function 
-                m_pScanAct = &scan;
+                (symbol.GetFunction( ))( * this );             // call wrapper function 
+                m_pScanAct = & scan;
             }   
             else if ( token == tTOKEN::End )
                 break;                                        // normal termination 

@@ -22,28 +22,29 @@ public:
 
     virtual void operator() ( Script & script ) const
     {
-        UINT uiResId = 0;
-        try
-        {
-            uiResId = script.ScrReadUint( );
-        }
-        catch ( ScriptErrorHandler::ScriptErrorInfo const & )
-        { }
+	    UINT uiResId = script.ScrReadUint( );
 
-        LONG const lXpos = script.ScrReadLong( );
-        LONG const lYpos = script.ScrReadLong( );
-        LONG const lWidth = script.ScrReadLong( );
-        LONG const lHeight = script.ScrReadLong( );
-
-        if ( uiResId > 0 )
-        {
-			HWND hWnd = m_pWinManager->GetHWND( uiResId );
-			BOOL bRes = Util::MoveWindowAbsolute( hWnd, lXpos, lYpos, lWidth, lHeight, TRUE );
-			assert( bRes );
-			PixelPoint pnt = m_pWinManager->GetRootWindow( uiResId )->GetWindowPos( );
-			assert( pnt.x == lXpos );
-			assert( pnt.y == lYpos );
-        }
+		if ( uiResId > 0 )
+		{
+			LONG const lXpos   = script.ScrReadLong( );
+			LONG const lYpos   = script.ScrReadLong( );
+			LONG const lWidth  = script.ScrReadLong( );
+			LONG const lHeight = script.ScrReadLong( );
+			if ( m_pWinManager->IsMoveable( uiResId ) )
+			{
+				HWND const hWnd = m_pWinManager->GetHWND( uiResId );
+				if ( m_pWinManager->IsSizeable( uiResId ) )
+				{
+					BOOL bRes    = Util::MoveWindowAbsolute( hWnd, lXpos, lYpos, lWidth, lHeight, TRUE ); 
+					assert( bRes );
+				}
+				else
+				{
+     				BOOL bRes = Util::MoveWindowAbsolute( hWnd, lXpos, lYpos, TRUE ); 
+					assert( bRes );
+				}
+			}
+		}
     }
 
 private:
@@ -59,20 +60,13 @@ public:
 
     virtual void operator() ( Script & script ) const
     {
-        UINT uiResId = 0;
-        try
-        {
-            uiResId = script.ScrReadUint( );
-        }
-        catch ( ScriptErrorHandler::ScriptErrorInfo const & )
-        { }
+	    UINT const uiResId  = script.ScrReadUint( );
+		INT const  iCmdShow = script.ScrReadInt( );  // WM_HIDE, WM_SHOW, ...
 
-        INT const iCmdShow = script.ScrReadInt( );  // WM_HIDE, WM_SHOW, ...
-
-        if ( uiResId > 0 )
-        {
-            ShowWindow( m_pWinManager->GetHWND( uiResId ), iCmdShow );
-        }
+		if ( uiResId > 0 )
+		{
+			ShowWindow( m_pWinManager->GetHWND( uiResId ), iCmdShow );
+		}
     }
 
 private:
@@ -200,21 +194,21 @@ BOOL WinManager::GetWindowConfiguration( )
 struct DUMP_MON_STRUCT    // communication between DumpWindowCoordinates and DumpMonitorInfo
 {
     int         m_iMonCounter;
-    wofstream * ostr;
+    wofstream * m_postr;
 };
 
 static BOOL CALLBACK DumpMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData )
 {
     DUMP_MON_STRUCT * const pMonStruct = (DUMP_MON_STRUCT *)dwData;
-    wofstream       * const ostr       = pMonStruct->ostr;
+    wofstream       * const postr      = pMonStruct->m_postr;
     MONITORINFO       const monInfo    = GetMonitorInfo( hMonitor );
 
     ++( pMonStruct->m_iMonCounter );
 
-    *ostr << pMonStruct->m_iMonCounter << L"   # monitor number"      << endl;
-    *ostr << monInfo.rcMonitor         << L"   # monitor rectangle"   << endl;
-    *ostr << monInfo.rcWork            << L"   # work area rectangle" << endl;
-    *ostr << (
+    * postr << pMonStruct->m_iMonCounter << L"   # monitor number"      << endl;
+    * postr << monInfo.rcMonitor         << L"   # monitor rectangle"   << endl;
+    * postr << monInfo.rcWork            << L"   # work area rectangle" << endl;
+    * postr << (
                 ( monInfo.dwFlags == 0 ) 
                 ? L"0    # secondary monitor" 
                 : L"1    # primary monitor"
@@ -251,8 +245,9 @@ void WinManager::dumpWindowCoordinates( ) const
 					 << it.second.m_wstr << L" "
 					 << GetWindowLeftPos( hwnd ) << L" "
 					 << GetWindowTop    ( hwnd ) << L" "
-					 << GetWindowWidth  ( hwnd ) << L" "
-					 << GetWindowHeight ( hwnd ) << endl;
+				     << GetWindowWidth  ( hwnd ) << L" "
+				     << GetWindowHeight ( hwnd ) << endl;
+
 				ostr << L"ShowWindow " 
 					<< it.second.m_wstr << L" "
 					<< ( IsWindowVisible( hwnd ) 
@@ -302,12 +297,13 @@ void WinManager::AddWindow
     UINT       const   id, 
     RootWindow const * pRootWin, 
 	BOOL       const   bTrackPosition,
+	BOOL       const   bTrackSize,
     INT        const   iMilliSecs 
 )
 {
     if ( id !=0 )
     {
-        m_map.insert( pair< UINT, MAP_ELEMENT >( id, { wstrName, pRootWin, bTrackPosition } ) );
+        m_map.insert( pair< UINT, MAP_ELEMENT >( id, { wstrName, pRootWin, bTrackPosition, bTrackSize } ) );
         SymbolTable::ScrDefConst( wstrName, static_cast<ULONG>(id) );
     }
 

@@ -23,6 +23,7 @@ void PerformanceWindow::Start( HWND const hWndParent, UINT const uiAlpha )
 {
     HWND hWnd = StartTextWindow( hWndParent, L"PerformanceWindow", uiAlpha );
     assert( hWnd != nullptr );
+	BOOL bRes = BringWindowToTop( hWnd );
 }
 
 DWORD PerformanceWindow::getMeasuredPerformance( )

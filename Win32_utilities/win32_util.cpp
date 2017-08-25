@@ -69,7 +69,7 @@ void Util::AdjustLeft( HWND hWnd, int iYpos )
     (void)BringWindowToTop( hWnd );
 }
 
-BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates 
+BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and set size
 (
 	HWND const hWnd,
 	LONG const lXpos,
@@ -79,13 +79,26 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates
 	BOOL const bRepaint
 )
 {
-	PixelPoint pos( lXpos, lYpos );
-	HWND       hWndParent = GetAncestor( hWnd, GA_PARENT );
+	HWND       const hWndParent = GetAncestor( hWnd, GA_PARENT );
+	PixelPoint       pos( lXpos, lYpos );
 
 	if ( hWndParent != nullptr )
 		ScreenToClient( hWndParent, & pos );
 
 	return MoveWindow( hWnd, pos.x, pos.y, lWidth, lHeight, bRepaint );
+}
+
+BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates 
+(
+	HWND const hWnd,
+	LONG const lXpos,
+	LONG const lYpos,
+	BOOL const bRepaint
+)
+{
+	PixelPoint const pixActSize = GetWindowSize( hWnd );
+
+	return MoveWindowAbsolute( hWnd, lXpos, lYpos, pixActSize.x, pixActSize.y, bRepaint );
 }
 
 void Util::MakeLayered( HWND const hWnd, BOOL const bMode, COLORREF const crKey, UINT const uiAlpha )

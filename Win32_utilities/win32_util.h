@@ -241,7 +241,8 @@ namespace Util
     void AdjustRight( HWND, int );
     void AdjustLeft( HWND, int );
 
-    BOOL MoveWindowAbsolute( HWND const, LONG const, LONG const, LONG const, LONG const, BOOL const bRepaint );
+    BOOL MoveWindowAbsolute( HWND const, LONG const, LONG const, LONG const, LONG const, BOOL const );
+    BOOL MoveWindowAbsolute( HWND const, LONG const, LONG const,                         BOOL const );
 	
 	HANDLE    MakeThread( LPTHREAD_START_ROUTINE, LPVOID, LPDWORD, HANDLE * );
     DWORD     GetNrOfCPUs( );
