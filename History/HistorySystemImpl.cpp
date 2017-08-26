@@ -115,10 +115,10 @@ void HistorySystemImpl::CreateResetCommand( )  // Layer 3
     createNewGen( GenerationCmd::RESET );                           
 }
 
-void HistorySystemImpl::CreateAppCommand( unsigned short const uiCmd, short const sParam )
+void HistorySystemImpl::CreateAppCommand( unsigned short const uiCmd, unsigned short const usParam )
 {
 	ClearHistory( GetCurrentGeneration( ) );  // if in history mode: cut off future generations
-	createNewGen( GenerationCmd( uiCmd, sParam ) );
+	createNewGen( GenerationCmd( uiCmd, usParam ) );
 }
 
 // ApproachHistGen - Get closer to demanded HIST_GENERATION

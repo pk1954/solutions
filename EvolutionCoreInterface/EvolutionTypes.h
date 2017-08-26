@@ -10,6 +10,8 @@ typedef unsigned short MEM_INDEX;
 typedef          short GRID_COORD;
 typedef          long  EVO_GENERATION;
 
+GRID_COORD const MAX_GRID_COORD = UCHAR_MAX;
+
 //lint -sem(IndId::ResetIndId,initializer)
 
 class IndId

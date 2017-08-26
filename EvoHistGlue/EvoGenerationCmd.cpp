@@ -16,8 +16,7 @@ wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
         { tEvoCmd::editSetBrushShape,     L"SHAPE" },
         { tEvoCmd::editSetBrushSize,      L"SIZE" },
         { tEvoCmd::editSetBrushIntensity, L"INTENS" },
-        { tEvoCmd::editSetXvalue,         L"X " },
-        { tEvoCmd::editSetYvalue,         L"Y " }
+        { tEvoCmd::editDoEdit,            L"EDIT" }
     };
 
     return mapNames.at( cmd );
@@ -31,8 +30,7 @@ wchar_t const * const GetEvoCommandName( tEvoCmd const cmd )
         { tEvoCmd::editSetBrushShape,     L"tEvoCmd::editSetBrushShape" },
         { tEvoCmd::editSetBrushSize,      L"tEvoCmd::editSetBrushSize" },
         { tEvoCmd::editSetBrushIntensity, L"tEvoCmd::editSetBrushIntensity" },
-        { tEvoCmd::editSetXvalue,         L"tEvoCmd::editSetXvalue" },
-        { tEvoCmd::editSetYvalue,         L"tEvoCmd::editSetYvalue" }
+        { tEvoCmd::editDoEdit,            L"tEvoCmd::editDoEdit" }
     };
 
     return mapNames.at( cmd );

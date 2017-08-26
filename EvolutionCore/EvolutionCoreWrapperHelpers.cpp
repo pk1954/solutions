@@ -18,9 +18,9 @@ GridPoint ScrReadGridPoint( Script & script )
 
 GridCircle ScrReadGridCircle( Script & script )
 {
-    GridPoint const gpCenter = ScrReadGridPoint( script );
-    short     const sRadius  = script.ScrReadShort();
-    return GridCircle( gpCenter, sRadius );
+    GridPoint  const gpCenter = ScrReadGridPoint( script );
+    GRID_COORD const radius   = script.ScrReadUchar();
+    return GridCircle( gpCenter, radius );
 }
 
 GridRect ScrReadGridRect( Script & script )

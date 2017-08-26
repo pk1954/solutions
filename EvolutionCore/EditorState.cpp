@@ -12,9 +12,9 @@ using namespace std;
 
 EditorState::EditorState( ) :
     m_brushMode(  tBrushMode::move ),
-    m_sBrushSize( 17 ),
+    m_brushSize( 17 ),
     m_shapeBrush( tShape::Circle ),
-    m_sBrushIntensity( 50 )
+    m_usBrushIntensity( 50 )
 { }
 
 void EditorState::EditorDoEdit( Grid * const pGrid, GridPoint const gp )
@@ -65,12 +65,12 @@ void EditorState::EditorDoEdit( Grid * const pGrid, GridPoint const gp )
 	switch ( m_shapeBrush )
     {
     case tShape::Circle:
-        Apply2Cone( pEditFunctor, GridCircle( gp, m_sBrushSize ), m_sBrushIntensity );
+        Apply2Cone( pEditFunctor, GridCircle( gp, m_brushSize ), m_usBrushIntensity );
         break;
 
     case tShape::Rect:
-        pEditFunctor->SetBrushIntensity( m_sBrushIntensity );
-        Apply2Rect( pEditFunctor, GridRect( gp, m_sBrushSize ) );
+        pEditFunctor->SetBrushIntensity( m_usBrushIntensity );
+        Apply2Rect( pEditFunctor, GridRect( gp, m_brushSize ) );
         break;
 
     default:

@@ -24,7 +24,7 @@ public:
 
 	virtual void OnNextGeneration()	{ m_pWorkThread->WorkThread::GenerationStep( ); }   // Layer 2
 	virtual void OnReset()	        { m_pWorkThread->WorkThread::ResetModel( ); }       // Layer 2
-    virtual void OnAppCommand( unsigned short, short );
+    virtual void OnAppCommand( unsigned short const, unsigned short const );
 	virtual void CopyModelData( ModelData const * const );
 
     GridPoint FindGridPoint( IndId const & ) const;
@@ -32,5 +32,4 @@ public:
 private:
 	EvolutionModelData * m_pEvolutionModelData;
 	WorkThread         * m_pWorkThread;
-    GridPoint            m_gpEdit;
 };

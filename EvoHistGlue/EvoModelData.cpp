@@ -22,25 +22,20 @@ void EvoModelData::CopyModelData( ModelData const * const src )
     m_pEvolutionModelData->CopyEvolutionModelData( evoSrc->m_pEvolutionModelData );
 }
 
-void EvoModelData::OnAppCommand( unsigned short usCmd, short sParam  )
+void EvoModelData::OnAppCommand( unsigned short const usCmd, unsigned short const usParam  )
 {
 	tEvoCmd const evoCmd = static_cast<tEvoCmd>( usCmd );
 	switch ( evoCmd )
 	{
-	case tEvoCmd::editSetXvalue:
-		m_gpEdit.x = sParam;
-		break;
-
-	case tEvoCmd::editSetYvalue:
-		m_gpEdit.y = sParam;
-		m_pWorkThread->WorkThread::DoEdit( m_gpEdit );
+	case tEvoCmd::editDoEdit:
+		m_pWorkThread->WorkThread::DoEdit( GridPoint( usParam ) );
 		break;
 
 	case tEvoCmd::editSetBrushShape:
 	case tEvoCmd::editSetBrushSize:
 	case tEvoCmd::editSetBrushIntensity:
 	case tEvoCmd::editSetBrushMode:
-		m_pWorkThread->WorkThread::ApplyEditorCommand( evoCmd, sParam );
+		m_pWorkThread->WorkThread::ApplyEditorCommand( evoCmd, usParam );
 		break;
 
 	default:

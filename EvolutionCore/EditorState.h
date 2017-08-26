@@ -17,26 +17,26 @@ public:
 
     void SetBrushStrategy ( tBrushMode const );
 
-    void SetBrushShape    ( tShape const shape      ) { m_shapeBrush      = shape;      }
-    void SetBrushSize     ( short  const sSize      ) { m_sBrushSize      = sSize;      }
-    void SetBrushIntensity( short  const sIntensity ) { m_sBrushIntensity = sIntensity; }
+    void SetBrushShape    ( tShape         const shape       ) { m_shapeBrush       = shape;       }
+    void SetBrushSize     ( GRID_COORD     const size        ) { m_brushSize        = size;        }
+    void SetBrushIntensity( unsigned short const usIntensity ) { m_usBrushIntensity = usIntensity; }
     
-    short      GetBrushIntensity( ) const { return m_sBrushIntensity; }
-    tShape     GetBrushShape( )     const { return m_shapeBrush; }
-    short      GetBrushSize( )      const { return m_sBrushSize; }
-    tBrushMode GetBrushMode( )      const { return m_brushMode; }
+    unsigned short GetBrushIntensity( ) const { return m_usBrushIntensity; }
+    tShape         GetBrushShape( )     const { return m_shapeBrush; }
+    GRID_COORD     GetBrushSize( )      const { return m_brushSize; }
+    tBrushMode     GetBrushMode( )      const { return m_brushMode; }
 
     bool operator!=( EditorState const & other ) const
     {
-        return ( m_brushMode       != other.m_brushMode )
-            || ( m_sBrushSize      != other.m_sBrushSize )      
-            || ( m_shapeBrush      != other.m_shapeBrush )
-            || ( m_sBrushIntensity != other.m_sBrushIntensity );
+        return ( m_brushMode        != other.m_brushMode )
+            || ( m_brushSize        != other.m_brushSize )      
+            || ( m_shapeBrush       != other.m_shapeBrush )
+            || ( m_usBrushIntensity != other.m_usBrushIntensity );
     }
  
 private:
-    tBrushMode m_brushMode;
-    short      m_sBrushSize;
-    tShape     m_shapeBrush;
-    short      m_sBrushIntensity;
+    tBrushMode     m_brushMode;
+    GRID_COORD     m_brushSize;
+    tShape         m_shapeBrush;
+    unsigned short m_usBrushIntensity;
 };

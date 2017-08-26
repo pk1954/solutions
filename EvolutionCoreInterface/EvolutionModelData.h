@@ -23,7 +23,7 @@ public:
     virtual EVO_GENERATION GetEvoGenerationNr       ( ) const = 0;
     virtual short          GetBrushIntensity        ( ) const = 0;
     virtual tShape         GetBrushShape            ( ) const = 0;
-    virtual short          GetBrushSize             ( ) const = 0;
+    virtual GRID_COORD     GetBrushSize             ( ) const = 0;
     virtual tBrushMode     GetBrushMode             ( ) const = 0;
 
     virtual bool           IsDead         ( GridPoint const & ) const = 0;
@@ -48,10 +48,10 @@ public:
 
     // manipulating functions
 
-    virtual void SetBrushShape    ( tShape     const ) = 0;
-    virtual void SetBrushSize     ( short      const ) = 0;
-    virtual void SetBrushIntensity( short      const ) = 0;
-    virtual void SetBrushStrategy ( tBrushMode const ) = 0;
-    virtual void ModelDoEdit      ( GridPoint  const ) = 0;
-    virtual void ResetAll         ( )                  = 0;
+    virtual void SetBrushShape    ( tShape         const ) = 0;
+    virtual void SetBrushSize     ( GRID_COORD     const ) = 0;
+    virtual void SetBrushIntensity( unsigned short const ) = 0;
+    virtual void SetBrushStrategy ( tBrushMode     const ) = 0;
+    virtual void ModelDoEdit      ( GridPoint      const ) = 0;
+    virtual void ResetAll         ( )                      = 0;
 };

@@ -30,7 +30,7 @@ private:
     virtual void GenerationStep( );
 	virtual void GenerationRun( );
 	virtual void StopComputation( );
-	virtual void ApplyEditorCommand( tEvoCmd const, short const );
+	virtual void ApplyEditorCommand( tEvoCmd const, unsigned short const );
 	virtual void DoEdit( GridPoint const );
 
 	void postGotoGeneration( HIST_GENERATION const );

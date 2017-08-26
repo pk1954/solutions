@@ -47,7 +47,7 @@ public:
     virtual void              ShutDownHistCacheSlot( short const );
 
     virtual void              CreateResetCommand( );        // Layer 
-    virtual void              CreateAppCommand  ( unsigned short const, short const );
+    virtual void              CreateAppCommand  ( unsigned short const, unsigned short const );
 	virtual void              ClearHistory      ( HIST_GENERATION const );
     virtual void              ApproachHistGen   ( HIST_GENERATION const );
 

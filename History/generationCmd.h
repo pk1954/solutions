@@ -29,26 +29,26 @@ public:
 
     explicit GenerationCmd( tGenCmd const cmd ) :
         m_Cmd( cmd ),
-        m_sParam( SHRT_MAX )
+        m_usParam( USHRT_MAX )
     { }
 
-    GenerationCmd( tGenCmd const cmd, short const s ) :
+    GenerationCmd( tGenCmd const cmd, unsigned short const us ) :
         m_Cmd( cmd ),
-        m_sParam( s )
+        m_usParam( us )
     { }
 
-    GenerationCmd( unsigned int const uiCmd, short const s ) :
+    GenerationCmd( unsigned int const uiCmd, unsigned short const us ) :
         m_Cmd( static_cast<tGenCmd>( uiCmd + FIRST_APP_CMD ) ),
-        m_sParam( s )
+        m_usParam( us )
     { }
 
-    tGenCmd GetCommand( ) const { return m_Cmd; }
-    short   GetParam( )   const { return m_sParam; }
+    tGenCmd        GetCommand( ) const { return m_Cmd; }
+    unsigned short GetParam( )   const { return m_usParam; }
 
     unsigned short GetAppCmd( ) const 
 	{ 
 		assert( static_cast<unsigned short>(m_Cmd) >= FIRST_APP_CMD ); 
-		return static_cast<unsigned short>(m_Cmd) - FIRST_APP_CMD; 
+		return  static_cast<unsigned short>(m_Cmd)  - FIRST_APP_CMD; 
 	}
 		
 	bool IsDefined( )             const { return m_Cmd != tGenCmd::undefined; }
@@ -58,8 +58,8 @@ public:
 
     void InitializeCmd( )
     {
-        m_Cmd    = tGenCmd::undefined;
-        m_sParam = SHRT_MAX;
+        m_Cmd     = tGenCmd::undefined;
+        m_usParam = USHRT_MAX;
     }
 
 	static const GenerationCmd UNDEFINED;
@@ -69,8 +69,8 @@ public:
 private:
 	static unsigned int const FIRST_APP_CMD = static_cast<unsigned short>(tGenCmd::last) + 1;
 
-    tGenCmd m_Cmd;
-    short   m_sParam;
+    tGenCmd        m_Cmd;
+    unsigned short m_usParam;
 };
 
 wchar_t const * const GetGenerationCmdNameShort( tGenCmd const );

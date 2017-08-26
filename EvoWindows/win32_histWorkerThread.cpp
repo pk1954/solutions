@@ -61,9 +61,9 @@ void HistWorkThread::GenerationRun( )
     WorkThread::GenerationRun( );
 }
 
-void HistWorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, short const sParam )
+void HistWorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, unsigned short const usParam )
 {
-    if ( m_pEvoHistorySys->CreateEditorCommand( evoCmd, sParam ) )
+    if ( m_pEvoHistorySys->CreateEditorCommand( evoCmd, usParam ) )
         SaveEditorState( );
 }
 
@@ -75,8 +75,7 @@ void HistWorkThread::StopComputation()
 
 void HistWorkThread::DoEdit( GridPoint const gp )
 {
-	if ( m_pEvoHistorySys->CreateEditorCommand( tEvoCmd::editSetXvalue, gp.x ) )
-		 m_pEvoHistorySys->CreateEditorCommand( tEvoCmd::editSetYvalue, gp.y );
+	m_pEvoHistorySys->CreateEditorCommand( tEvoCmd::editDoEdit, gp.Pack( ) );
 }
 
 void HistWorkThread::postGotoGeneration( HIST_GENERATION const gen )

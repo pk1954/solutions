@@ -20,10 +20,10 @@ public:
         * this = * static_cast<EvolutionModelDataImpl const *>( src );
     }
 
-    virtual void           SetBrushShape    ( tShape     const shape ) { m_editorState.SetBrushShape    ( shape ); }
-    virtual void           SetBrushSize     ( short      const iSize ) { m_editorState.SetBrushSize     ( iSize ); }
-    virtual void           SetBrushIntensity( short      const iInt  ) { m_editorState.SetBrushIntensity( iInt  ); }
-    virtual void           SetBrushStrategy ( tBrushMode const mode  ) { m_editorState.SetBrushStrategy ( mode  ); }
+    virtual void           SetBrushShape    ( tShape         const shape  ) { m_editorState.SetBrushShape    ( shape  ); }
+    virtual void           SetBrushSize     ( GRID_COORD     const size   ) { m_editorState.SetBrushSize     ( size   ); }
+    virtual void           SetBrushIntensity( unsigned short const uiInt  ) { m_editorState.SetBrushIntensity( uiInt  ); }
+    virtual void           SetBrushStrategy ( tBrushMode     const mode   ) { m_editorState.SetBrushStrategy ( mode   ); }
 
     virtual void           ModelDoEdit    ( GridPoint  const gp ) { m_editorState.EditorDoEdit( & m_grid, gp ); }
 	virtual void		   ResetAll       ( )                     { m_grid.ResetGrid( ); }
@@ -51,7 +51,7 @@ public:
     virtual EVO_GENERATION GetEvoGenerationNr( ) const { return m_grid.GetEvoGenerationNr( ); }
     virtual short          GetBrushIntensity ( ) const { return m_editorState.GetBrushIntensity( ); }
     virtual tShape         GetBrushShape     ( ) const { return m_editorState.GetBrushShape( ); }
-    virtual short          GetBrushSize      ( ) const { return m_editorState.GetBrushSize( ); }
+    virtual GRID_COORD     GetBrushSize      ( ) const { return m_editorState.GetBrushSize( ); }
     virtual tBrushMode     GetBrushMode      ( ) const { return m_editorState.GetBrushMode( ); }
 
     virtual GridPoint      FindGridPoint( IndId const & id ) const { return m_grid.FindGridPoint( id ); }

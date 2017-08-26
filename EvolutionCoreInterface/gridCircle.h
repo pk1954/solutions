@@ -11,16 +11,16 @@
 class GridCircle
 {
 public:
-    GridCircle( GridPoint const & gp, short const sRad ) : m_gpCenter(gp), m_sRadius(sRad) {};
+    GridCircle( GridPoint const & gp, GRID_COORD const radius ) : m_gpCenter(gp), m_radius( radius ) {};
 
     ~GridCircle( ) { };
 
     GridPoint const & GetCenter( ) const { return m_gpCenter; };
-    short             GetRadius( ) const { return m_sRadius; };
+    GRID_COORD        GetRadius( ) const { return m_radius; };
 
 private:
-    GridPoint m_gpCenter;
-    short     m_sRadius;
+    GridPoint  m_gpCenter;
+    GRID_COORD m_radius;
 };
 
 GridCircle GetInscribedCircle( GridRect const & );

@@ -59,7 +59,7 @@ public:
 	virtual void PostGenerationStep();
 	virtual void ResetModel( );       
 	virtual void GenerationStep( );
-	virtual void ApplyEditorCommand( tEvoCmd const, short const );
+	virtual void ApplyEditorCommand( tEvoCmd const, unsigned short const );
 	virtual void DoEdit( GridPoint const );
 
 protected:

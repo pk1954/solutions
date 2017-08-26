@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const GenerationCmd GenerationCmd::UNDEFINED = { tGenCmd::undefined, SHRT_MAX };
+const GenerationCmd GenerationCmd::UNDEFINED = { tGenCmd::undefined, USHRT_MAX };
 const GenerationCmd GenerationCmd::NEXT_GEN  = { tGenCmd::nextGen,   0 };
 const GenerationCmd GenerationCmd::RESET     = { tGenCmd::reset,     0 };
 

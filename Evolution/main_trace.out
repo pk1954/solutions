@@ -1,30 +1,22 @@
 OpenTraceFile  "main_trace.out"
 PostRefresh
 PostSetBrushMode tBrushMode::randomStrategy
-PostDoEdit   52  50 
+PostDoEdit   79  48 
 PostRefresh
-PostDoEdit   77  51 
+PostDoEdit   79  48 
 PostRefresh
-PostDoEdit   85  51 
+PostDoEdit  107  48 
 PostRefresh
-PostDoEdit   88  51 
+PostDoEdit  151  48 
 PostRefresh
-PostDoEdit  125  50 
+PostDoEdit  176  48 
 PostRefresh
-PostDoEdit  147  51 
+PostDoEdit   41  50 
 PostRefresh
-PostPrevGeneration
-PostGotoGeneration  12
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  11
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  10
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  9
-PostGenerationStep
+PostDoEdit   75  76 
+PostRefresh
+PostDoEdit   93  24 
+PostRefresh
 PostPrevGeneration
 PostGotoGeneration  8
 PostGenerationStep
@@ -40,1225 +32,313 @@ PostGenerationStep
 PostPrevGeneration
 PostGotoGeneration  4
 PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
 PostPrevGeneration
-PostGotoGeneration  10
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  7
-PostGenerationStep
-PostGotoGeneration  7
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
 PostGotoGeneration  3
 PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  2
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  6
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  5
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  4
+PostGenerationStep
+PostPrevGeneration
 PostGotoGeneration  3
 PostGenerationStep
+PostPrevGeneration
 PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  1
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  2
-PostGenerationStep
-PostGotoGeneration  3
-PostGenerationStep
-PostGotoGeneration  3
-PostGenerationStep
-PostGotoGeneration  3
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  4
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  5
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  6
-PostGenerationStep
-PostGotoGeneration  7
-PostGenerationStep
-PostGotoGeneration  7
-PostGenerationStep
-PostGotoGeneration  7
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  12
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
-PostGenerationStep
-PostGotoGeneration  13
 PostGenerationStep
 PostPrevGeneration
-PostGotoGeneration  12
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  11
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  10
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  9
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  8
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  7
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  6
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  5
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  4
+PostGotoGeneration  1
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostSetBrushMode tBrushMode::fertility
+PostRefresh
+PostDoEdit  155  51 
+PostRefresh
+PostDoEdit  155  53 
+PostRefresh
+PostDoEdit  154  53 
+PostRefresh
+PostDoEdit  154  55 
+PostRefresh
+PostDoEdit  153  56 
+PostRefresh
+PostDoEdit  152  57 
+PostRefresh
+PostDoEdit  152  58 
+PostRefresh
+PostDoEdit  151  59 
+PostRefresh
+PostDoEdit  150  59 
+PostRefresh
+PostDoEdit  148  60 
+PostRefresh
+PostDoEdit  147  61 
+PostRefresh
+PostDoEdit  145  62 
+PostRefresh
+PostDoEdit  142  63 
+PostRefresh
+PostDoEdit  139  64 
+PostRefresh
+PostDoEdit  135  66 
+PostRefresh
+PostDoEdit  131  67 
+PostRefresh
+PostDoEdit  127  67 
+PostRefresh
+PostDoEdit  122  68 
+PostRefresh
+PostDoEdit  117  69 
+PostRefresh
+PostDoEdit  112  69 
+PostRefresh
+PostDoEdit  108  70 
+PostRefresh
+PostDoEdit   97  70 
+PostRefresh
+PostDoEdit   93  70 
+PostRefresh
+PostDoEdit   90  70 
+PostRefresh
+PostDoEdit   87  69 
+PostRefresh
+PostDoEdit   84  69 
+PostRefresh
+PostDoEdit   82  68 
+PostRefresh
+PostDoEdit   80  67 
+PostRefresh
+PostDoEdit   78  67 
+PostRefresh
+PostDoEdit   77  66 
+PostRefresh
+PostDoEdit   75  65 
+PostRefresh
+PostDoEdit   74  65 
+PostRefresh
+PostDoEdit   72  63 
+PostRefresh
+PostDoEdit   71  62 
+PostRefresh
+PostDoEdit   70  61 
+PostRefresh
+PostDoEdit   69  60 
+PostRefresh
+PostDoEdit   68  60 
+PostRefresh
+PostDoEdit   66  59 
+PostRefresh
+PostDoEdit   65  58 
+PostRefresh
+PostDoEdit   64  57 
+PostRefresh
+PostDoEdit   63  57 
+PostRefresh
+PostDoEdit   62  56 
+PostRefresh
+PostDoEdit   61  55 
+PostRefresh
+PostDoEdit   58  54 
+PostRefresh
+PostDoEdit   57  53 
+PostRefresh
+PostDoEdit   57  53 
+PostRefresh
+PostDoEdit   57  52 
+PostRefresh
+PostDoEdit   56  52 
+PostRefresh
+PostDoEdit   56  51 
+PostRefresh
+PostDoEdit   56  51 
+PostRefresh
+PostDoEdit   56  50 
+PostRefresh
+PostDoEdit   56  50 
+PostRefresh
+PostDoEdit   56  49 
+PostRefresh
+PostDoEdit   56  48 
+PostRefresh
+PostDoEdit   57  47 
+PostRefresh
+PostDoEdit   57  46 
+PostRefresh
+PostDoEdit   57  45 
+PostRefresh
+PostDoEdit   58  44 
+PostRefresh
+PostDoEdit   58  43 
+PostRefresh
+PostDoEdit   59  42 
+PostRefresh
+PostDoEdit   60  41 
+PostRefresh
+PostDoEdit   61  40 
+PostRefresh
+PostDoEdit   62  39 
+PostRefresh
+PostDoEdit   63  38 
+PostRefresh
+PostDoEdit   65  37 
+PostRefresh
+PostDoEdit   67  37 
+PostRefresh
+PostDoEdit   74  34 
+PostRefresh
+PostDoEdit   80  34 
+PostRefresh
+PostDoEdit   82  33 
+PostRefresh
+PostDoEdit   85  33 
+PostRefresh
+PostDoEdit   87  33 
+PostRefresh
+PostDoEdit   90  33 
+PostRefresh
+PostDoEdit   92  33 
+PostRefresh
+PostDoEdit   94  33 
+PostRefresh
+PostDoEdit   96  33 
+PostRefresh
+PostDoEdit   97  33 
+PostRefresh
+PostDoEdit   98  33 
+PostRefresh
+PostDoEdit   99  33 
+PostRefresh
+PostDoEdit  100  33 
+PostRefresh
+PostDoEdit  100  33 
+PostRefresh
+PostDoEdit  100  33 
+PostRefresh
+PostDoEdit  100  34 
+PostRefresh
+PostDoEdit  100  34 
+PostRefresh
+PostDoEdit  100  34 
+PostRefresh
+PostDoEdit  100  34 
+PostRefresh
+PostSetBrushMode tBrushMode::mutRate
+PostRefresh
+PostDoEdit  105  44 
+PostRefresh
+PostDoEdit  105  44 
+PostRefresh
+PostDoEdit  105  44 
+PostRefresh
+PostDoEdit  105  45 
+PostRefresh
+PostDoEdit  105  46 
+PostRefresh
+PostDoEdit  108  51 
+PostRefresh
+PostDoEdit  110  53 
+PostRefresh
+PostDoEdit  111  54 
+PostRefresh
+PostDoEdit  112  55 
+PostRefresh
+PostDoEdit  114  56 
+PostRefresh
+PostDoEdit  116  58 
+PostRefresh
+PostDoEdit  118  59 
+PostRefresh
+PostDoEdit  120  60 
+PostRefresh
+PostDoEdit  122  61 
+PostRefresh
+PostDoEdit  124  62 
+PostRefresh
+PostDoEdit  125  62 
+PostRefresh
+PostDoEdit  126  62 
+PostRefresh
+PostDoEdit  127  63 
+PostRefresh
+PostDoEdit  128  63 
+PostRefresh
+PostDoEdit  129  63 
+PostRefresh
+PostDoEdit  130  63 
+PostRefresh
+PostDoEdit  131  63 
+PostRefresh
+PostDoEdit  132  63 
+PostRefresh
+PostDoEdit  132  63 
+PostRefresh
+PostDoEdit  133  63 
+PostRefresh
+PostDoEdit  133  62 
+PostRefresh
+PostDoEdit  133  62 
+PostRefresh
+PostDoEdit  133  62 
+PostRefresh
+PostDoEdit  134  62 
+PostRefresh
+PostDoEdit  134  61 
+PostRefresh
+PostDoEdit  134  60 
+PostRefresh
+PostDoEdit  135  59 
+PostRefresh
+PostDoEdit  135  58 
+PostRefresh
+PostDoEdit  135  57 
+PostRefresh
+PostDoEdit  135  56 
+PostRefresh
+PostDoEdit  135  55 
+PostRefresh
+PostDoEdit  135  55 
+PostRefresh
+PostDoEdit  135  54 
+PostRefresh
+PostDoEdit  135  54 
+PostRefresh
+PostDoEdit  134  53 
+PostRefresh
+PostDoEdit  134  53 
+PostRefresh
+PostDoEdit  133  52 
+PostRefresh
+PostRefresh
+SetGenerationDelay 0

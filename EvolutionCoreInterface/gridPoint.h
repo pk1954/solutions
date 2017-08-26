@@ -12,7 +12,7 @@ class GridPoint
 {
 public:
     GridPoint( ) : x( GP_NULL.x ), y( GP_NULL.y ) {}
-	GridPoint(long long const _x, long long const _y)
+	GridPoint( long long const _x, long long const _y )
 	{
 		assert( _x <= SHRT_MAX );
 		assert( _x >= SHRT_MIN );
@@ -20,6 +20,18 @@ public:
 		assert( _y >= SHRT_MIN );
 		x = static_cast< GRID_COORD >( _x );
 		y = static_cast< GRID_COORD >( _y );
+	}
+
+	GridPoint( unsigned short const usParam )
+    	: x ( usParam >> 8 ),
+	      y ( usParam & 0x00ff )
+	{ }
+
+	unsigned short Pack( ) const
+	{
+		assert( x < GRID_WIDTH );
+		assert( y < GRID_HEIGHT );
+		return ( x << 8 ) | y;
 	}
 
     virtual ~GridPoint() {};

@@ -74,24 +74,25 @@ void WorkThread::ResetModel( )  // Layer 1
     m_pEvolutionCore->ResetModel( m_pModelWork );
 }
 
-void WorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, short const sParam )  // Layer 1
+void WorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, unsigned short const usParam )  // Layer 1
 {
 	switch (evoCmd)
 	{
 	case tEvoCmd::editSetBrushMode:
-        m_pModelWork->SetBrushStrategy( static_cast<tBrushMode>( sParam ) );
+        m_pModelWork->SetBrushStrategy( static_cast<tBrushMode>( usParam ) );
         break;
 
     case tEvoCmd::editSetBrushShape:
-        m_pModelWork->SetBrushShape( static_cast<tShape>( sParam ) );
+        m_pModelWork->SetBrushShape( static_cast<tShape>( usParam ) );
 		break;
 
     case tEvoCmd::editSetBrushSize:
-        m_pModelWork->SetBrushSize( sParam );
+		assert( usParam <= MAX_GRID_COORD );
+        m_pModelWork->SetBrushSize( static_cast<GRID_COORD>( usParam ) );
 		break;
 
     case tEvoCmd::editSetBrushIntensity:
-        m_pModelWork->SetBrushIntensity( sParam );
+        m_pModelWork->SetBrushIntensity( usParam );
 		break;
 
 	default:
@@ -164,19 +165,19 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
         return 0;
 
     case THREAD_MSG_SET_BRUSH_INTENSITY:
-		ApplyEditorCommand( tEvoCmd::editSetBrushIntensity, static_cast<short>( wParam ) );
+		ApplyEditorCommand( tEvoCmd::editSetBrushIntensity, static_cast<unsigned short>( wParam ) );
         break;
 
     case THREAD_MSG_SET_BRUSH_SIZE:
-		ApplyEditorCommand( tEvoCmd::editSetBrushSize, static_cast<short>( wParam ) );
+		ApplyEditorCommand( tEvoCmd::editSetBrushSize, static_cast<unsigned short>( wParam ) );
         break;
 
     case THREAD_MSG_SET_BRUSH_SHAPE:
-		ApplyEditorCommand( tEvoCmd::editSetBrushShape, static_cast<short>( wParam ) );
+		ApplyEditorCommand( tEvoCmd::editSetBrushShape, static_cast<unsigned short>( wParam ) );
         break;
 
     case THREAD_MSG_SET_BRUSH_MODE:
-		ApplyEditorCommand( tEvoCmd::editSetBrushMode, static_cast<short>( wParam ) );
+		ApplyEditorCommand( tEvoCmd::editSetBrushMode, static_cast<unsigned short>( wParam ) );
         break;
 
     case THREAD_MSG_DO_EDIT:

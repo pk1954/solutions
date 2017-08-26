@@ -97,8 +97,8 @@ class WrapSetBrushSize : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        short sSize = script.ScrReadShort( );
-        m_pModelWork->SetBrushSize( sSize );
+        unsigned char size = script.ScrReadUchar( );
+        m_pModelWork->SetBrushSize( size );
     }
 };
 
@@ -107,8 +107,8 @@ class WrapSetBrushIntensity : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        short sIntensity = script.ScrReadShort( );
-        m_pModelWork->SetBrushIntensity( sIntensity );
+        unsigned short usIntensity = script.ScrReadUshort( );
+        m_pModelWork->SetBrushIntensity( usIntensity );
     }
 };
 

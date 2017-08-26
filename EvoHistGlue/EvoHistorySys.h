@@ -38,7 +38,7 @@ public:
     HIST_GENERATION GetLastGenOfIndividual ( IndId const & ) const;
 
 	void EvoCreateResetCommand( ) {	m_pHistorySystem->CreateResetCommand( ); }  // Layer 4
-	bool CreateEditorCommand( tEvoCmd, short );
+	bool CreateEditorCommand( tEvoCmd, unsigned short );
 
 private:
     EvoModelData    * m_pEvoModelWork;

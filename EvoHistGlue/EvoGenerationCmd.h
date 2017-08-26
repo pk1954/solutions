@@ -9,8 +9,7 @@ enum class tEvoCmd : unsigned short // enumeration starts after last tGenCmd val
     editSetBrushShape,
     editSetBrushSize,
     editSetBrushIntensity,
-    editSetXvalue,
-    editSetYvalue
+    editDoEdit
 };
 
 wchar_t const * const GetEvoCommandName     ( tEvoCmd const );
