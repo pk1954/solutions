@@ -11,6 +11,7 @@
 #include "EvoController.h"
 #include "win32_worker_thread.h"
 #include "win32_frameBuffer.h"
+#include "win32_util.h"
 #include "win32_status.h"
 
 //lint -e1924    C-style casts
@@ -22,8 +23,6 @@ static USHORT value2Trackbar( double );
 
 static DWORD const DEFAULT_DELAY =   50;
 static DWORD const MAX_DELAY     = 2048;    // in msecs
-
-static HMENU const ID_TRACKBAR = (HMENU)1;
 
 static double const TRACKBAR_SCALING_FACTOR = 1000.0;
 
@@ -69,8 +68,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
             }
                 break;
 
-            default:   // TODO: Check if needed 
-//                iPos = SendMessage( pStatusBar->m_hWndSize, TBM_GETPOS, 0, 0 );
+            default:   
                 break;
         }
         return TRUE;
@@ -117,18 +115,25 @@ HWND WINAPI StatusBar::createButton( LPCTSTR lpWindowName, HMENU hMenu )
     return createControl( WC_BUTTON, lpWindowName, BS_DEFPUSHBUTTON, hMenu );
 }
 
-HWND WINAPI StatusBar::createTrackBar( )
+HWND WINAPI StatusBar::createTrackBar( HMENU hMenu )
 { 
-    return createControl( TRACKBAR_CLASS, L"   Trackbar Control   ", 0, ID_TRACKBAR );
+    return createControl( TRACKBAR_CLASS, L"   Trackbar Control   ", 0, hMenu );
 };
+
+HWND WINAPI StatusBar::createModeControl( )
+{ 
+    return createButton( L"Switch to Simulation", (HMENU)IDM_TOGGLE_EDIT_SIMU_MODE ); 
+} 
 
 HWND WINAPI StatusBar::createSizeControl( )
 { 
     HWND const hwndTitle       = createStaticControl( L"Size" );
-    HWND const hwndMinusButton = createButton       ( L" - ",     (HMENU)IDM_ZOOM_OUT ); 
-    HWND const hwndTrackBar    = createTrackBar     (  ); 
-    HWND const hwndPlusButton  = createButton       ( L" + ",     (HMENU)IDM_ZOOM_IN  ); 
-    HWND const hwndFitButton   = createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM ); 
+    HWND const hwndMinusButton = createButton       ( L" - ",     (HMENU)IDM_ZOOM_OUT      ); 
+    HWND const hwndTrackBar    = createTrackBar     (             (HMENU)IDM_ZOOM_TRACKBAR ); 
+    HWND const hwndPlusButton  = createButton       ( L" + ",     (HMENU)IDM_ZOOM_IN       ); 
+    HWND const hwndFitButton   = createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM      ); 
+
+	m_hWndButtonFit = hwndFitButton;
 
     USHORT const usMinPos = fieldSize2TrackBarPos( FrameBuffer::MINIMUM_FIELD_SIZE );
     USHORT const usMaxPos = fieldSize2TrackBarPos( FrameBuffer::MAXIMUM_FIELD_SIZE );
@@ -146,7 +151,7 @@ HWND WINAPI StatusBar::createSpeedControl( )
     HWND const hwndStopButton = createButton  ( L"   Stop   ", (HMENU)IDM_STOP ); 
     HWND const hwndSnglButton = createButton  ( L"SingleStep", (HMENU)IDM_GENERATION ); 
     HWND const hwndRunButton  = createButton  ( L"   Run    ", (HMENU)IDM_RUN ); 
-    HWND const hwndTrackBar   = createTrackBar( ); 
+    HWND const hwndTrackBar   = createTrackBar(                (HMENU)IDM_SPEED_TRACKBAR ); 
     HWND const hwndMaxButton  = createButton  ( L" MaxSpeed ", (HMENU)IDM_MAX_SPEED ); 
 
     (void)::SendMessage( hwndTrackBar, TBM_SETRANGE,    TRUE, (LPARAM)MAKELONG( SPEED_TRACKBAR_MIN, SPEED_TRACKBAR_MAX ) );
@@ -193,6 +198,7 @@ void StatusBar::Start
     static std::array< int, static_cast<int>( tPart::Stop ) + 1> statwidths = 
     { 
         100, // Generation 
+		200, // Mode (Edit/Simu)
         400, // Size
         670, // Speed
         600, // ScriptLine
@@ -207,9 +213,12 @@ void StatusBar::Start
     }
     
     (void)SetWindowSubclass( hWndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this ) ;
-    
+
     m_iBorder       = GetSystemMetrics( SM_CXSIZEFRAME );
     m_iClientHeight = GetHeight( ) - m_iBorder;
+
+    m_iPosX     = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_iBorder + 10;
+    m_hWndSize  = createModeControl ( );
 
     m_iPosX     = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_iBorder + 10;
     m_hWndSize  = createSizeControl ( );
@@ -286,6 +295,24 @@ void StatusBar::setTrackBarPos( HWND const hwndTrackBar, USHORT const usPos ) co
         static_cast<WPARAM>( TRUE ),                   // redraw flag 
         static_cast<LPARAM>( usPos )
     ); 
+}
+
+void StatusBar::SetSimuMode( BOOL const bSimuMode )
+{
+    EnableWindow( GetDlgItem( IDM_STOP            ), bSimuMode );
+    EnableWindow( GetDlgItem( IDM_RUN             ), bSimuMode );
+    EnableWindow( GetDlgItem( IDM_MAX_SPEED       ), bSimuMode );
+    EnableWindow( GetDlgItem( IDM_SPEED_TRACKBAR  ), bSimuMode );
+
+	wchar_t * szButtonText = bSimuMode ? L"Switch to EDITOR" : L"Switch to SIMULATION";
+
+	(void)::SendMessage
+	( 
+		GetDlgItem( IDM_TOGGLE_EDIT_SIMU_MODE  ), 
+		WM_SETTEXT,
+		0, 
+		(LPARAM)( szButtonText )
+	);
 }
 
 int StatusBar::GetHeight( ) const

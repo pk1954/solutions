@@ -16,9 +16,10 @@ class StatusBar : public BaseDialog
 {
 public:
     StatusBar( );
-    ~StatusBar();
+    ~StatusBar( );
 
     void Start( HWND const, EvoController * const, EvolutionModelData * const );
+	void SetSimuMode( BOOL const );
 
     int  GetHeight( ) const;
     void Resize( ) const;
@@ -35,6 +36,7 @@ private:
     enum class tPart
     {
         Generation,
+		Mode,
         Size,
         Speed,
         ScriptLine,
@@ -50,8 +52,9 @@ private:
     HWND WINAPI createControl      ( LPCTSTR, LPCTSTR, DWORD, HMENU );
     HWND WINAPI createStaticControl( LPCTSTR );
     HWND WINAPI createButton       ( LPCTSTR, HMENU );
-    HWND WINAPI createTrackBar     ( );
+    HWND WINAPI createTrackBar     ( HMENU );
 
+    HWND WINAPI createModeControl ( );
     HWND WINAPI createSizeControl ( );
     HWND WINAPI createSpeedControl( );
 
@@ -65,6 +68,8 @@ private:
     HWND                 m_hWndSpeed;
     wstring              m_wstrGeneration;
     wstring              m_wstrScriptLine;
+
+	HWND                 m_hWndButtonFit;
 
 friend static LRESULT CALLBACK OwnerDrawStatusBar( HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR );
 };

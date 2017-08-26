@@ -10,9 +10,6 @@
 #define IDD_ABOUTBOX                            103
 #define IDM_ABOUT                               104
 #define IDM_EXIT                                105
-#define IDM_MAX_SPEED                           140
-#define IDM_SET_ZOOM                            142
-#define IDM_FIT_ZOOM                            143
 #define IDM_SCRIPT_DIALOG                       144
 #define IDM_SET_POI                             145
 #define IDD_TOGGLE_STRIP_MODE                   146
@@ -24,8 +21,6 @@
 #define IDD_EDITOR                              207
 #define IDD_DISPLAY_OPTIONS                     208
 #define IDM_DSP_ENV_NOTHING                     400
-#define IDM_ZOOM_IN                             401
-#define IDM_ZOOM_OUT                            403
 #define IDM_ESCAPE                              411
 #define IDM_APPL_WINDOW                         412
 #define IDM_MINI_WINDOW                         413
@@ -37,6 +32,7 @@
 #define IDM_PERF_WINDOW                         419
 #define IDM_MAIN_WINDOW                         420
 #define IDM_STATUS_BAR                          421
+#define IDM_TOGGLE_EDIT_SIMU_MODE               422
 
 #define IDM_ANIMALS                             424
 
@@ -60,11 +56,21 @@
 #define IDM_EDIT_SIZE                           (IDM_EDIT_PROPERTY_BASE + 0)
 #define IDM_EDIT_INTENSITY                      (IDM_EDIT_PROPERTY_BASE + 1)
 
-#define IDM_HISTORY_CMD_BASE                    800
-#define IDM_GENERATION                          (IDM_HISTORY_CMD_BASE +  0)
-#define IDM_BACKWARDS                           (IDM_HISTORY_CMD_BASE +  1)
-#define IDM_RUN                                 (IDM_HISTORY_CMD_BASE +  2)
-#define IDM_STOP                                (IDM_HISTORY_CMD_BASE +  3)
+#define IDM_SIMULATION_MODE                     800
+#define IDM_GENERATION                          (IDM_SIMULATION_MODE +  0)
+#define IDM_BACKWARDS                           (IDM_SIMULATION_MODE +  1)
+#define IDM_RUN                                 (IDM_SIMULATION_MODE +  2)
+#define IDM_STOP                                (IDM_SIMULATION_MODE +  3)
+#define IDM_SIMULATION_SPEED                    (IDM_SIMULATION_MODE +  4)
+#define IDM_MAX_SPEED                           (IDM_SIMULATION_MODE +  5)
+#define IDM_SPEED_TRACKBAR                      (IDM_SIMULATION_MODE +  6)
+
+#define IDM_ZOOM_MODE                           850
+#define IDM_SET_ZOOM                            (IDM_ZOOM_MODE + 0)
+#define IDM_FIT_ZOOM                            (IDM_ZOOM_MODE + 1)
+#define IDM_ZOOM_IN                             (IDM_ZOOM_MODE + 2)
+#define IDM_ZOOM_OUT                            (IDM_ZOOM_MODE + 3)
+#define IDM_ZOOM_TRACKBAR                       (IDM_ZOOM_MODE + 4)
 
 #define IDM_GOTO_CMD_BASE                       900
 #define IDM_GOTO_ORIGIN                         (IDM_GOTO_CMD_BASE + 0)

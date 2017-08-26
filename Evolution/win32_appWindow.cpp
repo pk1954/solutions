@@ -62,6 +62,7 @@
 
 AppWindow::AppWindow( ) :
     BaseWindow( ),
+	m_bSimulationMode( TRUE ),
     m_displayGridFunctor( ),
     m_pMainGridWindow( nullptr ),
     m_pMiniGridWindow( nullptr ),
@@ -186,6 +187,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pMiniGridWindow->Size( );
 
     m_displayGridFunctor.SetWinManager( m_pWinManager );
+	::PostMessage( hWndApp, WM_COMMAND, (WPARAM)IDM_TOGGLE_EDIT_SIMU_MODE, 0 );
 
     m_pEvolutionCore->SetGridDisplayFunctor( & m_displayGridFunctor );   // display callback for core
 
@@ -249,7 +251,7 @@ LRESULT AppWindow::UserProc
     LPARAM const lParam 
 )
 {
-    switch (message)
+    switch ( message )
     {
 
     case WM_COMMAND:
@@ -263,6 +265,10 @@ LRESULT AppWindow::UserProc
 
         case IDM_EXIT:
             PostMessage( WM_CLOSE, 0, 0 );
+            break;
+
+        case IDM_TOGGLE_EDIT_SIMU_MODE:
+			setSimulationMode( tBoolOp::opToggle );
             break;
 
         default:
@@ -318,4 +324,17 @@ void AppWindow::adjustChildWindows( )
 
         m_pMainGridWindow->Move( 0, 0, pntAppClientSize.GetWidth( ), pntAppClientSize.GetHeight( ), TRUE );
     }
+}
+
+void AppWindow::setSimulationMode( tBoolOp const op )
+{
+	Util::ApplyOp( m_bSimulationMode, op );
+
+	m_pStatusBar->SetSimuMode( m_bSimulationMode );
+
+	m_pEditorWindow->Show( ! m_bSimulationMode );
+	m_pPerfWindow  ->Show(   m_bSimulationMode );
+
+//    if ( Config::UseHistorySystem( ) )
+//		m_pWinManager->Show( IDM_HIST_WINDOW, op );
 }

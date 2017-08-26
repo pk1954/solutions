@@ -44,9 +44,11 @@ private:
 	AppWindow             ( AppWindow const & );  // noncopyable class 
     AppWindow & operator= ( AppWindow const & );  // noncopyable class 
 
-    void adjustChildWindows( );
+	void setSimulationMode( tBoolOp const );
+	void adjustChildWindows( );
 
-    DisplayAll          m_displayGridFunctor;
+	BOOL                 m_bSimulationMode;   // if TRUE: simu mode, FALSE: edit more
+    DisplayAll           m_displayGridFunctor;
 
     GridWindow         * m_pMainGridWindow;
     GridWindow         * m_pMiniGridWindow;
