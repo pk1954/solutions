@@ -77,9 +77,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_aboutBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>

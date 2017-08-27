@@ -55,6 +55,8 @@
 #define IDM_EDIT_PROPERTY_BASE                  700
 #define IDM_EDIT_SIZE                           (IDM_EDIT_PROPERTY_BASE + 0)
 #define IDM_EDIT_INTENSITY                      (IDM_EDIT_PROPERTY_BASE + 1)
+#define IDM_EDIT_UNDO                           (IDM_EDIT_PROPERTY_BASE + 2)
+#define IDM_EDIT_REDO                           (IDM_EDIT_PROPERTY_BASE + 3)
 
 #define IDM_SIMULATION_MODE                     800
 #define IDM_GENERATION                          (IDM_SIMULATION_MODE +  0)

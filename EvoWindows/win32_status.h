@@ -38,38 +38,34 @@ private:
         Generation,
 		Mode,
         Size,
-        Speed,
+        SimuEdit,
         ScriptLine,
         Stop
     };
 
-    void   setTrackBarPos( HWND, USHORT )   const;
-    short  trackBarPos2FieldSize( USHORT )  const;
-    USHORT fieldSize2TrackBarPos( short )   const;
-    DWORD  trackBarPos2SpeedDelay( USHORT ) const;
-    USHORT speedDelay2TrackBarPos( DWORD )  const; 
+    void   setTrackBarPos( INT const, USHORT const ) const;
+    short  trackBarPos2FieldSize ( USHORT const )    const;
+    USHORT fieldSize2TrackBarPos ( SHORT  const )    const;
+    DWORD  trackBarPos2SpeedDelay( USHORT const )    const;
+    USHORT speedDelay2TrackBarPos( DWORD  const )    const; 
 
     HWND WINAPI createControl      ( LPCTSTR, LPCTSTR, DWORD, HMENU );
     HWND WINAPI createStaticControl( LPCTSTR );
     HWND WINAPI createButton       ( LPCTSTR, HMENU );
     HWND WINAPI createTrackBar     ( HMENU );
 
-    HWND WINAPI createModeControl ( );
-    HWND WINAPI createSizeControl ( );
-    HWND WINAPI createSpeedControl( );
+    void WINAPI createModeControl ( );
+    void WINAPI createSizeControl ( );
+    void WINAPI createSimulationControl( );
+    void WINAPI createEditorControl( );
 
     EvoController      * m_pEvoController;
     EvolutionModelData * m_pModelWork;
-    GridPoint            m_gp;
     INT                  m_iClientHeight;
     INT                  m_iBorder;
     INT                  m_iPosX;
-    HWND                 m_hWndSize;
-    HWND                 m_hWndSpeed;
     wstring              m_wstrGeneration;
     wstring              m_wstrScriptLine;
-
-	HWND                 m_hWndButtonFit;
 
 friend static LRESULT CALLBACK OwnerDrawStatusBar( HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR );
 };
