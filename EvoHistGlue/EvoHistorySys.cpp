@@ -107,6 +107,13 @@ bool EvoHistorySys::CreateEditorCommand( tEvoCmd cmd, unsigned short usParam )
 	return true;
 }
 
+bool EvoHistorySys::IsEditorCommand( HIST_GENERATION const gen ) const
+{
+	unsigned short const usCmd  = m_pHistorySystem->GetGenerationCmd( gen );
+	tEvoCmd        const evoCmd = static_cast<tEvoCmd>( usCmd );
+	return ::IsEditorCommand( evoCmd );
+}
+
 bool EvoHistorySys::askHistoryCut( HistorySystem * pHistSys ) const
 {
     std::wostringstream wBuffer;

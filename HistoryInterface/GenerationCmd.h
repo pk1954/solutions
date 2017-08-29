@@ -1,4 +1,4 @@
-// generationCmd.h : 
+// GenerationCmd.h : 
 //
 
 #pragma once
@@ -18,6 +18,8 @@ enum class tGenCmd : unsigned short
     reset,
     last = reset
 };
+
+static unsigned int const FIRST_APP_CMD = static_cast<unsigned short>(tGenCmd::last) + 1;
 
 class GenerationCmd
 { 
@@ -67,8 +69,6 @@ public:
 	static const GenerationCmd RESET;
 
 private:
-	static unsigned int const FIRST_APP_CMD = static_cast<unsigned short>(tGenCmd::last) + 1;
-
     tGenCmd        m_Cmd;
     unsigned short m_usParam;
 };

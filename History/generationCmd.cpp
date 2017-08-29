@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include <unordered_map>
-#include "generationCmd.h"
+#include "GenerationCmd.h"
 
 using namespace std;
 

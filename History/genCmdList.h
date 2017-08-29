@@ -5,7 +5,7 @@
 
 #include <vector>
 #include "HistoryGeneration.h"
-#include "generationCmd.h"
+#include "GenerationCmd.h"
 
 class GenCmdList
 {
@@ -19,7 +19,7 @@ public:
     { 
         return m_generationCommands.at( gen.GetLong( ) );
     }
-       
+    
     void SetGenerationCmd( HIST_GENERATION const gen, GenerationCmd const cmd )
     {
         m_generationCommands[ gen.GetLong( ) ] = cmd;

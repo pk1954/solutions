@@ -64,8 +64,15 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
     int const wmId = LOWORD( wParam );
     switch (wmId)
     {
-        case IDM_GENERATION:
+        case IDM_EDIT_UNDO:
+			m_pHistWorkThread->PostUndo( );
+			break;
+
         case IDM_EDIT_REDO:
+ 			m_pHistWorkThread->PostRedo( );
+			break;
+
+	    case IDM_GENERATION:
             m_pHistWorkThread->PostGenerationStep( );
             break;
 
@@ -81,8 +88,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             m_pHistWorkThread->PostReset( );
             break;
 
-        case IDM_BACKWARDS:
-        case IDM_EDIT_UNDO:
+		case IDM_BACKWARDS:
 			m_pHistWorkThread->PostPrevGeneration( );
 			break;
 

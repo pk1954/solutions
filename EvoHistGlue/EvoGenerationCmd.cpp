@@ -8,6 +8,11 @@
 
 using namespace std;
 
+bool IsEditorCommand( tEvoCmd const cmd )
+{
+	return ( tEvoCmd::editSetBrushSize <= cmd ) && ( cmd >= tEvoCmd::editSetBrushSize );
+}
+
 wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
 {
     static unordered_map < tEvoCmd, wchar_t const * const > mapNames =

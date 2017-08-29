@@ -14,6 +14,8 @@ public:
     HistWorkThread( wostream *, EvolutionModelData * const, EvoHistorySys * const );
     ~HistWorkThread( );
 
+	void PostUndo();
+	void PostRedo();
 	void PostPrevGeneration();
 	void PostGotoGeneration( HIST_GENERATION const );
 	void PostHistoryAction( UINT const, GridPoint const );

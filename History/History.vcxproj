@@ -158,7 +158,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="genCmdList.h" />
-    <ClInclude Include="generationCmd.h" />
     <ClInclude Include="historyCache.h" />
     <ClInclude Include="HistorySystemImpl.h" />
     <ClInclude Include="hist_slot.h" />

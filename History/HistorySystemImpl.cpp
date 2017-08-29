@@ -121,6 +121,12 @@ void HistorySystemImpl::CreateAppCommand( unsigned short const uiCmd, unsigned s
 	createNewGen( GenerationCmd( uiCmd, usParam ) );
 }
 
+HistCacheItem const * HistorySystemImpl::getCachedItem( GenerationCmd cmd )
+{
+	short const sSlotNr = cmd.GetParam( );
+    return m_pHistoryCache->GetHistCacheItemC( sSlotNr );
+}
+
 // ApproachHistGen - Get closer to demanded HIST_GENERATION
 //                 - If several steps are neccessary, function returns after one displayed generation
 //                   to allow user interaction
@@ -143,6 +149,8 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )   /
         HIST_GENERATION genCached   = genDemanded;  // search backwards starting with genDemanded
         BOOL            bMicrosteps = TRUE;
         
+		assert( m_GenCmdList[ 0 ].IsCachedGeneration( ) );
+
         while ( m_GenCmdList[ genCached ].IsNotCachedGeneration( ) )
             --genCached;
 
@@ -157,11 +165,21 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )   /
         }
         else  // get cached generation
         {
-            short                 const sSlotNr        = m_GenCmdList[ genCached ].GetParam( );
-            HistCacheItem const * const pHistCacheItem = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
-            m_pHistCacheItemWork->CopyCacheItem( pHistCacheItem );
+            m_pHistCacheItemWork->CopyCacheItem( getCachedItem( m_GenCmdList[ genCached ] ) );
         }
     }
+}
+
+unsigned short HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
+{
+	GenerationCmd cmd = m_GenCmdList[ gen ];
+
+	if ( cmd.IsCachedGeneration( ) )
+	{
+		cmd = getCachedItem( cmd )->GetGenCmd( );
+	}
+
+	return static_cast<unsigned short>( cmd.GetCommand( ) );
 }
 
 // private member functions
@@ -258,9 +276,9 @@ void HistorySystemImpl::checkHistoryStructure( )  // used only in debug mode
         GenerationCmd generationCmd = m_GenCmdList[ gen ];
         if ( generationCmd.IsCachedGeneration( ) )
         {
-            short              const   sSlotNrFromList = generationCmd.GetParam( );
-            HistCacheItem const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC( sSlotNrFromList );
-            HIST_GENERATION    const   genNrFromCache  = pHistCacheItem->GetHistGenCounter( );
+            short           const   sSlotNrFromList = generationCmd.GetParam( );
+            HistCacheItem   const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC( sSlotNrFromList );
+            HIST_GENERATION const   genNrFromCache  = pHistCacheItem->GetHistGenCounter( );
             assert( genNrFromCache == gen );
         }
         else if ( generationCmd.IsUndefined( ) )
@@ -271,9 +289,9 @@ void HistorySystemImpl::checkHistoryStructure( )  // used only in debug mode
 
     for ( short sSlotNr = 0; sSlotNr < m_pHistoryCache->GetNrOfHistCacheSlots( ); ++sSlotNr )
     {
-        HistCacheItem const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
-        HIST_GENERATION    const   genNrFromCache  = pHistCacheItem->GetHistGenCounter( );
-        GenerationCmd      const   genCmdFromCache = pHistCacheItem->GetGenCmd( );
+        HistCacheItem   const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
+        HIST_GENERATION const   genNrFromCache  = pHistCacheItem->GetHistGenCounter( );
+        GenerationCmd   const   genCmdFromCache = pHistCacheItem->GetGenCmd( );
         if ( genCmdFromCache.IsDefined( ) )
         {
             GenerationCmd const generationCmd   = m_GenCmdList[ genNrFromCache ];

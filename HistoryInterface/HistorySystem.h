@@ -39,6 +39,7 @@ public:
     virtual void              CreateAppCommand  ( unsigned short const, unsigned short const ) = 0;
 	virtual void              ClearHistory      ( HIST_GENERATION const ) = 0;
     virtual void              ApproachHistGen   ( HIST_GENERATION const ) = 0;
+	virtual unsigned short    GetGenerationCmd  ( HIST_GENERATION const ) = 0;
 
     virtual HIST_GENERATION   FindFirstGenerationWithProperty( GenerationProperty const & ) const = 0;
     virtual HIST_GENERATION   FindLastGenerationWithProperty ( GenerationProperty const & ) const = 0;

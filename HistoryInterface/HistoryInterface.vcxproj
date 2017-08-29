@@ -145,6 +145,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GenerationCmd.h" />
     <ClInclude Include="HistoryGeneration.h" />
     <ClInclude Include="historyIterator.h" />
     <ClInclude Include="HistorySystem.h" />

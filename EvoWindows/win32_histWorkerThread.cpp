@@ -84,12 +84,38 @@ void HistWorkThread::postGotoGeneration( HIST_GENERATION const gen )
 	WorkThread::PostGenerationStep(  );   // will call indirectly HistWorkThread::GenerationStep
 }
 
+void HistWorkThread::PostRedo( )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << endl;
+
+	HIST_GENERATION gen = m_pEvoHistorySys->GetCurrentGeneration( );
+
+	if ( ( gen < m_pEvoHistorySys->GetYoungestGeneration( ) ) && m_pEvoHistorySys->IsEditorCommand( gen + 1 ) )
+		PostGotoGeneration( gen + 1 );
+	else
+		(void)MessageBeep(MB_OK);  // first generation reached
+}
+
 void HistWorkThread::PostGenerationStep( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
 
 	postGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration( ) + 1 );
+}
+
+void HistWorkThread::PostUndo( )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << endl;
+
+	HIST_GENERATION gen = m_pEvoHistorySys->GetCurrentGeneration( );
+
+	if ( ( gen > 0 ) && m_pEvoHistorySys->IsEditorCommand( gen - 1 ) )
+		PostGotoGeneration( gen - 1 );
+	else
+		(void)MessageBeep(MB_OK);  // first generation reached
 }
 
 void HistWorkThread::PostPrevGeneration( )

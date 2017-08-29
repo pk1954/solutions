@@ -22,5 +22,8 @@
     <ClInclude Include="ModelData.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="GenerationCmd.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

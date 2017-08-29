@@ -7,7 +7,6 @@
 #include "Resource.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
-#include "EvoGenerationCmd.h"
 #include "win32_hiResTimer.h"
 #include "win32_script.h"
 #include "win32_status.h"

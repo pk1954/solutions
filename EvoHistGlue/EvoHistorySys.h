@@ -30,6 +30,7 @@ public:
     bool            AddEvoHistorySlot    ( ) const { return m_pHistorySystem->AddHistorySlot( ); }
     int             GetNrOfHistCacheSlots( )       { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
     HIST_GENERATION GetCurrentGeneration ( ) const { return m_pHistorySystem->GetCurrentGeneration( ); }
+    HIST_GENERATION GetYoungestGeneration( ) const { return m_pHistorySystem->GetYoungestGeneration( ); }
 
     EvoModelData  * GetEvoModelData ( ) { return m_pEvoModelWork;  }
     HistorySystem * GetHistorySystem( ) { return m_pHistorySystem; }
@@ -39,6 +40,8 @@ public:
 
 	void EvoCreateResetCommand( ) {	m_pHistorySystem->CreateResetCommand( ); }  // Layer 4
 	bool CreateEditorCommand( tEvoCmd, unsigned short );
+
+	bool IsEditorCommand( HIST_GENERATION const ) const;
 
 private:
     EvoModelData    * m_pEvoModelWork;
@@ -52,7 +55,6 @@ private:
 	bool             askHistoryCut( HistorySystem * pHistSys ) const;
     void             shutDownHistoryCache( );
 
-    bool             IsInHistoryMode( )       const { return m_pHistorySystem->IsInHistoryMode( ); }
-    HIST_GENERATION  GetYoungestGeneration( ) const { return m_pHistorySystem->GetYoungestGeneration( ); }
-    HIST_GENERATION  GetNrOfGenerations( )    const { return m_pHistorySystem->GetNrOfGenerations( ); }
+    bool             IsInHistoryMode( )    const { return m_pHistorySystem->IsInHistoryMode( ); }
+    HIST_GENERATION  GetNrOfGenerations( ) const { return m_pHistorySystem->GetNrOfGenerations( ); }
 };

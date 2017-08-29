@@ -6,7 +6,7 @@
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
 #include "genCmdList.h"
-#include "generationCmd.h"
+#include "GenerationCmd.h"
 
 #ifndef NDEBUG
 #define CHECK_HISTORY_STRUCTURE checkHistoryStructure( )
@@ -50,21 +50,23 @@ public:
     virtual void              CreateAppCommand  ( unsigned short const, unsigned short const );
 	virtual void              ClearHistory      ( HIST_GENERATION const );
     virtual void              ApproachHistGen   ( HIST_GENERATION const );
+	virtual unsigned short    GetGenerationCmd  ( HIST_GENERATION const );
 
     virtual HIST_GENERATION   FindFirstGenerationWithProperty( GenerationProperty const & ) const;
     virtual HIST_GENERATION   FindLastGenerationWithProperty ( GenerationProperty const & ) const;
 
 private:
 
-    GenCmdList             m_GenCmdList;
-    HistoryCache         * m_pHistoryCache;
-    HistCacheItem        * m_pHistCacheItemWork;      // The reference item, where history system gets and restores  
-    ModelData            * m_pModelDataWork; 
-	ModelFactory   const * m_pModelFactory;
+    GenCmdList           m_GenCmdList;
+    HistoryCache       * m_pHistoryCache;
+    HistCacheItem      * m_pHistCacheItemWork;      // The reference item, where history system gets and restores  
+    ModelData          * m_pModelDataWork; 
+	ModelFactory const * m_pModelFactory;
 
-    void save2History( );
-	void createNewGen( GenerationCmd );
-    void step2NextGeneration( GenerationCmd );
-    void checkHistoryStructure( );
+    void                  save2History( );
+	void                  createNewGen       ( GenerationCmd );
+    void                  step2NextGeneration( GenerationCmd );
+	HistCacheItem const * getCachedItem      ( GenerationCmd );
+    void                  checkHistoryStructure( );
 };
 
