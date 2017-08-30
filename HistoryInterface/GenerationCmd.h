@@ -10,70 +10,50 @@
 
 using namespace std;
 
-enum class tGenCmd : unsigned short
-{
-    undefined,
-    cached,
-    nextGen,
-    reset,
-    last = reset
-};
-
-static unsigned int const FIRST_APP_CMD = static_cast<unsigned short>(tGenCmd::last) + 1;
-
 class GenerationCmd
 { 
 public:
+	typedef short tGenCmd;
+
     GenerationCmd( )
     {
         InitializeCmd( );
     }
-
-    explicit GenerationCmd( tGenCmd const cmd ) :
-        m_Cmd( cmd ),
-        m_usParam( USHRT_MAX )
-    { }
 
     GenerationCmd( tGenCmd const cmd, unsigned short const us ) :
         m_Cmd( cmd ),
         m_usParam( us )
     { }
 
-    GenerationCmd( unsigned int const uiCmd, unsigned short const us ) :
-        m_Cmd( static_cast<tGenCmd>( uiCmd + FIRST_APP_CMD ) ),
+    GenerationCmd( int const uiCmd, unsigned short const us ) :
+        m_Cmd( static_cast<tGenCmd>( uiCmd ) ),
         m_usParam( us )
     { }
 
     tGenCmd        GetCommand( ) const { return m_Cmd; }
     unsigned short GetParam( )   const { return m_usParam; }
 
-    unsigned short GetAppCmd( ) const 
-	{ 
-		assert( static_cast<unsigned short>(m_Cmd) >= FIRST_APP_CMD ); 
-		return  static_cast<unsigned short>(m_Cmd)  - FIRST_APP_CMD; 
-	}
-		
-	bool IsDefined( )             const { return m_Cmd != tGenCmd::undefined; }
-    bool IsUndefined( )           const { return m_Cmd == tGenCmd::undefined; }
-    bool IsCachedGeneration( )    const { return m_Cmd == tGenCmd::cached; }
-    bool IsNotCachedGeneration( ) const { return m_Cmd != tGenCmd::cached; }
+	bool IsDefined( )             const { return m_Cmd != UNDEFINED; }
+    bool IsUndefined( )           const { return m_Cmd == UNDEFINED; }
+    bool IsCachedGeneration( )    const { return m_Cmd == CACHED; }
+    bool IsNotCachedGeneration( ) const { return m_Cmd != CACHED; }
 
     void InitializeCmd( )
     {
-        m_Cmd     = tGenCmd::undefined;
+        m_Cmd     = UNDEFINED;
         m_usParam = USHRT_MAX;
     }
 
-	static const GenerationCmd UNDEFINED;
-	static const GenerationCmd NEXT_GEN;
-	static const GenerationCmd RESET;
+	static tGenCmd      const CACHED    =   -1;
+	static tGenCmd      const UNDEFINED =    0;
+	static unsigned int const FIRST_APP_CMD = 1000;
 
 private:
     tGenCmd        m_Cmd;
     unsigned short m_usParam;
 };
 
-wchar_t const * const GetGenerationCmdNameShort( tGenCmd const );
-wchar_t const * const GetGenerationCmdName     ( tGenCmd const );
+wchar_t const * const GetGenerationCmdNameShort( GenerationCmd::tGenCmd const );
+wchar_t const * const GetGenerationCmdName     ( GenerationCmd::tGenCmd const );
 
 wostream & operator << ( wostream &, GenerationCmd const & );

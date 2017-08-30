@@ -11,8 +11,6 @@ public:
 	// call back functions 
 
 	virtual void CopyModelData( ModelData const * const )                   = 0;   
-	virtual void OnReset( )                                                 = 0;
-	virtual void OnNextGeneration( )                                        = 0;
     virtual void OnAppCommand( unsigned short const, unsigned short const ) = 0;
 };
 

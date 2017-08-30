@@ -23,7 +23,7 @@ public:
 
     virtual ~HistorySystem( ) { };
 
-    virtual void InitHistorySystem( short const, HIST_GENERATION const, ModelData * const, ModelFactory * const ) = 0;
+    virtual void InitHistorySystem( short const, HIST_GENERATION const, ModelData * const, ModelFactory * const, short const, unsigned short const ) = 0;
 
     virtual int               GetNrOfHistCacheSlots( ) const = 0;
     virtual HIST_GENERATION   GetNrOfGenerations( )    const = 0;
@@ -35,8 +35,7 @@ public:
     virtual bool              AddHistorySlot( )              const = 0;
     virtual void              ShutDownHistCacheSlot( short const ) = 0;
 
-    virtual void              CreateResetCommand( ) = 0;
-    virtual void              CreateAppCommand  ( unsigned short const, unsigned short const ) = 0;
+    virtual void              CreateAppCommand  ( short const, unsigned short const ) = 0;
 	virtual void              ClearHistory      ( HIST_GENERATION const ) = 0;
     virtual void              ApproachHistGen   ( HIST_GENERATION const ) = 0;
 	virtual unsigned short    GetGenerationCmd  ( HIST_GENERATION const ) = 0;

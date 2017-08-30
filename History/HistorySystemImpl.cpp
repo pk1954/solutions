@@ -33,7 +33,9 @@ void HistorySystemImpl::InitHistorySystem
     short           const sNrOfSlots,
     HIST_GENERATION const genMaxNrOfGens,
     ModelData     * const pModelDataWork,
-    ModelFactory  * const pModelFactory
+    ModelFactory  * const pModelFactory,
+	short           const sCmd, 
+	unsigned short  const usParam
 )
 {
     m_pModelDataWork     = pModelDataWork;
@@ -42,7 +44,7 @@ void HistorySystemImpl::InitHistorySystem
 	m_pHistCacheItemWork = new HistCacheItem( pModelDataWork );
 	m_GenCmdList.Resize( genMaxNrOfGens );
     m_pHistoryCache->InitHistoryCache( sNrOfSlots, pModelFactory );
-    m_pHistCacheItemWork->SetGenerationCommand( GenerationCmd::RESET );
+	m_pHistCacheItemWork->SetGenerationCommand( GenerationCmd( sCmd, usParam ) );
     save2History( );
 }
 
@@ -101,24 +103,14 @@ void HistorySystemImpl::ClearHistory( HIST_GENERATION const genFirst )
 	}
 }
 
-void HistorySystemImpl::createNewGen( GenerationCmd genCmd )
+void HistorySystemImpl::CreateAppCommand( short const sCmd, unsigned short const usParam )
 {
+	GenerationCmd genCmd( sCmd, usParam );
 	CHECK_HISTORY_STRUCTURE;
     step2NextGeneration( genCmd );
     m_pHistCacheItemWork->SetGenerationCommand( genCmd );
     save2History( );
     CHECK_HISTORY_STRUCTURE;
-}
-
-void HistorySystemImpl::CreateResetCommand( )  // Layer 3 
-{
-    createNewGen( GenerationCmd::RESET );                           
-}
-
-void HistorySystemImpl::CreateAppCommand( unsigned short const uiCmd, unsigned short const usParam )
-{
-	ClearHistory( GetCurrentGeneration( ) );  // if in history mode: cut off future generations
-	createNewGen( GenerationCmd( uiCmd, usParam ) );
 }
 
 HistCacheItem const * HistorySystemImpl::getCachedItem( GenerationCmd cmd )
@@ -138,35 +130,27 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )   /
 
     assert( genDemanded != genActual );
     assert( genDemanded < m_GenCmdList.GetCmdListSize( ) ); //TODO: find clean solution if max number of generations reached. 
+    assert( m_GenCmdList[ genDemanded ].IsDefined( ) );     // we are somewhere in history
+	assert( m_GenCmdList[ 0 ].IsCachedGeneration( ) );      // at least initial generation is cached
 
-    if ( m_GenCmdList[ genDemanded ].IsUndefined( ) )   // normal forward mode
-    {
-        assert( genDemanded == genActual + 1 );
-        createNewGen( GenerationCmd::NEXT_GEN );                           
-    }
-    else   // genDemanded is somewhere in history
-    {
-        HIST_GENERATION genCached   = genDemanded;  // search backwards starting with genDemanded
-        BOOL            bMicrosteps = TRUE;
+    HIST_GENERATION genCached   = genDemanded;  // search backwards starting with genDemanded
+    BOOL            bMicrosteps = TRUE;
         
-		assert( m_GenCmdList[ 0 ].IsCachedGeneration( ) );
+    while ( m_GenCmdList[ genCached ].IsNotCachedGeneration( ) )
+        --genCached;
 
-        while ( m_GenCmdList[ genCached ].IsNotCachedGeneration( ) )
-            --genCached;
+    // now we have found a cached generation  
 
-        // now we have found a cached generation  
-
-        if ( 
-              (( genCached <= genActual ) && ( genActual < genDemanded )) || // cached generation is not better than actual generation
-              (( genActual == genDemanded - 1 ) && bMicrosteps )
-           )
-        {
-            step2NextGeneration( m_GenCmdList[ genActual + 1 ] );   // compute forwards
-        }
-        else  // get cached generation
-        {
-            m_pHistCacheItemWork->CopyCacheItem( getCachedItem( m_GenCmdList[ genCached ] ) );
-        }
+    if ( 
+            (( genCached <= genActual ) && ( genActual < genDemanded )) || // cached generation is not better than actual generation
+            (( genActual == genDemanded - 1 ) && bMicrosteps )
+        )
+    {
+        step2NextGeneration( m_GenCmdList[ genActual + 1 ] );   // compute forwards
+    }
+    else  // get cached generation
+    {
+        m_pHistCacheItemWork->CopyCacheItem( getCachedItem( m_GenCmdList[ genCached ] ) );
     }
 }
 
@@ -179,7 +163,7 @@ unsigned short HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
 		cmd = getCachedItem( cmd )->GetGenCmd( );
 	}
 
-	return static_cast<unsigned short>( cmd.GetCommand( ) );
+	return cmd.GetCommand( );
 }
 
 // private member functions
@@ -218,19 +202,7 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
         genCmd = pHistCacheItem->GetGenCmd( );
     }
 
-	switch ( genCmd.GetCommand() )
-	{
-	case tGenCmd::nextGen:
-		m_pModelDataWork->OnNextGeneration( ); // call layer 2
-		break;
-
-	case tGenCmd::reset:
-	    m_pModelDataWork->OnReset( );  // call layer 2
-		break;
-
-	default: 
-        m_pModelDataWork->OnAppCommand( genCmd.GetAppCmd( ), genCmd.GetParam( ) );    // Apply application defined operation to step to next generation
-	}
+    m_pModelDataWork->OnAppCommand( genCmd.GetCommand( ), genCmd.GetParam( ) );    // Apply application defined operation to step to next generation
 
     m_pHistCacheItemWork->IncHistGenCounter( );
 

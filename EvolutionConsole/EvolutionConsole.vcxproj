@@ -79,7 +79,7 @@
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>$(SolutionDir)\x64\Debug;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <IncludePath>$(SolutionDir)runtimeCPP;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoWindows;$(SolutionDir)Evolution;$(SolutionDir)EvoHistGlue;$(SolutionDir)Utilities;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)runtimeCPP;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoWindows;$(SolutionDir)Evolution;$(SolutionDir)EvoHistGlue;$(SolutionDir)HistoryInterface;$(SolutionDir)Utilities;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

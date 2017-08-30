@@ -51,7 +51,9 @@ void EvoHistorySys::Start
         sNrOfSlots,
         genMaxNrOfGens,
         m_pEvoModelWork,
-        m_pEvoModelFactory
+        m_pEvoModelFactory,
+		static_cast< short >( tEvoCmd::reset ),
+		0
     );
 
 	m_pStatusBar = pStatusBar;
@@ -95,7 +97,7 @@ HIST_GENERATION EvoHistorySys::GetLastGenOfIndividual ( IndId const & id ) const
     return id.IsDefined( ) ? m_pHistorySystem->FindLastGenerationWithProperty ( FindGridPointFunctor( id ) ) : -1; 
 }
 
-bool EvoHistorySys::CreateEditorCommand( tEvoCmd cmd, unsigned short usParam ) 
+bool EvoHistorySys::EvoCreateEditorCommand( tEvoCmd cmd, unsigned short usParam ) 
 { 
 	if ( 
 		  m_pHistorySystem->IsInHistoryMode( ) &&  // If in history mode,
@@ -103,7 +105,8 @@ bool EvoHistorySys::CreateEditorCommand( tEvoCmd cmd, unsigned short usParam )
 	   )
 		return false;
 
-	m_pHistorySystem->CreateAppCommand( static_cast< unsigned short >(cmd), usParam ); 
+	m_pHistorySystem->ClearHistory( GetCurrentGeneration( ) );  // if in history mode: cut off future generations
+	m_pHistorySystem->CreateAppCommand( static_cast< short >( cmd ), usParam ); 
 	return true;
 }
 

@@ -7,7 +7,9 @@
 
 enum class tEvoCmd : unsigned short // enumeration starts after last tGenCmd value
 {
-    editSetBrushMode = FIRST_APP_CMD,
+    reset = GenerationCmd::FIRST_APP_CMD,
+	nextGen,
+    editSetBrushMode,
     editSetBrushShape,
     editSetBrushSize,
     editSetBrushIntensity,

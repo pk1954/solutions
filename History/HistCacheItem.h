@@ -39,7 +39,7 @@ public:
     GenerationCmd     GetGenCmd( )         const { return m_genCmd; }
 
     void ZeroHistGenCounter( ) { m_genHistCounter = 0L; }
-    void IncHistGenCounter ( ) { ++m_genHistCounter; }
+    void IncHistGenCounter ( ) { ++ m_genHistCounter; }
 
     void InitializeGenCmd( ) { m_genCmd.InitializeCmd( ); }
     void SetGenerationCommand( GenerationCmd cmd ) { m_genCmd = cmd; }

@@ -6,55 +6,22 @@ PostGenerationStep
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
-PostGenerationStep
-PostGenerationStep
 PostSetBrushMode tBrushMode::randomStrategy
-PostDoEdit  169  49 
+PostDoEdit   59  43 
 PostRefresh
-PostDoEdit  120  51 
+PostDoEdit   95  44 
 PostRefresh
-PostDoEdit   63  48 
+PostDoEdit   95  44 
 PostRefresh
-PostDoEdit   29  54 
-PostRefresh
-PostDoEdit   28  53 
+PostDoEdit  136  45 
 PostRefresh
 PostSetBrushMode tBrushMode::cooperate
-PostDoEdit  145  71 
+PostDoEdit  117  70 
 PostRefresh
-PostDoEdit   91  72 
+PostDoEdit   77  71 
 PostRefresh
-PostSetBrushMode tBrushMode::tit4tat
-PostDoEdit  150  31 
+PostDoEdit   77  71 
 PostRefresh
-PostDoEdit  150  31 
-PostRefresh
-PostDoEdit   81  24 
-PostRefresh
-PostSetBrushMode tBrushMode::defect
-PostDoEdit   56  76 
-PostRefresh
-PostUndo
-PostGotoGeneration  18
-PostGenerationStep
-PostUndo
-PostGotoGeneration  17
-PostGenerationStep
-PostUndo
-PostGotoGeneration  16
-PostGenerationStep
-PostUndo
-PostGotoGeneration  15
-PostGenerationStep
-PostUndo
-PostGotoGeneration  14
-PostGenerationStep
-PostUndo
-PostGotoGeneration  13
-PostGenerationStep
-PostUndo
-PostGotoGeneration  12
-PostGenerationStep
 PostUndo
 PostGotoGeneration  11
 PostGenerationStep
@@ -77,62 +44,127 @@ PostUndo
 PostGotoGeneration  5
 PostGenerationStep
 PostUndo
+PostGotoGeneration  4
+PostGenerationStep
 PostUndo
-PostRedo
-PostGotoGeneration  6
+PostPrevGeneration
+PostGotoGeneration  3
 PostGenerationStep
-PostRedo
-PostGotoGeneration  7
+PostPrevGeneration
+PostGotoGeneration  2
 PostGenerationStep
-PostRedo
-PostGotoGeneration  8
+PostPrevGeneration
+PostGotoGeneration  1
 PostGenerationStep
-PostRedo
-PostGotoGeneration  9
+PostPrevGeneration
+PostGotoGeneration  0
 PostGenerationStep
-PostRedo
-PostGotoGeneration  10
 PostGenerationStep
-PostRedo
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostUndo
 PostGotoGeneration  11
 PostGenerationStep
 PostRedo
 PostGotoGeneration  12
 PostGenerationStep
 PostRedo
-PostGotoGeneration  12
+PostSetBrushMode tBrushMode::noAnimals
+PostSetBrushSize 17
+PostSetBrushSize 15
+PostSetBrushSize 10
+PostSetBrushSize 9
+PostSetBrushSize 8
+PostSetBrushSize 8
+PostSetBrushIntensity 61
+PostSetBrushIntensity 62
+PostSetBrushIntensity 82
+PostSetBrushIntensity 100
+PostSetBrushIntensity 100
+PostDoEdit  119  72 
+PostRefresh
+PostDoEdit  117  72 
+PostRefresh
+PostDoEdit  118  73 
+PostRefresh
+PostDoEdit  117  72 
+PostRefresh
+PostDoEdit   85  75 
+PostRefresh
+PostDoEdit   86  75 
+PostRefresh
+PostDoEdit   91  74 
+PostRefresh
+PostDoEdit   93  74 
+PostRefresh
+PostDoEdit   90  73 
+PostRefresh
+PostDoEdit   90  74 
+PostRefresh
+PostDoEdit   73  71 
+PostRefresh
+PostDoEdit   72  65 
+PostRefresh
+PostDoEdit   77  59 
+PostRefresh
+PostUndo
+PostGotoGeneration  58
 PostGenerationStep
+PostUndo
+PostGotoGeneration  57
 PostGenerationStep
 PostRedo
-PostGotoGeneration  13
+PostGotoGeneration  58
 PostGenerationStep
 PostRedo
-PostGotoGeneration  14
+PostGotoGeneration  59
+PostGenerationStep
+PostUndo
+PostGotoGeneration  58
+PostGenerationStep
+PostUndo
+PostGotoGeneration  57
 PostGenerationStep
 PostRedo
-PostGotoGeneration  15
+PostGotoGeneration  58
 PostGenerationStep
 PostRedo
-PostGotoGeneration  15
+PostGotoGeneration  59
 PostGenerationStep
+SetGenerationDelay 0
+PostReset
+PostPrevGeneration
+PostGotoGeneration  117
 PostGenerationStep
-PostRedo
-PostGotoGeneration  16
+PostPrevGeneration
+PostGotoGeneration  116
 PostGenerationStep
-PostRedo
-PostGotoGeneration  17
+PostPrevGeneration
+PostGotoGeneration  115
 PostGenerationStep
-PostRedo
-PostGotoGeneration  18
-PostGenerationStep
-PostRedo
-PostGotoGeneration  19
-PostGenerationStep
-PostRedo
-PostRedo
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  114
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
@@ -151,72 +183,112 @@ PostGenerationStep
 PostGenerationStep
 PostGenerationStep
 PostPrevGeneration
-PostGotoGeneration  24
+PostGotoGeneration  118
 PostGenerationStep
 PostPrevGeneration
-PostGotoGeneration  23
+PostGotoGeneration  117
 PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  22
+PostGotoGeneration  127
 PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  21
+PostGotoGeneration  134
 PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  20
+PostGotoGeneration  121
 PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  19
+PostGotoGeneration  121
 PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  18
+PostGotoGeneration  111
 PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  17
+PostGotoGeneration  113
 PostGenerationStep
-PostSetBrushMode tBrushMode::defect
-PostUndo
-PostGotoGeneration  17
+PostGotoGeneration  113
 PostGenerationStep
-PostUndo
-PostGotoGeneration  16
+PostGotoGeneration  113
 PostGenerationStep
-PostUndo
-PostGotoGeneration  15
+PostGotoGeneration  113
 PostGenerationStep
-PostUndo
-PostGotoGeneration  14
+PostGotoGeneration  113
 PostGenerationStep
-PostUndo
-PostGotoGeneration  13
+PostGotoGeneration  113
 PostGenerationStep
-PostUndo
-PostGotoGeneration  12
+PostGotoGeneration  114
 PostGenerationStep
-PostUndo
-PostGotoGeneration  12
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  114
+PostGenerationStep
+PostGotoGeneration  115
+PostGenerationStep
+PostGotoGeneration  115
+PostGenerationStep
+PostGotoGeneration  115
+PostGenerationStep
+PostGotoGeneration  115
+PostGenerationStep
+PostGotoGeneration  115
+PostGenerationStep
+PostGotoGeneration  115
+PostGenerationStep
+PostGotoGeneration  115
+PostGenerationStep
+PostGotoGeneration  115
+PostGenerationStep
+PostGotoGeneration  115
+PostGenerationStep
+PostGotoGeneration  115
+PostGenerationStep
+PostGotoGeneration  115
+PostGenerationStep
+PostGotoGeneration  115
 PostGenerationStep
 PostGenerationStep
-PostUndo
-PostGotoGeneration  11
+PostGotoGeneration  115
 PostGenerationStep
-PostUndo
-PostGotoGeneration  10
+PostGotoGeneration  115
 PostGenerationStep
-PostUndo
-PostGotoGeneration  9
+PostGotoGeneration  116
 PostGenerationStep
-PostUndo
-PostGotoGeneration  8
+PostGotoGeneration  PostGenerationStep116
+
 PostGenerationStep
-PostUndo
-PostGotoGeneration  7
+PostGotoGeneration  117
 PostGenerationStep
-PostUndo
-PostGotoGeneration  6
+PostGotoGeneration  117
 PostGenerationStep
-PostUndo
-PostGotoGeneration  5
+PostGotoGeneration  117
 PostGenerationStep
-PostUndo
-PostUndo
+PostGotoGeneration  PostGenerationStep
+117
+PostGenerationStep
+PostGotoGeneration  118
+PostGenerationStep
+PostGotoGeneration  118
+PostGenerationStep
+PostGotoGeneration  118
+PostGenerationStep
+PostGotoGeneration PostGenerationStep 
+118
+PostGenerationStep

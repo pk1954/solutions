@@ -27,7 +27,7 @@ public:
 
     void SetCachedGeneration( HIST_GENERATION const gen, short const sSlotNr )
     {
-        m_generationCommands[ gen.GetLong( ) ] = GenerationCmd( tGenCmd::cached, sSlotNr );
+        m_generationCommands[ gen.GetLong( ) ] = GenerationCmd( GenerationCmd::CACHED, sSlotNr );
     }
 
     void ResetGenerationCmd( HIST_GENERATION const gen )

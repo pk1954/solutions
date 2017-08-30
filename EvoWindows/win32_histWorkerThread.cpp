@@ -38,9 +38,14 @@ void HistWorkThread::ResetModel( )    // Layer 5
 
 void HistWorkThread::GenerationStep( )   // Layer 5
 {
-	if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
+	HIST_GENERATION genCurrent = m_pEvoHistorySys->GetCurrentGeneration( );
+
+	if ( m_genDemanded != m_pEvoHistorySys->GetCurrentGeneration( ) )
 	{
-		m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );
+		if ( m_genDemanded > m_pEvoHistorySys->GetYoungestGeneration( ) )
+			m_pEvoHistorySys->EvoCreateNextGenCommand( );
+		else
+			m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );
 
 		if ( EditorStateHasChanged( ) )
 		{
@@ -63,7 +68,7 @@ void HistWorkThread::GenerationRun( )
 
 void HistWorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, unsigned short const usParam )
 {
-    if ( m_pEvoHistorySys->CreateEditorCommand( evoCmd, usParam ) )
+    if ( m_pEvoHistorySys->EvoCreateEditorCommand( evoCmd, usParam ) )
         SaveEditorState( );
 }
 
@@ -75,7 +80,7 @@ void HistWorkThread::StopComputation()
 
 void HistWorkThread::DoEdit( GridPoint const gp )
 {
-	m_pEvoHistorySys->CreateEditorCommand( tEvoCmd::editDoEdit, gp.Pack( ) );
+	m_pEvoHistorySys->EvoCreateEditorCommand( tEvoCmd::editDoEdit, gp.Pack( ) );
 }
 
 void HistWorkThread::postGotoGeneration( HIST_GENERATION const gen )

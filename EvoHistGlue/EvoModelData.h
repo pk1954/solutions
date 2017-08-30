@@ -22,8 +22,6 @@ public:
 
     ~EvoModelData( );
 
-	virtual void OnNextGeneration()	{ m_pWorkThread->WorkThread::GenerationStep( ); }   // Layer 2
-	virtual void OnReset()	        { m_pWorkThread->WorkThread::ResetModel( ); }       // Layer 2
     virtual void OnAppCommand( unsigned short const, unsigned short const );
 	virtual void CopyModelData( ModelData const * const );
 

@@ -38,8 +38,10 @@ public:
     HIST_GENERATION GetFirstGenOfIndividual( IndId const & ) const;
     HIST_GENERATION GetLastGenOfIndividual ( IndId const & ) const;
 
-	void EvoCreateResetCommand( ) {	m_pHistorySystem->CreateResetCommand( ); }  // Layer 4
-	bool CreateEditorCommand( tEvoCmd, unsigned short );
+	void EvoCreateResetCommand( )   { m_pHistorySystem->CreateAppCommand( static_cast< short >(tEvoCmd::reset  ), 0 );  }  // Layer 4
+	void EvoCreateNextGenCommand( ) { m_pHistorySystem->CreateAppCommand( static_cast< short >(tEvoCmd::nextGen), 0 );  }  // Layer 4
+
+	bool EvoCreateEditorCommand( tEvoCmd, unsigned short );
 
 	bool IsEditorCommand( HIST_GENERATION const ) const;
 

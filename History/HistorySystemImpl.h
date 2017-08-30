@@ -33,7 +33,9 @@ public:
         short const, 
         HIST_GENERATION const, 
         ModelData     * const, 
-        ModelFactory  * const
+        ModelFactory  * const,
+		short           const, 
+		unsigned short  const
     );
 
     virtual int               GetNrOfHistCacheSlots( ) const;
@@ -46,8 +48,7 @@ public:
     virtual bool              AddHistorySlot( ) const;
     virtual void              ShutDownHistCacheSlot( short const );
 
-    virtual void              CreateResetCommand( );        // Layer 
-    virtual void              CreateAppCommand  ( unsigned short const, unsigned short const );
+    virtual void              CreateAppCommand  ( short const, unsigned short const );
 	virtual void              ClearHistory      ( HIST_GENERATION const );
     virtual void              ApproachHistGen   ( HIST_GENERATION const );
 	virtual unsigned short    GetGenerationCmd  ( HIST_GENERATION const );
@@ -64,7 +65,6 @@ private:
 	ModelFactory const * m_pModelFactory;
 
     void                  save2History( );
-	void                  createNewGen       ( GenerationCmd );
     void                  step2NextGeneration( GenerationCmd );
 	HistCacheItem const * getCachedItem      ( GenerationCmd );
     void                  checkHistoryStructure( );

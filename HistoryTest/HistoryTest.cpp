@@ -23,16 +23,6 @@ public:
         * this = * static_cast< HistTestModelData const * const >( src );
     }
 
-	virtual void OnNextGeneration()
-	{
-		++ m_iDataApp;;
-	}
-
-	virtual void OnReset( )
-	{
-    	 m_iDataApp = 0;;
-	}
-
     virtual void OnAppCommand( unsigned short const usCmd, unsigned short const sParam )
     {
 		assert( false );
@@ -88,7 +78,9 @@ void DoTest( )
 		NR_OF_SLOTS,    // # of cache slots
 		1000,           // # of generations
 		& modelData,
-		& modelFactory
+		& modelFactory,
+		0,
+		0
 	);
 
 	wcout << L"*** Create " << NR_OF_SLOTS << L" history slots" << endl;
