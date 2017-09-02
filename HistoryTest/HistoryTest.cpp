@@ -25,7 +25,7 @@ public:
 
     virtual void OnAppCommand( unsigned short const usCmd, unsigned short const sParam )
     {
-		assert( false );
+//		wcout << endl << L"OnAppCommand( " << usCmd << L", " << sParam << L" )" << endl;
 	}
 
 private:
@@ -58,7 +58,10 @@ void gotoGeneration( HistorySystem * const pHistorySys, HIST_GENERATION const hi
 {
 	while( histGenDemanded != pHistorySys->GetCurrentGeneration( ) )
 	{
-		pHistorySys->ApproachHistGen( histGenDemanded );
+		if ( histGenDemanded > pHistorySys->GetYoungestGeneration( ) )
+			pHistorySys->CreateAppCommand( 42, 0 );
+		else
+	    	pHistorySys->ApproachHistGen( histGenDemanded );
     	wcout << L"Generation: " << histGenDemanded << L" - " << pHistorySys->GetCurrentGeneration( ) << L" Slots: ";
 		showHistorySlots( pHistorySys );
 	}
