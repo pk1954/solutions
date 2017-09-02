@@ -1,17 +1,17 @@
-// EvolutionConsole.cpp : Definiert den Einstiegspunkt für die Konsolenanwendung.
+// EvolutionConsole.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
 
 // EvolutionCore interfaces
 
-#include "version.h"
 #include "config.h"
 #include "trace.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "win32_worker_thread.h"
+#include "version.h"
 
 // scripting and tracing
 

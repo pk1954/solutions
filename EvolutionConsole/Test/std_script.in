@@ -1,6 +1,0 @@
-SetBrushSize 6
-SetBrushIntensity 16
-SetBrushStrategy tBrushMode::randomStrategy
-ModelDoEdit   70  49 
-Compute
-DumpGridPointList
