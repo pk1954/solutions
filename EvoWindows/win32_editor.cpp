@@ -20,16 +20,15 @@ EditorWindow::EditorWindow( )
   : BaseDialog( ),
     m_pModelWork( nullptr ),
     m_pWorkThread( nullptr ),
-    m_pDspOptWindow( nullptr ),
-    m_editMode( TRUE )
+    m_pDspOptWindow( nullptr )
 { }
 
 void EditorWindow::Start
 (  
-    HWND           const hWndParent,
-    WorkThread   * const pWorkThread,
-    EvolutionModelData    * const pModel,
-    DspOptWindow * const pDspOptWindow
+    HWND                 const hWndParent,
+    WorkThread         * const pWorkThread,
+    EvolutionModelData * const pModel,
+    DspOptWindow       * const pDspOptWindow
     )
 {
     StartBaseDialog( hWndParent, MAKEINTRESOURCE( IDD_EDITOR ) );
@@ -48,6 +47,11 @@ EditorWindow::~EditorWindow( )
     m_pWorkThread   = nullptr;
     m_pModelWork    = nullptr;
 }
+
+BOOL EditorWindow::IsInEditMode( ) const 
+{ 
+	return m_pModelWork->GetBrushMode( ) != tBrushMode::move; 
+};
 
 LRESULT EditorWindow::SendClick( int const item ) const
 {
@@ -93,17 +97,15 @@ void EditorWindow::UpdateControls( )
         { tShape::Rect,   IDM_EDIT_RECTANGLE }
     };
 
-    tBrushMode const mode           = m_pModelWork->GetBrushMode( );
-    int        const iShapeButtonId = static_cast<int>( mapShapeTable.at( m_pModelWork->GetBrushShape( ) ) );
-    int        const iModeButtonId  = static_cast<int>( mapModeTable.at( mode ) );
+    int const iShapeButtonId = static_cast<int>( mapShapeTable.at( m_pModelWork->GetBrushShape( ) ) );
+    int const iModeButtonId  = static_cast<int>( mapModeTable.at ( m_pModelWork->GetBrushMode ( ) ) );
 
     CheckRadioButton( IDM_MOVE,        IDM_FOOD_STOCK,     iModeButtonId  );
     CheckRadioButton( IDM_EDIT_CIRCLE, IDM_EDIT_RECTANGLE, iShapeButtonId );
     
-    SetEditMode( mode !=  tBrushMode::move );
     if ( IsInEditMode( ) )
     {
-        WORD const wDspOptId = mapDspOptTable.at( mode );
+        WORD const wDspOptId = mapDspOptTable.at( m_pModelWork->GetBrushMode( ) );
         if ( wDspOptId == IDM_ANIMALS )
             m_pDspOptWindow->SetIndividualsVisible( );
         else 
@@ -146,55 +148,47 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
             switch ( wId )
             {
             case IDM_MOVE:
-                SetEditMode( FALSE );
+                m_pWorkThread->PostSetBrushMode( tBrushMode::move );
                 break;
 
             case IDM_RANDOM_STRATEGY:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::randomStrategy );
                 m_pDspOptWindow->SetIndividualsVisible( );
-                SetEditMode( TRUE );
                 break;
 
             case IDM_COOPERATE:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::cooperate );
                 m_pDspOptWindow->SetIndividualsVisible( );
-                SetEditMode( TRUE );
                 break;
 
             case IDM_DEFECT:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::defect );
                 m_pDspOptWindow->SetIndividualsVisible( );
-                SetEditMode( TRUE );
                 break;
 
             case IDM_TIT4TAT:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::tit4tat );
                 m_pDspOptWindow->SetIndividualsVisible( );
-                SetEditMode( TRUE );
                 break;
 
             case IDM_KILL_ANIMALS:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::noAnimals );
                 m_pDspOptWindow->SetIndividualsVisible( );
-                SetEditMode( TRUE );
                 break;
 
             case IDM_MUT_RATE:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::mutRate  );
                 m_pDspOptWindow->SetDisplayMode( wId );
-                SetEditMode( TRUE );
                 break;
 
             case IDM_FERTILITY:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::fertility  );
                 m_pDspOptWindow->SetDisplayMode( wId );
-                SetEditMode( TRUE );
                 break;
 
             case IDM_FOOD_STOCK:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::food );
                 m_pDspOptWindow->SetDisplayMode( wId );
-                SetEditMode( TRUE );
                 break;
 
             case IDM_EDIT_CIRCLE:

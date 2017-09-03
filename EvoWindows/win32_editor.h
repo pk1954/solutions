@@ -18,9 +18,8 @@ public:
     void Start( HWND const, WorkThread * const, EvolutionModelData * const, DspOptWindow * const );
 
     void    UpdateControls( );
-    void    SetEditMode( BOOL fMode )       { m_editMode = fMode; };
-    BOOL    IsInEditMode( )           const { return m_editMode; };
-    LRESULT SendClick( int )          const;
+    BOOL    IsInEditMode( )  const;
+    LRESULT SendClick( int ) const;
 
 private:
     virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
@@ -28,6 +27,4 @@ private:
 	EvolutionModelData * m_pModelWork;
     WorkThread         * m_pWorkThread;
     DspOptWindow       * m_pDspOptWindow;
-    BOOL                 m_editMode;
 };
-

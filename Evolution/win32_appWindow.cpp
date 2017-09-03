@@ -332,6 +332,8 @@ void AppWindow::setSimulationMode( tBoolOp const op )
 
 	m_pStatusBar->SetSimuMode( m_bSimulationMode );
 
+	if ( m_bSimulationMode )
+        m_pEditorWindow->SendClick( IDM_MOVE );
 	m_pEditorWindow->Show( ! m_bSimulationMode );
 	m_pPerfWindow  ->Show(   m_bSimulationMode );
 

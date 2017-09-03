@@ -11,7 +11,7 @@
 using namespace std;
 
 EditorState::EditorState( ) :
-    m_brushMode(  tBrushMode::move ),
+    m_brushMode( tBrushMode::move ),
     m_brushSize( 17 ),
     m_shapeBrush( tShape::Circle ),
     m_usBrushIntensity( 50 )
