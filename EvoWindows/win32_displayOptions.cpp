@@ -65,7 +65,7 @@ public:
     {
         int iSum = m_pModelWork->GetFoodStock( gp );
         Apply2AllNeighbors( FoodStockAverage( m_pModelWork, gp, &iSum ) );
-        return iSum / (NeighborhoodIterator::NR_OF_NEIGHBOURS + 1);
+        return iSum / (NR_OF_NEIGHBORS + 1);
     }
 };
 

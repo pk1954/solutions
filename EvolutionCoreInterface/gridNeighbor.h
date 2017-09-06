@@ -6,48 +6,7 @@
 #include <array>
 #include "gridPoint.h"
 
-class NeighborhoodIterator
-{
-public:
-    static int const NR_OF_NEIGHBOURS = 8;
-
-    explicit          NeighborhoodIterator( GridPoint const & );
-
-    bool              NextNeighbor( );
-    GridPoint const & GetNeighbor( ) const { return m_gpNeighbor; };
-
-private:
-    GridPoint calcNeighbor( ) const          // faster, but more complicated
-    { 
-        GridPoint gpNeighbor = m_gpCenter + m_gpDelta;
-
-        if ( gpNeighbor.x < 0 )
-            gpNeighbor.x += GridPoint::GRID_SIZE.x;
-        else if ( gpNeighbor.x >= GridPoint::GRID_SIZE.x )
-            gpNeighbor.x -= GridPoint::GRID_SIZE.x;
-
-        if ( gpNeighbor.y < 0 )
-            gpNeighbor.y += GridPoint::GRID_SIZE.y;
-        else if ( gpNeighbor.y >= GridPoint::GRID_SIZE.y )
-            gpNeighbor.y -= GridPoint::GRID_SIZE.y;
-
-        return gpNeighbor; 
-    }; 
-
-    GridPoint m_gpCenter;
-    GridPoint m_gpDelta;
-    GridPoint m_gpNeighbor;
-
-    static long const WEST   = -1;
-    static long const EAST   =  1;
-    static long const NORTH  = -1;
-    static long const SOUTH  =  1;
-    static long const CENTER =  0;
-
-    static GridPoint const GP_NORTH_WEST;
-};
-
-typedef std::array< GridPoint, NeighborhoodIterator::NR_OF_NEIGHBOURS > ARRAY_OF_NEIGHBORS;
+static int const NR_OF_NEIGHBORS = 8;
 
 //lint -esym(1565,NeighborList::m_list)   // not assigned by initializer function
 class NeighborList
@@ -69,7 +28,7 @@ public:
     }
 
 private:
-    std::array< GridPoint, NeighborhoodIterator::NR_OF_NEIGHBOURS > m_list;
+    std::array< GridPoint, NR_OF_NEIGHBORS > m_list;
     unsigned int m_uiLength;
 };
 
@@ -88,4 +47,3 @@ private:
 };
 
 void Apply2AllNeighbors( GridPointNeighbor_Functor const & );
-

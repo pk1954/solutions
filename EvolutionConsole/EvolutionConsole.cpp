@@ -19,7 +19,7 @@
 
 using namespace std;
 
-int main( int argc, char *argv [ ], char *envp [ ] )
+int main( int argc, char * argv [ ], char * envp [ ] )
 {
 	wcout << VER_PRODUCTNAME_STR << L" " << VER_FILE_DESCRIPTION_STR << endl;
 	wcout << L"Build at " << __DATE__ << L" " << __TIME__ << endl;

@@ -42,12 +42,14 @@ public:
     GridPoint const operator+= (GridPoint const & a) { x += a.x; y += a.y; return * this; }
     GridPoint const operator-= (GridPoint const & a) { x -= a.x; y -= a.y; return * this; }
     GridPoint const operator/= (GridPoint const & a) { x /= a.x; y /= a.y; return * this; }
+    GridPoint const operator%= (GridPoint const & a) { x %= a.x; y %= a.y; return * this; }
 
     // no * operator!   danger of short overflow
 
     GridPoint const operator/= (GRID_COORD const l) { x /= l; y /= l; return * this; }
     GridPoint const operator+= (GRID_COORD const l) { x += l; y += l; return * this; }
     GridPoint const operator-= (GRID_COORD const l) { x -= l; y -= l; return * this; }
+    GridPoint const operator%= (GRID_COORD const l) { x %= l; y %= l; return * this; }
 
     bool const operator== (GRID_COORD const i) const { return (x == i) && (y == i); }
     bool const operator!= (GRID_COORD const i) const { return (x != i) || (y != i); }
@@ -77,10 +79,12 @@ public:
 
 inline GridPoint const operator+ (GridPoint const & a, GridPoint const & b) { GridPoint res(a); res += b; return res; }
 inline GridPoint const operator- (GridPoint const & a, GridPoint const & b) { GridPoint res(a); res -= b; return res; }
+inline GridPoint const operator% (GridPoint const & a, GridPoint const & b) { GridPoint res(a); res %= b; return res; }
 
 inline GridPoint const operator/ (GridPoint const & a, GRID_COORD const l) { GridPoint res(a); res /= l; return res; }
 inline GridPoint const operator+ (GridPoint const & a, GRID_COORD const l) { GridPoint res(a); res += l; return res; }
 inline GridPoint const operator- (GridPoint const & a, GRID_COORD const l) { GridPoint res(a); res -= l; return res; }
+inline GridPoint const operator% (GridPoint const & a, GRID_COORD const l) { GridPoint res(a); res %= l; return res; }
 
 inline short           shrt_abs( short const s )  { return (s < 0) ? -s : s; }
 inline GridPoint const Abs( GridPoint const & a ) { return GridPoint( shrt_abs(a.x), shrt_abs(a.y ) ); }

@@ -65,9 +65,9 @@ void Apply2Rect( GridPoint_Functor * const pgpf, GridRect const & rect )
     GRID_COORD const gcBottom = min( rect.GetBottom(), GridRect::GRID_RECT_FULL.GetBottom() );
 
     GridPoint gp;
-    for (gp.y = gcTop; gp.y <= gcBottom; ++gp.y)
-        for (gp.x = gcLeft; gp.x <= gcRight; ++gp.x)
-            (* pgpf)(gp);
+    for ( gp.y = gcTop; gp.y <= gcBottom; ++gp.y )
+        for ( gp.x = gcLeft; gp.x <= gcRight; ++gp.x )
+            ( * pgpf )( gp );
 }
 
 void Apply2Grid( GridPoint_Functor * const pgpf )

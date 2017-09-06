@@ -108,8 +108,7 @@ void CheckIndividuals( Grid & grid )
     };
 
     int iCount = 0;
-    check functor( & grid, & iCount );
-    Apply2Grid( & functor );
+    Apply2Grid( & check( & grid, & iCount ) );
     int const iNrOfLivingIndividuals = grid.GetNrOfLivingIndividuals( );
     assert( iCount == iNrOfLivingIndividuals );
 }
@@ -223,7 +222,7 @@ void Grid::MakePlan
     Apply2AllNeighbors( getSlots( * this, IsDead_Functor(),  gpRun, gpListEmpty  ) );
     Apply2AllNeighbors( getSlots( * this, IsAlive_Functor(), gpRun, gpListFilled ) );
 
-    assert( gpListEmpty.GetLength() +  gpListFilled.GetLength() == NeighborhoodIterator::NR_OF_NEIGHBOURS);
+    assert( gpListEmpty.GetLength() +  gpListFilled.GetLength() == NR_OF_NEIGHBORS);
 
     bool const bHasFreeSpace = gpListEmpty.GetLength( ) > 0;
     bool const bHasNeighbor  = gpListFilled.GetLength( ) > 0;

@@ -213,8 +213,6 @@ void D3dBuffer::prepareTranspMode( )
 
 void D3dBuffer::finishTranspMode( )
 {
-    RenderRects( );
-
     m_d3d_device->SetRenderState( D3DRS_ALPHABLENDENABLE, m_dwAlphaBlendable );
     m_d3d_device->SetRenderState( D3DRS_SRCBLEND, m_dwSrcBlend );
     m_d3d_device->SetRenderState( D3DRS_DESTBLEND, m_dwDstBlend );    
@@ -224,7 +222,8 @@ void D3dBuffer::RenderTranspRect( PixelRect const &rectTransparent, DWORD const 
 {
     assert( m_d3d_device != nullptr );
     prepareTranspMode( );
-    addRect2Buffer
+
+	addRect2Buffer
     ( 
         static_cast<float>(rectTransparent.left), 
         static_cast<float>(rectTransparent.top), 
@@ -232,6 +231,8 @@ void D3dBuffer::RenderTranspRect( PixelRect const &rectTransparent, DWORD const 
         static_cast<float>(rectTransparent.bottom), 
         dwColor 
     );
+
+	RenderRects( );
     finishTranspMode( );
 }
 
