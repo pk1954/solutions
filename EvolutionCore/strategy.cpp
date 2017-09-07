@@ -14,7 +14,7 @@ StrategyData::StrategyData( )
 {
     m_memSize = 0;
     m_memUsed = 0;
-    for	( auto i : m_aIdBadGuys )
+    for	( auto & i : m_aIdBadGuys )
         i.ResetIndId();
 }
 
