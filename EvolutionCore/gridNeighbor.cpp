@@ -15,26 +15,37 @@ static void initNeighborMatrix( )     // Initialization of m_aNeighbors
     static long const SOUTH  =  1;
     static long const CENTER =  0;
 
-	static GridPoint const table[3][3] = 
+	static GridPoint const table8[3][3] = 
 	{
 		{ GridPoint( CENTER, NORTH  ), GridPoint( EAST,   NORTH  ), GridPoint( EAST,   CENTER ) }, 
 		{ GridPoint( WEST,   NORTH  ), GridPoint( CENTER, CENTER ), GridPoint( EAST,   SOUTH  ) }, 
 		{ GridPoint( WEST,   CENTER ), GridPoint( WEST,   SOUTH  ), GridPoint( CENTER, SOUTH  ) }
 	}; 
 
+	static GridPoint const table4[3][3] = 
+	{
+		{ GridPoint::GP_NULL,          GridPoint( EAST,   CENTER ), GridPoint::GP_NULL          }, 
+		{ GridPoint( WEST,   NORTH  ), GridPoint( CENTER, CENTER ), GridPoint( CENTER, SOUTH  ) }, 
+		{ GridPoint::GP_NULL         , GridPoint( WEST,   CENTER ), GridPoint::GP_NULL          }
+	}; 
+
 	GridPoint const GP_NORTH_WEST( WEST, NORTH );
+	GridPoint const GP_CENTER_NORTH( CENTER, NORTH );
 
     GridPoint gp;
     for ( gp.y = 0; gp.y <= GridPoint::GRID_HEIGHT - 1; ++ gp.y )
     for ( gp.x = 0; gp.x <= GridPoint::GRID_WIDTH  - 1; ++ gp.x )
 	{
-		GridPoint gpDelta    = GP_NORTH_WEST;
+		GridPoint gpDelta    = GP_CENTER_NORTH;
 		GridPoint gpNeighbor = gp + gpDelta + GridPoint::GRID_SIZE;
 		gpNeighbor %= GridPoint::GRID_SIZE;
 		for ( auto & neighbor : m_aNeighbors[ gp.x ][ gp.y ] )
 		{
 			neighbor   = gpNeighbor;
-			gpDelta    = table[gpDelta.y + 1][gpDelta.x + 1];
+			if ( NR_OF_NEIGHBORS == 8 )
+				gpDelta = table8[gpDelta.y + 1][gpDelta.x + 1];
+			else
+				gpDelta = table4[gpDelta.y + 1][gpDelta.x + 1];
 			gpNeighbor = gp + gpDelta + GridPoint::GRID_SIZE;
 			gpNeighbor %= GridPoint::GRID_SIZE;
 		}
