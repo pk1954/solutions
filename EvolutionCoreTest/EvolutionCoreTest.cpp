@@ -11,16 +11,12 @@
 #include "gridRect.h"
 #include "gridNeighbor.h"
 
-class gridNeighborTest : public GridPointNeighbor_Functor
+class gridNeighborTest : public GridPoint_Functor
 {
 public:
-    gridNeighborTest( GridPoint const & gp ) 
-	: GridPointNeighbor_Functor( gp )
-    { }
-
     virtual ~gridNeighborTest() { };
  
-    virtual bool operator() ( GridPoint const & gpNeighbor ) const 
+    virtual bool operator() ( GridPoint const & gpNeighbor )
     {
         return false;
     }
@@ -29,29 +25,23 @@ public:
 class visitNeighbours : public GridPoint_Functor
 {
 public:
-    visitNeighbours( ) 
-    : GridPoint_Functor( )
-    { };
-
 	virtual ~visitNeighbours() { };
 
-    virtual void operator() ( GridPoint const & gp )
+    virtual bool operator() ( GridPoint const & gp )
     {
-		Apply2AllNeighbors( gridNeighborTest( gp ) );
+		return Neighborhood::Apply2All( gp, gridNeighborTest( ) );
     }
 };
 
 class gpFunctorEmpty : public GridPoint_Functor
 {
 public:
-    gpFunctorEmpty( ) 
-    : GridPoint_Functor( )
-    { };
-
 	virtual ~gpFunctorEmpty() { };
 
-    virtual void operator() ( GridPoint const & gp )
-    { }
+    virtual bool operator() ( GridPoint const & gp )
+    {
+		return false;
+	}
 };
 
 int const NRUNS = 5000;
@@ -72,6 +62,8 @@ void DoTest( )
 {
 	HiResTimer m_hrtimer;
 	wofstream  m_traceStream = OpenTraceFile( L"main_trace.out" );
+
+	Neighborhood::InitClass( 8 );
 
 	m_hrtimer.Start( );
 	tara( );

@@ -4,46 +4,73 @@
 #pragma once
 
 #include <array>
+#include <vector>
 #include "gridPoint.h"
 
-static int const NR_OF_NEIGHBORS = 8;
-
-//lint -esym(1565,NeighborList::m_list)   // not assigned by initializer function
-class NeighborList
+class Neighborhood
 {
 public:
-    //lint -sem(NeighborList::ClearList,initializer)
-    NeighborList( ) { ClearList(); };
+    static void InitClass( int const );
+	static bool Apply2All( GridPoint const, GridPoint_Functor & );
 
-    void AddToList( GridPoint const & gp ) { m_list[ m_uiLength++ ] = gp; }
-    void ClearList( ) { m_uiLength = 0; }
-    unsigned int      GetLength       ( )                             const { return m_uiLength; }
-    GridPoint const & GetElement      ( unsigned int const uiIndex  ) const { return m_list[uiIndex]; }
+	static int  GetNrOfNeighbors( ) 
+	{ 
+		return m_iNrOfNeighbors; 
+	}
+
+	Neighborhood( )	: 
+		m_neighbors( )
+	{
+		m_neighbors.reserve( m_iNrOfNeighbors );
+	}
+
+    void AddToList( GridPoint const & gp ) 
+	{ 
+		m_neighbors.push_back( gp ); 
+		assert( m_neighbors.size( ) <= m_iNrOfNeighbors );
+	}
+
+	void RemoveFromList( int const iIndex )
+	{
+		assert( m_neighbors.size( ) >= iIndex);
+		m_neighbors.erase( m_neighbors.begin() + iIndex );
+	}
+
+    void ClearList( ) 
+	{ 
+		m_neighbors.clear( ); 
+	}
+
+	size_t GetLength( ) const 
+	{ 
+		return m_neighbors.size( ); 
+	}
+    
+	GridPoint const & GetElement( unsigned int const uiIndex  ) const 
+	{ 
+		return m_neighbors[uiIndex]; 
+	}
+
     GridPoint const & GetRandomElement( unsigned int const uiRandom ) const 
     {
-        assert( m_uiLength > 0 ); 
+        assert( m_neighbors.size( ) > 0 ); 
         //lint -e414   possible division by 0
-        return m_list[uiRandom % m_uiLength];
+        return m_neighbors[uiRandom % m_neighbors.size( )];
         //lint +e414 
     }
 
 private:
-    std::array< GridPoint, NR_OF_NEIGHBORS > m_list;
-    unsigned int m_uiLength;
+	typedef std::vector< GridPoint >                            NEIGHBORS;
+	typedef std::array < NEIGHBORS,    GridPoint::GRID_WIDTH  > NEIGHBOR_ROW;
+	typedef std::array < NEIGHBOR_ROW, GridPoint::GRID_HEIGHT > NEIGHBOR_GRID;
+
+	static int             m_iNrOfNeighbors;
+	static NEIGHBOR_GRID * m_pGridNeighbors;
+
+    NEIGHBORS m_neighbors;
+
+	static NEIGHBORS & getNeighbors( GridPoint const gp )
+	{
+		return (* m_pGridNeighbors)[ gp.y ][ gp.x ];
+	}
 };
-
-class GridPointNeighbor_Functor
-{
-public:
-    explicit GridPointNeighbor_Functor( GridPoint const & gp ) : m_gpCenter( gp ) { } 
-    virtual ~GridPointNeighbor_Functor() { };
- 
-    GridPoint const & GetCenter( ) const { return m_gpCenter; }
-
-    virtual bool operator() ( GridPoint const & ) const = 0;
-
-private:
-    GridPoint const m_gpCenter;
-};
-
-void Apply2AllNeighbors( GridPointNeighbor_Functor const & );

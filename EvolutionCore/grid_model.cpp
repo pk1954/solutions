@@ -42,6 +42,7 @@ void Grid::InitClass( )
     Genome::InitClass( );
     GridField::InitClass( );
     Individual::InitClass( );
+    Neighborhood::InitClass( 8 );
 
     m_iFoodGrowthRate              = Config::GetConfigValue( Config::tId::growthRateFood );
     m_iBasicFoodConsumption        = Config::GetConfigValue( Config::tId::energyConsumptionBasicRate );
@@ -58,16 +59,19 @@ Grid::Grid( )
       m_uiFoodGrowth( 0 ),
       m_random( ),
       m_idCounter( ),
-      m_genEvo( 0L )
+      m_genEvo( 0L ),
+	  m_emptyNeighborSlots( ),
+	  m_occupiedNeighborSlots( )
 {
     class initGridFields : public GridPoint_Functor
     {
     public:
         explicit initGridFields( Grid * const pGrid ) : GridPoint_Functor(pGrid) { };        
  
-        virtual void operator() ( GridPoint const & gpRun )
+        virtual bool operator() ( GridPoint const & gpRun )
         {
             GetGrid( )->getGridField( gpRun ).InitGridFieldStructure( gpRun );
+			return false;
         }
     };
 
@@ -97,10 +101,11 @@ void CheckIndividuals( Grid & grid )
           m_piCount( piCount ) 
         { };
 
-        virtual void operator() ( GridPoint const & gp )
+        virtual bool operator() ( GridPoint const & gp )
         {
             if ( GetGrid()->IsAlive( gp ) )
                ++ (* m_piCount);
+			return false;
         }
 
     private:
@@ -124,9 +129,10 @@ void Grid::ResetGrid( )
           m_sFood( sFood ) 
         { }
  
-        virtual void operator() ( GridPoint const & gpRun )
+        virtual bool operator() ( GridPoint const & gpRun )
         {
             GetGrid( )->getGridField( gpRun ).ResetGridField( m_sFood );
+			return false;
         }
 
     private:
@@ -141,25 +147,23 @@ void Grid::ResetGrid( )
 // getSlots: visit direct neighbors of a given GridPoint and create a list of all neighbors
 //           satisfying a criterion given as a Decision_Functor
 
-class Grid::getSlots : public GridPointNeighbor_Functor
+class Grid::getSlots : public GridPoint_Functor
 {
 public:
     getSlots
     ( 
         Grid             const & grid,
         Decision_Functor const & func, 
-        GridPoint        const & gp, 
-        NeighborList           & list
+        Neighborhood           & list
     ) : 
         m_grid( grid ),
         m_func( func ),
-        GridPointNeighbor_Functor( gp ),
         m_list( list )
     { }
 
-    virtual ~getSlots() { };
+    virtual ~getSlots( ) { };
  
-    virtual bool operator() ( GridPoint const & gpNeighbor ) const 
+    virtual bool operator() ( GridPoint const & gpNeighbor )
     {
         if ( (m_func)( m_grid.GetGridField( gpNeighbor ) ) )
         {
@@ -171,16 +175,16 @@ private:
 //lint -e1725                          // reference members
     Grid             const & m_grid;
     Decision_Functor const & m_func; 
-    NeighborList           & m_list;
+    Neighborhood           & m_list;
 //lint +e1725
 };
 
-GridPoint Grid::chooseTarget( NeighborList & gpListEmpty )
+GridPoint Grid::chooseTarget( Neighborhood & gpListEmpty )
 {
     GridPoint m_gpTarget;
 
     if ( m_bNeighborhoodFoodSensitivity )
-        gpListEmpty = getBestNeighborSlots( gpListEmpty );      // find free neighbor slots with best food stock
+        getBestNeighborSlots( gpListEmpty );   // consider only neighbor slots with best food stock
 
     unsigned int const uiRandom = m_random.NextRandomNumber( );
     m_gpTarget = gpListEmpty.GetRandomElement( uiRandom ); // choose one of them at random
@@ -189,7 +193,7 @@ GridPoint Grid::chooseTarget( NeighborList & gpListEmpty )
     return m_gpTarget;
 }
 
-GridPoint Grid::choosePartner( NeighborList & gpListFilled )
+GridPoint Grid::choosePartner( Neighborhood & gpListFilled )
 {
     GridPoint m_gpPartner;
 
@@ -216,16 +220,15 @@ void Grid::MakePlan
     plan.SetBaseConsumption( m_iBasicFoodConsumption );
     plan.IncBaseConsumption( m_iMemSizeFoodConsumption * gfRun.GetMemSize( ) );
 
-    NeighborList gpListEmpty;
-    NeighborList gpListFilled;
+	m_emptyNeighborSlots.ClearList( );
+    Neighborhood::Apply2All( gpRun, getSlots( * this, IsDead_Functor(), m_emptyNeighborSlots  ) );
+	m_occupiedNeighborSlots.ClearList( );
+    Neighborhood::Apply2All( gpRun, getSlots( * this, IsAlive_Functor(), m_occupiedNeighborSlots ) );
 
-    Apply2AllNeighbors( getSlots( * this, IsDead_Functor(),  gpRun, gpListEmpty  ) );
-    Apply2AllNeighbors( getSlots( * this, IsAlive_Functor(), gpRun, gpListFilled ) );
+    assert( m_emptyNeighborSlots.GetLength() +  m_occupiedNeighborSlots.GetLength() == Neighborhood::GetNrOfNeighbors( ) );
 
-    assert( gpListEmpty.GetLength() +  gpListFilled.GetLength() == NR_OF_NEIGHBORS);
-
-    bool const bHasFreeSpace = gpListEmpty.GetLength( ) > 0;
-    bool const bHasNeighbor  = gpListFilled.GetLength( ) > 0;
+    bool const bHasFreeSpace = m_emptyNeighborSlots.GetLength( ) > 0;
+    bool const bHasNeighbor  = m_occupiedNeighborSlots.GetLength( ) > 0;
     int  const iEnergy       = gfRun.GetEnergy( ) - plan.GetBaseConsumption( );
 
     Genome const & genome = gfRun.GetGenome( );
@@ -237,17 +240,17 @@ void Grid::MakePlan
     {
     case tAction::move:	// choose a free neighbour cell and move there
     case tAction::clone:  // choose a free neighbour cell and create a clone there 
-        plan.SetTarget ( chooseTarget( gpListEmpty ) );
+        plan.SetTarget ( chooseTarget( m_emptyNeighborSlots ) );
         plan.NoPartner( );
         break;
 
     case tAction::marry:     // choose a living neighbour and marry
-        plan.SetPartner( choosePartner( gpListFilled ) );
-        plan.SetTarget ( chooseTarget ( gpListEmpty ) );
+        plan.SetPartner( choosePartner( m_occupiedNeighborSlots ) );
+        plan.SetTarget ( chooseTarget ( m_emptyNeighborSlots ) );
         break;
 
     case tAction::interact:  // choose a living neighbour and interact
-        plan.SetPartner( choosePartner( gpListFilled ) );
+        plan.SetPartner( choosePartner( m_occupiedNeighborSlots ) );
         plan.NoTarget( );
         break;
 

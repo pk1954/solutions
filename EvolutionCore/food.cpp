@@ -12,10 +12,10 @@
 
 // returns a list of GRIDPOINTS in pgpList and length of list as return value
 
-NeighborList Grid::getBestNeighborSlots( NeighborList const & list ) const
+void Grid::getBestNeighborSlots( Neighborhood & list )
 {
     int iMaxFoodStock = 0;
-    for ( unsigned int uiIndex = 0; uiIndex < list.GetLength(); ++uiIndex )
+    for ( unsigned int uiIndex = 0; uiIndex < list.GetLength(); ++ uiIndex )
     {
         int const iFoodstock = GetFoodStock( list.GetElement( uiIndex ) );
         assert( iFoodstock >= 0 );
@@ -23,15 +23,11 @@ NeighborList Grid::getBestNeighborSlots( NeighborList const & list ) const
             iMaxFoodStock = iFoodstock;
     }
 
-    NeighborList listResult;
-    for ( unsigned int uiIndex = 0; uiIndex < list.GetLength(); ++uiIndex )
+    for ( unsigned int uiIndex = 0; uiIndex < list.GetLength(); ++ uiIndex )
     {
-        GridPoint const &gp = list.GetElement( uiIndex );
-        if ( GetFoodStock( gp ) == iMaxFoodStock )
-            listResult.AddToList( gp );
+        if ( GetFoodStock( list.GetElement( uiIndex ) ) != iMaxFoodStock )
+            list.RemoveFromList( uiIndex );
     }
-
-    return listResult;
 }
 
 void ASSERT_PRODUCT( int const iA, int const iB )     
@@ -53,7 +49,7 @@ void Grid::FoodGrowth( )
             m_iRate( iRate ) 
         { };        
  
-        virtual void operator() ( GridPoint const & gpRun )
+        virtual bool operator() ( GridPoint const & gpRun )
         {
             GridField & rGF  = GetGrid()->getGridField( gpRun );
             int const   iMax = rGF.GetFertility() + rGF.GetFertilizer();
@@ -78,7 +74,9 @@ void Grid::FoodGrowth( )
                 assert( iFood >= SHRT_MIN );
                 rGF.SetFoodStock( static_cast<short>(iFood) );
                 rGF.ReduceFertilizer( );
-            }
+				return true;
+			}
+			return false;
         }
 
     private:

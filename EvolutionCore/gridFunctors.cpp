@@ -6,17 +6,17 @@
 #include "gridFunctors.h"
 #include "grid_model.h"
 
-void Strategy_Functor ::operator() ( GridPoint const & gp )                   { GetGrid()->EditSetStrategy( gp, GetBrushIntensity( ), m_strategy ); }
-void Strategy_Functor ::operator() ( GridPoint const & gp, short const sVal ) { GetGrid()->EditSetStrategy( gp, sVal,                 m_strategy ); }
+bool Strategy_Functor ::operator() ( GridPoint const & gp )                   { GetGrid()->EditSetStrategy( gp, GetBrushIntensity( ), m_strategy ); return false; }
+bool Strategy_Functor ::operator() ( GridPoint const & gp, short const sVal ) { GetGrid()->EditSetStrategy( gp, sVal,                 m_strategy ); return false; }
 
-void Fertilizer_Functor::operator() ( GridPoint const & gp )                   { GetGrid( )->IncFertilizer( gp, GetBrushIntensity( ) ); };
-void Fertilizer_Functor::operator() ( GridPoint const & gp, short const sVal ) { GetGrid( )->IncFertilizer( gp, sVal ); };
+bool Fertilizer_Functor::operator() ( GridPoint const & gp )                   { GetGrid( )->IncFertilizer( gp, GetBrushIntensity( ) );             return false; };
+bool Fertilizer_Functor::operator() ( GridPoint const & gp, short const sVal ) { GetGrid( )->IncFertilizer( gp, sVal );                             return false; };
 
-void FoodStock_Functor::operator() ( GridPoint const & gp )                   { GetGrid( )->IncFoodStock( gp, GetBrushIntensity( ) ); };
-void FoodStock_Functor::operator() ( GridPoint const & gp, short const sVal ) { GetGrid( )->IncFoodStock( gp, sVal ); };
+bool FoodStock_Functor::operator() ( GridPoint const & gp )                   { GetGrid( )->IncFoodStock( gp, GetBrushIntensity( ) );               return false; };
+bool FoodStock_Functor::operator() ( GridPoint const & gp, short const sVal ) { GetGrid( )->IncFoodStock( gp, sVal );                               return false; };
 
-void Fertility_Functor::operator() ( GridPoint const & gp )                   { GetGrid()->IncFertility( gp, GetBrushIntensity( ) ); };
-void Fertility_Functor::operator() ( GridPoint const & gp, short const sVal ) { GetGrid()->IncFertility( gp, sVal ); };
+bool Fertility_Functor::operator() ( GridPoint const & gp )                   { GetGrid()->IncFertility( gp, GetBrushIntensity( ) );                return false; };
+bool Fertility_Functor::operator() ( GridPoint const & gp, short const sVal ) { GetGrid()->IncFertility( gp, sVal );                                return false; };
 
-void MutRate_Functor  ::operator() ( GridPoint const & gp )                   { GetGrid()->IncMutationRate( gp, GetBrushIntensity( ) ); };
-void MutRate_Functor  ::operator() ( GridPoint const & gp, short const sVal ) { GetGrid()->IncMutationRate( gp, sVal ); };
+bool MutRate_Functor  ::operator() ( GridPoint const & gp )                   { GetGrid()->IncMutationRate( gp, GetBrushIntensity( ) );             return false; };
+bool MutRate_Functor  ::operator() ( GridPoint const & gp, short const sVal ) { GetGrid()->IncMutationRate( gp, sVal );                             return false; };

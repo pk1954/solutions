@@ -1,8 +1,8 @@
-SetConfigValue Config::tId::moveEnabled 0
-SetConfigValue Config::tId::marryEnabled 0
-SetConfigValue Config::tId::fertilizeEnabled 0
-SetConfigValue Config::tId::eatEnabled 0
-SetConfigValue Config::tId::energyConsumptionBasicRate 0
+# SetConfigValue Config::tId::moveEnabled 0
+# SetConfigValue Config::tId::marryEnabled 0
+# SetConfigValue Config::tId::fertilizeEnabled 0
+# SetConfigValue Config::tId::eatEnabled 0
+SetConfigValue Config::tId::energyConsumptionBasicRate 10
 SetConfigValue Config::tId::interactionPayOff_R  100
 SetConfigValue Config::tId::interactionPayOff_S -300
 SetConfigValue Config::tId::interactionPayOff_T  300

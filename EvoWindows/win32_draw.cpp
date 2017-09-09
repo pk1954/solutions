@@ -58,11 +58,12 @@ public:
         m_pGetIntFunctor( & getIntFunctor )
     { };
 
-    virtual void operator() ( GridPoint const & gp )
+    virtual bool operator() ( GridPoint const & gp )
     {
         int   const iValue  = ( * m_pGetIntFunctor )( gp );
         DWORD const dwColor = m_pDraw->getBackgroundColor( iValue );
         m_pD3dBuffer->AddBackgroundRect( m_pFrameBuffer->Grid2PixelPos( gp ), dwColor, m_fPxSize );
+		return false;
     }
 
 private:
@@ -203,11 +204,12 @@ void DrawFrame::drawIndividuals( GridRect const & rect  )
             m_fHalfSizeInd( fHalfSizeInd )
         { };
 
-        virtual void operator() ( GridPoint const & gp )
+        virtual bool operator() ( GridPoint const & gp )
         {
             COLORREF color;
             if ( m_pDraw->getIndividualColor( gp, color ) )
                 m_pD3dBuffer->AddRect( m_pFrameBuffer->Grid2PixelPosCenter( gp ), color, m_fHalfSizeInd );
+			return false;
         }
 
     private:
@@ -259,7 +261,7 @@ void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
             m_gpPoi( gpPoi )
         { };
 
-        virtual void operator() ( GridPoint const & gp )
+        virtual bool operator() ( GridPoint const & gp )
         {
             if ( m_pDraw->GetEvoCore( )->IsAlive( gp ) )
             {
@@ -278,7 +280,9 @@ void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
                     m_pDraw->assembleRightColumn( gp );
                     m_pD3dBuffer->D3D_DrawText( pixRect, m_pDraw->getOutputString( ), colText );
                 }
+				return true;
             }
+			return false;
         }
 
     private:

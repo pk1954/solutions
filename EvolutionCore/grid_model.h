@@ -97,7 +97,7 @@ private:
 
     class getSlots;
 
-    NeighborList getBestNeighborSlots( NeighborList const & ) const;
+    void getBestNeighborSlots( Neighborhood & );
 
     GridField & getGridField( GridPoint const & gp )
     {
@@ -111,8 +111,8 @@ private:
         return m_aGF[ gp.x ][ gp.y ];
     };
 
-    GridPoint chooseTarget ( NeighborList & );
-    GridPoint choosePartner( NeighborList & );
+    GridPoint chooseTarget ( Neighborhood & );
+    GridPoint choosePartner( Neighborhood & );
 
     // member variables
 
@@ -120,6 +120,8 @@ private:
     GridPointList  m_gpList;                                               //                            10 byte
     unsigned int   m_uiFoodGrowth;   // for statistics                     //                             8 byte 
     EVO_GENERATION m_genEvo;                                               //                             4 byte
+    Neighborhood   m_emptyNeighborSlots;
+    Neighborhood   m_occupiedNeighborSlots;
 
     // following members must only be stored here to be part of grid history.
 
@@ -136,6 +138,7 @@ private:
     static int  m_iMarryFoodConsumption;
     static int  m_iInteractFoodConsumption;
     static bool m_bNeighborhoodFoodSensitivity;
+
 };
 
 void CheckIndividuals( Grid & );

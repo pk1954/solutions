@@ -109,7 +109,7 @@ public:
         m_pGrid = nullptr; 
     };
 
-    virtual void operator() ( GridPoint const & ) = 0; 
+    virtual bool operator() ( GridPoint const & ) = 0; 
 
     void SetGrid( Grid * const pGrid ) 
     { 
@@ -137,7 +137,7 @@ public:
 
     using GridPoint_Functor::operator(); // otherwise the operator() would be hidden by following operator()
 
-    virtual void operator() ( GridPoint const &, short const ) = 0;
+    virtual bool operator() ( GridPoint const &, short const ) = 0;
 
 private:
     short m_sIntensity;

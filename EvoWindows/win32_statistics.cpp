@@ -178,7 +178,7 @@ public:
         m_pStat( pStat )
     { };
 
-    virtual void operator() ( GridPoint const & gp )
+    virtual bool operator() ( GridPoint const & gp )
     {
         if ( m_pModelWork->IsAlive( gp ) )
         {
@@ -193,7 +193,9 @@ public:
             m_pStat->incCounter( s );
             m_pStat->addMemSize( s, m_pModelWork->GetMemSize( gp ) );
             m_pStat->addAge    ( s, m_pModelWork->GetAge( gp ) );
+			return false;
         }
+		return true;
     }
 private:
     EvolutionModelData const * m_pModelWork;

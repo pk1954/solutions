@@ -5,10 +5,15 @@
 #include "gridPoint.h"
 #include "gridNeighbor.h"
 
-static GridPoint m_aNeighbors[ GridPoint::GRID_WIDTH ][ GridPoint::GRID_HEIGHT ][ NR_OF_NEIGHBORS ];
+int                           Neighborhood::m_iNrOfNeighbors = 0;
+Neighborhood::NEIGHBOR_GRID * Neighborhood::m_pGridNeighbors = nullptr;
 
-static void initNeighborMatrix( )     // Initialization of m_aNeighbors
+void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization of m_pGridNeighbors
 {
+	assert( ( iNrOfNeighbors == 4 ) || ( iNrOfNeighbors == 8 ) );
+
+	m_iNrOfNeighbors = iNrOfNeighbors;
+
     static long const WEST   = -1;
     static long const EAST   =  1;
     static long const NORTH  = -1;
@@ -32,43 +37,39 @@ static void initNeighborMatrix( )     // Initialization of m_aNeighbors
 	GridPoint const GP_NORTH_WEST( WEST, NORTH );
 	GridPoint const GP_CENTER_NORTH( CENTER, NORTH );
 
+	m_pGridNeighbors = new NEIGHBOR_GRID;
+
     GridPoint gp;
     for ( gp.y = 0; gp.y <= GridPoint::GRID_HEIGHT - 1; ++ gp.y )
-    for ( gp.x = 0; gp.x <= GridPoint::GRID_WIDTH  - 1; ++ gp.x )
 	{
-		GridPoint gpDelta    = GP_CENTER_NORTH;
-		GridPoint gpNeighbor = gp + gpDelta + GridPoint::GRID_SIZE;
-		gpNeighbor %= GridPoint::GRID_SIZE;
-		for ( auto & neighbor : m_aNeighbors[ gp.x ][ gp.y ] )
+		NEIGHBOR_ROW & pRow = (* m_pGridNeighbors)[ gp.y ];
+		for ( gp.x = 0; gp.x <= GridPoint::GRID_WIDTH  - 1; ++ gp.x )
 		{
-			neighbor   = gpNeighbor;
-			if ( NR_OF_NEIGHBORS == 8 )
-				gpDelta = table8[gpDelta.y + 1][gpDelta.x + 1];
-			else
-				gpDelta = table4[gpDelta.y + 1][gpDelta.x + 1];
-			gpNeighbor = gp + gpDelta + GridPoint::GRID_SIZE;
+			NEIGHBORS & neighbors = pRow[ gp.x ];
+			GridPoint gpDelta    = GP_CENTER_NORTH;
+			GridPoint gpNeighbor = gp + gpDelta + GridPoint::GRID_SIZE;
 			gpNeighbor %= GridPoint::GRID_SIZE;
+			neighbors.reserve( m_iNrOfNeighbors );
+			for ( int i = 0; i < m_iNrOfNeighbors; ++i )
+			{
+				neighbors.push_back( gpNeighbor );
+				if ( m_iNrOfNeighbors == 8 )
+					gpDelta = table8[gpDelta.y + 1][gpDelta.x + 1];
+				else
+					gpDelta = table4[gpDelta.y + 1][gpDelta.x + 1];
+				gpNeighbor = gp + gpDelta + GridPoint::GRID_SIZE;
+				gpNeighbor %= GridPoint::GRID_SIZE;
+			}
 		}
 	}
 }
 
-void Apply2AllNeighbors( GridPointNeighbor_Functor const & func ) 
+bool Neighborhood::Apply2All( GridPoint gpCenter, GridPoint_Functor  & func ) 
 {
-	static bool bIsInitialized = false;
-
-	if ( ! bIsInitialized )
+	for ( auto n: getNeighbors( gpCenter ) )
 	{
-		initNeighborMatrix( );
-		bIsInitialized = true;
+		if ( (func)( n ) )
+			return true;
 	}
-
-	GridPoint         const gpCenter       = func.GetCenter( );
-	GridPoint const *       m_pGpNeighbors = m_aNeighbors[ gpCenter.x ][ gpCenter.y ];
-	GridPoint const * const m_pGpStop      = m_pGpNeighbors + NR_OF_NEIGHBORS;
-
-	do
-	{
-		if ( (func)( * m_pGpNeighbors ) )
-			break;
-	} while ( ++ m_pGpNeighbors < m_pGpStop );
+	return false;
 };

@@ -10,8 +10,6 @@
 #include "win32_worker_thread.h"
 #include "win32_displayOptions.h"
 
-//lint -e1924                C-style cast
-
 // The family of GetIntValueFunctor classes provides functors for access to 
 // EvolutionCore functions of return type int
 
@@ -26,23 +24,19 @@ class GetEmptyFunctor : public GetIntValueFunctor
         virtual int operator() ( GridPoint const & gp ) const { return 0; }
 };
 
-//lint -e1763                  function marked as const indirectly modifies class
-class FoodStockAverage : public GridPointNeighbor_Functor
+class FoodStockAverage : public GridPoint_Functor
 {
 public:
     FoodStockAverage
     (
         EvolutionModelData const * const pModel,
-        GridPoint          const &       gpCenter, 
         int                      * const piSum
     ) : 
-        GridPointNeighbor_Functor( gpCenter ),
         m_pModelWork( pModel ),
         m_piSum( piSum )
     { }
 
-//lint -esym( 715, gpCenter )  not referenced
-    virtual bool operator() ( GridPoint const & gpNeighbor ) const
+    virtual bool operator() ( GridPoint const & gpNeighbor )
     {
         * m_piSum += m_pModelWork->GetFoodStock( gpNeighbor );
         return false;
@@ -52,7 +46,6 @@ private:
     EvolutionModelData const * const m_pModelWork;
     int                      * const m_piSum;
 };
-//lint +e1763 
 
 class GetFoodStockFunctor : public GetIntValueFunctor
 {
@@ -64,8 +57,8 @@ public:
     virtual int operator() ( GridPoint const & gp ) const 
     {
         int iSum = m_pModelWork->GetFoodStock( gp );
-        Apply2AllNeighbors( FoodStockAverage( m_pModelWork, gp, &iSum ) );
-        return iSum / (NR_OF_NEIGHBORS + 1);
+        Neighborhood::Apply2All( gp, FoodStockAverage( m_pModelWork, & iSum ) );
+        return iSum / (Neighborhood::GetNrOfNeighbors( ) + 1);
     }
 };
 
