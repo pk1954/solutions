@@ -75,12 +75,12 @@ private:
 
 DrawFrame::DrawFrame
 ( 
-    HWND            const hWnd, 
-    EvolutionCore * const pCore,
-    EvolutionModelData     * const pModel,
-    FrameBuffer   * const pFrameBuffer, 
-    DspOptWindow  * const pDspOptWindow, 
-    GridRect      * const pGridRectSel
+    HWND                 const hWnd, 
+    EvolutionCore      * const pCore,
+    EvolutionModelData * const pModel,
+    FrameBuffer        * const pFrameBuffer, 
+    DspOptWindow       * const pDspOptWindow, 
+    GridRect           * const pGridRectSel
 ) : 
     m_hWnd( hWnd ),
     m_bDimmIndividuals( TRUE ),
@@ -89,20 +89,20 @@ DrawFrame::DrawFrame
     m_pFrameBuffer( pFrameBuffer ),
     m_pDspOptWindow( pDspOptWindow ),
     m_pGridRectSel( pGridRectSel ),
-    m_pD3dBuffer( new D3dBuffer( hWnd, GridPoint::GRID_AREA ) ),
+    m_pD3dBuffer( nullptr ), 
     m_clutBackground( )
 {
-    m_clutBackground.Allocate( MAX_BG_COLOR );    // default is grey scale lookup table with entries 0 .. 255
-    
     UINT const uiClutSize = static_cast<UINT>(Config::GetConfigValue( Config::tId::stdCapacity ));
-    for ( auto &strategy : m_aClutStrat )
+    for ( auto & strategy : m_aClutStrat )
         strategy.Allocate( uiClutSize );
-
-    SetIndDimmMode( tBoolOp::opFalse );
 
     m_aClutStrat[ static_cast<int>( tStrategyId::defectAlways )   ].SetColorHi( RGB(151, 171, 255) );
     m_aClutStrat[ static_cast<int>( tStrategyId::cooperateAlways )].SetColorHi( RGB(127, 255,   0) );
     m_aClutStrat[ static_cast<int>( tStrategyId::tit4tat )        ].SetColorHi( RGB(255,  50,  50) );
+
+    m_pD3dBuffer = new D3dBuffer( hWnd, GridPoint::GRID_AREA, tTesselation::HEXAGON );
+	m_clutBackground.Allocate( MAX_BG_COLOR );    // default is grey scale lookup table with entries 0 .. 255
+    SetIndDimmMode( tBoolOp::opFalse );
 }
 
 DrawFrame::~DrawFrame( ) 
@@ -155,7 +155,7 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
             drawPOI( gpPoi );
             rcGrid.ClipToGrid( );
             drawIndividuals( rcGrid );
-            m_pD3dBuffer->RenderRects( ); 
+            m_pD3dBuffer->RenderPrimitives( ); 
 
             if ( m_pFrameBuffer->GetFieldSize() >= 96 )
                 drawText( rcGrid, gpPoi );
@@ -208,7 +208,7 @@ void DrawFrame::drawIndividuals( GridRect const & rect  )
         {
             COLORREF color;
             if ( m_pDraw->getIndividualColor( gp, color ) )
-                m_pD3dBuffer->AddRect( m_pFrameBuffer->Grid2PixelPosCenter( gp ), color, m_fHalfSizeInd );
+                m_pD3dBuffer->AddHexagon( m_pFrameBuffer->Grid2PixelPosCenter( gp ), color, m_fHalfSizeInd );
 			return false;
         }
 

@@ -11,19 +11,26 @@
 #include "d3d_system.h"
 #include "d3d_vertexBuffer.h"
 
+enum class tTesselation
+{
+	RECTANGLE,
+	HEXAGON
+};
+
 class D3dBuffer
 {
 public:
 
-    D3dBuffer( HWND, ULONG );
+    D3dBuffer( HWND const, ULONG const, tTesselation const );
     ~D3dBuffer();
 
     void StartFrame( );
     void ResetFont( int const );
-    void AddRect( PixelPoint const &, DWORD const, float const );    
+    void AddRect          ( PixelPoint const &, DWORD const, float const );    
+    void AddHexagon       ( PixelPoint const &, DWORD const, float const );    
     void AddBackgroundRect( PixelPoint const &, DWORD, float );    
-    void AddVertex( PixelPoint const &, DWORD const );
-    void RenderRects( );
+    void AddVertex        ( PixelPoint const &, DWORD const );
+    void RenderPrimitives( );
     void RenderVertices( );
     void RenderTranspRect( PixelRect const &, DWORD const );
     void D3D_DrawText( PixelRect, wstring const &, D3DCOLOR );
@@ -35,8 +42,12 @@ private:
     
     HWND m_hWnd;
 
-    ULONG const ulNrOfRects;
-    ULONG const ulNrOfVertices;
+	tTesselation m_tesselationMode;
+
+    ULONG const m_ulTrianglesPerPrimitive;
+	ULONG const m_ulVerticesPerPrimitive;
+	ULONG const m_ulMaxNrOfPrimitives;
+    ULONG const m_ulNrOfVertices;
 
     VertexBuffer m_VertexBuffer;
     VertexBuffer m_RectBuffer;

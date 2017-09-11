@@ -11,9 +11,9 @@
 
 D3dSystem D3dSystem::_d3d_;
 
-D3dSystem *D3dSystem::GetSystem( void )
+D3dSystem * D3dSystem::GetSystem( void )
 {
-	return &D3dSystem::_d3d_;
+	return & D3dSystem::_d3d_;
 }
 
 void D3dSystem::Create( HWND const hWndApp, ULONG const ulWidth, ULONG const ulHeight )
@@ -24,7 +24,7 @@ void D3dSystem::Create( HWND const hWndApp, ULONG const ulWidth, ULONG const ulH
 	_d3d_.createDevice( hWndApp, ulWidth, ulHeight );
 }
 
-IDirect3DDevice9 *D3dSystem::GetDevice( void )
+IDirect3DDevice9 * D3dSystem::GetDevice( void )
 {
 	assert( m_d3d_device != nullptr );
 	return m_d3d_device;
@@ -35,11 +35,12 @@ void D3dSystem::ResetD3dSystem( HWND const hWnd )
 	PixelRectSize const pntSize = Util::GetClRectSize( hWnd );
 
 	m_d3d_presentationParameters.hDeviceWindow    = hWnd;
-	m_d3d_presentationParameters.BackBufferWidth  = static_cast<unsigned int>(pntSize.GetWidth());
-	m_d3d_presentationParameters.BackBufferHeight = static_cast<unsigned int>(pntSize.GetHeight());
+	m_d3d_presentationParameters.BackBufferWidth  = static_cast<unsigned int>( pntSize.GetWidth ( ) );
+	m_d3d_presentationParameters.BackBufferHeight = static_cast<unsigned int>( pntSize.GetHeight( ) );
 
 	assert( m_d3d_device != nullptr );
-	HRESULT const hres = m_d3d_device->Reset( &m_d3d_presentationParameters ); assert(hres == D3D_OK);
+	HRESULT const hres = m_d3d_device->Reset( & m_d3d_presentationParameters ); 
+	assert( hres == D3D_OK) ;
 }
 
 void D3dSystem::SetTransform( HWND const hWnd )
@@ -57,7 +58,7 @@ void D3dSystem::createDevice( HWND const hWnd, ULONG const ulModelWidth, ULONG c
 {
 	PixelRectSize const pntSize = Util::GetClRectSize( hWnd );
 
-	ZeroMemory( &m_d3d_presentationParameters, sizeof(D3DPRESENT_PARAMETERS) );
+	ZeroMemory( & m_d3d_presentationParameters, sizeof(D3DPRESENT_PARAMETERS) );
 	m_d3d_presentationParameters.Windowed               = TRUE;
 	m_d3d_presentationParameters.MultiSampleType        = D3DMULTISAMPLE_NONE;
 	m_d3d_presentationParameters.SwapEffect             = D3DSWAPEFFECT_DISCARD;
@@ -66,8 +67,8 @@ void D3dSystem::createDevice( HWND const hWnd, ULONG const ulModelWidth, ULONG c
 	m_d3d_presentationParameters.hDeviceWindow          = hWnd;
 	m_d3d_presentationParameters.Flags                  = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 	m_d3d_presentationParameters.BackBufferCount        = 1; // D3DPRESENT_BACK_BUFFERS_MAX;
-	m_d3d_presentationParameters.BackBufferWidth        = static_cast<unsigned int>(pntSize.GetWidth());
-	m_d3d_presentationParameters.BackBufferHeight       = static_cast<unsigned int>(pntSize.GetHeight());
+	m_d3d_presentationParameters.BackBufferWidth        = static_cast<unsigned int>( pntSize.GetWidth ( ) );
+	m_d3d_presentationParameters.BackBufferHeight       = static_cast<unsigned int>( pntSize.GetHeight( ) );
 	m_d3d_presentationParameters.PresentationInterval   = D3DPRESENT_INTERVAL_IMMEDIATE;
 
 	HRESULT const hres = m_d3d_object->CreateDevice
@@ -76,8 +77,8 @@ void D3dSystem::createDevice( HWND const hWnd, ULONG const ulModelWidth, ULONG c
 		D3DDEVTYPE_HAL, 
 		hWnd,
 		D3DCREATE_FPU_PRESERVE | D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-		&m_d3d_presentationParameters, 
-		&m_d3d_device
+		& m_d3d_presentationParameters, 
+		& m_d3d_device
 	);
 
 	assert( hres == D3D_OK );
@@ -132,7 +133,7 @@ D3dIndexBuffer * D3dSystem::prepareIndices( ULONG const * const pulIndex, ULONG 
 		0, 
 		D3DFMT_INDEX32,
 		D3DPOOL_MANAGED,
-		&d3d_indexBuffer,
+		& d3d_indexBuffer,
 		nullptr
 	);
 
@@ -148,28 +149,51 @@ D3dIndexBuffer * D3dSystem::prepareIndices( ULONG const * const pulIndex, ULONG 
 
 D3dIndexBuffer * D3dSystem::createIndsIndices( ULONG const ulModelWidth, ULONG const ulModelHeight )
 {
-	ULONG   const ulNrOfRects   = ulModelWidth * ulModelHeight;
-	ULONG   const ulNrOfIndices = 6 * ulNrOfRects;
-	ULONG * const pulIndices    = new ULONG[ulNrOfIndices];
-	ULONG *       pulIndexRun   = pulIndices;
-	ULONG   const ulStop        = ulNrOfRects * 4;
+	bool    const HEXAGON = TRUE;
+	ULONG   const ulVerticesPerPrimitive  = HEXAGON ? 6 : 4; // Hexagon has 6 vertices, rectangle has 4
+	ULONG   const ulTrianglesPerPrimitive = HEXAGON ? 4 : 2; // Hexagon is made of 4 triangles, rect of 2 triangles
+	ULONG   const ulNrOfPrimitives        = ulModelWidth * ulModelHeight;
+	ULONG   const ulNrOfIndices           = 3 * ulTrianglesPerPrimitive * ulNrOfPrimitives;
+	ULONG * const pulIndices              = new ULONG[ulNrOfIndices];
+	ULONG *       pulIndexRun             = pulIndices;
+	ULONG   const ulStop                  = ulNrOfPrimitives * ulVerticesPerPrimitive;
 
-	for ( ULONG ulBase = 0; ulBase < ulStop;  ulBase += 4 ) 
+	for ( ULONG ulBase = 0; ulBase < ulStop; ulBase += ulVerticesPerPrimitive ) 
+	if ( HEXAGON )
 	{
-		*pulIndexRun++ = ulBase + 0;
-		*pulIndexRun++ = ulBase + 1;
-		*pulIndexRun++ = ulBase + 3;
-		*pulIndexRun++ = ulBase + 1;
-		*pulIndexRun++ = ulBase + 2;
-		*pulIndexRun++ = ulBase + 3;
+		* pulIndexRun++ = ulBase + 0;
+		* pulIndexRun++ = ulBase + 1;
+		* pulIndexRun++ = ulBase + 3;
+
+		* pulIndexRun++ = ulBase + 3;
+		* pulIndexRun++ = ulBase + 5;
+		* pulIndexRun++ = ulBase + 4;
+
+		* pulIndexRun++ = ulBase + 4;
+		* pulIndexRun++ = ulBase + 2;
+		* pulIndexRun++ = ulBase + 0;
+
+		* pulIndexRun++ = ulBase + 0;
+		* pulIndexRun++ = ulBase + 3;
+		* pulIndexRun++ = ulBase + 4;
+	}
+	else
+	{
+		* pulIndexRun++ = ulBase + 0;
+		* pulIndexRun++ = ulBase + 1;
+		* pulIndexRun++ = ulBase + 3;
+
+		* pulIndexRun++ = ulBase + 1;
+		* pulIndexRun++ = ulBase + 2;
+		* pulIndexRun++ = ulBase + 3;
 	}
 
-	D3dIndexBuffer * const pRes = prepareIndices( pulIndices, ulNrOfIndices );
+	D3dIndexBuffer * const pIndexBuffer = prepareIndices( pulIndices, ulNrOfIndices );
 
 	delete[] pulIndices;
 
-	return pRes;
- }
+	return pIndexBuffer;
+}
 
 D3dIndexBuffer * D3dSystem::createStripIndices( ULONG const ulModelWidth, ULONG const ulModelHeight )
 {
