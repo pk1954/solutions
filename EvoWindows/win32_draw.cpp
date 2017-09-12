@@ -49,7 +49,7 @@ class DrawFrame::drawBackground : public drawGridPointFunc
 public:
     drawBackground
     ( 
-        EvolutionModelData          const *       pModel,
+        EvolutionModelData const *       pModel,
         DrawFrame                * const pDraw, 
         GetIntValueFunctor const &       getIntFunctor
     ) :
@@ -62,7 +62,7 @@ public:
     {
         int   const iValue  = ( * m_pGetIntFunctor )( gp );
         DWORD const dwColor = m_pDraw->getBackgroundColor( iValue );
-        m_pD3dBuffer->AddBackgroundRect( m_pFrameBuffer->Grid2PixelPos( gp ), dwColor, m_fPxSize );
+        m_pD3dBuffer->AddBackgroundPrimitive( m_pFrameBuffer->Grid2PixelPos( gp ), dwColor, m_fPxSize );
 		return false;
     }
 
@@ -146,7 +146,7 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
         m_pD3dBuffer->StartFrame( );
 
         Apply2Grid( & drawBackground( m_pModelWork, this, m_pDspOptWindow->GetDisplayFunctor( ) ) );
-        m_pD3dBuffer->RenderVertices( );
+        m_pD3dBuffer->RenderBackground( );
 
         if ( m_pDspOptWindow->AreIndividualsVisible( ) )
         {
@@ -155,7 +155,7 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
             drawPOI( gpPoi );
             rcGrid.ClipToGrid( );
             drawIndividuals( rcGrid );
-            m_pD3dBuffer->RenderPrimitives( ); 
+            m_pD3dBuffer->RenderIndividuals( ); 
 
             if ( m_pFrameBuffer->GetFieldSize() >= 96 )
                 drawText( rcGrid, gpPoi );
@@ -177,19 +177,19 @@ void DrawFrame::drawPOI( GridPoint const & gpPoi )
     {
         PixelPoint const ptCenter = m_pFrameBuffer->Grid2PixelPosCenter( gpPoi );
 
-        m_pD3dBuffer->AddRect( ptCenter, CLR_WHITE, static_cast<float>(m_pFrameBuffer->GetFieldSize()) * 0.50f );   // white frame for POI
-        m_pD3dBuffer->AddRect( ptCenter, CLR_BLACK, static_cast<float>(m_pFrameBuffer->GetFieldSize()) * 0.45f );   // black frame for POI
+        m_pD3dBuffer->AddIndividualPrimitive( ptCenter, CLR_WHITE, static_cast<float>(m_pFrameBuffer->GetFieldSize()) * 0.50f );   // white frame for POI
+        m_pD3dBuffer->AddIndividualPrimitive( ptCenter, CLR_BLACK, static_cast<float>(m_pFrameBuffer->GetFieldSize()) * 0.45f );   // black frame for POI
 
         PlannedActivity const & planPoi = m_pCore->GetPlan( );
         if ( planPoi.IsValid( ) )
         {
             GridPoint const gpTarget = planPoi.GetTarget( );
             if ( gpTarget.IsNotNull( ) )
-                m_pD3dBuffer->AddRect( m_pFrameBuffer->Grid2PixelPosCenter( gpTarget ), CLR_GREY, static_cast<float>( m_pFrameBuffer->GetFieldSize( ) ) * 0.45f );   // mark target
+                m_pD3dBuffer->AddIndividualPrimitive( m_pFrameBuffer->Grid2PixelPosCenter( gpTarget ), CLR_GREY, static_cast<float>( m_pFrameBuffer->GetFieldSize( ) ) * 0.45f );   // mark target
 
             GridPoint const gpPartner = planPoi.GetPartner( );
             if ( gpPartner.IsNotNull( ) )
-                m_pD3dBuffer->AddRect( m_pFrameBuffer->Grid2PixelPosCenter( gpPartner ), CLR_GREY, static_cast<float>( m_pFrameBuffer->GetFieldSize( ) ) * 0.45f );   // mark target
+                m_pD3dBuffer->AddIndividualPrimitive( m_pFrameBuffer->Grid2PixelPosCenter( gpPartner ), CLR_GREY, static_cast<float>( m_pFrameBuffer->GetFieldSize( ) ) * 0.45f );   // mark target
         }
     }
 }
@@ -208,7 +208,7 @@ void DrawFrame::drawIndividuals( GridRect const & rect  )
         {
             COLORREF color;
             if ( m_pDraw->getIndividualColor( gp, color ) )
-                m_pD3dBuffer->AddHexagon( m_pFrameBuffer->Grid2PixelPosCenter( gp ), color, m_fHalfSizeInd );
+                m_pD3dBuffer->AddIndividualPrimitive( m_pFrameBuffer->Grid2PixelPosCenter( gp ), color, m_fHalfSizeInd );
 			return false;
         }
 
@@ -233,20 +233,7 @@ void DrawFrame::drawIndividuals( GridRect const & rect  )
 
 COLORREF DrawFrame::getTextColor( GridPoint const & gp ) const
 {
-	COLORREF colText = CLR_WHITE;
-/*	
-	COLORREF colBackground;
-	if ( getIndividualColor( gp, colBackground ) )
-	{
-		DWORD R = (colBackground & 0x00FF0000) >> 16;
-		DWORD G = (colBackground & 0x0000FF00) >>  8;
-		DWORD B = (colBackground & 0x000000FF);
-
-		if ( ( 3 * R + 2 * G + B ) > 7 * 0x7F )
-			colText = CLR_BLACK;
-	}
-*/
-	return colText;
+	return CLR_WHITE;
 }
 
 void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )

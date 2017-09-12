@@ -58,6 +58,9 @@ public:
     bool const operator>= (GRID_COORD const i) const { return (x >= i) || (y >= i); }
     bool const operator>  (GRID_COORD const i) const { return (x >  i) || (y >  i); }
 
+	bool IsEvenCol( ) const { return x % 2 == 0; }
+	bool IsOddCol ( ) const { return x % 2 != 0; }
+
     static GRID_COORD const GRID_WIDTH  = 200;
     static GRID_COORD const GRID_HEIGHT = 100;
     static int        const GRID_AREA   = GRID_WIDTH * GRID_HEIGHT;

@@ -26,12 +26,10 @@ public:
 
     void StartFrame( );
     void ResetFont( int const );
-    void AddRect          ( PixelPoint const &, DWORD const, float const );    
-    void AddHexagon       ( PixelPoint const &, DWORD const, float const );    
-    void AddBackgroundRect( PixelPoint const &, DWORD, float );    
-    void AddVertex        ( PixelPoint const &, DWORD const );
-    void RenderPrimitives( );
-    void RenderVertices( );
+    void AddIndividualPrimitive( PixelPoint const &, DWORD const, float const );    
+    void AddBackgroundPrimitive( PixelPoint const &, DWORD const, float const );    
+    void RenderIndividuals( );
+    void RenderBackground( );
     void RenderTranspRect( PixelRect const &, DWORD const );
     void D3D_DrawText( PixelRect, wstring const &, D3DCOLOR );
     void EndFrame( );
@@ -49,8 +47,8 @@ private:
 	ULONG const m_ulMaxNrOfPrimitives;
     ULONG const m_ulNrOfVertices;
 
-    VertexBuffer m_VertexBuffer;
-    VertexBuffer m_RectBuffer;
+    VertexBuffer m_VertBufStripMode;
+    VertexBuffer m_VertBufPrimitives;
 
     D3dSystem             * m_d3d;
     IDirect3DDevice9      * m_d3d_device;
@@ -65,8 +63,11 @@ private:
     static D3DXFONT_DESC    m_d3dx_font_desc;  // identical for all buffers, even on systems with multiple displays
 
     void setFont( );
+    void addRectangle( float const, float const, DWORD const, float const );    
+    void addHexagon  ( float const, float const, DWORD const, float const, float const );    
     void addRect2Buffer( float const, float const, float const, float const, DWORD const );
-    void renderTriangleStrip( VertexBuffer const &, D3dIndexBuffer const * const ) const;
+    void renderTriangleStrip( ) const;
+    void renderPrimitives( );
     void prepareTranspMode( );
     void finishTranspMode( );
 };

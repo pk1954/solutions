@@ -15,7 +15,7 @@ public:
     bool       const operator!= ( PixelPoint const & a ) { return ( x != a.x ) || ( y != a.y ); };
 
     PixelPoint const operator+= ( PixelPoint const & a ) { x += a.x; y += a.y; return *this; };
-    PixelPoint const operator-= (PixelPoint const & a) { x -= a.x; y -= a.y; return *this; };
+    PixelPoint const operator-= ( PixelPoint const & a) { x -= a.x; y -= a.y; return *this; };
 
     PixelPoint const operator+= (long const l) { x += l; y += l; return *this; };
     PixelPoint const operator-= (long const l) { x -= l; y -= l; return *this; };

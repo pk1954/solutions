@@ -37,10 +37,26 @@ public:
     short      GetFieldSize ( ) const { return m_sFieldSize; };
 
     GridPoint  Pixel2GridSize( PixelPoint const & pp ) const { return GridPoint( pp.x / m_sFieldSize, pp.y / m_sFieldSize ); }
-    PixelPoint Grid2PixelSize( GridPoint  const & gp ) const { long const lFS = m_sFieldSize; return PixelPoint(gp.x * lFS, gp.y * lFS); }
+    PixelPoint Grid2PixelSize( GridPoint  const & gp ) const 
+	{ 
+		long   const lFS    = m_sFieldSize; 
+		double const fDistX = static_cast<double>( lFS ) * sqrt( 3 ) / 2 * static_cast<double>( gp.x );
+		long   const lDistX = static_cast<long>( fDistX + 0.5 );
+		return PixelPoint( lDistX, gp.y * lFS ); 
+	}
 
-    GridPoint  Pixel2GridPos ( PixelPoint const & pp ) const { return Pixel2GridSize( pp   + m_pixOffset ); }
-    PixelPoint Grid2PixelPos ( GridPoint  const & gp ) const { return Grid2PixelSize( gp ) - m_pixOffset;   }
+    GridPoint  Pixel2GridPos ( PixelPoint const & pp ) const 
+	{ 
+		return Pixel2GridSize( pp + m_pixOffset ); 
+	}
+
+    PixelPoint Grid2PixelPos ( GridPoint const & gp ) const 
+	{ 
+		PixelPoint ppRes = Grid2PixelSize( gp ) - m_pixOffset;
+		if ( gp.IsOddCol( ) )
+			ppRes.y -= m_sFieldSize / 2 ;
+		return ppRes;
+	}
 
     GridCircle Pixel2GridCircle( PixelPoint const & pntCenter, short const sRadius ) const { return GridCircle( Pixel2GridPos( pntCenter ), sRadius / m_sFieldSize ); }
 

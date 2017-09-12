@@ -19,7 +19,7 @@ public:
     IDirect3DDevice9 * GetDevice     ( void );
 
     D3dIndexBuffer const * GetBgIndexBufferStripMode( )    const { return m_d3d_pIndexBufBgStripMode;    };
-//    D3dIndexBuffer const * GetBgIndexBufferNonStripMode( ) const { return m_d3d_pIndexBufBgNonStripMode; };
+//  D3dIndexBuffer const * GetBgIndexBufferNonStripMode( ) const { return m_d3d_pIndexBufBgNonStripMode; };
     D3dIndexBuffer const * GetIndsIndexBuffer( )           const { return m_d3d_pIndexBufIndividuals;    };
 
 private:

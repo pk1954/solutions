@@ -150,8 +150,8 @@ D3dIndexBuffer * D3dSystem::prepareIndices( ULONG const * const pulIndex, ULONG 
 D3dIndexBuffer * D3dSystem::createIndsIndices( ULONG const ulModelWidth, ULONG const ulModelHeight )
 {
 	bool    const HEXAGON = TRUE;
-	ULONG   const ulVerticesPerPrimitive  = HEXAGON ? 6 : 4; // Hexagon has 6 vertices, rectangle has 4
 	ULONG   const ulTrianglesPerPrimitive = HEXAGON ? 4 : 2; // Hexagon is made of 4 triangles, rect of 2 triangles
+	ULONG   const ulVerticesPerPrimitive  = HEXAGON ? 6 : 4; // Hexagon has 6 vertices, rectangle has 4
 	ULONG   const ulNrOfPrimitives        = ulModelWidth * ulModelHeight;
 	ULONG   const ulNrOfIndices           = 3 * ulTrianglesPerPrimitive * ulNrOfPrimitives;
 	ULONG * const pulIndices              = new ULONG[ulNrOfIndices];
