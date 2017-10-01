@@ -100,7 +100,7 @@ DrawFrame::DrawFrame
     m_aClutStrat[ static_cast<int>( tStrategyId::cooperateAlways )].SetColorHi( RGB(127, 255,   0) );
     m_aClutStrat[ static_cast<int>( tStrategyId::tit4tat )        ].SetColorHi( RGB(255,  50,  50) );
 
-    m_pD3dBuffer = new D3dBuffer( hWnd, GridPoint::GRID_AREA, tTesselation::HEXAGON );
+    m_pD3dBuffer = new D3dBuffer( hWnd, GridPoint::GRID_AREA );
 	m_clutBackground.Allocate( MAX_BG_COLOR );    // default is grey scale lookup table with entries 0 .. 255
     SetIndDimmMode( tBoolOp::opFalse );
 }

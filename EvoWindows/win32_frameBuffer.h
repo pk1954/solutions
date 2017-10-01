@@ -22,7 +22,7 @@ public:
     static short const DEFAULT_FIELD_SIZE  =    8;
     static short const MAXIMUM_FIELD_SIZE  = 1024;
 
-    FrameBuffer( HWND const, short const, StatusBar * const, EvolutionCore *, EvolutionModelData * const );
+    FrameBuffer( HWND const, SHORT const, StatusBar * const, EvolutionCore *, EvolutionModelData * const, BOOL const );
     ~FrameBuffer();
 
     BOOL CenterPoi( );
@@ -39,10 +39,17 @@ public:
     GridPoint  Pixel2GridSize( PixelPoint const & pp ) const { return GridPoint( pp.x / m_sFieldSize, pp.y / m_sFieldSize ); }
     PixelPoint Grid2PixelSize( GridPoint  const & gp ) const 
 	{ 
-		long   const lFS    = m_sFieldSize; 
-		double const fDistX = static_cast<double>( lFS ) * sqrt( 3 ) / 2 * static_cast<double>( gp.x );
-		long   const lDistX = static_cast<long>( fDistX + 0.5 );
-		return PixelPoint( lDistX, gp.y * lFS ); 
+		long const lFS = m_sFieldSize; 
+		if ( m_bHexagon )
+		{
+			static double const SQRT3_HALF = sqrt( 3 ) / 2;
+
+			double const fDistX = static_cast<double>( lFS ) * SQRT3_HALF * static_cast<double>( gp.x );
+			long   const lDistX = static_cast<long>( fDistX + 0.5 );
+			return PixelPoint( lDistX, gp.y * lFS ); 
+		}
+		else
+		    return PixelPoint( gp.x * lFS, gp.y * lFS );
 	}
 
     GridPoint  Pixel2GridPos ( PixelPoint const & pp ) const 
@@ -53,8 +60,11 @@ public:
     PixelPoint Grid2PixelPos ( GridPoint const & gp ) const 
 	{ 
 		PixelPoint ppRes = Grid2PixelSize( gp ) - m_pixOffset;
-		if ( gp.IsOddCol( ) )
-			ppRes.y -= m_sFieldSize / 2 ;
+		if ( m_bHexagon )
+		{
+			if ( gp.IsOddCol( ) )
+				ppRes.y -= m_sFieldSize / 2 ;
+		}
 		return ppRes;
 	}
 
@@ -81,12 +91,13 @@ private:
 
     PixelPoint getCenterOffset( GridRect const & );
 
-    PixelPoint      m_pixOffset;
-    short           m_sFieldSize;         // main and worker thread
-    SmoothMove      m_smoothMove;
-    BOOL            m_bMoving;
-    HWND            m_hWnd;               // main thread only
-    StatusBar     * m_pStatusBar; 
-    EvolutionCore * m_pCore;
-    EvolutionModelData     * m_pModelWork;
+    PixelPoint           m_pixOffset;
+    SHORT                m_sFieldSize;         // main and worker thread
+    SmoothMove           m_smoothMove;
+    BOOL                 m_bMoving;
+	BOOL                 m_bHexagon;
+    HWND                 m_hWnd;               // main thread only
+    StatusBar          * m_pStatusBar; 
+    EvolutionCore      * m_pCore;
+    EvolutionModelData * m_pModelWork;
 };

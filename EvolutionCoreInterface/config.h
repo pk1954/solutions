@@ -74,6 +74,8 @@ public:
         interactionPayOff_S,  // Der Spieler wurde betrogen, er bekommt S (Suckers Payoff). 
         interactionPayOff_T,  // Der Spieler hat den anderen ausgenutzt und erhält T (Temptation).
         interactionPayOff_P,  // Gegenseitige Defektion führt nur zu P (Penalty). 
+		// misc
+		nrOfNeighbors
     };
 
     static bool  UseHistorySystem( ) { return GetConfigValue( tId::maxGeneration ) > 0; };

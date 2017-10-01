@@ -33,21 +33,21 @@ D3DXFONT_DESC D3dBuffer::m_d3dx_font_desc =
 
 D3dBuffer::D3dBuffer
 ( 
-	HWND         const hWnd, 
-	ULONG        const ulNrOfPoints,
-	tTesselation const tesselationMode
-) :
-	m_tesselationMode( tesselationMode ),
-	m_ulTrianglesPerPrimitive( (m_tesselationMode == tTesselation::HEXAGON) ? 4 : 2 ), // Hexagon is made of 4 triangles, rect of 2 triangles
-	m_ulVerticesPerPrimitive ( (m_tesselationMode == tTesselation::HEXAGON) ? 6 : 4 ), // Hexagon has 6 vertices, rect has 4
-    m_ulMaxNrOfPrimitives( ulNrOfPoints ),
-    m_ulNrOfVertices( m_ulMaxNrOfPrimitives * m_ulVerticesPerPrimitive ),
-    m_VertBufStripMode( ulNrOfPoints ),
-    m_VertBufPrimitives( m_ulNrOfVertices )
+	HWND  const hWnd, 
+	ULONG const ulNrOfPoints
+) 
 {
     HRESULT hres;
 
-    m_d3d        = D3dSystem::GetSystem( );
+    m_d3d = D3dSystem::GetSystem( );
+
+	m_ulTrianglesPerPrimitive = m_d3d->GetHexagonMode( ) ? 4 : 2; // Hexagon is made of 4 triangles, rect of 2 triangles
+	m_ulVerticesPerPrimitive  = m_d3d->GetHexagonMode( ) ? 6 : 4; // Hexagon has 6 vertices, rect has 4
+    m_ulMaxNrOfPrimitives     = ulNrOfPoints;
+    m_ulNrOfVertices          = m_ulMaxNrOfPrimitives * m_ulVerticesPerPrimitive;
+    m_pVertBufStripMode       = new VertexBuffer( ulNrOfPoints );
+    m_pVertBufPrimitives      = new VertexBuffer( m_ulNrOfVertices );
+
     m_d3d_device = m_d3d->GetDevice( );                                  assert( m_d3d_device != nullptr );
     hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, FALSE );        assert( hres == D3D_OK );
     hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE ); assert( hres == D3D_OK );
@@ -129,9 +129,9 @@ void D3dBuffer::StartFrame( )
     hres = m_d3d_device->BeginScene( );                                         assert(hres == D3D_OK);
 
     if ( m_bStripMode )
-        m_VertBufStripMode.ResetVertexBuffer();
+        m_pVertBufStripMode->ResetVertexBuffer();
 
-    m_VertBufPrimitives.ResetVertexBuffer();
+    m_pVertBufPrimitives->ResetVertexBuffer();
 
     setFont( );   
 }
@@ -169,10 +169,10 @@ void D3dBuffer::ResetFont( int const nPointSize )
 
 void D3dBuffer::addRect2Buffer( float const fWest, float const fNorth, float const fEast, float const fSouth, DWORD const dwColor )
 {    
-    m_VertBufPrimitives.AddVertex( fWest, fNorth, dwColor );
-    m_VertBufPrimitives.AddVertex( fEast, fNorth, dwColor );
-    m_VertBufPrimitives.AddVertex( fEast, fSouth, dwColor );
-    m_VertBufPrimitives.AddVertex( fWest, fSouth, dwColor );
+    m_pVertBufPrimitives->AddVertex( fWest, fNorth, dwColor );
+    m_pVertBufPrimitives->AddVertex( fEast, fNorth, dwColor );
+    m_pVertBufPrimitives->AddVertex( fEast, fSouth, dwColor );
+    m_pVertBufPrimitives->AddVertex( fWest, fSouth, dwColor );
 }
 
 void D3dBuffer::addRectangle( float const fPtPosx, float const fPtPosy, DWORD const dwColor, float const fPixSize )
@@ -189,40 +189,44 @@ void D3dBuffer::addRectangle( float const fPtPosx, float const fPtPosy, DWORD co
 
 void D3dBuffer::addHexagon( float const fPtPosx, float const fPtPosy, DWORD const dwColor, float const fPixSizeX, float const fPixSizeY )
 {
-	m_VertBufPrimitives.AddVertex( fPtPosx - fPixSizeX     - 0.5, fPtPosy,                 dwColor );     // west
-	m_VertBufPrimitives.AddVertex( fPtPosx - fPixSizeX / 2 - 0.5, fPtPosy - fPixSizeY / 2, dwColor );     // north west
-	m_VertBufPrimitives.AddVertex( fPtPosx - fPixSizeX / 2 - 0.5, fPtPosy + fPixSizeY / 2, dwColor );     // south west
-	m_VertBufPrimitives.AddVertex( fPtPosx + fPixSizeX / 2 + 0.5, fPtPosy - fPixSizeY / 2, dwColor );     // north east
- 	m_VertBufPrimitives.AddVertex( fPtPosx + fPixSizeX / 2 + 0.5, fPtPosy + fPixSizeY / 2, dwColor );     // south east
-	m_VertBufPrimitives.AddVertex( fPtPosx + fPixSizeX     + 0.5, fPtPosy,                 dwColor );     // east
+	m_pVertBufPrimitives->AddVertex( fPtPosx - fPixSizeX     - 0.5f, fPtPosy,                 dwColor );     // west
+	m_pVertBufPrimitives->AddVertex( fPtPosx - fPixSizeX / 2 - 0.5f, fPtPosy - fPixSizeY / 2, dwColor );     // north west
+	m_pVertBufPrimitives->AddVertex( fPtPosx - fPixSizeX / 2 - 0.5f, fPtPosy + fPixSizeY / 2, dwColor );     // south west
+	m_pVertBufPrimitives->AddVertex( fPtPosx + fPixSizeX / 2 + 0.5f, fPtPosy - fPixSizeY / 2, dwColor );     // north east
+ 	m_pVertBufPrimitives->AddVertex( fPtPosx + fPixSizeX / 2 + 0.5f, fPtPosy + fPixSizeY / 2, dwColor );     // south east
+	m_pVertBufPrimitives->AddVertex( fPtPosx + fPixSizeX     + 0.5f, fPtPosy,                 dwColor );     // east
 }
 
 void D3dBuffer::AddIndividualPrimitive( PixelPoint const & ptPos, DWORD const dwColor, float const fPixSize )
 {
+	static float const SQRT3 = static_cast<float>( sqrt( 3 ) );
+
     float const fPtPosx = static_cast<float>( ptPos.x );
     float const fPtPosy = static_cast<float>( ptPos.y );
 
-	if ( m_tesselationMode == tTesselation::HEXAGON )
-		addHexagon( fPtPosx, fPtPosy, dwColor, fPixSize, sqrt( 3 ) * fPixSize );
+	if ( m_d3d->GetHexagonMode( ) )
+		addHexagon( fPtPosx, fPtPosy, dwColor, fPixSize, SQRT3 * fPixSize );
 	else
 		addRectangle( fPtPosx, fPtPosy, dwColor, fPixSize );
 }
 
 void D3dBuffer::AddBackgroundPrimitive( PixelPoint const & ptPos, DWORD const dwColor, float const fPixSize )
 {
-    float const fPtPosx      = static_cast<float>( ptPos.x );
+	static float const INVERSE_SQRT3 = static_cast<float>( 1 / sqrt( 3 ) );
+
+	float const fPtPosx      = static_cast<float>( ptPos.x );
     float const fPtPosy      = static_cast<float>( ptPos.y );
 	float const fPixSizeHalf = fPixSize / 2;
 
     if ( m_bStripMode )
     {
-        m_VertBufStripMode.AddVertex( fPtPosx + fPixSizeHalf, fPtPosy + fPixSizeHalf, dwColor );
+        m_pVertBufStripMode->AddVertex( fPtPosx + fPixSizeHalf, fPtPosy + fPixSizeHalf, dwColor );
     }
     else
     {
-		if ( m_tesselationMode == tTesselation::HEXAGON )
+		if ( m_d3d->GetHexagonMode( ) )
 		{
-			addHexagon( fPtPosx + fPixSizeHalf, fPtPosy + fPixSizeHalf, dwColor, fPixSize / sqrt( 3 ), fPixSize );
+			addHexagon( fPtPosx + fPixSizeHalf, fPtPosy + fPixSizeHalf, dwColor, fPixSize * INVERSE_SQRT3, fPixSize );
 		}
 		else
 		{
@@ -241,7 +245,7 @@ void D3dBuffer::prepareTranspMode( )
     m_d3d_device->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
     m_d3d_device->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );    
 
-    m_VertBufPrimitives.ResetVertexBuffer();
+    m_pVertBufPrimitives->ResetVertexBuffer();
 }
 
 void D3dBuffer::finishTranspMode( )
@@ -284,10 +288,11 @@ void D3dBuffer::RenderIndividuals( )
 
 void D3dBuffer::renderTriangleStrip( ) const
 {
-    assert( m_VertBufStripMode.GetNrOfVertices() > 0 );
+    assert( m_pVertBufStripMode->GetNrOfVertices() > 0 );
     assert( m_d3d_device != nullptr );
 
-    m_VertBufStripMode.LoadVertices( m_d3d_vertexBuffer, m_d3d_device );
+    m_pVertBufStripMode->LoadVertices( m_d3d_vertexBuffer, m_d3d_device );
+
     D3dIndexBuffer const * const iBuf                = m_d3d->GetBgIndexBufferStripMode();
     ULONG          const         ulMaxNrOfPrimitives = iBuf->SetIndices( m_d3d_device );
     HRESULT        const         hres                = m_d3d_device->DrawIndexedPrimitive
@@ -295,7 +300,7 @@ void D3dBuffer::renderTriangleStrip( ) const
 		D3DPT_TRIANGLESTRIP, 
 		0, 
 		0, 
-		m_VertBufStripMode.GetNrOfVertices( ), 
+		m_pVertBufStripMode->GetNrOfVertices( ), 
 		0, 
 		ulMaxNrOfPrimitives 
 	);
@@ -305,11 +310,11 @@ void D3dBuffer::renderTriangleStrip( ) const
 
 void D3dBuffer::renderPrimitives( )
 {
-	ULONG const ulNrOfPrimitives = m_ulTrianglesPerPrimitive * m_VertBufPrimitives.GetNrOfVertices() / m_ulVerticesPerPrimitive;
+	ULONG const ulNrOfPrimitives = m_ulTrianglesPerPrimitive * m_pVertBufPrimitives->GetNrOfVertices() / m_ulVerticesPerPrimitive;
 	
 	if ( ulNrOfPrimitives > 0 )
     {
-        m_VertBufPrimitives.LoadVertices( m_d3d_vertexBuffer, m_d3d_device );
+        m_pVertBufPrimitives->LoadVertices( m_d3d_vertexBuffer, m_d3d_device );
         D3dIndexBuffer const * const iBuf                = m_d3d->GetIndsIndexBuffer();
         ULONG          const         ulMaxNrOfPrimitives = iBuf->SetIndices( m_d3d_device );
         HRESULT        const         hres                = m_d3d_device->DrawIndexedPrimitive
@@ -317,12 +322,12 @@ void D3dBuffer::renderPrimitives( )
 			D3DPT_TRIANGLELIST, 
 			0, 
 			0, 
-			m_VertBufPrimitives.GetNrOfVertices(), 
+			m_pVertBufPrimitives->GetNrOfVertices(), 
 			0, 
 			ulNrOfPrimitives 
 		); 
         assert( hres == D3D_OK ); 
-        m_VertBufPrimitives.ResetVertexBuffer();
+        m_pVertBufPrimitives->ResetVertexBuffer();
     }
 }
 

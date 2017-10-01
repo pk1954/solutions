@@ -13,14 +13,17 @@
 FrameBuffer::FrameBuffer
 ( 
     HWND                 const hWnd, 
-    short                const fs, 
+    SHORT                const fs, 
     StatusBar          * const pStatusBar,
     EvolutionCore      *       pCore,
-    EvolutionModelData * const pModel
+    EvolutionModelData * const pModel,
+	BOOL                 const bHexagon
 )
   : m_pixOffset ( ),
     m_sFieldSize( fs ),
     m_smoothMove(  ),
+	m_bMoving   ( FALSE ),
+	m_bHexagon  ( bHexagon ),
     m_hWnd      ( hWnd ), 
     m_pStatusBar( pStatusBar ),
     m_pCore     ( pCore ),

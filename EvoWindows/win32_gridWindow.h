@@ -40,8 +40,8 @@ public:
         StatusBar          * const,
         EvolutionCore      *, 
         EvolutionModelData *,
-        DWORD, 
-        short 
+        DWORD const, 
+        SHORT const
     );
 
     ~GridWindow( );

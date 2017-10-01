@@ -11,17 +11,11 @@
 #include "d3d_system.h"
 #include "d3d_vertexBuffer.h"
 
-enum class tTesselation
-{
-	RECTANGLE,
-	HEXAGON
-};
-
 class D3dBuffer
 {
 public:
 
-    D3dBuffer( HWND const, ULONG const, tTesselation const );
+    D3dBuffer( HWND const, ULONG const );
     ~D3dBuffer();
 
     void StartFrame( );
@@ -40,15 +34,13 @@ private:
     
     HWND m_hWnd;
 
-	tTesselation m_tesselationMode;
+    ULONG m_ulTrianglesPerPrimitive;
+	ULONG m_ulVerticesPerPrimitive;
+	ULONG m_ulMaxNrOfPrimitives;
+    ULONG m_ulNrOfVertices;
 
-    ULONG const m_ulTrianglesPerPrimitive;
-	ULONG const m_ulVerticesPerPrimitive;
-	ULONG const m_ulMaxNrOfPrimitives;
-    ULONG const m_ulNrOfVertices;
-
-    VertexBuffer m_VertBufStripMode;
-    VertexBuffer m_VertBufPrimitives;
+    VertexBuffer * m_pVertBufStripMode;
+    VertexBuffer * m_pVertBufPrimitives;
 
     D3dSystem             * m_d3d;
     IDirect3DDevice9      * m_d3d_device;

@@ -10,14 +10,16 @@
 //lint -esym( 613, D3dSystem::m_d3d_device )   possible use of null pointer
 
 D3dSystem D3dSystem::_d3d_;
+BOOL      D3dSystem::m_bHexagon;
 
 D3dSystem * D3dSystem::GetSystem( void )
 {
 	return & D3dSystem::_d3d_;
 }
 
-void D3dSystem::Create( HWND const hWndApp, ULONG const ulWidth, ULONG const ulHeight )
+void D3dSystem::Create( HWND const hWndApp, ULONG const ulWidth, ULONG const ulHeight, BOOL const bHexagon )
 {
+	m_bHexagon                 = bHexagon;
 	_d3d_.m_d3d_device         = nullptr;
 	_d3d_.m_d3d_object         = Direct3DCreate9(D3D_SDK_VERSION); assert( _d3d_.m_d3d_object != nullptr );
 	_d3d_.m_iNrSwapChainsInUse = 0;
@@ -149,9 +151,8 @@ D3dIndexBuffer * D3dSystem::prepareIndices( ULONG const * const pulIndex, ULONG 
 
 D3dIndexBuffer * D3dSystem::createIndsIndices( ULONG const ulModelWidth, ULONG const ulModelHeight )
 {
-	bool    const HEXAGON = TRUE;
-	ULONG   const ulTrianglesPerPrimitive = HEXAGON ? 4 : 2; // Hexagon is made of 4 triangles, rect of 2 triangles
-	ULONG   const ulVerticesPerPrimitive  = HEXAGON ? 6 : 4; // Hexagon has 6 vertices, rectangle has 4
+	ULONG   const ulTrianglesPerPrimitive = m_bHexagon ? 4 : 2; // Hexagon is made of 4 triangles, rect of 2 triangles
+	ULONG   const ulVerticesPerPrimitive  = m_bHexagon ? 6 : 4; // Hexagon has 6 vertices, rectangle has 4
 	ULONG   const ulNrOfPrimitives        = ulModelWidth * ulModelHeight;
 	ULONG   const ulNrOfIndices           = 3 * ulTrianglesPerPrimitive * ulNrOfPrimitives;
 	ULONG * const pulIndices              = new ULONG[ulNrOfIndices];
@@ -159,7 +160,7 @@ D3dIndexBuffer * D3dSystem::createIndsIndices( ULONG const ulModelWidth, ULONG c
 	ULONG   const ulStop                  = ulNrOfPrimitives * ulVerticesPerPrimitive;
 
 	for ( ULONG ulBase = 0; ulBase < ulStop; ulBase += ulVerticesPerPrimitive ) 
-	if ( HEXAGON )
+	if ( m_bHexagon )
 	{
 		* pulIndexRun++ = ulBase + 0;
 		* pulIndexRun++ = ulBase + 1;

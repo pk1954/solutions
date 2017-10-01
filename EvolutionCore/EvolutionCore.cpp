@@ -18,7 +18,7 @@ EvolutionModelData * EvolutionModelData::CreateModelData( )
 
 void EvolutionCore::InitClass( )
 {
-    Grid::InitClass( );
+    Grid::InitClass(  );
 }
 
 EvolutionCore * EvolutionCore::CreateCore( )

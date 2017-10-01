@@ -89,7 +89,7 @@ void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization o
     Apply2Grid( & initNeighbors( ) );    // initialization of grid variables which never change after initialization
 }
 
-bool Neighborhood::Apply2All( GridPoint gpCenter, GridPoint_Functor  & func ) 
+bool Neighborhood::Apply2All( GridPoint gpCenter, GridPoint_Functor & func ) 
 {
 	for ( auto n: getNeighbors( gpCenter ) )
 	{

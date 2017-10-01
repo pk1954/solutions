@@ -42,7 +42,7 @@ void Grid::InitClass( )
     Genome::InitClass( );
     GridField::InitClass( );
     Individual::InitClass( );
-    Neighborhood::InitClass( 6 );
+    Neighborhood::InitClass( Config::GetConfigValue( Config::tId::nrOfNeighbors ) );
 
     m_iFoodGrowthRate              = Config::GetConfigValue( Config::tId::growthRateFood );
     m_iBasicFoodConsumption        = Config::GetConfigValue( Config::tId::energyConsumptionBasicRate );

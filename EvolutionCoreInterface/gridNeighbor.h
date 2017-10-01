@@ -63,7 +63,7 @@ public:
 private:
 	typedef vector< GridPoint >                            NEIGHBORS;
 	typedef array < NEIGHBORS,    GridPoint::GRID_WIDTH  > NEIGHBOR_ROW;
-	typedef array < array < NEIGHBORS, GridPoint::GRID_WIDTH  >, GridPoint::GRID_HEIGHT > NEIGHBOR_GRID;
+	typedef array < NEIGHBOR_ROW, GridPoint::GRID_HEIGHT > NEIGHBOR_GRID;
 
 	static int             m_iNrOfNeighbors;
 	static NEIGHBOR_GRID * m_pGridNeighbors;

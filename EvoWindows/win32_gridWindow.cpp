@@ -45,9 +45,10 @@ void GridWindow::Start
     EvolutionCore      *       pCore,
     EvolutionModelData *       pModel,
     DWORD                const dwStyle,
-    short                const sFieldSize
+    SHORT                const sFieldSize
 )
 {
+	int  const iNrOfNeighbors = Config::GetConfigValue( Config::tId::nrOfNeighbors );
     HWND const hWnd = StartBaseWindow
     ( 
         hWndParent,
@@ -61,7 +62,8 @@ void GridWindow::Start
     m_pEditorWindow      = pEditorWindow;
     m_pGridRectSel       = pSelection;
     m_pFocusPoint        = pFocusPoint;
-    m_pFrameBuffer       = new FrameBuffer( hWnd, sFieldSize, pStatusBar, pCore, pModel );
+
+    m_pFrameBuffer       = new FrameBuffer( hWnd, sFieldSize, pStatusBar, pCore, pModel, iNrOfNeighbors == 6 );
     m_pDrawFrame         = new DrawFrame( hWnd, pCore, pModel, m_pFrameBuffer, pDspOptWindow, m_pGridRectSel );
     m_pDrawFrame->SetStripMode( tBoolOp::opTrue );
 }
