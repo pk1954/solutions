@@ -25,31 +25,49 @@ public:
     FrameBuffer( HWND const, SHORT const, StatusBar * const, EvolutionCore *, EvolutionModelData * const, BOOL const );
     ~FrameBuffer();
 
-    BOOL CenterPoi( );
-    void SetPoi  ( PixelPoint const & );
-    void MoveGrid( PixelPoint const &);
-    BOOL Zoom( BOOL );
-    BOOL SetFieldSize( short );
-    BOOL FitToRect( GridRect const & );
-
-    BOOL       IsPoiDefined ( ) const { return m_pCore->IsPoiDefined( ); };
-	PixelPoint FindPoiCenter( ) const { return Grid2PixelPosCenter( m_pCore->FindPOI( m_pModelWork ) ); };
-    short      GetFieldSize ( ) const { return m_sFieldSize; };
-
-    GridPoint  Pixel2GridSize( PixelPoint const & pp ) const { return GridPoint( pp.x / m_sFieldSize, pp.y / m_sFieldSize ); }
-    PixelPoint Grid2PixelSize( GridPoint  const & gp ) const 
+    BOOL IsPoiDefined ( ) const 
 	{ 
-		long const lFS = m_sFieldSize; 
+		return m_pCore->IsPoiDefined( ); 
+	};
+	
+	PixelPoint FindPoiCenter( ) const 
+	{ 
+		return Grid2PixelPosCenter( m_pCore->FindPOI( m_pModelWork ) ); 
+	};
+    
+	short GetFieldSize ( ) const 
+	{ 
+		return m_sFieldSize; 
+	};
+
+    GridPoint Pixel2GridSize( PixelPoint const & pp ) const 
+	{ 
 		if ( m_bHexagon )
 		{
-			static double const SQRT3_HALF = sqrt( 3 ) / 2;
+			static double const FACTOR = 2 / sqrt( 3 );
 
-			double const fDistX = static_cast<double>( lFS ) * SQRT3_HALF * static_cast<double>( gp.x );
-			long   const lDistX = static_cast<long>( fDistX + 0.5 );
-			return PixelPoint( lDistX, gp.y * lFS ); 
+			double const fDistX = FACTOR * (static_cast<double>( pp.x ) - 0.5) / static_cast<double>( m_sFieldSize );
+			long   const lDistX = static_cast<long>( fDistX );
+
+			return GridPoint( lDistX, pp.y / m_sFieldSize ); 
 		}
 		else
-		    return PixelPoint( gp.x * lFS, gp.y * lFS );
+			return GridPoint( pp.x / m_sFieldSize, pp.y / m_sFieldSize ); 
+	}
+
+	PixelPoint Grid2PixelSize( GridPoint  const & gp ) const 
+	{ 
+		if ( m_bHexagon )
+		{
+			static double const FACTOR = sqrt( 3 ) / 2;
+
+			double const fDistX = static_cast<double>( m_sFieldSize ) * FACTOR * static_cast<double>( gp.x );
+			long   const lDistX = static_cast<long>( fDistX + 0.5 );
+
+			return PixelPoint( lDistX, gp.y * m_sFieldSize ); 
+		}
+		else
+		    return PixelPoint( gp.x * m_sFieldSize, gp.y * m_sFieldSize );
 	}
 
     GridPoint  Pixel2GridPos ( PixelPoint const & pp ) const 
@@ -68,7 +86,25 @@ public:
 		return ppRes;
 	}
 
-    GridCircle Pixel2GridCircle( PixelPoint const & pntCenter, short const sRadius ) const { return GridCircle( Pixel2GridPos( pntCenter ), sRadius / m_sFieldSize ); }
+    GridCircle Pixel2GridCircle( PixelPoint const & pntCenter, short const sRadius ) const 
+	{ 
+		return GridCircle( Pixel2GridPos( pntCenter ), sRadius / m_sFieldSize ); 
+	}
+
+    KGridPoint Pixel2KGridPos( PixelPoint const & pp ) const 
+	{ 
+		return Pixel2KGridSize( pp + m_pixOffset, m_sFieldSize ); 
+	}
+
+    PixelPoint KGrid2PixelPos( KGridPoint const & kp ) const 
+	{ 
+		return KGrid2PixelSize( kp, m_sFieldSize ) - m_pixOffset; 
+	}
+    
+	PixelPoint Grid2PixelPosCenter( GridPoint  const & gp ) const 
+	{ 
+		return Grid2PixelPos( gp ) + m_sFieldSize / 2; 
+	}
 
     KGridRect  Pixel2KGridRect( PixelRect const & ) const;
     PixelRect  KGrid2PixelRect( KGridRect const & ) const; 
@@ -79,9 +115,12 @@ public:
     PixelPoint Pixel2PixelSize( PixelPoint const &, FrameBuffer const & ) const;
     PixelPoint Pixel2PixelPos ( PixelPoint const &, FrameBuffer const & ) const;
 
-    KGridPoint Pixel2KGridPos     ( PixelPoint const & pp ) const { return Pixel2KGridSize( pp + m_pixOffset, m_sFieldSize ); }
-    PixelPoint KGrid2PixelPos     ( KGridPoint const & kp ) const { return KGrid2PixelSize( kp, m_sFieldSize ) - m_pixOffset; }
-    PixelPoint Grid2PixelPosCenter( GridPoint  const & gp ) const { return Grid2PixelPos( gp ) + m_sFieldSize / 2; }
+    BOOL CenterPoi( );
+    void SetPoi  ( PixelPoint const & );
+    void MoveGrid( PixelPoint const &);
+    BOOL Zoom( BOOL );
+    BOOL SetFieldSize( short );
+    BOOL FitToRect( GridRect const & );
 
 private:
     BOOL isValidFieldSize( long const lNewFieldSize ) const 
