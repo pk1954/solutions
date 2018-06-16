@@ -6,6 +6,7 @@
 #include "Resource.h"
 #include "config.h"
 #include "pixelCoordinates.h"
+#include "EvolutionCore.h"
 #include "win32_util.h"
 #include "win32_status.h"
 #include "win32_draw.h"
@@ -63,8 +64,10 @@ void GridWindow::Start
     m_pGridRectSel       = pSelection;
     m_pFocusPoint        = pFocusPoint;
 	m_pStatusBar         = pStatusBar;
+	m_pCore              = pCore;
+	m_pModelWork         = pModel;
 
-    m_pPixelCoordinates  = new PixelCoordinates( sFieldSize, pCore, pModel, iNrOfNeighbors == 6 );
+    m_pPixelCoordinates  = new PixelCoordinates( sFieldSize, iNrOfNeighbors == 6 );
     m_pDrawFrame         = new DrawFrame( hWnd, pCore, pModel, m_pPixelCoordinates, pDspOptWindow, m_pGridRectSel );
     m_pDrawFrame->SetStripMode( tBoolOp::opTrue );
 }
@@ -81,6 +84,8 @@ GridWindow::~GridWindow( )
         exit( 1 );
     };
 
+	m_pModelWork    = nullptr;
+	m_pCore         = nullptr;
     m_pGWObserved   = nullptr;
     m_pEditorWindow = nullptr;
     m_pGridRectSel  = nullptr;
@@ -169,9 +174,9 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         if ( m_ptLast.x != LONG_MIN )  // last cursor pos stored in m_ptLast
         {
             PixelPoint ptOther = m_ptLast;
-            if ( m_pPixelCoordinates->IsPoiDefined() )
+            if ( m_pCore->IsPoiDefined() )
             {
-                PixelPoint const pixPointPoi = m_pPixelCoordinates->FindPoiCenter( );
+                PixelPoint const pixPointPoi = m_pPixelCoordinates->Grid2PixelPosCenter( m_pCore->FindPOI( m_pModelWork ) );
                 ptOther = pixPointPoi + pixPointPoi - ptCrsr;
             }
             setSelection( ptOther, ptCrsr ); 
@@ -218,9 +223,16 @@ void GridWindow::doPaint( )
         (void)EndPaint( &ps );
     }
 
-    if ( m_bMoveAllowed && m_pPixelCoordinates->IsPoiDefined( ) && !m_pPixelCoordinates->CenterPoi( Util::GetClRectCenter( GetWindowHandle( ) ) ) )
-        Invalidate( FALSE );    // repeat if POI is not in center 
-
+    if ( m_bMoveAllowed && m_pCore->IsPoiDefined( ) )
+	{
+		if ( ! m_pPixelCoordinates->CenterPoi
+		       ( 
+				   Util::GetClRectCenter( GetWindowHandle( ) ), 
+				   m_pCore->FindPOI( m_pModelWork )
+			   ) 
+		   )
+		   Invalidate( FALSE );    // repeat if POI is not in center 
+	}
     m_pPerformanceWindow->DisplayStop( );
 }
 
@@ -231,10 +243,22 @@ void GridWindow::resize()
 	m_pDrawFrame->Resize( );
 }
 
+PixelPoint GridWindow::getNewCenter( )
+{
+	return m_pCore->IsPoiDefined( ) 
+	       ? m_pPixelCoordinates->Grid2PixelPosCenter( m_pCore->FindPOI( m_pModelWork ) )
+	       : Util::GetClRectCenter( GetWindowHandle( ) );
+}
+
 void GridWindow::zoom( BOOL const bZoomIn )
 {
-	PixelPoint const pntClRectCenter = Util::GetClRectCenter( GetWindowHandle( ) );
-    (void)m_pPixelCoordinates->Zoom( bZoomIn, pntClRectCenter );
+    (void)m_pPixelCoordinates->Zoom( bZoomIn, getNewCenter() );
+	resize();
+}
+
+void GridWindow::setZoom(SHORT const fieldSize)
+{
+    (void)m_pPixelCoordinates->SetFieldSize( fieldSize, getNewCenter() );
 	resize();
 }
 
@@ -246,6 +270,22 @@ void GridWindow::fit( )
 		Util::GetClRectSize( GetWindowHandle( ) )
 	);
 	resize();
+}
+
+void GridWindow::setPOI( PixelPoint const pixPos ) 
+{
+    GridPoint const gpPoiNew = m_pPixelCoordinates->Pixel2GridPos( pixPos );
+    if ( gpPoiNew.IsInGrid( ) )
+    {
+        IndId const idPoiNew = m_pModelWork->GetId( gpPoiNew );
+        if ( idPoiNew.IsDefined( ) )
+        {    
+            if ( m_pCore->IsPoiId( idPoiNew ) )
+                m_pCore->ClearPoi( );           // same POI. deactivate POI
+            else
+                m_pCore->SetPoi( m_pModelWork, gpPoiNew );
+        }
+    }
 }
 
 LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -271,8 +311,8 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
                 break;
 
             case IDM_SET_ZOOM:
-                (void)m_pPixelCoordinates->SetFieldSize( static_cast<short>(lParam), Util::GetClRectCenter( GetWindowHandle( ) ) );
-                break;
+				setZoom( static_cast<SHORT>(lParam) );
+				break;
 
             case IDD_TOGGLE_STRIP_MODE:
                 m_pDrawFrame->SetStripMode( tBoolOp::opToggle );
@@ -283,7 +323,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
                 break;
 
             case IDM_SET_POI:
-                m_pPixelCoordinates->SetPoi( GetCrsrPosFromLparam( lParam ) );
+				setPOI( GetCrsrPosFromLparam( lParam ) );
                 m_pWorkThread->PostStopComputation( );
                 break;
 

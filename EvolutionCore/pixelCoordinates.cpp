@@ -5,46 +5,19 @@
 #include <algorithm>  // min/max templates
 #include "gridPoint.h"
 #include "pixelPoint.h"
-#include "EvolutionModelData.h"
-#include "EvolutionCore.h"
 #include "pixelCoordinates.h"
 
 PixelCoordinates::PixelCoordinates
 ( 
-    short                const fs, 
-    EvolutionCore      *       pCore,
-    EvolutionModelData * const pModel,
-	bool                 const bHexagon
+    short const fs, 
+	bool  const bHexagon
 )
   : m_pixOffset ( ),
     m_sFieldSize( fs ),
     m_smoothMove(  ),
 	m_bMoving   ( false ),
-	m_bHexagon  ( bHexagon ),
-    m_pCore     ( pCore ),
-    m_pModelWork( pModel )
+	m_bHexagon  ( bHexagon )
 { }
-
-PixelCoordinates::~PixelCoordinates()
-{
-    m_pCore = nullptr;
-};
-
-void PixelCoordinates::SetPoi( PixelPoint const & pt )
-{
-    GridPoint const gpPoiNew = Pixel2GridPos( pt );
-    if ( gpPoiNew.IsInGrid( ) )
-    {
-        IndId const idPoiNew = m_pModelWork->GetId( gpPoiNew );
-        if ( idPoiNew.IsDefined( ) )
-        {    
-            if ( m_pCore->IsPoiId( idPoiNew ) )
-                m_pCore->ClearPoi( );           // same POI. deactivate POI
-            else
-                m_pCore->SetPoi( m_pModelWork, gpPoiNew );
-        }
-    }
-}
 
 void PixelCoordinates::MoveGrid( PixelPoint const & pntDelta )
 {
@@ -61,9 +34,8 @@ PixelPoint PixelCoordinates::getCenterOffset(GridRect const & gridRect, PixelPoi
 	return pixOffset;
 }
 
-bool PixelCoordinates::CenterPoi( PixelPoint const pixCenter ) // returns TRUE, if POI was already centered, or if no POI defined
+bool PixelCoordinates::CenterPoi( PixelPoint const pixCenter, GridPoint const gpPoi ) // returns TRUE, if POI was already centered, or if no POI defined
 {
-    GridPoint const gpPoi = m_pCore->FindPOI( m_pModelWork );
     if ( gpPoi.IsNull( ) )
         return true;
 
@@ -93,22 +65,18 @@ bool PixelCoordinates::FitToRect( GridRect const & gridRect, PixelRectSize const
     return true;
 }
 
-bool PixelCoordinates::SetFieldSize( short const sNewFieldSize, PixelPoint const pntClRectCenter )
+bool PixelCoordinates::SetFieldSize( short const sNewFieldSize, PixelPoint const pntCenter )
 {
     if ( !isValidFieldSize( sNewFieldSize ) )
         return false;
  
-    PixelPoint const pntCenter = m_pCore->IsPoiDefined( ) 
-                                ? Grid2PixelPosCenter( m_pCore->FindPOI( m_pModelWork ) )
-                                : pntClRectCenter;
-
     m_pixOffset  = ((m_pixOffset + pntCenter) * sNewFieldSize) / m_sFieldSize - pntCenter;
     m_sFieldSize = sNewFieldSize;
 
     return true;
 }
 
-bool PixelCoordinates::Zoom( bool const bZoomIn, PixelPoint const pntClRectCenter )
+bool PixelCoordinates::Zoom( bool const bZoomIn, PixelPoint const pntCenter )
 {
     short sNewFieldSize = m_sFieldSize;
     if ( bZoomIn )
@@ -122,7 +90,7 @@ bool PixelCoordinates::Zoom( bool const bZoomIn, PixelPoint const pntClRectCente
         sNewFieldSize -= sDelta;
     }
 
-    return SetFieldSize( sNewFieldSize, pntClRectCenter );
+    return SetFieldSize( sNewFieldSize, pntCenter );
 }
 
 PixelPoint PixelCoordinates::Pixel2PixelSize( PixelPoint const & ptSizeIn, PixelCoordinates const & fTarget ) const 

@@ -53,18 +53,20 @@ private:
     GridWindow             ( GridWindow const & );  // noncopyable class 
     GridWindow & operator= ( GridWindow const & );  // noncopyable class 
     
-    WorkThread        * m_pWorkThread;
-    PixelCoordinates  * m_pPixelCoordinates;  // My own PixelCoordinates
-    GridWindow        * m_pGWObserved;	 // Observed GridWindow (or nullptr)
-    StatusBar         * m_pStatusBar; 
-    EditorWindow      * m_pEditorWindow;
-    PerformanceWindow * m_pPerformanceWindow;
-    DrawFrame         * m_pDrawFrame;
-    GridRect          * m_pGridRectSel;
-    PixelPoint 	        m_ptLast;	 	 // Last cursor position during selection 
-    BOOL                m_bMoveAllowed;  // TRUE: move with mouse is possible
-    FocusPoint        * m_pFocusPoint;
-    ObserverInterface * m_pObserverInterface;
+    WorkThread         * m_pWorkThread;
+    PixelCoordinates   * m_pPixelCoordinates;  // My own PixelCoordinates
+    GridWindow         * m_pGWObserved;	 // Observed GridWindow (or nullptr)
+    StatusBar          * m_pStatusBar; 
+	EvolutionCore      * m_pCore;
+    EvolutionModelData * m_pModelWork;
+    EditorWindow       * m_pEditorWindow;
+    PerformanceWindow  * m_pPerformanceWindow;
+    DrawFrame          * m_pDrawFrame;
+    GridRect           * m_pGridRectSel;
+    PixelPoint 	         m_ptLast;	 	 // Last cursor position during selection 
+    BOOL                 m_bMoveAllowed;  // TRUE: move with mouse is possible
+    FocusPoint         * m_pFocusPoint;
+    ObserverInterface  * m_pObserverInterface;
 
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 
@@ -73,6 +75,9 @@ private:
 	void fit( );
 	void resize( );
 	void zoom( BOOL const );
+	void setZoom( SHORT const );
+	void setPOI( PixelPoint const );
+	PixelPoint getNewCenter( );
     BOOL inObservedClientRect( LPARAM );
     void moveGrid( PixelPoint const & );
     void onMouseMove( LPARAM, WPARAM );

@@ -8,7 +8,6 @@
 #include "gridRect.h"
 #include "gridCircle.h"
 #include "kGridPoint.h"
-#include "EvolutionCore.h"
 #include "SmoothMove.h"
 
 class EvolutionModelData;
@@ -21,18 +20,7 @@ public:
     static short const DEFAULT_FIELD_SIZE  =    8;
     static short const MAXIMUM_FIELD_SIZE  = 1024;
 
-    PixelCoordinates( short const, EvolutionCore *, EvolutionModelData * const, bool const );
-    ~PixelCoordinates();
-
-    bool IsPoiDefined ( ) const 
-	{ 
-		return m_pCore->IsPoiDefined( ); 
-	};
-	
-	PixelPoint FindPoiCenter( ) const 
-	{ 
-		return Grid2PixelPosCenter( m_pCore->FindPOI( m_pModelWork ) ); 
-	};
+    PixelCoordinates( short const, bool const );
     
 	short GetFieldSize ( ) const 
 	{ 
@@ -69,7 +57,7 @@ public:
 		    return PixelPoint( gp.x * m_sFieldSize, gp.y * m_sFieldSize );
 	}
 
-    GridPoint  Pixel2GridPos ( PixelPoint const & pp ) const 
+    GridPoint Pixel2GridPos ( PixelPoint const & pp ) const 
 	{ 
 		GridPoint gpResult;
 		if ( m_bHexagon )  // does not work !!!!!!
@@ -137,8 +125,7 @@ public:
     PixelPoint Pixel2PixelSize( PixelPoint const &, PixelCoordinates const & ) const;
     PixelPoint Pixel2PixelPos ( PixelPoint const &, PixelCoordinates const & ) const;
 
-    bool CenterPoi( PixelPoint const );
-    void SetPoi  ( PixelPoint const & );
+    bool CenterPoi( PixelPoint const, GridPoint const );
     void MoveGrid( PixelPoint const &);
     bool Zoom( bool, PixelPoint const );
     bool SetFieldSize( short, PixelPoint const );
@@ -152,11 +139,9 @@ private:
 
     PixelPoint getCenterOffset( GridRect const &, PixelPoint const );
 
-    PixelPoint           m_pixOffset;
-    short                m_sFieldSize;
-    SmoothMove           m_smoothMove;
-    bool                 m_bMoving;
-	bool                 m_bHexagon;
-    EvolutionCore      * m_pCore;
-    EvolutionModelData * m_pModelWork;
+    PixelPoint m_pixOffset;
+    short      m_sFieldSize;
+    SmoothMove m_smoothMove;
+    bool       m_bMoving;
+	bool       m_bHexagon;
 };
