@@ -2,6 +2,8 @@
 //
 
 #include "stdafx.h"
+#include "assert.h"
+#include <algorithm>
 #include "SmoothMove.h"
 
 SmoothMove::SmoothMove( ) :
@@ -11,7 +13,7 @@ SmoothMove::SmoothMove( ) :
 PixelPoint SmoothMove::Step( PixelPoint pixActual, PixelPoint pixTarget )  // returns new pixOffset, which is closer to pixTarget
 {
     PixelPoint pixDelta       = pixTarget - pixActual;
-    long       lDistance      = max( abs( pixDelta.x ), abs( pixDelta.y ) );
+    long       lDistance      = std::max( abs( pixDelta.x ), abs( pixDelta.y ) );
     long       lBreakDistCont = ( m_lVelocity + 1 ) * ( m_lVelocity ) / 2;   // break distance if we continue with actual velocity
     long       lBreakDistAcc  = lBreakDistCont + m_lVelocity + 1;            // break distance if we accelerate
     long       lDeltaV        = ( lDistance >= lBreakDistAcc ) 
@@ -50,7 +52,7 @@ PixelPoint SmoothMove::Step( PixelPoint pixActual, PixelPoint pixTarget )  // re
 
 #ifdef _DEBUG
     PixelPoint pixDeltaNew  = pixTarget - pixActual;
-    long       lDistanceNew = max( abs( pixDeltaNew.x ), abs( pixDeltaNew.y ) );
+    long       lDistanceNew = std::max( abs( pixDeltaNew.x ), abs( pixDeltaNew.y ) );
     assert( lDistanceNew <= lDistance );
 #endif
 

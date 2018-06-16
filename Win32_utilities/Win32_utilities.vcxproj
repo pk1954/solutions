@@ -145,9 +145,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="kGridPoint.h" />
     <ClInclude Include="observerInterface.h" />
-    <ClInclude Include="SmoothMove.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="win32_baseDialog.h" />
     <ClInclude Include="win32_baseWindow.h" />
@@ -163,9 +161,7 @@
     <ClInclude Include="win32_winManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="kGridPoint.cpp" />
     <ClCompile Include="observerInterface.cpp" />
-    <ClCompile Include="SmoothMove.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
