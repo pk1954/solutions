@@ -70,6 +70,16 @@ namespace Util
         Util::Show( hWnd, ApplyOp2( bStateOld, op ) );
     }
 
+	inline POINT PixelPoint2POINT(PixelPoint pp)
+	{
+		return POINT{pp.x, pp.y};
+	}
+
+	inline PixelPoint POINT2PixelPoint(POINT pnt)
+	{
+		return PixelPoint{pnt.x, pnt.y};
+	}
+
     inline PixelRect GetClRect( HWND const hWnd ) // xPos / yPos always 0
     {
         PixelRect rect;
@@ -109,31 +119,26 @@ namespace Util
 
     inline PixelPoint GetClientAreaPos( HWND const hWnd )
     {
-        PixelPoint pnt( 0, 0 );
+		POINT pnt{ 0, 0 };
         (void)ClientToScreen( hWnd, &pnt );
-        return pnt;
+		PixelPoint pp = POINT2PixelPoint( pnt );
+        return pp;
     }
 
     inline PixelPoint GetCrsrPosition( )   // Delivers cursor position in screen coordinates
     {
-        PixelPoint ptCrsr;
-        (void)GetCursorPos( &ptCrsr );
-        return ptCrsr;
+		POINT pnt;
+		(void)GetCursorPos( &pnt );
+        return POINT2PixelPoint( pnt );
     }
 
     inline PixelPoint GetRelativeCrsrPosition( HWND const hWnd )   // Delivers cursor position relative to client area 
     {
         PixelPoint ptCrsr = GetCrsrPosition( );               // In screen coordinates
-        (void)ScreenToClient( hWnd, &ptCrsr );
+		POINT      pnt    = PixelPoint2POINT( ptCrsr );
+        (void)ScreenToClient( hWnd, &pnt );
         ptCrsr.y = GetClientWindowHeight( hWnd ) - ptCrsr.y;
         return ptCrsr;
-    }
-
-    inline long GetRelativeCrsrPositionX( HWND const hWnd )   // Delivers x value of cursor position relative to client area 
-    {
-        PixelPoint ptCrsr = GetCrsrPosition( );               // In screen coordinates
-        (void)ScreenToClient( hWnd, &ptCrsr );
-        return ptCrsr.x;
     }
 
     inline PixelPoint GetWindowPos( HWND const hWnd )
@@ -192,13 +197,21 @@ namespace Util
         return rect.right;
     }
 
-    inline BOOL CrsrInClientRect( HWND const hWnd )
+    inline BOOL PixelPointInRect( PixelRect const * const pRect, PixelPoint const pp )
     {
-        PixelRect  const rect   = GetClRect( hWnd );                     
-        PixelPoint const ptCrsr = GetRelativeCrsrPosition( hWnd );
-        return PtInRect( &rect, ptCrsr );  // Is cursor position in client rect?
+        return PtInRect( pRect, PixelPoint2POINT( pp ) );  
     } 
 
+    inline BOOL PixelPointInClientRect( HWND const hWnd, PixelPoint const pp )  // Is point in client rect?
+    {
+        PixelRect const rect = GetClRect( hWnd );                     
+		return PixelPointInRect( &rect, pp );
+    } 
+
+    inline BOOL CrsrInClientRect( HWND const hWnd )  // Is cursor position in client rect?
+    {
+		return PixelPointInClientRect( hWnd, GetRelativeCrsrPosition( hWnd ) );
+    } 
 
     inline void FastFill( HDC const hDC, RECT const & rect )
     {

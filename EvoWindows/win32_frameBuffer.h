@@ -11,7 +11,6 @@
 #include "EvolutionCore.h"
 #include "SmoothMove.h"
 
-class StatusBar;
 class EvolutionModelData;
 
 class FrameBuffer
@@ -22,7 +21,7 @@ public:
     static short const DEFAULT_FIELD_SIZE  =    8;
     static short const MAXIMUM_FIELD_SIZE  = 1024;
 
-    FrameBuffer( HWND const, SHORT const, StatusBar * const, EvolutionCore *, EvolutionModelData * const, BOOL const );
+    FrameBuffer( HWND const, SHORT const, EvolutionCore *, EvolutionModelData * const, BOOL const );
     ~FrameBuffer();
 
     BOOL IsPoiDefined ( ) const 
@@ -72,6 +71,7 @@ public:
 
     GridPoint  Pixel2GridPos ( PixelPoint const & pp ) const 
 	{ 
+		GridPoint gpResult;
 		if ( m_bHexagon )  // does not work !!!!!!
 		{
 			double const dFieldSize = static_cast<double>( m_sFieldSize );
@@ -80,14 +80,21 @@ public:
 			double const temp = floor(dx + sqrt(3) * dy + 1);
 			double const dq = floor((floor( 2 * dx + 1) + temp) / 3);
 			double const dr = floor((temp + floor( -dx + sqrt(3) * dy + 1))/3);
-			return GridPoint
+			gpResult = GridPoint
 			( 
 				static_cast< long >( floor(dq + 0.5) ),
 				static_cast< long >( floor(dr + 0.5) )
 			);
+			PixelPoint ppTest = Grid2PixelPos( gpResult );
+			if (ppTest != pp)
+			{
+				int x = 76;
+			}
 		}
 		else 
-			return Pixel2GridSize( pp + m_pixOffset ); 
+			gpResult = Pixel2GridSize( pp + m_pixOffset ); 
+
+		return gpResult;
 	}
 
     PixelPoint Grid2PixelPos ( GridPoint const & gp ) const 
@@ -130,12 +137,12 @@ public:
     PixelPoint Pixel2PixelSize( PixelPoint const &, FrameBuffer const & ) const;
     PixelPoint Pixel2PixelPos ( PixelPoint const &, FrameBuffer const & ) const;
 
-    BOOL CenterPoi( );
+    BOOL CenterPoi( PixelPoint const );
     void SetPoi  ( PixelPoint const & );
     void MoveGrid( PixelPoint const &);
-    BOOL Zoom( BOOL );
-    BOOL SetFieldSize( short );
-    BOOL FitToRect( GridRect const & );
+    BOOL Zoom( BOOL, PixelPoint const );
+    BOOL SetFieldSize( short, PixelPoint const );
+    BOOL FitToRect( GridRect const &, PixelRectSize const );
 
 private:
     BOOL isValidFieldSize( long const lNewFieldSize ) const 
@@ -143,15 +150,13 @@ private:
         return (MINIMUM_FIELD_SIZE <= lNewFieldSize) && (lNewFieldSize <= MAXIMUM_FIELD_SIZE); 
     };
 
-    PixelPoint getCenterOffset( GridRect const & );
+    PixelPoint getCenterOffset( GridRect const &, PixelPoint const );
 
     PixelPoint           m_pixOffset;
     SHORT                m_sFieldSize;         // main and worker thread
     SmoothMove           m_smoothMove;
     BOOL                 m_bMoving;
 	BOOL                 m_bHexagon;
-    HWND                 m_hWnd;               // main thread only
-    StatusBar          * m_pStatusBar; 
     EvolutionCore      * m_pCore;
     EvolutionModelData * m_pModelWork;
 };

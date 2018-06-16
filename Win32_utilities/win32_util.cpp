@@ -79,11 +79,11 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 	BOOL const bRepaint
 )
 {
-	HWND       const hWndParent = GetAncestor( hWnd, GA_PARENT );
-	PixelPoint       pos( lXpos, lYpos );
+	HWND  const hWndParent = GetAncestor( hWnd, GA_PARENT );
+	POINT       pos{ lXpos, lYpos };
 
 	if ( hWndParent != nullptr )
-		ScreenToClient( hWndParent, & pos );
+		ScreenToClient( hWndParent, &pos );
 
 	return MoveWindow( hWnd, pos.x, pos.y, lWidth, lHeight, bRepaint );
 }

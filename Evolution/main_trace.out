@@ -19,6 +19,7 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
+PostSetBrushMode tBrushMode::mutRate
 PostRefresh
 PostRefresh
 PostRefresh
@@ -65,17 +66,29 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
+PostDoEdit  124  62 
 PostRefresh
+PostDoEdit  124  61 
 PostRefresh
+PostDoEdit  124  61 
 PostRefresh
+PostDoEdit  128  62 
 PostRefresh
+PostDoEdit  129  62 
 PostRefresh
+PostDoEdit  130  62 
 PostRefresh
+PostDoEdit  130  61 
 PostRefresh
+PostDoEdit  131  62 
 PostRefresh
+PostDoEdit  131  61 
 PostRefresh
+PostDoEdit  131  61 
 PostRefresh
+PostDoEdit  132  61 
 PostRefresh
+PostDoEdit  132  61 
 PostRefresh
 PostRefresh
 PostRefresh
@@ -89,241 +102,11 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
+PostDoEdit  160  60 
 PostRefresh
+PostDoEdit  160  60 
 PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
+PostDoEdit  160  60 
 PostRefresh
 PostRefresh
 PostRefresh
@@ -386,82 +169,64 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
-PostDoEdit  199  94 
 PostRefresh
-PostDoEdit  196  94 
 PostRefresh
-PostDoEdit  194  94 
 PostRefresh
-PostDoEdit  192  93 
 PostRefresh
-PostDoEdit  190  93 
 PostRefresh
-PostDoEdit  183  91 
 PostRefresh
-PostDoEdit  182  90 
 PostRefresh
-PostDoEdit  181  89 
+PostDoEdit  121  62 
 PostRefresh
-PostDoEdit  180  88 
+PostDoEdit  121  62 
 PostRefresh
-PostDoEdit  179  87 
+PostDoEdit  121  62 
 PostRefresh
-PostDoEdit  178  86 
+PostDoEdit  122  63 
 PostRefresh
-PostDoEdit  177  85 
+PostDoEdit  122  63 
 PostRefresh
-PostDoEdit  176  84 
+PostDoEdit  123  63 
 PostRefresh
-PostDoEdit  172  79 
 PostRefresh
-PostDoEdit  171  76 
 PostRefresh
-PostDoEdit  171  75 
 PostRefresh
-PostDoEdit  171  74 
 PostRefresh
-PostDoEdit  171  73 
 PostRefresh
-PostDoEdit  172  73 
 PostRefresh
-PostDoEdit  175  71 
 PostRefresh
-PostDoEdit  176  70 
 PostRefresh
-PostDoEdit  177  69 
 PostRefresh
-PostDoEdit  178  69 
 PostRefresh
-PostDoEdit  180  69 
 PostRefresh
-PostDoEdit  181  69 
 PostRefresh
-PostDoEdit  182  68 
 PostRefresh
-PostDoEdit  183  68 
 PostRefresh
-PostDoEdit  185  68 
+PostDoEdit  137  64 
 PostRefresh
-PostDoEdit  186  68 
+PostDoEdit  138  63 
 PostRefresh
-PostDoEdit  190  67 
+PostDoEdit  138  63 
 PostRefresh
-PostDoEdit  191  67 
+PostDoEdit  138  62 
 PostRefresh
-PostDoEdit  192  67 
+PostDoEdit  138  62 
 PostRefresh
-PostDoEdit  192  66 
+PostDoEdit  139  62 
 PostRefresh
-PostDoEdit  193  66 
+PostDoEdit  139  61 
 PostRefresh
-PostDoEdit  195  66 
+PostDoEdit  140  61 
 PostRefresh
-PostDoEdit  195  65 
+PostDoEdit  140  60 
 PostRefresh
-PostDoEdit  196  65 
+PostDoEdit  140  59 
 PostRefresh
+PostDoEdit  141  59 
 PostRefresh
+PostDoEdit  142  57 
 PostRefresh
+PostDoEdit  142  57 
 PostRefresh
 PostRefresh
 PostRefresh
@@ -479,27 +244,19 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
+PostSetBrushMode tBrushMode::randomStrategy
 PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
-PostDoEdit  179  74 
 PostRefresh
-PostDoEdit  179  73 
 PostRefresh
-PostDoEdit  179  73 
 PostRefresh
-PostDoEdit  180  73 
 PostRefresh
-PostDoEdit  180  73 
 PostRefresh
-PostDoEdit  180  73 
 PostRefresh
-PostDoEdit  180  73 
 PostRefresh
-PostDoEdit  180  72 
 PostRefresh
-PostDoEdit  180  72 
 PostRefresh
 PostRefresh
 PostRefresh
@@ -511,175 +268,28 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
-PostDoEdit  160  80 
 PostRefresh
-PostDoEdit  160  80 
 PostRefresh
-PostDoEdit  161  80 
 PostRefresh
-PostDoEdit  161  80 
 PostRefresh
-PostDoEdit  162  80 
 PostRefresh
-PostDoEdit  162  79 
 PostRefresh
-PostDoEdit  163  79 
 PostRefresh
-PostDoEdit  163  78 
 PostRefresh
-PostDoEdit  164  78 
-PostRefresh
-PostDoEdit  165  78 
-PostRefresh
-PostDoEdit  166  77 
-PostRefresh
-PostDoEdit  174  70 
-PostRefresh
-PostDoEdit  175  69 
-PostRefresh
-PostDoEdit  176  68 
-PostRefresh
-PostDoEdit  177  67 
-PostRefresh
-PostDoEdit  178  66 
-PostRefresh
-PostDoEdit  181  61 
-PostRefresh
-PostDoEdit  183  56 
-PostRefresh
-PostDoEdit  184  55 
-PostRefresh
-PostDoEdit  184  54 
-PostRefresh
-PostDoEdit  184  53 
-PostRefresh
-PostDoEdit  185  53 
-PostRefresh
-PostDoEdit  184  50 
-PostRefresh
-PostDoEdit  184  50 
-PostRefresh
-PostDoEdit  184  49 
-PostRefresh
-PostDoEdit  183  48 
-PostRefresh
-PostDoEdit  182  47 
-PostRefresh
-PostDoEdit  180  46 
-PostRefresh
-PostDoEdit  179  45 
-PostRefresh
-PostDoEdit  178  45 
-PostRefresh
-PostDoEdit  176  44 
-PostRefresh
-PostDoEdit  166  42 
-PostRefresh
-PostDoEdit  163  42 
-PostRefresh
-PostDoEdit  159  42 
-PostRefresh
-PostDoEdit  156  42 
-PostRefresh
-PostDoEdit  152  42 
-PostRefresh
-PostDoEdit  149  43 
-PostRefresh
-PostDoEdit  146  43 
-PostRefresh
-PostDoEdit  143  43 
-PostRefresh
-PostDoEdit  133  46 
-PostRefresh
-PostDoEdit  126  50 
-PostRefresh
-PostDoEdit  126  50 
-PostRefresh
-PostDoEdit  126  51 
-PostRefresh
-PostDoEdit  126  53 
-PostRefresh
-PostDoEdit  126  53 
-PostRefresh
-PostDoEdit  126  54 
-PostRefresh
-PostDoEdit  126  54 
-PostRefresh
-PostDoEdit  126  54 
-PostRefresh
-PostDoEdit  126  54 
-PostRefresh
-PostDoEdit  126  55 
-PostRefresh
-PostDoEdit  126  55 
-PostRefresh
-PostDoEdit  126  55 
-PostRefresh
-PostDoEdit  126  55 
-PostRefresh
-PostDoEdit  127  57 
-PostRefresh
-PostDoEdit  128  58 
-PostRefresh
-PostDoEdit  128  58 
-PostRefresh
-PostDoEdit  128  59 
-PostRefresh
-PostDoEdit  128  59 
-PostRefresh
-PostDoEdit  128  59 
-PostRefresh
-PostDoEdit  129  60 
-PostRefresh
-PostDoEdit  129  60 
-PostRefresh
-PostDoEdit  129  62 
-PostRefresh
-PostDoEdit  129  62 
-PostRefresh
-PostDoEdit  129  63 
-PostRefresh
-PostDoEdit  129  64 
-PostRefresh
-PostDoEdit  129  64 
-PostRefresh
-PostDoEdit  129  64 
-PostRefresh
-PostDoEdit  128  64 
-PostRefresh
-PostDoEdit  126  65 
-PostRefresh
-PostDoEdit  125  65 
-PostRefresh
-PostDoEdit  124  65 
-PostRefresh
-PostDoEdit  123  65 
-PostRefresh
-PostDoEdit  122  65 
-PostRefresh
-PostDoEdit  122  65 
-PostRefresh
-PostDoEdit  121  65 
 PostRefresh
 PostDoEdit  120  65 
 PostRefresh
-PostDoEdit  118  65 
+PostDoEdit  120  65 
 PostRefresh
-PostDoEdit  118  65 
+PostDoEdit  120  65 
 PostRefresh
-PostDoEdit  117  65 
+PostDoEdit  120  65 
 PostRefresh
-PostDoEdit  117  65 
 PostRefresh
-PostDoEdit  115  65 
 PostRefresh
-PostDoEdit  113  65 
 PostRefresh
-PostDoEdit  113  65 
 PostRefresh
-PostDoEdit  112  65 
 PostRefresh
-PostDoEdit  112  65 
 PostRefresh
 PostRefresh
 PostRefresh
@@ -710,7 +320,6 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
-PostSetBrushMode tBrushMode::tit4tat
 PostRefresh
 PostRefresh
 PostRefresh
@@ -722,94 +331,176 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostDoEdit  156  76 
-PostRefresh
-PostDoEdit  154  74 
-PostRefresh
-PostDoEdit  163  60 
-PostRefresh
-PostDoEdit  167  61 
-PostRefresh
-PostDoEdit  170  61 
-PostRefresh
-PostDoEdit  173  62 
 PostRefresh
 PostRefresh
 PostRefresh
 PostSetBrushMode tBrushMode::move
-SetGenerationDelay 0
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh

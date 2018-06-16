@@ -5,9 +5,12 @@
 
 #pragma once
 
-class PixelPoint : /*lint -e1790 */ public POINT  // allow inheritance from non abstract base class 
+class PixelPoint  // : /*lint -e1790 */public POINT  // allow inheritance from non abstract base class 
 {
 public:
+    long x;
+    long y;
+
     PixelPoint()                               { x =    0; y =    0; };
     PixelPoint( long const _x, long const _y ) { x =   _x; y =   _y; };
 

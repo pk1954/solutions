@@ -62,8 +62,9 @@ void GridWindow::Start
     m_pEditorWindow      = pEditorWindow;
     m_pGridRectSel       = pSelection;
     m_pFocusPoint        = pFocusPoint;
+	m_pStatusBar         = pStatusBar;
 
-    m_pFrameBuffer       = new FrameBuffer( hWnd, sFieldSize, pStatusBar, pCore, pModel, iNrOfNeighbors == 6 );
+    m_pFrameBuffer       = new FrameBuffer( hWnd, sFieldSize, pCore, pModel, iNrOfNeighbors == 6 );
     m_pDrawFrame         = new DrawFrame( hWnd, pCore, pModel, m_pFrameBuffer, pDspOptWindow, m_pGridRectSel );
     m_pDrawFrame->SetStripMode( tBoolOp::opTrue );
 }
@@ -105,11 +106,10 @@ BOOL GridWindow::inObservedClientRect( LPARAM const lParam )
     if ( m_pGWObserved == nullptr )
         return FALSE;
 
-    PixelPoint const ptCrsr       = GetCrsrPosFromLparam( lParam );
-    PixelPoint const ptCrsrCheck  = m_pFrameBuffer->Pixel2PixelPos( ptCrsr, *(m_pGWObserved->m_pFrameBuffer) );
-    PixelRect  const rectObserved = Util::GetClRect( m_pGWObserved->GetWindowHandle( ) );                     
+    PixelPoint const ptCrsr      = GetCrsrPosFromLparam( lParam );
+    PixelPoint const ptCrsrCheck = m_pFrameBuffer->Pixel2PixelPos( ptCrsr, *(m_pGWObserved->m_pFrameBuffer) );
 
-    return PtInRect( &rectObserved, ptCrsrCheck );  // Is cursor position in observed client rect?
+    return Util::PixelPointInClientRect( m_pGWObserved->GetWindowHandle( ), ptCrsrCheck );  // Is cursor position in observed client rect?
 }
 
 void GridWindow::contextMenu( LPARAM lParam )
@@ -117,8 +117,8 @@ void GridWindow::contextMenu( LPARAM lParam )
     HWND  const hwnd       = GetWindowHandle( );
     HMENU const hPopupMenu = CreatePopupMenu();
     UINT  const STD_FLAGS  = MF_BYPOSITION | MF_STRING;
-    PixelPoint  ptPos( GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
-    (void)MapWindowPoints( hwnd, nullptr, &ptPos, 1 );
+	POINT pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
+    (void)MapWindowPoints( hwnd, nullptr, &pntPos, 1 );
 
     if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
     {
@@ -139,7 +139,7 @@ void GridWindow::contextMenu( LPARAM lParam )
     (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI,       L"POI" );
     (void)SetForegroundWindow( hwnd );
 
-    UINT const uiID = (UINT)TrackPopupMenu( hPopupMenu, TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, ptPos.x, ptPos.y, 0, hwnd, nullptr ); 	// Result is send as WM_COMMAND to this window
+    UINT const uiID = (UINT)TrackPopupMenu( hPopupMenu, TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, pntPos.x, pntPos.y, 0, hwnd, nullptr ); 	// Result is send as WM_COMMAND to this window
     PostMessage( WM_COMMAND, uiID, lParam );
     (void)DestroyMenu( hPopupMenu );
 }
@@ -218,10 +218,34 @@ void GridWindow::doPaint( )
         (void)EndPaint( &ps );
     }
 
-    if ( m_bMoveAllowed && m_pFrameBuffer->IsPoiDefined( ) && !m_pFrameBuffer->CenterPoi( ) )
+    if ( m_bMoveAllowed && m_pFrameBuffer->IsPoiDefined( ) && !m_pFrameBuffer->CenterPoi( Util::GetClRectCenter( GetWindowHandle( ) ) ) )
         Invalidate( FALSE );    // repeat if POI is not in center 
 
     m_pPerformanceWindow->DisplayStop( );
+}
+
+void GridWindow::resize()
+{
+	if ( m_pStatusBar != nullptr )
+		m_pStatusBar->SetSizeTrackBar( m_pFrameBuffer->GetFieldSize() );
+	m_pDrawFrame->Resize( );
+}
+
+void GridWindow::zoom( BOOL const bZoomIn )
+{
+	PixelPoint const pntClRectCenter = Util::GetClRectCenter( GetWindowHandle( ) );
+    (void)m_pFrameBuffer->Zoom( bZoomIn, pntClRectCenter );
+	resize();
+}
+
+void GridWindow::fit( )
+{
+    (void)m_pFrameBuffer->FitToRect
+	( 
+		m_pGridRectSel->IsEmpty() ? GridRect::GRID_RECT_FULL : *m_pGridRectSel,
+		Util::GetClRectSize( GetWindowHandle( ) )
+	);
+	resize();
 }
 
 LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -235,23 +259,19 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             switch ( uiCmdId )
             {
             case IDM_ZOOM_OUT:
-                (void)m_pFrameBuffer->Zoom( FALSE );
-				m_pDrawFrame->Resize( );
+                zoom( FALSE );
                 break;
 
             case IDM_ZOOM_IN:
-                (void)m_pFrameBuffer->Zoom( TRUE );
-				m_pDrawFrame->Resize( );
+                zoom( TRUE );
                 break;
 
             case IDM_FIT_ZOOM:
-                (void)m_pFrameBuffer->FitToRect( m_pGridRectSel->IsEmpty() ? GridRect::GRID_RECT_FULL : *m_pGridRectSel );
-				m_pDrawFrame->Resize( );
+				fit();
                 break;
 
             case IDM_SET_ZOOM:
-                (void)m_pFrameBuffer->SetFieldSize( static_cast<short>(lParam) );
-				m_pDrawFrame->Resize( );
+                (void)m_pFrameBuffer->SetFieldSize( static_cast<short>(lParam), Util::GetClRectCenter( GetWindowHandle( ) ) );
                 break;
 
             case IDD_TOGGLE_STRIP_MODE:
@@ -297,7 +317,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 			
 			while ( --iDelta >= 0 )
 			{
-                (void)m_pFrameBuffer->Zoom( bDirection );
+                (void)m_pFrameBuffer->Zoom( bDirection,  Util::GetClRectCenter( GetWindowHandle( ) ) );
 			}
 
 			m_pDrawFrame->Resize( );

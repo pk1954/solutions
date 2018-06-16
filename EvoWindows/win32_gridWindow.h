@@ -56,6 +56,7 @@ private:
     WorkThread        * m_pWorkThread;
     FrameBuffer       * m_pFrameBuffer;  // My own FrameBuffer
     GridWindow        * m_pGWObserved;	 // Observed GridWindow (or nullptr)
+    StatusBar         * m_pStatusBar; 
     EditorWindow      * m_pEditorWindow;
     PerformanceWindow * m_pPerformanceWindow;
     DrawFrame         * m_pDrawFrame;
@@ -69,6 +70,9 @@ private:
 
 	void setSelection( PixelPoint const &, PixelPoint  const & );
     void resetSelection( );
+	void fit( );
+	void resize( );
+	void zoom( BOOL const );
     BOOL inObservedClientRect( LPARAM );
     void moveGrid( PixelPoint const & );
     void onMouseMove( LPARAM, WPARAM );
