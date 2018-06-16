@@ -6,16 +6,14 @@
 #include "pixelPoint.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
-#include "win32_util.h"
 #include "win32_frameBuffer.h"
 
 FrameBuffer::FrameBuffer
 ( 
-    HWND                 const hWnd, 
-    SHORT                const fs, 
+    short                const fs, 
     EvolutionCore      *       pCore,
     EvolutionModelData * const pModel,
-	BOOL                 const bHexagon
+	bool                 const bHexagon
 )
   : m_pixOffset ( ),
     m_sFieldSize( fs ),
@@ -62,14 +60,14 @@ PixelPoint FrameBuffer::getCenterOffset(GridRect const & gridRect, PixelPoint co
 	return pixOffset;
 }
 
-BOOL FrameBuffer::CenterPoi( PixelPoint const pixCenter ) // returns TRUE, if POI was already centered, or if no POI defined
+bool FrameBuffer::CenterPoi( PixelPoint const pixCenter ) // returns TRUE, if POI was already centered, or if no POI defined
 {
     GridPoint const gpPoi = m_pCore->FindPOI( m_pModelWork );
     if ( gpPoi.IsNull( ) )
         return TRUE;
 
     PixelPoint pixCenterOffset = getCenterOffset( GridRect( gpPoi, gpPoi + 1 ), pixCenter );
-    BOOL       bCentered       = ( m_pixOffset == pixCenterOffset );
+    bool       bCentered       = ( m_pixOffset == pixCenterOffset );
 
     if ( ! bCentered )
         m_pixOffset = m_smoothMove.Step( m_pixOffset, pixCenterOffset );
@@ -77,7 +75,7 @@ BOOL FrameBuffer::CenterPoi( PixelPoint const pixCenter ) // returns TRUE, if PO
     return bCentered;
 }
 
-BOOL FrameBuffer::FitToRect( GridRect const & gridRect, PixelRectSize const pntPixSize )
+bool FrameBuffer::FitToRect( GridRect const & gridRect, PixelRectSize const pntPixSize )
 {
     GridPoint gp( pntPixSize.GetWidth(), pntPixSize.GetHeight() );
     gp /= gridRect.GetSize() + 1;
@@ -94,7 +92,7 @@ BOOL FrameBuffer::FitToRect( GridRect const & gridRect, PixelRectSize const pntP
     return TRUE;
 }
 
-BOOL FrameBuffer::SetFieldSize( short const sNewFieldSize, PixelPoint const pntClRectCenter )
+bool FrameBuffer::SetFieldSize( short const sNewFieldSize, PixelPoint const pntClRectCenter )
 {
     if ( !isValidFieldSize( sNewFieldSize ) )
         return FALSE;
@@ -109,7 +107,7 @@ BOOL FrameBuffer::SetFieldSize( short const sNewFieldSize, PixelPoint const pntC
     return TRUE;
 }
 
-BOOL FrameBuffer::Zoom( BOOL const bZoomIn, PixelPoint const pntClRectCenter )
+bool FrameBuffer::Zoom( bool const bZoomIn, PixelPoint const pntClRectCenter )
 {
     short sNewFieldSize = m_sFieldSize;
     if ( bZoomIn )

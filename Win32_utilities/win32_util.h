@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "windows.h"
 #include "pixelPoint.h"
 #include "pixelRect.h"
 
@@ -20,8 +21,7 @@ namespace Util
     wostream & operator << ( wostream &, PixelPoint const & );
     wostream & operator << ( wostream &, PixelRect const & );
 
-    RECT      ScrReadRECT     ( Script & );
-    PixelRect ScrReadPixelRect( Script & );
+    RECT ScrReadRECT( Script & );
 
     bool operator== ( RECT const &, RECT const & );
     bool operator!= ( RECT const &, RECT const & );
@@ -80,9 +80,19 @@ namespace Util
 		return PixelPoint{pnt.x, pnt.y};
 	}
 
-    inline PixelRect GetClRect( HWND const hWnd ) // xPos / yPos always 0
+	inline RECT PixelRect2RECT(PixelRect pixRect)
+	{
+		return RECT{pixRect.left, pixRect.top, pixRect.right, pixRect.bottom};
+	}
+
+	inline PixelRect RECT2PixelRect(RECT rect)
+	{
+		return PixelRect{rect.left, rect.top, rect.right, rect.bottom};
+	}
+
+    inline RECT GetClRect( HWND const hWnd ) // xPos / yPos always 0
     {
-        PixelRect rect;
+        RECT rect;
         (void)GetClientRect( hWnd, &rect );                     
         return rect;
     }
@@ -143,63 +153,64 @@ namespace Util
 
     inline PixelPoint GetWindowPos( HWND const hWnd )
     {
-        PixelRect rect;
+        RECT rect;
         (void)GetWindowRect( hWnd, &rect );
         return { rect.left, rect.top };
     }
 
     inline PixelPoint GetWindowSize( HWND const hWnd )
     {
-        PixelRect rect;
+        RECT rect;
         (void)GetWindowRect( hWnd, &rect );
         return { rect.right  - rect.left, rect.bottom - rect.top };
     }
 
     inline long GetWindowHeight( HWND const hWnd )
     {
-        PixelRect rect;
+        RECT rect;
         (void)GetWindowRect( hWnd, &rect );
         return rect.bottom - rect.top;
     }
 
     inline long GetWindowWidth( HWND const hWnd )
     {
-        PixelRect rect;
+        RECT rect;
         (void)GetWindowRect( hWnd, &rect );                     
         return rect.right - rect.left;
     }
 
     inline long GetWindowBottom( HWND const hWnd )
     {
-        PixelRect rect;
+        RECT rect;
         (void)GetWindowRect( hWnd, &rect );
         return rect.bottom;
     }
 
     inline long GetWindowTop( HWND const hWnd )
     {
-        PixelRect rect;
+        RECT rect;
         (void)GetWindowRect( hWnd, &rect );
         return rect.top;
     }
 
     inline long GetWindowLeftPos( HWND const hWnd )
     {
-        PixelRect rect;
+        RECT rect;
         (void)GetWindowRect( hWnd, &rect );
         return rect.left;
     }
 
     inline long GetWindowRightPos( HWND const hWnd )
     {
-        PixelRect rect;
+        RECT rect;
         (void)GetWindowRect( hWnd, &rect );
         return rect.right;
     }
 
     inline BOOL PixelPointInRect( PixelRect const * const pRect, PixelPoint const pp )
     {
-        return PtInRect( pRect, PixelPoint2POINT( pp ) );  
+		RECT rect = PixelRect2RECT( * pRect );
+        return PtInRect( &rect, PixelPoint2POINT( pp ) );  
     } 
 
     inline BOOL PixelPointInClientRect( HWND const hWnd, PixelPoint const pp )  // Is point in client rect?

@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "windows.h"
 #include "pixelRect.h"
 #include "pixelPoint.h"
 #include "win32_util.h"
@@ -24,7 +25,7 @@ public:
     PixelPoint    const GetWindowSize( )           const { return Util::GetWindowSize          ( m_hWnd ); }
     PixelPoint    const GetClientAreaPos( )        const { return Util::GetClientAreaPos       ( m_hWnd ); }
     PixelRectSize const GetClRectSize( )           const { return Util::GetClRectSize          ( m_hWnd ); }
-    PixelRect     const GetClRect( )               const { return Util::GetClRect              ( m_hWnd ); }
+    RECT          const GetClRect( )               const { return Util::GetClRect              ( m_hWnd ); }
     LONG          const GetClientWindowHeight( )   const { return Util::GetClientWindowHeight  ( m_hWnd ); }
     LONG          const GetClientWindowWidth( )    const { return Util::GetClientWindowWidth   ( m_hWnd ); }
     BOOL          const CrsrInClientRect( )        const { return Util::CrsrInClientRect       ( m_hWnd ); }

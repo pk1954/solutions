@@ -24,12 +24,6 @@
     <ClInclude Include="observerInterface.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="pixelPoint.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="pixelRect.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_baseWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>

@@ -19,16 +19,6 @@ RECT Util::ScrReadRECT( Script & script )
     return rect;
 }
 
-PixelRect Util::ScrReadPixelRect( Script & script )
-{
-    PixelRect rect;
-    rect.left   = script.ScrReadLong( );
-    rect.top    = script.ScrReadLong( );
-    rect.right  = script.ScrReadLong( );
-    rect.bottom = script.ScrReadLong( );
-    return rect;
-}
-
 wostream & Util::operator << ( wostream & out, PixelPoint const & pp )
 {
     //lint -e747  Significant prototype coercion with setw

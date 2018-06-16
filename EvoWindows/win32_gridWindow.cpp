@@ -64,7 +64,7 @@ void GridWindow::Start
     m_pFocusPoint        = pFocusPoint;
 	m_pStatusBar         = pStatusBar;
 
-    m_pFrameBuffer       = new FrameBuffer( hWnd, sFieldSize, pCore, pModel, iNrOfNeighbors == 6 );
+    m_pFrameBuffer       = new FrameBuffer( sFieldSize, pCore, pModel, iNrOfNeighbors == 6 );
     m_pDrawFrame         = new DrawFrame( hWnd, pCore, pModel, m_pFrameBuffer, pDspOptWindow, m_pGridRectSel );
     m_pDrawFrame->SetStripMode( tBoolOp::opTrue );
 }
@@ -375,8 +375,8 @@ void GridWindow::Observe( GridWindow * const hgw )
 void GridWindow::Size( )
 {
     PixelPoint const ptSize = m_pFrameBuffer->Grid2PixelSize( GridPoint::GRID_SIZE );
-    PixelRect        rect( 0, 0, ptSize.x, ptSize.y );
     DWORD      const dwStyle = (DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE );	
+	RECT             rect{ 0, 0, ptSize.x, ptSize.y };
     (void)AdjustWindowRect( &rect, dwStyle, FALSE );	
     Move( 0, 0, rect.right - rect.left, rect.bottom - rect.top, FALSE );
 }

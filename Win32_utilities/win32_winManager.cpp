@@ -90,8 +90,8 @@ static MONITORINFO ScrReadMonitorInfo( Script & script )
     MONITORINFO monInfo;
 
     monInfo.cbSize    = sizeof( MONITORINFO );
-    monInfo.rcMonitor = ScrReadPixelRect( script );
-    monInfo.rcWork    = ScrReadPixelRect( script );
+    monInfo.rcMonitor = ScrReadRECT( script );
+    monInfo.rcWork    = ScrReadRECT( script );
     monInfo.dwFlags   = script.ScrReadUlong( );
 
     return monInfo;

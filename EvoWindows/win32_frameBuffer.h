@@ -21,10 +21,10 @@ public:
     static short const DEFAULT_FIELD_SIZE  =    8;
     static short const MAXIMUM_FIELD_SIZE  = 1024;
 
-    FrameBuffer( HWND const, SHORT const, EvolutionCore *, EvolutionModelData * const, BOOL const );
+    FrameBuffer( short const, EvolutionCore *, EvolutionModelData * const, bool const );
     ~FrameBuffer();
 
-    BOOL IsPoiDefined ( ) const 
+    bool IsPoiDefined ( ) const 
 	{ 
 		return m_pCore->IsPoiDefined( ); 
 	};
@@ -137,15 +137,15 @@ public:
     PixelPoint Pixel2PixelSize( PixelPoint const &, FrameBuffer const & ) const;
     PixelPoint Pixel2PixelPos ( PixelPoint const &, FrameBuffer const & ) const;
 
-    BOOL CenterPoi( PixelPoint const );
+    bool CenterPoi( PixelPoint const );
     void SetPoi  ( PixelPoint const & );
     void MoveGrid( PixelPoint const &);
-    BOOL Zoom( BOOL, PixelPoint const );
-    BOOL SetFieldSize( short, PixelPoint const );
-    BOOL FitToRect( GridRect const &, PixelRectSize const );
+    bool Zoom( bool, PixelPoint const );
+    bool SetFieldSize( short, PixelPoint const );
+    bool FitToRect( GridRect const &, PixelRectSize const );
 
 private:
-    BOOL isValidFieldSize( long const lNewFieldSize ) const 
+    bool isValidFieldSize( long const lNewFieldSize ) const 
     { 
         return (MINIMUM_FIELD_SIZE <= lNewFieldSize) && (lNewFieldSize <= MAXIMUM_FIELD_SIZE); 
     };
@@ -155,8 +155,8 @@ private:
     PixelPoint           m_pixOffset;
     SHORT                m_sFieldSize;         // main and worker thread
     SmoothMove           m_smoothMove;
-    BOOL                 m_bMoving;
-	BOOL                 m_bHexagon;
+    bool                 m_bMoving;
+	bool                 m_bHexagon;
     EvolutionCore      * m_pCore;
     EvolutionModelData * m_pModelWork;
 };
