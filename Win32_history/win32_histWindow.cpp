@@ -65,7 +65,7 @@ RECT HistWindow::getGenerationRect  // position is relative to client area
     HIST_GENERATION const genHi
 ) const
 {
-    PixelRect       const rect = GetClRect( );
+    RECT            const rect = GetClRect( );
     long            const lPixSize = rect.right;
     HIST_GENERATION const genNrOfGens = m_pHistSys->GetNrOfGenerations( );
     assert( genNrOfGens  > 0 );

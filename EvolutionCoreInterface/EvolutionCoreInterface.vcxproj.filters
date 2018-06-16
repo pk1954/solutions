@@ -49,5 +49,8 @@
     <ClInclude Include="dump.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="pixelCoordinates.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

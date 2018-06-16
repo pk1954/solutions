@@ -15,7 +15,7 @@
 class GridRect;
 class StatusBar;
 class DrawFrame;
-class FrameBuffer;
+class PixelCoordinates;
 class WorkThread;
 class DspOptWindow;
 class EvolutionCore;
@@ -54,7 +54,7 @@ private:
     GridWindow & operator= ( GridWindow const & );  // noncopyable class 
     
     WorkThread        * m_pWorkThread;
-    FrameBuffer       * m_pFrameBuffer;  // My own FrameBuffer
+    PixelCoordinates  * m_pPixelCoordinates;  // My own PixelCoordinates
     GridWindow        * m_pGWObserved;	 // Observed GridWindow (or nullptr)
     StatusBar         * m_pStatusBar; 
     EditorWindow      * m_pEditorWindow;

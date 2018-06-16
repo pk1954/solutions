@@ -1,4 +1,4 @@
-// win32_frameBuffer.h : 
+// pixelCoordinates.h : 
 //
 
 #pragma once
@@ -13,7 +13,7 @@
 
 class EvolutionModelData;
 
-class FrameBuffer
+class PixelCoordinates
 {
 public:
 
@@ -21,8 +21,8 @@ public:
     static short const DEFAULT_FIELD_SIZE  =    8;
     static short const MAXIMUM_FIELD_SIZE  = 1024;
 
-    FrameBuffer( short const, EvolutionCore *, EvolutionModelData * const, bool const );
-    ~FrameBuffer();
+    PixelCoordinates( short const, EvolutionCore *, EvolutionModelData * const, bool const );
+    ~PixelCoordinates();
 
     bool IsPoiDefined ( ) const 
 	{ 
@@ -134,8 +134,8 @@ public:
     PixelRect  Grid2PixelRect ( GridRect  const & ) const;
     GridRect   Pixel2GridRect ( PixelRect const & ) const;
 
-    PixelPoint Pixel2PixelSize( PixelPoint const &, FrameBuffer const & ) const;
-    PixelPoint Pixel2PixelPos ( PixelPoint const &, FrameBuffer const & ) const;
+    PixelPoint Pixel2PixelSize( PixelPoint const &, PixelCoordinates const & ) const;
+    PixelPoint Pixel2PixelPos ( PixelPoint const &, PixelCoordinates const & ) const;
 
     bool CenterPoi( PixelPoint const );
     void SetPoi  ( PixelPoint const & );
@@ -153,7 +153,7 @@ private:
     PixelPoint getCenterOffset( GridRect const &, PixelPoint const );
 
     PixelPoint           m_pixOffset;
-    SHORT                m_sFieldSize;         // main and worker thread
+    short                m_sFieldSize;
     SmoothMove           m_smoothMove;
     bool                 m_bMoving;
 	bool                 m_bHexagon;

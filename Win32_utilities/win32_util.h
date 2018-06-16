@@ -97,10 +97,17 @@ namespace Util
         return rect;
     }
 
+    inline PixelRect GetClPixelRect( HWND const hWnd ) // xPos / yPos always 0
+    {
+        RECT rect;
+        (void)GetClientRect( hWnd, &rect );                     
+        return RECT2PixelRect(rect);
+    }
+
     inline PixelRectSize GetClRectSize( HWND const hWnd )
     {
-        PixelRect  const rect = Util::GetClRect( hWnd );
-        PixelRectSize    pntSize
+        RECT const rect = Util::GetClRect( hWnd );
+        PixelRectSize pntSize
         ( 
             (rect.right  - rect.left),
             (rect.bottom - rect.top) 
@@ -117,13 +124,13 @@ namespace Util
 
     inline long GetClientWindowHeight( HWND const hWnd )
     {
-        PixelRect rect = GetClRect( hWnd );                     
+        RECT rect = GetClRect( hWnd );                     
         return rect.bottom - rect.top;
     }
 
     inline long GetClientWindowWidth( HWND const hWnd )
     {
-        PixelRect rect = GetClRect( hWnd );
+        RECT rect = GetClRect( hWnd );
         return rect.right - rect.left;
     }
 
@@ -209,14 +216,14 @@ namespace Util
 
     inline BOOL PixelPointInRect( PixelRect const * const pRect, PixelPoint const pp )
     {
-		RECT rect = PixelRect2RECT( * pRect );
+		RECT const rect = PixelRect2RECT( * pRect );
         return PtInRect( &rect, PixelPoint2POINT( pp ) );  
     } 
 
     inline BOOL PixelPointInClientRect( HWND const hWnd, PixelPoint const pp )  // Is point in client rect?
     {
-        PixelRect const rect = GetClRect( hWnd );                     
-		return PixelPointInRect( &rect, pp );
+        RECT const rect = GetClRect( hWnd );  
+		return PtInRect( &rect, PixelPoint2POINT( pp ) );
     } 
 
     inline BOOL CrsrInClientRect( HWND const hWnd )  // Is cursor position in client rect?

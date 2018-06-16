@@ -153,7 +153,6 @@
     <ClCompile Include="win32_editorWrappers.cpp" />
     <ClCompile Include="win32_evoHistWindow.cpp" />
     <ClCompile Include="win32_focusPoint.cpp" />
-    <ClCompile Include="win32_frameBuffer.cpp" />
     <ClCompile Include="win32_gridWindow.cpp" />
     <ClCompile Include="win32_histWorkerThread.cpp" />
     <ClCompile Include="win32_histWrappers.cpp" />
@@ -175,7 +174,6 @@
     <ClInclude Include="win32_editorWrappers.h" />
     <ClInclude Include="win32_evoHistWindow.h" />
     <ClInclude Include="win32_focusPoint.h" />
-    <ClInclude Include="win32_frameBuffer.h" />
     <ClInclude Include="win32_gridWindow.h" />
     <ClInclude Include="win32_histWorkerThread.h" />
     <ClInclude Include="win32_histWrappers.h" />

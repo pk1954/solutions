@@ -1,14 +1,15 @@
-// win32_framebuffer.cpp
+// pixelCoordinates.cpp
 //
 
 #include "stdafx.h"
+#include <algorithm>  // min/max templates
 #include "gridPoint.h"
 #include "pixelPoint.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
-#include "win32_frameBuffer.h"
+#include "pixelCoordinates.h"
 
-FrameBuffer::FrameBuffer
+PixelCoordinates::PixelCoordinates
 ( 
     short                const fs, 
     EvolutionCore      *       pCore,
@@ -18,18 +19,18 @@ FrameBuffer::FrameBuffer
   : m_pixOffset ( ),
     m_sFieldSize( fs ),
     m_smoothMove(  ),
-	m_bMoving   ( FALSE ),
+	m_bMoving   ( false ),
 	m_bHexagon  ( bHexagon ),
     m_pCore     ( pCore ),
     m_pModelWork( pModel )
 { }
 
-FrameBuffer::~FrameBuffer()
+PixelCoordinates::~PixelCoordinates()
 {
     m_pCore = nullptr;
 };
 
-void FrameBuffer::SetPoi( PixelPoint const & pt )
+void PixelCoordinates::SetPoi( PixelPoint const & pt )
 {
     GridPoint const gpPoiNew = Pixel2GridPos( pt );
     if ( gpPoiNew.IsInGrid( ) )
@@ -45,12 +46,12 @@ void FrameBuffer::SetPoi( PixelPoint const & pt )
     }
 }
 
-void FrameBuffer::MoveGrid( PixelPoint const & pntDelta )
+void PixelCoordinates::MoveGrid( PixelPoint const & pntDelta )
 {
     m_pixOffset -= pntDelta;
 }
 
-PixelPoint FrameBuffer::getCenterOffset(GridRect const & gridRect, PixelPoint const pixCenter )  // Move gridRect to center of window
+PixelPoint PixelCoordinates::getCenterOffset(GridRect const & gridRect, PixelPoint const pixCenter )  // Move gridRect to center of window
 {
 	assert(gridRect.GetStartPoint().IsInGrid());
 	GridPoint  const gpStart(gridRect.GetStartPoint());
@@ -60,11 +61,11 @@ PixelPoint FrameBuffer::getCenterOffset(GridRect const & gridRect, PixelPoint co
 	return pixOffset;
 }
 
-bool FrameBuffer::CenterPoi( PixelPoint const pixCenter ) // returns TRUE, if POI was already centered, or if no POI defined
+bool PixelCoordinates::CenterPoi( PixelPoint const pixCenter ) // returns TRUE, if POI was already centered, or if no POI defined
 {
     GridPoint const gpPoi = m_pCore->FindPOI( m_pModelWork );
     if ( gpPoi.IsNull( ) )
-        return TRUE;
+        return true;
 
     PixelPoint pixCenterOffset = getCenterOffset( GridRect( gpPoi, gpPoi + 1 ), pixCenter );
     bool       bCentered       = ( m_pixOffset == pixCenterOffset );
@@ -75,27 +76,27 @@ bool FrameBuffer::CenterPoi( PixelPoint const pixCenter ) // returns TRUE, if PO
     return bCentered;
 }
 
-bool FrameBuffer::FitToRect( GridRect const & gridRect, PixelRectSize const pntPixSize )
+bool PixelCoordinates::FitToRect( GridRect const & gridRect, PixelRectSize const pntPixSize )
 {
     GridPoint gp( pntPixSize.GetWidth(), pntPixSize.GetHeight() );
     gp /= gridRect.GetSize() + 1;
 
-    short const sNewFieldSize = min( gp.x, gp.y );
+    short const sNewFieldSize = std::min( gp.x, gp.y );
     
     if ( !isValidFieldSize( sNewFieldSize ) )
-        return FALSE;
+        return false;
 
     PixelPoint pixCenter( pntPixSize.GetWidth() / 2, pntPixSize.GetHeight() / 2 );
     m_sFieldSize = sNewFieldSize;
     m_pixOffset  = getCenterOffset( gridRect, pixCenter );
 
-    return TRUE;
+    return true;
 }
 
-bool FrameBuffer::SetFieldSize( short const sNewFieldSize, PixelPoint const pntClRectCenter )
+bool PixelCoordinates::SetFieldSize( short const sNewFieldSize, PixelPoint const pntClRectCenter )
 {
     if ( !isValidFieldSize( sNewFieldSize ) )
-        return FALSE;
+        return false;
  
     PixelPoint const pntCenter = m_pCore->IsPoiDefined( ) 
                                 ? Grid2PixelPosCenter( m_pCore->FindPOI( m_pModelWork ) )
@@ -104,10 +105,10 @@ bool FrameBuffer::SetFieldSize( short const sNewFieldSize, PixelPoint const pntC
     m_pixOffset  = ((m_pixOffset + pntCenter) * sNewFieldSize) / m_sFieldSize - pntCenter;
     m_sFieldSize = sNewFieldSize;
 
-    return TRUE;
+    return true;
 }
 
-bool FrameBuffer::Zoom( bool const bZoomIn, PixelPoint const pntClRectCenter )
+bool PixelCoordinates::Zoom( bool const bZoomIn, PixelPoint const pntClRectCenter )
 {
     short sNewFieldSize = m_sFieldSize;
     if ( bZoomIn )
@@ -124,19 +125,19 @@ bool FrameBuffer::Zoom( bool const bZoomIn, PixelPoint const pntClRectCenter )
     return SetFieldSize( sNewFieldSize, pntClRectCenter );
 }
 
-PixelPoint FrameBuffer::Pixel2PixelSize( PixelPoint const & ptSizeIn, FrameBuffer const & fTarget ) const 
+PixelPoint PixelCoordinates::Pixel2PixelSize( PixelPoint const & ptSizeIn, PixelCoordinates const & fTarget ) const 
 {
     static long const FACTOR = 1024; // to avoid zero when dividing small ptSizeIn by m_sFieldSize 
 
     return (((ptSizeIn * FACTOR) / m_sFieldSize) * fTarget.m_sFieldSize ) / FACTOR;
 }
 
-PixelPoint FrameBuffer::Pixel2PixelPos( PixelPoint const & ptPosIn, FrameBuffer const & fTarget ) const 
+PixelPoint PixelCoordinates::Pixel2PixelPos( PixelPoint const & ptPosIn, PixelCoordinates const & fTarget ) const 
 {
     return Pixel2PixelSize( ptPosIn + m_pixOffset, fTarget ) - fTarget.m_pixOffset;
 }
 
-KGridRect FrameBuffer::Pixel2KGridRect( PixelRect const & rect ) const 
+KGridRect PixelCoordinates::Pixel2KGridRect( PixelRect const & rect ) const 
 {
     PixelPoint pntStart( rect.left,  rect.top    );
     PixelPoint pntEnd  ( rect.right, rect.bottom );
@@ -148,14 +149,14 @@ KGridRect FrameBuffer::Pixel2KGridRect( PixelRect const & rect ) const
     );
 }
 
-PixelRect FrameBuffer::KGrid2PixelRect( KGridRect const & kgrIn ) const 
+PixelRect PixelCoordinates::KGrid2PixelRect( KGridRect const & kgrIn ) const 
 {
     PixelPoint const ptPos  = KGrid2PixelPos ( kgrIn.GetPos()  );
     PixelPoint const ptSize = KGrid2PixelSize( kgrIn.GetSiz(), m_sFieldSize );
     return PixelRect( ptPos, ptPos + ptSize );
 }
 
-GridRect FrameBuffer::Pixel2GridRect( PixelRect const & rect ) const 
+GridRect PixelCoordinates::Pixel2GridRect( PixelRect const & rect ) const 
 {
     return GridRect
     ( 
@@ -164,7 +165,7 @@ GridRect FrameBuffer::Pixel2GridRect( PixelRect const & rect ) const
     );
 }
 
-PixelRect FrameBuffer::Grid2PixelRect( GridRect const & rcGrid ) const 
+PixelRect PixelCoordinates::Grid2PixelRect( GridRect const & rcGrid ) const 
 {
     return PixelRect
     ( 

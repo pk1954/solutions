@@ -42,9 +42,6 @@
     <ClCompile Include="win32_focusPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_frameBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32_gridWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -99,9 +96,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_focusPoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_frameBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_gridWindow.h">

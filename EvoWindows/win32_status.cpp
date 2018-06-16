@@ -9,8 +9,8 @@
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "EvoController.h"
+#include "pixelCoordinates.h"
 #include "win32_worker_thread.h"
-#include "win32_frameBuffer.h"
 #include "win32_util.h"
 #include "win32_status.h"
 
@@ -133,8 +133,8 @@ void WINAPI StatusBar::createSizeControl( )
     createButton       ( L" + ",     (HMENU)IDM_ZOOM_IN       ); 
     createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM      ); 
 
-    USHORT const usMinPos = fieldSize2TrackBarPos( FrameBuffer::MINIMUM_FIELD_SIZE );
-    USHORT const usMaxPos = fieldSize2TrackBarPos( FrameBuffer::MAXIMUM_FIELD_SIZE );
+    USHORT const usMinPos = fieldSize2TrackBarPos( PixelCoordinates::MINIMUM_FIELD_SIZE );
+    USHORT const usMaxPos = fieldSize2TrackBarPos( PixelCoordinates::MAXIMUM_FIELD_SIZE );
 
     (void)::SendMessage( GetDlgItem( IDM_ZOOM_TRACKBAR ), TBM_SETRANGE,    TRUE, (LPARAM)MAKELONG( usMinPos, usMaxPos ) );  
     (void)::SendMessage( GetDlgItem( IDM_ZOOM_TRACKBAR ), TBM_SETPAGESIZE,    0, (LPARAM)4 );                    // new page size    
@@ -232,7 +232,7 @@ void StatusBar::Start
 
     ( void )SendMessage( SB_SETPARTS, sizeof( statwidths ) / sizeof( int ), (LPARAM)( &statwidths ) );
 
-    SetSizeTrackBar ( FrameBuffer::DEFAULT_FIELD_SIZE );
+    SetSizeTrackBar ( PixelCoordinates::DEFAULT_FIELD_SIZE );
     SetSpeedTrackBar( DEFAULT_DELAY );
 }
 

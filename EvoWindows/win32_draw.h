@@ -17,7 +17,7 @@
 
 class EvolutionCore;
 class EvolutionModelData;
-class FrameBuffer;
+class PixelCoordinates;
 class DspOptWindow;
 class D3dBuffer;
 
@@ -25,7 +25,7 @@ class DrawFrame
 {
 public:
 
-    DrawFrame( HWND, EvolutionCore *, EvolutionModelData *, FrameBuffer *, DspOptWindow *, GridRect * );
+    DrawFrame( HWND, EvolutionCore *, EvolutionModelData *, PixelCoordinates *, DspOptWindow *, GridRect * );
     ~DrawFrame( );
 
     void Resize( );
@@ -47,7 +47,7 @@ private:
 
     EvolutionCore      * const m_pCore;
     EvolutionModelData * const m_pModelWork;
-    FrameBuffer        * const m_pFrameBuffer;
+    PixelCoordinates   * const m_pPixelCoordinates;
     DspOptWindow       * const m_pDspOptWindow;
     GridRect const     * const m_pGridRectSel;
     D3dBuffer          *       m_pD3dBuffer;

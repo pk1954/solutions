@@ -22,7 +22,7 @@ public:
         bottom = 0;
     };
 
-    PixelRect( RECT const & rect )
+    PixelRect( PixelRect const & rect )
     {
         left   = rect.left;
         top    = rect.top;
@@ -95,7 +95,7 @@ public:
         m_iHeight -= iDiff;
     }
 
-    BOOL IsEmpty( ) const
+    bool IsEmpty( ) const
     {
         return ( m_iWidth == 0 ) || ( m_iHeight == 0 );
     }
