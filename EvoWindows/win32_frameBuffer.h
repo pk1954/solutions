@@ -72,7 +72,22 @@ public:
 
     GridPoint  Pixel2GridPos ( PixelPoint const & pp ) const 
 	{ 
-		return Pixel2GridSize( pp + m_pixOffset ); 
+		if ( m_bHexagon )  // does not work !!!!!!
+		{
+			double const dFieldSize = static_cast<double>( m_sFieldSize );
+			double const dx = (double)pp.x / dFieldSize;
+			double const dy = (double)pp.y / dFieldSize;
+			double const temp = floor(dx + sqrt(3) * dy + 1);
+			double const dq = floor((floor( 2 * dx + 1) + temp) / 3);
+			double const dr = floor((temp + floor( -dx + sqrt(3) * dy + 1))/3);
+			return GridPoint
+			( 
+				static_cast< long >( floor(dq + 0.5) ),
+				static_cast< long >( floor(dr + 0.5) )
+			);
+		}
+		else 
+			return Pixel2GridSize( pp + m_pixOffset ); 
 	}
 
     PixelPoint Grid2PixelPos ( GridPoint const & gp ) const 

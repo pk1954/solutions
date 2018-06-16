@@ -8,6 +8,14 @@
 #include "win32_crsrWindow.h"
 #include "win32_focusPoint.h"
 
+// ++++++++++ EXPERIMENTAL ++++++++++++
+
+#include "win32_gridWindow.h" 
+#include "pixelPoint.h"
+#include "win32_util.h"
+
+// ++++++++++ end EXPERIMENTAL ++++++++++++
+
 using namespace std;
 
 CrsrWindow::CrsrWindow( ) :
@@ -20,7 +28,8 @@ void CrsrWindow::Start
 (
     HWND               const         hWndParent,
     FocusPoint       * const         pFocusPoint,
-    EvolutionModelData const * const pModel
+    EvolutionModelData const * const pModel,
+	GridWindow         const * const pGridWindow   // ++++++++++ EXPERIMENTAL ++++++++++++
 ) 
 {
     HWND hWnd = StartTextWindow( hWndParent, L"CrsrWindow", 100 );
@@ -28,6 +37,7 @@ void CrsrWindow::Start
     m_pModelWork = pModel;
     m_pFocusPoint = pFocusPoint;
     m_pFocusPoint->AttachFocusPointObserver( this, 0 );
+	m_pGridWindow = pGridWindow;      // ++++++++++ EXPERIMENTAL ++++++++++++
 }
 
 void CrsrWindow::DoPaint( )
@@ -57,7 +67,25 @@ void CrsrWindow::DoPaint( )
     setHorizontalPos( 2 );
     printPercentage( m_pModelWork->GetMutationRate( gpFocus ) );
     
-    if ( m_pModelWork->IsDead( gpFocus ) )
+	// ++++++++++ EXPERIMENTAL ++++++++++++
+/*
+	PixelPoint pp = m_pGridWindow->GetRelativeCrsrPosition( );
+    nextLine( L"pixel coord:" );
+    printNumber( pp.x );
+    printNumber( pp.y );
+
+    nextLine( L"red coord:" );
+    double dx = (double)pp.x;
+	double dc = dx / 2 * sqrt( 5 );
+	double dFieldSize;
+	double dSize = dFieldSize * sqrt( 3 ) / 3;
+	double q = pp.x * 2/3 / dSize;
+    double r = (-pp.x / 3 + sqrt(3)/3 * pp.y) / dSize;
+
+    printNumber( floor(dc + 0.5) );
+    printNumber( pp.x );
+*/
+	if ( m_pModelWork->IsDead( gpFocus ) )
         return;
 
     // PART_ENERGY

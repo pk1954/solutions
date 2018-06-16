@@ -23,23 +23,23 @@ public:
 
 	void EvoController::Start
 	( 
-		wostream *, 
-		HistWorkThread * const,
-		WinManager * const,
+		wostream          *, 
+		HistWorkThread    * const,
+		WinManager        * const,
 		PerformanceWindow * const,
-		StatusBar * const,
-		GridWindow * const
+		StatusBar         * const,
+		GridWindow        * const
 	);
 
 	void SetGenerationDelay( DWORD const );
 	void ProcessCommand( WPARAM const, LPARAM const );
 
 private:
-	BOOL                 m_bTrace;
-    wostream           * m_pTraceStream;
-	HistWorkThread     * m_pHistWorkThread;
-	WinManager         * m_pWinManager;
-    PerformanceWindow  * m_pPerformanceWindow;
-	StatusBar          * m_pStatusBar;
-	GridWindow         * m_pGridWindow;
+	BOOL                m_bTrace;
+    wostream          * m_pTraceStream;
+	HistWorkThread    * m_pHistWorkThread;
+	WinManager        * m_pWinManager;
+    PerformanceWindow * m_pPerformanceWindow;
+	StatusBar         * m_pStatusBar;
+	GridWindow        * m_pGridWindow;
 };

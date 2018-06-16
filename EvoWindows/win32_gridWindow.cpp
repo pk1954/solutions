@@ -198,6 +198,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     else
     {
         m_ptLast.x = LONG_MIN;    // make m_ptLast invalid
+        m_pWorkThread->PostRefresh( );  // +++++++++++++ EXPERIMENTAL +++++++++++++++++
         // no PostRefresh! It would cause repaint for every mouse move.
     }
 }
