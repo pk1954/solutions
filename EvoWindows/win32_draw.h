@@ -39,9 +39,6 @@ private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
     DrawFrame & operator= ( DrawFrame const & );  // noncopyable class 
 
-    class drawGridPointFunc;
-    class drawBackground;
-
     HWND const m_hWnd;
     BOOL       m_bDimmIndividuals;   
 
@@ -67,7 +64,7 @@ private:
 
     COLORREF getBackgroundColor ( int const ) const;
     COLORREF getTextColor       ( GridPoint const & ) const;
-    BOOL     getIndividualColor ( GridPoint const &, COLORREF & ) const;
+    void     setIndividualColor ( GridPoint const &, float const ) const;
     void     assembleLeftColumn ( GridPoint const &, GridPoint const & );
     void     assembleRightColumn( GridPoint const & );
 

@@ -70,9 +70,22 @@ void Apply2Rect( GridPoint_Functor * const pgpf, GridRect const & rect )
             ( * pgpf )( gp );
 }
 
-void Apply2Grid( GridPoint_Functor * const pgpf )
+void Apply2RectLambda( const std::function<void( GridPoint const &)>& func, GridRect const & rect )
 {
-    Apply2Rect( pgpf, GridRect::GRID_RECT_FULL );
+    GRID_COORD const gcLeft   = max( rect.GetLeft  (), GridRect::GRID_RECT_FULL.GetLeft  () );
+    GRID_COORD const gcTop    = max( rect.GetTop   (), GridRect::GRID_RECT_FULL.GetTop   () );
+    GRID_COORD const gcRight  = min( rect.GetRight (), GridRect::GRID_RECT_FULL.GetRight () );
+    GRID_COORD const gcBottom = min( rect.GetBottom(), GridRect::GRID_RECT_FULL.GetBottom() );
+
+    GridPoint gp;
+    for ( gp.y = gcTop; gp.y <= gcBottom; ++gp.y )
+        for ( gp.x = gcLeft; gp.x <= gcRight; ++gp.x )
+            func( gp );
+}
+
+void Apply2GridLambda( const std::function<void( GridPoint const &)>& func )
+{
+    Apply2RectLambda( func, GridRect::GRID_RECT_FULL );
 }
 
 std::wostream & operator << ( std::wostream & out, GridRect const & rect )

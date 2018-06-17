@@ -38,20 +38,15 @@ void ASSERT_PRODUCT( int const iA, int const iB )
 
 void Grid::FoodGrowth( )
 {
-    class growth : public GridPoint_Functor
-    {
-    public:
-        virtual ~growth() 
-        { };
+	int m_iRate = m_iFoodGrowthRate;
 
-        growth( Grid * const pGrid, int const iRate ) :
-            GridPoint_Functor( pGrid ), 
-            m_iRate( iRate ) 
-        { };        
- 
-        virtual bool operator() ( GridPoint const & gpRun )
-        {
-            GridField & rGF  = GetGrid()->getGridField( gpRun );
+	m_uiFoodGrowth = 0;
+
+	Apply2GridLambda
+	( 
+    	[&](GridPoint const & gp)
+		{
+            GridField & rGF  = getGridField( gp );
             int const   iMax = rGF.GetFertility() + rGF.GetFertilizer();
             if ( iMax > 0 )
             {
@@ -69,20 +64,12 @@ void Grid::FoodGrowth( )
                 if ( iFood + iGrowth > iMax )
                     iGrowth = iMax - iFood;
                 iFood += iGrowth;
-                GetGrid()->m_uiFoodGrowth += iGrowth;
+                m_uiFoodGrowth += iGrowth;
                 assert( iFood <= SHRT_MAX );
                 assert( iFood >= SHRT_MIN );
                 rGF.SetFoodStock( static_cast<short>(iFood) );
                 rGF.ReduceFertilizer( );
-				return true;
 			}
-			return false;
-        }
-
-    private:
-        int m_iRate;
-    };
-
-    m_uiFoodGrowth = 0;
-    Apply2Grid( & growth( this, m_iFoodGrowthRate ) );
+		}
+	);
 }

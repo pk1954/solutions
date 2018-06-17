@@ -22,57 +22,6 @@ static COLORREF const CLR_BLACK = D3DCOLOR_ARGB( 255,   0,   0,   0 );
 static COLORREF const CLR_WHITE = D3DCOLOR_ARGB( 255, 255, 255, 255 );
 static COLORREF const CLR_GREY  = D3DCOLOR_ARGB( 128, 128, 128, 128 );
 
-//lint -esym( 768, DrawFrame::drawGridPointFunc )     symbol not referenced
-//lint -esym( 768, DrawFrame::drawBackground )        symbol not referenced
-//lint -e845                                          0 as right argument to << or |
-
-//// The family of drawGridPointFunc classes provides functors of GridPoint_Functor type
-//// which have access to EvolutionCore, DrawFrame, PixelCoordinates and D3DBuffer objects
-
-class DrawFrame::drawGridPointFunc : public GridPoint_Functor
-{
-protected:
-    explicit drawGridPointFunc( DrawFrame * const pDraw ) :
-        GridPoint_Functor( ),
-        m_pDraw       ( pDraw ), 
-        m_pPixelCoordinates( m_pDraw->m_pPixelCoordinates ) ,
-        m_pD3dBuffer  ( m_pDraw->m_pD3dBuffer )
-    { };
-
-    DrawFrame   * m_pDraw;
-    PixelCoordinates * m_pPixelCoordinates;
-    D3dBuffer   * m_pD3dBuffer;
-};
-
-class DrawFrame::drawBackground : public drawGridPointFunc
-{
-public:
-    drawBackground
-    ( 
-        EvolutionModelData const *       pModel,
-        DrawFrame                * const pDraw, 
-        GetIntValueFunctor const &       getIntFunctor
-    ) :
-        drawGridPointFunc( pDraw ),
-        m_fPxSize( static_cast<float>( pDraw->m_pPixelCoordinates->GetFieldSize( ) ) ),
-        m_pGetIntFunctor( & getIntFunctor )
-    { };
-
-    virtual bool operator() ( GridPoint const & gp )
-    {
-        int   const iValue  = ( * m_pGetIntFunctor )( gp );
-        DWORD const dwColor = m_pDraw->getBackgroundColor( iValue );
-        m_pD3dBuffer->AddBackgroundPrimitive( m_pPixelCoordinates->Grid2PixelPos( gp ), dwColor, m_fPxSize );
-		return false;
-    }
-
-private:
-    float                      m_fPxSize;
-    GetIntValueFunctor const * m_pGetIntFunctor;
-};
-
-/////////////////////////////////////
-
 DrawFrame::DrawFrame
 ( 
     HWND                 const hWnd, 
@@ -143,9 +92,21 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
 {
     if ( IsWindowVisible( m_hWnd ) )
     {
-        m_pD3dBuffer->StartFrame( );
+		m_pD3dBuffer->StartFrame( );
 
-        Apply2Grid( & drawBackground( m_pModelWork, this, m_pDspOptWindow->GetDisplayFunctor( ) ) );
+		{
+			float                      m_fPxSize        = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) );
+			GetIntValueFunctor const * m_pGetIntFunctor = & m_pDspOptWindow->GetDisplayFunctor( );
+			Apply2GridLambda
+			( 
+    			[&](GridPoint const & gp)
+				{
+					int   const iValue  = ( * m_pGetIntFunctor )( gp );
+					DWORD const dwColor = getBackgroundColor( iValue );
+					m_pD3dBuffer->AddBackgroundPrimitive( m_pPixelCoordinates->Grid2PixelPos( gp ), dwColor, m_fPxSize );
+				}
+			);
+		}
         m_pD3dBuffer->RenderBackground( );
 
         if ( m_pDspOptWindow->AreIndividualsVisible( ) )
@@ -196,31 +157,12 @@ void DrawFrame::drawPOI( GridPoint const & gpPoi )
 
 void DrawFrame::drawIndividuals( GridRect const & rect  )
 {
-    class draw : public drawGridPointFunc
-    {
-    public:
-        draw( DrawFrame * const pDraw, float const fHalfSizeInd ) :   
-            drawGridPointFunc( pDraw ),
-            m_fHalfSizeInd( fHalfSizeInd )
-        { };
-
-        virtual bool operator() ( GridPoint const & gp )
-        {
-            COLORREF color;
-            if ( m_pDraw->getIndividualColor( gp, color ) )
-                m_pD3dBuffer->AddIndividualPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), color, m_fHalfSizeInd );
-			return false;
-        }
-
-    private:
-        float m_fHalfSizeInd;
-    };
-
     short const sFieldSize   = m_pPixelCoordinates->GetFieldSize();
     long  const lHalfSizeInd = ( sFieldSize <    8 ) ?                         1  :
                                ( sFieldSize <=  16 ) ? ((3 * sFieldSize) / 8 - 1) : 
                                                        ((3 * sFieldSize) / 8    );
-    Apply2Rect( & draw( this, static_cast<float>( lHalfSizeInd ) ), rect );
+
+    Apply2RectLambda( [&](GridPoint const & gp) { setIndividualColor( gp, static_cast<float>( lHalfSizeInd ) ); }, rect );
 /*
 #ifndef NDEBUG
     if ( rect == GridRect::GRID_RECT_FULL )
@@ -238,47 +180,34 @@ COLORREF DrawFrame::getTextColor( GridPoint const & gp ) const
 
 void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
 {
-    class draw : public drawGridPointFunc
-    {
-    public:
-        explicit draw( DrawFrame * const pDraw, GridPoint const & gpPoi ) :
-            drawGridPointFunc( pDraw ),
-            m_lHeight   ( Util::GetClientWindowHeight( m_pDraw->m_hWnd ) ),
-            m_sFieldSize( m_pPixelCoordinates->GetFieldSize() ),
-            m_gpPoi( gpPoi )
-        { };
+    long  const lHeight      = Util::GetClientWindowHeight( m_hWnd );
+    short const sFieldSize   = m_pPixelCoordinates->GetFieldSize();
+    long  const lHalfSizeInd = (5 * sFieldSize) / 16;
 
-        virtual bool operator() ( GridPoint const & gp )
-        {
-            if ( m_pDraw->GetEvoCore( )->IsAlive( gp ) )
+    Apply2RectLambda
+	( 
+		[&](GridPoint const & gp)
+		{
+            if ( GetEvoCore( )->IsAlive( gp ) )
             {
-				COLORREF   colText      = m_pDraw->getTextColor( gp );
-                PixelPoint ptCenter     = m_pPixelCoordinates->Grid2PixelPosCenter( gp );
-                           ptCenter.y   = m_lHeight - ptCenter.y;            // for DirectX text output
-                long const lHalfSizeInd = (5 * m_sFieldSize) / 16;
+				COLORREF   colText    = getTextColor( gp );
+                PixelPoint ptCenter   = m_pPixelCoordinates->Grid2PixelPosCenter( gp );
+                           ptCenter.y = lHeight - ptCenter.y;            // for DirectX text output
                 PixelRect  pixRect( ptCenter - lHalfSizeInd, ptCenter + lHalfSizeInd );
 
-                m_pDraw->assembleLeftColumn( gp, m_gpPoi );
-                m_pD3dBuffer->D3D_DrawText( pixRect, m_pDraw->getOutputString( ), colText );
+                assembleLeftColumn( gp, gpPoi );
+                m_pD3dBuffer->D3D_DrawText( pixRect, getOutputString( ), colText );
 
-                if ( m_sFieldSize >= 256 ) 
+                if ( sFieldSize >= 256 ) 
                 {
                     pixRect.left += lHalfSizeInd;
-                    m_pDraw->assembleRightColumn( gp );
-                    m_pD3dBuffer->D3D_DrawText( pixRect, m_pDraw->getOutputString( ), colText );
+                    assembleRightColumn( gp );
+                    m_pD3dBuffer->D3D_DrawText( pixRect, getOutputString( ), colText );
                 }
-				return true;
             }
-			return false;
-        }
-
-    private:
-        long      m_lHeight;
-        short     m_sFieldSize;
-        GridPoint m_gpPoi;
-    };
-
-    Apply2Rect( & draw( this, gpPoi ), rect );
+		},
+		rect 
+	);
 }
 
 void DrawFrame::assembleLeftColumn( GridPoint const & gp, GridPoint const & gpPoi )
@@ -325,21 +254,25 @@ void DrawFrame::assembleRightColumn( GridPoint const & gp )
     finishOutputString( );
 }
 
-BOOL DrawFrame::getIndividualColor( GridPoint const & gp, COLORREF & color ) const
+void DrawFrame::setIndividualColor( GridPoint const & gp, float const fHalfSize ) const
 {
     tStrategyId const strat   = m_pModelWork->GetStrategyId( gp );
     short       const sEnergy = m_pModelWork->GetEnergy  ( gp );
     if ( sEnergy <= 0 )
-        return FALSE;
+        return;
     if ( static_cast<int>( strat ) >= NR_STRATEGIES )
-        return FALSE;                   // can happen in case of race conditions between display thread and worker thread
+        return;                   // can happen in case of race conditions between display thread and worker thread
     //lint -e571  suspicious cast
     UINT const uiIndex = static_cast<UINT>( sEnergy );
     //lint +e571
     CLUT const & clut = m_aClutStrat.at( static_cast<int>( strat ) );
     assert( uiIndex < clut.GetSize() ); 
-    color = clut.Get( uiIndex );
-    return TRUE;
+    m_pD3dBuffer->AddIndividualPrimitive
+	( 
+		m_pPixelCoordinates->Grid2PixelPosCenter( gp ), 
+		clut.Get( uiIndex ), 
+		fHalfSize 
+	);
 }
 
 COLORREF DrawFrame::getBackgroundColor( int const iValue ) const

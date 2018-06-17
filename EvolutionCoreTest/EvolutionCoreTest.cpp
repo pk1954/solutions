@@ -11,51 +11,28 @@
 #include "gridRect.h"
 #include "gridNeighbor.h"
 
-class gridNeighborTest : public GridPoint_Functor
-{
-public:
-    virtual ~gridNeighborTest() { };
- 
-    virtual bool operator() ( GridPoint const & gpNeighbor )
-    {
-        return false;
-    }
-};
-
-class visitNeighbours : public GridPoint_Functor
-{
-public:
-	virtual ~visitNeighbours() { };
-
-    virtual bool operator() ( GridPoint const & gp )
-    {
-		return Neighborhood::Apply2All( gp, gridNeighborTest( ) );
-    }
-};
-
-class gpFunctorEmpty : public GridPoint_Functor
-{
-public:
-	virtual ~gpFunctorEmpty() { };
-
-    virtual bool operator() ( GridPoint const & gp )
-    {
-		return false;
-	}
-};
-
 int const NRUNS = 5000;
 
 void testee()
 {
 	for ( int i = 0; i <= NRUNS; ++i )
-		Apply2Grid( & visitNeighbours( ) );
+		Apply2GridLambda
+		( 
+			[](GridPoint const & gp)
+			{
+				Neighborhood::Apply2All
+				( 
+					gp, 
+					[&](GridPoint const & gpNeighbor) { }
+				);
+			} 
+		);
 }
 
 void tara()
 {
 	for ( int i = 0; i <= NRUNS; ++i )
-		Apply2Grid( & gpFunctorEmpty( ) );
+		Apply2GridLambda( [](GridPoint const & gp){} );
 }
 
 void DoTest( )

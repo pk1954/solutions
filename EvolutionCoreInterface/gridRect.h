@@ -4,12 +4,14 @@
 #pragma once
 
 #include <iostream>
+#include <functional>
 #include "gridPoint.h"
 
 class GridRect;
 
-void Apply2Grid( GridPoint_Functor * );
 void Apply2Rect( GridPoint_Functor *, GridRect const & );
+void Apply2GridLambda( const std::function<void( GridPoint const &)>& func);
+void Apply2RectLambda( const std::function<void( GridPoint const &)>& func, GridRect const & );
 
 class GridRect
 {
@@ -45,10 +47,6 @@ public:
     void Move     ( GridPoint const & );
     void SetCenter( GridPoint const & );
     void SetSize  ( GridPoint const & );
-    void Apply( GridPoint_Functor * const pgpf ) const 
-    {
-        ::Apply2Rect( pgpf, *this );
-    }
 
  private:
     GRID_COORD m_lLeft;

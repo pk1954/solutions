@@ -58,13 +58,13 @@ static std::array< GridPoint, 4 > const table4 =
 
 void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization of m_pGridNeighbors
 {
-    class initNeighbors : public GridPoint_Functor
-    {
-    public:
-        initNeighbors( ) : GridPoint_Functor( ) { };        
- 
-        virtual bool operator() ( GridPoint const & gp )
-        {
+	assert( ( iNrOfNeighbors == 4 ) || ( iNrOfNeighbors == 6 ) || ( iNrOfNeighbors == 8 ) );
+	m_iNrOfNeighbors = iNrOfNeighbors;
+	m_pGridNeighbors = new NEIGHBOR_GRID;
+    Apply2GridLambda  // initialization of grid variables which never change after initialization
+	( 
+    	[&](GridPoint const & gp)
+		{
 			NEIGHBORS & neighbors = (* m_pGridNeighbors)[ gp.y ][ gp.x ];
 			neighbors.reserve( m_iNrOfNeighbors );
 			for ( int i = 0; i < m_iNrOfNeighbors; ++i )
@@ -79,22 +79,14 @@ void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization o
 				GridPoint gpNeighbor = ( gp + gpDelta + GridPoint::GRID_SIZE ) % GridPoint::GRID_SIZE;
 				neighbors.push_back( gpNeighbor );
 			}
-			return false;
-        }
-    };
-
-	assert( ( iNrOfNeighbors == 4 ) || ( iNrOfNeighbors == 6 ) || ( iNrOfNeighbors == 8 ) );
-	m_iNrOfNeighbors = iNrOfNeighbors;
-	m_pGridNeighbors = new NEIGHBOR_GRID;
-    Apply2Grid( & initNeighbors( ) );    // initialization of grid variables which never change after initialization
+		}
+	);
 }
 
-bool Neighborhood::Apply2All( GridPoint gpCenter, GridPoint_Functor & func ) 
+void Neighborhood::Apply2All( GridPoint gpCenter, const std::function<void( GridPoint const &)>& func ) 
 {
 	for ( auto n: getNeighbors( gpCenter ) )
 	{
-		if ( (func)( n ) )
-			return true;
+		func( n );
 	}
-	return false;
 };

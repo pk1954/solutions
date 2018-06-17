@@ -38,7 +38,18 @@ void EditorState::EditorDoEdit( Grid * const pGrid, GridPoint const gp )
         { tBrushMode::food,           & m_FoodStock_Functor  },
         { tBrushMode::fertilizer,     & m_Fertilizer_Functor }
     };
-
+/*
+	static unordered_map < tBrushMode, const std::function<void(GridPoint const &)>& > mapLambdaTable =
+    {
+        { 
+			tBrushMode::move, 
+   			[&](GridPoint const & gp)
+			{
+				pGrid->  m_brushMode;
+			}
+		}
+	};
+*/
 	static unordered_map < tBrushMode, tStrategyId > mapStrategyTable =
 	{
 		{ tBrushMode::randomStrategy, tStrategyId::random },

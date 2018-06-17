@@ -24,29 +24,6 @@ class GetEmptyFunctor : public GetIntValueFunctor
         virtual int operator() ( GridPoint const & gp ) const { return 0; }
 };
 
-class FoodStockAverage : public GridPoint_Functor
-{
-public:
-    FoodStockAverage
-    (
-        EvolutionModelData const * const pModel,
-        int                      * const piSum
-    ) : 
-        m_pModelWork( pModel ),
-        m_piSum( piSum )
-    { }
-
-    virtual bool operator() ( GridPoint const & gpNeighbor )
-    {
-        * m_piSum += m_pModelWork->GetFoodStock( gpNeighbor );
-        return false;
-    }
-
-private:
-    EvolutionModelData const * const m_pModelWork;
-    int                      * const m_piSum;
-};
-
 class GetFoodStockFunctor : public GetIntValueFunctor
 {
 public: 
@@ -57,7 +34,14 @@ public:
     virtual int operator() ( GridPoint const & gp ) const 
     {
         int iSum = m_pModelWork->GetFoodStock( gp );
-        Neighborhood::Apply2All( gp, FoodStockAverage( m_pModelWork, & iSum ) );
+        Neighborhood::Apply2All
+		( 
+			gp, 
+			[&](GridPoint const & gpNeighbor) 
+			{
+				iSum += m_pModelWork->GetFoodStock( gpNeighbor );
+			}
+		);
         return iSum / (Neighborhood::GetNrOfNeighbors( ) + 1);
     }
 };

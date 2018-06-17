@@ -165,43 +165,6 @@ private:
     array < GeneStat,     NR_GENES      > m_aGeneStat;
 };
 
-class gridPointStatistics : public GridPoint_Functor
-{
-public:
-    explicit gridPointStatistics
-    ( 
-        AllGenesStat        * const pStat, 
-        EvolutionModelData const * const pModel
-    )  : 
-        GridPoint_Functor( ),
-        m_pModelWork( pModel ),
-        m_pStat( pStat )
-    { };
-
-    virtual bool operator() ( GridPoint const & gp )
-    {
-        if ( m_pModelWork->IsAlive( gp ) )
-        {
-            tStrategyId const s = m_pModelWork->GetStrategyId( gp );
-            for ( unsigned int uiOption = 0; uiOption < NR_ACTIONS; ++uiOption )
-				if ( EvolutionCore::IsEnabled( static_cast<tAction>( uiOption ) ) )
-		            m_pStat->add2option( s, uiOption, m_pModelWork->GetDistr( gp, static_cast<tAction>( uiOption ) ) );
-
-            for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
-                m_pStat->add2Gene( s, uiGene, m_pModelWork->GetGenotype( gp, static_cast<tGeneType>( uiGene ) ) );
-
-            m_pStat->incCounter( s );
-            m_pStat->addMemSize( s, m_pModelWork->GetMemSize( gp ) );
-            m_pStat->addAge    ( s, m_pModelWork->GetAge( gp ) );
-			return false;
-        }
-		return true;
-    }
-private:
-    EvolutionModelData const * m_pModelWork;
-    AllGenesStat        * m_pStat;
-};
-
 StatisticsWindow::StatisticsWindow( ):
     TextWindow( ),
     m_pGridRectSel( nullptr )
@@ -230,11 +193,28 @@ void StatisticsWindow::DoPaint( )
     // aquire and prepare data 
 
     AllGenesStat genesStat;
-    Apply2Rect
-    ( 
-        & gridPointStatistics( & genesStat, m_pModelWork ), 
-        m_pGridRectSel->IsEmpty( ) ? GridRect::GRID_RECT_FULL : *m_pGridRectSel
-    );
+
+    Apply2RectLambda
+	( 
+		[&](GridPoint const & gp)
+		{
+			if ( m_pModelWork->IsAlive( gp ) )
+			{
+				tStrategyId const s = m_pModelWork->GetStrategyId( gp );
+				for ( unsigned int uiOption = 0; uiOption < NR_ACTIONS; ++uiOption )
+					if ( EvolutionCore::IsEnabled( static_cast<tAction>( uiOption ) ) )
+						genesStat.add2option( s, uiOption, m_pModelWork->GetDistr( gp, static_cast<tAction>( uiOption ) ) );
+
+				for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
+					genesStat.add2Gene( s, uiGene, m_pModelWork->GetGenotype( gp, static_cast<tGeneType>( uiGene ) ) );
+
+				genesStat.incCounter( s );
+				genesStat.addMemSize( s, m_pModelWork->GetMemSize( gp ) );
+				genesStat.addAge    ( s, m_pModelWork->GetAge( gp ) );
+			}
+		},
+		m_pGridRectSel->IsEmpty( ) ? GridRect::GRID_RECT_FULL : *m_pGridRectSel 
+	);
 
     genesStat.scaleAllGenesStat( );
 

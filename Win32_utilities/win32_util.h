@@ -50,7 +50,7 @@ namespace Util
 
     inline void ApplyOp( BOOL & b, tBoolOp const op )
     {
-        b = Util::ApplyOp2( b, op );
+        b = ApplyOp2( b, op );
     }
     
     inline void Show( HWND const hWnd, BOOL const bStateOld, BOOL const bStateNew )
@@ -106,7 +106,7 @@ namespace Util
 
     inline PixelRectSize GetClRectSize( HWND const hWnd )
     {
-        RECT const rect = Util::GetClRect( hWnd );
+        RECT const rect = GetClRect( hWnd );
         PixelRectSize pntSize
         ( 
             (rect.right  - rect.left),
@@ -117,7 +117,7 @@ namespace Util
 
     inline PixelPoint GetClRectCenter( HWND const hWnd )
     {
-        PixelRectSize const rectSize = Util::GetClRectSize( hWnd );
+        PixelRectSize const rectSize = GetClRectSize( hWnd );
         PixelPoint          pntCenter( rectSize.GetWidth() / 2, rectSize.GetHeight() / 2 );
         return pntCenter;
     }

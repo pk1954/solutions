@@ -63,19 +63,13 @@ Grid::Grid( )
 	  m_emptyNeighborSlots( ),
 	  m_occupiedNeighborSlots( )
 {
-    class initGridFields : public GridPoint_Functor
-    {
-    public:
-        explicit initGridFields( Grid * const pGrid ) : GridPoint_Functor(pGrid) { };        
- 
-        virtual bool operator() ( GridPoint const & gpRun )
-        {
-            GetGrid( )->getGridField( gpRun ).InitGridFieldStructure( gpRun );
-			return false;
-        }
-    };
-
-    Apply2Grid( & initGridFields( this ) );    // initialization of grid variables which never change after initialization
+    Apply2GridLambda    // initialization of grid variables which never change after initialization
+	( 
+    	[&](GridPoint const & gp)
+		{
+           getGridField( gp ).InitGridFieldStructure( gp );
+		}
+	); 
 }
 
 Grid::~Grid( )
@@ -90,94 +84,38 @@ Grid::~Grid( )
     };
 }
 
-//lint -e1763         operator() marked as const indirectly modifies class
 void CheckIndividuals( Grid & grid )
 {
-    class check : public GridPoint_Functor
-    {
-    public:
-        check( Grid * const pGrid, int * const piCount ) 
-        : GridPoint_Functor( pGrid ), 
-          m_piCount( piCount ) 
-        { };
-
-        virtual bool operator() ( GridPoint const & gp )
-        {
-            if ( GetGrid()->IsAlive( gp ) )
-               ++ (* m_piCount);
-			return false;
-        }
-
-    private:
-        int * const m_piCount;
-    };
-
     int iCount = 0;
-    Apply2Grid( & check( & grid, & iCount ) );
-    int const iNrOfLivingIndividuals = grid.GetNrOfLivingIndividuals( );
+ 
+	Apply2GridLambda
+	( 
+    	[&](GridPoint const & gp)
+		{
+            if ( grid.IsAlive( gp ) )
+               ++ iCount;
+		}
+	);
+
+	int const iNrOfLivingIndividuals = grid.GetNrOfLivingIndividuals( );
     assert( iCount == iNrOfLivingIndividuals );
 }
-//lint +e1763 
 
 void Grid::ResetGrid( )
 {
-    class reset : public GridPoint_Functor
-    {
-    public:
-        reset( Grid * const pGrid, short const sFood ) 
-        : GridPoint_Functor( pGrid ), 
-          m_sFood( sFood ) 
-        { }
- 
-        virtual bool operator() ( GridPoint const & gpRun )
-        {
-            GetGrid( )->getGridField( gpRun ).ResetGridField( m_sFood );
-			return false;
-        }
+    short sFood = Config::GetConfigValueShort( Config::tId::minFood );
 
-    private:
-        short m_sFood;
-    };
+    Apply2GridLambda
+	( 
+    	[&](GridPoint const & gp)
+		{
+			getGridField( gp ).ResetGridField( sFood );
+		}
+	);
 
-    Apply2Grid( & reset( this, Config::GetConfigValueShort( Config::tId::minFood ) ) );
     m_gpList.ResetGpList( );
     m_random.InitializeRandom( );
 }
-
-// getSlots: visit direct neighbors of a given GridPoint and create a list of all neighbors
-//           satisfying a criterion given as a Decision_Functor
-
-class Grid::getSlots : public GridPoint_Functor
-{
-public:
-    getSlots
-    ( 
-        Grid             const & grid,
-        Decision_Functor const & func, 
-        Neighborhood           & list
-    ) : 
-        m_grid( grid ),
-        m_func( func ),
-        m_list( list )
-    { }
-
-    virtual ~getSlots( ) { };
- 
-    virtual bool operator() ( GridPoint const & gpNeighbor )
-    {
-        if ( (m_func)( m_grid.GetGridField( gpNeighbor ) ) )
-        {
-            m_list.AddToList( gpNeighbor );
-        }
-        return false;
-    }
-private:
-//lint -e1725                          // reference members
-    Grid             const & m_grid;
-    Decision_Functor const & m_func; 
-    Neighborhood           & m_list;
-//lint +e1725
-};
 
 GridPoint Grid::chooseTarget( Neighborhood & gpListEmpty )
 {
@@ -221,11 +159,17 @@ void Grid::MakePlan
     plan.IncBaseConsumption( m_iMemSizeFoodConsumption * gfRun.GetMemSize( ) );
 
 	m_emptyNeighborSlots.ClearList( );
-    Neighborhood::Apply2All( gpRun, getSlots( * this, IsDead_Functor(), m_emptyNeighborSlots  ) );
 	m_occupiedNeighborSlots.ClearList( );
-    Neighborhood::Apply2All( gpRun, getSlots( * this, IsAlive_Functor(), m_occupiedNeighborSlots ) );
+    Neighborhood::Apply2All
+	( 
+		gpRun, 
+		[&](GridPoint const & gpNeighbor)
+		{
+			(IsAlive(gpNeighbor) ? &m_occupiedNeighborSlots : &m_emptyNeighborSlots)->AddToList( gpNeighbor );
+		}
+	);
 
-    assert( m_emptyNeighborSlots.GetLength() +  m_occupiedNeighborSlots.GetLength() == Neighborhood::GetNrOfNeighbors( ) );
+    assert( m_emptyNeighborSlots.GetLength() + m_occupiedNeighborSlots.GetLength() == Neighborhood::GetNrOfNeighbors( ) );
 
     bool const bHasFreeSpace = m_emptyNeighborSlots.GetLength( ) > 0;
     bool const bHasNeighbor  = m_occupiedNeighborSlots.GetLength( ) > 0;

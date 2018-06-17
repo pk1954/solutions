@@ -5,6 +5,7 @@
 
 #include <array>
 #include <vector>
+#include <functional>
 #include "gridPoint.h"
 
 using namespace std;
@@ -13,7 +14,7 @@ class Neighborhood
 {
 public:
     static void InitClass( int const );
-	static bool Apply2All( GridPoint const, GridPoint_Functor & );
+	static void Apply2All( GridPoint const, const std::function<void( GridPoint const &)>& func );
 
 	static int  GetNrOfNeighbors( ) 
 	{ 
