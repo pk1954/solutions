@@ -196,7 +196,7 @@ void StatisticsWindow::DoPaint( )
 
     Apply2RectLambda
 	( 
-		[&](GridPoint const & gp)
+		[&](GridPoint const & gp, short const s)
 		{
 			if ( m_pModelWork->IsAlive( gp ) )
 			{
@@ -213,7 +213,8 @@ void StatisticsWindow::DoPaint( )
 				genesStat.addAge    ( s, m_pModelWork->GetAge( gp ) );
 			}
 		},
-		m_pGridRectSel->IsEmpty( ) ? GridRect::GRID_RECT_FULL : *m_pGridRectSel 
+		m_pGridRectSel->IsEmpty( ) ? GridRect::GRID_RECT_FULL : *m_pGridRectSel,
+		0
 	);
 
     genesStat.scaleAllGenesStat( );

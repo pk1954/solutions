@@ -18,21 +18,22 @@ void testee()
 	for ( int i = 0; i <= NRUNS; ++i )
 		Apply2GridLambda
 		( 
-			[](GridPoint const & gp)
+			[](GridPoint const & gp, short const s)
 			{
 				Neighborhood::Apply2All
 				( 
 					gp, 
 					[&](GridPoint const & gpNeighbor) { }
 				);
-			} 
+			},
+			0
 		);
 }
 
 void tara()
 {
 	for ( int i = 0; i <= NRUNS; ++i )
-		Apply2GridLambda( [](GridPoint const & gp){} );
+		Apply2GridLambda( [](GridPoint const & gp, short const s){}, 0 );
 }
 
 void DoTest( )

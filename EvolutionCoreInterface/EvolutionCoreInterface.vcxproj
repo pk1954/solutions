@@ -150,7 +150,6 @@
     <ClInclude Include="EvolutionCore.h" />
     <ClInclude Include="EvolutionTypes.h" />
     <ClInclude Include="gridCircle.h" />
-    <ClInclude Include="gridFunctors.h" />
     <ClInclude Include="gridNeighbor.h" />
     <ClInclude Include="gridPoint.h" />
     <ClInclude Include="gridRect.h" />

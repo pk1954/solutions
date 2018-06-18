@@ -63,7 +63,7 @@ void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization o
 	m_pGridNeighbors = new NEIGHBOR_GRID;
     Apply2GridLambda  // initialization of grid variables which never change after initialization
 	( 
-    	[&](GridPoint const & gp)
+    	[&](GridPoint const & gp, short const s)
 		{
 			NEIGHBORS & neighbors = (* m_pGridNeighbors)[ gp.y ][ gp.x ];
 			neighbors.reserve( m_iNrOfNeighbors );
@@ -79,7 +79,8 @@ void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization o
 				GridPoint gpNeighbor = ( gp + gpDelta + GridPoint::GRID_SIZE ) % GridPoint::GRID_SIZE;
 				neighbors.push_back( gpNeighbor );
 			}
-		}
+		},
+		0
 	);
 }
 

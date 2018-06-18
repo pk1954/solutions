@@ -99,12 +99,13 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
 			GetIntValueFunctor const * m_pGetIntFunctor = & m_pDspOptWindow->GetDisplayFunctor( );
 			Apply2GridLambda
 			( 
-    			[&](GridPoint const & gp)
+    			[&](GridPoint const & gp, short const s)
 				{
 					int   const iValue  = ( * m_pGetIntFunctor )( gp );
 					DWORD const dwColor = getBackgroundColor( iValue );
 					m_pD3dBuffer->AddBackgroundPrimitive( m_pPixelCoordinates->Grid2PixelPos( gp ), dwColor, m_fPxSize );
-				}
+				},
+				0
 			);
 		}
         m_pD3dBuffer->RenderBackground( );
@@ -162,7 +163,15 @@ void DrawFrame::drawIndividuals( GridRect const & rect  )
                                ( sFieldSize <=  16 ) ? ((3 * sFieldSize) / 8 - 1) : 
                                                        ((3 * sFieldSize) / 8    );
 
-    Apply2RectLambda( [&](GridPoint const & gp) { setIndividualColor( gp, static_cast<float>( lHalfSizeInd ) ); }, rect );
+    Apply2RectLambda
+	( 
+		[&](GridPoint const & gp, short const s) 
+		{ 
+			setIndividualColor( gp, static_cast<float>( lHalfSizeInd ) ); 
+		}, 
+		rect, 
+		0 
+	);
 /*
 #ifndef NDEBUG
     if ( rect == GridRect::GRID_RECT_FULL )
@@ -186,7 +195,7 @@ void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
 
     Apply2RectLambda
 	( 
-		[&](GridPoint const & gp)
+		[&](GridPoint const & gp, short const s)
 		{
             if ( GetEvoCore( )->IsAlive( gp ) )
             {
@@ -206,7 +215,8 @@ void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
                 }
             }
 		},
-		rect 
+		rect,
+		0
 	);
 }
 

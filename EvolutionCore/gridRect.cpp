@@ -70,7 +70,7 @@ void Apply2Rect( GridPoint_Functor * const pgpf, GridRect const & rect )
             ( * pgpf )( gp );
 }
 
-void Apply2RectLambda( const std::function<void( GridPoint const &)>& func, GridRect const & rect )
+void Apply2RectLambda( const std::function<void( GridPoint const &, short const s)>& func, GridRect const & rect, short const s )
 {
     GRID_COORD const gcLeft   = max( rect.GetLeft  (), GridRect::GRID_RECT_FULL.GetLeft  () );
     GRID_COORD const gcTop    = max( rect.GetTop   (), GridRect::GRID_RECT_FULL.GetTop   () );
@@ -80,12 +80,12 @@ void Apply2RectLambda( const std::function<void( GridPoint const &)>& func, Grid
     GridPoint gp;
     for ( gp.y = gcTop; gp.y <= gcBottom; ++gp.y )
         for ( gp.x = gcLeft; gp.x <= gcRight; ++gp.x )
-            func( gp );
+            func( gp, s );
 }
 
-void Apply2GridLambda( const std::function<void( GridPoint const &)>& func )
+void Apply2GridLambda( const std::function<void( GridPoint const &, short const s)>& func, short const s )
 {
-    Apply2RectLambda( func, GridRect::GRID_RECT_FULL );
+    Apply2RectLambda( func, GridRect::GRID_RECT_FULL, 0 );
 }
 
 std::wostream & operator << ( std::wostream & out, GridRect const & rect )

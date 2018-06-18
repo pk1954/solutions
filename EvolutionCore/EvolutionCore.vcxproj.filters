@@ -95,9 +95,6 @@
     <ClCompile Include="gridField.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="gridFunctors.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="gridNeighbor.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>

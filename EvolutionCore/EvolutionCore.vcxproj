@@ -190,7 +190,6 @@
     <ClCompile Include="gpList.cpp" />
     <ClCompile Include="gridCircle.cpp" />
     <ClCompile Include="gridField.cpp" />
-    <ClCompile Include="gridFunctors.cpp" />
     <ClCompile Include="gridNeighbor.cpp" />
     <ClCompile Include="gridPoint.cpp" />
     <ClCompile Include="gridRect.cpp" />

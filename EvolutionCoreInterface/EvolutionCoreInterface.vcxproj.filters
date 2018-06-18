@@ -28,9 +28,6 @@
     <ClInclude Include="gridCircle.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="gridFunctors.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="gridNeighbor.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>

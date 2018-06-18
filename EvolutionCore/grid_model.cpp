@@ -65,10 +65,11 @@ Grid::Grid( )
 {
     Apply2GridLambda    // initialization of grid variables which never change after initialization
 	( 
-    	[&](GridPoint const & gp)
+    	[&](GridPoint const & gp, short const s)
 		{
            getGridField( gp ).InitGridFieldStructure( gp );
-		}
+		},
+		0
 	); 
 }
 
@@ -90,11 +91,12 @@ void CheckIndividuals( Grid & grid )
  
 	Apply2GridLambda
 	( 
-    	[&](GridPoint const & gp)
+    	[&](GridPoint const & gp, short const s)
 		{
             if ( grid.IsAlive( gp ) )
                ++ iCount;
-		}
+		},
+		0
 	);
 
 	int const iNrOfLivingIndividuals = grid.GetNrOfLivingIndividuals( );
@@ -107,10 +109,11 @@ void Grid::ResetGrid( )
 
     Apply2GridLambda
 	( 
-    	[&](GridPoint const & gp)
+    	[&](GridPoint const & gp, short const s)
 		{
 			getGridField( gp ).ResetGridField( sFood );
-		}
+		},
+		0
 	);
 
     m_gpList.ResetGpList( );

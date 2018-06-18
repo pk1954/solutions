@@ -95,11 +95,5 @@ private:
 
 	// static members
 
-    static FoodStock_Functor  m_FoodStock_Functor;
-    static Fertilizer_Functor m_Fertilizer_Functor;
-    static Fertility_Functor  m_Fertility_Functor;
-    static MutRate_Functor    m_MutRate_Functor;
-    static Strategy_Functor   m_Strategy_Functor;
-
     static int m_iStdCapacity;  // cached config data
 };

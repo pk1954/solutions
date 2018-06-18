@@ -44,7 +44,7 @@ void Grid::FoodGrowth( )
 
 	Apply2GridLambda
 	( 
-    	[&](GridPoint const & gp)
+    	[&](GridPoint const & gp, short const s)
 		{
             GridField & rGF  = getGridField( gp );
             int const   iMax = rGF.GetFertility() + rGF.GetFertilizer();
@@ -70,6 +70,7 @@ void Grid::FoodGrowth( )
                 rGF.SetFoodStock( static_cast<short>(iFood) );
                 rGF.ReduceFertilizer( );
 			}
-		}
+		},
+		0
 	);
 }

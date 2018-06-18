@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include "gridRect.h"
 #include "gridCircle.h"
+#include "grid_model.h"
 #include "EditorState.h"
 
 using namespace std;
@@ -19,70 +20,30 @@ EditorState::EditorState( ) :
 
 void EditorState::EditorDoEdit( Grid * const pGrid, GridPoint const gp )
 {
-	static FoodStock_Functor  m_FoodStock_Functor;
-	static Fertilizer_Functor m_Fertilizer_Functor;
-	static Fertility_Functor  m_Fertility_Functor;
-	static MutRate_Functor    m_MutRate_Functor;
-	static Strategy_Functor   m_Strategy_Functor;
+	std::function<void(GridPoint const &, short const)> lambda;
 
-    static unordered_map < tBrushMode, GridPointIntensity_Functor * > mapFunctorTable =
+	switch ( m_brushMode )
     {
-        { tBrushMode::move,           & m_Strategy_Functor   },
-        { tBrushMode::randomStrategy, & m_Strategy_Functor   },
-        { tBrushMode::cooperate,      & m_Strategy_Functor   },
-        { tBrushMode::defect,         & m_Strategy_Functor   },
-        { tBrushMode::tit4tat,        & m_Strategy_Functor   },
-        { tBrushMode::noAnimals,      & m_Strategy_Functor   },
-        { tBrushMode::mutRate,        & m_MutRate_Functor    },
-        { tBrushMode::fertility,      & m_Fertility_Functor  },
-        { tBrushMode::food,           & m_FoodStock_Functor  },
-        { tBrushMode::fertilizer,     & m_Fertilizer_Functor }
-    };
-/*
-	static unordered_map < tBrushMode, const std::function<void(GridPoint const &)>& > mapLambdaTable =
-    {
-        { 
-			tBrushMode::move, 
-   			[&](GridPoint const & gp)
-			{
-				pGrid->  m_brushMode;
-			}
-		}
+	case  tBrushMode::move:           lambda = [&](GridPoint const & gp, short const s) { pGrid->EditSetStrategy(gp, s, tStrategyId::empty          ); }; break;
+	case  tBrushMode::randomStrategy: lambda = [&](GridPoint const & gp, short const s) { pGrid->EditSetStrategy(gp, s, tStrategyId::random         ); }; break;
+    case  tBrushMode::cooperate:      lambda = [&](GridPoint const & gp, short const s) { pGrid->EditSetStrategy(gp, s, tStrategyId::cooperateAlways); }; break;
+    case  tBrushMode::defect:         lambda = [&](GridPoint const & gp, short const s) { pGrid->EditSetStrategy(gp, s, tStrategyId::defectAlways   ); }; break;
+    case  tBrushMode::tit4tat:        lambda = [&](GridPoint const & gp, short const s) { pGrid->EditSetStrategy(gp, s, tStrategyId::tit4tat        ); }; break;
+    case  tBrushMode::noAnimals:      lambda = [&](GridPoint const & gp, short const s) { pGrid->EditSetStrategy(gp, s, tStrategyId::empty          ); }; break;
+    case  tBrushMode::mutRate:        lambda = [&](GridPoint const & gp, short const s) { pGrid->IncMutationRate(gp, s); }; break;
+    case  tBrushMode::fertility:      lambda = [&](GridPoint const & gp, short const s) { pGrid->IncFertility   (gp, s); }; break;
+    case  tBrushMode::food:           lambda = [&](GridPoint const & gp, short const s) { pGrid->IncFoodStock   (gp, s); }; break;
+    case  tBrushMode::fertilizer:     lambda = [&](GridPoint const & gp, short const s) { pGrid->IncFertilizer  (gp, s); }; break;
 	};
-*/
-	static unordered_map < tBrushMode, tStrategyId > mapStrategyTable =
-	{
-		{ tBrushMode::randomStrategy, tStrategyId::random },
-		{ tBrushMode::cooperate,      tStrategyId::cooperateAlways },
-		{ tBrushMode::defect,         tStrategyId::defectAlways },
-		{ tBrushMode::tit4tat,        tStrategyId::tit4tat },
-		{ tBrushMode::noAnimals,      tStrategyId::empty },
-		{ tBrushMode::move,           tStrategyId::empty },
-		{ tBrushMode::mutRate,        tStrategyId::empty },
-		{ tBrushMode::fertility,      tStrategyId::empty },
-		{ tBrushMode::food,           tStrategyId::empty },
-		{ tBrushMode::fertilizer,     tStrategyId::empty }
-	};
-
-	GridPointIntensity_Functor * pEditFunctor = mapFunctorTable.at( m_brushMode );
-
-    //   lint -e613  possible use of null pointer
-    assert( pEditFunctor != nullptr );
-	pEditFunctor->SetGrid( pGrid );
-	
-	if ( pEditFunctor == & m_Strategy_Functor )
-		m_Strategy_Functor.SetStrategy( mapStrategyTable.at( m_brushMode ) );
 
 	switch ( m_shapeBrush )
     {
     case tShape::Circle:
-        Apply2Cone( pEditFunctor, GridCircle( gp, m_brushSize ), m_usBrushIntensity );
+        Apply2ConeLambda( lambda, GridCircle( gp, m_brushSize ), m_usBrushIntensity );
         break;
 
     case tShape::Rect:
-        pEditFunctor->SetBrushIntensity( m_usBrushIntensity );
-        Apply2Rect( pEditFunctor, GridRect( gp, m_brushSize ) );
-        break;
+		Apply2RectLambda( lambda, GridRect( gp, m_brushSize ), m_usBrushIntensity  );        break;
 
     default:
         assert( false );
