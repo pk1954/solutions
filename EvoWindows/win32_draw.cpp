@@ -95,13 +95,12 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
 		m_pD3dBuffer->StartFrame( );
 
 		{
-			float                      m_fPxSize        = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) );
-			GetIntValueFunctor const * m_pGetIntFunctor = & m_pDspOptWindow->GetDisplayFunctor( );
+			float m_fPxSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) );
 			Apply2Grid
 			( 
     			[&](GridPoint const & gp, short const s)
 				{
-					int   const iValue  = ( * m_pGetIntFunctor )( gp );
+					int   const iValue  = m_pDspOptWindow->GetIntValue( gp );
 					DWORD const dwColor = getBackgroundColor( iValue );
 					m_pD3dBuffer->AddBackgroundPrimitive( m_pPixelCoordinates->Grid2PixelPos( gp ), dwColor, m_fPxSize );
 				}

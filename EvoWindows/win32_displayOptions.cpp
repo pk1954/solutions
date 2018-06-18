@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <functional>
 #include "Resource.h"
 #include "gridNeighbor.h"
 #include "EvolutionModelData.h"
@@ -10,103 +11,26 @@
 #include "win32_worker_thread.h"
 #include "win32_displayOptions.h"
 
-// The family of GetIntValueFunctor classes provides functors for access to 
-// EvolutionCore functions of return type int
-
-class GetEmptyFunctor : public GetIntValueFunctor
-{
-    public:
-        GetEmptyFunctor( EvolutionModelData const * pModel ) :
-            GetIntValueFunctor( pModel )
-        { }
-
-        //lint -esym( 715, gp )    symbol not referenced
-        virtual int operator() ( GridPoint const & gp ) const { return 0; }
-};
-
-class GetFoodStockFunctor : public GetIntValueFunctor
-{
-public: 
-    GetFoodStockFunctor( EvolutionModelData const * pModel ) :
-        GetIntValueFunctor( pModel )
-    { }
-
-    virtual int operator() ( GridPoint const & gp ) const 
-    {
-        int iSum = m_pModelWork->GetFoodStock( gp );
-        Neighborhood::Apply2All
-		( 
-			gp, 
-			[&](GridPoint const & gpNeighbor) 
-			{
-				iSum += m_pModelWork->GetFoodStock( gpNeighbor );
-			}
-		);
-        return iSum / (Neighborhood::GetNrOfNeighbors( ) + 1);
-    }
-};
-
-class GetFertilityFunctor : public GetIntValueFunctor
-{
-    public: 
-        GetFertilityFunctor( EvolutionModelData const * pModel ) :
-            GetIntValueFunctor( pModel )
-        { }
-
-        virtual int operator() ( GridPoint const & gp ) const { return m_pModelWork->GetFertility( gp ); }
-};
-
-class GetMutationRateFunctor : public GetIntValueFunctor
-{
-    public: 
-        GetMutationRateFunctor( EvolutionModelData const * pModel ) :
-            GetIntValueFunctor( pModel )
-        { }
-
-        virtual int operator() ( GridPoint const & gp ) const { return m_pModelWork->GetMutationRate( gp ); }
-};
-    
-class GetFertilizerFunctor : public GetIntValueFunctor
-{
-    public: 
-        GetFertilizerFunctor( EvolutionModelData const * pModel ) :
-            GetIntValueFunctor( pModel )
-        { }
-
-        virtual int operator() ( GridPoint const & gp ) const { return m_pModelWork->GetFertilizer( gp ); }
-};
-    
-//// end of GetIntValueFunctor classes //////////////////////////////
-
 DspOptWindow::DspOptWindow(  )
     : BaseDialog( )
 { }
 
 DspOptWindow::~DspOptWindow( )
 {
-    delete m_pGetFoodStockFunctor;
-    delete m_pGetFertilityFunctor;
-    delete m_pGetMutationRateFunctor;
-    delete m_pGetFertilizerFunctor;
-    delete m_pGetEmptyFunctor;
-    m_pGetIntValueFunctor = nullptr;
+	m_IntValueLambda = nullptr;
 }
 
 void DspOptWindow::Start
 ( 
-    HWND         const         hWndParent, 
-    WorkThread * const         pWorkThread,
-    EvolutionModelData    const * const pModel 
+    HWND               const         hWndParent, 
+    WorkThread               * const pWorkThread,
+    EvolutionModelData const * const pModel 
 )
 {
     StartBaseDialog( hWndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
-    m_pWorkThread             = pWorkThread;
-    m_pGetFoodStockFunctor    = new GetFoodStockFunctor( pModel );
-    m_pGetFertilityFunctor    = new GetFertilityFunctor( pModel );
-    m_pGetMutationRateFunctor = new GetMutationRateFunctor( pModel );
-    m_pGetFertilizerFunctor   = new GetFertilizerFunctor( pModel );
-    m_pGetEmptyFunctor        = new GetEmptyFunctor( pModel );
-    m_pGetIntValueFunctor     = m_pGetFoodStockFunctor;
+    m_pWorkThread    = pWorkThread;
+	m_pModel         = pModel;
+	m_IntValueLambda = nullptr;
 }
 
 void DspOptWindow::SetDisplayMode( WORD const wMode )
@@ -150,23 +74,35 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
                 break;
 
             case IDM_MUT_RATE:
-                m_pGetIntValueFunctor = m_pGetMutationRateFunctor;
+				m_IntValueLambda = [&](GridPoint const & gp){ return m_pModel->GetMutationRate( gp ); };
                 break;
 
             case IDM_FERTILITY:
-                m_pGetIntValueFunctor = m_pGetFertilityFunctor;
+				m_IntValueLambda = [&](GridPoint const & gp){ return m_pModel->GetFertility   ( gp ); };
                 break;
 
             case IDM_FOOD_STOCK:
-                m_pGetIntValueFunctor = m_pGetFoodStockFunctor;
+				m_IntValueLambda = [&](GridPoint const & gp)
+				{ 
+					int iSum = m_pModel->GetFoodStock( gp );
+					Neighborhood::Apply2All
+					( 
+						gp, 
+						[&](GridPoint const & gpNeighbor) 
+						{
+							iSum += m_pModel->GetFoodStock( gpNeighbor );
+						}
+					);
+					return iSum / (Neighborhood::GetNrOfNeighbors( ) + 1);
+				};
                 break;
 
             case IDM_FERTILIZER:
-                m_pGetIntValueFunctor = m_pGetFertilizerFunctor;
+				m_IntValueLambda = [&](GridPoint const & gp){ return m_pModel->GetFertilizer( gp ); };
                 break;
 
             case IDM_DSP_ENV_NOTHING:
-                m_pGetIntValueFunctor = m_pGetEmptyFunctor;
+				m_IntValueLambda = [&](GridPoint const & gp){ return 0; };
                 break;
 
             case IDCANCEL:
