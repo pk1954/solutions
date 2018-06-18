@@ -42,7 +42,7 @@ void Grid::FoodGrowth( )
 
 	m_uiFoodGrowth = 0;
 
-	Apply2GridLambda
+	Apply2Grid
 	( 
     	[&](GridPoint const & gp, short const s)
 		{
@@ -70,7 +70,6 @@ void Grid::FoodGrowth( )
                 rGF.SetFoodStock( static_cast<short>(iFood) );
                 rGF.ReduceFertilizer( );
 			}
-		},
-		0
+		}
 	);
 }

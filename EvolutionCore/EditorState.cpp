@@ -39,11 +39,12 @@ void EditorState::EditorDoEdit( Grid * const pGrid, GridPoint const gp )
 	switch ( m_shapeBrush )
     {
     case tShape::Circle:
-        Apply2ConeLambda( lambda, GridCircle( gp, m_brushSize ), m_usBrushIntensity );
+        Apply2Cone( lambda, GridCircle( gp, m_brushSize ), m_usBrushIntensity );
         break;
 
     case tShape::Rect:
-		Apply2RectLambda( lambda, GridRect( gp, m_brushSize ), m_usBrushIntensity  );        break;
+		Apply2Rect( lambda, GridRect( gp, m_brushSize ), m_usBrushIntensity  );        
+		break;
 
     default:
         assert( false );

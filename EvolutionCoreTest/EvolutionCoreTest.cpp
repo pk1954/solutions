@@ -16,7 +16,7 @@ int const NRUNS = 5000;
 void testee()
 {
 	for ( int i = 0; i <= NRUNS; ++i )
-		Apply2GridLambda
+		Apply2Grid
 		( 
 			[](GridPoint const & gp, short const s)
 			{
@@ -25,15 +25,14 @@ void testee()
 					gp, 
 					[&](GridPoint const & gpNeighbor) { }
 				);
-			},
-			0
+			}
 		);
 }
 
 void tara()
 {
 	for ( int i = 0; i <= NRUNS; ++i )
-		Apply2GridLambda( [](GridPoint const & gp, short const s){}, 0 );
+		Apply2Grid( [](GridPoint const & gp, short const s){} );
 }
 
 void DoTest( )

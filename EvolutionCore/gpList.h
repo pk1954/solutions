@@ -12,6 +12,8 @@
 #define CHECK_GRIDPOINT_LIST( grid )
 #endif
 
+class Grid;
+
 //lint -sem(GridPointList::ResetGpList,initializer)
 
 class GridPointList

@@ -9,9 +9,8 @@
 
 class GridRect;
 
-void Apply2Rect( GridPoint_Functor *, GridRect const & );
-void Apply2GridLambda( const std::function<void( GridPoint const &, short const)>& func, short const);
-void Apply2RectLambda( const std::function<void( GridPoint const &, short const)>& func, GridRect const &, short const );
+void Apply2Grid( const std::function<void( GridPoint const &, short const)>& func, short const = 0 );
+void Apply2Rect( const std::function<void( GridPoint const &, short const)>& func, GridRect const &, short const = 0 );
 
 class GridRect
 {

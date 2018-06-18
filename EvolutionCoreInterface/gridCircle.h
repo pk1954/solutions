@@ -25,7 +25,6 @@ private:
 
 GridCircle GetInscribedCircle( GridRect const & );
 
-void Apply2Cone( GridPointIntensity_Functor *, GridCircle const &, short const);
-void Apply2ConeLambda( const std::function<void( GridPoint const &, short)>& func, GridCircle const &, short );
+void Apply2Cone( const std::function<void( GridPoint const &, short)>& func, GridCircle const &, short );
 
 std::wostream & operator << ( std::wostream &, GridCircle const & );

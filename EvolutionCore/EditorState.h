@@ -4,7 +4,8 @@
 #pragma once
 
 #include "EvolutionTypes.h"
-#include "gridFunctors.h"
+
+class Grid;
 
 class EditorState
 {
