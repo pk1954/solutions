@@ -14,7 +14,15 @@ class Neighborhood
 {
 public:
     static void InitClass( int const );
-	static void Apply2All( GridPoint const, const std::function<void( GridPoint const &)>& func );
+
+	static void Apply2All( GridPoint const gpCenter, const std::function<void( GridPoint const &)>& func ) 
+	{
+		NEIGHBORS neighbors = (* m_pGridNeighbors)[ gpCenter.y ][ gpCenter.x ];
+		for ( auto gp: neighbors )
+		{
+			func( gp );
+		}
+	};
 
 	static int  GetNrOfNeighbors( ) 
 	{ 
@@ -70,9 +78,4 @@ private:
 	static NEIGHBOR_GRID * m_pGridNeighbors;
 
     NEIGHBORS m_neighbors;
-
-	static NEIGHBORS & getNeighbors( GridPoint const gp )
-	{
-		return (* m_pGridNeighbors)[ gp.y ][ gp.x ];
-	}
 };

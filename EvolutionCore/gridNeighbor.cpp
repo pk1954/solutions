@@ -65,7 +65,7 @@ void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization o
 	( 
     	[&](GridPoint const & gp, short const s)
 		{
-			NEIGHBORS & neighbors = (* m_pGridNeighbors)[ gp.y ][ gp.x ];
+			NEIGHBORS & neighbors = ( * m_pGridNeighbors)[ gp.y ][ gp.x ];
 			neighbors.reserve( m_iNrOfNeighbors );
 			for ( int i = 0; i < m_iNrOfNeighbors; ++i )
 			{
@@ -82,11 +82,3 @@ void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization o
 		}
 	);
 }
-
-void Neighborhood::Apply2All( GridPoint gpCenter, const std::function<void( GridPoint const &)>& func ) 
-{
-	for ( auto n: getNeighbors( gpCenter ) )
-	{
-		func( n );
-	}
-};

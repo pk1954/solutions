@@ -30,7 +30,9 @@ private:
     DspOptWindow             ( DspOptWindow const & );  // noncopyable class 
     DspOptWindow & operator= ( DspOptWindow const & );  // noncopyable class 
 
-    virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
+	int getNeighborHoodMeanValue( GridPoint const & ) const;
+
+	virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
 
 	WorkThread               * m_pWorkThread;
     EvolutionModelData const * m_pModel; 

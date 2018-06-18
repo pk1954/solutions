@@ -51,6 +51,20 @@ BOOL DspOptWindow::AreIndividualsVisible( ) const
     return ( BST_CHECKED == ::SendMessage( GetDlgItem( IDM_ANIMALS ), BM_GETCHECK, 0, 0 ) );
 }
 
+int DspOptWindow::getNeighborHoodMeanValue( GridPoint const & gp ) const
+{ 
+	int iSum = m_pModel->GetFoodStock( gp );
+	Neighborhood::Apply2All
+	( 
+		gp, 
+		[&](GridPoint const & gpNeighbor) 
+	    { 
+			iSum += m_pModel->GetFoodStock(gpNeighbor); 
+		} 
+	);
+	return iSum / (Neighborhood::GetNrOfNeighbors( ) + 1);
+};
+
 INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
     switch (message)
@@ -78,23 +92,11 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
                 break;
 
             case IDM_FERTILITY:
-				m_IntValueLambda = [&](GridPoint const & gp){ return m_pModel->GetFertility   ( gp ); };
+				m_IntValueLambda = [&](GridPoint const & gp){ return m_pModel->GetFertility( gp ); };
                 break;
 
             case IDM_FOOD_STOCK:
-				m_IntValueLambda = [&](GridPoint const & gp)
-				{ 
-					int iSum = m_pModel->GetFoodStock( gp );
-					Neighborhood::Apply2All
-					( 
-						gp, 
-						[&](GridPoint const & gpNeighbor) 
-						{
-							iSum += m_pModel->GetFoodStock( gpNeighbor );
-						}
-					);
-					return iSum / (Neighborhood::GetNrOfNeighbors( ) + 1);
-				};
+				m_IntValueLambda = [&](GridPoint const & gp){ return getNeighborHoodMeanValue( gp ); };
                 break;
 
             case IDM_FERTILIZER:
