@@ -20,11 +20,7 @@ void testee()
 		( 
 			[](GridPoint const & gp, short const s)
 			{
-				Neighborhood::Apply2All
-				( 
-					gp, 
-					[&](GridPoint const & gpNeighbor) { }
-				);
+				Neighborhood::Apply2All( gp, [&](GridPoint const & gpNeighbor) { } );
 			}
 		);
 }
