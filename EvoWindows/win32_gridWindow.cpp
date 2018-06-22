@@ -69,7 +69,7 @@ void GridWindow::Start
 
     m_pPixelCoordinates  = new PixelCoordinates( sFieldSize, iNrOfNeighbors == 6 );
     m_pDrawFrame         = new DrawFrame( hWnd, pCore, pModel, m_pPixelCoordinates, pDspOptWindow, m_pGridRectSel );
-    m_pDrawFrame->SetStripMode( tBoolOp::opTrue );
+	m_pDrawFrame->SetStripMode( Config::GetConfigValueBoolOp( Config::tId::stripMode ) );
 }
 
 GridWindow::~GridWindow( )
@@ -125,12 +125,6 @@ void GridWindow::contextMenu( LPARAM lParam )
 	POINT pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
     (void)MapWindowPoints( hwnd, nullptr, &pntPos, 1 );
 
-    if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
-    {
-        UINT const uiHistoryFlags = Config::UseHistorySystem( ) ? STD_FLAGS : STD_FLAGS | MF_GRAYED;
-        (void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_GOTO_DEATH,  L"Goto Death" );
-        (void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_GOTO_ORIGIN, L"Goto Origin" );
-    }
     if ( m_pGridRectSel->IsEmpty( ) )
     {
         (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_FIT_ZOOM, L"Fit Grid Area" );
@@ -141,7 +135,13 @@ void GridWindow::contextMenu( LPARAM lParam )
         (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_FIT_ZOOM, L"Fit Selection" );
     }
     (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SCRIPT_DIALOG, L"Script" );
-    (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI,       L"POI" );
+    if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
+    {
+		UINT const uiHistoryFlags = Config::UseHistorySystem( ) ? STD_FLAGS : STD_FLAGS | MF_GRAYED;
+		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_GOTO_DEATH,  L"Goto Death" );
+		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_GOTO_ORIGIN, L"Goto Origin" );
+		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI, L"POI" );
+    }
     (void)SetForegroundWindow( hwnd );
 
     UINT const uiID = (UINT)TrackPopupMenu( hPopupMenu, TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, pntPos.x, pntPos.y, 0, hwnd, nullptr ); 	// Result is send as WM_COMMAND to this window
@@ -163,22 +163,26 @@ void GridWindow::moveGrid( PixelPoint const & ptDiff )
     }
 }
 
+PixelPoint GridWindow::getPoiCenter() const
+{
+	GridPoint  const gpPoi       = m_pCore->FindPOI( m_pModelWork );
+    PixelPoint const pixPointPoi = m_pPixelCoordinates->Grid2PixelPosCenter( gpPoi );
+	return pixPointPoi;
+}
+
 void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
 {
     PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );
 
-    m_pFocusPoint->SetGridPoint( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
+    m_pFocusPoint->SetFocusPoint( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
 
     if ( wParam & MK_RBUTTON )                // Right mouse button: selection
     {
         if ( m_ptLast.x != LONG_MIN )  // last cursor pos stored in m_ptLast
         {
-            PixelPoint ptOther = m_ptLast;
-            if ( m_pCore->IsPoiDefined() )
-            {
-                PixelPoint const pixPointPoi = m_pPixelCoordinates->Grid2PixelPosCenter( m_pCore->FindPOI( m_pModelWork ) );
-                ptOther = pixPointPoi + pixPointPoi - ptCrsr;
-            }
+            PixelPoint ptOther = m_pCore->IsPoiDefined( ) 
+				                 ? getPoiCenter() * 2 - ptCrsr 
+				                 : m_ptLast;
             setSelection( ptOther, ptCrsr ); 
         }
         else                                // first time here after RBUTTON pressed
@@ -246,7 +250,7 @@ void GridWindow::resize()
 PixelPoint GridWindow::getNewCenter( )
 {
 	return m_pCore->IsPoiDefined( ) 
-	       ? m_pPixelCoordinates->Grid2PixelPosCenter( m_pCore->FindPOI( m_pModelWork ) )
+	       ? getPoiCenter( )
 	       : Util::GetClRectCenter( GetWindowHandle( ) );
 }
 

@@ -221,13 +221,13 @@ void D3dBuffer::AddBackgroundPrimitive( PixelPoint const & ptPos, DWORD const dw
 
     if ( m_bStripMode )
     {
-        m_pVertBufStripMode->AddVertex( fPtPosx + fPixSizeHalf, fPtPosy + fPixSizeHalf, dwColor );
+        m_pVertBufStripMode->AddVertex( fPtPosx, fPtPosy, dwColor );
     }
     else
     {
 		if ( m_d3d->GetHexagonMode( ) )
 		{
-			addHexagon( fPtPosx + fPixSizeHalf, fPtPosy + fPixSizeHalf, dwColor, fPixSize * INVERSE_SQRT3, fPixSize );
+			addHexagon( fPtPosx, fPtPosy, dwColor, fPixSize * INVERSE_SQRT3, fPixSize );
 		}
 		else
 		{

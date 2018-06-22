@@ -22,10 +22,7 @@ public:
 
     PixelCoordinates( short const, bool const );
     
-	short GetFieldSize( ) const 
-	{ 
-		return m_sFieldSize; 
-	};
+	//////// transformations ////////
 
 	GridPoint  Pixel2GridSize( PixelPoint const & ) const;
 	PixelPoint Grid2PixelSize( GridPoint  const & ) const;
@@ -48,11 +45,18 @@ public:
     GridCircle Pixel2GridCircle( PixelPoint const &, short const ) const;
 
 	PixelPoint Grid2PixelPosCenter( GridPoint  const & ) const; 
+	
+	//////// queries ////////
+	
+	short      GetFieldSize( )   const { return m_sFieldSize; };
+	PixelPoint GetPixelOffset( ) const { return m_pixOffset; }
+	
+	//////// manipulation functions ////////
 
+    bool SetFieldSize( short, PixelPoint const );
     bool CenterPoi( PixelPoint const, GridPoint const );
     void MoveGrid( PixelPoint const &);
     bool Zoom( bool, PixelPoint const );
-    bool SetFieldSize( short, PixelPoint const );
     bool FitToRect( GridRect const &, PixelRectSize const );
 
 private:

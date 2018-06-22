@@ -5,6 +5,7 @@
 
 #include <unordered_map>
 #include <string>
+#include "BoolOp.h"
 
 using namespace std;
 
@@ -75,13 +76,16 @@ public:
         interactionPayOff_T,  // Der Spieler hat den anderen ausgenutzt und erhält T (Temptation).
         interactionPayOff_P,  // Gegenseitige Defektion führt nur zu P (Penalty). 
 		// misc
-		nrOfNeighbors
+		nrOfNeighbors,        // 6 neighbors: hexagon grid, 4 or 8 neighbors: rectangle grid
+		stripMode,            // 1: strip mode on, 0: strip mode off - see Direct3D
+		dimmMode              // 1: dimm mode on, 0: dimm mode off - see DrawFrame
     };
 
-    static bool  UseHistorySystem( ) { return GetConfigValue( tId::maxGeneration ) > 0; };
-    static void  SetConfigValue     ( tId const, long const );
-    static long  GetConfigValue     ( tId const);
-    static short GetConfigValueShort( tId const );
+    static bool    UseHistorySystem( ) { return GetConfigValue( tId::maxGeneration ) > 0; };
+    static void    SetConfigValue      ( tId const, long const );
+    static long    GetConfigValue      ( tId const);
+    static short   GetConfigValueShort ( tId const );
+	static tBoolOp GetConfigValueBoolOp( tId const );
 
 private:
 

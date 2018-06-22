@@ -78,6 +78,7 @@ private:
 	void setZoom( SHORT const );
 	void setPOI( PixelPoint const );
 	PixelPoint getNewCenter( );
+	PixelPoint getPoiCenter( ) const;
     BOOL inObservedClientRect( LPARAM );
     void moveGrid( PixelPoint const & );
     void onMouseMove( LPARAM, WPARAM );

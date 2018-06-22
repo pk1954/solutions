@@ -28,6 +28,7 @@ public:
 
     virtual bool           IsDead         ( GridPoint const & ) const = 0;
     virtual bool           IsAlive        ( GridPoint const & ) const = 0;
+    virtual bool           IsDefined      ( GridPoint const & ) const = 0;
     virtual IndId          GetId          ( GridPoint const & ) const = 0;
     virtual tOrigin        GetOrigin      ( GridPoint const & ) const = 0;
     virtual short          GetEnergy      ( GridPoint const & ) const = 0;

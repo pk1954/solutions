@@ -7,6 +7,7 @@
 #include "SCRIPT.H"
 #include "EvolutionTypes.h"
 #include "gridCircle.h"
+#include "pixelCoordinates.h"
 #include "EvolutionCoreWrapperHelpers.h"
 
 GridPoint ScrReadGridPoint( Script & script )
@@ -30,3 +31,9 @@ GridRect ScrReadGridRect( Script & script )
     return GridRect( gpStart, gpEnd );
 }
 
+PixelPoint ScrReadPixelPoint( Script & script )
+{
+    long const x = script.ScrReadLong();
+    long const y = script.ScrReadLong();
+    return PixelPoint( x, y );
+}

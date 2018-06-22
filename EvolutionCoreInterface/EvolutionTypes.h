@@ -22,7 +22,7 @@ public:
     inline IndId & operator++() { ++m_lIdentifier; return *this; }; 
     inline bool    operator==( IndId const & id ) const { return (id.m_lIdentifier == m_lIdentifier); };
 
-    inline bool IsDefined ( ) const 
+    inline bool IsDefined( ) const 
     { 
         return (m_lIdentifier != ID_NO_INDIVIDUAL); 
     };
@@ -32,7 +32,7 @@ public:
         m_lIdentifier  = ID_NO_INDIVIDUAL;  
     };
 
-    inline long GetLong ( )   const { return m_lIdentifier; };
+    inline long GetLong( )   const { return m_lIdentifier; };
 
 private:
     static long const ID_NO_INDIVIDUAL = -1;

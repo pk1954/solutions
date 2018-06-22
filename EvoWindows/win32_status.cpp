@@ -125,7 +125,7 @@ void WINAPI StatusBar::createModeControl( )
     (void)createButton( L"Switch to Simulation", (HMENU)IDM_TOGGLE_EDIT_SIMU_MODE ); 
 } 
 
-void WINAPI StatusBar::createSizeControl( )
+void WINAPI StatusBar::createSizeControl( short const sMin, short const sMax )
 { 
     createStaticControl( L"Size" );
     createButton       ( L" - ",     (HMENU)IDM_ZOOM_OUT      ); 
@@ -133,8 +133,8 @@ void WINAPI StatusBar::createSizeControl( )
     createButton       ( L" + ",     (HMENU)IDM_ZOOM_IN       ); 
     createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM      ); 
 
-    USHORT const usMinPos = fieldSize2TrackBarPos( PixelCoordinates::MINIMUM_FIELD_SIZE );
-    USHORT const usMaxPos = fieldSize2TrackBarPos( PixelCoordinates::MAXIMUM_FIELD_SIZE );
+    USHORT const usMinPos = fieldSize2TrackBarPos( sMin );
+    USHORT const usMaxPos = fieldSize2TrackBarPos( sMax );
 
     (void)::SendMessage( GetDlgItem( IDM_ZOOM_TRACKBAR ), TBM_SETRANGE,    TRUE, (LPARAM)MAKELONG( usMinPos, usMaxPos ) );  
     (void)::SendMessage( GetDlgItem( IDM_ZOOM_TRACKBAR ), TBM_SETPAGESIZE,    0, (LPARAM)4 );                    // new page size    
@@ -222,7 +222,7 @@ void StatusBar::Start
     createModeControl ( );
 
     m_iPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_iBorder + 10;
-    createSizeControl ( );
+    createSizeControl( PixelCoordinates::MINIMUM_FIELD_SIZE, PixelCoordinates::MAXIMUM_FIELD_SIZE );
 
     m_iPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_iBorder + 10;
     createSimulationControl( );

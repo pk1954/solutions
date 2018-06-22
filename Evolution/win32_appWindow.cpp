@@ -329,7 +329,7 @@ void AppWindow::adjustChildWindows( )
 
 void AppWindow::setSimulationMode( tBoolOp const op )
 {
-	Util::ApplyOp( m_bSimulationMode, op );
+	ApplyOp( m_bSimulationMode, op );
 
 	m_pStatusBar->SetSimuMode( m_bSimulationMode );
 

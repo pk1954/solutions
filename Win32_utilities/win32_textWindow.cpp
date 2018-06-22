@@ -75,16 +75,15 @@ LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
     return DefWindowProc( message, wParam, lParam );
 }
 
-
 void TextWindow::printString( wchar_t const * const data )
 {
     (void)TextOut( m_hDC, m_iHorizontalPos, m_iVerticalPos, data, (int)wcslen( data ) );
     m_iHorizontalPos += m_iHorRaster;
 }
 
-void TextWindow::printNumber( unsigned int data )
+void TextWindow::printNumber( int data )
 {
-    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" %5u", data );
+    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" %5i", data );
     printString( m_szBuffer );
 }
 

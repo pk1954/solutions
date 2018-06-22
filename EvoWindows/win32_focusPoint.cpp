@@ -17,7 +17,7 @@ void FocusPoint::Start
     m_pModelWork = pModel;
 }
 
-void FocusPoint::SetGridPoint( GridPoint const gpNew )
+void FocusPoint::SetFocusPoint( GridPoint const gpNew )
 {
     if ( gpNew != m_gp )
     {

@@ -127,7 +127,12 @@ PixelPoint PixelCoordinates::KGrid2PixelPos( KGridPoint const & kp ) const
     
 PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint  const & gp ) const 
 { 
-	return Grid2PixelPos( gp ) + m_sFieldSize / 2; 
+//	return Grid2PixelPos( gp ) + m_sFieldSize / 2; 
+
+	PixelPoint pxResult = Grid2PixelPos( gp );
+	pxResult.x += m_bHexagon ? static_cast<long>((sqrt(3) / 2) * m_sFieldSize) : m_sFieldSize / 2;
+	pxResult.y += m_sFieldSize / 2;
+	return pxResult;
 }
 
 GridPoint PixelCoordinates::Pixel2GridSize( PixelPoint const & pp ) const 
@@ -158,29 +163,38 @@ PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint  const & gp ) const
 
 GridPoint PixelCoordinates::Pixel2GridPos ( PixelPoint const & pp ) const 
 { 
-	PixelPoint const pixPoint = pp +  m_pixOffset;
-	if ( m_bHexagon ) // https://web.archive.org/web/20161024224848/http://gdreflections.com/2011/02/hexagonal-grid-math.html
+	PixelPoint const pixPoint = pp + m_pixOffset;
+	if ( m_bHexagon ) // adapted from http://blog.ruslans.com/2011/02/hexagonal-grid-math.html
 	{
 		double dFieldSize = static_cast<double>(m_sFieldSize);
 		double dRadius    = (sqrt(3) / 3) * dFieldSize;
 		double dSide      = (sqrt(3) / 2) * dFieldSize;
-		double dPixPointx = static_cast<double>(pixPoint.x);
+		double dPixPointX = static_cast<double>(pixPoint.x);
+		double dPixPointY = static_cast<double>(pixPoint.y);
 
-		int    ci = static_cast<int>(floor(dPixPointx/dSide));
-		double cx = dPixPointx - dSide * ci;
+		int    iCi = static_cast<int>(floor(dPixPointX/dSide));
+		double dCx = dPixPointX - dSide * iCi;
 
-		double  ty = static_cast<double>(pixPoint.y - (ci % 2) * m_sFieldSize / 2);
-		int     cj = static_cast<int>(floor(ty/dFieldSize));
-		double  cy = ty - static_cast<double>(m_sFieldSize * cj);
+		double  dTy   = dPixPointY + (iCi % 2) * dFieldSize * 0.5;
+		int     iCj   = static_cast<int>(floor(dTy/dFieldSize));
+		double  dCy   = dTy - dFieldSize * iCj;
+		double  dCrit = 0.5 - dCy / dFieldSize;
 
-		GridPoint gpResult( ci, cj);
-		if (cx <= abs(dRadius / 2 - dRadius * cy / dFieldSize)) 
+		GridPoint gpResult;
+
+		if (dCx > dRadius * abs(dCrit))
 		{
-			gpResult.x -= 1;
-			gpResult.y += (ci % 2);
-			if (cy < dFieldSize / 2)
-				--gpResult.y;
+			gpResult.x = iCi;
+			gpResult.y = iCj;
 		}
+		else
+		{
+			gpResult.x = iCi - 1;
+			gpResult.y = iCj - iCi % 2;
+			if (dCrit < 0)
+				++gpResult.y;
+		}
+
 		return gpResult;
 	}
 	else 

@@ -51,7 +51,7 @@ DrawFrame::DrawFrame
 
     m_pD3dBuffer = new D3dBuffer( hWnd, GridPoint::GRID_AREA );
 	m_clutBackground.Allocate( MAX_BG_COLOR );    // default is grey scale lookup table with entries 0 .. 255
-    SetIndDimmMode( tBoolOp::opFalse );
+    SetIndDimmMode( Config::GetConfigValueBoolOp(Config::tId::dimmMode ) );
 }
 
 DrawFrame::~DrawFrame( ) 
@@ -62,7 +62,7 @@ DrawFrame::~DrawFrame( )
 
 void DrawFrame::SetIndDimmMode( tBoolOp const bOp )
 {
-    Util::ApplyOp( m_bDimmIndividuals, bOp );
+    ApplyOp( m_bDimmIndividuals, bOp );
 
     UINT const uiClutBase = m_bDimmIndividuals // color of individuals ...
                           ? 30       // ... varies from 30% - 100%, depending on energy 
@@ -102,7 +102,7 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
 				{
 					int   const iValue  = m_pDspOptWindow->GetIntValue( gp );
 					DWORD const dwColor = getBackgroundColor( iValue );
-					m_pD3dBuffer->AddBackgroundPrimitive( m_pPixelCoordinates->Grid2PixelPos( gp ), dwColor, m_fPxSize );
+					m_pD3dBuffer->AddBackgroundPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), dwColor, m_fPxSize );
 				}
 			);
 		}
@@ -136,20 +136,21 @@ void DrawFrame::drawPOI( GridPoint const & gpPoi )
     if ( gpPoi.IsNotNull( ) )
     {
         PixelPoint const ptCenter = m_pPixelCoordinates->Grid2PixelPosCenter( gpPoi );
+		float      const fPixSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) );
 
-        m_pD3dBuffer->AddIndividualPrimitive( ptCenter, CLR_WHITE, static_cast<float>(m_pPixelCoordinates->GetFieldSize()) * 0.50f );   // white frame for POI
-        m_pD3dBuffer->AddIndividualPrimitive( ptCenter, CLR_BLACK, static_cast<float>(m_pPixelCoordinates->GetFieldSize()) * 0.45f );   // black frame for POI
+        m_pD3dBuffer->AddIndividualPrimitive( ptCenter, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
+        m_pD3dBuffer->AddIndividualPrimitive( ptCenter, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
 
         PlannedActivity const & planPoi = m_pCore->GetPlan( );
         if ( planPoi.IsValid( ) )
         {
             GridPoint const gpTarget = planPoi.GetTarget( );
             if ( gpTarget.IsNotNull( ) )
-                m_pD3dBuffer->AddIndividualPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gpTarget ), CLR_GREY, static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) ) * 0.45f );   // mark target
+                m_pD3dBuffer->AddIndividualPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gpTarget ), CLR_GREY, fPixSize * 0.45f );   // mark target
 
             GridPoint const gpPartner = planPoi.GetPartner( );
             if ( gpPartner.IsNotNull( ) )
-                m_pD3dBuffer->AddIndividualPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gpPartner ), CLR_GREY, static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) ) * 0.45f );   // mark target
+                m_pD3dBuffer->AddIndividualPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gpPartner ), CLR_GREY, fPixSize * 0.45f );   // mark target
         }
     }
 }
@@ -186,7 +187,6 @@ COLORREF DrawFrame::getTextColor( GridPoint const & gp ) const
 
 void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
 {
-    long  const lHeight      = Util::GetClientWindowHeight( m_hWnd );
     short const sFieldSize   = m_pPixelCoordinates->GetFieldSize();
     long  const lHalfSizeInd = (5 * sFieldSize) / 16;
 
@@ -198,7 +198,7 @@ void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
             {
 				COLORREF   colText    = getTextColor( gp );
                 PixelPoint ptCenter   = m_pPixelCoordinates->Grid2PixelPosCenter( gp );
-                           ptCenter.y = lHeight - ptCenter.y;            // for DirectX text output
+						   Util::UpsideDown( m_hWnd, & ptCenter ); 
                 PixelRect  pixRect( ptCenter - lHalfSizeInd, ptCenter + lHalfSizeInd );
 
                 assembleLeftColumn( gp, gpPoi );

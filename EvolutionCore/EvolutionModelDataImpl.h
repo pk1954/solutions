@@ -43,6 +43,7 @@ public:
     virtual MEM_INDEX      GetMemUsed     ( GridPoint const & gp ) const { return getGridField( gp ).GetMemUsed( ); }
     virtual bool           IsDead         ( GridPoint const & gp ) const { return getGridField( gp ).IsDead( ); }
     virtual bool           IsAlive        ( GridPoint const & gp ) const { return getGridField( gp ).IsAlive( ); }
+    virtual bool           IsDefined      ( GridPoint const & gp ) const { return getGridField( gp ).IsDefined( ); }
 
     virtual long           GetMemEntry    ( GridPoint const & gp, MEM_INDEX const index ) const { return getGridField( gp ).GetMemEntry( index ); }
     virtual long           GetGenotype    ( GridPoint const & gp, tGeneType const gene  ) const { return getGenome( gp ).GetAllele( gene ); }

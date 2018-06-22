@@ -10,6 +10,7 @@
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
+#include "pixelCoordinates.h"
 #include "win32_worker_thread.h"
 #include "version.h"
 
@@ -34,8 +35,11 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	EvolutionCore::InitClass( );
     EvolutionCore::CreateCore( );
 
-    EvolutionModelData * m_pModelWork = EvolutionModelData::CreateModelData( );
-    DefineModelWrapperFunctions( m_pModelWork );
+	short const FIELDSIZE = 8;
+	bool  const HEXAGON   = true;
+	DefinePixelCoordinatesWrapperFunctions( new PixelCoordinates( FIELDSIZE, HEXAGON ) );
+
+    DefineModelWrapperFunctions( EvolutionModelData::CreateModelData( ) );
 
     WorkThread * m_pWorkThread = new WorkThread( & m_traceStream );
 

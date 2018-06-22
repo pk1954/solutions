@@ -40,7 +40,7 @@ private:
     DrawFrame & operator= ( DrawFrame const & );  // noncopyable class 
 
     HWND const m_hWnd;
-    BOOL       m_bDimmIndividuals;   
+    bool       m_bDimmIndividuals;   
 
     EvolutionCore      * const m_pCore;
     EvolutionModelData * const m_pModelWork;

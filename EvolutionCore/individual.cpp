@@ -121,12 +121,12 @@ void Individual::Breed
     Individual    const & indParentB
 )
 {
-    m_id        =          id;
-    m_genBirth  =          genBirth;
-    m_origin    =          tOrigin::marriage;
-    m_at        =          tAction::undefined;
-    m_sCapacity =          selectParent( random, indParentA, indParentB ).m_sCapacity;
-    m_strategyId  =          selectParent( random, indParentA, indParentB ).m_strategyId;
+    m_id         =         id;
+    m_genBirth   =         genBirth;
+    m_origin     =         tOrigin::marriage;
+    m_at         =         tAction::undefined;
+    m_sCapacity  =         selectParent( random, indParentA, indParentB ).m_sCapacity;
+    m_strategyId =         selectParent( random, indParentA, indParentB ).m_strategyId;
     m_strat.SetMemorySize( selectParent( random, indParentA, indParentB ).GetMemSize( ) );  // clears memory. Experience not inheritable.
     m_genome.Recombine( indParentA.m_genome, indParentB.m_genome, random );
     m_genome.Mutate( sMutationRate, random );

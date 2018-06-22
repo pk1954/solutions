@@ -10,6 +10,7 @@
 #include "EvolutionTypes.h"
 #include "EditorState.h"
 #include "gridCircle.h"
+#include "pixelCoordinates.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "EvolutionCoreWrappers.h"
 
@@ -17,6 +18,7 @@
 
 static EvolutionCore      * m_pCore;
 static EvolutionModelData * m_pModelWork;
+static PixelCoordinates   * m_pPixCoords;
 
 class WrapSetPoi : public Script_Functor
 {
@@ -122,6 +124,47 @@ public:
         m_pModelWork->SetBrushStrategy( mode );
     }
 };
+
+class WrapPixel2GridPos : public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        PixelPoint const pixPos = ScrReadPixelPoint( script );
+		GridPoint  const gp     = m_pPixCoords->Pixel2GridPos( pixPos );
+		wcout << gp << endl;
+    }
+};
+
+class WrapSetFieldSize : public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+		short      const sFieldSize = script.ScrReadShort();
+        PixelPoint const pixPos     = ScrReadPixelPoint( script );
+		m_pPixCoords->SetFieldSize( sFieldSize, pixPos );
+    }
+};
+
+class WrapMoveGrid : public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        PixelPoint const pixPosDelta = ScrReadPixelPoint( script );
+		m_pPixCoords->MoveGrid( pixPosDelta );
+    }
+};
+
+void DefinePixelCoordinatesWrapperFunctions( PixelCoordinates * pCoords )
+{
+    m_pPixCoords = pCoords;
+
+    DEF_FUNC( Pixel2GridPos );
+    DEF_FUNC( SetFieldSize );
+    DEF_FUNC( MoveGrid );
+}
 
 void DefineModelWrapperFunctions( EvolutionModelData * pModel )
 {

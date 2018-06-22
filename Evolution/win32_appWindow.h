@@ -47,7 +47,7 @@ private:
 	void setSimulationMode( tBoolOp const );
 	void adjustChildWindows( );
 
-	BOOL                 m_bSimulationMode;   // if TRUE: simu mode, FALSE: edit more
+	bool                 m_bSimulationMode;   // if TRUE: simu mode, FALSE: edit more
     DisplayAll           m_displayGridFunctor;
 
     GridWindow         * m_pMainGridWindow;

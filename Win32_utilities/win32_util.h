@@ -6,6 +6,7 @@
 #include "windows.h"
 #include "pixelPoint.h"
 #include "pixelRect.h"
+#include "BoolOp.h"
 
 #include <string>
 #include <iostream>
@@ -13,8 +14,6 @@
 using namespace std;
 
 class Script;
-
-enum class tBoolOp { opTrue, opFalse, opToggle, opNoChange };
 
 namespace Util
 {
@@ -25,33 +24,6 @@ namespace Util
 
     bool operator== ( RECT const &, RECT const & );
     bool operator!= ( RECT const &, RECT const & );
-
-    inline BOOL ApplyOp2( BOOL const b, tBoolOp const op )
-    {
-        switch ( op )
-        {
-		case tBoolOp::opTrue:
-            return TRUE;
-
-        case tBoolOp::opFalse:
-            return FALSE;
-
-        case tBoolOp::opToggle:
-            return ! b;
-
-        case tBoolOp::opNoChange: 
-            return b;
-
-        default:
-            assert( FALSE );
-            return FALSE;
-        }
-    }
-
-    inline void ApplyOp( BOOL & b, tBoolOp const op )
-    {
-        b = ApplyOp2( b, op );
-    }
     
     inline void Show( HWND const hWnd, BOOL const bStateOld, BOOL const bStateNew )
     {
@@ -141,20 +113,19 @@ namespace Util
 		PixelPoint pp = POINT2PixelPoint( pnt );
         return pp;
     }
-
-    inline PixelPoint GetCrsrPosition( )   // Delivers cursor position in screen coordinates
-    {
-		POINT pnt;
-		(void)GetCursorPos( &pnt );
-        return POINT2PixelPoint( pnt );
+	
+    inline void UpsideDown( HWND const hWnd, PixelPoint * pnt )   // windows y-coordinates increase from top to bottom
+    {                                                             // we use y-coordinates increasing from bottom to top
+        pnt->y = GetClientWindowHeight( hWnd ) - pnt->y;          // because of DirectX
     }
 
     inline PixelPoint GetRelativeCrsrPosition( HWND const hWnd )   // Delivers cursor position relative to client area 
     {
-        PixelPoint ptCrsr = GetCrsrPosition( );               // In screen coordinates
-		POINT      pnt    = PixelPoint2POINT( ptCrsr );
+		POINT pnt;
+		(void)GetCursorPos( &pnt );
         (void)ScreenToClient( hWnd, &pnt );
-        ptCrsr.y = GetClientWindowHeight( hWnd ) - ptCrsr.y;
+		PixelPoint ptCrsr = POINT2PixelPoint( pnt );
+        UpsideDown( hWnd, & ptCrsr ); 
         return ptCrsr;
     }
 

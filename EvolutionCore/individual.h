@@ -24,6 +24,7 @@ public:
     EVO_GENERATION GetGenBirth( ) const { return m_genBirth; };
     bool           IsDead     ( ) const { return m_sEnergy <= 0; };
     bool           IsAlive    ( ) const { return m_sEnergy >  0; };
+    bool           IsDefined  ( ) const { return m_id.IsDefined(); };
     IndId          GetId      ( ) const { return m_id; };
     tOrigin        GetOrigin  ( ) const { return m_origin; }
 

@@ -55,7 +55,7 @@ private:
     HWND WINAPI createTrackBar     ( HMENU );
 
     void WINAPI createModeControl ( );
-    void WINAPI createSizeControl ( );
+    void WINAPI createSizeControl ( short const, short const );
     void WINAPI createSimulationControl( );
     void WINAPI createEditorControl( );
 

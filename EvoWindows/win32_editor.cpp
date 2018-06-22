@@ -206,7 +206,7 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
         break;
 
     case WM_CLOSE:
-        Show( tBoolOp::opFalse );
+        Show( FALSE );
         return (INT_PTR)TRUE;
 
     case WM_DESTROY:

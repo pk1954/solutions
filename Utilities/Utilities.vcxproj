@@ -141,6 +141,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoolOp.h" />
     <ClInclude Include="DisplayFunctor.h" />
     <ClInclude Include="kGridPoint.h" />
     <ClInclude Include="pixelPoint.h" />

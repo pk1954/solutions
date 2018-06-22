@@ -17,7 +17,6 @@ BOOL RootWinIsReady( RootWindow const * pRootWin )
 PixelPoint const RootWindow::GetCrsrPosFromLparam( LPARAM const lParam ) const
 {
     PixelPoint ptCrsr( GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
-    LONG const lHeight = GetClientWindowHeight( );
-    ptCrsr.y = lHeight - ptCrsr.y;
+    Util::UpsideDown( m_hWnd, & ptCrsr ); 
     return ptCrsr;
 }

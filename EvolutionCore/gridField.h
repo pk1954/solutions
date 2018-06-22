@@ -31,6 +31,7 @@ public:
     short          GetEnergy( )       const { return m_Individual.GetEnergy( ); }
     bool           IsDead( )          const { return m_Individual.IsDead( ); }
     bool           IsAlive( )         const { return m_Individual.IsAlive( ); };
+    bool           IsDefined( )       const { return m_Individual.IsDefined( ); };
     tStrategyId    GetStrategyId( )   const { return m_Individual.GetStrategyId( ); }
     MEM_INDEX      GetMemSize( )      const { return m_Individual.GetMemSize  ( ); }
     MEM_INDEX      GetMemUsed( )      const { return m_Individual.GetMemUsed( ); }

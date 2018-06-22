@@ -75,7 +75,9 @@ void Config::SetDefaultConfiguration( )
    DEF_CONFIG_ID( Config::tId::interactionPayOff_T,    300 );  
    DEF_CONFIG_ID( Config::tId::interactionPayOff_P,    -50 );
    // misc
-   DEF_CONFIG_ID( Config::tId::nrOfNeighbors, 6 );
+   DEF_CONFIG_ID( Config::tId::nrOfNeighbors,            6 );  
+   DEF_CONFIG_ID( Config::tId::stripMode,                0 );
+   DEF_CONFIG_ID( Config::tId::dimmMode,                 0 );
 }
 
 long Config::GetConfigValue( tId const id )
@@ -83,12 +85,18 @@ long Config::GetConfigValue( tId const id )
     return m_mapConfigData.at( id );
 }
 
-short Config::GetConfigValueShort( Config::tId const id )
+short Config::GetConfigValueShort( tId const id )
 {
     long const lValue = GetConfigValue( id );
     assert( lValue >= SHRT_MIN );
     assert( lValue <= SHRT_MAX );
     return static_cast<short>( lValue );
+}
+
+tBoolOp Config::GetConfigValueBoolOp( tId const id )
+{
+    long const lValue = GetConfigValue( id );
+    return (lValue == 0) ? tBoolOp::opFalse : tBoolOp::opTrue;
 }
 
 void Config::SetConfigValue( tId const id, long const lValue )

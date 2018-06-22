@@ -27,7 +27,7 @@ public:
 
     void Start( EvoHistorySys *, EvolutionModelData * );
 
-    void SetGridPoint( GridPoint const );
+    void SetFocusPoint( GridPoint const );
 
     void AttachFocusPointObserver( RootWindow const *, INT const );
     
@@ -35,8 +35,9 @@ public:
     HIST_GENERATION const GetGenBirth( )  const { return m_genBirth; }
     HIST_GENERATION const GetGenDeath( )  const { return m_genDeath; }
     BOOL            const IsInGrid( )     const { return m_gp.IsInGrid( ); }
-    BOOL            const IsAlive( )      const { return m_pModelWork->IsAlive( m_gp ); }
-    BOOL            const IsDead( )       const { return m_pModelWork->IsDead ( m_gp ); }
+    BOOL            const IsAlive( )      const { return m_pModelWork->IsAlive  ( m_gp ); }
+    BOOL            const IsDead( )       const { return m_pModelWork->IsDead   ( m_gp ); }
+    BOOL            const IsDefined( )    const { return m_pModelWork->IsDefined( m_gp ); }
 
 private:
     EvoHistorySys      * m_pEvoHistorySys;

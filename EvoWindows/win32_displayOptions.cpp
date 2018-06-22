@@ -108,7 +108,7 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
                 break;
 
             case IDCANCEL:
-                Show( tBoolOp::opFalse );
+                Show( FALSE );
                 return static_cast<INT_PTR>(TRUE);
 
             default:

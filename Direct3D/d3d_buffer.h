@@ -28,7 +28,7 @@ public:
     void D3D_DrawText( PixelRect, wstring const &, D3DCOLOR );
     void EndFrame( );
 
-    void SetStripMode( tBoolOp const bOp ) { Util::ApplyOp( m_bStripMode, bOp ); };
+    void SetStripMode( tBoolOp const bOp ) { ApplyOp( m_bStripMode, bOp ); };
 
 private:
     
@@ -47,7 +47,7 @@ private:
     LPDIRECT3DVERTEXBUFFER9 m_d3d_vertexBuffer; 
     LPDIRECT3DSWAPCHAIN9    m_d3d_swapChain;
     ID3DXFont             * m_id3dx_font;
-    BOOL                    m_bStripMode;
+    bool                    m_bStripMode;
     DWORD                   m_dwAlphaBlendable;
     DWORD                   m_dwSrcBlend;
     DWORD                   m_dwDstBlend;

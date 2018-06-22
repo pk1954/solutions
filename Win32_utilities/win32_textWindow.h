@@ -42,7 +42,7 @@ public:
     }
 
     void printString    ( wchar_t const * const );
-    void printNumber    ( unsigned int );
+    void printNumber    ( int );
     void printPercentage( unsigned int );
     void printPercentage( unsigned int, unsigned int );
     void printSpan      ( unsigned int, unsigned int );
