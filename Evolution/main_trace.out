@@ -9,8 +9,12 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
 PostSetBrushSize 17
-PostSetBrushSize 12
+PostSetBrushSize 3
 PostSetBrushSize 1
 PostSetBrushSize 1
 PostRefresh
@@ -18,11 +22,10 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostSetBrushIntensity 61
-PostSetBrushIntensity 62
 PostSetBrushIntensity 70
+PostSetBrushIntensity 89
 PostSetBrushIntensity 100
 PostSetBrushIntensity 100
-PostSetBrushMode tBrushMode::mutRate
 PostRefresh
 PostRefresh
 PostRefresh
@@ -30,17 +33,6 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostDoEdit    0   0 
 PostRefresh
 PostRefresh
 PostRefresh
@@ -59,141 +51,8 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
+PostRefresh
 PostDoEdit    0   0 
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh

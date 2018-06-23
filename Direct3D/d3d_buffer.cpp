@@ -221,7 +221,7 @@ void D3dBuffer::AddBackgroundPrimitive( PixelPoint const & ptPos, DWORD const dw
 
     if ( m_bStripMode )
     {
-        m_pVertBufStripMode->AddVertex( fPtPosx, fPtPosy, dwColor );
+        m_pVertBufStripMode->AddVertex( fPtPosx + fPixSizeHalf, fPtPosy + fPixSizeHalf, dwColor );
     }
     else
     {
