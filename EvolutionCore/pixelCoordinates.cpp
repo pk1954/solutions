@@ -127,25 +127,21 @@ PixelPoint PixelCoordinates::KGrid2PixelPos( KGridPoint const & kp ) const
     
 PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint  const & gp ) const 
 { 
+	PixelPoint ppRes( gp.x * m_sFieldSize, gp.y * m_sFieldSize );
+	
 	if ( m_bHexagon )
-	{
-		double const fDistX = static_cast<double>( m_sFieldSize ) * (sqrt(3) / 2) * static_cast<double>( gp.x );
-		long   const lDistX = static_cast<long>( fDistX + 0.5 );
+		ppRes.x = static_cast<long>( ppRes.x * (sqrt(3) / 2.) + 0.5 );
 
-		return PixelPoint( lDistX, gp.y * m_sFieldSize ); 
-	}
-	else
-		return PixelPoint( gp.x * m_sFieldSize, gp.y * m_sFieldSize );
+	return ppRes;
 }
 
 PixelPoint PixelCoordinates::Grid2PixelPos ( GridPoint const & gp ) const 
 { 
 	PixelPoint ppRes = Grid2PixelSize( gp ) - m_pixOffset;
-	if ( m_bHexagon )
-	{
-		if ( gp.IsOddCol( ) )
-			ppRes.y -= m_sFieldSize / 2 ;
-	}
+
+	if ( m_bHexagon && gp.IsOddCol( ) )
+		ppRes.y -= m_sFieldSize / 2 ;
+
 	return ppRes;
 }
 
@@ -162,50 +158,46 @@ PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint  const & gp ) const
 		return Grid2PixelPos( gp ) + m_sFieldSize / 2; 
 }
 
-GridPoint PixelCoordinates::Pixel2GridSize( PixelPoint const & pp ) const 
-{ 
-	if ( m_bHexagon )
-	{
-		double const dFieldSize = static_cast<double>(m_sFieldSize);
-		double const dPixPointX = static_cast<double>(pp.x);
-		double const dSide      = (sqrt(3) / 2) * dFieldSize;
-		long   const lDistX     = static_cast<long>(floor(dPixPointX / dSide));
-
-		return GridPoint( lDistX, pp.y / m_sFieldSize ); 
-	}
-	else
-		return GridPoint( pp.x / m_sFieldSize, pp.y / m_sFieldSize ); 
-}
-
 GridPoint PixelCoordinates::Pixel2GridPos ( PixelPoint const & pp ) const 
 { 
 	PixelPoint const pixPoint = pp + m_pixOffset;
 	if ( m_bHexagon ) // adapted from http://blog.ruslans.com/2011/02/hexagonal-grid-math.html
 	{
+		static double const SQRT3_DIV2 = sqrt(3.) / 2.;
+		static double const SQRT3_DIV3 = sqrt(3.) / 3.;
+
 		double const dFieldSize = static_cast<double>(m_sFieldSize);
-		double const dSide      = (sqrt(3) / 2) * dFieldSize;
+		double const dRadius    = dFieldSize * SQRT3_DIV3;
+		double const dSide      = dFieldSize * SQRT3_DIV2;
+
 		double const dPixPointX = static_cast<double>(pixPoint.x);
-		long   const lCi        = static_cast<long>(floor(dPixPointX/dSide));
-		double const dCx        = dPixPointX - dSide * lCi;
+		double const dCi        = floor(dPixPointX/dSide);
+		double const dCx        = dPixPointX - dSide * dCi;
+
+		GRID_COORD const gCi    = static_cast<GRID_COORD>(dCi);
+		bool       const bOdd   = ((gCi % 2) != 0);
 
 		double const dPixPointY = static_cast<double>(pixPoint.y);
-		double const dTy        = dPixPointY + (lCi % 2) * dFieldSize * 0.5;
-		long   const lCj        = static_cast<int>(floor(dTy/dFieldSize));
-		double const dCy        = dTy - dFieldSize * lCj;
+		double const dTy        = dPixPointY + (bOdd ? (dFieldSize * 0.5) : 0);
+		double const dCj        = floor(dTy/dFieldSize);
+		double const dCy        = dTy - dFieldSize * dCj;
 		double const dCrit      = 0.5 - dCy / dFieldSize;
-		double const dRadius    = (sqrt(3) / 3) * dFieldSize;
+
+		GRID_COORD const gCj    = static_cast<GRID_COORD>(dCj);
 
 		GridPoint gpResult;
 
 		if (dCx > dRadius * abs(dCrit))
 		{
-			gpResult.x = lCi;
-			gpResult.y = lCj;
+			gpResult.x = gCi;
+			gpResult.y = gCj;
 		}
 		else
 		{
-			gpResult.x = lCi - 1;
-			gpResult.y = lCj - lCi % 2;
+			gpResult.x = gCi - 1;
+			gpResult.y = gCj;
+			if (bOdd)
+				--gpResult.y;
 			if (dCrit < 0)
 				++gpResult.y;
 		}
@@ -214,7 +206,7 @@ GridPoint PixelCoordinates::Pixel2GridPos ( PixelPoint const & pp ) const
 	}
 	else 
 	{
-		return Pixel2GridSize( pixPoint ); 
+		return GridPoint( pp.x / m_sFieldSize, pp.y / m_sFieldSize ); 
 	}
 }
 

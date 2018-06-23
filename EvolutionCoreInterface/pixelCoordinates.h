@@ -24,7 +24,6 @@ public:
     
 	//////// transformations ////////
 
-	GridPoint  Pixel2GridSize( PixelPoint const & ) const;
 	PixelPoint Grid2PixelSize( GridPoint  const & ) const;
 
     GridPoint  Pixel2GridPos ( PixelPoint const & ) const;
