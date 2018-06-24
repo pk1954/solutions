@@ -199,7 +199,7 @@ namespace Util
 
     inline BOOL CrsrInClientRect( HWND const hWnd )  // Is cursor position in client rect?
     {
-		return PixelPointInClientRect( hWnd, GetRelativeCrsrPosition( hWnd ) );
+		return PixelPointInClientRect( hWnd, GetRelativeCrsrPosition( hWnd )  );
     } 
 
     inline void FastFill( HDC const hDC, RECT const & rect )

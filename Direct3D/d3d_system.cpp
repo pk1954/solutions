@@ -101,6 +101,7 @@ void D3dSystem::createDevice( HWND const hWnd, ULONG const ulModelWidth, ULONG c
 	m_d3d_pIndexBufBgStripMode    = createStripIndices( ulModelWidth, ulModelHeight );    // Index buffer for food
 	m_d3d_pIndexBufBgNonStripMode = createIndsIndices ( ulModelWidth, ulModelHeight );    // Index buffer for food
 	m_d3d_pIndexBufIndividuals    = createIndsIndices ( ulModelWidth, ulModelHeight );    // Index buffer for individuals
+	m_d3d_pIndexBufRect           = createRectIndices ( );                                // Index buffer for one rectangle  
 }
 
 D3dSystem::~D3dSystem( )
@@ -124,7 +125,7 @@ D3dSystem::~D3dSystem( )
 	m_d3d_object = nullptr;
 }
 
-D3dIndexBuffer * D3dSystem::prepareIndices( ULONG const * const pulIndex, ULONG const ulNrOfIndices )       // lock m_d3d_indexBuffer and load the indices into it
+D3dIndexBuffer * D3dSystem::prepareIndices( ULONG const * const pulIndex, ULONG const ulNrOfIndices )  // lock m_d3d_indexBuffer and load the indices into it
 {
 	LPDIRECT3DINDEXBUFFER9 d3d_indexBuffer;
 
@@ -154,39 +155,24 @@ D3dIndexBuffer * D3dSystem::createIndsIndices( ULONG const ulModelWidth, ULONG c
 	ULONG   const ulTrianglesPerPrimitive = m_bHexagon ? 4 : 2; // Hexagon is made of 4 triangles, rect of 2 triangles
 	ULONG   const ulVerticesPerPrimitive  = m_bHexagon ? 6 : 4; // Hexagon has 6 vertices, rectangle has 4
 	ULONG   const ulNrOfPrimitives        = ulModelWidth * ulModelHeight;
-	ULONG   const ulNrOfIndices           = 3 * ulTrianglesPerPrimitive * ulNrOfPrimitives;
+	ULONG   const ulVerticesPerTriangle   = 3;
+	ULONG   const ulIndicesPerPrimitive   = ulVerticesPerTriangle * ulTrianglesPerPrimitive;
+	ULONG   const ulNrOfIndices           = ulIndicesPerPrimitive * ulNrOfPrimitives;
 	ULONG * const pulIndices              = new ULONG[ulNrOfIndices];
 	ULONG *       pulIndexRun             = pulIndices;
 	ULONG   const ulStop                  = ulNrOfPrimitives * ulVerticesPerPrimitive;
 
 	for ( ULONG ulBase = 0; ulBase < ulStop; ulBase += ulVerticesPerPrimitive ) 
-	if ( m_bHexagon )
 	{
-		* pulIndexRun++ = ulBase + 0;
-		* pulIndexRun++ = ulBase + 1;
-		* pulIndexRun++ = ulBase + 3;
-
-		* pulIndexRun++ = ulBase + 3;
-		* pulIndexRun++ = ulBase + 5;
-		* pulIndexRun++ = ulBase + 4;
-
-		* pulIndexRun++ = ulBase + 4;
-		* pulIndexRun++ = ulBase + 2;
-		* pulIndexRun++ = ulBase + 0;
-
-		* pulIndexRun++ = ulBase + 0;
-		* pulIndexRun++ = ulBase + 3;
-		* pulIndexRun++ = ulBase + 4;
-	}
-	else
-	{
-		* pulIndexRun++ = ulBase + 0;
-		* pulIndexRun++ = ulBase + 1;
-		* pulIndexRun++ = ulBase + 3;
-
-		* pulIndexRun++ = ulBase + 1;
-		* pulIndexRun++ = ulBase + 2;
-		* pulIndexRun++ = ulBase + 3;
+		if ( m_bHexagon )
+		{
+			hexagonIndices( pulIndexRun, ulBase );
+		}
+		else
+		{
+			rectangleIndices( pulIndexRun, ulBase );
+		}
+		pulIndexRun += ulIndicesPerPrimitive;
 	}
 
 	D3dIndexBuffer * const pIndexBuffer = prepareIndices( pulIndices, ulNrOfIndices );
@@ -194,6 +180,48 @@ D3dIndexBuffer * D3dSystem::createIndsIndices( ULONG const ulModelWidth, ULONG c
 	delete[] pulIndices;
 
 	return pIndexBuffer;
+}
+
+D3dIndexBuffer * D3dSystem::createRectIndices()
+{
+	ULONG const ulNrOfIndices = 6;
+	ULONG ulIndices[ulNrOfIndices];
+
+	rectangleIndices( ulIndices, 0 );
+
+	D3dIndexBuffer * const pIndexBuffer = prepareIndices( ulIndices, ulNrOfIndices );
+
+	return pIndexBuffer;
+}
+
+void D3dSystem::rectangleIndices( ULONG * const pulIndices, ULONG const ulBase )
+{
+	pulIndices[0] = ulBase + 0;
+	pulIndices[1] = ulBase + 1;
+	pulIndices[2] = ulBase + 3;
+
+	pulIndices[3] = ulBase + 1;
+	pulIndices[4] = ulBase + 2;
+	pulIndices[5] = ulBase + 3;
+}
+
+void D3dSystem::hexagonIndices( ULONG * const pulIndices, ULONG const ulBase )
+{
+	pulIndices[ 0] = ulBase + 0;
+	pulIndices[ 1] = ulBase + 1;
+	pulIndices[ 2] = ulBase + 3;
+
+	pulIndices[ 3] = ulBase + 3;
+	pulIndices[ 4] = ulBase + 5;
+	pulIndices[ 5] = ulBase + 4;
+
+	pulIndices[ 6] = ulBase + 4;
+	pulIndices[ 7] = ulBase + 2;
+	pulIndices[ 8] = ulBase + 0;
+
+	pulIndices[ 9] = ulBase + 0;
+	pulIndices[10] = ulBase + 3;
+	pulIndices[11] = ulBase + 4;
 }
 
 D3dIndexBuffer * D3dSystem::createStripIndices( ULONG const ulModelWidth, ULONG const ulModelHeight )

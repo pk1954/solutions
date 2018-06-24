@@ -20,6 +20,7 @@ public:
 
     D3dIndexBuffer const * GetBgIndexBufferStripMode( ) const { return m_d3d_pIndexBufBgStripMode; };
     D3dIndexBuffer const * GetIndsIndexBuffer( )        const { return m_d3d_pIndexBufIndividuals; };
+    D3dIndexBuffer const * GetRectIndexBuffer( )        const { return m_d3d_pIndexBufRect; };
 
 	static BOOL GetHexagonMode( ) { return m_bHexagon; };
 
@@ -29,6 +30,10 @@ private:
     D3dIndexBuffer * prepareIndices( ULONG const * const, ULONG const );
     D3dIndexBuffer * createStripIndices( ULONG const, ULONG const );
     D3dIndexBuffer * createIndsIndices ( ULONG const, ULONG const );
+	D3dIndexBuffer * createRectIndices();
+
+	void rectangleIndices( ULONG * const, ULONG const );
+	void hexagonIndices  ( ULONG * const, ULONG const );
 
     IDirect3D9       * m_d3d_object;
     IDirect3DDevice9 * m_d3d_device;
@@ -38,6 +43,7 @@ private:
     D3dIndexBuffer      * m_d3d_pIndexBufBgStripMode; 
     D3dIndexBuffer      * m_d3d_pIndexBufBgNonStripMode; 
     D3dIndexBuffer      * m_d3d_pIndexBufIndividuals; 
+    D3dIndexBuffer      * m_d3d_pIndexBufRect;    // index buffer for one rectangle 
 
     INT  m_iNrSwapChainsInUse;
 

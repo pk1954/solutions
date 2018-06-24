@@ -196,10 +196,11 @@ void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
 		{
             if ( GetEvoCore( )->IsAlive( gp ) )
             {
+				long       lHeight    = Util::GetClientWindowHeight( m_hWnd );
 				COLORREF   colText    = getTextColor( gp );
                 PixelPoint ptCenter   = m_pPixelCoordinates->Grid2PixelPosCenter( gp );
 						   Util::UpsideDown( m_hWnd, & ptCenter ); 
-                PixelRect  pixRect( ptCenter - lHalfSizeInd, ptCenter + lHalfSizeInd );
+                PixelRect  pixRect ( ptCenter  - lHalfSizeInd, ptCenter  + lHalfSizeInd );
 
                 assembleLeftColumn( gp, gpPoi );
                 m_pD3dBuffer->D3D_DrawText( pixRect, getOutputString( ), colText );

@@ -270,7 +270,8 @@ void D3dBuffer::RenderTranspRect( PixelRect const & rectTransparent, DWORD const
         dwColor 
     );
 
-	renderPrimitives( );
+	renderPrimitives( m_d3d->GetRectIndexBuffer() );
+
     finishTranspMode( );
 }
 
@@ -279,12 +280,12 @@ void D3dBuffer::RenderBackground( )
     if ( m_bStripMode )
         renderTriangleStrip( );
     else
-        renderPrimitives( );
+        renderPrimitives( m_d3d->GetIndsIndexBuffer() );
 }
 
 void D3dBuffer::RenderIndividuals( )
 {
-    renderPrimitives( );
+    renderPrimitives( m_d3d->GetIndsIndexBuffer() );
 }
 
 void D3dBuffer::renderTriangleStrip( ) const
@@ -309,16 +310,16 @@ void D3dBuffer::renderTriangleStrip( ) const
     assert( hres == D3D_OK );
 }
 
-void D3dBuffer::renderPrimitives( )
+void D3dBuffer::renderPrimitives( D3dIndexBuffer const * const iBuf )
 {
 	ULONG const ulNrOfPrimitives = m_ulTrianglesPerPrimitive * m_pVertBufPrimitives->GetNrOfVertices() / m_ulVerticesPerPrimitive;
 	
 	if ( ulNrOfPrimitives > 0 )
     {
         m_pVertBufPrimitives->LoadVertices( m_d3d_vertexBuffer, m_d3d_device );
-        D3dIndexBuffer const * const iBuf                = m_d3d->GetIndsIndexBuffer();
-        ULONG          const         ulMaxNrOfPrimitives = iBuf->SetIndices( m_d3d_device );
-        HRESULT        const         hres                = m_d3d_device->DrawIndexedPrimitive
+
+        iBuf->SetIndices( m_d3d_device );
+        HRESULT const hres = m_d3d_device->DrawIndexedPrimitive
 		( 
 			D3DPT_TRIANGLELIST, 
 			0, 

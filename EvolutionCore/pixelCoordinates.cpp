@@ -206,7 +206,7 @@ GridPoint PixelCoordinates::Pixel2GridPos ( PixelPoint const & pp ) const
 	}
 	else 
 	{
-		return GridPoint( pp.x / m_sFieldSize, pp.y / m_sFieldSize ); 
+		return GridPoint( pixPoint.x / m_sFieldSize, pixPoint.y / m_sFieldSize ); 
 	}
 }
 
@@ -245,4 +245,12 @@ PixelRect PixelCoordinates::Grid2PixelRect( GridRect const & rcGrid ) const
         Grid2PixelPos( rcGrid.GetStartPoint( ) ),
         Grid2PixelPos( rcGrid.GetEndPoint  ( ) ) + (m_sFieldSize - 1) 
     );
+}
+
+PixelRect PixelCoordinates::GetTextRect( GridPoint const & gp ) const
+{
+    long  const lHalfSizeInd = (5 * m_sFieldSize) / 16;
+    PixelPoint ptCenter   = Grid2PixelPosCenter( gp );
+//				Util::UpsideDown( m_hWnd, & ptCenter ); 
+    return PixelRect( ptCenter - lHalfSizeInd, ptCenter + lHalfSizeInd );
 }

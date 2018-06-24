@@ -279,6 +279,7 @@ void GridWindow::fit( )
 		m_pGridRectSel->IsEmpty() ? GridRect::GRID_RECT_FULL : *m_pGridRectSel,
 		Util::GetClRectSize( GetWindowHandle( ) )
 	);
+	resetSelection();
 	resize();
 }
 

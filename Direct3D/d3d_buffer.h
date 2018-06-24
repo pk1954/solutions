@@ -59,7 +59,7 @@ private:
     void addHexagon  ( float const, float const, DWORD const, float const, float const );    
     void addRect2Buffer( float const, float const, float const, float const, DWORD const );
     void renderTriangleStrip( ) const;
-    void renderPrimitives( );
+    void renderPrimitives( D3dIndexBuffer const * const );
     void prepareTranspMode( );
     void finishTranspMode( );
 };
