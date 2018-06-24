@@ -9,7 +9,7 @@
 
 using namespace std;
 
-wstring OpenScriptFile( wstring wstrPath )
+wstring AskForScriptFileName( wstring wstrPath )
 {
     OPENFILENAME ofn;                // common dialog box structure    
     wchar_t      lszFile[500];       // buffer for file name

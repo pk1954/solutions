@@ -71,15 +71,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -151,6 +155,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="trace.h" />
     <ClInclude Include="util.h" />
+    <ClInclude Include="UtilityWrappers.h" />
     <ClInclude Include="XArray.h" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +170,7 @@
     </ClCompile>
     <ClCompile Include="trace.cpp" />
     <ClCompile Include="util.cpp" />
+    <ClCompile Include="UtilityWrappers.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

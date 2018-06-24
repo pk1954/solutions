@@ -7,6 +7,9 @@
 #include "pixelPoint.h"
 #include "pixelCoordinates.h"
 
+static double const SQRT3_DIV2 = sqrt(3.) / 2.;
+static double const SQRT3_DIV3 = sqrt(3.) / 3.;
+
 PixelCoordinates::PixelCoordinates
 ( 
     short const fs, 
@@ -130,7 +133,7 @@ PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint  const & gp ) const
 	PixelPoint ppRes( gp.x * m_sFieldSize, gp.y * m_sFieldSize );
 	
 	if ( m_bHexagon )
-		ppRes.x = static_cast<long>( ppRes.x * (sqrt(3) / 2.) + 0.5 );
+		ppRes.x = static_cast<long>( ppRes.x * SQRT3_DIV2 + 0.5 );
 
 	return ppRes;
 }
@@ -150,7 +153,7 @@ PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint  const & gp ) const
 	if (m_bHexagon)
 	{
 		PixelPoint pxResult = Grid2PixelPos( gp );
-		pxResult.x += static_cast<long>(1. / (sqrt(3)) * m_sFieldSize);
+		pxResult.x += static_cast<long>(SQRT3_DIV3 * m_sFieldSize);
 		pxResult.y += m_sFieldSize / 2;
 		return pxResult;
 	}
@@ -163,9 +166,6 @@ GridPoint PixelCoordinates::Pixel2GridPos ( PixelPoint const & pp ) const
 	PixelPoint const pixPoint = pp + m_pixOffset;
 	if ( m_bHexagon ) // adapted from http://blog.ruslans.com/2011/02/hexagonal-grid-math.html
 	{
-		static double const SQRT3_DIV2 = sqrt(3.) / 2.;
-		static double const SQRT3_DIV3 = sqrt(3.) / 3.;
-
 		double const dFieldSize = static_cast<double>(m_sFieldSize);
 		double const dRadius    = dFieldSize * SQRT3_DIV3;
 		double const dSide      = dFieldSize * SQRT3_DIV2;

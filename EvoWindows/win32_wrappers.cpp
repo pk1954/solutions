@@ -8,6 +8,7 @@
 #include "SCRIPT.H"
 #include "EvoModelData.h"
 #include "EvolutionCoreWrapperHelpers.h"
+#include "win32_histWorkerThread.h"
 #include "win32_worker_thread.h"
 #include "EvoController.h"
 #include "win32_winManager.h"
@@ -17,10 +18,20 @@
 
 //lint -esym( 715, script )   // not referenced
 
-static WorkThread    * m_pWorkThread;
-static EvoController * m_pEvoController;
-static StatusBar     * m_pStatusBar;
-static BOOL            m_bMoveWindowActive;
+static HistWorkThread * m_pHistWorkThread;
+static WorkThread     * m_pWorkThread;
+static EvoController  * m_pEvoController;
+static StatusBar      * m_pStatusBar;
+static BOOL             m_bMoveWindowActive;
+
+class WrapPostPrevGeneration : public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        m_pHistWorkThread->PostPrevGeneration( );
+    }
+};
 
 class WrapPostDoEdit : public Script_Functor
 {
@@ -132,15 +143,20 @@ public:
 
 void DefineWin32WrapperFunctions
 ( 
-    WorkThread    * const pWorkThread,
-	EvoController * const pEvoController,
-    StatusBar     * const pStatusBar
+    HistWorkThread * const pHistWorkThread,
+    WorkThread     * const pWorkThread,
+	EvoController  * const pEvoController,
+    StatusBar      * const pStatusBar
 )
 {
-    m_pWorkThread = pWorkThread;
-    m_pStatusBar  = pStatusBar;
+    m_pHistWorkThread = pHistWorkThread;
+    m_pWorkThread     = pWorkThread;
+	m_pEvoController  = pEvoController;
+    m_pStatusBar      = pStatusBar;
 
-    DEF_FUNC( PostDoEdit );
+    DEF_FUNC( PostPrevGeneration ); 
+
+	DEF_FUNC( PostDoEdit );
     DEF_FUNC( PostSetBrushMode );
     DEF_FUNC( PostSetBrushShape );
     DEF_FUNC( PostSetBrushIntensity );

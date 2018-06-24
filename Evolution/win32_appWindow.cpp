@@ -43,6 +43,7 @@
 #include "trace.h"
 #include "errhndl.h"
 #include "script.h"
+#include "UtilityWrappers.h"
 #include "win32_scriptHook.h"
 #include "win32_wrappers.h"
 #include "win32_editorWrappers.h"
@@ -103,6 +104,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
 	Config::SetDefaultConfiguration( );
     Config::DefineConfigWrapperFunctions( );
+	DefineUtilityWrapperFunctions( );
 
     // evaluate command line parameters
 
@@ -163,6 +165,9 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
         EnableMenuItem( GetMenu( hWndApp ), IDM_BACKWARDS, MF_GRAYED );
     }
 
+	if ( Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 )
+        EnableMenuItem( GetMenu( hWndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
+
 	m_pFocusPoint    ->Start( m_pEvoHistorySys, m_pModelWork );
 	m_pWorkThread    ->Start( m_pStatusBar, m_pEditorWindow, m_pPerfWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
 	m_pDspOptWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork );
@@ -195,7 +200,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
 
-    DefineWin32WrapperFunctions( m_pWorkThread, m_pEvoController, m_pStatusBar );
+    DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, m_pEvoController, m_pStatusBar );
     DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 
     //  CheckMenuItem( GetMenu( hWndApp ), IDM_STAT_WINDOW, MF_CHECKED );
@@ -335,6 +340,8 @@ void AppWindow::setSimulationMode( tBoolOp const op )
 
 	if ( m_bSimulationMode )
         m_pEditorWindow->SendClick( IDM_MOVE );
+	else
+		SendMessage( WM_COMMAND, IDM_STOP, 0 );
 	m_pEditorWindow->Show( ! m_bSimulationMode );
 	m_pPerfWindow  ->Show(   m_bSimulationMode );
 

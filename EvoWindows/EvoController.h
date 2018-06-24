@@ -35,6 +35,8 @@ public:
 	void ProcessCommand( WPARAM const, LPARAM const );
 
 private:
+	void setSimulationMode( tBoolOp const );
+
 	BOOL                m_bTrace;
     wostream          * m_pTraceStream;
 	HistWorkThread    * m_pHistWorkThread;

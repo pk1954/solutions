@@ -108,7 +108,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
                 DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer);
                 assert( dwRes > 0 );
                 wstring const wstrPath( szBuffer );
-                wstring wstrFile = OpenScriptFile( wstrPath );
+                wstring wstrFile = AskForScriptFileName( wstrPath );
                 if ( ! wstrFile.empty( ) )
                    m_pHistWorkThread->PostProcessScript( wstrFile );
             }

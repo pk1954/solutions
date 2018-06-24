@@ -53,8 +53,9 @@ void CALLBACK ObserverInterface::TimerProc( void * const lpParameter, BOOL const
     {
         if ( pOI->m_hTimer != nullptr )
         {
-            (void)DeleteTimerQueueTimer( nullptr, pOI->m_hTimer, 0 );
+			HANDLE handle = pOI->m_hTimer;
             pOI->m_hTimer = nullptr;
+            (void)DeleteTimerQueueTimer( nullptr, handle, 0 );
         }
         pOI->m_bTimerActive = FALSE;
     }

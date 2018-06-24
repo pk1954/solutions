@@ -5,6 +5,7 @@
 #include "Windowsx.h"
 #include "Resource.h"
 #include "config.h"
+#include "BoolOp.h"
 #include "pixelCoordinates.h"
 #include "EvolutionCore.h"
 #include "win32_util.h"
@@ -67,9 +68,14 @@ void GridWindow::Start
 	m_pCore              = pCore;
 	m_pModelWork         = pModel;
 
-    m_pPixelCoordinates  = new PixelCoordinates( sFieldSize, iNrOfNeighbors == 6 );
+	BOOL bHexagonMode    = iNrOfNeighbors == 6;
+    m_pPixelCoordinates  = new PixelCoordinates( sFieldSize, bHexagonMode );
     m_pDrawFrame         = new DrawFrame( hWnd, pCore, pModel, m_pPixelCoordinates, pDspOptWindow, m_pGridRectSel );
-	m_pDrawFrame->SetStripMode( Config::GetConfigValueBoolOp( Config::tId::stripMode ) );
+	m_pDrawFrame->SetStripMode
+	( 
+		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
+		? tBoolOp::opFalse 
+		: Config::GetConfigValueBoolOp( Config::tId::stripMode ) );
 }
 
 GridWindow::~GridWindow( )
@@ -207,7 +213,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     else
     {
         m_ptLast.x = LONG_MIN;    // make m_ptLast invalid
-        m_pWorkThread->PostRefresh( );  // +++++++++++++ EXPERIMENTAL +++++++++++++++++
+        // m_pWorkThread->PostRefresh( );  // +++++++++++++ EXPERIMENTAL +++++++++++++++++
         // no PostRefresh! It would cause repaint for every mouse move.
     }
 }

@@ -7,4 +7,4 @@ class WorkThread;
 class EvoController;
 class StatusBar;
 
-extern void DefineWin32WrapperFunctions( WorkThread * const, EvoController *, StatusBar * const );
+extern void DefineWin32WrapperFunctions( HistWorkThread * const, WorkThread * const, EvoController *, StatusBar * const );

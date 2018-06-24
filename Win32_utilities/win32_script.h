@@ -8,4 +8,4 @@
 #include <string>
 #include "symtab.h"
 
-extern std::wstring OpenScriptFile( std::wstring );
+extern std::wstring AskForScriptFileName( std::wstring );
