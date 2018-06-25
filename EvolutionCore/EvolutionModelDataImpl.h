@@ -3,10 +3,13 @@
 
 #pragma once
 
+#include <functional>
 #include "EvolutionModelData.h"
 #include "gridRect.h"
 #include "grid_model.h"
 #include "EditorState.h"
+
+using namespace std;
 
 class EvolutionModelDataImpl : public EvolutionModelData
 {
@@ -61,7 +64,15 @@ public:
 	virtual bool           SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
 	virtual bool           SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
 
-    virtual GridPoint      FindGridPoint( IndId const & id ) const { return m_grid.FindGridPoint( id ); }
+	virtual GridPoint FindGridPoint( const function<bool( GridPoint const &)>& func ) const 
+	{ 
+		return m_grid.FindGridPoint( func ); 
+	}
+
+    virtual GridPoint FindGridPoint( IndId const & id ) const 
+	{ 
+		return FindGridPoint( [&](GridPoint const & gp) { return (GetId(gp) == id); } );
+	}
 
     virtual int GetAverageFoodGrowth( )     const { return m_grid.GetAverageFoodGrowth( ); }
     virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }

@@ -351,13 +351,13 @@ void Grid::EditSetStrategy
     };
 }
 
-GridPoint Grid::FindGridPoint( IndId const & id ) const
+GridPoint Grid::FindGridPoint( const std::function<bool( GridPoint const &)>& func ) const
 {
 	GridRect  const rectFull = GridRect::GetFullRect();
     GridPoint gp;
     for ( gp.y = rectFull.GetTop ( ); gp.y <= rectFull.GetBottom( ); ++gp.y )
     for ( gp.x = rectFull.GetLeft( ); gp.x <= rectFull.GetRight ( ); ++gp.x )
-        if ( GetId( gp ) == id )
+        if ( func( gp ) )
         {
             return gp;
         }

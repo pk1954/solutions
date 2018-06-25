@@ -31,7 +31,7 @@ public:
     virtual GridPoint FindPOI( EvolutionModelData * const pModel ) const 
 	{ 
 		return IsPoiDefined( ) 
-			   ? static_cast< EvolutionModelDataImpl * >( pModel )->m_grid.FindGridPoint( m_idPOI ) 
+			   ? static_cast< EvolutionModelDataImpl * >( pModel )->FindGridPoint( m_idPOI ) 
 			   : GridPoint::GP_NULL; 
 	}
     

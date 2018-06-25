@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <functional>
 #include "gridPoint.h"
 #include "ModelData.h"
 #include "win32_worker_thread.h"
@@ -25,6 +26,7 @@ public:
     virtual void OnAppCommand( unsigned short const, unsigned short const );
 	virtual void CopyModelData( ModelData const * const );
 
+	GridPoint FindGridPoint( const std::function<bool( GridPoint const &)>& ) const;
     GridPoint FindGridPoint( IndId const & ) const;
 
 private:
