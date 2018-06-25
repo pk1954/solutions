@@ -166,26 +166,23 @@ private:
 };
 
 StatisticsWindow::StatisticsWindow( ):
-    TextWindow( ),
-    m_pGridRectSel( nullptr )
+    TextWindow( )
 { }
 
 void StatisticsWindow::Start
 (
-    HWND                  const hWndParent,
-    EvolutionModelData const * const pModel,
-    GridRect            * const pSel
+    HWND                       const hWndParent,
+    EvolutionModelData const * const pModel
 ) 
 {
     HWND hWnd = StartTextWindow( hWndParent, L"StatisticsWindow", 100 );
     Move( 200, 200, 400, 430, TRUE );
-    m_pModelWork    = pModel;
-    m_pGridRectSel  = pSel;
+    m_pModelWork = pModel;
 }
 
 StatisticsWindow::~StatisticsWindow( )
 {
-    m_pGridRectSel = nullptr;
+	m_pModelWork = nullptr;
 }
 
 void StatisticsWindow::DoPaint( )
@@ -193,6 +190,7 @@ void StatisticsWindow::DoPaint( )
     // aquire and prepare data 
 
     AllGenesStat genesStat;
+	GridRect     gridRectSel = m_pModelWork->GetSelection( );
 
     Apply2Rect
 	( 
@@ -213,7 +211,7 @@ void StatisticsWindow::DoPaint( )
 				genesStat.addAge    ( s, m_pModelWork->GetAge( gp ) );
 			}
 		},
-		m_pGridRectSel->IsEmpty( ) ? GridRect::GRID_RECT_FULL : *m_pGridRectSel
+		gridRectSel.IsEmpty( ) ? GridRect::GRID_RECT_FULL : gridRectSel
 	);
 
     genesStat.scaleAllGenesStat( );

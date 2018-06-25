@@ -28,7 +28,6 @@ GridWindow::GridWindow( ) :
     m_pEditorWindow( nullptr ),
     m_pPerformanceWindow( nullptr ),
     m_pDrawFrame( nullptr ),
-    m_pGridRectSel( nullptr ),
     m_ptLast( PixelPoint( LONG_MIN, LONG_MIN ) ),
     m_bMoveAllowed( TRUE ),
     m_pFocusPoint( nullptr )
@@ -38,7 +37,6 @@ void GridWindow::Start
 ( 
     HWND                 const hWndParent,
     WorkThread         * const pWorkThread,
-    GridRect           * const pSelection,
     EditorWindow       * const pEditorWindow,
     FocusPoint         * const pFocusPoint,
     DspOptWindow       * const pDspOptWindow,
@@ -62,7 +60,6 @@ void GridWindow::Start
     m_pWorkThread        = pWorkThread;
     m_pPerformanceWindow = pPerformanceWindow;
     m_pEditorWindow      = pEditorWindow;
-    m_pGridRectSel       = pSelection;
     m_pFocusPoint        = pFocusPoint;
 	m_pStatusBar         = pStatusBar;
 	m_pCore              = pCore;
@@ -70,7 +67,7 @@ void GridWindow::Start
 
 	BOOL bHexagonMode    = iNrOfNeighbors == 6;
     m_pPixelCoordinates  = new PixelCoordinates( sFieldSize, bHexagonMode );
-    m_pDrawFrame         = new DrawFrame( hWnd, pCore, pModel, m_pPixelCoordinates, pDspOptWindow, m_pGridRectSel );
+    m_pDrawFrame         = new DrawFrame( hWnd, pCore, pModel, m_pPixelCoordinates, pDspOptWindow );
 	m_pDrawFrame->SetStripMode
 	( 
 		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
@@ -94,7 +91,6 @@ GridWindow::~GridWindow( )
 	m_pCore         = nullptr;
     m_pGWObserved   = nullptr;
     m_pEditorWindow = nullptr;
-    m_pGridRectSel  = nullptr;
     m_pWorkThread   = nullptr;
 }
 
@@ -103,12 +99,12 @@ void GridWindow::setSelection( PixelPoint const & pt1, PixelPoint const & pt2 )
     PixelRect const rectSelection( pt1, pt2 );	   // Current selection
     GridRect        rect( m_pPixelCoordinates->Pixel2GridRect( rectSelection ) );
     rect.ClipToGrid( );
-    * m_pGridRectSel = rect;
+	m_pModelWork->SetSelection( rect );
 }
 
 void GridWindow::resetSelection( )
 {
-    * m_pGridRectSel = GridRect::GRID_RECT_EMPTY;
+	m_pModelWork->SetSelection( GridRect::GRID_RECT_EMPTY );
     m_pWorkThread->PostRefresh( );
 }
 
@@ -131,7 +127,7 @@ void GridWindow::contextMenu( LPARAM lParam )
 	POINT pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
     (void)MapWindowPoints( hwnd, nullptr, &pntPos, 1 );
 
-    if ( m_pGridRectSel->IsEmpty( ) )
+    if ( m_pModelWork->SelectionIsEmpty() )
     {
         (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_FIT_ZOOM, L"Fit Grid Area" );
     }
@@ -276,7 +272,7 @@ void GridWindow::fit( )
 {
     (void)m_pPixelCoordinates->FitToRect
 	( 
-		m_pGridRectSel->IsEmpty() ? GridRect::GRID_RECT_FULL : *m_pGridRectSel,
+		m_pModelWork->SelectionIsEmpty() ? GridRect::GRID_RECT_FULL : m_pModelWork->GetSelection(),
 		Util::GetClRectSize( GetWindowHandle( ) )
 	);
 	resetSelection();
@@ -377,7 +373,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         return 0;
 
     case WM_LBUTTONDOWN:
-        if ( m_pGridRectSel->IsEmpty() )
+        if ( m_pModelWork->SelectionIsEmpty() )
         {
             SetCapture( );
             if ( inObservedClientRect( lParam ) || m_bMoveAllowed )

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "EvolutionTypes.h"
+#include "GridRect.h"
 
 class GridPoint;
 class IndId;
@@ -25,6 +26,9 @@ public:
     virtual tShape         GetBrushShape            ( ) const = 0;
     virtual GRID_COORD     GetBrushSize             ( ) const = 0;
     virtual tBrushMode     GetBrushMode             ( ) const = 0;
+	virtual GridRect       GetSelection             ( ) const = 0;
+	virtual bool           SelectionIsEmpty         ( ) const = 0;
+	virtual bool           SelectionIsNotEmpty      ( ) const = 0;
 
     virtual bool           IsDead         ( GridPoint const & ) const = 0;
     virtual bool           IsAlive        ( GridPoint const & ) const = 0;
@@ -49,10 +53,11 @@ public:
 
     // manipulating functions
 
-    virtual void SetBrushShape    ( tShape         const ) = 0;
-    virtual void SetBrushSize     ( GRID_COORD     const ) = 0;
-    virtual void SetBrushIntensity( unsigned short const ) = 0;
-    virtual void SetBrushStrategy ( tBrushMode     const ) = 0;
-    virtual void ModelDoEdit      ( GridPoint      const ) = 0;
-    virtual void ResetAll         ( )                      = 0;
+	virtual void SetSelection     ( GridRect       const & ) = 0;
+    virtual void SetBrushShape    ( tShape         const   ) = 0;
+    virtual void SetBrushSize     ( GRID_COORD     const   ) = 0;
+    virtual void SetBrushIntensity( unsigned short const   ) = 0;
+    virtual void SetBrushStrategy ( tBrushMode     const   ) = 0;
+    virtual void ModelDoEdit      ( GridPoint      const   ) = 0;
+    virtual void ResetAll         ( )                        = 0;
 };

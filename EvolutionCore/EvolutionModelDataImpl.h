@@ -4,6 +4,7 @@
 #pragma once
 
 #include "EvolutionModelData.h"
+#include "gridRect.h"
 #include "grid_model.h"
 #include "EditorState.h"
 
@@ -20,6 +21,7 @@ public:
         * this = * static_cast<EvolutionModelDataImpl const *>( src );
     }
 
+	virtual void           SetSelection     ( GridRect       const & rect ) { m_gridRectSelection = rect; }
     virtual void           SetBrushShape    ( tShape         const shape  ) { m_editorState.SetBrushShape    ( shape  ); }
     virtual void           SetBrushSize     ( GRID_COORD     const size   ) { m_editorState.SetBrushSize     ( size   ); }
     virtual void           SetBrushIntensity( unsigned short const uiInt  ) { m_editorState.SetBrushIntensity( uiInt  ); }
@@ -49,11 +51,14 @@ public:
     virtual long           GetGenotype    ( GridPoint const & gp, tGeneType const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
     virtual short          GetDistr       ( GridPoint const & gp, tAction   const at    ) const { return getGenome( gp ).GetDistr( at ); }
 
-    virtual EVO_GENERATION GetEvoGenerationNr( ) const { return m_grid.GetEvoGenerationNr( ); }
-    virtual short          GetBrushIntensity ( ) const { return m_editorState.GetBrushIntensity( ); }
-    virtual tShape         GetBrushShape     ( ) const { return m_editorState.GetBrushShape( ); }
-    virtual GRID_COORD     GetBrushSize      ( ) const { return m_editorState.GetBrushSize( ); }
-    virtual tBrushMode     GetBrushMode      ( ) const { return m_editorState.GetBrushMode( ); }
+    virtual EVO_GENERATION GetEvoGenerationNr ( ) const { return m_grid.GetEvoGenerationNr( ); }
+    virtual short          GetBrushIntensity  ( ) const { return m_editorState.GetBrushIntensity( ); }
+    virtual tShape         GetBrushShape      ( ) const { return m_editorState.GetBrushShape( ); }
+    virtual GRID_COORD     GetBrushSize       ( ) const { return m_editorState.GetBrushSize( ); }
+    virtual tBrushMode     GetBrushMode       ( ) const { return m_editorState.GetBrushMode( ); }
+	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection; }
+	virtual bool           SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
+	virtual bool           SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
 
     virtual GridPoint      FindGridPoint( IndId const & id ) const { return m_grid.FindGridPoint( id ); }
 
@@ -62,6 +67,7 @@ public:
 
     Grid        m_grid;
     EditorState m_editorState;
+	GridRect    m_gridRectSelection;
 
 private:
     GridField const & getGridField( GridPoint const & gp ) const { return m_grid.GetGridField( gp ); }

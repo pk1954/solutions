@@ -15,6 +15,59 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
+PostSetBrushMode tBrushMode::randomStrategy
+PostRefresh
+PostDoEdit   53  54 
+PostRefresh
+PostDoEdit   52  53 
+PostRefresh
+PostDoEdit   66  45 
+PostRefresh
+PostDoEdit   78  48 
+PostRefresh
+PostDoEdit   79  49 
+PostRefresh
+PostDoEdit   78  55 
+PostRefresh
+PostDoEdit   78  55 
+PostRefresh
+PostDoEdit   78  55 
+PostRefresh
+PostDoEdit   73  57 
+PostRefresh
+PostDoEdit   71  57 
+PostRefresh
+PostDoEdit   67  51 
+PostRefresh
+PostDoEdit   68  50 
+PostRefresh
+PostDoEdit   69  49 
+PostRefresh
+PostDoEdit   73  47 
+PostRefresh
+PostDoEdit   79  46 
+PostRefresh
+PostDoEdit   81  46 
+PostRefresh
+PostDoEdit   85  46 
+PostRefresh
+PostDoEdit   88  46 
+PostRefresh
+PostDoEdit   90  47 
+PostRefresh
+PostDoEdit   92  48 
+PostRefresh
+PostDoEdit   94  50 
+PostRefresh
+PostDoEdit   95  51 
+PostRefresh
+PostDoEdit   95  52 
+PostRefresh
+PostDoEdit   86  62 
+PostRefresh
+PostDoEdit   72  64 
+PostRefresh
+PostDoEdit   72  64 
 PostRefresh
 PostRefresh
 PostRefresh
@@ -38,6 +91,7 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
+PostDoEdit  129  52 
 PostRefresh
 PostRefresh
 PostRefresh
@@ -58,7 +112,6 @@ PostRefresh
 PostRefresh
 PostRefresh
 PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
+PostUndo
+PostGotoGeneration  27
+PostGenerationStep

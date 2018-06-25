@@ -21,11 +21,10 @@ public:
     StatisticsWindow( );
     virtual ~StatisticsWindow( );
 
-    void Start( HWND const, EvolutionModelData const * const, GridRect * const );
+    void Start( HWND const, EvolutionModelData const * const );
 
     virtual void DoPaint();
 
 private:
     EvolutionModelData const * m_pModelWork;
-    GridRect           const * m_pGridRectSel;
 };

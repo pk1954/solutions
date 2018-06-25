@@ -59,7 +59,6 @@ private:
     StatusBar          * m_pStatusBar;
     StatisticsWindow   * m_pStatistics;
     DspOptWindow       * m_pDspOptWindow;
-    GridRect           * m_pGridRectSel;
     FocusPoint         * m_pFocusPoint;
     WinManager         * m_pWinManager;
     EvolutionModelData * m_pModelWork;

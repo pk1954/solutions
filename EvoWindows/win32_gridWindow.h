@@ -32,7 +32,6 @@ public:
     ( 
         HWND, 
         WorkThread         * const,
-        GridRect           * const,
         EditorWindow       * const,
         FocusPoint         * const,
         DspOptWindow       * const,
@@ -62,7 +61,6 @@ private:
     EditorWindow       * m_pEditorWindow;
     PerformanceWindow  * m_pPerformanceWindow;
     DrawFrame          * m_pDrawFrame;
-    GridRect           * m_pGridRectSel;
     PixelPoint 	         m_ptLast;	 	 // Last cursor position during selection 
     BOOL                 m_bMoveAllowed;  // TRUE: move with mouse is possible
     FocusPoint         * m_pFocusPoint;

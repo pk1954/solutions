@@ -28,8 +28,7 @@ DrawFrame::DrawFrame
     EvolutionCore      * const pCore,
     EvolutionModelData * const pModel,
     PixelCoordinates   * const pPixelCoordinates, 
-    DspOptWindow       * const pDspOptWindow, 
-    GridRect           * const pGridRectSel
+    DspOptWindow       * const pDspOptWindow 
 ) : 
     m_hWnd( hWnd ),
     m_bDimmIndividuals( TRUE ),
@@ -37,7 +36,6 @@ DrawFrame::DrawFrame
     m_pModelWork( pModel ),
     m_pPixelCoordinates( pPixelCoordinates ),
     m_pDspOptWindow( pDspOptWindow ),
-    m_pGridRectSel( pGridRectSel ),
     m_pD3dBuffer( nullptr ), 
     m_clutBackground( )
 {
@@ -121,8 +119,8 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
                 drawText( rcGrid, gpPoi );
         }
 
-        if ( m_pGridRectSel->IsNotEmpty() )
-            m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( * m_pGridRectSel ), D3DCOLOR_ARGB( 64, 0, 217, 255)  );  
+        if ( m_pModelWork->SelectionIsNotEmpty() )
+            m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pModelWork->GetSelection() ), D3DCOLOR_ARGB( 64, 0, 217, 255)  );  
 
         if ( pkgr.IsNotEmpty( ) )
             m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), D3DCOLOR_ARGB( 128, 255, 217, 0) );  

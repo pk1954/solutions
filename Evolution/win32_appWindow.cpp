@@ -74,7 +74,6 @@ AppWindow::AppWindow( ) :
     m_pStatusBar( nullptr ),
     m_pStatistics( nullptr ),
     m_pDspOptWindow( nullptr ),
-    m_pGridRectSel( nullptr ),
     m_pFocusPoint( nullptr ),
     m_pWinManager( nullptr ),
     m_pModelWork( nullptr ),
@@ -122,7 +121,6 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	
     // create window objects
 
-    m_pGridRectSel    = new GridRect( );  
     m_pFocusPoint     = new FocusPoint( );                          
     m_pWinManager     = new WinManager( );                          
     m_pStatusBar      = new StatusBar( );       
@@ -173,9 +171,9 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	m_pDspOptWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork );
     m_pEditorWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork, m_pDspOptWindow );
     m_pStatusBar     ->Start( hWndApp, m_pEvoController, m_pModelWork );
-    m_pMainGridWindow->Start( hWndApp, m_pWorkThread,    m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
-    m_pMiniGridWindow->Start( hWndApp, m_pWorkThread,    m_pGridRectSel, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
-    m_pStatistics    ->Start( hWndApp, m_pModelWork,     m_pGridRectSel );
+    m_pMainGridWindow->Start( hWndApp, m_pWorkThread,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
+    m_pMiniGridWindow->Start( hWndApp, m_pWorkThread,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
+    m_pStatistics    ->Start( hWndApp, m_pModelWork );
     m_pCrsrWindow    ->Start( hWndApp, m_pFocusPoint,    m_pModelWork, m_pMainGridWindow );
     m_pPerfWindow    ->Start( hWndApp, 100 );
 	m_pEvoController ->Start( & m_traceStream, m_pHistWorkThread, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow );
@@ -236,7 +234,6 @@ AppWindow::~AppWindow( )
         delete m_pCrsrWindow; 
         delete m_pEditorWindow;
         delete m_pDspOptWindow;
-        delete m_pGridRectSel;
         delete m_pFocusPoint;
         delete m_pWinManager;
         delete m_pScriptHook;

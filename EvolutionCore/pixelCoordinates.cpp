@@ -161,7 +161,7 @@ PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint  const & gp ) const
 		return Grid2PixelPos( gp ) + m_sFieldSize / 2; 
 }
 
-GridPoint PixelCoordinates::Pixel2GridPos ( PixelPoint const & pp ) const 
+GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const & pp ) const 
 { 
 	PixelPoint const pixPoint = pp + m_pixOffset;
 	if ( m_bHexagon ) // adapted from http://blog.ruslans.com/2011/02/hexagonal-grid-math.html

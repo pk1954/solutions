@@ -25,7 +25,7 @@ class DrawFrame
 {
 public:
 
-    DrawFrame( HWND, EvolutionCore *, EvolutionModelData *, PixelCoordinates *, DspOptWindow *, GridRect * );
+    DrawFrame( HWND, EvolutionCore *, EvolutionModelData *, PixelCoordinates *, DspOptWindow * );
     ~DrawFrame( );
 
     void Resize( );
@@ -46,7 +46,6 @@ private:
     EvolutionModelData * const m_pModelWork;
     PixelCoordinates   * const m_pPixelCoordinates;
     DspOptWindow       * const m_pDspOptWindow;
-    GridRect const     * const m_pGridRectSel;
     D3dBuffer          *       m_pD3dBuffer;
 
     static UINT const MAX_BG_COLOR = 255;
