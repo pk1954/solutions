@@ -190,7 +190,6 @@ void StatisticsWindow::DoPaint( )
     // aquire and prepare data 
 
     AllGenesStat genesStat;
-	GridRect     gridRectSel = m_pModelWork->GetSelection( );
 
     Apply2Rect
 	( 
@@ -211,7 +210,7 @@ void StatisticsWindow::DoPaint( )
 				genesStat.addAge    ( s, m_pModelWork->GetAge( gp ) );
 			}
 		},
-		gridRectSel.IsEmpty( ) ? GridRect::GRID_RECT_FULL : gridRectSel
+		m_pModelWork->GetSelection( )
 	);
 
     genesStat.scaleAllGenesStat( );

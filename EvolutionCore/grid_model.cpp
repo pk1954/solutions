@@ -353,9 +353,10 @@ void Grid::EditSetStrategy
 
 GridPoint Grid::FindGridPoint( IndId const & id ) const
 {
+	GridRect  const rectFull = GridRect::GetFullRect();
     GridPoint gp;
-    for ( gp.y = GridRect::GRID_RECT_FULL.GetTop ( ); gp.y <= GridRect::GRID_RECT_FULL.GetBottom( ); ++gp.y )
-    for ( gp.x = GridRect::GRID_RECT_FULL.GetLeft( ); gp.x <= GridRect::GRID_RECT_FULL.GetRight ( ); ++gp.x )
+    for ( gp.y = rectFull.GetTop ( ); gp.y <= rectFull.GetBottom( ); ++gp.y )
+    for ( gp.x = rectFull.GetLeft( ); gp.x <= rectFull.GetRight ( ); ++gp.x )
         if ( GetId( gp ) == id )
         {
             return gp;

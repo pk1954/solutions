@@ -29,6 +29,7 @@ public:
 
     virtual void           ModelDoEdit    ( GridPoint  const gp ) { m_editorState.EditorDoEdit( & m_grid, gp ); }
 	virtual void		   ResetAll       ( )                     { m_grid.ResetGrid( ); }
+	virtual void           ResetSelection ( )                     { m_gridRectSelection.Reset(); };
 
     virtual EVO_GENERATION GetAge         ( GridPoint const & gp ) const { return m_grid.GetAge( gp ); }
 
@@ -56,7 +57,7 @@ public:
     virtual tShape         GetBrushShape      ( ) const { return m_editorState.GetBrushShape( ); }
     virtual GRID_COORD     GetBrushSize       ( ) const { return m_editorState.GetBrushSize( ); }
     virtual tBrushMode     GetBrushMode       ( ) const { return m_editorState.GetBrushMode( ); }
-	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection; }
+	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GridRect::GetFullRect() : m_gridRectSelection; }
 	virtual bool           SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
 	virtual bool           SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
 

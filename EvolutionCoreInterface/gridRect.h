@@ -15,7 +15,7 @@ void Apply2Rect( const std::function<void( GridPoint const &, short const)>& fun
 class GridRect
 {
 public:
-	GridRect( ) { * this = GRID_RECT_EMPTY; }
+	GridRect( ) { Reset(); }
     GridRect( GRID_COORD const lLeft, GRID_COORD const lTop, GRID_COORD const lRight, GRID_COORD const lBottom ) : m_lLeft(lLeft), m_lTop(lTop), m_lRight(lRight), m_lBottom(lBottom) {};
     GridRect( GridPoint const & gpStart, GridPoint const & gpEnd ) : m_lLeft(gpStart.x), m_lTop(gpStart.y), m_lRight(gpEnd.x), m_lBottom(gpEnd.y) {};
     GridRect( GridPoint const & gpCenter, GRID_COORD const iSize ) : m_lLeft(gpCenter.x - iSize), m_lTop(gpCenter.y - iSize), m_lRight(gpCenter.x + iSize), m_lBottom(gpCenter.y + iSize) {};
@@ -24,9 +24,6 @@ public:
     
     bool const operator== ( GridRect const &a ) const { return ( a.m_lLeft == m_lLeft ) && ( a.m_lTop == m_lTop ) && ( a.m_lRight == m_lRight ) && ( a.m_lBottom == m_lBottom ); };
     bool const operator!= ( GridRect const &a ) const { return ( a.m_lLeft != m_lLeft ) || ( a.m_lTop != m_lTop ) || ( a.m_lRight != m_lRight ) || ( a.m_lBottom != m_lBottom ); };
-
-    static GridRect const GRID_RECT_FULL;
-    static GridRect const GRID_RECT_EMPTY;
 
     GRID_COORD const GetLeft()         const { return m_lLeft;   };
     GRID_COORD const GetTop()          const { return m_lTop;    };
@@ -46,9 +43,15 @@ public:
     void Move     ( GridPoint const & );
     void SetCenter( GridPoint const & );
     void SetSize  ( GridPoint const & );
+	void Reset( ) { *this == GRID_RECT_EMPTY; }
+
+	static GridRect GetFullRect( ) { return GRID_RECT_FULL; }
 
  private:
-    GRID_COORD m_lLeft;
+    static GridRect const GRID_RECT_EMPTY;
+    static GridRect const GRID_RECT_FULL;
+
+	GRID_COORD m_lLeft;
     GRID_COORD m_lTop;
     GRID_COORD m_lRight;
     GRID_COORD m_lBottom;

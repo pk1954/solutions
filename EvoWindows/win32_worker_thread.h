@@ -103,7 +103,6 @@ private:
     EvolutionModelData * m_pModelWork;
     HANDLE               m_hEventThreadStarter;
     DWORD                m_dwThreadId;
-    GridRect             m_gridRectSelection;
     HANDLE               m_hTimer;
     BOOL                 m_bContinue;
     INT                  m_iScriptLevel;

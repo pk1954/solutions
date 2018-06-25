@@ -102,12 +102,6 @@ void GridWindow::setSelection( PixelPoint const & pt1, PixelPoint const & pt2 )
 	m_pModelWork->SetSelection( rect );
 }
 
-void GridWindow::resetSelection( )
-{
-	m_pModelWork->SetSelection( GridRect::GRID_RECT_EMPTY );
-    m_pWorkThread->PostRefresh( );
-}
-
 BOOL GridWindow::inObservedClientRect( LPARAM const lParam )
 {
     if ( m_pGWObserved == nullptr )
@@ -272,11 +266,12 @@ void GridWindow::fit( )
 {
     (void)m_pPixelCoordinates->FitToRect
 	( 
-		m_pModelWork->SelectionIsEmpty() ? GridRect::GRID_RECT_FULL : m_pModelWork->GetSelection(),
+		m_pModelWork->GetSelection(),
 		Util::GetClRectSize( GetWindowHandle( ) )
 	);
-	resetSelection();
+	m_pModelWork->ResetSelection( );
 	resize();
+    m_pWorkThread->PostRefresh( );
 }
 
 void GridWindow::setPOI( PixelPoint const pixPos ) 
@@ -335,7 +330,8 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
                 break;
 
 			case IDM_ESCAPE:
-				resetSelection( );
+				m_pModelWork->ResetSelection( );
+				m_pWorkThread->PostRefresh( );
 				break;
 
             case IDM_GOTO_ORIGIN:  // commands using cursor pos are handled here
@@ -379,8 +375,11 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             if ( inObservedClientRect( lParam ) || m_bMoveAllowed )
                 onMouseMove( lParam, wParam );
         }
-        else
-            resetSelection( );
+		else
+		{
+			m_pModelWork->ResetSelection( );
+			m_pWorkThread->PostRefresh( );
+		}
         SetFocus( );
         return 1;
 

@@ -23,7 +23,6 @@ WorkThread::WorkThread( wostream * pTraceStream ) :
     m_hEventThreadStarter( nullptr ),
     m_dwThreadId         ( 0 ),
     m_bTrace             ( TRUE ),
-    m_gridRectSelection  ( GridRect::GRID_RECT_FULL ),
     m_pTraceStream       ( pTraceStream ),
     m_hTimer             ( nullptr ),
     m_iScriptLevel       ( 0 ),

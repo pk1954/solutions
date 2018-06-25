@@ -1,117 +1,58 @@
 OpenTraceFile  "main_trace.out"
 PostRefresh
 PostRefresh
+PostSetBrushMode tBrushMode::cooperate
+PostDoEdit   42  67 
 PostRefresh
+PostSetBrushMode tBrushMode::fertility
 PostRefresh
+PostDoEdit  115  42 
 PostRefresh
+PostDoEdit  114  42 
 PostRefresh
+PostDoEdit  100  42 
 PostRefresh
+PostDoEdit   99  42 
 PostRefresh
+PostDoEdit   98  41 
 PostRefresh
+PostSetBrushSize 17
+PostSetBrushSize 18
+PostSetBrushSize 29
+PostSetBrushSize 37
+PostSetBrushSize 37
+PostDoEdit  177  26 
 PostRefresh
+PostSetBrushIntensity 61
+PostSetBrushIntensity 72
+PostSetBrushIntensity 100
+PostSetBrushIntensity 95
+PostSetBrushIntensity 89
+PostSetBrushIntensity 88
+PostSetBrushIntensity 84
+PostSetBrushIntensity 82
+PostSetBrushIntensity 82
+PostSetBrushSize 37
+PostSetBrushSize 22
+PostSetBrushSize 12
+PostSetBrushSize 9
+PostSetBrushSize 8
+PostSetBrushSize 8
+PostDoEdit   54  23 
 PostRefresh
+PostDoEdit   64  36 
 PostRefresh
+PostDoEdit   68  37 
 PostRefresh
+PostDoEdit   69  38 
 PostRefresh
+PostDoEdit   76  46 
 PostRefresh
+PostDoEdit   76  53 
 PostRefresh
-PostSetBrushMode tBrushMode::randomStrategy
+PostDoEdit   71  48 
 PostRefresh
-PostDoEdit   53  54 
+PostDoEdit   71  47 
 PostRefresh
-PostDoEdit   52  53 
+PostDoEdit   71  47 
 PostRefresh
-PostDoEdit   66  45 
-PostRefresh
-PostDoEdit   78  48 
-PostRefresh
-PostDoEdit   79  49 
-PostRefresh
-PostDoEdit   78  55 
-PostRefresh
-PostDoEdit   78  55 
-PostRefresh
-PostDoEdit   78  55 
-PostRefresh
-PostDoEdit   73  57 
-PostRefresh
-PostDoEdit   71  57 
-PostRefresh
-PostDoEdit   67  51 
-PostRefresh
-PostDoEdit   68  50 
-PostRefresh
-PostDoEdit   69  49 
-PostRefresh
-PostDoEdit   73  47 
-PostRefresh
-PostDoEdit   79  46 
-PostRefresh
-PostDoEdit   81  46 
-PostRefresh
-PostDoEdit   85  46 
-PostRefresh
-PostDoEdit   88  46 
-PostRefresh
-PostDoEdit   90  47 
-PostRefresh
-PostDoEdit   92  48 
-PostRefresh
-PostDoEdit   94  50 
-PostRefresh
-PostDoEdit   95  51 
-PostRefresh
-PostDoEdit   95  52 
-PostRefresh
-PostDoEdit   86  62 
-PostRefresh
-PostDoEdit   72  64 
-PostRefresh
-PostDoEdit   72  64 
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostDoEdit  129  52 
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostUndo
-PostGotoGeneration  27
-PostGenerationStep

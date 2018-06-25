@@ -69,7 +69,6 @@ private:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 
 	void setSelection( PixelPoint const &, PixelPoint  const & );
-    void resetSelection( );
 	void fit( );
 	void resize( );
 	void zoom( BOOL const );
