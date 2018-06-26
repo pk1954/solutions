@@ -264,7 +264,7 @@ LRESULT HistWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         (void)ReleaseCapture( );
         return 0;
 
-    default:
+	default:
         break;
     }
 

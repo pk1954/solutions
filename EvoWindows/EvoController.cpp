@@ -77,11 +77,13 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
 		case IDM_RUN:
+            m_pWinManager->Show( IDM_HIST_WINDOW, tBoolOp::opFalse );
 			m_pHistWorkThread->PostRunGenerations( );
 			break;
 
 		case IDM_STOP:
             m_pHistWorkThread->PostStopComputation( );
+            m_pWinManager->Show( IDM_HIST_WINDOW, tBoolOp::opTrue );
             break;
 
         case IDM_RESET:

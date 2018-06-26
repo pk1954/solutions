@@ -47,7 +47,9 @@ public:
     HDC  BeginPaint( LPPAINTSTRUCT lpPaint ) const { return ::BeginPaint( m_hWnd, lpPaint ); }
     BOOL EndPaint  ( LPPAINTSTRUCT lpPaint ) const { return ::EndPaint  ( m_hWnd, lpPaint ); }
     
-    LRESULT const PostMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
+    LRESULT Post2Application( UINT const, WPARAM const, LPARAM const );
+
+	LRESULT const PostMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
     {
         return ::PostMessage( m_hWnd, msg, wParam, lParam );
     }

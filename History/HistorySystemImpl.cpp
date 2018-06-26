@@ -106,11 +106,9 @@ void HistorySystemImpl::ClearHistory( HIST_GENERATION const genFirst )
 void HistorySystemImpl::CreateAppCommand( short const sCmd, unsigned short const usParam )
 {
 	GenerationCmd genCmd( sCmd, usParam );
-	CHECK_HISTORY_STRUCTURE;
     step2NextGeneration( genCmd );
     m_pHistCacheItemWork->SetGenerationCommand( genCmd );
     save2History( );
-    CHECK_HISTORY_STRUCTURE;
 }
 
 HistCacheItem const * HistorySystemImpl::getCachedItem( GenerationCmd cmd )
@@ -185,8 +183,10 @@ void HistorySystemImpl::save2History( )
         m_pHistoryCache->ResetHistCacheSlot( sSlotNr );
     }
 
+    CHECK_HISTORY_STRUCTURE;
     m_pHistoryCache->Save2CacheSlot( * m_pHistCacheItemWork, sSlotNr );
     m_GenCmdList.SetCachedGeneration( m_pHistCacheItemWork->GetHistGenCounter( ), sSlotNr );
+    CHECK_HISTORY_STRUCTURE;
 };
 
 // step2NextGeneration - if cached generation: get GenerationCmd from cache

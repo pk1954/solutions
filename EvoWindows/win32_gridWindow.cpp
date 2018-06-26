@@ -300,7 +300,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
             case IDM_SET_POI:
 				m_pPixelCore->SetPOI( GetCrsrPosFromLparam( lParam ) );
-                m_pWorkThread->PostStopComputation( );
+				Post2Application( WM_COMMAND, IDM_STOP, 0 );
                 break;
 
 			case IDM_ESCAPE:
@@ -314,12 +314,12 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
                 PixelPoint const ptCrsr    = GetCrsrPosFromLparam( lParam );
                 GridPoint  const gpCrsr    = m_pPixelCoordinates->Pixel2GridPos( ptCrsr );
 				long       const lParamNew = MAKELONG( gpCrsr.x, gpCrsr.y );
-				::PostMessage( GetAncestor(GetWindowHandle(), GA_ROOTOWNER), message, wParam, lParamNew );
+				Post2Application( WM_COMMAND, wParam, lParamNew );
 			}
             break;
 
             default:
-                ::PostMessage( GetAncestor( GetWindowHandle( ), GA_ROOTOWNER ), message, wParam, lParam );
+                Post2Application( message, wParam, lParam );
             }
         }
 

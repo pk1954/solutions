@@ -155,7 +155,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
         m_pEvoHistWindow = new EvoHistWindow( );
 		m_pEvoHistWindow->Start( hWndApp, m_pFocusPoint, m_pEvoHistorySys, m_pHistWorkThread );
-        m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, FALSE, FALSE, 75 );
+        m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, FALSE, FALSE, 75 ); //75 );
     }
     else
     {
@@ -339,7 +339,4 @@ void AppWindow::setSimulationMode( tBoolOp const op )
 		SendMessage( WM_COMMAND, IDM_STOP, 0 );
 	m_pEditorWindow->Show( ! m_bSimulationMode );
 	m_pPerfWindow  ->Show(   m_bSimulationMode );
-
-//    if ( Config::UseHistorySystem( ) )
-//		m_pWinManager->Show( IDM_HIST_WINDOW, op );
 }
