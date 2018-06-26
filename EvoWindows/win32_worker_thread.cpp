@@ -54,6 +54,8 @@ void WorkThread::Start
     m_pModelWork          = pModel;
 
     (void)SetThreadAffinityMask( hThread, 0x0002 );
+
+    m_pEvolutionCore->SetGridDisplayFunctor( m_pDisplayGridFunctor );   // display callback for core
 }
 
 WorkThread::~WorkThread( )

@@ -1,58 +1,332 @@
 OpenTraceFile  "main_trace.out"
 PostRefresh
 PostRefresh
-PostSetBrushMode tBrushMode::cooperate
-PostDoEdit   42  67 
+PostSetBrushMode tBrushMode::randomStrategy
+PostDoEdit   66  50 
+PostRefresh
+PostDoEdit   69  51 
+PostRefresh
+PostDoEdit   70  51 
+PostRefresh
+PostDoEdit   79  53 
+PostRefresh
+PostDoEdit   81  53 
+PostRefresh
+PostDoEdit   91  54 
+PostRefresh
+PostDoEdit  103  51 
+PostRefresh
+PostDoEdit  104  50 
+PostRefresh
+PostDoEdit  105  50 
+PostRefresh
+PostDoEdit  108  47 
+PostRefresh
+PostDoEdit  108  46 
+PostRefresh
+PostDoEdit  108  46 
+PostRefresh
+PostDoEdit  108  46 
+PostRefresh
+PostDoEdit  108  46 
+PostRefresh
+PostDoEdit  108  45 
+PostRefresh
+PostDoEdit  108  45 
+PostRefresh
+PostDoEdit  108  45 
+PostRefresh
+PostDoEdit  108  45 
 PostRefresh
 PostSetBrushMode tBrushMode::fertility
 PostRefresh
-PostDoEdit  115  42 
+PostDoEdit  129  44 
 PostRefresh
-PostDoEdit  114  42 
+PostDoEdit  128  44 
 PostRefresh
-PostDoEdit  100  42 
+PostDoEdit  125  45 
 PostRefresh
-PostDoEdit   99  42 
+PostDoEdit  125  45 
 PostRefresh
-PostDoEdit   98  41 
+PostDoEdit  123  44 
 PostRefresh
-PostSetBrushSize 17
-PostSetBrushSize 18
-PostSetBrushSize 29
-PostSetBrushSize 37
-PostSetBrushSize 37
-PostDoEdit  177  26 
+PostDoEdit  123  43 
 PostRefresh
-PostSetBrushIntensity 61
-PostSetBrushIntensity 72
-PostSetBrushIntensity 100
-PostSetBrushIntensity 95
-PostSetBrushIntensity 89
-PostSetBrushIntensity 88
-PostSetBrushIntensity 84
-PostSetBrushIntensity 82
-PostSetBrushIntensity 82
-PostSetBrushSize 37
-PostSetBrushSize 22
-PostSetBrushSize 12
-PostSetBrushSize 9
-PostSetBrushSize 8
-PostSetBrushSize 8
-PostDoEdit   54  23 
+PostDoEdit  123  43 
 PostRefresh
-PostDoEdit   64  36 
+PostDoEdit  123  43 
 PostRefresh
-PostDoEdit   68  37 
+PostDoEdit  123  43 
 PostRefresh
-PostDoEdit   69  38 
+PostDoEdit  122  42 
 PostRefresh
-PostDoEdit   76  46 
+PostDoEdit  122  42 
 PostRefresh
-PostDoEdit   76  53 
+PostDoEdit  123  41 
 PostRefresh
-PostDoEdit   71  48 
+PostDoEdit  123  41 
 PostRefresh
-PostDoEdit   71  47 
+PostDoEdit  123  41 
 PostRefresh
-PostDoEdit   71  47 
+PostSetBrushMode tBrushMode::mutRate
+PostRefresh
+PostDoEdit   49  45 
+PostRefresh
+PostDoEdit   49  45 
+PostRefresh
+PostDoEdit   65  62 
+PostRefresh
+PostDoEdit   65  62 
+PostRefresh
+PostDoEdit   66  62 
+PostRefresh
+PostDoEdit  103  62 
+PostRefresh
+PostDoEdit  103  62 
+PostRefresh
+PostDoEdit  103  62 
+PostRefresh
+PostDoEdit   90  49 
+PostRefresh
+PostDoEdit   90  48 
+PostRefresh
+PostDoEdit   73  46 
+PostRefresh
+PostDoEdit  113  39 
+PostRefresh
+PostDoEdit  113  39 
+PostRefresh
+PostDoEdit   60  47 
+PostRefresh
+PostDoEdit   40  19 
+PostRefresh
+PostDoEdit  156  28 
+PostRefresh
+PostDoEdit  158  30 
+PostRefresh
+PostDoEdit  166  41 
+PostRefresh
+PostDoEdit  166  47 
+PostRefresh
+PostDoEdit  152  70 
+PostRefresh
+PostDoEdit  152  70 
+PostRefresh
+PostDoEdit  150  71 
+PostRefresh
+PostDoEdit  150  71 
+PostRefresh
+PostDoEdit  150  72 
+PostRefresh
+PostDoEdit  149  72 
+PostRefresh
+PostDoEdit  149  73 
+PostRefresh
+PostDoEdit  148  73 
+PostRefresh
+PostDoEdit  129  77 
+PostRefresh
+PostDoEdit  128  76 
+PostRefresh
+PostDoEdit  120  78 
+PostRefresh
+PostDoEdit  102  78 
+PostRefresh
+PostDoEdit  101  78 
+PostRefresh
+PostDoEdit  100  78 
+PostRefresh
+PostDoEdit   99  78 
+PostRefresh
+PostDoEdit   98  78 
+PostRefresh
+PostDoEdit   67  76 
+PostRefresh
+PostDoEdit   64  75 
+PostRefresh
+PostDoEdit   63  75 
+PostRefresh
+PostDoEdit   60  73 
+PostRefresh
+PostDoEdit   60  72 
+PostRefresh
+PostDoEdit   60  72 
+PostRefresh
+PostDoEdit   60  72 
+PostRefresh
+PostDoEdit   60  72 
+PostRefresh
+PostDoEdit   60  72 
+PostRefresh
+PostDoEdit   37  66 
+PostRefresh
+PostDoEdit   36  63 
+PostRefresh
+PostDoEdit   31  50 
+PostRefresh
+PostDoEdit   31  50 
+PostRefresh
+PostDoEdit   30  45 
+PostRefresh
+PostDoEdit   30  45 
+PostRefresh
+PostDoEdit   31  45 
+PostRefresh
+PostDoEdit   31  45 
+PostRefresh
+PostDoEdit   46  27 
+PostRefresh
+PostDoEdit   47  27 
+PostRefresh
+PostDoEdit   55  25 
+PostRefresh
+PostDoEdit   82  21 
+PostRefresh
+PostDoEdit   83  21 
+PostRefresh
+PostDoEdit   83  21 
+PostRefresh
+PostDoEdit   86  21 
+PostRefresh
+PostDoEdit   87  21 
+PostRefresh
+PostDoEdit   88  21 
+PostRefresh
+PostDoEdit   89  21 
+PostRefresh
+PostDoEdit   90  21 
+PostRefresh
+PostDoEdit   91  22 
+PostRefresh
+PostDoEdit  123  23 
+PostRefresh
+PostDoEdit  130  23 
+PostRefresh
+PostDoEdit  132  24 
+PostRefresh
+PostDoEdit  156  27 
+PostRefresh
+PostDoEdit  157  29 
+PostRefresh
+PostDoEdit  162  35 
+PostRefresh
+PostDoEdit  162  36 
+PostRefresh
+PostDoEdit  162  39 
+PostRefresh
+PostDoEdit  141  53 
+PostRefresh
+PostDoEdit  141  53 
+PostRefresh
+PostDoEdit  140  53 
+PostRefresh
+PostDoEdit  140  53 
+PostRefresh
+PostDoEdit  139  52 
+PostRefresh
+PostDoEdit  130  50 
+PostRefresh
+PostDoEdit  129  50 
+PostRefresh
+PostDoEdit  129  50 
+PostRefresh
+PostDoEdit  129  50 
+PostRefresh
+PostDoEdit  127  50 
+PostRefresh
+PostDoEdit  127  50 
+PostRefresh
+PostDoEdit  126  49 
+PostRefresh
+PostSetBrushMode tBrushMode::move
+SetGenerationDelay 50
+SetGenerationDelay 52
+SetGenerationDelay 70
+SetGenerationDelay 95
+SetGenerationDelay 173
+SetGenerationDelay 205
+SetGenerationDelay 214
+SetGenerationDelay 233
+SetGenerationDelay 233
+SetGenerationDelay 233
+SetGenerationDelay 243
+SetGenerationDelay 254
+SetGenerationDelay 265
+SetGenerationDelay 276
+SetGenerationDelay 288
+SetGenerationDelay 314
+SetGenerationDelay 481
+SetGenerationDelay 502
+SetGenerationDelay 570
+SetGenerationDelay 648
+SetGenerationDelay 706
+SetGenerationDelay 736
+SetGenerationDelay 769
+SetGenerationDelay 802
+SetGenerationDelay 836
+SetGenerationDelay 836
+SetGenerationDelay 836
+SetGenerationDelay 769
+SetGenerationDelay 736
+SetGenerationDelay 706
+SetGenerationDelay 676
+SetGenerationDelay 648
+SetGenerationDelay 621
+SetGenerationDelay 595
+SetGenerationDelay 570
+SetGenerationDelay 546
+SetGenerationDelay 502
+SetGenerationDelay 481
+SetGenerationDelay 461
+SetGenerationDelay 442
+SetGenerationDelay 423
+SetGenerationDelay 388
+SetGenerationDelay 357
+SetGenerationDelay 328
+SetGenerationDelay 301
+SetGenerationDelay 276
+SetGenerationDelay 254
+SetGenerationDelay 223
+SetGenerationDelay 205
+SetGenerationDelay 173
+SetGenerationDelay 152
+SetGenerationDelay 134
+SetGenerationDelay 118
+SetGenerationDelay 103
+SetGenerationDelay 91
+SetGenerationDelay 83
+SetGenerationDelay 73
+SetGenerationDelay 67
+SetGenerationDelay 59
+SetGenerationDelay 54
+SetGenerationDelay 50
+SetGenerationDelay 44
+SetGenerationDelay 42
+SetGenerationDelay 37
+SetGenerationDelay 34
+SetGenerationDelay 31
+SetGenerationDelay 30
+SetGenerationDelay 27
+SetGenerationDelay 25
+SetGenerationDelay 24
+SetGenerationDelay 23
+SetGenerationDelay 22
+SetGenerationDelay 20
+SetGenerationDelay 19
+SetGenerationDelay 18
+SetGenerationDelay 17
+SetGenerationDelay 15
+SetGenerationDelay 15
+SetGenerationDelay 15
+SetGenerationDelay 15
+SetGenerationDelay 0
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
 PostRefresh

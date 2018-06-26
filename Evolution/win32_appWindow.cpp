@@ -193,8 +193,6 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_displayGridFunctor.SetWinManager( m_pWinManager );
 	::PostMessage( hWndApp, WM_COMMAND, (WPARAM)IDM_TOGGLE_EDIT_SIMU_MODE, 0 );
 
-    m_pEvolutionCore->SetGridDisplayFunctor( & m_displayGridFunctor );   // display callback for core
-
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include "EvolutionModelDataImpl.h"
 #include "EvolutionCore.h"
 #include "EditorState.h"
@@ -84,7 +85,7 @@ private:
     PlannedActivity        m_plan;
     IndId                  m_idPOI;
     DisplayFunctor const * m_gridDisplayFunctor;    // GUI call back for display of current model 
-    EditorState            m_editorStateLast;
+	EditorState            m_editorStateLast;
 
     // private member functions
 

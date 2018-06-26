@@ -16,6 +16,7 @@ class GridRect;
 class StatusBar;
 class DrawFrame;
 class PixelCoordinates;
+class PixelCore;
 class WorkThread;
 class DspOptWindow;
 class EvolutionCore;
@@ -65,17 +66,15 @@ private:
     BOOL                 m_bMoveAllowed;  // TRUE: move with mouse is possible
     FocusPoint         * m_pFocusPoint;
     ObserverInterface  * m_pObserverInterface;
+	PixelCore          * m_pPixelCore;
 
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 
-	void setSelection( PixelPoint const &, PixelPoint  const & );
 	void fit( );
 	void resize( );
 	void zoom( BOOL const );
 	void setZoom( SHORT const );
-	void setPOI( PixelPoint const );
 	PixelPoint getNewCenter( );
-	PixelPoint getPoiCenter( ) const;
     BOOL inObservedClientRect( LPARAM );
     void moveGrid( PixelPoint const & );
     void onMouseMove( LPARAM, WPARAM );

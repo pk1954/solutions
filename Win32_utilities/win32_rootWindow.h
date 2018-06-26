@@ -31,6 +31,7 @@ public:
     LONG          const GetClientWindowWidth( )    const { return Util::GetClientWindowWidth   ( m_hWnd ); }
     BOOL          const CrsrInClientRect( )        const { return Util::CrsrInClientRect       ( m_hWnd ); }
     PixelPoint    const GetRelativeCrsrPosition( ) const { return Util::GetRelativeCrsrPosition( m_hWnd ); }
+    PixelPoint    const GetClRectCenter( )         const { return Util::GetClRectCenter        ( m_hWnd ); }
 
     BOOL          const IsWindowVisible( )            const { return ::IsWindowVisible( m_hWnd ); }
     HWND          const SetCapture( )                 const { return ::SetCapture     ( m_hWnd ); }

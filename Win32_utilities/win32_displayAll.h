@@ -27,7 +27,6 @@ public:
         (void)SetEvent( m_event );
     }
 
-
 private:
     HANDLE       m_event;
     WinManager * m_pWinManager;
