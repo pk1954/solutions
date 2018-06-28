@@ -134,13 +134,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	m_pEvoController  = new EvoController( );
 
     SetMenu( hWndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
-
-    {
-        static int const MAX_LOADSTRING = 100;
-        static TCHAR szTitle[ MAX_LOADSTRING ];			// Titelleistentext
-        (void)LoadString( hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING );
-        SetWindowText( hWndApp, szTitle );
-    }
+	Util::SetApplicationTitle( hWndApp, IDS_APP_TITLE );
 
     m_pModelWork = EvolutionModelData::CreateModelData( );
     DefineModelWrapperFunctions( m_pModelWork );
@@ -198,8 +192,6 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
     DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, m_pEvoController, m_pStatusBar );
     DefineWin32EditorWrapperFunctions( m_pEditorWindow );
-
-    //  CheckMenuItem( GetMenu( hWndApp ), IDM_STAT_WINDOW, MF_CHECKED );
 
     m_pWinManager->GetWindowConfiguration( );
 	m_pStatusBar->ClearStatusLine( );

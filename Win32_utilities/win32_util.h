@@ -251,4 +251,5 @@ namespace Util
     ULONGLONG GetPhysicalMemory( );
 	LONG      GetMaxNrOfSlots( ULONG );
 	wstring   GetCurrentDateAndTime( );
+	void      SetApplicationTitle( HWND const, int const );
 };

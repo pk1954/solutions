@@ -17,8 +17,7 @@ public:
 
 	static void Apply2All( GridPoint const gpCenter, const std::function<void( GridPoint const &)>& func ) 
 	{
-		NEIGHBORS neighbors = (* m_pGridNeighbors)[ gpCenter.y ][ gpCenter.x ];
-		for ( auto gp: neighbors )
+		for ( auto gp: (* m_pGridNeighbors)[ gpCenter.y ][ gpCenter.x ] )
 		{
 			func( gp );
 		}

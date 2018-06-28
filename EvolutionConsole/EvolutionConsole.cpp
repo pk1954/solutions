@@ -35,23 +35,33 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	EvolutionCore::InitClass( );
     EvolutionCore::CreateCore( );
 
-	short const FIELDSIZE = 8;
-	bool  const HEXAGON   = true;
-	DefinePixelCoordinatesWrapperFunctions( new PixelCoordinates( FIELDSIZE, HEXAGON ) );
+	int   const iNrOfNeighbors = Config::GetConfigValue( Config::tId::nrOfNeighbors );
+	BOOL  const bHexagonMode   = (iNrOfNeighbors == 6);
+	short const FIELDSIZE      = 8;
+
+	DefinePixelCoordinatesWrapperFunctions( new PixelCoordinates( FIELDSIZE, bHexagonMode ) );
 
     DefineModelWrapperFunctions( EvolutionModelData::CreateModelData( ) );
 
     WorkThread * m_pWorkThread = new WorkThread( & m_traceStream );
 
-    for ( int iCount = 0; iCount < argc; iCount++ )
-    {
-        std::string const strCmdLine( argv[ iCount ] );
+    wstring strInputFile = L"test.in";
 
-        if ( strCmdLine.compare( "/nohist" ) == 0 )
+	for ( int iCount = 0; iCount < argc; iCount++ )
+    {
+        std::string strCmd( argv[ iCount ] );
+
+        if ( strCmd.compare( "/nohist" ) == 0 )
+		{
             Config::SetConfigValue( Config::tId::maxGeneration, 0 );
+		}
+		else if (strCmd.find( ".in" ) != string::npos )
+		{
+			strInputFile.assign( strCmd.begin(), strCmd.end() ); 
+		}
     }
 
-    Script::ProcessScript( L"std_script.in" );
+    Script::ProcessScript( strInputFile );
 
     return 0;
 }

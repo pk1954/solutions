@@ -161,3 +161,15 @@ wstring Util::GetCurrentDateAndTime( )
 	wstring wstrTime = converter.from_bytes( buf.str( ) );
 	return wstrTime;
 }
+
+void Util::SetApplicationTitle
+( 
+	HWND const hWndApp, 
+	int  const iResource
+)
+{
+    static int const MAX_LOADSTRING = 100;
+    static TCHAR szTitle[ MAX_LOADSTRING ];			// Titelleistentext
+    (void)LoadString( GetModuleHandle( nullptr ), iResource, szTitle, MAX_LOADSTRING );
+    SetWindowText( hWndApp, szTitle );
+}
