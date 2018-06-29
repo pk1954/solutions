@@ -45,7 +45,7 @@ void RTFOutput::Italics( wstring const & strOut )
 	wcout << L"}"; 
 }
 
-void RTFOutput::LightGrey( void )
+void RTFOutput::ResultFile( void )
 {
 	wcout << L"\\cbpat1 "; 
 }

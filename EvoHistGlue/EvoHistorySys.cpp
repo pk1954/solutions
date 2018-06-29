@@ -58,8 +58,8 @@ void EvoHistorySys::Start
 
 	m_pStatusBar = pStatusBar;
 
-	m_pHistAllocThread = new HistAllocThread;
-	m_pHistAllocThread->AllocateHistorySlots( m_pHistorySystem );  // delegate allocation of history slots to a work thread
+	m_pHistAllocThread = new HistAllocThread;   // delegate allocation of history slots to a work thread
+	m_pHistAllocThread->AllocateHistorySlots( m_pHistorySystem,FALSE );  
 }
 
 EvoHistorySys::~EvoHistorySys( ) 

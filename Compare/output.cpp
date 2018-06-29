@@ -1,5 +1,5 @@
 // output.cpp - output to test protocol file
-
+/*
 #include "stdafx.h"
 #include "scanner.h"
 #include "output.h"
@@ -172,3 +172,4 @@ void TerminateOutput( void )
 	default:      break;
 	}
 }
+*/

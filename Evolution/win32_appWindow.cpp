@@ -58,7 +58,7 @@
 
 #include "EvoModelData.h"
 #include "EvoModelFactory.h"
-#include "EvoController.h"
+#include "win32_evoController.h"
 #include "win32_appWindow.h"
 
 AppWindow::AppWindow( ) :
@@ -142,7 +142,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     if ( Config::UseHistorySystem( ) )
     {
 		m_pEvoHistorySys  = new EvoHistorySys( );
-		m_pHistWorkThread = new HistWorkThread( & m_traceStream, m_pModelWork, m_pEvoHistorySys );
+		m_pHistWorkThread = new HistWorkThread( & m_traceStream, m_pModelWork, m_pEvoHistorySys, m_pEditorWindow );
 		m_pWorkThread     = m_pHistWorkThread;
 		m_pEvoHistorySys->Start( m_pModelWork, m_pHistWorkThread, m_pStatusBar, EvolutionCore::GetModelSize( ) );
         DefineWin32HistWrapperFunctions( m_pHistWorkThread );
@@ -161,7 +161,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
         EnableMenuItem( GetMenu( hWndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
 
 	m_pFocusPoint    ->Start( m_pEvoHistorySys, m_pModelWork );
-	m_pWorkThread    ->Start( m_pStatusBar, m_pEditorWindow, m_pPerfWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
+	m_pWorkThread    ->Start( m_pStatusBar, m_pPerfWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
 	m_pDspOptWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork );
     m_pEditorWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork, m_pDspOptWindow );
     m_pStatusBar     ->Start( hWndApp, m_pEvoController, m_pModelWork );
@@ -190,7 +190,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
 
-    DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, m_pEvoController, m_pStatusBar );
+    DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, m_pEvoController );
     DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 
     m_pWinManager->GetWindowConfiguration( );

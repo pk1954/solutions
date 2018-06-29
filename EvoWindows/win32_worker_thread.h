@@ -35,7 +35,6 @@ public:
     void Start
     ( 
         StatusBar          * const, 
-        EditorWindow       * const,
         PerformanceWindow  * const, 
         DisplayAll   const * const, 
         EvolutionCore      * const,
@@ -53,6 +52,8 @@ public:
     void PostProcessScript( std::wstring const & );
 	void PostRunGenerations();
 	void PostStopComputation();
+
+	void DoProcessScript( std::wstring * const );
 
 	// functions called by worker thread  ( Layer 1 )
 
@@ -92,7 +93,6 @@ protected:
 
 	BOOL            m_bTrace;
     std::wostream * m_pTraceStream;
-    EditorWindow  * m_pEditorWindow;
 
 private:
 
@@ -110,7 +110,6 @@ private:
     // private member functions
 
 	DWORD processWorkerMessage( UINT, WPARAM, LPARAM );
-	void  processScript( std::wstring * const );
 
 friend static DWORD WINAPI WorkerThread( _In_ LPVOID );
 }; 

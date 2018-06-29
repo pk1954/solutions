@@ -16,7 +16,7 @@ public:
 	virtual void Bold( wstring const & );
 	virtual void BoldUnderlined( wstring const & );
 	virtual void Italics( wstring const & );
-	virtual void LightGrey( void );
+	virtual void ResultFile( void );
 	virtual void Standard( void );
 	virtual void Output( wstring const & );
 };

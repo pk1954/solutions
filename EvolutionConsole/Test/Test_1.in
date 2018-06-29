@@ -1,0 +1,63 @@
+#PostReset
+PostRefresh
+PostSetBrushMode tBrushMode::randomStrategy
+PostDoEdit   37  51 
+PostRefresh
+PostDoEdit   50  52 
+PostRefresh
+PostDoEdit   50  52 
+PostRefresh
+PostDoEdit   70  52 
+PostRefresh
+PostDoEdit   70  52 
+PostRefresh
+PostDoEdit   92  52 
+PostRefresh
+PostDoEdit   92  52 
+PostRefresh
+PostDoEdit  117  52 
+PostRefresh
+PostDoEdit  147  52 
+PostRefresh
+PostDoEdit  165  52 
+PostRefresh
+
+PostPrevGeneration
+PostGenerationStep
+PostPrevGeneration
+PostPrevGeneration
+PostGotoGeneration  11
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  10
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  10
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  9
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  8
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  8
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  8
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  7
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  6
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+#PostReset

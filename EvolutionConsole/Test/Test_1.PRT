@@ -1,0 +1,14 @@
+[42m
+COMPARE V1.2
+Test performed: 06/29/18 00:42:09
+Spec file:   TEST_1.SPC
+Result file: TEST_1.RES
+[41m
+EvolutionConsole Debug x64
+Build at Jun 28 2018 23:33:23[42m
+
++++ Compare: comparison failed
+Specified string not found:
+ ***** EvolutionConsole terminates successfully *****
++++ not ok
+[40m

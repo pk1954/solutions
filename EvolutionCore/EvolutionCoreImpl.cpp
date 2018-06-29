@@ -58,10 +58,10 @@ void EvolutionCoreImpl::Compute( EvolutionModelData * const pModel )
 
         pModelImpl->m_grid.MakePlan( gpRun, m_plan );
         m_plan.SetValid( );
-        if ( IsPoiDefined( ) ) 
+        if ( (m_gridDisplayFunctor != nullptr) && IsPoiDefined( ) ) 
         {
             if ( IsPoi( pModel, gpRun ) || IsPoi( pModel, m_plan.GetPartner( ) ) )
-               ( void )( * m_gridDisplayFunctor )( true );
+               ( * m_gridDisplayFunctor )( true );
         }
         m_plan.SetInvalid( );
         gpRun = pModelImpl->m_grid.ImplementPlan( gpRun, m_plan );   // may return GP_NULL

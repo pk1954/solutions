@@ -27,7 +27,6 @@ WorkThread::WorkThread( wostream * pTraceStream ) :
     m_hTimer             ( nullptr ),
     m_iScriptLevel       ( 0 ),
     m_pStatusBar         ( nullptr ),
-    m_pEditorWindow      ( nullptr ),
     m_pPerformanceWindow ( nullptr ),
     m_pDisplayGridFunctor( nullptr ),
     m_pEvolutionCore     ( nullptr ),
@@ -38,7 +37,6 @@ WorkThread::WorkThread( wostream * pTraceStream ) :
 void WorkThread::Start
 ( 
     StatusBar          * const pStatus, 
-    EditorWindow       * const pEditorWindow,
     PerformanceWindow  * const pPerformanceWindow,
     DisplayAll   const * const pDisplayGridFunctor,
     EvolutionCore      * const pEvolutionCore,
@@ -46,7 +44,6 @@ void WorkThread::Start
 )
 {
     HANDLE const hThread  = Util::MakeThread( WorkerThread, this, &m_dwThreadId, &m_hEventThreadStarter );
-    m_pEditorWindow       = pEditorWindow;
     m_pPerformanceWindow  = pPerformanceWindow;
     m_pStatusBar          = pStatus;
     m_pDisplayGridFunctor = pDisplayGridFunctor;
@@ -64,7 +61,6 @@ WorkThread::~WorkThread( )
     m_pTraceStream        = nullptr;
     m_hTimer              = nullptr;
     m_pStatusBar          = nullptr;
-    m_pEditorWindow       = nullptr;
     m_pPerformanceWindow  = nullptr;
     m_pDisplayGridFunctor = nullptr;
 }
@@ -107,11 +103,16 @@ void WorkThread::DoEdit( GridPoint const gp )  // Layer 1
 
 void WorkThread::GenerationStep( ) // Layer 1
 {
-    m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
+	if (m_pPerformanceWindow != nullptr)
+	    m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
     m_pEvolutionCore->Compute( m_pModelWork );   // compute next generation
-    m_pPerformanceWindow->ComputationStop( );    // measure computation time
-    m_pStatusBar->DisplayCurrentGeneration( );   // display new generation number in status bar
-    ( * m_pDisplayGridFunctor )( FALSE );        // notify all views
+	if (m_pPerformanceWindow != nullptr)
+		m_pPerformanceWindow->ComputationStop( );    // measure computation time
+
+	if (m_pStatusBar != nullptr)
+	    m_pStatusBar->DisplayCurrentGeneration( );   // display new generation number in status bar
+	if (m_pDisplayGridFunctor != nullptr)
+	    ( * m_pDisplayGridFunctor )( FALSE );        // notify all views
 }
 
 void WorkThread::GenerationRun( )  // Layer 1
@@ -120,12 +121,13 @@ void WorkThread::GenerationRun( )  // Layer 1
 
     if ( m_bContinue )
     {
-        m_pPerformanceWindow->SleepDelay( );
+		if (m_pPerformanceWindow != nullptr)
+		    m_pPerformanceWindow->SleepDelay( );
         postMsg2WorkThread( THREAD_MSG_GENERATION_RUN, 0, 0 );
     }
 }
 
-void WorkThread::processScript( wstring * const pwstr )
+void WorkThread::DoProcessScript( wstring * const pwstr )
 {
     ++m_iScriptLevel;
     Script::ProcessScript( * pwstr );
@@ -148,7 +150,7 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
         break;
 
     case THREAD_MSG_PROCESS_SCRIPT:
-        processScript( (wstring *)lParam );
+        DoProcessScript( (wstring *)lParam );
         break;
 
     case THREAD_MSG_STEP:
@@ -196,8 +198,11 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
         break;
     }
 
-    m_pStatusBar->DisplayCurrentGeneration( );
-    ( * m_pDisplayGridFunctor )( FALSE );
+	if (m_pStatusBar != nullptr)
+	    m_pStatusBar->DisplayCurrentGeneration( );
+	if (m_pDisplayGridFunctor != nullptr)
+	    ( * m_pDisplayGridFunctor )( FALSE );
+
     return 0;
 }
 

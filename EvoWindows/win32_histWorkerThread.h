@@ -5,13 +5,14 @@
 #include "HistoryGeneration.h"
 #include "win32_worker_thread.h"
 
-class EvoHistorySys;
 class EvolutionModelData;
+class EvoHistorySys;
+class EditorWindow;
 
 class HistWorkThread : public WorkThread
 {
 public:
-    HistWorkThread( wostream *, EvolutionModelData * const, EvoHistorySys * const );
+    HistWorkThread( wostream *, EvolutionModelData * const, EvoHistorySys * const, 	EditorWindow * const );
     ~HistWorkThread( );
 
 	void PostUndo();
@@ -40,4 +41,5 @@ private:
     HIST_GENERATION      m_genDemanded;
     EvoHistorySys      * m_pEvoHistorySys;
     EvolutionModelData * m_pModelWork;
+	EditorWindow       * m_pEditorWindow;
 };

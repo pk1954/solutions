@@ -7,6 +7,11 @@
 class TextOutput: public OutputDriver
 {
 public:
+	virtual ~TextOutput( );
+
+	virtual void ResultFile( void );
+	virtual void Standard( void );
+
 	virtual void StartParagraph( int );
 	virtual void Output( wstring const & );
 	virtual void Bold( wstring const & );

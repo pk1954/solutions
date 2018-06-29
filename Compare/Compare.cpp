@@ -53,7 +53,6 @@ public:
 			pOut = new TextOutput;
 		else 
 			pOut = new OutputDriver;
-
 	}
 
 	~CompareEngine()
@@ -150,7 +149,7 @@ public:
 	{
 		Scanner spec;
 
-		pOut->LightGrey();
+		pOut->ResultFile();
 
 		try 
 		{  
@@ -253,6 +252,7 @@ int main( int argc, char * argv[] )
 	UpperCase( strResFile );
 	UpperCase( strSpecFile );
 
+	ce.pOut->Standard();
 	ce.pOut->StartParagraph();
 	ce.pOut->Italics( strVersion );
 	ce.pOut->StartParagraph( );

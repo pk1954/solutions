@@ -1,4 +1,4 @@
-// EvoController.cpp
+// win32_evoController.cpp
 //
 
 #include "stdafx.h"
@@ -10,7 +10,7 @@
 #include "win32_performanceWindow.h"
 #include "win32_status.h"
 #include "win32_gridWindow.h"
-#include "EvoController.h"
+#include "win32_evoController.h"
 
 EvoController::EvoController() :
     m_bTrace            ( TRUE ),
@@ -55,8 +55,10 @@ void EvoController::SetGenerationDelay( DWORD const dwNewDelay )  // in millisec
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << dwNewDelay << endl;
-    m_pPerformanceWindow->SetGenerationDelay( dwNewDelay );
-    m_pStatusBar->SetSpeedTrackBar( dwNewDelay );
+	if (m_pPerformanceWindow != nullptr)
+		m_pPerformanceWindow->SetGenerationDelay( dwNewDelay );
+	if (m_pStatusBar != nullptr)
+		m_pStatusBar->SetSpeedTrackBar( dwNewDelay );
 }
 
 void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )

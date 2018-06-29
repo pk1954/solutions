@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include <fstream>
 #include <iostream>
+#include <string> 
 #include "resource.h"
 #include "errhndl.h"
 #include "EvolutionModelData.h"
@@ -17,7 +18,9 @@ HistWorkThread::HistWorkThread
 ( 
     wostream           *       pTraceStream,
     EvolutionModelData * const pModel,
-    EvoHistorySys      * const pHistorySys
+    EvoHistorySys      * const pHistorySys,
+	EditorWindow       * const pEditorWindow
+
 ) :
     WorkThread( pTraceStream ),
     m_genDemanded( 0 ),
@@ -50,7 +53,8 @@ void HistWorkThread::GenerationStep( )   // Layer 5
 		if ( EditorStateHasChanged( ) )
 		{
 	        SaveEditorState( );
-			m_pEditorWindow->UpdateControls( );
+			if (m_pEditorWindow != nullptr)
+				m_pEditorWindow->UpdateControls( );
 		}
 
 		postMsg2WorkThread( THREAD_MSG_REFRESH, 0, 0 );
@@ -156,8 +160,9 @@ void HistWorkThread::PostGotoGeneration( HIST_GENERATION const gen )
         * m_pTraceStream << __func__ << L" " << gen << endl;
 
     assert( gen >= 0 );
-    if ( gen > m_pEvoHistorySys->GetHistorySystem( )->GetYoungestGeneration( ) )
-		ScriptErrorHandler::semanticError( L"PostGotoGeneration - GenNr too big");
+	HIST_GENERATION genYoungest = m_pEvoHistorySys->GetHistorySystem( )->GetYoungestGeneration( );
+    if ( gen > genYoungest )
+		ScriptErrorHandler::semanticError( L"PostGotoGeneration - GenNr too big (max:" + std::to_wstring(genYoungest.GetLong()) + L")" );
 
 	postGotoGeneration( gen );
 }

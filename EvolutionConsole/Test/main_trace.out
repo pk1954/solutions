@@ -1,0 +1,110 @@
+OpenTraceFile  "main_trace.out"
+PostRefresh
+PostSetBrushMode tBrushMode::randomStrategy
+PostDoEdit   37  51 
+PostRefresh
+PostDoEdit   50  52 
+PostRefresh
+PostDoEdit   50  52 
+PostRefresh
+PostDoEdit   70  52 
+PostRefresh
+PostDoEdit   70  52 
+PostRefresh
+PostDoEdit   92  52 
+PostRefresh
+PostDoEdit   92  52 
+PostRefresh
+PostDoEdit  117  52 
+PostRefresh
+PostDoEdit  147  52 
+PostRefresh
+PostDoEdit  165  52 
+PostRefresh
+PostPrevGeneration
+PostGotoGeneration  10
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  10
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  9
+PostGenerationStep
+PostGotoGeneration  11
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  11
+PostGenerationStep
+PostGotoGeneration  10
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  12
+PostGenerationStep
+PostGotoGeneration  10
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  10
+PostGenerationStep
+PostGotoGeneration  9
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  9
+PostGenerationStep
+PostGotoGeneration  8
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  10
+PostGenerationStep
+PostGotoGeneration  8
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  10
+PostGenerationStep
+PostGotoGeneration  8
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  8
+PostGenerationStep
+PostGotoGeneration  7
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  7
+PostGenerationStep
+PostGotoGeneration  6
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep

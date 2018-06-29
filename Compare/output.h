@@ -13,7 +13,7 @@ public:
 	
 	virtual ~OutputDriver( ) { }
 
-	virtual void LightGrey      ( void ) { }
+	virtual void ResultFile      ( void ) { }
 	virtual void Standard       ( void ) { }
 	virtual void TerminateOutput( void ) { }
 
