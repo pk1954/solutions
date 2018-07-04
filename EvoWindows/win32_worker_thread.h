@@ -53,7 +53,7 @@ public:
 	void PostRunGenerations();
 	void PostStopComputation();
 
-	void DoProcessScript( std::wstring * const );
+	void DoProcessScript( std::wstring * const ); // parameter must be created with new, will be deleted here! 
 
 	// functions called by worker thread  ( Layer 1 )
 

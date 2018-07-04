@@ -72,7 +72,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, nullptr );
 
-    wstring strInputFile = L"Test_1.in";
+    wstring wstrInputFile = L"Test_1.in";
 
 	for ( int iCount = 1; iCount < argc; iCount++ )
     {
@@ -84,11 +84,11 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 		}
 		else if ( (strCmd.find( ".in" ) != string::npos) || (strCmd.find( ".IN" ) != string::npos) ) 
 		{
-			strInputFile.assign( strCmd.begin(), strCmd.end() ); 
+			wstrInputFile.assign( strCmd.begin(), strCmd.end() ); 
 		}
     }
 
-	m_pWorkThread->DoProcessScript( & strInputFile );
+	m_pWorkThread->DoProcessScript( new wstring( wstrInputFile ) );
 
 	wcout << L" ***** EvolutionConsole terminates successfully *****" << endl;
 

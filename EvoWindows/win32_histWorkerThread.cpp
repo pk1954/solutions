@@ -89,8 +89,10 @@ void HistWorkThread::DoEdit( GridPoint const gp )
 
 void HistWorkThread::postGotoGeneration( HIST_GENERATION const gen )
 {
+    assert( gen >= 0 );
+
 	m_genDemanded = gen;
-	WorkThread::PostGenerationStep(  );   // will call indirectly HistWorkThread::GenerationStep
+    postMsg2WorkThread( THREAD_MSG_STEP, 0, 0 );    // will call indirectly HistWorkThread::GenerationStep
 }
 
 void HistWorkThread::PostRedo( )
@@ -101,7 +103,7 @@ void HistWorkThread::PostRedo( )
 	HIST_GENERATION gen = m_pEvoHistorySys->GetCurrentGeneration( );
 
 	if ( ( gen < m_pEvoHistorySys->GetYoungestGeneration( ) ) && m_pEvoHistorySys->IsEditorCommand( gen + 1 ) )
-		PostGotoGeneration( gen + 1 );
+		postGotoGeneration( gen + 1 );
 	else
 		(void)MessageBeep(MB_OK);  // first generation reached
 }
@@ -122,7 +124,7 @@ void HistWorkThread::PostUndo( )
 	HIST_GENERATION gen = m_pEvoHistorySys->GetCurrentGeneration( );
 
 	if ( ( gen > 0 ) && m_pEvoHistorySys->IsEditorCommand( gen - 1 ) )
-		PostGotoGeneration( gen - 1 );
+		postGotoGeneration( gen - 1 );
 	else
 		(void)MessageBeep(MB_OK);  // first generation reached
 }
@@ -133,7 +135,7 @@ void HistWorkThread::PostPrevGeneration( )
         * m_pTraceStream << __func__ << endl;
 
 	if (m_pEvoHistorySys->GetCurrentGeneration() > 0)
-		PostGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration() - 1 );
+		postGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration() - 1 );
 	else
 		(void)MessageBeep(MB_OK);  // first generation reached
 }
@@ -158,11 +160,6 @@ void HistWorkThread::PostGotoGeneration( HIST_GENERATION const gen )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << gen << endl;
-
-    assert( gen >= 0 );
-	HIST_GENERATION genYoungest = m_pEvoHistorySys->GetHistorySystem( )->GetYoungestGeneration( );
-    if ( gen > genYoungest )
-		ScriptErrorHandler::semanticError( L"PostGotoGeneration - GenNr too big (max:" + std::to_wstring(genYoungest.GetLong()) + L")" );
 
 	postGotoGeneration( gen );
 }

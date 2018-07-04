@@ -1,6 +1,9 @@
 #PostReset
+#SetConfigValue Config::tId::nrOfHistorySlots 10
+#OpenTraceFile  "main_trace.out"
 PostRefresh
 PostSetBrushMode tBrushMode::randomStrategy
+PostReset
 PostDoEdit   37  51 
 PostRefresh
 PostDoEdit   50  52 
@@ -21,10 +24,12 @@ PostDoEdit  147  52
 PostRefresh
 PostDoEdit  165  52 
 PostRefresh
-
+PostReset
 PostPrevGeneration
 PostGenerationStep
 PostPrevGeneration
+PostGotoGeneration  12
+PostGenerationStep
 PostPrevGeneration
 PostGotoGeneration  11
 PostGenerationStep
@@ -60,4 +65,4 @@ PostGotoGeneration  6
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
-#PostReset
+PostReset

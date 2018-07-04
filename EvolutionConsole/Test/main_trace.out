@@ -1,6 +1,7 @@
 OpenTraceFile  "main_trace.out"
 PostRefresh
 PostSetBrushMode tBrushMode::randomStrategy
+PostReset
 PostDoEdit   37  51 
 PostRefresh
 PostDoEdit   50  52 
@@ -21,35 +22,16 @@ PostDoEdit  147  52
 PostRefresh
 PostDoEdit  165  52 
 PostRefresh
+PostReset
 PostPrevGeneration
-PostGotoGeneration  10
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  10
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  11
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  11
-PostGenerationStep
-PostGotoGeneration  10
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
 PostGenerationStep
 PostPrevGeneration
 PostGotoGeneration  12
 PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  11
+PostGenerationStep
+PostPrevGeneration
 PostGotoGeneration  10
 PostGenerationStep
 PostGenerationStep
@@ -57,35 +39,10 @@ PostGenerationStep
 PostPrevGeneration
 PostGotoGeneration  10
 PostGenerationStep
+PostPrevGeneration
 PostGotoGeneration  9
 PostGenerationStep
-PostGenerationStep
-PostGenerationStep
 PostPrevGeneration
-PostGotoGeneration  9
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  10
-PostGenerationStep
-PostGotoGeneration  8
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostPrevGeneration
-PostGotoGeneration  10
-PostGenerationStep
 PostGotoGeneration  8
 PostGenerationStep
 PostGenerationStep
@@ -93,18 +50,17 @@ PostGenerationStep
 PostPrevGeneration
 PostGotoGeneration  8
 PostGenerationStep
-PostGotoGeneration  7
 PostGenerationStep
 PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  8
 PostGenerationStep
 PostPrevGeneration
 PostGotoGeneration  7
 PostGenerationStep
+PostPrevGeneration
 PostGotoGeneration  6
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
+PostReset
