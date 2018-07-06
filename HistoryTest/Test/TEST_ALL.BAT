@@ -1,49 +1,18 @@
 @echo off
 
-if "%1"=="" (
-	set APP_PATH=..\..\x64\Release
-) else (
-	set APP_PATH=%1
-)
-
 set APP_NAME=HistoryTest
 
-set TESTEE=%APP_PATH%\%APP_NAME%.exe
-set COMPARE=..\..\Release\compare.exe
+call ..\..\Tests\TEST_SETUP %1
 
-if not exist %TESTEE% (
-	echo +++ Could not find %TESTEE%
-	goto ERROR_EXIT
-)
+%CALL_TEST_CASE% TEST_1 || goto ERROR_EXIT
 
-if not exist %COMPARE% (
-	echo +++ Could not find %COMPARE%
-	goto ERROR_EXIT
-)
-
-call :TEST_CASE TEST_1 || goto ERROR_EXIT
-
-echo *** %APP_NAME% tests ok
+echo %MESSAGE% tests ok
+echo .
+pause Press any key
 exit /B 0
 
 :ERROR_EXIT
-echo +++ error in %APP_NAME% tests
-pause
-exit /B 99
-
-rem *** subroutines ***
-
-:TEST_CASE
-echo *** %1
-del %1.RES
-%TESTEE% %1.IN > %1.RES
-@if ERRORLEVEL 1 (
-	echo +++ error in %APP_NAME% %1.IN
-	exit /B 1
-)
-%COMPARE% %1.RES %1.SPC /RTF > %TEST%.PRT
-@if ERRORLEVEL 1 (
-	echo +++ error in %COMPARE% %1.RES %1.SPC
-	exit /B 2
-)
-exit /B 0
+echo %MESSAGE% tests failed
+echo .
+pause Press any key
+exit 99

@@ -7,6 +7,7 @@
 
 #include "config.h"
 #include "trace.h"
+#include "dump.h"
 #include "EvoHistorySys.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCoreWrappers.h"
@@ -72,7 +73,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, nullptr );
 
-    wstring wstrInputFile = L"Test_1.in";
+    wstring wstrInputFile = L"Test_3.in";
 
 	for ( int iCount = 1; iCount < argc; iCount++ )
     {

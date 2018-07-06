@@ -5,7 +5,6 @@
 #include "symtab.h"
 #include "Resource.h"
 #include "config.h"
-#include "SCRIPT.H"
 #include "EvoModelData.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "win32_histWorkerThread.h"

@@ -105,7 +105,7 @@ void WorkThread::GenerationStep( ) // Layer 1
 {
 	if (m_pPerformanceWindow != nullptr)
 	    m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
-    m_pEvolutionCore->Compute( m_pModelWork );   // compute next generation
+    m_pEvolutionCore->Compute( m_pModelWork );       // compute next generation
 	if (m_pPerformanceWindow != nullptr)
 		m_pPerformanceWindow->ComputationStop( );    // measure computation time
 

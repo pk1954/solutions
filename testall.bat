@@ -2,9 +2,9 @@
 
 rem *** main program starts here ***
 
-for %%C in ( Debug, Release ) do (
-    call :PERFORM_TESTS ..\..\%%C || goto ERROR_EXIT
-)
+rem for %%C in ( Debug, Release ) do (
+rem     call :PERFORM_TESTS ..\..\%%C || goto ERROR_EXIT
+rem )
 
 if %PROCESSOR_ARCHITECTURE% == AMD64 (
     for %%C in ( Debug, Release ) do (

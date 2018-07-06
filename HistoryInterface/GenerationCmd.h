@@ -37,6 +37,7 @@ public:
     bool IsUndefined( )           const { return m_Cmd == UNDEFINED; }
     bool IsCachedGeneration( )    const { return m_Cmd == CACHED; }
     bool IsNotCachedGeneration( ) const { return m_Cmd != CACHED; }
+	bool IsAppCommand( )          const { IsAppCmd( m_Cmd ); }
 
     void InitializeCmd( )
     {
@@ -47,6 +48,8 @@ public:
 	static tGenCmd      const CACHED    =   -1;
 	static tGenCmd      const UNDEFINED =    0;
 	static unsigned int const FIRST_APP_CMD = 1000;
+
+	static bool IsAppCmd( tGenCmd const cmd ) { return cmd >= FIRST_APP_CMD; }
 
 private:
     tGenCmd        m_Cmd;

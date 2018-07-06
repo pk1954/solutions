@@ -44,3 +44,12 @@ wchar_t const * const GetEvoCommandName( tEvoCmd const cmd )
 
     return mapNames.at( cmd );
 }
+
+wostream & operator << ( wostream & out, tEvoCmd const & cmd )
+{
+	if ( GenerationCmd::IsAppCmd( static_cast<GenerationCmd::tGenCmd>(cmd) ) )
+		out << GetEvoCommandNameShort( cmd  );
+	else 
+		out << GetGenerationCmdNameShort( static_cast<GenerationCmd::tGenCmd>(cmd) );
+    return out;
+};

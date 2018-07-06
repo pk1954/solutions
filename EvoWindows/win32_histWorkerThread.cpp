@@ -24,8 +24,9 @@ HistWorkThread::HistWorkThread
 ) :
     WorkThread( pTraceStream ),
     m_genDemanded( 0 ),
+    m_pModelWork( pModel ),
     m_pEvoHistorySys( pHistorySys ),
-    m_pModelWork( pModel )
+	m_pEditorWindow( pEditorWindow )
 { }
 
 HistWorkThread::~HistWorkThread( )
@@ -41,11 +42,12 @@ void HistWorkThread::ResetModel( )    // Layer 5
 
 void HistWorkThread::GenerationStep( )   // Layer 5
 {
-	HIST_GENERATION genCurrent = m_pEvoHistorySys->GetCurrentGeneration( );
-
-	if ( m_genDemanded != m_pEvoHistorySys->GetCurrentGeneration( ) )
+	if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
 	{
-		if ( m_genDemanded > m_pEvoHistorySys->GetYoungestGeneration( ) )
+		if ( 
+		       (m_pEvoHistorySys->GetCurrentGeneration( ) < m_genDemanded)  &&
+		       (m_pEvoHistorySys->GetCurrentGeneration( ) == m_pEvoHistorySys->GetYoungestGeneration( ))
+		   )
 			m_pEvoHistorySys->EvoCreateNextGenCommand( );
 		else
 			m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );

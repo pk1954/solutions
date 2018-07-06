@@ -1,3 +1,407 @@
-EvolutionConsole Debug x64
-Build at Jun 29 2018 18:14:06
+EvolutionConsole Release x64
+Build at Jul  6 2018 17:01:13
+**** checkHistoryStructure
+m_genCmdList
+slots(1)
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+slots(1)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+ 7 -1 cache:  7
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+7 genNrFromCache=  7 (1001,0) sSlotNrFromList= 7
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+ 7 -1 cache:  7
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+7 genNrFromCache=  7 (1001,0) sSlotNrFromList= 7
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+ 7 -1 cache:  7
+ 8 -1 cache:  8
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+7 genNrFromCache=  7 (1001,0) sSlotNrFromList= 7
+8 genNrFromCache=  8 (1001,0) sSlotNrFromList= 8
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+ 7 -1 cache:  7
+ 8 -1 cache:  8
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+7 genNrFromCache=  7 (1001,0) sSlotNrFromList= 7
+8 genNrFromCache=  8 (1001,0) sSlotNrFromList= 8
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 -1 cache:  1
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+ 7 -1 cache:  7
+ 8 -1 cache:  8
+ 9 -1 cache:  9
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  1 (1002,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+7 genNrFromCache=  7 (1001,0) sSlotNrFromList= 7
+8 genNrFromCache=  8 (1001,0) sSlotNrFromList= 8
+9 genNrFromCache=  9 (1001,0) sSlotNrFromList= 9
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 1002
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+ 7 -1 cache:  7
+ 8 -1 cache:  8
+ 9 -1 cache:  9
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+7 genNrFromCache=  7 (1001,0) sSlotNrFromList= 7
+8 genNrFromCache=  8 (1001,0) sSlotNrFromList= 8
+9 genNrFromCache=  9 (1001,0) sSlotNrFromList= 9
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 1002
+ 2 -1 cache:  2
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+ 7 -1 cache:  7
+ 8 -1 cache:  8
+ 9 -1 cache:  9
+ 10 -1 cache:  10
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  10 (1001,0) sSlotNrFromList= 1
+2 genNrFromCache=  2 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+7 genNrFromCache=  7 (1001,0) sSlotNrFromList= 7
+8 genNrFromCache=  8 (1001,0) sSlotNrFromList= 8
+9 genNrFromCache=  9 (1001,0) sSlotNrFromList= 9
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 1002
+ 2 1001
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+ 7 -1 cache:  7
+ 8 -1 cache:  8
+ 9 -1 cache:  9
+ 10 -1 cache:  10
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  10 (1001,0) sSlotNrFromList= 1
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+7 genNrFromCache=  7 (1001,0) sSlotNrFromList= 7
+8 genNrFromCache=  8 (1001,0) sSlotNrFromList= 8
+9 genNrFromCache=  9 (1001,0) sSlotNrFromList= 9
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 1002
+ 2 1001
+ 3 -1 cache:  3
+ 4 -1 cache:  4
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+ 7 -1 cache:  7
+ 8 -1 cache:  8
+ 9 -1 cache:  9
+ 10 -1 cache:  10
+ 11 -1 cache:  11
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  10 (1001,0) sSlotNrFromList= 1
+2 genNrFromCache=  11 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  4 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+7 genNrFromCache=  7 (1001,0) sSlotNrFromList= 7
+8 genNrFromCache=  8 (1001,0) sSlotNrFromList= 8
+9 genNrFromCache=  9 (1001,0) sSlotNrFromList= 9
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 1002
+ 2 1001
+ 3 -1 cache:  3
+ 4 1001
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+ 7 -1 cache:  7
+ 8 -1 cache:  8
+ 9 -1 cache:  9
+ 10 -1 cache:  10
+ 11 -1 cache:  11
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  10 (1001,0) sSlotNrFromList= 1
+2 genNrFromCache=  11 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+7 genNrFromCache=  7 (1001,0) sSlotNrFromList= 7
+8 genNrFromCache=  8 (1001,0) sSlotNrFromList= 8
+9 genNrFromCache=  9 (1001,0) sSlotNrFromList= 9
+**** checkHistoryStructure
+m_genCmdList
+ 0 -1 cache:  0
+ 1 1002
+ 2 1001
+ 3 -1 cache:  3
+ 4 1001
+ 5 -1 cache:  5
+ 6 -1 cache:  6
+ 7 -1 cache:  7
+ 8 -1 cache:  8
+ 9 -1 cache:  9
+ 10 -1 cache:  10
+ 11 -1 cache:  11
+ 12 -1 cache:  12
+slots(10)
+0 genNrFromCache=  0 (1000,0) sSlotNrFromList= 0
+1 genNrFromCache=  10 (1001,0) sSlotNrFromList= 1
+2 genNrFromCache=  11 (1001,0) sSlotNrFromList= 2
+3 genNrFromCache=  3 (1001,0) sSlotNrFromList= 3
+4 genNrFromCache=  12 (1001,0) sSlotNrFromList= 4
+5 genNrFromCache=  5 (1001,0) sSlotNrFromList= 5
+6 genNrFromCache=  6 (1001,0) sSlotNrFromList= 6
+7 genNrFromCache=  7 (1001,0) sSlotNrFromList= 7
+8 genNrFromCache=  8 (1001,0) sSlotNrFromList= 8
+9 genNrFromCache=  9 (1001,0) sSlotNrFromList= 9
  ***** EvolutionConsole terminates successfully *****

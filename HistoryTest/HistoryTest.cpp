@@ -3,10 +3,12 @@
 
 #include "stdafx.h"
 #include <iostream>
-#include "script.h"
+#include "symtab.h"
+#include "errhndl.h"
 #include "ModelData.h"
 #include "HistoryIterator.h"
 #include "HistorySystem.h"
+#include "Version.h"
 
 using namespace std;
 
@@ -106,17 +108,43 @@ void DoTest( )
 	wcout << endl << L"*** HistoryTest finished" << endl;
 }
 
-int _tmain( int argc, _TCHAR* argv[] )
+class WrapHistoryTest_1 : public Script_Functor
 {
-	try
-	{
-		DoTest( );
-	}
-	catch (...)
-	{
-		wcout << endl << L"+++ Error in HistoryTest" << endl;
-		return 1;
-	}
+public:
+    virtual void operator() ( Script & script ) const
+    {
+		try
+		{
+			DoTest( );
+		}
+		catch (...)
+		{
+			wcout << endl << L"+++ Error in HistoryTest" << endl;
+		}
+    }
+};
+
+int _tmain( int argc, char * argv[] )
+{
+	wcout << VER_PRODUCTNAME_STR << L" " << VER_FILE_DESCRIPTION_STR << endl;
+	wcout << L"Build at " << __DATE__ << L" " << __TIME__ << endl;
+
+	ScriptErrorHandler::ScrSetOutputStream( & wcout );
+	DEF_FUNC( HistoryTest_1 );
+
+    wstring wstrInputFile = L"Test_1.in";
+
+	for ( int iCount = 1; iCount < argc; iCount++ )
+    {
+        std::string strCmd( argv[ iCount ] );
+
+		if ( (strCmd.find( ".in" ) != string::npos) || (strCmd.find( ".IN" ) != string::npos) ) 
+		{
+			wstrInputFile.assign( strCmd.begin(), strCmd.end() ); 
+		}
+    }
+
+	Script::ProcessScript( wstrInputFile );
 
 	return 0;
 }
