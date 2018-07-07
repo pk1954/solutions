@@ -1,0 +1,464 @@
+OpenTraceFile  "main_trace.out"
+PostRefresh
+PostSetBrushMode tBrushMode::randomStrategy
+PostRefresh
+PostDoEdit    4  10 
+PostRefresh
+PostDoEdit    4  10 
+PostRefresh
+PostDoEdit    4  10 
+PostRefresh
+PostDoEdit   14  18 
+PostRefresh
+PostDoEdit   15  18 
+PostRefresh
+PostDoEdit   15  18 
+PostRefresh
+PostDoEdit   15  17 
+PostRefresh
+PostDoEdit    7   3 
+PostRefresh
+PostDoEdit    7   3 
+PostRefresh
+PostDoEdit    7   2 
+PostRefresh
+PostSetBrushMode tBrushMode::move
+PostRefresh
+PostSetBrushMode tBrushMode::mutRate
+PostRefresh
+PostDoEdit   24  17 
+PostRefresh
+PostDoEdit   24  17 
+PostRefresh
+PostDoEdit   21  17 
+PostRefresh
+PostDoEdit   22  17 
+PostRefresh
+PostDoEdit   23  18 
+PostRefresh
+PostDoEdit   24  18 
+PostRefresh
+PostDoEdit   28  16 
+PostRefresh
+PostDoEdit   27  16 
+PostRefresh
+PostDoEdit   25  16 
+PostRefresh
+PostDoEdit   24  16 
+PostRefresh
+PostSetBrushMode tBrushMode::fertility
+PostRefresh
+PostDoEdit  135  35 
+PostRefresh
+PostDoEdit  135  35 
+PostRefresh
+PostSetBrushMode tBrushMode::move
+PostRefresh
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostRefresh
+SetGenerationDelay 0
+PostRefresh
+PostSetBrushMode tBrushMode::mutRate
+PostRefresh
+PostSetBrushIntensity 80
+PostSetBrushIntensity 63
+PostSetBrushIntensity 32
+PostSetBrushIntensity 15
+PostSetBrushIntensity 5
+PostSetBrushIntensity 5
+PostSetBrushSize 17
+PostSetBrushSize 25
+PostSetBrushSize 40
+PostSetBrushSize 41
+PostSetBrushSize 42
+PostSetBrushSize 43
+PostSetBrushSize 44
+PostSetBrushSize 45
+PostSetBrushSize 45
+PostRefresh
+PostDoEdit   34  69 
+PostRefresh
+PostDoEdit   61  60 
+PostRefresh
+PostDoEdit   51  50 
+PostRefresh
+PostDoEdit   70  52 
+PostRefresh
+PostDoEdit   72  52 
+PostRefresh
+PostDoEdit   77  53 
+PostRefresh
+PostDoEdit   83  54 
+PostRefresh
+PostDoEdit   89  54 
+PostRefresh
+PostDoEdit   94  54 
+PostRefresh
+PostDoEdit  100  54 
+PostRefresh
+PostDoEdit  106  55 
+PostRefresh
+PostDoEdit  112  55 
+PostRefresh
+PostDoEdit  121  55 
+PostRefresh
+PostDoEdit  128  55 
+PostRefresh
+PostDoEdit  134  55 
+PostRefresh
+PostDoEdit  140  55 
+PostRefresh
+PostDoEdit  145  55 
+PostRefresh
+PostDoEdit  149  55 
+PostRefresh
+PostDoEdit  150  54 
+PostRefresh
+PostDoEdit  152  54 
+PostRefresh
+PostDoEdit  153  54 
+PostRefresh
+PostDoEdit  154  53 
+PostRefresh
+PostDoEdit  154  53 
+PostRefresh
+PostDoEdit  155  53 
+PostRefresh
+PostDoEdit  125  29 
+PostRefresh
+PostDoEdit  133  32 
+PostRefresh
+PostDoEdit  134  32 
+PostRefresh
+PostDoEdit  135  33 
+PostRefresh
+PostDoEdit  136  33 
+PostRefresh
+PostDoEdit  137  34 
+PostRefresh
+PostDoEdit  138  34 
+PostRefresh
+PostDoEdit  139  36 
+PostRefresh
+PostDoEdit  153  47 
+PostRefresh
+PostDoEdit  154  47 
+PostRefresh
+PostDoEdit  155  49 
+PostRefresh
+PostDoEdit  156  50 
+PostRefresh
+PostDoEdit  156  50 
+PostRefresh
+PostDoEdit  140  77 
+PostRefresh
+PostDoEdit  137  77 
+PostRefresh
+PostDoEdit  134  76 
+PostRefresh
+PostDoEdit  131  77 
+PostRefresh
+PostDoEdit  128  76 
+PostRefresh
+PostDoEdit  126  76 
+PostRefresh
+PostDoEdit  124  75 
+PostRefresh
+PostDoEdit  124  75 
+PostRefresh
+PostDoEdit  124  75 
+PostRefresh
+PostDoEdit  150  84 
+PostRefresh
+PostDoEdit  145  85 
+PostRefresh
+PostDoEdit  139  84 
+PostRefresh
+PostDoEdit   88  79 
+PostRefresh
+PostDoEdit   53  81 
+PostRefresh
+PostDoEdit   49  80 
+PostRefresh
+PostDoEdit   39  80 
+PostRefresh
+PostDoEdit   34  79 
+PostRefresh
+PostDoEdit   27  80 
+PostRefresh
+PostDoEdit   26  79 
+PostRefresh
+PostDoEdit   26  79 
+PostRefresh
+PostDoEdit   20  78 
+PostRefresh
+PostDoEdit   21  78 
+PostRefresh
+PostDoEdit   21  78 
+PostRefresh
+PostDoEdit   35  74 
+PostRefresh
+PostDoEdit   37  73 
+PostRefresh
+PostDoEdit   39  72 
+PostRefresh
+PostDoEdit   40  71 
+PostRefresh
+PostDoEdit   46  69 
+PostRefresh
+PostDoEdit   49  69 
+PostRefresh
+PostDoEdit   51  68 
+PostRefresh
+PostDoEdit   53  68 
+PostRefresh
+PostDoEdit   53  67 
+PostRefresh
+PostDoEdit   30  79 
+PostRefresh
+PostDoEdit   33  80 
+PostRefresh
+PostDoEdit   36  80 
+PostRefresh
+PostDoEdit   39  80 
+PostRefresh
+PostDoEdit   42  79 
+PostRefresh
+PostDoEdit   46  78 
+PostRefresh
+PostDoEdit   51  76 
+PostRefresh
+PostDoEdit   64  55 
+PostRefresh
+PostDoEdit   64  54 
+PostRefresh
+PostDoEdit   64  52 
+PostRefresh
+PostDoEdit   64  51 
+PostRefresh
+PostDoEdit   64  47 
+PostRefresh
+PostDoEdit   64  46 
+PostRefresh
+PostDoEdit   64  45 
+PostRefresh
+PostDoEdit   64  43 
+PostRefresh
+PostDoEdit   64  41 
+PostRefresh
+PostDoEdit   64  40 
+PostRefresh
+PostDoEdit   64  38 
+PostRefresh
+PostDoEdit   64  37 
+PostRefresh
+PostDoEdit   65  36 
+PostRefresh
+PostDoEdit   74  25 
+PostRefresh
+PostDoEdit   75  25 
+PostRefresh
+PostDoEdit   75  25 
+PostRefresh
+PostDoEdit   76  25 
+PostRefresh
+PostDoEdit   70  22 
+PostRefresh
+PostDoEdit  103   8 
+PostRefresh
+PostDoEdit   95  78 
+PostRefresh
+PostDoEdit   99  79 
+PostRefresh
+PostDoEdit  100  79 
+PostRefresh
+PostDoEdit  104  80 
+PostRefresh
+PostDoEdit  110  81 
+PostRefresh
+PostDoEdit  113  82 
+PostRefresh
+PostDoEdit  124  83 
+PostRefresh
+PostDoEdit  131  85 
+PostRefresh
+PostDoEdit  138  86 
+PostRefresh
+PostDoEdit  149  87 
+PostRefresh
+PostDoEdit  196  27 
+PostRefresh
+PostDoEdit  195  26 
+PostRefresh
+PostDoEdit  194  22 
+PostRefresh
+PostDoEdit  192  20 
+PostRefresh
+PostDoEdit  190  14 
+PostRefresh
+PostDoEdit  189  13 
+PostRefresh
+PostDoEdit  188  11 
+PostRefresh
+PostDoEdit  188  10 
+PostRefresh
+PostDoEdit  187   9 
+PostRefresh
+PostDoEdit  186   8 
+PostRefresh
+PostDoEdit  186   7 
+PostRefresh
+PostDoEdit  186   7 
+PostRefresh
+PostDoEdit  186   7 
+PostRefresh
+PostDoEdit  186   7 
+PostRefresh
+PostDoEdit  189  21 
+PostRefresh
+PostDoEdit  191  11 
+PostRefresh
+PostDoEdit  191  10 
+PostRefresh
+PostDoEdit  192   8 
+PostRefresh
+PostDoEdit  191   8 
+PostRefresh
+PostDoEdit  191   7 
+PostRefresh
+PostDoEdit  192   6 
+PostRefresh
+PostDoEdit  191   6 
+PostRefresh
+PostDoEdit  191   5 
+PostRefresh
+PostDoEdit  192   4 
+PostRefresh
+PostDoEdit  192   4 
+PostRefresh
+PostDoEdit  192   4 
+PostRefresh
+PostDoEdit  173   7 
+PostRefresh
+PostDoEdit  189   8 
+PostRefresh
+PostSetBrushMode tBrushMode::move
+PostRefresh
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  992
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  1000
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  999
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  998
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  997
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  996
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  995
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  994
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  995
+PostGenerationStep
+PostGenerationStep
+PostPrevGeneration
+PostGotoGeneration  994
+PostGenerationStep
+PostRefresh
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostRefresh
+PostGenerationStep
+PostGenerationStep
+PostRefresh
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostRefresh
