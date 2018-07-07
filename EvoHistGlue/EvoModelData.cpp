@@ -27,10 +27,6 @@ void EvoModelData::OnAppCommand( unsigned short const usCmd, unsigned short cons
 	tEvoCmd const evoCmd = static_cast<tEvoCmd>( usCmd );
 	switch ( evoCmd )
 	{
-	case tEvoCmd::reset:
-		m_pWorkThread->WorkThread::ResetModel( );   // call layer 2
-		break;
-
 	case tEvoCmd::nextGen:
 		m_pWorkThread->WorkThread::GenerationStep( );   // call layer 2
 		break;
@@ -39,6 +35,7 @@ void EvoModelData::OnAppCommand( unsigned short const usCmd, unsigned short cons
 		m_pWorkThread->WorkThread::DoEdit( GridPoint( usParam ) );
 		break;
 
+	case tEvoCmd::reset:
 	case tEvoCmd::editSetBrushShape:
 	case tEvoCmd::editSetBrushSize:
 	case tEvoCmd::editSetBrushIntensity:

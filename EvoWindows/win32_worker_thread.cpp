@@ -65,15 +65,14 @@ WorkThread::~WorkThread( )
     m_pDisplayGridFunctor = nullptr;
 }
 
-void WorkThread::ResetModel( )  // Layer 1
-{
-    m_pEvolutionCore->ResetModel( m_pModelWork );
-}
-
 void WorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, unsigned short const usParam )  // Layer 1
 {
 	switch (evoCmd)
 	{
+	case tEvoCmd::reset:
+		m_pEvolutionCore->ResetModel( m_pModelWork );
+        break;
+
 	case tEvoCmd::editSetBrushMode:
         m_pModelWork->SetBrushStrategy( static_cast<tBrushMode>( usParam ) );
         break;
@@ -145,10 +144,6 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
     switch ( uiMsg )   // Layer 6
     {
         
-    case THREAD_MSG_RESET_MODEL:
-        ResetModel( );  
-        break;
-
     case THREAD_MSG_PROCESS_SCRIPT:
         DoProcessScript( (wstring *)lParam );
         break;
@@ -165,6 +160,10 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
     case THREAD_MSG_STOP:
 		StopComputation();
         return 0;
+
+    case THREAD_MSG_RESET_MODEL:
+		ApplyEditorCommand( tEvoCmd::reset, static_cast<unsigned short>( wParam ) );
+        break;
 
     case THREAD_MSG_SET_BRUSH_INTENSITY:
 		ApplyEditorCommand( tEvoCmd::editSetBrushIntensity, static_cast<unsigned short>( wParam ) );

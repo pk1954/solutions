@@ -58,7 +58,6 @@ public:
 	// functions called by worker thread  ( Layer 1 )
 
 	virtual void PostGenerationStep();
-	virtual void ResetModel( );       
 	virtual void GenerationStep( );
 	virtual void ApplyEditorCommand( tEvoCmd const, unsigned short const );
 	virtual void DoEdit( GridPoint const );

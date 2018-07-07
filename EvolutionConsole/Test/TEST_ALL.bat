@@ -1,10 +1,9 @@
-rem @echo off
+@echo off
 REM output color: blue
 
 set APP_NAME=EvolutionConsole
 
 call ..\..\Tests\TEST_SETUP %1
-echo on
 
 %CALL_TEST_CASE% Test_1 || goto ERROR_EXIT
 %CALL_TEST_CASE% Test_2 || goto ERROR_EXIT

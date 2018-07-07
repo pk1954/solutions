@@ -11,7 +11,6 @@ class GenDisplayWindow;
 class HistorySystem;
 class HistoryIterator;
 class RootWinDisplayFunctor;
-class AskHistoryCut;
 
 class HistWindow : public BaseWindow
 {
