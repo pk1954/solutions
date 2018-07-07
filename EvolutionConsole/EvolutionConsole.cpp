@@ -61,7 +61,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 		m_pEvoHistorySys  = new EvoHistorySys( );
 		m_pHistWorkThread = new HistWorkThread( & m_traceStream, m_pModelWork, m_pEvoHistorySys, nullptr );
 		m_pWorkThread     = m_pHistWorkThread;
-		m_pEvoHistorySys->Start( m_pModelWork, m_pHistWorkThread, nullptr, EvolutionCore::GetModelSize( ) );
+		m_pEvoHistorySys->Start( m_pModelWork, m_pHistWorkThread, nullptr, EvolutionCore::GetModelSize( ), false );
         DefineWin32HistWrapperFunctions( m_pHistWorkThread );
     }
     else

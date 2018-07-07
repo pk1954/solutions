@@ -21,7 +21,8 @@ EvoHistorySys::EvoHistorySys( ) :
 	m_pEvoModelFactory( nullptr ),
     m_pHistorySystem  ( nullptr ),
 	m_pHistAllocThread( nullptr ),
-    m_pStatusBar      ( nullptr )
+    m_pStatusBar      ( nullptr ),
+	m_bAskHistoryCut  ( false )
 {}
 
 void EvoHistorySys::Start
@@ -29,7 +30,8 @@ void EvoHistorySys::Start
 	EvolutionModelData * const pEvolutionModelData,
 	WorkThread         * const pWorkThread,
     StatusBar          * const pStatusBar,
-	unsigned long        const ulModelSize
+	unsigned long        const ulModelSize,
+	bool                 const bAskHistoryCut // true: ask user for history cut, false: cut without asking
 )
 {
     LONG const lMaxHistSize         = Util::GetMaxNrOfSlots( ulModelSize );
@@ -57,6 +59,7 @@ void EvoHistorySys::Start
     );
 
 	m_pStatusBar = pStatusBar;
+	m_bAskHistoryCut = bAskHistoryCut;
 
 	m_pHistAllocThread = new HistAllocThread;   // delegate allocation of history slots to a work thread
 	m_pHistAllocThread->AllocateHistorySlots( m_pHistorySystem,FALSE );  
@@ -101,9 +104,10 @@ bool EvoHistorySys::EvoCreateEditorCommand( tEvoCmd cmd, unsigned short usParam 
 { 
 	if ( 
 		  m_pHistorySystem->IsInHistoryMode( ) &&  // If in history mode,
-		 ! askHistoryCut( m_pHistorySystem )       // all future generations will be erased
+          m_bAskHistoryCut &&                      // and asking user is requested
+	      ! askHistoryCut( m_pHistorySystem )      // ask user, if all future generations should be erased
 	   )
-		return false;
+		return false;  // user answered no, do not erase
 
 	m_pHistorySystem->ClearHistory( GetCurrentGeneration( ) );  // if in history mode: cut off future generations
 	m_pHistorySystem->CreateAppCommand( static_cast< short >( cmd ), usParam ); 

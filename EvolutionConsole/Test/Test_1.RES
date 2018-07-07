@@ -1,5 +1,5 @@
 EvolutionConsole Release x64
-Build at Jul  7 2018 00:09:40
+Build at Jul  7 2018 13:11:58
 **** checkHistoryStructure
 m_genCmdList
 slots(1)

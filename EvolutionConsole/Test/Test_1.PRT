@@ -1,11 +1,11 @@
 [42m
 COMPARE V1.2
-Test performed: 07/07/18 00:29:06
+Test performed: 07/07/18 13:12:57
 Spec file:   TEST_1.SPC
 Result file: TEST_1.RES
 [41m
 EvolutionConsole Release x64
-Build at Jul  7 2018 00:09:40
+Build at Jul  7 2018 13:11:58
 **** checkHistoryStructure
 m_genCmdList
 slots(1)
