@@ -40,7 +40,7 @@ HWND TextWindow::StartTextWindow
     HWND const hWnd = StartBaseWindow
     ( 
         hWndParent,
-        CS_OWNDC | CS_DBLCLKS | CS_DROPSHADOW,
+        CS_OWNDC | CS_DBLCLKS, // | CS_DROPSHADOW,
         szClass,
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION
     );

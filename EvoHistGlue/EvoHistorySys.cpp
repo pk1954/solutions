@@ -61,13 +61,11 @@ void EvoHistorySys::Start
 	m_pStatusBar = pStatusBar;
 	m_bAskHistoryCut = bAskHistoryCut;
 
-	m_pHistAllocThread = new HistAllocThread;   // delegate allocation of history slots to a work thread
-	m_pHistAllocThread->AllocateHistorySlots( m_pHistorySystem,FALSE );  
+	m_pHistAllocThread = new HistAllocThread( m_pHistorySystem, TRUE );   // delegate allocation of history slots to a work thread
 }
 
 EvoHistorySys::~EvoHistorySys( ) 
 {
-	m_pHistAllocThread->ExitHistAllocThread();
     shutDownHistoryCache( );
 	delete m_pHistAllocThread;
 	delete m_pEvoModelFactory;

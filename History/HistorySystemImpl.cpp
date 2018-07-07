@@ -242,17 +242,17 @@ void HistorySystemImpl::checkHistoryStructure( )  // used only in debug mode
 {
      // check generation number of all generations in history cache
 
-	wcout << L"**** checkHistoryStructure" << endl;
-	wcout << L"m_genCmdList" << endl;
+//	wcout << L"**** checkHistoryStructure" << endl;
+//	wcout << L"m_genCmdList" << endl;
 
     for ( HIST_GENERATION gen = 0; gen < m_GenCmdList.GetCmdListSize( ); ++gen )
     {
         GenerationCmd generationCmd = m_GenCmdList[ gen ];
-		if ( generationCmd.IsDefined( ) )
-			wcout << gen 
-			      << L" (" << generationCmd.GetCommand() 
-				  << L"," << generationCmd.GetParam()
-			      << L")";
+//		if ( generationCmd.IsDefined( ) )
+//			wcout << gen 
+//			      << L" (" << generationCmd.GetCommand() 
+//				  << L"," << generationCmd.GetParam()
+//			      << L")";
         if ( generationCmd.IsCachedGeneration( ) )
         {
             short           const   sSlotNrFromList = generationCmd.GetParam( );
@@ -260,20 +260,20 @@ void HistorySystemImpl::checkHistoryStructure( )  // used only in debug mode
             HIST_GENERATION const   genNrFromCache  = pHistCacheItem->GetHistGenCounter( );
 	        GenerationCmd   const   genCmdFromCache = pHistCacheItem->GetGenCmd( );
             assert( genNrFromCache == gen );
-			wcout << L" cache: slot "
-				  << sSlotNrFromList
-	              << L" (" << genCmdFromCache.GetCommand() << L"," << genCmdFromCache.GetParam() << L") "
-				  << genNrFromCache << endl;
+//			wcout << L" cache: slot "
+//				  << sSlotNrFromList
+//	              << L" (" << genCmdFromCache.GetCommand() << L"," << genCmdFromCache.GetParam() << L") "
+//				  << genNrFromCache << endl;
         }
         else if ( generationCmd.IsUndefined( ) )
             break;
-		else
-			wcout << endl;
+//		else
+//			wcout << endl;
     }
 
     // check slot numbers and according generation commands
 
-	wcout << L"slots" << L"(" << m_pHistoryCache->GetNrOfHistCacheSlots( ) << L")" << endl;
+//	wcout << L"slots" << L"(" << m_pHistoryCache->GetNrOfHistCacheSlots( ) << L")" << endl;
 
     for ( short sSlotNr = 0; sSlotNr < m_pHistoryCache->GetNrOfHistCacheSlots( ); ++sSlotNr )
     {
@@ -284,11 +284,11 @@ void HistorySystemImpl::checkHistoryStructure( )  // used only in debug mode
         {
             GenerationCmd const generationCmd   = m_GenCmdList[ genNrFromCache ];
             short         const sSlotNrFromList = generationCmd.GetParam( );
-			wcout << L"slot " << sSlotNr 
-				  << L" (" << genCmdFromCache.GetCommand() << L"," << genCmdFromCache.GetParam() << L") "
-				  << L"gen " << genNrFromCache
-				  << L" sSlotNrFromList= " << sSlotNrFromList 
-				  << endl;
+//			wcout << L"slot " << sSlotNr 
+//				  << L" (" << genCmdFromCache.GetCommand() << L"," << genCmdFromCache.GetParam() << L") "
+//				  << L"gen " << genNrFromCache
+//				  << L" sSlotNrFromList= " << sSlotNrFromList 
+//				  << endl;
             assert( generationCmd.IsCachedGeneration( ) );
             assert( sSlotNrFromList == sSlotNr );
         }

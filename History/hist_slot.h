@@ -11,9 +11,11 @@ class HistCacheItem;
 class HistSlot
 {
 public: 
+	static int const NUL = -1; // indicates non existing hist slot
+
     HistSlot( ) :
-        m_iSenior       ( -1 ),
-        m_iJunior       ( -1 ),
+        m_iSenior       ( NUL ),
+        m_iJunior       ( NUL ),
         m_pHistCacheItem( nullptr )
     {}
 
@@ -25,9 +27,14 @@ public:
     int GetSeniorGen( ) const { return m_iSenior; }
     int GetJuniorGen( ) const { return m_iJunior; }
 
-    void SetSeniorGen    ( int const iSenior ) { m_iSenior = iSenior; }
-    void SetJuniorGen    ( int const iJunior ) { m_iJunior = iJunior; }
-    void SetHistCacheItem( HistCacheItem * const pItem   ) { m_pHistCacheItem = pItem;   }
+    void SetSeniorGen( int const iSenior ) { m_iSenior = iSenior; }
+    void SetJuniorGen( int const iJunior ) { m_iJunior = iJunior; }
+    
+	void SetHistCacheItem( HistCacheItem * const pItem ) 
+	{ 
+		m_pHistCacheItem = pItem;   
+	}
+
     void ShutDownHistCacheItem( )                                
     { 
         delete m_pHistCacheItem;

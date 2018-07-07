@@ -8,8 +8,8 @@ class HistorySystem;
 class HistAllocThread
 {
 public:
-	void AllocateHistorySlots( HistorySystem const * const, BOOL const );
-	void ExitHistAllocThread();
+	HistAllocThread( HistorySystem const * const, BOOL const );
+	~HistAllocThread( );
 
 private:
 	HistorySystem const * m_pHistorySys;
