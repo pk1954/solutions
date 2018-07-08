@@ -54,11 +54,11 @@ public:
 
 	//////// manipulation functions ////////
 
-    bool SetFieldSize( short, PixelPoint const );
-    bool CenterPoi( PixelPoint const, GridPoint const );
-    void MoveGrid( PixelPoint const &);
-    bool Zoom( bool, PixelPoint const );
-    bool FitToRect( GridRect const &, PixelRectSize const );
+    bool  SetFieldSize( short, PixelPoint const );
+    bool  CenterPoi( PixelPoint const, GridPoint const );
+    void  MoveGrid( PixelPoint const &);
+	short GetNewFieldSize( bool const ) const;
+    bool  FitToRect( GridRect const &, PixelRectSize const );
 
 private:
     bool       isValidFieldSize( long const ) const; 

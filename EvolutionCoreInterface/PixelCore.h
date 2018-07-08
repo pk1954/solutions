@@ -8,6 +8,7 @@
 class EvolutionCore;
 class EvolutionModelData;
 class PixelCoordinates;
+class PixelRectSize;
 
 class PixelCore
 {
@@ -23,8 +24,12 @@ public:
 
 	void       SetSelection( PixelPoint const &, PixelPoint const & );
 	PixelPoint GetPoiCenter() const;
-	void       SetPOI( PixelPoint const pixPos ) const;
-
+	void       SetPOI( PixelPoint const ) const;
+	bool       CenterPoi( PixelPoint const ) const;
+	void       FitToRect( PixelRectSize const ) const;
+	PixelPoint GetNewCenter( PixelPoint const ) const;
+	void       SetFieldSize( short const, PixelPoint const );
+		
 private:
 	EvolutionCore      * m_pCore;
     EvolutionModelData * m_pModelWork;

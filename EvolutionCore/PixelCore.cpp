@@ -57,3 +57,36 @@ void PixelCore::SetPOI( PixelPoint const pixPos ) const
     }
 }
 
+bool PixelCore::CenterPoi( PixelPoint const pntCenter ) const
+{
+	return m_pPixelCoordinates->CenterPoi
+		   ( 
+			  pntCenter, 
+			  m_pCore->FindPOI( m_pModelWork )
+		   );
+}
+
+void PixelCore::FitToRect( PixelRectSize const rectSize ) const
+{
+	m_pPixelCoordinates->FitToRect
+	( 
+		m_pModelWork->GetSelection(),
+		rectSize
+	);
+}
+
+PixelPoint PixelCore::GetNewCenter( PixelPoint const pntCenter ) const
+{
+	return m_pCore->IsPoiDefined( ) 
+	       ? GetPoiCenter( )
+	       : pntCenter;
+}
+
+void PixelCore::SetFieldSize( short const sNewFieldSize, PixelPoint const pntCenter )
+{
+    (void)m_pPixelCoordinates->SetFieldSize
+	( 
+		sNewFieldSize, 
+		GetNewCenter( pntCenter ) 
+	);
+}

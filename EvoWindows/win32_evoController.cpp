@@ -98,7 +98,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 
 		case IDM_GOTO_ORIGIN:
 		case IDM_GOTO_DEATH:
-			m_pHistWorkThread->PostHistoryAction( wmId, GridPoint( GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) ) );
+			m_pHistWorkThread->PostHistoryAction( wmId, UnpackFromLParam(lParam) );
 			break;
 
 		case IDM_MAX_SPEED:

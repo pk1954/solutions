@@ -215,14 +215,10 @@ void GridWindow::doPaint( )
 
     if ( m_bMoveAllowed && m_pCore->IsPoiDefined( ) )
 	{
-		if ( ! m_pPixelCoordinates->CenterPoi
-		       ( 
-				   GetClRectCenter( ), 
-				   m_pCore->FindPOI( m_pModelWork )
-			   ) 
-		   )
+		if ( ! m_pPixelCore->CenterPoi( GetClRectCenter( ) ) )
 		   Invalidate( FALSE );    // repeat if POI is not in center 
 	}
+
     m_pPerformanceWindow->DisplayStop( );
 }
 
@@ -233,34 +229,39 @@ void GridWindow::resize()
 	m_pDrawFrame->Resize( );
 }
 
-PixelPoint GridWindow::getNewCenter( )
-{
-	return m_pCore->IsPoiDefined( ) 
-	       ? m_pPixelCore->GetPoiCenter( )
-	       : GetClRectCenter( );
-}
-
 void GridWindow::zoom( BOOL const bZoomIn )
 {
-    (void)m_pPixelCoordinates->Zoom( bZoomIn, getNewCenter() );
-	resize();
+    setZoom( m_pPixelCoordinates->GetNewFieldSize( bZoomIn ) );
 }
 
-void GridWindow::setZoom(SHORT const fieldSize)
+void GridWindow::setZoom( SHORT const fieldSize )
 {
-    (void)m_pPixelCoordinates->SetFieldSize( fieldSize, getNewCenter() );
+    m_pPixelCore->SetFieldSize( fieldSize, GetClRectCenter( ) );
 	resize();
 }
 
 void GridWindow::fit( )
 {
-    (void)m_pPixelCoordinates->FitToRect
-	( 
-		m_pModelWork->GetSelection(),
-		GetClRectSize( )
-	);
+    m_pPixelCore->FitToRect( GetClRectSize( ) );
 	m_pModelWork->ResetSelection( );
 	resize();
+    m_pWorkThread->PostRefresh( );
+}
+
+void GridWindow::mouseWheelAction( int iDelta )
+{
+	BOOL const bDirection = ( iDelta > 0 );
+	short      sNewFieldSize;
+
+	iDelta = abs( iDelta );
+			
+	while ( --iDelta >= 0 )
+	{
+		sNewFieldSize = m_pPixelCoordinates->GetNewFieldSize( bDirection );
+	}
+
+	m_pPixelCoordinates->SetFieldSize( sNewFieldSize, GetClRectCenter( ) );
+	m_pDrawFrame->Resize( );
     m_pWorkThread->PostRefresh( );
 }
 
@@ -311,15 +312,14 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             case IDM_GOTO_ORIGIN:  // commands using cursor pos are handled here
             case IDM_GOTO_DEATH:
             {
-                PixelPoint const ptCrsr    = GetCrsrPosFromLparam( lParam );
-                GridPoint  const gpCrsr    = m_pPixelCoordinates->Pixel2GridPos( ptCrsr );
-				long       const lParamNew = MAKELONG( gpCrsr.x, gpCrsr.y );
-				Post2Application( WM_COMMAND, wParam, lParamNew );
+                PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );
+                GridPoint  const gpCrsr = m_pPixelCoordinates->Pixel2GridPos( ptCrsr );
+				Post2Application( WM_COMMAND, wParam, Pack2LParam( gpCrsr ) );
 			}
             break;
 
             default:
-                Post2Application( message, wParam, lParam );
+                Post2Application( message, wParam, lParam ); // not handled here, delegate to application
             }
         }
 
@@ -327,19 +327,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         return 1;  //  TODO clarify return code
 
     case WM_MOUSEWHEEL:
-		{
-			int        iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;
-			BOOL const bDirection = ( iDelta > 0 );
-			iDelta = abs( iDelta );
-			
-			while ( --iDelta >= 0 )
-			{
-                (void)m_pPixelCoordinates->Zoom( bDirection, GetClRectCenter( ) );
-			}
-
-			m_pDrawFrame->Resize( );
-            m_pWorkThread->PostRefresh( );
-		}
+		mouseWheelAction(GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA);
         return 0;
 
     case WM_LBUTTONDOWN:

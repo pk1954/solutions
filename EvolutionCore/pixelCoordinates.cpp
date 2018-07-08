@@ -84,7 +84,7 @@ bool PixelCoordinates::SetFieldSize( short const sNewFieldSize, PixelPoint const
     return true;
 }
 
-bool PixelCoordinates::Zoom( bool const bZoomIn, PixelPoint const pntCenter )
+short PixelCoordinates::GetNewFieldSize( bool const bZoomIn ) const
 {
     short sNewFieldSize = m_sFieldSize;
     if ( bZoomIn )
@@ -97,8 +97,7 @@ bool PixelCoordinates::Zoom( bool const bZoomIn, PixelPoint const pntCenter )
         short const sDelta = ( m_sFieldSize <= 16 ) ? 1 : (( m_sFieldSize <= 64 ) ? 16 : 32);
         sNewFieldSize -= sDelta;
     }
-
-    return SetFieldSize( sNewFieldSize, pntCenter );
+	return sNewFieldSize;
 }
 
 PixelPoint PixelCoordinates::Pixel2PixelSize( PixelPoint const & ptSizeIn, PixelCoordinates const & fTarget ) const 

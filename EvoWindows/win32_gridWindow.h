@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "minwindef.h"
+#include "windowsx.h"
 #include "win32_util.h"
 #include "win32_editor.h"
 #include "win32_crsrWindow.h"
@@ -74,10 +76,20 @@ private:
 	void resize( );
 	void zoom( BOOL const );
 	void setZoom( SHORT const );
-	PixelPoint getNewCenter( );
+	void mouseWheelAction( int );
     BOOL inObservedClientRect( LPARAM );
     void moveGrid( PixelPoint const & );
     void onMouseMove( LPARAM, WPARAM );
     void contextMenu( LPARAM );
     void doPaint( );
 };
+
+static LPARAM Pack2LParam( GridPoint const gp )
+{
+	return MAKELONG( gp.x, gp.y );
+}
+
+static GridPoint UnpackFromLParam( LPARAM const lParam )
+{
+	return GridPoint( GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) );
+}
