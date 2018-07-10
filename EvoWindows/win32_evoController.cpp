@@ -10,6 +10,7 @@
 #include "win32_performanceWindow.h"
 #include "win32_status.h"
 #include "win32_gridWindow.h"
+#include "win32_packGridPoint.h"
 #include "win32_evoController.h"
 
 EvoController::EvoController() :
@@ -61,6 +62,18 @@ void EvoController::SetGenerationDelay( DWORD const dwNewDelay )  // in millisec
 		m_pStatusBar->SetSpeedTrackBar( dwNewDelay );
 }
 
+void EvoController::scriptDialog( )
+{
+	// TODO: replace by general solution
+	wchar_t szBuffer[MAX_PATH];
+	DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer);
+	assert( dwRes > 0 );
+	wstring const wstrPath( szBuffer );
+	wstring wstrFile = AskForScriptFileName( wstrPath );
+	if ( ! wstrFile.empty( ) )
+		m_pHistWorkThread->PostProcessScript( wstrFile );
+}
+
 void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 {
     int const wmId = LOWORD( wParam );
@@ -106,16 +119,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
         case IDM_SCRIPT_DIALOG:
-            {
-                // TODO: replace by general solution
-                wchar_t szBuffer[MAX_PATH];
-                DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer);
-                assert( dwRes > 0 );
-                wstring const wstrPath( szBuffer );
-                wstring wstrFile = AskForScriptFileName( wstrPath );
-                if ( ! wstrFile.empty( ) )
-                   m_pHistWorkThread->PostProcessScript( wstrFile );
-            }
+			scriptDialog( );
             break;
                  
 		case IDM_MINI_WINDOW:

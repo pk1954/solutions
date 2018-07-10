@@ -20,7 +20,6 @@ HistWorkThread::HistWorkThread
     EvolutionModelData * const pModel,
     EvoHistorySys      * const pHistorySys,
 	EditorWindow       * const pEditorWindow
-
 ) :
     WorkThread( pTraceStream ),
     m_genDemanded( 0 ),
@@ -59,7 +58,7 @@ void HistWorkThread::GenerationStep( )   // Layer 5
 				m_pEditorWindow->UpdateControls( );
 		}
 
-		postMsg2WorkThread( THREAD_MSG_REFRESH, 0, 0 );
+		workMessage( THREAD_MSG_REFRESH, 0, 0 );
     
 		if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
 			WorkThread::PostGenerationStep(  );   // Loop! Will call indirectly HistWorkThread::GenerationStep again
@@ -86,7 +85,7 @@ void HistWorkThread::StopComputation()
 
 void HistWorkThread::DoEdit( GridPoint const gp )
 {
-	m_pEvoHistorySys->EvoCreateEditorCommand( tEvoCmd::editDoEdit, gp.Pack( ) );
+	m_pEvoHistorySys->EvoCreateEditorCommand( tEvoCmd::editDoEdit, gp.Pack2short( ) );
 }
 
 void HistWorkThread::postGotoGeneration( HIST_GENERATION const gen )
@@ -94,7 +93,7 @@ void HistWorkThread::postGotoGeneration( HIST_GENERATION const gen )
     assert( gen >= 0 );
 
 	m_genDemanded = gen;
-    postMsg2WorkThread( THREAD_MSG_STEP, 0, 0 );    // will call indirectly HistWorkThread::GenerationStep
+    workMessage( THREAD_MSG_STEP, 0, 0 );    // will call indirectly HistWorkThread::GenerationStep
 }
 
 void HistWorkThread::PostRedo( )

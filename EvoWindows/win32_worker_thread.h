@@ -23,6 +23,7 @@ class EvolutionModelData;
 class StatusBar;
 class WinManager;
 class DisplayAll;
+class EditorWindow;
 
 class WorkThread
 {
@@ -35,7 +36,8 @@ public:
     void Start
     ( 
         StatusBar          * const, 
-        PerformanceWindow  * const, 
+        PerformanceWindow  * const,
+		EditorWindow       * const,  
         DisplayAll   const * const, 
         EvolutionCore      * const,
         EvolutionModelData * const
@@ -82,7 +84,7 @@ protected:
         THREAD_MSG_LAST = THREAD_MSG_EXIT
     };
 
-    void postMsg2WorkThread( UINT, WPARAM, LPARAM );
+    void workMessage( UINT, WPARAM, LPARAM );
 
 	BOOL EditorStateHasChanged( );
 	void SaveEditorState( );
@@ -98,17 +100,20 @@ private:
     StatusBar          * m_pStatusBar;
     DisplayAll   const * m_pDisplayGridFunctor;
     PerformanceWindow  * m_pPerformanceWindow;
+    EditorWindow       * m_pEditorWindow;
     EvolutionCore      * m_pEvolutionCore;
     EvolutionModelData * m_pModelWork;
     HANDLE               m_hEventThreadStarter;
     DWORD                m_dwThreadId;
     HANDLE               m_hTimer;
+	HANDLE				 m_hThread;
     BOOL                 m_bContinue;
     INT                  m_iScriptLevel;
 
     // private member functions
 
-	DWORD processWorkerMessage( UINT, WPARAM, LPARAM );
+	void postMessage( UINT, WPARAM, LPARAM );
+	void sendMessage( UINT, WPARAM, LPARAM );
 
 friend static DWORD WINAPI WorkerThread( _In_ LPVOID );
 }; 

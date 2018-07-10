@@ -27,7 +27,7 @@ public:
 	      y ( usParam & 0x00ff )
 	{ }
 
-	unsigned short Pack( ) const
+	unsigned short Pack2short( ) const
 	{
 		assert( x < GRID_WIDTH );
 		assert( y < GRID_HEIGHT );

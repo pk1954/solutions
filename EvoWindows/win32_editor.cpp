@@ -153,42 +153,34 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 
             case IDM_RANDOM_STRATEGY:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::randomStrategy );
-                m_pDspOptWindow->SetIndividualsVisible( );
                 break;
 
             case IDM_COOPERATE:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::cooperate );
-                m_pDspOptWindow->SetIndividualsVisible( );
                 break;
 
             case IDM_DEFECT:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::defect );
-                m_pDspOptWindow->SetIndividualsVisible( );
                 break;
 
             case IDM_TIT4TAT:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::tit4tat );
-                m_pDspOptWindow->SetIndividualsVisible( );
                 break;
 
             case IDM_KILL_ANIMALS:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::noAnimals );
-                m_pDspOptWindow->SetIndividualsVisible( );
                 break;
 
             case IDM_MUT_RATE:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::mutRate  );
-                m_pDspOptWindow->SetDisplayMode( wId );
                 break;
 
             case IDM_FERTILITY:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::fertility  );
-                m_pDspOptWindow->SetDisplayMode( wId );
                 break;
 
             case IDM_FOOD_STOCK:
                 m_pWorkThread->PostSetBrushMode( tBrushMode::food );
-                m_pDspOptWindow->SetDisplayMode( wId );
                 break;
 
             case IDM_EDIT_CIRCLE:

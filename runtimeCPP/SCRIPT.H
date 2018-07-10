@@ -61,14 +61,20 @@ public:
 
     bool ScrProcess( wstring const & );
 
+	static void StopProcessing( ) 
+	{ 
+		m_bStop = true; 
+	}
+
 private:
 
     bool          readSign( void );
     unsigned long numeric( wstring const &, unsigned long, bool * );
 
     Scanner * m_pScanAct;   // Pointer to active stack element
-
-    static Script_Functor const * m_pWrapHook;
+	
+	static bool                   m_bStop;
+	static Script_Functor const * m_pWrapHook;
 };
 
 class WrapInclude : public Script_Functor

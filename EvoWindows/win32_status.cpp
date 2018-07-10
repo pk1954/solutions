@@ -332,7 +332,7 @@ int StatusBar::GetHeight( ) const
     
 void StatusBar::Resize( ) const 
 {
-    (void)SendMessage( WM_SIZE, 0, 0 );
+    (void)SendNotifyMessage( WM_SIZE, 0, 0 );
 }
 
 void StatusBar::ClearStatusLine( )
@@ -342,7 +342,7 @@ void StatusBar::ClearStatusLine( )
 
 void StatusBar::DisplayStatusLine( wstring const & wstrLine )
 {
-    (void)SendMessage( SB_SETTEXT, static_cast<int>( tPart::ScriptLine ), (LPARAM)( wstrLine.c_str( ) ) );
+    (void)SendNotifyMessage( SB_SETTEXT, static_cast<int>( tPart::ScriptLine ), (LPARAM)( wstrLine.c_str( ) ) );
 }
 
 void StatusBar::DisplayScriptLine( wstring const & wszPath, int iLineNr, wstring const & wstrLine )
@@ -355,7 +355,7 @@ void StatusBar::DisplayCurrentGeneration( )
 {
     assert( m_pModelWork != nullptr );
     m_wstrGeneration = L"EvoGen " + to_wstring( m_pModelWork->GetEvoGenerationNr( ) );
-    (void)SendMessage( SB_SETTEXT, static_cast<int>( tPart::Generation ), (LPARAM)( m_wstrGeneration.c_str() ) );
+    (void)SendNotifyMessage( SB_SETTEXT, static_cast<int>( tPart::Generation ), (LPARAM)( m_wstrGeneration.c_str() ) );
 }
 
 INT_PTR StatusBar::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )

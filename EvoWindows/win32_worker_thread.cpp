@@ -7,10 +7,12 @@
 #include "Resource.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
+#include "win32_packGridPoint.h"
 #include "win32_hiResTimer.h"
 #include "win32_script.h"
 #include "win32_status.h"
 #include "win32_performanceWindow.h"
+#include "win32_editor.h"
 #include "win32_displayAll.h"
 #include "win32_worker_thread.h"
 
@@ -22,12 +24,14 @@ using namespace std;
 WorkThread::WorkThread( wostream * pTraceStream ) :
     m_hEventThreadStarter( nullptr ),
     m_dwThreadId         ( 0 ),
+	m_hThread            ( nullptr ),
     m_bTrace             ( TRUE ),
     m_pTraceStream       ( pTraceStream ),
     m_hTimer             ( nullptr ),
     m_iScriptLevel       ( 0 ),
     m_pStatusBar         ( nullptr ),
     m_pPerformanceWindow ( nullptr ),
+	m_pEditorWindow      ( nullptr ),
     m_pDisplayGridFunctor( nullptr ),
     m_pEvolutionCore     ( nullptr ),
     m_pModelWork         ( nullptr ),
@@ -38,19 +42,21 @@ void WorkThread::Start
 ( 
     StatusBar          * const pStatus, 
     PerformanceWindow  * const pPerformanceWindow,
+	EditorWindow       * const pEditorWindow,
     DisplayAll   const * const pDisplayGridFunctor,
     EvolutionCore      * const pEvolutionCore,
     EvolutionModelData * const pModel
 )
 {
-    HANDLE const hThread  = Util::MakeThread( WorkerThread, this, &m_dwThreadId, &m_hEventThreadStarter );
+    m_hThread             = Util::MakeThread( WorkerThread, this, &m_dwThreadId, &m_hEventThreadStarter );
     m_pPerformanceWindow  = pPerformanceWindow;
+	m_pEditorWindow       = pEditorWindow;
     m_pStatusBar          = pStatus;
     m_pDisplayGridFunctor = pDisplayGridFunctor;
     m_pEvolutionCore      = pEvolutionCore;
     m_pModelWork          = pModel;
 
-    (void)SetThreadAffinityMask( hThread, 0x0002 );
+    (void)SetThreadAffinityMask( m_hThread, 0x0002 );
 
     m_pEvolutionCore->SetGridDisplayFunctor( m_pDisplayGridFunctor );   // display callback for core
 }
@@ -60,8 +66,10 @@ WorkThread::~WorkThread( )
     m_hEventThreadStarter = nullptr;
     m_pTraceStream        = nullptr;
     m_hTimer              = nullptr;
+	m_hThread             = nullptr;
     m_pStatusBar          = nullptr;
     m_pPerformanceWindow  = nullptr;
+    m_pEditorWindow       = nullptr;
     m_pDisplayGridFunctor = nullptr;
 }
 
@@ -93,6 +101,7 @@ void WorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, unsigned short const 
 	default:
 		break;
 	}
+	m_pEditorWindow->UpdateControls( );
 }
 
 void WorkThread::DoEdit( GridPoint const gp )  // Layer 1
@@ -122,7 +131,7 @@ void WorkThread::GenerationRun( )  // Layer 1
     {
 		if (m_pPerformanceWindow != nullptr)
 		    m_pPerformanceWindow->SleepDelay( );
-        postMsg2WorkThread( THREAD_MSG_GENERATION_RUN, 0, 0 );
+        PostRunGenerations( );
     }
 }
 
@@ -137,9 +146,28 @@ void WorkThread::DoProcessScript( wstring * const pwstr )
 void WorkThread::StopComputation()
 {
 	m_bContinue = FALSE;
+	Script::StopProcessing( );
 }
 
-DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
+static DWORD WINAPI WorkerThread( _In_ LPVOID lpParameter )
+{
+    WorkThread * const pWT = static_cast<WorkThread *>( lpParameter );
+    MSG                msg;
+       
+    (void)PeekMessage( &msg, nullptr, WM_USER, WM_USER, PM_NOREMOVE );  // cause creation of message queue
+    (void)SetEvent( pWT->m_hEventThreadStarter );				        // trigger waiting thread to continue
+
+    do
+    {
+        BOOL const bRet = GetMessage( &msg, nullptr, 0, 0 );
+        assert( bRet >= 0 );
+        (void)pWT->sendMessage( msg.message, msg.wParam, msg.lParam );
+    } while ( msg.message != pWT->THREAD_MSG_EXIT );
+
+    return 0;
+}
+
+void WorkThread::sendMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 {
     switch ( uiMsg )   // Layer 6
     {
@@ -150,16 +178,16 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
 
     case THREAD_MSG_STEP:
         GenerationStep( );  
-        return 0;
+        break;
 
     case THREAD_MSG_GENERATION_RUN:
         assert( m_iScriptLevel == 0 );
         GenerationRun( );
-        return 0;
+        break;
 
     case THREAD_MSG_STOP:
 		StopComputation();
-        return 0;
+        break;
 
     case THREAD_MSG_RESET_MODEL:
 		ApplyEditorCommand( tEvoCmd::reset, static_cast<unsigned short>( wParam ) );
@@ -182,16 +210,11 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
         break;
 
     case THREAD_MSG_DO_EDIT:
-        DoEdit( GridPoint( wParam, lParam ) );
+        DoEdit( UnpackFromLParam( lParam ) );
         break;
 
     case THREAD_MSG_REFRESH:
         break;
-
-    case THREAD_MSG_EXIT:
-        m_bContinue = FALSE;
-        PostMessage( (HWND)lParam, WM_DESTROY, 0, 0 );
-        return 0;
 
     default:
         break;
@@ -201,41 +224,26 @@ DWORD WorkThread::processWorkerMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam
 	    m_pStatusBar->DisplayCurrentGeneration( );
 	if (m_pDisplayGridFunctor != nullptr)
 	    ( * m_pDisplayGridFunctor )( FALSE );
-
-    return 0;
 }
 
-static DWORD WINAPI WorkerThread( _In_ LPVOID lpParameter )
+void WorkThread::postMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 {
-    WorkThread * const pWT = static_cast<WorkThread *>( lpParameter );
-    MSG                msg;
-       
-    (void)PeekMessage( &msg, nullptr, WM_USER, WM_USER, PM_NOREMOVE );  // cause creation of message queue
-    (void)SetEvent( pWT->m_hEventThreadStarter );				        // trigger waiting thread to continue
-
-    do
-    {
-        BOOL const bRet = GetMessage( &msg, nullptr, 0, 0 );
-        assert( bRet >= 0 );
-        (void)pWT->processWorkerMessage( msg.message, msg.wParam, msg.lParam );
-    } while ( msg.message != pWT->THREAD_MSG_EXIT );
-
-    return 0;
+    if ( m_pDisplayGridFunctor != nullptr )
+        ( * m_pDisplayGridFunctor ).Continue( );  // trigger worker thread if waiting for an event
+    BOOL const bRes = PostThreadMessage( m_dwThreadId, uiMsg, wParam, lParam );
+    DWORD err = GetLastError( );
+    assert( bRes );
 }
 
-void WorkThread::postMsg2WorkThread( UINT uiMsg, WPARAM wParam, LPARAM lParam )
+void WorkThread::workMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 {
     if ( m_iScriptLevel > 0 )
     {
-        (void)processWorkerMessage( uiMsg, wParam, lParam );
+        sendMessage( uiMsg, wParam, lParam );
     }
     else
     {
-        if ( m_pDisplayGridFunctor != nullptr )
-            ( * m_pDisplayGridFunctor ).Continue( );  // trigger worker thread if waiting for an event
-        BOOL const bRes = PostThreadMessage( m_dwThreadId, uiMsg, wParam, lParam );
-        DWORD err = GetLastError( );
-        assert( bRes );
+        postMessage( uiMsg, wParam, lParam );
     }
 }
 
@@ -255,14 +263,14 @@ void WorkThread::PostReset( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-    postMsg2WorkThread( THREAD_MSG_RESET_MODEL, 0, 0 );
+    workMessage( THREAD_MSG_RESET_MODEL, 0, 0 );
 }
 
 void WorkThread::PostRefresh( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-    postMsg2WorkThread( THREAD_MSG_REFRESH, 0, 0 );
+    workMessage( THREAD_MSG_REFRESH, 0, 0 );
 }
 
 void WorkThread::PostDoEdit( GridPoint const & gp )
@@ -271,9 +279,7 @@ void WorkThread::PostDoEdit( GridPoint const & gp )
     {
         if ( m_bTrace )
             * m_pTraceStream << __func__ << L" " << gp << endl;
-        //lint -e571  suspicious cast <WPARAM>
-        postMsg2WorkThread( THREAD_MSG_DO_EDIT, static_cast<WPARAM>(gp.x), static_cast<LPARAM>(gp.y) );
-        //lint +e571
+        workMessage( THREAD_MSG_DO_EDIT, 0, Pack2LParam( gp ) );
     }
 }
 
@@ -281,28 +287,28 @@ void WorkThread::PostSetBrushIntensity( INT const iValue )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << iValue << endl;
-    postMsg2WorkThread( THREAD_MSG_SET_BRUSH_INTENSITY, iValue, 0 );
+    workMessage( THREAD_MSG_SET_BRUSH_INTENSITY, iValue, 0 );
 }
 
 void WorkThread::PostSetBrushSize( INT const iValue )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << iValue << endl;
-    postMsg2WorkThread( THREAD_MSG_SET_BRUSH_SIZE, iValue, 0 );
+    workMessage( THREAD_MSG_SET_BRUSH_SIZE, iValue, 0 );
 }
 
 void WorkThread::PostSetBrushMode( tBrushMode const mode )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetBrushModeName( mode ) << endl;
-    postMsg2WorkThread( THREAD_MSG_SET_BRUSH_MODE, static_cast<WPARAM>( mode ), 0 );
+    workMessage( THREAD_MSG_SET_BRUSH_MODE, static_cast<WPARAM>( mode ), 0 );
 }
 
 void WorkThread::PostSetBrushShape( tShape const shape )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetShapeName( shape ) << endl;
-    postMsg2WorkThread( THREAD_MSG_SET_BRUSH_SHAPE, static_cast<WPARAM>( shape ), 0 );
+    workMessage( THREAD_MSG_SET_BRUSH_SHAPE, static_cast<WPARAM>( shape ), 0 );
 }
 
 void WorkThread::PostGenerationStep(  )
@@ -310,18 +316,21 @@ void WorkThread::PostGenerationStep(  )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
 
-    postMsg2WorkThread( THREAD_MSG_STEP, 0, 0 );
+    workMessage( THREAD_MSG_STEP, 0, 0 );
 }
 
 void WorkThread::PostRunGenerations( )
 {
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << endl;
+
 	m_bContinue = TRUE;
-	postMsg2WorkThread(THREAD_MSG_GENERATION_RUN, 0, 0);
+	workMessage( THREAD_MSG_GENERATION_RUN, 0, 0 );
 }
 
 void WorkThread::PostStopComputation( )
 {
-	postMsg2WorkThread(THREAD_MSG_STOP, 0, 0);
+	workMessage( THREAD_MSG_STOP, 0, 0 );
 }
 
 void WorkThread::PostProcessScript( wstring const & wstrPath )
@@ -331,13 +340,15 @@ void WorkThread::PostProcessScript( wstring const & wstrPath )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" \"" << wstrPath.c_str( )  << "\""<< endl;
 
-    postMsg2WorkThread( THREAD_MSG_PROCESS_SCRIPT, 0, (LPARAM)pwstr );
+    workMessage( THREAD_MSG_PROCESS_SCRIPT, 0, (LPARAM)pwstr );
 }
 
 // no trace output
 
 void WorkThread::PostEndThread( HWND const hwndCtl )
 {
-    postMsg2WorkThread( THREAD_MSG_STOP, 0, 0 );
-    postMsg2WorkThread( THREAD_MSG_EXIT, 0, (LPARAM)hwndCtl );
+	StopComputation();                                   // stop running computation and script processing
+	postMessage( THREAD_MSG_EXIT, 0, (LPARAM)hwndCtl );  // stop message pump of thread
+	::WaitForSingleObject(m_hThread, INFINITE);          // wait until thread has stopped
+	DestroyWindow( hwndCtl);                             // trigger termination of application
 }

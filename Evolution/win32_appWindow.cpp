@@ -63,7 +63,7 @@
 
 AppWindow::AppWindow( ) :
     BaseWindow( ),
-	m_bSimulationMode( TRUE ),
+	m_bSimulationMode( FALSE ),
     m_displayGridFunctor( ),
     m_pMainGridWindow( nullptr ),
     m_pMiniGridWindow( nullptr ),
@@ -161,7 +161,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
         EnableMenuItem( GetMenu( hWndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
 
 	m_pFocusPoint    ->Start( m_pEvoHistorySys, m_pModelWork );
-	m_pWorkThread    ->Start( m_pStatusBar, m_pPerfWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
+	m_pWorkThread    ->Start( m_pStatusBar, m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
 	m_pDspOptWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork );
     m_pEditorWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork, m_pDspOptWindow );
     m_pStatusBar     ->Start( hWndApp, m_pEvoController, m_pModelWork );
@@ -185,7 +185,6 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pMiniGridWindow->Size( );
 
     m_displayGridFunctor.SetWinManager( m_pWinManager );
-	::PostMessage( hWndApp, WM_COMMAND, (WPARAM)IDM_TOGGLE_EDIT_SIMU_MODE, 0 );
 
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
@@ -197,6 +196,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	m_pStatusBar->ClearStatusLine( );
 
     (void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
+	setSimulationMode( tBoolOp::opFalse );
 
 //	Script::ProcessScript( L"std_script.in" );
 }

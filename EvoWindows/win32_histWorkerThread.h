@@ -12,7 +12,13 @@ class EditorWindow;
 class HistWorkThread : public WorkThread
 {
 public:
-    HistWorkThread( wostream *, EvolutionModelData * const, EvoHistorySys * const, 	EditorWindow * const );
+    HistWorkThread
+	( 
+		wostream *, 
+		EvolutionModelData * const, 
+		EvoHistorySys * const, 	
+		EditorWindow * const
+	);
     ~HistWorkThread( );
 
 	void PostUndo();

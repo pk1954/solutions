@@ -91,6 +91,15 @@ public:
     }
 };
 
+class WrapPostRunGenerations : public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        m_pWorkThread->PostGenerationStep( );
+    }
+};
+
 class WrapPostProcessScript : public Script_Functor
 {
 public:
@@ -159,6 +168,7 @@ void DefineWin32WrapperFunctions
     DEF_FUNC( PostRefresh );
     DEF_FUNC( PostReset );
     DEF_FUNC( PostGenerationStep );
+    DEF_FUNC( PostRunGenerations );
     DEF_FUNC( SetGenerationDelay );
     DEF_FUNC( PostProcessScript );
     DEF_FUNC( Break );

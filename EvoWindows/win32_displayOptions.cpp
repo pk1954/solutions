@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <functional>
 #include "Resource.h"
+#include "windowsx.h"
 #include "gridNeighbor.h"
 #include "EvolutionModelData.h"
 #include "win32_util.h"
@@ -43,12 +44,12 @@ void DspOptWindow::SetDisplayMode( WORD const wMode )
 
 void DspOptWindow::SetIndividualsVisible( )
 {
-    (void)::SendMessage( GetDlgItem( IDM_ANIMALS ), BM_SETCHECK, BST_CHECKED, 0 );
+	Button_SetCheck( GetDlgItem( IDM_ANIMALS), BST_CHECKED );
 }
 
 BOOL DspOptWindow::AreIndividualsVisible( ) const
 {
-    return ( BST_CHECKED == ::SendMessage( GetDlgItem( IDM_ANIMALS ), BM_GETCHECK, 0, 0 ) );
+    return ( BST_CHECKED == Button_GetCheck( GetDlgItem( IDM_ANIMALS ) ) );
 }
 
 int DspOptWindow::getNeighborHoodMeanValue( GridPoint const & gp ) const
@@ -70,8 +71,8 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
     switch (message)
     {
     case WM_INITDIALOG:
-        (void)::SendMessage( GetDlgItem( IDM_ANIMALS),    BM_SETCHECK, BST_CHECKED, 0 );
-        (void)::SendMessage( GetDlgItem( IDM_FOOD_STOCK), BM_SETCHECK, BST_CHECKED, 0 );
+		Button_SetCheck( GetDlgItem( IDM_ANIMALS   ), BST_CHECKED );
+		Button_SetCheck( GetDlgItem( IDM_FOOD_STOCK), BST_CHECKED );
         return static_cast<INT_PTR>(TRUE);
 
     case WM_COMMAND:

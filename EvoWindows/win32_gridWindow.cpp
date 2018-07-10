@@ -16,8 +16,9 @@
 #include "win32_performanceWindow.h"
 #include "win32_worker_thread.h"
 #include "win32_aboutBox.h"
-#include "win32_gridWindow.h"
+#include "win32_packGridPoint.h"
 #include "win32_displayOptions.h"
+#include "win32_gridWindow.h"
 
 //lint -esym( 613, GridWindow::m_pPixelCoordinates )   nullptr will not be used
 

@@ -35,7 +35,7 @@ public:
 	void ProcessCommand( WPARAM const, LPARAM const );
 
 private:
-	void setSimulationMode( tBoolOp const );
+	void scriptDialog( );
 
 	BOOL                m_bTrace;
     wostream          * m_pTraceStream;

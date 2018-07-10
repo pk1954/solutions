@@ -59,6 +59,11 @@ public:
         return ::SendMessage( m_hWnd, msg, wParam, lParam );
     }
 
+    LRESULT const SendNotifyMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
+    {
+        return ::SendNotifyMessage( m_hWnd, msg, wParam, lParam );
+    }
+
     LRESULT const SendDlgItemMessage( int const iItem, UINT msg, WPARAM wParam, LPARAM lParam ) const
     {
         return ::SendDlgItemMessage( m_hWnd, iItem, msg, wParam, lParam );

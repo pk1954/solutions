@@ -69,7 +69,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
         m_pWorkThread = new WorkThread( & m_traceStream );
     }
 
-	m_pWorkThread->Start( nullptr, nullptr, nullptr, m_pEvolutionCore, m_pModelWork );
+	m_pWorkThread->Start( nullptr, nullptr, nullptr, nullptr, m_pEvolutionCore, m_pModelWork );
 
 	DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, nullptr );
 

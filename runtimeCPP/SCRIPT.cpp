@@ -16,6 +16,7 @@
 #include "script.h"
 #include "symtab.h"
 
+bool                   Script::m_bStop     = false;
 Script_Functor const * Script::m_pWrapHook = nullptr;
 
 //   ScrSetWrapHook: Set hook function, which will be called in processScript
@@ -383,12 +384,16 @@ bool Script::ScrProcess
 { 
     Scanner scan;          //lint -esym( 1414, scan )   Assigning address of auto variable 'scan' to member
     m_pScanAct = & scan;   // This is save. m_pScanAct is set to nullptr, before leaving the scope of this function
+	m_bStop = false;
     try 
     {  
         scan.OpenInputFile( wstrPath ); // open script file 
 
-        for (;;)
+		for (;;)
         {
+	        if( m_bStop )
+				break;
+
             tTOKEN const token = scan.NextToken( true );
          
             m_pScanAct->SetExpectedToken( L"function name" );
