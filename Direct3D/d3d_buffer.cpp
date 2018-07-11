@@ -213,20 +213,19 @@ void D3dBuffer::AddIndividualPrimitive( PixelPoint const & ptPos, DWORD const dw
 
 void D3dBuffer::AddBackgroundPrimitive( PixelPoint const & ptPos, DWORD const dwColor, float const fPixSize )
 {
-	static float const INVERSE_SQRT3 = static_cast<float>( 1 / sqrt( 3 ) );
-
-	float const fPtPosx      = static_cast<float>( ptPos.x );
-    float const fPtPosy      = static_cast<float>( ptPos.y );
-	float const fPixSizeHalf = fPixSize / 2;
+	float const fPtPosx = static_cast<float>( ptPos.x );
+    float const fPtPosy = static_cast<float>( ptPos.y );
 
     if ( m_bStripMode )
     {
+		float const fPixSizeHalf = fPixSize / 2;
         m_pVertBufStripMode->AddVertex( fPtPosx + fPixSizeHalf, fPtPosy + fPixSizeHalf, dwColor );
     }
     else
     {
 		if ( m_d3d->GetHexagonMode( ) )
 		{
+			static float const INVERSE_SQRT3 = static_cast<float>( 1 / sqrt( 3 ) );
 			addHexagon( fPtPosx, fPtPosy, dwColor, fPixSize * INVERSE_SQRT3, fPixSize );
 		}
 		else
@@ -293,18 +292,23 @@ void D3dBuffer::renderTriangleStrip( ) const
     assert( m_pVertBufStripMode->GetNrOfVertices() > 0 );
     assert( m_d3d_device != nullptr );
 
+    D3dIndexBuffer const * const iBuf = m_d3d->GetBgIndexBufferStripMode();
+    
     m_pVertBufStripMode->LoadVertices( m_d3d_vertexBuffer, m_d3d_device );
 
-    D3dIndexBuffer const * const iBuf                = m_d3d->GetBgIndexBufferStripMode();
-    ULONG          const         ulMaxNrOfPrimitives = iBuf->SetIndices( m_d3d_device );
-    HRESULT        const         hres                = m_d3d_device->DrawIndexedPrimitive
+	iBuf->SetIndices( m_d3d_device );
+    
+	ULONG ulNrOfVertices   = m_pVertBufStripMode->GetNrOfVertices( );
+	UINT  uiNrOfPrimitives = ulNrOfVertices - 2;
+	
+	HRESULT const hres = m_d3d_device->DrawIndexedPrimitive
 	( 
 		D3DPT_TRIANGLESTRIP, 
 		0, 
 		0, 
 		m_pVertBufStripMode->GetNrOfVertices( ), 
 		0, 
-		ulMaxNrOfPrimitives 
+		iBuf->GetMaxNrOfPrimitives( ) 
 	);
 
     assert( hres == D3D_OK );

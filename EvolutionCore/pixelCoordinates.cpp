@@ -205,7 +205,12 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const & pp ) const
 	}
 	else 
 	{
-		return GridPoint( pixPoint.x / m_sFieldSize, pixPoint.y / m_sFieldSize ); 
+		long lFieldSizeHalf = m_sFieldSize / 2;
+		return GridPoint
+		       ( 
+				   (pixPoint.x + lFieldSizeHalf) / m_sFieldSize, 
+				   (pixPoint.y + lFieldSizeHalf) / m_sFieldSize 
+			   ); 
 	}
 }
 

@@ -9,8 +9,7 @@
 
 class GridRect;
 
-void Apply2Grid( const std::function<void( GridPoint const &, short const)>& func, short const = 0 );
-void Apply2Rect( const std::function<void( GridPoint const &, short const)>& func, GridRect const &, short const = 0 );
+void Apply2Grid( const std::function<void( GridPoint const &)>& func );
 
 class GridRect
 {
@@ -22,6 +21,9 @@ public:
 
     ~GridRect() { };
     
+	void Apply2Rect( std::function<void( GridPoint const &, short const)> const &, short const = 0 ) const;
+	void Apply2Rect( std::function<void( GridPoint const &             )> const &                  ) const;
+
     bool const operator== ( GridRect const &a ) const { return ( a.m_lLeft == m_lLeft ) && ( a.m_lTop == m_lTop ) && ( a.m_lRight == m_lRight ) && ( a.m_lBottom == m_lBottom ); };
     bool const operator!= ( GridRect const &a ) const { return ( a.m_lLeft != m_lLeft ) || ( a.m_lTop != m_lTop ) || ( a.m_lRight != m_lRight ) || ( a.m_lBottom != m_lBottom ); };
 

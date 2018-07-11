@@ -18,7 +18,7 @@ void testee()
 	for ( int i = 0; i <= NRUNS; ++i )
 		Apply2Grid
 		( 
-			[](GridPoint const & gp, short const s)
+			[](GridPoint const & gp)
 			{
 				Neighborhood::Apply2All( gp, [&](GridPoint const & gpNeighbor) { } );
 			}
@@ -28,7 +28,7 @@ void testee()
 void tara()
 {
 	for ( int i = 0; i <= NRUNS; ++i )
-		Apply2Grid( [](GridPoint const & gp, short const s){} );
+		Apply2Grid( [](GridPoint const & gp){} );
 }
 
 void DoTest( )

@@ -31,6 +31,7 @@ public:
 		GridWindow        * const
 	);
 
+	void SetZoom( short const );
 	void SetGenerationDelay( DWORD const );
 	void ProcessCommand( WPARAM const, LPARAM const );
 

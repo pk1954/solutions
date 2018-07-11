@@ -39,17 +39,16 @@ void EditorState::EditorDoEdit( Grid * const pGrid, GridPoint const gp )
 	switch ( m_shapeBrush )
     {
     case tShape::Circle:
-        Apply2Cone( lambda, GridCircle( gp, m_brushSize ), m_usBrushIntensity );
+        GridCircle( gp, m_brushSize ).Apply2Cone( lambda, m_usBrushIntensity );
         break;
 
     case tShape::Rect:
-		Apply2Rect( lambda, GridRect( gp, m_brushSize ), m_usBrushIntensity  );        
+		GridRect( gp, m_brushSize ).Apply2Rect( lambda, m_usBrushIntensity  );        
 		break;
 
     default:
         assert( false );
     }
-    //   lint +e613
 }
 
 void EditorState::SetBrushStrategy( tBrushMode const brushMode )

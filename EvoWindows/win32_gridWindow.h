@@ -47,6 +47,7 @@ public:
     ~GridWindow( );
 
     void Observe( GridWindow * );
+	void SetZoom( SHORT const );
     void Size( );
 
 private:
@@ -71,9 +72,7 @@ private:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 
 	void fit( );
-	void resize( );
 	void zoom( BOOL const );
-	void setZoom( SHORT const );
 	void mouseWheelAction( int );
     BOOL inObservedClientRect( LPARAM );
     void moveGrid( PixelPoint const & );

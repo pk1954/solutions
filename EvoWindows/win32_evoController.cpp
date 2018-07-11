@@ -57,9 +57,15 @@ void EvoController::SetGenerationDelay( DWORD const dwNewDelay )  // in millisec
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << dwNewDelay << endl;
 	if (m_pPerformanceWindow != nullptr)
-		m_pPerformanceWindow->SetGenerationDelay( dwNewDelay );
-	if (m_pStatusBar != nullptr)
-		m_pStatusBar->SetSpeedTrackBar( dwNewDelay );
+		m_pPerformanceWindow->SetPerfGenerationDelay( dwNewDelay );
+}
+
+void EvoController::SetZoom( short const sFieldSize )  
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << L" " << sFieldSize << endl;
+	if (m_pGridWindow != nullptr)
+        m_pGridWindow->SetZoom( sFieldSize );
 }
 
 void EvoController::scriptDialog( )
@@ -116,6 +122,8 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 
 		case IDM_MAX_SPEED:
             SetGenerationDelay( 0 );
+			if (m_pStatusBar != nullptr)
+				m_pStatusBar->SetSpeedTrackBar( 0 );
             break;
 
         case IDM_SCRIPT_DIALOG:
@@ -136,7 +144,6 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
         case IDD_TOGGLE_CLUT_MODE:
         case IDM_ZOOM_OUT:
         case IDM_ZOOM_IN:
-        case IDM_SET_ZOOM:
         case IDM_FIT_ZOOM:
         case IDM_ESCAPE:
             (void)m_pGridWindow->SendMessage( WM_COMMAND, wParam, lParam );

@@ -22,6 +22,7 @@ public:
 		return (m_IntValueLambda == nullptr) ? 0 : m_IntValueLambda(gp); 
 	}
 
+	void UpdateDspOptionsControls( );
 	void SetDisplayMode( WORD );  // one of IDM_MUT_RATE/IDM_FERTILITY/IDM_FOOD_STOCK/IDM_FERTILIZER
     void SetIndividualsVisible( );
     BOOL AreIndividualsVisible( ) const;

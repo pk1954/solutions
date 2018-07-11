@@ -101,7 +101,6 @@ void WorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, unsigned short const 
 	default:
 		break;
 	}
-	m_pEditorWindow->UpdateControls( );
 }
 
 void WorkThread::DoEdit( GridPoint const gp )  // Layer 1

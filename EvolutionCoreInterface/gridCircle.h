@@ -15,6 +15,8 @@ public:
 
     ~GridCircle( ) { };
 
+	void Apply2Cone( std::function<void( GridPoint const &, short)>const &, short );
+
     GridPoint const & GetCenter( ) const { return m_gpCenter; };
     GRID_COORD        GetRadius( ) const { return m_radius; };
 
@@ -24,7 +26,5 @@ private:
 };
 
 GridCircle GetInscribedCircle( GridRect const & );
-
-void Apply2Cone( const std::function<void( GridPoint const &, short)>& func, GridCircle const &, short );
 
 std::wostream & operator << ( std::wostream &, GridCircle const & );

@@ -44,7 +44,7 @@ void Grid::FoodGrowth( )
 
 	Apply2Grid
 	( 
-    	[&](GridPoint const & gp, short const s)
+    	[&](GridPoint const & gp)
 		{
             GridField & rGF  = getGridField( gp );
             int const   iMax = rGF.GetFertility() + rGF.GetFertilizer();

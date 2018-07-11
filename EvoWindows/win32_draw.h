@@ -64,10 +64,11 @@ private:
     COLORREF getBackgroundColor ( int const ) const;
     COLORREF getTextColor       ( GridPoint const & ) const;
     void     setIndividualColor ( GridPoint const &, float const ) const;
-    void     assembleLeftColumn ( GridPoint const &, GridPoint const & );
+    void     assembleLeftColumn ( GridPoint const & );
     void     assembleRightColumn( GridPoint const & );
 
-    void drawPOI        ( GridPoint const & );
+	void drawBackground ( GridRect const & );
     void drawIndividuals( GridRect const & );
-    void drawText       ( GridRect const &, GridPoint const & );
+    void drawText       ( GridRect const & );
+    void drawPOI        ( GridPoint const & );
 };

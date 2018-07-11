@@ -223,29 +223,27 @@ void GridWindow::doPaint( )
     m_pPerformanceWindow->DisplayStop( );
 }
 
-void GridWindow::resize()
-{
-	if ( m_pStatusBar != nullptr )
-		m_pStatusBar->SetSizeTrackBar( m_pPixelCoordinates->GetFieldSize() );
-	m_pDrawFrame->Resize( );
-}
-
 void GridWindow::zoom( BOOL const bZoomIn )
 {
-    setZoom( m_pPixelCoordinates->GetNewFieldSize( bZoomIn ) );
+    SetZoom( m_pPixelCoordinates->GetNewFieldSize( bZoomIn ) );
+	if ( m_pStatusBar != nullptr )
+		m_pStatusBar->SetSizeTrackBar( m_pPixelCoordinates->GetFieldSize() );
 }
 
-void GridWindow::setZoom( SHORT const fieldSize )
+void GridWindow::SetZoom( SHORT const fieldSize )
 {
     m_pPixelCore->SetFieldSize( fieldSize, GetClRectCenter( ) );
-	resize();
+	m_pDrawFrame->Resize( );
+    m_pWorkThread->PostRefresh( );
 }
 
 void GridWindow::fit( )
 {
     m_pPixelCore->FitToRect( GetClRectSize( ) );
 	m_pModelWork->ResetSelection( );
-	resize();
+	if ( m_pStatusBar != nullptr )
+		m_pStatusBar->SetSizeTrackBar( m_pPixelCoordinates->GetFieldSize() );
+	m_pDrawFrame->Resize( );
     m_pWorkThread->PostRefresh( );
 }
 
@@ -287,10 +285,6 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             case IDM_FIT_ZOOM:
 				fit();
                 break;
-
-            case IDM_SET_ZOOM:
-				setZoom( static_cast<SHORT>(lParam) );
-				break;
 
             case IDD_TOGGLE_STRIP_MODE:
                 m_pDrawFrame->SetStripMode( tBoolOp::opToggle );

@@ -11,29 +11,29 @@
 
 using namespace std;
 
-void Apply2Cone
+void GridCircle::Apply2Cone
 ( 
-    const function<void( GridPoint const &, short const)>& func, 
-    GridCircle const & circle, 
-    short      const   sMaxIntensity  // between 0 and 100 (percent value)
+    function<void( GridPoint const &, short const)>const &func, 
+    short const sMaxIntensity  // between 0 and 100 (percent value)
 )
 {
-    long const lRadius    = static_cast<long>(circle.GetRadius( ));
+    long const lRadius    = static_cast<long>(m_radius);
     long const lRadSquare = lRadius * lRadius;
 
-    Apply2Rect
+    GridRect( m_gpCenter, m_radius ).Apply2Rect
 	( 
-		[&](GridPoint const & gp, short const s)
+		[&](GridPoint const & gp)
 		{
-            GridPoint  gpDist      = gp - circle.GetCenter( );
-            long const lDistSquare = static_cast<long>(gpDist.x) * static_cast<long>(gpDist.x) + static_cast<long>(gpDist.y) * static_cast<long>(gpDist.y);
+            GridPoint const gpDist      = gp - m_gpCenter;
+			long      const lx          = static_cast<long>(gpDist.x);
+			long      const ly          = static_cast<long>(gpDist.y);
+            long      const lDistSquare = lx * lx + ly * ly;
             if ( lDistSquare <= lRadSquare )
             { 
                 short const sReduce = static_cast<short>(( sMaxIntensity * lDistSquare) / lRadSquare);  
                 func( gp, sMaxIntensity - sReduce );
             }
-		},
-	    GridRect( circle.GetCenter( ), circle.GetRadius( ) )
+		}
 	);
 }
 

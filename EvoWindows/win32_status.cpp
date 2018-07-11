@@ -19,7 +19,7 @@
 using namespace std;
 
 static double trackBar2Value( USHORT ); 
-static USHORT value2Trackbar( double );  
+static USHORT value2Trackbar( long );  
 
 static DWORD const DEFAULT_DELAY =   50;
 static DWORD const MAX_DELAY     = 2048;    // in msecs
@@ -27,7 +27,7 @@ static DWORD const MAX_DELAY     = 2048;    // in msecs
 static double const TRACKBAR_SCALING_FACTOR = 1000.0;
 
 static USHORT const SPEED_TRACKBAR_MIN = 0; 
-static USHORT const SPEED_TRACKBAR_MAX = value2Trackbar( static_cast<double>(MAX_DELAY) ); 
+static USHORT const SPEED_TRACKBAR_MAX = value2Trackbar( MAX_DELAY ); 
 
 static INT const STATUS_BAR_HEIGHT =  22;
 
@@ -45,32 +45,23 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
         return TRUE;
 
     case WM_HSCROLL:
-        switch( LOWORD( wParam ) )
-        {
-            case TB_THUMBTRACK:
-            case TB_THUMBPOSITION:
-            {
-                USHORT const usLogicalPos = HIWORD( wParam );
-                if ( (HWND)lParam == pStatusBar->GetDlgItem( IDM_ZOOM_TRACKBAR ) )
-                {       
-                    short const sFieldSize = pStatusBar->trackBarPos2FieldSize( usLogicalPos );
-                    (void)SendMessage( GetParent( hWnd ), WM_COMMAND, IDM_SET_ZOOM, sFieldSize );
-                }
-                else if ( (HWND)lParam == pStatusBar->GetDlgItem( IDM_SPEED_TRACKBAR  ) )
-                {
-                    DWORD const dwDelay = pStatusBar->trackBarPos2SpeedDelay( usLogicalPos );
-                    pStatusBar->m_pEvoController->SetGenerationDelay( dwDelay );
-                }
-                else
-                {
-                    assert( false );
-                }
-            }
-                break;
+		{
+			HWND   hwndTrackBar = (HWND)lParam;
+			USHORT usLogicalPos = static_cast<USHORT>(::SendMessage( hwndTrackBar, TBM_GETPOS, 0, 0 ));
+			switch ( GetDlgCtrlID( hwndTrackBar ) )
+			{
+			case IDM_ZOOM_TRACKBAR:
+				pStatusBar->setMainGridWndZoom( usLogicalPos );
+				break;
 
-            default:   
-                break;
-        }
+			case IDM_SPEED_TRACKBAR:
+				pStatusBar->setGenerationDelay( usLogicalPos );
+				break;
+
+			default:
+				assert( false );
+			}
+		}
         return TRUE;
 
     default: 
@@ -78,6 +69,18 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
     }
 
     return DefSubclassProc(hWnd, uMsg, wParam, lParam);
+}
+
+void StatusBar::setGenerationDelay( USHORT const usLogicalPos ) const
+{
+	DWORD const dwDelay = static_cast<DWORD>( trackBar2Value( SPEED_TRACKBAR_MAX - usLogicalPos ) );
+	m_pEvoController->SetGenerationDelay( dwDelay );
+}
+
+void StatusBar::setMainGridWndZoom( USHORT const usLogicalPos ) const
+{
+	short const sFieldSize = static_cast<short>( trackBar2Value( usLogicalPos ) );
+	m_pEvoController->SetZoom( sFieldSize );
 }
 
 HWND WINAPI StatusBar::createControl
@@ -133,11 +136,11 @@ void WINAPI StatusBar::createSizeControl( short const sMin, short const sMax )
     createButton       ( L" + ",     (HMENU)IDM_ZOOM_IN       ); 
     createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM      ); 
 
-    USHORT const usMinPos = fieldSize2TrackBarPos( sMin );
-    USHORT const usMaxPos = fieldSize2TrackBarPos( sMax );
+    USHORT const usMinPos = value2Trackbar( sMin );
+    USHORT const usMaxPos = value2Trackbar( sMax );
 
-    (void)::SendMessage( GetDlgItem( IDM_ZOOM_TRACKBAR ), TBM_SETRANGE,    TRUE, (LPARAM)MAKELONG( usMinPos, usMaxPos ) );  
-    (void)::SendMessage( GetDlgItem( IDM_ZOOM_TRACKBAR ), TBM_SETPAGESIZE,    0, (LPARAM)4 );                    // new page size    
+    SetTrackBarRange( IDM_ZOOM_TRACKBAR, usMinPos, usMaxPos );  
+//  (void)SendDlgItemMessage( IDM_ZOOM_TRACKBAR, TBM_SETPAGESIZE,    0, (LPARAM)4 );                    // new page size    
 } 
 
 void WINAPI StatusBar::createSimulationControl( )
@@ -151,8 +154,8 @@ void WINAPI StatusBar::createSimulationControl( )
     createTrackBar(                (HMENU)IDM_SPEED_TRACKBAR ); 
     createButton  ( L" MaxSpeed ", (HMENU)IDM_MAX_SPEED ); 
 
-    (void)::SendMessage( GetDlgItem( IDM_SPEED_TRACKBAR ), TBM_SETRANGE,    TRUE, (LPARAM)MAKELONG( SPEED_TRACKBAR_MIN, SPEED_TRACKBAR_MAX ) );
-    (void)::SendMessage( GetDlgItem( IDM_SPEED_TRACKBAR ), TBM_SETPAGESIZE,    0, (LPARAM)4 );                    // new page size    
+    SetTrackBarRange( IDM_SPEED_TRACKBAR, SPEED_TRACKBAR_MIN, SPEED_TRACKBAR_MAX );
+//  (void)SendDlgItemMessage( IDM_SPEED_TRACKBAR, TBM_SETPAGESIZE,    0, (LPARAM)4 );                    // new page size    
 } 
 
 void WINAPI StatusBar::createEditorControl( )
@@ -238,16 +241,16 @@ void StatusBar::Start
 
 void StatusBar::SetSizeTrackBar( short const sFieldSize  ) const 
 { 
-    USHORT const usPos = fieldSize2TrackBarPos( sFieldSize );
-    setTrackBarPos( IDM_ZOOM_TRACKBAR, usPos ); 
+    USHORT const usPos = value2Trackbar( sFieldSize );
+    SetTrackBarPos( IDM_ZOOM_TRACKBAR, usPos ); 
 }
 
 void StatusBar::SetSpeedTrackBar( DWORD const dwDelay ) const 
 { 
     USHORT const usPos = ( dwDelay == 0 )
-                         ? SPEED_TRACKBAR_MAX
-                         : speedDelay2TrackBarPos( dwDelay );
-    setTrackBarPos( IDM_SPEED_TRACKBAR, usPos );                
+                         ? 0
+                         : value2Trackbar( dwDelay );
+    SetTrackBarPos( IDM_SPEED_TRACKBAR, SPEED_TRACKBAR_MAX - usPos );                
 }
 
 StatusBar::~StatusBar( )
@@ -261,42 +264,14 @@ static double trackBar2Value( USHORT usX ) // f(x) = 2 power (x/1000)
     return pow( 2.0, dX );
 }
 
-short StatusBar::trackBarPos2FieldSize( USHORT usTrackBarPos ) const 
-{
-    return static_cast<short>( trackBar2Value( usTrackBarPos ) );
-}
-
-DWORD StatusBar::trackBarPos2SpeedDelay( USHORT usTrackBarPos ) const 
-{
-    return static_cast<DWORD>( trackBar2Value( SPEED_TRACKBAR_MAX - usTrackBarPos ) );
-}
-
-static USHORT value2Trackbar( double dX )  // f(x) = 1000 * log2(x)
+static USHORT value2Trackbar( long lX )  // f(x) = 1000 * log2(x)
 {
     static double const dFactor = TRACKBAR_SCALING_FACTOR / log( 2 );
-    assert( dX > 0 );
+
+    assert( lX > 0 );
+	double const dX = static_cast<double>( lX );
     double const dY = log( dX ) * dFactor;
     return static_cast<USHORT>( dY );
-}
-
-USHORT StatusBar::fieldSize2TrackBarPos( SHORT const sFieldSize ) const 
-{
-    return value2Trackbar( static_cast<double>( sFieldSize ) );
-}
-
-USHORT StatusBar::speedDelay2TrackBarPos( DWORD const dwDelay ) const 
-{
-    return SPEED_TRACKBAR_MAX - value2Trackbar( static_cast<double>(dwDelay) );
-}
-
-void StatusBar::setTrackBarPos( INT const idTrackbar, USHORT const usPos ) const
-{
-    (void)::SendMessage
-    (   
-        GetDlgItem( idTrackbar ), TBM_SETPOS, 
-        static_cast<WPARAM>( TRUE ),                   // redraw flag 
-        static_cast<LPARAM>( usPos )
-    ); 
 }
 
 void StatusBar::SetSimuMode( BOOL const bSimuMode )

@@ -23,7 +23,7 @@ public:
     // EvoApproachHistGen - Get closer to demanded HIST_GENERATION
     //                    - If several steps are neccessary, function returns after one displayed generation
     //                      to allow user interaction
-    //                    - But actual history generation as alterered by at least 1
+    //                    - But actual history generation is alterered by at least 1
 
     void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); } // Layer 4
 	

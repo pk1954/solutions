@@ -12,12 +12,11 @@ D3dIndexBuffer::D3dIndexBuffer( LPDIRECT3DINDEXBUFFER9 const lpD3DiBuf, ULONG co
 {
 }
 
-ULONG D3dIndexBuffer::SetIndices( IDirect3DDevice9 * const device ) const  // returns maximum number of primitives described by indices
+void D3dIndexBuffer::SetIndices( IDirect3DDevice9 * const device ) const  // returns maximum number of primitives described by indices
 {
     //lint -esym( 613, device )     possible use of nullptr
     HRESULT const hres = device->SetIndices( m_d3d_indexBuffer );  
     assert( hres == D3D_OK );
-    return m_ulNrOfIndices - 2;
 }
 
 void D3dIndexBuffer::Release() 

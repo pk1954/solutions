@@ -17,7 +17,7 @@ public:
 
     void Start( HWND const, WorkThread * const, EvolutionModelData * const, DspOptWindow * const );
 
-    void    UpdateControls( );
+    void    UpdateEditControls( );
     BOOL    IsInEditMode( )  const;
     LRESULT SendClick( int ) const;
 

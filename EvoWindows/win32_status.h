@@ -43,11 +43,10 @@ private:
         Stop
     };
 
-    void   setTrackBarPos( INT const, USHORT const ) const;
-    short  trackBarPos2FieldSize ( USHORT const )    const;
-    USHORT fieldSize2TrackBarPos ( SHORT  const )    const;
-    DWORD  trackBarPos2SpeedDelay( USHORT const )    const;
-    USHORT speedDelay2TrackBarPos( DWORD  const )    const; 
+    void setTrackBarPos( INT const, USHORT const ) const;
+
+	void setGenerationDelay( USHORT const )    const;
+	void setMainGridWndZoom( USHORT const )    const;
 
     HWND WINAPI createControl      ( LPCTSTR, LPCTSTR, DWORD, HMENU );
     HWND WINAPI createStaticControl( LPCTSTR );

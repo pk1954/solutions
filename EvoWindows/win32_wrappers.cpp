@@ -11,6 +11,7 @@
 #include "win32_worker_thread.h"
 #include "win32_evoController.h"
 #include "win32_winManager.h"
+#include "win32_status.h"
 #include "win32_wrappers.h"
 #include "win32_util.h"
 
@@ -19,6 +20,7 @@
 static HistWorkThread * m_pHistWorkThread;
 static WorkThread     * m_pWorkThread;
 static EvoController  * m_pEvoController;
+static StatusBar      * m_pStatusBar;
 static BOOL             m_bMoveWindowActive;
 
 class WrapPostPrevGeneration : public Script_Functor
@@ -136,6 +138,8 @@ public:
         DWORD const dwDelay = script.ScrReadUlong( );
 		if (m_pEvoController != nullptr)
 			m_pEvoController->SetGenerationDelay( dwDelay );
+		if (m_pStatusBar != nullptr)
+			m_pStatusBar->SetSpeedTrackBar( dwDelay );
     }
 };
 
@@ -151,12 +155,14 @@ void DefineWin32WrapperFunctions
 ( 
     HistWorkThread * const pHistWorkThread,
     WorkThread     * const pWorkThread,
-	EvoController  * const pEvoController
+	EvoController  * const pEvoController,
+	StatusBar      * const pStatusBar
 )
 {
     m_pHistWorkThread = pHistWorkThread;
     m_pWorkThread     = pWorkThread;
 	m_pEvoController  = pEvoController;
+	m_pStatusBar      = pStatusBar;
 
     DEF_FUNC( PostPrevGeneration ); 
 

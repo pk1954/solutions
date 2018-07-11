@@ -90,33 +90,21 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
 {
     if ( IsWindowVisible( m_hWnd ) )
     {
+        GridRect rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hWnd ) ) );
+        rcGrid.ClipToGrid( );
+
 		m_pD3dBuffer->StartFrame( );
 
-		{
-			float m_fPxSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) );
-			Apply2Grid
-			( 
-    			[&](GridPoint const & gp, short const s)
-				{
-					int   const iValue  = m_pDspOptWindow->GetIntValue( gp );
-					DWORD const dwColor = getBackgroundColor( iValue );
-					m_pD3dBuffer->AddBackgroundPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), dwColor, m_fPxSize );
-				}
-			);
-		}
-        m_pD3dBuffer->RenderBackground( );
+		drawBackground( rcGrid );
 
         if ( m_pDspOptWindow->AreIndividualsVisible( ) )
         {
-            GridRect        rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hWnd ) ) );
-            GridPoint const gpPoi = m_pCore->FindPOI( m_pModelWork );
-            drawPOI( gpPoi );
-            rcGrid.ClipToGrid( );
+            drawPOI( m_pCore->FindPOI( m_pModelWork ) );
+
             drawIndividuals( rcGrid );
-            m_pD3dBuffer->RenderIndividuals( ); 
 
             if ( m_pPixelCoordinates->GetFieldSize() >= 96 )
-                drawText( rcGrid, gpPoi );
+                drawText( rcGrid );
         }
 
         if ( m_pModelWork->SelectionIsNotEmpty() )
@@ -127,6 +115,21 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
 
         m_pD3dBuffer->EndFrame( );  
     }
+}
+
+void DrawFrame::drawBackground( GridRect const & rect )
+{
+	float m_fPxSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) );
+	Apply2Grid    // strip mode works only with full grid
+	(             // TODO: use rect.Apply2Rect and make strip mode work
+    	[&](GridPoint const & gp)
+		{
+			int   const iValue  = m_pDspOptWindow->GetIntValue( gp );
+			DWORD const dwColor = getBackgroundColor( iValue );
+			m_pD3dBuffer->AddBackgroundPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), dwColor, m_fPxSize );
+		}
+	);
+    m_pD3dBuffer->RenderBackground( );
 }
 
 void DrawFrame::drawPOI( GridPoint const & gpPoi )
@@ -153,29 +156,17 @@ void DrawFrame::drawPOI( GridPoint const & gpPoi )
     }
 }
 
-void DrawFrame::drawIndividuals( GridRect const & rect  )
+void DrawFrame::drawIndividuals( GridRect const & rect )
 {
     short const sFieldSize   = m_pPixelCoordinates->GetFieldSize();
     long  const lHalfSizeInd = ( sFieldSize <    8 ) ?                         1  :
                                ( sFieldSize <=  16 ) ? ((3 * sFieldSize) / 8 - 1) : 
                                                        ((3 * sFieldSize) / 8    );
+	float const fHalfSizeInd = static_cast<float>( lHalfSizeInd );
 
-    Apply2Rect
-	( 
-		[&](GridPoint const & gp, short const s) 
-		{ 
-			setIndividualColor( gp, static_cast<float>( lHalfSizeInd ) ); 
-		}, 
-		rect
-	);
-/*
-#ifndef NDEBUG
-    if ( rect == GridRect::GRID_RECT_FULL )
-    {
-        m_pCore->DumpGridPointList( m_pModelWork );
-    }
-#endif
-*/
+    rect.Apply2Rect( [&](GridPoint const & gp) { setIndividualColor( gp, fHalfSizeInd ); } );
+
+    m_pD3dBuffer->RenderIndividuals( ); 
 }
 
 COLORREF DrawFrame::getTextColor( GridPoint const & gp ) const
@@ -183,14 +174,14 @@ COLORREF DrawFrame::getTextColor( GridPoint const & gp ) const
 	return CLR_WHITE;
 }
 
-void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
+void DrawFrame::drawText( GridRect const & rect )
 {
     short const sFieldSize   = m_pPixelCoordinates->GetFieldSize();
     long  const lHalfSizeInd = (5 * sFieldSize) / 16;
 
-    Apply2Rect
+    rect.Apply2Rect
 	( 
-		[&](GridPoint const & gp, short const s)
+		[&](GridPoint const & gp)
 		{
             if ( GetEvoCore( )->IsAlive( gp ) )
             {
@@ -200,7 +191,7 @@ void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
 						   Util::UpsideDown( m_hWnd, & ptCenter ); 
                 PixelRect  pixRect ( ptCenter  - lHalfSizeInd, ptCenter  + lHalfSizeInd );
 
-                assembleLeftColumn( gp, gpPoi );
+                assembleLeftColumn( gp );
                 m_pD3dBuffer->D3D_DrawText( pixRect, getOutputString( ), colText );
 
                 if ( sFieldSize >= 256 ) 
@@ -210,12 +201,11 @@ void DrawFrame::drawText( GridRect const & rect, GridPoint const & gpPoi )
                     m_pD3dBuffer->D3D_DrawText( pixRect, getOutputString( ), colText );
                 }
             }
-		},
-		rect
+		}
 	);
 }
 
-void DrawFrame::assembleLeftColumn( GridPoint const & gp, GridPoint const & gpPoi )
+void DrawFrame::assembleLeftColumn( GridPoint const & gp )
 {
     startOutputString( );
 

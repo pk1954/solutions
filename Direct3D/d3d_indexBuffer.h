@@ -10,7 +10,8 @@ class D3dIndexBuffer
 public:
     D3dIndexBuffer( LPDIRECT3DINDEXBUFFER9 const, ULONG const );
 
-    ULONG SetIndices( IDirect3DDevice9 * const ) const;   // returns maximum number of primitives described by indices
+    void  SetIndices( IDirect3DDevice9 * const ) const;   
+	ULONG GetMaxNrOfPrimitives( ) const { return m_ulNrOfIndices - 2; };	// returns maximum number of primitives described by indices
     void  Release(); 
 
 private:

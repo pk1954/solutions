@@ -189,7 +189,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
 
-    DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, m_pEvoController );
+    DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, m_pEvoController, m_pStatusBar );
     DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 
     m_pWinManager->GetWindowConfiguration( );

@@ -37,9 +37,10 @@ public:
         m_dwDisplayTime = m_hrtimDisplay.Get( );
     };
 
-    void SetGenerationDelay( DWORD dwDelay )
+    void SetPerfGenerationDelay( DWORD dwDelay )
     {
         m_dwGenerationDelay = dwDelay;
+        Invalidate( FALSE );   // Redraw, do not erase background
     };
 
     void SleepDelay( ) const

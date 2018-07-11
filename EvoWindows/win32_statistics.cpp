@@ -191,9 +191,9 @@ void StatisticsWindow::DoPaint( )
 
     AllGenesStat genesStat;
 
-    Apply2Rect
+    m_pModelWork->GetSelection( ).Apply2Rect
 	( 
-		[&](GridPoint const & gp, short const s)
+		[&](GridPoint const & gp)
 		{
 			if ( m_pModelWork->IsAlive( gp ) )
 			{
@@ -209,8 +209,7 @@ void StatisticsWindow::DoPaint( )
 				genesStat.addMemSize( s, m_pModelWork->GetMemSize( gp ) );
 				genesStat.addAge    ( s, m_pModelWork->GetAge( gp ) );
 			}
-		},
-		m_pModelWork->GetSelection( )
+		}
 	);
 
     genesStat.scaleAllGenesStat( );

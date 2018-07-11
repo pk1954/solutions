@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <unordered_map>
 #include <functional>
 #include "Resource.h"
 #include "windowsx.h"
@@ -32,6 +33,31 @@ void DspOptWindow::Start
     m_pWorkThread    = pWorkThread;
 	m_pModel         = pModel;
 	m_IntValueLambda = nullptr;
+}
+
+void DspOptWindow::UpdateDspOptionsControls( )
+{
+	tBrushMode brushMode = m_pModel->GetBrushMode( );
+	if ( brushMode != tBrushMode::move )
+	{
+		static unordered_map < tBrushMode, WORD > mapDspOptTable =
+		{
+			{ tBrushMode::randomStrategy, IDM_ANIMALS    },
+			{ tBrushMode::cooperate,      IDM_ANIMALS    },
+			{ tBrushMode::defect,         IDM_ANIMALS    },
+			{ tBrushMode::tit4tat,        IDM_ANIMALS    },
+			{ tBrushMode::noAnimals,      IDM_ANIMALS    },
+			{ tBrushMode::mutRate,        IDM_MUT_RATE   },
+			{ tBrushMode::fertility,      IDM_FERTILITY  },
+			{ tBrushMode::food,           IDM_FOOD_STOCK },
+			{ tBrushMode::fertilizer,     IDM_FERTILIZER }
+		};
+		WORD const wDspOptId = mapDspOptTable.at( brushMode );
+		if ( wDspOptId == IDM_ANIMALS )
+			SetIndividualsVisible( );
+		else 
+			SetDisplayMode( wDspOptId );
+	}
 }
 
 void DspOptWindow::SetDisplayMode( WORD const wMode )

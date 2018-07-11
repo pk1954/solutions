@@ -36,9 +36,9 @@ void EditorWindow::Start
     m_pModelWork    = pModel;
     m_pDspOptWindow = pDspOptWindow;
 
-    (void)SendDlgItemMessage( IDM_EDIT_SIZE,      TBM_SETRANGE, TRUE, MAKELONG( 1,  50 ) );
-    (void)SendDlgItemMessage( IDM_EDIT_INTENSITY, TBM_SETRANGE, TRUE, MAKELONG( 1, 100 ) );
-    UpdateControls( );
+    SetTrackBarRange( IDM_EDIT_SIZE,      1,  50 );
+    SetTrackBarRange( IDM_EDIT_INTENSITY, 1, 100 );
+    UpdateEditControls( );
 }
 
 EditorWindow::~EditorWindow( )
@@ -60,60 +60,44 @@ LRESULT EditorWindow::SendClick( int const item ) const
     (void)SetActiveWindow( hwndOld );
     return res;
 }
-    
-void EditorWindow::UpdateControls( )
+
+void EditorWindow::UpdateEditControls( )
 {
-    static unordered_map < tBrushMode, WORD > mapModeTable =
-    {
-        { tBrushMode::move,           IDM_MOVE            },
-        { tBrushMode::randomStrategy, IDM_RANDOM_STRATEGY },
-        { tBrushMode::cooperate,      IDM_COOPERATE       },
-        { tBrushMode::defect,         IDM_DEFECT          },
-        { tBrushMode::tit4tat,        IDM_TIT4TAT         },
-        { tBrushMode::noAnimals,      IDM_KILL_ANIMALS    },
-        { tBrushMode::mutRate,        IDM_MUT_RATE        },
-        { tBrushMode::fertility,      IDM_FERTILITY       },
-        { tBrushMode::food,           IDM_FOOD_STOCK      },
-        { tBrushMode::fertilizer,     IDM_FERTILIZER      }
-    };
+	// Set state of all editor window widgets according to model
 
-    static unordered_map < tBrushMode, WORD > mapDspOptTable =
-    {
-        { tBrushMode::move,           IDM_MOVE       },
-        { tBrushMode::randomStrategy, IDM_ANIMALS    },
-        { tBrushMode::cooperate,      IDM_ANIMALS    },
-        { tBrushMode::defect,         IDM_ANIMALS    },
-        { tBrushMode::tit4tat,        IDM_ANIMALS    },
-        { tBrushMode::noAnimals,      IDM_ANIMALS    },
-        { tBrushMode::mutRate,        IDM_MUT_RATE   },
-        { tBrushMode::fertility,      IDM_FERTILITY  },
-        { tBrushMode::food,           IDM_FOOD_STOCK },
-        { tBrushMode::fertilizer,     IDM_FERTILIZER }
-    };
-
-    static unordered_map < tShape, WORD > mapShapeTable =
-    {
-        { tShape::Circle, IDM_EDIT_CIRCLE    },    
-        { tShape::Rect,   IDM_EDIT_RECTANGLE }
-    };
-
-    int const iShapeButtonId = static_cast<int>( mapShapeTable.at( m_pModelWork->GetBrushShape( ) ) );
-    int const iModeButtonId  = static_cast<int>( mapModeTable.at ( m_pModelWork->GetBrushMode ( ) ) );
-
-    CheckRadioButton( IDM_MOVE,        IDM_FOOD_STOCK,     iModeButtonId  );
-    CheckRadioButton( IDM_EDIT_CIRCLE, IDM_EDIT_RECTANGLE, iShapeButtonId );
+	{
+		static unordered_map < tBrushMode, WORD > mapModeTable =
+		{
+			{ tBrushMode::move,           IDM_MOVE            },
+			{ tBrushMode::randomStrategy, IDM_RANDOM_STRATEGY },
+			{ tBrushMode::cooperate,      IDM_COOPERATE       },
+			{ tBrushMode::defect,         IDM_DEFECT          },
+			{ tBrushMode::tit4tat,        IDM_TIT4TAT         },
+			{ tBrushMode::noAnimals,      IDM_KILL_ANIMALS    },
+			{ tBrushMode::mutRate,        IDM_MUT_RATE        },
+			{ tBrushMode::fertility,      IDM_FERTILITY       },
+			{ tBrushMode::food,           IDM_FOOD_STOCK      },
+			{ tBrushMode::fertilizer,     IDM_FERTILIZER      }
+		};
     
-    if ( IsInEditMode( ) )
-    {
-        WORD const wDspOptId = mapDspOptTable.at( m_pModelWork->GetBrushMode( ) );
-        if ( wDspOptId == IDM_ANIMALS )
-            m_pDspOptWindow->SetIndividualsVisible( );
-        else 
-            m_pDspOptWindow->SetDisplayMode( wDspOptId );
-    }
+		CheckRadioButton( IDM_MOVE, IDM_FOOD_STOCK, mapModeTable.at( m_pModelWork->GetBrushMode () ) );
+	}
+	{
+		static unordered_map < tShape, WORD > mapShapeTable =
+		{
+			{ tShape::Circle, IDM_EDIT_CIRCLE    },    
+			{ tShape::Rect,   IDM_EDIT_RECTANGLE }
+		};
 
-    (void)SendDlgItemMessage( IDM_EDIT_SIZE,      TBM_SETPOS, TRUE, static_cast<long>( m_pModelWork->GetBrushSize( )) );
-    (void)SendDlgItemMessage( IDM_EDIT_INTENSITY, TBM_SETPOS, TRUE, static_cast<long>( m_pModelWork->GetBrushIntensity( ) + 10) );
+		CheckRadioButton( IDM_EDIT_CIRCLE, IDM_EDIT_RECTANGLE, mapShapeTable.at( m_pModelWork->GetBrushShape() ) );
+	}
+
+	SetTrackBarPos( IDM_EDIT_SIZE,      static_cast<long>( m_pModelWork->GetBrushSize( )) );
+    SetTrackBarPos( IDM_EDIT_INTENSITY, static_cast<long>( m_pModelWork->GetBrushIntensity( ) + 10) );
+
+	// adjust display options window according to state of editor
+
+	m_pDspOptWindow->UpdateDspOptionsControls( );
 }
 
 INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -121,24 +105,21 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
     switch (message)
     {
     case WM_HSCROLL:
-        switch( LOWORD( wParam ) )
-        {
-            case TB_THUMBTRACK:
-            case TB_THUMBPOSITION:
-            {
-                int const iLogicalPos = HIWORD( wParam );
-                int const iCtrlId     = GetDlgCtrlID( (HWND)lParam );
-                if ( iCtrlId == IDM_EDIT_INTENSITY )
-                    m_pWorkThread->PostSetBrushIntensity( iLogicalPos );
-                else if ( iCtrlId == IDM_EDIT_SIZE )
-                    m_pWorkThread->PostSetBrushSize( iLogicalPos );
-                else
-                    assert( false );
-                break;
-            }
-            default:
-                break;
-        }
+		{
+			HWND   hwndTrackBar = (HWND)lParam;
+			USHORT usLogicalPos = static_cast<USHORT>(::SendMessage( hwndTrackBar, TBM_GETPOS, 0, 0 ));
+			switch ( GetDlgCtrlID( hwndTrackBar ) )
+			{
+			case IDM_EDIT_INTENSITY:
+				m_pWorkThread->PostSetBrushIntensity( usLogicalPos );
+				break;
+			case IDM_EDIT_SIZE:
+				m_pWorkThread->PostSetBrushSize( usLogicalPos );
+				break;
+			default:
+				assert( false );
+			}
+		}
         return TRUE;
 
     case WM_COMMAND:
@@ -194,12 +175,13 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
             default:
                 break;
             }
+			m_pDspOptWindow->UpdateDspOptionsControls( );
         }
         break;
 
     case WM_CLOSE:
         Show( FALSE );
-        return (INT_PTR)TRUE;
+        return TRUE;
 
     case WM_DESTROY:
         DestroyWindow( GetWindowHandle( ) );
@@ -209,5 +191,5 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
         break;
     }
 
-    return static_cast<INT_PTR>(FALSE);
+    return FALSE;
 }

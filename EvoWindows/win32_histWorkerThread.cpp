@@ -49,13 +49,14 @@ void HistWorkThread::GenerationStep( )   // Layer 5
 		   )
 			m_pEvoHistorySys->EvoCreateNextGenCommand( );
 		else
-			m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );
-
-		if ( EditorStateHasChanged( ) )
 		{
-	        SaveEditorState( );
-			if (m_pEditorWindow != nullptr)
-				m_pEditorWindow->UpdateControls( );
+			m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded ); // Get a stored generation from history system
+			if ( EditorStateHasChanged( ) )                        // editor state may be different from before
+			{                                                       
+				SaveEditorState( );
+				if (m_pEditorWindow != nullptr)                    // make sure that editor GUI 
+					m_pEditorWindow->UpdateEditControls( );            // reflects new state
+			}
 		}
 
 		workMessage( THREAD_MSG_REFRESH, 0, 0 );

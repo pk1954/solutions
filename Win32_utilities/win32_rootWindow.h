@@ -4,6 +4,7 @@
 #pragma once
 
 #include "windows.h"
+#include "commctrl.h"
 #include "pixelRect.h"
 #include "pixelPoint.h"
 #include "win32_util.h"
@@ -94,6 +95,27 @@ public:
         SetBkColor( hDC, col );
         Util::FastFill( hDC, GetClRect( ) );
     }
+
+	void SetTrackBarPos( INT const idTrackbar, USHORT const usPos ) const
+	{
+		(void)SendDlgItemMessage
+		(   
+			idTrackbar, TBM_SETPOS, 
+			static_cast<WPARAM>( TRUE ),                   // redraw flag 
+			static_cast<LPARAM>( usPos )
+		); 
+	}
+
+	void SetTrackBarRange( INT const idTrackbar, USHORT const usMin, USHORT const usMax ) const
+	{
+		(void)SendDlgItemMessage
+		( 
+			idTrackbar, 
+			TBM_SETRANGE, 
+			static_cast<WPARAM>( TRUE ),                   // redraw flag 
+			static_cast<LPARAM>MAKELONG( usMin, usMax ) 
+		);
+	}
 
 protected:
     void SetWindowHandle( HWND hwnd ) { m_hWnd = hwnd; };

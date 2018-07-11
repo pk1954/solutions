@@ -71,7 +71,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	m_pWorkThread->Start( nullptr, nullptr, nullptr, nullptr, m_pEvolutionCore, m_pModelWork );
 
-	DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, nullptr );
+	DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, nullptr, nullptr );
 
     wstring wstrInputFile = L"Test_3.in";
 

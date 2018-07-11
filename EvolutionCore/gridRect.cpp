@@ -57,13 +57,13 @@ void GridRect::ClipToGrid( )
         *this = GRID_RECT_EMPTY;
 }
  
-void Apply2Rect( const std::function<void( GridPoint const &, short const s)>& func, GridRect const & rect, short const s)
+void GridRect::Apply2Rect(std::function<void(GridPoint const &, short const)> const &func, short const s) const
 {
 	GridRect   const rectFull = GridRect::GetFullRect();
-    GRID_COORD const gcLeft   = max( rect.GetLeft  (), rectFull.GetLeft  () );
-    GRID_COORD const gcTop    = max( rect.GetTop   (), rectFull.GetTop   () );
-    GRID_COORD const gcRight  = min( rect.GetRight (), rectFull.GetRight () );
-    GRID_COORD const gcBottom = min( rect.GetBottom(), rectFull.GetBottom() );
+    GRID_COORD const gcLeft   = max( m_lLeft,   rectFull.GetLeft  () );
+    GRID_COORD const gcTop    = max( m_lTop,    rectFull.GetTop   () );
+    GRID_COORD const gcRight  = min( m_lRight,  rectFull.GetRight () );
+    GRID_COORD const gcBottom = min( m_lBottom, rectFull.GetBottom() );
 
     GridPoint gp;
     for ( gp.y = gcTop; gp.y <= gcBottom; ++gp.y )
@@ -71,9 +71,23 @@ void Apply2Rect( const std::function<void( GridPoint const &, short const s)>& f
             func( gp, s );
 }
 
-void Apply2Grid( const std::function<void( GridPoint const &, short const s)>& func, short const s)
+void GridRect::Apply2Rect(std::function<void(GridPoint const &)> const &func) const
 {
-    Apply2Rect( func, GridRect::GetFullRect(), s );
+	GridRect   const rectFull = GridRect::GetFullRect();
+    GRID_COORD const gcLeft   = max( m_lLeft,   rectFull.GetLeft  () );
+    GRID_COORD const gcTop    = max( m_lTop,    rectFull.GetTop   () );
+    GRID_COORD const gcRight  = min( m_lRight,  rectFull.GetRight () );
+    GRID_COORD const gcBottom = min( m_lBottom, rectFull.GetBottom() );
+
+    GridPoint gp;
+    for ( gp.y = gcTop; gp.y <= gcBottom; ++gp.y )
+        for ( gp.x = gcLeft; gp.x <= gcRight; ++gp.x )
+            func( gp );
+}
+
+void Apply2Grid(std::function<void(GridPoint const &)> const &func)
+{
+    GridRect::GetFullRect().Apply2Rect( func );
 }
 
 std::wostream & operator << ( std::wostream & out, GridRect const & rect )
