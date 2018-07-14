@@ -1,5 +1,10 @@
 // EvoModelData.h
 //
+//
+// Glue code for adapting EVOLUTION to HISTORY system
+//
+// EvoHistorySys is ** below ** HISTORY (is called by HISTORY)
+//
 
 #pragma once
 
@@ -26,7 +31,6 @@ public:
     virtual void OnAppCommand( unsigned short const, unsigned short const );
 	virtual void CopyModelData( ModelData const * const );
 
-	GridPoint FindGridPoint( const std::function<bool( GridPoint const &)>& ) const;
     GridPoint FindGridPoint( IndId const & ) const;
 
 private:
