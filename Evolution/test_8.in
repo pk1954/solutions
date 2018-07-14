@@ -1,0 +1,98 @@
+OpenTraceFile  "main_trace.out"
+PostRefresh
+PostRefresh
+PostSetBrushMode tBrushMode::randomStrategy
+PostDoEdit   71  57 
+PostRefresh
+PostDoEdit   99  50 
+PostRefresh
+PostDoEdit  103  46 
+PostRefresh
+PostSetBrushMode tBrushMode::fertility
+PostRefresh
+PostDoEdit  126  52 
+PostRefresh
+PostDoEdit  125  52 
+PostRefresh
+PostDoEdit  101  54 
+PostRefresh
+PostDoEdit   82  55 
+PostRefresh
+PostDoEdit   76  55 
+PostRefresh
+PostSetBrushMode tBrushMode::mutRate
+PostRefresh
+PostDoEdit   36  33 
+PostRefresh
+PostDoEdit   36  33 
+PostRefresh
+PostDoEdit   36  33 
+PostRefresh
+PostDoEdit   36  33 
+PostRefresh
+PostDoEdit   37  33 
+PostRefresh
+PostDoEdit   37  34 
+PostRefresh
+PostDoEdit   48  46 
+PostRefresh
+PostDoEdit   69  48 
+PostRefresh
+PostDoEdit   91  44 
+PostRefresh
+PostDoEdit  101  46 
+PostRefresh
+PostDoEdit  101  47 
+PostRefresh
+PostDoEdit  104  49 
+PostRefresh
+PostDoEdit  104  49 
+PostRefresh
+PostDoEdit  138  56 
+PostRefresh
+PostDoEdit  138  56 
+PostRefresh
+PostSetBrushMode tBrushMode::noAnimals
+PostDoEdit  101  47 
+PostRefresh
+PostDoEdit  101  47 
+PostRefresh
+PostDoEdit  101  47 
+PostRefresh
+PostDoEdit  101  47 
+PostRefresh
+PostSetBrushMode tBrushMode::food
+PostRefresh
+PostDoEdit  146  47 
+PostRefresh
+PostDoEdit  146  47 
+PostRefresh
+PostDoEdit  137  47 
+PostRefresh
+PostDoEdit  128  45 
+PostRefresh
+PostDoEdit  127  45 
+PostRefresh
+PostDoEdit  102  43 
+PostRefresh
+PostDoEdit  101  43 
+PostRefresh
+PostDoEdit   95  42 
+PostRefresh
+PostDoEdit   95  42 
+PostRefresh
+PostDoEdit   93  43 
+PostRefresh
+PostSetBrushMode tBrushMode::tit4tat
+PostDoEdit  143  67 
+PostRefresh
+PostDoEdit  142  67 
+PostRefresh
+PostDoEdit  111  71 
+PostRefresh
+PostDoEdit   90  71 
+PostRefresh
+PostDoEdit   90  71 
+PostRefresh
+PostSetBrushMode tBrushMode::tit4tat
+PostSetBrushMode tBrushMode::move

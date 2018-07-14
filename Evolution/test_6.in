@@ -1,0 +1,678 @@
+OpenTraceFile  "main_trace.out"
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostSetBrushMode tBrushMode::tit4tat
+PostSetBrushMode tBrushMode::fertility
+PostRefresh
+PostSetBrushMode tBrushMode::food
+PostRefresh
+PostSetBrushMode tBrushMode::defect
+PostSetBrushMode tBrushMode::cooperate
+PostSetBrushMode tBrushMode::randomStrategy
+PostSetBrushMode tBrushMode::move
+PostRefresh
+PostRefresh
+PostSetBrushMode tBrushMode::mutRate
+PostRefresh
+PostSetBrushMode tBrushMode::move
+PostRefresh
+PostRefresh
+PostSetBrushSize 6
+PostSetBrushIntensity 16
+PostSetBrushMode tBrushMode::randomStrategy
+PostDoEdit   70  49 
+PostRefresh
+PostGenerationStep
+PostDoEdit   80  40 
+PostRefresh
+PostDoEdit   80  40 
+PostRefresh
+PostDoEdit   91  44 
+PostRefresh
+PostDoEdit   95  42 
+PostRefresh
+PostDoEdit   98  40 
+PostRefresh
+PostDoEdit   98  40 
+PostRefresh
+PostDoEdit  105  58 
+PostRefresh
+PostDoEdit   96  63 
+PostRefresh
+PostDoEdit   75  69 
+PostRefresh
+PostDoEdit   72  69 
+PostRefresh
+PostDoEdit   58  68 
+PostRefresh
+PostDoEdit   41  61 
+PostRefresh
+PostDoEdit   36  49 
+PostRefresh
+PostDoEdit   36  48 
+PostRefresh
+PostDoEdit   37  46 
+PostRefresh
+PostDoEdit   78  21 
+PostRefresh
+PostDoEdit  122  25 
+PostRefresh
+PostDoEdit  128  31 
+PostRefresh
+PostSetBrushMode tBrushMode::move
+PostSetBrushMode tBrushMode::move
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+SetGenerationDelay 0
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostSetBrushMode tBrushMode::mutRate
+PostDoEdit   30  66 
+PostRefresh
+PostDoEdit   68  62 
+PostRefresh
+PostDoEdit   71  62 
+PostRefresh
+PostDoEdit  105  51 
+PostRefresh
+PostDoEdit  164  35 
+PostRefresh
+PostDoEdit  100  43 
+PostRefresh
+PostDoEdit  100  43 
+PostRefresh
+PostDoEdit  114  44 
+PostRefresh
+PostDoEdit  114  44 
+PostRefresh
+PostDoEdit  115  45 
+PostRefresh
+PostDoEdit  115  45 
+PostRefresh
+PostDoEdit  115  45 
+PostRefresh
+PostDoEdit  116  45 
+PostRefresh
+PostDoEdit  108  41 
+PostRefresh
+PostDoEdit  114  43 
+PostRefresh
+PostDoEdit  113  43 
+PostRefresh
+PostDoEdit   72  62 
+PostRefresh
+PostDoEdit   74  60 
+PostRefresh
+PostDoEdit   91  62 
+PostRefresh
+PostDoEdit   91  62 
+PostRefresh
+PostDoEdit   91  62 
+PostRefresh
+PostDoEdit  107  70 
+PostRefresh
+PostDoEdit  107  70 
+PostRefresh
+PostDoEdit  131  68 
+PostRefresh
+PostDoEdit  132  68 
+PostRefresh
+PostDoEdit  154  67 
+PostRefresh
+PostDoEdit  155  67 
+PostRefresh
+PostDoEdit  166  68 
+PostRefresh
+PostDoEdit  173  79 
+PostRefresh
+PostDoEdit  173  79 
+PostRefresh
+PostDoEdit  185  73 
+PostRefresh
+PostDoEdit  185  73 
+PostRefresh
+PostDoEdit  108  70 
+PostRefresh
+PostDoEdit   20  64 
+PostRefresh
+PostDoEdit   20  64 
+PostRefresh
+PostDoEdit   20  64 
+PostRefresh
+PostDoEdit   20  64 
+PostRefresh
+PostDoEdit   27  63 
+PostRefresh
+PostDoEdit   27  63 
+PostRefresh
+PostDoEdit   16  62 
+PostRefresh
+PostDoEdit   18  62 
+PostRefresh
+PostDoEdit   24  62 
+PostRefresh
+PostDoEdit   25  62 
+PostRefresh
+PostDoEdit   22  61 
+PostRefresh
+PostDoEdit   25  62 
+PostRefresh
+PostDoEdit   33  60 
+PostRefresh
+PostDoEdit   34  60 
+PostRefresh
+PostSetBrushMode tBrushMode::move
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostGenerationStep
