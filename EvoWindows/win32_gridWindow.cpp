@@ -10,7 +10,6 @@
 #include "pixelCoordinates.h"
 #include "EvolutionCore.h"
 #include "win32_util.h"
-#include "win32_status.h"
 #include "win32_draw.h"
 #include "win32_focusPoint.h"
 #include "win32_performanceWindow.h"
@@ -44,9 +43,8 @@ void GridWindow::Start
     FocusPoint         * const pFocusPoint,
     DspOptWindow       * const pDspOptWindow,
     PerformanceWindow  * const pPerformanceWindow,
-    StatusBar          * const pStatusBar,
-    EvolutionCore      *       pCore,
-    EvolutionModelData *       pModel,
+    EvolutionCore      * const pCore,
+    EvolutionModelData * const pModel,
     DWORD                const dwStyle,
     SHORT                const sFieldSize
 )
@@ -64,7 +62,6 @@ void GridWindow::Start
     m_pPerformanceWindow = pPerformanceWindow;
     m_pEditorWindow      = pEditorWindow;
     m_pFocusPoint        = pFocusPoint;
-	m_pStatusBar         = pStatusBar;
 	m_pCore              = pCore;
 	m_pModelWork         = pModel;
 
@@ -139,7 +136,7 @@ void GridWindow::contextMenu( LPARAM lParam )
     (void)SetForegroundWindow( hwnd );
 
     UINT const uiID = (UINT)TrackPopupMenu( hPopupMenu, TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, pntPos.x, pntPos.y, 0, hwnd, nullptr ); 	// Result is send as WM_COMMAND to this window
-    PostMessage( WM_COMMAND, uiID, lParam );
+    Post2Application( WM_COMMAND, uiID, lParam );
     (void)DestroyMenu( hPopupMenu );
 }
 
@@ -223,28 +220,36 @@ void GridWindow::doPaint( )
     m_pPerformanceWindow->DisplayStop( );
 }
 
-void GridWindow::zoom( BOOL const bZoomIn )
+void GridWindow::ToggleStripMode( )
 {
-    SetZoom( m_pPixelCoordinates->GetNewFieldSize( bZoomIn ) );
-	if ( m_pStatusBar != nullptr )
-		m_pStatusBar->SetSizeTrackBar( m_pPixelCoordinates->GetFieldSize() );
+	m_pDrawFrame->SetStripMode( tBoolOp::opToggle );
+}
+
+void GridWindow::ToggleClutMode( )
+{
+	m_pDrawFrame->SetIndDimmMode( tBoolOp::opToggle );
 }
 
 void GridWindow::SetZoom( SHORT const fieldSize )
 {
     m_pPixelCore->SetFieldSize( fieldSize, GetClRectCenter( ) );
 	m_pDrawFrame->Resize( );
-    m_pWorkThread->PostRefresh( );
 }
 
-void GridWindow::fit( )
+void GridWindow::Zoom( bool const bZoomIn )
 {
-    m_pPixelCore->FitToRect( GetClRectSize( ) );
-	m_pModelWork->ResetSelection( );
-	if ( m_pStatusBar != nullptr )
-		m_pStatusBar->SetSizeTrackBar( m_pPixelCoordinates->GetFieldSize() );
+	SetZoom( m_pPixelCoordinates->ComputeNewFieldSize( bZoomIn ) );
+}
+
+void GridWindow::Fit2Rect( )
+{
+	m_pPixelCore->FitToRect( GetClRectSize( ) );
 	m_pDrawFrame->Resize( );
-    m_pWorkThread->PostRefresh( );
+}
+
+void GridWindow::Escape( )
+{
+	m_pModelWork->ResetSelection( );
 }
 
 void GridWindow::mouseWheelAction( int iDelta )
@@ -256,12 +261,10 @@ void GridWindow::mouseWheelAction( int iDelta )
 			
 	while ( --iDelta >= 0 )
 	{
-		sNewFieldSize = m_pPixelCoordinates->GetNewFieldSize( bDirection );
+		sNewFieldSize = m_pPixelCoordinates->ComputeNewFieldSize( bDirection );
 	}
 
-	m_pPixelCoordinates->SetFieldSize( sNewFieldSize, GetClRectCenter( ) );
-	m_pDrawFrame->Resize( );
-    m_pWorkThread->PostRefresh( );
+	Post2Application( WM_COMMAND, IDM_SET_ZOOM, sNewFieldSize );
 }
 
 LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -274,35 +277,10 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             UINT uiCmdId = LOWORD( wParam );
             switch ( uiCmdId )
             {
-            case IDM_ZOOM_OUT:
-                zoom( FALSE );
-                break;
-
-            case IDM_ZOOM_IN:
-                zoom( TRUE );
-                break;
-
-            case IDM_FIT_ZOOM:
-				fit();
-                break;
-
-            case IDD_TOGGLE_STRIP_MODE:
-                m_pDrawFrame->SetStripMode( tBoolOp::opToggle );
-                break;
-                 
-            case IDD_TOGGLE_CLUT_MODE:
-                m_pDrawFrame->SetIndDimmMode( tBoolOp::opToggle );
-                break;
-
             case IDM_SET_POI:
 				m_pPixelCore->SetPOI( GetCrsrPosFromLparam( lParam ) );
 				Post2Application( WM_COMMAND, IDM_STOP, 0 );
                 break;
-
-			case IDM_ESCAPE:
-				m_pModelWork->ResetSelection( );
-				m_pWorkThread->PostRefresh( );
-				break;
 
             case IDM_GOTO_ORIGIN:  // commands using cursor pos are handled here
             case IDM_GOTO_DEATH:
@@ -383,3 +361,8 @@ void GridWindow::Size( )
     (void)AdjustWindowRect( &rect, dwStyle, FALSE );	
     Move( 0, 0, rect.right - rect.left, rect.bottom - rect.top, FALSE );
 }
+
+short GridWindow::GetFieldSize( ) const 
+{ 
+	return m_pPixelCoordinates->GetFieldSize( ); 
+};

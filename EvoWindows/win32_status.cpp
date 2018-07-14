@@ -6,10 +6,8 @@
 #include "Resource.h"
 #include "commctrl.h"
 #include "config.h"
-#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "pixelCoordinates.h"
-#include "win32_evoController.h"
 #include "win32_worker_thread.h"
 #include "win32_util.h"
 #include "win32_status.h"
@@ -29,7 +27,7 @@ static double const TRACKBAR_SCALING_FACTOR = 1000.0;
 static USHORT const SPEED_TRACKBAR_MIN = 0; 
 static USHORT const SPEED_TRACKBAR_MAX = value2Trackbar( MAX_DELAY ); 
 
-static INT const STATUS_BAR_HEIGHT =  22;
+static INT const STATUS_BAR_HEIGHT = 22;
 
 //lint -esym( 715, uIdSubclass )    symbol not referenced
 
@@ -46,21 +44,13 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
 
     case WM_HSCROLL:
 		{
-			HWND   hwndTrackBar = (HWND)lParam;
-			USHORT usLogicalPos = static_cast<USHORT>(::SendMessage( hwndTrackBar, TBM_GETPOS, 0, 0 ));
-			switch ( GetDlgCtrlID( hwndTrackBar ) )
-			{
-			case IDM_ZOOM_TRACKBAR:
-				pStatusBar->setMainGridWndZoom( usLogicalPos );
-				break;
+			HWND   const hwndTrackBar = (HWND)lParam;
+			USHORT const usLogicalPos = static_cast<USHORT>(::SendMessage( hwndTrackBar, TBM_GETPOS, 0, 0 ));
+			INT    const iCtrlId      = GetDlgCtrlID( hwndTrackBar );
+			USHORT const usValue      = ( iCtrlId == IDM_ZOOM_TRACKBAR ) ? usLogicalPos : ( SPEED_TRACKBAR_MAX - usLogicalPos );
+			LPARAM const lparam       = static_cast<LPARAM>( trackBar2Value( usValue ) );
 
-			case IDM_SPEED_TRACKBAR:
-				pStatusBar->setGenerationDelay( usLogicalPos );
-				break;
-
-			default:
-				assert( false );
-			}
+	        (void)SendMessage( GetParent( hWnd ), WM_COMMAND, iCtrlId, lparam  );
 		}
         return TRUE;
 
@@ -69,18 +59,6 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
     }
 
     return DefSubclassProc(hWnd, uMsg, wParam, lParam);
-}
-
-void StatusBar::setGenerationDelay( USHORT const usLogicalPos ) const
-{
-	DWORD const dwDelay = static_cast<DWORD>( trackBar2Value( SPEED_TRACKBAR_MAX - usLogicalPos ) );
-	m_pEvoController->SetGenerationDelay( dwDelay );
-}
-
-void StatusBar::setMainGridWndZoom( USHORT const usLogicalPos ) const
-{
-	short const sFieldSize = static_cast<short>( trackBar2Value( usLogicalPos ) );
-	m_pEvoController->SetZoom( sFieldSize );
 }
 
 HWND WINAPI StatusBar::createControl
@@ -128,7 +106,7 @@ void WINAPI StatusBar::createModeControl( )
     (void)createButton( L"Switch to Simulation", (HMENU)IDM_TOGGLE_EDIT_SIMU_MODE ); 
 } 
 
-void WINAPI StatusBar::createSizeControl( short const sMin, short const sMax )
+void WINAPI StatusBar::createSizeControl( )
 { 
     createStaticControl( L"Size" );
     createButton       ( L" - ",     (HMENU)IDM_ZOOM_OUT      ); 
@@ -136,11 +114,10 @@ void WINAPI StatusBar::createSizeControl( short const sMin, short const sMax )
     createButton       ( L" + ",     (HMENU)IDM_ZOOM_IN       ); 
     createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM      ); 
 
-    USHORT const usMinPos = value2Trackbar( sMin );
-    USHORT const usMaxPos = value2Trackbar( sMax );
+    USHORT const usMinPos = value2Trackbar( PixelCoordinates::MINIMUM_FIELD_SIZE );
+    USHORT const usMaxPos = value2Trackbar( PixelCoordinates::MAXIMUM_FIELD_SIZE );
 
     SetTrackBarRange( IDM_ZOOM_TRACKBAR, usMinPos, usMaxPos );  
-//  (void)SendDlgItemMessage( IDM_ZOOM_TRACKBAR, TBM_SETPAGESIZE,    0, (LPARAM)4 );                    // new page size    
 } 
 
 void WINAPI StatusBar::createSimulationControl( )
@@ -155,7 +132,6 @@ void WINAPI StatusBar::createSimulationControl( )
     createButton  ( L" MaxSpeed ", (HMENU)IDM_MAX_SPEED ); 
 
     SetTrackBarRange( IDM_SPEED_TRACKBAR, SPEED_TRACKBAR_MIN, SPEED_TRACKBAR_MAX );
-//  (void)SendDlgItemMessage( IDM_SPEED_TRACKBAR, TBM_SETPAGESIZE,    0, (LPARAM)4 );                    // new page size    
 } 
 
 void WINAPI StatusBar::createEditorControl( )
@@ -167,20 +143,10 @@ void WINAPI StatusBar::createEditorControl( )
 	}
 } 
 
-//lint +e438
-//lint +e529
-
-StatusBar::StatusBar( ) : 
-    m_pEvoController( nullptr ),
-    m_pModelWork( nullptr )
+StatusBar::StatusBar( )
 { }
 
-void StatusBar::Start
-( 
-    HWND                 const hWndParent, 
-    EvoController      * const pEvoController, 
-    EvolutionModelData * const pModel
-)
+void StatusBar::Start( HWND const hWndParent )
 {
     HWND hWndStatus = CreateWindow
     (
@@ -193,9 +159,6 @@ void StatusBar::Start
         GetModuleHandle( nullptr ), 
         nullptr
     ); 
-
-    m_pEvoController = pEvoController;
-    m_pModelWork = pModel;
 
     SetWindowHandle( hWndStatus );
 
@@ -225,7 +188,7 @@ void StatusBar::Start
     createModeControl ( );
 
     m_iPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_iBorder + 10;
-    createSizeControl( PixelCoordinates::MINIMUM_FIELD_SIZE, PixelCoordinates::MAXIMUM_FIELD_SIZE );
+    createSizeControl( );
 
     m_iPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_iBorder + 10;
     createSimulationControl( );
@@ -251,11 +214,6 @@ void StatusBar::SetSpeedTrackBar( DWORD const dwDelay ) const
                          ? 0
                          : value2Trackbar( dwDelay );
     SetTrackBarPos( IDM_SPEED_TRACKBAR, SPEED_TRACKBAR_MAX - usPos );                
-}
-
-StatusBar::~StatusBar( )
-{
-    m_pEvoController = nullptr;
 }
 
 static double trackBar2Value( USHORT usX ) // f(x) = 2 power (x/1000)
@@ -326,10 +284,9 @@ void StatusBar::DisplayScriptLine( wstring const & wszPath, int iLineNr, wstring
     DisplayStatusLine( m_wstrScriptLine );
 }
 
-void StatusBar::DisplayCurrentGeneration( )
+void StatusBar::DisplayCurrentGeneration( EVO_GENERATION const gen )
 {
-    assert( m_pModelWork != nullptr );
-    m_wstrGeneration = L"EvoGen " + to_wstring( m_pModelWork->GetEvoGenerationNr( ) );
+    m_wstrGeneration = L"EvoGen " + to_wstring( gen );
     (void)SendNotifyMessage( SB_SETTEXT, static_cast<int>( tPart::Generation ), (LPARAM)( m_wstrGeneration.c_str() ) );
 }
 

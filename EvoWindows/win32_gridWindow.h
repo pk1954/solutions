@@ -13,7 +13,6 @@
 //lint -esym( 763, DspOptWindow )  redundant declaration
 
 class GridRect;
-class StatusBar;
 class DrawFrame;
 class PixelCoordinates;
 class PixelCore;
@@ -37,18 +36,26 @@ public:
         FocusPoint         * const,
         DspOptWindow       * const,
         PerformanceWindow  * const, 
-        StatusBar          * const,
-        EvolutionCore      *, 
-        EvolutionModelData *,
-        DWORD const, 
-        SHORT const
+        EvolutionCore      * const, 
+        EvolutionModelData * const,
+        DWORD                const, 
+        SHORT                const
     );
 
     ~GridWindow( );
 
     void Observe( GridWindow * );
-	void SetZoom( SHORT const );
     void Size( );
+
+	short GetFieldSize( ) const;
+
+	void Fit2Rect( );
+	void Zoom( bool const );
+	void SetZoom( SHORT const );
+	void ToggleStripMode( );
+	void ToggleClutMode( );
+	void Escape( );
+
 
 private:
     GridWindow             ( GridWindow const & );  // noncopyable class 
@@ -57,22 +64,19 @@ private:
     WorkThread         * m_pWorkThread;
     PixelCoordinates   * m_pPixelCoordinates;  // My own PixelCoordinates
     GridWindow         * m_pGWObserved;	 // Observed GridWindow (or nullptr)
-    StatusBar          * m_pStatusBar; 
 	EvolutionCore      * m_pCore;
     EvolutionModelData * m_pModelWork;
     EditorWindow       * m_pEditorWindow;
     PerformanceWindow  * m_pPerformanceWindow;
-    DrawFrame          * m_pDrawFrame;
-    PixelPoint 	         m_ptLast;	 	 // Last cursor position during selection 
-    BOOL                 m_bMoveAllowed;  // TRUE: move with mouse is possible
     FocusPoint         * m_pFocusPoint;
     ObserverInterface  * m_pObserverInterface;
 	PixelCore          * m_pPixelCore;
+    DrawFrame          * m_pDrawFrame;
+    PixelPoint 	         m_ptLast;	 	 // Last cursor position during selection 
+    BOOL                 m_bMoveAllowed;  // TRUE: move with mouse is possible
 
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 
-	void fit( );
-	void zoom( BOOL const );
 	void mouseWheelAction( int );
     BOOL inObservedClientRect( LPARAM );
     void moveGrid( PixelPoint const & );

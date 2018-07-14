@@ -57,6 +57,13 @@ void PixelCore::SetPOI( PixelPoint const pixPos ) const
     }
 }
 
+PixelPoint PixelCore::GetNewCenter( PixelPoint const pntCenter ) const
+{
+	return m_pCore->IsPoiDefined( ) 
+	       ? GetPoiCenter( )
+	       : pntCenter;
+}
+
 bool PixelCore::CenterPoi( PixelPoint const pntCenter ) const
 {
 	return m_pPixelCoordinates->CenterPoi
@@ -68,23 +75,17 @@ bool PixelCore::CenterPoi( PixelPoint const pntCenter ) const
 
 void PixelCore::FitToRect( PixelRectSize const rectSize ) const
 {
-	m_pPixelCoordinates->FitToRect
+	m_pPixelCoordinates->FitGridToRect
 	( 
 		m_pModelWork->GetSelection(),
 		rectSize
 	);
-}
-
-PixelPoint PixelCore::GetNewCenter( PixelPoint const pntCenter ) const
-{
-	return m_pCore->IsPoiDefined( ) 
-	       ? GetPoiCenter( )
-	       : pntCenter;
+	m_pModelWork->ResetSelection( );
 }
 
 void PixelCore::SetFieldSize( short const sNewFieldSize, PixelPoint const pntCenter )
 {
-    (void)m_pPixelCoordinates->SetFieldSize
+    (void)m_pPixelCoordinates->SetGridFieldSize
 	( 
 		sNewFieldSize, 
 		GetNewCenter( pntCenter ) 

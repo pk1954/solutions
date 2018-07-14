@@ -55,7 +55,7 @@ void HistWorkThread::GenerationStep( )   // Layer 5
 			{                                                       
 				SaveEditorState( );
 				if (m_pEditorWindow != nullptr)                    // make sure that editor GUI 
-					m_pEditorWindow->UpdateEditControls( );            // reflects new state
+					m_pEditorWindow->UpdateEditControls( );        // reflects new state
 			}
 		}
 

@@ -51,14 +51,15 @@ public:
 	PixelPoint GetPixelOffset( ) const { return m_pixOffset; }
 
 	PixelRect  GetTextRect( GridPoint  const & ) const; 
+	short      ComputeNewFieldSize( bool const ) const;
 
 	//////// manipulation functions ////////
 
-    bool  SetFieldSize( short, PixelPoint const );
-    bool  CenterPoi( PixelPoint const, GridPoint const );
+    bool  SetGridFieldSize( short, PixelPoint const );             // modifies field size
+    bool  FitGridToRect( GridRect const &, PixelRectSize const );  // modifies field size
+
+	bool  CenterPoi( PixelPoint const, GridPoint const );
     void  MoveGrid( PixelPoint const &);
-	short GetNewFieldSize( bool const ) const;
-    bool  FitToRect( GridRect const &, PixelRectSize const );
 
 private:
     bool       isValidFieldSize( long const ) const; 

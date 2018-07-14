@@ -63,7 +63,6 @@
 
 AppWindow::AppWindow( ) :
     BaseWindow( ),
-	m_bSimulationMode( FALSE ),
     m_displayGridFunctor( ),
     m_pMainGridWindow( nullptr ),
     m_pMiniGridWindow( nullptr ),
@@ -160,17 +159,17 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	if ( Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 )
         EnableMenuItem( GetMenu( hWndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
 
+    m_pStatusBar     ->Start( hWndApp );
 	m_pFocusPoint    ->Start( m_pEvoHistorySys, m_pModelWork );
 	m_pWorkThread    ->Start( m_pStatusBar, m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
 	m_pDspOptWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork );
     m_pEditorWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork, m_pDspOptWindow );
-    m_pStatusBar     ->Start( hWndApp, m_pEvoController, m_pModelWork );
-    m_pMainGridWindow->Start( hWndApp, m_pWorkThread,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
-    m_pMiniGridWindow->Start( hWndApp, m_pWorkThread,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pStatusBar, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
+    m_pMainGridWindow->Start( hWndApp, m_pWorkThread,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
+    m_pMiniGridWindow->Start( hWndApp, m_pWorkThread,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
     m_pStatistics    ->Start( hWndApp, m_pModelWork );
     m_pCrsrWindow    ->Start( hWndApp, m_pFocusPoint,    m_pModelWork, m_pMainGridWindow );
     m_pPerfWindow    ->Start( hWndApp, 100 );
-	m_pEvoController ->Start( & m_traceStream, m_pHistWorkThread, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow );
+	m_pEvoController ->Start( & m_traceStream, m_pHistWorkThread, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow );
 
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,              TRUE, TRUE,   -1 );
     m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow,   TRUE, FALSE,  -1 );
@@ -196,7 +195,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	m_pStatusBar->ClearStatusLine( );
 
     (void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
-	setSimulationMode( tBoolOp::opFalse );
+	m_pEvoController->SetSimulationMode( tBoolOp::opFalse );
 
 //	Script::ProcessScript( L"std_script.in" );
 }
@@ -260,10 +259,6 @@ LRESULT AppWindow::UserProc
             PostMessage( WM_CLOSE, 0, 0 );
             break;
 
-        case IDM_TOGGLE_EDIT_SIMU_MODE:
-			setSimulationMode( tBoolOp::opToggle );
-            break;
-
         default:
 			m_pEvoController->ProcessCommand( wParam, lParam );
             break;
@@ -317,18 +312,4 @@ void AppWindow::adjustChildWindows( )
 
         m_pMainGridWindow->Move( 0, 0, pntAppClientSize.GetWidth( ), pntAppClientSize.GetHeight( ), TRUE );
     }
-}
-
-void AppWindow::setSimulationMode( tBoolOp const op )
-{
-	ApplyOp( m_bSimulationMode, op );
-
-	m_pStatusBar->SetSimuMode( m_bSimulationMode );
-
-	if ( m_bSimulationMode )
-        m_pEditorWindow->SendClick( IDM_MOVE );
-	else
-		SendMessage( WM_COMMAND, IDM_STOP, 0 );
-	m_pEditorWindow->Show( ! m_bSimulationMode );
-	m_pPerfWindow  ->Show(   m_bSimulationMode );
 }

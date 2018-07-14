@@ -1,5 +1,9 @@
 // EvoHistorySys.h
 //
+// Glue code for adapting EVOLUTION to HISTORY system
+//
+// EvoHistorySys is ** above ** HISTORY (calls HISTORY)
+//
 
 #pragma once
 

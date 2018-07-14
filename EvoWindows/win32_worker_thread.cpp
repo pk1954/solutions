@@ -117,7 +117,7 @@ void WorkThread::GenerationStep( ) // Layer 1
 		m_pPerformanceWindow->ComputationStop( );    // measure computation time
 
 	if (m_pStatusBar != nullptr)
-	    m_pStatusBar->DisplayCurrentGeneration( );   // display new generation number in status bar
+	    m_pStatusBar->DisplayCurrentGeneration( m_pModelWork->GetEvoGenerationNr( ) );   // display new generation number in status bar
 	if (m_pDisplayGridFunctor != nullptr)
 	    ( * m_pDisplayGridFunctor )( FALSE );        // notify all views
 }
@@ -146,6 +146,27 @@ void WorkThread::StopComputation()
 {
 	m_bContinue = FALSE;
 	Script::StopProcessing( );
+}
+
+void WorkThread::workMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
+{
+    if ( m_iScriptLevel > 0 )
+    {
+        sendMessage( uiMsg, wParam, lParam );
+    }
+    else
+    {
+        postMessage( uiMsg, wParam, lParam );
+    }
+}
+
+void WorkThread::postMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
+{
+    if ( m_pDisplayGridFunctor != nullptr )
+        ( * m_pDisplayGridFunctor ).Continue( );  // trigger worker thread if waiting for an event
+    BOOL const bRes = PostThreadMessage( m_dwThreadId, uiMsg, wParam, lParam );
+    DWORD err = GetLastError( );
+    assert( bRes );
 }
 
 static DWORD WINAPI WorkerThread( _In_ LPVOID lpParameter )
@@ -189,27 +210,32 @@ void WorkThread::sendMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
 
     case THREAD_MSG_RESET_MODEL:
-		ApplyEditorCommand( tEvoCmd::reset, static_cast<unsigned short>( wParam ) );
+		m_pEvolutionCore->ResetModel( m_pModelWork );
         break;
 
     case THREAD_MSG_SET_BRUSH_INTENSITY:
-		ApplyEditorCommand( tEvoCmd::editSetBrushIntensity, static_cast<unsigned short>( wParam ) );
+        ApplyEditorCommand( tEvoCmd::editSetBrushIntensity, static_cast<unsigned short>( wParam ) );
+		m_pEditorWindow->UpdateEditControls( );
         break;
 
     case THREAD_MSG_SET_BRUSH_SIZE:
-		ApplyEditorCommand( tEvoCmd::editSetBrushSize, static_cast<unsigned short>( wParam ) );
+		assert( wParam <= MAX_GRID_COORD );
+        ApplyEditorCommand( tEvoCmd::editSetBrushSize, static_cast<GRID_COORD>( wParam ) );
+		m_pEditorWindow->UpdateEditControls( );
         break;
 
     case THREAD_MSG_SET_BRUSH_SHAPE:
-		ApplyEditorCommand( tEvoCmd::editSetBrushShape, static_cast<unsigned short>( wParam ) );
+        ApplyEditorCommand( tEvoCmd::editSetBrushShape, static_cast<unsigned short>( wParam ) );
+		m_pEditorWindow->UpdateEditControls( );
         break;
 
     case THREAD_MSG_SET_BRUSH_MODE:
-		ApplyEditorCommand( tEvoCmd::editSetBrushMode, static_cast<unsigned short>( wParam ) );
+        ApplyEditorCommand( tEvoCmd::editSetBrushMode, static_cast<unsigned short>( wParam ) );
+		m_pEditorWindow->UpdateEditControls( );
         break;
 
     case THREAD_MSG_DO_EDIT:
-        DoEdit( UnpackFromLParam( lParam ) );
+		m_pModelWork->ModelDoEdit( UnpackFromLParam( lParam )  );
         break;
 
     case THREAD_MSG_REFRESH:
@@ -220,30 +246,9 @@ void WorkThread::sendMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
     }
 
 	if (m_pStatusBar != nullptr)
-	    m_pStatusBar->DisplayCurrentGeneration( );
+	    m_pStatusBar->DisplayCurrentGeneration( m_pModelWork->GetEvoGenerationNr( ) );   // display new generation number in status bar
 	if (m_pDisplayGridFunctor != nullptr)
 	    ( * m_pDisplayGridFunctor )( FALSE );
-}
-
-void WorkThread::postMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
-{
-    if ( m_pDisplayGridFunctor != nullptr )
-        ( * m_pDisplayGridFunctor ).Continue( );  // trigger worker thread if waiting for an event
-    BOOL const bRes = PostThreadMessage( m_dwThreadId, uiMsg, wParam, lParam );
-    DWORD err = GetLastError( );
-    assert( bRes );
-}
-
-void WorkThread::workMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
-{
-    if ( m_iScriptLevel > 0 )
-    {
-        sendMessage( uiMsg, wParam, lParam );
-    }
-    else
-    {
-        postMessage( uiMsg, wParam, lParam );
-    }
 }
 
 BOOL WorkThread::EditorStateHasChanged( ) 

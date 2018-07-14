@@ -35,9 +35,8 @@ void DspOptWindow::Start
 	m_IntValueLambda = nullptr;
 }
 
-void DspOptWindow::UpdateDspOptionsControls( )
+void DspOptWindow::UpdateDspOptionsControls( tBrushMode const brushMode )
 {
-	tBrushMode brushMode = m_pModel->GetBrushMode( );
 	if ( brushMode != tBrushMode::move )
 	{
 		static unordered_map < tBrushMode, WORD > mapDspOptTable =
@@ -106,14 +105,6 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
             WORD const wId = LOWORD(wParam);
             switch ( wId )
             {
-            case IDM_MOVE:
-            case IDM_ANIMALS:
-            case IDM_RANDOM_STRATEGY:
-            case IDM_COOPERATE:
-            case IDM_DEFECT:
-            case IDM_TIT4TAT:
-                break;
-
             case IDM_MUT_RATE:
 				m_IntValueLambda = [&](GridPoint const & gp){ return m_pModel->GetMutationRate( gp ); };
                 break;

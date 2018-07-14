@@ -56,7 +56,7 @@ bool PixelCoordinates::CenterPoi( PixelPoint const pixCenter, GridPoint const gp
     return bCentered;
 }
 
-bool PixelCoordinates::FitToRect( GridRect const & gridRect, PixelRectSize const pntPixSize )
+bool PixelCoordinates::FitGridToRect( GridRect const & gridRect, PixelRectSize const pntPixSize )
 {
     GridPoint gp( pntPixSize.GetWidth(), pntPixSize.GetHeight() );
     gp /= gridRect.GetSize() + 1;
@@ -73,7 +73,7 @@ bool PixelCoordinates::FitToRect( GridRect const & gridRect, PixelRectSize const
     return true;
 }
 
-bool PixelCoordinates::SetFieldSize( short const sNewFieldSize, PixelPoint const pntCenter )
+bool PixelCoordinates::SetGridFieldSize( short const sNewFieldSize, PixelPoint const pntCenter )
 {
     if ( !isValidFieldSize( sNewFieldSize ) )
         return false;
@@ -84,7 +84,7 @@ bool PixelCoordinates::SetFieldSize( short const sNewFieldSize, PixelPoint const
     return true;
 }
 
-short PixelCoordinates::GetNewFieldSize( bool const bZoomIn ) const
+short PixelCoordinates::ComputeNewFieldSize( bool const bZoomIn ) const
 {
     short sNewFieldSize = m_sFieldSize;
     if ( bZoomIn )

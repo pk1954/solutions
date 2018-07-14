@@ -143,7 +143,7 @@ public:
     {
 		short      const sFieldSize = script.ScrReadShort();
         PixelPoint const pixPos     = ScrReadPixelPoint( script );
-		m_pPixCoords->SetFieldSize( sFieldSize, pixPos );
+		m_pPixCoords->SetGridFieldSize( sFieldSize, pixPos );
     }
 };
 

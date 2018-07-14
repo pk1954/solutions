@@ -130,19 +130,6 @@ public:
     }
 };
 
-class WrapSetGenerationDelay : public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        DWORD const dwDelay = script.ScrReadUlong( );
-		if (m_pEvoController != nullptr)
-			m_pEvoController->SetGenerationDelay( dwDelay );
-		if (m_pStatusBar != nullptr)
-			m_pStatusBar->SetSpeedTrackBar( dwDelay );
-    }
-};
-
 class WrapBreak : public Script_Functor
 {
 public:
@@ -175,7 +162,6 @@ void DefineWin32WrapperFunctions
     DEF_FUNC( PostReset );
     DEF_FUNC( PostGenerationStep );
     DEF_FUNC( PostRunGenerations );
-    DEF_FUNC( SetGenerationDelay );
     DEF_FUNC( PostProcessScript );
     DEF_FUNC( Break );
 

@@ -9,16 +9,12 @@
 
 using namespace std;
 
-class EvoController;
-class EvolutionModelData;
-
 class StatusBar : public BaseDialog
 {
 public:
     StatusBar( );
-    ~StatusBar( );
 
-    void Start( HWND const, EvoController * const, EvolutionModelData * const );
+    void Start( HWND const);
 	void SetSimuMode( BOOL const );
 
     int  GetHeight( ) const;
@@ -28,7 +24,7 @@ public:
     void ClearStatusLine( );
     void DisplayStatusLine( std::wstring const & );
     void DisplayScriptLine( std::wstring const &, int, std::wstring const & );
-    void DisplayCurrentGeneration( );
+    void DisplayCurrentGeneration( EVO_GENERATION const );
 
 private:
     virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
@@ -43,28 +39,21 @@ private:
         Stop
     };
 
-    void setTrackBarPos( INT const, USHORT const ) const;
-
-	void setGenerationDelay( USHORT const )    const;
-	void setMainGridWndZoom( USHORT const )    const;
-
     HWND WINAPI createControl      ( LPCTSTR, LPCTSTR, DWORD, HMENU );
     HWND WINAPI createStaticControl( LPCTSTR );
     HWND WINAPI createButton       ( LPCTSTR, HMENU );
     HWND WINAPI createTrackBar     ( HMENU );
 
     void WINAPI createModeControl ( );
-    void WINAPI createSizeControl ( short const, short const );
+    void WINAPI createSizeControl ( );
     void WINAPI createSimulationControl( );
     void WINAPI createEditorControl( );
 
-    EvoController      * m_pEvoController;
-    EvolutionModelData * m_pModelWork;
-    INT                  m_iClientHeight;
-    INT                  m_iBorder;
-    INT                  m_iPosX;
-    wstring              m_wstrGeneration;
-    wstring              m_wstrScriptLine;
+    INT     m_iClientHeight;
+    INT     m_iBorder;
+    INT     m_iPosX;
+    wstring m_wstrGeneration;
+    wstring m_wstrScriptLine;
 
 friend static LRESULT CALLBACK OwnerDrawStatusBar( HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR );
 };

@@ -9,18 +9,21 @@
 #include "win32_winManager.h"
 #include "win32_performanceWindow.h"
 #include "win32_status.h"
+#include "win32_editor.h"
 #include "win32_gridWindow.h"
 #include "win32_packGridPoint.h"
 #include "win32_evoController.h"
 
 EvoController::EvoController() :
+	m_bSimulationMode   ( FALSE ),
     m_bTrace            ( TRUE ),
     m_pTraceStream      ( nullptr ),
 	m_pHistWorkThread   ( nullptr ),
 	m_pWinManager       ( nullptr ),
     m_pPerformanceWindow( nullptr ),
     m_pStatusBar        ( nullptr ),
-    m_pGridWindow       ( nullptr )
+    m_pGridWindow       ( nullptr ),
+	m_pEditorWindow     ( nullptr )
 { }
 
 EvoController::~EvoController( )
@@ -31,6 +34,7 @@ EvoController::~EvoController( )
     m_pPerformanceWindow = nullptr;
     m_pStatusBar         = nullptr;
 	m_pGridWindow        = nullptr;
+	m_pEditorWindow      = nullptr;
 }
 
 void EvoController::Start
@@ -40,7 +44,8 @@ void EvoController::Start
 	WinManager        * const pWinManager,
     PerformanceWindow * const pPerformanceWindow,
 	StatusBar         * const pStatusBar,
-	GridWindow        * const pGridWindow
+	GridWindow        * const pGridWindow,
+	EditorWindow      * const pEditorWindow
 
 )
 {
@@ -50,22 +55,7 @@ void EvoController::Start
     m_pPerformanceWindow = pPerformanceWindow;
 	m_pStatusBar         = pStatusBar;
 	m_pGridWindow        = pGridWindow;
-}
-
-void EvoController::SetGenerationDelay( DWORD const dwNewDelay )  // in milliseconds
-{
-    if ( m_bTrace )
-        * m_pTraceStream << __func__ << L" " << dwNewDelay << endl;
-	if (m_pPerformanceWindow != nullptr)
-		m_pPerformanceWindow->SetPerfGenerationDelay( dwNewDelay );
-}
-
-void EvoController::SetZoom( short const sFieldSize )  
-{
-    if ( m_bTrace )
-        * m_pTraceStream << __func__ << L" " << sFieldSize << endl;
-	if (m_pGridWindow != nullptr)
-        m_pGridWindow->SetZoom( sFieldSize );
+	m_pEditorWindow      = pEditorWindow;
 }
 
 void EvoController::scriptDialog( )
@@ -120,8 +110,14 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			m_pHistWorkThread->PostHistoryAction( wmId, UnpackFromLParam(lParam) );
 			break;
 
+		case IDM_SPEED_TRACKBAR:
+			if (m_pPerformanceWindow != nullptr)
+				m_pPerformanceWindow->SetPerfGenerationDelay( static_cast<DWORD>( lParam ) );
+            break;
+
 		case IDM_MAX_SPEED:
-            SetGenerationDelay( 0 );
+			if (m_pPerformanceWindow != nullptr)
+				m_pPerformanceWindow->SetPerfGenerationDelay( 0 );
 			if (m_pStatusBar != nullptr)
 				m_pStatusBar->SetSpeedTrackBar( 0 );
             break;
@@ -141,12 +137,39 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
         case IDD_TOGGLE_STRIP_MODE:
+			m_pGridWindow->ToggleStripMode();
+            break;
+
         case IDD_TOGGLE_CLUT_MODE:
+			m_pGridWindow->ToggleClutMode();
+            break;
+
+        case IDM_ESCAPE:
+			m_pGridWindow->Escape();
+            break;
+
+        case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
+            (void)m_pGridWindow->SetZoom( static_cast<SHORT>(lParam) );
+            break;
+
+        case IDM_FIT_ZOOM:
+			m_pGridWindow->Fit2Rect( );
+			m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
+            break;
+
         case IDM_ZOOM_OUT:
         case IDM_ZOOM_IN:
-        case IDM_FIT_ZOOM:
-        case IDM_ESCAPE:
-            (void)m_pGridWindow->SendMessage( WM_COMMAND, wParam, lParam );
+            m_pGridWindow->Zoom( wmId == IDM_ZOOM_IN );
+			m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
+            break;
+
+		case IDM_SET_ZOOM:
+            (void)m_pGridWindow->SetZoom( static_cast<SHORT>(lParam));
+			m_pStatusBar->SetSizeTrackBar( static_cast<SHORT>(lParam) );
+            break;
+
+        case IDM_TOGGLE_EDIT_SIMU_MODE:
+			SetSimulationMode( tBoolOp::opToggle );
             break;
 
 		default:
@@ -154,3 +177,16 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
     }
 }
 
+void EvoController::SetSimulationMode( tBoolOp const op )
+{
+	ApplyOp( m_bSimulationMode, op );
+
+	m_pStatusBar->SetSimuMode( m_bSimulationMode );
+
+	if ( m_bSimulationMode )
+        m_pEditorWindow->SendClick( IDM_MOVE );
+	else
+		ProcessCommand( IDM_STOP, 0 );
+	m_pEditorWindow     ->Show( ! m_bSimulationMode );
+	m_pPerformanceWindow->Show(   m_bSimulationMode );
+}

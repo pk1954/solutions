@@ -97,7 +97,7 @@ void EditorWindow::UpdateEditControls( )
 
 	// adjust display options window according to state of editor
 
-	m_pDspOptWindow->UpdateDspOptionsControls( );
+	m_pDspOptWindow->UpdateDspOptionsControls( m_pModelWork->GetBrushMode () );
 }
 
 INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -129,53 +129,51 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
             switch ( wId )
             {
             case IDM_MOVE:
-                m_pWorkThread->PostSetBrushMode( tBrushMode::move );
-                break;
-
             case IDM_RANDOM_STRATEGY:
-                m_pWorkThread->PostSetBrushMode( tBrushMode::randomStrategy );
-                break;
-
             case IDM_COOPERATE:
-                m_pWorkThread->PostSetBrushMode( tBrushMode::cooperate );
-                break;
-
             case IDM_DEFECT:
-                m_pWorkThread->PostSetBrushMode( tBrushMode::defect );
-                break;
-
             case IDM_TIT4TAT:
-                m_pWorkThread->PostSetBrushMode( tBrushMode::tit4tat );
-                break;
-
             case IDM_KILL_ANIMALS:
-                m_pWorkThread->PostSetBrushMode( tBrushMode::noAnimals );
-                break;
-
             case IDM_MUT_RATE:
-                m_pWorkThread->PostSetBrushMode( tBrushMode::mutRate  );
-                break;
-
             case IDM_FERTILITY:
-                m_pWorkThread->PostSetBrushMode( tBrushMode::fertility  );
-                break;
-
             case IDM_FOOD_STOCK:
-                m_pWorkThread->PostSetBrushMode( tBrushMode::food );
+				{
+					static unordered_map < WORD, tBrushMode > mapModeTable =
+					{
+						{ IDM_MOVE,            tBrushMode::move            },
+						{ IDM_RANDOM_STRATEGY, tBrushMode::randomStrategy  },
+						{ IDM_COOPERATE,       tBrushMode::cooperate       },
+						{ IDM_DEFECT,          tBrushMode::defect          },
+						{ IDM_TIT4TAT,         tBrushMode::tit4tat         },
+						{ IDM_KILL_ANIMALS,    tBrushMode::noAnimals       },
+						{ IDM_MUT_RATE,        tBrushMode::mutRate         },
+						{ IDM_FERTILITY,       tBrushMode::fertility       },
+						{ IDM_FOOD_STOCK,      tBrushMode::food            },
+						{ IDM_FERTILIZER,      tBrushMode::fertilizer      }
+					};
+
+					tBrushMode const brushMode = mapModeTable.at( wId ) ;
+					m_pWorkThread->PostSetBrushMode( brushMode );
+					m_pDspOptWindow->UpdateDspOptionsControls( brushMode );
+				}
                 break;
 
             case IDM_EDIT_CIRCLE:
-                m_pWorkThread->PostSetBrushShape( tShape::Circle );
-                break;
-
             case IDM_EDIT_RECTANGLE:
-                m_pWorkThread->PostSetBrushShape( tShape::Rect );
+				{
+					static unordered_map < WORD, tShape > mapShapeTable =
+					{
+						{ IDM_EDIT_CIRCLE,    tShape::Circle },    
+						{ IDM_EDIT_RECTANGLE, tShape::Rect   }
+					};
+
+					m_pWorkThread->PostSetBrushShape( mapShapeTable.at( wId ) );
+				}
                 break;
 
             default:
                 break;
             }
-			m_pDspOptWindow->UpdateDspOptionsControls( );
         }
         break;
 

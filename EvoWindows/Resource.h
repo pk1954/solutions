@@ -69,6 +69,7 @@
 
 #define IDM_ZOOM_MODE                           850
 #define IDM_FIT_ZOOM                            (IDM_ZOOM_MODE + 0)
+#define IDM_SET_ZOOM                            (IDM_ZOOM_MODE + 1)
 #define IDM_ZOOM_IN                             (IDM_ZOOM_MODE + 2)
 #define IDM_ZOOM_OUT                            (IDM_ZOOM_MODE + 3)
 #define IDM_ZOOM_TRACKBAR                       (IDM_ZOOM_MODE + 4)

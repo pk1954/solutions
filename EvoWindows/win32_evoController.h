@@ -13,6 +13,7 @@ class StatusBar;
 class HistWorkThread;
 class WinManager;
 class GridWindow;
+class EditorWindow;
 
 class EvoController
 {
@@ -28,16 +29,17 @@ public:
 		WinManager        * const,
 		PerformanceWindow * const,
 		StatusBar         * const,
-		GridWindow        * const
+		GridWindow        * const,
+		EditorWindow      * const
 	);
 
-	void SetZoom( short const );
-	void SetGenerationDelay( DWORD const );
 	void ProcessCommand( WPARAM const, LPARAM const );
+	void SetSimulationMode( tBoolOp const );
 
 private:
 	void scriptDialog( );
 
+	bool                m_bSimulationMode;   // if TRUE: simu mode, FALSE: edit more
 	BOOL                m_bTrace;
     wostream          * m_pTraceStream;
 	HistWorkThread    * m_pHistWorkThread;
@@ -45,4 +47,5 @@ private:
     PerformanceWindow * m_pPerformanceWindow;
 	StatusBar         * m_pStatusBar;
 	GridWindow        * m_pGridWindow;
+	EditorWindow      * m_pEditorWindow;
 };

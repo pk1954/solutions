@@ -45,7 +45,7 @@ public:
     void Move     ( GridPoint const & );
     void SetCenter( GridPoint const & );
     void SetSize  ( GridPoint const & );
-	void Reset( ) { *this == GRID_RECT_EMPTY; }
+	void Reset( ) { *this = GRID_RECT_EMPTY; }
 
 	static GridRect GetFullRect( ) { return GRID_RECT_FULL; }
 
