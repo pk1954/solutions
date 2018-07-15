@@ -28,19 +28,32 @@ void EvoModelData::OnAppCommand( unsigned short const usCmd, unsigned short cons
 	switch ( evoCmd )
 	{
 	case tEvoCmd::nextGen:
-		m_pWorkThread->WorkThread::GenerationStep( );   // call layer 2
+		m_pWorkThread->ComputeNextGeneration( );   // call layer 2
 		break;
 
 	case tEvoCmd::editDoEdit:
-		m_pWorkThread->WorkThread::DoEdit( GridPoint( usParam ) );
+		m_pEvolutionModelData->ModelDoEdit( GridPoint( usParam )  );
 		break;
 
 	case tEvoCmd::reset:
-	case tEvoCmd::editSetBrushShape:
-	case tEvoCmd::editSetBrushSize:
-	case tEvoCmd::editSetBrushIntensity:
+//		m_pEvolutionCore->ResetModel( m_pModelWork ); //TODO: clearify and make working
+        break;
+
 	case tEvoCmd::editSetBrushMode:
-		m_pWorkThread->WorkThread::ApplyEditorCommand( evoCmd, usParam );
+        m_pEvolutionModelData->SetBrushStrategy( static_cast<tBrushMode>( usParam ) );
+        break;
+
+    case tEvoCmd::editSetBrushShape:
+        m_pEvolutionModelData->SetBrushShape( static_cast<tShape>( usParam ) );
+		break;
+
+    case tEvoCmd::editSetBrushSize:
+		assert( usParam <= MAX_GRID_COORD );
+        m_pEvolutionModelData->SetBrushSize( static_cast<GRID_COORD>( usParam ) );
+		break;
+
+    case tEvoCmd::editSetBrushIntensity:
+        m_pEvolutionModelData->SetBrushIntensity( usParam );
 		break;
 
 	default:

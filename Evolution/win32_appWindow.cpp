@@ -14,7 +14,7 @@
 // history system
 
 #include "EvoHistorySys.h"
-#include "win32_histWorkerThread.h"
+#include "win32_worker_thread.h"
 
 // interfaces of various windows
 
@@ -79,7 +79,6 @@ AppWindow::AppWindow( ) :
     m_pEvolutionCore( nullptr ),
     m_pScriptHook( nullptr ),
     m_pEvoHistWindow( nullptr ),
-    m_pHistWorkThread( nullptr ),
 	m_pEvoHistorySys( nullptr ),
 	m_pEvoController( nullptr ),
     m_traceStream( )
@@ -130,38 +129,27 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pMainGridWindow = new GridWindow( );   
     m_pMiniGridWindow = new GridWindow( );   
     m_pPerfWindow     = new PerformanceWindow( );  
+    m_pEvoHistWindow  = new EvoHistWindow( );
 	m_pEvoController  = new EvoController( );
+	m_pEvoHistorySys  = new EvoHistorySys( );
+	m_pWorkThread     = new WorkThread( & m_traceStream );
+
+    DefineModelWrapperFunctions( m_pModelWork );
+    DefineWin32HistWrapperFunctions( m_pWorkThread );
 
     SetMenu( hWndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
 	Util::SetApplicationTitle( hWndApp, IDS_APP_TITLE );
 
-    m_pModelWork = EvolutionModelData::CreateModelData( );
-    DefineModelWrapperFunctions( m_pModelWork );
-
-    if ( Config::UseHistorySystem( ) )
-    {
-		m_pEvoHistorySys  = new EvoHistorySys( );
-		m_pHistWorkThread = new HistWorkThread( & m_traceStream, m_pModelWork, m_pEvoHistorySys, m_pEditorWindow );
-		m_pWorkThread     = m_pHistWorkThread;
-		m_pEvoHistorySys->Start( m_pModelWork, m_pHistWorkThread, m_pStatusBar, EvolutionCore::GetModelSize( ), true );
-        DefineWin32HistWrapperFunctions( m_pHistWorkThread );
-
-        m_pEvoHistWindow = new EvoHistWindow( );
-		m_pEvoHistWindow->Start( hWndApp, m_pFocusPoint, m_pEvoHistorySys, m_pHistWorkThread );
-        m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, FALSE, FALSE, 75 ); //75 );
-    }
-    else
-    {
-        m_pWorkThread = new WorkThread( & m_traceStream );
-        EnableMenuItem( GetMenu( hWndApp ), IDM_BACKWARDS, MF_GRAYED );
-    }
-
 	if ( Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 )
         EnableMenuItem( GetMenu( hWndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
 
+	m_pModelWork = EvolutionModelData::CreateModelData( );
+	
+	m_pEvoHistorySys ->Start( m_pModelWork, m_pWorkThread, m_pStatusBar, EvolutionCore::GetModelSize( ), true );
+	m_pEvoHistWindow ->Start( hWndApp, m_pFocusPoint, m_pEvoHistorySys, m_pWorkThread );
     m_pStatusBar     ->Start( hWndApp );
 	m_pFocusPoint    ->Start( m_pEvoHistorySys, m_pModelWork );
-	m_pWorkThread    ->Start( m_pStatusBar, m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork );
+	m_pWorkThread    ->Start( m_pStatusBar, m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
 	m_pDspOptWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork );
     m_pEditorWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork, m_pDspOptWindow );
     m_pMainGridWindow->Start( hWndApp, m_pWorkThread,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
@@ -169,9 +157,10 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pStatistics    ->Start( hWndApp, m_pModelWork );
     m_pCrsrWindow    ->Start( hWndApp, m_pFocusPoint,    m_pModelWork, m_pMainGridWindow );
     m_pPerfWindow    ->Start( hWndApp, 100 );
-	m_pEvoController ->Start( & m_traceStream, m_pHistWorkThread, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow );
+	m_pEvoController ->Start( & m_traceStream, m_pWorkThread, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow );
 
-    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,              TRUE, TRUE,   -1 );
+    m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, FALSE, FALSE,  75 ); 
+    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,              TRUE,  TRUE,  -1 );
     m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow,   TRUE, FALSE,  -1 );
     m_pWinManager->AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_pEditorWindow,   TRUE, FALSE,  -1 );
     m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow,     TRUE, FALSE, 500 );
@@ -188,7 +177,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
 
-    DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, m_pEvoController, m_pStatusBar );
+    DefineWin32WrapperFunctions( m_pWorkThread, m_pEvoController, m_pStatusBar );
     DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 
     m_pWinManager->GetWindowConfiguration( );

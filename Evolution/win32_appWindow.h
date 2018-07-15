@@ -23,7 +23,6 @@ class FocusPoint;
 class WinManager;
 class EvolutionCore;
 class NextGenFunctor;
-class HistWorkThread;
 class ScriptHook;
 class EvolutionModelData;
 class EvoHistorySys;
@@ -67,7 +66,6 @@ private:
     // History 
 	EvoHistorySys      * m_pEvoHistorySys;
     EvoHistWindow      * m_pEvoHistWindow;
-    HistWorkThread     * m_pHistWorkThread;
 
     std::wofstream m_traceStream;
 };

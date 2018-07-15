@@ -3,8 +3,7 @@
 
 #pragma once
 
-class HistWorkThread;
 class WorkThread;
 class EvoController;
 
-extern void DefineWin32WrapperFunctions( HistWorkThread * const, WorkThread * const, EvoController *, StatusBar * const );
+extern void DefineWin32WrapperFunctions( WorkThread * const, EvoController *, StatusBar * const );

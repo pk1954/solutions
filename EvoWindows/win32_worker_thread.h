@@ -7,6 +7,7 @@
 #include <wtypes.h>
 #include "gridRect.h"
 #include "gridPoint.h"
+#include "HistoryGeneration.h"
 #include "EvolutionTypes.h"
 #include "EvoGenerationCmd.h"
 
@@ -24,6 +25,7 @@ class StatusBar;
 class WinManager;
 class DisplayAll;
 class EditorWindow;
+class EvoHistorySys;
 
 class WorkThread
 {
@@ -40,7 +42,8 @@ public:
 		EditorWindow       * const,  
         DisplayAll   const * const, 
         EvolutionCore      * const,
-        EvolutionModelData * const
+        EvolutionModelData * const,
+	    EvoHistorySys      * const
     );
 
     void PostDoEdit( GridPoint const & );
@@ -54,15 +57,23 @@ public:
     void PostProcessScript( std::wstring const & );
 	void PostRunGenerations();
 	void PostStopComputation();
+	void PostUndo();
+	void PostRedo();
+	void PostPrevGeneration();
+	void PostGotoGeneration( HIST_GENERATION const );
+	void PostHistoryAction( UINT const, GridPoint const );
+	void PostGenerationStep();
+	void ResetModel( );
 
 	void DoProcessScript( std::wstring * const ); // parameter must be created with new, will be deleted here! 
 
+	HIST_GENERATION GetGenDemanded( ) const { return m_genDemanded; }
+
 	// functions called by worker thread  ( Layer 1 )
 
-	virtual void PostGenerationStep();
-	virtual void GenerationStep( );
-	virtual void ApplyEditorCommand( tEvoCmd const, unsigned short const );
-	virtual void DoEdit( GridPoint const );
+	void WorkPostGenerationStep();
+	void ComputeNextGeneration( );
+    void GenerationStep( );
 
 protected:
 
@@ -84,13 +95,12 @@ protected:
         THREAD_MSG_LAST = THREAD_MSG_EXIT
     };
 
+	void postGotoGeneration( HIST_GENERATION const );
+
     void workMessage( UINT, WPARAM, LPARAM );
 
 	BOOL EditorStateHasChanged( );
 	void SaveEditorState( );
-
-    virtual void GenerationRun( );
-	virtual void StopComputation();
 
 	BOOL            m_bTrace;
     std::wostream * m_pTraceStream;
@@ -102,6 +112,7 @@ private:
     PerformanceWindow  * m_pPerformanceWindow;
     EditorWindow       * m_pEditorWindow;
     EvolutionCore      * m_pEvolutionCore;
+    EvoHistorySys      * m_pEvoHistorySys;
     EvolutionModelData * m_pModelWork;
     HANDLE               m_hEventThreadStarter;
     DWORD                m_dwThreadId;
@@ -109,11 +120,15 @@ private:
 	HANDLE				 m_hThread;
     BOOL                 m_bContinue;
     INT                  m_iScriptLevel;
+    HIST_GENERATION      m_genDemanded;
 
     // private member functions
 
 	void postMessage( UINT, WPARAM, LPARAM );
-	void sendMessage( UINT, WPARAM, LPARAM );
+	void dispatchMessage( UINT, WPARAM, LPARAM );
+	void editorCommand( UINT const,  WPARAM const );
+    void generationRun( );
+	void stopComputation();
 
 friend static DWORD WINAPI WorkerThread( _In_ LPVOID );
 }; 

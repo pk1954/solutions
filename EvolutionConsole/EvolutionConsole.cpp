@@ -14,7 +14,7 @@
 #include "EvolutionCore.h"
 #include "pixelCoordinates.h"
 #include "win32_status.h"
-#include "win32_histWorkerThread.h"
+#include "win32_worker_thread.h"
 #include "win32_worker_thread.h"
 #include "win32_wrappers.h"
 #include "win32_histWrappers.h"
@@ -50,7 +50,6 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
     WorkThread         * m_pWorkThread;
 	EvoHistorySys      * m_pEvoHistorySys;
-    HistWorkThread     * m_pHistWorkThread;
     EvolutionModelData * m_pModelWork;
 
 	m_pModelWork = EvolutionModelData::CreateModelData( );
@@ -58,20 +57,19 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	
 	if ( Config::UseHistorySystem( ) )
     {
-		m_pEvoHistorySys  = new EvoHistorySys( );
-		m_pHistWorkThread = new HistWorkThread( & m_traceStream, m_pModelWork, m_pEvoHistorySys, nullptr );
-		m_pWorkThread     = m_pHistWorkThread;
-		m_pEvoHistorySys->Start( m_pModelWork, m_pHistWorkThread, nullptr, EvolutionCore::GetModelSize( ), false );
-        DefineWin32HistWrapperFunctions( m_pHistWorkThread );
+		m_pEvoHistorySys = new EvoHistorySys( );
+		m_pWorkThread    = new WorkThread( & m_traceStream );
+		m_pEvoHistorySys->Start( m_pModelWork, m_pWorkThread, nullptr, EvolutionCore::GetModelSize( ), false );
+        DefineWin32HistWrapperFunctions( m_pWorkThread );
     }
     else
     {
         m_pWorkThread = new WorkThread( & m_traceStream );
     }
 
-	m_pWorkThread->Start( nullptr, nullptr, nullptr, nullptr, m_pEvolutionCore, m_pModelWork );
+	m_pWorkThread->Start( nullptr, nullptr, nullptr, nullptr, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
 
-	DefineWin32WrapperFunctions( m_pHistWorkThread, m_pWorkThread, nullptr, nullptr );
+	DefineWin32WrapperFunctions( m_pWorkThread, nullptr, nullptr );
 
     wstring wstrInputFile = L"Test_3.in";
 

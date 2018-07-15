@@ -3,6 +3,6 @@
 
 #pragma once
 
-class HistWorkThread;
+class WorkThread;
 
-extern void DefineWin32HistWrapperFunctions( HistWorkThread * );
+extern void DefineWin32HistWrapperFunctions( WorkThread * );

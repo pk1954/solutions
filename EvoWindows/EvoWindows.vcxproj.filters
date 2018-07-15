@@ -45,9 +45,6 @@
     <ClCompile Include="win32_gridWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_histWorkerThread.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32_histWrappers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -99,9 +96,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_gridWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_histWorkerThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_histWrappers.h">

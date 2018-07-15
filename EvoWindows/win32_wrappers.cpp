@@ -7,7 +7,6 @@
 #include "config.h"
 #include "EvoModelData.h"
 #include "EvolutionCoreWrapperHelpers.h"
-#include "win32_histWorkerThread.h"
 #include "win32_worker_thread.h"
 #include "win32_evoController.h"
 #include "win32_winManager.h"
@@ -17,7 +16,6 @@
 
 //lint -esym( 715, script )   // not referenced
 
-static HistWorkThread * m_pHistWorkThread;
 static WorkThread     * m_pWorkThread;
 static EvoController  * m_pEvoController;
 static StatusBar      * m_pStatusBar;
@@ -28,7 +26,7 @@ class WrapPostPrevGeneration : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pHistWorkThread->PostPrevGeneration( );
+        m_pWorkThread->PostPrevGeneration( );
     }
 };
 
@@ -89,7 +87,7 @@ class WrapPostGenerationStep : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pWorkThread->PostGenerationStep( );
+        m_pWorkThread->WorkPostGenerationStep( );
     }
 };
 
@@ -98,7 +96,7 @@ class WrapPostRunGenerations : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pWorkThread->PostGenerationStep( );
+        m_pWorkThread->WorkPostGenerationStep( );
     }
 };
 
@@ -140,13 +138,11 @@ public:
 
 void DefineWin32WrapperFunctions
 ( 
-    HistWorkThread * const pHistWorkThread,
-    WorkThread     * const pWorkThread,
-	EvoController  * const pEvoController,
-	StatusBar      * const pStatusBar
+    WorkThread    * const pWorkThread,
+	EvoController * const pEvoController,
+	StatusBar     * const pStatusBar
 )
 {
-    m_pHistWorkThread = pHistWorkThread;
     m_pWorkThread     = pWorkThread;
 	m_pEvoController  = pEvoController;
 	m_pStatusBar      = pStatusBar;

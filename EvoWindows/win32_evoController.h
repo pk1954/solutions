@@ -10,7 +10,7 @@ using namespace std;
 
 class PerformanceWindow;
 class StatusBar;
-class HistWorkThread;
+class WorkThread;
 class WinManager;
 class GridWindow;
 class EditorWindow;
@@ -25,7 +25,7 @@ public:
 	void EvoController::Start
 	( 
 		wostream          *, 
-		HistWorkThread    * const,
+		WorkThread        * const,
 		WinManager        * const,
 		PerformanceWindow * const,
 		StatusBar         * const,
@@ -42,7 +42,7 @@ private:
 	bool                m_bSimulationMode;   // if TRUE: simu mode, FALSE: edit more
 	BOOL                m_bTrace;
     wostream          * m_pTraceStream;
-	HistWorkThread    * m_pHistWorkThread;
+	WorkThread        * m_pWorkThread;
 	WinManager        * m_pWinManager;
     PerformanceWindow * m_pPerformanceWindow;
 	StatusBar         * m_pStatusBar;

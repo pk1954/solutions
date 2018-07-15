@@ -9,7 +9,7 @@ class EvolutionCore;
 class FocusPoint;
 class EvoNextGenFunctor;
 class EvoHistorySys;
-class HistWorkThread;
+class WorkThread;
 
 class EvoHistWindow : public HistWindow
 {
@@ -17,16 +17,16 @@ public:
     EvoHistWindow( );
     virtual ~EvoHistWindow( );
 
-    void Start( HWND const, FocusPoint * const, EvoHistorySys * const, HistWorkThread * const );
+    void Start( HWND const, FocusPoint * const, EvoHistorySys * const, WorkThread * const );
 
 	virtual void GotoGeneration( HIST_GENERATION const gen ) 
 	{ 
-		m_pHistWorkThread->PostGotoGeneration( gen ); 
+		m_pWorkThread->PostGotoGeneration( gen ); 
 	}
 
 	virtual void DoPaint( HDC const );
 
 private:
-    HistWorkThread * m_pHistWorkThread;
-    FocusPoint     * m_pFocusPoint;
+    WorkThread * m_pWorkThread;
+    FocusPoint * m_pFocusPoint;
 };

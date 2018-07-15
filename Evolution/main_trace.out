@@ -1,55 +1,163 @@
 OpenTraceFile  "main_trace.out"
 PostRefresh
-PostSetBrushMode tBrushMode::cooperate
 PostSetBrushMode tBrushMode::fertility
 PostRefresh
 PostRefresh
-PostDoEdit   75  46 
+PostDoEdit   53  59 
 PostRefresh
-PostDoEdit   75  46 
+PostDoEdit   94  60 
 PostRefresh
-PostDoEdit   77  45 
+PostDoEdit  118  42 
 PostRefresh
-PostDoEdit   80  44 
+PostDoEdit  135  39 
 PostRefresh
-PostDoEdit   94  42 
-PostRefresh
-PostSetBrushMode tBrushMode::randomStrategy
-PostDoEdit   62  34 
-PostRefresh
-PostDoEdit   62  34 
-PostRefresh
-PostDoEdit   65  35 
-PostRefresh
-PostDoEdit   66  36 
-PostRefresh
-PostDoEdit   75  41 
-PostRefresh
-PostDoEdit   76  41 
+PostDoEdit  146  41 
 PostRefresh
 PostSetBrushMode tBrushMode::mutRate
 PostRefresh
 PostRefresh
-PostDoEdit   82  33 
+PostDoEdit   63  57 
 PostRefresh
-PostDoEdit   83  37 
+PostDoEdit   64  58 
 PostRefresh
-PostDoEdit   83  38 
+PostDoEdit  106  53 
+PostRefresh
+PostDoEdit  121  36 
+PostRefresh
+PostDoEdit  129  34 
+PostRefresh
+PostDoEdit  129  35 
+PostRefresh
+PostSetBrushMode tBrushMode::randomStrategy
+PostDoEdit   75  57 
+PostRefresh
+PostDoEdit   75  57 
+PostRefresh
+PostDoEdit   75  57 
+PostRefresh
+PostDoEdit   97  48 
+PostRefresh
+PostDoEdit  106  39 
+PostRefresh
+PostDoEdit  110  37 
+PostRefresh
+PostDoEdit  110  37 
 PostRefresh
 PostUndo
 PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
 PostRefresh
-PostUndo
-PostUndo
+PostRedo
+PostRefresh
 PostRedo
 PostRedo
 PostRedo
-PostRefresh
+PostRedo
+PostRedo
+PostRedo
+PostRedo
+PostRedo
+WorkPostGenerationStep
+PostRedo
+PostRedo
+PostRedo
+PostRedo
+PostRedo
+PostRedo
+PostRedo
 PostRedo
 PostSetBrushMode tBrushMode::move
-PostGenerationStep
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostGotoGeneration  31
+PostGotoGeneration  17
+WorkPostGenerationStep
+PostGotoGeneration  17
+WorkPostGenerationStep
+WorkPostGenerationStep
+WorkPostGenerationStep
+PostGotoGeneration  7
+WorkPostGenerationStep
 PostRefresh
+WorkPostGenerationStep
+WorkPostGenerationStep
+WorkPostGenerationStep
+WorkPostGenerationStep
+WorkPostGenerationStep
+WorkPostGenerationStep
 PostRefresh
+PostGotoGeneration  10
+WorkPostGenerationStep
+WorkPostGenerationStep
+PostGotoGeneration  3
+WorkPostGenerationStep
 PostRefresh
-PostRefresh
-PostRefresh
+WorkPostGenerationStep
+WorkPostGenerationStep

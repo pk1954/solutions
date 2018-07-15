@@ -6,6 +6,7 @@
 #include "SCRIPT.H"
 #include "Resource.h"
 #include "EvolutionModelData.h"
+#include "EvoHistorySys.h"
 #include "EvolutionCore.h"
 #include "win32_packGridPoint.h"
 #include "win32_hiResTimer.h"
@@ -35,7 +36,9 @@ WorkThread::WorkThread( wostream * pTraceStream ) :
     m_pDisplayGridFunctor( nullptr ),
     m_pEvolutionCore     ( nullptr ),
     m_pModelWork         ( nullptr ),
-    m_bContinue          ( FALSE )
+    m_pEvoHistorySys     ( nullptr ),
+    m_bContinue          ( FALSE ),
+    m_genDemanded        ( 0 )
 { }
 
 void WorkThread::Start
@@ -45,7 +48,9 @@ void WorkThread::Start
 	EditorWindow       * const pEditorWindow,
     DisplayAll   const * const pDisplayGridFunctor,
     EvolutionCore      * const pEvolutionCore,
-    EvolutionModelData * const pModel
+    EvolutionModelData * const pModel,
+    EvoHistorySys      * const pEvoHistorySys
+
 )
 {
     m_hThread             = Util::MakeThread( WorkerThread, this, &m_dwThreadId, &m_hEventThreadStarter );
@@ -55,6 +60,8 @@ void WorkThread::Start
     m_pDisplayGridFunctor = pDisplayGridFunctor;
     m_pEvolutionCore      = pEvolutionCore;
     m_pModelWork          = pModel;
+	m_pEvoHistorySys      = pEvoHistorySys;
+
 
     (void)SetThreadAffinityMask( m_hThread, 0x0002 );
 
@@ -71,44 +78,40 @@ WorkThread::~WorkThread( )
     m_pPerformanceWindow  = nullptr;
     m_pEditorWindow       = nullptr;
     m_pDisplayGridFunctor = nullptr;
+	m_pEvoHistorySys      = nullptr;
 }
 
-void WorkThread::ApplyEditorCommand( tEvoCmd const evoCmd, unsigned short const usParam )  // Layer 1
+// GenerationStep - perform one history step towards demanded generation
+//                - update editor state if neccessary
+
+void WorkThread::GenerationStep( )   // Layer 5
 {
-	switch (evoCmd)
+	if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
 	{
-	case tEvoCmd::reset:
-		m_pEvolutionCore->ResetModel( m_pModelWork );
-        break;
+		if ( 
+		       (m_pEvoHistorySys->GetCurrentGeneration( ) < m_genDemanded)  &&
+		       (m_pEvoHistorySys->GetCurrentGeneration( ) == m_pEvoHistorySys->GetYoungestGeneration( ))
+		   )
+			m_pEvoHistorySys->EvoCreateNextGenCommand( );
+		else
+		{
+			m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded ); // Get a stored generation from history system
+			if ( EditorStateHasChanged( ) )                        // editor state may be different from before
+			{                                                       
+				SaveEditorState( );
+				if (m_pEditorWindow != nullptr)                    // make sure that editor GUI 
+					m_pEditorWindow->UpdateEditControls( );        // reflects new state
+			}
+		}
 
-	case tEvoCmd::editSetBrushMode:
-        m_pModelWork->SetBrushStrategy( static_cast<tBrushMode>( usParam ) );
-        break;
-
-    case tEvoCmd::editSetBrushShape:
-        m_pModelWork->SetBrushShape( static_cast<tShape>( usParam ) );
-		break;
-
-    case tEvoCmd::editSetBrushSize:
-		assert( usParam <= MAX_GRID_COORD );
-        m_pModelWork->SetBrushSize( static_cast<GRID_COORD>( usParam ) );
-		break;
-
-    case tEvoCmd::editSetBrushIntensity:
-        m_pModelWork->SetBrushIntensity( usParam );
-		break;
-
-	default:
-		break;
+		workMessage( THREAD_MSG_REFRESH, 0, 0 );
+    
+		if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
+			WorkPostGenerationStep(  );   // Loop! Will call indirectly HistWorkThread::GenerationStep again
 	}
 }
 
-void WorkThread::DoEdit( GridPoint const gp )  // Layer 1
-{
-	m_pModelWork->ModelDoEdit( gp );
-}
-
-void WorkThread::GenerationStep( ) // Layer 1
+void WorkThread::ComputeNextGeneration( ) // Layer 1
 {
 	if (m_pPerformanceWindow != nullptr)
 	    m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
@@ -122,7 +125,15 @@ void WorkThread::GenerationStep( ) // Layer 1
 	    ( * m_pDisplayGridFunctor )( FALSE );        // notify all views
 }
 
-void WorkThread::GenerationRun( )  // Layer 1
+void WorkThread::postGotoGeneration( HIST_GENERATION const gen )
+{
+    assert( gen >= 0 );
+
+	m_genDemanded = gen;
+    workMessage( THREAD_MSG_STEP, 0, 0 );    // will call indirectly HistWorkThread::GenerationStep
+}
+
+void WorkThread::generationRun( )  // Layer 1
 {
     GenerationStep( );
 
@@ -142,8 +153,9 @@ void WorkThread::DoProcessScript( wstring * const pwstr )
     delete pwstr;
 }
 
-void WorkThread::StopComputation()
+void WorkThread::stopComputation()
 {
+	m_genDemanded = m_pEvoHistorySys->GetCurrentGeneration( );
 	m_bContinue = FALSE;
 	Script::StopProcessing( );
 }
@@ -152,7 +164,7 @@ void WorkThread::workMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 {
     if ( m_iScriptLevel > 0 )
     {
-        sendMessage( uiMsg, wParam, lParam );
+        dispatchMessage( uiMsg, wParam, lParam );
     }
     else
     {
@@ -181,13 +193,13 @@ static DWORD WINAPI WorkerThread( _In_ LPVOID lpParameter )
     {
         BOOL const bRet = GetMessage( &msg, nullptr, 0, 0 );
         assert( bRet >= 0 );
-        (void)pWT->sendMessage( msg.message, msg.wParam, msg.lParam );
+        (void)pWT->dispatchMessage( msg.message, msg.wParam, msg.lParam );
     } while ( msg.message != pWT->THREAD_MSG_EXIT );
 
     return 0;
 }
 
-void WorkThread::sendMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
+void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 {
     switch ( uiMsg )   // Layer 6
     {
@@ -197,16 +209,17 @@ void WorkThread::sendMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
 
     case THREAD_MSG_STEP:
-        GenerationStep( );  
+        GenerationStep( );  // call HistWorkThread::GenerationStep( ) 
         break;
 
     case THREAD_MSG_GENERATION_RUN:
         assert( m_iScriptLevel == 0 );
-        GenerationRun( );
+		m_genDemanded = m_pEvoHistorySys->GetCurrentGeneration( ) + 1 ;
+		generationRun( );
         break;
 
     case THREAD_MSG_STOP:
-		StopComputation();
+		stopComputation();
         break;
 
     case THREAD_MSG_RESET_MODEL:
@@ -214,28 +227,11 @@ void WorkThread::sendMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
 
     case THREAD_MSG_SET_BRUSH_INTENSITY:
-        ApplyEditorCommand( tEvoCmd::editSetBrushIntensity, static_cast<unsigned short>( wParam ) );
-		m_pEditorWindow->UpdateEditControls( );
-        break;
-
     case THREAD_MSG_SET_BRUSH_SIZE:
-		assert( wParam <= MAX_GRID_COORD );
-        ApplyEditorCommand( tEvoCmd::editSetBrushSize, static_cast<GRID_COORD>( wParam ) );
-		m_pEditorWindow->UpdateEditControls( );
-        break;
-
     case THREAD_MSG_SET_BRUSH_SHAPE:
-        ApplyEditorCommand( tEvoCmd::editSetBrushShape, static_cast<unsigned short>( wParam ) );
-		m_pEditorWindow->UpdateEditControls( );
-        break;
-
     case THREAD_MSG_SET_BRUSH_MODE:
-        ApplyEditorCommand( tEvoCmd::editSetBrushMode, static_cast<unsigned short>( wParam ) );
-		m_pEditorWindow->UpdateEditControls( );
-        break;
-
     case THREAD_MSG_DO_EDIT:
-		m_pModelWork->ModelDoEdit( UnpackFromLParam( lParam )  );
+        editorCommand( uiMsg, wParam );
         break;
 
     case THREAD_MSG_REFRESH:
@@ -249,6 +245,23 @@ void WorkThread::sendMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 	    m_pStatusBar->DisplayCurrentGeneration( m_pModelWork->GetEvoGenerationNr( ) );   // display new generation number in status bar
 	if (m_pDisplayGridFunctor != nullptr)
 	    ( * m_pDisplayGridFunctor )( FALSE );
+}
+
+void WorkThread::editorCommand( UINT const uiMsg, WPARAM const wParam )
+{
+		static unordered_map < UINT, tEvoCmd > mapTable =
+		{
+			{ THREAD_MSG_SET_BRUSH_INTENSITY, tEvoCmd::editSetBrushIntensity },
+			{ THREAD_MSG_SET_BRUSH_SIZE,      tEvoCmd::editSetBrushSize      },
+			{ THREAD_MSG_SET_BRUSH_SHAPE,     tEvoCmd::editSetBrushShape     },
+			{ THREAD_MSG_SET_BRUSH_MODE,      tEvoCmd::editSetBrushMode      },
+			{ THREAD_MSG_DO_EDIT,             tEvoCmd::editDoEdit            }
+		};
+    
+    if ( m_pEvoHistorySys->EvoCreateEditorCommand( mapTable.at( uiMsg ), static_cast<unsigned short>( wParam ) ) )
+        SaveEditorState( );
+	if ( uiMsg != THREAD_MSG_DO_EDIT )
+		m_pEditorWindow->UpdateEditControls( );
 }
 
 BOOL WorkThread::EditorStateHasChanged( ) 
@@ -283,7 +296,7 @@ void WorkThread::PostDoEdit( GridPoint const & gp )
     {
         if ( m_bTrace )
             * m_pTraceStream << __func__ << L" " << gp << endl;
-        workMessage( THREAD_MSG_DO_EDIT, 0, Pack2LParam( gp ) );
+        workMessage( THREAD_MSG_DO_EDIT, gp.Pack2short(), 0 );
     }
 }
 
@@ -315,7 +328,7 @@ void WorkThread::PostSetBrushShape( tShape const shape )
     workMessage( THREAD_MSG_SET_BRUSH_SHAPE, static_cast<WPARAM>( shape ), 0 );
 }
 
-void WorkThread::PostGenerationStep(  )
+void WorkThread::WorkPostGenerationStep(  )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
@@ -332,6 +345,79 @@ void WorkThread::PostRunGenerations( )
 	workMessage( THREAD_MSG_GENERATION_RUN, 0, 0 );
 }
 
+void WorkThread::ResetModel( )    // Layer 5
+{
+	m_pEvoHistorySys->EvoCreateResetCommand( );
+}
+
+void WorkThread::PostRedo( )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << endl;
+
+	HIST_GENERATION gen = m_pEvoHistorySys->GetCurrentGeneration( );
+
+	if ( ( gen < m_pEvoHistorySys->GetYoungestGeneration( ) ) && m_pEvoHistorySys->IsEditorCommand( gen + 1 ) )
+		postGotoGeneration( gen + 1 );
+	else
+		(void)MessageBeep(MB_OK);  // first generation reached
+}
+
+void WorkThread::PostGenerationStep( )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << endl;
+
+	postGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration( ) + 1 );
+}
+
+void WorkThread::PostUndo( )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << endl;
+
+	HIST_GENERATION gen = m_pEvoHistorySys->GetCurrentGeneration( );
+
+	if ( ( gen > 0 ) && m_pEvoHistorySys->IsEditorCommand( gen - 1 ) )
+		postGotoGeneration( gen - 1 );
+	else
+		(void)MessageBeep(MB_OK);  // first generation reached
+}
+
+void WorkThread::PostPrevGeneration( )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << endl;
+
+	if (m_pEvoHistorySys->GetCurrentGeneration() > 0)
+		postGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration() - 1 );
+	else
+		(void)MessageBeep(MB_OK);  // first generation reached
+}
+
+void WorkThread::PostHistoryAction( UINT const uiID, GridPoint const gp )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << L" " << uiID << L" " << gp << endl;
+
+	assert( m_pModelWork->IsAlive(gp) );
+	assert( (uiID == IDM_GOTO_ORIGIN) || (uiID == IDM_GOTO_DEATH) );
+
+	IndId           idTarget  = m_pModelWork->GetId(gp);
+	HIST_GENERATION genTarget = ( uiID == IDM_GOTO_ORIGIN )
+	                            ? m_pEvoHistorySys->GetFirstGenOfIndividual(idTarget)
+		                        : m_pEvoHistorySys->GetLastGenOfIndividual(idTarget);
+	
+	postGotoGeneration( genTarget );
+}
+
+void WorkThread::PostGotoGeneration( HIST_GENERATION const gen )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << L" " << gen << endl;
+
+	postGotoGeneration( gen );
+}
 void WorkThread::PostStopComputation( )
 {
 	workMessage( THREAD_MSG_STOP, 0, 0 );
@@ -351,7 +437,7 @@ void WorkThread::PostProcessScript( wstring const & wstrPath )
 
 void WorkThread::PostEndThread( HWND const hwndCtl )
 {
-	StopComputation();                                   // stop running computation and script processing
+	stopComputation();                                   // stop running computation and script processing
 	postMessage( THREAD_MSG_EXIT, 0, (LPARAM)hwndCtl );  // stop message pump of thread
 	::WaitForSingleObject(m_hThread, INFINITE);          // wait until thread has stopped
 	DestroyWindow( hwndCtl);                             // trigger termination of application

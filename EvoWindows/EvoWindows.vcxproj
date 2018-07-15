@@ -154,7 +154,6 @@
     <ClCompile Include="win32_evoHistWindow.cpp" />
     <ClCompile Include="win32_focusPoint.cpp" />
     <ClCompile Include="win32_gridWindow.cpp" />
-    <ClCompile Include="win32_histWorkerThread.cpp" />
     <ClCompile Include="win32_histWrappers.cpp" />
     <ClCompile Include="win32_statistics.cpp" />
     <ClCompile Include="win32_status.cpp" />
@@ -175,7 +174,6 @@
     <ClInclude Include="win32_evoHistWindow.h" />
     <ClInclude Include="win32_focusPoint.h" />
     <ClInclude Include="win32_gridWindow.h" />
-    <ClInclude Include="win32_histWorkerThread.h" />
     <ClInclude Include="win32_histWrappers.h" />
     <ClInclude Include="win32_packGridPoint.h" />
     <ClInclude Include="win32_scriptHook.h" />
