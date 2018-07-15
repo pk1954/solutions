@@ -16,7 +16,7 @@ class GridRect;
 class DrawFrame;
 class PixelCoordinates;
 class PixelCore;
-class WorkThread;
+class WorkThreadInterface;
 class DspOptWindow;
 class EvolutionCore;
 class EvolutionModelData;
@@ -31,15 +31,15 @@ public:
     void Start
     ( 
         HWND, 
-        WorkThread         * const,
-        EditorWindow       * const,
-        FocusPoint         * const,
-        DspOptWindow       * const,
-        PerformanceWindow  * const, 
-        EvolutionCore      * const, 
-        EvolutionModelData * const,
-        DWORD                const, 
-        SHORT                const
+        WorkThreadInterface * const,
+        EditorWindow        * const,
+        FocusPoint          * const,
+        DspOptWindow        * const,
+        PerformanceWindow   * const, 
+        EvolutionCore       * const, 
+        EvolutionModelData  * const,
+        DWORD                 const, 
+        SHORT                 const
     );
 
     ~GridWindow( );
@@ -61,19 +61,19 @@ private:
     GridWindow             ( GridWindow const & );  // noncopyable class 
     GridWindow & operator= ( GridWindow const & );  // noncopyable class 
     
-    WorkThread         * m_pWorkThread;
-    PixelCoordinates   * m_pPixelCoordinates;  // My own PixelCoordinates
-    GridWindow         * m_pGWObserved;	 // Observed GridWindow (or nullptr)
-	EvolutionCore      * m_pCore;
-    EvolutionModelData * m_pModelWork;
-    EditorWindow       * m_pEditorWindow;
-    PerformanceWindow  * m_pPerformanceWindow;
-    FocusPoint         * m_pFocusPoint;
-    ObserverInterface  * m_pObserverInterface;
-	PixelCore          * m_pPixelCore;
-    DrawFrame          * m_pDrawFrame;
-    PixelPoint 	         m_ptLast;	 	 // Last cursor position during selection 
-    BOOL                 m_bMoveAllowed;  // TRUE: move with mouse is possible
+    WorkThreadInterface * m_pWorkThreadInterface;
+    PixelCoordinates    * m_pPixelCoordinates;  // My own PixelCoordinates
+    GridWindow          * m_pGWObserved;	 // Observed GridWindow (or nullptr)
+	EvolutionCore       * m_pCore;
+    EvolutionModelData  * m_pModelWork;
+    EditorWindow        * m_pEditorWindow;
+    PerformanceWindow   * m_pPerformanceWindow;
+    FocusPoint          * m_pFocusPoint;
+    ObserverInterface   * m_pObserverInterface;
+	PixelCore           * m_pPixelCore;
+    DrawFrame           * m_pDrawFrame;
+    PixelPoint 	          m_ptLast;	 	 // Last cursor position during selection 
+    BOOL                  m_bMoveAllowed;  // TRUE: move with mouse is possible
 
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 

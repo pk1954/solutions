@@ -5,7 +5,7 @@
 
 #include "win32_baseDialog.h"
 
-class WorkThread;
+class WorkThreadInterface;
 class DspOptWindow;
 class EvolutionModelData;
 
@@ -15,7 +15,7 @@ public:
     EditorWindow( );
     ~EditorWindow( );
 
-    void Start( HWND const, WorkThread * const, EvolutionModelData * const, DspOptWindow * const );
+    void Start( HWND const, WorkThreadInterface * const, EvolutionModelData * const, DspOptWindow * const );
 
     void    UpdateEditControls( );
     BOOL    IsInEditMode( )  const;
@@ -24,7 +24,7 @@ public:
 private:
     virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
 
-	EvolutionModelData * m_pModelWork;
-    WorkThread         * m_pWorkThread;
-    DspOptWindow       * m_pDspOptWindow;
+	EvolutionModelData  * m_pModelWork;
+    WorkThreadInterface * m_pWorkThreadInterface;
+    DspOptWindow        * m_pDspOptWindow;
 };

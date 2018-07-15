@@ -16,7 +16,7 @@ class StatisticsWindow;
 class EditorWindow;
 class DspOptWindow;
 class EvoHistWindow;
-class WorkThread;
+class WorkThreadInterface;
 class GridRect;
 class Script;
 class FocusPoint;
@@ -45,27 +45,27 @@ private:
 
 	void adjustChildWindows( );
 
-    DisplayAll           m_displayGridFunctor;
+    DisplayAll            m_displayGridFunctor;
 
-    GridWindow         * m_pMainGridWindow;
-    GridWindow         * m_pMiniGridWindow;
-    WorkThread         * m_pWorkThread;
-    PerformanceWindow  * m_pPerfWindow;
-    EditorWindow       * m_pEditorWindow;
-    CrsrWindow         * m_pCrsrWindow;
-    StatusBar          * m_pStatusBar;
-    StatisticsWindow   * m_pStatistics;
-    DspOptWindow       * m_pDspOptWindow;
-    FocusPoint         * m_pFocusPoint;
-    WinManager         * m_pWinManager;
-    EvolutionModelData * m_pModelWork;
-    EvolutionCore      * m_pEvolutionCore;
-	EvoController      * m_pEvoController;
-    ScriptHook         * m_pScriptHook;
+    GridWindow          * m_pMainGridWindow;
+    GridWindow          * m_pMiniGridWindow;
+    WorkThreadInterface * m_pWorkThreadInterface;
+    PerformanceWindow   * m_pPerfWindow;
+    EditorWindow        * m_pEditorWindow;
+    CrsrWindow          * m_pCrsrWindow;
+    StatusBar           * m_pStatusBar;
+    StatisticsWindow    * m_pStatistics;
+    DspOptWindow        * m_pDspOptWindow;
+    FocusPoint          * m_pFocusPoint;
+    WinManager          * m_pWinManager;
+    EvolutionModelData  * m_pModelWork;
+    EvolutionCore       * m_pEvolutionCore;
+	EvoController       * m_pEvoController;
+    ScriptHook          * m_pScriptHook;
     
     // History 
-	EvoHistorySys      * m_pEvoHistorySys;
-    EvoHistWindow      * m_pEvoHistWindow;
+	EvoHistorySys       * m_pEvoHistorySys;
+    EvoHistWindow       * m_pEvoHistWindow;
 
     std::wofstream m_traceStream;
 };

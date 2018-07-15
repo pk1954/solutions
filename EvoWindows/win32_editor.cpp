@@ -8,7 +8,7 @@
 #include "config.h"
 #include "EvolutionModelData.h"
 #include "win32_util.h"
-#include "win32_worker_thread.h"
+#include "win32_workThreadInterface.h"
 #include "win32_displayOptions.h"
 #include "win32_editor.h"
 
@@ -19,20 +19,20 @@ using namespace std;
 EditorWindow::EditorWindow( )
   : BaseDialog( ),
     m_pModelWork( nullptr ),
-    m_pWorkThread( nullptr ),
+    m_pWorkThreadInterface( nullptr ),
     m_pDspOptWindow( nullptr )
 { }
 
 void EditorWindow::Start
 (  
-    HWND                 const hWndParent,
-    WorkThread         * const pWorkThread,
-    EvolutionModelData * const pModel,
-    DspOptWindow       * const pDspOptWindow
+    HWND                  const hWndParent,
+    WorkThreadInterface * const pWorkThreadInterface,
+    EvolutionModelData  * const pModel,
+    DspOptWindow        * const pDspOptWindow
     )
 {
     StartBaseDialog( hWndParent, MAKEINTRESOURCE( IDD_EDITOR ) );
-    m_pWorkThread   = pWorkThread;
+    m_pWorkThreadInterface = pWorkThreadInterface;
     m_pModelWork    = pModel;
     m_pDspOptWindow = pDspOptWindow;
 
@@ -43,9 +43,9 @@ void EditorWindow::Start
 
 EditorWindow::~EditorWindow( )
 {
-    m_pDspOptWindow = nullptr;
-    m_pWorkThread   = nullptr;
-    m_pModelWork    = nullptr;
+    m_pDspOptWindow        = nullptr;
+    m_pWorkThreadInterface = nullptr;
+    m_pModelWork           = nullptr;
 }
 
 BOOL EditorWindow::IsInEditMode( ) const 
@@ -111,10 +111,10 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 			switch ( GetDlgCtrlID( hwndTrackBar ) )
 			{
 			case IDM_EDIT_INTENSITY:
-				m_pWorkThread->PostSetBrushIntensity( usLogicalPos );
+				m_pWorkThreadInterface->PostSetBrushIntensity( usLogicalPos );
 				break;
 			case IDM_EDIT_SIZE:
-				m_pWorkThread->PostSetBrushSize( usLogicalPos );
+				m_pWorkThreadInterface->PostSetBrushSize( usLogicalPos );
 				break;
 			default:
 				assert( false );
@@ -153,7 +153,7 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 					};
 
 					tBrushMode const brushMode = mapModeTable.at( wId ) ;
-					m_pWorkThread->PostSetBrushMode( brushMode );
+					m_pWorkThreadInterface->PostSetBrushMode( brushMode );
 					m_pDspOptWindow->UpdateDspOptionsControls( brushMode );
 				}
                 break;
@@ -167,7 +167,7 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 						{ IDM_EDIT_RECTANGLE, tShape::Rect   }
 					};
 
-					m_pWorkThread->PostSetBrushShape( mapShapeTable.at( wId ) );
+					m_pWorkThreadInterface->PostSetBrushShape( mapShapeTable.at( wId ) );
 				}
                 break;
 

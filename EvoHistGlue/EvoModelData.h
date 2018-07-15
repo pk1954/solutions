@@ -11,17 +11,21 @@
 #include <functional>
 #include "gridPoint.h"
 #include "ModelData.h"
-#include "win32_worker_thread.h"
 
 class EvolutionModelData;
+class EvolutionCore;
 
 class EvoModelData: public ModelData
 {
 public:
 	
-    EvoModelData( EvolutionModelData * pModelDataWork, WorkThread * pWorkThread ):
+    EvoModelData
+	( 
+		EvolutionModelData * const pModelDataWork, 
+        EvolutionCore      * const pCore
+	):
         m_pEvolutionModelData( pModelDataWork ),
-		m_pWorkThread( pWorkThread )
+		m_pEvolutionCore( pCore )
     { }
 
     EvoModelData & operator= ( EvoModelData const & );  // noncopyable class 
@@ -35,5 +39,5 @@ public:
 
 private:
 	EvolutionModelData * m_pEvolutionModelData;
-	WorkThread         * m_pWorkThread;
+    EvolutionCore      * m_pEvolutionCore;
 };

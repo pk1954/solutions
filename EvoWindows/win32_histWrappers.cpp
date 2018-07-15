@@ -6,9 +6,9 @@
 #include "SCRIPT.H"
 #include "config.h"
 #include "Resource.h"
-#include "win32_worker_thread.h"
+#include "win32_workThreadInterface.h"
 
-static WorkThread * m_pWorkThread;
+static WorkThreadInterface * m_pWorkThreadInterface;
 
 class WrapPostGotoGeneration : public Script_Functor
 {
@@ -17,13 +17,13 @@ public:
     {
         HIST_GENERATION const gen = static_cast<HIST_GENERATION>( script.ScrReadLong( ) );
         if ( Config::UseHistorySystem( ) )
-            m_pWorkThread->PostGotoGeneration( gen );
+            m_pWorkThreadInterface->PostGotoGeneration( gen );
     }
 };
 
-void DefineWin32HistWrapperFunctions( WorkThread * pWorkThread )
+void DefineWin32HistWrapperFunctions( WorkThreadInterface * pWorkThreadInterface )
 {
-    m_pWorkThread = pWorkThread;
+    m_pWorkThreadInterface = pWorkThreadInterface;
 
     DEF_FUNC( PostGotoGeneration );
 

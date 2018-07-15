@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "EvoGenerationCmd.h"
 #include "EvolutionModelData.h"
+#include "EvolutionCore.h"
 #include "EvoModelData.h"
 
 EvoModelData::~EvoModelData( )
@@ -28,7 +29,7 @@ void EvoModelData::OnAppCommand( unsigned short const usCmd, unsigned short cons
 	switch ( evoCmd )
 	{
 	case tEvoCmd::nextGen:
-		m_pWorkThread->ComputeNextGeneration( );   // call layer 2
+		m_pEvolutionCore->Compute( m_pEvolutionModelData );  // compute next generation
 		break;
 
 	case tEvoCmd::editDoEdit:
@@ -36,7 +37,7 @@ void EvoModelData::OnAppCommand( unsigned short const usCmd, unsigned short cons
 		break;
 
 	case tEvoCmd::reset:
-//		m_pEvolutionCore->ResetModel( m_pModelWork ); //TODO: clearify and make working
+//		m_pEvolutionCore->ResetModel( m_pModelWork ); 
         break;
 
 	case tEvoCmd::editSetBrushMode:

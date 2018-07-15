@@ -7,7 +7,7 @@
 #include "config.h"
 #include "EvoModelData.h"
 #include "EvolutionCoreWrapperHelpers.h"
-#include "win32_worker_thread.h"
+#include "win32_workThreadInterface.h"
 #include "win32_evoController.h"
 #include "win32_winManager.h"
 #include "win32_status.h"
@@ -16,17 +16,17 @@
 
 //lint -esym( 715, script )   // not referenced
 
-static WorkThread     * m_pWorkThread;
-static EvoController  * m_pEvoController;
-static StatusBar      * m_pStatusBar;
-static BOOL             m_bMoveWindowActive;
+static WorkThreadInterface * m_pWorkThreadInterface;
+static EvoController       * m_pEvoController;
+static StatusBar           * m_pStatusBar;
+static BOOL                  m_bMoveWindowActive;
 
 class WrapPostPrevGeneration : public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pWorkThread->PostPrevGeneration( );
+        m_pWorkThreadInterface->PostPrevGeneration( );
     }
 };
 
@@ -36,7 +36,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         GridPoint gp = ScrReadGridPoint( script );
-        m_pWorkThread->PostDoEdit( gp );
+        m_pWorkThreadInterface->PostDoEdit( gp );
     }
 };
 
@@ -47,7 +47,7 @@ public:
     {
         ULONG      const ulCmd = script.ScrReadUlong( );
         tBrushMode const mode  = static_cast<tBrushMode>( ulCmd );
-        m_pWorkThread->PostSetBrushMode( mode );
+        m_pWorkThreadInterface->PostSetBrushMode( mode );
     }
 };
 
@@ -58,7 +58,7 @@ public:
     {
         ULONG  const ulShape = script.ScrReadUlong( );
         tShape const shape   = static_cast<tShape>( ulShape );
-        m_pWorkThread->PostSetBrushShape( shape );
+        m_pWorkThreadInterface->PostSetBrushShape( shape );
     }
 };
 
@@ -68,7 +68,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         INT  const iValue = script.ScrReadInt( );
-        m_pWorkThread->PostSetBrushIntensity( iValue );
+        m_pWorkThreadInterface->PostSetBrushIntensity( iValue );
     }
 };
 
@@ -78,7 +78,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         INT  const iValue = script.ScrReadInt( );
-        m_pWorkThread->PostSetBrushSize( iValue );
+        m_pWorkThreadInterface->PostSetBrushSize( iValue );
     }
 };
 
@@ -87,7 +87,7 @@ class WrapPostGenerationStep : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pWorkThread->WorkPostGenerationStep( );
+        m_pWorkThreadInterface->PostGenerationStep( );
     }
 };
 
@@ -96,7 +96,7 @@ class WrapPostRunGenerations : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pWorkThread->WorkPostGenerationStep( );
+        m_pWorkThreadInterface->PostGenerationStep( );
     }
 };
 
@@ -106,7 +106,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         wstring const wstrScript = script.ScrReadString( );
-        m_pWorkThread->PostProcessScript( wstrScript );
+        m_pWorkThreadInterface->PostProcessScript( wstrScript );
     }
 };
 
@@ -115,7 +115,7 @@ class WrapPostRefresh : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pWorkThread->PostRefresh( );
+        m_pWorkThreadInterface->PostRefresh( );
     }
 };
 
@@ -124,7 +124,7 @@ class WrapPostReset : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pWorkThread->PostReset();
+        m_pWorkThreadInterface->PostReset();
     }
 };
 
@@ -138,14 +138,14 @@ public:
 
 void DefineWin32WrapperFunctions
 ( 
-    WorkThread    * const pWorkThread,
-	EvoController * const pEvoController,
-	StatusBar     * const pStatusBar
+    WorkThreadInterface * const pWorkThreadInterface,
+	EvoController       * const pEvoController,
+	StatusBar           * const pStatusBar
 )
 {
-    m_pWorkThread     = pWorkThread;
-	m_pEvoController  = pEvoController;
-	m_pStatusBar      = pStatusBar;
+    m_pWorkThreadInterface = pWorkThreadInterface;
+	m_pEvoController       = pEvoController;
+	m_pStatusBar           = pStatusBar;
 
     DEF_FUNC( PostPrevGeneration ); 
 

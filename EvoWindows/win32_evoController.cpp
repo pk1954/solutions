@@ -5,7 +5,7 @@
 #include "Windowsx.h"
 #include "Resource.h"
 #include "win32_script.h"
-#include "win32_worker_thread.h"
+#include "win32_workThreadInterface.h"
 #include "win32_winManager.h"
 #include "win32_performanceWindow.h"
 #include "win32_status.h"
@@ -15,47 +15,47 @@
 #include "win32_evoController.h"
 
 EvoController::EvoController() :
-	m_bSimulationMode   ( FALSE ),
-    m_bTrace            ( TRUE ),
-    m_pTraceStream      ( nullptr ),
-	m_pWorkThread       ( nullptr ),
-	m_pWinManager       ( nullptr ),
-    m_pPerformanceWindow( nullptr ),
-    m_pStatusBar        ( nullptr ),
-    m_pGridWindow       ( nullptr ),
-	m_pEditorWindow     ( nullptr )
+	m_bSimulationMode      ( FALSE ),
+    m_bTrace               ( TRUE ),
+    m_pTraceStream         ( nullptr ),
+	m_pWorkThreadInterface ( nullptr ),
+	m_pWinManager          ( nullptr ),
+    m_pPerformanceWindow   ( nullptr ),
+    m_pStatusBar           ( nullptr ),
+    m_pGridWindow          ( nullptr ),
+	m_pEditorWindow        ( nullptr )
 { }
 
 EvoController::~EvoController( )
 {
-    m_pTraceStream       = nullptr;
-	m_pWorkThread        = nullptr;
-	m_pWinManager        = nullptr;
-    m_pPerformanceWindow = nullptr;
-    m_pStatusBar         = nullptr;
-	m_pGridWindow        = nullptr;
-	m_pEditorWindow      = nullptr;
+    m_pTraceStream         = nullptr;
+	m_pWorkThreadInterface = nullptr;
+	m_pWinManager          = nullptr;
+    m_pPerformanceWindow   = nullptr;
+    m_pStatusBar           = nullptr;
+	m_pGridWindow          = nullptr;
+	m_pEditorWindow        = nullptr;
 }
 
 void EvoController::Start
 ( 
-    wostream          *       pTraceStream,
-	WorkThread        * const pWorkThread,
-	WinManager        * const pWinManager,
-    PerformanceWindow * const pPerformanceWindow,
-	StatusBar         * const pStatusBar,
-	GridWindow        * const pGridWindow,
-	EditorWindow      * const pEditorWindow
+    wostream            *       pTraceStream,
+	WorkThreadInterface * const pWorkThreadInterface,
+	WinManager          * const pWinManager,
+    PerformanceWindow   * const pPerformanceWindow,
+	StatusBar           * const pStatusBar,
+	GridWindow          * const pGridWindow,
+	EditorWindow        * const pEditorWindow
 
 )
 {
-	m_pTraceStream       = pTraceStream;
-	m_pWorkThread        = pWorkThread;
-	m_pWinManager        = pWinManager;
-    m_pPerformanceWindow = pPerformanceWindow;
-	m_pStatusBar         = pStatusBar;
-	m_pGridWindow        = pGridWindow;
-	m_pEditorWindow      = pEditorWindow;
+	m_pTraceStream         = pTraceStream;
+	m_pWorkThreadInterface = pWorkThreadInterface;
+	m_pWinManager          = pWinManager;
+    m_pPerformanceWindow   = pPerformanceWindow;
+	m_pStatusBar           = pStatusBar;
+	m_pGridWindow          = pGridWindow;
+	m_pEditorWindow        = pEditorWindow;
 }
 
 void EvoController::scriptDialog( )
@@ -67,7 +67,7 @@ void EvoController::scriptDialog( )
 	wstring const wstrPath( szBuffer );
 	wstring wstrFile = AskForScriptFileName( wstrPath );
 	if ( ! wstrFile.empty( ) )
-		m_pWorkThread->PostProcessScript( wstrFile );
+		m_pWorkThreadInterface->PostProcessScript( wstrFile );
 }
 
 void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
@@ -76,38 +76,38 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
     switch (wmId)
     {
         case IDM_EDIT_UNDO:
-			m_pWorkThread->PostUndo( );
+			m_pWorkThreadInterface->PostUndo( );
 			break;
 
         case IDM_EDIT_REDO:
- 			m_pWorkThread->PostRedo( );
+ 			m_pWorkThreadInterface->PostRedo( );
 			break;
 
 	    case IDM_GENERATION:
-            m_pWorkThread->PostGenerationStep( );
+            m_pWorkThreadInterface->PostGenerationStep( );
             break;
 
 		case IDM_RUN:
             m_pWinManager->Show( IDM_HIST_WINDOW, tBoolOp::opFalse );
-			m_pWorkThread->PostRunGenerations( );
+			m_pWorkThreadInterface->PostRunGenerations( );
 			break;
 
 		case IDM_STOP:
-            m_pWorkThread->PostStopComputation( );
+            m_pWorkThreadInterface->PostStopComputation( );
             m_pWinManager->Show( IDM_HIST_WINDOW, tBoolOp::opTrue );
             break;
 
         case IDM_RESET:
-            m_pWorkThread->PostReset( );
+            m_pWorkThreadInterface->PostReset( );
             break;
 
 		case IDM_BACKWARDS:
-			m_pWorkThread->PostPrevGeneration( );
+			m_pWorkThreadInterface->PostPrevGeneration( );
 			break;
 
 		case IDM_GOTO_ORIGIN:
 		case IDM_GOTO_DEATH:
-			m_pWorkThread->PostHistoryAction( wmId, UnpackFromLParam(lParam) );
+			m_pWorkThreadInterface->PostHistoryAction( wmId, UnpackFromLParam(lParam) );
 			break;
 
 		case IDM_SPEED_TRACKBAR:

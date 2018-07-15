@@ -33,7 +33,7 @@
 
 #include "util.h"
 #include "win32_winManager.h"
-#include "win32_worker_thread.h"
+#include "win32_workThreadInterface.h"
 #include "win32_focusPoint.h"
 #include "win32_displayAll.h"
 
@@ -66,7 +66,7 @@ AppWindow::AppWindow( ) :
     m_displayGridFunctor( ),
     m_pMainGridWindow( nullptr ),
     m_pMiniGridWindow( nullptr ),
-    m_pWorkThread( nullptr ),
+    m_pWorkThreadInterface( nullptr ),
     m_pPerfWindow( nullptr ),
     m_pEditorWindow( nullptr ),
     m_pCrsrWindow( nullptr ),
@@ -132,10 +132,10 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pEvoHistWindow  = new EvoHistWindow( );
 	m_pEvoController  = new EvoController( );
 	m_pEvoHistorySys  = new EvoHistorySys( );
-	m_pWorkThread     = new WorkThread( & m_traceStream );
+	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
 
     DefineModelWrapperFunctions( m_pModelWork );
-    DefineWin32HistWrapperFunctions( m_pWorkThread );
+    DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
 
     SetMenu( hWndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
 	Util::SetApplicationTitle( hWndApp, IDS_APP_TITLE );
@@ -145,19 +145,19 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
 	m_pModelWork = EvolutionModelData::CreateModelData( );
 	
-	m_pEvoHistorySys ->Start( m_pModelWork, m_pWorkThread, m_pStatusBar, EvolutionCore::GetModelSize( ), true );
-	m_pEvoHistWindow ->Start( hWndApp, m_pFocusPoint, m_pEvoHistorySys, m_pWorkThread );
+	m_pEvoHistorySys ->Start( m_pModelWork, m_pEvolutionCore, EvolutionCore::GetModelSize( ), true );
+	m_pEvoHistWindow ->Start( hWndApp, m_pFocusPoint, m_pEvoHistorySys, m_pWorkThreadInterface );
     m_pStatusBar     ->Start( hWndApp );
 	m_pFocusPoint    ->Start( m_pEvoHistorySys, m_pModelWork );
-	m_pWorkThread    ->Start( m_pStatusBar, m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
-	m_pDspOptWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork );
-    m_pEditorWindow  ->Start( hWndApp, m_pWorkThread,    m_pModelWork, m_pDspOptWindow );
-    m_pMainGridWindow->Start( hWndApp, m_pWorkThread,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
-    m_pMiniGridWindow->Start( hWndApp, m_pWorkThread,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
+	m_pWorkThreadInterface    ->Start( m_pStatusBar, m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
+	m_pDspOptWindow  ->Start( hWndApp, m_pWorkThreadInterface,    m_pModelWork );
+    m_pEditorWindow  ->Start( hWndApp, m_pWorkThreadInterface,    m_pModelWork, m_pDspOptWindow );
+    m_pMainGridWindow->Start( hWndApp, m_pWorkThreadInterface,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
+    m_pMiniGridWindow->Start( hWndApp, m_pWorkThreadInterface,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
     m_pStatistics    ->Start( hWndApp, m_pModelWork );
     m_pCrsrWindow    ->Start( hWndApp, m_pFocusPoint,    m_pModelWork, m_pMainGridWindow );
     m_pPerfWindow    ->Start( hWndApp, 100 );
-	m_pEvoController ->Start( & m_traceStream, m_pWorkThread, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow );
+	m_pEvoController ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow );
 
     m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, FALSE, FALSE,  75 ); 
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,              TRUE,  TRUE,  -1 );
@@ -177,7 +177,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
 
-    DefineWin32WrapperFunctions( m_pWorkThread, m_pEvoController, m_pStatusBar );
+    DefineWin32WrapperFunctions( m_pWorkThreadInterface, m_pEvoController, m_pStatusBar );
     DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 
     m_pWinManager->GetWindowConfiguration( );
@@ -201,7 +201,7 @@ AppWindow::~AppWindow( )
         else
         {
             delete m_pModelWork;
-            delete m_pWorkThread;
+            delete m_pWorkThreadInterface;
         }
 
         delete m_pMiniGridWindow;
@@ -262,7 +262,7 @@ LRESULT AppWindow::UserProc
 
     case WM_CLOSE:
         m_pWinManager->StoreWindowConfiguration( );
-        m_pWorkThread->PostEndThread( GetWindowHandle( ) );
+        m_pWorkThreadInterface->PostEndThread( GetWindowHandle( ) );
         return 1;  // Do not call DefWindowProc. Worker thread will call DestroyWindow. 
 
     case WM_DESTROY:

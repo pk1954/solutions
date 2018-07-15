@@ -3,45 +3,58 @@ PostRefresh
 PostSetBrushMode tBrushMode::fertility
 PostRefresh
 PostRefresh
-PostDoEdit   53  59 
-PostRefresh
-PostDoEdit   94  60 
-PostRefresh
-PostDoEdit  118  42 
-PostRefresh
-PostDoEdit  135  39 
-PostRefresh
-PostDoEdit  146  41 
-PostRefresh
 PostSetBrushMode tBrushMode::mutRate
 PostRefresh
 PostRefresh
-PostDoEdit   63  57 
+PostDoEdit   56  54 
 PostRefresh
-PostDoEdit   64  58 
+PostDoEdit   57  54 
 PostRefresh
-PostDoEdit  106  53 
+PostDoEdit   80  57 
 PostRefresh
-PostDoEdit  121  36 
+PostDoEdit   83  56 
 PostRefresh
-PostDoEdit  129  34 
+PostDoEdit   96  43 
 PostRefresh
-PostDoEdit  129  35 
+PostDoEdit   97  43 
+PostRefresh
+PostDoEdit  109  42 
+PostRefresh
+PostDoEdit  110  43 
+PostRefresh
+PostSetBrushMode tBrushMode::fertility
+PostRefresh
+PostRefresh
+PostDoEdit   70  34 
+PostRefresh
+PostDoEdit   70  34 
+PostRefresh
+PostDoEdit   80  47 
+PostRefresh
+PostDoEdit  101  50 
+PostRefresh
+PostDoEdit  129  42 
+PostRefresh
+PostDoEdit  130  42 
+PostRefresh
+PostDoEdit  136  44 
 PostRefresh
 PostSetBrushMode tBrushMode::randomStrategy
-PostDoEdit   75  57 
+PostDoEdit   52  54 
 PostRefresh
-PostDoEdit   75  57 
+PostDoEdit   52  54 
 PostRefresh
-PostDoEdit   75  57 
+PostDoEdit   54  55 
 PostRefresh
-PostDoEdit   97  48 
+PostDoEdit   56  55 
 PostRefresh
-PostDoEdit  106  39 
+PostDoEdit  111  42 
 PostRefresh
-PostDoEdit  110  37 
+PostDoEdit  113  42 
 PostRefresh
-PostDoEdit  110  37 
+PostDoEdit  128  45 
+PostRefresh
+PostDoEdit  128  45 
 PostRefresh
 PostUndo
 PostUndo
@@ -58,18 +71,17 @@ PostUndo
 PostUndo
 PostUndo
 PostUndo
-PostRefresh
-PostRedo
-PostRefresh
-PostRedo
-PostRedo
+PostUndo
 PostRedo
 PostRedo
 PostRedo
 PostRedo
 PostRedo
 PostRedo
-WorkPostGenerationStep
+PostRedo
+PostRedo
+PostRedo
+PostRedo
 PostRedo
 PostRedo
 PostRedo
@@ -79,6 +91,10 @@ PostRedo
 PostRedo
 PostRedo
 PostSetBrushMode tBrushMode::move
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
 PostRunGenerations
 PostRunGenerations
 PostRunGenerations
@@ -136,28 +152,19 @@ PostRunGenerations
 PostRunGenerations
 PostRunGenerations
 PostRunGenerations
-PostGotoGeneration  31
-PostGotoGeneration  17
-WorkPostGenerationStep
-PostGotoGeneration  17
-WorkPostGenerationStep
-WorkPostGenerationStep
-WorkPostGenerationStep
-PostGotoGeneration  7
-WorkPostGenerationStep
-PostRefresh
-WorkPostGenerationStep
-WorkPostGenerationStep
-WorkPostGenerationStep
-WorkPostGenerationStep
-WorkPostGenerationStep
-WorkPostGenerationStep
-PostRefresh
-PostGotoGeneration  10
-WorkPostGenerationStep
-WorkPostGenerationStep
-PostGotoGeneration  3
-WorkPostGenerationStep
-PostRefresh
-WorkPostGenerationStep
-WorkPostGenerationStep
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations
+PostRunGenerations

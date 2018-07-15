@@ -11,15 +11,22 @@ class WorkThread;
 class EvoModelFactory: public ModelFactory
 {
 public:
-	EvoModelFactory( WorkThread * const pWorkThread ) : 
-		m_pWorkThread( pWorkThread )
+	EvoModelFactory
+	( 
+        EvolutionCore * const pCore
+	) : 
+		m_pEvolutionCore( pCore )
 	{ }
 
 	virtual EvoModelData * CreateModelData() const 
 	{
-		return new EvoModelData( EvolutionModelData::CreateModelData( ), m_pWorkThread );
+		return new EvoModelData
+		( 
+			EvolutionModelData::CreateModelData( ), 
+			m_pEvolutionCore
+		);
 	}
 
 private:
-	WorkThread * const m_pWorkThread;
+    EvolutionCore * const m_pEvolutionCore;
 };

@@ -13,7 +13,7 @@
 #include "win32_draw.h"
 #include "win32_focusPoint.h"
 #include "win32_performanceWindow.h"
-#include "win32_worker_thread.h"
+#include "win32_workThreadInterface.h"
 #include "win32_aboutBox.h"
 #include "win32_packGridPoint.h"
 #include "win32_displayOptions.h"
@@ -23,7 +23,7 @@
 
 GridWindow::GridWindow( ) :
     BaseWindow( ),
-    m_pWorkThread( nullptr ),
+    m_pWorkThreadInterface( nullptr ),
     m_pPixelCoordinates( nullptr ),
     m_pGWObserved( nullptr ),
     m_pEditorWindow( nullptr ),
@@ -37,16 +37,16 @@ GridWindow::GridWindow( ) :
 
 void GridWindow::Start
 ( 
-    HWND                 const hWndParent,
-    WorkThread         * const pWorkThread,
-    EditorWindow       * const pEditorWindow,
-    FocusPoint         * const pFocusPoint,
-    DspOptWindow       * const pDspOptWindow,
-    PerformanceWindow  * const pPerformanceWindow,
-    EvolutionCore      * const pCore,
-    EvolutionModelData * const pModel,
-    DWORD                const dwStyle,
-    SHORT                const sFieldSize
+    HWND                  const hWndParent,
+    WorkThreadInterface * const pWorkThreadInterface,
+    EditorWindow        * const pEditorWindow,
+    FocusPoint          * const pFocusPoint,
+    DspOptWindow        * const pDspOptWindow,
+    PerformanceWindow   * const pPerformanceWindow,
+    EvolutionCore       * const pCore,
+    EvolutionModelData  * const pModel,
+    DWORD                 const dwStyle,
+    SHORT                 const sFieldSize
 )
 {
 	int  const iNrOfNeighbors = Config::GetConfigValue( Config::tId::nrOfNeighbors );
@@ -58,17 +58,17 @@ void GridWindow::Start
         dwStyle
     );
     assert( sFieldSize > 0 );
-    m_pWorkThread        = pWorkThread;
-    m_pPerformanceWindow = pPerformanceWindow;
-    m_pEditorWindow      = pEditorWindow;
-    m_pFocusPoint        = pFocusPoint;
-	m_pCore              = pCore;
-	m_pModelWork         = pModel;
+    m_pWorkThreadInterface = pWorkThreadInterface;
+    m_pPerformanceWindow  = pPerformanceWindow;
+    m_pEditorWindow       = pEditorWindow;
+    m_pFocusPoint         = pFocusPoint;
+	m_pCore               = pCore;
+	m_pModelWork          = pModel;
 
-	BOOL bHexagonMode    = iNrOfNeighbors == 6;
-    m_pPixelCoordinates  = new PixelCoordinates( sFieldSize, bHexagonMode );
-	m_pPixelCore         = new PixelCore( m_pCore, m_pModelWork, m_pPixelCoordinates );
-    m_pDrawFrame         = new DrawFrame( hWnd, pCore, pModel, m_pPixelCoordinates, pDspOptWindow );
+	BOOL bHexagonMode     = iNrOfNeighbors == 6;
+    m_pPixelCoordinates   = new PixelCoordinates( sFieldSize, bHexagonMode );
+	m_pPixelCore          = new PixelCore( m_pCore, m_pModelWork, m_pPixelCoordinates );
+    m_pDrawFrame          = new DrawFrame( hWnd, pCore, pModel, m_pPixelCoordinates, pDspOptWindow );
 	m_pDrawFrame->SetStripMode
 	( 
 		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
@@ -88,11 +88,11 @@ GridWindow::~GridWindow( )
         exit( 1 );
     };
 
-	m_pModelWork    = nullptr;
-	m_pCore         = nullptr;
-    m_pGWObserved   = nullptr;
-    m_pEditorWindow = nullptr;
-    m_pWorkThread   = nullptr;
+	m_pModelWork           = nullptr;
+	m_pCore                = nullptr;
+    m_pGWObserved          = nullptr;
+    m_pEditorWindow        = nullptr;
+    m_pWorkThreadInterface = nullptr;
 }
 
 BOOL GridWindow::inObservedClientRect( LPARAM const lParam )
@@ -173,20 +173,20 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         {
             m_ptLast = ptCrsr;         // store current cursor pos
         }
-        m_pWorkThread->PostRefresh( );
+        m_pWorkThreadInterface->PostRefresh( );
     }
     else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
     {
         if ( m_pEditorWindow->IsInEditMode() )
         {
-            m_pWorkThread->PostDoEdit( m_pFocusPoint->GetGridPoint( ) );
+            m_pWorkThreadInterface->PostDoEdit( m_pFocusPoint->GetGridPoint( ) );
         }
         else if ( m_ptLast.x != LONG_MIN )  // last cursor pos stored in m_ptLast
         {
            moveGrid( ptCrsr - m_ptLast );
         }
         m_ptLast = ptCrsr;
-        m_pWorkThread->PostRefresh( );
+        m_pWorkThreadInterface->PostRefresh( );
     }
     else
     {
@@ -296,7 +296,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             }
         }
 
-        m_pWorkThread->PostRefresh( );
+        m_pWorkThreadInterface->PostRefresh( );
         return 1;  //  TODO clarify return code
 
     case WM_MOUSEWHEEL:
@@ -313,7 +313,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 		else
 		{
 			m_pModelWork->ResetSelection( );
-			m_pWorkThread->PostRefresh( );
+			m_pWorkThreadInterface->PostRefresh( );
 		}
         SetFocus( );
         return 1;

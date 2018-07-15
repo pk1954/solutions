@@ -3,7 +3,7 @@
 
 #pragma once
 
-class WorkThread;
+class WorkThreadInterface;
 class EvoController;
 
-extern void DefineWin32WrapperFunctions( WorkThread * const, EvoController *, StatusBar * const );
+extern void DefineWin32WrapperFunctions( WorkThreadInterface * const, EvoController *, StatusBar * const );

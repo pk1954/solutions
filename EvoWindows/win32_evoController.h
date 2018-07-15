@@ -10,7 +10,7 @@ using namespace std;
 
 class PerformanceWindow;
 class StatusBar;
-class WorkThread;
+class WorkThreadInterface;
 class WinManager;
 class GridWindow;
 class EditorWindow;
@@ -24,13 +24,13 @@ public:
 
 	void EvoController::Start
 	( 
-		wostream          *, 
-		WorkThread        * const,
-		WinManager        * const,
-		PerformanceWindow * const,
-		StatusBar         * const,
-		GridWindow        * const,
-		EditorWindow      * const
+		wostream            *, 
+		WorkThreadInterface * const,
+		WinManager          * const,
+		PerformanceWindow   * const,
+		StatusBar           * const,
+		GridWindow          * const,
+		EditorWindow        * const
 	);
 
 	void ProcessCommand( WPARAM const, LPARAM const );
@@ -39,13 +39,13 @@ public:
 private:
 	void scriptDialog( );
 
-	bool                m_bSimulationMode;   // if TRUE: simu mode, FALSE: edit more
-	BOOL                m_bTrace;
-    wostream          * m_pTraceStream;
-	WorkThread        * m_pWorkThread;
-	WinManager        * m_pWinManager;
-    PerformanceWindow * m_pPerformanceWindow;
-	StatusBar         * m_pStatusBar;
-	GridWindow        * m_pGridWindow;
-	EditorWindow      * m_pEditorWindow;
+	bool                  m_bSimulationMode;   // if TRUE: simu mode, FALSE: edit more
+	BOOL                  m_bTrace;
+    wostream            * m_pTraceStream;
+	WorkThreadInterface * m_pWorkThreadInterface;
+	WinManager          * m_pWinManager;
+    PerformanceWindow   * m_pPerformanceWindow;
+	StatusBar           * m_pStatusBar;
+	GridWindow          * m_pGridWindow;
+	EditorWindow        * m_pEditorWindow;
 };

@@ -9,11 +9,11 @@
 
 #include "HistorySystem.h"
 #include "EvoModelData.h"
+#include "EvoGenerationCmd.h"
 
 class EvoModelFactory;
 class HistAllocThread;
-class StatusBar;
-class WorkThread;
+class EvolutionCore;
 
 class EvoHistorySys
 {
@@ -22,7 +22,13 @@ public:
     EvoHistorySys( );
 	virtual ~EvoHistorySys( );
 
-    void Start( EvolutionModelData * const, WorkThread * const, StatusBar * const, unsigned long const, bool const );
+    void Start
+	( 
+		EvolutionModelData  * const, 
+		EvolutionCore       * const, 
+		unsigned long const, 
+		bool const 
+	);
 
     // EvoApproachHistGen - Get closer to demanded HIST_GENERATION
     //                    - If several steps are neccessary, function returns after one displayed generation
@@ -54,7 +60,6 @@ private:
 	EvoModelFactory * m_pEvoModelFactory;
     HistorySystem   * m_pHistorySystem;
 	HistAllocThread * m_pHistAllocThread;
-    StatusBar       * m_pStatusBar;
 	bool              m_bAskHistoryCut;
 
     // private member functions

@@ -7,7 +7,6 @@
 #include <sstream> 
 #include "config.h"
 #include "win32_util.h"
-#include "win32_status.h"
 #include "HistAllocThread.h"
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
@@ -21,17 +20,15 @@ EvoHistorySys::EvoHistorySys( ) :
 	m_pEvoModelFactory( nullptr ),
     m_pHistorySystem  ( nullptr ),
 	m_pHistAllocThread( nullptr ),
-    m_pStatusBar      ( nullptr ),
 	m_bAskHistoryCut  ( false )
 {}
 
 void EvoHistorySys::Start
 (
-	EvolutionModelData * const pEvolutionModelData,
-	WorkThread         * const pWorkThread,
-    StatusBar          * const pStatusBar,
-	unsigned long        const ulModelSize,
-	bool                 const bAskHistoryCut // true: ask user for history cut, false: cut without asking
+	EvolutionModelData  * const pEvolutionModelData,
+	EvolutionCore       * const pCore, 
+	unsigned long         const ulModelSize,
+	bool                  const bAskHistoryCut // true: ask user for history cut, false: cut without asking
 )
 {
     LONG const lMaxHistSize         = Util::GetMaxNrOfSlots( ulModelSize );
@@ -43,8 +40,8 @@ void EvoHistorySys::Start
 
     HIST_GENERATION const genMaxNrOfGens = Config::GetConfigValue( Config::tId::maxGeneration );
 
-    m_pEvoModelWork    = new EvoModelData ( pEvolutionModelData, pWorkThread );
-	m_pEvoModelFactory = new EvoModelFactory( pWorkThread );
+    m_pEvoModelWork    = new EvoModelData ( pEvolutionModelData, pCore );
+	m_pEvoModelFactory = new EvoModelFactory( pCore );
 
     m_pHistorySystem = HistorySystem::CreateHistorySystem( );
 
@@ -58,7 +55,6 @@ void EvoHistorySys::Start
 		0
     );
 
-	m_pStatusBar = pStatusBar;
 	m_bAskHistoryCut = bAskHistoryCut;
 
 	m_pHistAllocThread = new HistAllocThread( m_pHistorySystem, TRUE );   // delegate allocation of history slots to a work thread
@@ -132,9 +128,10 @@ bool EvoHistorySys::askHistoryCut( HistorySystem * pHistSys ) const
 void EvoHistorySys::shutDownHistoryCache( )
 {
     int iMax = GetNrOfHistCacheSlots( ) - 1;
-    int iPercentLast = 0;
+//    int iPercentLast = 0;
     for ( int iRun = iMax; iRun >= 0; --iRun )
     {
+/*
         int iPercent = ( iRun * 100 ) / iMax;
         if ( iPercent != iPercentLast )
         {
@@ -142,6 +139,7 @@ void EvoHistorySys::shutDownHistoryCache( )
             m_pStatusBar->DisplayStatusLine( wstrLine );
             iPercentLast = iPercent;
         }
+*/
         m_pHistorySystem->ShutDownHistCacheSlot( iRun );
     }
 }
