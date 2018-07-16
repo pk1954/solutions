@@ -37,7 +37,7 @@ void EvoModelData::OnAppCommand( unsigned short const usCmd, unsigned short cons
 		break;
 
 	case tEvoCmd::reset:
-//		m_pEvolutionCore->ResetModel( m_pModelWork ); 
+		m_pEvolutionCore->ResetModel( m_pEvolutionModelData ); 
         break;
 
 	case tEvoCmd::editSetBrushMode:

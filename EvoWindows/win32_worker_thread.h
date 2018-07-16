@@ -47,7 +47,6 @@ public:
     );
 
 	void TerminateThread( HWND const );
-	void ResetModel( );
 
 	void DoProcessScript( std::wstring * const ); // parameter must be created with new, will be deleted here! 
 

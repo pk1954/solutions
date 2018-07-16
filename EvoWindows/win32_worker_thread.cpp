@@ -216,7 +216,7 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
 
     case THREAD_MSG_RESET_MODEL:
-		m_pEvolutionCore->ResetModel( m_pModelWork );
+		m_pEvoHistorySys->EvoCreateResetCommand( );
         break;
 
     case THREAD_MSG_SET_BRUSH_INTENSITY:
@@ -253,9 +253,4 @@ void WorkThread::editorCommand( UINT const uiMsg, WPARAM const wParam )
         m_pEvolutionCore->SaveEditorState( m_pModelWork );
 	if ((uiMsg != THREAD_MSG_DO_EDIT) && (m_pEditorWindow != nullptr))
 		m_pEditorWindow->UpdateEditControls( );
-}
-
-void WorkThread::ResetModel( )    // Layer 5
-{
-	m_pEvoHistorySys->EvoCreateResetCommand( );
 }
