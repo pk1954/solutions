@@ -88,25 +88,25 @@ void WorkThread::TerminateThread( HWND const hwndCtl )
 // GenerationStep - perform one history step towards demanded generation
 //                - update editor state if neccessary
 
-void WorkThread::GenerationStep( )   // Layer 5
+void WorkThread::GenerationStep( )   
 {
-	if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
+	if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )  // is something to do at all?
 	{
 		if ( 
 		       (m_pEvoHistorySys->GetCurrentGeneration( ) < m_genDemanded)  &&
 		       (m_pEvoHistorySys->GetCurrentGeneration( ) == m_pEvoHistorySys->GetYoungestGeneration( ))
-		   )
-		{
+		   )     
+		{                                                    // Normal case: Compute next generation
 			if (m_pPerformanceWindow != nullptr)
 				m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
 			m_pEvoHistorySys->EvoCreateNextGenCommand( );
 			if (m_pPerformanceWindow != nullptr)
 				m_pPerformanceWindow->ComputationStop( );    // measure computation time
 		}
-		else
+		else  // we are somewhere in history
 		{
-			m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded ); // Get a stored generation from history system
-			if ( m_pEvolutionCore->EditorStateHasChanged( m_pModelWork ) )                        // editor state may be different from before
+			m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );          // Get a stored generation from history system
+			if ( m_pEvolutionCore->EditorStateHasChanged( m_pModelWork ) )  // editor state may be different from before
 			{                                                       
 				m_pEvolutionCore->SaveEditorState( m_pModelWork );
 				if (m_pEditorWindow != nullptr)                    // make sure that editor GUI 
@@ -114,26 +114,25 @@ void WorkThread::GenerationStep( )   // Layer 5
 			}
 		}
 
-		WorkMessage( THREAD_MSG_REFRESH, 0, 0 );
+		WorkMessage( THREAD_MSG_REFRESH, 0, 0 );                   // refresh all views
     
-		if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )
-			m_pWorkThreadInterface->PostGenerationStep(  );   // Loop! Will call indirectly GenerationStep again
+		if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )   // stiil not done?
+			m_pWorkThreadInterface->PostRepeatGenerationStep( );   // Loop! Will call indirectly GenerationStep again
 	}
 }
 
 void WorkThread::generationRun( )
 {
-    assert( m_iScriptLevel == 0 );
-	m_genDemanded = m_pEvoHistorySys->GetCurrentGeneration( ) + 1 ;
-	m_bContinue = TRUE;
-
-	GenerationStep( );
-
     if ( m_bContinue )
     {
+		assert( m_iScriptLevel == 0 );
+		m_genDemanded = m_pEvoHistorySys->GetCurrentGeneration( ) + 1 ;
+    
+		GenerationStep( );
+
 		if (m_pPerformanceWindow != nullptr)
 		    m_pPerformanceWindow->SleepDelay( );
-        m_pWorkThreadInterface->PostRunGenerations( );
+        m_pWorkThreadInterface->PostRunGenerations( false );
     }
 }
 
@@ -195,12 +194,18 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         DoProcessScript( (wstring *)lParam );
         break;
 
-    case THREAD_MSG_STEP:
+    case THREAD_MSG_REPEAT_GENERATION_STEP:
+        GenerationStep( ); 
+        break;
+
+    case THREAD_MSG_GOTO_GENERATION:
 		m_genDemanded = HIST_GENERATION(static_cast<long>(lParam));
         GenerationStep( ); 
         break;
 
     case THREAD_MSG_GENERATION_RUN:
+		if ( static_cast<bool>(lParam) )
+			m_bContinue = TRUE;
 		generationRun( );
         break;
 

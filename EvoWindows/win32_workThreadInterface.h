@@ -40,7 +40,7 @@ public:
     void PostReset( );
     void PostEndThread( HWND );
     void PostProcessScript( std::wstring const & );
-	void PostRunGenerations();
+	void PostRunGenerations( bool const bFirst = true );
 	void PostStopComputation();
 	void PostUndo();
 	void PostRedo();
@@ -48,6 +48,7 @@ public:
 	void PostGotoGeneration( HIST_GENERATION const );
 	void PostHistoryAction( UINT const, GridPoint const );
 	void PostGenerationStep();
+	void PostRepeatGenerationStep();              // Do not call! Used by WorkThread only;
 	void DoProcessScript( std::wstring * const ); // parameter must be created with new, will be deleted here! 
 
 	HIST_GENERATION GetGenDemanded( ) const;

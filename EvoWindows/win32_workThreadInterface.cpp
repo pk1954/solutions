@@ -53,7 +53,7 @@ void WorkThreadInterface::postGotoGeneration( HIST_GENERATION const gen )
 {
     assert( gen >= 0 );
 
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_STEP, 0, static_cast<LPARAM>(gen.GetLong()) );
+    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_GOTO_GENERATION, 0, static_cast<LPARAM>(gen.GetLong()) );
 }
 
 // procedural interface of worker thread (Layer 7)
@@ -120,12 +120,12 @@ void WorkThreadInterface::PostSetBrushShape( tShape const shape )
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_SHAPE, static_cast<WPARAM>( shape ), 0 );
 }
 
-void WorkThreadInterface::PostRunGenerations( )
+void WorkThreadInterface::PostRunGenerations( bool const bFirst )
 {
     if ( m_bTrace )
-        * m_pTraceStream << __func__ << endl;
+        * m_pTraceStream << L"PostGenerationStep" << endl;
 
-	m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_GENERATION_RUN, 0, 0 );
+	m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_GENERATION_RUN, 0, bFirst );
 }
 
 void WorkThreadInterface::PostRedo( )
@@ -147,6 +147,14 @@ void WorkThreadInterface::PostGenerationStep( )
         * m_pTraceStream << __func__ << endl;
 
 	postGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration( ) + 1 );
+}
+
+void WorkThreadInterface::PostRepeatGenerationStep( )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << L"PostGenerationStep" << endl;
+
+    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_REPEAT_GENERATION_STEP, 0, 0 );
 }
 
 void WorkThreadInterface::PostUndo( )

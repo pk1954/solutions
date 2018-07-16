@@ -51,7 +51,16 @@ public:
 
 	void DoProcessScript( std::wstring * const ); // parameter must be created with new, will be deleted here! 
 
-	HIST_GENERATION GetGenDemanded( ) const { return m_genDemanded; }
+	HIST_GENERATION GetGenDemanded( ) const 
+	{ 
+		return m_genDemanded; 
+	}
+
+	void Stop()
+	{
+		m_genDemanded = m_pEvoHistorySys->GetCurrentGeneration( );
+		m_bContinue = FALSE;
+	}
 
     void GenerationStep( );
 
@@ -60,7 +69,8 @@ public:
     enum ThreadMessages
     {
         THREAD_MSG_REFRESH = WM_USER + 1,
-        THREAD_MSG_STEP,
+        THREAD_MSG_REPEAT_GENERATION_STEP,  // only used internaly, not part of procedural interface
+        THREAD_MSG_GOTO_GENERATION,
         THREAD_MSG_GENERATION_RUN,
         THREAD_MSG_DO_EDIT,
         THREAD_MSG_SET_BRUSH_SIZE,
@@ -97,7 +107,7 @@ private:
 	void postMessage( UINT, WPARAM, LPARAM );
 	void dispatchMessage( UINT, WPARAM, LPARAM );
 	void editorCommand( UINT const,  WPARAM const );
-    void generationRun( );
+    void generationRun(  );
 
 friend static DWORD WINAPI WorkerThread( _In_ LPVOID );
 }; 
