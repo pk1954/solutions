@@ -251,7 +251,7 @@ void WorkThread::editorCommand( UINT const uiMsg, WPARAM const wParam )
     
     if ( m_pEvoHistorySys->EvoCreateEditorCommand( mapTable.at( uiMsg ), static_cast<unsigned short>( wParam ) ) )
         m_pEvolutionCore->SaveEditorState( m_pModelWork );
-	if ( uiMsg != THREAD_MSG_DO_EDIT )
+	if ((uiMsg != THREAD_MSG_DO_EDIT) && (m_pEditorWindow != nullptr))
 		m_pEditorWindow->UpdateEditControls( );
 }
 

@@ -56,14 +56,14 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	
 	m_pEvoHistorySys       = new EvoHistorySys( );
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
-	m_pEvoHistorySys->Start( m_pModelWork, nullptr, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false );
+	m_pEvoHistorySys->Start( m_pModelWork, m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false );
     DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
 
 	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
 
 	DefineWin32WrapperFunctions( m_pWorkThreadInterface, nullptr, nullptr );
 
-    wstring wstrInputFile = L"Test_3.in";
+    wstring wstrInputFile = L"Test_1.in";
 
 	for ( int iCount = 1; iCount < argc; iCount++ )
     {
