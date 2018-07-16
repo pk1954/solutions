@@ -24,9 +24,9 @@ public:
 
     void Start
 	( 
-		EvolutionModelData  * const, 
-		EvolutionCore       * const, 
-		unsigned long const, 
+		EvolutionModelData * const, 
+		EvolutionCore      * const, 
+		long const, 
 		bool const 
 	);
 
@@ -38,7 +38,7 @@ public:
     void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); } // Layer 4
 	
     bool            AddEvoHistorySlot    ( ) const { return m_pHistorySystem->AddHistorySlot( ); }
-    int             GetNrOfHistCacheSlots( )       { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
+    int             GetNrOfHistCacheSlots( ) const { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
     HIST_GENERATION GetCurrentGeneration ( ) const { return m_pHistorySystem->GetCurrentGeneration( ); }
     HIST_GENERATION GetYoungestGeneration( ) const { return m_pHistorySystem->GetYoungestGeneration( ); }
 
@@ -64,9 +64,6 @@ private:
 
     // private member functions
 
-	bool             askHistoryCut( HistorySystem * pHistSys ) const;
-    void             shutDownHistoryCache( );
-
-    bool             IsInHistoryMode( )    const { return m_pHistorySystem->IsInHistoryMode( ); }
-    HIST_GENERATION  GetNrOfGenerations( ) const { return m_pHistorySystem->GetNrOfGenerations( ); }
+	bool askHistoryCut( HistorySystem * pHistSys ) const;
+    void shutDownHistoryCache( );
 };

@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include <functional>
 #include "gridPoint.h"
 #include "ModelData.h"
 

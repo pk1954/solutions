@@ -12,7 +12,6 @@
 #include "win32_packGridPoint.h"
 #include "win32_hiResTimer.h"
 #include "win32_script.h"
-#include "win32_status.h"
 #include "win32_performanceWindow.h"
 #include "win32_editor.h"
 #include "win32_displayAll.h"
@@ -30,7 +29,6 @@ WorkThreadInterface::WorkThreadInterface( wostream * pTraceStream ) :
 
 void WorkThreadInterface::Start
 ( 
-    StatusBar          * const pStatus, 
     PerformanceWindow  * const pPerformanceWindow,
 	EditorWindow       * const pEditorWindow,
     DisplayAll   const * const pDisplayGridFunctor,
@@ -43,7 +41,7 @@ void WorkThreadInterface::Start
     m_pModelWork     = pModel;
 	m_pEvoHistorySys = pEvoHistorySys;
 	m_pWorkThread    = new WorkThread();
-	m_pWorkThread->Start( pStatus, pPerformanceWindow, pEditorWindow, pDisplayGridFunctor, pEvolutionCore, pModel, pEvoHistorySys, this );
+	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pDisplayGridFunctor, pEvolutionCore, pModel, pEvoHistorySys, this );
 }
 
 WorkThreadInterface::~WorkThreadInterface( )

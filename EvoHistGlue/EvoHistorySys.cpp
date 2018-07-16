@@ -6,7 +6,6 @@
 #include <iostream>
 #include <sstream> 
 #include "config.h"
-#include "win32_util.h"
 #include "HistAllocThread.h"
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
@@ -25,15 +24,14 @@ EvoHistorySys::EvoHistorySys( ) :
 
 void EvoHistorySys::Start
 (
-	EvolutionModelData  * const pEvolutionModelData,
-	EvolutionCore       * const pCore, 
-	unsigned long         const ulModelSize,
-	bool                  const bAskHistoryCut // true: ask user for history cut, false: cut without asking
+	EvolutionModelData * const pEvolutionModelData,
+	EvolutionCore      * const pCore, 
+	long                 const lMaxHistSize,
+	bool                 const bAskHistoryCut // true: ask user for history cut, false: cut without asking
 )
 {
-    LONG const lMaxHistSize         = Util::GetMaxNrOfSlots( ulModelSize );
-    LONG const lHistEntriesDemanded = Config::GetConfigValue( Config::tId::nrOfHistorySlots );
-	LONG const lHistEntries         = min( lHistEntriesDemanded, lMaxHistSize * 80 / 100 );  // use only 80% of available memory
+    long const lHistEntriesDemanded = Config::GetConfigValue( Config::tId::nrOfHistorySlots );
+	long const lHistEntries         = min( lHistEntriesDemanded, lMaxHistSize * 80 / 100 );  // use only 80% of available memory
 	
 	assert( lHistEntries < SHRT_MAX );
     short sNrOfSlots = static_cast<short>( lHistEntries );

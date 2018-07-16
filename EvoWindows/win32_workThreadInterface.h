@@ -2,24 +2,16 @@
 
 #pragma once
 
-#include <string>
 #include <fstream>
-#include <wtypes.h>
 #include "gridRect.h"
-#include "gridPoint.h"
 #include "HistoryGeneration.h"
 #include "EvolutionTypes.h"
-#include "EvoGenerationCmd.h"
 
 class PerformanceWindow;
 class EditorWindow;
-class RootWindow;
 class EvolutionCore;
 class EvolutionModelData;
-class StatusBar;
-class WinManager;
 class DisplayAll;
-class EditorWindow;
 class EvoHistorySys;
 class WorkThread;
 
@@ -31,7 +23,6 @@ public:
 
     void Start
     ( 
-        StatusBar          * const, 
         PerformanceWindow  * const,
 		EditorWindow       * const,  
         DisplayAll   const * const, 

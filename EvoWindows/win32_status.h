@@ -5,16 +5,17 @@
 
 #include <string>
 #include "win32_baseDialog.h"
-#include "gridPoint.h"
 
 using namespace std;
+
+class EvolutionModelData;
 
 class StatusBar : public BaseDialog
 {
 public:
     StatusBar( );
 
-    void Start( HWND const);
+    void Start( HWND const, EvolutionModelData const * );
 	void SetSimuMode( BOOL const );
 
     int  GetHeight( ) const;
@@ -22,8 +23,8 @@ public:
     void SetSizeTrackBar ( short const ) const;
     void SetSpeedTrackBar( DWORD const ) const;
     void ClearStatusLine( );
-    void DisplayStatusLine( std::wstring const & );
-    void DisplayScriptLine( std::wstring const &, int, std::wstring const & );
+    void DisplayStatusLine( wstring const & );
+    void DisplayScriptLine( wstring const &, int, wstring const & );
     void DisplayCurrentGeneration( EVO_GENERATION const );
 
 private:
@@ -54,6 +55,8 @@ private:
     INT     m_iPosX;
     wstring m_wstrGeneration;
     wstring m_wstrScriptLine;
+
+	EvolutionModelData const * m_pModel;
 
 friend static LRESULT CALLBACK OwnerDrawStatusBar( HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR );
 };

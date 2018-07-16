@@ -56,10 +56,10 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	
 	m_pEvoHistorySys       = new EvoHistorySys( );
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
-	m_pEvoHistorySys->Start( m_pModelWork, nullptr, EvolutionCore::GetModelSize( ), false );
+	m_pEvoHistorySys->Start( m_pModelWork, nullptr, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false );
     DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
 
-	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, nullptr, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
+	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
 
 	DefineWin32WrapperFunctions( m_pWorkThreadInterface, nullptr, nullptr );
 

@@ -6,10 +6,8 @@
 #include "Resource.h"
 #include "commctrl.h"
 #include "config.h"
-#include "EvolutionCore.h"
 #include "pixelCoordinates.h"
-#include "win32_worker_thread.h"
-#include "win32_util.h"
+#include "EvolutionModelData.h"
 #include "win32_status.h"
 
 //lint -e1924    C-style casts
@@ -37,6 +35,10 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
 
     switch ( uMsg )
     {
+
+    case WM_PAINT:
+		pStatusBar->DisplayCurrentGeneration( pStatusBar->m_pModel->GetEvoGenerationNr( ) );
+        break;
 
     case WM_COMMAND:
         (void)SendMessage( GetParent( hWnd ), WM_COMMAND, LOWORD(wParam), 0 );
@@ -146,9 +148,15 @@ void WINAPI StatusBar::createEditorControl( )
 StatusBar::StatusBar( )
 { }
 
-void StatusBar::Start( HWND const hWndParent )
+void StatusBar::Start
+( 
+	HWND               const   hWndParent,
+	EvolutionModelData const * pModel
+)
 {
-    HWND hWndStatus = CreateWindow
+	m_pModel = pModel;
+
+	HWND hWndStatus = CreateWindow
     (
         STATUSCLASSNAME, 
         nullptr, 

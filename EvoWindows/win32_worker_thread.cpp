@@ -11,7 +11,6 @@
 #include "win32_packGridPoint.h"
 #include "win32_hiResTimer.h"
 #include "win32_script.h"
-#include "win32_status.h"
 #include "win32_performanceWindow.h"
 #include "win32_editor.h"
 #include "win32_displayAll.h"
@@ -30,7 +29,6 @@ WorkThread::WorkThread( ) :
 	m_hThread             ( nullptr ),
     m_hTimer              ( nullptr ),
     m_iScriptLevel        ( 0 ),
-    m_pStatusBar          ( nullptr ),
     m_pPerformanceWindow  ( nullptr ),
 	m_pEditorWindow       ( nullptr ),
     m_pDisplayGridFunctor ( nullptr ),
@@ -43,7 +41,6 @@ WorkThread::WorkThread( ) :
 
 void WorkThread::Start
 (  
-    StatusBar           * const pStatus, 
     PerformanceWindow   * const pPerformanceWindow,
 	EditorWindow        * const pEditorWindow,
     DisplayAll    const * const pDisplayGridFunctor,
@@ -57,7 +54,6 @@ void WorkThread::Start
     m_hThread              = Util::MakeThread( WorkerThread, this, &m_dwThreadId, &m_hEventThreadStarter );
     m_pPerformanceWindow   = pPerformanceWindow;
 	m_pEditorWindow        = pEditorWindow;
-    m_pStatusBar           = pStatus;
     m_pDisplayGridFunctor  = pDisplayGridFunctor;
     m_pEvolutionCore       = pEvolutionCore;
     m_pModelWork           = pModel;
@@ -75,7 +71,6 @@ WorkThread::~WorkThread( )
 	m_hEventThreadStarter  = nullptr;
     m_hTimer               = nullptr;
 	m_hThread              = nullptr;
-    m_pStatusBar           = nullptr;
     m_pPerformanceWindow   = nullptr;
     m_pEditorWindow        = nullptr;
     m_pDisplayGridFunctor  = nullptr;
@@ -234,8 +229,6 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
     }
 
-	if (m_pStatusBar != nullptr)
-	    m_pStatusBar->DisplayCurrentGeneration( m_pModelWork->GetEvoGenerationNr( ) );   // display new generation number in status bar
 	if (m_pDisplayGridFunctor != nullptr)
 	    ( * m_pDisplayGridFunctor )( FALSE );
 }

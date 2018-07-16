@@ -6,6 +6,7 @@
 #include "Resource.h"
 #include "config.h"
 #include "EvoModelData.h"
+#include "EvoGenerationCmd.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "win32_workThreadInterface.h"
 #include "win32_evoController.h"

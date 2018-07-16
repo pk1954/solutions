@@ -21,7 +21,6 @@ class EditorWindow;
 class RootWindow;
 class EvolutionCore;
 class EvolutionModelData;
-class StatusBar;
 class WinManager;
 class DisplayAll;
 class EditorWindow;
@@ -38,7 +37,6 @@ public:
 
     void Start
     ( 
-        StatusBar           * const, 
         PerformanceWindow   * const,
 		EditorWindow        * const,  
         DisplayAll   const  * const, 
@@ -80,7 +78,6 @@ public:
 private:
 
 	WorkThreadInterface * m_pWorkThreadInterface;
-    StatusBar           * m_pStatusBar;
     DisplayAll    const * m_pDisplayGridFunctor;
     PerformanceWindow   * m_pPerformanceWindow;
     EditorWindow        * m_pEditorWindow;
