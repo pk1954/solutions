@@ -3,7 +3,8 @@
 
 #include "stdafx.h"
 #include "gridPoint.h"
-#include "EvolutionCoreImpl.h"
+#include "EvolutionModelData.h"
+#include "EvolutionCore.h"
 #include "pixelCoordinates.h"
 #include "PixelCore.h"
 

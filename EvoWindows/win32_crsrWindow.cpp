@@ -3,8 +3,7 @@
 
 #include "stdafx.h"
 #include "config.h"
-#include "EvoModelData.h"
-#include "EvolutionCore.h"
+#include "EvolutionModelData.h"
 #include "win32_crsrWindow.h"
 #include "win32_focusPoint.h"
 
@@ -74,7 +73,7 @@ void CrsrWindow::DoPaint( )
 
     nextLine( L"Energy:" );
     setHorizontalPos( 4 );
-    printPercentage( m_pModelWork->GetEnergy( gpFocus ), EvolutionCore::GetStdCapacity( ) );
+    printPercentage( m_pModelWork->GetEnergy( gpFocus ), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
     
     nextLine( L"Lifespan:" );
     printSpan( m_pFocusPoint->GetGenBirth( ).GetLong( ), m_pFocusPoint->GetGenDeath( ).GetLong( ) );
