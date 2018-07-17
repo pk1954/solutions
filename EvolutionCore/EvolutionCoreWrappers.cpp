@@ -26,7 +26,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         GridPoint gp = ScrReadGridPoint( script );
-        m_pCore->SetPoi( m_pModelWork, gp );
+        m_pModelWork->SetPoi( gp );
     }
 };
 
@@ -35,7 +35,7 @@ class WrapClearPoi : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCore->ClearPoi( );
+        m_pModelWork->ClearPoi( );
     }
 };
 
@@ -62,7 +62,7 @@ class WrapResetModel : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCore->ResetModel( m_pModelWork );
+        m_pModelWork->ResetAll( );
     }
 };
 

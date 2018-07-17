@@ -14,6 +14,8 @@ public:
     EditorState( );
     virtual ~EditorState( ) { }
 
+	void Reset( );
+
     void EditorDoEdit( Grid * const, GridPoint const );
 
     void SetBrushStrategy ( tBrushMode const );

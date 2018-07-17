@@ -56,11 +56,6 @@ unsigned int EvolutionCore::GetNrInteractionsWithUnknownCulprit( )
     return StrategyData::GetNrInteractionsWithUnknownCulprit( ); 
 }
 
-int EvolutionCore::GetStdCapacity( ) 
-{ 
-    return  EvolutionCoreImpl::GetStdCapacity( );
-};
-
 bool EvolutionCore::IsEnabled( tAction const action )
 {
 	return Genome::IsEnabled( action );

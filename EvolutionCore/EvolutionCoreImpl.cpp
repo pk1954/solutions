@@ -16,27 +16,13 @@
 
 using namespace std;
 
-int EvolutionCoreImpl::m_iStdCapacity;
-
 EvolutionCoreImpl::EvolutionCoreImpl( ) :
-    m_plan( ),
-    m_idPOI( ),
     m_gridDisplayFunctor( nullptr )
 { }
 
 EvolutionCoreImpl::~EvolutionCoreImpl( )
 {
     m_gridDisplayFunctor = nullptr;
-}
-
-void EvolutionCoreImpl::ResetModel( EvolutionModelData * const pModel )
-{
-    EvolutionModelDataImpl * pModelImpl = static_cast< EvolutionModelDataImpl * >( pModel );
-    pModelImpl->m_grid.ResetGrid( );
-
-    m_idPOI.ResetIndId( );
-    m_plan.SetInvalid( );
-    m_iStdCapacity = Config::GetConfigValueShort( Config::tId::stdCapacity );
 }
 
 // Compute - plan and implement one generation step for all living individuals
@@ -46,6 +32,7 @@ void EvolutionCoreImpl::ResetModel( EvolutionModelData * const pModel )
 void EvolutionCoreImpl::Compute( EvolutionModelData * const pModel )
 {
     EvolutionModelDataImpl * pModelImpl = static_cast< EvolutionModelDataImpl * >( pModel );
+	PlannedActivity        * pPlan      = pModelImpl->GetPlan4Writing( );
 
     GplIterator m_gplIterator( pModelImpl->m_grid );
 
@@ -56,15 +43,15 @@ void EvolutionCoreImpl::Compute( EvolutionModelData * const pModel )
         assert( gpRun.IsInGrid( ) );
         assert( pModelImpl->m_grid.IsAlive( gpRun ) );
 
-        pModelImpl->m_grid.MakePlan( gpRun, m_plan );
-        m_plan.SetValid( );
-        if ( (m_gridDisplayFunctor != nullptr) && IsPoiDefined( ) ) 
+        pModelImpl->m_grid.MakePlan( gpRun, * pPlan );
+        pPlan->SetValid( );
+        if ( (m_gridDisplayFunctor != nullptr) && pModelImpl->IsPoiDefined( ) ) 
         {
-            if ( IsPoi( pModel, gpRun ) || IsPoi( pModel, m_plan.GetPartner( ) ) )
+            if ( pModelImpl->IsPoi( gpRun ) || pModelImpl->IsPoi( pPlan->GetPartner( ) ) )
                ( * m_gridDisplayFunctor )( true );
         }
-        m_plan.SetInvalid( );
-        gpRun = pModelImpl->m_grid.ImplementPlan( gpRun, m_plan );   // may return GP_NULL
+        pPlan->SetInvalid( );
+        gpRun = pModelImpl->m_grid.ImplementPlan( gpRun, * pPlan );   // may return GP_NULL
     }
 
     pModelImpl->m_grid.FoodGrowth( );

@@ -11,12 +11,18 @@
 
 using namespace std;
 
-EditorState::EditorState( ) :
-    m_brushMode( tBrushMode::move ),
-    m_brushSize( 17 ),
-    m_shapeBrush( tShape::Circle ),
-    m_usBrushIntensity( 50 )
-{ }
+EditorState::EditorState( )
+{ 
+	Reset( );
+}
+
+void EditorState::Reset( )
+{
+    m_brushMode = tBrushMode::move;
+    m_brushSize = 17;
+    m_shapeBrush = tShape::Circle;
+    m_usBrushIntensity= 50;
+}
 
 void EditorState::EditorDoEdit( Grid * const pGrid, GridPoint const gp )
 {
