@@ -96,7 +96,6 @@ private:
     EvolutionModelData  * m_pModelWork;
     HANDLE                m_hEventThreadStarter;
     DWORD                 m_dwThreadId;
-    HANDLE                m_hTimer;
 	HANDLE			      m_hThread;
     BOOL                  m_bContinue;
     INT                   m_iScriptLevel;

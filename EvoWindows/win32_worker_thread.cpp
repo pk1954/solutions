@@ -8,8 +8,6 @@
 #include "EvolutionModelData.h"
 #include "EvoHistorySys.h"
 #include "EvolutionCore.h"
-#include "win32_packGridPoint.h"
-#include "win32_hiResTimer.h"
 #include "win32_script.h"
 #include "win32_performanceWindow.h"
 #include "win32_editor.h"
@@ -27,7 +25,6 @@ WorkThread::WorkThread( ) :
     m_hEventThreadStarter ( nullptr ),
     m_dwThreadId          ( 0 ),
 	m_hThread             ( nullptr ),
-    m_hTimer              ( nullptr ),
     m_iScriptLevel        ( 0 ),
     m_pPerformanceWindow  ( nullptr ),
 	m_pEditorWindow       ( nullptr ),
@@ -69,7 +66,6 @@ WorkThread::~WorkThread( )
 {
     m_pWorkThreadInterface = nullptr;
 	m_hEventThreadStarter  = nullptr;
-    m_hTimer               = nullptr;
 	m_hThread              = nullptr;
     m_pPerformanceWindow   = nullptr;
     m_pEditorWindow        = nullptr;
@@ -116,7 +112,7 @@ void WorkThread::GenerationStep( )
 
 		WorkMessage( THREAD_MSG_REFRESH, 0, 0 );                   // refresh all views
     
-		if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )   // stiil not done?
+		if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )   // still not done?
 			m_pWorkThreadInterface->PostRepeatGenerationStep( );   // Loop! Will call indirectly GenerationStep again
 	}
 }

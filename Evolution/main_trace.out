@@ -1,94 +1,23 @@
 PostRefresh
 PostRefresh
 PostSetBrushMode tBrushMode::randomStrategy
-PostDoEdit   84  54 
+PostDoEdit  150  49 
 PostRefresh
-PostDoEdit  106  53 
+PostDoEdit  149  49 
 PostRefresh
-PostDoEdit  110  53 
+PostDoEdit  125  51 
 PostRefresh
-PostDoEdit  123  47 
+PostDoEdit  120  52 
 PostRefresh
-PostDoEdit  123  47 
+PostDoEdit   87  55 
 PostRefresh
-PostDoEdit   33  76 
+PostDoEdit   76  56 
 PostRefresh
-PostDoEdit   33  76 
+PostDoEdit   76  56 
 PostRefresh
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGenerationStep
+PostUndo
+PostRedo
+PostUndo
+PostUndo
+PostUndo
+PostUndo

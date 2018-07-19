@@ -3,17 +3,9 @@
 
 #include "stdafx.h"
 #include "assert.h"
-#include "gridRect.h"
-#include "SCRIPT.H"
 #include "Resource.h"
 #include "EvolutionModelData.h"
 #include "EvoHistorySys.h"
-#include "win32_packGridPoint.h"
-#include "win32_hiResTimer.h"
-#include "win32_script.h"
-#include "win32_performanceWindow.h"
-#include "win32_editor.h"
-#include "win32_displayAll.h"
 #include "win32_worker_thread.h"
 #include "win32_workThreadInterface.h"
 
@@ -21,6 +13,7 @@ using namespace std;
 
 WorkThreadInterface::WorkThreadInterface( wostream * pTraceStream ) :
 	m_pModelWork( nullptr ),
+	m_pEvoHistorySys( nullptr ),
 	m_pWorkThread( nullptr ),
     m_pTraceStream( pTraceStream ),
     m_bTrace( TRUE )
@@ -45,6 +38,9 @@ void WorkThreadInterface::Start
 
 WorkThreadInterface::~WorkThreadInterface( )
 {
+	m_pModelWork = nullptr;
+	m_pEvoHistorySys = nullptr;
+	m_pWorkThread = nullptr;
     m_pTraceStream = nullptr;
 }
 

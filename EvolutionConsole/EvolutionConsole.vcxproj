@@ -103,7 +103,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;runtimeCPP.lib;Direct3D.lib;EvolutionCore.lib;EvoHistGlue.lib;EvoWindows.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx9.lib;runtimeCPP.lib;Direct3D.lib;EvolutionCore.lib;EvoHistGlue.lib;EvoWindows.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -115,7 +115,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9d.lib;runtimeCPP.lib;Direct3D.lib;EvolutionCore.lib;EvoHistGlue.lib;EvoWindows.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx9d.lib;runtimeCPP.lib;Direct3D.lib;EvolutionCore.lib;EvoHistGlue.lib;EvoWindows.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -127,7 +127,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9d.lib;runtimeCPP.lib;Direct3D.lib;EvolutionCore.lib;EvoHistGlue.lib;EvoWindows.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx9d.lib;runtimeCPP.lib;Direct3D.lib;EvolutionCore.lib;EvoHistGlue.lib;EvoWindows.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -143,7 +143,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;runtimeCPP.lib;Direct3D.lib;EvolutionCore.lib;EvoHistGlue.lib;EvoWindows.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx9.lib;runtimeCPP.lib;Direct3D.lib;EvolutionCore.lib;EvoHistGlue.lib;EvoWindows.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
