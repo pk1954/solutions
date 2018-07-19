@@ -99,7 +99,7 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
 
         if ( m_pDspOptWindow->AreIndividualsVisible( ) )
         {
-            drawPOI( m_pCore->FindPOI( m_pModelWork ) );
+            drawPOI( m_pModelWork->FindPOI( ) );
 
             drawIndividuals( rcGrid );
 
@@ -142,7 +142,7 @@ void DrawFrame::drawPOI( GridPoint const & gpPoi )
         m_pD3dBuffer->AddIndividualPrimitive( ptCenter, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
         m_pD3dBuffer->AddIndividualPrimitive( ptCenter, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
 
-        PlannedActivity const & planPoi = m_pCore->GetPlan( );
+        PlannedActivity const planPoi = m_pModelWork->GetPlan( );
         if ( planPoi.IsValid( ) )
         {
             GridPoint const gpTarget = planPoi.GetTarget( );
@@ -215,7 +215,7 @@ void DrawFrame::assembleLeftColumn( GridPoint const & gp )
     m_wBuffer << L"Age:" << setw( 5 ) << m_pModelWork->GetAge( gp )                     << endl;
     m_wBuffer << L"Or: " << setw( 5 ) << GetOriginName( m_pModelWork->GetOrigin( gp ) ) << endl;
 
-    PlannedActivity plan = m_pCore->GetPlan( );
+    PlannedActivity plan = m_pModelWork->GetPlan( );
     if ( plan.IsValid( ) )
     {
         if ( (gp == plan.GetActor( )) || (gp == plan.GetPartner( )) )

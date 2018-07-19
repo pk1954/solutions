@@ -35,7 +35,7 @@ public:
     //                      to allow user interaction
     //                    - But actual history generation is alterered by at least 1
 
-    void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); } // Layer 4
+    void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); } 
 	
     bool            AddEvoHistorySlot    ( ) const { return m_pHistorySystem->AddHistorySlot( ); }
     int             GetNrOfHistCacheSlots( ) const { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
@@ -48,8 +48,10 @@ public:
     HIST_GENERATION GetFirstGenOfIndividual( IndId const & ) const;
     HIST_GENERATION GetLastGenOfIndividual ( IndId const & ) const;
 
-	void EvoCreateResetCommand( )   { m_pHistorySystem->CreateAppCommand( static_cast< short >(tEvoCmd::reset  ), 0 );  }  // Layer 4
-	void EvoCreateNextGenCommand( ) { m_pHistorySystem->CreateAppCommand( static_cast< short >(tEvoCmd::nextGen), 0 );  }  // Layer 4
+	void EvoCreateNextGenCommand( ) 
+	{ 
+		m_pHistorySystem->CreateAppCommand( static_cast< short >(tEvoCmd::nextGen), 0 );  
+	}  
 
 	bool EvoCreateEditorCommand( tEvoCmd, unsigned short );
 

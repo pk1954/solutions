@@ -10,7 +10,7 @@ using namespace std;
 
 bool IsEditorCommand( tEvoCmd const cmd )
 {
-	return ( tEvoCmd::editSetBrushMode <= cmd ) && ( cmd <= tEvoCmd::editDoEdit );
+	return ( tEvoCmd::editSetBrushMode <= cmd ) && ( cmd <= tEvoCmd::editSetPOI );
 }
 
 wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
@@ -23,7 +23,8 @@ wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
         { tEvoCmd::editSetBrushShape,     L"SHAPE"  },
         { tEvoCmd::editSetBrushSize,      L"SIZE"   },
         { tEvoCmd::editSetBrushIntensity, L"INTENS" },
-        { tEvoCmd::editDoEdit,            L"EDIT"   }
+        { tEvoCmd::editDoEdit,            L"EDIT"   },
+        { tEvoCmd::editSetPOI,            L"SETPOI" }
     };
 
     return mapNames.at( cmd );
@@ -39,7 +40,8 @@ wchar_t const * const GetEvoCommandName( tEvoCmd const cmd )
         { tEvoCmd::editSetBrushShape,     L"tEvoCmd::editSetBrushShape" },
         { tEvoCmd::editSetBrushSize,      L"tEvoCmd::editSetBrushSize" },
         { tEvoCmd::editSetBrushIntensity, L"tEvoCmd::editSetBrushIntensity" },
-        { tEvoCmd::editDoEdit,            L"tEvoCmd::editDoEdit" }
+        { tEvoCmd::editDoEdit,            L"tEvoCmd::editDoEdit" },
+        { tEvoCmd::editSetPOI,            L"tEvoCmd::editSetPOI" }
     };
 
     return mapNames.at( cmd );

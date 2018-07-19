@@ -172,4 +172,5 @@ void DefineWin32WrapperFunctions
     DEF_ULONG_CONST( tEvoCmd::editSetBrushSize );
     DEF_ULONG_CONST( tEvoCmd::editSetBrushIntensity );
     DEF_ULONG_CONST( tEvoCmd::editDoEdit );
+    DEF_ULONG_CONST( tEvoCmd::editSetPOI );
 }

@@ -20,7 +20,7 @@ wofstream OpenTraceFile( wstring const wszTraceFileName )
         assert( false );
     }
 
-    traceStream << L"OpenTraceFile " << L" \"" << wszTraceFileName << L"\"" << endl;
+//    traceStream << L"OpenTraceFile " << L" \"" << wszTraceFileName << L"\"" << endl;
 
     return traceStream;
 }

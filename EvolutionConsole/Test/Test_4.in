@@ -1,4 +1,8 @@
-OpenTraceFile  "main_trace.out"
+#
+# Test_4 in
+#
+# Regression test for a subtle bug in GridModel:Compute: dead individual not deleted from GridPointList
+#
 PostRefresh
 PostRefresh
 PostSetBrushMode tBrushMode::randomStrategy
@@ -54,4 +58,5 @@ PostGenerationStep
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
+Pause
 PostGenerationStep

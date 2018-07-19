@@ -36,8 +36,12 @@ void EvoModelData::OnAppCommand( unsigned short const usCmd, unsigned short cons
 		m_pEvolutionModelData->ModelDoEdit( GridPoint( usParam )  );
 		break;
 
+	case tEvoCmd::editSetPOI:
+		m_pEvolutionModelData->SetPoi( GridPoint( usParam )  );
+		break;
+
 	case tEvoCmd::reset:
-		m_pEvolutionCore->ResetModel( m_pEvolutionModelData ); 
+		m_pEvolutionModelData->ResetAll( ); 
         break;
 
 	case tEvoCmd::editSetBrushMode:

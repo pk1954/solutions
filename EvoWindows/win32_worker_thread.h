@@ -65,12 +65,13 @@ public:
 
     void WorkMessage( UINT, WPARAM, LPARAM );
 
-    enum ThreadMessages
+    enum ThreadMessage : UINT
     {
         THREAD_MSG_REFRESH = WM_USER + 1,
         THREAD_MSG_REPEAT_GENERATION_STEP,  // only used internaly, not part of procedural interface
         THREAD_MSG_GOTO_GENERATION,
         THREAD_MSG_GENERATION_RUN,
+        THREAD_MSG_SET_POI,
         THREAD_MSG_DO_EDIT,
         THREAD_MSG_SET_BRUSH_SIZE,
         THREAD_MSG_SET_BRUSH_INTENSITY,
@@ -107,6 +108,11 @@ private:
 	void dispatchMessage( UINT, WPARAM, LPARAM );
 	void editorCommand( UINT const,  WPARAM const );
     void generationRun(  );
+
+	bool IsValidThreadMessage(UINT msg)
+	{
+		return (THREAD_MSG_FIRST <= msg) && (msg <= THREAD_MSG_LAST);
+	}
 
 friend static DWORD WINAPI WorkerThread( _In_ LPVOID );
 }; 

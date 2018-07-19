@@ -8,6 +8,7 @@ call ..\..\Tests\TEST_SETUP %1
 %CALL_TEST_CASE% Test_1 || goto ERROR_EXIT
 %CALL_TEST_CASE% Test_2 || goto ERROR_EXIT
 %CALL_TEST_CASE% Test_3 || goto ERROR_EXIT
+%CALL_TEST_CASE% Test_4 || goto ERROR_EXIT
 
 echo %MESSAGE% tests ok
 echo .

@@ -62,12 +62,11 @@ void GridWindow::Start
     m_pPerformanceWindow  = pPerformanceWindow;
     m_pEditorWindow       = pEditorWindow;
     m_pFocusPoint         = pFocusPoint;
-	m_pCore               = pCore;
 	m_pModelWork          = pModel;
 
 	BOOL bHexagonMode     = iNrOfNeighbors == 6;
     m_pPixelCoordinates   = new PixelCoordinates( sFieldSize, bHexagonMode );
-	m_pPixelCore          = new PixelCore( m_pCore, m_pModelWork, m_pPixelCoordinates );
+	m_pPixelCore          = new PixelCore( m_pModelWork, m_pPixelCoordinates );
     m_pDrawFrame          = new DrawFrame( hWnd, pCore, pModel, m_pPixelCoordinates, pDspOptWindow );
 	m_pDrawFrame->SetStripMode
 	( 
@@ -89,7 +88,6 @@ GridWindow::~GridWindow( )
     };
 
 	m_pModelWork           = nullptr;
-	m_pCore                = nullptr;
     m_pGWObserved          = nullptr;
     m_pEditorWindow        = nullptr;
     m_pWorkThreadInterface = nullptr;
@@ -164,7 +162,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     {
         if ( m_ptLast.x != LONG_MIN )  // last cursor pos stored in m_ptLast
         {
-            PixelPoint ptOther = m_pCore->IsPoiDefined( ) 
+            PixelPoint ptOther = m_pModelWork->IsPoiDefined( ) 
 				                 ? m_pPixelCore->GetPoiCenter() * 2 - ptCrsr 
 				                 : m_ptLast;
             m_pPixelCore->SetSelection( ptOther, ptCrsr ); 
@@ -211,7 +209,7 @@ void GridWindow::doPaint( )
         (void)EndPaint( &ps );
     }
 
-    if ( m_bMoveAllowed && m_pCore->IsPoiDefined( ) )
+    if ( m_bMoveAllowed && m_pModelWork->IsPoiDefined( ) )
 	{
 		if ( ! m_pPixelCore->CenterPoi( GetClRectCenter( ) ) )
 		   Invalidate( FALSE );    // repeat if POI is not in center 
@@ -278,12 +276,8 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             switch ( uiCmdId )
             {
             case IDM_SET_POI:
-				m_pPixelCore->SetPOI( GetCrsrPosFromLparam( lParam ) );
-				Post2Application( WM_COMMAND, IDM_STOP, 0 );
-                break;
-
-            case IDM_GOTO_ORIGIN:  // commands using cursor pos are handled here
-            case IDM_GOTO_DEATH:
+            case IDM_GOTO_ORIGIN:  
+            case IDM_GOTO_DEATH:      // commands using cursor pos are handled here
             {
                 PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );
                 GridPoint  const gpCrsr = m_pPixelCoordinates->Pixel2GridPos( ptCrsr );

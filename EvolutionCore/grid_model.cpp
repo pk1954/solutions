@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "assert.h"
 #include <array> 
 #include <cstdlib> 
 #include <cmath> 
@@ -224,7 +225,7 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
     gfRun.SetLastAction( plan.GetActionType( ) );
     gfRun.DecEnergy    ( plan.GetBaseConsumption( ) );
 
-    switch ( plan.GetActionType( ) )
+	switch ( plan.GetActionType( ) )
     {
         case tAction::move: 
         {
@@ -234,10 +235,7 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
                 GridField & gfTarget = getGridField( plan.GetTarget( ) );
                 m_gpList.ReplaceGridPointInList( * this, gfRun, gfTarget ); 
                 gfTarget.MoveIndividual( gfRun );
-            }
-            else // caution: Do not remove this line!! gfRun is not the same as before  
-            {
-                deleteAndReset( gfRun );
+			    return gpNext;                    // avoid "deleteIfDead( gfRun );" after switch!
             }
         }
         break;
@@ -251,8 +249,6 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
 
             if ( gfTarget.IsAlive( ) )
                 m_gpList.AddGridPointToList( *this, gfTarget );
-
-            deleteIfDead( gfRun );
         }
         break;
 
@@ -268,7 +264,6 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
                 m_gpList.AddGridPointToList( *this, gfTarget );
 
             deleteIfDead( gfPartner );
-            deleteIfDead( gfRun );
         }
         break;
 
@@ -286,7 +281,6 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
             }
 
             deleteIfDead( gfTarget );
-            deleteIfDead( gfRun );
         }
         break;
 
@@ -295,7 +289,6 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
             short const sInvest = gfRun.GetAllele( tGeneType::fertilInvest );
             gfRun.Fertilize( sInvest );
             gfRun.DecEnergy( sInvest );
-            deleteIfDead( gfRun );
         }
         break;
 
@@ -305,7 +298,6 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
             short const sReceive = gfRun.GetConsumption( sWant );
             gfRun.DecFoodStock( sReceive );
             gfRun.IncEnergy   ( sReceive );
-            deleteIfDead( gfRun );
         }
         break;
 
@@ -315,6 +307,8 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
         default:
             assert( false );
     }
+
+	deleteIfDead( gfRun );
 
     CHECK_INDIVIDUALS;
     return gpNext;

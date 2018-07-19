@@ -105,10 +105,10 @@ void WorkThread::GenerationStep( )
 		}
 		else  // we are somewhere in history
 		{
-			m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded );          // Get a stored generation from history system
-			if ( m_pEvolutionCore->EditorStateHasChanged( m_pModelWork ) )  // editor state may be different from before
+			m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded ); // Get a stored generation from history system
+			if ( m_pModelWork->EditorStateHasChanged( ) )          // editor state may be different from before
 			{                                                       
-				m_pEvolutionCore->SaveEditorState( m_pModelWork );
+				m_pModelWork->SaveEditorState( );
 				if (m_pEditorWindow != nullptr)                    // make sure that editor GUI 
 					m_pEditorWindow->UpdateEditControls( );        // reflects new state
 			}
@@ -162,6 +162,7 @@ void WorkThread::postMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 {
     if ( m_pDisplayGridFunctor != nullptr )
         ( * m_pDisplayGridFunctor ).Continue( );  // trigger worker thread if waiting for an event
+	assert( IsValidThreadMessage( uiMsg ) );
     BOOL const bRes = PostThreadMessage( m_dwThreadId, uiMsg, wParam, lParam );
     DWORD err = GetLastError( );
     assert( bRes );
@@ -175,12 +176,14 @@ static DWORD WINAPI WorkerThread( _In_ LPVOID lpParameter )
     (void)PeekMessage( &msg, nullptr, WM_USER, WM_USER, PM_NOREMOVE );  // cause creation of message queue
     (void)SetEvent( pWT->m_hEventThreadStarter );				        // trigger waiting thread to continue
 
-    do
+    for(;;)
     {
         BOOL const bRet = GetMessage( &msg, nullptr, 0, 0 );
         assert( bRet >= 0 );
+		if ( msg.message == pWT->THREAD_MSG_EXIT )
+			break;
         (void)pWT->dispatchMessage( msg.message, msg.wParam, msg.lParam );
-    } while ( msg.message != pWT->THREAD_MSG_EXIT );
+    } 
 
     return 0;
 }
@@ -216,14 +219,12 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
 
     case THREAD_MSG_RESET_MODEL:
-		m_pEvoHistorySys->EvoCreateResetCommand( );
-        break;
-
     case THREAD_MSG_SET_BRUSH_INTENSITY:
     case THREAD_MSG_SET_BRUSH_SIZE:
     case THREAD_MSG_SET_BRUSH_SHAPE:
     case THREAD_MSG_SET_BRUSH_MODE:
     case THREAD_MSG_DO_EDIT:
+    case THREAD_MSG_SET_POI:
         editorCommand( uiMsg, wParam );
         break;
 
@@ -231,8 +232,8 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
 
     default:
-        break;
-    }
+		return;  // sometimes strange messages arrive. e.g. uiMsg 1847
+    }            // I cannot find a reason, so I ignore them
 
 	if (m_pDisplayGridFunctor != nullptr)
 	    ( * m_pDisplayGridFunctor )( FALSE );
@@ -242,15 +243,23 @@ void WorkThread::editorCommand( UINT const uiMsg, WPARAM const wParam )
 {
 	static unordered_map < UINT, tEvoCmd > mapTable =
 	{
+		{ THREAD_MSG_RESET_MODEL,         tEvoCmd::reset                 },
 		{ THREAD_MSG_SET_BRUSH_INTENSITY, tEvoCmd::editSetBrushIntensity },
 		{ THREAD_MSG_SET_BRUSH_SIZE,      tEvoCmd::editSetBrushSize      },
 		{ THREAD_MSG_SET_BRUSH_SHAPE,     tEvoCmd::editSetBrushShape     },
 		{ THREAD_MSG_SET_BRUSH_MODE,      tEvoCmd::editSetBrushMode      },
-		{ THREAD_MSG_DO_EDIT,             tEvoCmd::editDoEdit            }
+		{ THREAD_MSG_DO_EDIT,             tEvoCmd::editDoEdit            },
+		{ THREAD_MSG_SET_POI,             tEvoCmd::editSetPOI            }
 	};
     
-    if ( m_pEvoHistorySys->EvoCreateEditorCommand( mapTable.at( uiMsg ), static_cast<unsigned short>( wParam ) ) )
-        m_pEvolutionCore->SaveEditorState( m_pModelWork );
-	if ((uiMsg != THREAD_MSG_DO_EDIT) && (m_pEditorWindow != nullptr))
-		m_pEditorWindow->UpdateEditControls( );
+	tEvoCmd cmd = mapTable.at( uiMsg );
+    if ( m_pEvoHistorySys->EvoCreateEditorCommand( cmd, static_cast<unsigned short>( wParam ) ) )
+	{
+        m_pModelWork->SaveEditorState(  );
+	}
+
+	if ( (m_pEditorWindow != nullptr) && IsEditorCommand( cmd ) )
+	{
+		 m_pEditorWindow->UpdateEditControls( );
+	}
 }

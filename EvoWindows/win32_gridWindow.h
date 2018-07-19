@@ -64,7 +64,6 @@ private:
     WorkThreadInterface * m_pWorkThreadInterface;
     PixelCoordinates    * m_pPixelCoordinates;  // My own PixelCoordinates
     GridWindow          * m_pGWObserved;	 // Observed GridWindow (or nullptr)
-	EvolutionCore       * m_pCore;
     EvolutionModelData  * m_pModelWork;
     EditorWindow        * m_pEditorWindow;
     PerformanceWindow   * m_pPerformanceWindow;

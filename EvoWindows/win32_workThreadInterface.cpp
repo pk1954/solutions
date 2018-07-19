@@ -82,6 +82,16 @@ void WorkThreadInterface::PostRefresh( )
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_REFRESH, 0, 0 );
 }
 
+void WorkThreadInterface::PostSetPOI( GridPoint const & gp )
+{
+    if ( gp.IsInGrid() )
+    {
+        if ( m_bTrace )
+            * m_pTraceStream << __func__ << L" " << gp << endl;
+        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_POI, gp.Pack2short(), 0 );
+    }
+}
+
 void WorkThreadInterface::PostDoEdit( GridPoint const & gp )
 {
     if ( gp.IsInGrid() )

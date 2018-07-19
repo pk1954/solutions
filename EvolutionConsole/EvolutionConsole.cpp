@@ -63,17 +63,13 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	DefineWin32WrapperFunctions( m_pWorkThreadInterface, nullptr, nullptr );
 
-    wstring wstrInputFile = L"Test_1.in";
+    wstring wstrInputFile = L"Test_4.in";
 
 	for ( int iCount = 1; iCount < argc; iCount++ )
     {
         std::string strCmd( argv[ iCount ] );
 
-        if ( strCmd.compare( "/nohist" ) == 0 )
-		{
-            Config::SetConfigValue( Config::tId::maxGeneration, 0 );
-		}
-		else if ( (strCmd.find( ".in" ) != string::npos) || (strCmd.find( ".IN" ) != string::npos) ) 
+		if ( (strCmd.find( ".in" ) != string::npos) || (strCmd.find( ".IN" ) != string::npos) ) 
 		{
 			wstrInputFile.assign( strCmd.begin(), strCmd.end() ); 
 		}

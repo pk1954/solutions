@@ -13,7 +13,8 @@ enum class tEvoCmd : unsigned short // enumeration starts after last tGenCmd val
     editSetBrushShape,
     editSetBrushSize,
     editSetBrushIntensity,
-    editDoEdit
+    editDoEdit,
+	editSetPOI
 };
 
 bool IsEditorCommand( tEvoCmd const );

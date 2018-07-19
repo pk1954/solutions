@@ -101,12 +101,6 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     Config::DefineConfigWrapperFunctions( );
 	DefineUtilityWrapperFunctions( );
 
-    // evaluate command line parameters
-
-    std::wstring const wstrCmdLine( lpCmdLine );
-    if ( wstrCmdLine.compare( L"/nohist" ) == 0 )
-        Config::SetConfigValue( Config::tId::maxGeneration, 0 );
-
 	Script::ProcessScript( L"std_configuration.in" );
 
 	EvolutionCore::InitClass( );

@@ -6,6 +6,7 @@
 #include "EvolutionTypes.h"
 #include "GridRect.h"
 
+class PlannedActivity;
 class GridPoint;
 class IndId;
 
@@ -50,6 +51,23 @@ public:
     virtual long           GetGenotype    ( GridPoint const &, tGeneType const ) const = 0;
 
     virtual GridPoint FindGridPoint( IndId const & ) const = 0;
+
+    virtual PlannedActivity const & GetPlan( ) const = 0;
+
+// editor state
+	
+	virtual void SaveEditorState      ( )       = 0;
+    virtual bool EditorStateHasChanged( ) const = 0;
+
+// point of interest
+
+    virtual IndId     GetPoiId( )                  const = 0;
+    virtual bool      IsPoiDefined( )              const = 0; 
+    virtual bool      IsPoiId( IndId     const & ) const = 0;
+    virtual GridPoint FindPOI( )                   const = 0;
+    virtual bool      IsPoi  ( GridPoint const & ) const = 0;
+    virtual void      SetPoi ( GridPoint const & )       = 0;
+    virtual void      ClearPoi( )                        = 0;
 
     // manipulating functions
 

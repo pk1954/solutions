@@ -138,10 +138,12 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 
         case IDD_TOGGLE_STRIP_MODE:
 			m_pGridWindow->ToggleStripMode();
+			m_pWorkThreadInterface->PostRefresh( );
             break;
 
         case IDD_TOGGLE_CLUT_MODE:
 			m_pGridWindow->ToggleClutMode();
+			m_pWorkThreadInterface->PostRefresh( );
             break;
 
         case IDM_ESCAPE:
@@ -150,29 +152,38 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 
         case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
             (void)m_pGridWindow->SetZoom( static_cast<SHORT>(lParam) );
+			m_pWorkThreadInterface->PostRefresh( );
             break;
 
         case IDM_FIT_ZOOM:
 			m_pGridWindow->Fit2Rect( );
 			m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
+			m_pWorkThreadInterface->PostRefresh( );
             break;
 
         case IDM_ZOOM_OUT:
         case IDM_ZOOM_IN:
             m_pGridWindow->Zoom( wmId == IDM_ZOOM_IN );
 			m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
+			m_pWorkThreadInterface->PostRefresh( );
             break;
 
 		case IDM_SET_ZOOM:
             (void)m_pGridWindow->SetZoom( static_cast<SHORT>(lParam));
 			m_pStatusBar->SetSizeTrackBar( static_cast<SHORT>(lParam) );
+			m_pWorkThreadInterface->PostRefresh( );
             break;
 
         case IDM_TOGGLE_EDIT_SIMU_MODE:
 			SetSimulationMode( tBoolOp::opToggle );
             break;
 
+		case IDM_SET_POI:
+			m_pWorkThreadInterface->PostSetPOI( UnpackFromLParam(lParam) );
+			break;
+
 		default:
+			assert( false );
 	        break;
     }
 }
