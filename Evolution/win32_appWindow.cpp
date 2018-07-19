@@ -14,7 +14,6 @@
 // history system
 
 #include "EvoHistorySys.h"
-#include "win32_worker_thread.h"
 
 // interfaces of various windows
 
@@ -142,10 +141,10 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pStatusBar          ->Start( hWndApp, m_pModelWork );
 	m_pFocusPoint         ->Start( m_pEvoHistorySys, m_pModelWork );
 	m_pWorkThreadInterface->Start( m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
-	m_pDspOptWindow       ->Start( hWndApp, m_pWorkThreadInterface,    m_pModelWork );
-    m_pEditorWindow       ->Start( hWndApp, m_pWorkThreadInterface,    m_pModelWork, m_pDspOptWindow );
-    m_pMainGridWindow     ->Start( hWndApp, m_pWorkThreadInterface,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
-    m_pMiniGridWindow     ->Start( hWndApp, m_pWorkThreadInterface,    m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
+	m_pDspOptWindow       ->Start( hWndApp, m_pWorkThreadInterface, m_pModelWork );
+    m_pEditorWindow       ->Start( hWndApp, m_pWorkThreadInterface, m_pModelWork, m_pDspOptWindow );
+    m_pMainGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
+    m_pMiniGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
     m_pStatistics         ->Start( hWndApp, m_pModelWork );
     m_pCrsrWindow         ->Start( hWndApp, m_pFocusPoint,    m_pModelWork, m_pMainGridWindow );
     m_pPerfWindow         ->Start( hWndApp, 100 );

@@ -4,7 +4,18 @@
 #include "stdafx.h"
 #include "EvoHistorySys.h"
 #include "EvolutionModelData.h"
+#include "win32_viewCollection.h"
 #include "win32_focusPoint.h"
+
+FocusPoint::FocusPoint( ) :
+    m_pEvoHistorySys( nullptr ),
+    m_pModelWork( nullptr ),
+    m_genBirth( - 1 ),
+    m_genDeath( - 1 ),
+    m_gp( )
+{ 
+	m_pViewCol = new ViewCollection( );
+};
 
 void FocusPoint::Start
 ( 
@@ -15,6 +26,46 @@ void FocusPoint::Start
     assert( pModel != nullptr );
     m_pEvoHistorySys = pEvoHistorySys;
     m_pModelWork = pModel;
+}
+
+FocusPoint::~FocusPoint( ) 
+{ 
+	delete m_pViewCol;
+};
+
+GridPoint const FocusPoint::GetGridPoint( ) const 
+{ 
+	return m_gp; 
+}
+
+HIST_GENERATION const FocusPoint::GetGenBirth( ) const 
+{ 
+	return m_genBirth; 
+}
+
+HIST_GENERATION const FocusPoint::GetGenDeath( ) const 
+{ 
+	return m_genDeath; 
+}
+
+BOOL const FocusPoint::IsInGrid( ) const 
+{ 
+	return m_gp.IsInGrid( ); 
+}
+
+BOOL const FocusPoint::IsAlive( ) const 
+{ 
+	return m_pModelWork->IsAlive( m_gp ); 
+}
+
+BOOL const FocusPoint::IsDead( ) const 
+{ 
+	return m_pModelWork->IsDead( m_gp ); 
+}
+
+BOOL const FocusPoint::IsDefined( ) const 
+{ 
+	return m_pModelWork->IsDefined( m_gp ); 
 }
 
 void FocusPoint::SetFocusPoint( GridPoint const gpNew )
@@ -31,11 +82,11 @@ void FocusPoint::SetFocusPoint( GridPoint const gpNew )
                 m_genDeath = m_pEvoHistorySys->GetLastGenOfIndividual ( id ) + 1;
             }
         }
-        m_ViewCol.NotifyObservers( );
+        m_pViewCol->NotifyObservers( );
     }
 }
 
 void FocusPoint::AttachFocusPointObserver( RootWindow const * pRootWindow, INT const iMilliSecs )
 {
-    m_ViewCol.AttachObserver( pRootWindow, iMilliSecs );
+    m_pViewCol->AttachObserver( pRootWindow, iMilliSecs );
 }
