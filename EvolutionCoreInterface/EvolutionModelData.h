@@ -69,7 +69,7 @@ public:
     virtual void      SetPoi ( GridPoint const & )       = 0;
     virtual void      ClearPoi( )                        = 0;
 
-    // manipulating functions
+// manipulating functions
 
 	virtual void SetSelection     ( GridRect       const & ) = 0;
     virtual void SetBrushShape    ( tShape         const   ) = 0;
@@ -79,4 +79,13 @@ public:
     virtual void ModelDoEdit      ( GridPoint      const   ) = 0;
 	virtual void ResetSelection   ( )                        = 0;
     virtual void ResetAll         ( )                        = 0;
+
+    // static functions
+    
+    static unsigned long GetModelSize( );
+    static unsigned int  GetNrInteractionsWithKnownCulprit( );
+    static unsigned int  GetNrInteractionsWithUnknownCulprit( );
+    static unsigned int  GetMaxPartnerMemory( );
+	static bool          IsEnabled( tAction const );
+	static bool          IsEnabled( tGeneType const );
 };

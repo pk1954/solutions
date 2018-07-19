@@ -182,6 +182,7 @@
     <ClCompile Include="EditorState.cpp" />
     <ClCompile Include="EvolutionCore.cpp" />
     <ClCompile Include="EvolutionCoreImpl.cpp" />
+    <ClCompile Include="EvolutionModelData.cpp" />
     <ClCompile Include="EvolutionModelDataImpl.cpp" />
     <ClCompile Include="EvolutionTypes.cpp" />
     <ClCompile Include="food.cpp" />

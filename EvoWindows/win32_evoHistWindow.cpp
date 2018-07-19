@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "config.h"
-#include "EvolutionCore.h"
 #include "EvoHistorySys.h"
 #include "win32_focusPoint.h"
 #include "win32_workThreadInterface.h"

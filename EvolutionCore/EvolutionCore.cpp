@@ -3,18 +3,11 @@
 
 #include "stdafx.h"
 #include "assert.h"
-#include "grid_model.h"
 #include "EvolutionCoreWrappers.h"
-#include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "EvolutionCoreImpl.h"
 
 static EvolutionCoreImpl * m_pCore = nullptr;
-
-EvolutionModelData * EvolutionModelData::CreateModelData( ) 
-{ 
-    return new EvolutionModelDataImpl( ); 
-}
 
 void EvolutionCore::InitClass( )
 {
@@ -34,34 +27,4 @@ EvolutionCore * EvolutionCore::CreateCore( )
 void EvolutionCore::DeleteCore( )
 {
     delete m_pCore;
-}
-
-unsigned long EvolutionCore::GetModelSize( )
-{
-    return sizeof( Grid );
-}
-
-unsigned int EvolutionCore::GetMaxPartnerMemory( )
-{ 
-    return StrategyData::GetMaxPartnerMemory( ); 
-}
-
-unsigned int EvolutionCore::GetNrInteractionsWithKnownCulprit( ) 
-{ 
-    return StrategyData::GetNrInteractionsWithKnownCulprit( ); 
-}
-
-unsigned int EvolutionCore::GetNrInteractionsWithUnknownCulprit( ) 
-{ 
-    return StrategyData::GetNrInteractionsWithUnknownCulprit( ); 
-}
-
-bool EvolutionCore::IsEnabled( tAction const action )
-{
-	return Genome::IsEnabled( action );
-}
-
-bool EvolutionCore::IsEnabled( tGeneType const gene )
-{
-	return Genome::IsEnabled( GetRelatedAction( gene ) );
 }

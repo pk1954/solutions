@@ -10,7 +10,6 @@
 #include <iomanip>
 #include "config.h"
 #include "symtab.h"
-#include "EvolutionCore.h"
 
 using namespace std;
 

@@ -8,7 +8,6 @@
 #include "Resource.h"
 #include "EvolutionModelData.h"
 #include "EvoHistorySys.h"
-#include "EvolutionCore.h"
 #include "win32_packGridPoint.h"
 #include "win32_hiResTimer.h"
 #include "win32_script.h"

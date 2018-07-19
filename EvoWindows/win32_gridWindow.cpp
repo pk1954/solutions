@@ -2,16 +2,16 @@
 //
 
 #include "stdafx.h"
-#include "Windowsx.h"
 #include "Resource.h"
 #include "config.h"
 #include "BoolOp.h"
 #include "PixelCore.h"
 #include "pixelCoordinates.h"
-#include "EvolutionCore.h"
 #include "win32_util.h"
 #include "win32_draw.h"
+#include "win32_editor.h"
 #include "win32_focusPoint.h"
+#include "win32_crsrWindow.h"
 #include "win32_performanceWindow.h"
 #include "win32_workThreadInterface.h"
 #include "win32_aboutBox.h"
@@ -134,8 +134,11 @@ void GridWindow::contextMenu( LPARAM lParam )
     (void)SetForegroundWindow( hwnd );
 
     UINT const uiID = (UINT)TrackPopupMenu( hPopupMenu, TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, pntPos.x, pntPos.y, 0, hwnd, nullptr ); 	// Result is send as WM_COMMAND to this window
-    Post2Application( WM_COMMAND, uiID, lParam );
-    (void)DestroyMenu( hPopupMenu );
+
+	if ( uiID != 0 )
+	    Post2Application( WM_COMMAND, uiID, lParam );
+
+	(void)DestroyMenu( hPopupMenu );
 }
 
 void GridWindow::moveGrid( PixelPoint const & ptDiff )
@@ -216,38 +219,6 @@ void GridWindow::doPaint( )
 	}
 
     m_pPerformanceWindow->DisplayStop( );
-}
-
-void GridWindow::ToggleStripMode( )
-{
-	m_pDrawFrame->SetStripMode( tBoolOp::opToggle );
-}
-
-void GridWindow::ToggleClutMode( )
-{
-	m_pDrawFrame->SetIndDimmMode( tBoolOp::opToggle );
-}
-
-void GridWindow::SetZoom( SHORT const fieldSize )
-{
-    m_pPixelCore->SetFieldSize( fieldSize, GetClRectCenter( ) );
-	m_pDrawFrame->Resize( );
-}
-
-void GridWindow::Zoom( bool const bZoomIn )
-{
-	SetZoom( m_pPixelCoordinates->ComputeNewFieldSize( bZoomIn ) );
-}
-
-void GridWindow::Fit2Rect( )
-{
-	m_pPixelCore->FitToRect( GetClRectSize( ) );
-	m_pDrawFrame->Resize( );
-}
-
-void GridWindow::Escape( )
-{
-	m_pModelWork->ResetSelection( );
 }
 
 void GridWindow::mouseWheelAction( int iDelta )
@@ -341,12 +312,6 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
     return DefWindowProc( message, wParam, lParam );
 }
 
-void GridWindow::Observe( GridWindow * const hgw )
-{
-    m_pGWObserved  = hgw;
-    m_bMoveAllowed = FALSE; 
-}
-
 void GridWindow::Size( )
 {
     PixelPoint const ptSize = m_pPixelCoordinates->Grid2PixelSize( GridPoint::GRID_SIZE );
@@ -356,7 +321,39 @@ void GridWindow::Size( )
     Move( 0, 0, rect.right - rect.left, rect.bottom - rect.top, FALSE );
 }
 
+void GridWindow::SetZoom( SHORT const fieldSize )
+{
+	m_pPixelCore->SetFieldSize( fieldSize, GetClRectCenter( ) );
+	m_pDrawFrame->Resize( );
+}
+
+void GridWindow::Fit2Rect( )
+{
+	m_pPixelCore->FitToRect( GetClRectSize( ) );
+	m_pDrawFrame->Resize( );
+}
+
 short GridWindow::GetFieldSize( ) const 
 { 
 	return m_pPixelCoordinates->GetFieldSize( ); 
 };
+
+void GridWindow::Zoom( bool const bZoomIn )	
+{ 
+	SetZoom( m_pPixelCoordinates->ComputeNewFieldSize( bZoomIn ) ); 
+}
+
+void GridWindow::ToggleStripMode( ) 
+{ 
+	m_pDrawFrame->SetStripMode  ( tBoolOp::opToggle ); 
+}
+
+void GridWindow::ToggleClutMode( ) 
+{ 
+	m_pDrawFrame->SetIndDimmMode( tBoolOp::opToggle ); 
+}
+
+void GridWindow::Escape( ) 
+{ 
+	m_pModelWork->ResetSelection( ); 
+}

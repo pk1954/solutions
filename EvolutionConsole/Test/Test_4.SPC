@@ -1,4 +1,4 @@
-# TEST_1.SPC
+# TEST_4.SPC
 #
 # Testee: EvolutionConsole.exe
 #

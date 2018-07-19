@@ -3,14 +3,7 @@
 
 #pragma once
 
-#include "win32_util.h"
-#include "win32_editor.h"
-#include "win32_crsrWindow.h"
 #include "win32_baseWindow.h"
-#include "win32_focusPoint.h"
-
-//lint -esym( 763, WorkThread )    redundant declaration
-//lint -esym( 763, DspOptWindow )  redundant declaration
 
 class GridRect;
 class DrawFrame;
@@ -22,6 +15,8 @@ class EvolutionCore;
 class EvolutionModelData;
 class ObserverInterface;
 class PerformanceWindow;
+class EditorWindow;
+class FocusPoint;
 
 class GridWindow : public BaseWindow
 {
@@ -44,18 +39,20 @@ public:
 
     ~GridWindow( );
 
-    void Observe( GridWindow * );
-    void Size( );
-
+    void  Size( );
 	short GetFieldSize( ) const;
-
-	void Fit2Rect( );
-	void Zoom( bool const );
-	void SetZoom( SHORT const );
-	void ToggleStripMode( );
-	void ToggleClutMode( );
-	void Escape( );
-
+	void  Zoom( bool const );
+	void  ToggleStripMode( );
+	void  ToggleClutMode ( );
+	void  Escape( );
+	void  SetZoom( SHORT const );
+	void  Fit2Rect( );
+	
+	void Observe( GridWindow * const hgw )
+	{
+		m_pGWObserved  = hgw;
+		m_bMoveAllowed = FALSE; 
+	}
 
 private:
     GridWindow             ( GridWindow const & );  // noncopyable class 

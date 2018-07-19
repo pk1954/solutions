@@ -28,10 +28,4 @@ public:
     static void            InitClass( );
     static EvolutionCore * CreateCore( );
     static void            DeleteCore( );
-    static unsigned long   GetModelSize( );
-    static unsigned int    GetNrInteractionsWithKnownCulprit( );
-    static unsigned int    GetNrInteractionsWithUnknownCulprit( );
-    static unsigned int    GetMaxPartnerMemory( );
-	static bool            IsEnabled( tAction const );
-	static bool            IsEnabled( tGeneType const );
 };

@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include <fstream>
 #include <iomanip>
-#include "EvolutionCore.h"
 #include "grid_model.h"
 #include "dump.h"
 

@@ -8,7 +8,6 @@
 #include <vector>
 #include "config.h"
 #include "EvolutionModelData.h"
-#include "EvolutionCore.h"
 #include "plannedActivity.h"
 #include "pixelCoordinates.h"
 #include "win32_util.h"

@@ -137,7 +137,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
 	m_pModelWork = EvolutionModelData::CreateModelData( );
 	
-	m_pEvoHistorySys      ->Start( m_pModelWork, m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), true );
+	m_pEvoHistorySys      ->Start( m_pModelWork, m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionModelData::GetModelSize( ) ), true );
 	m_pEvoHistWindow      ->Start( hWndApp, m_pFocusPoint, m_pEvoHistorySys, m_pWorkThreadInterface );
     m_pStatusBar          ->Start( hWndApp, m_pModelWork );
 	m_pFocusPoint         ->Start( m_pEvoHistorySys, m_pModelWork );
