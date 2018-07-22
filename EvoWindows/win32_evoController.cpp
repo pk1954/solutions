@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "Windowsx.h"
 #include "Resource.h"
+#include "boolOp.h"
 #include "win32_script.h"
 #include "win32_workThreadInterface.h"
 #include "win32_winManager.h"
@@ -174,8 +175,12 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			m_pWorkThreadInterface->PostRefresh( );
             break;
 
-        case IDM_TOGGLE_EDIT_SIMU_MODE:
-			SetSimulationMode( tBoolOp::opToggle );
+        case IDM_TOGGLE_SIMU_MODE:
+			m_pWorkThreadInterface->PostSetSimulationMode( tBoolOp::opToggle );
+            break;
+
+        case IDM_SET_SIMU_MODE:
+			m_pWorkThreadInterface->PostSetSimulationMode( static_cast<tBoolOp>(lParam) );
             break;
 
 		case IDM_SET_POI:
@@ -186,18 +191,4 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			assert( false );
 	        break;
     }
-}
-
-void EvoController::SetSimulationMode( tBoolOp const op )
-{
-	ApplyOp( m_bSimulationMode, op );
-
-	m_pStatusBar->SetSimuMode( m_bSimulationMode );
-
-	if ( m_bSimulationMode )
-        m_pEditorWindow->SendClick( IDM_MOVE );
-	else
-		ProcessCommand( IDM_STOP, 0 );
-	m_pEditorWindow     ->Show( ! m_bSimulationMode );
-	m_pPerformanceWindow->Show(   m_bSimulationMode );
 }

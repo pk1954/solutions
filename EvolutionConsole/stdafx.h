@@ -5,6 +5,13 @@
 
 #pragma once
 
+#undef _HAS_VARIABLE_TEMPLATES
+
+//lint -esym( 755, WIN32_LEAN_AND_MEAN )  globale macro not referenced
+#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+// Windows Header Files:
+#include <windows.h>
+
 #include "targetver.h"
 
 #include <stdio.h>

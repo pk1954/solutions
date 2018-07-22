@@ -44,6 +44,10 @@ void EvoModelData::OnAppCommand( unsigned short const usCmd, unsigned short cons
 		m_pEvolutionModelData->ResetAll( ); 
         break;
 
+	case tEvoCmd::setSimulationMode:
+        m_pEvolutionModelData->SetSimulationMode( static_cast<tBoolOp>( usParam ) );
+        break;
+
 	case tEvoCmd::editSetBrushMode:
         m_pEvolutionModelData->SetBrushStrategy( static_cast<tBrushMode>( usParam ) );
         break;

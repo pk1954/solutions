@@ -11,7 +11,6 @@
 #include "win32_workThreadInterface.h"
 #include "win32_evoController.h"
 #include "win32_winManager.h"
-#include "win32_status.h"
 #include "win32_wrappers.h"
 #include "win32_util.h"
 
@@ -19,7 +18,6 @@
 
 static WorkThreadInterface * m_pWorkThreadInterface;
 static EvoController       * m_pEvoController;
-static StatusBar           * m_pStatusBar;
 static BOOL                  m_bMoveWindowActive;
 
 class WrapPostPrevGeneration : public Script_Functor
@@ -38,6 +36,17 @@ public:
     {
         GridPoint gp = ScrReadGridPoint( script );
         m_pWorkThreadInterface->PostDoEdit( gp );
+    }
+};
+
+class WrapPostSetSimulationMode : public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        ULONG   const ulOp = script.ScrReadUlong( );
+        tBoolOp const op   = static_cast<tBoolOp>( ulOp );
+        m_pWorkThreadInterface->PostSetSimulationMode( op );
     }
 };
 
@@ -140,17 +149,16 @@ public:
 void DefineWin32WrapperFunctions
 ( 
     WorkThreadInterface * const pWorkThreadInterface,
-	EvoController       * const pEvoController,
-	StatusBar           * const pStatusBar
+	EvoController       * const pEvoController
 )
 {
     m_pWorkThreadInterface = pWorkThreadInterface;
 	m_pEvoController       = pEvoController;
-	m_pStatusBar           = pStatusBar;
 
     DEF_FUNC( PostPrevGeneration ); 
 
 	DEF_FUNC( PostDoEdit );
+    DEF_FUNC( PostSetSimulationMode );
     DEF_FUNC( PostSetBrushMode );
     DEF_FUNC( PostSetBrushShape );
     DEF_FUNC( PostSetBrushIntensity );
@@ -167,6 +175,7 @@ void DefineWin32WrapperFunctions
     DEF_ULONG_CONST( IDM_RUN );
     DEF_ULONG_CONST( IDM_STOP );
 
+    DEF_ULONG_CONST( tEvoCmd::setSimulationMode );
     DEF_ULONG_CONST( tEvoCmd::editSetBrushMode );
     DEF_ULONG_CONST( tEvoCmd::editSetBrushShape );
     DEF_ULONG_CONST( tEvoCmd::editSetBrushSize );

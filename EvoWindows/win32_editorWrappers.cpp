@@ -11,22 +11,10 @@
 #include "win32_editorWrappers.h"
 
 static EditorWindow const * m_pEditorWindow;
-
-class WrapEditorCommand : public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        int const iMsg = script.ScrReadInt( );
-        (void)m_pEditorWindow->SendClick( iMsg );
-    }
-};
-
+ 
 void DefineWin32EditorWrapperFunctions( EditorWindow const * const pEditorWindow )
 {
     m_pEditorWindow = pEditorWindow;
-
-    DEF_FUNC( EditorCommand );
 
     DEF_ULONG_CONST( IDCANCEL );
 

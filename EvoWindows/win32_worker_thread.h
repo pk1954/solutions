@@ -78,6 +78,7 @@ public:
         THREAD_MSG_SET_BRUSH_SHAPE,
         THREAD_MSG_SET_BRUSH_MODE,
         THREAD_MSG_PROCESS_SCRIPT,
+        THREAD_MSG_SET_SIMULATION_MODE,
         THREAD_MSG_RESET_MODEL,
         THREAD_MSG_STOP,
         THREAD_MSG_EXIT,
@@ -106,7 +107,8 @@ private:
 	void postMessage( UINT, WPARAM, LPARAM );
 	void dispatchMessage( UINT, WPARAM, LPARAM );
 	void editorCommand( UINT const,  WPARAM const );
-    void generationRun(  );
+	void updateEditControls( );
+    void generationRun( );
 
 	bool IsValidThreadMessage(UINT msg)
 	{

@@ -13,10 +13,10 @@
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCore.h"
 #include "pixelCoordinates.h"
-#include "win32_status.h"
 #include "win32_workThreadInterface.h"
 #include "win32_wrappers.h"
 #include "win32_histWrappers.h"
+#include "win32_util.h"
 #include "version.h"
 
 // scripting and tracing
@@ -61,7 +61,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
 
-	DefineWin32WrapperFunctions( m_pWorkThreadInterface, nullptr, nullptr );
+	DefineWin32WrapperFunctions( m_pWorkThreadInterface, nullptr );
 
     wstring wstrInputFile = L"Test_4.in";
 

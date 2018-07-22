@@ -102,12 +102,7 @@ void WorkThread::GenerationStep( )
 		else  // we are somewhere in history
 		{
 			m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded ); // Get a stored generation from history system
-			if ( m_pModelWork->EditorStateHasChanged( ) )          // editor state may be different from before
-			{                                                       
-				m_pModelWork->SaveEditorState( );
-				if (m_pEditorWindow != nullptr)                    // make sure that editor GUI 
-					m_pEditorWindow->UpdateEditControls( );        // reflects new state
-			}
+			updateEditControls( );                                 // make sure that editor GUI reflects new state
 		}
 
 		WorkMessage( THREAD_MSG_REFRESH, 0, 0 );                   // refresh all views
@@ -215,10 +210,11 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
 
     case THREAD_MSG_RESET_MODEL:
-    case THREAD_MSG_SET_BRUSH_INTENSITY:
+    case THREAD_MSG_SET_SIMULATION_MODE:
+    case THREAD_MSG_SET_BRUSH_MODE:
     case THREAD_MSG_SET_BRUSH_SIZE:
     case THREAD_MSG_SET_BRUSH_SHAPE:
-    case THREAD_MSG_SET_BRUSH_MODE:
+    case THREAD_MSG_SET_BRUSH_INTENSITY:
     case THREAD_MSG_DO_EDIT:
     case THREAD_MSG_SET_POI:
         editorCommand( uiMsg, wParam );
@@ -244,18 +240,22 @@ void WorkThread::editorCommand( UINT const uiMsg, WPARAM const wParam )
 		{ THREAD_MSG_SET_BRUSH_SIZE,      tEvoCmd::editSetBrushSize      },
 		{ THREAD_MSG_SET_BRUSH_SHAPE,     tEvoCmd::editSetBrushShape     },
 		{ THREAD_MSG_SET_BRUSH_MODE,      tEvoCmd::editSetBrushMode      },
+		{ THREAD_MSG_SET_SIMULATION_MODE, tEvoCmd::setSimulationMode     },
 		{ THREAD_MSG_DO_EDIT,             tEvoCmd::editDoEdit            },
 		{ THREAD_MSG_SET_POI,             tEvoCmd::editSetPOI            }
 	};
     
 	tEvoCmd cmd = mapTable.at( uiMsg );
     if ( m_pEvoHistorySys->EvoCreateEditorCommand( cmd, static_cast<unsigned short>( wParam ) ) )
-	{
-        m_pModelWork->SaveEditorState(  );
-	}
+		updateEditControls( );
+}
 
-	if ( (m_pEditorWindow != nullptr) && IsEditorCommand( cmd ) )
+void WorkThread::updateEditControls( )
+{
+	if ( m_pModelWork->EditorStateHasChanged( ) )  
 	{
-		 m_pEditorWindow->UpdateEditControls( );
+		m_pModelWork->SaveEditorState(  );
+		if (m_pEditorWindow != nullptr)              
+			m_pEditorWindow->UpdateEditControls( ); 
 	}
 }

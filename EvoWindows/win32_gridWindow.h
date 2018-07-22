@@ -15,7 +15,6 @@ class EvolutionCore;
 class EvolutionModelData;
 class ObserverInterface;
 class PerformanceWindow;
-class EditorWindow;
 class FocusPoint;
 
 class GridWindow : public BaseWindow
@@ -27,7 +26,6 @@ public:
     ( 
         HWND, 
         WorkThreadInterface * const,
-        EditorWindow        * const,
         FocusPoint          * const,
         DspOptWindow        * const,
         PerformanceWindow   * const, 
@@ -62,7 +60,6 @@ private:
     PixelCoordinates    * m_pPixelCoordinates;  // My own PixelCoordinates
     GridWindow          * m_pGWObserved;	 // Observed GridWindow (or nullptr)
     EvolutionModelData  * m_pModelWork;
-    EditorWindow        * m_pEditorWindow;
     PerformanceWindow   * m_pPerformanceWindow;
     FocusPoint          * m_pFocusPoint;
     ObserverInterface   * m_pObserverInterface;

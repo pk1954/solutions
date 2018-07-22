@@ -142,9 +142,9 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	m_pFocusPoint         ->Start( m_pEvoHistorySys, m_pModelWork );
 	m_pWorkThreadInterface->Start( m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
 	m_pDspOptWindow       ->Start( hWndApp, m_pWorkThreadInterface, m_pModelWork );
-    m_pEditorWindow       ->Start( hWndApp, m_pWorkThreadInterface, m_pModelWork, m_pDspOptWindow );
-    m_pMainGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
-    m_pMiniGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pEditorWindow, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
+    m_pEditorWindow       ->Start( hWndApp, m_pWorkThreadInterface, m_pModelWork, m_pDspOptWindow, m_pStatusBar );
+    m_pMainGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
+    m_pMiniGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
     m_pStatistics         ->Start( hWndApp, m_pModelWork );
     m_pCrsrWindow         ->Start( hWndApp, m_pFocusPoint,    m_pModelWork, m_pMainGridWindow );
     m_pPerfWindow         ->Start( hWndApp, 100 );
@@ -169,14 +169,14 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
 
-    DefineWin32WrapperFunctions( m_pWorkThreadInterface, m_pEvoController, m_pStatusBar );
+    DefineWin32WrapperFunctions( m_pWorkThreadInterface, m_pEvoController );
     DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 
     m_pWinManager->GetWindowConfiguration( );
 	m_pStatusBar->ClearStatusLine( );
 
     (void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
-	m_pEvoController->SetSimulationMode( tBoolOp::opFalse );
+	m_pEvoController->ProcessCommand( IDM_SET_SIMU_MODE, static_cast<LPARAM>(tBoolOp::opFalse) );
 
 //	Script::ProcessScript( L"std_script.in" );
 }

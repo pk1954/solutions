@@ -8,6 +8,7 @@
 class WorkThreadInterface;
 class DspOptWindow;
 class EvolutionModelData;
+class StatusBar;
 
 class EditorWindow : public BaseDialog
 {
@@ -15,16 +16,26 @@ public:
     EditorWindow( );
     ~EditorWindow( );
 
-    void Start( HWND const, WorkThreadInterface * const, EvolutionModelData * const, DspOptWindow * const );
+    void Start
+	( 
+		HWND const, 
+		WorkThreadInterface * const, 
+		EvolutionModelData  * const, 
+		DspOptWindow        * const, 
+		StatusBar           * const
+	);
 
-    void    UpdateEditControls( );
-    BOOL    IsInEditMode( )  const;
-    LRESULT SendClick( int ) const;
+    void UpdateEditControls( );
 
 private:
     virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
 
+    LRESULT sendClick    ( int )        const;
+	void    setBrushMode ( WORD const ) const;
+	void    setBrushShape( WORD const ) const;
+
 	EvolutionModelData  * m_pModelWork;
     WorkThreadInterface * m_pWorkThreadInterface;
     DspOptWindow        * m_pDspOptWindow;
+	StatusBar           * m_pStatusBar;
 };

@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "assert.h"
 #include "Resource.h"
-#include "EvolutionModelData.h"
 #include "EvoHistorySys.h"
+#include "EvolutionModelData.h"
 #include "win32_worker_thread.h"
 #include "win32_workThreadInterface.h"
 
@@ -116,6 +116,13 @@ void WorkThreadInterface::PostSetBrushMode( tBrushMode const mode )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetBrushModeName( mode ) << endl;
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_MODE, static_cast<WPARAM>( mode ), 0 );
+}
+
+void WorkThreadInterface::PostSetSimulationMode( tBoolOp const op )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << L" " << GetBoolOpName( op ) << endl;
+    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_SIMULATION_MODE, static_cast<WPARAM>( op ), 0 );
 }
 
 void WorkThreadInterface::PostSetBrushShape( tShape const shape )

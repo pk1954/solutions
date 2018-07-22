@@ -15,7 +15,8 @@
 
 #define IDM_ABOUT                               130
 #define IDM_EXIT                                131
-#define IDM_TOGGLE_EDIT_SIMU_MODE               132
+#define IDM_TOGGLE_SIMU_MODE                    132
+#define IDM_SET_SIMU_MODE                       133
 #define IDM_SET_POI                             144
 #define IDM_ESCAPE                              145
 #define IDD_TOGGLE_STRIP_MODE                   146

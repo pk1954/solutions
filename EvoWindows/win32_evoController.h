@@ -34,7 +34,6 @@ public:
 	);
 
 	void ProcessCommand( WPARAM const, LPARAM const );
-	void SetSimulationMode( tBoolOp const );
 
 private:
 	void scriptDialog( );

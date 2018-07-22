@@ -10,15 +10,16 @@ using namespace std;
 
 bool IsEditorCommand( tEvoCmd const cmd )
 {
-	return ( tEvoCmd::editSetBrushMode <= cmd ) && ( cmd <= tEvoCmd::editSetPOI );
+	return ( tEvoCmd::setSimulationMode <= cmd ) && ( cmd <= tEvoCmd::editSetPOI );
 }
 
 wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
 {
     static unordered_map < tEvoCmd, wchar_t const * const > mapNames =
     {
-        { tEvoCmd::nextGen,               L"NEXT "  },
-        { tEvoCmd::reset,                 L"RESET"  },
+        { tEvoCmd::nextGen,               L"NEXT"  },
+        { tEvoCmd::reset,                 L"RESET"  },  
+        { tEvoCmd::setSimulationMode,     L"SIMU"  },
         { tEvoCmd::editSetBrushMode,      L"MODE"   },
         { tEvoCmd::editSetBrushShape,     L"SHAPE"  },
         { tEvoCmd::editSetBrushSize,      L"SIZE"   },
@@ -36,6 +37,7 @@ wchar_t const * const GetEvoCommandName( tEvoCmd const cmd )
     {
         { tEvoCmd::nextGen,               L"tEvoCmd::nextGen" },
         { tEvoCmd::reset,                 L"tGenCmd::reset" },
+        { tEvoCmd::setSimulationMode,     L"tEvoCmd::setSimulationMode"  },
         { tEvoCmd::editSetBrushMode,      L"tEvoCmd::editSetBrushMode" },
         { tEvoCmd::editSetBrushShape,     L"tEvoCmd::editSetBrushShape" },
         { tEvoCmd::editSetBrushSize,      L"tEvoCmd::editSetBrushSize" },

@@ -20,8 +20,8 @@ void EditorState::Reset( )
 {
     m_brushMode = tBrushMode::move;
     m_brushSize = 17;
-    m_shapeBrush = tShape::Circle;
-    m_usBrushIntensity= 50;
+    m_brushShape = tShape::Circle;
+    m_brushIntensity= 50;
 }
 
 void EditorState::EditorDoEdit( Grid * const pGrid, GridPoint const gp )
@@ -42,22 +42,17 @@ void EditorState::EditorDoEdit( Grid * const pGrid, GridPoint const gp )
     case  tBrushMode::fertilizer:     lambda = [&](GridPoint const & gp, short const s) { pGrid->IncFertilizer  (gp, s); }; break;
 	};
 
-	switch ( m_shapeBrush )
+	switch ( m_brushShape )
     {
     case tShape::Circle:
-        GridCircle( gp, m_brushSize ).Apply2Cone( lambda, m_usBrushIntensity );
+        GridCircle( gp, m_brushSize ).Apply2Cone( lambda, m_brushIntensity );
         break;
 
     case tShape::Rect:
-		GridRect( gp, m_brushSize ).Apply2Rect( lambda, m_usBrushIntensity  );        
+		GridRect( gp, m_brushSize ).Apply2Rect( lambda, m_brushIntensity  );        
 		break;
 
     default:
         assert( false );
     }
-}
-
-void EditorState::SetBrushStrategy( tBrushMode const brushMode )
-{
-    m_brushMode = brushMode;
 }

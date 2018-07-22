@@ -105,7 +105,7 @@ HWND WINAPI StatusBar::createTrackBar( HMENU hMenu )
 
 void WINAPI StatusBar::createModeControl( )
 { 
-    (void)createButton( L"Switch to Simulation", (HMENU)IDM_TOGGLE_EDIT_SIMU_MODE ); 
+    (void)createButton( L"Switch to Simulation", (HMENU)IDM_TOGGLE_SIMU_MODE ); 
 } 
 
 void WINAPI StatusBar::createSizeControl( )
@@ -259,7 +259,7 @@ void StatusBar::SetSimuMode( BOOL const bSimuMode )
 
 	(void)::SendMessage
 	( 
-		GetDlgItem( IDM_TOGGLE_EDIT_SIMU_MODE  ), 
+		GetDlgItem( IDM_TOGGLE_SIMU_MODE  ), 
 		WM_SETTEXT,
 		0, 
 		(LPARAM)( szButtonText )

@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "boolOp.h"
 #include "EvolutionTypes.h"
 #include "GridRect.h"
 
@@ -28,6 +29,7 @@ public:
     virtual GRID_COORD     GetBrushSize             ( ) const = 0;
     virtual tBrushMode     GetBrushMode             ( ) const = 0;
 	virtual GridRect       GetSelection             ( ) const = 0;
+	virtual bool           GetSimulationMode        ( ) const = 0;
 	virtual bool           SelectionIsEmpty         ( ) const = 0;
 	virtual bool           SelectionIsNotEmpty      ( ) const = 0;
 
@@ -66,11 +68,12 @@ public:
     virtual bool      IsPoiId( IndId     const & ) const = 0;
     virtual GridPoint FindPOI( )                   const = 0;
     virtual bool      IsPoi  ( GridPoint const & ) const = 0;
-    virtual void      SetPoi ( GridPoint const & )       = 0;
-    virtual void      ClearPoi( )                        = 0;
 
 // manipulating functions
 
+    virtual void ClearPoi         ( )                        = 0;
+    virtual void SetPoi           ( GridPoint      const & ) = 0;
+    virtual void SetSimulationMode( tBoolOp        const   ) = 0;
 	virtual void SetSelection     ( GridRect       const & ) = 0;
     virtual void SetBrushShape    ( tShape         const   ) = 0;
     virtual void SetBrushSize     ( GRID_COORD     const   ) = 0;

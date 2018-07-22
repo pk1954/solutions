@@ -10,7 +10,6 @@
 #include "EvolutionModelData.h"
 #include "win32_util.h"
 #include "win32_draw.h"
-#include "win32_editor.h"
 #include "win32_focusPoint.h"
 #include "win32_crsrWindow.h"
 #include "win32_performanceWindow.h"
@@ -26,7 +25,6 @@ GridWindow::GridWindow( ) :
     m_pWorkThreadInterface( nullptr ),
     m_pPixelCoordinates( nullptr ),
     m_pGWObserved( nullptr ),
-    m_pEditorWindow( nullptr ),
     m_pPerformanceWindow( nullptr ),
     m_pDrawFrame( nullptr ),
     m_ptLast( PixelPoint( LONG_MIN, LONG_MIN ) ),
@@ -39,7 +37,6 @@ void GridWindow::Start
 ( 
     HWND                  const hWndParent,
     WorkThreadInterface * const pWorkThreadInterface,
-    EditorWindow        * const pEditorWindow,
     FocusPoint          * const pFocusPoint,
     DspOptWindow        * const pDspOptWindow,
     PerformanceWindow   * const pPerformanceWindow,
@@ -60,7 +57,6 @@ void GridWindow::Start
     assert( sFieldSize > 0 );
     m_pWorkThreadInterface = pWorkThreadInterface;
     m_pPerformanceWindow  = pPerformanceWindow;
-    m_pEditorWindow       = pEditorWindow;
     m_pFocusPoint         = pFocusPoint;
 	m_pModelWork          = pModel;
 
@@ -89,7 +85,6 @@ GridWindow::~GridWindow( )
 
 	m_pModelWork           = nullptr;
     m_pGWObserved          = nullptr;
-    m_pEditorWindow        = nullptr;
     m_pWorkThreadInterface = nullptr;
 }
 
@@ -178,7 +173,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     }
     else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
     {
-        if ( m_pEditorWindow->IsInEditMode() )
+        if ( m_pModelWork->GetSimulationMode() == false ) // if in edit mode
         {
             m_pWorkThreadInterface->PostDoEdit( m_pFocusPoint->GetGridPoint( ) );
         }
@@ -192,7 +187,6 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     else
     {
         m_ptLast.x = LONG_MIN;    // make m_ptLast invalid
-        // m_pWorkThread->PostRefresh( );  // +++++++++++++ EXPERIMENTAL +++++++++++++++++
         // no PostRefresh! It would cause repaint for every mouse move.
     }
 }

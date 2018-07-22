@@ -159,6 +159,7 @@
     <ClInclude Include="XArray.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BoolOp.cpp" />
     <ClCompile Include="kGridPoint.cpp" />
     <ClCompile Include="random.cpp" />
     <ClCompile Include="SmoothMove.cpp" />
