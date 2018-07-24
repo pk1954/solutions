@@ -59,7 +59,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	m_pEvoHistorySys->Start( m_pModelWork, m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionModelData::GetModelSize( ) ), false );
     DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
 
-	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
+	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, m_pModelWork, m_pEvoHistorySys );
 
 	DefineWin32WrapperFunctions( m_pWorkThreadInterface, nullptr );
 

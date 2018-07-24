@@ -137,6 +137,10 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             m_pWinManager->Show( wmId, tBoolOp::opToggle );
             break;
 
+        case IDM_REFRESH:
+			m_pWorkThreadInterface->PostRefresh( );
+            break;
+
         case IDD_TOGGLE_STRIP_MODE:
 			m_pGridWindow->ToggleStripMode();
 			m_pWorkThreadInterface->PostRefresh( );

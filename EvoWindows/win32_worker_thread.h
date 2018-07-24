@@ -19,7 +19,6 @@
 class PerformanceWindow;
 class EditorWindow;
 class RootWindow;
-class EvolutionCore;
 class EvolutionModelData;
 class WinManager;
 class DisplayAll;
@@ -30,8 +29,6 @@ class WorkThreadInterface;
 class WorkThread
 {
 public:
-	// Layer 7 : called by main thread
-	
 	explicit WorkThread( );
     ~WorkThread( );
 
@@ -40,7 +37,6 @@ public:
         PerformanceWindow   * const,
 		EditorWindow        * const,  
         DisplayAll   const  * const, 
-        EvolutionCore       * const,
         EvolutionModelData  * const,
 	    EvoHistorySys       * const,
 		WorkThreadInterface * const
@@ -92,7 +88,6 @@ private:
     DisplayAll    const * m_pDisplayGridFunctor;
     PerformanceWindow   * m_pPerformanceWindow;
     EditorWindow        * m_pEditorWindow;
-    EvolutionCore       * m_pEvolutionCore;
     EvoHistorySys       * m_pEvoHistorySys;
     EvolutionModelData  * m_pModelWork;
     HANDLE                m_hEventThreadStarter;

@@ -140,8 +140,8 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	m_pEvoHistWindow      ->Start( hWndApp, m_pFocusPoint, m_pEvoHistorySys, m_pWorkThreadInterface );
     m_pStatusBar          ->Start( hWndApp, m_pModelWork );
 	m_pFocusPoint         ->Start( m_pEvoHistorySys, m_pModelWork );
-	m_pWorkThreadInterface->Start( m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pModelWork, m_pEvoHistorySys );
-	m_pDspOptWindow       ->Start( hWndApp, m_pWorkThreadInterface, m_pModelWork );
+	m_pWorkThreadInterface->Start( m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pModelWork, m_pEvoHistorySys );
+	m_pDspOptWindow       ->Start( hWndApp, m_pModelWork );
     m_pEditorWindow       ->Start( hWndApp, m_pWorkThreadInterface, m_pModelWork, m_pDspOptWindow, m_pStatusBar );
     m_pMainGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
     m_pMiniGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
@@ -160,6 +160,8 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow,     TRUE, FALSE, 500 );
     m_pWinManager->AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_pMiniGridWindow, TRUE, FALSE, 300 );
     m_pWinManager->AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_pMainGridWindow, TRUE, FALSE, 100 );
+
+    m_pEvolutionCore->SetGridDisplayFunctor( & m_displayGridFunctor );   // display callback for core
 
     m_pMiniGridWindow->Observe( m_pMainGridWindow );
     m_pMiniGridWindow->Size( );

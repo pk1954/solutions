@@ -1,51 +1,70 @@
-PostRefresh
 PostSetSimulationMode tBoolOp::opFalse
 PostRefresh
+PostRefresh
+PostDoEdit   99  31 
+PostRefresh
 PostSetBrushMode tBrushMode::randomStrategy
-PostDoEdit   73  57 
+PostDoEdit   64  49 
 PostRefresh
-PostDoEdit   74  57 
+PostDoEdit   77  51 
 PostRefresh
-PostDoEdit   98  51 
+PostDoEdit   87  52 
 PostRefresh
-PostDoEdit  100  50 
+PostDoEdit   88  52 
 PostRefresh
-PostDoEdit  111  44 
+PostDoEdit  108  50 
 PostRefresh
-PostDoEdit  114  42 
-PostRefresh
-PostSetBrushMode tBrushMode::fertility
-PostRefresh
-PostRefresh
-PostDoEdit   96  57 
-PostRefresh
-PostDoEdit  100  52 
+PostDoEdit  115  49 
 PostRefresh
 PostSetBrushMode tBrushMode::mutRate
 PostRefresh
 PostRefresh
-PostDoEdit   70  59 
+PostDoEdit   69  33 
 PostRefresh
-PostDoEdit   70  59 
+PostDoEdit   70  34 
 PostRefresh
+PostDoEdit   71  34 
+PostRefresh
+PostDoEdit   90  46 
+PostRefresh
+PostDoEdit   99  49 
+PostRefresh
+PostDoEdit  100  49 
+PostRefresh
+PostDoEdit  100  49 
+PostRefresh
+PostSetBrushMode tBrushMode::fertility
+PostRefresh
+PostRefresh
+PostDoEdit   58  70 
+PostRefresh
+PostDoEdit   74  62 
+PostRefresh
+PostDoEdit   85  55 
+PostRefresh
+PostDoEdit   93  49 
+PostRefresh
+PostDoEdit   93  49 
+PostRefresh
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostUndo
+PostRedo
+PostRedo
+PostRedo
+PostRedo
+PostRedo
+PostRedo
+PostRedo
+PostRedo
+PostUndo
+PostUndo
 PostSetSimulationMode tBoolOp::opToggle
 PostSetBrushMode tBrushMode::move
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
-PostSetSimulationMode tBoolOp::opToggle
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
@@ -100,90 +119,127 @@ PostGenerationStep
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGotoGeneration  58
+PostGotoGeneration  58
+PostGotoGeneration  58
+PostGotoGeneration  63
+PostGotoGeneration  66
+PostGotoGeneration  69
+PostGotoGeneration  70
+PostGotoGeneration  71
+PostGotoGeneration  71
+PostGotoGeneration  71
+PostGotoGeneration  70
+PostGotoGeneration  67
+PostGotoGeneration  63
 PostGotoGeneration  62
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostUndo
+PostGotoGeneration  61
+PostGotoGeneration  60
+PostGotoGeneration  58
+PostGotoGeneration  56
+PostGotoGeneration  56
+PostGotoGeneration  54
+PostGotoGeneration  53
+PostGotoGeneration  53
+PostGotoGeneration  51
 PostGenerationStep
-PostUndo
+PostGotoGeneration  51
+PostGotoGeneration  49
 PostGenerationStep
 PostGenerationStep
-PostUndo
-PostPrevGeneration
+PostGotoGeneration  47
+PostGotoGeneration  46
 PostGenerationStep
-PostUndo
+PostGotoGeneration  46
+PostGenerationStep
+PostGenerationStep
+PostGotoGeneration  46
+PostGenerationStep
+PostGotoGeneration  45
+PostGotoGeneration  44
+PostGenerationStep
+PostGenerationStep
+PostGotoGeneration  43
+PostGotoGeneration  43
+PostGenerationStep
+PostGotoGeneration  43
+PostGotoGeneration  43
+PostGotoGeneration  41
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
+PostGotoGeneration  40
 PostGenerationStep
 PostGenerationStep
-PostUndo
+PostGotoGeneration  39
+PostGenerationStep
+PostGotoGeneration  39
 PostGenerationStep
 PostGenerationStep
-PostGenerationStep
-PostPrevGeneration
-PostGenerationStep
-PostGenerationStep
-PostPrevGeneration
-PostGenerationStep
-PostPrevGeneration
-PostPrevGeneration
+PostGotoGeneration  38
 PostGenerationStep
 PostGenerationStep
+PostGotoGeneration  38
+PostGotoGeneration  38
 PostGenerationStep
-PostRedo
-PostRedo
-PostRedo
-PostRedo
-PostGotoGeneration  15
+PostGotoGeneration  36
 PostGenerationStep
+PostGotoGeneration  36
 PostGenerationStep
-PostPrevGeneration
-PostGenerationStep
-PostPrevGeneration
-PostPrevGeneration
+PostGotoGeneration  34
+PostGotoGeneration  33
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
-PostRedo
-PostRedo
-PostRedo
-PostRedo
-PostUndo
+PostGotoGeneration  32
+PostGotoGeneration  32
+PostGotoGeneration  32
+PostGotoGeneration  31
+PostGotoGeneration  31
+PostGotoGeneration  31
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
-PostGotoGeneration  12
-PostGotoGeneration  12
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGotoGeneration  31
+PostGenerationStep
+PostRefresh
+PostGotoGeneration  31
+PostGenerationStep
+PostGenerationStep
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
@@ -191,16 +247,35 @@ PostGenerationStep
 PostGenerationStep
 PostGenerationStep
 PostRefresh
+PostGotoGeneration  31
 PostGenerationStep
 PostGenerationStep
-PostGotoGeneration  12
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGotoGeneration  18
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGotoGeneration  18
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
 PostGenerationStep
 PostRefresh
-PostUndo
+PostGotoGeneration  18
 PostGenerationStep
-PostGenerationStep
-PostGenerationStep
-PostGotoGeneration  12
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
@@ -208,12 +283,50 @@ PostGenerationStep
 PostGenerationStep
 PostGenerationStep
 PostRefresh
+PostGotoGeneration  40
 PostGenerationStep
-PostGotoGeneration  12
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGotoGeneration  24
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGotoGeneration  27
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
 PostGenerationStep
 PostGenerationStep
 PostRefresh
-PostUndo
+PostGotoGeneration  60
+PostGotoGeneration  60
+PostGotoGeneration  62
+PostGotoGeneration  62
+PostGotoGeneration  67
+PostGotoGeneration  71
+PostGotoGeneration  72
+PostGotoGeneration  72
+PostGotoGeneration  73
+PostGotoGeneration  73
+PostGotoGeneration  72
+PostGotoGeneration  72
+PostGotoGeneration  69
+PostGotoGeneration  68
+PostGotoGeneration  64
+PostGotoGeneration  60
+PostGotoGeneration  59
+PostGotoGeneration  59
+PostGotoGeneration  58
+PostGotoGeneration  58
+PostGotoGeneration  58
+PostGotoGeneration  23
+PostGenerationStep
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep

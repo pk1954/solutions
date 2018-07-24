@@ -10,7 +10,6 @@
 #include "EvolutionModelData.h"
 #include "win32_util.h"
 #include "win32_baseDialog.h"
-#include "win32_workThreadInterface.h"
 #include "win32_displayOptions.h"
 
 DspOptWindow::DspOptWindow(  )
@@ -25,14 +24,12 @@ DspOptWindow::~DspOptWindow( )
 void DspOptWindow::Start
 ( 
     HWND               const         hWndParent, 
-    WorkThreadInterface      * const pWorkThreadInterface,
     EvolutionModelData const * const pModel 
 )
 {
     StartBaseDialog( hWndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
-    m_pWorkThreadInterface = pWorkThreadInterface;
-	m_pModel               = pModel;
-	m_IntValueLambda       = nullptr;
+	m_pModel         = pModel;
+	m_IntValueLambda = nullptr;
 }
 
 void DspOptWindow::UpdateDspOptionsControls( tBrushMode const brushMode )
@@ -132,7 +129,7 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
             default:
                 break;
             }
-            m_pWorkThreadInterface->PostRefresh( );
+			Post2Application( WM_COMMAND, IDM_REFRESH, 0 );
         }
         break;
 

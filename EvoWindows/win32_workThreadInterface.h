@@ -9,7 +9,6 @@
 
 class PerformanceWindow;
 class EditorWindow;
-class EvolutionCore;
 class EvolutionModelData;
 class DisplayAll;
 class EvoHistorySys;
@@ -26,7 +25,6 @@ public:
         PerformanceWindow  * const,
 		EditorWindow       * const,  
         DisplayAll   const * const, 
-        EvolutionCore      * const,
         EvolutionModelData * const,
 	    EvoHistorySys      * const
     );

@@ -7,7 +7,6 @@
 #include <functional>
 
 class EvolutionModelData;
-class WorkThreadInterface;
 
 class DspOptWindow : public BaseDialog
 {
@@ -15,7 +14,7 @@ public:
     DspOptWindow( );
     ~DspOptWindow( );
 
-    void Start( HWND const, WorkThreadInterface * const, EvolutionModelData const * const );
+    void Start( HWND const, EvolutionModelData const * const );
 
 	int GetIntValue( GridPoint const & gp ) 
 	{ 
@@ -35,7 +34,6 @@ private:
 
 	virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
 
-	WorkThreadInterface      * m_pWorkThreadInterface;
     EvolutionModelData const * m_pModel; 
 
 	std::function<int( GridPoint const & )> m_IntValueLambda;

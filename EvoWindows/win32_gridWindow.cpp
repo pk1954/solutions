@@ -169,7 +169,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         {
             m_ptLast = ptCrsr;         // store current cursor pos
         }
-        m_pWorkThreadInterface->PostRefresh( );
+		Post2Application( WM_COMMAND, IDM_REFRESH, 0 );
     }
     else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
     {
@@ -182,7 +182,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
            moveGrid( ptCrsr - m_ptLast );
         }
         m_ptLast = ptCrsr;
-        m_pWorkThreadInterface->PostRefresh( );
+		Post2Application( WM_COMMAND, IDM_REFRESH, 0 );
     }
     else
     {
@@ -255,7 +255,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             }
         }
 
-        m_pWorkThreadInterface->PostRefresh( );
+		Post2Application( WM_COMMAND, IDM_REFRESH, 0 );
         return 1;  //  TODO clarify return code
 
     case WM_MOUSEWHEEL:
@@ -272,7 +272,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 		else
 		{
 			m_pModelWork->ResetSelection( );
-			m_pWorkThreadInterface->PostRefresh( );
+			Post2Application( WM_COMMAND, IDM_REFRESH, 0 );
 		}
         SetFocus( );
         return 1;

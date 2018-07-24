@@ -7,7 +7,6 @@
 #include "Resource.h"
 #include "EvolutionModelData.h"
 #include "EvoHistorySys.h"
-#include "EvolutionCore.h"
 #include "win32_script.h"
 #include "win32_performanceWindow.h"
 #include "win32_editor.h"
@@ -29,7 +28,6 @@ WorkThread::WorkThread( ) :
     m_pPerformanceWindow  ( nullptr ),
 	m_pEditorWindow       ( nullptr ),
     m_pDisplayGridFunctor ( nullptr ),
-    m_pEvolutionCore      ( nullptr ),
     m_pModelWork          ( nullptr ),
     m_pEvoHistorySys      ( nullptr ),
     m_bContinue           ( FALSE ),
@@ -41,7 +39,6 @@ void WorkThread::Start
     PerformanceWindow   * const pPerformanceWindow,
 	EditorWindow        * const pEditorWindow,
     DisplayAll    const * const pDisplayGridFunctor,
-    EvolutionCore       * const pEvolutionCore,
     EvolutionModelData  * const pModel,
     EvoHistorySys       * const pEvoHistorySys,
 	WorkThreadInterface * const pWorkThreadInterface
@@ -52,14 +49,11 @@ void WorkThread::Start
     m_pPerformanceWindow   = pPerformanceWindow;
 	m_pEditorWindow        = pEditorWindow;
     m_pDisplayGridFunctor  = pDisplayGridFunctor;
-    m_pEvolutionCore       = pEvolutionCore;
     m_pModelWork           = pModel;
 	m_pEvoHistorySys       = pEvoHistorySys;
 	m_pWorkThreadInterface = pWorkThreadInterface;
 
     (void)SetThreadAffinityMask( m_hThread, 0x0002 );
-
-    m_pEvolutionCore->SetGridDisplayFunctor( m_pDisplayGridFunctor );   // display callback for core
 }
 
 WorkThread::~WorkThread( )
@@ -181,7 +175,7 @@ static DWORD WINAPI WorkerThread( _In_ LPVOID lpParameter )
 
 void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 {
-    switch ( uiMsg )   // Layer 6
+    switch ( uiMsg )
     {
         
     case THREAD_MSG_PROCESS_SCRIPT:

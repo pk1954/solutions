@@ -122,7 +122,7 @@ HistCacheItem const * HistorySystemImpl::getCachedItem( GenerationCmd cmd )
 //                   to allow user interaction
 //                 - But actual history generation as alterered by at least 1
 
-void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )   // Layer 3 
+void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
 {
     HIST_GENERATION genActual = m_pHistCacheItemWork->GetHistGenCounter( );
 

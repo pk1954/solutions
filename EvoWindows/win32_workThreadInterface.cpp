@@ -24,7 +24,6 @@ void WorkThreadInterface::Start
     PerformanceWindow  * const pPerformanceWindow,
 	EditorWindow       * const pEditorWindow,
     DisplayAll   const * const pDisplayGridFunctor,
-    EvolutionCore      * const pEvolutionCore,
     EvolutionModelData * const pModel,
     EvoHistorySys      * const pEvoHistorySys
 
@@ -33,7 +32,7 @@ void WorkThreadInterface::Start
     m_pModelWork     = pModel;
 	m_pEvoHistorySys = pEvoHistorySys;
 	m_pWorkThread    = new WorkThread();
-	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pDisplayGridFunctor, pEvolutionCore, pModel, pEvoHistorySys, this );
+	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pDisplayGridFunctor, pModel, pEvoHistorySys, this );
 }
 
 WorkThreadInterface::~WorkThreadInterface( )
@@ -51,7 +50,7 @@ void WorkThreadInterface::postGotoGeneration( HIST_GENERATION const gen )
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_GOTO_GENERATION, 0, static_cast<LPARAM>(gen.GetLong()) );
 }
 
-// procedural interface of worker thread (Layer 7)
+// procedural interface of worker thread
 
 void WorkThreadInterface::DoProcessScript( wstring * const pwstr )
 {
