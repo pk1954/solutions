@@ -54,4 +54,3 @@ void EvoHistWindow::GotoGeneration( HIST_GENERATION const gen )
 { 
 	m_pWorkThreadInterface->PostGotoGeneration( gen ); 
 }
-

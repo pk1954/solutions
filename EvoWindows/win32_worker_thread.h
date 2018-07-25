@@ -51,12 +51,6 @@ public:
 		return m_genDemanded; 
 	}
 
-	void Stop()
-	{
-		m_genDemanded = m_pEvoHistorySys->GetCurrentGeneration( );
-		m_bContinue = FALSE;
-	}
-
     void GenerationStep( );
 
     void WorkMessage( UINT, WPARAM, LPARAM );

@@ -96,6 +96,16 @@ HIST_GENERATION HistWindow::getGenFromXpos( LPARAM const lParam ) const
     return genRes;
 }
 
+void HistWindow::gotoNewGeneration( LPARAM const lParam )
+{
+	HIST_GENERATION genSelNew = getGenFromXpos( lParam );
+	if (genSelNew != m_genSelected)     // can be triggered several times with same value
+	{
+		m_genSelected = genSelNew;
+		GotoGeneration( m_genSelected );
+	}
+}
+
 void HistWindow::dispGenerationWindow( ) const
 {
     int        const iGenDispWidth  = 50;
@@ -239,9 +249,8 @@ LRESULT HistWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
     case WM_MOUSEMOVE:
         (void)TrackMouseEvent( &m_trackStruct );
-        m_genSelected = getGenFromXpos( lParam );
         if ( wParam & MK_LBUTTON )                // Left mouse button
-            GotoGeneration( m_genSelected );
+			gotoNewGeneration( lParam );
         else
             Invalidate( FALSE );   // Redraw, do not erase background
         return 0;
@@ -253,8 +262,7 @@ LRESULT HistWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         return 0;
 
     case WM_LBUTTONDOWN:
-        m_genSelected = getGenFromXpos( lParam );
-        GotoGeneration( m_genSelected );
+		gotoNewGeneration( lParam );
         (void)SetCapture( );
         (void)SetFocus( );
         Invalidate( FALSE );   // Redraw, do not erase background

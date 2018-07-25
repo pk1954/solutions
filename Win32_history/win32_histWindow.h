@@ -49,6 +49,7 @@ private:
     void paintGeneration( HDC const, HIST_GENERATION const, COLORREF const ) const;
     void paintPixelPos  ( HDC const, long const )                            const;
 
+	void            gotoNewGeneration( LPARAM const );
     HIST_GENERATION getGenFromXpos( LPARAM const) const;
     void            dispGenerationWindow( )       const;
 

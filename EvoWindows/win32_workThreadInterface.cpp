@@ -121,6 +121,7 @@ void WorkThreadInterface::PostSetSimulationMode( tBoolOp const op )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetBoolOpName( op ) << endl;
+	PostStopComputation( );
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_SIMULATION_MODE, static_cast<WPARAM>( op ), 0 );
 }
 
@@ -135,7 +136,6 @@ void WorkThreadInterface::PostRunGenerations( bool const bFirst )
 {
     if ( m_bTrace )
         * m_pTraceStream << L"PostGenerationStep" << endl;
-
 	m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_GENERATION_RUN, 0, bFirst );
 }
 
@@ -156,7 +156,6 @@ void WorkThreadInterface::PostGenerationStep( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-
 	postGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration( ) + 1 );
 }
 
@@ -164,7 +163,6 @@ void WorkThreadInterface::PostRepeatGenerationStep( )
 {
     if ( m_bTrace )
         * m_pTraceStream << L"PostGenerationStep" << endl;
-
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_REPEAT_GENERATION_STEP, 0, 0 );
 }
 
@@ -185,7 +183,6 @@ void WorkThreadInterface::PostPrevGeneration( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-
 	if (m_pEvoHistorySys->GetCurrentGeneration() > 0)
 		postGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration() - 1 );
 	else
@@ -212,9 +209,9 @@ void WorkThreadInterface::PostGotoGeneration( HIST_GENERATION const gen )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << gen << endl;
-
 	postGotoGeneration( gen );
 }
+
 void WorkThreadInterface::PostStopComputation( )
 {
 	m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_STOP, 0, 0 );

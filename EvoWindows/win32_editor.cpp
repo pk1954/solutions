@@ -97,8 +97,8 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 
 	if ( bSimulationMode )
 		sendClick( IDM_MOVE );
-	else
-		Post2Application( WM_COMMAND, IDM_STOP, 0 );
+//	else
+//		Post2Application( WM_COMMAND, IDM_STOP, 0 );
 
 	Show( ! bSimulationMode );
 	Post2Application( WM_COMMAND, IDM_PERF_WINDOW, bSimulationMode );
