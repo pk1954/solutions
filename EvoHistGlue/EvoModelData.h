@@ -38,8 +38,6 @@ public:
     GridPoint FindGridPoint( IndId const & ) const;
 
 private:
-	void setSimulationMode( tBoolOp const );
-
 	EvolutionModelData * m_pEvolutionModelData;
     EvolutionCore      * m_pEvolutionCore;
 };

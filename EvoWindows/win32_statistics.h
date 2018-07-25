@@ -6,9 +6,6 @@
 #include "win32_textWindow.h"
 #include "win32_util.h"
 
-//lint -esym( 763, WorkThread )  redundant declaration
-//lint -esym( 763, GridRect )    redundant declaration
-
 class EvoHistorySys;
 class GridRect;
 class EvolutionModelData;

@@ -25,6 +25,7 @@ class EvolutionCore;
 class NextGenFunctor;
 class ScriptHook;
 class EvolutionModelData;
+class EvolutionModelData;
 class EvoHistorySys;
 class EvoController;
 

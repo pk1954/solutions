@@ -125,9 +125,6 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	m_pEvoHistorySys       = new EvoHistorySys( );
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
 
-    DefineModelWrapperFunctions( m_pModelWork );
-    DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
-
     SetMenu( hWndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
 	Util::SetApplicationTitle( hWndApp, IDS_APP_TITLE );
 
@@ -136,6 +133,9 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
 	m_pModelWork = EvolutionModelData::CreateModelData( );
 	
+    DefineModelWrapperFunctions( m_pModelWork );
+    DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
+
 	m_pEvoHistorySys      ->Start( m_pModelWork, m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionModelData::GetModelSize( ) ), true );
 	m_pEvoHistWindow      ->Start( hWndApp, m_pFocusPoint, m_pEvoHistorySys, m_pWorkThreadInterface );
     m_pStatusBar          ->Start( hWndApp, m_pModelWork );
@@ -146,7 +146,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pMainGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
     m_pMiniGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
     m_pStatistics         ->Start( hWndApp, m_pModelWork );
-    m_pCrsrWindow         ->Start( hWndApp, m_pFocusPoint,    m_pModelWork, m_pMainGridWindow );
+    m_pCrsrWindow         ->Start( hWndApp, m_pFocusPoint, m_pModelWork, m_pMainGridWindow );
     m_pPerfWindow         ->Start( hWndApp, 100 );
 	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow );
 

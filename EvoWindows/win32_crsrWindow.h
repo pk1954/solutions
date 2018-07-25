@@ -14,7 +14,13 @@ class CrsrWindow: public TextWindow
 public:
     CrsrWindow( );
 
-    void Start( HWND const, FocusPoint * const, EvolutionModelData const * const, GridWindow const * const );
+    void Start
+	( 
+		HWND                       const, 
+		FocusPoint               * const, 
+		EvolutionModelData const * const, 
+		GridWindow         const * const 
+	);
 
     virtual void DoPaint( );
 

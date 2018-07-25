@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "assert.h"
+#include "grid_model.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCore.h"
 #include "EvolutionCoreImpl.h"

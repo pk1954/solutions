@@ -52,7 +52,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
     EvolutionModelData  * m_pModelWork;
 
 	m_pModelWork = EvolutionModelData::CreateModelData( );
-    DefineModelWrapperFunctions( EvolutionModelData::CreateModelData( ) );
+    DefineModelWrapperFunctions( m_pModelWork );
 	
 	m_pEvoHistorySys       = new EvoHistorySys( );
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );

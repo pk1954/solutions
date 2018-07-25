@@ -12,6 +12,7 @@
 #include "gridCircle.h"
 #include "gplIterator.h"
 #include "DisplayFunctor.h"
+#include "EvolutionModelDataImpl.h"
 #include "EvolutionCoreImpl.h"
 
 using namespace std;
@@ -58,8 +59,9 @@ void EvolutionCoreImpl::Compute( EvolutionModelData * const pModel )
     pModelImpl->m_grid.IncGenNr( );
 }
 
-void EvolutionCoreImpl::dumpGridPointList( Grid const & grid ) const
+void EvolutionCoreImpl::DumpGridPointList( EvolutionModelData * const pModel ) const
 {
+	Grid const & grid = static_cast< EvolutionModelDataImpl * >( pModel )->m_grid;
     int iCount = 0;
     DUMP::Dump( L"#  +++ start dump of GridPoint list" );
 	DUMP::DumpNL( );

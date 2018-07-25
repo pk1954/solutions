@@ -3,9 +3,6 @@
 
 #pragma once
 
-#include <functional>
-#include "EvolutionTypes.h"
-
 class DisplayFunctor;
 class EvolutionModelData;
 
@@ -21,7 +18,7 @@ public:
 // manipulating functions
 
     virtual void SetGridDisplayFunctor( DisplayFunctor const * const ) = 0;
-    virtual void Compute   ( EvolutionModelData * const ) = 0;
+    virtual void Compute              ( EvolutionModelData   * const ) = 0;
 
     // static functions
     
