@@ -21,7 +21,7 @@ PixelPoint const RootWindow::GetCrsrPosFromLparam( LPARAM const lParam ) const
     return ptCrsr;
 }
 
-LRESULT RootWindow::Post2Application( UINT const message, WPARAM const wParam, LPARAM const lParam )
+LRESULT RootWindow::PostCommand2Application( WPARAM const wParam, LPARAM const lParam )
 {
-	return ::PostMessage( GetAncestor( m_hWnd, GA_ROOTOWNER), message, wParam, lParam );
+	return ::PostMessage( GetAncestor( m_hWnd, GA_ROOTOWNER), WM_COMMAND, wParam, lParam );
 }

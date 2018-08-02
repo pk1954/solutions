@@ -67,8 +67,8 @@ void D3dSystem::createDevice( HWND const hWnd, ULONG const ulModelWidth, ULONG c
 	m_d3d_presentationParameters.EnableAutoDepthStencil = FALSE;
 	m_d3d_presentationParameters.BackBufferFormat       = D3DFMT_X8R8G8B8;
 	m_d3d_presentationParameters.hDeviceWindow          = hWnd;
-	m_d3d_presentationParameters.Flags                  = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
-	m_d3d_presentationParameters.BackBufferCount        = 1; // D3DPRESENT_BACK_BUFFERS_MAX;
+	m_d3d_presentationParameters.Flags                  = 0; //D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
+	m_d3d_presentationParameters.BackBufferCount        = 1;
 	m_d3d_presentationParameters.BackBufferWidth        = static_cast<unsigned int>( pntSize.GetWidth ( ) );
 	m_d3d_presentationParameters.BackBufferHeight       = static_cast<unsigned int>( pntSize.GetHeight( ) );
 	m_d3d_presentationParameters.PresentationInterval   = D3DPRESENT_INTERVAL_IMMEDIATE;
@@ -78,7 +78,7 @@ void D3dSystem::createDevice( HWND const hWnd, ULONG const ulModelWidth, ULONG c
 		D3DADAPTER_DEFAULT, 
 		D3DDEVTYPE_HAL, 
 		hWnd,
-		D3DCREATE_FPU_PRESERVE | D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+		D3DCREATE_HARDWARE_VERTEXPROCESSING, 
 		& m_d3d_presentationParameters, 
 		& m_d3d_device
 	);

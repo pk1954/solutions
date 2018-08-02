@@ -8,6 +8,7 @@
 #include "config.h"
 #include "pixelCoordinates.h"
 #include "EvolutionModelData.h"
+#include "win32_performanceWindow.h"
 #include "win32_status.h"
 
 //lint -e1924    C-style casts
@@ -130,10 +131,10 @@ void WINAPI StatusBar::createSimulationControl( )
     createButton  ( L"   Stop   ", (HMENU)IDM_STOP ); 
     createButton  ( L"SingleStep", (HMENU)IDM_GENERATION ); 
     createButton  ( L"   Run    ", (HMENU)IDM_RUN ); 
-    createTrackBar(                (HMENU)IDM_SPEED_TRACKBAR ); 
+    createTrackBar(                (HMENU)IDM_SIMULATION_SPEED ); 
     createButton  ( L" MaxSpeed ", (HMENU)IDM_MAX_SPEED ); 
 
-    SetTrackBarRange( IDM_SPEED_TRACKBAR, SPEED_TRACKBAR_MIN, SPEED_TRACKBAR_MAX );
+    SetTrackBarRange( IDM_SIMULATION_SPEED, SPEED_TRACKBAR_MIN, SPEED_TRACKBAR_MAX );
 } 
 
 void WINAPI StatusBar::createEditorControl( )
@@ -193,7 +194,7 @@ void StatusBar::Start
     m_iClientHeight = GetHeight( ) - m_iBorder;
 
     m_iPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_iBorder + 10;
-    createModeControl ( );
+    createModeControl( );
 
     m_iPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_iBorder + 10;
     createSizeControl( );
@@ -208,6 +209,7 @@ void StatusBar::Start
 
     SetSizeTrackBar ( PixelCoordinates::DEFAULT_FIELD_SIZE );
     SetSpeedTrackBar( DEFAULT_DELAY );
+	PostCommand2Application( IDM_SIMULATION_SPEED, DEFAULT_DELAY );
 }
 
 void StatusBar::SetSizeTrackBar( short const sFieldSize  ) const 
@@ -221,7 +223,7 @@ void StatusBar::SetSpeedTrackBar( DWORD const dwDelay ) const
     USHORT const usPos = ( dwDelay == 0 )
                          ? 0
                          : value2Trackbar( dwDelay );
-    SetTrackBarPos( IDM_SPEED_TRACKBAR, SPEED_TRACKBAR_MAX - usPos );                
+    SetTrackBarPos( IDM_SIMULATION_SPEED, SPEED_TRACKBAR_MAX - usPos );                
 }
 
 static double trackBar2Value( USHORT usX ) // f(x) = 2 power (x/1000)
@@ -242,12 +244,12 @@ static USHORT value2Trackbar( long lX )  // f(x) = 1000 * log2(x)
 
 void StatusBar::SetSimuMode( BOOL const bSimuMode )
 {
-    ShowWindow( GetDlgItem( IDM_BACKWARDS      ), bSimuMode );
-    ShowWindow( GetDlgItem( IDM_STOP           ), bSimuMode );
-    ShowWindow( GetDlgItem( IDM_GENERATION     ), bSimuMode );
-    ShowWindow( GetDlgItem( IDM_RUN            ), bSimuMode );
-    ShowWindow( GetDlgItem( IDM_SPEED_TRACKBAR ), bSimuMode );
-    ShowWindow( GetDlgItem( IDM_MAX_SPEED      ), bSimuMode );
+    ShowWindow( GetDlgItem( IDM_BACKWARDS        ), bSimuMode );
+    ShowWindow( GetDlgItem( IDM_STOP             ), bSimuMode );
+    ShowWindow( GetDlgItem( IDM_GENERATION       ), bSimuMode );
+    ShowWindow( GetDlgItem( IDM_RUN              ), bSimuMode );
+    ShowWindow( GetDlgItem( IDM_SIMULATION_SPEED ), bSimuMode );
+    ShowWindow( GetDlgItem( IDM_MAX_SPEED        ), bSimuMode );
 
 	if ( Config::UseHistorySystem( ) )
 	{
@@ -302,4 +304,3 @@ INT_PTR StatusBar::UserProc( UINT const message, WPARAM const wParam, LPARAM con
 {
     return static_cast<INT_PTR>( FALSE );
 }
-

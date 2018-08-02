@@ -48,7 +48,7 @@ HWND BaseWindow::StartBaseWindow
     (
         szClass,
         nullptr,
-        dwWindowStyle | WS_VISIBLE,
+        dwWindowStyle,
         CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, 
         hWndParent,
         nullptr,

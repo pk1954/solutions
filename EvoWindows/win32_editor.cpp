@@ -89,7 +89,7 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 	SetTrackBarPos( IDM_EDIT_SIZE,      static_cast<long>( m_pModelWork->GetBrushSize( )) );
     SetTrackBarPos( IDM_EDIT_INTENSITY, static_cast<long>( m_pModelWork->GetBrushIntensity( ) + 10) );
 
-	// adjust window configuration
+	// adjust window configuration according to simulation or edit mode
 
 	bool bSimulationMode = m_pModelWork->GetSimulationMode( );
 
@@ -97,11 +97,9 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 
 	if ( bSimulationMode )
 		sendClick( IDM_MOVE );
-//	else
-//		Post2Application( WM_COMMAND, IDM_STOP, 0 );
 
 	Show( ! bSimulationMode );
-	Post2Application( WM_COMMAND, IDM_PERF_WINDOW, bSimulationMode );
+	PostCommand2Application( IDM_SHOW_PERF_WINDOW, static_cast<LPARAM>(bSimulationMode) );
 
 	// adjust display options window
 

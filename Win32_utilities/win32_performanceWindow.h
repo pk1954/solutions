@@ -37,6 +37,11 @@ public:
         m_dwDisplayTime = m_hrtimDisplay.Get( );
     };
 
+    DWORD GetPerfGenerationDelay(  )
+    {
+        return m_dwGenerationDelay;
+    };
+
     void SetPerfGenerationDelay( DWORD dwDelay )
     {
         m_dwGenerationDelay = dwDelay;

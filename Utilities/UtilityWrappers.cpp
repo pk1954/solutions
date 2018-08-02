@@ -27,4 +27,3 @@ void DefineUtilityWrapperFunctions( )
     DEF_ULONG_CONST( tBoolOp::opToggle );
     DEF_ULONG_CONST( tBoolOp::opNoChange );
 }
-

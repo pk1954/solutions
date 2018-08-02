@@ -40,6 +40,7 @@
 #define IDM_PERF_WINDOW                         (IDM_WINDOWS_BASE +  8)
 #define IDM_MAIN_WINDOW                         (IDM_WINDOWS_BASE +  9)
 #define IDM_STATUS_BAR                          (IDM_WINDOWS_BASE + 10)
+#define IDM_SHOW_PERF_WINDOW                    (IDM_WINDOWS_BASE + 11)
 
 #define IDM_ANIMALS                             450
 
@@ -72,7 +73,6 @@
 #define IDM_STOP                                (IDM_SIMULATION_MODE +  4)
 #define IDM_SIMULATION_SPEED                    (IDM_SIMULATION_MODE +  5)
 #define IDM_MAX_SPEED                           (IDM_SIMULATION_MODE +  6)
-#define IDM_SPEED_TRACKBAR                      (IDM_SIMULATION_MODE +  7)
 
 #define IDM_ZOOM_MODE                           850
 #define IDM_FIT_ZOOM                            (IDM_ZOOM_MODE + 1)

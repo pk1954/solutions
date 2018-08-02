@@ -7,6 +7,11 @@
 
 enum class tBoolOp { opTrue, opFalse, opToggle, opNoChange };
 
+inline tBoolOp BoolOp( bool const b )
+{
+	return b ? tBoolOp::opTrue : tBoolOp::opFalse;
+}
+
 inline bool ApplyOp2( bool const b, tBoolOp const op )
 {
     switch ( op )

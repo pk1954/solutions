@@ -131,7 +131,7 @@ void GridWindow::contextMenu( LPARAM lParam )
     UINT const uiID = (UINT)TrackPopupMenu( hPopupMenu, TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, pntPos.x, pntPos.y, 0, hwnd, nullptr ); 	// Result is send as WM_COMMAND to this window
 
 	if ( uiID != 0 )
-	    Post2Application( WM_COMMAND, uiID, lParam );
+	    PostCommand2Application( uiID, lParam );
 
 	(void)DestroyMenu( hPopupMenu );
 }
@@ -169,7 +169,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         {
             m_ptLast = ptCrsr;         // store current cursor pos
         }
-		Post2Application( WM_COMMAND, IDM_REFRESH, 0 );
+		PostCommand2Application( IDM_REFRESH, 0 );
     }
     else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
     {
@@ -182,7 +182,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
            moveGrid( ptCrsr - m_ptLast );
         }
         m_ptLast = ptCrsr;
-		Post2Application( WM_COMMAND, IDM_REFRESH, 0 );
+		PostCommand2Application( IDM_REFRESH, 0 );
     }
     else
     {
@@ -227,7 +227,7 @@ void GridWindow::mouseWheelAction( int iDelta )
 		sNewFieldSize = m_pPixelCoordinates->ComputeNewFieldSize( bDirection );
 	}
 
-	Post2Application( WM_COMMAND, IDM_SET_ZOOM, sNewFieldSize );
+	PostCommand2Application( IDM_SET_ZOOM, sNewFieldSize );
 }
 
 LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -246,16 +246,16 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             {
                 PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );
                 GridPoint  const gpCrsr = m_pPixelCoordinates->Pixel2GridPos( ptCrsr );
-				Post2Application( WM_COMMAND, wParam, Pack2LParam( gpCrsr ) );
+				PostCommand2Application( wParam, Pack2LParam( gpCrsr ) );
 			}
             break;
 
             default:
-                Post2Application( message, wParam, lParam ); // not handled here, delegate to application
+                PostCommand2Application( wParam, lParam ); // not handled here, delegate to application
             }
         }
 
-		Post2Application( WM_COMMAND, IDM_REFRESH, 0 );
+		PostCommand2Application( IDM_REFRESH, 0 );
         return 1;  //  TODO clarify return code
 
     case WM_MOUSEWHEEL:
@@ -272,7 +272,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 		else
 		{
 			m_pModelWork->ResetSelection( );
-			Post2Application( WM_COMMAND, IDM_REFRESH, 0 );
+			PostCommand2Application( IDM_REFRESH, 0 );
 		}
         SetFocus( );
         return 1;

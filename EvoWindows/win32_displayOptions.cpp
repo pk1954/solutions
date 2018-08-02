@@ -129,7 +129,7 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
             default:
                 break;
             }
-			Post2Application( WM_COMMAND, IDM_REFRESH, 0 );
+			PostCommand2Application( IDM_REFRESH, 0 );
         }
         break;
 

@@ -111,14 +111,14 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			m_pWorkThreadInterface->PostHistoryAction( wmId, UnpackFromLParam(lParam) );
 			break;
 
-		case IDM_SPEED_TRACKBAR:
+		case IDM_SIMULATION_SPEED:   // comes from trackbar in statusBar
 			if (m_pPerformanceWindow != nullptr)
 				m_pPerformanceWindow->SetPerfGenerationDelay( static_cast<DWORD>( lParam ) );
             break;
 
 		case IDM_MAX_SPEED:
 			if (m_pPerformanceWindow != nullptr)
-				m_pPerformanceWindow->SetPerfGenerationDelay( 0 );
+				m_pPerformanceWindow->SetPerfGenerationDelay( static_cast<DWORD>( lParam ) );
 			if (m_pStatusBar != nullptr)
 				m_pStatusBar->SetSpeedTrackBar( 0 );
             break;
@@ -133,8 +133,12 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
         case IDM_STAT_WINDOW:
         case IDM_HIST_WINDOW:
         case IDM_CRSR_WINDOW:
-        case IDM_PERF_WINDOW:
+		case IDM_PERF_WINDOW:
             m_pWinManager->Show( wmId, tBoolOp::opToggle );
+            break;
+
+		case IDM_SHOW_PERF_WINDOW:
+            m_pWinManager->Show( IDM_PERF_WINDOW, BoolOp(static_cast<bool>(lParam)) );
             break;
 
         case IDM_REFRESH:
@@ -155,11 +159,6 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			m_pGridWindow->Escape();
             break;
 
-        case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
-            (void)m_pGridWindow->SetZoom( static_cast<SHORT>(lParam) );
-			m_pWorkThreadInterface->PostRefresh( );
-            break;
-
         case IDM_FIT_ZOOM:
 			m_pGridWindow->Fit2Rect( );
 			m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
@@ -176,6 +175,11 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 		case IDM_SET_ZOOM:
             (void)m_pGridWindow->SetZoom( static_cast<SHORT>(lParam));
 			m_pStatusBar->SetSizeTrackBar( static_cast<SHORT>(lParam) );
+			m_pWorkThreadInterface->PostRefresh( );
+            break;
+
+        case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
+            (void)m_pGridWindow->SetZoom( static_cast<SHORT>(lParam) );
 			m_pWorkThreadInterface->PostRefresh( );
             break;
 
