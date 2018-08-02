@@ -15,7 +15,7 @@ class Neighborhood
 public:
     static void InitClass( int const );
 
-	static void Apply2All( GridPoint const gpCenter, const std::function<void( GridPoint const &)>& func ) 
+	static void Apply2All( GridPoint const gpCenter, GridPointFunc const & func ) 
 	{
 		for ( auto gp: (* m_pGridNeighbors)[ gpCenter.y ][ gpCenter.x ] )
 		{

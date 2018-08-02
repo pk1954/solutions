@@ -5,6 +5,7 @@
 
 #include "win32_baseDialog.h"
 #include <functional>
+#include "gridPoint.h"
 
 class EvolutionModelData;
 

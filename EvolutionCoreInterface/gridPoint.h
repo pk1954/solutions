@@ -6,11 +6,13 @@
 #include <iostream>
 #include <limits.h>
 #include <assert.h>
+#include <functional>
 #include "EvolutionTypes.h"
 
 class GridPoint
 {
 public:
+
     GridPoint( ) : x( GP_NULL.x ), y( GP_NULL.y ) {}
 	GridPoint( long long const _x, long long const _y )
 	{
@@ -96,5 +98,8 @@ inline bool      const Neighbors( GridPoint const & a, GridPoint const & b )
     GridPoint gpDiff( Abs(a - b) );
     return ((gpDiff.x <= 1) || (gpDiff.x == GridPoint::GRID_WIDTH-1)) && ((gpDiff.y <= 1) || (gpDiff.y == GridPoint::GRID_HEIGHT-1));
 }
+
+typedef std::function<void(GridPoint const &             )> GridPointFunc;
+typedef std::function<void(GridPoint const &, short const)> GridPointFuncShort;
 
 std::wostream & operator << ( std::wostream &, GridPoint const & );

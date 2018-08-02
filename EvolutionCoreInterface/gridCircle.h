@@ -15,7 +15,7 @@ public:
 
     ~GridCircle( ) { };
 
-	void Apply2Cone( std::function<void( GridPoint const &, short)>const &, short );
+	void Apply2Cone( GridPointFuncShort const &, short const );
 
     GridPoint const & GetCenter( ) const { return m_gpCenter; };
     GRID_COORD        GetRadius( ) const { return m_radius; };

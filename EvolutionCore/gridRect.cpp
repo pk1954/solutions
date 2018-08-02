@@ -57,7 +57,7 @@ void GridRect::ClipToGrid( )
         *this = GRID_RECT_EMPTY;
 }
  
-void GridRect::Apply2Rect(std::function<void(GridPoint const &, short const)> const &func, short const s) const
+void GridRect::Apply2Rect( GridPointFuncShort const & func, short const s ) const
 {
 	GridRect   const rectFull = GridRect::GetFullRect();
     GRID_COORD const gcLeft   = max( m_lLeft,   rectFull.GetLeft  () );
@@ -71,7 +71,7 @@ void GridRect::Apply2Rect(std::function<void(GridPoint const &, short const)> co
             func( gp, s );
 }
 
-void GridRect::Apply2Rect(std::function<void(GridPoint const &)> const &func) const
+void GridRect::Apply2Rect( GridPointFunc const & func ) const
 {
 	GridRect   const rectFull = GridRect::GetFullRect();
     GRID_COORD const gcLeft   = max( m_lLeft,   rectFull.GetLeft  () );
@@ -85,7 +85,7 @@ void GridRect::Apply2Rect(std::function<void(GridPoint const &)> const &func) co
             func( gp );
 }
 
-void Apply2Grid(std::function<void(GridPoint const &)> const &func)
+void Apply2Grid( GridPointFunc const & func )
 {
     GridRect::GetFullRect().Apply2Rect( func );
 }

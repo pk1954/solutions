@@ -13,7 +13,7 @@ using namespace std;
 
 void GridCircle::Apply2Cone
 ( 
-    function<void( GridPoint const &, short const)>const &func, 
+    GridPointFuncShort const & func, 
     short const sMaxIntensity  // between 0 and 100 (percent value)
 )
 {
