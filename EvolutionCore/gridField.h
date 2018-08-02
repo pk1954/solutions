@@ -46,45 +46,11 @@ public:
     void IncEnergy( short const sInc )          { m_Individual.IncEnergy( sInc ); }
     void SetLastAction( tAction const at )      { m_Individual.SetLastAction( at ); }
 
-    void CreateIndividual( IndId const id, EVO_GENERATION const genBirth, tStrategyId const s )
-    {
-        m_Individual.Create( id, genBirth, s );
-    }
-
-    void Donate( GridField & gfDonator, short sDonation )
-    {
-        gfDonator.DecEnergy( sDonation );
-        IncEnergy( sDonation );
-    }
-
-    void CloneIndividual( IndId const & id, EVO_GENERATION const genBirth, Random & random, GridField & gfParent )
-    {
-        m_Individual.Clone( id, genBirth, m_sMutatRate, random, gfParent.m_Individual );
-        long lDonationRate = static_cast<long>( gfParent.GetAllele( tGeneType::cloneDonation ) );
-        long lParentEnergy = static_cast<long>( gfParent.GetEnergy( ) );
-        long lDonation = ( lDonationRate * lParentEnergy ) / SHRT_MAX;
-        assert( lDonation <= SHRT_MAX );
-        Donate( gfParent, static_cast<short>( lDonation ) );
-    }
-
-    void BreedIndividual( IndId const & id, EVO_GENERATION const genBirth, Random & random, GridField & gfParentA, GridField & gfParentB )
-    {
-        m_Individual.Breed( id, genBirth, m_sMutatRate, random, gfParentA.m_Individual, gfParentB.m_Individual );
-        Donate( gfParentA, gfParentA.GetEnergy( ) / 3 );   //TODO:  Make variable, Gene?
-        Donate( gfParentB, gfParentB.GetEnergy( ) / 3 );   //TODO:  Make variable, Gene?
-    }
-
-    void MoveIndividual( GridField & gfSrc )
-    {
-        m_Individual = gfSrc.m_Individual;
-        gfSrc.m_Individual.ResetIndividual( );
-    }
-
-    static void Interact( GridField & gfA, GridField & gfB )
-    {
-        INTERACTION::Interact( gfA.m_Individual, gfB.m_Individual );
-        gfA.SetLastAction( tAction::interact );
-    };
+    void Donate( GridField &, short  );
+    void CreateIndividual( IndId const, EVO_GENERATION const, tStrategyId const );
+    void CloneIndividual ( IndId const, EVO_GENERATION const, Random &, GridField & );
+    void BreedIndividual ( IndId const, EVO_GENERATION const, Random &, GridField &, GridField & );
+    void MoveIndividual  ( GridField & );
 
     void SetMutationRate( short const );
     void SetFertilizer  ( short const );
@@ -100,9 +66,8 @@ public:
     void ReduceFertilizer( ) { m_sFertilizer /= 2; }
 
     GridPoint const & GetGridPoint( ) const { return m_gp; }
-
-    GridPoint const & GetSeniorGp( ) const { return m_gpSenior; }
-    GridPoint const & GetJuniorGp( ) const { return m_gpJunior; }
+    GridPoint const & GetSeniorGp ( ) const { return m_gpSenior; }
+    GridPoint const & GetJuniorGp ( ) const { return m_gpJunior; }
 
     bool IsOldest  ( ) const { return m_gpSenior.IsNull( ); }
     bool IsYoungest( ) const { return m_gpJunior.IsNull( ); }
@@ -110,11 +75,9 @@ public:
     void SetSeniorGp( GridPoint const & gp ) { m_gpSenior = gp; }
     void SetJuniorGp( GridPoint const & gp ) { m_gpJunior = gp; }
 
-    void CutConnections( )
-    {
-        m_gpJunior.Set2Null( );
-        m_gpSenior.Set2Null( );
-    }
+    void CutConnections( );
+
+    static void Interact( GridField &, GridField & );
 
 private:
     // data for management of neighborhood relation and list of living individuals
