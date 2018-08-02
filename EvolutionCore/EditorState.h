@@ -17,7 +17,7 @@ public:
 
 	void Reset( );
 
-    void EditorDoEdit( Grid * const, GridPoint const );
+    void EditorDoEdit( Grid &, GridPoint const );
 
 	void SetBrushStrategy ( tBrushMode     const mode  ) { m_brushMode      = mode;  }
     void SetBrushShape    ( tShape         const shape ) { m_brushShape     = shape; }

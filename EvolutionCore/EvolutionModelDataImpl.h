@@ -41,7 +41,7 @@ public:
     
 	virtual bool           GetSimulationMode( ) const { return m_editorState.GetSimulationMode( ); }
 
-    virtual void           ModelDoEdit    ( GridPoint  const gp ) { m_editorState.EditorDoEdit( & m_grid, gp ); }
+    virtual void           ModelDoEdit    ( GridPoint  const gp ) { m_editorState.EditorDoEdit( m_grid, gp ); }
 	virtual void           ResetSelection ( )                     { m_gridRectSelection.Reset(); };
 
     virtual EVO_GENERATION GetAge         ( GridPoint const & gp ) const { return m_grid.GetAge( gp ); }

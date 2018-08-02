@@ -14,7 +14,7 @@ using namespace std;
 void GridCircle::Apply2Cone
 ( 
     GridPointFuncShort const & func, 
-    short const sMaxIntensity  // between 0 and 100 (percent value)
+    short              const   sMaxIntensity  // between 0 and 100 (percent value)
 )
 {
     long const lRadius    = static_cast<long>(m_radius);
