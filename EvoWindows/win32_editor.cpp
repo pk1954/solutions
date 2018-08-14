@@ -89,8 +89,15 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 	SetTrackBarPos( IDM_EDIT_SIZE,      static_cast<long>( m_pModelWork->GetBrushSize( )) );
     SetTrackBarPos( IDM_EDIT_INTENSITY, static_cast<long>( m_pModelWork->GetBrushIntensity( ) + 10) );
 
-	// adjust window configuration according to simulation or edit mode
+	// adjust display options window
 
+	m_pDspOptWindow->UpdateDspOptionsControls( m_pModelWork->GetBrushMode () );
+
+	SetSimulationMode();
+}
+
+void EditorWindow::SetSimulationMode()  	// adjust window configuration according to simulation or edit mode
+{
 	bool bSimulationMode = m_pModelWork->GetSimulationMode( );
 
 	m_pStatusBar->SetSimuMode( bSimulationMode );
@@ -99,11 +106,8 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 		sendClick( IDM_MOVE );
 
 	Show( ! bSimulationMode );
+
 	PostCommand2Application( IDM_SHOW_PERF_WINDOW, static_cast<LPARAM>(bSimulationMode) );
-
-	// adjust display options window
-
-	m_pDspOptWindow->UpdateDspOptionsControls( m_pModelWork->GetBrushMode () );
 }
 
 void EditorWindow::setBrushMode( WORD const wId ) const

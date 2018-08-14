@@ -96,7 +96,6 @@ private:
 	void postMessage( UINT, WPARAM, LPARAM );
 	void dispatchMessage( UINT, WPARAM, LPARAM );
 	void editorCommand( UINT const,  WPARAM const );
-	void updateEditControls( );
     void generationRun( );
 
 	bool IsValidThreadMessage(UINT msg)

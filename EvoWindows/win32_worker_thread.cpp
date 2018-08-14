@@ -96,7 +96,12 @@ void WorkThread::GenerationStep( )
 		else  // we are somewhere in history
 		{
 			m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded ); // Get a stored generation from history system
-			updateEditControls( );                                 // make sure that editor GUI reflects new state
+			if ( m_pModelWork->EditorStateHasChanged( ) )          // make sure that editor GUI reflects new state
+			{
+				m_pModelWork->SaveEditorState(  );
+				if (m_pEditorWindow != nullptr)              
+					m_pEditorWindow->UpdateEditControls( ); 
+			}
 		}
 
 		WorkMessage( THREAD_MSG_REFRESH, 0, 0 );                   // refresh all views
@@ -240,16 +245,11 @@ void WorkThread::editorCommand( UINT const uiMsg, WPARAM const wParam )
 	};
     
 	tEvoCmd cmd = mapTable.at( uiMsg );
-    if ( m_pEvoHistorySys->EvoCreateEditorCommand( cmd, static_cast<unsigned short>( wParam ) ) )
-		updateEditControls( );
-}
-
-void WorkThread::updateEditControls( )
-{
-	if ( m_pModelWork->EditorStateHasChanged( ) )  
+	if (m_pEvoHistorySys->EvoCreateEditorCommand(cmd, static_cast<unsigned short>(wParam)))
 	{
-		m_pModelWork->SaveEditorState(  );
-		if (m_pEditorWindow != nullptr)              
-			m_pEditorWindow->UpdateEditControls( ); 
+		if (cmd == tEvoCmd::setSimulationMode)    // 
+		{
+			m_pEditorWindow->SetSimulationMode();
+		}
 	}
 }

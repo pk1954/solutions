@@ -96,6 +96,11 @@ public:
         Util::FastFill( hDC, GetClRect( ) );
     }
 
+	USHORT GetTrackBarPos( INT const idTrackbar ) const
+	{
+		return static_cast<USHORT>( SendDlgItemMessage( idTrackbar, TBM_GETPOS, 0, 0 ) ); 
+	}
+
 	void SetTrackBarPos( INT const idTrackbar, USHORT const usPos ) const
 	{
 		(void)SendDlgItemMessage
