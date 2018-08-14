@@ -131,7 +131,7 @@ void GridWindow::contextMenu( LPARAM lParam )
     UINT const uiID = (UINT)TrackPopupMenu( hPopupMenu, TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, pntPos.x, pntPos.y, 0, hwnd, nullptr ); 	// Result is send as WM_COMMAND to this window
 
 	if ( uiID != 0 )
-	    PostCommand2Application( uiID, lParam );
+	    SendMessage( WM_COMMAND, uiID, lParam );
 
 	(void)DestroyMenu( hPopupMenu );
 }

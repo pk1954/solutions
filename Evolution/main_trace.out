@@ -1,37 +1,32 @@
 PostSetSimulationMode tBoolOp::opFalse
 PostRefresh
 PostRefresh
-PostSetBrushSize 17
-PostSetBrushSize 21
-PostSetBrushSize 27
-PostSetBrushSize 31
-PostSetBrushSize 33
-PostSetBrushSize 34
-PostSetBrushSize 35
-PostSetBrushSize 27
-PostSetBrushSize 25
-PostSetBrushSize 19
-PostSetBrushSize 15
-PostSetBrushSize 14
-PostSetBrushSize 12
-PostSetBrushSize 10
-PostSetBrushSize 10
-PostSetBrushSize 10
-PostSetBrushIntensity 61
-PostSetBrushIntensity 59
-PostSetBrushIntensity 57
-PostSetBrushIntensity 34
-PostSetBrushIntensity 32
-PostSetBrushIntensity 13
-PostSetBrushIntensity 8
-PostSetBrushIntensity 5
-PostSetBrushIntensity 2
-PostSetBrushIntensity 10
-PostSetBrushIntensity 35
-PostSetBrushIntensity 47
-PostSetBrushIntensity 57
-PostSetBrushIntensity 58
-PostSetBrushIntensity 69
-PostSetBrushIntensity 70
-PostSetBrushIntensity 70
-PostSetBrushIntensity 70
+PostSetBrushMode tBrushMode::randomStrategy
+PostDoEdit  166  45 
+PostRefresh
+PostDoEdit  145  50 
+PostRefresh
+PostDoEdit  140  50 
+PostRefresh
+PostDoEdit  129  52 
+PostRefresh
+PostDoEdit   56  55 
+PostRefresh
+PostDoEdit   43  48 
+PostRefresh
+PostDoEdit   55  39 
+PostRefresh
+PostDoEdit   56  39 
+PostRefresh
+PostSetPOI   69  58 
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
+PostRefresh
