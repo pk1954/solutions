@@ -23,7 +23,7 @@ void EvoModelData::CopyModelData( ModelData const * const src )
     m_pEvolutionModelData->CopyEvolutionModelData( evoSrc->m_pEvolutionModelData );
 }
 
-void EvoModelData::OnAppCommand( unsigned short const usCmd, unsigned short const usParam  )
+void EvoModelData::OnAppCommand( int16_t const usCmd, int16_t const param  )
 {
 	tEvoCmd const evoCmd = static_cast<tEvoCmd>( usCmd );
 	switch ( evoCmd )
@@ -33,11 +33,11 @@ void EvoModelData::OnAppCommand( unsigned short const usCmd, unsigned short cons
 		break;
 
 	case tEvoCmd::editDoEdit:
-		m_pEvolutionModelData->ModelDoEdit( GridPoint( usParam )  );
+		m_pEvolutionModelData->ModelDoEdit( GridPoint( static_cast<unsigned short>( param ) )  );
 		break;
 
 	case tEvoCmd::editSetPOI:
-		m_pEvolutionModelData->SetPoi( GridPoint( usParam )  );
+		m_pEvolutionModelData->SetPoi( GridPoint( static_cast<unsigned short>( param )  )  );
 		break;
 
 	case tEvoCmd::reset:
@@ -45,24 +45,24 @@ void EvoModelData::OnAppCommand( unsigned short const usCmd, unsigned short cons
         break;
 
 	case tEvoCmd::setSimulationMode:
-        m_pEvolutionModelData->SetSimulationMode( static_cast<tBoolOp>( usParam ) );
+        m_pEvolutionModelData->SetSimulationMode( static_cast<tBoolOp>( param ) );
         break;
 
 	case tEvoCmd::editSetBrushMode:
-        m_pEvolutionModelData->SetBrushStrategy( static_cast<tBrushMode>( usParam ) );
+        m_pEvolutionModelData->SetBrushStrategy( static_cast<tBrushMode>( param ) );
         break;
 
     case tEvoCmd::editSetBrushShape:
-        m_pEvolutionModelData->SetBrushShape( static_cast<tShape>( usParam ) );
+        m_pEvolutionModelData->SetBrushShape( static_cast<tShape>( param ) );
 		break;
 
     case tEvoCmd::editSetBrushSize:
-		assert( usParam <= MAX_GRID_COORD );
-        m_pEvolutionModelData->SetBrushSize( static_cast<GRID_COORD>( usParam ) );
+		assert( param <= MAX_GRID_COORD );
+        m_pEvolutionModelData->SetBrushSize( static_cast<GRID_COORD>( param ) );
 		break;
 
     case tEvoCmd::editSetBrushIntensity:
-        m_pEvolutionModelData->SetBrushIntensity( usParam );
+        m_pEvolutionModelData->SetBrushIntensity( static_cast<short>( param ) );
 		break;
 
 	default:

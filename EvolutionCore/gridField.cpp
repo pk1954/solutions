@@ -35,85 +35,39 @@ void GridField::ResetGridField( short const sFood )
     m_Individual.ResetIndividual( );
 }
 
-void GridField::SetFertilizer( short const sNewVal )
-{
-    assert( sNewVal >= 0 );
-    m_sFertilizer = sNewVal;
-}
-
-void GridField::SetFoodStock( short const sNewVal )
-{
-    assert( sNewVal >= 0 );
-    m_sFoodStock = ( sNewVal > m_sFertility ) ? m_sFertility : sNewVal;
-}
-
-void GridField::SetFertility( short const sFertility )
-{ 
-    m_sFertility = ( sFertility > m_sMaxFood ) ? m_sMaxFood : sFertility;
-}
-
-void GridField::SetMutationRate( short const sMutRate ) 
-{ 
-    static short const sMax = 100;        // mutation rate is a percent value
-    m_sMutatRate = ( sMutRate > sMax ) ? sMax : sMutRate;
-}
-
 void GridField::IncFertilizer( short const sInc )
 {
     assert( static_cast<long>( m_sFertilizer ) + static_cast<long>( sInc ) <= static_cast<long>( SHRT_MAX ) );
     assert( static_cast<long>( m_sFertilizer ) + static_cast<long>( sInc ) >= static_cast<long>( SHRT_MIN ) );
-    short sNewVal = m_sFertilizer + sInc;
-    if ( sNewVal < 0 )
-        sNewVal = 0;
-    SetFertilizer( sNewVal );
+    SetFertilizer( m_sFertilizer + sInc );
 }
 
 void GridField::IncFoodStock( short const sInc )
 {
     assert( static_cast<long>( m_sFoodStock ) + static_cast<long>( sInc ) <= static_cast<long>( SHRT_MAX ) );
     assert( static_cast<long>( m_sFoodStock ) + static_cast<long>( sInc ) >= static_cast<long>( SHRT_MIN ) );
-    short sNewVal = m_sFoodStock + sInc;
-    if ( sNewVal < 0 )
-        sNewVal = 0;
-    SetFoodStock( sNewVal );
+    SetFoodStock( m_sFoodStock + sInc );
 }
 
 void GridField::DecFoodStock( short const sDec )
 { 
     assert( static_cast<long>(m_sFoodStock) <= static_cast<long>(SHRT_MAX) + static_cast<long>(sDec) );
     assert( static_cast<long>(m_sFoodStock) >= static_cast<long>(SHRT_MIN) + static_cast<long>(sDec) );
-    short sNewVal = m_sFoodStock - sDec;
-    if ( sNewVal < 0 )
-        sNewVal = 0;
-    SetFoodStock( sNewVal ); 
+    SetFoodStock( m_sFoodStock - sDec ); 
 }
 
 void GridField::IncFertility( short const sInc ) 
 { 
     assert( static_cast<long>(m_sFertility) + static_cast<long>(sInc) <= static_cast<long>(SHRT_MAX) );
     assert( static_cast<long>(m_sFertility) + static_cast<long>(sInc) >= static_cast<long>(SHRT_MIN) );
-    short const sNewValue     = m_sFertility + sInc;
-    short const sNewFertility = (sNewValue < 0) ? 0 : sNewValue;
-    SetFertility( sNewFertility ); 
+    SetFertility( m_sFertility + sInc ); 
 }
 
 void GridField::IncMutationRate( short const sInc ) 
 {
     assert( static_cast<long>(m_sMutatRate) + static_cast<long>(sInc) <= static_cast<long>(SHRT_MAX) );
     assert( static_cast<long>(m_sMutatRate) + static_cast<long>(sInc) >= static_cast<long>(SHRT_MIN) );
-    short const sNewValue = m_sMutatRate + sInc;
-    SetMutationRate( (sNewValue >= 0) ? sNewValue : 0 ); 
-}
-
-short GridField::GetConsumption( short const sWant ) const 
-{
-    short const sReserve = m_sFoodReserve;
-
-    return ( m_sFoodStock < sReserve ) 
-           ?  0 
-           : ( m_sFoodStock >= sReserve + sWant) 
-             ? sWant 
-             : (m_sFoodStock - sReserve);
+    SetMutationRate( m_sMutatRate + sInc ); 
 }
 
 void GridField::CreateIndividual( IndId const id, EVO_GENERATION const genBirth, tStrategyId const s )

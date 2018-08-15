@@ -57,7 +57,7 @@ void Grid::InitClass( )
 
 Grid::Grid( )
     : m_gpList( ),
-      m_uiFoodGrowth( 0 ),
+      m_lFoodGrowth( 0 ),
       m_random( ),
       m_idCounter( ),
       m_genEvo( 0L ),

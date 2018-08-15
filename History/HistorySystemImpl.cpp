@@ -103,9 +103,9 @@ void HistorySystemImpl::ClearHistory( HIST_GENERATION const genFirst )
 	}
 }
 
-void HistorySystemImpl::CreateAppCommand( short const sCmd, unsigned short const usParam )
+void HistorySystemImpl::CreateAppCommand( GenerationCmd::tGenCmd const sCmd, int16_t const param )
 {
-	GenerationCmd genCmd( sCmd, usParam );
+	GenerationCmd genCmd( sCmd, param );
     step2NextGeneration( genCmd );
     m_pHistCacheItemWork->SetGenerationCommand( genCmd );
     save2History( );

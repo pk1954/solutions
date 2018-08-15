@@ -245,7 +245,7 @@ void WorkThread::editorCommand( UINT const uiMsg, WPARAM const wParam )
 	};
     
 	tEvoCmd cmd = mapTable.at( uiMsg );
-	if (m_pEvoHistorySys->EvoCreateEditorCommand(cmd, static_cast<unsigned short>(wParam)))
+	if (m_pEvoHistorySys->EvoCreateEditorCommand(cmd, static_cast<int16_t>(wParam)))
 	{
 		if (cmd == tEvoCmd::setSimulationMode)    // 
 		{

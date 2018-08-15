@@ -32,7 +32,7 @@ public:
 
     ~EvoModelData( );
 
-    virtual void OnAppCommand( unsigned short const, unsigned short const );
+    virtual void OnAppCommand( int16_t const, int16_t const );
 	virtual void CopyModelData( ModelData const * const );
 
     GridPoint FindGridPoint( IndId const & ) const;

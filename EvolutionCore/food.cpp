@@ -30,46 +30,39 @@ void Grid::getBestNeighborSlots( Neighborhood & list )
     }
 }
 
-void ASSERT_PRODUCT( int const iA, int const iB )     
-{                                       
-    if ( iB > 0 )                      
-        assert( iA < INT_MAX / iB ); 
-}
-
 void Grid::FoodGrowth( )
 {
 	int m_iRate = m_iFoodGrowthRate;
 
-	m_uiFoodGrowth = 0;
+	m_lFoodGrowth = 0;
 
 	Apply2Grid
 	( 
     	[&](GridPoint const & gp)
 		{
-            GridField & rGF  = getGridField( gp );
-            int const   iMax = rGF.GetFertility() + rGF.GetFertilizer();
-            if ( iMax > 0 )
-            {
-                int       iFood  = rGF.GetFoodStock();               
-                int const iDelta = (iMax > iFood) ? (iMax - iFood) : 0; 
+            GridField & rGF = getGridField( gp );
 
-                #ifndef NDEBUG                      
-                    ASSERT_PRODUCT( iFood, m_iRate );
-                    ASSERT_PRODUCT( iFood * m_iRate, iDelta );
-                    ASSERT_PRODUCT( iMax, 100 );
-                #endif
+            int iFood  = rGF.GetFoodStock();               
+            int iLimit = rGF.GetFertility(); 
+			iLimit += rGF.GetFertilizer();
+			if ( iLimit > SHRT_MAX )
+				iLimit = SHRT_MAX;
 
-                int iGrowth = (iFood * m_iRate * iDelta) / (iMax * 100) + 1;
-                assert( iGrowth >= 0 );
-                if ( iFood + iGrowth > iMax )
-                    iGrowth = iMax - iFood;
-                iFood += iGrowth;
-                m_uiFoodGrowth += iGrowth;
-                assert( iFood <= SHRT_MAX );
-                assert( iFood >= SHRT_MIN );
-                rGF.SetFoodStock( static_cast<short>(iFood) );
-                rGF.ReduceFertilizer( );
+            int const iDelta = iLimit - iFood; 
+
+			if ( iDelta != 0 )
+			{
+				int iGrowth = (m_iRate * iDelta) / 100;
+				if ( iGrowth == 0 )
+					iGrowth = (iDelta > 0) ? 1 : -1;
+				iFood         += iGrowth;
+				m_lFoodGrowth += iGrowth;
+				assert( iFood <= SHRT_MAX );
+				assert( iFood >= SHRT_MIN );
+				rGF.SetFoodStock( static_cast<short>(iFood) );
 			}
+
+            rGF.ReduceFertilizer( );
 		}
 	);
 }

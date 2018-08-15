@@ -31,13 +31,13 @@ public:
 
     virtual void CopyEvolutionModelData( EvolutionModelData const * const );
 
-	virtual void           SetSelection     ( GridRect       const & rect ) { m_gridRectSelection = rect; }
+	virtual void           SetSelection     ( GridRect const & rect ) { m_gridRectSelection = rect; }
 
-    virtual void           SetBrushShape    ( tShape         const shape  ) { m_editorState.SetBrushShape    ( shape ); }
-    virtual void           SetBrushSize     ( GRID_COORD     const size   ) { m_editorState.SetBrushSize     ( size  ); }
-    virtual void           SetBrushIntensity( unsigned short const uiInt  ) { m_editorState.SetBrushIntensity( uiInt ); }
-    virtual void           SetBrushStrategy ( tBrushMode     const mode   ) { m_editorState.SetBrushStrategy ( mode  ); }
-    virtual void           SetSimulationMode( tBoolOp        const op     ) { m_editorState.SetSimulationMode( op    ); }
+    virtual void           SetBrushShape    ( tShape     const shape ) { m_editorState.SetBrushShape    ( shape ); }
+    virtual void           SetBrushSize     ( GRID_COORD const size  ) { m_editorState.SetBrushSize     ( size  ); }
+    virtual void           SetBrushIntensity( short      const sInt  ) { m_editorState.SetBrushIntensity( sInt  ); }
+    virtual void           SetBrushStrategy ( tBrushMode const mode  ) { m_editorState.SetBrushStrategy ( mode  ); }
+    virtual void           SetSimulationMode( tBoolOp    const op    ) { m_editorState.SetSimulationMode( op    ); }
     
 	virtual bool           GetSimulationMode( ) const { return m_editorState.GetSimulationMode( ); }
 

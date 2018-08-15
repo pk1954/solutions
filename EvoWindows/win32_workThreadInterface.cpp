@@ -96,11 +96,11 @@ void WorkThreadInterface::PostDoEdit( GridPoint const & gp )
     }
 }
 
-void WorkThreadInterface::PostSetBrushIntensity( INT const iValue )
+void WorkThreadInterface::PostSetBrushIntensity( LONG const lValue )
 {
     if ( m_bTrace )
-        * m_pTraceStream << __func__ << L" " << iValue << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_INTENSITY, iValue, 0 );
+        * m_pTraceStream << __func__ << L" " << lValue << endl;
+    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_INTENSITY, lValue, 0 );
 }
 
 void WorkThreadInterface::PostSetBrushSize( INT const iValue )

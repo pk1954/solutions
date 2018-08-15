@@ -5,7 +5,7 @@
 
 #include "GenerationCmd.h"
 
-enum class tEvoCmd : unsigned short // enumeration starts after last tGenCmd value
+enum class tEvoCmd : int16_t // enumeration starts after last tGenCmd value
 {
 	nextGen = GenerationCmd::FIRST_APP_CMD,
     reset,

@@ -15,16 +15,16 @@
 
 using namespace std;
 
-static double trackBar2Value( USHORT ); 
-static USHORT value2Trackbar( long );  
+static long trackBar2Value( LONG ); 
+static LONG value2Trackbar( long );  
 
 static DWORD const DEFAULT_DELAY =   50;
 static DWORD const MAX_DELAY     = 2048;    // in msecs
 
 static double const TRACKBAR_SCALING_FACTOR = 1000.0;
 
-static USHORT const SPEED_TRACKBAR_MIN = 0; 
-static USHORT const SPEED_TRACKBAR_MAX = value2Trackbar( MAX_DELAY ); 
+static LONG const SPEED_TRACKBAR_MIN = 0; 
+static LONG const SPEED_TRACKBAR_MAX = value2Trackbar( MAX_DELAY ); 
 
 static INT const STATUS_BAR_HEIGHT = 22;
 
@@ -33,10 +33,8 @@ static INT const STATUS_BAR_HEIGHT = 22;
 static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
 {
     StatusBar * const pStatusBar = (StatusBar *)dwRefData;
-
     switch ( uMsg )
     {
-
     case WM_PAINT:
 		pStatusBar->DisplayCurrentGeneration( pStatusBar->m_pModel->GetEvoGenerationNr( ) );
         break;
@@ -47,13 +45,12 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
 
     case WM_HSCROLL:
 		{
-			HWND   const hwndTrackBar = (HWND)lParam;
-			USHORT const usLogicalPos = static_cast<USHORT>(::SendMessage( hwndTrackBar, TBM_GETPOS, 0, 0 ));
-			INT    const iCtrlId      = GetDlgCtrlID( hwndTrackBar );
-			USHORT const usValue      = ( iCtrlId == IDM_ZOOM_TRACKBAR ) ? usLogicalPos : ( SPEED_TRACKBAR_MAX - usLogicalPos );
-			LPARAM const lparam       = static_cast<LPARAM>( trackBar2Value( usValue ) );
+			HWND const hwndTrackBar = (HWND)lParam;
+			INT  const iCtrlId      = GetDlgCtrlID( hwndTrackBar );
+			LONG const lLogicalPos  = pStatusBar->GetTrackBarPos( iCtrlId );
+			LONG const lValue       = ( iCtrlId == IDM_ZOOM_TRACKBAR ) ? lLogicalPos : ( SPEED_TRACKBAR_MAX - lLogicalPos );
 
-	        (void)SendMessage( GetParent( hWnd ), WM_COMMAND, iCtrlId, lparam  );
+	        (void)SendMessage( GetParent( hWnd ), WM_COMMAND, iCtrlId, trackBar2Value( lValue )  );
 		}
         return TRUE;
 
@@ -101,7 +98,7 @@ HWND WINAPI StatusBar::createButton( LPCTSTR lpWindowName, HMENU hMenu )
 
 HWND WINAPI StatusBar::createTrackBar( HMENU hMenu )
 { 
-    return createControl( TRACKBAR_CLASS, L"   Trackbar Control   ", 0, hMenu );
+    return createControl( TRACKBAR_CLASS, L"   Trackbar Control   ", WS_TABSTOP | WS_BORDER | TBS_NOTICKS, hMenu );
 };
 
 void WINAPI StatusBar::createModeControl( )
@@ -117,10 +114,10 @@ void WINAPI StatusBar::createSizeControl( )
     createButton       ( L" + ",     (HMENU)IDM_ZOOM_IN       ); 
     createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM      ); 
 
-    USHORT const usMinPos = value2Trackbar( PixelCoordinates::MINIMUM_FIELD_SIZE );
-    USHORT const usMaxPos = value2Trackbar( PixelCoordinates::MAXIMUM_FIELD_SIZE );
+    LONG const lMinPos = value2Trackbar( PixelCoordinates::MINIMUM_FIELD_SIZE );
+    LONG const lMaxPos = value2Trackbar( PixelCoordinates::MAXIMUM_FIELD_SIZE );
 
-    SetTrackBarRange( IDM_ZOOM_TRACKBAR, usMinPos, usMaxPos );  
+    SetTrackBarRange( IDM_ZOOM_TRACKBAR, lMinPos, lMaxPos );  
 } 
 
 void WINAPI StatusBar::createSimulationControl( )
@@ -214,32 +211,32 @@ void StatusBar::Start
 
 void StatusBar::SetSizeTrackBar( short const sFieldSize  ) const 
 { 
-    USHORT const usPos = value2Trackbar( sFieldSize );
-    SetTrackBarPos( IDM_ZOOM_TRACKBAR, usPos ); 
+    SetTrackBarPos( IDM_ZOOM_TRACKBAR, value2Trackbar( sFieldSize ) ); 
 }
 
 void StatusBar::SetSpeedTrackBar( DWORD const dwDelay ) const 
 { 
-    USHORT const usPos = ( dwDelay == 0 )
-                         ? 0
-                         : value2Trackbar( dwDelay );
-    SetTrackBarPos( IDM_SIMULATION_SPEED, SPEED_TRACKBAR_MAX - usPos );                
+    LONG const lPos = ( dwDelay == 0 )
+                      ? 0
+                      : value2Trackbar( dwDelay );
+    SetTrackBarPos( IDM_SIMULATION_SPEED, SPEED_TRACKBAR_MAX - lPos );                
 }
 
-static double trackBar2Value( USHORT usX ) // f(x) = 2 power (x/1000)
+static long trackBar2Value( LONG lX ) // f(x) = 2 power (x/1000)
 {
-    double const dX = static_cast<double>( usX ) / TRACKBAR_SCALING_FACTOR;
-    return pow( 2.0, dX );
+    double const dX = static_cast<double>( lX ) / TRACKBAR_SCALING_FACTOR;
+    double dRes = pow( 2.0, dX );
+	return static_cast<long>( dRes );
 }
 
-static USHORT value2Trackbar( long lX )  // f(x) = 1000 * log2(x)
+static LONG value2Trackbar( long lX )  // f(x) = 1000 * log2(x)
 {
     static double const dFactor = TRACKBAR_SCALING_FACTOR / log( 2 );
 
     assert( lX > 0 );
 	double const dX = static_cast<double>( lX );
     double const dY = log( dX ) * dFactor;
-    return static_cast<USHORT>( dY );
+    return static_cast<LONG>( dY );
 }
 
 void StatusBar::SetSimuMode( BOOL const bSimuMode )

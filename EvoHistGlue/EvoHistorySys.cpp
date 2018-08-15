@@ -92,7 +92,7 @@ HIST_GENERATION EvoHistorySys::GetLastGenOfIndividual ( IndId const & id ) const
     return id.IsDefined( ) ? m_pHistorySystem->FindLastGenerationWithProperty ( FindGridPointFunctor( id ) ) : -1; 
 }
 
-bool EvoHistorySys::EvoCreateEditorCommand( tEvoCmd cmd, unsigned short usParam ) 
+bool EvoHistorySys::EvoCreateEditorCommand( tEvoCmd cmd, int16_t param ) 
 { 
 	if ( 
 		  m_pHistorySystem->IsInHistoryMode( ) &&  // If in history mode,
@@ -102,7 +102,7 @@ bool EvoHistorySys::EvoCreateEditorCommand( tEvoCmd cmd, unsigned short usParam 
 		return false;  // user answered no, do not erase
 
 	m_pHistorySystem->ClearHistory( GetCurrentGeneration( ) );  // if in history mode: cut off future generations
-	m_pHistorySystem->CreateAppCommand( static_cast< short >( cmd ), usParam ); 
+	m_pHistorySystem->CreateAppCommand( static_cast< GenerationCmd::tGenCmd >( cmd ), param ); 
 	return true;
 }
 

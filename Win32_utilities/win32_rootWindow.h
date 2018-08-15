@@ -96,29 +96,36 @@ public:
         Util::FastFill( hDC, GetClRect( ) );
     }
 
-	USHORT GetTrackBarPos( INT const idTrackbar ) const
+	LONG GetTrackBarPos( INT const idTrackbar ) const
 	{
-		return static_cast<USHORT>( SendDlgItemMessage( idTrackbar, TBM_GETPOS, 0, 0 ) ); 
+		return static_cast<LONG>( SendDlgItemMessage( idTrackbar, TBM_GETPOS, 0, 0 ) ); 
 	}
 
-	void SetTrackBarPos( INT const idTrackbar, USHORT const usPos ) const
+	void SetTrackBarPos( INT const idTrackbar, LONG const lPos ) const
 	{
 		(void)SendDlgItemMessage
 		(   
 			idTrackbar, TBM_SETPOS, 
 			static_cast<WPARAM>( TRUE ),                   // redraw flag 
-			static_cast<LPARAM>( usPos )
+			static_cast<LPARAM>( lPos )
 		); 
 	}
 
-	void SetTrackBarRange( INT const idTrackbar, USHORT const usMin, USHORT const usMax ) const
+	void SetTrackBarRange( INT const idTrackbar, LONG const lMin, LONG const lMax ) const
 	{
 		(void)SendDlgItemMessage
 		( 
 			idTrackbar, 
-			TBM_SETRANGE, 
+			TBM_SETRANGEMIN, 
+			static_cast<WPARAM>( FALSE ),                   // redraw flag 
+			static_cast<LPARAM>( lMin ) 
+		);
+		(void)SendDlgItemMessage
+		( 
+			idTrackbar, 
+			TBM_SETRANGEMAX, 
 			static_cast<WPARAM>( TRUE ),                   // redraw flag 
-			static_cast<LPARAM>MAKELONG( usMin, usMax ) 
+			static_cast<LPARAM>( lMax ) 
 		);
 	}
 

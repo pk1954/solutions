@@ -75,8 +75,8 @@ public:
 
     EVO_GENERATION GetEvoGenerationNr( ) const { return m_genEvo; }
 
-    unsigned int GetAverageFoodGrowth    ( ) const { return m_uiFoodGrowth / GridPoint::GRID_AREA; }
-    int          GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
+    long GetAverageFoodGrowth    ( ) const { return m_lFoodGrowth / GridPoint::GRID_AREA; }
+    int  GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
 
     // static functions
 
@@ -118,7 +118,7 @@ private:
 
     GridField      m_aGF[ GridPoint::GRID_WIDTH ][ GridPoint::GRID_HEIGHT ];   // 20.000 * 156 byte = 3.120.000 byte
     GridPointList  m_gpList;                                               //                            10 byte
-    unsigned int   m_uiFoodGrowth;   // for statistics                     //                             8 byte 
+    long           m_lFoodGrowth;    // for statistics                     //                             8 byte 
     EVO_GENERATION m_genEvo;                                               //                             4 byte
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;

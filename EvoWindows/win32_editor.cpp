@@ -39,8 +39,8 @@ void EditorWindow::Start
     m_pDspOptWindow        = pDspOptWindow;
 	m_pStatusBar           = pStatusBar;
 
-    SetTrackBarRange( IDM_EDIT_SIZE,      1,  50 );
-    SetTrackBarRange( IDM_EDIT_INTENSITY, 1, 100 );
+    SetTrackBarRange( IDM_EDIT_SIZE,         1,  50 );
+    SetTrackBarRange( IDM_EDIT_INTENSITY, -100, 100 );
     UpdateEditControls( );
 }
 
@@ -87,7 +87,7 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 	CheckRadioButton( IDM_EDIT_CIRCLE, IDM_EDIT_RECTANGLE, mapShapeTable.at( m_pModelWork->GetBrushShape() ) );
 
 	SetTrackBarPos( IDM_EDIT_SIZE,      static_cast<long>( m_pModelWork->GetBrushSize( )) );
-    SetTrackBarPos( IDM_EDIT_INTENSITY, static_cast<long>( m_pModelWork->GetBrushIntensity( ) + 10) );
+    SetTrackBarPos( IDM_EDIT_INTENSITY, static_cast<long>( m_pModelWork->GetBrushIntensity( )) );
 
 	// adjust display options window
 
@@ -149,15 +149,16 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
     {
     case WM_HSCROLL:
 		{
-			HWND   hwndTrackBar = (HWND)lParam;
-			USHORT usLogicalPos = static_cast<USHORT>(::SendMessage( hwndTrackBar, TBM_GETPOS, 0, 0 ));
-			switch ( GetDlgCtrlID( hwndTrackBar ) )
+			HWND const hwndTrackBar = (HWND)lParam;
+			int  const iCtrlId      = GetDlgCtrlID( hwndTrackBar );
+			LONG const lLogicalPos  = GetTrackBarPos( iCtrlId );
+			switch ( iCtrlId )
 			{
 			case IDM_EDIT_INTENSITY:
-				m_pWorkThreadInterface->PostSetBrushIntensity( usLogicalPos );
+				m_pWorkThreadInterface->PostSetBrushIntensity( lLogicalPos );
 				break;
 			case IDM_EDIT_SIZE:
-				m_pWorkThreadInterface->PostSetBrushSize( usLogicalPos );
+				m_pWorkThreadInterface->PostSetBrushSize( lLogicalPos );
 				break;
 			default:
 				assert( false );

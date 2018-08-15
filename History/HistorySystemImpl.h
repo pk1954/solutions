@@ -48,7 +48,7 @@ public:
     virtual bool              AddHistorySlot( ) const;
     virtual void              ShutDownHistCacheSlot( short const );
 
-    virtual void              CreateAppCommand  ( short const, unsigned short const );
+    virtual void              CreateAppCommand  ( GenerationCmd::tGenCmd, int16_t const );
 	virtual void              ClearHistory      ( HIST_GENERATION const );
     virtual void              ApproachHistGen   ( HIST_GENERATION const );
 	virtual unsigned short    GetGenerationCmd  ( HIST_GENERATION const );

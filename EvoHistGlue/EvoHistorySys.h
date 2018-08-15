@@ -50,10 +50,10 @@ public:
 
 	void EvoCreateNextGenCommand( ) 
 	{ 
-		m_pHistorySystem->CreateAppCommand( static_cast< short >(tEvoCmd::nextGen), 0 );  
+		m_pHistorySystem->CreateAppCommand( static_cast<int16_t>(tEvoCmd::nextGen), 0 );  
 	}  
 
-	bool EvoCreateEditorCommand( tEvoCmd, unsigned short );
+	bool EvoCreateEditorCommand( tEvoCmd, int16_t );
 
 	bool IsEditorCommand( HIST_GENERATION const ) const;
 

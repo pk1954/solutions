@@ -71,17 +71,17 @@ public:
 
 // manipulating functions
 
-    virtual void ClearPoi         ( )                        = 0;
-    virtual void SetPoi           ( GridPoint      const & ) = 0;
-    virtual void SetSimulationMode( tBoolOp        const   ) = 0;
-	virtual void SetSelection     ( GridRect       const & ) = 0;
-    virtual void SetBrushShape    ( tShape         const   ) = 0;
-    virtual void SetBrushSize     ( GRID_COORD     const   ) = 0;
-    virtual void SetBrushIntensity( unsigned short const   ) = 0;
-    virtual void SetBrushStrategy ( tBrushMode     const   ) = 0;
-    virtual void ModelDoEdit      ( GridPoint      const   ) = 0;
-	virtual void ResetSelection   ( )                        = 0;
-    virtual void ResetAll         ( )                        = 0;
+    virtual void ClearPoi         ( )                    = 0;
+    virtual void SetPoi           ( GridPoint  const & ) = 0;
+    virtual void SetSimulationMode( tBoolOp    const   ) = 0;
+	virtual void SetSelection     ( GridRect   const & ) = 0;
+    virtual void SetBrushShape    ( tShape     const   ) = 0;
+    virtual void SetBrushSize     ( GRID_COORD const   ) = 0;
+    virtual void SetBrushIntensity( short      const   ) = 0;
+    virtual void SetBrushStrategy ( tBrushMode const   ) = 0;
+    virtual void ModelDoEdit      ( GridPoint  const   ) = 0;
+	virtual void ResetSelection   ( )                    = 0;
+    virtual void ResetAll         ( )                    = 0;
 
     // static functions
     

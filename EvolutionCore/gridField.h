@@ -8,6 +8,7 @@
 #include "gridPoint.h"
 #include "interaction.h"
 #include "individual.h"
+#include "util.h"
 
 class GridField
 {
@@ -18,11 +19,11 @@ public:
     void ResetGridField( short const );
 
     void  Fertilize     ( short const );
-    short GetConsumption( short const ) const;
+	short GetConsumption( short const sWant ) const { return ClipToMinMax( m_sFoodStock - m_sFoodReserve, 0, sWant ); }
 
-    short          GetMutationRate( ) const { return m_sMutatRate; }
-    short          GetFoodStock( )    const { return m_sFoodStock + m_sFertilizer; }
-    short          GetFertility( )    const { return m_sFertility; }
+    short          GetMutationRate( ) const { return m_sMutatRate;  }
+    short          GetFoodStock( )    const { return m_sFoodStock;  }
+    short          GetFertility( )    const { return m_sFertility;  }
     short          GetFertilizer( )   const { return m_sFertilizer; }
     EVO_GENERATION GetGenBirth( )     const { return m_Individual.GetGenBirth( ); }
     tAction        GetLastAction( )   const { return m_Individual.GetLastAction( ); }
@@ -52,10 +53,25 @@ public:
     void BreedIndividual ( IndId const, EVO_GENERATION const, Random &, GridField &, GridField & );
     void MoveIndividual  ( GridField & );
 
-    void SetMutationRate( short const );
-    void SetFertilizer  ( short const );
-    void SetFoodStock   ( short const );
-    void SetFertility   ( short const );
+	void SetFertilizer( short const sNewVal )
+	{
+		m_sFertilizer = ( sNewVal < 0 ) ? 0 : sNewVal;
+	}
+
+	void SetFoodStock( short const sNewVal )
+	{
+	    m_sFoodStock = ( sNewVal < 0 ) ? 0 : sNewVal;
+	}
+
+	void SetFertility( short const sFertility )
+	{ 
+		m_sFertility = ( sFertility < 0 ) ? 0 : sFertility;
+	}
+
+	void SetMutationRate( short const sMutRate ) 
+	{ 
+		m_sMutatRate = ClipToMinMax( sMutRate, 0, 100 );  // mutation rate is a percent value
+	}
 
     void IncFertilizer  ( short const );
     void IncFoodStock   ( short const );

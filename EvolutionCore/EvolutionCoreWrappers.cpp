@@ -109,8 +109,8 @@ class WrapSetBrushIntensity : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        unsigned short usIntensity = script.ScrReadUshort( );
-        m_pModelWork->SetBrushIntensity( usIntensity );
+        short sIntensity = script.ScrReadShort( );
+        m_pModelWork->SetBrushIntensity( sIntensity );
     }
 };
 

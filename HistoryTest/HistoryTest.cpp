@@ -25,7 +25,7 @@ public:
         * this = * static_cast< HistTestModelData const * const >( src );
     }
 
-    virtual void OnAppCommand( unsigned short const usCmd, unsigned short const sParam )
+    virtual void OnAppCommand( int16_t const usCmd, int16_t const sParam )
     {
 //		wcout << endl << L"OnAppCommand( " << usCmd << L", " << sParam << L" )" << endl;
 	}

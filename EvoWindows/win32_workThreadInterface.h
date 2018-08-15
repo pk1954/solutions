@@ -34,7 +34,7 @@ public:
     void PostSetSimulationMode( tBoolOp const );
     void PostSetBrushMode( tBrushMode const );
     void PostSetBrushShape( tShape );
-    void PostSetBrushIntensity( INT const );
+    void PostSetBrushIntensity( LONG const );
     void PostSetBrushSize( INT const );
     void PostRefresh( );
     void PostReset( );
