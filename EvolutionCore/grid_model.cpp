@@ -316,9 +316,9 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
 
 void Grid::EditSetStrategy
 ( 
-    GridPoint     const & gp, 
-    unsigned int  const uiIntensity, // percent value
-    tStrategyId   const s
+    GridPoint    const & gp, 
+    unsigned int const uiIntensity, // percent value
+    tStrategyId  const s
 )
 {
     unsigned int const uiRand  = NextRandomNumber( );

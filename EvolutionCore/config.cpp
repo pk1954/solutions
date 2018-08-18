@@ -8,6 +8,7 @@
 #include "limits.h"
 #include "string.h"
 #include <iomanip>
+#include "util.h"
 #include "config.h"
 #include "symtab.h"
 
@@ -86,10 +87,7 @@ long Config::GetConfigValue( tId const id )
 
 short Config::GetConfigValueShort( tId const id )
 {
-    long const lValue = GetConfigValue( id );
-    assert( lValue >= SHRT_MIN );
-    assert( lValue <= SHRT_MAX );
-    return static_cast<short>( lValue );
+    return CastToShort( GetConfigValue( id ) );
 }
 
 tBoolOp Config::GetConfigValueBoolOp( tId const id )

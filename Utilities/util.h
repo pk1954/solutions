@@ -3,13 +3,29 @@
 
 #pragma once
 
+#include <assert.h>
 #include <string>
+#include <limits>
 #include <streambuf>
+#include "debug.h"
 
 using namespace std;
 
 extern void UpperCase( wstring & );
 
-extern short ClipToMinMax(short, short const, short const);
-extern short ClipToMin(short, short const);
-extern short ClipToMax(short, short const);
+template<typename T>
+T ClipToMinMax(T const val, T const min, T const max)
+{
+	return ( val > max ) 
+		   ? max 
+		   : (val < min) 
+		     ? min 
+		     : val;
+}
+
+template<typename T>
+short CastToShort(T const value ) 
+{
+	ASSERT_SHORT( value );
+	return static_cast<short>( value );
+}

@@ -19,7 +19,11 @@ public:
     void ResetGridField( short const );
 
     void  Fertilize     ( short const );
-	short GetConsumption( short const sWant ) const { return ClipToMinMax( m_sFoodStock - m_sFoodReserve, 0, sWant ); }
+	short const GetConsumption( short const sWant ) const 
+	{
+		short const sAvailable = m_sFoodStock - m_sFoodReserve;
+		return ClipToMinMax( sAvailable, (short const) 0, sWant ); 
+	}
 
     short          GetMutationRate( ) const { return m_sMutatRate;  }
     short          GetFoodStock( )    const { return m_sFoodStock;  }
@@ -70,7 +74,7 @@ public:
 
 	void SetMutationRate( short const sMutRate ) 
 	{ 
-		m_sMutatRate = ClipToMinMax( sMutRate, 0, 100 );  // mutation rate is a percent value
+		m_sMutatRate = ClipToMinMax( sMutRate, (short)0, (short)100 );  // mutation rate is a percent value
 	}
 
     void IncFertilizer  ( short const );

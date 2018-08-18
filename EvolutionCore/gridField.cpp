@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <iomanip>
 #include <iomanip>
+#include <algorithm>  // min/max templates
 #include "config.h"
 #include "gridField.h"
 
@@ -37,36 +38,31 @@ void GridField::ResetGridField( short const sFood )
 
 void GridField::IncFertilizer( short const sInc )
 {
-    assert( static_cast<long>( m_sFertilizer ) + static_cast<long>( sInc ) <= static_cast<long>( SHRT_MAX ) );
-    assert( static_cast<long>( m_sFertilizer ) + static_cast<long>( sInc ) >= static_cast<long>( SHRT_MIN ) );
+	ASSERT_SHORT_SUM( m_sFertilizer, sInc );
     SetFertilizer( m_sFertilizer + sInc );
 }
 
 void GridField::IncFoodStock( short const sInc )
 {
-    assert( static_cast<long>( m_sFoodStock ) + static_cast<long>( sInc ) <= static_cast<long>( SHRT_MAX ) );
-    assert( static_cast<long>( m_sFoodStock ) + static_cast<long>( sInc ) >= static_cast<long>( SHRT_MIN ) );
+	ASSERT_SHORT_SUM( m_sFoodStock, sInc );
     SetFoodStock( m_sFoodStock + sInc );
 }
 
 void GridField::DecFoodStock( short const sDec )
 { 
-    assert( static_cast<long>(m_sFoodStock) <= static_cast<long>(SHRT_MAX) + static_cast<long>(sDec) );
-    assert( static_cast<long>(m_sFoodStock) >= static_cast<long>(SHRT_MIN) + static_cast<long>(sDec) );
+	ASSERT_SHORT_SUM( m_sFoodStock, - sDec );
     SetFoodStock( m_sFoodStock - sDec ); 
 }
 
 void GridField::IncFertility( short const sInc ) 
 { 
-    assert( static_cast<long>(m_sFertility) + static_cast<long>(sInc) <= static_cast<long>(SHRT_MAX) );
-    assert( static_cast<long>(m_sFertility) + static_cast<long>(sInc) >= static_cast<long>(SHRT_MIN) );
+	ASSERT_SHORT_SUM( m_sFertility, sInc );
     SetFertility( m_sFertility + sInc ); 
 }
 
 void GridField::IncMutationRate( short const sInc ) 
 {
-    assert( static_cast<long>(m_sMutatRate) + static_cast<long>(sInc) <= static_cast<long>(SHRT_MAX) );
-    assert( static_cast<long>(m_sMutatRate) + static_cast<long>(sInc) >= static_cast<long>(SHRT_MIN) );
+	ASSERT_SHORT_SUM( m_sMutatRate, sInc );
     SetMutationRate( m_sMutatRate + sInc ); 
 }
 
@@ -83,13 +79,10 @@ void GridField::Donate( GridField & gfDonator, short sDonation )
 
 void GridField::Fertilize( short const sInvest )
 {
-    long const lYield = (sInvest * m_iFertilizerYield ) / 100;
     assert( sInvest > 0 );
-    assert( m_iMaxFertilizer <= SHRT_MAX );
-    long lNewValue = m_sFertilizer + lYield;
-    if ( lNewValue > m_iMaxFertilizer )
-        lNewValue = m_iMaxFertilizer;
-    SetFertilizer( static_cast<short>( lNewValue ) );
+    int const iYield    = (sInvest * m_iFertilizerYield ) / 100;
+    int const iNewValue = min( m_sFertilizer + iYield, m_iMaxFertilizer ); 
+    SetFertilizer( CastToShort( iNewValue ) );
 }
 
 void GridField::CloneIndividual( IndId const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParent )
@@ -98,8 +91,7 @@ void GridField::CloneIndividual( IndId const id, EVO_GENERATION const genBirth, 
     long lDonationRate = static_cast<long>( gfParent.GetAllele( tGeneType::cloneDonation ) );
     long lParentEnergy = static_cast<long>( gfParent.GetEnergy( ) );
     long lDonation = ( lDonationRate * lParentEnergy ) / SHRT_MAX;
-    assert( lDonation <= SHRT_MAX );
-    Donate( gfParent, static_cast<short>( lDonation ) );
+    Donate( gfParent, CastToShort( lDonation ) );
 }
 
 void GridField::BreedIndividual( IndId const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParentA, GridField & gfParentB )

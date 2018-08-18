@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <iostream>
 #include <algorithm>  // min/max templates
+#include "util.h"
 #include "grid_model.h"
 #include "gridPoint.h"
 #include "gridRect.h"
@@ -30,7 +31,7 @@ void GridCircle::Apply2Cone
             long      const lDistSquare = lx * lx + ly * ly;
             if ( lDistSquare <= lRadSquare )
             { 
-                short const sReduce = static_cast<short>(( sMaxIntensity * lDistSquare) / lRadSquare);  
+                short const sReduce = CastToShort(( sMaxIntensity * lDistSquare) / lRadSquare);  
                 func( gp, sMaxIntensity - sReduce );
             }
 		}

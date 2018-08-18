@@ -45,8 +45,7 @@ void Grid::FoodGrowth( )
             int iFood  = rGF.GetFoodStock();               
             int iLimit = rGF.GetFertility(); 
 			iLimit += rGF.GetFertilizer();
-			if ( iLimit > SHRT_MAX )
-				iLimit = SHRT_MAX;
+			min( iLimit, SHRT_MAX );
 
             int const iDelta = iLimit - iFood; 
 
@@ -57,9 +56,7 @@ void Grid::FoodGrowth( )
 					iGrowth = (iDelta > 0) ? 1 : -1;
 				iFood         += iGrowth;
 				m_lFoodGrowth += iGrowth;
-				assert( iFood <= SHRT_MAX );
-				assert( iFood >= SHRT_MIN );
-				rGF.SetFoodStock( static_cast<short>(iFood) );
+				rGF.SetFoodStock( CastToShort(iFood) );
 			}
 
             rGF.ReduceFertilizer( );

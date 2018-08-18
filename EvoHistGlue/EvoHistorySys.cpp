@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream> 
+#include <limits.h>
 #include "config.h"
 #include "HistAllocThread.h"
 #include "HistoryGeneration.h"
@@ -33,8 +34,7 @@ void EvoHistorySys::Start
     long const lHistEntriesDemanded = Config::GetConfigValue( Config::tId::nrOfHistorySlots );
 	long const lHistEntries         = min( lHistEntriesDemanded, lMaxHistSize * 80 / 100 );  // use only 80% of available memory
 	
-	assert( lHistEntries < SHRT_MAX );
-    short sNrOfSlots = static_cast<short>( lHistEntries );
+    short sNrOfSlots = CastToShort( lHistEntries );
 
     HIST_GENERATION const genMaxNrOfGens = Config::GetConfigValue( Config::tId::maxGeneration );
 

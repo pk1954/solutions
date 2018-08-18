@@ -7,6 +7,7 @@
 #include <limits.h>
 #include <assert.h>
 #include <functional>
+#include "util.h"
 #include "EvolutionTypes.h"
 
 class GridPoint
@@ -16,10 +17,8 @@ public:
     GridPoint( ) : x( GP_NULL.x ), y( GP_NULL.y ) {}
 	GridPoint( long long const _x, long long const _y )
 	{
-		assert( _x <= SHRT_MAX );
-		assert( _x >= SHRT_MIN );
-		assert( _y <= SHRT_MAX );
-		assert( _y >= SHRT_MIN );
+		ASSERT_SHORT( _x );
+		ASSERT_SHORT( _y );
 		x = static_cast< GRID_COORD >( _x );
 		y = static_cast< GRID_COORD >( _y );
 	}

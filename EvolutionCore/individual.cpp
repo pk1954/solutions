@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <unordered_map>
 #include "assert.h"
+#include "debug.h"
 #include "random.h"
 #include "config.h"
 #include "strategy.h"
@@ -139,18 +140,12 @@ void Individual::SetEnergy( short const energy )
 
 void Individual::IncEnergy( short const sInc )
 {
-#ifdef _DEBUG
-    assert( static_cast<long>(m_sEnergy) + static_cast<long>(sInc) <= SHRT_MAX );
-    assert( static_cast<long>(m_sEnergy) + static_cast<long>(sInc) >= SHRT_MIN );
-#endif
+	ASSERT_SHORT_SUM( m_sEnergy, sInc );
     SetEnergy( m_sEnergy + sInc );
 }
 
 void Individual::DecEnergy( short const sDec )
 {
-#ifdef _DEBUG
-    assert( static_cast<long>(m_sEnergy) <= static_cast<long>(SHRT_MAX) + static_cast<long>(sDec) );
-    assert( static_cast<long>(m_sEnergy) >= static_cast<long>(SHRT_MIN) + static_cast<long>(sDec) );
-#endif
+	ASSERT_SHORT_SUM( m_sEnergy, -sDec );
     SetEnergy( m_sEnergy - sDec );
 }

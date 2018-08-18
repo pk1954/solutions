@@ -4,6 +4,8 @@
 
 #include "stdafx.h"
 #include "assert.h"
+#include "util.h"
+#include "debug.h"
 #include "limits.h"
 #include "gene.h"
 #include "random.h"
@@ -12,33 +14,18 @@
  
 void GeneTypeLimits::SetLimits( long const lLo, long const lHi )
 {
-    assert( lLo >= SHRT_MIN );
-    assert( lLo <= SHRT_MAX );
-    short const sLo = static_cast<short>( lLo );
-    assert( lHi >= SHRT_MIN );
-    assert( lHi <= SHRT_MAX );
-    short const sHi = static_cast<short>( lHi );
+    short const sLo = CastToShort( lLo );
+    short const sHi = CastToShort( lHi );
 
     m_sMin    = sLo;
     m_sMax    = ( sHi >= sLo ) ? sHi : sLo;
-    m_dFactor = static_cast<double>(m_sMax - m_sMin) / Gene::MAX_MUTATIONRATE;
+    m_dFactor = (static_cast<double>(m_sMax - m_sMin)) / Gene::MAX_MUTATIONRATE;
 }
 
 short GeneTypeLimits::ClipToLimits( short const sAllele ) const
 {
-    if ( sAllele > m_sMax ) 
-        return m_sMax;
-    else if ( sAllele < m_sMin ) 
-        return m_sMin;
-    else 
-        return sAllele;
+	return ClipToMinMax( sAllele, m_sMin, m_sMax );
 }
-
-void GeneTypeLimits::CheckLimits( short const sValue ) const 
-{
-    assert( sValue >= m_sMin );
-    assert( sValue <= m_sMax );
-};
 
 //////////// Gene ////////////////////
 
@@ -50,10 +37,6 @@ void Gene::Mutate( short const sMutationRate, GeneTypeLimits const & lim, Random
 
     double const dRand = random.NextNormalDistribution() * lim.GetFactor( );
 
-    assert( dRand * static_cast<double>(sMutationRate) < static_cast<double>(INT_MAX) );
-    assert( dRand * static_cast<double>(sMutationRate) > static_cast<double>(INT_MIN) );
-
-    int const iMutation = static_cast<int>(dRand) * sMutationRate;
-    m_sAllele = lim.ClipToLimits( m_sAllele + static_cast<short>(iMutation) );
+    m_sAllele = lim.ClipToLimits( m_sAllele + CastToShort(dRand * sMutationRate) );
 }
     
