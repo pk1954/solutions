@@ -12,35 +12,63 @@
 
 using namespace std;
 
+Set_Manipulator <short> * EditorState::m_setMan; 
+Add_Manipulator <short> * EditorState::m_addMan; 
+Subt_Manipulator<short> * EditorState::m_subMan;    
+Max_Manipulator <short> * EditorState::m_maxMan; 
+Min_Manipulator <short> * EditorState::m_minMan; 
+Mean_Manipulator<short> * EditorState::m_meanMan;
+
 EditorState::EditorState( )
 { 
+	m_setMan  = new Set_Manipulator <short>;
+	m_addMan  = new Add_Manipulator <short>;   
+	m_subMan  = new Subt_Manipulator<short>;   
+	m_maxMan  = new Max_Manipulator <short>;   
+	m_minMan  = new Min_Manipulator <short>;   
+	m_meanMan = new Mean_Manipulator<short>;  
+
 	Reset( );
 }
 
 void EditorState::Reset( )
 {
-    m_brushMode = tBrushMode::move;
-    m_brushSize = 17;
-    m_brushShape = tShape::Circle;
-    m_brushIntensity= 50;
+	SetBrushOperator( tOperator::add );
+    m_brushMode      = tBrushMode::move;
+    m_brushShape     = tShape::Circle;
+    m_brushSize      = 17;
+    m_brushIntensity = 50;
 }
 
+void EditorState::SetBrushOperator( tOperator  const op ) 
+{ 
+	switch ( op )
+	{
+	case tOperator::set      : m_manipulator = m_setMan;  break; 
+	case tOperator::add      : m_manipulator = m_addMan;  break; 
+	case tOperator::subtract : m_manipulator = m_subMan;  break; 
+	case tOperator::max      : m_manipulator = m_maxMan;  break; 
+	case tOperator::min      : m_manipulator = m_minMan;  break; 
+	case tOperator::mean     : m_manipulator = m_meanMan; break; 
+	}
+}
+  
 void EditorState::EditorDoEdit( Grid & G, GridPoint const gpCenter )
 {
 	GridPointFuncShort lambdaMode;
 
 	switch ( m_brushMode )
     {
-	case  tBrushMode::move:           lambdaMode = [&G](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::empty          ); }; break;
-	case  tBrushMode::randomStrategy: lambdaMode = [&G](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::random         ); }; break;
-    case  tBrushMode::cooperate:      lambdaMode = [&G](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::cooperateAlways); }; break;
-    case  tBrushMode::defect:         lambdaMode = [&G](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::defectAlways   ); }; break;
-    case  tBrushMode::tit4tat:        lambdaMode = [&G](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::tit4tat        ); }; break;
-    case  tBrushMode::noAnimals:      lambdaMode = [&G](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::empty          ); }; break;
-    case  tBrushMode::mutRate:        lambdaMode = [&G](GridPoint const & gp, short const s) { G.IncMutationRate(gp, s); }; break;
-    case  tBrushMode::fertility:      lambdaMode = [&G](GridPoint const & gp, short const s) { G.IncFertility   (gp, s); }; break;
-    case  tBrushMode::food:           lambdaMode = [&G](GridPoint const & gp, short const s) { G.IncFoodStock   (gp, s); }; break;
-    case  tBrushMode::fertilizer:     lambdaMode = [&G](GridPoint const & gp, short const s) { G.IncFertilizer  (gp, s); }; break;
+	case  tBrushMode::move:        lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::empty    ); }; break;
+	case  tBrushMode::randomStrat: lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::random   ); }; break;
+    case  tBrushMode::cooperate:   lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::cooperate); }; break;
+    case  tBrushMode::defect:      lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::defect   ); }; break;
+    case  tBrushMode::tit4tat:     lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::tit4tat  ); }; break;
+    case  tBrushMode::noAnimals:   lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::empty    ); }; break;
+    case  tBrushMode::mutRate:     lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.Apply2MutRate   (gp, s, m_manipulator); }; break;
+    case  tBrushMode::fertility:   lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.Apply2Fertility (gp, s, m_manipulator); }; break;
+    case  tBrushMode::food:        lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.Apply2FoodStock (gp, s, m_manipulator); }; break;
+    case  tBrushMode::fertilizer:  lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.Apply2Fertilizer(gp, s, m_manipulator); }; break;
 	};
 
 	switch ( m_brushShape )

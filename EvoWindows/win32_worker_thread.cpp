@@ -213,6 +213,7 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
     case THREAD_MSG_SET_BRUSH_MODE:
     case THREAD_MSG_SET_BRUSH_SIZE:
     case THREAD_MSG_SET_BRUSH_SHAPE:
+    case THREAD_MSG_SET_BRUSH_OPERATOR:
     case THREAD_MSG_SET_BRUSH_INTENSITY:
     case THREAD_MSG_DO_EDIT:
     case THREAD_MSG_SET_POI:
@@ -238,6 +239,7 @@ void WorkThread::editorCommand( UINT const uiMsg, WPARAM const wParam )
 		{ THREAD_MSG_SET_BRUSH_INTENSITY, tEvoCmd::editSetBrushIntensity },
 		{ THREAD_MSG_SET_BRUSH_SIZE,      tEvoCmd::editSetBrushSize      },
 		{ THREAD_MSG_SET_BRUSH_SHAPE,     tEvoCmd::editSetBrushShape     },
+		{ THREAD_MSG_SET_BRUSH_OPERATOR,  tEvoCmd::editSetBrushOperator  },
 		{ THREAD_MSG_SET_BRUSH_MODE,      tEvoCmd::editSetBrushMode      },
 		{ THREAD_MSG_SET_SIMULATION_MODE, tEvoCmd::setSimulationMode     },
 		{ THREAD_MSG_DO_EDIT,             tEvoCmd::editDoEdit            },

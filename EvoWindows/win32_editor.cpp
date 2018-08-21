@@ -6,6 +6,7 @@
 #include "commctrl.h"
 #include "Resource.h"
 #include "config.h"
+#include "Manipulator.h"
 #include "EvolutionModelData.h"
 #include "win32_util.h"
 #include "win32_status.h"
@@ -64,16 +65,16 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 {
 	static unordered_map < tBrushMode, WORD > mapModeTable =
 	{
-		{ tBrushMode::move,           IDM_MOVE            },
-		{ tBrushMode::randomStrategy, IDM_RANDOM_STRATEGY },
-		{ tBrushMode::cooperate,      IDM_COOPERATE       },
-		{ tBrushMode::defect,         IDM_DEFECT          },
-		{ tBrushMode::tit4tat,        IDM_TIT4TAT         },
-		{ tBrushMode::noAnimals,      IDM_KILL_ANIMALS    },
-		{ tBrushMode::mutRate,        IDM_MUT_RATE        },
-		{ tBrushMode::fertility,      IDM_FERTILITY       },
-		{ tBrushMode::food,           IDM_FOOD_STOCK      },
-		{ tBrushMode::fertilizer,     IDM_FERTILIZER      }
+		{ tBrushMode::move,        IDM_MOVE            },
+		{ tBrushMode::randomStrat, IDM_RANDOM_STRATEGY },
+		{ tBrushMode::cooperate,   IDM_COOPERATE       },
+		{ tBrushMode::defect,      IDM_DEFECT          },
+		{ tBrushMode::tit4tat,     IDM_TIT4TAT         },
+		{ tBrushMode::noAnimals,   IDM_KILL_ANIMALS    },
+		{ tBrushMode::mutRate,     IDM_MUT_RATE        },
+		{ tBrushMode::fertility,   IDM_FERTILITY       },
+		{ tBrushMode::food,        IDM_FOOD_STOCK      },
+		{ tBrushMode::fertilizer,  IDM_FERTILIZER      }
 	};
     
 	CheckRadioButton( IDM_MOVE, IDM_FOOD_STOCK, mapModeTable.at( m_pModelWork->GetBrushMode () ) );
@@ -85,6 +86,18 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 	};
 
 	CheckRadioButton( IDM_EDIT_CIRCLE, IDM_EDIT_RECTANGLE, mapShapeTable.at( m_pModelWork->GetBrushShape() ) );
+
+	static unordered_map < tOperator, WORD > mapOperatorTable =
+	{
+		{ tOperator::set,      IDM_EDIT_OPERATION_SET      },    
+		{ tOperator::min,      IDM_EDIT_OPERATION_MIN      },
+		{ tOperator::max,      IDM_EDIT_OPERATION_MAX      },
+		{ tOperator::add,      IDM_EDIT_OPERATION_ADD      },
+		{ tOperator::subtract, IDM_EDIT_OPERATION_SUBTRACT },
+		{ tOperator::mean,     IDM_EDIT_OPERATION_MEAN     }
+	};
+
+	CheckRadioButton( IDM_EDIT_OPERATION_SET, IDM_EDIT_OPERATION_MEAN, mapOperatorTable.at( m_pModelWork->GetBrushOperator() ) );
 
 	SetTrackBarPos( IDM_EDIT_SIZE,      static_cast<long>( m_pModelWork->GetBrushSize( )) );
     SetTrackBarPos( IDM_EDIT_INTENSITY, static_cast<long>( m_pModelWork->GetBrushIntensity( )) );
@@ -114,16 +127,16 @@ void EditorWindow::setBrushMode( WORD const wId ) const
 {
 	static unordered_map < WORD, tBrushMode > mapModeTable =
 	{
-		{ IDM_MOVE,            tBrushMode::move            },
-		{ IDM_RANDOM_STRATEGY, tBrushMode::randomStrategy  },
-		{ IDM_COOPERATE,       tBrushMode::cooperate       },
-		{ IDM_DEFECT,          tBrushMode::defect          },
-		{ IDM_TIT4TAT,         tBrushMode::tit4tat         },
-		{ IDM_KILL_ANIMALS,    tBrushMode::noAnimals       },
-		{ IDM_MUT_RATE,        tBrushMode::mutRate         },
-		{ IDM_FERTILITY,       tBrushMode::fertility       },
-		{ IDM_FOOD_STOCK,      tBrushMode::food            },
-		{ IDM_FERTILIZER,      tBrushMode::fertilizer      }
+		{ IDM_MOVE,            tBrushMode::move         },
+		{ IDM_RANDOM_STRATEGY, tBrushMode::randomStrat  },
+		{ IDM_COOPERATE,       tBrushMode::cooperate    },
+		{ IDM_DEFECT,          tBrushMode::defect       },
+		{ IDM_TIT4TAT,         tBrushMode::tit4tat      },
+		{ IDM_KILL_ANIMALS,    tBrushMode::noAnimals    },
+		{ IDM_MUT_RATE,        tBrushMode::mutRate      },
+		{ IDM_FERTILITY,       tBrushMode::fertility    },
+		{ IDM_FOOD_STOCK,      tBrushMode::food         },
+		{ IDM_FERTILIZER,      tBrushMode::fertilizer   }
 	};
 
 	tBrushMode const brushMode = mapModeTable.at( wId ) ;
@@ -141,6 +154,22 @@ void EditorWindow::setBrushShape( WORD const wId ) const
 
 	tShape const brushShape = mapShapeTable.at( wId );
 	m_pWorkThreadInterface->PostSetBrushShape( brushShape );
+}
+
+void EditorWindow::setBrushOperator( WORD const wId ) const
+{
+	static unordered_map < WORD, tOperator > mapOperationTable =
+	{
+		{ IDM_EDIT_OPERATION_SET,      tOperator::set      },    
+		{ IDM_EDIT_OPERATION_MIN,      tOperator::min      },    
+		{ IDM_EDIT_OPERATION_MAX,      tOperator::max      },    
+		{ IDM_EDIT_OPERATION_ADD,      tOperator::add      },    
+		{ IDM_EDIT_OPERATION_SUBTRACT, tOperator::subtract },    
+		{ IDM_EDIT_OPERATION_MEAN,     tOperator::mean     } 
+	};
+
+	tOperator const brushOperator = mapOperationTable.at( wId );
+	m_pWorkThreadInterface->PostSetBrushOperator( brushOperator );
 }
 
 INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -187,6 +216,15 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
             case IDM_EDIT_CIRCLE:
             case IDM_EDIT_RECTANGLE:
 				setBrushShape( wId );
+                break;
+
+			case IDM_EDIT_OPERATION_SET:     
+			case IDM_EDIT_OPERATION_MIN:     
+			case IDM_EDIT_OPERATION_MAX:     
+			case IDM_EDIT_OPERATION_ADD:     
+			case IDM_EDIT_OPERATION_SUBTRACT:
+			case IDM_EDIT_OPERATION_MEAN:    
+				setBrushOperator( wId );
                 break;
 
             default:

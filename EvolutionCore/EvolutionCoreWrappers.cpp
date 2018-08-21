@@ -189,15 +189,15 @@ void DefineCoreWrapperFunctions( EvolutionCore * pCore )
     DEF_FUNC( Include );
     DEF_FUNC( Pause );
 
-    DEF_ULONG_CONST( tStrategyId::defectAlways );
-    DEF_ULONG_CONST( tStrategyId::cooperateAlways );
+    DEF_ULONG_CONST( tStrategyId::defect );
+    DEF_ULONG_CONST( tStrategyId::cooperate );
     DEF_ULONG_CONST( tStrategyId::tit4tat );
 
     DEF_ULONG_CONST( tShape::Rect );
     DEF_ULONG_CONST( tShape::Circle );
 
     DEF_ULONG_CONST( tBrushMode::move );
-    DEF_ULONG_CONST( tBrushMode::randomStrategy );
+    DEF_ULONG_CONST( tBrushMode::randomStrat );
     DEF_ULONG_CONST( tBrushMode::cooperate );
     DEF_ULONG_CONST( tBrushMode::defect );
     DEF_ULONG_CONST( tBrushMode::tit4tat );

@@ -33,6 +33,7 @@ public:
 
 	virtual void           SetSelection     ( GridRect const & rect ) { m_gridRectSelection = rect; }
 
+    virtual void           SetBrushOperator ( tOperator  const op    ) { m_editorState.SetBrushOperator ( op    ); }
     virtual void           SetBrushShape    ( tShape     const shape ) { m_editorState.SetBrushShape    ( shape ); }
     virtual void           SetBrushSize     ( GRID_COORD const size  ) { m_editorState.SetBrushSize     ( size  ); }
     virtual void           SetBrushIntensity( short      const sInt  ) { m_editorState.SetBrushIntensity( sInt  ); }
@@ -67,6 +68,7 @@ public:
 
     virtual EVO_GENERATION GetEvoGenerationNr ( ) const { return m_grid.GetEvoGenerationNr( ); }
     virtual short          GetBrushIntensity  ( ) const { return m_editorState.GetBrushIntensity( ); }
+    virtual tOperator      GetBrushOperator   ( ) const { return m_editorState.GetBrushOperator( ); }
     virtual tShape         GetBrushShape      ( ) const { return m_editorState.GetBrushShape( ); }
     virtual GRID_COORD     GetBrushSize       ( ) const { return m_editorState.GetBrushSize( ); }
     virtual tBrushMode     GetBrushMode       ( ) const { return m_editorState.GetBrushMode( ); }

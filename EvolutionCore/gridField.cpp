@@ -36,36 +36,6 @@ void GridField::ResetGridField( short const sFood )
     m_Individual.ResetIndividual( );
 }
 
-void GridField::IncFertilizer( short const sInc )
-{
-	ASSERT_SHORT_SUM( m_sFertilizer, sInc );
-    SetFertilizer( m_sFertilizer + sInc );
-}
-
-void GridField::IncFoodStock( short const sInc )
-{
-	ASSERT_SHORT_SUM( m_sFoodStock, sInc );
-    SetFoodStock( m_sFoodStock + sInc );
-}
-
-void GridField::DecFoodStock( short const sDec )
-{ 
-	ASSERT_SHORT_SUM( m_sFoodStock, - sDec );
-    SetFoodStock( m_sFoodStock - sDec ); 
-}
-
-void GridField::IncFertility( short const sInc ) 
-{ 
-	ASSERT_SHORT_SUM( m_sFertility, sInc );
-    SetFertility( m_sFertility + sInc ); 
-}
-
-void GridField::IncMutationRate( short const sInc ) 
-{
-	ASSERT_SHORT_SUM( m_sMutatRate, sInc );
-    SetMutationRate( m_sMutatRate + sInc ); 
-}
-
 void GridField::CreateIndividual( IndId const id, EVO_GENERATION const genBirth, tStrategyId const s )
 {
     m_Individual.Create( id, genBirth, s );

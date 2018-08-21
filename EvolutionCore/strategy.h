@@ -42,33 +42,32 @@ private:
 class Strategy
 {
 public:
-    virtual tStrategyId GetStrategyId( )                                          const = 0;
-    virtual bool     InteractWith( StrategyData &, IndId const )             const = 0;
-    virtual void     Remember    ( StrategyData &, IndId const, bool const ) const = 0;
+    virtual tStrategyId GetStrategyId( )                                        const = 0;
+    virtual bool        InteractWith( StrategyData &, IndId const )             const = 0;
+    virtual void        Remember    ( StrategyData &, IndId const, bool const ) const = 0;
 };
 
-//lint -e715      parameter not used
 class DefectAlways: public Strategy
 {
 public:
-    virtual tStrategyId GetStrategyId() const { return tStrategyId::defectAlways; };
-    virtual bool     InteractWith( StrategyData &mData, IndId const lPartnerId )  const { return false; };
-    virtual void     Remember    ( StrategyData &mData, IndId const, bool const ) const { };
+    virtual tStrategyId GetStrategyId( )                                             const { return tStrategyId::defect; };
+    virtual bool        InteractWith( StrategyData &mData, IndId const lPartnerId )  const { return false; };
+    virtual void        Remember    ( StrategyData &mData, IndId const, bool const ) const { };
 };
 
 class CooperateAlways: public Strategy
 {
 public:
-    virtual tStrategyId GetStrategyId() const { return tStrategyId::cooperateAlways; };
-    virtual bool     InteractWith( StrategyData &mData, IndId const lPartnerId )  const { return true; };
-    virtual void     Remember    ( StrategyData &mData, IndId const, bool const ) const { };
+    virtual tStrategyId GetStrategyId( )                                             const { return tStrategyId::cooperate; };
+    virtual bool        InteractWith( StrategyData &mData, IndId const lPartnerId )  const { return true; };
+    virtual void        Remember    ( StrategyData &mData, IndId const, bool const ) const { };
 };
 
 class Tit4Tat: public Strategy
 {
 public:
-    virtual tStrategyId GetStrategyId() const { return tStrategyId::tit4tat; };
-    virtual bool     InteractWith( StrategyData &, IndId const ) const;
-    virtual void     Remember    ( StrategyData &, IndId const, bool const ) const;
+    virtual tStrategyId GetStrategyId( )                                        const { return tStrategyId::tit4tat; };
+    virtual bool        InteractWith( StrategyData &, IndId const )             const;
+    virtual void        Remember    ( StrategyData &, IndId const, bool const ) const;
 };
 //lint +e715  

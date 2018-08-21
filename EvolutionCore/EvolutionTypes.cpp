@@ -12,9 +12,9 @@ wchar_t const * const GetStrategyName( tStrategyId const id )
 {
     static unordered_map < tStrategyId, wchar_t const * const > mapStrategies =
     { 
-        { tStrategyId::defectAlways,    L"D" },
-        { tStrategyId::cooperateAlways, L"C" },
-        { tStrategyId::tit4tat,         L"T" }
+        { tStrategyId::defect,    L"D" },
+        { tStrategyId::cooperate, L"C" },
+        { tStrategyId::tit4tat,   L"T" }
     };
 
     return mapStrategies.at( id );
@@ -99,16 +99,16 @@ wchar_t const * const GetBrushModeName( tBrushMode const mode )
 {
     static unordered_map < tBrushMode, wchar_t const * const > mapModes =
     {
-        { tBrushMode::move,           L"tBrushMode::move" },
-        { tBrushMode::randomStrategy, L"tBrushMode::randomStrategy" },
-        { tBrushMode::cooperate,      L"tBrushMode::cooperate" },
-        { tBrushMode::defect,         L"tBrushMode::defect" },
-        { tBrushMode::tit4tat,        L"tBrushMode::tit4tat" },
-        { tBrushMode::noAnimals,      L"tBrushMode::noAnimals" },
-        { tBrushMode::mutRate,        L"tBrushMode::mutRate" },
-        { tBrushMode::fertility,      L"tBrushMode::fertility" },
-        { tBrushMode::food,           L"tBrushMode::food" },
-        { tBrushMode::fertilizer,     L"tBrushMode::fertilizer" }
+        { tBrushMode::move,        L"tBrushMode::move" },
+        { tBrushMode::randomStrat, L"tBrushMode::randomStrat" },
+        { tBrushMode::cooperate,   L"tBrushMode::cooperate" },
+        { tBrushMode::defect,      L"tBrushMode::defect" },
+        { tBrushMode::tit4tat,     L"tBrushMode::tit4tat" },
+        { tBrushMode::noAnimals,   L"tBrushMode::noAnimals" },
+        { tBrushMode::mutRate,     L"tBrushMode::mutRate" },
+        { tBrushMode::fertility,   L"tBrushMode::fertility" },
+        { tBrushMode::food,        L"tBrushMode::food" },
+        { tBrushMode::fertilizer,  L"tBrushMode::fertilizer" }
     };
 
     return mapModes.at( mode );
@@ -118,16 +118,16 @@ wchar_t const * const GetBrushModeNameShort( tBrushMode const mode )
 {
     static unordered_map < tBrushMode, wchar_t const * const > mapModes =
     {
-        { tBrushMode::move,           L"E_MOV" },
-        { tBrushMode::randomStrategy, L"E_RAN" },
-        { tBrushMode::cooperate,      L"E_COO" },
-        { tBrushMode::defect,         L"E_DEF" },
-        { tBrushMode::tit4tat,        L"E_T4T" },
-        { tBrushMode::noAnimals,      L"E_NOA" },
-        { tBrushMode::mutRate,        L"E_MUT" },
-        { tBrushMode::fertility,      L"E_FTY" },
-        { tBrushMode::food,           L"E_FOO" },
-        { tBrushMode::fertilizer,     L"E_FER" }
+        { tBrushMode::move,        L"E_MOV" },
+        { tBrushMode::randomStrat, L"E_RAN" },
+        { tBrushMode::cooperate,   L"E_COO" },
+        { tBrushMode::defect,      L"E_DEF" },
+        { tBrushMode::tit4tat,     L"E_T4T" },
+        { tBrushMode::noAnimals,   L"E_NOA" },
+        { tBrushMode::mutRate,     L"E_MUT" },
+        { tBrushMode::fertility,   L"E_FTY" },
+        { tBrushMode::food,        L"E_FOO" },
+        { tBrushMode::fertilizer,  L"E_FER" }
     };
 
     return mapModes.at( mode );

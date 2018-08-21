@@ -25,9 +25,9 @@ void Individual::InitClass( )
 
 static std::unordered_map< tStrategyId, Strategy * const > apStrat =
 { 
-    { tStrategyId::defectAlways,    &StratD },
-    { tStrategyId::cooperateAlways, &StratC },
-    { tStrategyId::tit4tat,         &StratT }
+    { tStrategyId::defect,    &StratD },
+    { tStrategyId::cooperate, &StratC },
+    { tStrategyId::tit4tat,   &StratT }
 };
 
 bool Individual::InteractWith( IndId const & partnerId ) 

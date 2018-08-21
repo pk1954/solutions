@@ -8,7 +8,7 @@
 #include "gridPoint.h"
 #include "interaction.h"
 #include "individual.h"
-#include "util.h"
+#include "Manipulator.h"
 
 class GridField
 {
@@ -57,31 +57,19 @@ public:
     void BreedIndividual ( IndId const, EVO_GENERATION const, Random &, GridField &, GridField & );
     void MoveIndividual  ( GridField & );
 
-	void SetFertilizer( short const sNewVal )
-	{
-		m_sFertilizer = ( sNewVal < 0 ) ? 0 : sNewVal;
-	}
+	void Apply2Fertilizer(short const s, Manipulator<short> * man) { setFertilizer  ( (* man)( m_sFertilizer, s ) ); }
+	void Apply2FoodStock (short const s, Manipulator<short> * man) { setFoodStock   ( (* man)( m_sFoodStock,  s ) ); }
+	void Apply2Fertility (short const s, Manipulator<short> * man) { setFertility   ( (* man)( m_sFertility,  s ) ); }
+	void Apply2MutRate   (short const s, Manipulator<short> * man) { setMutationRate( (* man)( m_sMutatRate,  s ) ); }
 
-	void SetFoodStock( short const sNewVal )
-	{
-	    m_sFoodStock = ( sNewVal < 0 ) ? 0 : sNewVal;
-	}
-
-	void SetFertility( short const sFertility )
+	void DecFoodStock( short const sDec )
 	{ 
-		m_sFertility = ( sFertility < 0 ) ? 0 : sFertility;
+		ASSERT_SHORT_SUM( m_sFoodStock, - sDec );
+		setFoodStock( m_sFoodStock - sDec ); 
 	}
 
-	void SetMutationRate( short const sMutRate ) 
-	{ 
-		m_sMutatRate = ClipToMinMax( sMutRate, (short)0, (short)100 );  // mutation rate is a percent value
-	}
-
-    void IncFertilizer  ( short const );
-    void IncFoodStock   ( short const );
-    void DecFoodStock   ( short const );
-    void IncFertility   ( short const );
-    void IncMutationRate( short const );
+	void SetFoodStock ( short const s ) { setFoodStock ( s ); }
+	void SetFertilizer( short const s ) { setFertilizer( s ); }
 
     void ReduceFertilizer( ) { m_sFertilizer /= 2; }
 
@@ -124,6 +112,11 @@ private:
     static int   m_iMaxFertilizer;
     static short m_sFoodReserve;
     static short m_sMaxFood;
+
+	void setFertilizer  ( short const s ) { m_sFertilizer = ( s < 0 ) ? 0 : s; }
+	void setFoodStock   ( short const s ) { m_sFoodStock  = ( s < 0 ) ? 0 : s; }
+	void setFertility   ( short const s ) { m_sFertility  = ( s < 0 ) ? 0 : s; }
+	void setMutationRate( short const s ) { m_sMutatRate  = ClipToMinMax( s, (short)0, (short)100 ); } // mutation rate is a percent value	
 };
 
 std::wostream & operator << ( std::wostream &, GridField const & );
@@ -138,14 +131,12 @@ public:
 class IsDead_Functor : public Decision_Functor
 {
 public:
-    virtual ~IsDead_Functor() {};
     virtual bool operator() ( GridField const & gf ) const { return gf.IsDead( ); }; 
 };
 
 class IsAlive_Functor : public Decision_Functor
 {
 public:
-    virtual ~IsAlive_Functor() {};
     virtual bool operator() ( GridField const & gf ) const { return gf.IsAlive( ); }; 
 };
 

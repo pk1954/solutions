@@ -44,9 +44,17 @@
 
 #define IDM_ANIMALS                             450
 
-#define IDM_EDIT_SHAPE                          500
-#define IDM_EDIT_CIRCLE                         (IDM_EDIT_SHAPE + 1)
-#define IDM_EDIT_RECTANGLE                      (IDM_EDIT_SHAPE + 2)
+#define IDM_EDIT_SHAPE_BASE                     500
+#define IDM_EDIT_CIRCLE                         (IDM_EDIT_SHAPE_BASE + 1)
+#define IDM_EDIT_RECTANGLE                      (IDM_EDIT_SHAPE_BASE + 2)
+
+#define IDM_EDIT_OPERATION_BASE                 550
+#define IDM_EDIT_OPERATION_SET                  (IDM_EDIT_OPERATION_BASE + 1)
+#define IDM_EDIT_OPERATION_MIN                  (IDM_EDIT_OPERATION_BASE + 2)
+#define IDM_EDIT_OPERATION_MAX                  (IDM_EDIT_OPERATION_BASE + 3)
+#define IDM_EDIT_OPERATION_ADD                  (IDM_EDIT_OPERATION_BASE + 4)
+#define IDM_EDIT_OPERATION_SUBTRACT             (IDM_EDIT_OPERATION_BASE + 5)
+#define IDM_EDIT_OPERATION_MEAN                 (IDM_EDIT_OPERATION_BASE + 6)
 
 #define IDM_EDIT_MODE                           600
 #define IDM_MOVE                                (IDM_EDIT_MODE +  1)

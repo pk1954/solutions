@@ -10,6 +10,7 @@
 #include "gridNeighbor.h"
 #include "EvolutionTypes.h"
 #include "plannedActivity.h"
+#include "Manipulator.h"
 
 class GridCircle;
 class GridRect;
@@ -26,12 +27,19 @@ public:
     void      MakePlan     ( GridPoint const &, PlannedActivity & );
     GridPoint ImplementPlan( GridPoint const &, PlannedActivity const & );
 
-    void IncFertilizer  ( GridPoint const & gp, short const sInc ) { getGridField( gp ).IncFertilizer  ( sInc ); }
-    void IncFoodStock   ( GridPoint const & gp, short const sInc ) { getGridField( gp ).IncFoodStock   ( sInc ); }
-    void IncFertility   ( GridPoint const & gp, short const sInc ) { getGridField( gp ).IncFertility   ( sInc ); }
-    void IncMutationRate( GridPoint const & gp, short const sInc ) { getGridField( gp ).IncMutationRate( sInc ); }
-    void IncEnergy      ( GridPoint const & gp, short const sInc ) { getGridField( gp ).IncEnergy      ( sInc ); }
-    void DecEnergy      ( GridPoint const & gp, short const sDec ) { getGridField( gp ).DecEnergy      ( sDec ); }
+	short GetFertilizer  ( GridPoint const & gp ) { return getGridField( gp ).GetFertilizer( ); }
+	short GetFoodStock   ( GridPoint const & gp ) { return getGridField( gp ).GetFoodStock( ); }
+	short GetFertility   ( GridPoint const & gp ) { return getGridField( gp ).GetFertility( ); }
+	short GetMutationRate( GridPoint const & gp ) { return getGridField( gp ).GetMutationRate( ); }
+
+	void Apply2Fertilizer(GridPoint const & gp, short const s, Manipulator<short> * man) { getGridField( gp ).Apply2Fertilizer(s, man); }
+	void Apply2FoodStock (GridPoint const & gp, short const s, Manipulator<short> * man) { getGridField( gp ).Apply2FoodStock (s, man); }
+	void Apply2Fertility (GridPoint const & gp, short const s, Manipulator<short> * man) { getGridField( gp ).Apply2Fertility (s, man); }
+	void Apply2MutRate   (GridPoint const & gp, short const s, Manipulator<short> * man) { getGridField( gp ).Apply2MutRate   (s, man); }
+
+	void SetEnergy( GridPoint const & gp, short const s ) { getGridField( gp ).SetEnergy( s ); }
+	void IncEnergy( GridPoint const & gp, short const s ) { getGridField( gp ).IncEnergy( s ); }
+    void DecEnergy( GridPoint const & gp, short const s ) { getGridField( gp ).DecEnergy( s ); }
 
     void IncGenNr( ) { ++m_genEvo; }
 

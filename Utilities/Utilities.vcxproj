@@ -149,6 +149,7 @@
     <ClInclude Include="debug.h" />
     <ClInclude Include="DisplayFunctor.h" />
     <ClInclude Include="kGridPoint.h" />
+    <ClInclude Include="Manipulator.h" />
     <ClInclude Include="pixelPoint.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="SmoothMove.h" />
@@ -162,6 +163,7 @@
   <ItemGroup>
     <ClCompile Include="BoolOp.cpp" />
     <ClCompile Include="kGridPoint.cpp" />
+    <ClCompile Include="Manipulator.cpp" />
     <ClCompile Include="random.cpp" />
     <ClCompile Include="SmoothMove.cpp" />
     <ClCompile Include="stdafx.cpp">

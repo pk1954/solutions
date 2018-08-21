@@ -56,6 +56,10 @@ void EvoModelData::OnAppCommand( int16_t const usCmd, int16_t const param  )
         m_pEvolutionModelData->SetBrushShape( static_cast<tShape>( param ) );
 		break;
 
+    case tEvoCmd::editSetBrushOperator:
+        m_pEvolutionModelData->SetBrushOperator( static_cast<tOperator>( param ) );
+		break;
+
     case tEvoCmd::editSetBrushSize:
 		assert( param <= MAX_GRID_COORD );
         m_pEvolutionModelData->SetBrushSize( static_cast<GRID_COORD>( param ) );

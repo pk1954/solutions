@@ -44,8 +44,8 @@ std::wostream & operator << ( std::wostream & , IndId const & );  // implemented
 
 enum class tStrategyId : unsigned short
 { 
-    defectAlways, 
-    cooperateAlways, 
+    defect, 
+    cooperate, 
     tit4tat, 
 //	friedman, 
     nrOfStrategies, 
@@ -100,7 +100,7 @@ static const int NR_GENES = static_cast<int>( tGeneType::nrOfGeneTypes );
 
 enum class tBrushMode
 {
-    randomStrategy,
+    randomStrat,
     cooperate,
     defect,
     tit4tat,

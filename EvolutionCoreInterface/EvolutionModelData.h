@@ -6,6 +6,7 @@
 #include "boolOp.h"
 #include "EvolutionTypes.h"
 #include "GridRect.h"
+#include "Manipulator.h"
 
 class PlannedActivity;
 class GridPoint;
@@ -26,6 +27,7 @@ public:
     virtual EVO_GENERATION GetEvoGenerationNr       ( ) const = 0;
     virtual short          GetBrushIntensity        ( ) const = 0;
     virtual tShape         GetBrushShape            ( ) const = 0;
+    virtual tOperator      GetBrushOperator         ( ) const = 0;
     virtual GRID_COORD     GetBrushSize             ( ) const = 0;
     virtual tBrushMode     GetBrushMode             ( ) const = 0;
 	virtual GridRect       GetSelection             ( ) const = 0;
@@ -75,6 +77,7 @@ public:
     virtual void SetPoi           ( GridPoint  const & ) = 0;
     virtual void SetSimulationMode( tBoolOp    const   ) = 0;
 	virtual void SetSelection     ( GridRect   const & ) = 0;
+    virtual void SetBrushOperator ( tOperator  const   ) = 0;
     virtual void SetBrushShape    ( tShape     const   ) = 0;
     virtual void SetBrushSize     ( GRID_COORD const   ) = 0;
     virtual void SetBrushIntensity( short      const   ) = 0;

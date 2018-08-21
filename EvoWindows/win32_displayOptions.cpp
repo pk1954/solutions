@@ -38,15 +38,15 @@ void DspOptWindow::UpdateDspOptionsControls( tBrushMode const brushMode )
 	{
 		static unordered_map < tBrushMode, WORD > mapDspOptTable =
 		{
-			{ tBrushMode::randomStrategy, IDM_ANIMALS    },
-			{ tBrushMode::cooperate,      IDM_ANIMALS    },
-			{ tBrushMode::defect,         IDM_ANIMALS    },
-			{ tBrushMode::tit4tat,        IDM_ANIMALS    },
-			{ tBrushMode::noAnimals,      IDM_ANIMALS    },
-			{ tBrushMode::mutRate,        IDM_MUT_RATE   },
-			{ tBrushMode::fertility,      IDM_FERTILITY  },
-			{ tBrushMode::food,           IDM_FOOD_STOCK },
-			{ tBrushMode::fertilizer,     IDM_FERTILIZER }
+			{ tBrushMode::randomStrat, IDM_ANIMALS    },
+			{ tBrushMode::cooperate,   IDM_ANIMALS    },
+			{ tBrushMode::defect,      IDM_ANIMALS    },
+			{ tBrushMode::tit4tat,     IDM_ANIMALS    },
+			{ tBrushMode::noAnimals,   IDM_ANIMALS    },
+			{ tBrushMode::mutRate,     IDM_MUT_RATE   },
+			{ tBrushMode::fertility,   IDM_FERTILITY  },
+			{ tBrushMode::food,        IDM_FOOD_STOCK },
+			{ tBrushMode::fertilizer,  IDM_FERTILIZER }
 		};
 		WORD const wDspOptId = mapDspOptTable.at( brushMode );
 		if ( wDspOptId == IDM_ANIMALS )

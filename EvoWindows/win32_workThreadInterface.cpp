@@ -132,6 +132,13 @@ void WorkThreadInterface::PostSetBrushShape( tShape const shape )
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_SHAPE, static_cast<WPARAM>( shape ), 0 );
 }
 
+void WorkThreadInterface::PostSetBrushOperator( tOperator const op )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << L" " << GetOperatorName( op ) << endl;
+    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_OPERATOR, static_cast<WPARAM>( op ), 0 );
+}
+
 void WorkThreadInterface::PostRunGenerations( bool const bFirst )
 {
     if ( m_bTrace )
