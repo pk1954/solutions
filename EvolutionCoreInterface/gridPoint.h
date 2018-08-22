@@ -67,6 +67,7 @@ public:
     static int        const GRID_AREA   = GRID_WIDTH * GRID_HEIGHT;
 
     static GridPoint const GRID_ORIGIN;
+    static GridPoint const GRID_CENTER;
     static GridPoint const GRID_SIZE;
     static GridPoint const GP_NULL;
 
@@ -100,5 +101,12 @@ inline bool      const Neighbors( GridPoint const & a, GridPoint const & b )
 
 typedef std::function<void(GridPoint const &             )> GridPointFunc;
 typedef std::function<void(GridPoint const &, short const)> GridPointFuncShort;
-
+/*
+class GridPointFuncShort
+{
+public:
+    virtual ~GridPointFuncShort() {};
+    virtual void operator() ( GridPoint const &, short const ) const = 0;
+};
+*/
 std::wostream & operator << ( std::wostream &, GridPoint const & );

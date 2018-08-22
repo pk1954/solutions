@@ -239,7 +239,7 @@ GridRect PixelCoordinates::Pixel2GridRect( PixelRect const & rect ) const
     ( 
         Pixel2GridPos( PixelPoint( rect.left,  rect.top    ) ), 
         Pixel2GridPos( PixelPoint( rect.right, rect.bottom ) ) 
-    );
+    ).ClipToGrid( );
 }
 
 PixelRect PixelCoordinates::Grid2PixelRect( GridRect const & rcGrid ) const 

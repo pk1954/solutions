@@ -5,26 +5,17 @@
 
 #include <iostream>
 #include "EvolutionTypes.h"
+#include "gridShape.h"
 #include "gridPoint.h"
-#include "gridRect.h"
 
-class GridCircle
+class GridCircle : public Shape
 {
 public:
-    GridCircle( GridPoint const & gp, GRID_COORD const radius ) : m_gpCenter(gp), m_radius( radius ) {};
+    GridCircle( GridPoint const & gpCenter, GRID_COORD const iSize ) 
+		: Shape( gpCenter, iSize )
+	{};
 
-    ~GridCircle( ) { };
-
-	void Apply2Cone( GridPointFuncShort const &, short const );
-
-    GridPoint const & GetCenter( ) const { return m_gpCenter; };
-    GRID_COORD        GetRadius( ) const { return m_radius; };
-
-private:
-    GridPoint  m_gpCenter;
-    GRID_COORD m_radius;
+	virtual void Apply2Shape( GridPointFuncShort const &, short const = 0) const;
 };
-
-GridCircle GetInscribedCircle( GridRect const & );
 
 std::wostream & operator << ( std::wostream &, GridCircle const & );

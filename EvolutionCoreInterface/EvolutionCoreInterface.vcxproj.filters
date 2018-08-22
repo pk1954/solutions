@@ -52,5 +52,8 @@
     <ClInclude Include="PixelCore.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="gridShape.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

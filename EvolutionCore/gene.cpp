@@ -35,8 +35,8 @@ void Gene::Mutate( short const sMutationRate, GeneTypeLimits const & lim, Random
 {
     assert( sMutationRate <= MAX_MUTATIONRATE );
 
-    double const dRand = random.NextNormalDistribution() * lim.GetFactor( );
+    double const dRand = random.NextWeightedDistribution() * lim.GetFactor( );
 
-    m_sAllele = lim.ClipToLimits( m_sAllele + CastToShort(dRand * sMutationRate) );
+    m_sAllele = lim.ClipToLimits( CastToInt( m_sAllele + dRand * sMutationRate ) );
 }
     

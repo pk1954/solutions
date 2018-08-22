@@ -46,7 +46,7 @@ public:
     void EditSetStrategy( GridPoint const &, unsigned int const, Manipulator<short> *, tStrategyId );
 
     unsigned int NextRandomNumber      ( void ) { return m_random.NextRandomNumber( ); };
-    double       NextNormalDistribution( void ) { return m_random.NextNormalDistribution( ); };
+    double       Distribution( void ) { return m_random.NextWeightedDistribution( ); };
 
     // GridPoint list operations
 

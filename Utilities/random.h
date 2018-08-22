@@ -11,7 +11,7 @@ public:
     void         InitializeRandom( );
     unsigned int NextRandomNumber( void );
     bool         NextBooleanValue( void );
-    double       NextNormalDistribution( void ); 
+    double       NextWeightedDistribution( void ); 
 
 private:
     unsigned long m_ulRandomSeed;    // random generator

@@ -96,10 +96,14 @@ private:
 
 	void postMessage( UINT, WPARAM, LPARAM );
 	void dispatchMessage( UINT, WPARAM, LPARAM );
-	void editorCommand( UINT const,  WPARAM const );
     void generationRun( );
 
-	bool IsValidThreadMessage(UINT msg)
+	BOOL editorCommand( tEvoCmd const cmd, WPARAM const wParam )
+	{
+		return m_pEvoHistorySys->EvoCreateEditorCommand( cmd, static_cast<int16_t>(wParam) );
+	}
+
+	BOOL IsValidThreadMessage(UINT msg)
 	{
 		return (THREAD_MSG_FIRST <= msg) && (msg <= THREAD_MSG_LAST);
 	}

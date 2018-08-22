@@ -209,15 +209,40 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
 
     case THREAD_MSG_RESET_MODEL:
-    case THREAD_MSG_SET_SIMULATION_MODE:
+        editorCommand( tEvoCmd::reset, wParam );
+        break;
+
     case THREAD_MSG_SET_BRUSH_MODE:
+        editorCommand( tEvoCmd::editSetBrushMode, wParam );
+        break;
+
     case THREAD_MSG_SET_BRUSH_SIZE:
+        editorCommand( tEvoCmd::editSetBrushSize, wParam );
+        break;
+
     case THREAD_MSG_SET_BRUSH_SHAPE:
+        editorCommand( tEvoCmd::editSetBrushShape, wParam );
+        break;
+
     case THREAD_MSG_SET_BRUSH_OPERATOR:
+        editorCommand( tEvoCmd::editSetBrushOperator, wParam );
+        break;
+
     case THREAD_MSG_SET_BRUSH_INTENSITY:
+        editorCommand( tEvoCmd::editSetBrushIntensity, wParam );
+        break;
+
     case THREAD_MSG_DO_EDIT:
+        editorCommand( tEvoCmd::editDoEdit, wParam );
+        break;
+
     case THREAD_MSG_SET_POI:
-        editorCommand( uiMsg, wParam );
+        editorCommand( tEvoCmd::editSetPOI, wParam );
+        break;
+
+    case THREAD_MSG_SET_SIMULATION_MODE:
+        if ( editorCommand( tEvoCmd::setSimulationMode, wParam ) )
+			m_pEditorWindow->SetSimulationMode();
         break;
 
     case THREAD_MSG_REFRESH:
@@ -229,29 +254,4 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 
 	if (m_pDisplayGridFunctor != nullptr)
 	    ( * m_pDisplayGridFunctor )( FALSE );
-}
-
-void WorkThread::editorCommand( UINT const uiMsg, WPARAM const wParam )
-{
-	static unordered_map < UINT, tEvoCmd > mapTable =
-	{
-		{ THREAD_MSG_RESET_MODEL,         tEvoCmd::reset                 },
-		{ THREAD_MSG_SET_BRUSH_INTENSITY, tEvoCmd::editSetBrushIntensity },
-		{ THREAD_MSG_SET_BRUSH_SIZE,      tEvoCmd::editSetBrushSize      },
-		{ THREAD_MSG_SET_BRUSH_SHAPE,     tEvoCmd::editSetBrushShape     },
-		{ THREAD_MSG_SET_BRUSH_OPERATOR,  tEvoCmd::editSetBrushOperator  },
-		{ THREAD_MSG_SET_BRUSH_MODE,      tEvoCmd::editSetBrushMode      },
-		{ THREAD_MSG_SET_SIMULATION_MODE, tEvoCmd::setSimulationMode     },
-		{ THREAD_MSG_DO_EDIT,             tEvoCmd::editDoEdit            },
-		{ THREAD_MSG_SET_POI,             tEvoCmd::editSetPOI            }
-	};
-    
-	tEvoCmd cmd = mapTable.at( uiMsg );
-	if (m_pEvoHistorySys->EvoCreateEditorCommand(cmd, static_cast<int16_t>(wParam)))
-	{
-		if (cmd == tEvoCmd::setSimulationMode)    // 
-		{
-			m_pEditorWindow->SetSimulationMode();
-		}
-	}
 }

@@ -4,6 +4,8 @@
 #pragma once
 
 #include "script.h"
+#include "gridPoint.h"
+#include "gridRect.h"
 #include "gridCircle.h"
 #include "pixelPoint.h"
 

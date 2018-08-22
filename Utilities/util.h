@@ -29,3 +29,10 @@ short CastToShort(T const value )
 	ASSERT_SHORT( value );
 	return static_cast<short>( value );
 }
+
+template<typename T>
+short CastToInt(T const value ) 
+{
+	ASSERT_INT( value );
+	return static_cast<int>( value );
+}

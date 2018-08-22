@@ -49,7 +49,7 @@ void EvoModelData::OnAppCommand( int16_t const usCmd, int16_t const param  )
         break;
 
 	case tEvoCmd::editSetBrushMode:
-        m_pEvolutionModelData->SetBrushStrategy( static_cast<tBrushMode>( param ) );
+        m_pEvolutionModelData->SetBrushMode( static_cast<tBrushMode>( param ) );
         break;
 
     case tEvoCmd::editSetBrushShape:

@@ -8,8 +8,8 @@
 class GeneTypeLimits
 {
 public:
-    void   SetLimits( long const, long const );
-    short  ClipToLimits( short const ) const;
+    void  SetLimits( long const, long const );
+    short ClipToLimits( short const ) const;
     
 	double GetFactor( ) const 
 	{ 

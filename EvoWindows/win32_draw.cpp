@@ -90,7 +90,6 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
     if ( IsWindowVisible( m_hWnd ) )
     {
         GridRect rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hWnd ) ) );
-        rcGrid.ClipToGrid( );
 
 		m_pD3dBuffer->StartFrame( );
 
@@ -120,7 +119,7 @@ void DrawFrame::drawBackground( GridRect const & rect )
 {
 	float m_fPxSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) );
 	Apply2Grid    // strip mode works only with full grid
-	(             // TODO: use rect.Apply2Rect and make strip mode work
+	(             // TODO: use rect.Apply2Shape and make strip mode work
     	[&](GridPoint const & gp)
 		{
 			int   const iValue  = m_pDspOptWindow->GetIntValue( gp );

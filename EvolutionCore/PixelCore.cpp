@@ -25,17 +25,12 @@ PixelCore::~PixelCore( )
 
 void PixelCore::SetSelection( PixelPoint const & pt1, PixelPoint const & pt2 )
 {
-    PixelRect const rectSelection( pt1, pt2 );	   // Current selection
-    GridRect        rect( m_pPixelCoordinates->Pixel2GridRect( rectSelection ) );
-    rect.ClipToGrid( );
-	m_pModelWork->SetSelection( rect );
+	m_pModelWork->SetSelection( m_pPixelCoordinates->Pixel2GridRect( PixelRect( pt1, pt2 ) ) );
 }
 
 PixelPoint PixelCore::GetPoiCenter() const
 {
-	GridPoint  const gpPoi       = m_pModelWork->FindPOI( );
-    PixelPoint const pixPointPoi = m_pPixelCoordinates->Grid2PixelPosCenter( gpPoi );
-	return pixPointPoi;
+    return m_pPixelCoordinates->Grid2PixelPosCenter( m_pModelWork->FindPOI( ) );
 }
 
 PixelPoint PixelCore::GetNewCenter( PixelPoint const pntCenter ) const
