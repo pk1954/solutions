@@ -10,60 +10,32 @@
 
 using namespace std;
 
-GridRect const GridRect::GRID_RECT_FULL ( 0, 0, GridPoint::GRID_WIDTH - 1, GridPoint::GRID_HEIGHT - 1 );
-GridRect const GridRect::GRID_RECT_EMPTY( 0, 0, 0, 0 );
-
-void GridRect::Move( GridPoint const & gpDiff )
-{
-    m_lLeft   += gpDiff.x;
-    m_lRight  += gpDiff.x;
-    m_lTop    += gpDiff.y;
-    m_lBottom += gpDiff.y;
-}
-
-void GridRect::SetCenter( GridPoint const & gpCenter )
-{
-    GridPoint gpSize = GetSize( );
-    m_lLeft   = gpCenter.x - gpSize.x / 2;
-    m_lRight  = gpCenter.x + gpSize.x / 2;
-    m_lTop    = gpCenter.y - gpSize.y / 2;
-    m_lBottom = gpCenter.y + gpSize.y / 2;
-}
-
-void GridRect::SetSize( GridPoint const & gpSize )
-{
-    GridPoint gpCenter = GetCenter( );
-    m_lLeft   = gpCenter.x - gpSize.x / 2;
-    m_lRight  = gpCenter.x + gpSize.x / 2;
-    m_lTop    = gpCenter.y - gpSize.y / 2;
-    m_lBottom = gpCenter.y + gpSize.y / 2;
-}
+GridRect const GridRect::GRID_RECT_FULL ( GridPoint::GRID_ORIGIN, GridPoint::GRID_SIZE );
 
 void GridRect::ClipToGrid( )
 {
-    if ( m_lTop < GRID_RECT_FULL.m_lTop )
-         m_lTop = GRID_RECT_FULL.m_lTop;
+    if ( GetTop() < GRID_RECT_FULL.GetTop() )
+         m_gpExtension.y = m_gpCenter.y - GRID_RECT_FULL.GetTop();
 
-    if ( m_lBottom > GRID_RECT_FULL.m_lBottom )
-         m_lBottom = GRID_RECT_FULL.m_lBottom;
+    if ( GetBottom() > GRID_RECT_FULL.GetBottom() )
+         m_gpExtension.y = GRID_RECT_FULL.GetBottom() - m_gpCenter.y;
 
-    if ( m_lLeft < GRID_RECT_FULL.m_lLeft )
-         m_lLeft = GRID_RECT_FULL.m_lLeft;
+    if ( GetLeft() < GRID_RECT_FULL.GetLeft() )
+         m_gpExtension.x = m_gpCenter.x - GRID_RECT_FULL.GetLeft();
 
-    if ( m_lRight > GRID_RECT_FULL.m_lRight )
-         m_lRight = GRID_RECT_FULL.m_lRight;
+    if ( GetRight() > GRID_RECT_FULL.GetRight() )
+         m_gpExtension.x = GRID_RECT_FULL.GetRight() - m_gpCenter.x;
 
-    if ( (m_lTop > m_lBottom) || (m_lLeft > m_lRight) )
-        *this = GRID_RECT_EMPTY;
+    if ( (m_gpExtension.x < 0) || (m_gpExtension.y < 0) )
+        Reset();
 }
  
-void GridRect::Apply2Rect( GridPointFuncShort const & func, short const s ) const
+void GridRect::Apply2Shape( GridPointFuncShort const & func, short const s ) const
 {
-	GridRect   const rectFull = GridRect::GetFullRect();
-    GRID_COORD const gcLeft   = max( m_lLeft,   rectFull.GetLeft  () );
-    GRID_COORD const gcTop    = max( m_lTop,    rectFull.GetTop   () );
-    GRID_COORD const gcRight  = min( m_lRight,  rectFull.GetRight () );
-    GRID_COORD const gcBottom = min( m_lBottom, rectFull.GetBottom() );
+    GRID_COORD const gcLeft   = max( GetLeft  (), GridRect::GRID_RECT_FULL.GetLeft  () );
+    GRID_COORD const gcTop    = max( GetTop   (), GridRect::GRID_RECT_FULL.GetTop   () );
+    GRID_COORD const gcRight  = min( GetRight (), GridRect::GRID_RECT_FULL.GetRight () );
+    GRID_COORD const gcBottom = min( GetBottom(), GridRect::GRID_RECT_FULL.GetBottom() );
 
     GridPoint gp;
     for ( gp.y = gcTop; gp.y <= gcBottom; ++gp.y )
@@ -73,11 +45,10 @@ void GridRect::Apply2Rect( GridPointFuncShort const & func, short const s ) cons
 
 void GridRect::Apply2Rect( GridPointFunc const & func ) const
 {
-	GridRect   const rectFull = GridRect::GetFullRect();
-    GRID_COORD const gcLeft   = max( m_lLeft,   rectFull.GetLeft  () );
-    GRID_COORD const gcTop    = max( m_lTop,    rectFull.GetTop   () );
-    GRID_COORD const gcRight  = min( m_lRight,  rectFull.GetRight () );
-    GRID_COORD const gcBottom = min( m_lBottom, rectFull.GetBottom() );
+    GRID_COORD const gcLeft   = max( GetLeft  (), GridRect::GRID_RECT_FULL.GetLeft  () );
+    GRID_COORD const gcTop    = max( GetTop   (), GridRect::GRID_RECT_FULL.GetTop   () );
+    GRID_COORD const gcRight  = min( GetRight (), GridRect::GRID_RECT_FULL.GetRight () );
+    GRID_COORD const gcBottom = min( GetBottom(), GridRect::GRID_RECT_FULL.GetBottom() );
 
     GridPoint gp;
     for ( gp.y = gcTop; gp.y <= gcBottom; ++gp.y )
@@ -87,7 +58,7 @@ void GridRect::Apply2Rect( GridPointFunc const & func ) const
 
 void Apply2Grid( GridPointFunc const & func )
 {
-    GridRect::GetFullRect().Apply2Rect( func );
+    GridRect::GRID_RECT_FULL.Apply2Rect( func );
 }
 
 std::wostream & operator << ( std::wostream & out, GridRect const & rect )

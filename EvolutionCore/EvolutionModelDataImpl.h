@@ -27,23 +27,24 @@ public:
 		m_editorState.Reset( );
 	    m_plan.SetInvalid( );
 		ResetSelection( );
+        SetBrushMode( tBrushMode::move );
 	}
 
     virtual void CopyEvolutionModelData( EvolutionModelData const * const );
 
+	virtual void           ResetSelection   ( )                       { m_gridRectSelection.Reset(); };
 	virtual void           SetSelection     ( GridRect const & rect ) { m_gridRectSelection = rect; }
 
     virtual void           SetBrushOperator ( tOperator  const op    ) { m_editorState.SetBrushOperator ( op    ); }
     virtual void           SetBrushShape    ( tShape     const shape ) { m_editorState.SetBrushShape    ( shape ); }
     virtual void           SetBrushSize     ( GRID_COORD const size  ) { m_editorState.SetBrushSize     ( size  ); }
     virtual void           SetBrushIntensity( short      const sInt  ) { m_editorState.SetBrushIntensity( sInt  ); }
-    virtual void           SetBrushStrategy ( tBrushMode const mode  ) { m_editorState.SetBrushStrategy ( mode  ); }
     virtual void           SetSimulationMode( tBoolOp    const op    ) { m_editorState.SetSimulationMode( op    ); }
-    
-	virtual bool           GetSimulationMode( ) const { return m_editorState.GetSimulationMode( ); }
 
-    virtual void           ModelDoEdit    ( GridPoint  const gp ) { m_editorState.EditorDoEdit( m_grid, gp ); }
-	virtual void           ResetSelection ( )                     { m_gridRectSelection.Reset(); };
+    virtual void           SetBrushMode     ( tBrushMode const mode  ) { m_editorState.SetBrushMode( m_grid, mode  ); }
+    virtual void           ModelDoEdit      ( GridPoint  const gp )    { m_editorState.EditorDoEdit( gp ); }
+
+	virtual bool           GetSimulationMode( ) const { return m_editorState.GetSimulationMode( ); }
 
     virtual EVO_GENERATION GetAge         ( GridPoint const & gp ) const { return m_grid.GetAge( gp ); }
 
@@ -72,7 +73,7 @@ public:
     virtual tShape         GetBrushShape      ( ) const { return m_editorState.GetBrushShape( ); }
     virtual GRID_COORD     GetBrushSize       ( ) const { return m_editorState.GetBrushSize( ); }
     virtual tBrushMode     GetBrushMode       ( ) const { return m_editorState.GetBrushMode( ); }
-	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GridRect::GetFullRect() : m_gridRectSelection; }
+	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GridRect::GRID_RECT_FULL : m_gridRectSelection; }
 	virtual bool           SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
 	virtual bool           SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
 

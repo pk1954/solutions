@@ -317,8 +317,9 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
 void Grid::EditSetStrategy
 ( 
     GridPoint    const & gp, 
-    unsigned int const uiIntensity, // percent value
-    tStrategyId  const s
+    unsigned int const   uiIntensity, // percent value
+	Manipulator<short> * man,
+    tStrategyId          strategy
 )
 {
     unsigned int const uiRand  = NextRandomNumber( );
@@ -329,11 +330,11 @@ void Grid::EditSetStrategy
         GridField & gf       = getGridField( gp );
         bool const  bIsAlive = gf.IsAlive();
 
-        if ( s != tStrategyId::empty )
+        if ( strategy != tStrategyId::empty )
         {
-            tStrategyId const strategy = ( s == tStrategyId::random ) 
-                                       ? static_cast<tStrategyId>(m_random.NextRandomNumber() % NR_STRATEGIES ) 
-                                       : s;
+            if ( strategy == tStrategyId::random ) 
+               strategy = static_cast<tStrategyId>(m_random.NextRandomNumber() % NR_STRATEGIES );
+
             gf.CreateIndividual( ++m_idCounter, m_genEvo, strategy );
             if ( ! bIsAlive )
                 m_gpList.AddGridPointToList( * this, gf );
@@ -347,10 +348,9 @@ void Grid::EditSetStrategy
 
 GridPoint Grid::FindGridPoint( const std::function<bool( GridPoint const &)>& func ) const
 {
-	GridRect  const rectFull = GridRect::GetFullRect();
     GridPoint gp;
-    for ( gp.y = rectFull.GetTop ( ); gp.y <= rectFull.GetBottom( ); ++gp.y )
-    for ( gp.x = rectFull.GetLeft( ); gp.x <= rectFull.GetRight ( ); ++gp.x )
+    for ( gp.y = GridRect::GRID_RECT_FULL.GetTop ( ); gp.y <= GridRect::GRID_RECT_FULL.GetBottom( ); ++gp.y )
+    for ( gp.x = GridRect::GRID_RECT_FULL.GetLeft( ); gp.x <= GridRect::GRID_RECT_FULL.GetRight ( ); ++gp.x )
         if ( func( gp ) )
         {
             return gp;

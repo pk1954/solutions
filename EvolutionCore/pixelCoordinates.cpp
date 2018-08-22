@@ -112,9 +112,9 @@ PixelPoint PixelCoordinates::Pixel2PixelPos( PixelPoint const & ptPosIn, PixelCo
     return Pixel2PixelSize( ptPosIn + m_pixOffset, fTarget ) - fTarget.m_pixOffset;
 }
 
-GridCircle PixelCoordinates::Pixel2GridCircle( PixelPoint const & pntCenter, short const sRadius ) const 
+GridCircle PixelCoordinates::Pixel2GridCircle( PixelPoint const & pntCenter, short const sSize ) const 
 { 
-	return GridCircle( Pixel2GridPos( pntCenter ), sRadius / m_sFieldSize ); 
+	return GridCircle( Pixel2GridPos( pntCenter ), sSize / m_sFieldSize ); 
 }
 
 KGridPoint PixelCoordinates::Pixel2KGridPos( PixelPoint const & pp ) const 

@@ -5,6 +5,7 @@
 #include "assert.h"
 #include <unordered_map>
 #include "gridPoint.h"
+#include "gridShape.h"
 #include "gridRect.h"
 #include "gridCircle.h"
 #include "grid_model.h"
@@ -34,7 +35,7 @@ EditorState::EditorState( )
 void EditorState::Reset( )
 {
 	SetBrushOperator( tOperator::add );
-    m_brushMode      = tBrushMode::move;
+	m_lambdaMode     = nullptr;
     m_brushShape     = tShape::Circle;
     m_brushSize      = 17;
     m_brushIntensity = 50;
@@ -53,32 +54,35 @@ void EditorState::SetBrushOperator( tOperator  const op )
 	}
 }
   
-void EditorState::EditorDoEdit( Grid & G, GridPoint const gpCenter )
-{
-	GridPointFuncShort lambdaMode;
+void EditorState::SetBrushMode( Grid & G, tBrushMode const mode  ) 
+{ 
+	m_brushMode = mode;  
 
 	switch ( m_brushMode )
-    {
-	case  tBrushMode::move:        lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::empty    ); }; break;
-	case  tBrushMode::randomStrat: lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::random   ); }; break;
-    case  tBrushMode::cooperate:   lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::cooperate); }; break;
-    case  tBrushMode::defect:      lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::defect   ); }; break;
-    case  tBrushMode::tit4tat:     lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::tit4tat  ); }; break;
-    case  tBrushMode::noAnimals:   lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy(gp, s, tStrategyId::empty    ); }; break;
-    case  tBrushMode::mutRate:     lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.Apply2MutRate   (gp, s, m_manipulator); }; break;
-    case  tBrushMode::fertility:   lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.Apply2Fertility (gp, s, m_manipulator); }; break;
-    case  tBrushMode::food:        lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.Apply2FoodStock (gp, s, m_manipulator); }; break;
-    case  tBrushMode::fertilizer:  lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.Apply2Fertilizer(gp, s, m_manipulator); }; break;
+	{
+	case  tBrushMode::move:        m_lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy (gp, s, m_manipulator, tStrategyId::empty    ); }; break;
+	case  tBrushMode::randomStrat: m_lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy (gp, s, m_manipulator, tStrategyId::random   ); }; break;
+	case  tBrushMode::cooperate:   m_lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy (gp, s, m_manipulator, tStrategyId::cooperate); }; break;
+	case  tBrushMode::defect:      m_lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy (gp, s, m_manipulator, tStrategyId::defect   ); }; break;
+	case  tBrushMode::tit4tat:     m_lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy (gp, s, m_manipulator, tStrategyId::tit4tat  ); }; break;
+	case  tBrushMode::noAnimals:   m_lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.EditSetStrategy (gp, s, m_manipulator, tStrategyId::empty    ); }; break;
+	case  tBrushMode::mutRate:     m_lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.Apply2MutRate   (gp, s, m_manipulator); }; break;
+	case  tBrushMode::fertility:   m_lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.Apply2Fertility (gp, s, m_manipulator); }; break;
+	case  tBrushMode::food:        m_lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.Apply2FoodStock (gp, s, m_manipulator); }; break;
+	case  tBrushMode::fertilizer:  m_lambdaMode = [&G, this](GridPoint const & gp, short const s) { G.Apply2Fertilizer(gp, s, m_manipulator); }; break;
 	};
-
+}
+  
+void EditorState::EditorDoEdit( GridPoint const gpCenter )
+{
 	switch ( m_brushShape )
     {
     case tShape::Circle:
-        GridCircle( gpCenter, m_brushSize ).Apply2Cone( lambdaMode, m_brushIntensity );
+        GridCircle( gpCenter, m_brushSize ).Apply2Shape( m_lambdaMode, m_brushIntensity );
         break;
 
     case tShape::Rect:
-		GridRect( gpCenter, m_brushSize ).Apply2Rect( lambdaMode, m_brushIntensity  );        
+		GridRect( gpCenter, m_brushSize ).Apply2Shape( m_lambdaMode, m_brushIntensity ); 
 		break;
 
     default:

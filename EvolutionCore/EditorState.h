@@ -18,13 +18,14 @@ public:
 
 	void Reset( );
 
-    void EditorDoEdit( Grid &, GridPoint const );
+    void EditorDoEdit( GridPoint const );
 
-	void SetBrushStrategy ( tBrushMode const mode  ) { m_brushMode      = mode;  }
     void SetBrushShape    ( tShape     const shape ) { m_brushShape     = shape; }
     void SetBrushSize     ( GRID_COORD const size  ) { m_brushSize      = size;  }
     void SetBrushIntensity( short      const sInt  ) { m_brushIntensity = sInt;  }
     void SetSimulationMode( tBoolOp    const op    ) { ApplyOp( m_bSimulationMode, op ); }
+
+	void SetBrushMode( Grid &, tBrushMode const );
 	void SetBrushOperator ( tOperator  const ); 
   
     tOperator  GetBrushOperator ( ) const { return m_manipulator->GetOperator(); }
@@ -54,9 +55,10 @@ private:
 	
 	Manipulator<short> * m_manipulator;
 
-    tBrushMode    m_brushMode;
-    GRID_COORD    m_brushSize;
-    tShape        m_brushShape;
-    short         m_brushIntensity;
-	bool          m_bSimulationMode;
+	GridPointFuncShort m_lambdaMode;
+    tBrushMode m_brushMode;
+    GRID_COORD m_brushSize;
+    tShape     m_brushShape;
+    short      m_brushIntensity;
+	bool       m_bSimulationMode;
 };

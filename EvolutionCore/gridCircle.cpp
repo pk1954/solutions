@@ -12,16 +12,16 @@
 
 using namespace std;
 
-void GridCircle::Apply2Cone
+void GridCircle::Apply2Shape
 ( 
     GridPointFuncShort const & func, 
     short              const   sMaxIntensity  // between 0 and 100 (percent value)
-)
+) const 
 {
-    long const lRadius    = static_cast<long>(m_radius);
+    long const lRadius    = static_cast<long>(m_gpExtension.x / 2);
     long const lRadSquare = lRadius * lRadius;
 
-    GridRect( m_gpCenter, m_radius ).Apply2Rect
+    GridRect( m_gpCenter, m_gpExtension.x ).Apply2Rect
 	( 
 		[&](GridPoint const & gp)
 		{
@@ -38,13 +38,8 @@ void GridCircle::Apply2Cone
 	);
 }
 
-GridCircle GetInscribedCircle( GridRect const & rect)
-{
-    return GridCircle( rect.GetCenter( ), rect.GetMinExtension( ) / 2 );
-}
-
 wostream & operator << ( std::wostream & out, GridCircle const & circle )
 {
-    out << circle.GetCenter() << L' ' << circle.GetRadius();
+    out << circle.GetCenter() << L' ' << circle.GetSize();
     return out;
 }

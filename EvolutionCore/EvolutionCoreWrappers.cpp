@@ -114,14 +114,14 @@ public:
     }
 };
 
-class WrapSetBrushStrategy : public Script_Functor
+class WrapSetBrushMode : public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         int        const iMode = script.ScrReadInt( );
         tBrushMode const mode  = static_cast<tBrushMode>( iMode );
-        m_pModelWork->SetBrushStrategy( mode );
+        m_pModelWork->SetBrushMode( mode );
     }
 };
 
@@ -174,7 +174,7 @@ void DefineModelWrapperFunctions( EvolutionModelData * pModel )
     DEF_FUNC( SetBrushShape );
     DEF_FUNC( SetBrushSize );
     DEF_FUNC( SetBrushIntensity );
-    DEF_FUNC( SetBrushStrategy );
+    DEF_FUNC( SetBrushMode );
 }
 
 void DefineCoreWrapperFunctions( EvolutionCore * pCore )
