@@ -3,6 +3,7 @@
 
 
 #include "stdafx.h"
+#include <algorithm>
 #include "assert.h"
 #include "util.h"
 #include "debug.h"
@@ -18,7 +19,7 @@ void GeneTypeLimits::SetLimits( long const lLo, long const lHi )
     short const sHi = CastToShort( lHi );
 
     m_sMin    = sLo;
-    m_sMax    = ( sHi >= sLo ) ? sHi : sLo;
+    m_sMax    = max( sHi, sLo );
     m_dFactor = (static_cast<double>(m_sMax - m_sMin)) / Gene::MAX_MUTATIONRATE;
 }
 
