@@ -164,6 +164,7 @@
     <ClInclude Include="EditorState.h" />
     <ClInclude Include="EvolutionCoreImpl.h" />
     <ClInclude Include="gene.h" />
+    <ClInclude Include="geneTypeLimits.h" />
     <ClInclude Include="genome.h" />
     <ClInclude Include="gpList.h" />
     <ClInclude Include="gplIterator.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="EvolutionModelDataImpl.cpp" />
     <ClCompile Include="EvolutionTypes.cpp" />
     <ClCompile Include="food.cpp" />
+    <ClCompile Include="geneTypeLimits.cpp" />
     <ClCompile Include="pixelCoordinates.cpp" />
     <ClCompile Include="gene.cpp" />
     <ClCompile Include="genome.cpp" />
