@@ -34,8 +34,7 @@ public:
         HIST_GENERATION const, 
         ModelData     * const, 
         ModelFactory  * const,
-		tGenCmd         const, 
-		unsigned short  const
+		GenerationCmd   const
     );
 
     virtual int               GetNrOfHistCacheSlots( ) const;

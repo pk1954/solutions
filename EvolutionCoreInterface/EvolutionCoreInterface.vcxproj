@@ -152,6 +152,7 @@
     <ClInclude Include="gridCircle.h" />
     <ClInclude Include="gridNeighbor.h" />
     <ClInclude Include="gridPoint.h" />
+    <ClInclude Include="gridPoint24.h" />
     <ClInclude Include="gridRect.h" />
     <ClInclude Include="EvolutionModelData.h" />
     <ClInclude Include="gridShape.h" />

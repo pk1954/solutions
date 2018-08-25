@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "assert.h"
 #include "Resource.h"
+#include "GridPoint24.h"
 #include "EvoHistorySysGlue.h"
 #include "EvolutionModelData.h"
 #include "win32_worker_thread.h"
@@ -82,7 +83,7 @@ void WorkThreadInterface::PostSetPOI( GridPoint const & gp )
     {
         if ( m_bTrace )
             * m_pTraceStream << __func__ << L" " << gp << endl;
-        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_POI, gp.PackToInt16(), 0 );
+        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_POI, gp.x, gp.y );
     }
 }
 
@@ -92,7 +93,7 @@ void WorkThreadInterface::PostDoEdit( GridPoint const & gp )
     {
         if ( m_bTrace )
             * m_pTraceStream << __func__ << L" " << gp << endl;
-        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_DO_EDIT, gp.PackToInt16(), 0 );
+        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_DO_EDIT, gp.x, gp.y );
     }
 }
 

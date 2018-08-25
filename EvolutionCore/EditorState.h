@@ -21,9 +21,13 @@ public:
     void EditorDoEdit( GridPoint const );
 
     void SetBrushShape    ( tShape     const shape ) { m_brushShape     = shape; }
-    void SetBrushSize     ( GRID_COORD const size  ) { m_brushSize      = size;  }
     void SetBrushIntensity( short      const sInt  ) { m_brushIntensity = sInt;  }
     void SetSimulationMode( tBoolOp    const op    ) { ApplyOp( m_bSimulationMode, op ); }
+    void SetBrushSize     ( GRID_COORD const size  ) 
+	{ 
+		assert( size <= MAX_GRID_COORD );
+		m_brushSize = size;  
+	}
 
 	void SetBrushMode( Grid &, tBrushMode const );
 	void SetBrushOperator ( tOperator  const ); 

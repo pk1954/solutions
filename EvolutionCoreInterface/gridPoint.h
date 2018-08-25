@@ -8,6 +8,7 @@
 #include <assert.h>
 #include <functional>
 #include "util.h"
+#include "Int24.h"
 #include "EvolutionTypes.h"
 
 class GridPoint
@@ -21,18 +22,6 @@ public:
 		ASSERT_SHORT( _y );
 		x = static_cast< GRID_COORD >( _x );
 		y = static_cast< GRID_COORD >( _y );
-	}
-
-	GridPoint( int16_t const param )
-    	: x ( param >> 8 ),
-	      y ( param & 0x00ff )
-	{ }
-
-	int16_t PackToInt16( ) const
-	{
-		assert( x <= 0xff );
-		assert( y <= 0xff );
-		return ( x << 8 ) | y;
 	}
 
     virtual ~GridPoint() {};
@@ -62,8 +51,8 @@ public:
 	bool IsEvenCol( ) const { return x % 2 == 0; }
 	bool IsOddCol ( ) const { return x % 2 != 0; }
 
-    static GRID_COORD const GRID_WIDTH  = 400;
-    static GRID_COORD const GRID_HEIGHT = 200;
+    static GRID_COORD const GRID_WIDTH  = 200;
+    static GRID_COORD const GRID_HEIGHT = 100;
     static int        const GRID_AREA   = GRID_WIDTH * GRID_HEIGHT;
 
     static GridPoint const GRID_ORIGIN;

@@ -48,14 +48,9 @@ public:
 	HIST_GENERATION GetFirstGenOfIndividual( IndId const & ) const; 
 	HIST_GENERATION GetLastGenOfIndividual ( IndId const & ) const;  
 
-	GenerationCmd EvoCmd( tEvoCmd const cmd, int16_t const param )
-	{ 
-		return GenerationCmd::ApplicationCmd( static_cast<tGenCmd>(cmd), param );  
-	}  
-
 	void EvoCreateNextGenCommand( ) 
 	{ 
-		m_pHistorySystem->CreateAppCommand( EvoCmd( tEvoCmd::nextGen, 0 ) );  
+		m_pHistorySystem->CreateAppCommand( NEXT_GEN_CMD );  
 	}  
 
 	bool IsEditorCommand( HIST_GENERATION const gen ) const
@@ -63,10 +58,17 @@ public:
 		return ::IsEditorCommand( static_cast<tEvoCmd>( m_pHistorySystem->GetGenerationCmd( gen ) ) );
 	}
 
-	bool EvoCreateEditorCommand( tEvoCmd, int16_t );
+	bool EvoCreateEditorCommand( GenerationCmd const );
+
+	static GenerationCmd EvoCmd( tEvoCmd const cmd, Int24 const param )
+	{ 
+		return GenerationCmd::ApplicationCmd( static_cast<tGenCmd>(cmd), param );  
+	}  
 
 private:
-    EvoModelDataGlue * m_pEvoModelWork;
+    static GenerationCmd const NEXT_GEN_CMD;
+	
+	EvoModelDataGlue * m_pEvoModelWork;
 	EvoModelFactory  * m_pEvoModelFactory;
     HistorySystem    * m_pHistorySystem;
 	HistAllocThread  * m_pHistAllocThread;

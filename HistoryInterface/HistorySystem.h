@@ -24,7 +24,14 @@ public:
 
     virtual ~HistorySystem( ) { };
 
-    virtual void InitHistorySystem( short const, HIST_GENERATION const, ModelData * const, ModelFactory * const, tGenCmd const, unsigned short const ) = 0;
+    virtual void InitHistorySystem
+	( 
+		short           const, 
+		HIST_GENERATION const, 
+		ModelData     * const, 
+		ModelFactory  * const, 
+		GenerationCmd   const
+	) = 0;
 
     virtual int               GetNrOfHistCacheSlots( ) const = 0;
     virtual HIST_GENERATION   GetNrOfGenerations( )    const = 0;

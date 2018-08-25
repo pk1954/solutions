@@ -15,6 +15,8 @@
 
 class WorkThread;
 
+GenerationCmd const EvoHistorySysGlue::NEXT_GEN_CMD = EvoHistorySysGlue::EvoCmd( tEvoCmd::nextGen, 0 );
+
 EvoHistorySysGlue::EvoHistorySysGlue( ) :
     m_pEvoModelWork   ( nullptr ),
 	m_pEvoModelFactory( nullptr ),
@@ -49,8 +51,7 @@ void EvoHistorySysGlue::Start
         genMaxNrOfGens,
         m_pEvoModelWork,
         m_pEvoModelFactory,
-		static_cast< tGenCmd >( tEvoCmd::reset ),
-		0
+		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( tEvoCmd::reset ), 0 )
     );
 
 	m_bAskHistoryCut = bAskHistoryCut;
@@ -92,7 +93,7 @@ HIST_GENERATION EvoHistorySysGlue::GetLastGenOfIndividual ( IndId const & id ) c
 	return id.IsDefined( ) ? m_pHistorySystem->FindLastGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
 }
 
-bool EvoHistorySysGlue::EvoCreateEditorCommand( tEvoCmd cmd, int16_t param ) 
+bool EvoHistorySysGlue::EvoCreateEditorCommand( GenerationCmd cmd ) 
 { 
 	if ( 
 		  m_pHistorySystem->IsInHistoryMode( ) &&  // If in history mode,
@@ -102,7 +103,7 @@ bool EvoHistorySysGlue::EvoCreateEditorCommand( tEvoCmd cmd, int16_t param )
 		return false;  // user answered no, do not erase
 
 	m_pHistorySystem->ClearHistory( GetCurrentGeneration( ) );  // if in history mode: cut off future generations
-	m_pHistorySystem->CreateAppCommand( EvoCmd( cmd, param ) ); 
+	m_pHistorySystem->CreateAppCommand( cmd ); 
 	return true;
 }
 

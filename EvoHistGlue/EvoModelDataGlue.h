@@ -1,6 +1,5 @@
 // EvoModelDataGlue.h
 //
-//
 // Glue code for adapting EVOLUTION to HISTORY system
 //
 // EvoModelDataGlue is ** below ** HISTORY (is called by HISTORY)
@@ -9,6 +8,7 @@
 #pragma once
 
 #include "boolOp.h"
+#include "Int24.h"
 #include "gridPoint.h"
 #include "ModelData.h"
 
@@ -32,7 +32,7 @@ public:
 
     ~EvoModelDataGlue( );
 
-    virtual void OnAppCommand( tGenCmd const, int16_t const );
+    virtual void OnAppCommand( GenerationCmd const );
 	virtual void CopyModelData( ModelData const * const );
 
     GridPoint FindGridPoint( IndId const & ) const;

@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include <iostream>
+#include "Int24.h"
 #include "symtab.h"
 #include "errhndl.h"
 #include "ModelData.h"
@@ -25,9 +26,9 @@ public:
         * this = * static_cast< HistTestModelData const * const >( src );
     }
 
-    virtual void OnAppCommand( tGenCmd const usCmd, int16_t const sParam )
+    virtual void OnAppCommand( GenerationCmd const cmd )
     {
-//		wcout << endl << L"OnAppCommand( " << usCmd << L", " << sParam << L" )" << endl;
+//		wcout << endl << L"OnAppCommand( " << cmd.GetCommand() << L", " << cmd.GetParam() << L" )" << endl;
 	}
 
 private:
@@ -84,8 +85,7 @@ void DoTest( )
 		1000,           // # of generations
 		& modelData,
 		& modelFactory,
-		static_cast<tGenCmd>(0),
-		0
+		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( 0 ), 0 )
 	);
 
 	wcout << L"*** Create " << NR_OF_SLOTS << L" history slots" << endl;

@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "gridPoint24.h"
 #include "EvoGenerationCmd.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
@@ -23,9 +24,10 @@ void EvoModelDataGlue::CopyModelData( ModelData const * const src )
     m_pEvolutionModelData->CopyEvolutionModelData( evoSrc->m_pEvolutionModelData );
 }
 
-void EvoModelDataGlue::OnAppCommand( tGenCmd const usCmd, int16_t const param  )
+void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd  )
 {
-	tEvoCmd const evoCmd = static_cast<tEvoCmd>( usCmd );
+	tEvoCmd const evoCmd = static_cast<tEvoCmd>( cmd.GetCommand() );
+	Int24   const param  = cmd.GetParam( );
 	switch ( evoCmd )
 	{
 	case tEvoCmd::nextGen:
@@ -33,11 +35,11 @@ void EvoModelDataGlue::OnAppCommand( tGenCmd const usCmd, int16_t const param  )
 		break;
 
 	case tEvoCmd::editDoEdit:
-		m_pEvolutionModelData->ModelDoEdit( GridPoint( static_cast<unsigned short>( param ) )  );
+		m_pEvolutionModelData->ModelDoEdit( GridPoint24::Unpack( param ) );
 		break;
 
 	case tEvoCmd::editSetPOI:
-		m_pEvolutionModelData->SetPoi( GridPoint( static_cast<unsigned short>( param )  )  );
+		m_pEvolutionModelData->SetPoi( GridPoint24::Unpack( param ) );
 		break;
 
 	case tEvoCmd::reset:
@@ -45,28 +47,27 @@ void EvoModelDataGlue::OnAppCommand( tGenCmd const usCmd, int16_t const param  )
         break;
 
 	case tEvoCmd::setSimulationMode:
-        m_pEvolutionModelData->SetSimulationMode( static_cast<tBoolOp>( param ) );
+        m_pEvolutionModelData->SetSimulationMode( static_cast<tBoolOp>( param.GetValue() ) );
         break;
 
 	case tEvoCmd::editSetBrushMode:
-        m_pEvolutionModelData->SetBrushMode( static_cast<tBrushMode>( param ) );
+        m_pEvolutionModelData->SetBrushMode( static_cast<tBrushMode>( param.GetValue() ) );
         break;
 
     case tEvoCmd::editSetBrushShape:
-        m_pEvolutionModelData->SetBrushShape( static_cast<tShape>( param ) );
+        m_pEvolutionModelData->SetBrushShape( static_cast<tShape>( param.GetValue() ) );
 		break;
 
     case tEvoCmd::editSetBrushOperator:
-        m_pEvolutionModelData->SetBrushOperator( static_cast<tOperator>( param ) );
+        m_pEvolutionModelData->SetBrushOperator( static_cast<tOperator>( param.GetValue() ) );
 		break;
 
     case tEvoCmd::editSetBrushSize:
-		assert( param <= MAX_GRID_COORD );
-        m_pEvolutionModelData->SetBrushSize( static_cast<GRID_COORD>( param ) );
+        m_pEvolutionModelData->SetBrushSize( static_cast<GRID_COORD>( param.GetValue() ) );
 		break;
 
     case tEvoCmd::editSetBrushIntensity:
-        m_pEvolutionModelData->SetBrushIntensity( static_cast<short>( param ) );
+        m_pEvolutionModelData->SetBrushIntensity( static_cast<short>( param.GetValue() ) );
 		break;
 
 	default:

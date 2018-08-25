@@ -31,7 +31,7 @@ short CastToShort(T const value )
 }
 
 template<typename T>
-short CastToInt(T const value ) 
+int CastToInt(T const value ) 
 {
 	ASSERT_INT( value );
 	return static_cast<int>( value );

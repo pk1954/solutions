@@ -5,9 +5,11 @@
 #include <string>
 #include <fstream>
 #include <wtypes.h>
+#include "util.h"
 #include "assert.h"
 #include "gridRect.h"
 #include "gridPoint.h"
+#include "GridPoint24.h"
 #include "HistoryGeneration.h"
 #include "EvolutionTypes.h"
 #include "EvoGenerationCmd.h"
@@ -94,16 +96,19 @@ private:
 	void dispatchMessage( UINT, WPARAM, LPARAM );
     void generationRun( );
 
-	BOOL editorCommand( tEvoCmd const cmd, WPARAM const wParam )
-	{
-		int16_t cmdParam = static_cast<int16_t>(wParam);
-		assert( wParam == cmdParam );
-		return m_pEvoHistGlue->EvoCreateEditorCommand( cmd, cmdParam );
-	}
-
 	BOOL IsValidThreadMessage(UINT msg)
 	{
 		return (THREAD_MSG_FIRST <= msg) && (msg <= THREAD_MSG_LAST);
+	}
+
+	BOOL editorCommand( tEvoCmd const cmd, WPARAM const wParam )
+	{
+		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, Int24(CastToInt(wParam)) ) );
+	}
+
+	BOOL editorCommand( tEvoCmd const cmd, GridPoint24 const gp24 )
+	{
+		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, gp24 ) );
 	}
 
 friend static DWORD WINAPI WorkerThread( _In_ LPVOID );

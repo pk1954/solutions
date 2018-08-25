@@ -7,9 +7,12 @@
 
 #include <fstream>
 #include <iomanip>
+#include <bitset>
 #include "limits.h"
 #include "assert.h"
 #include "debug.h"
+#include "Int24.h"
+#include "util.h"
 
 using namespace std;
 
@@ -29,7 +32,12 @@ public:
     }
 
     tGenCmd GetCommand( ) const { return m_Cmd; }
-    int16_t GetParam( )   const { return m_Param; }
+	Int24   GetParam( )   const { return m_Param; }
+	short   GetSlotNr()  const
+	{
+		assert( m_Cmd == tGenCmd::CACHED );
+		return m_Param.GetValue( );
+	}
 
 	bool IsDefined( )             const { return m_Cmd != tGenCmd::UNDEFINED; }
     bool IsUndefined( )           const { return m_Cmd == tGenCmd::UNDEFINED; }
@@ -39,8 +47,7 @@ public:
 
     void InitializeCmd( )
     {
-        m_Cmd   = tGenCmd::UNDEFINED;
-        m_Param = 0xfff;
+        m_Cmd = tGenCmd::UNDEFINED;
     }
 
  	static int const MAX_APP_CMD = 0xff;
@@ -49,23 +56,23 @@ public:
 
     static GenerationCmd CachedCmd( short const sSlotNr )
     {
-		return GenerationCmd( tGenCmd::CACHED, sSlotNr );
+		return GenerationCmd( tGenCmd::CACHED, static_cast<unsigned int>(sSlotNr) );
     }
 
-    static GenerationCmd ApplicationCmd( tGenCmd cmd, int16_t const param )
+    static GenerationCmd ApplicationCmd( tGenCmd cmd, Int24 const param )
     {
 		ASSERT_LIMITS( static_cast<int>(cmd), static_cast<int>(tGenCmd::FIRST_APP_CMD), MAX_APP_CMD );
 		return GenerationCmd( cmd, param );
     }
 
 private:
-    GenerationCmd( tGenCmd const cmd, int16_t const p ) :
+    GenerationCmd( tGenCmd const cmd, Int24 const p ) :
         m_Cmd( cmd ),
-        m_Param( p )
-    { }
+		m_Param( p )
+	{ }
 
     tGenCmd m_Cmd;
-    int16_t m_Param;
+	Int24   m_Param;
 };
 
 wchar_t const * const GetGenerationCmdNameShort( tGenCmd const );

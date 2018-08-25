@@ -12,8 +12,8 @@ public:
 
 	// call back functions 
 
-	virtual void CopyModelData( ModelData const * const )     = 0;   
-    virtual void OnAppCommand( tGenCmd const, int16_t const ) = 0;
+	virtual void CopyModelData( ModelData const * const ) = 0;   
+    virtual void OnAppCommand( GenerationCmd const ) = 0;
 };
 
 class ModelFactory
