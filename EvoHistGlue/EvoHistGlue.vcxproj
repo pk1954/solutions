@@ -143,16 +143,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EvoGenerationCmd.h" />
-    <ClInclude Include="EvoHistorySys.h" />
-    <ClInclude Include="EvoModelData.h" />
+    <ClInclude Include="EvoHistorySysGlue.h" />
+    <ClInclude Include="EvoModelDataGlue.h" />
     <ClInclude Include="EvoModelFactory.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EvoGenerationCmd.cpp" />
-    <ClCompile Include="EvoHistorySys.cpp" />
-    <ClCompile Include="EvoModelData.cpp" />
+    <ClCompile Include="EvoHistorySysGlue.cpp" />
+    <ClCompile Include="EvoModelDataGlue.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

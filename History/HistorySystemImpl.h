@@ -34,7 +34,7 @@ public:
         HIST_GENERATION const, 
         ModelData     * const, 
         ModelFactory  * const,
-		short           const, 
+		tGenCmd         const, 
 		unsigned short  const
     );
 
@@ -48,10 +48,10 @@ public:
     virtual bool              AddHistorySlot( ) const;
     virtual void              ShutDownHistCacheSlot( short const );
 
-    virtual void              CreateAppCommand  ( GenerationCmd::tGenCmd, int16_t const );
-	virtual void              ClearHistory      ( HIST_GENERATION const );
-    virtual void              ApproachHistGen   ( HIST_GENERATION const );
-	virtual unsigned short    GetGenerationCmd  ( HIST_GENERATION const );
+    virtual void              CreateAppCommand( GenerationCmd );
+	virtual void              ClearHistory    ( HIST_GENERATION const );
+    virtual void              ApproachHistGen ( HIST_GENERATION const );
+	virtual tGenCmd           GetGenerationCmd( HIST_GENERATION const );
 
     virtual HIST_GENERATION   FindFirstGenerationWithProperty( GenerationProperty const & ) const;
     virtual HIST_GENERATION   FindLastGenerationWithProperty ( GenerationProperty const & ) const;

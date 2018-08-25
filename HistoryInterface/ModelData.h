@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "GenerationCmd.h"
+
 class ModelData 
 {
 public:
@@ -11,7 +13,7 @@ public:
 	// call back functions 
 
 	virtual void CopyModelData( ModelData const * const )     = 0;   
-    virtual void OnAppCommand( int16_t const, int16_t const ) = 0;
+    virtual void OnAppCommand( tGenCmd const, int16_t const ) = 0;
 };
 
 class ModelFactory

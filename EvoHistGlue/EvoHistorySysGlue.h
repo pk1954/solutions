@@ -1,26 +1,26 @@
-// EvoHistorySys.h
+// EvoHistorySysGlue.h
 //
 // Glue code for adapting EVOLUTION to HISTORY system
 //
-// EvoHistorySys is ** above ** HISTORY (calls HISTORY)
+// EvoHistorySysGlue is ** above ** HISTORY (calls HISTORY)
 //
 
 #pragma once
 
 #include "HistorySystem.h"
-#include "EvoModelData.h"
+#include "EvoModelDataGlue.h"
 #include "EvoGenerationCmd.h"
 
 class EvoModelFactory;
 class HistAllocThread;
 class EvolutionCore;
 
-class EvoHistorySys
+class EvoHistorySysGlue
 {
 public:
 
-    EvoHistorySys( );
-	virtual ~EvoHistorySys( );
+    EvoHistorySysGlue( );
+	virtual ~EvoHistorySysGlue( );
 
     void Start
 	( 
@@ -42,27 +42,35 @@ public:
     HIST_GENERATION GetCurrentGeneration ( ) const { return m_pHistorySystem->GetCurrentGeneration( ); }
     HIST_GENERATION GetYoungestGeneration( ) const { return m_pHistorySystem->GetYoungestGeneration( ); }
 
-    EvoModelData  * GetEvoModelData ( ) { return m_pEvoModelWork;  }
-    HistorySystem * GetHistorySystem( ) { return m_pHistorySystem; }
+    EvoModelDataGlue * GetEvoModelData ( ) { return m_pEvoModelWork;  }
+    HistorySystem    * GetHistorySystem( ) { return m_pHistorySystem; }
     
-    HIST_GENERATION GetFirstGenOfIndividual( IndId const & ) const;
-    HIST_GENERATION GetLastGenOfIndividual ( IndId const & ) const;
+	HIST_GENERATION GetFirstGenOfIndividual( IndId const & ) const; 
+	HIST_GENERATION GetLastGenOfIndividual ( IndId const & ) const;  
+
+	GenerationCmd EvoCmd( tEvoCmd const cmd, int16_t const param )
+	{ 
+		return GenerationCmd::ApplicationCmd( static_cast<tGenCmd>(cmd), param );  
+	}  
 
 	void EvoCreateNextGenCommand( ) 
 	{ 
-		m_pHistorySystem->CreateAppCommand( static_cast<int16_t>(tEvoCmd::nextGen), 0 );  
+		m_pHistorySystem->CreateAppCommand( EvoCmd( tEvoCmd::nextGen, 0 ) );  
 	}  
+
+	bool IsEditorCommand( HIST_GENERATION const gen ) const
+	{
+		return ::IsEditorCommand( static_cast<tEvoCmd>( m_pHistorySystem->GetGenerationCmd( gen ) ) );
+	}
 
 	bool EvoCreateEditorCommand( tEvoCmd, int16_t );
 
-	bool IsEditorCommand( HIST_GENERATION const ) const;
-
 private:
-    EvoModelData    * m_pEvoModelWork;
-	EvoModelFactory * m_pEvoModelFactory;
-    HistorySystem   * m_pHistorySystem;
-	HistAllocThread * m_pHistAllocThread;
-	bool              m_bAskHistoryCut;
+    EvoModelDataGlue * m_pEvoModelWork;
+	EvoModelFactory  * m_pEvoModelFactory;
+    HistorySystem    * m_pHistorySystem;
+	HistAllocThread  * m_pHistAllocThread;
+	bool               m_bAskHistoryCut;
 
     // private member functions
 

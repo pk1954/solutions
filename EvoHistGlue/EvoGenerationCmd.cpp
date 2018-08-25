@@ -10,6 +10,8 @@ using namespace std;
 
 bool IsEditorCommand( tEvoCmd const cmd )
 {
+	static_assert( (int)tEvoCmd::LAST_APP_CMD < GenerationCmd::MAX_APP_CMD, "Too many tEvoCmd values" );
+
 	return ( tEvoCmd::setSimulationMode <= cmd ) && ( cmd <= tEvoCmd::editSetPOI );
 }
 
@@ -53,9 +55,9 @@ wchar_t const * const GetEvoCommandName( tEvoCmd const cmd )
 
 wostream & operator << ( wostream & out, tEvoCmd const & cmd )
 {
-	if ( GenerationCmd::IsAppCmd( static_cast<GenerationCmd::tGenCmd>(cmd) ) )
+	if ( GenerationCmd::IsAppCmd( static_cast<tGenCmd>(cmd) ) )
 		out << GetEvoCommandNameShort( cmd  );
 	else 
-		out << GetGenerationCmdNameShort( static_cast<GenerationCmd::tGenCmd>(cmd) );
+		out << GetGenerationCmdNameShort( static_cast<tGenCmd>(cmd) );
     return out;
 };

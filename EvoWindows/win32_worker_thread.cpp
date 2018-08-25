@@ -6,7 +6,7 @@
 #include "SCRIPT.H"
 #include "Resource.h"
 #include "EvolutionModelData.h"
-#include "EvoHistorySys.h"
+#include "EvoHistorySysGlue.h"
 #include "win32_script.h"
 #include "win32_performanceWindow.h"
 #include "win32_editor.h"
@@ -29,7 +29,7 @@ WorkThread::WorkThread( ) :
 	m_pEditorWindow       ( nullptr ),
     m_pDisplayGridFunctor ( nullptr ),
     m_pModelWork          ( nullptr ),
-    m_pEvoHistorySys      ( nullptr ),
+    m_pEvoHistGlue        ( nullptr ),
     m_bContinue           ( FALSE ),
     m_genDemanded         ( 0 )
 { }
@@ -40,7 +40,7 @@ void WorkThread::Start
 	EditorWindow        * const pEditorWindow,
     DisplayAll    const * const pDisplayGridFunctor,
     EvolutionModelData  * const pModel,
-    EvoHistorySys       * const pEvoHistorySys,
+    EvoHistorySysGlue   * const pEvoHistorySys,
 	WorkThreadInterface * const pWorkThreadInterface
 
 )
@@ -50,7 +50,7 @@ void WorkThread::Start
 	m_pEditorWindow        = pEditorWindow;
     m_pDisplayGridFunctor  = pDisplayGridFunctor;
     m_pModelWork           = pModel;
-	m_pEvoHistorySys       = pEvoHistorySys;
+	m_pEvoHistGlue         = pEvoHistorySys;
 	m_pWorkThreadInterface = pWorkThreadInterface;
 
     (void)SetThreadAffinityMask( m_hThread, 0x0002 );
@@ -64,7 +64,7 @@ WorkThread::~WorkThread( )
     m_pPerformanceWindow   = nullptr;
     m_pEditorWindow        = nullptr;
     m_pDisplayGridFunctor  = nullptr;
-	m_pEvoHistorySys       = nullptr;
+	m_pEvoHistGlue         = nullptr;
 }
 
 void WorkThread::TerminateThread( HWND const hwndCtl )
@@ -80,22 +80,22 @@ void WorkThread::TerminateThread( HWND const hwndCtl )
 
 void WorkThread::GenerationStep( )   
 {
-	if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )  // is something to do at all?
+	if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )  // is something to do at all?
 	{
 		if ( 
-		       (m_pEvoHistorySys->GetCurrentGeneration( ) < m_genDemanded)  &&
-		       (m_pEvoHistorySys->GetCurrentGeneration( ) == m_pEvoHistorySys->GetYoungestGeneration( ))
+		       (m_pEvoHistGlue->GetCurrentGeneration( ) < m_genDemanded)  &&
+		       (m_pEvoHistGlue->GetCurrentGeneration( ) == m_pEvoHistGlue->GetYoungestGeneration( ))
 		   )     
 		{                                                    // Normal case: Compute next generation
 			if (m_pPerformanceWindow != nullptr)
 				m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
-			m_pEvoHistorySys->EvoCreateNextGenCommand( );
+			m_pEvoHistGlue->EvoCreateNextGenCommand( );
 			if (m_pPerformanceWindow != nullptr)
 				m_pPerformanceWindow->ComputationStop( );    // measure computation time
 		}
 		else  // we are somewhere in history
 		{
-			m_pEvoHistorySys->EvoApproachHistGen( m_genDemanded ); // Get a stored generation from history system
+			m_pEvoHistGlue->EvoApproachHistGen( m_genDemanded ); // Get a stored generation from history system
 			if ( m_pModelWork->EditorStateHasChanged( ) )          // make sure that editor GUI reflects new state
 			{
 				m_pModelWork->SaveEditorState(  );
@@ -106,7 +106,7 @@ void WorkThread::GenerationStep( )
 
 		WorkMessage( THREAD_MSG_REFRESH, 0, 0 );                   // refresh all views
     
-		if ( m_pEvoHistorySys->GetCurrentGeneration( ) != m_genDemanded )   // still not done?
+		if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )   // still not done?
 			m_pWorkThreadInterface->PostRepeatGenerationStep( );   // Loop! Will call indirectly GenerationStep again
 	}
 }
@@ -116,7 +116,7 @@ void WorkThread::generationRun( )
     if ( m_bContinue )
     {
 		assert( m_iScriptLevel == 0 );
-		m_genDemanded = m_pEvoHistorySys->GetCurrentGeneration( ) + 1 ;
+		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( ) + 1 ;
     
 		GenerationStep( );
 
@@ -203,7 +203,7 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
 
     case THREAD_MSG_STOP:
-		m_genDemanded = m_pEvoHistorySys->GetCurrentGeneration( );
+		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
 		m_bContinue = FALSE;
 		Script::StopProcessing( );
         break;

@@ -1,29 +1,29 @@
-// EvoModelData.cpp
+// EvoModelDataGlue.cpp
 //
 
 #include "stdafx.h"
 #include "EvoGenerationCmd.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
-#include "EvoModelData.h"
+#include "EvoModelDataGlue.h"
 
-EvoModelData::~EvoModelData( )
+EvoModelDataGlue::~EvoModelDataGlue( )
 {
     delete m_pEvolutionModelData;
 }
 
-GridPoint EvoModelData::FindGridPoint( IndId const & id ) const
+GridPoint EvoModelDataGlue::FindGridPoint( IndId const & id ) const
 { 
     return m_pEvolutionModelData->FindGridPoint( id );
 }
 
-void EvoModelData::CopyModelData( ModelData const * const src )
+void EvoModelDataGlue::CopyModelData( ModelData const * const src )
 {
-	EvoModelData const * const evoSrc = static_cast< EvoModelData const * const >( src );
+	EvoModelDataGlue const * const evoSrc = static_cast< EvoModelDataGlue const * const >( src );
     m_pEvolutionModelData->CopyEvolutionModelData( evoSrc->m_pEvolutionModelData );
 }
 
-void EvoModelData::OnAppCommand( int16_t const usCmd, int16_t const param  )
+void EvoModelDataGlue::OnAppCommand( tGenCmd const usCmd, int16_t const param  )
 {
 	tEvoCmd const evoCmd = static_cast<tEvoCmd>( usCmd );
 	switch ( evoCmd )

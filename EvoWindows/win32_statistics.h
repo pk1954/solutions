@@ -6,7 +6,7 @@
 #include "win32_textWindow.h"
 #include "win32_util.h"
 
-class EvoHistorySys;
+class EvoHistorySysGlue;
 class GridRect;
 class EvolutionModelData;
 

@@ -8,7 +8,7 @@
 
 class RootWindow;
 class ViewCollection;
-class EvoHistorySys;
+class EvoHistorySysGlue;
 class EvolutionModelData;
 
 class FocusPoint
@@ -17,7 +17,7 @@ public:
     FocusPoint( );
     virtual ~FocusPoint( );
 
-    void Start( EvoHistorySys *, EvolutionModelData * );
+    void Start( EvoHistorySysGlue *, EvolutionModelData * );
 
     void SetFocusPoint( GridPoint const );
 
@@ -32,7 +32,7 @@ public:
     BOOL            const IsDefined( )    const; 
 
 private:
-    EvoHistorySys      * m_pEvoHistorySys;
+    EvoHistorySysGlue  * m_pEvoHistGlue;
     EvolutionModelData * m_pModelWork;
     ViewCollection     * m_pViewCol;
     HIST_GENERATION      m_genBirth;

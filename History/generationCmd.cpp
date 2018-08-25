@@ -7,23 +7,23 @@
 
 using namespace std;
 
-wchar_t const * const GetGenerationCmdNameShort( GenerationCmd::tGenCmd const cmd )
+wchar_t const * const GetGenerationCmdNameShort( tGenCmd const cmd )
 {
-    static unordered_map < GenerationCmd::tGenCmd, wchar_t const * const > mapNames =
+    static unordered_map < tGenCmd, wchar_t const * const > mapNames =
     {
-        { GenerationCmd::CACHED,    L"CACHE" },
-        { GenerationCmd::UNDEFINED, L"UNDEF" }
+        { tGenCmd::CACHED,    L"CACHE" },
+        { tGenCmd::UNDEFINED, L"UNDEF" }
     };
 
     return mapNames.at( cmd );
 }
 
-wchar_t const * const GetGenerationCmdName( GenerationCmd::tGenCmd const cmd )
+wchar_t const * const GetGenerationCmdName( tGenCmd const cmd )
 {
-    static unordered_map < GenerationCmd::tGenCmd, wchar_t const * const > mapNames =
+    static unordered_map < tGenCmd, wchar_t const * const > mapNames =
     {
-        { GenerationCmd::CACHED,    L"tGenCmd::cached" },
-        { GenerationCmd::UNDEFINED, L"tGenCmd::undefined" }
+        { tGenCmd::CACHED,    L"tGenCmd::cached" },
+        { tGenCmd::UNDEFINED, L"tGenCmd::undefined" }
     };
 
     return mapNames.at( cmd );
@@ -31,7 +31,7 @@ wchar_t const * const GetGenerationCmdName( GenerationCmd::tGenCmd const cmd )
 
 wostream & operator << ( wostream & out, GenerationCmd const & genCmd )
 {
-    GenerationCmd::tGenCmd cmd = genCmd.GetCommand( );
+    tGenCmd cmd = genCmd.GetCommand( );
     out << GetGenerationCmdNameShort( cmd );
     return out;
 };

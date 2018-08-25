@@ -5,7 +5,7 @@
 #include "symtab.h"
 #include "Resource.h"
 #include "config.h"
-#include "EvoModelData.h"
+#include "EvoModelDataGlue.h"
 #include "EvoGenerationCmd.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "win32_workThreadInterface.h"

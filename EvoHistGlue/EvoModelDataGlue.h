@@ -1,9 +1,9 @@
-// EvoModelData.h
+// EvoModelDataGlue.h
 //
 //
 // Glue code for adapting EVOLUTION to HISTORY system
 //
-// EvoHistorySys is ** below ** HISTORY (is called by HISTORY)
+// EvoModelDataGlue is ** below ** HISTORY (is called by HISTORY)
 //
 
 #pragma once
@@ -15,11 +15,11 @@
 class EvolutionModelData;
 class EvolutionCore;
 
-class EvoModelData: public ModelData
+class EvoModelDataGlue: public ModelData
 {
 public:
 	
-    EvoModelData
+    EvoModelDataGlue
 	( 
 		EvolutionModelData * const pModelDataWork, 
         EvolutionCore      * const pCore
@@ -28,11 +28,11 @@ public:
 		m_pEvolutionCore( pCore )
     { }
 
-    EvoModelData & operator= ( EvoModelData const & );  // noncopyable class 
+    EvoModelDataGlue & operator= ( EvoModelDataGlue const & );  // noncopyable class 
 
-    ~EvoModelData( );
+    ~EvoModelDataGlue( );
 
-    virtual void OnAppCommand( int16_t const, int16_t const );
+    virtual void OnAppCommand( tGenCmd const, int16_t const );
 	virtual void CopyModelData( ModelData const * const );
 
     GridPoint FindGridPoint( IndId const & ) const;

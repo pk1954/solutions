@@ -5,9 +5,9 @@
 
 #include "GenerationCmd.h"
 
-enum class tEvoCmd : int16_t // enumeration starts after last tGenCmd value
+enum class tEvoCmd : int8_t // enumeration starts after last tGenCmd value
 {
-	nextGen = GenerationCmd::FIRST_APP_CMD,
+	nextGen = static_cast<int8_t>(tGenCmd::FIRST_APP_CMD),
     reset,
 	setSimulationMode,   // simulation mode / edit mode
     editSetBrushMode,
@@ -16,7 +16,8 @@ enum class tEvoCmd : int16_t // enumeration starts after last tGenCmd value
     editSetBrushSize,
     editSetBrushIntensity,
     editDoEdit,
-	editSetPOI
+	editSetPOI,
+	LAST_APP_CMD = editSetPOI
 };
 
 bool IsEditorCommand( tEvoCmd const );

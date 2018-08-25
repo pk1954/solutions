@@ -5,16 +5,12 @@
 #include <string>
 #include <fstream>
 #include <wtypes.h>
+#include "assert.h"
 #include "gridRect.h"
 #include "gridPoint.h"
 #include "HistoryGeneration.h"
 #include "EvolutionTypes.h"
 #include "EvoGenerationCmd.h"
-
-//lint -esym( 763, GridPoint )         redundant declaration
-//lint -esym( 763, HiResTimer )        redundant declaration
-//lint -esym( 763, EvolutionCore )     redundant declaration
-//lint -esym( 763, Script )            redundant declaration
 
 class PerformanceWindow;
 class EditorWindow;
@@ -23,7 +19,7 @@ class EvolutionModelData;
 class WinManager;
 class DisplayAll;
 class EditorWindow;
-class EvoHistorySys;
+class EvoHistorySysGlue;
 class WorkThreadInterface;
 
 class WorkThread
@@ -38,7 +34,7 @@ public:
 		EditorWindow        * const,  
         DisplayAll   const  * const, 
         EvolutionModelData  * const,
-	    EvoHistorySys       * const,
+	    EvoHistorySysGlue   * const,
 		WorkThreadInterface * const
     );
 
@@ -83,7 +79,7 @@ private:
     DisplayAll    const * m_pDisplayGridFunctor;
     PerformanceWindow   * m_pPerformanceWindow;
     EditorWindow        * m_pEditorWindow;
-    EvoHistorySys       * m_pEvoHistorySys;
+    EvoHistorySysGlue   * m_pEvoHistGlue;
     EvolutionModelData  * m_pModelWork;
     HANDLE                m_hEventThreadStarter;
     DWORD                 m_dwThreadId;
@@ -100,7 +96,9 @@ private:
 
 	BOOL editorCommand( tEvoCmd const cmd, WPARAM const wParam )
 	{
-		return m_pEvoHistorySys->EvoCreateEditorCommand( cmd, static_cast<int16_t>(wParam) );
+		int16_t cmdParam = static_cast<int16_t>(wParam);
+		assert( wParam == cmdParam );
+		return m_pEvoHistGlue->EvoCreateEditorCommand( cmd, cmdParam );
 	}
 
 	BOOL IsValidThreadMessage(UINT msg)

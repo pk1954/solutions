@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "assert.h"
 #include "Resource.h"
-#include "EvoHistorySys.h"
+#include "EvoHistorySysGlue.h"
 #include "EvolutionModelData.h"
 #include "win32_worker_thread.h"
 #include "win32_workThreadInterface.h"
@@ -13,7 +13,7 @@ using namespace std;
 
 WorkThreadInterface::WorkThreadInterface( wostream * pTraceStream ) :
 	m_pModelWork( nullptr ),
-	m_pEvoHistorySys( nullptr ),
+	m_pEvoHistGlue( nullptr ),
 	m_pWorkThread( nullptr ),
     m_pTraceStream( pTraceStream ),
     m_bTrace( TRUE )
@@ -25,21 +25,21 @@ void WorkThreadInterface::Start
 	EditorWindow       * const pEditorWindow,
     DisplayAll   const * const pDisplayGridFunctor,
     EvolutionModelData * const pModel,
-    EvoHistorySys      * const pEvoHistorySys
+    EvoHistorySysGlue  * const pEvoHistGlue
 
 )
 {
-    m_pModelWork     = pModel;
-	m_pEvoHistorySys = pEvoHistorySys;
-	m_pWorkThread    = new WorkThread();
-	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pDisplayGridFunctor, pModel, pEvoHistorySys, this );
+    m_pModelWork   = pModel;
+	m_pEvoHistGlue = pEvoHistGlue;
+	m_pWorkThread  = new WorkThread();
+	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pDisplayGridFunctor, pModel, pEvoHistGlue, this );
 }
 
 WorkThreadInterface::~WorkThreadInterface( )
 {
-	m_pModelWork = nullptr;
-	m_pEvoHistorySys = nullptr;
-	m_pWorkThread = nullptr;
+	m_pModelWork   = nullptr;
+	m_pEvoHistGlue = nullptr;
+	m_pWorkThread  = nullptr;
     m_pTraceStream = nullptr;
 }
 
@@ -82,7 +82,7 @@ void WorkThreadInterface::PostSetPOI( GridPoint const & gp )
     {
         if ( m_bTrace )
             * m_pTraceStream << __func__ << L" " << gp << endl;
-        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_POI, gp.Pack2short(), 0 );
+        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_POI, gp.PackToInt16(), 0 );
     }
 }
 
@@ -92,7 +92,7 @@ void WorkThreadInterface::PostDoEdit( GridPoint const & gp )
     {
         if ( m_bTrace )
             * m_pTraceStream << __func__ << L" " << gp << endl;
-        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_DO_EDIT, gp.Pack2short(), 0 );
+        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_DO_EDIT, gp.PackToInt16(), 0 );
     }
 }
 
@@ -151,9 +151,9 @@ void WorkThreadInterface::PostRedo( )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
 
-	HIST_GENERATION gen = m_pEvoHistorySys->GetCurrentGeneration( );
+	HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
 
-	if ( ( gen < m_pEvoHistorySys->GetYoungestGeneration( ) ) && m_pEvoHistorySys->IsEditorCommand( gen + 1 ) )
+	if ( ( gen < m_pEvoHistGlue->GetYoungestGeneration( ) ) && m_pEvoHistGlue->IsEditorCommand( gen + 1 ) )
 		postGotoGeneration( gen + 1 );
 	else
 		(void)MessageBeep(MB_OK);  // first generation reached
@@ -163,7 +163,7 @@ void WorkThreadInterface::PostGenerationStep( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-	postGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration( ) + 1 );
+	postGotoGeneration( m_pEvoHistGlue->GetCurrentGeneration( ) + 1 );
 }
 
 void WorkThreadInterface::PostRepeatGenerationStep( )
@@ -178,9 +178,9 @@ void WorkThreadInterface::PostUndo( )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
 
-	HIST_GENERATION gen = m_pEvoHistorySys->GetCurrentGeneration( );
+	HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
 
-	if ( ( gen > 0 ) && m_pEvoHistorySys->IsEditorCommand( gen - 1 ) )
+	if ( ( gen > 0 ) && m_pEvoHistGlue->IsEditorCommand( gen - 1 ) )
 		postGotoGeneration( gen - 1 );
 	else
 		(void)MessageBeep(MB_OK);  // first generation reached
@@ -190,8 +190,8 @@ void WorkThreadInterface::PostPrevGeneration( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-	if (m_pEvoHistorySys->GetCurrentGeneration() > 0)
-		postGotoGeneration( m_pEvoHistorySys->GetCurrentGeneration() - 1 );
+	if (m_pEvoHistGlue->GetCurrentGeneration() > 0)
+		postGotoGeneration( m_pEvoHistGlue->GetCurrentGeneration() - 1 );
 	else
 		(void)MessageBeep(MB_OK);  // first generation reached
 }
@@ -206,8 +206,8 @@ void WorkThreadInterface::PostHistoryAction( UINT const uiID, GridPoint const gp
 
 	IndId           idTarget  = m_pModelWork->GetId(gp);
 	HIST_GENERATION genTarget = ( uiID == IDM_GOTO_ORIGIN )
-	                            ? m_pEvoHistorySys->GetFirstGenOfIndividual(idTarget)
-		                        : m_pEvoHistorySys->GetLastGenOfIndividual(idTarget);
+	                            ? m_pEvoHistGlue->GetFirstGenOfIndividual(idTarget)
+		                        : m_pEvoHistGlue->GetLastGenOfIndividual(idTarget);
 	
 	postGotoGeneration( genTarget );
 }

@@ -25,7 +25,7 @@ class EvolutionCore;
 class NextGenFunctor;
 class ScriptHook;
 class EvolutionModelData;
-class EvoHistorySys;
+class EvoHistorySysGlue;
 class EvoController;
 
 //lint -esym( 1712, AppWindow )  no default constructor for class 
@@ -64,7 +64,7 @@ private:
     ScriptHook          * m_pScriptHook;
     
     // History 
-	EvoHistorySys       * m_pEvoHistorySys;
+	EvoHistorySysGlue   * m_pEvoHistGlue;
     EvoHistWindow       * m_pEvoHistWindow;
 
     std::wofstream m_traceStream;

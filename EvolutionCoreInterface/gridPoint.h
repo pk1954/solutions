@@ -23,15 +23,15 @@ public:
 		y = static_cast< GRID_COORD >( _y );
 	}
 
-	GridPoint( unsigned short const usParam )
-    	: x ( usParam >> 8 ),
-	      y ( usParam & 0x00ff )
+	GridPoint( int16_t const param )
+    	: x ( param >> 8 ),
+	      y ( param & 0x00ff )
 	{ }
 
-	unsigned short Pack2short( ) const
+	int16_t PackToInt16( ) const
 	{
-		assert( x < GRID_WIDTH );
-		assert( y < GRID_HEIGHT );
+		assert( x <= 0xff );
+		assert( y <= 0xff );
 		return ( x << 8 ) | y;
 	}
 
@@ -45,7 +45,7 @@ public:
     GridPoint const operator/= (GridPoint const & a) { x /= a.x; y /= a.y; return * this; }
     GridPoint const operator%= (GridPoint const & a) { x %= a.x; y %= a.y; return * this; }
 
-    // no * operator!   danger of short overflow
+    // no * operator!   risk of short overflow
 
     GridPoint const operator/= (GRID_COORD const l) { x /= l; y /= l; return * this; }
     GridPoint const operator+= (GRID_COORD const l) { x += l; y += l; return * this; }
@@ -62,8 +62,8 @@ public:
 	bool IsEvenCol( ) const { return x % 2 == 0; }
 	bool IsOddCol ( ) const { return x % 2 != 0; }
 
-    static GRID_COORD const GRID_WIDTH  = 200;
-    static GRID_COORD const GRID_HEIGHT = 100;
+    static GRID_COORD const GRID_WIDTH  = 400;
+    static GRID_COORD const GRID_HEIGHT = 200;
     static int        const GRID_AREA   = GRID_WIDTH * GRID_HEIGHT;
 
     static GridPoint const GRID_ORIGIN;

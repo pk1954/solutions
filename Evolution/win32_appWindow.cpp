@@ -13,7 +13,7 @@
 
 // history system
 
-#include "EvoHistorySys.h"
+#include "EvoHistorySysGlue.h"
 
 // interfaces of various windows
 
@@ -76,7 +76,7 @@ AppWindow::AppWindow( ) :
     m_pEvolutionCore( nullptr ),
     m_pScriptHook( nullptr ),
     m_pEvoHistWindow( nullptr ),
-	m_pEvoHistorySys( nullptr ),
+	m_pEvoHistGlue( nullptr ),
 	m_pEvoController( nullptr ),
     m_traceStream( )
 {};
@@ -122,7 +122,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pPerfWindow          = new PerformanceWindow( );  
     m_pEvoHistWindow       = new EvoHistWindow( );
 	m_pEvoController       = new EvoController( );
-	m_pEvoHistorySys       = new EvoHistorySys( );
+	m_pEvoHistGlue         = new EvoHistorySysGlue( );
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
 
     SetMenu( hWndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
@@ -136,11 +136,11 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     DefineModelWrapperFunctions( m_pModelWork );
     DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
 
-	m_pEvoHistorySys      ->Start( m_pModelWork, m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionModelData::GetModelSize( ) ), true );
-	m_pEvoHistWindow      ->Start( hWndApp, m_pFocusPoint, m_pEvoHistorySys, m_pWorkThreadInterface );
+	m_pEvoHistGlue        ->Start( m_pModelWork, m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionModelData::GetModelSize( ) ), true );
+	m_pEvoHistWindow      ->Start( hWndApp, m_pFocusPoint, m_pEvoHistGlue, m_pWorkThreadInterface );
     m_pStatusBar          ->Start( hWndApp, m_pModelWork );
-	m_pFocusPoint         ->Start( m_pEvoHistorySys, m_pModelWork );
-	m_pWorkThreadInterface->Start( m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pModelWork, m_pEvoHistorySys );
+	m_pFocusPoint         ->Start( m_pEvoHistGlue, m_pModelWork );
+	m_pWorkThreadInterface->Start( m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pModelWork, m_pEvoHistGlue );
 	m_pDspOptWindow       ->Start( hWndApp, m_pModelWork );
     m_pEditorWindow       ->Start( hWndApp, m_pWorkThreadInterface, m_pModelWork, m_pDspOptWindow, m_pStatusBar );
     m_pMainGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, m_pModelWork, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
@@ -190,7 +190,7 @@ AppWindow::~AppWindow( )
         if ( Config::UseHistorySystem( ) )
         {
             delete m_pEvoHistWindow;
-			delete m_pEvoHistorySys;
+			delete m_pEvoHistGlue;
         }
         else
         {

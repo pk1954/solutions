@@ -34,7 +34,7 @@ void HistorySystemImpl::InitHistorySystem
     HIST_GENERATION const genMaxNrOfGens,
     ModelData     * const pModelDataWork,
     ModelFactory  * const pModelFactory,
-	short           const sCmd, 
+	tGenCmd         const cmd, 
 	unsigned short  const usParam
 )
 {
@@ -44,7 +44,7 @@ void HistorySystemImpl::InitHistorySystem
 	m_pHistCacheItemWork = new HistCacheItem( pModelDataWork );
 	m_GenCmdList.Resize( genMaxNrOfGens );
     m_pHistoryCache->InitHistoryCache( sNrOfSlots, pModelFactory );
-	m_pHistCacheItemWork->SetGenerationCommand( GenerationCmd( sCmd, usParam ) );
+	m_pHistCacheItemWork->SetGenerationCommand( GenerationCmd::ApplicationCmd( cmd, usParam ) );
     save2History( );
 }
 
@@ -103,9 +103,8 @@ void HistorySystemImpl::ClearHistory( HIST_GENERATION const genFirst )
 	}
 }
 
-void HistorySystemImpl::CreateAppCommand( GenerationCmd::tGenCmd const sCmd, int16_t const param )
+void HistorySystemImpl::CreateAppCommand( GenerationCmd const genCmd )
 {
-	GenerationCmd genCmd( sCmd, param );
     step2NextGeneration( genCmd );
     m_pHistCacheItemWork->SetGenerationCommand( genCmd );
     save2History( );
@@ -151,7 +150,7 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
     }
 }
 
-unsigned short HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
+tGenCmd HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
 {
 	GenerationCmd cmd = m_GenCmdList[ gen ];
 

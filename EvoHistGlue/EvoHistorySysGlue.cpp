@@ -1,4 +1,4 @@
-// EvoHistorySys.cpp
+// EvoHistorySysGlue.cpp
 //
 
 #include "stdafx.h"
@@ -11,11 +11,11 @@
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
 #include "EvoModelFactory.h"
-#include "EvoHistorySys.h"
+#include "EvoHistorySysGlue.h"
 
 class WorkThread;
 
-EvoHistorySys::EvoHistorySys( ) :
+EvoHistorySysGlue::EvoHistorySysGlue( ) :
     m_pEvoModelWork   ( nullptr ),
 	m_pEvoModelFactory( nullptr ),
     m_pHistorySystem  ( nullptr ),
@@ -23,7 +23,7 @@ EvoHistorySys::EvoHistorySys( ) :
 	m_bAskHistoryCut  ( false )
 {}
 
-void EvoHistorySys::Start
+void EvoHistorySysGlue::Start
 (
 	EvolutionModelData * const pEvolutionModelData,
 	EvolutionCore      * const pCore, 
@@ -38,7 +38,7 @@ void EvoHistorySys::Start
 
     HIST_GENERATION const genMaxNrOfGens = Config::GetConfigValue( Config::tId::maxGeneration );
 
-    m_pEvoModelWork    = new EvoModelData ( pEvolutionModelData, pCore );
+    m_pEvoModelWork    = new EvoModelDataGlue ( pEvolutionModelData, pCore );
 	m_pEvoModelFactory = new EvoModelFactory( pCore );
 
     m_pHistorySystem = HistorySystem::CreateHistorySystem( );
@@ -49,7 +49,7 @@ void EvoHistorySys::Start
         genMaxNrOfGens,
         m_pEvoModelWork,
         m_pEvoModelFactory,
-		static_cast< short >( tEvoCmd::reset ),
+		static_cast< tGenCmd >( tEvoCmd::reset ),
 		0
     );
 
@@ -58,7 +58,7 @@ void EvoHistorySys::Start
 	m_pHistAllocThread = new HistAllocThread( m_pHistorySystem, TRUE );   // delegate allocation of history slots to a work thread
 }
 
-EvoHistorySys::~EvoHistorySys( ) 
+EvoHistorySysGlue::~EvoHistorySysGlue( ) 
 {
     shutDownHistoryCache( );
 	delete m_pHistAllocThread;
@@ -74,7 +74,7 @@ public:
 
     virtual bool operator() ( ModelData const * pModelData ) const
     {
-        EvoModelData const * pEvoModelData = static_cast< EvoModelData const * >( pModelData );
+        EvoModelDataGlue const * pEvoModelData = static_cast< EvoModelDataGlue const * >( pModelData );
         return ( pEvoModelData->FindGridPoint( m_id ).IsNotNull( ) );  // id is alive
     }
 
@@ -82,17 +82,17 @@ private:
     IndId const m_id;
 };
 
-HIST_GENERATION EvoHistorySys::GetFirstGenOfIndividual( IndId const & id ) const  
+HIST_GENERATION EvoHistorySysGlue::GetFirstGenOfIndividual( IndId const & id ) const  
 { 
-    return id.IsDefined( ) ? m_pHistorySystem->FindFirstGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
+	return id.IsDefined( ) ? m_pHistorySystem->FindFirstGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
 }
 
-HIST_GENERATION EvoHistorySys::GetLastGenOfIndividual ( IndId const & id ) const  
+HIST_GENERATION EvoHistorySysGlue::GetLastGenOfIndividual ( IndId const & id ) const  
 { 
-    return id.IsDefined( ) ? m_pHistorySystem->FindLastGenerationWithProperty ( FindGridPointFunctor( id ) ) : -1; 
+	return id.IsDefined( ) ? m_pHistorySystem->FindLastGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
 }
 
-bool EvoHistorySys::EvoCreateEditorCommand( tEvoCmd cmd, int16_t param ) 
+bool EvoHistorySysGlue::EvoCreateEditorCommand( tEvoCmd cmd, int16_t param ) 
 { 
 	if ( 
 		  m_pHistorySystem->IsInHistoryMode( ) &&  // If in history mode,
@@ -102,18 +102,11 @@ bool EvoHistorySys::EvoCreateEditorCommand( tEvoCmd cmd, int16_t param )
 		return false;  // user answered no, do not erase
 
 	m_pHistorySystem->ClearHistory( GetCurrentGeneration( ) );  // if in history mode: cut off future generations
-	m_pHistorySystem->CreateAppCommand( static_cast< GenerationCmd::tGenCmd >( cmd ), param ); 
+	m_pHistorySystem->CreateAppCommand( EvoCmd( cmd, param ) ); 
 	return true;
 }
 
-bool EvoHistorySys::IsEditorCommand( HIST_GENERATION const gen ) const
-{
-	unsigned short const usCmd  = m_pHistorySystem->GetGenerationCmd( gen );
-	tEvoCmd        const evoCmd = static_cast<tEvoCmd>( usCmd );
-	return ::IsEditorCommand( evoCmd );
-}
-
-bool EvoHistorySys::askHistoryCut( HistorySystem * pHistSys ) const
+bool EvoHistorySysGlue::askHistoryCut( HistorySystem * pHistSys ) const
 {
     std::wostringstream wBuffer;
     HIST_GENERATION  genCurrent  = pHistSys->GetCurrentGeneration( );
@@ -123,7 +116,7 @@ bool EvoHistorySys::askHistoryCut( HistorySystem * pHistSys ) const
     return IDOK == MessageBox( nullptr, L"Cut off history?", wBuffer.str( ).c_str( ), MB_OKCANCEL | MB_SYSTEMMODAL );
 }
 
-void EvoHistorySys::shutDownHistoryCache( )
+void EvoHistorySysGlue::shutDownHistoryCache( )
 {
     int iMax = GetNrOfHistCacheSlots( ) - 1;
 //    int iPercentLast = 0;

@@ -27,13 +27,13 @@
     <ClInclude Include="EvoGenerationCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EvoHistorySys.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EvoModelData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EvoModelFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EvoModelDataGlue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EvoHistorySysGlue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,10 +44,10 @@
     <ClCompile Include="EvoGenerationCmd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EvoHistorySys.cpp">
+    <ClCompile Include="EvoModelDataGlue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EvoModelData.cpp">
+    <ClCompile Include="EvoHistorySysGlue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

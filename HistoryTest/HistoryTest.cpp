@@ -25,7 +25,7 @@ public:
         * this = * static_cast< HistTestModelData const * const >( src );
     }
 
-    virtual void OnAppCommand( int16_t const usCmd, int16_t const sParam )
+    virtual void OnAppCommand( tGenCmd const usCmd, int16_t const sParam )
     {
 //		wcout << endl << L"OnAppCommand( " << usCmd << L", " << sParam << L" )" << endl;
 	}
@@ -61,7 +61,7 @@ void gotoGeneration( HistorySystem * const pHistorySys, HIST_GENERATION const hi
 	while( histGenDemanded != pHistorySys->GetCurrentGeneration( ) )
 	{
 		if ( histGenDemanded > pHistorySys->GetYoungestGeneration( ) )
-			pHistorySys->CreateAppCommand( 42, 0 );
+			pHistorySys->CreateAppCommand( GenerationCmd::ApplicationCmd(static_cast<tGenCmd>( 42 ), 0) );
 		else
 	    	pHistorySys->ApproachHistGen( histGenDemanded );
     	wcout << L"Generation: " << histGenDemanded << L" - " << pHistorySys->GetCurrentGeneration( ) << L" Slots: ";
@@ -84,7 +84,7 @@ void DoTest( )
 		1000,           // # of generations
 		& modelData,
 		& modelFactory,
-		0,
+		static_cast<tGenCmd>(0),
 		0
 	);
 

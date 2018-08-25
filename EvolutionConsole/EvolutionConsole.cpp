@@ -8,7 +8,7 @@
 #include "config.h"
 #include "trace.h"
 #include "dump.h"
-#include "EvoHistorySys.h"
+#include "EvoHistorySysGlue.h"
 #include "EvolutionModelData.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCore.h"
@@ -48,18 +48,18 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	DefinePixelCoordinatesWrapperFunctions( pPixCoords );
 
     WorkThreadInterface * m_pWorkThreadInterface;
-	EvoHistorySys       * m_pEvoHistorySys;
+	EvoHistorySysGlue   * m_pEvoHistGlue;
     EvolutionModelData  * m_pModelWork;
 
 	m_pModelWork = EvolutionModelData::CreateModelData( );
     DefineModelWrapperFunctions( m_pModelWork );
 	
-	m_pEvoHistorySys       = new EvoHistorySys( );
+	m_pEvoHistGlue         = new EvoHistorySysGlue( );
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
-	m_pEvoHistorySys->Start( m_pModelWork, m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionModelData::GetModelSize( ) ), false );
+	m_pEvoHistGlue->Start( m_pModelWork, m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionModelData::GetModelSize( ) ), false );
     DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
 
-	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, m_pModelWork, m_pEvoHistorySys );
+	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, m_pModelWork, m_pEvoHistGlue );
 
 	DefineWin32WrapperFunctions( m_pWorkThreadInterface, nullptr );
 

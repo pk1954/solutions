@@ -4,7 +4,7 @@
 #pragma once
 
 #include "EvolutionModelData.h"
-#include "EvoModelData.h"
+#include "EvoModelDataGlue.h"
 
 class WorkThread;
 
@@ -18,9 +18,9 @@ public:
 		m_pEvolutionCore( pCore )
 	{ }
 
-	virtual EvoModelData * CreateModelData() const 
+	virtual EvoModelDataGlue * CreateModelData() const 
 	{
-		return new EvoModelData
+		return new EvoModelDataGlue
 		( 
 			EvolutionModelData::CreateModelData( ), 
 			m_pEvolutionCore

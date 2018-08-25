@@ -12,7 +12,7 @@ class PerformanceWindow;
 class EditorWindow;
 class EvolutionModelData;
 class DisplayAll;
-class EvoHistorySys;
+class EvoHistorySysGlue;
 class WorkThread;
 
 class WorkThreadInterface
@@ -27,7 +27,7 @@ public:
 		EditorWindow       * const,  
         DisplayAll   const * const, 
         EvolutionModelData * const,
-	    EvoHistorySys      * const
+	    EvoHistorySysGlue  * const
     );
 
     void PostDoEdit( GridPoint const & );
@@ -59,7 +59,7 @@ private:
 	void postGotoGeneration( HIST_GENERATION const );
 
     EvolutionModelData * m_pModelWork;
-    EvoHistorySys      * m_pEvoHistorySys;
+    EvoHistorySysGlue  * m_pEvoHistGlue;
 	WorkThread         * m_pWorkThread;
     std::wostream      * m_pTraceStream;
 	BOOL                 m_bTrace;

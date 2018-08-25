@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "config.h"
-#include "EvoHistorySys.h"
+#include "EvoHistorySysGlue.h"
 #include "win32_focusPoint.h"
 #include "win32_workThreadInterface.h"
 #include "win32_evoHistWindow.h"
@@ -24,7 +24,7 @@ void EvoHistWindow::Start
 (
     HWND                  const hWndParent,
     FocusPoint          * const pFocusPoint,
-	EvoHistorySys       * const pEvoHistorySys,
+	EvoHistorySysGlue   * const pEvoHistorySys,
 	WorkThreadInterface * const pWorkThreadInterface
 )
 {

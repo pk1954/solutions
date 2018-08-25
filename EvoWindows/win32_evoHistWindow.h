@@ -8,7 +8,7 @@
 class EvolutionCore;
 class FocusPoint;
 class EvoNextGenFunctor;
-class EvoHistorySys;
+class EvoHistorySysGlue;
 class WorkThreadInterface;
 
 class EvoHistWindow : public HistWindow
@@ -17,7 +17,13 @@ public:
     EvoHistWindow( );
     virtual ~EvoHistWindow( );
 
-    void Start( HWND const, FocusPoint * const, EvoHistorySys * const, WorkThreadInterface * const );
+    void Start
+	( 
+		HWND                  const, 
+		FocusPoint          * const, 
+		EvoHistorySysGlue   * const, 
+		WorkThreadInterface * const 
+	);
 
 	virtual void GotoGeneration( HIST_GENERATION const );
 	virtual void DoPaint( HDC const );
