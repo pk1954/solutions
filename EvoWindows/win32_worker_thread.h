@@ -103,7 +103,7 @@ private:
 
 	BOOL editorCommand( tEvoCmd const cmd, WPARAM const wParam )
 	{
-		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, Int24(CastToInt(wParam)) ) );
+		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
 	}
 
 	BOOL editorCommand( tEvoCmd const cmd, GridPoint24 const gp24 )

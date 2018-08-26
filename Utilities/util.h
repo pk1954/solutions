@@ -31,8 +31,22 @@ short CastToShort(T const value )
 }
 
 template<typename T>
+unsigned short CastToUnsignedShort(T const value ) 
+{
+	ASSERT_USHORT( value );
+	return static_cast<unsigned short>( value );
+}
+
+template<typename T>
 int CastToInt(T const value ) 
 {
 	ASSERT_INT( value );
 	return static_cast<int>( value );
+}
+
+template<typename T>
+unsigned int CastToUnsignedInt(T const value ) 
+{
+	ASSERT_UINT( value );
+	return static_cast<unsigned int>( value );
 }

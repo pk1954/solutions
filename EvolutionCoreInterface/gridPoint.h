@@ -7,6 +7,7 @@
 #include <limits.h>
 #include <assert.h>
 #include <functional>
+#include "debug.h"
 #include "util.h"
 #include "Int24.h"
 #include "EvolutionTypes.h"

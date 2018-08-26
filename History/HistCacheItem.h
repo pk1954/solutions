@@ -15,10 +15,7 @@ public:
 		m_pModelData( pModelData ),
         m_genCmd( ),
         m_genHistCounter( 0L )
-    { 
-		int s = sizeof(m_genCmd);
-		int x = 786;
-	}
+	{ }
 
     virtual ~HistCacheItem( ) { };
 

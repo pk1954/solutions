@@ -9,12 +9,15 @@
 
 #define ASSERT_LIMITS(v, min, max)  \
 {                                   \
-	assert( v <= max );             \
-	assert( v >= min );             \
+	assert( (v) <= (max) );         \
+	assert( (v) >= (min) );         \
 }
 
-#define ASSERT_SHORT(i) ASSERT_LIMITS(i, (numeric_limits<short>::min)(), (numeric_limits<short>::max)()) 
-#define ASSERT_INT(d)   ASSERT_LIMITS(d, (numeric_limits<int>  ::min)(), (numeric_limits<int>  ::max)())
+#define ASSERT_SHORT(X) ASSERT_LIMITS((X), (numeric_limits<short>::min)(), (numeric_limits<short>::max)())
+#define ASSERT_INT(X)   ASSERT_LIMITS((X), (numeric_limits<int>  ::min)(), (numeric_limits<int>  ::max)())
+
+#define ASSERT_USHORT(X) assert((X) <= (numeric_limits<unsigned short>::max)())
+#define ASSERT_UINT(X)   assert((X) <= (numeric_limits<unsigned int>  ::max)())
 
 #define ASSERT_SHORT_SUM(a, b) \
 {                              \

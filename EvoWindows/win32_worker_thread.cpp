@@ -234,11 +234,11 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
 
     case THREAD_MSG_DO_EDIT:
-        editorCommand( tEvoCmd::editDoEdit, GridPoint24( CastToInt(wParam), CastToInt(lParam) ) );
+        editorCommand( tEvoCmd::editDoEdit, GridPoint24( CastToUnsignedInt(wParam), CastToUnsignedInt(lParam) ) );
         break;
 
     case THREAD_MSG_SET_POI:
-        editorCommand( tEvoCmd::editSetPOI, GridPoint24( CastToInt(wParam), CastToInt(lParam) ) );
+        editorCommand( tEvoCmd::editSetPOI, GridPoint24( CastToUnsignedInt(wParam), CastToUnsignedInt(lParam) ) );
         break;
 
     case THREAD_MSG_SET_SIMULATION_MODE:
