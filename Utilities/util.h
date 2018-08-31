@@ -13,6 +13,11 @@ using namespace std;
 
 extern void UpperCase( wstring & );
 
+template <typename T> int sgn(T val) 
+{
+    return (T(0) < val) - (val < T(0));
+}
+
 template<typename T>
 T ClipToMinMax(T const val, T const min, T const max)
 {

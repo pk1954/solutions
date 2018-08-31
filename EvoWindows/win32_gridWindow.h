@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "pixelCoordinates.h"
 #include "win32_baseWindow.h"
 
 class GridRect;
@@ -38,14 +39,23 @@ public:
     ~GridWindow( );
 
     void  Size( );
-	short GetFieldSize( ) const;
 	void  Zoom( bool const );
 	void  ToggleStripMode( );
 	void  ToggleClutMode ( );
 	void  Escape( );
 	void  SetZoom( SHORT const );
 	void  Fit2Rect( );
-	
+
+	short GetFieldSize( ) const
+	{ 
+		return m_pPixelCoordinates->GetFieldSize( ); 
+	};
+
+	PixelPoint GetPixelOffset( ) const 
+	{ 
+		return m_pPixelCoordinates->GetPixelOffset( ); 
+	};
+
 	void Observe( GridWindow * const hgw )
 	{
 		m_pGWObserved  = hgw;

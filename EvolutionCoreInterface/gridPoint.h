@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <stdlib.h>     /* abs */
 #include <iostream>
 #include <limits.h>
 #include <assert.h>
@@ -81,8 +82,7 @@ inline GridPoint const operator+ (GridPoint const & a, GRID_COORD const l) { Gri
 inline GridPoint const operator- (GridPoint const & a, GRID_COORD const l) { GridPoint res(a); res -= l; return res; }
 inline GridPoint const operator% (GridPoint const & a, GRID_COORD const l) { GridPoint res(a); res %= l; return res; }
 
-inline short           shrt_abs( short const s )  { return (s < 0) ? -s : s; }
-inline GridPoint const Abs( GridPoint const & a ) { return GridPoint( shrt_abs(a.x), shrt_abs(a.y ) ); }
+inline GridPoint const Abs( GridPoint const & a ) { return GridPoint( abs(a.x), abs(a.y ) ); }
 inline bool      const Neighbors( GridPoint const & a, GridPoint const & b )
 { 
     GridPoint gpDiff( Abs(a - b) );

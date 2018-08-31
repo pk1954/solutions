@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include <stdlib.h>    // abs
+#include "util.h"      // sgn
+
 class PixelPoint
 {
 public:
@@ -42,3 +45,6 @@ inline PixelPoint const operator+ (PixelPoint const & a, long const l) { PixelPo
 inline PixelPoint const operator- (PixelPoint const & a, long const l) { PixelPoint res(a); res -= l; return res; };
 
 inline PixelPoint const operator* ( PixelPoint const & a, PixelPoint const & b ) { PixelPoint res( a ); res *= b; return res; };
+
+inline PixelPoint const abs( PixelPoint const & a ) { return PixelPoint( ::abs(a.x), ::abs(a.y ) ); }
+inline PixelPoint const sgn( PixelPoint const & a ) { return PixelPoint( ::sgn(a.x), ::sgn(a.y ) ); }

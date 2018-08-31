@@ -29,8 +29,8 @@ public:
     GridPoint  Pixel2GridPos ( PixelPoint const & ) const;
 	PixelPoint Grid2PixelPos ( GridPoint  const & ) const; 
 
-    KGridPoint Pixel2KGridPos     ( PixelPoint const & ) const;
-    PixelPoint KGrid2PixelPos     ( KGridPoint const & ) const; 
+    KGridPoint Pixel2KGridPos ( PixelPoint const & ) const;
+    PixelPoint KGrid2PixelPos ( KGridPoint const & ) const; 
 
 	KGridRect  Pixel2KGridRect( PixelRect const & ) const;
     PixelRect  KGrid2PixelRect( KGridRect const & ) const; 

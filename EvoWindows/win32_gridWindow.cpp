@@ -330,11 +330,6 @@ void GridWindow::Fit2Rect( )
 	m_pDrawFrame->Resize( );
 }
 
-short GridWindow::GetFieldSize( ) const 
-{ 
-	return m_pPixelCoordinates->GetFieldSize( ); 
-};
-
 void GridWindow::Zoom( bool const bZoomIn )	
 { 
 	SetZoom( m_pPixelCoordinates->ComputeNewFieldSize( bZoomIn ) ); 

@@ -43,9 +43,15 @@ void CrsrWindow::DoPaint( )
 {
     printString( L"pixel coord:" );
 
-	PixelPoint pp = m_pGridWindow->GetRelativeCrsrPosition( );
-    printNumber( pp.x );
-    printNumber( pp.y );
+	PixelPoint ppPos = m_pGridWindow->GetRelativeCrsrPosition( );
+    printNumber( ppPos.x );
+    printNumber( ppPos.y );
+
+    nextLine( L"offset:" );
+
+	PixelPoint ppOffset = m_pGridWindow->GetPixelOffset( );
+    printNumber( ppOffset.x );
+    printNumber( ppOffset.y );
 
     nextLine( L"Position:" );
 
