@@ -10,14 +10,15 @@
 
 using namespace std;
 
-GridRect const GridRect::GRID_RECT_FULL ( GridPoint::GRID_ORIGIN, GridPoint::GRID_SIZE );
+GridRect const GridRect::GRID_RECT_FULL( GridPoint::GRID_ORIGIN, GridPoint::GRID_SIZE - 1 );
+GridRect const GridRect::GRID_RECT_EMPTY( 0, 0, 0, 0 );
 
 GridPoint GridRect::clipStartPoint( ) const
 {
 	return GridPoint
 	(
-		max( GetLeft(), GridRect::GRID_RECT_FULL.GetLeft() ),
-		max( GetTop (), GridRect::GRID_RECT_FULL.GetTop () )
+		max( m_lLeft, GRID_RECT_FULL.m_lLeft ),
+		max( m_lTop,  GRID_RECT_FULL.m_lTop )
 	);
 };
 
@@ -25,8 +26,8 @@ GridPoint GridRect::clipEndPoint( ) const
 {
 	return GridPoint
 	(
-		min( GetRight (), GridRect::GRID_RECT_FULL.GetRight () ),
-		min( GetBottom(), GridRect::GRID_RECT_FULL.GetBottom() )
+		min( m_lRight,  GRID_RECT_FULL.m_lRight ),
+		min( m_lBottom, GRID_RECT_FULL.m_lBottom )
 	);
 };
  

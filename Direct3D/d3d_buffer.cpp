@@ -205,33 +205,39 @@ void D3dBuffer::AddIndividualPrimitive( PixelPoint const & ptPos, DWORD const dw
     float const fPtPosx = static_cast<float>( ptPos.x );
     float const fPtPosy = static_cast<float>( ptPos.y );
 
-	if ( m_d3d->GetHexagonMode( ) )
-		addHexagon( fPtPosx, fPtPosy, dwColor, fPixSize, SQRT3 * fPixSize );
-	else
+    if ( m_bStripMode )
+    {
 		addRectangle( fPtPosx, fPtPosy, dwColor, fPixSize );
+	}
+	else
+	{
+		if ( m_d3d->GetHexagonMode( ) )
+			addHexagon( fPtPosx, fPtPosy, dwColor, fPixSize, SQRT3 * fPixSize );
+		else
+			addRectangle( fPtPosx, fPtPosy, dwColor, fPixSize );
+	}
 }
 
 void D3dBuffer::AddBackgroundPrimitive( PixelPoint const & ptPos, DWORD const dwColor, float const fPixSize )
 {
+	static float const INVERSE_SQRT3 = static_cast<float>( 1 / sqrt( 3 ) );
+
 	float const fPtPosx = static_cast<float>( ptPos.x );
     float const fPtPosy = static_cast<float>( ptPos.y );
 
+	float const fPixSizeHalf = fPixSize / 2;
+
     if ( m_bStripMode )
     {
-		float const fPixSizeHalf = fPixSize / 2;
-        m_pVertBufStripMode->AddVertex( fPtPosx + fPixSizeHalf, fPtPosy + fPixSizeHalf, dwColor );
+        m_pVertBufStripMode->AddVertex( fPtPosx, fPtPosy, dwColor );
+//        m_pVertBufStripMode->AddVertex( fPtPosx + fPixSizeHalf, fPtPosy + fPixSizeHalf, dwColor );
     }
     else
     {
 		if ( m_d3d->GetHexagonMode( ) )
-		{
-			static float const INVERSE_SQRT3 = static_cast<float>( 1 / sqrt( 3 ) );
 			addHexagon( fPtPosx, fPtPosy, dwColor, fPixSize * INVERSE_SQRT3, fPixSize );
-		}
 		else
-		{
-			addRectangle( fPtPosx, fPtPosy, dwColor, fPixSize );
-		}
+			addRectangle( fPtPosx, fPtPosy, dwColor, fPixSizeHalf );
     }
 }
 

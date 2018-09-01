@@ -91,12 +91,5 @@ inline bool      const Neighbors( GridPoint const & a, GridPoint const & b )
 
 typedef std::function<void(GridPoint const &             )> GridPointFunc;
 typedef std::function<void(GridPoint const &, short const)> GridPointFuncShort;
-/*
-class GridPointFuncShort
-{
-public:
-    virtual ~GridPointFuncShort() {};
-    virtual void operator() ( GridPoint const &, short const ) const = 0;
-};
-*/
+
 std::wostream & operator << ( std::wostream &, GridPoint const & );
