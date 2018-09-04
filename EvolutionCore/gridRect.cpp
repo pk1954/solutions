@@ -31,7 +31,7 @@ GridPoint GridRect::clipEndPoint( ) const
 	);
 };
  
-void GridRect::Apply2Shape( GridPointFuncShort const & func, short const s ) const
+void GridRect::Apply2Rect( GridPointFuncShort const & func, short const s ) const
 {
  	GridPoint gpStart = clipStartPoint( );
 	GridPoint gpEnd   = clipEndPoint( );
@@ -41,19 +41,28 @@ void GridRect::Apply2Shape( GridPointFuncShort const & func, short const s ) con
             func( gp, s );
 }
 
-void GridRect::Apply2Rect( GridPointFunc const & func ) const
+void Apply2Rect
+( 
+	GridPointFunc const & func,
+	GridPoint             gpStart,
+	GridPoint             gpEnd,
+	bool          const   fWithBorders
+)
 {
- 	GridPoint gpStart = clipStartPoint( );
-	GridPoint gpEnd   = clipEndPoint( );
+	if (fWithBorders)
+	{
+		--gpStart;
+		++gpEnd;
+	}
     GridPoint gp;
     for ( gp.y = gpStart.y; gp.y <= gpEnd.y; ++gp.y )
         for ( gp.x = gpStart.x; gp.x <= gpEnd.x; ++gp.x )
             func( gp );
 }
 
-void Apply2Grid( GridPointFunc const & func )
+void Apply2Grid( GridPointFunc const & func, bool const fWithBorders )
 {
-    GridRect::GRID_RECT_FULL.Apply2Rect( func );
+	Apply2Rect( func, GridPoint::GRID_ORIGIN, GridPoint::GRID_MAXIMUM, fWithBorders );
 }
 
 std::wostream & operator << ( std::wostream & out, GridRect const & rect )

@@ -17,7 +17,6 @@
 #include "dump.h"
 #include "genome.h"
 #include "gridField.h"
-#include "gridCircle.h"
 #include "gridRect.h"
 
 using namespace std;

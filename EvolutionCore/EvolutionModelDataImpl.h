@@ -10,12 +10,12 @@
 #include "grid_model.h"
 #include "EditorState.h"
 
-using namespace std;
-
 class EvolutionModelDataImpl : public EvolutionModelData
 {
 public:
-    EvolutionModelDataImpl( )
+    EvolutionModelDataImpl( ) : 
+		m_editorState    ( & m_grid ),
+		m_editorStateLast( & m_grid )
     {
         ResetAll( );
     };
@@ -37,11 +37,11 @@ public:
 
     virtual void           SetBrushOperator ( tOperator  const op    ) { m_editorState.SetBrushOperator ( op    ); }
     virtual void           SetBrushShape    ( tShape     const shape ) { m_editorState.SetBrushShape    ( shape ); }
-    virtual void           SetBrushSize     ( GRID_COORD const size  ) { m_editorState.SetBrushSize     ( size  ); }
+    virtual void           SetBrushRadius   ( GRID_COORD const r     ) { m_editorState.SetBrushRadius   ( r  ); }
     virtual void           SetBrushIntensity( short      const sInt  ) { m_editorState.SetBrushIntensity( sInt  ); }
     virtual void           SetSimulationMode( tBoolOp    const op    ) { m_editorState.SetSimulationMode( op    ); }
 
-    virtual void           SetBrushMode     ( tBrushMode const mode  ) { m_editorState.SetBrushMode( m_grid, mode  ); }
+    virtual void           SetBrushMode     ( tBrushMode const mode  ) { m_editorState.SetBrushMode( mode ); }
     virtual void           ModelDoEdit      ( GridPoint  const gp )    { m_editorState.EditorDoEdit( gp ); }
 
 	virtual bool           GetSimulationMode( ) const { return m_editorState.GetSimulationMode( ); }

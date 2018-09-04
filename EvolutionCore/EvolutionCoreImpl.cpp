@@ -9,7 +9,6 @@
 #include "config.h"
 #include "strategy.h"
 #include "grid_model.h"
-#include "gridCircle.h"
 #include "gplIterator.h"
 #include "DisplayFunctor.h"
 #include "EvolutionModelDataImpl.h"

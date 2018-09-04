@@ -9,7 +9,6 @@
 #include "EvolutionCore.h"
 #include "EvolutionTypes.h"
 #include "EditorState.h"
-#include "gridCircle.h"
 #include "pixelCoordinates.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "EvolutionCoreWrappers.h"
@@ -94,13 +93,13 @@ public:
     }
 };
 
-class WrapSetBrushSize : public Script_Functor
+class WrapSetBrushRadius : public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         unsigned char size = script.ScrReadUchar( );
-        m_pModelWork->SetBrushSize( size );
+        m_pModelWork->SetBrushRadius( size );
     }
 };
 
@@ -172,7 +171,7 @@ void DefineModelWrapperFunctions( EvolutionModelData * pModel )
 
     DEF_FUNC( ModelDoEdit );
     DEF_FUNC( SetBrushShape );
-    DEF_FUNC( SetBrushSize );
+    DEF_FUNC( SetBrushRadius );
     DEF_FUNC( SetBrushIntensity );
     DEF_FUNC( SetBrushMode );
 }

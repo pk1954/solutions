@@ -14,7 +14,7 @@ using namespace std;
 
 GridCircle const GridCircle::GRID_CIRCLE_EMPTY( GridPoint::GP_NULL, 0 );
 
-void GridCircle::Apply2Shape
+void GridCircle::Apply2Circle
 ( 
     GridPointFuncShort const & func, 
     short              const   sMaxIntensity  // between 0 and 100 (percent value)

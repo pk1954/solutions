@@ -7,7 +7,6 @@
 #include "EvolutionTypes.h"
 #include "gridPoint.h"
 #include "gridRect.h"
-#include "gridCircle.h"
 
 using namespace std;
 

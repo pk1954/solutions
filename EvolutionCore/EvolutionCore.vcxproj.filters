@@ -92,9 +92,6 @@
     <ClCompile Include="grid_model.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="gridCircle.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="gridField.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -119,9 +116,6 @@
     <ClCompile Include="EvolutionCoreImpl.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="EditorState.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="dump.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -144,6 +138,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="geneTypeLimits.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="gridBrush.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
