@@ -79,7 +79,7 @@ public:
 	virtual void SetSelection     ( GridRect   const & ) = 0;
     virtual void SetBrushOperator ( tOperator  const   ) = 0;
     virtual void SetBrushShape    ( tShape     const   ) = 0;
-    virtual void SetBrushSize     ( GRID_COORD const   ) = 0;
+    virtual void SetBrushRadius   ( GRID_COORD const   ) = 0;
     virtual void SetBrushIntensity( short      const   ) = 0;
     virtual void SetBrushMode     ( tBrushMode const   ) = 0;
     virtual void ModelDoEdit      ( GridPoint  const   ) = 0;

@@ -337,7 +337,7 @@ void GridWindow::Zoom( bool const bZoomIn )
 
 void GridWindow::ToggleStripMode( ) 
 { 
-	m_pDrawFrame->SetStripMode  ( tBoolOp::opToggle ); 
+	m_pDrawFrame->SetStripMode( tBoolOp::opToggle ); 
 }
 
 void GridWindow::ToggleClutMode( ) 

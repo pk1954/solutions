@@ -5,13 +5,14 @@
 
 #include <iostream>
 #include <functional>
-#include "gridShape.h"
+#include "gridPoint.h"
 
 class GridRect;
 
-void Apply2Grid( GridPointFunc const & );
+void Apply2Rect( GridPointFunc const &, GridPoint const, GridPoint const, bool const = false );
+void Apply2Grid( GridPointFunc const &,                                   bool const = false );
 
-class GridRect : public Shape
+class GridRect
 {
 public:
 	GridRect( ) 
@@ -58,9 +59,12 @@ public:
 
 	virtual void Reset( ) { *this = GRID_RECT_EMPTY; }
 
-	virtual void Apply2Shape( GridPointFuncShort const &, short const = 0 ) const;
-	
-	void Apply2Rect( GridPointFunc const & ) const;
+	virtual void Apply2Rect( GridPointFuncShort const &, short const = 0 ) const;
+
+	void Apply2Rect( GridPointFunc const & func ) const
+	{
+		::Apply2Rect( func, clipStartPoint( ), clipEndPoint( ) );
+	}
 
     bool const operator== ( GridRect const &a ) const { return ( a.m_lLeft == m_lLeft ) && ( a.m_lTop == m_lTop ) && ( a.m_lRight == m_lRight ) && ( a.m_lBottom == m_lBottom ); };
     bool const operator!= ( GridRect const &a ) const { return ( a.m_lLeft != m_lLeft ) || ( a.m_lTop != m_lTop ) || ( a.m_lRight != m_lRight ) || ( a.m_lBottom != m_lBottom ); };

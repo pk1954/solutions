@@ -25,7 +25,7 @@ wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
         { tEvoCmd::editSetBrushMode,      L"MODE"     },
         { tEvoCmd::editSetBrushShape,     L"SHAPE"    },
         { tEvoCmd::editSetBrushOperator,  L"OPERATOR" },
-        { tEvoCmd::editSetBrushSize,      L"SIZE"     },
+        { tEvoCmd::editSetBrushRadius,    L"RADIUS"   },
         { tEvoCmd::editSetBrushIntensity, L"INTENS"   },
         { tEvoCmd::editDoEdit,            L"EDIT"     },
         { tEvoCmd::editSetPOI,            L"SETPOI"   }
@@ -44,7 +44,7 @@ wchar_t const * const GetEvoCommandName( tEvoCmd const cmd )
         { tEvoCmd::editSetBrushMode,      L"tEvoCmd::editSetBrushMode" },
         { tEvoCmd::editSetBrushShape,     L"tEvoCmd::editSetBrushShape" },
         { tEvoCmd::editSetBrushOperator,  L"tEvoCmd::editSetBrushOperator" },
-        { tEvoCmd::editSetBrushSize,      L"tEvoCmd::editSetBrushSize" },
+        { tEvoCmd::editSetBrushRadius,    L"tEvoCmd::editSetBrushRadius" },
         { tEvoCmd::editSetBrushIntensity, L"tEvoCmd::editSetBrushIntensity" },
         { tEvoCmd::editDoEdit,            L"tEvoCmd::editDoEdit" },
         { tEvoCmd::editSetPOI,            L"tEvoCmd::editSetPOI" }

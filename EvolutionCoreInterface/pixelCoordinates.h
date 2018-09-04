@@ -6,7 +6,6 @@
 #include "pixelRect.h"
 #include "gridPoint.h"
 #include "gridRect.h"
-#include "gridCircle.h"
 #include "kGridPoint.h"
 #include "SmoothMove.h"
 
@@ -40,8 +39,6 @@ public:
 
     PixelPoint Pixel2PixelSize( PixelPoint const &, PixelCoordinates const & ) const;
     PixelPoint Pixel2PixelPos ( PixelPoint const &, PixelCoordinates const & ) const;
-
-    GridCircle Pixel2GridCircle( PixelPoint const &, short const ) const;
 
 	PixelPoint Grid2PixelPosCenter( GridPoint  const & ) const; 
 	

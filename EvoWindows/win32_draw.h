@@ -67,7 +67,7 @@ private:
     void     assembleLeftColumn ( GridPoint const & );
     void     assembleRightColumn( GridPoint const & );
 
-	void drawBackground ( GridRect const & );
+	void drawBackground ( );
     void drawIndividuals( GridRect const & );
     void drawText       ( GridRect const & );
     void drawPOI        ( GridPoint const & );

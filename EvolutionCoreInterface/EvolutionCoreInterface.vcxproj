@@ -149,13 +149,12 @@
     <ClInclude Include="dump.h" />
     <ClInclude Include="EvolutionCore.h" />
     <ClInclude Include="EvolutionTypes.h" />
-    <ClInclude Include="gridCircle.h" />
     <ClInclude Include="gridNeighbor.h" />
     <ClInclude Include="gridPoint.h" />
     <ClInclude Include="gridPoint24.h" />
     <ClInclude Include="gridRect.h" />
     <ClInclude Include="EvolutionModelData.h" />
-    <ClInclude Include="gridShape.h" />
+    <ClInclude Include="gridBrush.h" />
     <ClInclude Include="PixelCore.h" />
     <ClInclude Include="plannedActivity.h" />
     <ClInclude Include="EvolutionCoreWrapperHelpers.h" />

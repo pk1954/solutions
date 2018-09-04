@@ -62,8 +62,8 @@ void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd  )
         m_pEvolutionModelData->SetBrushOperator( static_cast<tOperator>( param.GetValue() ) );
 		break;
 
-    case tEvoCmd::editSetBrushSize:
-        m_pEvolutionModelData->SetBrushSize( static_cast<GRID_COORD>( param.GetValue() ) );
+    case tEvoCmd::editSetBrushRadius:
+        m_pEvolutionModelData->SetBrushRadius( static_cast<GRID_COORD>( param.GetValue() ) );
 		break;
 
     case tEvoCmd::editSetBrushIntensity:

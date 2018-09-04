@@ -104,11 +104,11 @@ void WorkThreadInterface::PostSetBrushIntensity( LONG const lValue )
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_INTENSITY, lValue, 0 );
 }
 
-void WorkThreadInterface::PostSetBrushSize( INT const iValue )
+void WorkThreadInterface::PostSetBrushRadius( INT const iValue )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << iValue << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_SIZE, iValue, 0 );
+    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_RADIUS, iValue, 0 );
 }
 
 void WorkThreadInterface::PostSetBrushMode( tBrushMode const mode )

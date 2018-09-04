@@ -217,8 +217,8 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         editorCommand( tEvoCmd::editSetBrushMode, wParam );
         break;
 
-    case THREAD_MSG_SET_BRUSH_SIZE:
-        editorCommand( tEvoCmd::editSetBrushSize, wParam );
+    case THREAD_MSG_SET_BRUSH_RADIUS:
+        editorCommand( tEvoCmd::editSetBrushRadius, wParam );
         break;
 
     case THREAD_MSG_SET_BRUSH_SHAPE:

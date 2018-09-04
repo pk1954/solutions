@@ -37,7 +37,7 @@ public:
     void PostSetBrushShape( tShape );
 	void PostSetBrushOperator( tOperator const );
     void PostSetBrushIntensity( LONG const );
-    void PostSetBrushSize( INT const );
+    void PostSetBrushRadius( INT const );
     void PostRefresh( );
     void PostReset( );
     void PostEndThread( HWND );

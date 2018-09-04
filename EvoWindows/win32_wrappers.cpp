@@ -82,13 +82,13 @@ public:
     }
 };
 
-class WrapPostSetBrushSize : public Script_Functor
+class WrapPostSetBrushRadius : public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         INT  const iValue = script.ScrReadInt( );
-        m_pWorkThreadInterface->PostSetBrushSize( iValue );
+        m_pWorkThreadInterface->PostSetBrushRadius( iValue );
     }
 };
 
@@ -162,7 +162,7 @@ void DefineWin32WrapperFunctions
     DEF_FUNC( PostSetBrushMode );
     DEF_FUNC( PostSetBrushShape );
     DEF_FUNC( PostSetBrushIntensity );
-    DEF_FUNC( PostSetBrushSize );
+    DEF_FUNC( PostSetBrushRadius );
     DEF_FUNC( PostRefresh );
     DEF_FUNC( PostReset );
     DEF_FUNC( PostGenerationStep );
@@ -178,7 +178,7 @@ void DefineWin32WrapperFunctions
     DEF_ULONG_CONST( tEvoCmd::setSimulationMode );
     DEF_ULONG_CONST( tEvoCmd::editSetBrushMode );
     DEF_ULONG_CONST( tEvoCmd::editSetBrushShape );
-    DEF_ULONG_CONST( tEvoCmd::editSetBrushSize );
+    DEF_ULONG_CONST( tEvoCmd::editSetBrushRadius );
     DEF_ULONG_CONST( tEvoCmd::editSetBrushIntensity );
     DEF_ULONG_CONST( tEvoCmd::editDoEdit );
     DEF_ULONG_CONST( tEvoCmd::editSetPOI );

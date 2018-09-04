@@ -13,7 +13,7 @@ enum class tEvoCmd : int8_t // enumeration starts after last tGenCmd value
     editSetBrushMode,
     editSetBrushShape,
     editSetBrushOperator,
-    editSetBrushSize,
+    editSetBrushRadius,
     editSetBrushIntensity,
     editDoEdit,
 	editSetPOI,

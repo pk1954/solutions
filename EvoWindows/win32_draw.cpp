@@ -89,14 +89,14 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
 {
     if ( IsWindowVisible( m_hWnd ) )
     {
-        GridRect rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hWnd ) ) );
-
 		m_pD3dBuffer->StartFrame( );
 
-		drawBackground( rcGrid );
+		drawBackground( );
 
         if ( m_pDspOptWindow->AreIndividualsVisible( ) )
         {
+	        GridRect rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hWnd ) ) );
+
             drawPOI( m_pModelWork->FindPOI( ) );
 
             drawIndividuals( rcGrid );
@@ -115,19 +115,22 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
     }
 }
 
-void DrawFrame::drawBackground( GridRect const & rect )
+void DrawFrame::drawBackground( )
 {
 	float m_fPxSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) );
+
 	Apply2Grid    // strip mode works only with full grid
-	(             // TODO: use rect.Apply2Shape and make strip mode work
+	(          
     	[&](GridPoint const & gp)
 		{
-			int   const iValue  = m_pDspOptWindow->GetIntValue( gp );
+			int   const iValue  = m_pDspOptWindow->GetIntValue( Wrap2Grid(gp) );
 			DWORD const dwColor = getBackgroundColor( iValue );
 			m_pD3dBuffer->AddBackgroundPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), dwColor, m_fPxSize );
-		}
+		},
+		m_pD3dBuffer->GetStripMode() // if strip mode add borders to grid
 	);
-    m_pD3dBuffer->RenderBackground( );
+
+	m_pD3dBuffer->RenderBackground( );
 }
 
 void DrawFrame::drawPOI( GridPoint const & gpPoi )

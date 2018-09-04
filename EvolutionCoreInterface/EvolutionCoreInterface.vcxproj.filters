@@ -25,9 +25,6 @@
     <ClInclude Include="gridRect.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="gridCircle.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="gridNeighbor.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -52,10 +49,10 @@
     <ClInclude Include="PixelCore.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="gridShape.h">
+    <ClInclude Include="gridPoint24.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="gridPoint24.h">
+    <ClInclude Include="gridBrush.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

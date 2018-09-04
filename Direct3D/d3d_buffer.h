@@ -28,7 +28,15 @@ public:
     void D3D_DrawText( PixelRect, wstring const &, D3DCOLOR );
     void EndFrame( );
 
-    void SetStripMode( tBoolOp const bOp ) { ApplyOp( m_bStripMode, bOp ); };
+    void SetStripMode( tBoolOp const bOp ) 
+	{ 
+		ApplyOp( m_bStripMode, bOp ); 
+	};
+
+    BOOL GetStripMode( ) 
+	{ 
+		return m_bStripMode; 
+	};
 
 private:
     
