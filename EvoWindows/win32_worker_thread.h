@@ -13,6 +13,7 @@
 #include "HistoryGeneration.h"
 #include "EvolutionTypes.h"
 #include "EvoGenerationCmd.h"
+#include "EvoHistorySysGlue.h"
 
 class PerformanceWindow;
 class EditorWindow;

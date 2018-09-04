@@ -97,9 +97,9 @@ void WorkThread::GenerationStep( )
 		else  // we are somewhere in history
 		{
 			m_pEvoHistGlue->EvoApproachHistGen( m_genDemanded ); // Get a stored generation from history system
-			if ( m_pModelWork->EditorStateHasChanged( ) )          // make sure that editor GUI reflects new state
+			if ( m_pModelWork->EditorStateHasChanged( ) )        // make sure that editor GUI reflects new state
 			{
-				m_pModelWork->SaveEditorState(  );
+				m_pModelWork->SaveEditorState( );
 				if (m_pEditorWindow != nullptr)              
 					m_pEditorWindow->UpdateEditControls( ); 
 			}

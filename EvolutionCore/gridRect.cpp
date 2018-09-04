@@ -10,8 +10,8 @@
 
 using namespace std;
 
-GridRect const GridRect::GRID_RECT_FULL( GridPoint::GRID_ORIGIN, GridPoint::GRID_SIZE - 1 );
-GridRect const GridRect::GRID_RECT_EMPTY( 0, 0, 0, 0 );
+GridRect const GridRect::GRID_RECT_FULL ( GridPoint::GRID_ORIGIN, GridPoint::GRID_SIZE - 1 );
+GridRect const GridRect::GRID_RECT_EMPTY( GridPoint::GRID_ORIGIN, GridPoint( 0, 0 ) );
 
 GridPoint GridRect::clipStartPoint( ) const
 {
@@ -30,16 +30,6 @@ GridPoint GridRect::clipEndPoint( ) const
 		min( m_lBottom, GRID_RECT_FULL.m_lBottom )
 	);
 };
- 
-void GridRect::Apply2Rect( GridPointFuncShort const & func, short const s ) const
-{
- 	GridPoint gpStart = clipStartPoint( );
-	GridPoint gpEnd   = clipEndPoint( );
-    GridPoint gp;
-    for ( gp.y = gpStart.y; gp.y <= gpEnd.y; ++gp.y )
-        for ( gp.x = gpStart.x; gp.x <= gpEnd.x; ++gp.x )
-            func( gp, s );
-}
 
 void Apply2Rect
 ( 

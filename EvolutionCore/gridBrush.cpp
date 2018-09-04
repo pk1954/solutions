@@ -2,11 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "assert.h"
-#include <unordered_map>
-#include "gridPoint.h"
-#include "gridRect.h"
-#include "grid_model.h"
+#include "Manipulator.h"
 #include "gridBrush.h"
 
 using namespace std;

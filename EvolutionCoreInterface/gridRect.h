@@ -4,7 +4,6 @@
 #pragma once
 
 #include <iostream>
-#include <functional>
 #include "gridPoint.h"
 
 class GridRect;
@@ -20,19 +19,6 @@ public:
 		Reset(); 
 	}
 
-	GridRect
-	( 
-		GRID_COORD const lLeft, 
-		GRID_COORD const lTop, 
-		GRID_COORD const lRight, 
-		GRID_COORD const lBottom 
-	) : 
-		m_lLeft  (lLeft), 
-		m_lTop   (lTop), 
-		m_lRight (lRight), 
-		m_lBottom(lBottom) 
-	{};
-
     GridRect
 	( 
 		GridPoint const & gpStart, 
@@ -44,22 +30,9 @@ public:
 		m_lBottom(gpEnd.y) 
 	{};
 
-    GridRect
-	( 
-		GridPoint const & gpCenter, 
-		GRID_COORD const iSize 
-	) : 
-		m_lLeft  (gpCenter.x - iSize), 
-		m_lTop   (gpCenter.y - iSize), 
-		m_lRight (gpCenter.x + iSize), 
-		m_lBottom(gpCenter.y + iSize) 
-	{};
+	~GridRect() { };
 
-    ~GridRect() { };
-
-	virtual void Reset( ) { *this = GRID_RECT_EMPTY; }
-
-	virtual void Apply2Rect( GridPointFuncShort const &, short const = 0 ) const;
+	void Reset( ) { * this = GRID_RECT_EMPTY; }
 
 	void Apply2Rect( GridPointFunc const & func ) const
 	{
@@ -74,10 +47,10 @@ public:
     GRID_COORD const GetRight () const { return m_lRight;  };
     GRID_COORD const GetBottom() const { return m_lBottom; };
 
-    virtual GridPoint const GetStartPoint( ) const { return GridPoint( GetLeft(),  GetTop()    ); }
-    virtual GridPoint const GetEndPoint  ( ) const { return GridPoint( GetRight(), GetBottom() ); }
-    virtual GridPoint const GetCenter    ( ) const { return GridPoint( (m_lLeft + m_lRight) / 2, (m_lTop + m_lBottom) / 2 ); }
-    virtual GridPoint const GetSize      ( ) const { return GridPoint( m_lRight - m_lLeft, m_lBottom - m_lTop ); }
+    GridPoint const GetStartPoint( ) const { return GridPoint( GetLeft(),  GetTop()    ); }
+    GridPoint const GetEndPoint  ( ) const { return GridPoint( GetRight(), GetBottom() ); }
+    GridPoint const GetCenter    ( ) const { return GridPoint( (m_lLeft + m_lRight) / 2, (m_lTop + m_lBottom) / 2 ); }
+    GridPoint const GetSize      ( ) const { return GridPoint( m_lRight - m_lLeft, m_lBottom - m_lTop ); }
 	
 	GridRect  const ClipToGrid   ( ) const { return GridRect( clipStartPoint( ), clipEndPoint( ) );	}
  

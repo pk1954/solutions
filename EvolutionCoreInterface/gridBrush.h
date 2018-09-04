@@ -54,9 +54,6 @@ public:
 				m_filter( gp );
 	}
 
-	bool const IsEmpty( )    const { return ( m_gpCenter == GridPoint::GP_NULL ); }
-    bool const IsNotEmpty( ) const { return ( m_gpCenter != GridPoint::GP_NULL ); }
-
 	void SetRadius( GRID_COORD const radius ) 
 	{ 
 		assert( radius <= MAX_GRID_COORD );
@@ -141,12 +138,12 @@ public:
             || ( m_shape       != other.m_shape );
     }
  
-    GridPoint  const GetCenter   ( ) const { return m_gpCenter;   }
-    GRID_COORD const GetRadius   ( ) const { return m_radius;     }
-	short      const GetIntensity( ) const { return m_sIntensity; }
-	tShape     const GetShape    ( ) const { return m_shape;      }
-    tBrushMode const GetBrushMode( ) const { return m_brushMode;  }
-    tOperator  const GetOperator ( ) const { return m_manipulator->GetOperator(); }
+    GRID_COORD    const GetRadius   ( ) const { return m_radius;     }
+	short         const GetIntensity( ) const { return m_sIntensity; }
+	tShape        const GetShape    ( ) const { return m_shape;      }
+    tBrushMode    const GetBrushMode( ) const { return m_brushMode;  }
+    tOperator     const GetOperator ( ) const { return m_manipulator->GetOperator(); }
+	GridPointFunc const GetFilter   ( ) const { return m_filter; }
 
 protected:
 	static bool m_bClassInitialized;

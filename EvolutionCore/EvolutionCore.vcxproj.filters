@@ -54,9 +54,6 @@
     <ClInclude Include="strategy.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="EditorState.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="EvolutionModelDataImpl.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>

@@ -161,7 +161,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EditorState.h" />
     <ClInclude Include="EvolutionCoreImpl.h" />
     <ClInclude Include="gene.h" />
     <ClInclude Include="geneTypeLimits.h" />

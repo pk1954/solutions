@@ -4,18 +4,18 @@
 #pragma once
 
 #include <functional>
-#include "boolOp.h"
+#include "BoolOp.h"
 #include "EvolutionModelData.h"
 #include "gridRect.h"
 #include "grid_model.h"
-#include "EditorState.h"
+#include "gridBrush.h"
 
 class EvolutionModelDataImpl : public EvolutionModelData
 {
 public:
-    EvolutionModelDataImpl( ) : 
-		m_editorState    ( & m_grid ),
-		m_editorStateLast( & m_grid )
+    EvolutionModelDataImpl( ) :
+		m_brush    ( & m_grid ),
+		m_brushLast( & m_grid )
     {
         ResetAll( );
     };
@@ -24,10 +24,12 @@ public:
 	{
         m_grid.ResetGrid( );
 	    m_idPOI.ResetIndId( );
-		m_editorState.Reset( );
 	    m_plan.SetInvalid( );
 		ResetSelection( );
         SetBrushMode( tBrushMode::move );
+		m_brush.Reset( );
+		m_brushLast.Reset( );
+		m_bSimulationMode = false;
 	}
 
     virtual void CopyEvolutionModelData( EvolutionModelData const * const );
@@ -35,16 +37,16 @@ public:
 	virtual void           ResetSelection   ( )                       { m_gridRectSelection.Reset(); };
 	virtual void           SetSelection     ( GridRect const & rect ) { m_gridRectSelection = rect; }
 
-    virtual void           SetBrushOperator ( tOperator  const op    ) { m_editorState.SetBrushOperator ( op    ); }
-    virtual void           SetBrushShape    ( tShape     const shape ) { m_editorState.SetBrushShape    ( shape ); }
-    virtual void           SetBrushRadius   ( GRID_COORD const r     ) { m_editorState.SetBrushRadius   ( r  ); }
-    virtual void           SetBrushIntensity( short      const sInt  ) { m_editorState.SetBrushIntensity( sInt  ); }
-    virtual void           SetSimulationMode( tBoolOp    const op    ) { m_editorState.SetSimulationMode( op    ); }
+    virtual void           SetBrushOperator ( tOperator  const op    ) { m_brush.SetOperator ( op    ); }
+    virtual void           SetBrushShape    ( tShape     const shape ) { m_brush.SetShape    ( shape ); }
+    virtual void           SetBrushRadius   ( GRID_COORD const r     ) { m_brush.SetRadius   ( r  ); }
+    virtual void           SetBrushIntensity( short      const sInt  ) { m_brush.SetIntensity( sInt  ); }
+    virtual void           SetBrushMode     ( tBrushMode const mode  ) { m_brush.SetBrushMode( mode ); }
+    virtual void           SetSimulationMode( tBoolOp    const op    ) { ApplyOp( m_bSimulationMode, op ); }
 
-    virtual void           SetBrushMode     ( tBrushMode const mode  ) { m_editorState.SetBrushMode( mode ); }
-    virtual void           ModelDoEdit      ( GridPoint  const gp )    { m_editorState.EditorDoEdit( gp ); }
+    virtual void           ModelDoEdit      ( GridPoint  const gp )    { (m_brush)( gp ); }
 
-	virtual bool           GetSimulationMode( ) const { return m_editorState.GetSimulationMode( ); }
+	virtual bool           GetSimulationMode( ) const { return m_bSimulationMode; }
 
     virtual EVO_GENERATION GetAge         ( GridPoint const & gp ) const { return m_grid.GetAge( gp ); }
 
@@ -68,11 +70,13 @@ public:
     virtual short          GetDistr       ( GridPoint const & gp, tAction   const at    ) const { return getGenome( gp ).GetDistr( at ); }
 
     virtual EVO_GENERATION GetEvoGenerationNr ( ) const { return m_grid.GetEvoGenerationNr( ); }
-    virtual short          GetBrushIntensity  ( ) const { return m_editorState.GetBrushIntensity( ); }
-    virtual tOperator      GetBrushOperator   ( ) const { return m_editorState.GetBrushOperator( ); }
-    virtual tShape         GetBrushShape      ( ) const { return m_editorState.GetBrushShape( ); }
-    virtual GRID_COORD     GetBrushSize       ( ) const { return m_editorState.GetBrushSize( ); }
-    virtual tBrushMode     GetBrushMode       ( ) const { return m_editorState.GetBrushMode( ); }
+
+	virtual tOperator      GetBrushOperator   ( ) const { return m_brush.GetOperator(); }
+    virtual short          GetBrushIntensity  ( ) const { return m_brush.GetIntensity(); }
+    virtual tShape         GetBrushShape      ( ) const { return m_brush.GetShape(); }
+    virtual GRID_COORD     GetBrushSize       ( ) const { return m_brush.GetRadius(); }
+    virtual tBrushMode     GetBrushMode       ( ) const { return m_brush.GetBrushMode(); }
+
 	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GridRect::GRID_RECT_FULL : m_gridRectSelection; }
 	virtual bool           SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
 	virtual bool           SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
@@ -87,8 +91,8 @@ public:
     virtual GridPoint FindPOI( ) const;
     virtual GridPoint FindGridPoint( IndId const & ) const;
 
-	virtual void SaveEditorState      ( )       {        m_editorStateLast  = m_editorState; }
-	virtual bool EditorStateHasChanged( ) const { return m_editorStateLast != m_editorState; }
+	virtual void SaveEditorState      ( )       {        m_brush  = m_brushLast; }
+	virtual bool EditorStateHasChanged( ) const { return m_brush != m_brushLast; }
 
     virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
     virtual PlannedActivity       * GetPlan4Writing( )       { return & m_plan; };
@@ -101,8 +105,9 @@ public:
 private:
     PlannedActivity m_plan;
     IndId           m_idPOI;
-    EditorState     m_editorState;
-	EditorState     m_editorStateLast;
+	GridBrush		m_brush;
+	GridBrush		m_brushLast;
+	bool			m_bSimulationMode;
 	GridRect        m_gridRectSelection;
 
     GridField const & getGridField( GridPoint const & gp ) const { return m_grid.GetGridField( gp ); }
