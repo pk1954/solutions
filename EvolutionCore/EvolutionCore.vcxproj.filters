@@ -60,6 +60,9 @@
     <ClInclude Include="geneTypeLimits.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="gridBrush.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -126,9 +129,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="PixelCore.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="EvolutionModelDataImpl.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="EvolutionModelData.cpp">

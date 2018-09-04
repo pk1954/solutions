@@ -8,7 +8,6 @@
 #include "EvolutionModelData.h"
 #include "EvolutionCore.h"
 #include "EvolutionTypes.h"
-#include "EditorState.h"
 #include "pixelCoordinates.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "EvolutionCoreWrappers.h"

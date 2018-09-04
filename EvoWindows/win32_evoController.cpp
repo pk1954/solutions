@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "Windowsx.h"
 #include "Resource.h"
-#include "boolOp.h"
+#include "BoolOp.h"
 #include "win32_script.h"
 #include "win32_workThreadInterface.h"
 #include "win32_winManager.h"

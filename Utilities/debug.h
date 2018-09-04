@@ -29,5 +29,7 @@
 #define ASSERT_LIMITS(v, min, max) 
 #define ASSERT_SHORT(i)
 #define ASSERT_INT(i)
+#define ASSERT_USHORT(i)
+#define ASSERT_UINT(i)
 #define ASSERT_SHORT_SUM(a,b)
 #endif

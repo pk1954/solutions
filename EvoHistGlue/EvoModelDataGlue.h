@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "boolOp.h"
+#include "BoolOp.h"
 #include "Int24.h"
 #include "gridPoint.h"
 #include "ModelData.h"

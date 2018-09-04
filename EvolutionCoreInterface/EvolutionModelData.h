@@ -1,15 +1,16 @@
 // EvolutionModelData.h
 //
+// Interface of evolution core 
 
 #pragma once
 
-#include "boolOp.h"
+#include "BoolOp.h"
 #include "EvolutionTypes.h"
-#include "GridRect.h"
 #include "Manipulator.h"
 
 class PlannedActivity;
 class GridPoint;
+class GridRect;
 class IndId;
 
 class EvolutionModelData
@@ -54,7 +55,7 @@ public:
     virtual short          GetDistr       ( GridPoint const &, tAction   const ) const = 0;
     virtual long           GetGenotype    ( GridPoint const &, tGeneType const ) const = 0;
 
-    virtual GridPoint FindGridPoint( IndId const & ) const = 0;
+    virtual GridPoint      FindGridPoint  ( IndId const & ) const = 0;
 
     virtual PlannedActivity const & GetPlan( ) const = 0;
 

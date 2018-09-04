@@ -167,6 +167,7 @@
     <ClInclude Include="genome.h" />
     <ClInclude Include="gpList.h" />
     <ClInclude Include="gplIterator.h" />
+    <ClInclude Include="gridBrush.h" />
     <ClInclude Include="gridField.h" />
     <ClInclude Include="grid_model.h" />
     <ClInclude Include="individual.h" />
@@ -182,7 +183,6 @@
     <ClCompile Include="EvolutionCore.cpp" />
     <ClCompile Include="EvolutionCoreImpl.cpp" />
     <ClCompile Include="EvolutionModelData.cpp" />
-    <ClCompile Include="EvolutionModelDataImpl.cpp" />
     <ClCompile Include="EvolutionTypes.cpp" />
     <ClCompile Include="food.cpp" />
     <ClCompile Include="geneTypeLimits.cpp" />

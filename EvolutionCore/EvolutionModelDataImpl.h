@@ -1,4 +1,4 @@
-// EvolutionDataModelImpl.h
+// EvolutionModelDataImpl.h
 //
 
 #pragma once
@@ -32,7 +32,10 @@ public:
 		m_bSimulationMode = false;
 	}
 
-    virtual void CopyEvolutionModelData( EvolutionModelData const * const );
+    virtual void CopyEvolutionModelData( EvolutionModelData const * const src )
+	{
+		* this = * static_cast<EvolutionModelDataImpl const *>( src );
+	}
 
 	virtual void           ResetSelection   ( )                       { m_gridRectSelection.Reset(); };
 	virtual void           SetSelection     ( GridRect const & rect ) { m_gridRectSelection = rect; }
@@ -81,24 +84,47 @@ public:
 	virtual bool           SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
 	virtual bool           SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
 
-	virtual IndId     GetPoiId    ( )                      const { return m_idPOI; }
-	virtual bool      IsPoiDefined( )                      const { return m_idPOI.IsDefined( ); }
-	virtual bool      IsPoiId     ( IndId     const & id ) const { return m_idPOI == id; }
-	virtual bool      IsPoi       ( GridPoint const & gp ) const { return ( gp.IsNotNull( ) && ( GetId( gp ) == m_idPOI ) ); }
-	virtual void      ClearPoi    ( )                            { m_idPOI.ResetIndId( ); }
+	virtual IndId          GetPoiId    ( )                      const { return m_idPOI; }
+	virtual bool           IsPoiDefined( )                      const { return m_idPOI.IsDefined( ); }
+	virtual bool           IsPoiId     ( IndId     const & id ) const { return m_idPOI == id; }
+	virtual bool           IsPoi       ( GridPoint const & gp ) const { return ( gp.IsNotNull( ) && ( GetId( gp ) == m_idPOI ) ); }
+	virtual void           ClearPoi    ( )                            { m_idPOI.ResetIndId( ); }
 
-	virtual void      SetPoi( GridPoint const & );     
-    virtual GridPoint FindPOI( ) const;
-    virtual GridPoint FindGridPoint( IndId const & ) const;
-
-	virtual void SaveEditorState      ( )       {        m_brush  = m_brushLast; }
-	virtual bool EditorStateHasChanged( ) const { return m_brush != m_brushLast; }
+	virtual void           SaveEditorState      ( )       {        m_brush  = m_brushLast; }
+	virtual bool           EditorStateHasChanged( ) const { return m_brush != m_brushLast; }
 
     virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
     virtual PlannedActivity       * GetPlan4Writing( )       { return & m_plan; };
 
     virtual int GetAverageFoodGrowth( )     const { return m_grid.GetAverageFoodGrowth( ); }
     virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
+
+	virtual void SetPoi( GridPoint const &  gp )       
+	{ 
+		if ( gp.IsInGrid( ) )
+		{
+			IndId const idPoiNew = GetId( gp );
+			if ( idPoiNew.IsDefined( ) )
+			{    
+				if ( IsPoiId( idPoiNew ) )
+					ClearPoi( );           // same POI. deactivate POI
+				else
+					m_idPOI = m_grid.GetId( gp ); 
+			}
+		}
+	}
+
+    virtual GridPoint FindPOI( ) const 
+	{ 
+		return IsPoiDefined( ) 
+				? FindGridPoint( m_idPOI ) 
+				: GridPoint::GP_NULL; 
+	}
+
+	virtual GridPoint FindGridPoint( IndId const & id ) const 
+	{ 
+		return m_grid.FindGridPoint( [&](GridPoint const & gp) { return (GetId(gp) == id); } );
+	}
 
     Grid            m_grid;	
 

@@ -154,7 +154,6 @@
     <ClInclude Include="gridPoint24.h" />
     <ClInclude Include="gridRect.h" />
     <ClInclude Include="EvolutionModelData.h" />
-    <ClInclude Include="gridBrush.h" />
     <ClInclude Include="PixelCore.h" />
     <ClInclude Include="plannedActivity.h" />
     <ClInclude Include="EvolutionCoreWrapperHelpers.h" />
