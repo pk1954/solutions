@@ -112,12 +112,23 @@ enum class tBrushMode
     fertilizer
 };
 
-wchar_t const * const GetStrategyName      ( tStrategyId const );
-wchar_t const * const GetShapeName         ( tShape      const );
-wchar_t const * const GetOriginName        ( tOrigin     const );
-wchar_t const * const GetActionTypeName    ( tAction     const );
-wchar_t const * const GetGeneName          ( tGeneType   const );
-wchar_t const * const GetBrushModeName     ( tBrushMode  const );
-wchar_t const * const GetBrushModeNameShort( tBrushMode  const );
+enum class tManipulator
+{
+	set,
+	max,
+	min,
+	add,
+	subtract,
+	mean
+};
+
+wchar_t const * const GetStrategyName      ( tStrategyId  const );
+wchar_t const * const GetShapeName         ( tShape       const );
+wchar_t const * const GetOriginName        ( tOrigin      const );
+wchar_t const * const GetActionTypeName    ( tAction      const );
+wchar_t const * const GetGeneName          ( tGeneType    const );
+wchar_t const * const GetBrushModeName     ( tBrushMode   const );
+wchar_t const * const GetBrushModeNameShort( tBrushMode   const );
+wchar_t const * const GetManipulatorName   ( tManipulator const );
 
 tAction const GetRelatedAction( tGeneType const );

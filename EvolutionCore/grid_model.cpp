@@ -315,34 +315,36 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
 
 void Grid::EditSetStrategy
 ( 
-    GridPoint    const & gp, 
-    unsigned int const   uiIntensity, // percent value
-	Manipulator<short> * man,
-    tStrategyId          strategy
+    GridPoint   const & gp, 
+    short       const   sIntensity, // percent value
+    tStrategyId         strategy
 )
 {
-    unsigned int const uiRand  = NextRandomNumber( );
-    unsigned int const uiLimit = uiIntensity * RAND_MAX / 100L;
+	if ( sIntensity > 0 )
+	{
+		unsigned int const uiRand  = NextRandomNumber( );
+		unsigned int const uiLimit = static_cast<unsigned short>(sIntensity) * RAND_MAX / 100L;
 
-    if ( uiRand < uiLimit )
-    {
-        GridField & gf       = getGridField( gp );
-        bool const  bIsAlive = gf.IsAlive();
+		if ( uiRand < uiLimit )
+		{
+			GridField & gf       = getGridField( gp );
+			bool const  bIsAlive = gf.IsAlive();
 
-        if ( strategy != tStrategyId::empty )
-        {
-            if ( strategy == tStrategyId::random ) 
-               strategy = static_cast<tStrategyId>(m_random.NextRandomNumber() % NR_STRATEGIES );
+			if ( strategy != tStrategyId::empty )
+			{
+				if ( strategy == tStrategyId::random ) 
+				   strategy = static_cast<tStrategyId>(m_random.NextRandomNumber() % NR_STRATEGIES );
 
-            gf.CreateIndividual( ++m_idCounter, m_genEvo, strategy );
-            if ( ! bIsAlive )
-                m_gpList.AddGridPointToList( * this, gf );
-        }
-        else if ( bIsAlive )
-        {
-            deleteAndReset( gf );
-        }
-    };
+				gf.CreateIndividual( ++m_idCounter, m_genEvo, strategy );
+				if ( ! bIsAlive )
+					m_gpList.AddGridPointToList( * this, gf );
+			}
+			else if ( bIsAlive )
+			{
+				deleteAndReset( gf );
+			}
+		}
+	}
 }
 
 GridPoint Grid::FindGridPoint( const std::function<bool( GridPoint const &)>& func ) const

@@ -97,12 +97,8 @@ void WorkThread::GenerationStep( )
 		else  // we are somewhere in history
 		{
 			m_pEvoHistGlue->EvoApproachHistGen( m_genDemanded ); // Get a stored generation from history system
-			if ( m_pModelWork->EditorStateHasChanged( ) )        // make sure that editor GUI reflects new state
-			{
-				m_pModelWork->SaveEditorState( );
-				if (m_pEditorWindow != nullptr)              
-					m_pEditorWindow->UpdateEditControls( ); 
-			}
+			if (m_pEditorWindow != nullptr)              
+				m_pEditorWindow->UpdateEditControls( );          // make sure that editor GUI reflects new state
 		}
 
 		WorkMessage( THREAD_MSG_REFRESH, 0, 0 );                   // refresh all views
@@ -226,7 +222,7 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
 
     case THREAD_MSG_SET_BRUSH_OPERATOR:
-        editorCommand( tEvoCmd::editSetBrushOperator, wParam );
+        editorCommand( tEvoCmd::editSetBrushManipulator, wParam );
         break;
 
     case THREAD_MSG_SET_BRUSH_INTENSITY:

@@ -14,67 +14,53 @@ class EvolutionModelDataImpl : public EvolutionModelData
 {
 public:
     EvolutionModelDataImpl( ) :
-		m_brush    ( & m_grid ),
-		m_brushLast( & m_grid )
+		m_brush( & m_grid )
     {
         ResetAll( );
     };
 
-	void ResetAll( )
-	{
-        m_grid.ResetGrid( );
-	    m_idPOI.ResetIndId( );
-	    m_plan.SetInvalid( );
-		ResetSelection( );
-        SetBrushMode( tBrushMode::move );
-		m_brush.Reset( );
-		m_brushLast.Reset( );
-		m_bSimulationMode = false;
-	}
+	virtual void           ResetAll();
 
-    virtual void CopyEvolutionModelData( EvolutionModelData const * const src )
-	{
-		* this = * static_cast<EvolutionModelDataImpl const *>( src );
-	}
+    virtual void           CopyEvolutionModelData( EvolutionModelData const * const );
 
-	virtual void           ResetSelection   ( )                       { m_gridRectSelection.Reset(); };
-	virtual void           SetSelection     ( GridRect const & rect ) { m_gridRectSelection = rect; }
+	virtual void           ResetSelection( )                       { m_gridRectSelection.Reset(); };
+	virtual void           SetSelection  ( GridRect const & rect ) { m_gridRectSelection = rect; }
 
-    virtual void           SetBrushOperator ( tOperator  const op    ) { m_brush.SetOperator ( op    ); }
-    virtual void           SetBrushShape    ( tShape     const shape ) { m_brush.SetShape    ( shape ); }
-    virtual void           SetBrushRadius   ( GRID_COORD const r     ) { m_brush.SetRadius   ( r  ); }
-    virtual void           SetBrushIntensity( short      const sInt  ) { m_brush.SetIntensity( sInt  ); }
-    virtual void           SetBrushMode     ( tBrushMode const mode  ) { m_brush.SetBrushMode( mode ); }
-    virtual void           SetSimulationMode( tBoolOp    const op    ) { ApplyOp( m_bSimulationMode, op ); }
+	virtual void           SetBrushMode       ( tBrushMode   const mode  ) { m_brush.SetBrushMode  ( mode  );  }
+	virtual void           SetBrushManipulator( tManipulator const op    ) { m_brush.SetManipulator( op    );  }
+	virtual void           SetBrushShape      ( tShape       const shape ) { m_brush.SetShape      ( shape );  }
+    virtual void           SetBrushRadius     ( GRID_COORD   const rad   ) { m_brush.SetRadius     ( rad   );  }
+    virtual void           SetBrushIntensity  ( short        const sInt  ) { m_brush.SetIntensity  ( sInt  );  }
+    virtual void           SetSimulationMode  ( tBoolOp      const op    ) { ApplyOp( m_bSimulationMode, op ); }
 
-    virtual void           ModelDoEdit      ( GridPoint  const gp )    { (m_brush)( gp ); }
+    virtual void           ModelDoEdit        ( GridPoint  const gp )    { (m_brush)( gp ); }
 
-	virtual bool           GetSimulationMode( ) const { return m_bSimulationMode; }
+	virtual bool           GetSimulationMode  ( ) const { return m_bSimulationMode; }
 
-    virtual EVO_GENERATION GetAge         ( GridPoint const & gp ) const { return m_grid.GetAge( gp ); }
+    virtual EVO_GENERATION GetAge       ( GridPoint const & gp ) const { return m_grid.GetAge( gp ); }
 
-    virtual int            GetFoodStock   ( GridPoint const & gp ) const { return getGridField( gp ).GetFoodStock( ); }
-    virtual int            GetFertility   ( GridPoint const & gp ) const { return getGridField( gp ).GetFertility( ); }
-    virtual int            GetMutationRate( GridPoint const & gp ) const { return getGridField( gp ).GetMutationRate( ); }
-    virtual int            GetFertilizer  ( GridPoint const & gp ) const { return getGridField( gp ).GetFertilizer( ); }
-    virtual EVO_GENERATION GetGenBirth    ( GridPoint const & gp ) const { return getGridField( gp ).GetGenBirth( ); }
-    virtual IndId          GetId          ( GridPoint const & gp ) const { return getGridField( gp ).GetId( ); }
-    virtual tOrigin        GetOrigin      ( GridPoint const & gp ) const { return getGridField( gp ).GetOrigin( ); }
-    virtual short          GetEnergy      ( GridPoint const & gp ) const { return getGridField( gp ).GetEnergy( ); }
-    virtual tStrategyId    GetStrategyId  ( GridPoint const & gp ) const { return getGridField( gp ).GetStrategyId( ); }
-    virtual MEM_INDEX      GetMemSize     ( GridPoint const & gp ) const { return getGridField( gp ).GetMemSize( ); }
-    virtual MEM_INDEX      GetMemUsed     ( GridPoint const & gp ) const { return getGridField( gp ).GetMemUsed( ); }
-    virtual bool           IsDead         ( GridPoint const & gp ) const { return getGridField( gp ).IsDead( ); }
-    virtual bool           IsAlive        ( GridPoint const & gp ) const { return getGridField( gp ).IsAlive( ); }
-    virtual bool           IsDefined      ( GridPoint const & gp ) const { return getGridField( gp ).IsDefined( ); }
+    virtual int            GetFoodStock ( GridPoint const & gp ) const { return getGridField( gp ).GetFoodStock( ); }
+    virtual int            GetFertility ( GridPoint const & gp ) const { return getGridField( gp ).GetFertility( ); }
+    virtual int            GetMutRate   ( GridPoint const & gp ) const { return getGridField( gp ).GetMutRate( ); }
+    virtual int            GetFertilizer( GridPoint const & gp ) const { return getGridField( gp ).GetFertilizer( ); }
+    virtual EVO_GENERATION GetGenBirth  ( GridPoint const & gp ) const { return getGridField( gp ).GetGenBirth( ); }
+    virtual IndId          GetId        ( GridPoint const & gp ) const { return getGridField( gp ).GetId( ); }
+    virtual tOrigin        GetOrigin    ( GridPoint const & gp ) const { return getGridField( gp ).GetOrigin( ); }
+    virtual short          GetEnergy    ( GridPoint const & gp ) const { return getGridField( gp ).GetEnergy( ); }
+    virtual tStrategyId    GetStrategyId( GridPoint const & gp ) const { return getGridField( gp ).GetStrategyId( ); }
+    virtual MEM_INDEX      GetMemSize   ( GridPoint const & gp ) const { return getGridField( gp ).GetMemSize( ); }
+    virtual MEM_INDEX      GetMemUsed   ( GridPoint const & gp ) const { return getGridField( gp ).GetMemUsed( ); }
+    virtual bool           IsDead       ( GridPoint const & gp ) const { return getGridField( gp ).IsDead( ); }
+    virtual bool           IsAlive      ( GridPoint const & gp ) const { return getGridField( gp ).IsAlive( ); }
+    virtual bool           IsDefined    ( GridPoint const & gp ) const { return getGridField( gp ).IsDefined( ); }
 
-    virtual long           GetMemEntry    ( GridPoint const & gp, MEM_INDEX const index ) const { return getGridField( gp ).GetMemEntry( index ); }
-    virtual long           GetGenotype    ( GridPoint const & gp, tGeneType const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
-    virtual short          GetDistr       ( GridPoint const & gp, tAction   const at    ) const { return getGenome( gp ).GetDistr( at ); }
+    virtual long           GetMemEntry  ( GridPoint const & gp, MEM_INDEX const index ) const { return getGridField( gp ).GetMemEntry( index ); }
+    virtual long           GetGenotype  ( GridPoint const & gp, tGeneType const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
+    virtual short          GetDistr     ( GridPoint const & gp, tAction   const at    ) const { return getGenome( gp ).GetDistr( at ); }
 
     virtual EVO_GENERATION GetEvoGenerationNr ( ) const { return m_grid.GetEvoGenerationNr( ); }
 
-	virtual tOperator      GetBrushOperator   ( ) const { return m_brush.GetOperator(); }
+	virtual tManipulator   GetBrushManipulator( ) const { return m_brush.GetManipulator(); }
     virtual short          GetBrushIntensity  ( ) const { return m_brush.GetIntensity(); }
     virtual tShape         GetBrushShape      ( ) const { return m_brush.GetShape(); }
     virtual GRID_COORD     GetBrushSize       ( ) const { return m_brush.GetRadius(); }
@@ -90,41 +76,15 @@ public:
 	virtual bool           IsPoi       ( GridPoint const & gp ) const { return ( gp.IsNotNull( ) && ( GetId( gp ) == m_idPOI ) ); }
 	virtual void           ClearPoi    ( )                            { m_idPOI.ResetIndId( ); }
 
-	virtual void           SaveEditorState      ( )       {        m_brush  = m_brushLast; }
-	virtual bool           EditorStateHasChanged( ) const { return m_brush != m_brushLast; }
-
     virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
     virtual PlannedActivity       * GetPlan4Writing( )       { return & m_plan; };
 
     virtual int GetAverageFoodGrowth( )     const { return m_grid.GetAverageFoodGrowth( ); }
     virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
 
-	virtual void SetPoi( GridPoint const &  gp )       
-	{ 
-		if ( gp.IsInGrid( ) )
-		{
-			IndId const idPoiNew = GetId( gp );
-			if ( idPoiNew.IsDefined( ) )
-			{    
-				if ( IsPoiId( idPoiNew ) )
-					ClearPoi( );           // same POI. deactivate POI
-				else
-					m_idPOI = m_grid.GetId( gp ); 
-			}
-		}
-	}
-
-    virtual GridPoint FindPOI( ) const 
-	{ 
-		return IsPoiDefined( ) 
-				? FindGridPoint( m_idPOI ) 
-				: GridPoint::GP_NULL; 
-	}
-
-	virtual GridPoint FindGridPoint( IndId const & id ) const 
-	{ 
-		return m_grid.FindGridPoint( [&](GridPoint const & gp) { return (GetId(gp) == id); } );
-	}
+	virtual void SetPoi( GridPoint const & );
+    virtual GridPoint FindPOI( ) const;
+	virtual GridPoint FindGridPoint( IndId const & ) const; 
 
     Grid            m_grid;	
 
@@ -132,7 +92,6 @@ private:
     PlannedActivity m_plan;
     IndId           m_idPOI;
 	GridBrush		m_brush;
-	GridBrush		m_brushLast;
 	bool			m_bSimulationMode;
 	GridRect        m_gridRectSelection;
 

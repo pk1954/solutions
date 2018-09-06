@@ -19,16 +19,16 @@ wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
 {
     static unordered_map < tEvoCmd, wchar_t const * const > mapNames =
     {
-        { tEvoCmd::nextGen,               L"NEXT"     },
-        { tEvoCmd::reset,                 L"RESET"    },  
-        { tEvoCmd::setSimulationMode,     L"SIMU"     },
-        { tEvoCmd::editSetBrushMode,      L"MODE"     },
-        { tEvoCmd::editSetBrushShape,     L"SHAPE"    },
-        { tEvoCmd::editSetBrushOperator,  L"OPERATOR" },
-        { tEvoCmd::editSetBrushRadius,    L"RADIUS"   },
-        { tEvoCmd::editSetBrushIntensity, L"INTENS"   },
-        { tEvoCmd::editDoEdit,            L"EDIT"     },
-        { tEvoCmd::editSetPOI,            L"SETPOI"   }
+        { tEvoCmd::nextGen,                 L"NEXT"   },
+        { tEvoCmd::reset,                   L"RESET"  },  
+        { tEvoCmd::setSimulationMode,       L"SIMU"   },
+        { tEvoCmd::editSetBrushMode,        L"MODE"   },
+        { tEvoCmd::editSetBrushShape,       L"SHAPE"  },
+        { tEvoCmd::editSetBrushManipulator, L"MANIP"  },
+        { tEvoCmd::editSetBrushRadius,      L"RADIUS" },
+        { tEvoCmd::editSetBrushIntensity,   L"INTENS" },
+        { tEvoCmd::editDoEdit,              L"EDIT"   },
+        { tEvoCmd::editSetPOI,              L"SETPOI" }
     };
 
     return mapNames.at( cmd );
@@ -38,16 +38,16 @@ wchar_t const * const GetEvoCommandName( tEvoCmd const cmd )
 {
     static unordered_map < tEvoCmd, wchar_t const * const > mapNames =
     {
-        { tEvoCmd::nextGen,               L"tEvoCmd::nextGen" },
-        { tEvoCmd::reset,                 L"tGenCmd::reset" },
-        { tEvoCmd::setSimulationMode,     L"tEvoCmd::setSimulationMode"  },
-        { tEvoCmd::editSetBrushMode,      L"tEvoCmd::editSetBrushMode" },
-        { tEvoCmd::editSetBrushShape,     L"tEvoCmd::editSetBrushShape" },
-        { tEvoCmd::editSetBrushOperator,  L"tEvoCmd::editSetBrushOperator" },
-        { tEvoCmd::editSetBrushRadius,    L"tEvoCmd::editSetBrushRadius" },
-        { tEvoCmd::editSetBrushIntensity, L"tEvoCmd::editSetBrushIntensity" },
-        { tEvoCmd::editDoEdit,            L"tEvoCmd::editDoEdit" },
-        { tEvoCmd::editSetPOI,            L"tEvoCmd::editSetPOI" }
+        { tEvoCmd::nextGen,                 L"tEvoCmd::nextGen" },
+        { tEvoCmd::reset,                   L"tGenCmd::reset" },
+        { tEvoCmd::setSimulationMode,       L"tEvoCmd::setSimulationMode"  },
+        { tEvoCmd::editSetBrushMode,        L"tEvoCmd::editSetBrushMode" },
+        { tEvoCmd::editSetBrushShape,       L"tEvoCmd::editSetBrushShape" },
+        { tEvoCmd::editSetBrushManipulator, L"tEvoCmd::editSetBrushManipulator" },
+        { tEvoCmd::editSetBrushRadius,      L"tEvoCmd::editSetBrushRadius" },
+        { tEvoCmd::editSetBrushIntensity,   L"tEvoCmd::editSetBrushIntensity" },
+        { tEvoCmd::editDoEdit,              L"tEvoCmd::editDoEdit" },
+        { tEvoCmd::editSetPOI,              L"tEvoCmd::editSetPOI" }
     };
 
     return mapNames.at( cmd );

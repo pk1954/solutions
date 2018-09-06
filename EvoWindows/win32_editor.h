@@ -31,10 +31,10 @@ public:
 private:
     virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
 
-    LRESULT sendClick       ( int )        const;
-	void    setBrushMode    ( WORD const ) const;
-	void    setBrushShape   ( WORD const ) const;
-	void    setBrushOperator( WORD const ) const;
+    LRESULT sendClick          ( int )        const;
+	void    setBrushMode       ( WORD const ) const;
+	void    setBrushShape      ( WORD const ) const;
+	void    setBrushManipulator( WORD const ) const;
 
 	EvolutionModelData  * m_pModelWork;
     WorkThreadInterface * m_pWorkThreadInterface;

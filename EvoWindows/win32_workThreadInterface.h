@@ -4,7 +4,6 @@
 
 #include <fstream>
 #include "gridRect.h"
-#include "Manipulator.h"
 #include "HistoryGeneration.h"
 #include "EvolutionTypes.h"
 
@@ -35,7 +34,7 @@ public:
     void PostSetSimulationMode( tBoolOp const );
     void PostSetBrushMode( tBrushMode const );
     void PostSetBrushShape( tShape );
-	void PostSetBrushOperator( tOperator const );
+	void PostSetBrushManipulator( tManipulator const );
     void PostSetBrushIntensity( LONG const );
     void PostSetBrushRadius( INT const );
     void PostRefresh( );

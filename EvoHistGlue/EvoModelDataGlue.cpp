@@ -58,8 +58,8 @@ void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd  )
         m_pEvolutionModelData->SetBrushShape( static_cast<tShape>( param.GetValue() ) );
 		break;
 
-    case tEvoCmd::editSetBrushOperator:
-        m_pEvolutionModelData->SetBrushOperator( static_cast<tOperator>( param.GetValue() ) );
+    case tEvoCmd::editSetBrushManipulator:
+        m_pEvolutionModelData->SetBrushManipulator( static_cast<tManipulator>( param.GetValue() ) );
 		break;
 
     case tEvoCmd::editSetBrushRadius:

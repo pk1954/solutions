@@ -135,3 +135,17 @@ wchar_t const * const GetBrushModeNameShort( tBrushMode const mode )
     return mapModes.at( mode );
 }
 
+wchar_t const * const GetManipulatorName( tManipulator const op )
+{
+    static unordered_map < tManipulator, wchar_t const * const > mapManipulators =
+    { 
+        { tManipulator::set,      L"set" },
+        { tManipulator::max,      L"max" },
+        { tManipulator::min,      L"min" },
+        { tManipulator::add,      L"add" },
+        { tManipulator::subtract, L"subtract" },
+        { tManipulator::mean,     L"mean" },
+    };
+
+    return mapManipulators.at( op );
+}

@@ -8,7 +8,6 @@
 #include "gridPoint.h"
 #include "interaction.h"
 #include "individual.h"
-#include "Manipulator.h"
 
 class GridField
 {
@@ -25,22 +24,22 @@ public:
 		return ClipToMinMax( sAvailable, (short const) 0, sWant ); 
 	}
 
-    short          GetMutationRate( ) const { return m_sMutatRate;  }
-    short          GetFoodStock( )    const { return m_sFoodStock;  }
-    short          GetFertility( )    const { return m_sFertility;  }
-    short          GetFertilizer( )   const { return m_sFertilizer; }
-    EVO_GENERATION GetGenBirth( )     const { return m_Individual.GetGenBirth( ); }
-    tAction        GetLastAction( )   const { return m_Individual.GetLastAction( ); }
-    IndId          GetId( )           const { return m_Individual.GetId( ); }
-    tOrigin        GetOrigin( )       const { return m_Individual.GetOrigin( ); }
-    short          GetEnergy( )       const { return m_Individual.GetEnergy( ); }
-    bool           IsDead( )          const { return m_Individual.IsDead( ); }
-    bool           IsAlive( )         const { return m_Individual.IsAlive( ); };
-    bool           IsDefined( )       const { return m_Individual.IsDefined( ); };
-    tStrategyId    GetStrategyId( )   const { return m_Individual.GetStrategyId( ); }
-    MEM_INDEX      GetMemSize( )      const { return m_Individual.GetMemSize  ( ); }
-    MEM_INDEX      GetMemUsed( )      const { return m_Individual.GetMemUsed( ); }
-    Genome const & GetGenome( )       const { return m_Individual.GetGenome( ); }
+    short          GetMutRate( )    const { return m_sMutatRate;  }
+    short          GetFoodStock( )  const { return m_sFoodStock;  }
+    short          GetFertility( )  const { return m_sFertility;  }
+    short          GetFertilizer( ) const { return m_sFertilizer; }
+    EVO_GENERATION GetGenBirth( )   const { return m_Individual.GetGenBirth( ); }
+    tAction        GetLastAction( ) const { return m_Individual.GetLastAction( ); }
+    IndId          GetId( )         const { return m_Individual.GetId( ); }
+    tOrigin        GetOrigin( )     const { return m_Individual.GetOrigin( ); }
+    short          GetEnergy( )     const { return m_Individual.GetEnergy( ); }
+    bool           IsDead( )        const { return m_Individual.IsDead( ); }
+    bool           IsAlive( )       const { return m_Individual.IsAlive( ); };
+    bool           IsDefined( )     const { return m_Individual.IsDefined( ); };
+    tStrategyId    GetStrategyId( ) const { return m_Individual.GetStrategyId( ); }
+    MEM_INDEX      GetMemSize( )    const { return m_Individual.GetMemSize  ( ); }
+    MEM_INDEX      GetMemUsed( )    const { return m_Individual.GetMemUsed( ); }
+    Genome const & GetGenome( )     const { return m_Individual.GetGenome( ); }
 
     short  const   GetAllele( tGeneType const geneType ) const { return GetGenome( ).GetAllele( geneType ); }
 
@@ -57,10 +56,10 @@ public:
     void BreedIndividual ( IndId const, EVO_GENERATION const, Random &, GridField &, GridField & );
     void MoveIndividual  ( GridField & );
 
-	void Apply2Fertilizer(short const s, Manipulator<short> * man) { setFertilizer  ( (* man)( m_sFertilizer, s ) ); }
-	void Apply2FoodStock (short const s, Manipulator<short> * man) { setFoodStock   ( (* man)( m_sFoodStock,  s ) ); }
-	void Apply2Fertility (short const s, Manipulator<short> * man) { setFertility   ( (* man)( m_sFertility,  s ) ); }
-	void Apply2MutRate   (short const s, Manipulator<short> * man) { setMutationRate( (* man)( m_sMutatRate,  s ) ); }
+	void Apply2Fertilizer(short const s, ManipulatorFunc f) { setFertilizer( (f)( m_sFertilizer, s ) ); }
+	void Apply2FoodStock (short const s, ManipulatorFunc f) { setFoodStock ( (f)( m_sFoodStock,  s ) ); }
+	void Apply2Fertility (short const s, ManipulatorFunc f) { setFertility ( (f)( m_sFertility,  s ) ); }
+	void Apply2MutRate   (short const s, ManipulatorFunc f) { setMutRate   ( (f)( m_sMutatRate,  s ) ); }
 
 	void DecFoodStock( short const sDec )
 	{ 
@@ -70,6 +69,8 @@ public:
 
 	void SetFoodStock ( short const s ) { setFoodStock ( s ); }
 	void SetFertilizer( short const s ) { setFertilizer( s ); }
+	void SetFertility ( short const s ) { setFertility ( s ); }
+	void SetMutRate   ( short const s ) { setMutRate   ( s ); }
 
     void ReduceFertilizer( ) { m_sFertilizer /= 2; }
 
@@ -113,10 +114,12 @@ private:
     static short m_sFoodReserve;
     static short m_sMaxFood;
 
-	void setFertilizer  ( short const s ) { m_sFertilizer = ( s < 0 ) ? 0 : s; }
-	void setFoodStock   ( short const s ) { m_sFoodStock  = ( s < 0 ) ? 0 : s; }
-	void setFertility   ( short const s ) { m_sFertility  = ( s < 0 ) ? 0 : s; }
-	void setMutationRate( short const s ) { m_sMutatRate  = ClipToMinMax( s, (short)0, (short)100 ); } // mutation rate is a percent value	
+// private functions
+
+	void setFertilizer( short const s ) { m_sFertilizer = ( s < 0 ) ? 0 : s; }
+	void setFoodStock ( short const s ) { m_sFoodStock  = ( s < 0 ) ? 0 : s; }
+	void setFertility ( short const s ) { m_sFertility  = ( s < 0 ) ? 0 : s; }
+	void setMutRate   ( short const s ) { m_sMutatRate  = ClipToMinMax( s, (short)0, (short)100 ); } // mutation rate is a percent value	
 };
 
 std::wostream & operator << ( std::wostream &, GridField const & );

@@ -72,7 +72,7 @@ void CrsrWindow::DoPaint( )
 
     nextLine( L"MutRate:" );
     setHorizontalPos( 2 );
-    printPercentage( m_pModelWork->GetMutationRate( gpFocus ) );
+    printPercentage( m_pModelWork->GetMutRate( gpFocus ) );
     
 	if ( m_pModelWork->IsDead( gpFocus ) )
         return;

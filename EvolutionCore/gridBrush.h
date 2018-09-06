@@ -5,7 +5,6 @@
 
 #include <algorithm>  // min/max templates
 #include "gridPoint.h"
-#include "Manipulator.h"
 #include "EvolutionTypes.h"
 #include "grid_model.h"
 
@@ -15,26 +14,24 @@ public:
 	GridBrush( Grid * const pGrid )
 		: m_pGrid( pGrid )
 	{
-		if ( ! m_bClassInitialized )
-		{
-			m_setMan  = new Set_Manipulator <short>;
-			m_addMan  = new Add_Manipulator <short>;   
-			m_subMan  = new Subt_Manipulator<short>;   
-			m_maxMan  = new Max_Manipulator <short>;   
-			m_minMan  = new Min_Manipulator <short>;   
-			m_meanMan = new Mean_Manipulator<short>;  
-		}
-
 		Reset();
+
+int i0 = sizeof( m_pGrid );
+int i2 = sizeof( m_func );
+int i3 = sizeof( m_shape );
+int i4 = sizeof( m_brushMode );
+int i5 = sizeof( m_sIntensity );
+int i6 = sizeof( m_radius );
+int i8 = sizeof( GridBrush );
+int i9 = 0;
 	}
 
 	virtual ~GridBrush() {};
 
 	void Reset( )
 	{
-		m_gpCenter = GridPoint::GP_NULL;
-		m_func = nullptr;
-		SetOperator( tOperator::add );
+		SetBrushMode( tBrushMode::move );
+		SetManipulator( tManipulator::add );
 		SetShape( tShape::Circle );
 		SetRadius( 17 );
 		SetIntensity( 50 );
@@ -42,16 +39,40 @@ public:
 
 	virtual void operator()( GridPoint const gpCenter )
 	{
-		m_gpCenter = gpCenter;
-
 		GridPoint gpStart = Max( GridPoint::GRID_ORIGIN  - gpCenter, GridPoint::GRID_ORIGIN - m_radius );
 		GridPoint gpEnd   = Min( GridPoint::GRID_MAXIMUM - gpCenter, GridPoint::GRID_ORIGIN + m_radius );
 
 		GridPoint gp;
 
-		for ( gp.y = gpStart.y; gp.y <= m_radius; ++gp.y )
-			for ( gp.x = gpStart.x; gp.x <= m_radius; ++gp.x )
-				m_filter( gp );
+		for ( gp.y = gpStart.y; gp.y <= gpEnd.y; ++gp.y )
+			for (gp.x = gpStart.x; gp.x <= gpEnd.x; ++gp.x)
+			{
+				short sIntensity;
+				switch ( m_shape )
+				{
+				case tShape::Circle:
+					{ 
+						long  const lRadius     = static_cast<long>(m_radius);
+						long  const lRadSquare  = lRadius * lRadius;
+						long  const lx          = static_cast<long>(gp.x);
+						long  const ly          = static_cast<long>(gp.y);
+						long  const lDistSquare = lx * lx + ly * ly;
+						short const sReduce     = CastToShort(( m_sIntensity * lDistSquare) / lRadSquare);
+						sIntensity = m_sIntensity - sReduce;
+					};
+					break;
+
+				case tShape::Rect:
+					{ 
+						sIntensity = m_sIntensity;
+					};
+					break;
+
+				default:
+					assert( false );
+				}
+				(m_func)( gpCenter + gp, sIntensity );
+			}
 	}
 
 	void SetRadius( GRID_COORD const radius ) 
@@ -70,63 +91,37 @@ public:
 		m_brushMode = mode;  
 		switch ( m_brushMode )
 		{
-		case  tBrushMode::move:        m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, m_manipulator, tStrategyId::empty    ); }; break;
-		case  tBrushMode::randomStrat: m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, m_manipulator, tStrategyId::random   ); }; break;
-		case  tBrushMode::cooperate:   m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, m_manipulator, tStrategyId::cooperate); }; break;
-		case  tBrushMode::defect:      m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, m_manipulator, tStrategyId::defect   ); }; break;
-		case  tBrushMode::tit4tat:     m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, m_manipulator, tStrategyId::tit4tat  ); }; break;
-		case  tBrushMode::noAnimals:   m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, m_manipulator, tStrategyId::empty    ); }; break;
-		case  tBrushMode::mutRate:     m_func = [this](GridPoint const & gp, short const s) { m_pGrid->Apply2MutRate   (gp, s, m_manipulator); }; break;
-		case  tBrushMode::fertility:   m_func = [this](GridPoint const & gp, short const s) { m_pGrid->Apply2Fertility (gp, s, m_manipulator); }; break;
-		case  tBrushMode::food:        m_func = [this](GridPoint const & gp, short const s) { m_pGrid->Apply2FoodStock (gp, s, m_manipulator); }; break;
-		case  tBrushMode::fertilizer:  m_func = [this](GridPoint const & gp, short const s) { m_pGrid->Apply2Fertilizer(gp, s, m_manipulator); }; break;
+		case  tBrushMode::move:        m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::empty    ); }; break;
+		case  tBrushMode::randomStrat: m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::random   ); }; break;
+		case  tBrushMode::cooperate:   m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::cooperate); }; break;
+		case  tBrushMode::defect:      m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::defect   ); }; break;
+		case  tBrushMode::tit4tat:     m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::tit4tat  ); }; break;
+		case  tBrushMode::noAnimals:   m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::empty    ); }; break;
+		case  tBrushMode::mutRate:     m_func = [this](GridPoint const & gp, short const s) { m_pGrid->Apply2MutRate   (gp, s, m_manFunc); }; break;
+		case  tBrushMode::fertility:   m_func = [this](GridPoint const & gp, short const s) { m_pGrid->Apply2Fertility (gp, s, m_manFunc); }; break;
+		case  tBrushMode::food:        m_func = [this](GridPoint const & gp, short const s) { m_pGrid->Apply2FoodStock (gp, s, m_manFunc); }; break;
+		case  tBrushMode::fertilizer:  m_func = [this](GridPoint const & gp, short const s) { m_pGrid->Apply2Fertilizer(gp, s, m_manFunc); }; break;
 		};
 	}
 
-	void SetOperator( tOperator const op ) 
+	void SetManipulator( tManipulator const man ) 
 	{ 
-		switch ( op )
+		m_manipulator = man;
+		switch ( man )
 		{
-		case tOperator::set      : m_manipulator = m_setMan;  break; 
-		case tOperator::add      : m_manipulator = m_addMan;  break; 
-		case tOperator::subtract : m_manipulator = m_subMan;  break; 
-		case tOperator::max      : m_manipulator = m_maxMan;  break; 
-		case tOperator::min      : m_manipulator = m_minMan;  break; 
-		case tOperator::mean     : m_manipulator = m_meanMan; break; 
+		case tManipulator::set      : m_manFunc = [](short const dst, short const src) { return src;             };  break; 
+		case tManipulator::add      : m_manFunc = [](short const dst, short const src) { return (dst + src);     };  break; 
+		case tManipulator::subtract : m_manFunc = [](short const dst, short const src) { return (dst - src);     };  break; 
+		case tManipulator::max      : m_manFunc = [](short const dst, short const src) { return max(dst, src);   };  break;
+		case tManipulator::min      : m_manFunc = [](short const dst, short const src) { return min(dst, src);   };  break; 
+		case tManipulator::mean     : m_manFunc = [](short const dst, short const src) { return (dst + src) / 2; };  break;
+		default: assert( false );
 		}
 	}
   
 	void SetShape( tShape const shape )
 	{
 		m_shape = shape;
-		switch ( shape )
-		{
-		case tShape::Circle:
-			m_filter = [&](GridPoint const & gp)
-			{ 
-				long const lRadius    = static_cast<long>(m_radius);
-				long const lRadSquare = lRadius * lRadius;
-				long const lx          = static_cast<long>(gp.x);
-				long const ly          = static_cast<long>(gp.y);
-				long const lDistSquare = lx * lx + ly * ly;
-				if ( lDistSquare <= lRadSquare )
-				{ 
-					short const sReduce = CastToShort(( m_sIntensity * lDistSquare) / lRadSquare);  
-					m_func( m_gpCenter + gp, m_sIntensity - sReduce );
-				}
-			};
-			break;
-
-		case tShape::Rect:
-			m_filter = [&](GridPoint const & gp)
-			{ 
-				m_func( m_gpCenter + gp, m_sIntensity );
-			};
-			break;
-
-		default:
-			assert( false );
-		}
 	}
 
     bool operator!=( GridBrush const & other ) const
@@ -138,30 +133,23 @@ public:
             || ( m_shape       != other.m_shape );
     }
  
-    GRID_COORD    const GetRadius   ( ) const { return m_radius;     }
-	short         const GetIntensity( ) const { return m_sIntensity; }
-	tShape        const GetShape    ( ) const { return m_shape;      }
-    tBrushMode    const GetBrushMode( ) const { return m_brushMode;  }
-    tOperator     const GetOperator ( ) const { return m_manipulator->GetOperator(); }
-	GridPointFunc const GetFilter   ( ) const { return m_filter; }
+    GRID_COORD   const GetRadius     ( ) const { return m_radius;      }
+	short        const GetIntensity  ( ) const { return m_sIntensity;  }
+	tShape       const GetShape      ( ) const { return m_shape;       }
+    tBrushMode   const GetBrushMode  ( ) const { return m_brushMode;   }
+    tManipulator const GetManipulator( ) const { return m_manipulator; }
 
-protected:
-	static bool m_bClassInitialized;
-
-	static Set_Manipulator <short> * m_setMan; 
-	static Add_Manipulator <short> * m_addMan; 
-	static Subt_Manipulator<short> * m_subMan;    
-	static Max_Manipulator <short> * m_maxMan; 
-	static Min_Manipulator <short> * m_minMan; 
-	static Mean_Manipulator<short> * m_meanMan;
+private:
+	static GridPointFilterShort m_filterRect;
+	static GridPointFilterShort m_filterCircle;
 	
 	Grid               * m_pGrid;
-	Manipulator<short> * m_manipulator;
-	GridPointFuncShort   m_func;
-	GridPointFunc        m_filter;
+	ManipulatorFunc      m_manFunc;
     tShape			     m_shape;
     tBrushMode		     m_brushMode;
+	tManipulator	     m_manipulator;
 	short                m_sIntensity;
-    GridPoint		     m_gpCenter;
     GRID_COORD	         m_radius;
+
+	std::function<void(GridPoint const &, short const)> m_func;
 };

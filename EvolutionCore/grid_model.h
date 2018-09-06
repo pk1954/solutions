@@ -10,10 +10,10 @@
 #include "gridNeighbor.h"
 #include "EvolutionTypes.h"
 #include "plannedActivity.h"
-#include "Manipulator.h"
 
 class GridCircle;
 class GridRect;
+class Manipulator;
 
 class Grid
 {
@@ -27,15 +27,20 @@ public:
     void      MakePlan     ( GridPoint const &, PlannedActivity & );
     GridPoint ImplementPlan( GridPoint const &, PlannedActivity const & );
 
-	short GetFertilizer  ( GridPoint const & gp ) { return getGridField( gp ).GetFertilizer( ); }
-	short GetFoodStock   ( GridPoint const & gp ) { return getGridField( gp ).GetFoodStock( ); }
-	short GetFertility   ( GridPoint const & gp ) { return getGridField( gp ).GetFertility( ); }
-	short GetMutationRate( GridPoint const & gp ) { return getGridField( gp ).GetMutationRate( ); }
+	short GetFertilizer( GridPoint const & gp ) { return getGridField( gp ).GetFertilizer( ); }
+	short GetFoodStock ( GridPoint const & gp ) { return getGridField( gp ).GetFoodStock( ); }
+	short GetFertility ( GridPoint const & gp ) { return getGridField( gp ).GetFertility( ); }
+	short GetMutRate   ( GridPoint const & gp ) { return getGridField( gp ).GetMutRate( ); }
 
-	void Apply2Fertilizer(GridPoint const & gp, short const s, Manipulator<short> * man) { getGridField( gp ).Apply2Fertilizer(s, man); }
-	void Apply2FoodStock (GridPoint const & gp, short const s, Manipulator<short> * man) { getGridField( gp ).Apply2FoodStock (s, man); }
-	void Apply2Fertility (GridPoint const & gp, short const s, Manipulator<short> * man) { getGridField( gp ).Apply2Fertility (s, man); }
-	void Apply2MutRate   (GridPoint const & gp, short const s, Manipulator<short> * man) { getGridField( gp ).Apply2MutRate   (s, man); }
+	void Apply2Fertilizer(GridPoint const & gp, short const s, ManipulatorFunc m) { if (s > 0) getGridField( gp ).Apply2Fertilizer(s, m); }
+	void Apply2FoodStock (GridPoint const & gp, short const s, ManipulatorFunc m) { if (s > 0) getGridField( gp ).Apply2FoodStock (s, m); }
+	void Apply2Fertility (GridPoint const & gp, short const s, ManipulatorFunc m) { if (s > 0) getGridField( gp ).Apply2Fertility (s, m); }
+	void Apply2MutRate   (GridPoint const & gp, short const s, ManipulatorFunc m) { if (s > 0) getGridField( gp ).Apply2MutRate   (s, m); }
+
+	void SetFertilizer(GridPoint const & gp, short const s) { if (s > 0) getGridField( gp ).SetFertilizer(s); }
+	void SetFoodStock (GridPoint const & gp, short const s) { if (s > 0) getGridField( gp ).SetFoodStock (s); }
+	void SetFertility (GridPoint const & gp, short const s) { if (s > 0) getGridField( gp ).SetFertility (s); }
+	void SetMutRate   (GridPoint const & gp, short const s) { if (s > 0) getGridField( gp ).SetMutRate   (s); }
 
 	void SetEnergy( GridPoint const & gp, short const s ) { getGridField( gp ).SetEnergy( s ); }
 	void IncEnergy( GridPoint const & gp, short const s ) { getGridField( gp ).IncEnergy( s ); }
@@ -43,7 +48,7 @@ public:
 
     void IncGenNr( ) { ++m_genEvo; }
 
-    void EditSetStrategy( GridPoint const &, unsigned int const, Manipulator<short> *, tStrategyId );
+    void EditSetStrategy( GridPoint const &, short const, tStrategyId );
 
     unsigned int NextRandomNumber      ( void ) { return m_random.NextRandomNumber( ); };
     double       Distribution( void ) { return m_random.NextWeightedDistribution( ); };
@@ -131,7 +136,7 @@ private:
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;
 
-    // following members must only be stored here to be part of grid history.
+    // following members are stored here only to be part of grid history.
 
     Random         m_random;                                               //                            16 byte
     IndId          m_idCounter;  // Used only by class Individual.         //                             4 byte
@@ -146,7 +151,6 @@ private:
     static int  m_iMarryFoodConsumption;
     static int  m_iInteractFoodConsumption;
     static bool m_bNeighborhoodFoodSensitivity;
-
 };
 
 void CheckIndividuals( Grid & );

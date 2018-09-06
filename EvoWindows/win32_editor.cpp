@@ -6,7 +6,6 @@
 #include "commctrl.h"
 #include "Resource.h"
 #include "config.h"
-#include "Manipulator.h"
 #include "EvolutionModelData.h"
 #include "win32_util.h"
 #include "win32_status.h"
@@ -77,7 +76,7 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 		{ tBrushMode::fertilizer,  IDM_FERTILIZER      }
 	};
     
-	CheckRadioButton( IDM_MOVE, IDM_FOOD_STOCK, mapModeTable.at( m_pModelWork->GetBrushMode () ) );
+	CheckRadioButton( IDM_MOVE, IDM_FOOD_STOCK, mapModeTable.at( m_pModelWork->GetBrushMode() ) );
 
 	static unordered_map < tShape, WORD > mapShapeTable =
 	{
@@ -87,17 +86,17 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 
 	CheckRadioButton( IDM_EDIT_CIRCLE, IDM_EDIT_RECTANGLE, mapShapeTable.at( m_pModelWork->GetBrushShape() ) );
 
-	static unordered_map < tOperator, WORD > mapOperatorTable =
+	static unordered_map < tManipulator, WORD > mapOperatorTable =
 	{
-		{ tOperator::set,      IDM_EDIT_OPERATION_SET      },    
-		{ tOperator::min,      IDM_EDIT_OPERATION_MIN      },
-		{ tOperator::max,      IDM_EDIT_OPERATION_MAX      },
-		{ tOperator::add,      IDM_EDIT_OPERATION_ADD      },
-		{ tOperator::subtract, IDM_EDIT_OPERATION_SUBTRACT },
-		{ tOperator::mean,     IDM_EDIT_OPERATION_MEAN     }
+		{ tManipulator::set,      IDM_EDIT_OPERATION_SET      },    
+		{ tManipulator::min,      IDM_EDIT_OPERATION_MIN      },
+		{ tManipulator::max,      IDM_EDIT_OPERATION_MAX      },
+		{ tManipulator::add,      IDM_EDIT_OPERATION_ADD      },
+		{ tManipulator::subtract, IDM_EDIT_OPERATION_SUBTRACT },
+		{ tManipulator::mean,     IDM_EDIT_OPERATION_MEAN     }
 	};
 
-	CheckRadioButton( IDM_EDIT_OPERATION_SET, IDM_EDIT_OPERATION_MEAN, mapOperatorTable.at( m_pModelWork->GetBrushOperator() ) );
+	CheckRadioButton( IDM_EDIT_OPERATION_SET, IDM_EDIT_OPERATION_MEAN, mapOperatorTable.at( m_pModelWork->GetBrushManipulator() ) );
 
 	SetTrackBarPos( IDM_EDIT_SIZE,      static_cast<long>( m_pModelWork->GetBrushSize( )) );
     SetTrackBarPos( IDM_EDIT_INTENSITY, static_cast<long>( m_pModelWork->GetBrushIntensity( )) );
@@ -156,20 +155,20 @@ void EditorWindow::setBrushShape( WORD const wId ) const
 	m_pWorkThreadInterface->PostSetBrushShape( brushShape );
 }
 
-void EditorWindow::setBrushOperator( WORD const wId ) const
+void EditorWindow::setBrushManipulator( WORD const wId ) const
 {
-	static unordered_map < WORD, tOperator > mapOperationTable =
+	static unordered_map < WORD, tManipulator > mapOperationTable =
 	{
-		{ IDM_EDIT_OPERATION_SET,      tOperator::set      },    
-		{ IDM_EDIT_OPERATION_MIN,      tOperator::min      },    
-		{ IDM_EDIT_OPERATION_MAX,      tOperator::max      },    
-		{ IDM_EDIT_OPERATION_ADD,      tOperator::add      },    
-		{ IDM_EDIT_OPERATION_SUBTRACT, tOperator::subtract },    
-		{ IDM_EDIT_OPERATION_MEAN,     tOperator::mean     } 
+		{ IDM_EDIT_OPERATION_SET,      tManipulator::set      },    
+		{ IDM_EDIT_OPERATION_MIN,      tManipulator::min      },    
+		{ IDM_EDIT_OPERATION_MAX,      tManipulator::max      },    
+		{ IDM_EDIT_OPERATION_ADD,      tManipulator::add      },    
+		{ IDM_EDIT_OPERATION_SUBTRACT, tManipulator::subtract },    
+		{ IDM_EDIT_OPERATION_MEAN,     tManipulator::mean     } 
 	};
 
-	tOperator const brushOperator = mapOperationTable.at( wId );
-	m_pWorkThreadInterface->PostSetBrushOperator( brushOperator );
+	tManipulator const brushOperator = mapOperationTable.at( wId );
+	m_pWorkThreadInterface->PostSetBrushManipulator( brushOperator );
 }
 
 INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -224,7 +223,7 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 			case IDM_EDIT_OPERATION_ADD:     
 			case IDM_EDIT_OPERATION_SUBTRACT:
 			case IDM_EDIT_OPERATION_MEAN:    
-				setBrushOperator( wId );
+				setBrushManipulator( wId );
                 break;
 
             default:
