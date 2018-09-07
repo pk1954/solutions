@@ -52,7 +52,7 @@ void GridField::Fertilize( short const sInvest )
     assert( sInvest > 0 );
     int const iYield    = (sInvest * m_iFertilizerYield ) / 100;
     int const iNewValue = min( m_sFertilizer + iYield, m_iMaxFertilizer ); 
-    SetFertilizer( CastToShort( iNewValue ) );
+    setFertilizer( CastToShort( iNewValue ) );
 }
 
 void GridField::CloneIndividual( IndId const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParent )

@@ -320,29 +320,24 @@ void Grid::EditSetStrategy
     tStrategyId         strategy
 )
 {
-	if ( sIntensity > 0 )
+	assert( sIntensity >= 0 );
+	if ( NextRandomNumber( ) < static_cast<unsigned short>(sIntensity) * RAND_MAX / 100ul )
 	{
-		unsigned int const uiRand  = NextRandomNumber( );
-		unsigned int const uiLimit = static_cast<unsigned short>(sIntensity) * RAND_MAX / 100L;
+		GridField & gf       = getGridField( gp );
+		bool const  bIsAlive = gf.IsAlive();
 
-		if ( uiRand < uiLimit )
+		if ( strategy != tStrategyId::empty )
 		{
-			GridField & gf       = getGridField( gp );
-			bool const  bIsAlive = gf.IsAlive();
+			if ( strategy == tStrategyId::random ) 
+				strategy = static_cast<tStrategyId>(m_random.NextRandomNumber() % NR_STRATEGIES );
 
-			if ( strategy != tStrategyId::empty )
-			{
-				if ( strategy == tStrategyId::random ) 
-				   strategy = static_cast<tStrategyId>(m_random.NextRandomNumber() % NR_STRATEGIES );
-
-				gf.CreateIndividual( ++m_idCounter, m_genEvo, strategy );
-				if ( ! bIsAlive )
-					m_gpList.AddGridPointToList( * this, gf );
-			}
-			else if ( bIsAlive )
-			{
-				deleteAndReset( gf );
-			}
+			gf.CreateIndividual( ++m_idCounter, m_genEvo, strategy );
+			if ( ! bIsAlive )
+				m_gpList.AddGridPointToList( * this, gf );
+		}
+		else if ( bIsAlive )
+		{
+			deleteAndReset( gf );
 		}
 	}
 }

@@ -67,7 +67,7 @@ void Config::SetDefaultConfiguration( )
    DEF_CONFIG_ID( Config::tId::defaultAppetite,         80 );  
    DEF_CONFIG_ID( Config::tId::defaultFertilInvest,     80 );  
    DEF_CONFIG_ID( Config::tId::reserveFood,             20 );  
-   DEF_CONFIG_ID( Config::tId::fertilizerYield,       1000 );  
+   DEF_CONFIG_ID( Config::tId::fertilizerYield,       1000 );  // percent value. 100 means yield is equal to investment
    DEF_CONFIG_ID( Config::tId::maxFertilizer,        20000 );  
    // interaction         
    DEF_CONFIG_ID( Config::tId::interactionPayOff_R,     50 );  

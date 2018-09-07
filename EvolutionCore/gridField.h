@@ -17,7 +17,7 @@ public:
     void InitGridFieldStructure( GridPoint const & );
     void ResetGridField( short const );
 
-    void  Fertilize     ( short const );
+    void        Fertilize     ( short const );
 	short const GetConsumption( short const sWant ) const 
 	{
 		short const sAvailable = m_sFoodStock - m_sFoodReserve;
@@ -67,10 +67,11 @@ public:
 		setFoodStock( m_sFoodStock - sDec ); 
 	}
 
-	void SetFoodStock ( short const s ) { setFoodStock ( s ); }
-	void SetFertilizer( short const s ) { setFertilizer( s ); }
-	void SetFertility ( short const s ) { setFertility ( s ); }
-	void SetMutRate   ( short const s ) { setMutRate   ( s ); }
+	void IncFoodStock( short const sInc )
+	{ 
+		ASSERT_SHORT_SUM( m_sFoodStock, sInc );
+		setFoodStock( m_sFoodStock + sInc ); 
+	}
 
     void ReduceFertilizer( ) { m_sFertilizer /= 2; }
 
@@ -116,10 +117,10 @@ private:
 
 // private functions
 
-	void setFertilizer( short const s ) { m_sFertilizer = ( s < 0 ) ? 0 : s; }
-	void setFoodStock ( short const s ) { m_sFoodStock  = ( s < 0 ) ? 0 : s; }
-	void setFertility ( short const s ) { m_sFertility  = ( s < 0 ) ? 0 : s; }
-	void setMutRate   ( short const s ) { m_sMutatRate  = ClipToMinMax( s, (short)0, (short)100 ); } // mutation rate is a percent value	
+	void setFertilizer( short const s ) { assert( s >= 0 ); m_sFertilizer = s; }
+	void setFoodStock ( short const s ) { assert( s >= 0 ); m_sFoodStock  = s; }
+	void setFertility ( short const s ) { assert( s >= 0 ); m_sFertility  = s; }
+	void setMutRate   ( short const s ) { assert( s >= 0 ); m_sMutatRate  = min( s, (short)100 ); } // mutation rate is a percent value	
 };
 
 std::wostream & operator << ( std::wostream &, GridField const & );

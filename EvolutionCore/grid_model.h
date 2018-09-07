@@ -32,15 +32,10 @@ public:
 	short GetFertility ( GridPoint const & gp ) { return getGridField( gp ).GetFertility( ); }
 	short GetMutRate   ( GridPoint const & gp ) { return getGridField( gp ).GetMutRate( ); }
 
-	void Apply2Fertilizer(GridPoint const & gp, short const s, ManipulatorFunc m) { if (s > 0) getGridField( gp ).Apply2Fertilizer(s, m); }
-	void Apply2FoodStock (GridPoint const & gp, short const s, ManipulatorFunc m) { if (s > 0) getGridField( gp ).Apply2FoodStock (s, m); }
-	void Apply2Fertility (GridPoint const & gp, short const s, ManipulatorFunc m) { if (s > 0) getGridField( gp ).Apply2Fertility (s, m); }
-	void Apply2MutRate   (GridPoint const & gp, short const s, ManipulatorFunc m) { if (s > 0) getGridField( gp ).Apply2MutRate   (s, m); }
-
-	void SetFertilizer(GridPoint const & gp, short const s) { if (s > 0) getGridField( gp ).SetFertilizer(s); }
-	void SetFoodStock (GridPoint const & gp, short const s) { if (s > 0) getGridField( gp ).SetFoodStock (s); }
-	void SetFertility (GridPoint const & gp, short const s) { if (s > 0) getGridField( gp ).SetFertility (s); }
-	void SetMutRate   (GridPoint const & gp, short const s) { if (s > 0) getGridField( gp ).SetMutRate   (s); }
+	void Apply2Fertilizer(GridPoint const & gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertilizer(s, m); }
+	void Apply2FoodStock (GridPoint const & gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2FoodStock (s, m); }
+	void Apply2Fertility (GridPoint const & gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertility (s, m); }
+	void Apply2MutRate   (GridPoint const & gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2MutRate   (s, m); }
 
 	void SetEnergy( GridPoint const & gp, short const s ) { getGridField( gp ).SetEnergy( s ); }
 	void IncEnergy( GridPoint const & gp, short const s ) { getGridField( gp ).IncEnergy( s ); }
@@ -50,8 +45,8 @@ public:
 
     void EditSetStrategy( GridPoint const &, short const, tStrategyId );
 
-    unsigned int NextRandomNumber      ( void ) { return m_random.NextRandomNumber( ); };
-    double       Distribution( void ) { return m_random.NextWeightedDistribution( ); };
+    unsigned int NextRandomNumber( ) { return m_random.NextRandomNumber( ); };
+    double       Distribution    ( ) { return m_random.NextWeightedDistribution( ); };
 
     // GridPoint list operations
 

@@ -47,31 +47,9 @@ int i9 = 0;
 		for ( gp.y = gpStart.y; gp.y <= gpEnd.y; ++gp.y )
 			for (gp.x = gpStart.x; gp.x <= gpEnd.x; ++gp.x)
 			{
-				short sIntensity;
-				switch ( m_shape )
-				{
-				case tShape::Circle:
-					{ 
-						long  const lRadius     = static_cast<long>(m_radius);
-						long  const lRadSquare  = lRadius * lRadius;
-						long  const lx          = static_cast<long>(gp.x);
-						long  const ly          = static_cast<long>(gp.y);
-						long  const lDistSquare = lx * lx + ly * ly;
-						short const sReduce     = CastToShort(( m_sIntensity * lDistSquare) / lRadSquare);
-						sIntensity = m_sIntensity - sReduce;
-					};
-					break;
-
-				case tShape::Rect:
-					{ 
-						sIntensity = m_sIntensity;
-					};
-					break;
-
-				default:
-					assert( false );
-				}
-				(m_func)( gpCenter + gp, sIntensity );
+				short sIntensity = m_filter( gp );
+				if ( sIntensity >= 0)
+					(m_func)( gpCenter + gp, sIntensity );
 			}
 	}
 
@@ -122,6 +100,31 @@ int i9 = 0;
 	void SetShape( tShape const shape )
 	{
 		m_shape = shape;
+		switch ( m_shape )
+		{
+		case tShape::Circle:
+			m_filter = [this]( GridPoint const & gp )
+			{ 
+				long  const lRadius     = static_cast<long>(m_radius);
+				long  const lRadSquare  = lRadius * lRadius;
+				long  const lx          = static_cast<long>(gp.x);
+				long  const ly          = static_cast<long>(gp.y);
+				long  const lDistSquare = lx * lx + ly * ly;
+				short const sReduce     = CastToShort(( m_sIntensity * lDistSquare) / lRadSquare);
+				return m_sIntensity - sReduce;
+			};
+			break;
+
+		case tShape::Rect:
+			m_filter = [this]( GridPoint const & gp )
+			{ 
+				return m_sIntensity;
+			};
+			break;
+
+		default:
+			assert( false );
+		}
 	}
 
     bool operator!=( GridBrush const & other ) const
@@ -140,16 +143,17 @@ int i9 = 0;
     tManipulator const GetManipulator( ) const { return m_manipulator; }
 
 private:
-	static GridPointFilterShort m_filterRect;
-	static GridPointFilterShort m_filterCircle;
 	
-	Grid               * m_pGrid;
-	ManipulatorFunc      m_manFunc;
-    tShape			     m_shape;
-    tBrushMode		     m_brushMode;
-	tManipulator	     m_manipulator;
-	short                m_sIntensity;
-    GRID_COORD	         m_radius;
+	Grid            * m_pGrid;
 
-	std::function<void(GridPoint const &, short const)> m_func;
+	tShape			  m_shape;
+    tBrushMode		  m_brushMode;
+	tManipulator	  m_manipulator;
+	short             m_sIntensity;
+    GRID_COORD	      m_radius;
+
+	ManipulatorFunc   m_manFunc;
+
+	std::function<void (GridPoint const &, short const)> m_func;
+    std::function<short(GridPoint const &)>              m_filter;
 };

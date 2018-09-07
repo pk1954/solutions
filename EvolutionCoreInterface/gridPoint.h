@@ -100,9 +100,7 @@ inline bool const Neighbors( GridPoint const & a, GridPoint const & b )
 
 inline GridPoint const Wrap2Grid(GridPoint const & gp) { return (gp + GridPoint::GRID_SIZE) % GridPoint::GRID_SIZE; }
 
-typedef std::function<short(GridPoint const &             )> GridPointFilter;
-typedef std::function<short(GridPoint const &, short const)> GridPointFilterShort;
-typedef std::function<void (GridPoint const &             )> GridPointFunc;
+typedef std::function<void (GridPoint const &       )> GridPointFunc;
 typedef std::function<short(short const, short const)> ManipulatorFunc;
 
 std::wostream & operator << ( std::wostream &, GridPoint const & );

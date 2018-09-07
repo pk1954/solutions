@@ -42,21 +42,16 @@ void Grid::FoodGrowth( )
 		{
             GridField & rGF = getGridField( gp );
 
-            int iFood  = rGF.GetFoodStock();               
-            int iLimit = rGF.GetFertility(); 
-			iLimit += rGF.GetFertilizer();
-			min( iLimit, SHRT_MAX );
-
-            int const iDelta = iLimit - iFood; 
+            int const iLimit = rGF.GetFertility() + rGF.GetFertilizer();
+            int const iDelta = iLimit - rGF.GetFoodStock(); 
 
 			if ( iDelta != 0 )
 			{
-				int iGrowth = (m_iRate * iDelta) / 100;
-				if ( iGrowth == 0 )
-					iGrowth = (iDelta > 0) ? 1 : -1;
-				iFood         += iGrowth;
+				int iGrowth = (m_iRate * iDelta) / 100;   // negative growth is possible
+				if ( iGrowth == 0 )                       // if foodstock is greater than maximum
+					iGrowth = (iDelta > 0) ? 1 : -1;      // caused by editor
 				m_lFoodGrowth += iGrowth;
-				rGF.SetFoodStock( CastToShort(iFood) );
+				rGF.IncFoodStock( CastToShort(iGrowth) );
 			}
 
             rGF.ReduceFertilizer( );
