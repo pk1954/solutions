@@ -15,15 +15,6 @@ public:
 		: m_pGrid( pGrid )
 	{
 		Reset();
-
-int i0 = sizeof( m_pGrid );
-int i2 = sizeof( m_func );
-int i3 = sizeof( m_shape );
-int i4 = sizeof( m_brushMode );
-int i5 = sizeof( m_sIntensity );
-int i6 = sizeof( m_radius );
-int i8 = sizeof( GridBrush );
-int i9 = 0;
 	}
 
 	virtual ~GridBrush() {};
@@ -37,20 +28,26 @@ int i9 = 0;
 		SetIntensity( 50 );
 	}
 
-	virtual void operator()( GridPoint const gpCenter )
+	virtual void operator()( GridPoint gpCenter )
 	{
-		GridPoint gpStart = Max( GridPoint::GRID_ORIGIN  - gpCenter, GridPoint::GRID_ORIGIN - m_radius );
-		GridPoint gpEnd   = Min( GridPoint::GRID_MAXIMUM - gpCenter, GridPoint::GRID_ORIGIN + m_radius );
-
-		GridPoint gp;
-
-		for ( gp.y = gpStart.y; gp.y <= gpEnd.y; ++gp.y )
-			for (gp.x = gpStart.x; gp.x <= gpEnd.x; ++gp.x)
-			{
-				short sIntensity = m_filter( gp );
-				if ( sIntensity >= 0)
-					(m_func)( gpCenter + gp, sIntensity );
-			}
+		if (m_shape == tShape::Grid)
+		{
+			Apply2Grid( [&](GridPoint const & gp) { (m_func)( gp, m_sIntensity ); } );
+		}
+		else
+		{
+			Apply2Rect
+			(
+				[&](GridPoint const & gp)
+				{
+					short sIntensity = m_filter( gp );
+					if ( sIntensity >= 0)
+						(m_func)( gp + gpCenter, sIntensity );
+				},
+				Max( GridPoint::GRID_ORIGIN  - gpCenter, GridPoint::GRID_ORIGIN - m_radius ),
+				Min( GridPoint::GRID_MAXIMUM - gpCenter, GridPoint::GRID_ORIGIN + m_radius )
+			);
+		}
 	}
 
 	void SetRadius( GRID_COORD const radius ) 
@@ -87,12 +84,11 @@ int i9 = 0;
 		m_manipulator = man;
 		switch ( man )
 		{
-		case tManipulator::set      : m_manFunc = [](short const dst, short const src) { return src;             };  break; 
-		case tManipulator::add      : m_manFunc = [](short const dst, short const src) { return (dst + src);     };  break; 
-		case tManipulator::subtract : m_manFunc = [](short const dst, short const src) { return (dst - src);     };  break; 
-		case tManipulator::max      : m_manFunc = [](short const dst, short const src) { return max(dst, src);   };  break;
-		case tManipulator::min      : m_manFunc = [](short const dst, short const src) { return min(dst, src);   };  break; 
-		case tManipulator::mean     : m_manFunc = [](short const dst, short const src) { return (dst + src) / 2; };  break;
+		case tManipulator::set      : m_manFunc = [](short const dst, short const src) { return src;               };  break; 
+		case tManipulator::add      : m_manFunc = [](short const dst, short const src) { return (dst + src);       };  break; 
+		case tManipulator::subtract : m_manFunc = [](short const dst, short const src) { return max(0, dst - src); };  break; 
+		case tManipulator::max      : m_manFunc = [](short const dst, short const src) { return max(dst, src);     };  break;
+		case tManipulator::min      : m_manFunc = [](short const dst, short const src) { return min(dst, src);     };  break; 
 		default: assert( false );
 		}
 	}
@@ -115,6 +111,7 @@ int i9 = 0;
 			};
 			break;
 
+		case tShape::Grid:
 		case tShape::Rect:
 			m_filter = [this]( GridPoint const & gp )
 			{ 

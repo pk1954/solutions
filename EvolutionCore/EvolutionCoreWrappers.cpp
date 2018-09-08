@@ -193,6 +193,7 @@ void DefineCoreWrapperFunctions( EvolutionCore * pCore )
 
     DEF_ULONG_CONST( tShape::Rect );
     DEF_ULONG_CONST( tShape::Circle );
+    DEF_ULONG_CONST( tShape::Grid );
 
     DEF_ULONG_CONST( tBrushMode::move );
     DEF_ULONG_CONST( tBrushMode::randomStrat );

@@ -81,10 +81,11 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 	static unordered_map < tShape, WORD > mapShapeTable =
 	{
 		{ tShape::Circle, IDM_EDIT_CIRCLE    },    
-		{ tShape::Rect,   IDM_EDIT_RECTANGLE }
+		{ tShape::Rect,   IDM_EDIT_RECTANGLE },
+		{ tShape::Grid,   IDM_EDIT_GRID_AREA }
 	};
 
-	CheckRadioButton( IDM_EDIT_CIRCLE, IDM_EDIT_RECTANGLE, mapShapeTable.at( m_pModelWork->GetBrushShape() ) );
+	CheckRadioButton( IDM_EDIT_CIRCLE, IDM_EDIT_GRID_AREA, mapShapeTable.at( m_pModelWork->GetBrushShape() ) );
 
 	static unordered_map < tManipulator, WORD > mapOperatorTable =
 	{
@@ -93,10 +94,9 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 		{ tManipulator::max,      IDM_EDIT_OPERATION_MAX      },
 		{ tManipulator::add,      IDM_EDIT_OPERATION_ADD      },
 		{ tManipulator::subtract, IDM_EDIT_OPERATION_SUBTRACT },
-		{ tManipulator::mean,     IDM_EDIT_OPERATION_MEAN     }
 	};
 
-	CheckRadioButton( IDM_EDIT_OPERATION_SET, IDM_EDIT_OPERATION_MEAN, mapOperatorTable.at( m_pModelWork->GetBrushManipulator() ) );
+	CheckRadioButton( IDM_EDIT_OPERATION_SET, IDM_EDIT_OPERATION_SUBTRACT, mapOperatorTable.at( m_pModelWork->GetBrushManipulator() ) );
 
 	SetTrackBarPos( IDM_EDIT_SIZE,      static_cast<long>( m_pModelWork->GetBrushSize( )) );
     SetTrackBarPos( IDM_EDIT_INTENSITY, static_cast<long>( m_pModelWork->GetBrushIntensity( )) );
@@ -148,7 +148,8 @@ void EditorWindow::setBrushShape( WORD const wId ) const
 	static unordered_map < WORD, tShape > mapShapeTable =
 	{
 		{ IDM_EDIT_CIRCLE,    tShape::Circle },    
-		{ IDM_EDIT_RECTANGLE, tShape::Rect   }
+		{ IDM_EDIT_RECTANGLE, tShape::Rect   },
+		{ IDM_EDIT_GRID_AREA, tShape::Grid   }
 	};
 
 	tShape const brushShape = mapShapeTable.at( wId );
@@ -164,7 +165,6 @@ void EditorWindow::setBrushManipulator( WORD const wId ) const
 		{ IDM_EDIT_OPERATION_MAX,      tManipulator::max      },    
 		{ IDM_EDIT_OPERATION_ADD,      tManipulator::add      },    
 		{ IDM_EDIT_OPERATION_SUBTRACT, tManipulator::subtract },    
-		{ IDM_EDIT_OPERATION_MEAN,     tManipulator::mean     } 
 	};
 
 	tManipulator const brushOperator = mapOperationTable.at( wId );
@@ -214,6 +214,7 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 
             case IDM_EDIT_CIRCLE:
             case IDM_EDIT_RECTANGLE:
+            case IDM_EDIT_GRID_AREA:
 				setBrushShape( wId );
                 break;
 
@@ -222,7 +223,6 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 			case IDM_EDIT_OPERATION_MAX:     
 			case IDM_EDIT_OPERATION_ADD:     
 			case IDM_EDIT_OPERATION_SUBTRACT:
-			case IDM_EDIT_OPERATION_MEAN:    
 				setBrushManipulator( wId );
                 break;
 

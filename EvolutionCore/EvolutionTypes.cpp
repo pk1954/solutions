@@ -26,8 +26,9 @@ wchar_t const * const GetShapeName( tShape const s )
 {
     static unordered_map < tShape, wchar_t const * const > mapShapes =
     {
-        { tShape::Circle, L"tShape::Rect"   },
-        { tShape::Rect,   L"tShape::Circle" }
+        { tShape::Circle, L"tShape::Circle"   },
+        { tShape::Rect,   L"tShape::Rect" },
+        { tShape::Grid,   L"tShape::Grid" }
     };
 
     return mapShapes.at( s );
@@ -143,8 +144,7 @@ wchar_t const * const GetManipulatorName( tManipulator const op )
         { tManipulator::max,      L"max" },
         { tManipulator::min,      L"min" },
         { tManipulator::add,      L"add" },
-        { tManipulator::subtract, L"subtract" },
-        { tManipulator::mean,     L"mean" },
+        { tManipulator::subtract, L"subtract" }
     };
 
     return mapManipulators.at( op );

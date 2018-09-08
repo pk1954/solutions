@@ -58,7 +58,8 @@ static const int NR_STRATEGIES = static_cast<int>( tStrategyId::nrOfStrategies )
 enum class tShape : unsigned short
 {
     Circle,
-    Rect
+    Rect,
+	Grid
 };
 
 enum class tOrigin : unsigned short
