@@ -36,6 +36,8 @@ private:
 	void    setBrushShape      ( WORD const ) const;
 	void    setBrushManipulator( WORD const ) const;
 
+	void updateOperationButtons( tBrushMode const ) const;
+
 	EvolutionModelData  * m_pModelWork;
     WorkThreadInterface * m_pWorkThreadInterface;
     DspOptWindow        * m_pDspOptWindow;

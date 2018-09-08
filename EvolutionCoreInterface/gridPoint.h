@@ -29,11 +29,11 @@ public:
 
     virtual ~GridPoint() {};
 
-    bool      const operator== (GridPoint const & a) const { return (a.x == x) && (a.y == y); }
-    bool      const operator!= (GridPoint const & a) const { return (a.x != x) || (a.y != y); }
-
     GridPoint operator++ () { ++x; ++y; return * this; }
     GridPoint operator-- () { --x; --y; return * this; }
+
+    bool      const operator== (GridPoint const & a) const { return (a.x == x) && (a.y == y); }
+    bool      const operator!= (GridPoint const & a) const { return (a.x != x) || (a.y != y); }
 
     GridPoint const operator+= (GridPoint const & a) { x += a.x; y += a.y; return * this; }
     GridPoint const operator-= (GridPoint const & a) { x -= a.x; y -= a.y; return * this; }

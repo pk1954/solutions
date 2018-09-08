@@ -117,6 +117,15 @@ wchar_t const * const GetBrushModeName( tBrushMode const mode )
     return mapModes.at( mode );
 }
 
+bool IsStrategyBrushMode( tBrushMode const mode ) 
+{ 
+	return (mode == tBrushMode::randomStrat) 
+		|| (mode == tBrushMode::cooperate)
+		|| (mode == tBrushMode::defect) 
+		|| (mode == tBrushMode::tit4tat) 
+		|| (mode == tBrushMode::noAnimals); 
+}
+
 wchar_t const * const GetBrushModeNameShort( tBrushMode const mode )
 {
     static unordered_map < tBrushMode, wchar_t const * const > mapModes =

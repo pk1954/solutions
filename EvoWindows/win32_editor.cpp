@@ -60,6 +60,17 @@ LRESULT EditorWindow::sendClick( int const item ) const
     return res;
 }
 
+void EditorWindow::updateOperationButtons( tBrushMode const mode ) const
+{
+	bool bEnableOperationButtons = ! IsStrategyBrushMode( mode );
+
+	EnableWindow( GetDlgItem( IDM_EDIT_OPERATION_SET ),      bEnableOperationButtons );
+	EnableWindow( GetDlgItem( IDM_EDIT_OPERATION_MIN ),      bEnableOperationButtons );
+	EnableWindow( GetDlgItem( IDM_EDIT_OPERATION_MAX ),      bEnableOperationButtons );
+	EnableWindow( GetDlgItem( IDM_EDIT_OPERATION_ADD ),      bEnableOperationButtons );
+	EnableWindow( GetDlgItem( IDM_EDIT_OPERATION_SUBTRACT ), bEnableOperationButtons );
+}
+
 void EditorWindow::UpdateEditControls( ) // Set state of all window widgets according to mode (edit/simu)
 {
 	static unordered_map < tBrushMode, WORD > mapModeTable =
@@ -87,6 +98,10 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 
 	CheckRadioButton( IDM_EDIT_CIRCLE, IDM_EDIT_GRID_AREA, mapShapeTable.at( m_pModelWork->GetBrushShape() ) );
 
+	// ShowWindow  ( GetDlgItem( IDM_EDIT_SIZE ), false );
+
+	updateOperationButtons( m_pModelWork->GetBrushMode() );
+
 	static unordered_map < tManipulator, WORD > mapOperatorTable =
 	{
 		{ tManipulator::set,      IDM_EDIT_OPERATION_SET      },    
@@ -97,13 +112,13 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 	};
 
 	CheckRadioButton( IDM_EDIT_OPERATION_SET, IDM_EDIT_OPERATION_SUBTRACT, mapOperatorTable.at( m_pModelWork->GetBrushManipulator() ) );
-
+	
 	SetTrackBarPos( IDM_EDIT_SIZE,      static_cast<long>( m_pModelWork->GetBrushSize( )) );
     SetTrackBarPos( IDM_EDIT_INTENSITY, static_cast<long>( m_pModelWork->GetBrushIntensity( )) );
 
 	// adjust display options window
 
-	m_pDspOptWindow->UpdateDspOptionsControls( m_pModelWork->GetBrushMode () );
+	m_pDspOptWindow->UpdateDspOptionsControls( m_pModelWork->GetBrushMode() );
 
 	SetSimulationMode();
 }
@@ -141,6 +156,7 @@ void EditorWindow::setBrushMode( WORD const wId ) const
 	tBrushMode const brushMode = mapModeTable.at( wId ) ;
 	m_pWorkThreadInterface->PostSetBrushMode( brushMode );
 	m_pDspOptWindow->UpdateDspOptionsControls( brushMode );
+	updateOperationButtons( brushMode );
 }
 
 void EditorWindow::setBrushShape( WORD const wId ) const

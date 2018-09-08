@@ -113,6 +113,8 @@ enum class tBrushMode
     fertilizer
 };
 
+bool IsStrategyBrushMode( tBrushMode const );
+
 enum class tManipulator
 {
 	set,

@@ -44,8 +44,8 @@ public:
 					if ( sIntensity >= 0)
 						(m_func)( gp + gpCenter, sIntensity );
 				},
-				Max( GridPoint::GRID_ORIGIN  - gpCenter, GridPoint::GRID_ORIGIN - m_radius ),
-				Min( GridPoint::GRID_MAXIMUM - gpCenter, GridPoint::GRID_ORIGIN + m_radius )
+				Max( GridPoint::GRID_ORIGIN  - gpCenter, GridPoint( -m_radius, -m_radius ) ),
+				Min( GridPoint::GRID_MAXIMUM - gpCenter, GridPoint(  m_radius,  m_radius ) )
 			);
 		}
 	}
