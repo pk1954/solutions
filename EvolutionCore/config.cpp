@@ -75,7 +75,7 @@ void Config::SetDefaultConfiguration( )
    DEF_CONFIG_ID( Config::tId::interactionPayOff_T,    300 );  
    DEF_CONFIG_ID( Config::tId::interactionPayOff_P,    -50 );
    // misc
-   DEF_CONFIG_ID( Config::tId::nrOfNeighbors,            8 );  
+   DEF_CONFIG_ID( Config::tId::nrOfNeighbors,            6 );  
    DEF_CONFIG_ID( Config::tId::stripMode,                0 );
    DEF_CONFIG_ID( Config::tId::dimmMode,                 0 );
 }
