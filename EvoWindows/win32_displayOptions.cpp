@@ -7,7 +7,7 @@
 #include "Resource.h"
 #include "windowsx.h"
 #include "gridNeighbor.h"
-#include "EvolutionModelData.h"
+#include "EvolutionCore.h"
 #include "win32_util.h"
 #include "win32_baseDialog.h"
 #include "win32_displayOptions.h"
@@ -23,12 +23,12 @@ DspOptWindow::~DspOptWindow( )
 
 void DspOptWindow::Start
 ( 
-    HWND               const         hWndParent, 
-    EvolutionModelData const * const pModel 
+    HWND          const         hWndParent, 
+    EvolutionCore const * const pCore 
 )
 {
     StartBaseDialog( hWndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
-	m_pModel         = pModel;
+	m_pCore          = pCore;
 	m_IntValueLambda = nullptr;
 }
 
@@ -76,13 +76,13 @@ BOOL DspOptWindow::AreIndividualsVisible( ) const
 
 int DspOptWindow::getNeighborHoodMeanValue( GridPoint const & gp ) const
 { 
-	int iSum = m_pModel->GetFoodStock( gp );
+	int iSum = m_pCore->GetFoodStock( gp );
 	Neighborhood::Apply2All
 	( 
 		gp, 
 		[&](GridPoint const & gpNeighbor) 
 	    { 
-			iSum += m_pModel->GetFoodStock(gpNeighbor); 
+			iSum += m_pCore->GetFoodStock(gpNeighbor); 
 		} 
 	);
 	return iSum / (Neighborhood::GetNrOfNeighbors( ) + 1);
@@ -103,11 +103,11 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
             switch ( wId )
             {
             case IDM_MUT_RATE:
-				m_IntValueLambda = [&](GridPoint const & gp){ return m_pModel->GetMutRate( gp ); };
+				m_IntValueLambda = [&](GridPoint const & gp){ return m_pCore->GetMutRate( gp ); };
                 break;
 
             case IDM_FERTILITY:
-				m_IntValueLambda = [&](GridPoint const & gp){ return m_pModel->GetFertility( gp ); };
+				m_IntValueLambda = [&](GridPoint const & gp){ return m_pCore->GetFertility( gp ); };
                 break;
 
             case IDM_FOOD_STOCK:
@@ -115,7 +115,7 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
                 break;
 
             case IDM_FERTILIZER:
-				m_IntValueLambda = [&](GridPoint const & gp){ return m_pModel->GetFertilizer( gp ); };
+				m_IntValueLambda = [&](GridPoint const & gp){ return m_pCore->GetFertilizer( gp ); };
                 break;
 
             case IDM_DSP_ENV_NOTHING:

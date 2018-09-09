@@ -7,7 +7,7 @@
 #include <sstream> 
 #include <vector>
 #include "config.h"
-#include "EvolutionModelData.h"
+#include "EvolutionCore.h"
 #include "plannedActivity.h"
 #include "pixelCoordinates.h"
 #include "win32_util.h"
@@ -25,14 +25,12 @@ DrawFrame::DrawFrame
 ( 
     HWND                 const hWnd, 
     EvolutionCore      * const pCore,
-    EvolutionModelData * const pModel,
     PixelCoordinates   * const pPixelCoordinates, 
     DspOptWindow       * const pDspOptWindow 
 ) : 
     m_hWnd( hWnd ),
     m_bDimmIndividuals( TRUE ),
     m_pCore( pCore ),
-    m_pModelWork( pModel ),
     m_pPixelCoordinates( pPixelCoordinates ),
     m_pDspOptWindow( pDspOptWindow ),
     m_pD3dBuffer( nullptr ), 
@@ -97,7 +95,7 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
         {
 	        GridRect rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hWnd ) ) );
 
-            drawPOI( m_pModelWork->FindPOI( ) );
+            drawPOI( m_pCore->FindPOI( ) );
 
             drawIndividuals( rcGrid );
 
@@ -105,8 +103,8 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
                 drawText( rcGrid );
         }
 
-        if ( m_pModelWork->SelectionIsNotEmpty() )
-            m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pModelWork->GetSelection() ), D3DCOLOR_ARGB( 64, 0, 217, 255)  );  
+        if ( m_pCore->SelectionIsNotEmpty() )
+            m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), D3DCOLOR_ARGB( 64, 0, 217, 255)  );  
 
         if ( pkgr.IsNotEmpty( ) )
             m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), D3DCOLOR_ARGB( 128, 255, 217, 0) );  
@@ -143,7 +141,7 @@ void DrawFrame::drawPOI( GridPoint const & gpPoi )
         m_pD3dBuffer->AddIndividualPrimitive( ptCenter, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
         m_pD3dBuffer->AddIndividualPrimitive( ptCenter, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
 
-        PlannedActivity const planPoi = m_pModelWork->GetPlan( );
+        PlannedActivity const planPoi = m_pCore->GetPlan( );
         if ( planPoi.IsValid( ) )
         {
             GridPoint const gpTarget = planPoi.GetTarget( );
@@ -210,13 +208,13 @@ void DrawFrame::assembleLeftColumn( GridPoint const & gp )
 {
     startOutputString( );
 
-	m_wBuffer << gp                                                                     << endl;
-    m_wBuffer << L"ID: " << setw( 5 ) << m_pModelWork->GetId( gp )                      << endl;
-    m_wBuffer << L"En: " << setw( 5 ) << m_pModelWork->GetEnergy( gp )                  << endl;
-    m_wBuffer << L"Age:" << setw( 5 ) << m_pModelWork->GetAge( gp )                     << endl;
-    m_wBuffer << L"Or: " << setw( 5 ) << GetOriginName( m_pModelWork->GetOrigin( gp ) ) << endl;
+	m_wBuffer << gp                                                                << endl;
+    m_wBuffer << L"ID: " << setw( 5 ) << m_pCore->GetId( gp )                      << endl;
+    m_wBuffer << L"En: " << setw( 5 ) << m_pCore->GetEnergy( gp )                  << endl;
+    m_wBuffer << L"Age:" << setw( 5 ) << m_pCore->GetAge( gp )                     << endl;
+    m_wBuffer << L"Or: " << setw( 5 ) << GetOriginName( m_pCore->GetOrigin( gp ) ) << endl;
 
-    PlannedActivity plan = m_pModelWork->GetPlan( );
+    PlannedActivity plan = m_pCore->GetPlan( );
     if ( plan.IsValid( ) )
     {
         if ( (gp == plan.GetActor( )) || (gp == plan.GetPartner( )) )
@@ -234,16 +232,16 @@ void DrawFrame::assembleRightColumn( GridPoint const & gp )
 {
     startOutputString( );
 
-    if ( m_pModelWork->GetStrategyId( gp ) == tStrategyId::tit4tat )
+    if ( m_pCore->GetStrategyId( gp ) == tStrategyId::tit4tat )
     {
-        MEM_INDEX const memSize   = m_pModelWork->GetMemSize( gp );  
-        MEM_INDEX const memFilled = m_pModelWork->GetMemUsed( gp ); 
+        MEM_INDEX const memSize   = m_pCore->GetMemSize( gp );  
+        MEM_INDEX const memFilled = m_pCore->GetMemUsed( gp ); 
         
         m_wBuffer << L"  Mem " << memFilled << L"/" << memSize << endl;
 
         for	( MEM_INDEX mem = 0; mem < memFilled; ++mem )
         {
-            m_wBuffer << setw( 10 ) << m_pModelWork->GetMemEntry( gp, mem ) << endl;
+            m_wBuffer << setw( 10 ) << m_pCore->GetMemEntry( gp, mem ) << endl;
         }
     }
 
@@ -252,8 +250,8 @@ void DrawFrame::assembleRightColumn( GridPoint const & gp )
 
 void DrawFrame::setIndividualColor( GridPoint const & gp, float const fHalfSize ) const
 {
-    tStrategyId const strat   = m_pModelWork->GetStrategyId( gp );
-    short       const sEnergy = m_pModelWork->GetEnergy  ( gp );
+    tStrategyId const strat   = m_pCore->GetStrategyId( gp );
+    short       const sEnergy = m_pCore->GetEnergy  ( gp );
     if ( sEnergy <= 0 )
         return;
     if ( static_cast<int>( strat ) >= NR_STRATEGIES )

@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "EvolutionModelData.h"
+#include "EvolutionCore.h"
 #include "EvoModelDataGlue.h"
 
 class WorkThread;
@@ -20,11 +20,7 @@ public:
 
 	virtual EvoModelDataGlue * CreateModelData() const 
 	{
-		return new EvoModelDataGlue
-		( 
-			EvolutionModelData::CreateModelData( ), 
-			m_pEvolutionCore
-		);
+		return new EvoModelDataGlue( m_pEvolutionCore );
 	}
 
 private:

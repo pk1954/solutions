@@ -9,7 +9,7 @@
 
 class PerformanceWindow;
 class EditorWindow;
-class EvolutionModelData;
+class EvolutionCore;
 class DisplayAll;
 class EvoHistorySysGlue;
 class WorkThread;
@@ -25,7 +25,7 @@ public:
         PerformanceWindow  * const,
 		EditorWindow       * const,  
         DisplayAll   const * const, 
-        EvolutionModelData * const,
+        EvolutionCore * const,
 	    EvoHistorySysGlue  * const
     );
 
@@ -57,7 +57,7 @@ public:
 private:
 	void postGotoGeneration( HIST_GENERATION const );
 
-    EvolutionModelData * m_pModelWork;
+    EvolutionCore * m_pCore;
     EvoHistorySysGlue  * m_pEvoHistGlue;
 	WorkThread         * m_pWorkThread;
     std::wostream      * m_pTraceStream;

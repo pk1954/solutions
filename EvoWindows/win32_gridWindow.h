@@ -13,7 +13,6 @@ class PixelCore;
 class WorkThreadInterface;
 class DspOptWindow;
 class EvolutionCore;
-class EvolutionModelData;
 class ObserverInterface;
 class PerformanceWindow;
 class FocusPoint;
@@ -31,7 +30,6 @@ public:
         DspOptWindow        * const,
         PerformanceWindow   * const, 
         EvolutionCore       * const, 
-        EvolutionModelData  * const,
         DWORD                 const, 
         SHORT                 const
     );
@@ -69,7 +67,7 @@ private:
     WorkThreadInterface * m_pWorkThreadInterface;
     PixelCoordinates    * m_pPixelCoordinates;  // My own PixelCoordinates
     GridWindow          * m_pGWObserved;	 // Observed GridWindow (or nullptr)
-    EvolutionModelData  * m_pModelWork;
+    EvolutionCore       * m_pCore;
     PerformanceWindow   * m_pPerformanceWindow;
     FocusPoint          * m_pFocusPoint;
     ObserverInterface   * m_pObserverInterface;

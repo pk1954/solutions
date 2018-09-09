@@ -3,13 +3,13 @@
 
 #include "stdafx.h"
 #include "EvoHistorySysGlue.h"
-#include "EvolutionModelData.h"
+#include "EvolutionCore.h"
 #include "win32_viewCollection.h"
 #include "win32_focusPoint.h"
 
 FocusPoint::FocusPoint( ) :
     m_pEvoHistGlue( nullptr ),
-    m_pModelWork( nullptr ),
+    m_pCore( nullptr ),
     m_genBirth( - 1 ),
     m_genDeath( - 1 ),
     m_gp( )
@@ -19,13 +19,13 @@ FocusPoint::FocusPoint( ) :
 
 void FocusPoint::Start
 ( 
-    EvoHistorySysGlue  * pEvoHistGlue,
-    EvolutionModelData * pModel
+    EvoHistorySysGlue * pEvoHistGlue,
+    EvolutionCore     * pCore
 )
 {
-    assert( pModel != nullptr );
+    assert( pCore != nullptr );
     m_pEvoHistGlue = pEvoHistGlue;
-    m_pModelWork   = pModel;
+    m_pCore        = pCore;
 }
 
 FocusPoint::~FocusPoint( ) 
@@ -55,17 +55,17 @@ BOOL const FocusPoint::IsInGrid( ) const
 
 BOOL const FocusPoint::IsAlive( ) const 
 { 
-	return m_pModelWork->IsAlive( m_gp ); 
+	return m_pCore->IsAlive( m_gp ); 
 }
 
 BOOL const FocusPoint::IsDead( ) const 
 { 
-	return m_pModelWork->IsDead( m_gp ); 
+	return m_pCore->IsDead( m_gp ); 
 }
 
 BOOL const FocusPoint::IsDefined( ) const 
 { 
-	return m_pModelWork->IsDefined( m_gp ); 
+	return m_pCore->IsDefined( m_gp ); 
 }
 
 void FocusPoint::SetFocusPoint( GridPoint const gpNew )
@@ -77,7 +77,7 @@ void FocusPoint::SetFocusPoint( GridPoint const gpNew )
         {
             if ( m_pEvoHistGlue != nullptr )
             {
-                IndId id = m_pModelWork->GetId( m_gp );
+                IndId id = m_pCore->GetId( m_gp );
                 m_genBirth = m_pEvoHistGlue->GetFirstGenOfIndividual( id );
                 m_genDeath = m_pEvoHistGlue->GetLastGenOfIndividual ( id ) + 1;
             }

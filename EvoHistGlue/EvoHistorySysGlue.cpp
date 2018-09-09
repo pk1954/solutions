@@ -27,7 +27,6 @@ EvoHistorySysGlue::EvoHistorySysGlue( ) :
 
 void EvoHistorySysGlue::Start
 (
-	EvolutionModelData * const pEvolutionModelData,
 	EvolutionCore      * const pCore, 
 	long                 const lMaxHistSize,
 	bool                 const bAskHistoryCut // true: ask user for history cut, false: cut without asking
@@ -40,7 +39,7 @@ void EvoHistorySysGlue::Start
 
     HIST_GENERATION const genMaxNrOfGens = Config::GetConfigValue( Config::tId::maxGeneration );
 
-    m_pEvoModelWork    = new EvoModelDataGlue ( pEvolutionModelData, pCore );
+    m_pEvoModelWork    = new EvoModelDataGlue ( pCore );
 	m_pEvoModelFactory = new EvoModelFactory( pCore );
 
     m_pHistorySystem = HistorySystem::CreateHistorySystem( );

@@ -9,7 +9,6 @@
 #include "trace.h"
 #include "dump.h"
 #include "EvoHistorySysGlue.h"
-#include "EvolutionModelData.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCore.h"
 #include "pixelCoordinates.h"
@@ -49,17 +48,13 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
     WorkThreadInterface * m_pWorkThreadInterface;
 	EvoHistorySysGlue   * m_pEvoHistGlue;
-    EvolutionModelData  * m_pModelWork;
-
-	m_pModelWork = EvolutionModelData::CreateModelData( );
-    DefineModelWrapperFunctions( m_pModelWork );
 	
 	m_pEvoHistGlue         = new EvoHistorySysGlue( );
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
-	m_pEvoHistGlue->Start( m_pModelWork, m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionModelData::GetModelSize( ) ), false );
+	m_pEvoHistGlue->Start( m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false );
     DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
 
-	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, m_pModelWork, m_pEvoHistGlue );
+	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, m_pEvolutionCore, m_pEvoHistGlue );
 
 	DefineWin32WrapperFunctions( m_pWorkThreadInterface, nullptr );
 

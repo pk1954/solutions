@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "config.h"
-#include "EvolutionModelData.h"
+#include "EvolutionCore.h"
 #include "win32_crsrWindow.h"
 #include "win32_focusPoint.h"
 
@@ -20,20 +20,20 @@ using namespace std;
 CrsrWindow::CrsrWindow( ) :
     TextWindow( ),
     m_pFocusPoint( nullptr ),
-    m_pModelWork( nullptr )
+    m_pCore( nullptr )
 { }
 
 void CrsrWindow::Start
 (
-    HWND                       const hWndParent,
-    FocusPoint               * const pFocusPoint,
-    EvolutionModelData const * const pModel,
-	GridWindow         const * const pGridWindow   // ++++++++++ EXPERIMENTAL ++++++++++++
+    HWND                  const hWndParent,
+    FocusPoint          * const pFocusPoint,
+    EvolutionCore const * const pCore,
+	GridWindow    const * const pGridWindow   // ++++++++++ EXPERIMENTAL ++++++++++++
 ) 
 {
     HWND hWnd = StartTextWindow( hWndParent, L"CrsrWindow", 100 );
     Move( 0, 300, 300, 150, TRUE );
-    m_pModelWork = pModel;
+    m_pCore = pCore;
     m_pFocusPoint = pFocusPoint;
     m_pFocusPoint->AttachFocusPointObserver( this, 0 );
 	m_pGridWindow = pGridWindow;      // ++++++++++ EXPERIMENTAL ++++++++++++
@@ -68,18 +68,18 @@ void CrsrWindow::DoPaint( )
 
     nextLine( L"Food:" );
     setHorizontalPos( 3 );
-    printPercentage( m_pModelWork->GetFoodStock( gpFocus ), m_pModelWork->GetFertility( gpFocus ) );
+    printPercentage( m_pCore->GetFoodStock( gpFocus ), m_pCore->GetFertility( gpFocus ) );
 
     nextLine( L"MutRate:" );
     setHorizontalPos( 2 );
-    printPercentage( m_pModelWork->GetMutRate( gpFocus ) );
+    printPercentage( m_pCore->GetMutRate( gpFocus ) );
     
-	if ( m_pModelWork->IsDead( gpFocus ) )
+	if ( m_pCore->IsDead( gpFocus ) )
         return;
 
     nextLine( L"Energy:" );
     setHorizontalPos( 4 );
-    printPercentage( m_pModelWork->GetEnergy( gpFocus ), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
+    printPercentage( m_pCore->GetEnergy( gpFocus ), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
     
     nextLine( L"Lifespan:" );
     printSpan( m_pFocusPoint->GetGenBirth( ).GetLong( ), m_pFocusPoint->GetGenDeath( ).GetLong( ) );

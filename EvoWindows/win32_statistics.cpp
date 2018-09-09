@@ -5,7 +5,7 @@
 #include "Strsafe.h"
 #include "XArray.h"
 #include "gridRect.h"
-#include "EvolutionModelData.h"
+#include "EvolutionCore.h"
 #include "win32_baseWindow.h"
 #include "win32_statistics.h"
 
@@ -123,14 +123,14 @@ public:
         for ( unsigned int uiOption = 0; uiOption < NR_ACTIONS; ++uiOption )
 		{
 			tAction action = static_cast<tAction>( uiOption );
-			if ( EvolutionModelData::IsEnabled( action ) )
+			if ( EvolutionCore::IsEnabled( action ) )
 				m_axaGenePoolStrategy[ uiOption ].printFloatLine( textWin, GetActionTypeName( action ) );
 		}
 
         for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
 		{
 			tGeneType gene = static_cast<tGeneType>( uiGene );
-			if ( EvolutionModelData::IsEnabled( gene ) )
+			if ( EvolutionCore::IsEnabled( gene ) )
 	            m_aGeneStat[ uiGene ].printGeneLine( textWin, GetGeneName( gene ) );
 		}
     }
@@ -170,18 +170,18 @@ StatisticsWindow::StatisticsWindow( ):
 
 void StatisticsWindow::Start
 (
-    HWND                       const hWndParent,
-    EvolutionModelData const * const pModel
+    HWND                  const hWndParent,
+    EvolutionCore const * const pCore
 ) 
 {
     HWND hWnd = StartTextWindow( hWndParent, L"StatisticsWindow", 100 );
     Move( 200, 200, 400, 430, TRUE );
-    m_pModelWork = pModel;
+    m_pCore = pCore;
 }
 
 StatisticsWindow::~StatisticsWindow( )
 {
-	m_pModelWork = nullptr;
+	m_pCore = nullptr;
 }
 
 void StatisticsWindow::DoPaint( )
@@ -190,23 +190,23 @@ void StatisticsWindow::DoPaint( )
 
     AllGenesStat genesStat;
 
-    m_pModelWork->GetSelection( ).Apply2Rect
+    m_pCore->GetSelection( ).Apply2Rect
 	( 
 		[&](GridPoint const & gp)
 		{
-			if ( m_pModelWork->IsAlive( gp ) )
+			if ( m_pCore->IsAlive( gp ) )
 			{
-				tStrategyId const s = m_pModelWork->GetStrategyId( gp );
+				tStrategyId const s = m_pCore->GetStrategyId( gp );
 				for ( unsigned int uiOption = 0; uiOption < NR_ACTIONS; ++uiOption )
-					if ( EvolutionModelData::IsEnabled( static_cast<tAction>( uiOption ) ) )
-						genesStat.add2option( s, uiOption, m_pModelWork->GetDistr( gp, static_cast<tAction>( uiOption ) ) );
+					if ( EvolutionCore::IsEnabled( static_cast<tAction>( uiOption ) ) )
+						genesStat.add2option( s, uiOption, m_pCore->GetDistr( gp, static_cast<tAction>( uiOption ) ) );
 
 				for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
-					genesStat.add2Gene( s, uiGene, m_pModelWork->GetGenotype( gp, static_cast<tGeneType>( uiGene ) ) );
+					genesStat.add2Gene( s, uiGene, m_pCore->GetGenotype( gp, static_cast<tGeneType>( uiGene ) ) );
 
 				genesStat.incCounter( s );
-				genesStat.addMemSize( s, m_pModelWork->GetMemSize( gp ) );
-				genesStat.addAge    ( s, m_pModelWork->GetAge( gp ) );
+				genesStat.addMemSize( s, m_pCore->GetMemSize( gp ) );
+				genesStat.addAge    ( s, m_pCore->GetAge( gp ) );
 			}
 		}
 	);
@@ -224,7 +224,7 @@ void StatisticsWindow::DoPaint( )
     genesStat.printAvAge   ( * this, L"av. age" );       // average age
     genesStat.printGeneStat( * this );                   // percentage numbers for options
 
-	if ( EvolutionModelData::IsEnabled( tAction::eat ) )
+	if ( EvolutionCore::IsEnabled( tAction::eat ) )
 		genesStat.printAvFood  ( * this, L"av. food" );      // average food consumption 
 
 	genesStat.printMemory  ( * this, L"memory" );        // memory size counters
@@ -233,29 +233,29 @@ void StatisticsWindow::DoPaint( )
 
     nextLine( L"max mem" );
     setHorizontalPos( 4 );
-    printNumber( EvolutionModelData::GetMaxPartnerMemory( ) );
+    printNumber( EvolutionCore::GetMaxPartnerMemory( ) );
 
-	if ( EvolutionModelData::IsEnabled( tAction::interact ) )
+	if ( EvolutionCore::IsEnabled( tAction::interact ) )
 	{
 		// nr of interactions with known culprits (Tit4Tat only)
 
 		nextLine( L"known" );
 		setHorizontalPos( 4 );
-		printNumber( EvolutionModelData::GetNrInteractionsWithKnownCulprit( ) );
+		printNumber( EvolutionCore::GetNrInteractionsWithKnownCulprit( ) );
 
 		// nr of interactions with unknown culprits (Tit4Tat only)
 
 		nextLine( L"unknown" );
 		setHorizontalPos( 4 );
-		printNumber( EvolutionModelData::GetNrInteractionsWithUnknownCulprit( ) );
+		printNumber( EvolutionCore::GetNrInteractionsWithUnknownCulprit( ) );
 	}
 
-	if ( EvolutionModelData::IsEnabled( tAction::eat ) )
+	if ( EvolutionCore::IsEnabled( tAction::eat ) )
 	{
 		// average food growth
 
 		nextLine( L"food growth" );
 		setHorizontalPos( 4 );
-		printNumber( m_pModelWork->GetAverageFoodGrowth( ) );
+		printNumber( m_pCore->GetAverageFoodGrowth( ) );
 	}
 }

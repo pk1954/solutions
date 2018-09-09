@@ -6,7 +6,7 @@
 #include "SCRIPT.H"
 #include "Resource.h"
 #include "GridPoint24.h"
-#include "EvolutionModelData.h"
+#include "EvolutionCore.h"
 #include "EvoHistorySysGlue.h"
 #include "win32_script.h"
 #include "win32_performanceWindow.h"
@@ -29,7 +29,7 @@ WorkThread::WorkThread( ) :
     m_pPerformanceWindow  ( nullptr ),
 	m_pEditorWindow       ( nullptr ),
     m_pDisplayGridFunctor ( nullptr ),
-    m_pModelWork          ( nullptr ),
+    m_pCore               ( nullptr ),
     m_pEvoHistGlue        ( nullptr ),
     m_bContinue           ( FALSE ),
     m_genDemanded         ( 0 )
@@ -40,7 +40,7 @@ void WorkThread::Start
     PerformanceWindow   * const pPerformanceWindow,
 	EditorWindow        * const pEditorWindow,
     DisplayAll    const * const pDisplayGridFunctor,
-    EvolutionModelData  * const pModel,
+    EvolutionCore       * const pCore,
     EvoHistorySysGlue   * const pEvoHistorySys,
 	WorkThreadInterface * const pWorkThreadInterface
 
@@ -50,7 +50,7 @@ void WorkThread::Start
     m_pPerformanceWindow   = pPerformanceWindow;
 	m_pEditorWindow        = pEditorWindow;
     m_pDisplayGridFunctor  = pDisplayGridFunctor;
-    m_pModelWork           = pModel;
+    m_pCore                = pCore;
 	m_pEvoHistGlue         = pEvoHistorySys;
 	m_pWorkThreadInterface = pWorkThreadInterface;
 

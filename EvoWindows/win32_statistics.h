@@ -8,7 +8,7 @@
 
 class EvoHistorySysGlue;
 class GridRect;
-class EvolutionModelData;
+class EvolutionCore;
 
 //lint -esym( 1712, StatisticsWindow )  no default constructor for class 
 
@@ -18,10 +18,10 @@ public:
     StatisticsWindow( );
     virtual ~StatisticsWindow( );
 
-    void Start( HWND const, EvolutionModelData const * const );
+    void Start( HWND const, EvolutionCore const * const );
 
     virtual void DoPaint();
 
 private:
-    EvolutionModelData const * m_pModelWork;
+    EvolutionCore const * m_pCore;
 };

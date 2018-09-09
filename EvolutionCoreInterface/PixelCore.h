@@ -5,16 +5,16 @@
 
 #include "pixelPoint.h"
 
-class EvolutionModelData;
 class PixelCoordinates;
 class PixelRectSize;
+class EvolutionCore;
 
 class PixelCore
 {
 public:
 	PixelCore
     ( 
-        EvolutionModelData *,
+        EvolutionCore *,
 		PixelCoordinates *
     );
 
@@ -28,6 +28,6 @@ public:
 	void       SetFieldSize( short const, PixelPoint const );
 		
 private:
-    EvolutionModelData * m_pModelWork;
-	PixelCoordinates   * m_pPixelCoordinates;
+    EvolutionCore    * m_pCore;
+	PixelCoordinates * m_pPixelCoordinates;
 };

@@ -24,8 +24,7 @@ public:
 
     void Start
 	( 
-		EvolutionModelData * const, 
-		EvolutionCore      * const, 
+		EvolutionCore * const, 
 		long const, 
 		bool const 
 	);

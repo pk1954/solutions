@@ -5,7 +5,7 @@
 #include "assert.h"
 #include "SCRIPT.H"
 #include "symtab.h"
-#include "EvolutionModelData.h"
+#include "EvolutionCore.h"
 #include "EvolutionCore.h"
 #include "EvolutionTypes.h"
 #include "pixelCoordinates.h"
@@ -15,7 +15,6 @@
 //lint -esym( 715, script )  // not referenced
 
 static EvolutionCore      * m_pCore;
-static EvolutionModelData * m_pModelWork;
 static PixelCoordinates   * m_pPixCoords;
 
 class WrapSetPoi : public Script_Functor
@@ -24,7 +23,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         GridPoint gp = ScrReadGridPoint( script );
-        m_pModelWork->SetPoi( gp );
+        m_pCore->SetPoi( gp );
     }
 };
 
@@ -33,7 +32,7 @@ class WrapClearPoi : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModelWork->ClearPoi( );
+        m_pCore->ClearPoi( );
     }
 };
 
@@ -42,7 +41,7 @@ class WrapDumpGridPointList : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCore->DumpGridPointList( m_pModelWork );
+        m_pCore->DumpGridPointList( );
     }
 };
 
@@ -51,7 +50,7 @@ class WrapCompute : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCore->Compute( m_pModelWork );
+        m_pCore->Compute( );
     }
 };
 
@@ -60,7 +59,7 @@ class WrapResetModel : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModelWork->ResetAll( );
+        m_pCore->ResetAll( );
     }
 };
 
@@ -77,7 +76,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         GridPoint gp = ScrReadGridPoint( script );
-        m_pModelWork->ModelDoEdit( gp );
+        m_pCore->ModelDoEdit( gp );
     }
 };
 
@@ -88,7 +87,7 @@ public:
     {
         int    const iShape = script.ScrReadInt( );
         tShape const shape  = static_cast<tShape>( iShape );
-        m_pModelWork->SetBrushShape( shape );
+        m_pCore->SetBrushShape( shape );
     }
 };
 
@@ -98,7 +97,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         unsigned char size = script.ScrReadUchar( );
-        m_pModelWork->SetBrushRadius( size );
+        m_pCore->SetBrushRadius( size );
     }
 };
 
@@ -108,7 +107,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         short sIntensity = script.ScrReadShort( );
-        m_pModelWork->SetBrushIntensity( sIntensity );
+        m_pCore->SetBrushIntensity( sIntensity );
     }
 };
 
@@ -119,7 +118,7 @@ public:
     {
         int        const iMode = script.ScrReadInt( );
         tBrushMode const mode  = static_cast<tBrushMode>( iMode );
-        m_pModelWork->SetBrushMode( mode );
+        m_pCore->SetBrushMode( mode );
     }
 };
 
@@ -164,17 +163,6 @@ void DefinePixelCoordinatesWrapperFunctions( PixelCoordinates * pCoords )
     DEF_FUNC( MoveGrid );
 }
 
-void DefineModelWrapperFunctions( EvolutionModelData * pModel )
-{
-    m_pModelWork = pModel;
-
-    DEF_FUNC( ModelDoEdit );
-    DEF_FUNC( SetBrushShape );
-    DEF_FUNC( SetBrushRadius );
-    DEF_FUNC( SetBrushIntensity );
-    DEF_FUNC( SetBrushMode );
-}
-
 void DefineCoreWrapperFunctions( EvolutionCore * pCore )
 {
     m_pCore = pCore;
@@ -187,7 +175,13 @@ void DefineCoreWrapperFunctions( EvolutionCore * pCore )
     DEF_FUNC( Include );
     DEF_FUNC( Pause );
 
-    DEF_ULONG_CONST( tStrategyId::defect );
+    DEF_FUNC( ModelDoEdit );
+    DEF_FUNC( SetBrushShape );
+    DEF_FUNC( SetBrushRadius );
+    DEF_FUNC( SetBrushIntensity );
+    DEF_FUNC( SetBrushMode );
+
+	DEF_ULONG_CONST( tStrategyId::defect );
     DEF_ULONG_CONST( tStrategyId::cooperate );
     DEF_ULONG_CONST( tStrategyId::tit4tat );
 

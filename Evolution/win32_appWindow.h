@@ -24,7 +24,6 @@ class WinManager;
 class EvolutionCore;
 class NextGenFunctor;
 class ScriptHook;
-class EvolutionModelData;
 class EvoHistorySysGlue;
 class EvoController;
 
@@ -58,7 +57,6 @@ private:
     DspOptWindow        * m_pDspOptWindow;
     FocusPoint          * m_pFocusPoint;
     WinManager          * m_pWinManager;
-    EvolutionModelData  * m_pModelWork;
     EvolutionCore       * m_pEvolutionCore;
 	EvoController       * m_pEvoController;
     ScriptHook          * m_pScriptHook;

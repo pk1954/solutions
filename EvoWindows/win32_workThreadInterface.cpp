@@ -5,15 +5,15 @@
 #include "assert.h"
 #include "Resource.h"
 #include "GridPoint24.h"
+#include "EvolutionCore.h"
 #include "EvoHistorySysGlue.h"
-#include "EvolutionModelData.h"
 #include "win32_worker_thread.h"
 #include "win32_workThreadInterface.h"
 
 using namespace std;
 
 WorkThreadInterface::WorkThreadInterface( wostream * pTraceStream ) :
-	m_pModelWork( nullptr ),
+	m_pCore( nullptr ),
 	m_pEvoHistGlue( nullptr ),
 	m_pWorkThread( nullptr ),
     m_pTraceStream( pTraceStream ),
@@ -25,20 +25,20 @@ void WorkThreadInterface::Start
     PerformanceWindow  * const pPerformanceWindow,
 	EditorWindow       * const pEditorWindow,
     DisplayAll   const * const pDisplayGridFunctor,
-    EvolutionModelData * const pModel,
+    EvolutionCore      * const pCore,
     EvoHistorySysGlue  * const pEvoHistGlue
 
 )
 {
-    m_pModelWork   = pModel;
+    m_pCore        = pCore;
 	m_pEvoHistGlue = pEvoHistGlue;
 	m_pWorkThread  = new WorkThread();
-	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pDisplayGridFunctor, pModel, pEvoHistGlue, this );
+	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pDisplayGridFunctor, pCore, pEvoHistGlue, this );
 }
 
 WorkThreadInterface::~WorkThreadInterface( )
 {
-	m_pModelWork   = nullptr;
+	m_pCore   = nullptr;
 	m_pEvoHistGlue = nullptr;
 	m_pWorkThread  = nullptr;
     m_pTraceStream = nullptr;
@@ -202,10 +202,10 @@ void WorkThreadInterface::PostHistoryAction( UINT const uiID, GridPoint const gp
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << uiID << L" " << gp << endl;
 
-	assert( m_pModelWork->IsAlive(gp) );
+	assert( m_pCore->IsAlive(gp) );
 	assert( (uiID == IDM_GOTO_ORIGIN) || (uiID == IDM_GOTO_DEATH) );
 
-	IndId           idTarget  = m_pModelWork->GetId(gp);
+	IndId           idTarget  = m_pCore->GetId(gp);
 	HIST_GENERATION genTarget = ( uiID == IDM_GOTO_ORIGIN )
 	                            ? m_pEvoHistGlue->GetFirstGenOfIndividual(idTarget)
 		                        : m_pEvoHistGlue->GetLastGenOfIndividual(idTarget);

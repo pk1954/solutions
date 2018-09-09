@@ -7,7 +7,7 @@
 #include <functional>
 #include "gridPoint.h"
 
-class EvolutionModelData;
+class EvolutionCore;
 
 class DspOptWindow : public BaseDialog
 {
@@ -15,7 +15,7 @@ public:
     DspOptWindow( );
     ~DspOptWindow( );
 
-    void Start( HWND const, EvolutionModelData const * const );
+    void Start( HWND const, EvolutionCore const * const );
 
 	int GetIntValue( GridPoint const & gp ) 
 	{ 
@@ -35,7 +35,7 @@ private:
 
 	virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
 
-    EvolutionModelData const * m_pModel; 
+    EvolutionCore const * m_pCore; 
 
 	std::function<int( GridPoint const & )> m_IntValueLambda;
 };

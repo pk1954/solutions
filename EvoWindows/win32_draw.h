@@ -16,7 +16,6 @@
 //lint -esym( 763, EvolutionCore )  redundant declaration
 
 class EvolutionCore;
-class EvolutionModelData;
 class PixelCoordinates;
 class DspOptWindow;
 class D3dBuffer;
@@ -25,7 +24,7 @@ class DrawFrame
 {
 public:
 
-    DrawFrame( HWND, EvolutionCore *, EvolutionModelData *, PixelCoordinates *, DspOptWindow * );
+    DrawFrame( HWND, EvolutionCore *, PixelCoordinates *, DspOptWindow * );
     ~DrawFrame( );
 
     void Resize( );
@@ -33,7 +32,7 @@ public:
     void SetStripMode( tBoolOp );
     void SetIndDimmMode( tBoolOp );
 
-    EvolutionModelData * const GetEvoCore( ) const { return m_pModelWork; } // for inner class
+    EvolutionCore * const GetEvoCore( ) const { return m_pCore; } // for inner class
 
 private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
@@ -43,7 +42,6 @@ private:
     bool       m_bDimmIndividuals;   
 
     EvolutionCore      * const m_pCore;
-    EvolutionModelData * const m_pModelWork;
     PixelCoordinates   * const m_pPixelCoordinates;
     DspOptWindow       * const m_pDspOptWindow;
     D3dBuffer          *       m_pD3dBuffer;

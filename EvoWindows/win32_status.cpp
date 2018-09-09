@@ -7,7 +7,7 @@
 #include "commctrl.h"
 #include "config.h"
 #include "pixelCoordinates.h"
-#include "EvolutionModelData.h"
+#include "EvolutionCore.h"
 #include "win32_performanceWindow.h"
 #include "win32_status.h"
 
@@ -36,7 +36,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
     switch ( uMsg )
     {
     case WM_PAINT:
-		pStatusBar->DisplayCurrentGeneration( pStatusBar->m_pModel->GetEvoGenerationNr( ) );
+		pStatusBar->DisplayCurrentGeneration( pStatusBar->m_pCore->GetEvoGenerationNr( ) );
         break;
 
     case WM_COMMAND:
@@ -148,11 +148,11 @@ StatusBar::StatusBar( )
 
 void StatusBar::Start
 ( 
-	HWND               const   hWndParent,
-	EvolutionModelData const * pModel
+	HWND          const   hWndParent,
+	EvolutionCore const * pCore
 )
 {
-	m_pModel = pModel;
+	m_pCore = pCore;
 
 	HWND hWndStatus = CreateWindow
     (

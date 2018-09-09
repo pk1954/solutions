@@ -9,7 +9,7 @@
 #include "kGridPoint.h"
 #include "SmoothMove.h"
 
-class EvolutionModelData;
+class EvolutionCore;
 
 class PixelCoordinates
 {

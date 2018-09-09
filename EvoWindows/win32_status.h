@@ -8,14 +8,14 @@
 
 using namespace std;
 
-class EvolutionModelData;
+class EvolutionCore;
 
 class StatusBar : public BaseDialog
 {
 public:
     StatusBar( );
 
-    void Start( HWND const, EvolutionModelData const * );
+    void Start( HWND const, EvolutionCore const * );
 	void SetSimuMode( BOOL const );
 
     int  GetHeight( ) const;
@@ -56,7 +56,7 @@ private:
     wstring m_wstrGeneration;
     wstring m_wstrScriptLine;
 
-	EvolutionModelData const * m_pModel;
+	EvolutionCore const * m_pCore;
 
 friend static LRESULT CALLBACK OwnerDrawStatusBar( HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR );
 };

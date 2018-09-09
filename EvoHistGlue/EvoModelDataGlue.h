@@ -12,19 +12,13 @@
 #include "gridPoint.h"
 #include "ModelData.h"
 
-class EvolutionModelData;
 class EvolutionCore;
 
 class EvoModelDataGlue: public ModelData
 {
 public:
 	
-    EvoModelDataGlue
-	( 
-		EvolutionModelData * const pModelDataWork, 
-        EvolutionCore      * const pCore
-	):
-        m_pEvolutionModelData( pModelDataWork ),
+    EvoModelDataGlue( EvolutionCore * const pCore ):
 		m_pEvolutionCore( pCore )
     { }
 
@@ -38,6 +32,5 @@ public:
     GridPoint FindGridPoint( IndId const & ) const;
 
 private:
-	EvolutionModelData * m_pEvolutionModelData;
-    EvolutionCore      * m_pEvolutionCore;
+    EvolutionCore * m_pEvolutionCore;
 };

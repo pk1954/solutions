@@ -54,9 +54,6 @@
     <ClInclude Include="strategy.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="EvolutionModelDataImpl.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="geneTypeLimits.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -131,13 +128,7 @@
     <ClCompile Include="PixelCore.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="EvolutionModelData.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="geneTypeLimits.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="EvolutionModelDataImpl.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

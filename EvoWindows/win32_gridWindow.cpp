@@ -7,7 +7,7 @@
 #include "BoolOp.h"
 #include "PixelCore.h"
 #include "pixelCoordinates.h"
-#include "EvolutionModelData.h"
+#include "EvolutionCore.h"
 #include "win32_util.h"
 #include "win32_draw.h"
 #include "win32_focusPoint.h"
@@ -41,7 +41,6 @@ void GridWindow::Start
     DspOptWindow        * const pDspOptWindow,
     PerformanceWindow   * const pPerformanceWindow,
     EvolutionCore       * const pCore,
-    EvolutionModelData  * const pModel,
     DWORD                 const dwStyle,
     SHORT                 const sFieldSize
 )
@@ -56,14 +55,14 @@ void GridWindow::Start
     );
     assert( sFieldSize > 0 );
     m_pWorkThreadInterface = pWorkThreadInterface;
-    m_pPerformanceWindow  = pPerformanceWindow;
-    m_pFocusPoint         = pFocusPoint;
-	m_pModelWork          = pModel;
+    m_pPerformanceWindow   = pPerformanceWindow;
+    m_pFocusPoint          = pFocusPoint;
+	m_pCore                = pCore;
 
 	BOOL bHexagonMode     = iNrOfNeighbors == 6;
     m_pPixelCoordinates   = new PixelCoordinates( sFieldSize, bHexagonMode );
-	m_pPixelCore          = new PixelCore( m_pModelWork, m_pPixelCoordinates );
-    m_pDrawFrame          = new DrawFrame( hWnd, pCore, pModel, m_pPixelCoordinates, pDspOptWindow );
+	m_pPixelCore          = new PixelCore( m_pCore, m_pPixelCoordinates );
+    m_pDrawFrame          = new DrawFrame( hWnd, pCore, m_pPixelCoordinates, pDspOptWindow );
 	m_pDrawFrame->SetStripMode
 	( 
 		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
@@ -83,7 +82,7 @@ GridWindow::~GridWindow( )
         exit( 1 );
     };
 
-	m_pModelWork           = nullptr;
+	m_pCore                = nullptr;
     m_pGWObserved          = nullptr;
     m_pWorkThreadInterface = nullptr;
 }
@@ -109,7 +108,7 @@ void GridWindow::contextMenu( LPARAM lParam )
 	POINT pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
     (void)MapWindowPoints( hwnd, nullptr, &pntPos, 1 );
 
-    if ( m_pModelWork->SelectionIsEmpty() )
+    if ( m_pCore->SelectionIsEmpty() )
     {
         (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_FIT_ZOOM, L"Fit Grid Area" );
     }
@@ -160,7 +159,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     {
         if ( m_ptLast.x != LONG_MIN )  // last cursor pos stored in m_ptLast
         {
-            PixelPoint ptOther = m_pModelWork->IsPoiDefined( ) 
+            PixelPoint ptOther = m_pCore->IsPoiDefined( ) 
 				                 ? m_pPixelCore->GetPoiCenter() * 2 - ptCrsr 
 				                 : m_ptLast;
             m_pPixelCore->SetSelection( ptOther, ptCrsr ); 
@@ -174,8 +173,8 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
     {
         if ( 
-			( m_pModelWork->GetSimulationMode() == false ) && // if in edit mode
-			( m_pModelWork->GetBrushMode() != tBrushMode::move )
+			( m_pCore->GetSimulationMode() == false ) && // if in edit mode
+			( m_pCore->GetBrushMode() != tBrushMode::move )
 		   )
         {
             m_pWorkThreadInterface->PostDoEdit( m_pFocusPoint->GetGridPoint( ) );
@@ -209,7 +208,7 @@ void GridWindow::doPaint( )
         (void)EndPaint( &ps );
     }
 
-    if ( m_bMoveAllowed && m_pModelWork->IsPoiDefined( ) )
+    if ( m_bMoveAllowed && m_pCore->IsPoiDefined( ) )
 	{
 		if ( ! m_pPixelCore->CenterPoi( GetClRectCenter( ) ) )
 		   Invalidate( FALSE );    // repeat if POI is not in center 
@@ -266,7 +265,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         return 0;
 
     case WM_LBUTTONDOWN:
-        if ( m_pModelWork->SelectionIsEmpty() )
+        if ( m_pCore->SelectionIsEmpty() )
         {
             SetCapture( );
             if ( inObservedClientRect( lParam ) || m_bMoveAllowed )
@@ -274,7 +273,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         }
 		else
 		{
-			m_pModelWork->ResetSelection( );
+			m_pCore->ResetSelection( );
 			PostCommand2Application( IDM_REFRESH, 0 );
 		}
         SetFocus( );
@@ -347,5 +346,5 @@ void GridWindow::ToggleClutMode( )
 
 void GridWindow::Escape( ) 
 { 
-	m_pModelWork->ResetSelection( ); 
+	m_pCore->ResetSelection( ); 
 }

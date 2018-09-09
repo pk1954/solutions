@@ -172,7 +172,6 @@
     <ClInclude Include="grid_model.h" />
     <ClInclude Include="individual.h" />
     <ClInclude Include="interaction.h" />
-    <ClInclude Include="EvolutionModelDataImpl.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="strategy.h" />
     <ClInclude Include="targetver.h" />
@@ -182,8 +181,6 @@
     <ClCompile Include="dump.cpp" />
     <ClCompile Include="EvolutionCore.cpp" />
     <ClCompile Include="EvolutionCoreImpl.cpp" />
-    <ClCompile Include="EvolutionModelData.cpp" />
-    <ClCompile Include="EvolutionModelDataImpl.cpp" />
     <ClCompile Include="EvolutionTypes.cpp" />
     <ClCompile Include="food.cpp" />
     <ClCompile Include="geneTypeLimits.cpp" />

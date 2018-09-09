@@ -9,7 +9,7 @@
 class RootWindow;
 class ViewCollection;
 class EvoHistorySysGlue;
-class EvolutionModelData;
+class EvolutionCore;
 
 class FocusPoint
 {
@@ -17,7 +17,7 @@ public:
     FocusPoint( );
     virtual ~FocusPoint( );
 
-    void Start( EvoHistorySysGlue *, EvolutionModelData * );
+    void Start( EvoHistorySysGlue *, EvolutionCore * );
 
     void SetFocusPoint( GridPoint const );
 
@@ -33,7 +33,7 @@ public:
 
 private:
     EvoHistorySysGlue  * m_pEvoHistGlue;
-    EvolutionModelData * m_pModelWork;
+    EvolutionCore      * m_pCore;
     ViewCollection     * m_pViewCol;
     HIST_GENERATION      m_genBirth;
     HIST_GENERATION      m_genDeath;

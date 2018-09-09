@@ -7,7 +7,7 @@
 
 class WorkThreadInterface;
 class DspOptWindow;
-class EvolutionModelData;
+class EvolutionCore;
 class StatusBar;
 
 class EditorWindow : public BaseDialog
@@ -20,7 +20,7 @@ public:
 	( 
 		HWND const, 
 		WorkThreadInterface * const, 
-		EvolutionModelData  * const, 
+		EvolutionCore       * const, 
 		DspOptWindow        * const, 
 		StatusBar           * const
 	);
@@ -38,7 +38,7 @@ private:
 
 	void updateOperationButtons( tBrushMode const ) const;
 
-	EvolutionModelData  * m_pModelWork;
+	EvolutionCore       * m_pCore;
     WorkThreadInterface * m_pWorkThreadInterface;
     DspOptWindow        * m_pDspOptWindow;
 	StatusBar           * m_pStatusBar;

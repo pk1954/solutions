@@ -18,7 +18,7 @@
 class PerformanceWindow;
 class EditorWindow;
 class RootWindow;
-class EvolutionModelData;
+class EvolutionCore;
 class WinManager;
 class DisplayAll;
 class EditorWindow;
@@ -36,7 +36,7 @@ public:
         PerformanceWindow   * const,
 		EditorWindow        * const,  
         DisplayAll   const  * const, 
-        EvolutionModelData  * const,
+        EvolutionCore       * const,
 	    EvoHistorySysGlue   * const,
 		WorkThreadInterface * const
     );
@@ -83,7 +83,7 @@ private:
     PerformanceWindow   * m_pPerformanceWindow;
     EditorWindow        * m_pEditorWindow;
     EvoHistorySysGlue   * m_pEvoHistGlue;
-    EvolutionModelData  * m_pModelWork;
+    EvolutionCore       * m_pCore;
     HANDLE                m_hEventThreadStarter;
     DWORD                 m_dwThreadId;
 	HANDLE			      m_hThread;
