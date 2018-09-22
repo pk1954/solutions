@@ -1,5 +1,5 @@
 PostRefresh
-PostSetBrushMode tBrushMode::randomStrategy
+PostSetBrushMode tBrushMode::randomStrat
 PostReset
 PostDoEdit   37  51 
 PostRefresh

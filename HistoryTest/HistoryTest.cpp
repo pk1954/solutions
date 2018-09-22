@@ -85,7 +85,7 @@ void DoTest( )
 		1000,           // # of generations
 		& modelData,
 		& modelFactory,
-		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( 0 ), 0 )
+		GenerationCmd::ApplicationCmd( tGenCmd::FIRST_APP_CMD, 0 )
 	);
 
 	wcout << L"*** Create " << NR_OF_SLOTS << L" history slots" << endl;
