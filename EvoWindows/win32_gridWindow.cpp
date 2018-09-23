@@ -172,10 +172,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     }
     else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
     {
-        if ( 
-			( m_pCore->GetSimulationMode() == false ) && // if in edit mode
-			( m_pCore->GetBrushMode() != tBrushMode::move )
-		   )
+        if ( (m_pCore->GetBrushMode() != tBrushMode::move) && (ptCrsr != m_ptLast) )
         {
             m_pWorkThreadInterface->PostDoEdit( m_pFocusPoint->GetGridPoint( ) );
         }
