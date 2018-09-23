@@ -12,7 +12,7 @@ public:
 
 	// call back functions 
 
-	virtual void CopyModelData( ModelData const * const ) = 0;   
+	virtual void CopyFrom( ModelData const * const ) = 0;   
     virtual void OnAppCommand( GenerationCmd const ) = 0;
 };
 

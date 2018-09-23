@@ -26,7 +26,7 @@ public:
     ~HistoryCache( );
     
     void InitHistoryCache( short const, ModelFactory const * const );
-    bool AddCacheSlot( HistCacheItem *, ModelFactory const * const );
+    bool AddCacheSlot( );
     void ResetHistoryCache( );
 
     short GetFreeCacheSlotNr( );
@@ -67,6 +67,8 @@ public:
 private:
     HistoryCache             ( HistoryCache const & );  // noncopyable class 
     HistoryCache & operator= ( HistoryCache const & );  // noncopyable class 
+
+	ModelFactory const * m_pModelFactory;
 
     vector< HistSlot > m_aHistSlot;  // is tail of list
 

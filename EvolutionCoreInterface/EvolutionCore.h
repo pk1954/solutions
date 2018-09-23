@@ -89,7 +89,7 @@ public:
 
     // static functions
     
-    static void            InitClass( );
+    static EvolutionCore * InitClass( );
     static EvolutionCore * CreateCore( );
     static void            DeleteCore( );
     static unsigned long   GetModelSize( );

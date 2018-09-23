@@ -17,13 +17,13 @@ GridPoint EvoModelDataGlue::FindGridPoint( IndId const & id ) const
     return m_pEvolutionCore->FindGridPoint( id );
 }
 
-void EvoModelDataGlue::CopyModelData( ModelData const * const src )
+void EvoModelDataGlue::CopyFrom( ModelData const * const src )
 {
 	EvoModelDataGlue const * const evoSrc = static_cast< EvoModelDataGlue const * const >( src );
     m_pEvolutionCore->CopyEvolutionCoreData( evoSrc->m_pEvolutionCore );
 }
 
-void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd  )
+void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 {
 	tEvoCmd const evoCmd = static_cast<tEvoCmd>( cmd.GetCommand() );
 	Int24   const param  = cmd.GetParam( );

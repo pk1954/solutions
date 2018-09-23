@@ -39,7 +39,9 @@ void HistoryCache::InitHistoryCache
 	ModelFactory const * const pModelFactory
 )
 {
-	HistCacheItem * pNewHistCacheItem = HistCacheItem::CreateItem( pModelFactory );
+	m_pModelFactory = pModelFactory;
+
+	HistCacheItem * pNewHistCacheItem = HistCacheItem::CreateItem( m_pModelFactory );
 
     assert( sNrOfSlots >= 2 );
 
@@ -51,7 +53,7 @@ void HistoryCache::InitHistoryCache
 #endif
     m_aHistSlot.resize( m_iNrOfRequestedSlots );
 
-    m_aHistSlot.at( 0 ).SetHistCacheItem( pNewHistCacheItem );
+    m_aHistSlot[ 0 ].SetHistCacheItem( pNewHistCacheItem );
     ++m_iNrOfSlots;
 
     m_iUnused = 0;
@@ -77,15 +79,11 @@ void HistoryCache::ResetHistoryCache( )
     setJunior( m_iNrOfSlots - 1,           HistSlot::NUL );
 }
 
-bool HistoryCache::AddCacheSlot
-( 
-	HistCacheItem      *       pHistCacheItem, 
-	ModelFactory const * const pModelFactory 
-)
+bool HistoryCache::AddCacheSlot( )
 {
     try
     {
-		HistCacheItem * pHistCacheItemNew = pHistCacheItem->CreateItem( pModelFactory );
+		HistCacheItem * pHistCacheItemNew = HistCacheItem::CreateItem( m_pModelFactory );
         m_aHistSlot.at( m_iNrOfSlots ).SetHistCacheItem( pHistCacheItemNew );
     }
     catch ( std::bad_alloc & )

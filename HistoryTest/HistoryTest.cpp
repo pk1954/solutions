@@ -21,7 +21,7 @@ public:
 		m_iDataApp( 0 )
 	{ }
 	
-	virtual void CopyModelData( ModelData const * const src )
+	virtual void CopyFrom( ModelData const * const src )
     {
         * this = * static_cast< HistTestModelData const * const >( src );
     }

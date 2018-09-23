@@ -100,9 +100,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
 	Script::ProcessScript( L"std_configuration.in" );
 
-	EvolutionCore::InitClass( );
-
-    m_pEvolutionCore = EvolutionCore::CreateCore( );
+	m_pEvolutionCore = EvolutionCore::InitClass( );
 
     D3dSystem::Create( hWndApp, GridPoint::GRID_WIDTH, GridPoint::GRID_HEIGHT, Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 );
 	
@@ -187,12 +185,9 @@ AppWindow::~AppWindow( )
             delete m_pEvoHistWindow;
 			delete m_pEvoHistGlue;
         }
-        else
-        {
-            delete m_pEvolutionCore;
-            delete m_pWorkThreadInterface;
-        }
 
+		delete m_pEvolutionCore;
+        delete m_pWorkThreadInterface;
         delete m_pMiniGridWindow;
         delete m_pMainGridWindow;
         delete m_pStatusBar;
@@ -205,8 +200,6 @@ AppWindow::~AppWindow( )
         delete m_pWinManager;
         delete m_pScriptHook;
 		delete m_pEvoController;
-
-        EvolutionCore::DeleteCore( );
     }
     catch ( ... )
     {

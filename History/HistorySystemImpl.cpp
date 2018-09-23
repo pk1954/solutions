@@ -13,19 +13,17 @@
 // public member functions
 
 HistorySystemImpl::HistorySystemImpl( ) :
-    m_GenCmdList( ),
-    m_pHistoryCache( nullptr ),
-    m_pHistCacheItemWork( nullptr ),
-    m_pModelDataWork( nullptr )
+    m_GenCmdList        ( ),
+    m_pHistoryCache     ( nullptr ),
+    m_pHistCacheItemWork( nullptr )
 { }
 
 HistorySystemImpl::~HistorySystemImpl( )
 {
     delete m_pHistoryCache;
 
-    m_pHistoryCache = nullptr;
+    m_pHistoryCache      = nullptr;
     m_pHistCacheItemWork = nullptr;
-    m_pModelDataWork = nullptr;
 }
 
 void HistorySystemImpl::InitHistorySystem
@@ -37,8 +35,6 @@ void HistorySystemImpl::InitHistorySystem
 	GenerationCmd   const cmd
 )
 {
-    m_pModelDataWork     = pModelDataWork;
-	m_pModelFactory      = pModelFactory;
     m_pHistoryCache      = new HistoryCache;
 	m_pHistCacheItemWork = new HistCacheItem( pModelDataWork );
 	m_GenCmdList.Resize( genMaxNrOfGens );
@@ -49,7 +45,7 @@ void HistorySystemImpl::InitHistorySystem
 
 bool HistorySystemImpl::AddHistorySlot( ) const 
 { 
-    return m_pHistoryCache->AddCacheSlot( m_pHistCacheItemWork, m_pModelFactory );
+    return m_pHistoryCache->AddCacheSlot( );
 }
 
 int HistorySystemImpl::GetNrOfHistCacheSlots( ) const 
@@ -199,8 +195,7 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
         genCmd = pHistCacheItem->GetGenCmd( );
     }
 
-    m_pModelDataWork->OnAppCommand( genCmd );    // Apply application defined operation to step to next generation
-
+	m_pHistCacheItemWork->GetModelData()->OnAppCommand( genCmd );    // Apply application defined operation to step to next generation
     m_pHistCacheItemWork->IncHistGenCounter( );
 
     assert( m_pHistCacheItemWork->GetHistGenCounter( ) < m_GenCmdList.GetCmdListSize( ) ); //TODO: find clean solution if max number of generations reached. 

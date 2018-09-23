@@ -6,30 +6,21 @@
 #include "strategy.h"
 #include "genome.h"
 #include "grid_model.h"
-#include "EvolutionCoreWrappers.h"
 #include "EvolutionCore.h"
 #include "EvolutionCoreImpl.h"
+#include "EvolutionCoreWrappers.h"
 
-static EvolutionCoreImpl * m_pCore = nullptr;
-
-void EvolutionCore::InitClass( )
+EvolutionCore * EvolutionCore::InitClass( )
 {
     Grid::InitClass(  );
+    EvolutionCore * pEvolutionCore = EvolutionCore::CreateCore( );
+	DefineCoreWrapperFunctions( pEvolutionCore );
+	return pEvolutionCore;
 }
 
 EvolutionCore * EvolutionCore::CreateCore( )
 {
-    m_pCore = new EvolutionCoreImpl( );
-    assert( m_pCore != nullptr );
-
-    DefineCoreWrapperFunctions( m_pCore );
-
-    return m_pCore;
-}
-
-void EvolutionCore::DeleteCore( )
-{
-    delete m_pCore;
+    return new EvolutionCoreImpl( );
 }
 
 unsigned long EvolutionCore::GetModelSize( )

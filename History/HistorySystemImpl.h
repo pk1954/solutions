@@ -57,11 +57,9 @@ public:
 
 private:
 
-    GenCmdList           m_GenCmdList;
-    HistoryCache       * m_pHistoryCache;
-    HistCacheItem      * m_pHistCacheItemWork;      // The reference item, where history system gets and restores  
-    ModelData          * m_pModelDataWork; 
-	ModelFactory const * m_pModelFactory;
+    GenCmdList      m_GenCmdList;
+    HistoryCache  * m_pHistoryCache;
+    HistCacheItem * m_pHistCacheItemWork;      // The reference item, where history system gets and restores data 
 
     void                  save2History( );
     void                  step2NextGeneration( GenerationCmd );

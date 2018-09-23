@@ -36,9 +36,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
     Script::ProcessScript( L"std_configuration.in" );
 
-	EvolutionCore::InitClass( );
-    EvolutionCore * m_pEvolutionCore = EvolutionCore::CreateCore( );
-
+    EvolutionCore    * const pEvolutionCore = EvolutionCore::InitClass( );
 	int                const iNrOfNeighbors = Config::GetConfigValue( Config::tId::nrOfNeighbors );
 	BOOL               const bHexagonMode   = (iNrOfNeighbors == 6);
 	short              const FIELDSIZE      = 8;
@@ -51,10 +49,10 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	
 	m_pEvoHistGlue         = new EvoHistorySysGlue( );
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
-	m_pEvoHistGlue->Start( m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false );
+	m_pEvoHistGlue->Start( pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false );
     DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
 
-	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, m_pEvolutionCore, m_pEvoHistGlue );
+	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, pEvolutionCore, m_pEvoHistGlue );
 
 	DefineWin32WrapperFunctions( m_pWorkThreadInterface, nullptr );
 
