@@ -52,6 +52,7 @@ IDC_EVOLUTION_MAIN MENU
     }
     POPUP "&Help"
     {
+        MENUITEM "&HistorySystem...", IDM_HISTORY_INFO
         MENUITEM "&Info...", IDM_ABOUT
     }
 }
@@ -144,25 +145,26 @@ STRINGTABLE
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
 IDC_EVOLUTION_MAIN ACCELERATORS
 {
-    "g",            IDM_GENERATION,  ASCII
-    "r",            IDM_RUN,         ASCII
-    "s",            IDM_STOP,        ASCII
-    "+",            IDM_ZOOM_IN,     ASCII
-    "-",            IDM_ZOOM_OUT,    ASCII
-    "w",            IDM_MINI_WINDOW, ASCII
-    "b",            IDM_BACKWARDS,   ASCII
-    "z",            IDM_BACKWARDS,   VIRTKEY, CONTROL
-    "y",            IDM_GENERATION,  VIRTKEY, CONTROL
-    VK_BACK,        IDM_BACKWARDS,   VIRTKEY, ALT
-    "?",            IDM_ABOUT,       ASCII, ALT
-    "/",            IDM_ABOUT,       ASCII, ALT
-    "m",            IDM_MINI_WINDOW, ASCII, ALT
-    "d",            IDM_DISP_WINDOW, ASCII, ALT
-    "e",            IDM_EDIT_WINDOW, ASCII, ALT
-    "s",            IDM_STAT_WINDOW, ASCII, ALT
-    "c",            IDM_CRSR_WINDOW, ASCII, ALT
-    "p",            IDM_PERF_WINDOW, ASCII, ALT
-    VK_ESCAPE,      IDM_ESCAPE, VIRTKEY
+    "g",            IDM_GENERATION,   ASCII
+    "r",            IDM_RUN,          ASCII
+    "s",            IDM_STOP,         ASCII
+    "+",            IDM_ZOOM_IN,      ASCII
+    "-",            IDM_ZOOM_OUT,     ASCII
+    "w",            IDM_MINI_WINDOW,  ASCII
+    "b",            IDM_BACKWARDS,    ASCII
+    "z",            IDM_BACKWARDS,    VIRTKEY, CONTROL
+    "y",            IDM_GENERATION,   VIRTKEY, CONTROL
+    VK_BACK,        IDM_BACKWARDS,    VIRTKEY, ALT
+    "?",            IDM_ABOUT,        ASCII,   ALT
+    "/",            IDM_ABOUT,        ASCII,   ALT
+    "h",            IDM_HISTORY_INFO, ASCII,   ALT
+    "m",            IDM_MINI_WINDOW,  ASCII,   ALT
+    "d",            IDM_DISP_WINDOW,  ASCII,   ALT
+    "e",            IDM_EDIT_WINDOW,  ASCII,   ALT
+    "s",            IDM_STAT_WINDOW,  ASCII,   ALT
+    "c",            IDM_CRSR_WINDOW,  ASCII,   ALT
+    "p",            IDM_PERF_WINDOW,  ASCII,   ALT
+    VK_ESCAPE,      IDM_ESCAPE,       VIRTKEY
 }
 
 

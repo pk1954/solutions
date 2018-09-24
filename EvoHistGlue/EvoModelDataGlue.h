@@ -25,7 +25,12 @@ public:
 
     ~EvoModelDataGlue( );
 
-    virtual void OnAppCommand( GenerationCmd const );
+	virtual int GetModelSize()
+	{
+		return EvolutionCore::GetModelSize( ) + sizeof(EvoModelDataGlue);
+	}
+
+	virtual void OnAppCommand( GenerationCmd const );
 	virtual void CopyFrom( ModelData const * const );
 
     GridPoint FindGridPoint( IndId const & ) const;

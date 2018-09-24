@@ -25,6 +25,7 @@
 #include "win32_statistics.h"
 #include "win32_crsrWindow.h"
 #include "win32_performanceWindow.h"
+#include "win32_historyInfo.h"
 #include "win32_aboutBox.h"
 
 // infrastructure
@@ -224,6 +225,10 @@ LRESULT AppWindow::UserProc
         {
         case IDM_ABOUT:
             ShowAboutBox( GetWindowHandle( ) );
+            break;
+
+        case IDM_HISTORY_INFO:
+            ShowHistoryInfo( * m_pEvoHistGlue->GetHistorySystem( ) );
             break;
 
         case IDM_EXIT:

@@ -33,6 +33,7 @@ public:
 		GenerationCmd   const
 	) = 0;
 
+    virtual int               GetSlotSize( )           const = 0;
     virtual int               GetNrOfHistCacheSlots( ) const = 0;
     virtual HIST_GENERATION   GetNrOfGenerations( )    const = 0;
     virtual HIST_GENERATION   GetYoungestGeneration( ) const = 0;

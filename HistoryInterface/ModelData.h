@@ -12,8 +12,9 @@ public:
 
 	// call back functions 
 
-	virtual void CopyFrom( ModelData const * const ) = 0;   
-    virtual void OnAppCommand( GenerationCmd const ) = 0;
+	virtual int  GetModelSize( )                         = 0;   
+	virtual void CopyFrom    ( ModelData const * const ) = 0;   
+    virtual void OnAppCommand( GenerationCmd const )     = 0;
 };
 
 class ModelFactory

@@ -43,46 +43,6 @@ void HistorySystemImpl::InitHistorySystem
     save2History( );
 }
 
-bool HistorySystemImpl::AddHistorySlot( ) const 
-{ 
-    return m_pHistoryCache->AddCacheSlot( );
-}
-
-int HistorySystemImpl::GetNrOfHistCacheSlots( ) const 
-{ 
-    return m_pHistoryCache->GetNrOfHistCacheSlots( ); 
-}
-
-HIST_GENERATION HistorySystemImpl::GetNrOfGenerations( ) const 
-{ 
-    return m_pHistoryCache->GetYoungestGeneration( ) + 1; 
-}
-
-HIST_GENERATION HistorySystemImpl::GetYoungestGeneration( ) const 
-{ 
-    return m_pHistoryCache->GetYoungestGeneration( ); 
-}
-
-HIST_GENERATION HistorySystemImpl::GetCurrentGeneration( ) const 
-{ 
-    return m_pHistCacheItemWork->GetHistGenCounter( ); 
-}
-
-bool HistorySystemImpl::IsInHistoryMode( ) const 
-{ 
-    return GetCurrentGeneration( ) < m_pHistoryCache->GetYoungestGeneration( ); 
-};
-
-void HistorySystemImpl::ShutDownHistCacheSlot( short const i ) 
-{ 
-    m_pHistoryCache->ShutDownHistCacheSlot( i ); 
-}
-
-HistoryIterator * HistorySystemImpl::CreateHistoryIterator( ) const 
-{ 
-    return new HistoryIterator( m_pHistoryCache ); 
-}
-
 // ClearHistory
 // Erase all generations starting with genFirst up to youngest generation
 // from m_GenerationCmd and from history slots
@@ -96,6 +56,11 @@ void HistorySystemImpl::ClearHistory( HIST_GENERATION const genFirst )
 
 		m_GenCmdList.ResetGenerationCmd( gen );
 	}
+}
+
+HistoryIterator * HistorySystemImpl::CreateHistoryIterator( ) const 
+{ 
+	return new HistoryIterator( m_pHistoryCache );     	 
 }
 
 void HistorySystemImpl::CreateAppCommand( GenerationCmd const genCmd )

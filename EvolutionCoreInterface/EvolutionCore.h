@@ -91,7 +91,6 @@ public:
     
     static EvolutionCore * InitClass( );
     static EvolutionCore * CreateCore( );
-    static void            DeleteCore( );
     static unsigned long   GetModelSize( );
     static unsigned int    GetNrInteractionsWithKnownCulprit( );
     static unsigned int    GetNrInteractionsWithUnknownCulprit( );

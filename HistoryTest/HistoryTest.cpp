@@ -20,7 +20,12 @@ public:
 		m_iDataTest( iCounter ),
 		m_iDataApp( 0 )
 	{ }
-	
+
+	virtual int GetModelSize()
+	{
+		return sizeof( HistTestModelData );
+	}
+
 	virtual void CopyFrom( ModelData const * const src )
     {
         * this = * static_cast< HistTestModelData const * const >( src );
