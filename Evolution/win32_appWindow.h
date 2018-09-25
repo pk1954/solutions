@@ -12,6 +12,7 @@ class GridWindow;
 class PerformanceWindow;
 class StatusBar;
 class CrsrWindow;
+class HistInfoWindow;
 class StatisticsWindow;
 class EditorWindow;
 class DspOptWindow;
@@ -52,6 +53,7 @@ private:
     PerformanceWindow   * m_pPerfWindow;
     EditorWindow        * m_pEditorWindow;
     CrsrWindow          * m_pCrsrWindow;
+	HistInfoWindow      * m_pHistInfoWindow;
     StatusBar           * m_pStatusBar;
     StatisticsWindow    * m_pStatistics;
     DspOptWindow        * m_pDspOptWindow;

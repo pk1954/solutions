@@ -3,8 +3,12 @@
 
 #pragma once
 
+#include <iostream>
+#include <sstream> 
 #include "win32_baseWindow.h"
 #include "win32_util.h"
+
+using namespace std;
 
 class GridPoint;
 
@@ -43,6 +47,8 @@ public:
 
     void printString    ( wchar_t const * const );
     void printNumber    ( int );
+    void printNumber    ( unsigned int );
+    void printNumber    ( long long );
     void printPercentage( unsigned int );
     void printPercentage( unsigned int, unsigned int );
     void printSpan      ( unsigned int, unsigned int );
@@ -60,7 +66,8 @@ private:
     int      const LEFT_MARGIN = 30;
     int      const TOP_MARGIN  =  5;
 
-    wchar_t m_szBuffer[ 300 ];
+    wchar_t m_szBuffer[1024];
+    wostringstream m_wBuffer;
     HDC     m_hDC;
     int     m_cyChar;
     int     m_cxChar;

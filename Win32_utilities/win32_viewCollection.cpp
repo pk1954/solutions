@@ -46,4 +46,3 @@ void ViewCollection::SetDisplayRate( RootWindow const * pRootWin, INT const iMil
     ObserverInterface * po = GetObserver( pRootWin );
     po->SetDisplayRate( iMilliSecs );
 }
-

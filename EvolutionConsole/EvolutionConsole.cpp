@@ -49,7 +49,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	
 	m_pEvoHistGlue         = new EvoHistorySysGlue( );
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
-	m_pEvoHistGlue->Start( pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false );
+	m_pEvoHistGlue->Start( pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false, nullptr );
     DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
 
 	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, pEvolutionCore, m_pEvoHistGlue );

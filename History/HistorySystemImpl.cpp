@@ -15,7 +15,8 @@
 HistorySystemImpl::HistorySystemImpl( ) :
     m_GenCmdList        ( ),
     m_pHistoryCache     ( nullptr ),
-    m_pHistCacheItemWork( nullptr )
+    m_pHistCacheItemWork( nullptr ),
+    m_pObserver         ( nullptr )
 { }
 
 HistorySystemImpl::~HistorySystemImpl( )
@@ -24,15 +25,16 @@ HistorySystemImpl::~HistorySystemImpl( )
 
     m_pHistoryCache      = nullptr;
     m_pHistCacheItemWork = nullptr;
+	m_pObserver          = nullptr;
 }
 
 void HistorySystemImpl::InitHistorySystem
 (
-    short           const sNrOfSlots,
-    HIST_GENERATION const genMaxNrOfGens,
-    ModelData     * const pModelDataWork,
-    ModelFactory  * const pModelFactory,
-	GenerationCmd   const cmd
+    short               const sNrOfSlots,
+    HIST_GENERATION     const genMaxNrOfGens,
+    ModelData         * const pModelDataWork,
+    ModelFactory      * const pModelFactory,
+	GenerationCmd       const cmd
 )
 {
     m_pHistoryCache      = new HistoryCache;
@@ -56,6 +58,11 @@ void HistorySystemImpl::ClearHistory( HIST_GENERATION const genFirst )
 
 		m_GenCmdList.ResetGenerationCmd( gen );
 	}
+}
+
+bool HistorySystemImpl::AddHistorySlot( ) const 
+{ 
+	return m_pHistoryCache->AddCacheSlot( );
 }
 
 HistoryIterator * HistorySystemImpl::CreateHistoryIterator( ) const 

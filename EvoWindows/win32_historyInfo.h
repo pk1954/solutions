@@ -3,6 +3,24 @@
 
 #pragma once
 
-class HistorySystem;
+#include "win32_textWindow.h"
 
-extern void ShowHistoryInfo( HistorySystem const & );
+class HistorySystem;
+class ObserverInterface;
+
+class HistInfoWindow: public TextWindow
+{
+public:
+    HistInfoWindow( );
+
+    void Start
+	( 
+		HWND const, 
+		HistorySystem const *
+	);
+
+    virtual void DoPaint( );
+
+private:
+	HistorySystem const * m_pHistSystem;
+};

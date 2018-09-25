@@ -14,6 +14,7 @@
 class EvoModelFactory;
 class HistAllocThread;
 class EvolutionCore;
+class ObserverInterface;
 
 class EvoHistorySysGlue
 {
@@ -26,7 +27,8 @@ public:
 	( 
 		EvolutionCore * const, 
 		long const, 
-		bool const 
+		bool const,
+		HWND const
 	);
 
     // EvoApproachHistGen - Get closer to demanded HIST_GENERATION
@@ -36,7 +38,6 @@ public:
 
     void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); } 
 	
-    bool            AddEvoHistorySlot    ( ) const { return m_pHistorySystem->AddHistorySlot( ); }
     int             GetNrOfHistCacheSlots( ) const { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
     HIST_GENERATION GetCurrentGeneration ( ) const { return m_pHistorySystem->GetCurrentGeneration( ); }
     HIST_GENERATION GetYoungestGeneration( ) const { return m_pHistorySystem->GetYoungestGeneration( ); }

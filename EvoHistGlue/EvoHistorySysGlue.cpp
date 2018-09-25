@@ -7,6 +7,7 @@
 #include <sstream> 
 #include <limits.h>
 #include "config.h"
+#include "observerInterface.h"
 #include "HistAllocThread.h"
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
@@ -14,6 +15,7 @@
 #include "EvoHistorySysGlue.h"
 
 class WorkThread;
+class ObserverInterface;
 
 GenerationCmd const EvoHistorySysGlue::NEXT_GEN_CMD = EvoHistorySysGlue::EvoCmd( tEvoCmd::nextGen, 0 );
 
@@ -29,15 +31,17 @@ void EvoHistorySysGlue::Start
 (
 	EvolutionCore * const pCore, 
 	long            const lMaxHistSize,
-	bool            const bAskHistoryCut // true: ask user for history cut, false: cut without asking
+	bool            const bAskHistoryCut, // true: ask user for history cut, false: cut without asking
+	HWND            const hwndHistInfo
 )
 {
-    long const lHistEntriesDemanded = Config::GetConfigValue( Config::tId::nrOfHistorySlots );
-	long const lHistEntries         = min( lHistEntriesDemanded, lMaxHistSize * 80 / 100 );  // use only 80% of available memory
-	
-    short sNrOfSlots = CastToShort( lHistEntries );
+    long  const lHistEntriesDemanded = Config::GetConfigValue( Config::tId::nrOfHistorySlots );
+	long  const lHistEntries         = min( lHistEntriesDemanded, lMaxHistSize * 80 / 100 );  // use only 80% of available memory
+    short const sNrOfSlots           = CastToShort( lHistEntries );
 
     HIST_GENERATION const genMaxNrOfGens = Config::GetConfigValue( Config::tId::maxGeneration );
+
+	ObserverInterface * const pObserverHistInfo = new ObserverInterface( hwndHistInfo, 300 );
 
     m_pEvoModelWork    = new EvoModelDataGlue( pCore );
 	m_pEvoModelFactory = new EvoModelFactory ( );
@@ -55,7 +59,7 @@ void EvoHistorySysGlue::Start
 
 	m_bAskHistoryCut = bAskHistoryCut;
 
-	m_pHistAllocThread = new HistAllocThread( m_pHistorySystem, TRUE );   // delegate allocation of history slots to a work thread
+	m_pHistAllocThread = new HistAllocThread( m_pHistorySystem, pObserverHistInfo, TRUE );   // delegate allocation of history slots to a work thread
 }
 
 EvoHistorySysGlue::~EvoHistorySysGlue( ) 

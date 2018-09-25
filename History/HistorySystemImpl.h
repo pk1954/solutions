@@ -15,6 +15,7 @@
 #define CHECK_HISTORY_STRUCTURE
 #endif
 
+class ObserverInterface;
 class DisplayFunctor;
 class NextGenFunctor;
 class HistoryIterator;
@@ -30,14 +31,15 @@ public:
 
     virtual void InitHistorySystem
     ( 
-        short const, 
-        HIST_GENERATION const, 
-        ModelData     * const, 
-        ModelFactory  * const,
-		GenerationCmd   const
+        short               const, 
+        HIST_GENERATION     const, 
+        ModelData         * const, 
+        ModelFactory      * const,
+		GenerationCmd       const
     );
 
-	virtual bool			  AddHistorySlot( )        const { return m_pHistoryCache->AddCacheSlot( );	             }
+	virtual bool			  AddHistorySlot( )        const;
+
     virtual int               GetNrOfHistCacheSlots( ) const { return m_pHistoryCache->GetNrOfHistCacheSlots( );     }
     virtual HIST_GENERATION   GetNrOfGenerations( )    const { return m_pHistoryCache->GetYoungestGeneration( ) + 1; }
     virtual HIST_GENERATION   GetYoungestGeneration( ) const { return m_pHistoryCache->GetYoungestGeneration( );     }
@@ -59,9 +61,10 @@ public:
 
 private:
 
-    GenCmdList      m_GenCmdList;
-    HistoryCache  * m_pHistoryCache;
-    HistCacheItem * m_pHistCacheItemWork;      // The reference item, where history system gets and restores data 
+    GenCmdList          m_GenCmdList;
+    HistoryCache      * m_pHistoryCache;
+    HistCacheItem     * m_pHistCacheItemWork;      // The reference item, where history system gets and restores data 
+	ObserverInterface * m_pObserver;
 
     void                  save2History( );
     void                  step2NextGeneration( GenerationCmd );

@@ -87,9 +87,22 @@ void TextWindow::printNumber( int data )
     printString( m_szBuffer );
 }
 
+void TextWindow::printNumber( unsigned int data )
+{
+    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" %5u", data );
+    printString( m_szBuffer );
+}
+
+void TextWindow::printNumber( long long data )
+{
+    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" %13lld", data );
+    m_iHorizontalPos += m_iHorRaster;
+    printString( m_szBuffer );
+}
+
 void TextWindow::printPercentage( unsigned int data )
 {
-    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" %5u%%", data );
+    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" %u%%", data );
     printString( m_szBuffer );
 }
 

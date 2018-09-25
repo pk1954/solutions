@@ -42,6 +42,7 @@ IDC_EVOLUTION_MAIN MENU
             MENUITEM "Toggle &mini window", IDM_MINI_WINDOW
             MENUITEM "Toggle &stat window", IDM_STAT_WINDOW
             MENUITEM "Toggle &crsr window", IDM_CRSR_WINDOW
+            MENUITEM "Toggle &hist info",   IDM_HIST_INFO
             MENUITEM "Toggle &perf window", IDM_PERF_WINDOW
         }
         POPUP "&Display Mode"

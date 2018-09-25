@@ -134,6 +134,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
         case IDM_HIST_WINDOW:
         case IDM_CRSR_WINDOW:
 		case IDM_PERF_WINDOW:
+		case IDM_HIST_INFO:
             m_pWinManager->Show( wmId, tBoolOp::opToggle );
             break;
 

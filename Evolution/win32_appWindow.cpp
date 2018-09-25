@@ -67,6 +67,7 @@ AppWindow::AppWindow( ) :
     m_pPerfWindow( nullptr ),
     m_pEditorWindow( nullptr ),
     m_pCrsrWindow( nullptr ),
+	m_pHistInfoWindow( nullptr ),
     m_pStatusBar( nullptr ),
     m_pStatistics( nullptr ),
     m_pDspOptWindow( nullptr ),
@@ -111,6 +112,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pWinManager          = new WinManager( );                          
     m_pStatusBar           = new StatusBar( );       
     m_pCrsrWindow          = new CrsrWindow( );   
+	m_pHistInfoWindow      = new HistInfoWindow( );
     m_pDspOptWindow        = new DspOptWindow( );       
     m_pEditorWindow        = new EditorWindow( );    
     m_pStatistics          = new StatisticsWindow( );   
@@ -130,7 +132,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	
     DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
 
-	m_pEvoHistGlue        ->Start( m_pEvolutionCore,  Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), true );
+	m_pEvoHistGlue        ->Start( m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), true, m_pHistInfoWindow->GetWindowHandle() );
 	m_pEvoHistWindow      ->Start( hWndApp, m_pFocusPoint, m_pEvoHistGlue, m_pWorkThreadInterface );
     m_pStatusBar          ->Start( hWndApp, m_pEvolutionCore );
 	m_pFocusPoint         ->Start( m_pEvoHistGlue, m_pEvolutionCore );
@@ -141,6 +143,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pMiniGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
     m_pStatistics         ->Start( hWndApp, m_pEvolutionCore );
     m_pCrsrWindow         ->Start( hWndApp, m_pFocusPoint, m_pEvolutionCore, m_pMainGridWindow );
+	m_pHistInfoWindow     ->Start( hWndApp, m_pEvoHistGlue->GetHistorySystem( ) );
     m_pPerfWindow         ->Start( hWndApp, 100 );
 	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow );
 
@@ -149,6 +152,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,              TRUE,  TRUE,  -1 );
     m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow,   TRUE, FALSE,  -1 );
     m_pWinManager->AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_pEditorWindow,   TRUE, FALSE,  -1 );
+    m_pWinManager->AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_pHistInfoWindow, TRUE, FALSE, 1000 );
     m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow,     TRUE, FALSE, 500 );
     m_pWinManager->AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_pStatistics,     TRUE, FALSE, 500 );
     m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow,     TRUE, FALSE, 500 );
@@ -227,9 +231,9 @@ LRESULT AppWindow::UserProc
             ShowAboutBox( GetWindowHandle( ) );
             break;
 
-        case IDM_HISTORY_INFO:
-            ShowHistoryInfo( * m_pEvoHistGlue->GetHistorySystem( ) );
-            break;
+//        case IDM_HISTORY_INFO:
+//            ShowHistoryInfo( * m_pEvoHistGlue->GetHistorySystem( ) );
+//            break;
 
         case IDM_EXIT:
             PostMessage( WM_CLOSE, 0, 0 );
