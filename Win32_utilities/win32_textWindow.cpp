@@ -2,7 +2,9 @@
 //
 
 #include "stdafx.h"
-#include "Strsafe.h"
+#include <locale>
+#include <iomanip>
+//#include "Strsafe.h"
 #include "win32_util.h"
 #include "win32_textWindow.h"
 
@@ -24,6 +26,7 @@ TextWindow::TextWindow( ) :
     m_iVerticalPos   = 0;
     m_iHorRaster     = 3 * (textMetric.tmPitchAndFamily & TMPF_FIXED_PITCH ? 3 : 2) * m_cxChar;
     ReleaseDC( nullptr, hDC );
+    m_wBuffer.imbue(std::locale(""));
 }
 
 TextWindow::~TextWindow( )
@@ -75,60 +78,69 @@ LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
     return DefWindowProc( message, wParam, lParam );
 }
 
-void TextWindow::printString( wchar_t const * const data )
+void TextWindow::printBuffer( )
 {
-    (void)TextOut( m_hDC, m_iHorizontalPos, m_iVerticalPos, data, (int)wcslen( data ) );
+	wstring const wstr = m_wBuffer.str();
+    (void)TextOut( m_hDC, m_iHorizontalPos, m_iVerticalPos, wstr.c_str(), static_cast<int>(wstr.size()) );
+	m_wBuffer.str( wstring() );
+	m_wBuffer.clear();
     m_iHorizontalPos += m_iHorRaster;
+}
+
+void TextWindow::printString( wstring data )
+{
+	m_wBuffer << data;
+	printBuffer( );
 }
 
 void TextWindow::printNumber( int data )
 {
-    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" %5i", data );
-    printString( m_szBuffer );
+    m_wBuffer << data;
+    printBuffer();
 }
 
 void TextWindow::printNumber( unsigned int data )
 {
-    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" %5u", data );
-    printString( m_szBuffer );
+    m_wBuffer << data;
+    printBuffer();
+}
+
+void TextWindow::printFloat( float data )
+{
+    m_wBuffer << setprecision(3) << data << L"%";
+    printBuffer();
 }
 
 void TextWindow::printNumber( long long data )
 {
-    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" %13lld", data );
     m_iHorizontalPos += m_iHorRaster;
-    printString( m_szBuffer );
+    m_wBuffer << setw(13) << data;
+    printBuffer();
 }
 
 void TextWindow::printPercentage( unsigned int data )
 {
-    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" %u%%", data );
-    printString( m_szBuffer );
+    m_wBuffer << setw(5) << data << L"%";
+    printBuffer();
 }
 
 void TextWindow::printPercentage( unsigned int val, unsigned int max )
 {
     int const iPercentage = ( max == 0 ) ? 0 : ( val * 100 ) / max;
-    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" %5u%% (%d of %d)", iPercentage, val, max );
-    printString( m_szBuffer );
+    m_wBuffer << setw(5) << iPercentage << L"% (" << val << L" of " << max << L")";
+    printBuffer();
 }
 
 void TextWindow::printSpan( unsigned int min, unsigned int max )
 {
-    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" (%ld - %ld)", min, max );
-    printString( m_szBuffer );
-}
-
-void TextWindow::printFloat( float data )
-{
-    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L" %3.1f%%", data );
-    printString( m_szBuffer );
+    m_wBuffer << setw(5) << L" (" << min << L" - " << max << L")";
+    printBuffer();
 }
 
 void TextWindow::printAsDecValue( DWORD dwValue )
 {
     DWORD const intPlaces = dwValue / 1000;
     DWORD const decPlaces = dwValue - 1000 * intPlaces;
-    (void)StringCchPrintf( m_szBuffer, sizeof( m_szBuffer ) / sizeof( *m_szBuffer ), L"%d.%d", intPlaces, decPlaces / 100 );
-    printString( m_szBuffer );
+    m_wBuffer << intPlaces << L"." << decPlaces / 100;
+    printBuffer();
 }

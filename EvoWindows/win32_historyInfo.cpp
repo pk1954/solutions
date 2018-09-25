@@ -34,9 +34,6 @@ void HistInfoWindow::DoPaint( )
     long long lSlotSize  = m_pHistSystem->GetSlotSize( );
     long long lTotalSize = lNrOfSlots * lSlotSize;
 
-    std::wostringstream wBuffer;
-    wBuffer.imbue(std::locale(""));
-
 	printString( L"# of slots  " );
 	printNumber( lNrOfSlots );
 
@@ -47,8 +44,10 @@ void HistInfoWindow::DoPaint( )
 	printNumber( lTotalSize );
 
     nextLine( L"genCurrent  " );
+	setHorizontalPos( 3 );
 	printNumber( m_pHistSystem->GetCurrentGeneration( ).GetLong() );
 
 	nextLine( L"genYoungest " );
+	setHorizontalPos( 3 );
 	printNumber( m_pHistSystem->GetYoungestGeneration( ).GetLong() );
 }

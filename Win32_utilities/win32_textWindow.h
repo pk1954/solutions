@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <sstream> 
+#include <string> 
 #include "win32_baseWindow.h"
 #include "win32_util.h"
 
@@ -28,9 +29,9 @@ public:
         SetTextAlign( m_hDC, TA_RIGHT );
     }
 
-    void nextLine( )     
+    void nextLine( int iHorPos = 1 )     
     { 
-        setHorizontalPos( 1 );
+        setHorizontalPos( iHorPos );
         m_iVerticalPos += m_cyChar;
     }
 
@@ -39,13 +40,13 @@ public:
         m_iHorizontalPos = LEFT_MARGIN + uiPos * m_iHorRaster;
     }
 
-    void nextLine( wchar_t const * const data )
+    void nextLine( wstring data, int iHorPos = 1 )
     {
-        nextLine( );
+        nextLine( iHorPos );
         printString( data );
     }
 
-    void printString    ( wchar_t const * const );
+    void printString    ( wstring );
     void printNumber    ( int );
     void printNumber    ( unsigned int );
     void printNumber    ( long long );
@@ -60,18 +61,20 @@ protected:
     virtual void DoPaint( ) = 0;
 
 private:
+
+	void printBuffer();
+
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) override;
 
     COLORREF const CLR_BACK    = RGB( 200, 200, 200 );
     int      const LEFT_MARGIN = 30;
     int      const TOP_MARGIN  =  5;
 
-    wchar_t m_szBuffer[1024];
     wostringstream m_wBuffer;
-    HDC     m_hDC;
-    int     m_cyChar;
-    int     m_cxChar;
-    int     m_iHorizontalPos;
-    int     m_iVerticalPos;
-    int     m_iHorRaster;
+    HDC            m_hDC;
+    int            m_cyChar;
+    int            m_cxChar;
+    int            m_iHorizontalPos;
+    int            m_iVerticalPos;
+    int            m_iHorRaster;
 };
