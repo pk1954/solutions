@@ -87,6 +87,7 @@ public:
 
     void Invalidate( BOOL const bRedraw ) 
     { 
+		assert( m_hWnd != nullptr );
         (void)InvalidateRect( m_hWnd, nullptr, bRedraw );
     }
 

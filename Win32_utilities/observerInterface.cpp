@@ -63,6 +63,7 @@ void CALLBACK ObserverInterface::TimerProc( void * const lpParameter, BOOL const
 
 void ObserverInterface::invalidate( )
 {
+	assert( m_hWnd != nullptr );
     InvalidateRect( m_hWnd, nullptr, FALSE );
     m_bDirty = FALSE;
 }
