@@ -73,10 +73,10 @@ static LRESULT CALLBACK BaseWndProc
         (void)SetWindowLongPtr( hwnd, GWLP_USERDATA, (LONG_PTR)( (LPCREATESTRUCT)lParam )->lpCreateParams );
         return TRUE;
     }
-    else if ( message == WM_ERASEBKGND )
-    {
-        return TRUE;			// Do not erase background
-    }
+//    else if ( message == WM_ERASEBKGND )
+//    {
+//        return TRUE;			// Do not erase background
+//    }
     else
     {
         BaseWindow * pBaseWin = (BaseWindow *)GetWindowLongPtr( hwnd, GWLP_USERDATA );

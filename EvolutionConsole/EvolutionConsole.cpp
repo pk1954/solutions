@@ -36,25 +36,23 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
     Script::ProcessScript( L"std_configuration.in" );
 
-    EvolutionCore    * const pEvolutionCore = EvolutionCore::InitClass( );
-	int                const iNrOfNeighbors = Config::GetConfigValue( Config::tId::nrOfNeighbors );
-	BOOL               const bHexagonMode   = (iNrOfNeighbors == 6);
-	short              const FIELDSIZE      = 8;
-	PixelCoordinates * const pPixCoords     = new PixelCoordinates( FIELDSIZE, bHexagonMode );
+	short                 const FIELDSIZE            = 8;
+    EvolutionCore       * const pEvolutionCore       = EvolutionCore::InitClass( );
+	int                   const iNrOfNeighbors       = Config::GetConfigValue( Config::tId::nrOfNeighbors );
+	BOOL                  const bHexagonMode         = (iNrOfNeighbors == 6);
+	PixelCoordinates    * const pPixCoords           = new PixelCoordinates( FIELDSIZE, bHexagonMode );
+	EvoHistorySysGlue   * const pEvoHistGlue         = new EvoHistorySysGlue( );
+    WorkThreadInterface * const pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
+    HistorySystem       * const pHistorySystem       = HistorySystem::CreateHistorySystem( );
 
 	DefinePixelCoordinatesWrapperFunctions( pPixCoords );
 
-    WorkThreadInterface * m_pWorkThreadInterface;
-	EvoHistorySysGlue   * m_pEvoHistGlue;
-	
-	m_pEvoHistGlue         = new EvoHistorySysGlue( );
-	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
-	m_pEvoHistGlue->Start( pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false, nullptr );
-    DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
+	pEvoHistGlue->Start( pEvolutionCore, pHistorySystem, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false, nullptr );
+    DefineWin32HistWrapperFunctions( pWorkThreadInterface );
 
-	m_pWorkThreadInterface->Start( nullptr, nullptr, nullptr, pEvolutionCore, m_pEvoHistGlue );
+	pWorkThreadInterface->Start( nullptr, nullptr, nullptr, pEvolutionCore, pEvoHistGlue );
 
-	DefineWin32WrapperFunctions( m_pWorkThreadInterface, nullptr );
+	DefineWin32WrapperFunctions( pWorkThreadInterface, nullptr );
 
     wstring wstrInputFile = L"Test_4.in";
 
@@ -68,7 +66,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 		}
     }
 
-	m_pWorkThreadInterface->DoProcessScript( new wstring( wstrInputFile ) );
+	pWorkThreadInterface->DoProcessScript( new wstring( wstrInputFile ) );
 
 	wcout << L" ***** EvolutionConsole terminates successfully *****" << endl;
 

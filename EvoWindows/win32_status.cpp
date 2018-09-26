@@ -41,7 +41,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
 
     case WM_COMMAND:
         (void)SendMessage( GetParent( hWnd ), WM_COMMAND, LOWORD(wParam), 0 );
-        return TRUE;
+        return FALSE;
 
     case WM_HSCROLL:
 		{

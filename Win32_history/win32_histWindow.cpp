@@ -244,7 +244,7 @@ LRESULT HistWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         else
             m_pGenDisplay->Show( FALSE );
 
-        return 0;
+        return FALSE;
     }
 
     case WM_MOUSEMOVE:
@@ -253,24 +253,24 @@ LRESULT HistWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 			gotoNewGeneration( lParam );
         else
             Invalidate( FALSE );   // Redraw, do not erase background
-        return 0;
+        return FALSE;
 
     case WM_MOUSELEAVE:
         m_pGenDisplay->Show( FALSE );
         m_genSelected = -1L;
         Invalidate( FALSE );   // Redraw, do not erase background
-        return 0;
+        return FALSE;
 
     case WM_LBUTTONDOWN:
 		gotoNewGeneration( lParam );
         (void)SetCapture( );
         (void)SetFocus( );
         Invalidate( FALSE );   // Redraw, do not erase background
-        return 0;
+        return FALSE;
 
     case WM_LBUTTONUP:
         (void)ReleaseCapture( );
-        return 0;
+        return FALSE;
 
 	default:
         break;

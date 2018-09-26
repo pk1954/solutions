@@ -30,6 +30,7 @@ EvoHistorySysGlue::EvoHistorySysGlue( ) :
 void EvoHistorySysGlue::Start
 (
 	EvolutionCore * const pCore, 
+	HistorySystem * const pHistorySystem,
 	long            const lMaxHistSize,
 	bool            const bAskHistoryCut, // true: ask user for history cut, false: cut without asking
 	HWND            const hwndHistInfo
@@ -46,7 +47,7 @@ void EvoHistorySysGlue::Start
     m_pEvoModelWork    = new EvoModelDataGlue( pCore );
 	m_pEvoModelFactory = new EvoModelFactory ( );
 
-    m_pHistorySystem = HistorySystem::CreateHistorySystem( );
+    m_pHistorySystem = pHistorySystem;
 
 	m_pHistorySystem->InitHistorySystem
     (
@@ -58,7 +59,6 @@ void EvoHistorySysGlue::Start
     );
 
 	m_bAskHistoryCut = bAskHistoryCut;
-
 	m_pHistAllocThread = new HistAllocThread( m_pHistorySystem, pObserverHistInfo, TRUE );   // delegate allocation of history slots to a work thread
 }
 

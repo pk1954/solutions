@@ -27,6 +27,7 @@ class NextGenFunctor;
 class ScriptHook;
 class EvoHistorySysGlue;
 class EvoController;
+class HistorySystem;
 
 //lint -esym( 1712, AppWindow )  no default constructor for class 
 
@@ -64,6 +65,7 @@ private:
     ScriptHook          * m_pScriptHook;
     
     // History 
+    HistorySystem       * m_pHistorySystem;
 	EvoHistorySysGlue   * m_pEvoHistGlue;
     EvoHistWindow       * m_pEvoHistWindow;
 

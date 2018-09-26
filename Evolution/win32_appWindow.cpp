@@ -58,6 +58,10 @@
 #include "win32_evoController.h"
 #include "win32_appWindow.h"
 
+//////////////////////////////////////////////////////////
+#include "HistAllocThread.h"  //////////// test only ///
+//////////////////////////////////////////////////////////
+
 AppWindow::AppWindow( ) :
     BaseWindow( ),
     m_displayGridFunctor( ),
@@ -124,6 +128,8 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	m_pEvoHistGlue         = new EvoHistorySysGlue( );
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
 
+    m_pHistorySystem = HistorySystem::CreateHistorySystem( );
+
     SetMenu( hWndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
 	Util::SetApplicationTitle( hWndApp, IDS_APP_TITLE );
 
@@ -132,7 +138,8 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	
     DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
 
-	m_pEvoHistGlue        ->Start( m_pEvolutionCore, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), true, m_pHistInfoWindow->GetWindowHandle() );
+	m_pHistInfoWindow     ->Start( hWndApp, m_pHistorySystem );
+	m_pEvoHistGlue        ->Start( m_pEvolutionCore, m_pHistorySystem, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), true, m_pHistInfoWindow->GetWindowHandle() );
 	m_pEvoHistWindow      ->Start( hWndApp, m_pFocusPoint, m_pEvoHistGlue, m_pWorkThreadInterface );
     m_pStatusBar          ->Start( hWndApp, m_pEvolutionCore );
 	m_pFocusPoint         ->Start( m_pEvoHistGlue, m_pEvolutionCore );
@@ -143,7 +150,6 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pMiniGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
     m_pStatistics         ->Start( hWndApp, m_pEvolutionCore );
     m_pCrsrWindow         ->Start( hWndApp, m_pFocusPoint, m_pEvolutionCore, m_pMainGridWindow );
-	m_pHistInfoWindow     ->Start( hWndApp, m_pEvoHistGlue->GetHistorySystem( ) );
     m_pPerfWindow         ->Start( hWndApp, 100 );
 	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow );
 
@@ -152,7 +158,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,              TRUE,  TRUE,  -1 );
     m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow,   TRUE, FALSE,  -1 );
     m_pWinManager->AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_pEditorWindow,   TRUE, FALSE,  -1 );
-    m_pWinManager->AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_pHistInfoWindow, TRUE, FALSE, 1000 );
+    m_pWinManager->AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_pHistInfoWindow, TRUE, FALSE,  -1 );
     m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow,     TRUE, FALSE, 500 );
     m_pWinManager->AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_pStatistics,     TRUE, FALSE, 500 );
     m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow,     TRUE, FALSE, 500 );
@@ -231,10 +237,6 @@ LRESULT AppWindow::UserProc
             ShowAboutBox( GetWindowHandle( ) );
             break;
 
-//        case IDM_HISTORY_INFO:
-//            ShowHistoryInfo( * m_pEvoHistGlue->GetHistorySystem( ) );
-//            break;
-
         case IDM_EXIT:
             PostMessage( WM_CLOSE, 0, 0 );
             break;
@@ -244,7 +246,7 @@ LRESULT AppWindow::UserProc
             break;
         }
     }
-    break;
+    return FALSE;
 
     case WM_SIZE:
     case WM_MOVE:
@@ -254,7 +256,7 @@ LRESULT AppWindow::UserProc
     case WM_CLOSE:
         m_pWinManager->StoreWindowConfiguration( );
         m_pWorkThreadInterface->PostEndThread( GetWindowHandle( ) );
-        return 1;  // Do not call DefWindowProc. Worker thread will call DestroyWindow. 
+        return TRUE;  // Do not call DefWindowProc. Worker thread will call DestroyWindow. 
 
     case WM_DESTROY:
         PostQuitMessage( 0 );

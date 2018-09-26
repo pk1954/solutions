@@ -21,13 +21,13 @@ static INT_PTR CALLBACK About
     switch (message)
     {
     case WM_INITDIALOG:
-        return static_cast<INT_PTR>(TRUE);
+        return TRUE;
 
     case WM_COMMAND:
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
         {
             (void)EndDialog(hDlg, LOWORD(wParam));
-            return static_cast<INT_PTR>(TRUE);
+            return TRUE;
         }
         break;
 
@@ -35,7 +35,7 @@ static INT_PTR CALLBACK About
         break;
     }
 
-    return static_cast<INT_PTR>(FALSE);
+    return FALSE;
 }
 
 void ShowAboutBox( HWND const hWndParent )

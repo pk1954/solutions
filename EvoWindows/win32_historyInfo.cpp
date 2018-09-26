@@ -19,8 +19,8 @@ HistInfoWindow::HistInfoWindow( ) :
 
 void HistInfoWindow::Start
 (
-    HWND              const   hWndParent,
-	HistorySystem     const * pHistSys
+    HWND          const   hWndParent,
+	HistorySystem const * pHistSys
 ) 
 {
     HWND hWnd = StartTextWindow( hWndParent, L"HistInfoWindow", 100 );

@@ -26,6 +26,7 @@ public:
     void Start
 	( 
 		EvolutionCore * const, 
+		HistorySystem * const,
 		long const, 
 		bool const,
 		HWND const

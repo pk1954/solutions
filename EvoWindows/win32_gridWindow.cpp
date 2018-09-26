@@ -255,11 +255,11 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         }
 
 		PostCommand2Application( IDM_REFRESH, 0 );
-        return 1;  //  TODO clarify return code
+        return FALSE;
 
     case WM_MOUSEWHEEL:
 		mouseWheelAction(GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA);
-        return 0;
+        return FALSE;
 
     case WM_LBUTTONDOWN:
         if ( m_pCore->SelectionIsEmpty() )
@@ -274,29 +274,29 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 			PostCommand2Application( IDM_REFRESH, 0 );
 		}
         SetFocus( );
-        return 1;
+        return TRUE;
 
     case WM_LBUTTONUP:
         (void)ReleaseCapture( );
-        return 0;
+        return FALSE;
 
     case WM_MOUSEMOVE:
         onMouseMove( lParam, wParam );
-        return 0;
+        return FALSE;
 
     case WM_RBUTTONDOWN:
         SetCapture(  );
         SetFocus( );
-        return 0;
+        return FALSE;
 
     case WM_RBUTTONUP:
         (void)ReleaseCapture( );
         contextMenu( lParam );
-        return 0;
+        return FALSE;
 
     case WM_PAINT:
         doPaint( );
-        return 0;
+        return FALSE;
 
     default:
         break;

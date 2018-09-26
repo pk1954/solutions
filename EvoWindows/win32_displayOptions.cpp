@@ -95,7 +95,7 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
     case WM_INITDIALOG:
 		Button_SetCheck( GetDlgItem( IDM_ANIMALS   ), BST_CHECKED );
 		Button_SetCheck( GetDlgItem( IDM_FOOD_STOCK), BST_CHECKED );
-        return static_cast<INT_PTR>(TRUE);
+        return TRUE;
 
     case WM_COMMAND:
         {
@@ -124,7 +124,7 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 
             case IDCANCEL:
                 Show( FALSE );
-                return static_cast<INT_PTR>(TRUE);
+                return TRUE;
 
             default:
                 break;
@@ -137,5 +137,5 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
         break;
     }
 
-    return static_cast<INT_PTR>(FALSE);
+    return FALSE;
 }
