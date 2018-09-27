@@ -7,7 +7,7 @@
 #include <sstream> 
 #include <limits.h>
 #include "config.h"
-#include "observerInterface.h"
+#include "Observer.h"
 #include "HistAllocThread.h"
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
@@ -42,7 +42,7 @@ void EvoHistorySysGlue::Start
 
     HIST_GENERATION const genMaxNrOfGens = Config::GetConfigValue( Config::tId::maxGeneration );
 
-	ObserverInterface * const pObserverHistInfo = new ObserverInterface( hwndHistInfo, 300 );
+	Observer * const pObserverHistInfo = new Observer( hwndHistInfo, 300 );
 
     m_pEvoModelWork    = new EvoModelDataGlue( pCore );
 	m_pEvoModelFactory = new EvoModelFactory ( );
@@ -55,11 +55,12 @@ void EvoHistorySysGlue::Start
         genMaxNrOfGens,
         m_pEvoModelWork,
         m_pEvoModelFactory,
+		pObserverHistInfo,
 		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( tEvoCmd::reset ), 0 )
     );
 
 	m_bAskHistoryCut = bAskHistoryCut;
-	m_pHistAllocThread = new HistAllocThread( m_pHistorySystem, pObserverHistInfo, TRUE );   // delegate allocation of history slots to a work thread
+	m_pHistAllocThread = new HistAllocThread( m_pHistorySystem, TRUE );   // delegate allocation of history slots to a work thread
 }
 
 EvoHistorySysGlue::~EvoHistorySysGlue( ) 

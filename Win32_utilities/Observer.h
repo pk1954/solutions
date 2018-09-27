@@ -1,17 +1,19 @@
-// observerInterface.h : 
+// Observer.h : 
 //
 
 #pragma once
 
-class ObserverInterface
+#include "observerInterface.h"
+
+class Observer : public ObserverInterface
 {
 public:
-    ObserverInterface( HWND, INT );
+    Observer( HWND, INT );
 
-    virtual ~ObserverInterface( );
+    virtual ~Observer( );
 
-    void SetDisplayRate( INT );
-    void SetDirtyFlag( );
+    virtual void SetDisplayRate( INT );
+    virtual void SetDirtyFlag( );
 
     HWND const GetWindowHandle( ) { return m_hWnd; }
 

@@ -5,7 +5,7 @@
 
 #include <vector>
 
-class ObserverInterface;
+class Observer;
 class RootWindow;
 
 class ViewCollection
@@ -16,10 +16,10 @@ public:
 
     void NotifyObservers( ) const;
 
-    ObserverInterface * AttachObserver( RootWindow const *, UINT const );
-    ObserverInterface * GetObserver   ( RootWindow const * );
-    void                SetDisplayRate( RootWindow const *, const INT );
+    Observer * AttachObserver( RootWindow const *, UINT const );
+    Observer * GetObserver   ( RootWindow const * );
+    void       SetDisplayRate( RootWindow const *, const INT );
 
 private:
-    std::vector< ObserverInterface * > m_aView;
+    std::vector< Observer * > m_aView;
 };

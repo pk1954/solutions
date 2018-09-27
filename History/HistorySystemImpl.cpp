@@ -15,8 +15,7 @@
 HistorySystemImpl::HistorySystemImpl( ) :
     m_GenCmdList        ( ),
     m_pHistoryCache     ( nullptr ),
-    m_pHistCacheItemWork( nullptr ),
-    m_pObserver         ( nullptr )
+    m_pHistCacheItemWork( nullptr )
 { }
 
 HistorySystemImpl::~HistorySystemImpl( )
@@ -25,7 +24,6 @@ HistorySystemImpl::~HistorySystemImpl( )
 
     m_pHistoryCache      = nullptr;
     m_pHistCacheItemWork = nullptr;
-	m_pObserver          = nullptr;
 }
 
 void HistorySystemImpl::InitHistorySystem
@@ -34,13 +32,14 @@ void HistorySystemImpl::InitHistorySystem
     HIST_GENERATION     const genMaxNrOfGens,
     ModelData         * const pModelDataWork,
     ModelFactory      * const pModelFactory,
+	ObserverInterface * const pObserver,
 	GenerationCmd       const cmd
 )
 {
     m_pHistoryCache      = new HistoryCache;
 	m_pHistCacheItemWork = new HistCacheItem( pModelDataWork );
 	m_GenCmdList.Resize( genMaxNrOfGens );
-    m_pHistoryCache->InitHistoryCache( sNrOfSlots, pModelFactory );
+    m_pHistoryCache->InitHistoryCache( sNrOfSlots, pModelFactory, pObserver );
 	m_pHistCacheItemWork->SetGenerationCommand( cmd );
     save2History( );
 }

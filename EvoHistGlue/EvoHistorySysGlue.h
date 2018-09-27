@@ -39,9 +39,10 @@ public:
 
     void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); } 
 	
-    int             GetNrOfHistCacheSlots( ) const { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
-    HIST_GENERATION GetCurrentGeneration ( ) const { return m_pHistorySystem->GetCurrentGeneration( ); }
-    HIST_GENERATION GetYoungestGeneration( ) const { return m_pHistorySystem->GetYoungestGeneration( ); }
+    int             GetNrOfUsedHistCacheSlots( ) const { return m_pHistorySystem->GetNrOfUsedHistCacheSlots( ); }
+    int             GetNrOfHistCacheSlots    ( ) const { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
+    HIST_GENERATION GetCurrentGeneration     ( ) const { return m_pHistorySystem->GetCurrentGeneration( ); }
+    HIST_GENERATION GetYoungestGeneration    ( ) const { return m_pHistorySystem->GetYoungestGeneration( ); }
 
     EvoModelDataGlue * GetEvoModelData ( ) { return m_pEvoModelWork;  }
     HistorySystem    * GetHistorySystem( ) { return m_pHistorySystem; }

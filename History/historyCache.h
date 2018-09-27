@@ -16,6 +16,7 @@ using namespace std;
 #include "HistoryGeneration.h"
 #include "hist_slot.h"
 
+class ObserverInterface;
 class ModelFactory;
 
 class HistoryCache
@@ -25,7 +26,7 @@ public:
     explicit HistoryCache( );
     ~HistoryCache( );
     
-    void InitHistoryCache( short const, ModelFactory const * const );
+    void InitHistoryCache( short const, ModelFactory const * const, ObserverInterface * const );
     bool AddCacheSlot( );
     void ResetHistoryCache( );
 
@@ -49,8 +50,9 @@ public:
 	
 	HIST_GENERATION GetGridGen( int iSlot ) const { return m_aHistSlot.at( iSlot ).GetGridGeneration( ); }
 
-    short           GetNrOfHistCacheSlots( ) const { return m_iNrOfSlots; }
-    HIST_GENERATION GetYoungestGeneration( ) const { return IsEmpty( ) ? -1 : m_aHistSlot.at( m_iHead ).GetGridGeneration( ); };
+    short           GetNrOfHistCacheSlots    ( ) const { return m_iNrOfSlots; }
+    short           GetNrOfUsedHistCacheSlots( ) const { return m_iNrOfUsedSlots; }
+    HIST_GENERATION GetYoungestGeneration    ( ) const { return IsEmpty( ) ? -1 : GetGridGen( m_iHead ); };
     
     void ShutDownHistCacheSlot( short const i ) { m_aHistSlot.at( i ).ShutDownHistCacheItem( ); };
 
@@ -69,6 +71,7 @@ private:
     HistoryCache & operator= ( HistoryCache const & );  // noncopyable class 
 
 	ModelFactory const * m_pModelFactory;
+	ObserverInterface  * m_pObserver; 
 
     vector< HistSlot > m_aHistSlot;  // is tail of list
 

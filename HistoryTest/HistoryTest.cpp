@@ -90,6 +90,7 @@ void DoTest( )
 		1000,           // # of generations
 		& modelData,
 		& modelFactory,
+		nullptr,
 		GenerationCmd::ApplicationCmd( tGenCmd::FIRST_APP_CMD, 0 )
 	);
 

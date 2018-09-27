@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "observerInterface.h"
+#include "Observer.h"
 #include "win32_viewCollection.h"
 #include "win32_rootWindow.h"
 
@@ -14,7 +14,7 @@ ViewCollection::~ViewCollection( )
     }
 };
 
-ObserverInterface * ViewCollection::GetObserver( RootWindow const * pRootWin )
+Observer * ViewCollection::GetObserver( RootWindow const * pRootWin )
 {
     for ( auto &v : m_aView )
     {
@@ -33,10 +33,10 @@ void ViewCollection::NotifyObservers( ) const
     }
 }
 
-ObserverInterface * ViewCollection::AttachObserver( RootWindow const * pRootWin, UINT const iMilliSecs )
+Observer* ViewCollection::AttachObserver( RootWindow const * pRootWin, UINT const iMilliSecs )
 {
     assert( pRootWin != nullptr );
-    ObserverInterface * po = new ObserverInterface( pRootWin->GetWindowHandle( ), iMilliSecs );
+    Observer * po = new Observer( pRootWin->GetWindowHandle( ), iMilliSecs );
     m_aView.push_back( po );
     return po;
 }

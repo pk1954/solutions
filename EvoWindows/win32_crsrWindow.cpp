@@ -7,14 +7,6 @@
 #include "win32_crsrWindow.h"
 #include "win32_focusPoint.h"
 
-// ++++++++++ EXPERIMENTAL ++++++++++++
-
-#include "win32_gridWindow.h" 
-#include "pixelPoint.h"
-#include "win32_util.h"
-
-// ++++++++++ end EXPERIMENTAL ++++++++++++
-
 using namespace std;
 
 CrsrWindow::CrsrWindow( ) :
@@ -27,8 +19,7 @@ void CrsrWindow::Start
 (
     HWND                  const hWndParent,
     FocusPoint          * const pFocusPoint,
-    EvolutionCore const * const pCore,
-	GridWindow    const * const pGridWindow   // ++++++++++ EXPERIMENTAL ++++++++++++
+    EvolutionCore const * const pCore
 ) 
 {
     HWND hWnd = StartTextWindow( hWndParent, L"CrsrWindow", 100 );
@@ -36,24 +27,11 @@ void CrsrWindow::Start
     m_pCore = pCore;
     m_pFocusPoint = pFocusPoint;
     m_pFocusPoint->AttachFocusPointObserver( this, 0 );
-	m_pGridWindow = pGridWindow;      // ++++++++++ EXPERIMENTAL ++++++++++++
 }
 
 void CrsrWindow::DoPaint( )
 {
-    printString( L"pixel coord:" );
-
-	PixelPoint ppPos = m_pGridWindow->GetRelativeCrsrPosition( );
-    printNumber( ppPos.x );
-    printNumber( ppPos.y );
-
-    nextLine( L"offset:" );
-
-	PixelPoint ppOffset = m_pGridWindow->GetPixelOffset( );
-    printNumber( ppOffset.x );
-    printNumber( ppOffset.y );
-
-    nextLine( L"Position:" );
+    printString( L"Position:" );
 
     GridPoint const gpFocus = m_pFocusPoint->GetGridPoint( );
 

@@ -7,7 +7,6 @@
 
 class FocusPoint;
 class EvolutionCore;
-class GridWindow;            // ++++++++++ EXPERIMENTAL ++++++++++++
 
 class CrsrWindow: public TextWindow
 {
@@ -18,8 +17,7 @@ public:
 	( 
 		HWND                  const, 
 		FocusPoint          * const, 
-		EvolutionCore const * const, 
-		GridWindow    const * const 
+		EvolutionCore const * const 
 	);
 
     virtual void DoPaint( );
@@ -27,5 +25,4 @@ public:
 private:
     FocusPoint          * m_pFocusPoint;
     EvolutionCore const * m_pCore;
-	GridWindow    const * m_pGridWindow;
 };

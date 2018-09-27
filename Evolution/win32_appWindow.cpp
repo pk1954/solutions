@@ -149,7 +149,7 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pMainGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
     m_pMiniGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
     m_pStatistics         ->Start( hWndApp, m_pEvolutionCore );
-    m_pCrsrWindow         ->Start( hWndApp, m_pFocusPoint, m_pEvolutionCore, m_pMainGridWindow );
+    m_pCrsrWindow         ->Start( hWndApp, m_pFocusPoint, m_pEvolutionCore );
     m_pPerfWindow         ->Start( hWndApp, 100 );
 	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow );
 

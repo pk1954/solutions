@@ -6,6 +6,7 @@
 #include "GenerationCmd.h"
 #include "HistoryGeneration.h"
 
+class ObserverInterface;
 class DisplayFunctor;
 class HistoryIterator;
 class ModelFactory;
@@ -26,20 +27,22 @@ public:
 
     virtual void InitHistorySystem
 	( 
-		short           const, 
-		HIST_GENERATION const, 
-		ModelData     * const, 
-		ModelFactory  * const, 
-		GenerationCmd   const
+		short               const, 
+		HIST_GENERATION     const, 
+		ModelData         * const, 
+		ModelFactory      * const, 
+		ObserverInterface * const,
+		GenerationCmd       const
 	) = 0;
 
-    virtual int               GetSlotSize( )           const = 0;
-    virtual int               GetNrOfHistCacheSlots( ) const = 0;
-    virtual HIST_GENERATION   GetNrOfGenerations( )    const = 0;
-    virtual HIST_GENERATION   GetYoungestGeneration( ) const = 0;
-    virtual HIST_GENERATION   GetCurrentGeneration( )  const = 0;
-    virtual bool              IsInHistoryMode( )       const = 0;
-    virtual HistoryIterator * CreateHistoryIterator( ) const = 0;
+    virtual int               GetSlotSize( )               const = 0;
+    virtual int               GetNrOfUsedHistCacheSlots( ) const = 0;
+    virtual int               GetNrOfHistCacheSlots( )     const = 0;
+    virtual HIST_GENERATION   GetNrOfGenerations( )        const = 0;
+    virtual HIST_GENERATION   GetYoungestGeneration( )     const = 0;
+    virtual HIST_GENERATION   GetCurrentGeneration( )      const = 0;
+    virtual bool              IsInHistoryMode( )           const = 0;
+    virtual HistoryIterator * CreateHistoryIterator( )     const = 0;
 
     virtual bool              AddHistorySlot( )              const = 0;
     virtual void              ShutDownHistCacheSlot( short const ) = 0;

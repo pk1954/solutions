@@ -35,17 +35,19 @@ public:
         HIST_GENERATION     const, 
         ModelData         * const, 
         ModelFactory      * const,
+		ObserverInterface * const,
 		GenerationCmd       const
     );
 
 	virtual bool			  AddHistorySlot( )        const;
 
-    virtual int               GetNrOfHistCacheSlots( ) const { return m_pHistoryCache->GetNrOfHistCacheSlots( );     }
-    virtual HIST_GENERATION   GetNrOfGenerations( )    const { return m_pHistoryCache->GetYoungestGeneration( ) + 1; }
-    virtual HIST_GENERATION   GetYoungestGeneration( ) const { return m_pHistoryCache->GetYoungestGeneration( );     }
-	virtual HIST_GENERATION   GetCurrentGeneration( )  const { return m_pHistCacheItemWork->GetHistGenCounter( );    }
-    virtual int               GetSlotSize( )           const { return m_pHistCacheItemWork->GetItemSize( );          }
-	virtual bool              IsInHistoryMode( )       const { return GetCurrentGeneration() < GetYoungestGeneration(); };
+    virtual int               GetNrOfUsedHistCacheSlots( ) const { return m_pHistoryCache->GetNrOfUsedHistCacheSlots( );    }
+    virtual int               GetNrOfHistCacheSlots( )     const { return m_pHistoryCache->GetNrOfHistCacheSlots( );        }
+    virtual HIST_GENERATION   GetNrOfGenerations( )        const { return m_pHistoryCache->GetYoungestGeneration( ) + 1;    }
+    virtual HIST_GENERATION   GetYoungestGeneration( )     const { return m_pHistoryCache->GetYoungestGeneration( );        }
+	virtual HIST_GENERATION   GetCurrentGeneration( )      const { return m_pHistCacheItemWork->GetHistGenCounter( );       }
+    virtual int               GetSlotSize( )               const { return m_pHistCacheItemWork->GetItemSize( );             }
+	virtual bool              IsInHistoryMode( )           const { return GetCurrentGeneration() < GetYoungestGeneration(); };
 
 	virtual void              ShutDownHistCacheSlot( short const i ) { m_pHistoryCache->ShutDownHistCacheSlot( i ); }
 
@@ -64,7 +66,6 @@ private:
     GenCmdList          m_GenCmdList;
     HistoryCache      * m_pHistoryCache;
     HistCacheItem     * m_pHistCacheItemWork;      // The reference item, where history system gets and restores data 
-	ObserverInterface * m_pObserver;
 
     void                  save2History( );
     void                  step2NextGeneration( GenerationCmd );

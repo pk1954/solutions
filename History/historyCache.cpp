@@ -9,6 +9,7 @@
 using namespace std;
 #endif
 
+#include "observerInterface.h"
 #include "HistCacheItem.h"
 #include "HistoryGeneration.h"
 #include "hist_slot.h"
@@ -36,10 +37,12 @@ HistoryCache::~HistoryCache( )
 void HistoryCache::InitHistoryCache
 ( 
 	short                const sNrOfSlots, 
-	ModelFactory const * const pModelFactory
+	ModelFactory const * const pModelFactory,
+	ObserverInterface  * const pObserver
 )
 {
 	m_pModelFactory = pModelFactory;
+	m_pObserver     = pObserver;
 
 	HistCacheItem * pNewHistCacheItem = HistCacheItem::CreateItem( m_pModelFactory );
 
@@ -55,6 +58,8 @@ void HistoryCache::InitHistoryCache
 
     m_aHistSlot[ 0 ].SetHistCacheItem( pNewHistCacheItem );
     ++m_iNrOfSlots;
+
+	m_pObserver->SetDirtyFlag();
 
     m_iUnused = 0;
 }
@@ -99,6 +104,8 @@ bool HistoryCache::AddCacheSlot( )
         setSenior( m_iNrOfSlots,     m_iNrOfSlots - 1 );
         setJunior( m_iNrOfSlots - 1, m_iNrOfSlots     );
         ++m_iNrOfSlots;
+
+		m_pObserver->SetDirtyFlag();
 
         checkConsistency( );
 
@@ -149,6 +156,7 @@ short HistoryCache::GetFreeCacheSlotNr( )
         m_iHead = m_iUnused;
         m_iUnused = GetJunior( m_iUnused );
         ++m_iNrOfUsedSlots;
+		m_pObserver->SetDirtyFlag();
     }
     else                                // No unused slots. We have to reuse slots
     {
@@ -203,6 +211,7 @@ void HistoryCache::RemoveHistCacheSlot( int const iSlotNr )
 
     ResetHistCacheSlot( iSlotNr );
     --m_iNrOfUsedSlots;
+	m_pObserver->SetDirtyFlag();
 
     checkConsistency( );
 }

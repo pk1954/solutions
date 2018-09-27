@@ -2,9 +2,9 @@
 //
 
 #include "stdafx.h"
-#include "observerInterface.h"
+#include "Observer.h"
 
-ObserverInterface::ObserverInterface( HWND hWnd, INT iMilliSecs ) :
+Observer::Observer( HWND hWnd, INT iMilliSecs ) :
         m_hWnd( hWnd ),
         m_hTimer( nullptr ),
         m_iDisplayRate( iMilliSecs ),  // minimum delay between Invalidate calls 
@@ -14,19 +14,19 @@ ObserverInterface::ObserverInterface( HWND hWnd, INT iMilliSecs ) :
     SetDirtyFlag( );
 }
 
-ObserverInterface::~ObserverInterface( )
+Observer::~Observer( )
 {
     m_hWnd = nullptr;
     m_hTimer = nullptr;
 }
 
-void ObserverInterface::SetDisplayRate( INT iRate )
+void Observer::SetDisplayRate( INT iRate )
 {
     m_iDisplayRate = iRate;
     invalidate( );
 }
 
-void ObserverInterface::SetDirtyFlag( )
+void Observer::SetDirtyFlag( )
 {
     if ( m_iDisplayRate == 0 )
         invalidate( );
@@ -42,9 +42,9 @@ void ObserverInterface::SetDirtyFlag( )
     }
 }
 
-void CALLBACK ObserverInterface::TimerProc( void * const lpParameter, BOOL const TimerOrWaitFired )
+void CALLBACK Observer::TimerProc( void * const lpParameter, BOOL const TimerOrWaitFired )
 {
-    ObserverInterface * const pOI = static_cast<ObserverInterface * >( lpParameter );
+    Observer * const pOI = static_cast<Observer * >( lpParameter );
     if ( pOI->m_bDirty )
     {
         pOI->invalidate( );
@@ -61,14 +61,14 @@ void CALLBACK ObserverInterface::TimerProc( void * const lpParameter, BOOL const
     }
 }
 
-void ObserverInterface::invalidate( )
+void Observer::invalidate( )
 {
 	assert( m_hWnd != nullptr );
     InvalidateRect( m_hWnd, nullptr, FALSE );
     m_bDirty = FALSE;
 }
 
-void ObserverInterface::startTimer( )
+void Observer::startTimer( )
 {
     void * const pVoid = static_cast<void *>( this );
     (void)CreateTimerQueueTimer( &m_hTimer, nullptr, (WAITORTIMERCALLBACK)TimerProc, pVoid, (DWORD)m_iDisplayRate, (DWORD)m_iDisplayRate, 0 );

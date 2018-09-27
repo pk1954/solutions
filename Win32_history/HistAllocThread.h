@@ -4,17 +4,15 @@
 #pragma once
 
 class HistorySystem;
-class ObserverInterface;
 
 class HistAllocThread
 {
 public:
-	HistAllocThread( HistorySystem const * const, ObserverInterface * const, BOOL const );
+	HistAllocThread( HistorySystem const * const, BOOL const );
 	~HistAllocThread( );
 
 private:
-	HistorySystem     const * m_pHistorySys;
-	ObserverInterface       * m_pObserver;
+	HistorySystem const * m_pHistorySys;
 
 	HANDLE m_hThreadSlotAllocator;
 	BOOL   m_bContinueSlotAllocation;

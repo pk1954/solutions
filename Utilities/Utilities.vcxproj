@@ -150,6 +150,7 @@
     <ClInclude Include="DisplayFunctor.h" />
     <ClInclude Include="Int24.h" />
     <ClInclude Include="kGridPoint.h" />
+    <ClInclude Include="observerInterface.h" />
     <ClInclude Include="pixelPoint.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="SmoothMove.h" />

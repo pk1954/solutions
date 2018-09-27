@@ -30,24 +30,22 @@ void HistInfoWindow::Start
 
 void HistInfoWindow::DoPaint( )
 {
-    long long lNrOfSlots = m_pHistSystem->GetNrOfHistCacheSlots( );
+    int iNrOfUsedSlots   = m_pHistSystem->GetNrOfUsedHistCacheSlots( );
+    int iNrOfSlots       = m_pHistSystem->GetNrOfHistCacheSlots( );
     long long lSlotSize  = m_pHistSystem->GetSlotSize( );
-    long long lTotalSize = lNrOfSlots * lSlotSize;
+    long long lTotalSize = iNrOfSlots * lSlotSize;
 
-	printString( L"# of slots  " );
-	printNumber( lNrOfSlots );
+	printString( L"used slots  " );
+	setHorizontalPos( 3 );
+	printPercentage( iNrOfUsedSlots, iNrOfSlots );
 
     nextLine( L"slot size   " );
 	printNumber( lSlotSize );
 
-    nextLine( L"total size  " );
+    nextLine( L"cache size  " );
 	printNumber( lTotalSize );
 
     nextLine( L"genCurrent  " );
 	setHorizontalPos( 3 );
 	printNumber( m_pHistSystem->GetCurrentGeneration( ).GetLong() );
-
-	nextLine( L"genYoungest " );
-	setHorizontalPos( 3 );
-	printNumber( m_pHistSystem->GetYoungestGeneration( ).GetLong() );
 }

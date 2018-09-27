@@ -18,9 +18,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="observerInterface.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_baseWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -60,6 +57,9 @@
     <ClInclude Include="stdafx.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Quelldateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_baseWindow.cpp">
@@ -92,9 +92,6 @@
     <ClCompile Include="win32_baseDialog.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="observerInterface.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="win32_rootWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -102,6 +99,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
