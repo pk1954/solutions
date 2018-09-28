@@ -25,7 +25,7 @@ public:
     void RenderIndividuals( );
     void RenderBackground( );
     void RenderTranspRect( PixelRect const &, DWORD const );
-    void D3D_DrawText( PixelRect, wstring const &, D3DCOLOR );
+    void D3D_DrawText( PixelRect const &, wstring const &, D3DCOLOR );
     void EndFrame( );
 
     void SetStripMode( tBoolOp const bOp ) 

@@ -51,13 +51,13 @@ private:
                 CLUT                 m_clutBackground;
     std::array< CLUT, NR_STRATEGIES> m_aClutStrat;
 
-    std::wstring        m_wString;
     std::wostringstream m_wBuffer;
 
-    void startOutputString( )  { m_wBuffer.str( L"" ); }
-    void finishOutputString( ) { m_wString = m_wBuffer.str( ); }
-
-    std::wstring const & getOutputString( ) { return m_wString; }
+    void startOutputString( )  
+	{ 
+		m_wBuffer.str( wstring() );
+		m_wBuffer.clear();
+	}
 
     COLORREF getBackgroundColor ( int const ) const;
     COLORREF getTextColor       ( GridPoint const & ) const;

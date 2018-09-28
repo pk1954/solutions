@@ -191,13 +191,13 @@ void DrawFrame::drawText( GridRect const & rect )
                 PixelRect  pixRect ( ptCenter  - lHalfSizeInd, ptCenter  + lHalfSizeInd );
 
                 assembleLeftColumn( gp );
-                m_pD3dBuffer->D3D_DrawText( pixRect, getOutputString( ), colText );
+                m_pD3dBuffer->D3D_DrawText( pixRect, m_wBuffer.str( ), colText );
 
                 if ( sFieldSize >= 256 ) 
                 {
                     pixRect.left += lHalfSizeInd;
                     assembleRightColumn( gp );
-                    m_pD3dBuffer->D3D_DrawText( pixRect, getOutputString( ), colText );
+                    m_pD3dBuffer->D3D_DrawText( pixRect, m_wBuffer.str( ), colText );
                 }
             }
 		}
@@ -224,8 +224,6 @@ void DrawFrame::assembleLeftColumn( GridPoint const & gp )
             m_wBuffer << L"BaseCons: "  << plan.GetBaseConsumption( )                     << endl;
         }
     }
-
-    finishOutputString( );
 }
 
 void DrawFrame::assembleRightColumn( GridPoint const & gp )
@@ -244,8 +242,6 @@ void DrawFrame::assembleRightColumn( GridPoint const & gp )
             m_wBuffer << setw( 10 ) << m_pCore->GetMemEntry( gp, mem ) << endl;
         }
     }
-
-    finishOutputString( );
 }
 
 void DrawFrame::setIndividualColor( GridPoint const & gp, float const fHalfSize ) const
