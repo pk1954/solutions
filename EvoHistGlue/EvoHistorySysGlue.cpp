@@ -42,7 +42,7 @@ void EvoHistorySysGlue::Start
 
     HIST_GENERATION const genMaxNrOfGens = Config::GetConfigValue( Config::tId::maxGeneration );
 
-	Observer * const pObserverHistInfo = new Observer( hwndHistInfo, 300 );
+	Observer * const pObserverHistInfo = ( hwndHistInfo == nullptr ) ? nullptr : new Observer( hwndHistInfo, 300 );
 
     m_pEvoModelWork    = new EvoModelDataGlue( pCore );
 	m_pEvoModelFactory = new EvoModelFactory ( );

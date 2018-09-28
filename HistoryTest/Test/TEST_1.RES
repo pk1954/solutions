@@ -1,5 +1,5 @@
 HistoryTest Debug x64
-Build at Sep 23 2018 19:24:48
+Build at Sep 27 2018 21:26:23
 *** Create 10 history slots
 
 *** Iterate thru generations

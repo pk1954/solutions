@@ -6,17 +6,11 @@
 #include "stdafx.h"
 #include "assert.h"
 #include <vector>
-
-#ifdef _DEBUG
-#include <iostream>
-using namespace std;
-#endif
-
+#include "observerInterface.h"
 #include "HistCacheItem.h"
 #include "HistoryGeneration.h"
 #include "hist_slot.h"
 
-class ObserverInterface;
 class ModelFactory;
 
 class HistoryCache
@@ -29,9 +23,7 @@ public:
     void InitHistoryCache( short const, ModelFactory const * const, ObserverInterface * const );
     bool AddCacheSlot( );
     void ResetHistoryCache( );
-
     short GetFreeCacheSlotNr( );
-
     void Save2CacheSlot( HistCacheItem const &, short const );
     void RemoveHistCacheSlot( int const );
 
@@ -54,7 +46,10 @@ public:
     short           GetNrOfUsedHistCacheSlots( ) const { return m_iNrOfUsedSlots; }
     HIST_GENERATION GetYoungestGeneration    ( ) const { return IsEmpty( ) ? -1 : GetGridGen( m_iHead ); };
     
-    void ShutDownHistCacheSlot( short const i ) { m_aHistSlot.at( i ).ShutDownHistCacheItem( ); };
+    void ShutDownHistCacheSlot( short const iSlotNr )
+	{ 
+		m_aHistSlot.at( iSlotNr ).ShutDownHistCacheItem( ); 
+	};
 
     HistCacheItem const * HistoryCache::GetHistCacheItemC( int const iSlotNr ) const
 	{
@@ -87,6 +82,12 @@ private:
 
 	void setSenior( int iDst, int iSrc ) { m_aHistSlot.at( iDst ).SetSeniorGen( iSrc ); }
 	void setJunior( int iDst, int iSrc ) { m_aHistSlot.at( iDst ).SetJuniorGen( iSrc ); }
+
+	void triggerObserver() 
+	{ 	
+		if ( m_pObserver != nullptr )
+			m_pObserver->SetDirtyFlag();
+	}
 
     int  findSlot4Reuse( );
     void checkConsistency( );

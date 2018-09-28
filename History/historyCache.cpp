@@ -2,17 +2,6 @@
 
 #include "stdafx.h"
 #include "assert.h"
-#include <exception>
-
-#ifdef _DEBUG
-#include <iostream>
-using namespace std;
-#endif
-
-#include "observerInterface.h"
-#include "HistCacheItem.h"
-#include "HistoryGeneration.h"
-#include "hist_slot.h"
 #include "historyCache.h"
 
 HistoryCache::HistoryCache( ) :
@@ -55,12 +44,9 @@ void HistoryCache::InitHistoryCache
         m_iNrOfRequestedSlots = 60;
 #endif
     m_aHistSlot.resize( m_iNrOfRequestedSlots );
-
     m_aHistSlot[ 0 ].SetHistCacheItem( pNewHistCacheItem );
     ++m_iNrOfSlots;
-
-	m_pObserver->SetDirtyFlag();
-
+	triggerObserver();
     m_iUnused = 0;
 }
 
@@ -81,7 +67,7 @@ void HistoryCache::ResetHistoryCache( )
     }
 
     setSenior( m_iNrOfSlots - 1, m_iNrOfSlots );
-    setJunior( m_iNrOfSlots - 1,           HistSlot::NUL );
+    setJunior( m_iNrOfSlots - 1, HistSlot::NUL );
 }
 
 bool HistoryCache::AddCacheSlot( )
@@ -104,11 +90,8 @@ bool HistoryCache::AddCacheSlot( )
         setSenior( m_iNrOfSlots,     m_iNrOfSlots - 1 );
         setJunior( m_iNrOfSlots - 1, m_iNrOfSlots     );
         ++m_iNrOfSlots;
-
-		m_pObserver->SetDirtyFlag();
-
+		triggerObserver();
         checkConsistency( );
-
         m_bAllocationRunning = ( m_iNrOfSlots < m_iNrOfRequestedSlots );
     }
 
@@ -156,7 +139,7 @@ short HistoryCache::GetFreeCacheSlotNr( )
         m_iHead = m_iUnused;
         m_iUnused = GetJunior( m_iUnused );
         ++m_iNrOfUsedSlots;
-		m_pObserver->SetDirtyFlag();
+		triggerObserver();
     }
     else                                // No unused slots. We have to reuse slots
     {
@@ -211,8 +194,7 @@ void HistoryCache::RemoveHistCacheSlot( int const iSlotNr )
 
     ResetHistCacheSlot( iSlotNr );
     --m_iNrOfUsedSlots;
-	m_pObserver->SetDirtyFlag();
-
+	triggerObserver();
     checkConsistency( );
 }
 
