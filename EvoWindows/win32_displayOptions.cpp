@@ -30,6 +30,41 @@ void DspOptWindow::Start
     StartBaseDialog( hWndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
 	m_pCore          = pCore;
 	m_IntValueLambda = nullptr;
+/* TODO 
+	{
+		HWND hwndDlg = GetWindowHandle( );
+		HWND hwndTip = CreateWindowEx
+					  (
+						  NULL, TOOLTIPS_CLASS, NULL,
+				          WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP | TTS_BALLOON,
+						  CW_USEDEFAULT, CW_USEDEFAULT,
+						  CW_USEDEFAULT, CW_USEDEFAULT,
+						  hwndDlg, NULL, GetModuleHandle( nullptr ),
+						  NULL
+					  );
+		assert( hwndTip != nullptr );
+
+		SetWindowPos
+		(
+			hwndTip, HWND_TOPMOST, 0, 0, 0, 0,
+			SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE
+		);
+
+		PTSTR pszText = L"Fyxyxyxyxyx";
+
+		// Associate the tooltip with the tool.
+		TOOLINFO toolInfo = { 0 };
+		toolInfo.cbSize = sizeof(toolInfo);
+		toolInfo.hwnd = hwndDlg;
+		toolInfo.uFlags = TTF_SUBCLASS | TTF_IDISHWND;
+		toolInfo.uId = (UINT_PTR)hwndDlg;
+		toolInfo.lpszText = pszText;
+		::GetClientRect (hwndDlg, &toolInfo.rect);
+
+		LRESULT lres = ::SendMessage( hwndTip, TTM_ADDTOOL, 0, (LPARAM)&toolInfo );
+		assert( lres );
+	}
+*/
 }
 
 void DspOptWindow::UpdateDspOptionsControls( tBrushMode const brushMode )

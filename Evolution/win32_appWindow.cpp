@@ -43,6 +43,7 @@
 #include "errhndl.h"
 #include "script.h"
 #include "UtilityWrappers.h"
+#include "win32_stopwatch.h"
 #include "win32_scriptHook.h"
 #include "win32_wrappers.h"
 #include "win32_editorWrappers.h"
@@ -100,18 +101,31 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	
 	DUMP::SetDumpStream( & wcout );
 
+	Stopwatch stopwatch;
+
+	stopwatch.Start();
+	stopwatch.Stop( L"Stopwatch tara" );
+	stopwatch.Start();
 	Config::SetDefaultConfiguration( );
     Config::DefineConfigWrapperFunctions( );
 	DefineUtilityWrapperFunctions( );
+	stopwatch.Stop( L"setup std configuration" );
 
+	stopwatch.Start();
 	Script::ProcessScript( L"std_configuration.in" );
+	stopwatch.Stop( L"process std_configuration.in" );
 
+	stopwatch.Start();
 	m_pEvolutionCore = EvolutionCore::InitClass( );
+	stopwatch.Stop( L"EvolutionCore::InitClass" );
 
+	stopwatch.Start();
     D3dSystem::Create( hWndApp, GridPoint::GRID_WIDTH, GridPoint::GRID_HEIGHT, Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 );
+	stopwatch.Stop( L"D3dSystem::Create" );
 	
     // create window objects
 
+	stopwatch.Start();
     m_pFocusPoint          = new FocusPoint( );                          
     m_pWinManager          = new WinManager( );                          
     m_pStatusBar           = new StatusBar( );       
@@ -127,17 +141,21 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	m_pEvoController       = new EvoController( );
 	m_pEvoHistGlue         = new EvoHistorySysGlue( );
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
+	stopwatch.Stop( L"create window objects" );
 
+	stopwatch.Start();
     m_pHistorySystem = HistorySystem::CreateHistorySystem( );
+	stopwatch.Stop( L"CreateHistorySystem" );
 
+	stopwatch.Start();
     SetMenu( hWndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
 	Util::SetApplicationTitle( hWndApp, IDS_APP_TITLE );
-
 	if ( Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 )
         EnableMenuItem( GetMenu( hWndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
-	
     DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
+	stopwatch.Stop( L"Application setup" );
 
+	stopwatch.Start();
 	m_pHistInfoWindow     ->Start( hWndApp, m_pHistorySystem );
 	m_pEvoHistGlue        ->Start( m_pEvolutionCore, m_pHistorySystem, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), true, m_pHistInfoWindow->GetWindowHandle() );
 	m_pEvoHistWindow      ->Start( hWndApp, m_pFocusPoint, m_pEvoHistGlue, m_pWorkThreadInterface );
@@ -152,7 +170,9 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pCrsrWindow         ->Start( hWndApp, m_pFocusPoint, m_pEvolutionCore );
     m_pPerfWindow         ->Start( hWndApp, 100 );
 	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow );
+	stopwatch.Stop( L"Start windows" );
 
+	stopwatch.Start();
     m_pWinManager->AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_pStatusBar,     FALSE, FALSE, 300 );
     m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, FALSE, FALSE,  75 ); 
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,              TRUE,  TRUE,  -1 );
@@ -164,26 +184,31 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow,     TRUE, FALSE, 500 );
     m_pWinManager->AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_pMiniGridWindow, TRUE, FALSE, 300 );
     m_pWinManager->AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_pMainGridWindow, TRUE, FALSE, 100 );
+	stopwatch.Stop( L"Window manager setup" );
 
-    m_pEvolutionCore->SetGridDisplayFunctor( & m_displayGridFunctor );   // display callback for core
-
+	stopwatch.Start();
+	m_pEvolutionCore->SetGridDisplayFunctor( & m_displayGridFunctor );   // display callback for core
     m_pMiniGridWindow->Observe( m_pMainGridWindow );
     m_pMiniGridWindow->Size( );
-
     m_displayGridFunctor.SetWinManager( m_pWinManager );
-
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
-
     DefineWin32WrapperFunctions( m_pWorkThreadInterface, m_pEvoController );
     DefineWin32EditorWrapperFunctions( m_pEditorWindow );
+	stopwatch.Stop( L"Other setup tasks" );
 
-    m_pWinManager->GetWindowConfiguration( );
+	stopwatch.Start();
+    if ( ! m_pWinManager->GetWindowConfiguration( ) )
+	{
+		wcout << L"Using default window positions" << endl;
+		Show( TRUE );
+	}
+	stopwatch.Stop( L"Get window configuration" );
+
 	m_pStatusBar->ClearStatusLine( );
 
     (void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 	m_pEvoController->ProcessCommand( IDM_SET_SIMU_MODE, static_cast<LPARAM>(tBoolOp::opFalse) );
-
 //	Script::ProcessScript( L"std_script.in" );
 }
 

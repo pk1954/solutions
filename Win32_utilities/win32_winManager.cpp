@@ -117,8 +117,10 @@ static BOOL CALLBACK CheckMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT
 
     ++( pMonStruct->m_iMonCounter );
     
+	MONITORINFO monInfoScript = ScrReadMonitorInfo( script );
+	MONITORINFO monInfoSystem = GetMonitorInfo( hMonitor );
     if (
-          ( ScrReadMonitorInfo( script ) != GetMonitorInfo( hMonitor ) ) ||
+          ( monInfoScript != monInfoSystem ) ||
           ( pMonStruct->m_iMonFromScript != pMonStruct->m_iMonCounter )
        )
     {                                        // some monitor infos don't fit
@@ -179,12 +181,26 @@ private:
 BOOL WinManager::GetWindowConfiguration( )
 {
     Script scriptWindowConfig;
-    BOOL bRes = scriptWindowConfig.ScrProcess( MONITOR_CONFIG_FILE );
+	
+	if (! scriptWindowConfig.ScrProcess(MONITOR_CONFIG_FILE))
+	{
+		wcout << L"Could not find " << MONITOR_CONFIG_FILE << endl;
+		return FALSE;
+	} 
+	
+	if ( m_strWindowConfigurationFile.empty() )
+	{
+		wcout << L"Monitor configuration unknown" << endl;
+		return FALSE;
+	}
 
-    if ( ! m_strWindowConfigurationFile.empty()  )
-        scriptWindowConfig.ScrProcess( m_strWindowConfigurationFile );
+	if ( ! scriptWindowConfig.ScrProcess( m_strWindowConfigurationFile ) )
+	{
+		wcout << L"Window configuration file " << m_strWindowConfigurationFile << L" missing or bad" << endl;
+		return FALSE;
+	}
 
-    return bRes;
+    return TRUE;
 }
 
 //

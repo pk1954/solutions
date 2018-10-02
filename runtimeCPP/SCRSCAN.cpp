@@ -27,16 +27,12 @@ Scanner::Scanner( )
   m_wstrExpected( )
 { }
 
-// OpenFile: Allocate tSCAN_STRUCT
-//             open script file and initialize according variables
-//             return handle or nullptr if not enough memory
-//   
+// OpenInputFile
+//
 //   Error conditions: File name (including path) too long
 //                     File could not be opened                 
 
-void Scanner::OpenInputFile( 
-                               wstring const & wstrFile  // (path) name of file to be opened
-                            )
+void Scanner::OpenInputFile( wstring const & wstrFile ) // (path) name of file to be opened
 {
     m_wstrPath = wstrFile;
     m_inbuf.Open( m_wstrPath );
@@ -53,7 +49,6 @@ Scanner::~Scanner(  )
 
 // SkipSpace: Skips white space, newlines and comments 
 // returns (char)0 or some significant character
-
 
 wchar_t Scanner::SkipSpace( )
 {

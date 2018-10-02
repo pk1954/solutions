@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "commctrl.h"
 #include "win32_appWindow.h"
+#include "win32_stopwatch.h"
 #include "Resource.h"
 
 //lint -e952 some parameters could be declared as const
@@ -33,10 +34,16 @@ int APIENTRY _tWinMain
 
 	SetThreadAffinityMask( GetCurrentThread( ), 0x0001 );
 
-    InitCommonControls( ); // loads common control's DLL 
+    INITCOMMONCONTROLSEX icex; // load common control's DLL 
+    icex.dwSize = sizeof( INITCOMMONCONTROLSEX );
+    icex.dwICC  = ICC_STANDARD_CLASSES | ICC_BAR_CLASSES | ICC_TAB_CLASSES;
+    InitCommonControlsEx(&icex); 
     
+ 	Stopwatch stopwatch;
+	stopwatch.Start();
     AppWindow App;
     App.Start( hInstance, lpCmdLine );
+	stopwatch.Stop( L"App.Start" );
 
 //lint -e1924  C-style cast
 
@@ -49,9 +56,8 @@ int APIENTRY _tWinMain
         assert( bRet );
         if ( !TranslateAccelerator( hwndApp, hAccelTable, &msg ) )
         {
-            TranslateMessage( &msg );
-            //lint -e534  ignore return code
-            DispatchMessage( &msg );
+            (void)TranslateMessage( &msg );
+            (void)DispatchMessage( &msg );
         }
     }
 

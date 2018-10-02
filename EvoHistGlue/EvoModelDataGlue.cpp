@@ -6,6 +6,7 @@
 #include "EvoGenerationCmd.h"
 #include "EvolutionCore.h"
 #include "EvoModelDataGlue.h"
+#include "win32_stopwatch.h"
 
 EvoModelDataGlue::~EvoModelDataGlue( )
 {
@@ -23,14 +24,19 @@ void EvoModelDataGlue::CopyFrom( ModelData const * const src )
     m_pEvolutionCore->CopyEvolutionCoreData( evoSrc->m_pEvolutionCore );
 }
 
-void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
+	Stopwatch stopwatch;
+
+	void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 {
 	tEvoCmd const evoCmd = static_cast<tEvoCmd>( cmd.GetCommand() );
 	Int24   const param  = cmd.GetParam( );
 	switch ( evoCmd )
 	{
 	case tEvoCmd::nextGen:
+
+	stopwatch.Start();
 		m_pEvolutionCore->Compute( );  // compute next generation
+	stopwatch.Stop( L"Compute" );
 		break;
 
 	case tEvoCmd::editDoEdit:

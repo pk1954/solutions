@@ -57,8 +57,11 @@
     <ClInclude Include="stdafx.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="win32_stopwatch.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
     <ClInclude Include="Observer.h">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +105,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Observer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_stopwatch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

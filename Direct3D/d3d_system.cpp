@@ -5,6 +5,7 @@
 #include <d3d9.h>
 #include <D3dx9core.h>
 #include "win32_util.h"
+#include "win32_stopwatch.h"
 #include "d3d_system.h"
 
 //lint -esym( 613, D3dSystem::m_d3d_device )   possible use of null pointer
@@ -19,11 +20,16 @@ D3dSystem * D3dSystem::GetSystem( void )
 
 void D3dSystem::Create( HWND const hWndApp, ULONG const ulWidth, ULONG const ulHeight, BOOL const bHexagon )
 {
+	Stopwatch stopwatch;
+	stopwatch.Start();
 	m_bHexagon                 = bHexagon;
 	_d3d_.m_d3d_device         = nullptr;
 	_d3d_.m_d3d_object         = Direct3DCreate9(D3D_SDK_VERSION); assert( _d3d_.m_d3d_object != nullptr );
 	_d3d_.m_iNrSwapChainsInUse = 0;
+	stopwatch.Stop( L"Direct3DCreate9" );
+	stopwatch.Start();
 	_d3d_.createDevice( hWndApp, ulWidth, ulHeight );
+	stopwatch.Stop( L"createDevice" );
 }
 
 IDirect3DDevice9 * D3dSystem::GetDevice( void )
@@ -58,6 +64,9 @@ void D3dSystem::SetTransform( HWND const hWnd )
 
 void D3dSystem::createDevice( HWND const hWnd, ULONG const ulModelWidth, ULONG const ulModelHeight )
 {
+	Stopwatch stopwatch;
+	stopwatch.Start();
+
 	PixelRectSize const pntSize = Util::GetClRectSize( hWnd );
 
 	ZeroMemory( & m_d3d_presentationParameters, sizeof(D3DPRESENT_PARAMETERS) );
@@ -84,7 +93,9 @@ void D3dSystem::createDevice( HWND const hWnd, ULONG const ulModelWidth, ULONG c
 	);
 
 	assert( hres == D3D_OK );
-	
+
+	stopwatch.Stop( L"CreateDevice" );
+
 	//lint -e708     union initialization
 	D3DMATRIX const m = 
 	{
@@ -98,10 +109,12 @@ void D3dSystem::createDevice( HWND const hWnd, ULONG const ulModelWidth, ULONG c
 	m_d3d_matrix = m;
 	m_d3d_device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
 	m_d3d_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
+	stopwatch.Start();
 	m_d3d_pIndexBufBgStripMode    = createStripIndices( ulModelWidth + 2, ulModelHeight + 2 );    // Index buffer for food
 	m_d3d_pIndexBufBgNonStripMode = createIndsIndices ( ulModelWidth, ulModelHeight );    // Index buffer for food
 	m_d3d_pIndexBufIndividuals    = createIndsIndices ( ulModelWidth, ulModelHeight );    // Index buffer for individuals
 	m_d3d_pIndexBufRect           = createRectIndices ( );                                // Index buffer for one rectangle  
+	stopwatch.Stop( L"create indices" );
 }
 
 D3dSystem::~D3dSystem( )

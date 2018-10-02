@@ -155,6 +155,7 @@
     <ClInclude Include="win32_performanceWindow.h" />
     <ClInclude Include="win32_rootWindow.h" />
     <ClInclude Include="win32_script.h" />
+    <ClInclude Include="win32_stopwatch.h" />
     <ClInclude Include="win32_textWindow.h" />
     <ClInclude Include="win32_util.h" />
     <ClInclude Include="win32_viewCollection.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="win32_performanceWindow.cpp" />
     <ClCompile Include="win32_rootWindow.cpp" />
     <ClCompile Include="win32_script.cpp" />
+    <ClCompile Include="win32_stopwatch.cpp" />
     <ClCompile Include="win32_textWindow.cpp" />
     <ClCompile Include="win32_util.cpp" />
     <ClCompile Include="win32_viewCollection.cpp" />

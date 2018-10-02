@@ -3,6 +3,7 @@
 //
 
 #include "stdafx.h"
+#include "assert.h"
 #include "Windowsx.h"
 #include "strsafe.h"
 #include "win32_util.h"
@@ -26,7 +27,7 @@ void HistWindow::Start
     HistorySystem * pHistSys
 )
 {
-    HWND const hWnd = StartBaseWindow
+    HWND const hwndHistory = StartBaseWindow
     (
         hWndParent,
         CS_OWNDC | CS_DBLCLKS,
@@ -34,8 +35,8 @@ void HistWindow::Start
         WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE
     );
 
-    Util::AddWindowStyle( hWnd, WS_EX_STATICEDGE );
-    m_trackStruct.hwndTrack = hWnd;
+    Util::AddWindowStyle( hwndHistory, WS_EX_STATICEDGE );
+    m_trackStruct.hwndTrack = hwndHistory;
 
     m_pHistSys    = pHistSys;
     m_pHistIter   = m_pHistSys->CreateHistoryIterator( );
