@@ -8,6 +8,8 @@
 #include "EvoModelDataGlue.h"
 #include "win32_stopwatch.h"
 
+static Stopwatch stopwatch;
+
 EvoModelDataGlue::~EvoModelDataGlue( )
 {
     delete m_pEvolutionCore;
@@ -20,11 +22,11 @@ GridPoint EvoModelDataGlue::FindGridPoint( IndId const & id ) const
 
 void EvoModelDataGlue::CopyFrom( ModelData const * const src )
 {
+	stopwatch.Start();
 	EvoModelDataGlue const * const evoSrc = static_cast< EvoModelDataGlue const * const >( src );
     m_pEvolutionCore->CopyEvolutionCoreData( evoSrc->m_pEvolutionCore );
+	stopwatch.Stop( L"Copy model" );
 }
-
-	Stopwatch stopwatch;
 
 	void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 {
@@ -34,9 +36,9 @@ void EvoModelDataGlue::CopyFrom( ModelData const * const src )
 	{
 	case tEvoCmd::nextGen:
 
-	stopwatch.Start();
+		stopwatch.Start();
 		m_pEvolutionCore->Compute( );  // compute next generation
-	stopwatch.Stop( L"Compute" );
+		stopwatch.Stop( L"Compute" );
 		break;
 
 	case tEvoCmd::editDoEdit:

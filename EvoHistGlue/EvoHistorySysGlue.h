@@ -50,6 +50,8 @@ public:
 	HIST_GENERATION GetFirstGenOfIndividual( IndId const & ) const; 
 	HIST_GENERATION GetLastGenOfIndividual ( IndId const & ) const;  
 
+	void ClearHistory( );
+
 	void EvoCreateNextGenCommand( ) 
 	{ 
 		m_pHistorySystem->CreateAppCommand( NEXT_GEN_CMD );  

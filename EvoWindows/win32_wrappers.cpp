@@ -134,7 +134,8 @@ class WrapPostReset : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pWorkThreadInterface->PostReset();
+        INT const iValue = script.ScrReadInt( );
+        m_pWorkThreadInterface->PostReset( iValue != 0 );
     }
 };
 

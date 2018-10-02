@@ -10,6 +10,9 @@ BaseWindow::BaseWindow( )
     : RootWindow( )
 {}
 
+BaseWindow::~BaseWindow( )    
+{}
+
 HWND BaseWindow::StartBaseWindow
 ( 
     HWND    const hWndParent,
@@ -22,6 +25,8 @@ HWND BaseWindow::StartBaseWindow
     WNDCLASSEX      wcex;
 
     assert( szClass != nullptr );
+	m_szClass = szClass;
+
     wcex.cbSize = sizeof( WNDCLASSEX );
 
     wcex.style		   = uiClassStyle;

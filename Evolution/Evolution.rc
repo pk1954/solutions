@@ -27,6 +27,7 @@ IDC_EVOLUTION_MAIN MENU
         MENUITEM "Goto &Origin", IDM_GOTO_ORIGIN
         MENUITEM "Goto &Death", IDM_GOTO_DEATH
         MENUITEM "Reset", IDM_RESET
+        MENUITEM "Restart", IDM_RESTART
     }
     POPUP "&View"
     {

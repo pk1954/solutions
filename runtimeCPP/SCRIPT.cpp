@@ -470,3 +470,9 @@ bool Script::ProcessScript( wstring const & wstrScript )
     Script script;
     return script.ScrProcess( wstrScript );
 }
+
+void Script::Clear()
+{
+	ScrSetWrapHook( nullptr );
+	SymbolTable::Clear();
+}

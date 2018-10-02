@@ -207,6 +207,8 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 
     case THREAD_MSG_RESET_MODEL:
         editorCommand( tEvoCmd::reset, wParam );
+		if ( static_cast<BOOL>(wParam) )
+			m_pEvoHistGlue->ClearHistory( );
         break;
 
     case THREAD_MSG_SET_BRUSH_MODE:

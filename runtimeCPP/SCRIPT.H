@@ -31,7 +31,7 @@ public:
 class Script
 {
 public:
-//// functions for reading from input script
+// functions for reading from input script
 
     double         ScrReadFloat ( void ); 
     long           ScrReadLong  ( void ); 
@@ -52,12 +52,13 @@ public:
     int           GetActEndPos       ( void ) const;
     wstring const GetActExpectedToken( void ) const;
 
-//// utility functions
+// utility functions
 
 	static bool ProcessScript( wstring const & );
     static void ScrSetWrapHook( Script_Functor const * const );
+	static void Clear( );
 
-//// script processing
+// script processing
 
     bool ScrProcess( wstring const & );
 

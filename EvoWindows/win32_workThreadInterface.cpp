@@ -63,11 +63,11 @@ HIST_GENERATION WorkThreadInterface::GetGenDemanded( ) const
 	return m_pWorkThread->GetGenDemanded( );
 }
 
-void WorkThreadInterface::PostReset( )
+void WorkThreadInterface::PostReset( BOOL bResetHistSys )
 {
     if ( m_bTrace )
-        * m_pTraceStream << __func__ << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_RESET_MODEL, 0, 0 );
+        * m_pTraceStream << __func__ << (bResetHistSys ? 1 : 0) << endl;
+    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_RESET_MODEL, bResetHistSys, 0 );
 }
 
 void WorkThreadInterface::PostRefresh( )

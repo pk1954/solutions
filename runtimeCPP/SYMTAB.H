@@ -63,6 +63,8 @@ public:
     static Symbol  const & GetSymbolFromName( wstring const & );
     static wstring const & GetSymbolName    ( Symbol  const & );
 
+	static void Clear( );
+
 private:
     static void addSymbol( wstring const &, Symbol const & );
 

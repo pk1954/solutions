@@ -104,3 +104,8 @@ void SymbolTable::ScrDefConst( wstring const & wstrName, wstring const & wstrVal
     addSymbol( wstrName, Symbol( wstrValue ) );
 }
 
+void SymbolTable::Clear()
+{
+	m_SymbolTab.clear();
+	m_ReverseTab.clear();
+}

@@ -99,7 +99,11 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
         case IDM_RESET:
-            m_pWorkThreadInterface->PostReset( );
+            m_pWorkThreadInterface->PostReset( FALSE );
+            break;
+
+        case IDM_RESTART:
+            m_pWorkThreadInterface->PostReset( TRUE );
             break;
 
 		case IDM_BACKWARDS:

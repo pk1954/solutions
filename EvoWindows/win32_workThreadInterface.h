@@ -38,7 +38,7 @@ public:
     void PostSetBrushIntensity( LONG const );
     void PostSetBrushRadius( INT const );
     void PostRefresh( );
-    void PostReset( );
+    void PostReset( BOOL );
     void PostEndThread( HWND );
     void PostProcessScript( std::wstring const & );
 	void PostRunGenerations( bool const bFirst = true );
