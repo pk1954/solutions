@@ -4,22 +4,32 @@
 #pragma once
 
 #include <vector>
-
-class Observer;
-class RootWindow;
+#include "ObserverInterface.h"
+#include "win32_rootWindow.h"
 
 class ViewCollection
 {
 public:
     ViewCollection( ) {};
-    virtual ~ViewCollection( );
 
-    void NotifyObservers( ) const;
+	~ViewCollection( ) {};
 
-    Observer * AttachObserver( RootWindow const *, UINT const );
-    Observer * GetObserver   ( RootWindow const * );
-    void       SetDisplayRate( RootWindow const *, const INT );
+	void NotifyObservers( ) const
+	{
+		for ( auto &v : m_aView )
+		{
+			v->Trigger();
+		}
+	}
+
+	ObserverInterface * AttachObserver( RootWindow * pRootWin )
+	{
+		assert( pRootWin != nullptr );
+		ObserverInterface * po = pRootWin->GetObserver( );
+		m_aView.push_back( po );
+		return po;
+	}
 
 private:
-    std::vector< Observer * > m_aView;
+    std::vector< ObserverInterface * > m_aView;
 };

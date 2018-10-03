@@ -1,34 +1,29 @@
-// observerInterface.cpp
+// Observer.cpp
 //
 
 #include "stdafx.h"
 #include "Observer.h"
 
-Observer::Observer( HWND hWnd, INT iMilliSecs ) :
-        m_hWnd( hWnd ),
+Observer::Observer( RootWindow * pRootWindow ) :
+        m_pRootWindow( pRootWindow ),
         m_hTimer( nullptr ),
-        m_iDisplayRate( iMilliSecs ),  // minimum delay between Invalidate calls 
         m_bTimerActive( FALSE ),
         m_bDirty( TRUE )
 {
-    SetDirtyFlag( );
+	Trigger( false ); 
 }
 
 Observer::~Observer( )
 {
-    m_hWnd = nullptr;
-    m_hTimer = nullptr;
+    m_pRootWindow = nullptr;
+    m_hTimer      = nullptr;
 }
 
-void Observer::SetDisplayRate( INT iRate )
+void Observer::Trigger( bool const bWait )
 {
-    m_iDisplayRate = iRate;
-    invalidate( );
-}
+	DWORD dwTime = static_cast<DWORD>( m_pRootWindow->GetDisplayRate() );
 
-void Observer::SetDirtyFlag( )
-{
-    if ( m_iDisplayRate == 0 )
+    if ( dwTime == 0 )
         invalidate( );
     else
     {
@@ -37,39 +32,47 @@ void Observer::SetDirtyFlag( )
         {
             m_bTimerActive = TRUE;
             invalidate( );
-            startTimer( );
+            startTimer( dwTime );
         }
     }
 }
 
 void CALLBACK Observer::TimerProc( void * const lpParameter, BOOL const TimerOrWaitFired )
 {
-    Observer * const pOI = static_cast<Observer * >( lpParameter );
-    if ( pOI->m_bDirty )
+    Observer * const pObserver = static_cast<Observer * >( lpParameter );
+    if ( pObserver->m_bDirty )
     {
-        pOI->invalidate( );
+        pObserver->invalidate( );
     }
     else
     {
-        if ( pOI->m_hTimer != nullptr )
+        if ( pObserver->m_hTimer != nullptr )
         {
-			HANDLE handle = pOI->m_hTimer;
-            pOI->m_hTimer = nullptr;
+			HANDLE handle = pObserver->m_hTimer;
+            pObserver->m_hTimer = nullptr;
             (void)DeleteTimerQueueTimer( nullptr, handle, 0 );
         }
-        pOI->m_bTimerActive = FALSE;
+        pObserver->m_bTimerActive = FALSE;
     }
 }
 
 void Observer::invalidate( )
 {
-	assert( m_hWnd != nullptr );
-    InvalidateRect( m_hWnd, nullptr, FALSE );
+	if ( m_pRootWindow != nullptr )
+		m_pRootWindow->Invalidate( FALSE );
     m_bDirty = FALSE;
 }
 
-void Observer::startTimer( )
+void Observer::startTimer( DWORD const dwTime )
 {
-    void * const pVoid = static_cast<void *>( this );
-    (void)CreateTimerQueueTimer( &m_hTimer, nullptr, (WAITORTIMERCALLBACK)TimerProc, pVoid, (DWORD)m_iDisplayRate, (DWORD)m_iDisplayRate, 0 );
+    (void)CreateTimerQueueTimer
+	( 
+		& m_hTimer,                     // output parameter 
+		nullptr,                        // use default timer queue
+		(WAITORTIMERCALLBACK)TimerProc, // the timer procedure
+		static_cast<void *>( this ),    // pointer to this object as parameter to TimerProc
+		dwTime,                         // timer is signaled the first time after dwTime msecs
+		dwTime,                         // timer is signaled periodically every dwTime msecs
+		0                               // no flags
+	);
 }

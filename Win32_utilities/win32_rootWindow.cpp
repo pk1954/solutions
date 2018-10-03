@@ -2,8 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "Windowsx.h"
-#include "win32_util.h"
+#include "Observer.h"
 #include "win32_rootWindow.h"
 
 BOOL RootWinIsReady( RootWindow const * pRootWin )
@@ -11,17 +10,29 @@ BOOL RootWinIsReady( RootWindow const * pRootWin )
     return ( ( pRootWin != nullptr ) && ( pRootWin->GetWindowHandle( ) != nullptr ) );
 }
 
-// GetCrsrPosFromLparam - Windows delivers cursor position in coordinate system with origin in left upper corner
-//                        transform to coord system with origin in left lower corner
+RootWindow::RootWindow( ) : 
+	m_hwnd( nullptr ),
+	m_hwndApp( nullptr ),
+	m_pObserver( nullptr ),
+	m_iDisplayRate( 0 )
+{ }
 
-PixelPoint const RootWindow::GetCrsrPosFromLparam( LPARAM const lParam ) const
-{
-    PixelPoint ptCrsr( GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
-    Util::UpsideDown( m_hWnd, & ptCrsr ); 
-    return ptCrsr;
+RootWindow::~RootWindow( ) 
+{ 
+	delete m_pObserver;
+
+	m_pObserver = nullptr;
+	m_hwnd      = nullptr; 
 }
 
-LRESULT RootWindow::PostCommand2Application( WPARAM const wParam, LPARAM const lParam )
-{
-	return ::PostMessage( GetAncestor( m_hWnd, GA_ROOTOWNER), WM_COMMAND, wParam, lParam );
+void RootWindow::SetWindowHandle( HWND const hwnd ) 
+{ 
+	m_hwnd      = hwnd;  
+	m_pObserver = new Observer( this );
+	m_hwndApp   = GetAncestor( m_hwnd, GA_ROOTOWNER );
+};
+
+ObserverInterface * RootWindow::GetObserver() const 
+{ 
+	return m_pObserver; 
 }

@@ -172,7 +172,6 @@
     <ClCompile Include="win32_baseDialog.cpp" />
     <ClCompile Include="win32_baseWindow.cpp" />
     <ClCompile Include="win32_clut.cpp" />
-    <ClCompile Include="win32_displayAll.cpp" />
     <ClCompile Include="win32_hiResTimer.cpp" />
     <ClCompile Include="win32_performanceWindow.cpp" />
     <ClCompile Include="win32_rootWindow.cpp" />
@@ -180,7 +179,6 @@
     <ClCompile Include="win32_stopwatch.cpp" />
     <ClCompile Include="win32_textWindow.cpp" />
     <ClCompile Include="win32_util.cpp" />
-    <ClCompile Include="win32_viewCollection.cpp" />
     <ClCompile Include="win32_winManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

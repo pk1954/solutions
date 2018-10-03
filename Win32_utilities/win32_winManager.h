@@ -6,7 +6,6 @@
 #include <string>
 #include <unordered_map>
 #include "win32_util.h"
-#include "win32_viewCollection.h"
 
 using namespace std;
 
@@ -18,17 +17,7 @@ public:
     WinManager( );
     virtual ~WinManager( ) { };
 
-    void AddWindow( wstring const, UINT const, RootWindow const *, BOOL const, BOOL const, INT const );
-
-    void NotifyObservers( ) const 
-    { 
-        m_ViewCollection.NotifyObservers( ); 
-    };
-
-    void SetDisplayRate( UINT const id, INT const iMilliSecs )
-    {
-        m_ViewCollection.SetDisplayRate( GetRootWindow( id ), iMilliSecs );
-    }
+    void AddWindow( wstring const, UINT const, RootWindow const *, BOOL const, BOOL const );
 
     wstring const GetWindowName( UINT const id )  const // can throw out_of_range exception
     {
@@ -39,6 +28,15 @@ public:
     {
         return getWindowHandle( m_map.at( id ) );
     }
+
+	INT const GetIdFromRootWindow( RootWindow const * pRootWin )
+	{
+		for ( auto pp : m_map )
+			if ( pp.second.m_pRootWin == pRootWin )
+				return pp.first; 
+
+		return -1;
+	}
 
     RootWindow const * const GetRootWindow( UINT const id )  const // can throw out_of_range exception
     {
@@ -87,9 +85,8 @@ private:
 
     unordered_map< UINT, MAP_ELEMENT > m_map;
     
-    ViewCollection m_ViewCollection;
-    wstring        m_strWindowConfigurationFile;
-    int            m_iNrOfMonitorConfigurations;
+    wstring m_strWindowConfigurationFile;
+    int     m_iNrOfMonitorConfigurations;
 
     void       dumpMonitorConfiguration( ) const;
     void       dumpWindowCoordinates( ) const;

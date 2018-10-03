@@ -313,19 +313,13 @@ void WinManager::AddWindow
     UINT       const   id, 
     RootWindow const * pRootWin, 
 	BOOL       const   bTrackPosition,
-	BOOL       const   bTrackSize,
-    INT        const   iMilliSecs 
+	BOOL       const   bTrackSize
 )
 {
-    if ( id !=0 )
+    if ( id != 0 )
     {
         m_map.insert( pair< UINT, MAP_ELEMENT >( id, { wstrName, pRootWin, bTrackPosition, bTrackSize } ) );
         SymbolTable::ScrDefConst( wstrName, static_cast<ULONG>(id) );
-    }
-
-    if ( iMilliSecs >= 0 )
-    {
-        m_ViewCollection.AttachObserver( pRootWin, iMilliSecs );
     }
 }
 

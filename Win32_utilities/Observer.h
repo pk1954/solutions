@@ -4,29 +4,31 @@
 #pragma once
 
 #include "observerInterface.h"
+#include "win32_rootWindow.h"
 
 class Observer : public ObserverInterface
 {
 public:
-    Observer( HWND, INT );
+    Observer( RootWindow * );
 
     virtual ~Observer( );
 
-    virtual void SetDisplayRate( INT );
-    virtual void SetDirtyFlag( );
+    virtual void Trigger( bool const );
 
-    HWND const GetWindowHandle( ) { return m_hWnd; }
+    HWND const GetWindowHandle( ) 
+	{ 
+		return m_pRootWindow->GetWindowHandle(); 
+	}
 
 private:
 
     static void CALLBACK TimerProc( void * const, BOOL const );
 
     void invalidate( );
-    void startTimer( );
+    void startTimer( DWORD const );
 
-    HWND   m_hWnd;
-    HANDLE m_hTimer;
-    INT    m_iDisplayRate; // in milliseconds
-    BOOL   m_bTimerActive;
-    BOOL   m_bDirty;
+    RootWindow * m_pRootWindow;
+    HANDLE       m_hTimer;
+    BOOL         m_bTimerActive;
+    BOOL         m_bDirty;
 };

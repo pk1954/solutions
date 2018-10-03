@@ -83,9 +83,6 @@
     <ClCompile Include="win32_util.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_viewCollection.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="win32_winManager.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -96,9 +93,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_rootWindow.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_displayAll.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
