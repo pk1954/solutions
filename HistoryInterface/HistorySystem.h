@@ -7,7 +7,7 @@
 #include "HistoryGeneration.h"
 
 class ObserverInterface;
-class DisplayFunctor;
+class ObserverInterface;
 class HistoryIterator;
 class ModelFactory;
 class ModelData;

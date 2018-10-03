@@ -20,7 +20,7 @@ class EditorWindow;
 class RootWindow;
 class EvolutionCore;
 class WinManager;
-class DisplayAll;
+class ViewCollection;
 class EditorWindow;
 class EvoHistorySysGlue;
 class WorkThreadInterface;
@@ -35,7 +35,7 @@ public:
     ( 
         PerformanceWindow   * const,
 		EditorWindow        * const,  
-        DisplayAll   const  * const, 
+        ViewCollection      * const, 
         EvolutionCore       * const,
 	    EvoHistorySysGlue   * const,
 		WorkThreadInterface * const
@@ -79,7 +79,7 @@ public:
 private:
 
 	WorkThreadInterface * m_pWorkThreadInterface;
-    DisplayAll    const * m_pDisplayGridFunctor;
+    ViewCollection      * m_pViewCollection;
     PerformanceWindow   * m_pPerformanceWindow;
     EditorWindow        * m_pEditorWindow;
     EvoHistorySysGlue   * m_pEvoHistGlue;

@@ -86,7 +86,7 @@ private:
 	void triggerObserver() 
 	{ 	
 		if ( m_pObserver != nullptr )
-			m_pObserver->SetDirtyFlag();
+			m_pObserver->Notify();
 	}
 
     int  findSlot4Reuse( );

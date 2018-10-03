@@ -10,7 +10,7 @@ Observer::Observer( RootWindow * pRootWindow ) :
         m_bTimerActive( FALSE ),
         m_bDirty( TRUE )
 {
-	Trigger( false ); 
+	Notify( false ); 
 }
 
 Observer::~Observer( )
@@ -19,7 +19,7 @@ Observer::~Observer( )
     m_hTimer      = nullptr;
 }
 
-void Observer::Trigger( bool const bWait )
+void Observer::Notify( bool const bWait )
 {
 	DWORD dwTime = static_cast<DWORD>( m_pRootWindow->GetDisplayRate() );
 

@@ -13,7 +13,7 @@ public:
 
     virtual ~Observer( );
 
-    virtual void Trigger( bool const );
+    virtual void Notify( bool const );
 
     HWND const GetWindowHandle( ) 
 	{ 

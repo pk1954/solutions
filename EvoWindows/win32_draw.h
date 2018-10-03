@@ -38,7 +38,7 @@ private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
     DrawFrame & operator= ( DrawFrame const & );  // noncopyable class 
 
-    HWND const m_hWnd;
+    HWND const m_hwnd;
     bool       m_bDimmIndividuals;   
 
     EvolutionCore      * const m_pCore;

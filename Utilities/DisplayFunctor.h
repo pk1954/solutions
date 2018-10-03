@@ -7,5 +7,5 @@ class DisplayFunctor
 {
 public:
     virtual ~DisplayFunctor( ) {};
-    virtual bool operator() ( bool const ) const = 0;
+    virtual void Trigger( bool const = false ) const = 0;
 };

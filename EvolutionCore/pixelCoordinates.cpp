@@ -257,6 +257,6 @@ PixelRect PixelCoordinates::GetTextRect( GridPoint const & gp ) const
 {
     long  const lHalfSizeInd = (5 * m_sFieldSize) / 16;
     PixelPoint ptCenter   = Grid2PixelPosCenter( gp );
-//				Util::UpsideDown( m_hWnd, & ptCenter ); 
+//				Util::UpsideDown( m_hwnd, & ptCenter ); 
     return PixelRect( ptCenter - lHalfSizeInd, ptCenter + lHalfSizeInd );
 }

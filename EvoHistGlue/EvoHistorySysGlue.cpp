@@ -7,7 +7,7 @@
 #include <sstream> 
 #include <limits.h>
 #include "config.h"
-#include "Observer.h"
+#include "win32_rootWindow.h"
 #include "HistAllocThread.h"
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
@@ -33,7 +33,7 @@ void EvoHistorySysGlue::Start
 	HistorySystem * const pHistorySystem,
 	long            const lMaxHistSize,
 	bool            const bAskHistoryCut, // true: ask user for history cut, false: cut without asking
-	HWND            const hwndHistInfo
+	RootWindow    * const pRootWindow
 )
 {
     long  const lHistEntriesDemanded = Config::GetConfigValue( Config::tId::nrOfHistorySlots );
@@ -41,8 +41,6 @@ void EvoHistorySysGlue::Start
     short const sNrOfSlots           = CastToShort( lHistEntries );
 
     HIST_GENERATION const genMaxNrOfGens = Config::GetConfigValue( Config::tId::maxGeneration );
-
-	Observer * const pObserverHistInfo = ( hwndHistInfo == nullptr ) ? nullptr : new Observer( hwndHistInfo, 300 );
 
     m_pEvoModelWork    = new EvoModelDataGlue( pCore );
 	m_pEvoModelFactory = new EvoModelFactory ( );
@@ -55,7 +53,7 @@ void EvoHistorySysGlue::Start
         genMaxNrOfGens,
         m_pEvoModelWork,
         m_pEvoModelFactory,
-		pObserverHistInfo,
+		( pRootWindow == nullptr ) ? nullptr : pRootWindow->GetObserver(),
 		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( tEvoCmd::reset ), 0 )
     );
 

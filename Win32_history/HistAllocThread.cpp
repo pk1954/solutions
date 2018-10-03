@@ -7,8 +7,8 @@
 
 HistAllocThread::HistAllocThread
 ( 
-	HistorySystem     const * const pHistSys,
-	BOOL                      const bAsync      
+	HistorySystem const * const pHistSys,
+	BOOL                  const bAsync      
 ) :
 	m_pHistorySys( pHistSys ),
 	m_hThreadSlotAllocator( nullptr ),

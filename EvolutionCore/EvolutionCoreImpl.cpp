@@ -5,18 +5,18 @@
 #include "assert.h"
 #include <array>
 #include "dump.h"
-#include "EvolutionCoreWrappers.h"
 #include "config.h"
 #include "strategy.h"
 #include "grid_model.h"
 #include "gplIterator.h"
-#include "DisplayFunctor.h"
+#include "ObserverInterface.h"
+#include "EvolutionCoreWrappers.h"
 #include "EvolutionCoreImpl.h"
 
 using namespace std;
 
 EvolutionCoreImpl::EvolutionCoreImpl( ) :
-    m_gridDisplayFunctor( nullptr ),
+    m_pObservers( nullptr ),
 	m_brush( & m_grid )
 { 
 	ResetAll( );
@@ -24,7 +24,7 @@ EvolutionCoreImpl::EvolutionCoreImpl( ) :
 
 EvolutionCoreImpl::~EvolutionCoreImpl( )
 {
-    m_gridDisplayFunctor = nullptr;
+    m_pObservers = nullptr;
 }
 
 void EvolutionCoreImpl::ResetAll( )
@@ -78,10 +78,10 @@ void EvolutionCoreImpl::Compute( )
 
         m_grid.MakePlan( gpRun, * pPlan );
         pPlan->SetValid( );
-        if ( (m_gridDisplayFunctor != nullptr) && IsPoiDefined( ) ) 
+        if ( (m_pObservers != nullptr) && IsPoiDefined( ) ) 
         {
             if ( IsPoi( gpRun ) || IsPoi( pPlan->GetPartner( ) ) )
-               ( * m_gridDisplayFunctor )( true );
+               m_pObservers->Notify( true );
         }
         pPlan->SetInvalid( );
         gpRun = m_grid.ImplementPlan( gpRun, * pPlan );   // may return GP_NULL

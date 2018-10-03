@@ -11,6 +11,7 @@
 #include "EvoModelDataGlue.h"
 #include "EvoGenerationCmd.h"
 
+class RootWindow;
 class EvoModelFactory;
 class HistAllocThread;
 class EvolutionCore;
@@ -29,7 +30,7 @@ public:
 		HistorySystem * const,
 		long const, 
 		bool const,
-		HWND const
+		RootWindow * const
 	);
 
     // EvoApproachHistGen - Get closer to demanded HIST_GENERATION

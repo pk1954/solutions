@@ -10,7 +10,7 @@
 class PerformanceWindow;
 class EditorWindow;
 class EvolutionCore;
-class DisplayAll;
+class ViewCollection;
 class EvoHistorySysGlue;
 class WorkThread;
 
@@ -22,11 +22,11 @@ public:
 
     void Start
     ( 
-        PerformanceWindow  * const,
-		EditorWindow       * const,  
-        DisplayAll   const * const, 
-        EvolutionCore * const,
-	    EvoHistorySysGlue  * const
+        PerformanceWindow * const,
+		EditorWindow      * const,  
+        ViewCollection    * const, 
+        EvolutionCore     * const,
+	    EvoHistorySysGlue * const
     );
 
     void PostDoEdit( GridPoint const & );

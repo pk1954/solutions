@@ -6,6 +6,6 @@
 class ObserverInterface
 {
 public:
-    virtual void SetDisplayRate( int ) = 0;
-    virtual void SetDirtyFlag  ( )     = 0;
+    virtual ~ObserverInterface( ) {};
+    virtual void Notify( bool const = false ) = 0;
 };

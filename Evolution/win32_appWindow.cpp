@@ -34,7 +34,7 @@
 #include "win32_winManager.h"
 #include "win32_workThreadInterface.h"
 #include "win32_focusPoint.h"
-#include "win32_displayAll.h"
+#include "ObserverInterface.h"
 
 // scripting and tracing
 
@@ -65,7 +65,7 @@
 
 AppWindow::AppWindow( ) :
     BaseWindow( ),
-    m_displayGridFunctor( ),
+    m_gridObservers( ),
     m_pMainGridWindow( nullptr ),
     m_pMiniGridWindow( nullptr ),
     m_pWorkThreadInterface( nullptr ),
@@ -157,11 +157,11 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 
 	stopwatch.Start();
 	m_pHistInfoWindow     ->Start( hWndApp, m_pHistorySystem );
-	m_pEvoHistGlue        ->Start( m_pEvolutionCore, m_pHistorySystem, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), true, m_pHistInfoWindow->GetWindowHandle() );
+	m_pEvoHistGlue        ->Start( m_pEvolutionCore, m_pHistorySystem, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), true, m_pHistInfoWindow );
 	m_pEvoHistWindow      ->Start( hWndApp, m_pFocusPoint, m_pEvoHistGlue, m_pWorkThreadInterface );
     m_pStatusBar          ->Start( hWndApp, m_pEvolutionCore );
 	m_pFocusPoint         ->Start( m_pEvoHistGlue, m_pEvolutionCore );
-	m_pWorkThreadInterface->Start( m_pPerfWindow, m_pEditorWindow, & m_displayGridFunctor, m_pEvolutionCore, m_pEvoHistGlue );
+	m_pWorkThreadInterface->Start( m_pPerfWindow, m_pEditorWindow, & m_gridObservers, m_pEvolutionCore, m_pEvoHistGlue );
 	m_pDspOptWindow       ->Start( hWndApp, m_pEvolutionCore );
     m_pEditorWindow       ->Start( hWndApp, m_pWorkThreadInterface, m_pEvolutionCore, m_pDspOptWindow, m_pStatusBar );
     m_pMainGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
@@ -173,24 +173,41 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
 	stopwatch.Stop( L"Start windows" );
 
 	stopwatch.Start();
-    m_pWinManager->AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_pStatusBar,     FALSE, FALSE, 300 );
-    m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, FALSE, FALSE,  75 ); 
-    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,              TRUE,  TRUE,  -1 );
-    m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow,   TRUE, FALSE,  -1 );
-    m_pWinManager->AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_pEditorWindow,   TRUE, FALSE,  -1 );
-    m_pWinManager->AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_pHistInfoWindow, TRUE, FALSE,  -1 );
-    m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow,     TRUE, FALSE, 500 );
-    m_pWinManager->AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_pStatistics,     TRUE, FALSE, 500 );
-    m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow,     TRUE, FALSE, 500 );
-    m_pWinManager->AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_pMiniGridWindow, TRUE, FALSE, 300 );
-    m_pWinManager->AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_pMainGridWindow, TRUE, FALSE, 100 );
+
+    m_pStatusBar->SetDisplayRate     ( 300 );
+    m_pEvoHistWindow->SetDisplayRate (  75 ); 
+    m_pCrsrWindow->SetDisplayRate    ( 100 );
+    m_pStatistics->SetDisplayRate    ( 100 );
+    m_pPerfWindow->SetDisplayRate    ( 100 );
+    m_pMiniGridWindow->SetDisplayRate( 300 );
+    m_pMainGridWindow->SetDisplayRate( 100 );
+
+    m_gridObservers.AttachObserver( m_pStatusBar      );
+    m_gridObservers.AttachObserver( m_pEvoHistWindow  ); 
+    m_gridObservers.AttachObserver( m_pCrsrWindow     );
+    m_gridObservers.AttachObserver( m_pStatistics     );
+    m_gridObservers.AttachObserver( m_pPerfWindow     );
+    m_gridObservers.AttachObserver( m_pMiniGridWindow );
+    m_gridObservers.AttachObserver( m_pMainGridWindow );
+	
+	m_pEvolutionCore->SetObservers( & m_gridObservers );   // display callback for core
+
+	m_pWinManager->AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_pStatusBar,     FALSE, FALSE );
+    m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow, FALSE, FALSE ); 
+    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, this,              TRUE,  TRUE );
+    m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow,   TRUE, FALSE );
+    m_pWinManager->AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_pEditorWindow,   TRUE, FALSE );
+    m_pWinManager->AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_pHistInfoWindow, TRUE, FALSE );
+    m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow,     TRUE, FALSE );
+    m_pWinManager->AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_pStatistics,     TRUE, FALSE );
+    m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow,     TRUE, FALSE );
+    m_pWinManager->AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_pMiniGridWindow, TRUE, FALSE );
+    m_pWinManager->AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_pMainGridWindow, TRUE, FALSE );
 	stopwatch.Stop( L"Window manager setup" );
 
 	stopwatch.Start();
-	m_pEvolutionCore->SetGridDisplayFunctor( & m_displayGridFunctor );   // display callback for core
     m_pMiniGridWindow->Observe( m_pMainGridWindow );
     m_pMiniGridWindow->Size( );
-    m_displayGridFunctor.SetWinManager( m_pWinManager );
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
     DefineWin32WrapperFunctions( m_pWorkThreadInterface, m_pEvoController );

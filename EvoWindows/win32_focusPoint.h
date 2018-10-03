@@ -5,9 +5,9 @@
 
 #include "GridPoint.h"
 #include "HistoryGeneration.h"
+#include "win32_viewCollection.h"
 
 class RootWindow;
-class ViewCollection;
 class EvoHistorySysGlue;
 class EvolutionCore;
 
@@ -15,27 +15,57 @@ class FocusPoint
 {
 public:
     FocusPoint( );
-    virtual ~FocusPoint( );
+	virtual ~FocusPoint( ) {};
 
     void Start( EvoHistorySysGlue *, EvolutionCore * );
 
     void SetFocusPoint( GridPoint const );
 
-    void AttachFocusPointObserver( RootWindow const *, INT const );
+	void AttachFocusPointObserver( RootWindow * pRootWin )
+	{
+		m_ViewCollection.AttachObserver( pRootWin );
+	}
     
-    GridPoint       const GetGridPoint( ) const; 
-    HIST_GENERATION const GetGenBirth( )  const; 
-    HIST_GENERATION const GetGenDeath( )  const; 
-    BOOL            const IsInGrid( )     const; 
-    BOOL            const IsAlive( )      const; 
-    BOOL            const IsDead( )       const; 
-    BOOL            const IsDefined( )    const; 
+	GridPoint const GetGridPoint( ) const 
+	{ 
+		return m_gp; 
+	}
+
+	HIST_GENERATION const GetGenBirth( ) const 
+	{ 
+		return m_genBirth; 
+	}
+
+	HIST_GENERATION const GetGenDeath( ) const 
+	{ 
+		return m_genDeath; 
+	}
+
+	BOOL const IsInGrid( ) const 
+	{ 
+		return m_gp.IsInGrid( ); 
+	}
+
+	BOOL const IsAlive( ) const 
+	{ 
+		return m_pCore->IsAlive( m_gp ); 
+	}
+
+	BOOL const IsDead( ) const 
+	{ 
+		return m_pCore->IsDead( m_gp ); 
+	}
+
+	BOOL const IsDefined( ) const 
+	{ 
+		return m_pCore->IsDefined( m_gp ); 
+	}
 
 private:
-    EvoHistorySysGlue  * m_pEvoHistGlue;
-    EvolutionCore      * m_pCore;
-    ViewCollection     * m_pViewCol;
-    HIST_GENERATION      m_genBirth;
-    HIST_GENERATION      m_genDeath;
-    GridPoint            m_gp;
+    EvoHistorySysGlue * m_pEvoHistGlue;
+    EvolutionCore     * m_pCore;
+    ViewCollection      m_ViewCollection;
+    HIST_GENERATION     m_genBirth;
+    HIST_GENERATION     m_genDeath;
+    GridPoint           m_gp;
 };

@@ -34,7 +34,7 @@ void EvoHistWindow::Start
     HistWindow::Start( hWndParent, pEvoHistorySys->GetHistorySystem( ) );
 	m_pWorkThreadInterface = pWorkThreadInterface;
 	m_pFocusPoint = pFocusPoint;
-    m_pFocusPoint->AttachFocusPointObserver( this, 75 );
+    m_pFocusPoint->AttachFocusPointObserver( this );
     Show( bShow );
 }
 

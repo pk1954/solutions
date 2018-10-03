@@ -150,7 +150,6 @@
     <ClInclude Include="win32_baseDialog.h" />
     <ClInclude Include="win32_baseWindow.h" />
     <ClInclude Include="win32_clut.h" />
-    <ClInclude Include="win32_displayAll.h" />
     <ClInclude Include="win32_hiResTimer.h" />
     <ClInclude Include="win32_performanceWindow.h" />
     <ClInclude Include="win32_rootWindow.h" />

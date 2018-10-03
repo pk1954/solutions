@@ -6,7 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include "win32_baseWindow.h"
-#include "win32_displayAll.h"
+#include "win32_viewCollection.h"
 
 class GridWindow;
 class PerformanceWindow;
@@ -46,7 +46,7 @@ private:
 
 	void adjustChildWindows( );
 
-    DisplayAll            m_displayGridFunctor;
+    ViewCollection        m_gridObservers;
 
     GridWindow          * m_pMainGridWindow;
     GridWindow          * m_pMiniGridWindow;

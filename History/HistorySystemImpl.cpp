@@ -7,7 +7,7 @@
 #include "historyCache.h"
 #include "historyIterator.h"
 #include "HistoryGeneration.h"
-#include "DisplayFunctor.h"
+#include "ObserverInterface.h"
 #include "HistorySystemImpl.h"
 
 // public member functions

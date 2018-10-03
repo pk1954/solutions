@@ -9,9 +9,9 @@
 #include "EvolutionCore.h"
 #include "EvoHistorySysGlue.h"
 #include "win32_script.h"
-#include "win32_performanceWindow.h"
 #include "win32_editor.h"
-#include "win32_displayAll.h"
+#include "win32_viewCollection.h"
+#include "win32_performanceWindow.h"
 #include "win32_workThreadInterface.h"
 #include "win32_worker_thread.h"
 
@@ -28,7 +28,7 @@ WorkThread::WorkThread( ) :
     m_iScriptLevel        ( 0 ),
     m_pPerformanceWindow  ( nullptr ),
 	m_pEditorWindow       ( nullptr ),
-    m_pDisplayGridFunctor ( nullptr ),
+    m_pViewCollection     ( nullptr ),
     m_pCore               ( nullptr ),
     m_pEvoHistGlue        ( nullptr ),
     m_bContinue           ( FALSE ),
@@ -39,7 +39,7 @@ void WorkThread::Start
 (  
     PerformanceWindow   * const pPerformanceWindow,
 	EditorWindow        * const pEditorWindow,
-    DisplayAll    const * const pDisplayGridFunctor,
+    ViewCollection      * const pViewCollection,
     EvolutionCore       * const pCore,
     EvoHistorySysGlue   * const pEvoHistorySys,
 	WorkThreadInterface * const pWorkThreadInterface
@@ -49,7 +49,7 @@ void WorkThread::Start
     m_hThread              = Util::MakeThread( WorkerThread, this, &m_dwThreadId, &m_hEventThreadStarter );
     m_pPerformanceWindow   = pPerformanceWindow;
 	m_pEditorWindow        = pEditorWindow;
-    m_pDisplayGridFunctor  = pDisplayGridFunctor;
+    m_pViewCollection      = pViewCollection;
     m_pCore                = pCore;
 	m_pEvoHistGlue         = pEvoHistorySys;
 	m_pWorkThreadInterface = pWorkThreadInterface;
@@ -64,7 +64,7 @@ WorkThread::~WorkThread( )
 	m_hThread              = nullptr;
     m_pPerformanceWindow   = nullptr;
     m_pEditorWindow        = nullptr;
-    m_pDisplayGridFunctor  = nullptr;
+    m_pViewCollection      = nullptr;
 	m_pEvoHistGlue         = nullptr;
 }
 
@@ -147,8 +147,8 @@ void WorkThread::WorkMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 
 void WorkThread::postMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 {
-    if ( m_pDisplayGridFunctor != nullptr )
-        ( * m_pDisplayGridFunctor ).Continue( );  // trigger worker thread if waiting for an event
+    if ( m_pViewCollection != nullptr )
+        m_pViewCollection->Continue( );  // trigger worker thread if waiting for an event
 	assert( IsValidThreadMessage( uiMsg ) );
     BOOL const bRes = PostThreadMessage( m_dwThreadId, uiMsg, wParam, lParam );
     DWORD err = GetLastError( );
@@ -251,6 +251,6 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 		return;  // sometimes strange messages arrive. e.g. uiMsg 1847
     }            // I cannot find a reason, so I ignore them
 
-	if (m_pDisplayGridFunctor != nullptr)
-	    ( * m_pDisplayGridFunctor )( FALSE );
+	if (m_pViewCollection != nullptr)
+	    m_pViewCollection->Notify( FALSE );
 }

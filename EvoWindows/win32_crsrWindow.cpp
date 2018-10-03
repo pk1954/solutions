@@ -26,7 +26,7 @@ void CrsrWindow::Start
     Move( 0, 300, 300, 150, TRUE );
     m_pCore = pCore;
     m_pFocusPoint = pFocusPoint;
-    m_pFocusPoint->AttachFocusPointObserver( this, 0 );
+    m_pFocusPoint->AttachFocusPointObserver( this );
 }
 
 void CrsrWindow::DoPaint( )

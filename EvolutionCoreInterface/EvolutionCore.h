@@ -6,7 +6,7 @@
 #include "BoolOp.h"
 #include "EvolutionTypes.h"
 
-class DisplayFunctor;
+class ObserverInterface;
 class EvolutionCore;
 class PlannedActivity;
 class GridPoint;
@@ -72,20 +72,20 @@ public:
 
 // manipulating functions
 
-    virtual void Compute              ( ) = 0;
-	virtual void ResetSelection       ( ) = 0;
-    virtual void ResetAll             ( ) = 0;
-    virtual void ClearPoi             ( ) = 0;
-    virtual void SetPoi               ( GridPoint              const & ) = 0;
-    virtual void SetGridDisplayFunctor( DisplayFunctor const * const   ) = 0;
-    virtual void SetSimulationMode    ( tBoolOp                const   ) = 0;
-	virtual void SetSelection         ( GridRect               const & ) = 0;
-    virtual void SetBrushManipulator  ( tManipulator           const   ) = 0;
-    virtual void SetBrushShape        ( tShape                 const   ) = 0;
-    virtual void SetBrushRadius       ( GRID_COORD             const   ) = 0;
-    virtual void SetBrushIntensity    ( short                  const   ) = 0;
-    virtual void SetBrushMode         ( tBrushMode             const   ) = 0;
-    virtual void ModelDoEdit          ( GridPoint              const   ) = 0;
+    virtual void Compute            ( ) = 0;
+	virtual void ResetSelection     ( ) = 0;
+    virtual void ResetAll           ( ) = 0;
+    virtual void ClearPoi           ( ) = 0;
+    virtual void SetPoi             ( GridPoint           const & ) = 0;
+    virtual void SetObservers       ( ObserverInterface * const   ) = 0;
+    virtual void SetSimulationMode  ( tBoolOp             const   ) = 0;
+	virtual void SetSelection       ( GridRect            const & ) = 0;
+    virtual void SetBrushManipulator( tManipulator        const   ) = 0;
+    virtual void SetBrushShape      ( tShape              const   ) = 0;
+    virtual void SetBrushRadius     ( GRID_COORD          const   ) = 0;
+    virtual void SetBrushIntensity  ( short               const   ) = 0;
+    virtual void SetBrushMode       ( tBrushMode          const   ) = 0;
+    virtual void ModelDoEdit        ( GridPoint           const   ) = 0;
 
     // static functions
     

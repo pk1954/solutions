@@ -28,7 +28,7 @@ DrawFrame::DrawFrame
     PixelCoordinates   * const pPixelCoordinates, 
     DspOptWindow       * const pDspOptWindow 
 ) : 
-    m_hWnd( hWnd ),
+    m_hwnd( hWnd ),
     m_bDimmIndividuals( TRUE ),
     m_pCore( pCore ),
     m_pPixelCoordinates( pPixelCoordinates ),
@@ -85,7 +85,7 @@ void DrawFrame::Resize( )
 
 void DrawFrame::DoPaint( KGridRect const & pkgr )
 {
-    if ( IsWindowVisible( m_hWnd ) )
+    if ( IsWindowVisible( m_hwnd ) )
     {
 		m_pD3dBuffer->StartFrame( );
 
@@ -93,7 +93,7 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
 
         if ( m_pDspOptWindow->AreIndividualsVisible( ) )
         {
-	        GridRect rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hWnd ) ) );
+	        GridRect rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hwnd ) ) );
 
             drawPOI( m_pCore->FindPOI( ) );
 
@@ -184,10 +184,10 @@ void DrawFrame::drawText( GridRect const & rect )
 		{
             if ( GetEvoCore( )->IsAlive( gp ) )
             {
-				long       lHeight    = Util::GetClientWindowHeight( m_hWnd );
+				long       lHeight    = Util::GetClientWindowHeight( m_hwnd );
 				COLORREF   colText    = getTextColor( gp );
                 PixelPoint ptCenter   = m_pPixelCoordinates->Grid2PixelPosCenter( gp );
-						   Util::UpsideDown( m_hWnd, & ptCenter ); 
+						   Util::UpsideDown( m_hwnd, & ptCenter ); 
                 PixelRect  pixRect ( ptCenter  - lHalfSizeInd, ptCenter  + lHalfSizeInd );
 
                 assembleLeftColumn( gp );

@@ -24,7 +24,7 @@ void WorkThreadInterface::Start
 ( 
     PerformanceWindow  * const pPerformanceWindow,
 	EditorWindow       * const pEditorWindow,
-    DisplayAll   const * const pDisplayGridFunctor,
+    ViewCollection     * const pViewCollection,
     EvolutionCore      * const pCore,
     EvoHistorySysGlue  * const pEvoHistGlue
 
@@ -33,7 +33,7 @@ void WorkThreadInterface::Start
     m_pCore        = pCore;
 	m_pEvoHistGlue = pEvoHistGlue;
 	m_pWorkThread  = new WorkThread();
-	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pDisplayGridFunctor, pCore, pEvoHistGlue, this );
+	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pViewCollection, pCore, pEvoHistGlue, this );
 }
 
 WorkThreadInterface::~WorkThreadInterface( )

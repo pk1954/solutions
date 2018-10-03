@@ -16,7 +16,7 @@
 #endif
 
 class ObserverInterface;
-class DisplayFunctor;
+class ObserverInterface;
 class NextGenFunctor;
 class HistoryIterator;
 class HistCacheItem;

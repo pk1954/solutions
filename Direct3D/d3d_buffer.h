@@ -40,7 +40,7 @@ public:
 
 private:
     
-    HWND m_hWnd;
+    HWND m_hwnd;
 
     ULONG m_ulTrianglesPerPrimitive;
 	ULONG m_ulVerticesPerPrimitive;

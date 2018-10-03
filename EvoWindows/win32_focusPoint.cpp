@@ -13,9 +13,7 @@ FocusPoint::FocusPoint( ) :
     m_genBirth( - 1 ),
     m_genDeath( - 1 ),
     m_gp( )
-{ 
-	m_pViewCol = new ViewCollection( );
-};
+{ };
 
 void FocusPoint::Start
 ( 
@@ -26,46 +24,6 @@ void FocusPoint::Start
     assert( pCore != nullptr );
     m_pEvoHistGlue = pEvoHistGlue;
     m_pCore        = pCore;
-}
-
-FocusPoint::~FocusPoint( ) 
-{ 
-	delete m_pViewCol;
-};
-
-GridPoint const FocusPoint::GetGridPoint( ) const 
-{ 
-	return m_gp; 
-}
-
-HIST_GENERATION const FocusPoint::GetGenBirth( ) const 
-{ 
-	return m_genBirth; 
-}
-
-HIST_GENERATION const FocusPoint::GetGenDeath( ) const 
-{ 
-	return m_genDeath; 
-}
-
-BOOL const FocusPoint::IsInGrid( ) const 
-{ 
-	return m_gp.IsInGrid( ); 
-}
-
-BOOL const FocusPoint::IsAlive( ) const 
-{ 
-	return m_pCore->IsAlive( m_gp ); 
-}
-
-BOOL const FocusPoint::IsDead( ) const 
-{ 
-	return m_pCore->IsDead( m_gp ); 
-}
-
-BOOL const FocusPoint::IsDefined( ) const 
-{ 
-	return m_pCore->IsDefined( m_gp ); 
 }
 
 void FocusPoint::SetFocusPoint( GridPoint const gpNew )
@@ -82,11 +40,6 @@ void FocusPoint::SetFocusPoint( GridPoint const gpNew )
                 m_genDeath = m_pEvoHistGlue->GetLastGenOfIndividual ( id ) + 1;
             }
         }
-        m_pViewCol->NotifyObservers( );
+        m_ViewCollection.Notify( );
     }
-}
-
-void FocusPoint::AttachFocusPointObserver( RootWindow const * pRootWindow, INT const iMilliSecs )
-{
-    m_pViewCol->AttachObserver( pRootWindow, iMilliSecs );
 }

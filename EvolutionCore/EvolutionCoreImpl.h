@@ -8,7 +8,7 @@
 #include "EvolutionCore.h"
 
 class EvolutionCore;
-class DisplayFunctor;
+class ObserverInterface;
 
 class EvolutionCoreImpl : public EvolutionCore
 {
@@ -23,9 +23,9 @@ public:
 
     virtual void Compute( );
     
-	virtual void SetGridDisplayFunctor( DisplayFunctor const * const f ) 
+	virtual void SetObservers( ObserverInterface * const f ) 
 	{ 
-		m_gridDisplayFunctor = f; 
+		m_pObservers = f; 
 	}
 
 	virtual void DumpGridPointList( ) const;
@@ -99,14 +99,13 @@ public:
 	}
 
 private:
-    DisplayFunctor const * m_gridDisplayFunctor;    // GUI call back for display of current model 
-
-    Grid            m_grid;	
-    PlannedActivity m_plan;
-    IndId           m_idPOI;
-	GridBrush		m_brush;
-	bool			m_bSimulationMode;
-	GridRect        m_gridRectSelection;
+    ObserverInterface * m_pObservers;    // GUI call back for display of current model 
+    Grid                m_grid;	
+    PlannedActivity     m_plan;
+    IndId               m_idPOI;
+	GridBrush 	        m_brush;
+	bool	    	    m_bSimulationMode;
+	GridRect            m_gridRectSelection;
 
     GridField const & getGridField( GridPoint const & gp ) const { return m_grid.GetGridField( gp ); }
     Genome    const & getGenome   ( GridPoint const & gp ) const { return getGridField( gp ).GetGenome( ); }
