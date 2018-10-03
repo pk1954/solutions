@@ -53,7 +53,7 @@ void EvoHistorySysGlue::Start
         genMaxNrOfGens,
         m_pEvoModelWork,
         m_pEvoModelFactory,
-		( pRootWindow == nullptr ) ? nullptr : pRootWindow->GetObserver(),
+		pRootWindow,
 		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( tEvoCmd::reset ), 0 )
     );
 

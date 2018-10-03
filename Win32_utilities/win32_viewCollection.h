@@ -33,12 +33,10 @@ public:
 		}
 	}
 
-	ObserverInterface * AttachObserver( RootWindow * pRootWin )
+	void AttachObserver( RootWindow * pRootWin )
 	{
 		assert( pRootWin != nullptr );
-		ObserverInterface * po = pRootWin->GetObserver( );
-		m_aView.push_back( po );
-		return po;
+		m_aView.push_back( pRootWin );
 	}
 
     void Continue( ) const

@@ -7,12 +7,12 @@
 #include "commctrl.h"
 #include "pixelRect.h"
 #include "pixelPoint.h"
+#include "ObserverInterface.h"
 #include "win32_util.h"
 
 class Observer;
-class ObserverInterface;
 
-class RootWindow
+class RootWindow: public ObserverInterface
 {
 public:
 
@@ -41,9 +41,6 @@ public:
     HWND          const SetFocus( )                   const { return ::SetFocus       ( m_hwnd ); }
     HWND          const GetDlgItem( int const iItem ) const { return ::GetDlgItem     ( m_hwnd, iItem ); }
     BOOL          const IsCaptured( )                 const { return GetCapture( ) == m_hwnd; }
-	INT           const GetDisplayRate()	          const { return m_iDisplayRate; }
-
-	ObserverInterface * GetObserver() const;
 
 	void SetDisplayRate( INT const iRate ) { m_iDisplayRate = iRate; }
 	
@@ -148,15 +145,25 @@ public:
 		return ptCrsr;
 	}
 
+	virtual void Notify( bool const );
+
 protected:
-    void SetWindowHandle( HWND const );
+
+	void SetWindowHandle( HWND const );
 
 private:
 
-    HWND       m_hwnd;
-	HWND       m_hwndApp;
-	Observer * m_pObserver;
-    INT        m_iDisplayRate; // in milliseconds
+    static void CALLBACK TimerProc( void * const, BOOL const );
+
+    void invalidate( );
+    void startTimer( DWORD const );
+
+    HWND   m_hwnd;
+	HWND   m_hwndApp;
+    INT    m_iDisplayRate; // in milliseconds
+    HANDLE m_hTimer;
+    BOOL   m_bTimerActive;
+    BOOL   m_bDirty;
 };
 
 BOOL RootWinIsReady( RootWindow const * );
