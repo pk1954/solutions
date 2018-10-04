@@ -10,26 +10,17 @@
 class ViewCollection : public ObserverInterface
 {
 public:
-    ViewCollection( )
-	  : m_event( CreateEvent( nullptr, FALSE, FALSE, nullptr ) )
+    ViewCollection( ) 
 	{ }
 
-	~ViewCollection( )
-	{
-		(void)CloseHandle( m_event );
-		m_event = nullptr;
-	}
+	~ViewCollection( )	
+	{ }
 
-	virtual void Notify( bool const bWait = false )
+	virtual void Notify( )
 	{
 		for ( auto &v : m_aView )
 		{
 			v->Notify();
-		}
-		if ( bWait )
-		{
-			(void)ResetEvent( m_event );
-			(void)WaitForSingleObject( m_event, INFINITE );
 		}
 	}
 
@@ -39,12 +30,6 @@ public:
 		m_aView.push_back( pRootWin );
 	}
 
-    void Continue( ) const
-    {
-        (void)SetEvent( m_event );
-    }
-
 private:
-    HANDLE m_event;
     std::vector< ObserverInterface * > m_aView;
 };

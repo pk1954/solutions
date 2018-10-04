@@ -8,6 +8,7 @@
 #include "EvolutionCore.h"
 
 class EvolutionCore;
+class EventInterface;
 class ObserverInterface;
 
 class EvolutionCoreImpl : public EvolutionCore
@@ -23,9 +24,14 @@ public:
 
     virtual void Compute( );
     
-	virtual void SetObservers( ObserverInterface * const f ) 
+	virtual void SetObservers( ObserverInterface * const pObservers ) 
 	{ 
-		m_pObservers = f; 
+		m_pObservers = pObservers; 
+	}
+
+	virtual void SetEvent( EventInterface * const pEvent ) 
+	{ 
+		m_pEvent = pEvent; 
 	}
 
 	virtual void DumpGridPointList( ) const;
@@ -100,7 +106,8 @@ public:
 
 private:
     ObserverInterface * m_pObservers;    // GUI call back for display of current model 
-    Grid                m_grid;	
+	EventInterface    * m_pEvent;
+	Grid                m_grid;	
     PlannedActivity     m_plan;
     IndId               m_idPOI;
 	GridBrush 	        m_brush;

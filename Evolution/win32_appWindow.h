@@ -7,6 +7,7 @@
 #include <iostream>
 #include "win32_baseWindow.h"
 #include "win32_viewCollection.h"
+#include "win32_event.h"
 
 class GridWindow;
 class PerformanceWindow;
@@ -46,6 +47,7 @@ private:
 
 	void adjustChildWindows( );
 
+	Win32_event           m_event;
     ViewCollection        m_gridObservers;
 
     GridWindow          * m_pMainGridWindow;

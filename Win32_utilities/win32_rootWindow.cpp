@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "Observer.h"
 #include "win32_rootWindow.h"
 
 BOOL RootWinIsReady( RootWindow const * pRootWin )
@@ -31,7 +30,7 @@ void RootWindow::SetWindowHandle( HWND const hwnd )
 	m_hwndApp = GetAncestor( m_hwnd, GA_ROOTOWNER );
 };
 
-void RootWindow::Notify( bool const bWait )
+void RootWindow::Notify( )
 {
 	DWORD dwTime = static_cast<DWORD>( m_iDisplayRate );
 
@@ -51,7 +50,7 @@ void RootWindow::Notify( bool const bWait )
 
 void CALLBACK RootWindow::TimerProc( void * const lpParameter, BOOL const TimerOrWaitFired )
 {
-    RootWindow * const pRootWin = static_cast<RootWindow * >( lpParameter );
+    RootWindow * const pRootWin = static_cast<RootWindow *>( lpParameter );
     if ( pRootWin->m_bDirty )
     {
         pRootWin->invalidate( );

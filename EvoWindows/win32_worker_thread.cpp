@@ -8,9 +8,12 @@
 #include "GridPoint24.h"
 #include "EvolutionCore.h"
 #include "EvoHistorySysGlue.h"
+#include "EventInterface.h"
+#include "ObserverInterface.h"
 #include "win32_script.h"
 #include "win32_editor.h"
-#include "win32_viewCollection.h"
+#include "win32_thread.h"
+#include "win32_event.h"
 #include "win32_performanceWindow.h"
 #include "win32_workThreadInterface.h"
 #include "win32_worker_thread.h"
@@ -22,37 +25,41 @@ using namespace std;
 
 WorkThread::WorkThread( ) :
 	m_pWorkThreadInterface( nullptr ),
-    m_hEventThreadStarter ( nullptr ),
     m_dwThreadId          ( 0 ),
 	m_hThread             ( nullptr ),
     m_iScriptLevel        ( 0 ),
     m_pPerformanceWindow  ( nullptr ),
 	m_pEditorWindow       ( nullptr ),
-    m_pViewCollection     ( nullptr ),
+    m_pObservers          ( nullptr ),
+    m_pEvent              ( nullptr ),
     m_pCore               ( nullptr ),
     m_pEvoHistGlue        ( nullptr ),
     m_bContinue           ( FALSE ),
-    m_genDemanded         ( 0 )
+    m_genDemanded         ( 0 ),
+    m_EventThreadStarter  ( )
 { }
 
 void WorkThread::Start
 (  
     PerformanceWindow   * const pPerformanceWindow,
 	EditorWindow        * const pEditorWindow,
-    ViewCollection      * const pViewCollection,
+    EventInterface      * const pEvent,
+    ObserverInterface   * const pObservers, 
     EvolutionCore       * const pCore,
     EvoHistorySysGlue   * const pEvoHistorySys,
 	WorkThreadInterface * const pWorkThreadInterface
-
 )
 {
-    m_hThread              = Util::MakeThread( WorkerThread, this, &m_dwThreadId, &m_hEventThreadStarter );
+    m_hThread              = Util::MakeThread( WorkerThread, this, &m_dwThreadId );
     m_pPerformanceWindow   = pPerformanceWindow;
 	m_pEditorWindow        = pEditorWindow;
-    m_pViewCollection      = pViewCollection;
+    m_pEvent               = pEvent;
+	m_pObservers           = pObservers;
     m_pCore                = pCore;
 	m_pEvoHistGlue         = pEvoHistorySys;
 	m_pWorkThreadInterface = pWorkThreadInterface;
+
+	m_EventThreadStarter.Wait();
 
     (void)SetThreadAffinityMask( m_hThread, 0x0002 );
 }
@@ -60,11 +67,11 @@ void WorkThread::Start
 WorkThread::~WorkThread( )
 {
     m_pWorkThreadInterface = nullptr;
-	m_hEventThreadStarter  = nullptr;
 	m_hThread              = nullptr;
     m_pPerformanceWindow   = nullptr;
     m_pEditorWindow        = nullptr;
-    m_pViewCollection      = nullptr;
+    m_pEvent               = nullptr;
+    m_pObservers           = nullptr;
 	m_pEvoHistGlue         = nullptr;
 }
 
@@ -147,8 +154,8 @@ void WorkThread::WorkMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 
 void WorkThread::postMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 {
-    if ( m_pViewCollection != nullptr )
-        m_pViewCollection->Continue( );  // trigger worker thread if waiting for an event
+    if ( m_pEvent != nullptr )
+        m_pEvent->Continue( );  // trigger worker thread if waiting for an event
 	assert( IsValidThreadMessage( uiMsg ) );
     BOOL const bRes = PostThreadMessage( m_dwThreadId, uiMsg, wParam, lParam );
     DWORD err = GetLastError( );
@@ -161,7 +168,7 @@ static DWORD WINAPI WorkerThread( _In_ LPVOID lpParameter )
     MSG                msg;
        
     (void)PeekMessage( &msg, nullptr, WM_USER, WM_USER, PM_NOREMOVE );  // cause creation of message queue
-    (void)SetEvent( pWT->m_hEventThreadStarter );				        // trigger waiting thread to continue
+    pWT->m_EventThreadStarter.Continue();       				        // trigger waiting thread to continue
 
     for(;;)
     {
@@ -251,6 +258,6 @@ void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 		return;  // sometimes strange messages arrive. e.g. uiMsg 1847
     }            // I cannot find a reason, so I ignore them
 
-	if (m_pViewCollection != nullptr)
-	    m_pViewCollection->Notify( FALSE );
+	if (m_pObservers != nullptr)
+	    m_pObservers->Notify( );
 }

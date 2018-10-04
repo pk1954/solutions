@@ -10,7 +10,8 @@
 class PerformanceWindow;
 class EditorWindow;
 class EvolutionCore;
-class ViewCollection;
+class EventInterface;
+class ObserverInterface;
 class EvoHistorySysGlue;
 class WorkThread;
 
@@ -24,7 +25,8 @@ public:
     ( 
         PerformanceWindow * const,
 		EditorWindow      * const,  
-        ViewCollection    * const, 
+		EventInterface    * const,
+		ObserverInterface * const, 
         EvolutionCore     * const,
 	    EvoHistorySysGlue * const
     );

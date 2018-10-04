@@ -14,14 +14,16 @@
 #include "EvolutionTypes.h"
 #include "EvoGenerationCmd.h"
 #include "EvoHistorySysGlue.h"
+#include "win32_event.h"
 
 class PerformanceWindow;
 class EditorWindow;
 class RootWindow;
 class EvolutionCore;
 class WinManager;
-class ViewCollection;
 class EditorWindow;
+class EventInterface;
+class ObserverInterface;
 class EvoHistorySysGlue;
 class WorkThreadInterface;
 
@@ -35,7 +37,8 @@ public:
     ( 
         PerformanceWindow   * const,
 		EditorWindow        * const,  
-        ViewCollection      * const, 
+        EventInterface      * const, 
+        ObserverInterface   * const, 
         EvolutionCore       * const,
 	    EvoHistorySysGlue   * const,
 		WorkThreadInterface * const
@@ -79,12 +82,13 @@ public:
 private:
 
 	WorkThreadInterface * m_pWorkThreadInterface;
-    ViewCollection      * m_pViewCollection;
     PerformanceWindow   * m_pPerformanceWindow;
     EditorWindow        * m_pEditorWindow;
     EvoHistorySysGlue   * m_pEvoHistGlue;
+    ObserverInterface   * m_pObservers;
+    EventInterface      * m_pEvent;
     EvolutionCore       * m_pCore;
-    HANDLE                m_hEventThreadStarter;
+	Win32_event           m_EventThreadStarter;
     DWORD                 m_dwThreadId;
 	HANDLE			      m_hThread;
     BOOL                  m_bContinue;

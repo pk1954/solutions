@@ -149,12 +149,14 @@
     <ClInclude Include="win32_baseDialog.h" />
     <ClInclude Include="win32_baseWindow.h" />
     <ClInclude Include="win32_clut.h" />
+    <ClInclude Include="win32_event.h" />
     <ClInclude Include="win32_hiResTimer.h" />
     <ClInclude Include="win32_performanceWindow.h" />
     <ClInclude Include="win32_rootWindow.h" />
     <ClInclude Include="win32_script.h" />
     <ClInclude Include="win32_stopwatch.h" />
     <ClInclude Include="win32_textWindow.h" />
+    <ClInclude Include="win32_thread.h" />
     <ClInclude Include="win32_util.h" />
     <ClInclude Include="win32_viewCollection.h" />
     <ClInclude Include="win32_winManager.h" />
@@ -175,6 +177,7 @@
     <ClCompile Include="win32_script.cpp" />
     <ClCompile Include="win32_stopwatch.cpp" />
     <ClCompile Include="win32_textWindow.cpp" />
+    <ClCompile Include="win32_thread.cpp" />
     <ClCompile Include="win32_util.cpp" />
     <ClCompile Include="win32_winManager.cpp" />
   </ItemGroup>

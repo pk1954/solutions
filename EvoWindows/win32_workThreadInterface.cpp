@@ -24,7 +24,8 @@ void WorkThreadInterface::Start
 ( 
     PerformanceWindow  * const pPerformanceWindow,
 	EditorWindow       * const pEditorWindow,
-    ViewCollection     * const pViewCollection,
+    EventInterface     * const pEvent,
+    ObserverInterface  * const pObservers, 
     EvolutionCore      * const pCore,
     EvoHistorySysGlue  * const pEvoHistGlue
 
@@ -33,12 +34,12 @@ void WorkThreadInterface::Start
     m_pCore        = pCore;
 	m_pEvoHistGlue = pEvoHistGlue;
 	m_pWorkThread  = new WorkThread();
-	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pViewCollection, pCore, pEvoHistGlue, this );
+	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pEvent, pObservers, pCore, pEvoHistGlue, this );
 }
 
 WorkThreadInterface::~WorkThreadInterface( )
 {
-	m_pCore   = nullptr;
+	m_pCore        = nullptr;
 	m_pEvoHistGlue = nullptr;
 	m_pWorkThread  = nullptr;
     m_pTraceStream = nullptr;

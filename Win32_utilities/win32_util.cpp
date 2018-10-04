@@ -102,29 +102,6 @@ void Util::MakeLayered( HWND const hWnd, BOOL const bMode, COLORREF const crKey,
     assert( bRes );
 }
 
-HANDLE Util::MakeThread
-( 
-    LPTHREAD_START_ROUTINE lpStartAddress,
-    LPVOID   lpParameter,
-    LPDWORD  lpThreadId,
-    HANDLE * phEvent
-)
-{
-    //lint -esym( 954, hndThread )     HANDLE could be pointer to const
-    HANDLE const hThread = CreateThread( nullptr, 0, lpStartAddress, lpParameter, 0, lpThreadId );
-
-    assert( hThread != nullptr );
-
-    if ( phEvent != nullptr )
-    {
-        *phEvent = CreateEvent( nullptr, FALSE, FALSE, nullptr );
-        assert( * phEvent != nullptr );
-        (void)WaitForSingleObject( *phEvent, INFINITE );  // wait until new thread has created a message queue
-    }
-
-    return hThread;
-}  
-
 //lint -esym( 714, Util::GetNrOfCPUs(void) )      not referenced
 DWORD Util::GetNrOfCPUs( void )
 {

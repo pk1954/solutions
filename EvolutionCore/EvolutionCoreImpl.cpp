@@ -9,6 +9,7 @@
 #include "strategy.h"
 #include "grid_model.h"
 #include "gplIterator.h"
+#include "EventInterface.h"
 #include "ObserverInterface.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCoreImpl.h"
@@ -17,6 +18,7 @@ using namespace std;
 
 EvolutionCoreImpl::EvolutionCoreImpl( ) :
     m_pObservers( nullptr ),
+	m_pEvent( nullptr ),
 	m_brush( & m_grid )
 { 
 	ResetAll( );
@@ -81,7 +83,10 @@ void EvolutionCoreImpl::Compute( )
         if ( (m_pObservers != nullptr) && IsPoiDefined( ) ) 
         {
             if ( IsPoi( gpRun ) || IsPoi( pPlan->GetPartner( ) ) )
-               m_pObservers->Notify( true );
+			{
+               m_pObservers->Notify( );
+               m_pEvent->Wait( );
+			}
         }
         pPlan->SetInvalid( );
         gpRun = m_grid.ImplementPlan( gpRun, * pPlan );   // may return GP_NULL

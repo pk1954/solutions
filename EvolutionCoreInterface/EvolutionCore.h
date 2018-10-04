@@ -7,6 +7,7 @@
 #include "EvolutionTypes.h"
 
 class ObserverInterface;
+class EventInterface;
 class EvolutionCore;
 class PlannedActivity;
 class GridPoint;
@@ -16,6 +17,7 @@ class IndId;
 class EvolutionCore
 {
 public:
+
     virtual ~EvolutionCore( ) { };
 
 	virtual void CopyEvolutionCoreData( EvolutionCore const * const ) = 0;
@@ -78,6 +80,7 @@ public:
     virtual void ClearPoi           ( ) = 0;
     virtual void SetPoi             ( GridPoint           const & ) = 0;
     virtual void SetObservers       ( ObserverInterface * const   ) = 0;
+    virtual void SetEvent           ( EventInterface    * const   ) = 0;
     virtual void SetSimulationMode  ( tBoolOp             const   ) = 0;
 	virtual void SetSelection       ( GridRect            const & ) = 0;
     virtual void SetBrushManipulator( tManipulator        const   ) = 0;
@@ -89,7 +92,7 @@ public:
 
     // static functions
     
-    static EvolutionCore * InitClass( );
+    static EvolutionCore * InitClass(  );
     static EvolutionCore * CreateCore( );
     static unsigned long   GetModelSize( );
     static unsigned int    GetNrInteractionsWithKnownCulprit( );

@@ -147,7 +147,7 @@
   <ItemGroup>
     <ClInclude Include="BoolOp.h" />
     <ClInclude Include="debug.h" />
-    <ClInclude Include="DisplayFunctor.h" />
+    <ClInclude Include="EventInterface.h" />
     <ClInclude Include="Int24.h" />
     <ClInclude Include="kGridPoint.h" />
     <ClInclude Include="observerInterface.h" />

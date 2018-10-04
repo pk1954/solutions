@@ -7,5 +7,6 @@ class ObserverInterface
 {
 public:
     virtual ~ObserverInterface( ) {};
-    virtual void Notify( bool const = false ) = 0;
+
+    virtual void Notify( ) = 0;
 };

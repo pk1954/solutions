@@ -1,7 +1,7 @@
 // HistAllocThread.cpp
 
 #include "stdafx.h"
-#include "win32_util.h"
+#include "win32_thread.h"
 #include "HistorySystem.h"
 #include "HistAllocThread.h"
 
@@ -17,7 +17,7 @@ HistAllocThread::HistAllocThread
 	if ( bAsync )
 	{
 		DWORD m_dwThreadId;
-		m_hThreadSlotAllocator = Util::MakeThread( threadProc, this, &m_dwThreadId, nullptr );
+		m_hThreadSlotAllocator = Util::MakeThread( threadProc, this, &m_dwThreadId );
 		(void)SetThreadAffinityMask( m_hThreadSlotAllocator, 0x0003 );
 	}
 	else
