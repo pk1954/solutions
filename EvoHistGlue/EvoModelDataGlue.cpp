@@ -22,10 +22,10 @@ GridPoint EvoModelDataGlue::FindGridPoint( IndId const & id ) const
 
 void EvoModelDataGlue::CopyFrom( ModelData const * const src )
 {
-	stopwatch.Start();
+//	stopwatch.Start();
 	EvoModelDataGlue const * const evoSrc = static_cast< EvoModelDataGlue const * const >( src );
     m_pEvolutionCore->CopyEvolutionCoreData( evoSrc->m_pEvolutionCore );
-	stopwatch.Stop( L"Copy model" );
+//	stopwatch.Stop( L"Copy model" );
 }
 
 	void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )

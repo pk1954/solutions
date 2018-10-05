@@ -25,8 +25,7 @@ using namespace std;
 
 WorkThread::WorkThread( ) :
 	m_pWorkThreadInterface( nullptr ),
-    m_dwThreadId          ( 0 ),
-	m_hThread             ( nullptr ),
+    m_pWorkThread         ( nullptr ),
     m_iScriptLevel        ( 0 ),
     m_pPerformanceWindow  ( nullptr ),
 	m_pEditorWindow       ( nullptr ),
@@ -50,7 +49,7 @@ void WorkThread::Start
 	WorkThreadInterface * const pWorkThreadInterface
 )
 {
-    m_hThread              = Util::MakeThread( WorkerThread, this, &m_dwThreadId );
+    m_pWorkThread          = new Util::Thread( WorkerThread, this );
     m_pPerformanceWindow   = pPerformanceWindow;
 	m_pEditorWindow        = pEditorWindow;
     m_pEvent               = pEvent;
@@ -61,13 +60,15 @@ void WorkThread::Start
 
 	m_EventThreadStarter.Wait();
 
-    (void)SetThreadAffinityMask( m_hThread, 0x0002 );
+    m_pWorkThread->SetThreadAffinityMask( 0x0002 );
 }
 
 WorkThread::~WorkThread( )
 {
+	delete m_pWorkThread;
+
     m_pWorkThreadInterface = nullptr;
-	m_hThread              = nullptr;
+	m_pWorkThread          = nullptr;
     m_pPerformanceWindow   = nullptr;
     m_pEditorWindow        = nullptr;
     m_pEvent               = nullptr;
@@ -79,7 +80,7 @@ void WorkThread::TerminateThread( HWND const hwndCtl )
 {
 	dispatchMessage( THREAD_MSG_STOP, 0, 0 );            // stop running computation and script processing
 	postMessage( THREAD_MSG_EXIT, 0, (LPARAM)hwndCtl );  // stop message pump of thread
-	::WaitForSingleObject(m_hThread, INFINITE);          // wait until thread has stopped
+	m_pWorkThread->Wait4Termination();                   // wait until thread has stopped
 	DestroyWindow( hwndCtl);                             // trigger termination of application
 }
 
@@ -157,14 +158,12 @@ void WorkThread::postMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
     if ( m_pEvent != nullptr )
         m_pEvent->Continue( );  // trigger worker thread if waiting for an event
 	assert( IsValidThreadMessage( uiMsg ) );
-    BOOL const bRes = PostThreadMessage( m_dwThreadId, uiMsg, wParam, lParam );
-    DWORD err = GetLastError( );
-    assert( bRes );
+    m_pWorkThread->PostMessage( uiMsg, wParam, lParam );
 }
 
-static DWORD WINAPI WorkerThread( _In_ LPVOID lpParameter )
+static unsigned int __stdcall WorkerThread( void * data ) 
 {
-    WorkThread * const pWT = static_cast<WorkThread *>( lpParameter );
+    WorkThread * const pWT = static_cast<WorkThread *>( data );
     MSG                msg;
        
     (void)PeekMessage( &msg, nullptr, WM_USER, WM_USER, PM_NOREMOVE );  // cause creation of message queue

@@ -11,14 +11,13 @@ HistAllocThread::HistAllocThread
 	BOOL                  const bAsync      
 ) :
 	m_pHistorySys( pHistSys ),
-	m_hThreadSlotAllocator( nullptr ),
+	m_pThreadSlotAllocator( nullptr ),
 	m_bContinueSlotAllocation( TRUE )
 {
 	if ( bAsync )
 	{
-		DWORD m_dwThreadId;
-		m_hThreadSlotAllocator = Util::MakeThread( threadProc, this, &m_dwThreadId );
-		(void)SetThreadAffinityMask( m_hThreadSlotAllocator, 0x0003 );
+		m_pThreadSlotAllocator = new Util::Thread( threadProc, this );
+		m_pThreadSlotAllocator->SetThreadAffinityMask( 0x0003 );
 	}
 	else
 		threadProc( this );
@@ -27,19 +26,24 @@ HistAllocThread::HistAllocThread
 HistAllocThread::~HistAllocThread( )
 {
 	m_bContinueSlotAllocation = FALSE;
-	if ( m_hThreadSlotAllocator != nullptr )
+	if ( m_pThreadSlotAllocator != nullptr )
 	{
-		WaitForSingleObject (m_hThreadSlotAllocator, INFINITE );
-		CloseHandle( m_hThreadSlotAllocator );
+		m_pThreadSlotAllocator->Wait4Termination( );
 	}
 }
 
-static DWORD WINAPI threadProc( _In_ LPVOID lpParameter )
+static unsigned int __stdcall threadProc( void * data ) 
 {
-	HistAllocThread   const * const pHistAllocThread = static_cast<HistAllocThread const *>(lpParameter);
-	HistorySystem     const * const pHistSys         = pHistAllocThread->m_pHistorySys;
+	HistAllocThread const * const pHistAllocThread = static_cast<HistAllocThread const *>(data);
+	HistorySystem   const * const pHistSys         = pHistAllocThread->m_pHistorySys;
 
-	while (pHistAllocThread->m_bContinueSlotAllocation && pHistSys->AddHistorySlot());
+	for (;;)
+	{
+		if ( ! pHistAllocThread->m_bContinueSlotAllocation )
+			break;
+		if ( ! pHistSys->AddHistorySlot() )
+			break;
+	}
 
 	return 0;
 }

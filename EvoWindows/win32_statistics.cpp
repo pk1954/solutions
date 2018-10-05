@@ -8,6 +8,7 @@
 #include "EvolutionCore.h"
 #include "win32_baseWindow.h"
 #include "win32_statistics.h"
+#include "win32_stopwatch.h"
 
 using namespace std;
 
@@ -184,8 +185,11 @@ StatisticsWindow::~StatisticsWindow( )
 	m_pCore = nullptr;
 }
 
+	Stopwatch stopwatch;
+
 void StatisticsWindow::DoPaint( )
 {
+	stopwatch.Start();
     // aquire and prepare data 
 
     AllGenesStat genesStat;
@@ -258,4 +262,5 @@ void StatisticsWindow::DoPaint( )
 		setHorizontalPos( 4 );
 		printNumber( m_pCore->GetAverageFoodGrowth( ) );
 	}
+	stopwatch.Stop( L"Statistics" );
 }

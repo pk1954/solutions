@@ -46,4 +46,5 @@ namespace Util
 		HANDLE m_handle;
 		UINT   m_threadId;
 	};
+
 };

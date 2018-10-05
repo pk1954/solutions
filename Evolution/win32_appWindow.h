@@ -47,7 +47,7 @@ private:
 
 	void adjustChildWindows( );
 
-	Win32_event           m_event;
+	Util::Event           m_event;
     ViewCollection        m_gridObservers;
 
     GridWindow          * m_pMainGridWindow;

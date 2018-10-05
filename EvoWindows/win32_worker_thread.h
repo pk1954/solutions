@@ -14,6 +14,7 @@
 #include "EvolutionTypes.h"
 #include "EvoGenerationCmd.h"
 #include "EvoHistorySysGlue.h"
+#include "win32_thread.h"
 #include "win32_event.h"
 
 class PerformanceWindow;
@@ -88,9 +89,8 @@ private:
     ObserverInterface   * m_pObservers;
     EventInterface      * m_pEvent;
     EvolutionCore       * m_pCore;
-	Win32_event           m_EventThreadStarter;
-    DWORD                 m_dwThreadId;
-	HANDLE			      m_hThread;
+	Util::Thread        * m_pWorkThread;
+	Util::Event           m_EventThreadStarter;
     BOOL                  m_bContinue;
     INT                   m_iScriptLevel;
     HIST_GENERATION       m_genDemanded;
@@ -116,5 +116,5 @@ private:
 		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, gp24 ) );
 	}
 
-friend static DWORD WINAPI WorkerThread( _In_ LPVOID );
+	friend static unsigned int __stdcall WorkerThread( void * );
 }; 

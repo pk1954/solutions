@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "win32_thread.h"
+
 class HistorySystem;
 
 class HistAllocThread
@@ -13,9 +15,8 @@ public:
 
 private:
 	HistorySystem const * m_pHistorySys;
+	Util::Thread        * m_pThreadSlotAllocator;
+	BOOL                  m_bContinueSlotAllocation;
 
-	HANDLE m_hThreadSlotAllocator;
-	BOOL   m_bContinueSlotAllocation;
-
-	friend static DWORD WINAPI threadProc(_In_ LPVOID);
+	friend static unsigned int __stdcall threadProc( void * );
 };
