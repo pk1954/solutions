@@ -177,6 +177,7 @@
     <ClCompile Include="win32_script.cpp" />
     <ClCompile Include="win32_stopwatch.cpp" />
     <ClCompile Include="win32_textWindow.cpp" />
+    <ClCompile Include="win32_thread.cpp" />
     <ClCompile Include="win32_util.cpp" />
     <ClCompile Include="win32_winManager.cpp" />
   </ItemGroup>

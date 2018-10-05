@@ -6,22 +6,17 @@
 #include "assert.h"
 #include <Windows.h>
 #include <process.h>
+#include <string>
 #include "win32_event.h"
+
+using namespace std;
 
 namespace Util
 {
 	class Thread
 	{
 	public:
-		Thread
-		(
-			unsigned int ( __stdcall *start_address )( void * ),
-			void * parameter
-		) 
-		{
-			m_handle = (HANDLE)_beginthreadex( 0, 0, start_address, parameter, 0, & m_threadId );
-		    assert( m_handle != nullptr );
-		}
+		Thread(	unsigned int ( __stdcall *start_address )( void * ), string, void * parameter );
 
 		void PostMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 		{
@@ -30,21 +25,18 @@ namespace Util
 			assert( bRes );
 		}
 
-		void SetThreadAffinityMask( DWORD_PTR mask )
-		{
-		    (void)::SetThreadAffinityMask( m_handle, mask );
-		}
-
-		void Wait4Termination( )
-		{
-			WaitForSingleObject( m_handle, INFINITE );   // wait until thread has stopped
-			CloseHandle( m_handle );
-		}
+		void SetThreadAffinityMask( DWORD_PTR );
+		void Wait4Termination( );
 
 	private:
 		Event  m_eventThreadStarter;
 		HANDLE m_handle;
 		UINT   m_threadId;
-	};
+		string m_strName;
+		void * m_parameter;
 
+		unsigned int ( __stdcall * m_start_address )( void * );
+
+		friend static unsigned int __stdcall ThreadProc( void * );
+	};
 };
