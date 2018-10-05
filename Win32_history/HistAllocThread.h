@@ -7,16 +7,14 @@
 
 class HistorySystem;
 
-class HistAllocThread
+class HistAllocThread : public Util::Thread
 {
 public:
 	HistAllocThread( HistorySystem const * const, BOOL const );
-	~HistAllocThread( );
+	~HistAllocThread() {};
 
 private:
-	HistorySystem const * m_pHistorySys;
-	Util::Thread        * m_pThreadSlotAllocator;
-	BOOL                  m_bContinueSlotAllocation;
+	virtual void DispatchMessage( UINT, WPARAM, LPARAM );
 
-	friend static unsigned int __stdcall threadProc( void * );
+	HistorySystem const * m_pHistorySys;
 };

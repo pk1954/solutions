@@ -28,7 +28,7 @@ class ObserverInterface;
 class EvoHistorySysGlue;
 class WorkThreadInterface;
 
-class WorkThread
+class WorkThread : public Util::Thread
 {
 public:
 	explicit WorkThread( );
@@ -58,9 +58,10 @@ public:
 
     void WorkMessage( UINT, WPARAM, LPARAM );
 
-    enum ThreadMessage : UINT
+    enum WorkerThreadMessage : UINT
     {
-        THREAD_MSG_REFRESH = WM_USER + 1,
+        THREAD_MSG_REFRESH = Util::Thread::THREAD_MSG_APP_FIRST,
+        THREAD_MSG_STOP,
         THREAD_MSG_REPEAT_GENERATION_STEP,  // only used internaly, not part of procedural interface
         THREAD_MSG_GOTO_GENERATION,
         THREAD_MSG_GENERATION_RUN,
@@ -74,10 +75,8 @@ public:
         THREAD_MSG_PROCESS_SCRIPT,
         THREAD_MSG_SET_SIMULATION_MODE,
         THREAD_MSG_RESET_MODEL,
-        THREAD_MSG_STOP,
-        THREAD_MSG_EXIT,
         THREAD_MSG_FIRST = THREAD_MSG_REFRESH,
-        THREAD_MSG_LAST = THREAD_MSG_EXIT
+        THREAD_MSG_LAST = THREAD_MSG_RESET_MODEL
     };
 
 private:
@@ -89,16 +88,14 @@ private:
     ObserverInterface   * m_pObservers;
     EventInterface      * m_pEvent;
     EvolutionCore       * m_pCore;
-	Util::Thread        * m_pWorkThread;
-	Util::Event           m_EventThreadStarter;
     BOOL                  m_bContinue;
     INT                   m_iScriptLevel;
     HIST_GENERATION       m_genDemanded;
 
     // private member functions
 
-	void postMessage( UINT, WPARAM, LPARAM );
-	void dispatchMessage( UINT, WPARAM, LPARAM );
+	virtual void DispatchMessage( UINT, WPARAM, LPARAM );
+
     void generationRun( );
 
 	BOOL IsValidThreadMessage(UINT msg)
@@ -115,6 +112,4 @@ private:
 	{
 		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, gp24 ) );
 	}
-
-	friend static unsigned int __stdcall WorkerThread( void * );
 }; 

@@ -5,8 +5,6 @@
 
 #include "assert.h"
 #include <Windows.h>
-#include <process.h>
-#include <string>
 #include "win32_event.h"
 
 using namespace std;
@@ -16,7 +14,7 @@ namespace Util
 	class Thread
 	{
 	public:
-		Thread(	unsigned int ( __stdcall *start_address )( void * ), string, void * parameter );
+		void StartThread( DWORD_PTR );
 
 		void PostMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 		{
@@ -25,17 +23,21 @@ namespace Util
 			assert( bRes );
 		}
 
-		void SetThreadAffinityMask( DWORD_PTR );
-		void Wait4Termination( );
+		void Terminate( );
+
+		enum ThreadMessage : UINT
+		{
+			THREAD_MSG_EXIT = WM_USER + 1,
+			THREAD_MSG_APP_FIRST    // messages of application start here
+		};
+
+	protected:
+		virtual void DispatchMessage( UINT, WPARAM, LPARAM ) = 0;
 
 	private:
 		Event  m_eventThreadStarter;
 		HANDLE m_handle;
 		UINT   m_threadId;
-		string m_strName;
-		void * m_parameter;
-
-		unsigned int ( __stdcall * m_start_address )( void * );
 
 		friend static unsigned int __stdcall ThreadProc( void * );
 	};

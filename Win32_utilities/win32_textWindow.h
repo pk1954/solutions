@@ -17,7 +17,7 @@ class TextWindow : public BaseWindow
 {
 public:
     TextWindow( );
-    virtual ~TextWindow( ); 
+	virtual ~TextWindow( ) {}; 
 
     HWND StartTextWindow( HWND const, LPCTSTR const, UINT const );
 

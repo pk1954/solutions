@@ -59,10 +59,6 @@
 #include "win32_evoController.h"
 #include "win32_appWindow.h"
 
-//////////////////////////////////////////////////////////
-#include "HistAllocThread.h"  //////////// test only ///
-//////////////////////////////////////////////////////////
-
 AppWindow::AppWindow( ) :
     BaseWindow( ),
     m_gridObservers( ),

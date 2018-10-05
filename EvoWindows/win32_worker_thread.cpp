@@ -20,12 +20,8 @@
 
 using namespace std;
 
-//lint -e849    same enumerator value          
-//lint -esym( 488, tThreadMessages::THREAD_MSG_LAST )  same value as THREAD_MSG_EXIT
-
 WorkThread::WorkThread( ) :
 	m_pWorkThreadInterface( nullptr ),
-    m_pWorkThread         ( nullptr ),
     m_iScriptLevel        ( 0 ),
     m_pPerformanceWindow  ( nullptr ),
 	m_pEditorWindow       ( nullptr ),
@@ -34,8 +30,7 @@ WorkThread::WorkThread( ) :
     m_pCore               ( nullptr ),
     m_pEvoHistGlue        ( nullptr ),
     m_bContinue           ( FALSE ),
-    m_genDemanded         ( 0 ),
-    m_EventThreadStarter  ( )
+    m_genDemanded         ( 0 )
 { }
 
 void WorkThread::Start
@@ -49,7 +44,6 @@ void WorkThread::Start
 	WorkThreadInterface * const pWorkThreadInterface
 )
 {
-    m_pWorkThread          = new Util::Thread( WorkerThread, this );
     m_pPerformanceWindow   = pPerformanceWindow;
 	m_pEditorWindow        = pEditorWindow;
     m_pEvent               = pEvent;
@@ -57,18 +51,12 @@ void WorkThread::Start
     m_pCore                = pCore;
 	m_pEvoHistGlue         = pEvoHistorySys;
 	m_pWorkThreadInterface = pWorkThreadInterface;
-
-	m_EventThreadStarter.Wait();
-
-    m_pWorkThread->SetThreadAffinityMask( 0x0002 );
+    StartThread( 0x0002 );
 }
 
 WorkThread::~WorkThread( )
 {
-	delete m_pWorkThread;
-
     m_pWorkThreadInterface = nullptr;
-	m_pWorkThread          = nullptr;
     m_pPerformanceWindow   = nullptr;
     m_pEditorWindow        = nullptr;
     m_pEvent               = nullptr;
@@ -78,9 +66,8 @@ WorkThread::~WorkThread( )
 
 void WorkThread::TerminateThread( HWND const hwndCtl )
 {
-	dispatchMessage( THREAD_MSG_STOP, 0, 0 );            // stop running computation and script processing
-	postMessage( THREAD_MSG_EXIT, 0, (LPARAM)hwndCtl );  // stop message pump of thread
-	m_pWorkThread->Wait4Termination();                   // wait until thread has stopped
+	DispatchMessage( THREAD_MSG_STOP, 0, 0 );            // stop running computation and script processing
+	Terminate( );
 	DestroyWindow( hwndCtl);                             // trigger termination of application
 }
 
@@ -143,45 +130,20 @@ void WorkThread::DoProcessScript( wstring * const pwstr )
 
 void WorkThread::WorkMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 {
+	assert( IsValidThreadMessage( uiMsg ) );
     if ( m_iScriptLevel > 0 )                      // if we are processing a script    
     {                                              // we run already in worker thread 
-        dispatchMessage( uiMsg, wParam, lParam );  // dispatch message directly to avoid blocking
+        DispatchMessage( uiMsg, wParam, lParam );  // dispatch message directly to avoid blocking
     }
     else                                           // normal case
     {                                              // we run in main thread
-        postMessage( uiMsg, wParam, lParam );      // post message to worker thread
-    }
+		if ( m_pEvent != nullptr )
+			m_pEvent->Continue( );                 // trigger worker thread if waiting for an event
+		PostMessage( uiMsg, wParam, lParam );      // post message to worker thread
+	}
 }
 
-void WorkThread::postMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
-{
-    if ( m_pEvent != nullptr )
-        m_pEvent->Continue( );  // trigger worker thread if waiting for an event
-	assert( IsValidThreadMessage( uiMsg ) );
-    m_pWorkThread->PostMessage( uiMsg, wParam, lParam );
-}
-
-static unsigned int __stdcall WorkerThread( void * data ) 
-{
-    WorkThread * const pWT = static_cast<WorkThread *>( data );
-    MSG                msg;
-       
-    (void)PeekMessage( &msg, nullptr, WM_USER, WM_USER, PM_NOREMOVE );  // cause creation of message queue
-    pWT->m_EventThreadStarter.Continue();       				        // trigger waiting thread to continue
-
-    for(;;)
-    {
-        BOOL const bRet = GetMessage( &msg, nullptr, 0, 0 );
-        assert( bRet >= 0 );
-		if ( msg.message == pWT->THREAD_MSG_EXIT )
-			break;
-        (void)pWT->dispatchMessage( msg.message, msg.wParam, msg.lParam );
-    } 
-
-    return 0;
-}
-
-void WorkThread::dispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
+void WorkThread::DispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 {
     switch ( uiMsg )
     {

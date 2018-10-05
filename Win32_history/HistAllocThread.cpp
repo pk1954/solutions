@@ -10,40 +10,21 @@ HistAllocThread::HistAllocThread
 	HistorySystem const * const pHistSys,
 	BOOL                  const bAsync      
 ) :
-	m_pHistorySys( pHistSys ),
-	m_pThreadSlotAllocator( nullptr ),
-	m_bContinueSlotAllocation( TRUE )
+	m_pHistorySys( pHistSys )
 {
 	if ( bAsync )
 	{
-		m_pThreadSlotAllocator = new Util::Thread( threadProc, this );
-		m_pThreadSlotAllocator->SetThreadAffinityMask( 0x0003 );
+		StartThread( 0x0003 );
+		PostMessage( THREAD_MSG_APP_FIRST, 0, 0 );  // any msg will do, just to trigger one DispatchMessage
 	}
 	else
-		threadProc( this );
-}
-
-HistAllocThread::~HistAllocThread( )
-{
-	m_bContinueSlotAllocation = FALSE;
-	if ( m_pThreadSlotAllocator != nullptr )
 	{
-		m_pThreadSlotAllocator->Wait4Termination( );
+		DispatchMessage( THREAD_MSG_APP_FIRST, 0, 0 );
 	}
 }
 
-static unsigned int __stdcall threadProc( void * data ) 
+void HistAllocThread::DispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
 {
-	HistAllocThread const * const pHistAllocThread = static_cast<HistAllocThread const *>(data);
-	HistorySystem   const * const pHistSys         = pHistAllocThread->m_pHistorySys;
-
-	for (;;)
-	{
-		if ( ! pHistAllocThread->m_bContinueSlotAllocation )
-			break;
-		if ( ! pHistSys->AddHistorySlot() )
-			break;
-	}
-
-	return 0;
+	while (m_pHistorySys->AddHistorySlot()) {}
+	Terminate( );  // kill yourself
 }

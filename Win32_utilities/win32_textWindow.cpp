@@ -29,10 +29,6 @@ TextWindow::TextWindow( ) :
     m_wBuffer.imbue(std::locale(""));
 }
 
-TextWindow::~TextWindow( )
-{
-}
-
 HWND TextWindow::StartTextWindow
 (
     HWND    const hWndParent,
