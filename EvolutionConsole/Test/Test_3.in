@@ -1,6 +1,6 @@
 PostRefresh
 PostSetBrushMode tBrushMode::randomStrat
-PostReset
+PostReset 0
 PostDoEdit   37  51 
 PostRefresh
 PostDoEdit   50  52 
@@ -21,7 +21,7 @@ PostDoEdit  147  52
 PostRefresh
 PostDoEdit  165  52 
 PostRefresh
-PostReset
+PostReset 0
 PostPrevGeneration
 PostGenerationStep
 PostPrevGeneration
