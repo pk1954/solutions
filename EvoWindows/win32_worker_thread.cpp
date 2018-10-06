@@ -51,7 +51,8 @@ void WorkThread::Start
     m_pCore                = pCore;
 	m_pEvoHistGlue         = pEvoHistorySys;
 	m_pWorkThreadInterface = pWorkThreadInterface;
-    StartThread( 0x0002 );
+    StartThread( );
+    SetThreadAffinityMask( 0x0002 );
 }
 
 WorkThread::~WorkThread( )
@@ -143,7 +144,7 @@ void WorkThread::WorkMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 	}
 }
 
-void WorkThread::DispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
+LRESULT WorkThread::DispatchMessage( UINT const uiMsg, WPARAM const wParam, LPARAM const lParam  )
 {
     switch ( uiMsg )
     {
@@ -216,9 +217,11 @@ void WorkThread::DispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
         break;
 
     default:
-		return;  // sometimes strange messages arrive. e.g. uiMsg 1847
-    }            // I cannot find a reason, so I ignore them
+		return 0;  // sometimes strange messages arrive. e.g. uiMsg 1847
+    }             // I cannot find a reason, so I ignore them
 
 	if (m_pObservers != nullptr)
 	    m_pObservers->Notify( );
+
+	return 0;
 }

@@ -14,7 +14,8 @@ HistAllocThread::HistAllocThread
 {
 	if ( bAsync )
 	{
-		StartThread( 0x0003 );
+		StartThread( );
+		SetThreadAffinityMask( 0x0003 );
 		PostMessage( THREAD_MSG_APP_FIRST, 0, 0 );  // any msg will do, just to trigger one DispatchMessage
 	}
 	else
@@ -23,8 +24,9 @@ HistAllocThread::HistAllocThread
 	}
 }
 
-void HistAllocThread::DispatchMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam  )
+LRESULT HistAllocThread::DispatchMessage( UINT const message, WPARAM const wParam, LPARAM const lParam  )
 {
 	while (m_pHistorySys->AddHistorySlot()) {}
 	Terminate( );  // kill yourself
+	return 0;
 }

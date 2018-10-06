@@ -14,7 +14,9 @@ namespace Util
 	class Thread
 	{
 	public:
-		void StartThread( DWORD_PTR );
+		void StartThread( );
+
+		void SetThreadAffinityMask( DWORD_PTR );
 
 		void PostMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 		{
@@ -25,14 +27,14 @@ namespace Util
 
 		void Terminate( );
 
+	protected:
+		virtual LRESULT DispatchMessage( UINT const, WPARAM const, LPARAM const ) = 0;
+
 		enum ThreadMessage : UINT
 		{
 			THREAD_MSG_EXIT = WM_USER + 1,
 			THREAD_MSG_APP_FIRST    // messages of application start here
 		};
-
-	protected:
-		virtual void DispatchMessage( UINT, WPARAM, LPARAM ) = 0;
 
 	private:
 		Event  m_eventThreadStarter;

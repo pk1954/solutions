@@ -158,7 +158,7 @@ void StatusBar::Start
     (
         STATUSCLASSNAME, 
         nullptr, 
-        WS_CHILD | WS_VISIBLE, // | SBARS_SIZEGRIP, 
+        WS_CHILD | WS_VISIBLE,
         CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT,
         hWndParent,
         nullptr, 

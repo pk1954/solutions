@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include <locale>
 #include <iomanip>
-//#include "Strsafe.h"
 #include "win32_util.h"
 #include "win32_textWindow.h"
 
@@ -39,7 +38,7 @@ HWND TextWindow::StartTextWindow
     HWND const hWnd = StartBaseWindow
     ( 
         hWndParent,
-        CS_OWNDC | CS_DBLCLKS, // | CS_DROPSHADOW,
+        CS_OWNDC | CS_DBLCLKS,
         szClass,
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION
     );
@@ -63,7 +62,7 @@ LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         return FALSE;
     }
 
-    case WM_CLOSE:                           // Do not destroy, just hide  
+    case WM_CLOSE:    // Do not destroy, just hide  
         Show( FALSE );
         return TRUE;
 

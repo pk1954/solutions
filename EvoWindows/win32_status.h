@@ -4,13 +4,13 @@
 #pragma once
 
 #include <string>
-#include "win32_baseDialog.h"
+#include "win32_rootWindow.h"
 
 using namespace std;
 
 class EvolutionCore;
 
-class StatusBar : public BaseDialog
+class StatusBar : public RootWindow
 {
 public:
     StatusBar( );
