@@ -17,4 +17,4 @@ PostGenerationStep
 PostPrevGeneration
 PostGotoGeneration  12
 PostGenerationStep
-PostReset
+PostReset 0
