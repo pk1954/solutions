@@ -3,14 +3,13 @@
 
 #pragma once
 
+#include "util.h"
 #include "random.h"
 #include "geneTypeLimits.h"
 
 class Gene
 {
 public:
-    static int const MAX_MUTATIONRATE;
-	
     Gene( )
 		: m_sAllele( 0 ) 
 	{ }
@@ -19,7 +18,19 @@ public:
 		: m_sAllele( lim.GetAverageValue( ) ) 
 	{ }
     	
-	void Mutate( short const, GeneTypeLimits const &, Random & );
+	void Mutate
+	( 
+		double         const   dMutationRate, 
+		GeneTypeLimits const & lim, 
+		Random               & random 
+	)
+	{
+		assert( sMutationRate <= 100 );   // percentage
+
+		double const dRand = random.NextWeightedDistribution() * lim.GetFactor( );
+
+		m_sAllele = lim.ClipToLimits( CastToInt( m_sAllele + dRand * dMutationRate ) );
+	}
 
 	void SetAllele( short const sValue) 
 	{ 

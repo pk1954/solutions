@@ -183,9 +183,7 @@
     <ClCompile Include="EvolutionCoreImpl.cpp" />
     <ClCompile Include="EvolutionTypes.cpp" />
     <ClCompile Include="food.cpp" />
-    <ClCompile Include="geneTypeLimits.cpp" />
     <ClCompile Include="pixelCoordinates.cpp" />
-    <ClCompile Include="gene.cpp" />
     <ClCompile Include="genome.cpp" />
     <ClCompile Include="gpList.cpp" />
     <ClCompile Include="gridField.cpp" />

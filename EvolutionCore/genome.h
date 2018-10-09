@@ -27,8 +27,16 @@ public:
     static void InitClass( );
 
     // for statistics
-    short GetDistr ( tAction const   ) const;
-    short GetAllele( tGeneType const geneType ) const { return m_aGeneGeneral[ static_cast<int>( geneType ) ].m_gene.GetAllele(); };
+
+	short GetDistr( tAction const action ) const
+	{ 
+		return m_aGeneActions.at( static_cast<int>( action ) ).m_gene.GetAllele();
+	}
+
+    short GetAllele( tGeneType const geneType ) const 
+	{ 
+		return m_aGeneGeneral[ static_cast<int>( geneType ) ].m_gene.GetAllele(); 
+	};
 
 	static bool IsEnabled( tAction const action ) { return enabled( action ); };
 
@@ -55,7 +63,10 @@ private:
 
 	// static members and functions
 
-	static array< bool, NR_ACTIONS > m_abActionEnabled;
+	static unsigned int const MAX_LIFE_SPAN = 200;
+
+	static array< bool,         NR_ACTIONS        > m_abActionEnabled;
+	static array< unsigned int, MAX_LIFE_SPAN + 1 > m_mortalityTable;
 
 	static bool & enabled( tAction const action ) { return m_abActionEnabled[ static_cast<unsigned short>( action ) ]; 	}
 

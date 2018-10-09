@@ -4,7 +4,6 @@
 #pragma once
 
 #include "pixelCoordinates.h"
-#include "win32_thread.h"
 #include "win32_baseWindow.h"
 
 class GridRect;
@@ -18,16 +17,10 @@ class ObserverInterface;
 class PerformanceWindow;
 class FocusPoint;
 
-class GridWindow : public BaseWindow, public Util::Thread
+class GridWindow : public BaseWindow
 {
 public:
     GridWindow( );
-
-//	virtual void ThreadStartupFunc();
-
-//	virtual LRESULT ThreadMsgDispatcher( UINT const uiMsg, WPARAM const wParam, LPARAM const lParam )
-//	{
-//	}
 
     void Start
     ( 

@@ -333,7 +333,7 @@ void Grid::EditSetStrategy
 )
 {
 	assert( sIntensity >= 0 );
-	if ( NextRandomNumber( ) < static_cast<unsigned short>(sIntensity) * RAND_MAX / 100ul )
+	if ( m_random.NextRandomNumber( ) < static_cast<unsigned short>(sIntensity) * Random::MAX_VAL / 100ul )
 	{
 		GridField & gf       = getGridField( gp );
 		bool const  bIsAlive = gf.IsAlive();

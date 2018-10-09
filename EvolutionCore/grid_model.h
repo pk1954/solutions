@@ -47,9 +47,6 @@ public:
 
     void EditSetStrategy( GridPoint const &, short const, tStrategyId );
 
-    unsigned int NextRandomNumber( ) { return m_random.NextRandomNumber( ); };
-    double       Distribution    ( ) { return m_random.NextWeightedDistribution( ); };
-
     // GridPoint list operations
 
     void CheckGridPointList( ) const { m_gpList.CheckGridPointList( * this ); };

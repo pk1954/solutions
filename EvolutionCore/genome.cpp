@@ -20,6 +20,8 @@ array< GeneTypeLimits, NR_GENES   > Genome::m_aLimitsGeneral;
 array< GeneTypeLimits, NR_ACTIONS > Genome::m_aLimitsActions;
 array< bool,           NR_ACTIONS > Genome::m_abActionEnabled;
 
+array< unsigned int, Genome::MAX_LIFE_SPAN + 1 > Genome::m_mortalityTable;
+
 void Genome::setGeneralLimits( tGeneType const gene, long const lLo, long const lHi )
 {
     m_aLimitsGeneral[ static_cast<int>( gene ) ].SetLimits( lLo, lHi );
@@ -27,6 +29,19 @@ void Genome::setGeneralLimits( tGeneType const gene, long const lLo, long const 
 
 void Genome::InitClass( )
 { 
+	double dRandomMax = static_cast<double>(Random::MAX_VAL);
+
+	for ( EVO_GENERATION age = 0; age <= MAX_LIFE_SPAN; ++age )
+	{
+		double dAge = static_cast<double>(age);
+		double dx   = dAge / MAX_LIFE_SPAN;
+		double dx2  = dx * dx;
+		double dx4  = dx2 * dx2;
+		double dx8  = dx4 * dx4;
+		double dAgeFactor = dx8 * dRandomMax;
+		ASSERT_LIMITS( dAgeFactor, 0.0, dRandomMax );
+		m_mortalityTable[ age ] = static_cast<unsigned int>( dAgeFactor );
+	}
     // Init limitations
 
     for ( auto & lim : m_aLimitsActions )
@@ -106,14 +121,16 @@ void Genome::InitGenome( )
 
 void Genome::Mutate( short const sMutationRate, Random & random )
 {
+	double dMutationRate = static_cast<double>(sMutationRate);
+
     for ( auto & g : m_aGeneGeneral )
     {
-        g.m_gene.Mutate( sMutationRate, m_aLimitsGeneral[ static_cast<int>( g.m_type ) ], random );
+        g.m_gene.Mutate( dMutationRate, m_aLimitsGeneral[ static_cast<int>( g.m_type ) ], random );
     }                                                                                                                     // verified in assembly code  
 
     for ( auto & g : m_aGeneActions )
     {
-        g.m_gene.Mutate( sMutationRate, m_aLimitsActions[ static_cast<int>( g.m_action ) ], random );
+        g.m_gene.Mutate( dMutationRate, m_aLimitsActions[ static_cast<int>( g.m_action ) ], random );
     }
 }
 
@@ -143,26 +160,13 @@ tAction Genome::GetOption
     Random             & random 
 ) const
 {
-	if ( m_abActionEnabled[ static_cast<int>( tAction::passOn ) ] )
-	{
-		static double const MAX_LIFE_SPAN = 200.0;
-		static double const RANDOM_FACTOR = static_cast<double>(0x7fff);
-
-		double dAge = static_cast<double>(age);
-		double dx   = dAge / MAX_LIFE_SPAN;
-		double dx2  = dx * dx;
-		double dx4  = dx2 * dx2;
-		double dx8  = dx4 * dx4;
-		double dAgeFactor = dx8 * RANDOM_FACTOR;
-		ASSERT_LIMITS( dAgeFactor, 0.0, RANDOM_FACTOR );
-
-		unsigned int uiRandom    = random.NextRandomNumber();
-		unsigned int uiAgeFactor = static_cast<unsigned int>( dAgeFactor );
-
-		if ( uiAgeFactor > uiRandom )
-			return tAction::passOn;
-	}
-    array <bool, NR_ACTIONS > abOptions;
+	if (
+		  ( m_abActionEnabled[ static_cast<int>( tAction::passOn ) ] ) && 
+		  ( m_mortalityTable[ age ] > random.NextRandomNumber() )
+	   )
+		return tAction::passOn;
+	
+	array <bool, NR_ACTIONS > abOptions;
  
     abOptions[ static_cast<int>( tAction::passOn    ) ] = true;
 	abOptions[ static_cast<int>( tAction::move      ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdMove )      );
@@ -203,9 +207,4 @@ tAction Genome::GetOption
     }
 
 	return tAction::undefined;
-}
-
-short Genome::GetDistr( tAction const action ) const
-{ 
-    return m_aGeneActions.at( static_cast<int>( action ) ).m_gene.GetAllele();
 }

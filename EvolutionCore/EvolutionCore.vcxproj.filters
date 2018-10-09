@@ -77,9 +77,6 @@
     <ClCompile Include="food.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="gene.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="genome.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -126,9 +123,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="PixelCore.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="geneTypeLimits.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

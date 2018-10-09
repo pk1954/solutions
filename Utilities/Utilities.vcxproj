@@ -164,7 +164,6 @@
   <ItemGroup>
     <ClCompile Include="BoolOp.cpp" />
     <ClCompile Include="kGridPoint.cpp" />
-    <ClCompile Include="random.cpp" />
     <ClCompile Include="SmoothMove.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
