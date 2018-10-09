@@ -23,12 +23,10 @@ static COLORREF const CLR_GREY  = D3DCOLOR_ARGB( 128, 128, 128, 128 );
 
 DrawFrame::DrawFrame
 ( 
-    HWND                 const hWnd, 
-    EvolutionCore      * const pCore,
-    PixelCoordinates   * const pPixelCoordinates, 
-    DspOptWindow       * const pDspOptWindow 
+    EvolutionCore    * const pCore,
+    PixelCoordinates * const pPixelCoordinates, 
+    DspOptWindow     * const pDspOptWindow 
 ) : 
-    m_hwnd( hWnd ),
     m_bDimmIndividuals( TRUE ),
     m_pCore( pCore ),
     m_pPixelCoordinates( pPixelCoordinates ),
@@ -44,7 +42,7 @@ DrawFrame::DrawFrame
     m_aClutStrat[ static_cast<int>( tStrategyId::cooperate ) ].SetColorHi( RGB(127, 255,   0) );
     m_aClutStrat[ static_cast<int>( tStrategyId::tit4tat   ) ].SetColorHi( RGB(255,  50,  50) );
 
-    m_pD3dBuffer = new D3dBuffer( hWnd, GridPoint::GRID_AREA );
+    m_pD3dBuffer = new D3dBuffer( GridPoint::GRID_AREA );
 	m_clutBackground.Allocate( MAX_BG_COLOR );    // default is grey scale lookup table with entries 0 .. 255
     SetIndDimmMode( Config::GetConfigValueBoolOp(Config::tId::dimmMode ) );
 }
@@ -83,24 +81,24 @@ void DrawFrame::Resize( )
     m_pD3dBuffer->ResetFont( iFontSize );   
 }
 
-void DrawFrame::DoPaint( KGridRect const & pkgr )
+void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 {
-    if ( IsWindowVisible( m_hwnd ) )
+    if ( IsWindowVisible( hwnd ) )
     {
-		m_pD3dBuffer->StartFrame( );
+		m_pD3dBuffer->StartFrame( hwnd );
 
 		drawBackground( );
 
         if ( m_pDspOptWindow->AreIndividualsVisible( ) )
         {
-	        GridRect rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hwnd ) ) );
+	        GridRect rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( hwnd ) ) );
 
             drawPOI( m_pCore->FindPOI( ) );
 
             drawIndividuals( rcGrid );
 
             if ( m_pPixelCoordinates->GetFieldSize() >= 96 )
-                drawText( rcGrid );
+                drawText( hwnd, rcGrid );
         }
 
         if ( m_pCore->SelectionIsNotEmpty() )
@@ -109,7 +107,7 @@ void DrawFrame::DoPaint( KGridRect const & pkgr )
         if ( pkgr.IsNotEmpty( ) )
             m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), D3DCOLOR_ARGB( 128, 255, 217, 0) );  
 
-        m_pD3dBuffer->EndFrame( );  
+        m_pD3dBuffer->EndFrame( hwnd );  
     }
 }
 
@@ -173,7 +171,7 @@ COLORREF DrawFrame::getTextColor( GridPoint const & gp ) const
 	return CLR_WHITE;
 }
 
-void DrawFrame::drawText( GridRect const & rect )
+void DrawFrame::drawText( HWND hwnd, GridRect const & rect )
 {
     short const sFieldSize   = m_pPixelCoordinates->GetFieldSize();
     long  const lHalfSizeInd = (5 * sFieldSize) / 16;
@@ -184,10 +182,10 @@ void DrawFrame::drawText( GridRect const & rect )
 		{
             if ( GetEvoCore( )->IsAlive( gp ) )
             {
-				long       lHeight    = Util::GetClientWindowHeight( m_hwnd );
+				long       lHeight    = Util::GetClientWindowHeight( hwnd );
 				COLORREF   colText    = getTextColor( gp );
                 PixelPoint ptCenter   = m_pPixelCoordinates->Grid2PixelPosCenter( gp );
-						   Util::UpsideDown( m_hwnd, & ptCenter ); 
+						   Util::UpsideDown( hwnd, & ptCenter ); 
                 PixelRect  pixRect ( ptCenter  - lHalfSizeInd, ptCenter  + lHalfSizeInd );
 
                 assembleLeftColumn( gp );

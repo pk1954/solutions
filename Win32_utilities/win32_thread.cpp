@@ -5,8 +5,9 @@
 #include <process.h>
 #include "win32_thread.h"
 
-void Util::Thread::StartThread( )
+void Util::Thread::StartThread( BOOL const bLoop )
 {
+	m_bLoop = bLoop;
 	m_handle = (HANDLE)_beginthreadex( 0, 0, Util::ThreadProc, this, 0, & m_threadId );
 	assert( m_handle != nullptr );
 	m_eventThreadStarter.Wait();
@@ -17,10 +18,10 @@ void Util::Thread::SetThreadAffinityMask( DWORD_PTR mask )
 	::SetThreadAffinityMask( m_handle, mask );
 }
 
-void Util::Thread::Terminate( )
+void Util::Thread::Terminate( )   // to be called from different thread
 {
-	PostMessage( Util::Thread::THREAD_MSG_EXIT, 0, 0 );        // stop message pump of thread
-	WaitForSingleObject( m_handle, INFINITE );   // wait until thread has stopped
+	PostThreadMessage( WM_QUIT, 0, 0 );                        // stop message pump of thread
+	WaitForSingleObject( m_handle, INFINITE );                 // wait until thread has stopped
 	CloseHandle( m_handle );
 }
 
@@ -31,14 +32,16 @@ static unsigned int __stdcall Util::ThreadProc( void * data )
     (void)PeekMessage( &msg, nullptr, WM_USER, WM_USER, PM_NOREMOVE );  // cause creation of message queue
     pThread->m_eventThreadStarter.Continue();       			        // trigger waiting thread to continue
 
-    for(;;)
-    {
-        BOOL const bRet = GetMessage( &msg, nullptr, 0, 0 );
-        assert( bRet >= 0 );
-		if ( msg.message == pThread->THREAD_MSG_EXIT )
-			break;
-        (void)pThread->DispatchThreadMsg( msg.message, msg.wParam, msg.lParam );
-    } 
+	pThread->ThreadStartupFunc();
+
+	if ( pThread->m_bLoop )
+	{
+	    while ( BOOL bRet = GetMessage( &msg, nullptr, 0, 0 ) != 0 )   
+		{
+			assert( bRet != -1 );
+			(void)pThread->ThreadMsgDispatcher( msg.message, msg.wParam, msg.lParam );
+		} 
+	}
 
 	return 0;
 }

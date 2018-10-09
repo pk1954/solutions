@@ -60,7 +60,7 @@ public:
 
     enum WorkerThreadMessage : UINT
     {
-        THREAD_MSG_REFRESH = Util::Thread::THREAD_MSG_APP_FIRST,
+        THREAD_MSG_REFRESH = WM_APP,
         THREAD_MSG_STOP,
         THREAD_MSG_REPEAT_GENERATION_STEP,  // only used internaly, not part of procedural interface
         THREAD_MSG_GOTO_GENERATION,
@@ -94,7 +94,7 @@ private:
 
     // private member functions
 
-	virtual LRESULT DispatchThreadMsg( UINT const, WPARAM const, LPARAM const );
+	virtual LRESULT ThreadMsgDispatcher( UINT const, WPARAM const, LPARAM const );
 
     void generationRun( );
 

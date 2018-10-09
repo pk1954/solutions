@@ -42,7 +42,7 @@ public:
     HWND          const GetDlgItem( int const iItem ) const { return ::GetDlgItem     ( m_hwnd, iItem ); }
     BOOL          const IsCaptured( )                 const { return GetCapture( ) == m_hwnd; }
 
-	void SetDisplayRate( INT const iRate ) { m_iDisplayRate = iRate; }
+	void SetDisplayRate( DWORD const dwRate ) { m_dwDisplayRate = dwRate; }
 	
     void Show( tBoolOp const op ) const { Util::Show( m_hwnd, op ); }
     void Show( BOOL    const b  ) const { Util::Show( m_hwnd, b  ); }
@@ -160,7 +160,7 @@ private:
 
     HWND   m_hwnd;
 	HWND   m_hwndApp;
-    INT    m_iDisplayRate; // in milliseconds
+    DWORD  m_dwDisplayRate; // in milliseconds
     HANDLE m_hTimer;
     BOOL   m_bTimerActive;
     BOOL   m_bDirty;

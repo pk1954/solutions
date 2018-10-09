@@ -32,15 +32,15 @@ public:
 			LONG const lHeight = script.ScrReadLong( );
 			if ( m_pWinManager->IsMoveable( uiResId ) )
 			{
-				HWND const hWnd = m_pWinManager->GetHWND( uiResId );
+				HWND const hwnd = m_pWinManager->GetHWND( uiResId );
 				if ( m_pWinManager->IsSizeable( uiResId ) )
 				{
-					BOOL bRes    = Util::MoveWindowAbsolute( hWnd, lXpos, lYpos, lWidth, lHeight, TRUE ); 
+					BOOL bRes    = Util::MoveWindowAbsolute( hwnd, lXpos, lYpos, lWidth, lHeight, TRUE ); 
 					assert( bRes );
 				}
 				else
 				{
-     				BOOL bRes = Util::MoveWindowAbsolute( hWnd, lXpos, lYpos, TRUE ); 
+     				BOOL bRes = Util::MoveWindowAbsolute( hwnd, lXpos, lYpos, TRUE ); 
 					assert( bRes );
 				}
 			}

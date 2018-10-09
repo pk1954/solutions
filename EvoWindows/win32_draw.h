@@ -24,11 +24,11 @@ class DrawFrame
 {
 public:
 
-    DrawFrame( HWND, EvolutionCore *, PixelCoordinates *, DspOptWindow * );
+    DrawFrame( EvolutionCore *, PixelCoordinates *, DspOptWindow * );
     ~DrawFrame( );
 
     void Resize( );
-    void DoPaint( KGridRect const & );
+    void DoPaint( HWND, KGridRect const & );
     void SetStripMode( tBoolOp );
     void SetIndDimmMode( tBoolOp );
 
@@ -38,13 +38,12 @@ private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
     DrawFrame & operator= ( DrawFrame const & );  // noncopyable class 
 
-    HWND const m_hwnd;
-    bool       m_bDimmIndividuals;   
+    bool m_bDimmIndividuals;   
 
-    EvolutionCore      * const m_pCore;
-    PixelCoordinates   * const m_pPixelCoordinates;
-    DspOptWindow       * const m_pDspOptWindow;
-    D3dBuffer          *       m_pD3dBuffer;
+    EvolutionCore    * const m_pCore;
+    PixelCoordinates * const m_pPixelCoordinates;
+    DspOptWindow     * const m_pDspOptWindow;
+    D3dBuffer        *       m_pD3dBuffer;
 
     static UINT const MAX_BG_COLOR = 255;
 
@@ -66,7 +65,7 @@ private:
     void     assembleRightColumn( GridPoint const & );
 
 	void drawBackground ( );
+    void drawText( HWND,  GridRect const & );
     void drawIndividuals( GridRect const & );
-    void drawText       ( GridRect const & );
     void drawPOI        ( GridPoint const & );
 };

@@ -35,16 +35,16 @@ HWND TextWindow::StartTextWindow
     UINT    const uiAlpha
 )
 {
-    HWND const hWnd = StartBaseWindow
+    HWND const hwnd = StartBaseWindow
     ( 
         hWndParent,
         CS_OWNDC | CS_DBLCLKS,
         szClass,
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION
     );
-    Util::MakeLayered( hWnd, TRUE, 0, uiAlpha );
-    SetWindowText( hWnd, szClass );
-    return hWnd;
+    Util::MakeLayered( hwnd, TRUE, 0, uiAlpha );
+    SetWindowText( hwnd, szClass );
+    return hwnd;
 }
 
 LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )

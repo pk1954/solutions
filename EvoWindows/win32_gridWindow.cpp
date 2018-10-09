@@ -46,28 +46,29 @@ void GridWindow::Start
 )
 {
 	int  const iNrOfNeighbors = Config::GetConfigValue( Config::tId::nrOfNeighbors );
-    HWND const hWnd = StartBaseWindow
+	BOOL const bHexagonMode   = (iNrOfNeighbors == 6);
+    assert( sFieldSize > 0 );
+    m_pWorkThreadInterface = pWorkThreadInterface;
+    m_pPerformanceWindow   = pPerformanceWindow;
+    m_pFocusPoint          = pFocusPoint;
+	m_pCore                = pCore;
+    m_pPixelCoordinates    = new PixelCoordinates( sFieldSize, bHexagonMode );
+	m_pPixelCore           = new PixelCore( m_pCore, m_pPixelCoordinates );
+    m_pDrawFrame           = new DrawFrame( m_pCore, m_pPixelCoordinates, pDspOptWindow );
+	m_pDrawFrame->SetStripMode
+	( 
+		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
+		? tBoolOp::opFalse 
+		: Config::GetConfigValueBoolOp( Config::tId::stripMode ) 
+	);
+    
+	StartBaseWindow
     ( 
         hWndParent,
         CS_OWNDC | CS_DBLCLKS,
         L"ClassGridWindow",
         dwStyle
     );
-    assert( sFieldSize > 0 );
-    m_pWorkThreadInterface = pWorkThreadInterface;
-    m_pPerformanceWindow   = pPerformanceWindow;
-    m_pFocusPoint          = pFocusPoint;
-	m_pCore                = pCore;
-
-	BOOL bHexagonMode     = iNrOfNeighbors == 6;
-    m_pPixelCoordinates   = new PixelCoordinates( sFieldSize, bHexagonMode );
-	m_pPixelCore          = new PixelCore( m_pCore, m_pPixelCoordinates );
-    m_pDrawFrame          = new DrawFrame( hWnd, pCore, m_pPixelCoordinates, pDspOptWindow );
-	m_pDrawFrame->SetStripMode
-	( 
-		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
-		? tBoolOp::opFalse 
-		: Config::GetConfigValueBoolOp( Config::tId::stripMode ) );
 }
 
 GridWindow::~GridWindow( )
@@ -198,10 +199,11 @@ void GridWindow::doPaint( )
         ( ( m_pGWObserved != nullptr ) && CrsrInClientRect( ) )
         ? m_pGWObserved->m_pPixelCoordinates->Pixel2KGridRect( Util::GetClPixelRect( m_pGWObserved->GetWindowHandle( ) ) )
         : KGridRect::KGRID_RECT_EMPTY;
+
     {
         PAINTSTRUCT ps;
         BeginPaint( &ps );
-        (void)m_pDrawFrame->DoPaint( kgr );
+        (void)m_pDrawFrame->DoPaint( GetWindowHandle(), kgr );
         (void)EndPaint( &ps );
     }
 

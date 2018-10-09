@@ -50,10 +50,11 @@ int APIENTRY _tWinMain
     HACCEL const hAccelTable = LoadAccelerators( hInstance, MAKEINTRESOURCE(IDC_EVOLUTION_MAIN) );
     HWND         hwndApp     = App.GetWindowHandle( );
     MSG          msg;
+	BOOL         bRet;
 
-    while ( BOOL const bRet = GetMessage( &msg, nullptr, 0, 0 ) )    // Main message loop
+    while ( bRet = GetMessage( &msg, nullptr, 0, 0 ) != 0 )    // Main message loop
     {
-        assert( bRet );
+        assert( bRet != -1 );
         if ( !TranslateAccelerator( hwndApp, hAccelTable, &msg ) )
         {
             (void)TranslateMessage( &msg );

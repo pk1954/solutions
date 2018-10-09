@@ -51,7 +51,7 @@ void WorkThread::Start
     m_pCore                = pCore;
 	m_pEvoHistGlue         = pEvoHistorySys;
 	m_pWorkThreadInterface = pWorkThreadInterface;
-    StartThread( );
+    StartThread( TRUE );  // start thread as a loop
     SetThreadAffinityMask( 0x0002 );
 }
 
@@ -67,7 +67,7 @@ WorkThread::~WorkThread( )
 
 void WorkThread::TerminateThread( HWND const hwndCtl )
 {
-	DispatchThreadMsg( THREAD_MSG_STOP, 0, 0 );            // stop running computation and script processing
+	ThreadMsgDispatcher( THREAD_MSG_STOP, 0, 0 );            // stop running computation and script processing
 	Terminate( );
 	DestroyWindow( hwndCtl);                             // trigger termination of application
 }
@@ -134,17 +134,17 @@ void WorkThread::WorkMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 	assert( IsValidThreadMessage( uiMsg ) );
     if ( m_iScriptLevel > 0 )                      // if we are processing a script    
     {                                              // we run already in worker thread 
-        DispatchThreadMsg( uiMsg, wParam, lParam );  // dispatch message directly to avoid blocking
+        ThreadMsgDispatcher( uiMsg, wParam, lParam );  // dispatch message directly to avoid blocking
     }
     else                                           // normal case
     {                                              // we run in main thread
 		if ( m_pEvent != nullptr )
 			m_pEvent->Continue( );                 // trigger worker thread if waiting for an event
-		PostMessage( uiMsg, wParam, lParam );      // post message to worker thread
+		PostThreadMessage( uiMsg, wParam, lParam );      // post message to worker thread
 	}
 }
 
-LRESULT WorkThread::DispatchThreadMsg( UINT const uiMsg, WPARAM const wParam, LPARAM const lParam  )
+LRESULT WorkThread::ThreadMsgDispatcher( UINT const uiMsg, WPARAM const wParam, LPARAM const lParam  )
 {
     switch ( uiMsg )
     {

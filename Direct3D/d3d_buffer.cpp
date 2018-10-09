@@ -31,11 +31,7 @@ D3DXFONT_DESC D3dBuffer::m_d3dx_font_desc =
     L""                        //  FaceName
 };
 
-D3dBuffer::D3dBuffer
-( 
-	HWND  const hWnd, 
-	ULONG const ulNrOfPoints
-) 
+D3dBuffer::D3dBuffer( ULONG const ulNrOfPoints ) 
 {
     HRESULT hres;
 
@@ -71,7 +67,6 @@ D3dBuffer::D3dBuffer
     m_dwDstBlend       = 0;
     m_bStripMode       = TRUE;
     m_id3dx_font       = nullptr;
-    m_hwnd             = hWnd;
     ResetFont( 9 );
 }
 
@@ -91,7 +86,6 @@ D3dBuffer::~D3dBuffer()
     m_d3d_device       = nullptr;
     m_id3dx_font       = nullptr;
     m_d3d              = nullptr;
-    m_hwnd             = nullptr;
 }
 
 void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, wstring const & wstr, D3DCOLOR col )
@@ -113,11 +107,11 @@ void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, wstring const & wstr, D
 
 // functions called per frame
 
-void D3dBuffer::StartFrame( )
+void D3dBuffer::StartFrame( HWND hwnd )
 {
     HRESULT hres;
 
-    m_d3d->ResetD3dSystem( m_hwnd );
+    m_d3d->ResetD3dSystem( hwnd );
 
     hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, FALSE );               assert(hres == D3D_OK);
     hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );        assert(hres == D3D_OK);
@@ -126,7 +120,7 @@ void D3dBuffer::StartFrame( )
 //lint -e620          suspicious constant (L or one?)
     hres = m_d3d_device->Clear( 0, nullptr, D3DCLEAR_TARGET, CLR_WHITE, 1.0f, 0 ); assert(hres == D3D_OK);
 //lint +e620    
-    m_d3d->SetTransform( m_hwnd );
+    m_d3d->SetTransform( hwnd );
     hres = m_d3d_device->BeginScene( );                                         assert(hres == D3D_OK);
 
     if ( m_bStripMode )
@@ -344,11 +338,11 @@ void D3dBuffer::renderPrimitives( D3dIndexBuffer const * const iBuf )
 
 // Finish rendering; page flip.
 
-void D3dBuffer::EndFrame( )
+void D3dBuffer::EndFrame( HWND hwnd )
 {
     HRESULT hres;
     hres = m_d3d_device->EndScene();                                          assert(hres == D3D_OK);
-    hres = m_d3d_swapChain->Present( nullptr, nullptr, m_hwnd, nullptr, 0 );  assert(hres == D3D_OK);
+    hres = m_d3d_swapChain->Present( nullptr, nullptr, hwnd, nullptr, 0 );  assert(hres == D3D_OK);
     //lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
     m_id3dx_font->Release();      
     //lint +esym( 613, D3dBuffer::m_id3dx_font ) 

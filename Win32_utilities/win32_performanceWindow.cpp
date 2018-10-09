@@ -21,8 +21,8 @@ PerformanceWindow::PerformanceWindow( ) :
 
 void PerformanceWindow::Start( HWND const hWndParent, UINT const uiAlpha )
 {
-    HWND hWnd = StartTextWindow( hWndParent, L"PerformanceWindow", uiAlpha );
-    assert( hWnd != nullptr );
+    HWND hwnd = StartTextWindow( hWndParent, L"PerformanceWindow", uiAlpha );
+    assert( hwnd != nullptr );
 	Move( 0, 0, 300, 130, TRUE );  // set reasonable window size
 }
 

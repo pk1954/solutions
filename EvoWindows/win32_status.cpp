@@ -30,7 +30,7 @@ static INT const STATUS_BAR_HEIGHT = 22;
 
 //lint -esym( 715, uIdSubclass )    symbol not referenced
 
-static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
+static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
 {
     StatusBar * const pStatusBar = (StatusBar *)dwRefData;
     switch ( uMsg )
@@ -40,7 +40,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
         break;
 
     case WM_COMMAND:
-        (void)SendMessage( GetParent( hWnd ), WM_COMMAND, LOWORD(wParam), 0 );
+        (void)SendMessage( GetParent( hwnd ), WM_COMMAND, LOWORD(wParam), 0 );
         return FALSE;
 
     case WM_HSCROLL:
@@ -50,7 +50,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
 			LONG const lLogicalPos  = pStatusBar->GetTrackBarPos( iCtrlId );
 			LONG const lValue       = ( iCtrlId == IDM_ZOOM_TRACKBAR ) ? lLogicalPos : ( SPEED_TRACKBAR_MAX - lLogicalPos );
 
-	        (void)SendMessage( GetParent( hWnd ), WM_COMMAND, iCtrlId, trackBar2Value( lValue )  );
+	        (void)SendMessage( GetParent( hwnd ), WM_COMMAND, iCtrlId, trackBar2Value( lValue )  );
 		}
         return TRUE;
 
@@ -58,7 +58,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hWnd, UINT uMsg, WPARAM wParam,
         break;
     }
 
-    return DefSubclassProc(hWnd, uMsg, wParam, lParam);
+    return DefSubclassProc(hwnd, uMsg, wParam, lParam);
 }
 
 HWND WINAPI StatusBar::createControl

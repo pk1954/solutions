@@ -38,11 +38,11 @@ IDirect3DDevice9 * D3dSystem::GetDevice( void )
 	return m_d3d_device;
 }
 
-void D3dSystem::ResetD3dSystem( HWND const hWnd )
+void D3dSystem::ResetD3dSystem( HWND const hwnd )
 {
-	PixelRectSize const pntSize = Util::GetClRectSize( hWnd );
+	PixelRectSize const pntSize = Util::GetClRectSize( hwnd );
 
-	m_d3d_presentationParameters.hDeviceWindow    = hWnd;
+	m_d3d_presentationParameters.hDeviceWindow    = hwnd;
 	m_d3d_presentationParameters.BackBufferWidth  = static_cast<unsigned int>( pntSize.GetWidth ( ) );
 	m_d3d_presentationParameters.BackBufferHeight = static_cast<unsigned int>( pntSize.GetHeight( ) );
 
@@ -51,9 +51,9 @@ void D3dSystem::ResetD3dSystem( HWND const hWnd )
 	assert( hres == D3D_OK) ;
 }
 
-void D3dSystem::SetTransform( HWND const hWnd )
+void D3dSystem::SetTransform( HWND const hwnd )
 {
-	PixelRectSize const pntSize = Util::GetClRectSize( hWnd );
+	PixelRectSize const pntSize = Util::GetClRectSize( hwnd );
 
 	m_d3d_matrix._11 = 2.0f / static_cast<float>( pntSize.GetWidth() );
 	m_d3d_matrix._22 = 2.0f / static_cast<float>( pntSize.GetHeight() );
@@ -62,12 +62,12 @@ void D3dSystem::SetTransform( HWND const hWnd )
 	HRESULT const hres = m_d3d_device->SetTransform( D3DTS_PROJECTION, &m_d3d_matrix );  assert(hres == D3D_OK);
 }
 
-void D3dSystem::createDevice( HWND const hWnd, ULONG const ulModelWidth, ULONG const ulModelHeight )
+void D3dSystem::createDevice( HWND const hwnd, ULONG const ulModelWidth, ULONG const ulModelHeight )
 {
 	Stopwatch stopwatch;
 	stopwatch.Start();
 
-	PixelRectSize const pntSize = Util::GetClRectSize( hWnd );
+	PixelRectSize const pntSize = Util::GetClRectSize( hwnd );
 
 	ZeroMemory( & m_d3d_presentationParameters, sizeof(D3DPRESENT_PARAMETERS) );
 	m_d3d_presentationParameters.Windowed               = TRUE;
@@ -75,7 +75,7 @@ void D3dSystem::createDevice( HWND const hWnd, ULONG const ulModelWidth, ULONG c
 	m_d3d_presentationParameters.SwapEffect             = D3DSWAPEFFECT_DISCARD;
 	m_d3d_presentationParameters.EnableAutoDepthStencil = FALSE;
 	m_d3d_presentationParameters.BackBufferFormat       = D3DFMT_X8R8G8B8;
-	m_d3d_presentationParameters.hDeviceWindow          = hWnd;
+	m_d3d_presentationParameters.hDeviceWindow          = hwnd;
 	m_d3d_presentationParameters.Flags                  = 0; //D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 	m_d3d_presentationParameters.BackBufferCount        = 1;
 	m_d3d_presentationParameters.BackBufferWidth        = static_cast<unsigned int>( pntSize.GetWidth ( ) );
@@ -86,7 +86,7 @@ void D3dSystem::createDevice( HWND const hWnd, ULONG const ulModelWidth, ULONG c
 	(
 		D3DADAPTER_DEFAULT, 
 		D3DDEVTYPE_HAL, 
-		hWnd,
+		hwnd,
 		D3DCREATE_HARDWARE_VERTEXPROCESSING, 
 		& m_d3d_presentationParameters, 
 		& m_d3d_device

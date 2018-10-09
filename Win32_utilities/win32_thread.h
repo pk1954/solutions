@@ -14,13 +14,13 @@ namespace Util
 	class Thread
 	{
 	public:
-		void StartThread( );
+		void StartThread( BOOL const );
 
 		void SetThreadAffinityMask( DWORD_PTR );
 
-		void PostMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
+		void PostThreadMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 		{
-		    BOOL const bRes = PostThreadMessage( m_threadId, uiMsg, wParam, lParam );
+		    BOOL const bRes = ::PostThreadMessage( m_threadId, uiMsg, wParam, lParam );
 			DWORD err = GetLastError( );
 			assert( bRes );
 		}
@@ -28,18 +28,14 @@ namespace Util
 		void Terminate( );
 
 	protected:
-		virtual LRESULT DispatchThreadMsg( UINT const, WPARAM const, LPARAM const ) = 0;
-
-		enum ThreadMessage : UINT
-		{
-			THREAD_MSG_EXIT = WM_USER + 1,
-			THREAD_MSG_APP_FIRST    // messages of application start here
-		};
+		virtual void    ThreadStartupFunc( ) {}
+		virtual LRESULT ThreadMsgDispatcher( UINT const, WPARAM const, LPARAM const ) { return 0; };
 
 	private:
 		Event  m_eventThreadStarter;
 		HANDLE m_handle;
 		UINT   m_threadId;
+		BOOL   m_bLoop;
 
 		friend static unsigned int __stdcall ThreadProc( void * );
 	};

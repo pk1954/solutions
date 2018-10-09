@@ -14,14 +14,14 @@ GenDisplayWindow::GenDisplayWindow( ) :
 
 void GenDisplayWindow::StartGenDisplayWindow( HWND const hWndParent )
 {
-    HWND const hWnd = StartBaseWindow
+    HWND const hwnd = StartBaseWindow
     ( 
         hWndParent,
         CS_OWNDC,
         L"GenDisplayWindow",
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE
     );
-    Util::MakeLayered( hWnd, TRUE, 0, 100 );
+    Util::MakeLayered( hwnd, TRUE, 0, 100 );
 };
 
 void GenDisplayWindow::DisplayGenerationBelowCursor( HIST_GENERATION const gen )

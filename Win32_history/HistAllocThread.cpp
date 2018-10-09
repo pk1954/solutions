@@ -14,19 +14,16 @@ HistAllocThread::HistAllocThread
 {
 	if ( bAsync )
 	{
-		StartThread( );
+		StartThread( FALSE );  // start thread without loop, ThreadMsgDispatcher has its own loop
 		SetThreadAffinityMask( 0x0003 );
-		PostMessage( THREAD_MSG_APP_FIRST, 0, 0 );  // any msg will do, just to trigger one DispatchThreadMsg
 	}
 	else
 	{
-		DispatchThreadMsg( THREAD_MSG_APP_FIRST, 0, 0 );
+		ThreadMsgDispatcher( 0, 0, 0 );
 	}
 }
 
-LRESULT HistAllocThread::DispatchThreadMsg( UINT const message, WPARAM const wParam, LPARAM const lParam  )
+void HistAllocThread::ThreadStartupFunc( )
 {
 	while (m_pHistorySys->AddHistorySlot()) {}
-	Terminate( );  // kill yourself
-	return 0;
 }

@@ -15,10 +15,10 @@ class D3dBuffer
 {
 public:
 
-    D3dBuffer( HWND const, ULONG const );
+    D3dBuffer( ULONG const );
     ~D3dBuffer();
 
-    void StartFrame( );
+    void StartFrame( HWND );
     void ResetFont( int const );
     void AddIndividualPrimitive( PixelPoint const &, DWORD const, float const );    
     void AddBackgroundPrimitive( PixelPoint const &, DWORD const, float const );    
@@ -26,7 +26,7 @@ public:
     void RenderBackground( );
     void RenderTranspRect( PixelRect const &, DWORD const );
     void D3D_DrawText( PixelRect const &, wstring const &, D3DCOLOR );
-    void EndFrame( );
+    void EndFrame( HWND );
 
     void SetStripMode( tBoolOp const bOp ) 
 	{ 
@@ -40,8 +40,6 @@ public:
 
 private:
     
-    HWND m_hwnd;
-
     ULONG m_ulTrianglesPerPrimitive;
 	ULONG m_ulVerticesPerPrimitive;
 	ULONG m_ulMaxNrOfPrimitives;

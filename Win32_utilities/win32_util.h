@@ -25,21 +25,21 @@ namespace Util
     bool operator== ( RECT const &, RECT const & );
     bool operator!= ( RECT const &, RECT const & );
     
-    inline void Show( HWND const hWnd, BOOL const bStateOld, BOOL const bStateNew )
+    inline void Show( HWND const hwnd, BOOL const bStateOld, BOOL const bStateNew )
     {
         if ( bStateNew != bStateOld )
-            ShowWindow( hWnd, bStateNew ? SW_SHOW : SW_HIDE );
+            ShowWindow( hwnd, bStateNew ? SW_SHOW : SW_HIDE );
     }
 
-    inline void Show( HWND const hWnd, BOOL const bStateNew )
+    inline void Show( HWND const hwnd, BOOL const bStateNew )
     {
-        Util::Show( hWnd, IsWindowVisible( hWnd ), bStateNew );
+        Util::Show( hwnd, IsWindowVisible( hwnd ), bStateNew );
     }
 
-    inline void Show( HWND const hWnd, tBoolOp const op )
+    inline void Show( HWND const hwnd, tBoolOp const op )
     {
-        BOOL const bStateOld = IsWindowVisible( hWnd );
-        Util::Show( hWnd, ApplyOp2( bStateOld, op ) );
+        BOOL const bStateOld = IsWindowVisible( hwnd );
+        Util::Show( hwnd, ApplyOp2( bStateOld, op ) );
     }
 
 	inline POINT PixelPoint2POINT(PixelPoint pp)
@@ -62,23 +62,23 @@ namespace Util
 		return PixelRect{rect.left, rect.top, rect.right, rect.bottom};
 	}
 
-    inline RECT GetClRect( HWND const hWnd ) // xPos / yPos always 0
+    inline RECT GetClRect( HWND const hwnd ) // xPos / yPos always 0
     {
         RECT rect;
-        (void)GetClientRect( hWnd, &rect );                     
+        (void)GetClientRect( hwnd, &rect );                     
         return rect;
     }
 
-    inline PixelRect GetClPixelRect( HWND const hWnd ) // xPos / yPos always 0
+    inline PixelRect GetClPixelRect( HWND const hwnd ) // xPos / yPos always 0
     {
         RECT rect;
-        (void)GetClientRect( hWnd, &rect );                     
+        (void)GetClientRect( hwnd, &rect );                     
         return RECT2PixelRect(rect);
     }
 
-    inline PixelRectSize GetClRectSize( HWND const hWnd )
+    inline PixelRectSize GetClRectSize( HWND const hwnd )
     {
-        RECT const rect = GetClRect( hWnd );
+        RECT const rect = GetClRect( hwnd );
         PixelRectSize pntSize
         ( 
             (rect.right  - rect.left),
@@ -87,101 +87,101 @@ namespace Util
         return pntSize;
     }
 
-    inline PixelPoint GetClRectCenter( HWND const hWnd )
+    inline PixelPoint GetClRectCenter( HWND const hwnd )
     {
-        PixelRectSize const rectSize = GetClRectSize( hWnd );
+        PixelRectSize const rectSize = GetClRectSize( hwnd );
         PixelPoint          pntCenter( rectSize.GetWidth() / 2, rectSize.GetHeight() / 2 );
         return pntCenter;
     }
 
-    inline long GetClientWindowHeight( HWND const hWnd )
+    inline long GetClientWindowHeight( HWND const hwnd )
     {
-        RECT rect = GetClRect( hWnd );                     
+        RECT rect = GetClRect( hwnd );                     
         return rect.bottom - rect.top;
     }
 
-    inline long GetClientWindowWidth( HWND const hWnd )
+    inline long GetClientWindowWidth( HWND const hwnd )
     {
-        RECT rect = GetClRect( hWnd );
+        RECT rect = GetClRect( hwnd );
         return rect.right - rect.left;
     }
 
-    inline PixelPoint GetClientAreaPos( HWND const hWnd )
+    inline PixelPoint GetClientAreaPos( HWND const hwnd )
     {
 		POINT pnt{ 0, 0 };
-        (void)ClientToScreen( hWnd, &pnt );
+        (void)ClientToScreen( hwnd, &pnt );
 		PixelPoint pp = POINT2PixelPoint( pnt );
         return pp;
     }
 	
-    inline void UpsideDown( HWND const hWnd, PixelPoint * pnt )   // windows y-coordinates increase from top to bottom
+    inline void UpsideDown( HWND const hwnd, PixelPoint * pnt )   // windows y-coordinates increase from top to bottom
     {                                                             // we use y-coordinates increasing from bottom to top
-        pnt->y = GetClientWindowHeight( hWnd ) - pnt->y;          // because of DirectX
+        pnt->y = GetClientWindowHeight( hwnd ) - pnt->y;          // because of DirectX
     }
 
-    inline PixelPoint GetRelativeCrsrPosition( HWND const hWnd )   // Delivers cursor position relative to client area 
+    inline PixelPoint GetRelativeCrsrPosition( HWND const hwnd )   // Delivers cursor position relative to client area 
     {
 		POINT pnt;
 		(void)GetCursorPos( &pnt );
-        (void)ScreenToClient( hWnd, &pnt );
+        (void)ScreenToClient( hwnd, &pnt );
 		PixelPoint ptCrsr = POINT2PixelPoint( pnt );
-        UpsideDown( hWnd, & ptCrsr ); 
+        UpsideDown( hwnd, & ptCrsr ); 
         return ptCrsr;
     }
 
-    inline PixelPoint GetWindowPos( HWND const hWnd )
+    inline PixelPoint GetWindowPos( HWND const hwnd )
     {
         RECT rect;
-        (void)GetWindowRect( hWnd, &rect );
+        (void)GetWindowRect( hwnd, &rect );
         return { rect.left, rect.top };
     }
 
-    inline PixelPoint GetWindowSize( HWND const hWnd )
+    inline PixelPoint GetWindowSize( HWND const hwnd )
     {
         RECT rect;
-        (void)GetWindowRect( hWnd, &rect );
+        (void)GetWindowRect( hwnd, &rect );
         return { rect.right  - rect.left, rect.bottom - rect.top };
     }
 
-    inline long GetWindowHeight( HWND const hWnd )
+    inline long GetWindowHeight( HWND const hwnd )
     {
         RECT rect;
-        (void)GetWindowRect( hWnd, &rect );
+        (void)GetWindowRect( hwnd, &rect );
         return rect.bottom - rect.top;
     }
 
-    inline long GetWindowWidth( HWND const hWnd )
+    inline long GetWindowWidth( HWND const hwnd )
     {
         RECT rect;
-        (void)GetWindowRect( hWnd, &rect );                     
+        (void)GetWindowRect( hwnd, &rect );                     
         return rect.right - rect.left;
     }
 
-    inline long GetWindowBottom( HWND const hWnd )
+    inline long GetWindowBottom( HWND const hwnd )
     {
         RECT rect;
-        (void)GetWindowRect( hWnd, &rect );
+        (void)GetWindowRect( hwnd, &rect );
         return rect.bottom;
     }
 
-    inline long GetWindowTop( HWND const hWnd )
+    inline long GetWindowTop( HWND const hwnd )
     {
         RECT rect;
-        (void)GetWindowRect( hWnd, &rect );
+        (void)GetWindowRect( hwnd, &rect );
         return rect.top;
     }
 
-    inline long GetWindowLeftPos( HWND const hWnd )
+    inline long GetWindowLeftPos( HWND const hwnd )
     {
         RECT rect;
-        (void)GetWindowRect( hWnd, &rect );
+        (void)GetWindowRect( hwnd, &rect );
         return rect.left;
     }
 
-    inline long GetWindowRightPos( HWND const hWnd )
+    inline long GetWindowRightPos( HWND const hwnd )
     {
         RECT rect;
-        (void)GetWindowRect( hWnd, &rect );
+        (void)GetWindowRect( hwnd, &rect );
         return rect.right;
     }
 
@@ -191,15 +191,15 @@ namespace Util
         return PtInRect( &rect, PixelPoint2POINT( pp ) );  
     } 
 
-    inline BOOL PixelPointInClientRect( HWND const hWnd, PixelPoint const pp )  // Is point in client rect?
+    inline BOOL PixelPointInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?
     {
-        RECT const rect = GetClRect( hWnd );  
+        RECT const rect = GetClRect( hwnd );  
 		return PtInRect( &rect, PixelPoint2POINT( pp ) );
     } 
 
-    inline BOOL CrsrInClientRect( HWND const hWnd )  // Is cursor position in client rect?
+    inline BOOL CrsrInClientRect( HWND const hwnd )  // Is cursor position in client rect?
     {
-		return PixelPointInClientRect( hWnd, GetRelativeCrsrPosition( hWnd )  );
+		return PixelPointInClientRect( hwnd, GetRelativeCrsrPosition( hwnd )  );
     } 
 
     inline void FastFill( HDC const hDC, RECT const & rect )
@@ -207,18 +207,18 @@ namespace Util
         (void)ExtTextOut( hDC, 0, 0, ETO_OPAQUE, & rect, L"", 0, 0 );
     }
 
-    inline void AddWindowStyle( HWND const hWnd, DWORD const dwStyle )
+    inline void AddWindowStyle( HWND const hwnd, DWORD const dwStyle )
     {
-        DWORD const dwOldStyle = GetWindowLong( hWnd, GWL_EXSTYLE );
+        DWORD const dwOldStyle = GetWindowLong( hwnd, GWL_EXSTYLE );
         DWORD const dwNewStyle = dwOldStyle | dwStyle;
-        SetWindowLong( hWnd, GWL_EXSTYLE, dwNewStyle );
+        SetWindowLong( hwnd, GWL_EXSTYLE, dwNewStyle );
     }
 
-    inline void DeleteWindowStyle( HWND const hWnd, DWORD const dwStyle )
+    inline void DeleteWindowStyle( HWND const hwnd, DWORD const dwStyle )
     {
-        DWORD const dwOldStyle = GetWindowLong( hWnd, GWL_EXSTYLE );
+        DWORD const dwOldStyle = GetWindowLong( hwnd, GWL_EXSTYLE );
         DWORD const dwNewStyle = dwOldStyle & ~dwStyle;
-        LONG  const lRes       = SetWindowLong( hWnd, GWL_EXSTYLE, dwNewStyle );
+        LONG  const lRes       = SetWindowLong( hwnd, GWL_EXSTYLE, dwNewStyle );
         assert( lRes == dwNewStyle );
     }
 

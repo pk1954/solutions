@@ -42,26 +42,26 @@ bool Util::operator!= ( RECT const & a, RECT const & b )
     return ( a.left != b.left ) || ( a.top != b.top ) || ( a.right != b.right ) || ( a.bottom != b.bottom ); 
 };
 
-void Util::AdjustRight( HWND hWnd, int iYpos )
+void Util::AdjustRight( HWND hwnd, int iYpos )
 {
-    HWND const hWndParent   = GetParent( hWnd );
+    HWND const hWndParent   = GetParent( hwnd );
     int  const iWidthParent = GetClientWindowWidth( hWndParent );
-    int  const iWidth       = GetWindowWidth( hWnd );
-    int  const iHeight      = GetWindowHeight( hWnd );
-    MoveWindow( hWnd, iWidthParent - iWidth, iYpos, iWidth, iHeight, TRUE );
-    (void)BringWindowToTop( hWnd );
+    int  const iWidth       = GetWindowWidth( hwnd );
+    int  const iHeight      = GetWindowHeight( hwnd );
+    MoveWindow( hwnd, iWidthParent - iWidth, iYpos, iWidth, iHeight, TRUE );
+    (void)BringWindowToTop( hwnd );
 }
 
-void Util::AdjustLeft( HWND hWnd, int iYpos )
+void Util::AdjustLeft( HWND hwnd, int iYpos )
 {
-	PixelPoint pnt = GetWindowSize( hWnd );
-    MoveWindow( hWnd, 0, iYpos, pnt.x, pnt.y, TRUE );
-    (void)BringWindowToTop( hWnd );
+	PixelPoint pnt = GetWindowSize( hwnd );
+    MoveWindow( hwnd, 0, iYpos, pnt.x, pnt.y, TRUE );
+    (void)BringWindowToTop( hwnd );
 }
 
 BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and set size
 (
-	HWND const hWnd,
+	HWND const hwnd,
 	LONG const lXpos,
 	LONG const lYpos,
 	LONG const lWidth,
@@ -69,36 +69,36 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 	BOOL const bRepaint
 )
 {
-	HWND  const hWndParent = GetAncestor( hWnd, GA_PARENT );
+	HWND  const hWndParent = GetAncestor( hwnd, GA_PARENT );
 	POINT       pos{ lXpos, lYpos };
 
 	if ( hWndParent != nullptr )
 		ScreenToClient( hWndParent, &pos );
 
-	return MoveWindow( hWnd, pos.x, pos.y, lWidth, lHeight, bRepaint );
+	return MoveWindow( hwnd, pos.x, pos.y, lWidth, lHeight, bRepaint );
 }
 
 BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates 
 (
-	HWND const hWnd,
+	HWND const hwnd,
 	LONG const lXpos,
 	LONG const lYpos,
 	BOOL const bRepaint
 )
 {
-	PixelPoint const pixActSize = GetWindowSize( hWnd );
+	PixelPoint const pixActSize = GetWindowSize( hwnd );
 
-	return MoveWindowAbsolute( hWnd, lXpos, lYpos, pixActSize.x, pixActSize.y, bRepaint );
+	return MoveWindowAbsolute( hwnd, lXpos, lYpos, pixActSize.x, pixActSize.y, bRepaint );
 }
 
-void Util::MakeLayered( HWND const hWnd, BOOL const bMode, COLORREF const crKey, UINT const uiAlpha )
+void Util::MakeLayered( HWND const hwnd, BOOL const bMode, COLORREF const crKey, UINT const uiAlpha )
 {
     if ( bMode )
-        AddWindowStyle( hWnd, WS_EX_LAYERED );
+        AddWindowStyle( hwnd, WS_EX_LAYERED );
     else
-        DeleteWindowStyle( hWnd, WS_EX_LAYERED );
+        DeleteWindowStyle( hwnd, WS_EX_LAYERED );
 
-    BOOL const bRes = SetLayeredWindowAttributes( hWnd, crKey, ( 255 * uiAlpha ) / 100, (crKey == 0) ? LWA_ALPHA : LWA_COLORKEY );
+    BOOL const bRes = SetLayeredWindowAttributes( hwnd, crKey, ( 255 * uiAlpha ) / 100, (crKey == 0) ? LWA_ALPHA : LWA_COLORKEY );
     assert( bRes );
 }
 

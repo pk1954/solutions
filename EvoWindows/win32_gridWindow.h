@@ -4,6 +4,7 @@
 #pragma once
 
 #include "pixelCoordinates.h"
+#include "win32_thread.h"
 #include "win32_baseWindow.h"
 
 class GridRect;
@@ -17,10 +18,16 @@ class ObserverInterface;
 class PerformanceWindow;
 class FocusPoint;
 
-class GridWindow : public BaseWindow
+class GridWindow : public BaseWindow, public Util::Thread
 {
 public:
     GridWindow( );
+
+//	virtual void ThreadStartupFunc();
+
+//	virtual LRESULT ThreadMsgDispatcher( UINT const uiMsg, WPARAM const wParam, LPARAM const lParam )
+//	{
+//	}
 
     void Start
     ( 
@@ -66,14 +73,14 @@ private:
     
     WorkThreadInterface * m_pWorkThreadInterface;
     PixelCoordinates    * m_pPixelCoordinates;  // My own PixelCoordinates
-    GridWindow          * m_pGWObserved;	 // Observed GridWindow (or nullptr)
+    GridWindow          * m_pGWObserved;	    // Observed GridWindow (or nullptr)
     EvolutionCore       * m_pCore;
     PerformanceWindow   * m_pPerformanceWindow;
     FocusPoint          * m_pFocusPoint;
     ObserverInterface   * m_pObserverInterface;
 	PixelCore           * m_pPixelCore;
     DrawFrame           * m_pDrawFrame;
-    PixelPoint 	          m_ptLast;	 	 // Last cursor position during selection 
+    PixelPoint 	          m_ptLast;	 	   // Last cursor position during selection 
     BOOL                  m_bMoveAllowed;  // TRUE: move with mouse is possible
 
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
