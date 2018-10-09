@@ -35,7 +35,7 @@ public:
         // individual energy 
         initialEnergy,
         stdCapacity,
-        extraCapacity,    // size of energy storage increase 
+        extraCapacity,        // size of energy storage increase 
         // abilities
         neighborhoodFoodSensitivity, // sensitivity for energy level of neighbor slots
         // energy consumption
@@ -53,6 +53,7 @@ public:
         marryEnabled,
         interactEnabled,
         fertilizeEnabled,
+        passOnEnabled,
         eatEnabled,
         // thresholds for activities
         thresholdClone,             // cloning possible if at least that much energy

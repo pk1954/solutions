@@ -59,6 +59,8 @@ public:
     virtual long           GetMemEntry  ( GridPoint const &, MEM_INDEX const ) const = 0;
     virtual short          GetDistr     ( GridPoint const &, tAction   const ) const = 0;
     virtual long           GetGenotype  ( GridPoint const &, tGeneType const ) const = 0;
+	
+	virtual	unsigned int   GetActionCounter( unsigned int const, unsigned int const ) const = 0;
 
     virtual GridPoint      FindGridPoint  ( IndId const & ) const = 0;
 

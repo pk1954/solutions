@@ -119,13 +119,19 @@ public:
         m_gsAverageAge.printGeneLine( textWin, data );
     }
 
-    void printGeneStat( TextWindow & textWin )
+    void printGeneStat( TextWindow & textWin, EvolutionCore const * pCore )
     {
         for ( unsigned int uiOption = 0; uiOption < NR_ACTIONS; ++uiOption )
 		{
 			tAction action = static_cast<tAction>( uiOption );
 			if ( EvolutionCore::IsEnabled( action ) )
+			{
 				m_axaGenePoolStrategy[ uiOption ].printFloatLine( textWin, GetActionTypeName( action ) );
+		        textWin.nextLine( L"" );
+
+				for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
+					textWin.printNumber( pCore->GetActionCounter( uiStrategy, uiOption ) );
+			}
 		}
 
         for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
@@ -185,11 +191,11 @@ StatisticsWindow::~StatisticsWindow( )
 	m_pCore = nullptr;
 }
 
-	Stopwatch stopwatch;
+Stopwatch stopwatch;
 
 void StatisticsWindow::DoPaint( )
 {
-	stopwatch.Start();
+//	stopwatch.Start();
     // aquire and prepare data 
 
     AllGenesStat genesStat;
@@ -226,7 +232,7 @@ void StatisticsWindow::DoPaint( )
 
     genesStat.printCounter ( * this, L"#individuals" );  // number of individuals
     genesStat.printAvAge   ( * this, L"av. age" );       // average age
-    genesStat.printGeneStat( * this );                   // percentage numbers for options
+    genesStat.printGeneStat( * this, m_pCore );                   // percentage numbers for options
 
 	if ( EvolutionCore::IsEnabled( tAction::eat ) )
 		genesStat.printAvFood  ( * this, L"av. food" );      // average food consumption 
@@ -262,5 +268,5 @@ void StatisticsWindow::DoPaint( )
 		setHorizontalPos( 4 );
 		printNumber( m_pCore->GetAverageFoodGrowth( ) );
 	}
-	stopwatch.Stop( L"Statistics" );
+//	stopwatch.Stop( L"Statistics" );
 }

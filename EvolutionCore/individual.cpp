@@ -114,12 +114,12 @@ static Individual const & selectParent
 
 void Individual::Breed
 (
-    IndId         const   id,
+    IndId          const   id,
     EVO_GENERATION const   genBirth,
-    short         const   sMutationRate,
-    Random              & random,
-    Individual    const & indParentA,
-    Individual    const & indParentB
+    short          const   sMutationRate,
+    Random               & random,
+    Individual     const & indParentA,
+    Individual     const & indParentB
 )
 {
     m_id         =         id;

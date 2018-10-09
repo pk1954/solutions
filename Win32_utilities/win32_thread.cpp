@@ -37,7 +37,7 @@ static unsigned int __stdcall Util::ThreadProc( void * data )
         assert( bRet >= 0 );
 		if ( msg.message == pThread->THREAD_MSG_EXIT )
 			break;
-        (void)pThread->DispatchMessage( msg.message, msg.wParam, msg.lParam );
+        (void)pThread->DispatchThreadMsg( msg.message, msg.wParam, msg.lParam );
     } 
 
 	return 0;

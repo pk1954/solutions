@@ -20,7 +20,7 @@ public:
     
     Genome( );
     void    InitGenome( );
-    tAction GetOption( bool const, bool const, int const, Random & ) const;
+    tAction GetOption( bool const, bool const, int const, EVO_GENERATION const, Random & ) const;
     void    Mutate( short const, Random & );
     void    Recombine( Genome const &, Genome const &, Random & );
 

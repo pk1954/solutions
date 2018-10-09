@@ -94,7 +94,7 @@ private:
 
     // private member functions
 
-	virtual LRESULT DispatchMessage( UINT const, WPARAM const, LPARAM const );
+	virtual LRESULT DispatchThreadMsg( UINT const, WPARAM const, LPARAM const );
 
     void generationRun( );
 

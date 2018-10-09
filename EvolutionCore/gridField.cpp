@@ -64,6 +64,11 @@ void GridField::CloneIndividual( IndId const id, EVO_GENERATION const genBirth, 
     Donate( gfParent, CastToShort( lDonation ) );
 }
 
+void GridField::PassOn2Child( IndId const id, EVO_GENERATION const genBirth, Random & random )
+{
+    m_Individual.Clone( id, genBirth, m_sMutatRate, random, m_Individual );
+}
+
 void GridField::BreedIndividual( IndId const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParentA, GridField & gfParentB )
 {
     m_Individual.Breed( id, genBirth, m_sMutatRate, random, gfParentA.m_Individual, gfParentB.m_Individual );

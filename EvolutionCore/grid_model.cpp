@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "assert.h"
-#include <array> 
 #include <cstdlib> 
 #include <cmath> 
 #include "strategy.h"
@@ -61,7 +60,9 @@ Grid::Grid( )
       m_idCounter( ),
       m_genEvo( 0L ),
 	  m_emptyNeighborSlots( ),
-	  m_occupiedNeighborSlots( )
+	  m_occupiedNeighborSlots( ),
+	  m_pActionCounterFill( & m_ActionCounter1 ),
+	  m_pActionCounterRead( & m_ActionCounter2 )
 {
     Apply2Grid    // initialization of grid variables which never change after initialization
 	( 
@@ -171,12 +172,14 @@ void Grid::MakePlan
 
     assert( m_emptyNeighborSlots.GetLength() + m_occupiedNeighborSlots.GetLength() == Neighborhood::GetNrOfNeighbors( ) );
 
-    bool const bHasFreeSpace = m_emptyNeighborSlots.GetLength( ) > 0;
-    bool const bHasNeighbor  = m_occupiedNeighborSlots.GetLength( ) > 0;
-    int  const iEnergy       = gfRun.GetEnergy( ) - plan.GetBaseConsumption( );
-
-    Genome const & genome = gfRun.GetGenome( );
-    tAction        action = genome.GetOption( bHasFreeSpace, bHasNeighbor, iEnergy, m_random );
+    tAction action = gfRun.GetGenome( ).GetOption
+	( 
+        m_emptyNeighborSlots.GetLength( ) > 0,            // has free space around? 
+        m_occupiedNeighborSlots.GetLength( ) > 0,         // has neighbor
+        gfRun.GetEnergy( ) - plan.GetBaseConsumption( ),  // available energy
+	    GetAge( gpRun ),
+		m_random 
+	);
 
     plan.SetActionType( action );
 
@@ -198,6 +201,7 @@ void Grid::MakePlan
         plan.NoTarget( );
         break;
 
+    case tAction::passOn:
     case tAction::fertilize:
     case tAction::eat:
         plan.NoPartner( );
@@ -223,6 +227,8 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
 
     gfRun.SetLastAction( plan.GetActionType( ) );
     gfRun.DecEnergy    ( plan.GetBaseConsumption( ) );
+
+	incActionCounter( plan.GetActionType( ), gfRun.GetStrategyId( ) );
 
 	switch ( plan.GetActionType( ) )
     {
@@ -288,6 +294,12 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
             short const sInvest = gfRun.GetAllele( tGeneType::fertilInvest );
             gfRun.Fertilize( sInvest );
             gfRun.DecEnergy( sInvest );
+        }
+        break;
+
+        case tAction::passOn:  
+        {
+            gfRun.PassOn2Child( ++m_idCounter, m_genEvo, m_random );
         }
         break;
 

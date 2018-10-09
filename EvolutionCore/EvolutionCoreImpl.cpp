@@ -73,27 +73,37 @@ void EvolutionCoreImpl::Compute( )
 
     GridPoint gpRun = m_gplIterator.Begin( );
 
+	m_grid.PrepareActionCounters( );
     while ( gpRun.IsNotNull( ) )
     {
         assert( gpRun.IsInGrid( ) );
         assert( m_grid.IsAlive( gpRun ) );
 
         m_grid.MakePlan( gpRun, * pPlan );
-        pPlan->SetValid( );
-        if ( (m_pObservers != nullptr) && IsPoiDefined( ) ) 
-        {
-            if ( IsPoi( gpRun ) || IsPoi( pPlan->GetPartner( ) ) )
-			{
-               m_pObservers->Notify( );
-               m_pEvent->Wait( );
-			}
-        }
-        pPlan->SetInvalid( );
+		stopOnPoi      ( gpRun, * pPlan );
         gpRun = m_grid.ImplementPlan( gpRun, * pPlan );   // may return GP_NULL
     }
 
     m_grid.FoodGrowth( );
     m_grid.IncGenNr( );
+}
+
+void EvolutionCoreImpl::stopOnPoi
+( 
+    GridPoint       const & gpRun, 
+    PlannedActivity       & plan
+)
+{
+    if ( (m_pObservers != nullptr) && IsPoiDefined( ) ) 
+    {
+        if ( IsPoi( gpRun ) || IsPoi( plan.GetPartner( ) ) )
+		{
+		    plan.SetValid( );
+            m_pObservers->Notify( );
+            m_pEvent->Wait( );
+		    plan.SetInvalid( );
+		}
+    }
 }
 
 void EvolutionCoreImpl::DumpGridPointList( ) const

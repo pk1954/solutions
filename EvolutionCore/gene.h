@@ -19,7 +19,7 @@ public:
 		: m_sAllele( lim.GetAverageValue( ) ) 
 	{ }
     	
-	void  Mutate( short const, GeneTypeLimits const &, Random & );
+	void Mutate( short const, GeneTypeLimits const &, Random & );
 
 	void SetAllele( short const sValue) 
 	{ 

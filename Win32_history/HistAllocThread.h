@@ -14,7 +14,7 @@ public:
 	~HistAllocThread() {};
 
 private:
-	virtual LRESULT DispatchMessage( UINT const, WPARAM const, LPARAM const );
+	virtual LRESULT DispatchThreadMsg( UINT const, WPARAM const, LPARAM const );
 
 	HistorySystem const * m_pHistorySys;
 };

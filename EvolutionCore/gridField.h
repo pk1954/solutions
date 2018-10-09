@@ -54,6 +54,7 @@ public:
     void CreateIndividual( IndId const, EVO_GENERATION const, tStrategyId const );
     void CloneIndividual ( IndId const, EVO_GENERATION const, Random &, GridField & );
     void BreedIndividual ( IndId const, EVO_GENERATION const, Random &, GridField &, GridField & );
+	void PassOn2Child    ( IndId const, EVO_GENERATION const, Random & );
     void MoveIndividual  ( GridField & );
 
 	void Apply2Fertilizer(short const s, ManipulatorFunc f) { setFertilizer( (f)( m_sFertilizer, s ) ); }

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <array>
 #include "assert.h"
+#include "debug.h"
 #include "config.h"
 #include "strategy.h"
 #include "genome.h"
@@ -51,6 +52,7 @@ void Genome::InitClass( )
     m_genomeTemplate.setActionGene( tAction::interact,  500 );
     m_genomeTemplate.setActionGene( tAction::eat,       500 );
     m_genomeTemplate.setActionGene( tAction::fertilize, 500 );
+    m_genomeTemplate.setActionGene( tAction::passOn,    500 );
 
     m_genomeTemplate.setGeneralGene( tGeneType::appetite,           Config::GetConfigValue( Config::tId::defaultAppetite     ) );
     m_genomeTemplate.setGeneralGene( tGeneType::fertilInvest,       Config::GetConfigValue( Config::tId::defaultFertilInvest ) );
@@ -66,6 +68,7 @@ void Genome::InitClass( )
 
     enabled( tAction::move      ) = Config::GetConfigValue( Config::tId::moveEnabled      ) > 0;
     enabled( tAction::fertilize ) = Config::GetConfigValue( Config::tId::fertilizeEnabled ) > 0;
+    enabled( tAction::passOn    ) = Config::GetConfigValue( Config::tId::passOnEnabled    ) > 0;
     enabled( tAction::clone     ) = Config::GetConfigValue( Config::tId::cloneEnabled     ) > 0;
     enabled( tAction::marry     ) = Config::GetConfigValue( Config::tId::marryEnabled     ) > 0;
     enabled( tAction::interact  ) = Config::GetConfigValue( Config::tId::interactEnabled  ) > 0;
@@ -133,29 +136,48 @@ void Genome::Recombine( Genome const & genomeA, Genome const & genomeB, Random &
 
 tAction Genome::GetOption
 ( 
-    bool const bHasFreeSpace, 
-    bool const bHasNeighbor,
-    int  const iEnergy,
-    Random   & random 
+    bool           const bHasFreeSpace, 
+    bool           const bHasNeighbor,
+    int            const iEnergy,
+	EVO_GENERATION const age,
+    Random             & random 
 ) const
 {
-    int iNrOfOptions = 0;
+	if ( m_abActionEnabled[ static_cast<int>( tAction::passOn ) ] )
+	{
+		static double const MAX_LIFE_SPAN = 200.0;
+		static double const RANDOM_FACTOR = static_cast<double>(0x7fff);
 
+		double dAge = static_cast<double>(age);
+		double dx   = dAge / MAX_LIFE_SPAN;
+		double dx2  = dx * dx;
+		double dx4  = dx2 * dx2;
+		double dx8  = dx4 * dx4;
+		double dAgeFactor = dx8 * RANDOM_FACTOR;
+		ASSERT_LIMITS( dAgeFactor, 0.0, RANDOM_FACTOR );
+
+		unsigned int uiRandom    = random.NextRandomNumber();
+		unsigned int uiAgeFactor = static_cast<unsigned int>( dAgeFactor );
+
+		if ( uiAgeFactor > uiRandom )
+			return tAction::passOn;
+	}
     array <bool, NR_ACTIONS > abOptions;
  
-    if ( abOptions[ static_cast<int>( tAction::move      ) ] = enabled( tAction::move      ) && bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdMove )      ) ) ++iNrOfOptions;
-    if ( abOptions[ static_cast<int>( tAction::fertilize ) ] = enabled( tAction::fertilize ) &&                                  ( iEnergy >= GetAllele( tGeneType::thresholdFertilize ) ) ) ++iNrOfOptions;
-    if ( abOptions[ static_cast<int>( tAction::clone     ) ] = enabled( tAction::clone     ) && bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdClone )     ) ) ++iNrOfOptions;
-    if ( abOptions[ static_cast<int>( tAction::marry     ) ] = enabled( tAction::marry     ) && bHasFreeSpace && bHasNeighbor && ( iEnergy >= GetAllele( tGeneType::thresholdMarry )     ) ) ++iNrOfOptions;
-    if ( abOptions[ static_cast<int>( tAction::interact  ) ] = enabled( tAction::interact  ) && bHasNeighbor )                                                                               ++iNrOfOptions;
-    if ( abOptions[ static_cast<int>( tAction::eat       ) ] = enabled( tAction::eat       ) &&                                  ( iEnergy <  GetAllele( tGeneType::maxEat )             ) ) ++iNrOfOptions;
+    abOptions[ static_cast<int>( tAction::passOn    ) ] = true;
+	abOptions[ static_cast<int>( tAction::move      ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdMove )      );
+    abOptions[ static_cast<int>( tAction::fertilize ) ] =                                  ( iEnergy >= GetAllele( tGeneType::thresholdFertilize ) );
+    abOptions[ static_cast<int>( tAction::clone     ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdClone )     );
+    abOptions[ static_cast<int>( tAction::marry     ) ] = bHasFreeSpace && bHasNeighbor && ( iEnergy >= GetAllele( tGeneType::thresholdMarry )     );
+    abOptions[ static_cast<int>( tAction::interact  ) ] =                  bHasNeighbor;
+    abOptions[ static_cast<int>( tAction::eat       ) ] =                                  ( iEnergy <  GetAllele( tGeneType::maxEat )             );
 
     unsigned int uiSum = 0;
 
     for ( auto & g : m_aGeneActions )
     {
         int index = static_cast<int>( g.m_action );
-        if ( abOptions[ index ] )
+        if ( abOptions[ index ] && m_abActionEnabled[ index ] )
         {
             short const sVal = g.m_gene.GetAllele( );
             assert( sVal >= 0 );
@@ -166,9 +188,7 @@ tAction Genome::GetOption
         }
     }
 
-    unsigned int const uiRand   = random.NextRandomNumber( );
-    unsigned int const uiFaktor = uiRand * uiSum;
-    int iVal = uiFaktor >> 15;
+    int iVal = random.NextRandomNumberScaledTo( uiSum );
 
     for ( auto & g : m_aGeneActions )
     {

@@ -36,9 +36,9 @@ void EvoModelDataGlue::CopyFrom( ModelData const * const src )
 	{
 	case tEvoCmd::nextGen:
 
-		stopwatch.Start();
+//		stopwatch.Start();
 		m_pEvolutionCore->Compute( );  // compute next generation
-		stopwatch.Stop( L"Compute" );
+//		stopwatch.Stop( L"Compute" );
 		break;
 
 	case tEvoCmd::editDoEdit:

@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <array> 
+#include <algorithm>
 #include "random.h"
 #include "gridPoint.h"
 #include "gpList.h"
@@ -86,11 +88,40 @@ public:
     long GetAverageFoodGrowth    ( ) const { return m_lFoodGrowth / GridPoint::GRID_AREA; }
     int  GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
 
+	void PrepareActionCounters( )
+	{ 
+		std::swap( m_pActionCounterFill, m_pActionCounterRead );
+		for ( auto & ax: ( * m_pActionCounterFill ) )
+			ax.fill( 0 ); 
+	}
+
+	unsigned int GetActionCounter
+	( 
+		unsigned int const uiStrategy, 
+		unsigned int const uiAction
+	) const
+	{
+		assert( uiAction   <= NR_ACTIONS );
+		assert( uiStrategy <= NR_STRATEGIES );
+		return (* m_pActionCounterRead)[ uiAction ][ uiStrategy ];
+	}
+
     // static functions
 
     static void InitClass( );
 
 private:
+	void incActionCounter
+	(
+		tAction action,
+		tStrategyId strategy
+	)
+	{
+		unsigned int const uiAction   = static_cast<unsigned int>(action);
+		unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
+		++ ( * m_pActionCounterFill )[uiAction][uiStrategy];
+	}
+		
     void deleteAndReset( GridField & gf )
     {
         m_gpList.DeleteGridPointFromList( * this, gf );
@@ -130,6 +161,12 @@ private:
     EVO_GENERATION m_genEvo;                                               //                             4 byte
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;
+
+	typedef array< array < unsigned int, NR_STRATEGIES>, NR_ACTIONS > tActionCounters;
+	tActionCounters m_ActionCounter1;
+	tActionCounters m_ActionCounter2;
+	tActionCounters * m_pActionCounterFill;
+	tActionCounters * m_pActionCounterRead;
 
     // following members are stored here only to be part of grid history.
 

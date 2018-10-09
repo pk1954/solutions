@@ -16,15 +16,15 @@ HistAllocThread::HistAllocThread
 	{
 		StartThread( );
 		SetThreadAffinityMask( 0x0003 );
-		PostMessage( THREAD_MSG_APP_FIRST, 0, 0 );  // any msg will do, just to trigger one DispatchMessage
+		PostMessage( THREAD_MSG_APP_FIRST, 0, 0 );  // any msg will do, just to trigger one DispatchThreadMsg
 	}
 	else
 	{
-		DispatchMessage( THREAD_MSG_APP_FIRST, 0, 0 );
+		DispatchThreadMsg( THREAD_MSG_APP_FIRST, 0, 0 );
 	}
 }
 
-LRESULT HistAllocThread::DispatchMessage( UINT const message, WPARAM const wParam, LPARAM const lParam  )
+LRESULT HistAllocThread::DispatchThreadMsg( UINT const message, WPARAM const wParam, LPARAM const lParam  )
 {
 	while (m_pHistorySys->AddHistorySlot()) {}
 	Terminate( );  // kill yourself

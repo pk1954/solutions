@@ -28,7 +28,7 @@ namespace Util
 		void Terminate( );
 
 	protected:
-		virtual LRESULT DispatchMessage( UINT const, WPARAM const, LPARAM const ) = 0;
+		virtual LRESULT DispatchThreadMsg( UINT const, WPARAM const, LPARAM const ) = 0;
 
 		enum ThreadMessage : UINT
 		{

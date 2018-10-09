@@ -67,7 +67,7 @@ WorkThread::~WorkThread( )
 
 void WorkThread::TerminateThread( HWND const hwndCtl )
 {
-	DispatchMessage( THREAD_MSG_STOP, 0, 0 );            // stop running computation and script processing
+	DispatchThreadMsg( THREAD_MSG_STOP, 0, 0 );            // stop running computation and script processing
 	Terminate( );
 	DestroyWindow( hwndCtl);                             // trigger termination of application
 }
@@ -134,7 +134,7 @@ void WorkThread::WorkMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 	assert( IsValidThreadMessage( uiMsg ) );
     if ( m_iScriptLevel > 0 )                      // if we are processing a script    
     {                                              // we run already in worker thread 
-        DispatchMessage( uiMsg, wParam, lParam );  // dispatch message directly to avoid blocking
+        DispatchThreadMsg( uiMsg, wParam, lParam );  // dispatch message directly to avoid blocking
     }
     else                                           // normal case
     {                                              // we run in main thread
@@ -144,7 +144,7 @@ void WorkThread::WorkMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 	}
 }
 
-LRESULT WorkThread::DispatchMessage( UINT const uiMsg, WPARAM const wParam, LPARAM const lParam  )
+LRESULT WorkThread::DispatchThreadMsg( UINT const uiMsg, WPARAM const wParam, LPARAM const lParam  )
 {
     switch ( uiMsg )
     {

@@ -56,6 +56,7 @@ wchar_t const * const GetActionTypeName( tAction const action )
         { tAction::interact,  L"interact"  },
         { tAction::eat,       L"eat"       },
         { tAction::fertilize, L"fertilize" },
+        { tAction::passOn,    L"passOn"    },
         { tAction::undefined, L"undef"     }
     };
 

@@ -11,7 +11,16 @@ public:
     void         InitializeRandom( );
     unsigned int NextRandomNumber( void );
     bool         NextBooleanValue( void );
-    double       NextWeightedDistribution( void ); 
+
+	unsigned int NextRandomNumberScaledTo( unsigned int const uiFactor )
+	{
+		unsigned int const uiRandom  = NextRandomNumber( );
+		unsigned int const uiProduct = uiRandom * uiFactor;
+		unsigned int const uiResult  = uiProduct >> 15;
+		return uiResult;
+	}
+
+    double       NextWeightedDistribution( ); 
 
 private:
     unsigned long m_ulRandomSeed;    // random generator

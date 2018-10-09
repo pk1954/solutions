@@ -97,6 +97,15 @@ public:
     virtual int GetAverageFoodGrowth( )     const { return m_grid.GetAverageFoodGrowth( ); }
     virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
 
+	virtual	unsigned int GetActionCounter
+	(
+		unsigned int const uiStrategy,
+		unsigned int const uiAction
+	) const
+	{
+		return m_grid.GetActionCounter( uiStrategy, uiAction );
+	}
+
 	virtual void SetPoi( GridPoint const & );
     virtual GridPoint FindPOI( ) const;
 	virtual GridPoint FindGridPoint( IndId const & id ) const 
@@ -113,6 +122,8 @@ private:
 	GridBrush 	        m_brush;
 	bool	    	    m_bSimulationMode;
 	GridRect            m_gridRectSelection;
+
+	void stopOnPoi( GridPoint const &, PlannedActivity & );
 
     GridField const & getGridField( GridPoint const & gp ) const { return m_grid.GetGridField( gp ); }
     Genome    const & getGenome   ( GridPoint const & gp ) const { return getGridField( gp ).GetGenome( ); }

@@ -76,7 +76,8 @@ enum class tAction : unsigned short
     marry,
     interact, 
     eat, 
-    fertilize, 
+    fertilize,
+	passOn,
     nrOfActions,
     undefined = nrOfActions
 };
