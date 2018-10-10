@@ -44,10 +44,12 @@ void EvoHistWindow::DoPaint( HDC const hDC )
 
     PaintHighlightGenerations( hDC, m_pWorkThreadInterface->GetGenDemanded( ) );
 
-    if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
-    {
-		PaintLifeLine( hDC, m_pFocusPoint->GetGenBirth( ), m_pFocusPoint->GetGenDeath( ) );
-	}
+// Deactivated, see win32_focusPoint.cpp
+//
+//    if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
+//    {
+//		PaintLifeLine( hDC, m_pFocusPoint->GetGenBirth( ), m_pFocusPoint->GetGenDeath( ) );
+//	}
 }
 
 void EvoHistWindow::GotoGeneration( HIST_GENERATION const gen ) 

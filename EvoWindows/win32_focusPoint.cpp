@@ -31,15 +31,23 @@ void FocusPoint::SetFocusPoint( GridPoint const gpNew )
     if ( gpNew != m_gp )
     {
         m_gp = gpNew;
-        if ( IsInGrid( ) )
-        {
-            if ( m_pEvoHistGlue != nullptr )
-            {
-                IndId id = m_pCore->GetId( m_gp );
-                m_genBirth = m_pEvoHistGlue->GetFirstGenOfIndividual( id );
-                m_genDeath = m_pEvoHistGlue->GetLastGenOfIndividual ( id ) + 1;
-            }
-        }
+
+// Feature deactiveted, takes too much CPU time, stalls UI
+// Options: 
+//    - Run in separate thread
+//    - Optimize (??)
+//    - Call only on request
+//
+//        if ( IsInGrid( ) )
+//        {
+//            if ( m_pEvoHistGlue != nullptr )
+//            {
+//                IndId id = m_pCore->GetId( m_gp );
+//                m_genBirth = m_pEvoHistGlue->GetFirstGenOfIndividual( id );
+//                m_genDeath = m_pEvoHistGlue->GetLastGenOfIndividual ( id ) + 1;
+//            }
+//        }
+
         m_ViewCollection.Notify( );
     }
 }

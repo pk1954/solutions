@@ -58,7 +58,9 @@ void CrsrWindow::DoPaint( )
     nextLine( L"Energy:" );
     setHorizontalPos( 4 );
     printPercentage( m_pCore->GetEnergy( gpFocus ), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
-    
-    nextLine( L"Lifespan:" );
-    printSpan( m_pFocusPoint->GetGenBirth( ).GetLong( ), m_pFocusPoint->GetGenDeath( ).GetLong( ) );
+
+	// Deactivated, see win32_focusPoint.cpp
+
+    // nextLine( L"Lifespan:" );
+    // printSpan( m_pFocusPoint->GetGenBirth( ).GetLong( ), m_pFocusPoint->GetGenDeath( ).GetLong( ) );
 }

@@ -15,7 +15,7 @@ void Util::Thread::StartThread( BOOL const bLoop )
 
 void Util::Thread::SetThreadAffinityMask( DWORD_PTR mask )
 {
-	::SetThreadAffinityMask( m_handle, mask );
+//	::SetThreadAffinityMask( m_handle, mask );
 }
 
 void Util::Thread::Terminate( )   // to be called from different thread
