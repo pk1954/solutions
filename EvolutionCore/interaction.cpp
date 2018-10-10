@@ -23,12 +23,6 @@ void INTERACTION::InitClass( )
 	P = Config::GetConfigValueShort( Config::tId::interactionPayOff_P );
 }
 
-static pair <short,short> GetRewards( bool const resA, bool const resB )
-{
-	return resA ? (resB ? make_pair( R, R ) : make_pair( S, T ))
-		        : (resB ? make_pair( T, S ) : make_pair( P, P ));
-}
-
 void INTERACTION::Interact( Individual &IndA, Individual &IndB )
 {
 	bool const resA = IndA.InteractWith( IndB.GetId() );
@@ -37,7 +31,9 @@ void INTERACTION::Interact( Individual &IndA, Individual &IndB )
 	IndB.Remember( IndA.GetId(), resA );
 	IndA.Remember( IndB.GetId(), resB );
 
-	pair <short,short> const rewards = GetRewards( resA, resB );
+	pair <short,short> const rewards =  
+		resA ? (resB ? make_pair( R, R ) : make_pair( S, T ))
+		     : (resB ? make_pair( T, S ) : make_pair( P, P ));
 	
 	IndA.IncEnergy( rewards.first );
 	IndB.IncEnergy( rewards.second );

@@ -17,28 +17,18 @@ static Tit4Tat         StratT;
 short Individual::m_sStdEnergyCapacity;
 short Individual::m_sInitialEnergy;
 
+const std::unordered_map< tStrategyId, Strategy * const > Individual::m_apStrat =
+{ 
+	{ tStrategyId::defect,    &StratD },
+	{ tStrategyId::cooperate, &StratC },
+	{ tStrategyId::tit4tat,   &StratT }
+};
+
 void Individual::InitClass( )
 {
     m_sStdEnergyCapacity = Config::GetConfigValueShort( Config::tId::stdCapacity );
     m_sInitialEnergy     = Config::GetConfigValueShort( Config::tId::initialEnergy );
 }
-
-static std::unordered_map< tStrategyId, Strategy * const > apStrat =
-{ 
-    { tStrategyId::defect,    &StratD },
-    { tStrategyId::cooperate, &StratC },
-    { tStrategyId::tit4tat,   &StratT }
-};
-
-bool Individual::InteractWith( IndId const & partnerId ) 
-{ 
-    return apStrat.at( m_strategyId )->InteractWith( m_strat, partnerId );
-};
-
-void Individual::Remember( IndId const & partnerId, bool const bPartnerReaction ) 
-{ 
-    apStrat.at( m_strategyId )->Remember( m_strat, partnerId, bPartnerReaction );
-};
 
 Individual::Individual( )
   : m_id( ),
@@ -131,21 +121,4 @@ void Individual::Breed
     m_strat.SetMemorySize( selectParent( random, indParentA, indParentB ).GetMemSize( ) );  // clears memory. Experience not inheritable.
     m_genome.Recombine( indParentA.m_genome, indParentB.m_genome, random );
     m_genome.Mutate( sMutationRate, random );
-}
-
-void Individual::SetEnergy( short const energy )
-{
-   m_sEnergy = ( energy > m_sCapacity ) ? m_sCapacity : energy;
-}
-
-void Individual::IncEnergy( short const sInc )
-{
-	ASSERT_SHORT_SUM( m_sEnergy, sInc );
-    SetEnergy( m_sEnergy + sInc );
-}
-
-void Individual::DecEnergy( short const sDec )
-{
-	ASSERT_SHORT_SUM( m_sEnergy, -sDec );
-    SetEnergy( m_sEnergy - sDec );
 }
