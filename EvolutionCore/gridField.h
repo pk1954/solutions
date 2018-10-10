@@ -12,12 +12,29 @@
 class GridField
 {
 public:
-    static void InitClass( );
+    static void InitClass( )
+	{
+		m_iFertilizerYield = Config::GetConfigValue( Config::tId::fertilizerYield );
+		m_iMaxFertilizer   = Config::GetConfigValue( Config::tId::maxFertilizer );
+		m_sFoodReserve     = Config::GetConfigValueShort( Config::tId::reserveFood );
+		m_sMaxFood         = Config::GetConfigValueShort( Config::tId::maxFood );
+	}
 
-    void InitGridFieldStructure( GridPoint const & );
-    void ResetGridField( short const );
+	void InitGridFieldStructure( GridPoint const & gp )
+	{
+		m_gp = gp;
+	}
 
-    void        Fertilize     ( short const );
+	void ResetGridField( short const sFood )
+	{
+		CutConnections( );
+		m_sMutatRate  = 0;
+		m_sFertility  = sFood;
+		m_sFoodStock  = sFood;
+		m_sFertilizer = 0;
+		m_Individual.ResetIndividual( );
+	}
+
 	short const GetConsumption( short const sWant ) const 
 	{
 		short const sAvailable = m_sFoodStock - m_sFoodReserve;
@@ -50,12 +67,51 @@ public:
     void IncEnergy( short const sInc )          { m_Individual.IncEnergy( sInc ); }
     void SetLastAction( tAction const at )      { m_Individual.SetLastAction( at ); }
 
-    void Donate( GridField &, short  );
-    void CreateIndividual( IndId const, EVO_GENERATION const, tStrategyId const );
-    void CloneIndividual ( IndId const, EVO_GENERATION const, Random &, GridField & );
-    void BreedIndividual ( IndId const, EVO_GENERATION const, Random &, GridField &, GridField & );
-	void PassOn2Child    ( IndId const, EVO_GENERATION const, Random & );
-    void MoveIndividual  ( GridField & );
+	void CreateIndividual( IndId const id, EVO_GENERATION const genBirth, tStrategyId const s )
+	{
+		m_Individual.Create( id, genBirth, s );
+	}
+
+	void Donate( GridField & gfDonator, short sDonation )
+	{
+		gfDonator.DecEnergy( sDonation );
+		IncEnergy( sDonation );
+	}
+
+	void CloneIndividual( IndId const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParent )
+	{
+		m_Individual.Clone( id, genBirth, m_sMutatRate, random, gfParent.m_Individual );
+		long lDonationRate = static_cast<long>( gfParent.GetAllele( tGeneType::cloneDonation ) );
+		long lParentEnergy = static_cast<long>( gfParent.GetEnergy( ) );
+		long lDonation = ( lDonationRate * lParentEnergy ) / SHRT_MAX;
+		Donate( gfParent, CastToShort( lDonation ) );
+	}
+
+	void BreedIndividual( IndId const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParentA, GridField & gfParentB )
+	{
+		m_Individual.Breed( id, genBirth, m_sMutatRate, random, gfParentA.m_Individual, gfParentB.m_Individual );
+		Donate( gfParentA, gfParentA.GetEnergy( ) / 3 );   //TODO:  Make variable, Gene?
+		Donate( gfParentB, gfParentB.GetEnergy( ) / 3 );   //TODO:  Make variable, Gene?
+	}
+
+	void Fertilize( short const sInvest )
+	{
+		assert( sInvest > 0 );
+		int const iYield    = (sInvest * m_iFertilizerYield ) / 100;
+		int const iNewValue = min( m_sFertilizer + iYield, m_iMaxFertilizer ); 
+		setFertilizer( CastToShort( iNewValue ) );
+	}
+
+	void PassOn2Child( IndId const id, EVO_GENERATION const genBirth, Random & random )
+	{
+		m_Individual.Clone( id, genBirth, m_sMutatRate, random, m_Individual );
+	}
+
+	void MoveIndividual( GridField & gfSrc )
+	{
+		m_Individual = gfSrc.m_Individual;
+		gfSrc.m_Individual.ResetIndividual( );
+	}
 
 	void Apply2Fertilizer(short const s, ManipulatorFunc f) { setFertilizer( (f)( m_sFertilizer, s ) ); }
 	void Apply2FoodStock (short const s, ManipulatorFunc f) { setFoodStock ( (f)( m_sFoodStock,  s ) ); }
@@ -86,9 +142,17 @@ public:
     void SetSeniorGp( GridPoint const & gp ) { m_gpSenior = gp; }
     void SetJuniorGp( GridPoint const & gp ) { m_gpJunior = gp; }
 
-    void CutConnections( );
+	void CutConnections( )
+	{
+		m_gpJunior.Set2Null( );
+		m_gpSenior.Set2Null( );
+	}
 
-    static void Interact( GridField &, GridField & );
+	static void Interact( GridField & gfA, GridField & gfB )
+	{
+		INTERACTION::Interact( gfA.m_Individual, gfB.m_Individual );
+		gfA.SetLastAction( tAction::interact );
+	};
 
 private:
     // data for management of neighborhood relation and list of living individuals
@@ -104,10 +168,10 @@ private:
 
 // data changed by algorithm
 
-    Individual m_Individual;    // 162 byte
+    Individual m_Individual;    // 176 byte
     short      m_sFoodStock;    //   2 byte 
     short      m_sFertilizer;   //   2 byte
-                    // sum         186 byte
+                    // sum         196 byte
 
 // static members for caching frequently used configuration items
 
@@ -125,35 +189,3 @@ private:
 };
 
 std::wostream & operator << ( std::wostream &, GridField const & );
-
-class Decision_Functor
-{
-public:
-    virtual ~Decision_Functor() {};
-    virtual bool operator() ( GridField const & ) const = 0; 
-};
-
-class IsDead_Functor : public Decision_Functor
-{
-public:
-    virtual bool operator() ( GridField const & gf ) const { return gf.IsDead( ); }; 
-};
-
-class IsAlive_Functor : public Decision_Functor
-{
-public:
-    virtual bool operator() ( GridField const & gf ) const { return gf.IsAlive( ); }; 
-};
-
-class IsCompatible_Functor : public Decision_Functor
-{
-public:
-    explicit IsCompatible_Functor( tStrategyId const strat ) : m_strat( strat ) { };
-    virtual ~IsCompatible_Functor() {};
-    virtual bool operator() ( GridField const & gf ) const 
-    { 
-        return gf.IsAlive() && ( gf.GetStrategyId() == m_strat ); 
-    }; 
-private:
-    tStrategyId m_strat;
-};

@@ -274,9 +274,9 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
 
         case tAction::interact:
         {
-            GridField & gfTarget = getGridField( plan.GetPartner( ) );
+            GridField & gfPartner = getGridField( plan.GetPartner( ) );
             gfRun.DecEnergy( m_iInteractFoodConsumption );
-            GridField::Interact( gfRun, getGridField( plan.GetPartner( ) ) );
+            GridField::Interact( gfRun, gfPartner );
 
             if ( gpNext.IsNotNull( ) )
             {
@@ -285,7 +285,7 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
                     gpNext = gfNext.GetJuniorGp( );
             }
 
-            deleteIfDead( gfTarget );
+            deleteIfDead( gfPartner );
         }
         break;
 

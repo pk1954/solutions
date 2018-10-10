@@ -55,8 +55,8 @@ private:
     };
 
     array< generalGene, NR_GENES   > m_aGeneGeneral;  // 4 * 9 = 36   general genes 
-    array< actionGene,  NR_ACTIONS > m_aGeneActions;  // 4 * 6 = 24   genes for choosing next action
-                                                      // sum     60
+    array< actionGene,  NR_ACTIONS > m_aGeneActions;  // 4 * 8 = 32   genes for choosing next action
+                                                      // sum     68
     
     void setGeneralGene( tGeneType const, int const );
     void setActionGene ( tAction   const, int const );

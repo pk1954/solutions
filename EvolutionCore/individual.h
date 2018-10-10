@@ -29,7 +29,7 @@ public:
     tOrigin        GetOrigin    ( )                    const { return m_origin; }
     tAction        GetLastAction( )                    const { return m_at; }
     Genome const & GetGenome    ( )                    const { return m_genome; }
-    tStrategyId    GetStrategyId( )                    const { return m_strategyId; }
+    tStrategyId    GetStrategyId( )                    const { return m_pStrategy->GetStrategyId(); }
     MEM_INDEX      GetMemSize   ( )                    const { return m_strat.GetMemSize( );  }
     MEM_INDEX      GetMemUsed   ( )                    const { return m_strat.GetMemUsed( ); }
     short          GetAllele    ( tGeneType const gt ) const { return m_genome.GetAllele( gt ); }
@@ -41,12 +41,12 @@ public:
 
 	void Remember( IndId const & partnerId, bool const bPartnerReaction ) 
 	{ 
-		m_apStrat.at( m_strategyId )->Remember( m_strat, partnerId, bPartnerReaction );
+		m_pStrategy->Remember( m_strat, partnerId, bPartnerReaction );
 	};
 
 	bool InteractWith( IndId const & partnerId ) 
 	{ 
-		return m_apStrat.at( m_strategyId )->InteractWith( m_strat, partnerId );
+		return m_pStrategy->InteractWith( m_strat, partnerId );
 	};
 
 	void SetLastAction( tAction const at ) 
@@ -72,18 +72,18 @@ public:
 	}
 
 private:
-    IndId          m_id;          //  4 bytes
-    EVO_GENERATION m_genBirth;    //  4 bytes
-    tOrigin        m_origin;      //  2 bytes
-    short          m_sCapacity;   //  2 bytes
-    StrategyData   m_strat;       // 84 bytes
-    Genome         m_genome;      // 30 bytes
-    tStrategyId    m_strategyId;  //  2 bytes
-    tAction        m_at;          //  2 bytes
-    short          m_sEnergy;     //  2 bytes
-                           // sum:  132 bytes
+    IndId            m_id;          //  4 bytes
+    EVO_GENERATION   m_genBirth;    //  4 bytes
+    tOrigin          m_origin;      //  2 bytes
+    short            m_sCapacity;   //  2 bytes
+    StrategyData     m_strat;       // 84 bytes
+    Genome           m_genome;      // 68 bytes
+	Strategy const * m_pStrategy;   //  8 bytes 
+	tAction          m_at;          //  2 bytes
+    short            m_sEnergy;     //  2 bytes
+                             // sum:  176 bytes
 
-	static const std::unordered_map< tStrategyId, Strategy * const > m_apStrat;
+	static const std::unordered_map< tStrategyId, Strategy * const > m_apStrat; 
 
     static short m_sStdEnergyCapacity;
     static short m_sInitialEnergy;

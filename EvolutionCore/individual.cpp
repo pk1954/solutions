@@ -13,6 +13,7 @@
 static DefectAlways    StratD;
 static CooperateAlways StratC;
 static Tit4Tat         StratT;
+static EmptyStrategy   StratNull;
 
 short Individual::m_sStdEnergyCapacity;
 short Individual::m_sInitialEnergy;
@@ -33,7 +34,8 @@ void Individual::InitClass( )
 Individual::Individual( )
   : m_id( ),
     m_strat( ),
-    m_genome( )
+    m_genome( ),
+	m_pStrategy( & StratNull )
 { 
     ResetIndividual( );
 }
@@ -45,7 +47,7 @@ void Individual::ResetIndividual( )
     m_sEnergy   = 0;
     m_sCapacity = 0;
     m_strat.SetMemorySize( 0 );
-    m_strategyId = tStrategyId::empty;
+    m_pStrategy = & StratNull;
     m_genome.InitGenome( );
 };
 
@@ -53,15 +55,14 @@ void Individual::Create
 ( 
     IndId          const id,
     EVO_GENERATION const genBirth,
-    tStrategyId    const s
+    tStrategyId    const strategyId
 )
 {
-    m_strategyId = s;
+    m_pStrategy  = m_apStrat.at( strategyId );
     m_id         = id;
     m_genBirth   = genBirth;
     m_origin     = tOrigin::editor;
     m_genome.InitGenome( );
-    assert( static_cast<int>( m_strategyId ) < NR_STRATEGIES );
     m_strat.SetMemorySize( static_cast<MEM_INDEX>(m_genome.GetAllele(tGeneType::memSize)) );
     m_sCapacity = m_sStdEnergyCapacity;
     SetEnergy( m_sInitialEnergy ); // makes IsAlive() true. Last assignment to avoid race conditions  
@@ -79,12 +80,12 @@ void Individual::Clone
     Individual     const & indParent
 )
 {
-    m_id         = id;
-    m_genBirth   = genBirth;
-    m_origin     = tOrigin::cloning;
-    m_sCapacity  = indParent.m_sCapacity;
-    m_strategyId = indParent.m_strategyId;
-    m_at         = tAction::undefined;
+    m_id        = id;
+    m_genBirth  = genBirth;
+    m_origin    = tOrigin::cloning;
+    m_sCapacity = indParent.m_sCapacity;
+    m_pStrategy = indParent.m_pStrategy;
+    m_at        = tAction::undefined;
     m_strat.SetMemorySize( indParent.m_strat.GetMemSize( ) );  // clears memory. Experience not inheritable.
     m_genome.Mutate( sMutationRate, random );
 }
@@ -112,12 +113,12 @@ void Individual::Breed
     Individual     const & indParentB
 )
 {
-    m_id         =         id;
-    m_genBirth   =         genBirth;
-    m_origin     =         tOrigin::marriage;
-    m_at         =         tAction::undefined;
-    m_sCapacity  =         selectParent( random, indParentA, indParentB ).m_sCapacity;
-    m_strategyId =         selectParent( random, indParentA, indParentB ).m_strategyId;
+    m_id        =          id;
+    m_genBirth  =          genBirth;
+    m_origin    =          tOrigin::marriage;
+    m_at        =          tAction::undefined;
+    m_sCapacity =          selectParent( random, indParentA, indParentB ).m_sCapacity;
+    m_pStrategy =          selectParent( random, indParentA, indParentB ).m_pStrategy;
     m_strat.SetMemorySize( selectParent( random, indParentA, indParentB ).GetMemSize( ) );  // clears memory. Experience not inheritable.
     m_genome.Recombine( indParentA.m_genome, indParentB.m_genome, random );
     m_genome.Mutate( sMutationRate, random );

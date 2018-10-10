@@ -70,4 +70,12 @@ public:
     virtual bool        InteractWith( StrategyData &, IndId const )             const;
     virtual void        Remember    ( StrategyData &, IndId const, bool const ) const;
 };
+
+class EmptyStrategy: public Strategy
+{
+public:
+    virtual tStrategyId GetStrategyId( )                                        const { return tStrategyId::empty; };
+	virtual bool        InteractWith( StrategyData &, IndId const )             const { return false; };
+	virtual void        Remember    ( StrategyData &, IndId const, bool const ) const {};
+};
 //lint +e715  
