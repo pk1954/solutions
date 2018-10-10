@@ -25,7 +25,7 @@ public:
 		Random               & random 
 	)
 	{
-		assert( sMutationRate <= 100 );   // percentage
+		assert( dMutationRate <= 100 );   // percentage
 
 		double const dRand = random.NextWeightedDistribution() * lim.GetFactor( );
 
