@@ -6,7 +6,6 @@
 #include "win32_textWindow.h"
 #include "win32_util.h"
 
-class EvoHistorySysGlue;
 class GridRect;
 class EvolutionCore;
 

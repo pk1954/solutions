@@ -14,7 +14,7 @@ public:
 	~HistAllocThread() {};
 
 private:
-	virtual void ThreadStartupFunc( );
+	virtual void ThreadStartupFunc( void * );
 
 	HistorySystem const * m_pHistorySys;
 };

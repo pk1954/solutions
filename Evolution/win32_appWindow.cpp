@@ -82,9 +82,10 @@ AppWindow::AppWindow( ) :
     m_traceStream( )
 {};
 
-void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
+void AppWindow::Start(  )
 {
-    HWND const hWndApp = StartBaseWindow( nullptr, CS_HREDRAW | CS_VREDRAW, L"ClassAppWindow", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN );
+    HINSTANCE const hInstance = GetModuleHandle( nullptr );
+    HWND      const hWndApp   = StartBaseWindow( nullptr, CS_HREDRAW | CS_VREDRAW, L"ClassAppWindow", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN );
 
     SendMessage( WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
     SendMessage( WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL     ) ) );
@@ -224,6 +225,20 @@ void AppWindow::Start( HINSTANCE const hInstance, LPTSTR const lpCmdLine )
     (void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 	m_pEvoController->ProcessCommand( IDM_SET_SIMU_MODE, static_cast<LPARAM>(tBoolOp::opFalse) );
 //	Script::ProcessScript( L"std_script.in" );
+
+	HACCEL const hAccelTable = LoadAccelerators( hInstance, MAKEINTRESOURCE(IDC_EVOLUTION_MAIN) );
+    MSG          msg;
+	BOOL         bRet;
+
+    while ( bRet = GetMessage( &msg, nullptr, 0, 0 ) != 0 )    // Main message loop
+    {
+        assert( bRet != -1 );
+        if ( !TranslateAccelerator( hWndApp, hAccelTable, &msg ) )
+        {
+            (void)TranslateMessage( &msg );
+            (void)DispatchMessage( &msg );
+        }
+    }
 }
 
 AppWindow::~AppWindow( )

@@ -15,7 +15,7 @@ HistAllocThread::HistAllocThread
 	if ( bAsync )
 	{
 		StartThread( FALSE );  // start thread without loop, ThreadMsgDispatcher has its own loop
-		SetThreadAffinityMask( 0x0003 );
+		SetThreadAffinityMask( 0x0004 );
 	}
 	else
 	{
@@ -23,7 +23,7 @@ HistAllocThread::HistAllocThread
 	}
 }
 
-void HistAllocThread::ThreadStartupFunc( )
+void HistAllocThread::ThreadStartupFunc( void * data )
 {
 	while (m_pHistorySys->AddHistorySlot()) {}
 }

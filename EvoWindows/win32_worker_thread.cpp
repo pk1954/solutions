@@ -67,9 +67,9 @@ WorkThread::~WorkThread( )
 
 void WorkThread::TerminateThread( HWND const hwndCtl )
 {
-	ThreadMsgDispatcher( THREAD_MSG_STOP, 0, 0 );            // stop running computation and script processing
+	ThreadMsgDispatcher( THREAD_MSG_STOP, 0, 0 );  // stop running computation and script processing
 	Terminate( );
-	DestroyWindow( hwndCtl);                             // trigger termination of application
+	DestroyWindow( hwndCtl );                       // trigger termination of application
 }
 
 // GenerationStep - perform one history step towards demanded generation

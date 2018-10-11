@@ -36,7 +36,7 @@ class AppWindow : public BaseWindow
 {
 public:
     AppWindow( );
-    void Start( HINSTANCE const, LPTSTR const );
+    void Start( );
     ~AppWindow( );
 
 private:

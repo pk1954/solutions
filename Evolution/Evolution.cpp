@@ -42,7 +42,7 @@ int APIENTRY _tWinMain
  	Stopwatch stopwatch;
 	stopwatch.Start();
     AppWindow App;
-    App.Start( hInstance, lpCmdLine );
+    App.Start( );
 	stopwatch.Stop( L"App.Start" );
 
 //lint -e1924  C-style cast
