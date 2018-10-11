@@ -19,11 +19,11 @@ HistInfoWindow::HistInfoWindow( ) :
 
 void HistInfoWindow::Start
 (
-    HWND          const   hWndParent,
+    HWND          const   hwndParent,
 	HistorySystem const * pHistSys
 ) 
 {
-    HWND hwnd = StartTextWindow( hWndParent, L"HistInfoWindow", 100 );
+    HWND hwnd = StartTextWindow( hwndParent, L"HistInfoWindow", 100 );
     Move( 0, 300, 300, 150, TRUE );
 	m_pHistSystem = pHistSys;
 }

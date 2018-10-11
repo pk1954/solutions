@@ -44,8 +44,8 @@ bool Util::operator!= ( RECT const & a, RECT const & b )
 
 void Util::AdjustRight( HWND hwnd, int iYpos )
 {
-    HWND const hWndParent   = GetParent( hwnd );
-    int  const iWidthParent = GetClientWindowWidth( hWndParent );
+    HWND const hwndParent   = GetParent( hwnd );
+    int  const iWidthParent = GetClientWindowWidth( hwndParent );
     int  const iWidth       = GetWindowWidth( hwnd );
     int  const iHeight      = GetWindowHeight( hwnd );
     MoveWindow( hwnd, iWidthParent - iWidth, iYpos, iWidth, iHeight, TRUE );
@@ -69,11 +69,11 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 	BOOL const bRepaint
 )
 {
-	HWND  const hWndParent = GetAncestor( hwnd, GA_PARENT );
+	HWND  const hwndParent = GetAncestor( hwnd, GA_PARENT );
 	POINT       pos{ lXpos, lYpos };
 
-	if ( hWndParent != nullptr )
-		ScreenToClient( hWndParent, &pos );
+	if ( hwndParent != nullptr )
+		ScreenToClient( hwndParent, &pos );
 
 	return MoveWindow( hwnd, pos.x, pos.y, lWidth, lHeight, bRepaint );
 }

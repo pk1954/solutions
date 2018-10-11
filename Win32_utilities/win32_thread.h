@@ -28,8 +28,8 @@ namespace Util
 		void Terminate( );
 
 	protected:
-		virtual void    ThreadStartupFunc( void * ) {}
-		virtual LRESULT ThreadMsgDispatcher( UINT const, WPARAM const, LPARAM const ) { return 0; };
+		virtual void ThreadStartupFunc( ) {}
+		virtual void ThreadMsgDispatcher( MSG const ) {};
 
 	private:
 		Event  m_eventThreadStarter;

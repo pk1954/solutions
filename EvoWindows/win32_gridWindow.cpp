@@ -35,7 +35,7 @@ GridWindow::GridWindow( ) :
 
 void GridWindow::Start
 ( 
-    HWND                  const hWndParent,
+    HWND                  const hwndParent,
     WorkThreadInterface * const pWorkThreadInterface,
     FocusPoint          * const pFocusPoint,
     DspOptWindow        * const pDspOptWindow,
@@ -64,7 +64,7 @@ void GridWindow::Start
     
 	StartBaseWindow
     ( 
-        hWndParent,
+        hwndParent,
         CS_OWNDC | CS_DBLCLKS,
         L"ClassGridWindow",
         dwStyle

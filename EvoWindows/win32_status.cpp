@@ -148,25 +148,31 @@ StatusBar::StatusBar( )
 
 void StatusBar::Start
 ( 
-	HWND          const   hWndParent,
+	HWND          const   hwndParent,
 	EvolutionCore const * pCore
 )
 {
 	m_pCore = pCore;
+	m_hwndParent = hwndParent;
 
-	HWND hWndStatus = CreateWindow
+	StartThread( TRUE );
+}
+
+void StatusBar::ThreadStartupFunc( )
+{
+	HWND hwndStatus = CreateWindow
     (
         STATUSCLASSNAME, 
         nullptr, 
         WS_CHILD | WS_VISIBLE,
         CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT,
-        hWndParent,
+        m_hwndParent,
         nullptr, 
         GetModuleHandle( nullptr ), 
         nullptr
     ); 
 
-    SetWindowHandle( hWndStatus );
+    SetWindowHandle( hwndStatus );
 
     static std::array< int, static_cast<int>( tPart::Stop ) + 1> statwidths = 
     { 
@@ -185,7 +191,7 @@ void StatusBar::Start
         iPartWidth = statwidths[i];
     }
     
-    (void)SetWindowSubclass( hWndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this ) ;
+    (void)SetWindowSubclass( hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this ) ;
 
     m_iBorder       = GetSystemMetrics( SM_CXSIZEFRAME );
     m_iClientHeight = GetHeight( ) - m_iBorder;
@@ -207,6 +213,12 @@ void StatusBar::Start
     SetSizeTrackBar ( PixelCoordinates::DEFAULT_FIELD_SIZE );
     SetSpeedTrackBar( DEFAULT_DELAY );
 	PostCommand2Application( IDM_SIMULATION_SPEED, DEFAULT_DELAY );
+}
+
+void StatusBar::ThreadMsgDispatcher( MSG const msg )
+{
+    (void)TranslateMessage( &msg );
+    (void)DispatchMessage( &msg );
 }
 
 void StatusBar::SetSizeTrackBar( short const sFieldSize  ) const 

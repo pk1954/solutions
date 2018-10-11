@@ -23,13 +23,13 @@ HistWindow::HistWindow( ) :
 
 void HistWindow::Start
 (
-    HWND      const hWndParent,
+    HWND      const hwndParent,
     HistorySystem * pHistSys
 )
 {
     HWND const hwndHistory = StartBaseWindow
     (
-        hWndParent,
+        hwndParent,
         CS_OWNDC | CS_DBLCLKS,
         L"ClassHistWindow",
         WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE

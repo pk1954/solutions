@@ -177,11 +177,11 @@ StatisticsWindow::StatisticsWindow( ):
 
 void StatisticsWindow::Start
 (
-    HWND                  const hWndParent,
+    HWND                  const hwndParent,
     EvolutionCore const * const pCore
 ) 
 {
-    HWND hwnd = StartTextWindow( hWndParent, L"StatisticsWindow", 100 );
+    HWND hwnd = StartTextWindow( hwndParent, L"StatisticsWindow", 100 );
     Move( 200, 200, 400, 430, TRUE );
     m_pCore = pCore;
 }

@@ -22,7 +22,7 @@ EvoHistWindow::~EvoHistWindow( )
 
 void EvoHistWindow::Start
 (
-    HWND                  const hWndParent,
+    HWND                  const hwndParent,
     FocusPoint          * const pFocusPoint,
 	EvoHistorySysGlue   * const pEvoHistorySys,
 	WorkThreadInterface * const pWorkThreadInterface
@@ -31,7 +31,7 @@ void EvoHistWindow::Start
     Config::tOnOffAuto const displayMode = static_cast<Config::tOnOffAuto>( Config::GetConfigValue( Config::tId::historyDisplay ) );
     BOOL               const bShow       = ( displayMode == Config::tOnOffAuto::on );
 
-    HistWindow::Start( hWndParent, pEvoHistorySys->GetHistorySystem( ) );
+    HistWindow::Start( hwndParent, pEvoHistorySys->GetHistorySystem( ) );
 	m_pWorkThreadInterface = pWorkThreadInterface;
 	m_pFocusPoint = pFocusPoint;
     m_pFocusPoint->AttachFocusPointObserver( this );

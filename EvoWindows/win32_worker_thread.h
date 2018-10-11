@@ -56,7 +56,8 @@ public:
 
     void GenerationStep( );
 
-    void WorkMessage( UINT, WPARAM, LPARAM );
+    void WorkMessage( MSG const );
+    void WorkMessage( UINT const, WPARAM const, LPARAM const );
 
     enum WorkerThreadMessage : UINT
     {
@@ -94,7 +95,7 @@ private:
 
     // private member functions
 
-	virtual LRESULT ThreadMsgDispatcher( UINT const, WPARAM const, LPARAM const );
+	virtual void ThreadMsgDispatcher( MSG const );
 
     void generationRun( );
 

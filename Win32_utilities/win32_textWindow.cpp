@@ -30,14 +30,14 @@ TextWindow::TextWindow( ) :
 
 HWND TextWindow::StartTextWindow
 (
-    HWND    const hWndParent,
+    HWND    const hwndParent,
     LPCTSTR const szClass,
     UINT    const uiAlpha
 )
 {
     HWND const hwnd = StartBaseWindow
     ( 
-        hWndParent,
+        hwndParent,
         CS_OWNDC | CS_DBLCLKS,
         szClass,
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION

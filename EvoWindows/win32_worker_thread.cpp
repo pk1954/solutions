@@ -67,7 +67,7 @@ WorkThread::~WorkThread( )
 
 void WorkThread::TerminateThread( HWND const hwndCtl )
 {
-	ThreadMsgDispatcher( THREAD_MSG_STOP, 0, 0 );  // stop running computation and script processing
+	ThreadMsgDispatcher( MSG { nullptr, THREAD_MSG_STOP, 0, 0 } );  // stop running computation and script processing
 	Terminate( );
 	DestroyWindow( hwndCtl );                       // trigger termination of application
 }
@@ -129,28 +129,33 @@ void WorkThread::DoProcessScript( wstring * const pwstr )
 
 // WorkMessage - process incoming messages from main thread
 
-void WorkThread::WorkMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
+void WorkThread::WorkMessage( UINT const uiMsg, WPARAM const wparam, LPARAM const lparam )
 {
-	assert( IsValidThreadMessage( uiMsg ) );
+	WorkMessage( MSG { nullptr, uiMsg, wparam, lparam } );
+}
+
+void WorkThread::WorkMessage( MSG const msg )
+{
+	assert( IsValidThreadMessage( msg.message ) );
     if ( m_iScriptLevel > 0 )                      // if we are processing a script    
     {                                              // we run already in worker thread 
-        ThreadMsgDispatcher( uiMsg, wParam, lParam );  // dispatch message directly to avoid blocking
+        ThreadMsgDispatcher( msg );  // dispatch message directly to avoid blocking
     }
     else                                           // normal case
     {                                              // we run in main thread
 		if ( m_pEvent != nullptr )
 			m_pEvent->Continue( );                 // trigger worker thread if waiting for an event
-		PostThreadMessage( uiMsg, wParam, lParam );      // post message to worker thread
+		PostThreadMessage( msg.message, msg.wParam, msg.lParam );  // post message to worker thread
 	}
 }
 
-LRESULT WorkThread::ThreadMsgDispatcher( UINT const uiMsg, WPARAM const wParam, LPARAM const lParam  )
+void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 {
-    switch ( uiMsg )
+    switch ( msg.message )
     {
         
     case THREAD_MSG_PROCESS_SCRIPT:
-        DoProcessScript( (wstring *)lParam );
+        DoProcessScript( (wstring *)msg.lParam );
         break;
 
     case THREAD_MSG_REPEAT_GENERATION_STEP:
@@ -158,12 +163,12 @@ LRESULT WorkThread::ThreadMsgDispatcher( UINT const uiMsg, WPARAM const wParam, 
         break;
 
     case THREAD_MSG_GOTO_GENERATION:
-		m_genDemanded = HIST_GENERATION(static_cast<long>(lParam));
+		m_genDemanded = HIST_GENERATION(static_cast<long>(msg.lParam));
         GenerationStep( ); 
         break;
 
     case THREAD_MSG_GENERATION_RUN:
-		if ( static_cast<bool>(lParam) )
+		if ( static_cast<bool>(msg.lParam) )
 			m_bContinue = TRUE;
 		generationRun( );
         break;
@@ -175,41 +180,41 @@ LRESULT WorkThread::ThreadMsgDispatcher( UINT const uiMsg, WPARAM const wParam, 
         break;
 
     case THREAD_MSG_RESET_MODEL:
-        editorCommand( tEvoCmd::reset, wParam );
-		if ( static_cast<BOOL>(wParam) )
+        editorCommand( tEvoCmd::reset, msg.wParam );
+		if ( static_cast<BOOL>(msg.wParam) )
 			m_pEvoHistGlue->ClearHistory( );
         break;
 
     case THREAD_MSG_SET_BRUSH_MODE:
-        editorCommand( tEvoCmd::editSetBrushMode, wParam );
+        editorCommand( tEvoCmd::editSetBrushMode, msg.wParam );
         break;
 
     case THREAD_MSG_SET_BRUSH_RADIUS:
-        editorCommand( tEvoCmd::editSetBrushRadius, wParam );
+        editorCommand( tEvoCmd::editSetBrushRadius, msg.wParam );
         break;
 
     case THREAD_MSG_SET_BRUSH_SHAPE:
-        editorCommand( tEvoCmd::editSetBrushShape, wParam );
+        editorCommand( tEvoCmd::editSetBrushShape, msg.wParam );
         break;
 
     case THREAD_MSG_SET_BRUSH_OPERATOR:
-        editorCommand( tEvoCmd::editSetBrushManipulator, wParam );
+        editorCommand( tEvoCmd::editSetBrushManipulator, msg.wParam );
         break;
 
     case THREAD_MSG_SET_BRUSH_INTENSITY:
-        editorCommand( tEvoCmd::editSetBrushIntensity, wParam );
+        editorCommand( tEvoCmd::editSetBrushIntensity, msg.wParam );
         break;
 
     case THREAD_MSG_DO_EDIT:
-        editorCommand( tEvoCmd::editDoEdit, GridPoint24( CastToUnsignedInt(wParam), CastToUnsignedInt(lParam) ) );
+        editorCommand( tEvoCmd::editDoEdit, GridPoint24( CastToUnsignedInt(msg.wParam), CastToUnsignedInt(msg.lParam) ) );
         break;
 
     case THREAD_MSG_SET_POI:
-        editorCommand( tEvoCmd::editSetPOI, GridPoint24( CastToUnsignedInt(wParam), CastToUnsignedInt(lParam) ) );
+        editorCommand( tEvoCmd::editSetPOI, GridPoint24( CastToUnsignedInt(msg.wParam), CastToUnsignedInt(msg.lParam) ) );
         break;
 
     case THREAD_MSG_SET_SIMULATION_MODE:
-        if ( editorCommand( tEvoCmd::setSimulationMode, wParam ) )
+        if ( editorCommand( tEvoCmd::setSimulationMode, msg.wParam ) )
 			m_pEditorWindow->SetSimulationMode();
         break;
 
@@ -217,11 +222,9 @@ LRESULT WorkThread::ThreadMsgDispatcher( UINT const uiMsg, WPARAM const wParam, 
         break;
 
     default:
-		return 0;  // sometimes strange messages arrive. e.g. uiMsg 1847
+		return;  // sometimes strange messages arrive. e.g. uiMsg 1847
     }             // I cannot find a reason, so I ignore them
 
 	if (m_pObservers != nullptr)
 	    m_pObservers->Notify( );
-
-	return 0;
 }

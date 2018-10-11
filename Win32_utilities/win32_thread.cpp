@@ -32,14 +32,14 @@ static unsigned int __stdcall Util::ThreadProc( void * data )
     (void)PeekMessage( &msg, nullptr, WM_USER, WM_USER, PM_NOREMOVE );  // cause creation of message queue
     pThread->m_eventThreadStarter.Continue();       			        // trigger waiting thread to continue
 
-	pThread->ThreadStartupFunc( data );
+	pThread->ThreadStartupFunc( );
 
 	if ( pThread->m_bLoop )
 	{
 	    while ( BOOL bRet = GetMessage( &msg, nullptr, 0, 0 ) != 0 )   
 		{
 			assert( bRet != -1 );
-			(void)pThread->ThreadMsgDispatcher( msg.message, msg.wParam, msg.lParam );
+			pThread->ThreadMsgDispatcher( msg );
 		} 
 	}
 

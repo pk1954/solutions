@@ -12,11 +12,11 @@ GenDisplayWindow::GenDisplayWindow( ) :
 {
 }
 
-void GenDisplayWindow::StartGenDisplayWindow( HWND const hWndParent )
+void GenDisplayWindow::StartGenDisplayWindow( HWND const hwndParent )
 {
     HWND const hwnd = StartBaseWindow
     ( 
-        hWndParent,
+        hwndParent,
         CS_OWNDC,
         L"GenDisplayWindow",
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE

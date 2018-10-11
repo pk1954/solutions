@@ -15,7 +15,7 @@ BaseWindow::~BaseWindow( )
 
 HWND BaseWindow::StartBaseWindow
 ( 
-    HWND    const hWndParent,
+    HWND    const hwndParent,
     UINT    const uiClassStyle,
     LPCTSTR const szClass,
     DWORD   const dwWindowStyle
@@ -55,7 +55,7 @@ HWND BaseWindow::StartBaseWindow
         nullptr,
         dwWindowStyle,
         CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, 
-        hWndParent,
+        hwndParent,
         nullptr,
         hInstance, 
         this

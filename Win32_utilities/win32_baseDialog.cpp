@@ -14,7 +14,7 @@ BaseDialog::BaseDialog( )
 
 HWND BaseDialog::StartBaseDialog
 (
-    HWND    const hWndParent,
+    HWND    const hwndParent,
     LPCTSTR const lpTemplateName
 )
 {
@@ -22,7 +22,7 @@ HWND BaseDialog::StartBaseDialog
     (
         nullptr,
         lpTemplateName,
-        hWndParent,
+        hwndParent,
         BaseDialogProc,
         ( LPARAM )this
     );

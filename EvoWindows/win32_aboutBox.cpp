@@ -38,8 +38,8 @@ static INT_PTR CALLBACK About
     return FALSE;
 }
 
-void ShowAboutBox( HWND const hWndParent )
+void ShowAboutBox( HWND const hwndParent )
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
-    (void)DialogBox( hInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hWndParent, About );
+    (void)DialogBox( hInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hwndParent, About );
 }

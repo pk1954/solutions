@@ -25,14 +25,14 @@ EditorWindow::EditorWindow( )
 
 void EditorWindow::Start
 (  
-    HWND                  const hWndParent,
+    HWND                  const hwndParent,
     WorkThreadInterface * const pWorkThreadInterface,
     EvolutionCore       * const pCore,
     DspOptWindow        * const pDspOptWindow,
 	StatusBar           * const pStatusBar
 )
 {
-    StartBaseDialog( hWndParent, MAKEINTRESOURCE( IDD_EDITOR ) );
+    StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_EDITOR ) );
 
     m_pWorkThreadInterface = pWorkThreadInterface;
     m_pCore                = pCore;

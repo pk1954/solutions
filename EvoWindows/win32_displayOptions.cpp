@@ -23,11 +23,11 @@ DspOptWindow::~DspOptWindow( )
 
 void DspOptWindow::Start
 ( 
-    HWND          const         hWndParent, 
+    HWND          const         hwndParent, 
     EvolutionCore const * const pCore 
 )
 {
-    StartBaseDialog( hWndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
+    StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
 	m_pCore          = pCore;
 	m_IntValueLambda = nullptr;
 /* TODO 
