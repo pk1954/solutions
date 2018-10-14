@@ -178,13 +178,13 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
 		case IDM_SET_ZOOM:
-            (void)m_pGridWindow->SetZoom( static_cast<SHORT>(lParam));
+            (void)m_pGridWindow->SetFieldSize( static_cast<SHORT>(lParam));
 			m_pStatusBar->SetSizeTrackBar( static_cast<SHORT>(lParam) );
 			m_pWorkThreadInterface->PostRefresh( );
             break;
 
         case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
-            (void)m_pGridWindow->SetZoom( static_cast<SHORT>(lParam) );
+            (void)m_pGridWindow->SetFieldSize( static_cast<SHORT>(lParam) );
 			m_pWorkThreadInterface->PostRefresh( );
             break;
 

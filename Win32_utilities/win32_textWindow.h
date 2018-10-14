@@ -7,19 +7,20 @@
 #include <sstream> 
 #include <string> 
 #include "win32_baseWindow.h"
+#include "win32_thread.h"
 #include "win32_util.h"
 
 using namespace std;
 
 class GridPoint;
 
-class TextWindow : public BaseWindow
+class TextWindow : public BaseWindow, public Util::Thread
 {
 public:
     TextWindow( );
 	virtual ~TextWindow( ) {}; 
 
-    HWND StartTextWindow( HWND const, LPCTSTR const, UINT const );
+    void StartTextWindow( HWND const, LPCTSTR const, UINT const, BOOL const );
 
     void startPainting( ) 
     { 
@@ -65,6 +66,7 @@ private:
 	void printBuffer();
 
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) override;
+	virtual void ThreadStartupFunc( );
 
     COLORREF const CLR_BACK    = RGB( 200, 200, 200 );
     int      const LEFT_MARGIN = 30;
@@ -77,4 +79,7 @@ private:
     int            m_iHorizontalPos;
     int            m_iVerticalPos;
     int            m_iHorRaster;
+    HWND           m_hwndParent;
+    LPCTSTR        m_szClass;
+    UINT           m_uiAlpha;
 };

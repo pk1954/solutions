@@ -4,6 +4,7 @@
 #pragma once
 
 #include "pixelCoordinates.h"
+#include "win32_thread.h"
 #include "win32_baseWindow.h"
 
 class GridRect;
@@ -17,7 +18,7 @@ class ObserverInterface;
 class PerformanceWindow;
 class FocusPoint;
 
-class GridWindow : public BaseWindow
+class GridWindow : public BaseWindow, public Util::Thread
 {
 public:
     GridWindow( );
@@ -36,13 +37,13 @@ public:
 
     ~GridWindow( );
 
-    void  Size( );
-	void  Zoom( bool const );
-	void  ToggleStripMode( );
-	void  ToggleClutMode ( );
-	void  Escape( );
-	void  SetZoom( SHORT const );
-	void  Fit2Rect( );
+    void Size( );
+	void Zoom( bool const );
+	void ToggleStripMode( );
+	void ToggleClutMode ( );
+	void Escape( );
+	void SetFieldSize( SHORT const );
+	void Fit2Rect( );
 
 	short GetFieldSize( ) const
 	{ 
@@ -64,19 +65,25 @@ private:
     GridWindow             ( GridWindow const & );  // noncopyable class 
     GridWindow & operator= ( GridWindow const & );  // noncopyable class 
     
+	HWND                  m_hwndParent;
     WorkThreadInterface * m_pWorkThreadInterface;
     PixelCoordinates    * m_pPixelCoordinates;  // My own PixelCoordinates
     GridWindow          * m_pGWObserved;	    // Observed GridWindow (or nullptr)
     EvolutionCore       * m_pCore;
     PerformanceWindow   * m_pPerformanceWindow;
+    DspOptWindow        * m_pDspOptWindow;
     FocusPoint          * m_pFocusPoint;
     ObserverInterface   * m_pObserverInterface;
 	PixelCore           * m_pPixelCore;
     DrawFrame           * m_pDrawFrame;
     PixelPoint 	          m_ptLast;	 	   // Last cursor position during selection 
     BOOL                  m_bMoveAllowed;  // TRUE: move with mouse is possible
+	DWORD                 m_dwWindowStyle;
+	BOOL                  m_bHexagonMode;
+	SHORT                 m_sFieldSize;
 
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+	virtual void ThreadStartupFunc( );
 
 	void mouseWheelAction( int );
     BOOL inObservedClientRect( LPARAM );

@@ -11,7 +11,7 @@ class D3dSystem
 public:
     virtual ~D3dSystem( );
 
-    static void Create( HWND const, ULONG const, ULONG const, BOOL const );
+    static void Create_D3D_Device( HWND const, ULONG const, ULONG const, BOOL const );
     static D3dSystem * GetSystem( void );
 
     void               ResetD3dSystem( HWND const );

@@ -29,7 +29,6 @@ public:
     void DisplayCurrentGeneration( EVO_GENERATION const );
 
 private:
-    virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
 
     enum class tPart
     {
@@ -42,7 +41,6 @@ private:
     };
 
 	virtual void ThreadStartupFunc( );
-	virtual void ThreadMsgDispatcher( MSG const );
 
 	HWND WINAPI createControl      ( LPCTSTR, LPCTSTR, DWORD, HMENU );
     HWND WINAPI createStaticControl( LPCTSTR );

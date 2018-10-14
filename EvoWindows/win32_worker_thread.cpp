@@ -51,8 +51,13 @@ void WorkThread::Start
     m_pCore                = pCore;
 	m_pEvoHistGlue         = pEvoHistorySys;
 	m_pWorkThreadInterface = pWorkThreadInterface;
-    StartThread( TRUE );  // start thread as a loop
+    StartThread( TRUE, L"Worker" );  // start thread as a loop
     SetThreadAffinityMask( 0x0002 );
+}
+
+void WorkThread::ThreadStartupFunc()
+{
+	Continue( );   // trigger mother thread to continue
 }
 
 WorkThread::~WorkThread( )
@@ -139,7 +144,7 @@ void WorkThread::WorkMessage( MSG const msg )
 	assert( IsValidThreadMessage( msg.message ) );
     if ( m_iScriptLevel > 0 )                      // if we are processing a script    
     {                                              // we run already in worker thread 
-        ThreadMsgDispatcher( msg );  // dispatch message directly to avoid blocking
+        ThreadMsgDispatcher( msg );                // dispatch message directly to avoid blocking
     }
     else                                           // normal case
     {                                              // we run in main thread

@@ -18,7 +18,7 @@ D3dSystem * D3dSystem::GetSystem( void )
 	return & D3dSystem::_d3d_;
 }
 
-void D3dSystem::Create( HWND const hWndApp, ULONG const ulWidth, ULONG const ulHeight, BOOL const bHexagon )
+void D3dSystem::Create_D3D_Device( HWND const hWndApp, ULONG const ulWidth, ULONG const ulHeight, BOOL const bHexagon )
 {
 	Stopwatch stopwatch;
 	stopwatch.Start();
@@ -48,7 +48,7 @@ void D3dSystem::ResetD3dSystem( HWND const hwnd )
 
 	assert( m_d3d_device != nullptr );
 	HRESULT const hres = m_d3d_device->Reset( & m_d3d_presentationParameters ); 
-	assert( hres == D3D_OK) ;
+//	assert( hres == D3D_OK) ;
 }
 
 void D3dSystem::SetTransform( HWND const hwnd )
@@ -87,7 +87,7 @@ void D3dSystem::createDevice( HWND const hwnd, ULONG const ulModelWidth, ULONG c
 		D3DADAPTER_DEFAULT, 
 		D3DDEVTYPE_HAL, 
 		hwnd,
-		D3DCREATE_HARDWARE_VERTEXPROCESSING, 
+		D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED, 
 		& m_d3d_presentationParameters, 
 		& m_d3d_device
 	);

@@ -22,15 +22,22 @@
 
 GridWindow::GridWindow( ) :
     BaseWindow( ),
+	m_hwndParent( nullptr ),
     m_pWorkThreadInterface( nullptr ),
     m_pPixelCoordinates( nullptr ),
     m_pGWObserved( nullptr ),
+	m_pCore( nullptr ),
     m_pPerformanceWindow( nullptr ),
+	m_pDspOptWindow( nullptr ),
+    m_pFocusPoint( nullptr ),
+    m_pObserverInterface( nullptr ),
+	m_pPixelCore( nullptr ),
     m_pDrawFrame( nullptr ),
     m_ptLast( PixelPoint( LONG_MIN, LONG_MIN ) ),
     m_bMoveAllowed( TRUE ),
-    m_pFocusPoint( nullptr ),
-	m_pPixelCore( nullptr )
+	m_dwWindowStyle( 0 ),
+	m_bHexagonMode( FALSE ),
+	m_sFieldSize( 0 )
 { }
 
 void GridWindow::Start
@@ -45,30 +52,42 @@ void GridWindow::Start
     SHORT                 const sFieldSize
 )
 {
-	int  const iNrOfNeighbors = Config::GetConfigValue( Config::tId::nrOfNeighbors );
-	BOOL const bHexagonMode   = (iNrOfNeighbors == 6);
     assert( sFieldSize > 0 );
-    m_pWorkThreadInterface = pWorkThreadInterface;
+	m_sFieldSize           = sFieldSize;
+	m_dwWindowStyle        = dwStyle;
+	m_hwndParent           = hwndParent;
+	m_pWorkThreadInterface = pWorkThreadInterface;
     m_pPerformanceWindow   = pPerformanceWindow;
+	m_pDspOptWindow        = pDspOptWindow;
     m_pFocusPoint          = pFocusPoint;
 	m_pCore                = pCore;
-    m_pPixelCoordinates    = new PixelCoordinates( sFieldSize, bHexagonMode );
-	m_pPixelCore           = new PixelCore( m_pCore, m_pPixelCoordinates );
-    m_pDrawFrame           = new DrawFrame( m_pCore, m_pPixelCoordinates, pDspOptWindow );
+    
+//	StartThread( TRUE, "Grid" );
+	ThreadStartupFunc( );
+}
+
+void GridWindow::ThreadStartupFunc( )
+{
+	m_bHexagonMode      = (Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6);
+    m_pPixelCoordinates = new PixelCoordinates( m_sFieldSize, m_bHexagonMode );
+	m_pPixelCore        = new PixelCore( m_pCore, m_pPixelCoordinates );
+    m_pDrawFrame        = new DrawFrame( m_pCore, m_pPixelCoordinates, m_pDspOptWindow );
+
 	m_pDrawFrame->SetStripMode
 	( 
-		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
+		m_bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
 		? tBoolOp::opFalse 
 		: Config::GetConfigValueBoolOp( Config::tId::stripMode ) 
 	);
-    
+
 	StartBaseWindow
     ( 
-        hwndParent,
+        m_hwndParent,
         CS_OWNDC | CS_DBLCLKS,
         L"ClassGridWindow",
-        dwStyle
+        m_dwWindowStyle
     );
+	Continue( );   // trigger mother thread to continue
 }
 
 GridWindow::~GridWindow( )
@@ -316,7 +335,7 @@ void GridWindow::Size( )
     Move( 0, 0, rect.right - rect.left, rect.bottom - rect.top, FALSE );
 }
 
-void GridWindow::SetZoom( SHORT const fieldSize )
+void GridWindow::SetFieldSize( SHORT const fieldSize )
 {
 	m_pPixelCore->SetFieldSize( fieldSize, GetClRectCenter( ) );
 	m_pDrawFrame->Resize( );
@@ -330,7 +349,7 @@ void GridWindow::Fit2Rect( )
 
 void GridWindow::Zoom( bool const bZoomIn )	
 { 
-	SetZoom( m_pPixelCoordinates->ComputeNewFieldSize( bZoomIn ) ); 
+	SetFieldSize( m_pPixelCoordinates->ComputeNewFieldSize( bZoomIn ) ); 
 }
 
 void GridWindow::ToggleStripMode( ) 

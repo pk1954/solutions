@@ -13,17 +13,13 @@ HistAllocThread::HistAllocThread
 	m_pHistorySys( pHistSys )
 {
 	if ( bAsync )
-	{
-		StartThread( FALSE );  // start thread without loop, ThreadStartupFunc has its own loop
-		SetThreadAffinityMask( 0x0004 );
-	}
+		StartThread( FALSE, L"HistAlloc" );  // start thread without loop, ThreadStartupFunc has its own loop
 	else
-	{
 		ThreadStartupFunc( );
-	}
 }
 
 void HistAllocThread::ThreadStartupFunc( )
 {
+	Continue( );   // trigger mother thread to continue
 	while (m_pHistorySys->AddHistorySlot()) {}
 }

@@ -95,6 +95,7 @@ private:
 
     // private member functions
 
+	virtual void ThreadStartupFunc( );
 	virtual void ThreadMsgDispatcher( MSG const );
 
     void generationRun( );

@@ -41,6 +41,7 @@ public:
 				else
 				{
      				BOOL bRes = Util::MoveWindowAbsolute( hwnd, lXpos, lYpos, TRUE ); 
+					DWORD dwErr = GetLastError();
 					assert( bRes );
 				}
 			}
@@ -316,6 +317,7 @@ void WinManager::AddWindow
 	BOOL       const   bTrackSize
 )
 {
+	assert( pRootWin->GetWindowHandle() != nullptr );
     if ( id != 0 )
     {
         m_map.insert( pair< UINT, MAP_ELEMENT >( id, { wstrName, pRootWin, bTrackPosition, bTrackSize } ) );

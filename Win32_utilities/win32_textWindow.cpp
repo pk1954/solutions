@@ -12,7 +12,10 @@ using namespace std;
 //lint -sem(TextWindow::setupTextMetrics,initializer)
 
 TextWindow::TextWindow( ) :  
-    BaseWindow( )
+    BaseWindow( ),
+    m_hwndParent( nullptr ),
+    m_szClass( nullptr ),
+    m_uiAlpha( 0 )
 {
         // setup text metrics
 
@@ -28,23 +31,36 @@ TextWindow::TextWindow( ) :
     m_wBuffer.imbue(std::locale(""));
 }
 
-HWND TextWindow::StartTextWindow
+void TextWindow::StartTextWindow
 (
     HWND    const hwndParent,
     LPCTSTR const szClass,
-    UINT    const uiAlpha
+    UINT    const uiAlpha,
+	BOOL    const bAsync
 )
+{
+    m_hwndParent = hwndParent;
+    m_szClass    = szClass;
+    m_uiAlpha    = uiAlpha;
+
+	if ( bAsync )
+		StartThread( TRUE, szClass );
+	else
+		ThreadStartupFunc( );
+}
+
+void TextWindow::ThreadStartupFunc( )
 {
     HWND const hwnd = StartBaseWindow
     ( 
-        hwndParent,
+        m_hwndParent,
         CS_OWNDC | CS_DBLCLKS,
-        szClass,
+        m_szClass,
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION
     );
-    Util::MakeLayered( hwnd, TRUE, 0, uiAlpha );
-    SetWindowText( hwnd, szClass );
-    return hwnd;
+    Util::MakeLayered( hwnd, TRUE, 0, m_uiAlpha );
+    SetWindowText( hwnd, m_szClass );
+	Continue( );
 }
 
 LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )

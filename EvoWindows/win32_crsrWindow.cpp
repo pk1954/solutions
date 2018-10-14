@@ -22,7 +22,7 @@ void CrsrWindow::Start
     EvolutionCore const * const pCore
 ) 
 {
-    HWND hwnd = StartTextWindow( hwndParent, L"CrsrWindow", 100 );
+    StartTextWindow( hwndParent, L"CrsrWindow", 100, FALSE );
     Move( 0, 300, 300, 150, TRUE );
     m_pCore = pCore;
     m_pFocusPoint = pFocusPoint;

@@ -154,12 +154,13 @@ void StatusBar::Start
 {
 	m_pCore = pCore;
 	m_hwndParent = hwndParent;
-
-	StartThread( TRUE );
+	ThreadStartupFunc( );
+//	StartThread( TRUE, "StatusBar" );
 }
 
 void StatusBar::ThreadStartupFunc( )
 {
+//	Continue( );   // trigger mother thread to continue
 	HWND hwndStatus = CreateWindow
     (
         STATUSCLASSNAME, 
@@ -173,6 +174,7 @@ void StatusBar::ThreadStartupFunc( )
     ); 
 
     SetWindowHandle( hwndStatus );
+	Continue( );   // trigger mother thread to continue
 
     static std::array< int, static_cast<int>( tPart::Stop ) + 1> statwidths = 
     { 
@@ -213,12 +215,6 @@ void StatusBar::ThreadStartupFunc( )
     SetSizeTrackBar ( PixelCoordinates::DEFAULT_FIELD_SIZE );
     SetSpeedTrackBar( DEFAULT_DELAY );
 	PostCommand2Application( IDM_SIMULATION_SPEED, DEFAULT_DELAY );
-}
-
-void StatusBar::ThreadMsgDispatcher( MSG const msg )
-{
-    (void)TranslateMessage( &msg );
-    (void)DispatchMessage( &msg );
 }
 
 void StatusBar::SetSizeTrackBar( short const sFieldSize  ) const 
@@ -307,9 +303,4 @@ void StatusBar::DisplayCurrentGeneration( EVO_GENERATION const gen )
 {
     m_wstrGeneration = L"EvoGen " + to_wstring( gen );
     (void)SendNotifyMessage( SB_SETTEXT, static_cast<int>( tPart::Generation ), (LPARAM)( m_wstrGeneration.c_str() ) );
-}
-
-INT_PTR StatusBar::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
-{
-    return static_cast<INT_PTR>( FALSE );
 }
