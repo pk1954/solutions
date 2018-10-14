@@ -95,9 +95,10 @@ public:
 	unsigned int GetActionCounter
 	( 
 		unsigned int const uiStrategy, 
-		unsigned int const uiAction
+		tAction      const action
 	) const
 	{
+		unsigned int uiAction = static_cast<unsigned int>( action );
 		assert( uiAction   <= NR_ACTIONS );
 		assert( uiStrategy <= NR_STRATEGIES );
 		return (* m_pActionCounterRead)[ uiAction ][ uiStrategy ];
@@ -110,13 +111,16 @@ public:
 private:
 	void incActionCounter
 	(
-		tAction action,
+		tAction     action,
 		tStrategyId strategy
 	)
 	{
-		unsigned int const uiAction   = static_cast<unsigned int>(action);
-		unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
-		++ ( * m_pActionCounterFill )[uiAction][uiStrategy];
+		if ( action != tAction::undefined )
+		{
+			unsigned int const uiAction   = static_cast<unsigned int>(action);
+			unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
+			++ ( * m_pActionCounterFill )[uiAction][uiStrategy];
+		}
 	}
 		
     void deleteAndReset( GridField & gf )
@@ -160,8 +164,8 @@ private:
     Neighborhood   m_occupiedNeighborSlots;
 
 	typedef array< array < unsigned int, NR_STRATEGIES>, NR_ACTIONS > tActionCounters;
-	tActionCounters m_ActionCounter1;
-	tActionCounters m_ActionCounter2;
+	tActionCounters   m_ActionCounter1;
+	tActionCounters   m_ActionCounter2;
 	tActionCounters * m_pActionCounterFill;
 	tActionCounters * m_pActionCounterRead;
 

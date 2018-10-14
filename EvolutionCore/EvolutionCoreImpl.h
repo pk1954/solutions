@@ -100,10 +100,10 @@ public:
 	virtual	unsigned int GetActionCounter
 	(
 		unsigned int const uiStrategy,
-		unsigned int const uiAction
+		tAction      const action
 	) const
 	{
-		return m_grid.GetActionCounter( uiStrategy, uiAction );
+		return m_grid.GetActionCounter( uiStrategy, action );
 	}
 
 	virtual void SetPoi( GridPoint const & );

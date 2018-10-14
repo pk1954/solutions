@@ -16,9 +16,9 @@
 
 Genome Genome::m_genomeTemplate;
 
-array< GeneTypeLimits, NR_GENES   > Genome::m_aLimitsGeneral;
-array< GeneTypeLimits, NR_ACTIONS > Genome::m_aLimitsActions;
-array< bool,           NR_ACTIONS > Genome::m_abActionEnabled;
+array< GeneTypeLimits, NR_GENES        > Genome::m_aLimitsGeneral;
+array< GeneTypeLimits, NR_ACTION_GENES > Genome::m_aLimitsActions;
+array< bool,           NR_ACTIONS      > Genome::m_abActionEnabled;
 
 array< unsigned int, Genome::MAX_LIFE_SPAN + 1 > Genome::m_mortalityTable;
 
@@ -67,7 +67,6 @@ void Genome::InitClass( )
     m_genomeTemplate.setActionGene( tAction::interact,  500 );
     m_genomeTemplate.setActionGene( tAction::eat,       500 );
     m_genomeTemplate.setActionGene( tAction::fertilize, 500 );
-    m_genomeTemplate.setActionGene( tAction::passOn,    500 );
 
     m_genomeTemplate.setGeneralGene( tGeneType::appetite,           Config::GetConfigValue( Config::tId::defaultAppetite     ) );
     m_genomeTemplate.setGeneralGene( tGeneType::fertilInvest,       Config::GetConfigValue( Config::tId::defaultFertilInvest ) );
@@ -166,9 +165,8 @@ tAction Genome::GetOption
 	   )
 		return tAction::passOn;
 	
-	array <bool, NR_ACTIONS > abOptions;
+	array <bool, NR_ACTION_GENES > abOptions;
  
-    abOptions[ static_cast<int>( tAction::passOn    ) ] = true;
 	abOptions[ static_cast<int>( tAction::move      ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdMove )      );
     abOptions[ static_cast<int>( tAction::fertilize ) ] =                                  ( iEnergy >= GetAllele( tGeneType::thresholdFertilize ) );
     abOptions[ static_cast<int>( tAction::clone     ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdClone )     );

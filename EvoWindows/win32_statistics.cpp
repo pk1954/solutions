@@ -33,7 +33,7 @@ public:
 
     void printFloatLine( TextWindow & textWin, wchar_t const * const data )
     {
-        textWin.nextLine( data );
+		textWin.nextLine( data );
 
         for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
         {
@@ -83,9 +83,9 @@ public:
             DivNonZero( m_auiMemSize[ uiStrategy ], m_gsCounter[ uiStrategy ] );
     };
 
-    void add2option( tStrategyId const s, unsigned int const uiOption, short const sValue )
+    void add2option( tStrategyId const s, unsigned int const uiAction, short const sValue )
     {
-        m_axaGenePoolStrategy[ uiOption ].Add( static_cast<int>( s ), static_cast<float>( sValue ) );
+        m_axaGenePoolStrategy[ uiAction ].Add( static_cast<int>( s ), static_cast<float>( sValue ) );
     }
 
     void add2Gene( tStrategyId const s, unsigned int const uiGene, long const lGenoType )
@@ -119,18 +119,36 @@ public:
         m_gsAverageAge.printGeneLine( textWin, data );
     }
 
+    void printCounters( TextWindow & textWin, EvolutionCore const * pCore, tAction const action )
+    {
+		int iCounterSum = 0;
+		textWin.nextLine( GetActionTypeName( action ) );
+		for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
+		{
+			int iCounter = pCore->GetActionCounter( uiStrategy, action );
+			textWin.printNumber( iCounter );
+			iCounterSum += iCounter;
+		}
+		textWin.printNumber( iCounterSum );
+    }
+
+    void printNrPassOn( TextWindow & textWin, EvolutionCore const * pCore )
+    {
+		if ( EvolutionCore::IsEnabled( tAction::passOn ) )
+		{
+			printCounters( textWin, pCore, tAction::passOn );
+		}
+    }
+
     void printGeneStat( TextWindow & textWin, EvolutionCore const * pCore )
     {
-        for ( unsigned int uiOption = 0; uiOption < NR_ACTIONS; ++uiOption )
+        for ( unsigned int uiAction = 0; uiAction < NR_ACTION_GENES; ++uiAction )
 		{
-			tAction action = static_cast<tAction>( uiOption );
+			tAction action = static_cast<tAction>( uiAction );
 			if ( EvolutionCore::IsEnabled( action ) )
 			{
-				m_axaGenePoolStrategy[ uiOption ].printFloatLine( textWin, GetActionTypeName( action ) );
-		        textWin.nextLine( L"" );
-
-				for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
-					textWin.printNumber( pCore->GetActionCounter( uiStrategy, uiOption ) );
+				printCounters( textWin, pCore, action );
+				m_axaGenePoolStrategy[ uiAction ].printFloatLine( textWin, L"" );
 			}
 		}
 
@@ -140,16 +158,19 @@ public:
 			if ( EvolutionCore::IsEnabled( gene ) )
 	            m_aGeneStat[ uiGene ].printGeneLine( textWin, GetGeneName( gene ) );
 		}
-    }
+	}
 
     void printAvFood( TextWindow & textWin, wchar_t const * const data )
     {
         FloatStat fsAvFood;
 
-        for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
-            fsAvFood[ uiStrategy ] = m_aGeneStat[ static_cast<int>( tGeneType::appetite ) ][ uiStrategy ] * m_axaGenePoolStrategy[ static_cast<int>( tAction::eat ) ][ uiStrategy ] / 100;
+		unsigned int uiEat      = static_cast<unsigned int>( tAction::eat );
+		unsigned int uiAppetite = static_cast<unsigned int>(tGeneType::appetite);
 
-        fsAvFood.General( ) = m_aGeneStat[ static_cast<int>( tGeneType::appetite ) ].General( ) * m_axaGenePoolStrategy[ static_cast<int>( tAction::eat ) ].General( ) / 100 ;
+        for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
+            fsAvFood[ uiStrategy ] = m_aGeneStat[ uiAppetite ][ uiStrategy ] * m_axaGenePoolStrategy[ uiEat ][ uiStrategy ] / 100;
+
+        fsAvFood.General( ) = m_aGeneStat[ uiAppetite ].General( ) * m_axaGenePoolStrategy[ uiEat ].General( ) / 100 ;
 
         fsAvFood.printFloatLine( textWin, data );
     }
@@ -166,9 +187,9 @@ private:
     GeneStat m_gsCounter;          // counter for strategies and sum counter 
     GeneStat m_gsAverageAge;       // average age of all individuals
 
-    array < FloatStat,    NR_ACTIONS    > m_axaGenePoolStrategy;
-    array < unsigned int, NR_STRATEGIES > m_auiMemSize;
-    array < GeneStat,     NR_GENES      > m_aGeneStat;
+    array < FloatStat,    NR_ACTION_GENES > m_axaGenePoolStrategy;
+    array < unsigned int, NR_STRATEGIES   > m_auiMemSize;
+    array < GeneStat,     NR_GENES        > m_aGeneStat;
 };
 
 StatisticsWindow::StatisticsWindow( ):
@@ -182,7 +203,7 @@ void StatisticsWindow::Start
 ) 
 {
     StartTextWindow( hwndParent, L"StatisticsWindow", 100, FALSE );
-    Move( 200, 200, 400, 430, TRUE );
+    Move( 200, 200, 400, 540, TRUE );
     m_pCore = pCore;
 }
 
@@ -207,9 +228,9 @@ void StatisticsWindow::DoPaint( )
 			if ( m_pCore->IsAlive( gp ) )
 			{
 				tStrategyId const s = m_pCore->GetStrategyId( gp );
-				for ( unsigned int uiOption = 0; uiOption < NR_ACTIONS; ++uiOption )
-					if ( EvolutionCore::IsEnabled( static_cast<tAction>( uiOption ) ) )
-						genesStat.add2option( s, uiOption, m_pCore->GetDistr( gp, static_cast<tAction>( uiOption ) ) );
+				for ( unsigned int uiAction = 0; uiAction < NR_ACTION_GENES; ++uiAction )
+					if ( EvolutionCore::IsEnabled( static_cast<tAction>( uiAction ) ) )
+						genesStat.add2option( s, uiAction, m_pCore->GetDistr( gp, static_cast<tAction>( uiAction ) ) );
 
 				for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
 					genesStat.add2Gene( s, uiGene, m_pCore->GetGenotype( gp, static_cast<tGeneType>( uiGene ) ) );
@@ -232,12 +253,13 @@ void StatisticsWindow::DoPaint( )
 
     genesStat.printCounter ( * this, L"#individuals" );  // number of individuals
     genesStat.printAvAge   ( * this, L"av. age" );       // average age
-    genesStat.printGeneStat( * this, m_pCore );                   // percentage numbers for options
+	genesStat.printNrPassOn( * this, m_pCore );
+    genesStat.printGeneStat( * this, m_pCore );          // percentage numbers for options
 
 	if ( EvolutionCore::IsEnabled( tAction::eat ) )
-		genesStat.printAvFood  ( * this, L"av. food" );      // average food consumption 
+		genesStat.printAvFood( * this, L"av. food" );  // average food consumption 
 
-	genesStat.printMemory  ( * this, L"memory" );        // memory size counters
+	genesStat.printMemory( * this, L"memory" );        // memory size counters
 
     // maximum memory size
 

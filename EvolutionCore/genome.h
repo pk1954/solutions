@@ -54,9 +54,9 @@ private:
         Gene    m_gene;
     };
 
-    array< generalGene, NR_GENES   > m_aGeneGeneral;  // 4 * 9 = 36   general genes 
-    array< actionGene,  NR_ACTIONS > m_aGeneActions;  // 4 * 8 = 32   genes for choosing next action
-                                                      // sum     68
+    array< generalGene, NR_GENES        > m_aGeneGeneral;  // 4 * 9 = 36   general genes 
+    array< actionGene,  NR_ACTION_GENES > m_aGeneActions;  // 4 * 8 = 32   genes for choosing next action
+                                                           // sum     68
     
     void setGeneralGene( tGeneType const, int const );
     void setActionGene ( tAction   const, int const );
@@ -72,8 +72,8 @@ private:
 
     static Genome m_genomeTemplate;
 
-    static array< GeneTypeLimits, NR_GENES   > m_aLimitsGeneral;
-    static array< GeneTypeLimits, NR_ACTIONS > m_aLimitsActions;
+    static array< GeneTypeLimits, NR_GENES        > m_aLimitsGeneral;
+    static array< GeneTypeLimits, NR_ACTION_GENES > m_aLimitsActions;
 
     static void setGeneralLimits( tGeneType, long, long );
 };

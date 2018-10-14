@@ -77,12 +77,14 @@ enum class tAction : unsigned short
     interact, 
     eat, 
     fertilize,
-	passOn,
+	nrOfActionGenes,
+	passOn = nrOfActionGenes,
     nrOfActions,
     undefined = nrOfActions
 };
 
-static const int NR_ACTIONS = static_cast<int>( tAction::nrOfActions );
+static const int NR_ACTIONS      = static_cast<int>( tAction::nrOfActions );
+static const int NR_ACTION_GENES = static_cast<int>( tAction::nrOfActionGenes );
 
 enum class tGeneType : unsigned short
 {
