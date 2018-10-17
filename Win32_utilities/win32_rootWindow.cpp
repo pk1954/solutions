@@ -20,6 +20,7 @@ RootWindow::RootWindow( ) :
 
 RootWindow::~RootWindow( ) 
 { 
+	deleteTimer( );
 	m_hwnd   = nullptr; 
     m_hTimer = nullptr;
 }
@@ -55,13 +56,8 @@ void CALLBACK RootWindow::TimerProc( void * const lpParameter, BOOL const TimerO
     }
     else
     {
-        if ( pRootWin->m_hTimer != nullptr )
-        {
-			HANDLE handle = pRootWin->m_hTimer;
-            pRootWin->m_hTimer = nullptr;
-            (void)DeleteTimerQueueTimer( nullptr, handle, 0 );
-        }
-        pRootWin->m_bTimerActive = FALSE;
+		pRootWin->deleteTimer( );
+		pRootWin->m_bTimerActive = FALSE;
     }
 }
 

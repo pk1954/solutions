@@ -143,9 +143,6 @@ void WINAPI StatusBar::createEditorControl( )
 	}
 } 
 
-StatusBar::StatusBar( )
-{ }
-
 void StatusBar::Start
 ( 
 	HWND          const   hwndParent,
@@ -153,28 +150,19 @@ void StatusBar::Start
 )
 {
 	m_pCore = pCore;
-	m_hwndParent = hwndParent;
-	ThreadStartupFunc( );
-//	StartThread( TRUE, "StatusBar" );
-}
-
-void StatusBar::ThreadStartupFunc( )
-{
-//	Continue( );   // trigger mother thread to continue
 	HWND hwndStatus = CreateWindow
     (
         STATUSCLASSNAME, 
         nullptr, 
         WS_CHILD | WS_VISIBLE,
         CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT,
-        m_hwndParent,
+        hwndParent,
         nullptr, 
         GetModuleHandle( nullptr ), 
         nullptr
     ); 
 
     SetWindowHandle( hwndStatus );
-	Continue( );   // trigger mother thread to continue
 
     static std::array< int, static_cast<int>( tPart::Stop ) + 1> statwidths = 
     { 

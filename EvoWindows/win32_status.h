@@ -4,21 +4,17 @@
 #pragma once
 
 #include <string>
-#include "win32_thread.h"
 #include "win32_rootWindow.h"
 
 using namespace std;
 
 class EvolutionCore;
 
-class StatusBar : public RootWindow, public Util::Thread
+class StatusBar : public RootWindow
 {
 public:
-    StatusBar( );
-
     void Start( HWND const, EvolutionCore const * );
 	void SetSimuMode( BOOL const );
-
     int  GetHeight( ) const;
     void Resize( ) const;
     void SetSizeTrackBar ( short const ) const;
@@ -40,8 +36,6 @@ private:
         Stop
     };
 
-	virtual void ThreadStartupFunc( );
-
 	HWND WINAPI createControl      ( LPCTSTR, LPCTSTR, DWORD, HMENU );
     HWND WINAPI createStaticControl( LPCTSTR );
     HWND WINAPI createButton       ( LPCTSTR, HMENU );
@@ -52,7 +46,6 @@ private:
     void WINAPI createSimulationControl( );
     void WINAPI createEditorControl( );
 
-	HWND    m_hwndParent;
 	INT     m_iClientHeight;
     INT     m_iBorder;
     INT     m_iPosX;

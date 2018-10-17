@@ -12,10 +12,10 @@ using namespace std;
 
 TextWindow::TextWindow( ) :  
     BaseWindow( ),
-    m_hwndParent( nullptr ),
-    m_uiAlpha( 0 )
-{
-}
+	m_pTextBuffer( nullptr ),
+	m_hDC_Memory( 0 ),
+	m_hBitmap( 0 )
+{ }
 
 TextWindow::~TextWindow()
 {
@@ -35,12 +35,9 @@ void TextWindow::StartTextWindow
 	BOOL    const   bAsync
 )
 {
-    m_hwndParent = hwndParent;
-    m_uiAlpha    = uiAlpha;
-
     HWND const hwnd = StartBaseWindow
     ( 
-        m_hwndParent,
+        hwndParent,
 		xPos, yPos, width, height,
         CS_OWNDC | CS_DBLCLKS,
         szClass,
@@ -53,7 +50,7 @@ void TextWindow::StartTextWindow
 	m_hBitmap    = CreateCompatibleBitmap( hDC, rectSize.GetWidth(), rectSize.GetHeight() );
 	SelectObject( m_hDC_Memory, m_hBitmap );
 	ReleaseDC( hwnd, hDC );
-	Util::MakeLayered( hwnd, TRUE, 0, m_uiAlpha );
+	Util::MakeLayered( hwnd, TRUE, 0, uiAlpha );
     SetWindowText( hwnd, szClass );
     m_pTextBuffer = new TextBuffer( m_hDC_Memory, width, height );
 }

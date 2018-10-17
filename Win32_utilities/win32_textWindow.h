@@ -40,6 +40,4 @@ private:
 	TextBuffer * m_pTextBuffer;
     HDC          m_hDC_Memory;
 	HBITMAP      m_hBitmap;
-    HWND         m_hwndParent;
-    UINT         m_uiAlpha;
 };

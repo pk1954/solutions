@@ -22,7 +22,6 @@
 
 GridWindow::GridWindow( ) :
     BaseWindow( ),
-	m_hwndParent( nullptr ),
     m_pWorkThreadInterface( nullptr ),
     m_pPixelCoordinates( nullptr ),
     m_pGWObserved( nullptr ),
@@ -34,10 +33,7 @@ GridWindow::GridWindow( ) :
 	m_pPixelCore( nullptr ),
     m_pDrawFrame( nullptr ),
     m_ptLast( PixelPoint( LONG_MIN, LONG_MIN ) ),
-    m_bMoveAllowed( TRUE ),
-	m_dwWindowStyle( 0 ),
-	m_bHexagonMode( FALSE ),
-	m_sFieldSize( 0 )
+    m_bMoveAllowed( TRUE )
 { }
 
 void GridWindow::Start
@@ -53,43 +49,32 @@ void GridWindow::Start
 )
 {
     assert( sFieldSize > 0 );
-	m_sFieldSize           = sFieldSize;
-	m_dwWindowStyle        = dwStyle;
-	m_hwndParent           = hwndParent;
 	m_pWorkThreadInterface = pWorkThreadInterface;
     m_pPerformanceWindow   = pPerformanceWindow;
 	m_pDspOptWindow        = pDspOptWindow;
     m_pFocusPoint          = pFocusPoint;
 	m_pCore                = pCore;
     
-//	StartThread( TRUE, "Grid" );
-	ThreadStartupFunc( );
-}
-
-void GridWindow::ThreadStartupFunc( )
-{
-	m_bHexagonMode      = (Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6);
-    m_pPixelCoordinates = new PixelCoordinates( m_sFieldSize, m_bHexagonMode );
+	BOOL bHexagonMode   = (Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6);
+    m_pPixelCoordinates = new PixelCoordinates( sFieldSize, bHexagonMode );
 	m_pPixelCore        = new PixelCore( m_pCore, m_pPixelCoordinates );
     m_pDrawFrame        = new DrawFrame( m_pCore, m_pPixelCoordinates, m_pDspOptWindow );
 
 	m_pDrawFrame->SetStripMode
 	( 
-		m_bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
+		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
 		? tBoolOp::opFalse 
 		: Config::GetConfigValueBoolOp( Config::tId::stripMode ) 
 	);
 
 	StartBaseWindow
     ( 
-        m_hwndParent,
+        hwndParent,
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
         CS_OWNDC | CS_DBLCLKS,
         L"ClassGridWindow",
-        m_dwWindowStyle
+        dwStyle
     );
-
-	Continue( );   // trigger mother thread to continue
 }
 
 GridWindow::~GridWindow( )

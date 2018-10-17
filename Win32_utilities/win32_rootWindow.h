@@ -168,6 +168,16 @@ private:
 
     void startTimer( DWORD const );
 
+	void deleteTimer( )
+	{
+	    if ( m_hTimer != nullptr )
+        {
+			HANDLE handle = m_hTimer;
+            m_hTimer = nullptr;
+            (void)DeleteTimerQueueTimer( nullptr, handle, 0 );
+        }
+	}
+
     HWND   m_hwnd;
 	HWND   m_hwndApp;
     DWORD  m_dwDisplayRate; // in milliseconds
