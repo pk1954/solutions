@@ -113,15 +113,13 @@ void D3dBuffer::StartFrame( HWND hwnd )
 
     m_d3d->ResetD3dSystem( hwnd );
 
-    hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, FALSE );               assert(hres == D3D_OK);
-    hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );        assert(hres == D3D_OK);
-    hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );                 assert(hres == D3D_OK);
-
-//lint -e620          suspicious constant (L or one?)
+    hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, FALSE );                  assert(hres == D3D_OK);
+    hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );           assert(hres == D3D_OK);
+    hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );                    assert(hres == D3D_OK);
     hres = m_d3d_device->Clear( 0, nullptr, D3DCLEAR_TARGET, CLR_WHITE, 1.0f, 0 ); assert(hres == D3D_OK);
-//lint +e620    
-    m_d3d->SetTransform( hwnd );
-    hres = m_d3d_device->BeginScene( );                                         assert(hres == D3D_OK);
+
+	m_d3d->SetTransform( hwnd );
+    hres = m_d3d_device->BeginScene( );                                            assert(hres == D3D_OK);
 
     if ( m_bStripMode )
         m_pVertBufStripMode->ResetVertexBuffer();

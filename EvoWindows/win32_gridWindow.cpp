@@ -83,10 +83,12 @@ void GridWindow::ThreadStartupFunc( )
 	StartBaseWindow
     ( 
         m_hwndParent,
+		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
         CS_OWNDC | CS_DBLCLKS,
         L"ClassGridWindow",
         m_dwWindowStyle
     );
+
 	Continue( );   // trigger mother thread to continue
 }
 

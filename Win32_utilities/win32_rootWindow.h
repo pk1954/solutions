@@ -151,11 +151,21 @@ protected:
 
 	void SetWindowHandle( HWND const );
 
+	virtual void Trigger( )
+	{
+		Invalidate( FALSE );
+	}
+
 private:
 
     static void CALLBACK TimerProc( void * const, BOOL const );
 
-    void invalidate( );
+	void invalidate( )
+	{
+		Trigger( );
+		m_bDirty = FALSE;
+	}
+
     void startTimer( DWORD const );
 
     HWND   m_hwnd;

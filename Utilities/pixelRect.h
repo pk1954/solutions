@@ -84,6 +84,7 @@ public:
 class PixelRectSize
 {
 public:
+	PixelRectSize( ) : m_iWidth( 0 ), m_iHeight( 0 ) {};
     PixelRectSize( int const iWidth, int const iHeight ) : m_iWidth(iWidth), m_iHeight(iHeight) {};
 
     int GetWidth ( ) const { return m_iWidth;  }

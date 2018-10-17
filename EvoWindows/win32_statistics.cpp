@@ -202,8 +202,8 @@ void StatisticsWindow::Start
     EvolutionCore const * const pCore
 ) 
 {
-    StartTextWindow( hwndParent, L"StatisticsWindow", 100, FALSE );
-    Move( 200, 200, 400, 540, TRUE );
+    StartTextWindow( hwndParent, 200, 200, 400, 540, L"StatisticsWindow", 100, FALSE );
+//    Move( 200, 200, 400, 540, TRUE );
     m_pCore = pCore;
 }
 

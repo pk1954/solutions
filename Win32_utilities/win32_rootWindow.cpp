@@ -65,12 +65,6 @@ void CALLBACK RootWindow::TimerProc( void * const lpParameter, BOOL const TimerO
     }
 }
 
-void RootWindow::invalidate( )
-{
-	Invalidate( FALSE );
-    m_bDirty = FALSE;
-}
-
 void RootWindow::startTimer( DWORD const dwTime )
 {
     (void)CreateTimerQueueTimer
