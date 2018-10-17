@@ -4,8 +4,9 @@
 #include "stdafx.h"
 #include "config.h"
 #include "EvolutionCore.h"
-#include "win32_crsrWindow.h"
 #include "win32_focusPoint.h"
+#include "win32_textBuffer.h"
+#include "win32_crsrWindow.h"
 
 using namespace std;
 
@@ -29,35 +30,35 @@ void CrsrWindow::Start
     m_pFocusPoint->AttachFocusPointObserver( this );
 }
 
-void CrsrWindow::DoPaint( )
+void CrsrWindow::DoPaint( TextBuffer & textBuf )
 {
-    printString( L"Position:" );
+    textBuf.printString( L"Position:" );
 
     GridPoint const gpFocus = m_pFocusPoint->GetGridPoint( );
 
     if ( !gpFocus.IsInGrid( ) )
     {
-        printString( L"out of grid" );
+        textBuf.printString( L"out of grid" );
         return;
     }
 
-    printNumber( gpFocus.x );
-    printNumber( gpFocus.y );
+    textBuf.printNumber( gpFocus.x );
+    textBuf.printNumber( gpFocus.y );
 
-    nextLine( L"Food:" );
-    setHorizontalPos( 3 );
-    printPercentage( m_pCore->GetFoodStock( gpFocus ), m_pCore->GetFertility( gpFocus ) );
+    textBuf.nextLine( L"Food:" );
+    textBuf.setHorizontalPos( 3 );
+    textBuf.printPercentage( m_pCore->GetFoodStock( gpFocus ), m_pCore->GetFertility( gpFocus ) );
 
-    nextLine( L"MutRate:" );
-    setHorizontalPos( 2 );
-    printPercentage( m_pCore->GetMutRate( gpFocus ) );
+    textBuf.nextLine( L"MutRate:" );
+    textBuf.setHorizontalPos( 2 );
+    textBuf.printPercentage( m_pCore->GetMutRate( gpFocus ) );
     
 	if ( m_pCore->IsDead( gpFocus ) )
         return;
 
-    nextLine( L"Energy:" );
-    setHorizontalPos( 4 );
-    printPercentage( m_pCore->GetEnergy( gpFocus ), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
+    textBuf.nextLine( L"Energy:" );
+    textBuf.setHorizontalPos( 4 );
+    textBuf.printPercentage( m_pCore->GetEnergy( gpFocus ), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
 
 	// Deactivated, see win32_focusPoint.cpp
 

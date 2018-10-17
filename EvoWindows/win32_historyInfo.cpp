@@ -28,24 +28,24 @@ void HistInfoWindow::Start
 	m_pHistSystem = pHistSys;
 }
 
-void HistInfoWindow::DoPaint( )
+void HistInfoWindow::DoPaint( TextBuffer & textBuf )
 {
     int iNrOfUsedSlots   = m_pHistSystem->GetNrOfUsedHistCacheSlots( );
     int iNrOfSlots       = m_pHistSystem->GetNrOfHistCacheSlots( );
     long long lSlotSize  = m_pHistSystem->GetSlotSize( );
     long long lTotalSize = iNrOfSlots * lSlotSize;
 
-	printString( L"used slots  " );
-	setHorizontalPos( 3 );
-	printPercentage( iNrOfUsedSlots, iNrOfSlots );
+	textBuf.printString( L"used slots  " );
+	textBuf.setHorizontalPos( 3 );
+	textBuf.printPercentage( iNrOfUsedSlots, iNrOfSlots );
 
-    nextLine( L"slot size   " );
-	printNumber( lSlotSize );
+    textBuf.nextLine( L"slot size   " );
+	textBuf.printNumber( lSlotSize );
 
-    nextLine( L"cache size  " );
-	printNumber( lTotalSize );
+    textBuf.nextLine( L"cache size  " );
+	textBuf.printNumber( lTotalSize );
 
-    nextLine( L"genCurrent  " );
-	setHorizontalPos( 3 );
-	printNumber( m_pHistSystem->GetCurrentGeneration( ).GetLong() );
+    textBuf.nextLine( L"genCurrent  " );
+	textBuf.setHorizontalPos( 3 );
+	textBuf.printNumber( m_pHistSystem->GetCurrentGeneration( ).GetLong() );
 }

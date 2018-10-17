@@ -19,7 +19,7 @@ public:
 
     void Start( HWND const, EvolutionCore const * const );
 
-    virtual void DoPaint();
+    virtual void DoPaint( TextBuffer & );
 
 private:
     EvolutionCore const * m_pCore;

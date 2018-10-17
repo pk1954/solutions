@@ -16,14 +16,14 @@ class GeneStat: public XArray< unsigned int, NR_STRATEGIES  >
 {
 public:
 
-    void printGeneLine( TextWindow & textWin, wchar_t const * const data )
+    void printGeneLine( TextBuffer & textBuf, wchar_t const * const data )
     {
-        textWin.nextLine( data );
+        textBuf.nextLine( data );
 
         for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
-            textWin.printNumber( ( *this )[ uiStrategy ] );
+            textBuf.printNumber( ( *this )[ uiStrategy ] );
 
-        textWin.printNumber( General( ) );
+        textBuf.printNumber( General( ) );
     };
 };
 
@@ -31,19 +31,19 @@ class FloatStat : public XArray< float, NR_STRATEGIES  >
 {
 public:
 
-    void printFloatLine( TextWindow & textWin, wchar_t const * const data )
+    void printFloatLine( TextBuffer & textBuf, wchar_t const * const data )
     {
-		textWin.nextLine( data );
+		textBuf.nextLine( data );
 
         for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
         {
             if ( ( *this )[ uiStrategy ] > 0 )
-                textWin.printFloat( ( *this )[ uiStrategy ] );
+                textBuf.printFloat( ( *this )[ uiStrategy ] );
             else
-                textWin.printString( L"-" );
+                textBuf.printString( L"-" );
         }
 
-        textWin.printFloat( ( *this ).General( ) );
+        textBuf.printFloat( ( *this ).General( ) );
     };
 };
 
@@ -109,46 +109,46 @@ public:
         m_gsCounter.Add( static_cast<int>( s ), 1 );
     }
 
-    void printCounter( TextWindow & textWin, wchar_t const * const data )
+    void printCounter( TextBuffer & textBuf, wchar_t const * const data )
     {
-        m_gsCounter.printGeneLine( textWin, data );
+        m_gsCounter.printGeneLine( textBuf, data );
     }
 
-    void printAvAge( TextWindow & textWin, wchar_t const * const data )
+    void printAvAge( TextBuffer & textBuf, wchar_t const * const data )
     {
-        m_gsAverageAge.printGeneLine( textWin, data );
+        m_gsAverageAge.printGeneLine( textBuf, data );
     }
 
-    void printCounters( TextWindow & textWin, EvolutionCore const * pCore, tAction const action )
+    void printCounters( TextBuffer & textBuf, EvolutionCore const * pCore, tAction const action )
     {
 		int iCounterSum = 0;
-		textWin.nextLine( GetActionTypeName( action ) );
+		textBuf.nextLine( GetActionTypeName( action ) );
 		for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
 		{
 			int iCounter = pCore->GetActionCounter( uiStrategy, action );
-			textWin.printNumber( iCounter );
+			textBuf.printNumber( iCounter );
 			iCounterSum += iCounter;
 		}
-		textWin.printNumber( iCounterSum );
+		textBuf.printNumber( iCounterSum );
     }
 
-    void printNrPassOn( TextWindow & textWin, EvolutionCore const * pCore )
+    void printNrPassOn( TextBuffer & textBuf, EvolutionCore const * pCore )
     {
 		if ( EvolutionCore::IsEnabled( tAction::passOn ) )
 		{
-			printCounters( textWin, pCore, tAction::passOn );
+			printCounters( textBuf, pCore, tAction::passOn );
 		}
     }
 
-    void printGeneStat( TextWindow & textWin, EvolutionCore const * pCore )
+    void printGeneStat( TextBuffer & textBuf, EvolutionCore const * pCore )
     {
         for ( unsigned int uiAction = 0; uiAction < NR_ACTION_GENES; ++uiAction )
 		{
 			tAction action = static_cast<tAction>( uiAction );
 			if ( EvolutionCore::IsEnabled( action ) )
 			{
-				printCounters( textWin, pCore, action );
-				m_axaGenePoolStrategy[ uiAction ].printFloatLine( textWin, L"" );
+				printCounters( textBuf, pCore, action );
+				m_axaGenePoolStrategy[ uiAction ].printFloatLine( textBuf, L"" );
 			}
 		}
 
@@ -156,11 +156,11 @@ public:
 		{
 			tGeneType gene = static_cast<tGeneType>( uiGene );
 			if ( EvolutionCore::IsEnabled( gene ) )
-	            m_aGeneStat[ uiGene ].printGeneLine( textWin, GetGeneName( gene ) );
+	            m_aGeneStat[ uiGene ].printGeneLine( textBuf, GetGeneName( gene ) );
 		}
 	}
 
-    void printAvFood( TextWindow & textWin, wchar_t const * const data )
+    void printAvFood( TextBuffer & textBuf, wchar_t const * const data )
     {
         FloatStat fsAvFood;
 
@@ -172,15 +172,15 @@ public:
 
         fsAvFood.General( ) = m_aGeneStat[ uiAppetite ].General( ) * m_axaGenePoolStrategy[ uiEat ].General( ) / 100 ;
 
-        fsAvFood.printFloatLine( textWin, data );
+        fsAvFood.printFloatLine( textBuf, data );
     }
 
-    void printMemory( TextWindow & textWin, wchar_t const * const data )
+    void printMemory( TextBuffer & textBuf, wchar_t const * const data )
     {
-        textWin.nextLine( data );
+        textBuf.nextLine( data );
 
         for ( const auto & val : m_auiMemSize )
-            textWin.printNumber( val );
+            textBuf.printNumber( val );
     }
 
 private:
@@ -214,7 +214,7 @@ StatisticsWindow::~StatisticsWindow( )
 
 Stopwatch stopwatch;
 
-void StatisticsWindow::DoPaint( )
+void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 {
 //	stopwatch.Start();
     // aquire and prepare data 
@@ -246,49 +246,49 @@ void StatisticsWindow::DoPaint( )
 
     // start printing
 
-    setHorizontalPos( 2 );                                 // header
+    textBuf.setHorizontalPos( 2 );                                 // header
     for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
-        printString( GetStrategyName( (tStrategyId)uiStrategy ) );
-    printString( L"all" );                               
+        textBuf.printString( GetStrategyName( (tStrategyId)uiStrategy ) );
+    textBuf.printString( L"all" );                               
 
-    genesStat.printCounter ( * this, L"#individuals" );  // number of individuals
-    genesStat.printAvAge   ( * this, L"av. age" );       // average age
-	genesStat.printNrPassOn( * this, m_pCore );
-    genesStat.printGeneStat( * this, m_pCore );          // percentage numbers for options
+    genesStat.printCounter ( textBuf, L"#individuals" );  // number of individuals
+    genesStat.printAvAge   ( textBuf, L"av. age" );       // average age
+	genesStat.printNrPassOn( textBuf, m_pCore );
+    genesStat.printGeneStat( textBuf, m_pCore );          // percentage numbers for options
 
 	if ( EvolutionCore::IsEnabled( tAction::eat ) )
-		genesStat.printAvFood( * this, L"av. food" );  // average food consumption 
+		genesStat.printAvFood( textBuf, L"av. food" );  // average food consumption 
 
-	genesStat.printMemory( * this, L"memory" );        // memory size counters
+	genesStat.printMemory( textBuf, L"memory" );        // memory size counters
 
     // maximum memory size
 
-    nextLine( L"max mem" );
-    setHorizontalPos( 4 );
-    printNumber( EvolutionCore::GetMaxPartnerMemory( ) );
+    textBuf.nextLine( L"max mem" );
+    textBuf.setHorizontalPos( 4 );
+    textBuf.printNumber( EvolutionCore::GetMaxPartnerMemory( ) );
 
 	if ( EvolutionCore::IsEnabled( tAction::interact ) )
 	{
 		// nr of interactions with known culprits (Tit4Tat only)
 
-		nextLine( L"known" );
-		setHorizontalPos( 4 );
-		printNumber( EvolutionCore::GetNrInteractionsWithKnownCulprit( ) );
+		textBuf.nextLine( L"known" );
+		textBuf.setHorizontalPos( 4 );
+		textBuf.printNumber( EvolutionCore::GetNrInteractionsWithKnownCulprit( ) );
 
 		// nr of interactions with unknown culprits (Tit4Tat only)
 
-		nextLine( L"unknown" );
-		setHorizontalPos( 4 );
-		printNumber( EvolutionCore::GetNrInteractionsWithUnknownCulprit( ) );
+		textBuf.nextLine( L"unknown" );
+		textBuf.setHorizontalPos( 4 );
+		textBuf.printNumber( EvolutionCore::GetNrInteractionsWithUnknownCulprit( ) );
 	}
 
 	if ( EvolutionCore::IsEnabled( tAction::eat ) )
 	{
 		// average food growth
 
-		nextLine( L"food growth" );
-		setHorizontalPos( 4 );
-		printNumber( m_pCore->GetAverageFoodGrowth( ) );
+		textBuf.nextLine( L"food growth" );
+		textBuf.setHorizontalPos( 4 );
+		textBuf.printNumber( m_pCore->GetAverageFoodGrowth( ) );
 	}
 //	stopwatch.Stop( L"Statistics" );
 }

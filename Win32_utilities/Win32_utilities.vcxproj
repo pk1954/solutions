@@ -149,6 +149,7 @@
     <ClInclude Include="win32_baseDialog.h" />
     <ClInclude Include="win32_baseWindow.h" />
     <ClInclude Include="win32_clut.h" />
+    <ClInclude Include="win32_textBuffer.h" />
     <ClInclude Include="win32_event.h" />
     <ClInclude Include="win32_hiResTimer.h" />
     <ClInclude Include="win32_performanceWindow.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="win32_baseDialog.cpp" />
     <ClCompile Include="win32_baseWindow.cpp" />
     <ClCompile Include="win32_clut.cpp" />
+    <ClCompile Include="win32_textBuffer.cpp" />
     <ClCompile Include="win32_hiResTimer.cpp" />
     <ClCompile Include="win32_performanceWindow.cpp" />
     <ClCompile Include="win32_rootWindow.cpp" />

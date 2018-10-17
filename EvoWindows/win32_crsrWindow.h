@@ -20,7 +20,7 @@ public:
 		EvolutionCore const * const 
 	);
 
-    virtual void DoPaint( );
+    virtual void DoPaint( TextBuffer & );
 
 private:
     FocusPoint          * m_pFocusPoint;

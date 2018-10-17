@@ -54,11 +54,11 @@ public:
 			Sleep( m_dwGenerationDelay );
     };
 
-    virtual void DoPaint( );
+    virtual void DoPaint( TextBuffer & );
 
 private:
     DWORD getMeasuredPerformance( );
-    void  printLine( wchar_t const * const, DWORD const, wchar_t const * const );
+    void  printLine( TextBuffer &, wchar_t const * const, DWORD const, wchar_t const * const );
 
     HANDLE     m_hTimer;
     HiResTimer m_hrtimOverall;

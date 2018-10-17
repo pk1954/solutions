@@ -39,23 +39,29 @@ DWORD PerformanceWindow::getMeasuredPerformance( )
     return dwResult;
 }
 
-void PerformanceWindow::printLine( wchar_t const * const pwch1, DWORD const dwValue, wchar_t const * const pwch2 )
+void PerformanceWindow::printLine
+(
+	TextBuffer          & textBuf,
+	wchar_t const * const pwch1, 
+	DWORD           const dwValue, 
+	wchar_t const * const pwch2 
+)
 {
-    printString    ( pwch1 );
-    printAsDecValue( dwValue );
-    printString    ( pwch2 );
-    nextLine( );
+    textBuf.printString    ( pwch1 );
+    textBuf.printAsDecValue( dwValue );
+    textBuf.printString    ( pwch2 );
+    textBuf.nextLine       ( );
 }
 
-void PerformanceWindow::DoPaint( )
+void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 {
     DWORD const dwSumInMicroSeconds  = m_dwModelTime + m_dwGenerationDelay * 1000;
     DWORD const dwGensPer1000SecComp = dwSumInMicroSeconds ? ( 1000 * 1000 * 1000 / dwSumInMicroSeconds ) : 0;
     DWORD const dwGensPer1000SecMeas = getMeasuredPerformance( );
 
-    printLine( L"Model:  ", m_dwModelTime,              L"ms"    );
-    printLine( L"Delay:  ", m_dwGenerationDelay * 1000, L"ms"    );
-    printLine( L"Comp:   ", dwGensPer1000SecComp,       L"Gen/s" );
-    printLine( L"Meas:   ", dwGensPer1000SecMeas,       L"Gen/s" );
-    printLine( L"Display:", m_dwDisplayTime,            L"ms"    );
+    printLine( textBuf, L"Model:  ", m_dwModelTime,              L"ms"    );
+    printLine( textBuf, L"Delay:  ", m_dwGenerationDelay * 1000, L"ms"    );
+    printLine( textBuf, L"Comp:   ", dwGensPer1000SecComp,       L"Gen/s" );
+    printLine( textBuf, L"Meas:   ", dwGensPer1000SecMeas,       L"Gen/s" );
+    printLine( textBuf, L"Display:", m_dwDisplayTime,            L"ms"    );
 }

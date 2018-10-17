@@ -19,7 +19,7 @@ public:
 		HistorySystem const *
 	);
 
-    virtual void DoPaint( );
+    virtual void DoPaint( TextBuffer & );
 
 private:
 	HistorySystem const * m_pHistSystem;
