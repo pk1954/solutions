@@ -34,7 +34,7 @@ void WorkThreadInterface::Start
     m_pCore        = pCore;
 	m_pEvoHistGlue = pEvoHistGlue;
 	m_pWorkThread  = new WorkThread();
-	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pEvent, pObservers, pCore, pEvoHistGlue, this );
+	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pEvent, pObservers, pEvoHistGlue, this );
 }
 
 WorkThreadInterface::~WorkThreadInterface( )

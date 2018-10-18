@@ -5,7 +5,7 @@
 #include <process.h>
 #include "win32_thread.h"
 
-void Util::Thread::StartThread( BOOL const bLoop, wstring const & strName )
+void Util::Thread::StartThread(  BOOL const bLoop, wstring const & strName )
 {
 	m_strThreadName = strName;
 	m_bLoop = bLoop;
@@ -16,7 +16,7 @@ void Util::Thread::StartThread( BOOL const bLoop, wstring const & strName )
 
 void Util::Thread::Terminate( )   // to be called from different thread
 {
-	PostThreadMessage( WM_QUIT, 0, 0 );                        // stop message pump of thread
+	PostThreadMsg( WM_QUIT, 0, 0 );                        // stop message pump of thread
 	WaitForSingleObject( m_handle, INFINITE );                 // wait until thread has stopped
 	CloseHandle( m_handle );
 }

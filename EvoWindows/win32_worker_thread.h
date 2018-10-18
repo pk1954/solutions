@@ -28,82 +28,57 @@ class ObserverInterface;
 class EvoHistorySysGlue;
 class WorkThreadInterface;
 
-class WorkThread : public Util::Thread
+class WorkThread: public Util::Thread
 {
 public:
-	explicit WorkThread( );
-    ~WorkThread( );
-
-    void Start
-    ( 
-        PerformanceWindow   * const,
-		EditorWindow        * const,  
-        EventInterface      * const, 
-        ObserverInterface   * const, 
-        EvolutionCore       * const,
-	    EvoHistorySysGlue   * const,
-		WorkThreadInterface * const
-    );
-
-	void TerminateThread( HWND const );
-
-	void DoProcessScript( std::wstring * const ); // parameter must be created with new, will be deleted here! 
-
-	HIST_GENERATION GetGenDemanded( ) const 
-	{ 
-		return m_genDemanded; 
-	}
-
-    void GenerationStep( );
-
-    void WorkMessage( MSG const );
-    void WorkMessage( UINT const, WPARAM const, LPARAM const );
-
-    enum WorkerThreadMessage : UINT
-    {
-        THREAD_MSG_REFRESH = WM_APP,
-        THREAD_MSG_STOP,
-        THREAD_MSG_REPEAT_GENERATION_STEP,  // only used internaly, not part of procedural interface
-        THREAD_MSG_GOTO_GENERATION,
-        THREAD_MSG_GENERATION_RUN,
-        THREAD_MSG_SET_POI,
-        THREAD_MSG_DO_EDIT,
-        THREAD_MSG_SET_BRUSH_RADIUS,
-        THREAD_MSG_SET_BRUSH_INTENSITY,
-        THREAD_MSG_SET_BRUSH_SHAPE,
-        THREAD_MSG_SET_BRUSH_OPERATOR,
-        THREAD_MSG_SET_BRUSH_MODE,
-        THREAD_MSG_PROCESS_SCRIPT,
-        THREAD_MSG_SET_SIMULATION_MODE,
-        THREAD_MSG_RESET_MODEL,
-        THREAD_MSG_FIRST = THREAD_MSG_REFRESH,
-        THREAD_MSG_LAST = THREAD_MSG_RESET_MODEL
-    };
-
-private:
-
-	WorkThreadInterface * m_pWorkThreadInterface;
-    PerformanceWindow   * m_pPerformanceWindow;
-    EditorWindow        * m_pEditorWindow;
-    EvoHistorySysGlue   * m_pEvoHistGlue;
-    ObserverInterface   * m_pObservers;
-    EventInterface      * m_pEvent;
-    EvolutionCore       * m_pCore;
-    BOOL                  m_bContinue;
-    INT                   m_iScriptLevel;
-    HIST_GENERATION       m_genDemanded;
-
-    // private member functions
-
-	virtual void ThreadStartupFunc( );
-	virtual void ThreadMsgDispatcher( MSG const );
-
-    void generationRun( );
-
-	BOOL IsValidThreadMessage(UINT msg)
+	enum WorkerThreadMessage : UINT
 	{
-		return (THREAD_MSG_FIRST <= msg) && (msg <= THREAD_MSG_LAST);
-	}
+		THREAD_MSG_REFRESH = WM_APP,
+		THREAD_MSG_STOP,
+		THREAD_MSG_REPEAT_GENERATION_STEP,  // only used internaly, not part of procedural interface
+		THREAD_MSG_GOTO_GENERATION,
+		THREAD_MSG_GENERATION_RUN,
+		THREAD_MSG_SET_POI,
+		THREAD_MSG_DO_EDIT,
+		THREAD_MSG_SET_BRUSH_RADIUS,
+		THREAD_MSG_SET_BRUSH_INTENSITY,
+		THREAD_MSG_SET_BRUSH_SHAPE,
+		THREAD_MSG_SET_BRUSH_OPERATOR,
+		THREAD_MSG_SET_BRUSH_MODE,
+		THREAD_MSG_PROCESS_SCRIPT,
+		THREAD_MSG_SET_SIMULATION_MODE,
+		THREAD_MSG_RESET_MODEL,
+		THREAD_MSG_FIRST = THREAD_MSG_REFRESH,
+		THREAD_MSG_LAST = THREAD_MSG_RESET_MODEL
+	};
+
+	BOOL IsValidThreadMessage( UINT );
+
+	WorkThread( );
+	~WorkThread( );
+
+	void Start
+	( 
+		PerformanceWindow   * const,
+		EditorWindow        * const,
+		EventInterface      * const,
+		ObserverInterface   * const,
+		EvoHistorySysGlue   * const,
+		WorkThreadInterface * const
+	);
+
+	virtual void ThreadStartupFunc( ) { }
+	virtual void ThreadMsgDispatcher( MSG const );
+	
+	// WorkMessage - process incoming messages from main thread
+
+	void WorkMessage( UINT const, WPARAM const, LPARAM const );
+	void WorkMessage( MSG const );
+
+	void GenerationStep( );
+	void generationRun( );
+
+	void DoProcessScript( wstring * const );
 
 	BOOL editorCommand( tEvoCmd const cmd, WPARAM const wParam )
 	{
@@ -114,4 +89,22 @@ private:
 	{
 		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, gp24 ) );
 	}
-}; 
+
+	HIST_GENERATION GetGenDemanded( ) const 
+	{ 
+		return m_genDemanded; 
+	}
+
+	void TerminateThread( HWND const );
+
+private:
+    PerformanceWindow   * m_pPerformanceWindow;
+    EditorWindow        * m_pEditorWindow;
+    EventInterface      * m_pEvent;
+    ObserverInterface   * m_pObservers;
+    EvoHistorySysGlue   * m_pEvoHistGlue;
+	WorkThreadInterface * m_pWorkThreadInterface;
+    HIST_GENERATION       m_genDemanded;
+    BOOL                  m_bContinue;
+    INT                   m_iScriptLevel;
+};

@@ -26,8 +26,9 @@ namespace Util
 			m_eventThreadStarter.Continue();   // trigger waiting thread to continue
 		}
 
-		void PostThreadMessage( UINT uiMsg, WPARAM wParam, LPARAM lParam )
+		void PostThreadMsg( UINT uiMsg, WPARAM wParam, LPARAM lParam )
 		{
+			assert( m_threadId != 0 );
 		    BOOL const bRes = ::PostThreadMessage( m_threadId, uiMsg, wParam, lParam );
 			DWORD err = GetLastError( );
 			assert( bRes );
@@ -35,7 +36,6 @@ namespace Util
 
 		void Terminate( );
 
-	protected:
 		virtual void ThreadStartupFunc( ) = 0;
 		virtual void ThreadMsgDispatcher( MSG const msg )
 		{
