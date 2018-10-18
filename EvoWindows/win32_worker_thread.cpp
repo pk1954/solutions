@@ -79,8 +79,13 @@ void WorkThread::WorkMessage( MSG const msg )
 	{                                              // we run in main thread
 		if ( m_pEvent != nullptr )
 			m_pEvent->Continue( );                 // trigger worker thread if waiting for an event
-		PostThreadMsg( msg.message, msg.wParam, msg.lParam );  // post message to worker thread
+		PostThreadMsg( msg );                      // post message to worker thread
 	}
+}
+
+void WorkThread::ThreadStartupFunc( ) 
+{ 
+	SetThreadAffinityMask( 0x0002 );
 }
 
 void WorkThread::ThreadMsgDispatcher( MSG const msg  )
@@ -220,7 +225,7 @@ void WorkThread::DoProcessScript( wstring * const pwstr )
 
 void WorkThread::TerminateThread( HWND const hwndCtl )
 {
-	PostThreadMsg( THREAD_MSG_STOP, 0, 0 );  // stop running computation and script processing
+	PostThreadMsg( THREAD_MSG_STOP );  // stop running computation and script processing
 	Terminate( );
 	DestroyWindow( hwndCtl );                       // trigger termination of application
 }

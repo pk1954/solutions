@@ -67,7 +67,7 @@ public:
 		WorkThreadInterface * const
 	);
 
-	virtual void ThreadStartupFunc( ) { }
+	virtual void ThreadStartupFunc( );
 	virtual void ThreadMsgDispatcher( MSG const );
 	
 	// WorkMessage - process incoming messages from main thread

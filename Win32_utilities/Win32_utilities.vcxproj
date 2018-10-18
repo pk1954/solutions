@@ -157,6 +157,7 @@
     <ClInclude Include="win32_script.h" />
     <ClInclude Include="win32_stopwatch.h" />
     <ClInclude Include="win32_textWindow.h" />
+    <ClInclude Include="win32_textWindowThread.h" />
     <ClInclude Include="win32_thread.h" />
     <ClInclude Include="win32_util.h" />
     <ClInclude Include="win32_viewCollection.h" />

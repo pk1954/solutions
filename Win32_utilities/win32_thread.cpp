@@ -16,8 +16,8 @@ void Util::Thread::StartThread(  BOOL const bLoop, wstring const & strName )
 
 void Util::Thread::Terminate( )   // to be called from different thread
 {
-	PostThreadMsg( WM_QUIT, 0, 0 );                        // stop message pump of thread
-	WaitForSingleObject( m_handle, INFINITE );                 // wait until thread has stopped
+	PostThreadMsg( WM_QUIT );                   // stop message pump of thread
+	WaitForSingleObject( m_handle, INFINITE );  // wait until thread has stopped
 	CloseHandle( m_handle );
 }
 

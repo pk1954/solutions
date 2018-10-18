@@ -26,12 +26,17 @@ namespace Util
 			m_eventThreadStarter.Continue();   // trigger waiting thread to continue
 		}
 
-		void PostThreadMsg( UINT uiMsg, WPARAM wParam, LPARAM lParam )
+		void PostThreadMsg( MSG msg )
 		{
 			assert( m_threadId != 0 );
-		    BOOL const bRes = ::PostThreadMessage( m_threadId, uiMsg, wParam, lParam );
+		    BOOL const bRes = ::PostThreadMessage( m_threadId, msg.message, msg.wParam, msg.lParam );
 			DWORD err = GetLastError( );
 			assert( bRes );
+		}
+
+		void PostThreadMsg( unsigned int uiMsg )
+		{
+			PostThreadMsg( MSG{ nullptr, uiMsg, 0, 0 } );
 		}
 
 		void Terminate( );

@@ -6,13 +6,14 @@
 #include <iomanip>
 #include "win32_util.h"
 #include "win32_thread.h"
+#include "win32_textWindowThread.h"
 #include "win32_textWindow.h"
 
 using namespace std;
 
+
 TextWindow::TextWindow( ) :  
     BaseWindow( ),
-	m_pTextBuffer( nullptr ),
 	m_hDC_Memory( 0 ),
 	m_hBitmap( 0 )
 { }
@@ -52,7 +53,12 @@ void TextWindow::StartTextWindow
 	ReleaseDC( hwnd, hDC );
 	Util::MakeLayered( hwnd, TRUE, 0, uiAlpha );
     SetWindowText( hwnd, szClass );
-    m_pTextBuffer = new TextBuffer( m_hDC_Memory, width, height );
+	m_pTextWindowThread = new TextWindowThread( m_hDC_Memory, width, height, this, szClass, bAsync );
+}
+
+void TextWindow::Trigger( )
+{
+	m_pTextWindowThread->Trigger( );
 }
 
 LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )

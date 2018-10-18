@@ -23,9 +23,8 @@ void HistInfoWindow::Start
 	HistorySystem const * pHistSys
 ) 
 {
-    StartTextWindow( hwndParent, 0, 300, 300, 150, L"HistInfoWindow", 100, FALSE );
-//    Move( 0, 300, 300, 150, TRUE );
 	m_pHistSystem = pHistSys;
+    StartTextWindow( hwndParent, 0, 300, 300, 150, L"HistInfoWindow", 100, TRUE );
 }
 
 void HistInfoWindow::DoPaint( TextBuffer & textBuf )
