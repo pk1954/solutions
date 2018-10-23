@@ -14,16 +14,11 @@ namespace Util
 	class Thread
 	{
 	public:
-		void StartThread( BOOL const, wstring const & strName );
+		void StartThread( wstring const & strName );
 
 		void SetThreadAffinityMask( DWORD_PTR mask )
 		{
 			::SetThreadAffinityMask( m_handle, mask );
-		}
-
-		void Continue( )
-		{
-			m_eventThreadStarter.Continue();   // trigger waiting thread to continue
 		}
 
 		void PostThreadMsg( MSG msg )
@@ -39,20 +34,16 @@ namespace Util
 			PostThreadMsg( MSG{ nullptr, uiMsg, 0, 0 } );
 		}
 
-		void Terminate( );
+		void Terminate( ); // Waits until thread has stopped
 
-		virtual void ThreadStartupFunc( ) = 0;
-		virtual void ThreadMsgDispatcher( MSG const msg )
-		{
-			(void)TranslateMessage( &msg );
-			(void)DispatchMessage( &msg );
-		}
+		virtual void ThreadStartupFunc( ) {};
+		virtual void ThreadMsgDispatcher( MSG const ) = 0;
+		virtual void ThreadShutDownFunc( ) {};
 
 	private:
 		Event   m_eventThreadStarter;
 		HANDLE  m_handle;
 		UINT    m_threadId;
-		BOOL    m_bLoop;
 		wstring m_strThreadName;
 
 		friend static unsigned int __stdcall ThreadProc( void * );

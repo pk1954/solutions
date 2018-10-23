@@ -41,7 +41,6 @@ public:
     void PostSetBrushRadius( INT const );
     void PostRefresh( );
     void PostReset( BOOL );
-    void PostEndThread( HWND );
     void PostProcessScript( std::wstring const & );
 	void PostRunGenerations( bool const bFirst = true );
 	void PostStopComputation();
@@ -55,6 +54,8 @@ public:
 	void DoProcessScript( std::wstring * const ); // parameter must be created with new, will be deleted here! 
 
 	HIST_GENERATION GetGenDemanded( ) const;
+
+    void TerminateThread( );
 
 private:
 	void postGotoGeneration( HIST_GENERATION const );

@@ -18,7 +18,7 @@ using namespace std;
 
 EvolutionCoreImpl::EvolutionCoreImpl( ) :
     m_pObservers( nullptr ),
-	m_pEvent( nullptr ),
+	m_pEventPOI( nullptr ),
 	m_brush( & m_grid )
 { 
 	ResetAll( );
@@ -100,7 +100,7 @@ void EvolutionCoreImpl::stopOnPoi
 		{
 		    plan.SetValid( );
             m_pObservers->Notify( );
-            m_pEvent->Wait( );
+            m_pEventPOI->Wait( );
 		    plan.SetInvalid( );
 		}
     }

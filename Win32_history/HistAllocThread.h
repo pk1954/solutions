@@ -21,11 +21,11 @@ public:
 	{
 		if ( bAsync )
 		{
-			StartThread( FALSE, L"HistAlloc" );  // start thread without loop, ThreadStartupFunc has its own loop
+			StartThread( L"HistAlloc" );  
 		}
 		else
 		{
-			ThreadStartupFunc( );
+			while (m_pHistorySys->AddHistorySlot()) {}
 		}
 	}
 
@@ -33,7 +33,13 @@ public:
 
 	void HistAllocThread::ThreadStartupFunc( )
 	{
-		while (m_pHistorySys->AddHistorySlot()) {}
+		ThreadMsgDispatcher( MSG{0,0,0,0} );
+	}
+
+	void HistAllocThread::ThreadMsgDispatcher( MSG msg )
+	{
+		if ( m_pHistorySys->AddHistorySlot() ) 
+			PostThreadMsg( msg );
 	}
 
 private:

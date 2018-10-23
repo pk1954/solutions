@@ -69,6 +69,7 @@ public:
 
 	virtual void ThreadStartupFunc( );
 	virtual void ThreadMsgDispatcher( MSG const );
+	virtual void ThreadShutDownFunc( );
 	
 	// WorkMessage - process incoming messages from main thread
 
@@ -95,12 +96,10 @@ public:
 		return m_genDemanded; 
 	}
 
-	void TerminateThread( HWND const );
-
 private:
     PerformanceWindow   * m_pPerformanceWindow;
     EditorWindow        * m_pEditorWindow;
-    EventInterface      * m_pEvent;
+    EventInterface      * m_pEventPOI;
     ObserverInterface   * m_pObservers;
     EvoHistorySysGlue   * m_pEvoHistGlue;
 	WorkThreadInterface * m_pWorkThreadInterface;

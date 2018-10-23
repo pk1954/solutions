@@ -208,7 +208,7 @@ void StatisticsWindow::Start
 
 StatisticsWindow::~StatisticsWindow( )
 {
-	m_pCore = nullptr;
+//	m_pCore = nullptr;
 }
 
 Stopwatch stopwatch;
@@ -227,16 +227,19 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 			if ( m_pCore->IsAlive( gp ) )
 			{
 				tStrategyId const s = m_pCore->GetStrategyId( gp );
-				for ( unsigned int uiAction = 0; uiAction < NR_ACTION_GENES; ++uiAction )
-					if ( EvolutionCore::IsEnabled( static_cast<tAction>( uiAction ) ) )
-						genesStat.add2option( s, uiAction, m_pCore->GetDistr( gp, static_cast<tAction>( uiAction ) ) );
+				if ( s != tStrategyId::empty ) // can happen due to race conditions 
+				{
+					for ( unsigned int uiAction = 0; uiAction < NR_ACTION_GENES; ++uiAction )
+						if ( EvolutionCore::IsEnabled( static_cast<tAction>( uiAction ) ) )
+							genesStat.add2option( s, uiAction, m_pCore->GetDistr( gp, static_cast<tAction>( uiAction ) ) );
 
-				for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
-					genesStat.add2Gene( s, uiGene, m_pCore->GetGenotype( gp, static_cast<tGeneType>( uiGene ) ) );
+					for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
+						genesStat.add2Gene( s, uiGene, m_pCore->GetGenotype( gp, static_cast<tGeneType>( uiGene ) ) );
 
-				genesStat.incCounter( s );
-				genesStat.addMemSize( s, m_pCore->GetMemSize( gp ) );
-				genesStat.addAge    ( s, m_pCore->GetAge( gp ) );
+					genesStat.incCounter( s );
+					genesStat.addMemSize( s, m_pCore->GetMemSize( gp ) );
+					genesStat.addAge    ( s, m_pCore->GetAge( gp ) );
+				}
 			}
 		}
 	);

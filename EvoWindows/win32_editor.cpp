@@ -41,7 +41,7 @@ void EditorWindow::Start
 
     SetTrackBarRange( IDM_EDIT_SIZE,      1,  50 );
     SetTrackBarRange( IDM_EDIT_INTENSITY, 0, 100 );
-    UpdateEditControls( );
+    updateEditControls( FALSE );
 }
 
 EditorWindow::~EditorWindow( )
@@ -50,6 +50,11 @@ EditorWindow::~EditorWindow( )
     m_pWorkThreadInterface = nullptr;
     m_pCore                = nullptr;
     m_pStatusBar           = nullptr;
+}
+
+void EditorWindow::UpdateEditControls( )
+{
+	PostMessage( WM_COMMAND, IDM_UPDATE_EDITOR_CONTROLS, 0 );
 }
 
 LRESULT EditorWindow::sendClick( int const item ) const
@@ -71,7 +76,7 @@ void EditorWindow::updateOperationButtons( tBrushMode const mode ) const
 	EnableWindow( GetDlgItem( IDM_EDIT_OPERATION_SUBTRACT ), bEnableOperationButtons );
 }
 
-void EditorWindow::UpdateEditControls( ) // Set state of all window widgets according to mode (edit/simu)
+void EditorWindow::updateEditControls( BOOL const bHistory ) // Set state of all window widgets according to mode (edit/simu)
 {
 	static unordered_map < tBrushMode, WORD > mapModeTable =
 	{
@@ -120,10 +125,11 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 
 	m_pDspOptWindow->UpdateDspOptionsControls( m_pCore->GetBrushMode() );
 
-	SetSimulationMode();
+	if ( ! bHistory )
+		SetSimulationMode( );
 }
 
-void EditorWindow::SetSimulationMode()  	// adjust window configuration according to simulation or edit mode
+void EditorWindow::SetSimulationMode( )  	// adjust window configuration according to simulation or edit mode
 {
 	bool bSimulationMode = m_pCore->GetSimulationMode( );
 
@@ -242,6 +248,10 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 				setBrushManipulator( wId );
                 break;
 
+			case IDM_UPDATE_EDITOR_CONTROLS:
+				updateEditControls( TRUE );
+				break;
+
             default:
 				assert( false );
                 break;
@@ -252,10 +262,6 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
     case WM_CLOSE:
         Show( FALSE );
         return TRUE;
-
-    case WM_DESTROY:
-        DestroyWindow( GetWindowHandle( ) );
-        break;
 
     default:
         break;

@@ -22,7 +22,7 @@ using namespace std;
 WorkThread::WorkThread( ):
 	m_pPerformanceWindow  ( nullptr ),
 	m_pEditorWindow       ( nullptr ),   
-	m_pEvent              ( nullptr ),   
+	m_pEventPOI           ( nullptr ),   
 	m_pObservers          ( nullptr ),   
 	m_pEvoHistGlue        ( nullptr ),   
 	m_pWorkThreadInterface( nullptr ),
@@ -43,12 +43,12 @@ void WorkThread::Start
 {
 	m_pPerformanceWindow   = pPerformanceWindow;
 	m_pEditorWindow        = pEditorWindow;
-	m_pEvent               = pEvent;
+	m_pEventPOI            = pEvent;
 	m_pObservers           = pObservers;
 	m_pEvoHistGlue         = pEvoHistorySys;
 	m_pWorkThreadInterface = pWorkThreadInterface;
 
-	StartThread( TRUE, L"WorkerThread" );  // start thread with loop
+	StartThread( L"WorkerThread" ); 
 }
 
 WorkThread::~WorkThread( )
@@ -56,7 +56,7 @@ WorkThread::~WorkThread( )
 	m_pWorkThreadInterface = nullptr;
 	m_pPerformanceWindow   = nullptr;
 	m_pEditorWindow        = nullptr;
-	m_pEvent               = nullptr;
+	m_pEventPOI            = nullptr;
 	m_pObservers           = nullptr;
 	m_pEvoHistGlue         = nullptr;
 }
@@ -77,8 +77,8 @@ void WorkThread::WorkMessage( MSG const msg )
 	}
 	else                                           // normal case
 	{                                              // we run in main thread
-		if ( m_pEvent != nullptr )
-			m_pEvent->Continue( );                 // trigger worker thread if waiting for an event
+		if ( m_pEventPOI != nullptr )
+			m_pEventPOI->Continue( );              // trigger worker thread if waiting on POI event
 		PostThreadMsg( msg );                      // post message to worker thread
 	}
 }
@@ -154,7 +154,7 @@ void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 
 	case THREAD_MSG_SET_SIMULATION_MODE:
 		if ( editorCommand( tEvoCmd::setSimulationMode, msg.wParam ) )
-			m_pEditorWindow->SetSimulationMode();
+			m_pEditorWindow->SetSimulationMode( );
 		break;
 
 	case THREAD_MSG_REFRESH:
@@ -166,6 +166,13 @@ void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 
 	if (m_pObservers != nullptr)
 		m_pObservers->Notify( );
+}
+
+void WorkThread::ThreadShutDownFunc()
+{  
+//	XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//	HWND m_hwndApp = GetAncestor( m_hwnd, GA_ROOTOWNER );
+//	::PostMessage( m_hwndApp, WM_COMMAND, wParam, lParam );	
 }
 
 // GenerationStep - perform one history step towards demanded generation
@@ -190,7 +197,7 @@ void WorkThread::GenerationStep( )
 		{
 			m_pEvoHistGlue->EvoApproachHistGen( m_genDemanded ); // Get a stored generation from history system
 			if (m_pEditorWindow != nullptr)              
-				m_pEditorWindow->UpdateEditControls( );          // make sure that editor GUI reflects new state
+				m_pEditorWindow->UpdateEditControls( );            // make sure that editor GUI reflects new state
 		}
 
 		WorkMessage( THREAD_MSG_REFRESH, 0, 0 );                   // refresh all views
@@ -221,13 +228,6 @@ void WorkThread::DoProcessScript( wstring * const pwstr )
 	Script::ProcessScript( * pwstr );
 	--m_iScriptLevel;
 	delete pwstr;
-}
-
-void WorkThread::TerminateThread( HWND const hwndCtl )
-{
-	PostThreadMsg( THREAD_MSG_STOP );  // stop running computation and script processing
-	Terminate( );
-	DestroyWindow( hwndCtl );                       // trigger termination of application
 }
 
 BOOL WorkThread::IsValidThreadMessage( UINT msg )

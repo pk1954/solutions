@@ -14,14 +14,17 @@ using namespace std;
 
 TextWindow::TextWindow( ) :  
     BaseWindow( ),
+	m_pTextWindowThread( nullptr ),
 	m_hDC_Memory( 0 ),
 	m_hBitmap( 0 )
 { }
 
-TextWindow::~TextWindow()
+void TextWindow::TerminateTextWindow()
 {
+	m_pTextWindowThread->Terminate( );
 	DeleteObject( m_hBitmap );
 	DeleteDC( m_hDC_Memory );
+	delete m_pTextWindowThread;
 }
 
 void TextWindow::StartTextWindow

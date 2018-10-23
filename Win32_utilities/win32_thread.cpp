@@ -5,10 +5,12 @@
 #include <process.h>
 #include "win32_thread.h"
 
-void Util::Thread::StartThread(  BOOL const bLoop, wstring const & strName )
+void Util::Thread::StartThread
+(  
+	wstring const & strName // for debugging only
+)
 {
 	m_strThreadName = strName;
-	m_bLoop = bLoop;
 	m_handle = (HANDLE)_beginthreadex( 0, 0, Util::ThreadProc, this, 0, & m_threadId );
 	assert( m_handle != nullptr );
 	m_eventThreadStarter.Wait();
@@ -16,7 +18,8 @@ void Util::Thread::StartThread(  BOOL const bLoop, wstring const & strName )
 
 void Util::Thread::Terminate( )   // to be called from different thread
 {
-	PostThreadMsg( WM_QUIT );                   // stop message pump of thread
+	PostThreadMessage( m_threadId, WM_QUIT, 0, 0 );
+//	PostQuitMessage( 0 );  // this is recommended by MS documentation, but doesn't work
 	WaitForSingleObject( m_handle, INFINITE );  // wait until thread has stopped
 	CloseHandle( m_handle );
 }
@@ -25,20 +28,21 @@ static unsigned int __stdcall Util::ThreadProc( void * data )
 {
     Util::Thread * const pThread = static_cast<Util::Thread *>( data );
     MSG  msg;
+	INT  iRes;
+
     (void)PeekMessage( &msg, nullptr, WM_USER, WM_USER, PM_NOREMOVE );  // cause creation of message queue
 
-	pThread->Continue();
+	pThread->m_eventThreadStarter.Continue();   // trigger waiting thread to continue
 
 	pThread->ThreadStartupFunc( );
 
-	if ( pThread->m_bLoop )
+	while ( iRes = GetMessage( &msg, nullptr, 0, 0 ) )  // loop ends at WM_QUIT 
 	{
-	    while ( BOOL bRet = GetMessage( &msg, nullptr, 0, 0 ) != 0 )   
-		{
-			assert( bRet != -1 );
-			pThread->ThreadMsgDispatcher( msg );
-		} 
-	}
+		assert( iRes > 0 );
+		pThread->ThreadMsgDispatcher( msg );
+	} 
 
-	return 0;
+	pThread->ThreadShutDownFunc( );
+
+	return iRes;
 }

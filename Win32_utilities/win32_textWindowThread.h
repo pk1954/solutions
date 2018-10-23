@@ -14,19 +14,26 @@ class TextWindowThread: public Util::Thread
 public:
 	TextWindowThread
 	(
-		HDC hDC_Memory,
-		int iWidth,
-		int iHeight,
-		TextWindow * pTextWindow,
+		HDC             hDC_Memory,
+		int             iWidth,
+		int             iHeight,
+		TextWindow    * pTextWindow,
 		wstring const & strName,
-		BOOL bAsync
+		BOOL            bAsync
 	) :
 		m_pTextWindow( pTextWindow ),
 		m_bAsync( bAsync)
 	{ 
 	    m_pTextBuffer = new TextBuffer( hDC_Memory, iWidth, iHeight );
 		if ( bAsync )
-			StartThread( TRUE, strName );  // start thread with loop
+			StartThread( strName ); 
+	}
+
+	~TextWindowThread()
+	{
+		delete m_pTextBuffer;
+		m_pTextWindow = nullptr;
+		m_pTextBuffer = nullptr;
 	}
 
 	void Trigger( )
@@ -42,8 +49,6 @@ public:
 			ThreadMsgDispatcher( MSG{ nullptr, anyMessageWillDo, 0, 0 } );
 		}
 	}
-
-	virtual void ThreadStartupFunc( ) { }
 
 	virtual void ThreadMsgDispatcher( MSG const msg )
 	{

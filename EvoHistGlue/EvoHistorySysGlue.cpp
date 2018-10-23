@@ -106,7 +106,7 @@ bool EvoHistorySysGlue::EvoCreateEditorCommand( GenerationCmd cmd )
 { 
 	if ( 
 		  m_pHistorySystem->IsInHistoryMode( ) &&  // If in history mode,
-          m_bAskHistoryCut &&                      // and asking user is requested
+          m_bAskHistoryCut &&                      // and asking user is turned on
 	      ! askHistoryCut( m_pHistorySystem )      // ask user, if all future generations should be erased
 	   )
 		return false;  // user answered no, do not erase

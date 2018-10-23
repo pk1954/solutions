@@ -31,7 +31,7 @@ public:
 
 	virtual void SetEvent( EventInterface * const pEvent ) 
 	{ 
-		m_pEvent = pEvent; 
+		m_pEventPOI = pEvent; 
 	}
 
 	virtual void DumpGridPointList( ) const;
@@ -115,7 +115,7 @@ public:
 
 private:
     ObserverInterface * m_pObservers;    // GUI call back for display of current model 
-	EventInterface    * m_pEvent;
+	EventInterface    * m_pEventPOI;
 	Grid                m_grid;	
     PlannedActivity     m_plan;
     IndId               m_idPOI;

@@ -16,7 +16,9 @@ class TextBuffer
 {
 public:
     TextBuffer( HDC, int const, int const );
-	virtual ~TextBuffer( ) {}
+	virtual ~TextBuffer( ) 
+	{
+	}
 
 	void StartPainting( );
 

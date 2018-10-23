@@ -40,7 +40,7 @@ public:
     HWND          const SetCapture( )                 const { return ::SetCapture     ( m_hwnd ); }
     HWND          const SetFocus( )                   const { return ::SetFocus       ( m_hwnd ); }
     HWND          const GetDlgItem( int const iItem ) const { return ::GetDlgItem     ( m_hwnd, iItem ); }
-    BOOL          const IsCaptured( )                 const { return GetCapture( ) == m_hwnd; }
+    BOOL          const IsCaptured( )                 const { return ::GetCapture( ) == m_hwnd; }
 
 	void SetDisplayRate( DWORD const dwRate ) { m_dwDisplayRate = dwRate; }
 	
@@ -82,13 +82,13 @@ public:
 
     void Move( int const xPos, int const yPos, int const width, int const height, BOOL const bRedraw )
     {
-        (void)MoveWindow( m_hwnd, xPos, yPos, width, height, bRedraw );
+        (void)::MoveWindow( m_hwnd, xPos, yPos, width, height, bRedraw );
     }
 
     void Invalidate( BOOL const bRedraw ) 
     { 
 		if ( m_hwnd != nullptr )
-			(void)InvalidateRect( m_hwnd, nullptr, bRedraw );
+			(void)::InvalidateRect( m_hwnd, nullptr, bRedraw );
     }
 
     void FillBackground( HDC const hDC, COLORREF const col ) const

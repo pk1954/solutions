@@ -28,7 +28,7 @@ void EvoModelDataGlue::CopyFrom( ModelData const * const src )
 //	stopwatch.Stop( L"Copy model" );
 }
 
-	void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
+void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 {
 	tEvoCmd const evoCmd = static_cast<tEvoCmd>( cmd.GetCommand() );
 	Int24   const param  = cmd.GetParam( );

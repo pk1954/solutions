@@ -90,8 +90,10 @@ static LRESULT CALLBACK BaseWndProc
     {
         BaseWindow * pBaseWin = (BaseWindow *)GetWindowLongPtr( hwnd, GWLP_USERDATA );
 
-        return ( RootWinIsReady( pBaseWin ) )
-            ? pBaseWin->UserProc( message, wParam, lParam )         // normal case
-            : DefWindowProc( hwnd, message, wParam, lParam );
+        BOOL bReady = RootWinIsReady( pBaseWin );
+		if ( bReady )
+			return pBaseWin->UserProc( message, wParam, lParam );         // normal case
+		else
+            return DefWindowProc( hwnd, message, wParam, lParam );
     }
 }

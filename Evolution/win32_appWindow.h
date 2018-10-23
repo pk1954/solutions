@@ -46,6 +46,7 @@ private:
     AppWindow & operator= ( AppWindow const & );  // noncopyable class 
 
 	void adjustChildWindows( );
+	void shutDown( );
 
 	Util::Event           m_event;
     ViewCollection        m_gridObservers;

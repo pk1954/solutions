@@ -170,13 +170,14 @@ void AppWindow::Start(  )
 
 	stopwatch.Start();
 	
-    m_pStatusBar->SetDisplayRate     ( 300 );
-    m_pEvoHistWindow->SetDisplayRate ( 200 ); 
-    m_pCrsrWindow->SetDisplayRate    ( 100 );
-    m_pStatistics->SetDisplayRate    ( 300 );
-    m_pPerfWindow->SetDisplayRate    ( 100 );
-    m_pMiniGridWindow->SetDisplayRate( 300 );
-    m_pMainGridWindow->SetDisplayRate( 100 );
+    m_pStatusBar->SetDisplayRate     ( 0 ); //300 );
+    m_pEvoHistWindow->SetDisplayRate ( 0 ); //200 ); 
+    m_pCrsrWindow->SetDisplayRate    ( 0 ); //100 );
+    m_pStatistics->SetDisplayRate    ( 0 ); //100 );
+    m_pPerfWindow->SetDisplayRate    ( 0 ); //100 );
+	m_pHistInfoWindow->SetDisplayRate( 0 ); //300 );
+    m_pMiniGridWindow->SetDisplayRate( 0 ); //300 );
+    m_pMainGridWindow->SetDisplayRate( 0 ); //100 );
 	
     m_gridObservers.AttachObserver( m_pStatusBar      );
     m_gridObservers.AttachObserver( m_pEvoHistWindow  ); 
@@ -225,6 +226,14 @@ void AppWindow::Start(  )
 //	Script::ProcessScript( L"std_script.in" );
 }
 
+void AppWindow::shutDown()
+{
+	m_pStatistics->TerminateTextWindow();
+    m_pPerfWindow->TerminateTextWindow();
+    m_pCrsrWindow->TerminateTextWindow();
+	m_pHistInfoWindow->TerminateTextWindow();
+}
+
 AppWindow::~AppWindow( )
 {
     try
@@ -235,16 +244,17 @@ AppWindow::~AppWindow( )
 			delete m_pEvoHistGlue;
         }
 
+		delete m_pWorkThreadInterface;
+		delete m_pStatistics;
+		delete m_pPerfWindow;
+		delete m_pCrsrWindow; 
+		delete m_pEditorWindow;
+		delete m_pDspOptWindow;
+		delete m_pStatusBar;
+		delete m_pHistInfoWindow;
+		delete m_pMiniGridWindow;
+		delete m_pMainGridWindow;
 		delete m_pEvolutionCore;
-        delete m_pWorkThreadInterface;
-        delete m_pMiniGridWindow;
-        delete m_pMainGridWindow;
-        delete m_pStatusBar;
-        delete m_pStatistics;
-        delete m_pPerfWindow;
-        delete m_pCrsrWindow; 
-        delete m_pEditorWindow;
-        delete m_pDspOptWindow;
         delete m_pFocusPoint;
         delete m_pWinManager;
         delete m_pScriptHook;
@@ -293,8 +303,11 @@ LRESULT AppWindow::UserProc
 
     case WM_CLOSE:
         m_pWinManager->StoreWindowConfiguration( );
-        m_pWorkThreadInterface->PostEndThread( GetWindowHandle( ) );
-        return TRUE;  // Do not call DefWindowProc. Worker thread will call DestroyWindow. 
+		m_pWorkThreadInterface->PostStopComputation( );
+        m_pWorkThreadInterface->TerminateThread( );
+		shutDown();
+		DestroyWindow( GetWindowHandle( ) );        
+        return TRUE;  
 
     case WM_DESTROY:
         PostQuitMessage( 0 );

@@ -25,8 +25,8 @@ public:
 		StatusBar           * const
 	);
 
-    void UpdateEditControls( );
-	void SetSimulationMode( );
+	void UpdateEditControls( );
+	void SetSimulationMode ( );
 
 private:
     virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
@@ -36,6 +36,7 @@ private:
 	void    setBrushShape      ( WORD const ) const;
 	void    setBrushManipulator( WORD const ) const;
 
+    void updateEditControls( BOOL const );
 	void updateOperationButtons( tBrushMode const ) const;
 
 	EvolutionCore       * m_pCore;

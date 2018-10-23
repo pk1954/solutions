@@ -71,6 +71,8 @@
 #define IDM_FOOD_STOCK                          (IDM_EDIT_MODE +  9)
 #define IDM_FERTILIZER                          (IDM_EDIT_MODE + 10)
 
+#define IDM_UPDATE_EDITOR_CONTROLS              (IDM_EDIT_MODE + 20)
+
 #define IDM_EDIT_PROPERTY_BASE                  700
 #define IDM_EDIT_SIZE                           (IDM_EDIT_PROPERTY_BASE + 1)
 #define IDM_EDIT_INTENSITY                      (IDM_EDIT_PROPERTY_BASE + 2)

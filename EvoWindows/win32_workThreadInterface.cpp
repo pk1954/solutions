@@ -238,8 +238,7 @@ void WorkThreadInterface::PostProcessScript( wstring const & wstrPath )
 
 // no trace output
 
-void WorkThreadInterface::PostEndThread( HWND const hwndCtl )
+void WorkThreadInterface::TerminateThread( )
 {
-	m_pWorkThread->TerminateThread( hwndCtl );
-	DestroyWindow( hwndCtl);           // TODO: shift to WorkerThread after termination of message pump
+	m_pWorkThread->Terminate( );    // wait until thread has stopped
 }
