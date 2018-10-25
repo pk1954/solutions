@@ -57,8 +57,8 @@ public:
 	bool IsEvenCol( ) const { return x % 2 == 0; }
 	bool IsOddCol ( ) const { return x % 2 != 0; }
 
-    static GRID_COORD const GRID_WIDTH  = 200;
-    static GRID_COORD const GRID_HEIGHT = 100;
+    static GRID_COORD const GRID_WIDTH  =  200;
+    static GRID_COORD const GRID_HEIGHT =  100;
     static int        const GRID_AREA   = GRID_WIDTH * GRID_HEIGHT;
 
     static GridPoint const GRID_ORIGIN;

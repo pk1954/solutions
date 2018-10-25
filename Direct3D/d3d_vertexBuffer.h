@@ -44,7 +44,7 @@ public:
 		return static_cast<ULONG>( m_vertexVector.size() ); 
 	}
 
-    void LoadVertices( LPDIRECT3DVERTEXBUFFER9 const, IDirect3DDevice9 * const ) const;   // lock m_d3d_vertexBuffer and load the vertices into it
+    HRESULT LoadVertices( LPDIRECT3DVERTEXBUFFER9 const, IDirect3DDevice9 * const ) const;   // lock m_d3d_vertexBuffer and load the vertices into it
 
 private:
     vector<Vertex> m_vertexVector;

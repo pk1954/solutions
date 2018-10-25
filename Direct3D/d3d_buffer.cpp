@@ -286,19 +286,21 @@ void D3dBuffer::RenderIndividuals( )
 
 void D3dBuffer::renderTriangleStrip( ) const
 {
+	HRESULT hres;
+
     assert( m_pVertBufStripMode->GetNrOfVertices() > 0 );
     assert( m_d3d_device != nullptr );
 
     D3dIndexBuffer const * const iBuf = m_d3d->GetBgIndexBufferStripMode();
     
-    m_pVertBufStripMode->LoadVertices( m_d3d_vertexBuffer, m_d3d_device );
+    hres = m_pVertBufStripMode->LoadVertices( m_d3d_vertexBuffer, m_d3d_device );
 
 	iBuf->SetIndices( m_d3d_device );
     
 	ULONG ulNrOfVertices   = m_pVertBufStripMode->GetNrOfVertices( );
 	UINT  uiNrOfPrimitives = ulNrOfVertices - 2;
 	
-	HRESULT const hres = m_d3d_device->DrawIndexedPrimitive
+	hres = m_d3d_device->DrawIndexedPrimitive
 	( 
 		D3DPT_TRIANGLESTRIP, 
 		0, 
@@ -314,13 +316,15 @@ void D3dBuffer::renderTriangleStrip( ) const
 void D3dBuffer::renderPrimitives( D3dIndexBuffer const * const iBuf )
 {
 	ULONG const ulNrOfPrimitives = m_ulTrianglesPerPrimitive * m_pVertBufPrimitives->GetNrOfVertices() / m_ulVerticesPerPrimitive;
+	HRESULT hres;
 	
 	if ( ulNrOfPrimitives > 0 )
     {
-        m_pVertBufPrimitives->LoadVertices( m_d3d_vertexBuffer, m_d3d_device );
+        hres = m_pVertBufPrimitives->LoadVertices( m_d3d_vertexBuffer, m_d3d_device );
+        assert( hres == D3D_OK ); 
 
         iBuf->SetIndices( m_d3d_device );
-        HRESULT const hres = m_d3d_device->DrawIndexedPrimitive
+        hres = m_d3d_device->DrawIndexedPrimitive
 		( 
 			D3DPT_TRIANGLELIST, 
 			0, 
@@ -339,7 +343,7 @@ void D3dBuffer::renderPrimitives( D3dIndexBuffer const * const iBuf )
 void D3dBuffer::EndFrame( HWND hwnd )
 {
     HRESULT hres;
-    hres = m_d3d_device->EndScene();                                          assert(hres == D3D_OK);
+    hres = m_d3d_device->EndScene();                                        assert(hres == D3D_OK);
     hres = m_d3d_swapChain->Present( nullptr, nullptr, hwnd, nullptr, 0 );  assert(hres == D3D_OK);
     //lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
     m_id3dx_font->Release();      
