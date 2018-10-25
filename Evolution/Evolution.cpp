@@ -34,9 +34,11 @@ int APIENTRY _tWinMain
 
 //	SetThreadAffinityMask( GetCurrentThread( ), 0x0001 );
 
-    INITCOMMONCONTROLSEX icex; // load common control's DLL 
-    icex.dwSize = sizeof( INITCOMMONCONTROLSEX );
-    icex.dwICC  = ICC_STANDARD_CLASSES | ICC_BAR_CLASSES | ICC_TAB_CLASSES;
+    INITCOMMONCONTROLSEX icex // load common control's DLL 
+	{
+        sizeof( INITCOMMONCONTROLSEX ),
+        ICC_STANDARD_CLASSES | ICC_BAR_CLASSES | ICC_TAB_CLASSES
+	};
     InitCommonControlsEx(&icex); 
     
  	Stopwatch stopwatch;
