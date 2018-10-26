@@ -1,0 +1,18 @@
+
+#include <windows.h>
+#include <commctrl.h>
+#include <richedit.h>
+#include "win32_util_resource.h"
+
+//
+// Dialog resources
+//
+
+IDD_REFRESH_RATE_DIALOG DIALOGEX 0, 0, 170, 62
+STYLE DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_POPUP | WS_SYSMENU
+CAPTION "Refresh Rate"
+FONT 8, "MS Shell Dlg", 0, 0, 1
+{
+    EDITTEXT      IDD_REFRESH_RATE_EDIT_CTL,  42, 14, 40, 10, ES_NUMBER
+    DEFPUSHBUTTON "OK",                IDOK, 113, 41, 50, 14, WS_GROUP, WS_EX_LEFT
+}

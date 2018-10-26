@@ -2,7 +2,10 @@
 //
 
 #include "stdafx.h"
+#include "win32_refreshRateDialog.h"
 #include "win32_baseWindow.h"
+
+#define IDM_REFRESH_RATE_DIALOG  10
 
 //lint -e1924                C-style cast
 
@@ -69,6 +72,26 @@ HWND BaseWindow::StartBaseWindow
     return hwnd;
 }
 
+void BaseWindow::contextMenu( LPARAM lParam )
+{
+    HWND  const hwnd       = GetWindowHandle( );
+    HMENU const hPopupMenu = CreatePopupMenu();
+	POINT pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
+    (void)MapWindowPoints( hwnd, nullptr, &pntPos, 1 );
+
+    (void)InsertMenu( hPopupMenu, 0, MF_STRING, IDM_REFRESH_RATE_DIALOG, L"Refresh Rate" );
+	AddContextMenuEntries( hPopupMenu );
+
+    (void)SetForegroundWindow( hwnd );
+
+    UINT const uiID = (UINT)TrackPopupMenu( hPopupMenu, TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, pntPos.x, pntPos.y, 0, hwnd, nullptr ); 	// Result is send as WM_COMMAND to this window
+
+	if ( uiID != 0 )
+	    SendMessage( WM_COMMAND, uiID, lParam );
+
+	(void)DestroyMenu( hPopupMenu );
+}
+
 static LRESULT CALLBACK BaseWndProc
 ( 
     HWND   const hwnd,
@@ -77,23 +100,52 @@ static LRESULT CALLBACK BaseWndProc
     LPARAM const lParam 
 )
 {
-    if ( message == WM_NCCREATE )    // retrieve Window instance from window creation data and associate    
+	BaseWindow * pBaseWin = (BaseWindow *)GetWindowLongPtr( hwnd, GWLP_USERDATA );
+
+    switch (message)
     {
+
+	case WM_NCCREATE:    // retrieve Window instance from window creation data and associate    
         (void)SetWindowLongPtr( hwnd, GWLP_USERDATA, (LONG_PTR)( (LPCREATESTRUCT)lParam )->lpCreateParams );
         return TRUE;
-    }
-    else if ( message == WM_ERASEBKGND )
-    {
-        return TRUE;			// Do not erase background
-    }
-    else
-    {
-        BaseWindow * pBaseWin = (BaseWindow *)GetWindowLongPtr( hwnd, GWLP_USERDATA );
 
-        BOOL bReady = RootWinIsReady( pBaseWin );
+	case WM_ERASEBKGND:
+        return TRUE;			// Do not erase background
+
+    case WM_RBUTTONDOWN:
+        pBaseWin->SetCapture( );
+        pBaseWin->SetFocus( );
+        return FALSE;
+
+    case WM_RBUTTONUP:
+        (void)ReleaseCapture( );
+        pBaseWin->contextMenu( lParam );
+        return FALSE;
+
+    case WM_COMMAND:
+        {
+            UINT uiCmdId = LOWORD( wParam );
+            switch ( uiCmdId )
+            {
+
+	        case IDM_REFRESH_RATE_DIALOG:
+				pBaseWin->SetRefreshRate( RefreshRateDialog::Show( pBaseWin->GetWindowHandle( ), pBaseWin->GetRefreshRate( ) ) );
+		        return FALSE;
+
+            default:
+ 				break;
+           }
+        }
+		break;
+
+	default:
+ 			break;
+	}
+	{
+		BOOL bReady = RootWinIsReady( pBaseWin );
 		if ( bReady )
 			return pBaseWin->UserProc( message, wParam, lParam );         // normal case
 		else
-            return DefWindowProc( hwnd, message, wParam, lParam );
-    }
+			return DefWindowProc( hwnd, message, wParam, lParam );
+	}
 }

@@ -12,7 +12,7 @@ BOOL RootWinIsReady( RootWindow const * pRootWin )
 RootWindow::RootWindow( ) : 
 	m_hwnd( nullptr ),
 	m_hwndApp( nullptr ),
-	m_dwDisplayRate( 0 ),
+	m_dwRefreshRate( 0 ),
     m_hTimer( nullptr ),
     m_bTimerActive( FALSE ),
     m_bDirty( TRUE )
@@ -33,7 +33,7 @@ void RootWindow::SetWindowHandle( HWND const hwnd )
 
 void RootWindow::Notify( )
 {
-    if ( m_dwDisplayRate == 0 )
+    if ( m_dwRefreshRate == 0 )
         invalidate( );
     else
     {
@@ -42,7 +42,7 @@ void RootWindow::Notify( )
         {
             m_bTimerActive = TRUE;
             invalidate( );
-            startTimer( m_dwDisplayRate );
+            startTimer( m_dwRefreshRate );
         }
     }
 }

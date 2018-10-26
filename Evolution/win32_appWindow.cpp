@@ -170,14 +170,14 @@ void AppWindow::Start(  )
 
 	stopwatch.Start();
 	
-    m_pStatusBar->SetDisplayRate     ( 300 );
-    m_pEvoHistWindow->SetDisplayRate ( 200 ); 
-    m_pCrsrWindow->SetDisplayRate    ( 100 );
-    m_pStatistics->SetDisplayRate    ( 100 );
-    m_pPerfWindow->SetDisplayRate    ( 100 );
-	m_pHistInfoWindow->SetDisplayRate( 300 );
-    m_pMiniGridWindow->SetDisplayRate( 300 );
-    m_pMainGridWindow->SetDisplayRate( 100 );
+    m_pStatusBar->SetRefreshRate     ( 300 );
+    m_pEvoHistWindow->SetRefreshRate ( 200 ); 
+    m_pCrsrWindow->SetRefreshRate    ( 100 );
+    m_pStatistics->SetRefreshRate    ( 100 );
+    m_pPerfWindow->SetRefreshRate    ( 100 );
+	m_pHistInfoWindow->SetRefreshRate( 300 );
+    m_pMiniGridWindow->SetRefreshRate( 300 );
+    m_pMainGridWindow->SetRefreshRate( 100 );
 	
     m_gridObservers.AttachObserver( m_pStatusBar      );
     m_gridObservers.AttachObserver( m_pEvoHistWindow  ); 

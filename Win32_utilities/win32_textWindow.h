@@ -9,6 +9,7 @@
 using namespace std;
 
 class TextWindowThread;
+class RefreshTimer;
 
 class TextWindow : public BaseWindow
 {
@@ -25,6 +26,7 @@ private:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) override;
 	virtual void Trigger( );
 
+	RefreshTimer     * m_pRefreshTimer;
 	TextWindowThread * m_pTextWindowThread;
     HDC                m_hDC_Memory;
 	HBITMAP            m_hBitmap;

@@ -107,13 +107,9 @@ BOOL GridWindow::inObservedClientRect( LPARAM const lParam )
     return Util::PixelPointInClientRect( hWndObserved, ptCrsrCheck );  // Is cursor position in observed client rect?
 }
 
-void GridWindow::contextMenu( LPARAM lParam )
+void GridWindow::AddContextMenuEntries( HMENU hPopupMenu )
 {
-    HWND  const hwnd       = GetWindowHandle( );
-    HMENU const hPopupMenu = CreatePopupMenu();
-    UINT  const STD_FLAGS  = MF_BYPOSITION | MF_STRING;
-	POINT pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
-    (void)MapWindowPoints( hwnd, nullptr, &pntPos, 1 );
+    UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 
     if ( m_pCore->SelectionIsEmpty() )
     {
@@ -132,14 +128,6 @@ void GridWindow::contextMenu( LPARAM lParam )
 		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_GOTO_ORIGIN, L"Goto Origin" );
 		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI, L"POI" );
     }
-    (void)SetForegroundWindow( hwnd );
-
-    UINT const uiID = (UINT)TrackPopupMenu( hPopupMenu, TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, pntPos.x, pntPos.y, 0, hwnd, nullptr ); 	// Result is send as WM_COMMAND to this window
-
-	if ( uiID != 0 )
-	    SendMessage( WM_COMMAND, uiID, lParam );
-
-	(void)DestroyMenu( hPopupMenu );
 }
 
 void GridWindow::moveGrid( PixelPoint const & ptDiff )
@@ -290,16 +278,6 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
     case WM_MOUSEMOVE:
         onMouseMove( lParam, wParam );
-        return FALSE;
-
-    case WM_RBUTTONDOWN:
-        SetCapture(  );
-        SetFocus( );
-        return FALSE;
-
-    case WM_RBUTTONUP:
-        (void)ReleaseCapture( );
-        contextMenu( lParam );
         return FALSE;
 
     case WM_PAINT:

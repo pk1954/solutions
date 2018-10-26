@@ -76,13 +76,14 @@ private:
     DrawFrame           * m_pDrawFrame;
     PixelPoint 	          m_ptLast;	 	   // Last cursor position during selection 
     BOOL                  m_bMoveAllowed;  // TRUE: move with mouse is possible
+    HMENU                 m_hPopupMenu;
 
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+	virtual void    AddContextMenuEntries( HMENU );
 
 	void mouseWheelAction( int );
     BOOL inObservedClientRect( LPARAM );
     void moveGrid( PixelPoint const & );
     void onMouseMove( LPARAM, WPARAM );
-    void contextMenu( LPARAM );
     void doPaint( );
 };

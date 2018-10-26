@@ -14,10 +14,14 @@ public:
 
     HWND StartBaseWindow( HWND const, int const, int const, int const, int const, UINT const, LPCTSTR const, DWORD const );
 
+	virtual void AddContextMenuEntries( HMENU ) {}
+
 private:
     LPCTSTR m_szClass;	
 
-    virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) = 0;
+	void contextMenu( LPARAM );
+	
+	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) = 0;
 	
 friend static LRESULT CALLBACK BaseWndProc( HWND const, UINT const, WPARAM const, LPARAM const );
 };

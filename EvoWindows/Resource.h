@@ -6,8 +6,12 @@
 #define IDC_STATIC (-1)
 #endif
 
-#define IDS_APP_TITLE                           101
-#define IDD_ABOUTBOX                            110
+// identifiers below 100 are reserved for win32_utilities
+
+// identifiers for application start at 100
+
+#define IDS_APP_TITLE                           100
+#define IDD_ABOUTBOX                            102
 #define IDI_EVOLUTION                           111
 #define IDI_SMALL                               112
 
@@ -29,7 +33,6 @@
 #define IDC_EVOLUTION_MAIN                      202
 #define IDD_EDITOR                              207
 #define IDD_DISPLAY_OPTIONS                     208
-#define IDM_DSP_ENV_NOTHING                     300
 
 #define IDM_WINDOWS_BASE                        400
 #define IDM_APPL_WINDOW                         (IDM_WINDOWS_BASE +  1)
@@ -70,6 +73,7 @@
 #define IDM_FERTILITY                           (IDM_EDIT_MODE +  8)
 #define IDM_FOOD_STOCK                          (IDM_EDIT_MODE +  9)
 #define IDM_FERTILIZER                          (IDM_EDIT_MODE + 10)
+#define IDM_DSP_ENV_NOTHING                     (IDM_EDIT_MODE + 11)
 
 #define IDM_UPDATE_EDITOR_CONTROLS              (IDM_EDIT_MODE + 20)
 
