@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <locale>
 #include <iomanip>
+#include "util.h"
 #include "win32_util.h"
 #include "win32_textBuffer.h"
 
@@ -100,10 +101,7 @@ void TextBuffer::printSpan( unsigned int min, unsigned int max )
     printBuffer();
 }
 
-void TextBuffer::printAsDecValue( DWORD dwValue )
+void TextBuffer::printAsDecFraction( DWORD dwValue )
 {
-    DWORD const intPlaces = dwValue / 1000;
-    DWORD const decPlaces = dwValue - 1000 * intPlaces;
-    m_wBuffer << intPlaces << L"." << decPlaces / 100;
-    printBuffer();
+	printString( DecFraction( dwValue ) );
 }

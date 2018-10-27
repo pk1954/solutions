@@ -4,9 +4,11 @@
 #pragma once
 
 #include "stdafx.h"
+#include <sstream> 
 #include <iostream>
 #include <iomanip>
 #include "assert.h"
+#include "util.h"
 #include "windows.h"
 #include "win32_stopwatch.h"
 
@@ -23,12 +25,11 @@ void Stopwatch::Stop( wstring const wstr )
 	assert( m_iLevel > 0 );  // no Stop without Start
 
 	m_hrtimer.Stop( );
-	DWORD dwMicroseconds = m_hrtimer.Get( );
-	DWORD dwMilliseconds = dwMicroseconds / 1000;
-	DWORD dwFraction     = dwMicroseconds - dwMilliseconds * 1000;
 	--m_iLevel;
 	for ( int i = 0; i < m_iLevel; ++i )
 		wcout << L"      ";
 	wcout << setw(30) << left << wstr;
-	wcout << setw(6) << right << dwMilliseconds << L"." << dwFraction << L" ms" << endl;
+	wcout << setw(6) << right;
+	wcout << DecFraction( m_hrtimer.Get( ) );
+	wcout << L" ms" << endl;
 }

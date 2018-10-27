@@ -39,15 +39,15 @@ public:
         printString( data );
     }
 
-    void printString    ( wstring );
-    void printNumber    ( int );
-    void printNumber    ( unsigned int );
-    void printNumber    ( long long );
-    void printPercentage( unsigned int );
-    void printPercentage( unsigned int, unsigned int );
-    void printSpan      ( unsigned int, unsigned int );
-    void printAsDecValue( DWORD );
-    void printFloat     ( float );
+    void printString       ( wstring );
+    void printNumber       ( int );
+    void printNumber       ( unsigned int );
+    void printNumber       ( long long );
+    void printPercentage   ( unsigned int );
+    void printPercentage   ( unsigned int, unsigned int );
+    void printSpan         ( unsigned int, unsigned int );
+    void printAsDecFraction( DWORD );
+    void printFloat        ( float );
 
 private:
 	void printBuffer( );

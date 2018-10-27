@@ -46,10 +46,10 @@ void PerformanceWindow::printLine
 	wchar_t const * const pwch2 
 )
 {
-    textBuf.printString    ( pwch1 );
-    textBuf.printAsDecValue( dwValue );
-    textBuf.printString    ( pwch2 );
-    textBuf.nextLine       ( );
+    textBuf.printString       ( pwch1 );
+    textBuf.printAsDecFraction( dwValue );
+    textBuf.printString       ( pwch2 );
+    textBuf.nextLine          ( );
 }
 
 void PerformanceWindow::DoPaint( TextBuffer & textBuf )

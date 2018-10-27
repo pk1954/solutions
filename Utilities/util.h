@@ -55,3 +55,5 @@ unsigned int CastToUnsignedInt(T const value )
 	ASSERT_UINT( value );
 	return static_cast<unsigned int>( value );
 }
+
+std::wstring DecFraction( unsigned long );
