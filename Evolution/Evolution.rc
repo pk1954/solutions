@@ -7,6 +7,7 @@
 #include <richedit.h>
 #include "resource.h"
 #include "version.h"
+#include "win32_utilities.rc"
 
 //
 // Menu resources
@@ -59,8 +60,6 @@ IDC_EVOLUTION_MAIN MENU
     }
 }
 
-
-
 //
 // Dialog resources
 //
@@ -75,15 +74,6 @@ FONT 8, "MS Shell Dlg", 0, 0, 1
     LTEXT           "Copyright (C) 2018", IDC_STATIC, 42, 26, 114,  8, SS_LEFT, WS_EX_LEFT
     DEFPUSHBUTTON   "OK",                 IDOK,      113, 41,  50, 14, WS_GROUP, WS_EX_LEFT
 }
-
-//IDD_REFRESH_RATE_DIALOG DIALOGEX 0, 0, 170, 62
-//STYLE DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_POPUP | WS_SYSMENU
-//CAPTION "Refresh Rate"
-//FONT 8, "MS Shell Dlg", 0, 0, 1
-//{
-//    EDITTEXT      IDD_REFRESH_RATE_EDIT_CTL,  42, 14, 40, 10, ES_NUMBER
-//    DEFPUSHBUTTON "OK",                IDOK, 113, 41, 50, 14, WS_GROUP, WS_EX_LEFT
-//}
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 IDD_DISPLAY_OPTIONS DIALOG 0, 0, 110, 111
@@ -145,8 +135,6 @@ STRINGTABLE
     IDS_APP_TITLE                 "Evolution"
 }
 
-
-
 //
 // Accelerator resources
 //
@@ -175,14 +163,11 @@ IDC_EVOLUTION_MAIN ACCELERATORS
     VK_ESCAPE,      IDM_ESCAPE,       VIRTKEY
 }
 
-
-
 //
 // Icon resources
 //
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
 IDI_EVOLUTION      ICON           "Evolution.ico"
-
 
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
 IDI_SMALL          ICON           "small.ico"

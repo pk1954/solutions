@@ -49,7 +49,7 @@ static INT_PTR CALLBACK dialogProc
 				}
 				else
 				{
-					MessageBeep(MB_ICONWARNING);
+					MessageBeep( MB_ICONWARNING );
 				}
 			}
 
