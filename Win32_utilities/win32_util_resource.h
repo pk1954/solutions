@@ -5,4 +5,6 @@
 #define IDD_REFRESH_RATE_DIALOG   10
 #define IDD_REFRESH_RATE_EDIT_CTL 11
 
+#define IDM_HIDE_WINDOW           50
+
 // application identifiers start at 100

@@ -203,7 +203,7 @@ void StatisticsWindow::Start
 ) 
 {
     m_pCore = pCore;
-    StartTextWindow( hwndParent, 200, 200, 400, 540, L"StatisticsWindow", 100, TRUE );
+    StartTextWindow( hwndParent, 200, 200, 400, 545, L"StatisticsWindow", 100, TRUE );
 }
 
 StatisticsWindow::~StatisticsWindow( )

@@ -6,6 +6,7 @@
 #include <iomanip>
 #include "win32_util.h"
 #include "win32_thread.h"
+#include "win32_util_resource.h"
 #include "win32_textWindowThread.h"
 #include "win32_textWindow.h"
 
@@ -59,6 +60,13 @@ void TextWindow::StartTextWindow
 	m_pTextWindowThread = new TextWindowThread( m_hDC_Memory, width, height, this, szClass, bAsync );
 }
 
+void TextWindow::AddContextMenuEntries( HMENU hPopupMenu )
+{
+    UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
+
+    (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_HIDE_WINDOW, L"Hide window" );
+}
+
 void TextWindow::Trigger( )
 {
 	m_pTextWindowThread->Trigger( );
@@ -68,6 +76,21 @@ LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 {
     switch (message)
     {
+
+    case WM_COMMAND:
+    {
+        int const wmId = LOWORD(wParam);
+        switch (wmId)
+        {
+        case IDM_HIDE_WINDOW:
+	        Show( FALSE );
+            break;
+
+        default:
+            break;
+        }
+    }
+    return FALSE;
 
     case WM_PAINT:
     {

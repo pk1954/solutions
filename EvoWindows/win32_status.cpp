@@ -18,8 +18,7 @@ using namespace std;
 static long trackBar2Value( LONG ); 
 static LONG value2Trackbar( long );  
 
-static DWORD const DEFAULT_DELAY =   50;
-static DWORD const MAX_DELAY     = 2048;    // in msecs
+static DWORD const MAX_DELAY = 2048;    // in msecs
 
 static double const TRACKBAR_SCALING_FACTOR = 1000.0;
 
@@ -201,8 +200,9 @@ void StatusBar::Start
     ( void )SendMessage( SB_SETPARTS, sizeof( statwidths ) / sizeof( int ), (LPARAM)( &statwidths ) );
 
     SetSizeTrackBar ( PixelCoordinates::DEFAULT_FIELD_SIZE );
-    SetSpeedTrackBar( DEFAULT_DELAY );
-	PostCommand2Application( IDM_SIMULATION_SPEED, DEFAULT_DELAY );
+	long lDefaultDelay = Config::GetConfigValue( Config::tId::generationDelay );
+    SetSpeedTrackBar( lDefaultDelay );
+	PostCommand2Application( IDM_SIMULATION_SPEED, lDefaultDelay );
 }
 
 void StatusBar::SetSizeTrackBar( short const sFieldSize  ) const 
