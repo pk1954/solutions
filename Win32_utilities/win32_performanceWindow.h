@@ -58,6 +58,7 @@ public:
 
 private:
     DWORD getMeasuredPerformance( );
+	DWORD calcFrequency( DWORD, DWORD );
     void  printLine( TextBuffer &, wchar_t const * const, DWORD const, wchar_t const * const );
 
     HANDLE     m_hTimer;

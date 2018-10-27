@@ -24,6 +24,11 @@ void PerformanceWindow::Start( HWND const hwndParent, UINT const uiAlpha )
     StartTextWindow( hwndParent, 0, 0, 300, 130, L"PerformanceWindow", uiAlpha, TRUE );
 }
 
+DWORD PerformanceWindow::calcFrequency( DWORD dwCount, DWORD dwMicroSecs )
+{
+    return dwMicroSecs ? ( ( dwCount * 1000 * 1000 ) / dwMicroSecs ) : 0;
+}
+
 DWORD PerformanceWindow::getMeasuredPerformance( )
 {
     DWORD dwResult;
@@ -32,7 +37,7 @@ DWORD PerformanceWindow::getMeasuredPerformance( )
     m_hrtimOverall.Stop( );
     dwMicroSecs = m_hrtimOverall.Get( );
     m_hrtimOverall.Start( );
-    dwResult = dwMicroSecs ? ( ( m_dwCounter * 1000 * 1000 ) / dwMicroSecs ) * 1000 : 0;
+    dwResult = calcFrequency( m_dwCounter, dwMicroSecs ) * 1000;
     m_dwCounter = 0;
 
     return dwResult;
@@ -55,7 +60,7 @@ void PerformanceWindow::printLine
 void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 {
     DWORD const dwSumInMicroSeconds  = m_dwModelTime + m_dwGenerationDelay * 1000;
-    DWORD const dwGensPer1000SecComp = dwSumInMicroSeconds ? ( 1000 * 1000 * 1000 / dwSumInMicroSeconds ) : 0;
+    DWORD const dwGensPer1000SecComp = calcFrequency( 1000, dwSumInMicroSeconds );
     DWORD const dwGensPer1000SecMeas = getMeasuredPerformance( );
 
     printLine( textBuf, L"Model:  ", m_dwModelTime,              L"ms"    );

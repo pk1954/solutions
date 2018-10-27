@@ -50,5 +50,3 @@ DWORD HiResTimer::Get( )
 
     return dwAverage;
 }
-
-
