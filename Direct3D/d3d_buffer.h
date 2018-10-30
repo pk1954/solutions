@@ -30,7 +30,7 @@ public:
     void RenderBackground( );
     void RenderTranspRect( PixelRect const &, DWORD const );
     void D3D_DrawText( PixelRect const &, wstring const &, D3DCOLOR );
-    void EndFrame( HWND );
+    void EndFrame( );
 
     void SetStripMode( tBoolOp const bOp ) 
 	{ 
@@ -52,7 +52,8 @@ private:
     VertexBuffer * m_pVertBufStripMode;
     VertexBuffer * m_pVertBufPrimitives;
 
-    D3dSystem             * m_d3d;
+    HWND                    m_hwnd;
+	D3dSystem             * m_d3d;
     IDirect3DDevice9      * m_d3d_device;
     LPDIRECT3DVERTEXBUFFER9 m_d3d_vertexBuffer; 
     LPDIRECT3DSWAPCHAIN9    m_d3d_swapChain;

@@ -31,37 +31,25 @@ public:
 		m_pCore( pCore )
 	{ }
 
-	void SetClientWinHeight( long const lHeight )
-	{ 
-		m_lClientWinHeight = lHeight; 
-	}
-	
-	virtual void Resize( short const sFieldSize )
+	virtual void PrepareShape( GridPoint const gp  )
 	{
-		m_lSizeInd = (5 * sFieldSize) / 8;
-		m_leftColumn.SetOffset( PixelPoint( 0, 0 ) );
+		m_lSizeInd = (5 * m_pPixelCoordinates->GetFieldSize()) / 8;                    // use only 5/8 of field size
+		m_offset   = m_pPixelCoordinates->Grid2PixelPosCenter( gp ) - m_lSizeInd / 2;
 	}
 
 	virtual void Draw( GridPoint const ) = 0;
 
 protected:
-	PixelPoint CalculateOffset( GridPoint const gp )
-	{
-		PixelPoint ptCenter   = m_pPixelCoordinates->Grid2PixelPosCenter( gp );
-				   ptCenter.y = m_lClientWinHeight - ptCenter.y;     // because of DirectX coord system
-
-		return ptCenter - m_lSizeInd / 2;
-	}
 
 	LeftColumn  m_leftColumn;
 	RightColumn m_rightColumn;
+	PixelPoint  m_offset;
 	long        m_lSizeInd;
 
 	EvolutionCore const * const m_pCore;
 
 private:
 
-	long                     m_lClientWinHeight;
     PixelCoordinates * const m_pPixelCoordinates;
 };
 
@@ -70,16 +58,12 @@ class IndividualShape_Level_1 : public IndividualShape
 public:
 	using IndividualShape::IndividualShape;
 
-	void Resize( short const sFieldSize )
-	{
-		IndividualShape::Resize( sFieldSize );
-		m_leftColumn.SetSize( PixelRectSize( m_lSizeInd, m_lSizeInd ) );
-	}
-
 	void Draw( GridPoint const gp )
 	{
-		PixelPoint offset = CalculateOffset( gp );
-		m_leftColumn.Draw( gp, offset );
+		PrepareShape( gp );
+		m_leftColumn.SetSize( PixelRectSize( m_lSizeInd, m_lSizeInd ) );
+		m_leftColumn.SetOffset( PixelPoint( 0, 0 ) );
+		m_leftColumn.Draw( gp, m_offset );
 	}
 };
 
@@ -88,23 +72,19 @@ class IndividualShape_Level_2 : public IndividualShape
 public:
 	using IndividualShape::IndividualShape;
 
-	void Resize( short const sFieldSize )
-	{
-		IndividualShape::Resize( sFieldSize );
-		m_leftColumn .SetSize( PixelRectSize( m_lSizeInd / 2, m_lSizeInd ) );
-		m_rightColumn.SetSize( PixelRectSize( m_lSizeInd / 2, m_lSizeInd ) );
-		m_rightColumn.SetOffset( PixelPoint( m_lSizeInd / 2, 0 ) );
-	}
-
 	void Draw( GridPoint const gp )
 	{
-		PixelPoint offset = CalculateOffset( gp );
+		PrepareShape( gp );
+		m_leftColumn .SetSize( PixelRectSize( m_lSizeInd / 2, m_lSizeInd ) );
+		m_rightColumn.SetSize( PixelRectSize( m_lSizeInd / 2, m_lSizeInd ) );
+		m_leftColumn .SetOffset( PixelPoint( 0, 0 ) );
+		m_rightColumn.SetOffset( PixelPoint( m_lSizeInd / 2, 0 ) );
 
-		m_leftColumn.Draw( gp, offset );
+		m_leftColumn.Draw( gp, m_offset );
 
 		if ( m_pCore->GetStrategyId( gp ) == tStrategyId::tit4tat )
 		{
-			m_rightColumn.Draw( gp, offset );
+			m_rightColumn.Draw( gp, m_offset );
 		}
 	}
 };

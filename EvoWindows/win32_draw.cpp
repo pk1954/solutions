@@ -89,7 +89,6 @@ void DrawFrame::Resize( )
 		iFontSize = 16;
     m_pD3dBuffer->ResetFont( iFontSize );
 	m_pIndividualShape = ( sFieldSize < 256 ) ? m_pIndividualShape_Level_1 : m_pIndividualShape_Level_2;
-	m_pIndividualShape->Resize( sFieldSize );
 }
 
 void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
@@ -106,9 +105,10 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 	        GridRect  const rcGrid( m_pPixelCoordinates->Pixel2GridRect( pixRect ) );
             drawPOI( m_pCore->FindPOI( ) );
             drawIndividuals( rcGrid );
-		 	m_pIndividualShape->SetClientWinHeight( pixRect.m_lBottom - pixRect.m_lTop );
             if ( m_pPixelCoordinates->GetFieldSize() >= 96 )
+			{
                 drawText( rcGrid );
+			}
         }
 
         if ( m_pCore->SelectionIsNotEmpty() )
@@ -117,7 +117,7 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
         if ( pkgr.IsNotEmpty( ) )
             m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), D3DCOLOR_ARGB( 128, 255, 217, 0) );  
 
-        m_pD3dBuffer->EndFrame( hwnd );  
+        m_pD3dBuffer->EndFrame( );  
     }
 }
 

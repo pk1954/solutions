@@ -88,9 +88,16 @@ D3dBuffer::~D3dBuffer()
 
 void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, wstring const & wstr, D3DCOLOR col )
 {
+	long const lClientWinHeight = Util::GetClientWindowHeight( m_hwnd );
+	RECT rect 
+	{                                         
+		pixRect.m_lLeft,					  // windows y-coordinates increase from top to bottom
+		lClientWinHeight - pixRect.m_lBottom, // DirectX y-coordinates increasing from bottom to top
+		pixRect.m_lRight,                     // see UpsideDown
+		lClientWinHeight - pixRect.m_lTop	   
+	};
     assert( m_id3dx_font != nullptr );
     //lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
-	RECT rect = Util::PixelRect2RECT( pixRect );
     m_id3dx_font->DrawText
     ( 
         nullptr,           // pSprite
@@ -108,6 +115,8 @@ void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, wstring const & wstr, D
 void D3dBuffer::StartFrame( HWND hwnd )
 {
     HRESULT hres;
+
+	m_hwnd = hwnd;
 
     m_d3d->ResetD3dSystem( hwnd );
 
@@ -338,11 +347,11 @@ void D3dBuffer::renderPrimitives( D3dIndexBuffer const * const iBuf )
 
 // Finish rendering; page flip.
 
-void D3dBuffer::EndFrame( HWND hwnd )
+void D3dBuffer::EndFrame( )
 {
     HRESULT hres;
-    hres = m_d3d_device->EndScene();                                        assert(hres == D3D_OK);
-    hres = m_d3d_swapChain->Present( nullptr, nullptr, hwnd, nullptr, 0 );  assert(hres == D3D_OK);
+    hres = m_d3d_device->EndScene();                                          assert(hres == D3D_OK);
+    hres = m_d3d_swapChain->Present( nullptr, nullptr, m_hwnd, nullptr, 0 );  assert(hres == D3D_OK);
     //lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
     m_id3dx_font->Release();      
     //lint +esym( 613, D3dBuffer::m_id3dx_font ) 

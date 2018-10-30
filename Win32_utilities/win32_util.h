@@ -185,12 +185,6 @@ namespace Util
         return rect.right;
     }
 
-    inline BOOL PixelPointInRect( PixelRect const * const pRect, PixelPoint const pp )
-    {
-		RECT const rect = PixelRect2RECT( * pRect );
-        return PtInRect( &rect, PixelPoint2POINT( pp ) );  
-    } 
-
     inline BOOL PixelPointInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?
     {
         RECT const rect = GetClRect( hwnd );  

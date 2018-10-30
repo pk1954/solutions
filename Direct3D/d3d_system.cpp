@@ -24,8 +24,9 @@ void D3dSystem::Create_D3D_Device( HWND const hWndApp, ULONG const ulWidth, ULON
 	stopwatch.Start();
 	m_bHexagon                 = bHexagon;
 	_d3d_.m_d3d_device         = nullptr;
-	_d3d_.m_d3d_object         = Direct3DCreate9(D3D_SDK_VERSION); assert( _d3d_.m_d3d_object != nullptr );
 	_d3d_.m_iNrSwapChainsInUse = 0;
+	_d3d_.m_d3d_object         = Direct3DCreate9(D3D_SDK_VERSION); 
+	assert( _d3d_.m_d3d_object != nullptr );
 	stopwatch.Stop( L"Direct3DCreate9" );
 	stopwatch.Start();
 	_d3d_.createDevice( hWndApp, ulWidth, ulHeight );

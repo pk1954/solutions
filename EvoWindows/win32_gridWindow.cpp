@@ -298,7 +298,6 @@ void GridWindow::Size( )
 	RECT             rect{ 0, 0, ptSize.x, ptSize.y };
     (void)AdjustWindowRect( &rect, dwStyle, FALSE );	
     Move( 0, 0, rect.right - rect.left, rect.bottom - rect.top, FALSE );
-	m_pDrawFrame->Resize( );
 }
 
 void GridWindow::SetFieldSize( SHORT const fieldSize )
@@ -309,7 +308,7 @@ void GridWindow::SetFieldSize( SHORT const fieldSize )
 
 void GridWindow::Fit2Rect( )
 {
-	m_pPixelCore->FitToRect( GetClRectSize( ) );
+	m_pPixelCore->FitToRect( GetClRectSize( ) ); 
 	m_pDrawFrame->Resize( );
 }
 
