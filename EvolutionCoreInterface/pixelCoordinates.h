@@ -47,7 +47,6 @@ public:
 	short      GetFieldSize( )   const { return m_sFieldSize; };
 	PixelPoint GetPixelOffset( ) const { return m_pixOffset; }
 
-	PixelRect  GetTextRect( GridPoint  const & ) const; 
 	short      ComputeNewFieldSize( bool const ) const;
 
 	//////// manipulation functions ////////

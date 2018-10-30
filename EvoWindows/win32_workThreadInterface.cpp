@@ -240,5 +240,6 @@ void WorkThreadInterface::PostProcessScript( wstring const & wstrPath )
 
 void WorkThreadInterface::TerminateThread( )
 {
+	PostStopComputation( );
 	m_pWorkThread->Terminate( );    // wait until thread has stopped
 }

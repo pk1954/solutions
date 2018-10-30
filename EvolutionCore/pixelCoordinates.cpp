@@ -218,8 +218,8 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const & pp ) const
 
 KGridRect PixelCoordinates::Pixel2KGridRect( PixelRect const & rect ) const 
 {
-    PixelPoint pntStart( rect.left,  rect.top    );
-    PixelPoint pntEnd  ( rect.right, rect.bottom );
+    PixelPoint pntStart( rect.m_lLeft,  rect.m_lTop    );
+    PixelPoint pntEnd  ( rect.m_lRight, rect.m_lBottom );
 
     return KGridRect 
     (
@@ -239,8 +239,8 @@ GridRect PixelCoordinates::Pixel2GridRect( PixelRect const & rect ) const
 {
     return GridRect
     ( 
-        Pixel2GridPos( PixelPoint( rect.left,  rect.top    ) ), 
-        Pixel2GridPos( PixelPoint( rect.right, rect.bottom ) ) 
+        Pixel2GridPos( PixelPoint( rect.m_lLeft,  rect.m_lTop    ) ), 
+        Pixel2GridPos( PixelPoint( rect.m_lRight, rect.m_lBottom ) ) 
     ).ClipToGrid( );
 }
 
@@ -251,12 +251,4 @@ PixelRect PixelCoordinates::Grid2PixelRect( GridRect const & rcGrid ) const
         Grid2PixelPos( rcGrid.GetStartPoint( ) ),
         Grid2PixelPos( rcGrid.GetEndPoint  ( ) ) + (m_sFieldSize - 1) 
     );
-}
-
-PixelRect PixelCoordinates::GetTextRect( GridPoint const & gp ) const
-{
-    long  const lHalfSizeInd = (5 * m_sFieldSize) / 16;
-    PixelPoint ptCenter   = Grid2PixelPosCenter( gp );
-//				Util::UpsideDown( m_hwnd, & ptCenter ); 
-    return PixelRect( ptCenter - lHalfSizeInd, ptCenter + lHalfSizeInd );
 }

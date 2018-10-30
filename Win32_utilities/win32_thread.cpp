@@ -18,8 +18,7 @@ void Util::Thread::StartThread
 
 void Util::Thread::Terminate( )   // to be called from different thread
 {
-	PostThreadMessage( m_threadId, WM_QUIT, 0, 0 );
-//	PostQuitMessage( 0 );  // this is recommended by MS documentation, but doesn't work
+	PostThreadMessage( m_threadId, WM_QUIT, 0, 0 ); // PostQuitMessage( 0 );  but doesn't work
 	WaitForSingleObject( m_handle, INFINITE );  // wait until thread has stopped
 	CloseHandle( m_handle );
 }

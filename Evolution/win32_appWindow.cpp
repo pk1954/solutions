@@ -228,10 +228,13 @@ void AppWindow::Start(  )
 
 void AppWindow::shutDown()
 {
+    m_pWinManager->StoreWindowConfiguration( );
+    m_pWorkThreadInterface->TerminateThread( );
 	m_pStatistics->TerminateTextWindow();
     m_pPerfWindow->TerminateTextWindow();
     m_pCrsrWindow->TerminateTextWindow();
 	m_pHistInfoWindow->TerminateTextWindow();
+	DestroyWindow( GetWindowHandle( ) );        
 }
 
 AppWindow::~AppWindow( )
@@ -302,11 +305,7 @@ LRESULT AppWindow::UserProc
         break;
 
     case WM_CLOSE:
-        m_pWinManager->StoreWindowConfiguration( );
-		m_pWorkThreadInterface->PostStopComputation( );
-        m_pWorkThreadInterface->TerminateThread( );
 		shutDown();
-		DestroyWindow( GetWindowHandle( ) );        
         return TRUE;  
 
     case WM_DESTROY:

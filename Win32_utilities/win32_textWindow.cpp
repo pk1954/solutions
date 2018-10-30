@@ -12,7 +12,6 @@
 
 using namespace std;
 
-
 TextWindow::TextWindow( ) :  
     BaseWindow( ),
 	m_pTextWindowThread( nullptr ),

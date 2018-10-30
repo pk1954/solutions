@@ -177,11 +177,17 @@
     <ClInclude Include="win32_editorWrappers.h" />
     <ClInclude Include="win32_evoHistWindow.h" />
     <ClInclude Include="win32_focusPoint.h" />
+    <ClInclude Include="win32_gridPointShape.h" />
     <ClInclude Include="win32_gridWindow.h" />
     <ClInclude Include="win32_historyInfo.h" />
     <ClInclude Include="win32_histWrappers.h" />
+    <ClInclude Include="win32_individualShape.h" />
+    <ClInclude Include="win32_leftColumn.h" />
     <ClInclude Include="win32_packGridPoint.h" />
+    <ClInclude Include="win32_rectShape.h" />
+    <ClInclude Include="win32_rightColumn.h" />
     <ClInclude Include="win32_scriptHook.h" />
+    <ClInclude Include="win32_shape.h" />
     <ClInclude Include="win32_statistics.h" />
     <ClInclude Include="win32_status.h" />
     <ClInclude Include="win32_worker_thread.h" />

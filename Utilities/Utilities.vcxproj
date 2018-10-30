@@ -154,6 +154,8 @@
     <ClInclude Include="kGridPoint.h" />
     <ClInclude Include="observerInterface.h" />
     <ClInclude Include="pixelPoint.h" />
+    <ClInclude Include="pixelRect.h" />
+    <ClInclude Include="pixelRectSize.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="SmoothMove.h" />
     <ClInclude Include="stdafx.h" />

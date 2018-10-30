@@ -11,6 +11,10 @@
 #include "d3d_system.h"
 #include "d3d_vertexBuffer.h"
 
+static COLORREF const CLR_BLACK = D3DCOLOR_ARGB( 255,   0,   0,   0 );
+static COLORREF const CLR_GREY  = D3DCOLOR_ARGB( 128, 128, 128, 128 );
+static COLORREF const CLR_WHITE = D3DCOLOR_ARGB( 255, 255, 255, 255 );
+
 class D3dBuffer
 {
 public:

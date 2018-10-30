@@ -15,8 +15,6 @@
 //lint -e835                                   0 as left argument to << or |
 //lint -e845                                   0 as right argument to << or |
 
-static COLORREF const CLR_WHITE = D3DCOLOR_ARGB( 255, 255, 255, 255 );
-
 D3DXFONT_DESC D3dBuffer::m_d3dx_font_desc =
 {
     0,                         //  Height (will be set during initializition)
@@ -259,10 +257,10 @@ void D3dBuffer::RenderTranspRect( PixelRect const & rectTransparent, DWORD const
 
 	addRect2Buffer
     ( 
-        static_cast<float>( rectTransparent.left   ), 
-        static_cast<float>( rectTransparent.top    ), 
-        static_cast<float>( rectTransparent.right  ), 
-        static_cast<float>( rectTransparent.bottom ), 
+        static_cast<float>( rectTransparent.m_lLeft   ), 
+        static_cast<float>( rectTransparent.m_lTop    ), 
+        static_cast<float>( rectTransparent.m_lRight  ), 
+        static_cast<float>( rectTransparent.m_lBottom ), 
         dwColor 
     );
 

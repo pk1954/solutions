@@ -2,24 +2,22 @@
 //
 
 #include "stdafx.h"
-#include <iomanip>     
-#include <iostream>     
-#include <sstream> 
 #include <vector>
 #include "config.h"
 #include "EvolutionCore.h"
-#include "plannedActivity.h"
 #include "pixelCoordinates.h"
+#include "plannedActivity.h"
 #include "win32_util.h"
 #include "d3d_buffer.h"
 #include "win32_displayOptions.h"
+#include "win32_individualShape.h"
 #include "win32_draw.h"
 
 using namespace std;
 
-static COLORREF const CLR_BLACK = D3DCOLOR_ARGB( 255,   0,   0,   0 );
-static COLORREF const CLR_WHITE = D3DCOLOR_ARGB( 255, 255, 255, 255 );
-static COLORREF const CLR_GREY  = D3DCOLOR_ARGB( 128, 128, 128, 128 );
+static COLORREF const CLR_DEFECT    = RGB(151, 171, 255);
+static COLORREF const CLR_COOPERATE = RGB(127, 255,   0);
+static COLORREF const CLR_TIT4TAT   = RGB(255,  50,  50);
 
 DrawFrame::DrawFrame
 ( 
@@ -32,19 +30,29 @@ DrawFrame::DrawFrame
     m_pPixelCoordinates( pPixelCoordinates ),
     m_pDspOptWindow( pDspOptWindow ),
     m_pD3dBuffer( nullptr ), 
-    m_clutBackground( )
+    m_clutBackground( ),
+	m_pIndividualShape( nullptr )
 {
     UINT const uiClutSize = static_cast<UINT>(Config::GetConfigValue( Config::tId::stdCapacity ));
     for ( auto & strategy : m_aClutStrat )
         strategy.Allocate( uiClutSize );
 
-    m_aClutStrat[ static_cast<int>( tStrategyId::defect    ) ].SetColorHi( RGB(151, 171, 255) );
-    m_aClutStrat[ static_cast<int>( tStrategyId::cooperate ) ].SetColorHi( RGB(127, 255,   0) );
-    m_aClutStrat[ static_cast<int>( tStrategyId::tit4tat   ) ].SetColorHi( RGB(255,  50,  50) );
-
     m_pD3dBuffer = new D3dBuffer( GridPoint::GRID_AREA );
 	m_clutBackground.Allocate( MAX_BG_COLOR );    // default is grey scale lookup table with entries 0 .. 255
     SetIndDimmMode( Config::GetConfigValueBoolOp(Config::tId::dimmMode ) );
+
+    SetStrategyColor( tStrategyId::defect,    CLR_DEFECT    );
+    SetStrategyColor( tStrategyId::cooperate, CLR_COOPERATE );
+    SetStrategyColor( tStrategyId::tit4tat,   CLR_TIT4TAT   );
+
+	m_pIndividualShape_Level_1 = new IndividualShape_Level_1( m_pD3dBuffer, m_wBuffer, m_pCore, m_pPixelCoordinates );
+	m_pIndividualShape_Level_2 = new IndividualShape_Level_2( m_pD3dBuffer, m_wBuffer, m_pCore, m_pPixelCoordinates );
+	Resize();
+}
+
+void DrawFrame::SetStrategyColor( tStrategyId const strat, COLORREF const col )
+{
+    m_aClutStrat[ static_cast<int>(strat) ].SetColorHi( col );
 }
 
 DrawFrame::~DrawFrame( ) 
@@ -72,13 +80,16 @@ void DrawFrame::SetStripMode( tBoolOp const bOp )
 
 void DrawFrame::Resize( )
 {
-	int const MAX_TEXT_LINES = 20;
-	int       iFontSize = m_pPixelCoordinates->GetFieldSize() / MAX_TEXT_LINES;
+	short const sFieldSize     = m_pPixelCoordinates->GetFieldSize();
+	int   const MAX_TEXT_LINES = 20;
+	int         iFontSize      = sFieldSize / MAX_TEXT_LINES;
 	if ( iFontSize < 9 )
 		iFontSize = 9;
 	if ( iFontSize > 16 )
 		iFontSize = 16;
-    m_pD3dBuffer->ResetFont( iFontSize );   
+    m_pD3dBuffer->ResetFont( iFontSize );
+	m_pIndividualShape = ( sFieldSize < 256 ) ? m_pIndividualShape_Level_1 : m_pIndividualShape_Level_2;
+	m_pIndividualShape->Resize( sFieldSize );
 }
 
 void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
@@ -91,14 +102,13 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 
         if ( m_pDspOptWindow->AreIndividualsVisible( ) )
         {
-	        GridRect rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( hwnd ) ) );
-
+			PixelRect const pixRect( Util::GetClPixelRect( hwnd ) );
+	        GridRect  const rcGrid( m_pPixelCoordinates->Pixel2GridRect( pixRect ) );
             drawPOI( m_pCore->FindPOI( ) );
-
             drawIndividuals( rcGrid );
-
+		 	m_pIndividualShape->SetClientWinHeight( pixRect.m_lBottom - pixRect.m_lTop );
             if ( m_pPixelCoordinates->GetFieldSize() >= 96 )
-                drawText( hwnd, rcGrid );
+                drawText( rcGrid );
         }
 
         if ( m_pCore->SelectionIsNotEmpty() )
@@ -166,80 +176,18 @@ void DrawFrame::drawIndividuals( GridRect const & rect )
     m_pD3dBuffer->RenderIndividuals( ); 
 }
 
-COLORREF DrawFrame::getTextColor( GridPoint const & gp ) const
+void DrawFrame::drawText( GridRect const & rect )
 {
-	return CLR_WHITE;
-}
-
-void DrawFrame::drawText( HWND hwnd, GridRect const & rect )
-{
-    short const sFieldSize   = m_pPixelCoordinates->GetFieldSize();
-    long  const lHalfSizeInd = (5 * sFieldSize) / 16;
-
     rect.Apply2Rect
 	( 
 		[&](GridPoint const & gp)
 		{
-            if ( GetEvoCore( )->IsAlive( gp ) )
+            if ( m_pCore->IsAlive( gp ) )
             {
-				long       lHeight    = Util::GetClientWindowHeight( hwnd );
-				COLORREF   colText    = getTextColor( gp );
-                PixelPoint ptCenter   = m_pPixelCoordinates->Grid2PixelPosCenter( gp );
-						   Util::UpsideDown( hwnd, & ptCenter ); 
-                PixelRect  pixRect ( ptCenter  - lHalfSizeInd, ptCenter  + lHalfSizeInd );
-
-                assembleLeftColumn( gp );
-                m_pD3dBuffer->D3D_DrawText( pixRect, m_wBuffer.str( ), colText );
-
-                if ( sFieldSize >= 256 ) 
-                {
-                    pixRect.left += lHalfSizeInd;
-                    assembleRightColumn( gp );
-                    m_pD3dBuffer->D3D_DrawText( pixRect, m_wBuffer.str( ), colText );
-                }
+				m_pIndividualShape->Draw( gp );
             }
 		}
 	);
-}
-
-void DrawFrame::assembleLeftColumn( GridPoint const & gp )
-{
-    startOutputString( );
-
-	m_wBuffer << gp                                                                << endl;
-    m_wBuffer << L"ID: " << setw( 5 ) << m_pCore->GetId( gp )                      << endl;
-    m_wBuffer << L"En: " << setw( 5 ) << m_pCore->GetEnergy( gp )                  << endl;
-    m_wBuffer << L"Age:" << setw( 5 ) << m_pCore->GetAge( gp )                     << endl;
-    m_wBuffer << L"Or: " << setw( 5 ) << GetOriginName( m_pCore->GetOrigin( gp ) ) << endl;
-
-    PlannedActivity plan = m_pCore->GetPlan( );
-    if ( plan.IsValid( ) )
-    {
-        if ( (gp == plan.GetActor( )) || (gp == plan.GetPartner( )) )
-        {
-            m_wBuffer << (( gp == plan.GetActor( ) ) ? L"** ACTOR **" : L"** PARTNER **") << endl;
-            m_wBuffer << L"** "  << GetActionTypeName( plan.GetActionType( ) ) << L" **"  << endl;
-            m_wBuffer << L"BaseCons: "  << plan.GetBaseConsumption( )                     << endl;
-        }
-    }
-}
-
-void DrawFrame::assembleRightColumn( GridPoint const & gp )
-{
-    startOutputString( );
-
-    if ( m_pCore->GetStrategyId( gp ) == tStrategyId::tit4tat )
-    {
-        MEM_INDEX const memSize   = m_pCore->GetMemSize( gp );  
-        MEM_INDEX const memFilled = m_pCore->GetMemUsed( gp ); 
-        
-        m_wBuffer << L"  Mem " << memFilled << L"/" << memSize << endl;
-
-        for	( MEM_INDEX mem = 0; mem < memFilled; ++mem )
-        {
-            m_wBuffer << setw( 10 ) << m_pCore->GetMemEntry( gp, mem ) << endl;
-        }
-    }
 }
 
 void DrawFrame::setIndividualColor( GridPoint const & gp, float const fHalfSize ) const

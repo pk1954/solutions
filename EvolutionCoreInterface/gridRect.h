@@ -54,8 +54,13 @@ public:
 	
 	GridRect  const ClipToGrid   ( ) const { return GridRect( clipStartPoint( ), clipEndPoint( ) );	}
  
-    virtual bool const IsEmpty( )    const { return ( *this == GRID_RECT_EMPTY ); }
-    virtual bool const IsNotEmpty( ) const { return ( *this != GRID_RECT_EMPTY ); }
+    bool const IsEmpty( )    const { return ( *this == GRID_RECT_EMPTY ); }
+    bool const IsNotEmpty( ) const { return ( *this != GRID_RECT_EMPTY ); }
+
+	bool Includes( GridPoint const gp ) const
+	{
+		return (m_lLeft <= gp.x) && (gp.x <= m_lRight) && (m_lBottom <= gp.y) && (gp.y <= m_lTop);
+	}
 
     static GridRect const GRID_RECT_FULL;
     static GridRect const GRID_RECT_EMPTY;

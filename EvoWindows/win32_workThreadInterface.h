@@ -60,9 +60,9 @@ public:
 private:
 	void postGotoGeneration( HIST_GENERATION const );
 
-    EvolutionCore * m_pCore;
-    EvoHistorySysGlue  * m_pEvoHistGlue;
-	WorkThread         * m_pWorkThread;
-    std::wostream      * m_pTraceStream;
-	BOOL                 m_bTrace;
+    EvolutionCore     * m_pCore;
+    EvoHistorySysGlue * m_pEvoHistGlue;
+	WorkThread        * m_pWorkThread;
+    std::wostream     * m_pTraceStream;
+	BOOL                m_bTrace;
 }; 

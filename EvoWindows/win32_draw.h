@@ -17,8 +17,11 @@
 
 class EvolutionCore;
 class PixelCoordinates;
+class IndividualShape;
 class DspOptWindow;
 class D3dBuffer;
+
+using namespace std;
 
 class DrawFrame
 {
@@ -29,10 +32,9 @@ public:
 
     void Resize( );
     void DoPaint( HWND, KGridRect const & );
+	void SetStrategyColor( tStrategyId const, COLORREF const );
     void SetStripMode( tBoolOp );
     void SetIndDimmMode( tBoolOp );
-
-    EvolutionCore * const GetEvoCore( ) const { return m_pCore; } // for inner class
 
 private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
@@ -44,13 +46,16 @@ private:
     PixelCoordinates * const m_pPixelCoordinates;
     DspOptWindow     * const m_pDspOptWindow;
     D3dBuffer        *       m_pD3dBuffer;
+	IndividualShape  *       m_pIndividualShape_Level_1;
+	IndividualShape  *       m_pIndividualShape_Level_2;
+	IndividualShape  *       m_pIndividualShape;
 
     static UINT const MAX_BG_COLOR = 255;
 
-                CLUT                 m_clutBackground;
-    std::array< CLUT, NR_STRATEGIES> m_aClutStrat;
+           CLUT                 m_clutBackground;
+    array< CLUT, NR_STRATEGIES> m_aClutStrat;
 
-    std::wostringstream m_wBuffer;
+    wostringstream m_wBuffer;
 
     void startOutputString( )  
 	{ 
@@ -58,14 +63,11 @@ private:
 		m_wBuffer.clear();
 	}
 
-    COLORREF getBackgroundColor ( int const ) const;
-    COLORREF getTextColor       ( GridPoint const & ) const;
-    void     setIndividualColor ( GridPoint const &, float const ) const;
-    void     assembleLeftColumn ( GridPoint const & );
-    void     assembleRightColumn( GridPoint const & );
+    COLORREF getBackgroundColor( int const ) const;
+    void     setIndividualColor( GridPoint const &, float const ) const;
 
-	void drawBackground ( );
-    void drawText( HWND,  GridRect const & );
-    void drawIndividuals( GridRect const & );
+	void drawBackground( );
+    void drawText       ( GridRect  const & );
+    void drawIndividuals( GridRect  const & );
     void drawPOI        ( GridPoint const & );
 };

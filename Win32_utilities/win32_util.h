@@ -54,7 +54,7 @@ namespace Util
 
 	inline RECT PixelRect2RECT(PixelRect pixRect)
 	{
-		return RECT{pixRect.left, pixRect.top, pixRect.right, pixRect.bottom};
+		return RECT{pixRect.m_lLeft, pixRect.m_lTop, pixRect.m_lRight, pixRect.m_lBottom};
 	}
 
 	inline PixelRect RECT2PixelRect(RECT rect)

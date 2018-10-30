@@ -1,108 +1,121 @@
 // pixelRect.h
 //
+// pixel coordinates
+// origin is top left
 
 #pragma once
 
 #include <assert.h>
 #include "pixelPoint.h"
+#include "pixelRectSize.h"
+
+class PixelRectSize;
 
 class PixelRect
 {
 public:
-    long left;
-    long top;
-    long right;
-    long bottom;
+    long m_lLeft;
+    long m_lTop;
+    long m_lRight;
+    long m_lBottom;
 
     PixelRect( )
     {
-        left = 0;
-        top = 0;
-        right = 0;
-        bottom = 0;
+        m_lLeft = 0;
+        m_lTop = 0;
+        m_lRight = 0;
+        m_lBottom = 0;
     };
 
     PixelRect( PixelRect const & rect )
     {
-        left   = rect.left;
-        top    = rect.top;
-        right  = rect.right;
-        bottom = rect.bottom;
+        m_lLeft   = rect.m_lLeft;
+        m_lTop    = rect.m_lTop;
+        m_lRight  = rect.m_lRight;
+        m_lBottom = rect.m_lBottom;
     };
 
     PixelRect( PixelPoint const & pt1, PixelPoint const & pt2 )
     { 
         if ( pt1.x < pt2.x )
         {
-            left = pt1.x;
-            right = pt2.x;
+            m_lLeft = pt1.x;
+            m_lRight = pt2.x;
         }
         else
         {
-            left = pt2.x;
-            right = pt1.x;
+            m_lLeft = pt2.x;
+            m_lRight = pt1.x;
         }
         if ( pt1.y < pt2.y )
         {
-            top = pt1.y;
-            bottom = pt2.y;
+            m_lTop = pt1.y;
+            m_lBottom = pt2.y;
         }
         else
         {
-            top = pt2.y;
-            bottom = pt1.y;
+            m_lTop = pt2.y;
+            m_lBottom = pt1.y;
         }
     };
 
     PixelRect( long const lLeft, long const lTop, long const lRight, long const lBottom ) 
     { 
-        left   = lLeft; 
-        top    = lTop; 
-        right  = lRight; 
-        bottom = lBottom; 
+        m_lLeft   = lLeft; 
+        m_lTop    = lTop; 
+        m_lRight  = lRight; 
+        m_lBottom = lBottom; 
     };
+
+	PixelRect( PixelPoint const & ptOrigin, PixelRectSize const & rectSize )
+	{
+        m_lLeft   = ptOrigin.x; 
+        m_lTop    = ptOrigin.y; 
+        m_lRight  = m_lLeft + rectSize.GetWidth(); 
+        m_lBottom = m_lTop  + rectSize.GetHeight(); 
+	}
 
     PixelPoint const GetStartPoint( ) const 
     {
-        return PixelPoint( left, top );
+        return PixelPoint( m_lLeft, m_lTop );
     }
 
     PixelPoint const GetEndPoint( ) const
     {
-        return PixelPoint( right, bottom );
+        return PixelPoint( m_lRight, m_lBottom );
     }
 
     PixelPoint const GetCenter( ) const
     {
-        return PixelPoint( (left + right) / 2, (top + bottom) / 2 );
+        return PixelPoint( (m_lLeft + m_lRight) / 2, (m_lTop + m_lBottom) / 2 );
     }
 
-    bool const operator== ( PixelRect const & a ) const { return ( a.left == left ) && ( a.top == top ) && ( a.right == right ) && ( a.bottom == bottom ); };
-    bool const operator!= ( PixelRect const & a ) const { return ( a.left != left ) || ( a.top != top ) || ( a.right != right ) || ( a.bottom != bottom ); };
+	bool Includes( PixelPoint const pnt ) const
+	{
+		return (m_lLeft <= pnt.x) && (pnt.x <= m_lRight) && (m_lTop <= pnt.y) && (pnt.y <= m_lBottom);
+	}
+
+	bool const operator== ( PixelRect const & a ) const { return ( a.m_lLeft == m_lLeft ) && ( a.m_lTop == m_lTop ) && ( a.m_lRight == m_lRight ) && ( a.m_lBottom == m_lBottom ); };
+    bool const operator!= ( PixelRect const & a ) const { return ( a.m_lLeft != m_lLeft ) || ( a.m_lTop != m_lTop ) || ( a.m_lRight != m_lRight ) || ( a.m_lBottom != m_lBottom ); };
+
+	PixelRect const operator+= ( PixelPoint const & offset )
+	{ 
+		m_lLeft   += offset.x;
+		m_lTop    += offset.y;
+		m_lRight  += offset.x;
+		m_lBottom += offset.y;
+		return *this;
+	}
+
+	PixelRect const operator-= ( PixelPoint const & offset )
+	{ 
+		m_lLeft   -= offset.x;
+		m_lTop    -= offset.y;
+		m_lRight  -= offset.x;
+		m_lBottom -= offset.y;
+		return *this;
+	}
 };
 
-class PixelRectSize
-{
-public:
-	PixelRectSize( ) : m_iWidth( 0 ), m_iHeight( 0 ) {};
-    PixelRectSize( int const iWidth, int const iHeight ) : m_iWidth(iWidth), m_iHeight(iHeight) {};
-
-    int GetWidth ( ) const { return m_iWidth;  }
-    int GetHeight( ) const { return m_iHeight; }
-
-    void ReduceHeight( int const iDiff ) 
-    {
-        assert( m_iHeight >= iDiff );
-        m_iHeight -= iDiff;
-    }
-
-    bool IsEmpty( ) const
-    {
-        return ( m_iWidth == 0 ) || ( m_iHeight == 0 );
-    }
-
-private:
-    int m_iWidth;
-    int m_iHeight;
-};
-
+inline PixelRect const operator+ (PixelRect const & r, PixelPoint const & p) { PixelRect res(r); res += p; return res; };
+inline PixelRect const operator- (PixelRect const & r, PixelPoint const & p) { PixelRect res(r); res -= p; return res; };
