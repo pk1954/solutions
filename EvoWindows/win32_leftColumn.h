@@ -11,7 +11,7 @@ class LeftColumn : public GridPointShape
 {
 public:
 	using GridPointShape::GridPointShape;
-
+	
 	void FillBuffer( GridPoint const gp )
 	{
 		m_wBuffer << gp                                                                << endl;

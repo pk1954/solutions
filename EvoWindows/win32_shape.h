@@ -19,6 +19,7 @@ public:
 	// all parameters are relative to client rect
 
 	virtual bool PointInShape( PixelPoint const &, PixelPoint const & ) const = 0;
+	virtual void Highlight( PixelPoint const & ) const = 0;
 
 	////////////////////
 
@@ -45,14 +46,9 @@ public:
 		m_shapeOffset = offset;
 	}
 
-	void AddSubShape
-	( 
-		Shape          * pShape, 
-		PixelPoint const shapeOffset // offset of subshape relative to this shape
-	)
+	void AddSubShape( Shape * const pShape )
 	{
 		m_subShapes.push_back( pShape );
-		pShape->SetOffset( shapeOffset );
 	}
 
 private:

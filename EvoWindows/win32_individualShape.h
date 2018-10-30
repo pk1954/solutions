@@ -5,7 +5,7 @@
 
 #include <sstream> 
 #include "GridPoint.h"
-#include "win32_rectShape.h"
+#include "win32_gridPointShape.h"
 #include "win32_leftColumn.h"
 #include "win32_rightColumn.h"
 
@@ -15,7 +15,7 @@ class D3dBuffer;
 class LeftColumn;
 class RightColumn;
 
-class IndividualShape : public RectShape
+class IndividualShape : public GridPointShape
 {
 public:
 	IndividualShape
@@ -25,17 +25,27 @@ public:
 		EvolutionCore    * const pCore,
 		PixelCoordinates * const pPixelCoordinates
 	) :
+		GridPointShape( pD3dBuffer, wBuffer, pCore ),
 		m_leftColumn ( pD3dBuffer, wBuffer, pCore ),
 		m_rightColumn( pD3dBuffer, wBuffer, pCore ),
-		m_pPixelCoordinates( pPixelCoordinates ),
-		m_pCore( pCore )
-	{ }
+		m_pPixelCoordinates( pPixelCoordinates )
+	{ 
+		AddSubShape( & m_leftColumn );
+		AddSubShape( & m_rightColumn );
+	}
 
-	virtual void PrepareShape( GridPoint const gp  )
+	PixelPoint GetOffset( GridPoint const gp )
+	{
+		return m_pPixelCoordinates->Grid2PixelPosCenter( gp ) - m_lSizeInd / 2;
+	}
+
+	void PrepareShape( GridPoint const gp  )
 	{
 		m_lSizeInd = (5 * m_pPixelCoordinates->GetFieldSize()) / 8;                    // use only 5/8 of field size
-		m_offset   = m_pPixelCoordinates->Grid2PixelPosCenter( gp ) - m_lSizeInd / 2;
+		m_offset   = GetOffset( gp );
 	}
+
+	virtual void FillBuffer( GridPoint const gp ) { };  // all text in subshapes
 
 	virtual void Draw( GridPoint const ) = 0;
 
@@ -46,11 +56,25 @@ protected:
 	PixelPoint  m_offset;
 	long        m_lSizeInd;
 
-	EvolutionCore const * const m_pCore;
-
 private:
 
     PixelCoordinates * const m_pPixelCoordinates;
+};
+
+class IndividualShape_Level_0 : public IndividualShape
+{
+public:
+	using IndividualShape::IndividualShape;
+
+	PixelRect const GetRect(PixelPoint const & inheritedOffset) const
+	{
+		return PixelRect();   // return empty rect
+	}
+
+	void Draw( GridPoint const gp )
+	{
+		// individuals are too small to display any text
+	}
 };
 
 class IndividualShape_Level_1 : public IndividualShape

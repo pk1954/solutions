@@ -45,8 +45,11 @@ DrawFrame::DrawFrame
     SetStrategyColor( tStrategyId::cooperate, CLR_COOPERATE );
     SetStrategyColor( tStrategyId::tit4tat,   CLR_TIT4TAT   );
 
+	m_pIndividualShape_Level_0 = new IndividualShape_Level_0( m_pD3dBuffer, m_wBuffer, m_pCore, m_pPixelCoordinates );
 	m_pIndividualShape_Level_1 = new IndividualShape_Level_1( m_pD3dBuffer, m_wBuffer, m_pCore, m_pPixelCoordinates );
 	m_pIndividualShape_Level_2 = new IndividualShape_Level_2( m_pD3dBuffer, m_wBuffer, m_pCore, m_pPixelCoordinates );
+	m_pShapeHighlight = nullptr;
+	m_offsetpHighlight = PixelPoint( 0, 0 );
 	Resize();
 }
 
@@ -88,7 +91,21 @@ void DrawFrame::Resize( )
 	if ( iFontSize > 16 )
 		iFontSize = 16;
     m_pD3dBuffer->ResetFont( iFontSize );
-	m_pIndividualShape = ( sFieldSize < 256 ) ? m_pIndividualShape_Level_1 : m_pIndividualShape_Level_2;
+	m_pIndividualShape = ( sFieldSize < 96 ) 
+		                 ? m_pIndividualShape_Level_0
+		                 : ( sFieldSize < 256 ) 
+		                   ? m_pIndividualShape_Level_1 
+		                   : m_pIndividualShape_Level_2;
+}
+
+bool DrawFrame::SetHighlightPos( PixelPoint const & pos )
+{
+	GridPoint const   gpLast     = m_gpHighlight;
+	Shape     const * pShapeLast = m_pShapeHighlight;
+	m_gpHighlight      = m_pPixelCoordinates->Pixel2GridPos( pos );
+	m_offsetpHighlight = m_pIndividualShape->GetOffset( m_gpHighlight );
+	m_pShapeHighlight  = m_pIndividualShape->FindSubshape( m_offsetpHighlight, pos );
+	return ( (gpLast != m_gpHighlight) || (pShapeLast != m_pShapeHighlight) );
 }
 
 void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
@@ -105,14 +122,17 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 	        GridRect  const rcGrid( m_pPixelCoordinates->Pixel2GridRect( pixRect ) );
             drawPOI( m_pCore->FindPOI( ) );
             drawIndividuals( rcGrid );
-            if ( m_pPixelCoordinates->GetFieldSize() >= 96 )
+            drawText( rcGrid );
+			if ( m_pShapeHighlight != nullptr )
 			{
-                drawText( rcGrid );
+				PixelRect const rect = static_cast<const RectShape *>(m_pShapeHighlight)->GetRect( m_offsetpHighlight );
+				if ( rect.IsNotEmpty() )
+					m_pD3dBuffer->RenderTranspRect( rect, D3DCOLOR_ARGB( 128, 255, 217, 0) );  
 			}
         }
 
         if ( m_pCore->SelectionIsNotEmpty() )
-            m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), D3DCOLOR_ARGB( 64, 0, 217, 255)  );  
+            m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), D3DCOLOR_ARGB( 64, 0, 217, 255) );  
 
         if ( pkgr.IsNotEmpty( ) )
             m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), D3DCOLOR_ARGB( 128, 255, 217, 0) );  
@@ -129,14 +149,21 @@ void DrawFrame::drawBackground( )
 	(          
     	[&](GridPoint const & gp)
 		{
-			int   const iValue  = m_pDspOptWindow->GetIntValue( Wrap2Grid(gp) );
-			DWORD const dwColor = getBackgroundColor( iValue );
-			m_pD3dBuffer->AddBackgroundPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), dwColor, m_fPxSize );
+			int        const iValue  = m_pDspOptWindow->GetIntValue( Wrap2Grid(gp) );
+			DWORD      const dwColor = getBackgroundColor( iValue );
+			PixelPoint const pnt     = m_pPixelCoordinates->Grid2PixelPosCenter( gp );
+			m_pD3dBuffer->AddBackgroundPrimitive( pnt, dwColor, m_fPxSize );
 		},
 		m_pD3dBuffer->GetStripMode() // if strip mode add borders to grid
 	);
 
 	m_pD3dBuffer->RenderBackground( );
+}
+
+void DrawFrame::addPrimitive( GridPoint const & gp, DWORD const dwColor, float const fPixSize ) const
+{
+    if ( gp.IsNotNull( ) )
+		m_pD3dBuffer->AddIndividualPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), dwColor, fPixSize );
 }
 
 void DrawFrame::drawPOI( GridPoint const & gpPoi )
@@ -146,19 +173,14 @@ void DrawFrame::drawPOI( GridPoint const & gpPoi )
         PixelPoint const ptCenter = m_pPixelCoordinates->Grid2PixelPosCenter( gpPoi );
 		float      const fPixSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) );
 
-        m_pD3dBuffer->AddIndividualPrimitive( ptCenter, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
-        m_pD3dBuffer->AddIndividualPrimitive( ptCenter, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
+        addPrimitive( gpPoi, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
+        addPrimitive( gpPoi, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
 
         PlannedActivity const planPoi = m_pCore->GetPlan( );
         if ( planPoi.IsValid( ) )
         {
-            GridPoint const gpTarget = planPoi.GetTarget( );
-            if ( gpTarget.IsNotNull( ) )
-                m_pD3dBuffer->AddIndividualPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gpTarget ), CLR_GREY, fPixSize * 0.45f );   // mark target
-
-            GridPoint const gpPartner = planPoi.GetPartner( );
-            if ( gpPartner.IsNotNull( ) )
-                m_pD3dBuffer->AddIndividualPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gpPartner ), CLR_GREY, fPixSize * 0.45f );   // mark target
+            addPrimitive( planPoi.GetTarget( ),  CLR_GREY, fPixSize * 0.45f );   // mark target
+            addPrimitive( planPoi.GetPartner( ), CLR_GREY, fPixSize * 0.45f );   // mark target
         }
     }
 }
@@ -171,7 +193,16 @@ void DrawFrame::drawIndividuals( GridRect const & rect )
                                                        ((3 * sFieldSize) / 8    );
 	float const fHalfSizeInd = static_cast<float>( lHalfSizeInd );
 
-    rect.Apply2Rect( [&](GridPoint const & gp) { setIndividualColor( gp, fHalfSizeInd ); } );
+    rect.Apply2Rect
+	( 
+		[&](GridPoint const & gp) 
+	    { 
+            if ( m_pCore->IsAlive( gp ) )
+            {
+				setIndividualColor( gp, fHalfSizeInd ); 
+			}
+	    } 
+	);
 
     m_pD3dBuffer->RenderIndividuals( ); 
 }
@@ -192,23 +223,15 @@ void DrawFrame::drawText( GridRect const & rect )
 
 void DrawFrame::setIndividualColor( GridPoint const & gp, float const fHalfSize ) const
 {
-    tStrategyId const strat   = m_pCore->GetStrategyId( gp );
-    short       const sEnergy = m_pCore->GetEnergy  ( gp );
-    if ( sEnergy <= 0 )
-        return;
+    tStrategyId const strat = m_pCore->GetStrategyId( gp );
     if ( static_cast<int>( strat ) >= NR_STRATEGIES )
         return;                   // can happen in case of race conditions between display thread and worker thread
     //lint -e571  suspicious cast
-    UINT const uiIndex = static_cast<UINT>( sEnergy );
+    UINT const uiIndex = static_cast<UINT>( m_pCore->GetEnergy( gp ) );
     //lint +e571
     CLUT const & clut = m_aClutStrat.at( static_cast<int>( strat ) );
     assert( uiIndex < clut.GetSize() ); 
-    m_pD3dBuffer->AddIndividualPrimitive
-	( 
-		m_pPixelCoordinates->Grid2PixelPosCenter( gp ), 
-		clut.Get( uiIndex ), 
-		fHalfSize 
-	);
+    addPrimitive( gp, clut.Get( uiIndex ),fHalfSize );
 }
 
 COLORREF DrawFrame::getBackgroundColor( int const iValue ) const

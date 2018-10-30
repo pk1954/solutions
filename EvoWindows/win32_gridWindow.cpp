@@ -150,6 +150,9 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
 
     m_pFocusPoint->SetFocusPoint( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
 
+	if ( m_pDrawFrame->SetHighlightPos( ptCrsr ) )
+		PostCommand2Application( IDM_REFRESH, 0 );
+
     if ( wParam & MK_RBUTTON )                // Right mouse button: selection
     {
         if ( m_ptLast.x != LONG_MIN )  // last cursor pos stored in m_ptLast
@@ -304,12 +307,14 @@ void GridWindow::SetFieldSize( SHORT const fieldSize )
 {
 	m_pPixelCore->SetFieldSize( fieldSize, GetClRectCenter( ) );
 	m_pDrawFrame->Resize( );
+	m_pDrawFrame->SetHighlightPos( GetRelativeCrsrPosition( ) );
 }
 
 void GridWindow::Fit2Rect( )
 {
 	m_pPixelCore->FitToRect( GetClRectSize( ) ); 
 	m_pDrawFrame->Resize( );
+	m_pDrawFrame->SetHighlightPos( GetRelativeCrsrPosition( ) );
 }
 
 void GridWindow::Zoom( bool const bZoomIn )	

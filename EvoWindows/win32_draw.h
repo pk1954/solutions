@@ -20,6 +20,7 @@ class PixelCoordinates;
 class IndividualShape;
 class DspOptWindow;
 class D3dBuffer;
+class Shape;
 
 using namespace std;
 
@@ -35,6 +36,7 @@ public:
 	void SetStrategyColor( tStrategyId const, COLORREF const );
     void SetStripMode( tBoolOp );
     void SetIndDimmMode( tBoolOp );
+	bool SetHighlightPos( PixelPoint const & );
 
 private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
@@ -46,9 +48,13 @@ private:
     PixelCoordinates * const m_pPixelCoordinates;
     DspOptWindow     * const m_pDspOptWindow;
     D3dBuffer        *       m_pD3dBuffer;
+	IndividualShape  *       m_pIndividualShape_Level_0;
 	IndividualShape  *       m_pIndividualShape_Level_1;
 	IndividualShape  *       m_pIndividualShape_Level_2;
 	IndividualShape  *       m_pIndividualShape;
+	Shape    const   *       m_pShapeHighlight;
+	PixelPoint               m_offsetpHighlight;
+	GridPoint                m_gpHighlight;
 
     static UINT const MAX_BG_COLOR = 255;
 
@@ -65,6 +71,7 @@ private:
 
     COLORREF getBackgroundColor( int const ) const;
     void     setIndividualColor( GridPoint const &, float const ) const;
+	void     addPrimitive( GridPoint const &, DWORD const, float const ) const;
 
 	void drawBackground( );
     void drawText       ( GridRect  const & );

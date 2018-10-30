@@ -18,7 +18,7 @@ public:
 		m_pCore( pCore )
 	{}
 
-	void Draw( GridPoint const gp, PixelPoint const inheritedOffset )
+	void Draw( GridPoint const gp, PixelPoint const & inheritedOffset )
 	{
 		m_wBuffer.str( wstring() );
 		m_wBuffer.clear();
@@ -26,9 +26,12 @@ public:
 		m_pD3dBuffer->D3D_DrawText( GetRect( inheritedOffset ), m_wBuffer.str( ), CLR_WHITE );
 	}
 
+	virtual void Highlight( PixelPoint const & offset ) const
+	{}
+
 protected:
 
-	virtual void FillBuffer( GridPoint const gp ) = 0;
+	virtual void FillBuffer( GridPoint const ) = 0;
 
     D3dBuffer     *       m_pD3dBuffer;
 	wostringstream      & m_wBuffer;
