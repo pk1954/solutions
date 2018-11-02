@@ -51,7 +51,7 @@ void Genome::InitClass( )
 
     setGeneralLimits( tGeneType::appetite,           1, Config::GetConfigValue( Config::tId::maxFood      ) );
     setGeneralLimits( tGeneType::fertilInvest,       1, Config::GetConfigValue( Config::tId::maxFood      ) );
-    setGeneralLimits( tGeneType::memSize,            1, StrategyData::IMEMSIZE_MAX                         );
+    setGeneralLimits( tGeneType::memSize,            1, IMEMSIZE_MAX );
     setGeneralLimits( tGeneType::thresholdClone,     0, Config::GetConfigValue( Config::tId::stdCapacity  ) );
     setGeneralLimits( tGeneType::thresholdMarry,     0, Config::GetConfigValue( Config::tId::stdCapacity  ) );
     setGeneralLimits( tGeneType::thresholdMove,      0, Config::GetConfigValue( Config::tId::stdCapacity  ) );

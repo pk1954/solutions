@@ -11,47 +11,27 @@ using namespace std;
 class Shape
 {
 public:
-	Shape() :
+	Shape( Shape * const pParent ) :
+		m_pParent( pParent ),
 		m_shapeOffset( PixelPoint( 0, 0 ) )
 	{}
 
-	// PointInShape: 
-	// all parameters are relative to client rect
+	virtual bool PointInShape( PixelPoint const & ) const = 0;
 
-	virtual bool PointInShape( PixelPoint const &, PixelPoint const & ) const = 0;
-	virtual void Highlight( PixelPoint const & ) const = 0;
-
-	////////////////////
-
-	Shape const * FindSubshape
-	( 
-		PixelPoint const & inheritedOffset, // offset of superior shape relative to client rect
-		PixelPoint const & pnt              // point to be searched for, coordinates relative to client rect
-	) const
+	PixelPoint GetAbsoluteOffset( ) const
 	{
-		PixelPoint offset( m_shapeOffset + inheritedOffset );
-		for ( auto &shape : m_subShapes )
-			if ( shape->PointInShape( offset, pnt ) )
-				return shape;
-		return nullptr;
+		PixelPoint pRes = m_shapeOffset;
+		if ( m_pParent )
+			pRes += m_pParent->GetAbsoluteOffset();
+		return pRes;
 	}
 
-	PixelPoint GetOffset( ) const
-	{
-		return m_shapeOffset;
-	}
-
-	void SetOffset( PixelPoint const offset )
+	void SetShapeOffset( PixelPoint const offset )
 	{
 		m_shapeOffset = offset;
 	}
 
-	void AddSubShape( Shape * const pShape )
-	{
-		m_subShapes.push_back( pShape );
-	}
-
 private:
-	PixelPoint      m_shapeOffset;    // offset relative to superior shape
-	vector<Shape *> m_subShapes;
+	PixelPoint m_shapeOffset;    // offset relative to superior shape
+	Shape    * m_pParent;
 };

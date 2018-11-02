@@ -39,7 +39,7 @@ public:
 	void PostSetBrushManipulator( tManipulator const );
     void PostSetBrushIntensity( LONG const );
     void PostSetBrushRadius( INT const );
-    void PostRefresh( );
+    void PostRefresh( LPARAM const );
     void PostReset( BOOL );
     void PostProcessScript( std::wstring const & );
 	void PostRunGenerations( bool const bFirst = true );

@@ -31,9 +31,9 @@ void RootWindow::SetWindowHandle( HWND const hwnd )
 	m_hwndApp = GetAncestor( m_hwnd, GA_ROOTOWNER );
 };
 
-void RootWindow::Notify( )
+void RootWindow::Notify( bool const bImmediately )
 {
-    if ( m_dwRefreshRate == 0 )
+    if ( bImmediately || (m_dwRefreshRate == 0) )
         invalidate( );
     else
     {

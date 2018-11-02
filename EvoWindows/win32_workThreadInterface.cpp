@@ -71,11 +71,11 @@ void WorkThreadInterface::PostReset( BOOL bResetHistSys )
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_RESET_MODEL, bResetHistSys, 0 );
 }
 
-void WorkThreadInterface::PostRefresh( )
+void WorkThreadInterface::PostRefresh( LPARAM const lParam )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_REFRESH, 0, 0 );
+    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_REFRESH, 0, lParam );
 }
 
 void WorkThreadInterface::PostSetPOI( GridPoint const & gp )

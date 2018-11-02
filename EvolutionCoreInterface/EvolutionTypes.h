@@ -12,6 +12,8 @@ typedef          long  EVO_GENERATION;
 
 GRID_COORD const MAX_GRID_COORD = UCHAR_MAX;
 
+static MEM_INDEX const IMEMSIZE_MAX = 9;
+
 //lint -sem(IndId::ResetIndId,initializer)
 
 class IndId
@@ -29,7 +31,7 @@ public:
     
     inline void ResetIndId( )       
     {
-        m_lIdentifier  = ID_NO_INDIVIDUAL;  
+        m_lIdentifier = ID_NO_INDIVIDUAL;  
     };
 
     inline long GetLong( )   const { return m_lIdentifier; };

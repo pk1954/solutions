@@ -47,8 +47,8 @@ bool PixelCoordinates::CenterPoi( PixelPoint const pixCenter, GridPoint const gp
     if ( gpPoi.IsNull( ) )
         return true;
 
-    PixelPoint pixCenterOffset = getCenterOffset( GridRect( gpPoi, gpPoi + 1 ), pixCenter );
-    bool       bCentered       = ( m_pixOffset == pixCenterOffset );
+    PixelPoint pixCenterOffset( getCenterOffset( GridRect( gpPoi, gpPoi + 1 ), pixCenter ) );
+    bool       bCentered( m_pixOffset == pixCenterOffset );
 
     if ( ! bCentered )
         m_pixOffset = m_smoothMove.Step( m_pixOffset, pixCenterOffset );
@@ -61,7 +61,7 @@ bool PixelCoordinates::FitGridToRect( GridRect const & gridRect, PixelRectSize c
     GridPoint gp( pntPixSize.GetWidth(), pntPixSize.GetHeight() );
     gp /= gridRect.GetSize() + 1;
 
-    short const sNewFieldSize = std::min( gp.x, gp.y );
+    short const sNewFieldSize( std::min( gp.x, gp.y ) );
     
     if ( !isValidFieldSize( sNewFieldSize ) )
         return false;
@@ -86,15 +86,15 @@ bool PixelCoordinates::SetGridFieldSize( short const sNewFieldSize, PixelPoint c
 
 short PixelCoordinates::ComputeNewFieldSize( bool const bZoomIn ) const
 {
-    short sNewFieldSize = m_sFieldSize;
+    short sNewFieldSize( m_sFieldSize );
     if ( bZoomIn )
     {
-        short const sDelta = ( m_sFieldSize < 16 ) ? 1 : (( m_sFieldSize < 64 ) ? 16 : 32);
+        short const sDelta( ( m_sFieldSize < 16 ) ? 1 : (( m_sFieldSize < 64 ) ? 16 : 32) );
         sNewFieldSize += sDelta;
     }
     else
     {
-        short const sDelta = ( m_sFieldSize <= 16 ) ? 1 : (( m_sFieldSize <= 64 ) ? 16 : 32);
+        short const sDelta( ( m_sFieldSize <= 16 ) ? 1 : (( m_sFieldSize <= 64 ) ? 16 : 32) );
         sNewFieldSize -= sDelta;
     }
 	return sNewFieldSize;
@@ -102,7 +102,7 @@ short PixelCoordinates::ComputeNewFieldSize( bool const bZoomIn ) const
 
 PixelPoint PixelCoordinates::Pixel2PixelSize( PixelPoint const & ptSizeIn, PixelCoordinates const & fTarget ) const 
 {
-    static long const FACTOR = 1024; // to avoid zero when dividing small ptSizeIn by m_sFieldSize 
+    static long const FACTOR( 1024 ); // to avoid zero when dividing small ptSizeIn by m_sFieldSize 
 
     return (((ptSizeIn * FACTOR) / m_sFieldSize) * fTarget.m_sFieldSize ) / FACTOR;
 }
@@ -134,7 +134,7 @@ PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint  const & gp ) const
 
 PixelPoint PixelCoordinates::Grid2PixelPos ( GridPoint const & gp ) const 
 { 
-	PixelPoint ppRes = Grid2PixelSize( gp ) - m_pixOffset;
+	PixelPoint ppRes( Grid2PixelSize( gp ) - m_pixOffset );
 
 	if ( m_bHexagon && gp.IsOddCol( ) )
 		ppRes.y -= m_sFieldSize / 2 ;
@@ -146,7 +146,7 @@ PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint  const & gp ) const
 { 
 	if (m_bHexagon)
 	{
-		PixelPoint pxResult = Grid2PixelPos( gp );
+		PixelPoint pxResult( Grid2PixelPos( gp ) );
 		pxResult.x += static_cast<long>(SQRT3_DIV3 * m_sFieldSize);
 		pxResult.y += m_sFieldSize / 2;
 		return pxResult;
@@ -157,7 +157,7 @@ PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint  const & gp ) const
 
 GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const & pp ) const 
 { 
-	PixelPoint pixPoint = pp + m_pixOffset;
+	PixelPoint pixPoint( pp + m_pixOffset );
 
 	if ( m_bHexagon ) // adapted from http://blog.ruslans.com/2011/02/hexagonal-grid-math.html
 	{
@@ -230,8 +230,8 @@ KGridRect PixelCoordinates::Pixel2KGridRect( PixelRect const & rect ) const
 
 PixelRect PixelCoordinates::KGrid2PixelRect( KGridRect const & kgrIn ) const 
 {
-    PixelPoint const ptPos  = KGrid2PixelPos ( kgrIn.GetPos()  );
-    PixelPoint const ptSize = KGrid2PixelSize( kgrIn.GetSiz(), m_sFieldSize );
+    PixelPoint const ptPos ( KGrid2PixelPos ( kgrIn.GetPos()  ) );
+    PixelPoint const ptSize( KGrid2PixelSize( kgrIn.GetSiz(), m_sFieldSize ) );
     return PixelRect( ptPos, ptPos + ptSize );
 }
 

@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include <vector>
 #include "config.h"
 #include "EvolutionCore.h"
 #include "pixelCoordinates.h"
@@ -45,11 +44,11 @@ DrawFrame::DrawFrame
     SetStrategyColor( tStrategyId::cooperate, CLR_COOPERATE );
     SetStrategyColor( tStrategyId::tit4tat,   CLR_TIT4TAT   );
 
-	m_pIndividualShape_Level_0 = new IndividualShape_Level_0( m_pD3dBuffer, m_wBuffer, m_pCore, m_pPixelCoordinates );
-	m_pIndividualShape_Level_1 = new IndividualShape_Level_1( m_pD3dBuffer, m_wBuffer, m_pCore, m_pPixelCoordinates );
-	m_pIndividualShape_Level_2 = new IndividualShape_Level_2( m_pD3dBuffer, m_wBuffer, m_pCore, m_pPixelCoordinates );
+	m_pTextDisplay  = new TextDisplay( * m_pD3dBuffer, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
+	m_pZoom_level_0 = new Zoom_level_0( * m_pTextDisplay );
+	m_pZoom_level_1 = new Zoom_level_1( * m_pTextDisplay );
+	m_pZoom_level_2 = new Zoom_level_2( * m_pTextDisplay );
 	m_pShapeHighlight = nullptr;
-	m_offsetpHighlight = PixelPoint( 0, 0 );
 	Resize();
 }
 
@@ -92,20 +91,36 @@ void DrawFrame::Resize( )
 		iFontSize = 16;
     m_pD3dBuffer->ResetFont( iFontSize );
 	m_pIndividualShape = ( sFieldSize < 96 ) 
-		                 ? m_pIndividualShape_Level_0
+		                 ? m_pZoom_level_0
 		                 : ( sFieldSize < 256 ) 
-		                   ? m_pIndividualShape_Level_1 
-		                   : m_pIndividualShape_Level_2;
+		                   ? m_pZoom_level_1 
+		                   : m_pZoom_level_2;
+}
+
+void DrawFrame::prepareIndividualShape( GridPoint const & gp )
+{
+	long lSizeInd = (5 * m_pPixelCoordinates->GetFieldSize()) / 8;  // use only 5/8 of field size; 
+	m_pIndividualShape->SetSize( PixelRectSize( lSizeInd, lSizeInd ) );
+	m_pIndividualShape->SetShapeOffset( m_pPixelCoordinates->Grid2PixelPosCenter( gp ) - lSizeInd / 2 );
+	m_pIndividualShape->PrepareShape( );
 }
 
 bool DrawFrame::SetHighlightPos( PixelPoint const & pos )
 {
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
-	m_gpHighlight      = m_pPixelCoordinates->Pixel2GridPos( pos );
-	m_offsetpHighlight = m_pIndividualShape->GetOffset( m_gpHighlight );
-	m_pShapeHighlight  = m_pIndividualShape->FindSubshape( m_offsetpHighlight, pos );
+	m_gpHighlight = m_pPixelCoordinates->Pixel2GridPos( pos );
+	prepareIndividualShape( m_gpHighlight );
+	m_pShapeHighlight = m_pIndividualShape->FindRelevantShape( pos, m_gpHighlight );
 	return ( (gpLast != m_gpHighlight) || (pShapeLast != m_pShapeHighlight) );
+}
+
+void DrawFrame::HighlightRect( PixelRect const & rect )
+{
+	if ( rect.IsNotEmpty() )
+	{
+		m_pD3dBuffer->RenderTranspRect( rect, D3DCOLOR_ARGB( 128, 255, 217, 0) );  
+	}
 }
 
 void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
@@ -125,9 +140,11 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
             drawText( rcGrid );
 			if ( m_pShapeHighlight != nullptr )
 			{
-				PixelRect const rect = static_cast<const RectShape *>(m_pShapeHighlight)->GetRect( m_offsetpHighlight );
-				if ( rect.IsNotEmpty() )
-					m_pD3dBuffer->RenderTranspRect( rect, D3DCOLOR_ARGB( 128, 255, 217, 0) );  
+				prepareIndividualShape( m_gpHighlight );
+				HighlightRect( m_pShapeHighlight->GetRect( ) );
+				GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( m_gpHighlight );
+				if ( m_gpHighlight != GridPoint::GP_NULL )
+					HighlightRect( m_pPixelCoordinates->Grid2PixelRect( GridRect( gpReferenced, gpReferenced ) ) );
 			}
         }
 
@@ -215,6 +232,7 @@ void DrawFrame::drawText( GridRect const & rect )
 		{
             if ( m_pCore->IsAlive( gp ) )
             {
+				prepareIndividualShape( gp );
 				m_pIndividualShape->Draw( gp );
             }
 		}

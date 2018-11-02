@@ -146,12 +146,12 @@ void GridWindow::moveGrid( PixelPoint const & ptDiff )
 
 void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
 {
-    PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );
+    PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
 
     m_pFocusPoint->SetFocusPoint( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
 
 	if ( m_pDrawFrame->SetHighlightPos( ptCrsr ) )
-		PostCommand2Application( IDM_REFRESH, 0 );
+		PostCommand2Application( IDM_REFRESH, 1 );   // refresh immediatelly
 
     if ( wParam & MK_RBUTTON )                // Right mouse button: selection
     {

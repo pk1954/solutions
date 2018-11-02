@@ -48,6 +48,6 @@ void FocusPoint::SetFocusPoint( GridPoint const gpNew )
 //            }
 //        }
 
-        m_ViewCollection.Notify( );
+        m_ViewCollection.Notify( false );
     }
 }

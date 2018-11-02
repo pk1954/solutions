@@ -8,5 +8,5 @@ class ObserverInterface
 public:
     virtual ~ObserverInterface( ) {};
 
-    virtual void Notify( ) = 0;
+    virtual void Notify( bool const ) = 0;
 };

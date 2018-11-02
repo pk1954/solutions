@@ -16,11 +16,11 @@ public:
 	~ViewCollection( )	
 	{ }
 
-	virtual void Notify( )
+	virtual void Notify( bool const bImmediately )
 	{
 		for ( auto &v : m_aView )
 		{
-			v->Notify();
+			v->Notify( bImmediately );
 		}
 	}
 

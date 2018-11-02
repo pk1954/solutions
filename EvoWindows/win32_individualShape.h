@@ -18,55 +18,35 @@ class RightColumn;
 class IndividualShape : public GridPointShape
 {
 public:
-	IndividualShape
-	( 
-		D3dBuffer        * const pD3dBuffer, 
-		wostringstream         & wBuffer, 
-		EvolutionCore    * const pCore,
-		PixelCoordinates * const pPixelCoordinates
-	) :
-		GridPointShape( pD3dBuffer, wBuffer, pCore ),
-		m_leftColumn ( pD3dBuffer, wBuffer, pCore ),
-		m_rightColumn( pD3dBuffer, wBuffer, pCore ),
-		m_pPixelCoordinates( pPixelCoordinates )
-	{ 
-		AddSubShape( & m_leftColumn );
-		AddSubShape( & m_rightColumn );
-	}
-
-	PixelPoint GetOffset( GridPoint const gp )
-	{
-		return m_pPixelCoordinates->Grid2PixelPosCenter( gp ) - m_lSizeInd / 2;
-	}
-
-	void PrepareShape( GridPoint const gp  )
-	{
-		m_lSizeInd = (5 * m_pPixelCoordinates->GetFieldSize()) / 8;                    // use only 5/8 of field size
-		m_offset   = GetOffset( gp );
-	}
+	using GridPointShape::GridPointShape;
 
 	virtual void FillBuffer( GridPoint const gp ) { };  // all text in subshapes
 
 	virtual void Draw( GridPoint const ) = 0;
 
-protected:
-
-	LeftColumn  m_leftColumn;
-	RightColumn m_rightColumn;
-	PixelPoint  m_offset;
-	long        m_lSizeInd;
-
-private:
-
-    PixelCoordinates * const m_pPixelCoordinates;
+	virtual GridPointShape const * FindRelevantShape( PixelPoint const &, GridPoint const ) const = 0;
 };
 
-class IndividualShape_Level_0 : public IndividualShape
+class Zoom_level_0 : public IndividualShape
 {
 public:
-	using IndividualShape::IndividualShape;
+	Zoom_level_0( TextDisplay & textDisplay ) :
+		IndividualShape( nullptr, textDisplay )
+	{ }
 
-	PixelRect const GetRect(PixelPoint const & inheritedOffset) const
+	virtual void PrepareShape(  )
+	{ }
+
+	GridPointShape const * FindRelevantShape
+	( 
+		PixelPoint const & pnt,            
+		GridPoint  const   gp
+	) const
+	{
+		return nullptr;
+	}
+
+	PixelRect const GetRect( ) const
 	{
 		return PixelRect();   // return empty rect
 	}
@@ -77,38 +57,94 @@ public:
 	}
 };
 
-class IndividualShape_Level_1 : public IndividualShape
+class Zoom_level_1 : public IndividualShape
 {
 public:
-	using IndividualShape::IndividualShape;
+	Zoom_level_1( TextDisplay & textDisplay ) :
+		IndividualShape( nullptr, textDisplay ),
+		m_leftColumn   ( this, textDisplay )
+	{ }
+
+	virtual void PrepareShape( )
+	{
+		m_leftColumn.SetSize( PixelRectSize( GetSize().GetWidth() / 2, GetSize().GetHeight() ) );
+		m_leftColumn.SetShapeOffset( PixelPoint( 0, 0 ) );
+		m_leftColumn.PrepareShape( );
+	}
+
+	GridPointShape const * FindRelevantShape
+	( 
+		PixelPoint const & pnt,
+		GridPoint  const   gp
+	) const
+	{
+		GridPointShape const * pShapeRes = m_leftColumn.FindShape( pnt, gp );
+		if ( pShapeRes != nullptr )
+			return pShapeRes;
+
+		return PointInShape( pnt ) ? this : nullptr;
+	}
 
 	void Draw( GridPoint const gp )
 	{
-		PrepareShape( gp );
-		m_leftColumn.SetSize( PixelRectSize( m_lSizeInd, m_lSizeInd ) );
-		m_leftColumn.SetOffset( PixelPoint( 0, 0 ) );
-		m_leftColumn.Draw( gp, m_offset );
+		m_leftColumn.Draw( gp );
 	}
+
+private:
+		LeftColumn m_leftColumn;
 };
 
-class IndividualShape_Level_2 : public IndividualShape
+class Zoom_level_2 : public IndividualShape
 {
 public:
-	using IndividualShape::IndividualShape;
+	Zoom_level_2( TextDisplay & textDisplay ) :
+		IndividualShape( nullptr, textDisplay ),
+		m_leftColumn ( this, textDisplay ),
+		m_rightColumn( this, textDisplay )
+	{ }
+
+	virtual void PrepareShape( )
+	{
+		m_leftColumn.SetSize( PixelRectSize( GetSize().GetWidth() / 2, GetSize().GetHeight() ) );
+		m_leftColumn.SetShapeOffset( PixelPoint( 0, 0 ) );
+		m_leftColumn.PrepareShape( );
+
+		m_rightColumn.SetSize( PixelRectSize( GetSize().GetWidth() / 2, GetSize().GetHeight() ) );
+		m_rightColumn.SetShapeOffset( PixelPoint( GetSize().GetWidth() / 2, 0 ) );
+		m_rightColumn.PrepareShape( );
+	}
+
+	GridPointShape const * FindRelevantShape
+	( 
+		PixelPoint const & pnt, 
+		GridPoint  const   gp
+	) const
+	{
+		GridPointShape const * pShapeRes = m_leftColumn.FindShape( pnt, gp );
+		if ( pShapeRes != nullptr )
+			return pShapeRes;
+
+		if ( m_textDisplay.Core().GetStrategyId( gp ) == tStrategyId::tit4tat )
+		{
+			pShapeRes = m_rightColumn.FindShape( pnt, gp );
+			if ( pShapeRes != nullptr )
+				return pShapeRes;
+		}
+
+		return PointInShape( pnt ) ? this : nullptr;
+	}
 
 	void Draw( GridPoint const gp )
 	{
-		PrepareShape( gp );
-		m_leftColumn .SetSize( PixelRectSize( m_lSizeInd / 2, m_lSizeInd ) );
-		m_rightColumn.SetSize( PixelRectSize( m_lSizeInd / 2, m_lSizeInd ) );
-		m_leftColumn .SetOffset( PixelPoint( 0, 0 ) );
-		m_rightColumn.SetOffset( PixelPoint( m_lSizeInd / 2, 0 ) );
+		m_leftColumn.Draw( gp );
 
-		m_leftColumn.Draw( gp, m_offset );
-
-		if ( m_pCore->GetStrategyId( gp ) == tStrategyId::tit4tat )
+		if ( m_textDisplay.Core().GetStrategyId( gp ) == tStrategyId::tit4tat )
 		{
-			m_rightColumn.Draw( gp, m_offset );
+			m_rightColumn.Draw( gp );
 		}
 	}
+
+private:
+	LeftColumn  m_leftColumn;
+	RightColumn m_rightColumn;
 };

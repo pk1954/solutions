@@ -158,5 +158,8 @@
     <ClInclude Include="win32_rightColumn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="win32_textDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

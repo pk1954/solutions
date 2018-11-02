@@ -11,8 +11,6 @@ class StrategyData
 public:
     StrategyData( );
 
-    static MEM_INDEX const IMEMSIZE_MAX = 20;
-
     void SetMemorySize( MEM_INDEX const );
 
     // display information

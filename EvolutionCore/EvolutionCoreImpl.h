@@ -69,7 +69,7 @@ public:
     virtual bool           IsAlive      ( GridPoint const & gp ) const { return getGridField( gp ).IsAlive( ); }
     virtual bool           IsDefined    ( GridPoint const & gp ) const { return getGridField( gp ).IsDefined( ); }
 
-    virtual long           GetMemEntry  ( GridPoint const & gp, MEM_INDEX const index ) const { return getGridField( gp ).GetMemEntry( index ); }
+    virtual IndId          GetMemEntry  ( GridPoint const & gp, MEM_INDEX const index ) const { return getGridField( gp ).GetMemEntry( index ); }
     virtual long           GetGenotype  ( GridPoint const & gp, tGeneType const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
     virtual short          GetDistr     ( GridPoint const & gp, tAction   const at    ) const { return getGenome( gp ).GetDistr( at ); }
 
@@ -108,9 +108,9 @@ public:
 
 	virtual void SetPoi( GridPoint const & );
     virtual GridPoint FindPOI( ) const;
-	virtual GridPoint FindGridPoint( IndId const & id ) const 
+	virtual GridPoint FindGridPoint( IndId const & id, GridRect const & rect = GridRect::GRID_RECT_FULL ) const 
 	{ 
-		return m_grid.FindGridPoint( [&](GridPoint const & gp) { return (GetId(gp) == id); } );
+		return m_grid.FindGridPoint( [&](GridPoint const & gp) { return (GetId(gp) == id); }, rect );
 	}
 
 private:

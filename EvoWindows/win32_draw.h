@@ -19,8 +19,9 @@ class EvolutionCore;
 class PixelCoordinates;
 class IndividualShape;
 class DspOptWindow;
+class TextDisplay;
 class D3dBuffer;
-class Shape;
+class GridPointShape;
 
 using namespace std;
 
@@ -37,6 +38,7 @@ public:
     void SetStripMode( tBoolOp );
     void SetIndDimmMode( tBoolOp );
 	bool SetHighlightPos( PixelPoint const & );
+	void HighlightRect( PixelRect const & );
 
 private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
@@ -47,14 +49,16 @@ private:
     EvolutionCore    * const m_pCore;
     PixelCoordinates * const m_pPixelCoordinates;
     DspOptWindow     * const m_pDspOptWindow;
-    D3dBuffer        *       m_pD3dBuffer;
-	IndividualShape  *       m_pIndividualShape_Level_0;
-	IndividualShape  *       m_pIndividualShape_Level_1;
-	IndividualShape  *       m_pIndividualShape_Level_2;
-	IndividualShape  *       m_pIndividualShape;
-	Shape    const   *       m_pShapeHighlight;
-	PixelPoint               m_offsetpHighlight;
-	GridPoint                m_gpHighlight;
+
+    D3dBuffer        * m_pD3dBuffer;
+	IndividualShape  * m_pZoom_level_0;
+	IndividualShape  * m_pZoom_level_1;
+	IndividualShape  * m_pZoom_level_2;
+	IndividualShape  * m_pIndividualShape;
+	TextDisplay      * m_pTextDisplay;
+
+	GridPointShape const * m_pShapeHighlight;
+	GridPoint              m_gpHighlight;
 
     static UINT const MAX_BG_COLOR = 255;
 
@@ -72,6 +76,8 @@ private:
     COLORREF getBackgroundColor( int const ) const;
     void     setIndividualColor( GridPoint const &, float const ) const;
 	void     addPrimitive( GridPoint const &, DWORD const, float const ) const;
+	
+	void prepareIndividualShape( GridPoint const & );
 
 	void drawBackground( );
     void drawText       ( GridRect  const & );

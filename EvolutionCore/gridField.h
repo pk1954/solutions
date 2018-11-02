@@ -60,12 +60,12 @@ public:
 
     short  const   GetAllele( tGeneType const geneType ) const { return GetGenome( ).GetAllele( geneType ); }
 
-    long GetMemEntry( MEM_INDEX const i ) const { return m_Individual.GetMemEntry( i ).GetLong( ); }
-    void ResetIndividual( )                     { m_Individual.ResetIndividual( ); }
-    void SetEnergy( short const sInc )          { m_Individual.SetEnergy( sInc ); }
-    void DecEnergy( short const sDec )          { m_Individual.DecEnergy( sDec ); }
-    void IncEnergy( short const sInc )          { m_Individual.IncEnergy( sInc ); }
-    void SetLastAction( tAction const at )      { m_Individual.SetLastAction( at ); }
+    IndId GetMemEntry( MEM_INDEX const i ) const { return m_Individual.GetMemEntry( i ); }
+    void  ResetIndividual( )                     { m_Individual.ResetIndividual( ); }
+    void  SetEnergy( short const sInc )          { m_Individual.SetEnergy( sInc ); }
+    void  DecEnergy( short const sDec )          { m_Individual.DecEnergy( sDec ); }
+    void  IncEnergy( short const sInc )          { m_Individual.IncEnergy( sInc ); }
+    void  SetLastAction( tAction const at )      { m_Individual.SetLastAction( at ); }
 
 	void CreateIndividual( IndId const id, EVO_GENERATION const genBirth, tStrategyId const s )
 	{

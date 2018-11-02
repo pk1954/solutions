@@ -9,6 +9,7 @@
 
 #include "BoolOp.h"
 #include "gridPoint.h"
+#include "gridRect.h"
 #include "ModelData.h"
 #include "EvolutionCore.h"
 
@@ -33,7 +34,7 @@ public:
 	virtual void OnAppCommand( GenerationCmd const );
 	virtual void CopyFrom( ModelData const * const );
 
-    GridPoint FindGridPoint( IndId const & ) const;
+    GridPoint FindGridPoint( IndId const &, GridRect const & = GridRect::GRID_RECT_FULL ) const;
 
 private:
     EvolutionCore * m_pEvolutionCore;

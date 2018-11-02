@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "random.h"
 #include "gridPoint.h"
+#include "gridRect.h"
 #include "gpList.h"
 #include "gridField.h"
 #include "gridNeighbor.h"
@@ -62,7 +63,7 @@ public:
 
     bool ListIsEmpty( ) const { return m_gpList.ListIsEmpty( ); }
 
-    GridPoint FindGridPoint( const std::function<bool( GridPoint const &)>& ) const;
+    GridPoint FindGridPoint( const std::function<bool( GridPoint const &)>&, GridRect const & = GridRect::GRID_RECT_FULL ) const;
 
     // Query functions 
 

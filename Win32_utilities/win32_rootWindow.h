@@ -146,7 +146,7 @@ public:
 		return ptCrsr;
 	}
 
-	virtual void Notify( );
+	virtual void Notify( bool const );
 
 protected:
 

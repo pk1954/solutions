@@ -21,10 +21,7 @@ public:
 
     PixelRect( )
     {
-        m_lLeft = 0;
-        m_lTop = 0;
-        m_lRight = 0;
-        m_lBottom = 0;
+		SetEmpty( );
     };
 
     PixelRect( PixelRect const & rect )
@@ -75,6 +72,24 @@ public:
         m_lBottom = m_lTop  + rectSize.GetHeight(); 
 	}
 
+    void SetEmpty( )
+    {
+        m_lLeft   = 0;
+        m_lTop    = 0;
+        m_lRight  = 0;
+        m_lBottom = 0;
+    };
+
+    bool IsEmpty( ) const
+    {
+        return (m_lLeft == m_lRight) || (m_lTop == m_lBottom);
+    };
+
+    bool IsNotEmpty( ) const
+    {
+        return (m_lLeft < m_lRight) && (m_lTop < m_lBottom);
+    };
+
     PixelPoint const GetStartPoint( ) const 
     {
         return PixelPoint( m_lLeft, m_lTop );
@@ -92,7 +107,7 @@ public:
 
 	bool Includes( PixelPoint const pnt ) const
 	{
-		return (m_lLeft <= pnt.x) && (pnt.x <= m_lRight) && (m_lTop <= pnt.y) && (pnt.y <= m_lBottom);
+		return (m_lLeft <= pnt.x) && (pnt.x < m_lRight) && (m_lTop <= pnt.y) && (pnt.y < m_lBottom);
 	}
 
 	bool const operator== ( PixelRect const & a ) const { return ( a.m_lLeft == m_lLeft ) && ( a.m_lTop == m_lTop ) && ( a.m_lRight == m_lRight ) && ( a.m_lBottom == m_lBottom ); };

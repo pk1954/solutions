@@ -125,7 +125,7 @@ class WrapPostRefresh : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pWorkThreadInterface->PostRefresh( );
+        m_pWorkThreadInterface->PostRefresh( false );
     }
 };
 

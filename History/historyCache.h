@@ -86,7 +86,7 @@ private:
 	void triggerObserver() 
 	{ 	
 		if ( m_pObserver != nullptr )
-			m_pObserver->Notify();
+			m_pObserver->Notify( false );
 	}
 
     int  findSlot4Reuse( );

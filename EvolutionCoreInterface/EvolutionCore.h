@@ -4,6 +4,7 @@
 #pragma once
 
 #include "BoolOp.h"
+#include "GridRect.h"
 #include "EvolutionTypes.h"
 
 class ObserverInterface;
@@ -56,13 +57,13 @@ public:
     virtual MEM_INDEX      GetMemSize   ( GridPoint const & ) const = 0;
     virtual MEM_INDEX      GetMemUsed   ( GridPoint const & ) const = 0;
     virtual tStrategyId    GetStrategyId( GridPoint const & ) const = 0;
-    virtual long           GetMemEntry  ( GridPoint const &, MEM_INDEX const ) const = 0;
+    virtual IndId          GetMemEntry  ( GridPoint const &, MEM_INDEX const ) const = 0;
     virtual short          GetDistr     ( GridPoint const &, tAction   const ) const = 0;
     virtual long           GetGenotype  ( GridPoint const &, tGeneType const ) const = 0;
 	
 	virtual	unsigned int   GetActionCounter( unsigned int const, tAction const ) const = 0;
 
-    virtual GridPoint      FindGridPoint  ( IndId const & ) const = 0;
+    virtual GridPoint      FindGridPoint( IndId const &, GridRect const & = GridRect::GRID_RECT_FULL) const = 0;
 
     virtual PlannedActivity const & GetPlan( ) const = 0;
 

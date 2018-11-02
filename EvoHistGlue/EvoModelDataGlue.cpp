@@ -15,9 +15,9 @@ EvoModelDataGlue::~EvoModelDataGlue( )
     delete m_pEvolutionCore;
 }
 
-GridPoint EvoModelDataGlue::FindGridPoint( IndId const & id ) const
+GridPoint EvoModelDataGlue::FindGridPoint( IndId const & id, GridRect const & rect ) const
 { 
-    return m_pEvolutionCore->FindGridPoint( id );
+    return m_pEvolutionCore->FindGridPoint( id, rect );
 }
 
 void EvoModelDataGlue::CopyFrom( ModelData const * const src )

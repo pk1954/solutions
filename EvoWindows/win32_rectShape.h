@@ -14,14 +14,18 @@ using namespace std;
 class RectShape : public Shape
 {
 public:
-	PixelRect const GetRect( PixelPoint const & inheritedOffset ) const 
+	RectShape( Shape * const pParent ) :
+		Shape( pParent )
+	{}
+
+	PixelRect const GetRect( ) const 
 	{
-		return PixelRect( inheritedOffset + GetOffset(), m_rectSize );
+		return PixelRect( GetAbsoluteOffset(), m_rectSize );
 	}
 
-	virtual bool PointInShape( PixelPoint const & inheritedOffset, PixelPoint const & pnt ) const
+	virtual bool PointInShape( PixelPoint const & pnt ) const
 	{
-		return GetRect( inheritedOffset ).Includes( pnt );
+		return GetRect( ).Includes( pnt );
 	}
 
 	PixelRectSize const GetSize() const 

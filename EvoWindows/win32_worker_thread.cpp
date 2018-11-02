@@ -158,6 +158,8 @@ void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 		break;
 
 	case THREAD_MSG_REFRESH:
+		if (m_pObservers != nullptr)
+			m_pObservers->Notify( msg.lParam != 0 );
 		break;
 
 	default:
@@ -165,12 +167,12 @@ void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 	}             // I cannot find a reason, so I ignore them
 
 	if (m_pObservers != nullptr)
-		m_pObservers->Notify( );
+		m_pObservers->Notify( false );
 }
 
 void WorkThread::ThreadShutDownFunc()
 {  
-//	XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//	TODO: XXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //	HWND m_hwndApp = GetAncestor( m_hwnd, GA_ROOTOWNER );
 //	::PostMessage( m_hwndApp, WM_COMMAND, wParam, lParam );	
 }
