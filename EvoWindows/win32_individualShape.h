@@ -34,7 +34,7 @@ public:
 		IndividualShape( nullptr, textDisplay )
 	{ }
 
-	virtual void PrepareShape(  )
+	virtual void PrepareShape( GridPoint const gp )
 	{ }
 
 	GridPointShape const * FindRelevantShape
@@ -65,11 +65,11 @@ public:
 		m_leftColumn   ( this, textDisplay )
 	{ }
 
-	virtual void PrepareShape( )
+	virtual void PrepareShape( GridPoint const gp )
 	{
 		m_leftColumn.SetSize( PixelRectSize( GetSize().GetWidth() / 2, GetSize().GetHeight() ) );
 		m_leftColumn.SetShapeOffset( PixelPoint( 0, 0 ) );
-		m_leftColumn.PrepareShape( );
+		m_leftColumn.PrepareShape( gp );
 	}
 
 	GridPointShape const * FindRelevantShape
@@ -103,15 +103,15 @@ public:
 		m_rightColumn( this, textDisplay )
 	{ }
 
-	virtual void PrepareShape( )
+	virtual void PrepareShape( GridPoint const gp )
 	{
 		m_leftColumn.SetSize( PixelRectSize( GetSize().GetWidth() / 2, GetSize().GetHeight() ) );
 		m_leftColumn.SetShapeOffset( PixelPoint( 0, 0 ) );
-		m_leftColumn.PrepareShape( );
+		m_leftColumn.PrepareShape( gp );
 
 		m_rightColumn.SetSize( PixelRectSize( GetSize().GetWidth() / 2, GetSize().GetHeight() ) );
 		m_rightColumn.SetShapeOffset( PixelPoint( GetSize().GetWidth() / 2, 0 ) );
-		m_rightColumn.PrepareShape( );
+		m_rightColumn.PrepareShape( gp );
 	}
 
 	GridPointShape const * FindRelevantShape

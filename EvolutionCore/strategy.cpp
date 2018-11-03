@@ -20,9 +20,9 @@ StrategyData::StrategyData( )
 
 IndId StrategyData::GetMemEntry( MEM_INDEX const index ) const 
 {
-    assert( index < m_memUsed );
-
-    return m_aIdBadGuys[index];
+    return ( index < m_memUsed )
+		   ? m_aIdBadGuys[index]
+		   : IndId::NO_INDIVIDUAL;  // Can happen at race conditions
 }	
 
 int StrategyData::findInList( IndId const & idPartner ) 

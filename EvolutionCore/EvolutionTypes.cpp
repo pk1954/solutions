@@ -10,6 +10,8 @@
 
 using namespace std;
 
+const IndId IndId::NO_INDIVIDUAL = IndId();
+
 wchar_t const * const GetStrategyName( tStrategyId const id )
 {
     static unordered_map < tStrategyId, wchar_t const * const > mapStrategies =

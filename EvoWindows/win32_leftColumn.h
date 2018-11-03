@@ -12,7 +12,7 @@ class LeftColumn : public GridPointShape
 public:
 	using GridPointShape::GridPointShape;
 	
-	virtual void PrepareShape( )
+	virtual void PrepareShape( GridPoint const gp )
 	{ }
 
 	void FillBuffer( GridPoint const gp )

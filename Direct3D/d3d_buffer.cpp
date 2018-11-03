@@ -112,35 +112,33 @@ void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, wstring const & wstr, D
 
 // functions called per frame
 
-void D3dBuffer::StartFrame( HWND hwnd )
+BOOL D3dBuffer::StartFrame( HWND hwnd )
 {
     HRESULT hres;
 
 	m_hwnd = hwnd;
 
-    m_d3d->ResetD3dSystem( hwnd );
-
-    hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, FALSE );                  assert(hres == D3D_OK);
-    hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );           assert(hres == D3D_OK);
-    hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );                    assert(hres == D3D_OK);
-    hres = m_d3d_device->Clear( 0, nullptr, D3DCLEAR_TARGET, CLR_WHITE, 1.0f, 0 ); assert(hres == D3D_OK);
-
-	m_d3d->SetTransform( hwnd );
-    hres = m_d3d_device->BeginScene( );                                            assert(hres == D3D_OK);
-
+    hres = m_d3d->ResetD3dSystem( hwnd );                                          if ( hres != D3D_OK ) return FALSE;
+    hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, FALSE );                  if ( hres != D3D_OK ) return FALSE;
+    hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );           if ( hres != D3D_OK ) return FALSE;
+    hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );                    if ( hres != D3D_OK ) return FALSE;
+    hres = m_d3d_device->Clear( 0, nullptr, D3DCLEAR_TARGET, CLR_WHITE, 1.0f, 0 ); if ( hres != D3D_OK ) return FALSE;
+	hres = m_d3d->SetTransform( hwnd );                                            if ( hres != D3D_OK ) return FALSE;
+    hres = m_d3d_device->BeginScene( );                                            if ( hres != D3D_OK ) return FALSE;
     if ( m_bStripMode )
         m_pVertBufStripMode->ResetVertexBuffer();
-
     m_pVertBufPrimitives->ResetVertexBuffer();
-
-    setFont( );   
+    if ( ! setFont( ) )
+		return FALSE;
+	return TRUE;
 }
 
-void D3dBuffer::setFont( )
+BOOL D3dBuffer::setFont( )
 {
     HRESULT const hres = D3DXCreateFontIndirect( m_d3d_device, &m_d3dx_font_desc, &m_id3dx_font );   
-    assert( hres == D3D_OK );
-    assert( m_id3dx_font != nullptr );
+    if ( hres != D3D_OK )          return FALSE;
+    if ( m_id3dx_font == nullptr ) return FALSE;
+	return TRUE;
 }
 
 void D3dBuffer::ResetFont( int const nPointSize )

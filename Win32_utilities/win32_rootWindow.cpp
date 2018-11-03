@@ -47,9 +47,9 @@ void RootWindow::Notify( bool const bImmediately )
     }
 }
 
-void CALLBACK RootWindow::TimerProc( void * const lpParameter, BOOL const TimerOrWaitFired )
+void CALLBACK RootWindow::TimerProc( void * const lpParam, BOOL const TimerOrWaitFired )
 {
-    RootWindow * const pRootWin = static_cast<RootWindow *>( lpParameter );
+    RootWindow * const pRootWin = reinterpret_cast<RootWindow *>( lpParam );
     if ( pRootWin->m_bDirty )
     {
         pRootWin->invalidate( );

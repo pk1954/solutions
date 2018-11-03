@@ -63,6 +63,7 @@ void EvoHistorySysGlue::Start
 
 EvoHistorySysGlue::~EvoHistorySysGlue( ) 
 {
+	//m_pHistAllocThread->Terminate();
     shutDownHistoryCache( );
 	delete m_pHistAllocThread;
 	delete m_pEvoModelFactory;

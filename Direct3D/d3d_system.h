@@ -14,8 +14,8 @@ public:
     static void Create_D3D_Device( HWND const, ULONG const, ULONG const, BOOL const );
     static D3dSystem * GetSystem( void );
 
-    void               ResetD3dSystem( HWND const );
-    void               SetTransform  ( HWND const );
+    HRESULT            ResetD3dSystem( HWND const );
+    HRESULT            SetTransform  ( HWND const );
     IDirect3DDevice9 * GetDevice     ( void );
 
     D3dIndexBuffer const * GetBgIndexBufferStripMode( ) const { return m_d3d_pIndexBufBgStripMode; };

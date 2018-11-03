@@ -22,7 +22,7 @@ public:
     D3dBuffer( ULONG const );
     ~D3dBuffer();
 
-    void StartFrame( HWND );
+    BOOL StartFrame( HWND );
     void ResetFont( int const );
     void AddIndividualPrimitive( PixelPoint const &, DWORD const, float const );    
     void AddBackgroundPrimitive( PixelPoint const &, DWORD const, float const );    
@@ -65,7 +65,7 @@ private:
 
     static D3DXFONT_DESC    m_d3dx_font_desc;  // identical for all buffers, even on systems with multiple displays
 
-    void setFont( );
+    BOOL setFont( );
     void addRectangle( float const, float const, DWORD const, float const );    
     void addHexagon  ( float const, float const, DWORD const, float const, float const );    
     void addRect2Buffer( float const, float const, float const, float const, DWORD const );

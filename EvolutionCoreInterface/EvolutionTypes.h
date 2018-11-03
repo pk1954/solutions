@@ -19,6 +19,8 @@ static MEM_INDEX const IMEMSIZE_MAX = 9;
 class IndId
 {
 public:
+	static const IndId NO_INDIVIDUAL;
+
     IndId( ) { ResetIndId( ); };
 
     inline IndId & operator++() { ++m_lIdentifier; return *this; }; 

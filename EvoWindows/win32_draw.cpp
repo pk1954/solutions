@@ -102,7 +102,7 @@ void DrawFrame::prepareIndividualShape( GridPoint const & gp )
 	long lSizeInd = (5 * m_pPixelCoordinates->GetFieldSize()) / 8;  // use only 5/8 of field size; 
 	m_pIndividualShape->SetSize( PixelRectSize( lSizeInd, lSizeInd ) );
 	m_pIndividualShape->SetShapeOffset( m_pPixelCoordinates->Grid2PixelPosCenter( gp ) - lSizeInd / 2 );
-	m_pIndividualShape->PrepareShape( );
+	m_pIndividualShape->PrepareShape( gp );
 }
 
 bool DrawFrame::SetHighlightPos( PixelPoint const & pos )
@@ -127,34 +127,35 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 {
     if ( IsWindowVisible( hwnd ) )
     {
-		m_pD3dBuffer->StartFrame( hwnd );
+		if ( m_pD3dBuffer->StartFrame( hwnd ) )
+		{
+			drawBackground( );
 
-		drawBackground( );
-
-        if ( m_pDspOptWindow->AreIndividualsVisible( ) )
-        {
-			PixelRect const pixRect( Util::GetClPixelRect( hwnd ) );
-	        GridRect  const rcGrid( m_pPixelCoordinates->Pixel2GridRect( pixRect ) );
-            drawPOI( m_pCore->FindPOI( ) );
-            drawIndividuals( rcGrid );
-            drawText( rcGrid );
-			if ( m_pShapeHighlight != nullptr )
+			if ( m_pDspOptWindow->AreIndividualsVisible( ) )
 			{
-				prepareIndividualShape( m_gpHighlight );
-				HighlightRect( m_pShapeHighlight->GetRect( ) );
-				GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( m_gpHighlight );
-				if ( m_gpHighlight != GridPoint::GP_NULL )
-					HighlightRect( m_pPixelCoordinates->Grid2PixelRect( GridRect( gpReferenced, gpReferenced ) ) );
+				PixelRect const pixRect( Util::GetClPixelRect( hwnd ) );
+				GridRect  const rcGrid( m_pPixelCoordinates->Pixel2GridRect( pixRect ) );
+				drawPOI( m_pCore->FindPOI( ) );
+				drawIndividuals( rcGrid );
+				drawText( rcGrid );
+				if ( m_pShapeHighlight != nullptr )
+				{
+					prepareIndividualShape( m_gpHighlight );
+					HighlightRect( m_pShapeHighlight->GetRect( ) );
+					GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( m_gpHighlight );
+					if ( m_gpHighlight != GridPoint::GP_NULL )
+						HighlightRect( m_pPixelCoordinates->Grid2PixelRect( GridRect( gpReferenced, gpReferenced ) ) );
+				}
 			}
-        }
 
-        if ( m_pCore->SelectionIsNotEmpty() )
-            m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), D3DCOLOR_ARGB( 64, 0, 217, 255) );  
+			if ( m_pCore->SelectionIsNotEmpty() )
+				m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), D3DCOLOR_ARGB( 64, 0, 217, 255) );  
 
-        if ( pkgr.IsNotEmpty( ) )
-            m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), D3DCOLOR_ARGB( 128, 255, 217, 0) );  
+			if ( pkgr.IsNotEmpty( ) )
+				m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), D3DCOLOR_ARGB( 128, 255, 217, 0) );  
 
-        m_pD3dBuffer->EndFrame( );  
+			m_pD3dBuffer->EndFrame( );
+		}
     }
 }
 

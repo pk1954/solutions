@@ -100,7 +100,7 @@ static LRESULT CALLBACK BaseWndProc
     LPARAM const lParam 
 )
 {
-	BaseWindow * pBaseWin = (BaseWindow *)GetWindowLongPtr( hwnd, GWLP_USERDATA );
+	BaseWindow * pBaseWin = reinterpret_cast<BaseWindow *>(GetWindowLongPtr( hwnd, GWLP_USERDATA ));
 
     switch (message)
     {

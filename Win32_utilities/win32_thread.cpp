@@ -25,7 +25,7 @@ void Util::Thread::Terminate( )   // to be called from different thread
 
 static unsigned int __stdcall Util::ThreadProc( void * data ) 
 {
-    Util::Thread * const pThread = static_cast<Util::Thread *>( data );
+    Util::Thread * const pThread = reinterpret_cast<Util::Thread *>( data );
     MSG  msg;
 	INT  iRes;
 

@@ -110,7 +110,9 @@ public:
     virtual GridPoint FindPOI( ) const;
 	virtual GridPoint FindGridPoint( IndId const & id, GridRect const & rect = GridRect::GRID_RECT_FULL ) const 
 	{ 
-		return m_grid.FindGridPoint( [&](GridPoint const & gp) { return (GetId(gp) == id); }, rect );
+		return ( id == IndId::NO_INDIVIDUAL )
+			   ? GridPoint::GP_NULL
+			   : m_grid.FindGridPoint( [&](GridPoint const & gp) { return (GetId(gp) == id); }, rect );
 	}
 
 private:
