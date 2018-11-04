@@ -37,9 +37,19 @@ public:
 		return m_core;
 	}
 
-	long GetIndDisplaySize( )
+	tStrategyId GetStrategyId( GridPoint const gp ) const
 	{
-		return (5 * m_pixelCoordinates.GetFieldSize()) / 8;  // use only 5/8 of field size; 
+		return  m_core.GetStrategyId( gp );
+	}
+
+	short GetFieldSize( ) const 
+	{
+		return m_pixelCoordinates.GetFieldSize();
+	}
+
+	long GetIndDisplaySize( ) const
+	{
+		return (5 * GetFieldSize()) / 8;  // use only 5/8 of field size; 
 	}
 
 	PixelPoint GetCenterOffset( GridPoint const gp )

@@ -18,7 +18,7 @@ public:
     static void DumpNL( );
     static void Dump( wchar_t const * );
     static void Dump( GridField const & );
-    static void Dump( Grid const &, GridPoint const & );
+    static void Dump( Grid const &, GridPoint const );
     static void Flush( );
 
 private:

@@ -33,7 +33,7 @@ public:
 		m_neighbors.reserve( m_iNrOfNeighbors );
 	}
 
-    void AddToList( GridPoint const & gp ) 
+    void AddToList( GridPoint const gp ) 
 	{ 
 		m_neighbors.push_back( gp ); 
 		assert( m_neighbors.size( ) <= m_iNrOfNeighbors );
@@ -55,12 +55,12 @@ public:
 		return m_neighbors.size( ); 
 	}
     
-	GridPoint const & GetElement( unsigned int const uiIndex  ) const 
+	GridPoint const GetElement( unsigned int const uiIndex  ) const 
 	{ 
 		return m_neighbors[uiIndex]; 
 	}
 
-    GridPoint const & GetRandomElement( unsigned int const uiRandom ) const 
+    GridPoint const GetRandomElement( unsigned int const uiRandom ) const 
     {
         assert( m_neighbors.size( ) > 0 ); 
         //lint -e414   possible division by 0

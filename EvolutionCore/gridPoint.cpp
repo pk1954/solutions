@@ -13,7 +13,7 @@ GridPoint const GridPoint::GRID_MAXIMUM( GridPoint::GRID_WIDTH - 1, GridPoint::G
 GridPoint const GridPoint::GRID_SIZE( GridPoint::GRID_WIDTH, GridPoint::GRID_HEIGHT );
 GridPoint const GridPoint::GRID_CENTER( GRID_ORIGIN + GRID_SIZE / 2 );
 
-std::wostream & operator << ( std::wostream & out, GridPoint const & gp )
+std::wostream & operator << ( std::wostream & out, GridPoint const gp )
 {
 //lint -e747  Significant prototype coercion with setw
     out << L" " << std::setw(3) << gp.x << L" " << std::setw(3) << gp.y << L" ";

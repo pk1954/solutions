@@ -60,8 +60,8 @@ public:
 
 	GridPointShape const * FindShape
 	( 
-		PixelPoint const & pnt,             
-		GridPoint  const   gp
+		PixelPoint const pnt,             
+		GridPoint  const gp
 	) const
 	{
 		MEM_INDEX const memUsed = m_textDisplay.Core().GetMemUsed( gp ); 

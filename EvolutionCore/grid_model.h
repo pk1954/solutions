@@ -27,59 +27,59 @@ public:
 
     void      ResetGrid    ( );
     void      FoodGrowth   ( );
-    void      MakePlan     ( GridPoint const &, PlannedActivity & );
-    GridPoint ImplementPlan( GridPoint const &, PlannedActivity const & );
+    void      MakePlan     ( GridPoint const, PlannedActivity & );
+    GridPoint ImplementPlan( GridPoint const, PlannedActivity const & );
 
-	short GetFertilizer( GridPoint const & gp ) { return getGridField( gp ).GetFertilizer( ); }
-	short GetFoodStock ( GridPoint const & gp ) { return getGridField( gp ).GetFoodStock( ); }
-	short GetFertility ( GridPoint const & gp ) { return getGridField( gp ).GetFertility( ); }
-	short GetMutRate   ( GridPoint const & gp ) { return getGridField( gp ).GetMutRate( ); }
+	short GetFertilizer( GridPoint const gp ) { return getGridField( gp ).GetFertilizer( ); }
+	short GetFoodStock ( GridPoint const gp ) { return getGridField( gp ).GetFoodStock( ); }
+	short GetFertility ( GridPoint const gp ) { return getGridField( gp ).GetFertility( ); }
+	short GetMutRate   ( GridPoint const gp ) { return getGridField( gp ).GetMutRate( ); }
 
-	void Apply2Fertilizer(GridPoint const & gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertilizer(s, m); }
-	void Apply2FoodStock (GridPoint const & gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2FoodStock (s, m); }
-	void Apply2Fertility (GridPoint const & gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertility (s, m); }
-	void Apply2MutRate   (GridPoint const & gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2MutRate   (s, m); }
+	void Apply2Fertilizer(GridPoint const gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertilizer(s, m); }
+	void Apply2FoodStock (GridPoint const gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2FoodStock (s, m); }
+	void Apply2Fertility (GridPoint const gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertility (s, m); }
+	void Apply2MutRate   (GridPoint const gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2MutRate   (s, m); }
 
-	void SetEnergy( GridPoint const & gp, short const s ) { getGridField( gp ).SetEnergy( s ); }
-	void IncEnergy( GridPoint const & gp, short const s ) { getGridField( gp ).IncEnergy( s ); }
-    void DecEnergy( GridPoint const & gp, short const s ) { getGridField( gp ).DecEnergy( s ); }
+	void SetEnergy( GridPoint const gp, short const s ) { getGridField( gp ).SetEnergy( s ); }
+	void IncEnergy( GridPoint const gp, short const s ) { getGridField( gp ).IncEnergy( s ); }
+    void DecEnergy( GridPoint const gp, short const s ) { getGridField( gp ).DecEnergy( s ); }
 
     void IncGenNr( ) { ++m_genEvo; }
 
-    void EditSetStrategy( GridPoint const &, short const, tStrategyId );
+    void EditSetStrategy( GridPoint const, short const, tStrategyId );
 
     // GridPoint list operations
 
     void CheckGridPointList( ) const { m_gpList.CheckGridPointList( * this ); };
 
-    GridPoint const & GetOldestGp  ( ) const { return m_gpList.GetOldestGp  ( ); }
-    GridPoint const & GetYoungestGp( ) const { return m_gpList.GetYoungestGp( ); }
+    GridPoint const GetOldestGp  ( ) const { return m_gpList.GetOldestGp  ( ); }
+    GridPoint const GetYoungestGp( ) const { return m_gpList.GetYoungestGp( ); }
 
-    GridPoint const & GetSeniorGp( GridPoint const & gp ) const { return GetGridField( gp ).GetSeniorGp( ); }
-    GridPoint const & GetJuniorGp( GridPoint const & gp ) const { return GetGridField( gp ).GetJuniorGp( ); }
+    GridPoint const GetSeniorGp( GridPoint const gp ) const { return GetGridField( gp ).GetSeniorGp( ); }
+    GridPoint const GetJuniorGp( GridPoint const gp ) const { return GetGridField( gp ).GetJuniorGp( ); }
 
-    void SetSeniorGp( GridPoint const & gp, GridPoint const & gpSenior ) { getGridField( gp ).SetSeniorGp( gpSenior ); }
-    void SetJuniorGp( GridPoint const & gp, GridPoint const & gpJunior ) { getGridField( gp ).SetJuniorGp( gpJunior ); }
+    void SetSeniorGp( GridPoint const gp, GridPoint const gpSenior ) { getGridField( gp ).SetSeniorGp( gpSenior ); }
+    void SetJuniorGp( GridPoint const gp, GridPoint const gpJunior ) { getGridField( gp ).SetJuniorGp( gpJunior ); }
 
     bool ListIsEmpty( ) const { return m_gpList.ListIsEmpty( ); }
 
-    GridPoint FindGridPoint( const std::function<bool( GridPoint const &)>&, GridRect const & = GridRect::GRID_RECT_FULL ) const;
+    GridPoint FindGridPoint( const std::function<bool( GridPoint const)>&, GridRect const & = GridRect::GRID_RECT_FULL ) const;
 
     // Query functions 
 
-    GridField const & GetGridField( GridPoint const & gp ) const
+    GridField const & GetGridField( GridPoint const gp ) const
     {
         assert( gp.IsInGrid( ) );
         return m_aGF[ gp.x ][ gp.y ];
     };
 
-    bool           IsAlive     ( GridPoint const & gp ) const { return GetGridField( gp ).IsAlive( ); }
-    bool           IsDead      ( GridPoint const & gp ) const { return GetGridField( gp ).IsDead( ); }
-    int            GetFoodStock( GridPoint const & gp ) const { return GetGridField( gp ).GetFoodStock( ); }
-    IndId          GetId       ( GridPoint const & gp ) const { return GetGridField( gp ).GetId       ( ); }
-    tOrigin        GetOrigin   ( GridPoint const & gp ) const { return GetGridField( gp ).GetOrigin   ( ); }
-    EVO_GENERATION GetGenBirth ( GridPoint const & gp ) const { return GetGridField( gp ).GetGenBirth( ); }
-    EVO_GENERATION GetAge      ( GridPoint const & gp ) const { return m_genEvo - GetGenBirth( gp ); }
+    bool           IsAlive     ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive( ); }
+    bool           IsDead      ( GridPoint const gp ) const { return GetGridField( gp ).IsDead( ); }
+    int            GetFoodStock( GridPoint const gp ) const { return GetGridField( gp ).GetFoodStock( ); }
+    IndId          GetId       ( GridPoint const gp ) const { return GetGridField( gp ).GetId       ( ); }
+    tOrigin        GetOrigin   ( GridPoint const gp ) const { return GetGridField( gp ).GetOrigin   ( ); }
+    EVO_GENERATION GetGenBirth ( GridPoint const gp ) const { return GetGridField( gp ).GetGenBirth( ); }
+    EVO_GENERATION GetAge      ( GridPoint const gp ) const { return m_genEvo - GetGenBirth( gp ); }
 
     EVO_GENERATION GetEvoGenerationNr( ) const { return m_genEvo; }
 
@@ -140,13 +140,13 @@ private:
 
     void getBestNeighborSlots( Neighborhood & );
 
-    GridField & getGridField( GridPoint const & gp )
+    GridField & getGridField( GridPoint const gp )
     {
         assert( gp.IsInGrid( ) );
         return m_aGF[ gp.x ][ gp.y ];
     };
 
-    GridField const & getGridFieldC( GridPoint const & gp ) const
+    GridField const & getGridFieldC( GridPoint const gp ) const
     {
         assert( gp.IsInGrid( ) );
         return m_aGF[ gp.x ][ gp.y ];

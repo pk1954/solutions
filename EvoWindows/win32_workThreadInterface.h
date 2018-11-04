@@ -31,8 +31,8 @@ public:
 	    EvoHistorySysGlue * const
     );
 
-    void PostDoEdit( GridPoint const & );
-    void PostSetPOI( GridPoint const & );
+    void PostDoEdit( GridPoint const );
+    void PostSetPOI( GridPoint const );
     void PostSetSimulationMode( tBoolOp const );
     void PostSetBrushMode( tBrushMode const );
     void PostSetBrushShape( tShape );

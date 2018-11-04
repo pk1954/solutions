@@ -130,7 +130,7 @@ void GridWindow::AddContextMenuEntries( HMENU hPopupMenu )
     }
 }
 
-void GridWindow::moveGrid( PixelPoint const & ptDiff )
+void GridWindow::moveGrid( PixelPoint const ptDiff )
 {
     if ( m_pGWObserved != nullptr )     // I observe someone
     {

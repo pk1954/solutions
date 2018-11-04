@@ -23,7 +23,7 @@ public:
 		return PixelRect( GetAbsoluteOffset(), m_rectSize );
 	}
 
-	virtual bool PointInShape( PixelPoint const & pnt ) const
+	virtual bool PointInShape( PixelPoint const pnt ) const
 	{
 		return GetRect( ).Includes( pnt );
 	}

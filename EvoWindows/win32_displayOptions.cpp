@@ -109,13 +109,13 @@ BOOL DspOptWindow::AreIndividualsVisible( ) const
     return ( BST_CHECKED == Button_GetCheck( GetDlgItem( IDM_ANIMALS ) ) );
 }
 
-int DspOptWindow::getNeighborHoodMeanValue( GridPoint const & gp ) const
+int DspOptWindow::getNeighborHoodMeanValue( GridPoint const gp ) const
 { 
 	int iSum = m_pCore->GetFoodStock( gp );
 	Neighborhood::Apply2All
 	( 
 		gp, 
-		[&](GridPoint const & gpNeighbor) 
+		[&](GridPoint const gpNeighbor) 
 	    { 
 			iSum += m_pCore->GetFoodStock(gpNeighbor); 
 		} 
@@ -138,23 +138,23 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
             switch ( wId )
             {
             case IDM_MUT_RATE:
-				m_IntValueLambda = [&](GridPoint const & gp){ return m_pCore->GetMutRate( gp ); };
+				m_IntValueLambda = [&](GridPoint const gp){ return m_pCore->GetMutRate( gp ); };
                 break;
 
             case IDM_FERTILITY:
-				m_IntValueLambda = [&](GridPoint const & gp){ return m_pCore->GetFertility( gp ); };
+				m_IntValueLambda = [&](GridPoint const gp){ return m_pCore->GetFertility( gp ); };
                 break;
 
             case IDM_FOOD_STOCK:
-				m_IntValueLambda = [&](GridPoint const & gp){ return getNeighborHoodMeanValue( gp ); };
+				m_IntValueLambda = [&](GridPoint const gp){ return getNeighborHoodMeanValue( gp ); };
                 break;
 
             case IDM_FERTILIZER:
-				m_IntValueLambda = [&](GridPoint const & gp){ return m_pCore->GetFertilizer( gp ); };
+				m_IntValueLambda = [&](GridPoint const gp){ return m_pCore->GetFertilizer( gp ); };
                 break;
 
             case IDM_DSP_ENV_NOTHING:
-				m_IntValueLambda = [&](GridPoint const & gp){ return 0; };
+				m_IntValueLambda = [&](GridPoint const gp){ return 0; };
                 break;
 
             case IDCANCEL:

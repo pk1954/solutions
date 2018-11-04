@@ -20,7 +20,7 @@ public:
 
 	~PixelCore( );
 
-	void       SetSelection( PixelPoint const &, PixelPoint const & );
+	void       SetSelection( PixelPoint const, PixelPoint const );
 	PixelPoint GetPoiCenter() const;
 	bool       CenterPoi( PixelPoint const ) const;
 	void       FitToRect( PixelRectSize const ) const;

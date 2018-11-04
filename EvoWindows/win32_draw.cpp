@@ -44,10 +44,8 @@ DrawFrame::DrawFrame
     SetStrategyColor( tStrategyId::cooperate, CLR_COOPERATE );
     SetStrategyColor( tStrategyId::tit4tat,   CLR_TIT4TAT   );
 
-	m_pTextDisplay  = new TextDisplay( * m_pD3dBuffer, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
-	m_pZoom_level_0 = new Zoom_level_0( * m_pTextDisplay );
-	m_pZoom_level_1 = new Zoom_level_1( * m_pTextDisplay );
-	m_pZoom_level_2 = new Zoom_level_2( * m_pTextDisplay );
+	m_pTextDisplay     = new TextDisplay( * m_pD3dBuffer, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
+	m_pIndividualShape = new IndividualShape( * m_pTextDisplay );
 	m_pShapeHighlight = nullptr;
 	Resize();
 }
@@ -90,14 +88,9 @@ void DrawFrame::Resize( )
 	if ( iFontSize > 16 )
 		iFontSize = 16;
     m_pD3dBuffer->ResetFont( iFontSize );
-	m_pIndividualShape = ( sFieldSize < 96 ) 
-		                 ? m_pZoom_level_0
-		                 : ( sFieldSize < 256 ) 
-		                   ? m_pZoom_level_1 
-		                   : m_pZoom_level_2;
 }
 
-void DrawFrame::prepareIndividualShape( GridPoint const & gp )
+void DrawFrame::prepareIndividualShape( GridPoint const gp )
 {
 	long lSizeInd = (5 * m_pPixelCoordinates->GetFieldSize()) / 8;  // use only 5/8 of field size; 
 	m_pIndividualShape->SetSize( PixelRectSize( lSizeInd, lSizeInd ) );
@@ -105,7 +98,7 @@ void DrawFrame::prepareIndividualShape( GridPoint const & gp )
 	m_pIndividualShape->PrepareShape( gp );
 }
 
-bool DrawFrame::SetHighlightPos( PixelPoint const & pos )
+bool DrawFrame::SetHighlightPos( PixelPoint const pos )
 {
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
@@ -165,7 +158,7 @@ void DrawFrame::drawBackground( )
 
 	Apply2Grid    // strip mode works only with full grid
 	(          
-    	[&](GridPoint const & gp)
+    	[&](GridPoint const gp)
 		{
 			int        const iValue  = m_pDspOptWindow->GetIntValue( Wrap2Grid(gp) );
 			DWORD      const dwColor = getBackgroundColor( iValue );
@@ -178,13 +171,13 @@ void DrawFrame::drawBackground( )
 	m_pD3dBuffer->RenderBackground( );
 }
 
-void DrawFrame::addPrimitive( GridPoint const & gp, DWORD const dwColor, float const fPixSize ) const
+void DrawFrame::addPrimitive( GridPoint const gp, DWORD const dwColor, float const fPixSize ) const
 {
     if ( gp.IsNotNull( ) )
 		m_pD3dBuffer->AddIndividualPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), dwColor, fPixSize );
 }
 
-void DrawFrame::drawPOI( GridPoint const & gpPoi )
+void DrawFrame::drawPOI( GridPoint const gpPoi )
 {
     if ( gpPoi.IsNotNull( ) )
     {
@@ -213,7 +206,7 @@ void DrawFrame::drawIndividuals( GridRect const & rect )
 
     rect.Apply2Rect
 	( 
-		[&](GridPoint const & gp) 
+		[&](GridPoint const gp) 
 	    { 
             if ( m_pCore->IsAlive( gp ) )
             {
@@ -229,7 +222,7 @@ void DrawFrame::drawText( GridRect const & rect )
 {
     rect.Apply2Rect
 	( 
-		[&](GridPoint const & gp)
+		[&](GridPoint const gp)
 		{
             if ( m_pCore->IsAlive( gp ) )
             {
@@ -240,7 +233,7 @@ void DrawFrame::drawText( GridRect const & rect )
 	);
 }
 
-void DrawFrame::setIndividualColor( GridPoint const & gp, float const fHalfSize ) const
+void DrawFrame::setIndividualColor( GridPoint const gp, float const fHalfSize ) const
 {
     tStrategyId const strat = m_pCore->GetStrategyId( gp );
     if ( static_cast<int>( strat ) >= NR_STRATEGIES )

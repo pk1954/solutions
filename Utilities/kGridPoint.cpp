@@ -9,14 +9,14 @@ KGridRect  const KGridRect ::KGRID_RECT_EMPTY ( KGridPoint::KGRID_POINT_EMPTY, K
 
 static long const KGRID_FACTOR = 1024;
 
-KGridPoint Pixel2KGridSize( PixelPoint const & ptSize, short const sFieldSize )
+KGridPoint Pixel2KGridSize( PixelPoint const ptSize, short const sFieldSize )
 {
     PixelPoint pixSize = ptSize * KGRID_FACTOR;
     pixSize /= sFieldSize;
     return KGridPoint( pixSize );
 }
 
-PixelPoint KGrid2PixelSize( KGridPoint const & kgpSize, short const sFieldSize ) 
+PixelPoint KGrid2PixelSize( KGridPoint const kgpSize, short const sFieldSize ) 
 {
     KGridPoint kgp = (kgpSize * sFieldSize);
     kgp /= KGRID_FACTOR;

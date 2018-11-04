@@ -37,7 +37,6 @@ public:
 		wostringstream & buffer = m_textDisplay.Buffer();
 		EvolutionCore  & core   = m_textDisplay.Core();
 
-//		buffer << gp                                                            << endl;
 		buffer << L"ID: " << setw( 5 ) << core.GetId( gp )                      << endl;
 		buffer << L"En: " << setw( 5 ) << core.GetEnergy( gp )                  << endl;
 		buffer << L"Age:" << setw( 5 ) << core.GetAge( gp )                     << endl;

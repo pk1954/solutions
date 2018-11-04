@@ -37,7 +37,7 @@ public:
 	void SetStrategyColor( tStrategyId const, COLORREF const );
     void SetStripMode( tBoolOp );
     void SetIndDimmMode( tBoolOp );
-	bool SetHighlightPos( PixelPoint const & );
+	bool SetHighlightPos( PixelPoint const );
 	void HighlightRect( PixelRect const & );
 
 private:
@@ -74,13 +74,13 @@ private:
 	}
 
     COLORREF getBackgroundColor( int const ) const;
-    void     setIndividualColor( GridPoint const &, float const ) const;
-	void     addPrimitive( GridPoint const &, DWORD const, float const ) const;
+    void     setIndividualColor( GridPoint const, float const ) const;
+	void     addPrimitive( GridPoint const, DWORD const, float const ) const;
 	
-	void prepareIndividualShape( GridPoint const & );
+	void prepareIndividualShape( GridPoint const );
 
 	void drawBackground( );
     void drawText       ( GridRect  const & );
     void drawIndividuals( GridRect  const & );
-    void drawPOI        ( GridPoint const & );
+    void drawPOI        ( GridPoint const );
 };

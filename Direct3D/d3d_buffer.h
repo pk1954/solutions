@@ -24,8 +24,8 @@ public:
 
     BOOL StartFrame( HWND );
     void ResetFont( int const );
-    void AddIndividualPrimitive( PixelPoint const &, DWORD const, float const );    
-    void AddBackgroundPrimitive( PixelPoint const &, DWORD const, float const );    
+    void AddIndividualPrimitive( PixelPoint const, DWORD const, float const );    
+    void AddBackgroundPrimitive( PixelPoint const, DWORD const, float const );    
     void RenderIndividuals( );
     void RenderBackground( );
     void RenderTranspRect( PixelRect const &, DWORD const );

@@ -21,8 +21,8 @@ public:
 
     GridRect
 	( 
-		GridPoint const & gpStart, 
-		GridPoint const & gpEnd 
+		GridPoint const gpStart, 
+		GridPoint const gpEnd 
 	) : 
 		m_lLeft  (gpStart.x), 
 		m_lTop   (gpStart.y), 

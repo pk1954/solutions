@@ -20,7 +20,7 @@ public:
 		m_sMaxFood         = Config::GetConfigValueShort( Config::tId::maxFood );
 	}
 
-	void InitGridFieldStructure( GridPoint const & gp )
+	void InitGridFieldStructure( GridPoint const gp )
 	{
 		m_gp = gp;
 	}
@@ -132,15 +132,15 @@ public:
 
     void ReduceFertilizer( ) { m_sFertilizer /= 2; }
 
-    GridPoint const & GetGridPoint( ) const { return m_gp; }
-    GridPoint const & GetSeniorGp ( ) const { return m_gpSenior; }
-    GridPoint const & GetJuniorGp ( ) const { return m_gpJunior; }
+    GridPoint const GetGridPoint( ) const { return m_gp; }
+    GridPoint const GetSeniorGp ( ) const { return m_gpSenior; }
+    GridPoint const GetJuniorGp ( ) const { return m_gpJunior; }
 
     bool IsOldest  ( ) const { return m_gpSenior.IsNull( ); }
     bool IsYoungest( ) const { return m_gpJunior.IsNull( ); }
 
-    void SetSeniorGp( GridPoint const & gp ) { m_gpSenior = gp; }
-    void SetJuniorGp( GridPoint const & gp ) { m_gpJunior = gp; }
+    void SetSeniorGp( GridPoint const gp ) { m_gpSenior = gp; }
+    void SetJuniorGp( GridPoint const gp ) { m_gpJunior = gp; }
 
 	void CutConnections( )
 	{

@@ -195,7 +195,7 @@ void D3dBuffer::addHexagon( float const fPtPosx, float const fPtPosy, DWORD cons
 	m_pVertBufPrimitives->AddVertex( fPtPosx + fPixSizeX     + 0.5f, fPtPosy,                 dwColor );     // east
 }
 
-void D3dBuffer::AddIndividualPrimitive( PixelPoint const & ptPos, DWORD const dwColor, float const fPixSize )
+void D3dBuffer::AddIndividualPrimitive( PixelPoint const ptPos, DWORD const dwColor, float const fPixSize )
 {
 	static float const SQRT3 = static_cast<float>( sqrt( 3 ) );
 
@@ -215,7 +215,7 @@ void D3dBuffer::AddIndividualPrimitive( PixelPoint const & ptPos, DWORD const dw
 	}
 }
 
-void D3dBuffer::AddBackgroundPrimitive( PixelPoint const & ptPos, DWORD const dwColor, float const fPixSize )
+void D3dBuffer::AddBackgroundPrimitive( PixelPoint const ptPos, DWORD const dwColor, float const fPixSize )
 {
 	static float const INVERSE_SQRT3 = static_cast<float>( 1 / sqrt( 3 ) );
 

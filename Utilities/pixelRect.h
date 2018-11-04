@@ -32,7 +32,7 @@ public:
         m_lBottom = rect.m_lBottom;
     };
 
-    PixelRect( PixelPoint const & pt1, PixelPoint const & pt2 )
+    PixelRect( PixelPoint const pt1, PixelPoint const pt2 )
     { 
         if ( pt1.x < pt2.x )
         {
@@ -64,7 +64,7 @@ public:
         m_lBottom = lBottom; 
     };
 
-	PixelRect( PixelPoint const & ptOrigin, PixelRectSize const & rectSize )
+	PixelRect( PixelPoint const ptOrigin, PixelRectSize const & rectSize )
 	{
         m_lLeft   = ptOrigin.x; 
         m_lTop    = ptOrigin.y; 
@@ -113,7 +113,7 @@ public:
 	bool const operator== ( PixelRect const & a ) const { return ( a.m_lLeft == m_lLeft ) && ( a.m_lTop == m_lTop ) && ( a.m_lRight == m_lRight ) && ( a.m_lBottom == m_lBottom ); };
     bool const operator!= ( PixelRect const & a ) const { return ( a.m_lLeft != m_lLeft ) || ( a.m_lTop != m_lTop ) || ( a.m_lRight != m_lRight ) || ( a.m_lBottom != m_lBottom ); };
 
-	PixelRect const operator+= ( PixelPoint const & offset )
+	PixelRect const operator+= ( PixelPoint const offset )
 	{ 
 		m_lLeft   += offset.x;
 		m_lTop    += offset.y;
@@ -122,7 +122,7 @@ public:
 		return *this;
 	}
 
-	PixelRect const operator-= ( PixelPoint const & offset )
+	PixelRect const operator-= ( PixelPoint const offset )
 	{ 
 		m_lLeft   -= offset.x;
 		m_lTop    -= offset.y;
@@ -132,5 +132,5 @@ public:
 	}
 };
 
-inline PixelRect const operator+ (PixelRect const & r, PixelPoint const & p) { PixelRect res(r); res += p; return res; };
-inline PixelRect const operator- (PixelRect const & r, PixelPoint const & p) { PixelRect res(r); res -= p; return res; };
+inline PixelRect const operator+ (PixelRect const & r, PixelPoint const p) { PixelRect res(r); res += p; return res; };
+inline PixelRect const operator- (PixelRect const & r, PixelPoint const p) { PixelRect res(r); res -= p; return res; };

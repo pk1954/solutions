@@ -23,7 +23,7 @@ PixelCore::~PixelCore( )
 	m_pPixelCoordinates = nullptr;
 }
 
-void PixelCore::SetSelection( PixelPoint const & pt1, PixelPoint const & pt2 )
+void PixelCore::SetSelection( PixelPoint const pt1, PixelPoint const pt2 )
 {
 	m_pCore->SetSelection( m_pPixelCoordinates->Pixel2GridRect( PixelRect( pt1, pt2 ) ) );
 }

@@ -17,7 +17,7 @@ public:
 
     void Start( HWND const, EvolutionCore const * const );
 
-	int GetIntValue( GridPoint const & gp ) 
+	int GetIntValue( GridPoint const gp ) 
 	{ 
 		return (m_IntValueLambda == nullptr) ? 0 : m_IntValueLambda(gp); 
 	}
@@ -31,11 +31,11 @@ private:
     DspOptWindow             ( DspOptWindow const & );  // noncopyable class 
     DspOptWindow & operator= ( DspOptWindow const & );  // noncopyable class 
 
-	int getNeighborHoodMeanValue( GridPoint const & ) const;
+	int getNeighborHoodMeanValue( GridPoint const ) const;
 
 	virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
 
     EvolutionCore const * m_pCore; 
 
-	std::function<int( GridPoint const & )> m_IntValueLambda;
+	std::function<int( GridPoint const )> m_IntValueLambda;
 };

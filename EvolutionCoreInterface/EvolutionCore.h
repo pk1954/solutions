@@ -42,24 +42,24 @@ public:
 	virtual bool           SelectionIsEmpty         ( ) const = 0;
 	virtual bool           SelectionIsNotEmpty      ( ) const = 0;
 
-    virtual bool           IsDead       ( GridPoint const & ) const = 0;
-    virtual bool           IsAlive      ( GridPoint const & ) const = 0;
-    virtual bool           IsDefined    ( GridPoint const & ) const = 0;
-    virtual IndId          GetId        ( GridPoint const & ) const = 0;
-    virtual tOrigin        GetOrigin    ( GridPoint const & ) const = 0;
-    virtual short          GetEnergy    ( GridPoint const & ) const = 0;
-    virtual int            GetFoodStock ( GridPoint const & ) const = 0;
-    virtual int            GetFertility ( GridPoint const & ) const = 0;
-    virtual int            GetMutRate   ( GridPoint const & ) const = 0;
-    virtual int            GetFertilizer( GridPoint const & ) const = 0;
-    virtual EVO_GENERATION GetGenBirth  ( GridPoint const & ) const = 0;
-    virtual EVO_GENERATION GetAge       ( GridPoint const & ) const = 0;
-    virtual MEM_INDEX      GetMemSize   ( GridPoint const & ) const = 0;
-    virtual MEM_INDEX      GetMemUsed   ( GridPoint const & ) const = 0;
-    virtual tStrategyId    GetStrategyId( GridPoint const & ) const = 0;
-    virtual IndId          GetMemEntry  ( GridPoint const &, MEM_INDEX const ) const = 0;
-    virtual short          GetDistr     ( GridPoint const &, tAction   const ) const = 0;
-    virtual long           GetGenotype  ( GridPoint const &, tGeneType const ) const = 0;
+    virtual bool           IsDead       ( GridPoint const ) const = 0;
+    virtual bool           IsAlive      ( GridPoint const ) const = 0;
+    virtual bool           IsDefined    ( GridPoint const ) const = 0;
+    virtual IndId          GetId        ( GridPoint const ) const = 0;
+    virtual tOrigin        GetOrigin    ( GridPoint const ) const = 0;
+    virtual short          GetEnergy    ( GridPoint const ) const = 0;
+    virtual int            GetFoodStock ( GridPoint const ) const = 0;
+    virtual int            GetFertility ( GridPoint const ) const = 0;
+    virtual int            GetMutRate   ( GridPoint const ) const = 0;
+    virtual int            GetFertilizer( GridPoint const ) const = 0;
+    virtual EVO_GENERATION GetGenBirth  ( GridPoint const ) const = 0;
+    virtual EVO_GENERATION GetAge       ( GridPoint const ) const = 0;
+    virtual MEM_INDEX      GetMemSize   ( GridPoint const ) const = 0;
+    virtual MEM_INDEX      GetMemUsed   ( GridPoint const ) const = 0;
+    virtual tStrategyId    GetStrategyId( GridPoint const ) const = 0;
+    virtual IndId          GetMemEntry  ( GridPoint const, MEM_INDEX const ) const = 0;
+    virtual short          GetDistr     ( GridPoint const, tAction   const ) const = 0;
+    virtual long           GetGenotype  ( GridPoint const, tGeneType const ) const = 0;
 	
 	virtual	unsigned int   GetActionCounter( unsigned int const, tAction const ) const = 0;
 
@@ -73,7 +73,7 @@ public:
     virtual bool      IsPoiDefined( )              const = 0; 
     virtual bool      IsPoiId( IndId     const & ) const = 0;
     virtual GridPoint FindPOI( )                   const = 0;
-    virtual bool      IsPoi  ( GridPoint const & ) const = 0;
+    virtual bool      IsPoi  ( GridPoint const ) const = 0;
 
 // manipulating functions
 
@@ -81,7 +81,7 @@ public:
 	virtual void ResetSelection     ( ) = 0;
     virtual void ResetAll           ( ) = 0;
     virtual void ClearPoi           ( ) = 0;
-    virtual void SetPoi             ( GridPoint           const & ) = 0;
+    virtual void SetPoi             ( GridPoint           const   ) = 0;
     virtual void SetObservers       ( ObserverInterface * const   ) = 0;
     virtual void SetEvent           ( EventInterface    * const   ) = 0;
     virtual void SetSimulationMode  ( tBoolOp             const   ) = 0;

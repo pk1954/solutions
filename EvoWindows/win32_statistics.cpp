@@ -222,7 +222,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 
     m_pCore->GetSelection( ).Apply2Rect
 	( 
-		[&](GridPoint const & gp)
+		[&](GridPoint const gp)
 		{
 			if ( m_pCore->IsAlive( gp ) )
 			{

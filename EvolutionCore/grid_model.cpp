@@ -66,7 +66,7 @@ Grid::Grid( )
 {
     Apply2Grid    // initialization of grid variables which never change after initialization
 	( 
-    	[&](GridPoint const & gp)
+    	[&](GridPoint const gp)
 		{
            getGridField( gp ).InitGridFieldStructure( gp );
 		}
@@ -91,7 +91,7 @@ void CheckIndividuals( Grid & grid )
  
 	Apply2Grid
 	( 
-    	[&](GridPoint const & gp)
+    	[&](GridPoint const gp)
 		{
             if ( grid.IsAlive( gp ) )
                ++ iCount;
@@ -108,7 +108,7 @@ void Grid::ResetGrid( )
 
     Apply2Grid
 	( 
-    	[&](GridPoint const & gp)
+    	[&](GridPoint const gp)
 		{
 			getGridField( gp ).ResetGridField( sFood );
 		}
@@ -145,8 +145,8 @@ GridPoint Grid::choosePartner( Neighborhood & gpListFilled )
 
 void Grid::MakePlan
 ( 
-    GridPoint       const & gpRun, 
-    PlannedActivity       & plan
+    GridPoint       const gpRun, 
+    PlannedActivity     & plan
 )
 {
     GridField const & gfRun = GetGridField( gpRun );
@@ -164,7 +164,7 @@ void Grid::MakePlan
     Neighborhood::Apply2All
 	( 
 		gpRun, 
-		[&](GridPoint const & gpNeighbor)
+		[&](GridPoint const gpNeighbor)
 		{
 			(IsAlive(gpNeighbor) ? &m_occupiedNeighborSlots : &m_emptyNeighborSlots)->AddToList( gpNeighbor );
 		}
@@ -218,7 +218,7 @@ void Grid::MakePlan
 
 GridPoint Grid::ImplementPlan   // may return GP_NULL
 ( 
-    GridPoint       const & gpRun, 
+    GridPoint       const   gpRun, 
     PlannedActivity const & plan
 )  
 {
@@ -327,9 +327,9 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
 
 void Grid::EditSetStrategy
 ( 
-    GridPoint   const & gp, 
-    short       const   sIntensity, // percent value
-    tStrategyId         strategy
+    GridPoint   const gp, 
+    short       const sIntensity, // percent value
+    tStrategyId       strategy
 )
 {
 	assert( sIntensity >= 0 );
@@ -356,7 +356,7 @@ void Grid::EditSetStrategy
 
 GridPoint Grid::FindGridPoint
 (
-	const std::function<bool( GridPoint const &)>& func, 
+	const std::function<bool( GridPoint const)>& func, 
 	GridRect const & rect
 ) const
 {

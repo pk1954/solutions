@@ -78,7 +78,7 @@ void WorkThreadInterface::PostRefresh( LPARAM const lParam )
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_REFRESH, 0, lParam );
 }
 
-void WorkThreadInterface::PostSetPOI( GridPoint const & gp )
+void WorkThreadInterface::PostSetPOI( GridPoint const gp )
 {
     if ( gp.IsInGrid() )
     {
@@ -88,7 +88,7 @@ void WorkThreadInterface::PostSetPOI( GridPoint const & gp )
     }
 }
 
-void WorkThreadInterface::PostDoEdit( GridPoint const & gp )
+void WorkThreadInterface::PostDoEdit( GridPoint const gp )
 {
     if ( gp.IsInGrid() )
     {

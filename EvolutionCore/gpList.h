@@ -27,16 +27,16 @@ public:
 
     int GetSize( ) const { return m_iCount; }; 
 
-    GridPoint const & GetOldestGp  ( ) const { return m_gpOldest;   };
-    GridPoint const & GetYoungestGp( ) const { return m_gpYoungest; };
+    GridPoint const GetOldestGp  ( ) const { return m_gpOldest;   };
+    GridPoint const GetYoungestGp( ) const { return m_gpYoungest; };
 
     bool ListIsEmpty( ) const { return m_gpOldest.IsNull( ); }
 
     void SetOldest  ( GridPoint const gp ) { m_gpOldest   = gp; }; 
     void SetYoungest( GridPoint const gp ) { m_gpYoungest = gp; }; 
 
-    bool IsOldest  ( GridPoint const & gp ) const { return m_gpOldest   == gp; }
-    bool IsYoungest( GridPoint const & gp ) const { return m_gpYoungest == gp; }
+    bool IsOldest  ( GridPoint const gp ) const { return m_gpOldest   == gp; }
+    bool IsYoungest( GridPoint const gp ) const { return m_gpYoungest == gp; }
 
     void ResetGpList( )
     {

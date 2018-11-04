@@ -32,13 +32,13 @@ public:
 	{
 		if (m_shape == tShape::Grid)
 		{
-			Apply2Grid( [&](GridPoint const & gp) { (m_func)( gp, m_sIntensity ); } );
+			Apply2Grid( [&](GridPoint const gp) { (m_func)( gp, m_sIntensity ); } );
 		}
 		else
 		{
 			Apply2Rect
 			(
-				[&](GridPoint const & gp)
+				[&](GridPoint const gp)
 				{
 					short sIntensity = m_filter( gp );
 					if ( sIntensity >= 0)
@@ -66,16 +66,16 @@ public:
 		m_brushMode = mode;  
 		switch ( m_brushMode )
 		{
-		case  tBrushMode::move:        m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::empty    ); }; break;
-		case  tBrushMode::randomStrat: m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::random   ); }; break;
-		case  tBrushMode::cooperate:   m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::cooperate); }; break;
-		case  tBrushMode::defect:      m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::defect   ); }; break;
-		case  tBrushMode::tit4tat:     m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::tit4tat  ); }; break;
-		case  tBrushMode::noAnimals:   m_func = [this](GridPoint const & gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::empty    ); }; break;
-		case  tBrushMode::mutRate:     m_func = [this](GridPoint const & gp, short const s) { m_pGrid->Apply2MutRate   (gp, s, m_manFunc); }; break;
-		case  tBrushMode::fertility:   m_func = [this](GridPoint const & gp, short const s) { m_pGrid->Apply2Fertility (gp, s, m_manFunc); }; break;
-		case  tBrushMode::food:        m_func = [this](GridPoint const & gp, short const s) { m_pGrid->Apply2FoodStock (gp, s, m_manFunc); }; break;
-		case  tBrushMode::fertilizer:  m_func = [this](GridPoint const & gp, short const s) { m_pGrid->Apply2Fertilizer(gp, s, m_manFunc); }; break;
+		case  tBrushMode::move:        m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::empty    ); }; break;
+		case  tBrushMode::randomStrat: m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::random   ); }; break;
+		case  tBrushMode::cooperate:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::cooperate); }; break;
+		case  tBrushMode::defect:      m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::defect   ); }; break;
+		case  tBrushMode::tit4tat:     m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::tit4tat  ); }; break;
+		case  tBrushMode::noAnimals:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::empty    ); }; break;
+		case  tBrushMode::mutRate:     m_func = [this](GridPoint const gp, short const s) { m_pGrid->Apply2MutRate   (gp, s, m_manFunc); }; break;
+		case  tBrushMode::fertility:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->Apply2Fertility (gp, s, m_manFunc); }; break;
+		case  tBrushMode::food:        m_func = [this](GridPoint const gp, short const s) { m_pGrid->Apply2FoodStock (gp, s, m_manFunc); }; break;
+		case  tBrushMode::fertilizer:  m_func = [this](GridPoint const gp, short const s) { m_pGrid->Apply2Fertilizer(gp, s, m_manFunc); }; break;
 		};
 	}
 
@@ -99,7 +99,7 @@ public:
 		switch ( m_shape )
 		{
 		case tShape::Circle:
-			m_filter = [this]( GridPoint const & gp )
+			m_filter = [this]( GridPoint const gp )
 			{ 
 				long  const lRadius     = static_cast<long>(m_radius);
 				long  const lRadSquare  = lRadius * lRadius;
@@ -113,7 +113,7 @@ public:
 
 		case tShape::Grid:
 		case tShape::Rect:
-			m_filter = [this]( GridPoint const & gp )
+			m_filter = [this]( GridPoint const gp )
 			{ 
 				return m_sIntensity;
 			};
@@ -151,6 +151,6 @@ private:
 
 	ManipulatorFunc   m_manFunc;
 
-	std::function<void (GridPoint const &, short const)> m_func;
-    std::function<short(GridPoint const &)>              m_filter;
+	std::function<void (GridPoint const, short const)> m_func;
+    std::function<short(GridPoint const)>              m_filter;
 };

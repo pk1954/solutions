@@ -29,7 +29,7 @@ public:
         return m_gpCurrent;
     } 
     
-    void MoveTo( GridPoint const & gpNewPos ) 
+    void MoveTo( GridPoint const gpNewPos ) 
     { 
         m_gpCurrent = gpNewPos; 
     };

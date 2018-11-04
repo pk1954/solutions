@@ -24,8 +24,8 @@ public:
 
 	GridPointShape const * FindShape
 	( 
-		PixelPoint const & pnt,             
-		GridPoint  const   gp
+		PixelPoint const pnt,             
+		GridPoint  const gp
 	) const
 	{
 		return PointInShape( pnt ) ? this : nullptr;

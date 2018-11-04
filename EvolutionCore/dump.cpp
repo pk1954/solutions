@@ -63,7 +63,7 @@ void DUMP::Dump( GridField const & gf )
     *m_pDumpStream << endl;
 }
 
-void DUMP::Dump( Grid const & grid, GridPoint const & gp )
+void DUMP::Dump( Grid const & grid, GridPoint const gp )
 {
     *m_pDumpStream << grid.GetGridField( gp );
     *m_pDumpStream << endl;

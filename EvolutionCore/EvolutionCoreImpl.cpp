@@ -39,7 +39,7 @@ void EvolutionCoreImpl::ResetAll( )
 	m_bSimulationMode = false;
 }
 
-void EvolutionCoreImpl::SetPoi( GridPoint const &  gp )       
+void EvolutionCoreImpl::SetPoi( GridPoint const  gp )       
 { 
 	if ( gp.IsInGrid( ) )
 	{
@@ -90,8 +90,8 @@ void EvolutionCoreImpl::Compute( )
 
 void EvolutionCoreImpl::stopOnPoi
 ( 
-    GridPoint       const & gpRun, 
-    PlannedActivity       & plan
+    GridPoint       const gpRun, 
+    PlannedActivity     & plan
 )
 {
     if ( (m_pObservers != nullptr) && IsPoiDefined( ) ) 

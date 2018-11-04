@@ -16,7 +16,7 @@ public:
 		m_shapeOffset( PixelPoint( 0, 0 ) )
 	{}
 
-	virtual bool PointInShape( PixelPoint const & ) const = 0;
+	virtual bool PointInShape( PixelPoint const ) const = 0;
 
 	PixelPoint GetAbsoluteOffset( ) const
 	{

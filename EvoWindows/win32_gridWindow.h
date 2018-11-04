@@ -83,7 +83,7 @@ private:
 
 	void mouseWheelAction( int );
     BOOL inObservedClientRect( LPARAM );
-    void moveGrid( PixelPoint const & );
+    void moveGrid( PixelPoint const );
     void onMouseMove( LPARAM, WPARAM );
     void doPaint( );
 };

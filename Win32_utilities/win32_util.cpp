@@ -19,7 +19,7 @@ RECT Util::ScrReadRECT( Script & script )
     return rect;
 }
 
-wostream & Util::operator << ( wostream & out, PixelPoint const & pp )
+wostream & Util::operator << ( wostream & out, PixelPoint const pp )
 {
     //lint -e747  Significant prototype coercion with setw
     out << L" " << setw( 3 ) << pp.x << L" " << setw( 3 ) << pp.y << L" ";

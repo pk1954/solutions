@@ -38,7 +38,7 @@ void Grid::FoodGrowth( )
 
 	Apply2Grid
 	( 
-    	[&](GridPoint const & gp)
+    	[&](GridPoint const gp)
 		{
             GridField & rGF = getGridField( gp );
 

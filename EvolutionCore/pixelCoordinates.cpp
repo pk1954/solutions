@@ -27,7 +27,7 @@ bool PixelCoordinates::isValidFieldSize( long const lNewFieldSize ) const
     return (MINIMUM_FIELD_SIZE <= lNewFieldSize) && (lNewFieldSize <= MAXIMUM_FIELD_SIZE); 
 };
 
-void PixelCoordinates::MoveGrid( PixelPoint const & pntDelta )
+void PixelCoordinates::MoveGrid( PixelPoint const pntDelta )
 {
     m_pixOffset -= pntDelta;
 }
@@ -100,29 +100,29 @@ short PixelCoordinates::ComputeNewFieldSize( bool const bZoomIn ) const
 	return sNewFieldSize;
 }
 
-PixelPoint PixelCoordinates::Pixel2PixelSize( PixelPoint const & ptSizeIn, PixelCoordinates const & fTarget ) const 
+PixelPoint PixelCoordinates::Pixel2PixelSize( PixelPoint const ptSizeIn, PixelCoordinates const & fTarget ) const 
 {
     static long const FACTOR( 1024 ); // to avoid zero when dividing small ptSizeIn by m_sFieldSize 
 
     return (((ptSizeIn * FACTOR) / m_sFieldSize) * fTarget.m_sFieldSize ) / FACTOR;
 }
 
-PixelPoint PixelCoordinates::Pixel2PixelPos( PixelPoint const & ptPosIn, PixelCoordinates const & fTarget ) const 
+PixelPoint PixelCoordinates::Pixel2PixelPos( PixelPoint const ptPosIn, PixelCoordinates const & fTarget ) const 
 {
     return Pixel2PixelSize( ptPosIn + m_pixOffset, fTarget ) - fTarget.m_pixOffset;
 }
 
-KGridPoint PixelCoordinates::Pixel2KGridPos( PixelPoint const & pp ) const 
+KGridPoint PixelCoordinates::Pixel2KGridPos( PixelPoint const pp ) const 
 { 
 	return Pixel2KGridSize( pp + m_pixOffset, m_sFieldSize ); 
 }
 
-PixelPoint PixelCoordinates::KGrid2PixelPos( KGridPoint const & kp ) const 
+PixelPoint PixelCoordinates::KGrid2PixelPos( KGridPoint const kp ) const 
 { 
 	return KGrid2PixelSize( kp, m_sFieldSize ) - m_pixOffset; 
 }
     
-PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint  const & gp ) const 
+PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint const gp ) const 
 { 
 	PixelPoint ppRes( gp.x * m_sFieldSize, gp.y * m_sFieldSize );
 	
@@ -132,7 +132,7 @@ PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint  const & gp ) const
 	return ppRes;
 }
 
-PixelPoint PixelCoordinates::Grid2PixelPos ( GridPoint const & gp ) const 
+PixelPoint PixelCoordinates::Grid2PixelPos( GridPoint const gp ) const 
 { 
 	PixelPoint ppRes( Grid2PixelSize( gp ) - m_pixOffset );
 
@@ -142,7 +142,7 @@ PixelPoint PixelCoordinates::Grid2PixelPos ( GridPoint const & gp ) const
 	return ppRes;
 }
 
-PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint  const & gp ) const 
+PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint const gp ) const 
 { 
 	if (m_bHexagon)
 	{
@@ -155,7 +155,7 @@ PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint  const & gp ) const
 		return Grid2PixelPos( gp ) + m_sFieldSize / 2; 
 }
 
-GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const & pp ) const 
+GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const 
 { 
 	PixelPoint pixPoint( pp + m_pixOffset );
 
