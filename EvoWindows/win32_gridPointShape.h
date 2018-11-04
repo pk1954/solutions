@@ -43,7 +43,7 @@ public:
 		m_textDisplay.DrawText( GetRect( ) );
 	}
 
-	virtual void PrepareShape( GridPoint const ) = 0;
+	virtual void PrepareShape( GridPoint const ) {};
 
 protected:
 

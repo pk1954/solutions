@@ -28,17 +28,6 @@ public:
 		}
 	}
 
-	void FillBuffer( GridPoint const gp )
-	{
-		wostringstream & buffer = m_textDisplay.Buffer();
-		EvolutionCore  & core   = m_textDisplay.Core();
-
-		MEM_INDEX const memSize = core.GetMemSize( gp );  
-		MEM_INDEX const memUsed = core.GetMemUsed( gp ); 
-        
-		buffer << L"  Mem " << memUsed << L"/" << memSize;
-	}
-
 	virtual void PrepareShape( GridPoint const gp )
 	{
 		PixelRectSize   rectSize = GetSize();
@@ -56,6 +45,17 @@ public:
 			pSlot->SetSize( rectSize );
 			pSlot->SetShapeOffset( PixelPoint( 0, lYpos ) );
 		}
+	}
+
+	void FillBuffer( GridPoint const gp )
+	{
+		wostringstream & buffer = m_textDisplay.Buffer();
+		EvolutionCore  & core   = m_textDisplay.Core();
+
+		MEM_INDEX const memSize = core.GetMemSize( gp );  
+		MEM_INDEX const memUsed = core.GetMemUsed( gp ); 
+        
+		buffer << L"  Mem " << memUsed << L"/" << memSize;
 	}
 
 	GridPointShape const * FindShape

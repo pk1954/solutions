@@ -109,7 +109,7 @@ bool DrawFrame::SetHighlightPos( PixelPoint const & pos )
 {
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
-	m_gpHighlight = m_pPixelCoordinates->Pixel2GridPos( pos );
+	m_gpHighlight = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pos ) );
 	prepareIndividualShape( m_gpHighlight );
 	m_pShapeHighlight = m_pIndividualShape->FindRelevantShape( pos, m_gpHighlight );
 	return ( (gpLast != m_gpHighlight) || (pShapeLast != m_pShapeHighlight) );

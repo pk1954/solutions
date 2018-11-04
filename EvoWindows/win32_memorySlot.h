@@ -21,9 +21,6 @@ public:
 		m_index( index )
 	{}
 
-	virtual void PrepareShape( GridPoint const )
-	{ }
-
 	virtual GridPoint GetReferencedGridPoint( GridPoint const gp ) const 
 	{ 
 		return getReferencedGridPoint( getIndId( gp ) );
@@ -59,4 +56,3 @@ private:
 
 	MEM_INDEX m_index;
 };
-
