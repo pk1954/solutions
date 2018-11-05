@@ -90,7 +90,7 @@ void DrawFrame::Resize( )
     m_pD3dBuffer->ResetFont( iFontSize );
 }
 
-void DrawFrame::prepareIndividualShape( GridPoint const gp )
+void DrawFrame::prepareGridPoint( GridPoint const gp )
 {
 	long lSizeInd = (5 * m_pPixelCoordinates->GetFieldSize()) / 8;  // use only 5/8 of field size; 
 	m_pIndividualShape->SetSize( PixelRectSize( lSizeInd, lSizeInd ) );
@@ -103,8 +103,8 @@ bool DrawFrame::SetHighlightPos( PixelPoint const pos )
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
 	m_gpHighlight = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pos ) );
-	prepareIndividualShape( m_gpHighlight );
-	m_pShapeHighlight = m_pIndividualShape->FindRelevantShape( pos, m_gpHighlight );
+	prepareGridPoint( m_gpHighlight );
+	m_pShapeHighlight = m_pIndividualShape->FindShape( pos, m_gpHighlight );
 	return ( (gpLast != m_gpHighlight) || (pShapeLast != m_pShapeHighlight) );
 }
 
@@ -133,7 +133,7 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 				drawText( rcGrid );
 				if ( m_pShapeHighlight != nullptr )
 				{
-					prepareIndividualShape( m_gpHighlight );
+					prepareGridPoint( m_gpHighlight );
 					HighlightRect( m_pShapeHighlight->GetRect( ) );
 					GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( m_gpHighlight );
 					if ( m_gpHighlight != GridPoint::GP_NULL )
@@ -226,7 +226,7 @@ void DrawFrame::drawText( GridRect const & rect )
 		{
             if ( m_pCore->IsAlive( gp ) )
             {
-				prepareIndividualShape( gp );
+				prepareGridPoint( gp );
 				m_pIndividualShape->Draw( gp );
             }
 		}

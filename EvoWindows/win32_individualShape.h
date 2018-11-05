@@ -71,7 +71,7 @@ public:
 		}
 	}
 
-	GridPointShape const * FindRelevantShape
+	GridPointShape const * FindShape
 	( 
 		PixelPoint const pnt, 
 		GridPoint  const gp

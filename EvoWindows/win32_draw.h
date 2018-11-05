@@ -51,9 +51,6 @@ private:
     DspOptWindow     * const m_pDspOptWindow;
 
     D3dBuffer        * m_pD3dBuffer;
-	IndividualShape  * m_pZoom_level_0;
-	IndividualShape  * m_pZoom_level_1;
-	IndividualShape  * m_pZoom_level_2;
 	IndividualShape  * m_pIndividualShape;
 	TextDisplay      * m_pTextDisplay;
 
@@ -77,7 +74,7 @@ private:
     void     setIndividualColor( GridPoint const, float const ) const;
 	void     addPrimitive( GridPoint const, DWORD const, float const ) const;
 	
-	void prepareIndividualShape( GridPoint const );
+	void prepareGridPoint( GridPoint const );
 
 	void drawBackground( );
     void drawText       ( GridRect  const & );
