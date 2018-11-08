@@ -361,12 +361,11 @@ GridPoint Grid::FindGridPoint
 ) const
 {
     GridPoint gp;
-    for ( gp.y = rect.GetTop ( ); gp.y <= rect.GetBottom( ); ++gp.y )
-    for ( gp.x = rect.GetLeft( ); gp.x <= rect.GetRight ( ); ++gp.x )
+    for ( gp.y = rect.GetBottom( ); gp.y <= rect.GetTop  ( ); ++gp.y )
+    for ( gp.x = rect.GetLeft  ( ); gp.x <= rect.GetRight( ); ++gp.x )
         if ( func( gp ) )
         {
             return gp;
         }
-
     return GridPoint::GP_NULL;
 }

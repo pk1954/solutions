@@ -17,11 +17,11 @@
 
 class EvolutionCore;
 class PixelCoordinates;
-class IndividualShape;
+class GridPointShape;
 class DspOptWindow;
 class TextDisplay;
 class D3dBuffer;
-class GridPointShape;
+class Shape;
 
 using namespace std;
 
@@ -38,7 +38,7 @@ public:
     void SetStripMode( tBoolOp );
     void SetIndDimmMode( tBoolOp );
 	bool SetHighlightPos( PixelPoint const );
-	void HighlightRect( PixelRect const & );
+	void HighlightShape( Shape const * );
 
 private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
@@ -51,11 +51,11 @@ private:
     DspOptWindow     * const m_pDspOptWindow;
 
     D3dBuffer        * m_pD3dBuffer;
-	IndividualShape  * m_pIndividualShape;
+	GridPointShape   * m_gridPointShape;
 	TextDisplay      * m_pTextDisplay;
 
-	GridPointShape const * m_pShapeHighlight;
-	GridPoint              m_gpHighlight;
+	Shape const * m_pShapeHighlight;
+	GridPoint     m_gpHighlight;
 
     static UINT const MAX_BG_COLOR = 255;
 

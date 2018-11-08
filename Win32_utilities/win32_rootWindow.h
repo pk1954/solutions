@@ -24,7 +24,6 @@ public:
     LONG          const GetWindowTop( )            const { return Util::GetWindowTop           ( m_hwnd ); }
     LONG          const GetWindowWidth( )          const { return Util::GetWindowWidth         ( m_hwnd ); }
     LONG          const GetWindowHeight( )         const { return Util::GetWindowHeight        ( m_hwnd ); }
-    PixelPoint    const GetWindowPos( )            const { return Util::GetWindowPos           ( m_hwnd ); }
     PixelPoint    const GetWindowSize( )           const { return Util::GetWindowSize          ( m_hwnd ); }
     PixelPoint    const GetClientAreaPos( )        const { return Util::GetClientAreaPos       ( m_hwnd ); }
     PixelRectSize const GetClRectSize( )           const { return Util::GetClRectSize          ( m_hwnd ); }
@@ -141,9 +140,7 @@ public:
 
 	PixelPoint const GetCrsrPosFromLparam( LPARAM const lParam ) const
 	{
-		PixelPoint ptCrsr( GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) );
-		Util::UpsideDown( m_hwnd, & ptCrsr ); 
-		return ptCrsr;
+		return Util::POINT2PixelPoint( m_hwnd, POINT{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) } );
 	}
 
 	virtual void Notify( bool const );

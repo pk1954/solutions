@@ -5,32 +5,12 @@
 
 #include <iomanip>     
 #include "plannedActivity.h"
-#include "win32_gridPointShape.h"
+#include "win32_shape.h"
 
-class GridPointCoordShape : public GridPointShape
+class LeftColumn : public Shape
 {
 public:
-	GridPointCoordShape
-	( 
-		Shape       * const pParent,
-		TextDisplay &       textDisplay
-	) :
-		GridPointShape( pParent, textDisplay )
-	{}
-
-	void FillBuffer( GridPoint const gp )
-	{
-		m_textDisplay.Buffer() << gp;
-	}
-
-private:
-};
-
-
-class LeftColumn : public GridPointShape
-{
-public:
-	using GridPointShape::GridPointShape;
+	using Shape::Shape;
 	
 	void FillBuffer( GridPoint const gp )
 	{

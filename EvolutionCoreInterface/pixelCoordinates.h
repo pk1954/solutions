@@ -41,7 +41,8 @@ public:
     PixelPoint Pixel2PixelPos ( PixelPoint const, PixelCoordinates const & ) const;
 
 	PixelPoint Grid2PixelPosCenter( GridPoint const ) const; 
-	
+	PixelRect  GridPoint2PixelRect( GridPoint const ) const;
+
 	//////// queries ////////
 	
 	short      GetFieldSize( )   const { return m_sFieldSize; };

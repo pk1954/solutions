@@ -91,10 +91,10 @@ void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, wstring const & wstr, D
 	long const lClientWinHeight = Util::GetClientWindowHeight( m_hwnd );
 	RECT rect 
 	{                                         
-		pixRect.m_lLeft,					  // windows y-coordinates increase from top to bottom
-		lClientWinHeight - pixRect.m_lBottom, // DirectX y-coordinates increasing from bottom to top
-		pixRect.m_lRight,                     // see UpsideDown
-		lClientWinHeight - pixRect.m_lTop	   
+		pixRect.m_lLeft,					  
+		lClientWinHeight - pixRect.m_lTop, 
+		pixRect.m_lRight,                    
+		lClientWinHeight - pixRect.m_lBottom	   
 	};
     assert( m_id3dx_font != nullptr );
     //lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
@@ -259,21 +259,24 @@ void D3dBuffer::finishTranspMode( )
 
 void D3dBuffer::RenderTranspRect( PixelRect const & rectTransparent, DWORD const dwColor )
 {
-    assert( m_d3d_device != nullptr );
-    prepareTranspMode( );
+	if ( rectTransparent.IsNotEmpty() )
+	{
+		assert( m_d3d_device != nullptr );
+		prepareTranspMode( );
 
-	addRect2Buffer
-    ( 
-        static_cast<float>( rectTransparent.m_lLeft   ), 
-        static_cast<float>( rectTransparent.m_lTop    ), 
-        static_cast<float>( rectTransparent.m_lRight  ), 
-        static_cast<float>( rectTransparent.m_lBottom ), 
-        dwColor 
-    );
+		addRect2Buffer
+		( 
+			static_cast<float>( rectTransparent.m_lLeft   ), 
+			static_cast<float>( rectTransparent.m_lTop    ), 
+			static_cast<float>( rectTransparent.m_lRight  ), 
+			static_cast<float>( rectTransparent.m_lBottom ), 
+			dwColor 
+		);
 
-	renderPrimitives( m_d3d->GetRectIndexBuffer() );
+		renderPrimitives( m_d3d->GetRectIndexBuffer() );
 
-    finishTranspMode( );
+		finishTranspMode( );
+	}
 }
 
 void D3dBuffer::RenderBackground( )

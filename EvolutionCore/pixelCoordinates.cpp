@@ -5,6 +5,7 @@
 #include <algorithm>  // min/max templates
 #include "gridPoint.h"
 #include "pixelPoint.h"
+#include "pixelRect.h"
 #include "pixelCoordinates.h"
 
 static double const SQRT3_DIV2 = sqrt(3.) / 2.;
@@ -30,9 +31,10 @@ bool PixelCoordinates::isValidFieldSize( long const lNewFieldSize ) const
 void PixelCoordinates::MoveGrid( PixelPoint const pntDelta )
 {
     m_pixOffset -= pntDelta;
+	CheckPixelPoint( m_pixOffset );
 }
 
-PixelPoint PixelCoordinates::getCenterOffset(GridRect const & gridRect, PixelPoint const pixCenter )  // Move gridRect to center of window
+PixelPoint PixelCoordinates::getCenterOffset( GridRect const & gridRect, PixelPoint const pixCenter )  // Move gridRect to center of window
 {
 	assert(gridRect.GetStartPoint().IsInGrid());
 	GridPoint  const gpStart(gridRect.GetStartPoint());
@@ -49,26 +51,34 @@ bool PixelCoordinates::CenterPoi( PixelPoint const pixCenter, GridPoint const gp
 
     PixelPoint pixCenterOffset( getCenterOffset( GridRect( gpPoi, gpPoi + 1 ), pixCenter ) );
     bool       bCentered( m_pixOffset == pixCenterOffset );
+	CheckPixelPoint( pixCenterOffset );
 
     if ( ! bCentered )
+	{
         m_pixOffset = m_smoothMove.Step( m_pixOffset, pixCenterOffset );
+		CheckPixelPoint( m_pixOffset );
+	}
 
     return bCentered;
 }
 
-bool PixelCoordinates::FitGridToRect( GridRect const & gridRect, PixelRectSize const pntPixSize )
+bool PixelCoordinates::FitGridToRect
+( 
+	GridRect      const & gridRect,   // GridRect to fit into window
+	PixelRectSize const   pntPixSize  // available size 
+)
 {
-    GridPoint gp( pntPixSize.GetWidth(), pntPixSize.GetHeight() );
-    gp /= gridRect.GetSize() + 1;
+	GridPoint     gpGridRectSize = gridRect.GetSize() + 1;
+	PixelRectSize pixRectSize    = pntPixSize / PixelRectSize{ gpGridRectSize.x, gpGridRectSize.y };
 
-    short const sNewFieldSize( std::min( gp.x, gp.y ) );
+	short const sNewFieldSize( std::min( pixRectSize.GetWidth(), pixRectSize.GetHeight() ) );
     
     if ( !isValidFieldSize( sNewFieldSize ) )
         return false;
 
-    PixelPoint pixCenter( pntPixSize.GetWidth() / 2, pntPixSize.GetHeight() / 2 );
     m_sFieldSize = sNewFieldSize;
-    m_pixOffset  = getCenterOffset( gridRect, pixCenter );
+    m_pixOffset  = getCenterOffset( gridRect, pntPixSize.ToPixelPoint() / 2 );
+	CheckPixelPoint( m_pixOffset );
 
     return true;
 }
@@ -79,6 +89,7 @@ bool PixelCoordinates::SetGridFieldSize( short const sNewFieldSize, PixelPoint c
         return false;
  
     m_pixOffset  = ((m_pixOffset + pntCenter) * sNewFieldSize) / m_sFieldSize - pntCenter;
+	CheckPixelPoint( m_pixOffset );
     m_sFieldSize = sNewFieldSize;
 
     return true;
@@ -154,6 +165,14 @@ PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint const gp ) const
 	else
 		return Grid2PixelPos( gp ) + m_sFieldSize / 2; 
 }
+PixelRect PixelCoordinates::GridPoint2PixelRect( GridPoint const gp ) const
+{
+	return PixelRect
+	(
+		Grid2PixelPos( gp ),  // PixelPoint 
+		PixelRectSize( m_sFieldSize, m_sFieldSize ) 
+	);
+}
 
 GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const 
 { 
@@ -218,8 +237,8 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 
 KGridRect PixelCoordinates::Pixel2KGridRect( PixelRect const & rect ) const 
 {
-    PixelPoint pntStart( rect.m_lLeft,  rect.m_lTop    );
-    PixelPoint pntEnd  ( rect.m_lRight, rect.m_lBottom );
+    PixelPoint pntStart( rect.m_lLeft,  rect.m_lBottom );
+    PixelPoint pntEnd  ( rect.m_lRight, rect.m_lTop    );
 
     return KGridRect 
     (
@@ -239,8 +258,8 @@ GridRect PixelCoordinates::Pixel2GridRect( PixelRect const & rect ) const
 {
     return GridRect
     ( 
-        Pixel2GridPos( PixelPoint( rect.m_lLeft,  rect.m_lTop    ) ), 
-        Pixel2GridPos( PixelPoint( rect.m_lRight, rect.m_lBottom ) ) 
+        Pixel2GridPos( PixelPoint( rect.m_lLeft,  rect.m_lBottom ) ), 
+        Pixel2GridPos( PixelPoint( rect.m_lRight, rect.m_lTop    ) ) 
     ).ClipToGrid( );
 }
 

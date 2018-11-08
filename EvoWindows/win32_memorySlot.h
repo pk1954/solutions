@@ -4,11 +4,11 @@
 #pragma once
 
 #include <iomanip>
-#include "win32_gridPointShape.h"
+#include "win32_shape.h"
 
 using namespace std;
 
-class MemorySlot : public GridPointShape
+class MemorySlot : public Shape
 {
 public:
 	MemorySlot
@@ -17,7 +17,7 @@ public:
 		TextDisplay &       textDisplay, 
 		MEM_INDEX     const index 
 	) :
-		GridPointShape( pParent, textDisplay ),
+		Shape( pParent, textDisplay ),
 		m_index( index )
 	{}
 

@@ -8,11 +8,11 @@
 #include "EvolutionTypes.h"
 #include "gridRect.h"
 #include "win32_memorySlot.h"
-#include "win32_gridPointShape.h"
+#include "win32_shape.h"
 
 using namespace std;
 
-class RightColumn : public GridPointShape
+class RightColumn : public Shape
 {
 public:
 	RightColumn
@@ -20,7 +20,7 @@ public:
 		Shape * const pParent,
 		TextDisplay & textDisplay 
 	) :
-		GridPointShape( pParent, textDisplay )
+		Shape( pParent, textDisplay )
 	{
 		for	( MEM_INDEX mem = 0; mem < IMEMSIZE_MAX; ++mem )
 		{
@@ -30,20 +30,18 @@ public:
 
 	virtual void PrepareShape( GridPoint const gp )
 	{
-		PixelRectSize   rectSize = GetSize();
-		long      const lHeight  = rectSize.GetHeight() / (IMEMSIZE_MAX + 1);
-		long            lYpos    = rectSize.GetHeight() - lHeight;
+		long          const lShapeHeight = GetShapeHeight();
+		long          const lHeight      = lShapeHeight / (IMEMSIZE_MAX + 1);
+		PixelRectSize const slotSize( GetShapeWidth(), lHeight );
 
-		rectSize.SetHeight( lHeight );
-
+		long lYpos = lShapeHeight - lHeight;
 		MEM_INDEX const memUsed = m_textDisplay.Core().GetMemUsed( gp ); 
 		for	( auto & pSlot : m_aMemorySlot )
 		{
 			if ( pSlot->GetMemIndex() == memUsed )
 				break;
 			lYpos -= lHeight;
-			pSlot->SetSize( rectSize );
-			pSlot->SetShapeOffset( PixelPoint( 0, lYpos ) );
+			pSlot->SetShapeRect( PixelRect( PixelPoint( 0, lYpos ), slotSize ) );
 		}
 	}
 
@@ -58,7 +56,7 @@ public:
 		buffer << L"  Mem " << memUsed << L"/" << memSize;
 	}
 
-	GridPointShape const * FindShape
+	Shape const * FindShape
 	( 
 		PixelPoint const pnt,             
 		GridPoint  const gp
@@ -78,7 +76,7 @@ public:
 
 	void Draw( GridPoint const gp )
 	{
-		GridPointShape::Draw( gp );
+		Shape::Draw( gp );
 
 		MEM_INDEX const memUsed = m_textDisplay.Core().GetMemUsed( gp ); 
 		for	( auto & pSlot : m_aMemorySlot )

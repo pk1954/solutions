@@ -3,26 +3,23 @@
 
 #pragma once
 
-#include <sstream> 
-#include "GridPoint.h"
-#include "win32_gridPointShape.h"
+#include "win32_shape.h"
+#include "win32_textDisplay.h"
 #include "win32_leftColumn.h"
 #include "win32_rightColumn.h"
 
-class PixelCoordinates;
-class EvolutionCore;
-class D3dBuffer;
-class LeftColumn;
-class RightColumn;
-
-class IndividualShape : public GridPointShape
+class IndividualShape : public Shape
 {
 public:
-	IndividualShape( TextDisplay & textDisplay ) :
-		GridPointShape( nullptr, textDisplay ),
-		m_leftColumn  ( this, textDisplay ),
-		m_rightColumn ( this, textDisplay ),
-		m_gpCoordShape( this, textDisplay )
+
+	IndividualShape
+	( 
+		Shape * const pParent,
+		TextDisplay & textDisplay 
+	) :
+		Shape     ( pParent, textDisplay ),
+		m_leftColumn ( this, textDisplay ),
+		m_rightColumn( this, textDisplay )
 	{ }
 
 	virtual void FillBuffer( GridPoint const gp ) { };  // all text in subshapes
@@ -32,23 +29,34 @@ public:
     	short const sFieldSize = m_textDisplay.GetFieldSize();
 		if ( sFieldSize >= ZOOM_LEVEL_1 )
 		{
-			PixelRectSize const rectSize = GetSize();
-			long          const lWidth   = rectSize.GetWidth();
-			long          const lHeight  = rectSize.GetHeight();
-
-			m_gpCoordShape.SetSize( PixelRectSize( lWidth, lHeight / 10 ) );
-			m_gpCoordShape.SetShapeOffset( PixelPoint( 0, 11 * lHeight / 10 ) );
-			m_gpCoordShape.PrepareShape( gp );
-
-			m_leftColumn.SetSize( PixelRectSize( lWidth / 2, lHeight ) );
-			m_leftColumn.SetShapeOffset( PixelPoint( 0, 0 ) );
-			m_leftColumn.PrepareShape( gp );
+			PixelRect rect    = GetShapeRect();
+			long      lWidth  = rect.GetWidth();
+			long      lHeight = rect.GetHeight();
 
 			if ( sFieldSize >= ZOOM_LEVEL_2 )
 			{
-				m_rightColumn.SetSize( PixelRectSize( lWidth / 2, lHeight ) );
-				m_rightColumn.SetShapeOffset( PixelPoint( lWidth / 2, 0 ) );
+				m_leftColumn.SetShapeRect
+				( 
+					PixelPoint   (          0,       0 ),
+					PixelRectSize( lWidth / 2, lHeight )
+				);
+				m_leftColumn.PrepareShape( gp );
+
+				m_rightColumn.SetShapeRect
+				( 
+					PixelPoint   ( lWidth / 2,       0 ),
+					PixelRectSize( lWidth / 2, lHeight )
+				);
 				m_rightColumn.PrepareShape( gp );
+			}
+			else
+			{
+				m_leftColumn.SetShapeRect
+				( 
+					PixelPoint   (      0,       0 ),
+					PixelRectSize( lWidth, lHeight )
+				);
+				m_leftColumn.PrepareShape( gp );
 			}
 		}
 	}
@@ -58,7 +66,6 @@ public:
     	short const sFieldSize = m_textDisplay.GetFieldSize();
 		if ( sFieldSize >= ZOOM_LEVEL_1 )
 		{
-			m_gpCoordShape.Draw( gp );
 			m_leftColumn.Draw( gp );
 
 			if ( sFieldSize >= ZOOM_LEVEL_2 )
@@ -71,7 +78,7 @@ public:
 		}
 	}
 
-	GridPointShape const * FindShape
+	Shape const * FindShape
 	( 
 		PixelPoint const pnt, 
 		GridPoint  const gp
@@ -80,7 +87,7 @@ public:
     	short const sFieldSize = m_textDisplay.GetFieldSize();
 		if ( sFieldSize >= ZOOM_LEVEL_1 )
 		{
-			GridPointShape const * pShapeRes = m_leftColumn.FindShape( pnt, gp );
+			Shape const * pShapeRes = m_leftColumn.FindShape( pnt, gp );
 			if ( pShapeRes != nullptr )
 				return pShapeRes;
 
@@ -97,12 +104,7 @@ public:
 
 		return PointInShape( pnt ) ? this : nullptr;
 	}
-
 private:
-	static short const ZOOM_LEVEL_1 =  96;
-	static short const ZOOM_LEVEL_2 = 256;
-
-	GridPointCoordShape m_gpCoordShape;
-	LeftColumn          m_leftColumn;
-	RightColumn         m_rightColumn;
+	LeftColumn  m_leftColumn;
+	RightColumn m_rightColumn;
 };

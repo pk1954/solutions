@@ -1,54 +1,105 @@
-// win32_gridPointShape.cpp
+// win32_individualShape.h
 //
 
 #pragma once
 
 #include <sstream> 
-#include "d3d_buffer.h"
 #include "GridPoint.h"
-#include "EvolutionCore.h"
-#include "win32_textDisplay.h"
-#include "win32_rectShape.h"
+#include "win32_shape.h"
+#include "win32_individualShape.h"
 
-class GridPointShape : public RectShape
+class PixelCoordinates;
+class EvolutionCore;
+class D3dBuffer;
+
+class CoordShape : public Shape
 {
 public:
-	GridPointShape
+	CoordShape
 	( 
-		Shape * const pParent,
-		TextDisplay & textDisplay 
+		Shape       * const pParent,
+		TextDisplay &       textDisplay
 	) :
-		RectShape( pParent ),
-		m_textDisplay( textDisplay )
-	{ }
+		Shape( pParent, textDisplay )
+	{}
 
-	GridPointShape const * FindShape
-	( 
-		PixelPoint const pnt,             
-		GridPoint  const gp
-	) const
+	void FillBuffer( GridPoint const gp )
 	{
-		return PointInShape( pnt ) ? this : nullptr;
+		m_textDisplay.Buffer() << gp;
 	}
 
-	virtual GridPoint GetReferencedGridPoint( GridPoint const gp ) const 
-	{ 
-		return GridPoint::GP_NULL; 
+private:
+};
+
+class GridPointShape : public Shape
+{
+public:
+	GridPointShape( TextDisplay & textDisplay ) :
+		Shape( nullptr, textDisplay ),
+		m_indivShape( this, textDisplay ),
+		m_coordShape( this, textDisplay )
+	{ }
+
+	virtual void FillBuffer( GridPoint const gp ) { };  // all text in subshapes
+
+	virtual void PrepareShape( GridPoint const gp )
+	{
+    	short const sFieldSize = m_textDisplay.GetFieldSize();
+		if ( sFieldSize >= ZOOM_LEVEL_1 )
+		{
+			PixelRectSize const rectSize = GetShapeSize();
+			long          const lWidth   = rectSize.GetWidth();
+			long          const lHeight  = rectSize.GetHeight();
+
+			m_coordShape.SetShapeRect
+			( 
+				PixelPoint   ( 0,  9 * lHeight / 10 ),
+				PixelRectSize( lWidth, lHeight / 10 )
+			);
+			m_coordShape.PrepareShape( gp );
+
+			m_indivShape.SetShapeRect
+			( 
+				rectSize.ToPixelPoint() * 3 / 16,    // 
+				rectSize * 10 / 16                   // use only 5/8 of field size;
+			);
+			m_indivShape.PrepareShape( gp );
+		}
 	}
 
 	void Draw( GridPoint const gp )
 	{
-		m_textDisplay.Clear();
-		FillBuffer( gp );
-		m_textDisplay.DrawText( GetRect( ) );
+    	short const sFieldSize = m_textDisplay.GetFieldSize();
+		if ( sFieldSize >= ZOOM_LEVEL_1 )
+		{
+			m_coordShape.Draw( gp );
+			m_indivShape.Draw( gp );
+		}
 	}
 
-	virtual void PrepareShape( GridPoint const ) {};
+	Shape const * FindShape
+	( 
+		PixelPoint const pnt, 
+		GridPoint  const gp
+	) const
+	{
+		Shape const * pShapeRes;
+    	short const   sFieldSize = m_textDisplay.GetFieldSize();
+		if ( sFieldSize >= ZOOM_LEVEL_1 )
+		{
+			pShapeRes = m_coordShape.FindShape( pnt, gp );
+			if ( pShapeRes != nullptr )
+				return pShapeRes;
 
-protected:
+			pShapeRes = m_indivShape.FindShape( pnt, gp );
+			if ( pShapeRes != nullptr )
+				return pShapeRes;
+		}
 
-	virtual void FillBuffer( GridPoint const ) = 0;
+		return PointInShape( pnt ) ? this : nullptr;
+	}
 
-    TextDisplay & m_textDisplay;
-};   
-
+private:
+	CoordShape      m_coordShape;
+	IndividualShape m_indivShape;
+};

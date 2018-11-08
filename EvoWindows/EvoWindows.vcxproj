@@ -185,7 +185,6 @@
     <ClInclude Include="win32_leftColumn.h" />
     <ClInclude Include="win32_memorySlot.h" />
     <ClInclude Include="win32_packGridPoint.h" />
-    <ClInclude Include="win32_rectShape.h" />
     <ClInclude Include="win32_rightColumn.h" />
     <ClInclude Include="win32_scriptHook.h" />
     <ClInclude Include="win32_shape.h" />
