@@ -97,7 +97,7 @@ void D3dSystem::createDevice( HWND const hwnd, ULONG const ulModelWidth, ULONG c
 	stopwatch.Stop( L"CreateDevice" );
 
 	//lint -e708     union initialization
-	D3DMATRIX const m = 
+	m_d3d_matrix = D3DMATRIX 
 	{
 		 1.0f,   0.0f,  0.0f,  0.0f,
 		 0.0f,   1.0f,  0.0f,  0.0f,
@@ -106,7 +106,6 @@ void D3dSystem::createDevice( HWND const hwnd, ULONG const ulModelWidth, ULONG c
 	};
 	//lint +e708
 
-	m_d3d_matrix = m;
 	m_d3d_device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
 	m_d3d_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
 	stopwatch.Start();
