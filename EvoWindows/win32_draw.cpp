@@ -133,9 +133,13 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 				{
 					prepareGridPoint( m_gpHighlight );
 					HighlightShape( m_pShapeHighlight);
-//					GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( m_gpHighlight );
-//					if ( m_gpHighlight != GridPoint::GP_NULL )
-//						HighlightRect( m_pPixelCoordinates->Grid2PixelRect( GridRect( gpReferenced, gpReferenced ) ) );
+					GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( m_gpHighlight );
+					if ( gpReferenced != GridPoint::GP_NULL )
+					{
+						prepareGridPoint( gpReferenced );
+						Shape const & shapeReferenced = m_gridPointShape->GetIndividualShape().GetLeftColumn().GetIdentifierShape();
+						HighlightShape( & shapeReferenced );
+					}
 				}
 			}
 

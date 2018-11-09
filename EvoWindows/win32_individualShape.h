@@ -104,6 +104,12 @@ public:
 
 		return PointInShape( pnt ) ? this : nullptr;
 	}
+
+	LeftColumn const & GetLeftColumn() const 
+	{
+		return m_leftColumn;
+	}
+
 private:
 	LeftColumn  m_leftColumn;
 	RightColumn m_rightColumn;

@@ -48,20 +48,23 @@ public:
 		if ( sFieldSize >= ZOOM_LEVEL_1 )
 		{
 			PixelRectSize const rectSize = GetShapeSize();
-			long          const lWidth   = rectSize.GetWidth();
-			long          const lHeight  = rectSize.GetHeight();
+			long          const lShapeWidth  = rectSize.GetWidth();
+			long          const lShapeHeight = rectSize.GetHeight();
+			long                lYpos        = 0;
+			long                lHeight      = lShapeHeight / 10;
 
 			m_coordShape.SetShapeRect
 			( 
-				PixelPoint   ( 0,  9 * lHeight / 10 ),
-				PixelRectSize( lWidth, lHeight / 10 )
+				PixelPoint   (           0, lYpos ),
+				PixelRectSize( lShapeWidth, lHeight )
 			);
 			m_coordShape.PrepareShape( gp );
+			lYpos += lHeight;
 
 			m_indivShape.SetShapeRect
 			( 
-				rectSize.ToPixelPoint() * 3 / 16,    // 
-				rectSize * 10 / 16                   // use only 5/8 of field size;
+				rectSize.ToPixelPoint() *  3 / 16,    // 3 left + 3 right margin
+				rectSize                * 10 / 16     // rest for iIdividualShape
 			);
 			m_indivShape.PrepareShape( gp );
 		}
@@ -97,6 +100,11 @@ public:
 		}
 
 		return PointInShape( pnt ) ? this : nullptr;
+	}
+
+	IndividualShape const & GetIndividualShape() const 
+	{
+		return m_indivShape;
 	}
 
 private:
