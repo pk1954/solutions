@@ -14,7 +14,7 @@ public:
     static void Create_D3D_Device( HWND const, ULONG const, ULONG const, BOOL const );
     static D3dSystem * GetSystem( void );
 
-    HRESULT            ResetD3dSystem( HWND const );
+    HRESULT            ResizeD3dSystem( HWND const );
     IDirect3DDevice9 * GetDevice( );
 
     D3dIndexBuffer const * GetBgIndexBufferStripMode( ) const { return m_d3d_pIndexBufBgStripMode; };

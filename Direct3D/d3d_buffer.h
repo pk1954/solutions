@@ -19,10 +19,11 @@ class D3dBuffer
 {
 public:
 
-    D3dBuffer( ULONG const );
+    D3dBuffer( HWND const, ULONG const );
     ~D3dBuffer();
 
-    BOOL StartFrame( HWND );
+    void Resize( );
+    BOOL StartFrame( );
     void ResetFont( int const );
     void AddIndividualPrimitive( PixelPoint const, DWORD const, float const );    
     void AddBackgroundPrimitive( PixelPoint const, DWORD const, float const );    

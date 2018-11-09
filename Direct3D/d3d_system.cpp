@@ -39,7 +39,7 @@ IDirect3DDevice9 * D3dSystem::GetDevice( void )
 	return m_d3d_device;
 }
 
-HRESULT D3dSystem::ResetD3dSystem( HWND const hwnd )
+HRESULT D3dSystem::ResizeD3dSystem( HWND const hwnd )
 {
     HRESULT hres;
 	PixelRectSize const pntSize = Util::GetClRectSize( hwnd );
@@ -153,7 +153,7 @@ D3dIndexBuffer * D3dSystem::prepareIndices( ULONG const * const pulIndex, ULONG 
 	VOID *pVoid;
 	hres = d3d_indexBuffer->Lock( 0, 0, static_cast<void**>(&pVoid), 0 );  assert(hres == D3D_OK);
 	memcpy( pVoid, pulIndex, ulNrOfIndices * sizeof(ULONG) );
-	hres = d3d_indexBuffer->Unlock( );                        assert(hres == D3D_OK);
+	hres = d3d_indexBuffer->Unlock( );                                     assert(hres == D3D_OK);
 
 	return new D3dIndexBuffer( d3d_indexBuffer, ulNrOfIndices );
 }

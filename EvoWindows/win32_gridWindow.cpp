@@ -58,16 +58,8 @@ void GridWindow::Start
 	BOOL bHexagonMode   = (Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6);
     m_pPixelCoordinates = new PixelCoordinates( sFieldSize, bHexagonMode );
 	m_pPixelCore        = new PixelCore( m_pCore, m_pPixelCoordinates );
-    m_pDrawFrame        = new DrawFrame( m_pCore, m_pPixelCoordinates, m_pDspOptWindow );
 
-	m_pDrawFrame->SetStripMode
-	( 
-		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
-		? tBoolOp::opFalse 
-		: Config::GetConfigValueBoolOp( Config::tId::stripMode ) 
-	);
-
-	StartBaseWindow
+	HWND hwnd = StartBaseWindow
     ( 
         hwndParent,
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
@@ -75,6 +67,14 @@ void GridWindow::Start
         L"ClassGridWindow",
         dwStyle
     );
+
+    m_pDrawFrame = new DrawFrame( hwnd, m_pCore, m_pPixelCoordinates, m_pDspOptWindow );
+	m_pDrawFrame->SetStripMode
+	( 
+		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
+		? tBoolOp::opFalse 
+		: Config::GetConfigValueBoolOp( Config::tId::stripMode ) 
+	);
 }
 
 GridWindow::~GridWindow( )

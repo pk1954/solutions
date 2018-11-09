@@ -29,11 +29,12 @@ D3DXFONT_DESC D3dBuffer::m_d3dx_font_desc =
     L""                        //  FaceName
 };
 
-D3dBuffer::D3dBuffer( ULONG const ulNrOfPoints ) 
+D3dBuffer::D3dBuffer( HWND const hwnd, ULONG const ulNrOfPoints ) 
 {
     HRESULT hres;
 
-    m_d3d = D3dSystem::GetSystem( );
+	m_hwnd = hwnd;
+    m_d3d  = D3dSystem::GetSystem( );
 
 	m_ulTrianglesPerPrimitive = m_d3d->GetHexagonMode( ) ? 4 : 2; // Hexagon is made of 4 triangles, rect of 2 triangles
 	m_ulVerticesPerPrimitive  = m_d3d->GetHexagonMode( ) ? 6 : 4; // Hexagon has 6 vertices, rect has 4
@@ -88,14 +89,7 @@ D3dBuffer::~D3dBuffer()
 
 void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, wstring const & wstr, D3DCOLOR col )
 {
-//	long const lClientWinHeight = Util::GetClientWindowHeight( m_hwnd );
-	RECT rect 
-	{                                         
-		pixRect.m_lLeft,					  
-		pixRect.m_lTop, 
-		pixRect.m_lRight,                    
-		pixRect.m_lBottom	   
-	};
+	RECT rect{ pixRect.m_lLeft,	pixRect.m_lTop, pixRect.m_lRight, pixRect.m_lBottom };			  
     assert( m_id3dx_font != nullptr );
     //lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
     m_id3dx_font->DrawText
@@ -110,15 +104,16 @@ void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, wstring const & wstr, D
     //lint +esym( 613, D3dBuffer::m_id3dx_font ) 
 }
 
+void D3dBuffer::Resize( )
+{
+    m_d3d->ResizeD3dSystem( m_hwnd ); 
+}
+
 // functions called per frame
 
-BOOL D3dBuffer::StartFrame( HWND hwnd )
+BOOL D3dBuffer::StartFrame( )
 {
     HRESULT hres;
-
-	m_hwnd = hwnd;
-
-    hres = m_d3d->ResetD3dSystem( hwnd );                                          if ( hres != D3D_OK ) return FALSE;
     hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, FALSE );                  if ( hres != D3D_OK ) return FALSE;
     hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );           if ( hres != D3D_OK ) return FALSE;
     hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );                    if ( hres != D3D_OK ) return FALSE;

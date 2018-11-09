@@ -20,6 +20,7 @@ static COLORREF const CLR_TIT4TAT   = RGB(255,  50,  50);
 
 DrawFrame::DrawFrame
 ( 
+	HWND               const hwnd,
     EvolutionCore    * const pCore,
     PixelCoordinates * const pPixelCoordinates, 
     DspOptWindow     * const pDspOptWindow 
@@ -36,7 +37,7 @@ DrawFrame::DrawFrame
     for ( auto & strategy : m_aClutStrat )
         strategy.Allocate( uiClutSize );
 
-    m_pD3dBuffer = new D3dBuffer( GridPoint::GRID_AREA );
+    m_pD3dBuffer = new D3dBuffer( hwnd, GridPoint::GRID_AREA );
 	m_clutBackground.Allocate( MAX_BG_COLOR );    // default is grey scale lookup table with entries 0 .. 255
     SetIndDimmMode( Config::GetConfigValueBoolOp(Config::tId::dimmMode ) );
 
@@ -44,10 +45,9 @@ DrawFrame::DrawFrame
     SetStrategyColor( tStrategyId::cooperate, CLR_COOPERATE );
     SetStrategyColor( tStrategyId::tit4tat,   CLR_TIT4TAT   );
 
-	m_pTextDisplay   = new TextDisplay( * m_pD3dBuffer, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
-	m_gridPointShape = new GridPointShape( * m_pTextDisplay );
+	m_pTextDisplay    = new TextDisplay( * m_pD3dBuffer, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
+	m_gridPointShape  = new GridPointShape( * m_pTextDisplay );
 	m_pShapeHighlight = nullptr;
-	Resize();
 }
 
 void DrawFrame::SetStrategyColor( tStrategyId const strat, COLORREF const col )
@@ -88,6 +88,7 @@ void DrawFrame::Resize( )
 	if ( iFontSize > 16 )
 		iFontSize = 16;
     m_pD3dBuffer->ResetFont( iFontSize );
+	m_pD3dBuffer->Resize( );
 }
 
 void DrawFrame::prepareGridPoint( GridPoint const gp )
@@ -117,7 +118,7 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 {
     if ( IsWindowVisible( hwnd ) )
     {
-		if ( m_pD3dBuffer->StartFrame( hwnd ) )
+		if ( m_pD3dBuffer->StartFrame( ) )
 		{
 			drawBackground( );
 
