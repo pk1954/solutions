@@ -1,7 +1,5 @@
 // pixelRect.h
 //
-// pixel coordinates
-// origin is bottom left
 
 #pragma once
 
@@ -28,7 +26,7 @@ public:
         m_lBottom = rect.m_lBottom;
         m_lRight  = rect.m_lRight;
         m_lTop    = rect.m_lTop;
-		assert( m_lBottom <= m_lTop );
+		assert( m_lBottom >= m_lTop );
     };
 
     PixelRect( PixelPoint const pt1, PixelPoint const pt2 )
@@ -43,7 +41,7 @@ public:
             m_lLeft = pt2.x;
             m_lRight = pt1.x;
         }
-        if ( pt1.y < pt2.y )
+        if ( pt1.y > pt2.y )
         {
             m_lBottom = pt1.y;
             m_lTop = pt2.y;
@@ -53,25 +51,25 @@ public:
             m_lBottom = pt2.y;
             m_lTop = pt1.y;
         }
-		assert( m_lBottom <= m_lTop );
+		assert( m_lBottom >= m_lTop );
     };
 
-    PixelRect( long const lLeft, long const lBottom, long const lRight, long const lTop ) 
+    PixelRect( long const lLeft, long const lTop, long const lRight, long const lBottom ) 
     { 
         m_lLeft   = lLeft; 
-        m_lBottom = lBottom; 
-        m_lRight  = lRight; 
         m_lTop    = lTop; 
-		assert( m_lBottom <= m_lTop );
+        m_lRight  = lRight; 
+        m_lBottom = lBottom; 
+		assert( m_lBottom >= m_lTop );
     };
 
 	PixelRect( PixelPoint const ptOrigin, PixelRectSize const & rectSize )
 	{
         m_lLeft   = ptOrigin.x; 
-        m_lBottom = ptOrigin.y; 
-        m_lRight  = m_lLeft   + rectSize.GetWidth(); 
-        m_lTop    = m_lBottom + rectSize.GetHeight(); 
-		assert( m_lBottom <= m_lTop );
+        m_lTop    = ptOrigin.y; 
+        m_lRight  = m_lLeft + rectSize.GetWidth(); 
+        m_lBottom = m_lTop  + rectSize.GetHeight(); 
+		assert( m_lBottom >= m_lTop );
 	}
 
     void SetEmpty( )
@@ -89,7 +87,7 @@ public:
 
     bool IsNotEmpty( ) const
     {
-        return (m_lLeft < m_lRight) && (m_lBottom < m_lTop);
+        return (m_lLeft < m_lRight) && (m_lTop < m_lBottom );
     };
 
     long const GetWidth( ) const 
@@ -99,7 +97,7 @@ public:
 
     long const GetHeight( ) const 
     {
-        return m_lTop - m_lBottom + 1;
+        return m_lBottom - m_lTop + 1;
     }
 
     PixelRectSize const GetSize( ) const 
@@ -109,12 +107,12 @@ public:
 
     PixelPoint const GetStartPoint( ) const 
     {
-        return PixelPoint( m_lLeft, m_lBottom );
+        return PixelPoint( m_lLeft, m_lTop );
     }
 
     PixelPoint const GetEndPoint( ) const
     {
-        return PixelPoint( m_lRight, m_lTop );
+        return PixelPoint( m_lRight, m_lBottom );
     }
 
     PixelPoint const GetCenter( ) const
@@ -124,7 +122,7 @@ public:
 
 	bool Includes( PixelPoint const pnt ) const
 	{
-		return (m_lLeft <= pnt.x) && (pnt.x < m_lRight) && (m_lBottom <= pnt.y) && (pnt.y < m_lTop);
+		return (m_lLeft <= pnt.x) && (pnt.x < m_lRight) && (m_lTop <= pnt.y) && (pnt.y < m_lBottom);
 	}
 
 	bool const operator== ( PixelRect const & a ) const { return ( a.m_lLeft == m_lLeft ) && ( a.m_lTop == m_lTop ) && ( a.m_lRight == m_lRight ) && ( a.m_lBottom == m_lBottom ); };
@@ -133,18 +131,18 @@ public:
 	PixelRect const operator+= ( PixelPoint const offset )
 	{ 
 		m_lLeft   += offset.x;
-		m_lBottom += offset.y;
-		m_lRight  += offset.x;
 		m_lTop    += offset.y;
+		m_lRight  += offset.x;
+		m_lBottom += offset.y;
 		return *this;
 	}
 
 	PixelRect const operator-= ( PixelPoint const offset )
 	{ 
 		m_lLeft   -= offset.x;
-		m_lBottom -= offset.y;
-		m_lRight  -= offset.x;
 		m_lTop    -= offset.y;
+		m_lRight  -= offset.x;
+		m_lBottom -= offset.y;
 		return *this;
 	}
 };

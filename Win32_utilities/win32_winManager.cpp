@@ -222,9 +222,9 @@ static BOOL CALLBACK DumpMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT 
 
     ++( pMonStruct->m_iMonCounter );
 
-    * postr << pMonStruct->m_iMonCounter               << L"   # monitor number"      << endl;
-    * postr << Util::RECT2PixelRect(monInfo.rcMonitor) << L"   # monitor rectangle"   << endl;
-    * postr << Util::RECT2PixelRect(monInfo.rcWork)    << L"   # work area rectangle" << endl;
+    * postr << pMonStruct->m_iMonCounter << L"   # monitor number"      << endl;
+    * postr << monInfo.rcMonitor         << L"   # monitor rectangle"   << endl;
+    * postr << monInfo.rcWork            << L"   # work area rectangle" << endl;
     * postr << (
                 ( monInfo.dwFlags == 0 ) 
                 ? L"0    # secondary monitor" 

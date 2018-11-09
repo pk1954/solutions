@@ -1,7 +1,5 @@
 // gridPoint.cpp :
 //
-// grid coordinates
-// origin is bottom left
 
 #include "stdafx.h"
 #include <limits.h>

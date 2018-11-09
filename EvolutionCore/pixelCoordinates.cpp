@@ -68,7 +68,7 @@ bool PixelCoordinates::FitGridToRect
 	PixelRectSize const   pntPixSize  // available size 
 )
 {
-	GridPoint     gpGridRectSize = gridRect.GetSize() + 1;
+	GridPoint     gpGridRectSize = gridRect.GetSize();
 	PixelRectSize pixRectSize    = pntPixSize / PixelRectSize{ gpGridRectSize.x, gpGridRectSize.y };
 
 	short const sNewFieldSize( std::min( pixRectSize.GetWidth(), pixRectSize.GetHeight() ) );
@@ -237,30 +237,29 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 
 KGridRect PixelCoordinates::Pixel2KGridRect( PixelRect const & rect ) const 
 {
-    PixelPoint pntStart( rect.m_lLeft,  rect.m_lBottom );
-    PixelPoint pntEnd  ( rect.m_lRight, rect.m_lTop    );
-
     return KGridRect 
     (
-        Pixel2KGridPos ( pntStart ),
-        Pixel2KGridSize( pntEnd - pntStart, m_sFieldSize )
+        Pixel2KGridPos ( rect.GetStartPoint() ),
+        Pixel2KGridSize( rect.GetSize().ToPixelPoint(), m_sFieldSize )
     );
 }
 
 PixelRect PixelCoordinates::KGrid2PixelRect( KGridRect const & kgrIn ) const 
 {
-    PixelPoint const ptPos ( KGrid2PixelPos ( kgrIn.GetPos()  ) );
-    PixelPoint const ptSize( KGrid2PixelSize( kgrIn.GetSiz(), m_sFieldSize ) );
+    PixelPoint const ptPos ( KGrid2PixelPos ( kgrIn.GetPos ()  ) );
+    PixelPoint const ptSize( KGrid2PixelSize( kgrIn.GetSize(), m_sFieldSize ) );
     return PixelRect( ptPos, ptPos + ptSize );
 }
 
 GridRect PixelCoordinates::Pixel2GridRect( PixelRect const & rect ) const 
 {
-    return GridRect
+    GridRect gridRect
     ( 
-        Pixel2GridPos( PixelPoint( rect.m_lLeft,  rect.m_lBottom ) ), 
-        Pixel2GridPos( PixelPoint( rect.m_lRight, rect.m_lTop    ) ) 
-    ).ClipToGrid( );
+        Pixel2GridPos( rect.GetStartPoint() ), 
+        Pixel2GridPos( rect.GetEndPoint  () ) 
+    );
+	GridRect gridRectRes = gridRect.ClipToGrid( );
+	return gridRectRes;
 }
 
 PixelRect PixelCoordinates::Grid2PixelRect( GridRect const & rcGrid ) const 

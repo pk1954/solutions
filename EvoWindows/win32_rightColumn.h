@@ -34,13 +34,13 @@ public:
 		long          const lHeight      = lShapeHeight / (IMEMSIZE_MAX + 1);
 		PixelRectSize const slotSize( GetShapeWidth(), lHeight );
 
-		long lYpos = lShapeHeight - lHeight;
+		long lYpos = lHeight;
 		MEM_INDEX const memUsed = m_textDisplay.Core().GetMemUsed( gp ); 
 		for	( auto & pSlot : m_aMemorySlot )
 		{
 			if ( pSlot->GetMemIndex() == memUsed )
 				break;
-			lYpos -= lHeight;
+			lYpos += lHeight;
 			pSlot->SetShapeRect( PixelRect( PixelPoint( 0, lYpos ), slotSize ) );
 		}
 	}

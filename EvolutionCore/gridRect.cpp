@@ -1,7 +1,5 @@
 // gridRect.cpp :
 //
-// grid coordinates
-// origin is bottom left
 
 #include "stdafx.h"
 #include "limits.h"
@@ -19,8 +17,8 @@ GridPoint GridRect::clipStartPoint( ) const
 {
 	return GridPoint
 	(
-		max( m_lLeft,   GRID_RECT_FULL.m_lLeft ),
-		max( m_lBottom, GRID_RECT_FULL.m_lBottom )
+		max( m_lLeft, GRID_RECT_FULL.m_lLeft ),
+		max( m_lTop,  GRID_RECT_FULL.m_lTop  )
 	);
 };
 
@@ -28,8 +26,8 @@ GridPoint GridRect::clipEndPoint( ) const
 {
 	return GridPoint
 	(
-		min( m_lRight, GRID_RECT_FULL.m_lRight ),
-		min( m_lTop,   GRID_RECT_FULL.m_lTop )
+		min( m_lRight,  GRID_RECT_FULL.m_lRight ),
+		min( m_lBottom, GRID_RECT_FULL.m_lBottom )
 	);
 };
 

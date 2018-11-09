@@ -361,8 +361,8 @@ GridPoint Grid::FindGridPoint
 ) const
 {
     GridPoint gp;
-    for ( gp.y = rect.GetBottom( ); gp.y <= rect.GetTop  ( ); ++gp.y )
-    for ( gp.x = rect.GetLeft  ( ); gp.x <= rect.GetRight( ); ++gp.x )
+    for ( gp.y = rect.GetStartPoint().y; gp.y <= rect.GetEndPoint().y; ++gp.y )
+    for ( gp.x = rect.GetStartPoint().x; gp.x <= rect.GetEndPoint().x; ++gp.x )
         if ( func( gp ) )
         {
             return gp;

@@ -41,6 +41,7 @@ IDirect3DDevice9 * D3dSystem::GetDevice( void )
 
 HRESULT D3dSystem::ResetD3dSystem( HWND const hwnd )
 {
+    HRESULT hres;
 	PixelRectSize const pntSize = Util::GetClRectSize( hwnd );
 
 	m_d3d_presentationParameters.hDeviceWindow    = hwnd;
@@ -48,17 +49,12 @@ HRESULT D3dSystem::ResetD3dSystem( HWND const hwnd )
 	m_d3d_presentationParameters.BackBufferHeight = static_cast<unsigned int>( pntSize.GetHeight( ) );
 
 	assert( m_d3d_device != nullptr );
-	return m_d3d_device->Reset( & m_d3d_presentationParameters ); 
-}
+	hres = m_d3d_device->Reset( & m_d3d_presentationParameters ); 
+	if ( hres != D3D_OK ) return hres;
 
-HRESULT D3dSystem::SetTransform( HWND const hwnd )
-{
-	PixelRectSize const pntSize = Util::GetClRectSize( hwnd );
+	m_d3d_matrix._11 =  2.0f / static_cast<float>( pntSize.GetWidth() );
+	m_d3d_matrix._22 = -2.0f / static_cast<float>( pntSize.GetHeight() );
 
-	m_d3d_matrix._11 = 2.0f / static_cast<float>( pntSize.GetWidth() );
-	m_d3d_matrix._22 = 2.0f / static_cast<float>( pntSize.GetHeight() );
-
-	assert( m_d3d_device != nullptr );
 	return m_d3d_device->SetTransform( D3DTS_PROJECTION, &m_d3d_matrix );
 }
 
@@ -102,7 +98,7 @@ void D3dSystem::createDevice( HWND const hwnd, ULONG const ulModelWidth, ULONG c
 		 1.0f,   0.0f,  0.0f,  0.0f,
 		 0.0f,   1.0f,  0.0f,  0.0f,
 		 0.0f,   0.0f,  1.0f,  0.0f,
-		-1.0f,  -1.0f,  0.0f,  1.0f
+		-1.0f,   1.0f,  0.0f,  1.0f
 	};
 	//lint +e708
 

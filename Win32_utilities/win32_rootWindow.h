@@ -135,12 +135,9 @@ public:
 		return ::PostMessage( m_hwndApp, WM_COMMAND, wParam, lParam );
 	}
 
-	// GetCrsrPosFromLparam - Windows delivers cursor position in coordinate system with origin in left upper corner
-	//                        transform to coord system with origin in left lower corner
-
 	PixelPoint const GetCrsrPosFromLparam( LPARAM const lParam ) const
 	{
-		return Util::POINT2PixelPoint( m_hwnd, POINT{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) } );
+		return PixelPoint{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
 	}
 
 	virtual void Notify( bool const );

@@ -1,7 +1,5 @@
 // pixelPoint.h
 //
-// pixel coordinates
-// origin is bottom left
 
 #pragma once
 
@@ -15,8 +13,8 @@ public:
     long x;
     long y;
 
-    PixelPoint()                               { x =    0; y =    0; };
-    PixelPoint( long const _x, long const _y ) { x =   _x; y =   _y; };
+    PixelPoint()                               { x =  0; y =  0; };
+    PixelPoint( long const _x, long const _y ) { x = _x; y = _y; };
 
     bool       const operator== ( PixelPoint const a ) const { return ( x == a.x ) && ( y == a.y ); };
     bool       const operator!= ( PixelPoint const a ) const { return ( x != a.x ) || ( y != a.y ); };

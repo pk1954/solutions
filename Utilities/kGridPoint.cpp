@@ -13,7 +13,7 @@ KGridPoint Pixel2KGridSize( PixelPoint const ptSize, short const sFieldSize )
 {
     PixelPoint pixSize = ptSize * KGRID_FACTOR;
     pixSize /= sFieldSize;
-    return KGridPoint( pixSize );
+    return KGridPoint( pixSize.x, pixSize.y );
 }
 
 PixelPoint KGrid2PixelSize( KGridPoint const kgpSize, short const sFieldSize ) 

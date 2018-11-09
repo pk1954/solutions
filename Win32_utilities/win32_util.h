@@ -19,6 +19,7 @@ namespace Util
 {
     wostream & operator << ( wostream &, PixelPoint const );
     wostream & operator << ( wostream &, PixelRect const & );
+    wostream & operator << ( wostream &, RECT const & );
 
     RECT ScrReadRECT( Script & );
 
@@ -51,8 +52,8 @@ namespace Util
 
     inline long GetClientWindowHeight( HWND const hwnd )
     {
-        RECT rect = GetClRect( hwnd );    // windows coordinates                 
-        return rect.bottom - rect.top;    // origin is top left
+        RECT rect = GetClRect( hwnd );                    
+        return rect.bottom - rect.top;    
     }
 
     inline long GetClientWindowWidth( HWND const hwnd )
@@ -61,42 +62,11 @@ namespace Util
         return rect.right - rect.left;
     }
 
-	// windows y-coordinates increase from top to bottom
-	// we use y-coordinates increasing from bottom to top
-
-    inline PixelPoint POINT2PixelPoint( HWND const hwnd, POINT const pnt )
-    {
-		return PixelPoint
-		{ 
-			pnt.x, 
-			GetClientWindowHeight( hwnd ) - pnt.y 
-		};            
-    }
-
-	inline POINT PixelPoint2POINT( HWND const hwnd, PixelPoint pp )
-	{
-		return POINT
-		{
-			pp.x, 
-			GetClientWindowHeight( hwnd ) - pp.y
-		};
-	}
-
-	inline RECT PixelRect2RECT(PixelRect pixRect)
-	{
-		return RECT { pixRect.m_lLeft, pixRect.m_lTop, pixRect.m_lRight, pixRect.m_lBottom };
-	}
-
-	inline PixelRect RECT2PixelRect(RECT rect)
-	{
-		return PixelRect { rect.left, rect.bottom, rect.right, rect.top };
-	}
-
     inline PixelRect GetClPixelRect( HWND const hwnd ) // left / top always 0
     {
         RECT rect;
         (void)GetClientRect( hwnd, &rect );
-		return PixelRect{ 0, 0,	rect.right,	rect.bottom	};  // swap top/bottom
+		return PixelRect{ 0, 0,	rect.right,	rect.bottom	};
     }
 
     inline PixelRectSize GetClRectSize( HWND const hwnd )
@@ -114,8 +84,7 @@ namespace Util
     {
 		POINT pnt{ 0, 0 };
         (void)ClientToScreen( hwnd, &pnt );
-		PixelPoint pp = POINT2PixelPoint( hwnd, pnt );
-        return pp;
+		return PixelPoint( pnt.x, pnt.y );
     }
 	
     inline PixelPoint GetRelativeCrsrPosition( HWND const hwnd )   // Delivers cursor position relative to client area 
@@ -123,7 +92,7 @@ namespace Util
 		POINT pnt;
 		(void)GetCursorPos( &pnt );
         (void)ScreenToClient( hwnd, &pnt );
-        return POINT2PixelPoint( hwnd, pnt );
+		return PixelPoint( pnt.x, pnt.y );
     }
 
     inline PixelPoint GetWindowSize( HWND const hwnd )
@@ -174,7 +143,7 @@ namespace Util
     inline BOOL PixelPointInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?
     {
         RECT const rect = GetClRect( hwnd );  
-		return PtInRect( &rect, PixelPoint2POINT( hwnd, pp ) );
+		return PtInRect( &rect, POINT{ pp.x, pp.y } );
     } 
 
     inline BOOL CrsrInClientRect( HWND const hwnd )  // Is cursor position in client rect?

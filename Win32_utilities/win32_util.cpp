@@ -32,6 +32,12 @@ wostream & Util::operator << ( wostream & out, PixelRect const & rect )
     return out;
 }
 
+wostream & Util::operator << ( wostream & out, RECT const & rect )
+{
+    out << PixelPoint(rect.left, rect.top) << L' ' << PixelPoint(rect.right, rect.bottom);
+    return out;
+}
+
 bool Util::operator== ( RECT const & a, RECT const & b ) 
 { 
     return ( a.left == b.left ) && ( a.top == b.top ) && ( a.right == b.right ) && ( a.bottom == b.bottom ); 

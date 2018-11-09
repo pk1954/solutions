@@ -88,13 +88,13 @@ D3dBuffer::~D3dBuffer()
 
 void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, wstring const & wstr, D3DCOLOR col )
 {
-	long const lClientWinHeight = Util::GetClientWindowHeight( m_hwnd );
+//	long const lClientWinHeight = Util::GetClientWindowHeight( m_hwnd );
 	RECT rect 
 	{                                         
 		pixRect.m_lLeft,					  
-		lClientWinHeight - pixRect.m_lTop, 
+		pixRect.m_lTop, 
 		pixRect.m_lRight,                    
-		lClientWinHeight - pixRect.m_lBottom	   
+		pixRect.m_lBottom	   
 	};
     assert( m_id3dx_font != nullptr );
     //lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
@@ -123,7 +123,6 @@ BOOL D3dBuffer::StartFrame( HWND hwnd )
     hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );           if ( hres != D3D_OK ) return FALSE;
     hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );                    if ( hres != D3D_OK ) return FALSE;
     hres = m_d3d_device->Clear( 0, nullptr, D3DCLEAR_TARGET, CLR_WHITE, 1.0f, 0 ); if ( hres != D3D_OK ) return FALSE;
-	hres = m_d3d->SetTransform( hwnd );                                            if ( hres != D3D_OK ) return FALSE;
     hres = m_d3d_device->BeginScene( );                                            if ( hres != D3D_OK ) return FALSE;
     if ( m_bStripMode )
         m_pVertBufStripMode->ResetVertexBuffer();

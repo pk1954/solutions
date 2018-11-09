@@ -1,7 +1,5 @@
 // gridRect.h : 
 //
-// grid coordinates
-// origin is bottom left
 
 #pragma once
 
@@ -27,11 +25,11 @@ public:
 		GridPoint const gpEnd 
 	) : 
 		m_lLeft  (gpStart.x), 
-		m_lBottom(gpStart.y), 
+		m_lTop   (gpStart.y), 
 		m_lRight (gpEnd.x), 
-		m_lTop   (gpEnd.y) 
+		m_lBottom(gpEnd.y)
 	{
-		assert( m_lBottom <= m_lTop );
+		assert( m_lTop <= m_lBottom );
 	};
 
 	~GridRect() { };
@@ -46,15 +44,18 @@ public:
     bool const operator== ( GridRect const &a ) const { return ( a.m_lLeft == m_lLeft ) && ( a.m_lTop == m_lTop ) && ( a.m_lRight == m_lRight ) && ( a.m_lBottom == m_lBottom ); };
     bool const operator!= ( GridRect const &a ) const { return ( a.m_lLeft != m_lLeft ) || ( a.m_lTop != m_lTop ) || ( a.m_lRight != m_lRight ) || ( a.m_lBottom != m_lBottom ); };
 
+    long const GetWidth ( ) const { return m_lRight  - m_lLeft + 1; }
+	long const GetHeight( ) const { return m_lBottom - m_lTop  + 1; }
+	
 	GRID_COORD const GetLeft  () const { return m_lLeft;   };
     GRID_COORD const GetTop   () const { return m_lTop;    };
     GRID_COORD const GetRight () const { return m_lRight;  };
     GRID_COORD const GetBottom() const { return m_lBottom; };
 
-    GridPoint const GetStartPoint( ) const { return GridPoint( GetLeft(),  GetBottom() ); }
-    GridPoint const GetEndPoint  ( ) const { return GridPoint( GetRight(), GetTop()    ); }
-    GridPoint const GetCenter    ( ) const { return GridPoint( (m_lLeft + m_lRight) / 2, (m_lTop + m_lBottom) / 2 ); }
-    GridPoint const GetSize      ( ) const { return GridPoint( (m_lRight - m_lLeft),     (m_lTop - m_lBottom)     ); }
+    GridPoint const GetStartPoint( ) const { return GridPoint( GetLeft(),  GetTop() ); }
+    GridPoint const GetEndPoint  ( ) const { return GridPoint( GetRight(), GetBottom()    ); }
+    GridPoint const GetCenter    ( ) const { return ( GetStartPoint() + GetEndPoint() ) / 2; }
+    GridPoint const GetSize      ( ) const { return GridPoint( GetWidth(), GetHeight() ); }
 	
 	GridRect  const ClipToGrid   ( ) const { return GridRect( clipStartPoint( ), clipEndPoint( ) );	}
  
@@ -63,7 +64,7 @@ public:
 
 	bool Includes( GridPoint const gp ) const
 	{
-		return (m_lLeft <= gp.x) && (gp.x <= m_lRight) && (m_lBottom <= gp.y) && (gp.y <= m_lTop);
+		return (m_lLeft <= gp.x) && (gp.x <= m_lRight) && (m_lTop <= gp.y) && (gp.y <= m_lBottom);
 	}
 
     static GridRect const GRID_RECT_FULL;
@@ -74,9 +75,9 @@ private:
 	GridPoint clipEndPoint  ( ) const;
 
 	GRID_COORD m_lLeft;
-    GRID_COORD m_lBottom;
-    GRID_COORD m_lRight;
     GRID_COORD m_lTop;
+    GRID_COORD m_lRight;
+    GRID_COORD m_lBottom;
 };
 
 std::wostream & operator << ( std::wostream &, GridRect const & );

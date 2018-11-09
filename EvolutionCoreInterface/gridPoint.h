@@ -1,7 +1,5 @@
 // gridPoint.h : 
 //
-// grid coordinates
-// origin is bottom left
 
 #pragma once
 

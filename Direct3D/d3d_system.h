@@ -15,8 +15,7 @@ public:
     static D3dSystem * GetSystem( void );
 
     HRESULT            ResetD3dSystem( HWND const );
-    HRESULT            SetTransform  ( HWND const );
-    IDirect3DDevice9 * GetDevice     ( void );
+    IDirect3DDevice9 * GetDevice( );
 
     D3dIndexBuffer const * GetBgIndexBufferStripMode( ) const { return m_d3d_pIndexBufBgStripMode; };
     D3dIndexBuffer const * GetIndsIndexBuffer( )        const { return m_d3d_pIndexBufIndividuals; };
