@@ -14,6 +14,7 @@ class WorkThreadInterface;
 class WinManager;
 class GridWindow;
 class EditorWindow;
+class ColorManager;
 
 class EvoController
 {
@@ -30,7 +31,8 @@ public:
 		PerformanceWindow   * const,
 		StatusBar           * const,
 		GridWindow          * const,
-		EditorWindow        * const
+		EditorWindow        * const,
+		ColorManager        * const
 	);
 
 	void ProcessCommand( WPARAM const, LPARAM const );
@@ -47,4 +49,5 @@ private:
 	StatusBar           * m_pStatusBar;
 	GridWindow          * m_pGridWindow;
 	EditorWindow        * m_pEditorWindow;
+	ColorManager        * m_pColorManager;
 };

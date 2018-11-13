@@ -54,7 +54,8 @@ enum class tStrategyId : unsigned short
 //	friedman, 
     nrOfStrategies, 
     random,         // Not really a strategy. Used to signal random fill
-    empty           // Not really a strategy. Used to mark empty slot
+    empty,          // Not really a strategy. Used to mark empty slot
+    all             // Not really a strategy. Used to mark all strategies
 };
 
 static const int NR_STRATEGIES = static_cast<int>( tStrategyId::nrOfStrategies );

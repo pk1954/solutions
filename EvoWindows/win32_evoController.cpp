@@ -14,6 +14,7 @@
 #include "win32_gridWindow.h"
 #include "win32_packGridPoint.h"
 #include "win32_evoController.h"
+#include "win32_colorManager.h"
 
 EvoController::EvoController() :
 	m_bSimulationMode      ( FALSE ),
@@ -46,8 +47,8 @@ void EvoController::Start
     PerformanceWindow   * const pPerformanceWindow,
 	StatusBar           * const pStatusBar,
 	GridWindow          * const pGridWindow,
-	EditorWindow        * const pEditorWindow
-
+	EditorWindow        * const pEditorWindow,
+	ColorManager        * const pColorManager
 )
 {
 	m_pTraceStream         = pTraceStream;
@@ -57,6 +58,7 @@ void EvoController::Start
 	m_pStatusBar           = pStatusBar;
 	m_pGridWindow          = pGridWindow;
 	m_pEditorWindow        = pEditorWindow;
+	m_pColorManager        = pColorManager;
 }
 
 void EvoController::scriptDialog( )
@@ -156,7 +158,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
         case IDD_TOGGLE_CLUT_MODE:
-			m_pGridWindow->ToggleClutMode();
+			m_pColorManager->ToggleClutMode();
 			m_pWorkThreadInterface->PostRefresh( lParam );
             break;
 

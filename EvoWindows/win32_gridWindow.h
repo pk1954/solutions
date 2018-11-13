@@ -16,6 +16,7 @@ class EvolutionCore;
 class ObserverInterface;
 class PerformanceWindow;
 class FocusPoint;
+class ColorManager;
 
 class GridWindow : public BaseWindow
 {
@@ -29,6 +30,7 @@ public:
         FocusPoint          * const,
         DspOptWindow        * const,
         PerformanceWindow   * const, 
+		ColorManager        * const, 
         EvolutionCore       * const, 
         DWORD                 const, 
         SHORT                 const
@@ -39,7 +41,6 @@ public:
     void Size( );
 	void Zoom( bool const );
 	void ToggleStripMode( );
-	void ToggleClutMode ( );
 	void Escape( );
 	void SetFieldSize( SHORT const );
 	void Fit2Rect( );

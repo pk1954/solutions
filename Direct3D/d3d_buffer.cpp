@@ -104,16 +104,12 @@ void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, wstring const & wstr, D
     //lint +esym( 613, D3dBuffer::m_id3dx_font ) 
 }
 
-void D3dBuffer::Resize( )
-{
-    m_d3d->ResizeD3dSystem( m_hwnd ); 
-}
-
 // functions called per frame
 
 BOOL D3dBuffer::StartFrame( )
 {
     HRESULT hres;
+	m_d3d->ResizeD3dSystem( m_hwnd ); 
     hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, FALSE );                  if ( hres != D3D_OK ) return FALSE;
     hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );           if ( hres != D3D_OK ) return FALSE;
     hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );                    if ( hres != D3D_OK ) return FALSE;

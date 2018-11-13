@@ -37,6 +37,11 @@ public:
         return static_cast<UINT>(m_data->size());
     };
 
+    UINT GetColorHi( ) const 
+    { 
+        return m_colorHi;
+    };
+
 private:
     void setTableValues( );
 

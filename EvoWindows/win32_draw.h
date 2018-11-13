@@ -18,6 +18,7 @@
 class EvolutionCore;
 class PixelCoordinates;
 class GridPointShape;
+class ColorManager;
 class DspOptWindow;
 class TextDisplay;
 class D3dBuffer;
@@ -29,26 +30,24 @@ class DrawFrame
 {
 public:
 
-    DrawFrame( HWND const, EvolutionCore *, PixelCoordinates *, DspOptWindow * );
+    DrawFrame( HWND const, EvolutionCore *, PixelCoordinates *, DspOptWindow *, ColorManager * );
     ~DrawFrame( );
 
-    void Resize( );
+    void ResizeDrawFrame( );
     void DoPaint( HWND, KGridRect const & );
-	void SetStrategyColor( tStrategyId const, COLORREF const );
     void SetStripMode( tBoolOp );
-    void SetIndDimmMode( tBoolOp );
 	bool SetHighlightPos( PixelPoint const );
 	void HighlightShape( Shape const * );
+	void CallColorDialog( HWND const, tStrategyId const );
 
 private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
     DrawFrame & operator= ( DrawFrame const & );  // noncopyable class 
 
-    bool m_bDimmIndividuals;   
-
     EvolutionCore    * const m_pCore;
     PixelCoordinates * const m_pPixelCoordinates;
     DspOptWindow     * const m_pDspOptWindow;
+	ColorManager     * const m_pColorManager;  
 
     D3dBuffer        * m_pD3dBuffer;
 	GridPointShape   * m_gridPointShape;
@@ -60,7 +59,6 @@ private:
     static UINT const MAX_BG_COLOR = 255;
 
            CLUT                 m_clutBackground;
-    array< CLUT, NR_STRATEGIES> m_aClutStrat;
 
     wostringstream m_wBuffer;
 

@@ -43,6 +43,7 @@ void GridWindow::Start
     FocusPoint          * const pFocusPoint,
     DspOptWindow        * const pDspOptWindow,
     PerformanceWindow   * const pPerformanceWindow,
+	ColorManager        * const pColorManager,
     EvolutionCore       * const pCore,
     DWORD                 const dwStyle,
     SHORT                 const sFieldSize
@@ -68,13 +69,14 @@ void GridWindow::Start
         dwStyle
     );
 
-    m_pDrawFrame = new DrawFrame( hwnd, m_pCore, m_pPixelCoordinates, m_pDspOptWindow );
+    m_pDrawFrame = new DrawFrame( hwnd, m_pCore, m_pPixelCoordinates, m_pDspOptWindow, pColorManager );
 	m_pDrawFrame->SetStripMode
 	( 
 		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
 		? tBoolOp::opFalse 
 		: Config::GetConfigValueBoolOp( Config::tId::stripMode ) 
 	);
+//	SetFieldSize( sFieldSize );
 }
 
 GridWindow::~GridWindow( )
@@ -124,6 +126,7 @@ void GridWindow::AddContextMenuEntries( HMENU hPopupMenu )
     if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
     {
 		UINT const uiHistoryFlags = Config::UseHistorySystem( ) ? STD_FLAGS : STD_FLAGS | MF_GRAYED;
+		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_CHOOSE_COLOR,  L"Choose color" );
 		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_GOTO_DEATH,  L"Goto Death" );
 		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_GOTO_ORIGIN, L"Goto Origin" );
 		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI, L"POI" );
@@ -238,6 +241,14 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             UINT uiCmdId = LOWORD( wParam );
             switch ( uiCmdId )
             {
+			case IDM_CHOOSE_COLOR:
+			{
+                PixelPoint  const ptCrsr = GetCrsrPosFromLparam( lParam );
+                GridPoint   const gpCrsr = m_pPixelCoordinates->Pixel2GridPos( ptCrsr );
+				tStrategyId const strat  = m_pCore->GetStrategyId( gpCrsr );
+				m_pDrawFrame->CallColorDialog( GetWindowHandle(), strat );
+			}
+				break;
             case IDM_SET_POI:
             case IDM_GOTO_ORIGIN:  
             case IDM_GOTO_DEATH:      // commands using cursor pos are handled here
@@ -306,14 +317,14 @@ void GridWindow::Size( )
 void GridWindow::SetFieldSize( SHORT const fieldSize )
 {
 	m_pPixelCore->SetFieldSize( fieldSize, GetClRectCenter( ) );
-	m_pDrawFrame->Resize( );
+	m_pDrawFrame->ResizeDrawFrame( );
 	m_pDrawFrame->SetHighlightPos( GetRelativeCrsrPosition( ) );
 }
 
 void GridWindow::Fit2Rect( )
 {
 	m_pPixelCore->FitToRect( GetClRectSize( ) ); 
-	m_pDrawFrame->Resize( );
+	m_pDrawFrame->ResizeDrawFrame( );
 	m_pDrawFrame->SetHighlightPos( GetRelativeCrsrPosition( ) );
 }
 
@@ -325,11 +336,6 @@ void GridWindow::Zoom( bool const bZoomIn )
 void GridWindow::ToggleStripMode( ) 
 { 
 	m_pDrawFrame->SetStripMode( tBoolOp::opToggle ); 
-}
-
-void GridWindow::ToggleClutMode( ) 
-{ 
-	m_pDrawFrame->SetIndDimmMode( tBoolOp::opToggle ); 
 }
 
 void GridWindow::Escape( ) 

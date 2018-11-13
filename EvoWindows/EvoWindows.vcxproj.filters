@@ -72,6 +72,9 @@
     <ClCompile Include="win32_historyInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="win32_colorManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -140,25 +143,10 @@
     <ClInclude Include="win32_historyInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_shape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_individualShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_leftColumn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_gridPointShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_rightColumn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_textDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_memorySlot.h">
+    <ClInclude Include="win32_colorManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

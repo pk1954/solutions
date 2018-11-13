@@ -47,16 +47,14 @@ public:
     	short const sFieldSize = m_textDisplay.GetFieldSize();
 		if ( sFieldSize >= ZOOM_LEVEL_1 )
 		{
-			PixelRectSize const rectSize = GetShapeSize();
-			long          const lShapeWidth  = rectSize.GetWidth();
-			long          const lShapeHeight = rectSize.GetHeight();
+			PixelRectSize const rectSize     = GetShapeSize();
 			long                lYpos        = 0;
-			long                lHeight      = lShapeHeight / 10;
+			long                lHeight      = rectSize.GetHeight() / 10;
 
 			m_coordShape.SetShapeRect
 			( 
-				PixelPoint   (           0, lYpos ),
-				PixelRectSize( lShapeWidth, lHeight )
+				PixelPoint   (                   0,   lYpos ),
+				PixelRectSize( rectSize.GetWidth(), lHeight )
 			);
 			m_coordShape.PrepareShape( gp );
 			lYpos += lHeight;

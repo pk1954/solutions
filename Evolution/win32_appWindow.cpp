@@ -34,6 +34,7 @@
 #include "win32_winManager.h"
 #include "win32_workThreadInterface.h"
 #include "win32_focusPoint.h"
+#include "win32_colorManager.h"
 #include "ObserverInterface.h"
 
 // scripting and tracing
@@ -123,7 +124,8 @@ void AppWindow::Start(  )
 
 	stopwatch.Start();
     m_pFocusPoint          = new FocusPoint( );                          
-    m_pWinManager          = new WinManager( );                          
+    m_pWinManager          = new WinManager( );  
+	m_pColorManager        = new ColorManager( );
     m_pStatusBar           = new StatusBar( );       
     m_pCrsrWindow          = new CrsrWindow( );   
 	m_pHistInfoWindow      = new HistInfoWindow( );
@@ -160,12 +162,12 @@ void AppWindow::Start(  )
 	m_pWorkThreadInterface->Start( m_pPerfWindow, m_pEditorWindow, & m_event, & m_gridObservers, m_pEvolutionCore, m_pEvoHistGlue );
 	m_pDspOptWindow       ->Start( hWndApp, m_pEvolutionCore );
     m_pEditorWindow       ->Start( hWndApp, m_pWorkThreadInterface, m_pEvolutionCore, m_pDspOptWindow, m_pStatusBar );
-    m_pMainGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
-    m_pMiniGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pEvolutionCore, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
+    m_pMainGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pColorManager, m_pEvolutionCore, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
+    m_pMiniGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pColorManager, m_pEvolutionCore, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
     m_pStatistics         ->Start( hWndApp, m_pEvolutionCore );
     m_pCrsrWindow         ->Start( hWndApp, m_pFocusPoint, m_pEvolutionCore );
     m_pPerfWindow         ->Start( hWndApp, 100 );
-	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow );
+	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow, m_pColorManager );
 	stopwatch.Stop( L"Start windows" );
 
 	stopwatch.Start();

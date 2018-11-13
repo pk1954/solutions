@@ -10,49 +10,32 @@
 #include "d3d_buffer.h"
 #include "win32_displayOptions.h"
 #include "win32_gridPointShape.h"
+#include "win32_colorManager.h"
 #include "win32_draw.h"
 
 using namespace std;
-
-static COLORREF const CLR_DEFECT    = RGB(151, 171, 255);
-static COLORREF const CLR_COOPERATE = RGB(127, 255,   0);
-static COLORREF const CLR_TIT4TAT   = RGB(255,  50,  50);
 
 DrawFrame::DrawFrame
 ( 
 	HWND               const hwnd,
     EvolutionCore    * const pCore,
     PixelCoordinates * const pPixelCoordinates, 
-    DspOptWindow     * const pDspOptWindow 
+    DspOptWindow     * const pDspOptWindow,
+	ColorManager     * const pColorManager
 ) : 
-    m_bDimmIndividuals( TRUE ),
     m_pCore( pCore ),
     m_pPixelCoordinates( pPixelCoordinates ),
     m_pDspOptWindow( pDspOptWindow ),
+	m_pColorManager( pColorManager ),
     m_pD3dBuffer( nullptr ), 
     m_clutBackground( ),
 	m_gridPointShape( nullptr )
 {
-    UINT const uiClutSize = static_cast<UINT>(Config::GetConfigValue( Config::tId::stdCapacity ));
-    for ( auto & strategy : m_aClutStrat )
-        strategy.Allocate( uiClutSize );
-
     m_pD3dBuffer = new D3dBuffer( hwnd, GridPoint::GRID_AREA );
 	m_clutBackground.Allocate( MAX_BG_COLOR );    // default is grey scale lookup table with entries 0 .. 255
-    SetIndDimmMode( Config::GetConfigValueBoolOp(Config::tId::dimmMode ) );
-
-    SetStrategyColor( tStrategyId::defect,    CLR_DEFECT    );
-    SetStrategyColor( tStrategyId::cooperate, CLR_COOPERATE );
-    SetStrategyColor( tStrategyId::tit4tat,   CLR_TIT4TAT   );
-
 	m_pTextDisplay    = new TextDisplay( * m_pD3dBuffer, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
 	m_gridPointShape  = new GridPointShape( * m_pTextDisplay );
 	m_pShapeHighlight = nullptr;
-}
-
-void DrawFrame::SetStrategyColor( tStrategyId const strat, COLORREF const col )
-{
-    m_aClutStrat[ static_cast<int>(strat) ].SetColorHi( col );
 }
 
 DrawFrame::~DrawFrame( ) 
@@ -61,16 +44,9 @@ DrawFrame::~DrawFrame( )
     m_pD3dBuffer = nullptr;
 };
 
-void DrawFrame::SetIndDimmMode( tBoolOp const bOp )
+void DrawFrame::CallColorDialog( HWND const hwndOwner, tStrategyId const strat )
 {
-    ApplyOp( m_bDimmIndividuals, bOp );
-
-    UINT const uiClutBase = m_bDimmIndividuals // color of individuals ...
-                          ? 30       // ... varies from 30% - 100%, depending on energy 
-                          : 100;     // ... is always at 100%
-
-    for ( auto &strategy : m_aClutStrat )
-        strategy.SetClutBase( uiClutBase );
+	m_pColorManager->ColorDialog( hwndOwner, strat );
 }
 
 void DrawFrame::SetStripMode( tBoolOp const bOp ) 
@@ -78,7 +54,7 @@ void DrawFrame::SetStripMode( tBoolOp const bOp )
     m_pD3dBuffer->SetStripMode( bOp ); 
 };
 
-void DrawFrame::Resize( )
+void DrawFrame::ResizeDrawFrame( )
 {
 	short const sFieldSize     = m_pPixelCoordinates->GetFieldSize();
 	int   const MAX_TEXT_LINES = 20;
@@ -88,7 +64,6 @@ void DrawFrame::Resize( )
 	if ( iFontSize > 16 )
 		iFontSize = 16;
     m_pD3dBuffer->ResetFont( iFontSize );
-	m_pD3dBuffer->Resize( );
 }
 
 void DrawFrame::prepareGridPoint( GridPoint const gp )
@@ -243,9 +218,8 @@ void DrawFrame::setIndividualColor( GridPoint const gp, float const fHalfSize ) 
     //lint -e571  suspicious cast
     UINT const uiIndex = static_cast<UINT>( m_pCore->GetEnergy( gp ) );
     //lint +e571
-    CLUT const & clut = m_aClutStrat.at( static_cast<int>( strat ) );
-    assert( uiIndex < clut.GetSize() ); 
-    addPrimitive( gp, clut.Get( uiIndex ),fHalfSize );
+	DWORD dwColor = m_pColorManager->GetColorFromClut( strat, uiIndex );
+    addPrimitive( gp, dwColor, fHalfSize );
 }
 
 COLORREF DrawFrame::getBackgroundColor( int const iValue ) const
