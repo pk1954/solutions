@@ -30,7 +30,7 @@ void DspOptWindow::Start
     StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
 	m_pCore          = pCore;
 	m_IntValueLambda = nullptr;
-/* TODO 
+/* TODO:  Tooltipps 
 	{
 		HWND hwndDlg = GetWindowHandle( );
 		HWND hwndTip = CreateWindowEx

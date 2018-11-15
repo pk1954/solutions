@@ -44,9 +44,19 @@ DrawFrame::~DrawFrame( )
     m_pD3dBuffer = nullptr;
 };
 
-void DrawFrame::CallColorDialog( HWND const hwndOwner, tStrategyId const strat )
+void DrawFrame::CallStrategyColorDialog( HWND const hwndOwner, tStrategyId const strat )
 {
-	m_pColorManager->ColorDialog( hwndOwner, strat );
+	m_pColorManager->ColorDialog( hwndOwner, ColorManager::tObject::individual, strat );
+}
+
+void DrawFrame::CallSelectionColorDialog( HWND const hwndOwner )
+{
+	m_pColorManager->ColorDialog( hwndOwner, ColorManager::tObject::selection );
+}
+
+void DrawFrame::CallHighlightColorDialog( HWND const hwndOwner )
+{
+	m_pColorManager->ColorDialog( hwndOwner, ColorManager::tObject::highlight );
 }
 
 void DrawFrame::SetStripMode( tBoolOp const bOp ) 
@@ -85,8 +95,9 @@ bool DrawFrame::SetHighlightPos( PixelPoint const pos )
 
 void DrawFrame::HighlightShape( Shape const * pShape )
 {
-	PixelRect const & rect = pShape->GetAbsoluteCoordinates( );
-	m_pD3dBuffer->RenderTranspRect( rect, D3DCOLOR_ARGB( 128, 255, 217, 0) );  
+	PixelRect const & rect  = pShape->GetAbsoluteCoordinates( );
+	COLORREF  const   color = m_pColorManager->GetColor( ColorManager::tObject::highlight );
+	m_pD3dBuffer->RenderTranspRect( rect, 128, color );  
 }
 
 void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
@@ -119,10 +130,16 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 			}
 
 			if ( m_pCore->SelectionIsNotEmpty() )
-				m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), D3DCOLOR_ARGB( 64, 0, 217, 255) );  
+			{
+				COLORREF const color = m_pColorManager->GetColor( ColorManager::tObject::selection );
+				m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), 64, color );  
+			}
 
 			if ( pkgr.IsNotEmpty( ) )
-				m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), D3DCOLOR_ARGB( 128, 255, 217, 0) );  
+			{
+				COLORREF const color = m_pColorManager->GetColor( ColorManager::tObject::selection );
+				m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), 128, color );  
+			}
 
 			m_pD3dBuffer->EndFrame( );
 		}
@@ -148,10 +165,10 @@ void DrawFrame::drawBackground( )
 	m_pD3dBuffer->RenderBackground( );
 }
 
-void DrawFrame::addPrimitive( GridPoint const gp, DWORD const dwColor, float const fPixSize ) const
+void DrawFrame::addPrimitive( GridPoint const gp, COLORREF const color, float const fPixSize ) const
 {
     if ( gp.IsNotNull( ) )
-		m_pD3dBuffer->AddIndividualPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), dwColor, fPixSize );
+		m_pD3dBuffer->AddIndividualPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), color, fPixSize );
 }
 
 void DrawFrame::drawPOI( GridPoint const gpPoi )
@@ -218,8 +235,8 @@ void DrawFrame::setIndividualColor( GridPoint const gp, float const fHalfSize ) 
     //lint -e571  suspicious cast
     UINT const uiIndex = static_cast<UINT>( m_pCore->GetEnergy( gp ) );
     //lint +e571
-	DWORD dwColor = m_pColorManager->GetColorFromClut( strat, uiIndex );
-    addPrimitive( gp, dwColor, fHalfSize );
+	COLORREF color = m_pColorManager->GetColor( ColorManager::tObject::individual, strat, uiIndex );
+    addPrimitive( gp, color, fHalfSize );
 }
 
 COLORREF DrawFrame::getBackgroundColor( int const iValue ) const
@@ -237,5 +254,5 @@ COLORREF DrawFrame::getBackgroundColor( int const iValue ) const
             uiIndex = MAX_BG_COLOR;
     }
 
-    return m_clutBackground.Get( uiIndex );
+    return m_clutBackground.GetColor( uiIndex );
 }

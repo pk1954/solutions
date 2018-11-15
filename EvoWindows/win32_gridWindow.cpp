@@ -126,7 +126,9 @@ void GridWindow::AddContextMenuEntries( HMENU hPopupMenu )
     if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
     {
 		UINT const uiHistoryFlags = Config::UseHistorySystem( ) ? STD_FLAGS : STD_FLAGS | MF_GRAYED;
-		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_CHOOSE_COLOR,  L"Choose color" );
+		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_CHOOSE_STRATEGY_COLOR,   L"Choose strategy color" );
+		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_CHOOSE_HIGHLIGHT_COLOR,  L"Choose highlight color" );
+		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_CHOOSE_SELECTION_COLOR,  L"Choose selection color" );
 		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_GOTO_DEATH,  L"Goto Death" );
 		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_GOTO_ORIGIN, L"Goto Origin" );
 		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI, L"POI" );
@@ -241,14 +243,24 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             UINT uiCmdId = LOWORD( wParam );
             switch ( uiCmdId )
             {
-			case IDM_CHOOSE_COLOR:
+			case IDM_CHOOSE_STRATEGY_COLOR:
 			{
-                PixelPoint  const ptCrsr = GetCrsrPosFromLparam( lParam );
-                GridPoint   const gpCrsr = m_pPixelCoordinates->Pixel2GridPos( ptCrsr );
+				PixelPoint  const ptCrsr = GetCrsrPosFromLparam( lParam );
+				GridPoint   const gpCrsr = m_pPixelCoordinates->Pixel2GridPos( ptCrsr );
 				tStrategyId const strat  = m_pCore->GetStrategyId( gpCrsr );
-				m_pDrawFrame->CallColorDialog( GetWindowHandle(), strat );
+				m_pDrawFrame->CallStrategyColorDialog( GetWindowHandle(), strat );
 			}
-				break;
+			break;
+			case IDM_CHOOSE_SELECTION_COLOR:
+			{
+				m_pDrawFrame->CallSelectionColorDialog( GetWindowHandle() );
+			}
+			break;
+			case IDM_CHOOSE_HIGHLIGHT_COLOR:
+			{
+				m_pDrawFrame->CallHighlightColorDialog( GetWindowHandle() );
+			}
+			break;
             case IDM_SET_POI:
             case IDM_GOTO_ORIGIN:  
             case IDM_GOTO_DEATH:      // commands using cursor pos are handled here

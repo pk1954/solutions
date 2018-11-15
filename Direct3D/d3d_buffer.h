@@ -28,7 +28,7 @@ public:
     void AddBackgroundPrimitive( PixelPoint const, DWORD const, float const );    
     void RenderIndividuals( );
     void RenderBackground( );
-    void RenderTranspRect( PixelRect const &, DWORD const );
+    void RenderTranspRect( PixelRect const &, unsigned int const, COLORREF const );
     void D3D_DrawText( PixelRect const &, wstring const &, D3DCOLOR );
     void EndFrame( );
 

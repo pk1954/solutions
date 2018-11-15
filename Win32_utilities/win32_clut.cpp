@@ -9,7 +9,7 @@ using namespace std;
 
 void CLUT::Allocate( UINT const uiMaxIndex )
 {
-    m_data = new vector<DWORD>( uiMaxIndex + 1 );
+    m_data = new vector<COLORREF>( uiMaxIndex + 1 );
     setTableValues( );
 }
 

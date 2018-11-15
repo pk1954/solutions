@@ -7,11 +7,11 @@
 
 #include <sstream> 
 #include "vector"
-#include "d3d_buffer.h"
 #include "GridPoint.h"
 #include "EvolutionCore.h"
 #include "win32_textDisplay.h"
 #include "pixelPoint.h"
+#include "pixelRect.h"
 
 using namespace std;
 

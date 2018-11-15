@@ -247,12 +247,23 @@ void D3dBuffer::finishTranspMode( )
     m_d3d_device->SetRenderState( D3DRS_DESTBLEND, m_dwDstBlend );    
 }
 
-void D3dBuffer::RenderTranspRect( PixelRect const & rectTransparent, DWORD const dwColor )
+void D3dBuffer::RenderTranspRect
+( 
+	PixelRect    const & rectTransparent, 
+	unsigned int const   uiALpha,
+	COLORREF     const   color
+)
 {
 	if ( rectTransparent.IsNotEmpty() )
 	{
 		assert( m_d3d_device != nullptr );
 		prepareTranspMode( );
+
+		UINT const uiR = GetRValue ( color ); 
+		UINT const uiG = GetGValue ( color ); 
+		UINT const uiB = GetBValue ( color );
+
+		D3DCOLOR d3dColor = D3DCOLOR_ARGB( uiALpha, uiR, uiG, uiB );
 
 		addRect2Buffer
 		( 
@@ -260,7 +271,7 @@ void D3dBuffer::RenderTranspRect( PixelRect const & rectTransparent, DWORD const
 			static_cast<float>( rectTransparent.m_lTop    ), 
 			static_cast<float>( rectTransparent.m_lRight  ), 
 			static_cast<float>( rectTransparent.m_lBottom ), 
-			dwColor 
+			d3dColor 
 		);
 
 		renderPrimitives( m_d3d->GetRectIndexBuffer() );

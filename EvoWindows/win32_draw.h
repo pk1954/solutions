@@ -38,7 +38,9 @@ public:
     void SetStripMode( tBoolOp );
 	bool SetHighlightPos( PixelPoint const );
 	void HighlightShape( Shape const * );
-	void CallColorDialog( HWND const, tStrategyId const );
+	void CallStrategyColorDialog( HWND const, tStrategyId const );
+	void CallHighlightColorDialog( HWND const );
+	void CallSelectionColorDialog( HWND const );
 
 private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
@@ -58,7 +60,7 @@ private:
 
     static UINT const MAX_BG_COLOR = 255;
 
-           CLUT                 m_clutBackground;
+    CLUT m_clutBackground;
 
     wostringstream m_wBuffer;
 
@@ -70,7 +72,7 @@ private:
 
     COLORREF getBackgroundColor( int const ) const;
     void     setIndividualColor( GridPoint const, float const ) const;
-	void     addPrimitive( GridPoint const, DWORD const, float const ) const;
+	void     addPrimitive( GridPoint const, COLORREF const, float const ) const;
 	
 	void prepareGridPoint( GridPoint const );
 

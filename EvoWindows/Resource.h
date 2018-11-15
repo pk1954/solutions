@@ -23,7 +23,9 @@
 #define IDM_SET_SIMU_MODE                       133
 #define IDM_HISTORY_INFO                        134
 #define IDM_REFRESH                             140
-#define IDM_CHOOSE_COLOR                        143
+#define IDM_CHOOSE_SELECTION_COLOR              141
+#define IDM_CHOOSE_HIGHLIGHT_COLOR              142
+#define IDM_CHOOSE_STRATEGY_COLOR               143
 #define IDM_SET_POI                             144
 #define IDM_ESCAPE                              145
 #define IDD_TOGGLE_STRIP_MODE                   146

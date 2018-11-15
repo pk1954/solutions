@@ -7,10 +7,11 @@
 #include "win32_util.h"
 #include "win32_colorManager.h"
 
-ColorManager::ColorManager( )
+ColorManager::ColorManager( ) :
+	m_bDimmIndividuals( TRUE ),
+	m_colorSelection( RGB(   0, 217, 255) ),
+	m_colorHighlight( RGB( 255, 217,   0) )
 {
-	m_bDimmIndividuals = TRUE;
-
 	UINT uiClutSize = static_cast<UINT>(Config::GetConfigValue( Config::tId::stdCapacity ));
 	for ( auto & strategy : m_aClutStrat )
 		strategy.Allocate( uiClutSize );
@@ -39,7 +40,12 @@ void ColorManager::ToggleClutMode( )
 	setupClut( tBoolOp::opToggle ); 
 }
 
-void ColorManager::ColorDialog( HWND const hwndOwner, tStrategyId const strat )
+void ColorManager::ColorDialog
+( 
+	HWND        const hwndOwner, 
+	tObject     const object, 
+	tStrategyId const strat 
+)
 {
 	static COLORREF acrCustClr[16]; // array of custom colors 
 	CHOOSECOLOR cc;
@@ -48,12 +54,35 @@ void ColorManager::ColorDialog( HWND const hwndOwner, tStrategyId const strat )
 	cc.lStructSize  = sizeof( cc ) ;
 	cc.hwndOwner    = hwndOwner;
 	cc.lpCustColors = (LPDWORD)acrCustClr;
-	cc.rgbResult    = getStrategyColor( strat );
 	cc.Flags        = CC_RGBINIT;
+	cc.rgbResult    = GetColor( object, strat );
 
 	if ( ChooseColor( & cc ) )
 	{
-	    setStrategyColor( strat, cc.rgbResult );
+		SetColor( cc.rgbResult, object, strat );
+	}
+}
+
+void ColorManager::SetColor
+(
+	COLORREF    const color,
+	tObject     const object,
+	tStrategyId const strat
+)
+{
+	switch ( object )
+	{
+	case tObject::individual:
+		setStrategyColor( strat, color );
+		break;
+	case tObject::selection:
+		m_colorSelection = color;
+		break;
+	case tObject::highlight:
+		m_colorHighlight = color;
+		break;
+	default:
+		assert( false );
 	}
 }
 
@@ -69,10 +98,37 @@ void ColorManager::setStrategyColor( tStrategyId const strat, COLORREF const col
     m_aClutStrat.at( static_cast<int>(strat) ).SetColorHi( col );
 }
 
-DWORD ColorManager::GetColorFromClut( tStrategyId const strat, UINT const uiClutIndex )
+COLORREF ColorManager::GetColor
+( 
+	tObject     const object, 
+	tStrategyId const strat, 
+	UINT        const uiClutIndex
+)
 {
-    CLUT const & clut = m_aClutStrat.at( static_cast<int>( strat ) );
-    assert( uiClutIndex < clut.GetSize() ); 
-	DWORD dwColor = clut.Get( uiClutIndex );
-	return dwColor;
+	switch (object)
+	{
+	case tObject::individual:
+	{
+		if ( uiClutIndex == -1 )
+			return getStrategyColor( strat );
+		else
+		{
+			CLUT const & clut = m_aClutStrat.at( static_cast<int>( strat ) );
+			assert( uiClutIndex < clut.GetSize() ); 
+			COLORREF dwColor = clut.GetColor( uiClutIndex );
+			return dwColor;
+		}
+	}
+
+	case tObject::selection:
+		return m_colorSelection;
+		break;
+
+	case tObject::highlight:
+		return m_colorHighlight;
+
+	default:
+		assert( false );
+		return 0;
+	}
 }

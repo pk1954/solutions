@@ -25,7 +25,7 @@ public:
     void SetClutBase( UINT const );
     void SetColorHi( COLORREF const );
 
-    DWORD Get( UINT uiIndex ) const 
+    COLORREF GetColor( UINT uiIndex ) const 
     {
         assert( m_data != nullptr );
         return (*m_data)[ uiIndex ]; 
@@ -37,7 +37,7 @@ public:
         return static_cast<UINT>(m_data->size());
     };
 
-    UINT GetColorHi( ) const 
+    COLORREF GetColorHi( ) const 
     { 
         return m_colorHi;
     };

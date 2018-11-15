@@ -3,6 +3,8 @@
 #pragma once
 
 #include <sstream> 
+#include "EvolutionCore.h"
+#include "pixelCoordinates.h"
 #include "d3d_buffer.h"
 
 class TextDisplay
