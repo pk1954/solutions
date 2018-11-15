@@ -52,7 +52,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	pWorkThreadInterface->Start( nullptr, nullptr, nullptr, nullptr, pEvolutionCore, pEvoHistGlue );
 
-	DefineWin32WrapperFunctions( pWorkThreadInterface, nullptr );
+	DefineWin32WrapperFunctions( pWorkThreadInterface );
 
     wstring wstrInputFile = L"Test_4.in";
 

@@ -3,6 +3,7 @@
 #pragma once
 
 #include <fstream>
+#include "boolOp.h"
 #include "gridRect.h"
 #include "HistoryGeneration.h"
 #include "EvolutionTypes.h"

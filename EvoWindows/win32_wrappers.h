@@ -4,6 +4,5 @@
 #pragma once
 
 class WorkThreadInterface;
-class EvoController;
 
-extern void DefineWin32WrapperFunctions( WorkThreadInterface * const, EvoController * );
+extern void DefineWin32WrapperFunctions( WorkThreadInterface * const );

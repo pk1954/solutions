@@ -209,7 +209,7 @@ void AppWindow::Start(  )
     m_pMiniGridWindow->Size( );
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
-    DefineWin32WrapperFunctions( m_pWorkThreadInterface, m_pEvoController );
+    DefineWin32WrapperFunctions( m_pWorkThreadInterface );
     DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 	stopwatch.Stop( L"Other setup tasks" );
 

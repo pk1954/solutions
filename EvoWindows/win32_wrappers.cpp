@@ -4,21 +4,13 @@
 #include "stdafx.h"
 #include "symtab.h"
 #include "Resource.h"
-#include "config.h"
-#include "EvoModelDataGlue.h"
 #include "EvoGenerationCmd.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "win32_workThreadInterface.h"
-#include "win32_evoController.h"
-#include "win32_winManager.h"
 #include "win32_wrappers.h"
 #include "win32_util.h"
 
-//lint -esym( 715, script )   // not referenced
-
 static WorkThreadInterface * m_pWorkThreadInterface;
-static EvoController       * m_pEvoController;
-static BOOL                  m_bMoveWindowActive;
 
 class WrapPostPrevGeneration : public Script_Functor
 {
@@ -147,14 +139,9 @@ public:
     }
 };
 
-void DefineWin32WrapperFunctions
-( 
-    WorkThreadInterface * const pWorkThreadInterface,
-	EvoController       * const pEvoController
-)
+void DefineWin32WrapperFunctions( WorkThreadInterface * const pWorkThreadInterface )
 {
     m_pWorkThreadInterface = pWorkThreadInterface;
-	m_pEvoController       = pEvoController;
 
     DEF_FUNC( PostPrevGeneration ); 
 
