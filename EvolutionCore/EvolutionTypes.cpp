@@ -161,3 +161,15 @@ wchar_t const * const GetManipulatorName( tManipulator const op )
 
     return mapManipulators.at( op );
 }
+
+wchar_t const * const GetColorObjectName( tColorObject const object )
+{
+    static unordered_map < tColorObject, wchar_t const * const > mapColorObjects =
+    { 
+        { tColorObject::individual, L"individual" },
+        { tColorObject::selection,  L"selection" },
+        { tColorObject::highlight,  L"highlight" }
+    };
+
+    return mapColorObjects.at( object );
+}

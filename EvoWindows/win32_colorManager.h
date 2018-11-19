@@ -4,26 +4,17 @@
 #pragma once
 
 #include <array>
-#include "Windows.h"
-#include "Commdlg.h"
 #include "EvolutionTypes.h"
 #include "win32_clut.h"
 
 class ColorManager
 {
 public:
-	enum class tObject : unsigned short
-	{
-		individual,
-		selection,
-		highlight
-	};
-
 	ColorManager();
 	
-	void     ColorDialog( HWND const, tObject const, tStrategyId const = tStrategyId::empty );
-	COLORREF GetColor( tObject const, tStrategyId const = tStrategyId::empty, UINT const = -1 );
-	void     SetColor( COLORREF const, tObject const, tStrategyId const = tStrategyId::empty );
+	void     ColorDialog( HWND const, tColorObject const, tStrategyId const = tStrategyId::empty );
+	COLORREF GetColor( tColorObject const, tStrategyId const = tStrategyId::empty, UINT const = -1 );
+	void     SetColor( COLORREF const, tColorObject const, tStrategyId const = tStrategyId::empty );
 	void     ToggleClutMode( );
 
 private:

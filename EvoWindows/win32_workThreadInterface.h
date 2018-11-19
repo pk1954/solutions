@@ -7,6 +7,7 @@
 #include "gridRect.h"
 #include "HistoryGeneration.h"
 #include "EvolutionTypes.h"
+#include "win32_colorManager.h"
 
 class PerformanceWindow;
 class EditorWindow;
@@ -24,6 +25,7 @@ public:
 
     void Start
     ( 
+		ColorManager      * const,
         PerformanceWindow * const,
 		EditorWindow      * const,  
 		EventInterface    * const,
@@ -39,6 +41,7 @@ public:
     void PostSetBrushShape( tShape );
 	void PostSetBrushManipulator( tManipulator const );
     void PostSetBrushIntensity( LONG const );
+    void PostSetColor( COLORREF const, tColorObject const, tStrategyId const );
     void PostSetBrushRadius( INT const );
     void PostRefresh( LPARAM const );
     void PostReset( BOOL );

@@ -17,6 +17,7 @@
 #include "win32_thread.h"
 #include "win32_event.h"
 
+class ColorManager;
 class PerformanceWindow;
 class EditorWindow;
 class RootWindow;
@@ -45,6 +46,9 @@ public:
 		THREAD_MSG_SET_BRUSH_SHAPE,
 		THREAD_MSG_SET_BRUSH_OPERATOR,
 		THREAD_MSG_SET_BRUSH_MODE,
+		THREAD_MSG_SET_STRATEGY_COLOR,
+		THREAD_MSG_SET_SELECTION_COLOR,
+		THREAD_MSG_SET_HIGHLIGHT_COLOR,
 		THREAD_MSG_PROCESS_SCRIPT,
 		THREAD_MSG_SET_SIMULATION_MODE,
 		THREAD_MSG_RESET_MODEL,
@@ -59,6 +63,7 @@ public:
 
 	void Start
 	( 
+		ColorManager        * const,
 		PerformanceWindow   * const,
 		EditorWindow        * const,
 		EventInterface      * const,
@@ -97,6 +102,7 @@ public:
 	}
 
 private:
+    ColorManager        * m_pColorManager;
     PerformanceWindow   * m_pPerformanceWindow;
     EditorWindow        * m_pEditorWindow;
     EventInterface      * m_pEventPOI;

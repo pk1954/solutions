@@ -22,6 +22,7 @@ WorkThreadInterface::WorkThreadInterface( wostream * pTraceStream ) :
 
 void WorkThreadInterface::Start
 ( 
+    ColorManager       * const pColorManager,
     PerformanceWindow  * const pPerformanceWindow,
 	EditorWindow       * const pEditorWindow,
     EventInterface     * const pEvent,
@@ -34,7 +35,7 @@ void WorkThreadInterface::Start
     m_pCore        = pCore;
 	m_pEvoHistGlue = pEvoHistGlue;
 	m_pWorkThread  = new WorkThread();
-	m_pWorkThread->Start( pPerformanceWindow, pEditorWindow, pEvent, pObservers, pEvoHistGlue, this );
+	m_pWorkThread->Start( pColorManager, pPerformanceWindow, pEditorWindow, pEvent, pObservers, pEvoHistGlue, this );
 }
 
 WorkThreadInterface::~WorkThreadInterface( )
@@ -139,6 +140,26 @@ void WorkThreadInterface::PostSetBrushManipulator( tManipulator const op )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetManipulatorName( op ) << endl;
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_OPERATOR, static_cast<WPARAM>( op ), 0 );
+}
+
+void WorkThreadInterface::PostSetColor( COLORREF const col, tColorObject const obj, tStrategyId const strat )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << L" " << GetColorObjectName( obj ) << endl;
+	switch ( obj )
+	{
+	case tColorObject::individual:
+	    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_STRATEGY_COLOR, static_cast<WPARAM>( strat ), static_cast<LPARAM>( col ) );
+		break;
+	case tColorObject::selection:
+	    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_SELECTION_COLOR, 0, static_cast<LPARAM>( col ) );
+		break;
+	case tColorObject::highlight:
+	    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_HIGHLIGHT_COLOR, 0, static_cast<LPARAM>( col ) );
+		break;
+	default:
+		assert( false );
+	}
 }
 
 void WorkThreadInterface::PostRunGenerations( bool const bFirst )

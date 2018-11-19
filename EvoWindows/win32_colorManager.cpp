@@ -2,6 +2,8 @@
 //
 
 #include "stdafx.h"
+#include "Windows.h"
+#include "Commdlg.h"
 #include "debug.h"
 #include "config.h"
 #include "win32_util.h"
@@ -16,9 +18,9 @@ ColorManager::ColorManager( ) :
 	for ( auto & strategy : m_aClutStrat )
 		strategy.Allocate( uiClutSize );
 
-	setStrategyColor( tStrategyId::defect,    RGB(151, 171, 255) );
-	setStrategyColor( tStrategyId::cooperate, RGB(127, 255,   0) );
-	setStrategyColor( tStrategyId::tit4tat,   RGB(255,  50,  50) );
+	setStrategyColor( tStrategyId::defect,    RGB( 20, 150, 187) );
+	setStrategyColor( tStrategyId::cooperate, RGB(130, 147,  86) );
+	setStrategyColor( tStrategyId::tit4tat,   RGB(192,  47,  29) );
 
     setupClut( Config::GetConfigValueBoolOp( Config::tId::dimmMode ) );
 }
@@ -42,9 +44,9 @@ void ColorManager::ToggleClutMode( )
 
 void ColorManager::ColorDialog
 ( 
-	HWND        const hwndOwner, 
-	tObject     const object, 
-	tStrategyId const strat 
+	HWND         const hwndOwner, 
+	tColorObject const object, 
+	tStrategyId  const strat 
 )
 {
 	static COLORREF acrCustClr[16]; // array of custom colors 
@@ -65,20 +67,20 @@ void ColorManager::ColorDialog
 
 void ColorManager::SetColor
 (
-	COLORREF    const color,
-	tObject     const object,
-	tStrategyId const strat
+	COLORREF     const color,
+	tColorObject const object,
+	tStrategyId  const strat
 )
 {
 	switch ( object )
 	{
-	case tObject::individual:
+	case tColorObject::individual:
 		setStrategyColor( strat, color );
 		break;
-	case tObject::selection:
+	case tColorObject::selection:
 		m_colorSelection = color;
 		break;
-	case tObject::highlight:
+	case tColorObject::highlight:
 		m_colorHighlight = color;
 		break;
 	default:
@@ -100,14 +102,14 @@ void ColorManager::setStrategyColor( tStrategyId const strat, COLORREF const col
 
 COLORREF ColorManager::GetColor
 ( 
-	tObject     const object, 
-	tStrategyId const strat, 
-	UINT        const uiClutIndex
+	tColorObject const object, 
+	tStrategyId  const strat, 
+	UINT         const uiClutIndex
 )
 {
 	switch (object)
 	{
-	case tObject::individual:
+	case tColorObject::individual:
 	{
 		if ( uiClutIndex == -1 )
 			return getStrategyColor( strat );
@@ -120,11 +122,11 @@ COLORREF ColorManager::GetColor
 		}
 	}
 
-	case tObject::selection:
+	case tColorObject::selection:
 		return m_colorSelection;
 		break;
 
-	case tObject::highlight:
+	case tColorObject::highlight:
 		return m_colorHighlight;
 
 	default:

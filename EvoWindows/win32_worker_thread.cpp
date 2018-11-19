@@ -13,6 +13,7 @@
 #include "win32_editor.h"
 #include "win32_thread.h"
 #include "win32_event.h"
+#include "win32_colorManager.h"
 #include "win32_performanceWindow.h"
 #include "win32_workThreadInterface.h"
 #include "win32_worker_thread.h"
@@ -20,6 +21,7 @@
 using namespace std;
 
 WorkThread::WorkThread( ):
+	m_pColorManager       ( nullptr ),
 	m_pPerformanceWindow  ( nullptr ),
 	m_pEditorWindow       ( nullptr ),   
 	m_pEventPOI           ( nullptr ),   
@@ -33,6 +35,7 @@ WorkThread::WorkThread( ):
 
 void WorkThread::Start
 ( 
+	ColorManager        * const pColorManager,
 	PerformanceWindow   * const pPerformanceWindow,
 	EditorWindow        * const pEditorWindow,
 	EventInterface      * const pEvent,
@@ -41,6 +44,7 @@ void WorkThread::Start
 	WorkThreadInterface * const pWorkThreadInterface
 )
 {
+	m_pColorManager        = pColorManager;
 	m_pPerformanceWindow   = pPerformanceWindow;
 	m_pEditorWindow        = pEditorWindow;
 	m_pEventPOI            = pEvent;
@@ -53,6 +57,7 @@ void WorkThread::Start
 
 WorkThread::~WorkThread( )
 {
+	m_pColorManager        = nullptr;
 	m_pWorkThreadInterface = nullptr;
 	m_pPerformanceWindow   = nullptr;
 	m_pEditorWindow        = nullptr;
@@ -155,6 +160,18 @@ void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 	case THREAD_MSG_SET_SIMULATION_MODE:
 		if ( editorCommand( tEvoCmd::setSimulationMode, msg.wParam ) )
 			m_pEditorWindow->SetSimulationMode( );
+		break;
+
+	case THREAD_MSG_SET_STRATEGY_COLOR:
+		m_pColorManager->SetColor( static_cast<COLORREF>(msg.lParam), tColorObject::individual, static_cast<tStrategyId>(msg.wParam) );
+		break;
+
+	case THREAD_MSG_SET_SELECTION_COLOR:
+		m_pColorManager->SetColor( static_cast<COLORREF>(msg.lParam), tColorObject::selection );
+		break;
+
+	case THREAD_MSG_SET_HIGHLIGHT_COLOR:
+		m_pColorManager->SetColor( static_cast<COLORREF>(msg.lParam), tColorObject::highlight );
 		break;
 
 	case THREAD_MSG_REFRESH:

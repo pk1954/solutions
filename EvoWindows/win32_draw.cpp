@@ -46,17 +46,17 @@ DrawFrame::~DrawFrame( )
 
 void DrawFrame::CallStrategyColorDialog( HWND const hwndOwner, tStrategyId const strat )
 {
-	m_pColorManager->ColorDialog( hwndOwner, ColorManager::tObject::individual, strat );
+	m_pColorManager->ColorDialog( hwndOwner, tColorObject::individual, strat );
 }
 
 void DrawFrame::CallSelectionColorDialog( HWND const hwndOwner )
 {
-	m_pColorManager->ColorDialog( hwndOwner, ColorManager::tObject::selection );
+	m_pColorManager->ColorDialog( hwndOwner, tColorObject::selection );
 }
 
 void DrawFrame::CallHighlightColorDialog( HWND const hwndOwner )
 {
-	m_pColorManager->ColorDialog( hwndOwner, ColorManager::tObject::highlight );
+	m_pColorManager->ColorDialog( hwndOwner, tColorObject::highlight );
 }
 
 void DrawFrame::SetStripMode( tBoolOp const bOp ) 
@@ -96,7 +96,7 @@ bool DrawFrame::SetHighlightPos( PixelPoint const pos )
 void DrawFrame::HighlightShape( Shape const * pShape )
 {
 	PixelRect const & rect  = pShape->GetAbsoluteCoordinates( );
-	COLORREF  const   color = m_pColorManager->GetColor( ColorManager::tObject::highlight );
+	COLORREF  const   color = m_pColorManager->GetColor( tColorObject::highlight );
 	m_pD3dBuffer->RenderTranspRect( rect, 128, color );  
 }
 
@@ -131,13 +131,13 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 
 			if ( m_pCore->SelectionIsNotEmpty() )
 			{
-				COLORREF const color = m_pColorManager->GetColor( ColorManager::tObject::selection );
+				COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
 				m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), 64, color );  
 			}
 
 			if ( pkgr.IsNotEmpty( ) )
 			{
-				COLORREF const color = m_pColorManager->GetColor( ColorManager::tObject::selection );
+				COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
 				m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), 128, color );  
 			}
 
@@ -235,7 +235,7 @@ void DrawFrame::setIndividualColor( GridPoint const gp, float const fHalfSize ) 
     //lint -e571  suspicious cast
     UINT const uiIndex = static_cast<UINT>( m_pCore->GetEnergy( gp ) );
     //lint +e571
-	COLORREF color = m_pColorManager->GetColor( ColorManager::tObject::individual, strat, uiIndex );
+	COLORREF color = m_pColorManager->GetColor( tColorObject::individual, strat, uiIndex );
     addPrimitive( gp, color, fHalfSize );
 }
 

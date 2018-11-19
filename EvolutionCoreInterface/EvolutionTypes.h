@@ -133,6 +133,13 @@ enum class tManipulator
 	mean
 };
 
+enum class tColorObject : unsigned short
+{
+	individual,
+	selection,
+	highlight
+};
+
 wchar_t const * const GetStrategyName      ( tStrategyId  const );
 wchar_t const * const GetShapeName         ( tShape       const );
 wchar_t const * const GetOriginName        ( tOrigin      const );
@@ -141,5 +148,6 @@ wchar_t const * const GetGeneName          ( tGeneType    const );
 wchar_t const * const GetBrushModeName     ( tBrushMode   const );
 wchar_t const * const GetBrushModeNameShort( tBrushMode   const );
 wchar_t const * const GetManipulatorName   ( tManipulator const );
+wchar_t const * const GetColorObjectName   ( tColorObject const );
 
 tAction const GetRelatedAction( tGeneType const );

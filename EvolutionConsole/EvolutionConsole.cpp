@@ -50,7 +50,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	pEvoHistGlue->Start( pEvolutionCore, pHistorySystem, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false, nullptr );
     DefineWin32HistWrapperFunctions( pWorkThreadInterface );
 
-	pWorkThreadInterface->Start( nullptr, nullptr, nullptr, nullptr, pEvolutionCore, pEvoHistGlue );
+	pWorkThreadInterface->Start( nullptr, nullptr, nullptr, nullptr, nullptr, pEvolutionCore, pEvoHistGlue );
 
 	DefineWin32WrapperFunctions( pWorkThreadInterface );
 
