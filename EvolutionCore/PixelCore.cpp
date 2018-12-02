@@ -49,16 +49,6 @@ bool PixelCore::CenterPoi( PixelPoint const pntCenter ) const
 		   );
 }
 
-void PixelCore::FitToRect( PixelRectSize const rectSize ) const
-{
-	m_pPixelCoordinates->FitGridToRect
-	( 
-		m_pCore->GetSelection(),
-		rectSize
-	);
-	m_pCore->ResetSelection( );
-}
-
 void PixelCore::SetFieldSize( short const sNewFieldSize, PixelPoint const pntCenter )
 {
     (void)m_pPixelCoordinates->SetGridFieldSize

@@ -181,7 +181,8 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         }
         else if ( m_ptLast.x != LONG_MIN )  // last cursor pos stored in m_ptLast
         {
-           moveGrid( ptCrsr - m_ptLast );
+            moveGrid( ptCrsr - m_ptLast );
+		    PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
         }
         m_ptLast = ptCrsr;
 		PostCommand2Application( IDM_REFRESH, 0 );
@@ -231,6 +232,13 @@ void GridWindow::mouseWheelAction( int iDelta )
 	}
 
 	PostCommand2Application( IDM_SET_ZOOM, sNewFieldSize );
+	PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
+}
+
+bool GridWindow::IsFullGridVisible() const
+{
+	PixelRect ppRect( m_pPixelCoordinates->Grid2PixelRect( GridRect::GRID_RECT_FULL ) );
+	return Util::PixelRectInClientRect( GetWindowHandle(), ppRect );
 }
 
 LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -306,6 +314,10 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         onMouseMove( lParam, wParam );
         return FALSE;
 
+    case WM_SIZE:
+		PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
+		return FALSE;
+
     case WM_PAINT:
         doPaint( );
         return FALSE;
@@ -331,13 +343,16 @@ void GridWindow::SetFieldSize( SHORT const fieldSize )
 	m_pPixelCore->SetFieldSize( fieldSize, GetClRectCenter( ) );
 	m_pDrawFrame->ResizeDrawFrame( );
 	m_pDrawFrame->SetHighlightPos( GetRelativeCrsrPosition( ) );
+	PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
 }
 
 void GridWindow::Fit2Rect( )
 {
-	m_pPixelCore->FitToRect( GetClRectSize( ) ); 
+	m_pPixelCoordinates->FitGridToRect( m_pCore->GetSelection(), GetClRectSize( ) );
+	m_pCore->ResetSelection( );
 	m_pDrawFrame->ResizeDrawFrame( );
 	m_pDrawFrame->SetHighlightPos( GetRelativeCrsrPosition( ) );
+	PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
 }
 
 void GridWindow::Zoom( bool const bZoomIn )	

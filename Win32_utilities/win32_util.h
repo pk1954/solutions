@@ -140,10 +140,22 @@ namespace Util
         return rect.right;
     }
 
+	inline POINT PixelPoint2POINT( PixelPoint const pnt ) 
+	{ 
+		return POINT{ pnt.x, pnt.y }; 
+	}
+
     inline BOOL PixelPointInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?
     {
         RECT const rect = GetClRect( hwnd );  
-		return PtInRect( &rect, POINT{ pp.x, pp.y } );
+		return PtInRect( &rect, PixelPoint2POINT( pp ) );
+    } 
+
+    inline BOOL PixelRectInClientRect( HWND const hwnd, PixelRect const pixRect )  // Is rect in client rect?
+    {
+        RECT const rect = GetClRect( hwnd );  
+		return PtInRect( &rect, PixelPoint2POINT( pixRect.GetStartPoint() ) ) && 
+			   PtInRect( &rect, PixelPoint2POINT( pixRect.GetEndPoint  () ) );
     } 
 
     inline BOOL CrsrInClientRect( HWND const hwnd )  // Is cursor position in client rect?

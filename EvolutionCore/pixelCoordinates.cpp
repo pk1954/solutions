@@ -89,8 +89,8 @@ bool PixelCoordinates::SetGridFieldSize( short const sNewFieldSize, PixelPoint c
         return false;
  
     m_pixOffset  = ((m_pixOffset + pntCenter) * sNewFieldSize) / m_sFieldSize - pntCenter;
-	CheckPixelPoint( m_pixOffset );
     m_sFieldSize = sNewFieldSize;
+	CheckPixelPoint( m_pixOffset );
 
     return true;
 }

@@ -48,7 +48,7 @@ public:
 	short      GetFieldSize( )   const { return m_sFieldSize; };
 	PixelPoint GetPixelOffset( ) const { return m_pixOffset; }
 
-	short      ComputeNewFieldSize( bool const ) const;
+	short      ComputeNewFieldSize( bool const ) const;  // does not modify field size
 
 	//////// manipulation functions ////////
 

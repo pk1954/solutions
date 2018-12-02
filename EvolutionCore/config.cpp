@@ -29,7 +29,8 @@ void Config::SetDefaultConfiguration( )
      // general
    DEF_CONFIG_ID( Config::tId::maxGeneration,   1000 * 1000 );
    DEF_CONFIG_ID( Config::tId::nrOfHistorySlots,      10000 );
-   DEF_CONFIG_ID( Config::tId::historyDisplay,            0 );       // MODE_ON
+   DEF_CONFIG_ID( Config::tId::historyDisplay,  static_cast<long>(tOnOffAuto::on) );
+   DEF_CONFIG_ID( Config::tId::miniGridDisplay, static_cast<long>(tOnOffAuto::automatic) );
    DEF_CONFIG_ID( Config::tId::stdMemSize,                8 );  
    // individual energy          
    DEF_CONFIG_ID( Config::tId::initialEnergy,        10000 );  
@@ -44,7 +45,7 @@ void Config::SetDefaultConfiguration( )
    DEF_CONFIG_ID( Config::tId::energyConsumptionMarry,       100 );  
    DEF_CONFIG_ID( Config::tId::energyConsumptionInteraction,   0 );   
    // energy consuption         
-   DEF_CONFIG_ID( Config::tId::energyConsumptionMemSize,       0 );           ///// TODO:  reset to value > 0          
+   DEF_CONFIG_ID( Config::tId::energyConsumptionMemSize,       0 );  ///// TODO:  reset to value > 0          
    DEF_CONFIG_ID( Config::tId::energyConsumptionextraCapacity, 0 );  
    // enable/disable activities         
    DEF_CONFIG_ID( Config::tId::moveEnabled,      1 );  
@@ -96,6 +97,12 @@ tBoolOp Config::GetConfigValueBoolOp( tId const id )
 {
     long const lValue = GetConfigValue( id );
     return (lValue == 0) ? tBoolOp::opFalse : tBoolOp::opTrue;
+}
+
+Config::tOnOffAuto Config::GetConfigValueOnOffAuto( tId const id )
+{
+    long const lValue = GetConfigValue( id );
+    return static_cast<tOnOffAuto>(lValue);
 }
 
 void Config::SetConfigValue( tId const id, long const lValue )

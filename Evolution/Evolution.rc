@@ -41,7 +41,12 @@ IDC_EVOLUTION_MAIN MENU
         {
             MENUITEM "Toggle &disp window", IDM_DISP_WINDOW
             MENUITEM "Toggle &edit window", IDM_EDIT_WINDOW
-            MENUITEM "Toggle &mini window", IDM_MINI_WINDOW
+			POPUP "Toggle &mini window"
+			{
+				MENUITEM "on",   IDM_MINI_WINDOW_ON
+				MENUITEM "off",  IDM_MINI_WINDOW_OFF
+				MENUITEM "auto", IDM_MINI_WINDOW_AUTO
+			}
             MENUITEM "Toggle &stat window", IDM_STAT_WINDOW
             MENUITEM "Toggle &crsr window", IDM_CRSR_WINDOW
             MENUITEM "Toggle &hist info",   IDM_HIST_INFO
@@ -146,7 +151,6 @@ IDC_EVOLUTION_MAIN ACCELERATORS
     "s",            IDM_STOP,         ASCII
     "+",            IDM_ZOOM_IN,      ASCII
     "-",            IDM_ZOOM_OUT,     ASCII
-    "w",            IDM_MINI_WINDOW,  ASCII
     "b",            IDM_BACKWARDS,    ASCII
     "z",            IDM_BACKWARDS,    VIRTKEY, CONTROL
     "y",            IDM_GENERATION,   VIRTKEY, CONTROL
@@ -154,7 +158,6 @@ IDC_EVOLUTION_MAIN ACCELERATORS
     "?",            IDM_ABOUT,        ASCII,   ALT
     "/",            IDM_ABOUT,        ASCII,   ALT
     "h",            IDM_HISTORY_INFO, ASCII,   ALT
-    "m",            IDM_MINI_WINDOW,  ASCII,   ALT
     "d",            IDM_DISP_WINDOW,  ASCII,   ALT
     "e",            IDM_EDIT_WINDOW,  ASCII,   ALT
     "s",            IDM_STAT_WINDOW,  ASCII,   ALT

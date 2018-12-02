@@ -22,6 +22,7 @@
 #define IDM_TOGGLE_SIMU_MODE                    132
 #define IDM_SET_SIMU_MODE                       133
 #define IDM_HISTORY_INFO                        134
+#define IDM_ADJUST_MINI_WIN                     137
 #define IDM_REFRESH                             140
 #define IDM_CHOOSE_SELECTION_COLOR              141
 #define IDM_CHOOSE_HIGHLIGHT_COLOR              142
@@ -50,6 +51,10 @@
 #define IDM_MAIN_WINDOW                         (IDM_WINDOWS_BASE + 10)
 #define IDM_STATUS_BAR                          (IDM_WINDOWS_BASE + 11)
 #define IDM_SHOW_PERF_WINDOW                    (IDM_WINDOWS_BASE + 12)
+
+#define IDM_MINI_WINDOW_ON                      (IDM_WINDOWS_BASE + 20)
+#define IDM_MINI_WINDOW_OFF                     (IDM_WINDOWS_BASE + 21)
+#define IDM_MINI_WINDOW_AUTO                    (IDM_WINDOWS_BASE + 22)
 
 #define IDM_ANIMALS                             450
 

@@ -18,7 +18,7 @@ public:
     static void SetDefaultConfiguration( );
 	static void DefineConfigWrapperFunctions( );
 
-    enum class tOnOffAuto
+    enum class tOnOffAuto : long
     {
         on,
         off,
@@ -31,6 +31,7 @@ public:
         maxGeneration,        // Maximum number of generations, -1 means: no history system 
         nrOfHistorySlots,     // Number of history slots (if enough memory)
         historyDisplay,       // MODE_ON/OFF/AUTO
+        miniGridDisplay,      // MODE_ON/OFF/AUTO
         stdMemSize,           // for strategies with memory (e.g. TFT)
         // individual energy 
         initialEnergy,
@@ -83,11 +84,12 @@ public:
 		generationDelay       // initial delay between generations in ms
     };
 
-    static bool    UseHistorySystem( ) { return GetConfigValue( tId::maxGeneration ) > 0; };
-    static void    SetConfigValue      ( tId const, long const );
-    static long    GetConfigValue      ( tId const);
-    static short   GetConfigValueShort ( tId const );
-	static tBoolOp GetConfigValueBoolOp( tId const );
+    static bool       UseHistorySystem( )    { return GetConfigValue( tId::maxGeneration ) > 0; };
+    static void       SetConfigValue         ( tId const, long const );
+    static long       GetConfigValue         ( tId const );
+    static short      GetConfigValueShort    ( tId const );
+	static tBoolOp    GetConfigValueBoolOp   ( tId const );
+	static tOnOffAuto GetConfigValueOnOffAuto( tId const );
 
 private:
 

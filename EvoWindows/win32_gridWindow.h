@@ -44,6 +44,7 @@ public:
 	void Escape( );
 	void SetFieldSize( SHORT const );
 	void Fit2Rect( );
+	bool IsFullGridVisible( ) const;
 
 	short GetFieldSize( ) const
 	{ 

@@ -5,6 +5,7 @@
 #include "Windowsx.h"
 #include "Resource.h"
 #include "BoolOp.h"
+#include "config.h"
 #include "win32_script.h"
 #include "win32_workThreadInterface.h"
 #include "win32_winManager.h"
@@ -133,7 +134,12 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			scriptDialog( );
             break;
                  
-		case IDM_MINI_WINDOW:
+		case IDM_MINI_WINDOW_ON:
+		case IDM_MINI_WINDOW_OFF:
+		case IDM_MINI_WINDOW_AUTO:
+			m_pGridWindow->PostCommand2Application( IDM_ADJUST_MINI_WIN, wmId );
+			break;
+
         case IDM_DISP_WINDOW:
         case IDM_EDIT_WINDOW:
         case IDM_STAT_WINDOW:

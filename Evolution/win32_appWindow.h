@@ -47,6 +47,7 @@ private:
     AppWindow & operator= ( AppWindow const & );  // noncopyable class 
 
 	void adjustChildWindows( );
+	void adjustMiniWinVisibility( int const );
 	void shutDown( );
 
 	Util::Event           m_event;

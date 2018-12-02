@@ -205,7 +205,7 @@ void AppWindow::Start(  )
 	stopwatch.Stop( L"Window manager setup" );
 
 	stopwatch.Start();
-    m_pMiniGridWindow->Observe( m_pMainGridWindow );
+    m_pMiniGridWindow->Observe( m_pMainGridWindow );  // mini window observes main grid window
     m_pMiniGridWindow->Size( );
     m_pScriptHook = new ScriptHook( m_pStatusBar );
     Script::ScrSetWrapHook( m_pScriptHook );
@@ -290,6 +290,10 @@ LRESULT AppWindow::UserProc
             ShowAboutBox( GetWindowHandle( ) );
             break;
 
+        case IDM_ADJUST_MINI_WIN:
+			adjustMiniWinVisibility( static_cast<int>(lParam) );
+            break;
+
         case IDM_EXIT:
             PostMessage( WM_CLOSE, 0, 0 );
             break;
@@ -346,4 +350,47 @@ void AppWindow::adjustChildWindows( )
 
         m_pMainGridWindow->Move( 0, 0, pntAppClientSize.GetWidth( ), pntAppClientSize.GetHeight( ), TRUE );
     }
+}
+
+void AppWindow::adjustMiniWinVisibility( int const iMode )
+{
+	Config::tOnOffAuto onOffAuto;
+	if ( iMode != 0 )
+	{
+		switch ( iMode )
+		{
+			case IDM_MINI_WINDOW_ON:
+				onOffAuto = Config::tOnOffAuto::on; 
+				break;
+			case IDM_MINI_WINDOW_OFF:
+				onOffAuto = Config::tOnOffAuto::off; 
+				break;
+			case IDM_MINI_WINDOW_AUTO:
+				onOffAuto = Config::tOnOffAuto::automatic; 
+				break;
+			default:
+				assert( false );
+				break;
+		}
+		Config::SetConfigValue( Config::tId::miniGridDisplay, static_cast<long>( onOffAuto ) ); 
+	}
+	else 
+	{
+		onOffAuto = Config::GetConfigValueOnOffAuto( Config::tId::miniGridDisplay ); 
+	}
+
+	switch ( onOffAuto )
+	{
+		case Config::tOnOffAuto::on:
+			m_pMiniGridWindow->Show( true );
+			break;
+
+		case Config::tOnOffAuto::off:
+			m_pMiniGridWindow->Show( false );
+			break;
+
+		case Config::tOnOffAuto::automatic:
+			m_pMiniGridWindow->Show( ! m_pMainGridWindow->IsFullGridVisible( ) );
+			break;
+	}
 }
