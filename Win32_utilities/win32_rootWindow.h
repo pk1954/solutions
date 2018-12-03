@@ -25,7 +25,7 @@ public:
     LONG          const GetWindowWidth( )          const { return Util::GetWindowWidth         ( m_hwnd ); }
     LONG          const GetWindowHeight( )         const { return Util::GetWindowHeight        ( m_hwnd ); }
     PixelPoint    const GetWindowSize( )           const { return Util::GetWindowSize          ( m_hwnd ); }
-    PixelPoint    const GetClientAreaPos( )        const { return Util::GetClientAreaPos       ( m_hwnd ); }
+    PixelPoint    const Client2Screen( POINT pnt)  const { return Util::Client2Screen          ( m_hwnd, pnt ); }
     PixelRectSize const GetClRectSize( )           const { return Util::GetClRectSize          ( m_hwnd ); }
     PixelRect     const GetClPixelRect( )          const { return Util::GetClPixelRect         ( m_hwnd ); }
     RECT          const GetClRect( )               const { return Util::GetClRect              ( m_hwnd ); }

@@ -7,6 +7,7 @@
 
 #include <sstream> 
 #include "vector"
+#include "windef.h"
 #include "GridPoint.h"
 #include "EvolutionCore.h"
 #include "win32_textDisplay.h"
@@ -98,6 +99,7 @@ public:
 	}
 
 	virtual void PrepareShape( GridPoint const ) {};
+	virtual void AddContextMenuEntries( HMENU const ) const {};
 
 protected:
 

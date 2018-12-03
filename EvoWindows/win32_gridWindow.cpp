@@ -109,9 +109,11 @@ BOOL GridWindow::inObservedClientRect( LPARAM const lParam )
     return Util::PixelPointInClientRect( hWndObserved, ptCrsrCheck );  // Is cursor position in observed client rect?
 }
 
-void GridWindow::AddContextMenuEntries( HMENU hPopupMenu )
+void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
 {
     UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
+
+	m_pDrawFrame->AddContextMenuEntries( hPopupMenu, pntPos );
 
     if ( m_pCore->SelectionIsEmpty() )
     {

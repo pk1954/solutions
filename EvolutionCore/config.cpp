@@ -31,6 +31,7 @@ void Config::SetDefaultConfiguration( )
    DEF_CONFIG_ID( Config::tId::nrOfHistorySlots,      10000 );
    DEF_CONFIG_ID( Config::tId::historyDisplay,  static_cast<long>(tOnOffAuto::on) );
    DEF_CONFIG_ID( Config::tId::miniGridDisplay, static_cast<long>(tOnOffAuto::automatic) );
+   DEF_CONFIG_ID( Config::tId::showGridPointCoords,       1 );  
    DEF_CONFIG_ID( Config::tId::stdMemSize,                8 );  
    // individual energy          
    DEF_CONFIG_ID( Config::tId::initialEnergy,        10000 );  
@@ -97,6 +98,15 @@ tBoolOp Config::GetConfigValueBoolOp( tId const id )
 {
     long const lValue = GetConfigValue( id );
     return (lValue == 0) ? tBoolOp::opFalse : tBoolOp::opTrue;
+}
+
+bool Config::SetConfigValueBoolOp( tId const id, tBoolOp const op )
+{
+    long const lValue    = GetConfigValue( id );
+    bool const bOldState = (lValue != 0);
+	bool const bNewState = ApplyOp2( bOldState, op );
+	SetConfigValue( id, bNewState ? 1 : 0 );
+	return bNewState;
 }
 
 Config::tOnOffAuto Config::GetConfigValueOnOffAuto( tId const id )

@@ -74,17 +74,24 @@ HWND BaseWindow::StartBaseWindow
 
 void BaseWindow::contextMenu( LPARAM lParam )
 {
-    HWND  const hwnd       = GetWindowHandle( );
-    HMENU const hPopupMenu = CreatePopupMenu();
-	POINT pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
-    (void)MapWindowPoints( hwnd, nullptr, &pntPos, 1 );
+    HMENU      const hPopupMenu = CreatePopupMenu();
+	POINT      const pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
+	PixelPoint const pixPosCrsr( Client2Screen( pntPos ) );
 
     (void)InsertMenu( hPopupMenu, 0, MF_STRING, IDM_REFRESH_RATE_DIALOG, L"Refresh Rate" );
-	AddContextMenuEntries( hPopupMenu );
+	AddContextMenuEntries( hPopupMenu, pntPos );  
 
-    (void)SetForegroundWindow( hwnd );
+    (void)SetForegroundWindow( GetWindowHandle( ) );
 
-    UINT const uiID = (UINT)TrackPopupMenu( hPopupMenu, TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, pntPos.x, pntPos.y, 0, hwnd, nullptr ); 	// Result is send as WM_COMMAND to this window
+    UINT const uiID = (UINT)TrackPopupMenu
+	                  ( 
+						  hPopupMenu, 
+						  TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, 
+						  pixPosCrsr.x, pixPosCrsr.y, 
+						  0, 
+						  GetWindowHandle( ), 
+						  nullptr 
+					  );         	// Result is send as WM_COMMAND to this window
 
 	if ( uiID != 0 )
 	    SendMessage( WM_COMMAND, uiID, lParam );

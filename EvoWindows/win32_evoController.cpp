@@ -168,6 +168,11 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			m_pWorkThreadInterface->PostRefresh( lParam );
             break;
 
+        case IDD_TOGGLE_COORD_DISPLAY:
+			Config::SetConfigValueBoolOp( Config::tId::showGridPointCoords, tBoolOp::opToggle );
+			m_pWorkThreadInterface->PostRefresh( lParam );
+            break;
+
         case IDM_ESCAPE:
 			m_pGridWindow->Escape();
             break;

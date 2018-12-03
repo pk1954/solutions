@@ -80,9 +80,8 @@ namespace Util
         return (GetClRectSize( hwnd ) / 2).ToPixelPoint();
     }
 
-    inline PixelPoint GetClientAreaPos( HWND const hwnd )
+	inline PixelPoint Client2Screen( HWND const hwnd, POINT pnt )
     {
-		POINT pnt{ 0, 0 };
         (void)ClientToScreen( hwnd, &pnt );
 		return PixelPoint( pnt.x, pnt.y );
     }
@@ -140,9 +139,14 @@ namespace Util
         return rect.right;
     }
 
-	inline POINT PixelPoint2POINT( PixelPoint const pnt ) 
+	inline PixelPoint POINT2PixelPoint( POINT const pnt ) 
 	{ 
-		return POINT{ pnt.x, pnt.y }; 
+		return PixelPoint{ pnt.x, pnt.y }; 
+	}
+
+	inline POINT PixelPoint2POINT( PixelPoint const pp ) 
+	{ 
+		return POINT{ pp.x, pp.y }; 
 	}
 
     inline BOOL PixelPointInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?

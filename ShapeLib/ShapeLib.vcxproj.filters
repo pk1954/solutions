@@ -33,9 +33,6 @@
     <ClInclude Include="win32_memorySlot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_rectShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_shape.h">
       <Filter>Header Files</Filter>
     </ClInclude>

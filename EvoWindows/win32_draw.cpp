@@ -256,3 +256,12 @@ COLORREF DrawFrame::getBackgroundColor( int const iValue ) const
 
     return m_clutBackground.GetColor( uiIndex );
 }
+
+void DrawFrame::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pnt )
+{
+	PixelPoint const pp = Util::POINT2PixelPoint( pnt );
+	GridPoint  const gp = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pp ) );
+	prepareGridPoint( gp );
+	Shape const * const pShape = m_gridPointShape->FindShape( pp, gp );
+	pShape->AddContextMenuEntries( hPopupMenu );
+}

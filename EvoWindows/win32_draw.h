@@ -41,6 +41,7 @@ public:
 	void CallStrategyColorDialog( HWND const, tStrategyId const );
 	void CallHighlightColorDialog( HWND const );
 	void CallSelectionColorDialog( HWND const );
+	void AddContextMenuEntries( HMENU const, POINT const );
 
 private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 

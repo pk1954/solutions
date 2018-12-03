@@ -24,7 +24,7 @@ public:
 private:
 
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) override;
-	virtual void    AddContextMenuEntries( HMENU );
+	virtual void    AddContextMenuEntries( HMENU const, POINT const );
 	virtual void    Trigger( );
 
 	RefreshTimer     * m_pRefreshTimer;

@@ -14,7 +14,7 @@ public:
 
     HWND StartBaseWindow( HWND const, int const, int const, int const, int const, UINT const, LPCTSTR const, DWORD const );
 
-	virtual void AddContextMenuEntries( HMENU ) {}
+	virtual void AddContextMenuEntries( HMENU const, POINT const ) {}
 
 private:
     LPCTSTR m_szClass;	

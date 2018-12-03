@@ -114,7 +114,7 @@ void HistWindow::dispGenerationWindow( ) const
     int        const iGenDispHeight = 20;
     long       const lClientWidth   = GetClientWindowWidth( );
     RECT       const pixRectGen     = getGenerationRect( m_genSelected ); // position is relative to client area
-    PixelPoint const ptClientPos    = GetClientAreaPos( );                // position of client area origin in screen coordinates
+	PixelPoint const ptClientPos    = Client2Screen( POINT{ 0, 0 } );     // position of client area origin in screen coordinates
     int        const iYpos          = ptClientPos.y - iGenDispHeight;
     int              iXpos          = ( pixRectGen.left + pixRectGen.right - iGenDispWidth ) / 2 + ptClientPos.x;
 

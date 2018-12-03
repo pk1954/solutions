@@ -31,8 +31,9 @@
 #define IDM_ESCAPE                              145
 #define IDD_TOGGLE_STRIP_MODE                   146
 #define IDD_TOGGLE_CLUT_MODE                    147
-#define IDM_RESET                               148
-#define IDM_RESTART                             149
+#define IDD_TOGGLE_COORD_DISPLAY                148
+#define IDM_RESET                               149
+#define IDM_RESTART                             150
 
 #define IDC_EVOLUTION_MAIN                      202
 #define IDD_EDITOR                              207

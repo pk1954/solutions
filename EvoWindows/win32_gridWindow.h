@@ -81,7 +81,7 @@ private:
     HMENU                 m_hPopupMenu;
 
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
-	virtual void    AddContextMenuEntries( HMENU );
+	virtual void    AddContextMenuEntries( HMENU const, POINT const );
 
 	void mouseWheelAction( int );
     BOOL inObservedClientRect( LPARAM );

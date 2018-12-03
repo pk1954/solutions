@@ -3,7 +3,9 @@
 
 #pragma once
 
-#include <sstream> 
+#include "windows.h"
+#include "config.h"
+#include "Resource.h"
 #include "GridPoint.h"
 #include "win32_shape.h"
 #include "win32_individualShape.h"
@@ -28,6 +30,12 @@ public:
 		m_textDisplay.Buffer() << gp;
 	}
 
+	virtual void AddContextMenuEntries( HMENU const hPopupMenu ) const 
+	{
+	    UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
+        (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDD_TOGGLE_COORD_DISPLAY, L"Toggle coord display" );
+	};
+
 private:
 };
 
@@ -47,9 +55,9 @@ public:
     	short const sFieldSize = m_textDisplay.GetFieldSize();
 		if ( sFieldSize >= ZOOM_LEVEL_1 )
 		{
-			PixelRectSize const rectSize     = GetShapeSize();
-			long                lYpos        = 0;
-			long                lHeight      = rectSize.GetHeight() / 10;
+			PixelRectSize const rectSize = GetShapeSize();
+			long                lYpos    = 0;
+			long                lHeight  = rectSize.GetHeight() / 10;
 
 			m_coordShape.SetShapeRect
 			( 
@@ -73,7 +81,8 @@ public:
     	short const sFieldSize = m_textDisplay.GetFieldSize();
 		if ( sFieldSize >= ZOOM_LEVEL_1 )
 		{
-			m_coordShape.Draw( gp );
+			if ( Config::GetConfigValueBoolOp( Config::tId::showGridPointCoords ) == tBoolOp::opTrue )
+				m_coordShape.Draw( gp );
 			m_indivShape.Draw( gp );
 		}
 	}
