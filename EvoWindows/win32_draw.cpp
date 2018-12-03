@@ -83,18 +83,19 @@ void DrawFrame::prepareGridPoint( GridPoint const gp )
 	m_gridPointShape->PrepareShape( gp );
 }
 
-bool DrawFrame::SetHighlightPos( PixelPoint const pos )
+bool DrawFrame::SetHighlightPos( PixelPoint const pp )
 {
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
-	m_gpHighlight = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pos ) );
+	m_gpHighlight = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pp ) );
 	prepareGridPoint( m_gpHighlight );
-	m_pShapeHighlight = m_gridPointShape->FindShape( pos, m_gpHighlight );
+	m_pShapeHighlight = m_gridPointShape->FindShape( pp, m_gpHighlight );
 	return ( (gpLast != m_gpHighlight) || (pShapeLast != m_pShapeHighlight) );
 }
 
-void DrawFrame::HighlightShape( Shape const * pShape )
+void DrawFrame::HighlightShape( Shape const * pShape, GridPoint const gp )
 {
+	prepareGridPoint( gp );
 	PixelRect const & rect  = pShape->GetAbsoluteCoordinates( );
 	COLORREF  const   color = m_pColorManager->GetColor( tColorObject::highlight );
 	m_pD3dBuffer->RenderTranspRect( rect, 128, color );  
@@ -117,14 +118,12 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 				drawText( rcGrid );
 				if ( m_pShapeHighlight != nullptr )
 				{
-					prepareGridPoint( m_gpHighlight );
-					HighlightShape( m_pShapeHighlight);
+					HighlightShape( m_pShapeHighlight, m_gpHighlight );
 					GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( m_gpHighlight );
 					if ( gpReferenced != GridPoint::GP_NULL )
 					{
-						prepareGridPoint( gpReferenced );
 						Shape const & shapeReferenced = m_gridPointShape->GetIndividualShape().GetLeftColumn().GetIdentifierShape();
-						HighlightShape( & shapeReferenced );
+						HighlightShape( & shapeReferenced, gpReferenced );
 					}
 				}
 			}

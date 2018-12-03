@@ -37,7 +37,7 @@ public:
     void DoPaint( HWND, KGridRect const & );
     void SetStripMode( tBoolOp );
 	bool SetHighlightPos( PixelPoint const );
-	void HighlightShape( Shape const * );
+	void HighlightShape( Shape const *, GridPoint const );
 	void CallStrategyColorDialog( HWND const, tStrategyId const );
 	void CallHighlightColorDialog( HWND const );
 	void CallSelectionColorDialog( HWND const );
