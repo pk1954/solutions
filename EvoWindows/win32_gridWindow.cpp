@@ -124,15 +124,27 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
         (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_ESCAPE,   L"Escape" );
         (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_FIT_ZOOM, L"Fit Selection" );
     }
+
     (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SCRIPT_DIALOG, L"Script" );
+
     if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
     {
-		UINT const uiHistoryFlags = Config::UseHistorySystem( ) ? STD_FLAGS : STD_FLAGS | MF_GRAYED;
-		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_CHOOSE_STRATEGY_COLOR,   L"Choose strategy color" );
-		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_CHOOSE_HIGHLIGHT_COLOR,  L"Choose highlight color" );
-		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_CHOOSE_SELECTION_COLOR,  L"Choose selection color" );
-		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_GOTO_DEATH,  L"Goto Death" );
-		(void)InsertMenu( hPopupMenu, 0, uiHistoryFlags, IDM_GOTO_ORIGIN, L"Goto Origin" );
+		{
+			HMENU const hColorMenu = CreatePopupMenu();
+			(void)InsertMenu( hColorMenu, 0, STD_FLAGS, IDM_CHOOSE_STRATEGY_COLOR,  L"Choose strategy color" );
+			(void)InsertMenu( hColorMenu, 0, STD_FLAGS, IDM_CHOOSE_HIGHLIGHT_COLOR, L"Choose highlight color" );
+			(void)InsertMenu( hColorMenu, 0, STD_FLAGS, IDM_CHOOSE_SELECTION_COLOR, L"Choose selection color" );
+			(void)InsertMenu( hPopupMenu, 0, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hColorMenu, L"Choose color" );
+		}
+
+		if ( Config::UseHistorySystem( ) )
+		{
+			HMENU const hTimeTravelMenu = CreatePopupMenu();
+			(void)InsertMenu( hTimeTravelMenu, 0, STD_FLAGS, IDM_GOTO_DEATH,  L"Goto death of this individual" );
+			(void)InsertMenu( hTimeTravelMenu, 0, STD_FLAGS, IDM_GOTO_ORIGIN, L"Goto origin of this individual" );
+			(void)InsertMenu( hPopupMenu, 0, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hTimeTravelMenu, L"Time travel" );
+		}
+
 		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI, L"POI" );
     }
 }

@@ -24,9 +24,6 @@
 #define IDM_HISTORY_INFO                        134
 #define IDM_ADJUST_MINI_WIN                     137
 #define IDM_REFRESH                             140
-#define IDM_CHOOSE_SELECTION_COLOR              141
-#define IDM_CHOOSE_HIGHLIGHT_COLOR              142
-#define IDM_CHOOSE_STRATEGY_COLOR               143
 #define IDM_SET_POI                             144
 #define IDM_ESCAPE                              145
 #define IDD_TOGGLE_STRIP_MODE                   146
@@ -34,6 +31,11 @@
 #define IDD_TOGGLE_COORD_DISPLAY                148
 #define IDM_RESET                               149
 #define IDM_RESTART                             150
+
+#define IDM_CHOOSE_COLOR                        160
+#define IDM_CHOOSE_SELECTION_COLOR              161
+#define IDM_CHOOSE_HIGHLIGHT_COLOR              162
+#define IDM_CHOOSE_STRATEGY_COLOR               163
 
 #define IDC_EVOLUTION_MAIN                      202
 #define IDD_EDITOR                              207
