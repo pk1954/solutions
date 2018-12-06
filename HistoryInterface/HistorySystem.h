@@ -49,7 +49,7 @@ public:
 
     virtual void              CreateAppCommand( GenerationCmd   const ) = 0;
 	virtual void              ClearHistory    ( HIST_GENERATION const ) = 0;
-    virtual void              ApproachHistGen ( HIST_GENERATION const ) = 0;
+    virtual bool              ApproachHistGen ( HIST_GENERATION const ) = 0;
 	virtual tGenCmd           GetGenerationCmd( HIST_GENERATION const ) = 0;
 
     virtual HIST_GENERATION   FindFirstGenerationWithProperty( GenerationProperty const & ) const = 0;

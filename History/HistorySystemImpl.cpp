@@ -86,14 +86,17 @@ HistCacheItem const * HistorySystemImpl::getCachedItem( GenerationCmd cmd )
 //                 - If several steps are neccessary, function returns after one displayed generation
 //                   to allow user interaction
 //                 - But actual history generation as alterered by at least 1
+// return false if maximum number of generations reached, else true
 
-void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
+bool HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
 {
     HIST_GENERATION genActual = m_pHistCacheItemWork->GetHistGenCounter( );
 
     assert( genDemanded != genActual );
-    assert( genDemanded < m_GenCmdList.GetCmdListSize( ) ); //TODO: find clean solution if max number of generations reached. 
 	assert( m_GenCmdList[ 0 ].IsCachedGeneration( ) );      // at least initial generation is cached
+
+	if ( genDemanded >= m_GenCmdList.GetCmdListSize( ) )
+		return false;
 
     HIST_GENERATION genCached   = genDemanded;  // search backwards starting with genDemanded
     BOOL            bMicrosteps = TRUE;
@@ -114,6 +117,8 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
     {
         m_pHistCacheItemWork->CopyCacheItem( getCachedItem( m_GenCmdList[ genCached ] ) );
     }
+
+	return true;
 }
 
 tGenCmd HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )

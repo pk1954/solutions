@@ -38,7 +38,7 @@ public:
     //                      to allow user interaction
     //                    - But actual history generation is alterered by at least 1
 
-    void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); } 
+    bool EvoApproachHistGen( HIST_GENERATION const genDemanded ) { return m_pHistorySystem->ApproachHistGen( genDemanded ); } 
 	
     int             GetNrOfUsedHistCacheSlots( ) const { return m_pHistorySystem->GetNrOfUsedHistCacheSlots( ); }
     int             GetNrOfHistCacheSlots    ( ) const { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }

@@ -69,7 +69,10 @@ void gotoGeneration( HistorySystem * const pHistorySys, HIST_GENERATION const hi
 		if ( histGenDemanded > pHistorySys->GetYoungestGeneration( ) )
 			pHistorySys->CreateAppCommand( GenerationCmd::ApplicationCmd(static_cast<tGenCmd>( 42 ), 0) );
 		else
-	    	pHistorySys->ApproachHistGen( histGenDemanded );
+		{
+	    	if ( ! pHistorySys->ApproachHistGen( histGenDemanded ) )
+		    	wcout << L"Error: Generation " << histGenDemanded << L" cannot be reached";
+		}
     	wcout << L"Generation: " << histGenDemanded << L" - " << pHistorySys->GetCurrentGeneration( ) << L" Slots: ";
 		showHistorySlots( pHistorySys );
 	}

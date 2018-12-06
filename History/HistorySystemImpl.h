@@ -53,7 +53,7 @@ public:
 
 	virtual void              CreateAppCommand( GenerationCmd );
 	virtual void              ClearHistory    ( HIST_GENERATION const );
-    virtual void              ApproachHistGen ( HIST_GENERATION const );
+    virtual bool              ApproachHistGen ( HIST_GENERATION const );
 	virtual tGenCmd           GetGenerationCmd( HIST_GENERATION const );
 
 	virtual HistoryIterator * CreateHistoryIterator( ) const;

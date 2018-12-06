@@ -74,18 +74,22 @@ public:
 
 	virtual void ThreadStartupFunc( );
 	virtual void ThreadMsgDispatcher( MSG const );
-	virtual void ThreadShutDownFunc( );
 	
 	// WorkMessage - process incoming messages from main thread
 
 	void WorkMessage( UINT const, WPARAM const, LPARAM const );
 	void WorkMessage( MSG const );
 
-	void GenerationStep( );
-	void generationRun( );
+	bool GenerationStep( );
 
 	void DoProcessScript( wstring * const );
 
+	HIST_GENERATION GetGenDemanded( ) const 
+	{ 
+		return m_genDemanded; 
+	}
+
+private:
 	BOOL editorCommand( tEvoCmd const cmd, WPARAM const wParam )
 	{
 		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
@@ -96,13 +100,10 @@ public:
 		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, gp24 ) );
 	}
 
-	HIST_GENERATION GetGenDemanded( ) const 
-	{ 
-		return m_genDemanded; 
-	}
+	bool generationRun( );
+	void stopComputation( );
 
-private:
-    ColorManager        * m_pColorManager;
+	ColorManager        * m_pColorManager;
     PerformanceWindow   * m_pPerformanceWindow;
     EditorWindow        * m_pEditorWindow;
     EventInterface      * m_pEventPOI;

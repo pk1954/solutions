@@ -93,6 +93,13 @@ void WorkThread::ThreadStartupFunc( )
 	SetThreadAffinityMask( 0x0002 );
 }
 
+void WorkThread::stopComputation()
+{
+	m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
+	m_bContinue = FALSE;
+	Script::StopProcessing( );
+}
+
 void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 {
 	switch ( msg.message )
@@ -103,24 +110,25 @@ void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 		break;
 
 	case THREAD_MSG_REPEAT_GENERATION_STEP:
-		GenerationStep( ); 
+		if ( ! GenerationStep( ) )
+			stopComputation( );
 		break;
 
 	case THREAD_MSG_GOTO_GENERATION:
 		m_genDemanded = HIST_GENERATION(static_cast<long>(msg.lParam));
-		GenerationStep( ); 
+		if ( ! GenerationStep( ) )
+			stopComputation( );
 		break;
 
 	case THREAD_MSG_GENERATION_RUN:
 		if ( static_cast<bool>(msg.lParam) )
 			m_bContinue = TRUE;
-		generationRun( );
+		if ( ! generationRun( ) )
+			stopComputation( );
 		break;
 
 	case THREAD_MSG_STOP:
-		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
-		m_bContinue = FALSE;
-		Script::StopProcessing( );
+		stopComputation( );
 		break;
 
 	case THREAD_MSG_RESET_MODEL:
@@ -187,17 +195,10 @@ void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 		m_pObservers->Notify( false );
 }
 
-void WorkThread::ThreadShutDownFunc()
-{  
-//	TODO: XXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//	HWND m_hwndApp = GetAncestor( m_hwnd, GA_ROOTOWNER );
-//	::PostMessage( m_hwndApp, WM_COMMAND, wParam, lParam );	
-}
-
 // GenerationStep - perform one history step towards demanded generation
 //                - update editor state if neccessary
 
-void WorkThread::GenerationStep( )   
+bool WorkThread::GenerationStep( )   
 {
 	if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )  // is something to do at all?
 	{
@@ -214,7 +215,8 @@ void WorkThread::GenerationStep( )
 		}
 		else  // we are somewhere in history
 		{
-			m_pEvoHistGlue->EvoApproachHistGen( m_genDemanded ); // Get a stored generation from history system
+			if ( ! m_pEvoHistGlue->EvoApproachHistGen( m_genDemanded ) ) // Get a stored generation from history system
+				return false;
 			if (m_pEditorWindow != nullptr)              
 				m_pEditorWindow->UpdateEditControls( );            // make sure that editor GUI reflects new state
 		}
@@ -224,21 +226,25 @@ void WorkThread::GenerationStep( )
 		if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )   // still not done?
 			m_pWorkThreadInterface->PostRepeatGenerationStep( );   // Loop! Will call indirectly GenerationStep again
 	}
+	return true;
 }
 
-void WorkThread::generationRun( )
+bool WorkThread::generationRun( )
 {
 	if ( m_bContinue )
 	{
 		assert( m_iScriptLevel == 0 );
 		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( ) + 1 ;
     
-		GenerationStep( );
+		if ( ! GenerationStep( ) )
+			return false;
 
 		if (m_pPerformanceWindow != nullptr)
 			m_pPerformanceWindow->SleepDelay( );
+
 		m_pWorkThreadInterface->PostRunGenerations( false );
 	}
+	return true;
 }
 
 void WorkThread::DoProcessScript( wstring * const pwstr )
