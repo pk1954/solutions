@@ -35,7 +35,7 @@ public:
 				HWND const hwnd = m_pWinManager->GetHWND( uiResId );
 				if ( m_pWinManager->IsSizeable( uiResId ) )
 				{
-					BOOL bRes    = Util::MoveWindowAbsolute( hwnd, lXpos, lYpos, lWidth, lHeight, TRUE ); 
+					BOOL bRes = Util::MoveWindowAbsolute( hwnd, lXpos, lYpos, lWidth, lHeight, TRUE ); 
 					assert( bRes );
 				}
 				else
@@ -255,7 +255,7 @@ void WinManager::dumpWindowCoordinates( ) const
 	{
 		if ( it.second.m_bTrackPosition )
 		{
-			HWND hwnd = getWindowHandle( it.second );
+			HWND hwnd = it.second.m_hwnd;
 			if ( hwnd != nullptr )
 			{
 				ostr << L"MoveWindow "
@@ -310,22 +310,17 @@ WinManager::WinManager( ) :
 
 void WinManager::AddWindow
 ( 
-    wstring    const   wstrName, 
-    UINT       const   id, 
-    RootWindow const * pRootWin, 
-	BOOL       const   bTrackPosition,
-	BOOL       const   bTrackSize
+    wstring const wstrName, 
+    UINT    const id, 
+    HWND    const hwnd, 
+	BOOL    const bTrackPosition,
+	BOOL    const bTrackSize
 )
 {
-	assert( pRootWin->GetWindowHandle() != nullptr );
+	assert( hwnd != nullptr );
     if ( id != 0 )
     {
-        m_map.insert( pair< UINT, MAP_ELEMENT >( id, { wstrName, pRootWin, bTrackPosition, bTrackSize } ) );
+        m_map.insert( pair< UINT, MAP_ELEMENT >( id, { wstrName, hwnd, bTrackPosition, bTrackSize } ) );
         SymbolTable::ScrDefConst( wstrName, static_cast<ULONG>(id) );
     }
 }
-
-HWND const WinManager::getWindowHandle( MAP_ELEMENT const & elem ) const
-{
-    return ( elem.m_pRootWin == nullptr ) ? nullptr : elem.m_pRootWin->GetWindowHandle( );
-};

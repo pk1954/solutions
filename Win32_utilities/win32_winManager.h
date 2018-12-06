@@ -17,7 +17,7 @@ public:
     WinManager( );
     virtual ~WinManager( ) { };
 
-    void AddWindow( wstring const, UINT const, RootWindow const *, BOOL const, BOOL const );
+    void AddWindow( wstring const, UINT const, HWND const, BOOL const, BOOL const );
 
     wstring const GetWindowName( UINT const id )  const // can throw out_of_range exception
     {
@@ -26,22 +26,17 @@ public:
 
     HWND const GetHWND( UINT const id )  const // can throw out_of_range exception
     {
-        return getWindowHandle( m_map.at( id ) );
+        return m_map.at( id ).m_hwnd;
     }
 
-	INT const GetIdFromRootWindow( RootWindow const * pRootWin )
+	INT const GetIdFromRootWindow( HWND const hwnd )
 	{
 		for ( auto pp : m_map )
-			if ( pp.second.m_pRootWin == pRootWin )
+			if ( pp.second.m_hwnd == hwnd )
 				return pp.first; 
 
 		return -1;
 	}
-
-    RootWindow const * const GetRootWindow( UINT const id )  const // can throw out_of_range exception
-    {
-        return m_map.at( id ).m_pRootWin;
-    }
 
     BOOL const IsMoveable( UINT const id )  const // can throw out_of_range exception
     {
@@ -77,10 +72,10 @@ private:
 
     struct MAP_ELEMENT
     {
-        wstring    const   m_wstr;
-        RootWindow const * m_pRootWin;
-		BOOL       const   m_bTrackPosition; // if TRUE, winManager sets window position from config file
-		BOOL       const   m_bTrackSize;     // if TRUE, winManager sets window size from config file
+        wstring    const m_wstr;
+        HWND       const m_hwnd;
+		BOOL       const m_bTrackPosition; // if TRUE, winManager sets window position from config file
+		BOOL       const m_bTrackSize;     // if TRUE, winManager sets window size from config file
     };
 
     unordered_map< UINT, MAP_ELEMENT > m_map;
@@ -88,7 +83,6 @@ private:
     wstring m_strWindowConfigurationFile;
     int     m_iNrOfMonitorConfigurations;
 
-    void       dumpMonitorConfiguration( ) const;
-    void       dumpWindowCoordinates( ) const;
-    HWND const getWindowHandle( MAP_ELEMENT const & elem ) const;
+    void dumpMonitorConfiguration( ) const;
+    void dumpWindowCoordinates( ) const;
 };

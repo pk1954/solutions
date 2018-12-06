@@ -81,7 +81,12 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 	if ( hwndParent != nullptr )
 		ScreenToClient( hwndParent, &pos );
 
-	return MoveWindow( hwnd, pos.x, pos.y, lWidth, lHeight, bRepaint );
+	BOOL bRes = MoveWindow( hwnd, pos.x, pos.y, lWidth, lHeight, bRepaint );
+	
+	if ( GetWindowSize( hwnd ) != PixelPoint{ lWidth, lHeight } )   // can happen in strange situations
+		bRes = MoveWindow( hwnd, pos.x, pos.y, lWidth, lHeight, bRepaint );
+
+	return bRes;
 }
 
 BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates 
@@ -93,7 +98,6 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates
 )
 {
 	PixelPoint const pixActSize = GetWindowSize( hwnd );
-
 	return MoveWindowAbsolute( hwnd, lXpos, lYpos, pixActSize.x, pixActSize.y, bRepaint );
 }
 
