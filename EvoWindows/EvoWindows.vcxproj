@@ -71,10 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoHistGlue;$(SolutionDir)HistoryInterface;$(SolutionDir)win32_utilities;$(SolutionDir)Direct3D;$(SolutionDir)Win32_history;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)ShapeLib;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoHistGlue;$(SolutionDir)HistoryInterface;$(SolutionDir)win32_utilities;$(SolutionDir)Direct3D;$(SolutionDir)Win32_history;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoHistGlue;$(SolutionDir)HistoryInterface;$(SolutionDir)win32_utilities;$(SolutionDir)Direct3D;$(SolutionDir)Win32_history;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)ShapeLib;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoHistGlue;$(SolutionDir)HistoryInterface;$(SolutionDir)win32_utilities;$(SolutionDir)Direct3D;$(SolutionDir)Win32_history;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)ShapeLib;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoHistGlue;$(SolutionDir)HistoryInterface;$(SolutionDir)win32_utilities;$(SolutionDir)Direct3D;$(SolutionDir)Win32_history;C:\Programme\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
