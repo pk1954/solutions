@@ -39,8 +39,13 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
         break;
 
     case WM_COMMAND:
-        (void)SendMessage( GetParent( hwnd ), WM_COMMAND, LOWORD(wParam), 0 );
+	{
+		int iCmd = LOWORD(wParam);
+		if (iCmd == IDM_RUN)
+			iCmd = pStatusBar->handleStartStop( );
+		(void)SendMessage( GetParent( hwnd ), WM_COMMAND, iCmd, 0 );
         return FALSE;
+	}
 
     case WM_HSCROLL:
 		{
@@ -58,6 +63,26 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
     }
 
     return DefSubclassProc(hwnd, uMsg, wParam, lParam);
+}
+
+int StatusBar::handleStartStop( )
+{
+	wchar_t * szButtonText;
+	int       iCmd;
+	if (m_bRunning)
+	{
+		iCmd = IDM_STOP;
+		szButtonText = L"   Run    ";
+		m_bRunning = FALSE;
+	}
+	else
+	{
+		iCmd = IDM_RUN;
+		szButtonText = L"  Stop    ";
+		m_bRunning = TRUE;
+	}
+	::SendMessage( GetDlgItem(IDM_RUN), WM_SETTEXT,	0, (LPARAM)( szButtonText )	);
+	return iCmd;
 }
 
 HWND WINAPI StatusBar::createControl
@@ -90,9 +115,9 @@ HWND WINAPI StatusBar::createStaticControl( LPCTSTR lpWindowName )
     return createControl( WC_STATIC, lpWindowName, 0, nullptr );
 }
 
-HWND WINAPI StatusBar::createButton( LPCTSTR lpWindowName, HMENU hMenu )
+HWND WINAPI StatusBar::createButton( LPCTSTR const lpWindowName, HMENU const hMenu, DWORD const dwStyle )
 { 
-    return createControl( WC_BUTTON, lpWindowName, BS_DEFPUSHBUTTON, hMenu );
+    return createControl( WC_BUTTON, lpWindowName, dwStyle, hMenu );
 }
 
 HWND WINAPI StatusBar::createTrackBar( HMENU hMenu )
@@ -102,16 +127,16 @@ HWND WINAPI StatusBar::createTrackBar( HMENU hMenu )
 
 void WINAPI StatusBar::createModeControl( )
 { 
-    (void)createButton( L"Switch to Simulation", (HMENU)IDM_TOGGLE_SIMU_MODE ); 
+    (void)createButton( L"Switch to Simulation", (HMENU)IDM_TOGGLE_SIMU_MODE, BS_PUSHBUTTON );  
 } 
 
 void WINAPI StatusBar::createSizeControl( )
 { 
     createStaticControl( L"Size" );
-    createButton       ( L" - ",     (HMENU)IDM_ZOOM_OUT      ); 
+    createButton       ( L" - ",     (HMENU)IDM_ZOOM_OUT, BS_PUSHBUTTON ); 
     createTrackBar     (             (HMENU)IDM_ZOOM_TRACKBAR ); 
-    createButton       ( L" + ",     (HMENU)IDM_ZOOM_IN       ); 
-    createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM      ); 
+    createButton       ( L" + ",     (HMENU)IDM_ZOOM_IN,  BS_PUSHBUTTON ); 
+    createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM, BS_PUSHBUTTON ); 
 
     LONG const lMinPos = value2Trackbar( PixelCoordinates::MINIMUM_FIELD_SIZE );
     LONG const lMaxPos = value2Trackbar( PixelCoordinates::MAXIMUM_FIELD_SIZE );
@@ -122,13 +147,12 @@ void WINAPI StatusBar::createSizeControl( )
 void WINAPI StatusBar::createSimulationControl( )
 { 
     if ( Config::UseHistorySystem( ) )
-        createButton  ( L"Backwards ", (HMENU)IDM_BACKWARDS );
+        createButton  ( L"Backwards ", (HMENU)IDM_BACKWARDS, BS_PUSHBUTTON );
 
-    createButton  ( L"   Stop   ", (HMENU)IDM_STOP ); 
-    createButton  ( L"SingleStep", (HMENU)IDM_GENERATION ); 
-    createButton  ( L"   Run    ", (HMENU)IDM_RUN ); 
+    createButton  ( L"SingleStep", (HMENU)IDM_GENERATION, BS_PUSHBUTTON ); 
+    createButton  ( L"   Run    ", (HMENU)IDM_RUN,        BS_PUSHBUTTON ); 
     createTrackBar(                (HMENU)IDM_SIMULATION_SPEED ); 
-    createButton  ( L" MaxSpeed ", (HMENU)IDM_MAX_SPEED ); 
+    createButton  ( L" MaxSpeed ", (HMENU)IDM_MAX_SPEED,  BS_PUSHBUTTON ); 
 
     SetTrackBarRange( IDM_SIMULATION_SPEED, SPEED_TRACKBAR_MIN, SPEED_TRACKBAR_MAX );
 } 
@@ -137,8 +161,8 @@ void WINAPI StatusBar::createEditorControl( )
 { 
 	if ( Config::UseHistorySystem( ) )
 	{
-		createButton( L"   Undo   ", (HMENU)IDM_EDIT_UNDO ); 
-		createButton( L"   Redo   ", (HMENU)IDM_EDIT_REDO ); 
+		createButton( L"   Undo   ", (HMENU)IDM_EDIT_UNDO, BS_PUSHBUTTON ); 
+		createButton( L"   Redo   ", (HMENU)IDM_EDIT_REDO, BS_PUSHBUTTON ); 
 	}
 } 
 
@@ -149,6 +173,7 @@ void StatusBar::Start
 )
 {
 	m_pCore = pCore;
+	m_bRunning = FALSE;
 	HWND hwndStatus = CreateWindow
     (
         STATUSCLASSNAME, 
@@ -238,7 +263,6 @@ static LONG value2Trackbar( long lX )  // f(x) = 1000 * log2(x)
 void StatusBar::SetSimuMode( BOOL const bSimuMode )
 {
     ShowWindow( GetDlgItem( IDM_BACKWARDS        ), bSimuMode );
-    ShowWindow( GetDlgItem( IDM_STOP             ), bSimuMode );
     ShowWindow( GetDlgItem( IDM_GENERATION       ), bSimuMode );
     ShowWindow( GetDlgItem( IDM_RUN              ), bSimuMode );
     ShowWindow( GetDlgItem( IDM_SIMULATION_SPEED ), bSimuMode );

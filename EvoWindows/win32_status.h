@@ -38,7 +38,7 @@ private:
 
 	HWND WINAPI createControl      ( LPCTSTR, LPCTSTR, DWORD, HMENU );
     HWND WINAPI createStaticControl( LPCTSTR );
-    HWND WINAPI createButton       ( LPCTSTR, HMENU );
+    HWND WINAPI createButton       ( LPCTSTR const, HMENU const, DWORD const  );
     HWND WINAPI createTrackBar     ( HMENU );
 
     void WINAPI createModeControl ( );
@@ -46,6 +46,9 @@ private:
     void WINAPI createSimulationControl( );
     void WINAPI createEditorControl( );
 
+	int handleStartStop( );
+
+	BOOL    m_bRunning;
 	INT     m_iClientHeight;
     INT     m_iBorder;
     INT     m_iPosX;

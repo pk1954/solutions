@@ -32,7 +32,6 @@
 #define IDM_RESET                               149
 #define IDM_RESTART                             150
 
-#define IDM_CHOOSE_COLOR                        160
 #define IDM_CHOOSE_SELECTION_COLOR              161
 #define IDM_CHOOSE_HIGHLIGHT_COLOR              162
 #define IDM_CHOOSE_STRATEGY_COLOR               163
