@@ -23,6 +23,7 @@
 #define IDM_SET_SIMU_MODE                       133
 #define IDM_HISTORY_INFO                        134
 #define IDM_ADJUST_MINI_WIN                     137
+#define IDM_HIST_BUFFER_FULL                    138
 #define IDM_REFRESH                             140
 #define IDM_SET_POI                             144
 #define IDM_ESCAPE                              145
@@ -101,6 +102,7 @@
 #define IDM_STOP                                (IDM_SIMULATION_MODE +  4)
 #define IDM_SIMULATION_SPEED                    (IDM_SIMULATION_MODE +  5)
 #define IDM_MAX_SPEED                           (IDM_SIMULATION_MODE +  6)
+#define IDM_RUN_STOP                            (IDM_SIMULATION_MODE +  7)
 
 #define IDM_ZOOM_MODE                           850
 #define IDM_FIT_ZOOM                            (IDM_ZOOM_MODE + 1)

@@ -71,9 +71,9 @@ HistoryIterator * HistorySystemImpl::CreateHistoryIterator( ) const
 
 void HistorySystemImpl::CreateAppCommand( GenerationCmd const genCmd )
 {
-    step2NextGeneration( genCmd );
-    m_pHistCacheItemWork->SetGenerationCommand( genCmd );
-    save2History( );
+	step2NextGeneration( genCmd );
+	m_pHistCacheItemWork->SetGenerationCommand( genCmd );
+	save2History( );
 }
 
 HistCacheItem const * HistorySystemImpl::getCachedItem( GenerationCmd cmd )
@@ -85,18 +85,15 @@ HistCacheItem const * HistorySystemImpl::getCachedItem( GenerationCmd cmd )
 // ApproachHistGen - Get closer to demanded HIST_GENERATION
 //                 - If several steps are neccessary, function returns after one displayed generation
 //                   to allow user interaction
-//                 - But actual history generation as alterered by at least 1
-// return false if maximum number of generations reached, else true
+//                 - But actual history generation as altered by at least 1
 
-bool HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
+void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
 {
     HIST_GENERATION genActual = m_pHistCacheItemWork->GetHistGenCounter( );
 
     assert( genDemanded != genActual );
+	assert( genDemanded <= m_GenCmdList.GetMaxGeneration( ) );
 	assert( m_GenCmdList[ 0 ].IsCachedGeneration( ) );      // at least initial generation is cached
-
-	if ( genDemanded >= m_GenCmdList.GetCmdListSize( ) )
-		return false;
 
     HIST_GENERATION genCached   = genDemanded;  // search backwards starting with genDemanded
     BOOL            bMicrosteps = TRUE;
@@ -107,18 +104,16 @@ bool HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
     // now we have found a cached generation  
 
     if ( 
-            (( genCached <= genActual ) && ( genActual < genDemanded )) || // cached generation is not better than actual generation
-            (( genActual == genDemanded - 1 ) && bMicrosteps )
-        )
+          (( genCached <= genActual ) && ( genActual < genDemanded )) || // cached generation is not better than actual generation
+          (( genActual == genDemanded - 1 ) && bMicrosteps )
+       )
     {
-        step2NextGeneration( m_GenCmdList[ genActual + 1 ] );   // compute forwards
+		step2NextGeneration( m_GenCmdList[ genActual + 1 ] );   // compute forwards
     }
     else  // get cached generation
     {
         m_pHistCacheItemWork->CopyCacheItem( getCachedItem( m_GenCmdList[ genCached ] ) );
     }
-
-	return true;
 }
 
 tGenCmd HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
@@ -160,6 +155,7 @@ void HistorySystemImpl::save2History( )
 
 // step2NextGeneration - if cached generation: get GenerationCmd from cache
 //                     - apply command and increment history generation counter
+// throws exception if maximum number of generations reached
 
 void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
 {
@@ -172,9 +168,9 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
     }
 
 	m_pHistCacheItemWork->GetModelData()->OnAppCommand( genCmd );    // Apply application defined operation to step to next generation
-    m_pHistCacheItemWork->IncHistGenCounter( );
-
-    assert( m_pHistCacheItemWork->GetHistGenCounter( ) < m_GenCmdList.GetCmdListSize( ) ); //TODO: find clean solution if max number of generations reached. 
+    if ( m_pHistCacheItemWork->GetHistGenCounter() >= m_GenCmdList.GetMaxGeneration() )
+		throw HistoryBufferException();
+	m_pHistCacheItemWork->IncHistGenCounter( );
 }
 
 HIST_GENERATION HistorySystemImpl::FindFirstGenerationWithProperty( GenerationProperty const & property ) const
@@ -214,7 +210,7 @@ void HistorySystemImpl::checkHistoryStructure( )  // used only in debug mode
 //	wcout << L"**** checkHistoryStructure" << endl;
 //	wcout << L"m_genCmdList" << endl;
 
-    for ( HIST_GENERATION gen = 0; gen < m_GenCmdList.GetCmdListSize( ); ++gen )
+    for ( HIST_GENERATION gen = 0; gen <= m_GenCmdList.GetMaxGeneration( ); ++gen )
     {
         GenerationCmd generationCmd = m_GenCmdList[ gen ];
 //		if ( generationCmd.IsDefined( ) )

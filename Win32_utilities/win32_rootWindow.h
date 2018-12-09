@@ -70,6 +70,11 @@ public:
         return ::SendDlgItemMessage( m_hwnd, iItem, msg, wParam, lParam );
     }
 
+	void SetDlgText( int const iItem, wchar_t const * const wstrText )
+	{
+		Util::SetText( GetDlgItem( iItem ), wstrText );
+	}
+
     LRESULT const DefWindowProc( UINT msg, WPARAM wParam, LPARAM lParam ) const
     {
         return ::DefWindowProc( m_hwnd, msg, wParam, lParam );

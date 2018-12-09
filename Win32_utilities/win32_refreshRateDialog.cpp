@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <wchar.h>
 #include <stdio.h>
+#include "win32_util.h"
 #include "win32_util_resource.h"
 #include "win32_refreshRateDialog.h"
 
@@ -26,13 +27,7 @@ static INT_PTR CALLBACK dialogProc
     case WM_INITDIALOG:
 	{
 		swprintf_s( m_wBuffer, BUFLEN, L"%d", m_iRefreshRate );
-		(void)::SendMessage
-		( 
-			GetDlgItem( hDlg, IDD_REFRESH_RATE_EDIT_CTL ), 
-			WM_SETTEXT,
-			0, 
-			(LPARAM)( m_wBuffer )
-		);
+		Util::SetText( GetDlgItem( hDlg, IDD_REFRESH_RATE_EDIT_CTL ), m_wBuffer	);
         return TRUE;
 	}
 

@@ -94,12 +94,24 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 		case IDM_RUN:
             m_pWinManager->Show( IDM_HIST_WINDOW, tBoolOp::opFalse );
 			m_pWorkThreadInterface->PostRunGenerations( );
+			m_pStatusBar->SetRunMode( TRUE );
 			break;
 
 		case IDM_STOP:
             m_pWorkThreadInterface->PostStopComputation( );
             m_pWinManager->Show( IDM_HIST_WINDOW, tBoolOp::opTrue );
+			m_pStatusBar->SetRunMode( FALSE );
             break;
+
+		case IDM_RUN_STOP:
+			ProcessCommand( m_pWorkThreadInterface->IsRunning() ? IDM_STOP : IDM_RUN, 0 );
+			break;
+
+		case IDM_HIST_BUFFER_FULL:
+			wcout << L"History buffer is full" << endl;
+			(void)MessageBeep( MB_ICONWARNING );
+			ProcessCommand( IDM_STOP, 0 );
+			break;
 
         case IDM_RESET:
             m_pWorkThreadInterface->PostReset( FALSE );

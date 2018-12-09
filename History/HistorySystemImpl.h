@@ -53,7 +53,7 @@ public:
 
 	virtual void              CreateAppCommand( GenerationCmd );
 	virtual void              ClearHistory    ( HIST_GENERATION const );
-    virtual bool              ApproachHistGen ( HIST_GENERATION const );
+    virtual void              ApproachHistGen ( HIST_GENERATION const );
 	virtual tGenCmd           GetGenerationCmd( HIST_GENERATION const );
 
 	virtual HistoryIterator * CreateHistoryIterator( ) const;
@@ -63,9 +63,9 @@ public:
 
 private:
 
-    GenCmdList          m_GenCmdList;
-    HistoryCache      * m_pHistoryCache;
-    HistCacheItem     * m_pHistCacheItemWork;      // The reference item, where history system gets and restores data 
+    GenCmdList      m_GenCmdList;
+    HistoryCache  * m_pHistoryCache;
+    HistCacheItem * m_pHistCacheItemWork;      // The reference item, where history system gets and restores data 
 
     void                  save2History( );
     void                  step2NextGeneration( GenerationCmd );

@@ -151,12 +151,12 @@ wstring Util::GetCurrentDateAndTime( )
 
 void Util::SetApplicationTitle
 ( 
-	HWND const hWndApp, 
+	HWND const hwndApp, 
 	int  const iResource
 )
 {
     static int const MAX_LOADSTRING = 100;
     static TCHAR szTitle[ MAX_LOADSTRING ];			// Titelleistentext
     (void)LoadString( GetModuleHandle( nullptr ), iResource, szTitle, MAX_LOADSTRING );
-    SetWindowText( hWndApp, szTitle );
+    SetWindowText( hwndApp, szTitle );
 }

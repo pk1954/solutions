@@ -26,6 +26,11 @@ namespace Util
     bool operator== ( RECT const &, RECT const & );
     bool operator!= ( RECT const &, RECT const & );
     
+	inline void SetText( HWND const hwnd, wchar_t const * const wstrText )
+	{
+		(void)::SendMessage( hwnd, WM_SETTEXT,	0, (LPARAM)( wstrText )	);
+	}
+
     inline void Show( HWND const hwnd, BOOL const bStateOld, BOOL const bStateNew )
     {
         if ( bStateNew != bStateOld )

@@ -30,11 +30,13 @@ WorkThread::WorkThread( ):
 	m_pWorkThreadInterface( nullptr ),
 	m_bContinue( FALSE ),
 	m_iScriptLevel( 0 ),
-	m_genDemanded( 0 )
+	m_genDemanded( 0 ),
+	m_hwndApplication( 0 )
 {}
 
 void WorkThread::Start
 ( 
+	HWND                  const hwndApplication,
 	ColorManager        * const pColorManager,
 	PerformanceWindow   * const pPerformanceWindow,
 	EditorWindow        * const pEditorWindow,
@@ -44,6 +46,7 @@ void WorkThread::Start
 	WorkThreadInterface * const pWorkThreadInterface
 )
 {
+	m_hwndApplication      = hwndApplication;
 	m_pColorManager        = pColorManager;
 	m_pPerformanceWindow   = pPerformanceWindow;
 	m_pEditorWindow        = pEditorWindow;
@@ -57,6 +60,7 @@ void WorkThread::Start
 
 WorkThread::~WorkThread( )
 {
+	m_hwndApplication      = nullptr;
 	m_pColorManager        = nullptr;
 	m_pWorkThreadInterface = nullptr;
 	m_pPerformanceWindow   = nullptr;
@@ -93,48 +97,52 @@ void WorkThread::ThreadStartupFunc( )
 	SetThreadAffinityMask( 0x0002 );
 }
 
-void WorkThread::stopComputation()
+void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 {
-	m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
-	m_bContinue = FALSE;
-	Script::StopProcessing( );
+	try
+	{
+		dispatch( msg );
+	}
+	catch ( HistoryBufferException e )
+	{
+		PostMessage( m_hwndApplication, WM_COMMAND, IDM_HIST_BUFFER_FULL, 0 );
+	}
 }
 
-void WorkThread::ThreadMsgDispatcher( MSG const msg  )
+void WorkThread::dispatch( MSG const msg  )
 {
 	switch ( msg.message )
 	{
-        
+
 	case THREAD_MSG_PROCESS_SCRIPT:
 		DoProcessScript( (wstring *)msg.lParam );
 		break;
 
 	case THREAD_MSG_REPEAT_GENERATION_STEP:
-		if ( ! GenerationStep( ) )
-			stopComputation( );
+		GenerationStep( );
 		break;
 
 	case THREAD_MSG_GOTO_GENERATION:
 		m_genDemanded = HIST_GENERATION(static_cast<long>(msg.lParam));
-		if ( ! GenerationStep( ) )
-			stopComputation( );
+		GenerationStep( );
 		break;
 
 	case THREAD_MSG_GENERATION_RUN:
 		if ( static_cast<bool>(msg.lParam) )
 			m_bContinue = TRUE;
-		if ( ! generationRun( ) )
-			stopComputation( );
+		generationRun( );
 		break;
 
 	case THREAD_MSG_STOP:
-		stopComputation( );
+		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
+		m_bContinue = FALSE;
+		Script::StopProcessing( );
 		break;
 
 	case THREAD_MSG_RESET_MODEL:
 		editorCommand( tEvoCmd::reset, msg.wParam );
 		if ( static_cast<BOOL>(msg.wParam) )
-			m_pEvoHistGlue->ClearHistory( );
+			m_pEvoHistGlue->EvoClearHistory( );
 		break;
 
 	case THREAD_MSG_SET_BRUSH_MODE:
@@ -198,7 +206,7 @@ void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 // GenerationStep - perform one history step towards demanded generation
 //                - update editor state if neccessary
 
-bool WorkThread::GenerationStep( )   
+void WorkThread::GenerationStep( )   
 {
 	if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )  // is something to do at all?
 	{
@@ -215,8 +223,7 @@ bool WorkThread::GenerationStep( )
 		}
 		else  // we are somewhere in history
 		{
-			if ( ! m_pEvoHistGlue->EvoApproachHistGen( m_genDemanded ) ) // Get a stored generation from history system
-				return false;
+			m_pEvoHistGlue->EvoApproachHistGen( m_genDemanded );   // Get a stored generation from history system
 			if (m_pEditorWindow != nullptr)              
 				m_pEditorWindow->UpdateEditControls( );            // make sure that editor GUI reflects new state
 		}
@@ -226,25 +233,22 @@ bool WorkThread::GenerationStep( )
 		if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )   // still not done?
 			m_pWorkThreadInterface->PostRepeatGenerationStep( );   // Loop! Will call indirectly GenerationStep again
 	}
-	return true;
 }
 
-bool WorkThread::generationRun( )
+void WorkThread::generationRun( )
 {
 	if ( m_bContinue )
 	{
 		assert( m_iScriptLevel == 0 );
 		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( ) + 1 ;
     
-		if ( ! GenerationStep( ) )
-			return false;
+		GenerationStep( );
 
 		if (m_pPerformanceWindow != nullptr)
 			m_pPerformanceWindow->SleepDelay( );
 
 		m_pWorkThreadInterface->PostRunGenerations( false );
 	}
-	return true;
 }
 
 void WorkThread::DoProcessScript( wstring * const pwstr )

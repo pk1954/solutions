@@ -38,7 +38,7 @@ public:
     //                      to allow user interaction
     //                    - But actual history generation is alterered by at least 1
 
-    bool EvoApproachHistGen( HIST_GENERATION const genDemanded ) { return m_pHistorySystem->ApproachHistGen( genDemanded ); } 
+    void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); } 
 	
     int             GetNrOfUsedHistCacheSlots( ) const { return m_pHistorySystem->GetNrOfUsedHistCacheSlots( ); }
     int             GetNrOfHistCacheSlots    ( ) const { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
@@ -51,7 +51,7 @@ public:
 	HIST_GENERATION GetFirstGenOfIndividual( IndId const & ) const; 
 	HIST_GENERATION GetLastGenOfIndividual ( IndId const & ) const;  
 
-	void ClearHistory( );
+	void EvoClearHistory( );
 
 	void EvoCreateNextGenCommand( ) 
 	{ 

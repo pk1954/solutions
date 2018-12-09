@@ -22,6 +22,7 @@ WorkThreadInterface::WorkThreadInterface( wostream * pTraceStream ) :
 
 void WorkThreadInterface::Start
 ( 
+	HWND                 const hwndApplication,
     ColorManager       * const pColorManager,
     PerformanceWindow  * const pPerformanceWindow,
 	EditorWindow       * const pEditorWindow,
@@ -29,13 +30,12 @@ void WorkThreadInterface::Start
     ObserverInterface  * const pObservers, 
     EvolutionCore      * const pCore,
     EvoHistorySysGlue  * const pEvoHistGlue
-
 )
 {
     m_pCore        = pCore;
 	m_pEvoHistGlue = pEvoHistGlue;
 	m_pWorkThread  = new WorkThread();
-	m_pWorkThread->Start( pColorManager, pPerformanceWindow, pEditorWindow, pEvent, pObservers, pEvoHistGlue, this );
+	m_pWorkThread->Start( hwndApplication, pColorManager, pPerformanceWindow, pEditorWindow, pEvent, pObservers, pEvoHistGlue, this );
 }
 
 WorkThreadInterface::~WorkThreadInterface( )
@@ -44,6 +44,11 @@ WorkThreadInterface::~WorkThreadInterface( )
 	m_pEvoHistGlue = nullptr;
 	m_pWorkThread  = nullptr;
     m_pTraceStream = nullptr;
+}
+
+BOOL WorkThreadInterface::IsRunning( ) const
+{
+	return m_pWorkThread->IsRunning( );
 }
 
 void WorkThreadInterface::postGotoGeneration( HIST_GENERATION const gen )

@@ -96,11 +96,11 @@ HIST_GENERATION EvoHistorySysGlue::GetLastGenOfIndividual ( IndId const & id ) c
 	return id.IsDefined( ) ? m_pHistorySystem->FindLastGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
 }
 
-void EvoHistorySysGlue::ClearHistory(  ) 
+void EvoHistorySysGlue::EvoClearHistory(  ) 
 { 
-    m_pHistorySystem->ApproachHistGen( 1 );
-	assert( m_pHistorySystem->GetCurrentGeneration( ) == 1 );
-	m_pHistorySystem->ClearHistory( 1 );
+    m_pHistorySystem->ApproachHistGen( 0 );
+	assert( m_pHistorySystem->GetCurrentGeneration( ) == 0 );
+	m_pHistorySystem->ClearHistory( 0 );
 }
 
 bool EvoHistorySysGlue::EvoCreateEditorCommand( GenerationCmd cmd ) 

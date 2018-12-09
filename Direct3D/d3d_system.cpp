@@ -18,7 +18,7 @@ D3dSystem * D3dSystem::GetSystem( void )
 	return & D3dSystem::_d3d_;
 }
 
-void D3dSystem::Create_D3D_Device( HWND const hWndApp, ULONG const ulWidth, ULONG const ulHeight, BOOL const bHexagon )
+void D3dSystem::Create_D3D_Device( HWND const hwndApp, ULONG const ulWidth, ULONG const ulHeight, BOOL const bHexagon )
 {
 	Stopwatch stopwatch;
 	stopwatch.Start();
@@ -29,7 +29,7 @@ void D3dSystem::Create_D3D_Device( HWND const hWndApp, ULONG const ulWidth, ULON
 	assert( _d3d_.m_d3d_object != nullptr );
 	stopwatch.Stop( L"Direct3DCreate9" );
 	stopwatch.Start();
-	_d3d_.createDevice( hWndApp, ulWidth, ulHeight );
+	_d3d_.createDevice( hwndApp, ulWidth, ulHeight );
 	stopwatch.Stop( L"createDevice" );
 }
 

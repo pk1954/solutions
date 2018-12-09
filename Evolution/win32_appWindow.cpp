@@ -86,7 +86,7 @@ AppWindow::AppWindow( ) :
 void AppWindow::Start(  )
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
-    HWND      const hWndApp   = StartBaseWindow( nullptr, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,CS_HREDRAW | CS_VREDRAW, L"ClassAppWindow", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN );
+    HWND      const hwndApp   = StartBaseWindow( nullptr, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,CS_HREDRAW | CS_VREDRAW, L"ClassAppWindow", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN );
 
     SendMessage( WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
     SendMessage( WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL     ) ) );
@@ -117,7 +117,7 @@ void AppWindow::Start(  )
 	m_pEvolutionCore->SetEvent( & m_event );
 	stopwatch.Stop( L"EvolutionCore::InitClass" );
 
-    D3dSystem::Create_D3D_Device( hWndApp, GridPoint::GRID_WIDTH, GridPoint::GRID_HEIGHT, Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 );
+    D3dSystem::Create_D3D_Device( hwndApp, GridPoint::GRID_WIDTH, GridPoint::GRID_HEIGHT, Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 );
 	
     // create window objects
 
@@ -145,27 +145,27 @@ void AppWindow::Start(  )
 	stopwatch.Stop( L"CreateHistorySystem" );
 
 	stopwatch.Start();
-    SetMenu( hWndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
-	Util::SetApplicationTitle( hWndApp, IDS_APP_TITLE );
+    SetMenu( hwndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
+	Util::SetApplicationTitle( hwndApp, IDS_APP_TITLE );
 	if ( Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 )
-        EnableMenuItem( GetMenu( hWndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
+        EnableMenuItem( GetMenu( hwndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
     DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
 	stopwatch.Stop( L"Application setup" );
 
 	stopwatch.Start();
-	m_pHistInfoWindow     ->Start( hWndApp, m_pHistorySystem );
+	m_pHistInfoWindow     ->Start( hwndApp, m_pHistorySystem );
 	m_pEvoHistGlue        ->Start( m_pEvolutionCore, m_pHistorySystem, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), true, m_pHistInfoWindow );
-	m_pEvoHistWindow      ->Start( hWndApp, m_pFocusPoint, m_pEvoHistGlue, m_pWorkThreadInterface );
-    m_pStatusBar          ->Start( hWndApp, m_pEvolutionCore );
+	m_pEvoHistWindow      ->Start( hwndApp, m_pFocusPoint, m_pEvoHistGlue, m_pWorkThreadInterface );
+    m_pStatusBar          ->Start( hwndApp, m_pEvolutionCore );
 	m_pFocusPoint         ->Start( m_pEvoHistGlue, m_pEvolutionCore );
-	m_pWorkThreadInterface->Start( m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, & m_gridObservers, m_pEvolutionCore, m_pEvoHistGlue );
-	m_pDspOptWindow       ->Start( hWndApp, m_pEvolutionCore );
-    m_pEditorWindow       ->Start( hWndApp, m_pWorkThreadInterface, m_pEvolutionCore, m_pDspOptWindow, m_pStatusBar );
-    m_pMainGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pColorManager, m_pEvolutionCore, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
-    m_pMiniGridWindow     ->Start( hWndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pColorManager, m_pEvolutionCore, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
-    m_pStatistics         ->Start( hWndApp, m_pEvolutionCore );
-    m_pCrsrWindow         ->Start( hWndApp, m_pFocusPoint, m_pEvolutionCore );
-    m_pPerfWindow         ->Start( hWndApp, 100 );
+	m_pWorkThreadInterface->Start( hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, & m_gridObservers, m_pEvolutionCore, m_pEvoHistGlue );
+	m_pDspOptWindow       ->Start( hwndApp, m_pEvolutionCore );
+    m_pEditorWindow       ->Start( hwndApp, m_pWorkThreadInterface, m_pEvolutionCore, m_pDspOptWindow, m_pStatusBar );
+    m_pMainGridWindow     ->Start( hwndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pColorManager, m_pEvolutionCore, WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE, 16 );
+    m_pMiniGridWindow     ->Start( hwndApp, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pColorManager, m_pEvolutionCore, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2 );
+    m_pStatistics         ->Start( hwndApp, m_pEvolutionCore );
+    m_pCrsrWindow         ->Start( hwndApp, m_pFocusPoint, m_pEvolutionCore );
+    m_pPerfWindow         ->Start( hwndApp, 100 );
 	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow, m_pColorManager );
 	stopwatch.Stop( L"Start windows" );
 
@@ -190,7 +190,7 @@ void AppWindow::Start(  )
 	
 	m_pEvolutionCore->SetObservers( & m_gridObservers );   // display callback for core
 
-    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, hWndApp,                              TRUE,  TRUE );
+    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, hwndApp,                              TRUE,  TRUE );
     m_pWinManager->AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                        TRUE,  TRUE );
 	m_pWinManager->AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_pStatusBar     ->GetWindowHandle(), FALSE, FALSE );
     m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow ->GetWindowHandle(), FALSE, FALSE ); 

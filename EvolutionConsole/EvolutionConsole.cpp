@@ -24,6 +24,8 @@
 
 using namespace std;
 
+HWND G_hwndApp;
+
 int main( int argc, char * argv [ ], char * envp [ ] )
 {
 	wcout << VER_PRODUCTNAME_STR << L" " << VER_FILE_DESCRIPTION_STR << endl;
@@ -50,7 +52,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	pEvoHistGlue->Start( pEvolutionCore, pHistorySystem, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false, nullptr );
     DefineWin32HistWrapperFunctions( pWorkThreadInterface );
 
-	pWorkThreadInterface->Start( nullptr, nullptr, nullptr, nullptr, nullptr, pEvolutionCore, pEvoHistGlue );
+	pWorkThreadInterface->Start( nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, pEvolutionCore, pEvoHistGlue );
 
 	DefineWin32WrapperFunctions( pWorkThreadInterface );
 

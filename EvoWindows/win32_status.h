@@ -15,6 +15,7 @@ class StatusBar : public RootWindow
 public:
     void Start( HWND const, EvolutionCore const * );
 	void SetSimuMode( BOOL const );
+	void SetRunMode( BOOL const );
     int  GetHeight( ) const;
     void Resize( ) const;
     void SetSizeTrackBar ( short const ) const;
@@ -46,9 +47,6 @@ private:
     void WINAPI createSimulationControl( );
     void WINAPI createEditorControl( );
 
-	int handleStartStop( );
-
-	BOOL    m_bRunning;
 	INT     m_iClientHeight;
     INT     m_iBorder;
     INT     m_iPosX;

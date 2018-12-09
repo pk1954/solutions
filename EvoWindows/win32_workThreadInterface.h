@@ -25,6 +25,7 @@ public:
 
     void Start
     ( 
+		HWND                const,
 		ColorManager      * const,
         PerformanceWindow * const,
 		EditorWindow      * const,  
@@ -58,6 +59,7 @@ public:
 	void DoProcessScript( std::wstring * const ); // parameter must be created with new, will be deleted here! 
 
 	HIST_GENERATION GetGenDemanded( ) const;
+	BOOL            IsRunning( )      const;
 
     void TerminateThread( );
 

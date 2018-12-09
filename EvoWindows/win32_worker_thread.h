@@ -63,6 +63,7 @@ public:
 
 	void Start
 	( 
+		HWND                  const,
 		ColorManager        * const,
 		PerformanceWindow   * const,
 		EditorWindow        * const,
@@ -80,13 +81,18 @@ public:
 	void WorkMessage( UINT const, WPARAM const, LPARAM const );
 	void WorkMessage( MSG const );
 
-	bool GenerationStep( );
+	void GenerationStep( );
 
 	void DoProcessScript( wstring * const );
 
 	HIST_GENERATION GetGenDemanded( ) const 
 	{ 
 		return m_genDemanded; 
+	}
+
+	BOOL IsRunning() const
+	{
+		return m_bContinue;
 	}
 
 private:
@@ -100,8 +106,8 @@ private:
 		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, gp24 ) );
 	}
 
-	bool generationRun( );
-	void stopComputation( );
+	void generationRun( );
+	void dispatch( MSG const );
 
 	ColorManager        * m_pColorManager;
     PerformanceWindow   * m_pPerformanceWindow;
@@ -113,4 +119,5 @@ private:
     HIST_GENERATION       m_genDemanded;
     BOOL                  m_bContinue;
     INT                   m_iScriptLevel;
+	HWND                  m_hwndApplication;
 };

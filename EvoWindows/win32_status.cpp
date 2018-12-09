@@ -27,6 +27,11 @@ static LONG const SPEED_TRACKBAR_MAX = value2Trackbar( MAX_DELAY );
 
 static INT const STATUS_BAR_HEIGHT = 22;
 
+static wchar_t * SZ_RUN_MODE  = L"   Run    ";
+static wchar_t * SZ_STOP_MODE = L"  Stop    ";
+static wchar_t * SZ_SIMU_MODE = L"Switch to SIMULATION";
+static wchar_t * SZ_EDIT_MODE = L"Switch to EDITOR";
+
 //lint -esym( 715, uIdSubclass )    symbol not referenced
 
 static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
@@ -40,10 +45,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
 
     case WM_COMMAND:
 	{
-		int iCmd = LOWORD(wParam);
-		if (iCmd == IDM_RUN)
-			iCmd = pStatusBar->handleStartStop( );
-		(void)SendMessage( GetParent( hwnd ), WM_COMMAND, iCmd, 0 );
+		(void)SendMessage( GetParent( hwnd ), WM_COMMAND, LOWORD(wParam), 0 );
         return FALSE;
 	}
 
@@ -65,24 +67,9 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
     return DefSubclassProc(hwnd, uMsg, wParam, lParam);
 }
 
-int StatusBar::handleStartStop( )
+void StatusBar::SetRunMode( BOOL const bMode )
 {
-	wchar_t * szButtonText;
-	int       iCmd;
-	if (m_bRunning)
-	{
-		iCmd = IDM_STOP;
-		szButtonText = L"   Run    ";
-		m_bRunning = FALSE;
-	}
-	else
-	{
-		iCmd = IDM_RUN;
-		szButtonText = L"  Stop    ";
-		m_bRunning = TRUE;
-	}
-	::SendMessage( GetDlgItem(IDM_RUN), WM_SETTEXT,	0, (LPARAM)( szButtonText )	);
-	return iCmd;
+	SetDlgText( IDM_RUN_STOP, bMode ? SZ_STOP_MODE : SZ_RUN_MODE );
 }
 
 HWND WINAPI StatusBar::createControl
@@ -127,7 +114,7 @@ HWND WINAPI StatusBar::createTrackBar( HMENU hMenu )
 
 void WINAPI StatusBar::createModeControl( )
 { 
-    (void)createButton( L"Switch to Simulation", (HMENU)IDM_TOGGLE_SIMU_MODE, BS_PUSHBUTTON );  
+    (void)createButton( SZ_SIMU_MODE, (HMENU)IDM_TOGGLE_SIMU_MODE, BS_PUSHBUTTON );  
 } 
 
 void WINAPI StatusBar::createSizeControl( )
@@ -150,7 +137,7 @@ void WINAPI StatusBar::createSimulationControl( )
         createButton  ( L"Backwards ", (HMENU)IDM_BACKWARDS, BS_PUSHBUTTON );
 
     createButton  ( L"SingleStep", (HMENU)IDM_GENERATION, BS_PUSHBUTTON ); 
-    createButton  ( L"   Run    ", (HMENU)IDM_RUN,        BS_PUSHBUTTON ); 
+    createButton  ( SZ_RUN_MODE,   (HMENU)IDM_RUN_STOP,   BS_PUSHBUTTON ); 
     createTrackBar(                (HMENU)IDM_SIMULATION_SPEED ); 
     createButton  ( L" MaxSpeed ", (HMENU)IDM_MAX_SPEED,  BS_PUSHBUTTON ); 
 
@@ -173,7 +160,6 @@ void StatusBar::Start
 )
 {
 	m_pCore = pCore;
-	m_bRunning = FALSE;
 	HWND hwndStatus = CreateWindow
     (
         STATUSCLASSNAME, 
@@ -264,7 +250,7 @@ void StatusBar::SetSimuMode( BOOL const bSimuMode )
 {
     ShowWindow( GetDlgItem( IDM_BACKWARDS        ), bSimuMode );
     ShowWindow( GetDlgItem( IDM_GENERATION       ), bSimuMode );
-    ShowWindow( GetDlgItem( IDM_RUN              ), bSimuMode );
+    ShowWindow( GetDlgItem( IDM_RUN_STOP         ), bSimuMode );
     ShowWindow( GetDlgItem( IDM_SIMULATION_SPEED ), bSimuMode );
     ShowWindow( GetDlgItem( IDM_MAX_SPEED        ), bSimuMode );
 
@@ -274,15 +260,7 @@ void StatusBar::SetSimuMode( BOOL const bSimuMode )
 		ShowWindow( GetDlgItem( IDM_EDIT_REDO ), ! bSimuMode );
 	}
 
-	wchar_t * szButtonText = bSimuMode ? L"Switch to EDITOR" : L"Switch to SIMULATION";
-
-	(void)::SendMessage
-	( 
-		GetDlgItem( IDM_TOGGLE_SIMU_MODE  ), 
-		WM_SETTEXT,
-		0, 
-		(LPARAM)( szButtonText )
-	);
+	SetDlgText( IDM_TOGGLE_SIMU_MODE, bSimuMode ? SZ_EDIT_MODE : SZ_SIMU_MODE );
 }
 
 int StatusBar::GetHeight( ) const

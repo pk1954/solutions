@@ -164,6 +164,7 @@
     <ClInclude Include="win32_textWindowThread.h" />
     <ClInclude Include="win32_thread.h" />
     <ClInclude Include="win32_util.h" />
+    <ClInclude Include="win32_util_resource.h" />
     <ClInclude Include="win32_viewCollection.h" />
     <ClInclude Include="win32_winManager.h" />
   </ItemGroup>

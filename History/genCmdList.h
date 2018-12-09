@@ -40,9 +40,9 @@ public:
         return m_generationCommands[ gen.GetLong( ) ].IsCachedGeneration( );
     }
 
-    long GetCmdListSize( ) const
+    long GetMaxGeneration( ) const
     {
-        return static_cast<long>( m_generationCommands.size( ) );
+        return static_cast<long>( m_generationCommands.size( ) - 1 );
     }
 
 private:

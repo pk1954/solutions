@@ -12,11 +12,13 @@ class HistoryIterator;
 class ModelFactory;
 class ModelData;
 
-class GenerationProperty
+class GenerationProperty  // used when searching for generation with certain property
 {
 public:
     virtual bool operator() ( ModelData const * ) const = 0;
 };
+
+class HistoryBufferException : public exception { };
 
 class HistorySystem
 {
@@ -49,7 +51,7 @@ public:
 
     virtual void              CreateAppCommand( GenerationCmd   const ) = 0;
 	virtual void              ClearHistory    ( HIST_GENERATION const ) = 0;
-    virtual bool              ApproachHistGen ( HIST_GENERATION const ) = 0;
+    virtual void              ApproachHistGen ( HIST_GENERATION const ) = 0;
 	virtual tGenCmd           GetGenerationCmd( HIST_GENERATION const ) = 0;
 
     virtual HIST_GENERATION   FindFirstGenerationWithProperty( GenerationProperty const & ) const = 0;
