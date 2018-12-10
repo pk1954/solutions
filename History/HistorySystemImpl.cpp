@@ -167,9 +167,10 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
         genCmd = pHistCacheItem->GetGenCmd( );
     }
 
-	m_pHistCacheItemWork->GetModelData()->OnAppCommand( genCmd );    // Apply application defined operation to step to next generation
     if ( m_pHistCacheItemWork->GetHistGenCounter() >= m_GenCmdList.GetMaxGeneration() )
 		throw HistoryBufferException();
+
+	m_pHistCacheItemWork->GetModelData()->OnAppCommand( genCmd );    // Apply application defined operation to step to next generation
 	m_pHistCacheItemWork->IncHistGenCounter( );
 }
 
