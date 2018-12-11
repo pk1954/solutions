@@ -5,11 +5,7 @@
 
 #pragma once
 
-#include <sstream> 
-#include "vector"
-#include "windef.h"
 #include "GridPoint.h"
-#include "EvolutionCore.h"
 #include "win32_textDisplay.h"
 #include "pixelPoint.h"
 #include "pixelRect.h"
@@ -32,13 +28,7 @@ public:
 		m_textDisplay( textDisplay )
 	{}
 
-	PixelRect GetAbsoluteCoordinates( ) const
-	{
-		PixelRect pRes( m_rect );
-		for ( Shape * pParent = m_pParent; pParent; pParent = pParent->m_pParent )
-			pRes += pParent->m_rect.GetStartPoint();
-		return pRes;
-	}
+	PixelRect GetAbsoluteCoordinates( ) const;
 
 	void SetShapeRect( PixelRect const & rect )
 	{
@@ -76,7 +66,7 @@ public:
 		return rectAbsolute.Includes( pnt );
 	}
 
-	Shape const * FindShape
+	virtual Shape const * FindShape  // for all shapes without subshapes
 	( 
 		PixelPoint const pnt,             
 		GridPoint  const gp
@@ -90,14 +80,7 @@ public:
 		return GridPoint::GP_NULL; 
 	}
 
-	void Draw( GridPoint const gp )
-	{
-		m_textDisplay.Clear();
-		FillBuffer( gp );
-		PixelRect rectAbsolute = GetAbsoluteCoordinates( );
-		m_textDisplay.DrawText( rectAbsolute );
-	}
-
+	virtual void Draw( GridPoint const );
 	virtual void PrepareShape( GridPoint const ) {};
 	virtual void AddContextMenuEntries( HMENU const ) const {};
 

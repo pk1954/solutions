@@ -5,7 +5,7 @@
 
 #include <string.h>
 #include <d3d9.h>
-#include <D3dx9core.h>
+#include "d3dx9core.h"
 #include "pixelPoint.h"
 #include "win32_util.h"
 #include "d3d_system.h"

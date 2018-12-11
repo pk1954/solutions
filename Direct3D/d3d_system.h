@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <D3dx9core.h>
+#include <d3dx9core.h>
 #include "d3d_indexBuffer.h"
 
 class D3dSystem

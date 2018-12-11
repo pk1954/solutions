@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include <string.h>
 #include <d3d9.h>
-#include <D3dx9core.h>
+#include <d3dx9core.h>
 #include "win32_util.h"
 #include "pixelPoint.h"
 #include "d3d_system.h"

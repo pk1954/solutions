@@ -72,17 +72,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)EvoWindows;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(SolutionDir)Direct3D;$(SolutionDir)EvoWindows;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)Win32_utilities;C:\Program Files\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(SolutionDir)Direct3D;$(SolutionDir)EvoWindows;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)Win32_utilities;C:\Program Files\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)EvoWindows;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(SolutionDir)Direct3D;$(SolutionDir)EvoWindows;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)Win32_utilities;C:\Program Files\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(SolutionDir)Direct3D;$(SolutionDir)EvoWindows;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)Win32_utilities;C:\Program Files\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -93,7 +95,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -109,7 +111,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -123,7 +125,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,7 +141,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -151,8 +153,11 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="win32_coordShape.h" />
     <ClInclude Include="win32_gridPointShape.h" />
+    <ClInclude Include="win32_identifierShape.h" />
     <ClInclude Include="win32_individualShape.h" />
+    <ClInclude Include="win32_infoShape.h" />
     <ClInclude Include="win32_leftColumn.h" />
     <ClInclude Include="win32_memorySlot.h" />
     <ClInclude Include="win32_rightColumn.h" />
@@ -165,6 +170,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="win32_gridPointShape.cpp" />
+    <ClCompile Include="win32_individualShape.cpp" />
+    <ClCompile Include="win32_leftColumn.cpp" />
+    <ClCompile Include="win32_memorySlot.cpp" />
+    <ClCompile Include="win32_rightColumn.cpp" />
+    <ClCompile Include="win32_shape.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

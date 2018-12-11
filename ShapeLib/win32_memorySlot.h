@@ -1,9 +1,8 @@
-// win32_memorySlot.cpp
+// win32_memorySlot.h
 //
 
 #pragma once
 
-#include <iomanip>
 #include "win32_shape.h"
 
 using namespace std;
@@ -21,38 +20,19 @@ public:
 		m_index( index )
 	{}
 
-	virtual GridPoint GetReferencedGridPoint( GridPoint const gp ) const 
-	{ 
-		return getReferencedGridPoint( getIndId( gp ) );
-	}
+	virtual GridPoint GetReferencedGridPoint( GridPoint const ) const; 
 
-	void FillBuffer( GridPoint const gp )
-	{
-		wostringstream & buffer = m_textDisplay.Buffer();
-		IndId            indId  = getIndId( gp );
+	virtual void FillBuffer( GridPoint const gp );
 
-		buffer << setw( 10 );
-		if (getReferencedGridPoint( indId ) == GridPoint::GP_NULL) 
-			buffer << L"DEAD";
-		else
-			buffer << indId;
-	}
-
-	MEM_INDEX GetMemIndex()
+	MEM_INDEX GetMemIndex() const
 	{
 		return m_index;
 	}
 
 private:
-	virtual GridPoint getReferencedGridPoint( IndId const indId ) const 
-	{ 
-		return m_textDisplay.Core().FindGridPoint( indId );
-	}
+	virtual GridPoint getReferencedGridPoint( IndId const ) const;
 
-	IndId getIndId( GridPoint const gp ) const 
-	{ 
-		return m_textDisplay.Core().GetMemEntry( gp, m_index );
-	}
+	IndId getIndId( GridPoint const ) const; 
 
 	MEM_INDEX m_index;
 };
