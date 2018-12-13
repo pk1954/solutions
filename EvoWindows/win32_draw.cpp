@@ -64,7 +64,7 @@ void DrawFrame::SetStripMode( tBoolOp const bOp )
     m_pD3dBuffer->SetStripMode( bOp ); 
 };
 
-void DrawFrame::ResizeDrawFrame( )
+void DrawFrame::ResizeDrawFrame( PixelPoint const ptCrsr )
 {
 	short const sFieldSize     = m_pPixelCoordinates->GetFieldSize();
 	int   const MAX_TEXT_LINES = 20;
@@ -74,6 +74,7 @@ void DrawFrame::ResizeDrawFrame( )
 	if ( iFontSize > 16 )
 		iFontSize = 16;
     m_pD3dBuffer->ResetFont( iFontSize );
+	SetHighlightPos( ptCrsr );   
 }
 
 void DrawFrame::prepareGridPoint( GridPoint const gp )
@@ -83,13 +84,13 @@ void DrawFrame::prepareGridPoint( GridPoint const gp )
 	m_gridPointShape->PrepareShape( gp );
 }
 
-bool DrawFrame::SetHighlightPos( PixelPoint const pp )
+bool DrawFrame::SetHighlightPos( PixelPoint const ptCrsr )
 {
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
-	m_gpHighlight = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pp ) );
+	m_gpHighlight = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
 	prepareGridPoint( m_gpHighlight );
-	m_pShapeHighlight = m_gridPointShape->FindShape( pp, m_gpHighlight );
+	m_pShapeHighlight = m_gridPointShape->FindShape( ptCrsr, m_gpHighlight );
 	return ( (gpLast != m_gpHighlight) || (pShapeLast != m_pShapeHighlight) );
 }
 

@@ -33,7 +33,7 @@ public:
     DrawFrame( HWND const, EvolutionCore *, PixelCoordinates *, DspOptWindow *, ColorManager * );
     ~DrawFrame( );
 
-    void ResizeDrawFrame( );
+    void ResizeDrawFrame( PixelPoint const );
     void DoPaint( HWND, KGridRect const & );
     void SetStripMode( tBoolOp );
 	bool SetHighlightPos( PixelPoint const );
@@ -55,9 +55,8 @@ private:
     D3dBuffer        * m_pD3dBuffer;
 	GridPointShape   * m_gridPointShape;
 	TextDisplay      * m_pTextDisplay;
-
-	Shape const * m_pShapeHighlight;
-	GridPoint     m_gpHighlight;
+	Shape const      * m_pShapeHighlight;
+	GridPoint          m_gpHighlight;
 
     static UINT const MAX_BG_COLOR = 255;
 

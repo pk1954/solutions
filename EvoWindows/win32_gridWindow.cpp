@@ -356,10 +356,9 @@ void GridWindow::newFieldSize( SHORT const fieldSize, GridPoint const gpCenter )
 {
 	if ( m_pPixelCoordinates->SetGridFieldSize( fieldSize ) )
 	{
-		m_pPixelCoordinates->CenterGrid( gpCenter, GetClRectSize( ) );
-		m_pDrawFrame->ResizeDrawFrame( );
-		m_pDrawFrame->SetHighlightPos( GetRelativeCrsrPosition( ) );
-		PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
+		m_pPixelCoordinates->CenterGrid( gpCenter, GetClRectSize( ) ); // center grid around gpCenter
+		m_pDrawFrame->ResizeDrawFrame( GetRelativeCrsrPosition( ) );   // trigger DrawFrame to adapt font size etc.
+		PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );             
 	}
 	else
 	{
