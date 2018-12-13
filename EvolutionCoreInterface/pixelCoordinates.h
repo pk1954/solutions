@@ -52,15 +52,16 @@ public:
 
 	//////// manipulation functions ////////
 
-    bool  SetGridFieldSize( short, PixelPoint const );             // modifies field size
-    bool  FitGridToRect( GridRect const &, PixelRectSize const );  // modifies field size
+    short CalcMaximumFieldSize( GridPoint const &, PixelRectSize const );
+    bool  SetGridFieldSize( short );                                   
+	void  CenterGrid   ( GridPoint const, PixelRectSize const );
 
 	bool  CenterPoi( PixelPoint const, GridPoint const );
     void  MoveGrid( PixelPoint const);
 
 private:
     bool       isValidFieldSize( long const ) const; 
-    PixelPoint getCenterOffset( GridRect const &, PixelPoint const );
+    PixelPoint calcCenterOffset( GridPoint const, PixelPoint const );
 
     PixelPoint m_pixOffset;
     short      m_sFieldSize;

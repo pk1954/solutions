@@ -83,6 +83,7 @@ private:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 	virtual void    AddContextMenuEntries( HMENU const, POINT const );
 
+	void newFieldSize( SHORT const, GridPoint const );
 	void mouseWheelAction( int );
     BOOL inObservedClientRect( LPARAM );
     void moveGrid( PixelPoint const );

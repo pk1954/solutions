@@ -33,13 +33,6 @@ PixelPoint PixelCore::GetPoiCenter() const
     return m_pPixelCoordinates->Grid2PixelPosCenter( m_pCore->FindPOI( ) );
 }
 
-PixelPoint PixelCore::GetNewCenter( PixelPoint const pntCenter ) const
-{
-	return m_pCore->IsPoiDefined( ) 
-	       ? GetPoiCenter( )
-	       : pntCenter;
-}
-
 bool PixelCore::CenterPoi( PixelPoint const pntCenter ) const
 {
 	return m_pPixelCoordinates->CenterPoi
@@ -47,13 +40,4 @@ bool PixelCore::CenterPoi( PixelPoint const pntCenter ) const
 			  pntCenter, 
 			  m_pCore->FindPOI( )
 		   );
-}
-
-void PixelCore::SetFieldSize( short const sNewFieldSize, PixelPoint const pntCenter )
-{
-    (void)m_pPixelCoordinates->SetGridFieldSize
-	( 
-		sNewFieldSize, 
-		GetNewCenter( pntCenter ) 
-	);
 }

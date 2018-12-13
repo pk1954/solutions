@@ -352,21 +352,43 @@ void GridWindow::Size( )
     Move( 0, 0, rect.right - rect.left, rect.bottom - rect.top, FALSE );
 }
 
+void GridWindow::newFieldSize( SHORT const fieldSize, GridPoint const gpCenter )
+{
+	if ( m_pPixelCoordinates->SetGridFieldSize( fieldSize ) )
+	{
+		m_pPixelCoordinates->CenterGrid( gpCenter, GetClRectSize( ) );
+		m_pDrawFrame->ResizeDrawFrame( );
+		m_pDrawFrame->SetHighlightPos( GetRelativeCrsrPosition( ) );
+		PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
+	}
+	else
+	{
+		MessageBeep( MB_ICONWARNING );
+	}
+}
+
 void GridWindow::SetFieldSize( SHORT const fieldSize )
 {
-	m_pPixelCore->SetFieldSize( fieldSize, GetClRectCenter( ) );
-	m_pDrawFrame->ResizeDrawFrame( );
-	m_pDrawFrame->SetHighlightPos( GetRelativeCrsrPosition( ) );
-	PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
+	newFieldSize
+	( 
+		fieldSize, 
+		m_pCore->IsPoiDefined( ) 
+		? m_pCore->FindPOI( ) 
+		: m_pPixelCoordinates->Pixel2GridPos( GetClRectCenter( ) ) 
+	);
 }
 
 void GridWindow::Fit2Rect( )
 {
-	m_pPixelCoordinates->FitGridToRect( m_pCore->GetSelection(), GetClRectSize( ) );
+	GridRect gridRect = m_pCore->GetSelection();
+
+	newFieldSize
+	( 
+		m_pPixelCoordinates->CalcMaximumFieldSize( gridRect.GetSize(), GetClRectSize( ) ), 
+		gridRect.GetCenter() 
+	);
+
 	m_pCore->ResetSelection( );
-	m_pDrawFrame->ResizeDrawFrame( );
-	m_pDrawFrame->SetHighlightPos( GetRelativeCrsrPosition( ) );
-	PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
 }
 
 void GridWindow::Zoom( bool const bZoomIn )	

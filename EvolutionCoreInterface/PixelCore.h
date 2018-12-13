@@ -23,8 +23,6 @@ public:
 	void       SetSelection( PixelPoint const, PixelPoint const );
 	PixelPoint GetPoiCenter() const;
 	bool       CenterPoi( PixelPoint const ) const;
-	PixelPoint GetNewCenter( PixelPoint const ) const;
-	void       SetFieldSize( short const, PixelPoint const );
 		
 private:
     EvolutionCore    * m_pCore;

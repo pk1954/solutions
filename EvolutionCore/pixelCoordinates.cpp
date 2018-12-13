@@ -34,13 +34,15 @@ void PixelCoordinates::MoveGrid( PixelPoint const pntDelta )
 	CheckPixelPoint( m_pixOffset );
 }
 
-PixelPoint PixelCoordinates::getCenterOffset( GridRect const & gridRect, PixelPoint const pixCenter )  // Move gridRect to center of window
+PixelPoint PixelCoordinates::calcCenterOffset  // calculate new pixel offset,
+(                                              // which moves gridRect to center of window.
+	GridPoint  const gpCenter,                 // do not yet set m_pixOffset to this value!
+	PixelPoint const pixCenter 
+)  
 {
-	assert(gridRect.GetStartPoint().IsInGrid());
-	GridPoint  const gpStart(gridRect.GetStartPoint());
-	GridPoint  const gpSum(gpStart + gpStart + gridRect.GetSize());
-	PixelPoint const pixPnt(Grid2PixelSize(gpSum));
-	PixelPoint const pixOffset(pixPnt / 2 - pixCenter);
+	assert( gpCenter.IsInGrid());
+	PixelPoint const pixPnt( Grid2PixelSize(gpCenter) + m_sFieldSize / 2 );
+	PixelPoint const pixOffset( pixPnt - pixCenter );
 	return pixOffset;
 }
 
@@ -49,50 +51,45 @@ bool PixelCoordinates::CenterPoi( PixelPoint const pixCenter, GridPoint const gp
     if ( gpPoi.IsNull( ) )
         return true;
 
-    PixelPoint pixCenterOffset( getCenterOffset( GridRect( gpPoi, gpPoi + 1 ), pixCenter ) );
-    bool       bCentered( m_pixOffset == pixCenterOffset );
-	CheckPixelPoint( pixCenterOffset );
+    PixelPoint pixOffsetDesired( calcCenterOffset( gpPoi, pixCenter ) );
+    bool       bCentered( m_pixOffset == pixOffsetDesired );
+	CheckPixelPoint( pixOffsetDesired );
 
     if ( ! bCentered )
 	{
-        m_pixOffset = m_smoothMove.Step( m_pixOffset, pixCenterOffset );
+        m_pixOffset = m_smoothMove.Step( m_pixOffset, pixOffsetDesired );
 		CheckPixelPoint( m_pixOffset );
 	}
 
     return bCentered;
 }
 
-bool PixelCoordinates::FitGridToRect
+void PixelCoordinates::CenterGrid
 ( 
-	GridRect      const & gridRect,   // GridRect to fit into window
-	PixelRectSize const   pntPixSize  // available size 
+	GridPoint     const gpCenter,   
+	PixelRectSize const pntPixSize  // available size 
 )
 {
-	GridPoint     gpGridRectSize = gridRect.GetSize();
-	PixelRectSize pixRectSize    = pntPixSize / PixelRectSize{ gpGridRectSize.x, gpGridRectSize.y };
-
-	short const sNewFieldSize( std::min( pixRectSize.GetWidth(), pixRectSize.GetHeight() ) );
-    
-    if ( !isValidFieldSize( sNewFieldSize ) )
-        return false;
-
-    m_sFieldSize = sNewFieldSize;
-    m_pixOffset  = getCenterOffset( gridRect, pntPixSize.ToPixelPoint() / 2 );
+    m_pixOffset = calcCenterOffset( gpCenter, pntPixSize.ToPixelPoint() / 2 );
 	CheckPixelPoint( m_pixOffset );
-
-    return true;
 }
 
-bool PixelCoordinates::SetGridFieldSize( short const sNewFieldSize, PixelPoint const pntCenter )
+short PixelCoordinates::CalcMaximumFieldSize
+( 
+	GridPoint     const & gpGridRectSize,   // Grid size to fit into window
+	PixelRectSize const   pntPixSize        // available pixel size 
+)
 {
-    if ( !isValidFieldSize( sNewFieldSize ) )
-        return false;
- 
-    m_pixOffset  = ((m_pixOffset + pntCenter) * sNewFieldSize) / m_sFieldSize - pntCenter;
-    m_sFieldSize = sNewFieldSize;
-	CheckPixelPoint( m_pixOffset );
+	PixelRectSize pixRectSize = pntPixSize / PixelRectSize{ gpGridRectSize.x, gpGridRectSize.y };
+	return std::min( pixRectSize.GetWidth(), pixRectSize.GetHeight() );
+}
 
-    return true;
+bool PixelCoordinates::SetGridFieldSize( short const sNewFieldSize )
+{
+    bool bValid = isValidFieldSize( sNewFieldSize );
+	if ( bValid )
+	    m_sFieldSize = sNewFieldSize;
+	return bValid;
 }
 
 short PixelCoordinates::ComputeNewFieldSize( bool const bZoomIn ) const
