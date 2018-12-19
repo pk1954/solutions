@@ -27,7 +27,7 @@ void Config::defineConfigId( Config::tId const id, wstring const & wstrName, lon
 void Config::SetDefaultConfiguration( )
 {
      // general
-   DEF_CONFIG_ID( Config::tId::maxGeneration,   100 ); // 1000 * 1000 );
+   DEF_CONFIG_ID( Config::tId::maxGeneration,   1000 * 1000 );
    DEF_CONFIG_ID( Config::tId::nrOfHistorySlots,      10000 );
    DEF_CONFIG_ID( Config::tId::historyDisplay,  static_cast<long>(tOnOffAuto::on) );
    DEF_CONFIG_ID( Config::tId::miniGridDisplay, static_cast<long>(tOnOffAuto::automatic) );

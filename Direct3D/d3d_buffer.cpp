@@ -100,7 +100,7 @@ PixelRect D3dBuffer::D3D_CalcRect( wstring const & wstr )
         &rect,             // pRect
         DT_CALCRECT,       // Format
         0                  // Color
-    ); 
+    );
 	return Util::RECT2PixelRect( rect );
 }
 

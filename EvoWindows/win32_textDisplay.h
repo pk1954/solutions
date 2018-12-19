@@ -59,9 +59,9 @@ public:
 		return m_pixelCoordinates.Grid2PixelPosCenter( gp );
 	}
 
-	PixelRect CalcRect( )
+	PixelRectSize CalcRectSize( )
 	{
-		return m_D3dBuffer.D3D_CalcRect( m_wBuffer.str( ) );
+		return m_D3dBuffer.D3D_CalcRect( m_wBuffer.str( ) ).GetSize( );
 	}
 
 	void DrawText( PixelRect const & rect )

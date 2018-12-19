@@ -36,7 +36,7 @@ DrawFrame::DrawFrame
 	m_pTextDisplay    = new TextDisplay( * m_pD3dBuffer, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
 	m_gridPointShape  = new GridPointShape( * m_pTextDisplay );
 	m_pShapeHighlight = nullptr;
-	m_gridPointShape->MinimalSize( );
+	m_gridPointShape->RefreshLayout( );
 }
 
 DrawFrame::~DrawFrame( ) 

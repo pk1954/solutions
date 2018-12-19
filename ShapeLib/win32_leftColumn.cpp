@@ -11,39 +11,39 @@
 
 PixelRectSize LeftColumn::MinimalSize( )  
 {       
-	m_idShape  .MinimalSize( );
-	m_infoShape.MinimalSize( );
+	PixelRectSize const minId   = m_idShape  .MinimalSize( );
+	PixelRectSize const minInfo = m_infoShape.MinimalSize( );
 
-	return setMinSize( m_infoShape.GetMinSize( ) );     
+	return SetMinSize( minInfo );     
 }                                     
 
 void LeftColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const ppSize )
 {
-	if ( setShapeRect( ppOffset, ppSize ) )
+	if ( SetShapeRect( ppOffset, ppSize ) )
 	{
 		long lWidth    = getShapeWidth ();
 		long lHeight   = getShapeHeight();
 		long lIdHeight = m_idShape.GetMinHeight();
 
-		PixelPoint pixPosSubShape = getShapePos( );
+		PixelPoint posShape = GetShapePos( );
 
 		if ( lIdHeight + m_infoShape.GetMinHeight() <= lHeight )
 		{
-			m_idShape  .PrepareShape( pixPosSubShape, PixelRectSize( lWidth,           lIdHeight ) );
-			pixPosSubShape.y += lIdHeight;
-			m_infoShape.PrepareShape( pixPosSubShape, PixelRectSize( lWidth, lHeight - lIdHeight ) );
+			m_idShape  .PrepareShape( posShape, PixelRectSize( lWidth,           lIdHeight ) );
+			posShape.y += lIdHeight;
+			m_infoShape.PrepareShape( posShape, PixelRectSize( lWidth, lHeight - lIdHeight ) );
 		}
 		else
 		{
 			m_idShape  .SetShapeEmpty( );
-			m_infoShape.PrepareShape( pixPosSubShape, PixelRectSize( lWidth, lHeight ) );
+			m_infoShape.PrepareShape( posShape, PixelRectSize( lWidth, lHeight ) );
 		}
 	}
 }
 
 void LeftColumn::Draw( GridPoint const gp, PixelPoint const ppGridpointOffset )
 {
-	if ( isNotEmpty () )
+	if ( IsNotEmpty () )
 	{
  		m_idShape  .Draw( gp, ppGridpointOffset );
 		m_infoShape.Draw( gp, ppGridpointOffset );

@@ -12,23 +12,19 @@ class PixelCoordinates;
 class EvolutionCore;
 class D3dBuffer;
 
-class GridPointShape : public Shape
+class GridPointShape
 {
 public:
 	GridPointShape( TextDisplay & t ) :
-		Shape( t ),
+		m_shape( t ),
 		m_indivShape( t ),
 		m_coordShape( t )
 	{ }
 
-	virtual PixelRectSize MinimalSize( );
-	virtual void          FillBuffer( GridPoint const gp ) { };  // all text in subshapes
-	virtual void          Draw      ( GridPoint const, PixelPoint const );
-
-	virtual Shape const * FindShape( PixelPoint const, GridPoint const ) const;
-
-	void RefreshLayout( );
-	long GetIndShapeSize( );
+	void          Draw( GridPoint const, PixelPoint const );
+	Shape const * FindShape( PixelPoint const, GridPoint const ) const;
+	void          RefreshLayout( );
+	long          GetIndShapeSize( );
 
 	IndividualShape const & GetIndividualShape() const 
 	{
@@ -36,6 +32,7 @@ public:
 	}
 
 private:
+	Shape           m_shape;
 	CoordShape      m_coordShape;
 	IndividualShape m_indivShape;
 };

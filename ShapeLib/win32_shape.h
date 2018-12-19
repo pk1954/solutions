@@ -25,8 +25,7 @@ public:
 	{                                     
 		m_textDisplay.Clear();
 		FillBuffer( GridPoint( 0, 0 ) );
-		PixelRect pixRect = m_textDisplay.CalcRect( );
-		return setMinSize( pixRect.GetSize( ) + 2 * MARGIN );
+		return SetMinSize( m_textDisplay.CalcRectSize( ) );
 	}                                     
 
 	PixelRect const GetAbsoluteShapeRect( GridPoint const gp ) const 
@@ -34,9 +33,8 @@ public:
 		return m_rect + m_textDisplay.GetOffset( gp );
 	}
 
-	PixelRectSize const GetMinSize  ( ) const { return m_minSize; }
-	long          const GetMinWidth ( ) const { return m_minSize.GetWidth();  }
-	long          const GetMinHeight( ) const {	return m_minSize.GetHeight(); }
+	long const GetMinWidth ( ) const { return m_minSize.GetWidth();  }
+	long const GetMinHeight( ) const { return m_minSize.GetHeight(); }
 
 	virtual Shape const * FindShape  // for all shapes without subshapes
 	( 
@@ -61,7 +59,7 @@ public:
 
 	virtual void PrepareShape( PixelPoint const ppOffset, PixelRectSize const ppSize )
 	{
-		setShapeRect( ppOffset, ppSize );
+		SetShapeRect( ppOffset, ppSize );
 	}
 
 	void SetShapeEmpty()
@@ -69,37 +67,42 @@ public:
 		return m_rect.SetEmpty( );
 	}
 
-protected:
-
-	bool isNotEmpty()
-	{
-		return m_rect.IsNotEmpty( );
-	}
-
-	PixelRectSize setMinSize( PixelRectSize const rect )
+	PixelRectSize SetMinSize( PixelRectSize const rect )
 	{
 		return m_minSize = rect;
 	}
 
-	PixelRectSize setMinSize( int const iWidth, int const iHeight )
+	PixelRectSize SetMinSize( int const iWidth, int const iHeight )
 	{
-		return setMinSize( PixelRectSize( iWidth, iHeight ) );
+		return SetMinSize( PixelRectSize( iWidth, iHeight ) );
 	}
 
-	bool setShapeRect( PixelPoint const ppOffset, PixelRectSize const ppSize )
+	short GetFieldSize()
+	{
+		return m_textDisplay.GetFieldSize( );
+	}
+
+	bool IsNotEmpty()
+	{
+		return m_rect.IsNotEmpty( );
+	}
+
+	bool SetShapeRect( PixelPoint const ppOffset, PixelRectSize const ppSize )
 	{
 		bool bRes = ppSize.Includes( m_minSize );
 		if ( bRes )
-			m_rect = PixelRect( ppOffset, ppSize ).Scale( - MARGIN );
+			m_rect = PixelRect( ppOffset, ppSize );
 		else 
 			m_rect.SetEmpty( );
 		return bRes;
 	}
 
-	PixelPoint const getShapePos( )
+	PixelPoint const GetShapePos( )
 	{
 		return m_rect.GetStartPoint( );
 	}
+
+protected:
 
 	PixelRectSize const getShapeSize( )
 	{
@@ -119,8 +122,6 @@ protected:
 	virtual void FillBuffer( GridPoint const ) { };
 
 	TextDisplay & m_textDisplay;
-
-	static unsigned short const MARGIN = 3;  // minimum space around text
 
 private:
 	PixelRect     m_rect;      // position is relative to GridPointShape

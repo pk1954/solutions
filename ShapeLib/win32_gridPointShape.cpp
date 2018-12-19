@@ -8,17 +8,9 @@
 // Can be displayed, if at least IndividualShape has space
 // If possible, display also CoordShape
 
-PixelRectSize GridPointShape::MinimalSize( )  
-{
-	PixelRectSize minCoord = m_coordShape.MinimalSize( );
-	PixelRectSize minIndiv = m_indivShape.MinimalSize( );
-
-	return setMinSize( minIndiv );     
-}                                     
-
 long GridPointShape::GetIndShapeSize( ) // returns half of side length
 {
-	short const sFieldSize = m_textDisplay.GetFieldSize();
+	short const sFieldSize = m_shape.GetFieldSize();
 	return ( sFieldSize <    8 ) ?                         1  :
 		   ( sFieldSize <=  16 ) ? ((3 * sFieldSize) / 8 - 1) : 
 								   ((3 * sFieldSize) / 8    );
@@ -26,26 +18,28 @@ long GridPointShape::GetIndShapeSize( ) // returns half of side length
 
 void GridPointShape::RefreshLayout( )
 {
-	MinimalSize( );
+	PixelRectSize const minCoord   = m_coordShape.MinimalSize( );
+	PixelRectSize const minIndiv   = m_indivShape.MinimalSize( );
+	PixelRectSize const minSize    = m_shape.SetMinSize( minIndiv );     
+	short         const sFieldSize = m_shape.GetFieldSize();
 
-	short const sFieldSize = m_textDisplay.GetFieldSize();
-	if ( setShapeRect( PixelPoint(), PixelRectSize( sFieldSize ) ) )
+	if ( m_shape.SetShapeRect( PixelPoint(), PixelRectSize( sFieldSize ) ) )
 	{
 		long lSizeInd   = 2 * GetIndShapeSize( );
 		long lSizeFrame = sFieldSize - lSizeInd;
 
-		PixelPoint pixPosSubShape = getShapePos( );
-
-		pixPosSubShape += PixelPoint( lSizeFrame / 2, 0 );
-		m_coordShape.PrepareShape( pixPosSubShape, PixelRectSize( lSizeInd, lSizeFrame / 2 ) );
-		pixPosSubShape += PixelPoint( 0, lSizeFrame / 2);
-		m_indivShape.PrepareShape( pixPosSubShape, PixelRectSize( lSizeInd, lSizeInd ) );
+		m_coordShape.PrepareShape( PixelPoint( lSizeFrame / 2,              0 ), PixelRectSize( lSizeInd, lSizeFrame / 2 ) );
+		m_indivShape.PrepareShape
+		( 
+			PixelPoint( lSizeFrame / 2 + 3, lSizeFrame / 2 + 3 ), 
+			PixelRectSize( lSizeInd - 6,       lSizeInd - 6 ) 
+		);
 	}
 }
 
 void GridPointShape::Draw( GridPoint const gp, PixelPoint const ppGridpointOffset )
 {
-	if ( isNotEmpty () )
+	if ( m_shape.IsNotEmpty () )
 	{
 		m_coordShape.Draw( gp, ppGridpointOffset );
 		m_indivShape.Draw( gp, ppGridpointOffset );
@@ -66,5 +60,5 @@ Shape const * GridPointShape::FindShape
 	if ( pShapeRes != nullptr )
 		return pShapeRes;
 
-	return Shape::FindShape( pnt, gp );
+	return m_shape.FindShape( pnt, gp );
 }

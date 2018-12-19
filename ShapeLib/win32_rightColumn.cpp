@@ -19,30 +19,22 @@ RightColumn::RightColumn( TextDisplay & textDisplay ) :
 
 PixelRectSize RightColumn::MinimalSize( )  
 {       
-	for	( auto & pSlot : m_aMemorySlot )
-	{
-		pSlot->MinimalSize( );
-	}
-
-	return setMinSize
-	( 
-		2 * MARGIN + m_aMemorySlot[0]->GetMinWidth ( ), 
-		2 * MARGIN + m_aMemorySlot[0]->GetMinHeight( ) * IMEMSIZE_MAX
-	);     
+	PixelRectSize minSlotSize = m_aMemorySlot[0]->MinimalSize( );
+	return SetMinSize( minSlotSize.GetWidth( ), minSlotSize.GetHeight( ) * IMEMSIZE_MAX	);     
 }                                     
 
 void RightColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const ppSize )
 {
-	if ( setShapeRect( ppOffset, ppSize ) )
+	if ( SetShapeRect( ppOffset, ppSize ) )
 	{
-		long          const slotHeight{ getShapeHeight() / (IMEMSIZE_MAX + 1) };
+		long          const slotHeight{ getShapeHeight() / (IMEMSIZE_MAX ) };
 		PixelRectSize const slotSize  { getShapeWidth(), slotHeight };
 
-		PixelPoint pixPosSubShape = getShapePos( );
+		PixelPoint posShape = GetShapePos( );
 		for	( auto & pSlot : m_aMemorySlot )
 		{
-			pixPosSubShape.y += slotHeight;
-			pSlot->PrepareShape( pixPosSubShape, slotSize );
+			posShape.y += slotHeight;
+			pSlot->PrepareShape( posShape, slotSize );
 		}
 	}
 }
@@ -55,7 +47,7 @@ void RightColumn::FillBuffer( GridPoint const gp )
 	MEM_INDEX const memSize = core.GetMemSize( gp );  
 	MEM_INDEX const memUsed = core.GetMemUsed( gp ); 
         
-	buffer << L"Mem " << memUsed << L"/" << memSize;
+	buffer << L"Memory " << memUsed << L"/" << memSize;
 }
 
 Shape const * RightColumn::FindShape
@@ -78,7 +70,7 @@ Shape const * RightColumn::FindShape
 
 void RightColumn::Draw( GridPoint const gp, PixelPoint const ppGridpointOffset )
 {
-	if ( isNotEmpty () )
+	if ( IsNotEmpty () )
 	{
 		Shape::Draw( gp, ppGridpointOffset );
 

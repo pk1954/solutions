@@ -8,7 +8,7 @@
 
 void Shape::Draw( GridPoint const gp, PixelPoint const ppGridPointOffset )
 {
-	if ( isNotEmpty() )
+	if ( IsNotEmpty() )
 	{
 		m_textDisplay.Clear();
 		FillBuffer( gp );
