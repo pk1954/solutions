@@ -49,14 +49,19 @@ public:
 		return m_pixelCoordinates.GetFieldSize();
 	}
 
-	long GetIndDisplaySize( ) const
+	PixelPoint GetOffset( GridPoint const gp )
 	{
-		return (5 * GetFieldSize()) / 8;  // use only 5/8 of field size; 
+		return m_pixelCoordinates.Grid2PixelPos( gp );
 	}
 
 	PixelPoint GetCenterOffset( GridPoint const gp )
 	{
 		return m_pixelCoordinates.Grid2PixelPosCenter( gp );
+	}
+
+	PixelRect CalcRect( )
+	{
+		return m_D3dBuffer.D3D_CalcRect( m_wBuffer.str( ) );
 	}
 
 	void DrawText( PixelRect const & rect )

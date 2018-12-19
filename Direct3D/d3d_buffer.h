@@ -22,15 +22,16 @@ public:
     D3dBuffer( HWND const, ULONG const );
     ~D3dBuffer();
 
-    BOOL StartFrame( );
-    void ResetFont( int const );
-    void AddIndividualPrimitive( PixelPoint const, DWORD const, float const );    
-    void AddBackgroundPrimitive( PixelPoint const, DWORD const, float const );    
-    void RenderIndividuals( );
-    void RenderBackground( );
-    void RenderTranspRect( PixelRect const &, unsigned int const, COLORREF const );
-    void D3D_DrawText( PixelRect const &, wstring const &, D3DCOLOR );
-    void EndFrame( );
+    BOOL      StartFrame( );
+    void      ResetFont( int const );
+    void      AddIndividualPrimitive( PixelPoint const, DWORD const, float const );    
+    void      AddBackgroundPrimitive( PixelPoint const, DWORD const, float const );    
+    void      RenderIndividuals( );
+    void      RenderBackground( );
+    void      RenderTranspRect( PixelRect const &, unsigned int const, COLORREF const );
+    void      D3D_DrawText( PixelRect const &, wstring const &, D3DCOLOR );
+    PixelRect D3D_CalcRect( wstring const & );
+	void      EndFrame( );
 
     void SetStripMode( tBoolOp const bOp ) 
 	{ 

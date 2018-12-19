@@ -10,27 +10,19 @@
 class IndividualShape : public Shape
 {
 public:
+	IndividualShape( TextDisplay & t ) :
+		Shape( t ),
+		m_leftColumn( t ),
+		m_rightColumn( t )
+	{}
 
-	IndividualShape
-	( 
-		Shape * const pParent,
-		TextDisplay & textDisplay 
-	) :
-		Shape     ( pParent, textDisplay ),
-		m_leftColumn ( this, textDisplay ),
-		m_rightColumn( this, textDisplay )
-	{ }
+	virtual PixelRectSize MinimalSize( );
+	virtual void          PrepareShape( PixelPoint const, PixelRectSize const );
+	virtual void          Draw        ( GridPoint  const, PixelPoint    const );
+	virtual Shape const * FindShape   ( PixelPoint const, GridPoint     const ) const;
 
-	virtual void PrepareShape( GridPoint const );
-	virtual void FillBuffer  ( GridPoint const gp ) { };  // all text in subshapes
-	virtual void Draw        ( GridPoint const );
-
-	virtual Shape const * FindShape( PixelPoint const, GridPoint const ) const;
-
-	LeftColumn const & GetLeftColumn() const 
-	{
-		return m_leftColumn;
-	}
+	LeftColumn  const & GetLeftColumn () const { return m_leftColumn;  }
+	RightColumn const & GetRightColumn() const { return m_rightColumn; }
 
 private:
 	LeftColumn  m_leftColumn;

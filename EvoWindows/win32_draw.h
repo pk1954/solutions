@@ -33,7 +33,7 @@ public:
     DrawFrame( HWND const, EvolutionCore *, PixelCoordinates *, DspOptWindow *, ColorManager * );
     ~DrawFrame( );
 
-    void ResizeDrawFrame( PixelPoint const );
+    void ResizeDrawFrame( );
     void DoPaint( HWND, KGridRect const & );
     void SetStripMode( tBoolOp );
 	bool SetHighlightPos( PixelPoint const );
@@ -74,8 +74,6 @@ private:
     void     setIndividualColor( GridPoint const, float const ) const;
 	void     addPrimitive( GridPoint const, COLORREF const, float const ) const;
 	
-	void prepareGridPoint( GridPoint const );
-
 	void drawBackground( );
     void drawText       ( GridRect  const & );
     void drawIndividuals( GridRect  const & );

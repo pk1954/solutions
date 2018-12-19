@@ -67,8 +67,8 @@ public:
 	{
         m_lLeft   = ptOrigin.x; 
         m_lTop    = ptOrigin.y; 
-        m_lRight  = m_lLeft + rectSize.GetWidth(); 
-        m_lBottom = m_lTop  + rectSize.GetHeight(); 
+        m_lRight  = m_lLeft + rectSize.GetWidth()  - 1; 
+        m_lBottom = m_lTop  + rectSize.GetHeight() - 1; 
 		assert( m_lBottom >= m_lTop );
 	}
 
@@ -125,8 +125,24 @@ public:
 		return (m_lLeft <= pnt.x) && (pnt.x < m_lRight) && (m_lTop <= pnt.y) && (pnt.y < m_lBottom);
 	}
 
+	bool Includes( PixelRectSize const size ) const
+	{
+		return ( GetWidth() >= size.GetWidth() ) && ( GetHeight() >= size.GetHeight() );
+	}
+
 	bool const operator== ( PixelRect const & a ) const { return ( a.m_lLeft == m_lLeft ) && ( a.m_lTop == m_lTop ) && ( a.m_lRight == m_lRight ) && ( a.m_lBottom == m_lBottom ); };
     bool const operator!= ( PixelRect const & a ) const { return ( a.m_lLeft != m_lLeft ) || ( a.m_lTop != m_lTop ) || ( a.m_lRight != m_lRight ) || ( a.m_lBottom != m_lBottom ); };
+
+	PixelRect const Scale( long const lPixels )  // positive values of lPixels enlarge rectangle
+	{                                            // negative values reduce its size
+		return PixelRect
+		{
+			m_lLeft   - lPixels,
+			m_lTop    - lPixels,
+			m_lRight  + lPixels,
+			m_lBottom + lPixels
+		};
+	}
 
 	PixelRect const operator+= ( PixelPoint const offset )
 	{ 

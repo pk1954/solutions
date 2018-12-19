@@ -87,11 +87,27 @@ D3dBuffer::~D3dBuffer()
     m_d3d              = nullptr;
 }
 
+//lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
+PixelRect D3dBuffer::D3D_CalcRect( wstring const & wstr )
+{
+	RECT rect{ 0, 0, 0, 0 };
+    assert( m_id3dx_font != nullptr );
+    m_id3dx_font->DrawText
+    ( 
+        nullptr,           // pSprite
+        wstr.c_str( ),     // pString
+        -1,                // Count
+        &rect,             // pRect
+        DT_CALCRECT,       // Format
+        0                  // Color
+    ); 
+	return Util::RECT2PixelRect( rect );
+}
+
 void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, wstring const & wstr, D3DCOLOR col )
 {
-	RECT rect{ pixRect.m_lLeft,	pixRect.m_lTop, pixRect.m_lRight, pixRect.m_lBottom };			  
+	RECT rect( Util::PixelRect2RECT( pixRect ) );			  
     assert( m_id3dx_font != nullptr );
-    //lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
     m_id3dx_font->DrawText
     ( 
         nullptr,           // pSprite
@@ -101,8 +117,8 @@ void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, wstring const & wstr, D
         DT_LEFT,           // Format
         col                // Color
     ); 
-    //lint +esym( 613, D3dBuffer::m_id3dx_font ) 
 }
+//lint +esym( 613, D3dBuffer::m_id3dx_font ) 
 
 // functions called per frame
 

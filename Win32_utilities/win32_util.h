@@ -154,13 +154,23 @@ namespace Util
 		return POINT{ pp.x, pp.y }; 
 	}
 
-    inline BOOL PixelPointInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?
+	inline PixelRect RECT2PixelRect( RECT const & rect ) 
+	{ 
+		return PixelRect{ rect.left, rect.top, rect.right, rect.bottom }; 
+	}
+
+	inline RECT PixelRect2RECT( PixelRect const & pixRect ) 
+	{ 
+		return RECT{ pixRect.m_lLeft,	pixRect.m_lTop, pixRect.m_lRight, pixRect.m_lBottom }; 
+	}
+
+    inline BOOL IsInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?
     {
         RECT const rect = GetClRect( hwnd );  
 		return PtInRect( &rect, PixelPoint2POINT( pp ) );
     } 
 
-    inline BOOL PixelRectInClientRect( HWND const hwnd, PixelRect const pixRect )  // Is rect in client rect?
+    inline BOOL IsInClientRect( HWND const hwnd, PixelRect const & pixRect )  // Is rect in client rect?
     {
         RECT const rect = GetClRect( hwnd );  
 		return PtInRect( &rect, PixelPoint2POINT( pixRect.GetStartPoint() ) ) && 
@@ -169,7 +179,7 @@ namespace Util
 
     inline BOOL CrsrInClientRect( HWND const hwnd )  // Is cursor position in client rect?
     {
-		return PixelPointInClientRect( hwnd, GetRelativeCrsrPosition( hwnd )  );
+		return IsInClientRect( hwnd, GetRelativeCrsrPosition( hwnd )  );
     } 
 
     inline void FastFill( HDC const hDC, RECT const & rect )

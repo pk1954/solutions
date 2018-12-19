@@ -31,11 +31,12 @@ DrawFrame::DrawFrame
     m_clutBackground( ),
 	m_gridPointShape( nullptr )
 {
-    m_pD3dBuffer = new D3dBuffer( hwnd, GridPoint::GRID_AREA );
 	m_clutBackground.Allocate( MAX_BG_COLOR );    // default is grey scale lookup table with entries 0 .. 255
+    m_pD3dBuffer      = new D3dBuffer( hwnd, GridPoint::GRID_AREA );
 	m_pTextDisplay    = new TextDisplay( * m_pD3dBuffer, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
 	m_gridPointShape  = new GridPointShape( * m_pTextDisplay );
 	m_pShapeHighlight = nullptr;
+	m_gridPointShape->MinimalSize( );
 }
 
 DrawFrame::~DrawFrame( ) 
@@ -64,24 +65,17 @@ void DrawFrame::SetStripMode( tBoolOp const bOp )
     m_pD3dBuffer->SetStripMode( bOp ); 
 };
 
-void DrawFrame::ResizeDrawFrame( PixelPoint const ptCrsr )
+void DrawFrame::ResizeDrawFrame( )
 {
 	short const sFieldSize     = m_pPixelCoordinates->GetFieldSize();
-	int   const MAX_TEXT_LINES = 20;
+	int   const MAX_TEXT_LINES = 10;
 	int         iFontSize      = sFieldSize / MAX_TEXT_LINES;
 	if ( iFontSize < 9 )
 		iFontSize = 9;
 	if ( iFontSize > 16 )
 		iFontSize = 16;
     m_pD3dBuffer->ResetFont( iFontSize );
-	SetHighlightPos( ptCrsr );   
-}
-
-void DrawFrame::prepareGridPoint( GridPoint const gp )
-{
-	PixelRect const rect = m_pPixelCoordinates->GridPoint2PixelRect( gp );
-	m_gridPointShape->SetShapeRect( rect );
-	m_gridPointShape->PrepareShape( gp );
+	m_gridPointShape->RefreshLayout( );
 }
 
 bool DrawFrame::SetHighlightPos( PixelPoint const ptCrsr )
@@ -89,15 +83,15 @@ bool DrawFrame::SetHighlightPos( PixelPoint const ptCrsr )
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
 	m_gpHighlight = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
-	prepareGridPoint( m_gpHighlight );
-	m_pShapeHighlight = m_gridPointShape->FindShape( ptCrsr, m_gpHighlight );
+	assert( m_gpHighlight.IsInGrid() );
+	PixelPoint const ppGridpointOffset =  m_pPixelCoordinates->Grid2PixelPos( m_gpHighlight );
+	m_pShapeHighlight = m_gridPointShape->FindShape( ptCrsr - ppGridpointOffset, m_gpHighlight );
 	return ( (gpLast != m_gpHighlight) || (pShapeLast != m_pShapeHighlight) );
 }
 
 void DrawFrame::HighlightShape( Shape const * pShape, GridPoint const gp )
 {
-	prepareGridPoint( gp );
-	PixelRect const & rect  = pShape->GetAbsoluteCoordinates( );
+	PixelRect const & rect  = pShape->GetAbsoluteShapeRect( gp );
 	COLORREF  const   color = m_pColorManager->GetColor( tColorObject::highlight );
 	m_pD3dBuffer->RenderTranspRect( rect, 128, color );  
 }
@@ -192,11 +186,7 @@ void DrawFrame::drawPOI( GridPoint const gpPoi )
 
 void DrawFrame::drawIndividuals( GridRect const & rect )
 {
-    short const sFieldSize   = m_pPixelCoordinates->GetFieldSize();
-    long  const lHalfSizeInd = ( sFieldSize <    8 ) ?                         1  :
-                               ( sFieldSize <=  16 ) ? ((3 * sFieldSize) / 8 - 1) : 
-                                                       ((3 * sFieldSize) / 8    );
-	float const fHalfSizeInd = static_cast<float>( lHalfSizeInd );
+	float const fHalfSizeInd = static_cast<float>( m_gridPointShape->GetIndShapeSize( ) );
 
     rect.Apply2Rect
 	( 
@@ -220,8 +210,8 @@ void DrawFrame::drawText( GridRect const & rect )
 		{
             if ( m_pCore->IsAlive( gp ) )
             {
-				prepareGridPoint( gp );
-				m_gridPointShape->Draw( gp );
+				PixelPoint const ppGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( gp );
+				m_gridPointShape->Draw( gp, ppGridpointOffset );
             }
 		}
 	);
@@ -259,9 +249,8 @@ COLORREF DrawFrame::getBackgroundColor( int const iValue ) const
 
 void DrawFrame::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pnt )
 {
-	PixelPoint const pp = Util::POINT2PixelPoint( pnt );
-	GridPoint  const gp = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pp ) );
-	prepareGridPoint( gp );
+	PixelPoint    const pp     = Util::POINT2PixelPoint( pnt );
+	GridPoint     const gp     = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pp ) );
 	Shape const * const pShape = m_gridPointShape->FindShape( pp, gp );
 	if ( pShape )
 		pShape->AddContextMenuEntries( hPopupMenu );

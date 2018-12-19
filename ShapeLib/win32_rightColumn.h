@@ -12,11 +12,12 @@ class MemorySlot;
 class RightColumn : public Shape
 {
 public:
-	RightColumn( Shape * const,	TextDisplay & );
+	RightColumn( TextDisplay & );
 
-	virtual void PrepareShape( GridPoint const );
-	virtual void FillBuffer  ( GridPoint const );
-	virtual void Draw        ( GridPoint const );
+	virtual PixelRectSize MinimalSize( );
+	virtual void          PrepareShape  ( PixelPoint const, PixelRectSize const );
+	virtual void          Draw          ( GridPoint const, PixelPoint const  );
+	virtual void          FillBuffer    ( GridPoint const );
 
 	virtual Shape const * FindShape( PixelPoint const, GridPoint const ) const;
 

@@ -15,56 +15,28 @@ using namespace std;
 class Shape
 {
 public:
-	static short const ZOOM_LEVEL_1 =  96;
-	static short const ZOOM_LEVEL_2 = 256;
-
-	Shape
-	( 
-		Shape * const pParent,
-		TextDisplay & textDisplay 
-	) :
-		m_pParent( pParent ),
-		m_rect( PixelRect( ) ),
-		m_textDisplay( textDisplay )
+	Shape( TextDisplay & t ) :
+		m_textDisplay( t ),
+		m_rect   ( PixelRect    ( ) ),
+		m_minSize( PixelRectSize( ) )
 	{}
 
-	PixelRect GetAbsoluteCoordinates( ) const;
+	virtual PixelRectSize MinimalSize( )  
+	{                                     
+		m_textDisplay.Clear();
+		FillBuffer( GridPoint( 0, 0 ) );
+		PixelRect pixRect = m_textDisplay.CalcRect( );
+		return setMinSize( pixRect.GetSize( ) + 2 * MARGIN );
+	}                                     
 
-	void SetShapeRect( PixelRect const & rect )
+	PixelRect const GetAbsoluteShapeRect( GridPoint const gp ) const 
 	{
-		m_rect = rect;
+		return m_rect + m_textDisplay.GetOffset( gp );
 	}
 
-	void SetShapeRect( PixelPoint const & pp, PixelRectSize const & size )
-	{
-		SetShapeRect( PixelRect( pp, size )	);
-	}
-
-	PixelRect const GetShapeRect( ) const 
-	{
-		return m_rect;
-	}
-
-	PixelRectSize const GetShapeSize( ) const 
-	{
-		return m_rect.GetSize();
-	}
-
-	long const GetShapeWidth( ) const 
-	{
-		return m_rect.GetWidth();
-	}
-
-	long const GetShapeHeight( ) const 
-	{
-		return m_rect.GetHeight();
-	}
-
-	virtual bool PointInShape( PixelPoint const pnt ) const
-	{
-		PixelRect rectAbsolute = GetAbsoluteCoordinates( );
-		return rectAbsolute.Includes( pnt );
-	}
+	PixelRectSize const GetMinSize  ( ) const { return m_minSize; }
+	long          const GetMinWidth ( ) const { return m_minSize.GetWidth();  }
+	long          const GetMinHeight( ) const {	return m_minSize.GetHeight(); }
 
 	virtual Shape const * FindShape  // for all shapes without subshapes
 	( 
@@ -72,7 +44,7 @@ public:
 		GridPoint  const gp
 	) const
 	{
-		return PointInShape( pnt ) ? this : nullptr;
+		return m_rect.Includes( pnt ) ? this : nullptr;
 	}
 
 	virtual GridPoint GetReferencedGridPoint( GridPoint const gp ) const 
@@ -80,17 +52,77 @@ public:
 		return GridPoint::GP_NULL; 
 	}
 
-	virtual void Draw( GridPoint const );
-	virtual void PrepareShape( GridPoint const ) {};
+	virtual void Draw( GridPoint const, PixelPoint const );
 	virtual void AddContextMenuEntries( HMENU const ) const {};
+
+	// PrepareShape: Rearrange shape according new size
+	// no GridPoint parameter, because function is responsible for 
+	// general adjustments, valid for all grid points
+
+	virtual void PrepareShape( PixelPoint const ppOffset, PixelRectSize const ppSize )
+	{
+		setShapeRect( ppOffset, ppSize );
+	}
+
+	void SetShapeEmpty()
+	{
+		return m_rect.SetEmpty( );
+	}
 
 protected:
 
-	virtual void FillBuffer( GridPoint const ) = 0;
+	bool isNotEmpty()
+	{
+		return m_rect.IsNotEmpty( );
+	}
 
-    TextDisplay & m_textDisplay;
+	PixelRectSize setMinSize( PixelRectSize const rect )
+	{
+		return m_minSize = rect;
+	}
+
+	PixelRectSize setMinSize( int const iWidth, int const iHeight )
+	{
+		return setMinSize( PixelRectSize( iWidth, iHeight ) );
+	}
+
+	bool setShapeRect( PixelPoint const ppOffset, PixelRectSize const ppSize )
+	{
+		bool bRes = ppSize.Includes( m_minSize );
+		if ( bRes )
+			m_rect = PixelRect( ppOffset, ppSize ).Scale( - MARGIN );
+		else 
+			m_rect.SetEmpty( );
+		return bRes;
+	}
+
+	PixelPoint const getShapePos( )
+	{
+		return m_rect.GetStartPoint( );
+	}
+
+	PixelRectSize const getShapeSize( )
+	{
+		return m_rect.GetSize( );
+	}
+
+	long const getShapeWidth()
+	{
+		return m_rect.GetWidth( );
+	}
+
+	long const getShapeHeight()
+	{
+		return m_rect.GetHeight( );
+	}
+
+	virtual void FillBuffer( GridPoint const ) { };
+
+	TextDisplay & m_textDisplay;
+
+	static unsigned short const MARGIN = 3;  // minimum space around text
 
 private:
-	PixelRect m_rect;
-	Shape   * m_pParent;
+	PixelRect     m_rect;      // position is relative to GridPointShape
+ 	PixelRectSize m_minSize;   // Smallest possible size of Shape in pixels 
 };

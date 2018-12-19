@@ -10,7 +10,11 @@ class PixelRectSize
 {
 public:
 	PixelRectSize( ) : m_iWidth( 0 ), m_iHeight( 0 ) {};
+    PixelRectSize( int const iSideLength ) : m_iWidth( iSideLength ), m_iHeight( iSideLength ) {};
     PixelRectSize( int const iWidth, int const iHeight ) : m_iWidth(iWidth), m_iHeight(iHeight) {};
+
+    PixelRectSize const operator+= (long const l) { m_iWidth += l; m_iHeight += l; return *this; };
+    PixelRectSize const operator-= (long const l) { m_iWidth -= l; m_iHeight -= l; return *this; };
 
     PixelRectSize const operator*= (long const l) { m_iWidth *= l; m_iHeight *= l; return *this; };
     PixelRectSize const operator/= (long const l) { m_iWidth /= l; m_iHeight /= l; return *this; };
@@ -29,20 +33,34 @@ public:
         m_iHeight -= iDiff;
     }
 
-	void SetHeight(int const iHeight)
+	void SetHeight( int const iHeight )
 	{
 		m_iHeight = iHeight;
 	}
+
+    void SetEmpty( )
+    {
+        m_iWidth  = 0;
+		m_iHeight = 0;
+    }
 
     bool IsEmpty( ) const
     {
         return ( m_iWidth == 0 ) || ( m_iHeight == 0 );
     }
 
+    bool Includes( PixelRectSize const size ) const
+    {
+        return ( m_iWidth >= size.m_iWidth ) && ( m_iHeight >= size.m_iHeight );
+    }
+
 private:
     int m_iWidth;
     int m_iHeight;
 };
+
+inline PixelRectSize const operator+ (PixelRectSize const & a, long const l) { PixelRectSize res(a); res += l; return res; };
+inline PixelRectSize const operator- (PixelRectSize const & a, long const l) { PixelRectSize res(a); res -= l; return res; };
 
 inline PixelRectSize const operator* (PixelRectSize const & a, long const l) { PixelRectSize res(a); res *= l; return res; };
 inline PixelRectSize const operator/ (PixelRectSize const & a, long const l) { PixelRectSize res(a); res /= l; return res; };

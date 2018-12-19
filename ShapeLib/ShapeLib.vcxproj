@@ -172,6 +172,7 @@
     </ClCompile>
     <ClCompile Include="win32_gridPointShape.cpp" />
     <ClCompile Include="win32_individualShape.cpp" />
+    <ClCompile Include="win32_infoShape.cpp" />
     <ClCompile Include="win32_leftColumn.cpp" />
     <ClCompile Include="win32_memorySlot.cpp" />
     <ClCompile Include="win32_rightColumn.cpp" />

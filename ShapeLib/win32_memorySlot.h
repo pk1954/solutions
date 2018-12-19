@@ -12,22 +12,17 @@ class MemorySlot : public Shape
 public:
 	MemorySlot
 	( 
-		Shape       * const pParent,
-		TextDisplay &       textDisplay, 
-		MEM_INDEX     const index 
+		TextDisplay & textDisplay, 
+		MEM_INDEX const index 
 	) :
-		Shape( pParent, textDisplay ),
+		Shape( textDisplay ),
 		m_index( index )
 	{}
 
+	virtual void      FillBuffer( GridPoint const gp );
 	virtual GridPoint GetReferencedGridPoint( GridPoint const ) const; 
 
-	virtual void FillBuffer( GridPoint const gp );
-
-	MEM_INDEX GetMemIndex() const
-	{
-		return m_index;
-	}
+	MEM_INDEX GetMemIndex() const {	return m_index;	}
 
 private:
 	virtual GridPoint getReferencedGridPoint( IndId const ) const;

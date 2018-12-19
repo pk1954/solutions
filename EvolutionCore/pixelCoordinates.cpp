@@ -81,7 +81,7 @@ short PixelCoordinates::CalcMaximumFieldSize
 )
 {
 	PixelRectSize pixRectSize = pntPixSize / PixelRectSize{ gpGridRectSize.x, gpGridRectSize.y };
-	return std::min( pixRectSize.GetWidth(), pixRectSize.GetHeight() );
+	return min( pixRectSize.GetWidth(), pixRectSize.GetHeight() );
 }
 
 bool PixelCoordinates::SetGridFieldSize( short const sNewFieldSize )

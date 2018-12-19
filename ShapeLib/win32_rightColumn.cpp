@@ -8,33 +8,42 @@
 
 using namespace std;
 
-RightColumn::RightColumn
-( 
-	Shape * const pParent,
-	TextDisplay & textDisplay 
-) :
-	Shape( pParent, textDisplay )
+RightColumn::RightColumn( TextDisplay & textDisplay ) :
+	Shape( textDisplay )
 {
 	for	( MEM_INDEX mem = 0; mem < IMEMSIZE_MAX; ++mem )
 	{
-		m_aMemorySlot[mem] = new MemorySlot( this, textDisplay, mem );
+		m_aMemorySlot[mem] = new MemorySlot( textDisplay, mem );
 	}
 }
 
-void RightColumn::PrepareShape( GridPoint const gp )
-{
-	long          const lShapeHeight = GetShapeHeight();
-	long          const lHeight      = lShapeHeight / (IMEMSIZE_MAX + 1);
-	PixelRectSize const slotSize( GetShapeWidth(), lHeight );
-
-	long lYpos = lHeight;
-	MEM_INDEX const memUsed = m_textDisplay.Core().GetMemUsed( gp ); 
+PixelRectSize RightColumn::MinimalSize( )  
+{       
 	for	( auto & pSlot : m_aMemorySlot )
 	{
-		if ( pSlot->GetMemIndex() == memUsed )
-			break;
-		lYpos += lHeight;
-		pSlot->SetShapeRect( PixelRect( PixelPoint( 0, lYpos ), slotSize ) );
+		pSlot->MinimalSize( );
+	}
+
+	return setMinSize
+	( 
+		2 * MARGIN + m_aMemorySlot[0]->GetMinWidth ( ), 
+		2 * MARGIN + m_aMemorySlot[0]->GetMinHeight( ) * IMEMSIZE_MAX
+	);     
+}                                     
+
+void RightColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const ppSize )
+{
+	if ( setShapeRect( ppOffset, ppSize ) )
+	{
+		long          const slotHeight{ getShapeHeight() / (IMEMSIZE_MAX + 1) };
+		PixelRectSize const slotSize  { getShapeWidth(), slotHeight };
+
+		PixelPoint pixPosSubShape = getShapePos( );
+		for	( auto & pSlot : m_aMemorySlot )
+		{
+			pixPosSubShape.y += slotHeight;
+			pSlot->PrepareShape( pixPosSubShape, slotSize );
+		}
 	}
 }
 
@@ -46,7 +55,7 @@ void RightColumn::FillBuffer( GridPoint const gp )
 	MEM_INDEX const memSize = core.GetMemSize( gp );  
 	MEM_INDEX const memUsed = core.GetMemUsed( gp ); 
         
-	buffer << L"  Mem " << memUsed << L"/" << memSize;
+	buffer << L"Mem " << memUsed << L"/" << memSize;
 }
 
 Shape const * RightColumn::FindShape
@@ -60,22 +69,25 @@ Shape const * RightColumn::FindShape
 	{
 		if ( pSlot->GetMemIndex() == memUsed )
 			break;
-		if ( pSlot->PointInShape(pnt) )
+		if ( pSlot->FindShape( pnt, gp ) )
 			return pSlot;
 	}
 
-	return nullptr;
+	return Shape::FindShape( pnt, gp );
 }
 
-void RightColumn::Draw( GridPoint const gp )
+void RightColumn::Draw( GridPoint const gp, PixelPoint const ppGridpointOffset )
 {
-	Shape::Draw( gp );
-
-	MEM_INDEX const memUsed = m_textDisplay.Core().GetMemUsed( gp ); 
-	for	( auto & pSlot : m_aMemorySlot )
+	if ( isNotEmpty () )
 	{
-		if ( pSlot->GetMemIndex() == memUsed )
-			break;
-		pSlot->Draw( gp );
+		Shape::Draw( gp, ppGridpointOffset );
+
+		MEM_INDEX const memUsed = m_textDisplay.Core().GetMemUsed( gp ); 
+		for	( auto & pSlot : m_aMemorySlot )
+		{
+			if ( pSlot->GetMemIndex() == memUsed )
+				break;
+			pSlot->Draw( gp, ppGridpointOffset );
+		}
 	}
 }

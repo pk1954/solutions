@@ -10,26 +10,18 @@
 class LeftColumn : public Shape
 {
 public:
-	LeftColumn
-	( 
-		Shape * const pParent,
-		TextDisplay & textDisplay 
-	) :
-		Shape( pParent, textDisplay ),
-		m_idShape  ( this, textDisplay ),
-		m_infoShape( this, textDisplay )
+	LeftColumn( TextDisplay & t ) :
+		Shape( t ),
+		m_idShape  ( t ),
+		m_infoShape( t )
 	{ }
 
-	virtual void PrepareShape( GridPoint const );
-	virtual void Draw        ( GridPoint const );
-	virtual void FillBuffer  ( GridPoint const ) { };  // all text in subshapes
+	virtual PixelRectSize MinimalSize( );
+	virtual void          PrepareShape( PixelPoint const, PixelRectSize const );
+	virtual void          Draw        ( GridPoint  const, PixelPoint    const );
+	virtual Shape const * FindShape   ( PixelPoint const, GridPoint     const ) const;
 
-	virtual Shape const * FindShape( PixelPoint const, GridPoint const ) const;
-
-	IdentifierShape const & GetIdentifierShape() const 
-	{
-		return m_idShape;
-	}
+	IdentifierShape const & GetIdentifierShape() const { return m_idShape; }
 
 private:
 	IdentifierShape m_idShape;

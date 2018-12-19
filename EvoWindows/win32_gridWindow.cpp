@@ -106,7 +106,7 @@ BOOL GridWindow::inObservedClientRect( LPARAM const lParam )
     PixelPoint       const ptCrsrCheck      = m_pPixelCoordinates->Pixel2PixelPos( ptCrsr, pixCoordObserved );
 	HWND             const hWndObserved     = m_pGWObserved->GetWindowHandle( );
 
-    return Util::PixelPointInClientRect( hWndObserved, ptCrsrCheck );  // Is cursor position in observed client rect?
+    return Util::IsInClientRect( hWndObserved, ptCrsrCheck );  // Is cursor position in observed client rect?
 }
 
 void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
@@ -251,8 +251,7 @@ void GridWindow::mouseWheelAction( int iDelta )
 
 bool GridWindow::IsFullGridVisible() const
 {
-	PixelRect ppRect( m_pPixelCoordinates->Grid2PixelRect( GridRect::GRID_RECT_FULL ) );
-	return Util::PixelRectInClientRect( GetWindowHandle(), ppRect );
+	return IsInClientRect( m_pPixelCoordinates->Grid2PixelRect( GridRect::GRID_RECT_FULL ) );
 }
 
 LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -357,7 +356,10 @@ void GridWindow::newFieldSize( SHORT const fieldSize, GridPoint const gpCenter )
 	if ( m_pPixelCoordinates->SetGridFieldSize( fieldSize ) )
 	{
 		m_pPixelCoordinates->CenterGrid( gpCenter, GetClRectSize( ) ); // center grid around gpCenter
-		m_pDrawFrame->ResizeDrawFrame( GetRelativeCrsrPosition( ) );   // trigger DrawFrame to adapt font size etc.
+		m_pDrawFrame->ResizeDrawFrame( );  // trigger DrawFrame to adapt font size etc.
+		PixelPoint const ppCrsr = GetRelativeCrsrPosition( );
+		if ( IsInClientRect( ppCrsr ) )
+			m_pDrawFrame->SetHighlightPos( ppCrsr );  
 		PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );             
 	}
 	else

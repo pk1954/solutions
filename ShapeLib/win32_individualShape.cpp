@@ -4,57 +4,44 @@
 #include "stdafx.h"
 #include "win32_individualShape.h"
 
-void IndividualShape::PrepareShape( GridPoint const gp )
+PixelRectSize IndividualShape::MinimalSize( )  
+{       
+	PixelRectSize minLeft  = m_leftColumn .MinimalSize( );
+	PixelRectSize minRight = m_rightColumn.MinimalSize( );
+
+	return setMinSize( minLeft );
+}                                     
+
+void IndividualShape::PrepareShape( PixelPoint const ppOffset, PixelRectSize const ppSize )
 {
-    short const sFieldSize = m_textDisplay.GetFieldSize();
-	if ( sFieldSize >= ZOOM_LEVEL_1 )
+	if ( setShapeRect( ppOffset, ppSize ) )
 	{
-		PixelRect rect    = GetShapeRect();
-		long      lWidth  = rect.GetWidth();
-		long      lHeight = rect.GetHeight();
+		long lWidth  = getShapeWidth();
+		long lHeight = getShapeHeight();
 
-		if ( sFieldSize >= ZOOM_LEVEL_2 )
+		PixelPoint    pixPosSubShape  = getShapePos( );
+		PixelRectSize pixSizeSubShape = PixelRectSize( lWidth / 2, lHeight );
+
+		if ( m_leftColumn.GetMinWidth() + m_rightColumn.GetMinWidth() <= lWidth )
 		{
-			m_leftColumn.SetShapeRect
-			( 
-				PixelPoint   (          0,       0 ),
-				PixelRectSize( lWidth / 2, lHeight )
-			);
-			m_leftColumn.PrepareShape( gp );
-
-			m_rightColumn.SetShapeRect
-			( 
-				PixelPoint   ( lWidth / 2,       0 ),
-				PixelRectSize( lWidth / 2, lHeight )
-			);
-			m_rightColumn.PrepareShape( gp );
+			m_leftColumn .PrepareShape( pixPosSubShape, pixSizeSubShape );
+			pixPosSubShape.x += lWidth / 2;
+			m_rightColumn.PrepareShape( pixPosSubShape, pixSizeSubShape );
 		}
 		else
 		{
-			m_leftColumn.SetShapeRect
-			( 
-				PixelPoint   (      0,       0 ),
-				PixelRectSize( lWidth, lHeight )
-			);
-			m_leftColumn.PrepareShape( gp );
+			m_leftColumn .PrepareShape( pixPosSubShape, PixelRectSize( lWidth, lHeight ) );
+			m_rightColumn.SetShapeEmpty( );
 		}
 	}
 }
 
-void IndividualShape::Draw( GridPoint const gp )
+void IndividualShape::Draw( GridPoint const gp, PixelPoint const ppGridpointOffset )
 {
-    short const sFieldSize = m_textDisplay.GetFieldSize();
-	if ( sFieldSize >= ZOOM_LEVEL_1 )
+	if ( isNotEmpty () )
 	{
-		m_leftColumn.Draw( gp );
-
-		if ( sFieldSize >= ZOOM_LEVEL_2 )
-		{
-			if ( m_textDisplay.GetStrategyId( gp ) == tStrategyId::tit4tat )
-			{
-				m_rightColumn.Draw( gp );
-			}
-		}
+		m_leftColumn. Draw( gp, ppGridpointOffset );
+		m_rightColumn.Draw( gp, ppGridpointOffset );
 	}
 }
 
@@ -64,23 +51,16 @@ Shape const * IndividualShape::FindShape
 	GridPoint  const gp
 ) const
 {
-    short const sFieldSize = m_textDisplay.GetFieldSize();
-	if ( sFieldSize >= ZOOM_LEVEL_1 )
+	Shape const * pShapeRes = m_leftColumn.FindShape( pnt, gp );
+	if ( pShapeRes != nullptr )
+		return pShapeRes;
+
+	if ( m_textDisplay.GetStrategyId( gp ) == tStrategyId::tit4tat )
 	{
-		Shape const * pShapeRes = m_leftColumn.FindShape( pnt, gp );
+		pShapeRes = m_rightColumn.FindShape( pnt, gp );
 		if ( pShapeRes != nullptr )
 			return pShapeRes;
-
-		if ( sFieldSize >= ZOOM_LEVEL_2 )
-		{
-			if ( m_textDisplay.GetStrategyId( gp ) == tStrategyId::tit4tat )
-			{
-				pShapeRes = m_rightColumn.FindShape( pnt, gp );
-				if ( pShapeRes != nullptr )
-					return pShapeRes;
-			}
-		}
 	}
 
-	return PointInShape( pnt ) ? this : nullptr;
+	return Shape::FindShape( pnt, gp );
 }

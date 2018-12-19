@@ -6,18 +6,12 @@
 #include "stdafx.h"
 #include "win32_shape.h"
 
-PixelRect Shape::GetAbsoluteCoordinates( ) const
+void Shape::Draw( GridPoint const gp, PixelPoint const ppGridPointOffset )
 {
-	PixelRect pRes( m_rect );
-	for ( Shape * pParent = m_pParent; pParent; pParent = pParent->m_pParent )
-		pRes += pParent->m_rect.GetStartPoint();
-	return pRes;
-}
-
-void Shape::Draw( GridPoint const gp )
-{
-	m_textDisplay.Clear();
-	FillBuffer( gp );
-	PixelRect rectAbsolute = GetAbsoluteCoordinates( );
-	m_textDisplay.DrawText( rectAbsolute );
+	if ( isNotEmpty() )
+	{
+		m_textDisplay.Clear();
+		FillBuffer( gp );
+		m_textDisplay.DrawText( m_rect + ppGridPointOffset );
+	}
 }
