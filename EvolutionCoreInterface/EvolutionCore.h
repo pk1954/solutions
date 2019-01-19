@@ -67,6 +67,8 @@ public:
 
     virtual PlannedActivity const & GetPlan( ) const = 0;
 
+	virtual long GetGridArea( ) const = 0;
+
 // point of interest
 
     virtual IndId     GetPoiId( )                  const = 0;

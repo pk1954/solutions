@@ -20,13 +20,13 @@ public:
 	}
 
 	GridPoint24( GridPoint const gp ) :
-		GridPoint24( gp.x, gp.y )
+		GridPoint24( gp.x.get(), gp.y.get() )
 	{ }
 
 	GridPoint Unpack() const
 	{
 		int i = GetValue();
-		GridPoint gp( i >> 12, i & 0x0fff );
+		GridPoint gp( GRID_COORD(i >> 12), GRID_COORD(i & 0x0fff) );
 		return gp;
 	}
 

@@ -24,7 +24,7 @@ public:
 		SetBrushMode( tBrushMode::move );
 		SetManipulator( tManipulator::add );
 		SetShape( tShape::Circle );
-		SetRadius( 17 );
+		SetRadius( GRID_COORD(17_GRID_COORD) );
 		SetIntensity( 50 );
 	}
 
@@ -101,10 +101,10 @@ public:
 		case tShape::Circle:
 			m_filter = [this]( GridPoint const gp )
 			{ 
-				long  const lRadius     = static_cast<long>(m_radius);
+				long  const lRadius     = m_radius.get();
 				long  const lRadSquare  = lRadius * lRadius;
-				long  const lx          = static_cast<long>(gp.x);
-				long  const ly          = static_cast<long>(gp.y);
+				long  const lx          = gp.x.get();
+				long  const ly          = gp.y.get();
 				long  const lDistSquare = lx * lx + ly * ly;
 				short const sReduce     = CastToShort(( m_sIntensity * lDistSquare) / lRadSquare);
 				return m_sIntensity - sReduce;

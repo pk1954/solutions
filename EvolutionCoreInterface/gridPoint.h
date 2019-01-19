@@ -19,13 +19,10 @@ class GridPoint
 public:
 
     GridPoint( ) : x( GP_NULL.x ), y( GP_NULL.y ) {}
-	GridPoint( long long const _x, long long const _y )
-	{
-		ASSERT_SHORT( _x );
-		ASSERT_SHORT( _y );
-		x = static_cast< GRID_COORD >( _x );
-		y = static_cast< GRID_COORD >( _y );
-	}
+
+	GridPoint( GRID_COORD const _x, GRID_COORD const _y ) 
+		: x(_x), y(_y)
+	{}
 
     virtual ~GridPoint() {};
 
@@ -47,19 +44,19 @@ public:
     GridPoint const operator-= (GRID_COORD const l) { x -= l; y -= l; return * this; }
     GridPoint const operator%= (GRID_COORD const l) { x %= l; y %= l; return * this; }
 
-    bool const operator== (GRID_COORD const i) const { return (x == i) && (y == i); }
+    GridPoint const operator/= (int const i) { x /= i; y /= i; return * this; }
+
+	bool const operator== (GRID_COORD const i) const { return (x == i) && (y == i); }
     bool const operator!= (GRID_COORD const i) const { return (x != i) || (y != i); }
     bool const operator<= (GRID_COORD const i) const { return (x <= i) || (y <= i); }
     bool const operator<  (GRID_COORD const i) const { return (x <  i) || (y <  i); }
     bool const operator>= (GRID_COORD const i) const { return (x >= i) || (y >= i); }
     bool const operator>  (GRID_COORD const i) const { return (x >  i) || (y >  i); }
 
-	bool IsEvenCol( ) const { return x % 2 == 0; }
-	bool IsOddCol ( ) const { return x % 2 != 0; }
+	bool IsEvenCol( ) const { return x.IsEven(); }
+	bool IsOddCol ( ) const { return x.IsOdd(); }
 
-    static GRID_COORD const GRID_WIDTH  =  200;
-    static GRID_COORD const GRID_HEIGHT =  100;
-    static int        const GRID_AREA   = GRID_WIDTH * GRID_HEIGHT;
+    static int const GRID_AREA = GRID_WIDTH_ * GRID_HEIGHT_;
 
     static GridPoint const GRID_ORIGIN;
     static GridPoint const GRID_MAXIMUM;
@@ -67,7 +64,7 @@ public:
     static GridPoint const GRID_SIZE;
     static GridPoint const GP_NULL;
 
-    bool const IsInGrid( ) const { return (0 <= x) && (0 <= y) && (x < GRID_WIDTH) && (y < GRID_HEIGHT); };
+    bool const IsInGrid( ) const { return (0 <= x.get()) && (0 <= y.get()) && (x < GRID_WIDTH) && (y < GRID_HEIGHT); };
 
     bool IsNull   ( ) const { return * this == GP_NULL; };
     bool IsNotNull( ) const { return * this != GP_NULL; };
@@ -87,15 +84,20 @@ inline GridPoint const operator+ (GridPoint const a, GRID_COORD const l) { GridP
 inline GridPoint const operator- (GridPoint const a, GRID_COORD const l) { GridPoint res(a); res -= l; return res; }
 inline GridPoint const operator% (GridPoint const a, GRID_COORD const l) { GridPoint res(a); res %= l; return res; }
 
-inline GridPoint const Abs(GridPoint const a ) { return GridPoint( abs(a.x), abs(a.y ) ); }
+inline GridPoint const operator/ (GridPoint const a, int const i) { GridPoint res(a); res /= i; return res; }
+
+inline GridPoint const abs(GridPoint const a ) { return GridPoint( abs(a.x), abs(a.y) ); }
 
 inline GridPoint const Min(GridPoint const a, GridPoint const b) { return GridPoint( min(a.x, b.x), min(a.y, b.y) ); }
 inline GridPoint const Max(GridPoint const a, GridPoint const b) { return GridPoint( max(a.x, b.x), max(a.y, b.y) ); }
 
 inline bool const Neighbors( GridPoint const a, GridPoint const b )
 { 
-    GridPoint gpDiff( Abs(a - b) );
-    return ((gpDiff.x <= 1) || (gpDiff.x == GridPoint::GRID_WIDTH-1)) && ((gpDiff.y <= 1) || (gpDiff.y == GridPoint::GRID_HEIGHT-1));
+    GridPoint gpDiff( abs(a - b) );
+    return ( 
+		      ((gpDiff.x <= GRID_COORD(1_GRID_COORD)) || (gpDiff.x == GRID_X_MAX)) && 
+		      ((gpDiff.y <= GRID_COORD(1_GRID_COORD)) || (gpDiff.y == GRID_Y_MAX))
+		   );
 }
 
 inline GridPoint const Wrap2Grid(GridPoint const gp) { return (gp + GridPoint::GRID_SIZE) % GridPoint::GRID_SIZE; }

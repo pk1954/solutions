@@ -30,7 +30,14 @@ class DrawFrame
 {
 public:
 
-    DrawFrame( HWND const, EvolutionCore *, PixelCoordinates *, DspOptWindow *, ColorManager * );
+    DrawFrame
+	( 
+		HWND const, 
+		EvolutionCore * const, 
+		PixelCoordinates * const, 
+		DspOptWindow * const, 
+		ColorManager * const
+	);
     ~DrawFrame( );
 
     void ResizeDrawFrame( );

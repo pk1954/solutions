@@ -10,7 +10,7 @@
 
 using namespace std;
 
-GridRect const GridRect::GRID_RECT_FULL ( GridPoint::GRID_ORIGIN, GridPoint::GRID_SIZE - 1 );
+GridRect const GridRect::GRID_RECT_FULL ( GridPoint::GRID_ORIGIN, GridPoint::GRID_SIZE - GRID_COORD(1_GRID_COORD) );
 GridRect const GridRect::GRID_RECT_EMPTY( GridPoint::GRID_ORIGIN, GridPoint::GRID_ORIGIN );
 
 GridPoint GridRect::clipStartPoint( ) const

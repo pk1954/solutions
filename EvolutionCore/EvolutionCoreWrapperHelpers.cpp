@@ -9,10 +9,15 @@
 #include "pixelCoordinates.h"
 #include "EvolutionCoreWrapperHelpers.h"
 
+GRID_COORD ScrReadGridCoord( Script & script )
+{
+    return GRID_COORD( script.ScrReadUshort() );
+}
+
 GridPoint ScrReadGridPoint( Script & script )
 {
-    short const x = script.ScrReadShort();
-    short const y = script.ScrReadShort();
+    GRID_COORD const x = ScrReadGridCoord( script );
+    GRID_COORD const y = ScrReadGridCoord( script );
     return GridPoint( x, y );
 }
 

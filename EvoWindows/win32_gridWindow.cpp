@@ -18,6 +18,8 @@
 #include "win32_displayOptions.h"
 #include "win32_gridWindow.h"
 
+#include "Commdlg.h"
+
 //lint -esym( 613, GridWindow::m_pPixelCoordinates )   nullptr will not be used
 
 GridWindow::GridWindow( ) :
@@ -69,7 +71,15 @@ void GridWindow::Start
         dwStyle
     );
 
-    m_pDrawFrame = new DrawFrame( hwnd, m_pCore, m_pPixelCoordinates, m_pDspOptWindow, pColorManager );
+    m_pDrawFrame = new DrawFrame
+	( 
+		hwnd, 
+		m_pCore, 
+		m_pPixelCoordinates, 
+		m_pDspOptWindow, 
+		pColorManager
+	);
+
 	m_pDrawFrame->SetStripMode
 	( 
 		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
@@ -274,6 +284,25 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 			break;
 			case IDM_CHOOSE_SELECTION_COLOR:
 			{
+				LOGFONT lf; 
+				CHOOSEFONT cf;
+				cf.lStructSize = sizeof(CHOOSEFONT); 
+				cf.hwndOwner = (HWND)NULL; 
+				cf.hDC = (HDC)NULL; 
+				cf.lpLogFont = &lf; 
+				cf.iPointSize = 0; 
+				cf.Flags = CF_SCREENFONTS | CF_FIXEDPITCHONLY; 
+				cf.rgbColors = RGB(0,0,0); 
+				cf.lCustData = 0L; 
+				cf.lpfnHook = (LPCFHOOKPROC)NULL; 
+				cf.lpTemplateName = (LPCTSTR)NULL; 
+				cf.hInstance = (HINSTANCE) NULL; 
+				cf.lpszStyle = (LPTSTR)NULL; 
+				cf.nFontType = SCREEN_FONTTYPE; 
+				cf.nSizeMin = 0; 
+				cf.nSizeMax = 0; 
+				BOOL bRes = ChooseFont( & cf );
+
 				m_pDrawFrame->CallSelectionColorDialog( GetWindowHandle() );
 			}
 			break;

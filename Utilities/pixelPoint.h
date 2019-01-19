@@ -46,13 +46,3 @@ inline PixelPoint const operator- (PixelPoint const a, long const l) { PixelPoin
 
 inline PixelPoint const abs( PixelPoint const a ) { return PixelPoint( ::abs(a.x), ::abs(a.y ) ); }
 inline PixelPoint const sgn( PixelPoint const a ) { return PixelPoint( ::sgn(a.x), ::sgn(a.y ) ); }
-
-#ifndef NDEBUG
-	#define CheckPixelPoint( pp ) \
-	{                          \
-		ASSERT_SHORT( pp.x / 10 );  \
-		ASSERT_SHORT( pp.y / 10 );  \
-	}                       
-#else
-	#define CheckPixelPoint( pp )
-#endif

@@ -31,7 +31,6 @@ bool PixelCoordinates::isValidFieldSize( long const lNewFieldSize ) const
 void PixelCoordinates::MoveGrid( PixelPoint const pntDelta )
 {
     m_pixOffset -= pntDelta;
-	CheckPixelPoint( m_pixOffset );
 }
 
 PixelPoint PixelCoordinates::calcCenterOffset  // calculate new pixel offset,
@@ -53,13 +52,9 @@ bool PixelCoordinates::CenterPoi( PixelPoint const pixCenter, GridPoint const gp
 
     PixelPoint pixOffsetDesired( calcCenterOffset( gpPoi, pixCenter ) );
     bool       bCentered( m_pixOffset == pixOffsetDesired );
-	CheckPixelPoint( pixOffsetDesired );
 
     if ( ! bCentered )
-	{
         m_pixOffset = m_smoothMove.Step( m_pixOffset, pixOffsetDesired );
-		CheckPixelPoint( m_pixOffset );
-	}
 
     return bCentered;
 }
@@ -71,7 +66,6 @@ void PixelCoordinates::CenterGrid
 )
 {
     m_pixOffset = calcCenterOffset( gpCenter, pntPixSize.ToPixelPoint() / 2 );
-	CheckPixelPoint( m_pixOffset );
 }
 
 short PixelCoordinates::CalcMaximumFieldSize
@@ -80,7 +74,7 @@ short PixelCoordinates::CalcMaximumFieldSize
 	PixelRectSize const   pntPixSize        // available pixel size 
 )
 {
-	PixelRectSize pixRectSize = pntPixSize / PixelRectSize{ gpGridRectSize.x, gpGridRectSize.y };
+	PixelRectSize pixRectSize = pntPixSize / PixelRectSize{ gpGridRectSize.x.get(), gpGridRectSize.y.get() };
 	return min( pixRectSize.GetWidth(), pixRectSize.GetHeight() );
 }
 
@@ -132,7 +126,7 @@ PixelPoint PixelCoordinates::KGrid2PixelPos( KGridPoint const kp ) const
     
 PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint const gp ) const 
 { 
-	PixelPoint ppRes( gp.x * m_sFieldSize, gp.y * m_sFieldSize );
+	PixelPoint ppRes( gp.x.get() * m_sFieldSize, gp.y.get() * m_sFieldSize );
 	
 	if ( m_bHexagon )
 		ppRes.x = static_cast<long>( ppRes.x * SQRT3_DIV2 + 0.5 );
@@ -185,8 +179,8 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 		double const dCi        = floor(dPixPointX/dSide);
 		double const dCx        = dPixPointX - dSide * dCi;
 
-		GRID_COORD const gCi    = static_cast<GRID_COORD>(dCi);
-		bool       const bOdd   = ((gCi % 2) != 0);
+		GRID_COORD const gCi( CastToShort(dCi) );  //TODO: check if ok
+		bool       const bOdd   = ((gCi.get() % 2) != 0);
 
 		double const dPixPointY = static_cast<double>(pixPoint.y);
 		double const dTy        = dPixPointY + (bOdd ? (dFieldSize * 0.5) : 0);
@@ -194,7 +188,7 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 		double const dCy        = dTy - dFieldSize * dCj;
 		double const dCrit      = 0.5 - dCy / dFieldSize;
 
-		GRID_COORD const gCj    = static_cast<GRID_COORD>(dCj);
+		GRID_COORD const gCj( CastToShort(dCj) );
 
 		GridPoint gpResult;
 
@@ -205,7 +199,7 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 		}
 		else
 		{
-			gpResult.x = gCi - 1;
+			gpResult.x = gCi - GRID_COORD(1_GRID_COORD);
 			gpResult.y = gCj;
 			if (bOdd)
 				--gpResult.y;
@@ -226,7 +220,11 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 			pixPoint.y -= m_sFieldSize - 1;
 		}
 
-		GridPoint gp = GridPoint( pixPoint.x / m_sFieldSize, pixPoint.y / m_sFieldSize ); 
+		GridPoint gp = GridPoint
+		( 
+			GRID_COORD( CastToShort(pixPoint.x / m_sFieldSize) ), 
+			GRID_COORD( CastToShort(pixPoint.y / m_sFieldSize) ) 
+		); 
 
 		return gp;
 	}

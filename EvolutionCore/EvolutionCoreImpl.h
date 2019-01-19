@@ -2,6 +2,7 @@
 
 #include <functional>
 #include "BoolOp.h"
+#include "gridPoint.h"
 #include "gridRect.h"
 #include "grid_model.h"
 #include "gridBrush.h"
@@ -93,6 +94,8 @@ public:
 
     virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
     virtual PlannedActivity       * GetPlan4Writing( )       { return & m_plan; };
+
+	virtual long GetGridArea( ) const { return GridPoint::GRID_AREA; };
 
     virtual int GetAverageFoodGrowth( )     const { return m_grid.GetAverageFoodGrowth( ); }
     virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }

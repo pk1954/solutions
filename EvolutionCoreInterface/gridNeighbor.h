@@ -17,7 +17,7 @@ public:
 
 	static void Apply2All( GridPoint const gpCenter, GridPointFunc const & func ) 
 	{
-		for ( auto gp: (* m_pGridNeighbors)[ gpCenter.y ][ gpCenter.x ] )
+		for ( auto gp: (* m_pGridNeighbors)[ gpCenter.y.get() ][ gpCenter.x.get() ] )
 		{
 			func( gp );
 		}
@@ -69,9 +69,9 @@ public:
     }
 
 private:
-	typedef vector< GridPoint >                            NEIGHBORS;
-	typedef array < NEIGHBORS,    GridPoint::GRID_WIDTH  > NEIGHBOR_ROW;
-	typedef array < NEIGHBOR_ROW, GridPoint::GRID_HEIGHT > NEIGHBOR_GRID;
+	typedef vector< GridPoint >                  NEIGHBORS;
+	typedef array < NEIGHBORS,    GRID_WIDTH_  > NEIGHBOR_ROW;
+	typedef array < NEIGHBOR_ROW, GRID_HEIGHT_ > NEIGHBOR_GRID;
 
 	static int             m_iNrOfNeighbors;
 	static NEIGHBOR_GRID * m_pGridNeighbors;

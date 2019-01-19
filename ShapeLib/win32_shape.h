@@ -24,7 +24,7 @@ public:
 	virtual PixelRectSize MinimalSize( )  
 	{                                     
 		m_textDisplay.Clear();
-		FillBuffer( GridPoint( 0, 0 ) );
+		FillBuffer( GridPoint::GRID_ORIGIN );
 		return SetMinSize( m_textDisplay.CalcRectSize( ) );
 	}                                     
 

@@ -70,7 +70,7 @@ public:
     GridField const & GetGridField( GridPoint const gp ) const
     {
         assert( gp.IsInGrid( ) );
-        return m_aGF[ gp.x ][ gp.y ];
+        return m_aGF[ gp.x.get() ][ gp.y.get() ];
     };
 
     bool           IsAlive     ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive( ); }
@@ -143,13 +143,13 @@ private:
     GridField & getGridField( GridPoint const gp )
     {
         assert( gp.IsInGrid( ) );
-        return m_aGF[ gp.x ][ gp.y ];
+        return m_aGF[ gp.x.get() ][ gp.y.get() ];
     };
 
     GridField const & getGridFieldC( GridPoint const gp ) const
     {
         assert( gp.IsInGrid( ) );
-        return m_aGF[ gp.x ][ gp.y ];
+        return m_aGF[ gp.x.get() ][ gp.y.get() ];
     };
 
     GridPoint chooseTarget ( Neighborhood & );
@@ -157,7 +157,7 @@ private:
 
     // member variables
 
-    GridField      m_aGF[ GridPoint::GRID_WIDTH ][ GridPoint::GRID_HEIGHT ];   // 20.000 * 196 byte = 3.920.000 byte
+    GridField      m_aGF[ GRID_WIDTH_ ][ GRID_HEIGHT_ ];   // 20.000 * 196 byte = 3.920.000 byte
     GridPointList  m_gpList;                                               //                                10 byte
     long           m_lFoodGrowth;    // for statistics                     //                                 8 byte 
     EVO_GENERATION m_genEvo;                                               //                                 4 byte

@@ -31,28 +31,28 @@ T ClipToMinMax(T const val, T const min, T const max)
 template<typename T>
 short CastToShort(T const value ) 
 {
-	ASSERT_SHORT( value );
+	AssertShort( value );
 	return static_cast<short>( value );
 }
 
 template<typename T>
 unsigned short CastToUnsignedShort(T const value ) 
 {
-	ASSERT_USHORT( value );
+	AssertUnsignedShort( value );
 	return static_cast<unsigned short>( value );
 }
 
 template<typename T>
 int CastToInt(T const value ) 
 {
-	ASSERT_INT( value );
+	AssertInt( value );
 	return static_cast<int>( value );
 }
 
 template<typename T>
 unsigned int CastToUnsignedInt(T const value ) 
 {
-	ASSERT_UINT( value );
+	AssertUnsignedInt( value );
 	return static_cast<unsigned int>( value );
 }
 

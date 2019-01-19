@@ -96,7 +96,7 @@ class WrapSetBrushRadius : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        unsigned char size = script.ScrReadUchar( );
+        GRID_COORD const size = ScrReadGridCoord( script );
         m_pCore->SetBrushRadius( size );
     }
 };
@@ -106,7 +106,7 @@ class WrapSetBrushIntensity : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        short sIntensity = script.ScrReadShort( );
+        short const sIntensity = script.ScrReadShort( );
         m_pCore->SetBrushIntensity( sIntensity );
     }
 };

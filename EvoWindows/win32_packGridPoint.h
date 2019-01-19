@@ -11,10 +11,10 @@
 
 static LPARAM Pack2LParam( GridPoint const gp )
 {
-	return MAKELONG( gp.x, gp.y );
+	return MAKELONG( gp.x.get(), gp.y.get() );
 }
 
 static GridPoint UnpackFromLParam( LPARAM const lParam )
 {
-	return GridPoint( GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) );
+	return GridPoint( GRID_COORD(GET_X_LPARAM(lParam)), GRID_COORD(GET_Y_LPARAM(lParam)) );
 }

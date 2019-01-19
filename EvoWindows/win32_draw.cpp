@@ -32,7 +32,7 @@ DrawFrame::DrawFrame
 	m_gridPointShape( nullptr )
 {
 	m_clutBackground.Allocate( MAX_BG_COLOR );    // default is grey scale lookup table with entries 0 .. 255
-    m_pD3dBuffer      = new D3dBuffer( hwnd, GridPoint::GRID_AREA );
+    m_pD3dBuffer      = new D3dBuffer( hwnd, m_pCore->GetGridArea( ) );
 	m_pTextDisplay    = new TextDisplay( * m_pD3dBuffer, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
 	m_gridPointShape  = new GridPointShape( * m_pTextDisplay );
 	m_pShapeHighlight = nullptr;
