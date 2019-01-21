@@ -33,7 +33,7 @@ public:
 
     tGenCmd GetCommand( ) const { return m_Cmd; }
 	Int24   GetParam( )   const { return m_Param; }
-	short   GetSlotNr()  const
+	short   GetSlotNr()   const
 	{
 		assert( m_Cmd == tGenCmd::CACHED );
 		return m_Param.GetValue( );
@@ -50,6 +50,7 @@ public:
         m_Cmd = tGenCmd::UNDEFINED;
     }
 
+ 	static int const MIN_APP_CMD = static_cast<int>(tGenCmd::FIRST_APP_CMD);
  	static int const MAX_APP_CMD = 0xff;
 
 	static bool IsAppCmd( tGenCmd const cmd ) { return cmd >= tGenCmd::FIRST_APP_CMD; }
@@ -61,7 +62,7 @@ public:
 
     static GenerationCmd ApplicationCmd( tGenCmd cmd, Int24 const param )
     {
-		ASSERT_LIMITS( static_cast<int>(cmd), static_cast<int>(tGenCmd::FIRST_APP_CMD), MAX_APP_CMD );
+		ASSERT_LIMITS( static_cast<int>(cmd), MIN_APP_CMD, MAX_APP_CMD );
 		return GenerationCmd( cmd, param );
     }
 

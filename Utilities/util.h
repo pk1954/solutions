@@ -13,13 +13,13 @@ using namespace std;
 
 extern void UpperCase( wstring & );
 
-template <typename T> int sgn(T val) 
+template <typename SOURCE_TYPE> int sgn(SOURCE_TYPE val) 
 {
-    return (T(0) < val) - (val < T(0));
+    return (SOURCE_TYPE(0) < val) - (val < SOURCE_TYPE(0));
 }
 
-template<typename T>
-T ClipToMinMax(T const val, T const min, T const max)
+template<typename SOURCE_TYPE>
+SOURCE_TYPE ClipToMinMax(SOURCE_TYPE const val, SOURCE_TYPE const min, SOURCE_TYPE const max)
 {
 	return ( val > max ) 
 		   ? max 
@@ -28,29 +28,29 @@ T ClipToMinMax(T const val, T const min, T const max)
 		     : val;
 }
 
-template<typename T>
-short CastToShort(T const value ) 
+template<typename SOURCE_TYPE>
+short CastToShort(SOURCE_TYPE const value ) 
 {
 	AssertShort( value );
 	return static_cast<short>( value );
 }
 
-template<typename T>
-unsigned short CastToUnsignedShort(T const value ) 
+template<typename SOURCE_TYPE>
+unsigned short CastToUnsignedShort(SOURCE_TYPE const value ) 
 {
 	AssertUnsignedShort( value );
 	return static_cast<unsigned short>( value );
 }
 
-template<typename T>
-int CastToInt(T const value ) 
+template<typename SOURCE_TYPE>
+int CastToInt(SOURCE_TYPE const value ) 
 {
 	AssertInt( value );
 	return static_cast<int>( value );
 }
 
-template<typename T>
-unsigned int CastToUnsignedInt(T const value ) 
+template<typename SOURCE_TYPE>
+unsigned int CastToUnsignedInt(SOURCE_TYPE const value ) 
 {
 	AssertUnsignedInt( value );
 	return static_cast<unsigned int>( value );

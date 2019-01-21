@@ -14,31 +14,31 @@
 	assert( (v) >= (min) );         \
 }
 
-template<typename T>
-void AssertShort( T const value ) 
+template<typename SOURCE_TYPE>
+void AssertShort( SOURCE_TYPE const value ) 
 {
 	assert( value <= (numeric_limits<short>::max)() );         
-	if ( numeric_limits<T>::is_signed )
+	if ( numeric_limits<SOURCE_TYPE>::is_signed )
 		assert( value >= (numeric_limits<short>::min)() );
 }
 
-template<typename T>
-void AssertInt( T const value ) 
+template<typename SOURCE_TYPE>
+void AssertInt( SOURCE_TYPE const value ) 
 {
 	assert( value <= (numeric_limits<int>::max)() );         
-	if ( numeric_limits<T>::is_signed )
+	if ( numeric_limits<SOURCE_TYPE>::is_signed )
 		assert( value >= (numeric_limits<int>::min)() );
 }
 
-template<typename T>
-void AssertUnsignedShort( T const value )
+template<typename SOURCE_TYPE>
+void AssertUnsignedShort( SOURCE_TYPE const value )
 {
 	assert( value >= (numeric_limits<unsigned short>::min)() );
 	assert( value <= (numeric_limits<unsigned short>::max)() );
 }
 
-template<typename T>
-void AssertUnsignedInt( T const value )
+template<typename SOURCE_TYPE>
+void AssertUnsignedInt( SOURCE_TYPE const value )
 {
 	assert( value >= (numeric_limits<unsigned int>::min)() );
 	assert( value <= (numeric_limits<unsigned int>::max)() );
@@ -52,9 +52,9 @@ void AssertUnsignedInt( T const value )
 
 #else
 #define ASSERT_LIMITS(v, min, max) 
-template<typename T> void AssertShort(T const value ) {}
-template<typename T> void AssertInt(T const value ) {}
-template<typename T> void AssertUnsignedShort(T const value ) {}
-template<typename T> void AssertUnsignedInt(T const value ) {}
+template<typename SOURCE_TYPE> void AssertShort(SOURCE_TYPE const value ) {}
+template<typename SOURCE_TYPE> void AssertInt(SOURCE_TYPE const value ) {}
+template<typename SOURCE_TYPE> void AssertUnsignedShort(SOURCE_TYPE const value ) {}
+template<typename SOURCE_TYPE> void AssertUnsignedInt(SOURCE_TYPE const value ) {}
 #define ASSERT_SHORT_SUM(a,b)
 #endif

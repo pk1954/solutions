@@ -25,8 +25,6 @@ public:
     short      & get()       { return value_; }
     short const& get() const { return value_; }
 
-	short size() const { return value_; }
-
     GRID_COORD operator++ () { ++value_; return * this; }
     GRID_COORD operator-- () { --value_; return * this; }
 
@@ -75,7 +73,6 @@ GRID_COORD const GRID_X_MAX  = GRID_WIDTH  - GRID_COORD(1_GRID_COORD);
 GRID_COORD const GRID_Y_MAX  = GRID_HEIGHT - GRID_COORD(1_GRID_COORD);
 
 typedef unsigned short MEM_INDEX;
-//typedef          short GRID_COORD;
 typedef          long  EVO_GENERATION;
 
 static MEM_INDEX const IMEMSIZE_MAX = 9;

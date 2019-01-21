@@ -90,9 +90,7 @@ void ColorManager::SetColor
 
 COLORREF ColorManager::getStrategyColor( tStrategyId const strat )
 {
-	int iIndex = static_cast<int>(strat);
-	ASSERT_LIMITS( iIndex, 0, NR_STRATEGIES - 1 );
-	return m_aClutStrat[ iIndex ].GetColorHi( );
+	return m_aClutStrat.at( static_cast<int>(strat) ).GetColorHi( );
 }
 
 void ColorManager::setStrategyColor( tStrategyId const strat, COLORREF const col )
