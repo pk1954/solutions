@@ -50,7 +50,7 @@ public:
 	{
 		double dx   = static_cast<double>(NextRandomNumber()) / static_cast<double>(MAX_VAL);
 		double dRes = ((4.0 * dx - 6.0) * dx + 3.0) * dx * 2.0 - 1.0;
-		ASSERT_LIMITS( dRes, -1.0, 1.0 );
+		AssertLimits( dRes, -1.0, 1.0 );
 		return dRes;
 	}
 

@@ -18,12 +18,28 @@ public:
 	void     ToggleClutMode( );
 
 private:
-	COLORREF getStrategyColor( tStrategyId const );
-	void     setStrategyColor( tStrategyId const, COLORREF const );
 	void     setupClut( tBoolOp const );
 
     bool     m_bDimmIndividuals;
 	COLORREF m_colorSelection;
 	COLORREF m_colorHighlight;
+	
 	array< CLUT, NR_STRATEGIES> m_aClutStrat;
+
+	CLUT & getClut(tStrategyId const strat)
+	{
+		int iIndex = static_cast<int>(strat);
+		AssertLimits( iIndex, 0, NR_STRATEGIES - 1 );
+		return m_aClutStrat[ iIndex ];
+	}
+
+	COLORREF getStrategyColor( tStrategyId const strat )
+	{
+		return getClut( strat ).GetColorHi( );
+	}
+
+	void setStrategyColor( tStrategyId const strat, COLORREF const col )
+	{
+		getClut( strat ).SetColorHi( col );
+	}
 };

@@ -63,7 +63,7 @@ public:
     IndId GetMemEntry( MEM_INDEX const i ) const { return m_Individual.GetMemEntry( i ); }
     void  ResetIndividual( )                     { m_Individual.ResetIndividual( ); }
     void  SetEnergy( short const sInc )          { m_Individual.SetEnergy( sInc ); }
-    void  DecEnergy( short const sDec )          { m_Individual.DecEnergy( sDec ); }
+    void  DecEnergy( short const sDec )          { m_Individual.IncEnergy( - sDec ); }
     void  IncEnergy( short const sInc )          { m_Individual.IncEnergy( sInc ); }
     void  SetLastAction( tAction const at )      { m_Individual.SetLastAction( at ); }
 
@@ -118,16 +118,9 @@ public:
 	void Apply2Fertility (short const s, ManipulatorFunc f) { setFertility ( (f)( m_sFertility,  s ) ); }
 	void Apply2MutRate   (short const s, ManipulatorFunc f) { setMutRate   ( (f)( m_sMutatRate,  s ) ); }
 
-	void DecFoodStock( short const sDec )
-	{ 
-		ASSERT_SHORT_SUM( m_sFoodStock, - sDec );
-		setFoodStock( m_sFoodStock - sDec ); 
-	}
-
 	void IncFoodStock( short const sInc )
 	{ 
-		ASSERT_SHORT_SUM( m_sFoodStock, sInc );
-		setFoodStock( m_sFoodStock + sInc ); 
+		setFoodStock( AssertShortSum( m_sFoodStock, sInc ) ); 
 	}
 
     void ReduceFertilizer( ) { m_sFertilizer /= 2; }

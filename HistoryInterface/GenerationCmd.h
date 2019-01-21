@@ -62,7 +62,7 @@ public:
 
     static GenerationCmd ApplicationCmd( tGenCmd cmd, Int24 const param )
     {
-		ASSERT_LIMITS( static_cast<int>(cmd), MIN_APP_CMD, MAX_APP_CMD );
+		AssertLimits( static_cast<int>(cmd), MIN_APP_CMD, MAX_APP_CMD );
 		return GenerationCmd( cmd, param );
     }
 

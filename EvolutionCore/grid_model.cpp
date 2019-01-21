@@ -307,7 +307,7 @@ GridPoint Grid::ImplementPlan   // may return GP_NULL
         {
             short const sWant    = gfRun.GetAllele( tGeneType::appetite );
             short const sReceive = gfRun.GetConsumption( sWant );
-            gfRun.DecFoodStock( sReceive );
+            gfRun.IncFoodStock( - sReceive );
             gfRun.IncEnergy   ( sReceive );
         }
         break;

@@ -32,7 +32,7 @@ public:
 		m_sAllele = lim.ClipToLimits( CastToInt( m_sAllele + dRand * dMutationRate ) );
 	}
 
-	void SetAllele( short const sValue) 
+	void SetAllele( short const sValue ) 
 	{ 
 		m_sAllele = sValue; 
 	};

@@ -36,7 +36,7 @@ public:
 	
 	void CheckLimits( short const sValue ) const 
 	{
-		ASSERT_LIMITS( sValue, m_sMin, m_sMax );
+		AssertLimits( sValue, m_sMin, m_sMax );
 	};
 
 private: 

@@ -61,14 +61,7 @@ public:
 
 	void IncEnergy( short const sInc )
 	{
-		ASSERT_SHORT_SUM( m_sEnergy, sInc );
-		SetEnergy( m_sEnergy + sInc );
-	}
-
-	void DecEnergy( short const sDec )
-	{
-		ASSERT_SHORT_SUM( m_sEnergy, -sDec );
-		SetEnergy( m_sEnergy - sDec );
+		SetEnergy( AssertShortSum( m_sEnergy, sInc ) );
 	}
 
 private:

@@ -88,16 +88,6 @@ void ColorManager::SetColor
 	}
 }
 
-COLORREF ColorManager::getStrategyColor( tStrategyId const strat )
-{
-	return m_aClutStrat.at( static_cast<int>(strat) ).GetColorHi( );
-}
-
-void ColorManager::setStrategyColor( tStrategyId const strat, COLORREF const col )
-{
-    m_aClutStrat.at( static_cast<int>(strat) ).SetColorHi( col );
-}
-
 COLORREF ColorManager::GetColor
 ( 
 	tColorObject const object, 

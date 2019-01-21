@@ -39,7 +39,7 @@ void Genome::InitClass( )
 		double dx4  = dx2 * dx2;
 		double dx8  = dx4 * dx4;
 		double dAgeFactor = dx8 * dRandomMax;
-		ASSERT_LIMITS( dAgeFactor, 0.0, dRandomMax );
+		AssertLimits( dAgeFactor, 0.0, dRandomMax );
 		m_mortalityTable[ age ] = static_cast<unsigned int>( dAgeFactor );
 	}
     // Init limitations
