@@ -23,15 +23,8 @@ public:
     PixelPoint const operator+= ( PixelPoint const a ) { x += a.x; y += a.y; return *this; };
     PixelPoint const operator-= ( PixelPoint const a ) { x -= a.x; y -= a.y; return *this; };
 
-    PixelPoint const operator+= (long const l) { x += l; y += l; return *this; };
-    PixelPoint const operator-= (long const l) { x -= l; y -= l; return *this; };
     PixelPoint const operator*= (long const l) { x *= l; y *= l; return *this; };
     PixelPoint const operator/= (long const l) { x /= l; y /= l; return *this; };
-
-    PixelPoint const operator+= (short const s) { x += s; y += s; return *this; };
-    PixelPoint const operator-= (short const s) { x -= s; y -= s; return *this; };
-    PixelPoint const operator*= (short const s) { x *= s; y *= s; return *this; };
-    PixelPoint const operator/= (short const s) { x /= s; y /= s; return *this; };
 
     PixelPoint operator- () const { return PixelPoint( -x, -y ); };
 };
@@ -41,8 +34,6 @@ inline PixelPoint const operator- (PixelPoint const a, PixelPoint const b) { Pix
 
 inline PixelPoint const operator* (PixelPoint const a, long const l) { PixelPoint res(a); res *= l; return res; };
 inline PixelPoint const operator/ (PixelPoint const a, long const l) { PixelPoint res(a); res /= l; return res; };
-inline PixelPoint const operator+ (PixelPoint const a, long const l) { PixelPoint res(a); res += l; return res; };
-inline PixelPoint const operator- (PixelPoint const a, long const l) { PixelPoint res(a); res -= l; return res; };
 
 inline PixelPoint const abs( PixelPoint const a ) { return PixelPoint( ::abs(a.x), ::abs(a.y ) ); }
 inline PixelPoint const sgn( PixelPoint const a ) { return PixelPoint( ::sgn(a.x), ::sgn(a.y ) ); }

@@ -138,7 +138,7 @@ PixelPoint PixelCoordinates::Grid2PixelPos( GridPoint const gp ) const
 { 
 	PixelPoint ppRes( Grid2PixelSize( gp ) - m_pixOffset );
 
-	if ( m_bHexagon && gp.IsOddCol( ) )
+	if ( m_bHexagon && gp.IsOddColumn( ) )
 		ppRes.y -= m_sFieldSize / 2 ;
 
 	return ppRes;

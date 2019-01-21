@@ -34,27 +34,16 @@ public:
 
     GridPoint const operator+= (GridPoint const a) { x += a.x; y += a.y; return * this; }
     GridPoint const operator-= (GridPoint const a) { x -= a.x; y -= a.y; return * this; }
-    GridPoint const operator/= (GridPoint const a) { x /= a.x; y /= a.y; return * this; }
     GridPoint const operator%= (GridPoint const a) { x %= a.x; y %= a.y; return * this; }
 
-    // no * operator!   risk of short overflow
-
-    GridPoint const operator/= (GRID_COORD const l) { x /= l; y /= l; return * this; }
     GridPoint const operator+= (GRID_COORD const l) { x += l; y += l; return * this; }
     GridPoint const operator-= (GRID_COORD const l) { x -= l; y -= l; return * this; }
-    GridPoint const operator%= (GRID_COORD const l) { x %= l; y %= l; return * this; }
 
+	GridPoint const operator%= (int const i) { x %= i; y %= i; return * this; }
     GridPoint const operator/= (int const i) { x /= i; y /= i; return * this; }
 
-	bool const operator== (GRID_COORD const i) const { return (x == i) && (y == i); }
-    bool const operator!= (GRID_COORD const i) const { return (x != i) || (y != i); }
-    bool const operator<= (GRID_COORD const i) const { return (x <= i) || (y <= i); }
-    bool const operator<  (GRID_COORD const i) const { return (x <  i) || (y <  i); }
-    bool const operator>= (GRID_COORD const i) const { return (x >= i) || (y >= i); }
-    bool const operator>  (GRID_COORD const i) const { return (x >  i) || (y >  i); }
-
-	bool IsEvenCol( ) const { return x.IsEven(); }
-	bool IsOddCol ( ) const { return x.IsOdd(); }
+	bool IsEvenColumn( ) const { return x.IsEven(); }
+	bool IsOddColumn ( ) const { return x.IsOdd(); }
 
     static int const GRID_AREA = GRID_WIDTH_ * GRID_HEIGHT_;
 
@@ -79,11 +68,10 @@ inline GridPoint const operator+ (GridPoint const a, GridPoint const b) { GridPo
 inline GridPoint const operator- (GridPoint const a, GridPoint const b) { GridPoint res(a); res -= b; return res; }
 inline GridPoint const operator% (GridPoint const a, GridPoint const b) { GridPoint res(a); res %= b; return res; }
 
-inline GridPoint const operator/ (GridPoint const a, GRID_COORD const l) { GridPoint res(a); res /= l; return res; }
 inline GridPoint const operator+ (GridPoint const a, GRID_COORD const l) { GridPoint res(a); res += l; return res; }
 inline GridPoint const operator- (GridPoint const a, GRID_COORD const l) { GridPoint res(a); res -= l; return res; }
-inline GridPoint const operator% (GridPoint const a, GRID_COORD const l) { GridPoint res(a); res %= l; return res; }
 
+inline GridPoint const operator% (GridPoint const a, int const i) { GridPoint res(a); res %= i; return res; }
 inline GridPoint const operator/ (GridPoint const a, int const i) { GridPoint res(a); res /= i; return res; }
 
 inline GridPoint const abs(GridPoint const a ) { return GridPoint( abs(a.x), abs(a.y) ); }
@@ -100,9 +88,12 @@ inline bool const Neighbors( GridPoint const a, GridPoint const b )
 		   );
 }
 
-inline GridPoint const Wrap2Grid(GridPoint const gp) { return (gp + GridPoint::GRID_SIZE) % GridPoint::GRID_SIZE; }
+inline GridPoint const Wrap2Grid(GridPoint const gp) 
+{ 
+	return (gp + GridPoint::GRID_SIZE) % GridPoint::GRID_SIZE; 
+}
 
-typedef std::function<void (GridPoint const       )> GridPointFunc;
+typedef std::function<void (GridPoint const)> GridPointFunc;
 typedef std::function<short(short const, short const)> ManipulatorFunc;
 
 std::wostream & operator << ( std::wostream &, GridPoint const );

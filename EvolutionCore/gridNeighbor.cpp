@@ -70,14 +70,13 @@ void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization o
 			for ( int i = 0; i < m_iNrOfNeighbors; ++i )
 			{
 				GridPoint gpDelta = ( m_iNrOfNeighbors == 6 ) 
-					                ? ( gp.IsEvenCol( ) )
+					                ? ( gp.IsEvenColumn( ) )
 										? table6even[i] 
 										: table6odd[i]
 					                : ( m_iNrOfNeighbors == 8 ) 
 					                    ? table8[i] 
 					                    : table4[i];
-				GridPoint gpNeighbor = ( gp + gpDelta + GridPoint::GRID_SIZE ) % GridPoint::GRID_SIZE;
-				neighbors.push_back( gpNeighbor );
+				neighbors.push_back( Wrap2Grid( gp + gpDelta ) );
 			}
 		}
 	);

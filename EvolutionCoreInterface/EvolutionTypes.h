@@ -14,15 +14,10 @@ public:
 		: value_(0) 
 	{}
 		
-    explicit GRID_COORD( short const & value ) 
+    constexpr explicit GRID_COORD( short const & value ) 
 		: value_(value) 
 	{}
 
-    constexpr explicit GRID_COORD( short && value ) 
-		: value_( std::move(value) ) 
-	{}
-
-    short      & get()       { return value_; }
     short const& get() const { return value_; }
 
     GRID_COORD operator++ () { ++value_; return * this; }
@@ -39,10 +34,12 @@ public:
 
 	GRID_COORD const operator+= (GRID_COORD const a) { value_ += a.value_; return * this; }
     GRID_COORD const operator-= (GRID_COORD const a) { value_ -= a.value_; return * this; }
-    GRID_COORD const operator/= (GRID_COORD const a) { value_ /= a.value_; return * this; }
     GRID_COORD const operator%= (GRID_COORD const a) { value_ %= a.value_; return * this; }
 
-    GRID_COORD const operator/= (int const i) { value_ /= i; return * this; }
+    // no * operator!   risk of short overflow
+
+	GRID_COORD const operator/= (int const i) { value_ /= i; return * this; }
+    GRID_COORD const operator%= (int const i) { value_ %= i; return * this; }
 
 	bool IsEven( ) const { return value_ % 2 == 0; }
 	bool IsOdd ( ) const { return value_ % 2 != 0; }
