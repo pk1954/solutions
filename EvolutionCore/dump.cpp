@@ -11,12 +11,6 @@ using namespace std;
 
 wostream * DUMP::m_pDumpStream = & wcout;
 
-wostream & operator << ( wostream & out, IndividualId const & id )
-{
-    out << id.GetLong( );
-    return out;
-};
-
 wostream & operator << ( wostream & out, PlannedActivity const & plan )
 {
 //lint -e747  Significant prototype coercion with setw

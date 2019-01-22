@@ -128,5 +128,8 @@
     <ClCompile Include="IndividualId.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="gridCoord.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -187,6 +187,7 @@
     <ClCompile Include="EvolutionCoreImpl.cpp" />
     <ClCompile Include="EvolutionTypes.cpp" />
     <ClCompile Include="food.cpp" />
+    <ClCompile Include="gridCoord.cpp" />
     <ClCompile Include="IndividualId.cpp" />
     <ClCompile Include="pixelCoordinates.cpp" />
     <ClCompile Include="genome.cpp" />

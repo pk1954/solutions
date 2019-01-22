@@ -5,24 +5,8 @@
 #include <unordered_map>
 #include "strategy.h"
 #include "EvolutionTypes.h"
-#include "gridPoint.h"
-#include "gridRect.h"
-
-
-#include <limits>
 
 using namespace std;
-
-std::wostream & operator << ( std::wostream & out, GRID_COORD const c )
-{
-    out << c.get();
-    return out;
-}
-
-constexpr GRID_COORD operator"" _GRID_COORD( unsigned long long ull )
-{
-	return GRID_COORD( CastToUnsignedShort( ull ) );
-}
 
 wchar_t const * const GetStrategyName( tStrategyId const id )
 {

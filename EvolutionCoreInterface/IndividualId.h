@@ -35,4 +35,4 @@ private:
     long m_lIdentifier;
 };
 
-std::wostream & operator << ( std::wostream & , IndividualId const & );  // implemented in dump.cpp
+std::wostream & operator << ( std::wostream & , IndividualId const & );
