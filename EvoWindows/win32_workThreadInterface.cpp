@@ -6,6 +6,7 @@
 #include "Resource.h"
 #include "GridPoint24.h"
 #include "EvolutionCore.h"
+#include "IndividualId.h"
 #include "EvoHistorySysGlue.h"
 #include "win32_worker_thread.h"
 #include "win32_workThreadInterface.h"
@@ -232,7 +233,7 @@ void WorkThreadInterface::PostHistoryAction( UINT const uiID, GridPoint const gp
 	assert( m_pCore->IsAlive(gp) );
 	assert( (uiID == IDM_GOTO_ORIGIN) || (uiID == IDM_GOTO_DEATH) );
 
-	IndId           idTarget  = m_pCore->GetId(gp);
+	IndividualId           idTarget  = m_pCore->GetId(gp);
 	HIST_GENERATION genTarget = ( uiID == IDM_GOTO_ORIGIN )
 	                            ? m_pEvoHistGlue->GetFirstGenOfIndividual(idTarget)
 		                        : m_pEvoHistGlue->GetLastGenOfIndividual(idTarget);

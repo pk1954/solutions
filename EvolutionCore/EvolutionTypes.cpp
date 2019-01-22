@@ -13,8 +13,6 @@
 
 using namespace std;
 
-const IndId IndId::NO_INDIVIDUAL = IndId();
-
 std::wostream & operator << ( std::wostream & out, GRID_COORD const c )
 {
     out << c.get();

@@ -53,7 +53,7 @@ void Individual::ResetIndividual( )
 
 void Individual::Create
 ( 
-    IndId          const id,
+    IndividualId   const id,
     EVO_GENERATION const genBirth,
     tStrategyId    const strategyId
 )
@@ -73,7 +73,7 @@ void Individual::Create
 
 void Individual::Clone
 (
-    IndId          const   id,
+    IndividualId   const   id,
     EVO_GENERATION const   genBirth,
     short          const   sMutationRate,
     Random               & random,
@@ -105,7 +105,7 @@ static Individual const & selectParent
 
 void Individual::Breed
 (
-    IndId          const   id,
+    IndividualId   const   id,
     EVO_GENERATION const   genBirth,
     short          const   sMutationRate,
     Random               & random,

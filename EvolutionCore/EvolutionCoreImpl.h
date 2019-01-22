@@ -60,7 +60,7 @@ public:
     virtual int            GetMutRate   ( GridPoint const gp ) const { return getGridField( gp ).GetMutRate( ); }
     virtual int            GetFertilizer( GridPoint const gp ) const { return getGridField( gp ).GetFertilizer( ); }
     virtual EVO_GENERATION GetGenBirth  ( GridPoint const gp ) const { return getGridField( gp ).GetGenBirth( ); }
-    virtual IndId          GetId        ( GridPoint const gp ) const { return getGridField( gp ).GetId( ); }
+    virtual IndividualId   GetId        ( GridPoint const gp ) const { return getGridField( gp ).GetId( ); }
     virtual tOrigin        GetOrigin    ( GridPoint const gp ) const { return getGridField( gp ).GetOrigin( ); }
     virtual short          GetEnergy    ( GridPoint const gp ) const { return getGridField( gp ).GetEnergy( ); }
     virtual tStrategyId    GetStrategyId( GridPoint const gp ) const { return getGridField( gp ).GetStrategyId( ); }
@@ -70,7 +70,7 @@ public:
     virtual bool           IsAlive      ( GridPoint const gp ) const { return getGridField( gp ).IsAlive( ); }
     virtual bool           IsDefined    ( GridPoint const gp ) const { return getGridField( gp ).IsDefined( ); }
 
-    virtual IndId          GetMemEntry  ( GridPoint const gp, MEM_INDEX const index ) const { return getGridField( gp ).GetMemEntry( index ); }
+    virtual IndividualId   GetMemEntry  ( GridPoint const gp, MEM_INDEX const index ) const { return getGridField( gp ).GetMemEntry( index ); }
     virtual long           GetGenotype  ( GridPoint const gp, tGeneType const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
     virtual short          GetDistr     ( GridPoint const gp, tAction   const at    ) const { return getGenome( gp ).GetDistr( at ); }
 
@@ -86,12 +86,12 @@ public:
 	virtual bool           SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
 	virtual bool           SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
 
-	virtual IndId          GetPoiId    ( )                      const { return m_idPOI; }
-	virtual bool           IsPoiDefined( )                      const { return m_idPOI.IsDefined( ); }
-	virtual bool           IsPoiId     ( IndId     const & id ) const { return m_idPOI == id; }
-	virtual bool           IsPoi       ( GridPoint const gp ) const { return ( gp.IsNotNull( ) && ( GetId( gp ) == m_idPOI ) ); }
-	virtual void           ClearPoi    ( )                            { m_idPOI.ResetIndId( ); }
-
+	virtual IndividualId   GetPoiId    ( )                         const { return m_idPOI; }
+	virtual bool           IsPoiDefined( )                         const { return m_idPOI.IsDefined( ); }
+	virtual bool           IsPoiId     ( IndividualId const & id ) const { return m_idPOI == id; }
+	virtual bool           IsPoi       ( GridPoint    const   gp ) const { return ( gp.IsNotNull( ) && ( GetId( gp ) == m_idPOI ) ); }
+	virtual void           ClearPoi    ( )                               { m_idPOI.ResetIndId( ); }
+	 
     virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
     virtual PlannedActivity       * GetPlan4Writing( )       { return & m_plan; };
 
@@ -111,9 +111,9 @@ public:
 
 	virtual void SetPoi( GridPoint const );
     virtual GridPoint FindPOI( ) const;
-	virtual GridPoint FindGridPoint( IndId const & id, GridRect const & rect = GridRect::GRID_RECT_FULL ) const 
+	virtual GridPoint FindGridPoint( IndividualId const & id, GridRect const & rect = GridRect::GRID_RECT_FULL ) const 
 	{ 
-		return ( id == IndId::NO_INDIVIDUAL )
+		return ( id == IndividualId::NO_INDIVIDUAL )
 			   ? GridPoint::GP_NULL
 			   : m_grid.FindGridPoint( [&](GridPoint const gp) { return (GetId(gp) == id); }, rect );
 	}
@@ -123,7 +123,7 @@ private:
 	EventInterface    * m_pEventPOI;
 	Grid                m_grid;	
     PlannedActivity     m_plan;
-    IndId               m_idPOI;
+    IndividualId        m_idPOI;
 	GridBrush 	        m_brush;
 	bool	    	    m_bSimulationMode;
 	GridRect            m_gridRectSelection;

@@ -5,7 +5,6 @@
 #include "kGridPoint.h"
 
 KGridPoint const KGridPoint::KGRID_POINT_EMPTY( 0, 0 );
-KGridRect  const KGridRect ::KGRID_RECT_EMPTY ( KGridPoint::KGRID_POINT_EMPTY, KGridPoint::KGRID_POINT_EMPTY );
 
 static long const KGRID_FACTOR = 1024;
 

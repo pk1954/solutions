@@ -18,14 +18,14 @@ StrategyData::StrategyData( )
         i.ResetIndId();
 }
 
-IndId StrategyData::GetMemEntry( MEM_INDEX const index ) const 
+IndividualId StrategyData::GetMemEntry( MEM_INDEX const index ) const 
 {
     return ( index < m_memUsed )
 		   ? m_aIdBadGuys[index]
-		   : IndId::NO_INDIVIDUAL;  // Can happen at race conditions
+		   : IndividualId::NO_INDIVIDUAL;  // Can happen at race conditions
 }	
 
-int StrategyData::findInList( IndId const & idPartner ) 
+int StrategyData::findInList( IndividualId const & idPartner ) 
 {
     for	( MEM_INDEX index = 0; index < m_memUsed; ++index )
     {
@@ -50,7 +50,7 @@ void StrategyData::removeFromList( MEM_INDEX const index )
     m_aIdBadGuys[m_memUsed].ResetIndId( );
 }
 
-void StrategyData::addToList( IndId const & partnerId )
+void StrategyData::addToList( IndividualId const & partnerId )
 {
     ++m_uiNrInteractionsWithUnknownCulprit;           
 
@@ -71,13 +71,13 @@ void StrategyData::SetMemorySize( MEM_INDEX const newSize )
     m_memUsed = 0;
 }
 
-bool Tit4Tat::InteractWith( StrategyData &data, IndId const idPartner ) const
+bool Tit4Tat::InteractWith( StrategyData &data, IndividualId const idPartner ) const
 {
     bool const bKnown = data.findInList( idPartner ) >= 0;
     return (!bKnown);                                    // If he is not in the list of bad guys, be friendly
 }
 
-void Tit4Tat::Remember( StrategyData &data, IndId const idPartner, bool const bPartnerReaction ) const
+void Tit4Tat::Remember( StrategyData &data, IndividualId const idPartner, bool const bPartnerReaction ) const
 {
     int const index = data.findInList( idPartner );
 

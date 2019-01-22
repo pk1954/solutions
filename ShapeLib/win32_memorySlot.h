@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "IndividualId.h"
 #include "win32_shape.h"
 
 using namespace std;
@@ -25,9 +26,9 @@ public:
 	MEM_INDEX GetMemIndex() const {	return m_index;	}
 
 private:
-	virtual GridPoint getReferencedGridPoint( IndId const ) const;
+	virtual GridPoint getReferencedGridPoint( IndividualId const ) const;
 
-	IndId getIndId( GridPoint const ) const; 
+	IndividualId getIndId( GridPoint const ) const; 
 
 	MEM_INDEX m_index;
 };

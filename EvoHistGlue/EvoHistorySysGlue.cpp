@@ -12,6 +12,7 @@
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
 #include "EvoModelFactory.h"
+#include "IndividualId.h"
 #include "EvoHistorySysGlue.h"
 
 class WorkThread;
@@ -74,7 +75,7 @@ class FindGridPointFunctor : public GenerationProperty
 {
 public:
 
-    FindGridPointFunctor( IndId const id ) : m_id( id ) {}
+    FindGridPointFunctor( IndividualId const id ) : m_id( id ) {}
 
     virtual bool operator() ( ModelData const * pModelData ) const
     {
@@ -83,15 +84,15 @@ public:
     }
 
 private:
-    IndId const m_id;
+    IndividualId const m_id;
 };
 
-HIST_GENERATION EvoHistorySysGlue::GetFirstGenOfIndividual( IndId const & id ) const  
+HIST_GENERATION EvoHistorySysGlue::GetFirstGenOfIndividual( IndividualId const & id ) const  
 { 
 	return id.IsDefined( ) ? m_pHistorySystem->FindFirstGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
 }
 
-HIST_GENERATION EvoHistorySysGlue::GetLastGenOfIndividual ( IndId const & id ) const  
+HIST_GENERATION EvoHistorySysGlue::GetLastGenOfIndividual ( IndividualId const & id ) const  
 { 
 	return id.IsDefined( ) ? m_pHistorySystem->FindLastGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
 }

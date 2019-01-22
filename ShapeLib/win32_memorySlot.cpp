@@ -13,7 +13,7 @@ GridPoint MemorySlot::GetReferencedGridPoint( GridPoint const gp ) const
 void MemorySlot::FillBuffer( GridPoint const gp )
 {
 	wostringstream & buffer = m_textDisplay.Buffer();
-	IndId            indId  = getIndId( gp );
+	IndividualId     indId  = getIndId( gp );
 
 	buffer << setw( 10 );
 	if ( getReferencedGridPoint( indId ) == GridPoint::GP_NULL ) 
@@ -22,12 +22,12 @@ void MemorySlot::FillBuffer( GridPoint const gp )
 		buffer << indId;
 }
 
-GridPoint MemorySlot::getReferencedGridPoint( IndId const indId ) const 
+GridPoint MemorySlot::getReferencedGridPoint( IndividualId const indId ) const 
 { 
 	return m_textDisplay.Core().FindGridPoint( indId );
 }
 
-IndId MemorySlot::getIndId( GridPoint const gp ) const 
+IndividualId MemorySlot::getIndId( GridPoint const gp ) const 
 { 
 	return m_textDisplay.Core().GetMemEntry( gp, m_index );
 }

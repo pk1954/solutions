@@ -47,7 +47,7 @@ public:
     short          GetFertilizer( ) const { return m_sFertilizer; }
     EVO_GENERATION GetGenBirth( )   const { return m_Individual.GetGenBirth( ); }
     tAction        GetLastAction( ) const { return m_Individual.GetLastAction( ); }
-    IndId          GetId( )         const { return m_Individual.GetId( ); }
+    IndividualId   GetId( )         const { return m_Individual.GetId( ); }
     tOrigin        GetOrigin( )     const { return m_Individual.GetOrigin( ); }
     short          GetEnergy( )     const { return m_Individual.GetEnergy( ); }
     bool           IsDead( )        const { return m_Individual.IsDead( ); }
@@ -60,14 +60,14 @@ public:
 
     short  const   GetAllele( tGeneType const geneType ) const { return GetGenome( ).GetAllele( geneType ); }
 
-    IndId GetMemEntry( MEM_INDEX const i ) const { return m_Individual.GetMemEntry( i ); }
-    void  ResetIndividual( )                     { m_Individual.ResetIndividual( ); }
-    void  SetEnergy( short const sInc )          { m_Individual.SetEnergy( sInc ); }
-    void  DecEnergy( short const sDec )          { m_Individual.IncEnergy( - sDec ); }
-    void  IncEnergy( short const sInc )          { m_Individual.IncEnergy( sInc ); }
-    void  SetLastAction( tAction const at )      { m_Individual.SetLastAction( at ); }
+    IndividualId GetMemEntry( MEM_INDEX const i ) const { return m_Individual.GetMemEntry( i ); }
+    void         ResetIndividual( )                     { m_Individual.ResetIndividual( ); }
+    void         SetEnergy( short const sInc )          { m_Individual.SetEnergy( sInc ); }
+    void         DecEnergy( short const sDec )          { m_Individual.IncEnergy( - sDec ); }
+    void         IncEnergy( short const sInc )          { m_Individual.IncEnergy( sInc ); }
+    void         SetLastAction( tAction const at )      { m_Individual.SetLastAction( at ); }
 
-	void CreateIndividual( IndId const id, EVO_GENERATION const genBirth, tStrategyId const s )
+	void CreateIndividual( IndividualId const id, EVO_GENERATION const genBirth, tStrategyId const s )
 	{
 		m_Individual.Create( id, genBirth, s );
 	}
@@ -78,7 +78,7 @@ public:
 		IncEnergy( sDonation );
 	}
 
-	void CloneIndividual( IndId const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParent )
+	void CloneIndividual( IndividualId const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParent )
 	{
 		m_Individual.Clone( id, genBirth, m_sMutatRate, random, gfParent.m_Individual );
 		long lDonationRate = static_cast<long>( gfParent.GetAllele( tGeneType::cloneDonation ) );
@@ -87,7 +87,7 @@ public:
 		Donate( gfParent, CastToShort( lDonation ) );
 	}
 
-	void BreedIndividual( IndId const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParentA, GridField & gfParentB )
+	void BreedIndividual( IndividualId const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParentA, GridField & gfParentB )
 	{
 		m_Individual.Breed( id, genBirth, m_sMutatRate, random, gfParentA.m_Individual, gfParentB.m_Individual );
 		Donate( gfParentA, gfParentA.GetEnergy( ) / 3 );   //TODO:  Make variable, Gene?
@@ -102,7 +102,7 @@ public:
 		setFertilizer( CastToShort( iNewValue ) );
 	}
 
-	void PassOn2Child( IndId const id, EVO_GENERATION const genBirth, Random & random )
+	void PassOn2Child( IndividualId const id, EVO_GENERATION const genBirth, Random & random )
 	{
 		m_Individual.Clone( id, genBirth, m_sMutatRate, random, m_Individual );
 	}

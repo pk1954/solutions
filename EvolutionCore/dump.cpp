@@ -11,7 +11,7 @@ using namespace std;
 
 wostream * DUMP::m_pDumpStream = & wcout;
 
-wostream & operator << ( wostream & out, IndId const & id )
+wostream & operator << ( wostream & out, IndividualId const & id )
 {
     out << id.GetLong( );
     return out;

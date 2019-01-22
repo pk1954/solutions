@@ -76,7 +76,7 @@ public:
     bool           IsAlive     ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive( ); }
     bool           IsDead      ( GridPoint const gp ) const { return GetGridField( gp ).IsDead( ); }
     int            GetFoodStock( GridPoint const gp ) const { return GetGridField( gp ).GetFoodStock( ); }
-    IndId          GetId       ( GridPoint const gp ) const { return GetGridField( gp ).GetId       ( ); }
+    IndividualId   GetId       ( GridPoint const gp ) const { return GetGridField( gp ).GetId       ( ); }
     tOrigin        GetOrigin   ( GridPoint const gp ) const { return GetGridField( gp ).GetOrigin   ( ); }
     EVO_GENERATION GetGenBirth ( GridPoint const gp ) const { return GetGridField( gp ).GetGenBirth( ); }
     EVO_GENERATION GetAge      ( GridPoint const gp ) const { return m_genEvo - GetGenBirth( gp ); }
@@ -173,7 +173,7 @@ private:
     // following members are stored here only to be part of grid history.
 
     Random         m_random;                                               //                            16 byte
-    IndId          m_idCounter;  // Used only by class Individual.         //                             4 byte
+    IndividualId   m_idCounter;  // Used only by class Individual.         //                             4 byte
      
     // static members 
 

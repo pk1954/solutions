@@ -48,8 +48,8 @@ public:
     EvoModelDataGlue * GetEvoModelData ( ) { return m_pEvoModelWork;  }
     HistorySystem    * GetHistorySystem( ) { return m_pHistorySystem; }
     
-	HIST_GENERATION GetFirstGenOfIndividual( IndId const & ) const; 
-	HIST_GENERATION GetLastGenOfIndividual ( IndId const & ) const;  
+	HIST_GENERATION GetFirstGenOfIndividual( IndividualId const & ) const; 
+	HIST_GENERATION GetLastGenOfIndividual ( IndividualId const & ) const;  
 
 	void EvoClearHistory( );
 

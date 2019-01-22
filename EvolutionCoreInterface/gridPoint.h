@@ -1,5 +1,6 @@
 // gridPoint.h : 
 //
+// library EvolutionCoreInterface
 
 #pragma once
 
@@ -12,7 +13,7 @@
 #include "debug.h"
 #include "util.h"
 #include "Int24.h"
-#include "EvolutionTypes.h"
+#include "gridCoord.h"
 
 class GridPoint
 {

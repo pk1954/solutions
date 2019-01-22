@@ -6,7 +6,7 @@
 #include "pixelRect.h"
 #include "gridPoint.h"
 #include "gridRect.h"
-#include "kGridPoint.h"
+#include "kGridRect.h"
 #include "SmoothMove.h"
 
 class EvolutionCore;
