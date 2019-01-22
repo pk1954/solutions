@@ -16,21 +16,21 @@ GRID_COORD ScrReadGridCoord( Script & script )
 
 GridPoint ScrReadGridPoint( Script & script )
 {
-    GRID_COORD const x = ScrReadGridCoord( script );
-    GRID_COORD const y = ScrReadGridCoord( script );
+    GRID_COORD const x(ScrReadGridCoord( script ));
+    GRID_COORD const y(ScrReadGridCoord( script ));
     return GridPoint( x, y );
 }
 
 GridRect ScrReadGridRect( Script & script )
 {
-    GridPoint gpStart = ScrReadGridPoint( script );
-    GridPoint gpEnd   = ScrReadGridPoint( script );
+    GridPoint gpStart(ScrReadGridPoint( script ));
+    GridPoint gpEnd  (ScrReadGridPoint( script ));
     return GridRect( gpStart, gpEnd );
 }
 
 PixelPoint ScrReadPixelPoint( Script & script )
 {
-    long const x = script.ScrReadLong();
-    long const y = script.ScrReadLong();
+    PIXEL const x(script.ScrReadLong());
+    PIXEL const y(script.ScrReadLong());
     return PixelPoint( x, y );
 }

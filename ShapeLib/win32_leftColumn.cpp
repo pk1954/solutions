@@ -21,22 +21,22 @@ void LeftColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const pp
 {
 	if ( SetShapeRect( ppOffset, ppSize ) )
 	{
-		long lWidth    = getShapeWidth ();
-		long lHeight   = getShapeHeight();
-		long lIdHeight = m_idShape.GetMinHeight();
+		PIXEL pixWidth    = getShapeWidth ();
+		PIXEL pixHeight   = getShapeHeight();
+		PIXEL pixIdHeight = m_idShape.GetMinHeight();
 
 		PixelPoint posShape = GetShapePos( );
 
-		if ( lIdHeight + m_infoShape.GetMinHeight() <= lHeight )
+		if ( pixIdHeight + m_infoShape.GetMinHeight() <= pixHeight )
 		{
-			m_idShape  .PrepareShape( posShape, PixelRectSize( lWidth,           lIdHeight ) );
-			posShape.y += lIdHeight;
-			m_infoShape.PrepareShape( posShape, PixelRectSize( lWidth, lHeight - lIdHeight ) );
+			m_idShape  .PrepareShape( posShape, PixelRectSize( pixWidth,             pixIdHeight ) );
+			posShape.y += pixIdHeight;
+			m_infoShape.PrepareShape( posShape, PixelRectSize( pixWidth, pixHeight - pixIdHeight ) );
 		}
 		else
 		{
 			m_idShape  .SetShapeEmpty( );
-			m_infoShape.PrepareShape( posShape, PixelRectSize( lWidth, lHeight ) );
+			m_infoShape.PrepareShape( posShape, PixelRectSize( pixWidth, pixHeight ) );
 		}
 	}
 }

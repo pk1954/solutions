@@ -15,10 +15,6 @@ class PixelCoordinates
 {
 public:
 
-    static short const MINIMUM_FIELD_SIZE  =    1;
-    static short const DEFAULT_FIELD_SIZE  =    8;
-    static short const MAXIMUM_FIELD_SIZE  = 1024;
-
     PixelCoordinates( short const, bool const );
     
 	//////// transformations ////////
@@ -45,27 +41,31 @@ public:
 
 	//////// queries ////////
 	
-	short      GetFieldSize( )   const { return m_sFieldSize; };
+	PIXEL      GetFieldSize( )   const { return m_pixFieldSize; };
 	PixelPoint GetPixelOffset( ) const { return m_pixOffset; }
 
-	short      ComputeNewFieldSize( bool const ) const;  // does not modify field size
+	PIXEL      ComputeNewFieldSize( bool const ) const;  // does not modify field size
 
 	//////// manipulation functions ////////
 
-    short CalcMaximumFieldSize( GridPoint const &, PixelRectSize const );
-    bool  SetGridFieldSize( short );                                   
+    PIXEL CalcMaximumFieldSize( GridPoint const &, PixelRectSize const );
+    bool  SetGridFieldSize( PIXEL const );                                   
 	void  CenterGrid   ( GridPoint const, PixelRectSize const );
 
 	bool  CenterPoi( PixelPoint const, GridPoint const );
     void  MoveGrid( PixelPoint const);
 
 private:
-    bool       isValidFieldSize( long const ) const; 
+    bool       isValidFieldSize( PIXEL const ) const; 
     PixelPoint calcCenterOffset( GridPoint const, PixelPoint const );
 
     PixelPoint m_pixOffset;
-    short      m_sFieldSize;
+    PIXEL      m_pixFieldSize;
     SmoothMove m_smoothMove;
     bool       m_bMoving;
 	bool       m_bHexagon;
 };
+
+PIXEL const MINIMUM_FIELD_SIZE = PIXEL(1_PIXEL);
+PIXEL const DEFAULT_FIELD_SIZE = PIXEL(8_PIXEL);
+PIXEL const MAXIMUM_FIELD_SIZE = PIXEL(1024_PIXEL);

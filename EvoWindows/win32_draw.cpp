@@ -67,14 +67,14 @@ void DrawFrame::SetStripMode( tBoolOp const bOp )
 
 void DrawFrame::ResizeDrawFrame( )
 {
-	short const sFieldSize     = m_pPixelCoordinates->GetFieldSize();
+	PIXEL const pixFieldSize     = m_pPixelCoordinates->GetFieldSize();
 	int   const MAX_TEXT_LINES = 10;
-	int         iFontSize      = sFieldSize / MAX_TEXT_LINES;
-	if ( iFontSize < 9 )
-		iFontSize = 9;
-	if ( iFontSize > 16 )
-		iFontSize = 16;
-    m_pD3dBuffer->ResetFont( iFontSize );
+	PIXEL       pixFontSize      = pixFieldSize / MAX_TEXT_LINES;
+	if ( pixFontSize < PIXEL(9_PIXEL) )
+		pixFontSize = PIXEL(9_PIXEL);
+	if ( pixFontSize > PIXEL(16_PIXEL) )
+		pixFontSize = PIXEL(16_PIXEL);
+    m_pD3dBuffer->ResetFont( pixFontSize );
 	m_gridPointShape->RefreshLayout( );
 }
 
@@ -142,7 +142,7 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 
 void DrawFrame::drawBackground( )
 {
-	float m_fPxSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) );
+	float m_fPxSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).get() );
 
 	Apply2Grid    // strip mode works only with full grid
 	(          
@@ -170,7 +170,7 @@ void DrawFrame::drawPOI( GridPoint const gpPoi )
     if ( gpPoi.IsNotNull( ) )
     {
         PixelPoint const ptCenter = m_pPixelCoordinates->Grid2PixelPosCenter( gpPoi );
-		float      const fPixSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ) );
+		float      const fPixSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).get() );
 
         addPrimitive( gpPoi, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
         addPrimitive( gpPoi, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
@@ -186,7 +186,7 @@ void DrawFrame::drawPOI( GridPoint const gpPoi )
 
 void DrawFrame::drawIndividuals( GridRect const & rect )
 {
-	float const fHalfSizeInd = static_cast<float>( m_gridPointShape->GetIndShapeSize( ) );
+	float const fHalfSizeInd = static_cast<float>( m_gridPointShape->GetIndShapeSize( ).get() );
 
     rect.Apply2Rect
 	( 

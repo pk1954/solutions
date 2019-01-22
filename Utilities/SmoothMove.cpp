@@ -7,53 +7,53 @@
 #include "SmoothMove.h"
 
 SmoothMove::SmoothMove( ) :
-    m_lVelocity( 0 )
+    m_pixVelocity( 0 )
 {}
 
 PixelPoint SmoothMove::Step( PixelPoint pixActual, PixelPoint pixTarget )  // returns new pixOffset, which is closer to pixTarget
 {
-    PixelPoint pixDelta       = pixTarget - pixActual;
-    long       lDistance      = std::max( abs( pixDelta.x ), abs( pixDelta.y ) );
-    long       lBreakDistCont = ( m_lVelocity + 1 ) * ( m_lVelocity ) / 2;   // break distance if we continue with actual velocity
-    long       lBreakDistAcc  = lBreakDistCont + m_lVelocity + 1;            // break distance if we accelerate
-    long       lDeltaV        = ( lDistance >= lBreakDistAcc ) 
-                                ? 1                                 // distance is big enough to accelerate 
-                                : ( lDistance >= lBreakDistCont ) 
-                                  ? 0                               // continue with current velocity
-                                  : -1;                             // we have to reduce velocity
+    PixelPoint pixDelta         = pixTarget - pixActual;
+    PIXEL      pixDistance      = MaxAbsDelta( pixDelta );
+    PIXEL      pixBreakDistCont = PIXEL( ( m_pixVelocity.get() + 1 ) * m_pixVelocity.get() / 2);   // break distance if we continue with actual velocity
+    PIXEL      pixBreakDistAcc  = pixBreakDistCont + m_pixVelocity + PIXEL(1_PIXEL);               // break distance if we accelerate
+    PIXEL      pixDeltaV        = ( pixDistance >= pixBreakDistAcc ) 
+                                ? PIXEL(1_PIXEL)                                 // distance is big enough to accelerate 
+                                : ( pixDistance >= pixBreakDistCont ) 
+                                  ? PIXEL(0_PIXEL)                               // continue with current velocity
+                                  : -PIXEL(1_PIXEL);                             // we have to reduce velocity
     PixelPoint pixStep;
-    m_lVelocity += lDeltaV;
-    assert( m_lVelocity >= 0 );
+    m_pixVelocity += pixDeltaV;
+    assert( m_pixVelocity >= PIXEL(0_PIXEL) );
     
     if ( abs( pixDelta.x ) > abs( pixDelta.y ) )  // x is major direction
     {
-        assert( pixDelta.x != 0 );
-        pixStep.x    = ( pixDelta.x > 0 ) ? m_lVelocity : -m_lVelocity;
+        assert( pixDelta.x != PIXEL(0_PIXEL) );
+        pixStep.x    = ( pixDelta.x > PIXEL(0_PIXEL) ) ? m_pixVelocity : -m_pixVelocity;
         pixActual.x += pixStep.x;
-        if ( pixDelta.y != 0 )
+        if ( pixDelta.y != PIXEL(0_PIXEL) )
         {
-            long lVelocityMinor = abs( ( pixStep.x * pixDelta.y + pixDelta.x / 2 ) / pixDelta.x );
-            pixStep.y = ( pixDelta.y > 0 ) ? lVelocityMinor : -lVelocityMinor;
+            PIXEL pixVelocityMinor = PIXEL(abs( ( pixStep.x.get() * pixDelta.y.get() + pixDelta.x.get() / 2 ) / pixDelta.x.get() ));
+            pixStep.y = ( pixDelta.y > PIXEL(0_PIXEL) ) ? pixVelocityMinor : -pixVelocityMinor;
             pixActual.y += pixStep.y;
         }
     }
     else  // y is major direction
     {
-        assert( pixDelta.y != 0 );
-        pixStep.y    = ( pixDelta.y > 0 ) ? m_lVelocity : -m_lVelocity;
+        assert( pixDelta.y != PIXEL(0_PIXEL) );
+        pixStep.y    = ( pixDelta.y > PIXEL(0_PIXEL) ) ? m_pixVelocity : -m_pixVelocity;
         pixActual.y += pixStep.y;
-        if ( pixDelta.x != 0 )
+        if ( pixDelta.x != PIXEL(0_PIXEL) )
         {
-            long lVelocityMinor = abs( ( pixStep.y * pixDelta.x + pixDelta.y / 2 ) / pixDelta.y );
-            pixStep.x = ( pixDelta.x > 0 ) ? lVelocityMinor : -lVelocityMinor;
+            PIXEL pixVelocityMinor = PIXEL(abs( ( pixStep.y.get() * pixDelta.x.get() + pixDelta.y.get() / 2 ) / pixDelta.y.get() ));
+            pixStep.x = ( pixDelta.x > PIXEL(0_PIXEL) ) ? pixVelocityMinor : -pixVelocityMinor;
             pixActual.x += pixStep.x;
         }
     }
 
 #ifdef _DEBUG
     PixelPoint pixDeltaNew  = pixTarget - pixActual;
-    long       lDistanceNew = std::max( abs( pixDeltaNew.x ), abs( pixDeltaNew.y ) );
-    assert( lDistanceNew <= lDistance );
+    PIXEL      pixDistanceNew = MaxAbsDelta( pixDeltaNew );
+    assert( pixDistanceNew <= pixDistance );
 #endif
 
    return pixActual;

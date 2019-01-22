@@ -9,61 +9,58 @@
 class PixelRectSize
 {
 public:
-	PixelRectSize( ) : m_iWidth( 0 ), m_iHeight( 0 ) {};
-    PixelRectSize( int const iSideLength ) : m_iWidth( iSideLength ), m_iHeight( iSideLength ) {};
-    PixelRectSize( int const iWidth, int const iHeight ) : m_iWidth(iWidth), m_iHeight(iHeight) {};
+	PixelRectSize( ) : m_pixWidth( 0 ), m_pixHeight( 0 ) {};
+    PixelRectSize( PIXEL const pixSideLength ) : m_pixWidth( pixSideLength ), m_pixHeight( pixSideLength ) {};
+    PixelRectSize( PIXEL const pixWidth, PIXEL const pixHeight ) : m_pixWidth(pixWidth), m_pixHeight(pixHeight) {};
 
-    PixelRectSize const operator+= (long const l) { m_iWidth += l; m_iHeight += l; return *this; };
-    PixelRectSize const operator-= (long const l) { m_iWidth -= l; m_iHeight -= l; return *this; };
+    PixelRectSize const operator*= (long const l) { m_pixWidth *= l; m_pixHeight *= l; return *this; };
+    PixelRectSize const operator/= (long const l) { m_pixWidth /= l; m_pixHeight /= l; return *this; };
 
-    PixelRectSize const operator*= (long const l) { m_iWidth *= l; m_iHeight *= l; return *this; };
-    PixelRectSize const operator/= (long const l) { m_iWidth /= l; m_iHeight /= l; return *this; };
+    PixelRectSize const operator+= (PIXEL const p) { m_pixWidth += p; m_pixHeight += p; return *this; };
+    PixelRectSize const operator-= (PIXEL const p) { m_pixWidth -= p; m_pixHeight -= p; return *this; };
 
-    PixelRectSize const operator*= (PixelRectSize const a) { m_iWidth *= a.m_iWidth; m_iHeight *= a.m_iHeight; return *this; };
-    PixelRectSize const operator/= (PixelRectSize const a) { m_iWidth /= a.m_iWidth; m_iHeight /= a.m_iHeight; return *this; };
+    //PixelRectSize const operator*= (PixelRectSize const a) { m_pixWidth *= a.m_pixWidth; m_pixHeight *= a.m_pixHeight; return *this; };
+    //PixelRectSize const operator/= (PixelRectSize const a) { m_pixWidth /= a.m_pixWidth; m_pixHeight /= a.m_pixHeight; return *this; };
 
-    int GetWidth ( ) const { return m_iWidth;  }
-    int GetHeight( ) const { return m_iHeight; }
+    PIXEL GetWidth ( ) const { return m_pixWidth;  }
+    PIXEL GetHeight( ) const { return m_pixHeight; }
 
-	PixelPoint ToPixelPoint() const { return PixelPoint( m_iWidth, m_iHeight ); }
+	PixelPoint ToPixelPoint() const { return PixelPoint( m_pixWidth, m_pixHeight ); }
 
-    void ReduceHeight( int const iDiff ) 
+    void ReduceHeight( PIXEL const pixDiff ) 
     {
-        assert( m_iHeight >= iDiff );
-        m_iHeight -= iDiff;
+        assert( m_pixHeight >= pixDiff );
+        m_pixHeight -= pixDiff;
     }
 
-	void SetHeight( int const iHeight )
+	void SetHeight( PIXEL const pixHeight )
 	{
-		m_iHeight = iHeight;
+		m_pixHeight = pixHeight;
 	}
 
     void SetEmpty( )
     {
-        m_iWidth  = 0;
-		m_iHeight = 0;
+        m_pixWidth  = PIXEL(0_PIXEL);
+		m_pixHeight = PIXEL(0_PIXEL);
     }
 
     bool IsEmpty( ) const
     {
-        return ( m_iWidth == 0 ) || ( m_iHeight == 0 );
+        return ( m_pixWidth == PIXEL(0_PIXEL) ) || ( m_pixHeight == PIXEL(0_PIXEL) );
     }
 
     bool Includes( PixelRectSize const size ) const
     {
-        return ( m_iWidth >= size.m_iWidth ) && ( m_iHeight >= size.m_iHeight );
+        return ( m_pixWidth >= size.m_pixWidth ) && ( m_pixHeight >= size.m_pixHeight );
     }
 
 private:
-    int m_iWidth;
-    int m_iHeight;
+    PIXEL m_pixWidth;
+    PIXEL m_pixHeight;
 };
-
-inline PixelRectSize const operator+ (PixelRectSize const & a, long const l) { PixelRectSize res(a); res += l; return res; };
-inline PixelRectSize const operator- (PixelRectSize const & a, long const l) { PixelRectSize res(a); res -= l; return res; };
 
 inline PixelRectSize const operator* (PixelRectSize const & a, long const l) { PixelRectSize res(a); res *= l; return res; };
 inline PixelRectSize const operator/ (PixelRectSize const & a, long const l) { PixelRectSize res(a); res /= l; return res; };
 
-inline PixelRectSize const operator* (PixelRectSize const & a, PixelRectSize const & b) { PixelRectSize res(a); res *= b; return res; };
-inline PixelRectSize const operator/ (PixelRectSize const & a, PixelRectSize const & b) { PixelRectSize res(a); res /= b; return res; };
+inline PixelRectSize const operator+ (PixelRectSize const & a, PIXEL const p ) { PixelRectSize res(a); res += p; return res; };
+inline PixelRectSize const operator- (PixelRectSize const & a, PIXEL const p ) { PixelRectSize res(a); res -= p; return res; };

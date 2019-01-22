@@ -36,7 +36,7 @@ void TextBuffer::StartPainting( )
     COLORREF const CLR_BACK   = RGB( 200, 200, 200 );
 
     SetBkColor( m_hDC, CLR_BACK );
-	Util::FastFill( m_hDC, RECT{ 0, 0, m_width, m_height } );
+	Util::FastFill( m_hDC, RECT{ 0, 0, m_width.get(), m_height.get() } );
     setHorizontalPos( 1 );
     m_iVerticalPos = TOP_MARGIN;
     SetTextAlign( m_hDC, TA_RIGHT );

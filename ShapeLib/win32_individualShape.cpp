@@ -16,21 +16,21 @@ void IndividualShape::PrepareShape( PixelPoint const ppOffset, PixelRectSize con
 {
 	if ( SetShapeRect( ppOffset, ppSize ) )
 	{
-		long lWidth  = getShapeWidth();
-		long lHeight = getShapeHeight();
+		PIXEL pixWidth  = getShapeWidth();
+		PIXEL pixHeight = getShapeHeight();
 
 		PixelPoint    pixPosSubShape  = GetShapePos( );
-		PixelRectSize pixSizeSubShape = PixelRectSize( lWidth / 2, lHeight );
+		PixelRectSize pixSizeSubShape = PixelRectSize( pixWidth / 2, pixHeight );
 
-		if ( m_leftColumn.GetMinWidth() + m_rightColumn.GetMinWidth() <= lWidth )
+		if ( m_leftColumn.GetMinWidth() + m_rightColumn.GetMinWidth() <= pixWidth )
 		{
 			m_leftColumn .PrepareShape( pixPosSubShape, pixSizeSubShape );
-			pixPosSubShape.x += lWidth / 2;
+			pixPosSubShape.x += pixWidth / 2;
 			m_rightColumn.PrepareShape( pixPosSubShape, pixSizeSubShape );
 		}
 		else
 		{
-			m_leftColumn .PrepareShape( pixPosSubShape, PixelRectSize( lWidth, lHeight ) );
+			m_leftColumn .PrepareShape( pixPosSubShape, PixelRectSize( pixWidth, pixHeight ) );
 			m_rightColumn.SetShapeEmpty( );
 		}
 	}

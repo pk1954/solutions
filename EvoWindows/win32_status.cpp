@@ -25,7 +25,7 @@ static double const TRACKBAR_SCALING_FACTOR = 1000.0;
 static LONG const SPEED_TRACKBAR_MIN = 0; 
 static LONG const SPEED_TRACKBAR_MAX = value2Trackbar( MAX_DELAY ); 
 
-static INT const STATUS_BAR_HEIGHT = 22;
+static PIXEL const STATUS_BAR_HEIGHT = PIXEL(22_PIXEL);
 
 static wchar_t * SZ_RUN_MODE  = L"   Run    ";
 static wchar_t * SZ_STOP_MODE = L"  Stop    ";
@@ -80,20 +80,22 @@ HWND WINAPI StatusBar::createControl
     HMENU   hMenu
 )
 {
-    INT  const iWidth = static_cast<int>( wcslen( lpWindowName ) ) * 9;
-    HWND const hwnd   = CreateWindow
+    PIXEL const pixWidth = PIXEL(static_cast<int>( wcslen( lpWindowName ) ) * 9);
+    HWND  const hwnd     = CreateWindow
     (
         lpClassName,                     // class name 
         lpWindowName,                    // title (caption) 
         WS_CHILD | WS_VISIBLE | dwStyle, // style 
-        m_iPosX, m_iBorder,              // position 
-        iWidth, m_iClientHeight,         // size 
+        m_pixPosX.get(),                 // x position
+		m_pixBorder.get(),               // y position 
+        pixWidth.get(),                  // width
+		m_pixClientHeight.get(),         // height
         GetWindowHandle( ),              // parent window 
         hMenu,                           // control identifier 
         GetModuleHandle( nullptr ),      // instance 
         NULL                             // no WM_CREATE parameter 
     );
-    m_iPosX += iWidth;
+    m_pixPosX += pixWidth;
     return hwnd;
 }
 
@@ -125,8 +127,8 @@ void WINAPI StatusBar::createSizeControl( )
     createButton       ( L" + ",     (HMENU)IDM_ZOOM_IN,  BS_PUSHBUTTON ); 
     createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM, BS_PUSHBUTTON ); 
 
-    LONG const lMinPos = value2Trackbar( PixelCoordinates::MINIMUM_FIELD_SIZE );
-    LONG const lMaxPos = value2Trackbar( PixelCoordinates::MAXIMUM_FIELD_SIZE );
+    LONG const lMinPos = value2Trackbar( MINIMUM_FIELD_SIZE.get() );
+    LONG const lMaxPos = value2Trackbar( MAXIMUM_FIELD_SIZE.get() );
 
     SetTrackBarRange( IDM_ZOOM_TRACKBAR, lMinPos, lMaxPos );  
 } 
@@ -165,7 +167,7 @@ void StatusBar::Start
         STATUSCLASSNAME, 
         nullptr, 
         WS_CHILD | WS_VISIBLE,
-        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT,
+        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT.get(),
         hwndParent,
         nullptr, 
         GetModuleHandle( nullptr ), 
@@ -174,51 +176,51 @@ void StatusBar::Start
 
     SetWindowHandle( hwndStatus );
 
-    static std::array< int, static_cast<int>( tPart::Stop ) + 1> statwidths = 
+    static std::array< PIXEL, static_cast<int>( tPart::Stop ) + 1> statwidths = 
     { 
-        100, // Generation 
-		200, // Mode (Edit/Simu)
-        400, // Size
-        670, // Edit/Simu controls
-        600, // ScriptLine
-         -1  // Stop
+        PIXEL(100_PIXEL), // Generation 
+		PIXEL(200_PIXEL), // Mode (Edit/Simu)
+        PIXEL(400_PIXEL), // Size
+        PIXEL(670_PIXEL), // Edit/Simu controls
+        PIXEL(600_PIXEL), // ScriptLine
+       -PIXEL(1_PIXEL)    // Stop
     };
 
-    int iPartWidth = statwidths[0];
+    PIXEL pixPartWidth = statwidths[0];
     for ( int i = 1; i < static_cast<int>( tPart::Stop ); ++i )
     {
-        statwidths[i] += iPartWidth;
-        iPartWidth = statwidths[i];
+        statwidths[i] += pixPartWidth;
+        pixPartWidth = statwidths[i];
     }
     
     (void)SetWindowSubclass( hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this ) ;
 
-    m_iBorder       = GetSystemMetrics( SM_CXSIZEFRAME );
-    m_iClientHeight = GetHeight( ) - m_iBorder;
+    m_pixBorder       = PIXEL(GetSystemMetrics( SM_CXSIZEFRAME ));
+    m_pixClientHeight = GetHeight( ) - m_pixBorder;
 
-    m_iPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_iBorder + 10;
+    m_pixPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_pixBorder + PIXEL(10_PIXEL);
     createModeControl( );
 
-    m_iPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_iBorder + 10;
+    m_pixPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_pixBorder + PIXEL(10_PIXEL);
     createSizeControl( );
 
-    m_iPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_iBorder + 10;
+    m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorder + PIXEL(10_PIXEL);
     createSimulationControl( );
 
-    m_iPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_iBorder + 10;
+    m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorder + PIXEL(10_PIXEL);
 	createEditorControl( );
 
     ( void )SendMessage( SB_SETPARTS, sizeof( statwidths ) / sizeof( int ), (LPARAM)( &statwidths ) );
 
-    SetSizeTrackBar ( PixelCoordinates::DEFAULT_FIELD_SIZE );
+    SetSizeTrackBar ( DEFAULT_FIELD_SIZE );
 	long lDefaultDelay = Config::GetConfigValue( Config::tId::generationDelay );
     SetSpeedTrackBar( lDefaultDelay );
 	PostCommand2Application( IDM_SIMULATION_SPEED, lDefaultDelay );
 }
 
-void StatusBar::SetSizeTrackBar( short const sFieldSize  ) const 
+void StatusBar::SetSizeTrackBar( PIXEL const pixFieldSize  ) const 
 { 
-    SetTrackBarPos( IDM_ZOOM_TRACKBAR, value2Trackbar( sFieldSize ) ); 
+    SetTrackBarPos( IDM_ZOOM_TRACKBAR, value2Trackbar( pixFieldSize.get() ) ); 
 }
 
 void StatusBar::SetSpeedTrackBar( DWORD const dwDelay ) const 
@@ -263,7 +265,7 @@ void StatusBar::SetSimuMode( BOOL const bSimuMode )
 	SetDlgText( IDM_TOGGLE_SIMU_MODE, bSimuMode ? SZ_EDIT_MODE : SZ_SIMU_MODE );
 }
 
-int StatusBar::GetHeight( ) const
+PIXEL StatusBar::GetHeight( ) const
 {
     return STATUS_BAR_HEIGHT;
 }

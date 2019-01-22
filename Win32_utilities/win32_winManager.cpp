@@ -26,21 +26,21 @@ public:
 
 		if ( uiResId > 0 )
 		{
-			LONG const lXpos   = script.ScrReadLong( );
-			LONG const lYpos   = script.ScrReadLong( );
-			LONG const lWidth  = script.ScrReadLong( );
-			LONG const lHeight = script.ScrReadLong( );
+			PIXEL const pixXpos  ( script.ScrReadLong( ) );
+			PIXEL const pixYpos  ( script.ScrReadLong( ) );
+			PIXEL const pixWidth ( script.ScrReadLong( ) );
+			PIXEL const pixHeight( script.ScrReadLong( ) );
 			if ( m_pWinManager->IsMoveable( uiResId ) )
 			{
 				HWND const hwnd = m_pWinManager->GetHWND( uiResId );
 				if ( m_pWinManager->IsSizeable( uiResId ) )
 				{
-					BOOL bRes = Util::MoveWindowAbsolute( hwnd, lXpos, lYpos, lWidth, lHeight, TRUE ); 
+					BOOL bRes = Util::MoveWindowAbsolute( hwnd, pixXpos, pixYpos, pixWidth, pixHeight, TRUE ); 
 					assert( bRes );
 				}
 				else
 				{
-     				BOOL bRes = Util::MoveWindowAbsolute( hwnd, lXpos, lYpos, TRUE ); 
+     				BOOL bRes = Util::MoveWindowAbsolute( hwnd, pixXpos, pixYpos, TRUE ); 
 					DWORD dwErr = GetLastError();
 					assert( bRes );
 				}

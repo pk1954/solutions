@@ -138,8 +138,7 @@ class WrapSetFieldSize : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-		short const sFieldSize = script.ScrReadShort();
-		m_pPixCoords->SetGridFieldSize( sFieldSize );
+		m_pPixCoords->SetGridFieldSize( PIXEL(script.ScrReadShort()) );
     }
 };
 

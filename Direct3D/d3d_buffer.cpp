@@ -66,7 +66,7 @@ D3dBuffer::D3dBuffer( HWND const hwnd, ULONG const ulNrOfPoints )
     m_dwDstBlend       = 0;
     m_bStripMode       = TRUE;
     m_id3dx_font       = nullptr;
-    ResetFont( 9 );
+    ResetFont( PIXEL(9_PIXEL) );
 }
 
 D3dBuffer::~D3dBuffer()
@@ -147,7 +147,7 @@ BOOL D3dBuffer::setFont( )
 	return TRUE;
 }
 
-void D3dBuffer::ResetFont( int const nPointSize )
+void D3dBuffer::ResetFont( PIXEL const nPointSize )
 {
     //
     // To create a Windows friendly font using only a point size, an 
@@ -166,7 +166,7 @@ void D3dBuffer::ResetFont( int const nPointSize )
     HDC const hDC = GetDC( nullptr );
     int const iLogPixels = GetDeviceCaps( hDC, LOGPIXELSY );
     ReleaseDC( nullptr, hDC );
-    m_d3dx_font_desc.Height = -( MulDiv( nPointSize, iLogPixels, 72 ) );
+    m_d3dx_font_desc.Height = -( MulDiv( nPointSize.get(), iLogPixels, 72 ) );
 	m_d3dx_font_desc.Width  = m_d3dx_font_desc.Height / 2;
     setFont( );   
 }
@@ -205,8 +205,8 @@ void D3dBuffer::AddIndividualPrimitive( PixelPoint const ptPos, DWORD const dwCo
 {
 	static float const SQRT3 = static_cast<float>( sqrt( 3 ) );
 
-    float const fPtPosx = static_cast<float>( ptPos.x );
-    float const fPtPosy = static_cast<float>( ptPos.y );
+    float const fPtPosx = static_cast<float>( ptPos.x.get() );
+    float const fPtPosy = static_cast<float>( ptPos.y.get() );
 
     if ( m_bStripMode )
     {
@@ -225,8 +225,8 @@ void D3dBuffer::AddBackgroundPrimitive( PixelPoint const ptPos, DWORD const dwCo
 {
 	static float const INVERSE_SQRT3 = static_cast<float>( 1 / sqrt( 3 ) );
 
-	float const fPtPosx = static_cast<float>( ptPos.x );
-    float const fPtPosy = static_cast<float>( ptPos.y );
+	float const fPtPosx = static_cast<float>( ptPos.x.get() );
+    float const fPtPosy = static_cast<float>( ptPos.y.get() );
 
 	float const fPixSizeHalf = fPixSize / 2;
 
@@ -283,10 +283,10 @@ void D3dBuffer::RenderTranspRect
 
 		addRect2Buffer
 		( 
-			static_cast<float>( rectTransparent.m_lLeft   ), 
-			static_cast<float>( rectTransparent.m_lTop    ), 
-			static_cast<float>( rectTransparent.m_lRight  ), 
-			static_cast<float>( rectTransparent.m_lBottom ), 
+			static_cast<float>( rectTransparent.GetLeft().get()   ), 
+			static_cast<float>( rectTransparent.GetTop().get()    ), 
+			static_cast<float>( rectTransparent.GetRight().get()  ), 
+			static_cast<float>( rectTransparent.GetBottom().get() ), 
 			d3dColor 
 		);
 

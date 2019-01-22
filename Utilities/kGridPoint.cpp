@@ -9,16 +9,16 @@ KGridRect  const KGridRect ::KGRID_RECT_EMPTY ( KGridPoint::KGRID_POINT_EMPTY, K
 
 static long const KGRID_FACTOR = 1024;
 
-KGridPoint Pixel2KGridSize( PixelPoint const ptSize, short const sFieldSize )
+KGridPoint Pixel2KGridSize( PixelPoint const ptSize, PIXEL const pixFieldSize )
 {
     PixelPoint pixSize = ptSize * KGRID_FACTOR;
-    pixSize /= sFieldSize;
-    return KGridPoint( pixSize.x, pixSize.y );
+    pixSize /= pixFieldSize.get();
+    return KGridPoint( pixSize.x.get(), pixSize.y.get() );
 }
 
-PixelPoint KGrid2PixelSize( KGridPoint const kgpSize, short const sFieldSize ) 
+PixelPoint KGrid2PixelSize( KGridPoint const kgpSize, PIXEL const pixFieldSize ) 
 {
-    KGridPoint kgp = (kgpSize * sFieldSize);
+    KGridPoint kgp = (kgpSize * CastToShort(pixFieldSize.get()));
     kgp /= KGRID_FACTOR;
-    return PixelPoint( kgp.GetX(), kgp.GetY() );
+    return PixelPoint( PIXEL(kgp.GetX()), PIXEL(kgp.GetY()) );
 }

@@ -23,7 +23,7 @@ public:
     GRID_COORD operator++ () { ++value_; return * this; }
     GRID_COORD operator-- () { --value_; return * this; }
 
-    GRID_COORD const operator- () { return GRID_COORD( -value_ ); }
+    GRID_COORD const operator- () const { return GRID_COORD( -value_ ); }
 
     bool const operator== (GRID_COORD const a) const { return value_ == a.value_; }
     bool const operator!= (GRID_COORD const a) const { return value_ != a.value_; }

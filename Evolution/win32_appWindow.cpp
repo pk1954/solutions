@@ -327,7 +327,7 @@ LRESULT AppWindow::UserProc
 
 void AppWindow::adjustChildWindows( )
 {
-    static int const HIST_WINDOW_HEIGHT = 30;
+    static PIXEL const HIST_WINDOW_HEIGHT = PIXEL(30_PIXEL);
 
     PixelRectSize pntAppClientSize( GetClRectSize( ) );
 
@@ -340,7 +340,7 @@ void AppWindow::adjustChildWindows( )
         {
             m_pEvoHistWindow->Move   // adapt history window to new size
 			( 
-				0, 
+				PIXEL(0_PIXEL), 
 				pntAppClientSize.GetHeight( ) - HIST_WINDOW_HEIGHT, 
 				pntAppClientSize.GetWidth(), 
 				HIST_WINDOW_HEIGHT, 
@@ -348,7 +348,14 @@ void AppWindow::adjustChildWindows( )
 			); 
         }
 
-        m_pMainGridWindow->Move( 0, 0, pntAppClientSize.GetWidth( ), pntAppClientSize.GetHeight( ), TRUE );
+        m_pMainGridWindow->Move
+		( 
+			PIXEL(0_PIXEL), 
+			PIXEL(0_PIXEL), 
+			pntAppClientSize.GetWidth( ), 
+			pntAppClientSize.GetHeight( ), 
+			TRUE 
+		);
     }
 }
 

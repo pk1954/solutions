@@ -10,7 +10,7 @@ class KGridPoint
 {
 public:
     KGridPoint( long const _x, long const _y ) : x(_x) , y(_y) { };
-    explicit KGridPoint( PixelPoint const pxPnt ) : x(pxPnt.x), y(pxPnt.y) { }; 
+    explicit KGridPoint( PixelPoint const pxPnt ) : x(pxPnt.x.get()), y(pxPnt.y.get()) { }; 
 
     bool const operator== (KGridPoint const a) const { return (a.x == x) && (a.y == y); };
     bool const operator!= (KGridPoint const a) const { return (a.x != x) || (a.y != y); };
@@ -22,6 +22,7 @@ public:
     long GetY( ) const { return y; };
 
     static KGridPoint const KGRID_POINT_EMPTY;
+
 private:
     long x;
     long y;
@@ -30,8 +31,8 @@ private:
 inline KGridPoint const operator* (KGridPoint const a, short const s) { KGridPoint res(a); res *= s; return res; };
 inline KGridPoint const operator/ (KGridPoint const a, short const s) { KGridPoint res(a); res /= s; return res; };
 
-KGridPoint Pixel2KGridSize( PixelPoint    const, short );
-PixelPoint KGrid2PixelSize( KGridPoint    const, short );
+KGridPoint Pixel2KGridSize( PixelPoint const, PIXEL const );
+PixelPoint KGrid2PixelSize( KGridPoint const, PIXEL const );
 
 class KGridRect
 {

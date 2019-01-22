@@ -13,10 +13,11 @@ using namespace std;
 
 extern void UpperCase( wstring & );
 
-template <typename SOURCE_TYPE> int sgn(SOURCE_TYPE val) 
-{
-    return (SOURCE_TYPE(0) < val) - (val < SOURCE_TYPE(0));
-}
+// not needed, makes strange problems 
+//template <typename SOURCE_TYPE> int sgn(SOURCE_TYPE val) 
+//{
+//    return (SOURCE_TYPE(0) < val) - (val < SOURCE_TYPE(0));
+//}
 
 template<typename SOURCE_TYPE>
 SOURCE_TYPE ClipToMinMax(SOURCE_TYPE const val, SOURCE_TYPE const min, SOURCE_TYPE const max)

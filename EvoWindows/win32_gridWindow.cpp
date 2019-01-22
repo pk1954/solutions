@@ -34,7 +34,7 @@ GridWindow::GridWindow( ) :
     m_pObserverInterface( nullptr ),
 	m_pPixelCore( nullptr ),
     m_pDrawFrame( nullptr ),
-    m_ptLast( PixelPoint( LONG_MIN, LONG_MIN ) ),
+    m_ptLast( PixelPoint( PIXEL_NULL, PIXEL_NULL ) ),
     m_bMoveAllowed( TRUE )
 { }
 
@@ -184,7 +184,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
 
     if ( wParam & MK_RBUTTON )                // Right mouse button: selection
     {
-        if ( m_ptLast.x != LONG_MIN )  // last cursor pos stored in m_ptLast
+        if ( m_ptLast.x != PIXEL_NULL )  // last cursor pos stored in m_ptLast
         {
             PixelPoint ptOther = m_pCore->IsPoiDefined( ) 
 				                 ? m_pPixelCore->GetPoiCenter() * 2 - ptCrsr 
@@ -203,7 +203,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         {
             m_pWorkThreadInterface->PostDoEdit( m_pFocusPoint->GetGridPoint( ) );
         }
-        else if ( m_ptLast.x != LONG_MIN )  // last cursor pos stored in m_ptLast
+        else if ( m_ptLast.x != PIXEL_NULL )  // last cursor pos stored in m_ptLast
         {
             moveGrid( ptCrsr - m_ptLast );
 		    PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
@@ -213,7 +213,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     }
     else
     {
-        m_ptLast.x = LONG_MIN;    // make m_ptLast invalid
+        m_ptLast.x = PIXEL_NULL;    // make m_ptLast invalid
         // no PostRefresh! It would cause repaint for every mouse move.
     }
 }
@@ -246,16 +246,16 @@ void GridWindow::doPaint( )
 void GridWindow::mouseWheelAction( int iDelta )
 {
 	BOOL const bDirection = ( iDelta > 0 );
-	short      sNewFieldSize;
+	PIXEL      pixNewFieldSize;
 
 	iDelta = abs( iDelta );
 			
 	while ( --iDelta >= 0 )
 	{
-		sNewFieldSize = m_pPixelCoordinates->ComputeNewFieldSize( bDirection );
+		pixNewFieldSize = m_pPixelCoordinates->ComputeNewFieldSize( bDirection );
 	}
 
-	PostCommand2Application( IDM_SET_ZOOM, sNewFieldSize );
+	PostCommand2Application( IDM_SET_ZOOM, pixNewFieldSize.get() );
 	PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
 }
 
@@ -375,14 +375,14 @@ void GridWindow::Size( )
 {
     PixelPoint const ptSize = m_pPixelCoordinates->Grid2PixelSize( GridPoint::GRID_SIZE );
     DWORD      const dwStyle = (DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE );	
-	RECT             rect{ 0, 0, ptSize.x, ptSize.y };
+	RECT             rect{ 0, 0, ptSize.x.get(), ptSize.y.get() };
     (void)AdjustWindowRect( &rect, dwStyle, FALSE );	
-    Move( 0, 0, rect.right - rect.left, rect.bottom - rect.top, FALSE );
+    (void)::MoveWindow( GetWindowHandle( ), 0, 0, rect.right - rect.left, rect.bottom - rect.top, FALSE );
 }
 
-void GridWindow::newFieldSize( SHORT const fieldSize, GridPoint const gpCenter )
+void GridWindow::newFieldSize( PIXEL const pixfieldSize, GridPoint const gpCenter )
 {
-	if ( m_pPixelCoordinates->SetGridFieldSize( fieldSize ) )
+	if ( m_pPixelCoordinates->SetGridFieldSize( pixfieldSize ) )
 	{
 		m_pPixelCoordinates->CenterGrid( gpCenter, GetClRectSize( ) ); // center grid around gpCenter
 		m_pDrawFrame->ResizeDrawFrame( );  // trigger DrawFrame to adapt font size etc.
@@ -397,11 +397,11 @@ void GridWindow::newFieldSize( SHORT const fieldSize, GridPoint const gpCenter )
 	}
 }
 
-void GridWindow::SetFieldSize( SHORT const fieldSize )
+void GridWindow::SetFieldSize( PIXEL const pixFieldSize )
 {
 	newFieldSize
 	( 
-		fieldSize, 
+		pixFieldSize, 
 		m_pCore->IsPoiDefined( ) 
 		? m_pCore->FindPOI( ) 
 		: m_pPixelCoordinates->Pixel2GridPos( GetClRectCenter( ) ) 

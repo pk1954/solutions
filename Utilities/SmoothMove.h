@@ -13,5 +13,5 @@ public:
     PixelPoint Step( PixelPoint, PixelPoint );
 
 private:
-    long m_lVelocity; // set in every step
+    PIXEL m_pixVelocity; // set in every step
 };

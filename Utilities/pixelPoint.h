@@ -3,19 +3,21 @@
 
 #pragma once
 
+#include <algorithm>   // max
 #include <stdlib.h>    // abs
-#include "util.h"      // sgn
+#include "util.h"     
 #include "debug.h"
+#include "pixel.h"
 
 class PixelPoint
 {
 public:
-    long x;
-    long y;
+    PIXEL x;
+    PIXEL y;
 
-    PixelPoint( )                              { x =  0; y =  0; };
-    PixelPoint( long const _a )                { x = _a; y = _a; };
-    PixelPoint( long const _x, long const _y ) { x = _x; y = _y; };
+	PixelPoint( )                                : x(0), y(0)   {}
+    PixelPoint( PIXEL const _a )                 : x(_a), y(_a) {}
+    PixelPoint( PIXEL const _x, PIXEL const _y ) : x(_x), y(_y) {};
 
     bool       const operator== ( PixelPoint const a ) const { return ( x == a.x ) && ( y == a.y ); };
     bool       const operator!= ( PixelPoint const a ) const { return ( x != a.x ) || ( y != a.y ); };
@@ -36,4 +38,8 @@ inline PixelPoint const operator* (PixelPoint const a, long const l) { PixelPoin
 inline PixelPoint const operator/ (PixelPoint const a, long const l) { PixelPoint res(a); res /= l; return res; };
 
 inline PixelPoint const abs( PixelPoint const a ) { return PixelPoint( ::abs(a.x), ::abs(a.y ) ); }
-inline PixelPoint const sgn( PixelPoint const a ) { return PixelPoint( ::sgn(a.x), ::sgn(a.y ) ); }
+
+inline PIXEL const MaxAbsDelta(PixelPoint const pp) 
+{
+    return PIXEL( max( abs( pp.x.get() ), abs( pp.y.get() ) ) );
+}

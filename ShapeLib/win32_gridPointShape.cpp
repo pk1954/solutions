@@ -8,37 +8,37 @@
 // Can be displayed, if at least IndividualShape has space
 // If possible, display also CoordShape
 
-long GridPointShape::GetIndShapeSize( ) // returns half of side length
+PIXEL GridPointShape::GetIndShapeSize( ) // returns half of side length
 {
-	short const sFieldSize = m_shape.GetFieldSize();
-	return ( sFieldSize <    8 ) ?                         1  :
-		   ( sFieldSize <=  16 ) ? ((3 * sFieldSize) / 8 - 1) : 
-								   ((3 * sFieldSize) / 8    );
+	PIXEL const pixFieldSize = m_shape.GetFieldSize();
+	return ( pixFieldSize <  PIXEL( 8_PIXEL) ) ?                           PIXEL(1_PIXEL)  :
+		   ( pixFieldSize <= PIXEL(16_PIXEL) ) ? ((pixFieldSize * 3) / 8 - PIXEL(1_PIXEL)) : 
+								                 ((pixFieldSize * 3) / 8    );
 }
 
 void GridPointShape::RefreshLayout( )
 {
-	static const long MARGIN = 3;
+	static const PIXEL MARGIN = PIXEL(3_PIXEL);
 
-	PixelRectSize const minCoord   = m_coordShape.MinimalSize( );
-	PixelRectSize const minIndiv   = m_indivShape.MinimalSize( );
-	PixelRectSize const minSize    = m_shape.SetMinSize( minIndiv );     
-	short         const sFieldSize = m_shape.GetFieldSize();
+	PixelRectSize const minCoord     = m_coordShape.MinimalSize( );
+	PixelRectSize const minIndiv     = m_indivShape.MinimalSize( );
+	PixelRectSize const minSize      = m_shape.SetMinSize( minIndiv );     
+	PIXEL         const pixFieldSize = m_shape.GetFieldSize();
 
-	if ( m_shape.SetShapeRect( PixelPoint(), PixelRectSize( sFieldSize ) ) )
+	if ( m_shape.SetShapeRect( PixelPoint(), PixelRectSize( pixFieldSize ) ) )
 	{
-		long lSizeInd   = 2 * GetIndShapeSize( );
-		long lSizeFrame = sFieldSize - lSizeInd;
+		PIXEL pixSizeInd   = GetIndShapeSize( ) * 2;
+		PIXEL pixSizeFrame = pixFieldSize - pixSizeInd;
 
 		m_coordShape.PrepareShape
 		( 
-			PixelPoint( lSizeFrame / 2, 0 ), 
-			PixelRectSize( lSizeInd, lSizeFrame / 2 ) 
+			PixelPoint( pixSizeFrame / 2, PIXEL(0_PIXEL) ), 
+			PixelRectSize( pixSizeInd, pixSizeFrame / 2 ) 
 		);
 		m_indivShape.PrepareShape
 		( 
-			PixelPoint( lSizeFrame ) / 2 + MARGIN, 
-			PixelRectSize( lSizeInd ) - 2 * MARGIN
+			PixelPoint( pixSizeFrame ) / 2 + MARGIN, 
+			PixelRectSize( pixSizeInd ) - MARGIN * 2
 		);
 	}
 }

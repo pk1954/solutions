@@ -24,7 +24,7 @@ public:
 	void          Draw( GridPoint const, PixelPoint const );
 	Shape const * FindShape( PixelPoint const, GridPoint const ) const;
 	void          RefreshLayout( );
-	long          GetIndShapeSize( );
+	PIXEL         GetIndShapeSize( );
 
 	IndividualShape const & GetIndividualShape() const 
 	{

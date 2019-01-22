@@ -23,7 +23,7 @@ public:
     ~D3dBuffer();
 
     BOOL      StartFrame( );
-    void      ResetFont( int const );
+    void      ResetFont( PIXEL const );
     void      AddIndividualPrimitive( PixelPoint const, DWORD const, float const );    
     void      AddBackgroundPrimitive( PixelPoint const, DWORD const, float const );    
     void      RenderIndividuals( );

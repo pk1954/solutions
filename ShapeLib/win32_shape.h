@@ -33,8 +33,8 @@ public:
 		return m_rect + m_textDisplay.GetOffset( gp );
 	}
 
-	long const GetMinWidth ( ) const { return m_minSize.GetWidth();  }
-	long const GetMinHeight( ) const { return m_minSize.GetHeight(); }
+	PIXEL const GetMinWidth ( ) const { return m_minSize.GetWidth();  }
+	PIXEL const GetMinHeight( ) const { return m_minSize.GetHeight(); }
 
 	virtual Shape const * FindShape  // for all shapes without subshapes
 	( 
@@ -72,12 +72,12 @@ public:
 		return m_minSize = rect;
 	}
 
-	PixelRectSize SetMinSize( int const iWidth, int const iHeight )
+	PixelRectSize SetMinSize( PIXEL const iWidth, PIXEL const iHeight )
 	{
 		return SetMinSize( PixelRectSize( iWidth, iHeight ) );
 	}
 
-	short GetFieldSize()
+	PIXEL GetFieldSize()
 	{
 		return m_textDisplay.GetFieldSize( );
 	}
@@ -109,12 +109,12 @@ protected:
 		return m_rect.GetSize( );
 	}
 
-	long const getShapeWidth()
+	PIXEL const getShapeWidth()
 	{
 		return m_rect.GetWidth( );
 	}
 
-	long const getShapeHeight()
+	PIXEL const getShapeHeight()
 	{
 		return m_rect.GetHeight( );
 	}

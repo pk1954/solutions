@@ -22,7 +22,7 @@ RECT Util::ScrReadRECT( Script & script )
 wostream & Util::operator << ( wostream & out, PixelPoint const pp )
 {
     //lint -e747  Significant prototype coercion with setw
-    out << L" " << setw( 3 ) << pp.x << L" " << setw( 3 ) << pp.y << L" ";
+    out << pp.x << pp.y << L" ";
     return out;
 }
 
@@ -34,7 +34,7 @@ wostream & Util::operator << ( wostream & out, PixelRect const & rect )
 
 wostream & Util::operator << ( wostream & out, RECT const & rect )
 {
-    out << PixelPoint(rect.left, rect.top) << L' ' << PixelPoint(rect.right, rect.bottom);
+    out << rect.left << L' ' << rect.top << L' ' << rect.right << L' ' << rect.bottom;
     return out;
 }
 
@@ -48,57 +48,57 @@ bool Util::operator!= ( RECT const & a, RECT const & b )
     return ( a.left != b.left ) || ( a.top != b.top ) || ( a.right != b.right ) || ( a.bottom != b.bottom ); 
 };
 
-void Util::AdjustRight( HWND hwnd, int iYpos )
+void Util::AdjustRight( HWND const hwnd, PIXEL const pixYpos )
 {
-    HWND const hwndParent   = GetParent( hwnd );
-    int  const iWidthParent = GetClientWindowWidth( hwndParent );
-    int  const iWidth       = GetWindowWidth( hwnd );
-    int  const iHeight      = GetWindowHeight( hwnd );
-    MoveWindow( hwnd, iWidthParent - iWidth, iYpos, iWidth, iHeight, TRUE );
+    HWND  const hwndParent     = GetParent( hwnd );
+    PIXEL const pixWidthParent = GetClientWindowWidth( hwndParent );
+    PIXEL const pixWidth       = GetWindowWidth( hwnd );
+    PIXEL const pixHeight      = GetWindowHeight( hwnd );
+    MoveWindow( hwnd, (pixWidthParent - pixWidth).get(), pixYpos.get(), pixWidth.get(), pixHeight.get(), TRUE );
     (void)BringWindowToTop( hwnd );
 }
 
-void Util::AdjustLeft( HWND hwnd, int iYpos )
+void Util::AdjustLeft( HWND const hwnd, PIXEL const pixYpos )
 {
 	PixelPoint pnt = GetWindowSize( hwnd );
-    MoveWindow( hwnd, 0, iYpos, pnt.x, pnt.y, TRUE );
+    MoveWindow( hwnd, 0, pixYpos.get(), pnt.x.get(), pnt.y.get(), TRUE );
     (void)BringWindowToTop( hwnd );
 }
 
 BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and set size
 (
-	HWND const hwnd,
-	LONG const lXpos,
-	LONG const lYpos,
-	LONG const lWidth,
-	LONG const lHeight,
-	BOOL const bRepaint
+	HWND  const hwnd,
+	PIXEL const pixXpos,
+	PIXEL const pixYpos,
+	PIXEL const pixWidth,
+	PIXEL const pixHeight,
+	BOOL  const bRepaint
 )
 {
 	HWND  const hwndParent = GetAncestor( hwnd, GA_PARENT );
-	POINT       pos{ lXpos, lYpos };
+	POINT       pos{ pixXpos.get(), pixYpos.get() };
 
 	if ( hwndParent != nullptr )
 		ScreenToClient( hwndParent, &pos );
 
-	BOOL bRes = MoveWindow( hwnd, pos.x, pos.y, lWidth, lHeight, bRepaint );
+	BOOL bRes = MoveWindow( hwnd, pos.x, pos.y, pixWidth.get(), pixHeight.get(), bRepaint );
 	
-	if ( GetWindowSize( hwnd ) != PixelPoint{ lWidth, lHeight } )   // can happen in strange situations
-		bRes = MoveWindow( hwnd, pos.x, pos.y, lWidth, lHeight, bRepaint );
+	if ( GetWindowSize( hwnd ) != PixelPoint{ pixWidth, pixHeight } )   // can happen in strange situations
+		bRes = MoveWindow( hwnd, pos.x, pos.y, pixWidth.get(), pixHeight.get(), bRepaint );
 
 	return bRes;
 }
 
 BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates 
 (
-	HWND const hwnd,
-	LONG const lXpos,
-	LONG const lYpos,
-	BOOL const bRepaint
+	HWND  const hwnd,
+	PIXEL const pixXpos,
+	PIXEL const pixYpos,
+	BOOL  const bRepaint
 )
 {
 	PixelPoint const pixActSize = GetWindowSize( hwnd );
-	return MoveWindowAbsolute( hwnd, lXpos, lYpos, pixActSize.x, pixActSize.y, bRepaint );
+	return MoveWindowAbsolute( hwnd, pixXpos, pixYpos, pixActSize.x, pixActSize.y, bRepaint );
 }
 
 void Util::MakeLayered( HWND const hwnd, BOOL const bMode, COLORREF const crKey, UINT const uiAlpha )

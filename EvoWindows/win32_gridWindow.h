@@ -42,11 +42,11 @@ public:
 	void Zoom( bool const );
 	void ToggleStripMode( );
 	void Escape( );
-	void SetFieldSize( SHORT const );
+	void SetFieldSize( PIXEL const );
 	void Fit2Rect( );
 	bool IsFullGridVisible( ) const;
 
-	short GetFieldSize( ) const
+	PIXEL GetFieldSize( ) const
 	{ 
 		return m_pPixelCoordinates->GetFieldSize( ); 
 	};
@@ -83,7 +83,7 @@ private:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 	virtual void    AddContextMenuEntries( HMENU const, POINT const );
 
-	void newFieldSize( SHORT const, GridPoint const );
+	void newFieldSize( PIXEL const, GridPoint const );
 	void mouseWheelAction( int );
     BOOL inObservedClientRect( LPARAM );
     void moveGrid( PixelPoint const );

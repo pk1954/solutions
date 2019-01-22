@@ -44,7 +44,7 @@ public:
 		return  m_core.GetStrategyId( gp );
 	}
 
-	short GetFieldSize( ) const 
+	PIXEL GetFieldSize( ) const 
 	{
 		return m_pixelCoordinates.GetFieldSize();
 	}

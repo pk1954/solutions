@@ -16,6 +16,7 @@ class TextBuffer
 {
 public:
     TextBuffer( HDC, int const, int const );
+
 	virtual ~TextBuffer( ) 
 	{
 	}
@@ -56,8 +57,8 @@ private:
 
     wostringstream m_wBuffer;
     HDC            m_hDC;
-	int            m_width;
-	int			   m_height;
+	PIXEL          m_width;
+	PIXEL   	   m_height;
 	int            m_cyChar;
     int            m_cxChar;
     int            m_iHorizontalPos;

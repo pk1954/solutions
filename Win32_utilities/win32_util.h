@@ -4,6 +4,7 @@
 #pragma once
 
 #include "windows.h"
+#include "pixel.h"
 #include "pixelPoint.h"
 #include "pixelRect.h"
 #include "BoolOp.h"
@@ -55,16 +56,16 @@ namespace Util
         return rect;
     }
 
-    inline long GetClientWindowHeight( HWND const hwnd )
+    inline PIXEL GetClientWindowHeight( HWND const hwnd )
     {
         RECT rect = GetClRect( hwnd );                    
-        return rect.bottom - rect.top;    
+		return PIXEL{rect.bottom - rect.top};    
     }
 
-    inline long GetClientWindowWidth( HWND const hwnd )
+    inline PIXEL GetClientWindowWidth( HWND const hwnd )
     {
         RECT rect = GetClRect( hwnd );
-        return rect.right - rect.left;
+		return PIXEL{rect.right - rect.left};
     }
 
     inline PixelRect GetClPixelRect( HWND const hwnd ) // left / top always 0
@@ -77,7 +78,7 @@ namespace Util
     inline PixelRectSize GetClRectSize( HWND const hwnd )
     {
         RECT const rect = GetClRect( hwnd );
-		return PixelRectSize{ rect.right, rect.bottom };
+		return PixelRectSize{ PIXEL(rect.right), PIXEL(rect.bottom) };
     }
 
     inline PixelPoint GetClRectCenter( HWND const hwnd )
@@ -88,7 +89,7 @@ namespace Util
 	inline PixelPoint Client2Screen( HWND const hwnd, POINT pnt )
     {
         (void)ClientToScreen( hwnd, &pnt );
-		return PixelPoint( pnt.x, pnt.y );
+		return PixelPoint{ PIXEL(pnt.x), PIXEL(pnt.y) };
     }
 	
     inline PixelPoint GetRelativeCrsrPosition( HWND const hwnd )   // Delivers cursor position relative to client area 
@@ -96,62 +97,62 @@ namespace Util
 		POINT pnt;
 		(void)GetCursorPos( &pnt );
         (void)ScreenToClient( hwnd, &pnt );
-		return PixelPoint( pnt.x, pnt.y );
+		return PixelPoint{ PIXEL(pnt.x), PIXEL(pnt.y) };
     }
 
     inline PixelPoint GetWindowSize( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-        return { rect.right  - rect.left, rect.bottom - rect.top };
+        return PixelPoint{ PIXEL(rect.right - rect.left), PIXEL(rect.bottom - rect.top) };
     }
 
-    inline long GetWindowWidth( HWND const hwnd )
+    inline PIXEL GetWindowWidth( HWND const hwnd )
     {
 		return GetWindowSize( hwnd ).x;
     }
 
-    inline long GetWindowHeight( HWND const hwnd )
+    inline PIXEL GetWindowHeight( HWND const hwnd )
     {
 		return GetWindowSize( hwnd ).y;
     }
 
-    inline long GetWindowBottom( HWND const hwnd )
+    inline PIXEL GetWindowBottom( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-        return rect.bottom;
+		return PIXEL{rect.bottom};
     }
 
-    inline long GetWindowTop( HWND const hwnd )
+    inline PIXEL GetWindowTop( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-        return rect.top;
+		return PIXEL{rect.top};
     }
 
-    inline long GetWindowLeftPos( HWND const hwnd )
+    inline PIXEL GetWindowLeftPos( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-        return rect.left;
+		return PIXEL{rect.left};
     }
 
-    inline long GetWindowRightPos( HWND const hwnd )
+    inline PIXEL GetWindowRightPos( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-        return rect.right;
+		return PIXEL{rect.right};
     }
 
 	inline PixelPoint POINT2PixelPoint( POINT const pnt ) 
 	{ 
-		return PixelPoint{ pnt.x, pnt.y }; 
+		return PixelPoint{ PIXEL(pnt.x), PIXEL(pnt.y) }; 
 	}
 
 	inline POINT PixelPoint2POINT( PixelPoint const pp ) 
 	{ 
-		return POINT{ pp.x, pp.y }; 
+		return POINT{ pp.x.get(), pp.y.get() }; 
 	}
 
 	inline PixelRect RECT2PixelRect( RECT const & rect ) 
@@ -161,7 +162,13 @@ namespace Util
 
 	inline RECT PixelRect2RECT( PixelRect const & pixRect ) 
 	{ 
-		return RECT{ pixRect.m_lLeft,	pixRect.m_lTop, pixRect.m_lRight, pixRect.m_lBottom }; 
+		return RECT
+		{ 
+			pixRect.GetLeft().get(),	
+			pixRect.GetTop().get(), 
+			pixRect.GetRight().get(), 
+			pixRect.GetBottom().get() 
+		}; 
 	}
 
     inline BOOL IsInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?
@@ -185,6 +192,11 @@ namespace Util
     inline void FastFill( HDC const hDC, RECT const & rect )
     {
         (void)ExtTextOut( hDC, 0, 0, ETO_OPAQUE, & rect, L"", 0, 0 );
+    }
+
+    inline void FastFill( HDC const hDC, PixelRect const & pixRect )
+    {
+        FastFill( hDC, PixelRect2RECT( pixRect ) );
     }
 
     inline void AddWindowStyle( HWND const hwnd, DWORD const dwStyle )
@@ -221,11 +233,11 @@ namespace Util
 
 	void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );
 
-    void AdjustRight( HWND, int );
-    void AdjustLeft( HWND, int );
+    void AdjustRight( HWND const, PIXEL const );
+    void AdjustLeft ( HWND const, PIXEL const );
 
-    BOOL MoveWindowAbsolute( HWND const, LONG const, LONG const, LONG const, LONG const, BOOL const );
-    BOOL MoveWindowAbsolute( HWND const, LONG const, LONG const,                         BOOL const );
+    BOOL MoveWindowAbsolute( HWND const, PIXEL const, PIXEL const, PIXEL const, PIXEL const, BOOL const );
+    BOOL MoveWindowAbsolute( HWND const, PIXEL const, PIXEL const,                          BOOL const );
 	
     DWORD     GetNrOfCPUs( );
     ULONGLONG GetPhysicalMemory( );
