@@ -34,7 +34,7 @@ public:
 	virtual void OnAppCommand( GenerationCmd const );
 	virtual void CopyFrom( ModelData const * const );
 
-    GridPoint FindGridPoint( IndividualId const &, GridRect const & = GridRect::GRID_RECT_FULL ) const;
+    GridPoint FindGridPoint( IndividualId const &, GridRect const & = GridRect::GRID_RECT_FULL() ) const;
 
 private:
     EvolutionCore * m_pEvolutionCore;

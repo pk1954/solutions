@@ -19,7 +19,7 @@ class GridPoint
 {
 public:
 
-    GridPoint( ) : x( GP_NULL.x ), y( GP_NULL.y ) {}
+    GridPoint( ) : x( GP_NULL().x ), y( GP_NULL().y ) {}
 
 	GridPoint( GRID_COORD const _x, GRID_COORD const _y ) 
 		: x(_x), y(_y)
@@ -46,20 +46,42 @@ public:
 	bool IsEvenColumn( ) const { return x.IsEven(); }
 	bool IsOddColumn ( ) const { return x.IsOdd(); }
 
-    static int const GRID_AREA = GRID_WIDTH_ * GRID_HEIGHT_;
+    inline static int const GRID_AREA() 
+	{ 
+		static int res = GRID_WIDTH_ * GRID_HEIGHT_; 
+		return res;
+	};
 
-    static GridPoint const GRID_ORIGIN;
-    static GridPoint const GRID_MAXIMUM;
-    static GridPoint const GRID_CENTER;
-    static GridPoint const GRID_SIZE;
-    static GridPoint const GP_NULL;
+	inline static GridPoint const & GP_NULL() 
+	{ 
+		static GridPoint res = GridPoint( GRID_COORD_NULL, GRID_COORD_NULL ); 
+		return res;
+	};
 
-    bool const IsInGrid( ) const { return (0 <= x.get()) && (0 <= y.get()) && (x < GRID_WIDTH) && (y < GRID_HEIGHT); };
+	inline static GridPoint const & GRID_ORIGIN() 
+	{ 
+		static GridPoint res = GridPoint( GRID_X_MIN,  GRID_Y_MIN ); 
+		return res;
+	};
 
-    bool IsNull   ( ) const { return * this == GP_NULL; };
-    bool IsNotNull( ) const { return * this != GP_NULL; };
+	inline static GridPoint const & GRID_MAXIMUM() 
+	{ 
+		static GridPoint res = GridPoint( GRID_X_MAX, GRID_Y_MAX ); 
+		return res;
+	};
 
-    void Set2Null( ) { * this = GP_NULL; }
+	inline static GridPoint const & GRID_SIZE() 
+	{ 
+		static GridPoint res = GridPoint( GRID_WIDTH, GRID_HEIGHT ); 
+		return res;
+	};
+
+	bool const IsInGrid( ) const { return (0 <= x.get()) && (0 <= y.get()) && (x < GRID_WIDTH) && (y < GRID_HEIGHT); };
+
+    bool IsNull   ( ) const { return * this == GP_NULL(); };
+    bool IsNotNull( ) const { return * this != GP_NULL(); };
+
+    void Set2Null( ) { * this = GP_NULL(); }
 
     GRID_COORD x;
     GRID_COORD y;
@@ -91,7 +113,7 @@ inline bool const Neighbors( GridPoint const a, GridPoint const b )
 
 inline GridPoint const Wrap2Grid(GridPoint const gp) 
 { 
-	return (gp + GridPoint::GRID_SIZE) % GridPoint::GRID_SIZE; 
+	return (gp + GridPoint::GRID_SIZE()) % GridPoint::GRID_SIZE(); 
 }
 
 typedef std::function<void (GridPoint const)> GridPointFunc;

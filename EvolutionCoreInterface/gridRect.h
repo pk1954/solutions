@@ -34,7 +34,7 @@ public:
 
 	~GridRect() { };
 
-	void Reset( ) { * this = GRID_RECT_EMPTY; }
+	void Reset( ) { * this = GRID_RECT_EMPTY(); }
 
 	void Apply2Rect( GridPointFunc const & func ) const
 	{
@@ -52,23 +52,32 @@ public:
     GRID_COORD const GetRight () const { return m_lRight;  };
     GRID_COORD const GetBottom() const { return m_lBottom; };
 
-    GridPoint const GetStartPoint( ) const { return GridPoint( GetLeft(),  GetTop() ); }
-    GridPoint const GetEndPoint  ( ) const { return GridPoint( GetRight(), GetBottom()    ); }
+    GridPoint const GetStartPoint( ) const { return GridPoint( GetLeft(),  GetTop()    ); }
+    GridPoint const GetEndPoint  ( ) const { return GridPoint( GetRight(), GetBottom() ); }
     GridPoint const GetCenter    ( ) const { return ( GetStartPoint() + GetEndPoint() ) / 2; }
     GridPoint const GetSize      ( ) const { return GridPoint( GetWidth(), GetHeight() ); }
 	
 	GridRect  const ClipToGrid   ( ) const { return GridRect( clipStartPoint( ), clipEndPoint( ) );	}
  
-    bool const IsEmpty( )    const { return ( *this == GRID_RECT_EMPTY ); }
-    bool const IsNotEmpty( ) const { return ( *this != GRID_RECT_EMPTY ); }
+    bool const IsEmpty( )    const { return ( *this == GRID_RECT_EMPTY() ); }
+    bool const IsNotEmpty( ) const { return ( *this != GRID_RECT_EMPTY() ); }
 
 	bool Includes( GridPoint const gp ) const
 	{
 		return (m_lLeft <= gp.x) && (gp.x <= m_lRight) && (m_lTop <= gp.y) && (gp.y <= m_lBottom);
 	}
 
-    static GridRect const GRID_RECT_FULL;
-    static GridRect const GRID_RECT_EMPTY;
+	inline static GridRect const & GRID_RECT_EMPTY() 
+	{ 
+		static GridRect res = GridRect( GridPoint::GRID_ORIGIN(), GridPoint::GRID_ORIGIN() ); 
+		return res;
+	};
+
+	inline static GridRect const & GRID_RECT_FULL() 
+	{ 
+		static GridRect res = GridRect( GridPoint::GRID_ORIGIN(), GridPoint::GRID_SIZE() - GRID_COORD(1_GRID_COORD)); 
+		return res;
+	};
 
 private:
 	GridPoint clipStartPoint( ) const;

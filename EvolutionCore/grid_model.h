@@ -63,7 +63,7 @@ public:
 
     bool ListIsEmpty( ) const { return m_gpList.ListIsEmpty( ); }
 
-    GridPoint FindGridPoint( const std::function<bool( GridPoint const)>&, GridRect const & = GridRect::GRID_RECT_FULL ) const;
+    GridPoint FindGridPoint( const std::function<bool( GridPoint const)>&, GridRect const & = GridRect::GRID_RECT_FULL() ) const;
 
     // Query functions 
 
@@ -83,7 +83,7 @@ public:
 
     EVO_GENERATION GetEvoGenerationNr( ) const { return m_genEvo; }
 
-    long GetAverageFoodGrowth    ( ) const { return m_lFoodGrowth / GridPoint::GRID_AREA; }
+    long GetAverageFoodGrowth    ( ) const { return m_lFoodGrowth / GridPoint::GRID_AREA(); }
     int  GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
 
 	void PrepareActionCounters( )

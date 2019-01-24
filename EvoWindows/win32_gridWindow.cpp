@@ -261,7 +261,7 @@ void GridWindow::mouseWheelAction( int iDelta )
 
 bool GridWindow::IsFullGridVisible() const
 {
-	return IsInClientRect( m_pPixelCoordinates->Grid2PixelRect( GridRect::GRID_RECT_FULL ) );
+	return IsInClientRect( m_pPixelCoordinates->Grid2PixelRect( GridRect::GRID_RECT_FULL() ) );
 }
 
 LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -373,7 +373,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
 void GridWindow::Size( )
 {
-    PixelPoint const ptSize = m_pPixelCoordinates->Grid2PixelSize( GridPoint::GRID_SIZE );
+    PixelPoint const ptSize = m_pPixelCoordinates->Grid2PixelSize( GridPoint::GRID_SIZE() );
     DWORD      const dwStyle = (DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE );	
 	RECT             rect{ 0, 0, ptSize.x.get(), ptSize.y.get() };
     (void)AdjustWindowRect( &rect, dwStyle, FALSE );	

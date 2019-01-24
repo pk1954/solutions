@@ -58,7 +58,7 @@ GridPoint EvolutionCoreImpl::FindPOI( ) const
 { 
 	return IsPoiDefined( ) 
 			? FindGridPoint( m_idPOI ) 
-			: GridPoint::GP_NULL; 
+			: GridPoint::GP_NULL(); 
 }
 
 // Compute - plan and implement one generation step for all living individuals

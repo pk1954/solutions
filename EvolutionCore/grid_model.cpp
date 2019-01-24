@@ -367,5 +367,5 @@ GridPoint Grid::FindGridPoint
         {
             return gp;
         }
-    return GridPoint::GP_NULL;
+    return GridPoint::GP_NULL();
 }

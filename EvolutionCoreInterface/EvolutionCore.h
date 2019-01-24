@@ -63,7 +63,7 @@ public:
 	
 	virtual	unsigned int   GetActionCounter( unsigned int const, tAction const ) const = 0;
 
-    virtual GridPoint      FindGridPoint( IndividualId const &, GridRect const & = GridRect::GRID_RECT_FULL) const = 0;
+    virtual GridPoint      FindGridPoint( IndividualId const &, GridRect const & = GridRect::GRID_RECT_FULL()) const = 0;
 
     virtual PlannedActivity const & GetPlan( ) const = 0;
 

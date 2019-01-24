@@ -82,7 +82,7 @@ public:
     virtual GRID_COORD     GetBrushSize       ( ) const { return m_brush.GetRadius(); }
     virtual tBrushMode     GetBrushMode       ( ) const { return m_brush.GetBrushMode(); }
 
-	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GridRect::GRID_RECT_FULL : m_gridRectSelection; }
+	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GridRect::GRID_RECT_FULL() : m_gridRectSelection; }
 	virtual bool           SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
 	virtual bool           SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
 
@@ -95,7 +95,7 @@ public:
     virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
     virtual PlannedActivity       * GetPlan4Writing( )       { return & m_plan; };
 
-	virtual long GetGridArea( ) const { return GridPoint::GRID_AREA; };
+	virtual long GetGridArea( ) const { return GridPoint::GRID_AREA(); };
 
     virtual int GetAverageFoodGrowth( )     const { return m_grid.GetAverageFoodGrowth( ); }
     virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
@@ -111,10 +111,10 @@ public:
 
 	virtual void SetPoi( GridPoint const );
     virtual GridPoint FindPOI( ) const;
-	virtual GridPoint FindGridPoint( IndividualId const & id, GridRect const & rect = GridRect::GRID_RECT_FULL ) const 
+	virtual GridPoint FindGridPoint( IndividualId const & id, GridRect const & rect = GridRect::GRID_RECT_FULL() ) const 
 	{ 
 		return ( id == IndividualId::NO_INDIVIDUAL )
-			   ? GridPoint::GP_NULL
+			   ? GridPoint::GP_NULL()
 			   : m_grid.FindGridPoint( [&](GridPoint const gp) { return (GetId(gp) == id); }, rect );
 	}
 

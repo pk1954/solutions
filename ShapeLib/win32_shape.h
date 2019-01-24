@@ -24,7 +24,7 @@ public:
 	virtual PixelRectSize MinimalSize( )  
 	{                                     
 		m_textDisplay.Clear();
-		FillBuffer( GridPoint::GRID_ORIGIN );
+		FillBuffer( GridPoint::GRID_ORIGIN() );
 		return SetMinSize( m_textDisplay.CalcRectSize( ) );
 	}                                     
 
@@ -47,7 +47,7 @@ public:
 
 	virtual GridPoint GetReferencedGridPoint( GridPoint const gp ) const 
 	{ 
-		return GridPoint::GP_NULL; 
+		return GridPoint::GP_NULL(); 
 	}
 
 	virtual void Draw( GridPoint const, PixelPoint const );
