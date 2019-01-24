@@ -52,6 +52,8 @@ inline PIXEL const operator- (PIXEL const a, PIXEL const b) { PIXEL res(a); res 
 inline PIXEL const operator* (PIXEL const a, long const l) { PIXEL res(a); res *= l; return res; }
 inline PIXEL const operator/ (PIXEL const a, long const l) { PIXEL res(a); res /= l; return res; }
 
+inline long const operator/ (PIXEL const a, PIXEL const b) { long res(a.get()); res /= b.get(); return res; }
+
 PIXEL operator"" _PIXEL( unsigned long long );
 
 std::wostream & operator << ( std::wostream &, PIXEL const );

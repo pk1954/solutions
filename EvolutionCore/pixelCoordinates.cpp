@@ -234,8 +234,8 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 
 		GridPoint gp = GridPoint
 		( 
-			GRID_COORD( CastToShort(pixPoint.x.get() / m_pixFieldSize.get()) ), 
-			GRID_COORD( CastToShort(pixPoint.y.get() / m_pixFieldSize.get()) ) 
+			GRID_COORD( CastToShort(pixPoint.x / m_pixFieldSize) ), 
+			GRID_COORD( CastToShort(pixPoint.y / m_pixFieldSize) ) 
 		); 
 
 		return gp;

@@ -76,7 +76,13 @@ public:
 		return res;
 	};
 
-	bool const IsInGrid( ) const { return (0 <= x.get()) && (0 <= y.get()) && (x < GRID_WIDTH) && (y < GRID_HEIGHT); };
+	bool const IsInGrid( ) const 
+	{ 
+		return (GRID_COORD(0_GRID_COORD) <= x) && 
+			   (GRID_COORD(0_GRID_COORD) <= y) && 
+			   (x < GRID_WIDTH ) && 
+			   (y < GRID_HEIGHT);
+	};
 
     bool IsNull   ( ) const { return * this == GP_NULL(); };
     bool IsNotNull( ) const { return * this != GP_NULL(); };
@@ -97,7 +103,7 @@ inline GridPoint const operator- (GridPoint const a, GRID_COORD const l) { GridP
 inline GridPoint const operator% (GridPoint const a, int const i) { GridPoint res(a); res %= i; return res; }
 inline GridPoint const operator/ (GridPoint const a, int const i) { GridPoint res(a); res /= i; return res; }
 
-inline GridPoint const abs(GridPoint const a ) { return GridPoint( abs(a.x), abs(a.y) ); }
+inline GridPoint const abs(GridPoint const a) { return GridPoint( abs(a.x), abs(a.y) ); }
 
 inline GridPoint const Min(GridPoint const a, GridPoint const b) { return GridPoint( min(a.x, b.x), min(a.y, b.y) ); }
 inline GridPoint const Max(GridPoint const a, GridPoint const b) { return GridPoint( max(a.x, b.x), max(a.y, b.y) ); }
