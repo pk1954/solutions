@@ -11,26 +11,6 @@ using namespace std;
 
 wostream * DUMP::m_pDumpStream = & wcout;
 
-wostream & operator << ( wostream & out, PlannedActivity const & plan )
-{
-//lint -e747  Significant prototype coercion with setw
-
-   out << L" action=" << setw(8) << GetActionTypeName( plan.GetActionType( ) );
-
-   if ( plan.GetTarget( ).IsNull( ) )
-       out << setw( 15 ) << L" ";
-   else
-       out << L" target=" << setw( 3 ) << plan.GetTarget( );
-
-   if ( plan.GetPartner( ).IsNull( ) )
-       out << setw( 15 ) << L" ";
-   else
-       out << L" target=" << setw( 3 ) << plan.GetPartner( );
-
-   return out;
-//lint +e747 
-}
-
 void DUMP::SetDumpStream( wostream * const pDumpStream ) 
 {
     m_pDumpStream = pDumpStream;
