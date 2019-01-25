@@ -72,8 +72,8 @@ PixelRect HistWindow::getGenerationRect  // position is relative to client area
     HIST_GENERATION const genNrOfGens = m_pHistSys->GetNrOfGenerations( );
     assert( genNrOfGens  > 0 );
 
-	PIXEL pixLeft  = PIXEL( MulDiv( genLo.GetLong( ), pixSize.get(), genNrOfGens.GetLong( ) ) );
-    PIXEL pixRight = PIXEL( MulDiv( genHi.GetLong( ), pixSize.get(), genNrOfGens.GetLong( ) ) );
+	PIXEL pixLeft  = PIXEL( MulDiv( genLo.GetLong( ), pixSize.GetValue(), genNrOfGens.GetLong( ) ) );
+    PIXEL pixRight = PIXEL( MulDiv( genHi.GetLong( ), pixSize.GetValue(), genNrOfGens.GetLong( ) ) );
 
 	if ( pixLeft == pixRight )
 		++pixRight;
@@ -87,7 +87,7 @@ HIST_GENERATION HistWindow::getGenFromXpos( LPARAM const lParam ) const
     PIXEL           const pixWidth  = GetClientWindowWidth( );
     long            const lNrOfGens = m_pHistSys->GetNrOfGenerations( ).GetLong( );
     HIST_GENERATION const genMax    = lNrOfGens - 1;
-    HIST_GENERATION       genRes    = ( max( 0, pixXpos.get() ) * lNrOfGens ) / pixWidth.get();
+    HIST_GENERATION       genRes    = ( max( 0, pixXpos.GetValue() ) * lNrOfGens ) / pixWidth.GetValue();
 
 	if ( genRes > genMax )
 		genRes = genMax;
@@ -112,11 +112,11 @@ void HistWindow::dispGenerationWindow( ) const
     PIXEL      const pixClientWidth = GetClientWindowWidth( );
     PixelRect  const pixRectGen     = getGenerationRect( m_genSelected ); // position is relative to client area
 	PixelPoint const ptClientPos    = Client2Screen( POINT{ 0, 0 } );     // position of client area origin in screen coordinates
-    PIXEL      const pixYpos        = ptClientPos.y - iGenDispHeight;
-    PIXEL            pixXpos        = ( pixRectGen.GetLeft() + pixRectGen.GetRight() - iGenDispWidth ) / 2 + ptClientPos.x;
+    PIXEL      const pixYpos        = ptClientPos.GetY() - iGenDispHeight;
+    PIXEL            pixXpos        = ( pixRectGen.GetLeft() + pixRectGen.GetRight() - iGenDispWidth ) / 2 + ptClientPos.GetX();
 
-    pixXpos = max( pixXpos, ptClientPos.x );                                   // do not leave client area on left
-    pixXpos = min( pixXpos, ptClientPos.x + pixClientWidth - iGenDispWidth );  // or right side
+    pixXpos = max( pixXpos, ptClientPos.GetX() );                                   // do not leave client area on left
+    pixXpos = min( pixXpos, ptClientPos.GetX() + pixClientWidth - iGenDispWidth );  // or right side
 
     m_pGenDisplay->Move( pixXpos, pixYpos, iGenDispWidth, iGenDispHeight, FALSE );
     m_pGenDisplay->DisplayGenerationBelowCursor( m_genSelected );
@@ -134,8 +134,8 @@ void HistWindow::paintPixelPos( HDC const hDC, PIXEL const pixPos ) const
 {
     PIXEL           const pixClientWidth = GetClientWindowWidth( );
     HIST_GENERATION const genNrOfGens    = m_pHistSys->GetNrOfGenerations( );
-    HIST_GENERATION const genMin = MulDiv( pixPos.get(),     genNrOfGens.GetLong( ), pixClientWidth.get() ) + 1;
-    HIST_GENERATION       genMax = MulDiv( pixPos.get() + 1, genNrOfGens.GetLong( ), pixClientWidth.get() );
+    HIST_GENERATION const genMin = MulDiv( pixPos.GetValue(),     genNrOfGens.GetLong( ), pixClientWidth.GetValue() ) + 1;
+    HIST_GENERATION       genMax = MulDiv( pixPos.GetValue() + 1, genNrOfGens.GetLong( ), pixClientWidth.GetValue() );
     BOOL                  bFoundPos = FALSE;  // Found a pixel pos representing an existing history entry
     BOOL                  bFoundNeg = FALSE;  // Found a pixel pos representing a missing history entry
 
@@ -178,7 +178,7 @@ void HistWindow::PaintAllGenerations( HDC const hDC )
     if ( m_pHistSys->GetNrOfGenerations( ) <= 1 )
         return;
 
-    if ( m_pHistSys->GetNrOfGenerations( ) < pixSize.get() )
+    if ( m_pHistSys->GetNrOfGenerations( ) < pixSize.GetValue() )
     {
         int iRun = m_pHistIter->Set2Oldest( );
 

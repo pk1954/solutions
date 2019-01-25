@@ -184,7 +184,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
 
     if ( wParam & MK_RBUTTON )                // Right mouse button: selection
     {
-        if ( m_ptLast.x != PIXEL_NULL )  // last cursor pos stored in m_ptLast
+        if ( m_ptLast.GetX() != PIXEL_NULL )  // last cursor pos stored in m_ptLast
         {
             PixelPoint ptOther = m_pCore->IsPoiDefined( ) 
 				                 ? m_pPixelCore->GetPoiCenter() * 2 - ptCrsr 
@@ -203,7 +203,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         {
             m_pWorkThreadInterface->PostDoEdit( m_pFocusPoint->GetGridPoint( ) );
         }
-        else if ( m_ptLast.x != PIXEL_NULL )  // last cursor pos stored in m_ptLast
+        else if ( m_ptLast.GetX() != PIXEL_NULL )  // last cursor pos stored in m_ptLast
         {
             moveGrid( ptCrsr - m_ptLast );
 		    PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
@@ -213,7 +213,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     }
     else
     {
-        m_ptLast.x = PIXEL_NULL;    // make m_ptLast invalid
+        m_ptLast.SetX( PIXEL_NULL );    // make m_ptLast invalid
         // no PostRefresh! It would cause repaint for every mouse move.
     }
 }
@@ -255,7 +255,7 @@ void GridWindow::mouseWheelAction( int iDelta )
 		pixNewFieldSize = m_pPixelCoordinates->ComputeNewFieldSize( bDirection );
 	}
 
-	PostCommand2Application( IDM_SET_ZOOM, pixNewFieldSize.get() );
+	PostCommand2Application( IDM_SET_ZOOM, pixNewFieldSize.GetValue() );
 	PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
 }
 
@@ -374,10 +374,12 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 void GridWindow::Size( )
 {
     PixelPoint const ptSize = m_pPixelCoordinates->Grid2PixelSize( GridPoint::GRID_SIZE() );
-    DWORD      const dwStyle = (DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE );	
-	RECT             rect{ 0, 0, ptSize.x.get(), ptSize.y.get() };
-    (void)AdjustWindowRect( &rect, dwStyle, FALSE );	
-    (void)::MoveWindow( GetWindowHandle( ), 0, 0, rect.right - rect.left, rect.bottom - rect.top, FALSE );
+	PixelRect  const pixRect = Util::CalcWindowRect
+	( 
+		PixelRect( PixelPoint( PIXEL(0_PIXEL), PIXEL(0_PIXEL) ), ptSize ), 
+		(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 
+	);
+    Move( pixRect, FALSE );
 }
 
 void GridWindow::newFieldSize( PIXEL const pixfieldSize, GridPoint const gpCenter )

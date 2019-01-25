@@ -109,12 +109,12 @@ namespace Util
 
     inline PIXEL GetWindowWidth( HWND const hwnd )
     {
-		return GetWindowSize( hwnd ).x;
+		return GetWindowSize( hwnd ).GetX();
     }
 
     inline PIXEL GetWindowHeight( HWND const hwnd )
     {
-		return GetWindowSize( hwnd ).y;
+		return GetWindowSize( hwnd ).GetY();
     }
 
     inline PIXEL GetWindowBottom( HWND const hwnd )
@@ -152,7 +152,7 @@ namespace Util
 
 	inline POINT PixelPoint2POINT( PixelPoint const pp ) 
 	{ 
-		return POINT{ pp.x.get(), pp.y.get() }; 
+		return POINT{ pp.GetXlong(), pp.GetYlong() }; 
 	}
 
 	inline PixelRect RECT2PixelRect( RECT const & rect ) 
@@ -164,10 +164,10 @@ namespace Util
 	{ 
 		return RECT
 		{ 
-			pixRect.GetLeft().get(),	
-			pixRect.GetTop().get(), 
-			pixRect.GetRight().get(), 
-			pixRect.GetBottom().get() 
+			pixRect.GetLeft().GetValue(),	
+			pixRect.GetTop().GetValue(), 
+			pixRect.GetRight().GetValue(), 
+			pixRect.GetBottom().GetValue() 
 		}; 
 	}
 
@@ -235,6 +235,8 @@ namespace Util
 
     void AdjustRight( HWND const, PIXEL const );
     void AdjustLeft ( HWND const, PIXEL const );
+
+    PixelRect CalcWindowRect( PixelRect const, DWORD const );
 
     BOOL MoveWindowAbsolute( HWND const, PIXEL const, PIXEL const, PIXEL const, PIXEL const, BOOL const );
     BOOL MoveWindowAbsolute( HWND const, PIXEL const, PIXEL const,                          BOOL const );

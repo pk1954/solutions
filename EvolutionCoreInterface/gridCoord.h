@@ -16,7 +16,7 @@ public:
 		: value_(value) 
 	{}
 
-    short const& get() const { return value_; }
+    short const& GetValue() const { return value_; }
 
     GRID_COORD operator++ () { ++value_; return * this; }
     GRID_COORD operator-- () { --value_; return * this; }
@@ -46,7 +46,7 @@ private:
     short value_;
 };
 
-inline GRID_COORD const abs(GRID_COORD const a) { return GRID_COORD( ::abs(a.get()) ); }
+inline GRID_COORD const abs(GRID_COORD const a) { return GRID_COORD( ::abs(a.GetValue()) ); }
 
 inline GRID_COORD const operator+ (GRID_COORD const a, GRID_COORD const b) { GRID_COORD res(a); res += b; return res; }
 inline GRID_COORD const operator- (GRID_COORD const a, GRID_COORD const b) { GRID_COORD res(a); res -= b; return res; }

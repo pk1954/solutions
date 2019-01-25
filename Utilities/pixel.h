@@ -18,7 +18,7 @@ public:
 		: value_(value) 
 	{}
 
-    long const& get() const { return value_; }
+    long const& GetValue() const { return value_; }
 
     PIXEL operator++ () { ++value_; return * this; }
     PIXEL operator-- () { --value_; return * this; }
@@ -44,7 +44,7 @@ private:
     long value_;
 };
 
-inline PIXEL const abs(PIXEL const a) { return PIXEL{ ::abs(a.get()) }; }
+inline PIXEL const abs(PIXEL const a) { return PIXEL{ ::abs(a.GetValue()) }; }
 
 inline PIXEL const operator+ (PIXEL const a, PIXEL const b) { PIXEL res(a); res += b; return res; }
 inline PIXEL const operator- (PIXEL const a, PIXEL const b) { PIXEL res(a); res -= b; return res; }
@@ -52,7 +52,7 @@ inline PIXEL const operator- (PIXEL const a, PIXEL const b) { PIXEL res(a); res 
 inline PIXEL const operator* (PIXEL const a, long const l) { PIXEL res(a); res *= l; return res; }
 inline PIXEL const operator/ (PIXEL const a, long const l) { PIXEL res(a); res /= l; return res; }
 
-inline long const operator/ (PIXEL const a, PIXEL const b) { long res(a.get()); res /= b.get(); return res; }
+inline long const operator/ (PIXEL const a, PIXEL const b) { long res(a.GetValue()); res /= b.GetValue(); return res; }
 
 PIXEL operator"" _PIXEL( unsigned long long );
 

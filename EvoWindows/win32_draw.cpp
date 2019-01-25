@@ -142,7 +142,7 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 
 void DrawFrame::drawBackground( )
 {
-	float m_fPxSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).get() );
+	float m_fPxSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).GetValue() );
 
 	Apply2Grid    // strip mode works only with full grid
 	(          
@@ -170,7 +170,7 @@ void DrawFrame::drawPOI( GridPoint const gpPoi )
     if ( gpPoi.IsNotNull( ) )
     {
         PixelPoint const ptCenter = m_pPixelCoordinates->Grid2PixelPosCenter( gpPoi );
-		float      const fPixSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).get() );
+		float      const fPixSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).GetValue() );
 
         addPrimitive( gpPoi, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
         addPrimitive( gpPoi, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
@@ -186,7 +186,7 @@ void DrawFrame::drawPOI( GridPoint const gpPoi )
 
 void DrawFrame::drawIndividuals( GridRect const & rect )
 {
-	float const fHalfSizeInd = static_cast<float>( m_gridPointShape->GetIndShapeSize( ).get() );
+	float const fHalfSizeInd = static_cast<float>( m_gridPointShape->GetIndShapeSize( ).GetValue() );
 
     rect.Apply2Rect
 	( 

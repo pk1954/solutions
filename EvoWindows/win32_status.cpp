@@ -86,10 +86,10 @@ HWND WINAPI StatusBar::createControl
         lpClassName,                     // class name 
         lpWindowName,                    // title (caption) 
         WS_CHILD | WS_VISIBLE | dwStyle, // style 
-        m_pixPosX.get(),                 // x position
-		m_pixBorder.get(),               // y position 
-        pixWidth.get(),                  // width
-		m_pixClientHeight.get(),         // height
+        m_pixPosX.GetValue(),                 // x position
+		m_pixBorder.GetValue(),               // y position 
+        pixWidth.GetValue(),                  // width
+		m_pixClientHeight.GetValue(),         // height
         GetWindowHandle( ),              // parent window 
         hMenu,                           // control identifier 
         GetModuleHandle( nullptr ),      // instance 
@@ -127,8 +127,8 @@ void WINAPI StatusBar::createSizeControl( )
     createButton       ( L" + ",     (HMENU)IDM_ZOOM_IN,  BS_PUSHBUTTON ); 
     createButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM, BS_PUSHBUTTON ); 
 
-    LONG const lMinPos = value2Trackbar( MINIMUM_FIELD_SIZE.get() );
-    LONG const lMaxPos = value2Trackbar( MAXIMUM_FIELD_SIZE.get() );
+    LONG const lMinPos = value2Trackbar( MINIMUM_FIELD_SIZE.GetValue() );
+    LONG const lMaxPos = value2Trackbar( MAXIMUM_FIELD_SIZE.GetValue() );
 
     SetTrackBarRange( IDM_ZOOM_TRACKBAR, lMinPos, lMaxPos );  
 } 
@@ -167,7 +167,7 @@ void StatusBar::Start
         STATUSCLASSNAME, 
         nullptr, 
         WS_CHILD | WS_VISIBLE,
-        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT.get(),
+        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT.GetValue(),
         hwndParent,
         nullptr, 
         GetModuleHandle( nullptr ), 
@@ -220,7 +220,7 @@ void StatusBar::Start
 
 void StatusBar::SetSizeTrackBar( PIXEL const pixFieldSize  ) const 
 { 
-    SetTrackBarPos( IDM_ZOOM_TRACKBAR, value2Trackbar( pixFieldSize.get() ) ); 
+    SetTrackBarPos( IDM_ZOOM_TRACKBAR, value2Trackbar( pixFieldSize.GetValue() ) ); 
 }
 
 void StatusBar::SetSpeedTrackBar( DWORD const dwDelay ) const 

@@ -28,25 +28,25 @@ public:
 
     PixelRect( PixelPoint const pt1, PixelPoint const pt2 )
     { 
-        if ( pt1.x < pt2.x )
+        if ( pt1.GetX() < pt2.GetX() )
         {
-            m_pixLeft = pt1.x;
-            m_pixRight = pt2.x;
+            m_pixLeft = pt1.GetX();
+            m_pixRight = pt2.GetX();
         }
         else
         {
-            m_pixLeft = pt2.x;
-            m_pixRight = pt1.x;
+            m_pixLeft = pt2.GetX();
+            m_pixRight = pt1.GetX();
         }
-        if ( pt1.y > pt2.y )
+        if ( pt1.GetY() > pt2.GetY() )
         {
-            m_pixBottom = pt1.y;
-            m_pixTop = pt2.y;
+            m_pixBottom = pt1.GetY();
+            m_pixTop = pt2.GetY();
         }
         else
         {
-            m_pixBottom = pt2.y;
-            m_pixTop = pt1.y;
+            m_pixBottom = pt2.GetY();
+            m_pixTop = pt1.GetY();
         }
 		assert( m_pixBottom >= m_pixTop );
     };
@@ -70,8 +70,8 @@ public:
     };
 
 	PixelRect( PixelPoint const ptOrigin, PixelRectSize const & rectSize ) :
-        m_pixLeft  (ptOrigin.x),
-        m_pixTop   (ptOrigin.y),
+        m_pixLeft  (ptOrigin.GetX()),
+        m_pixTop   (ptOrigin.GetY()),
         m_pixRight (m_pixLeft + rectSize.GetWidth()  - PIXEL(1_PIXEL)),
         m_pixBottom(m_pixTop  + rectSize.GetHeight() - PIXEL(1_PIXEL))
 	{
@@ -148,7 +148,7 @@ public:
 
 	bool Includes( PixelPoint const pnt ) const
 	{
-		return (m_pixLeft <= pnt.x) && (pnt.x < m_pixRight) && (m_pixTop <= pnt.y) && (pnt.y < m_pixBottom);
+		return (m_pixLeft <= pnt.GetX()) && (pnt.GetX() < m_pixRight) && (m_pixTop <= pnt.GetY()) && (pnt.GetY() < m_pixBottom);
 	}
 
 	bool Includes( PixelRectSize const size ) const
@@ -172,19 +172,19 @@ public:
 
 	PixelRect const operator+= ( PixelPoint const offset )
 	{ 
-		m_pixLeft   += offset.x;
-		m_pixTop    += offset.y;
-		m_pixRight  += offset.x;
-		m_pixBottom += offset.y;
+		m_pixLeft   += offset.GetX();
+		m_pixTop    += offset.GetY();
+		m_pixRight  += offset.GetX();
+		m_pixBottom += offset.GetY();
 		return *this;
 	}
 
 	PixelRect const operator-= ( PixelPoint const offset )
 	{ 
-		m_pixLeft   -= offset.x;
-		m_pixTop    -= offset.y;
-		m_pixRight  -= offset.x;
-		m_pixBottom -= offset.y;
+		m_pixLeft   -= offset.GetX();
+		m_pixTop    -= offset.GetY();
+		m_pixRight  -= offset.GetX();
+		m_pixBottom -= offset.GetY();
 		return *this;
 	}
 

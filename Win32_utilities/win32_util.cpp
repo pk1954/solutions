@@ -22,7 +22,7 @@ RECT Util::ScrReadRECT( Script & script )
 wostream & Util::operator << ( wostream & out, PixelPoint const pp )
 {
     //lint -e747  Significant prototype coercion with setw
-    out << pp.x << pp.y << L" ";
+    out << pp.GetX() << pp.GetY() << L" ";
     return out;
 }
 
@@ -48,20 +48,30 @@ bool Util::operator!= ( RECT const & a, RECT const & b )
     return ( a.left != b.left ) || ( a.top != b.top ) || ( a.right != b.right ) || ( a.bottom != b.bottom ); 
 };
 
+// CalcWindowRect: Calculates the required size of the window rectangle, based on the desired client-rectangle size. 
+
+PixelRect Util::CalcWindowRect( PixelRect pixRect, DWORD const dwStyle )
+{
+	RECT rect = Util::PixelRect2RECT( pixRect );
+	(void)AdjustWindowRect( &rect, dwStyle, FALSE );	
+	pixRect = Util::RECT2PixelRect( rect );
+	return pixRect;
+}
+
 void Util::AdjustRight( HWND const hwnd, PIXEL const pixYpos )
 {
     HWND  const hwndParent     = GetParent( hwnd );
     PIXEL const pixWidthParent = GetClientWindowWidth( hwndParent );
     PIXEL const pixWidth       = GetWindowWidth( hwnd );
     PIXEL const pixHeight      = GetWindowHeight( hwnd );
-    MoveWindow( hwnd, (pixWidthParent - pixWidth).get(), pixYpos.get(), pixWidth.get(), pixHeight.get(), TRUE );
+    MoveWindow( hwnd, (pixWidthParent - pixWidth).GetValue(), pixYpos.GetValue(), pixWidth.GetValue(), pixHeight.GetValue(), TRUE );
     (void)BringWindowToTop( hwnd );
 }
 
 void Util::AdjustLeft( HWND const hwnd, PIXEL const pixYpos )
 {
 	PixelPoint pnt = GetWindowSize( hwnd );
-    MoveWindow( hwnd, 0, pixYpos.get(), pnt.x.get(), pnt.y.get(), TRUE );
+    MoveWindow( hwnd, 0, pixYpos.GetValue(), pnt.GetXlong(), pnt.GetYlong(), TRUE );
     (void)BringWindowToTop( hwnd );
 }
 
@@ -76,15 +86,15 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 )
 {
 	HWND  const hwndParent = GetAncestor( hwnd, GA_PARENT );
-	POINT       pos{ pixXpos.get(), pixYpos.get() };
+	POINT       pos{ pixXpos.GetValue(), pixYpos.GetValue() };
 
 	if ( hwndParent != nullptr )
 		ScreenToClient( hwndParent, &pos );
 
-	BOOL bRes = MoveWindow( hwnd, pos.x, pos.y, pixWidth.get(), pixHeight.get(), bRepaint );
+	BOOL bRes = MoveWindow( hwnd, pos.x, pos.y, pixWidth.GetValue(), pixHeight.GetValue(), bRepaint );
 	
 	if ( GetWindowSize( hwnd ) != PixelPoint{ pixWidth, pixHeight } )   // can happen in strange situations
-		bRes = MoveWindow( hwnd, pos.x, pos.y, pixWidth.get(), pixHeight.get(), bRepaint );
+		bRes = MoveWindow( hwnd, pos.x, pos.y, pixWidth.GetValue(), pixHeight.GetValue(), bRepaint );
 
 	return bRes;
 }
@@ -98,7 +108,7 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates
 )
 {
 	PixelPoint const pixActSize = GetWindowSize( hwnd );
-	return MoveWindowAbsolute( hwnd, pixXpos, pixYpos, pixActSize.x, pixActSize.y, bRepaint );
+	return MoveWindowAbsolute( hwnd, pixXpos, pixYpos, pixActSize.GetX(), pixActSize.GetY(), bRepaint );
 }
 
 void Util::MakeLayered( HWND const hwnd, BOOL const bMode, COLORREF const crKey, UINT const uiAlpha )

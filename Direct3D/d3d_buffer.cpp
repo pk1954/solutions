@@ -166,7 +166,7 @@ void D3dBuffer::ResetFont( PIXEL const nPointSize )
     HDC const hDC = GetDC( nullptr );
     int const iLogPixels = GetDeviceCaps( hDC, LOGPIXELSY );
     ReleaseDC( nullptr, hDC );
-    m_d3dx_font_desc.Height = -( MulDiv( nPointSize.get(), iLogPixels, 72 ) );
+    m_d3dx_font_desc.Height = -( MulDiv( nPointSize.GetValue(), iLogPixels, 72 ) );
 	m_d3dx_font_desc.Width  = m_d3dx_font_desc.Height / 2;
     setFont( );   
 }
@@ -205,8 +205,8 @@ void D3dBuffer::AddIndividualPrimitive( PixelPoint const ptPos, DWORD const dwCo
 {
 	static float const SQRT3 = static_cast<float>( sqrt( 3 ) );
 
-    float const fPtPosx = static_cast<float>( ptPos.x.get() );
-    float const fPtPosy = static_cast<float>( ptPos.y.get() );
+    float const fPtPosx = static_cast<float>( ptPos.GetXlong() );
+    float const fPtPosy = static_cast<float>( ptPos.GetYlong() );
 
     if ( m_bStripMode )
     {
@@ -225,8 +225,8 @@ void D3dBuffer::AddBackgroundPrimitive( PixelPoint const ptPos, DWORD const dwCo
 {
 	static float const INVERSE_SQRT3 = static_cast<float>( 1 / sqrt( 3 ) );
 
-	float const fPtPosx = static_cast<float>( ptPos.x.get() );
-    float const fPtPosy = static_cast<float>( ptPos.y.get() );
+	float const fPtPosx = static_cast<float>( ptPos.GetXlong() );
+    float const fPtPosy = static_cast<float>( ptPos.GetYlong() );
 
 	float const fPixSizeHalf = fPixSize / 2;
 
@@ -283,10 +283,10 @@ void D3dBuffer::RenderTranspRect
 
 		addRect2Buffer
 		( 
-			static_cast<float>( rectTransparent.GetLeft().get()   ), 
-			static_cast<float>( rectTransparent.GetTop().get()    ), 
-			static_cast<float>( rectTransparent.GetRight().get()  ), 
-			static_cast<float>( rectTransparent.GetBottom().get() ), 
+			static_cast<float>( rectTransparent.GetLeft().GetValue()   ), 
+			static_cast<float>( rectTransparent.GetTop().GetValue()    ), 
+			static_cast<float>( rectTransparent.GetRight().GetValue()  ), 
+			static_cast<float>( rectTransparent.GetBottom().GetValue() ), 
 			d3dColor 
 		);
 

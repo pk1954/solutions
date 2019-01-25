@@ -118,8 +118,8 @@ void EditorWindow::updateEditControls( BOOL const bHistory ) // Set state of all
 
 	CheckRadioButton( IDM_EDIT_OPERATION_SET, IDM_EDIT_OPERATION_SUBTRACT, mapOperatorTable.at( m_pCore->GetBrushManipulator() ) );
 	
-	SetTrackBarPos( IDM_EDIT_SIZE,      static_cast<long>( m_pCore->GetBrushSize( ).get()) );
-    SetTrackBarPos( IDM_EDIT_INTENSITY, static_cast<long>( m_pCore->GetBrushIntensity( )) );
+	SetTrackBarPos( IDM_EDIT_SIZE,      m_pCore->GetBrushSize( ).GetValue() );
+    SetTrackBarPos( IDM_EDIT_INTENSITY, m_pCore->GetBrushIntensity( ) );
 
 	// adjust display options window
 

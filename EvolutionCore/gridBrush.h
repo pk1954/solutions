@@ -101,10 +101,10 @@ public:
 		case tShape::Circle:
 			m_filter = [this]( GridPoint const gp )
 			{ 
-				long  const lRadius     = m_radius.get();
+				long  const lRadius     = m_radius.GetValue();
 				long  const lRadSquare  = lRadius * lRadius;
-				long  const lx          = gp.x.get();
-				long  const ly          = gp.y.get();
+				long  const lx          = gp.x.GetValue();
+				long  const ly          = gp.y.GetValue();
 				long  const lDistSquare = lx * lx + ly * ly;
 				short const sReduce     = CastToShort(( m_sIntensity * lDistSquare) / lRadSquare);
 				return m_sIntensity - sReduce;

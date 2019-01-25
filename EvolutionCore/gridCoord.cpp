@@ -10,7 +10,7 @@ using namespace std;
 
 std::wostream & operator << ( std::wostream & out, GRID_COORD const c )
 {
-    out << c.get();
+    out << c.GetValue();
     return out;
 }
 

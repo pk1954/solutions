@@ -17,7 +17,7 @@ public:
 
 	static void Apply2All( GridPoint const gpCenter, GridPointFunc const & func ) 
 	{
-		for ( auto gp: (* m_pGridNeighbors)[ gpCenter.y.get() ][ gpCenter.x.get() ] )
+		for ( auto gp: (* m_pGridNeighbors)[ gpCenter.y.GetValue() ][ gpCenter.x.GetValue() ] )
 		{
 			func( gp );
 		}

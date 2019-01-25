@@ -87,7 +87,7 @@ void BaseWindow::contextMenu( LPARAM lParam )
 	                  ( 
 						  hPopupMenu, 
 						  TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, 
-						  pixPosCrsr.x.get(), pixPosCrsr.y.get(), 
+						  pixPosCrsr.GetXlong(), pixPosCrsr.GetYlong(), 
 						  0, 
 						  GetWindowHandle( ), 
 						  nullptr 

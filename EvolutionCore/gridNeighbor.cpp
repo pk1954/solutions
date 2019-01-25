@@ -65,7 +65,7 @@ void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization o
 	( 
     	[&](GridPoint const gp)
 		{
-			NEIGHBORS & neighbors = ( * m_pGridNeighbors)[ gp.y.get() ][ gp.x.get() ];
+			NEIGHBORS & neighbors = ( * m_pGridNeighbors)[ gp.y.GetValue() ][ gp.x.GetValue() ];
 			neighbors.reserve( m_iNrOfNeighbors );
 			for ( int i = 0; i < m_iNrOfNeighbors; ++i )
 			{

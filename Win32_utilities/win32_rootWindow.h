@@ -90,11 +90,21 @@ public:
 
     void Move( PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, BOOL const bRedraw )
     {
-        (void)::MoveWindow( m_hwnd, xPos.get(), yPos.get(), width.get(), height.get(), bRedraw );
+        (void)::MoveWindow( m_hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw );
+    }
+
+    void Move( PixelPoint const pos, PixelRectSize const size, BOOL const bRedraw )
+    {
+        (void)::MoveWindow( m_hwnd, pos.GetXlong(), pos.GetYlong(), size.GetWidth().GetValue(), size.GetHeight().GetValue(), bRedraw );
+    }
+
+    void Move( PixelRect const rect, BOOL const bRedraw )
+    {
+        (void)::MoveWindow( m_hwnd, rect.GetLeft().GetValue(), rect.GetTop().GetValue(), rect.GetWidth().GetValue(), rect.GetHeight().GetValue(), bRedraw );
     }
 
     void Invalidate( BOOL const bRedraw ) 
-    { 
+    {
 		if ( m_hwnd != nullptr )
 			(void)::InvalidateRect( m_hwnd, nullptr, bRedraw );
     }

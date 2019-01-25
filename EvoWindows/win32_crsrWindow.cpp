@@ -41,8 +41,8 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
         return;
     }
 
-    textBuf.printNumber( gpFocus.x.get() );
-    textBuf.printNumber( gpFocus.y.get() );
+    textBuf.printNumber( gpFocus.x.GetValue() );
+    textBuf.printNumber( gpFocus.y.GetValue() );
 
     textBuf.nextLine( L"Food:" );
     textBuf.setHorizontalPos( 3 );
