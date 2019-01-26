@@ -42,6 +42,12 @@ public:
 	void DecX( PIXEL const value ) { x -= value; }
 	void DecY( PIXEL const value ) { y -= value; }
 
+	static const PixelPoint PIXEL_POINT_ZERO()
+	{
+		PixelPoint value = PixelPoint( PIXEL(0_PIXEL), PIXEL(0_PIXEL) );
+		return value;
+	}
+
 private:
 	PIXEL x;
     PIXEL y;

@@ -60,15 +60,6 @@ public:
 		assert( m_pixBottom >= m_pixTop );
     };
 
-    PixelRect( long const lLeft, long const lTop, long const lRight, long const lBottom ) :
-        m_pixLeft  (lLeft),
-        m_pixTop   (lTop),
-        m_pixRight (lRight), 
-        m_pixBottom(lBottom) 
-    { 
-		assert( m_pixBottom >= m_pixTop );
-    };
-
 	PixelRect( PixelPoint const ptOrigin, PixelRectSize const & rectSize ) :
         m_pixLeft  (ptOrigin.GetX()),
         m_pixTop   (ptOrigin.GetY()),

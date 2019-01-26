@@ -45,12 +45,12 @@ public:
 	PixelPoint GetPixelOffset( ) const { return m_pixOffset; }
 
 	PIXEL      ComputeNewFieldSize( bool const ) const;  // does not modify field size
+    PIXEL	   CalcMaximumFieldSize( GridPoint const &, PixelRectSize const ) const;
 
 	//////// manipulation functions ////////
 
-    PIXEL CalcMaximumFieldSize( GridPoint const &, PixelRectSize const );
     bool  SetGridFieldSize( PIXEL const );                                   
-	void  CenterGrid   ( GridPoint const, PixelRectSize const );
+	void  CenterGrid( GridPoint const, PixelRectSize const );
 
 	bool  CenterPoi( PixelPoint const, GridPoint const );
     void  MoveGrid( PixelPoint const);

@@ -27,6 +27,37 @@ namespace Util
     bool operator== ( RECT const &, RECT const & );
     bool operator!= ( RECT const &, RECT const & );
     
+	inline PixelPoint POINT2PixelPoint( POINT const pnt ) 
+	{ 
+		return PixelPoint{ PIXEL(pnt.x), PIXEL(pnt.y) }; 
+	}
+
+	inline POINT PixelPoint2POINT( PixelPoint const pp ) 
+	{ 
+		return POINT{ pp.GetXlong(), pp.GetYlong() }; 
+	}
+
+	inline PixelRect RECT2PixelRect( RECT const & rect ) 
+	{ 
+		return PixelRect{ PIXEL(rect.left), PIXEL(rect.top), PIXEL(rect.right), PIXEL(rect.bottom) }; 
+	}
+
+	inline RECT PixelRect2RECT( PixelRect const & pixRect ) 
+	{ 
+		return RECT
+		{ 
+			pixRect.GetLeft().GetValue(),	
+			pixRect.GetTop().GetValue(), 
+			pixRect.GetRight().GetValue(), 
+			pixRect.GetBottom().GetValue() 
+		}; 
+	}
+
+	inline BOOL MoveWindow( HWND const hwnd, PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, BOOL const bRedraw )
+	{
+		return ::MoveWindow( hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw );
+	}
+
 	inline void SetText( HWND const hwnd, wchar_t const * const wstrText )
 	{
 		(void)::SendMessage( hwnd, WM_SETTEXT,	0, (LPARAM)( wstrText )	);
@@ -72,7 +103,7 @@ namespace Util
     {
         RECT rect;
         (void)GetClientRect( hwnd, &rect );
-		return PixelRect{ 0, 0,	rect.right,	rect.bottom	};
+		return RECT2PixelRect( rect ); 
     }
 
     inline PixelRectSize GetClRectSize( HWND const hwnd )
@@ -86,18 +117,41 @@ namespace Util
         return (GetClRectSize( hwnd ) / 2).ToPixelPoint();
     }
 
+    inline BOOL IsInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?
+    {
+        RECT const rect = GetClRect( hwnd );  
+		return PtInRect( &rect, PixelPoint2POINT( pp ) );
+    } 
+
+    inline BOOL IsInClientRect( HWND const hwnd, PixelRect const & pixRect )  // Is rect in client rect?
+    {
+        RECT const rect = GetClRect( hwnd );  
+		return PtInRect( &rect, PixelPoint2POINT( pixRect.GetStartPoint() ) ) && 
+			   PtInRect( &rect, PixelPoint2POINT( pixRect.GetEndPoint  () ) );
+    } 
+
 	inline PixelPoint Client2Screen( HWND const hwnd, POINT pnt )
     {
         (void)ClientToScreen( hwnd, &pnt );
 		return PixelPoint{ PIXEL(pnt.x), PIXEL(pnt.y) };
     }
 	
+    inline PixelPoint const ScreenToClient( HWND const hwnd, POINT pnt )
+    {
+        (void)ScreenToClient( hwnd, &pnt );
+		return PixelPoint{ PIXEL(pnt.x), PIXEL(pnt.y) };
+    }
+
+    inline void ScreenToClient( HWND const hwnd, PixelPoint & pixPoint )
+    {
+		pixPoint = ScreenToClient( hwnd, PixelPoint2POINT( pixPoint ) );
+    }
+
     inline PixelPoint GetRelativeCrsrPosition( HWND const hwnd )   // Delivers cursor position relative to client area 
     {
 		POINT pnt;
 		(void)GetCursorPos( &pnt );
-        (void)ScreenToClient( hwnd, &pnt );
-		return PixelPoint{ PIXEL(pnt.x), PIXEL(pnt.y) };
+		return ScreenToClient( hwnd, pnt );
     }
 
     inline PixelPoint GetWindowSize( HWND const hwnd )
@@ -144,45 +198,6 @@ namespace Util
         (void)GetWindowRect( hwnd, &rect );
 		return PIXEL{rect.right};
     }
-
-	inline PixelPoint POINT2PixelPoint( POINT const pnt ) 
-	{ 
-		return PixelPoint{ PIXEL(pnt.x), PIXEL(pnt.y) }; 
-	}
-
-	inline POINT PixelPoint2POINT( PixelPoint const pp ) 
-	{ 
-		return POINT{ pp.GetXlong(), pp.GetYlong() }; 
-	}
-
-	inline PixelRect RECT2PixelRect( RECT const & rect ) 
-	{ 
-		return PixelRect{ rect.left, rect.top, rect.right, rect.bottom }; 
-	}
-
-	inline RECT PixelRect2RECT( PixelRect const & pixRect ) 
-	{ 
-		return RECT
-		{ 
-			pixRect.GetLeft().GetValue(),	
-			pixRect.GetTop().GetValue(), 
-			pixRect.GetRight().GetValue(), 
-			pixRect.GetBottom().GetValue() 
-		}; 
-	}
-
-    inline BOOL IsInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?
-    {
-        RECT const rect = GetClRect( hwnd );  
-		return PtInRect( &rect, PixelPoint2POINT( pp ) );
-    } 
-
-    inline BOOL IsInClientRect( HWND const hwnd, PixelRect const & pixRect )  // Is rect in client rect?
-    {
-        RECT const rect = GetClRect( hwnd );  
-		return PtInRect( &rect, PixelPoint2POINT( pixRect.GetStartPoint() ) ) && 
-			   PtInRect( &rect, PixelPoint2POINT( pixRect.GetEndPoint  () ) );
-    } 
 
     inline BOOL CrsrInClientRect( HWND const hwnd )  // Is cursor position in client rect?
     {

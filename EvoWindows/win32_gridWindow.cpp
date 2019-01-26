@@ -373,13 +373,19 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
 void GridWindow::Size( )
 {
-    PixelPoint const ptSize = m_pPixelCoordinates->Grid2PixelSize( GridPoint::GRID_SIZE() );
-	PixelRect  const pixRect = Util::CalcWindowRect
-	( 
-		PixelRect( PixelPoint( PIXEL(0_PIXEL), PIXEL(0_PIXEL) ), ptSize ), 
-		(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 
+	Move
+	(
+		Util::CalcWindowRect
+		( 
+			PixelRect
+			( 
+				PixelPoint::PIXEL_POINT_ZERO(), 
+				m_pPixelCoordinates->Grid2PixelSize( GridPoint::GRID_SIZE() ) 
+			), 
+			(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 
+		), 
+		FALSE 
 	);
-    Move( pixRect, FALSE );
 }
 
 void GridWindow::newFieldSize( PIXEL const pixfieldSize, GridPoint const gpCenter )

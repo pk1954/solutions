@@ -95,12 +95,12 @@ public:
 
     void Move( PixelPoint const pos, PixelRectSize const size, BOOL const bRedraw )
     {
-        (void)::MoveWindow( m_hwnd, pos.GetXlong(), pos.GetYlong(), size.GetWidth().GetValue(), size.GetHeight().GetValue(), bRedraw );
+        Move( pos.GetX(), pos.GetY(), size.GetWidth(), size.GetHeight(), bRedraw );
     }
 
     void Move( PixelRect const rect, BOOL const bRedraw )
     {
-        (void)::MoveWindow( m_hwnd, rect.GetLeft().GetValue(), rect.GetTop().GetValue(), rect.GetWidth().GetValue(), rect.GetHeight().GetValue(), bRedraw );
+        Move( rect.GetStartPoint(), rect.GetSize(), bRedraw );
     }
 
     void Invalidate( BOOL const bRedraw ) 

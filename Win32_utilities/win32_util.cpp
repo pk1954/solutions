@@ -64,7 +64,7 @@ void Util::AdjustRight( HWND const hwnd, PIXEL const pixYpos )
     PIXEL const pixWidthParent = GetClientWindowWidth( hwndParent );
     PIXEL const pixWidth       = GetWindowWidth( hwnd );
     PIXEL const pixHeight      = GetWindowHeight( hwnd );
-    MoveWindow( hwnd, (pixWidthParent - pixWidth).GetValue(), pixYpos.GetValue(), pixWidth.GetValue(), pixHeight.GetValue(), TRUE );
+    MoveWindow( hwnd,(pixWidthParent - pixWidth), pixYpos, pixWidth, pixHeight, TRUE );
     (void)BringWindowToTop( hwnd );
 }
 
@@ -86,15 +86,15 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 )
 {
 	HWND  const hwndParent = GetAncestor( hwnd, GA_PARENT );
-	POINT       pos{ pixXpos.GetValue(), pixYpos.GetValue() };
+	PixelPoint pixPoint{ pixXpos, pixYpos };
 
 	if ( hwndParent != nullptr )
-		ScreenToClient( hwndParent, &pos );
+		ScreenToClient( hwndParent, pixPoint );
 
-	BOOL bRes = MoveWindow( hwnd, pos.x, pos.y, pixWidth.GetValue(), pixHeight.GetValue(), bRepaint );
+	BOOL bRes = MoveWindow( hwnd, pixPoint.GetX(), pixPoint.GetY(), pixWidth, pixHeight, bRepaint );
 	
 	if ( GetWindowSize( hwnd ) != PixelPoint{ pixWidth, pixHeight } )   // can happen in strange situations
-		bRes = MoveWindow( hwnd, pos.x, pos.y, pixWidth.GetValue(), pixHeight.GetValue(), bRepaint );
+		bRes = MoveWindow( hwnd, pixPoint.GetX(), pixPoint.GetY(), pixWidth, pixHeight, bRepaint );
 
 	return bRes;
 }
