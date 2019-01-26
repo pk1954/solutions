@@ -43,8 +43,8 @@ public:
 	GridPoint const operator%= (int const i) { x %= i; y %= i; return * this; }
     GridPoint const operator/= (int const i) { x /= i; y /= i; return * this; }
 
-	bool IsEvenColumn( ) const { return x.IsEven(); }
-	bool IsOddColumn ( ) const { return x.IsOdd(); }
+	bool IsEvenColumn( ) const { return IsEven( x ); }
+	bool IsOddColumn ( ) const { return IsOdd( x ); }
 
     inline static int const GRID_AREA() 
 	{ 

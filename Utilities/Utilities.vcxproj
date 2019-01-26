@@ -153,6 +153,7 @@
     <ClInclude Include="Int24.h" />
     <ClInclude Include="kGridPoint.h" />
     <ClInclude Include="kGridRect.h" />
+    <ClInclude Include="NamedType.h" />
     <ClInclude Include="observerInterface.h" />
     <ClInclude Include="pixel.h" />
     <ClInclude Include="pixelPoint.h" />

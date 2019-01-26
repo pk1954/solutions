@@ -6,43 +6,9 @@
 #include <limits.h>
 #include <stdlib.h>    // abs
 #include <sstream>
+#include "NamedType.h"
 
-class PIXEL
-{
-public:
-    explicit PIXEL( ) 
-		: value_(0) 
-	{}
-		
-    constexpr explicit PIXEL( long const value ) 
-		: value_(value) 
-	{}
-
-    long const& GetValue() const { return value_; }
-
-    PIXEL operator++ () { ++value_; return * this; }
-    PIXEL operator-- () { --value_; return * this; }
-
-    PIXEL const operator- () const { return PIXEL( -value_ ); }
-
-    bool const operator== (PIXEL const a) const { return value_ == a.value_; }
-    bool const operator!= (PIXEL const a) const { return value_ != a.value_; }
-    bool const operator<= (PIXEL const a) const { return value_ <= a.value_; }
-    bool const operator<  (PIXEL const a) const { return value_ <  a.value_; }
-    bool const operator>= (PIXEL const a) const { return value_ >= a.value_; }
-    bool const operator>  (PIXEL const a) const { return value_ >  a.value_; }
-
-	PIXEL const operator+= (PIXEL const a) { value_ += a.value_; return * this; }
-    PIXEL const operator-= (PIXEL const a) { value_ -= a.value_; return * this; }
-    PIXEL const operator%= (PIXEL const a) { value_ %= a.value_; return * this; }
-
-	PIXEL const operator*= (int const i) { value_ *= i; return * this; }
-	PIXEL const operator/= (int const i) { value_ /= i; return * this; }
-    PIXEL const operator%= (int const i) { value_ %= i; return * this; }
-
-private:
-    long value_;
-};
+using PIXEL = NamedType< long, struct PixelParameter >;
 
 inline PIXEL const abs(PIXEL const a) { return PIXEL{ ::abs(a.GetValue()) }; }
 

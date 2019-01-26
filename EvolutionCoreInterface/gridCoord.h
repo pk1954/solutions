@@ -4,47 +4,12 @@
 #pragma once
 
 #include <iostream>
+#include "NamedType.h"
 
-class GRID_COORD
-{
-public:
-    explicit GRID_COORD( ) 
-		: value_(0) 
-	{}
-		
-    constexpr explicit GRID_COORD( short const & value ) 
-		: value_(value) 
-	{}
+using GRID_COORD = NamedType< short, struct GRID_COORD_Parameter >;
 
-    short const& GetValue() const { return value_; }
-
-    GRID_COORD operator++ () { ++value_; return * this; }
-    GRID_COORD operator-- () { --value_; return * this; }
-
-    GRID_COORD const operator- () const { return GRID_COORD( -value_ ); }
-
-    bool const operator== (GRID_COORD const a) const { return value_ == a.value_; }
-    bool const operator!= (GRID_COORD const a) const { return value_ != a.value_; }
-    bool const operator<= (GRID_COORD const a) const { return value_ <= a.value_; }
-    bool const operator<  (GRID_COORD const a) const { return value_ <  a.value_; }
-    bool const operator>= (GRID_COORD const a) const { return value_ >= a.value_; }
-    bool const operator>  (GRID_COORD const a) const { return value_ >  a.value_; }
-
-	GRID_COORD const operator+= (GRID_COORD const a) { value_ += a.value_; return * this; }
-    GRID_COORD const operator-= (GRID_COORD const a) { value_ -= a.value_; return * this; }
-    GRID_COORD const operator%= (GRID_COORD const a) { value_ %= a.value_; return * this; }
-
-    // no * operator!   risk of short overflow
-
-	GRID_COORD const operator/= (int const i) { value_ /= i; return * this; }
-    GRID_COORD const operator%= (int const i) { value_ %= i; return * this; }
-
-	bool IsEven( ) const { return value_ % 2 == 0; }
-	bool IsOdd ( ) const { return value_ % 2 != 0; }
-
-private:
-    short value_;
-};
+inline bool IsEven( GRID_COORD const a ) { return a.GetValue() % 2 == 0; }
+inline bool IsOdd ( GRID_COORD const a ) { return a.GetValue() % 2 != 0; }
 
 inline GRID_COORD const abs(GRID_COORD const a) { return GRID_COORD( ::abs(a.GetValue()) ); }
 

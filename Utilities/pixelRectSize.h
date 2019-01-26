@@ -19,9 +19,6 @@ public:
     PixelRectSize const operator+= (PIXEL const p) { m_pixWidth += p; m_pixHeight += p; return *this; };
     PixelRectSize const operator-= (PIXEL const p) { m_pixWidth -= p; m_pixHeight -= p; return *this; };
 
-    //PixelRectSize const operator*= (PixelRectSize const a) { m_pixWidth *= a.m_pixWidth; m_pixHeight *= a.m_pixHeight; return *this; };
-    //PixelRectSize const operator/= (PixelRectSize const a) { m_pixWidth /= a.m_pixWidth; m_pixHeight /= a.m_pixHeight; return *this; };
-
     PIXEL GetWidth ( ) const { return m_pixWidth;  }
     PIXEL GetHeight( ) const { return m_pixHeight; }
 
@@ -53,6 +50,12 @@ public:
     {
         return ( m_pixWidth >= size.m_pixWidth ) && ( m_pixHeight >= size.m_pixHeight );
     }
+
+	static const PixelRectSize PIXEL_RECT_SIZE_ZERO()
+	{
+		PixelRectSize value = PixelRectSize( PIXEL(0_PIXEL), PIXEL(0_PIXEL) );
+		return value;
+	}
 
 private:
     PIXEL m_pixWidth;
