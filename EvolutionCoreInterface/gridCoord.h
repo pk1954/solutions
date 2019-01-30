@@ -6,17 +6,14 @@
 #include <iostream>
 #include "NamedType.h"
 
-using GRID_COORD = NamedType< short, struct GRID_COORD_Parameter >;
+using GRID_COORD = NamedType< short, struct GRID_COORD_Parameter, Addable, Subtractable >;
 
 inline bool IsEven( GRID_COORD const a ) { return a.GetValue() % 2 == 0; }
 inline bool IsOdd ( GRID_COORD const a ) { return a.GetValue() % 2 != 0; }
 
 inline GRID_COORD const abs(GRID_COORD const a) { return GRID_COORD( ::abs(a.GetValue()) ); }
 
-inline GRID_COORD const operator+ (GRID_COORD const a, GRID_COORD const b) { GRID_COORD res(a); res += b; return res; }
-inline GRID_COORD const operator- (GRID_COORD const a, GRID_COORD const b) { GRID_COORD res(a); res -= b; return res; }
-
-constexpr GRID_COORD operator"" _GRID_COORD( unsigned long long );
+GRID_COORD operator"" _GRID_COORD( unsigned long long );
 
 std::wostream & operator << ( std::wostream &, GRID_COORD const );
 

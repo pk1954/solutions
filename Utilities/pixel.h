@@ -8,12 +8,9 @@
 #include <sstream>
 #include "NamedType.h"
 
-using PIXEL = NamedType< long, struct PixelParameter >;
+using PIXEL = NamedType< long, struct PIXEL_PARAMETER, Subtractable, Addable  >;
 
 inline PIXEL const abs(PIXEL const a) { return PIXEL{ ::abs(a.GetValue()) }; }
-
-inline PIXEL const operator+ (PIXEL const a, PIXEL const b) { PIXEL res(a); res += b; return res; }
-inline PIXEL const operator- (PIXEL const a, PIXEL const b) { PIXEL res(a); res -= b; return res; }
 
 inline PIXEL const operator* (PIXEL const a, long const l) { PIXEL res(a); res *= l; return res; }
 inline PIXEL const operator/ (PIXEL const a, long const l) { PIXEL res(a); res /= l; return res; }

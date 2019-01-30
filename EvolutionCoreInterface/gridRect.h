@@ -19,7 +19,7 @@ public:
 		Reset(); 
 	}
 
-    GridRect
+    explicit GridRect
 	( 
 		GridPoint const gpStart, 
 		GridPoint const gpEnd 
@@ -44,7 +44,7 @@ public:
     bool const operator== ( GridRect const &a ) const { return ( a.m_lLeft == m_lLeft ) && ( a.m_lTop == m_lTop ) && ( a.m_lRight == m_lRight ) && ( a.m_lBottom == m_lBottom ); };
     bool const operator!= ( GridRect const &a ) const { return ( a.m_lLeft != m_lLeft ) || ( a.m_lTop != m_lTop ) || ( a.m_lRight != m_lRight ) || ( a.m_lBottom != m_lBottom ); };
 
-    GRID_COORD const GetWidth ( ) const { return m_lRight  - m_lLeft + GRID_COORD(1_GRID_COORD); }
+    GRID_COORD const GetWidth ( ) const { return (m_lRight - m_lLeft) + GRID_COORD(1_GRID_COORD); }
 	GRID_COORD const GetHeight( ) const { return m_lBottom - m_lTop  + GRID_COORD(1_GRID_COORD); }
 	
 	GRID_COORD const GetLeft  () const { return m_lLeft;   };

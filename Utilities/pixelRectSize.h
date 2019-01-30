@@ -9,9 +9,9 @@
 class PixelRectSize
 {
 public:
-	PixelRectSize( ) : m_pixWidth( 0 ), m_pixHeight( 0 ) {};
-    PixelRectSize( PIXEL const pixSideLength ) : m_pixWidth( pixSideLength ), m_pixHeight( pixSideLength ) {};
-    PixelRectSize( PIXEL const pixWidth, PIXEL const pixHeight ) : m_pixWidth(pixWidth), m_pixHeight(pixHeight) {};
+	         PixelRectSize( ) : m_pixWidth( 0 ), m_pixHeight( 0 ) {};
+    explicit PixelRectSize( PIXEL const pixSideLength ) : m_pixWidth( pixSideLength ), m_pixHeight( pixSideLength ) {};
+             PixelRectSize( PIXEL const pixWidth, PIXEL const pixHeight ) : m_pixWidth(pixWidth), m_pixHeight(pixHeight) {};
 
     PixelRectSize const operator*= (long const l) { m_pixWidth *= l; m_pixHeight *= l; return *this; };
     PixelRectSize const operator/= (long const l) { m_pixWidth /= l; m_pixHeight /= l; return *this; };

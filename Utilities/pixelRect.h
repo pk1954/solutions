@@ -66,6 +66,12 @@ public:
         m_pixRight (m_pixLeft + rectSize.GetWidth()  - PIXEL(1_PIXEL)),
         m_pixBottom(m_pixTop  + rectSize.GetHeight() - PIXEL(1_PIXEL))
 	{
+	PIXEL p = PIXEL(1_PIXEL);
+	p += PIXEL(3_PIXEL);
+	p -= PIXEL(2_PIXEL);
+	PIXEL p2 = p - PIXEL(2_PIXEL);
+	PIXEL p3 = p + PIXEL(2_PIXEL);
+
 		assert( m_pixBottom >= m_pixTop );
 	}
 
