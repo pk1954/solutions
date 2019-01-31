@@ -31,6 +31,17 @@ struct Subtractable : crtp<T, Subtractable>
     T  operator- ()               const { T res( -this->underlying().GetValue() ); return res; }
 };
 
+template <typename T>
+struct Comparable : crtp<T, Comparable>
+{
+    bool const operator== (T const other) const { return this->underlying().GetValue() == other.GetValue(); }
+    bool const operator!= (T const other) const { return this->underlying().GetValue() != other.GetValue(); }
+    bool const operator<= (T const other) const { return this->underlying().GetValue() <= other.GetValue(); }
+    bool const operator<  (T const other) const { return this->underlying().GetValue() <  other.GetValue(); }
+    bool const operator>= (T const other) const { return this->underlying().GetValue() >= other.GetValue(); }
+    bool const operator>  (T const other) const { return this->underlying().GetValue() >  other.GetValue(); }
+};
+
 template <typename T, typename Parameter, template<typename> class... Skills>
 class NamedType : public Skills<NamedType<T, Parameter, Skills...>>...
 {
@@ -44,13 +55,6 @@ public:
 
     NamedType operator++ () { ++value_; return * this; }
     NamedType operator-- () { --value_; return * this; }
-
-    bool const operator== (NamedType const a) const { return value_ == a.value_; }
-    bool const operator!= (NamedType const a) const { return value_ != a.value_; }
-    bool const operator<= (NamedType const a) const { return value_ <= a.value_; }
-    bool const operator<  (NamedType const a) const { return value_ <  a.value_; }
-    bool const operator>= (NamedType const a) const { return value_ >= a.value_; }
-    bool const operator>  (NamedType const a) const { return value_ >  a.value_; }
 
     NamedType const operator%= (NamedType const a) { value_ %= a.value_; return * this; }
 

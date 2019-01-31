@@ -8,7 +8,7 @@
 #include <sstream>
 #include "NamedType.h"
 
-using PIXEL = NamedType< long, struct PIXEL_PARAMETER, Subtractable, Addable  >;
+using PIXEL = NamedType< long, struct PIXEL_PARAMETER, Comparable, Subtractable, Addable  >;
 
 inline PIXEL const abs(PIXEL const a) { return PIXEL{ ::abs(a.GetValue()) }; }
 
