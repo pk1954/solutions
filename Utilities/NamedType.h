@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <stdlib.h>    // abs
+
 template <typename T, template<typename> class crtpType>
 struct crtp
 {
@@ -20,6 +22,7 @@ struct Addable : crtp<T, Addable>
     T  operator+ (T const& other)       { return T(this->underlying().GetValue() + other.GetValue()); }
     T  operator+ (T const& other) const { return T(this->underlying().GetValue() + other.GetValue()); }
     T  operator+ ()               const { T res( +this->underlying().GetValue() ); return res; }
+    T  operator++()                     { ++this->underlying().GetValue(); return this->underlying(); }
 };
 
 template <typename T>
@@ -29,7 +32,7 @@ struct Subtractable : crtp<T, Subtractable>
     T  operator- (T const& other)       { return T(this->underlying().GetValue() - other.GetValue()); }
     T  operator- (T const& other) const { return T(this->underlying().GetValue() - other.GetValue()); }
     T  operator- ()               const { T res( -this->underlying().GetValue() ); return res; }
-
+    T  operator--()                     { --this->underlying().GetValue(); return this->underlying(); }
 };
 
 template <typename T>
@@ -59,9 +62,6 @@ public:
 
     T      & GetValue()       { return value_; }
 	T const& GetValue() const { return value_; }
-
-    NamedType operator++ () { ++value_; return * this; }
-    NamedType operator-- () { --value_; return * this; }
 
     NamedType const operator%= (NamedType const a) { value_ %= a.value_; return * this; }
 

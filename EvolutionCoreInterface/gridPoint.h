@@ -27,7 +27,12 @@ public:
 
     virtual ~GridPoint() {};
 
-    GridPoint operator++ () { ++x; ++y; return * this; }
+    GridPoint operator++ () 
+	{ 
+		++x; 
+		++y; 
+		return * this; 
+	}
     GridPoint operator-- () { --x; --y; return * this; }
 
     bool      const operator== (GridPoint const a) const { return (a.x == x) && (a.y == y); }
