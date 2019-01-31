@@ -103,7 +103,7 @@ inline GridPoint const operator- (GridPoint const a, GRID_COORD const l) { GridP
 inline GridPoint const operator% (GridPoint const a, int const i) { GridPoint res(a); res %= i; return res; }
 inline GridPoint const operator/ (GridPoint const a, int const i) { GridPoint res(a); res /= i; return res; }
 
-inline GridPoint const abs(GridPoint const a) { return GridPoint( abs(a.x), abs(a.y) ); }
+inline GridPoint const abs(GridPoint const a) { return GridPoint( a.x.abs_value(), a.y.abs_value() ); }
 
 inline GridPoint const Min(GridPoint const a, GridPoint const b) { return GridPoint( min(a.x, b.x), min(a.y, b.y) ); }
 inline GridPoint const Max(GridPoint const a, GridPoint const b) { return GridPoint( max(a.x, b.x), max(a.y, b.y) ); }

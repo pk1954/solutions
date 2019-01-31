@@ -6,12 +6,12 @@
 #include <iostream>
 #include "NamedType.h"
 
-using GRID_COORD = NamedType< short, struct GRID_COORD_Parameter, Comparable, Addable, Subtractable >;
+using GRID_COORD = NamedType< short, struct GRID_COORD_Parameter, Comparable, Addable, Subtractable, AbsValue >;
 
 inline bool IsEven( GRID_COORD const a ) { return a.GetValue() % 2 == 0; }
 inline bool IsOdd ( GRID_COORD const a ) { return a.GetValue() % 2 != 0; }
 
-inline GRID_COORD const abs(GRID_COORD const a) { return GRID_COORD( ::abs(a.GetValue()) ); }
+//inline GRID_COORD const abs(GRID_COORD const a) { return GRID_COORD( ::abs(a.GetValue()) ); }
 
 GRID_COORD operator"" _GRID_COORD( unsigned long long );
 

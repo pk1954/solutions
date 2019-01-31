@@ -10,10 +10,6 @@ using namespace std;
 
 std::wostream & operator << ( std::wostream & out, GRID_COORD const c )
 {
-	GRID_COORD p = GRID_COORD(1_GRID_COORD);
-	p += GRID_COORD(3_GRID_COORD);
-	GRID_COORD p2 = p + GRID_COORD(3_GRID_COORD);
-
 	out << c.GetValue();
     return out;
 }

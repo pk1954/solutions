@@ -65,7 +65,7 @@ inline PixelPoint const operator- (PixelPoint const a, PIXEL const p) { PixelPoi
 inline PixelPoint const operator* (PixelPoint const a, long const l) { PixelPoint res(a); res *= l; return res; };
 inline PixelPoint const operator/ (PixelPoint const a, long const l) { PixelPoint res(a); res /= l; return res; };
 
-inline PixelPoint const abs( PixelPoint const a ) { return PixelPoint( ::abs(a.GetX()), ::abs(a.GetY() ) ); }
+inline PixelPoint const abs( PixelPoint const a ) { return PixelPoint( a.GetX().abs_value(), a.GetY().abs_value() ); }
 
 inline PIXEL const MaxAbsDelta(PixelPoint const pp) 
 {

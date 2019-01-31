@@ -29,6 +29,13 @@ struct Subtractable : crtp<T, Subtractable>
     T  operator- (T const& other)       { return T(this->underlying().GetValue() - other.GetValue()); }
     T  operator- (T const& other) const { return T(this->underlying().GetValue() - other.GetValue()); }
     T  operator- ()               const { T res( -this->underlying().GetValue() ); return res; }
+
+};
+
+template <typename T>
+struct AbsValue : crtp<T, AbsValue>
+{
+	T const abs_value() const{ T res( ::abs(this->underlying().GetValue() )); return res; }
 };
 
 template <typename T>

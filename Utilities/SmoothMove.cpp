@@ -25,7 +25,7 @@ PixelPoint SmoothMove::Step( PixelPoint pixActual, PixelPoint pixTarget )  // re
     m_pixVelocity += pixDeltaV;
     assert( m_pixVelocity >= PIXEL(0_PIXEL) );
     
-    if ( abs( pixDelta.GetX() ) > abs( pixDelta.GetY() ) )  // x is major direction
+    if ( pixDelta.GetX().abs_value() > pixDelta.GetY().abs_value() )  // x is major direction
     {
         assert( pixDelta.GetX() != PIXEL(0_PIXEL) );
         pixStep.SetX( ( pixDelta.GetX() > PIXEL(0_PIXEL) ) ? m_pixVelocity : -m_pixVelocity );
