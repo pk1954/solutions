@@ -56,6 +56,14 @@ struct Multiplicable : crtp<T, Multiplicable>
     T  operator* (int const& i) const { return T(this->underlying().GetValue() * i); }
 };
 
+template <typename T>
+struct Dividable : crtp<T, Dividable>
+{
+    T&  operator/=(int const& i)           { this->underlying().GetValue() /= i; return this->underlying(); }
+    T   operator/ (int const& i)     const { return T(this->underlying().GetValue() / i); }
+    int operator/ (T   const& other) const { int res( this->underlying().GetValue() / other.GetValue() ); return res; }
+};
+
 template <typename T, typename Parameter, template<typename> class... Skills>
 class NamedType : public Skills<NamedType<T, Parameter, Skills...>>...
 {
@@ -68,8 +76,6 @@ public:
 	T const& GetValue() const { return value_; }
 
     NamedType const operator%= (NamedType const a) { value_ %= a.value_; return * this; }
-
-	NamedType const operator/= (int const i) { value_ /= i; return * this; }
     NamedType const operator%= (int const i) { value_ %= i; return * this; }
 
 private:
