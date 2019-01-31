@@ -57,6 +57,15 @@ struct Multiplicable : crtp<T, Multiplicable>
 };
 
 template <typename T>
+struct Modulo : crtp<T, Modulo>
+{
+    T& operator%=(int const& i)           { this->underlying().GetValue() %= i; return this->underlying(); }
+    T  operator% (int const& i)     const { return T(this->underlying().GetValue() % i); }
+    T& operator%=(T   const& other)       { this->underlying().GetValue() %= other.GetValue(); return this->underlying(); }
+    T  operator% (T   const& other) const { T res( this->underlying().GetValue() % other.GetValue() ); return res; }
+};
+
+template <typename T>
 struct Dividable : crtp<T, Dividable>
 {
     T&  operator/=(int const& i)           { this->underlying().GetValue() /= i; return this->underlying(); }
@@ -74,9 +83,6 @@ public:
 
     T      & GetValue()       { return value_; }
 	T const& GetValue() const { return value_; }
-
-    NamedType const operator%= (NamedType const a) { value_ %= a.value_; return * this; }
-    NamedType const operator%= (int const i) { value_ %= i; return * this; }
 
 private:
     T value_;

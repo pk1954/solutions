@@ -14,6 +14,7 @@ using GRID_COORD = NamedType
 	Addable, 
 	Subtractable, 
 	Dividable,
+	Modulo,
 	AbsValue 
 >;
 

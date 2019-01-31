@@ -19,8 +19,6 @@ using PIXEL = NamedType
 	AbsValue 
 >;
 
-// inline long const operator/ (PIXEL const a, PIXEL const b) { long res(a.GetValue()); res /= b.GetValue(); return res; }
-
 PIXEL operator"" _PIXEL( unsigned long long );
 
 std::wostream & operator << ( std::wostream &, PIXEL const );
