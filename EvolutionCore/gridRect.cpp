@@ -41,10 +41,12 @@ void Apply2Rect
 		--gpStart;
 		++gpEnd;
 	}
-    GridPoint gp;
-    for ( gp.y = gpStart.y; gp.y <= gpEnd.y; ++gp.y )
-        for ( gp.x = gpStart.x; gp.x <= gpEnd.x; ++gp.x )
-            func( gp );
+
+    for ( short y = gpStart.GetYshort(); y <= gpEnd.GetYshort(); ++y )
+    for ( short x = gpStart.GetXshort(); x <= gpEnd.GetXshort(); ++x )
+	{
+		func( GridPoint{ GRID_COORD(x), GRID_COORD(y) } );
+	}
 }
 
 void Apply2Grid( GridPointFunc const & func, bool const fWithBorders )

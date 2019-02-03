@@ -12,11 +12,11 @@ using PIXEL = NamedType
 	long, 
 	struct PIXEL_PARAMETER, 
 	Comparable, 
-	Subtractable, 
 	Addable, 
+	Subtractable, 
 	Multiplicable, 
 	Dividable,
-	AbsValue 
+	AbsValue
 >;
 
 PIXEL operator"" _PIXEL( unsigned long long );

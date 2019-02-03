@@ -24,10 +24,10 @@ public:
 		GridPoint const gpStart, 
 		GridPoint const gpEnd 
 	) : 
-		m_lLeft  (gpStart.x), 
-		m_lTop   (gpStart.y), 
-		m_lRight (gpEnd.x), 
-		m_lBottom(gpEnd.y)
+		m_lLeft  (gpStart.GetX()), 
+		m_lTop   (gpStart.GetY()), 
+		m_lRight (gpEnd.GetX()), 
+		m_lBottom(gpEnd.GetY())
 	{
 		assert( m_lTop <= m_lBottom );
 	};
@@ -64,7 +64,7 @@ public:
 
 	bool Includes( GridPoint const gp ) const
 	{
-		return (m_lLeft <= gp.x) && (gp.x <= m_lRight) && (m_lTop <= gp.y) && (gp.y <= m_lBottom);
+		return (m_lLeft <= gp.GetX()) && (gp.GetX() <= m_lRight) && (m_lTop <= gp.GetY()) && (gp.GetY() <= m_lBottom);
 	}
 
 	inline static GridRect const & GRID_RECT_EMPTY() 

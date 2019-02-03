@@ -360,12 +360,15 @@ GridPoint Grid::FindGridPoint
 	GridRect const & rect
 ) const
 {
-    GridPoint gp;
-    for ( gp.y = rect.GetStartPoint().y; gp.y <= rect.GetEndPoint().y; ++gp.y )
-    for ( gp.x = rect.GetStartPoint().x; gp.x <= rect.GetEndPoint().x; ++gp.x )
+    for ( short y = rect.GetStartPoint().GetYshort(); y <= rect.GetEndPoint().GetYshort(); ++y )
+    for ( short x = rect.GetStartPoint().GetXshort(); x <= rect.GetEndPoint().GetXshort(); ++x )
+	{
+		GridPoint gp{ GRID_COORD(x), GRID_COORD(y) };
+
         if ( func( gp ) )
         {
             return gp;
         }
+	}
     return GridPoint::GP_NULL();
 }

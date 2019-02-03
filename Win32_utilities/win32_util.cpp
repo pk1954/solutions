@@ -22,7 +22,7 @@ RECT Util::ScrReadRECT( Script & script )
 wostream & Util::operator << ( wostream & out, PixelPoint const pp )
 {
     //lint -e747  Significant prototype coercion with setw
-    out << pp.GetX() << pp.GetY() << L" ";
+    out << pp.GetX() << L" " << pp.GetY() << L" ";
     return out;
 }
 

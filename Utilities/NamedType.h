@@ -3,7 +3,9 @@
 
 #pragma once
 
+#include <iostream>
 #include <stdlib.h>    // abs
+#include <iomanip>
 
 template <typename T, template<typename> class crtpType>
 struct crtp
@@ -13,6 +15,21 @@ struct crtp
 private:
     crtp(){}
     friend crtpType<T>;
+};
+
+template <typename T, typename Parameter, template<typename> class... Skills>
+class NamedType : public Skills<NamedType<T, Parameter, Skills...>>...
+{
+public:
+    NamedType( ) : value_(0) {}
+		
+    constexpr explicit NamedType( T const& value ) : value_(value) {}
+
+    T      & GetValue()       { return value_; }
+	T const& GetValue() const { return value_; }
+
+private:
+    T value_;
 };
 
 template <typename T>
@@ -73,17 +90,21 @@ struct Dividable : crtp<T, Dividable>
     int operator/ (T   const& other) const { int res( this->underlying().GetValue() / other.GetValue() ); return res; }
 };
 
-template <typename T, typename Parameter, template<typename> class... Skills>
-class NamedType : public Skills<NamedType<T, Parameter, Skills...>>...
-{
-public:
-    explicit NamedType( ) : value_(0) {}
-		
-    constexpr explicit NamedType( T const& value ) : value_(value) {}
-
-    T      & GetValue()       { return value_; }
-	T const& GetValue() const { return value_; }
-
-private:
-    T value_;
-};
+//template <typename T>
+//struct Printable : crtp<T, Printable>
+//{
+//    std::wostream& print( std::wostream& out ) const 
+//	{ 
+//		return out << this->underlying().GetValue(); 
+//	}
+//	std::wostream & operator << ( std::wostream & out, T const & param )
+//	{
+//		return out << this->underlying().GetValue();
+//	}
+//};
+ 
+//template <typename T, typename Parameter>
+//std::wostream & operator << ( std::wostream & out, NamedType<T, Parameter> const& param )
+//{
+//    return param.print(out);
+//}

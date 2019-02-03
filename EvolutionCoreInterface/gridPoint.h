@@ -27,12 +27,7 @@ public:
 
     virtual ~GridPoint() {};
 
-    GridPoint operator++ () 
-	{ 
-		++x; 
-		++y; 
-		return * this; 
-	}
+    GridPoint operator++ () { ++x; ++y; return * this; }
     GridPoint operator-- () { --x; --y; return * this; }
 
     bool      const operator== (GridPoint const a) const { return (a.x == x) && (a.y == y); }
@@ -53,7 +48,7 @@ public:
 
     inline static int const GRID_AREA() 
 	{ 
-		static int res = GRID_WIDTH_ * GRID_HEIGHT_; 
+		static int res = GRID_WIDTH.GetValue() * GRID_HEIGHT.GetValue(); 
 		return res;
 	};
 
@@ -94,6 +89,13 @@ public:
 
     void Set2Null( ) { * this = GP_NULL(); }
 
+	GRID_COORD const GetX() const { return x; }
+	GRID_COORD const GetY() const { return y; }
+
+	short const GetXshort() const { return x.GetValue(); }
+	short const GetYshort() const { return y.GetValue(); }
+
+private:
     GRID_COORD x;
     GRID_COORD y;
 };
@@ -108,17 +110,17 @@ inline GridPoint const operator- (GridPoint const a, GRID_COORD const l) { GridP
 inline GridPoint const operator% (GridPoint const a, int const i) { GridPoint res(a); res %= i; return res; }
 inline GridPoint const operator/ (GridPoint const a, int const i) { GridPoint res(a); res /= i; return res; }
 
-inline GridPoint const abs(GridPoint const a) { return GridPoint( a.x.abs_value(), a.y.abs_value() ); }
+inline GridPoint const abs(GridPoint const a) { return GridPoint( a.GetX().abs_value(), a.GetY().abs_value() ); }
 
-inline GridPoint const Min(GridPoint const a, GridPoint const b) { return GridPoint( min(a.x, b.x), min(a.y, b.y) ); }
-inline GridPoint const Max(GridPoint const a, GridPoint const b) { return GridPoint( max(a.x, b.x), max(a.y, b.y) ); }
+inline GridPoint const Min(GridPoint const a, GridPoint const b) { return GridPoint( min(a.GetX(), b.GetX()), min(a.GetY(), b.GetY()) ); }
+inline GridPoint const Max(GridPoint const a, GridPoint const b) { return GridPoint( max(a.GetX(), b.GetX()), max(a.GetY(), b.GetY()) ); }
 
 inline bool const Neighbors( GridPoint const a, GridPoint const b )
 { 
     GridPoint gpDiff( abs(a - b) );
     return ( 
-		      ((gpDiff.x <= GRID_COORD(1_GRID_COORD)) || (gpDiff.x == GRID_X_MAX)) && 
-		      ((gpDiff.y <= GRID_COORD(1_GRID_COORD)) || (gpDiff.y == GRID_Y_MAX))
+		      ((gpDiff.GetX() <= GRID_COORD(1_GRID_COORD)) || (gpDiff.GetX() == GRID_X_MAX)) && 
+		      ((gpDiff.GetY() <= GRID_COORD(1_GRID_COORD)) || (gpDiff.GetY() == GRID_Y_MAX))
 		   );
 }
 

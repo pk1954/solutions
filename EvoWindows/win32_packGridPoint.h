@@ -11,7 +11,7 @@
 
 static LPARAM Pack2LParam( GridPoint const gp )
 {
-	return MAKELONG( gp.x.GetValue(), gp.y.GetValue() );
+	return MAKELONG( gp.GetXshort(), gp.GetYshort() );
 }
 
 static GridPoint UnpackFromLParam( LPARAM const lParam )

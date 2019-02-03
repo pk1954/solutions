@@ -10,6 +10,6 @@
 std::wostream & operator << ( std::wostream & out, GridPoint const gp )
 {
 //lint -e747  Significant prototype coercion with setw
-    out << L" " << std::setw(3) << gp.x << L" " << std::setw(3) << gp.y << L" ";
+    out << L" " << std::setw(3) << gp.GetX() << L" " << std::setw(3) << gp.GetY() << L" ";
     return out;
 }

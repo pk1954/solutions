@@ -20,7 +20,7 @@ public:
 	}
 
 	GridPoint24( GridPoint const gp ) :
-		GridPoint24( gp.x.GetValue(), gp.y.GetValue() )
+		GridPoint24( gp.GetXshort(), gp.GetYshort() )
 	{ }
 
 	GridPoint Unpack() const
