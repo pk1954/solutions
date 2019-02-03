@@ -57,4 +57,18 @@ unsigned int CastToUnsignedInt(SOURCE_TYPE const value )
 	return static_cast<unsigned int>( value );
 }
 
+template<typename SOURCE_TYPE>
+int CastToLong(SOURCE_TYPE const value ) 
+{
+	AssertLong( value );
+	return static_cast<long>( value );
+}
+
+template<typename SOURCE_TYPE>
+unsigned int CastToUnsignedLong(SOURCE_TYPE const value ) 
+{
+	AssertUnsignedLong( value );
+	return static_cast<unsigned long>( value );
+}
+
 std::wstring DecFraction( unsigned long );

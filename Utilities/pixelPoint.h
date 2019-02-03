@@ -36,16 +36,7 @@ public:
 	long const GetXlong() const { return x.GetValue(); }
 	long const GetYlong() const { return y.GetValue(); }
 
-	void SetX( PIXEL const value ) { x = value; }
-	void SetY( PIXEL const value ) { y = value; }
-
-	void IncX( PIXEL const value ) { x += value; }
-	void IncY( PIXEL const value ) { y += value; }
-
-	void DecX( PIXEL const value ) { x -= value; }
-	void DecY( PIXEL const value ) { y -= value; }
-
-	static const PixelPoint PIXEL_POINT_ZERO()
+	static const PixelPoint ZERO()
 	{
 		PixelPoint value = PixelPoint( PIXEL(0_PIXEL), PIXEL(0_PIXEL) );
 		return value;

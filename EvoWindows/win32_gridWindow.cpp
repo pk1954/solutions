@@ -184,7 +184,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
 
     if ( wParam & MK_RBUTTON )                // Right mouse button: selection
     {
-        if ( m_ptLast.GetX() != PIXEL_NULL )  // last cursor pos stored in m_ptLast
+        if ( m_ptLast != PixelPoint::ZERO() )  // last cursor pos stored in m_ptLast
         {
             PixelPoint ptOther = m_pCore->IsPoiDefined( ) 
 				                 ? m_pPixelCore->GetPoiCenter() * 2 - ptCrsr 
@@ -213,7 +213,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     }
     else
     {
-        m_ptLast.SetX( PIXEL_NULL );    // make m_ptLast invalid
+        m_ptLast = PixelPoint::ZERO();    // make m_ptLast invalid
         // no PostRefresh! It would cause repaint for every mouse move.
     }
 }
@@ -379,7 +379,7 @@ void GridWindow::Size( )
 		( 
 			PixelRect
 			( 
-				PixelPoint::PIXEL_POINT_ZERO(), 
+				PixelPoint::ZERO(), 
 				m_pPixelCoordinates->Grid2PixelSize( GridPoint::GRID_SIZE() ) 
 			), 
 			(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 
