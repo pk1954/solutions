@@ -39,7 +39,7 @@ PixelPoint PixelCoordinates::calcCenterOffset  // calculate new pixel offset,
 	PixelPoint const pixCenter 
 )  
 {
-	assert( gpCenter.IsInGrid());
+	assert( IsInGrid( gpCenter ) );
 	PixelPoint const pixPnt( Grid2PixelSize(gpCenter) + m_pixFieldSize / 2 );
 	PixelPoint const pixOffset( pixPnt - pixCenter );
 	return pixOffset;

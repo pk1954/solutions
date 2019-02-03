@@ -87,7 +87,7 @@ void WorkThreadInterface::PostRefresh( LPARAM const lParam )
 
 void WorkThreadInterface::PostSetPOI( GridPoint const gp )
 {
-    if ( gp.IsInGrid() )
+    if ( IsInGrid( gp ) )
     {
         if ( m_bTrace )
             * m_pTraceStream << __func__ << L" " << gp << endl;
@@ -97,7 +97,7 @@ void WorkThreadInterface::PostSetPOI( GridPoint const gp )
 
 void WorkThreadInterface::PostDoEdit( GridPoint const gp )
 {
-    if ( gp.IsInGrid() )
+    if ( IsInGrid( gp ) )
     {
         if ( m_bTrace )
             * m_pTraceStream << __func__ << L" " << gp << endl;

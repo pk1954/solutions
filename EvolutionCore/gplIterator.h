@@ -24,7 +24,7 @@ public:
 
     GridPoint GotoNext( )
     {
-        assert( m_gpCurrent.IsInGrid( ) );
+        assert( IsInGrid( m_gpCurrent ) );
         m_gpCurrent = m_grid.GetJuniorGp( m_gpCurrent );
         return m_gpCurrent;
     } 

@@ -43,7 +43,7 @@ public:
 
 	BOOL const IsInGrid( ) const 
 	{ 
-		return m_gp.IsInGrid( ); 
+		return ::IsInGrid( m_gp ); 
 	}
 
 	BOOL const IsAlive( ) const 

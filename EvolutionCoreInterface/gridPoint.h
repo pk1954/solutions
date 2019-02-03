@@ -7,6 +7,7 @@
 #include <stdlib.h>   // abs
 #include <algorithm>  // min/max templates
 #include <iostream>
+#include <iomanip>
 #include <limits.h>
 #include <assert.h>
 #include <functional>
@@ -76,14 +77,6 @@ public:
 		return res;
 	};
 
-	bool const IsInGrid( ) const 
-	{ 
-		return (GRID_COORD(0_GRID_COORD) <= x) && 
-			   (GRID_COORD(0_GRID_COORD) <= y) && 
-			   (x < GRID_WIDTH ) && 
-			   (y < GRID_HEIGHT);
-	};
-
     bool IsNull   ( ) const { return * this == GP_NULL(); };
     bool IsNotNull( ) const { return * this != GP_NULL(); };
 
@@ -129,7 +122,18 @@ inline GridPoint const Wrap2Grid(GridPoint const gp)
 	return (gp + GridPoint::GRID_SIZE()) % GridPoint::GRID_SIZE(); 
 }
 
+inline bool const IsInGrid( GridPoint const & gp ) 
+{ 
+	return (GRID_X_MIN <= gp.GetX()) && (gp.GetX() <= GRID_X_MAX) && 
+		   (GRID_Y_MIN <= gp.GetY()) && (gp.GetY() <= GRID_Y_MAX);
+};
+
 typedef std::function<void (GridPoint const)> GridPointFunc;
 typedef std::function<short(short const, short const)> ManipulatorFunc;
 
-std::wostream & operator << ( std::wostream &, GridPoint const );
+inline std::wostream & operator << ( std::wostream & out, GridPoint const gp )
+{
+//lint -e747  Significant prototype coercion with setw
+    out << L" " << std::setw(3) << gp.GetX() << L" " << std::setw(3) << gp.GetY() << L" ";
+    return out;
+}

@@ -69,7 +69,7 @@ public:
 
     GridField const & GetGridField( GridPoint const gp ) const
     {
-        assert( gp.IsInGrid( ) );
+        assert( IsInGrid( gp ) );
         return m_aGF[ gp.GetXshort() ][ gp.GetYshort() ];
     };
 
@@ -142,13 +142,13 @@ private:
 
     GridField & getGridField( GridPoint const gp )
     {
-        assert( gp.IsInGrid( ) );
+        assert( IsInGrid( gp ) );
         return m_aGF[ gp.GetXshort() ][ gp.GetYshort() ];
     };
 
     GridField const & getGridFieldC( GridPoint const gp ) const
     {
-        assert( gp.IsInGrid( ) );
+        assert( IsInGrid( gp ) );
         return m_aGF[ gp.GetXshort() ][ gp.GetYshort() ];
     };
 

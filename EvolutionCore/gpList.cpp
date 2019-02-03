@@ -35,7 +35,7 @@ void GridPointList::CheckGridPointList( Grid const & grid ) const
         else
         {
             GridPoint gpJunior = grid.GetJuniorGp( gpRun );
-            assert( gpJunior.IsInGrid( ) );
+            assert( IsInGrid( gpJunior ) );
             if ( grid.GetSeniorGp( gpJunior ) != gpRun )
             {
                 DUMP::Dump( L" CheckGridPointList detected inconsistency" );

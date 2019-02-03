@@ -41,7 +41,7 @@ void EvolutionCoreImpl::ResetAll( )
 
 void EvolutionCoreImpl::SetPoi( GridPoint const  gp )       
 { 
-	if ( gp.IsInGrid( ) )
+	if ( IsInGrid( gp ) )
 	{
 		IndividualId const idPoiNew = GetId( gp );
 		if ( idPoiNew.IsDefined( ) )
@@ -76,7 +76,7 @@ void EvolutionCoreImpl::Compute( )
 	m_grid.PrepareActionCounters( );
     while ( gpRun.IsNotNull( ) )
     {
-        assert( gpRun.IsInGrid( ) );
+        assert( IsInGrid( gpRun ) );
         assert( m_grid.IsAlive( gpRun ) );
 
         m_grid.MakePlan( gpRun, * pPlan );

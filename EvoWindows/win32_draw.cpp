@@ -83,7 +83,7 @@ bool DrawFrame::SetHighlightPos( PixelPoint const ptCrsr )
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
 	m_gpHighlight = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
-	assert( m_gpHighlight.IsInGrid() );
+	assert( IsInGrid( m_gpHighlight ) );
 	PixelPoint const ppGridpointOffset =  m_pPixelCoordinates->Grid2PixelPos( m_gpHighlight );
 	m_pShapeHighlight = m_gridPointShape->FindShape( ptCrsr - ppGridpointOffset, m_gpHighlight );
 	return ( (gpLast != m_gpHighlight) || (pShapeLast != m_pShapeHighlight) );

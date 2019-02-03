@@ -35,7 +35,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
     GridPoint const gpFocus = m_pFocusPoint->GetGridPoint( );
 
-    if ( !gpFocus.IsInGrid( ) )
+    if ( ! IsInGrid( gpFocus ) )
     {
         textBuf.printString( L"out of grid" );
         return;
