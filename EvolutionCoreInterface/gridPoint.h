@@ -36,13 +36,12 @@ public:
 	GridPoint const operator%= (int const i) { x %= i; y %= i; return * this; }
     GridPoint const operator/= (int const i) { x /= i; y /= i; return * this; }
 
+    GridPoint operator- () const { return GridPoint( -x, -y ); };
+
 	GRID_COORD const GetX() const { return x; }
 	GRID_COORD const GetY() const { return y; }
 
-	short const GetXvalue() const { return x.GetValue(); }
-	short const GetYvalue() const { return y.GetValue(); }
-
-	inline static GridPoint const & NULL_VAL() 
+	static GridPoint const & NULL_VAL() 
 	{ 
 		static GridPoint res = GridPoint( GRID_COORD::NULL_VAL(), GRID_COORD::NULL_VAL() ); 
 		return res;
@@ -57,6 +56,9 @@ private:
     GRID_COORD x;
     GRID_COORD y;
 };
+
+inline short const GetXvalue( GridPoint const & gp ) { return gp.GetX().GetValue(); }
+inline short const GetYvalue( GridPoint const & gp ) { return gp.GetY().GetValue(); }
 
 inline GridPoint const operator+ (GridPoint const a, GridPoint const b) { GridPoint res(a); res += b; return res; }
 inline GridPoint const operator- (GridPoint const a, GridPoint const b) { GridPoint res(a); res -= b; return res; }

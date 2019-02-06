@@ -70,7 +70,7 @@ public:
     GridField const & GetGridField( GridPoint const gp ) const
     {
         assert( IsInGrid( gp ) );
-        return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
+        return m_aGF[ GetXvalue(gp) ][ GetYvalue(gp) ];
     };
 
     bool           IsAlive     ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive( ); }
@@ -143,13 +143,13 @@ private:
     GridField & getGridField( GridPoint const gp )
     {
         assert( IsInGrid( gp ) );
-        return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
+        return m_aGF[ GetXvalue(gp) ][ GetYvalue(gp) ];
     };
 
     GridField const & getGridFieldC( GridPoint const gp ) const
     {
         assert( IsInGrid( gp ) );
-        return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
+        return m_aGF[ GetXvalue(gp) ][ GetYvalue(gp) ];
     };
 
     GridPoint chooseTarget ( Neighborhood & );

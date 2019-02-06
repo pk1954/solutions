@@ -18,6 +18,7 @@ using PIXEL = NamedType
 	Subtractable, 
 	Multiplicable, 
 	Dividable,
+	Modulo,
 	AbsValue
 >;
 

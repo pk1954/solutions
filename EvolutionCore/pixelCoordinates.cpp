@@ -75,8 +75,8 @@ PIXEL PixelCoordinates::CalcMaximumFieldSize
 ) const
 {
 	return min( 
-				pntPixSize.GetWidth()  / gpGridRectSize.GetXvalue(), 
-				pntPixSize.GetHeight() / gpGridRectSize.GetYvalue() 
+				pntPixSize.GetWidth()  / GetXvalue(gpGridRectSize), 
+				pntPixSize.GetHeight() / GetYvalue(gpGridRectSize) 
 	          );
 }
 
@@ -138,8 +138,8 @@ PixelPoint PixelCoordinates::KGrid2PixelPos( KGridPoint const kp ) const
     
 PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint const gp ) const 
 { 
-	PIXEL pixY = m_pixFieldSize * gp.GetYvalue();
-	PIXEL pixX = m_pixFieldSize * gp.GetXvalue();
+	PIXEL pixY = m_pixFieldSize * GetYvalue(gp);
+	PIXEL pixX = m_pixFieldSize * GetXvalue(gp);
 
 	if ( m_bHexagon )
 	{
@@ -195,14 +195,14 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 		double const dRadius    = dFieldSize * SQRT3_DIV3;
 		double const dSide      = dFieldSize * SQRT3_DIV2;
 
-		double const dPixPointX = static_cast<double>(pixPoint.GetXvalue());
+		double const dPixPointX = static_cast<double>(GetXvalue(pixPoint));
 		double const dCi        = floor(dPixPointX/dSide);
 		double const dCx        = dPixPointX - dSide * dCi;
 
 		GRID_COORD const gCi( CastToShort(dCi) );  //TODO: check if ok
 		bool       const bOdd   = ((gCi.GetValue() % 2) != 0);
 
-		double const dPixPointY = static_cast<double>(pixPoint.GetYvalue());
+		double const dPixPointY = static_cast<double>(GetYvalue(pixPoint));
 		double const dTy        = dPixPointY + (bOdd ? (dFieldSize * 0.5) : 0);
 		double const dCj        = floor(dTy/dFieldSize);
 		double const dCy        = dTy - dFieldSize * dCj;

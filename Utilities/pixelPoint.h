@@ -20,6 +20,7 @@ public:
 
     PixelPoint const operator+= ( PixelPoint const a ) { x += a.x; y += a.y; return *this; };
     PixelPoint const operator-= ( PixelPoint const a ) { x -= a.x; y -= a.y; return *this; };
+    PixelPoint const operator%=  (PixelPoint const a ) { x %= a.x; y %= a.y; return *this; }
 
     PixelPoint const operator+= ( PIXEL const p ) { x += p; y += p; return *this; };
     PixelPoint const operator-= ( PIXEL const p ) { x -= p; y -= p; return *this; };
@@ -31,9 +32,6 @@ public:
 
 	PIXEL const GetX() const { return x; }
 	PIXEL const GetY() const { return y; }
-
-	long const GetXvalue() const { return x.GetValue(); }
-	long const GetYvalue() const { return y.GetValue(); }
 
 	static PixelPoint const NULL_VAL()
 	{
@@ -51,6 +49,9 @@ private:
     PIXEL y;
 };
 
+inline long const GetXvalue( PixelPoint const & pp ) { return pp.GetX().GetValue(); }
+inline long const GetYvalue( PixelPoint const & pp ) { return pp.GetY().GetValue(); }
+
 inline PixelPoint const operator+ (PixelPoint const a, PixelPoint const b) { PixelPoint res(a); res += b; return res; };
 inline PixelPoint const operator- (PixelPoint const a, PixelPoint const b) { PixelPoint res(a); res -= b; return res; };
 
@@ -64,5 +65,5 @@ inline PixelPoint const abs( PixelPoint const a ) { return PixelPoint( a.GetX().
 
 inline PIXEL const MaxAbsDelta(PixelPoint const pp) 
 {
-    return PIXEL( max( abs( pp.GetXvalue() ), abs( pp.GetYvalue() ) ) );
+    return PIXEL( max( abs( GetXvalue(pp) ), abs( GetYvalue(pp) ) ) );
 }

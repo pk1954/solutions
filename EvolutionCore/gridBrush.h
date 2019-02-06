@@ -103,8 +103,8 @@ public:
 			{ 
 				long  const lRadius     = m_radius.GetValue();
 				long  const lRadSquare  = lRadius * lRadius;
-				long  const lx          = gp.GetXvalue();
-				long  const ly          = gp.GetYvalue();
+				long  const lx          = GetXvalue(gp);
+				long  const ly          = GetYvalue(gp);
 				long  const lDistSquare = lx * lx + ly * ly;
 				short const sReduce     = CastToShort(( m_sIntensity * lDistSquare) / lRadSquare);
 				return m_sIntensity - sReduce;
