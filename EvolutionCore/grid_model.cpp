@@ -216,14 +216,14 @@ void Grid::MakePlan
     }
 }
 
-GridPoint Grid::ImplementPlan   // may return GP_NULL
+GridPoint Grid::ImplementPlan   // may return UNDEF
 ( 
     GridPoint       const   gpRun, 
     PlannedActivity const & plan
 )  
 {
     GridField & gfRun  = getGridField( gpRun );
-    GridPoint   gpNext = gfRun.GetJuniorGp( );      // may be GP_NULL
+    GridPoint   gpNext = gfRun.GetJuniorGp( );      // may be UNDEF
 
     gfRun.SetLastAction( plan.GetActionType( ) );
     gfRun.DecEnergy    ( plan.GetBaseConsumption( ) );
@@ -370,5 +370,5 @@ GridPoint Grid::FindGridPoint
             return gp;
         }
 	}
-    return GridPoint::GP_NULL();
+    return GridPoint::UNDEF();
 }

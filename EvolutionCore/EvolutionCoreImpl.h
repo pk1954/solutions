@@ -114,7 +114,7 @@ public:
 	virtual GridPoint FindGridPoint( IndividualId const & id, GridRect const & rect = GridRect::GRID_RECT_FULL() ) const 
 	{ 
 		return ( id == IndividualId::NO_INDIVIDUAL )
-			   ? GridPoint::GP_NULL()
+			   ? GridPoint::UNDEF()
 			   : m_grid.FindGridPoint( [&](GridPoint const gp) { return (GetId(gp) == id); }, rect );
 	}
 

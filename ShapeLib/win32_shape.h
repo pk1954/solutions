@@ -47,7 +47,7 @@ public:
 
 	virtual GridPoint GetReferencedGridPoint( GridPoint const gp ) const 
 	{ 
-		return GridPoint::GP_NULL(); 
+		return GridPoint::UNDEF(); 
 	}
 
 	virtual void Draw( GridPoint const, PixelPoint const );

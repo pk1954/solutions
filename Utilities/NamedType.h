@@ -7,16 +7,6 @@
 #include <stdlib.h>    // abs
 #include <iomanip>
 
-template <typename T, template<typename> class crtpType>
-struct crtp
-{
-    T       & underlying()       { return static_cast< T       & >( * this ); }
-    T const & underlying() const { return static_cast< T const & >( * this ); }
-private:
-    crtp(){}
-    friend crtpType<T>;
-};
-
 template <typename T, typename Parameter, template<typename> class... Skills>
 class NamedType : public Skills<NamedType<T, Parameter, Skills...>>...
 {
@@ -28,9 +18,26 @@ public:
     T      & GetValue()       { return value_; }
 	T const& GetValue() const { return value_; }
 
+	static NamedType const UNDEF()
+	{
+		static const NamedType res((numeric_limits<T>::min)());
+		return res;
+	}
+
 private:
     T value_;
 };
+
+template <typename T, template<typename> class crtpType>
+struct crtp
+{
+    T       & underlying()       { return static_cast< T       & >( * this ); }
+    T const & underlying() const { return static_cast< T const & >( * this ); }
+private:
+    crtp(){}
+    friend crtpType<T>;
+};
+
 
 template <typename T>
 struct Addable : crtp<T, Addable>
@@ -64,6 +71,13 @@ struct Comparable : crtp<T, Comparable>
     bool const operator<  (T const other) const { return this->underlying().GetValue() <  other.GetValue(); }
     bool const operator>= (T const other) const { return this->underlying().GetValue() >= other.GetValue(); }
     bool const operator>  (T const other) const { return this->underlying().GetValue() >  other.GetValue(); }
+
+	bool IsZero       ( ) const { return this->underlying().GetValue() == 0; };
+	bool IsNotZero    ( ) const { return this->underlying().GetValue() != 0; };
+	bool IsPositive   ( ) const { return this->underlying().GetValue() >  0; };
+	bool IsNotPositive( ) const { return this->underlying().GetValue() <= 0; };
+	bool IsNegative   ( ) const { return this->underlying().GetValue() <  0; };
+	bool IsNotNegative( ) const { return this->underlying().GetValue() >= 0; };
 };
 
 template <typename T>

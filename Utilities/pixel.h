@@ -7,6 +7,8 @@
 #include <sstream>
 #include "NamedType.h"
 
+using namespace std;
+
 using PIXEL = NamedType
 < 
 	long, 
@@ -22,5 +24,3 @@ using PIXEL = NamedType
 PIXEL operator"" _PIXEL( unsigned long long );
 
 std::wostream & operator << ( std::wostream &, PIXEL const );
-
-PIXEL const PIXEL_NULL = PIXEL(LONG_MIN);

@@ -12,9 +12,9 @@
 class PixelPoint
 {
 public:
-	         PixelPoint( )                                : x( 0), y( 0) {}
-    explicit PixelPoint( PIXEL const _a )                 : x(_a), y(_a) {}
-             PixelPoint( PIXEL const _x, PIXEL const _y ) : x(_x), y(_y) {};
+    PixelPoint( ) : x(PIXEL(0_PIXEL)), y(PIXEL(0_PIXEL)) {}
+	PixelPoint( PixelPoint const & s ) : x(s.x), y(s.y) {}
+    PixelPoint( PIXEL const _x, PIXEL const _y ) : x(_x), y(_y) {};
 
     bool       const operator== ( PixelPoint const a ) const { return ( x == a.x ) && ( y == a.y ); };
     bool       const operator!= ( PixelPoint const a ) const { return ( x != a.x ) || ( y != a.y ); };
@@ -36,9 +36,15 @@ public:
 	long const GetXlong() const { return x.GetValue(); }
 	long const GetYlong() const { return y.GetValue(); }
 
-	static const PixelPoint ZERO()
+	static PixelPoint const ZERO()
 	{
-		PixelPoint value = PixelPoint( PIXEL(0_PIXEL), PIXEL(0_PIXEL) );
+		static PixelPoint value = PixelPoint( PIXEL(0_PIXEL), PIXEL(0_PIXEL) );
+		return value;
+	}
+
+	static PixelPoint const UNDEF()
+	{
+		static PixelPoint value = PixelPoint( PIXEL::UNDEF(), PIXEL::UNDEF() );
 		return value;
 	}
 

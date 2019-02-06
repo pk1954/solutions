@@ -20,19 +20,13 @@ class GridPoint
 {
 public:
 
-    GridPoint( ) : x( GP_NULL().x ), y( GP_NULL().y ) {}
-
-	GridPoint( GRID_COORD const _x, GRID_COORD const _y ) 
-		: x(_x), y(_y)
-	{}
+    GridPoint( )                                          : x( UNDEF().x ), y( UNDEF().y ) {}
+	GridPoint( GRID_COORD const _x, GRID_COORD const _y ) : x(_x), y(_y) {}
 
     virtual ~GridPoint() {};
 
-    GridPoint operator++ () { ++x; ++y; return * this; }
-    GridPoint operator-- () { --x; --y; return * this; }
-
-    bool      const operator== (GridPoint const a) const { return (a.x == x) && (a.y == y); }
-    bool      const operator!= (GridPoint const a) const { return (a.x != x) || (a.y != y); }
+    bool      const operator== (GridPoint const a) const { return (x == a.x) && (y == a.y); }
+    bool      const operator!= (GridPoint const a) const { return (x != a.x) || (y != a.y); }
 
     GridPoint const operator+= (GridPoint const a) { x += a.x; y += a.y; return * this; }
     GridPoint const operator-= (GridPoint const a) { x -= a.x; y -= a.y; return * this; }
@@ -44,6 +38,12 @@ public:
 	GridPoint const operator%= (int const i) { x %= i; y %= i; return * this; }
     GridPoint const operator/= (int const i) { x /= i; y /= i; return * this; }
 
+	GRID_COORD const GetX() const { return x; }
+	GRID_COORD const GetY() const { return y; }
+
+	short const GetXshort() const { return x.GetValue(); }
+	short const GetYshort() const { return y.GetValue(); }
+
 	bool IsEvenColumn( ) const { return IsEven( x ); }
 	bool IsOddColumn ( ) const { return IsOdd( x ); }
 
@@ -53,9 +53,9 @@ public:
 		return res;
 	};
 
-	inline static GridPoint const & GP_NULL() 
+	inline static GridPoint const & UNDEF() 
 	{ 
-		static GridPoint res = GridPoint( GRID_COORD_NULL, GRID_COORD_NULL ); 
+		static GridPoint res = GridPoint( GRID_COORD::UNDEF(), GRID_COORD::UNDEF() ); 
 		return res;
 	};
 
@@ -77,16 +77,10 @@ public:
 		return res;
 	};
 
-    bool IsNull   ( ) const { return * this == GP_NULL(); };
-    bool IsNotNull( ) const { return * this != GP_NULL(); };
+    bool IsNull   ( ) const { return * this == UNDEF(); };
+    bool IsNotNull( ) const { return * this != UNDEF(); };
 
-    void Set2Null( ) { * this = GP_NULL(); }
-
-	GRID_COORD const GetX() const { return x; }
-	GRID_COORD const GetY() const { return y; }
-
-	short const GetXshort() const { return x.GetValue(); }
-	short const GetYshort() const { return y.GetValue(); }
+    void Set2Null( ) { * this = UNDEF(); }
 
 private:
     GRID_COORD x;

@@ -115,7 +115,7 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 				{
 					HighlightShape( m_pShapeHighlight, m_gpHighlight );
 					GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( m_gpHighlight );
-					if ( gpReferenced != GridPoint::GP_NULL() )
+					if ( gpReferenced != GridPoint::UNDEF() )
 					{
 						Shape const & shapeReferenced = m_gridPointShape->GetIndividualShape().GetLeftColumn().GetIdentifierShape();
 						HighlightShape( & shapeReferenced, gpReferenced );

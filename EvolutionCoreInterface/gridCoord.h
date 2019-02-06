@@ -25,8 +25,7 @@ GRID_COORD operator"" _GRID_COORD( unsigned long long );
 
 std::wostream & operator << ( std::wostream &, GRID_COORD const );
 
-GRID_COORD const MAX_GRID_COORD  = GRID_COORD(255_GRID_COORD);
-GRID_COORD const GRID_COORD_NULL = GRID_COORD(SHRT_MIN);
+GRID_COORD const MAX_GRID_COORD   = GRID_COORD(255_GRID_COORD);
 
 static long const GRID_WIDTH_  = 200;
 static long const GRID_HEIGHT_ = 100;

@@ -30,13 +30,13 @@ PixelPoint SmoothMove::Step( PixelPoint pixActual, PixelPoint pixTarget )  // re
         PIXEL pixStepX;
         PIXEL pixStepY;
 
-        assert( pixDelta.GetX() != PIXEL(0_PIXEL) );
-        pixStepX = (pixDelta.GetX() > PIXEL(0_PIXEL)) ? m_pixVelocity : -m_pixVelocity;
+        assert( pixDelta.GetX().IsNotZero() );
+        pixStepX = pixDelta.GetX().IsPositive() ? m_pixVelocity : -m_pixVelocity;
         pixActual += PixelPoint( pixStepX, PIXEL(0_PIXEL) );
-        if ( pixDelta.GetY() != PIXEL(0_PIXEL) )
+        if ( pixDelta.GetY().IsNotZero() )
         {
             PIXEL pixVelocityMinor = PIXEL(abs( ( pixStepX.GetValue() * pixDelta.GetYlong() + pixDelta.GetXlong() / 2 ) / pixDelta.GetXlong() ));
-            pixStepY = (pixDelta.GetY() > PIXEL(0_PIXEL)) ? pixVelocityMinor : -pixVelocityMinor;
+            pixStepY = pixDelta.GetY().IsPositive() ? pixVelocityMinor : -pixVelocityMinor;
             pixActual += PixelPoint( PIXEL(0_PIXEL), pixStepY );
         }
     }
@@ -45,13 +45,13 @@ PixelPoint SmoothMove::Step( PixelPoint pixActual, PixelPoint pixTarget )  // re
         PIXEL pixStepX;
         PIXEL pixStepY;
 
-        assert( pixDelta.GetY() != PIXEL(0_PIXEL) );
-        pixStepY = (pixDelta.GetY() > PIXEL(0_PIXEL)) ? m_pixVelocity : -m_pixVelocity;
+        assert( pixDelta.GetY().IsNotZero() );
+        pixStepY = pixDelta.GetY().IsPositive() ? m_pixVelocity : -m_pixVelocity;
         pixActual += PixelPoint( PIXEL(0_PIXEL), pixStepY );
-        if ( pixDelta.GetX() != PIXEL(0_PIXEL) )
+        if ( pixDelta.GetX().IsNotZero() )
         {
             PIXEL pixVelocityMinor = PIXEL(abs( ( pixStepY.GetValue() * pixDelta.GetXlong() + pixDelta.GetYlong() / 2 ) / pixDelta.GetYlong() ));
-            pixStepX = (pixDelta.GetX() > PIXEL(0_PIXEL)) ? pixVelocityMinor : -pixVelocityMinor;
+            pixStepX = pixDelta.GetX().IsPositive() ? pixVelocityMinor : -pixVelocityMinor;
             pixActual += PixelPoint( pixStepX, PIXEL(0_PIXEL) );
         }
     }
