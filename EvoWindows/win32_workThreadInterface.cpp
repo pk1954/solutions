@@ -91,7 +91,7 @@ void WorkThreadInterface::PostSetPOI( GridPoint const gp )
     {
         if ( m_bTrace )
             * m_pTraceStream << __func__ << L" " << gp << endl;
-        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_POI, gp.GetXshort(), gp.GetYshort() );
+        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_POI, gp.GetXvalue(), gp.GetYvalue() );
     }
 }
 
@@ -101,7 +101,7 @@ void WorkThreadInterface::PostDoEdit( GridPoint const gp )
     {
         if ( m_bTrace )
             * m_pTraceStream << __func__ << L" " << gp << endl;
-        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_DO_EDIT, gp.GetXshort(), gp.GetYshort() );
+        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_DO_EDIT, gp.GetXvalue(), gp.GetYvalue() );
     }
 }
 

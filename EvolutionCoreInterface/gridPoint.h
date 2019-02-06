@@ -20,10 +20,8 @@ class GridPoint
 {
 public:
 
-    GridPoint( )                                          : x( UNDEF().x ), y( UNDEF().y ) {}
+	GridPoint( GridPoint const & src ) : x(src.x), y(src.y) {}
 	GridPoint( GRID_COORD const _x, GRID_COORD const _y ) : x(_x), y(_y) {}
-
-    virtual ~GridPoint() {};
 
     bool      const operator== (GridPoint const a) const { return (x == a.x) && (y == a.y); }
     bool      const operator!= (GridPoint const a) const { return (x != a.x) || (y != a.y); }
@@ -41,46 +39,19 @@ public:
 	GRID_COORD const GetX() const { return x; }
 	GRID_COORD const GetY() const { return y; }
 
-	short const GetXshort() const { return x.GetValue(); }
-	short const GetYshort() const { return y.GetValue(); }
+	short const GetXvalue() const { return x.GetValue(); }
+	short const GetYvalue() const { return y.GetValue(); }
 
-	bool IsEvenColumn( ) const { return IsEven( x ); }
-	bool IsOddColumn ( ) const { return IsOdd( x ); }
-
-    inline static int const GRID_AREA() 
+	inline static GridPoint const & NULL_VAL() 
 	{ 
-		static int res = GRID_WIDTH.GetValue() * GRID_HEIGHT.GetValue(); 
+		static GridPoint res = GridPoint( GRID_COORD::NULL_VAL(), GRID_COORD::NULL_VAL() ); 
 		return res;
 	};
 
-	inline static GridPoint const & UNDEF() 
-	{ 
-		static GridPoint res = GridPoint( GRID_COORD::UNDEF(), GRID_COORD::UNDEF() ); 
-		return res;
-	};
+    void Set2Null( ) { * this = NULL_VAL(); }
 
-	inline static GridPoint const & GRID_ORIGIN() 
-	{ 
-		static GridPoint res = GridPoint( GRID_X_MIN,  GRID_Y_MIN ); 
-		return res;
-	};
-
-	inline static GridPoint const & GRID_MAXIMUM() 
-	{ 
-		static GridPoint res = GridPoint( GRID_X_MAX, GRID_Y_MAX ); 
-		return res;
-	};
-
-	inline static GridPoint const & GRID_SIZE() 
-	{ 
-		static GridPoint res = GridPoint( GRID_WIDTH, GRID_HEIGHT ); 
-		return res;
-	};
-
-    bool IsNull   ( ) const { return * this == UNDEF(); };
-    bool IsNotNull( ) const { return * this != UNDEF(); };
-
-    void Set2Null( ) { * this = UNDEF(); }
+    bool IsNull   ( ) const { return * this == NULL_VAL(); };
+    bool IsNotNull( ) const { return * this != NULL_VAL(); };
 
 private:
     GRID_COORD x;
@@ -111,9 +82,33 @@ inline bool const Neighbors( GridPoint const a, GridPoint const b )
 		   );
 }
 
+inline static int const GRID_AREA() 
+{ 
+	static int res = GRID_WIDTH.GetValue() * GRID_HEIGHT.GetValue(); 
+	return res;
+};
+
+inline static GridPoint const & GRID_ORIGIN() 
+{ 
+	static GridPoint res = GridPoint( GRID_X_MIN,  GRID_Y_MIN ); 
+	return res;
+};
+
+inline static GridPoint const & GRID_MAXIMUM() 
+{ 
+	static GridPoint res = GridPoint( GRID_X_MAX, GRID_Y_MAX ); 
+	return res;
+};
+
+inline static GridPoint const & GRID_SIZE() 
+{ 
+	static GridPoint res = GridPoint( GRID_WIDTH, GRID_HEIGHT ); 
+	return res;
+};
+
 inline GridPoint const Wrap2Grid(GridPoint const gp) 
 { 
-	return (gp + GridPoint::GRID_SIZE()) % GridPoint::GRID_SIZE(); 
+	return (gp + GRID_SIZE()) % GRID_SIZE(); 
 }
 
 inline bool const IsInGrid( GridPoint const & gp ) 
@@ -121,6 +116,9 @@ inline bool const IsInGrid( GridPoint const & gp )
 	return (GRID_X_MIN <= gp.GetX()) && (gp.GetX() <= GRID_X_MAX) && 
 		   (GRID_Y_MIN <= gp.GetY()) && (gp.GetY() <= GRID_Y_MAX);
 };
+
+inline bool IsEvenColumn( GridPoint const & gp ) { return IsEven( gp.GetX() ); }
+inline bool IsOddColumn ( GridPoint const & gp ) { return IsOdd ( gp.GetX() ); }
 
 typedef std::function<void (GridPoint const)> GridPointFunc;
 typedef std::function<short(short const, short const)> ManipulatorFunc;

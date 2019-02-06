@@ -120,26 +120,18 @@ void Grid::ResetGrid( )
 
 GridPoint Grid::chooseTarget( Neighborhood & gpListEmpty )
 {
-    GridPoint m_gpTarget;
-
     if ( m_bNeighborhoodFoodSensitivity )
         getBestNeighborSlots( gpListEmpty );   // consider only neighbor slots with best food stock
 
-    unsigned int const uiRandom = m_random.NextRandomNumber( );
-    m_gpTarget = gpListEmpty.GetRandomElement( uiRandom ); // choose one of them at random
+    GridPoint m_gpTarget = gpListEmpty.GetRandomElement( m_random.NextRandomNumber( ) ); // choose one of them at random
     assert( IsDead( m_gpTarget ) );
-
     return m_gpTarget;
 }
 
 GridPoint Grid::choosePartner( Neighborhood & gpListFilled )
 {
-    GridPoint m_gpPartner;
-
-    unsigned int const uiRandom = m_random.NextRandomNumber( );
-    m_gpPartner = gpListFilled.GetRandomElement( uiRandom );
+    GridPoint const m_gpPartner = gpListFilled.GetRandomElement( m_random.NextRandomNumber( ) );
     assert( IsAlive( m_gpPartner ) );
-
     return m_gpPartner;
 }
 
@@ -216,14 +208,14 @@ void Grid::MakePlan
     }
 }
 
-GridPoint Grid::ImplementPlan   // may return UNDEF
+GridPoint Grid::ImplementPlan   // may return NULL_VAL
 ( 
     GridPoint       const   gpRun, 
     PlannedActivity const & plan
 )  
 {
     GridField & gfRun  = getGridField( gpRun );
-    GridPoint   gpNext = gfRun.GetJuniorGp( );      // may be UNDEF
+    GridPoint   gpNext = gfRun.GetJuniorGp( );      // may be NULL_VAL
 
     gfRun.SetLastAction( plan.GetActionType( ) );
     gfRun.DecEnergy    ( plan.GetBaseConsumption( ) );
@@ -360,8 +352,8 @@ GridPoint Grid::FindGridPoint
 	GridRect const & rect
 ) const
 {
-    for ( short y = rect.GetStartPoint().GetYshort(); y <= rect.GetEndPoint().GetYshort(); ++y )
-    for ( short x = rect.GetStartPoint().GetXshort(); x <= rect.GetEndPoint().GetXshort(); ++x )
+    for ( short y = rect.GetStartPoint().GetYvalue(); y <= rect.GetEndPoint().GetYvalue(); ++y )
+    for ( short x = rect.GetStartPoint().GetXvalue(); x <= rect.GetEndPoint().GetXvalue(); ++x )
 	{
 		GridPoint gp{ GRID_COORD(x), GRID_COORD(y) };
 
@@ -370,5 +362,5 @@ GridPoint Grid::FindGridPoint
             return gp;
         }
 	}
-    return GridPoint::UNDEF();
+    return GridPoint::NULL_VAL();
 }

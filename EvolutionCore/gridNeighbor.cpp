@@ -65,12 +65,12 @@ void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization o
 	( 
     	[&](GridPoint const gp)
 		{
-			NEIGHBORS & neighbors = ( * m_pGridNeighbors)[ gp.GetYshort() ][ gp.GetXshort() ];
+			NEIGHBORS & neighbors = ( * m_pGridNeighbors)[ gp.GetYvalue() ][ gp.GetXvalue() ];
 			neighbors.reserve( m_iNrOfNeighbors );
 			for ( int i = 0; i < m_iNrOfNeighbors; ++i )
 			{
 				GridPoint gpDelta = ( m_iNrOfNeighbors == 6 ) 
-					                ? ( gp.IsEvenColumn( ) )
+					                ? ( IsEvenColumn( gp ) )
 										? table6even[i] 
 										: table6odd[i]
 					                : ( m_iNrOfNeighbors == 8 ) 

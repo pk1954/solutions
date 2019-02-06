@@ -20,6 +20,17 @@ public:
 		m_sMaxFood         = Config::GetConfigValueShort( Config::tId::maxFood );
 	}
 
+	GridField::GridField() :
+		m_gp      ( GridPoint::NULL_VAL() ),
+		m_gpSenior( GridPoint::NULL_VAL() ),
+		m_gpJunior( GridPoint::NULL_VAL() ),   
+		m_sMutatRate(),   
+		m_sFertility(), 
+		m_Individual(), 
+		m_sFoodStock(), 
+		m_sFertilizer() 
+	{}
+
 	void InitGridFieldStructure( GridPoint const gp )
 	{
 		m_gp = gp;

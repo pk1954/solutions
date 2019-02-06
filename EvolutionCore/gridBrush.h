@@ -44,8 +44,8 @@ public:
 					if ( sIntensity >= 0)
 						(m_func)( gp + gpCenter, sIntensity );
 				},
-				Max( GridPoint::GRID_ORIGIN()  - gpCenter, GridPoint( -m_radius, -m_radius ) ),
-				Min( GridPoint::GRID_MAXIMUM() - gpCenter, GridPoint(  m_radius,  m_radius ) )
+				Max( GRID_ORIGIN()  - gpCenter, GridPoint( -m_radius, -m_radius ) ),
+				Min( GRID_MAXIMUM() - gpCenter, GridPoint(  m_radius,  m_radius ) )
 			);
 		}
 	}
@@ -103,8 +103,8 @@ public:
 			{ 
 				long  const lRadius     = m_radius.GetValue();
 				long  const lRadSquare  = lRadius * lRadius;
-				long  const lx          = gp.GetXshort();
-				long  const ly          = gp.GetYshort();
+				long  const lx          = gp.GetXvalue();
+				long  const ly          = gp.GetYvalue();
 				long  const lDistSquare = lx * lx + ly * ly;
 				short const sReduce     = CastToShort(( m_sIntensity * lDistSquare) / lRadSquare);
 				return m_sIntensity - sReduce;

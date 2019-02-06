@@ -59,7 +59,7 @@ void GridPointList::AddGridPointToList( Grid & grid, GridField & gf )
     GridPoint gp = gf.GetGridPoint( );
 
     gf.SetSeniorGp( m_gpYoungest );
-    gf.SetJuniorGp( GridPoint::UNDEF() );
+    gf.SetJuniorGp( GridPoint::NULL_VAL() );
 
     if ( ListIsEmpty( ) )
         SetOldest( gp );

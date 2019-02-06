@@ -70,7 +70,7 @@ public:
     GridField const & GetGridField( GridPoint const gp ) const
     {
         assert( IsInGrid( gp ) );
-        return m_aGF[ gp.GetXshort() ][ gp.GetYshort() ];
+        return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
     };
 
     bool           IsAlive     ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive( ); }
@@ -83,7 +83,7 @@ public:
 
     EVO_GENERATION GetEvoGenerationNr( ) const { return m_genEvo; }
 
-    long GetAverageFoodGrowth    ( ) const { return m_lFoodGrowth / GridPoint::GRID_AREA(); }
+    long GetAverageFoodGrowth    ( ) const { return m_lFoodGrowth / GRID_AREA(); }
     int  GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
 
 	void PrepareActionCounters( )
@@ -143,13 +143,13 @@ private:
     GridField & getGridField( GridPoint const gp )
     {
         assert( IsInGrid( gp ) );
-        return m_aGF[ gp.GetXshort() ][ gp.GetYshort() ];
+        return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
     };
 
     GridField const & getGridFieldC( GridPoint const gp ) const
     {
         assert( IsInGrid( gp ) );
-        return m_aGF[ gp.GetXshort() ][ gp.GetYshort() ];
+        return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
     };
 
     GridPoint chooseTarget ( Neighborhood & );

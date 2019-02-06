@@ -58,7 +58,7 @@ GridPoint EvolutionCoreImpl::FindPOI( ) const
 { 
 	return IsPoiDefined( ) 
 			? FindGridPoint( m_idPOI ) 
-			: GridPoint::UNDEF(); 
+			: GridPoint::NULL_VAL(); 
 }
 
 // Compute - plan and implement one generation step for all living individuals
@@ -81,7 +81,7 @@ void EvolutionCoreImpl::Compute( )
 
         m_grid.MakePlan( gpRun, * pPlan );
 		stopOnPoi      ( gpRun, * pPlan );
-        gpRun = m_grid.ImplementPlan( gpRun, * pPlan );   // may return UNDEF
+        gpRun = m_grid.ImplementPlan( gpRun, * pPlan );   // may return NULL_VAL
     }
 
     m_grid.FoodGrowth( );

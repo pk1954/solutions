@@ -12,8 +12,7 @@
 class PixelPoint
 {
 public:
-    PixelPoint( ) : x(PIXEL(0_PIXEL)), y(PIXEL(0_PIXEL)) {}
-	PixelPoint( PixelPoint const & s ) : x(s.x), y(s.y) {}
+	PixelPoint( PixelPoint const & src ) : x(src.x), y(src.y) {}
     PixelPoint( PIXEL const _x, PIXEL const _y ) : x(_x), y(_y) {};
 
     bool       const operator== ( PixelPoint const a ) const { return ( x == a.x ) && ( y == a.y ); };
@@ -33,20 +32,19 @@ public:
 	PIXEL const GetX() const { return x; }
 	PIXEL const GetY() const { return y; }
 
-	long const GetXlong() const { return x.GetValue(); }
-	long const GetYlong() const { return y.GetValue(); }
+	long const GetXvalue() const { return x.GetValue(); }
+	long const GetYvalue() const { return y.GetValue(); }
 
-	static PixelPoint const ZERO()
+	static PixelPoint const NULL_VAL()
 	{
-		static PixelPoint value = PixelPoint( PIXEL(0_PIXEL), PIXEL(0_PIXEL) );
+		static PixelPoint value = PixelPoint( PIXEL::NULL_VAL(), PIXEL::NULL_VAL() );
 		return value;
 	}
 
-	static PixelPoint const UNDEF()
-	{
-		static PixelPoint value = PixelPoint( PIXEL::UNDEF(), PIXEL::UNDEF() );
-		return value;
-	}
+    void Set2Null( ) { * this = NULL_VAL(); }
+
+    bool IsNull   ( ) const { return * this == NULL_VAL(); };
+    bool IsNotNull( ) const { return * this != NULL_VAL(); };
 
 private:
 	PIXEL x;
@@ -66,5 +64,5 @@ inline PixelPoint const abs( PixelPoint const a ) { return PixelPoint( a.GetX().
 
 inline PIXEL const MaxAbsDelta(PixelPoint const pp) 
 {
-    return PIXEL( max( abs( pp.GetXlong() ), abs( pp.GetYlong() ) ) );
+    return PIXEL( max( abs( pp.GetXvalue() ), abs( pp.GetYvalue() ) ) );
 }

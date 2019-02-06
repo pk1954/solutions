@@ -95,7 +95,7 @@ public:
     virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
     virtual PlannedActivity       * GetPlan4Writing( )       { return & m_plan; };
 
-	virtual long GetGridArea( ) const { return GridPoint::GRID_AREA(); };
+	virtual long GetGridArea( ) const { return GRID_AREA(); };
 
     virtual int GetAverageFoodGrowth( )     const { return m_grid.GetAverageFoodGrowth( ); }
     virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
@@ -114,7 +114,7 @@ public:
 	virtual GridPoint FindGridPoint( IndividualId const & id, GridRect const & rect = GridRect::GRID_RECT_FULL() ) const 
 	{ 
 		return ( id == IndividualId::NO_INDIVIDUAL )
-			   ? GridPoint::UNDEF()
+			   ? GridPoint::NULL_VAL()
 			   : m_grid.FindGridPoint( [&](GridPoint const gp) { return (GetId(gp) == id); }, rect );
 	}
 

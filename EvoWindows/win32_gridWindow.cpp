@@ -34,7 +34,7 @@ GridWindow::GridWindow( ) :
     m_pObserverInterface( nullptr ),
 	m_pPixelCore( nullptr ),
     m_pDrawFrame( nullptr ),
-    m_ptLast( PixelPoint::UNDEF() ),
+    m_ptLast( PixelPoint::NULL_VAL() ),
     m_bMoveAllowed( TRUE )
 { }
 
@@ -184,7 +184,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
 
     if ( wParam & MK_RBUTTON )                // Right mouse button: selection
     {
-        if ( m_ptLast != PixelPoint::UNDEF() )  // last cursor pos stored in m_ptLast
+        if ( m_ptLast != PixelPoint::NULL_VAL() )  // last cursor pos stored in m_ptLast
         {
             PixelPoint ptOther = m_pCore->IsPoiDefined( ) 
 				                 ? m_pPixelCore->GetPoiCenter() * 2 - ptCrsr 
@@ -203,7 +203,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         {
             m_pWorkThreadInterface->PostDoEdit( m_pFocusPoint->GetGridPoint( ) );
         }
-        else if ( m_ptLast != PixelPoint::UNDEF() )  // last cursor pos stored in m_ptLast
+        else if ( m_ptLast != PixelPoint::NULL_VAL() )  // last cursor pos stored in m_ptLast
         {
             moveGrid( ptCrsr - m_ptLast );
 		    PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
@@ -213,7 +213,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     }
     else
     {
-        m_ptLast = PixelPoint::UNDEF();    // make m_ptLast invalid
+        m_ptLast = PixelPoint::NULL_VAL();    // make m_ptLast invalid
         // no PostRefresh! It would cause repaint for every mouse move.
     }
 }
@@ -379,8 +379,8 @@ void GridWindow::Size( )
 		( 
 			PixelRect
 			( 
-				PixelPoint::ZERO(), 
-				m_pPixelCoordinates->Grid2PixelSize( GridPoint::GRID_SIZE() ) 
+				PixelPoint( PIXEL(0_PIXEL), PIXEL(0_PIXEL) ), 
+				m_pPixelCoordinates->Grid2PixelSize( GRID_SIZE() ) 
 			), 
 			(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 
 		), 

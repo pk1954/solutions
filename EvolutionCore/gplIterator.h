@@ -13,7 +13,7 @@ class GplIterator
 public:
     explicit GplIterator( Grid const & grid ) 
     :   m_grid( grid ),
-        m_gpCurrent( )
+        m_gpCurrent( GridPoint::NULL_VAL() )
     { };
 
     GridPoint Begin( )

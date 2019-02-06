@@ -18,7 +18,7 @@ public:
     T      & GetValue()       { return value_; }
 	T const& GetValue() const { return value_; }
 
-	static NamedType const UNDEF()
+	static NamedType const NULL_VAL()
 	{
 		static const NamedType res((numeric_limits<T>::min)());
 		return res;

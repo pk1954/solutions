@@ -34,7 +34,7 @@ namespace Util
 
 	inline POINT PixelPoint2POINT( PixelPoint const pp ) 
 	{ 
-		return POINT{ pp.GetXlong(), pp.GetYlong() }; 
+		return POINT{ pp.GetXvalue(), pp.GetYvalue() }; 
 	}
 
 	inline PixelRect RECT2PixelRect( RECT const & rect ) 

@@ -69,13 +69,13 @@ public:
 
 	inline static GridRect const & GRID_RECT_EMPTY() 
 	{ 
-		static GridRect res = GridRect( GridPoint::GRID_ORIGIN(), GridPoint::GRID_ORIGIN() ); 
+		static GridRect res = GridRect( GRID_ORIGIN(), GRID_ORIGIN() ); 
 		return res;
 	};
 
 	inline static GridRect const & GRID_RECT_FULL() 
 	{ 
-		static GridRect res = GridRect( GridPoint::GRID_ORIGIN(), GridPoint::GRID_SIZE() - GRID_COORD(1_GRID_COORD)); 
+		static GridRect res = GridRect( GRID_ORIGIN(), GRID_SIZE() - GRID_COORD(1_GRID_COORD)); 
 		return res;
 	};
 

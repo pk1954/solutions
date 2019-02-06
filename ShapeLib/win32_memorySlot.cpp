@@ -16,7 +16,7 @@ void MemorySlot::FillBuffer( GridPoint const gp )
 	IndividualId     indId  = getIndId( gp );
 
 	buffer << setw( 10 );
-	if ( getReferencedGridPoint( indId ) == GridPoint::UNDEF() ) 
+	if ( getReferencedGridPoint( indId ) == GridPoint::NULL_VAL() ) 
 		buffer << L"DEAD";
 	else
 		buffer << indId;

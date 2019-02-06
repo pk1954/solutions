@@ -16,7 +16,7 @@ PixelCoordinates::PixelCoordinates
     short const fs, 
 	bool  const bHexagon
 )
-  : m_pixOffset ( ),
+  : m_pixOffset( PIXEL(0_PIXEL), PIXEL(0_PIXEL) ),
     m_pixFieldSize( fs ),
     m_smoothMove(  ),
 	m_bMoving   ( false ),
@@ -75,8 +75,8 @@ PIXEL PixelCoordinates::CalcMaximumFieldSize
 ) const
 {
 	return min( 
-				pntPixSize.GetWidth()  / gpGridRectSize.GetXshort(), 
-				pntPixSize.GetHeight() / gpGridRectSize.GetYshort() 
+				pntPixSize.GetWidth()  / gpGridRectSize.GetXvalue(), 
+				pntPixSize.GetHeight() / gpGridRectSize.GetYvalue() 
 	          );
 }
 
@@ -138,8 +138,8 @@ PixelPoint PixelCoordinates::KGrid2PixelPos( KGridPoint const kp ) const
     
 PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint const gp ) const 
 { 
-	PIXEL pixY = m_pixFieldSize * gp.GetYshort();
-	PIXEL pixX = m_pixFieldSize * gp.GetXshort();
+	PIXEL pixY = m_pixFieldSize * gp.GetYvalue();
+	PIXEL pixX = m_pixFieldSize * gp.GetXvalue();
 
 	if ( m_bHexagon )
 	{
@@ -153,7 +153,7 @@ PixelPoint PixelCoordinates::Grid2PixelPos( GridPoint const gp ) const
 { 
 	PixelPoint ppRes{ Grid2PixelSize( gp ) - m_pixOffset };
 
-	if ( m_bHexagon && gp.IsOddColumn( ) )
+	if ( m_bHexagon && IsOddColumn( gp ) )
 		ppRes -= PixelPoint( PIXEL(0_PIXEL), m_pixFieldSize / 2 );
 
 	return ppRes;
@@ -195,14 +195,14 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 		double const dRadius    = dFieldSize * SQRT3_DIV3;
 		double const dSide      = dFieldSize * SQRT3_DIV2;
 
-		double const dPixPointX = static_cast<double>(pixPoint.GetXlong());
+		double const dPixPointX = static_cast<double>(pixPoint.GetXvalue());
 		double const dCi        = floor(dPixPointX/dSide);
 		double const dCx        = dPixPointX - dSide * dCi;
 
 		GRID_COORD const gCi( CastToShort(dCi) );  //TODO: check if ok
 		bool       const bOdd   = ((gCi.GetValue() % 2) != 0);
 
-		double const dPixPointY = static_cast<double>(pixPoint.GetYlong());
+		double const dPixPointY = static_cast<double>(pixPoint.GetYvalue());
 		double const dTy        = dPixPointY + (bOdd ? (dFieldSize * 0.5) : 0);
 		double const dCj        = floor(dTy/dFieldSize);
 		double const dCy        = dTy - dFieldSize * dCj;

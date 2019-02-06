@@ -25,7 +25,7 @@ void GridPointShape::RefreshLayout( )
 	PixelRectSize const minSize      = m_shape.SetMinSize( minIndiv );     
 	PIXEL         const pixFieldSize = m_shape.GetFieldSize();
 
-	if ( m_shape.SetShapeRect( PixelPoint( ), PixelRectSize( pixFieldSize ) ) )
+	if ( m_shape.SetShapeRect( PixelPoint( PIXEL(0_PIXEL), PIXEL(0_PIXEL) ), PixelRectSize( pixFieldSize ) ) )
 	{
 		PIXEL pixSizeInd   = GetIndShapeSize( ) * 2;
 		PIXEL pixSizeFrame = pixFieldSize - pixSizeInd;

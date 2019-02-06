@@ -29,7 +29,8 @@ DrawFrame::DrawFrame
 	m_pColorManager( pColorManager ),
     m_pD3dBuffer( nullptr ), 
     m_clutBackground( ),
-	m_gridPointShape( nullptr )
+	m_gridPointShape( nullptr ),
+	m_gpHighlight( GridPoint::NULL_VAL() )
 {
 	m_clutBackground.Allocate( MAX_BG_COLOR );    // default is grey scale lookup table with entries 0 .. 255
     m_pD3dBuffer      = new D3dBuffer( hwnd, m_pCore->GetGridArea( ) );
@@ -115,7 +116,7 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 				{
 					HighlightShape( m_pShapeHighlight, m_gpHighlight );
 					GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( m_gpHighlight );
-					if ( gpReferenced != GridPoint::UNDEF() )
+					if ( gpReferenced != GridPoint::NULL_VAL() )
 					{
 						Shape const & shapeReferenced = m_gridPointShape->GetIndividualShape().GetLeftColumn().GetIdentifierShape();
 						HighlightShape( & shapeReferenced, gpReferenced );

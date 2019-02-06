@@ -12,7 +12,7 @@ FocusPoint::FocusPoint( ) :
     m_pCore( nullptr ),
     m_genBirth( - 1 ),
     m_genDeath( - 1 ),
-    m_gp( )
+    m_gp( GridPoint::NULL_VAL() )
 { };
 
 void FocusPoint::Start
