@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include <iostream>
+#include <iomanip>
+
 template <typename BASE_TYPE>
 class NamedType
 {
@@ -60,21 +63,9 @@ private:
     BASE_TYPE value_;
 };
 
-//template <typename T>
-//struct Printable : crtp<T, Printable>
-//{
-//    std::wostream& print( std::wostream& out ) const 
-//	{ 
-//		return out << this->underlying().GetValue(); 
-//	}
-//	std::wostream & operator << ( std::wostream & out, T const & param )
-//	{
-//		return out << this->underlying().GetValue();
-//	}
-//};
- 
-//template <typename T, typename Parameter>
-//std::wostream & operator << ( std::wostream & out, NamedType<T, Parameter> const& param )
-//{
-//    return param.print(out);
-//}
+template <typename BASE_TYPE>
+std::wostream & operator<< ( std::wostream & out, NamedType<BASE_TYPE> const & param )
+{
+	out << setw( 5 ) << param.GetValue();
+    return out;
+}

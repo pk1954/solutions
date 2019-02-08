@@ -13,8 +13,6 @@ inline bool IsOdd ( GRID_COORD const a ) { return a.GetValue() % 2 != 0; }
 
 GRID_COORD operator"" _GRID_COORD( unsigned long long );
 
-std::wostream & operator << ( std::wostream &, GRID_COORD const );
-
 GRID_COORD const MAX_GRID_COORD = GRID_COORD(255_GRID_COORD);
 
 static long const GRID_WIDTH_  = 200;

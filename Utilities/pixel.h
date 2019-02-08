@@ -12,5 +12,3 @@ using namespace std;
 using PIXEL = NamedType< long >;
 
 PIXEL operator"" _PIXEL( unsigned long long );
-
-std::wostream & operator << ( std::wostream &, PIXEL const );
