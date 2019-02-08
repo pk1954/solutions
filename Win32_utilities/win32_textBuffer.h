@@ -10,8 +10,6 @@
 
 using namespace std;
 
-class GridPoint;
-
 class TextBuffer
 {
 public:

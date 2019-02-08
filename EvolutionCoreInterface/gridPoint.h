@@ -16,46 +16,7 @@
 #include "Int24.h"
 #include "gridCoord.h"
 
-class GridPoint
-{
-public:
-
-	GridPoint( GridPoint const & src ) : x(src.x), y(src.y) {}
-	GridPoint( GRID_COORD const _x, GRID_COORD const _y ) : x(_x), y(_y) {}
-
-    bool      const operator== (GridPoint const a) const { return (x == a.x) && (y == a.y); }
-    bool      const operator!= (GridPoint const a) const { return (x != a.x) || (y != a.y); }
-
-    GridPoint const operator+= (GridPoint const a) { x += a.x; y += a.y; return * this; }
-    GridPoint const operator-= (GridPoint const a) { x -= a.x; y -= a.y; return * this; }
-    GridPoint const operator%= (GridPoint const a) { x %= a.x; y %= a.y; return * this; }
-
-    GridPoint const operator+= (GRID_COORD const l) { x += l; y += l; return * this; }
-    GridPoint const operator-= (GRID_COORD const l) { x -= l; y -= l; return * this; }
-
-	GridPoint const operator%= (int const i) { x %= i; y %= i; return * this; }
-    GridPoint const operator/= (int const i) { x /= i; y /= i; return * this; }
-
-    GridPoint operator- () const { return GridPoint( -x, -y ); };
-
-	GRID_COORD const GetX() const { return x; }
-	GRID_COORD const GetY() const { return y; }
-
-	static GridPoint const & NULL_VAL() 
-	{ 
-		static GridPoint res = GridPoint( GRID_COORD::NULL_VAL(), GRID_COORD::NULL_VAL() ); 
-		return res;
-	};
-
-    void Set2Null( ) { * this = NULL_VAL(); }
-
-    bool IsNull   ( ) const { return * this == NULL_VAL(); };
-    bool IsNotNull( ) const { return * this != NULL_VAL(); };
-
-private:
-    GRID_COORD x;
-    GRID_COORD y;
-};
+using GridPoint = PointType< GRID_COORD >;
 
 inline short const GetXvalue( GridPoint const & gp ) { return gp.GetX().GetValue(); }
 inline short const GetYvalue( GridPoint const & gp ) { return gp.GetY().GetValue(); }

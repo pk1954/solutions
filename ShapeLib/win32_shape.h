@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include "GridPoint.h"
 #include "win32_textDisplay.h"
 #include "pixelPoint.h"
 #include "pixelRect.h"

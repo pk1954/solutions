@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "GridPoint.h"
 #include "HistoryGeneration.h"
 #include "win32_viewCollection.h"
 

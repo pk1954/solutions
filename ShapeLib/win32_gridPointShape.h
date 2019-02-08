@@ -3,10 +3,10 @@
 
 #pragma once
 
-#include "GridPoint.h"
 #include "win32_shape.h"
 #include "win32_coordShape.h"
 #include "win32_individualShape.h"
+#include "gridPoint.h"
 
 class PixelCoordinates;
 class EvolutionCore;

@@ -5,10 +5,11 @@
 
 #include <fstream>
 #include <iostream>
+#include "gridCoord.h"
+#include "gridPoint.h"
 
 class Grid;
 class GridField;
-class GridPoint;
 
 class DUMP
 {

@@ -11,7 +11,6 @@ class ObserverInterface;
 class EventInterface;
 class EvolutionCore;
 class PlannedActivity;
-class GridPoint;
 class GridRect;
 class IndividualId;
 
