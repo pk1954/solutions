@@ -205,8 +205,8 @@ void D3dBuffer::AddIndividualPrimitive( PixelPoint const ptPos, DWORD const dwCo
 {
 	static float const SQRT3 = static_cast<float>( sqrt( 3 ) );
 
-    float const fPtPosx = static_cast<float>( GetXvalue(ptPos) );
-    float const fPtPosy = static_cast<float>( GetYvalue(ptPos) );
+    float const fPtPosx = static_cast<float>( ptPos.GetXvalue() );
+    float const fPtPosy = static_cast<float>( ptPos.GetYvalue() );
 
     if ( m_bStripMode )
     {
@@ -225,8 +225,8 @@ void D3dBuffer::AddBackgroundPrimitive( PixelPoint const ptPos, DWORD const dwCo
 {
 	static float const INVERSE_SQRT3 = static_cast<float>( 1 / sqrt( 3 ) );
 
-	float const fPtPosx = static_cast<float>( GetXvalue(ptPos) );
-    float const fPtPosy = static_cast<float>( GetYvalue(ptPos) );
+	float const fPtPosx = static_cast<float>( ptPos.GetXvalue() );
+    float const fPtPosy = static_cast<float>( ptPos.GetYvalue() );
 
 	float const fPixSizeHalf = fPixSize / 2;
 

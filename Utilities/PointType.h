@@ -28,6 +28,9 @@ public:
 	BASE_TYPE const GetX() const { return x; }
 	BASE_TYPE const GetY() const { return y; }
 
+	auto const GetXvalue( ) const { return x.GetValue(); }
+	auto const GetYvalue( ) const { return y.GetValue(); }
+
 	static PointType const & NULL_VAL() 
 	{ 
 		static PointType res = PointType( BASE_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL() ); 
@@ -43,4 +46,3 @@ private:
     BASE_TYPE x;
     BASE_TYPE y;
 };
-

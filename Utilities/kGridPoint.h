@@ -11,7 +11,7 @@ class KGridPoint
 {
 public:
     KGridPoint( long const _x, long const _y ) : x(_x) , y(_y) { };
-    explicit KGridPoint( PixelPoint const pxPnt ) : x(GetXvalue(pxPnt)), y(GetYvalue(pxPnt)) { }; 
+    explicit KGridPoint( PixelPoint const pxPnt ) : x(pxPnt.GetXvalue()), y(pxPnt.GetYvalue()) { }; 
 
     bool const operator== (KGridPoint const a) const { return (a.x == x) && (a.y == y); };
     bool const operator!= (KGridPoint const a) const { return (a.x != x) || (a.y != y); };

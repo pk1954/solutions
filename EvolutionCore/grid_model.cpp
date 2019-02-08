@@ -352,8 +352,8 @@ GridPoint Grid::FindGridPoint
 	GridRect const & rect
 ) const
 {
-    for ( short y = GetYvalue(rect.GetStartPoint()); y <= GetYvalue(rect.GetEndPoint()); ++y )
-    for ( short x = GetXvalue(rect.GetStartPoint()); x <= GetXvalue(rect.GetEndPoint()); ++x )
+    for ( short y = rect.GetStartPoint().GetYvalue(); y <= rect.GetEndPoint().GetYvalue(); ++y )
+    for ( short x = rect.GetStartPoint().GetXvalue(); x <= rect.GetEndPoint().GetXvalue(); ++x )
 	{
 		GridPoint gp{ GRID_COORD(x), GRID_COORD(y) };
 

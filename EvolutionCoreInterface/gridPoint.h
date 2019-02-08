@@ -19,8 +19,8 @@
 
 using GridPoint = PointType< GRID_COORD >;
 
-inline short const GetXvalue( GridPoint const & gp ) { return gp.GetX().GetValue(); }
-inline short const GetYvalue( GridPoint const & gp ) { return gp.GetY().GetValue(); }
+//inline short const GetXvalue( GridPoint const & gp ) { return gp.GetX().GetValue(); }
+//inline short const GetYvalue( GridPoint const & gp ) { return gp.GetY().GetValue(); }
 
 inline GridPoint const operator+ (GridPoint const a, GridPoint const b) { GridPoint res(a); res += b; return res; }
 inline GridPoint const operator- (GridPoint const a, GridPoint const b) { GridPoint res(a); res -= b; return res; }
