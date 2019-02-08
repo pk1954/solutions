@@ -24,12 +24,12 @@ public:
 		GridPoint const gpStart, 
 		GridPoint const gpEnd 
 	) : 
-		m_lLeft  (gpStart.GetX()), 
-		m_lTop   (gpStart.GetY()), 
-		m_lRight (gpEnd.GetX()), 
-		m_lBottom(gpEnd.GetY())
+		m_Left  (gpStart.GetX()), 
+		m_Top   (gpStart.GetY()), 
+		m_Right (gpEnd.GetX()), 
+		m_Bottom(gpEnd.GetY())
 	{
-		assert( m_lTop <= m_lBottom );
+		assert( m_Top <= m_Bottom );
 	};
 
 	~GridRect() { };
@@ -41,16 +41,16 @@ public:
 		::Apply2Rect( func, clipStartPoint( ), clipEndPoint( ) );
 	}
 
-    bool const operator== ( GridRect const &a ) const { return ( a.m_lLeft == m_lLeft ) && ( a.m_lTop == m_lTop ) && ( a.m_lRight == m_lRight ) && ( a.m_lBottom == m_lBottom ); };
-    bool const operator!= ( GridRect const &a ) const { return ( a.m_lLeft != m_lLeft ) || ( a.m_lTop != m_lTop ) || ( a.m_lRight != m_lRight ) || ( a.m_lBottom != m_lBottom ); };
+    bool const operator== ( GridRect const &a ) const { return ( a.m_Left == m_Left ) && ( a.m_Top == m_Top ) && ( a.m_Right == m_Right ) && ( a.m_Bottom == m_Bottom ); };
+    bool const operator!= ( GridRect const &a ) const { return ( a.m_Left != m_Left ) || ( a.m_Top != m_Top ) || ( a.m_Right != m_Right ) || ( a.m_Bottom != m_Bottom ); };
 
-    GRID_COORD const GetWidth ( ) const { return m_lRight - m_lLeft + GRID_COORD(1_GRID_COORD); }
-	GRID_COORD const GetHeight( ) const { return m_lBottom - m_lTop + GRID_COORD(1_GRID_COORD); }
+    GRID_COORD const GetWidth ( ) const { return m_Right - m_Left + GRID_COORD(1_GRID_COORD); }
+	GRID_COORD const GetHeight( ) const { return m_Bottom - m_Top + GRID_COORD(1_GRID_COORD); }
 	
-	GRID_COORD const GetLeft  () const { return m_lLeft;   };
-    GRID_COORD const GetTop   () const { return m_lTop;    };
-    GRID_COORD const GetRight () const { return m_lRight;  };
-    GRID_COORD const GetBottom() const { return m_lBottom; };
+	GRID_COORD const GetLeft  () const { return m_Left;   };
+    GRID_COORD const GetTop   () const { return m_Top;    };
+    GRID_COORD const GetRight () const { return m_Right;  };
+    GRID_COORD const GetBottom() const { return m_Bottom; };
 
     GridPoint const GetStartPoint( ) const { return GridPoint( GetLeft(),  GetTop()    ); }
     GridPoint const GetEndPoint  ( ) const { return GridPoint( GetRight(), GetBottom() ); }
@@ -64,7 +64,7 @@ public:
 
 	bool Includes( GridPoint const gp ) const
 	{
-		return (m_lLeft <= gp.GetX()) && (gp.GetX() <= m_lRight) && (m_lTop <= gp.GetY()) && (gp.GetY() <= m_lBottom);
+		return (m_Left <= gp.GetX()) && (gp.GetX() <= m_Right) && (m_Top <= gp.GetY()) && (gp.GetY() <= m_Bottom);
 	}
 
 	inline static GridRect const & GRID_RECT_EMPTY() 
@@ -83,10 +83,10 @@ private:
 	GridPoint clipStartPoint( ) const;
 	GridPoint clipEndPoint  ( ) const;
 
-	GRID_COORD m_lLeft;
-    GRID_COORD m_lTop;
-    GRID_COORD m_lRight;
-    GRID_COORD m_lBottom;
+	GRID_COORD m_Left;
+    GRID_COORD m_Top;
+    GRID_COORD m_Right;
+    GRID_COORD m_Bottom;
 };
 
 std::wostream & operator << ( std::wostream &, GridRect const & );

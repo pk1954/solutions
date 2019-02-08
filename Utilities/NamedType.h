@@ -3,9 +3,7 @@
 
 #pragma once
 
-#include <iostream>
-#include <stdlib.h>    // abs
-#include <iomanip>
+#include "crtpType.h"
 
 template <typename T, typename Parameter, template<typename> class... Skills>
 class NamedType : public Skills<NamedType<T, Parameter, Skills...>>...
@@ -28,36 +26,20 @@ private:
     T value_;
 };
 
-template <typename T, template<typename> class crtpType>
-struct crtp
-{
-    T       & underlying()       { return static_cast< T       & >( * this ); }
-    T const & underlying() const { return static_cast< T const & >( * this ); }
-private:
-    crtp(){}
-    friend crtpType<T>;
-};
-
 template <typename T>
 struct Addable : crtp<T, Addable>
 {
     T& operator+=(T const& other)       { this->underlying().GetValue() += other.GetValue(); return this->underlying(); }
-    T  operator++()                     { ++this->underlying().GetValue();                   return this->underlying(); }
-    T  operator+ (T const& other) const { T res( this->underlying().GetValue() + other.GetValue() ); return res; }
-};
-
-template <typename T>
-struct Subtractable : crtp<T, Subtractable>
-{
     T& operator-=(T const& other)       { this->underlying().GetValue() -= other.GetValue(); return this->underlying(); }
-    T  operator--()                     { --this->underlying().GetValue();                   return this->underlying(); }
-    T  operator- (T const& other) const { T res( this->underlying().GetValue() - other.GetValue() ); return res; }
-    T  operator- ()               const { T res( -this->underlying().GetValue() ); return res; }
-};
 
-template <typename T>
-struct AbsValue : crtp<T, AbsValue>
-{
+    T  operator+ (T const& other) const { T res( this->underlying().GetValue() + other.GetValue() ); return res; }
+    T  operator- (T const& other) const { T res( this->underlying().GetValue() - other.GetValue() ); return res; }
+
+	T  operator- ()               const { T res( -this->underlying().GetValue() ); return res; }
+
+	T  operator++()                     { ++this->underlying().GetValue();                   return this->underlying(); }
+    T  operator--()                     { --this->underlying().GetValue();                   return this->underlying(); }
+
 	T const abs_value() const{ T res( ::abs(this->underlying().GetValue() )); return res; }
 };
 
@@ -89,8 +71,6 @@ struct Multiplicable : crtp<T, Multiplicable>
 template <typename T>
 struct Modulo : crtp<T, Modulo>
 {
-    T& operator%=(int const& i)           { this->underlying().GetValue() %= i; return this->underlying(); }
-    T  operator% (int const& i)     const { return T(this->underlying().GetValue() % i); }
     T& operator%=(T   const& other)       { this->underlying().GetValue() %= other.GetValue(); return this->underlying(); }
     T  operator% (T   const& other) const { T res( this->underlying().GetValue() % other.GetValue() ); return res; }
 };
@@ -121,46 +101,3 @@ struct Dividable : crtp<T, Dividable>
 //{
 //    return param.print(out);
 //}
-
-template <class BASE_TYPE>class PointType
-{
-public:
-
-	PointType( PointType const & src ) : x(src.x), y(src.y) {}
-	PointType( BASE_TYPE const _x, BASE_TYPE const _y ) : x(_x), y(_y) {}
-
-    bool      const operator== (PointType const a) const { return (x == a.x) && (y == a.y); }
-    bool      const operator!= (PointType const a) const { return (x != a.x) || (y != a.y); }
-
-    PointType const operator+= (PointType const a) { x += a.x; y += a.y; return * this; }
-    PointType const operator-= (PointType const a) { x -= a.x; y -= a.y; return * this; }
-    PointType const operator%= (PointType const a) { x %= a.x; y %= a.y; return * this; }
-
-    PointType const operator+= (BASE_TYPE const l) { x += l; y += l; return * this; }
-    PointType const operator-= (BASE_TYPE const l) { x -= l; y -= l; return * this; }
-
-	PointType const operator%= (int const i) { x %= i; y %= i; return * this; }
-    PointType const operator*= (int const i) { x *= i; y *= i; return * this; };
-    PointType const operator/= (int const i) { x /= i; y /= i; return * this; }
-
-    PointType operator- () const { return PointType( -x, -y ); };
-
-	BASE_TYPE const GetX() const { return x; }
-	BASE_TYPE const GetY() const { return y; }
-
-	static PointType const & NULL_VAL() 
-	{ 
-		static PointType res = PointType( BASE_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL() ); 
-		return res;
-	};
-
-    void Set2Null( ) { * this = NULL_VAL(); }
-
-    bool IsNull   ( ) const { return * this == NULL_VAL(); };
-    bool IsNotNull( ) const { return * this != NULL_VAL(); };
-
-private:
-    BASE_TYPE x;
-    BASE_TYPE y;
-};
-

@@ -8,6 +8,7 @@
 #include "util.h"     
 #include "debug.h"
 #include "pixel.h"
+#include "PointType.h"
 
 using PixelPoint = PointType< PIXEL >;
 

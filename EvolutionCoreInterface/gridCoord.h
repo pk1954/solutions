@@ -12,10 +12,8 @@ using GRID_COORD = NamedType
 	struct GRID_COORD_Parameter, 
 	Comparable, 
 	Addable, 
-	Subtractable, 
 	Dividable,
-	Modulo,
-	AbsValue
+	Modulo
 >;
 
 inline bool IsEven( GRID_COORD const a ) { return a.GetValue() % 2 == 0; }

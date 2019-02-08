@@ -15,11 +15,9 @@ using PIXEL = NamedType
 	struct PIXEL_PARAMETER, 
 	Comparable, 
 	Addable, 
-	Subtractable, 
 	Multiplicable, 
 	Dividable,
-	Modulo,
-	AbsValue
+	Modulo
 >;
 
 PIXEL operator"" _PIXEL( unsigned long long );

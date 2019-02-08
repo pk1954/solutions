@@ -15,6 +15,7 @@
 #include "util.h"
 #include "Int24.h"
 #include "gridCoord.h"
+#include "PointType.h"
 
 using GridPoint = PointType< GRID_COORD >;
 
@@ -28,7 +29,6 @@ inline GridPoint const operator% (GridPoint const a, GridPoint const b) { GridPo
 inline GridPoint const operator+ (GridPoint const a, GRID_COORD const l) { GridPoint res(a); res += l; return res; }
 inline GridPoint const operator- (GridPoint const a, GRID_COORD const l) { GridPoint res(a); res -= l; return res; }
 
-inline GridPoint const operator% (GridPoint const a, int const i) { GridPoint res(a); res %= i; return res; }
 inline GridPoint const operator/ (GridPoint const a, int const i) { GridPoint res(a); res /= i; return res; }
 
 inline GridPoint const abs(GridPoint const a) { return GridPoint( a.GetX().abs_value(), a.GetY().abs_value() ); }

@@ -14,8 +14,8 @@ GridPoint GridRect::clipStartPoint( ) const
 {
 	return GridPoint
 	(
-		max( m_lLeft, GRID_RECT_FULL().m_lLeft ),
-		max( m_lTop,  GRID_RECT_FULL().m_lTop  )
+		max( m_Left, GRID_RECT_FULL().m_Left ),
+		max( m_Top,  GRID_RECT_FULL().m_Top  )
 	);
 };
 
@@ -23,8 +23,8 @@ GridPoint GridRect::clipEndPoint( ) const
 {
 	return GridPoint
 	(
-		min( m_lRight,  GRID_RECT_FULL().m_lRight ),
-		min( m_lBottom, GRID_RECT_FULL().m_lBottom )
+		min( m_Right,  GRID_RECT_FULL().m_Right ),
+		min( m_Bottom, GRID_RECT_FULL().m_Bottom )
 	);
 };
 
