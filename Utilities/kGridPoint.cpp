@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "util.h"     
 #include "kGridPoint.h"
 
 KGridPoint const KGridPoint::KGRID_POINT_EMPTY( 0, 0 );

@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <iostream>
+#include "util.h"
 #include "NamedType.h"
 
 using GRID_COORD = NamedType< short >;
@@ -11,7 +11,10 @@ using GRID_COORD = NamedType< short >;
 inline bool IsEven( GRID_COORD const a ) { return a.GetValue() % 2 == 0; }
 inline bool IsOdd ( GRID_COORD const a ) { return a.GetValue() % 2 != 0; }
 
-GRID_COORD operator"" _GRID_COORD( unsigned long long );
+constexpr GRID_COORD operator"" _GRID_COORD( unsigned long long ull )
+{
+	return GRID_COORD( CastToUnsignedShort( ull ) );
+}
 
 GRID_COORD const MAX_GRID_COORD = GRID_COORD(255_GRID_COORD);
 

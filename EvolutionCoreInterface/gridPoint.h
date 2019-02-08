@@ -19,18 +19,6 @@
 
 using GridPoint = PointType< GRID_COORD >;
 
-inline GridPoint const operator+ (GridPoint const a, GridPoint const b) { GridPoint res(a); res += b; return res; }
-inline GridPoint const operator- (GridPoint const a, GridPoint const b) { GridPoint res(a); res -= b; return res; }
-inline GridPoint const operator% (GridPoint const a, GridPoint const b) { GridPoint res(a); res %= b; return res; }
-
-inline GridPoint const operator+ (GridPoint const a, GRID_COORD const l) { GridPoint res(a); res += l; return res; }
-inline GridPoint const operator- (GridPoint const a, GRID_COORD const l) { GridPoint res(a); res -= l; return res; }
-
-inline GridPoint const operator/ (GridPoint const a, int const i) { GridPoint res(a); res /= i; return res; }
-
-inline GridPoint const Min(GridPoint const a, GridPoint const b) { return GridPoint( min(a.GetX(), b.GetX()), min(a.GetY(), b.GetY()) ); }
-inline GridPoint const Max(GridPoint const a, GridPoint const b) { return GridPoint( max(a.GetX(), b.GetX()), max(a.GetY(), b.GetY()) ); }
-
 inline bool const Neighbors( GridPoint const a, GridPoint const b )
 { 
 	GridPoint gpDiff = GridPoint( a - b ).abs_value();
@@ -80,10 +68,3 @@ inline bool IsOddColumn ( GridPoint const & gp ) { return IsOdd ( gp.GetX() ); }
 
 typedef std::function<void (GridPoint const)> GridPointFunc;
 typedef std::function<short(short const, short const)> ManipulatorFunc;
-
-inline std::wostream & operator << ( std::wostream & out, GridPoint const gp )
-{
-//lint -e747  Significant prototype coercion with setw
-    out << L" " << std::setw(3) << gp.GetX() << L" " << std::setw(3) << gp.GetY() << L" ";
-    return out;
-}

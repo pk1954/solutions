@@ -3,7 +3,7 @@
 
 #pragma once
 
-template <class BASE_TYPE> class PointType
+template <typename BASE_TYPE> class PointType
 {
 public:
 
@@ -48,3 +48,84 @@ private:
     BASE_TYPE x;
     BASE_TYPE y;
 };
+
+template <typename BASE_TYPE>
+PointType<BASE_TYPE> const operator+ (PointType<BASE_TYPE> const a, PointType<BASE_TYPE> const b) 
+{ 
+	PointType<BASE_TYPE> res(a); 
+	res += b; 
+	return res; 
+};
+
+template <typename BASE_TYPE>
+PointType<BASE_TYPE> const operator- (PointType<BASE_TYPE> const a, PointType<BASE_TYPE> const b) 
+{ 
+	PointType<BASE_TYPE> res(a); 
+	res -= b; 
+	return res; 
+};
+
+template <typename BASE_TYPE>
+PointType<BASE_TYPE> const operator% (PointType<BASE_TYPE> const a, PointType<BASE_TYPE> const b) 
+{ 
+	PointType<BASE_TYPE> res(a); 
+	res %= b; 
+	return res; 
+};
+
+template <typename BASE_TYPE>
+PointType<BASE_TYPE> const operator+ (PointType<BASE_TYPE> const a, BASE_TYPE const base) 
+{ 
+	PointType<BASE_TYPE> res(a); 
+	res += base; 
+	return res; 
+};
+
+template <typename BASE_TYPE>
+PointType<BASE_TYPE> const operator- (PointType<BASE_TYPE> const a, BASE_TYPE const base) 
+{ 
+	PointType<BASE_TYPE> res(a); 
+	res -= base; 
+	return res; 
+};
+
+template <typename BASE_TYPE>
+PointType<BASE_TYPE> const operator* (PointType<BASE_TYPE> const a, long const l) 
+{ 
+	PointType<BASE_TYPE> res(a); 
+	res *= l; 
+	return res; 
+};
+
+template <typename BASE_TYPE>
+PointType<BASE_TYPE> const operator/ (PointType<BASE_TYPE> const a, long const l) 
+{ 
+	PointType<BASE_TYPE> res(a); 
+	res /= l; 
+	return res; 
+};
+
+template <typename BASE_TYPE>
+PointType<BASE_TYPE> const Max(PointType<BASE_TYPE> const a, PointType<BASE_TYPE> const b) 
+{ 
+	return PointType<BASE_TYPE>( ::min(a.GetX(), b.GetX()), ::min(a.GetY(), b.GetY()) ); 
+}
+
+template <typename BASE_TYPE>
+PointType<BASE_TYPE> const Min(PointType<BASE_TYPE> const a, PointType<BASE_TYPE> const b) 
+{ 
+	return PointType<BASE_TYPE>( ::max(a.GetX(), b.GetX()), ::max(a.GetY(), b.GetY()) ); 
+}
+
+template <typename BASE_TYPE>
+BASE_TYPE const MaxAbsDelta(PointType<BASE_TYPE> const pnt) 
+{
+    return BASE_TYPE( ::max( pnt.GetX().abs_value(), pnt.GetY().abs_value() ) );
+}
+
+template <typename BASE_TYPE>
+std::wostream & operator<< ( std::wostream & out, PointType<BASE_TYPE> const & param )
+{
+    out << L" " << param.GetX() << L" " << param.GetY() << L" ";
+    return out;
+}
