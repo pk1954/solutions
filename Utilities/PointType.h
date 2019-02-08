@@ -23,7 +23,9 @@ public:
     PointType const operator*= (int const i) { x *= i; y *= i; return * this; };
     PointType const operator/= (int const i) { x /= i; y /= i; return * this; }
 
-    PointType operator- () const { return PointType( -x, -y ); };
+    PointType const operator- () const { return PointType( -x, -y ); };
+
+	PointType const abs_value() { return PointType( x.abs_value(), y.abs_value() ); }
 
 	BASE_TYPE const GetX() const { return x; }
 	BASE_TYPE const GetY() const { return y; }

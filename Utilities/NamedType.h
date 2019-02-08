@@ -3,84 +3,61 @@
 
 #pragma once
 
-#include "crtpType.h"
-
-template <typename T, typename Parameter, template<typename> class... Skills>
-class NamedType : public Skills<NamedType<T, Parameter, Skills...>>...
+template <typename BASE_TYPE>
+class NamedType
 {
 public:
     NamedType( ) : value_(0) {}
 		
-    constexpr explicit NamedType( T const& value ) : value_(value) {}
+    constexpr explicit NamedType( BASE_TYPE const& value ) : value_(value) {}
 
-    T      & GetValue()       { return value_; }
-	T const& GetValue() const { return value_; }
+    BASE_TYPE      & GetValue()       { return value_; }
+	BASE_TYPE const& GetValue() const { return value_; }
+
+    bool const operator== (NamedType const other) const { return value_ == other.GetValue(); }
+    bool const operator!= (NamedType const other) const { return value_ != other.GetValue(); }
+    bool const operator<= (NamedType const other) const { return value_ <= other.GetValue(); }
+    bool const operator<  (NamedType const other) const { return value_ <  other.GetValue(); }
+    bool const operator>= (NamedType const other) const { return value_ >= other.GetValue(); }
+    bool const operator>  (NamedType const other) const { return value_ >  other.GetValue(); }
+
+	bool IsZero       ( ) const { return value_ == 0; };
+	bool IsNotZero    ( ) const { return value_ != 0; };
+	bool IsPositive   ( ) const { return value_ >  0; };
+	bool IsNotPositive( ) const { return value_ <= 0; };
+	bool IsNegative   ( ) const { return value_ <  0; };
+	bool IsNotNegative( ) const { return value_ >= 0; };
+
+    NamedType& operator+= (NamedType const& other) { value_ += other.GetValue(); return * this; }
+    NamedType& operator-= (NamedType const& other) { value_ -= other.GetValue(); return * this; }
+    NamedType& operator%= (NamedType const& other) { value_ %= other.GetValue(); return * this; }
+
+    NamedType& operator*= (int       const& i)     { value_ *= i;                return * this; }
+	NamedType& operator/= (int       const& i)     { value_ /= i;                return * this; }
+
+    NamedType  operator+ (NamedType const& other) const { NamedType res( value_ + other.GetValue() ); return res; }
+    NamedType  operator- (NamedType const& other) const { NamedType res( value_ - other.GetValue() ); return res; }
+    NamedType  operator% (NamedType const& other) const { NamedType res( value_ % other.GetValue() ); return res; }
+    int        operator/ (NamedType const& other) const { int       res( value_ / other.GetValue() ); return res; }
+
+    NamedType  operator* (int const& i) const { NamedType res( value_ * i ); return res; }
+	NamedType  operator/ (int const& i) const { NamedType res( value_ / i ); return res; }
+
+	NamedType  operator- ()                       const { NamedType res( -value_ ); return res; }
+
+	NamedType  operator++() { ++value_; return * this; }
+    NamedType  operator--() { --value_; return * this; }
+
+	NamedType const abs_value() const{ NamedType res(::abs(value_)); return res; }
 
 	static NamedType const NULL_VAL()
 	{
-		static const NamedType res((numeric_limits<T>::min)());
+		static const NamedType res((numeric_limits<BASE_TYPE>::min)());
 		return res;
 	}
 
 private:
-    T value_;
-};
-
-template <typename T>
-struct Addable : crtp<T, Addable>
-{
-    T& operator+=(T const& other)       { this->underlying().GetValue() += other.GetValue(); return this->underlying(); }
-    T& operator-=(T const& other)       { this->underlying().GetValue() -= other.GetValue(); return this->underlying(); }
-
-    T  operator+ (T const& other) const { T res( this->underlying().GetValue() + other.GetValue() ); return res; }
-    T  operator- (T const& other) const { T res( this->underlying().GetValue() - other.GetValue() ); return res; }
-
-	T  operator- ()               const { T res( -this->underlying().GetValue() ); return res; }
-
-	T  operator++()                     { ++this->underlying().GetValue();                   return this->underlying(); }
-    T  operator--()                     { --this->underlying().GetValue();                   return this->underlying(); }
-
-	T const abs_value() const{ T res( ::abs(this->underlying().GetValue() )); return res; }
-};
-
-template <typename T>
-struct Comparable : crtp<T, Comparable>
-{
-    bool const operator== (T const other) const { return this->underlying().GetValue() == other.GetValue(); }
-    bool const operator!= (T const other) const { return this->underlying().GetValue() != other.GetValue(); }
-    bool const operator<= (T const other) const { return this->underlying().GetValue() <= other.GetValue(); }
-    bool const operator<  (T const other) const { return this->underlying().GetValue() <  other.GetValue(); }
-    bool const operator>= (T const other) const { return this->underlying().GetValue() >= other.GetValue(); }
-    bool const operator>  (T const other) const { return this->underlying().GetValue() >  other.GetValue(); }
-
-	bool IsZero       ( ) const { return this->underlying().GetValue() == 0; };
-	bool IsNotZero    ( ) const { return this->underlying().GetValue() != 0; };
-	bool IsPositive   ( ) const { return this->underlying().GetValue() >  0; };
-	bool IsNotPositive( ) const { return this->underlying().GetValue() <= 0; };
-	bool IsNegative   ( ) const { return this->underlying().GetValue() <  0; };
-	bool IsNotNegative( ) const { return this->underlying().GetValue() >= 0; };
-};
-
-template <typename T>
-struct Multiplicable : crtp<T, Multiplicable>
-{
-    T& operator*=(int const& i)       { this->underlying().GetValue() *= i; return this->underlying(); }
-    T  operator* (int const& i) const { return T(this->underlying().GetValue() * i); }
-};
-
-template <typename T>
-struct Modulo : crtp<T, Modulo>
-{
-    T& operator%=(T   const& other)       { this->underlying().GetValue() %= other.GetValue(); return this->underlying(); }
-    T  operator% (T   const& other) const { T res( this->underlying().GetValue() % other.GetValue() ); return res; }
-};
-
-template <typename T>
-struct Dividable : crtp<T, Dividable>
-{
-    T&  operator/=(int const& i)           { this->underlying().GetValue() /= i; return this->underlying(); }
-    T   operator/ (int const& i)     const { return T(this->underlying().GetValue() / i); }
-    int operator/ (T   const& other) const { int res( this->underlying().GetValue() / other.GetValue() ); return res; }
+    BASE_TYPE value_;
 };
 
 //template <typename T>

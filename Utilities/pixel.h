@@ -9,16 +9,7 @@
 
 using namespace std;
 
-using PIXEL = NamedType
-< 
-	long, 
-	struct PIXEL_PARAMETER, 
-	Comparable, 
-	Addable, 
-	Multiplicable, 
-	Dividable,
-	Modulo
->;
+using PIXEL = NamedType< long >;
 
 PIXEL operator"" _PIXEL( unsigned long long );
 
