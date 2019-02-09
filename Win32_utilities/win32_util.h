@@ -4,9 +4,7 @@
 #pragma once
 
 #include "windows.h"
-#include "pixel.h"
-#include "pixelPoint.h"
-#include "pixelRect.h"
+#include "PixelTypes.h"
 #include "BoolOp.h"
 
 #include <string>

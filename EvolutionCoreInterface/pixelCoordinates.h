@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "pixelRect.h"
+#include "PixelTypes.h"
 #include "gridPoint.h"
 #include "gridRect.h"
 #include "kGridRect.h"

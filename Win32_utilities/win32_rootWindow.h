@@ -5,8 +5,7 @@
 
 #include "Windowsx.h"
 #include "commctrl.h"
-#include "pixelRect.h"
-#include "pixelPoint.h"
+#include "PixelTypes.h"
 #include "ObserverInterface.h"
 #include "win32_util.h"
 

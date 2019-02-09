@@ -6,7 +6,7 @@
 #include "script.h"
 #include "gridPoint.h"
 #include "gridRect.h"
-#include "pixelPoint.h"
+#include "PixelTypes.h"
 
 extern GRID_COORD ScrReadGridCoord ( Script & );
 extern GridPoint  ScrReadGridPoint ( Script & );

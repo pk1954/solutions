@@ -6,7 +6,7 @@
 #include <string.h>
 #include <d3d9.h>
 #include "d3dx9core.h"
-#include "pixelPoint.h"
+#include "PixelTypes.h"
 #include "win32_util.h"
 #include "d3d_system.h"
 #include "d3d_vertexBuffer.h"

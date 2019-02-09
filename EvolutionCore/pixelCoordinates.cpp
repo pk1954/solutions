@@ -4,8 +4,7 @@
 #include "stdafx.h"
 #include <algorithm>  // min/max templates
 #include "gridPoint.h"
-#include "pixelPoint.h"
-#include "pixelRect.h"
+#include "PixelTypes.h"
 #include "pixelCoordinates.h"
 
 static double const SQRT3_DIV2 = sqrt(3.) / 2.;

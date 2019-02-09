@@ -6,8 +6,7 @@
 #pragma once
 
 #include "win32_textDisplay.h"
-#include "pixelPoint.h"
-#include "pixelRect.h"
+#include "PixelTypes.h"
 
 class Shape
 {

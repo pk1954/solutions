@@ -6,7 +6,7 @@
 #include <array>
 #include <iostream>     
 #include <sstream> 
-#include "pixelRect.h"
+#include "PixelTypes.h"
 #include "gridPoint.h"
 #include "gridRect.h"
 #include "kGridPoint.h"

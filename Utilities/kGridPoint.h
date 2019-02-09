@@ -4,8 +4,7 @@
 
 #pragma once
 
-#include "pixelPoint.h"
-#include "pixelRect.h"
+#include "PixelTypes.h"
 
 class KGridPoint
 {

@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "pixelPoint.h"
+#include "PixelTypes.h"
 
 class PixelCoordinates;
 class EvolutionCore;
