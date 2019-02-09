@@ -34,12 +34,12 @@ public:
     void AddToList( GridPoint const gp ) 
 	{ 
 		m_neighbors.push_back( gp ); 
-		assert( m_neighbors.size( ) <= m_iNrOfNeighbors );
+		assert( static_cast<int>(m_neighbors.size()) <= m_iNrOfNeighbors );
 	}
 
 	void RemoveFromList( int const iIndex )
 	{
-		assert( m_neighbors.size( ) >= iIndex);
+		assert( static_cast<int>(m_neighbors.size()) >= iIndex);
 		m_neighbors.erase( m_neighbors.begin() + iIndex );
 	}
 
