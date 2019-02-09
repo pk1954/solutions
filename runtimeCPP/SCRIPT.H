@@ -9,7 +9,7 @@
 
 #include <string>
 
-using namespace std;
+using std::wstring;
 
 //lint -esym( 755, DEF_FUNC )
 //lint -esym( 755, DEF_ULONG_CONST )

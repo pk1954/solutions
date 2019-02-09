@@ -13,8 +13,6 @@
 #include "win32_colorManager.h"
 #include "win32_draw.h"
 
-using namespace std;
-
 DrawFrame::DrawFrame
 ( 
 	HWND               const hwnd,

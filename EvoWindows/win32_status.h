@@ -6,8 +6,6 @@
 #include <string>
 #include "win32_rootWindow.h"
 
-using namespace std;
-
 class EvolutionCore;
 
 class StatusBar : public RootWindow
@@ -21,8 +19,8 @@ public:
     void  SetSizeTrackBar ( PIXEL const ) const;
     void  SetSpeedTrackBar( DWORD const ) const;
     void  ClearStatusLine( );
-    void  DisplayStatusLine( wstring const & );
-    void  DisplayScriptLine( wstring const &, int, wstring const & );
+    void  DisplayStatusLine( std::wstring const & );
+    void  DisplayScriptLine( std::wstring const &, int, std::wstring const & );
     void  DisplayCurrentGeneration( EVO_GENERATION const );
 
 private:
@@ -47,11 +45,11 @@ private:
     void WINAPI createSimulationControl( );
     void WINAPI createEditorControl( );
 
-	PIXEL   m_pixClientHeight;
-    PIXEL   m_pixBorder;
-    PIXEL   m_pixPosX;
-    wstring m_wstrGeneration;
-    wstring m_wstrScriptLine;
+	PIXEL        m_pixClientHeight;
+    PIXEL        m_pixBorder;
+    PIXEL        m_pixPosX;
+    std::wstring m_wstrGeneration;
+    std::wstring m_wstrScriptLine;
 
 	EvolutionCore const * m_pCore;
 

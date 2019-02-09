@@ -4,6 +4,9 @@
 #include <iostream>
 #include "text_output.h"
  
+using std::wcout;
+using std::wstring;
+
 static wchar_t const ESC = '\033';
 
 TextOutput::~TextOutput()

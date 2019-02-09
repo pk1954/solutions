@@ -129,7 +129,7 @@ public:
     {
         PixelPoint const pixPos = ScrReadPixelPoint( script );
 		GridPoint  const gp     = m_pPixCoords->Pixel2GridPos( pixPos );
-		wcout << gp << endl;
+		std::wcout << gp << std::endl;
     }
 };
 

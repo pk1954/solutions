@@ -13,10 +13,10 @@ public:
 	virtual ~RTFOutput( );
 
 	virtual void StartParagraph( int iCount = 1 );
-	virtual void Bold( wstring const & );
-	virtual void BoldUnderlined( wstring const & );
-	virtual void Italics( wstring const & );
+	virtual void Bold( std::wstring const & );
+	virtual void BoldUnderlined( std::wstring const & );
+	virtual void Italics( std::wstring const & );
 	virtual void ResultFile( void );
 	virtual void Standard( void );
-	virtual void Output( wstring const & );
+	virtual void Output( std::wstring const & );
 };

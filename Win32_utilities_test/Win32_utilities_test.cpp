@@ -6,14 +6,12 @@
 #include "script.h"
 #include "win32_winManager.h"
 
-using namespace std;
-
 void DoTest( )
 {
 //	WinManager winManager;
 
 
-	wcout << endl << L"*** Win32_utilities_test finished" << endl;
+	std::wcout << std::endl << L"*** Win32_utilities_test finished" << std::endl;
 }
 
 int main()
@@ -24,7 +22,7 @@ int main()
 	}
 	catch (...)
 	{
-		wcout << endl << L"+++ Error in Win32_utilities_test" << endl;
+		std::wcout << std::endl << L"+++ Error in Win32_utilities_test" << std::endl;
 		return 1;
 	}
 

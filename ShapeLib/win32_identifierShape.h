@@ -21,6 +21,6 @@ public:
 
 	virtual void FillBuffer( GridPoint const gp )
 	{
-		m_textDisplay.Buffer() << L"ID: " << setw( 5 ) << m_textDisplay.Core().GetId( gp );
+		m_textDisplay.Buffer() << L"ID: " << std::setw( 5 ) << m_textDisplay.Core().GetId( gp );
 	}
 };

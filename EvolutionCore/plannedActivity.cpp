@@ -7,9 +7,9 @@
 #include <iomanip>
 #include "plannedActivity.h"
 
-using namespace std;
+using std::setw;
 
-wostream & operator << ( wostream & out, PlannedActivity const & plan )
+std::wostream & operator << ( std::wostream & out, PlannedActivity const & plan )
 {
 //lint -e747  Significant prototype coercion with setw
 

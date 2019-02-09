@@ -7,7 +7,7 @@
 #include "assert.h"
 #include "win32_event.h"
 
-using namespace std;
+using std::wstring;
 
 namespace Util
 {

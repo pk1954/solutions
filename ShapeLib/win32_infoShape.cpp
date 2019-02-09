@@ -5,6 +5,10 @@
 #include "config.h"
 #include "win32_infoShape.h"
 
+using std::wostringstream;
+using std::setw;
+using std::endl;
+
 void InfoShape::FillBuffer( GridPoint const gp )
 {
 	wostringstream & buffer = m_textDisplay.Buffer();

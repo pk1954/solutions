@@ -55,7 +55,7 @@ public:
 
 	static NamedType const NULL_VAL()
 	{
-		static const NamedType res((numeric_limits<BASE_TYPE>::min)());
+		static const NamedType res((std::numeric_limits<BASE_TYPE>::min)());
 		return res;
 	}
 
@@ -66,6 +66,6 @@ private:
 template <typename BASE_TYPE>
 std::wostream & operator<< ( std::wostream & out, NamedType<BASE_TYPE> const & param )
 {
-	out << setw( 5 ) << param.GetValue();
+	out << std::setw( 5 ) << param.GetValue();
     return out;
 }

@@ -14,8 +14,6 @@
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCoreImpl.h"
 
-using namespace std;
-
 EvolutionCoreImpl::EvolutionCoreImpl( ) :
     m_pObservers( nullptr ),
 	m_pEventPOI( nullptr ),

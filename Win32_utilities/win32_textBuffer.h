@@ -8,8 +8,6 @@
 #include <string> 
 #include "win32_util.h"
 
-using namespace std;
-
 class TextBuffer
 {
 public:
@@ -32,13 +30,13 @@ public:
         m_iHorizontalPos = LEFT_MARGIN + uiPos * m_iHorRaster;
     }
 
-    void nextLine( wstring data, int iHorPos = 1 )
+    void nextLine( std::wstring data, int iHorPos = 1 )
     {
         nextLine( iHorPos );
         printString( data );
     }
 
-    void printString       ( wstring );
+    void printString       ( std::wstring );
     void printNumber       ( int );
     void printNumber       ( unsigned int );
     void printNumber       ( long long );
@@ -53,13 +51,13 @@ private:
 
     int const LEFT_MARGIN = 30;
 
-    wostringstream m_wBuffer;
-    HDC            m_hDC;
-	PIXEL          m_width;
-	PIXEL   	   m_height;
-	int            m_cyChar;
-    int            m_cxChar;
-    int            m_iHorizontalPos;
-    int            m_iVerticalPos;
-    int            m_iHorRaster;
+    std::wostringstream m_wBuffer;
+    HDC                 m_hDC;
+	PIXEL               m_width;
+	PIXEL        	    m_height;
+	int                 m_cyChar;
+    int                 m_cxChar;
+    int                 m_iHorizontalPos;
+    int                 m_iVerticalPos;
+    int                 m_iHorRaster;
 };

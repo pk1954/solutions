@@ -8,7 +8,8 @@
 #include "win32_util.h"
 #include "win32_textBuffer.h"
 
-using namespace std;
+using std::setprecision;
+using std::setw;
 
 TextBuffer::TextBuffer
 ( 
@@ -44,14 +45,14 @@ void TextBuffer::StartPainting( )
 
 void TextBuffer::printBuffer( )
 {
-	wstring const wstr = m_wBuffer.str();
+	std::wstring const wstr = m_wBuffer.str();
     (void)TextOut( m_hDC, m_iHorizontalPos, m_iVerticalPos, wstr.c_str(), static_cast<int>(wstr.size()) );
-	m_wBuffer.str( wstring() );
+	m_wBuffer.str( std::wstring() );
 	m_wBuffer.clear();
     m_iHorizontalPos += m_iHorRaster;
 }
 
-void TextBuffer::printString( wstring data )
+void TextBuffer::printString( std::wstring data )
 {
 	m_wBuffer << data;
 	printBuffer( );

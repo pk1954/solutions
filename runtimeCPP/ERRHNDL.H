@@ -12,7 +12,7 @@
 #include <exception>
 #include "scanner.h"
 
-using namespace std;
+using std::wostream;
 
 class Scanner;
 

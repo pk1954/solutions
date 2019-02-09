@@ -13,8 +13,8 @@ public:
 	virtual void Standard( void );
 
 	virtual void StartParagraph( int );
-	virtual void Output( wstring const & );
-	virtual void Bold( wstring const & );
-	virtual void BoldUnderlined( wstring const & );
-	virtual void Italics( wstring const & );
+	virtual void Output( std::wstring const & );
+	virtual void Bold( std::wstring const & );
+	virtual void BoldUnderlined( std::wstring const & );
+	virtual void Italics( std::wstring const & );
 };

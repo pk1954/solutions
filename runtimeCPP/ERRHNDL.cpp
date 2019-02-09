@@ -14,7 +14,9 @@
 #include "scanner.h"
 #include "errhndl.h"
 
-using namespace std;
+using std::wstring;
+using std::wostream;
+using std::endl;
 
 wostream * ScriptErrorHandler::m_pScriptTrace = & std::wcout;
 

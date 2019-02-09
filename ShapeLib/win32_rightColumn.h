@@ -22,5 +22,5 @@ public:
 	virtual Shape const * FindShape( PixelPoint const, GridPoint const ) const;
 
 private:
-    array< MemorySlot *, IMEMSIZE_MAX > m_aMemorySlot; 
+    std::array< MemorySlot *, IMEMSIZE_MAX > m_aMemorySlot; 
 };

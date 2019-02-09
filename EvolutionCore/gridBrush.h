@@ -84,11 +84,11 @@ public:
 		m_manipulator = man;
 		switch ( man )
 		{
-		case tManipulator::set      : m_manFunc = [](short const dst, short const src) { return src;               };  break; 
-		case tManipulator::add      : m_manFunc = [](short const dst, short const src) { return (dst + src);       };  break; 
-		case tManipulator::subtract : m_manFunc = [](short const dst, short const src) { return max(0, dst - src); };  break; 
-		case tManipulator::max      : m_manFunc = [](short const dst, short const src) { return max(dst, src);     };  break;
-		case tManipulator::min      : m_manFunc = [](short const dst, short const src) { return min(dst, src);     };  break; 
+		case tManipulator::set      : m_manFunc = [](short const dst, short const src) { return src;                    };  break; 
+		case tManipulator::add      : m_manFunc = [](short const dst, short const src) { return (dst + src);            };  break; 
+		case tManipulator::subtract : m_manFunc = [](short const dst, short const src) { return std::max(0, dst - src); };  break; 
+		case tManipulator::max      : m_manFunc = [](short const dst, short const src) { return std::max(dst, src);     };  break;
+		case tManipulator::min      : m_manFunc = [](short const dst, short const src) { return std::min(dst, src);     };  break; 
 		default: assert( false );
 		}
 	}

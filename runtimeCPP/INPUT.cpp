@@ -15,8 +15,6 @@
 #include "Input.h"
 #include "errhndl.h"
 
-using namespace std;
-
 InputBuffer::InputBuffer( ) 
   :  m_wstrLine( ),
      m_ifstream( )
@@ -42,7 +40,7 @@ InputBuffer::~InputBuffer( )
 
 void InputBuffer::Open( wstring const & wstrFile )  // path of file to be opened 
 {
-    m_ifstream.open( wstrFile, ios::in );
+    m_ifstream.open( wstrFile, std::ios::in );
     if ( ! m_ifstream )
         ScriptErrorHandler::inputFileError( );
 }                                                  // end OpenInputBuffer 

@@ -18,7 +18,7 @@ public:
     virtual bool operator() ( ModelData const * ) const = 0;
 };
 
-class HistoryBufferException : public exception { };
+class HistoryBufferException : public std::exception { };
 
 class HistorySystem
 {

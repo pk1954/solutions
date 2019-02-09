@@ -19,7 +19,7 @@ public:
 		Reset(); 
 	}
 
-    explicit GridRect
+    GridRect
 	( 
 		GridPoint const gpStart, 
 		GridPoint const gpEnd 
@@ -29,7 +29,7 @@ public:
 		m_Right (gpEnd.GetX()), 
 		m_Bottom(gpEnd.GetY())
 	{
-		assert( m_Top <= m_Bottom );
+		assert( m_Bottom >= m_Top );
 	};
 
 	~GridRect() { };

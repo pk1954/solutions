@@ -2,31 +2,29 @@
 
 #include <array>
 
-using namespace std;
-
 template <typename T, size_t SIZE>
-void operator/= ( array<T, SIZE> &a, T const op )
+void operator/= ( std::array<T, SIZE> &a, T const op )
 {
     for ( auto &f : a )
         f /= op;
 }
 
 template <typename T, size_t SIZE>
-void operator+= ( array<T, SIZE> &a, T const op )
+void operator+= ( std::array<T, SIZE> &a, T const op )
 {
     for ( auto &f : a )
         f += op;
 }
 
 template <typename T, size_t SIZE>
- void operator*= ( array<T, SIZE> &a, T const op )
+ void operator*= ( std::array<T, SIZE> &a, T const op )
 {
     for ( auto &f : a )
         f *= op;
 }
 
 template <typename T, size_t SIZE>
-T SumArray( array<T, SIZE> &a )
+T SumArray( std::array<T, SIZE> &a )
 {
     T sum = 0;
     for ( auto &f : a )
@@ -53,7 +51,7 @@ void DivNonZero( T & op, T const div )
 }
 
 template <typename T, size_t SIZE>
-void DivNonZero( array<T, SIZE> & a, T const div )
+void DivNonZero( std::array<T, SIZE> & a, T const div )
 {
     if ( div == 0 )
         a.fill( 0 );
@@ -62,7 +60,7 @@ void DivNonZero( array<T, SIZE> & a, T const div )
 }
 
 template <typename T, size_t SIZE>
-void DivNonZero( array<T, SIZE> & a, array<T, SIZE> const & div )
+void DivNonZero( std::array<T, SIZE> & a, std::array<T, SIZE> const & div )
 {
     for ( unsigned int uiRun = 0; uiRun < SIZE; ++uiRun )
         DivNonZero( a[ uiRun ], div[ uiRun ] );
@@ -111,6 +109,6 @@ public:
     T & operator[] ( unsigned int uiIndex )  { return m_tArray[ uiIndex ]; }
 
  private:
-    T                 m_tGeneral;
-    array < T, SIZE > m_tArray;
+    T                      m_tGeneral;
+    std::array < T, SIZE > m_tArray;
 };

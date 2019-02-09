@@ -71,7 +71,7 @@ void DspOptWindow::UpdateDspOptionsControls( tBrushMode const brushMode )
 {
 	if ( brushMode != tBrushMode::move )
 	{
-		static unordered_map < tBrushMode, WORD > mapDspOptTable =
+		static std::unordered_map < tBrushMode, WORD > mapDspOptTable =
 		{
 			{ tBrushMode::randomStrat, IDM_ANIMALS    },
 			{ tBrushMode::cooperate,   IDM_ANIMALS    },

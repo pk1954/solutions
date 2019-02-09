@@ -8,8 +8,6 @@
 #include "win32_textBuffer.h"
 #include "win32_crsrWindow.h"
 
-using namespace std;
-
 CrsrWindow::CrsrWindow( ) :
     TextWindow( ),
     m_pFocusPoint( nullptr ),

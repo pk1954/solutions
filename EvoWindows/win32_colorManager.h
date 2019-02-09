@@ -24,7 +24,7 @@ private:
 	COLORREF m_colorSelection;
 	COLORREF m_colorHighlight;
 	
-	array< CLUT, NR_STRATEGIES> m_aClutStrat;
+	std::array< CLUT, NR_STRATEGIES> m_aClutStrat;
 
 	CLUT & getClut(tStrategyId const strat)
 	{

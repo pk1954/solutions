@@ -12,10 +12,10 @@ class TextDisplay
 public:
 	TextDisplay
 	( 
-		D3dBuffer        & d3dBuffer, 
-		wostringstream   & wBuffer,
-		PixelCoordinates & pixelCoordinates,
-		EvolutionCore    & core
+		D3dBuffer           & d3dBuffer, 
+		std::wostringstream & wBuffer,
+		PixelCoordinates    & pixelCoordinates,
+		EvolutionCore       & core
 	) :
 		m_D3dBuffer( d3dBuffer ),
 		m_wBuffer( wBuffer ),
@@ -25,11 +25,11 @@ public:
 
 	void Clear()
 	{
-		m_wBuffer.str( wstring() );
+		m_wBuffer.str( std::wstring() );
 		m_wBuffer.clear();
 	}
 
-	wostringstream & Buffer() 
+	std::wostringstream & Buffer() 
 	{
 		return m_wBuffer;
 	}
@@ -70,8 +70,8 @@ public:
 	}
 
 private:
-    D3dBuffer        & m_D3dBuffer;
-	wostringstream   & m_wBuffer;
-	PixelCoordinates & m_pixelCoordinates;
-    EvolutionCore    & m_core;
+    D3dBuffer           & m_D3dBuffer;
+	std::wostringstream & m_wBuffer;
+	PixelCoordinates    & m_pixelCoordinates;
+    EvolutionCore       & m_core;
 };

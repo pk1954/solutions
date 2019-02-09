@@ -3,10 +3,7 @@
 
 #pragma once
 
-#include <string>
 #include <fstream>
-
-using namespace std;
 
 class PerformanceWindow;
 class StatusBar;
@@ -25,7 +22,7 @@ public:
 
 	void EvoController::Start
 	( 
-		wostream            *, 
+		std::wostream       *, 
 		WorkThreadInterface * const,
 		WinManager          * const,
 		PerformanceWindow   * const,
@@ -42,7 +39,7 @@ private:
 
 	bool                  m_bSimulationMode;   // if TRUE: simu mode, FALSE: edit more
 	BOOL                  m_bTrace;
-    wostream            * m_pTraceStream;
+    std::wostream       * m_pTraceStream;
 	WorkThreadInterface * m_pWorkThreadInterface;
 	WinManager          * m_pWinManager;
     PerformanceWindow   * m_pPerformanceWindow;

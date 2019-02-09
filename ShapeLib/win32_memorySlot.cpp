@@ -5,6 +5,8 @@
 #include <iomanip>
 #include "win32_memorySlot.h"
 
+using std::wostringstream;
+
 GridPoint MemorySlot::GetReferencedGridPoint( GridPoint const gp ) const 
 { 
 	return getReferencedGridPoint( getIndId( gp ) );
@@ -15,7 +17,7 @@ void MemorySlot::FillBuffer( GridPoint const gp )
 	wostringstream & buffer = m_textDisplay.Buffer();
 	IndividualId     indId  = getIndId( gp );
 
-	buffer << setw( 10 );
+	buffer << std::setw( 10 );
 	if ( getReferencedGridPoint( indId ) == GridPoint::NULL_VAL() ) 
 		buffer << L"DEAD";
 	else

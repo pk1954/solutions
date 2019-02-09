@@ -8,15 +8,13 @@
 #include <iostream>
 #include "trace.h"
 
-using namespace std;
-
-wofstream OpenTraceFile( wstring const wszTraceFileName )
+std::wofstream OpenTraceFile( std::wstring const wszTraceFileName )
 {
-    wofstream traceStream;
-    traceStream.open( wszTraceFileName, ios::out );
+    std::wofstream traceStream;
+    traceStream.open( wszTraceFileName, std::ios::out );
     if ( traceStream.bad() )
     {
-        cout << "Could not open trace file " << endl;
+        std::cout << "Could not open trace file " << std::endl;
         assert( false );
     }
 

@@ -13,8 +13,6 @@
 #include "win32_displayOptions.h"
 #include "win32_editor.h"
 
-using namespace std;
-
 EditorWindow::EditorWindow( )
   : BaseDialog( ),
     m_pCore               ( nullptr ),
@@ -78,7 +76,7 @@ void EditorWindow::updateOperationButtons( tBrushMode const mode ) const
 
 void EditorWindow::updateEditControls( BOOL const bHistory ) // Set state of all window widgets according to mode (edit/simu)
 {
-	static unordered_map < tBrushMode, WORD > mapModeTable =
+	static std::unordered_map < tBrushMode, WORD > mapModeTable =
 	{
 		{ tBrushMode::move,        IDM_MOVE            },
 		{ tBrushMode::randomStrat, IDM_RANDOM_STRATEGY },
@@ -94,7 +92,7 @@ void EditorWindow::updateEditControls( BOOL const bHistory ) // Set state of all
     
 	CheckRadioButton( IDM_MOVE, IDM_FOOD_STOCK, mapModeTable.at( m_pCore->GetBrushMode() ) );
 
-	static unordered_map < tShape, WORD > mapShapeTable =
+	static std::unordered_map < tShape, WORD > mapShapeTable =
 	{
 		{ tShape::Circle, IDM_EDIT_CIRCLE    },    
 		{ tShape::Rect,   IDM_EDIT_RECTANGLE },
@@ -107,7 +105,7 @@ void EditorWindow::updateEditControls( BOOL const bHistory ) // Set state of all
 
 	updateOperationButtons( m_pCore->GetBrushMode() );
 
-	static unordered_map < tManipulator, WORD > mapOperatorTable =
+	static std::unordered_map < tManipulator, WORD > mapOperatorTable =
 	{
 		{ tManipulator::set,      IDM_EDIT_OPERATION_SET      },    
 		{ tManipulator::min,      IDM_EDIT_OPERATION_MIN      },
@@ -145,7 +143,7 @@ void EditorWindow::SetSimulationMode( )  	// adjust window configuration accordi
 
 void EditorWindow::setBrushMode( WORD const wId ) const
 {
-	static unordered_map < WORD, tBrushMode > mapModeTable =
+	static std::unordered_map < WORD, tBrushMode > mapModeTable =
 	{
 		{ IDM_MOVE,            tBrushMode::move         },
 		{ IDM_RANDOM_STRATEGY, tBrushMode::randomStrat  },
@@ -167,7 +165,7 @@ void EditorWindow::setBrushMode( WORD const wId ) const
 
 void EditorWindow::setBrushShape( WORD const wId ) const
 {
-	static unordered_map < WORD, tShape > mapShapeTable =
+	static std::unordered_map < WORD, tShape > mapShapeTable =
 	{
 		{ IDM_EDIT_CIRCLE,    tShape::Circle },    
 		{ IDM_EDIT_RECTANGLE, tShape::Rect   },
@@ -180,7 +178,7 @@ void EditorWindow::setBrushShape( WORD const wId ) const
 
 void EditorWindow::setBrushManipulator( WORD const wId ) const
 {
-	static unordered_map < WORD, tManipulator > mapOperationTable =
+	static std::unordered_map < WORD, tManipulator > mapOperationTable =
 	{
 		{ IDM_EDIT_OPERATION_SET,      tManipulator::set      },    
 		{ IDM_EDIT_OPERATION_MIN,      tManipulator::min      },    

@@ -12,9 +12,7 @@
 #include "config.h"
 #include "symtab.h"
 
-using namespace std;
-
-unordered_map< Config::tId, Config::tConfigItem > Config::m_mapConfigData;
+std::unordered_map< Config::tId, Config::tConfigItem > Config::m_mapConfigData;
 
 #define DEF_CONFIG_ID( id, init ) { defineConfigId( id, L#id, init ); }
 

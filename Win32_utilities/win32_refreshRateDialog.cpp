@@ -8,8 +8,6 @@
 #include "win32_util_resource.h"
 #include "win32_refreshRateDialog.h"
 
-using namespace std;
-
 static int const BUFLEN = 20;
 static wchar_t m_wBuffer[BUFLEN];
 static int     m_iRefreshRate; // in milliseconds

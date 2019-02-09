@@ -6,7 +6,7 @@
 #include "strategy.h"
 #include "EvolutionTypes.h"
 
-using namespace std;
+using std::unordered_map;
 
 wchar_t const * const GetStrategyName( tStrategyId const id )
 {

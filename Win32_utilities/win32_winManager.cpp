@@ -10,8 +10,14 @@
 #include "win32_rootWindow.h"
 #include "win32_winManager.h"
 
-using namespace std;
-using namespace Util;
+using std::endl;
+using std::wcout;
+using std::wofstream;
+
+using Util::operator==;
+using Util::operator!=;
+using Util::operator!=;
+using Util::operator<<; 
 
 class WrapMoveWindow : public Script_Functor
 {
@@ -91,8 +97,8 @@ static MONITORINFO ScrReadMonitorInfo( Script & script )
     MONITORINFO monInfo;
 
     monInfo.cbSize    = sizeof( MONITORINFO );
-    monInfo.rcMonitor = ScrReadRECT( script );
-    monInfo.rcWork    = ScrReadRECT( script );
+    monInfo.rcMonitor = Util::ScrReadRECT( script );
+    monInfo.rcWork    = Util::ScrReadRECT( script );
     monInfo.dwFlags   = script.ScrReadUlong( );
 
     return monInfo;
@@ -119,7 +125,7 @@ static BOOL CALLBACK CheckMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT
     ++( pMonStruct->m_iMonCounter );
     
 	MONITORINFO monInfoScript = ScrReadMonitorInfo( script );
-	MONITORINFO monInfoSystem = GetMonitorInfo( hMonitor );
+	MONITORINFO monInfoSystem = Util::GetMonitorInfo( hMonitor );
     if (
           ( monInfoScript != monInfoSystem ) ||
           ( pMonStruct->m_iMonFromScript != pMonStruct->m_iMonCounter )
@@ -218,7 +224,7 @@ static BOOL CALLBACK DumpMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT 
 {
     DUMP_MON_STRUCT * const pMonStruct = (DUMP_MON_STRUCT *)dwData;
     wofstream       * const postr      = pMonStruct->m_postr;
-    MONITORINFO       const monInfo    = GetMonitorInfo( hMonitor );
+    MONITORINFO       const monInfo    = Util::GetMonitorInfo( hMonitor );
 
     ++( pMonStruct->m_iMonCounter );
 
@@ -260,10 +266,10 @@ void WinManager::dumpWindowCoordinates( ) const
 			{
 				ostr << L"MoveWindow "
 					 << it.second.m_wstr << L" "
-					 << GetWindowLeftPos( hwnd ) << L" "
-					 << GetWindowTop    ( hwnd ) << L" "
-				     << GetWindowWidth  ( hwnd ) << L" "
-				     << GetWindowHeight ( hwnd ) << endl;
+					 << Util::GetWindowLeftPos( hwnd ) << L" "
+					 << Util::GetWindowTop    ( hwnd ) << L" "
+				     << Util::GetWindowWidth  ( hwnd ) << L" "
+				     << Util::GetWindowHeight ( hwnd ) << endl;
 
 				ostr << L"ShowWindow " 
 					<< it.second.m_wstr << L" "
@@ -281,7 +287,7 @@ void WinManager::StoreWindowConfiguration( )
 {
     if ( m_strWindowConfigurationFile.empty( ) )
     {
-        m_strWindowConfigurationFile = WINDOW_CONFIG_FILE_STUB + to_wstring( ++m_iNrOfMonitorConfigurations ) + L".cnf";
+        m_strWindowConfigurationFile = WINDOW_CONFIG_FILE_STUB + std::to_wstring( ++m_iNrOfMonitorConfigurations ) + L".cnf";
 
         dumpMonitorConfiguration( );
     }
@@ -320,7 +326,7 @@ void WinManager::AddWindow
 	assert( hwnd != nullptr );
     if ( id != 0 )
     {
-        m_map.insert( pair< UINT, MAP_ELEMENT >( id, { wstrName, hwnd, bTrackPosition, bTrackSize } ) );
+        m_map.insert( std::pair< UINT, MAP_ELEMENT >( id, { wstrName, hwnd, bTrackPosition, bTrackSize } ) );
         SymbolTable::ScrDefConst( wstrName, static_cast<ULONG>(id) );
     }
 }

@@ -6,8 +6,6 @@
 #include <vector>
 #include <d3d9.h>
 
-using namespace std;
-
 class Vertex        // 16 Byte
 { 
 public:
@@ -47,6 +45,6 @@ public:
     HRESULT LoadVertices( LPDIRECT3DVERTEXBUFFER9 const, IDirect3DDevice9 * const ) const;   // lock m_d3d_vertexBuffer and load the vertices into it
 
 private:
-    vector<Vertex> m_vertexVector;
+    std::vector<Vertex> m_vertexVector;
 };
 

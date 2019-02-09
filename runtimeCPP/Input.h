@@ -10,7 +10,8 @@
 #include <iostream>
 #include <fstream>
 
-using namespace std;
+using std::wstring;
+using std::wifstream;
 
 class InputBuffer
 {

@@ -68,7 +68,7 @@ private:
 	ModelFactory const * m_pModelFactory;
 	ObserverInterface  * m_pObserver; 
 
-    vector< HistSlot > m_aHistSlot;  // is tail of list
+    std::vector< HistSlot > m_aHistSlot;  // is tail of list
 
 	int m_iHead;            // slot with youngest generation
     int m_iUnused;          // first unused slot

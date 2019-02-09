@@ -8,6 +8,7 @@
 #include <assert.h>
 #include <limits.h>
 
+
 template<typename SOURCE_TYPE>
 void AssertLimits( SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_TYPE const max)  
 {                                   
@@ -18,46 +19,46 @@ void AssertLimits( SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_TYPE const
 template<typename SOURCE_TYPE>
 void AssertShort( SOURCE_TYPE const value ) 
 {
-	assert( value <= (numeric_limits<short>::max)() );         
-	if ( numeric_limits<SOURCE_TYPE>::is_signed )
-		assert( value >= (numeric_limits<short>::min)() );
+	assert( value <= (std::numeric_limits<short>::max)() );         
+	if ( std::numeric_limits<SOURCE_TYPE>::is_signed )
+		assert( value >= (std::numeric_limits<short>::min)() );
 }
 
 template<typename SOURCE_TYPE>
 void AssertInt( SOURCE_TYPE const value ) 
 {
-	assert( value <= (numeric_limits<int>::max)() );         
-	if ( numeric_limits<SOURCE_TYPE>::is_signed )
-		assert( value >= (numeric_limits<int>::min)() );
+	assert( value <= (std::numeric_limits<int>::max)() );         
+	if ( std::numeric_limits<SOURCE_TYPE>::is_signed )
+		assert( value >= (std::numeric_limits<int>::min)() );
 }
 
 template<typename SOURCE_TYPE>
 void AssertLong( SOURCE_TYPE const value ) 
 {
-	assert( value <= (numeric_limits<long>::max)() );         
-	if ( numeric_limits<SOURCE_TYPE>::is_signed )
-		assert( value >= (numeric_limits<long>::min)() );
+	assert( value <= (std::numeric_limits<long>::max)() );         
+	if ( std::numeric_limits<SOURCE_TYPE>::is_signed )
+		assert( value >= (std::numeric_limits<long>::min)() );
 }
 
 template<typename SOURCE_TYPE>
 void AssertUnsignedShort( SOURCE_TYPE const value )
 {
-	assert( value >= (numeric_limits<unsigned short>::min)() );
-	assert( value <= (numeric_limits<unsigned short>::max)() );
+	assert( value >= (std::numeric_limits<unsigned short>::min)() );
+	assert( value <= (std::numeric_limits<unsigned short>::max)() );
 }
 
 template<typename SOURCE_TYPE>
 void AssertUnsignedInt( SOURCE_TYPE const value )
 {
-	assert( value >= (numeric_limits<unsigned int>::min)() );
-	assert( value <= (numeric_limits<unsigned int>::max)() );
+	assert( value >= (std::numeric_limits<unsigned int>::min)() );
+	assert( value <= (std::numeric_limits<unsigned int>::max)() );
 }
 
 template<typename SOURCE_TYPE>
 void AssertUnsignedLong( SOURCE_TYPE const value )
 {
-	assert( value >= (numeric_limits<unsigned long>::min)() );
-	assert( value <= (numeric_limits<unsigned long>::max)() );
+	assert( value >= (std::numeric_limits<unsigned long>::min)() );
+	assert( value <= (std::numeric_limits<unsigned long>::max)() );
 }
 
 template<typename SOURCE_TYPE>

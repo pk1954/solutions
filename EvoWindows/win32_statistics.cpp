@@ -10,8 +10,6 @@
 #include "win32_statistics.h"
 #include "win32_stopwatch.h"
 
-using namespace std;
-
 class GeneStat: public XArray< unsigned int, NR_STRATEGIES  >
 {
 public:
@@ -187,9 +185,9 @@ private:
     GeneStat m_gsCounter;          // counter for strategies and sum counter 
     GeneStat m_gsAverageAge;       // average age of all individuals
 
-    array < FloatStat,    NR_ACTION_GENES > m_axaGenePoolStrategy;
-    array < unsigned int, NR_STRATEGIES   > m_auiMemSize;
-    array < GeneStat,     NR_GENES        > m_aGeneStat;
+    std::array < FloatStat,    NR_ACTION_GENES > m_axaGenePoolStrategy;
+    std::array < unsigned int, NR_STRATEGIES   > m_auiMemSize;
+    std::array < GeneStat,     NR_GENES        > m_aGeneStat;
 };
 
 StatisticsWindow::StatisticsWindow( ):

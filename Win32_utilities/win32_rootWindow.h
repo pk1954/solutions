@@ -95,7 +95,7 @@ public:
 
     void Move( PixelPoint const pos, PixelRectSize const size, BOOL const bRedraw )
     {
-        Move( pos.GetX(), pos.GetY(), size.GetWidth(), size.GetHeight(), bRedraw );
+        Move( pos.GetX(), pos.GetY(), size.GetX(), size.GetY(), bRedraw );
     }
 
     void Move( PixelRect const rect, BOOL const bRedraw )

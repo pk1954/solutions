@@ -13,8 +13,6 @@
 
 //lint -e1924    C-style casts
 
-using namespace std;
-
 static long trackBar2Value( LONG ); 
 static LONG value2Trackbar( long );  
 
@@ -280,19 +278,19 @@ void StatusBar::ClearStatusLine( )
     DisplayStatusLine( L"" );
 }
 
-void StatusBar::DisplayStatusLine( wstring const & wstrLine )
+void StatusBar::DisplayStatusLine( std::wstring const & wstrLine )
 {
     (void)SendNotifyMessage( SB_SETTEXT, static_cast<int>( tPart::ScriptLine ), (LPARAM)( wstrLine.c_str( ) ) );
 }
 
-void StatusBar::DisplayScriptLine( wstring const & wszPath, int iLineNr, wstring const & wstrLine )
+void StatusBar::DisplayScriptLine( std::wstring const & wszPath, int iLineNr, std::wstring const & wstrLine )
 {
-    m_wstrScriptLine = wszPath + L"(" + to_wstring( iLineNr ) + L"): " + wstrLine;
+    m_wstrScriptLine = wszPath + L"(" + std::to_wstring( iLineNr ) + L"): " + wstrLine;
     DisplayStatusLine( m_wstrScriptLine );
 }
 
 void StatusBar::DisplayCurrentGeneration( EVO_GENERATION const gen )
 {
-    m_wstrGeneration = L"EvoGen " + to_wstring( gen );
+    m_wstrGeneration = L"EvoGen " + std::to_wstring( gen );
     (void)SendNotifyMessage( SB_SETTEXT, static_cast<int>( tPart::Generation ), (LPARAM)( m_wstrGeneration.c_str() ) );
 }

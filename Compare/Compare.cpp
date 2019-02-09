@@ -86,7 +86,7 @@ public:
 			wstring strFound = negList.Check( wstrLine );
 			if ( ! strFound.empty( ) )
 			{
-				string::size_type pos = wstrLine.find( strFound );
+				std::string::size_type pos = wstrLine.find( strFound );
 				pOut->StartParagraph();    	    
 				pOut->Output( wstrLine.substr( 0, pos ) );                                       // print faulty line 
 				pOut->BoldUnderlined( strFound );                                                // emphasize found negative spec  
@@ -235,19 +235,19 @@ int main( int argc, char * argv[] )
 {             
 	if  ( argc < 3 )
 	{           
-		wcout << strVersion << endl;
-		wcout << L"syntax: compare res spec\n" << endl;
+		std::wcout << strVersion << std::endl;
+		std::wcout << L"syntax: compare res spec\n" << std::endl;
 		return 1;
 	}
 
-	wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
+	std::wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
 
 	wstring strResFile  = converter.from_bytes( argv[1] );
 	wstring strSpecFile = converter.from_bytes( argv[2] );
 
 	CompareEngine ce( ( argc >= 4 ) ? converter.from_bytes( argv[3] ) : L"" );
 
-	ScriptErrorHandler::ScrSetOutputStream( & wcout );
+	ScriptErrorHandler::ScrSetOutputStream( & std::wcout );
 
 	UpperCase( strResFile );
 	UpperCase( strSpecFile );
@@ -265,7 +265,7 @@ int main( int argc, char * argv[] )
 
 	wifstream ifResults;
 
-	ifResults.open( strResFile, ios::in );
+	ifResults.open( strResFile, std::ios::in );
 	if ( ! ifResults )
 	{
 		ce.pOut->StartParagraph( 2 );

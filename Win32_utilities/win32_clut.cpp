@@ -5,11 +5,9 @@
 #include <d3d9.h>
 #include "win32_clut.h"
 
-using namespace std;
-
 void CLUT::Allocate( UINT const uiMaxIndex )
 {
-    m_data = new vector<COLORREF>( uiMaxIndex + 1 );
+    m_data = new std::vector<COLORREF>( uiMaxIndex + 1 );
     setTableValues( );
 }
 

@@ -5,8 +5,6 @@
 #include "Strsafe.h"
 #include "win32_performanceWindow.h"
 
-using namespace std;
-
 PerformanceWindow::PerformanceWindow( ) : 
     TextWindow( ),
     m_hTimer( nullptr ),

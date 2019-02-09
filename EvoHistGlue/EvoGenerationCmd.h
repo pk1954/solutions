@@ -25,4 +25,4 @@ bool IsEditorCommand( tEvoCmd const );
 wchar_t const * const GetEvoCommandName     ( tEvoCmd const );
 wchar_t const * const GetEvoCommandNameShort( tEvoCmd const );
 
-wostream & operator << ( wostream &, GenerationCmd const & );
+std::wostream & operator << ( std::wostream &, GenerationCmd const & );

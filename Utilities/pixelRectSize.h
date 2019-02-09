@@ -3,63 +3,43 @@
 
 #pragma once
 
-#include <assert.h>
-#include "pixelPoint.h"
+#include "pixel.h"
+// #include "PointType.h"
+
+//using PixelRectSize = PointType< PIXEL >;
 
 class PixelRectSize
 {
 public:
-	         PixelRectSize( ) : m_pixWidth( 0 ), m_pixHeight( 0 ) {};
-    explicit PixelRectSize( PIXEL const pixSideLength ) : m_pixWidth( pixSideLength ), m_pixHeight( pixSideLength ) {};
-             PixelRectSize( PIXEL const pixWidth, PIXEL const pixHeight ) : m_pixWidth(pixWidth), m_pixHeight(pixHeight) {};
+    PixelRectSize( PIXEL const pixWidth, PIXEL const pixHeight ) : x(pixWidth), y(pixHeight) {};
 
-    PixelRectSize const operator*= (long const l) { m_pixWidth *= l; m_pixHeight *= l; return *this; };
-    PixelRectSize const operator/= (long const l) { m_pixWidth /= l; m_pixHeight /= l; return *this; };
+    bool const operator== (PixelRectSize const a) const { return (x == a.x) && (y == a.y); }
+    bool const operator!= (PixelRectSize const a) const { return (x != a.x) || (y != a.y); }
 
-    PixelRectSize const operator+= (PIXEL const p) { m_pixWidth += p; m_pixHeight += p; return *this; };
-    PixelRectSize const operator-= (PIXEL const p) { m_pixWidth -= p; m_pixHeight -= p; return *this; };
+    PixelRectSize const operator*= (long const l) { x *= l; y *= l; return *this; };
+    PixelRectSize const operator/= (long const l) { x /= l; y /= l; return *this; };
 
-    PIXEL GetWidth ( ) const { return m_pixWidth;  }
-    PIXEL GetHeight( ) const { return m_pixHeight; }
+    PixelRectSize const operator+= (PIXEL const p) { x += p; y += p; return *this; };
+    PixelRectSize const operator-= (PIXEL const p) { x -= p; y -= p; return *this; };
 
-	PixelPoint ToPixelPoint() const { return PixelPoint( m_pixWidth, m_pixHeight ); }
+    PIXEL GetX( ) const { return x;  }
+    PIXEL GetY( ) const { return y; }
 
-    void ReduceHeight( PIXEL const pixDiff ) 
-    {
-        assert( m_pixHeight >= pixDiff );
-        m_pixHeight -= pixDiff;
-    }
+	long const GetXvalue( ) const { return x.GetValue(); }
+	long const GetYvalue( ) const { return y.GetValue(); }
 
-	void SetHeight( PIXEL const pixHeight )
-	{
-		m_pixHeight = pixHeight;
-	}
+    void Set2Zero( ) { * this = ZERO_VAL(); }
+    bool IsZero( ) const { return * this == ZERO_VAL(); };
 
-    void SetEmpty( )
-    {
-        m_pixWidth  = PIXEL(0_PIXEL);
-		m_pixHeight = PIXEL(0_PIXEL);
-    }
-
-    bool IsEmpty( ) const
-    {
-        return ( m_pixWidth == PIXEL(0_PIXEL) ) || ( m_pixHeight == PIXEL(0_PIXEL) );
-    }
-
-    bool Includes( PixelRectSize const size ) const
-    {
-        return ( m_pixWidth >= size.m_pixWidth ) && ( m_pixHeight >= size.m_pixHeight );
-    }
-
-	static const PixelRectSize PIXEL_RECT_SIZE_ZERO()
+	static const PixelRectSize ZERO_VAL()
 	{
 		PixelRectSize value = PixelRectSize( PIXEL(0_PIXEL), PIXEL(0_PIXEL) );
 		return value;
 	}
 
 private:
-    PIXEL m_pixWidth;
-    PIXEL m_pixHeight;
+    PIXEL x;
+    PIXEL y;
 };
 
 inline PixelRectSize const operator* (PixelRectSize const & a, long const l) { PixelRectSize res(a); res *= l; return res; };

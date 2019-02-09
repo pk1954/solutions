@@ -14,8 +14,6 @@
 #include "Int24.h"
 #include "util.h"
 
-using namespace std;
-
 enum class tGenCmd : int8_t
 {
 	UNDEFINED,
@@ -79,4 +77,4 @@ private:
 wchar_t const * const GetGenerationCmdNameShort( tGenCmd const );
 wchar_t const * const GetGenerationCmdName     ( tGenCmd const );
 
-wostream & operator << ( wostream &, GenerationCmd const & );
+std::wostream & operator << ( std::wostream &, GenerationCmd const & );

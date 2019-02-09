@@ -42,7 +42,7 @@ EvoController::~EvoController( )
 
 void EvoController::Start
 ( 
-    wostream            *       pTraceStream,
+    std::wostream       *       pTraceStream,
 	WorkThreadInterface * const pWorkThreadInterface,
 	WinManager          * const pWinManager,
     PerformanceWindow   * const pPerformanceWindow,
@@ -108,7 +108,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			break;
 
 		case IDM_HIST_BUFFER_FULL:
-			wcout << L"History buffer is full" << endl;
+			std::wcout << L"History buffer is full" << std::endl;
 			(void)MessageBeep( MB_ICONWARNING );
 			ProcessCommand( IDM_STOP, 0 );
 			break;

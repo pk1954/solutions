@@ -8,8 +8,6 @@
 #include "config.h"
 #include "EvolutionTypes.h"
 
-using namespace std;
-
 class Random;
 
 //lint -sem(Genome::init,initializer)
@@ -54,8 +52,8 @@ private:
         Gene    m_gene;
     };
 
-    array< generalGene, NR_GENES        > m_aGeneGeneral;  // 4 * 9 = 36   general genes 
-    array< actionGene,  NR_ACTION_GENES > m_aGeneActions;  // 4 * 8 = 32   genes for choosing next action
+    std::array< generalGene, NR_GENES        > m_aGeneGeneral;  // 4 * 9 = 36   general genes 
+    std::array< actionGene,  NR_ACTION_GENES > m_aGeneActions;  // 4 * 8 = 32   genes for choosing next action
                                                            // sum     68
     
     void setGeneralGene( tGeneType const, int const );
@@ -65,15 +63,15 @@ private:
 
 	static unsigned int const MAX_LIFE_SPAN = 200;
 
-	static array< bool,         NR_ACTIONS        > m_abActionEnabled;
-	static array< unsigned int, MAX_LIFE_SPAN + 1 > m_mortalityTable;
+	static std::array< bool,         NR_ACTIONS        > m_abActionEnabled;
+	static std::array< unsigned int, MAX_LIFE_SPAN + 1 > m_mortalityTable;
 
 	static bool & enabled( tAction const action ) { return m_abActionEnabled[ static_cast<unsigned short>( action ) ]; 	}
 
     static Genome m_genomeTemplate;
 
-    static array< GeneTypeLimits, NR_GENES        > m_aLimitsGeneral;
-    static array< GeneTypeLimits, NR_ACTION_GENES > m_aLimitsActions;
+    static std::array< GeneTypeLimits, NR_GENES        > m_aLimitsGeneral;
+    static std::array< GeneTypeLimits, NR_ACTION_GENES > m_aLimitsActions;
 
     static void setGeneralLimits( tGeneType, long, long );
 };

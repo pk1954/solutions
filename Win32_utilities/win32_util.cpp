@@ -9,6 +9,8 @@
 #include "script.h"
 #include "win32_util.h"
 
+using std::wostream;
+
 RECT Util::ScrReadRECT( Script & script )
 {
     RECT rect;
@@ -147,14 +149,14 @@ LONG Util::GetMaxNrOfSlots( ULONG ulSlotSize )
 
 wstring Util::GetCurrentDateAndTime( )
 {
-	wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
+	std::wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
     struct tm newtime;  
     __time64_t long_time;  
     _time64( & long_time );                                  // Get time as 64-bit integer.  
     errno_t err = _localtime64_s( & newtime, & long_time );  // Convert to local time.  
-	stringbuf buf;
-	ostream os ( & buf );
-	os << put_time( & newtime, "%c" );
+	std::stringbuf buf;
+	std::ostream os ( & buf );
+	os << std::put_time( & newtime, "%c" );
 	wstring wstrTime = converter.from_bytes( buf.str( ) );
 	return wstrTime;
 }

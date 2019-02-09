@@ -11,7 +11,8 @@
 #include "win32_worker_thread.h"
 #include "win32_workThreadInterface.h"
 
-using namespace std;
+using std::wostream;
+using std::endl;
 
 WorkThreadInterface::WorkThreadInterface( wostream * pTraceStream ) :
 	m_pCore( nullptr ),

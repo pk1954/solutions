@@ -7,9 +7,8 @@
 
 #include "win32_textDisplay.h"
 #include "pixelPoint.h"
+#include "pixelRectSize.h"
 #include "pixelRect.h"
-
-using namespace std;
 
 class Shape
 {
@@ -17,7 +16,7 @@ public:
 	Shape( TextDisplay & t ) :
 		m_textDisplay( t ),
 		m_rect   ( PixelRect    ( ) ),
-		m_minSize( PixelRectSize( ) )
+		m_minSize( PixelRectSize( PIXEL(0_PIXEL), PIXEL(0_PIXEL) ) )
 	{}
 
 	virtual PixelRectSize MinimalSize( )  
@@ -32,8 +31,8 @@ public:
 		return m_rect + m_textDisplay.GetOffset( gp );
 	}
 
-	PIXEL const GetMinWidth ( ) const { return m_minSize.GetWidth();  }
-	PIXEL const GetMinHeight( ) const { return m_minSize.GetHeight(); }
+	PIXEL const GetMinWidth ( ) const { return m_minSize.GetX();  }
+	PIXEL const GetMinHeight( ) const { return m_minSize.GetY(); }
 
 	virtual Shape const * FindShape  // for all shapes without subshapes
 	( 
@@ -63,7 +62,7 @@ public:
 
 	void SetShapeEmpty()
 	{
-		return m_rect.SetEmpty( );
+		return m_rect.Reset( );
 	}
 
 	PixelRectSize SetMinSize( PixelRectSize const rect )
@@ -88,11 +87,11 @@ public:
 
 	bool SetShapeRect( PixelPoint const ppOffset, PixelRectSize const ppSize )
 	{
-		bool bRes = ppSize.Includes( m_minSize );
+		bool bRes = ( ppSize.GetX() >= m_minSize.GetX() ) && ( ppSize.GetY() >= m_minSize.GetY() );
 		if ( bRes )
 			m_rect = PixelRect( ppOffset, ppSize );
 		else 
-			m_rect.SetEmpty( );
+			m_rect.Reset( );
 		return bRes;
 	}
 

@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include "Input.h"
    
-using namespace std;
+using std::wstring;
                                             
 enum class tTOKEN    // Return value of NextToken
 { 

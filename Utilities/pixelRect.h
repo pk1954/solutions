@@ -10,12 +10,10 @@
 class PixelRect
 {
 public:
-    PixelRect( ) :
-        m_Left  (PIXEL(0_PIXEL)), 
-        m_Top   (PIXEL(0_PIXEL)), 
-        m_Right (PIXEL(0_PIXEL)), 
-        m_Bottom(PIXEL(0_PIXEL))
-    {};
+    PixelRect( ) 
+	{ 
+		Reset(); 
+	}
 
     PixelRect( PixelRect const & rect ) :
         m_Left  (rect.m_Left),
@@ -63,19 +61,13 @@ public:
 	PixelRect( PixelPoint const ptOrigin, PixelRectSize const & rectSize ) :
         m_Left  (ptOrigin.GetX()),
         m_Top   (ptOrigin.GetY()),
-        m_Right (m_Left + rectSize.GetWidth()  - PIXEL(1_PIXEL)),
-        m_Bottom(m_Top  + rectSize.GetHeight() - PIXEL(1_PIXEL))
+        m_Right (m_Left + rectSize.GetX()  - PIXEL(1_PIXEL)),
+        m_Bottom(m_Top  + rectSize.GetY() - PIXEL(1_PIXEL))
 	{
-	PIXEL p = PIXEL(1_PIXEL);
-	p += PIXEL(3_PIXEL);
-	p -= PIXEL(2_PIXEL);
-	PIXEL p2 = p - PIXEL(2_PIXEL);
-	PIXEL p3 = p + PIXEL(2_PIXEL);
-
 		assert( m_Bottom >= m_Top );
 	}
 
-    void SetEmpty( )
+	void Reset( )
     {
         m_Left   = PIXEL(0_PIXEL);
         m_Top    = PIXEL(0_PIXEL);
@@ -93,35 +85,13 @@ public:
         return (m_Left < m_Right) && (m_Top < m_Bottom );
     };
 
-    PIXEL const GetLeft( ) const 
-    {
-        return m_Left;
-    }
+	PIXEL const GetLeft  () const { return m_Left;   };
+    PIXEL const GetTop   () const { return m_Top;    };
+    PIXEL const GetRight () const { return m_Right;  };
+    PIXEL const GetBottom() const { return m_Bottom; };
 
-    PIXEL const GetRight( ) const 
-    {
-        return m_Right;
-    }
-
-    PIXEL const GetTop( ) const 
-    {
-        return m_Top;
-    }
-
-    PIXEL const GetBottom( ) const 
-    {
-        return m_Bottom;
-    }
-
-    PIXEL const GetWidth( ) const 
-    {
-        return m_Right - m_Left + PIXEL(1_PIXEL);
-    }
-
-    PIXEL const GetHeight( ) const 
-    {
-        return m_Bottom - m_Top + PIXEL(1_PIXEL);
-    }
+    PIXEL const GetWidth () const { return m_Right  - m_Left + PIXEL(1_PIXEL); }
+	PIXEL const GetHeight() const { return m_Bottom - m_Top  + PIXEL(1_PIXEL); }
 
     PixelRectSize const GetSize( ) const 
     {
@@ -150,7 +120,7 @@ public:
 
 	bool Includes( PixelRectSize const size ) const
 	{
-		return ( GetWidth() >= size.GetWidth() ) && ( GetHeight() >= size.GetHeight() );
+		return ( GetWidth() >= size.GetX() ) && ( GetHeight() >= size.GetY() );
 	}
 
 	bool const operator== ( PixelRect const & a ) const { return ( a.m_Left == m_Left ) && ( a.m_Top == m_Top ) && ( a.m_Right == m_Right ) && ( a.m_Bottom == m_Bottom ); };

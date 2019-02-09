@@ -24,8 +24,6 @@ class TextDisplay;
 class D3dBuffer;
 class Shape;
 
-using namespace std;
-
 class DrawFrame
 {
 public:
@@ -69,11 +67,11 @@ private:
 
     CLUT m_clutBackground;
 
-    wostringstream m_wBuffer;
+    std::wostringstream m_wBuffer;
 
     void startOutputString( )  
 	{ 
-		m_wBuffer.str( wstring() );
+		m_wBuffer.str( std::wstring() );
 		m_wBuffer.clear();
 	}
 

@@ -6,7 +6,7 @@
 #include "win32_memorySlot.h"
 #include "win32_rightColumn.h"
 
-using namespace std;
+using std::wostringstream;
 
 RightColumn::RightColumn( TextDisplay & textDisplay ) :
 	Shape( textDisplay )
@@ -20,7 +20,7 @@ RightColumn::RightColumn( TextDisplay & textDisplay ) :
 PixelRectSize RightColumn::MinimalSize( )  
 {       
 	PixelRectSize minSlotSize = m_aMemorySlot[0]->MinimalSize( );
-	return SetMinSize( minSlotSize.GetWidth( ), minSlotSize.GetHeight( ) * IMEMSIZE_MAX	);     
+	return SetMinSize( minSlotSize.GetX( ), minSlotSize.GetY( ) * IMEMSIZE_MAX	);     
 }                                     
 
 void RightColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const ppSize )

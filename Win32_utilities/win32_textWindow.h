@@ -6,8 +6,6 @@
 #include "win32_baseWindow.h"
 #include "win32_textBuffer.h"
 
-using namespace std;
-
 class TextWindowThread;
 class RefreshTimer;
 

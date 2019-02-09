@@ -18,8 +18,6 @@
 #include "gridField.h"
 #include "gridRect.h"
 
-using namespace std;
-
 //#ifndef NDEBUG
 //    #define CHECK_INDIVIDUALS CheckIndividuals( * this )
 //#else

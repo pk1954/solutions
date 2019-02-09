@@ -10,8 +10,6 @@
 #include "win32_textWindowThread.h"
 #include "win32_textWindow.h"
 
-using namespace std;
-
 TextWindow::TextWindow( ) :  
     BaseWindow( ),
 	m_pTextWindowThread( nullptr ),
@@ -51,7 +49,7 @@ void TextWindow::StartTextWindow
 	PixelRectSize rectSize = GetClRectSize( );
 	HDC     const hDC      = GetDC( hwnd );   assert( hDC != nullptr );
 	m_hDC_Memory = CreateCompatibleDC( hDC );
-	m_hBitmap    = CreateCompatibleBitmap( hDC, rectSize.GetWidth().GetValue(), rectSize.GetHeight().GetValue() );
+	m_hBitmap    = CreateCompatibleBitmap( hDC, rectSize.GetXvalue(), rectSize.GetYvalue() );
 	SelectObject( m_hDC_Memory, m_hBitmap );
 	ReleaseDC( hwnd, hDC );
 	Util::MakeLayered( hwnd, TRUE, 0, uiAlpha );
@@ -96,7 +94,7 @@ LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         PAINTSTRUCT   ps;
         HDC           hDC      = BeginPaint( &ps );
 		PixelRectSize rectSize = GetClRectSize( );
-		BitBlt( hDC, 0, 0, rectSize.GetWidth().GetValue(), rectSize.GetHeight().GetValue(), m_hDC_Memory, 0, 0, SRCCOPY );
+		BitBlt( hDC, 0, 0, rectSize.GetXvalue(), rectSize.GetYvalue(), m_hDC_Memory, 0, 0, SRCCOPY );
         (void)EndPaint( &ps );
         return FALSE;
     }

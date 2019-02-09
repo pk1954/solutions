@@ -8,8 +8,6 @@
 #include <functional>
 #include "gridPoint.h"
 
-using namespace std;
-
 class Neighborhood
 {
 public:
@@ -69,9 +67,9 @@ public:
     }
 
 private:
-	typedef vector< GridPoint >                  NEIGHBORS;
-	typedef array < NEIGHBORS,    GRID_WIDTH_  > NEIGHBOR_ROW;
-	typedef array < NEIGHBOR_ROW, GRID_HEIGHT_ > NEIGHBOR_GRID;
+	typedef std::vector< GridPoint >                  NEIGHBORS;
+	typedef std::array < NEIGHBORS,    GRID_WIDTH_  > NEIGHBOR_ROW;
+	typedef std::array < NEIGHBOR_ROW, GRID_HEIGHT_ > NEIGHBOR_GRID;
 
 	static int             m_iNrOfNeighbors;
 	static NEIGHBOR_GRID * m_pGridNeighbors;

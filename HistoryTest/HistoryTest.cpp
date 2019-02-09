@@ -11,7 +11,9 @@
 #include "HistorySystem.h"
 #include "Version.h"
 
-using namespace std;
+using std::string;
+using std::wcout;
+using std::endl;
 
 class HistTestModelData: public ModelData
 {

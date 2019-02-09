@@ -96,7 +96,7 @@ void AppWindow::Start(  )
 
 //	ScriptErrorHandler::ScrSetOutputStream( & wcout );
 	
-	DUMP::SetDumpStream( & wcout );
+	DUMP::SetDumpStream( & std::wcout );
 
 	Stopwatch stopwatch;
 
@@ -216,7 +216,7 @@ void AppWindow::Start(  )
 	stopwatch.Start();
     if ( ! m_pWinManager->GetWindowConfiguration( ) )
 	{
-		wcout << L"Using default window positions" << endl;
+		std::wcout << L"Using default window positions" << std::endl;
 		Show( TRUE );
 	}
 	stopwatch.Stop( L"Get window configuration" );
@@ -330,19 +330,21 @@ void AppWindow::adjustChildWindows( )
     static PIXEL const HIST_WINDOW_HEIGHT = PIXEL(30_PIXEL);
 
     PixelRectSize pntAppClientSize( GetClRectSize( ) );
+	PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
+	PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
 
-    if ( ! pntAppClientSize.IsEmpty( ) )
+    if ( ! pntAppClientSize.IsZero( ) )
     {
         m_pStatusBar->Resize( );
-        pntAppClientSize.ReduceHeight( m_pStatusBar->GetHeight( ) );
+        pixAppClientWinHeight -= m_pStatusBar->GetHeight( );
 
         if ( m_pEvoHistWindow != nullptr )
         {
             m_pEvoHistWindow->Move   // adapt history window to new size
 			( 
 				PIXEL(0_PIXEL), 
-				pntAppClientSize.GetHeight( ) - HIST_WINDOW_HEIGHT, 
-				pntAppClientSize.GetWidth(), 
+				pixAppClientWinHeight - HIST_WINDOW_HEIGHT, 
+				pixAppClientWinWidth, 
 				HIST_WINDOW_HEIGHT, 
 				TRUE 
 			); 
@@ -352,8 +354,8 @@ void AppWindow::adjustChildWindows( )
 		( 
 			PIXEL(0_PIXEL), 
 			PIXEL(0_PIXEL), 
-			pntAppClientSize.GetWidth( ), 
-			pntAppClientSize.GetHeight( ), 
+			pixAppClientWinWidth, 
+			pixAppClientWinHeight, 
 			TRUE 
 		);
     }

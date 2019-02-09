@@ -5,6 +5,8 @@
 #include <sstream> 
 #include "util.h"
 
+using std::wostringstream;
+
 extern void UpperCase( std::wstring & str )
 {
 	for ( auto & c: str ) 

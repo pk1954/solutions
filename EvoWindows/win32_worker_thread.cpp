@@ -18,8 +18,6 @@
 #include "win32_workThreadInterface.h"
 #include "win32_worker_thread.h"
 
-using namespace std;
-
 WorkThread::WorkThread( ):
 	m_pColorManager       ( nullptr ),
 	m_pPerformanceWindow  ( nullptr ),

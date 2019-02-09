@@ -109,7 +109,7 @@ public:
 	{
 		assert( sInvest > 0 );
 		int const iYield    = (sInvest * m_iFertilizerYield ) / 100;
-		int const iNewValue = min( m_sFertilizer + iYield, m_iMaxFertilizer ); 
+		int const iNewValue = std::min( m_sFertilizer + iYield, m_iMaxFertilizer ); 
 		setFertilizer( CastToShort( iNewValue ) );
 	}
 
@@ -189,7 +189,7 @@ private:
 	void setFertilizer( short const s ) { assert( s >= 0 ); m_sFertilizer = s; }
 	void setFoodStock ( short const s ) { assert( s >= 0 ); m_sFoodStock  = s; }
 	void setFertility ( short const s ) { assert( s >= 0 ); m_sFertility  = s; }
-	void setMutRate   ( short const s ) { assert( s >= 0 ); m_sMutatRate  = min( s, (short)100 ); } // mutation rate is a percent value	
+	void setMutRate   ( short const s ) { assert( s >= 0 ); m_sMutatRate  = std::min( s, (short)100 ); } // mutation rate is a percent value	
 };
 
 std::wostream & operator << ( std::wostream &, GridField const & );

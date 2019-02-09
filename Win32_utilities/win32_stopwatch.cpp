@@ -20,16 +20,16 @@ void Stopwatch::Start( )
 	m_hrtimer.Start( );
 }
 
-void Stopwatch::Stop( wstring const wstr )
+void Stopwatch::Stop( std::wstring const wstr )
 {
 	assert( m_iLevel > 0 );  // no Stop without Start
 
 	m_hrtimer.Stop( );
 	--m_iLevel;
 	for ( int i = 0; i < m_iLevel; ++i )
-		wcout << L"      ";
-	wcout << setw(30) << left << wstr;
-	wcout << setw(6) << right;
-	wcout << DecFraction( m_hrtimer.Get( ) );
-	wcout << L" ms" << endl;
+		std::wcout << L"      ";
+	std::wcout << std::setw(30) << std::left << wstr;
+	std::wcout << std::setw( 6) << std::right;
+	std::wcout << DecFraction( m_hrtimer.Get( ) );
+	std::wcout << L" ms" << std::endl;
 }

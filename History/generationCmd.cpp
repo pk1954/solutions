@@ -5,11 +5,9 @@
 #include <unordered_map>
 #include "GenerationCmd.h"
 
-using namespace std;
-
 wchar_t const * const GetGenerationCmdNameShort( tGenCmd const cmd )
 {
-    static unordered_map < tGenCmd, wchar_t const * const > mapNames =
+    static std::unordered_map < tGenCmd, wchar_t const * const > mapNames =
     {
         { tGenCmd::CACHED,    L"CACHE" },
         { tGenCmd::UNDEFINED, L"UNDEF" }
@@ -20,7 +18,7 @@ wchar_t const * const GetGenerationCmdNameShort( tGenCmd const cmd )
 
 wchar_t const * const GetGenerationCmdName( tGenCmd const cmd )
 {
-    static unordered_map < tGenCmd, wchar_t const * const > mapNames =
+    static std::unordered_map < tGenCmd, wchar_t const * const > mapNames =
     {
         { tGenCmd::CACHED,    L"tGenCmd::cached" },
         { tGenCmd::UNDEFINED, L"tGenCmd::undefined" }
@@ -29,7 +27,7 @@ wchar_t const * const GetGenerationCmdName( tGenCmd const cmd )
     return mapNames.at( cmd );
 }
 
-wostream & operator << ( wostream & out, GenerationCmd const & genCmd )
+std::wostream & operator << ( std::wostream & out, GenerationCmd const & genCmd )
 {
     tGenCmd cmd = genCmd.GetCommand( );
     out << GetGenerationCmdNameShort( cmd );

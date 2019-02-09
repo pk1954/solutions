@@ -11,6 +11,11 @@
 #include "gridRect.h"
 #include "gridNeighbor.h"
 
+using std::wofstream;
+using std::wstring;
+using std::wcout;
+using std::endl;
+
 int const NRUNS = 5000;
 
 void testee()

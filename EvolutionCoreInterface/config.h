@@ -7,8 +7,6 @@
 #include <string>
 #include "BoolOp.h"
 
-using namespace std;
-
 class Config
 {
 public:
@@ -97,8 +95,8 @@ private:
 
     typedef long tConfigItem;
 
-    static unordered_map< tId, tConfigItem > m_mapConfigData;
+    static std::unordered_map< tId, tConfigItem > m_mapConfigData;
 
-    static void defineConfigId( Config::tId const, wstring const &, long const );
+    static void defineConfigId( Config::tId const, std::wstring const &, long const );
 };
 

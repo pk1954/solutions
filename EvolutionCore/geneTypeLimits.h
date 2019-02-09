@@ -6,6 +6,8 @@
 #include "debug.h"
 #include "util.h"
 
+using std::max;
+
 class GeneTypeLimits
 {
 public:

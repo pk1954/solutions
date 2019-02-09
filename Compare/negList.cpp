@@ -6,7 +6,7 @@
 #include "negList.h"
 #include "errhndl.h"
   
-using namespace std;
+using std::wstring;
 
 bool NegativeList::Add
 ( 
@@ -27,7 +27,7 @@ bool NegativeList::SetActive
 	bool          fActive 
 )
 {
-	map < unsigned long, StrInfo >::iterator it = m_negSpecs.find( ulIndex );
+	std::map < unsigned long, StrInfo >::iterator it = m_negSpecs.find( ulIndex );
 
 	if ( m_negSpecs.end() == it )
 		return false;

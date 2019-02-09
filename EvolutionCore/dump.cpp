@@ -7,7 +7,9 @@
 #include "grid_model.h"
 #include "dump.h"
 
-using namespace std;
+using std::wostream;
+using std::wcout;
+using std::endl;
 
 wostream * DUMP::m_pDumpStream = & wcout;
 

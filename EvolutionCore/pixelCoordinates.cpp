@@ -65,7 +65,7 @@ void PixelCoordinates::CenterGrid
 	PixelRectSize const pntPixSize  // available size 
 )
 {
-    m_pixOffset = calcCenterOffset( gpCenter, pntPixSize.ToPixelPoint() / 2 );
+    m_pixOffset = calcCenterOffset( gpCenter, PixelPoint( pntPixSize.GetX(), pntPixSize.GetY() ) / 2 );
 }
 
 PIXEL PixelCoordinates::CalcMaximumFieldSize
@@ -74,10 +74,10 @@ PIXEL PixelCoordinates::CalcMaximumFieldSize
 	PixelRectSize const   pntPixSize        // available pixel size 
 ) const
 {
-	return min( 
-				pntPixSize.GetWidth()  / gpGridRectSize.GetXvalue(), 
-				pntPixSize.GetHeight() / gpGridRectSize.GetYvalue() 
-	          );
+	return std::min( 
+			          pntPixSize.GetX() / gpGridRectSize.GetXvalue(), 
+				      pntPixSize.GetY() / gpGridRectSize.GetYvalue() 
+	               );
 }
 
 bool PixelCoordinates::SetGridFieldSize( PIXEL const pixNewFieldSize )
@@ -247,7 +247,7 @@ KGridRect PixelCoordinates::Pixel2KGridRect( PixelRect const & rect ) const
     return KGridRect 
     (
         Pixel2KGridPos ( rect.GetStartPoint() ),
-        Pixel2KGridSize( rect.GetSize().ToPixelPoint(), m_pixFieldSize )
+        Pixel2KGridSize( PixelPoint( rect.GetWidth(), rect.GetHeight() ), m_pixFieldSize )
     );
 }
 

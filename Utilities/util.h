@@ -9,9 +9,7 @@
 #include <streambuf>
 #include "debug.h"
 
-using namespace std;
-
-extern void UpperCase( wstring & );
+extern void UpperCase( std::wstring & );
 
 // not needed, makes strange problems 
 //template <typename SOURCE_TYPE> int sgn(SOURCE_TYPE val) 

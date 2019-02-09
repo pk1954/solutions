@@ -6,8 +6,6 @@
 #include "IndividualId.h"
 #include "win32_shape.h"
 
-using namespace std;
-
 class MemorySlot : public Shape
 {
 public:

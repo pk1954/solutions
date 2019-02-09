@@ -4,6 +4,9 @@
 #include <iostream>
 #include "RTF_output.h"
  
+using std::wcout;
+using std::wstring;
+
 RTFOutput::RTFOutput( )
 {                         
 	wcout << L"{\\rtf1\\pc{\\fonttbl{\\f0\\fmodern Courier New;}} ";

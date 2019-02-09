@@ -8,7 +8,8 @@
 #include "gridPoint.h"
 #include "gridRect.h"
 
-using namespace std;
+using std::min;
+using std::max;
 
 GridPoint GridRect::clipStartPoint( ) const
 {

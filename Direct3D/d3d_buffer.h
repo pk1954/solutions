@@ -29,8 +29,8 @@ public:
     void      RenderIndividuals( );
     void      RenderBackground( );
     void      RenderTranspRect( PixelRect const &, unsigned int const, COLORREF const );
-    void      D3D_DrawText( PixelRect const &, wstring const &, D3DCOLOR );
-    PixelRect D3D_CalcRect( wstring const & );
+    void      D3D_DrawText( PixelRect const &, std::wstring const &, D3DCOLOR );
+    PixelRect D3D_CalcRect( std::wstring const & );
 	void      EndFrame( );
 
     void SetStripMode( tBoolOp const bOp ) 

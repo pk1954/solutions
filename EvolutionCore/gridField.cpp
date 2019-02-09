@@ -15,8 +15,8 @@ std::wostream & operator << ( std::wostream & out, GridField const & gf )
 {
 //lint -e747  Significant prototype coercion with setw
     out << gf.GetGridPoint( );
-    out << L" en="           << setw(8) << gf.GetEnergy( );
-//  out << L" last action: " << setw(9) << GetActionTypeName( gf.GetLastAction() );
+    out << L" en="           << std::setw(8) << gf.GetEnergy( );
+//  out << L" last action: " << std::setw(9) << GetActionTypeName( gf.GetLastAction() );
 //lint +e747 
     return out;
 }

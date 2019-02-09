@@ -7,7 +7,7 @@
 #include "SCRIPT.H"
 #include "win32_script.h"
 
-using namespace std;
+using std::wstring;
 
 wstring AskForScriptFileName( wstring wstrPath )
 {

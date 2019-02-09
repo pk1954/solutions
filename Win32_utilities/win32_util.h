@@ -12,15 +12,13 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
-
 class Script;
 
 namespace Util
 {
-    wostream & operator << ( wostream &, PixelPoint const );
-    wostream & operator << ( wostream &, PixelRect const & );
-    wostream & operator << ( wostream &, RECT const & );
+    std::wostream & operator << ( std::wostream &, PixelPoint const );
+    std::wostream & operator << ( std::wostream &, PixelRect const & );
+    std::wostream & operator << ( std::wostream &, RECT const & );
 
     RECT ScrReadRECT( Script & );
 
@@ -114,7 +112,8 @@ namespace Util
 
     inline PixelPoint GetClRectCenter( HWND const hwnd )
     {
-        return (GetClRectSize( hwnd ) / 2).ToPixelPoint();
+        PixelRectSize pixSize = GetClRectSize( hwnd ) / 2;
+		return PixelPoint( pixSize.GetX(), pixSize.GetY() );
     }
 
     inline BOOL IsInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?
@@ -242,7 +241,7 @@ namespace Util
 		FILE * fp;
 		BOOL bRes = AllocConsole( );
 		_wfreopen_s( &fp, L"CONOUT$", L"w", stdout );
-		std::wcout << "console output started" << endl << flush;
+		std::wcout << "console output started" << std::endl << std::flush;
 		return GetConsoleWindow( );
 	}
 
@@ -256,9 +255,9 @@ namespace Util
     BOOL MoveWindowAbsolute( HWND const, PIXEL const, PIXEL const, PIXEL const, PIXEL const, BOOL const );
     BOOL MoveWindowAbsolute( HWND const, PIXEL const, PIXEL const,                          BOOL const );
 	
-    DWORD     GetNrOfCPUs( );
-    ULONGLONG GetPhysicalMemory( );
-	LONG      GetMaxNrOfSlots( ULONG );
-	wstring   GetCurrentDateAndTime( );
-	void      SetApplicationTitle( HWND const, int const );
+    DWORD        GetNrOfCPUs( );
+    ULONGLONG    GetPhysicalMemory( );
+	LONG         GetMaxNrOfSlots( ULONG );
+	std::wstring GetCurrentDateAndTime( );
+	void         SetApplicationTitle( HWND const, int const );
 };

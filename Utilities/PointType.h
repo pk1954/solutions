@@ -39,10 +39,19 @@ public:
 		return res;
 	};
 
+	static PointType const & ZERO_VAL() 
+	{ 
+		static PointType res = PointType( BASE_TYPE(0), BASE_TYPE(0) ); 
+		return res;
+	};
+
+    void Set2Zero( ) { * this = ZERO_VAL(); }
     void Set2Null( ) { * this = NULL_VAL(); }
 
     bool IsNull   ( ) const { return * this == NULL_VAL(); };
     bool IsNotNull( ) const { return * this != NULL_VAL(); };
+    bool IsZero   ( ) const { return * this == ZERO_VAL(); };
+    bool IsNotZero( ) const { return * this != ZERO_VAL(); };
 
 private:
     BASE_TYPE x;
@@ -108,19 +117,19 @@ PointType<BASE_TYPE> const operator/ (PointType<BASE_TYPE> const a, long const l
 template <typename BASE_TYPE>
 PointType<BASE_TYPE> const Max(PointType<BASE_TYPE> const a, PointType<BASE_TYPE> const b) 
 { 
-	return PointType<BASE_TYPE>( ::min(a.GetX(), b.GetX()), ::min(a.GetY(), b.GetY()) ); 
+	return PointType<BASE_TYPE>( std::min(a.GetX(), b.GetX()), std::min(a.GetY(), b.GetY()) ); 
 }
 
 template <typename BASE_TYPE>
 PointType<BASE_TYPE> const Min(PointType<BASE_TYPE> const a, PointType<BASE_TYPE> const b) 
 { 
-	return PointType<BASE_TYPE>( ::max(a.GetX(), b.GetX()), ::max(a.GetY(), b.GetY()) ); 
+	return PointType<BASE_TYPE>( std::max(a.GetX(), b.GetX()), std::max(a.GetY(), b.GetY()) ); 
 }
 
 template <typename BASE_TYPE>
 BASE_TYPE const MaxAbsDelta(PointType<BASE_TYPE> const pnt) 
 {
-    return BASE_TYPE( ::max( pnt.GetX().abs_value(), pnt.GetY().abs_value() ) );
+    return BASE_TYPE( std::max( pnt.GetX().abs_value(), pnt.GetY().abs_value() ) );
 }
 
 template <typename BASE_TYPE>

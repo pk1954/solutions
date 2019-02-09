@@ -7,8 +7,6 @@
 #include "win32_textBuffer.h"
 #include "win32_thread.h"
 
-using namespace std;
-
 class TextWindowThread: public Util::Thread
 {
 public:

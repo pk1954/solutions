@@ -6,8 +6,6 @@
 #include <fstream>
 #include "EvoGenerationCmd.h"
 
-using namespace std;
-
 bool IsEditorCommand( tEvoCmd const cmd )
 {
 	static_assert( (int)tEvoCmd::LAST_APP_CMD < GenerationCmd::MAX_APP_CMD, "Too many tEvoCmd values" );
@@ -17,7 +15,7 @@ bool IsEditorCommand( tEvoCmd const cmd )
 
 wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
 {
-    static unordered_map < tEvoCmd, wchar_t const * const > mapNames =
+    static std::unordered_map < tEvoCmd, wchar_t const * const > mapNames =
     {
         { tEvoCmd::nextGen,                 L"NEXT"   },
         { tEvoCmd::reset,                   L"RESET"  },  
@@ -36,7 +34,7 @@ wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
 
 wchar_t const * const GetEvoCommandName( tEvoCmd const cmd )
 {
-    static unordered_map < tEvoCmd, wchar_t const * const > mapNames =
+    static std::unordered_map < tEvoCmd, wchar_t const * const > mapNames =
     {
         { tEvoCmd::nextGen,                 L"tEvoCmd::nextGen" },
         { tEvoCmd::reset,                   L"tGenCmd::reset" },
@@ -53,7 +51,7 @@ wchar_t const * const GetEvoCommandName( tEvoCmd const cmd )
     return mapNames.at( cmd );
 }
 
-wostream & operator << ( wostream & out, tEvoCmd const & cmd )
+std::wostream & operator << ( std::wostream & out, tEvoCmd const & cmd )
 {
 	if ( GenerationCmd::IsAppCmd( static_cast<tGenCmd>(cmd) ) )
 		out << GetEvoCommandNameShort( cmd  );
