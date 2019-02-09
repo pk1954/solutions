@@ -11,23 +11,28 @@
 using std::min;
 using std::max;
 
-GridPoint GridRect::clipStartPoint( ) const
-{
-	return GridPoint
+GridRect const ClipToGrid( GridRect const & rect ) 
+{ 
+	GridPoint const startPoint
 	(
-		max( m_Left, GRID_RECT_FULL().m_Left ),
-		max( m_Top,  GRID_RECT_FULL().m_Top  )
+		max( rect.GetLeft(), GridRect::GRID_RECT_FULL().GetLeft() ),
+		max( rect.GetTop(),  GridRect::GRID_RECT_FULL().GetTop()  )
 	);
-};
 
-GridPoint GridRect::clipEndPoint( ) const
-{
-	return GridPoint
+	GridPoint const endPoint
 	(
-		min( m_Right,  GRID_RECT_FULL().m_Right ),
-		min( m_Bottom, GRID_RECT_FULL().m_Bottom )
+		min( rect.GetRight(),  GridRect::GRID_RECT_FULL().GetRight() ),
+		min( rect.GetBottom(), GridRect::GRID_RECT_FULL().GetBottom() )
 	);
-};
+
+	return GridRect( startPoint, endPoint );	
+}
+
+void Apply2Rect( GridPointFunc const & func, GridRect const & rect )
+{
+	GridRect rectClipped = ClipToGrid( rect );
+	::Apply2Rect( func, rectClipped.GetStartPoint(), rectClipped.GetEndPoint() );
+}
 
 void Apply2Rect
 ( 

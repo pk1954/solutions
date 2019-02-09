@@ -36,11 +36,6 @@ public:
 
 	void Reset( ) { * this = GRID_RECT_EMPTY(); }
 
-	void Apply2Rect( GridPointFunc const & func ) const
-	{
-		::Apply2Rect( func, clipStartPoint( ), clipEndPoint( ) );
-	}
-
     bool const operator== ( GridRect const &a ) const { return ( a.m_Left == m_Left ) && ( a.m_Top == m_Top ) && ( a.m_Right == m_Right ) && ( a.m_Bottom == m_Bottom ); };
     bool const operator!= ( GridRect const &a ) const { return ( a.m_Left != m_Left ) || ( a.m_Top != m_Top ) || ( a.m_Right != m_Right ) || ( a.m_Bottom != m_Bottom ); };
 
@@ -57,8 +52,6 @@ public:
     GridPoint const GetCenter    ( ) const { return ( GetStartPoint() + GetEndPoint() ) / 2; }
     GridPoint const GetSize      ( ) const { return GridPoint( GetWidth(), GetHeight() ); }
 	
-	GridRect  const ClipToGrid   ( ) const { return GridRect( clipStartPoint( ), clipEndPoint( ) );	}
- 
     bool const IsEmpty( )    const { return ( *this == GRID_RECT_EMPTY() ); }
     bool const IsNotEmpty( ) const { return ( *this != GRID_RECT_EMPTY() ); }
 
@@ -80,13 +73,14 @@ public:
 	};
 
 private:
-	GridPoint clipStartPoint( ) const;
-	GridPoint clipEndPoint  ( ) const;
-
 	GRID_COORD m_Left;
     GRID_COORD m_Top;
     GRID_COORD m_Right;
     GRID_COORD m_Bottom;
 };
+
+GridRect const ClipToGrid( GridRect const & ); 
+ 
+void Apply2Rect( GridPointFunc const &, GridRect const & );
 
 std::wostream & operator << ( std::wostream &, GridRect const & );

@@ -187,7 +187,7 @@ void DrawFrame::drawIndividuals( GridRect const & rect )
 {
 	float const fHalfSizeInd = static_cast<float>( m_gridPointShape->GetIndShapeSize( ).GetValue() );
 
-    rect.Apply2Rect
+    Apply2Rect
 	( 
 		[&](GridPoint const gp) 
 	    { 
@@ -195,7 +195,8 @@ void DrawFrame::drawIndividuals( GridRect const & rect )
             {
 				setIndividualColor( gp, fHalfSizeInd ); 
 			}
-	    } 
+	    },
+		rect
 	);
 
     m_pD3dBuffer->RenderIndividuals( ); 
@@ -203,7 +204,7 @@ void DrawFrame::drawIndividuals( GridRect const & rect )
 
 void DrawFrame::drawText( GridRect const & rect )
 {
-    rect.Apply2Rect
+    Apply2Rect
 	( 
 		[&](GridPoint const gp)
 		{
@@ -212,7 +213,8 @@ void DrawFrame::drawText( GridRect const & rect )
 				PixelPoint const ppGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( gp );
 				m_gridPointShape->Draw( gp, ppGridpointOffset );
             }
-		}
+		},
+		rect
 	);
 }
 

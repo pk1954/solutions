@@ -218,7 +218,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 
     AllGenesStat genesStat;
 
-    m_pCore->GetSelection( ).Apply2Rect
+    Apply2Rect
 	( 
 		[&](GridPoint const gp)
 		{
@@ -239,7 +239,8 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 					genesStat.addAge    ( s, m_pCore->GetAge( gp ) );
 				}
 			}
-		}
+		},
+		m_pCore->GetSelection( )
 	);
 
     genesStat.scaleAllGenesStat( );

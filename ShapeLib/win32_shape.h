@@ -7,7 +7,6 @@
 
 #include "win32_textDisplay.h"
 #include "pixelPoint.h"
-#include "pixelRectSize.h"
 #include "pixelRect.h"
 
 class Shape
