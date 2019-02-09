@@ -6,4 +6,4 @@
 #include "pixel.h"
 #include "PointType.h"
 
-using PixelPoint = PointType< PIXEL >;
+using PixelPoint = PointType< PIXEL, struct PixelPoint_Parameter >;

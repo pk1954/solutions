@@ -6,7 +6,6 @@
 #include "pixelPoint.h"
 
 class PixelCoordinates;
-class PixelRectSize;
 class EvolutionCore;
 
 class PixelCore

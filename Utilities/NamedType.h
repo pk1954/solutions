@@ -6,7 +6,7 @@
 #include <iostream>
 #include <iomanip>
 
-template <typename BASE_TYPE>
+template <typename BASE_TYPE, typename Parameter>
 class NamedType
 {
 public:
@@ -63,8 +63,8 @@ private:
     BASE_TYPE value_;
 };
 
-template <typename BASE_TYPE>
-std::wostream & operator<< ( std::wostream & out, NamedType<BASE_TYPE> const & param )
+template <typename BASE_TYPE, typename Parameter>
+std::wostream & operator<< ( std::wostream & out, NamedType<BASE_TYPE, Parameter> const & param )
 {
 	out << std::setw( 5 ) << param.GetValue();
     return out;

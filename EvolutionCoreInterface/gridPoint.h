@@ -17,7 +17,7 @@
 #include "gridCoord.h"
 #include "PointType.h"
 
-using GridPoint = PointType< GRID_COORD >;
+using GridPoint = PointType< GRID_COORD, struct GRID_COORD_Parameter >;
 
 inline bool const Neighbors( GridPoint const a, GridPoint const b )
 { 
