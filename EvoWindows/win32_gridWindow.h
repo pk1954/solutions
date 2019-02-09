@@ -6,7 +6,6 @@
 #include "pixelCoordinates.h"
 #include "win32_baseWindow.h"
 
-class GridRect;
 class DrawFrame;
 class PixelCoordinates;
 class PixelCore;

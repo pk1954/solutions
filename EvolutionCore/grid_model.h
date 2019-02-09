@@ -15,7 +15,6 @@
 #include "plannedActivity.h"
 
 class GridCircle;
-class GridRect;
 class Manipulator;
 
 class Grid
@@ -63,7 +62,7 @@ public:
 
     bool ListIsEmpty( ) const { return m_gpList.ListIsEmpty( ); }
 
-    GridPoint FindGridPoint( const std::function<bool( GridPoint const)>&, GridRect const & = GridRect::GRID_RECT_FULL() ) const;
+    GridPoint FindGridPoint( const std::function<bool( GridPoint const)>&, GridRect const & = GRID_RECT_FULL() ) const;
 
     // Query functions 
 

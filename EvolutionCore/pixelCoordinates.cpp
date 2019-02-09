@@ -70,8 +70,8 @@ void PixelCoordinates::CenterGrid
 
 PIXEL PixelCoordinates::CalcMaximumFieldSize
 ( 
-	GridPoint     const & gpGridRectSize,   // Grid size to fit into window
-	PixelRectSize const   pntPixSize        // available pixel size 
+	GridRectSize  const & gpGridRectSize,   // Grid size to fit into window
+	PixelRectSize const & pntPixSize        // available pixel size 
 ) const
 {
 	return std::min( 

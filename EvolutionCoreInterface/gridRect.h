@@ -5,82 +5,27 @@
 
 #include <iostream>
 #include "gridPoint.h"
+#include "RectType.h"
 
-class GridRect;
+using GridRectSize = PointType< GRID_COORD,                          struct PixelRectSize_Parameter >;
+using GridRect     = RectType < GRID_COORD, GridPoint, GridRectSize, struct GridRect_Parameter >;
 
-void Apply2Rect( GridPointFunc const &, GridPoint const, GridPoint const, bool const = false );
-void Apply2Grid( GridPointFunc const &,                                   bool const = false );
+inline static GridRect const & GRID_RECT_EMPTY() 
+{ 
+	static GridRect res = GridRect( GRID_ORIGIN(), GRID_ORIGIN() ); 
+	return res;
+};
 
-class GridRect
-{
-public:
-	GridRect( ) 
-	{ 
-		Reset(); 
-	}
-
-    GridRect
-	( 
-		GridPoint const gpStart, 
-		GridPoint const gpEnd 
-	) : 
-		m_Left  (gpStart.GetX()), 
-		m_Top   (gpStart.GetY()), 
-		m_Right (gpEnd.GetX()), 
-		m_Bottom(gpEnd.GetY())
-	{
-		assert( m_Bottom >= m_Top );
-	};
-
-	~GridRect() { };
-
-	void Reset( ) { * this = GRID_RECT_EMPTY(); }
-
-    bool const operator== ( GridRect const &a ) const { return ( a.m_Left == m_Left ) && ( a.m_Top == m_Top ) && ( a.m_Right == m_Right ) && ( a.m_Bottom == m_Bottom ); };
-    bool const operator!= ( GridRect const &a ) const { return ( a.m_Left != m_Left ) || ( a.m_Top != m_Top ) || ( a.m_Right != m_Right ) || ( a.m_Bottom != m_Bottom ); };
-
-    GRID_COORD const GetWidth ( ) const { return m_Right - m_Left + GRID_COORD(1_GRID_COORD); }
-	GRID_COORD const GetHeight( ) const { return m_Bottom - m_Top + GRID_COORD(1_GRID_COORD); }
-	
-	GRID_COORD const GetLeft  () const { return m_Left;   };
-    GRID_COORD const GetTop   () const { return m_Top;    };
-    GRID_COORD const GetRight () const { return m_Right;  };
-    GRID_COORD const GetBottom() const { return m_Bottom; };
-
-    GridPoint const GetStartPoint( ) const { return GridPoint( GetLeft(),  GetTop()    ); }
-    GridPoint const GetEndPoint  ( ) const { return GridPoint( GetRight(), GetBottom() ); }
-    GridPoint const GetCenter    ( ) const { return ( GetStartPoint() + GetEndPoint() ) / 2; }
-    GridPoint const GetSize      ( ) const { return GridPoint( GetWidth(), GetHeight() ); }
-	
-    bool const IsEmpty( )    const { return ( *this == GRID_RECT_EMPTY() ); }
-    bool const IsNotEmpty( ) const { return ( *this != GRID_RECT_EMPTY() ); }
-
-	bool Includes( GridPoint const gp ) const
-	{
-		return (m_Left <= gp.GetX()) && (gp.GetX() <= m_Right) && (m_Top <= gp.GetY()) && (gp.GetY() <= m_Bottom);
-	}
-
-	inline static GridRect const & GRID_RECT_EMPTY() 
-	{ 
-		static GridRect res = GridRect( GRID_ORIGIN(), GRID_ORIGIN() ); 
-		return res;
-	};
-
-	inline static GridRect const & GRID_RECT_FULL() 
-	{ 
-		static GridRect res = GridRect( GRID_ORIGIN(), GRID_SIZE() - GRID_COORD(1_GRID_COORD)); 
-		return res;
-	};
-
-private:
-	GRID_COORD m_Left;
-    GRID_COORD m_Top;
-    GRID_COORD m_Right;
-    GRID_COORD m_Bottom;
+inline static GridRect const & GRID_RECT_FULL() 
+{ 
+	static GridRect res = GridRect( GRID_ORIGIN(), GRID_SIZE() - GRID_COORD(1_GRID_COORD)); 
+	return res;
 };
 
 GridRect const ClipToGrid( GridRect const & ); 
  
 void Apply2Rect( GridPointFunc const &, GridRect const & );
+void Apply2Rect( GridPointFunc const &, GridPoint const, GridPoint const, bool const = false );
+void Apply2Grid( GridPointFunc const &,                                   bool const = false );
 
 std::wostream & operator << ( std::wostream &, GridRect const & );

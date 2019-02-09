@@ -45,7 +45,7 @@ public:
 	PixelPoint GetPixelOffset( ) const { return m_pixOffset; }
 
 	PIXEL      ComputeNewFieldSize( bool const ) const;  // does not modify field size
-    PIXEL	   CalcMaximumFieldSize( GridPoint const &, PixelRectSize const ) const;
+    PIXEL	   CalcMaximumFieldSize( GridRectSize const &, PixelRectSize const & ) const;
 
 	//////// manipulation functions ////////
 

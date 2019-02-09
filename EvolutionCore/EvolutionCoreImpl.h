@@ -82,7 +82,7 @@ public:
     virtual GRID_COORD     GetBrushSize       ( ) const { return m_brush.GetRadius(); }
     virtual tBrushMode     GetBrushMode       ( ) const { return m_brush.GetBrushMode(); }
 
-	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GridRect::GRID_RECT_FULL() : m_gridRectSelection; }
+	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GRID_RECT_FULL() : m_gridRectSelection; }
 	virtual bool           SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
 	virtual bool           SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
 
@@ -111,7 +111,7 @@ public:
 
 	virtual void SetPoi( GridPoint const );
     virtual GridPoint FindPOI( ) const;
-	virtual GridPoint FindGridPoint( IndividualId const & id, GridRect const & rect = GridRect::GRID_RECT_FULL() ) const 
+	virtual GridPoint FindGridPoint( IndividualId const & id, GridRect const & rect = GRID_RECT_FULL() ) const 
 	{ 
 		return ( id == IndividualId::NO_INDIVIDUAL )
 			   ? GridPoint::NULL_VAL()

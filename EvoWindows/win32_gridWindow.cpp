@@ -261,7 +261,7 @@ void GridWindow::mouseWheelAction( int iDelta )
 
 bool GridWindow::IsFullGridVisible() const
 {
-	return IsInClientRect( m_pPixelCoordinates->Grid2PixelRect( GridRect::GRID_RECT_FULL() ) );
+	return IsInClientRect( m_pPixelCoordinates->Grid2PixelRect( GRID_RECT_FULL() ) );
 }
 
 LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )

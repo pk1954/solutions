@@ -6,7 +6,6 @@
 #include "win32_textWindow.h"
 #include "win32_util.h"
 
-class GridRect;
 class EvolutionCore;
 
 //lint -esym( 1712, StatisticsWindow )  no default constructor for class 

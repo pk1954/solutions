@@ -15,14 +15,14 @@ GridRect const ClipToGrid( GridRect const & rect )
 { 
 	GridPoint const startPoint
 	(
-		max( rect.GetLeft(), GridRect::GRID_RECT_FULL().GetLeft() ),
-		max( rect.GetTop(),  GridRect::GRID_RECT_FULL().GetTop()  )
+		max( rect.GetLeft(), GRID_RECT_FULL().GetLeft() ),
+		max( rect.GetTop(),  GRID_RECT_FULL().GetTop()  )
 	);
 
 	GridPoint const endPoint
 	(
-		min( rect.GetRight(),  GridRect::GRID_RECT_FULL().GetRight() ),
-		min( rect.GetBottom(), GridRect::GRID_RECT_FULL().GetBottom() )
+		min( rect.GetRight(),  GRID_RECT_FULL().GetRight() ),
+		min( rect.GetBottom(), GRID_RECT_FULL().GetBottom() )
 	);
 
 	return GridRect( startPoint, endPoint );	

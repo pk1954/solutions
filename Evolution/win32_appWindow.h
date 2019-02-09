@@ -19,7 +19,6 @@ class EditorWindow;
 class DspOptWindow;
 class EvoHistWindow;
 class WorkThreadInterface;
-class GridRect;
 class Script;
 class FocusPoint;
 class WinManager;
