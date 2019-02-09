@@ -4,8 +4,10 @@
 #pragma once
 
 #include <assert.h>
+#include "pixel.h"
 #include "pixelPoint.h"
-#include "pixelRectSize.h"
+
+using PixelRectSize = PointType< PIXEL, struct PixelRectSize_Parameter >;
 
 class PixelRect
 {
@@ -24,7 +26,11 @@ public:
 		assert( m_Bottom >= m_Top );
     };
 
-    PixelRect( PixelPoint const pt1, PixelPoint const pt2 )
+    PixelRect
+	( 
+		PixelPoint const pt1, 
+		PixelPoint const pt2 
+	)
     { 
         if ( pt1.GetX() < pt2.GetX() )
         {
@@ -58,11 +64,11 @@ public:
 		assert( m_Bottom >= m_Top );
     };
 
-	PixelRect( PixelPoint const ptOrigin, PixelRectSize const & rectSize ) :
+	PixelRect( PixelPoint const ptOrigin, PixelRectSize const & size ) :
         m_Left  (ptOrigin.GetX()),
         m_Top   (ptOrigin.GetY()),
-        m_Right (m_Left + rectSize.GetX()  - PIXEL(1_PIXEL)),
-        m_Bottom(m_Top  + rectSize.GetY() - PIXEL(1_PIXEL))
+        m_Right (m_Left + size.GetX() - PIXEL(1_PIXEL)),
+        m_Bottom(m_Top  + size.GetY() - PIXEL(1_PIXEL))
 	{
 		assert( m_Bottom >= m_Top );
 	}
@@ -75,15 +81,8 @@ public:
         m_Bottom = PIXEL(0_PIXEL);
     };
 
-    bool IsEmpty( ) const
-    {
-        return (m_Left == m_Right) || (m_Top == m_Bottom);
-    };
-
-    bool IsNotEmpty( ) const
-    {
-        return (m_Left < m_Right) && (m_Top < m_Bottom );
-    };
+    bool IsEmpty   ( ) const { return (m_Left == m_Right) || (m_Top == m_Bottom); };
+	bool IsNotEmpty( ) const { return (m_Left <  m_Right) && (m_Top <  m_Bottom); };
 
 	PIXEL const GetLeft  () const { return m_Left;   };
     PIXEL const GetTop   () const { return m_Top;    };
@@ -98,20 +97,9 @@ public:
         return PixelRectSize( GetWidth(), GetHeight() );
     }
 
-    PixelPoint const GetStartPoint( ) const 
-    {
-        return PixelPoint( m_Left, m_Top );
-    }
-
-    PixelPoint const GetEndPoint( ) const
-    {
-        return PixelPoint( m_Right, m_Bottom );
-    }
-
-    PixelPoint const GetCenter( ) const
-    {
-        return ( GetStartPoint() + GetEndPoint() ) / 2;
-    }
+    PixelPoint const GetStartPoint( ) const { return PixelPoint( GetLeft(),  GetTop()  ); }
+    PixelPoint const GetEndPoint  ( ) const { return PixelPoint( GetRight(), GetBottom() ); }
+    PixelPoint const GetCenter    ( ) const { return ( GetStartPoint() + GetEndPoint() ) / 2; }
 
 	bool Includes( PixelPoint const pnt ) const
 	{

@@ -5,7 +5,7 @@
 #pragma once
 
 #include "pixelPoint.h"
-#include "pixelRectSize.h"
+#include "pixelRect.h"
 
 class KGridPoint
 {
