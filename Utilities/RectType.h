@@ -158,3 +158,10 @@ RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const operator- (RectType<BA
 	res -= b; 
 	return res; 
 };
+
+template <typename BASE_TYPE, typename POS_TYPE, typename SIZE_TYPE, typename Parameter> 
+std::wostream & operator << ( std::wostream & out, RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const & rect )
+{
+    out << rect.GetStartPoint() << L' ' << rect.GetEndPoint();
+    return out;
+}
