@@ -225,7 +225,7 @@ void GridWindow::doPaint( )
     KGridRect const kgr =  // if I observe someone and cursor is in client area, show his position
         ( ( m_pGWObserved != nullptr ) && CrsrInClientRect( ) )
         ? m_pGWObserved->m_pPixelCoordinates->Pixel2KGridRect( Util::GetClPixelRect( m_pGWObserved->GetWindowHandle( ) ) )
-        : KGridRect::KGRID_RECT_EMPTY;
+        : KGridRect::ZERO_VAL();
 
     {
         PAINTSTRUCT ps;

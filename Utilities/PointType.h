@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <iostream>
+
 template <typename BASE_TYPE, typename Parameter> class PointType
 {
 public:

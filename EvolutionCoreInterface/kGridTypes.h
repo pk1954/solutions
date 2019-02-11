@@ -1,14 +1,13 @@
-// kGridPoint.h : 
+// kGridTypes.h : 
 //
-// library Utilities
+// library EvolutionCoreInterface
 
 #pragma once
 
 #include "PixelTypes.h"
 #include "PointType.h"
+#include "RectType.h"
 
 using KGridPoint    = PointType< long, struct KGridPoint_Parameter >;
 using KGridRectSize = PointType< long, struct PixelRectSize_Parameter >;
-
-KGridPoint Pixel2KGridSize( PixelPoint    const, PIXEL const );
-PixelPoint KGrid2PixelSize( KGridRectSize const, PIXEL const );
+using KGridRect     = RectType < long, KGridPoint, KGridRectSize, struct KGridRect_Parameter >;

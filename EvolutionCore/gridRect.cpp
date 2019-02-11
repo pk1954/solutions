@@ -2,10 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "limits.h"
-#include <iostream>
 #include <algorithm>  // min/max templates
-#include "gridPoint.h"
 #include "gridRect.h"
 
 using std::min;
@@ -58,10 +55,4 @@ void Apply2Rect
 void Apply2Grid( GridPointFunc const & func, bool const fWithBorders )
 {
 	Apply2Rect( func, GRID_ORIGIN(), GRID_MAXIMUM(), fWithBorders );
-}
-
-std::wostream & operator << ( std::wostream & out, GridRect const & rect )
-{
-    out << rect.GetStartPoint() << L' ' << rect.GetEndPoint();
-    return out;
 }

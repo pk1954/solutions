@@ -136,6 +136,12 @@ public:
 		return * this;
 	}
 
+	static RectType const & ZERO_VAL() 
+	{ 
+		static RectType res( POS_TYPE::ZERO_VAL(), POS_TYPE::ZERO_VAL() ); 
+		return res;
+	};
+
 private:
     BASE_TYPE m_Left;
     BASE_TYPE m_Top;

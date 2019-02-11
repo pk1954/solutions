@@ -9,7 +9,7 @@
 #include "PixelTypes.h"
 #include "gridPoint.h"
 #include "gridRect.h"
-#include "kGridPoint.h"
+#include "kGridTypes.h"
 #include "win32_util.h"
 #include "win32_clut.h"
 
