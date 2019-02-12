@@ -275,10 +275,10 @@ GridRect PixelCoordinates::Pixel2GridRect( PixelRect const & rect ) const
 {
     GridRect gridRect
     ( 
-        Pixel2GridPos( rect.GetStartPoint() ), 
-        Pixel2GridPos( rect.GetEndPoint  () ) 
+        ClipToGrid( Pixel2GridPos( rect.GetStartPoint() ) ), 
+        ClipToGrid( Pixel2GridPos( rect.GetEndPoint  () ) )
     );
-	return ClipToGrid( gridRect );
+	return gridRect;
 }
 
 PixelRect PixelCoordinates::Grid2PixelRect( GridRect const & rcGrid ) const 

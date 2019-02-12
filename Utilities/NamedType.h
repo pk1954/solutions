@@ -46,7 +46,8 @@ public:
     NamedType  operator* (int const& i) const { NamedType res( value_ * i ); return res; }
 	NamedType  operator/ (int const& i) const { NamedType res( value_ / i ); return res; }
 
-	NamedType  operator- ()                       const { NamedType res( -value_ ); return res; }
+	NamedType  operator- () const { NamedType res( -value_ ); return res; }
+	NamedType  operator+ () const { NamedType res( +value_ ); return res; }
 
 	NamedType  operator++() { ++value_; return * this; }
     NamedType  operator--() { --value_; return * this; }

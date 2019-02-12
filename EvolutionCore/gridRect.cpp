@@ -2,33 +2,16 @@
 //
 
 #include "stdafx.h"
-#include <algorithm>  // min/max templates
 #include "gridRect.h"
-
-using std::min;
-using std::max;
-
-GridRect const ClipToGrid( GridRect const & rect ) 
-{ 
-	GridPoint const startPoint
-	(
-		max( rect.GetLeft(), GRID_RECT_FULL().GetLeft() ),
-		max( rect.GetTop(),  GRID_RECT_FULL().GetTop()  )
-	);
-
-	GridPoint const endPoint
-	(
-		min( rect.GetRight(),  GRID_RECT_FULL().GetRight() ),
-		min( rect.GetBottom(), GRID_RECT_FULL().GetBottom() )
-	);
-
-	return GridRect( startPoint, endPoint );	
-}
 
 void Apply2Rect( GridPointFunc const & func, GridRect const & rect )
 {
-	GridRect rectClipped = ClipToGrid( rect );
-	::Apply2Rect( func, rectClipped.GetStartPoint(), rectClipped.GetEndPoint() );
+	::Apply2Rect
+	( 
+		func, 
+		ClipToGrid( rect.GetStartPoint() ),
+		ClipToGrid( rect.GetEndPoint  () )
+	);
 }
 
 void Apply2Rect
@@ -45,10 +28,10 @@ void Apply2Rect
 		gpEnd   += GridPoint( GRID_COORD(1_GRID_COORD), GRID_COORD(1_GRID_COORD) );
 	}
 
-    for ( short y = gpStart.GetYvalue(); y <= gpEnd.GetYvalue(); ++y )
-    for ( short x = gpStart.GetXvalue(); x <= gpEnd.GetXvalue(); ++x )
+    for ( GRID_COORD y = gpStart.GetY(); y <= gpEnd.GetY(); ++y )
+    for ( GRID_COORD x = gpStart.GetX(); x <= gpEnd.GetX(); ++x )
 	{
-		func( GridPoint{ GRID_COORD(x), GRID_COORD(y) } );
+		func( GridPoint( x, y ) );
 	}
 }
 

@@ -26,6 +26,7 @@ public:
     PointType const operator/= (int const i) { x /= i; y /= i; return * this; }
 
     PointType const operator- () const { return PointType( -x, -y ); };
+    PointType const operator+ () const { return PointType( +x, +y ); };
 
 	PointType const abs_value() { return PointType( x.abs_value(), y.abs_value() ); }
 

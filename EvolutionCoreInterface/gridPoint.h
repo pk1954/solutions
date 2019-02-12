@@ -17,6 +17,9 @@
 #include "gridCoord.h"
 #include "PointType.h"
 
+using std::min;
+using std::max;
+
 using GridPoint = PointType< GRID_COORD, struct GRID_COORD_Parameter >;
 
 inline bool const Neighbors( GridPoint const a, GridPoint const b )
@@ -62,6 +65,23 @@ inline bool const IsInGrid( GridPoint const & gp )
 	return (GRID_X_MIN <= gp.GetX()) && (gp.GetX() <= GRID_X_MAX) && 
 		   (GRID_Y_MIN <= gp.GetY()) && (gp.GetY() <= GRID_Y_MAX);
 };
+
+inline GridPoint const ClipToGrid( GridPoint gp ) 
+{ 
+	gp = GridPoint
+	(
+		max( gp.GetX(), GRID_X_MIN ),
+		max( gp.GetY(), GRID_Y_MIN  )
+	);
+
+	gp = GridPoint
+	(
+		min( gp.GetX(), GRID_X_MAX ),
+		min( gp.GetY(), GRID_Y_MAX )
+	);
+
+	return gp;	
+}
 
 inline bool IsEvenColumn( GridPoint const & gp ) { return IsEven( gp.GetX() ); }
 inline bool IsOddColumn ( GridPoint const & gp ) { return IsOdd ( gp.GetX() ); }
