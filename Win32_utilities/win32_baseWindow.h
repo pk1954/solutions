@@ -12,7 +12,7 @@ public:
     BaseWindow( );
 	~BaseWindow( );
 
-    HWND StartBaseWindow( HWND const, int const, int const, int const, int const, UINT const, LPCTSTR const, DWORD const );
+    HWND StartBaseWindow( HWND const, PIXEL const, PIXEL const, PIXEL const, PIXEL const, UINT const, LPCTSTR const, DWORD const );
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const ) {}
 

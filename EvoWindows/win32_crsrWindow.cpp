@@ -24,7 +24,7 @@ void CrsrWindow::Start
     m_pCore = pCore;
     m_pFocusPoint = pFocusPoint;
     m_pFocusPoint->AttachFocusPointObserver( this );
-    StartTextWindow( hwndParent, 0, 300, 300, 115, L"CrsrWindow", 100, TRUE );
+    StartTextWindow( hwndParent, 0_PIXEL, 300_PIXEL, 300_PIXEL, 115_PIXEL, L"CrsrWindow", 100, TRUE );
 }
 
 void CrsrWindow::DoPaint( TextBuffer & textBuf )
@@ -43,18 +43,18 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
     textBuf.printNumber( gpFocus.GetYvalue() );
 
     textBuf.nextLine( L"Food:" );
-    textBuf.setHorizontalPos( 3 );
+    textBuf.setHorizontalPos( 3_TEXT_POSITION );
     textBuf.printPercentage( m_pCore->GetFoodStock( gpFocus ), m_pCore->GetFertility( gpFocus ) );
 
     textBuf.nextLine( L"MutRate:" );
-    textBuf.setHorizontalPos( 2 );
+    textBuf.setHorizontalPos( 2_TEXT_POSITION );
     textBuf.printPercentage( m_pCore->GetMutRate( gpFocus ) );
     
 	if ( m_pCore->IsDead( gpFocus ) )
         return;
 
     textBuf.nextLine( L"Energy:" );
-    textBuf.setHorizontalPos( 4 );
+    textBuf.setHorizontalPos( 4_TEXT_POSITION );
     textBuf.printPercentage( m_pCore->GetEnergy( gpFocus ), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
 
 	// Deactivated, see win32_focusPoint.cpp

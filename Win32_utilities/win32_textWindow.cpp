@@ -28,10 +28,10 @@ void TextWindow::TerminateTextWindow()
 void TextWindow::StartTextWindow
 (
     HWND    const   hwndParent,
-	int		const	xPos, 
-	int		const	yPos, 
-	int		const	width, 
-	int		const	height,    
+	PIXEL   const	pixXpos, 
+	PIXEL	const	pixYpos, 
+	PIXEL	const	pixWidth, 
+	PIXEL	const	pixHeight,    
 	LPCTSTR const   szClass,
     UINT    const   uiAlpha,
 	BOOL    const   bAsync
@@ -40,7 +40,7 @@ void TextWindow::StartTextWindow
     HWND const hwnd = StartBaseWindow
     ( 
         hwndParent,
-		xPos, yPos, width, height,
+		pixXpos, pixYpos, pixWidth, pixHeight,
         CS_OWNDC | CS_DBLCLKS,
         szClass,
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION
@@ -54,7 +54,7 @@ void TextWindow::StartTextWindow
 	ReleaseDC( hwnd, hDC );
 	Util::MakeLayered( hwnd, TRUE, 0, uiAlpha );
     SetWindowText( hwnd, szClass );
-	m_pTextWindowThread = new TextWindowThread( m_hDC_Memory, width, height, this, szClass, bAsync );
+	m_pTextWindowThread = new TextWindowThread( m_hDC_Memory, pixWidth, pixHeight, this, szClass, bAsync );
 }
 
 void TextWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )

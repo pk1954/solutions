@@ -30,7 +30,7 @@ void LeftColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const pp
 		if ( pixIdHeight + m_infoShape.GetMinHeight() <= pixHeight )
 		{
 			m_idShape  .PrepareShape( posShape, PixelRectSize( pixWidth,             pixIdHeight ) );
-			posShape += PixelPoint( PIXEL(0_PIXEL), pixIdHeight );
+			posShape += PixelPoint( 0_PIXEL, pixIdHeight );
 			m_infoShape.PrepareShape( posShape, PixelRectSize( pixWidth, pixHeight - pixIdHeight ) );
 		}
 		else

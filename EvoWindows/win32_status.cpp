@@ -23,7 +23,7 @@ static double const TRACKBAR_SCALING_FACTOR = 1000.0;
 static LONG const SPEED_TRACKBAR_MIN = 0; 
 static LONG const SPEED_TRACKBAR_MAX = value2Trackbar( MAX_DELAY ); 
 
-static PIXEL const STATUS_BAR_HEIGHT = PIXEL(22_PIXEL);
+static PIXEL const STATUS_BAR_HEIGHT = 22_PIXEL;
 
 static wchar_t * SZ_RUN_MODE  = L"   Run    ";
 static wchar_t * SZ_STOP_MODE = L"  Stop    ";
@@ -176,12 +176,12 @@ void StatusBar::Start
 
     static std::array< PIXEL, static_cast<int>( tPart::Stop ) + 1> statwidths = 
     { 
-        PIXEL(100_PIXEL), // Generation 
-		PIXEL(200_PIXEL), // Mode (Edit/Simu)
-        PIXEL(400_PIXEL), // Size
-        PIXEL(670_PIXEL), // Edit/Simu controls
-        PIXEL(600_PIXEL), // ScriptLine
-       -PIXEL(1_PIXEL)    // Stop
+        100_PIXEL, // Generation 
+		200_PIXEL, // Mode (Edit/Simu)
+        400_PIXEL, // Size
+        670_PIXEL, // Edit/Simu controls
+        600_PIXEL, // ScriptLine
+         -1_PIXEL  // Stop
     };
 
     PIXEL pixPartWidth = statwidths[0];
@@ -196,16 +196,16 @@ void StatusBar::Start
     m_pixBorder       = PIXEL(GetSystemMetrics( SM_CXSIZEFRAME ));
     m_pixClientHeight = GetHeight( ) - m_pixBorder;
 
-    m_pixPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_pixBorder + PIXEL(10_PIXEL);
+    m_pixPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_pixBorder + 10_PIXEL;
     createModeControl( );
 
-    m_pixPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_pixBorder + PIXEL(10_PIXEL);
+    m_pixPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_pixBorder + 10_PIXEL;
     createSizeControl( );
 
-    m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorder + PIXEL(10_PIXEL);
+    m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorder + 10_PIXEL;
     createSimulationControl( );
 
-    m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorder + PIXEL(10_PIXEL);
+    m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorder + 10_PIXEL;
 	createEditorControl( );
 
     ( void )SendMessage( SB_SETPARTS, sizeof( statwidths ) / sizeof( int ), (LPARAM)( &statwidths ) );

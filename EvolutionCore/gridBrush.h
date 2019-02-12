@@ -24,7 +24,7 @@ public:
 		SetBrushMode( tBrushMode::move );
 		SetManipulator( tManipulator::add );
 		SetShape( tShape::Circle );
-		SetRadius( GRID_COORD(17_GRID_COORD) );
+		SetRadius( 17_GRID_COORD );
 		SetIntensity( 50 );
 	}
 

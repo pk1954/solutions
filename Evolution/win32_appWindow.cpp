@@ -86,7 +86,7 @@ AppWindow::AppWindow( ) :
 void AppWindow::Start(  )
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
-    HWND      const hwndApp   = StartBaseWindow( nullptr, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,CS_HREDRAW | CS_VREDRAW, L"ClassAppWindow", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN );
+    HWND      const hwndApp   = StartBaseWindow( nullptr, PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), CS_HREDRAW | CS_VREDRAW, L"ClassAppWindow", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN );
 
     SendMessage( WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
     SendMessage( WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL     ) ) );
@@ -327,7 +327,7 @@ LRESULT AppWindow::UserProc
 
 void AppWindow::adjustChildWindows( )
 {
-    static PIXEL const HIST_WINDOW_HEIGHT = PIXEL(30_PIXEL);
+    static PIXEL const HIST_WINDOW_HEIGHT = 30_PIXEL;
 
     PixelRectSize pntAppClientSize( GetClRectSize( ) );
 	PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
@@ -342,7 +342,7 @@ void AppWindow::adjustChildWindows( )
         {
             m_pEvoHistWindow->Move   // adapt history window to new size
 			( 
-				PIXEL(0_PIXEL), 
+				0_PIXEL, 
 				pixAppClientWinHeight - HIST_WINDOW_HEIGHT, 
 				pixAppClientWinWidth, 
 				HIST_WINDOW_HEIGHT, 
@@ -352,8 +352,8 @@ void AppWindow::adjustChildWindows( )
 
         m_pMainGridWindow->Move
 		( 
-			PIXEL(0_PIXEL), 
-			PIXEL(0_PIXEL), 
+			0_PIXEL, 
+			0_PIXEL, 
 			pixAppClientWinWidth, 
 			pixAppClientWinHeight, 
 			TRUE 

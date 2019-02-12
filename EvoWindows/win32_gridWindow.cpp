@@ -65,7 +65,7 @@ void GridWindow::Start
 	HWND hwnd = StartBaseWindow
     ( 
         hwndParent,
-		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+		PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT),
         CS_OWNDC | CS_DBLCLKS,
         L"ClassGridWindow",
         dwStyle
@@ -379,7 +379,7 @@ void GridWindow::Size( )
 		( 
 			PixelRect
 			( 
-				PixelPoint( PIXEL(0_PIXEL), PIXEL(0_PIXEL) ), 
+				PixelPoint( 0_PIXEL, 0_PIXEL ), 
 				m_pPixelCoordinates->Grid2PixelSize( GRID_SIZE() ) 
 			), 
 			(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 

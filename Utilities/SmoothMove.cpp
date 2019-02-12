@@ -15,15 +15,15 @@ PixelPoint SmoothMove::Step( PixelPoint pixActual, PixelPoint pixTarget )  // re
     PixelPoint pixDelta         = pixTarget - pixActual;
     PIXEL      pixDistance      = MaxAbsDelta( pixDelta );
     PIXEL      pixBreakDistCont = PIXEL( ( m_pixVelocity.GetValue() + 1 ) * m_pixVelocity.GetValue() / 2);   // break distance if we continue with actual velocity
-    PIXEL      pixBreakDistAcc  = pixBreakDistCont + m_pixVelocity + PIXEL(1_PIXEL);               // break distance if we accelerate
+    PIXEL      pixBreakDistAcc  = pixBreakDistCont + m_pixVelocity + 1_PIXEL;               // break distance if we accelerate
     PIXEL      pixDeltaV        = ( pixDistance >= pixBreakDistAcc ) 
-                                ? PIXEL(1_PIXEL)                                 // distance is big enough to accelerate 
+                                ? 1_PIXEL                                 // distance is big enough to accelerate 
                                 : ( pixDistance >= pixBreakDistCont ) 
-                                  ? PIXEL(0_PIXEL)                               // continue with current velocity
-                                  : -PIXEL(1_PIXEL);                             // we have to reduce velocity
+                                  ? 0_PIXEL                               // continue with current velocity
+                                  : -1_PIXEL;                             // we have to reduce velocity
 
     m_pixVelocity += pixDeltaV;
-    assert( m_pixVelocity >= PIXEL(0_PIXEL) );
+    assert( m_pixVelocity >= 0_PIXEL );
     
     if ( pixDelta.GetX().abs_value() > pixDelta.GetY().abs_value() )  // x is major direction
     {
@@ -32,12 +32,12 @@ PixelPoint SmoothMove::Step( PixelPoint pixActual, PixelPoint pixTarget )  // re
 
         assert( pixDelta.GetX().IsNotZero() );
         pixStepX = pixDelta.GetX().IsPositive() ? m_pixVelocity : -m_pixVelocity;
-        pixActual += PixelPoint( pixStepX, PIXEL(0_PIXEL) );
+        pixActual += PixelPoint( pixStepX, 0_PIXEL );
         if ( pixDelta.GetY().IsNotZero() )
         {
             PIXEL pixVelocityMinor = PIXEL(abs( ( pixStepX.GetValue() * pixDelta.GetYvalue() + pixDelta.GetXvalue() / 2 ) / pixDelta.GetXvalue() ));
             pixStepY = pixDelta.GetY().IsPositive() ? pixVelocityMinor : -pixVelocityMinor;
-            pixActual += PixelPoint( PIXEL(0_PIXEL), pixStepY );
+            pixActual += PixelPoint( 0_PIXEL, pixStepY );
         }
     }
     else  // y is major direction
@@ -47,12 +47,12 @@ PixelPoint SmoothMove::Step( PixelPoint pixActual, PixelPoint pixTarget )  // re
 
         assert( pixDelta.GetY().IsNotZero() );
         pixStepY = pixDelta.GetY().IsPositive() ? m_pixVelocity : -m_pixVelocity;
-        pixActual += PixelPoint( PIXEL(0_PIXEL), pixStepY );
+        pixActual += PixelPoint( 0_PIXEL, pixStepY );
         if ( pixDelta.GetX().IsNotZero() )
         {
             PIXEL pixVelocityMinor = PIXEL(abs( ( pixStepY.GetValue() * pixDelta.GetYvalue() + pixDelta.GetXvalue() / 2 ) / pixDelta.GetYvalue() ));
             pixStepX = pixDelta.GetX().IsPositive() ? pixVelocityMinor : -pixVelocityMinor;
-            pixActual += PixelPoint( pixStepX, PIXEL(0_PIXEL) );
+            pixActual += PixelPoint( pixStepX, 0_PIXEL );
         }
     }
 

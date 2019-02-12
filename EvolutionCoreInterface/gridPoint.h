@@ -26,8 +26,8 @@ inline bool const Neighbors( GridPoint const a, GridPoint const b )
 { 
 	GridPoint gpDiff = GridPoint( a - b ).abs_value();
     return ( 
-		      ((gpDiff.GetX() <= GRID_COORD(1_GRID_COORD)) || (gpDiff.GetX() == GRID_X_MAX)) && 
-		      ((gpDiff.GetY() <= GRID_COORD(1_GRID_COORD)) || (gpDiff.GetY() == GRID_Y_MAX))
+		      (( gpDiff.GetX() <= 1_GRID_COORD ) || ( gpDiff.GetX() == GRID_X_MAX )) && 
+		      (( gpDiff.GetY() <= 1_GRID_COORD ) || ( gpDiff.GetY() == GRID_Y_MAX ))
 		   );
 }
 

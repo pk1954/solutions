@@ -11,28 +11,28 @@
 PIXEL GridPointShape::GetIndShapeSize( ) // returns half of side length
 {
 	PIXEL const pixFieldSize = m_shape.GetFieldSize();
-	return ( pixFieldSize <  PIXEL( 8_PIXEL) ) ?                           PIXEL(1_PIXEL)  :
-		   ( pixFieldSize <= PIXEL(16_PIXEL) ) ? ((pixFieldSize * 3) / 8 - PIXEL(1_PIXEL)) : 
+	return ( pixFieldSize <   8_PIXEL ) ?                           1_PIXEL   :
+		   ( pixFieldSize <= 16_PIXEL ) ? ((pixFieldSize * 3) / 8 - 1_PIXEL ) : 
 								                 ((pixFieldSize * 3) / 8    );
 }
 
 void GridPointShape::RefreshLayout( )
 {
-	static const PIXEL MARGIN = PIXEL(3_PIXEL);
+	static const PIXEL MARGIN = 3_PIXEL;
 
 	PixelRectSize const minCoord     = m_coordShape.MinimalSize( );
 	PixelRectSize const minIndiv     = m_indivShape.MinimalSize( );
 	PixelRectSize const minSize      = m_shape.SetMinSize( minIndiv );     
 	PIXEL         const pixFieldSize = m_shape.GetFieldSize();
 
-	if ( m_shape.SetShapeRect( PixelPoint( PIXEL(0_PIXEL), PIXEL(0_PIXEL) ), PixelRectSize( pixFieldSize, pixFieldSize ) ) )
+	if ( m_shape.SetShapeRect( PixelPoint( 0_PIXEL, 0_PIXEL ), PixelRectSize( pixFieldSize, pixFieldSize ) ) )
 	{
 		PIXEL pixSizeInd   = GetIndShapeSize( ) * 2;
 		PIXEL pixSizeFrame = pixFieldSize - pixSizeInd;
 
 		m_coordShape.PrepareShape
 		( 
-			PixelPoint( pixSizeFrame / 2, PIXEL(0_PIXEL) ), 
+			PixelPoint( pixSizeFrame / 2, 0_PIXEL ), 
 			PixelRectSize( pixSizeInd, pixSizeFrame / 2 ) 
 		);
 		m_indivShape.PrepareShape

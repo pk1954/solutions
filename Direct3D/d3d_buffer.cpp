@@ -66,7 +66,7 @@ D3dBuffer::D3dBuffer( HWND const hwnd, ULONG const ulNrOfPoints )
     m_dwDstBlend       = 0;
     m_bStripMode       = TRUE;
     m_id3dx_font       = nullptr;
-    ResetFont( PIXEL(9_PIXEL) );
+    ResetFont( 9_PIXEL );
 }
 
 D3dBuffer::~D3dBuffer()

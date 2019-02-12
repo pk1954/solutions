@@ -66,13 +66,13 @@ void DrawFrame::SetStripMode( tBoolOp const bOp )
 
 void DrawFrame::ResizeDrawFrame( )
 {
-	PIXEL const pixFieldSize     = m_pPixelCoordinates->GetFieldSize();
+	PIXEL const pixFieldSize   = m_pPixelCoordinates->GetFieldSize();
 	int   const MAX_TEXT_LINES = 10;
-	PIXEL       pixFontSize      = pixFieldSize / MAX_TEXT_LINES;
-	if ( pixFontSize < PIXEL(9_PIXEL) )
-		pixFontSize = PIXEL(9_PIXEL);
-	if ( pixFontSize > PIXEL(16_PIXEL) )
-		pixFontSize = PIXEL(16_PIXEL);
+	PIXEL       pixFontSize    = pixFieldSize / MAX_TEXT_LINES;
+	if ( pixFontSize < 9_PIXEL )
+		pixFontSize = 9_PIXEL;
+	if ( pixFontSize > 16_PIXEL )
+		pixFontSize = 16_PIXEL;
     m_pD3dBuffer->ResetFont( pixFontSize );
 	m_gridPointShape->RefreshLayout( );
 }

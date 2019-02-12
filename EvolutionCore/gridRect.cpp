@@ -24,8 +24,8 @@ void Apply2Rect
 {
 	if (fWithBorders)
 	{
-		gpStart -= GridPoint( GRID_COORD(1_GRID_COORD), GRID_COORD(1_GRID_COORD) );
-		gpEnd   += GridPoint( GRID_COORD(1_GRID_COORD), GRID_COORD(1_GRID_COORD) );
+		gpStart -= GridPoint( 1_GRID_COORD, 1_GRID_COORD );
+		gpEnd   += GridPoint( 1_GRID_COORD, 1_GRID_COORD );
 	}
 
     for ( GRID_COORD y = gpStart.GetY(); y <= gpEnd.GetY(); ++y )

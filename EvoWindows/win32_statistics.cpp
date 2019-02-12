@@ -201,7 +201,7 @@ void StatisticsWindow::Start
 ) 
 {
     m_pCore = pCore;
-    StartTextWindow( hwndParent, 200, 200, 400, 545, L"StatisticsWindow", 100, TRUE );
+    StartTextWindow( hwndParent, 200_PIXEL, 200_PIXEL, 400_PIXEL, 545_PIXEL, L"StatisticsWindow", 100, TRUE );
 }
 
 StatisticsWindow::~StatisticsWindow( )
@@ -247,7 +247,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 
     // start printing
 
-    textBuf.setHorizontalPos( 2 );                                 // header
+    textBuf.setHorizontalPos( 2_TEXT_POSITION );                                 // header
     for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
         textBuf.printString( GetStrategyName( (tStrategyId)uiStrategy ) );
     textBuf.printString( L"all" );                               
@@ -265,7 +265,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
     // maximum memory size
 
     textBuf.nextLine( L"max mem" );
-    textBuf.setHorizontalPos( 4 );
+    textBuf.setHorizontalPos( 4_TEXT_POSITION );
     textBuf.printNumber( EvolutionCore::GetMaxPartnerMemory( ) );
 
 	if ( EvolutionCore::IsEnabled( tAction::interact ) )
@@ -273,13 +273,13 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 		// nr of interactions with known culprits (Tit4Tat only)
 
 		textBuf.nextLine( L"known" );
-		textBuf.setHorizontalPos( 4 );
+		textBuf.setHorizontalPos( 4_TEXT_POSITION );
 		textBuf.printNumber( EvolutionCore::GetNrInteractionsWithKnownCulprit( ) );
 
 		// nr of interactions with unknown culprits (Tit4Tat only)
 
 		textBuf.nextLine( L"unknown" );
-		textBuf.setHorizontalPos( 4 );
+		textBuf.setHorizontalPos( 4_TEXT_POSITION );
 		textBuf.printNumber( EvolutionCore::GetNrInteractionsWithUnknownCulprit( ) );
 	}
 
@@ -288,7 +288,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 		// average food growth
 
 		textBuf.nextLine( L"food growth" );
-		textBuf.setHorizontalPos( 4 );
+		textBuf.setHorizontalPos( 4_TEXT_POSITION );
 		textBuf.printNumber( m_pCore->GetAverageFoodGrowth( ) );
 	}
 //	stopwatch.Stop( L"Statistics" );

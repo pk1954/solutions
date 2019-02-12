@@ -13,43 +13,50 @@ using std::setw;
 
 TextBuffer::TextBuffer
 ( 
-	HDC       hdc,
-	int	const width, 
-	int const height
+	HDC   const hdc,
+	PIXEL const pixWidth, 
+	PIXEL const pixHeight
 ) : 
     m_hDC( hdc ),
-	m_width( width ),
-	m_height( height )
+	m_pixBufferWidth( pixWidth ),
+	m_pixBufferHeight( pixHeight )
 {
     TEXTMETRIC textMetric;
     (void)GetTextMetrics( m_hDC, &textMetric );
-    m_cxChar         = textMetric.tmAveCharWidth;
-    m_cyChar         = textMetric.tmHeight + textMetric.tmExternalLeading;
-    m_iHorizontalPos = 0;
-    m_iVerticalPos   = 0;
-    m_iHorRaster     = 3 * (textMetric.tmPitchAndFamily & TMPF_FIXED_PITCH ? 3 : 2) * m_cxChar;
+    m_cxChar           = PIXEL(textMetric.tmAveCharWidth);
+    m_cyChar           = PIXEL(textMetric.tmHeight + textMetric.tmExternalLeading);
+    m_pixHorizontalPos = 0_PIXEL;
+    m_pixVerticalPos   = 0_PIXEL;
+    m_pixHorRaster     = m_cxChar * 3 * (textMetric.tmPitchAndFamily & TMPF_FIXED_PITCH ? 3 : 2);
     m_wBuffer.imbue(std::locale(""));
 }
 
 void TextBuffer::StartPainting( ) 
 { 
-    int      const TOP_MARGIN =  5;
+    PIXEL    const TOP_MARGIN = 5_PIXEL;
     COLORREF const CLR_BACK   = RGB( 200, 200, 200 );
 
     SetBkColor( m_hDC, CLR_BACK );
-	Util::FastFill( m_hDC, RECT{ 0, 0, m_width.GetValue(), m_height.GetValue() } );
-    setHorizontalPos( 1 );
-    m_iVerticalPos = TOP_MARGIN;
+	Util::FastFill( m_hDC, RECT{ 0, 0, m_pixBufferWidth.GetValue(), m_pixBufferHeight.GetValue() } );
+    setHorizontalPos( 1_TEXT_POSITION );
+    m_pixVerticalPos = TOP_MARGIN;
     SetTextAlign( m_hDC, TA_RIGHT );
 }
 
 void TextBuffer::printBuffer( )
 {
 	std::wstring const wstr = m_wBuffer.str();
-    (void)TextOut( m_hDC, m_iHorizontalPos, m_iVerticalPos, wstr.c_str(), static_cast<int>(wstr.size()) );
+    (void)TextOut
+	( 
+		m_hDC, 
+		m_pixHorizontalPos.GetValue(), 
+		m_pixVerticalPos.GetValue(), 
+		wstr.c_str(), 
+		static_cast<int>(wstr.size()) 
+	);
 	m_wBuffer.str( std::wstring() );
 	m_wBuffer.clear();
-    m_iHorizontalPos += m_iHorRaster;
+    m_pixHorizontalPos += m_pixHorRaster;
 }
 
 void TextBuffer::printString( std::wstring data )
@@ -78,7 +85,7 @@ void TextBuffer::printFloat( float data )
 
 void TextBuffer::printNumber( long long data )
 {
-    m_iHorizontalPos += m_iHorRaster;
+    m_pixHorizontalPos += m_pixHorRaster;
     m_wBuffer << setw(13) << data;
     printBuffer();
 }

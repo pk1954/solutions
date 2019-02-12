@@ -17,7 +17,7 @@ inline static GridRect const & GRID_RECT_EMPTY()
 
 inline static GridRect const & GRID_RECT_FULL() 
 { 
-	static GridRect res( GRID_ORIGIN(), GRID_SIZE() - GRID_COORD(1_GRID_COORD)); 
+	static GridRect res( GRID_ORIGIN(), GRID_SIZE() - 1_GRID_COORD ); 
 	return res;
 };
  

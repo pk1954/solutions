@@ -19,10 +19,10 @@ BaseWindow::~BaseWindow( )
 HWND BaseWindow::StartBaseWindow
 ( 
     HWND    const hwndParent,
-	int		const xPos, 
-	int		const yPos, 
-	int		const width, 
-	int		const height,    
+	PIXEL	const xPos, 
+	PIXEL	const yPos, 
+	PIXEL	const width, 
+	PIXEL	const height,    
     UINT    const uiClassStyle,
     LPCTSTR const szClass,
     DWORD   const dwWindowStyle
@@ -61,7 +61,7 @@ HWND BaseWindow::StartBaseWindow
         szClass,
         nullptr,
         dwWindowStyle,
-        xPos, yPos, width, height, 
+        xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), 
         hwndParent,
         nullptr,
         hInstance, 

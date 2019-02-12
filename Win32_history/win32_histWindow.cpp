@@ -30,7 +30,7 @@ void HistWindow::Start
     HWND const hwndHistory = StartBaseWindow
     (
         hwndParent,
-		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+		PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT),
         CS_OWNDC | CS_DBLCLKS,
         L"ClassHistWindow",
         WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE
@@ -78,7 +78,7 @@ PixelRect HistWindow::getGenerationRect  // position is relative to client area
 	if ( pixLeft == pixRight )
 		++pixRight;
 
-    return PixelRect{ pixLeft, PIXEL(0_PIXEL), pixRight, rect.GetHeight() };
+    return PixelRect{ pixLeft, 0_PIXEL, pixRight, rect.GetHeight() };
 }
 
 HIST_GENERATION HistWindow::getGenFromXpos( LPARAM const lParam ) const
@@ -107,8 +107,8 @@ void HistWindow::gotoNewGeneration( LPARAM const lParam )
 
 void HistWindow::dispGenerationWindow( ) const
 {
-    PIXEL      const iGenDispWidth  = PIXEL(50_PIXEL);
-    PIXEL      const iGenDispHeight = PIXEL(20_PIXEL);
+    PIXEL      const iGenDispWidth  = 50_PIXEL;
+    PIXEL      const iGenDispHeight = 20_PIXEL;
     PIXEL      const pixClientWidth = GetClientWindowWidth( );
     PixelRect  const pixRectGen     = getGenerationRect( m_genSelected ); // position is relative to client area
 	PixelPoint const ptClientPos    = Client2Screen( POINT{ 0, 0 } );     // position of client area origin in screen coordinates
@@ -168,7 +168,7 @@ void HistWindow::paintPixelPos( HDC const hDC, PIXEL const pixPos ) const
         : CLR_BACK
     );
 
-    Util::FastFill( hDC, PixelRect{ pixPos, PIXEL(0_PIXEL), pixPos + PIXEL(1_PIXEL),  GetClientWindowHeight( ) } );
+    Util::FastFill( hDC, PixelRect{ pixPos, 0_PIXEL, pixPos + 1_PIXEL,  GetClientWindowHeight( ) } );
 }
 
 void HistWindow::PaintAllGenerations( HDC const hDC )
@@ -194,7 +194,7 @@ void HistWindow::PaintAllGenerations( HDC const hDC )
     {
         (void)m_pHistIter->Set2Oldest( );
 
-        for ( PIXEL pixPos = PIXEL(0_PIXEL); pixPos < pixSize; ++pixPos )
+        for ( PIXEL pixPos = 0_PIXEL; pixPos < pixSize; ++pixPos )
         {
             paintPixelPos( hDC, pixPos );
         }

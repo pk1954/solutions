@@ -6,12 +6,20 @@
 #include <iostream>
 #include <sstream> 
 #include <string> 
+#include "NamedType.h"
 #include "win32_util.h"
+
+using TEXT_POSITION = NamedType< int, struct TEXT_POSITION_Parameter >;
+
+constexpr TEXT_POSITION operator"" _TEXT_POSITION( unsigned long long ull )
+{
+	return TEXT_POSITION( CastToInt( ull ) );
+}
 
 class TextBuffer
 {
 public:
-    TextBuffer( HDC, int const, int const );
+    TextBuffer( HDC const, PIXEL const, PIXEL const );
 
 	virtual ~TextBuffer( ) 
 	{
@@ -19,18 +27,18 @@ public:
 
 	void StartPainting( );
 
-    void nextLine( int iHorPos = 1 )     
+    void nextLine( TEXT_POSITION iHorPos = 1_TEXT_POSITION )     
     { 
         setHorizontalPos( iHorPos );
-        m_iVerticalPos += m_cyChar;
+        m_pixVerticalPos += m_cyChar;
     }
 
-    void setHorizontalPos( unsigned int uiPos )
+    void setHorizontalPos( TEXT_POSITION pos )
     {
-        m_iHorizontalPos = LEFT_MARGIN + uiPos * m_iHorRaster;
+        m_pixHorizontalPos = LEFT_MARGIN + m_pixHorRaster * pos.GetValue();
     }
 
-    void nextLine( std::wstring data, int iHorPos = 1 )
+    void nextLine( std::wstring data, TEXT_POSITION iHorPos = 1_TEXT_POSITION )
     {
         nextLine( iHorPos );
         printString( data );
@@ -49,15 +57,15 @@ public:
 private:
 	void printBuffer( );
 
-    int const LEFT_MARGIN = 30;
+    PIXEL const LEFT_MARGIN = 30_PIXEL;
 
     std::wostringstream m_wBuffer;
     HDC                 m_hDC;
-	PIXEL               m_width;
-	PIXEL        	    m_height;
-	int                 m_cyChar;
-    int                 m_cxChar;
-    int                 m_iHorizontalPos;
-    int                 m_iVerticalPos;
-    int                 m_iHorRaster;
+	PIXEL               m_pixBufferWidth;
+	PIXEL        	    m_pixBufferHeight;
+	PIXEL               m_cyChar;
+    PIXEL               m_cxChar;
+    PIXEL               m_pixHorizontalPos;
+    PIXEL               m_pixVerticalPos;
+    PIXEL               m_pixHorRaster;
 };
