@@ -31,7 +31,7 @@ void Genome::InitClass( )
 { 
 	double dRandomMax = static_cast<double>(Random::MAX_VAL);
 
-	for ( EVO_GENERATION age = 0; age <= MAX_LIFE_SPAN; ++age )
+	for ( int age = 0; age <= MAX_LIFE_SPAN; ++age )
 	{
 		double dAge = static_cast<double>(age);
 		double dx   = dAge / MAX_LIFE_SPAN;
@@ -161,7 +161,7 @@ tAction Genome::GetOption
 {
 	if (
 		  ( m_abActionEnabled[ static_cast<int>( tAction::passOn ) ] ) && 
-		  ( m_mortalityTable[ age ] > random.NextRandomNumber() )
+		  ( m_mortalityTable[ age.GetValue() ] > random.NextRandomNumber() )
 	   )
 		return tAction::passOn;
 	

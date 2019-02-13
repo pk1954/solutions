@@ -234,7 +234,7 @@ void WorkThreadInterface::PostHistoryAction( UINT const uiID, GridPoint const gp
 	assert( m_pCore->IsAlive(gp) );
 	assert( (uiID == IDM_GOTO_ORIGIN) || (uiID == IDM_GOTO_DEATH) );
 
-	IndividualId           idTarget  = m_pCore->GetId(gp);
+	IND_ID          idTarget  = m_pCore->GetId(gp);
 	HIST_GENERATION genTarget = ( uiID == IDM_GOTO_ORIGIN )
 	                            ? m_pEvoHistGlue->GetFirstGenOfIndividual(idTarget)
 		                        : m_pEvoHistGlue->GetLastGenOfIndividual(idTarget);

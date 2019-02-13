@@ -54,7 +54,7 @@ private:
 
     std::array< generalGene, NR_GENES        > m_aGeneGeneral;  // 4 * 9 = 36   general genes 
     std::array< actionGene,  NR_ACTION_GENES > m_aGeneActions;  // 4 * 8 = 32   genes for choosing next action
-                                                           // sum     68
+                                                                // sum     68
     
     void setGeneralGene( tGeneType const, int const );
     void setActionGene ( tAction   const, int const );

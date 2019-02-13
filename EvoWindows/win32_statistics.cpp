@@ -99,7 +99,7 @@ public:
 
     void addAge( tStrategyId const s, EVO_GENERATION genAge )
     {
-        m_gsAverageAge.Add( static_cast<int>( s ), genAge );
+        m_gsAverageAge.Add( static_cast<int>( s ), genAge.GetValue() );
     }
 
     void incCounter( tStrategyId const s )

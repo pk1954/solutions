@@ -291,6 +291,6 @@ void StatusBar::DisplayScriptLine( std::wstring const & wszPath, int iLineNr, st
 
 void StatusBar::DisplayCurrentGeneration( EVO_GENERATION const gen )
 {
-    m_wstrGeneration = L"EvoGen " + std::to_wstring( gen );
+    m_wstrGeneration = L"EvoGen " + std::to_wstring( gen.GetValue() );
     (void)SendNotifyMessage( SB_SETTEXT, static_cast<int>( tPart::Generation ), (LPARAM)( m_wstrGeneration.c_str() ) );
 }

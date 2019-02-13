@@ -75,7 +75,7 @@ public:
     bool           IsAlive     ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive( ); }
     bool           IsDead      ( GridPoint const gp ) const { return GetGridField( gp ).IsDead( ); }
     int            GetFoodStock( GridPoint const gp ) const { return GetGridField( gp ).GetFoodStock( ); }
-    IndividualId   GetId       ( GridPoint const gp ) const { return GetGridField( gp ).GetId       ( ); }
+    IND_ID         GetId       ( GridPoint const gp ) const { return GetGridField( gp ).GetId       ( ); }
     tOrigin        GetOrigin   ( GridPoint const gp ) const { return GetGridField( gp ).GetOrigin   ( ); }
     EVO_GENERATION GetGenBirth ( GridPoint const gp ) const { return GetGridField( gp ).GetGenBirth( ); }
     EVO_GENERATION GetAge      ( GridPoint const gp ) const { return m_genEvo - GetGenBirth( gp ); }
@@ -157,9 +157,9 @@ private:
     // member variables
 
     GridField      m_aGF[ GRID_WIDTH_ ][ GRID_HEIGHT_ ];   // 20.000 * 196 byte = 3.920.000 byte
-    GridPointList  m_gpList;                                               //                                10 byte
-    long           m_lFoodGrowth;    // for statistics                     //                                 8 byte 
-    EVO_GENERATION m_genEvo;                                               //                                 4 byte
+    GridPointList  m_gpList;                               //                            10 byte
+    long           m_lFoodGrowth;    // for statistics     //                             8 byte 
+    EVO_GENERATION m_genEvo;                               //                             4 byte
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;
 
@@ -171,8 +171,8 @@ private:
 
     // following members are stored here only to be part of grid history.
 
-    Random         m_random;                                               //                            16 byte
-    IndividualId   m_idCounter;  // Used only by class Individual.         //                             4 byte
+    Random m_random;                                               //  16 byte
+    IND_ID m_idCounter;  // Used only by class Individual.         //   4 byte
      
     // static members 
 

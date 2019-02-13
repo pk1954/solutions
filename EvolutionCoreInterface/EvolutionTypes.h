@@ -6,10 +6,9 @@
 #include "debug.h"
 #include "NamedType.h"
 
-using IndividualId = NamedType< long,           struct IndividualId_Parameter >;
-using MEM_INDEX    = NamedType< unsigned short, struct MEM_INDEX_Parameter >;
-
-typedef          long  EVO_GENERATION;
+using EVO_GENERATION = NamedType< long,           struct EVO_GENERATION_Parameter >;
+using IND_ID         = NamedType< long,           struct IND_ID_Parameter >;
+using MEM_INDEX      = NamedType< unsigned short, struct MEM_INDEX_Parameter >;
 
 static int const IMEMSIZE_MAX = 9;
 

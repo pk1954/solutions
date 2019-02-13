@@ -75,7 +75,7 @@ class FindGridPointFunctor : public GenerationProperty
 {
 public:
 
-    FindGridPointFunctor( IndividualId const id ) : m_id( id ) {}
+    FindGridPointFunctor( IND_ID const id ) : m_id( id ) {}
 
     virtual bool operator() ( ModelData const * pModelData ) const
     {
@@ -84,15 +84,15 @@ public:
     }
 
 private:
-    IndividualId const m_id;
+    IND_ID const m_id;
 };
 
-HIST_GENERATION EvoHistorySysGlue::GetFirstGenOfIndividual( IndividualId const & id ) const  
+HIST_GENERATION EvoHistorySysGlue::GetFirstGenOfIndividual( IND_ID const & id ) const  
 { 
 	return id.IsNotNull( ) ? m_pHistorySystem->FindFirstGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
 }
 
-HIST_GENERATION EvoHistorySysGlue::GetLastGenOfIndividual ( IndividualId const & id ) const  
+HIST_GENERATION EvoHistorySysGlue::GetLastGenOfIndividual ( IND_ID const & id ) const  
 { 
 	return id.IsNotNull( ) ? m_pHistorySystem->FindLastGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
 }

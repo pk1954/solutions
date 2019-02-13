@@ -24,9 +24,9 @@ public:
 	MEM_INDEX GetMemIndex() const {	return m_index;	}
 
 private:
-	virtual GridPoint getReferencedGridPoint( IndividualId const ) const;
+	virtual GridPoint getReferencedGridPoint( IND_ID const ) const;
 
-	IndividualId getIndId( GridPoint const ) const; 
+	IND_ID getIndId( GridPoint const ) const; 
 
 	MEM_INDEX m_index;
 };

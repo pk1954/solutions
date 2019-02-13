@@ -42,7 +42,7 @@ void FocusPoint::SetFocusPoint( GridPoint const gpNew )
 //        {
 //            if ( m_pEvoHistGlue != nullptr )
 //            {
-//                IndividualId id = m_pCore->GetId( m_gp );
+//                IND_ID id = m_pCore->GetId( m_gp );
 //                m_genBirth = m_pEvoHistGlue->GetFirstGenOfIndividual( id );
 //                m_genDeath = m_pEvoHistGlue->GetLastGenOfIndividual ( id ) + 1;
 //            }

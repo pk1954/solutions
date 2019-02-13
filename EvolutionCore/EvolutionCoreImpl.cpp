@@ -41,7 +41,7 @@ void EvolutionCoreImpl::SetPoi( GridPoint const  gp )
 { 
 	if ( IsInGrid( gp ) )
 	{
-		IndividualId const idPoiNew = GetId( gp );
+		IND_ID const idPoiNew = GetId( gp );
 		if ( idPoiNew.IsNotNull( ) )
 		{    
 			if ( IsPoiId( idPoiNew ) )

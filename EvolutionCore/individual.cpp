@@ -43,7 +43,7 @@ Individual::Individual( )
 void Individual::ResetIndividual( )
 { 
     m_id.Set2Null( ); 
-    m_genBirth  = -1L;
+    m_genBirth.Set2Null();
     m_sEnergy   = 0;
     m_sCapacity = 0;
     m_strat.SetMemorySize( MEM_INDEX(0) );
@@ -53,7 +53,7 @@ void Individual::ResetIndividual( )
 
 void Individual::Create
 ( 
-    IndividualId   const id,
+    IND_ID         const id,
     EVO_GENERATION const genBirth,
     tStrategyId    const strategyId
 )
@@ -73,7 +73,7 @@ void Individual::Create
 
 void Individual::Clone
 (
-    IndividualId   const   id,
+    IND_ID         const   id,
     EVO_GENERATION const   genBirth,
     short          const   sMutationRate,
     Random               & random,
@@ -105,7 +105,7 @@ static Individual const & selectParent
 
 void Individual::Breed
 (
-    IndividualId   const   id,
+    IND_ID         const   id,
     EVO_GENERATION const   genBirth,
     short          const   sMutationRate,
     Random               & random,
