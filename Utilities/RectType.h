@@ -96,7 +96,8 @@ public:
 
 	bool Includes( POS_TYPE const pnt ) const
 	{
-		return (m_Left <= pnt.GetX()) && (pnt.GetX() < m_Right) && (m_Top <= pnt.GetY()) && (pnt.GetY() < m_Bottom);
+		return (m_Left <= pnt.GetX()) && (pnt.GetX() < m_Right ) && 
+			   (m_Top  <= pnt.GetY()) && (pnt.GetY() < m_Bottom);
 	}
 
 	bool Includes( SIZE_TYPE const size ) const
@@ -104,8 +105,17 @@ public:
 		return ( GetWidth() >= size.GetX() ) && ( GetHeight() >= size.GetY() );
 	}
 
-	bool const operator== ( RectType const & a ) const { return ( a.m_Left == m_Left ) && ( a.m_Top == m_Top ) && ( a.m_Right == m_Right ) && ( a.m_Bottom == m_Bottom ); };
-    bool const operator!= ( RectType const & a ) const { return ( a.m_Left != m_Left ) || ( a.m_Top != m_Top ) || ( a.m_Right != m_Right ) || ( a.m_Bottom != m_Bottom ); };
+	bool const operator== ( RectType const & a ) const 
+	{ 
+		return ( a.m_Left  == m_Left  ) && ( a.m_Top    == m_Top    ) && 
+			   ( a.m_Right == m_Right ) && ( a.m_Bottom == m_Bottom ); 
+	};
+
+    bool const operator!= ( RectType const & a ) const 
+	{ 
+		return ( a.m_Left  != m_Left  ) || ( a.m_Top    != m_Top    ) || 
+			   ( a.m_Right != m_Right ) || ( a.m_Bottom != m_Bottom ); 
+	};
 
 	RectType const Scale( BASE_TYPE const pix )  // positive values of pix enlarge rectangle
 	{                                            // negative values reduce its size
@@ -150,7 +160,11 @@ private:
 };
 
 template <typename BASE_TYPE, typename POS_TYPE, typename SIZE_TYPE, typename Parameter> 
-RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const operator+ (RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const a, POS_TYPE const b) 
+RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const operator+ 
+(
+	RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const a, 
+	POS_TYPE const b
+) 
 { 
 	RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> res(a); 
 	res += b; 
@@ -158,7 +172,11 @@ RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const operator+ (RectType<BA
 };
 
 template <typename BASE_TYPE, typename POS_TYPE, typename SIZE_TYPE, typename Parameter> 
-RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const operator- (RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const a, POS_TYPE const b) 
+RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const operator- 
+(
+	RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const a, 
+	POS_TYPE const b
+) 
 { 
 	RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> res(a); 
 	res -= b; 
@@ -166,7 +184,11 @@ RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const operator- (RectType<BA
 };
 
 template <typename BASE_TYPE, typename POS_TYPE, typename SIZE_TYPE, typename Parameter> 
-std::wostream & operator << ( std::wostream & out, RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const & rect )
+std::wostream & operator << 
+( 
+	std::wostream & out, 
+	RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const & rect 
+)
 {
     out << rect.GetStartPoint() << L' ' << rect.GetEndPoint();
     return out;

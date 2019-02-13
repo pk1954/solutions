@@ -148,7 +148,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoolOp.h" />
-    <ClInclude Include="crtpType.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="EventInterface.h" />
     <ClInclude Include="Int24.h" />
