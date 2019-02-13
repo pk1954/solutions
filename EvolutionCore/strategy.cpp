@@ -73,7 +73,7 @@ void StrategyData::SetMemorySize( MEM_INDEX const newSize )
 
 bool Tit4Tat::InteractWith( StrategyData &data, IndividualId const idPartner ) const
 {
-    bool const bNotorious = data.FindInList( idPartner ) != MEM_INDEX::NULL_VAL();
+    bool const bNotorious = data.FindInList( idPartner ).IsNotNull();
     return ! bNotorious;                                    // If he is not in the list of bad guys, be friendly
 }
 
@@ -81,7 +81,7 @@ void Tit4Tat::Remember( StrategyData &data, IndividualId const idPartner, bool c
 {
     MEM_INDEX const index = data.FindInList( idPartner );
 
-    if ( index != MEM_INDEX::NULL_VAL() )                      // He is on the list of bad guys
+    if ( index.IsNotNull() )               // He is on the list of bad guys
     {
         if ( bPartnerReaction )            // He turned into a good guy. Let him off the hook
         {

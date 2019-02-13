@@ -62,6 +62,11 @@ public:
 		return res;
 	}
 
+	void Set2Null( ) { * this = NULL_VAL(); }
+
+    bool IsNull   ( ) const { return * this == NULL_VAL(); };
+    bool IsNotNull( ) const { return * this != NULL_VAL(); };
+
 private:
     BASE_TYPE value_;
 };

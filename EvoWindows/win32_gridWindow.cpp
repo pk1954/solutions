@@ -184,7 +184,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
 
     if ( wParam & MK_RBUTTON )                // Right mouse button: selection
     {
-        if ( m_ptLast != PixelPoint::NULL_VAL() )  // last cursor pos stored in m_ptLast
+        if ( m_ptLast.IsNotNull() )  // last cursor pos stored in m_ptLast
         {
             PixelPoint ptOther = m_pCore->IsPoiDefined( ) 
 				                 ? m_pPixelCore->GetPoiCenter() * 2 - ptCrsr 
@@ -203,7 +203,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         {
             m_pWorkThreadInterface->PostDoEdit( m_pFocusPoint->GetGridPoint( ) );
         }
-        else if ( m_ptLast != PixelPoint::NULL_VAL() )  // last cursor pos stored in m_ptLast
+        else if ( m_ptLast.IsNotNull() )  // last cursor pos stored in m_ptLast
         {
             moveGrid( ptCrsr - m_ptLast );
 		    PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
