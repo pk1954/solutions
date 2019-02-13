@@ -147,7 +147,7 @@ void Grid::MakePlan
     // basic food consumption
 
     plan.SetBaseConsumption( m_iBasicFoodConsumption );
-    plan.IncBaseConsumption( m_iMemSizeFoodConsumption * gfRun.GetMemSize( ) );
+    plan.IncBaseConsumption( m_iMemSizeFoodConsumption * gfRun.GetMemSize( ).GetValue() );
 
 	m_emptyNeighborSlots.ClearList( );
 	m_occupiedNeighborSlots.ClearList( );

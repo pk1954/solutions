@@ -30,7 +30,7 @@ unsigned long EvolutionCore::GetModelSize( )
 
 unsigned int EvolutionCore::GetMaxPartnerMemory( )
 { 
-	return StrategyData::GetMaxPartnerMemory( ); 
+	return StrategyData::GetMaxPartnerMemory( ).GetValue( ); 
 }
 
 unsigned int EvolutionCore::GetNrInteractionsWithKnownCulprit( ) 

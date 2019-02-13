@@ -46,7 +46,7 @@ void Individual::ResetIndividual( )
     m_genBirth  = -1L;
     m_sEnergy   = 0;
     m_sCapacity = 0;
-    m_strat.SetMemorySize( 0 );
+    m_strat.SetMemorySize( MEM_INDEX(0) );
     m_pStrategy = & StratNull;
     m_genome.InitGenome( );
 };

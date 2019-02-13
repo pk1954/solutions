@@ -4,11 +4,15 @@
 #pragma once
 
 #include "debug.h"
+#include "NamedType.h"
 
-typedef unsigned short MEM_INDEX;
+//typedef unsigned short MEM_INDEX;
+
+using MEM_INDEX = NamedType< unsigned short, struct MEM_INDEX_Parameter >;
+
 typedef          long  EVO_GENERATION;
 
-static MEM_INDEX const IMEMSIZE_MAX = 9;
+static int const IMEMSIZE_MAX = 9;
 
 enum class tStrategyId : unsigned short
 { 

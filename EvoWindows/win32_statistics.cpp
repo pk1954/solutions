@@ -235,7 +235,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 						genesStat.add2Gene( s, uiGene, m_pCore->GetGenotype( gp, static_cast<tGeneType>( uiGene ) ) );
 
 					genesStat.incCounter( s );
-					genesStat.addMemSize( s, m_pCore->GetMemSize( gp ) );
+					genesStat.addMemSize( s, m_pCore->GetMemSize( gp ).GetValue() );
 					genesStat.addAge    ( s, m_pCore->GetAge( gp ) );
 				}
 			}

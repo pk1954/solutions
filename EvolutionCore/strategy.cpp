@@ -6,14 +6,14 @@
 #include "random.h"
 #include "strategy.h"
 
-MEM_INDEX    StrategyData::m_uiMaxPartnerMemory                 = 0;
+MEM_INDEX    StrategyData::m_uiMaxPartnerMemory                 = MEM_INDEX(0);
 unsigned int StrategyData::m_uiNrInteractionsWithKnownCulprit   = 0;
 unsigned int StrategyData::m_uiNrInteractionsWithUnknownCulprit = 0;
 
 StrategyData::StrategyData( )
 {
-    m_memSize = 0;
-    m_memUsed = 0;
+    m_memSize = MEM_INDEX(0);
+    m_memUsed = MEM_INDEX(0);
     for	( auto & i : m_aIdBadGuys )
         i.ResetIndId();
 }
@@ -21,43 +21,43 @@ StrategyData::StrategyData( )
 IndividualId StrategyData::GetMemEntry( MEM_INDEX const index ) const 
 {
     return ( index < m_memUsed )
-		   ? m_aIdBadGuys[index]
+		   ? getBadGuyId( index )
 		   : IndividualId::NO_INDIVIDUAL;  // Can happen at race conditions
 }	
 
-int StrategyData::findInList( IndividualId const & idPartner ) 
+MEM_INDEX StrategyData::FindInList( IndividualId const & idPartner ) 
 {
-    for	( MEM_INDEX index = 0; index < m_memUsed; ++index )
+    for	( MEM_INDEX index = MEM_INDEX(0); index < m_memUsed; ++index )
     {
-        if ( m_aIdBadGuys[index] == idPartner )
+        if ( getBadGuyId( index ) == idPartner )
         {
             ++m_uiNrInteractionsWithKnownCulprit;
-            return static_cast<int>(index);
+            return index;
         }
     }
 
-    return -1;     
+    return MEM_INDEX::NULL_VAL();     
 }
 
-void StrategyData::removeFromList( MEM_INDEX const index )
+void StrategyData::RemoveFromList( MEM_INDEX const index )
 {
     assert( m_memUsed > index );
  
     MEM_INDEX const indexStop = --m_memUsed;
     for	( MEM_INDEX iRun = index; iRun < indexStop; ++iRun )
-        m_aIdBadGuys[iRun] = m_aIdBadGuys[iRun+1];
+        getBadGuyId(iRun) = getBadGuyId(iRun + MEM_INDEX(1));
 
-    m_aIdBadGuys[m_memUsed].ResetIndId( );
+    getBadGuyId(m_memUsed).ResetIndId( );
 }
 
-void StrategyData::addToList( IndividualId const & partnerId )
+void StrategyData::AddToList( IndividualId const & partnerId )
 {
     ++m_uiNrInteractionsWithUnknownCulprit;           
 
     if ( m_memUsed == m_memSize )          // list is full. Remove oldest entry
-        removeFromList( 0 );
+        RemoveFromList( MEM_INDEX(0) );
 
-    m_aIdBadGuys[m_memUsed++] = partnerId;   // add id to list of bad guys
+    getBadGuyId(m_memUsed++) = partnerId;   // add id to list of bad guys
 
     if ( m_memUsed > m_uiMaxPartnerMemory )  // statistics of memory usage
         m_uiMaxPartnerMemory = m_memUsed;
@@ -65,29 +65,29 @@ void StrategyData::addToList( IndividualId const & partnerId )
 
 void StrategyData::SetMemorySize( MEM_INDEX const newSize )
 {
-    assert( newSize <= IMEMSIZE_MAX );
+    assert( newSize <= MEM_INDEX(IMEMSIZE_MAX) );
 
     m_memSize = newSize;
-    m_memUsed = 0;
+    m_memUsed = MEM_INDEX(0);
 }
 
 bool Tit4Tat::InteractWith( StrategyData &data, IndividualId const idPartner ) const
 {
-    bool const bKnown = data.findInList( idPartner ) >= 0;
-    return (!bKnown);                                    // If he is not in the list of bad guys, be friendly
+    bool const bNotorious = data.FindInList( idPartner ) != MEM_INDEX::NULL_VAL();
+    return ! bNotorious;                                    // If he is not in the list of bad guys, be friendly
 }
 
 void Tit4Tat::Remember( StrategyData &data, IndividualId const idPartner, bool const bPartnerReaction ) const
 {
-    int const index = data.findInList( idPartner );
+    MEM_INDEX const index = data.FindInList( idPartner );
 
-    if ( index >= 0 )                      // He is on the list of bad guys
+    if ( index != MEM_INDEX::NULL_VAL() )                      // He is on the list of bad guys
     {
         if ( bPartnerReaction )            // He turned into a good guy. Let him off the hook
         {
-            MEM_INDEX const memIndex = static_cast<MEM_INDEX>(index);
+            MEM_INDEX const memIndex = index;
             assert( data.GetMemUsed( ) > memIndex );
-            data.removeFromList( memIndex );
+            data.RemoveFromList( memIndex );
         }
         else                               // He is persistently bad. Remains on the list.
         {
@@ -100,7 +100,7 @@ void Tit4Tat::Remember( StrategyData &data, IndividualId const idPartner, bool c
         }
         else                               // He doesn't behave well. Put him on the list
         {
-            data.addToList( idPartner );   
+            data.AddToList( idPartner );   
         }
     }
 };

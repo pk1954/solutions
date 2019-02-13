@@ -24,9 +24,9 @@ public:
     static unsigned int GetNrInteractionsWithKnownCulprit( )   { return m_uiNrInteractionsWithKnownCulprit; };
     static unsigned int GetNrInteractionsWithUnknownCulprit( ) { return m_uiNrInteractionsWithUnknownCulprit; };
 
-    int  findInList( IndividualId const & );
-    void addToList ( IndividualId const & );
-    void removeFromList( MEM_INDEX const );
+	MEM_INDEX FindInList( IndividualId const & );
+    void      AddToList ( IndividualId const & );
+    void      RemoveFromList( MEM_INDEX const );
 
 private:
     static MEM_INDEX    m_uiMaxPartnerMemory;
@@ -35,7 +35,13 @@ private:
 
     MEM_INDEX m_memUsed;   // number of occopied slots.     
     MEM_INDEX m_memSize;   // number of usable slots.    m_memUsed <= m_memSize <= IMEMSIZE_MAX
+
     std::array< IndividualId, IMEMSIZE_MAX > m_aIdBadGuys;
+
+	IndividualId getBadGuyId( MEM_INDEX const index ) const
+	{
+		return m_aIdBadGuys[ index.GetValue() ];
+	}
 };
 
 class Strategy
@@ -77,4 +83,3 @@ public:
 	virtual bool        InteractWith( StrategyData &, IndividualId const )             const { return false; };
 	virtual void        Remember    ( StrategyData &, IndividualId const, bool const ) const {};
 };
-//lint +e715  

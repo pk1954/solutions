@@ -14,8 +14,7 @@ public:
 		
     constexpr explicit NamedType( BASE_TYPE const& value ) : value_(value) {}
 
-    BASE_TYPE      & GetValue()       { return value_; }
-	BASE_TYPE const& GetValue() const { return value_; }
+	BASE_TYPE const & GetValue() const { return value_; }
 
     bool const operator== (NamedType const other) const { return value_ == other.GetValue(); }
     bool const operator!= (NamedType const other) const { return value_ != other.GetValue(); }
@@ -35,8 +34,8 @@ public:
     NamedType& operator-= (NamedType const& other) { value_ -= other.GetValue(); return * this; }
     NamedType& operator%= (NamedType const& other) { value_ %= other.GetValue(); return * this; }
 
-    NamedType& operator*= (int       const& i)     { value_ *= i;                return * this; }
-	NamedType& operator/= (int       const& i)     { value_ /= i;                return * this; }
+    NamedType& operator*= (int const& i) { value_ *= i; return * this; }
+	NamedType& operator/= (int const& i) { value_ /= i; return * this; }
 
     NamedType  operator+ (NamedType const& other) const { NamedType res( value_ + other.GetValue() ); return res; }
     NamedType  operator- (NamedType const& other) const { NamedType res( value_ - other.GetValue() ); return res; }
@@ -51,6 +50,9 @@ public:
 
 	NamedType  operator++() { ++value_; return * this; }
     NamedType  operator--() { --value_; return * this; }
+
+	NamedType  operator++(int) { NamedType tmp(*this); operator++(); return tmp; }
+    NamedType  operator--(int) { NamedType tmp(*this); operator--(); return tmp; }
 
 	NamedType const abs_value() const{ NamedType res(::abs(value_)); return res; }
 

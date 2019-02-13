@@ -60,12 +60,6 @@ inline GridPoint const Wrap2Grid(GridPoint const gp)
 	return (gp + GRID_SIZE()) % GRID_SIZE(); 
 }
 
-inline bool const IsInGrid( GridPoint const & gp ) 
-{ 
-	return (GRID_X_MIN <= gp.GetX()) && (gp.GetX() <= GRID_X_MAX) && 
-		   (GRID_Y_MIN <= gp.GetY()) && (gp.GetY() <= GRID_Y_MAX);
-};
-
 inline GridPoint const ClipToGrid( GridPoint gp ) 
 { 
 	gp = GridPoint
@@ -82,6 +76,11 @@ inline GridPoint const ClipToGrid( GridPoint gp )
 
 	return gp;	
 }
+
+inline bool const IsInGrid( GridPoint const & gp ) 
+{ 
+	return ClipToGrid( gp ) == gp;
+};
 
 inline bool IsEvenColumn( GridPoint const & gp ) { return IsEven( gp.GetX() ); }
 inline bool IsOddColumn ( GridPoint const & gp ) { return IsOdd ( gp.GetX() ); }

@@ -11,9 +11,9 @@ using std::wostringstream;
 RightColumn::RightColumn( TextDisplay & textDisplay ) :
 	Shape( textDisplay )
 {
-	for	( MEM_INDEX mem = 0; mem < IMEMSIZE_MAX; ++mem )
+	for	( MEM_INDEX mem = MEM_INDEX( 0 ); mem < MEM_INDEX(IMEMSIZE_MAX); ++mem )
 	{
-		m_aMemorySlot[mem] = new MemorySlot( textDisplay, mem );
+		m_aMemorySlot[mem.GetValue()] = new MemorySlot( textDisplay, mem );
 	}
 }
 
@@ -27,7 +27,7 @@ void RightColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const p
 {
 	if ( SetShapeRect( ppOffset, ppSize ) )
 	{
-		PIXEL         const pixSlotHeight{ getShapeHeight() / (IMEMSIZE_MAX ) };
+		PIXEL         const pixSlotHeight{ getShapeHeight() / IMEMSIZE_MAX };
 		PixelRectSize const slotSize     { getShapeWidth(), pixSlotHeight };
 
 		PixelPoint posShape = GetShapePos( );
