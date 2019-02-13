@@ -30,7 +30,7 @@ EvolutionCoreImpl::~EvolutionCoreImpl( )
 void EvolutionCoreImpl::ResetAll( )
 {
     m_grid.ResetGrid( );
-	m_idPOI.ResetIndId( );
+	m_idPOI.Set2Null( );
 	m_plan.SetInvalid( );
 	ResetSelection( );
 	m_brush.Reset( );
@@ -42,7 +42,7 @@ void EvolutionCoreImpl::SetPoi( GridPoint const  gp )
 	if ( IsInGrid( gp ) )
 	{
 		IndividualId const idPoiNew = GetId( gp );
-		if ( idPoiNew.IsDefined( ) )
+		if ( idPoiNew.IsNotNull( ) )
 		{    
 			if ( IsPoiId( idPoiNew ) )
 				ClearPoi( );           // same POI. deactivate POI

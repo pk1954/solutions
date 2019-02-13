@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "IndividualId.h"
+#include "EvolutionTypes.h"
 #include "win32_shape.h"
 
 class MemorySlot : public Shape

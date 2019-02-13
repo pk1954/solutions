@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <limits.h>
 
 template <typename BASE_TYPE, typename Parameter>
 class NamedType

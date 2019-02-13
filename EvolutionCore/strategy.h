@@ -5,7 +5,6 @@
 #include <array>
 #include "random.h"
 #include "EvolutionTypes.h"
-#include "IndividualId.h"
 
 class StrategyData
 {

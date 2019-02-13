@@ -8,7 +8,6 @@
 #include <algorithm>  // min/max templates
 #include <iostream>
 #include <iomanip>
-#include <limits.h>
 #include <assert.h>
 #include <functional>
 #include "debug.h"

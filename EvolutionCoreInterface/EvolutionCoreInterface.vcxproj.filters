@@ -52,9 +52,6 @@
     <ClInclude Include="gridCoord.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="IndividualId.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="kGridTypes.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>

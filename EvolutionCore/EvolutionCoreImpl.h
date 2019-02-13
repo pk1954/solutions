@@ -6,6 +6,7 @@
 #include "gridRect.h"
 #include "grid_model.h"
 #include "gridBrush.h"
+#include "EvolutionTypes.h"
 #include "EvolutionCore.h"
 
 class EvolutionCore;
@@ -87,10 +88,10 @@ public:
 	virtual bool           SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
 
 	virtual IndividualId   GetPoiId    ( )                         const { return m_idPOI; }
-	virtual bool           IsPoiDefined( )                         const { return m_idPOI.IsDefined( ); }
+	virtual bool           IsPoiDefined( )                         const { return m_idPOI.IsNotNull( ); }
 	virtual bool           IsPoiId     ( IndividualId const & id ) const { return m_idPOI == id; }
 	virtual bool           IsPoi       ( GridPoint    const   gp ) const { return ( gp.IsNotNull( ) && ( GetId( gp ) == m_idPOI ) ); }
-	virtual void           ClearPoi    ( )                               { m_idPOI.ResetIndId( ); }
+	virtual void           ClearPoi    ( )                               { m_idPOI.Set2Null( ); }
 	 
     virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
     virtual PlannedActivity       * GetPlan4Writing( )       { return & m_plan; };
@@ -113,7 +114,7 @@ public:
     virtual GridPoint FindPOI( ) const;
 	virtual GridPoint FindGridPoint( IndividualId const & id, GridRect const & rect = GRID_RECT_FULL() ) const 
 	{ 
-		return ( id == IndividualId::NO_INDIVIDUAL )
+		return ( id.IsNull() )
 			   ? GridPoint::NULL_VAL()
 			   : m_grid.FindGridPoint( [&](GridPoint const gp) { return (GetId(gp) == id); }, rect );
 	}

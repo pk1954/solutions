@@ -155,7 +155,6 @@
     <ClInclude Include="gridPoint.h" />
     <ClInclude Include="gridPoint24.h" />
     <ClInclude Include="gridRect.h" />
-    <ClInclude Include="IndividualId.h" />
     <ClInclude Include="kGridTypes.h" />
     <ClInclude Include="PixelCore.h" />
     <ClInclude Include="plannedActivity.h" />

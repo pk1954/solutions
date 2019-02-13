@@ -6,9 +6,8 @@
 #include "debug.h"
 #include "NamedType.h"
 
-//typedef unsigned short MEM_INDEX;
-
-using MEM_INDEX = NamedType< unsigned short, struct MEM_INDEX_Parameter >;
+using IndividualId = NamedType< long,           struct IndividualId_Parameter >;
+using MEM_INDEX    = NamedType< unsigned short, struct MEM_INDEX_Parameter >;
 
 typedef          long  EVO_GENERATION;
 

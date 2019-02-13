@@ -122,9 +122,6 @@
     <ClCompile Include="PixelCore.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="IndividualId.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="plannedActivity.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>

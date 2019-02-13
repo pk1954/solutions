@@ -12,7 +12,7 @@
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
 #include "EvoModelFactory.h"
-#include "IndividualId.h"
+#include "EvolutionTypes.h"
 #include "EvoHistorySysGlue.h"
 
 class WorkThread;
@@ -89,12 +89,12 @@ private:
 
 HIST_GENERATION EvoHistorySysGlue::GetFirstGenOfIndividual( IndividualId const & id ) const  
 { 
-	return id.IsDefined( ) ? m_pHistorySystem->FindFirstGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
+	return id.IsNotNull( ) ? m_pHistorySystem->FindFirstGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
 }
 
 HIST_GENERATION EvoHistorySysGlue::GetLastGenOfIndividual ( IndividualId const & id ) const  
 { 
-	return id.IsDefined( ) ? m_pHistorySystem->FindLastGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
+	return id.IsNotNull( ) ? m_pHistorySystem->FindLastGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
 }
 
 void EvoHistorySysGlue::EvoClearHistory(  ) 

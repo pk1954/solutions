@@ -4,7 +4,7 @@
 #pragma once
 
 #include <iomanip>     
-#include "IndividualId.h"
+#include "EvolutionTypes.h"
 #include "win32_shape.h"
 
 class IdentifierShape : public Shape

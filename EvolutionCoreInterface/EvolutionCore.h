@@ -11,7 +11,6 @@ class ObserverInterface;
 class EventInterface;
 class EvolutionCore;
 class PlannedActivity;
-class IndividualId;
 
 class EvolutionCore
 {

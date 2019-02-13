@@ -42,7 +42,7 @@ Individual::Individual( )
 
 void Individual::ResetIndividual( )
 { 
-    m_id.ResetIndId( ); 
+    m_id.Set2Null( ); 
     m_genBirth  = -1L;
     m_sEnergy   = 0;
     m_sCapacity = 0;

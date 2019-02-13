@@ -15,14 +15,14 @@ StrategyData::StrategyData( )
     m_memSize = MEM_INDEX(0);
     m_memUsed = MEM_INDEX(0);
     for	( auto & i : m_aIdBadGuys )
-        i.ResetIndId();
+        i.Set2Null();
 }
 
 IndividualId StrategyData::GetMemEntry( MEM_INDEX const index ) const 
 {
     return ( index < m_memUsed )
 		   ? getBadGuyId( index )
-		   : IndividualId::NO_INDIVIDUAL;  // Can happen at race conditions
+		   : IndividualId::NULL_VAL();  // Can happen at race conditions
 }	
 
 MEM_INDEX StrategyData::FindInList( IndividualId const & idPartner ) 
@@ -47,7 +47,7 @@ void StrategyData::RemoveFromList( MEM_INDEX const index )
     for	( MEM_INDEX iRun = index; iRun < indexStop; ++iRun )
         getBadGuyId(iRun) = getBadGuyId(iRun + MEM_INDEX(1));
 
-    getBadGuyId(m_memUsed).ResetIndId( );
+    getBadGuyId(m_memUsed).Set2Null( );
 }
 
 void StrategyData::AddToList( IndividualId const & partnerId )
