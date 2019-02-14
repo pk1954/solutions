@@ -19,11 +19,11 @@
 using std::min;
 using std::max;
 
-using GridPoint = PointType< GRID_COORD, struct GRID_COORD_Parameter >;
+using GridPoint = PointType< GRID_COORD, struct GridPoint_Parameter >;
 
 inline bool const Neighbors( GridPoint const a, GridPoint const b )
 { 
-	GridPoint gpDiff = GridPoint( a - b ).abs_value();
+	GridPoint gpDiff = abs_value( a - b );
     return ( 
 		      (( gpDiff.GetX() <= 1_GRID_COORD ) || ( gpDiff.GetX() == GRID_X_MAX )) && 
 		      (( gpDiff.GetY() <= 1_GRID_COORD ) || ( gpDiff.GetY() == GRID_Y_MAX ))

@@ -6,7 +6,7 @@
 #include "util.h"
 #include "NamedType.h"
 
-using GRID_COORD = NamedType< short, struct GRID_COORD_Parameter >;
+using GRID_COORD = NamedType< short, struct GRID_Parameter >;
 
 inline bool IsEven( GRID_COORD const a ) { return a.GetValue() % 2 == 0; }
 inline bool IsOdd ( GRID_COORD const a ) { return a.GetValue() % 2 != 0; }

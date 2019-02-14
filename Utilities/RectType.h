@@ -160,25 +160,25 @@ private:
 };
 
 template <typename BASE_TYPE, typename POS_TYPE, typename SIZE_TYPE, typename Parameter> 
-RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const operator+ 
+auto const operator+ 
 (
 	RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const a, 
 	POS_TYPE const b
 ) 
 { 
-	RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> res(a); 
+	auto res(a); 
 	res += b; 
 	return res; 
 };
 
 template <typename BASE_TYPE, typename POS_TYPE, typename SIZE_TYPE, typename Parameter> 
-RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const operator- 
+auto const operator- 
 (
 	RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const a, 
 	POS_TYPE const b
 ) 
 { 
-	RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> res(a); 
+	auto res(a); 
 	res -= b; 
 	return res; 
 };

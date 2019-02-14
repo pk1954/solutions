@@ -6,8 +6,8 @@
 #include "gridPoint.h"
 #include "RectType.h"
 
-using GridRectSize = PointType< GRID_COORD,                          struct PixelRectSize_Parameter >;
-using GridRect     = RectType < GRID_COORD, GridPoint, GridRectSize, struct GridRect_Parameter >;
+using GridRectSize = PointType< GRID_COORD,                          struct GridRectSize_Parameter >;
+using GridRect     = RectType < GRID_COORD, GridPoint, GridRectSize, struct GRID_Parameter >;
 
 inline static GridRect const & GRID_RECT_EMPTY() 
 { 

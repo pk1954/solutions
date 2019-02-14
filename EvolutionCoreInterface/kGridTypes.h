@@ -8,6 +8,6 @@
 #include "PointType.h"
 #include "RectType.h"
 
-using KGridPoint    = PointType< long, struct KGridPoint_Parameter >;
-using KGridRectSize = PointType< long, struct PixelRectSize_Parameter >;
+using KGridPoint    = PointType< long, struct KGrid_Parameter >;
+using KGridRectSize = PointType< long, struct KGridRectSize_Parameter >;
 using KGridRect     = RectType < long, KGridPoint, KGridRectSize, struct KGridRect_Parameter >;

@@ -5,7 +5,8 @@
 
 #include <iostream>
 
-template <typename BASE_TYPE, typename Parameter> class PointType
+template <typename BASE_TYPE, typename Parameter> 
+class PointType
 {
 public:
 
@@ -27,8 +28,6 @@ public:
 
     PointType const operator- () const { return PointType( -x, -y ); };
     PointType const operator+ () const { return PointType( +x, +y ); };
-
-	PointType const abs_value() { return PointType( x.abs_value(), y.abs_value() ); }
 
 	BASE_TYPE const GetX() const { return x; }
 	BASE_TYPE const GetY() const { return y; }
@@ -62,77 +61,83 @@ private:
 };
 
 template <typename BASE_TYPE, typename Parameter>
-PointType<BASE_TYPE, Parameter> const operator+ (PointType<BASE_TYPE, Parameter> const a, PointType<BASE_TYPE, Parameter> const b) 
+auto const operator+ (PointType<BASE_TYPE, Parameter> const a, PointType<BASE_TYPE, Parameter> const b) 
 { 
-	PointType<BASE_TYPE, Parameter> res(a); 
+	auto res(a); 
 	res += b; 
 	return res; 
 };
 
 template <typename BASE_TYPE, typename Parameter>
-PointType<BASE_TYPE, Parameter> const operator- (PointType<BASE_TYPE, Parameter> const a, PointType<BASE_TYPE, Parameter> const b) 
+auto const operator- (PointType<BASE_TYPE, Parameter> const a, PointType<BASE_TYPE, Parameter> const b) 
 { 
-	PointType<BASE_TYPE, Parameter> res(a); 
+	auto res(a); 
 	res -= b; 
 	return res; 
 };
 
 template <typename BASE_TYPE, typename Parameter>
-PointType<BASE_TYPE, Parameter> const operator% (PointType<BASE_TYPE, Parameter> const a, PointType<BASE_TYPE, Parameter> const b) 
+auto const operator% (PointType<BASE_TYPE, Parameter> const a, PointType<BASE_TYPE, Parameter> const b) 
 { 
-	PointType<BASE_TYPE, Parameter> res(a); 
+	auto res(a); 
 	res %= b; 
 	return res; 
 };
 
 template <typename BASE_TYPE, typename Parameter>
-PointType<BASE_TYPE, Parameter> const operator+ (PointType<BASE_TYPE, Parameter> const a, BASE_TYPE const base) 
+auto const operator+ (PointType<BASE_TYPE, Parameter> const a, BASE_TYPE const base) 
 { 
-	PointType<BASE_TYPE, Parameter> res(a); 
+	auto res(a); 
 	res += base; 
 	return res; 
 };
 
 template <typename BASE_TYPE, typename Parameter>
-PointType<BASE_TYPE, Parameter> const operator- (PointType<BASE_TYPE, Parameter> const a, BASE_TYPE const base) 
+auto const operator- (PointType<BASE_TYPE, Parameter> const a, BASE_TYPE const base) 
 { 
-	PointType<BASE_TYPE, Parameter> res(a); 
+	auto res(a); 
 	res -= base; 
 	return res; 
 };
 
 template <typename BASE_TYPE, typename Parameter>
-PointType<BASE_TYPE, Parameter> const operator* (PointType<BASE_TYPE, Parameter> const a, long const l) 
+auto const operator* (PointType<BASE_TYPE, Parameter> const a, long const l) 
 { 
-	PointType<BASE_TYPE, Parameter> res(a); 
+	auto res(a); 
 	res *= l; 
 	return res; 
 };
 
 template <typename BASE_TYPE, typename Parameter>
-PointType<BASE_TYPE, Parameter> const operator/ (PointType<BASE_TYPE, Parameter> const a, long const l) 
+auto const operator/ (PointType<BASE_TYPE, Parameter> const a, long const l) 
 { 
-	PointType<BASE_TYPE, Parameter> res(a); 
+	auto res(a); 
 	res /= l; 
 	return res; 
 };
 
 template <typename BASE_TYPE, typename Parameter>
-PointType<BASE_TYPE, Parameter> const Max(PointType<BASE_TYPE, Parameter> const a, PointType<BASE_TYPE, Parameter> const b) 
+auto const Max(PointType<BASE_TYPE, Parameter> const a, PointType<BASE_TYPE, Parameter> const b) 
 { 
 	return PointType<BASE_TYPE, Parameter>( std::min(a.GetX(), b.GetX()), std::min(a.GetY(), b.GetY()) ); 
 }
 
 template <typename BASE_TYPE, typename Parameter>
-PointType<BASE_TYPE, Parameter> const Min(PointType<BASE_TYPE, Parameter> const a, PointType<BASE_TYPE, Parameter> const b) 
+auto const Min(PointType<BASE_TYPE, Parameter> const a, PointType<BASE_TYPE, Parameter> const b) 
 { 
 	return PointType<BASE_TYPE, Parameter>( std::max(a.GetX(), b.GetX()), std::max(a.GetY(), b.GetY()) ); 
 }
 
 template <typename BASE_TYPE, typename Parameter>
+auto const abs_value(PointType<BASE_TYPE, Parameter> const a) 
+{ 
+	return PointType<BASE_TYPE, Parameter>( ::abs_value(a.GetX()), ::abs_value(a.GetY()) ); 
+}
+
+template <typename BASE_TYPE, typename Parameter>
 BASE_TYPE const MaxAbsDelta(PointType<BASE_TYPE, Parameter> const pnt) 
 {
-    return BASE_TYPE( std::max( pnt.GetX().abs_value(), pnt.GetY().abs_value() ) );
+    return BASE_TYPE( std::max( abs_value(pnt.GetX()), abs_value(pnt.GetY()) ) );
 }
 
 template <typename BASE_TYPE, typename Parameter>

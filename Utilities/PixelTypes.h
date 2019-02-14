@@ -11,7 +11,7 @@
 using PIXEL         = NamedType< long,                             struct PIXEL_Parameter >;
 using PixelPoint    = PointType< PIXEL,                            struct PixelPoint_Parameter >;
 using PixelRectSize = PointType< PIXEL,                            struct PixelRectSize_Parameter >;
-using PixelRect     = RectType < PIXEL, PixelPoint, PixelRectSize, struct PixelRect_Parameter >;
+using PixelRect     = RectType < PIXEL, PixelPoint, PixelRectSize, struct PIXEL_Parameter >;
 
 constexpr PIXEL operator"" _PIXEL( unsigned long long ull )
 {
