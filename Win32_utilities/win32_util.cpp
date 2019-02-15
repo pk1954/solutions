@@ -21,19 +21,6 @@ RECT Util::ScrReadRECT( Script & script )
     return rect;
 }
 
-wostream & Util::operator << ( wostream & out, PixelPoint const pp )
-{
-    //lint -e747  Significant prototype coercion with setw
-    out << pp.GetX() << L" " << pp.GetY() << L" ";
-    return out;
-}
-
-wostream & Util::operator << ( wostream & out, PixelRect const & rect )
-{
-    out << rect.GetStartPoint( ) << L' ' << rect.GetEndPoint( );
-    return out;
-}
-
 wostream & Util::operator << ( wostream & out, RECT const & rect )
 {
     out << rect.left << L' ' << rect.top << L' ' << rect.right << L' ' << rect.bottom;

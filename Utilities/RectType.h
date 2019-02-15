@@ -146,6 +146,26 @@ public:
 		return * this;
 	}
 
+	friend RectType const operator+ (RectType const a, POS_TYPE const b	) 
+	{ 
+		RectType res(a); 
+		res += b; 
+		return res; 
+	};
+
+	friend RectType const operator- (RectType const a, POS_TYPE const b	) 
+	{ 
+		RectType res(a); 
+		res -= b;
+		return res; 
+	};
+
+	friend std::wostream & operator << ( std::wostream & out, RectType const & rect )
+	{
+		out << rect.GetStartPoint() << L' ' << rect.GetEndPoint();
+		return out;
+	}
+
 	static RectType const & ZERO_VAL() 
 	{ 
 		static RectType res( POS_TYPE::ZERO_VAL(), POS_TYPE::ZERO_VAL() ); 
@@ -158,38 +178,3 @@ private:
     BASE_TYPE m_Right;
     BASE_TYPE m_Bottom;
 };
-
-template <typename BASE_TYPE, typename POS_TYPE, typename SIZE_TYPE, typename Parameter> 
-auto const operator+ 
-(
-	RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const a, 
-	POS_TYPE const b
-) 
-{ 
-	auto res(a); 
-	res += b; 
-	return res; 
-};
-
-template <typename BASE_TYPE, typename POS_TYPE, typename SIZE_TYPE, typename Parameter> 
-auto const operator- 
-(
-	RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const a, 
-	POS_TYPE const b
-) 
-{ 
-	auto res(a); 
-	res -= b; 
-	return res; 
-};
-
-template <typename BASE_TYPE, typename POS_TYPE, typename SIZE_TYPE, typename Parameter> 
-std::wostream & operator << 
-( 
-	std::wostream & out, 
-	RectType<BASE_TYPE, POS_TYPE, SIZE_TYPE, Parameter> const & rect 
-)
-{
-    out << rect.GetStartPoint() << L' ' << rect.GetEndPoint();
-    return out;
-}

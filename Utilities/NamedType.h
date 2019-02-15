@@ -47,6 +47,58 @@ public:
 	NamedType  operator++(int) { NamedType tmp(*this); operator++(); return tmp; }
     NamedType  operator--(int) { NamedType tmp(*this); operator--(); return tmp; }
 
+	friend NamedType operator+ (NamedType const a, NamedType const b )
+	{ 
+		NamedType res(a);
+		res += b; 
+		return res; 
+	}
+
+	friend NamedType operator- (NamedType const a, NamedType const b )
+	{ 
+		NamedType res(a);
+		res -= b; 
+		return res; 
+	}
+
+	friend NamedType operator% (NamedType const a, NamedType const b )
+	{ 
+		NamedType res(a);
+		res %= b; 
+		return res; 
+	}
+
+	friend BASE_TYPE operator/ (NamedType const a, NamedType const b )
+	{ 
+		return a.GetValue() / b.GetValue();
+	}
+
+	friend NamedType operator* (NamedType const a, int const i )
+	{ 
+		NamedType res(a);
+		res *= i; 
+		return res; 
+	}
+
+	friend NamedType operator/ (NamedType const a, int const i )
+	{ 
+		NamedType res(a);
+		res /= i; 
+		return res; 
+	}
+
+	friend NamedType const abs_value(NamedType const a) 
+	{ 
+		NamedType res(::abs(a.GetValue())); 
+		return res; 
+	}
+
+	friend std::wostream & operator<< ( std::wostream & out, NamedType const & param )
+	{
+		out << std::setw( 5 ) << param.GetValue();
+		return out;
+	}
+
 	static NamedType const NULL_VAL()
 	{
 		static const NamedType res((std::numeric_limits<BASE_TYPE>::min)());
@@ -61,63 +113,3 @@ public:
 private:
     BASE_TYPE value_;
 };
-
-template <typename BASE_TYPE, typename Parameter>
-auto operator+ (NamedType< BASE_TYPE, Parameter > const a, NamedType< BASE_TYPE, Parameter > const b )
-{ 
-	auto res(a);
-	res += b; 
-	return res; 
-}
-
-template <typename BASE_TYPE, typename Parameter>
-auto operator- (NamedType< BASE_TYPE, Parameter > const a, NamedType< BASE_TYPE, Parameter > const b )
-{ 
-	auto res(a);
-	res -= b; 
-	return res; 
-}
-
-template <typename BASE_TYPE, typename Parameter>
-auto operator% (NamedType< BASE_TYPE, Parameter > const a, NamedType< BASE_TYPE, Parameter > const b )
-{ 
-	auto res(a);
-	res %= b; 
-	return res; 
-}
-
-template <typename BASE_TYPE, typename Parameter>
-BASE_TYPE operator/ (NamedType< BASE_TYPE, Parameter > const a, NamedType< BASE_TYPE, Parameter > const b )
-{ 
-	return a.GetValue() / b.GetValue();
-}
-
-template <typename BASE_TYPE, typename Parameter>
-auto operator* (NamedType< BASE_TYPE, Parameter > const a, int const i )
-{ 
-	auto res(a);
-	res *= i; 
-	return res; 
-}
-
-template <typename BASE_TYPE, typename Parameter>
-auto operator/ (NamedType< BASE_TYPE, Parameter > const a, int const i )
-{ 
-	auto res(a);
-	res /= i; 
-	return res; 
-}
-
-template <typename BASE_TYPE, typename Parameter>
-auto const abs_value(NamedType< BASE_TYPE, Parameter > const a) 
-{ 
-	NamedType< BASE_TYPE, Parameter > res(::abs(a.GetValue())); 
-	return res; 
-}
-
-template <typename BASE_TYPE, typename Parameter>
-std::wostream & operator<< ( std::wostream & out, NamedType<BASE_TYPE, Parameter> const & param )
-{
-	out << std::setw( 5 ) << param.GetValue();
-    return out;
-}
