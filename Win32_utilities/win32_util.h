@@ -14,8 +14,6 @@ class Script;
 
 namespace Util
 {
-    std::wostream & operator << ( std::wostream &, PixelPoint const );
-    std::wostream & operator << ( std::wostream &, PixelRect const & );
     std::wostream & operator << ( std::wostream &, RECT const & );
 
     RECT ScrReadRECT( Script & );
