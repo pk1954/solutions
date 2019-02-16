@@ -67,9 +67,9 @@ public:
     }
 
 private:
-	typedef std::vector< GridPoint >                  NEIGHBORS;
-	typedef std::array < NEIGHBORS,    GRID_WIDTH_  > NEIGHBOR_ROW;
-	typedef std::array < NEIGHBOR_ROW, GRID_HEIGHT_ > NEIGHBOR_GRID;
+	using NEIGHBORS     = std::vector< GridPoint >;
+	using NEIGHBOR_ROW  = std::array < NEIGHBORS,    GRID_WIDTH_  >;
+	using NEIGHBOR_GRID = std::array < NEIGHBOR_ROW, GRID_HEIGHT_ >;
 
 	static int             m_iNrOfNeighbors;
 	static NEIGHBOR_GRID * m_pGridNeighbors;

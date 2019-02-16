@@ -163,7 +163,8 @@ private:
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;
 
-	typedef std::array< std::array < unsigned int, NR_STRATEGIES>, NR_ACTIONS > tActionCounters;
+	using tActionCounters = std::array< std::array < unsigned int, NR_STRATEGIES>, NR_ACTIONS >;
+
 	tActionCounters   m_ActionCounter1;
 	tActionCounters   m_ActionCounter2;
 	tActionCounters * m_pActionCounterFill;

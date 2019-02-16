@@ -84,5 +84,5 @@ inline bool const IsInGrid( GridPoint const & gp )
 inline bool IsEvenColumn( GridPoint const & gp ) { return IsEven( gp.GetX() ); }
 inline bool IsOddColumn ( GridPoint const & gp ) { return IsOdd ( gp.GetX() ); }
 
-typedef std::function<void (GridPoint const)> GridPointFunc;
-typedef std::function<short(short const, short const)> ManipulatorFunc;
+using GridPointFunc   = std::function<void (GridPoint const)>;
+using ManipulatorFunc = std::function<short(short const, short const)>;

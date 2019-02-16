@@ -93,7 +93,7 @@ public:
 
 private:
 
-    typedef long tConfigItem;
+    using tConfigItem = long;
 
     static std::unordered_map< tId, tConfigItem > m_mapConfigData;
 

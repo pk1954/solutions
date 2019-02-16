@@ -15,7 +15,7 @@ public:
 		
     constexpr explicit NamedType( BASE_TYPE const value ) : value_(value) {}
 
-	BASE_TYPE const & GetValue() const { return value_; }
+	constexpr BASE_TYPE const & GetValue() const { return value_; }
 
     bool const operator== (NamedType const other) const { return value_ == other.GetValue(); }
     bool const operator!= (NamedType const other) const { return value_ != other.GetValue(); }
