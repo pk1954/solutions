@@ -19,7 +19,7 @@
 using std::min;
 using std::max;
 
-using GridPoint = PointType< GRID_COORD, struct GridPoint_Parameter >;
+using GridPoint = PosType< GRID_COORD, struct GridPoint_Parameter >;
 
 inline bool const Neighbors( GridPoint const a, GridPoint const b )
 { 

@@ -9,7 +9,12 @@
 #include "RectType.h"
 
 using PIXEL         = NamedType< long,                             struct PIXEL_Parameter >;
-using PixelPoint    = PointType< PIXEL,                            struct PixelPoint_Parameter >;
+
+
+using PixelPoint    = PosType< PIXEL, struct PixelPoint_Parameter >;
+//using PixelPoint    = PointType< PIXEL, struct PixelPoint_Parameter >;
+
+
 using PixelRectSize = PointType< PIXEL,                            struct PixelRectSize_Parameter >;
 using PixelRect     = RectType < PIXEL, PixelPoint, PixelRectSize, struct PIXEL_Parameter >;
 

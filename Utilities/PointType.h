@@ -97,9 +97,9 @@ public:
 		return res; 
 	};
 
-	friend auto const operator/ (PointType const a, long const l) 
+	friend PointType const operator/ (PointType const a, long const l) 
 	{ 
-		auto res(a); 
+		PointType res(a); 
 		res /= l; 
 		return res; 
 	};
@@ -133,3 +133,36 @@ private:
     BASE_TYPE x;
     BASE_TYPE y;
 };
+
+template <typename BASE_TYPE, typename Parameter> 
+class PosType: public PointType<BASE_TYPE, Parameter> 
+{
+public:
+
+	PosType( PointType<BASE_TYPE, Parameter> const & p )
+		: PointType<BASE_TYPE, Parameter>( p )
+	{}
+
+	PosType( BASE_TYPE const x, BASE_TYPE const y )
+		: PointType<BASE_TYPE, Parameter>( x, y )
+	{}
+};
+
+//struct pos_tag {};
+//struct siz_tag {};
+//
+//template <typename T> struct point_traits;
+//
+//template <typename BASE_TYPE, typename Parameter>
+//class PosType : public PointType<BASE_TYPE, Parameter>
+//{
+//public:
+//	using point_traits = pos_tag;
+//};
+//
+//template <typename BASE_TYPE, typename Parameter>
+//class SizType : public PointType<BASE_TYPE, Parameter>
+//{
+//public:
+//	using point_traits = siz_tag;
+//};

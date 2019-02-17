@@ -5,6 +5,7 @@
 #include "Resource.h"
 #include "config.h"
 #include "BoolOp.h"
+#include "PixelTypes.h"
 #include "PixelCore.h"
 #include "pixelCoordinates.h"
 #include "EvolutionCore.h"

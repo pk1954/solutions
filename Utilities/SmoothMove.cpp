@@ -1,5 +1,6 @@
 // SmoothMove.cpp
 //
+// Utilities
 
 #include "stdafx.h"
 #include "assert.h"
@@ -50,7 +51,7 @@ PixelPoint SmoothMove::Step( PixelPoint pixActual, PixelPoint pixTarget )  // re
         pixActual += PixelPoint( 0_PIXEL, pixStepY );
         if ( pixDelta.GetX().IsNotZero() )
         {
-            PIXEL pixVelocityMinor = PIXEL(abs( ( pixStepY.GetValue() * pixDelta.GetYvalue() + pixDelta.GetXvalue() / 2 ) / pixDelta.GetYvalue() ));
+            PIXEL pixVelocityMinor = PIXEL(abs( ( pixStepY.GetValue() * pixDelta.GetXvalue() + pixDelta.GetYvalue() / 2 ) / pixDelta.GetYvalue() ));
             pixStepX = pixDelta.GetX().IsPositive() ? pixVelocityMinor : -pixVelocityMinor;
             pixActual += PixelPoint( pixStepX, 0_PIXEL );
         }
