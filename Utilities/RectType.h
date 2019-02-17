@@ -3,10 +3,12 @@
 
 #pragma once
 
-template <typename BASE_TYPE, typename POS_TYPE, typename SIZE_TYPE, typename Parameter> 
+template <typename BASE_TYPE> 
 class RectType
 {
 public:
+	using POS_TYPE  = PosType<BASE_TYPE>;
+	using SIZE_TYPE = SizeType<BASE_TYPE>;
 
     RectType( ) 
 	{ 
@@ -24,8 +26,8 @@ public:
 
     RectType
 	( 
-		POS_TYPE const pt1, 
-		POS_TYPE const pt2 
+		POS_TYPE const & pt1, 
+		POS_TYPE const & pt2 
 	)
     { 
         if ( pt1.GetX() < pt2.GetX() )
@@ -60,7 +62,11 @@ public:
 		assert( m_Bottom >= m_Top );
     };
 
-	RectType( POS_TYPE const ptOrigin, SIZE_TYPE const & size ) :
+	RectType
+	( 
+		POS_TYPE  const & ptOrigin, 
+		SIZE_TYPE const & size 
+	) :
         m_Left  (ptOrigin.GetX()),
         m_Top   (ptOrigin.GetY()),
         m_Right (m_Left + size.GetX() - BASE_TYPE(1)),

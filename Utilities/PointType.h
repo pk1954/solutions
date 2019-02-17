@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+template <typename T> struct point_traits;
+
 template <typename BASE_TYPE, typename Parameter> 
 class PointType
 {
@@ -134,35 +136,31 @@ private:
     BASE_TYPE y;
 };
 
-template <typename BASE_TYPE, typename Parameter> 
-class PosType: public PointType<BASE_TYPE, Parameter> 
+struct pos_tag {};
+struct siz_tag {};
+
+// PosType: A specialized PointType used to denote the position of something
+
+template <typename BASE_TYPE> 
+class PosType: public PointType<BASE_TYPE, pos_tag> 
 {
 public:
+	using PointType::PointType;
 
-	PosType( PointType<BASE_TYPE, Parameter> const & p )
-		: PointType<BASE_TYPE, Parameter>( p )
-	{}
+	PosType( PointType const & p ) : PointType( p )	{}
 
-	PosType( BASE_TYPE const x, BASE_TYPE const y )
-		: PointType<BASE_TYPE, Parameter>( x, y )
-	{}
+	using point_traits = pos_tag;
 };
 
-//struct pos_tag {};
-//struct siz_tag {};
-//
-//template <typename T> struct point_traits;
-//
-//template <typename BASE_TYPE, typename Parameter>
-//class PosType : public PointType<BASE_TYPE, Parameter>
-//{
-//public:
-//	using point_traits = pos_tag;
-//};
-//
-//template <typename BASE_TYPE, typename Parameter>
-//class SizType : public PointType<BASE_TYPE, Parameter>
-//{
-//public:
-//	using point_traits = siz_tag;
-//};
+// SizeType: A specialized PointType used to denote the size of something
+
+template <typename BASE_TYPE> 
+class SizeType: public PointType<BASE_TYPE, siz_tag> 
+{
+public:
+	using PointType::PointType;
+
+	SizeType( PointType const & p ) : PointType( p ) {}
+
+	using point_traits = siz_tag;
+};

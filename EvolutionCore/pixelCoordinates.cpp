@@ -129,13 +129,13 @@ PixelPoint PixelCoordinates::Pixel2PixelPos( PixelPoint const ptPosIn, PixelCoor
 KGridPoint PixelCoordinates::Pixel2KGridSize( PixelPoint const ptSize, PIXEL const pixFieldSize ) const
 {
 	PixelPoint size( ptSize * KGRID_FACTOR / pixFieldSize.GetValue() );
-    return KGridPoint( size.GetXvalue(), size.GetYvalue() );
+    return KGridPoint( KGrid(size.GetXvalue()), KGrid(size.GetYvalue()) );
 }
 
 PixelPoint PixelCoordinates::KGrid2PixelSize( KGridRectSize const kgpSize, PIXEL const pixFieldSize ) const 
 {
     KGridRectSize size = (kgpSize * CastToShort(pixFieldSize.GetValue())) / KGRID_FACTOR;
-    return PixelPoint( PIXEL(size.GetX()), PIXEL(size.GetY()) );
+    return PixelPoint( PIXEL(size.GetXvalue()), PIXEL(size.GetYvalue()) );
 }
 
 KGridPoint PixelCoordinates::Pixel2KGridPos( PixelPoint const pp ) const 
