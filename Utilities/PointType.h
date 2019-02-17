@@ -5,8 +5,6 @@
 
 #include <iostream>
 
-template <typename T> struct point_traits;
-
 template <typename BASE_TYPE, typename Parameter> 
 class PointType
 {
@@ -135,6 +133,8 @@ private:
     BASE_TYPE x;
     BASE_TYPE y;
 };
+
+template <typename T> struct point_traits;
 
 struct pos_tag {};
 struct siz_tag {};

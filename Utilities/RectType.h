@@ -6,10 +6,10 @@
 template <typename BASE_TYPE> 
 class RectType
 {
-public:
 	using POS_TYPE  = PosType<BASE_TYPE>;
 	using SIZE_TYPE = SizeType<BASE_TYPE>;
 
+public:
     RectType( ) 
 	{ 
 		Reset(); 
