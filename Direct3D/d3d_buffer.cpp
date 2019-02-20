@@ -283,10 +283,10 @@ void D3dBuffer::RenderTranspRect
 
 		addRect2Buffer
 		( 
-			static_cast<float>( rectTransparent.GetLeft().GetValue()   ), 
-			static_cast<float>( rectTransparent.GetTop().GetValue()    ), 
-			static_cast<float>( rectTransparent.GetRight().GetValue()  ), 
-			static_cast<float>( rectTransparent.GetBottom().GetValue() ), 
+			static_cast<float>( rectTransparent.GetLeft  ().GetValue().GetValue() ), 
+			static_cast<float>( rectTransparent.GetTop   ().GetValue().GetValue() ), 
+			static_cast<float>( rectTransparent.GetRight ().GetValue().GetValue() ), 
+			static_cast<float>( rectTransparent.GetBottom().GetValue().GetValue() ), 
 			d3dColor 
 		);
 

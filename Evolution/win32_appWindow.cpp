@@ -7,6 +7,7 @@
 
 #include "config.h"
 #include "gridRect.h"
+#include "GridDimensions.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCore.h"
 
@@ -117,7 +118,7 @@ void AppWindow::Start(  )
 	m_pEvolutionCore->SetEvent( & m_event );
 	stopwatch.Stop( L"EvolutionCore::InitClass" );
 
-    D3dSystem::Create_D3D_Device( hwndApp, GRID_WIDTH.GetValue(), GRID_HEIGHT.GetValue(), Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 );
+    D3dSystem::Create_D3D_Device( hwndApp, GRID_WIDTH.GetValue().GetValue(), GRID_HEIGHT.GetValue().GetValue(), Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 );
 	
     // create window objects
 
@@ -327,11 +328,11 @@ LRESULT AppWindow::UserProc
 
 void AppWindow::adjustChildWindows( )
 {
-    static PIXEL const HIST_WINDOW_HEIGHT = 30_PIXEL;
+    static PIXEL_Y const HIST_WINDOW_HEIGHT = PIXEL_Y(30_PIXEL);
 
     PixelRectSize pntAppClientSize( GetClRectSize( ) );
-	PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
-	PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
+	PIXEL_X pixAppClientWinWidth  = pntAppClientSize.GetX();
+	PIXEL_Y pixAppClientWinHeight = pntAppClientSize.GetY();
 
     if ( ! pntAppClientSize.IsZero( ) )
     {
@@ -342,7 +343,7 @@ void AppWindow::adjustChildWindows( )
         {
             m_pEvoHistWindow->Move   // adapt history window to new size
 			( 
-				0_PIXEL, 
+				PIXEL_X(0_PIXEL), 
 				pixAppClientWinHeight - HIST_WINDOW_HEIGHT, 
 				pixAppClientWinWidth, 
 				HIST_WINDOW_HEIGHT, 
@@ -352,8 +353,8 @@ void AppWindow::adjustChildWindows( )
 
         m_pMainGridWindow->Move
 		( 
-			0_PIXEL, 
-			0_PIXEL, 
+			PIXEL_X(0_PIXEL), 
+			PIXEL_Y(0_PIXEL), 
 			pixAppClientWinWidth, 
 			pixAppClientWinHeight, 
 			TRUE 

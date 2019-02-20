@@ -9,7 +9,11 @@ class RectType
 	using POS_TYPE  = PosType<BASE_TYPE>;
 	using SIZE_TYPE = SizeType<BASE_TYPE>;
 
+	using BASE_X = NamedType< BASE_TYPE, x_tag >;
+	using BASE_Y = NamedType< BASE_TYPE, y_tag >;
+
 public:
+
     RectType( ) 
 	{ 
 		Reset(); 
@@ -53,7 +57,13 @@ public:
 		assert( m_Bottom >= m_Top );
     };
 
-    RectType( BASE_TYPE const pixLeft, BASE_TYPE const pixTop, BASE_TYPE const pixRight, BASE_TYPE const pixBottom ) :
+    RectType
+	( 
+		BASE_X const pixLeft, 
+		BASE_Y const pixTop, 
+		BASE_X const pixRight, 
+		BASE_Y const pixBottom 
+	) :
         m_Left  (pixLeft), 
         m_Top   (pixTop), 
         m_Right (pixRight), 
@@ -69,30 +79,30 @@ public:
 	) :
         m_Left  (ptOrigin.GetX()),
         m_Top   (ptOrigin.GetY()),
-        m_Right (m_Left + size.GetX() - BASE_TYPE(1)),
-        m_Bottom(m_Top  + size.GetY() - BASE_TYPE(1))
+        m_Right (m_Left + size.GetX() - BASE_X(BASE_TYPE(1))),
+        m_Bottom(m_Top  + size.GetY() - BASE_Y(BASE_TYPE(1)))
 	{
 		assert( m_Bottom >= m_Top );
 	}
 
 	void Reset( )
     {
-        m_Left   = BASE_TYPE(0);
-        m_Top    = BASE_TYPE(0);
-        m_Right  = BASE_TYPE(0);
-        m_Bottom = BASE_TYPE(0);
+        m_Left   = BASE_X(BASE_TYPE(0));
+        m_Top    = BASE_Y(BASE_TYPE(0));
+        m_Right  = BASE_X(BASE_TYPE(0));
+        m_Bottom = BASE_Y(BASE_TYPE(0));
     };
 
     bool IsEmpty   ( ) const { return (m_Left == m_Right) || (m_Top == m_Bottom); };
 	bool IsNotEmpty( ) const { return (m_Left <  m_Right) && (m_Top <  m_Bottom); };
 
-	BASE_TYPE const GetLeft  () const { return m_Left;   };
-    BASE_TYPE const GetTop   () const { return m_Top;    };
-    BASE_TYPE const GetRight () const { return m_Right;  };
-    BASE_TYPE const GetBottom() const { return m_Bottom; };
+	BASE_X const GetLeft  () const { return m_Left;   };
+    BASE_Y const GetTop   () const { return m_Top;    };
+    BASE_X const GetRight () const { return m_Right;  };
+    BASE_Y const GetBottom() const { return m_Bottom; };
 
-    BASE_TYPE const GetWidth () const { return m_Right  - m_Left + BASE_TYPE(1); }
-	BASE_TYPE const GetHeight() const { return m_Bottom - m_Top  + BASE_TYPE(1); }
+    BASE_X const GetWidth () const { return m_Right  - m_Left + BASE_X(BASE_TYPE(1)); }
+	BASE_Y const GetHeight() const { return m_Bottom - m_Top  + BASE_Y(BASE_TYPE(1)); }
 
     SIZE_TYPE const GetSize() const { return SIZE_TYPE( GetWidth(), GetHeight() ); }
 
@@ -179,8 +189,8 @@ public:
 	};
 
 private:
-    BASE_TYPE m_Left;
-    BASE_TYPE m_Top;
-    BASE_TYPE m_Right;
-    BASE_TYPE m_Bottom;
+    BASE_X m_Left;
+    BASE_Y m_Top;
+    BASE_X m_Right;
+    BASE_Y m_Bottom;
 };

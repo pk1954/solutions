@@ -4,6 +4,7 @@
 #pragma once
 
 #include <string>
+#include "PixelTypes.h"
 #include "win32_rootWindow.h"
 
 class EvolutionCore;
@@ -11,17 +12,17 @@ class EvolutionCore;
 class StatusBar : public RootWindow
 {
 public:
-    void  Start( HWND const, EvolutionCore const * );
-	void  SetSimuMode( BOOL const );
-	void  SetRunMode( BOOL const );
-    PIXEL GetHeight( ) const;
-    void  Resize( ) const;
-    void  SetSizeTrackBar ( PIXEL const ) const;
-    void  SetSpeedTrackBar( DWORD const ) const;
-    void  ClearStatusLine( );
-    void  DisplayStatusLine( std::wstring const & );
-    void  DisplayScriptLine( std::wstring const &, int, std::wstring const & );
-    void  DisplayCurrentGeneration( EVO_GENERATION const );
+    void    Start( HWND const, EvolutionCore const * );
+	void    SetSimuMode( BOOL const );
+	void    SetRunMode( BOOL const );
+    PIXEL_Y GetHeight( ) const;
+    void    Resize( ) const;
+    void    SetSizeTrackBar ( PIXEL const ) const;
+    void    SetSpeedTrackBar( DWORD const ) const;
+    void    ClearStatusLine( );
+    void    DisplayStatusLine( std::wstring const & );
+    void    DisplayScriptLine( std::wstring const &, int, std::wstring const & );
+    void    DisplayCurrentGeneration( EVO_GENERATION const );
 
 private:
 
@@ -45,9 +46,10 @@ private:
     void WINAPI createSimulationControl( );
     void WINAPI createEditorControl( );
 
-	PIXEL        m_pixClientHeight;
-    PIXEL        m_pixBorder;
-    PIXEL        m_pixPosX;
+	PIXEL_Y      m_pixClientHeight;
+    PIXEL_X      m_pixBorderX;
+    PIXEL_Y      m_pixBorderY;
+    PIXEL_X      m_pixPosX;
     std::wstring m_wstrGeneration;
     std::wstring m_wstrScriptLine;
 

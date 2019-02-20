@@ -20,16 +20,16 @@ public:
 
     HWND GetWindowHandle( ) const { return m_hwnd; };
 
-    PIXEL         const GetWindowTop( )            const { return Util::GetWindowTop           ( m_hwnd ); }
-    PIXEL         const GetWindowWidth( )          const { return Util::GetWindowWidth         ( m_hwnd ); }
-    PIXEL         const GetWindowHeight( )         const { return Util::GetWindowHeight        ( m_hwnd ); }
-    PixelPoint    const GetWindowSize( )           const { return Util::GetWindowSize          ( m_hwnd ); }
+    PIXEL_Y       const GetWindowTop( )            const { return Util::GetWindowTop           ( m_hwnd ); }
+    PIXEL_X       const GetWindowWidth( )          const { return Util::GetWindowWidth         ( m_hwnd ); }
+    PIXEL_Y       const GetWindowHeight( )         const { return Util::GetWindowHeight        ( m_hwnd ); }
+    PixelRectSize const GetWindowSize( )           const { return Util::GetWindowSize          ( m_hwnd ); }
     PixelPoint    const Client2Screen( POINT pnt)  const { return Util::Client2Screen          ( m_hwnd, pnt ); }
     PixelRectSize const GetClRectSize( )           const { return Util::GetClRectSize          ( m_hwnd ); }
     PixelRect     const GetClPixelRect( )          const { return Util::GetClPixelRect         ( m_hwnd ); }
     RECT          const GetClRect( )               const { return Util::GetClRect              ( m_hwnd ); }
-    PIXEL         const GetClientWindowHeight( )   const { return Util::GetClientWindowHeight  ( m_hwnd ); }
-    PIXEL         const GetClientWindowWidth( )    const { return Util::GetClientWindowWidth   ( m_hwnd ); }
+    PIXEL_Y       const GetClientWindowHeight( )   const { return Util::GetClientWindowHeight  ( m_hwnd ); }
+    PIXEL_X       const GetClientWindowWidth( )    const { return Util::GetClientWindowWidth   ( m_hwnd ); }
     BOOL          const CrsrInClientRect( )        const { return Util::CrsrInClientRect       ( m_hwnd ); }
     PixelPoint    const GetRelativeCrsrPosition( ) const { return Util::GetRelativeCrsrPosition( m_hwnd ); }
     PixelPoint    const GetClRectCenter( )         const { return Util::GetClRectCenter        ( m_hwnd ); }
@@ -87,9 +87,9 @@ public:
         (void)::CheckRadioButton( m_hwnd, iFirst, iLast, iCheck );
     }
 
-    void Move( PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, BOOL const bRedraw )
+    void Move( PIXEL_X const xPos, PIXEL_Y const yPos, PIXEL_X const width, PIXEL_Y const height, BOOL const bRedraw )
     {
-        (void)::MoveWindow( m_hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw );
+        (void)::MoveWindow( m_hwnd, xPos.GetValue().GetValue(), yPos.GetValue().GetValue(), width.GetValue().GetValue(), height.GetValue().GetValue(), bRedraw );
     }
 
     void Move( PixelPoint const pos, PixelRectSize const size, BOOL const bRedraw )
@@ -154,7 +154,7 @@ public:
 
 	PixelPoint const GetCrsrPosFromLparam( LPARAM const lParam ) const
 	{
-		return PixelPoint{ PIXEL(GET_X_LPARAM( lParam )), PIXEL(GET_Y_LPARAM( lParam )) };
+		return PixelPoint{ PIXEL_X(PIXEL(GET_X_LPARAM( lParam ))), PIXEL_Y(PIXEL(GET_Y_LPARAM( lParam ))) };
 	}
 
 	virtual void Notify( bool const );

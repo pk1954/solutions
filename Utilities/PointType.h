@@ -5,12 +5,19 @@
 
 #include <iostream>
 
+struct x_tag {};
+struct y_tag {};
+
 template <typename BASE_TYPE, typename Parameter> 
 class PointType
 {
+	using BASE_X = NamedType< BASE_TYPE, x_tag >;
+	using BASE_Y = NamedType< BASE_TYPE, y_tag >;
+
 public:
 
 	PointType( PointType const & src ) : x(src.x), y(src.y) {}
+	PointType( BASE_X    const _x, BASE_Y    const _y ) : x(_x), y(_y) {}
 	PointType( BASE_TYPE const _x, BASE_TYPE const _y ) : x(_x), y(_y) {}
 
     bool      const operator== (PointType const a) const { return (x == a.x) && (y == a.y); }
@@ -20,8 +27,8 @@ public:
     PointType const operator-= (PointType const a) { x -= a.x; y -= a.y; return * this; }
     PointType const operator%= (PointType const a) { x %= a.x; y %= a.y; return * this; }
 
-    PointType const operator+= (BASE_TYPE const l) { x += l; y += l; return * this; }
-    PointType const operator-= (BASE_TYPE const l) { x -= l; y -= l; return * this; }
+    PointType const operator+= (BASE_TYPE const b) { x += BASE_X(b); y += BASE_Y(b); return * this; }
+    PointType const operator-= (BASE_TYPE const b) { x -= BASE_X(b); y -= BASE_Y(b); return * this; }
 
     PointType const operator*= (int const i) { x *= i; y *= i; return * this; };
     PointType const operator/= (int const i) { x /= i; y /= i; return * this; }
@@ -29,11 +36,11 @@ public:
     PointType const operator- () const { return PointType( -x, -y ); };
     PointType const operator+ () const { return PointType( +x, +y ); };
 
-	BASE_TYPE const GetX() const { return x; }
-	BASE_TYPE const GetY() const { return y; }
+	BASE_X const GetX() const { return x; }
+	BASE_Y const GetY() const { return y; }
 
-	auto const GetXvalue( ) const { return x.GetValue(); }
-	auto const GetYvalue( ) const { return y.GetValue(); }
+	auto const GetXvalue( ) const { return x.GetValue().GetValue(); }
+	auto const GetYvalue( ) const { return y.GetValue().GetValue(); }
 
 	static PointType const & NULL_VAL() 
 	{ 
@@ -114,14 +121,11 @@ public:
 		return PointType( std::max(a.GetX(), b.GetX()), std::max(a.GetY(), b.GetY()) ); 
 	}
 
-	friend PointType const abs_value(PointType const a) 
-	{ 
-		return PointType( abs_value(a.GetX()), abs_value(a.GetY()) ); 
-	}
-
 	friend BASE_TYPE const MaxAbsDelta(PointType const pnt) 
 	{
-		return BASE_TYPE( std::max( abs_value(pnt.GetX()), abs_value(pnt.GetY()) ) );
+		BASE_TYPE xAbs{ std::abs(pnt.GetXvalue()) };
+		BASE_TYPE yAbs{ std::abs(pnt.GetYvalue()) };
+		return BASE_TYPE( std::max( xAbs, yAbs ) );
 	}
 
 	friend std::wostream & operator<< ( std::wostream & out, PointType const & param )
@@ -130,8 +134,8 @@ public:
 		return out;
 	}
 private:
-    BASE_TYPE x;
-    BASE_TYPE y;
+    BASE_X x;
+    BASE_Y y;
 };
 
 template <typename T> struct point_traits;

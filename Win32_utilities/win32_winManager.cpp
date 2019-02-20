@@ -32,10 +32,10 @@ public:
 
 		if ( uiResId > 0 )
 		{
-			PIXEL const pixXpos  ( script.ScrReadLong( ) );
-			PIXEL const pixYpos  ( script.ScrReadLong( ) );
-			PIXEL const pixWidth ( script.ScrReadLong( ) );
-			PIXEL const pixHeight( script.ScrReadLong( ) );
+			PIXEL_X const pixXpos  ( PIXEL(script.ScrReadLong()) );
+			PIXEL_Y const pixYpos  ( PIXEL(script.ScrReadLong()) );
+			PIXEL_X const pixWidth ( PIXEL(script.ScrReadLong()) );
+			PIXEL_Y const pixHeight( PIXEL(script.ScrReadLong()) );
 			if ( m_pWinManager->IsMoveable( uiResId ) )
 			{
 				HWND const hwnd = m_pWinManager->GetHWND( uiResId );

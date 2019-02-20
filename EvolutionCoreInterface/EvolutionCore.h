@@ -6,6 +6,7 @@
 #include "BoolOp.h"
 #include "GridRect.h"
 #include "EvolutionTypes.h"
+#include "GridDimensions.h"
 
 class ObserverInterface;
 class EventInterface;

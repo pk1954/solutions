@@ -33,23 +33,29 @@ namespace Util
 
 	inline PixelRect RECT2PixelRect( RECT const & rect ) 
 	{ 
-		return PixelRect{ PIXEL(rect.left), PIXEL(rect.top), PIXEL(rect.right), PIXEL(rect.bottom) }; 
+		return PixelRect
+		{ 
+			PIXEL_X(PIXEL(rect.left)), 
+			PIXEL_Y(PIXEL(rect.top)), 
+			PIXEL_X(PIXEL(rect.right)), 
+			PIXEL_Y(PIXEL(rect.bottom)) 
+		}; 
 	}
 
 	inline RECT PixelRect2RECT( PixelRect const & pixRect ) 
 	{ 
 		return RECT
 		{ 
-			pixRect.GetLeft().GetValue(),	
-			pixRect.GetTop().GetValue(), 
-			pixRect.GetRight().GetValue(), 
-			pixRect.GetBottom().GetValue() 
+			pixRect.GetLeft  ().GetValue().GetValue(),	
+			pixRect.GetTop   ().GetValue().GetValue(), 
+			pixRect.GetRight ().GetValue().GetValue(), 
+			pixRect.GetBottom().GetValue().GetValue() 
 		}; 
 	}
 
-	inline BOOL MoveWindow( HWND const hwnd, PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, BOOL const bRedraw )
+	inline BOOL MoveWindow( HWND const hwnd, PIXEL_X const xPos, PIXEL_Y const yPos, PIXEL_X const width, PIXEL_Y const height, BOOL const bRedraw )
 	{
-		return ::MoveWindow( hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw );
+		return ::MoveWindow( hwnd, xPos.GetValue().GetValue(), yPos.GetValue().GetValue(), width.GetValue().GetValue(), height.GetValue().GetValue(), bRedraw );
 	}
 
 	inline void SetText( HWND const hwnd, wchar_t const * const wstrText )
@@ -81,16 +87,16 @@ namespace Util
         return rect;
     }
 
-    inline PIXEL GetClientWindowHeight( HWND const hwnd )
+    inline PIXEL_Y GetClientWindowHeight( HWND const hwnd )
     {
         RECT rect = GetClRect( hwnd );                    
-		return PIXEL{rect.bottom - rect.top};    
+		return PIXEL_Y(PIXEL(rect.bottom - rect.top));
     }
 
-    inline PIXEL GetClientWindowWidth( HWND const hwnd )
+    inline PIXEL_X GetClientWindowWidth( HWND const hwnd )
     {
         RECT rect = GetClRect( hwnd );
-		return PIXEL{rect.right - rect.left};
+		return PIXEL_X(PIXEL(rect.right - rect.left));
     }
 
     inline PixelRect GetClPixelRect( HWND const hwnd ) // left / top always 0
@@ -149,49 +155,49 @@ namespace Util
 		return ScreenToClient( hwnd, pnt );
     }
 
-    inline PixelPoint GetWindowSize( HWND const hwnd )
+    inline PixelRectSize GetWindowSize( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-        return PixelPoint{ PIXEL(rect.right - rect.left), PIXEL(rect.bottom - rect.top) };
+        return PixelRectSize{ PIXEL(rect.right - rect.left), PIXEL(rect.bottom - rect.top) };
     }
 
-    inline PIXEL GetWindowWidth( HWND const hwnd )
+    inline PIXEL_X GetWindowWidth( HWND const hwnd )
     {
 		return GetWindowSize( hwnd ).GetX();
     }
 
-    inline PIXEL GetWindowHeight( HWND const hwnd )
+    inline PIXEL_Y GetWindowHeight( HWND const hwnd )
     {
 		return GetWindowSize( hwnd ).GetY();
     }
 
-    inline PIXEL GetWindowBottom( HWND const hwnd )
+    inline PIXEL_Y GetWindowBottom( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-		return PIXEL{rect.bottom};
+		return PIXEL_Y(PIXEL(rect.bottom));
     }
 
-    inline PIXEL GetWindowTop( HWND const hwnd )
+    inline PIXEL_Y GetWindowTop( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-		return PIXEL{rect.top};
+		return PIXEL_Y(PIXEL(rect.top));
     }
 
-    inline PIXEL GetWindowLeftPos( HWND const hwnd )
+    inline PIXEL_X GetWindowLeftPos( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-		return PIXEL{rect.left};
+		return PIXEL_X(PIXEL(rect.left));
     }
 
-    inline PIXEL GetWindowRightPos( HWND const hwnd )
+    inline PIXEL_X GetWindowRightPos( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-		return PIXEL{rect.right};
+		return PIXEL_X(PIXEL(rect.right));
     }
 
     inline BOOL CrsrInClientRect( HWND const hwnd )  // Is cursor position in client rect?
@@ -243,13 +249,13 @@ namespace Util
 
 	void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );
 
-    void AdjustRight( HWND const, PIXEL const );
-    void AdjustLeft ( HWND const, PIXEL const );
+    void AdjustRight( HWND const, PIXEL_Y const );
+    void AdjustLeft ( HWND const, PIXEL_Y const );
 
     PixelRect CalcWindowRect( PixelRect const, DWORD const );
 
-    BOOL MoveWindowAbsolute( HWND const, PIXEL const, PIXEL const, PIXEL const, PIXEL const, BOOL const );
-    BOOL MoveWindowAbsolute( HWND const, PIXEL const, PIXEL const,                          BOOL const );
+    BOOL MoveWindowAbsolute( HWND const, PIXEL_X const, PIXEL_Y const, PIXEL_X const, PIXEL_Y const, BOOL const );
+    BOOL MoveWindowAbsolute( HWND const, PIXEL_X const, PIXEL_Y const,                          BOOL const );
 	
     DWORD        GetNrOfCPUs( );
     ULONGLONG    GetPhysicalMemory( );

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <algorithm>  // min/max templates
 #include "gridPoint.h"
+#include "GridDimensions.h"
 #include "PixelTypes.h"
 #include "pixelCoordinates.h"
 
@@ -75,10 +76,9 @@ PIXEL PixelCoordinates::CalcMaximumFieldSize
 	PixelRectSize const & pntPixSize        // available pixel size 
 ) const
 {
-	return std::min( 
-			          pntPixSize.GetX() / gpGridRectSize.GetXvalue(), 
-				      pntPixSize.GetY() / gpGridRectSize.GetYvalue() 
-	               );
+	PIXEL_X xSize = pntPixSize.GetX() / gpGridRectSize.GetXvalue();
+	PIXEL_Y ySize = pntPixSize.GetY() / gpGridRectSize.GetYvalue(); 
+	return std::min( xSize.GetValue(), ySize.GetValue() );
 }
 
 bool PixelCoordinates::SetGridFieldSize( PIXEL const pixNewFieldSize )
@@ -224,30 +224,30 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 
 		if (dCx <= dRadius * abs(dCrit))
 		{
-			gpResult -= { 1_GRID_COORD, 0_GRID_COORD };
+			gpResult -= GridPoint( 1_GRID_COORD, 0_GRID_COORD );
 			if (bOdd)
-				gpResult -= { 0_GRID_COORD, 1_GRID_COORD };
+				gpResult -= GridPoint( 0_GRID_COORD, 1_GRID_COORD );
 			if (dCrit < 0)
-				gpResult += { 0_GRID_COORD, 1_GRID_COORD };
+				gpResult += GridPoint( 0_GRID_COORD, 1_GRID_COORD );
 		}
 
 		return gpResult;
 	}
 	else 
 	{
-		if ( pixPoint.GetX() < 0_PIXEL ) 
+		if ( pixPoint.GetX() < PIXEL_X(0_PIXEL) ) 
 		{
 			pixPoint -= PixelPoint( m_pixFieldSize - 1_PIXEL, 0_PIXEL );
 		}
-		if ( pixPoint.GetY() < 0_PIXEL ) 
+		if ( pixPoint.GetY() < PIXEL_Y(0_PIXEL) ) 
 		{
 			pixPoint -= ( 0_PIXEL, m_pixFieldSize - 1_PIXEL );
 		}
 
 		GridPoint gp = GridPoint
 		( 
-			GRID_COORD( CastToShort(pixPoint.GetX() / m_pixFieldSize) ), 
-			GRID_COORD( CastToShort(pixPoint.GetY() / m_pixFieldSize) ) 
+			GRID_X( GRID_COORD(CastToShort(pixPoint.GetXvalue() / m_pixFieldSize.GetValue() )) ), 
+			GRID_Y( GRID_COORD(CastToShort(pixPoint.GetYvalue() / m_pixFieldSize.GetValue() )) ) 
 		); 
 
 		return gp;

@@ -24,12 +24,12 @@ public:
     bool const operator>= (NamedType const other) const { return value_ >= other.GetValue(); }
     bool const operator>  (NamedType const other) const { return value_ >  other.GetValue(); }
 
-	bool IsZero       ( ) const { return value_ == 0; };
-	bool IsNotZero    ( ) const { return value_ != 0; };
-	bool IsPositive   ( ) const { return value_ >  0; };
-	bool IsNotPositive( ) const { return value_ <= 0; };
-	bool IsNegative   ( ) const { return value_ <  0; };
-	bool IsNotNegative( ) const { return value_ >= 0; };
+	bool IsZero       ( ) const { return value_ == BASE_TYPE(0); };
+	bool IsNotZero    ( ) const { return value_ != BASE_TYPE(0); };
+	bool IsPositive   ( ) const { return value_ >  BASE_TYPE(0); };
+	bool IsNotPositive( ) const { return value_ <= BASE_TYPE(0); };
+	bool IsNegative   ( ) const { return value_ <  BASE_TYPE(0); };
+	bool IsNotNegative( ) const { return value_ >= BASE_TYPE(0); };
 
     NamedType& operator+= (NamedType const other) { value_ += other.GetValue(); return * this; }
     NamedType& operator-= (NamedType const other) { value_ -= other.GetValue(); return * this; }
@@ -68,11 +68,6 @@ public:
 		return res; 
 	}
 
-	friend BASE_TYPE operator/ (NamedType const a, NamedType const b )
-	{ 
-		return a.GetValue() / b.GetValue();
-	}
-
 	friend NamedType operator* (NamedType const a, int const i )
 	{ 
 		NamedType res(a);
@@ -87,10 +82,14 @@ public:
 		return res; 
 	}
 
-	friend NamedType const abs_value(NamedType const a) 
+	friend NamedType const min_value(NamedType const a, NamedType const b )
 	{ 
-		NamedType res(::abs(a.GetValue())); 
-		return res; 
+		return NamedType( std::min( a.GetValue(), b.GetValue() ) );
+	}
+
+	friend NamedType const max_value(NamedType const a, NamedType const b )
+	{ 
+		return NamedType( std::max( a.GetValue(), b.GetValue() ) );
 	}
 
 	friend std::wostream & operator<< ( std::wostream & out, NamedType const & param )

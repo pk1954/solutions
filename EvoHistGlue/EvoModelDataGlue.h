@@ -10,6 +10,7 @@
 #include "BoolOp.h"
 #include "gridPoint.h"
 #include "gridRect.h"
+#include "GridDimensions.h"
 #include "ModelData.h"
 #include "EvolutionCore.h"
 

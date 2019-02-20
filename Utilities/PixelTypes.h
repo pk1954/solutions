@@ -17,3 +17,6 @@ constexpr PIXEL operator"" _PIXEL( unsigned long long ull )
 {
 	return PIXEL( CastToShort( ull ) );
 }
+
+using PIXEL_X = NamedType<PIXEL, x_tag>;
+using PIXEL_Y = NamedType<PIXEL, y_tag>;

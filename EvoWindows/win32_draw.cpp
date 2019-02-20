@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "config.h"
 #include "EvolutionCore.h"
+#include "GridDimensions.h"
 #include "pixelCoordinates.h"
 #include "plannedActivity.h"
 #include "win32_util.h"

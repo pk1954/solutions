@@ -7,6 +7,7 @@
 #include <vector>
 #include <functional>
 #include "gridPoint.h"
+#include "GridDimensions.h"
 
 class Neighborhood
 {

@@ -47,31 +47,31 @@ PixelRect Util::CalcWindowRect( PixelRect pixRect, DWORD const dwStyle )
 	return pixRect;
 }
 
-void Util::AdjustRight( HWND const hwnd, PIXEL const pixYpos )
+void Util::AdjustRight( HWND const hwnd, PIXEL_Y const pixYpos )
 {
-    HWND  const hwndParent     = GetParent( hwnd );
-    PIXEL const pixWidthParent = GetClientWindowWidth( hwndParent );
-    PIXEL const pixWidth       = GetWindowWidth( hwnd );
-    PIXEL const pixHeight      = GetWindowHeight( hwnd );
-    MoveWindow( hwnd,(pixWidthParent - pixWidth), pixYpos, pixWidth, pixHeight, TRUE );
+    HWND    const hwndParent     = GetParent( hwnd );
+    PIXEL_X const pixWidthParent = GetClientWindowWidth( hwndParent );
+    PIXEL_X const pixWidth       = GetWindowWidth( hwnd );
+    PIXEL_Y const pixHeight      = GetWindowHeight( hwnd );
+    MoveWindow( hwnd, (pixWidthParent - pixWidth), pixYpos, pixWidth, pixHeight, TRUE );
     (void)BringWindowToTop( hwnd );
 }
 
-void Util::AdjustLeft( HWND const hwnd, PIXEL const pixYpos )
+void Util::AdjustLeft( HWND const hwnd, PIXEL_Y const pixYpos )
 {
-	PixelPoint pnt = GetWindowSize( hwnd );
-    MoveWindow( hwnd, 0, pixYpos.GetValue(), pnt.GetXvalue(), pnt.GetYvalue(), TRUE );
+	PixelRectSize pnt = GetWindowSize( hwnd );
+    MoveWindow( hwnd, PIXEL_X(0_PIXEL), pixYpos, pnt.GetX(), pnt.GetY(), TRUE );
     (void)BringWindowToTop( hwnd );
 }
 
 BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and set size
 (
-	HWND  const hwnd,
-	PIXEL const pixXpos,
-	PIXEL const pixYpos,
-	PIXEL const pixWidth,
-	PIXEL const pixHeight,
-	BOOL  const bRepaint
+	HWND    const hwnd,
+	PIXEL_X const pixXpos,
+	PIXEL_Y const pixYpos,
+	PIXEL_X const pixWidth,
+	PIXEL_Y const pixHeight,
+	BOOL    const bRepaint
 )
 {
 	HWND  const hwndParent = GetAncestor( hwnd, GA_PARENT );
@@ -82,7 +82,7 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 
 	BOOL bRes = MoveWindow( hwnd, pixPoint.GetX(), pixPoint.GetY(), pixWidth, pixHeight, bRepaint );
 	
-	if ( GetWindowSize( hwnd ) != PixelPoint{ pixWidth, pixHeight } )   // can happen in strange situations
+	if ( GetWindowSize( hwnd ) != PixelRectSize{ pixWidth, pixHeight } )   // can happen in strange situations
 		bRes = MoveWindow( hwnd, pixPoint.GetX(), pixPoint.GetY(), pixWidth, pixHeight, bRepaint );
 
 	return bRes;
@@ -90,13 +90,13 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 
 BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates 
 (
-	HWND  const hwnd,
-	PIXEL const pixXpos,
-	PIXEL const pixYpos,
-	BOOL  const bRepaint
+	HWND    const hwnd,
+	PIXEL_X const pixXpos,
+	PIXEL_Y const pixYpos,
+	BOOL    const bRepaint
 )
 {
-	PixelPoint const pixActSize = GetWindowSize( hwnd );
+	PixelRectSize const pixActSize = GetWindowSize( hwnd );
 	return MoveWindowAbsolute( hwnd, pixXpos, pixYpos, pixActSize.GetX(), pixActSize.GetY(), bRepaint );
 }
 
