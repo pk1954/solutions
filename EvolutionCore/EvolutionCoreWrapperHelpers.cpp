@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "assert.h"
 #include "config.h"
+#include "ERRHNDL.H"
 #include "SCRIPT.H"
 #include "EvolutionTypes.h"
 #include "pixelCoordinates.h"
@@ -11,13 +12,16 @@
 
 GRID_COORD ScrReadGridCoord( Script & script )
 {
-    return GRID_COORD( script.ScrReadUshort() );
+	unsigned short us = script.ScrReadUshort();
+	if ( us > MAX_GRID_COORD.GetValue() )
+		ScriptErrorHandler::throwError( 777, L"GRID_COORD too big" );
+    return GRID_COORD( us );
 }
 
 GridPoint ScrReadGridPoint( Script & script )
 {
-    GRID_COORD const x(ScrReadGridCoord( script ));
-    GRID_COORD const y(ScrReadGridCoord( script ));
+    GRID_X const x(ScrReadGridCoord( script ));
+    GRID_Y const y(ScrReadGridCoord( script ));
     return GridPoint( x, y );
 }
 
@@ -28,9 +32,14 @@ GridRect ScrReadGridRect( Script & script )
     return GridRect( gpStart, gpEnd );
 }
 
+PIXEL ScrReadPixel( Script & script )
+{
+    return PIXEL( script.ScrReadLong() );
+}
+
 PixelPoint ScrReadPixelPoint( Script & script )
 {
-    PIXEL const x(script.ScrReadLong());
-    PIXEL const y(script.ScrReadLong());
+    PIXEL_X const x( ScrReadPixel( script ) );
+    PIXEL_Y const y( ScrReadPixel( script ) );
     return PixelPoint( x, y );
 }

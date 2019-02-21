@@ -10,50 +10,51 @@
 int                           Neighborhood::m_iNrOfNeighbors = 0;
 Neighborhood::NEIGHBOR_GRID * Neighborhood::m_pGridNeighbors = nullptr;
 
-static GRID_COORD const WEST   = -1_GRID_COORD;
-static GRID_COORD const EAST   =  1_GRID_COORD;
-static GRID_COORD const NORTH  = -1_GRID_COORD;
-static GRID_COORD const SOUTH  =  1_GRID_COORD;
-static GRID_COORD const CENTER =  0_GRID_COORD;
+static GRID_X const WEST     { -1_GRID_COORD };
+static GRID_X const EAST     {  1_GRID_COORD };
+static GRID_Y const NORTH    { -1_GRID_COORD };
+static GRID_Y const SOUTH    {  1_GRID_COORD };
+static GRID_X const CENTER_X {  0_GRID_COORD };
+static GRID_Y const CENTER_Y {  0_GRID_COORD };
 
 static std::array< GridPoint, 8 > const table8 = 
 {
-	GridPoint( CENTER, NORTH  ), 
-	GridPoint( WEST,   NORTH  ),
-	GridPoint( WEST,   CENTER ),
-	GridPoint( WEST,   SOUTH  ), 
-	GridPoint( CENTER, SOUTH  ), 
-	GridPoint( EAST,   SOUTH  ),
-	GridPoint( EAST,   CENTER ),
-	GridPoint( EAST,   NORTH  ) 
+	GridPoint( CENTER_X, NORTH    ), 
+	GridPoint( WEST,     NORTH    ),
+	GridPoint( WEST,     CENTER_Y ),
+	GridPoint( WEST,     SOUTH    ), 
+	GridPoint( CENTER_X, SOUTH    ), 
+	GridPoint( EAST,     SOUTH    ),
+	GridPoint( EAST,     CENTER_Y ),
+	GridPoint( EAST,     NORTH    ) 
 }; 
 
 static std::array< GridPoint, 6 > const table6even = 
 {
-	GridPoint( CENTER, NORTH  ), 
-	GridPoint( EAST,   CENTER ),
-	GridPoint( EAST,   SOUTH  ), 
-	GridPoint( CENTER, SOUTH  ), 
-	GridPoint( WEST,   SOUTH  ),
-	GridPoint( WEST,   CENTER ) 
+	GridPoint( CENTER_X, NORTH    ), 
+	GridPoint( EAST,     CENTER_Y ),
+	GridPoint( EAST,     SOUTH    ), 
+	GridPoint( CENTER_X, SOUTH    ), 
+	GridPoint( WEST,     SOUTH    ),
+	GridPoint( WEST,     CENTER_Y ) 
 }; 
 
 static std::array< GridPoint, 6 > const table6odd = 
 {
-	GridPoint( CENTER, NORTH  ), 
-	GridPoint( EAST,   NORTH  ), 
-	GridPoint( EAST,   CENTER ),
-	GridPoint( CENTER, SOUTH  ), 
-	GridPoint( WEST,   CENTER ), 
-	GridPoint( WEST,   NORTH  )
+	GridPoint( CENTER_X, NORTH    ), 
+	GridPoint( EAST,     NORTH    ), 
+	GridPoint( EAST,     CENTER_Y ),
+	GridPoint( CENTER_X, SOUTH    ), 
+	GridPoint( WEST,     CENTER_Y ), 
+	GridPoint( WEST,     NORTH    )
 }; 
 
 static std::array< GridPoint, 4 > const table4 = 
 {
-	GridPoint( CENTER, NORTH  ), 
-	GridPoint( WEST,   CENTER ),
-	GridPoint( CENTER, SOUTH  ), 
-	GridPoint( EAST,   CENTER )
+	GridPoint( CENTER_X, NORTH    ), 
+	GridPoint( WEST,     CENTER_Y ),
+	GridPoint( CENTER_X, SOUTH    ), 
+	GridPoint( EAST,     CENTER_Y )
 }; 
 
 void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization of m_pGridNeighbors

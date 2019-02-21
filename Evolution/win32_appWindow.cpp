@@ -118,7 +118,7 @@ void AppWindow::Start(  )
 	m_pEvolutionCore->SetEvent( & m_event );
 	stopwatch.Stop( L"EvolutionCore::InitClass" );
 
-    D3dSystem::Create_D3D_Device( hwndApp, GRID_WIDTH.GetValue().GetValue(), GRID_HEIGHT.GetValue().GetValue(), Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 );
+    D3dSystem::Create_D3D_Device( hwndApp, GRID_WIDTH_VAL, GRID_HEIGHT_VAL, Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 );
 	
     // create window objects
 

@@ -23,7 +23,7 @@ namespace Util
     
 	inline PixelPoint POINT2PixelPoint( POINT const pnt ) 
 	{ 
-		return PixelPoint{ PIXEL(pnt.x), PIXEL(pnt.y) }; 
+		return PixelPoint{ PIXEL_X(PIXEL(pnt.x)), PIXEL_Y(PIXEL(pnt.y)) }; 
 	}
 
 	inline POINT PixelPoint2POINT( PixelPoint const pp ) 
@@ -109,7 +109,7 @@ namespace Util
     inline PixelRectSize GetClRectSize( HWND const hwnd )
     {
         RECT const rect = GetClRect( hwnd );
-		return PixelRectSize{ PIXEL(rect.right), PIXEL(rect.bottom) };
+		return PixelRectSize{ PIXEL_X(PIXEL(rect.right)), PIXEL_Y(PIXEL(rect.bottom)) };
     }
 
     inline PixelPoint GetClRectCenter( HWND const hwnd )
@@ -134,13 +134,13 @@ namespace Util
 	inline PixelPoint Client2Screen( HWND const hwnd, POINT pnt )
     {
         (void)ClientToScreen( hwnd, &pnt );
-		return PixelPoint{ PIXEL(pnt.x), PIXEL(pnt.y) };
+		return PixelPoint{ PIXEL_X(PIXEL(pnt.x)), PIXEL_Y(PIXEL(pnt.y)) };
     }
 	
     inline PixelPoint const ScreenToClient( HWND const hwnd, POINT pnt )
     {
         (void)ScreenToClient( hwnd, &pnt );
-		return PixelPoint{ PIXEL(pnt.x), PIXEL(pnt.y) };
+		return PixelPoint{ PIXEL_X(PIXEL(pnt.x)), PIXEL_Y(PIXEL(pnt.y)) };
     }
 
     inline void ScreenToClient( HWND const hwnd, PixelPoint & pixPoint )
@@ -159,7 +159,7 @@ namespace Util
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-        return PixelRectSize{ PIXEL(rect.right - rect.left), PIXEL(rect.bottom - rect.top) };
+        return PixelRectSize{ PIXEL_X(PIXEL(rect.right - rect.left)), PIXEL_Y(PIXEL(rect.bottom - rect.top)) };
     }
 
     inline PIXEL_X GetWindowWidth( HWND const hwnd )

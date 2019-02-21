@@ -1,9 +1,17 @@
 // GridDimensions.h
 //
+// EvolutionCoreInterface
+//
+// knows static size of the Grid
+// contains all functions directly dependent on Grid size
 
 #pragma once
 
+#include <algorithm>  // min/max templates
 #include "gridRect.h"
+
+using std::min;
+using std::max;
 
 static constexpr GRID_X const GRID_WIDTH { 200_GRID_COORD };  // the dimension of the GRID in x direction
 static constexpr GRID_Y const GRID_HEIGHT{ 100_GRID_COORD };  // the dimension of the GRID in y direction
@@ -101,7 +109,7 @@ inline void Apply2Rect( GridPointFunc const & func, GridRect const & rect )
 	);
 }
 
-inline void Apply2Grid( GridPointFunc const & func, bool const fWithBorders )
+inline void Apply2Grid( GridPointFunc const & func, bool const fWithBorders = false)
 {
 	Apply2Rect( func, GRID_ORIGIN(), GRID_MAXIMUM(), fWithBorders );
 }

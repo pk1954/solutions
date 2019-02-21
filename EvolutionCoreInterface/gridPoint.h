@@ -4,20 +4,9 @@
 
 #pragma once
 
-#include <stdlib.h>   // abs
-#include <algorithm>  // min/max templates
-#include <iostream>
-#include <iomanip>
-#include <assert.h>
 #include <functional>
-#include "debug.h"
-#include "util.h"
-#include "Int24.h"
 #include "gridCoord.h"
 #include "PointType.h"
-
-using std::min;
-using std::max;
 
 using GRID_X = NamedType<GRID_COORD, x_tag>;
 using GRID_Y = NamedType<GRID_COORD, y_tag>;

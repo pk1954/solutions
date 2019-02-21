@@ -16,5 +16,9 @@ static LPARAM Pack2LParam( GridPoint const gp )
 
 static GridPoint UnpackFromLParam( LPARAM const lParam )
 {
-	return GridPoint( GRID_COORD(GET_X_LPARAM(lParam)), GRID_COORD(GET_Y_LPARAM(lParam)) );
+	return GridPoint
+	( 
+		GRID_X(GRID_COORD(GET_X_LPARAM(lParam))), 
+		GRID_Y(GRID_COORD(GET_Y_LPARAM(lParam))) 
+	);
 }

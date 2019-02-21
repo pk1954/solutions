@@ -21,8 +21,8 @@ public:
 
 	PixelPoint Grid2PixelSize( GridPoint  const ) const;
 
-KGridPoint Pixel2KGridSize( PixelPoint    const, PIXEL const ) const;
-PixelPoint KGrid2PixelSize( KGridRectSize const, PIXEL const ) const;
+	KGridPoint Pixel2KGridSize( PixelPoint    const, PIXEL const ) const;
+	PixelPoint KGrid2PixelSize( KGridRectSize const, PIXEL const ) const;
 
 	GridPoint  Pixel2GridPos ( PixelPoint const ) const;
 	PixelPoint Grid2PixelPos ( GridPoint  const ) const; 

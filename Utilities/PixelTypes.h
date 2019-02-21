@@ -8,7 +8,7 @@
 #include "PointType.h"
 #include "RectType.h"
 
-using PIXEL         = NamedType< long,  struct PIXEL_Parameter >;
+using PIXEL         = NamedType< long, struct PIXEL_Parameter >;
 using PixelPoint    = PosType  < PIXEL >;
 using PixelRectSize = SizeType < PIXEL >;
 using PixelRect     = RectType < PIXEL >;

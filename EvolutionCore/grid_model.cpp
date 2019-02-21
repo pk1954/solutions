@@ -350,10 +350,10 @@ GridPoint Grid::FindGridPoint
 	GridRect const & rect
 ) const
 {
-    for ( short y = rect.GetStartPoint().GetYvalue(); y <= rect.GetEndPoint().GetYvalue(); ++y )
-    for ( short x = rect.GetStartPoint().GetXvalue(); x <= rect.GetEndPoint().GetXvalue(); ++x )
+    for ( GRID_Y y = rect.GetTop();  y <= rect.GetBottom(); ++y )
+    for ( GRID_X x = rect.GetLeft(); x <= rect.GetRight();  ++x )
 	{
-		GridPoint gp{ GRID_COORD(x), GRID_COORD(y) };
+		GridPoint gp{ x, y };
 
         if ( func( gp ) )
         {

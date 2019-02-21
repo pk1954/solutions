@@ -12,3 +12,6 @@ using KGrid         = NamedType< long, struct KGrid_Parameter >;
 using KGridPoint    = PosType  < KGrid >;
 using KGridRectSize = SizeType < KGrid >;
 using KGridRect     = RectType < KGrid >;
+
+using KGrid_X = NamedType<KGrid, x_tag>;
+using KGrid_Y = NamedType<KGrid, y_tag>;

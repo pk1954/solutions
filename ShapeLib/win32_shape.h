@@ -13,8 +13,8 @@ class Shape
 public:
 	Shape( TextDisplay & t ) :
 		m_textDisplay( t ),
-		m_rect   ( PixelRect    ( ) ),
-		m_minSize( PixelRectSize( 0_PIXEL, 0_PIXEL ) )
+		m_rect   ( PixelRect( ) ),
+		m_minSize( PixelRectSize( PIXEL_X(0_PIXEL), PIXEL_Y(0_PIXEL) ) )
 	{}
 
 	virtual PixelRectSize MinimalSize( )  

@@ -104,6 +104,12 @@ public:
 		return res;
 	}
 
+	static NamedType const ZERO_VAL()
+	{
+		static const NamedType res(BASE_TYPE(0));
+		return res;
+	}
+
 	void Set2Null( ) { * this = NULL_VAL(); }
 
     bool IsNull   ( ) const { return * this == NULL_VAL(); };

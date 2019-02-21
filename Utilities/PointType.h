@@ -17,8 +17,8 @@ class PointType
 public:
 
 	PointType( PointType const & src ) : x(src.x), y(src.y) {}
-	PointType( BASE_X    const _x, BASE_Y    const _y ) : x(_x), y(_y) {}
-	PointType( BASE_TYPE const _x, BASE_TYPE const _y ) : x(_x), y(_y) {}
+	PointType( BASE_TYPE const _b ) : x(_b), y(_b) {}
+	PointType( BASE_X const _x, BASE_Y const _y ) : x(_x), y(_y) {}
 
     bool      const operator== (PointType const a) const { return (x == a.x) && (y == a.y); }
     bool      const operator!= (PointType const a) const { return (x != a.x) || (y != a.y); }
@@ -39,18 +39,18 @@ public:
 	BASE_X const GetX() const { return x; }
 	BASE_Y const GetY() const { return y; }
 
-	auto const GetXvalue( ) const { return x.GetValue().GetValue(); }
-	auto const GetYvalue( ) const { return y.GetValue().GetValue(); }
+	auto const GetXvalue( ) const { return GetX().GetValue().GetValue(); }
+	auto const GetYvalue( ) const { return GetY().GetValue().GetValue(); }
 
 	static PointType const & NULL_VAL() 
 	{ 
-		static PointType res = PointType( BASE_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL() ); 
+		static PointType res = PointType( BASE_X::NULL_VAL(), BASE_Y::NULL_VAL() ); 
 		return res;
 	};
 
 	static PointType const & ZERO_VAL() 
 	{ 
-		static PointType res = PointType( BASE_TYPE(0), BASE_TYPE(0) ); 
+		static PointType res = PointType( BASE_X::ZERO_VAL(), BASE_Y::ZERO_VAL() ); 
 		return res;
 	};
 

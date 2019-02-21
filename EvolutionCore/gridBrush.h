@@ -44,8 +44,8 @@ public:
 					if ( sIntensity >= 0)
 						(m_func)( gp + gpCenter, sIntensity );
 				},
-				ClipToGrid( gpCenter - GridPoint( m_radius, m_radius ) ) - gpCenter,
-				ClipToGrid( gpCenter + GridPoint( m_radius, m_radius ) ) - gpCenter
+				ClipToGrid( gpCenter - GridPoint( m_radius ) ) - gpCenter,
+				ClipToGrid( gpCenter + GridPoint( m_radius ) ) - gpCenter
 			);
 		}
 	}

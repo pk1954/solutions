@@ -1,2 +1,2 @@
-PostSetBrushMode tBrushMode::fertility
-PostDoEdit      4    45 
+PostSetBrushRadius 255
+PostSetBrushRadius 256

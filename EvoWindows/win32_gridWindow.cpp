@@ -380,7 +380,7 @@ void GridWindow::Size( )
 		( 
 			PixelRect
 			( 
-				PixelPoint( 0_PIXEL, 0_PIXEL ), 
+				PixelPoint( 0_PIXEL ), 
 				m_pPixelCoordinates->Grid2PixelSize( GRID_SIZE() ) 
 			), 
 			(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 
