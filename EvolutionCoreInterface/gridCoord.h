@@ -11,7 +11,7 @@ using GRID_COORD = NamedType< short, struct GRID_Parameter >;
 inline bool IsEven( GRID_COORD const a ) { return a.GetValue() % 2 == 0; }
 inline bool IsOdd ( GRID_COORD const a ) { return a.GetValue() % 2 != 0; }
 
-constexpr GRID_COORD operator"" _GRID_COORD( unsigned long long ull )
+constexpr const GRID_COORD operator"" _GRID_COORD( const unsigned long long ull )
 {
 	return GRID_COORD( CastToUnsignedShort( ull ) );
 }

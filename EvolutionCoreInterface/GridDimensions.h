@@ -5,19 +5,21 @@
 
 #include "gridRect.h"
 
-static long const GRID_WIDTH_ { 200 };
-static long const GRID_HEIGHT_{ 100 };
+static constexpr GRID_X const GRID_WIDTH { 200_GRID_COORD };  // the dimension of the GRID in x direction
+static constexpr GRID_Y const GRID_HEIGHT{ 100_GRID_COORD };  // the dimension of the GRID in y direction
 
-static GRID_X const GRID_WIDTH { 200_GRID_COORD };
-static GRID_Y const GRID_HEIGHT{ 100_GRID_COORD };
-static GRID_X const GRID_X_MIN {   0_GRID_COORD };
-static GRID_Y const GRID_Y_MIN {   0_GRID_COORD };
+static GRID_X const GRID_X_MIN { 0_GRID_COORD };
+static GRID_Y const GRID_Y_MIN { 0_GRID_COORD };
+
 static GRID_X const GRID_X_MAX { GRID_WIDTH .GetValue() - 1_GRID_COORD };
 static GRID_Y const GRID_Y_MAX { GRID_HEIGHT.GetValue() - 1_GRID_COORD };
 
+static int const GRID_WIDTH_VAL  { GRID_WIDTH .GetValue().GetValue() }; // abbreviations for e.g. array dims
+static int const GRID_HEIGHT_VAL { GRID_HEIGHT.GetValue().GetValue() };
+
 inline static int const GRID_AREA() 
 { 
-	static int res = GRID_WIDTH.GetValue().GetValue() * GRID_HEIGHT.GetValue().GetValue(); 
+	static int res = GRID_WIDTH_VAL * GRID_HEIGHT_VAL; 
 	return res;
 };
 

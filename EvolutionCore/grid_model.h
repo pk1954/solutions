@@ -156,7 +156,7 @@ private:
 
     // member variables
 
-    GridField      m_aGF[ GRID_WIDTH_ ][ GRID_HEIGHT_ ];   // 20.000 * 196 byte = 3.920.000 byte
+    GridField      m_aGF[ GRID_WIDTH_VAL ][ GRID_HEIGHT_VAL ];   // 20.000 * 196 byte = 3.920.000 byte
     GridPointList  m_gpList;                               //                            10 byte
     long           m_lFoodGrowth;    // for statistics     //                             8 byte 
     EVO_GENERATION m_genEvo;                               //                             4 byte

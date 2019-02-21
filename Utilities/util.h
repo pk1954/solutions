@@ -35,7 +35,7 @@ short CastToShort(SOURCE_TYPE const value )
 }
 
 template<typename SOURCE_TYPE>
-unsigned short CastToUnsignedShort(SOURCE_TYPE const value ) 
+constexpr const unsigned short CastToUnsignedShort(SOURCE_TYPE const value ) 
 {
 	AssertUnsignedShort( value );
 	return static_cast<unsigned short>( value );

@@ -69,8 +69,8 @@ public:
 
 private:
 	using NEIGHBORS     = std::vector< GridPoint >;
-	using NEIGHBOR_ROW  = std::array < NEIGHBORS,    GRID_WIDTH_  >;
-	using NEIGHBOR_GRID = std::array < NEIGHBOR_ROW, GRID_HEIGHT_ >;
+	using NEIGHBOR_ROW  = std::array < NEIGHBORS,    GRID_WIDTH_VAL  >;
+	using NEIGHBOR_GRID = std::array < NEIGHBOR_ROW, GRID_HEIGHT_VAL >;
 
 	static int             m_iNrOfNeighbors;
 	static NEIGHBOR_GRID * m_pGridNeighbors;

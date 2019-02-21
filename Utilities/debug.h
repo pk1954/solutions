@@ -41,7 +41,7 @@ void AssertLong( SOURCE_TYPE const value )
 }
 
 template<typename SOURCE_TYPE>
-void AssertUnsignedShort( SOURCE_TYPE const value )
+constexpr void AssertUnsignedShort( SOURCE_TYPE const value )
 {
 	assert( value >= (std::numeric_limits<unsigned short>::min)() );
 	assert( value <= (std::numeric_limits<unsigned short>::max)() );
