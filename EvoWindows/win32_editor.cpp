@@ -37,8 +37,8 @@ void EditorWindow::Start
     m_pDspOptWindow        = pDspOptWindow;
 	m_pStatusBar           = pStatusBar;
 
-    SetTrackBarRange( IDM_EDIT_SIZE,      1,  50 );
-    SetTrackBarRange( IDM_EDIT_INTENSITY, 0, 100 );
+    SetTrackBarRange( IDM_EDIT_SIZE,      1L,  50L );
+    SetTrackBarRange( IDM_EDIT_INTENSITY, 0L, 100L );
     updateEditControls( FALSE );
 }
 
@@ -206,7 +206,7 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 				m_pWorkThreadInterface->PostSetBrushIntensity( lLogicalPos );
 				break;
 			case IDM_EDIT_SIZE:
-				m_pWorkThreadInterface->PostSetBrushRadius( lLogicalPos );
+				m_pWorkThreadInterface->PostSetBrushRadius( GRID_COORD(CastToShort(lLogicalPos)) );
 				break;
 			default:
 				assert( false );

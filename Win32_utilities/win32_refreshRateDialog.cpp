@@ -61,7 +61,7 @@ int RefreshRateDialog::Show( HWND const hwndParent, int iRefreshRate )
 {
 	m_iRefreshRate = iRefreshRate;
 
-    DialogBox( NULL, MAKEINTRESOURCE(IDD_REFRESH_RATE_DIALOG), hwndParent, dialogProc );
+    DialogBox( nullptr, MAKEINTRESOURCE(IDD_REFRESH_RATE_DIALOG), hwndParent, dialogProc );
 
 	return m_iRefreshRate;
 }

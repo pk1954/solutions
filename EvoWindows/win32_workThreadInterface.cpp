@@ -113,11 +113,11 @@ void WorkThreadInterface::PostSetBrushIntensity( LONG const lValue )
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_INTENSITY, lValue, 0 );
 }
 
-void WorkThreadInterface::PostSetBrushRadius( INT const iValue )
+void WorkThreadInterface::PostSetBrushRadius( GRID_COORD const radius )
 {
     if ( m_bTrace )
-        * m_pTraceStream << __func__ << L" " << iValue << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_RADIUS, iValue, 0 );
+        * m_pTraceStream << __func__ << L" " << radius << endl;
+    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_RADIUS, radius.GetValue(), 0 );
 }
 
 void WorkThreadInterface::PostSetBrushMode( tBrushMode const mode )

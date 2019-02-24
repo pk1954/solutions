@@ -91,7 +91,7 @@ HWND WINAPI StatusBar::createControl
         GetWindowHandle( ),              // parent window 
         hMenu,                           // control identifier 
         GetModuleHandle( nullptr ),      // instance 
-        NULL                             // no WM_CREATE parameter 
+        nullptr                             // no WM_CREATE parameter 
     );
     m_pixPosX += pixWidth;
     return hwnd;

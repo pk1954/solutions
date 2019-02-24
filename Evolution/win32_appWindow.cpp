@@ -81,6 +81,7 @@ AppWindow::AppWindow( ) :
     m_pEvoHistWindow( nullptr ),
 	m_pEvoHistGlue( nullptr ),
 	m_pEvoController( nullptr ),
+	m_hwndConsole( nullptr ),
     m_traceStream( )
 {};
 

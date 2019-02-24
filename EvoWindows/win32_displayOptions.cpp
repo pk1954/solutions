@@ -35,12 +35,12 @@ void DspOptWindow::Start
 		HWND hwndDlg = GetWindowHandle( );
 		HWND hwndTip = CreateWindowEx
 					  (
-						  NULL, TOOLTIPS_CLASS, NULL,
+						  nullptr, TOOLTIPS_CLASS, nullptr,
 				          WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP | TTS_BALLOON,
 						  CW_USEDEFAULT, CW_USEDEFAULT,
 						  CW_USEDEFAULT, CW_USEDEFAULT,
-						  hwndDlg, NULL, GetModuleHandle( nullptr ),
-						  NULL
+						  hwndDlg, nullptr, GetModuleHandle( nullptr ),
+						  nullptr
 					  );
 		assert( hwndTip != nullptr );
 
