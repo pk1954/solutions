@@ -3,7 +3,7 @@
 // EvolutionCoreInterface
 //
 // knows static size of the Grid
-// contains all functions directly dependent on Grid size
+// contains functions directly dependent on Grid size
 
 #pragma once
 
@@ -16,48 +16,48 @@ using std::max;
 static constexpr GRID_X const GRID_WIDTH { 200_GRID_COORD };  // the dimension of the GRID in x direction
 static constexpr GRID_Y const GRID_HEIGHT{ 100_GRID_COORD };  // the dimension of the GRID in y direction
 
-static GRID_X const GRID_X_MIN { 0_GRID_COORD };
-static GRID_Y const GRID_Y_MIN { 0_GRID_COORD };
+static constexpr GRID_X const GRID_X_MIN { 0_GRID_COORD };
+static constexpr GRID_Y const GRID_Y_MIN { 0_GRID_COORD };
 
 static GRID_X const GRID_X_MAX { GRID_WIDTH .GetValue() - 1_GRID_COORD };
 static GRID_Y const GRID_Y_MAX { GRID_HEIGHT.GetValue() - 1_GRID_COORD };
 
-static int const GRID_WIDTH_VAL  { GRID_WIDTH .GetValue().GetValue() }; // abbreviations for e.g. array dims
-static int const GRID_HEIGHT_VAL { GRID_HEIGHT.GetValue().GetValue() };
+static constexpr int const GRID_WIDTH_VAL  { GRID_WIDTH .GetValue().GetValue() }; // abbreviations for e.g. array dims
+static constexpr int const GRID_HEIGHT_VAL { GRID_HEIGHT.GetValue().GetValue() };
 
-inline static int const GRID_AREA() 
+inline constexpr static int const GRID_AREA() 
 { 
-	static int res = GRID_WIDTH_VAL * GRID_HEIGHT_VAL; 
+	constexpr int res { GRID_WIDTH_VAL * GRID_HEIGHT_VAL }; 
 	return res;
 };
 
 inline static GridPoint const & GRID_ORIGIN() 
 { 
-	static GridPoint res = GridPoint( GRID_X_MIN, GRID_Y_MIN ); 
+	static GridPoint res { GRID_X_MIN, GRID_Y_MIN }; 
 	return res;
 };
 
 inline static GridPoint const & GRID_MAXIMUM() 
 { 
-	static GridPoint res = GridPoint( GRID_X_MAX, GRID_Y_MAX ); 
+	static GridPoint res { GRID_X_MAX, GRID_Y_MAX }; 
 	return res;
 };
 
 inline static GridPoint const & GRID_SIZE() 
 { 
-	static GridPoint res = GridPoint( GRID_WIDTH, GRID_HEIGHT ); 
+	static GridPoint res { GRID_WIDTH, GRID_HEIGHT }; 
 	return res;
 };
 
 inline static GridRect const & GRID_RECT_EMPTY() 
 { 
-	static GridRect res( GRID_ORIGIN(), GRID_ORIGIN() ); 
+	static GridRect res { GRID_ORIGIN(), GRID_ORIGIN() }; 
 	return res;
 };
 
 inline static GridRect const & GRID_RECT_FULL() 
 { 
-	static GridRect res( GRID_ORIGIN(), GRID_SIZE() - 1_GRID_COORD ); 
+	static GridRect res { GRID_ORIGIN(), GRID_SIZE() - 1_GRID_COORD }; 
 	return res;
 };
  

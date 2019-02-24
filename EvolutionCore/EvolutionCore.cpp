@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "assert.h"
 #include "strategy.h"
 #include "genome.h"
 #include "grid_model.h"

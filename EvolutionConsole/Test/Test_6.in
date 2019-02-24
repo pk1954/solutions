@@ -1,0 +1,8 @@
+#
+# Test_6 in
+#
+# ScrReadGridCoord has to check that GRID_COORD <= MAX_GRID_COORD
+#
+
+PostSetBrushRadius 255
+PostSetBrushRadius 256

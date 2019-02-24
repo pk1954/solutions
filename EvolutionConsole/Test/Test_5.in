@@ -1,0 +1,8 @@
+#
+# Test_5 in
+#
+# Apply2Rect has to check that rectangle is completely in GRID
+#
+
+PostSetBrushMode tBrushMode::fertility
+PostDoEdit      4    45 

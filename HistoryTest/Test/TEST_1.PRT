@@ -1,11 +1,11 @@
 [42m
 COMPARE V1.2
-Test performed: 02/12/19 15:56:19
+Test performed: 02/24/19 13:31:40
 Spec file:   TEST_1.SPC
 Result file: TEST_1.RES
 [41m
 HistoryTest Debug x64
-Build at Feb  9 2019 14:39:47
+Build at Feb 21 2019 22:13:51
 *** Create 10 history slots
 
 *** Iterate thru generations
