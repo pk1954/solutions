@@ -25,7 +25,7 @@ void IndividualShape::PrepareShape( PixelPoint const ppOffset, PixelRectSize con
 		if ( m_leftColumn.GetMinWidth() + m_rightColumn.GetMinWidth() <= pixWidth )
 		{
 			m_leftColumn .PrepareShape( pixPosSubShape, pixSizeSubShape );
-			pixPosSubShape += PixelPoint( pixWidth / 2, PIXEL_Y(0_PIXEL) );
+			pixPosSubShape += PixelPoint( pixWidth / 2, 0_PIXEL_Y );
 			m_rightColumn.PrepareShape( pixPosSubShape, pixSizeSubShape );
 		}
 		else

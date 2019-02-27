@@ -33,7 +33,7 @@ void GridPointShape::RefreshLayout( )
 
 		m_coordShape.PrepareShape
 		( 
-			PixelPoint   ( PIXEL_X(pixHalfFrame), PIXEL_Y(0_PIXEL) ), 
+			PixelPoint   ( PIXEL_X(pixHalfFrame), 0_PIXEL_Y ), 
 			PixelRectSize( PIXEL_X(pixSizeInd),   PIXEL_Y(pixHalfFrame) ) 
 		);
 		m_indivShape.PrepareShape

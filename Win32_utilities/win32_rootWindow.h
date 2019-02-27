@@ -89,7 +89,7 @@ public:
 
     void Move( PIXEL_X const xPos, PIXEL_Y const yPos, PIXEL_X const width, PIXEL_Y const height, BOOL const bRedraw )
     {
-        (void)::MoveWindow( m_hwnd, xPos.GetValue().GetValue(), yPos.GetValue().GetValue(), width.GetValue().GetValue(), height.GetValue().GetValue(), bRedraw );
+        (void)::MoveWindow( m_hwnd, xPos.GetBaseValue(), yPos.GetBaseValue(), width.GetBaseValue(), height.GetBaseValue(), bRedraw );
     }
 
     void Move( PixelPoint const pos, PixelRectSize const size, BOOL const bRedraw )

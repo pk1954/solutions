@@ -40,8 +40,8 @@ public:
 	BASE_X const GetX() const { return m_x; }
 	BASE_Y const GetY() const { return m_y; }
 
-	auto const GetXvalue( ) const { return GetX().GetValue().GetValue(); }
-	auto const GetYvalue( ) const { return GetY().GetValue().GetValue(); }
+	auto const GetXvalue( ) const { return GetX().GetBaseValue(); }
+	auto const GetYvalue( ) const { return GetY().GetBaseValue(); }
 
 	static PointType const & NULL_VAL() 
 	{ 

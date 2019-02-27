@@ -46,16 +46,16 @@ namespace Util
 	{ 
 		return RECT
 		{ 
-			pixRect.GetLeft  ().GetValue().GetValue(),	
-			pixRect.GetTop   ().GetValue().GetValue(), 
-			pixRect.GetRight ().GetValue().GetValue(), 
-			pixRect.GetBottom().GetValue().GetValue() 
+			pixRect.GetLeft  ().GetBaseValue(),	
+			pixRect.GetTop   ().GetBaseValue(), 
+			pixRect.GetRight ().GetBaseValue(), 
+			pixRect.GetBottom().GetBaseValue() 
 		}; 
 	}
 
 	inline BOOL MoveWindow( HWND const hwnd, PIXEL_X const xPos, PIXEL_Y const yPos, PIXEL_X const width, PIXEL_Y const height, BOOL const bRedraw )
 	{
-		return ::MoveWindow( hwnd, xPos.GetValue().GetValue(), yPos.GetValue().GetValue(), width.GetValue().GetValue(), height.GetValue().GetValue(), bRedraw );
+		return ::MoveWindow( hwnd, xPos.GetBaseValue(), yPos.GetBaseValue(), width.GetBaseValue(), height.GetBaseValue(), bRedraw );
 	}
 
 	inline void SetText( HWND const hwnd, wchar_t const * const wstrText )

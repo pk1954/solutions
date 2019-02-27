@@ -23,7 +23,7 @@ static double const TRACKBAR_SCALING_FACTOR = 1000.0;
 static LONG const SPEED_TRACKBAR_MIN = 0; 
 static LONG const SPEED_TRACKBAR_MAX = value2Trackbar( MAX_DELAY ); 
 
-static PIXEL_Y const STATUS_BAR_HEIGHT = PIXEL_Y(22_PIXEL);
+static PIXEL_Y const STATUS_BAR_HEIGHT = 22_PIXEL_Y;
 
 static wchar_t * SZ_RUN_MODE  = L"   Run    ";
 static wchar_t * SZ_STOP_MODE = L"  Stop    ";
@@ -84,10 +84,10 @@ HWND WINAPI StatusBar::createControl
         lpClassName,                     // class name 
         lpWindowName,                    // title (caption) 
         WS_CHILD | WS_VISIBLE | dwStyle, // style 
-        m_pixPosX.GetValue().GetValue(),          // x position
-		m_pixBorderY.GetValue().GetValue(),       // y position 
-        pixWidth.GetValue().GetValue(),           // width
-		m_pixClientHeight.GetValue().GetValue(),  // height
+        m_pixPosX.GetBaseValue(),          // x position
+		m_pixBorderY.GetBaseValue(),       // y position 
+        pixWidth.GetBaseValue(),           // width
+		m_pixClientHeight.GetBaseValue(),  // height
         GetWindowHandle( ),              // parent window 
         hMenu,                           // control identifier 
         GetModuleHandle( nullptr ),      // instance 
@@ -165,7 +165,7 @@ void StatusBar::Start
         STATUSCLASSNAME, 
         nullptr, 
         WS_CHILD | WS_VISIBLE,
-        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT.GetValue().GetValue(),
+        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT.GetBaseValue(),
         hwndParent,
         nullptr, 
         GetModuleHandle( nullptr ), 
@@ -176,12 +176,12 @@ void StatusBar::Start
 
     static std::array< PIXEL_X, static_cast<int>( tPart::Stop ) + 1> statwidths = 
     { 
-        PIXEL_X(100_PIXEL), // Generation 
-		PIXEL_X(200_PIXEL), // Mode (Edit/Simu)
-        PIXEL_X(400_PIXEL), // Size
-        PIXEL_X(670_PIXEL), // Edit/Simu controls
-        PIXEL_X(600_PIXEL), // ScriptLine
-        PIXEL_X( -1_PIXEL)  // Stop
+        100_PIXEL_X, // Generation 
+		200_PIXEL_X, // Mode (Edit/Simu)
+        400_PIXEL_X, // Size
+        670_PIXEL_X, // Edit/Simu controls
+        600_PIXEL_X, // ScriptLine
+         -1_PIXEL_X  // Stop
     };
 
     PIXEL_X pixPartWidth = statwidths[0];
@@ -197,16 +197,15 @@ void StatusBar::Start
     m_pixBorderY      = PIXEL_Y(PIXEL(GetSystemMetrics( SM_CYSIZEFRAME )));
     m_pixClientHeight = GetHeight( ) - m_pixBorderY;
 
-    m_pixPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_pixBorderX + PIXEL_X(10_PIXEL);
     createModeControl( );
 
-    m_pixPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_pixBorderX + PIXEL_X(10_PIXEL);
+    m_pixPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_pixBorderX + 10_PIXEL_X;
     createSizeControl( );
 
-    m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX + PIXEL_X(10_PIXEL);
+    m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX + 10_PIXEL_X;
     createSimulationControl( );
 
-    m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX + PIXEL_X(10_PIXEL);
+    m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX + 10_PIXEL_X;
 	createEditorControl( );
 
     (void)SendMessage( SB_SETPARTS, sizeof( statwidths ) / sizeof( int ), (LPARAM)( &statwidths ) );

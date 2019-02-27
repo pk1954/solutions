@@ -22,8 +22,8 @@ static constexpr GRID_Y const GRID_Y_MIN { 0_GRID_COORD };
 static GRID_X const GRID_X_MAX { GRID_WIDTH .GetValue() - 1_GRID_COORD };
 static GRID_Y const GRID_Y_MAX { GRID_HEIGHT.GetValue() - 1_GRID_COORD };
 
-static constexpr int const GRID_WIDTH_VAL  { GRID_WIDTH .GetValue().GetValue() }; // abbreviations for e.g. array dims
-static constexpr int const GRID_HEIGHT_VAL { GRID_HEIGHT.GetValue().GetValue() };
+static constexpr int const GRID_WIDTH_VAL  { GRID_WIDTH .GetBaseValue() }; // abbreviations for e.g. array dims
+static constexpr int const GRID_HEIGHT_VAL { GRID_HEIGHT.GetBaseValue() };
 
 inline constexpr static int const GRID_AREA() 
 { 
@@ -67,8 +67,8 @@ inline bool const Neighbors( GridPoint const a, GridPoint const b )
 	GRID_X    const dx { GRID_COORD(std::abs(gpDiff.GetXvalue())) }; 
 	GRID_Y    const dy { GRID_COORD(std::abs(gpDiff.GetYvalue())) };
     return ( 
-		      (( dx <= GRID_X(1_GRID_COORD) ) || ( dx == GRID_X_MAX )) && 
-		      (( dy <= GRID_Y(1_GRID_COORD) ) || ( dy == GRID_Y_MAX ))
+		      (( dx <= 1_GRID_X ) || ( dx == GRID_X_MAX )) && 
+		      (( dy <= 1_GRID_Y ) || ( dy == GRID_Y_MAX ))
 		   );
 }
 

@@ -17,6 +17,8 @@ public:
 
 	constexpr BASE_TYPE const & GetValue() const { return m_value; }
 
+	constexpr auto const & GetBaseValue() const { return GetValue().GetValue(); }
+
     bool const operator== (NamedType const other) const { return m_value == other.GetValue(); }
     bool const operator!= (NamedType const other) const { return m_value != other.GetValue(); }
     bool const operator<= (NamedType const other) const { return m_value <= other.GetValue(); }

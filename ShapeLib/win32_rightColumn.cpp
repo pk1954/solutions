@@ -33,7 +33,7 @@ void RightColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const p
 		PixelPoint posShape = GetShapePos( );
 		for	( auto & pSlot : m_aMemorySlot )
 		{
-			posShape += PixelPoint( PIXEL_X(0_PIXEL), pixSlotHeight );
+			posShape += PixelPoint( 0_PIXEL_X, pixSlotHeight );
 			pSlot->PrepareShape( posShape, slotSize );
 		}
 	}

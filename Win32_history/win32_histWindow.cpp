@@ -78,7 +78,7 @@ PixelRect HistWindow::getGenerationRect  // position is relative to client area
 	if ( pixLeft == pixRight )
 		++pixRight;
 
-    return PixelRect{ pixLeft, PIXEL_Y(0_PIXEL), pixRight, rectSize.GetY() };
+    return PixelRect{ pixLeft, 0_PIXEL_Y, pixRight, rectSize.GetY() };
 }
 
 HIST_GENERATION HistWindow::getGenFromXpos( LPARAM const lParam ) const
@@ -87,7 +87,7 @@ HIST_GENERATION HistWindow::getGenFromXpos( LPARAM const lParam ) const
     PIXEL_X         const pixWidth { GetClientWindowWidth( ) };
     long            const lNrOfGens{ m_pHistSys->GetNrOfGenerations( ).GetLong( ) };
     HIST_GENERATION const genMax   { lNrOfGens - 1 };
-	HIST_GENERATION       genRes   { ( max( 0, pixXpos.GetValue().GetValue() ) * lNrOfGens ) / pixWidth.GetValue().GetValue() };
+	HIST_GENERATION       genRes   { ( max( 0, pixXpos.GetBaseValue() ) * lNrOfGens ) / pixWidth.GetBaseValue() };
 
 	if ( genRes > genMax )
 		genRes = genMax;
@@ -134,8 +134,8 @@ void HistWindow::paintPixelPos( HDC const hDC, PIXEL_X const pixPosX ) const
 {
     PIXEL_X         const pixClientWidth = GetClientWindowWidth( );
     HIST_GENERATION const genNrOfGens    = m_pHistSys->GetNrOfGenerations( );
-    HIST_GENERATION const genMin = MulDiv( pixPosX.GetValue().GetValue(),     genNrOfGens.GetLong( ), pixClientWidth.GetValue().GetValue() ) + 1;
-    HIST_GENERATION       genMax = MulDiv( pixPosX.GetValue().GetValue() + 1, genNrOfGens.GetLong( ), pixClientWidth.GetValue().GetValue() );
+    HIST_GENERATION const genMin = MulDiv( pixPosX.GetBaseValue(),     genNrOfGens.GetLong( ), pixClientWidth.GetBaseValue() ) + 1;
+    HIST_GENERATION       genMax = MulDiv( pixPosX.GetBaseValue() + 1, genNrOfGens.GetLong( ), pixClientWidth.GetBaseValue() );
     BOOL                  bFoundPos = FALSE;  // Found a pixel pos representing an existing history entry
     BOOL                  bFoundNeg = FALSE;  // Found a pixel pos representing a missing history entry
 
@@ -168,7 +168,7 @@ void HistWindow::paintPixelPos( HDC const hDC, PIXEL_X const pixPosX ) const
         : CLR_BACK
     );
 
-    Util::FastFill( hDC, PixelRect{ pixPosX, PIXEL_Y(0_PIXEL), pixPosX + PIXEL_X(1_PIXEL), GetClientWindowHeight( ) } );
+    Util::FastFill( hDC, PixelRect{ pixPosX, 0_PIXEL_Y, pixPosX + 1_PIXEL_X, GetClientWindowHeight( ) } );
 }
 
 void HistWindow::PaintAllGenerations( HDC const hDC )
@@ -178,7 +178,7 @@ void HistWindow::PaintAllGenerations( HDC const hDC )
     if ( m_pHistSys->GetNrOfGenerations( ) <= 1 )
         return;
 
-    if ( m_pHistSys->GetNrOfGenerations( ) < pixSizeX.GetValue().GetValue() )
+    if ( m_pHistSys->GetNrOfGenerations( ) < pixSizeX.GetBaseValue() )
     {
         int iRun = m_pHistIter->Set2Oldest( );
 
@@ -194,7 +194,7 @@ void HistWindow::PaintAllGenerations( HDC const hDC )
     {
         (void)m_pHistIter->Set2Oldest( );
 
-        for ( PIXEL_X pixX = PIXEL_X(0_PIXEL); pixX < pixSizeX; ++pixX )
+        for ( PIXEL_X pixX = 0_PIXEL_X; pixX < pixSizeX; ++pixX )
         {
             paintPixelPos( hDC, pixX );
         }

@@ -60,7 +60,7 @@ void Util::AdjustRight( HWND const hwnd, PIXEL_Y const pixYpos )
 void Util::AdjustLeft( HWND const hwnd, PIXEL_Y const pixYpos )
 {
 	PixelRectSize pnt = GetWindowSize( hwnd );
-    MoveWindow( hwnd, PIXEL_X(0_PIXEL), pixYpos, pnt.GetX(), pnt.GetY(), TRUE );
+    MoveWindow( hwnd, 0_PIXEL_X, pixYpos, pnt.GetX(), pnt.GetY(), TRUE );
     (void)BringWindowToTop( hwnd );
 }
 
