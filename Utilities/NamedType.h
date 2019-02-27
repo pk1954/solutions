@@ -82,16 +82,6 @@ public:
 		return res; 
 	}
 
-	friend NamedType const min_value(NamedType const a, NamedType const b )
-	{ 
-		return NamedType( std::min( a.GetValue(), b.GetValue() ) );
-	}
-
-	friend NamedType const max_value(NamedType const a, NamedType const b )
-	{ 
-		return NamedType( std::max( a.GetValue(), b.GetValue() ) );
-	}
-
 	friend std::wostream & operator<< ( std::wostream & out, NamedType const & param )
 	{
 		out << std::setw( 5 ) << param.GetValue();

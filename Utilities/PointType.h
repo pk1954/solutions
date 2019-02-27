@@ -3,7 +3,11 @@
 
 #pragma once
 
+#include <algorithm>  // min/max/abs templates
 #include <iostream>
+
+using std::abs;
+using std::max;
 
 struct x_tag {};
 struct y_tag {};
@@ -111,21 +115,11 @@ public:
 		return res; 
 	};
 
-	friend PointType const Max(PointType const a, PointType const b) 
-	{ 
-		return PointType( std::min(a.GetX(), b.GetX()), std::min(a.GetY(), b.GetY()) ); 
-	}
-
-	friend PointType const Min(PointType const a, PointType const b) 
-	{ 
-		return PointType( std::max(a.GetX(), b.GetX()), std::max(a.GetY(), b.GetY()) ); 
-	}
-
 	friend BASE_TYPE const MaxAbsDelta(PointType const pnt) 
 	{
-		BASE_TYPE xAbs{ std::abs(pnt.GetXvalue()) };
-		BASE_TYPE yAbs{ std::abs(pnt.GetYvalue()) };
-		return BASE_TYPE( std::max( xAbs, yAbs ) );
+		BASE_TYPE xAbs{ abs(pnt.GetXvalue()) };
+		BASE_TYPE yAbs{ abs(pnt.GetYvalue()) };
+		return BASE_TYPE( max( xAbs, yAbs ) );
 	}
 
 	friend std::wostream & operator<< ( std::wostream & out, PointType const & param )
