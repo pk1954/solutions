@@ -24,7 +24,6 @@ public:
     PIXEL_X       const GetWindowWidth( )          const { return Util::GetWindowWidth         ( m_hwnd ); }
     PIXEL_Y       const GetWindowHeight( )         const { return Util::GetWindowHeight        ( m_hwnd ); }
     PixelRectSize const GetWindowSize( )           const { return Util::GetWindowSize          ( m_hwnd ); }
-    PixelPoint    const Client2Screen( POINT pnt)  const { return Util::Client2Screen          ( m_hwnd, pnt ); }
     PixelRectSize const GetClRectSize( )           const { return Util::GetClRectSize          ( m_hwnd ); }
     PixelRect     const GetClPixelRect( )          const { return Util::GetClPixelRect         ( m_hwnd ); }
     RECT          const GetClRect( )               const { return Util::GetClRect              ( m_hwnd ); }
@@ -33,9 +32,12 @@ public:
     BOOL          const CrsrInClientRect( )        const { return Util::CrsrInClientRect       ( m_hwnd ); }
     PixelPoint    const GetRelativeCrsrPosition( ) const { return Util::GetRelativeCrsrPosition( m_hwnd ); }
     PixelPoint    const GetClRectCenter( )         const { return Util::GetClRectCenter        ( m_hwnd ); }
-	
-	BOOL          const IsInClientRect( PixelPoint const p ) const { return Util::IsInClientRect( m_hwnd, p ); }
-	BOOL          const IsInClientRect( PixelRect  const r ) const { return Util::IsInClientRect( m_hwnd, r ); }
+
+	PixelPoint    const Client2Screen( PixelPoint  const & p ) const { return Util::Client2Screen ( m_hwnd, p ); }
+	PixelPoint    const Screen2Client( PixelPoint  const & p ) const { return Util::Screen2Client ( m_hwnd, p ); }
+
+	BOOL          const IsInClientRect( PixelPoint const & p ) const { return Util::IsInClientRect( m_hwnd, p ); }
+	BOOL          const IsInClientRect( PixelRect  const & r ) const { return Util::IsInClientRect( m_hwnd, r ); }
 
     BOOL          const IsWindowVisible( )            const { return ::IsWindowVisible( m_hwnd ); }
     HWND          const SetCapture( )                 const { return ::SetCapture     ( m_hwnd ); }

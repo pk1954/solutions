@@ -97,7 +97,7 @@ HIST_GENERATION HistWindow::getGenFromXpos( LPARAM const lParam ) const
 
 void HistWindow::gotoNewGeneration( LPARAM const lParam )
 {
-	HIST_GENERATION genSelNew = getGenFromXpos( lParam );
+	HIST_GENERATION genSelNew { getGenFromXpos( lParam ) };
 	if (genSelNew != m_genSelected)     // can be triggered several times with same value
 	{
 		m_genSelected = genSelNew;
@@ -107,13 +107,13 @@ void HistWindow::gotoNewGeneration( LPARAM const lParam )
 
 void HistWindow::dispGenerationWindow( ) const
 {
-    PIXEL_X    const iGenDispWidth ( 50_PIXEL );
-    PIXEL_Y    const iGenDispHeight( 20_PIXEL );
-    PIXEL_X    const pixClientWidth = GetClientWindowWidth( );
-    PixelRect  const pixRectGen     = getGenerationRect( m_genSelected ); // position is relative to client area
-	PixelPoint const ptClientPos    = Client2Screen( POINT{ 0, 0 } );     // position of client area origin in screen coordinates
-    PIXEL_Y    const pixYpos        = ptClientPos.GetY() - iGenDispHeight;
-    PIXEL_X          pixXpos        = ( pixRectGen.GetLeft() + pixRectGen.GetRight() - iGenDispWidth ) / 2 + ptClientPos.GetX();
+	PIXEL_X    const iGenDispWidth { 50_PIXEL };
+    PIXEL_Y    const iGenDispHeight{ 20_PIXEL };
+    PIXEL_X    const pixClientWidth{ GetClientWindowWidth( ) };
+    PixelRect  const pixRectGen    { getGenerationRect( m_genSelected ) };      // position is relative to client area
+	PixelPoint const ptClientPos   { Client2Screen( PixelPoint::ZERO_VAL() ) }; // position of client area origin in screen coordinates
+    PIXEL_Y    const pixYpos       { ptClientPos.GetY() - iGenDispHeight };
+    PIXEL_X          pixXpos       { ( pixRectGen.GetLeft() + pixRectGen.GetRight() - iGenDispWidth ) / 2 + ptClientPos.GetX() };
 
     pixXpos = max( pixXpos, ptClientPos.GetX() );                                   // do not leave client area on left
     pixXpos = min( pixXpos, ptClientPos.GetX() + pixClientWidth - iGenDispWidth );  // or right side

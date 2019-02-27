@@ -6,8 +6,8 @@
 
 PixelRectSize IndividualShape::MinimalSize( )  
 {       
-	PixelRectSize minLeft  = m_leftColumn .MinimalSize( );
-	PixelRectSize minRight = m_rightColumn.MinimalSize( );
+	PixelRectSize minLeft  { m_leftColumn .MinimalSize( ) };
+	PixelRectSize minRight { m_rightColumn.MinimalSize( ) };
 
 	return SetMinSize( minLeft );
 }                                     
@@ -16,11 +16,11 @@ void IndividualShape::PrepareShape( PixelPoint const ppOffset, PixelRectSize con
 {
 	if ( SetShapeRect( ppOffset, ppSize ) )
 	{
-		PIXEL_X pixWidth  = getShapeWidth();
-		PIXEL_Y pixHeight = getShapeHeight();
+		PIXEL_X pixWidth  { getShapeWidth()  };
+		PIXEL_Y pixHeight { getShapeHeight() };
 
-		PixelPoint    pixPosSubShape  = GetShapePos( );
-		PixelRectSize pixSizeSubShape = PixelRectSize( pixWidth / 2, pixHeight );
+		PixelPoint    pixPosSubShape  { GetShapePos( ) };
+		PixelRectSize pixSizeSubShape { PixelRectSize( pixWidth / 2, pixHeight ) };
 
 		if ( m_leftColumn.GetMinWidth() + m_rightColumn.GetMinWidth() <= pixWidth )
 		{

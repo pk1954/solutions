@@ -74,13 +74,13 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 	BOOL    const bRepaint
 )
 {
-	HWND  const hwndParent = GetAncestor( hwnd, GA_PARENT );
 	PixelPoint pixPoint{ pixXpos, pixYpos };
+	BOOL       bRes;
 
-	if ( hwndParent != nullptr )
-		ScreenToClient( hwndParent, pixPoint );
+	if ( GetAncestor( hwnd, GA_PARENT ) )
+		pixPoint = Screen2Client( hwnd, pixPoint );
 
-	BOOL bRes = MoveWindow( hwnd, pixPoint.GetX(), pixPoint.GetY(), pixWidth, pixHeight, bRepaint );
+	bRes = MoveWindow( hwnd, pixPoint.GetX(), pixPoint.GetY(), pixWidth, pixHeight, bRepaint );
 	
 	if ( GetWindowSize( hwnd ) != PixelRectSize{ pixWidth, pixHeight } )   // can happen in strange situations
 		bRes = MoveWindow( hwnd, pixPoint.GetX(), pixPoint.GetY(), pixWidth, pixHeight, bRepaint );
@@ -96,8 +96,15 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates
 	BOOL    const bRepaint
 )
 {
-	PixelRectSize const pixActSize = GetWindowSize( hwnd );
-	return MoveWindowAbsolute( hwnd, pixXpos, pixYpos, pixActSize.GetX(), pixActSize.GetY(), bRepaint );
+	return MoveWindowAbsolute
+	( 
+		hwnd, 
+		pixXpos, 
+		pixYpos, 
+		GetWindowWidth( hwnd ), 
+		GetWindowHeight( hwnd ), 
+		bRepaint 
+	);
 }
 
 void Util::MakeLayered( HWND const hwnd, BOOL const bMode, COLORREF const crKey, UINT const uiAlpha )

@@ -63,7 +63,7 @@ inline static GridRect const & GRID_RECT_FULL()
  
 inline bool const Neighbors( GridPoint const a, GridPoint const b )
 { 
-	GridPoint const gpDiff{ a - b };
+	GridPoint const gpDiff { a - b };
 	GRID_X    const dx { GRID_COORD(std::abs(gpDiff.GetXvalue())) }; 
 	GRID_Y    const dy { GRID_COORD(std::abs(gpDiff.GetYvalue())) };
     return ( 

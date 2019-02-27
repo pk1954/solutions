@@ -21,12 +21,12 @@ namespace Util
     bool operator== ( RECT const &, RECT const & );
     bool operator!= ( RECT const &, RECT const & );
     
-	inline PixelPoint POINT2PixelPoint( POINT const pnt ) 
+	inline PixelPoint POINT2PixelPoint( POINT const & pnt ) 
 	{ 
 		return PixelPoint{ PIXEL_X(PIXEL(pnt.x)), PIXEL_Y(PIXEL(pnt.y)) }; 
 	}
 
-	inline POINT PixelPoint2POINT( PixelPoint const pp ) 
+	inline POINT PixelPoint2POINT( PixelPoint const & pp ) 
 	{ 
 		return POINT{ pp.GetXvalue(), pp.GetYvalue() }; 
 	}
@@ -131,28 +131,26 @@ namespace Util
 			   PtInRect( &rect, PixelPoint2POINT( pixRect.GetEndPoint  () ) );
     } 
 
-	inline PixelPoint Client2Screen( HWND const hwnd, POINT pnt )
+	inline PixelPoint Client2Screen( HWND const hwnd, PixelPoint const & pixPoint )
     {
+		POINT pnt { PixelPoint2POINT( pixPoint ) };
         (void)ClientToScreen( hwnd, &pnt );
-		return PixelPoint{ PIXEL_X(PIXEL(pnt.x)), PIXEL_Y(PIXEL(pnt.y)) };
+		return POINT2PixelPoint( pnt );
     }
 	
-    inline PixelPoint const ScreenToClient( HWND const hwnd, POINT pnt )
+    inline PixelPoint const Screen2Client( HWND const hwnd, PixelPoint const & pixPoint )
     {
+		POINT pnt { PixelPoint2POINT( pixPoint ) };
         (void)ScreenToClient( hwnd, &pnt );
-		return PixelPoint{ PIXEL_X(PIXEL(pnt.x)), PIXEL_Y(PIXEL(pnt.y)) };
-    }
-
-    inline void ScreenToClient( HWND const hwnd, PixelPoint & pixPoint )
-    {
-		pixPoint = ScreenToClient( hwnd, PixelPoint2POINT( pixPoint ) );
+		return POINT2PixelPoint( pnt );
     }
 
     inline PixelPoint GetRelativeCrsrPosition( HWND const hwnd )   // Delivers cursor position relative to client area 
     {
 		POINT pnt;
 		(void)GetCursorPos( &pnt );
-		return ScreenToClient( hwnd, pnt );
+		ScreenToClient( hwnd, &pnt );
+		return POINT2PixelPoint( pnt );
     }
 
     inline PixelRectSize GetWindowSize( HWND const hwnd )

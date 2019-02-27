@@ -57,8 +57,8 @@ void EditorWindow::UpdateEditControls( )
 
 LRESULT EditorWindow::sendClick( int const item ) const
 {
-    HWND    const hwndOld = SetActiveWindow( GetWindowHandle( ) );
-    LRESULT const res = SendDlgItemMessage( item, BM_CLICK, 0, 0 );
+	HWND    const hwndOld { SetActiveWindow( GetWindowHandle( ) ) };
+	LRESULT const res     { SendDlgItemMessage( item, BM_CLICK, 0, 0 ) };
     (void)SetActiveWindow( hwndOld );
     return res;
 }
@@ -76,7 +76,7 @@ void EditorWindow::updateOperationButtons( tBrushMode const mode ) const
 
 void EditorWindow::updateEditControls( BOOL const bHistory ) // Set state of all window widgets according to mode (edit/simu)
 {
-	static std::unordered_map < tBrushMode, WORD > mapModeTable =
+	static std::unordered_map < tBrushMode, WORD > mapModeTable
 	{
 		{ tBrushMode::move,        IDM_MOVE            },
 		{ tBrushMode::randomStrat, IDM_RANDOM_STRATEGY },
@@ -92,7 +92,7 @@ void EditorWindow::updateEditControls( BOOL const bHistory ) // Set state of all
     
 	CheckRadioButton( IDM_MOVE, IDM_FOOD_STOCK, mapModeTable.at( m_pCore->GetBrushMode() ) );
 
-	static std::unordered_map < tShape, WORD > mapShapeTable =
+	static std::unordered_map < tShape, WORD > mapShapeTable
 	{
 		{ tShape::Circle, IDM_EDIT_CIRCLE    },    
 		{ tShape::Rect,   IDM_EDIT_RECTANGLE },
@@ -105,7 +105,7 @@ void EditorWindow::updateEditControls( BOOL const bHistory ) // Set state of all
 
 	updateOperationButtons( m_pCore->GetBrushMode() );
 
-	static std::unordered_map < tManipulator, WORD > mapOperatorTable =
+	static std::unordered_map < tManipulator, WORD > mapOperatorTable
 	{
 		{ tManipulator::set,      IDM_EDIT_OPERATION_SET      },    
 		{ tManipulator::min,      IDM_EDIT_OPERATION_MIN      },
@@ -129,7 +129,7 @@ void EditorWindow::updateEditControls( BOOL const bHistory ) // Set state of all
 
 void EditorWindow::SetSimulationMode( )  	// adjust window configuration according to simulation or edit mode
 {
-	bool bSimulationMode = m_pCore->GetSimulationMode( );
+	bool bSimulationMode { m_pCore->GetSimulationMode( ) };
 
 	m_pStatusBar->SetSimuMode( bSimulationMode );
 
@@ -143,7 +143,7 @@ void EditorWindow::SetSimulationMode( )  	// adjust window configuration accordi
 
 void EditorWindow::setBrushMode( WORD const wId ) const
 {
-	static std::unordered_map < WORD, tBrushMode > mapModeTable =
+	static std::unordered_map < WORD, tBrushMode > mapModeTable
 	{
 		{ IDM_MOVE,            tBrushMode::move         },
 		{ IDM_RANDOM_STRATEGY, tBrushMode::randomStrat  },
@@ -157,7 +157,7 @@ void EditorWindow::setBrushMode( WORD const wId ) const
 		{ IDM_FERTILIZER,      tBrushMode::fertilizer   }
 	};
 
-	tBrushMode const brushMode = mapModeTable.at( wId ) ;
+	tBrushMode const brushMode { mapModeTable.at( wId ) };
 	m_pWorkThreadInterface->PostSetBrushMode( brushMode );
 	m_pDspOptWindow->UpdateDspOptionsControls( brushMode );
 	updateOperationButtons( brushMode );
@@ -165,20 +165,20 @@ void EditorWindow::setBrushMode( WORD const wId ) const
 
 void EditorWindow::setBrushShape( WORD const wId ) const
 {
-	static std::unordered_map < WORD, tShape > mapShapeTable =
+	static std::unordered_map < WORD, tShape > mapShapeTable
 	{
 		{ IDM_EDIT_CIRCLE,    tShape::Circle },    
 		{ IDM_EDIT_RECTANGLE, tShape::Rect   },
 		{ IDM_EDIT_GRID_AREA, tShape::Grid   }
 	};
 
-	tShape const brushShape = mapShapeTable.at( wId );
+	tShape const brushShape { mapShapeTable.at( wId ) };
 	m_pWorkThreadInterface->PostSetBrushShape( brushShape );
 }
 
 void EditorWindow::setBrushManipulator( WORD const wId ) const
 {
-	static std::unordered_map < WORD, tManipulator > mapOperationTable =
+	static std::unordered_map < WORD, tManipulator > mapOperationTable
 	{
 		{ IDM_EDIT_OPERATION_SET,      tManipulator::set      },    
 		{ IDM_EDIT_OPERATION_MIN,      tManipulator::min      },    
@@ -187,7 +187,7 @@ void EditorWindow::setBrushManipulator( WORD const wId ) const
 		{ IDM_EDIT_OPERATION_SUBTRACT, tManipulator::subtract },    
 	};
 
-	tManipulator const brushOperator = mapOperationTable.at( wId );
+	tManipulator const brushOperator { mapOperationTable.at( wId ) };
 	m_pWorkThreadInterface->PostSetBrushManipulator( brushOperator );
 }
 
@@ -197,9 +197,9 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
     {
     case WM_HSCROLL:
 		{
-			HWND const hwndTrackBar = (HWND)lParam;
-			int  const iCtrlId      = GetDlgCtrlID( hwndTrackBar );
-			LONG const lLogicalPos  = GetTrackBarPos( iCtrlId );
+			HWND const hwndTrackBar { (HWND)lParam };
+			int  const iCtrlId      { GetDlgCtrlID( hwndTrackBar ) };
+			LONG const lLogicalPos  { GetTrackBarPos( iCtrlId ) };
 			switch ( iCtrlId )
 			{
 			case IDM_EDIT_INTENSITY:
@@ -216,7 +216,7 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 
     case WM_COMMAND:
         {
-            WORD const wId = LOWORD( wParam );
+		WORD const wId { LOWORD( wParam ) };
 
             switch ( wId )
             {

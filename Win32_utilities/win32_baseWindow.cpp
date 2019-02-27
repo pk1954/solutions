@@ -74,20 +74,19 @@ HWND BaseWindow::StartBaseWindow
 
 void BaseWindow::contextMenu( LPARAM lParam )
 {
-    HMENU      const hPopupMenu = CreatePopupMenu();
-	POINT      const pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
-	PixelPoint const pixPosCrsr( Client2Screen( pntPos ) );
+	HMENU const hPopupMenu{ CreatePopupMenu() };
+	POINT       pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
 
     (void)InsertMenu( hPopupMenu, 0, MF_STRING, IDM_REFRESH_RATE_DIALOG, L"Refresh Rate" );
+    (void)ClientToScreen( GetWindowHandle(), & pntPos );
 	AddContextMenuEntries( hPopupMenu, pntPos );  
-
     (void)SetForegroundWindow( GetWindowHandle( ) );
 
     UINT const uiID = (UINT)TrackPopupMenu
 	                  ( 
 						  hPopupMenu, 
 						  TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, 
-						  pixPosCrsr.GetXvalue(), pixPosCrsr.GetYvalue(), 
+						  pntPos.x, pntPos.y, 
 						  0, 
 						  GetWindowHandle( ), 
 						  nullptr 
