@@ -20,28 +20,25 @@ class PointType
 
 public:
 
-	PointType( PointType const & src ) : x(src.x), y(src.y) {}
-	PointType( BASE_TYPE const _b ) : x(_b), y(_b) {}
-	PointType( BASE_X const _x, BASE_Y const _y ) : x(_x), y(_y) {}
+	PointType( PointType const & src ) : m_x(src.m_x), m_y(src.m_y) {}
+	PointType( BASE_TYPE const _b ) : m_x(_b), m_y(_b) {}
+	PointType( BASE_X const _x, BASE_Y const _y ) : m_x(_x), m_y(_y) {}
 
-    bool      const operator== (PointType const a) const { return (x == a.x) && (y == a.y); }
-    bool      const operator!= (PointType const a) const { return (x != a.x) || (y != a.y); }
+    bool      const operator== (PointType const a) const { return (m_x == a.m_x) && (m_y == a.m_y); }
+    bool      const operator!= (PointType const a) const { return (m_x != a.m_x) || (m_y != a.m_y); }
 
-    PointType const operator+= (PointType const a) { x += a.x; y += a.y; return * this; }
-    PointType const operator-= (PointType const a) { x -= a.x; y -= a.y; return * this; }
-    PointType const operator%= (PointType const a) { x %= a.x; y %= a.y; return * this; }
+    PointType const operator+= (PointType const a) { m_x += a.m_x; m_y += a.m_y; return * this; }
+    PointType const operator-= (PointType const a) { m_x -= a.m_x; m_y -= a.m_y; return * this; }
+    PointType const operator%= (PointType const a) { m_x %= a.m_x; m_y %= a.m_y; return * this; }
 
-    PointType const operator+= (BASE_TYPE const b) { x += BASE_X(b); y += BASE_Y(b); return * this; }
-    PointType const operator-= (BASE_TYPE const b) { x -= BASE_X(b); y -= BASE_Y(b); return * this; }
+    PointType const operator*= (int const i) { m_x *= i; m_y *= i; return * this; };
+    PointType const operator/= (int const i) { m_x /= i; m_y /= i; return * this; }
 
-    PointType const operator*= (int const i) { x *= i; y *= i; return * this; };
-    PointType const operator/= (int const i) { x /= i; y /= i; return * this; }
+    PointType const operator- () const { return PointType( -m_x, -m_y ); };
+    PointType const operator+ () const { return PointType( +m_x, +m_y ); };
 
-    PointType const operator- () const { return PointType( -x, -y ); };
-    PointType const operator+ () const { return PointType( +x, +y ); };
-
-	BASE_X const GetX() const { return x; }
-	BASE_Y const GetY() const { return y; }
+	BASE_X const GetX() const { return m_x; }
+	BASE_Y const GetY() const { return m_y; }
 
 	auto const GetXvalue( ) const { return GetX().GetValue().GetValue(); }
 	auto const GetYvalue( ) const { return GetY().GetValue().GetValue(); }
@@ -119,7 +116,7 @@ public:
 	{
 		BASE_TYPE xAbs{ abs(pnt.GetXvalue()) };
 		BASE_TYPE yAbs{ abs(pnt.GetYvalue()) };
-		return BASE_TYPE( max( xAbs, yAbs ) );
+		return max( xAbs, yAbs );
 	}
 
 	friend std::wostream & operator<< ( std::wostream & out, PointType const & param )
@@ -128,37 +125,28 @@ public:
 		return out;
 	}
 private:
-    BASE_X x;
-    BASE_Y y;
+    BASE_X m_x;
+    BASE_Y m_y;
 };
-
-template <typename T> struct point_traits;
-
-struct pos_tag {};
-struct siz_tag {};
 
 // PosType: A specialized PointType used to denote the position of something
 
 template <typename BASE_TYPE> 
-class PosType: public PointType<BASE_TYPE, pos_tag> 
+class PosType: public PointType<BASE_TYPE, struct pos_tag> 
 {
 public:
 	using PointType::PointType;
 
 	PosType( PointType const & p ) : PointType( p )	{}
-
-	using point_traits = pos_tag;
 };
 
 // SizeType: A specialized PointType used to denote the size of something
 
 template <typename BASE_TYPE> 
-class SizeType: public PointType<BASE_TYPE, siz_tag> 
+class SizeType: public PointType<BASE_TYPE, struct siz_tag> 
 {
 public:
 	using PointType::PointType;
 
 	SizeType( PointType const & p ) : PointType( p ) {}
-
-	using point_traits = siz_tag;
 };

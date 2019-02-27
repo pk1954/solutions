@@ -11,38 +11,38 @@ template <typename BASE_TYPE, typename Parameter>
 class NamedType
 {
 public:
-    NamedType( ) : value_(0) {}
+    NamedType( ) : m_value(0) {}
 		
-    constexpr explicit NamedType( BASE_TYPE const value ) : value_(value) {}
+    constexpr explicit NamedType( BASE_TYPE const value ) : m_value(value) {}
 
-	constexpr BASE_TYPE const & GetValue() const { return value_; }
+	constexpr BASE_TYPE const & GetValue() const { return m_value; }
 
-    bool const operator== (NamedType const other) const { return value_ == other.GetValue(); }
-    bool const operator!= (NamedType const other) const { return value_ != other.GetValue(); }
-    bool const operator<= (NamedType const other) const { return value_ <= other.GetValue(); }
-    bool const operator<  (NamedType const other) const { return value_ <  other.GetValue(); }
-    bool const operator>= (NamedType const other) const { return value_ >= other.GetValue(); }
-    bool const operator>  (NamedType const other) const { return value_ >  other.GetValue(); }
+    bool const operator== (NamedType const other) const { return m_value == other.GetValue(); }
+    bool const operator!= (NamedType const other) const { return m_value != other.GetValue(); }
+    bool const operator<= (NamedType const other) const { return m_value <= other.GetValue(); }
+    bool const operator<  (NamedType const other) const { return m_value <  other.GetValue(); }
+    bool const operator>= (NamedType const other) const { return m_value >= other.GetValue(); }
+    bool const operator>  (NamedType const other) const { return m_value >  other.GetValue(); }
 
-	bool IsZero       ( ) const { return value_ == BASE_TYPE(0); };
-	bool IsNotZero    ( ) const { return value_ != BASE_TYPE(0); };
-	bool IsPositive   ( ) const { return value_ >  BASE_TYPE(0); };
-	bool IsNotPositive( ) const { return value_ <= BASE_TYPE(0); };
-	bool IsNegative   ( ) const { return value_ <  BASE_TYPE(0); };
-	bool IsNotNegative( ) const { return value_ >= BASE_TYPE(0); };
+	bool IsZero       ( ) const { return m_value == BASE_TYPE(0); };
+	bool IsNotZero    ( ) const { return m_value != BASE_TYPE(0); };
+	bool IsPositive   ( ) const { return m_value >  BASE_TYPE(0); };
+	bool IsNotPositive( ) const { return m_value <= BASE_TYPE(0); };
+	bool IsNegative   ( ) const { return m_value <  BASE_TYPE(0); };
+	bool IsNotNegative( ) const { return m_value >= BASE_TYPE(0); };
 
-    NamedType& operator+= (NamedType const other) { value_ += other.GetValue(); return * this; }
-    NamedType& operator-= (NamedType const other) { value_ -= other.GetValue(); return * this; }
-    NamedType& operator%= (NamedType const other) { value_ %= other.GetValue(); return * this; }
+    NamedType& operator+= (NamedType const other) { m_value += other.GetValue(); return * this; }
+    NamedType& operator-= (NamedType const other) { m_value -= other.GetValue(); return * this; }
+    NamedType& operator%= (NamedType const other) { m_value %= other.GetValue(); return * this; }
 
-    NamedType& operator*= (int const i) { value_ *= i; return * this; }
-	NamedType& operator/= (int const i) { value_ /= i; return * this; }
+    NamedType& operator*= (int const i) { m_value *= i; return * this; }
+	NamedType& operator/= (int const i) { m_value /= i; return * this; }
 
-	NamedType  operator- () const { NamedType res( -value_ ); return res; }
-	NamedType  operator+ () const { NamedType res( +value_ ); return res; }
+	NamedType  operator- () const { NamedType res( -m_value ); return res; }
+	NamedType  operator+ () const { NamedType res( +m_value ); return res; }
 
-	NamedType  operator++() { ++value_; return * this; }
-    NamedType  operator--() { --value_; return * this; }
+	NamedType  operator++() { ++m_value; return * this; }
+    NamedType  operator--() { --m_value; return * this; }
 
 	NamedType  operator++(int) { NamedType tmp(*this); operator++(); return tmp; }
     NamedType  operator--(int) { NamedType tmp(*this); operator--(); return tmp; }
@@ -106,5 +106,5 @@ public:
     bool IsNotNull( ) const { return * this != NULL_VAL(); };
 
 private:
-    BASE_TYPE value_;
+    BASE_TYPE m_value;
 };
