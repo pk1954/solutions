@@ -24,7 +24,7 @@ void CrsrWindow::Start
     m_pCore = pCore;
     m_pFocusPoint = pFocusPoint;
     m_pFocusPoint->AttachFocusPointObserver( this );
-    StartTextWindow( hwndParent, 0_PIXEL, 300_PIXEL, 300_PIXEL, 115_PIXEL, L"CrsrWindow", 100, TRUE );
+    StartTextWindow( hwndParent, 0_PIXEL_X, 300_PIXEL_Y, 300_PIXEL_X, 115_PIXEL_Y, L"CrsrWindow", 100, TRUE );
 }
 
 void CrsrWindow::DoPaint( TextBuffer & textBuf )

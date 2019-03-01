@@ -24,7 +24,7 @@ void HistInfoWindow::Start
 ) 
 {
 	m_pHistSystem = pHistSys;
-    StartTextWindow( hwndParent, 0_PIXEL, 300_PIXEL, 300_PIXEL, 115_PIXEL, L"HistInfoWindow", 100, TRUE );
+    StartTextWindow( hwndParent, 0_PIXEL_X, 300_PIXEL_Y, 300_PIXEL_X, 115_PIXEL_Y, L"HistInfoWindow", 100, TRUE );
 }
 
 void HistInfoWindow::DoPaint( TextBuffer & textBuf )

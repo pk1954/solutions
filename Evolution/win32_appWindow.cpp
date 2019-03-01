@@ -88,7 +88,13 @@ AppWindow::AppWindow( ) :
 void AppWindow::Start(  )
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
-    HWND      const hwndApp   = StartBaseWindow( nullptr, PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), CS_HREDRAW | CS_VREDRAW, L"ClassAppWindow", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN );
+    HWND      const hwndApp   = StartBaseWindow
+	( 
+		nullptr, 
+		CS_HREDRAW | CS_VREDRAW, 
+		L"ClassAppWindow", 
+		WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN
+);
 
     SendMessage( WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
     SendMessage( WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL     ) ) );

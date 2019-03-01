@@ -13,8 +13,8 @@ public:
 	TextWindowThread
 	(
 		HDC             hDC_Memory,
-		PIXEL           pixWidth,
-		PIXEL           pixHeight,
+		PIXEL_X         pixWidth,
+		PIXEL_Y         pixHeight,
 		TextWindow    * pTextWindow,
 		wstring const & strName,
 		BOOL            bAsync

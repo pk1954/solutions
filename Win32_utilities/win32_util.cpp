@@ -74,11 +74,12 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 	BOOL    const bRepaint
 )
 {
+	HWND const hwndParent { GetAncestor( hwnd, GA_PARENT ) };
 	PixelPoint pixPoint{ pixXpos, pixYpos };
 	BOOL       bRes;
 
-	if ( GetAncestor( hwnd, GA_PARENT ) )
-		pixPoint = Screen2Client( hwnd, pixPoint );
+	if ( hwndParent )
+		pixPoint = Screen2Client( hwndParent, pixPoint );
 
 	bRes = MoveWindow( hwnd, pixPoint.GetX(), pixPoint.GetY(), pixWidth, pixHeight, bRepaint );
 	

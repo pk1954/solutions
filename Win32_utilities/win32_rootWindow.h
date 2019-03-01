@@ -26,7 +26,6 @@ public:
     PixelRectSize const GetWindowSize( )           const { return Util::GetWindowSize          ( m_hwnd ); }
     PixelRectSize const GetClRectSize( )           const { return Util::GetClRectSize          ( m_hwnd ); }
     PixelRect     const GetClPixelRect( )          const { return Util::GetClPixelRect         ( m_hwnd ); }
-    RECT          const GetClRect( )               const { return Util::GetClRect              ( m_hwnd ); }
     PIXEL_Y       const GetClientWindowHeight( )   const { return Util::GetClientWindowHeight  ( m_hwnd ); }
     PIXEL_X       const GetClientWindowWidth( )    const { return Util::GetClientWindowWidth   ( m_hwnd ); }
     BOOL          const CrsrInClientRect( )        const { return Util::CrsrInClientRect       ( m_hwnd ); }
@@ -113,7 +112,7 @@ public:
     void FillBackground( HDC const hDC, COLORREF const col ) const
     {
         SetBkColor( hDC, col );
-        Util::FastFill( hDC, GetClRect( ) );
+        Util::FastFill( hDC, m_hwnd );
     }
 
 	LONG GetTrackBarPos( INT const idTrackbar ) const

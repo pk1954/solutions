@@ -66,7 +66,6 @@ void GridWindow::Start
 	HWND hwnd = StartBaseWindow
     ( 
         hwndParent,
-		PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT),
         CS_OWNDC | CS_DBLCLKS,
         L"ClassGridWindow",
         dwStyle

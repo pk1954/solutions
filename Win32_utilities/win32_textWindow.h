@@ -14,7 +14,7 @@ class TextWindow : public BaseWindow
 public:
     TextWindow( );
 
-    void StartTextWindow( HWND const, PIXEL const, PIXEL const, PIXEL const, PIXEL const, LPCTSTR const, UINT const, BOOL const );
+    void StartTextWindow( HWND const, PIXEL_X const, PIXEL_Y const, PIXEL_X const, PIXEL_Y const, LPCTSTR const, UINT const, BOOL const );
 	void TerminateTextWindow( );
 
     virtual void DoPaint( TextBuffer & ) = 0;

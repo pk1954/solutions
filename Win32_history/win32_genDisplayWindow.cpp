@@ -17,7 +17,6 @@ void GenDisplayWindow::StartGenDisplayWindow( HWND const hwndParent )
     HWND const hwnd = StartBaseWindow
     ( 
         hwndParent,
-		PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT),
         CS_OWNDC,
         L"GenDisplayWindow",
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE

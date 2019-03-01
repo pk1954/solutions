@@ -201,12 +201,12 @@ void StatisticsWindow::Start
 ) 
 {
     m_pCore = pCore;
-    StartTextWindow( hwndParent, 200_PIXEL, 200_PIXEL, 400_PIXEL, 545_PIXEL, L"StatisticsWindow", 100, TRUE );
+    StartTextWindow( hwndParent, 200_PIXEL_X, 200_PIXEL_Y, 400_PIXEL_X, 545_PIXEL_Y, L"StatisticsWindow", 100, TRUE );
 }
 
 StatisticsWindow::~StatisticsWindow( )
 {
-//	m_pCore = nullptr;
+	m_pCore = nullptr;
 }
 
 Stopwatch stopwatch;

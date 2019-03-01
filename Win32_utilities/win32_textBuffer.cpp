@@ -13,9 +13,9 @@ using std::setw;
 
 TextBuffer::TextBuffer
 ( 
-	HDC   const hdc,
-	PIXEL const pixWidth, 
-	PIXEL const pixHeight
+	HDC     const hdc,
+	PIXEL_X const pixWidth, 
+	PIXEL_Y const pixHeight
 ) : 
     m_hDC( hdc ),
 	m_pixBufferWidth( pixWidth ),
@@ -37,7 +37,7 @@ void TextBuffer::StartPainting( )
     COLORREF const CLR_BACK   = RGB( 200, 200, 200 );
 
     SetBkColor( m_hDC, CLR_BACK );
-	Util::FastFill( m_hDC, RECT{ 0, 0, m_pixBufferWidth.GetValue(), m_pixBufferHeight.GetValue() } );
+	Util::FastFill( m_hDC, PixelRect{ 0_PIXEL_X, 0_PIXEL_Y, m_pixBufferWidth, m_pixBufferHeight } );
     setHorizontalPos( 1_TEXT_POSITION );
     m_pixVerticalPos = TOP_MARGIN;
     SetTextAlign( m_hDC, TA_RIGHT );

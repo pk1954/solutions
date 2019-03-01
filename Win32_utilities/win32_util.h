@@ -213,6 +213,11 @@ namespace Util
         FastFill( hDC, PixelRect2RECT( pixRect ) );
     }
 
+    inline void FastFill( HDC const hDC, HWND const hwnd )
+    {
+        Util::FastFill( hDC, GetClRect( hwnd ) );
+    }
+
     inline void AddWindowStyle( HWND const hwnd, DWORD const dwStyle )
     {
         DWORD const dwOldStyle = GetWindowLong( hwnd, GWL_EXSTYLE );

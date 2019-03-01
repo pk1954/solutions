@@ -30,7 +30,6 @@ void HistWindow::Start
     HWND const hwndHistory = StartBaseWindow
     (
         hwndParent,
-		PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT), PIXEL(CW_USEDEFAULT),
         CS_OWNDC | CS_DBLCLKS,
         L"ClassHistWindow",
         WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE

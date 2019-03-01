@@ -27,23 +27,23 @@ void TextWindow::TerminateTextWindow()
 
 void TextWindow::StartTextWindow
 (
-    HWND    const   hwndParent,
-	PIXEL   const	pixXpos, 
-	PIXEL	const	pixYpos, 
-	PIXEL	const	pixWidth, 
-	PIXEL	const	pixHeight,    
-	LPCTSTR const   szClass,
-    UINT    const   uiAlpha,
-	BOOL    const   bAsync
+    HWND    const hwndParent,
+	PIXEL_X const pixXpos, 
+	PIXEL_Y	const pixYpos, 
+	PIXEL_X	const pixWidth, 
+	PIXEL_Y	const pixHeight,    
+	LPCTSTR const szClass,
+    UINT    const uiAlpha,
+	BOOL    const bAsync
 )
 {
     HWND const hwnd = StartBaseWindow
     ( 
         hwndParent,
-		pixXpos, pixYpos, pixWidth, pixHeight,
         CS_OWNDC | CS_DBLCLKS,
         szClass,
-        WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION
+        WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION,
+		pixXpos, pixYpos, pixWidth, pixHeight
     );
 
 	PixelRectSize rectSize = GetClRectSize( );
