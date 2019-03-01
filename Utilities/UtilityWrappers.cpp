@@ -3,11 +3,36 @@
 
 #include "stdafx.h"
 #include "assert.h"
-#include "SCRIPT.H"
+#include "script.h"
 #include "symtab.h"
 #include "trace.h"
 #include "BoolOp.h"
 #include "UtilityWrappers.h"
+
+PIXEL ScrReadPixel( Script & script )
+{
+    return PIXEL( script.ScrReadLong() );
+}
+
+PixelPoint ScrReadPixelPoint( Script & script )
+{
+    PIXEL_X const x( ScrReadPixel( script ) );
+    PIXEL_Y const y( ScrReadPixel( script ) );
+    return PixelPoint( x, y );
+}
+
+PixelRectSize ScrReadPixelRectSize( Script & script )
+{
+    PixelPoint const pixPnt( ScrReadPixelPoint( script ) );
+    return PixelRectSize( pixPnt.GetX(), pixPnt.GetY() );
+}
+
+PixelRect ScrReadPixelRect( Script & script )
+{
+    PixelPoint    const pixPos ( ScrReadPixelPoint   ( script ) );
+    PixelRectSize const pixSize( ScrReadPixelRectSize( script ) );
+    return PixelRect( pixPos, pixSize );
+}
 
 class WrapOpenTraceFile : public Script_Functor
 {

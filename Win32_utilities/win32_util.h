@@ -18,9 +18,16 @@ namespace Util
 
     RECT ScrReadRECT( Script & );
 
-    bool operator== ( RECT const &, RECT const & );
-    bool operator!= ( RECT const &, RECT const & );
-    
+	inline bool operator== ( RECT const & a, RECT const & b ) 
+	{ 
+		return ( a.left == b.left ) && ( a.top == b.top ) && ( a.right == b.right ) && ( a.bottom == b.bottom ); 
+	};
+
+	inline bool operator!= ( RECT const & a, RECT const & b ) 
+	{ 
+		return ( a.left != b.left ) || ( a.top != b.top ) || ( a.right != b.right ) || ( a.bottom != b.bottom ); 
+	};
+
 	inline PixelPoint POINT2PixelPoint( POINT const & pnt ) 
 	{ 
 		return PixelPoint{ PIXEL_X(PIXEL(pnt.x)), PIXEL_Y(PIXEL(pnt.y)) }; 
@@ -257,8 +264,8 @@ namespace Util
 
     PixelRect CalcWindowRect( PixelRect const, DWORD const );
 
-    BOOL MoveWindowAbsolute( HWND const, PIXEL_X const, PIXEL_Y const, PIXEL_X const, PIXEL_Y const, BOOL const );
-    BOOL MoveWindowAbsolute( HWND const, PIXEL_X const, PIXEL_Y const,                          BOOL const );
+    BOOL MoveWindowAbsolute( HWND const, PixelRect  const &, BOOL const );
+    BOOL MoveWindowAbsolute( HWND const, PixelPoint const &, BOOL const );
 	
     DWORD        GetNrOfCPUs( );
     ULONGLONG    GetPhysicalMemory( );

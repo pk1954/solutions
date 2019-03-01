@@ -27,16 +27,6 @@ wostream & Util::operator << ( wostream & out, RECT const & rect )
     return out;
 }
 
-bool Util::operator== ( RECT const & a, RECT const & b ) 
-{ 
-    return ( a.left == b.left ) && ( a.top == b.top ) && ( a.right == b.right ) && ( a.bottom == b.bottom ); 
-};
-
-bool Util::operator!= ( RECT const & a, RECT const & b ) 
-{ 
-    return ( a.left != b.left ) || ( a.top != b.top ) || ( a.right != b.right ) || ( a.bottom != b.bottom ); 
-};
-
 // CalcWindowRect: Calculates the required size of the window rectangle, based on the desired client-rectangle size. 
 
 PixelRect Util::CalcWindowRect( PixelRect pixRect, DWORD const dwStyle )
@@ -66,46 +56,34 @@ void Util::AdjustLeft( HWND const hwnd, PIXEL_Y const pixYpos )
 
 BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and set size
 (
-	HWND    const hwnd,
-	PIXEL_X const pixXpos,
-	PIXEL_Y const pixYpos,
-	PIXEL_X const pixWidth,
-	PIXEL_Y const pixHeight,
-	BOOL    const bRepaint
+	HWND      const   hwnd,
+	PixelRect const & pixRect,
+	BOOL      const   bRepaint
 )
 {
 	HWND const hwndParent { GetAncestor( hwnd, GA_PARENT ) };
-	PixelPoint pixPoint{ pixXpos, pixYpos };
+	PixelPoint pixPoint{ pixRect.GetStartPoint() };
 	BOOL       bRes;
 
 	if ( hwndParent )
 		pixPoint = Screen2Client( hwndParent, pixPoint );
 
-	bRes = MoveWindow( hwnd, pixPoint.GetX(), pixPoint.GetY(), pixWidth, pixHeight, bRepaint );
+	bRes = MoveWindow( hwnd, pixPoint.GetX(), pixPoint.GetY(), pixRect.GetWidth(), pixRect.GetHeight(), bRepaint );
 	
-	if ( GetWindowSize( hwnd ) != PixelRectSize{ pixWidth, pixHeight } )   // can happen in strange situations
-		bRes = MoveWindow( hwnd, pixPoint.GetX(), pixPoint.GetY(), pixWidth, pixHeight, bRepaint );
+	if ( GetWindowSize( hwnd ) != pixRect.GetSize() )   // can happen in strange situations
+		bRes = MoveWindow( hwnd, pixPoint.GetX(), pixPoint.GetY(), pixRect.GetWidth(), pixRect.GetHeight(), bRepaint );
 
 	return bRes;
 }
 
 BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates 
 (
-	HWND    const hwnd,
-	PIXEL_X const pixXpos,
-	PIXEL_Y const pixYpos,
-	BOOL    const bRepaint
+	HWND       const   hwnd,
+	PixelPoint const & pixPos,
+	BOOL       const   bRepaint
 )
 {
-	return MoveWindowAbsolute
-	( 
-		hwnd, 
-		pixXpos, 
-		pixYpos, 
-		GetWindowWidth( hwnd ), 
-		GetWindowHeight( hwnd ), 
-		bRepaint 
-	);
+	return MoveWindowAbsolute( hwnd, PixelRect{ pixPos, GetWindowSize( hwnd ) }, bRepaint );
 }
 
 void Util::MakeLayered( HWND const hwnd, BOOL const bMode, COLORREF const crKey, UINT const uiAlpha )

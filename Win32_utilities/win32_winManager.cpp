@@ -6,6 +6,7 @@
 #include "SCRIPT.H"
 #include "symtab.h"
 #include "errhndl.h"
+#include "UtilityWrappers.h"
 #include "win32_util.h"
 #include "win32_rootWindow.h"
 #include "win32_winManager.h"
@@ -15,7 +16,6 @@ using std::wcout;
 using std::wofstream;
 
 using Util::operator==;
-using Util::operator!=;
 using Util::operator!=;
 using Util::operator<<; 
 
@@ -32,21 +32,18 @@ public:
 
 		if ( uiResId > 0 )
 		{
-			PIXEL_X const pixXpos  ( PIXEL(script.ScrReadLong()) );
-			PIXEL_Y const pixYpos  ( PIXEL(script.ScrReadLong()) );
-			PIXEL_X const pixWidth ( PIXEL(script.ScrReadLong()) );
-			PIXEL_Y const pixHeight( PIXEL(script.ScrReadLong()) );
+			PixelRect pixRect = ScrReadPixelRect( script );
 			if ( m_pWinManager->IsMoveable( uiResId ) )
 			{
 				HWND const hwnd = m_pWinManager->GetHWND( uiResId );
 				if ( m_pWinManager->IsSizeable( uiResId ) )
 				{
-					BOOL bRes = Util::MoveWindowAbsolute( hwnd, pixXpos, pixYpos, pixWidth, pixHeight, TRUE ); 
+					BOOL bRes = Util::MoveWindowAbsolute( hwnd, pixRect, TRUE ); 
 					assert( bRes );
 				}
 				else
 				{
-     				BOOL bRes = Util::MoveWindowAbsolute( hwnd, pixXpos, pixYpos, TRUE ); 
+     				BOOL bRes = Util::MoveWindowAbsolute( hwnd, pixRect.GetStartPoint(), TRUE ); 
 					DWORD dwErr = GetLastError();
 					assert( bRes );
 				}

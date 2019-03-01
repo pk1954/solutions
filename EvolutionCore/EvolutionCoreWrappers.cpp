@@ -3,9 +3,9 @@
 
 #include "stdafx.h"
 #include "assert.h"
-#include "SCRIPT.H"
+#include "script.h"
 #include "symtab.h"
-#include "EvolutionCore.h"
+#include "UtilityWrappers.h"
 #include "EvolutionCore.h"
 #include "EvolutionTypes.h"
 #include "pixelCoordinates.h"
@@ -14,8 +14,8 @@
 
 //lint -esym( 715, script )  // not referenced
 
-static EvolutionCore      * m_pCore;
-static PixelCoordinates   * m_pPixCoords;
+static EvolutionCore    * m_pCore;
+static PixelCoordinates * m_pPixCoords;
 
 class WrapSetPoi : public Script_Functor
 {

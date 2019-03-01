@@ -1,4 +1,4 @@
-// wrapperHelpers.cpp : wrapper functions for unit tests and scripting of application
+// EvolutionCoreWrapperHelpers.cpp : wrapper functions for unit tests and scripting of application
 //
 
 #include "stdafx.h"
@@ -7,7 +7,6 @@
 #include "ERRHNDL.H"
 #include "SCRIPT.H"
 #include "EvolutionTypes.h"
-#include "pixelCoordinates.h"
 #include "EvolutionCoreWrapperHelpers.h"
 
 GRID_COORD ScrReadGridCoord( Script & script )
@@ -30,16 +29,4 @@ GridRect ScrReadGridRect( Script & script )
     GridPoint gpStart(ScrReadGridPoint( script ));
     GridPoint gpEnd  (ScrReadGridPoint( script ));
     return GridRect( gpStart, gpEnd );
-}
-
-PIXEL ScrReadPixel( Script & script )
-{
-    return PIXEL( script.ScrReadLong() );
-}
-
-PixelPoint ScrReadPixelPoint( Script & script )
-{
-    PIXEL_X const x( ScrReadPixel( script ) );
-    PIXEL_Y const y( ScrReadPixel( script ) );
-    return PixelPoint( x, y );
 }
