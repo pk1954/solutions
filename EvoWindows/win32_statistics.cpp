@@ -201,7 +201,14 @@ void StatisticsWindow::Start
 ) 
 {
     m_pCore = pCore;
-    StartTextWindow( hwndParent, 200_PIXEL_X, 200_PIXEL_Y, 400_PIXEL_X, 545_PIXEL_Y, L"StatisticsWindow", 100, TRUE );
+    StartTextWindow
+	( 
+		hwndParent, 
+		PixelRect{ 200_PIXEL_X, 200_PIXEL_Y, 600_PIXEL_X, 745_PIXEL_Y }, 
+		L"StatisticsWindow", 
+		100, 
+		TRUE 
+	);
 }
 
 StatisticsWindow::~StatisticsWindow( )

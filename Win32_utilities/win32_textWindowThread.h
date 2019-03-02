@@ -13,8 +13,7 @@ public:
 	TextWindowThread
 	(
 		HDC             hDC_Memory,
-		PIXEL_X         pixWidth,
-		PIXEL_Y         pixHeight,
+		PixelRectSize & pixSize,
 		TextWindow    * pTextWindow,
 		wstring const & strName,
 		BOOL            bAsync
@@ -22,7 +21,7 @@ public:
 		m_pTextWindow( pTextWindow ),
 		m_bAsync( bAsync)
 	{ 
-	    m_pTextBuffer = new TextBuffer( hDC_Memory, pixWidth, pixHeight );
+	    m_pTextBuffer = new TextBuffer( hDC_Memory, pixSize );
 		if ( bAsync )
 			StartThread( strName ); 
 	}

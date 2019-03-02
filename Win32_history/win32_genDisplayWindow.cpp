@@ -19,7 +19,8 @@ void GenDisplayWindow::StartGenDisplayWindow( HWND const hwndParent )
         hwndParent,
         CS_OWNDC,
         L"GenDisplayWindow",
-        WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE
+        WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE,
+		nullptr
     );
     Util::MakeLayered( hwnd, TRUE, 0, 100 );
 };

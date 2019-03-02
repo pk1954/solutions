@@ -27,14 +27,11 @@ void TextWindow::TerminateTextWindow()
 
 void TextWindow::StartTextWindow
 (
-    HWND    const hwndParent,
-	PIXEL_X const pixXpos, 
-	PIXEL_Y	const pixYpos, 
-	PIXEL_X	const pixWidth, 
-	PIXEL_Y	const pixHeight,    
-	LPCTSTR const szClass,
-    UINT    const uiAlpha,
-	BOOL    const bAsync
+    HWND      const   hwndParent,
+	PixelRect const & rect,
+	LPCTSTR   const   szClass,
+    UINT      const   uiAlpha,
+	BOOL      const   bAsync
 )
 {
     HWND const hwnd = StartBaseWindow
@@ -43,18 +40,25 @@ void TextWindow::StartTextWindow
         CS_OWNDC | CS_DBLCLKS,
         szClass,
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION,
-		pixXpos, pixYpos, pixWidth, pixHeight
+		& rect
     );
 
-	PixelRectSize rectSize = GetClRectSize( );
-	HDC     const hDC      = GetDC( hwnd );   assert( hDC != nullptr );
+	HDC const hDC = GetDC( hwnd );   assert( hDC != nullptr );
 	m_hDC_Memory = CreateCompatibleDC( hDC );
-	m_hBitmap    = CreateCompatibleBitmap( hDC, rectSize.GetXvalue(), rectSize.GetYvalue() );
+	m_hBitmap    = CreateCompatibleBitmap( hDC );
 	SelectObject( m_hDC_Memory, m_hBitmap );
 	ReleaseDC( hwnd, hDC );
 	Util::MakeLayered( hwnd, TRUE, 0, uiAlpha );
     SetWindowText( hwnd, szClass );
-	m_pTextWindowThread = new TextWindowThread( m_hDC_Memory, pixWidth, pixHeight, this, szClass, bAsync );
+
+	m_pTextWindowThread = new TextWindowThread
+	( 
+		m_hDC_Memory, 
+		PixelRectSize{ rect.GetSize() }, 
+		this, 
+		szClass, 
+		bAsync 
+	);
 }
 
 void TextWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )

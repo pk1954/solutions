@@ -53,6 +53,12 @@ public:
     HDC  BeginPaint( LPPAINTSTRUCT lpPaint ) const { return ::BeginPaint( m_hwnd, lpPaint ); }
     BOOL EndPaint  ( LPPAINTSTRUCT lpPaint ) const { return ::EndPaint  ( m_hwnd, lpPaint ); }
     
+	HBITMAP const CreateCompatibleBitmap( HDC const hDC )
+	{
+		PixelRectSize rectSize = GetClRectSize( );
+		return ::CreateCompatibleBitmap( hDC, rectSize.GetXvalue(), rectSize.GetYvalue() );
+	}
+	
 	LRESULT const PostMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
     {
         return ::PostMessage( m_hwnd, msg, wParam, lParam );

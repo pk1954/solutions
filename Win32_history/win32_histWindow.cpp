@@ -32,7 +32,8 @@ void HistWindow::Start
         hwndParent,
         CS_OWNDC | CS_DBLCLKS,
         L"ClassHistWindow",
-        WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE
+        WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
+		nullptr
     );
 
     Util::AddWindowStyle( hwndHistory, WS_EX_STATICEDGE );
@@ -106,18 +107,18 @@ void HistWindow::gotoNewGeneration( LPARAM const lParam )
 
 void HistWindow::dispGenerationWindow( ) const
 {
-	PIXEL_X    const iGenDispWidth { 50_PIXEL };
-    PIXEL_Y    const iGenDispHeight{ 20_PIXEL };
-    PIXEL_X    const pixClientWidth{ GetClientWindowWidth( ) };
-    PixelRect  const pixRectGen    { getGenerationRect( m_genSelected ) };      // position is relative to client area
-	PixelPoint const ptClientPos   { Client2Screen( PixelPoint::ZERO_VAL() ) }; // position of client area origin in screen coordinates
-    PIXEL_Y    const pixYpos       { ptClientPos.GetY() - iGenDispHeight };
-    PIXEL_X          pixXpos       { ( pixRectGen.GetLeft() + pixRectGen.GetRight() - iGenDispWidth ) / 2 + ptClientPos.GetX() };
+	PIXEL_X    const pixGenDispWidth { 50_PIXEL };
+    PIXEL_Y    const pixGenDispHeight{ 20_PIXEL };
+    PIXEL_X    const pixClientWidth  { GetClientWindowWidth( ) };
+    PixelRect  const pixRectGen      { getGenerationRect( m_genSelected ) };      // position is relative to client area
+	PixelPoint const ptClientPos     { Client2Screen( PixelPoint::ZERO_VAL() ) }; // position of client area origin in screen coordinates
+    PIXEL_Y    const pixYpos         { ptClientPos.GetY() - pixGenDispHeight };
+    PIXEL_X          pixXpos         { ( pixRectGen.GetLeft() + pixRectGen.GetRight() - pixGenDispWidth ) / 2 + ptClientPos.GetX() };
 
-    pixXpos = max( pixXpos, ptClientPos.GetX() );                                   // do not leave client area on left
-    pixXpos = min( pixXpos, ptClientPos.GetX() + pixClientWidth - iGenDispWidth );  // or right side
+    pixXpos = max( pixXpos, ptClientPos.GetX() );                                     // do not leave client area on left
+    pixXpos = min( pixXpos, ptClientPos.GetX() + pixClientWidth - pixGenDispWidth );  // or right side
 
-    m_pGenDisplay->Move( pixXpos, pixYpos, iGenDispWidth, iGenDispHeight, FALSE );
+    m_pGenDisplay->Move( pixXpos, pixYpos, pixGenDispWidth, pixGenDispHeight, FALSE );
     m_pGenDisplay->DisplayGenerationBelowCursor( m_genSelected );
     m_pGenDisplay->Show( TRUE );
 }

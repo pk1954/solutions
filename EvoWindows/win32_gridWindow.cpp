@@ -68,7 +68,8 @@ void GridWindow::Start
         hwndParent,
         CS_OWNDC | CS_DBLCLKS,
         L"ClassGridWindow",
-        dwStyle
+        dwStyle,
+		nullptr
     );
 
     m_pDrawFrame = new DrawFrame

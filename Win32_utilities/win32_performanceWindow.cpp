@@ -19,7 +19,14 @@ PerformanceWindow::PerformanceWindow( ) :
 
 void PerformanceWindow::Start( HWND const hwndParent, UINT const uiAlpha )
 {
-    StartTextWindow( hwndParent, 0_PIXEL_X, 0_PIXEL_Y, 300_PIXEL_X, 130_PIXEL_Y, L"PerformanceWindow", uiAlpha, TRUE );
+    StartTextWindow
+	( 
+		hwndParent, 
+		PixelRect { 0_PIXEL_X, 0_PIXEL_Y, 300_PIXEL_X, 130_PIXEL_Y }, 
+		L"PerformanceWindow", 
+		uiAlpha, 
+		TRUE 
+	);
 }
 
 DWORD PerformanceWindow::calcFrequency( DWORD dwCount, DWORD dwMicroSecs )

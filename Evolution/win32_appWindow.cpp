@@ -93,8 +93,9 @@ void AppWindow::Start(  )
 		nullptr, 
 		CS_HREDRAW | CS_VREDRAW, 
 		L"ClassAppWindow", 
-		WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN
-);
+		WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,
+		nullptr
+	);
 
     SendMessage( WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
     SendMessage( WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL     ) ) );

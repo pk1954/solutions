@@ -19,11 +19,9 @@ constexpr TEXT_POSITION operator"" _TEXT_POSITION( unsigned long long ull )
 class TextBuffer
 {
 public:
-    TextBuffer( HDC const, PIXEL_X const, PIXEL_Y const );
+    TextBuffer( HDC const, PixelRectSize const & );
 
-	virtual ~TextBuffer( ) 
-	{
-	}
+	virtual ~TextBuffer( ) {}
 
 	void StartPainting( );
 
@@ -61,8 +59,7 @@ private:
 
     std::wostringstream m_wBuffer;
     HDC                 m_hDC;
-	PIXEL_X             m_pixBufferWidth;
-	PIXEL_Y      	    m_pixBufferHeight;
+	PixelRectSize       m_pixSize;
 	PIXEL               m_cyChar;
     PIXEL               m_cxChar;
     PIXEL               m_pixHorizontalPos;

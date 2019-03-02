@@ -15,14 +15,11 @@ public:
 
     HWND StartBaseWindow
 	( 
-		HWND    const hwndParent,
-		UINT    const uiClassStyle,
-		LPCTSTR const szClass,
-		DWORD   const dwWindowStyle,
-		PIXEL_X	const xPos   = PIXEL_X(PIXEL(CW_USEDEFAULT)), 
-		PIXEL_Y	const yPos 	 = PIXEL_Y(PIXEL(CW_USEDEFAULT)), 
-		PIXEL_X	const width  = PIXEL_X(PIXEL(CW_USEDEFAULT)),
-		PIXEL_Y	const height = PIXEL_Y(PIXEL(CW_USEDEFAULT))
+		HWND      const, 
+		UINT      const, 
+		LPCTSTR   const, 
+		DWORD     const, 
+		PixelRect const *
 	);
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const ) {}

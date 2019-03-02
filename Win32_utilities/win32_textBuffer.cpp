@@ -11,15 +11,9 @@
 using std::setprecision;
 using std::setw;
 
-TextBuffer::TextBuffer
-( 
-	HDC     const hdc,
-	PIXEL_X const pixWidth, 
-	PIXEL_Y const pixHeight
-) : 
+TextBuffer::TextBuffer( HDC const hdc, PixelRectSize const & size ) : 
     m_hDC( hdc ),
-	m_pixBufferWidth( pixWidth ),
-	m_pixBufferHeight( pixHeight )
+	m_pixSize( size )
 {
     TEXTMETRIC textMetric;
     (void)GetTextMetrics( m_hDC, &textMetric );
@@ -37,7 +31,7 @@ void TextBuffer::StartPainting( )
     COLORREF const CLR_BACK   = RGB( 200, 200, 200 );
 
     SetBkColor( m_hDC, CLR_BACK );
-	Util::FastFill( m_hDC, PixelRect{ 0_PIXEL_X, 0_PIXEL_Y, m_pixBufferWidth, m_pixBufferHeight } );
+	Util::FastFill( m_hDC, PixelRect{ PixelPoint::ZERO_VAL(), m_pixSize } );
     setHorizontalPos( 1_TEXT_POSITION );
     m_pixVerticalPos = TOP_MARGIN;
     SetTextAlign( m_hDC, TA_RIGHT );

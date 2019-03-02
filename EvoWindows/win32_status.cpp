@@ -197,6 +197,7 @@ void StatusBar::Start
     m_pixBorderY      = PIXEL_Y(PIXEL(GetSystemMetrics( SM_CYSIZEFRAME )));
     m_pixClientHeight = GetHeight( ) - m_pixBorderY;
 
+    m_pixPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_pixBorderX + 10_PIXEL_X;
     createModeControl( );
 
     m_pixPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_pixBorderX + 10_PIXEL_X;
