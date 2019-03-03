@@ -28,7 +28,7 @@ SOURCE_TYPE ClipToMinMax(SOURCE_TYPE const val, SOURCE_TYPE const min, SOURCE_TY
 }
 
 template<typename SOURCE_TYPE>
-short CastToShort(SOURCE_TYPE const value ) 
+constexpr const short CastToShort(SOURCE_TYPE const value ) 
 {
 	AssertShort( value );
 	return static_cast<short>( value );
@@ -42,28 +42,28 @@ constexpr const unsigned short CastToUnsignedShort(SOURCE_TYPE const value )
 }
 
 template<typename SOURCE_TYPE>
-int CastToInt(SOURCE_TYPE const value ) 
+constexpr const int CastToInt(SOURCE_TYPE const value ) 
 {
 	AssertInt( value );
 	return static_cast<int>( value );
 }
 
 template<typename SOURCE_TYPE>
-unsigned int CastToUnsignedInt(SOURCE_TYPE const value ) 
+constexpr const unsigned int CastToUnsignedInt(SOURCE_TYPE const value ) 
 {
 	AssertUnsignedInt( value );
 	return static_cast<unsigned int>( value );
 }
 
 template<typename SOURCE_TYPE>
-int CastToLong(SOURCE_TYPE const value ) 
+constexpr const int CastToLong(SOURCE_TYPE const value ) 
 {
 	AssertLong( value );
 	return static_cast<long>( value );
 }
 
 template<typename SOURCE_TYPE>
-unsigned int CastToUnsignedLong(SOURCE_TYPE const value ) 
+constexpr const unsigned int CastToUnsignedLong(SOURCE_TYPE const value ) 
 {
 	AssertUnsignedLong( value );
 	return static_cast<unsigned long>( value );

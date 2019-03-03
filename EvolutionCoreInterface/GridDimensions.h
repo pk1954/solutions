@@ -13,14 +13,14 @@
 using std::min;
 using std::max;
 
-static constexpr GRID_X const GRID_WIDTH { 200_GRID_COORD };  // the dimension of the GRID in x direction
-static constexpr GRID_Y const GRID_HEIGHT{ 100_GRID_COORD };  // the dimension of the GRID in y direction
+static constexpr GRID_X const GRID_WIDTH { 200_GRID_X };  // the dimension of the GRID in x direction
+static constexpr GRID_Y const GRID_HEIGHT{ 100_GRID_Y };  // the dimension of the GRID in y direction
 
-static constexpr GRID_X const GRID_X_MIN { 0_GRID_COORD };
-static constexpr GRID_Y const GRID_Y_MIN { 0_GRID_COORD };
+static constexpr GRID_X const GRID_X_MIN { 0_GRID_X };
+static constexpr GRID_Y const GRID_Y_MIN { 0_GRID_Y };
 
-static GRID_X const GRID_X_MAX { GRID_WIDTH .GetValue() - 1_GRID_COORD };
-static GRID_Y const GRID_Y_MAX { GRID_HEIGHT.GetValue() - 1_GRID_COORD };
+static GRID_X const GRID_X_MAX { GRID_WIDTH  - 1_GRID_X };
+static GRID_Y const GRID_Y_MAX { GRID_HEIGHT - 1_GRID_Y };
 
 static constexpr int const GRID_WIDTH_VAL  { GRID_WIDTH .GetBaseValue() }; // abbreviations for e.g. array dims
 static constexpr int const GRID_HEIGHT_VAL { GRID_HEIGHT.GetBaseValue() };
