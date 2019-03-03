@@ -48,11 +48,11 @@ void Config::SetDefaultConfiguration( )
    DEF_CONFIG_ID( Config::tId::energyConsumptionextraCapacity, 0 );  
    // enable/disable activities         
    DEF_CONFIG_ID( Config::tId::moveEnabled,      1 );  
-   DEF_CONFIG_ID( Config::tId::cloneEnabled,     0 );  
-   DEF_CONFIG_ID( Config::tId::marryEnabled,     0 );  
-   DEF_CONFIG_ID( Config::tId::interactEnabled,  0 );  
-   DEF_CONFIG_ID( Config::tId::fertilizeEnabled, 0 );  
-   DEF_CONFIG_ID( Config::tId::passOnEnabled,    0 );  
+   DEF_CONFIG_ID( Config::tId::cloneEnabled,     1 );  
+   DEF_CONFIG_ID( Config::tId::marryEnabled,     1 );  
+   DEF_CONFIG_ID( Config::tId::interactEnabled,  1 );  
+   DEF_CONFIG_ID( Config::tId::fertilizeEnabled, 1 );  
+   DEF_CONFIG_ID( Config::tId::passOnEnabled,    1 );  
    DEF_CONFIG_ID( Config::tId::eatEnabled,       1 );  
    // thresholds for activities         
    DEF_CONFIG_ID( Config::tId::thresholdClone,     500 );  
