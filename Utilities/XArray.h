@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <functional>
 
 template <typename T, size_t SIZE>
 void operator/= ( std::array<T, SIZE> &a, T const op )
@@ -106,9 +107,18 @@ public:
     }
 
     T & General( ) { return m_tGeneral; }
-    T & operator[] ( unsigned int uiIndex )  { return m_tArray[ uiIndex ]; }
+    T & operator[] ( unsigned int uiIndex ) { return m_tArray[ uiIndex ]; }
 
- private:
+	void Apply2All( std::function< void ( T const & ) > const & func )
+	{
+        for ( auto & elem : m_tArray )
+		{
+            func( elem );
+		}
+        func( m_tGeneral );
+	}
+
+private:
     T                      m_tGeneral;
     std::array < T, SIZE > m_tArray;
 };

@@ -42,7 +42,7 @@ public:
     void PostSetBrushShape( tShape );
 	void PostSetBrushManipulator( tManipulator const );
     void PostSetBrushIntensity( LONG const );
-    void PostSetColor( COLORREF const, tColorObject const, tStrategyId const );
+    void PostSetColor( COLORREF const, tColorObject const, Strategy::Id const );
     void PostSetBrushRadius( GRID_COORD const );
     void PostRefresh( LPARAM const );
     void PostReset( BOOL );

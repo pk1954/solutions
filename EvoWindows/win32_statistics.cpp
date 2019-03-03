@@ -10,38 +10,25 @@
 #include "win32_statistics.h"
 #include "win32_stopwatch.h"
 
-class GeneStat: public XArray< unsigned int, NR_STRATEGIES  >
+class GeneStat: public XArray< unsigned int, Strategy::NR_STRATEGIES  >
 {
 public:
 
     void printGeneLine( TextBuffer & textBuf, wchar_t const * const data )
     {
         textBuf.nextLine( data );
-
-        for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
-            textBuf.printNumber( ( *this )[ uiStrategy ] );
-
-        textBuf.printNumber( General( ) );
+ 		Apply2All( [&](unsigned int elem) { textBuf.printNumber( elem ); } );
     };
 };
 
-class FloatStat : public XArray< float, NR_STRATEGIES  >
+class FloatStat : public XArray< float, Strategy::NR_STRATEGIES >
 {
 public:
 
     void printFloatLine( TextBuffer & textBuf, wchar_t const * const data )
     {
 		textBuf.nextLine( data );
-
-        for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
-        {
-            if ( ( *this )[ uiStrategy ] > 0 )
-                textBuf.printFloat( ( *this )[ uiStrategy ] );
-            else
-                textBuf.printString( L"-" );
-        }
-
-        textBuf.printFloat( ( *this ).General( ) );
+ 		Apply2All( [&](float elem) { textBuf.printFloat( elem ); } );
     };
 };
 
@@ -67,42 +54,48 @@ public:
         for ( auto & floatStat : m_axaGenePoolStrategy )
             Scale( floatStat.General( ), fSum );
             
-        for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
-        {
-            float fSum = 0;
-            for ( auto & floatStat : m_axaGenePoolStrategy )
-                fSum += floatStat[ uiStrategy ];
+		Strategy::Apply2All
+		( 
+			[&]( unsigned int uiStrategy )
+			{
+				float fSum = 0;
+				for ( auto & floatStat : m_axaGenePoolStrategy )
+					fSum += floatStat[ uiStrategy ];
 
-            for ( auto & floatStat : m_axaGenePoolStrategy )
-                Scale( floatStat[ uiStrategy ], fSum );
-        }
+				for ( auto & floatStat : m_axaGenePoolStrategy )
+					Scale( floatStat[ uiStrategy ], fSum );
+			}
+		);
 
-        for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
-            DivNonZero( m_auiMemSize[ uiStrategy ], m_gsCounter[ uiStrategy ] );
+		Strategy::Apply2All
+		( 
+			[&]( unsigned int uiStrategy )
+			{ DivNonZero( m_auiMemSize[ uiStrategy ], m_gsCounter[ uiStrategy ] ); }
+		);
     };
 
-    void add2option( tStrategyId const s, unsigned int const uiAction, short const sValue )
+    void add2option( Strategy::Id const s, unsigned int const uiAction, short const sValue )
     {
         m_axaGenePoolStrategy[ uiAction ].Add( static_cast<int>( s ), static_cast<float>( sValue ) );
     }
 
-    void add2Gene( tStrategyId const s, unsigned int const uiGene, long const lGenoType )
+    void add2Gene( Strategy::Id const s, unsigned int const uiGene, long const lGenoType )
     {
         assert( lGenoType >= 0 );
         m_aGeneStat[ uiGene ].Add( static_cast<int>( s ), static_cast<unsigned int>( lGenoType ) );
     }
 
-    void addMemSize( tStrategyId const s, unsigned int const uiMemSize )
+    void addMemSize( Strategy::Id const s, unsigned int const uiMemSize )
     {
         m_auiMemSize[ static_cast<int>( s ) ] += uiMemSize;
     }
 
-    void addAge( tStrategyId const s, EVO_GENERATION genAge )
+    void addAge( Strategy::Id const s, EVO_GENERATION genAge )
     {
         m_gsAverageAge.Add( static_cast<int>( s ), genAge.GetValue() );
     }
 
-    void incCounter( tStrategyId const s )
+    void incCounter( Strategy::Id const s )
     {
         m_gsCounter.Add( static_cast<int>( s ), 1 );
     }
@@ -117,32 +110,35 @@ public:
         m_gsAverageAge.printGeneLine( textBuf, data );
     }
 
-    void printCounters( TextBuffer & textBuf, EvolutionCore const * pCore, tAction const action )
+    void printCounters( TextBuffer & textBuf, EvolutionCore const * pCore, Action::Id const action )
     {
 		int iCounterSum = 0;
-		textBuf.nextLine( GetActionTypeName( action ) );
-		for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
-		{
-			int iCounter = pCore->GetActionCounter( uiStrategy, action );
-			textBuf.printNumber( iCounter );
-			iCounterSum += iCounter;
-		}
+		textBuf.nextLine(  Action::GetName( action ) );
+		Strategy::Apply2All
+		( 
+			[&]( Strategy::Id strat )
+			{
+				int iCounter = pCore->GetActionCounter( strat, action );
+				textBuf.printNumber( iCounter );
+				iCounterSum += iCounter;
+			}
+		);
 		textBuf.printNumber( iCounterSum );
     }
 
     void printNrPassOn( TextBuffer & textBuf, EvolutionCore const * pCore )
     {
-		if ( EvolutionCore::IsEnabled( tAction::passOn ) )
+		if ( EvolutionCore::IsEnabled( Action::Id::passOn ) )
 		{
-			printCounters( textBuf, pCore, tAction::passOn );
+			printCounters( textBuf, pCore, Action::Id::passOn );
 		}
     }
 
     void printGeneStat( TextBuffer & textBuf, EvolutionCore const * pCore )
     {
-        for ( unsigned int uiAction = 0; uiAction < NR_ACTION_GENES; ++uiAction )
+        for ( unsigned int uiAction = 0; uiAction < Action::NR_ACTION_GENES; ++uiAction )
 		{
-			tAction action = static_cast<tAction>( uiAction );
+			Action::Id action = static_cast<Action::Id>( uiAction );
 			if ( EvolutionCore::IsEnabled( action ) )
 			{
 				printCounters( textBuf, pCore, action );
@@ -162,11 +158,14 @@ public:
     {
         FloatStat fsAvFood;
 
-		unsigned int uiEat      = static_cast<unsigned int>( tAction::eat );
+		unsigned int uiEat      = static_cast<unsigned int>( Action::Id::eat );
 		unsigned int uiAppetite = static_cast<unsigned int>(tGeneType::appetite);
 
-        for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
-            fsAvFood[ uiStrategy ] = m_aGeneStat[ uiAppetite ][ uiStrategy ] * m_axaGenePoolStrategy[ uiEat ][ uiStrategy ] / 100;
+		Strategy::Apply2All
+		( 
+			[&]( unsigned int uiStrategy )
+			{ fsAvFood[ uiStrategy ] = m_aGeneStat[ uiAppetite ][ uiStrategy ] * m_axaGenePoolStrategy[ uiEat ][ uiStrategy ] / 100; }
+		);
 
         fsAvFood.General( ) = m_aGeneStat[ uiAppetite ].General( ) * m_axaGenePoolStrategy[ uiEat ].General( ) / 100 ;
 
@@ -185,9 +184,9 @@ private:
     GeneStat m_gsCounter;          // counter for strategies and sum counter 
     GeneStat m_gsAverageAge;       // average age of all individuals
 
-    std::array < FloatStat,    NR_ACTION_GENES > m_axaGenePoolStrategy;
-    std::array < unsigned int, NR_STRATEGIES   > m_auiMemSize;
-    std::array < GeneStat,     NR_GENES        > m_aGeneStat;
+    std::array < FloatStat,      Action::NR_ACTION_GENES > m_axaGenePoolStrategy;
+    std::array < unsigned int, Strategy::NR_STRATEGIES   > m_auiMemSize;
+    std::array < GeneStat,               NR_GENES        > m_aGeneStat;
 };
 
 StatisticsWindow::StatisticsWindow( ):
@@ -231,12 +230,12 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 		{
 			if ( m_pCore->IsAlive( gp ) )
 			{
-				tStrategyId const s = m_pCore->GetStrategyId( gp );
-				if ( s != tStrategyId::empty ) // can happen due to race conditions 
+				Strategy::Id const s = m_pCore->GetStrategyId( gp );
+				if ( s != Strategy::Id::empty ) // can happen due to race conditions 
 				{
-					for ( unsigned int uiAction = 0; uiAction < NR_ACTION_GENES; ++uiAction )
-						if ( EvolutionCore::IsEnabled( static_cast<tAction>( uiAction ) ) )
-							genesStat.add2option( s, uiAction, m_pCore->GetDistr( gp, static_cast<tAction>( uiAction ) ) );
+					for ( unsigned int uiAction = 0; uiAction < Action::NR_ACTION_GENES; ++uiAction )
+						if ( EvolutionCore::IsEnabled( static_cast<Action::Id>( uiAction ) ) )
+							genesStat.add2option( s, uiAction, m_pCore->GetDistr( gp, static_cast<Action::Id>( uiAction ) ) );
 
 					for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
 						genesStat.add2Gene( s, uiGene, m_pCore->GetGenotype( gp, static_cast<tGeneType>( uiGene ) ) );
@@ -254,9 +253,12 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 
     // start printing
 
-    textBuf.setHorizontalPos( 2_TEXT_POSITION );                                 // header
-    for ( unsigned int uiStrategy = 0; uiStrategy < NR_STRATEGIES; ++uiStrategy )
-        textBuf.printString( GetStrategyName( (tStrategyId)uiStrategy ) );
+    textBuf.setHorizontalPos( 2_TEXT_POSITION );          // header
+	Strategy::Apply2All
+	( 
+		[&]( Strategy::Id const & id ) 
+		{ textBuf.printString( Strategy::GetName( id ) ); }
+	);
     textBuf.printString( L"all" );                               
 
     genesStat.printCounter ( textBuf, L"#individuals" );  // number of individuals
@@ -264,7 +266,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 	genesStat.printNrPassOn( textBuf, m_pCore );
     genesStat.printGeneStat( textBuf, m_pCore );          // percentage numbers for options
 
-	if ( EvolutionCore::IsEnabled( tAction::eat ) )
+	if ( EvolutionCore::IsEnabled( Action::Id::eat ) )
 		genesStat.printAvFood( textBuf, L"av. food" );  // average food consumption 
 
 	genesStat.printMemory( textBuf, L"memory" );        // memory size counters
@@ -275,7 +277,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
     textBuf.setHorizontalPos( 4_TEXT_POSITION );
     textBuf.printNumber( EvolutionCore::GetMaxPartnerMemory( ) );
 
-	if ( EvolutionCore::IsEnabled( tAction::interact ) )
+	if ( EvolutionCore::IsEnabled( Action::Id::interact ) )
 	{
 		// nr of interactions with known culprits (Tit4Tat only)
 
@@ -290,7 +292,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 		textBuf.printNumber( EvolutionCore::GetNrInteractionsWithUnknownCulprit( ) );
 	}
 
-	if ( EvolutionCore::IsEnabled( tAction::eat ) )
+	if ( EvolutionCore::IsEnabled( Action::Id::eat ) )
 	{
 		// average food growth
 

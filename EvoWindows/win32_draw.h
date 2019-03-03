@@ -43,7 +43,7 @@ public:
     void SetStripMode( tBoolOp );
 	bool SetHighlightPos( PixelPoint const );
 	void HighlightShape( Shape const *, GridPoint const );
-	void CallStrategyColorDialog( HWND const, tStrategyId const );
+	void CallStrategyColorDialog( HWND const, Strategy::Id const );
 	void CallHighlightColorDialog( HWND const );
 	void CallSelectionColorDialog( HWND const );
 	void AddContextMenuEntries( HMENU const, POINT const );

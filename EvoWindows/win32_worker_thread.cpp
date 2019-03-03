@@ -177,7 +177,7 @@ void WorkThread::dispatch( MSG const msg  )
 		break;
 
 	case THREAD_MSG_SET_STRATEGY_COLOR:
-		m_pColorManager->SetColor( static_cast<COLORREF>(msg.lParam), tColorObject::individual, static_cast<tStrategyId>(msg.wParam) );
+		m_pColorManager->SetColor( static_cast<COLORREF>(msg.lParam), tColorObject::individual, static_cast<Strategy::Id>(msg.wParam) );
 		break;
 
 	case THREAD_MSG_SET_SELECTION_COLOR:

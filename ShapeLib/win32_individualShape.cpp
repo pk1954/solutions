@@ -55,7 +55,7 @@ Shape const * IndividualShape::FindShape
 	if ( pShapeRes != nullptr )
 		return pShapeRes;
 
-	if ( m_textDisplay.GetStrategyId( gp ) == tStrategyId::tit4tat )
+	if ( m_textDisplay.GetStrategyId( gp ) == Strategy::Id::tit4tat )
 	{
 		pShapeRes = m_rightColumn.FindShape( pnt, gp );
 		if ( pShapeRes != nullptr )

@@ -179,9 +179,9 @@ void DefineCoreWrapperFunctions( EvolutionCore * pCore )
     DEF_FUNC( SetBrushIntensity );
     DEF_FUNC( SetBrushMode );
 
-	DEF_ULONG_CONST( tStrategyId::defect );
-    DEF_ULONG_CONST( tStrategyId::cooperate );
-    DEF_ULONG_CONST( tStrategyId::tit4tat );
+	DEF_ULONG_CONST( Strategy::Id::defect );
+    DEF_ULONG_CONST( Strategy::Id::cooperate );
+    DEF_ULONG_CONST( Strategy::Id::tit4tat );
 
     DEF_ULONG_CONST( tShape::Rect );
     DEF_ULONG_CONST( tShape::Circle );

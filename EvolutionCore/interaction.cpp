@@ -40,8 +40,8 @@ void INTERACTION::Interact( Individual &IndA, Individual &IndB )
 
 	if /*lint -e774 */ ( DUMP )
 	{
-		std::cout << IndA.GetId().GetValue() << "[" << GetStrategyName( IndA.GetStrategyId() ) << "]/";
-		std::cout << IndB.GetId().GetValue() << "[" << GetStrategyName( IndB.GetStrategyId() ) << "]  "; 
+		std::cout << IndA.GetId().GetValue() << "[" << Strategy::GetName( IndA.GetStrategyId() ) << "]/";
+		std::cout << IndB.GetId().GetValue() << "[" << Strategy::GetName( IndB.GetStrategyId() ) << "]  "; 
 		std::cout << resA << "/" << resB << "  ";
 		std::cout << rewards.first << "/" << rewards.second << "  ";
 		std::cout << IndA.GetEnergy() << "/" << IndB.GetEnergy();

@@ -73,7 +73,10 @@ void TextBuffer::printNumber( unsigned int data )
 
 void TextBuffer::printFloat( float data )
 {
-    m_wBuffer << setprecision(3) << data << L"%";
+	if ( data > 0 )
+		m_wBuffer << setprecision(3) << data << L"%";
+	else 
+		m_wBuffer << L"-";
     printBuffer();
 }
 

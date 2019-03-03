@@ -13,7 +13,7 @@ std::wostream & operator << ( std::wostream & out, PlannedActivity const & plan 
 {
 //lint -e747  Significant prototype coercion with setw
 
-   out << L" action=" << setw(8) << GetActionTypeName( plan.GetActionType( ) );
+   out << L" action=" << setw(8) <<  Action::GetName( plan.GetActionType( ) );
 
    if ( plan.GetTarget( ).IsNull( ) )
        out << setw( 15 ) << L" ";

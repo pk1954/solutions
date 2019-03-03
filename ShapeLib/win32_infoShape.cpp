@@ -24,7 +24,7 @@ void InfoShape::FillBuffer( GridPoint const gp )
 		if ( (gp == plan.GetActor( )) || (gp == plan.GetPartner( )) )
 		{
 			buffer << (( gp == plan.GetActor( ) ) ? L"** ACTOR **" : L"** PARTNER **") << endl;
-			buffer << L"** "  << GetActionTypeName( plan.GetActionType( ) ) << L" **"  << endl;
+			buffer << L"** "  <<  Action::GetName( plan.GetActionType( ) ) << L" **"  << endl;
 			buffer << L"BaseCons: " << plan.GetBaseConsumption( )                      << endl;
 		}
 	}

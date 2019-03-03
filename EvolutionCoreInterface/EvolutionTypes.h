@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <functional>
 #include "debug.h"
 #include "NamedType.h"
 
@@ -12,50 +13,70 @@ using MEM_INDEX      = NamedType< unsigned short, struct MEM_INDEX_Parameter >;
 
 static int const IMEMSIZE_MAX = 9;
 
-enum class tStrategyId : unsigned short
-{ 
-    defect, 
-    cooperate, 
-    tit4tat, 
-//	friedman, 
-    nrOfStrategies, 
-    random,         // Not really a strategy. Used to signal random fill
-    empty,          // Not really a strategy. Used to mark empty slot
-    all             // Not really a strategy. Used to mark all strategies
-};
+class StrategyData;
 
-static const int NR_STRATEGIES = static_cast<int>( tStrategyId::nrOfStrategies );
-
-enum class tShape : unsigned short
+class Strategy
 {
-    Circle,
-    Rect,
-	Grid
+public:
+	enum class Id : unsigned short
+	{ 
+		defect, 
+		cooperate, 
+		tit4tat, 
+	//	friedman, 
+		nrOfStrategies, 
+		random,         // Not really a strategy. Used to signal random fill
+		empty,          // Not really a strategy. Used to mark empty slot
+		all             // Not really a strategy. Used to mark all strategies
+	};
+
+	static const int NR_STRATEGIES = static_cast<int>( Id::nrOfStrategies );
+
+	virtual Id   GetStrategyId( )                                         const = 0;
+    virtual bool InteractWith( StrategyData &, IND_ID const )             const = 0;
+    virtual void Remember    ( StrategyData &, IND_ID const, bool const ) const = 0;
+
+	static wchar_t const * const GetName( Strategy::Id const );
+
+	static void Apply2All( std::function<void(unsigned short const &)> const & func )
+	{
+        for ( unsigned short usStrategy = 0; usStrategy < Strategy::NR_STRATEGIES; ++usStrategy )
+		{
+            func( usStrategy );
+		}
+	}
+
+	static void Apply2All( std::function<void(Id const &)> const & func )
+	{
+        for ( unsigned short usStrategy = 0; usStrategy < Strategy::NR_STRATEGIES; ++usStrategy )
+		{
+            func( static_cast<Strategy::Id>(usStrategy) );
+		}
+	}
 };
 
-enum class tOrigin : unsigned short
+class Action
 {
-    editor,
-    cloning,
-    marriage
-};
+public:
+	enum class Id : unsigned short
+	{ 
+		move, 
+		clone,
+		marry,
+		interact, 
+		eat, 
+		fertilize,
+		nrOfActionGenes,
+		passOn = nrOfActionGenes,
+		nrOfActions,
+		undefined = nrOfActions
+	};
 
-enum class tAction : unsigned short
-{ 
-    move, 
-    clone,
-    marry,
-    interact, 
-    eat, 
-    fertilize,
-	nrOfActionGenes,
-	passOn = nrOfActionGenes,
-    nrOfActions,
-    undefined = nrOfActions
-};
+	static const int NR_ACTIONS      = static_cast<int>( Action::Id::nrOfActions );
+	static const int NR_ACTION_GENES = static_cast<int>( Action::Id::nrOfActionGenes );
 
-static const int NR_ACTIONS      = static_cast<int>( tAction::nrOfActions );
-static const int NR_ACTION_GENES = static_cast<int>( tAction::nrOfActionGenes );
+	static wchar_t const * const GetName( Action::Id const );
+};
 
 enum class tGeneType : unsigned short
 {
@@ -106,14 +127,26 @@ enum class tColorObject : unsigned short
 	highlight
 };
 
-wchar_t const * const GetStrategyName      ( tStrategyId  const );
+enum class tShape : unsigned short
+{
+    Circle,
+    Rect,
+	Grid
+};
+
+enum class tOrigin : unsigned short
+{
+    editor,
+    cloning,
+    marriage
+};
+
 wchar_t const * const GetShapeName         ( tShape       const );
 wchar_t const * const GetOriginName        ( tOrigin      const );
-wchar_t const * const GetActionTypeName    ( tAction      const );
 wchar_t const * const GetGeneName          ( tGeneType    const );
 wchar_t const * const GetBrushModeName     ( tBrushMode   const );
 wchar_t const * const GetBrushModeNameShort( tBrushMode   const );
 wchar_t const * const GetManipulatorName   ( tManipulator const );
 wchar_t const * const GetColorObjectName   ( tColorObject const );
 
-tAction const GetRelatedAction( tGeneType const );
+Action::Id const GetRelatedAction( tGeneType const );

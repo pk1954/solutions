@@ -18,11 +18,11 @@ static EmptyStrategy   StratNull;
 short Individual::m_sStdEnergyCapacity;
 short Individual::m_sInitialEnergy;
 
-const std::unordered_map< tStrategyId, Strategy * const > Individual::m_apStrat =
+const std::unordered_map< Strategy::Id, Strategy * const > Individual::m_apStrat =
 { 
-	{ tStrategyId::defect,    &StratD },
-	{ tStrategyId::cooperate, &StratC },
-	{ tStrategyId::tit4tat,   &StratT }
+	{ Strategy::Id::defect,    &StratD },
+	{ Strategy::Id::cooperate, &StratC },
+	{ Strategy::Id::tit4tat,   &StratT }
 };
 
 void Individual::InitClass( )
@@ -53,9 +53,9 @@ void Individual::ResetIndividual( )
 
 void Individual::Create
 ( 
-    IND_ID         const id,
-    EVO_GENERATION const genBirth,
-    tStrategyId    const strategyId
+    IND_ID                const id,
+    EVO_GENERATION        const genBirth,
+    Strategy::Id const strategyId
 )
 {
     m_pStrategy  = m_apStrat.at( strategyId );
@@ -85,7 +85,7 @@ void Individual::Clone
     m_origin    = tOrigin::cloning;
     m_sCapacity = indParent.m_sCapacity;
     m_pStrategy = indParent.m_pStrategy;
-    m_at        = tAction::undefined;
+    m_at        = Action::Id::undefined;
     m_strat.SetMemorySize( indParent.m_strat.GetMemSize( ) );  // clears memory. Experience not inheritable.
     m_genome.Mutate( sMutationRate, random );
 }
@@ -116,7 +116,7 @@ void Individual::Breed
     m_id        =          id;
     m_genBirth  =          genBirth;
     m_origin    =          tOrigin::marriage;
-    m_at        =          tAction::undefined;
+    m_at        =          Action::Id::undefined;
     m_sCapacity =          selectParent( random, indParentA, indParentB ).m_sCapacity;
     m_pStrategy =          selectParent( random, indParentA, indParentB ).m_pStrategy;
     m_strat.SetMemorySize( selectParent( random, indParentA, indParentB ).GetMemSize( ) );  // clears memory. Experience not inheritable.

@@ -45,7 +45,7 @@ public:
 
     void IncGenNr( ) { ++m_genEvo; }
 
-    void EditSetStrategy( GridPoint const, short const, tStrategyId );
+    void EditSetStrategy( GridPoint const, short const, Strategy::Id );
 
     // GridPoint list operations
 
@@ -94,13 +94,16 @@ public:
 
 	unsigned int GetActionCounter
 	( 
-		unsigned int const uiStrategy, 
-		tAction      const action
+		Strategy::Id const strategy, 
+		Action::Id   const action
 	) const
 	{
-		unsigned int uiAction = static_cast<unsigned int>( action );
-		assert( uiAction   <= NR_ACTIONS );
-		assert( uiStrategy <= NR_STRATEGIES );
+		unsigned int uiAction   = static_cast<unsigned int>( action );
+		unsigned int uiStrategy = static_cast<unsigned int>( strategy );
+
+		assert( uiAction   <= Action::NR_ACTIONS );
+		assert( uiStrategy <= Strategy::NR_STRATEGIES );
+
 		return (* m_pActionCounterRead)[ uiAction ][ uiStrategy ];
 	}
 
@@ -109,13 +112,9 @@ public:
     static void InitClass( );
 
 private:
-	void incActionCounter
-	(
-		tAction     action,
-		tStrategyId strategy
-	)
+	void incActionCounter( Strategy::Id strategy, Action::Id action )
 	{
-		if ( action != tAction::undefined )
+		if ( action != Action::Id::undefined )
 		{
 			unsigned int const uiAction   = static_cast<unsigned int>(action);
 			unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
@@ -163,7 +162,7 @@ private:
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;
 
-	using tActionCounters = std::array< std::array < unsigned int, NR_STRATEGIES>, NR_ACTIONS >;
+	using tActionCounters = std::array< std::array < unsigned int, Strategy::NR_STRATEGIES>, Action::NR_ACTIONS >;
 
 	tActionCounters   m_ActionCounter1;
 	tActionCounters   m_ActionCounter2;

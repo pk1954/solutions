@@ -45,7 +45,7 @@ DrawFrame::~DrawFrame( )
     m_pD3dBuffer = nullptr;
 };
 
-void DrawFrame::CallStrategyColorDialog( HWND const hwndOwner, tStrategyId const strat )
+void DrawFrame::CallStrategyColorDialog( HWND const hwndOwner, Strategy::Id const strat )
 {
 	m_pColorManager->ColorDialog( hwndOwner, tColorObject::individual, strat );
 }
@@ -221,10 +221,10 @@ void DrawFrame::drawText( GridRect const & rect )
 
 void DrawFrame::setIndividualColor( GridPoint const gp, float const fHalfSize ) const
 {
-    tStrategyId const strat   = m_pCore->GetStrategyId( gp );
-    short       const sEnergy = m_pCore->GetEnergy( gp );
+    Strategy::Id const strat   = m_pCore->GetStrategyId( gp );
+    short        const sEnergy = m_pCore->GetEnergy( gp );
 
-	if ( static_cast<int>( strat ) >= NR_STRATEGIES )  // can happen in case of
+	if ( static_cast<int>( strat ) >= Strategy::NR_STRATEGIES )  // can happen in case of
         return;                                        // race conditions between 
 	if ( sEnergy < 0 )                                 // display thread and 
 		return;                                        // worker thread

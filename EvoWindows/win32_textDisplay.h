@@ -39,7 +39,7 @@ public:
 		return m_core;
 	}
 
-	tStrategyId GetStrategyId( GridPoint const gp ) const
+	Strategy::Id GetStrategyId( GridPoint const gp ) const
 	{
 		return  m_core.GetStrategyId( gp );
 	}

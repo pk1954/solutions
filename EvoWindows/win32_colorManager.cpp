@@ -18,9 +18,9 @@ ColorManager::ColorManager( ) :
 	for ( auto & strategy : m_aClutStrat )
 		strategy.Allocate( uiClutSize );
 
-	setStrategyColor( tStrategyId::defect,    RGB( 20, 150, 187) );
-	setStrategyColor( tStrategyId::cooperate, RGB(130, 147,  86) );
-	setStrategyColor( tStrategyId::tit4tat,   RGB(192,  47,  29) );
+	setStrategyColor( Strategy::Id::defect,    RGB( 20, 150, 187) );
+	setStrategyColor( Strategy::Id::cooperate, RGB(130, 147,  86) );
+	setStrategyColor( Strategy::Id::tit4tat,   RGB(192,  47,  29) );
 
     setupClut( Config::GetConfigValueBoolOp( Config::tId::dimmMode ) );
 }
@@ -46,7 +46,7 @@ void ColorManager::ColorDialog
 ( 
 	HWND         const hwndOwner, 
 	tColorObject const object, 
-	tStrategyId  const strat 
+	Strategy::Id const strat 
 )
 {
 	static COLORREF acrCustClr[16]; // array of custom colors 
@@ -69,7 +69,7 @@ void ColorManager::SetColor
 (
 	COLORREF     const color,
 	tColorObject const object,
-	tStrategyId  const strat
+	Strategy::Id const strat
 )
 {
 	switch ( object )
@@ -91,7 +91,7 @@ void ColorManager::SetColor
 COLORREF ColorManager::GetColor
 ( 
 	tColorObject const object, 
-	tStrategyId  const strat, 
+	Strategy::Id const strat, 
 	UINT         const uiClutIndex
 )
 {

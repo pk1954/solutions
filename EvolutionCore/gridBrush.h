@@ -66,12 +66,12 @@ public:
 		m_brushMode = mode;  
 		switch ( m_brushMode )
 		{
-		case  tBrushMode::move:        m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::empty    ); }; break;
-		case  tBrushMode::randomStrat: m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::random   ); }; break;
-		case  tBrushMode::cooperate:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::cooperate); }; break;
-		case  tBrushMode::defect:      m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::defect   ); }; break;
-		case  tBrushMode::tit4tat:     m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::tit4tat  ); }; break;
-		case  tBrushMode::noAnimals:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, tStrategyId::empty    ); }; break;
+		case  tBrushMode::move:        m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, Strategy::Id::empty    ); }; break;
+		case  tBrushMode::randomStrat: m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, Strategy::Id::random   ); }; break;
+		case  tBrushMode::cooperate:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, Strategy::Id::cooperate); }; break;
+		case  tBrushMode::defect:      m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, Strategy::Id::defect   ); }; break;
+		case  tBrushMode::tit4tat:     m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, Strategy::Id::tit4tat  ); }; break;
+		case  tBrushMode::noAnimals:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, Strategy::Id::empty    ); }; break;
 		case  tBrushMode::mutRate:     m_func = [this](GridPoint const gp, short const s) { m_pGrid->Apply2MutRate   (gp, s, m_manFunc); }; break;
 		case  tBrushMode::fertility:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->Apply2Fertility (gp, s, m_manFunc); }; break;
 		case  tBrushMode::food:        m_func = [this](GridPoint const gp, short const s) { m_pGrid->Apply2FoodStock (gp, s, m_manFunc); }; break;

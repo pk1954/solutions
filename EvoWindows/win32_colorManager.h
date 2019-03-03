@@ -12,9 +12,9 @@ class ColorManager
 public:
 	ColorManager();
 	
-	void     ColorDialog( HWND const, tColorObject const, tStrategyId const = tStrategyId::empty );
-	COLORREF GetColor( tColorObject const, tStrategyId const = tStrategyId::empty, UINT const = -1 );
-	void     SetColor( COLORREF const, tColorObject const, tStrategyId const = tStrategyId::empty );
+	void     ColorDialog( HWND const, tColorObject const, Strategy::Id const = Strategy::Id::empty );
+	COLORREF GetColor( tColorObject const, Strategy::Id const = Strategy::Id::empty, UINT const = -1 );
+	void     SetColor( COLORREF const, tColorObject const, Strategy::Id const = Strategy::Id::empty );
 	void     ToggleClutMode( );
 
 private:
@@ -24,21 +24,21 @@ private:
 	COLORREF m_colorSelection;
 	COLORREF m_colorHighlight;
 	
-	std::array< CLUT, NR_STRATEGIES> m_aClutStrat;
+	std::array< CLUT, Strategy::NR_STRATEGIES> m_aClutStrat;
 
-	CLUT & getClut(tStrategyId const strat)
+	CLUT & getClut(Strategy::Id const strat)
 	{
 		int iIndex = static_cast<int>(strat);
-		AssertLimits( iIndex, 0, NR_STRATEGIES - 1 );
+		AssertLimits( iIndex, 0, Strategy::NR_STRATEGIES - 1 );
 		return m_aClutStrat[ iIndex ];
 	}
 
-	COLORREF getStrategyColor( tStrategyId const strat )
+	COLORREF getStrategyColor( Strategy::Id const strat )
 	{
 		return getClut( strat ).GetColorHi( );
 	}
 
-	void setStrategyColor( tStrategyId const strat, COLORREF const col )
+	void setStrategyColor( Strategy::Id const strat, COLORREF const col )
 	{
 		getClut( strat ).SetColorHi( col );
 	}

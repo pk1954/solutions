@@ -149,7 +149,7 @@ void WorkThreadInterface::PostSetBrushManipulator( tManipulator const op )
     m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_OPERATOR, static_cast<WPARAM>( op ), 0 );
 }
 
-void WorkThreadInterface::PostSetColor( COLORREF const col, tColorObject const obj, tStrategyId const strat )
+void WorkThreadInterface::PostSetColor( COLORREF const col, tColorObject const obj, Strategy::Id const strat )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetColorObjectName( obj ) << endl;

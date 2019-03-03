@@ -27,15 +27,16 @@ public:
     bool           IsDefined    ( )                    const { return m_id.IsNotNull(); };
     IND_ID         GetId        ( )                    const { return m_id; };
     tOrigin        GetOrigin    ( )                    const { return m_origin; }
-    tAction        GetLastAction( )                    const { return m_at; }
+    Action::Id     GetLastAction( )                    const { return m_at; }
     Genome const & GetGenome    ( )                    const { return m_genome; }
-    tStrategyId    GetStrategyId( )                    const { return m_pStrategy->GetStrategyId(); }
     MEM_INDEX      GetMemSize   ( )                    const { return m_strat.GetMemSize( );  }
     MEM_INDEX      GetMemUsed   ( )                    const { return m_strat.GetMemUsed( ); }
     short          GetAllele    ( tGeneType const gt ) const { return m_genome.GetAllele( gt ); }
     IND_ID         GetMemEntry  ( MEM_INDEX const ui ) const { return m_strat.GetMemEntry( ui ); }
-	
-    void Create( IND_ID const, EVO_GENERATION const, tStrategyId const );
+
+	Strategy::Id GetStrategyId( )             const { return m_pStrategy->GetStrategyId(); }
+
+    void Create( IND_ID const, EVO_GENERATION const, Strategy::Id const );
     void Clone ( IND_ID const, EVO_GENERATION const, short const, Random &, Individual const & );
     void Breed ( IND_ID const, EVO_GENERATION const, short const, Random &, Individual const &, Individual const & );
 
@@ -49,7 +50,7 @@ public:
 		return m_pStrategy->InteractWith( m_strat, partnerId );
 	};
 
-	void SetLastAction( tAction const at ) 
+	void SetLastAction( Action::Id const at ) 
 	{ 
 		m_at = at; 
 	}
@@ -72,11 +73,11 @@ private:
     StrategyData     m_strat;       // 84 bytes
     Genome           m_genome;      // 68 bytes
 	Strategy const * m_pStrategy;   //  8 bytes 
-	tAction          m_at;          //  2 bytes
+	Action::Id       m_at;          //  2 bytes
     short            m_sEnergy;     //  2 bytes
                              // sum:  176 bytes
 
-	static const std::unordered_map< tStrategyId, Strategy * const > m_apStrat; 
+	static const std::unordered_map< Strategy::Id, Strategy * const > m_apStrat; 
 
     static short m_sStdEnergyCapacity;
     static short m_sInitialEnergy;

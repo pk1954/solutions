@@ -8,13 +8,13 @@
 
 using std::unordered_map;
 
-wchar_t const * const GetStrategyName( tStrategyId const id )
+wchar_t const * const Strategy::GetName( Strategy::Id const id )
 {
-    static unordered_map < tStrategyId, wchar_t const * const > mapStrategies =
+    static unordered_map < Strategy::Id, wchar_t const * const > mapStrategies =
     { 
-        { tStrategyId::defect,    L"D" },
-        { tStrategyId::cooperate, L"C" },
-        { tStrategyId::tit4tat,   L"T" }
+        { Strategy::Id::defect,    L"D" },
+        { Strategy::Id::cooperate, L"C" },
+        { Strategy::Id::tit4tat,   L"T" }
     };
 
     return mapStrategies.at( id );
@@ -44,18 +44,18 @@ wchar_t const * const GetOriginName( tOrigin const o )
     return mapOrigins.at( o );
 }
 
-wchar_t const * const GetActionTypeName( tAction const action )
+wchar_t const * const Action::GetName( Action::Id const action )
 {
-    static unordered_map < tAction, wchar_t const * const > mapOptions =
+    static unordered_map < Action::Id, wchar_t const * const > mapOptions =
     { 
-        { tAction::move,      L"move"      },
-        { tAction::clone,     L"clone"     },
-        { tAction::marry,     L"marry"     },
-        { tAction::interact,  L"interact"  },
-        { tAction::eat,       L"eat"       },
-        { tAction::fertilize, L"fertilize" },
-        { tAction::passOn,    L"passOn"    },
-        { tAction::undefined, L"undef"     }
+        { Action::Id::move,      L"move"      },
+        { Action::Id::clone,     L"clone"     },
+        { Action::Id::marry,     L"marry"     },
+        { Action::Id::interact,  L"interact"  },
+        { Action::Id::eat,       L"eat"       },
+        { Action::Id::fertilize, L"fertilize" },
+        { Action::Id::passOn,    L"passOn"    },
+        { Action::Id::undefined, L"undef"     }
     };
 
     return mapOptions.at( action );
@@ -79,19 +79,19 @@ wchar_t const * const GetGeneName( tGeneType const gene )
     return mapTitles.at( gene );
 }
 
-tAction const GetRelatedAction( tGeneType const gene )
+Action::Id const GetRelatedAction( tGeneType const gene )
 {
-    static unordered_map < tGeneType, tAction const > mapActions =
+    static unordered_map < tGeneType, Action::Id const > mapActions =
     {
-        { tGeneType::appetite,            tAction::eat       },
-        { tGeneType::fertilInvest,        tAction::fertilize },
-        { tGeneType::memSize,             tAction::interact  },
-        { tGeneType::thresholdClone,      tAction::clone     },
-        { tGeneType::thresholdMarry,      tAction::marry     },
-        { tGeneType::thresholdMove,       tAction::move      },
-        { tGeneType::thresholdFertilize,  tAction::fertilize },
-        { tGeneType::maxEat,              tAction::eat       },
-        { tGeneType::cloneDonation,       tAction::clone     }
+        { tGeneType::appetite,            Action::Id::eat       },
+        { tGeneType::fertilInvest,        Action::Id::fertilize },
+        { tGeneType::memSize,             Action::Id::interact  },
+        { tGeneType::thresholdClone,      Action::Id::clone     },
+        { tGeneType::thresholdMarry,      Action::Id::marry     },
+        { tGeneType::thresholdMove,       Action::Id::move      },
+        { tGeneType::thresholdFertilize,  Action::Id::fertilize },
+        { tGeneType::maxEat,              Action::Id::eat       },
+        { tGeneType::cloneDonation,       Action::Id::clone     }
     };
 
     return mapActions.at( gene );

@@ -52,14 +52,14 @@ public:
     virtual int            GetFertilizer( GridPoint const ) const = 0;
     virtual EVO_GENERATION GetGenBirth  ( GridPoint const ) const = 0;
     virtual EVO_GENERATION GetAge       ( GridPoint const ) const = 0;
+    virtual Strategy::Id   GetStrategyId( GridPoint const ) const = 0;
     virtual MEM_INDEX      GetMemSize   ( GridPoint const ) const = 0;
     virtual MEM_INDEX      GetMemUsed   ( GridPoint const ) const = 0;
-    virtual tStrategyId    GetStrategyId( GridPoint const ) const = 0;
-    virtual IND_ID         GetMemEntry  ( GridPoint const, MEM_INDEX const ) const = 0;
-    virtual short          GetDistr     ( GridPoint const, tAction   const ) const = 0;
-    virtual long           GetGenotype  ( GridPoint const, tGeneType const ) const = 0;
+    virtual IND_ID         GetMemEntry  ( GridPoint const, MEM_INDEX  const ) const = 0;
+    virtual short          GetDistr     ( GridPoint const, Action::Id const ) const = 0;
+    virtual long           GetGenotype  ( GridPoint const, tGeneType  const ) const = 0;
 	
-	virtual	unsigned int   GetActionCounter( unsigned int const, tAction const ) const = 0;
+	virtual	unsigned int   GetActionCounter( Strategy::Id const, Action::Id const ) const = 0;
 
     virtual GridPoint      FindGridPoint( IND_ID const &, GridRect const & = GRID_RECT_FULL()) const = 0;
 
@@ -101,6 +101,6 @@ public:
     static unsigned int    GetNrInteractionsWithKnownCulprit( );
     static unsigned int    GetNrInteractionsWithUnknownCulprit( );
     static unsigned int    GetMaxPartnerMemory( );
-	static bool            IsEnabled( tAction const );
+	static bool            IsEnabled( Action::Id const );
 	static bool            IsEnabled( tGeneType const );
 };

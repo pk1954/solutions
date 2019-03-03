@@ -57,28 +57,29 @@ public:
     short          GetFertility( )  const { return m_sFertility;  }
     short          GetFertilizer( ) const { return m_sFertilizer; }
     EVO_GENERATION GetGenBirth( )   const { return m_Individual.GetGenBirth( ); }
-    tAction        GetLastAction( ) const { return m_Individual.GetLastAction( ); }
+    Action::Id     GetLastAction( ) const { return m_Individual.GetLastAction( ); }
     IND_ID         GetId( )         const { return m_Individual.GetId( ); }
     tOrigin        GetOrigin( )     const { return m_Individual.GetOrigin( ); }
     short          GetEnergy( )     const { return m_Individual.GetEnergy( ); }
     bool           IsDead( )        const { return m_Individual.IsDead( ); }
     bool           IsAlive( )       const { return m_Individual.IsAlive( ); };
     bool           IsDefined( )     const { return m_Individual.IsDefined( ); };
-    tStrategyId    GetStrategyId( ) const { return m_Individual.GetStrategyId( ); }
     MEM_INDEX      GetMemSize( )    const { return m_Individual.GetMemSize  ( ); }
     MEM_INDEX      GetMemUsed( )    const { return m_Individual.GetMemUsed( ); }
     Genome const & GetGenome( )     const { return m_Individual.GetGenome( ); }
 
-    short  const   GetAllele( tGeneType const geneType ) const { return GetGenome( ).GetAllele( geneType ); }
+    Strategy::Id GetStrategyId( ) const { return m_Individual.GetStrategyId( ); }
+
+	short  const   GetAllele( tGeneType const geneType ) const { return GetGenome( ).GetAllele( geneType ); }
 
     IND_ID GetMemEntry( MEM_INDEX const i ) const { return m_Individual.GetMemEntry( i ); }
     void   ResetIndividual( )                     { m_Individual.ResetIndividual( ); }
     void   SetEnergy( short const sInc )          { m_Individual.SetEnergy( sInc ); }
     void   DecEnergy( short const sDec )          { m_Individual.IncEnergy( - sDec ); }
     void   IncEnergy( short const sInc )          { m_Individual.IncEnergy( sInc ); }
-    void   SetLastAction( tAction const at )      { m_Individual.SetLastAction( at ); }
+    void   SetLastAction( Action::Id const at )   { m_Individual.SetLastAction( at ); }
 
-	void CreateIndividual( IND_ID const id, EVO_GENERATION const genBirth, tStrategyId const s )
+	void CreateIndividual( IND_ID const id, EVO_GENERATION const genBirth, Strategy::Id const s )
 	{
 		m_Individual.Create( id, genBirth, s );
 	}
@@ -155,7 +156,7 @@ public:
 	static void Interact( GridField & gfA, GridField & gfB )
 	{
 		INTERACTION::Interact( gfA.m_Individual, gfB.m_Individual );
-		gfA.SetLastAction( tAction::interact );
+		gfA.SetLastAction( Action::Id::interact );
 	};
 
 private:

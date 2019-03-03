@@ -42,7 +42,7 @@ unsigned int EvolutionCore::GetNrInteractionsWithUnknownCulprit( )
 	return StrategyData::GetNrInteractionsWithUnknownCulprit( ); 
 }
 
-bool EvolutionCore::IsEnabled( tAction const action )
+bool EvolutionCore::IsEnabled( Action::Id const action )
 {
 	return Genome::IsEnabled( action );
 }

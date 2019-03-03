@@ -277,9 +277,9 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             {
 			case IDM_CHOOSE_STRATEGY_COLOR:
 			{
-				PixelPoint  const ptCrsr = GetCrsrPosFromLparam( lParam );
-				GridPoint   const gpCrsr = m_pPixelCoordinates->Pixel2GridPos( ptCrsr );
-				tStrategyId const strat  = m_pCore->GetStrategyId( gpCrsr );
+				PixelPoint   const ptCrsr = GetCrsrPosFromLparam( lParam );
+				GridPoint    const gpCrsr = m_pPixelCoordinates->Pixel2GridPos( ptCrsr );
+				Strategy::Id const strat  = m_pCore->GetStrategyId( gpCrsr );
 				m_pDrawFrame->CallStrategyColorDialog( GetWindowHandle(), strat );
 			}
 			break;

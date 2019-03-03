@@ -162,7 +162,7 @@ void Grid::MakePlan
 
     assert( m_emptyNeighborSlots.GetLength() + m_occupiedNeighborSlots.GetLength() == Neighborhood::GetNrOfNeighbors( ) );
 
-    tAction action = gfRun.GetGenome( ).GetOption
+    Action::Id action = gfRun.GetGenome( ).GetOption
 	( 
         m_emptyNeighborSlots.GetLength( ) > 0,            // has free space around? 
         m_occupiedNeighborSlots.GetLength( ) > 0,         // has neighbor
@@ -175,30 +175,30 @@ void Grid::MakePlan
 
     switch ( action )
     {
-    case tAction::move:	// choose a free neighbour cell and move there
-    case tAction::clone:  // choose a free neighbour cell and create a clone there 
+    case Action::Id::move:	// choose a free neighbour cell and move there
+    case Action::Id::clone:  // choose a free neighbour cell and create a clone there 
         plan.SetTarget ( chooseTarget( m_emptyNeighborSlots ) );
         plan.NoPartner( );
         break;
 
-    case tAction::marry:     // choose a living neighbour and marry
+    case Action::Id::marry:     // choose a living neighbour and marry
         plan.SetPartner( choosePartner( m_occupiedNeighborSlots ) );
         plan.SetTarget ( chooseTarget ( m_emptyNeighborSlots ) );
         break;
 
-    case tAction::interact:  // choose a living neighbour and interact
+    case Action::Id::interact:  // choose a living neighbour and interact
         plan.SetPartner( choosePartner( m_occupiedNeighborSlots ) );
         plan.NoTarget( );
         break;
 
-    case tAction::passOn:
-    case tAction::fertilize:
-    case tAction::eat:
+    case Action::Id::passOn:
+    case Action::Id::fertilize:
+    case Action::Id::eat:
         plan.NoPartner( );
         plan.NoTarget ( );
         break;
 
-    case tAction::undefined:
+    case Action::Id::undefined:
         break;
 
 	default:
@@ -218,11 +218,11 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
     gfRun.SetLastAction( plan.GetActionType( ) );
     gfRun.DecEnergy    ( plan.GetBaseConsumption( ) );
 
-	incActionCounter( plan.GetActionType( ), gfRun.GetStrategyId( ) );
+	incActionCounter( gfRun.GetStrategyId( ), plan.GetActionType( ) );
 
 	switch ( plan.GetActionType( ) )
     {
-        case tAction::move: 
+        case Action::Id::move: 
         {
             gfRun.DecEnergy( m_iMoveFoodConsumption );
             if ( gfRun.IsAlive( ) )
@@ -235,7 +235,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
         }
         break;
 
-        case tAction::clone:
+        case Action::Id::clone:
         {
             GridField & gfTarget = getGridField( plan.GetTarget( ) );
 
@@ -247,7 +247,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
         }
         break;
 
-        case tAction::marry:
+        case Action::Id::marry:
         {
             GridField & gfTarget  = getGridField( plan.GetTarget( ) );
             GridField & gfPartner = getGridField( plan.GetPartner( ) );
@@ -262,7 +262,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
         }
         break;
 
-        case tAction::interact:
+        case Action::Id::interact:
         {
             GridField & gfPartner = getGridField( plan.GetPartner( ) );
             gfRun.DecEnergy( m_iInteractFoodConsumption );
@@ -279,7 +279,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
         }
         break;
 
-        case tAction::fertilize:
+        case Action::Id::fertilize:
         {
             short const sInvest = gfRun.GetAllele( tGeneType::fertilInvest );
             gfRun.Fertilize( sInvest );
@@ -287,13 +287,13 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
         }
         break;
 
-        case tAction::passOn:  
+        case Action::Id::passOn:  
         {
             gfRun.PassOn2Child( ++m_idCounter, m_genEvo, m_random );
         }
         break;
 
-        case tAction::eat:  
+        case Action::Id::eat:  
         {
             short const sWant    = gfRun.GetAllele( tGeneType::appetite );
             short const sReceive = gfRun.GetConsumption( sWant );
@@ -302,7 +302,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
         }
         break;
 
-	    case tAction::undefined:
+	    case Action::Id::undefined:
         break;
 
         default:
@@ -317,9 +317,9 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
 
 void Grid::EditSetStrategy
 ( 
-    GridPoint   const gp, 
-    short       const sIntensity, // percent value
-    tStrategyId       strategy
+    GridPoint             const gp, 
+    short                 const sIntensity, // percent value
+    Strategy::Id       strategy
 )
 {
 	assert( sIntensity >= 0 );
@@ -328,10 +328,10 @@ void Grid::EditSetStrategy
 		GridField & gf       = getGridField( gp );
 		bool const  bIsAlive = gf.IsAlive();
 
-		if ( strategy != tStrategyId::empty )
+		if ( strategy != Strategy::Id::empty )
 		{
-			if ( strategy == tStrategyId::random ) 
-				strategy = static_cast<tStrategyId>(m_random.NextRandomNumber() % NR_STRATEGIES );
+			if ( strategy == Strategy::Id::random ) 
+				strategy = static_cast<Strategy::Id>(m_random.NextRandomNumber() % Strategy::NR_STRATEGIES );
 
 			gf.CreateIndividual( ++m_idCounter, m_genEvo, strategy );
 			if ( ! bIsAlive )

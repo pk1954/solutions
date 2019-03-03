@@ -16,9 +16,9 @@
 
 Genome Genome::m_genomeTemplate;
 
-std::array< GeneTypeLimits, NR_GENES        > Genome::m_aLimitsGeneral;
-std::array< GeneTypeLimits, NR_ACTION_GENES > Genome::m_aLimitsActions;
-std::array< bool,           NR_ACTIONS      > Genome::m_abActionEnabled;
+std::array< GeneTypeLimits,         NR_GENES        > Genome::m_aLimitsGeneral;
+std::array< GeneTypeLimits, Action::NR_ACTION_GENES > Genome::m_aLimitsActions;
+std::array< bool,           Action::NR_ACTIONS      > Genome::m_abActionEnabled;
 
 std::array< unsigned int, Genome::MAX_LIFE_SPAN + 1 > Genome::m_mortalityTable;
 
@@ -61,12 +61,12 @@ void Genome::InitClass( )
 
     // init genome template 
 
-    m_genomeTemplate.setActionGene( tAction::move,      500 );
-    m_genomeTemplate.setActionGene( tAction::clone,     500 );
-    m_genomeTemplate.setActionGene( tAction::marry,     500 );
-    m_genomeTemplate.setActionGene( tAction::interact,  500 );
-    m_genomeTemplate.setActionGene( tAction::eat,       500 );
-    m_genomeTemplate.setActionGene( tAction::fertilize, 500 );
+    m_genomeTemplate.setActionGene( Action::Id::move,      500 );
+    m_genomeTemplate.setActionGene( Action::Id::clone,     500 );
+    m_genomeTemplate.setActionGene( Action::Id::marry,     500 );
+    m_genomeTemplate.setActionGene( Action::Id::interact,  500 );
+    m_genomeTemplate.setActionGene( Action::Id::eat,       500 );
+    m_genomeTemplate.setActionGene( Action::Id::fertilize, 500 );
 
     m_genomeTemplate.setGeneralGene( tGeneType::appetite,           Config::GetConfigValue( Config::tId::defaultAppetite     ) );
     m_genomeTemplate.setGeneralGene( tGeneType::fertilInvest,       Config::GetConfigValue( Config::tId::defaultFertilInvest ) );
@@ -80,13 +80,13 @@ void Genome::InitClass( )
 
     // static members for caching frequently used configuration items
 
-    enabled( tAction::move      ) = Config::GetConfigValue( Config::tId::moveEnabled      ) > 0;
-    enabled( tAction::fertilize ) = Config::GetConfigValue( Config::tId::fertilizeEnabled ) > 0;
-    enabled( tAction::passOn    ) = Config::GetConfigValue( Config::tId::passOnEnabled    ) > 0;
-    enabled( tAction::clone     ) = Config::GetConfigValue( Config::tId::cloneEnabled     ) > 0;
-    enabled( tAction::marry     ) = Config::GetConfigValue( Config::tId::marryEnabled     ) > 0;
-    enabled( tAction::interact  ) = Config::GetConfigValue( Config::tId::interactEnabled  ) > 0;
-    enabled( tAction::eat       ) = Config::GetConfigValue( Config::tId::eatEnabled       ) > 0;
+    enabled( Action::Id::move      ) = Config::GetConfigValue( Config::tId::moveEnabled      ) > 0;
+    enabled( Action::Id::fertilize ) = Config::GetConfigValue( Config::tId::fertilizeEnabled ) > 0;
+    enabled( Action::Id::passOn    ) = Config::GetConfigValue( Config::tId::passOnEnabled    ) > 0;
+    enabled( Action::Id::clone     ) = Config::GetConfigValue( Config::tId::cloneEnabled     ) > 0;
+    enabled( Action::Id::marry     ) = Config::GetConfigValue( Config::tId::marryEnabled     ) > 0;
+    enabled( Action::Id::interact  ) = Config::GetConfigValue( Config::tId::interactEnabled  ) > 0;
+    enabled( Action::Id::eat       ) = Config::GetConfigValue( Config::tId::eatEnabled       ) > 0;
 }
 
 //  nonstatic functions 
@@ -96,7 +96,7 @@ Genome::Genome( )
     InitGenome( );
 }
 
-void Genome::setActionGene( tAction const action, int const iValue )
+void Genome::setActionGene( Action::Id const action, int const iValue )
 {
     short const sValue = static_cast<short>( iValue );
     m_aLimitsActions[ static_cast<int>( action ) ].CheckLimits( sValue );
@@ -150,7 +150,7 @@ void Genome::Recombine( Genome const & genomeA, Genome const & genomeB, Random &
     }
 }
 
-tAction Genome::GetOption
+Action::Id Genome::GetOption
 ( 
     bool           const bHasFreeSpace, 
     bool           const bHasNeighbor,
@@ -160,19 +160,19 @@ tAction Genome::GetOption
 ) const
 {
 	if (
-		  ( m_abActionEnabled[ static_cast<int>( tAction::passOn ) ] ) && 
+		  ( m_abActionEnabled[ static_cast<int>( Action::Id::passOn ) ] ) && 
 		  ( m_mortalityTable[ age.GetValue() ] > random.NextRandomNumber() )
 	   )
-		return tAction::passOn;
+		return Action::Id::passOn;
 	
-	std::array <bool, NR_ACTION_GENES > abOptions;
+	std::array <bool, Action::NR_ACTION_GENES > abOptions;
  
-	abOptions[ static_cast<int>( tAction::move      ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdMove )      );
-    abOptions[ static_cast<int>( tAction::fertilize ) ] =                                  ( iEnergy >= GetAllele( tGeneType::thresholdFertilize ) );
-    abOptions[ static_cast<int>( tAction::clone     ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdClone )     );
-    abOptions[ static_cast<int>( tAction::marry     ) ] = bHasFreeSpace && bHasNeighbor && ( iEnergy >= GetAllele( tGeneType::thresholdMarry )     );
-    abOptions[ static_cast<int>( tAction::interact  ) ] =                  bHasNeighbor;
-    abOptions[ static_cast<int>( tAction::eat       ) ] =                                  ( iEnergy <  GetAllele( tGeneType::maxEat )             );
+	abOptions[ static_cast<int>( Action::Id::move      ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdMove )      );
+    abOptions[ static_cast<int>( Action::Id::fertilize ) ] =                                  ( iEnergy >= GetAllele( tGeneType::thresholdFertilize ) );
+    abOptions[ static_cast<int>( Action::Id::clone     ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdClone )     );
+    abOptions[ static_cast<int>( Action::Id::marry     ) ] = bHasFreeSpace && bHasNeighbor && ( iEnergy >= GetAllele( tGeneType::thresholdMarry )     );
+    abOptions[ static_cast<int>( Action::Id::interact  ) ] =                  bHasNeighbor;
+    abOptions[ static_cast<int>( Action::Id::eat       ) ] =                                  ( iEnergy <  GetAllele( tGeneType::maxEat )             );
 
     unsigned int uiSum = 0;
 
@@ -204,5 +204,5 @@ tAction Genome::GetOption
         }
     }
 
-	return tAction::undefined;
+	return Action::Id::undefined;
 }
