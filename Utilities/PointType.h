@@ -45,13 +45,13 @@ public:
 
 	static PointType const & NULL_VAL() 
 	{ 
-		static PointType res = PointType( BASE_X::NULL_VAL(), BASE_Y::NULL_VAL() ); 
+		static PointType res = PointType( BASE_TYPE::NULL_VAL() ); 
 		return res;
 	};
 
 	static PointType const & ZERO_VAL() 
 	{ 
-		static PointType res = PointType( BASE_X::ZERO_VAL(), BASE_Y::ZERO_VAL() ); 
+		static PointType res = PointType( BASE_TYPE::ZERO_VAL() ); 
 		return res;
 	};
 

@@ -60,6 +60,15 @@ namespace Util
 		}; 
 	}
 
+    inline PixelRectSize PixelRectSizeFromRECT( RECT const & rect )
+    {
+        return PixelRectSize
+		{ 
+			PIXEL_X(PIXEL(rect.right - rect.left)), 
+			PIXEL_Y(PIXEL(rect.bottom - rect.top)) 
+		};
+    }
+
 	inline BOOL MoveWindow( HWND const hwnd, PIXEL_X const xPos, PIXEL_Y const yPos, PIXEL_X const width, PIXEL_Y const height, BOOL const bRedraw )
 	{
 		return ::MoveWindow( hwnd, xPos.GetBaseValue(), yPos.GetBaseValue(), width.GetBaseValue(), height.GetBaseValue(), bRedraw );
@@ -108,15 +117,12 @@ namespace Util
 
     inline PixelRect GetClPixelRect( HWND const hwnd ) // left / top always 0
     {
-        RECT rect;
-        (void)GetClientRect( hwnd, &rect );
-		return RECT2PixelRect( rect ); 
+		return RECT2PixelRect( GetClRect( hwnd ) ); 
     }
 
     inline PixelRectSize GetClRectSize( HWND const hwnd )
     {
-        RECT const rect = GetClRect( hwnd );
-		return PixelRectSize{ PIXEL_X(PIXEL(rect.right)), PIXEL_Y(PIXEL(rect.bottom)) };
+        return PixelRectSizeFromRECT( GetClRect( hwnd ) );
     }
 
     inline PixelPoint GetClRectCenter( HWND const hwnd )
@@ -164,7 +170,7 @@ namespace Util
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-        return PixelRectSize{ PIXEL_X(PIXEL(rect.right - rect.left)), PIXEL_Y(PIXEL(rect.bottom - rect.top)) };
+        return PixelRectSizeFromRECT( rect );
     }
 
     inline PIXEL_X GetWindowWidth( HWND const hwnd )

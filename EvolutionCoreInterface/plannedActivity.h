@@ -24,6 +24,9 @@ public:
 
     bool IsValid( ) const { return m_bValid; }
 
+	bool HasTarget ( ) const { return m_gpTarget .IsNotNull(); }
+	bool HasPartner( ) const { return m_gpPartner.IsNotNull(); }
+
     GridPoint GetActor  ( ) const { return m_gpActor; }
     GridPoint GetTarget ( ) const { return m_gpTarget; }
     GridPoint GetPartner( ) const { return m_gpPartner; }

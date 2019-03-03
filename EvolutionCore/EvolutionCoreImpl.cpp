@@ -71,9 +71,12 @@ void EvolutionCoreImpl::Compute( )
 
     GridPoint gpRun = m_gplIterator.Begin( );
 
+int iNrBefor = m_grid.GetNrOfLivingIndividuals();
+int iCounter = 0;
 	m_grid.PrepareActionCounters( );
     while ( gpRun.IsNotNull( ) )
     {
+++iCounter;
         assert( IsInGrid( gpRun ) );
         assert( m_grid.IsAlive( gpRun ) );
 
@@ -81,6 +84,7 @@ void EvolutionCoreImpl::Compute( )
 		stopOnPoi      ( gpRun, * pPlan );
         gpRun = m_grid.ImplementPlan( gpRun, * pPlan );   // may return NULL_VAL
     }
+int iNrAfter = m_grid.GetNrOfLivingIndividuals();
 
     m_grid.FoodGrowth( );
     m_grid.IncGenNr( );

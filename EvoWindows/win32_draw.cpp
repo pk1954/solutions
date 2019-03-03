@@ -221,13 +221,16 @@ void DrawFrame::drawText( GridRect const & rect )
 
 void DrawFrame::setIndividualColor( GridPoint const gp, float const fHalfSize ) const
 {
-    tStrategyId const strat = m_pCore->GetStrategyId( gp );
-    if ( static_cast<int>( strat ) >= NR_STRATEGIES )
-        return;                   // can happen in case of race conditions between display thread and worker thread
-    //lint -e571  suspicious cast
-    UINT const uiIndex = static_cast<UINT>( m_pCore->GetEnergy( gp ) );
-    //lint +e571
-	COLORREF color = m_pColorManager->GetColor( tColorObject::individual, strat, uiIndex );
+    tStrategyId const strat   = m_pCore->GetStrategyId( gp );
+    short       const sEnergy = m_pCore->GetEnergy( gp );
+
+	if ( static_cast<int>( strat ) >= NR_STRATEGIES )  // can happen in case of
+        return;                                        // race conditions between 
+	if ( sEnergy < 0 )                                 // display thread and 
+		return;                                        // worker thread
+
+	UINT     const uiIndex = CastToUnsignedInt( sEnergy );
+	COLORREF const color   = m_pColorManager->GetColor( tColorObject::individual, strat, uiIndex );
     addPrimitive( gp, color, fHalfSize );
 }
 
