@@ -136,22 +136,28 @@ public:
 
     void printGeneStat( TextBuffer & textBuf, EvolutionCore const * pCore )
     {
-        for ( unsigned int uiAction = 0; uiAction < Action::NR_ACTION_GENES; ++uiAction )
-		{
-			Action::Id action = static_cast<Action::Id>( uiAction );
-			if ( EvolutionCore::IsEnabled( action ) )
+		Action::Apply2All
+		(
+			[&]( unsigned short usAction )
 			{
-				printCounters( textBuf, pCore, action );
-				m_axaGenePoolStrategy[ uiAction ].printFloatLine( textBuf, L"" );
+				Action::Id action = static_cast<Action::Id>( usAction );
+				if ( EvolutionCore::IsEnabled( action ) )
+				{
+					printCounters( textBuf, pCore, action );
+					m_axaGenePoolStrategy[ usAction ].printFloatLine( textBuf, L"" );
+				}
 			}
-		}
+		);
 
-        for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
-		{
-			tGeneType gene = static_cast<tGeneType>( uiGene );
-			if ( EvolutionCore::IsEnabled( gene ) )
-	            m_aGeneStat[ uiGene ].printGeneLine( textBuf, GetGeneName( gene ) );
-		}
+		GeneType::Apply2All
+		(
+			[&]( unsigned short usGeneType )
+			{
+				GeneType::Id geneType = static_cast<GeneType::Id>( usGeneType );
+				if ( EvolutionCore::IsEnabled( geneType ) )
+					m_aGeneStat[ usGeneType ].printGeneLine( textBuf, GeneType::GetName( geneType ) );
+			}
+		);
 	}
 
     void printAvFood( TextBuffer & textBuf, wchar_t const * const data )
@@ -159,7 +165,7 @@ public:
         FloatStat fsAvFood;
 
 		unsigned int uiEat      = static_cast<unsigned int>( Action::Id::eat );
-		unsigned int uiAppetite = static_cast<unsigned int>(tGeneType::appetite);
+		unsigned int uiAppetite = static_cast<unsigned int>(GeneType::Id::appetite);
 
 		Strategy::Apply2All
 		( 
@@ -186,7 +192,7 @@ private:
 
     std::array < FloatStat,      Action::NR_ACTION_GENES > m_axaGenePoolStrategy;
     std::array < unsigned int, Strategy::NR_STRATEGIES   > m_auiMemSize;
-    std::array < GeneStat,               NR_GENES        > m_aGeneStat;
+    std::array < GeneStat,     GeneType::NR_GENES        > m_aGeneStat;
 };
 
 StatisticsWindow::StatisticsWindow( ):
@@ -237,8 +243,11 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 						if ( EvolutionCore::IsEnabled( static_cast<Action::Id>( uiAction ) ) )
 							genesStat.add2option( s, uiAction, m_pCore->GetDistr( gp, static_cast<Action::Id>( uiAction ) ) );
 
-					for ( unsigned int uiGene = 0; uiGene < NR_GENES; ++uiGene )
-						genesStat.add2Gene( s, uiGene, m_pCore->GetGenotype( gp, static_cast<tGeneType>( uiGene ) ) );
+					GeneType::Apply2All
+					(
+						[&]( unsigned short usGeneType )
+						{ genesStat.add2Gene( s, usGeneType, m_pCore->GetGenotype( gp, static_cast<GeneType::Id>( usGeneType ) ) ); }
+					);
 
 					genesStat.incCounter( s );
 					genesStat.addMemSize( s, m_pCore->GetMemSize( gp ).GetValue() );

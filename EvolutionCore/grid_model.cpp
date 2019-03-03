@@ -281,7 +281,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
 
         case Action::Id::fertilize:
         {
-            short const sInvest = gfRun.GetAllele( tGeneType::fertilInvest );
+            short const sInvest = gfRun.GetAllele( GeneType::Id::fertilInvest );
             gfRun.Fertilize( sInvest );
             gfRun.DecEnergy( sInvest );
         }
@@ -295,7 +295,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
 
         case Action::Id::eat:  
         {
-            short const sWant    = gfRun.GetAllele( tGeneType::appetite );
+            short const sWant    = gfRun.GetAllele( GeneType::Id::appetite );
             short const sReceive = gfRun.GetConsumption( sWant );
             gfRun.IncFoodStock( - sReceive );
             gfRun.IncEnergy   ( sReceive );

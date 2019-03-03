@@ -16,13 +16,13 @@
 
 Genome Genome::m_genomeTemplate;
 
-std::array< GeneTypeLimits,         NR_GENES        > Genome::m_aLimitsGeneral;
+std::array< GeneTypeLimits, GeneType::NR_GENES      > Genome::m_aLimitsGeneral;
 std::array< GeneTypeLimits, Action::NR_ACTION_GENES > Genome::m_aLimitsActions;
 std::array< bool,           Action::NR_ACTIONS      > Genome::m_abActionEnabled;
 
 std::array< unsigned int, Genome::MAX_LIFE_SPAN + 1 > Genome::m_mortalityTable;
 
-void Genome::setGeneralLimits( tGeneType const gene, long const lLo, long const lHi )
+void Genome::setGeneralLimits( GeneType::Id const gene, long const lLo, long const lHi )
 {
     m_aLimitsGeneral[ static_cast<int>( gene ) ].SetLimits( lLo, lHi );
 }
@@ -49,15 +49,15 @@ void Genome::InitClass( )
         lim.SetLimits( 1, 1000 );
     }
 
-    setGeneralLimits( tGeneType::appetite,           1, Config::GetConfigValue( Config::tId::maxFood      ) );
-    setGeneralLimits( tGeneType::fertilInvest,       1, Config::GetConfigValue( Config::tId::maxFood      ) );
-    setGeneralLimits( tGeneType::memSize,            1, IMEMSIZE_MAX );
-    setGeneralLimits( tGeneType::thresholdClone,     0, Config::GetConfigValue( Config::tId::stdCapacity  ) );
-    setGeneralLimits( tGeneType::thresholdMarry,     0, Config::GetConfigValue( Config::tId::stdCapacity  ) );
-    setGeneralLimits( tGeneType::thresholdMove,      0, Config::GetConfigValue( Config::tId::stdCapacity  ) );
-    setGeneralLimits( tGeneType::thresholdFertilize, 0, Config::GetConfigValue( Config::tId::stdCapacity  ) );
-    setGeneralLimits( tGeneType::maxEat,             0, Config::GetConfigValue( Config::tId::stdCapacity  ) );
-    setGeneralLimits( tGeneType::cloneDonation,      0, SHRT_MAX                                           );
+    setGeneralLimits( GeneType::Id::appetite,           1, Config::GetConfigValue( Config::tId::maxFood      ) );
+    setGeneralLimits( GeneType::Id::fertilInvest,       1, Config::GetConfigValue( Config::tId::maxFood      ) );
+    setGeneralLimits( GeneType::Id::memSize,            1, IMEMSIZE_MAX );
+    setGeneralLimits( GeneType::Id::thresholdClone,     0, Config::GetConfigValue( Config::tId::stdCapacity  ) );
+    setGeneralLimits( GeneType::Id::thresholdMarry,     0, Config::GetConfigValue( Config::tId::stdCapacity  ) );
+    setGeneralLimits( GeneType::Id::thresholdMove,      0, Config::GetConfigValue( Config::tId::stdCapacity  ) );
+    setGeneralLimits( GeneType::Id::thresholdFertilize, 0, Config::GetConfigValue( Config::tId::stdCapacity  ) );
+    setGeneralLimits( GeneType::Id::maxEat,             0, Config::GetConfigValue( Config::tId::stdCapacity  ) );
+    setGeneralLimits( GeneType::Id::cloneDonation,      0, SHRT_MAX                                           );
 
     // init genome template 
 
@@ -68,15 +68,15 @@ void Genome::InitClass( )
     m_genomeTemplate.setActionGene( Action::Id::eat,       500 );
     m_genomeTemplate.setActionGene( Action::Id::fertilize, 500 );
 
-    m_genomeTemplate.setGeneralGene( tGeneType::appetite,           Config::GetConfigValue( Config::tId::defaultAppetite     ) );
-    m_genomeTemplate.setGeneralGene( tGeneType::fertilInvest,       Config::GetConfigValue( Config::tId::defaultFertilInvest ) );
-    m_genomeTemplate.setGeneralGene( tGeneType::memSize,            Config::GetConfigValue( Config::tId::stdMemSize          ) );
-    m_genomeTemplate.setGeneralGene( tGeneType::thresholdClone,     Config::GetConfigValue( Config::tId::thresholdClone      ) );
-    m_genomeTemplate.setGeneralGene( tGeneType::thresholdMarry,     Config::GetConfigValue( Config::tId::thresholdMarry      ) );
-    m_genomeTemplate.setGeneralGene( tGeneType::thresholdMove,      Config::GetConfigValue( Config::tId::thresholdMove       ) );
-    m_genomeTemplate.setGeneralGene( tGeneType::thresholdFertilize, Config::GetConfigValue( Config::tId::thresholdFertilize  ) );
-    m_genomeTemplate.setGeneralGene( tGeneType::maxEat,             Config::GetConfigValue( Config::tId::maxEat              ) );
-    m_genomeTemplate.setGeneralGene( tGeneType::cloneDonation,      SHRT_MAX / 2 );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::appetite,           Config::GetConfigValue( Config::tId::defaultAppetite     ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::fertilInvest,       Config::GetConfigValue( Config::tId::defaultFertilInvest ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::memSize,            Config::GetConfigValue( Config::tId::stdMemSize          ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::thresholdClone,     Config::GetConfigValue( Config::tId::thresholdClone      ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::thresholdMarry,     Config::GetConfigValue( Config::tId::thresholdMarry      ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::thresholdMove,      Config::GetConfigValue( Config::tId::thresholdMove       ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::thresholdFertilize, Config::GetConfigValue( Config::tId::thresholdFertilize  ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::maxEat,             Config::GetConfigValue( Config::tId::maxEat              ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::cloneDonation,      SHRT_MAX / 2 );
 
     // static members for caching frequently used configuration items
 
@@ -104,7 +104,7 @@ void Genome::setActionGene( Action::Id const action, int const iValue )
     m_aGeneActions  [ static_cast<int>( action ) ].m_action = action;
 }
 
-void Genome::setGeneralGene( tGeneType const type, int const iValue )
+void Genome::setGeneralGene( GeneType::Id const type, int const iValue )
 {
     short const sValue = static_cast<short>( iValue );
     m_aLimitsGeneral[ static_cast<int>( type ) ].CheckLimits( sValue );
@@ -167,12 +167,12 @@ Action::Id Genome::GetOption
 	
 	std::array <bool, Action::NR_ACTION_GENES > abOptions;
  
-	abOptions[ static_cast<int>( Action::Id::move      ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdMove )      );
-    abOptions[ static_cast<int>( Action::Id::fertilize ) ] =                                  ( iEnergy >= GetAllele( tGeneType::thresholdFertilize ) );
-    abOptions[ static_cast<int>( Action::Id::clone     ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( tGeneType::thresholdClone )     );
-    abOptions[ static_cast<int>( Action::Id::marry     ) ] = bHasFreeSpace && bHasNeighbor && ( iEnergy >= GetAllele( tGeneType::thresholdMarry )     );
+	abOptions[ static_cast<int>( Action::Id::move      ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( GeneType::Id::thresholdMove )      );
+    abOptions[ static_cast<int>( Action::Id::fertilize ) ] =                                  ( iEnergy >= GetAllele( GeneType::Id::thresholdFertilize ) );
+    abOptions[ static_cast<int>( Action::Id::clone     ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( GeneType::Id::thresholdClone )     );
+    abOptions[ static_cast<int>( Action::Id::marry     ) ] = bHasFreeSpace && bHasNeighbor && ( iEnergy >= GetAllele( GeneType::Id::thresholdMarry )     );
     abOptions[ static_cast<int>( Action::Id::interact  ) ] =                  bHasNeighbor;
-    abOptions[ static_cast<int>( Action::Id::eat       ) ] =                                  ( iEnergy <  GetAllele( tGeneType::maxEat )             );
+    abOptions[ static_cast<int>( Action::Id::eat       ) ] =                                  ( iEnergy <  GetAllele( GeneType::Id::maxEat )             );
 
     unsigned int uiSum = 0;
 

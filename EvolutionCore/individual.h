@@ -20,19 +20,19 @@ public:
 
     void ResetIndividual( );
     
-    short          GetEnergy    ( )                    const { return m_sEnergy; };
-    EVO_GENERATION GetGenBirth  ( )                    const { return m_genBirth; };
-    bool           IsDead       ( )                    const { return m_sEnergy <= 0; };
-    bool           IsAlive      ( )                    const { return m_sEnergy >  0; };
-    bool           IsDefined    ( )                    const { return m_id.IsNotNull(); };
-    IND_ID         GetId        ( )                    const { return m_id; };
-    tOrigin        GetOrigin    ( )                    const { return m_origin; }
-    Action::Id     GetLastAction( )                    const { return m_at; }
-    Genome const & GetGenome    ( )                    const { return m_genome; }
-    MEM_INDEX      GetMemSize   ( )                    const { return m_strat.GetMemSize( );  }
-    MEM_INDEX      GetMemUsed   ( )                    const { return m_strat.GetMemUsed( ); }
-    short          GetAllele    ( tGeneType const gt ) const { return m_genome.GetAllele( gt ); }
-    IND_ID         GetMemEntry  ( MEM_INDEX const ui ) const { return m_strat.GetMemEntry( ui ); }
+    short          GetEnergy    ( )                       const { return m_sEnergy; };
+    EVO_GENERATION GetGenBirth  ( )                       const { return m_genBirth; };
+    bool           IsDead       ( )                       const { return m_sEnergy <= 0; };
+    bool           IsAlive      ( )                       const { return m_sEnergy >  0; };
+    bool           IsDefined    ( )                       const { return m_id.IsNotNull(); };
+    IND_ID         GetId        ( )                       const { return m_id; };
+    tOrigin        GetOrigin    ( )                       const { return m_origin; }
+    Action::Id     GetLastAction( )                       const { return m_at; }
+    Genome const & GetGenome    ( )                       const { return m_genome; }
+    MEM_INDEX      GetMemSize   ( )                       const { return m_strat.GetMemSize( );  }
+    MEM_INDEX      GetMemUsed   ( )                       const { return m_strat.GetMemUsed( ); }
+    short          GetAllele    ( GeneType::Id const gt ) const { return m_genome.GetAllele( gt ); }
+    IND_ID         GetMemEntry  ( MEM_INDEX    const ui ) const { return m_strat.GetMemEntry( ui ); }
 
 	Strategy::Id GetStrategyId( )             const { return m_pStrategy->GetStrategyId(); }
 

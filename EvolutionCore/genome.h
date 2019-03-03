@@ -31,7 +31,7 @@ public:
 		return m_aGeneActions.at( static_cast<int>( action ) ).m_gene.GetAllele();
 	}
 
-    short GetAllele( tGeneType const geneType ) const 
+    short GetAllele( GeneType::Id const geneType ) const 
 	{ 
 		return m_aGeneGeneral[ static_cast<int>( geneType ) ].m_gene.GetAllele(); 
 	};
@@ -42,8 +42,8 @@ private:
  
     struct generalGene
     {
-        tGeneType m_type;
-        Gene      m_gene;
+        GeneType::Id m_type;
+        Gene         m_gene;
     };
 
     struct actionGene
@@ -52,12 +52,11 @@ private:
         Gene       m_gene;
     };
 
-    std::array< generalGene, NR_GENES                > m_aGeneGeneral;  // 4 * 9 = 36   general genes 
+    std::array< generalGene, GeneType::NR_GENES      > m_aGeneGeneral;  // 4 * 9 = 36   general genes 
     std::array< actionGene,  Action::NR_ACTION_GENES > m_aGeneActions;  // 4 * 8 = 32   genes for choosing next action
-                                                                // sum     68
-    
-    void setGeneralGene( tGeneType  const, int const );
-    void setActionGene ( Action::Id const, int const );
+                                                                        // sum     68
+    void setGeneralGene( GeneType::Id const, int const );
+    void setActionGene ( Action::Id   const, int const );
 
 	// static members and functions
 
@@ -70,8 +69,8 @@ private:
 
     static Genome m_genomeTemplate;
 
-    static std::array< GeneTypeLimits, NR_GENES                > m_aLimitsGeneral;
+    static std::array< GeneTypeLimits, GeneType::NR_GENES      > m_aLimitsGeneral;
     static std::array< GeneTypeLimits, Action::NR_ACTION_GENES > m_aLimitsActions;
 
-    static void setGeneralLimits( tGeneType, long, long );
+    static void setGeneralLimits( GeneType::Id, long, long );
 };

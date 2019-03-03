@@ -72,7 +72,7 @@ public:
     virtual bool           IsDefined    ( GridPoint const gp ) const { return getGridField( gp ).IsDefined( ); }
 
     virtual IND_ID         GetMemEntry  ( GridPoint const gp, MEM_INDEX  const index ) const { return getGridField( gp ).GetMemEntry( index ); }
-    virtual long           GetGenotype  ( GridPoint const gp, tGeneType  const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
+    virtual long           GetGenotype  ( GridPoint const gp, GeneType::Id  const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
     virtual short          GetDistr     ( GridPoint const gp, Action::Id const at    ) const { return getGenome( gp ).GetDistr( at ); }
 
 	virtual EVO_GENERATION GetEvoGenerationNr ( ) const { return m_grid.GetEvoGenerationNr( ); }

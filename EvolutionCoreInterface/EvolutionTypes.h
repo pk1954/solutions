@@ -40,7 +40,7 @@ public:
 
 	static void Apply2All( std::function<void(unsigned short const &)> const & func )
 	{
-        for ( unsigned short usStrategy = 0; usStrategy < Strategy::NR_STRATEGIES; ++usStrategy )
+        for ( unsigned short usStrategy = 0; usStrategy < NR_STRATEGIES; ++usStrategy )
 		{
             func( usStrategy );
 		}
@@ -48,7 +48,7 @@ public:
 
 	static void Apply2All( std::function<void(Id const &)> const & func )
 	{
-        for ( unsigned short usStrategy = 0; usStrategy < Strategy::NR_STRATEGIES; ++usStrategy )
+        for ( unsigned short usStrategy = 0; usStrategy < NR_STRATEGIES; ++usStrategy )
 		{
             func( static_cast<Strategy::Id>(usStrategy) );
 		}
@@ -75,24 +75,46 @@ public:
 	static const int NR_ACTIONS      = static_cast<int>( Action::Id::nrOfActions );
 	static const int NR_ACTION_GENES = static_cast<int>( Action::Id::nrOfActionGenes );
 
+	static void Apply2All( std::function<void(unsigned short const &)> const & func )
+	{
+        for ( unsigned short usAction = 0; usAction < NR_ACTION_GENES; ++usAction )
+		{
+            func( usAction );
+		}
+	}
+
 	static wchar_t const * const GetName( Action::Id const );
 };
 
-enum class tGeneType : unsigned short
+class GeneType
 {
-    appetite,
-    fertilInvest,
-    memSize,
-    thresholdClone,       // minimum available energy for considering CLONE
-    thresholdMarry,       // minimum available energy for considering MARRY
-    thresholdMove,        // minimum available energy for considering MOVE
-    thresholdFertilize,   // minimum available energy for considering FERTILIZE
-    maxEat,               // maximum available energy for considering EAT
-    cloneDonation,        // amount of energy donated to clone. 0 means nothing (clone dies), SHORT_MAX means all available energy (parent dies)
-    nrOfGeneTypes
-};
+public:
+	enum class Id : unsigned short
+	{
+		appetite,
+		fertilInvest,
+		memSize,
+		thresholdClone,       // minimum available energy for considering CLONE
+		thresholdMarry,       // minimum available energy for considering MARRY
+		thresholdMove,        // minimum available energy for considering MOVE
+		thresholdFertilize,   // minimum available energy for considering FERTILIZE
+		maxEat,               // maximum available energy for considering EAT
+		cloneDonation,        // amount of energy donated to clone. 0 means nothing (clone dies), SHORT_MAX means all available energy (parent dies)
+		nrOfGeneTypes
+	};
 
-static const int NR_GENES = static_cast<int>( tGeneType::nrOfGeneTypes );
+	static const int NR_GENES = static_cast<int>( GeneType::Id::nrOfGeneTypes );
+
+	static void Apply2All( std::function<void(unsigned short const &)> const & func )
+	{
+        for ( unsigned short usGeneType = 0; usGeneType < NR_GENES; ++usGeneType )
+		{
+            func( usGeneType );
+		}
+	}
+
+	static wchar_t const * const GetName( GeneType::Id const );
+};
 
 enum class tBrushMode
 {
@@ -143,10 +165,9 @@ enum class tOrigin : unsigned short
 
 wchar_t const * const GetShapeName         ( tShape       const );
 wchar_t const * const GetOriginName        ( tOrigin      const );
-wchar_t const * const GetGeneName          ( tGeneType    const );
 wchar_t const * const GetBrushModeName     ( tBrushMode   const );
 wchar_t const * const GetBrushModeNameShort( tBrushMode   const );
 wchar_t const * const GetManipulatorName   ( tManipulator const );
 wchar_t const * const GetColorObjectName   ( tColorObject const );
 
-Action::Id const GetRelatedAction( tGeneType const );
+Action::Id const GetRelatedAction( GeneType::Id const );

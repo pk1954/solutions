@@ -47,7 +47,7 @@ bool EvolutionCore::IsEnabled( Action::Id const action )
 	return Genome::IsEnabled( action );
 }
 
-bool EvolutionCore::IsEnabled( tGeneType const gene )
+bool EvolutionCore::IsEnabled( GeneType::Id const gene )
 {
 	return Genome::IsEnabled( GetRelatedAction( gene ) );
 }
