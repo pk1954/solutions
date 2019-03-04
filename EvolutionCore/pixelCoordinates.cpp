@@ -150,8 +150,8 @@ PixelPoint PixelCoordinates::KGrid2PixelPos( KGridPoint const kp ) const
     
 PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint const gp ) const 
 { 
-	PIXEL pixY = m_pixFieldSize * gp.GetYvalue();
 	PIXEL pixX = m_pixFieldSize * gp.GetXvalue();
+	PIXEL pixY = m_pixFieldSize * gp.GetYvalue();
 
 	if ( m_bHexagon )
 	{

@@ -55,14 +55,15 @@ public:
 private:
 	void printBuffer( );
 
-    PIXEL const LEFT_MARGIN = 30_PIXEL;
+	PIXEL_X const LEFT_MARGIN { 30_PIXEL_X };
+	PIXEL_Y const TOP_MARGIN  {  5_PIXEL_Y };
 
     std::wostringstream m_wBuffer;
     HDC                 m_hDC;
-	PixelRectSize       m_pixSize;
-	PIXEL               m_cyChar;
-    PIXEL               m_cxChar;
-    PIXEL               m_pixHorizontalPos;
-    PIXEL               m_pixVerticalPos;
-    PIXEL               m_pixHorRaster;
+	PixelRect           m_pixRect; // text buffer area 
+    PIXEL_X             m_cxChar;  // horizontal sie of character
+	PIXEL_Y             m_cyChar;  // vertical size of character
+    PIXEL_X             m_pixHorizontalPos;  
+    PIXEL_Y             m_pixVerticalPos;
+    PIXEL_X             m_pixHorRaster;
 };

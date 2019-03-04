@@ -8,30 +8,29 @@
 #include "win32_util.h"
 #include "win32_textBuffer.h"
 
+using std::wstring;
 using std::setprecision;
 using std::setw;
 
 TextBuffer::TextBuffer( HDC const hdc, PixelRectSize const & size ) : 
     m_hDC( hdc ),
-	m_pixSize( size )
+	m_pixRect( PixelRect{ PixelPoint::ZERO_VAL(), size } ),
+    m_pixHorizontalPos( 0_PIXEL_X ),
+    m_pixVerticalPos  ( 0_PIXEL_Y )
 {
     TEXTMETRIC textMetric;
     (void)GetTextMetrics( m_hDC, &textMetric );
-    m_cxChar           = PIXEL(textMetric.tmAveCharWidth);
-    m_cyChar           = PIXEL(textMetric.tmHeight + textMetric.tmExternalLeading);
-    m_pixHorizontalPos = 0_PIXEL;
-    m_pixVerticalPos   = 0_PIXEL;
-    m_pixHorRaster     = m_cxChar * 3 * (textMetric.tmPitchAndFamily & TMPF_FIXED_PITCH ? 3 : 2);
+    m_cxChar       = PIXEL_X(PIXEL(textMetric.tmAveCharWidth));
+    m_cyChar       = PIXEL_Y(PIXEL(textMetric.tmHeight + textMetric.tmExternalLeading));
+    m_pixHorRaster = m_cxChar * 3 * (textMetric.tmPitchAndFamily & TMPF_FIXED_PITCH ? 3 : 2);
     m_wBuffer.imbue(std::locale(""));
 }
 
 void TextBuffer::StartPainting( ) 
 { 
-    PIXEL    const TOP_MARGIN = 5_PIXEL;
-    COLORREF const CLR_BACK   = RGB( 200, 200, 200 );
-
+	COLORREF const CLR_BACK { RGB( 200, 200, 200 ) };
     SetBkColor( m_hDC, CLR_BACK );
-	Util::FastFill( m_hDC, PixelRect{ PixelPoint::ZERO_VAL(), m_pixSize } );
+	Util::FastFill( m_hDC, m_pixRect );
     setHorizontalPos( 1_TEXT_POSITION );
     m_pixVerticalPos = TOP_MARGIN;
     SetTextAlign( m_hDC, TA_RIGHT );
@@ -39,21 +38,21 @@ void TextBuffer::StartPainting( )
 
 void TextBuffer::printBuffer( )
 {
-	std::wstring const wstr = m_wBuffer.str();
+	wstring const wstr { m_wBuffer.str() };
     (void)TextOut
 	( 
 		m_hDC, 
-		m_pixHorizontalPos.GetValue(), 
-		m_pixVerticalPos.GetValue(), 
+		m_pixHorizontalPos.GetBaseValue(), 
+		m_pixVerticalPos.GetBaseValue(), 
 		wstr.c_str(), 
 		static_cast<int>(wstr.size()) 
 	);
-	m_wBuffer.str( std::wstring() );
+	m_wBuffer.str( wstring() );
 	m_wBuffer.clear();
     m_pixHorizontalPos += m_pixHorRaster;
 }
 
-void TextBuffer::printString( std::wstring data )
+void TextBuffer::printString( wstring data )
 {
 	m_wBuffer << data;
 	printBuffer( );
