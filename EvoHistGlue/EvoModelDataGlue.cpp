@@ -6,27 +6,6 @@
 #include "EvoGenerationCmd.h"
 #include "EvolutionCore.h"
 #include "EvoModelDataGlue.h"
-#include "win32_stopwatch.h"
-
-static Stopwatch stopwatch;
-
-EvoModelDataGlue::~EvoModelDataGlue( )
-{
-    delete m_pEvolutionCore;
-}
-
-GridPoint EvoModelDataGlue::FindGridPoint( IND_ID const & id, GridRect const & rect ) const
-{ 
-    return m_pEvolutionCore->FindGridPoint( id, rect );
-}
-
-void EvoModelDataGlue::CopyFrom( ModelData const * const src )
-{
-//	stopwatch.Start();
-	EvoModelDataGlue const * const evoSrc = static_cast< EvoModelDataGlue const * const >( src );
-    m_pEvolutionCore->CopyEvolutionCoreData( evoSrc->m_pEvolutionCore );
-//	stopwatch.Stop( L"Copy model" );
-}
 
 void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 {

@@ -7,12 +7,11 @@
 
 #pragma once
 
-#include "BoolOp.h"
-#include "gridPoint.h"
 #include "gridRect.h"
 #include "GridDimensions.h"
 #include "ModelData.h"
 #include "EvolutionCore.h"
+#include "win32_stopwatch.h"
 
 class EvoModelDataGlue: public ModelData
 {
@@ -25,18 +24,30 @@ public:
 
     EvoModelDataGlue & operator= ( EvoModelDataGlue const & );  // noncopyable class 
 
-    ~EvoModelDataGlue( );
+	~EvoModelDataGlue( ) { }
 
 	virtual int GetModelSize()
 	{
 		return EvolutionCore::GetModelSize( ) + sizeof(EvoModelDataGlue);
 	}
 
-	virtual void OnAppCommand( GenerationCmd const );
-	virtual void CopyFrom( ModelData const * const );
+	virtual void CopyFrom( ModelData const * const src )
+	{
+	//	stopwatch.Start();
+		EvoModelDataGlue const * const evoSrc = static_cast< EvoModelDataGlue const * const >( src );
+		m_pEvolutionCore->CopyEvolutionCoreData( evoSrc->m_pEvolutionCore );
+	//	stopwatch.Stop( L"Copy model" );
+	}
 
-    GridPoint FindGridPoint( IND_ID const &, GridRect const & = GRID_RECT_FULL() ) const;
+    GridPoint FindGridPoint( IND_ID const & id, GridRect const & rect = GRID_RECT_FULL() ) const
+	{ 
+		return m_pEvolutionCore->FindGridPoint( id, rect );
+	}
+
+	virtual void OnAppCommand( GenerationCmd const );
 
 private:
-    EvolutionCore * m_pEvolutionCore;
+   static Stopwatch stopwatch;
+
+   EvolutionCore * m_pEvolutionCore;
 };

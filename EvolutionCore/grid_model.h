@@ -62,7 +62,7 @@ public:
 
     bool ListIsEmpty( ) const { return m_gpList.ListIsEmpty( ); }
 
-    GridPoint FindGridPoint( const std::function<bool( GridPoint const)>&, GridRect const & = GRID_RECT_FULL() ) const;
+    GridPoint FindGridPoint( const std::function<bool( GridPoint const)>&, GridRect const & ) const;
 
     // Query functions 
 

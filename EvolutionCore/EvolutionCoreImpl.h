@@ -112,12 +112,7 @@ public:
 
 	virtual void SetPoi( GridPoint const );
     virtual GridPoint FindPOI( ) const;
-	virtual GridPoint FindGridPoint( IND_ID const & id, GridRect const & rect = GRID_RECT_FULL() ) const 
-	{ 
-		return ( id.IsNull() )
-			   ? GridPoint::NULL_VAL()
-			   : m_grid.FindGridPoint( [&](GridPoint const gp) { return (GetId(gp) == id); }, rect );
-	}
+	virtual GridPoint FindGridPoint( IND_ID const &, GridRect const & rect ) const; 
 
 private:
     static ObserverInterface * m_pObservers;    // GUI call back for display of current model 

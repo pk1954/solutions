@@ -53,8 +53,15 @@ void EvolutionCoreImpl::SetPoi( GridPoint const  gp )
 GridPoint EvolutionCoreImpl::FindPOI( ) const 
 { 
 	return IsPoiDefined( ) 
-			? FindGridPoint( m_idPOI ) 
+			? FindGridPoint( m_idPOI, GRID_RECT_FULL() ) 
 			: GridPoint::NULL_VAL(); 
+}
+
+GridPoint EvolutionCoreImpl::FindGridPoint( IND_ID const & id, GridRect const & rect = GRID_RECT_FULL() ) const 
+{ 
+	return ( id.IsNull() )
+			? GridPoint::NULL_VAL()
+			: m_grid.FindGridPoint( [&](GridPoint const gp) { return (GetId(gp) == id); }, rect );
 }
 
 // Compute - plan and implement one generation step for all living individuals
