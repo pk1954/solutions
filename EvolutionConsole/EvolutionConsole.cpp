@@ -39,7 +39,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
     Script::ProcessScript( L"std_configuration.in" );
 
 	short                 const FIELDSIZE            = 8;
-    EvolutionCore       * const pEvolutionCore       = EvolutionCore::InitClass( );
+    EvolutionCore       * const pEvolutionCore       = EvolutionCore::InitClass( nullptr, nullptr );
 	int                   const iNrOfNeighbors       = Config::GetConfigValue( Config::tId::nrOfNeighbors );
 	BOOL                  const bHexagonMode         = (iNrOfNeighbors == 6);
 	PixelCoordinates    * const pPixCoords           = new PixelCoordinates( FIELDSIZE, bHexagonMode );

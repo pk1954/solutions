@@ -122,8 +122,7 @@ void AppWindow::Start(  )
 	stopwatch.Stop( L"process std_configuration.in" );
 
 	stopwatch.Start();
-	m_pEvolutionCore = EvolutionCore::InitClass( );
-	m_pEvolutionCore->SetEvent( & m_event );
+	m_pEvolutionCore = EvolutionCore::InitClass( & m_gridObservers, & m_event );
 	stopwatch.Stop( L"EvolutionCore::InitClass" );
 
     D3dSystem::Create_D3D_Device( hwndApp, GRID_WIDTH_VAL, GRID_HEIGHT_VAL, Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 );
@@ -197,8 +196,6 @@ void AppWindow::Start(  )
     m_gridObservers.AttachObserver( m_pMiniGridWindow );
     m_gridObservers.AttachObserver( m_pMainGridWindow );
 	
-	m_pEvolutionCore->SetObservers( & m_gridObservers );   // display callback for core
-
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, hwndApp,                              TRUE,  TRUE );
     m_pWinManager->AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                        TRUE,  TRUE );
 	m_pWinManager->AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_pStatusBar     ->GetWindowHandle(), FALSE, FALSE );

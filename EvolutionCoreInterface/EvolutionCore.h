@@ -82,8 +82,6 @@ public:
     virtual void ResetAll           ( ) = 0;
     virtual void ClearPoi           ( ) = 0;
     virtual void SetPoi             ( GridPoint           const   ) = 0;
-    virtual void SetObservers       ( ObserverInterface * const   ) = 0;
-    virtual void SetEvent           ( EventInterface    * const   ) = 0;
     virtual void SetSimulationMode  ( tBoolOp             const   ) = 0;
 	virtual void SetSelection       ( GridRect            const & ) = 0;
     virtual void SetBrushManipulator( tManipulator        const   ) = 0;
@@ -95,7 +93,7 @@ public:
 
     // static functions
     
-    static EvolutionCore * InitClass(  );
+    static EvolutionCore * InitClass( ObserverInterface * const, EventInterface * const );
     static EvolutionCore * CreateCore( );
     static unsigned long   GetModelSize( );
     static unsigned int    GetNrInteractionsWithKnownCulprit( );

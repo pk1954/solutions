@@ -14,18 +14,16 @@
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCoreImpl.h"
 
+ObserverInterface * EvolutionCoreImpl::m_pObservers = nullptr;    // GUI call back for display of current model 
+EventInterface    * EvolutionCoreImpl::m_pEventPOI  = nullptr;
+
 EvolutionCoreImpl::EvolutionCoreImpl( ) :
-    m_pObservers( nullptr ),
-	m_pEventPOI( nullptr ),
 	m_brush( & m_grid )
 { 
 	ResetAll( );
 };
 
-EvolutionCoreImpl::~EvolutionCoreImpl( )
-{
-    m_pObservers = nullptr;
-}
+EvolutionCoreImpl::~EvolutionCoreImpl( ) { }
 
 void EvolutionCoreImpl::ResetAll( )
 {
@@ -65,18 +63,13 @@ GridPoint EvolutionCoreImpl::FindPOI( ) const
 
 void EvolutionCoreImpl::Compute( )
 {
+    GplIterator       m_gplIterator( m_grid );
+    GridPoint         gpRun = m_gplIterator.Begin( );
 	PlannedActivity * pPlan = GetPlan4Writing( );
 
-    GplIterator m_gplIterator( m_grid );
-
-    GridPoint gpRun = m_gplIterator.Begin( );
-
-int iNrBefor = m_grid.GetNrOfLivingIndividuals();
-int iCounter = 0;
 	m_grid.PrepareActionCounters( );
     while ( gpRun.IsNotNull( ) )
     {
-++iCounter;
         assert( IsInGrid( gpRun ) );
         assert( m_grid.IsAlive( gpRun ) );
 
@@ -84,7 +77,6 @@ int iCounter = 0;
 		stopOnPoi      ( gpRun, * pPlan );
         gpRun = m_grid.ImplementPlan( gpRun, * pPlan );   // may return NULL_VAL
     }
-int iNrAfter = m_grid.GetNrOfLivingIndividuals();
 
     m_grid.FoodGrowth( );
     m_grid.IncGenNr( );

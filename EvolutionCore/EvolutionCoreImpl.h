@@ -16,6 +16,16 @@ class ObserverInterface;
 class EvolutionCoreImpl : public EvolutionCore
 {
 public:
+	static void EvolutionCoreImpl::InitClass
+	( 
+		ObserverInterface * const pObservers,
+		EventInterface    * const pEvent
+	)
+	{
+		m_pObservers = pObservers; 
+		m_pEventPOI = pEvent; 
+	}
+
 	EvolutionCoreImpl( );
     ~EvolutionCoreImpl( );
 
@@ -26,16 +36,6 @@ public:
 
     virtual void Compute( );
     
-	virtual void SetObservers( ObserverInterface * const pObservers ) 
-	{ 
-		m_pObservers = pObservers; 
-	}
-
-	virtual void SetEvent( EventInterface * const pEvent ) 
-	{ 
-		m_pEventPOI = pEvent; 
-	}
-
 	virtual void DumpGridPointList( ) const;
 
 	virtual void           ResetAll();
@@ -120,14 +120,15 @@ public:
 	}
 
 private:
-    ObserverInterface * m_pObservers;    // GUI call back for display of current model 
-	EventInterface    * m_pEventPOI;
-	Grid                m_grid;	
-    PlannedActivity     m_plan;
-    IND_ID              m_idPOI;
-	GridBrush 	        m_brush;
-	bool	    	    m_bSimulationMode;
-	GridRect            m_gridRectSelection;
+    static ObserverInterface * m_pObservers;    // GUI call back for display of current model 
+	static EventInterface    * m_pEventPOI;
+
+	Grid            m_grid;	
+    PlannedActivity m_plan;
+    IND_ID          m_idPOI;
+	GridBrush 	    m_brush;
+	bool	    	m_bSimulationMode;
+	GridRect        m_gridRectSelection;
 
 	void stopOnPoi( GridPoint const, PlannedActivity & );
 

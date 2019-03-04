@@ -9,9 +9,14 @@
 #include "EvolutionCoreImpl.h"
 #include "EvolutionCoreWrappers.h"
 
-EvolutionCore * EvolutionCore::InitClass( )
+EvolutionCore * EvolutionCore::InitClass
+( 
+	ObserverInterface * const pObservers,
+	EventInterface    * const pEvent
+)
 {
-    Grid::InitClass(  );
+    Grid::InitClass( );
+	EvolutionCoreImpl::InitClass( pObservers, pEvent );
     EvolutionCore * pEvolutionCore = EvolutionCore::CreateCore( );
 	DefineCoreWrapperFunctions( pEvolutionCore );
 	return pEvolutionCore;
