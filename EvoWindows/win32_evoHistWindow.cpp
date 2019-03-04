@@ -24,18 +24,15 @@ void EvoHistWindow::Start
 (
     HWND                  const hwndParent,
     FocusPoint          * const pFocusPoint,
-	EvoHistorySysGlue   * const pEvoHistorySys,
+	HistorySystem       * const pHistorySystem,
 	WorkThreadInterface * const pWorkThreadInterface
 )
 {
-    Config::tOnOffAuto const displayMode = static_cast<Config::tOnOffAuto>( Config::GetConfigValue( Config::tId::historyDisplay ) );
-    BOOL               const bShow       = ( displayMode == Config::tOnOffAuto::on );
-
-    HistWindow::Start( hwndParent, pEvoHistorySys->GetHistorySystem( ) );
+    HistWindow::Start( hwndParent, pHistorySystem );  // call base class
+	m_pFocusPoint          = pFocusPoint;
 	m_pWorkThreadInterface = pWorkThreadInterface;
-	m_pFocusPoint = pFocusPoint;
     m_pFocusPoint->AttachFocusPointObserver( this );
-    Show( bShow );
+	Show( Config::GetConfigValueOnOffAuto( Config::tId::historyDisplay ) == Config::tOnOffAuto::on );
 }
 
 void EvoHistWindow::DoPaint( HDC const hDC )

@@ -5,10 +5,8 @@
 
 #include "win32_histWindow.h"
 
-class EvolutionCore;
 class FocusPoint;
-class EvoNextGenFunctor;
-class EvoHistorySysGlue;
+class HistorySystem;
 class WorkThreadInterface;
 
 class EvoHistWindow : public HistWindow
@@ -21,7 +19,7 @@ public:
 	( 
 		HWND                  const, 
 		FocusPoint          * const, 
-		EvoHistorySysGlue   * const, 
+		HistorySystem       * const, 
 		WorkThreadInterface * const 
 	);
 

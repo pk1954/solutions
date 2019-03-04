@@ -163,7 +163,7 @@ void AppWindow::Start(  )
 	stopwatch.Start();
 	m_pHistInfoWindow     ->Start( hwndApp, m_pHistorySystem );
 	m_pEvoHistGlue        ->Start( m_pEvolutionCore, m_pHistorySystem, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), true, m_pHistInfoWindow );
-	m_pEvoHistWindow      ->Start( hwndApp, m_pFocusPoint, m_pEvoHistGlue, m_pWorkThreadInterface );
+	m_pEvoHistWindow      ->Start( hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
     m_pStatusBar          ->Start( hwndApp, m_pEvolutionCore );
 	m_pFocusPoint         ->Start( m_pEvoHistGlue, m_pEvolutionCore );
 	m_pWorkThreadInterface->Start( hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, & m_gridObservers, m_pEvolutionCore, m_pEvoHistGlue );
@@ -270,6 +270,7 @@ AppWindow::~AppWindow( )
         delete m_pWinManager;
         delete m_pScriptHook;
 		delete m_pEvoController;
+		delete m_pHistorySystem;
     }
     catch ( ... )
     {

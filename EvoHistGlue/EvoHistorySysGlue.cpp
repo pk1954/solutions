@@ -68,7 +68,7 @@ EvoHistorySysGlue::~EvoHistorySysGlue( )
     shutDownHistoryCache( );
 	delete m_pHistAllocThread;
 	delete m_pEvoModelFactory;
-	delete m_pHistorySystem;
+	delete m_pEvoModelWork;
 };
 
 class FindGridPointFunctor : public GenerationProperty

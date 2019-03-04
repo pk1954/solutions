@@ -45,9 +45,6 @@ public:
     HIST_GENERATION GetCurrentGeneration     ( ) const { return m_pHistorySystem->GetCurrentGeneration( ); }
     HIST_GENERATION GetYoungestGeneration    ( ) const { return m_pHistorySystem->GetYoungestGeneration( ); }
 
-    EvoModelDataGlue * GetEvoModelData ( ) { return m_pEvoModelWork;  }
-    HistorySystem    * GetHistorySystem( ) { return m_pHistorySystem; }
-    
 	HIST_GENERATION GetFirstGenOfIndividual( IND_ID const & ) const; 
 	HIST_GENERATION GetLastGenOfIndividual ( IND_ID const & ) const;  
 

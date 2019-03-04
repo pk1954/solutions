@@ -13,16 +13,15 @@ public:
 
     HistCacheItem( ModelData * const pModelData ) :
 		m_pModelData( pModelData ),
-        m_genCmd( ),
-        m_genHistCounter( 0L )
+        m_genHistCounter( 0L ),
+        m_genCmd( )
 	{ }
 
     virtual ~HistCacheItem( ) { };
 
 	static HistCacheItem * CreateItem( ModelFactory const * const pModelFactory )
 	{
-		ModelData * pModelDataNew = pModelFactory->CreateModelData( );
-		return new HistCacheItem( pModelDataNew );
+		return new HistCacheItem( pModelFactory->CreateModelData( ) );
 	}
 
 	virtual void CopyCacheItem( HistCacheItem const * const pSrc )

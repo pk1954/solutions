@@ -24,8 +24,6 @@ public:
 
     EvoModelDataGlue & operator= ( EvoModelDataGlue const & );  // noncopyable class 
 
-	~EvoModelDataGlue( ) { }
-
 	virtual int GetModelSize()
 	{
 		return EvolutionCore::GetModelSize( ) + sizeof(EvoModelDataGlue);
@@ -33,10 +31,9 @@ public:
 
 	virtual void CopyFrom( ModelData const * const src )
 	{
-	//	stopwatch.Start();
-		EvoModelDataGlue const * const evoSrc = static_cast< EvoModelDataGlue const * const >( src );
-		m_pEvolutionCore->CopyEvolutionCoreData( evoSrc->m_pEvolutionCore );
-	//	stopwatch.Stop( L"Copy model" );
+		//	stopwatch.Start();
+		m_pEvolutionCore->CopyEvolutionCoreData( static_cast< EvoModelDataGlue const * const >( src )->m_pEvolutionCore );
+		//	stopwatch.Stop( L"Copy model" );
 	}
 
     GridPoint FindGridPoint( IND_ID const & id, GridRect const & rect = GRID_RECT_FULL() ) const
