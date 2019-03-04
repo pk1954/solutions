@@ -224,7 +224,7 @@ void DrawFrame::setIndividualColor( GridPoint const gp, float const fHalfSize ) 
     Strategy::Id const strat   = m_pCore->GetStrategyId( gp );
     short        const sEnergy = m_pCore->GetEnergy( gp );
 
-	if ( static_cast<int>( strat ) >= Strategy::NR_STRATEGIES )  // can happen in case of
+	if ( static_cast<int>( strat ) >= Strategy::COUNT )  // can happen in case of
         return;                                        // race conditions between 
 	if ( sEnergy < 0 )                                 // display thread and 
 		return;                                        // worker thread

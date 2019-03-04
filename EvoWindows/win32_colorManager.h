@@ -24,12 +24,12 @@ private:
 	COLORREF m_colorSelection;
 	COLORREF m_colorHighlight;
 	
-	std::array< CLUT, Strategy::NR_STRATEGIES> m_aClutStrat;
+	std::array< CLUT, Strategy::COUNT> m_aClutStrat;
 
 	CLUT & getClut(Strategy::Id const strat)
 	{
 		int iIndex = static_cast<int>(strat);
-		AssertLimits( iIndex, 0, Strategy::NR_STRATEGIES - 1 );
+		AssertLimits( iIndex, 0, Strategy::COUNT - 1 );
 		return m_aClutStrat[ iIndex ];
 	}
 

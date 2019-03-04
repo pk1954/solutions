@@ -10,7 +10,7 @@
 #include "win32_statistics.h"
 #include "win32_stopwatch.h"
 
-class GeneStat: public XArray< unsigned int, Strategy::NR_STRATEGIES  >
+class GeneStat: public XArray< unsigned int, Strategy::COUNT  >
 {
 public:
 
@@ -21,7 +21,7 @@ public:
     };
 };
 
-class FloatStat : public XArray< float, Strategy::NR_STRATEGIES >
+class FloatStat : public XArray< float, Strategy::COUNT >
 {
 public:
 
@@ -56,33 +56,33 @@ public:
             
 		Strategy::Apply2All
 		( 
-			[&]( unsigned int uiStrategy )
+			[&]( Strategy::Id strategy )
 			{
 				float fSum = 0;
 				for ( auto & floatStat : m_axaGenePoolStrategy )
-					fSum += floatStat[ uiStrategy ];
+					fSum += floatStat[ static_cast<int>(strategy) ];
 
 				for ( auto & floatStat : m_axaGenePoolStrategy )
-					Scale( floatStat[ uiStrategy ], fSum );
+					Scale( floatStat[ static_cast<int>(strategy) ], fSum );
 			}
 		);
 
 		Strategy::Apply2All
 		( 
-			[&]( unsigned int uiStrategy )
-			{ DivNonZero( m_auiMemSize[ uiStrategy ], m_gsCounter[ uiStrategy ] ); }
+			[&]( Strategy::Id strategy )
+			{ DivNonZero( m_auiMemSize[ static_cast<int>(strategy) ], m_gsCounter[ static_cast<int>(strategy) ] ); }
 		);
     };
 
-    void add2option( Strategy::Id const s, unsigned int const uiAction, short const sValue )
+    void add2option( Strategy::Id const s, Action::Id const action, short const sValue )
     {
-        m_axaGenePoolStrategy[ uiAction ].Add( static_cast<int>( s ), static_cast<float>( sValue ) );
+        m_axaGenePoolStrategy[ static_cast<int>(action) ].Add( static_cast<int>( s ), static_cast<float>( sValue ) );
     }
 
-    void add2Gene( Strategy::Id const s, unsigned int const uiGene, long const lGenoType )
+    void add2Gene( Strategy::Id const s, GeneType::Id const geneType, long const lGenoType )
     {
         assert( lGenoType >= 0 );
-        m_aGeneStat[ uiGene ].Add( static_cast<int>( s ), static_cast<unsigned int>( lGenoType ) );
+        m_aGeneStat[ static_cast<int>(geneType) ].Add( static_cast<int>( s ), static_cast<unsigned int>( lGenoType ) );
     }
 
     void addMemSize( Strategy::Id const s, unsigned int const uiMemSize )
@@ -138,24 +138,22 @@ public:
     {
 		Action::Apply2All
 		(
-			[&]( unsigned short usAction )
+			[&]( Action::Id action )
 			{
-				Action::Id action = static_cast<Action::Id>( usAction );
 				if ( EvolutionCore::IsEnabled( action ) )
 				{
 					printCounters( textBuf, pCore, action );
-					m_axaGenePoolStrategy[ usAction ].printFloatLine( textBuf, L"" );
+					m_axaGenePoolStrategy[ static_cast<int>(action) ].printFloatLine( textBuf, L"" );
 				}
 			}
 		);
 
 		GeneType::Apply2All
 		(
-			[&]( unsigned short usGeneType )
+			[&]( GeneType::Id geneType )
 			{
-				GeneType::Id geneType = static_cast<GeneType::Id>( usGeneType );
 				if ( EvolutionCore::IsEnabled( geneType ) )
-					m_aGeneStat[ usGeneType ].printGeneLine( textBuf, GeneType::GetName( geneType ) );
+					m_aGeneStat[ static_cast<int>(geneType) ].printGeneLine( textBuf, GeneType::GetName( geneType ) );
 			}
 		);
 	}
@@ -164,16 +162,19 @@ public:
     {
         FloatStat fsAvFood;
 
-		unsigned int uiEat      = static_cast<unsigned int>( Action::Id::eat );
-		unsigned int uiAppetite = static_cast<unsigned int>(GeneType::Id::appetite);
+		int iEat      = static_cast<int>( Action::Id::eat );
+		int iAppetite = static_cast<int>( GeneType::Id::appetite );
 
 		Strategy::Apply2All
 		( 
-			[&]( unsigned int uiStrategy )
-			{ fsAvFood[ uiStrategy ] = m_aGeneStat[ uiAppetite ][ uiStrategy ] * m_axaGenePoolStrategy[ uiEat ][ uiStrategy ] / 100; }
+			[&]( Strategy::Id strategy )
+			{ 
+				int iStrategy = static_cast<int>( strategy );
+				fsAvFood[ iStrategy ] = m_aGeneStat[ iAppetite ][ iStrategy ] * m_axaGenePoolStrategy[ iEat ][ iStrategy ] / 100; 
+			}
 		);
 
-        fsAvFood.General( ) = m_aGeneStat[ uiAppetite ].General( ) * m_axaGenePoolStrategy[ uiEat ].General( ) / 100 ;
+        fsAvFood.General( ) = m_aGeneStat[ iAppetite ].General( ) * m_axaGenePoolStrategy[ iEat ].General( ) / 100 ;
 
         fsAvFood.printFloatLine( textBuf, data );
     }
@@ -190,9 +191,9 @@ private:
     GeneStat m_gsCounter;          // counter for strategies and sum counter 
     GeneStat m_gsAverageAge;       // average age of all individuals
 
-    std::array < FloatStat,      Action::NR_ACTION_GENES > m_axaGenePoolStrategy;
-    std::array < unsigned int, Strategy::NR_STRATEGIES   > m_auiMemSize;
-    std::array < GeneStat,     GeneType::NR_GENES        > m_aGeneStat;
+    std::array < FloatStat,      Action::COUNT > m_axaGenePoolStrategy;
+    std::array < unsigned int, Strategy::COUNT > m_auiMemSize;
+    std::array < GeneStat,     GeneType::COUNT > m_aGeneStat;
 };
 
 StatisticsWindow::StatisticsWindow( ):
@@ -236,22 +237,27 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 		{
 			if ( m_pCore->IsAlive( gp ) )
 			{
-				Strategy::Id const s = m_pCore->GetStrategyId( gp );
-				if ( s != Strategy::Id::empty ) // can happen due to race conditions 
+				Strategy::Id const strategy = m_pCore->GetStrategyId( gp );
+				if ( strategy != Strategy::Id::empty ) // can happen due to race conditions 
 				{
-					for ( unsigned int uiAction = 0; uiAction < Action::NR_ACTION_GENES; ++uiAction )
-						if ( EvolutionCore::IsEnabled( static_cast<Action::Id>( uiAction ) ) )
-							genesStat.add2option( s, uiAction, m_pCore->GetDistr( gp, static_cast<Action::Id>( uiAction ) ) );
+					Action::Apply2All
+					(
+						[&]( Action::Id action )
+						{
+							if ( EvolutionCore::IsEnabled( action ) )
+								genesStat.add2option( strategy, action, m_pCore->GetDistr( gp, action ) );
+						}
+					);
 
 					GeneType::Apply2All
 					(
-						[&]( unsigned short usGeneType )
-						{ genesStat.add2Gene( s, usGeneType, m_pCore->GetGenotype( gp, static_cast<GeneType::Id>( usGeneType ) ) ); }
+						[&]( GeneType::Id geneType )
+						{ genesStat.add2Gene( strategy, geneType, m_pCore->GetGenotype( gp, geneType ) ); }
 					);
 
-					genesStat.incCounter( s );
-					genesStat.addMemSize( s, m_pCore->GetMemSize( gp ).GetValue() );
-					genesStat.addAge    ( s, m_pCore->GetAge( gp ) );
+					genesStat.incCounter( strategy );
+					genesStat.addMemSize( strategy, m_pCore->GetMemSize( gp ).GetValue() );
+					genesStat.addAge    ( strategy, m_pCore->GetAge( gp ) );
 				}
 			}
 		},

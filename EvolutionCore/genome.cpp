@@ -16,9 +16,9 @@
 
 Genome Genome::m_genomeTemplate;
 
-std::array< GeneTypeLimits, GeneType::NR_GENES      > Genome::m_aLimitsGeneral;
-std::array< GeneTypeLimits, Action::NR_ACTION_GENES > Genome::m_aLimitsActions;
-std::array< bool,           Action::NR_ACTIONS      > Genome::m_abActionEnabled;
+std::array< GeneTypeLimits, GeneType::COUNT      > Genome::m_aLimitsGeneral;
+std::array< GeneTypeLimits,   Action::COUNT      > Genome::m_aLimitsActions;
+std::array< bool,             Action::NR_ACTIONS > Genome::m_abActionEnabled;
 
 std::array< unsigned int, Genome::MAX_LIFE_SPAN + 1 > Genome::m_mortalityTable;
 
@@ -165,7 +165,7 @@ Action::Id Genome::GetOption
 	   )
 		return Action::Id::passOn;
 	
-	std::array <bool, Action::NR_ACTION_GENES > abOptions;
+	std::array <bool, Action::COUNT > abOptions;
  
 	abOptions[ static_cast<int>( Action::Id::move      ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( GeneType::Id::thresholdMove )      );
     abOptions[ static_cast<int>( Action::Id::fertilize ) ] =                                  ( iEnergy >= GetAllele( GeneType::Id::thresholdFertilize ) );

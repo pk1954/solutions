@@ -24,33 +24,25 @@ public:
 		cooperate, 
 		tit4tat, 
 	//	friedman, 
-		nrOfStrategies, 
+		count, 
 		random,         // Not really a strategy. Used to signal random fill
 		empty,          // Not really a strategy. Used to mark empty slot
 		all             // Not really a strategy. Used to mark all strategies
 	};
 
-	static const int NR_STRATEGIES = static_cast<int>( Id::nrOfStrategies );
+	static const int COUNT = static_cast<int>( Id::count );
 
 	virtual Id   GetStrategyId( )                                         const = 0;
     virtual bool InteractWith( StrategyData &, IND_ID const )             const = 0;
     virtual void Remember    ( StrategyData &, IND_ID const, bool const ) const = 0;
 
-	static wchar_t const * const GetName( Strategy::Id const );
-
-	static void Apply2All( std::function<void(unsigned short const &)> const & func )
-	{
-        for ( unsigned short usStrategy = 0; usStrategy < NR_STRATEGIES; ++usStrategy )
-		{
-            func( usStrategy );
-		}
-	}
+	static wchar_t const * const GetName( Id const );
 
 	static void Apply2All( std::function<void(Id const &)> const & func )
 	{
-        for ( unsigned short usStrategy = 0; usStrategy < NR_STRATEGIES; ++usStrategy )
+        for ( int index = 0; index < COUNT; ++index )
 		{
-            func( static_cast<Strategy::Id>(usStrategy) );
+            func( static_cast<Id>(index) );
 		}
 	}
 };
@@ -66,24 +58,24 @@ public:
 		interact, 
 		eat, 
 		fertilize,
-		nrOfActionGenes,
-		passOn = nrOfActionGenes,
+		count,
+		passOn = count,
 		nrOfActions,
 		undefined = nrOfActions
 	};
 
-	static const int NR_ACTIONS      = static_cast<int>( Action::Id::nrOfActions );
-	static const int NR_ACTION_GENES = static_cast<int>( Action::Id::nrOfActionGenes );
+	static const int NR_ACTIONS = static_cast<int>( Id::nrOfActions );
+	static const int COUNT      = static_cast<int>( Id::count );
 
-	static void Apply2All( std::function<void(unsigned short const &)> const & func )
+	static void Apply2All( std::function<void(Id const &)> const & func )
 	{
-        for ( unsigned short usAction = 0; usAction < NR_ACTION_GENES; ++usAction )
+        for ( int index = 0; index < COUNT; ++index )
 		{
-            func( usAction );
+            func( static_cast<Id>(index) );
 		}
 	}
 
-	static wchar_t const * const GetName( Action::Id const );
+	static wchar_t const * const GetName( Id const );
 };
 
 class GeneType
@@ -100,20 +92,20 @@ public:
 		thresholdFertilize,   // minimum available energy for considering FERTILIZE
 		maxEat,               // maximum available energy for considering EAT
 		cloneDonation,        // amount of energy donated to clone. 0 means nothing (clone dies), SHORT_MAX means all available energy (parent dies)
-		nrOfGeneTypes
+		count
 	};
 
-	static const int NR_GENES = static_cast<int>( GeneType::Id::nrOfGeneTypes );
+	static const int COUNT = static_cast<int>( Id::count );
 
-	static void Apply2All( std::function<void(unsigned short const &)> const & func )
+	static void Apply2All( std::function<void(Id const &)> const & func )
 	{
-        for ( unsigned short usGeneType = 0; usGeneType < NR_GENES; ++usGeneType )
+        for ( int index = 0; index < COUNT; ++index )
 		{
-            func( usGeneType );
+            func( static_cast<Id>(index) );
 		}
 	}
 
-	static wchar_t const * const GetName( GeneType::Id const );
+	static wchar_t const * const GetName( Id const );
 };
 
 enum class tBrushMode

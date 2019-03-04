@@ -102,7 +102,7 @@ public:
 		unsigned int uiStrategy = static_cast<unsigned int>( strategy );
 
 		assert( uiAction   <= Action::NR_ACTIONS );
-		assert( uiStrategy <= Strategy::NR_STRATEGIES );
+		assert( uiStrategy <= Strategy::COUNT );
 
 		return (* m_pActionCounterRead)[ uiAction ][ uiStrategy ];
 	}
@@ -162,7 +162,7 @@ private:
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;
 
-	using tActionCounters = std::array< std::array < unsigned int, Strategy::NR_STRATEGIES>, Action::NR_ACTIONS >;
+	using tActionCounters = std::array< std::array < unsigned int, Strategy::COUNT>, Action::NR_ACTIONS >;
 
 	tActionCounters   m_ActionCounter1;
 	tActionCounters   m_ActionCounter2;

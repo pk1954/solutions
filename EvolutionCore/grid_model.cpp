@@ -331,7 +331,7 @@ void Grid::EditSetStrategy
 		if ( strategy != Strategy::Id::empty )
 		{
 			if ( strategy == Strategy::Id::random ) 
-				strategy = static_cast<Strategy::Id>(m_random.NextRandomNumber() % Strategy::NR_STRATEGIES );
+				strategy = static_cast<Strategy::Id>(m_random.NextRandomNumber() % Strategy::COUNT );
 
 			gf.CreateIndividual( ++m_idCounter, m_genEvo, strategy );
 			if ( ! bIsAlive )

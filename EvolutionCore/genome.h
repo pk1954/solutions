@@ -52,8 +52,8 @@ private:
         Gene       m_gene;
     };
 
-    std::array< generalGene, GeneType::NR_GENES      > m_aGeneGeneral;  // 4 * 9 = 36   general genes 
-    std::array< actionGene,  Action::NR_ACTION_GENES > m_aGeneActions;  // 4 * 8 = 32   genes for choosing next action
+    std::array< generalGene, GeneType::COUNT > m_aGeneGeneral;  // 4 * 9 = 36   general genes 
+    std::array< actionGene,    Action::COUNT > m_aGeneActions;  // 4 * 8 = 32   genes for choosing next action
                                                                         // sum     68
     void setGeneralGene( GeneType::Id const, int const );
     void setActionGene ( Action::Id   const, int const );
@@ -63,14 +63,14 @@ private:
 	static unsigned int const MAX_LIFE_SPAN = 200;
 
 	static std::array< bool,         Action::NR_ACTIONS > m_abActionEnabled;
-	static std::array< unsigned int, MAX_LIFE_SPAN + 1 > m_mortalityTable;
+	static std::array< unsigned int, MAX_LIFE_SPAN + 1  > m_mortalityTable;
 
 	static bool & enabled( Action::Id const action ) { return m_abActionEnabled[ static_cast<unsigned short>( action ) ]; 	}
 
     static Genome m_genomeTemplate;
 
-    static std::array< GeneTypeLimits, GeneType::NR_GENES      > m_aLimitsGeneral;
-    static std::array< GeneTypeLimits, Action::NR_ACTION_GENES > m_aLimitsActions;
+    static std::array< GeneTypeLimits, GeneType::COUNT > m_aLimitsGeneral;
+    static std::array< GeneTypeLimits,   Action::COUNT > m_aLimitsActions;
 
     static void setGeneralLimits( GeneType::Id, long, long );
 };
