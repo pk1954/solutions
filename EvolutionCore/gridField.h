@@ -64,7 +64,7 @@ public:
     bool           IsDead( )        const { return m_Individual.IsDead( ); }
     bool           IsAlive( )       const { return m_Individual.IsAlive( ); };
     bool           IsDefined( )     const { return m_Individual.IsDefined( ); };
-    MEM_INDEX      GetMemSize( )    const { return m_Individual.GetMemSize  ( ); }
+    MEM_INDEX      GetMemSize( )    const { return m_Individual.GetMemSize( ); }
     MEM_INDEX      GetMemUsed( )    const { return m_Individual.GetMemUsed( ); }
     Genome const & GetGenome( )     const { return m_Individual.GetGenome( ); }
 

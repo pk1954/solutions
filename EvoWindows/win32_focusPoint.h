@@ -32,12 +32,12 @@ public:
 
 	HIST_GENERATION const GetGenBirth( ) const 
 	{ 
-		return m_genBirth; 
+		return m_histGenBirth; 
 	}
 
 	HIST_GENERATION const GetGenDeath( ) const 
 	{ 
-		return m_genDeath; 
+		return m_histGenDeath; 
 	}
 
 	BOOL const IsInGrid( ) const 
@@ -64,7 +64,7 @@ private:
     EvoHistorySysGlue * m_pEvoHistGlue;
     EvolutionCore     * m_pCore;
     ViewCollection      m_ViewCollection;
-    HIST_GENERATION     m_genBirth;
-    HIST_GENERATION     m_genDeath;
+    HIST_GENERATION     m_histGenBirth;
+    HIST_GENERATION     m_histGenDeath;
     GridPoint           m_gp;
 };

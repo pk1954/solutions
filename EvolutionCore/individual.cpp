@@ -53,15 +53,15 @@ void Individual::ResetIndividual( )
 
 void Individual::Create
 ( 
-    IND_ID                const id,
-    EVO_GENERATION        const genBirth,
-    Strategy::Id const strategyId
+    IND_ID         const id,
+    EVO_GENERATION const genBirth,
+    Strategy::Id   const strategyId
 )
 {
-    m_pStrategy  = m_apStrat.at( strategyId );
-    m_id         = id;
-    m_genBirth   = genBirth;
-    m_origin     = tOrigin::editor;
+    m_pStrategy = m_apStrat.at( strategyId );
+    m_id        = id;
+    m_genBirth  = genBirth;
+    m_origin    = tOrigin::editor;
     m_genome.InitGenome( );
     m_strat.SetMemorySize( static_cast<MEM_INDEX>(m_genome.GetAllele(GeneType::Id::memSize)) );
     m_sCapacity = m_sStdEnergyCapacity;

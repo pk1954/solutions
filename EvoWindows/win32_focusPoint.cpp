@@ -10,8 +10,8 @@
 FocusPoint::FocusPoint( ) :
     m_pEvoHistGlue( nullptr ),
     m_pCore( nullptr ),
-    m_genBirth( - 1 ),
-    m_genDeath( - 1 ),
+    m_histGenBirth( ),
+    m_histGenDeath( ),
     m_gp( GridPoint::NULL_VAL() )
 { };
 
@@ -43,8 +43,8 @@ void FocusPoint::SetFocusPoint( GridPoint const gpNew )
 //            if ( m_pEvoHistGlue != nullptr )
 //            {
 //                IND_ID id = m_pCore->GetId( m_gp );
-//                m_genBirth = m_pEvoHistGlue->GetFirstGenOfIndividual( id );
-//                m_genDeath = m_pEvoHistGlue->GetLastGenOfIndividual ( id ) + 1;
+//                m_histGenBirth = m_pEvoHistGlue->GetFirstGenOfIndividual( id );
+//                m_histGenDeath = m_pEvoHistGlue->GetLastGenOfIndividual ( id ) + 1;
 //            }
 //        }
 

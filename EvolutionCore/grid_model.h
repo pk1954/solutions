@@ -78,7 +78,11 @@ public:
     IND_ID         GetId       ( GridPoint const gp ) const { return GetGridField( gp ).GetId       ( ); }
     tOrigin        GetOrigin   ( GridPoint const gp ) const { return GetGridField( gp ).GetOrigin   ( ); }
     EVO_GENERATION GetGenBirth ( GridPoint const gp ) const { return GetGridField( gp ).GetGenBirth( ); }
-    EVO_GENERATION GetAge      ( GridPoint const gp ) const { return m_genEvo - GetGenBirth( gp ); }
+    EVO_GENERATION GetAge      ( GridPoint const gp ) const 
+	{
+		EVO_GENERATION genBirth = GetGenBirth( gp );
+		return genBirth.IsNull() ? EVO_GENERATION::NULL_VAL() : (m_genEvo - genBirth); 
+	}
 
     EVO_GENERATION GetEvoGenerationNr( ) const { return m_genEvo; }
 

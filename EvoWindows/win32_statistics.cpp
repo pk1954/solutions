@@ -85,9 +85,9 @@ public:
         m_aGeneStat[ static_cast<int>(geneType) ].Add( static_cast<int>( s ), static_cast<unsigned int>( lGenoType ) );
     }
 
-    void addMemSize( Strategy::Id const s, unsigned int const uiMemSize )
+    void addMemSize( Strategy::Id const s, MEM_INDEX const memSize )
     {
-        m_auiMemSize[ static_cast<int>( s ) ] += uiMemSize;
+        m_auiMemSize[ static_cast<int>( s ) ] += memSize.GetValue();
     }
 
     void addAge( Strategy::Id const s, EVO_GENERATION genAge )
@@ -237,8 +237,14 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 		{
 			if ( m_pCore->IsAlive( gp ) )
 			{
-				Strategy::Id const strategy = m_pCore->GetStrategyId( gp );
-				if ( strategy != Strategy::Id::empty ) // can happen due to race conditions 
+				Strategy::Id   const strategy = m_pCore->GetStrategyId( gp );
+				EVO_GENERATION const age      = m_pCore->GetAge( gp );
+				MEM_INDEX      const memSize  = m_pCore->GetMemSize( gp );
+
+				if (  // can happen due to race conditions 
+					  ( strategy != Strategy::Id::empty ) &&
+					  ( age.IsNotNull()  )
+				   )
 				{
 					Action::Apply2All
 					(
@@ -255,9 +261,9 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 						{ genesStat.add2Gene( strategy, geneType, m_pCore->GetGenotype( gp, geneType ) ); }
 					);
 
+					genesStat.addMemSize( strategy, memSize );
+					genesStat.addAge    ( strategy, age );
 					genesStat.incCounter( strategy );
-					genesStat.addMemSize( strategy, m_pCore->GetMemSize( gp ).GetValue() );
-					genesStat.addAge    ( strategy, m_pCore->GetAge( gp ) );
 				}
 			}
 		},

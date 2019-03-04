@@ -11,14 +11,14 @@
 class HIST_GENERATION
 {
 public:
-    HIST_GENERATION( )              : m_nr( HIST_GENERATION_UNDEFINED ) {}
+    HIST_GENERATION( )              : m_nr( NULL_VAL ) {}
     HIST_GENERATION( long const l ) : m_nr( l ) {}
 
-    void Set2Infinite( ) { m_nr = LONG_MAX; }
+    void Set2Infinite( ) { m_nr = INFINITE_VAL; }
 
-    bool IsInfinite  ( ) const { return m_nr == LONG_MAX; }
-    bool IsDefined   ( ) const { return m_nr != HIST_GENERATION_UNDEFINED; }
-    bool IsUndefined ( ) const { return m_nr == HIST_GENERATION_UNDEFINED; }
+    bool IsInfinite  ( ) const { return m_nr == INFINITE_VAL; }
+    bool IsDefined   ( ) const { return m_nr != NULL_VAL; }
+    bool IsUndefined ( ) const { return m_nr == NULL_VAL; }
 
     HIST_GENERATION operator+ ( HIST_GENERATION const & a ) const { return m_nr + a.m_nr; }
     HIST_GENERATION operator- ( HIST_GENERATION const & a ) const { return m_nr - a.m_nr; }
@@ -40,9 +40,11 @@ public:
 
     long const GetLong( ) const { return m_nr; }
 
-    static long const HIST_GENERATION_UNDEFINED = -1;
 
 private:
+    static long const INFINITE_VAL = LONG_MAX;
+    static long const NULL_VAL     = LONG_MIN;
+
     long m_nr;
 };
 
