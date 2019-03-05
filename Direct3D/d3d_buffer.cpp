@@ -15,6 +15,8 @@
 //lint -e835                                   0 as left argument to << or |
 //lint -e845                                   0 as right argument to << or |
 
+static COLORREF const CLR_WHITE = D3DCOLOR_ARGB( 255, 255, 255, 255 );
+
 D3DXFONT_DESC D3dBuffer::m_d3dx_font_desc =
 {
     0,                         //  Height (will be set during initializition)
@@ -88,7 +90,7 @@ D3dBuffer::~D3dBuffer()
 }
 
 //lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
-PixelRect D3dBuffer::D3D_CalcRect( std::wstring const & wstr )
+PixelRect D3dBuffer::CalcGraphicsRect( std::wstring const & wstr )
 {
 	RECT rect{ 0, 0, 0, 0 };
     assert( m_id3dx_font != nullptr );
@@ -104,7 +106,7 @@ PixelRect D3dBuffer::D3D_CalcRect( std::wstring const & wstr )
 	return Util::RECT2PixelRect( rect );
 }
 
-void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, std::wstring const & wstr, D3DCOLOR col )
+void D3dBuffer::DisplayGraphicsText( PixelRect const & pixRect, std::wstring const & wstr )
 {
 	RECT rect( Util::PixelRect2RECT( pixRect ) );			  
     assert( m_id3dx_font != nullptr );
@@ -115,7 +117,7 @@ void D3dBuffer::D3D_DrawText( PixelRect const & pixRect, std::wstring const & ws
         -1,                // Count
         &rect,             // pRect
         DT_LEFT,           // Format
-        col                // Color
+        CLR_WHITE          // Color
     ); 
 }
 //lint +esym( 613, D3dBuffer::m_id3dx_font ) 
@@ -171,7 +173,7 @@ void D3dBuffer::ResetFont( PIXEL const nPointSize )
     setFont( );   
 }
 
-void D3dBuffer::addRect2Buffer( float const fWest, float const fNorth, float const fEast, float const fSouth, DWORD const dwColor )
+void D3dBuffer::addRect2Buffer( float const fWest, float const fNorth, float const fEast, float const fSouth, D3DCOLOR const dwColor )
 {    
     m_pVertBufPrimitives->AddVertex( fWest, fNorth, dwColor );
     m_pVertBufPrimitives->AddVertex( fEast, fNorth, dwColor );
@@ -179,7 +181,7 @@ void D3dBuffer::addRect2Buffer( float const fWest, float const fNorth, float con
     m_pVertBufPrimitives->AddVertex( fWest, fSouth, dwColor );
 }
 
-void D3dBuffer::addRectangle( float const fPtPosx, float const fPtPosy, DWORD const dwColor, float const fPixSize )
+void D3dBuffer::addRectangle( float const fPtPosx, float const fPtPosy, D3DCOLOR const dwColor, float const fPixSize )
 {
     addRect2Buffer
     ( 
@@ -191,7 +193,7 @@ void D3dBuffer::addRectangle( float const fPtPosx, float const fPtPosy, DWORD co
     );
 }
 
-void D3dBuffer::addHexagon( float const fPtPosx, float const fPtPosy, DWORD const dwColor, float const fPixSizeX, float const fPixSizeY )
+void D3dBuffer::addHexagon( float const fPtPosx, float const fPtPosy, D3DCOLOR const dwColor, float const fPixSizeX, float const fPixSizeY )
 {
 	m_pVertBufPrimitives->AddVertex( fPtPosx - fPixSizeX     - 0.5f, fPtPosy,                 dwColor );     // west
 	m_pVertBufPrimitives->AddVertex( fPtPosx - fPixSizeX / 2 - 0.5f, fPtPosy - fPixSizeY / 2, dwColor );     // north west
@@ -201,27 +203,29 @@ void D3dBuffer::addHexagon( float const fPtPosx, float const fPtPosy, DWORD cons
 	m_pVertBufPrimitives->AddVertex( fPtPosx + fPixSizeX     + 0.5f, fPtPosy,                 dwColor );     // east
 }
 
-void D3dBuffer::AddIndividualPrimitive( PixelPoint const ptPos, DWORD const dwColor, float const fPixSize )
+void D3dBuffer::AddIndividual( PixelPoint const ptPos, COLORREF const color, float const fPixSize )
 {
 	static float const SQRT3 = static_cast<float>( sqrt( 3 ) );
 
     float const fPtPosx = static_cast<float>( ptPos.GetXvalue() );
     float const fPtPosy = static_cast<float>( ptPos.GetYvalue() );
 
+	D3DCOLOR const D3Dcolor = color; // COLORREFtoD3DCOLOR( 255, color );
+
     if ( m_bStripMode )
     {
-		addRectangle( fPtPosx, fPtPosy, dwColor, fPixSize );
+		addRectangle( fPtPosx, fPtPosy, D3Dcolor, fPixSize );
 	}
 	else
 	{
 		if ( m_d3d->GetHexagonMode( ) )
-			addHexagon( fPtPosx, fPtPosy, dwColor, fPixSize, SQRT3 * fPixSize );
+			addHexagon( fPtPosx, fPtPosy, D3Dcolor, fPixSize, SQRT3 * fPixSize );
 		else
-			addRectangle( fPtPosx, fPtPosy, dwColor, fPixSize );
+			addRectangle( fPtPosx, fPtPosy, D3Dcolor, fPixSize );
 	}
 }
 
-void D3dBuffer::AddBackgroundPrimitive( PixelPoint const ptPos, DWORD const dwColor, float const fPixSize )
+void D3dBuffer::AddBackGround( PixelPoint const ptPos, COLORREF const color, float const fPixSize )
 {
 	static float const INVERSE_SQRT3 = static_cast<float>( 1 / sqrt( 3 ) );
 
@@ -230,16 +234,18 @@ void D3dBuffer::AddBackgroundPrimitive( PixelPoint const ptPos, DWORD const dwCo
 
 	float const fPixSizeHalf = fPixSize / 2;
 
+	D3DCOLOR const D3Dcolor = color; // COLORREFtoD3DCOLOR( 255, color );
+
     if ( m_bStripMode )
     {
-        m_pVertBufStripMode->AddVertex( fPtPosx, fPtPosy, dwColor );
+        m_pVertBufStripMode->AddVertex( fPtPosx, fPtPosy, D3Dcolor );
     }
     else
     {
 		if ( m_d3d->GetHexagonMode( ) )
-			addHexagon( fPtPosx, fPtPosy, dwColor, fPixSize * INVERSE_SQRT3, fPixSize );
+			addHexagon( fPtPosx, fPtPosy, D3Dcolor, fPixSize * INVERSE_SQRT3, fPixSize );
 		else
-			addRectangle( fPtPosx, fPtPosy, dwColor, fPixSizeHalf );
+			addRectangle( fPtPosx, fPtPosy, D3Dcolor, fPixSizeHalf );
     }
 }
 
@@ -275,19 +281,13 @@ void D3dBuffer::RenderTranspRect
 		assert( m_d3d_device != nullptr );
 		prepareTranspMode( );
 
-		UINT const uiR = GetRValue ( color ); 
-		UINT const uiG = GetGValue ( color ); 
-		UINT const uiB = GetBValue ( color );
-
-		D3DCOLOR d3dColor = D3DCOLOR_ARGB( uiALpha, uiR, uiG, uiB );
-
 		addRect2Buffer
 		( 
 			static_cast<float>( rectTransparent.GetLeft  ().GetBaseValue() ), 
 			static_cast<float>( rectTransparent.GetTop   ().GetBaseValue() ), 
 			static_cast<float>( rectTransparent.GetRight ().GetBaseValue() ), 
 			static_cast<float>( rectTransparent.GetBottom().GetBaseValue() ), 
-			d3dColor 
+			COLORREFtoD3DCOLOR( uiALpha, color ) 
 		);
 
 		renderPrimitives( m_d3d->GetRectIndexBuffer() );
@@ -373,4 +373,13 @@ void D3dBuffer::EndFrame( )
     //lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
     m_id3dx_font->Release();      
     //lint +esym( 613, D3dBuffer::m_id3dx_font ) 
+}
+
+D3DCOLOR D3dBuffer::COLORREFtoD3DCOLOR( unsigned int const uiALpha, COLORREF const color )
+{
+	UINT const uiR = GetRValue ( color ); 
+	UINT const uiG = GetGValue ( color ); 
+	UINT const uiB = GetBValue ( color );
+
+	return D3DCOLOR_ARGB( uiALpha, uiR, uiG, uiB );
 }

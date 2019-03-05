@@ -15,7 +15,7 @@ static long const KGRID_FACTOR = 1024;
 
 PixelCoordinates::PixelCoordinates
 ( 
-    short const fs, 
+    PIXEL const fs, 
 	bool  const bHexagon
 )
   : m_pixOffset( 0_PIXEL_X, 0_PIXEL_Y ),

@@ -15,7 +15,7 @@ class PixelCoordinates
 {
 public:
 
-    PixelCoordinates( short const, bool const );
+    PixelCoordinates( PIXEL const, bool const );
     
 	//////// transformations ////////
 

@@ -8,37 +8,34 @@
 #include "d3dx9core.h"
 #include "PixelTypes.h"
 #include "win32_util.h"
+#include "GraphicsInterface.h"
 #include "d3d_system.h"
 #include "d3d_vertexBuffer.h"
 
-static COLORREF const CLR_BLACK = D3DCOLOR_ARGB( 255,   0,   0,   0 );
-static COLORREF const CLR_GREY  = D3DCOLOR_ARGB( 128, 128, 128, 128 );
-static COLORREF const CLR_WHITE = D3DCOLOR_ARGB( 255, 255, 255, 255 );
-
-class D3dBuffer
+class D3dBuffer: public GraphicsInterface
 {
 public:
 
     D3dBuffer( HWND const, ULONG const );
     ~D3dBuffer();
 
-    BOOL      StartFrame( );
-    void      ResetFont( PIXEL const );
-    void      AddIndividualPrimitive( PixelPoint const, DWORD const, float const );    
-    void      AddBackgroundPrimitive( PixelPoint const, DWORD const, float const );    
-    void      RenderIndividuals( );
-    void      RenderBackground( );
-    void      RenderTranspRect( PixelRect const &, unsigned int const, COLORREF const );
-    void      D3D_DrawText( PixelRect const &, std::wstring const &, D3DCOLOR );
-    PixelRect D3D_CalcRect( std::wstring const & );
-	void      EndFrame( );
-
-    void SetStripMode( tBoolOp const bOp ) 
+    virtual BOOL      StartFrame( );
+    virtual void      ResetFont( PIXEL const );
+    virtual void      AddIndividual( PixelPoint const, COLORREF const, float const );    
+    virtual void      AddBackGround( PixelPoint const, COLORREF const, float const );    
+    virtual void      RenderIndividuals( );
+    virtual void      RenderBackground( );
+    virtual void      RenderTranspRect( PixelRect const &, unsigned int const, COLORREF const );
+    virtual void      DisplayGraphicsText( PixelRect const &, std::wstring const & );
+    virtual PixelRect CalcGraphicsRect( std::wstring const & );
+	virtual void      EndFrame( );
+	 
+    virtual void SetStripMode( tBoolOp const bOp ) 
 	{ 
 		ApplyOp( m_bStripMode, bOp ); 
 	};
 
-    BOOL GetStripMode( ) 
+    virtual BOOL GetStripMode( ) 
 	{ 
 		return m_bStripMode; 
 	};
@@ -67,11 +64,13 @@ private:
     static D3DXFONT_DESC    m_d3dx_font_desc;  // identical for all buffers, even on systems with multiple displays
 
     BOOL setFont( );
-    void addRectangle( float const, float const, DWORD const, float const );    
-    void addHexagon  ( float const, float const, DWORD const, float const, float const );    
-    void addRect2Buffer( float const, float const, float const, float const, DWORD const );
+    void addRectangle( float const, float const, D3DCOLOR const, float const );    
+    void addHexagon  ( float const, float const, D3DCOLOR const, float const, float const );    
+    void addRect2Buffer( float const, float const, float const, float const, D3DCOLOR const );
     void renderTriangleStrip( ) const;
     void renderPrimitives( D3dIndexBuffer const * const );
     void prepareTranspMode( );
     void finishTranspMode( );
+
+	D3DCOLOR COLORREFtoD3DCOLOR( unsigned int const, COLORREF const );
 };

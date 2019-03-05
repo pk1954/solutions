@@ -9,7 +9,7 @@
 class Vertex        // 16 Byte
 { 
 public:
-    Vertex( float const fx, float const fy, float const fz, DWORD const dwColor) :
+    Vertex( float const fx, float const fy, float const fz, D3DCOLOR const dwColor) :
 		m_fx     ( fx ), 
 		m_fy     ( fy ), 
 		m_fz     ( fz ), 
@@ -17,8 +17,8 @@ public:
 {};
 
 private:
-    float m_fx, m_fy, m_fz; 
-    DWORD m_dwColor; 
+    float    m_fx, m_fy, m_fz; 
+    D3DCOLOR m_dwColor; 
 };     
 
 class VertexBuffer
@@ -27,7 +27,7 @@ public:
     explicit VertexBuffer( ULONG const ulSize );
     ~VertexBuffer( ) { };
 
-    void  AddVertex( float const fx, float const fy, DWORD const dwColor) 
+    void  AddVertex( float const fx, float const fy, D3DCOLOR const dwColor) 
 	{ 
 		m_vertexVector.push_back( Vertex( fx, fy, 0.0f, dwColor ) ); 
 	}

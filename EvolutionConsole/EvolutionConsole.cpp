@@ -38,7 +38,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
     Script::ProcessScript( L"std_configuration.in" );
 
-	short                 const FIELDSIZE            = 8;
+	PIXEL                 const FIELDSIZE            = 8_PIXEL;
     EvolutionCore       * const pEvolutionCore       = EvolutionCore::InitClass( nullptr, nullptr );
 	int                   const iNrOfNeighbors       = Config::GetConfigValue( Config::tId::nrOfNeighbors );
 	BOOL                  const bHexagonMode         = (iNrOfNeighbors == 6);

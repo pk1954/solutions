@@ -1,5 +1,6 @@
 // win32_draw.h : 
 //
+// EvoWindows
 
 #pragma once
 
@@ -16,12 +17,12 @@
 //lint -esym( 763, EvolutionCore )  redundant declaration
 
 class EvolutionCore;
+class GraphicsInterface;
 class PixelCoordinates;
 class GridPointShape;
 class ColorManager;
 class DspOptWindow;
 class TextDisplay;
-class D3dBuffer;
 class Shape;
 
 class DrawFrame
@@ -33,6 +34,7 @@ public:
 		HWND const, 
 		EvolutionCore * const, 
 		PixelCoordinates * const, 
+		GraphicsInterface * const,
 		DspOptWindow * const, 
 		ColorManager * const
 	);
@@ -52,16 +54,16 @@ private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
     DrawFrame & operator= ( DrawFrame const & );  // noncopyable class 
 
-    EvolutionCore    * const m_pCore;
-    PixelCoordinates * const m_pPixelCoordinates;
-    DspOptWindow     * const m_pDspOptWindow;
-	ColorManager     * const m_pColorManager;  
+    EvolutionCore     * const m_pCore;
+    PixelCoordinates  * const m_pPixelCoordinates;
+    DspOptWindow      * const m_pDspOptWindow;
+	ColorManager      * const m_pColorManager;  
 
-    D3dBuffer        * m_pD3dBuffer;
-	GridPointShape   * m_gridPointShape;
-	TextDisplay      * m_pTextDisplay;
-	Shape const      * m_pShapeHighlight;
-	GridPoint          m_gpHighlight;
+    GraphicsInterface * m_pGraphics;
+	GridPointShape    * m_gridPointShape;
+	TextDisplay       * m_pTextDisplay;
+	Shape const       * m_pShapeHighlight;
+	GridPoint           m_gpHighlight;
 
 	static CLUT_INDEX const MAX_BG_COLOR()
 	{

@@ -17,14 +17,14 @@ PerformanceWindow::PerformanceWindow( ) :
     m_dwCounter( 0 )
 { }
 
-void PerformanceWindow::Start( HWND const hwndParent, UINT const uiAlpha )
+void PerformanceWindow::Start( HWND const hwndParent )
 {
     StartTextWindow
 	( 
 		hwndParent, 
 		PixelRect { 0_PIXEL_X, 0_PIXEL_Y, 300_PIXEL_X, 130_PIXEL_Y }, 
 		L"PerformanceWindow", 
-		uiAlpha, 
+		100,  // alpha
 		TRUE 
 	);
 }

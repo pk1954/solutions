@@ -5,19 +5,19 @@
 #include <sstream> 
 #include "EvolutionCore.h"
 #include "pixelCoordinates.h"
-#include "d3d_buffer.h"
+#include "GraphicsInterface.h"
 
 class TextDisplay
 {
 public:
 	TextDisplay
 	( 
-		D3dBuffer           & d3dBuffer, 
+		GraphicsInterface   & graphicsInterface, 
 		std::wostringstream & wBuffer,
 		PixelCoordinates    & pixelCoordinates,
 		EvolutionCore       & core
 	) :
-		m_D3dBuffer( d3dBuffer ),
+		m_graphics( graphicsInterface ),
 		m_wBuffer( wBuffer ),
 		m_pixelCoordinates( pixelCoordinates ),
 		m_core( core )
@@ -61,16 +61,16 @@ public:
 
 	PixelRectSize CalcRectSize( )
 	{
-		return m_D3dBuffer.D3D_CalcRect( m_wBuffer.str( ) ).GetSize( );
+		return m_graphics.CalcGraphicsRect( m_wBuffer.str( ) ).GetSize( );
 	}
 
-	void DrawText( PixelRect const & rect )
+	void DisplayText( PixelRect const & rect )
 	{
-		m_D3dBuffer.D3D_DrawText( rect, m_wBuffer.str( ), CLR_WHITE );
+		m_graphics.DisplayGraphicsText( rect, m_wBuffer.str( ) );
 	}
 
 private:
-    D3dBuffer           & m_D3dBuffer;
+    GraphicsInterface   & m_graphics;
 	std::wostringstream & m_wBuffer;
 	PixelCoordinates    & m_pixelCoordinates;
     EvolutionCore       & m_core;

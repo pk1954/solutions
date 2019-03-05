@@ -105,7 +105,7 @@ void D3dSystem::createDevice( HWND const hwnd, ULONG const ulModelWidth, ULONG c
 	m_d3d_device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
 	m_d3d_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
 	stopwatch.Start();
-	m_d3d_pIndexBufBgStripMode    = createStripIndices( ulModelWidth + 2, ulModelHeight + 2 );    // Index buffer for food
+	m_d3d_pIndexBufBgStripMode    = createStripIndices( ulModelWidth + 2, ulModelHeight + 2 ); // Index buffer for food
 	m_d3d_pIndexBufBgNonStripMode = createIndsIndices ( ulModelWidth, ulModelHeight );    // Index buffer for food
 	m_d3d_pIndexBufIndividuals    = createIndsIndices ( ulModelWidth, ulModelHeight );    // Index buffer for individuals
 	m_d3d_pIndexBufRect           = createRectIndices ( );                                // Index buffer for one rectangle  

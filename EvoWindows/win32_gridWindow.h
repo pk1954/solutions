@@ -20,20 +20,20 @@ class ColorManager;
 class GridWindow : public BaseWindow
 {
 public:
-    GridWindow( );
-
-    void Start
-    ( 
-        HWND, 
+	static void InitClass
+	( 
+		HWND                  const, 
+		EvolutionCore       * const,
         WorkThreadInterface * const,
         FocusPoint          * const,
         DspOptWindow        * const,
         PerformanceWindow   * const, 
-		ColorManager        * const, 
-        EvolutionCore       * const, 
-        DWORD                 const, 
-        SHORT                 const
-    );
+		ColorManager        * const 
+	);
+
+    GridWindow( );
+
+    void Start( DWORD const, PIXEL const );
 
     ~GridWindow( );
 
@@ -64,14 +64,17 @@ public:
 private:
     GridWindow             ( GridWindow const & );  // noncopyable class 
     GridWindow & operator= ( GridWindow const & );  // noncopyable class 
-    
-    WorkThreadInterface * m_pWorkThreadInterface;
+
+	static HWND                  m_hwndApp;
+	static EvolutionCore       * m_pCore;
+    static WorkThreadInterface * m_pWorkThreadInterface;
+    static PerformanceWindow   * m_pPerformanceWindow;
+    static DspOptWindow        * m_pDspOptWindow;
+    static FocusPoint          * m_pFocusPoint;
+	static ColorManager        * m_pColorManager;
+
     PixelCoordinates    * m_pPixelCoordinates;  // My own PixelCoordinates
     GridWindow          * m_pGWObserved;	    // Observed GridWindow (or nullptr)
-    EvolutionCore       * m_pCore;
-    PerformanceWindow   * m_pPerformanceWindow;
-    DspOptWindow        * m_pDspOptWindow;
-    FocusPoint          * m_pFocusPoint;
     ObserverInterface   * m_pObserverInterface;
 	PixelCore           * m_pPixelCore;
     DrawFrame           * m_pDrawFrame;

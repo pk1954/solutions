@@ -9,6 +9,7 @@
 #include "PixelCore.h"
 #include "pixelCoordinates.h"
 #include "EvolutionCore.h"
+#include "d3d_buffer.h"
 #include "win32_util.h"
 #include "win32_draw.h"
 #include "win32_focusPoint.h"
@@ -23,15 +24,46 @@
 
 //lint -esym( 613, GridWindow::m_pPixelCoordinates )   nullptr will not be used
 
+HWND                  GridWindow::m_hwndApp              = nullptr;
+EvolutionCore       * GridWindow::m_pCore                = nullptr;
+WorkThreadInterface * GridWindow::m_pWorkThreadInterface = nullptr;
+PerformanceWindow   * GridWindow::m_pPerformanceWindow   = nullptr;
+DspOptWindow        * GridWindow::m_pDspOptWindow        = nullptr;
+FocusPoint          * GridWindow::m_pFocusPoint          = nullptr;
+ColorManager        * GridWindow::m_pColorManager        = nullptr;
+
+void GridWindow::InitClass
+( 
+	HWND                  const hwndApp, 
+	EvolutionCore       * const pCore, 
+    WorkThreadInterface * const pWorkThreadInterface,
+    FocusPoint          * const pFocusPoint,
+    DspOptWindow        * const pDspOptWindow,
+    PerformanceWindow   * const pPerformanceWindow,
+	ColorManager        * const pColorManager
+)
+{
+	m_hwndApp              = hwndApp;
+	m_pCore                = pCore;
+	m_pWorkThreadInterface = pWorkThreadInterface;
+    m_pPerformanceWindow   = pPerformanceWindow;
+	m_pDspOptWindow        = pDspOptWindow;
+    m_pFocusPoint          = pFocusPoint;
+	m_pColorManager        = pColorManager;
+
+	D3dSystem::Create_D3D_Device
+	( 
+		m_hwndApp, 
+		GRID_WIDTH_VAL, 
+		GRID_HEIGHT_VAL, 
+		Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 
+	);
+}
+
 GridWindow::GridWindow( ) :
     BaseWindow( ),
-    m_pWorkThreadInterface( nullptr ),
     m_pPixelCoordinates( nullptr ),
     m_pGWObserved( nullptr ),
-	m_pCore( nullptr ),
-    m_pPerformanceWindow( nullptr ),
-	m_pDspOptWindow( nullptr ),
-    m_pFocusPoint( nullptr ),
     m_pObserverInterface( nullptr ),
 	m_pPixelCore( nullptr ),
     m_pDrawFrame( nullptr ),
@@ -41,44 +73,35 @@ GridWindow::GridWindow( ) :
 
 void GridWindow::Start
 ( 
-    HWND                  const hwndParent,
-    WorkThreadInterface * const pWorkThreadInterface,
-    FocusPoint          * const pFocusPoint,
-    DspOptWindow        * const pDspOptWindow,
-    PerformanceWindow   * const pPerformanceWindow,
-	ColorManager        * const pColorManager,
-    EvolutionCore       * const pCore,
-    DWORD                 const dwStyle,
-    SHORT                 const sFieldSize
+    DWORD const dwStyle,
+    PIXEL const pixFieldSize
 )
 {
     assert( sFieldSize > 0 );
-	m_pWorkThreadInterface = pWorkThreadInterface;
-    m_pPerformanceWindow   = pPerformanceWindow;
-	m_pDspOptWindow        = pDspOptWindow;
-    m_pFocusPoint          = pFocusPoint;
-	m_pCore                = pCore;
     
 	BOOL bHexagonMode   = (Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6);
-    m_pPixelCoordinates = new PixelCoordinates( sFieldSize, bHexagonMode );
+    m_pPixelCoordinates = new PixelCoordinates( pixFieldSize, bHexagonMode );
 	m_pPixelCore        = new PixelCore( m_pCore, m_pPixelCoordinates );
 
 	HWND hwnd = StartBaseWindow
     ( 
-        hwndParent,
+        m_hwndApp,
         CS_OWNDC | CS_DBLCLKS,
         L"ClassGridWindow",
         dwStyle,
 		nullptr
     );
 
-    m_pDrawFrame = new DrawFrame
+	GraphicsInterface * pGraphics = new D3dBuffer( hwnd, m_pCore->GetGridArea( ) );
+
+	m_pDrawFrame = new DrawFrame
 	( 
 		hwnd, 
 		m_pCore, 
 		m_pPixelCoordinates, 
+		pGraphics,
 		m_pDspOptWindow, 
-		pColorManager
+		m_pColorManager
 	);
 
 	m_pDrawFrame->SetStripMode

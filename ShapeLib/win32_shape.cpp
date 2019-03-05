@@ -12,6 +12,6 @@ void Shape::Draw( GridPoint const gp, PixelPoint const ppGridPointOffset )
 	{
 		m_textDisplay.Clear();
 		FillBuffer( gp );
-		m_textDisplay.DrawText( m_rect + ppGridPointOffset );
+		m_textDisplay.DisplayText( m_rect + ppGridPointOffset );
 	}
 }

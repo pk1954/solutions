@@ -1,5 +1,6 @@
 // win32_draw.cpp
 //
+// EvoWindows
 
 #include "stdafx.h"
 #include "config.h"
@@ -8,32 +9,36 @@
 #include "pixelCoordinates.h"
 #include "plannedActivity.h"
 #include "win32_util.h"
-#include "d3d_buffer.h"
+#include "GraphicsInterface.h"
 #include "win32_displayOptions.h"
 #include "win32_gridPointShape.h"
 #include "win32_colorManager.h"
 #include "win32_draw.h"
 
+static COLORREF const CLR_BLACK = RGB(   0,   0,   0 );
+static COLORREF const CLR_GREY  = RGB( 128, 128, 128 );
+static COLORREF const CLR_WHITE = RGB( 255, 255, 255 );
+
 DrawFrame::DrawFrame
 ( 
-	HWND               const hwnd,
-    EvolutionCore    * const pCore,
-    PixelCoordinates * const pPixelCoordinates, 
-    DspOptWindow     * const pDspOptWindow,
-	ColorManager     * const pColorManager
+	HWND                const hwnd,
+    EvolutionCore     * const pCore,
+    PixelCoordinates  * const pPixelCoordinates, 
+	GraphicsInterface * const pGraphics,
+    DspOptWindow      * const pDspOptWindow,
+	ColorManager      * const pColorManager
 ) : 
     m_pCore( pCore ),
     m_pPixelCoordinates( pPixelCoordinates ),
     m_pDspOptWindow( pDspOptWindow ),
 	m_pColorManager( pColorManager ),
-    m_pD3dBuffer( nullptr ), 
+    m_pGraphics( pGraphics ), 
     m_clutBackground( ),
 	m_gridPointShape( nullptr ),
 	m_gpHighlight( GridPoint::NULL_VAL() )
 {
 	m_clutBackground.Allocate( MAX_BG_COLOR() );    // default is grey scale lookup table with entries 0 .. 255
-    m_pD3dBuffer      = new D3dBuffer( hwnd, m_pCore->GetGridArea( ) );
-	m_pTextDisplay    = new TextDisplay( * m_pD3dBuffer, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
+	m_pTextDisplay    = new TextDisplay( * m_pGraphics, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
 	m_gridPointShape  = new GridPointShape( * m_pTextDisplay );
 	m_pShapeHighlight = nullptr;
 	m_gridPointShape->RefreshLayout( );
@@ -41,8 +46,8 @@ DrawFrame::DrawFrame
 
 DrawFrame::~DrawFrame( ) 
 { 
-    delete m_pD3dBuffer;
-    m_pD3dBuffer = nullptr;
+    delete m_pGraphics;
+    m_pGraphics = nullptr;
 };
 
 void DrawFrame::CallStrategyColorDialog( HWND const hwndOwner, Strategy::Id const strat )
@@ -62,7 +67,7 @@ void DrawFrame::CallHighlightColorDialog( HWND const hwndOwner )
 
 void DrawFrame::SetStripMode( tBoolOp const bOp ) 
 { 
-    m_pD3dBuffer->SetStripMode( bOp ); 
+    m_pGraphics->SetStripMode( bOp ); 
 };
 
 void DrawFrame::ResizeDrawFrame( )
@@ -74,7 +79,7 @@ void DrawFrame::ResizeDrawFrame( )
 		pixFontSize = 9_PIXEL;
 	if ( pixFontSize > 16_PIXEL )
 		pixFontSize = 16_PIXEL;
-    m_pD3dBuffer->ResetFont( pixFontSize );
+    m_pGraphics->ResetFont( pixFontSize );
 	m_gridPointShape->RefreshLayout( );
 }
 
@@ -93,14 +98,14 @@ void DrawFrame::HighlightShape( Shape const * pShape, GridPoint const gp )
 {
 	PixelRect const & rect  = pShape->GetAbsoluteShapeRect( gp );
 	COLORREF  const   color = m_pColorManager->GetColor( tColorObject::highlight );
-	m_pD3dBuffer->RenderTranspRect( rect, 128, color );  
+	m_pGraphics->RenderTranspRect( rect, 128, color );  
 }
 
 void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 {
     if ( IsWindowVisible( hwnd ) )
     {
-		if ( m_pD3dBuffer->StartFrame( ) )
+		if ( m_pGraphics->StartFrame( ) )
 		{
 			drawBackground( );
 
@@ -126,16 +131,16 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 			if ( m_pCore->SelectionIsNotEmpty() )
 			{
 				COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
-				m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), 64, color );  
+				m_pGraphics->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), 64, color );  
 			}
 
 			if ( pkgr.IsNotEmpty( ) )
 			{
 				COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
-				m_pD3dBuffer->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), 128, color );  
+				m_pGraphics->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), 128, color );  
 			}
 
-			m_pD3dBuffer->EndFrame( );
+			m_pGraphics->EndFrame( );
 		}
     }
 }
@@ -151,18 +156,18 @@ void DrawFrame::drawBackground( )
 		CLUT_INDEX const index   { m_pDspOptWindow->GetIntValue( Wrap2Grid(gp) ) };
 		DWORD      const dwColor { getBackgroundColor( index ) };
 		PixelPoint const pnt     { m_pPixelCoordinates->Grid2PixelPosCenter( gp ) };
-			m_pD3dBuffer->AddBackgroundPrimitive( pnt, dwColor, m_fPxSize );
+			m_pGraphics->AddBackGround( pnt, dwColor, m_fPxSize );
 		},
-		m_pD3dBuffer->GetStripMode() // if strip mode add borders to grid
+		m_pGraphics->GetStripMode() // if strip mode add borders to grid
 	);
 
-	m_pD3dBuffer->RenderBackground( );
+	m_pGraphics->RenderBackground( );
 }
 
 void DrawFrame::addPrimitive( GridPoint const gp, COLORREF const color, float const fPixSize ) const
 {
     if ( gp.IsNotNull( ) )
-		m_pD3dBuffer->AddIndividualPrimitive( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), color, fPixSize );
+		m_pGraphics->AddIndividual( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), color, fPixSize );
 }
 
 void DrawFrame::drawPOI( GridPoint const gpPoi )
@@ -200,7 +205,7 @@ void DrawFrame::drawIndividuals( GridRect const & rect )
 		rect
 	);
 
-    m_pD3dBuffer->RenderIndividuals( ); 
+    m_pGraphics->RenderIndividuals( ); 
 }
 
 void DrawFrame::drawText( GridRect const & rect )
