@@ -17,6 +17,8 @@
 class GridCircle;
 class Manipulator;
 
+using GROWTH_RATE = NamedType< unsigned int, struct GROWTH_RATET_Parameter >;
+
 class Grid
 {
 public:
@@ -152,7 +154,7 @@ private:
 
     GridField      m_aGF[ GRID_WIDTH_VAL ][ GRID_HEIGHT_VAL ];   // 20.000 * 196 byte = 3.920.000 byte
     GridPointList  m_gpList;                               //                            10 byte
-    ENERGY_UNITS   m_enFoodGrowth;    // for statistics     //                             8 byte 
+    ENERGY_UNITS   m_enFoodGrowth;    // for statistics    //                             8 byte 
     EVO_GENERATION m_genEvo;                               //                             4 byte
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;
@@ -171,7 +173,7 @@ private:
      
     // static members 
 
-    static int          m_iFoodGrowthRate;
+    static GROWTH_RATE  m_iFoodGrowthRate;
     static ENERGY_UNITS m_iBasicFoodConsumption;
     static ENERGY_UNITS m_iMemSizeFoodConsumption;
     static ENERGY_UNITS m_iMoveFoodConsumption;

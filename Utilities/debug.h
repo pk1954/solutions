@@ -43,22 +43,22 @@ constexpr void AssertLong( SOURCE_TYPE const value )
 template<typename SOURCE_TYPE>
 constexpr void AssertUnsignedShort( SOURCE_TYPE const value )
 {
-	assert( value >= (std::numeric_limits<unsigned short>::min)() );
-	assert( value <= (std::numeric_limits<unsigned short>::max)() );
+	assert( value >= 0 );
+	assert( static_cast<unsigned short>(value) <= (std::numeric_limits<unsigned short>::max)() );
 }
 
 template<typename SOURCE_TYPE>
 constexpr void AssertUnsignedInt( SOURCE_TYPE const value )
 {
-	assert( value >= (std::numeric_limits<unsigned int>::min)() );
-	assert( value <= (std::numeric_limits<unsigned int>::max)() );
+	assert( value >= 0 );
+	assert( static_cast<unsigned int>(value) <= (std::numeric_limits<unsigned int>::max)() );
 }
 
 template<typename SOURCE_TYPE>
 constexpr void AssertUnsignedLong( SOURCE_TYPE const value )
 {
-	assert( value >= (std::numeric_limits<unsigned long>::min)() );
-	assert( value <= (std::numeric_limits<unsigned long>::max)() );
+	assert( value >= 0 );
+	assert( static_cast<unsigned long>(value) <= (std::numeric_limits<unsigned long>::max)() );
 }
 
 template<typename SOURCE_TYPE>

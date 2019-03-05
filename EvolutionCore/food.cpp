@@ -19,8 +19,8 @@ void Grid::getBestNeighborSlots( Neighborhood & list )
     {
         ENERGY_UNITS const enFoodstock = GetFoodStock( list.GetElement( uiIndex ) );
         assert(enFoodstock >= ENERGY_UNITS(0) );
-        if ( enFoodstock >enMaxFoodStock )
-           enMaxFoodStock =enFoodstock;
+        if ( enFoodstock > enMaxFoodStock )
+           enMaxFoodStock = enFoodstock;
     }
 
     for ( unsigned int uiIndex = 0; uiIndex < list.GetLength(); ++ uiIndex )
@@ -32,8 +32,6 @@ void Grid::getBestNeighborSlots( Neighborhood & list )
 
 void Grid::FoodGrowth( )
 {
-	int m_iRate = m_iFoodGrowthRate;
-
 	m_enFoodGrowth = ENERGY_UNITS(0);
 
 	Apply2Grid
@@ -47,11 +45,11 @@ void Grid::FoodGrowth( )
 
 			if ( iDelta != ENERGY_UNITS(0) )
 			{
-				ENERGY_UNITS iGrowth = (iDelta * m_iRate) / 100;                                // negative growth is possible
-				if ( iGrowth == ENERGY_UNITS(0) )                                               // if foodstock is greater than maximum
-					iGrowth = (iDelta > ENERGY_UNITS(0)) ? ENERGY_UNITS(1) : -ENERGY_UNITS(1);  // caused by editor
-				m_enFoodGrowth += iGrowth;
-				rGF.IncFoodStock( iGrowth );
+				ENERGY_UNITS enGrowth = (iDelta * m_iFoodGrowthRate.GetValue()) / 100;                                // negative growth is possible
+				if ( enGrowth == ENERGY_UNITS(0) )                                               // if foodstock is greater than maximum
+					enGrowth = (iDelta > ENERGY_UNITS(0)) ? ENERGY_UNITS(1) : -ENERGY_UNITS(1);  // caused by editor
+				m_enFoodGrowth += enGrowth;
+				rGF.IncFoodStock( enGrowth );
 			}
 
             rGF.ReduceFertilizer( );

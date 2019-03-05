@@ -24,7 +24,7 @@
     #define CHECK_INDIVIDUALS
 //#endif
 
-int          Grid::m_iFoodGrowthRate;
+GROWTH_RATE  Grid::m_iFoodGrowthRate;
 ENERGY_UNITS Grid::m_iBasicFoodConsumption;
 ENERGY_UNITS Grid::m_iMemSizeFoodConsumption;
 ENERGY_UNITS Grid::m_iMoveFoodConsumption;
@@ -41,15 +41,14 @@ void Grid::InitClass( )
     Individual::InitClass( );
     Neighborhood::InitClass( Config::GetConfigValue( Config::tId::nrOfNeighbors ) );
 
-    m_bNeighborhoodFoodSensitivity = Config::GetConfigValue( Config::tId::neighborhoodFoodSensitivity ) > 0;
-    m_iFoodGrowthRate              = Config::GetConfigValue( Config::tId::growthRateFood );
-
-	m_iBasicFoodConsumption        = ENERGY_UNITS(Config::GetConfigValue( Config::tId::energyConsumptionBasicRate ));
-    m_iMemSizeFoodConsumption      = ENERGY_UNITS(Config::GetConfigValue( Config::tId::energyConsumptionMemSize ));
-    m_iMoveFoodConsumption         = ENERGY_UNITS(Config::GetConfigValue( Config::tId::energyConsumptionMove ));
-    m_iCloneFoodConsumption        = ENERGY_UNITS(Config::GetConfigValue( Config::tId::energyConsumptionClone ));
-    m_iMarryFoodConsumption        = ENERGY_UNITS(Config::GetConfigValue( Config::tId::energyConsumptionMarry ));
-    m_iInteractFoodConsumption     = ENERGY_UNITS(Config::GetConfigValue( Config::tId::energyConsumptionInteraction ));
+    m_bNeighborhoodFoodSensitivity = Config::GetConfigValueBool( Config::tId::neighborhoodFoodSensitivity );
+    m_iFoodGrowthRate              = GROWTH_RATE (Config::GetConfigValueShort( Config::tId::growthRateFood ));
+	m_iBasicFoodConsumption        = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionBasicRate ));
+    m_iMemSizeFoodConsumption      = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMemSize ));
+    m_iMoveFoodConsumption         = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMove ));
+    m_iCloneFoodConsumption        = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionClone ));
+    m_iMarryFoodConsumption        = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMarry ));
+    m_iInteractFoodConsumption     = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionInteraction ));
 }
 
 Grid::Grid( )

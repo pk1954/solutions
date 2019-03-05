@@ -87,6 +87,7 @@ public:
 	static bool       SetConfigValueBoolOp   ( tId const, tBoolOp const );
     static long       GetConfigValue         ( tId const );
     static short      GetConfigValueShort    ( tId const );
+	static bool       GetConfigValueBool     ( tId const );
 	static tBoolOp    GetConfigValueBoolOp   ( tId const );
 	static tOnOffAuto GetConfigValueOnOffAuto( tId const );
     static bool       UseHistorySystem( )    { return GetConfigValue( tId::maxGeneration ) > 0; };

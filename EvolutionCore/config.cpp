@@ -92,6 +92,11 @@ short Config::GetConfigValueShort( tId const id )
     return CastToShort( GetConfigValue( id ) );
 }
 
+bool Config::GetConfigValueBool( tId const id )
+{
+    return GetConfigValue( id ) != 0;
+}
+
 tBoolOp Config::GetConfigValueBoolOp( tId const id )
 {
     long const lValue = GetConfigValue( id );
