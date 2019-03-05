@@ -31,12 +31,12 @@ public:
     void      MakePlan     ( GridPoint const, PlannedActivity & );
     GridPoint ImplementPlan( GridPoint const, PlannedActivity const & );
 
-	short        GetMutRate   ( GridPoint const gp ) { return getGridField( gp ).GetMutRate( ); }
+	PERCENT      GetMutRate   ( GridPoint const gp ) { return getGridField( gp ).GetMutRate( ); }
 	ENERGY_UNITS GetFertilizer( GridPoint const gp ) { return getGridField( gp ).GetFertilizer( ); }
 	ENERGY_UNITS GetFoodStock ( GridPoint const gp ) { return getGridField( gp ).GetFoodStock( ); }
 	ENERGY_UNITS GetFertility ( GridPoint const gp ) { return getGridField( gp ).GetFertility( ); }
 
-	void Apply2MutRate   (GridPoint const gp, short        const s, ManipulatorFunc m) { getGridField( gp ).Apply2MutRate   (s, m); }
+	void Apply2MutRate   (GridPoint const gp, PERCENT      const s, ManipulatorFunc m) { getGridField( gp ).Apply2MutRate   (s, m); }
 	void Apply2Fertilizer(GridPoint const gp, ENERGY_UNITS const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertilizer(s, m); }
 	void Apply2FoodStock (GridPoint const gp, ENERGY_UNITS const s, ManipulatorFunc m) { getGridField( gp ).Apply2FoodStock (s, m); }
 	void Apply2Fertility (GridPoint const gp, ENERGY_UNITS const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertility (s, m); }

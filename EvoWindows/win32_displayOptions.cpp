@@ -138,7 +138,7 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
             switch ( wId )
             {
             case IDM_MUT_RATE:
-				m_IntValueLambda = [&](GridPoint const gp){ return m_pCore->GetMutRate( gp ); };
+				m_IntValueLambda = [&](GridPoint const gp){ return m_pCore->GetMutRate( gp ).GetValue(); };
                 break;
 
             case IDM_FERTILITY:

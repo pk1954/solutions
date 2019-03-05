@@ -118,9 +118,9 @@ void Genome::InitGenome( )
         * this = m_genomeTemplate;
 }
 
-void Genome::Mutate( short const sMutationRate, Random & random )
+void Genome::Mutate( PERCENT const mutationRate, Random & random )
 {
-	double dMutationRate = static_cast<double>(sMutationRate);
+	double dMutationRate = static_cast<double>(mutationRate.GetValue());
 
     for ( auto & g : m_aGeneGeneral )
     {

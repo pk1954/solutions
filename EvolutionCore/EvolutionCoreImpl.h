@@ -56,7 +56,7 @@ public:
 
     virtual EVO_GENERATION GetAge       ( GridPoint const gp ) const { return m_grid.GetAge( gp ); }
 
-    virtual int            GetMutRate   ( GridPoint const gp ) const { return getGridField( gp ).GetMutRate( ); }
+    virtual PERCENT        GetMutRate   ( GridPoint const gp ) const { return getGridField( gp ).GetMutRate( ); }
     virtual ENERGY_UNITS   GetFoodStock ( GridPoint const gp ) const { return getGridField( gp ).GetFoodStock( ); }
     virtual ENERGY_UNITS   GetFertility ( GridPoint const gp ) const { return getGridField( gp ).GetFertility( ); }
     virtual ENERGY_UNITS   GetFertilizer( GridPoint const gp ) const { return getGridField( gp ).GetFertilizer( ); }

@@ -37,8 +37,8 @@ public:
 	Strategy::Id GetStrategyId( )             const { return m_pStrategy->GetStrategyId(); }
 
     void Create( IND_ID const, EVO_GENERATION const, Strategy::Id const );
-    void Clone ( IND_ID const, EVO_GENERATION const, short const, Random &, Individual const & );
-    void Breed ( IND_ID const, EVO_GENERATION const, short const, Random &, Individual const &, Individual const & );
+    void Clone ( IND_ID const, EVO_GENERATION const, PERCENT const, Random &, Individual const & );
+    void Breed ( IND_ID const, EVO_GENERATION const, PERCENT const, Random &, Individual const &, Individual const & );
 
 	void Remember( IND_ID const & partnerId, bool const bPartnerReaction ) 
 	{ 

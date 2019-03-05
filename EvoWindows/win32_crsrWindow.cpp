@@ -55,7 +55,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
     textBuf.nextLine( L"MutRate:" );
     textBuf.setHorizontalPos( 2_TEXT_POSITION );
-    textBuf.printPercentage( m_pCore->GetMutRate( gpFocus ) );
+    textBuf.printPercentage( m_pCore->GetMutRate( gpFocus ).GetValue() );
     
 	if ( m_pCore->IsDead( gpFocus ) )
         return;

@@ -75,7 +75,7 @@ void Individual::Clone
 (
     IND_ID         const   id,
     EVO_GENERATION const   genBirth,
-    short          const   sMutationRate,
+    PERCENT        const   mutationRate,
     Random               & random,
     Individual     const & indParent
 )
@@ -87,7 +87,7 @@ void Individual::Clone
     m_pStrategy = indParent.m_pStrategy;
     m_at        = Action::Id::undefined;
     m_strat.SetMemorySize( indParent.m_strat.GetMemSize( ) );  // clears memory. Experience not inheritable.
-    m_genome.Mutate( sMutationRate, random );
+    m_genome.Mutate( mutationRate, random );
 }
 
 static Individual const & selectParent
@@ -107,7 +107,7 @@ void Individual::Breed
 (
     IND_ID         const   id,
     EVO_GENERATION const   genBirth,
-    short          const   sMutationRate,
+    PERCENT        const   mutationRate,
     Random               & random,
     Individual     const & indParentA,
     Individual     const & indParentB
@@ -121,5 +121,5 @@ void Individual::Breed
     m_pStrategy =          selectParent( random, indParentA, indParentB ).m_pStrategy;
     m_strat.SetMemorySize( selectParent( random, indParentA, indParentB ).GetMemSize( ) );  // clears memory. Experience not inheritable.
     m_genome.Recombine( indParentA.m_genome, indParentB.m_genome, random );
-    m_genome.Mutate( sMutationRate, random );
+    m_genome.Mutate( mutationRate, random );
 }

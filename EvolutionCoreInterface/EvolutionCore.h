@@ -48,7 +48,7 @@ public:
     virtual ENERGY_UNITS   GetEnergy    ( GridPoint const ) const = 0;
     virtual ENERGY_UNITS   GetFoodStock ( GridPoint const ) const = 0;
     virtual ENERGY_UNITS   GetFertility ( GridPoint const ) const = 0;
-    virtual int            GetMutRate   ( GridPoint const ) const = 0;
+    virtual PERCENT        GetMutRate   ( GridPoint const ) const = 0;
     virtual ENERGY_UNITS   GetFertilizer( GridPoint const ) const = 0;
     virtual EVO_GENERATION GetGenBirth  ( GridPoint const ) const = 0;
     virtual EVO_GENERATION GetAge       ( GridPoint const ) const = 0;

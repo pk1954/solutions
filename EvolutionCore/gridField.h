@@ -24,7 +24,7 @@ public:
 		m_gp      ( GridPoint::NULL_VAL() ),
 		m_gpSenior( GridPoint::NULL_VAL() ),
 		m_gpJunior( GridPoint::NULL_VAL() ),   
-		m_sMutatRate(),   
+		m_mutRate(),   
 		m_enFertility(), 
 		m_Individual(), 
 		m_enFoodStock(), 
@@ -39,7 +39,7 @@ public:
 	void ResetGridField( ENERGY_UNITS const enFood )
 	{
 		CutConnections( );
-		m_sMutatRate   = 0;
+		m_mutRate      = PERCENT(0);
 		m_enFertility  = enFood;
 		m_enFoodStock  = enFood;
 		m_enFertilizer = ENERGY_UNITS(0);
@@ -52,7 +52,7 @@ public:
 		return ENERGY_UNITS( ClipToMinMax( available, ENERGY_UNITS(0), sWant ) ); 
 	}
 
-    short          GetMutRate( )    const { return m_sMutatRate;  }
+    PERCENT        GetMutRate( )    const { return m_mutRate;  }
     ENERGY_UNITS   GetFoodStock( )  const { return m_enFoodStock;  }
     ENERGY_UNITS   GetFertility( )  const { return m_enFertility;  }
     ENERGY_UNITS   GetFertilizer( ) const { return m_enFertilizer; }
@@ -92,7 +92,7 @@ public:
 
 	void CloneIndividual( IND_ID const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParent )
 	{
-		m_Individual.Clone( id, genBirth, m_sMutatRate, random, gfParent.m_Individual );
+		m_Individual.Clone( id, genBirth, m_mutRate, random, gfParent.m_Individual );
 		long lDonationRate = static_cast<long>( gfParent.GetAllele( GeneType::Id::cloneDonation ) );
 		long lParentEnergy = static_cast<long>( gfParent.GetEnergy( ).GetValue() );
 		long lDonation = ( lDonationRate * lParentEnergy ) / SHRT_MAX;
@@ -101,7 +101,7 @@ public:
 
 	void BreedIndividual( IND_ID const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParentA, GridField & gfParentB )
 	{
-		m_Individual.Breed( id, genBirth, m_sMutatRate, random, gfParentA.m_Individual, gfParentB.m_Individual );
+		m_Individual.Breed( id, genBirth, m_mutRate, random, gfParentA.m_Individual, gfParentB.m_Individual );
 		Donate( gfParentA, gfParentA.GetEnergy( ) / 3 );   //TODO:  Make variable, Gene?
 		Donate( gfParentB, gfParentB.GetEnergy( ) / 3 );   //TODO:  Make variable, Gene?
 	}
@@ -116,7 +116,7 @@ public:
 
 	void PassOn2Child( IND_ID const id, EVO_GENERATION const genBirth, Random & random )
 	{
-		m_Individual.Clone( id, genBirth, m_sMutatRate, random, m_Individual );
+		m_Individual.Clone( id, genBirth, m_mutRate, random, m_Individual );
 	}
 
 	void MoveIndividual( GridField & gfSrc )
@@ -125,10 +125,10 @@ public:
 		gfSrc.m_Individual.ResetIndividual( );
 	}
 
-	void Apply2MutRate   (short        const s, ManipulatorFunc f) { setMutRate   ( (f)( m_sMutatRate,  s ) ); }
+	void Apply2MutRate   (PERCENT      const s, ManipulatorFunc f) { setMutRate   ( PERCENT     ((f)( m_mutRate.GetValue(),      s.GetValue() ) ) ); }
 	void Apply2Fertilizer(ENERGY_UNITS const s, ManipulatorFunc f) { setFertilizer( ENERGY_UNITS((f)( m_enFertilizer.GetValue(), s.GetValue() ) ) ); }
-	void Apply2FoodStock (ENERGY_UNITS const s, ManipulatorFunc f) { setFoodStock ( ENERGY_UNITS((f)( m_enFoodStock.GetValue(), s.GetValue() ) ) ); }
-	void Apply2Fertility (ENERGY_UNITS const s, ManipulatorFunc f) { setFertility ( ENERGY_UNITS((f)( m_enFertility.GetValue(), s.GetValue() ) ) ); }
+	void Apply2FoodStock (ENERGY_UNITS const s, ManipulatorFunc f) { setFoodStock ( ENERGY_UNITS((f)( m_enFoodStock.GetValue(),  s.GetValue() ) ) ); }
+	void Apply2Fertility (ENERGY_UNITS const s, ManipulatorFunc f) { setFertility ( ENERGY_UNITS((f)( m_enFertility.GetValue(),  s.GetValue() ) ) ); }
 
 	void IncFoodStock( ENERGY_UNITS const sInc )
 	{ 
@@ -162,21 +162,21 @@ public:
 private:
     // data for management of neighborhood relation and list of living individuals
 
-    GridPoint  m_gp;            //   4 byte     will stay unchanged after initialization
-    GridPoint  m_gpSenior;      //   4 byte
-    GridPoint  m_gpJunior;      //   4 byte
+    GridPoint  m_gp;             //   4 byte     will stay unchanged after initialization
+    GridPoint  m_gpSenior;       //   4 byte
+    GridPoint  m_gpJunior;       //   4 byte
 
 // configuraton data, changed only by user 
 
-    short        m_sMutatRate;  //   2 byte
+    PERCENT      m_mutRate;      //   2 byte
     ENERGY_UNITS m_enFertility;  //   2 byte     normal fertility of soil
 
 // data changed by algorithm
 
-    Individual   m_Individual;  // 176 byte
+    Individual   m_Individual;   // 176 byte
     ENERGY_UNITS m_enFoodStock;  //   2 byte 
     ENERGY_UNITS m_enFertilizer; //   2 byte
-                      // sum       196 byte
+                      // sum        196 byte
 
 // static members for caching frequently used configuration items
 
@@ -190,7 +190,7 @@ private:
 	void setFertilizer( ENERGY_UNITS const s ) { assert( s >= ENERGY_UNITS(0) ); m_enFertilizer = s; }
 	void setFoodStock ( ENERGY_UNITS const s ) { assert( s >= ENERGY_UNITS(0) ); m_enFoodStock  = s; }
 	void setFertility ( ENERGY_UNITS const s ) { assert( s >= ENERGY_UNITS(0) ); m_enFertility  = s; }
-	void setMutRate   ( short        const s ) { assert( s >= 0 ); m_sMutatRate = std::min( s, (short)100 ); } // mutation rate is a percent value	
+	void setMutRate   ( PERCENT      const s ) { assert( s >= PERCENT     (0) ); m_mutRate = PERCENT{ std::min( s.GetValue(), (short)100 ) }; }
 };
 
 std::wostream & operator << ( std::wostream &, GridField const & );
