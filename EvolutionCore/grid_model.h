@@ -173,13 +173,13 @@ private:
      
     // static members 
 
-    static GROWTH_RATE  m_iFoodGrowthRate;
-    static ENERGY_UNITS m_iBasicFoodConsumption;
-    static ENERGY_UNITS m_iMemSizeFoodConsumption;
-    static ENERGY_UNITS m_iMoveFoodConsumption;
-    static ENERGY_UNITS m_iCloneFoodConsumption;
-    static ENERGY_UNITS m_iMarryFoodConsumption;
-    static ENERGY_UNITS m_iInteractFoodConsumption;
+    static GROWTH_RATE  m_enFoodGrowthRate;
+    static ENERGY_UNITS m_enBasicFoodConsumption;
+    static ENERGY_UNITS m_enMemSizeFoodConsumption;
+    static ENERGY_UNITS m_enMoveFoodConsumption;
+    static ENERGY_UNITS m_enCloneFoodConsumption;
+    static ENERGY_UNITS m_enMarryFoodConsumption;
+    static ENERGY_UNITS m_enInteractFoodConsumption;
     static bool         m_bNeighborhoodFoodSensitivity;
 };
 

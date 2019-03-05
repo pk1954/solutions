@@ -22,7 +22,7 @@ public:
 		}
 	};
 
-	static int  GetNrOfNeighbors( ) 
+	static int GetNrOfNeighbors( ) 
 	{ 
 		return m_iNrOfNeighbors; 
 	}

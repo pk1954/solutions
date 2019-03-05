@@ -24,13 +24,13 @@
     #define CHECK_INDIVIDUALS
 //#endif
 
-GROWTH_RATE  Grid::m_iFoodGrowthRate;
-ENERGY_UNITS Grid::m_iBasicFoodConsumption;
-ENERGY_UNITS Grid::m_iMemSizeFoodConsumption;
-ENERGY_UNITS Grid::m_iMoveFoodConsumption;
-ENERGY_UNITS Grid::m_iCloneFoodConsumption;
-ENERGY_UNITS Grid::m_iMarryFoodConsumption;
-ENERGY_UNITS Grid::m_iInteractFoodConsumption;
+GROWTH_RATE  Grid::m_enFoodGrowthRate;
+ENERGY_UNITS Grid::m_enBasicFoodConsumption;
+ENERGY_UNITS Grid::m_enMemSizeFoodConsumption;
+ENERGY_UNITS Grid::m_enMoveFoodConsumption;
+ENERGY_UNITS Grid::m_enCloneFoodConsumption;
+ENERGY_UNITS Grid::m_enMarryFoodConsumption;
+ENERGY_UNITS Grid::m_enInteractFoodConsumption;
 bool Grid::m_bNeighborhoodFoodSensitivity;
 
 void Grid::InitClass( )
@@ -42,13 +42,13 @@ void Grid::InitClass( )
     Neighborhood::InitClass( Config::GetConfigValue( Config::tId::nrOfNeighbors ) );
 
     m_bNeighborhoodFoodSensitivity = Config::GetConfigValueBool( Config::tId::neighborhoodFoodSensitivity );
-    m_iFoodGrowthRate              = GROWTH_RATE (Config::GetConfigValueShort( Config::tId::growthRateFood ));
-	m_iBasicFoodConsumption        = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionBasicRate ));
-    m_iMemSizeFoodConsumption      = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMemSize ));
-    m_iMoveFoodConsumption         = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMove ));
-    m_iCloneFoodConsumption        = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionClone ));
-    m_iMarryFoodConsumption        = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMarry ));
-    m_iInteractFoodConsumption     = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionInteraction ));
+    m_enFoodGrowthRate             = GROWTH_RATE (Config::GetConfigValueShort( Config::tId::growthRateFood ));
+	m_enBasicFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionBasicRate ));
+    m_enMemSizeFoodConsumption     = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMemSize ));
+    m_enMoveFoodConsumption        = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMove ));
+    m_enCloneFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionClone ));
+    m_enMarryFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMarry ));
+    m_enInteractFoodConsumption    = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionInteraction ));
 }
 
 Grid::Grid( )
@@ -146,8 +146,8 @@ void Grid::MakePlan
 
     // basic food consumption
 
-    plan.SetBaseConsumption( m_iBasicFoodConsumption );
-    plan.IncBaseConsumption( m_iMemSizeFoodConsumption * gfRun.GetMemSize( ).GetValue() );
+    plan.SetBaseConsumption( m_enBasicFoodConsumption );
+    plan.IncBaseConsumption( m_enMemSizeFoodConsumption * gfRun.GetMemSize( ).GetValue() );
 
 	m_emptyNeighborSlots.ClearList( );
 	m_occupiedNeighborSlots.ClearList( );
@@ -224,7 +224,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
     {
         case Action::Id::move: 
         {
-            gfRun.DecEnergy( m_iMoveFoodConsumption );
+            gfRun.DecEnergy( m_enMoveFoodConsumption );
             if ( gfRun.IsAlive( ) )
             {
                 GridField & gfTarget = getGridField( plan.GetTarget( ) );
@@ -239,7 +239,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
         {
             GridField & gfTarget = getGridField( plan.GetTarget( ) );
 
-            gfRun.DecEnergy( m_iCloneFoodConsumption );
+            gfRun.DecEnergy( m_enCloneFoodConsumption );
             gfTarget.CloneIndividual( ++m_idCounter, m_genEvo, m_random, gfRun );
 
             if ( gfTarget.IsAlive( ) )
@@ -252,7 +252,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
             GridField & gfTarget  = getGridField( plan.GetTarget( ) );
             GridField & gfPartner = getGridField( plan.GetPartner( ) );
 
-            gfRun.DecEnergy( m_iMarryFoodConsumption );
+            gfRun.DecEnergy( m_enMarryFoodConsumption );
             gfTarget.BreedIndividual( ++m_idCounter, m_genEvo, m_random, gfRun, gfPartner );
 
             if ( gfTarget.IsAlive( ) )
@@ -265,7 +265,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
         case Action::Id::interact:
         {
             GridField & gfPartner = getGridField( plan.GetPartner( ) );
-            gfRun.DecEnergy( m_iInteractFoodConsumption );
+            gfRun.DecEnergy( m_enInteractFoodConsumption );
             GridField::Interact( gfRun, gfPartner );
 
             if ( gpNext.IsNotNull( ) )

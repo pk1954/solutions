@@ -45,7 +45,7 @@ void Grid::FoodGrowth( )
 
 			if ( iDelta != ENERGY_UNITS(0) )
 			{
-				ENERGY_UNITS enGrowth = (iDelta * m_iFoodGrowthRate.GetValue()) / 100;                                // negative growth is possible
+				ENERGY_UNITS enGrowth = (iDelta * m_enFoodGrowthRate.GetValue()) / 100;                                // negative growth is possible
 				if ( enGrowth == ENERGY_UNITS(0) )                                               // if foodstock is greater than maximum
 					enGrowth = (iDelta > ENERGY_UNITS(0)) ? ENERGY_UNITS(1) : -ENERGY_UNITS(1);  // caused by editor
 				m_enFoodGrowth += enGrowth;
