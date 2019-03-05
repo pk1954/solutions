@@ -56,7 +56,7 @@ void showHistorySlots( HistorySystem * const pHistorySys )
 {
 	HistoryIterator * iter = pHistorySys->CreateHistoryIterator( );
 
-    for ( auto iRun = iter->Set2Oldest( ); iRun != -1; iRun = iter->Set2Junior( ) )
+    for ( HistSlotNr slotNr = iter->Set2Oldest( ); slotNr.IsNotNull(); slotNr = iter->Set2Junior( ) )
         wcout << iter->GetCurrentGeneration( ) << L" ";
 
 	wcout << endl;
@@ -83,7 +83,7 @@ void gotoGeneration( HistorySystem * const pHistorySys, HIST_GENERATION const hi
 
 void DoTest( )
 {
-	static const int NR_OF_SLOTS = 10;
+	static const HistSlotNr NR_OF_SLOTS {10};
 
 	HistorySystem      * pHistorySys = HistorySystem::CreateHistorySystem( );
 	HistTestModelFactory modelFactory;
@@ -102,7 +102,7 @@ void DoTest( )
 
 	wcout << L"*** Create " << NR_OF_SLOTS << L" history slots" << endl;
 
-	for ( int i = 1; i < NR_OF_SLOTS; ++i )
+	for ( int i = 1; i < NR_OF_SLOTS.GetValue(); ++i )
 		pHistorySys->AddHistorySlot( );
 
 	assert( pHistorySys->GetNrOfHistCacheSlots( ) == NR_OF_SLOTS );

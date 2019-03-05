@@ -13,6 +13,7 @@
 #include "debug.h"
 #include "Int24.h"
 #include "util.h"
+#include "HistSlotNr.h"
 
 enum class tGenCmd : int8_t
 {
@@ -29,12 +30,12 @@ public:
         InitializeCmd( );
     }
 
-    tGenCmd GetCommand( ) const { return m_Cmd; }
-	Int24   GetParam( )   const { return m_Param; }
-	short   GetSlotNr()   const
+    tGenCmd    GetCommand( ) const { return m_Cmd; }
+	Int24      GetParam( )   const { return m_Param; }
+	HistSlotNr GetSlotNr()   const
 	{
 		assert( m_Cmd == tGenCmd::CACHED );
-		return m_Param.GetValue( );
+		return HistSlotNr{ m_Param.GetValue( ) };
 	}
 
 	bool IsDefined( )             const { return m_Cmd != tGenCmd::UNDEFINED; }
@@ -53,9 +54,9 @@ public:
 
 	static bool IsAppCmd( tGenCmd const cmd ) { return cmd >= tGenCmd::FIRST_APP_CMD; }
 
-    static GenerationCmd CachedCmd( short const sSlotNr )
+    static GenerationCmd CachedCmd( HistSlotNr const slotNr )
     {
-		return GenerationCmd( tGenCmd::CACHED, static_cast<unsigned int>(sSlotNr) );
+		return GenerationCmd( tGenCmd::CACHED, slotNr.GetValue() );
     }
 
     static GenerationCmd ApplicationCmd( tGenCmd cmd, Int24 const param )

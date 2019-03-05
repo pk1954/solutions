@@ -37,11 +37,10 @@ void EvoHistorySysGlue::Start
 	RootWindow    * const pRootWindow
 )
 {
-    long  const lHistEntriesDemanded = Config::GetConfigValue( Config::tId::nrOfHistorySlots );
-	long  const lHistEntries         = min( lHistEntriesDemanded, lMaxHistSize * 80 / 100 );  // use only 80% of available memory
-    short const sNrOfSlots           = CastToShort( lHistEntries );
-
-    HIST_GENERATION const genMaxNrOfGens = Config::GetConfigValue( Config::tId::maxGeneration );
+	long            const lHistEntriesDemanded { Config::GetConfigValue( Config::tId::nrOfHistorySlots ) };
+	long            const lHistEntries         { min( lHistEntriesDemanded, lMaxHistSize * 80 / 100 ) };  // use only 80% of available memory
+	HistSlotNr      const nrOfSlots            { CastToShort( lHistEntries ) }; 
+	HIST_GENERATION const genMaxNrOfGens       { Config::GetConfigValue( Config::tId::maxGeneration ) };
 
     m_pEvoModelWork    = new EvoModelDataGlue( pCore );
 	m_pEvoModelFactory = new EvoModelFactory ( );
@@ -50,7 +49,7 @@ void EvoHistorySysGlue::Start
 
 	m_pHistorySystem->InitHistorySystem
     (
-        sNrOfSlots,
+        nrOfSlots,
         genMaxNrOfGens,
         m_pEvoModelWork,
         m_pEvoModelFactory,
@@ -87,14 +86,11 @@ private:
     IND_ID const m_id;
 };
 
-HIST_GENERATION EvoHistorySysGlue::GetFirstGenOfIndividual( IND_ID const & id ) const  
+HIST_GENERATION EvoHistorySysGlue::GetGenWithIndividual( IND_ID const & id, bool const bReverse ) const  
 { 
-	return id.IsNotNull( ) ? m_pHistorySystem->FindFirstGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
-}
-
-HIST_GENERATION EvoHistorySysGlue::GetLastGenOfIndividual ( IND_ID const & id ) const  
-{ 
-	return id.IsNotNull( ) ? m_pHistorySystem->FindLastGenerationWithProperty( FindGridPointFunctor( id ) ) : -1; 
+	return id.IsNull( ) 
+		   ? HIST_GENERATION()
+           : m_pHistorySystem->FindGenerationWithProperty( FindGridPointFunctor( id ), bReverse );
 }
 
 void EvoHistorySysGlue::EvoClearHistory(  ) 
@@ -130,12 +126,12 @@ bool EvoHistorySysGlue::askHistoryCut( HistorySystem * pHistSys ) const
 
 void EvoHistorySysGlue::shutDownHistoryCache( )
 {
-    int iMax = GetNrOfHistCacheSlots( ) - 1;
+    HistSlotNr slotNrMax = GetNrOfHistCacheSlots( ) - HistSlotNr(1);
 //    int iPercentLast = 0;
-    for ( int iRun = iMax; iRun >= 0; --iRun )
+    for ( HistSlotNr slotNr = slotNrMax; slotNr >= HistSlotNr(0); --slotNr )
     {
 /*
-        int iPercent = ( iRun * 100 ) / iMax;
+        int iPercent = ( slotNr.GetValue() * 100 ) / iMax;
         if ( iPercent != iPercentLast )
         {
             std::wstring wstrLine = L"... deleting history buffer: " + to_wstring( iPercent ) + L"%";
@@ -143,6 +139,6 @@ void EvoHistorySysGlue::shutDownHistoryCache( )
             iPercentLast = iPercent;
         }
 */
-        m_pHistorySystem->ShutDownHistCacheSlot( iRun );
+        m_pHistorySystem->ShutDownHistCacheSlot( slotNr );
     }
 }

@@ -3,29 +3,26 @@
 
 #pragma once
 
+#include "HistSlotNr.h"
 #include "HistoryGeneration.h"
 
 class HistoryCache;
-class HistSlot;
 class HistCacheItem;
 
 class HistoryIterator
 {
 public:
-    explicit HistoryIterator( HistoryCache const * pHistCache ) : 
-        m_pHistCache( pHistCache ),
-        m_iSlotRun( -1 )
-    { }
+    explicit HistoryIterator( HistoryCache const * );
 
     ~HistoryIterator( )
     {
-        m_iSlotRun = -1;
+        m_slotNrRun.Set2Null();
     }
 
-    int Set2Youngest( );
-    int Set2Oldest( );
-    int Set2Senior( );
-    int Set2Junior( );
+    HistSlotNr Set2Youngest( );
+    HistSlotNr Set2Oldest( );
+    HistSlotNr Set2Senior( );
+    HistSlotNr Set2Junior( );
 
     bool IsYoungest( )    const;
     bool IsNotYoungest( ) const;
@@ -41,5 +38,5 @@ private:
     HistoryIterator( HistoryIterator const & ); // Disable copy constructor
 
     HistoryCache const * m_pHistCache;
-    int                  m_iSlotRun;
+    HistSlotNr           m_slotNrRun;
 };

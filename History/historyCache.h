@@ -20,45 +20,45 @@ public:
     explicit HistoryCache( );
     ~HistoryCache( );
     
-    void  InitHistoryCache( short const, ModelFactory const * const, ObserverInterface * const );
-    bool  AddCacheSlot( );
-    void  ResetHistoryCache( );
-    short GetFreeCacheSlotNr( );
-    void  Save2CacheSlot( HistCacheItem const &, short const );
-    void  RemoveHistCacheSlot( int const );
+    void       InitHistoryCache( HistSlotNr const, ModelFactory const * const, ObserverInterface * const );
+    bool       AddCacheSlot( );
+    void       ResetHistoryCache( );
+    HistSlotNr GetFreeCacheSlot( );
+    void       Save2CacheSlot( HistCacheItem const &, HistSlotNr const );
+    void       RemoveHistCacheSlot( HistSlotNr const );
 
-	void HistoryCache::ResetHistCacheSlot( int const iSlotNr )  	// reset slot, but leave it in list of used slots
+	void HistoryCache::ResetHistCacheSlot( HistSlotNr const slotNr )  	// reset slot, but leave it in list of used slots
 	{
-		m_aHistSlot.at( iSlotNr ).ResetSlot( );
+		getSlot( slotNr ).ResetSlot( );
 	}
 
-    bool IsEmpty( )    const { return m_iHead == -1; };
-    bool IsNotEmpty( ) const { return m_iHead != -1; };
+    bool IsEmpty( )    const { return m_histSlotHead.IsNull(); };
+    bool IsNotEmpty( ) const { return m_histSlotHead.IsNotNull(); };
 
-    int GetHead( ) const { return m_iHead; };
-    int GetTail( ) const { return 0; };
-	int GetSenior( int iSlot ) const { return m_aHistSlot.at( iSlot ).GetSeniorGen( ); }
-	int GetJunior( int iSlot ) const { return m_aHistSlot.at( iSlot ).GetJuniorGen( ); }
+    HistSlotNr GetHead( ) const { return m_histSlotHead; };
+	HistSlotNr GetTail( ) const { return HistSlotNr{0}; };
+	HistSlotNr GetSenior( HistSlotNr slotNr ) const { return getSlotC( slotNr ).GetSeniorGen( ); }
+	HistSlotNr GetJunior( HistSlotNr slotNr ) const { return getSlotC( slotNr ).GetJuniorGen( ); }
 	
-	HIST_GENERATION GetGridGen( int iSlot ) const { return m_aHistSlot.at( iSlot ).GetGridGeneration( ); }
+	HIST_GENERATION GetGridGen( HistSlotNr slotNr ) const { return getSlotC( slotNr ).GetGridGeneration( ); }
 
-    short           GetNrOfHistCacheSlots    ( ) const { return m_iNrOfSlots; }
-    short           GetNrOfUsedHistCacheSlots( ) const { return m_iNrOfUsedSlots; }
-    HIST_GENERATION GetYoungestGeneration    ( ) const { return IsEmpty( ) ? -1 : GetGridGen( m_iHead ); };
+    HistSlotNr      GetNrOfHistCacheSlots    ( ) const { return m_iNrOfSlots; }
+    HistSlotNr      GetNrOfUsedHistCacheSlots( ) const { return m_iNrOfUsedSlots; }
+    HIST_GENERATION GetYoungestGeneration    ( ) const { return IsEmpty( ) ? -1 : GetGridGen( m_histSlotHead ); };
     
-    void ShutDownHistCacheSlot( short const iSlotNr )
+    void ShutDownHistCacheSlot( HistSlotNr const slotNr )
 	{ 
-		m_aHistSlot.at( iSlotNr ).ShutDownHistCacheItem( ); 
+		getSlot( slotNr ).ShutDownHistCacheItem( ); 
 	};
 
-    HistCacheItem const * HistoryCache::GetHistCacheItemC( int const iSlotNr ) const
+    HistCacheItem const * HistoryCache::GetHistCacheItemC( HistSlotNr const slotNr ) const
 	{
-		return m_aHistSlot.at( iSlotNr ).GetHistCacheItemC( );
+		return getSlotC( slotNr ).GetHistCacheItemC( );
 	};
 
-	HistCacheItem * HistoryCache::GetHistCacheItem( int const iSlotNr ) const
+	HistCacheItem * HistoryCache::GetHistCacheItem( HistSlotNr const slotNr )
 	{
-		return m_aHistSlot.at( iSlotNr ).GetHistCacheItem( );
+		return getSlot( slotNr ).GetHistCacheItem( );
 	};
 
 private:
@@ -70,18 +70,28 @@ private:
 
     std::vector< HistSlot > m_aHistSlot;  // is tail of list
 
-	int m_iHead;            // slot with youngest generation
-    int m_iUnused;          // first unused slot
-    int m_iStartSearching;  // for optimization
+	HistSlot & getSlot(HistSlotNr const slotNr)
+	{
+		return m_aHistSlot.at( slotNr.GetValue() );
+	}
 
-    int m_iNrOfSlots;
-    int m_iNrOfRequestedSlots;
-    int m_iNrOfUsedSlots;
+	HistSlot const & getSlotC(HistSlotNr const slotNr) const
+	{
+		return m_aHistSlot.at( slotNr.GetValue() );
+	}
+
+	HistSlotNr m_histSlotHead;            // slot with youngest generation
+    HistSlotNr m_iUnused;          // first unused slot
+    HistSlotNr m_iStartSearching;  // for optimization
+
+    HistSlotNr m_iNrOfSlots;
+    HistSlotNr m_iNrOfRequestedSlots;
+    HistSlotNr m_iNrOfUsedSlots;
     
     bool  m_bAllocationRunning;
 
-	void setSenior( int iDst, int iSrc ) { m_aHistSlot.at( iDst ).SetSeniorGen( iSrc ); }
-	void setJunior( int iDst, int iSrc ) { m_aHistSlot.at( iDst ).SetJuniorGen( iSrc ); }
+	void setSenior( HistSlotNr iDst, HistSlotNr iSrc ) { getSlot( iDst ).SetSeniorGen( iSrc ); }
+	void setJunior( HistSlotNr iDst, HistSlotNr iSrc ) { getSlot( iDst ).SetJuniorGen( iSrc ); }
 
 	void triggerObserver() 
 	{ 	
@@ -89,6 +99,6 @@ private:
 			m_pObserver->Notify( false );
 	}
 
-    int  findSlot4Reuse( );
-    void checkConsistency( );
+    HistSlotNr findSlot4Reuse( );
+    void       checkConsistency( );
 };

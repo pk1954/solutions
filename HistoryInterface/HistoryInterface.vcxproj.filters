@@ -25,5 +25,8 @@
     <ClInclude Include="GenerationCmd.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="HistSlotNr.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

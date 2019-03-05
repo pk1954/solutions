@@ -152,7 +152,7 @@ void HistWindow::paintPixelPos( HDC const hDC, PIXEL_X const pixPosX ) const
         if ( ( genMin <= gen ) && ( gen <= genMax ) )  // gen maps to lPixPos
             bFoundPos = TRUE;
 
-        if ( m_pHistIter->Set2Junior( ) == -1 )
+        if ( m_pHistIter->Set2Junior( ).IsNull() )
             break;
 
         if ( m_pHistIter->GetCurrentGeneration( ) > gen + 1 )
@@ -180,14 +180,14 @@ void HistWindow::PaintAllGenerations( HDC const hDC )
 
     if ( m_pHistSys->GetNrOfGenerations( ) < pixSizeX.GetBaseValue() )
     {
-        int iRun = m_pHistIter->Set2Oldest( );
+        HistSlotNr slotNr = m_pHistIter->Set2Oldest( );
 
-        for ( HIST_GENERATION genRun = 0; iRun != -1; ++genRun )
+        for ( HIST_GENERATION genRun = 0; slotNr.IsNotNull(); ++genRun )
         {
-            BOOL bGenRunInHistory = genRun >= m_pHistIter->GetCurrentGeneration( );
+            BOOL bGenRunInHistory = (genRun >= m_pHistIter->GetCurrentGeneration( ));
             paintGeneration( hDC, genRun, bGenRunInHistory ? CLR_DARK : CLR_BACK );
             if ( bGenRunInHistory )
-                iRun = m_pHistIter->Set2Junior( );
+                slotNr = m_pHistIter->Set2Junior( );
         }
     }
     else // more generations than pixels

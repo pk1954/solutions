@@ -150,6 +150,7 @@
     <ClInclude Include="HistoryGeneration.h" />
     <ClInclude Include="historyIterator.h" />
     <ClInclude Include="HistorySystem.h" />
+    <ClInclude Include="HistSlotNr.h" />
     <ClInclude Include="ModelData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

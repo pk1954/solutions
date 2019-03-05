@@ -36,8 +36,8 @@ void HistInfoWindow::Start
 
 void HistInfoWindow::DoPaint( TextBuffer & textBuf )
 {
-    int iNrOfUsedSlots   = m_pHistSystem->GetNrOfUsedHistCacheSlots( );
-    int iNrOfSlots       = m_pHistSystem->GetNrOfHistCacheSlots( );
+    int iNrOfUsedSlots   = m_pHistSystem->GetNrOfUsedHistCacheSlots( ).GetValue();
+    int iNrOfSlots       = m_pHistSystem->GetNrOfHistCacheSlots( ).GetValue();
     long long lSlotSize  = m_pHistSystem->GetSlotSize( );
     long long lTotalSize = iNrOfSlots * lSlotSize;
 

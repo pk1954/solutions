@@ -6,70 +6,75 @@
 #include "historyCache.h"
 #include "historyIterator.h"
 
-int HistoryIterator::Set2Youngest( )
+HistoryIterator::HistoryIterator( HistoryCache const * pHistCache ) : 
+    m_pHistCache( pHistCache ),
+    m_slotNrRun( HistSlotNr::NULL_VAL() )
+{ }
+
+HistSlotNr HistoryIterator::Set2Youngest( )
 {
     assert( !m_pHistCache->IsEmpty( ) );
-    return m_iSlotRun = m_pHistCache->GetHead( );
+    return m_slotNrRun = m_pHistCache->GetHead( );
 }
 
-int HistoryIterator::Set2Oldest( )
+HistSlotNr HistoryIterator::Set2Oldest( )
 {
     if ( m_pHistCache->IsEmpty( ) )
-        return -1;
-    return m_iSlotRun = m_pHistCache->GetTail( );
+        return HistSlotNr::NULL_VAL();
+    return m_slotNrRun = m_pHistCache->GetTail( );
 }
 
-int HistoryIterator::Set2Senior( )
+HistSlotNr HistoryIterator::Set2Senior( )
 {
     if ( IsOldest( ) )
-        return -1;
-    return m_iSlotRun = m_pHistCache->GetSenior( m_iSlotRun );
+        return HistSlotNr::NULL_VAL();
+    return m_slotNrRun = m_pHistCache->GetSenior( m_slotNrRun );
 }
 
-int HistoryIterator::Set2Junior( )
+HistSlotNr HistoryIterator::Set2Junior( )
 {
     if ( IsYoungest( ) )
-        return -1;
-    return m_iSlotRun = m_pHistCache->GetJunior( m_iSlotRun );
+        return HistSlotNr::NULL_VAL();
+    return m_slotNrRun = m_pHistCache->GetJunior( m_slotNrRun );
 }
 
 bool HistoryIterator::IsYoungest( ) const
 {
-    return m_pHistCache->IsEmpty( ) || ( m_iSlotRun == m_pHistCache->GetHead( ) );
+    return m_pHistCache->IsEmpty( ) || ( m_slotNrRun == m_pHistCache->GetHead( ) );
 }
 
 bool HistoryIterator::IsNotYoungest( ) const
 {
-    return m_pHistCache->IsNotEmpty( ) && ( m_iSlotRun != m_pHistCache->GetHead( ) );
+    return m_pHistCache->IsNotEmpty( ) && ( m_slotNrRun != m_pHistCache->GetHead( ) );
 }
 
 bool HistoryIterator::IsOldest( ) const
 {
-    return m_pHistCache->IsEmpty( ) || ( m_iSlotRun == m_pHistCache->GetTail( ) );
+    return m_pHistCache->IsEmpty( ) || ( m_slotNrRun == m_pHistCache->GetTail( ) );
 }
 
 HistCacheItem const * HistoryIterator::GetCurrentHistCacheItem( ) const
 {
-    assert( m_iSlotRun != -1 );
-    return m_pHistCache->GetHistCacheItem( m_iSlotRun );
+    assert( m_slotNrRun.IsNotNull() );
+    return m_pHistCache->GetHistCacheItemC( m_slotNrRun );
 }
 
 HIST_GENERATION HistoryIterator::GetCurrentGeneration( ) const
 {
-    assert( m_iSlotRun != -1 );
-    return m_pHistCache->GetGridGen( m_iSlotRun );
+    assert( m_slotNrRun.IsNotNull() );
+    return m_pHistCache->GetGridGen( m_slotNrRun );
 };
 
 HIST_GENERATION HistoryIterator::GetJuniorGeneration( ) const
 {
-    assert( m_iSlotRun != -1 );
-    int const iJunior = m_pHistCache->GetJunior( m_iSlotRun );
-    return ( iJunior == -1 ) ? LONG_MAX : m_pHistCache->GetGridGen( iJunior );  //TODO: check if safe
+    assert( m_slotNrRun.IsNotNull() );
+    HistSlotNr const slotNrJunior = m_pHistCache->GetJunior( m_slotNrRun );
+    return ( slotNrJunior.IsNull() ) ? LONG_MAX : m_pHistCache->GetGridGen( slotNrJunior );  //TODO: check if safe
 };
 
 HIST_GENERATION HistoryIterator::GetSeniorGeneration( ) const
 {
-    assert( m_iSlotRun != -1 );
-    int const iSenior = m_pHistCache->GetSenior( m_iSlotRun );
-    return ( iSenior == -1 ) ? 0 : m_pHistCache->GetGridGen( iSenior );
+    assert( m_slotNrRun.IsNotNull() );
+    HistSlotNr const slotNrSenior = m_pHistCache->GetSenior( m_slotNrRun );
+    return ( slotNrSenior.IsNull() ) ? 0 : m_pHistCache->GetGridGen( slotNrSenior );
 };

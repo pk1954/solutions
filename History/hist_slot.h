@@ -3,19 +3,17 @@
 
 #pragma once
 
+#include "HistSlotNr.h"
 #include "HistCacheItem.h"
 #include "HistoryGeneration.h"
-
-class HistCacheItem;
 
 class HistSlot
 {
 public: 
-	static int const NUL = -1; // indicates non existing hist slot
 
     HistSlot( ) :
-        m_iSenior       ( NUL ),
-        m_iJunior       ( NUL ),
+        m_histSlotSenior( HistSlotNr::NULL_VAL() ),
+        m_histSlotJunior( HistSlotNr::NULL_VAL() ),
         m_pHistCacheItem( nullptr )
     {}
 
@@ -24,11 +22,11 @@ public:
         ShutDownHistCacheItem( );
     }
 
-    int GetSeniorGen( ) const { return m_iSenior; }
-    int GetJuniorGen( ) const { return m_iJunior; }
+    HistSlotNr GetSeniorGen( ) const { return m_histSlotSenior; }
+    HistSlotNr GetJuniorGen( ) const { return m_histSlotJunior; }
 
-    void SetSeniorGen( int const iSenior ) { m_iSenior = iSenior; }
-    void SetJuniorGen( int const iJunior ) { m_iJunior = iJunior; }
+    void SetSeniorGen( HistSlotNr const slotNrSenior ) { m_histSlotSenior = slotNrSenior; }
+    void SetJuniorGen( HistSlotNr const slotNrJunior ) { m_histSlotJunior = slotNrJunior; }
     
 	void SetHistCacheItem( HistCacheItem * const pItem ) 
 	{ 
@@ -49,7 +47,7 @@ public:
     void ResetSlot( ) { m_pHistCacheItem->InitializeGenCmd( ); }
 
 private:
-    int             m_iSenior;
-    int             m_iJunior;
+    HistSlotNr      m_histSlotSenior;
+    HistSlotNr      m_histSlotJunior;
     HistCacheItem * m_pHistCacheItem;
 };

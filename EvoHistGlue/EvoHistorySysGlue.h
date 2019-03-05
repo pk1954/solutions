@@ -40,13 +40,12 @@ public:
 
     void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); } 
 	
-    int             GetNrOfUsedHistCacheSlots( ) const { return m_pHistorySystem->GetNrOfUsedHistCacheSlots( ); }
-    int             GetNrOfHistCacheSlots    ( ) const { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
+    HistSlotNr      GetNrOfUsedHistCacheSlots( ) const { return m_pHistorySystem->GetNrOfUsedHistCacheSlots( ); }
+    HistSlotNr      GetNrOfHistCacheSlots    ( ) const { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
     HIST_GENERATION GetCurrentGeneration     ( ) const { return m_pHistorySystem->GetCurrentGeneration( ); }
     HIST_GENERATION GetYoungestGeneration    ( ) const { return m_pHistorySystem->GetYoungestGeneration( ); }
 
-	HIST_GENERATION GetFirstGenOfIndividual( IND_ID const & ) const; 
-	HIST_GENERATION GetLastGenOfIndividual ( IND_ID const & ) const;  
+	HIST_GENERATION GetGenWithIndividual( IND_ID const &, bool const ) const; 
 
 	void EvoClearHistory( );
 

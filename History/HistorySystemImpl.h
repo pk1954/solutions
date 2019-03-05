@@ -31,7 +31,7 @@ public:
 
     virtual void InitHistorySystem
     ( 
-        short               const, 
+        HistSlotNr          const, 
         HIST_GENERATION     const, 
         ModelData         * const, 
         ModelFactory      * const,
@@ -41,15 +41,15 @@ public:
 
 	virtual bool			  AddHistorySlot( )        const;
 
-    virtual int               GetNrOfUsedHistCacheSlots( ) const { return m_pHistoryCache->GetNrOfUsedHistCacheSlots( );    }
-    virtual int               GetNrOfHistCacheSlots( )     const { return m_pHistoryCache->GetNrOfHistCacheSlots( );        }
+    virtual HistSlotNr        GetNrOfUsedHistCacheSlots( ) const { return m_pHistoryCache->GetNrOfUsedHistCacheSlots( );    }
+    virtual HistSlotNr        GetNrOfHistCacheSlots( )     const { return m_pHistoryCache->GetNrOfHistCacheSlots( );        }
     virtual HIST_GENERATION   GetNrOfGenerations( )        const { return m_pHistoryCache->GetYoungestGeneration( ) + 1;    }
     virtual HIST_GENERATION   GetYoungestGeneration( )     const { return m_pHistoryCache->GetYoungestGeneration( );        }
 	virtual HIST_GENERATION   GetCurrentGeneration( )      const { return m_pHistCacheItemWork->GetHistGenCounter( );       }
     virtual int               GetSlotSize( )               const { return m_pHistCacheItemWork->GetItemSize( );             }
 	virtual bool              IsInHistoryMode( )           const { return GetCurrentGeneration() < GetYoungestGeneration(); };
 
-	virtual void              ShutDownHistCacheSlot( short const i ) { m_pHistoryCache->ShutDownHistCacheSlot( i ); }
+	virtual void              ShutDownHistCacheSlot( HistSlotNr const i ) { m_pHistoryCache->ShutDownHistCacheSlot( i ); }
 
 	virtual void              CreateAppCommand( GenerationCmd );
 	virtual void              ClearHistory    ( HIST_GENERATION const );
@@ -58,8 +58,7 @@ public:
 
 	virtual HistoryIterator * CreateHistoryIterator( ) const;
 
-    virtual HIST_GENERATION   FindFirstGenerationWithProperty( GenerationProperty const & ) const;
-    virtual HIST_GENERATION   FindLastGenerationWithProperty ( GenerationProperty const & ) const;
+    virtual HIST_GENERATION   FindGenerationWithProperty( GenerationProperty const &, bool const ) const;
 
 private:
 
