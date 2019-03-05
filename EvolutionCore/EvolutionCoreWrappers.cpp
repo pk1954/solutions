@@ -106,8 +106,8 @@ class WrapSetBrushIntensity : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        short const sIntensity = script.ScrReadShort( );
-        m_pCore->SetBrushIntensity( sIntensity );
+        PERCENT const intensity = static_cast<PERCENT>(script.ScrReadShort( ));
+        m_pCore->SetBrushIntensity( intensity );
     }
 };
 

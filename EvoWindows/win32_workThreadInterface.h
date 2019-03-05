@@ -41,7 +41,7 @@ public:
     void PostSetBrushMode( tBrushMode const );
     void PostSetBrushShape( tShape );
 	void PostSetBrushManipulator( tManipulator const );
-    void PostSetBrushIntensity( LONG const );
+    void PostSetBrushIntensity( PERCENT const );
     void PostSetColor( COLORREF const, tColorObject const, Strategy::Id const );
     void PostSetBrushRadius( GRID_COORD const );
     void PostRefresh( LPARAM const );

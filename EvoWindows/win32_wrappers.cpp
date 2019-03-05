@@ -69,8 +69,8 @@ class WrapPostSetBrushIntensity : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        long const lValue = script.ScrReadLong( );
-        m_pWorkThreadInterface->PostSetBrushIntensity( lValue );
+		PERCENT const intensity { script.ScrReadShort( ) };
+        m_pWorkThreadInterface->PostSetBrushIntensity( intensity );
     }
 };
 

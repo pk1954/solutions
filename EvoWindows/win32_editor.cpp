@@ -116,8 +116,8 @@ void EditorWindow::updateEditControls( BOOL const bHistory ) // Set state of all
 
 	CheckRadioButton( IDM_EDIT_OPERATION_SET, IDM_EDIT_OPERATION_SUBTRACT, mapOperatorTable.at( m_pCore->GetBrushManipulator() ) );
 	
-	SetTrackBarPos( IDM_EDIT_SIZE,      m_pCore->GetBrushSize( ).GetValue() );
-    SetTrackBarPos( IDM_EDIT_INTENSITY, m_pCore->GetBrushIntensity( ) );
+	SetTrackBarPos( IDM_EDIT_SIZE,      m_pCore->GetBrushSize().GetValue() );
+    SetTrackBarPos( IDM_EDIT_INTENSITY, m_pCore->GetBrushIntensity().GetValue() );
 
 	// adjust display options window
 
@@ -197,16 +197,16 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
     {
     case WM_HSCROLL:
 		{
-			HWND const hwndTrackBar { (HWND)lParam };
-			int  const iCtrlId      { GetDlgCtrlID( hwndTrackBar ) };
-			LONG const lLogicalPos  { GetTrackBarPos( iCtrlId ) };
+			HWND  const hwndTrackBar { (HWND)lParam };
+			int   const iCtrlId      { GetDlgCtrlID( hwndTrackBar ) };
+			short const sLogicalPos  { GetTrackBarPos( iCtrlId ) };
 			switch ( iCtrlId )
 			{
 			case IDM_EDIT_INTENSITY:
-				m_pWorkThreadInterface->PostSetBrushIntensity( lLogicalPos );
+				m_pWorkThreadInterface->PostSetBrushIntensity( PERCENT(sLogicalPos) );
 				break;
 			case IDM_EDIT_SIZE:
-				m_pWorkThreadInterface->PostSetBrushRadius( GRID_COORD(CastToShort(lLogicalPos)) );
+				m_pWorkThreadInterface->PostSetBrushRadius( GRID_COORD(sLogicalPos) );
 				break;
 			default:
 				assert( false );

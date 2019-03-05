@@ -47,7 +47,7 @@ public:
 
     void IncGenNr( ) { ++m_genEvo; }
 
-    void EditSetStrategy( GridPoint const, short const, Strategy::Id );
+    void EditSetStrategy( GridPoint const, PERCENT const, Strategy::Id );
 
     // GridPoint list operations
 

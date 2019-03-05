@@ -25,14 +25,14 @@ public:
 		SetManipulator( tManipulator::add );
 		SetShape( tShape::Circle );
 		SetRadius( 17_GRID_COORD );
-		SetIntensity( 50 );
+		SetIntensity( PERCENT(50) );
 	}
 
 	virtual void operator()( GridPoint gpCenter )
 	{
 		if (m_shape == tShape::Grid)
 		{
-			Apply2Grid( [&](GridPoint const gp) { (m_func)( gp, m_sIntensity ); } );
+			Apply2Grid( [&](GridPoint const gp) { (m_func)( gp, m_intensity.GetValue() ); } );
 		}
 		else
 		{
@@ -40,9 +40,9 @@ public:
 			(
 				[&](GridPoint const gp)
 				{
-					short sIntensity = m_filter( gp );
-					if ( sIntensity >= 0)
-						(m_func)( gp + gpCenter, sIntensity );
+					PERCENT intensity = m_filter( gp );
+					if ( intensity >= PERCENT(0) )
+						(m_func)( gp + gpCenter, intensity.GetValue() );
 				},
 				ClipToGrid( gpCenter - GridPoint( m_radius ) ) - gpCenter,
 				ClipToGrid( gpCenter + GridPoint( m_radius ) ) - gpCenter
@@ -56,9 +56,9 @@ public:
 		m_radius = radius;    
 	}
 
-	void SetIntensity( short const intensity ) 
+	void SetIntensity( PERCENT const intensity ) 
 	{ 
-		m_sIntensity = intensity; 
+		m_intensity = intensity; 
 	}
 
 	void SetBrushMode( tBrushMode const mode ) 
@@ -66,12 +66,12 @@ public:
 		m_brushMode = mode;  
 		switch ( m_brushMode )
 		{
-		case  tBrushMode::move:        m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, Strategy::Id::empty    ); }; break;
-		case  tBrushMode::randomStrat: m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, Strategy::Id::random   ); }; break;
-		case  tBrushMode::cooperate:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, Strategy::Id::cooperate); }; break;
-		case  tBrushMode::defect:      m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, Strategy::Id::defect   ); }; break;
-		case  tBrushMode::tit4tat:     m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, Strategy::Id::tit4tat  ); }; break;
-		case  tBrushMode::noAnimals:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, s, Strategy::Id::empty    ); }; break;
+		case  tBrushMode::move:        m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, PERCENT(s), Strategy::Id::empty    ); }; break;
+		case  tBrushMode::randomStrat: m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, PERCENT(s), Strategy::Id::random   ); }; break;
+		case  tBrushMode::cooperate:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, PERCENT(s), Strategy::Id::cooperate); }; break;
+		case  tBrushMode::defect:      m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, PERCENT(s), Strategy::Id::defect   ); }; break;
+		case  tBrushMode::tit4tat:     m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, PERCENT(s), Strategy::Id::tit4tat  ); }; break;
+		case  tBrushMode::noAnimals:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->EditSetStrategy (gp, PERCENT(s), Strategy::Id::empty    ); }; break;
 		case  tBrushMode::fertilizer:  m_func = [this](GridPoint const gp, short const s) { m_pGrid->Apply2Fertilizer(gp, ENERGY_UNITS(s), m_manFunc); }; break;
 		case  tBrushMode::fertility:   m_func = [this](GridPoint const gp, short const s) { m_pGrid->Apply2Fertility (gp, ENERGY_UNITS(s), m_manFunc); }; break;
 		case  tBrushMode::food:        m_func = [this](GridPoint const gp, short const s) { m_pGrid->Apply2FoodStock (gp, ENERGY_UNITS(s), m_manFunc); }; break;
@@ -101,13 +101,14 @@ public:
 		case tShape::Circle:
 			m_filter = [this]( GridPoint const gp )
 			{ 
-				long  const lRadius     = m_radius.GetValue();
-				long  const lRadSquare  = lRadius * lRadius;
-				long  const lx          = gp.GetXvalue();
-				long  const ly          = gp.GetYvalue();
-				long  const lDistSquare = lx * lx + ly * ly;
-				short const sReduce     = CastToShort(( m_sIntensity * lDistSquare) / lRadSquare);
-				return m_sIntensity - sReduce;
+				long    const lRadius     { m_radius.GetValue() };
+				long    const lRadSquare  { lRadius * lRadius };
+				long    const lx          { gp.GetXvalue() };
+				long    const ly          { gp.GetYvalue() };
+				long    const lDistSquare { lx * lx + ly * ly  };
+				long    const lReduction  { (m_intensity.GetValue() * lDistSquare) / lRadSquare };
+				PERCENT const reduction   { CastToShort( lReduction ) };
+				return m_intensity - reduction;
 			};
 			break;
 
@@ -115,7 +116,7 @@ public:
 		case tShape::Rect:
 			m_filter = [this]( GridPoint const gp )
 			{ 
-				return m_sIntensity;
+				return m_intensity;
 			};
 			break;
 
@@ -129,12 +130,12 @@ public:
         return ( m_manipulator != other.m_manipulator )
             || ( m_brushMode   != other.m_brushMode )
             || ( m_radius      != other.m_radius )      
-			|| ( m_sIntensity  != other.m_sIntensity )
+			|| ( m_intensity   != other.m_intensity )
             || ( m_shape       != other.m_shape );
     }
  
     GRID_COORD   const GetRadius     ( ) const { return m_radius;      }
-	short        const GetIntensity  ( ) const { return m_sIntensity;  }
+	PERCENT      const GetIntensity  ( ) const { return m_intensity;  }
 	tShape       const GetShape      ( ) const { return m_shape;       }
     tBrushMode   const GetBrushMode  ( ) const { return m_brushMode;   }
     tManipulator const GetManipulator( ) const { return m_manipulator; }
@@ -146,11 +147,11 @@ private:
 	tShape			  m_shape;
     tBrushMode		  m_brushMode;
 	tManipulator	  m_manipulator;
-	short             m_sIntensity;
+	PERCENT           m_intensity;
     GRID_COORD	      m_radius;
 
 	ManipulatorFunc   m_manFunc;
 
-	std::function<void (GridPoint const, short const)> m_func;
-    std::function<short(GridPoint const)>              m_filter;
+	std::function<void   (GridPoint const, short const)> m_func;
+    std::function<PERCENT(GridPoint const)>              m_filter;
 };

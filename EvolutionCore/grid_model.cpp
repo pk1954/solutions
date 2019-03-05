@@ -317,13 +317,13 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
 
 void Grid::EditSetStrategy
 ( 
-    GridPoint             const gp, 
-    short                 const sIntensity, // percent value
-    Strategy::Id       strategy
+    GridPoint const gp, 
+    PERCENT   const intensity, // percent value
+    Strategy::Id    strategy
 )
 {
-	assert( sIntensity >= 0 );
-	if ( m_random.NextRandomNumber( ) < static_cast<unsigned short>(sIntensity) * Random::MAX_VAL / 100ul )
+	assert( intensity >= PERCENT(0) );
+	if ( m_random.NextRandomNumber( ) < intensity.GetValue() * Random::MAX_VAL / 100ul )
 	{
 		GridField & gf       = getGridField( gp );
 		bool const  bIsAlive = gf.IsAlive();

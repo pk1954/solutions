@@ -53,7 +53,7 @@ void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 		break;
 
     case tEvoCmd::editSetBrushIntensity:
-        m_pEvolutionCore->SetBrushIntensity( static_cast<short>( param.GetValue() ) );
+        m_pEvolutionCore->SetBrushIntensity( static_cast<PERCENT>( param.GetValue() ) );
 		break;
 
 	default:

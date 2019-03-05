@@ -30,7 +30,7 @@ public:
     virtual int            GetNrOfLivingIndividuals ( ) const = 0;
     virtual ENERGY_UNITS   GetAverageFoodGrowth     ( ) const = 0;
     virtual EVO_GENERATION GetEvoGenerationNr       ( ) const = 0;
-    virtual short          GetBrushIntensity        ( ) const = 0;
+    virtual PERCENT        GetBrushIntensity        ( ) const = 0;
     virtual tShape         GetBrushShape            ( ) const = 0;
     virtual tManipulator   GetBrushManipulator      ( ) const = 0;
     virtual GRID_COORD     GetBrushSize             ( ) const = 0;
@@ -87,7 +87,7 @@ public:
     virtual void SetBrushManipulator( tManipulator        const   ) = 0;
     virtual void SetBrushShape      ( tShape              const   ) = 0;
     virtual void SetBrushRadius     ( GRID_COORD          const   ) = 0;
-    virtual void SetBrushIntensity  ( short               const   ) = 0;
+    virtual void SetBrushIntensity  ( PERCENT             const   ) = 0;
     virtual void SetBrushMode       ( tBrushMode          const   ) = 0;
     virtual void ModelDoEdit        ( GridPoint           const   ) = 0;
 

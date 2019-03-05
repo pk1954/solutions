@@ -47,7 +47,7 @@ public:
 	virtual void           SetBrushManipulator( tManipulator const op    ) { m_brush.SetManipulator( op    );  }
 	virtual void           SetBrushShape      ( tShape       const shape ) { m_brush.SetShape      ( shape );  }
     virtual void           SetBrushRadius     ( GRID_COORD   const rad   ) { m_brush.SetRadius     ( rad   );  }
-    virtual void           SetBrushIntensity  ( short        const sInt  ) { m_brush.SetIntensity  ( sInt  );  }
+    virtual void           SetBrushIntensity  ( PERCENT      const perc  ) { m_brush.SetIntensity  ( perc  );  }
     virtual void           SetSimulationMode  ( tBoolOp      const op    ) { ApplyOp( m_bSimulationMode, op ); }
 
     virtual void           ModelDoEdit        ( GridPoint  const gp )    { (m_brush)( gp ); }
@@ -78,7 +78,7 @@ public:
 	virtual EVO_GENERATION GetEvoGenerationNr ( ) const { return m_grid.GetEvoGenerationNr( ); }
 
 	virtual tManipulator   GetBrushManipulator( ) const { return m_brush.GetManipulator(); }
-    virtual short          GetBrushIntensity  ( ) const { return m_brush.GetIntensity(); }
+    virtual PERCENT        GetBrushIntensity  ( ) const { return m_brush.GetIntensity(); }
     virtual tShape         GetBrushShape      ( ) const { return m_brush.GetShape(); }
     virtual GRID_COORD     GetBrushSize       ( ) const { return m_brush.GetRadius(); }
     virtual tBrushMode     GetBrushMode       ( ) const { return m_brush.GetBrushMode(); }

@@ -121,9 +121,9 @@ public:
         Util::FastFill( hDC, m_hwnd );
     }
 
-	LONG GetTrackBarPos( INT const idTrackbar ) const
+	short GetTrackBarPos( INT const idTrackbar ) const
 	{
-		return static_cast<LONG>( SendDlgItemMessage( idTrackbar, TBM_GETPOS, 0, 0 ) ); 
+		return CastToShort( SendDlgItemMessage( idTrackbar, TBM_GETPOS, 0, 0 ) ); 
 	}
 
 	void SetTrackBarPos( INT const idTrackbar, LONG const lPos ) const
