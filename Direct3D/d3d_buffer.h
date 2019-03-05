@@ -20,7 +20,7 @@ public:
     ~D3dBuffer();
 
     virtual BOOL      StartFrame( );
-    virtual void      ResetFont( PIXEL const );
+    virtual void      SetFontSize( PIXEL const );
     virtual void      AddIndividual( PixelPoint const, COLORREF const, float const );    
     virtual void      AddBackGround( PixelPoint const, COLORREF const, float const );    
     virtual void      RenderIndividuals( );

@@ -13,7 +13,7 @@ class GraphicsInterface
 public:
 
     virtual BOOL      StartFrame( ) = 0;
-    virtual void      ResetFont( PIXEL const ) = 0;
+    virtual void      SetFontSize( PIXEL const ) = 0;
     virtual void      AddIndividual( PixelPoint const, DWORD const, float const ) = 0;    
     virtual void      AddBackGround( PixelPoint const, DWORD const, float const ) = 0;    
     virtual void      RenderIndividuals( ) = 0;

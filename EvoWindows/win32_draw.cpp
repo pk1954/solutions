@@ -3,7 +3,6 @@
 // EvoWindows
 
 #include "stdafx.h"
-#include "config.h"
 #include "EvolutionCore.h"
 #include "GridDimensions.h"
 #include "pixelCoordinates.h"
@@ -72,14 +71,14 @@ void DrawFrame::SetStripMode( tBoolOp const bOp )
 
 void DrawFrame::ResizeDrawFrame( )
 {
-	PIXEL const pixFieldSize   = m_pPixelCoordinates->GetFieldSize();
 	int   const MAX_TEXT_LINES = 10;
+	PIXEL const pixFieldSize   = m_pPixelCoordinates->GetFieldSize();
 	PIXEL       pixFontSize    = pixFieldSize / MAX_TEXT_LINES;
 	if ( pixFontSize < 9_PIXEL )
 		pixFontSize = 9_PIXEL;
 	if ( pixFontSize > 16_PIXEL )
 		pixFontSize = 16_PIXEL;
-    m_pGraphics->ResetFont( pixFontSize );
+    m_pGraphics->SetFontSize( pixFontSize );
 	m_gridPointShape->RefreshLayout( );
 }
 

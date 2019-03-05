@@ -68,7 +68,7 @@ D3dBuffer::D3dBuffer( HWND const hwnd, ULONG const ulNrOfPoints )
     m_dwDstBlend       = 0;
     m_bStripMode       = TRUE;
     m_id3dx_font       = nullptr;
-    ResetFont( 9_PIXEL );
+    SetFontSize( 9_PIXEL );
 }
 
 D3dBuffer::~D3dBuffer()
@@ -149,7 +149,7 @@ BOOL D3dBuffer::setFont( )
 	return TRUE;
 }
 
-void D3dBuffer::ResetFont( PIXEL const nPointSize )
+void D3dBuffer::SetFontSize( PIXEL const nPointSize )
 {
     //
     // To create a Windows friendly font using only a point size, an 
