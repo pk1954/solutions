@@ -14,9 +14,9 @@ ColorManager::ColorManager( ) :
 	m_colorSelection( RGB(   0, 217, 255) ),
 	m_colorHighlight( RGB( 255, 217,   0) )
 {
-	UINT uiClutSize = static_cast<UINT>(Config::GetConfigValue( Config::tId::stdCapacity ));
+	CLUT_INDEX clutSize { Config::GetConfigValue( Config::tId::stdCapacity ) };
 	for ( auto & strategy : m_aClutStrat )
-		strategy.Allocate( uiClutSize );
+		strategy.Allocate( clutSize );
 
 	setStrategyColor( Strategy::Id::defect,    RGB( 20, 150, 187) );
 	setStrategyColor( Strategy::Id::cooperate, RGB(130, 147,  86) );
@@ -29,12 +29,12 @@ void ColorManager::setupClut( tBoolOp const bOp )
 {
     ApplyOp( m_bDimmIndividuals, bOp );
 
-    UINT const uiClutBase = m_bDimmIndividuals // color of individuals ...
-                          ? 30       // ... varies from 30% - 100%, depending on energy 
-                          : 100;     // ... is always at 100%
+    CLUT_INDEX const clutBase = m_bDimmIndividuals // color of individuals ...
+                                ? CLUT_INDEX(30)   // ... varies from 30% - 100%, depending on energy 
+                                : CLUT_INDEX(100); // ... is always at 100%
 
     for ( auto &strategy : m_aClutStrat )
-        strategy.SetClutBase( uiClutBase );
+        strategy.SetClutBase( clutBase );
 }
 
 void ColorManager::ToggleClutMode( ) 
@@ -92,22 +92,16 @@ COLORREF ColorManager::GetColor
 ( 
 	tColorObject const object, 
 	Strategy::Id const strat, 
-	UINT         const uiClutIndex
+	CLUT_INDEX   const clutIndex
 )
 {
 	switch (object)
 	{
 	case tColorObject::individual:
 	{
-		if ( uiClutIndex == -1 )
-			return getStrategyColor( strat );
-		else
-		{
-			CLUT const & clut = m_aClutStrat.at( static_cast<int>( strat ) );
-			assert( uiClutIndex < clut.GetSize() ); 
-			COLORREF dwColor = clut.GetColor( uiClutIndex );
-			return dwColor;
-		}
+		return ( clutIndex == STRATEGY_COLOR() )
+			   ? getStrategyColor( strat )
+			   : getClut( strat ).GetColor( clutIndex );
 	}
 
 	case tColorObject::selection:

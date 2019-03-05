@@ -3,10 +3,13 @@
 
 #pragma once
 
+#include "NamedType.h"
 #include <vector>
 
 //lint -esym( 613, CLUT::m_data )  possible use of null pointer
 //lint -sem( CLUT::Init, initializer )
+
+using CLUT_INDEX = NamedType< int, struct CLUT_INDEX_Parameter >;
 
 class CLUT
 {
@@ -14,21 +17,22 @@ public:
 
     CLUT( ) 
     { 
-        m_uiBase  = 0;
+        m_uiBase  = CLUT_INDEX(0);
         m_data    = nullptr; 
         m_colorHi = RGB( 255, 255, 255 );
     };
    
     ~CLUT();
 
-    void Allocate( UINT const );
-    void SetClutBase( UINT const );
+    void Allocate( CLUT_INDEX const );
+    void SetClutBase( CLUT_INDEX const );
     void SetColorHi( COLORREF const );
 
-    COLORREF GetColor( UINT uiIndex ) const 
+    COLORREF GetColor( CLUT_INDEX index ) const 
     {
         assert( m_data != nullptr );
-        return (*m_data)[ uiIndex ]; 
+		assert( index.GetValue() < m_data->size() ); 
+        return (*m_data)[ index.GetValue() ]; 
     };
 
     UINT GetSize( ) const 
@@ -45,7 +49,7 @@ public:
 private:
     void setTableValues( );
 
-    UINT                 m_uiBase;
+    CLUT_INDEX           m_uiBase;
     std::vector<DWORD> * m_data;
     COLORREF             m_colorHi;
 };

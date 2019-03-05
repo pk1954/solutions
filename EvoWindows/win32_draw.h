@@ -63,7 +63,11 @@ private:
 	Shape const      * m_pShapeHighlight;
 	GridPoint          m_gpHighlight;
 
-    static UINT const MAX_BG_COLOR = 255;
+	static CLUT_INDEX const MAX_BG_COLOR()
+	{
+		static const CLUT_INDEX res(255);
+		return res;
+	}
 
     CLUT m_clutBackground;
 
@@ -75,7 +79,7 @@ private:
 		m_wBuffer.clear();
 	}
 
-    COLORREF getBackgroundColor( int const ) const;
+    COLORREF getBackgroundColor( CLUT_INDEX ) const;
     void     setIndividualColor( GridPoint const, float const ) const;
 	void     addPrimitive( GridPoint const, COLORREF const, float const ) const;
 	

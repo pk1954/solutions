@@ -31,7 +31,7 @@ DrawFrame::DrawFrame
 	m_gridPointShape( nullptr ),
 	m_gpHighlight( GridPoint::NULL_VAL() )
 {
-	m_clutBackground.Allocate( MAX_BG_COLOR );    // default is grey scale lookup table with entries 0 .. 255
+	m_clutBackground.Allocate( MAX_BG_COLOR() );    // default is grey scale lookup table with entries 0 .. 255
     m_pD3dBuffer      = new D3dBuffer( hwnd, m_pCore->GetGridArea( ) );
 	m_pTextDisplay    = new TextDisplay( * m_pD3dBuffer, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
 	m_gridPointShape  = new GridPointShape( * m_pTextDisplay );
@@ -148,9 +148,9 @@ void DrawFrame::drawBackground( )
 	(          
     	[&](GridPoint const gp)
 		{
-			int        const iValue  = m_pDspOptWindow->GetIntValue( Wrap2Grid(gp) );
-			DWORD      const dwColor = getBackgroundColor( iValue );
-			PixelPoint const pnt     = m_pPixelCoordinates->Grid2PixelPosCenter( gp );
+		CLUT_INDEX const index   { m_pDspOptWindow->GetIntValue( Wrap2Grid(gp) ) };
+		DWORD      const dwColor { getBackgroundColor( index ) };
+		PixelPoint const pnt     { m_pPixelCoordinates->Grid2PixelPosCenter( gp ) };
 			m_pD3dBuffer->AddBackgroundPrimitive( pnt, dwColor, m_fPxSize );
 		},
 		m_pD3dBuffer->GetStripMode() // if strip mode add borders to grid
@@ -229,27 +229,18 @@ void DrawFrame::setIndividualColor( GridPoint const gp, float const fHalfSize ) 
 	if ( energy < ENERGY_UNITS(0) )                      // display thread and 
 		return;                                          // worker thread
 
-	UINT     const uiIndex = CastToUnsignedInt( energy.GetValue() );
-	COLORREF const color   = m_pColorManager->GetColor( tColorObject::individual, strat, uiIndex );
+	CLUT_INDEX const index { CastToInt( energy.GetValue() ) };
+	COLORREF   const color { m_pColorManager->GetColor( tColorObject::individual, strat, index ) };
     addPrimitive( gp, color, fHalfSize );
 }
 
-COLORREF DrawFrame::getBackgroundColor( int const iValue ) const
+COLORREF DrawFrame::getBackgroundColor( CLUT_INDEX index ) const
 {
-    unsigned int uiIndex;
-
-    if ( iValue < 0 )
-    {
-        uiIndex = 0;
-    }
-    else
-    {
-        uiIndex = static_cast<unsigned int>( iValue );
-        if ( uiIndex > MAX_BG_COLOR )
-            uiIndex = MAX_BG_COLOR;
-    }
-
-    return m_clutBackground.GetColor( uiIndex );
+    if ( index < CLUT_INDEX(0) )
+        index = CLUT_INDEX(0);
+    else if ( index > MAX_BG_COLOR() )
+        index = MAX_BG_COLOR();
+    return m_clutBackground.GetColor( index );
 }
 
 void DrawFrame::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pnt )
