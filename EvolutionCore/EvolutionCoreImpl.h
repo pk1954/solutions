@@ -101,7 +101,7 @@ public:
     virtual ENERGY_UNITS GetAverageFoodGrowth( ) const { return m_grid.GetAverageFoodGrowth( ); }
     virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
 
-	virtual	unsigned int GetActionCounter
+	virtual	ACTION_COUNT GetActionCounter
 	(
 		Strategy::Id const strategy,
 		Action::Id   const action

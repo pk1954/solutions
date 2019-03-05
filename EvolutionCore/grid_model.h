@@ -93,22 +93,12 @@ public:
 	{ 
 		std::swap( m_pActionCounterFill, m_pActionCounterRead );
 		for ( auto & ax: ( * m_pActionCounterFill ) )
-			ax.fill( 0 ); 
+			ax.fill( ACTION_COUNT(0) ); 
 	}
 
-	unsigned int GetActionCounter
-	( 
-		Strategy::Id const strategy, 
-		Action::Id   const action
-	) const
+	ACTION_COUNT GetActionCounter( Strategy::Id const strategy, Action::Id const action ) const 
 	{
-		unsigned int uiAction   = static_cast<unsigned int>( action );
-		unsigned int uiStrategy = static_cast<unsigned int>( strategy );
-
-		assert( uiAction   <= Action::NR_ACTIONS );
-		assert( uiStrategy <= Strategy::COUNT );
-
-		return (* m_pActionCounterRead)[ uiAction ][ uiStrategy ];
+		return actionCounter( strategy, action );
 	}
 
     // static functions
@@ -116,14 +106,15 @@ public:
     static void InitClass( );
 
 private:
-	void incActionCounter( Strategy::Id strategy, Action::Id action )
+	ACTION_COUNT & actionCounter( Strategy::Id const strategy, Action::Id const action ) const
 	{
-		if ( action != Action::Id::undefined )
-		{
-			unsigned int const uiAction   = static_cast<unsigned int>(action);
-			unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
-			++ ( * m_pActionCounterFill )[uiAction][uiStrategy];
-		}
+		unsigned int const uiAction   = static_cast<unsigned int>(action);
+		unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
+
+		assert( uiAction   <= Action::NR_ACTIONS );
+		assert( uiStrategy <= Strategy::COUNT );
+
+		return ( * m_pActionCounterFill )[uiAction][uiStrategy];
 	}
 		
     void deleteAndReset( GridField & gf )
@@ -166,7 +157,7 @@ private:
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;
 
-	using tActionCounters = std::array< std::array < unsigned int, Strategy::COUNT>, Action::NR_ACTIONS >;
+	using tActionCounters = std::array< std::array < ACTION_COUNT, Strategy::COUNT>, Action::NR_ACTIONS >;
 
 	tActionCounters   m_ActionCounter1;
 	tActionCounters   m_ActionCounter2;

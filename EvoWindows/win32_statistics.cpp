@@ -112,18 +112,18 @@ public:
 
     void printCounters( TextBuffer & textBuf, EvolutionCore const * pCore, Action::Id const action )
     {
-		int iCounterSum = 0;
-		textBuf.nextLine(  Action::GetName( action ) );
+		ACTION_COUNT sum = ACTION_COUNT(0);
+		textBuf.nextLine( Action::GetName( action ) );
 		Strategy::Apply2All
 		( 
 			[&]( Strategy::Id strat )
 			{
-				int iCounter = pCore->GetActionCounter( strat, action );
-				textBuf.printNumber( iCounter );
-				iCounterSum += iCounter;
+				ACTION_COUNT counter = pCore->GetActionCounter( strat, action );
+				textBuf.printNumber( counter.GetValue() );
+				sum += counter;
 			}
 		);
-		textBuf.printNumber( iCounterSum );
+		textBuf.printNumber( sum.GetValue() );
     }
 
     void printNrPassOn( TextBuffer & textBuf, EvolutionCore const * pCore )

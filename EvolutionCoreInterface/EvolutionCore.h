@@ -59,7 +59,7 @@ public:
     virtual short          GetDistr     ( GridPoint const, Action::Id   const ) const = 0;
     virtual long           GetGenotype  ( GridPoint const, GeneType::Id const ) const = 0;
 	
-	virtual	unsigned int   GetActionCounter( Strategy::Id const, Action::Id const ) const = 0;
+	virtual	ACTION_COUNT   GetActionCounter( Strategy::Id const, Action::Id const ) const = 0;
 
     virtual GridPoint      FindGridPoint( IND_ID const &, GridRect const & = GRID_RECT_FULL()) const = 0;
 

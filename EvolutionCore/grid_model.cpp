@@ -219,7 +219,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
     gfRun.SetLastAction( plan.GetActionType( ) );
     gfRun.DecEnergy    ( plan.GetBaseConsumption( ) );
 
-	incActionCounter( gfRun.GetStrategyId( ), plan.GetActionType( ) );
+	++ actionCounter( gfRun.GetStrategyId( ), plan.GetActionType( ) );
 
 	switch ( plan.GetActionType( ) )
     {

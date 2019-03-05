@@ -11,6 +11,7 @@ using ENERGY_UNITS   = NamedType< short,          struct ENERGY_UNITS_Parameter 
 using EVO_GENERATION = NamedType< long,           struct EVO_GENERATION_Parameter >;
 using IND_ID         = NamedType< long,           struct IND_ID_Parameter >;
 using MEM_INDEX      = NamedType< unsigned short, struct MEM_INDEX_Parameter >;
+using ACTION_COUNT   = NamedType< unsigned int,   struct ACTION_COUNT_Parameter >;
 
 static int const IMEMSIZE_MAX = 9;
 
