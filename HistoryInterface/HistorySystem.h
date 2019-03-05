@@ -5,6 +5,7 @@
 
 #include "GenerationCmd.h"
 #include "HistoryGeneration.h"
+#include "util.h"
 
 class ObserverInterface;
 class ObserverInterface;
@@ -37,7 +38,7 @@ public:
 		GenerationCmd       const
 	) = 0;
 
-    virtual int               GetSlotSize( )               const = 0;
+    virtual BYTES             GetSlotSize( )               const = 0;
     virtual HistSlotNr        GetNrOfUsedHistCacheSlots( ) const = 0;
     virtual HistSlotNr        GetNrOfHistCacheSlots( )     const = 0;
     virtual HIST_GENERATION   GetNrOfGenerations( )        const = 0;

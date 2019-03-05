@@ -36,7 +36,7 @@ public:
     ModelData const * GetModelDataC( )     const { return m_pModelData; }
     HIST_GENERATION   GetHistGenCounter( ) const { return m_genHistCounter; }
     GenerationCmd     GetGenCmd( )         const { return m_genCmd; }
-	int               GetItemSize( )       const { return m_pModelData->GetModelSize( ) + sizeof(HistCacheItem); }
+	BYTES             GetItemSize( )       const { return m_pModelData->GetModelSize( ) + BYTES(sizeof(HistCacheItem)); }
 
     void ZeroHistGenCounter( ) { m_genHistCounter = 0L; }
     void IncHistGenCounter ( ) { ++ m_genHistCounter; }

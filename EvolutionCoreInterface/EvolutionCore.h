@@ -95,10 +95,10 @@ public:
     
     static EvolutionCore * InitClass( ObserverInterface * const, EventInterface * const );
     static EvolutionCore * CreateCore( );
-    static unsigned long   GetModelSize( );
-    static unsigned int    GetNrInteractionsWithKnownCulprit( );
-    static unsigned int    GetNrInteractionsWithUnknownCulprit( );
-    static unsigned int    GetMaxPartnerMemory( );
-	static bool            IsEnabled( Action::Id const );
-	static bool            IsEnabled( GeneType::Id const );
+    static BYTES        GetModelSize( );
+    static unsigned int GetNrInteractionsWithKnownCulprit( );
+    static unsigned int GetNrInteractionsWithUnknownCulprit( );
+    static unsigned int GetMaxPartnerMemory( );
+	static bool         IsEnabled( Action::Id const );
+	static bool         IsEnabled( GeneType::Id const );
 };

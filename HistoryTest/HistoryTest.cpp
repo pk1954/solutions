@@ -23,9 +23,9 @@ public:
 		m_iDataApp( 0 )
 	{ }
 
-	virtual int GetModelSize()
+	virtual BYTES GetModelSize()
 	{
-		return sizeof( HistTestModelData );
+		return BYTES { sizeof( HistTestModelData ) };
 	}
 
 	virtual void CopyFrom( ModelData const * const src )

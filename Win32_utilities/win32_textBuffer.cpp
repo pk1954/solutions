@@ -70,6 +70,12 @@ void TextBuffer::printNumber( unsigned int data )
     printBuffer();
 }
 
+void TextBuffer::printNumber( unsigned long long data )
+{
+    m_wBuffer << data;
+    printBuffer();
+}
+
 void TextBuffer::printFloat( float data )
 {
 	if ( data > 0 )

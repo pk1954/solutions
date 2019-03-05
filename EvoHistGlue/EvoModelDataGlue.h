@@ -24,9 +24,9 @@ public:
 
     EvoModelDataGlue & operator= ( EvoModelDataGlue const & );  // noncopyable class 
 
-	virtual int GetModelSize()
+	virtual BYTES GetModelSize()
 	{
-		return EvolutionCore::GetModelSize( ) + sizeof(EvoModelDataGlue);
+		return EvolutionCore::GetModelSize( ) + BYTES(sizeof(EvoModelDataGlue));
 	}
 
 	virtual void CopyFrom( ModelData const * const src )

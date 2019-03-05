@@ -46,7 +46,7 @@ public:
     virtual HIST_GENERATION   GetNrOfGenerations( )        const { return m_pHistoryCache->GetYoungestGeneration( ) + 1;    }
     virtual HIST_GENERATION   GetYoungestGeneration( )     const { return m_pHistoryCache->GetYoungestGeneration( );        }
 	virtual HIST_GENERATION   GetCurrentGeneration( )      const { return m_pHistCacheItemWork->GetHistGenCounter( );       }
-    virtual int               GetSlotSize( )               const { return m_pHistCacheItemWork->GetItemSize( );             }
+    virtual BYTES             GetSlotSize( )               const { return m_pHistCacheItemWork->GetItemSize( );             }
 	virtual bool              IsInHistoryMode( )           const { return GetCurrentGeneration() < GetYoungestGeneration(); };
 
 	virtual void              ShutDownHistCacheSlot( HistSlotNr const i ) { m_pHistoryCache->ShutDownHistCacheSlot( i ); }

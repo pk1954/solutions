@@ -7,9 +7,12 @@
 #include <string>
 #include <limits>
 #include <streambuf>
+#include "NamedType.h"
 #include "debug.h"
 
 extern void UpperCase( std::wstring & );
+
+using BYTES = NamedType< unsigned long long, struct BYTES_Parameter >;
 
 // not needed, makes strange problems 
 //template <typename SOURCE_TYPE> int sgn(SOURCE_TYPE val) 
