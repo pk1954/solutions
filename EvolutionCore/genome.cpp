@@ -68,25 +68,25 @@ void Genome::InitClass( )
     m_genomeTemplate.setActionGene( Action::Id::eat,       500 );
     m_genomeTemplate.setActionGene( Action::Id::fertilize, 500 );
 
-    m_genomeTemplate.setGeneralGene( GeneType::Id::appetite,           Config::GetConfigValue( Config::tId::defaultAppetite     ) );
-    m_genomeTemplate.setGeneralGene( GeneType::Id::fertilInvest,       Config::GetConfigValue( Config::tId::defaultFertilInvest ) );
-    m_genomeTemplate.setGeneralGene( GeneType::Id::memSize,            Config::GetConfigValue( Config::tId::stdMemSize          ) );
-    m_genomeTemplate.setGeneralGene( GeneType::Id::thresholdClone,     Config::GetConfigValue( Config::tId::thresholdClone      ) );
-    m_genomeTemplate.setGeneralGene( GeneType::Id::thresholdMarry,     Config::GetConfigValue( Config::tId::thresholdMarry      ) );
-    m_genomeTemplate.setGeneralGene( GeneType::Id::thresholdMove,      Config::GetConfigValue( Config::tId::thresholdMove       ) );
-    m_genomeTemplate.setGeneralGene( GeneType::Id::thresholdFertilize, Config::GetConfigValue( Config::tId::thresholdFertilize  ) );
-    m_genomeTemplate.setGeneralGene( GeneType::Id::maxEat,             Config::GetConfigValue( Config::tId::maxEat              ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::appetite,           Config::GetConfigValueShort( Config::tId::defaultAppetite     ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::fertilInvest,       Config::GetConfigValueShort( Config::tId::defaultFertilInvest ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::memSize,            Config::GetConfigValueShort( Config::tId::stdMemSize          ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::thresholdClone,     Config::GetConfigValueShort( Config::tId::thresholdClone      ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::thresholdMarry,     Config::GetConfigValueShort( Config::tId::thresholdMarry      ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::thresholdMove,      Config::GetConfigValueShort( Config::tId::thresholdMove       ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::thresholdFertilize, Config::GetConfigValueShort( Config::tId::thresholdFertilize  ) );
+    m_genomeTemplate.setGeneralGene( GeneType::Id::maxEat,             Config::GetConfigValueShort( Config::tId::maxEat              ) );
     m_genomeTemplate.setGeneralGene( GeneType::Id::cloneDonation,      SHRT_MAX / 2 );
 
     // static members for caching frequently used configuration items
 
-    enabled( Action::Id::move      ) = Config::GetConfigValue( Config::tId::moveEnabled      ) > 0;
-    enabled( Action::Id::fertilize ) = Config::GetConfigValue( Config::tId::fertilizeEnabled ) > 0;
-    enabled( Action::Id::passOn    ) = Config::GetConfigValue( Config::tId::passOnEnabled    ) > 0;
-    enabled( Action::Id::clone     ) = Config::GetConfigValue( Config::tId::cloneEnabled     ) > 0;
-    enabled( Action::Id::marry     ) = Config::GetConfigValue( Config::tId::marryEnabled     ) > 0;
-    enabled( Action::Id::interact  ) = Config::GetConfigValue( Config::tId::interactEnabled  ) > 0;
-    enabled( Action::Id::eat       ) = Config::GetConfigValue( Config::tId::eatEnabled       ) > 0;
+    enabled( Action::Id::move      ) = Config::GetConfigValueBool( Config::tId::moveEnabled      );
+    enabled( Action::Id::fertilize ) = Config::GetConfigValueBool( Config::tId::fertilizeEnabled );
+    enabled( Action::Id::passOn    ) = Config::GetConfigValueBool( Config::tId::passOnEnabled    );
+    enabled( Action::Id::clone     ) = Config::GetConfigValueBool( Config::tId::cloneEnabled     );
+    enabled( Action::Id::marry     ) = Config::GetConfigValueBool( Config::tId::marryEnabled     );
+    enabled( Action::Id::interact  ) = Config::GetConfigValueBool( Config::tId::interactEnabled  );
+    enabled( Action::Id::eat       ) = Config::GetConfigValueBool( Config::tId::eatEnabled       );
 }
 
 //  nonstatic functions 
@@ -96,20 +96,20 @@ Genome::Genome( )
     InitGenome( );
 }
 
-void Genome::setActionGene( Action::Id const action, int const iValue )
+void Genome::setActionGene( Action::Id const action, short const sValue )
 {
-    short const sValue = static_cast<short>( iValue );
-    m_aLimitsActions[ static_cast<int>( action ) ].CheckLimits( sValue );
-    m_aGeneActions  [ static_cast<int>( action ) ].m_gene.SetAllele( sValue );
-    m_aGeneActions  [ static_cast<int>( action ) ].m_action = action;
+    int const index = static_cast<int>( action );
+	m_aLimitsActions[ index ].CheckLimits( sValue );
+    m_aGeneActions  [ index ].m_gene.SetAllele( sValue );
+    m_aGeneActions  [ index ].m_action = action;
 }
 
-void Genome::setGeneralGene( GeneType::Id const type, int const iValue )
+void Genome::setGeneralGene( GeneType::Id const type, short const sValue )
 {
-    short const sValue = static_cast<short>( iValue );
-    m_aLimitsGeneral[ static_cast<int>( type ) ].CheckLimits( sValue );
-    m_aGeneGeneral  [ static_cast<int>( type ) ].m_gene.SetAllele( sValue );
-    m_aGeneGeneral  [ static_cast<int>( type ) ].m_type = type;
+	int const index = static_cast<int>( type );
+    m_aLimitsGeneral[ index ].CheckLimits( sValue );
+    m_aGeneGeneral  [ index ].m_gene.SetAllele( sValue );
+    m_aGeneGeneral  [ index ].m_type = type;
 }
 
 void Genome::InitGenome( )
