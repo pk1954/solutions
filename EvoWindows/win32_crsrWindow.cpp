@@ -51,7 +51,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
     textBuf.nextLine( L"Food:" );
     textBuf.setHorizontalPos( 3_TEXT_POSITION );
-    textBuf.printPercentage( m_pCore->GetFoodStock( gpFocus ), m_pCore->GetFertility( gpFocus ) );
+    textBuf.printPercentage( m_pCore->GetFoodStock( gpFocus ).GetValue(), m_pCore->GetFertility( gpFocus ).GetValue() );
 
     textBuf.nextLine( L"MutRate:" );
     textBuf.setHorizontalPos( 2_TEXT_POSITION );
@@ -62,7 +62,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
     textBuf.nextLine( L"Energy:" );
     textBuf.setHorizontalPos( 4_TEXT_POSITION );
-    textBuf.printPercentage( m_pCore->GetEnergy( gpFocus ), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
+    textBuf.printPercentage( m_pCore->GetEnergy( gpFocus ).GetValue(), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
 
 	// Deactivated, see win32_focusPoint.cpp
 

@@ -14,18 +14,18 @@
 
 void Grid::getBestNeighborSlots( Neighborhood & list )
 {
-    int iMaxFoodStock = 0;
+    ENERGY_UNITS enMaxFoodStock = ENERGY_UNITS(0);
     for ( unsigned int uiIndex = 0; uiIndex < list.GetLength(); ++ uiIndex )
     {
-        int const iFoodstock = GetFoodStock( list.GetElement( uiIndex ) );
-        assert( iFoodstock >= 0 );
-        if ( iFoodstock > iMaxFoodStock )
-            iMaxFoodStock = iFoodstock;
+        ENERGY_UNITS const enFoodstock = GetFoodStock( list.GetElement( uiIndex ) );
+        assert(enFoodstock >= ENERGY_UNITS(0) );
+        if ( enFoodstock >enMaxFoodStock )
+           enMaxFoodStock =enFoodstock;
     }
 
     for ( unsigned int uiIndex = 0; uiIndex < list.GetLength(); ++ uiIndex )
     {
-        if ( GetFoodStock( list.GetElement( uiIndex ) ) != iMaxFoodStock )
+        if ( GetFoodStock( list.GetElement( uiIndex ) ) != enMaxFoodStock )
             list.RemoveFromList( uiIndex );
     }
 }
@@ -34,7 +34,7 @@ void Grid::FoodGrowth( )
 {
 	int m_iRate = m_iFoodGrowthRate;
 
-	m_lFoodGrowth = 0;
+	m_enFoodGrowth = ENERGY_UNITS(0);
 
 	Apply2Grid
 	( 
@@ -42,16 +42,16 @@ void Grid::FoodGrowth( )
 		{
             GridField & rGF = getGridField( gp );
 
-            int const iLimit = rGF.GetFertility() + rGF.GetFertilizer();
-            int const iDelta = iLimit - rGF.GetFoodStock(); 
+            ENERGY_UNITS const iLimit = rGF.GetFertility() + rGF.GetFertilizer();
+            ENERGY_UNITS const iDelta = iLimit - rGF.GetFoodStock(); 
 
-			if ( iDelta != 0 )
+			if ( iDelta != ENERGY_UNITS(0) )
 			{
-				int iGrowth = (m_iRate * iDelta) / 100;   // negative growth is possible
-				if ( iGrowth == 0 )                       // if foodstock is greater than maximum
-					iGrowth = (iDelta > 0) ? 1 : -1;      // caused by editor
-				m_lFoodGrowth += iGrowth;
-				rGF.IncFoodStock( CastToShort(iGrowth) );
+				ENERGY_UNITS iGrowth = (iDelta * m_iRate) / 100;                                // negative growth is possible
+				if ( iGrowth == ENERGY_UNITS(0) )                                               // if foodstock is greater than maximum
+					iGrowth = (iDelta > ENERGY_UNITS(0)) ? ENERGY_UNITS(1) : -ENERGY_UNITS(1);  // caused by editor
+				m_enFoodGrowth += iGrowth;
+				rGF.IncFoodStock( iGrowth );
 			}
 
             rGF.ReduceFertilizer( );

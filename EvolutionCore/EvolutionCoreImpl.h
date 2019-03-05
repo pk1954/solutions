@@ -56,15 +56,15 @@ public:
 
     virtual EVO_GENERATION GetAge       ( GridPoint const gp ) const { return m_grid.GetAge( gp ); }
 
-    virtual int            GetFoodStock ( GridPoint const gp ) const { return getGridField( gp ).GetFoodStock( ); }
-    virtual int            GetFertility ( GridPoint const gp ) const { return getGridField( gp ).GetFertility( ); }
     virtual int            GetMutRate   ( GridPoint const gp ) const { return getGridField( gp ).GetMutRate( ); }
-    virtual int            GetFertilizer( GridPoint const gp ) const { return getGridField( gp ).GetFertilizer( ); }
+    virtual ENERGY_UNITS   GetFoodStock ( GridPoint const gp ) const { return getGridField( gp ).GetFoodStock( ); }
+    virtual ENERGY_UNITS   GetFertility ( GridPoint const gp ) const { return getGridField( gp ).GetFertility( ); }
+    virtual ENERGY_UNITS   GetFertilizer( GridPoint const gp ) const { return getGridField( gp ).GetFertilizer( ); }
     virtual EVO_GENERATION GetGenBirth  ( GridPoint const gp ) const { return getGridField( gp ).GetGenBirth( ); }
     virtual Strategy::Id   GetStrategyId( GridPoint const gp ) const { return getGridField( gp ).GetStrategyId( ); }
     virtual IND_ID         GetId        ( GridPoint const gp ) const { return getGridField( gp ).GetId( ); }
     virtual tOrigin        GetOrigin    ( GridPoint const gp ) const { return getGridField( gp ).GetOrigin( ); }
-    virtual short          GetEnergy    ( GridPoint const gp ) const { return getGridField( gp ).GetEnergy( ); }
+    virtual ENERGY_UNITS   GetEnergy    ( GridPoint const gp ) const { return getGridField( gp ).GetEnergy( ); }
     virtual MEM_INDEX      GetMemSize   ( GridPoint const gp ) const { return getGridField( gp ).GetMemSize( ); }
     virtual MEM_INDEX      GetMemUsed   ( GridPoint const gp ) const { return getGridField( gp ).GetMemUsed( ); }
     virtual bool           IsDead       ( GridPoint const gp ) const { return getGridField( gp ).IsDead( ); }
@@ -98,7 +98,7 @@ public:
 
 	virtual long GetGridArea( ) const { return GRID_AREA(); };
 
-    virtual int GetAverageFoodGrowth( )     const { return m_grid.GetAverageFoodGrowth( ); }
+    virtual ENERGY_UNITS GetAverageFoodGrowth( ) const { return m_grid.GetAverageFoodGrowth( ); }
     virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
 
 	virtual	unsigned int GetActionCounter

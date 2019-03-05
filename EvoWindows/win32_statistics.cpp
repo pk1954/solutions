@@ -319,7 +319,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 
 		textBuf.nextLine( L"food growth" );
 		textBuf.setHorizontalPos( 4_TEXT_POSITION );
-		textBuf.printNumber( m_pCore->GetAverageFoodGrowth( ) );
+		textBuf.printNumber( m_pCore->GetAverageFoodGrowth( ).GetValue() );
 	}
 //	stopwatch.Stop( L"Statistics" );
 }

@@ -15,8 +15,8 @@ static CooperateAlways StratC;
 static Tit4Tat         StratT;
 static EmptyStrategy   StratNull;
 
-short Individual::m_sStdEnergyCapacity;
-short Individual::m_sInitialEnergy;
+ENERGY_UNITS Individual::m_stdEnergyCapacity;
+ENERGY_UNITS Individual::m_initialEnergy;
 
 const std::unordered_map< Strategy::Id, Strategy * const > Individual::m_apStrat =
 { 
@@ -27,8 +27,8 @@ const std::unordered_map< Strategy::Id, Strategy * const > Individual::m_apStrat
 
 void Individual::InitClass( )
 {
-    m_sStdEnergyCapacity = Config::GetConfigValueShort( Config::tId::stdCapacity );
-    m_sInitialEnergy     = Config::GetConfigValueShort( Config::tId::initialEnergy );
+    m_stdEnergyCapacity = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::stdCapacity ));
+    m_initialEnergy     = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::initialEnergy ));
 }
 
 Individual::Individual( )
@@ -44,8 +44,8 @@ void Individual::ResetIndividual( )
 { 
     m_id.Set2Null( ); 
     m_genBirth.Set2Null();
-    m_sEnergy   = 0;
-    m_sCapacity = 0;
+    m_sEnergy   = ENERGY_UNITS(0);
+    m_sCapacity = ENERGY_UNITS(0);
     m_strat.SetMemorySize( MEM_INDEX(0) );
     m_pStrategy = & StratNull;
     m_genome.InitGenome( );
@@ -64,8 +64,8 @@ void Individual::Create
     m_origin    = tOrigin::editor;
     m_genome.InitGenome( );
     m_strat.SetMemorySize( static_cast<MEM_INDEX>(m_genome.GetAllele(GeneType::Id::memSize)) );
-    m_sCapacity = m_sStdEnergyCapacity;
-    SetEnergy( m_sInitialEnergy ); // makes IsAlive() true. Last assignment to avoid race conditions  
+    m_sCapacity = m_stdEnergyCapacity;
+    SetEnergy( m_initialEnergy ); // makes IsAlive() true. Last assignment to avoid race conditions  
 }
 
 // Clone - creates a mutated clone of this object

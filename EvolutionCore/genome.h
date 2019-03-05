@@ -18,7 +18,7 @@ public:
     
     Genome( );
     void       InitGenome( );
-    Action::Id GetOption( bool const, bool const, int const, EVO_GENERATION const, Random & ) const;
+    Action::Id GetOption( bool const, bool const, ENERGY_UNITS const, EVO_GENERATION const, Random & ) const;
     void       Mutate( short const, Random & );
     void       Recombine( Genome const &, Genome const &, Random & );
 

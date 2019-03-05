@@ -29,19 +29,19 @@ public:
     void      MakePlan     ( GridPoint const, PlannedActivity & );
     GridPoint ImplementPlan( GridPoint const, PlannedActivity const & );
 
-	short GetFertilizer( GridPoint const gp ) { return getGridField( gp ).GetFertilizer( ); }
-	short GetFoodStock ( GridPoint const gp ) { return getGridField( gp ).GetFoodStock( ); }
-	short GetFertility ( GridPoint const gp ) { return getGridField( gp ).GetFertility( ); }
-	short GetMutRate   ( GridPoint const gp ) { return getGridField( gp ).GetMutRate( ); }
+	short        GetMutRate   ( GridPoint const gp ) { return getGridField( gp ).GetMutRate( ); }
+	ENERGY_UNITS GetFertilizer( GridPoint const gp ) { return getGridField( gp ).GetFertilizer( ); }
+	ENERGY_UNITS GetFoodStock ( GridPoint const gp ) { return getGridField( gp ).GetFoodStock( ); }
+	ENERGY_UNITS GetFertility ( GridPoint const gp ) { return getGridField( gp ).GetFertility( ); }
 
-	void Apply2Fertilizer(GridPoint const gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertilizer(s, m); }
-	void Apply2FoodStock (GridPoint const gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2FoodStock (s, m); }
-	void Apply2Fertility (GridPoint const gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertility (s, m); }
-	void Apply2MutRate   (GridPoint const gp, short const s, ManipulatorFunc m) { getGridField( gp ).Apply2MutRate   (s, m); }
+	void Apply2MutRate   (GridPoint const gp, short        const s, ManipulatorFunc m) { getGridField( gp ).Apply2MutRate   (s, m); }
+	void Apply2Fertilizer(GridPoint const gp, ENERGY_UNITS const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertilizer(s, m); }
+	void Apply2FoodStock (GridPoint const gp, ENERGY_UNITS const s, ManipulatorFunc m) { getGridField( gp ).Apply2FoodStock (s, m); }
+	void Apply2Fertility (GridPoint const gp, ENERGY_UNITS const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertility (s, m); }
 
-	void SetEnergy( GridPoint const gp, short const s ) { getGridField( gp ).SetEnergy( s ); }
-	void IncEnergy( GridPoint const gp, short const s ) { getGridField( gp ).IncEnergy( s ); }
-    void DecEnergy( GridPoint const gp, short const s ) { getGridField( gp ).DecEnergy( s ); }
+	void SetEnergy( GridPoint const gp, ENERGY_UNITS const s ) { getGridField( gp ).SetEnergy( s ); }
+	void IncEnergy( GridPoint const gp, ENERGY_UNITS const s ) { getGridField( gp ).IncEnergy( s ); }
+    void DecEnergy( GridPoint const gp, ENERGY_UNITS const s ) { getGridField( gp ).DecEnergy( s ); }
 
     void IncGenNr( ) { ++m_genEvo; }
 
@@ -62,7 +62,7 @@ public:
 
     bool ListIsEmpty( ) const { return m_gpList.ListIsEmpty( ); }
 
-    GridPoint FindGridPoint( const std::function<bool( GridPoint const)>&, GridRect const & ) const;
+    GridPoint FindGridPoint( std::function<bool( GridPoint const)> const &, GridRect const & ) const;
 
     // Query functions 
 
@@ -74,7 +74,7 @@ public:
 
     bool           IsAlive     ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive( ); }
     bool           IsDead      ( GridPoint const gp ) const { return GetGridField( gp ).IsDead( ); }
-    int            GetFoodStock( GridPoint const gp ) const { return GetGridField( gp ).GetFoodStock( ); }
+    ENERGY_UNITS   GetFoodStock( GridPoint const gp ) const { return GetGridField( gp ).GetFoodStock( ); }
     IND_ID         GetId       ( GridPoint const gp ) const { return GetGridField( gp ).GetId       ( ); }
     tOrigin        GetOrigin   ( GridPoint const gp ) const { return GetGridField( gp ).GetOrigin   ( ); }
     EVO_GENERATION GetGenBirth ( GridPoint const gp ) const { return GetGridField( gp ).GetGenBirth( ); }
@@ -86,8 +86,8 @@ public:
 
     EVO_GENERATION GetEvoGenerationNr( ) const { return m_genEvo; }
 
-    long GetAverageFoodGrowth    ( ) const { return m_lFoodGrowth / GRID_AREA(); }
-    int  GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
+    ENERGY_UNITS GetAverageFoodGrowth    ( ) const { return ENERGY_UNITS(m_enFoodGrowth / GRID_AREA()); }
+    int          GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
 
 	void PrepareActionCounters( )
 	{ 
@@ -161,7 +161,7 @@ private:
 
     GridField      m_aGF[ GRID_WIDTH_VAL ][ GRID_HEIGHT_VAL ];   // 20.000 * 196 byte = 3.920.000 byte
     GridPointList  m_gpList;                               //                            10 byte
-    long           m_lFoodGrowth;    // for statistics     //                             8 byte 
+    ENERGY_UNITS   m_enFoodGrowth;    // for statistics     //                             8 byte 
     EVO_GENERATION m_genEvo;                               //                             4 byte
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;
@@ -180,14 +180,14 @@ private:
      
     // static members 
 
-    static int  m_iFoodGrowthRate;
-    static int  m_iBasicFoodConsumption;
-    static int  m_iMemSizeFoodConsumption;
-    static int  m_iMoveFoodConsumption;
-    static int  m_iCloneFoodConsumption;
-    static int  m_iMarryFoodConsumption;
-    static int  m_iInteractFoodConsumption;
-    static bool m_bNeighborhoodFoodSensitivity;
+    static int          m_iFoodGrowthRate;
+    static ENERGY_UNITS m_iBasicFoodConsumption;
+    static ENERGY_UNITS m_iMemSizeFoodConsumption;
+    static ENERGY_UNITS m_iMoveFoodConsumption;
+    static ENERGY_UNITS m_iCloneFoodConsumption;
+    static ENERGY_UNITS m_iMarryFoodConsumption;
+    static ENERGY_UNITS m_iInteractFoodConsumption;
+    static bool         m_bNeighborhoodFoodSensitivity;
 };
 
 void CheckIndividuals( Grid & );

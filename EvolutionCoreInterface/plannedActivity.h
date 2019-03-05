@@ -38,20 +38,20 @@ public:
     void NoTarget ( ) { m_gpTarget .Set2Null( ); }
     void NoPartner( ) { m_gpPartner.Set2Null( ); }
 
-    int  GetBaseConsumption( ) const   { return m_iBaseConsumption; }
-    void SetBaseConsumption( int const iVal ) { m_iBaseConsumption  = iVal; }
-    void IncBaseConsumption( int const iVal ) { m_iBaseConsumption += iVal; }
+    ENERGY_UNITS GetBaseConsumption( ) const   { return m_iBaseConsumption; }
+    void         SetBaseConsumption( ENERGY_UNITS const iVal ) { m_iBaseConsumption  = iVal; }
+    void         IncBaseConsumption( ENERGY_UNITS const iVal ) { m_iBaseConsumption += iVal; }
 
     Action::Id GetActionType( ) const { return m_at; }
     void       SetActionType( Action::Id const at ) { m_at = at;}
 
 private:
-    GridPoint  m_gpActor;   // acting GridPoint, owner of the plan
-    GridPoint  m_gpTarget;  // target for move, clone and marry operations
-    GridPoint  m_gpPartner; // partner for interaction and marry operations
-    Action::Id m_at;
-    int        m_iBaseConsumption;
-    bool       m_bValid;
+    GridPoint    m_gpActor;   // acting GridPoint, owner of the plan
+    GridPoint    m_gpTarget;  // target for move, clone and marry operations
+    GridPoint    m_gpPartner; // partner for interaction and marry operations
+    Action::Id   m_at;
+    ENERGY_UNITS m_iBaseConsumption;
+    bool         m_bValid;
 };
 
 std::wostream & operator << ( std::wostream & , PlannedActivity const & );  // implemented in dump.cpp

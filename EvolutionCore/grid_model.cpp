@@ -24,13 +24,13 @@
     #define CHECK_INDIVIDUALS
 //#endif
 
-int  Grid::m_iFoodGrowthRate;
-int  Grid::m_iBasicFoodConsumption;
-int  Grid::m_iMemSizeFoodConsumption;
-int  Grid::m_iMoveFoodConsumption;
-int  Grid::m_iCloneFoodConsumption;
-int  Grid::m_iMarryFoodConsumption;
-int  Grid::m_iInteractFoodConsumption;
+int          Grid::m_iFoodGrowthRate;
+ENERGY_UNITS Grid::m_iBasicFoodConsumption;
+ENERGY_UNITS Grid::m_iMemSizeFoodConsumption;
+ENERGY_UNITS Grid::m_iMoveFoodConsumption;
+ENERGY_UNITS Grid::m_iCloneFoodConsumption;
+ENERGY_UNITS Grid::m_iMarryFoodConsumption;
+ENERGY_UNITS Grid::m_iInteractFoodConsumption;
 bool Grid::m_bNeighborhoodFoodSensitivity;
 
 void Grid::InitClass( )
@@ -41,19 +41,20 @@ void Grid::InitClass( )
     Individual::InitClass( );
     Neighborhood::InitClass( Config::GetConfigValue( Config::tId::nrOfNeighbors ) );
 
-    m_iFoodGrowthRate              = Config::GetConfigValue( Config::tId::growthRateFood );
-    m_iBasicFoodConsumption        = Config::GetConfigValue( Config::tId::energyConsumptionBasicRate );
-    m_iMemSizeFoodConsumption      = Config::GetConfigValue( Config::tId::energyConsumptionMemSize );
-    m_iMoveFoodConsumption         = Config::GetConfigValue( Config::tId::energyConsumptionMove );
-    m_iCloneFoodConsumption        = Config::GetConfigValue( Config::tId::energyConsumptionClone );
-    m_iMarryFoodConsumption        = Config::GetConfigValue( Config::tId::energyConsumptionMarry );
-    m_iInteractFoodConsumption     = Config::GetConfigValue( Config::tId::energyConsumptionInteraction );
     m_bNeighborhoodFoodSensitivity = Config::GetConfigValue( Config::tId::neighborhoodFoodSensitivity ) > 0;
+    m_iFoodGrowthRate              = Config::GetConfigValue( Config::tId::growthRateFood );
+
+	m_iBasicFoodConsumption        = ENERGY_UNITS(Config::GetConfigValue( Config::tId::energyConsumptionBasicRate ));
+    m_iMemSizeFoodConsumption      = ENERGY_UNITS(Config::GetConfigValue( Config::tId::energyConsumptionMemSize ));
+    m_iMoveFoodConsumption         = ENERGY_UNITS(Config::GetConfigValue( Config::tId::energyConsumptionMove ));
+    m_iCloneFoodConsumption        = ENERGY_UNITS(Config::GetConfigValue( Config::tId::energyConsumptionClone ));
+    m_iMarryFoodConsumption        = ENERGY_UNITS(Config::GetConfigValue( Config::tId::energyConsumptionMarry ));
+    m_iInteractFoodConsumption     = ENERGY_UNITS(Config::GetConfigValue( Config::tId::energyConsumptionInteraction ));
 }
 
 Grid::Grid( )
     : m_gpList( ),
-      m_lFoodGrowth( 0 ),
+      m_enFoodGrowth( ENERGY_UNITS(0) ),
       m_random( ),
       m_idCounter( ),
       m_genEvo( 0L ),
@@ -102,13 +103,13 @@ void CheckIndividuals( Grid & grid )
 
 void Grid::ResetGrid( )
 {
-    short sFood = Config::GetConfigValueShort( Config::tId::minFood );
+    ENERGY_UNITS enFood = ENERGY_UNITS( Config::GetConfigValueShort( Config::tId::minFood ) );
 
     Apply2Grid
 	( 
     	[&](GridPoint const gp)
 		{
-			getGridField( gp ).ResetGridField( sFood );
+			getGridField( gp ).ResetGridField( enFood );
 		}
 	);
 
@@ -281,9 +282,9 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
 
         case Action::Id::fertilize:
         {
-            short const sInvest = gfRun.GetAllele( GeneType::Id::fertilInvest );
-            gfRun.Fertilize( sInvest );
-            gfRun.DecEnergy( sInvest );
+            ENERGY_UNITS const enInvest = ENERGY_UNITS(gfRun.GetAllele( GeneType::Id::fertilInvest ));
+            gfRun.Fertilize( enInvest );
+            gfRun.DecEnergy( enInvest );
         }
         break;
 
@@ -295,10 +296,10 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
 
         case Action::Id::eat:  
         {
-            short const sWant    = gfRun.GetAllele( GeneType::Id::appetite );
-            short const sReceive = gfRun.GetConsumption( sWant );
-            gfRun.IncFoodStock( - sReceive );
-            gfRun.IncEnergy   ( sReceive );
+            ENERGY_UNITS const enWant    = ENERGY_UNITS( gfRun.GetAllele( GeneType::Id::appetite ) );
+            ENERGY_UNITS const enReceive = gfRun.GetConsumption( enWant );
+            gfRun.IncFoodStock( - enReceive );
+            gfRun.IncEnergy   ( enReceive );
         }
         break;
 
@@ -346,7 +347,7 @@ void Grid::EditSetStrategy
 
 GridPoint Grid::FindGridPoint
 (
-	const std::function<bool( GridPoint const)>& func, 
+	std::function<bool( GridPoint const)> const & func, 
 	GridRect const & rect
 ) const
 {

@@ -14,10 +14,10 @@ class GridField
 public:
     static void InitClass( )
 	{
-		m_iFertilizerYield = Config::GetConfigValue( Config::tId::fertilizerYield );
-		m_iMaxFertilizer   = Config::GetConfigValue( Config::tId::maxFertilizer );
-		m_sFoodReserve     = Config::GetConfigValueShort( Config::tId::reserveFood );
-		m_sMaxFood         = Config::GetConfigValueShort( Config::tId::maxFood );
+		m_lFertilizerYield = Config::GetConfigValue( Config::tId::fertilizerYield );
+		m_enMaxFertilizer  = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::maxFertilizer ));
+		m_enFoodReserve    = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::reserveFood ));
+		m_enMaxFood        = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::maxFood ));
 	}
 
 	GridField::GridField() :
@@ -25,10 +25,10 @@ public:
 		m_gpSenior( GridPoint::NULL_VAL() ),
 		m_gpJunior( GridPoint::NULL_VAL() ),   
 		m_sMutatRate(),   
-		m_sFertility(), 
+		m_enFertility(), 
 		m_Individual(), 
-		m_sFoodStock(), 
-		m_sFertilizer() 
+		m_enFoodStock(), 
+		m_enFertilizer() 
 	{}
 
 	void InitGridFieldStructure( GridPoint const gp )
@@ -36,31 +36,31 @@ public:
 		m_gp = gp;
 	}
 
-	void ResetGridField( short const sFood )
+	void ResetGridField( ENERGY_UNITS const enFood )
 	{
 		CutConnections( );
-		m_sMutatRate  = 0;
-		m_sFertility  = sFood;
-		m_sFoodStock  = sFood;
-		m_sFertilizer = 0;
+		m_sMutatRate   = 0;
+		m_enFertility  = enFood;
+		m_enFoodStock  = enFood;
+		m_enFertilizer = ENERGY_UNITS(0);
 		m_Individual.ResetIndividual( );
 	}
 
-	short const GetConsumption( short const sWant ) const 
+	ENERGY_UNITS const GetConsumption( ENERGY_UNITS const sWant ) const 
 	{
-		short const sAvailable = m_sFoodStock - m_sFoodReserve;
-		return ClipToMinMax( sAvailable, (short const) 0, sWant ); 
+		ENERGY_UNITS const available = m_enFoodStock - m_enFoodReserve;
+		return ENERGY_UNITS( ClipToMinMax( available, ENERGY_UNITS(0), sWant ) ); 
 	}
 
     short          GetMutRate( )    const { return m_sMutatRate;  }
-    short          GetFoodStock( )  const { return m_sFoodStock;  }
-    short          GetFertility( )  const { return m_sFertility;  }
-    short          GetFertilizer( ) const { return m_sFertilizer; }
+    ENERGY_UNITS   GetFoodStock( )  const { return m_enFoodStock;  }
+    ENERGY_UNITS   GetFertility( )  const { return m_enFertility;  }
+    ENERGY_UNITS   GetFertilizer( ) const { return m_enFertilizer; }
     EVO_GENERATION GetGenBirth( )   const { return m_Individual.GetGenBirth( ); }
     Action::Id     GetLastAction( ) const { return m_Individual.GetLastAction( ); }
     IND_ID         GetId( )         const { return m_Individual.GetId( ); }
     tOrigin        GetOrigin( )     const { return m_Individual.GetOrigin( ); }
-    short          GetEnergy( )     const { return m_Individual.GetEnergy( ); }
+    ENERGY_UNITS   GetEnergy( )     const { return m_Individual.GetEnergy( ); }
     bool           IsDead( )        const { return m_Individual.IsDead( ); }
     bool           IsAlive( )       const { return m_Individual.IsAlive( ); };
     bool           IsDefined( )     const { return m_Individual.IsDefined( ); };
@@ -74,9 +74,9 @@ public:
 
     IND_ID GetMemEntry( MEM_INDEX const i ) const { return m_Individual.GetMemEntry( i ); }
     void   ResetIndividual( )                     { m_Individual.ResetIndividual( ); }
-    void   SetEnergy( short const sInc )          { m_Individual.SetEnergy( sInc ); }
-    void   DecEnergy( short const sDec )          { m_Individual.IncEnergy( - sDec ); }
-    void   IncEnergy( short const sInc )          { m_Individual.IncEnergy( sInc ); }
+    void   SetEnergy( ENERGY_UNITS const sInc )   { m_Individual.SetEnergy( sInc ); }
+    void   DecEnergy( ENERGY_UNITS const sDec )   { m_Individual.IncEnergy( - sDec ); }
+    void   IncEnergy( ENERGY_UNITS const sInc )   { m_Individual.IncEnergy( sInc ); }
     void   SetLastAction( Action::Id const at )   { m_Individual.SetLastAction( at ); }
 
 	void CreateIndividual( IND_ID const id, EVO_GENERATION const genBirth, Strategy::Id const s )
@@ -84,7 +84,7 @@ public:
 		m_Individual.Create( id, genBirth, s );
 	}
 
-	void Donate( GridField & gfDonator, short sDonation )
+	void Donate( GridField & gfDonator, ENERGY_UNITS sDonation )
 	{
 		gfDonator.DecEnergy( sDonation );
 		IncEnergy( sDonation );
@@ -94,9 +94,9 @@ public:
 	{
 		m_Individual.Clone( id, genBirth, m_sMutatRate, random, gfParent.m_Individual );
 		long lDonationRate = static_cast<long>( gfParent.GetAllele( GeneType::Id::cloneDonation ) );
-		long lParentEnergy = static_cast<long>( gfParent.GetEnergy( ) );
+		long lParentEnergy = static_cast<long>( gfParent.GetEnergy( ).GetValue() );
 		long lDonation = ( lDonationRate * lParentEnergy ) / SHRT_MAX;
-		Donate( gfParent, CastToShort( lDonation ) );
+		Donate( gfParent, ENERGY_UNITS(CastToShort( lDonation )) );
 	}
 
 	void BreedIndividual( IND_ID const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParentA, GridField & gfParentB )
@@ -106,12 +106,12 @@ public:
 		Donate( gfParentB, gfParentB.GetEnergy( ) / 3 );   //TODO:  Make variable, Gene?
 	}
 
-	void Fertilize( short const sInvest )
+	void Fertilize( ENERGY_UNITS const enInvest )
 	{
-		assert( sInvest > 0 );
-		int const iYield    = (sInvest * m_iFertilizerYield ) / 100;
-		int const iNewValue = std::min( m_sFertilizer + iYield, m_iMaxFertilizer ); 
-		setFertilizer( CastToShort( iNewValue ) );
+		assert( enInvest > ENERGY_UNITS(0) );
+		ENERGY_UNITS const yield    = (enInvest * m_lFertilizerYield ) / 100;
+		ENERGY_UNITS const newValue = std::min( m_enFertilizer + yield, m_enMaxFertilizer ); 
+		setFertilizer( newValue );
 	}
 
 	void PassOn2Child( IND_ID const id, EVO_GENERATION const genBirth, Random & random )
@@ -125,17 +125,17 @@ public:
 		gfSrc.m_Individual.ResetIndividual( );
 	}
 
-	void Apply2Fertilizer(short const s, ManipulatorFunc f) { setFertilizer( (f)( m_sFertilizer, s ) ); }
-	void Apply2FoodStock (short const s, ManipulatorFunc f) { setFoodStock ( (f)( m_sFoodStock,  s ) ); }
-	void Apply2Fertility (short const s, ManipulatorFunc f) { setFertility ( (f)( m_sFertility,  s ) ); }
-	void Apply2MutRate   (short const s, ManipulatorFunc f) { setMutRate   ( (f)( m_sMutatRate,  s ) ); }
+	void Apply2MutRate   (short        const s, ManipulatorFunc f) { setMutRate   ( (f)( m_sMutatRate,  s ) ); }
+	void Apply2Fertilizer(ENERGY_UNITS const s, ManipulatorFunc f) { setFertilizer( ENERGY_UNITS((f)( m_enFertilizer.GetValue(), s.GetValue() ) ) ); }
+	void Apply2FoodStock (ENERGY_UNITS const s, ManipulatorFunc f) { setFoodStock ( ENERGY_UNITS((f)( m_enFoodStock.GetValue(), s.GetValue() ) ) ); }
+	void Apply2Fertility (ENERGY_UNITS const s, ManipulatorFunc f) { setFertility ( ENERGY_UNITS((f)( m_enFertility.GetValue(), s.GetValue() ) ) ); }
 
-	void IncFoodStock( short const sInc )
+	void IncFoodStock( ENERGY_UNITS const sInc )
 	{ 
-		setFoodStock( AssertShortSum( m_sFoodStock, sInc ) ); 
+		setFoodStock( ENERGY_UNITS( AssertShortSum( m_enFoodStock.GetValue(), sInc.GetValue() ) ) ); 
 	}
 
-    void ReduceFertilizer( ) { m_sFertilizer /= 2; }
+    void ReduceFertilizer( ) { m_enFertilizer /= 2; }
 
     GridPoint const GetGridPoint( ) const { return m_gp; }
     GridPoint const GetSeniorGp ( ) const { return m_gpSenior; }
@@ -168,29 +168,29 @@ private:
 
 // configuraton data, changed only by user 
 
-    short      m_sMutatRate;    //   2 byte
-    short      m_sFertility;    //   2 byte     normal fertility of soil
+    short        m_sMutatRate;  //   2 byte
+    ENERGY_UNITS m_enFertility;  //   2 byte     normal fertility of soil
 
 // data changed by algorithm
 
-    Individual m_Individual;    // 176 byte
-    short      m_sFoodStock;    //   2 byte 
-    short      m_sFertilizer;   //   2 byte
-                    // sum         196 byte
+    Individual   m_Individual;  // 176 byte
+    ENERGY_UNITS m_enFoodStock;  //   2 byte 
+    ENERGY_UNITS m_enFertilizer; //   2 byte
+                      // sum       196 byte
 
 // static members for caching frequently used configuration items
 
-    static int   m_iFertilizerYield;
-    static int   m_iMaxFertilizer;
-    static short m_sFoodReserve;
-    static short m_sMaxFood;
+    static long         m_lFertilizerYield;
+    static ENERGY_UNITS m_enMaxFertilizer;
+    static ENERGY_UNITS m_enFoodReserve;
+    static ENERGY_UNITS m_enMaxFood;
 
 // private functions
 
-	void setFertilizer( short const s ) { assert( s >= 0 ); m_sFertilizer = s; }
-	void setFoodStock ( short const s ) { assert( s >= 0 ); m_sFoodStock  = s; }
-	void setFertility ( short const s ) { assert( s >= 0 ); m_sFertility  = s; }
-	void setMutRate   ( short const s ) { assert( s >= 0 ); m_sMutatRate  = std::min( s, (short)100 ); } // mutation rate is a percent value	
+	void setFertilizer( ENERGY_UNITS const s ) { assert( s >= ENERGY_UNITS(0) ); m_enFertilizer = s; }
+	void setFoodStock ( ENERGY_UNITS const s ) { assert( s >= ENERGY_UNITS(0) ); m_enFoodStock  = s; }
+	void setFertility ( ENERGY_UNITS const s ) { assert( s >= ENERGY_UNITS(0) ); m_enFertility  = s; }
+	void setMutRate   ( short        const s ) { assert( s >= 0 ); m_sMutatRate = std::min( s, (short)100 ); } // mutation rate is a percent value	
 };
 
 std::wostream & operator << ( std::wostream &, GridField const & );

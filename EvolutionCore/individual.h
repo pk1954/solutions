@@ -20,10 +20,10 @@ public:
 
     void ResetIndividual( );
     
-    short          GetEnergy    ( )                       const { return m_sEnergy; };
+    ENERGY_UNITS   GetEnergy    ( )                       const { return m_sEnergy; };
     EVO_GENERATION GetGenBirth  ( )                       const { return m_genBirth; };
-    bool           IsDead       ( )                       const { return m_sEnergy <= 0; };
-    bool           IsAlive      ( )                       const { return m_sEnergy >  0; };
+    bool           IsDead       ( )                       const { return m_sEnergy <= ENERGY_UNITS(0); };
+    bool           IsAlive      ( )                       const { return m_sEnergy >  ENERGY_UNITS(0); };
     bool           IsDefined    ( )                       const { return m_id.IsNotNull(); };
     IND_ID         GetId        ( )                       const { return m_id; };
     tOrigin        GetOrigin    ( )                       const { return m_origin; }
@@ -55,31 +55,31 @@ public:
 		m_at = at; 
 	}
 
-	void SetEnergy( short const energy )
+	void SetEnergy( ENERGY_UNITS const energy )
 	{
 	   m_sEnergy = ( energy > m_sCapacity ) ? m_sCapacity : energy;
 	}
 
-	void IncEnergy( short const sInc )
+	void IncEnergy( ENERGY_UNITS const sInc )
 	{
-		SetEnergy( AssertShortSum( m_sEnergy, sInc ) );
+		SetEnergy( ENERGY_UNITS( AssertShortSum( m_sEnergy.GetValue(), sInc.GetValue() ) ) );
 	}
 
 private:
     IND_ID           m_id;          //  4 bytes
     EVO_GENERATION   m_genBirth;    //  4 bytes
     tOrigin          m_origin;      //  2 bytes
-    short            m_sCapacity;   //  2 bytes
+    ENERGY_UNITS     m_sCapacity;   //  2 bytes
     StrategyData     m_strat;       // 84 bytes
     Genome           m_genome;      // 68 bytes
 	Strategy const * m_pStrategy;   //  8 bytes 
 	Action::Id       m_at;          //  2 bytes
-    short            m_sEnergy;     //  2 bytes
+    ENERGY_UNITS     m_sEnergy;     //  2 bytes
                              // sum:  176 bytes
 
 	static const std::unordered_map< Strategy::Id, Strategy * const > m_apStrat; 
 
-    static short m_sStdEnergyCapacity;
-    static short m_sInitialEnergy;
+    static ENERGY_UNITS m_stdEnergyCapacity;
+    static ENERGY_UNITS m_initialEnergy;
 };
         

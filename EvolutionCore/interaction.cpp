@@ -8,17 +8,17 @@
 #include "individual.h"
 #include "interaction.h"
 
-static short R;  // Beide kooperieren und fahren das gute Ergebnis R (Reward) ein. 
-static short S;  // Der Spieler wurde betrogen, er bekommt S (Suckers Payoff). 
-static short T;  // Der Spieler hat den anderen ausgenutzt und erhält T (Temptation).
-static short P;  // Gegenseitige Defektion führt nur zu P (Penalty). 
+static ENERGY_UNITS R;  // Beide kooperieren und fahren das gute Ergebnis R (Reward) ein. 
+static ENERGY_UNITS S;  // Der Spieler wurde betrogen, er bekommt S (Suckers Payoff). 
+static ENERGY_UNITS T;  // Der Spieler hat den anderen ausgenutzt und erhält T (Temptation).
+static ENERGY_UNITS P;  // Gegenseitige Defektion führt nur zu P (Penalty). 
 
 void INTERACTION::InitClass( )
 {
-	R = Config::GetConfigValueShort( Config::tId::interactionPayOff_R );
-	S = Config::GetConfigValueShort( Config::tId::interactionPayOff_S );
-	T = Config::GetConfigValueShort( Config::tId::interactionPayOff_T );
-	P = Config::GetConfigValueShort( Config::tId::interactionPayOff_P );
+	R = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::interactionPayOff_R ));
+	S = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::interactionPayOff_S ));
+	T = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::interactionPayOff_T ));
+	P = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::interactionPayOff_P ));
 }
 
 void INTERACTION::Interact( Individual &IndA, Individual &IndB )
@@ -29,7 +29,7 @@ void INTERACTION::Interact( Individual &IndA, Individual &IndB )
 	IndB.Remember( IndA.GetId(), resA );
 	IndA.Remember( IndB.GetId(), resB );
 
-	std::pair <short,short> const rewards =  
+	std::pair <ENERGY_UNITS,ENERGY_UNITS> const rewards =  
 		resA ? (resB ? std::make_pair( R, R ) : std::make_pair( S, T ))
 		     : (resB ? std::make_pair( T, S ) : std::make_pair( P, P ));
 	
@@ -43,8 +43,8 @@ void INTERACTION::Interact( Individual &IndA, Individual &IndB )
 		std::cout << IndA.GetId().GetValue() << "[" << Strategy::GetName( IndA.GetStrategyId() ) << "]/";
 		std::cout << IndB.GetId().GetValue() << "[" << Strategy::GetName( IndB.GetStrategyId() ) << "]  "; 
 		std::cout << resA << "/" << resB << "  ";
-		std::cout << rewards.first << "/" << rewards.second << "  ";
-		std::cout << IndA.GetEnergy() << "/" << IndB.GetEnergy();
+		std::cout << rewards.first.GetValue() << "/" << rewards.second.GetValue() << "  ";
+		std::cout << IndA.GetEnergy().GetValue() << "/" << IndB.GetEnergy().GetValue();
 		std::cout << std::endl;
 	}
 }

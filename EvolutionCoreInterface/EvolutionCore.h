@@ -28,7 +28,7 @@ public:
 // readOnly functions
 
     virtual int            GetNrOfLivingIndividuals ( ) const = 0;
-    virtual int            GetAverageFoodGrowth     ( ) const = 0;
+    virtual ENERGY_UNITS   GetAverageFoodGrowth     ( ) const = 0;
     virtual EVO_GENERATION GetEvoGenerationNr       ( ) const = 0;
     virtual short          GetBrushIntensity        ( ) const = 0;
     virtual tShape         GetBrushShape            ( ) const = 0;
@@ -45,11 +45,11 @@ public:
     virtual bool           IsDefined    ( GridPoint const ) const = 0;
     virtual IND_ID         GetId        ( GridPoint const ) const = 0;
     virtual tOrigin        GetOrigin    ( GridPoint const ) const = 0;
-    virtual short          GetEnergy    ( GridPoint const ) const = 0;
-    virtual int            GetFoodStock ( GridPoint const ) const = 0;
-    virtual int            GetFertility ( GridPoint const ) const = 0;
+    virtual ENERGY_UNITS   GetEnergy    ( GridPoint const ) const = 0;
+    virtual ENERGY_UNITS   GetFoodStock ( GridPoint const ) const = 0;
+    virtual ENERGY_UNITS   GetFertility ( GridPoint const ) const = 0;
     virtual int            GetMutRate   ( GridPoint const ) const = 0;
-    virtual int            GetFertilizer( GridPoint const ) const = 0;
+    virtual ENERGY_UNITS   GetFertilizer( GridPoint const ) const = 0;
     virtual EVO_GENERATION GetGenBirth  ( GridPoint const ) const = 0;
     virtual EVO_GENERATION GetAge       ( GridPoint const ) const = 0;
     virtual Strategy::Id   GetStrategyId( GridPoint const ) const = 0;

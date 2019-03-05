@@ -154,7 +154,7 @@ Action::Id Genome::GetOption
 ( 
     bool           const bHasFreeSpace, 
     bool           const bHasNeighbor,
-    int            const iEnergy,
+    ENERGY_UNITS   const energy,
 	EVO_GENERATION const age,
     Random             & random 
 ) const
@@ -167,12 +167,12 @@ Action::Id Genome::GetOption
 	
 	std::array <bool, Action::COUNT > abOptions;
  
-	abOptions[ static_cast<int>( Action::Id::move      ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( GeneType::Id::thresholdMove )      );
-    abOptions[ static_cast<int>( Action::Id::fertilize ) ] =                                  ( iEnergy >= GetAllele( GeneType::Id::thresholdFertilize ) );
-    abOptions[ static_cast<int>( Action::Id::clone     ) ] = bHasFreeSpace &&                 ( iEnergy >= GetAllele( GeneType::Id::thresholdClone )     );
-    abOptions[ static_cast<int>( Action::Id::marry     ) ] = bHasFreeSpace && bHasNeighbor && ( iEnergy >= GetAllele( GeneType::Id::thresholdMarry )     );
+	abOptions[ static_cast<int>( Action::Id::move      ) ] = bHasFreeSpace &&                 ( energy.GetValue() >= GetAllele( GeneType::Id::thresholdMove )      );
+    abOptions[ static_cast<int>( Action::Id::fertilize ) ] =                                  ( energy.GetValue() >= GetAllele( GeneType::Id::thresholdFertilize ) );
+    abOptions[ static_cast<int>( Action::Id::clone     ) ] = bHasFreeSpace &&                 ( energy.GetValue() >= GetAllele( GeneType::Id::thresholdClone )     );
+    abOptions[ static_cast<int>( Action::Id::marry     ) ] = bHasFreeSpace && bHasNeighbor && ( energy.GetValue() >= GetAllele( GeneType::Id::thresholdMarry )     );
     abOptions[ static_cast<int>( Action::Id::interact  ) ] =                  bHasNeighbor;
-    abOptions[ static_cast<int>( Action::Id::eat       ) ] =                                  ( iEnergy <  GetAllele( GeneType::Id::maxEat )             );
+    abOptions[ static_cast<int>( Action::Id::eat       ) ] =                                  ( energy.GetValue() <  GetAllele( GeneType::Id::maxEat )             );
 
     unsigned int uiSum = 0;
 
