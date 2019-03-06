@@ -6,7 +6,6 @@
 #include "config.h"
 #include "BoolOp.h"
 #include "PixelTypes.h"
-#include "PixelCore.h"
 #include "pixelCoordinates.h"
 #include "EvolutionCore.h"
 #include "d3d_buffer.h"
@@ -65,7 +64,6 @@ GridWindow::GridWindow( ) :
     m_pPixelCoordinates( nullptr ),
     m_pGridWindowObserved( nullptr ),
     m_pObserverInterface( nullptr ),
-	m_pPixelCore( nullptr ),
     m_pDrawFrame( nullptr ),
     m_ptLast( PixelPoint::NULL_VAL() ),
     m_bMoveAllowed( TRUE )
@@ -81,7 +79,6 @@ void GridWindow::Start
     
 	BOOL bHexagonMode   = (Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6);
     m_pPixelCoordinates = new PixelCoordinates( pixFieldSize, bHexagonMode );
-	m_pPixelCore        = new PixelCore( m_pCore, m_pPixelCoordinates );
 
 	HWND hwnd = StartBaseWindow
     ( 
@@ -184,9 +181,9 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         if ( m_ptLast.IsNotNull() )  // last cursor pos stored in m_ptLast
         {
             PixelPoint ptOther = m_pCore->IsPoiDefined( ) 
-				                 ? m_pPixelCore->GetPoiCenter() * 2 - ptCrsr 
+				                 ? m_pPixelCoordinates->Grid2PixelPosCenter( m_pCore->FindPOI( ) ) * 2 - ptCrsr 
 				                 : m_ptLast;
-            m_pPixelCore->SetSelection( ptOther, ptCrsr ); 
+			m_pCore->SetSelection( m_pPixelCoordinates->Pixel2GridRect( PixelRect( ptOther, ptCrsr ) ) );
         }
         else                                // first time here after RBUTTON pressed
         {
@@ -265,15 +262,17 @@ void GridWindow::doPaint( )
 
     if ( m_bMoveAllowed && m_pCore->IsPoiDefined( ) )
 	{
-		if ( ! m_pPixelCore->CenterPoi( GetClRectCenter( ) ) )
+		bool bCentered = m_pPixelCoordinates->CenterPoi( GetClRectCenter( ), m_pCore->FindPOI( ) );
+		if ( ! bCentered )
 		   Invalidate( FALSE );    // repeat if POI is not in center 
 	}
 
     m_pPerformanceWindow->DisplayStop( );
 }
 
-void GridWindow::mouseWheelAction( int iDelta )
+void GridWindow::mouseWheelAction( WPARAM const wParam )
 {
+	int        iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;
 	BOOL const bDirection = ( iDelta > 0 );
 	PIXEL      pixNewFieldSize;
 
@@ -359,7 +358,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         return FALSE;
 
     case WM_MOUSEWHEEL:
-		mouseWheelAction(GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA);
+		mouseWheelAction( wParam );
         return FALSE;
 
     case WM_LBUTTONDOWN:
@@ -472,3 +471,8 @@ void GridWindow::Escape( )
 { 
 	m_pCore->ResetSelection( ); 
 }
+
+PIXEL GridWindow::GetFieldSize( ) const
+{ 
+	return m_pPixelCoordinates->GetFieldSize( ); 
+};

@@ -196,7 +196,6 @@
     <ClCompile Include="grid_model.cpp" />
     <ClCompile Include="individual.cpp" />
     <ClCompile Include="interaction.cpp" />
-    <ClCompile Include="PixelCore.cpp" />
     <ClCompile Include="plannedActivity.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

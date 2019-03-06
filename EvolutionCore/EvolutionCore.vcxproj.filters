@@ -119,9 +119,6 @@
     <ClCompile Include="pixelCoordinates.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="PixelCore.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="plannedActivity.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>

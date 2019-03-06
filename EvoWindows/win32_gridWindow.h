@@ -3,12 +3,10 @@
 
 #pragma once
 
-#include "pixelCoordinates.h"
 #include "win32_baseWindow.h"
 
 class DrawFrame;
 class PixelCoordinates;
-class PixelCore;
 class WorkThreadInterface;
 class DspOptWindow;
 class EvolutionCore;
@@ -32,28 +30,18 @@ public:
 	);
 
     GridWindow( );
+    ~GridWindow( );
 
     void Start( DWORD const, PIXEL const );
 
-    ~GridWindow( );
-
-    void Size( );
-	void Zoom( bool const );
-	void ToggleStripMode( );
-	void Escape( );
-	void SetFieldSize( PIXEL const );
-	void Fit2Rect( );
-	bool IsFullGridVisible( ) const;
-
-	PIXEL GetFieldSize( ) const
-	{ 
-		return m_pPixelCoordinates->GetFieldSize( ); 
-	};
-
-	PixelPoint GetPixelOffset( ) const 
-	{ 
-		return m_pPixelCoordinates->GetPixelOffset( ); 
-	};
+    void  Size( );
+	void  Zoom( bool const );
+	void  ToggleStripMode( );
+	void  Escape( );
+	void  SetFieldSize( PIXEL const );
+	void  Fit2Rect( );
+	bool  IsFullGridVisible( ) const;
+	PIXEL GetFieldSize( ) const;
 
 	void Observe( GridWindow * const pGridWin )
 	{
@@ -73,22 +61,21 @@ private:
     static FocusPoint          * m_pFocusPoint;
 	static ColorManager        * m_pColorManager;
 
-    PixelCoordinates    * m_pPixelCoordinates;   // My own PixelCoordinates
-    GridWindow          * m_pGridWindowObserved; // Observed GridWindow (or nullptr)
-    ObserverInterface   * m_pObserverInterface;
-	PixelCore           * m_pPixelCore;
-    DrawFrame           * m_pDrawFrame;
-    PixelPoint 	          m_ptLast;	 	   // Last cursor position during selection 
-    BOOL                  m_bMoveAllowed;  // TRUE: move with mouse is possible
-    HMENU                 m_hPopupMenu;
+    PixelCoordinates  * m_pPixelCoordinates;   // My own PixelCoordinates
+    GridWindow        * m_pGridWindowObserved; // Observed GridWindow (or nullptr)
+    ObserverInterface * m_pObserverInterface;
+    DrawFrame         * m_pDrawFrame;
+    PixelPoint 	        m_ptLast;	 	   // Last cursor position during selection 
+    BOOL                m_bMoveAllowed;    // TRUE: move with mouse is possible
+    HMENU               m_hPopupMenu;
 
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 	virtual void    AddContextMenuEntries( HMENU const, POINT const );
 
 	void newFieldSize( PIXEL const, GridPoint const );
-	void mouseWheelAction( int );
-    BOOL inObservedClientRect( LPARAM );
+	void mouseWheelAction( WPARAM const  );
+    BOOL inObservedClientRect( LPARAM const );
     void moveGrid( PixelPoint const );
-    void onMouseMove( LPARAM, WPARAM );
+    void onMouseMove( LPARAM const, WPARAM const );
     void doPaint( );
 };

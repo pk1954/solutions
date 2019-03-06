@@ -43,9 +43,6 @@
     <ClInclude Include="pixelCoordinates.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="PixelCore.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="gridPoint24.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
