@@ -52,10 +52,10 @@
     <ClInclude Include="gridCoord.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="kGridTypes.h">
+    <ClInclude Include="GridDimensions.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="GridDimensions.h">
+    <ClInclude Include="milliGridTypes.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

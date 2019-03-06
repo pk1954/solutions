@@ -246,10 +246,10 @@ void GridWindow::doPaint( )
 {
     m_pPerformanceWindow->DisplayStart( );
 
-    KGridRect const kgr =  // if I observe someone and cursor is in client area, show his position
+    MilliGridRect const kgr =  // if I observe someone and cursor is in client area, show his position
         ( ( m_pGWObserved != nullptr ) && CrsrInClientRect( ) )
-        ? m_pGWObserved->m_pPixelCoordinates->Pixel2KGridRect( Util::GetClPixelRect( m_pGWObserved->GetWindowHandle( ) ) )
-        : KGridRect::ZERO_VAL();
+        ? m_pGWObserved->m_pPixelCoordinates->Pixel2MilliGridRect( Util::GetClPixelRect( m_pGWObserved->GetWindowHandle( ) ) )
+        : MilliGridRect::ZERO_VAL();
 
     {
         PAINTSTRUCT ps;

@@ -100,7 +100,7 @@ void DrawFrame::HighlightShape( Shape const * pShape, GridPoint const gp )
 	m_pGraphics->RenderTranspRect( rect, 128, color );  
 }
 
-void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
+void DrawFrame::DoPaint( HWND hwnd, MilliGridRect const & pkgr )
 {
     if ( IsWindowVisible( hwnd ) )
     {
@@ -136,7 +136,7 @@ void DrawFrame::DoPaint( HWND hwnd, KGridRect const & pkgr )
 			if ( pkgr.IsNotEmpty( ) )
 			{
 				COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
-				m_pGraphics->RenderTranspRect( m_pPixelCoordinates->KGrid2PixelRect( pkgr ), 128, color );  
+				m_pGraphics->RenderTranspRect( m_pPixelCoordinates->MilliGrid2PixelRect( pkgr ), 128, color );  
 			}
 
 			m_pGraphics->EndFrame( );
