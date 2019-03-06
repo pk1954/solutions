@@ -126,26 +126,32 @@ PixelPoint PixelCoordinates::Pixel2PixelPos( PixelPoint const ptPosIn, PixelCoor
     return Pixel2PixelSize( ptPosIn + m_pixOffset, fTarget ) - fTarget.m_pixOffset;
 }
 
-KGridPoint PixelCoordinates::Pixel2KGridSize( PixelPoint const ptSize, PIXEL const pixFieldSize ) const
+KGridPoint PixelCoordinates::pixel2KGridPoint( PixelPoint const ptSize ) const
 {
-	PixelPoint size( ptSize * KGRID_FACTOR / pixFieldSize.GetValue() );
+	PixelPoint size { ptSize * KGRID_FACTOR / m_pixFieldSize.GetValue() };
     return KGridPoint( KGrid_X(KGrid(size.GetXvalue())), KGrid_Y(KGrid(size.GetYvalue())) );
 }
 
-PixelPoint PixelCoordinates::KGrid2PixelSize( KGridRectSize const kgpSize, PIXEL const pixFieldSize ) const 
+KGridRectSize PixelCoordinates::pixel2KGridSize( PixelPoint const ptSize ) const
 {
-    KGridRectSize size = (kgpSize * CastToShort(pixFieldSize.GetValue())) / KGRID_FACTOR;
-    return PixelPoint( PIXEL_X(PIXEL(size.GetXvalue())), PIXEL_Y(PIXEL(size.GetYvalue())) );
+	KGridPoint pnt { pixel2KGridPoint( ptSize ) };
+    return KGridRectSize( pnt.GetX(), pnt.GetY() );
 }
 
 KGridPoint PixelCoordinates::Pixel2KGridPos( PixelPoint const pp ) const 
 { 
-	return Pixel2KGridSize( pp + m_pixOffset, m_pixFieldSize ); 
+	return pixel2KGridPoint( pp + m_pixOffset );
 }
 
-PixelPoint PixelCoordinates::KGrid2PixelPos( KGridPoint const kp ) const 
+PixelPoint PixelCoordinates::kGrid2PixelSize( KGridRectSize const kgpSize ) const 
+{
+    KGridRectSize size = (kgpSize * CastToShort(m_pixFieldSize.GetValue())) / KGRID_FACTOR;
+    return PixelPoint( PIXEL_X(PIXEL(size.GetXvalue())), PIXEL_Y(PIXEL(size.GetYvalue())) );
+}
+
+PixelPoint PixelCoordinates::kGrid2PixelPos( KGridPoint const kp ) const 
 { 
-	return KGrid2PixelSize( KGridRectSize( kp.GetX(), kp.GetY() ), m_pixFieldSize ) - m_pixOffset; 
+	return kGrid2PixelSize( KGridRectSize( kp.GetX(), kp.GetY() ) ) - m_pixOffset; 
 }
     
 PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint const gp ) const 
@@ -259,14 +265,14 @@ KGridRect PixelCoordinates::Pixel2KGridRect( PixelRect const & rect ) const
     return KGridRect 
     (
         Pixel2KGridPos ( rect.GetStartPoint() ),
-        Pixel2KGridSize( PixelPoint( rect.GetWidth(), rect.GetHeight() ), m_pixFieldSize )
+        pixel2KGridSize( PixelPoint( rect.GetWidth(), rect.GetHeight() ) )
     );
 }
 
 PixelRect PixelCoordinates::KGrid2PixelRect( KGridRect const & kgrIn ) const 
 {
-    PixelPoint const ptPos ( KGrid2PixelPos ( kgrIn.GetStartPoint()  ) );
-    PixelPoint const ptSize( KGrid2PixelSize( kgrIn.GetSize(), m_pixFieldSize ) );
+    PixelPoint const ptPos ( kGrid2PixelPos ( kgrIn.GetStartPoint()  ) );
+    PixelPoint const ptSize( kGrid2PixelSize( kgrIn.GetSize() ) );
     return PixelRect( ptPos, ptPos + ptSize );
 }
 

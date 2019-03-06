@@ -34,8 +34,8 @@ public:
     PointType const operator*= (int const i) { m_x *= i; m_y *= i; return * this; };
     PointType const operator/= (int const i) { m_x /= i; m_y /= i; return * this; }
 
-    PointType const operator- () const { return PointType( -m_x, -m_y ); };
-    PointType const operator+ () const { return PointType( +m_x, +m_y ); };
+	PointType const operator- () const { return PointType { -m_x, -m_y }; };
+	PointType const operator+ () const { return PointType { +m_x, +m_y }; };
 
 	BASE_X const GetX() const { return m_x; }
 	BASE_Y const GetY() const { return m_y; }
@@ -45,13 +45,13 @@ public:
 
 	static PointType const & NULL_VAL() 
 	{ 
-		static PointType res = PointType( BASE_TYPE::NULL_VAL() ); 
+		static PointType res { PointType( BASE_TYPE::NULL_VAL() ) }; 
 		return res;
 	};
 
 	static PointType const & ZERO_VAL() 
 	{ 
-		static PointType res = PointType( BASE_TYPE::ZERO_VAL() ); 
+		static PointType res { PointType( BASE_TYPE::ZERO_VAL() ) }; 
 		return res;
 	};
 
@@ -65,57 +65,57 @@ public:
 
 	friend PointType const operator+ (PointType const a, PointType const b) 
 	{ 
-		PointType res(a); 
+		PointType res { a }; 
 		res += b; 
 		return res; 
 	};
 
 	friend PointType const operator- (PointType const a, PointType const b) 
 	{ 
-		PointType res(a); 
+		PointType res { a }; 
 		res -= b; 
 		return res; 
 	};
 
 	friend PointType const operator% (PointType const a, PointType const b) 
 	{ 
-		PointType res(a); 
+		PointType res { a }; 
 		res %= b; 
 		return res; 
 	};
 
 	friend PointType const operator+ (PointType const a, BASE_TYPE const base) 
 	{ 
-		PointType res(a); 
+		PointType res { a }; 
 		res += base; 
 		return res; 
 	};
 
 	friend PointType const operator- (PointType const a, BASE_TYPE const base) 
 	{ 
-		PointType res(a); 
+		PointType res { a }; 
 		res -= base; 
 		return res; 
 	};
 
 	friend PointType const operator* (PointType const a, long const l) 
 	{ 
-		PointType res(a); 
+		PointType res { a }; 
 		res *= l; 
 		return res; 
 	};
 
 	friend PointType const operator/ (PointType const a, long const l) 
 	{ 
-		PointType res(a); 
+		PointType res { a }; 
 		res /= l; 
 		return res; 
 	};
 
 	friend BASE_TYPE const MaxAbsDelta(PointType const pnt) 
 	{
-		BASE_TYPE xAbs{ abs(pnt.GetXvalue()) };
-		BASE_TYPE yAbs{ abs(pnt.GetYvalue()) };
+		BASE_TYPE xAbs { abs(pnt.GetXvalue()) };
+		BASE_TYPE yAbs { abs(pnt.GetYvalue()) };
 		return max( xAbs, yAbs );
 	}
 

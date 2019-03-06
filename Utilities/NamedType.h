@@ -42,46 +42,46 @@ public:
     NamedType& operator*= (int const i) { m_value *= i; return * this; }
 	NamedType& operator/= (int const i) { m_value /= i; return * this; }
 
-	NamedType  operator- () const { NamedType res( -m_value ); return res; }
-	NamedType  operator+ () const { NamedType res( +m_value ); return res; }
+	NamedType  operator- () const { NamedType res { -m_value }; return res; }
+	NamedType  operator+ () const { NamedType res { +m_value }; return res; }
 
 	NamedType  operator++() { ++m_value; return * this; }
     NamedType  operator--() { --m_value; return * this; }
 
-	NamedType  operator++(int) { NamedType tmp(*this); operator++(); return tmp; }
-    NamedType  operator--(int) { NamedType tmp(*this); operator--(); return tmp; }
+	NamedType  operator++(int) { NamedType tmp { *this }; operator++(); return tmp; }
+	NamedType  operator--(int) { NamedType tmp { *this }; operator--(); return tmp; }
 
 	friend NamedType operator+ (NamedType const a, NamedType const b )
 	{ 
-		NamedType res(a);
+		NamedType res { a };
 		res += b; 
 		return res; 
 	}
 
 	friend NamedType operator- (NamedType const a, NamedType const b )
 	{ 
-		NamedType res(a);
+		NamedType res { a };
 		res -= b; 
 		return res; 
 	}
 
 	friend NamedType operator% (NamedType const a, NamedType const b )
 	{ 
-		NamedType res(a);
+		NamedType res { a };
 		res %= b; 
 		return res; 
 	}
 
 	friend NamedType operator* (NamedType const a, int const i )
 	{ 
-		NamedType res(a);
+		NamedType res { a };
 		res *= i; 
 		return res; 
 	}
 
 	friend NamedType operator/ (NamedType const a, int const i )
 	{ 
-		NamedType res(a);
+		NamedType res { a };
 		res /= i; 
 		return res; 
 	}
@@ -95,13 +95,13 @@ public:
 	static NamedType const NULL_VAL()
 	{
 		static_assert( std::numeric_limits<BASE_TYPE>::is_specialized, "type has no NULL_VAL"	);
-		static const NamedType res((std::numeric_limits<BASE_TYPE>::min)());
+		static const NamedType res { (std::numeric_limits<BASE_TYPE>::min)() };
 		return res;
 	}
 
 	static NamedType const ZERO_VAL()
 	{
-		static const NamedType res(BASE_TYPE(0));
+		static const NamedType res { BASE_TYPE(0) };
 		return res;
 	}
 

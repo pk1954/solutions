@@ -164,14 +164,14 @@ public:
 
 	friend RectType const operator+ (RectType const a, POS_TYPE const b	) 
 	{ 
-		RectType res(a); 
+		RectType res { a }; 
 		res += b; 
 		return res; 
 	};
 
 	friend RectType const operator- (RectType const a, POS_TYPE const b	) 
 	{ 
-		RectType res(a); 
+		RectType res { a }; 
 		res -= b;
 		return res; 
 	};
@@ -184,7 +184,7 @@ public:
 
 	static RectType const & ZERO_VAL() 
 	{ 
-		static RectType res( POS_TYPE::ZERO_VAL(), POS_TYPE::ZERO_VAL() ); 
+		static RectType res { POS_TYPE::ZERO_VAL(), POS_TYPE::ZERO_VAL() }; 
 		return res;
 	};
 

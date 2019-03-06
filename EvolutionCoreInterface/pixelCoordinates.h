@@ -19,28 +19,24 @@ public:
     
 	//////// transformations ////////
 
-	PixelPoint Grid2PixelSize( GridPoint  const ) const;
+	PixelPoint    Grid2PixelSize( GridPoint  const ) const;
 
-	KGridPoint Pixel2KGridSize( PixelPoint    const, PIXEL const ) const;
-	PixelPoint KGrid2PixelSize( KGridRectSize const, PIXEL const ) const;
+	GridPoint     Pixel2GridPos  ( PixelPoint const ) const;
+	PixelPoint    Grid2PixelPos  ( GridPoint  const ) const; 
 
-	GridPoint  Pixel2GridPos ( PixelPoint const ) const;
-	PixelPoint Grid2PixelPos ( GridPoint  const ) const; 
+    KGridPoint    Pixel2KGridPos ( PixelPoint const ) const;
 
-    KGridPoint Pixel2KGridPos ( PixelPoint const ) const;
-    PixelPoint KGrid2PixelPos ( KGridPoint const ) const; 
+	KGridRect     Pixel2KGridRect( PixelRect const & ) const;
+    PixelRect     KGrid2PixelRect( KGridRect const & ) const; 
 
-	KGridRect  Pixel2KGridRect( PixelRect const & ) const;
-    PixelRect  KGrid2PixelRect( KGridRect const & ) const; 
+    PixelRect     Grid2PixelRect ( GridRect  const & ) const;
+    GridRect      Pixel2GridRect ( PixelRect const & ) const;
 
-    PixelRect  Grid2PixelRect ( GridRect  const & ) const;
-    GridRect   Pixel2GridRect ( PixelRect const & ) const;
+    PixelPoint    Pixel2PixelSize( PixelPoint const, PixelCoordinates const & ) const;
+    PixelPoint    Pixel2PixelPos ( PixelPoint const, PixelCoordinates const & ) const;
 
-    PixelPoint Pixel2PixelSize( PixelPoint const, PixelCoordinates const & ) const;
-    PixelPoint Pixel2PixelPos ( PixelPoint const, PixelCoordinates const & ) const;
-
-	PixelPoint Grid2PixelPosCenter( GridPoint const ) const; 
-	PixelRect  GridPoint2PixelRect( GridPoint const ) const;
+	PixelPoint    Grid2PixelPosCenter( GridPoint const ) const; 
+	PixelRect     GridPoint2PixelRect( GridPoint const ) const;
 
 	//////// queries ////////
 	
@@ -59,7 +55,12 @@ public:
     void  MoveGrid( PixelPoint const);
 
 private:
-    bool       isValidFieldSize( PIXEL const ) const; 
+	KGridRectSize pixel2KGridSize ( PixelPoint    const ) const;
+	KGridPoint    pixel2KGridPoint( PixelPoint    const ) const;
+    PixelPoint    kGrid2PixelPos  ( KGridPoint    const ) const; 
+	PixelPoint    kGrid2PixelSize ( KGridRectSize const ) const;
+
+	bool       isValidFieldSize( PIXEL const ) const; 
     PixelPoint calcCenterOffset( GridPoint const, PixelPoint const );
 
     PixelPoint m_pixOffset;
