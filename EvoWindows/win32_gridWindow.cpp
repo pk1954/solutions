@@ -63,7 +63,7 @@ void GridWindow::InitClass
 GridWindow::GridWindow( ) :
     BaseWindow( ),
     m_pPixelCoordinates( nullptr ),
-    m_pGWObserved( nullptr ),
+    m_pGridWindowObserved( nullptr ),
     m_pObserverInterface( nullptr ),
 	m_pPixelCore( nullptr ),
     m_pDrawFrame( nullptr ),
@@ -126,21 +126,8 @@ GridWindow::~GridWindow( )
     };
 
 	m_pCore                = nullptr;
-    m_pGWObserved          = nullptr;
+    m_pGridWindowObserved  = nullptr;
     m_pWorkThreadInterface = nullptr;
-}
-
-BOOL GridWindow::inObservedClientRect( LPARAM const lParam )
-{
-    if ( m_pGWObserved == nullptr )
-        return FALSE;
-
-	PixelCoordinates const pixCoordObserved = *(m_pGWObserved->m_pPixelCoordinates);
-    PixelPoint       const ptCrsr           = GetCrsrPosFromLparam( lParam );
-    PixelPoint       const ptCrsrCheck      = m_pPixelCoordinates->Pixel2PixelPos( ptCrsr, pixCoordObserved );
-	HWND             const hWndObserved     = m_pGWObserved->GetWindowHandle( );
-
-    return Util::IsInClientRect( hWndObserved, ptCrsrCheck );  // Is cursor position in observed client rect?
 }
 
 void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
@@ -180,20 +167,6 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 		}
 
 		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI, L"POI" );
-    }
-}
-
-void GridWindow::moveGrid( PixelPoint const ptDiff )
-{
-    if ( m_pGWObserved != nullptr )     // I observe someone
-    {
-        PixelPoint const ptDiffObserved = m_pPixelCoordinates->Pixel2PixelSize( ptDiff, *( m_pGWObserved->m_pPixelCoordinates) );
-        m_pGWObserved->m_pPixelCoordinates->MoveGrid( -ptDiffObserved );   // move the observed 
-    }
-
-    if ( m_bMoveAllowed )
-    {
-        m_pPixelCoordinates->MoveGrid( ptDiff );
     }
 }
 
@@ -242,19 +215,51 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     }
 }
 
+BOOL GridWindow::inObservedClientRect( LPARAM const lParam )
+{
+    if ( m_pGridWindowObserved == nullptr )
+        return FALSE;
+
+	PixelCoordinates const * pixCoordObserved = m_pGridWindowObserved->m_pPixelCoordinates;
+    PixelPoint       const   ptCrsr           = GetCrsrPosFromLparam( lParam );
+    PixelPoint       const   ptCrsrCheck      = Pixel2PixelPos( ptCrsr, m_pPixelCoordinates, pixCoordObserved );
+	HWND             const   hwndObserved     = m_pGridWindowObserved->GetWindowHandle( );
+
+    return Util::IsInClientRect( hwndObserved, ptCrsrCheck );  // Is cursor position in observed client rect?
+}
+
+void GridWindow::moveGrid( PixelPoint const ptDiff )
+{
+    if ( m_pGridWindowObserved != nullptr )     // I observe someone
+    {
+		PixelCoordinates * const pixCoordObserved = m_pGridWindowObserved->m_pPixelCoordinates;
+        PixelPoint         const ptDiffObserved   = Pixel2PixelSize( ptDiff, m_pPixelCoordinates, pixCoordObserved );
+        pixCoordObserved->MoveGrid( -ptDiffObserved );   // move the observed in opposite direction 
+    }
+
+    if ( m_bMoveAllowed )
+    {
+        m_pPixelCoordinates->MoveGrid( ptDiff );
+    }
+}
+
 void GridWindow::doPaint( )
 {
     m_pPerformanceWindow->DisplayStart( );
 
-    MilliGridRect const kgr =  // if I observe someone and cursor is in client area, show his position
-        ( ( m_pGWObserved != nullptr ) && CrsrInClientRect( ) )
-        ? m_pGWObserved->m_pPixelCoordinates->Pixel2MilliGridRect( Util::GetClPixelRect( m_pGWObserved->GetWindowHandle( ) ) )
-        : MilliGridRect::ZERO_VAL();
+    PixelRect pixRectTarget = PixelRect::ZERO_VAL();
+	
+	if ((m_pGridWindowObserved != nullptr) && CrsrInClientRect())   // if I observe someone and cursor is in client area, show its position
+	{
+		PixelCoordinates * const pixCoordObserved = m_pGridWindowObserved->m_pPixelCoordinates;
+		PixelRect          const pixRectObserved  = Util::GetClPixelRect( m_pGridWindowObserved->GetWindowHandle( ) );
+		pixRectTarget = Pixel2PixelRect( pixRectObserved, pixCoordObserved, m_pPixelCoordinates );
+	}
 
     {
         PAINTSTRUCT ps;
         BeginPaint( &ps );
-        (void)m_pDrawFrame->DoPaint( GetWindowHandle(), kgr );
+        (void)m_pDrawFrame->DoPaint( GetWindowHandle(), pixRectTarget );
         (void)EndPaint( &ps );
     }
 

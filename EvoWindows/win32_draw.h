@@ -10,7 +10,6 @@
 #include "PixelTypes.h"
 #include "gridPoint.h"
 #include "gridRect.h"
-#include "milliGridTypes.h"
 #include "win32_util.h"
 #include "win32_clut.h"
 
@@ -41,7 +40,7 @@ public:
     ~DrawFrame( );
 
     void ResizeDrawFrame( );
-    void DoPaint( HWND, MilliGridRect const & );
+    void DoPaint( HWND, PixelRect const & );
     void SetStripMode( tBoolOp );
 	bool SetHighlightPos( PixelPoint const );
 	void HighlightShape( Shape const *, GridPoint const );

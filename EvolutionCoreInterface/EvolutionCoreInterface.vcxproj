@@ -156,7 +156,6 @@
     <ClInclude Include="gridPoint.h" />
     <ClInclude Include="gridPoint24.h" />
     <ClInclude Include="gridRect.h" />
-    <ClInclude Include="milliGridTypes.h" />
     <ClInclude Include="PixelCore.h" />
     <ClInclude Include="plannedActivity.h" />
     <ClInclude Include="EvolutionCoreWrapperHelpers.h" />

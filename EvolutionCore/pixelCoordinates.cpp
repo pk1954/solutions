@@ -11,8 +11,6 @@
 static double const SQRT3_DIV2 = sqrt(3.) / 2.;
 static double const SQRT3_DIV3 = sqrt(3.) / 3.;
 
-static long const MILLI_GRID_FACTOR = 1024;
-
 PixelCoordinates::PixelCoordinates
 ( 
     PIXEL const fs, 
@@ -114,31 +112,6 @@ PIXEL PixelCoordinates::ComputeNewFieldSize( bool const bZoomIn ) const
 	return pixNewFieldSize;
 }
 
-PixelPoint PixelCoordinates::Pixel2PixelSize( PixelPoint const ptSizeIn, PixelCoordinates const & fTarget ) const 
-{
-    static long const FACTOR( 1024 ); // to avoid zero when dividing small ptSizeIn by m_pixFieldSize 
-
-    return (((ptSizeIn * FACTOR) / m_pixFieldSize.GetValue()) * fTarget.m_pixFieldSize.GetValue() ) / FACTOR;
-}
-
-PixelPoint PixelCoordinates::Pixel2PixelPos( PixelPoint const ptPosIn, PixelCoordinates const & fTarget ) const 
-{
-    return Pixel2PixelSize( ptPosIn + m_pixOffset, fTarget ) - fTarget.m_pixOffset;
-}
-
-MilliGridPoint PixelCoordinates::pixel2MilliGridPoint( PixelPoint const ptSize ) const
-{
-	PixelPoint size { ptSize * MILLI_GRID_FACTOR / m_pixFieldSize.GetValue() };
-    return MilliGridPoint( MilliGrid_X(MilliGrid(size.GetXvalue())), MilliGrid_Y(MilliGrid(size.GetYvalue())) );
-}
-
-MilliGridRect PixelCoordinates::Pixel2MilliGridRect( PixelRect const & rect ) const 
-{
-	MilliGridPoint pntStartPos { pixel2MilliGridPoint( rect.GetStartPoint() + m_pixOffset ) };
-	MilliGridPoint pntEndPos   { pixel2MilliGridPoint( rect.GetEndPoint()   + m_pixOffset ) };
-    return MilliGridRect( pntStartPos, pntEndPos );
-}
-
 PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint const gp ) const 
 { 
 	PIXEL pixX { m_pixFieldSize * gp.GetXvalue() };
@@ -164,28 +137,19 @@ PixelPoint PixelCoordinates::Grid2PixelPos( GridPoint const gp ) const
 
 PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint const gp ) const 
 { 
-	PixelPoint pxResult( Grid2PixelPos( gp ) );
+	PixelPoint ppRes { Grid2PixelPos( gp ) };
 	if (m_bHexagon)
 	{
-		pxResult += PixelPoint( 
-			                     PIXEL_X(PIXEL(static_cast<long>(SQRT3_DIV3 * m_pixFieldSize.GetValue()))),
-		                         PIXEL_Y(m_pixFieldSize / 2) 
-			                  );
+		ppRes += PixelPoint( 
+			                  PIXEL_X(PIXEL(static_cast<long>(SQRT3_DIV3 * m_pixFieldSize.GetValue()))),
+		                      PIXEL_Y(m_pixFieldSize / 2) 
+			               );
 	}
 	else
 	{
-		pxResult += m_pixFieldSize / 2; 
+		ppRes += m_pixFieldSize / 2; 
 	}
-	return pxResult;
-}
-
-PixelRect PixelCoordinates::GridPoint2PixelRect( GridPoint const gp ) const
-{
-	return PixelRect
-	(
-		Grid2PixelPos( gp ),  // PixelPoint 
-		PixelRectSize( PIXEL_X(m_pixFieldSize), PIXEL_Y(m_pixFieldSize) ) 
-	);
+	return ppRes;
 }
 
 GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const 
@@ -245,20 +209,6 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 	}
 }
 
-PixelPoint PixelCoordinates::milliGrid2PixelSize( MilliGridRectSize const kgpSize ) const 
-{
-	MilliGridRectSize const size { (kgpSize * m_pixFieldSize.GetValue()) / MILLI_GRID_FACTOR };
-    return PixelPoint( PIXEL_X(PIXEL(size.GetXvalue())), PIXEL_Y(PIXEL(size.GetYvalue())) );
-}
-
-PixelRect PixelCoordinates::MilliGrid2PixelRect( MilliGridRect const & kgrIn ) const 
-{
-	MilliGridRectSize const kpSize{ kgrIn.GetStartPoint().GetX(), kgrIn.GetStartPoint().GetY() };
-	PixelPoint    const ptPos { milliGrid2PixelSize( kpSize ) - m_pixOffset };
-	PixelPoint    const ptSize{ milliGrid2PixelSize( kgrIn.GetSize() ) };
-    return PixelRect( ptPos, ptPos + ptSize );
-}
-
 GridRect PixelCoordinates::Pixel2GridRect(PixelRect const & rect ) const 
 {
     GridRect gridRect
@@ -277,3 +227,23 @@ PixelRect PixelCoordinates::Grid2PixelRect( GridRect const & rcGrid ) const
         Grid2PixelPos( rcGrid.GetEndPoint  ( ) ) + ( m_pixFieldSize - 1_PIXEL ) 
     );
 }
+
+PixelPoint Pixel2PixelSize( PixelPoint const ptSizeIn, PixelCoordinates const * pSrc, PixelCoordinates const * pDst )
+{
+    return ( ptSizeIn * pDst->GetFieldSize().GetValue() ) / pSrc->GetFieldSize().GetValue();
+}
+
+PixelPoint Pixel2PixelPos( PixelPoint const ptPosIn, PixelCoordinates const * pSrc, PixelCoordinates const * pDst ) 
+{
+    return Pixel2PixelSize( ptPosIn + pSrc->GetPixelOffset(), pSrc, pDst ) - pDst->GetPixelOffset();
+}
+
+PixelRect Pixel2PixelRect(PixelRect const & rect, PixelCoordinates const * pSrc, PixelCoordinates const * pDst )
+{
+	return PixelRect
+	(
+		Pixel2PixelPos( rect.GetStartPoint(), pSrc, pDst ),
+		Pixel2PixelPos( rect.GetEndPoint(),   pSrc, pDst )
+	);
+}
+

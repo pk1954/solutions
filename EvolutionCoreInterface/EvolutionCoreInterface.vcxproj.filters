@@ -55,8 +55,5 @@
     <ClInclude Include="GridDimensions.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="milliGridTypes.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

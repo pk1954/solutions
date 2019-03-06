@@ -55,9 +55,9 @@ public:
 		return m_pPixelCoordinates->GetPixelOffset( ); 
 	};
 
-	void Observe( GridWindow * const hgw )
+	void Observe( GridWindow * const pGridWin )
 	{
-		m_pGWObserved  = hgw;
+		m_pGridWindowObserved = pGridWin;
 		m_bMoveAllowed = FALSE; 
 	}
 
@@ -73,8 +73,8 @@ private:
     static FocusPoint          * m_pFocusPoint;
 	static ColorManager        * m_pColorManager;
 
-    PixelCoordinates    * m_pPixelCoordinates;  // My own PixelCoordinates
-    GridWindow          * m_pGWObserved;	    // Observed GridWindow (or nullptr)
+    PixelCoordinates    * m_pPixelCoordinates;   // My own PixelCoordinates
+    GridWindow          * m_pGridWindowObserved; // Observed GridWindow (or nullptr)
     ObserverInterface   * m_pObserverInterface;
 	PixelCore           * m_pPixelCore;
     DrawFrame           * m_pDrawFrame;

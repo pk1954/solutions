@@ -100,7 +100,7 @@ void DrawFrame::HighlightShape( Shape const * pShape, GridPoint const gp )
 	m_pGraphics->RenderTranspRect( rect, 128, color );  
 }
 
-void DrawFrame::DoPaint( HWND hwnd, MilliGridRect const & pkgr )
+void DrawFrame::DoPaint( HWND hwnd, PixelRect const & pixRect )
 {
     if ( IsWindowVisible( hwnd ) )
     {
@@ -127,17 +127,13 @@ void DrawFrame::DoPaint( HWND hwnd, MilliGridRect const & pkgr )
 				}
 			}
 
-			if ( m_pCore->SelectionIsNotEmpty() )
-			{
-				COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
-				m_pGraphics->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), 64, color );  
-			}
+			COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
 
-			if ( pkgr.IsNotEmpty( ) )
-			{
-				COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
-				m_pGraphics->RenderTranspRect( m_pPixelCoordinates->MilliGrid2PixelRect( pkgr ), 128, color );  
-			}
+			if ( m_pCore->SelectionIsNotEmpty() )
+				m_pGraphics->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), 64, color );  
+
+			if ( pixRect.IsNotEmpty( ) )
+				m_pGraphics->RenderTranspRect( pixRect, 128, color );  
 
 			m_pGraphics->EndFrame( );
 		}
@@ -152,9 +148,9 @@ void DrawFrame::drawBackground( )
 	(          
     	[&](GridPoint const gp)
 		{
-		CLUT_INDEX const index   { m_pDspOptWindow->GetIntValue( Wrap2Grid(gp) ) };
-		DWORD      const dwColor { getBackgroundColor( index ) };
-		PixelPoint const pnt     { m_pPixelCoordinates->Grid2PixelPosCenter( gp ) };
+			CLUT_INDEX const index   { m_pDspOptWindow->GetIntValue( Wrap2Grid(gp) ) };
+			DWORD      const dwColor { getBackgroundColor( index ) };
+			PixelPoint const pnt     { m_pPixelCoordinates->Grid2PixelPosCenter( gp ) };
 			m_pGraphics->AddBackGround( pnt, dwColor, m_fPxSize );
 		},
 		m_pGraphics->GetStripMode() // if strip mode add borders to grid

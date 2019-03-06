@@ -6,7 +6,6 @@
 #include "PixelTypes.h"
 #include "gridPoint.h"
 #include "gridRect.h"
-#include "milliGridTypes.h"
 #include "SmoothMove.h"
 
 class EvolutionCore;
@@ -19,22 +18,15 @@ public:
     
 	//////// transformations ////////
 
-	PixelPoint     Grid2PixelSize( GridPoint  const ) const;
+	PixelPoint Grid2PixelSize( GridPoint  const ) const;
 
-	GridPoint      Pixel2GridPos  ( PixelPoint const ) const;
-	PixelPoint     Grid2PixelPos  ( GridPoint  const ) const; 
+	GridPoint  Pixel2GridPos  ( PixelPoint const ) const;
+	PixelPoint Grid2PixelPos  ( GridPoint  const ) const; 
 
-	MilliGridRect  Pixel2MilliGridRect( PixelRect const & ) const;
-    PixelRect      MilliGrid2PixelRect( MilliGridRect const & ) const; 
+    PixelRect  Grid2PixelRect ( GridRect  const & ) const;
+    GridRect   Pixel2GridRect ( PixelRect const & ) const;
 
-    PixelRect      Grid2PixelRect ( GridRect  const & ) const;
-    GridRect       Pixel2GridRect ( PixelRect const & ) const;
-
-    PixelPoint     Pixel2PixelSize( PixelPoint const, PixelCoordinates const & ) const;
-    PixelPoint     Pixel2PixelPos ( PixelPoint const, PixelCoordinates const & ) const;
-
-	PixelPoint     Grid2PixelPosCenter( GridPoint const ) const; 
-	PixelRect      GridPoint2PixelRect( GridPoint const ) const;
+	PixelPoint Grid2PixelPosCenter( GridPoint const ) const; 
 
 	//////// queries ////////
 	
@@ -53,8 +45,6 @@ public:
     void  MoveGrid( PixelPoint const);
 
 private:
-	MilliGridPoint pixel2MilliGridPoint( PixelPoint        const ) const;
-	PixelPoint     milliGrid2PixelSize ( MilliGridRectSize const ) const;
 
 	bool       isValidFieldSize( PIXEL const ) const; 
     PixelPoint calcCenterOffset( GridPoint const, PixelPoint const );
@@ -69,3 +59,8 @@ private:
 PIXEL const MINIMUM_FIELD_SIZE =    1_PIXEL;
 PIXEL const DEFAULT_FIELD_SIZE =    8_PIXEL;
 PIXEL const MAXIMUM_FIELD_SIZE = 1024_PIXEL;
+
+PixelPoint Pixel2PixelSize( PixelPoint const,   PixelCoordinates const *, PixelCoordinates const * );
+PixelPoint Pixel2PixelPos ( PixelPoint const,   PixelCoordinates const *, PixelCoordinates const * );
+PixelRect  Pixel2PixelRect( PixelRect  const &, PixelCoordinates const *, PixelCoordinates const * );
+
