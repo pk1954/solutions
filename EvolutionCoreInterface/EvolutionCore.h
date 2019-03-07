@@ -65,7 +65,8 @@ public:
 
     virtual PlannedActivity const & GetPlan( ) const = 0;
 
-	virtual long GetGridArea( ) const = 0;
+	virtual long  GetGridArea( ) const = 0;
+    virtual BYTES GetCoreSize( ) const = 0;
 
 // point of interest
 
@@ -95,7 +96,6 @@ public:
     
     static EvolutionCore * InitClass( ObserverInterface * const, EventInterface * const );
     static EvolutionCore * CreateCore( );
-    static BYTES        GetModelSize( );
     static unsigned int GetNrInteractionsWithKnownCulprit( );
     static unsigned int GetNrInteractionsWithUnknownCulprit( );
     static unsigned int GetMaxPartnerMemory( );

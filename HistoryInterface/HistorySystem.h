@@ -28,11 +28,10 @@ public:
 
     virtual ~HistorySystem( ) { };
 
-    virtual void InitHistorySystem
+    virtual void InitHistorySystem( HIST_GENERATION const, ModelData * const ) = 0;
+    virtual void StartHistorySystem
 	( 
 		HistSlotNr          const, 
-		HIST_GENERATION     const, 
-		ModelData         * const, 
 		ModelFactory      * const, 
 		ObserverInterface * const,
 		GenerationCmd       const
@@ -55,4 +54,6 @@ public:
 	virtual tGenCmd GetGenerationCmd( HIST_GENERATION const ) = 0;
 
     virtual HIST_GENERATION FindGenerationWithProperty( GenerationProperty const &, bool const ) const = 0;
+
+    static  BYTES GetSlotWrapperSize( );
 };

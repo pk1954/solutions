@@ -49,7 +49,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	DefinePixelCoordinatesWrapperFunctions( pPixCoords );
 
-	pEvoHistGlue->Start( pEvolutionCore, pHistorySystem, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), false, nullptr );
+	pEvoHistGlue->Start( pEvolutionCore, pHistorySystem, false, nullptr );
     DefineWin32HistWrapperFunctions( pWorkThreadInterface );
 
 	pWorkThreadInterface->Start( nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, pEvolutionCore, pEvoHistGlue );

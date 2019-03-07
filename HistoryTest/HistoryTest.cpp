@@ -92,9 +92,13 @@ void DoTest( )
 
 	pHistorySys->InitHistorySystem
 	( 
-		NR_OF_SLOTS,    // # of cache slots
 		1000,           // # of generations
-		& modelData,
+		& modelData
+	);
+
+	pHistorySys->StartHistorySystem
+	( 
+		NR_OF_SLOTS,    // # of cache slots
 		& modelFactory,
 		nullptr,
 		GenerationCmd::ApplicationCmd( tGenCmd::FIRST_APP_CMD, 0 )

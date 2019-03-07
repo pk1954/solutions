@@ -36,9 +36,10 @@ wchar_t const * const GetOriginName( tOrigin const o )
 {
     static unordered_map < tOrigin, wchar_t const * const > mapOrigins =
     {
-        { tOrigin::editor,   L" edit"     },
-        { tOrigin::cloning,  L"clone"    },
-        { tOrigin::marriage, L" marr" }
+        { tOrigin::editor,    L" edit" },
+        { tOrigin::cloning,   L"clone" },
+        { tOrigin::marriage,  L" marr" },
+        { tOrigin::undefined, L" undef" }
     };
 
     return mapOrigins.at( o );

@@ -106,7 +106,8 @@ public:
 		thresholdFertilize,   // minimum available energy for considering FERTILIZE
 		maxEat,               // maximum available energy for considering EAT
 		cloneDonation,        // amount of energy donated to clone. 0 means nothing (clone dies), SHORT_MAX means all available energy (parent dies)
-		count
+		count,
+		undefined = count
 	};
 
 	static const int COUNT = static_cast<int>( Id::count );
@@ -133,7 +134,8 @@ enum class tBrushMode
     mutRate,
     fertility,
     food,
-    fertilizer
+    fertilizer,
+	undefined
 };
 
 bool IsStrategyBrushMode( tBrushMode const );
@@ -145,28 +147,32 @@ enum class tManipulator
 	min,
 	add,
 	subtract,
-	mean
+	mean,
+	undefined
 };
 
 enum class tColorObject : unsigned short
 {
 	individual,
 	selection,
-	highlight
+	highlight,
+	undefined
 };
 
 enum class tShape : unsigned short
 {
     Circle,
     Rect,
-	Grid
+	Grid,
+	undefined
 };
 
 enum class tOrigin : unsigned short
 {
     editor,
     cloning,
-    marriage
+    marriage,
+	undefined
 };
 
 wchar_t const * const GetShapeName         ( tShape       const );

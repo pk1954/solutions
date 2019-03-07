@@ -7,6 +7,8 @@
 #include "EvolutionCore.h"
 #include "EvoModelDataGlue.h"
 
+Stopwatch EvoModelDataGlue::stopwatch;
+
 void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 {
 	tEvoCmd const evoCmd = static_cast<tEvoCmd>( cmd.GetCommand() );

@@ -29,11 +29,11 @@ public:
     HistorySystemImpl( );
     ~HistorySystemImpl( );
 
-    virtual void InitHistorySystem
+    virtual void InitHistorySystem( HIST_GENERATION const, ModelData * const );
+
+    virtual void StartHistorySystem
     ( 
         HistSlotNr          const, 
-        HIST_GENERATION     const, 
-        ModelData         * const, 
         ModelFactory      * const,
 		ObserverInterface * const,
 		GenerationCmd       const

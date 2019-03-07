@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "resource.h"
 #include <fstream>
 #include <iostream>
 #include <sstream> 

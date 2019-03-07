@@ -80,7 +80,13 @@ private:
 		return m_aHistSlot.at( slotNr.GetValue() );
 	}
 
-	HistSlotNr m_histSlotHead;            // slot with youngest generation
+	void newSlot( )
+    {
+		HistCacheItem * pHistCacheItemNew = HistCacheItem::CreateItem( m_pModelFactory );
+        getSlot( m_iNrOfSlots ).SetHistCacheItem( pHistCacheItemNew );
+    }
+
+	HistSlotNr m_histSlotHead;     // slot with youngest generation
     HistSlotNr m_iUnused;          // first unused slot
     HistSlotNr m_iStartSearching;  // for optimization
 

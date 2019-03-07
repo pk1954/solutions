@@ -28,9 +28,8 @@ public:
 	( 
 		EvolutionCore * const, 
 		HistorySystem * const,
-		long const, 
-		bool const,
-		RootWindow * const
+		bool            const,
+		RootWindow    * const
 	);
 
     // EvoApproachHistGen - Get closer to demanded HIST_GENERATION
@@ -77,6 +76,7 @@ private:
 
     // private member functions
 
-	bool askHistoryCut( HistorySystem * pHistSys ) const;
-    void shutDownHistoryCache( );
+	HistSlotNr calcHistCacheSize( );
+	bool       askHistoryCut( HistorySystem * pHistSys ) const;
+    void       shutDownHistoryCache( );
 };

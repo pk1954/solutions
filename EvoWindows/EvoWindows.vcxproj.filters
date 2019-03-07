@@ -69,9 +69,6 @@
     <ClCompile Include="win32_workThreadInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_historyInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32_colorManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -138,9 +135,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_workThreadInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_historyInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_textDisplay.h">

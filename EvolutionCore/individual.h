@@ -27,7 +27,7 @@ public:
     bool           IsDefined    ( )                       const { return m_id.IsNotNull(); };
     IND_ID         GetId        ( )                       const { return m_id; };
     tOrigin        GetOrigin    ( )                       const { return m_origin; }
-    Action::Id     GetLastAction( )                       const { return m_at; }
+    Action::Id     GetLastAction( )                       const { return m_action; }
     Genome const & GetGenome    ( )                       const { return m_genome; }
     MEM_INDEX      GetMemSize   ( )                       const { return m_stratData.GetMemSize( );  }
     MEM_INDEX      GetMemUsed   ( )                       const { return m_stratData.GetMemUsed( ); }
@@ -50,9 +50,9 @@ public:
 		return m_pStrategy->InteractWith( m_stratData, partnerId );
 	};
 
-	void SetLastAction( Action::Id const at ) 
+	void SetLastAction( Action::Id const action ) 
 	{ 
-		m_at = at; 
+		m_action = action; 
 	}
 
 	void SetEnergy( ENERGY_UNITS const energy )
@@ -73,7 +73,7 @@ private:
     StrategyData     m_stratData;   // 84 bytes
     Genome           m_genome;      // 68 bytes
 	Strategy const * m_pStrategy;   //  8 bytes 
-	Action::Id       m_at;          //  2 bytes
+	Action::Id       m_action;      //  2 bytes
     ENERGY_UNITS     m_enStock;     //  2 bytes
                              // sum:  176 bytes
 

@@ -28,36 +28,43 @@ EvoHistorySysGlue::EvoHistorySysGlue( ) :
 	m_bAskHistoryCut  ( false )
 {}
 
+HistSlotNr EvoHistorySysGlue::calcHistCacheSize()
+{
+	BYTES      const slotSize             { m_pHistorySystem->GetSlotSize() };
+	long       const lMaxHistSize         { Util::GetMaxNrOfSlots( slotSize ) };
+	long       const lHistEntriesDemanded { Config::GetConfigValue( Config::tId::nrOfHistorySlots ) };
+	long       const lHistEntries         { min( lHistEntriesDemanded, lMaxHistSize * 80 / 100 ) };  // use only 80% of available memory
+	HistSlotNr const nrOfSlots            { CastToShort( lHistEntries ) }; 
+	return nrOfSlots;
+}
+
 void EvoHistorySysGlue::Start
 (
 	EvolutionCore * const pCore, 
 	HistorySystem * const pHistorySystem,
-	long            const lMaxHistSize,
 	bool            const bAskHistoryCut, // true: ask user for history cut, false: cut without asking
 	RootWindow    * const pRootWindow
 )
 {
-	long            const lHistEntriesDemanded { Config::GetConfigValue( Config::tId::nrOfHistorySlots ) };
-	long            const lHistEntries         { min( lHistEntriesDemanded, lMaxHistSize * 80 / 100 ) };  // use only 80% of available memory
-	HistSlotNr      const nrOfSlots            { CastToShort( lHistEntries ) }; 
-	HIST_GENERATION const genMaxNrOfGens       { Config::GetConfigValue( Config::tId::maxGeneration ) };
-
+	m_pHistorySystem   = pHistorySystem;
+	m_bAskHistoryCut   = bAskHistoryCut;
     m_pEvoModelWork    = new EvoModelDataGlue( pCore );
 	m_pEvoModelFactory = new EvoModelFactory ( );
 
-    m_pHistorySystem = pHistorySystem;
-
-	m_pHistorySystem->InitHistorySystem
+	pHistorySystem->InitHistorySystem
     (
-        nrOfSlots,
-        genMaxNrOfGens,
-        m_pEvoModelWork,
+        Config::GetConfigValue( Config::tId::maxGeneration ),
+        m_pEvoModelWork
+    );
+
+	pHistorySystem->StartHistorySystem
+    (
+        calcHistCacheSize(), // needs m_pEvoModelWork in HistorySystem!
         m_pEvoModelFactory,
 		pRootWindow,
 		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( tEvoCmd::reset ), 0 )
     );
 
-	m_bAskHistoryCut = bAskHistoryCut;
 	m_pHistAllocThread = new HistAllocThread( m_pHistorySystem, TRUE );   // delegate allocation of history slots to a work thread
 }
 

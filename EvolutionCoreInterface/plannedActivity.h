@@ -14,7 +14,7 @@ public:
       : m_gpActor  ( GridPoint::NULL_VAL() ),
         m_gpTarget ( GridPoint::NULL_VAL() ),
         m_gpPartner( GridPoint::NULL_VAL() ),
-        m_at( Action::Id::undefined ),
+        m_action   ( Action::Id::undefined ),
         m_iBaseConsumption( 0 ),
         m_bValid( false ) 
     {}
@@ -42,14 +42,14 @@ public:
     void         SetBaseConsumption( ENERGY_UNITS const iVal ) { m_iBaseConsumption  = iVal; }
     void         IncBaseConsumption( ENERGY_UNITS const iVal ) { m_iBaseConsumption += iVal; }
 
-    Action::Id GetActionType( ) const { return m_at; }
-    void       SetActionType( Action::Id const at ) { m_at = at;}
+    Action::Id GetActionType( ) const { return m_action; }
+    void       SetActionType( Action::Id const action ) { m_action = action;}
 
 private:
     GridPoint    m_gpActor;   // acting GridPoint, owner of the plan
     GridPoint    m_gpTarget;  // target for move, clone and marry operations
     GridPoint    m_gpPartner; // partner for interaction and marry operations
-    Action::Id   m_at;
+    Action::Id   m_action;
     ENERGY_UNITS m_iBaseConsumption;
     bool         m_bValid;
 };

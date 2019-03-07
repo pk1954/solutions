@@ -96,7 +96,8 @@ public:
     virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
     virtual PlannedActivity       * GetPlan4Writing( )       { return & m_plan; };
 
-	virtual long GetGridArea( ) const { return GRID_AREA(); };
+	virtual long  GetGridArea( ) const { return GRID_AREA(); };
+	virtual BYTES GetCoreSize( ) const { return BYTES(sizeof(EvolutionCoreImpl)) + m_grid.GetGridExtraSize(); };
 
     virtual ENERGY_UNITS GetAverageFoodGrowth( ) const { return m_grid.GetAverageFoodGrowth( ); }
     virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
@@ -110,7 +111,7 @@ public:
 		return m_grid.GetActionCounter( strategy, action );
 	}
 
-	virtual void SetPoi( GridPoint const );
+	virtual void      SetPoi( GridPoint const );
     virtual GridPoint FindPOI( ) const;
 	virtual GridPoint FindGridPoint( IND_ID const &, GridRect const & rect ) const; 
 

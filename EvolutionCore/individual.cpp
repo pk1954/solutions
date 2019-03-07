@@ -32,10 +32,6 @@ void Individual::InitClass( )
 }
 
 Individual::Individual( )
-  : m_id( ),
-    m_stratData( ),
-    m_genome( ),
-	m_pStrategy( & StratNull )
 { 
     ResetIndividual( );
 }
@@ -44,9 +40,11 @@ void Individual::ResetIndividual( )
 { 
     m_id.Set2Null( ); 
     m_genBirth.Set2Null();
+    m_origin     = tOrigin::undefined;
     m_enStock    = 0_ENERGY_UNITS;
     m_enCapacity = 0_ENERGY_UNITS;
     m_pStrategy  = & StratNull;
+    m_action     = Action::Id::undefined;
     m_stratData.SetMemorySize( MEM_INDEX(0) );
     m_genome.InitGenome( );
 };
@@ -85,7 +83,7 @@ void Individual::Clone
     m_origin     = tOrigin::cloning;
     m_enCapacity = indParent.m_enCapacity;
     m_pStrategy  = indParent.m_pStrategy;
-    m_at         = Action::Id::undefined;
+    m_action     = Action::Id::undefined;
     m_stratData.SetMemorySize( indParent.m_stratData.GetMemSize( ) );  // clears memory. Experience not inheritable.
     m_genome.Mutate( mutationRate, random );
 }
@@ -116,7 +114,7 @@ void Individual::Breed
     m_id         = id;
     m_genBirth   = genBirth;
     m_origin     = tOrigin::marriage;
-    m_at         = Action::Id::undefined;
+    m_action     = Action::Id::undefined;
     m_enCapacity = selectParent( random, indParentA, indParentB ).m_enCapacity;
     m_pStrategy  = selectParent( random, indParentA, indParentB ).m_pStrategy;
     m_stratData.SetMemorySize( selectParent( random, indParentA, indParentB ).GetMemSize( ) );  // clears memory. Experience not inheritable.

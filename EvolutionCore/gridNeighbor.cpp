@@ -62,12 +62,16 @@ void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization o
 	assert( ( iNrOfNeighbors == 4 ) || ( iNrOfNeighbors == 6 ) || ( iNrOfNeighbors == 8 ) );
 	m_iNrOfNeighbors = iNrOfNeighbors;
 	m_pGridNeighbors = new NEIGHBOR_GRID;
-    Apply2Grid  // initialization of grid variables which never change after initialization
+	m_pGridNeighbors->resize( GRID_WIDTH_VAL );
+	for ( auto & col: * m_pGridNeighbors )
+		col.resize( GRID_HEIGHT_VAL );
+
+	Apply2Grid  // initialization of grid variables which never change after initialization
 	( 
     	[&](GridPoint const gp)
 		{
-			NEIGHBORS & neighbors = ( * m_pGridNeighbors)[ gp.GetYvalue() ][ gp.GetXvalue() ];
-			neighbors.reserve( m_iNrOfNeighbors );
+			NEIGHBORS & neighbors = ( * m_pGridNeighbors)[ gp.GetXvalue() ][ gp.GetYvalue() ];
+			neighbors.resize( m_iNrOfNeighbors, GridPoint::ZERO_VAL() );
 			for ( int i = 0; i < m_iNrOfNeighbors; ++i )
 			{
 				GridPoint gpDelta = ( m_iNrOfNeighbors == 6 ) 
@@ -77,7 +81,7 @@ void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization o
 					                : ( m_iNrOfNeighbors == 8 ) 
 					                    ? table8[i] 
 					                    : table4[i];
-				neighbors.push_back( Wrap2Grid( gp + gpDelta ) );
+				neighbors[i] = Wrap2Grid( gp + gpDelta );
 			}
 		}
 	);

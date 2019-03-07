@@ -28,7 +28,7 @@ public:
 		SetIntensity( 50_PERCENT );
 	}
 
-	virtual void operator()( GridPoint gpCenter )
+	void operator()( GridPoint gpCenter )
 	{
 		if (m_shape == tShape::Grid)
 		{
@@ -135,7 +135,7 @@ public:
     }
  
     GRID_COORD   const GetRadius     ( ) const { return m_radius;      }
-	PERCENT      const GetIntensity  ( ) const { return m_intensity;  }
+	PERCENT      const GetIntensity  ( ) const { return m_intensity;   }
 	tShape       const GetShape      ( ) const { return m_shape;       }
     tBrushMode   const GetBrushMode  ( ) const { return m_brushMode;   }
     tManipulator const GetManipulator( ) const { return m_manipulator; }
@@ -143,13 +143,11 @@ public:
 private:
 	
 	Grid            * m_pGrid;
-
 	tShape			  m_shape;
     tBrushMode		  m_brushMode;
 	tManipulator	  m_manipulator;
 	PERCENT           m_intensity;
     GRID_COORD	      m_radius;
-
 	ManipulatorFunc   m_manFunc;
 
 	std::function<void   (GridPoint const, short const)> m_func;

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <array> 
+#include <vector> 
 #include <algorithm>
 #include "random.h"
 #include "gridPoint.h"
@@ -13,6 +14,9 @@
 #include "gridNeighbor.h"
 #include "EvolutionTypes.h"
 #include "plannedActivity.h"
+
+using std::array;
+using std::vector;
 
 class GridCircle;
 class Manipulator;
@@ -86,7 +90,9 @@ public:
 		return genBirth.IsNull() ? EVO_GENERATION::NULL_VAL() : (m_genEvo - genBirth); 
 	}
 
-    EVO_GENERATION GetEvoGenerationNr( ) const { return m_genEvo; }
+	BYTES GetGridExtraSize() const;
+
+	EVO_GENERATION GetEvoGenerationNr( ) const { return m_genEvo; }
 
     ENERGY_UNITS GetAverageFoodGrowth    ( ) const { return ENERGY_UNITS(m_enFoodGrowth / GRID_AREA()); }
     int          GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
@@ -103,7 +109,7 @@ public:
 		return actionCounter( strategy, action );
 	}
 
-    // static functions
+	// static functions
 
     static void InitClass( );
 
@@ -141,25 +147,20 @@ private:
         return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
     };
 
-    GridField const & getGridFieldC( GridPoint const gp ) const
-    {
-        assert( IsInGrid( gp ) );
-        return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
-    };
-
     GridPoint chooseTarget ( Neighborhood & );
     GridPoint choosePartner( Neighborhood & );
 
     // member variables
 
-    GridField      m_aGF[ GRID_WIDTH_VAL ][ GRID_HEIGHT_VAL ];   // 20.000 * 196 byte = 3.920.000 byte
+	vector< vector < GridField > > m_aGF;                  // 20.000 * 196 byte = 3.920.000 byte
+                                                        
     GridPointList  m_gpList;                               //                            10 byte
     ENERGY_UNITS   m_enFoodGrowth;    // for statistics    //                             8 byte 
     EVO_GENERATION m_genEvo;                               //                             4 byte
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;
 
-	using tActionCounters = std::array< std::array < ACTION_COUNT, Strategy::COUNT>, Action::NR_ACTIONS >;
+	using tActionCounters = array< array < ACTION_COUNT, Strategy::COUNT>, Action::NR_ACTIONS >;
 
 	tActionCounters   m_ActionCounter1;
 	tActionCounters   m_ActionCounter2;

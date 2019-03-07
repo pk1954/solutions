@@ -27,11 +27,6 @@ EvolutionCore * EvolutionCore::CreateCore( )
     return new EvolutionCoreImpl( );
 }
 
-BYTES EvolutionCore::GetModelSize( )
-{
-	return BYTES { sizeof( Grid ) };
-}
-
 unsigned int EvolutionCore::GetMaxPartnerMemory( )
 { 
 	return StrategyData::GetMaxPartnerMemory( ).GetValue( ); 

@@ -62,6 +62,10 @@ Grid::Grid( )
 	  m_pActionCounterFill( & m_ActionCounter1 ),
 	  m_pActionCounterRead( & m_ActionCounter2 )
 {
+	m_aGF.resize( GRID_WIDTH_VAL );
+	for ( auto & col: m_aGF )
+		col.resize( GRID_HEIGHT_VAL );
+
     Apply2Grid    // initialization of grid variables which never change after initialization
 	( 
     	[&](GridPoint const gp)
@@ -81,6 +85,14 @@ Grid::~Grid( )
     {
         exit( 1 );
     };
+}
+
+BYTES Grid::GetGridExtraSize() const
+{
+	unsigned long gridFieldSize { sizeof ( GridField ) };
+	unsigned long gridRowSize   { sizeof(vector< GridField >) + GRID_HEIGHT_VAL * gridFieldSize };
+	unsigned long gridAreaSize  { GRID_WIDTH_VAL * gridRowSize };
+	return BYTES( gridAreaSize );
 }
 
 void CheckIndividuals( Grid & grid )

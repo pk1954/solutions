@@ -164,7 +164,7 @@ void AppWindow::Start(  )
 	m_pMainGridWindow     ->Start( WS_CHILD       | WS_CLIPSIBLINGS | WS_VISIBLE,             16_PIXEL );
     m_pMiniGridWindow     ->Start( WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
     m_pHistInfoWindow     ->Start( hwndApp, m_pHistorySystem );
-	m_pEvoHistGlue        ->Start( m_pEvolutionCore, m_pHistorySystem, Util::GetMaxNrOfSlots( EvolutionCore::GetModelSize( ) ), true, m_pHistInfoWindow );
+	m_pEvoHistGlue        ->Start( m_pEvolutionCore, m_pHistorySystem, true, m_pHistInfoWindow );
 	m_pEvoHistWindow      ->Start( hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
     m_pStatusBar          ->Start( hwndApp, m_pEvolutionCore );
 	m_pFocusPoint         ->Start( m_pEvoHistGlue, m_pEvolutionCore );

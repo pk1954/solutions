@@ -3,11 +3,12 @@
 
 #pragma once
 
-#include <array>
 #include <vector>
 #include <functional>
 #include "gridPoint.h"
 #include "GridDimensions.h"
+
+using std::vector;
 
 class Neighborhood
 {
@@ -16,7 +17,7 @@ public:
 
 	static void Apply2All( GridPoint const gpCenter, GridPointFunc const & func ) 
 	{
-		for ( auto gp: (* m_pGridNeighbors)[ gpCenter.GetYvalue() ][ gpCenter.GetXvalue() ] )
+		for ( auto gp: (* m_pGridNeighbors)[ gpCenter.GetXvalue() ][ gpCenter.GetYvalue() ] )
 		{
 			func( gp );
 		}
@@ -68,9 +69,8 @@ public:
     }
 
 private:
-	using NEIGHBORS     = std::vector< GridPoint >;
-	using NEIGHBOR_ROW  = std::array < NEIGHBORS,    GRID_WIDTH_VAL  >;
-	using NEIGHBOR_GRID = std::array < NEIGHBOR_ROW, GRID_HEIGHT_VAL >;
+	using NEIGHBORS     = vector< GridPoint >;
+	using NEIGHBOR_GRID = vector < vector < NEIGHBORS > >;
 
 	static int             m_iNrOfNeighbors;
 	static NEIGHBOR_GRID * m_pGridNeighbors;

@@ -33,8 +33,6 @@ void HistoryCache::InitHistoryCache
 	m_pModelFactory = pModelFactory;
 	m_pObserver     = pObserver;
 
-	HistCacheItem * pNewHistCacheItem = HistCacheItem::CreateItem( m_pModelFactory );
-
     assert( nrOfSlots >= HistSlotNr(2) );
 
     m_iNrOfRequestedSlots = nrOfSlots;
@@ -44,7 +42,7 @@ void HistoryCache::InitHistoryCache
         m_iNrOfRequestedSlots = HistSlotNr(60);
 #endif
     m_aHistSlot.resize( m_iNrOfRequestedSlots.GetValue() );
-    m_aHistSlot[ 0 ].SetHistCacheItem( pNewHistCacheItem );
+	newSlot( );
     ++m_iNrOfSlots;
 	triggerObserver();
     m_iUnused = HistSlotNr(0);
@@ -74,8 +72,7 @@ bool HistoryCache::AddCacheSlot( )
 {
     try
     {
-		HistCacheItem * pHistCacheItemNew = HistCacheItem::CreateItem( m_pModelFactory );
-        getSlot( m_iNrOfSlots ).SetHistCacheItem( pHistCacheItemNew );
+		newSlot( );
     }
     catch ( std::bad_alloc & )
     {

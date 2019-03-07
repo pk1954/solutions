@@ -29,17 +29,23 @@ HistorySystemImpl::~HistorySystemImpl( )
 
 void HistorySystemImpl::InitHistorySystem
 (
-    HistSlotNr          const nrOfSlots,
     HIST_GENERATION     const genMaxNrOfGens,
-    ModelData         * const pModelDataWork,
-    ModelFactory      * const pModelFactory,
-	ObserverInterface * const pObserver,
-	GenerationCmd       const cmd
+    ModelData         * const pModelDataWork
 )
 {
     m_pHistoryCache      = new HistoryCache;
 	m_pHistCacheItemWork = new HistCacheItem( pModelDataWork );
 	m_GenCmdList.Resize( genMaxNrOfGens );
+}
+
+void HistorySystemImpl::StartHistorySystem
+(
+    HistSlotNr          const nrOfSlots,
+    ModelFactory      * const pModelFactory,
+	ObserverInterface * const pObserver,
+	GenerationCmd       const cmd
+)
+{
     m_pHistoryCache->InitHistoryCache( nrOfSlots, pModelFactory, pObserver );
 	m_pHistCacheItemWork->SetGenerationCommand( cmd );
     save2History( );
