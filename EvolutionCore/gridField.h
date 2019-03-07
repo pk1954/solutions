@@ -39,17 +39,17 @@ public:
 	void ResetGridField( ENERGY_UNITS const enFood )
 	{
 		CutConnections( );
-		m_mutRate      = PERCENT(0);
+		m_mutRate      = 0_PERCENT;
 		m_enFertility  = enFood;
 		m_enFoodStock  = enFood;
-		m_enFertilizer = ENERGY_UNITS(0);
+		m_enFertilizer = 0_ENERGY_UNITS;
 		m_Individual.ResetIndividual( );
 	}
 
 	ENERGY_UNITS const GetConsumption( ENERGY_UNITS const sWant ) const 
 	{
 		ENERGY_UNITS const available = m_enFoodStock - m_enFoodReserve;
-		return ENERGY_UNITS( ClipToMinMax( available, ENERGY_UNITS(0), sWant ) ); 
+		return ENERGY_UNITS( ClipToMinMax( available, 0_ENERGY_UNITS, sWant ) ); 
 	}
 
     PERCENT        GetMutRate( )    const { return m_mutRate;  }
@@ -108,7 +108,7 @@ public:
 
 	void Fertilize( ENERGY_UNITS const enInvest )
 	{
-		assert( enInvest > ENERGY_UNITS(0) );
+		assert( enInvest > 0_ENERGY_UNITS );
 		ENERGY_UNITS const yield    = (enInvest * m_lFertilizerYield ) / 100;
 		ENERGY_UNITS const newValue = std::min( m_enFertilizer + yield, m_enMaxFertilizer ); 
 		setFertilizer( newValue );
@@ -187,10 +187,10 @@ private:
 
 // private functions
 
-	void setFertilizer( ENERGY_UNITS const s ) { assert( s >= ENERGY_UNITS(0) ); m_enFertilizer = s; }
-	void setFoodStock ( ENERGY_UNITS const s ) { assert( s >= ENERGY_UNITS(0) ); m_enFoodStock  = s; }
-	void setFertility ( ENERGY_UNITS const s ) { assert( s >= ENERGY_UNITS(0) ); m_enFertility  = s; }
-	void setMutRate   ( PERCENT      const s ) { assert( s >= PERCENT     (0) ); m_mutRate = PERCENT{ std::min( s.GetValue(), (short)100 ) }; }
+	void setFertilizer( ENERGY_UNITS const s ) { assert( s >= 0_ENERGY_UNITS ); m_enFertilizer = s; }
+	void setFoodStock ( ENERGY_UNITS const s ) { assert( s >= 0_ENERGY_UNITS ); m_enFoodStock  = s; }
+	void setFertility ( ENERGY_UNITS const s ) { assert( s >= 0_ENERGY_UNITS ); m_enFertility  = s; }
+	void setMutRate   ( PERCENT      const s ) { assert( s >= 0_PERCENT       ); m_mutRate = PERCENT{ std::min( s.GetValue(), (short)100 ) }; }
 };
 
 std::wostream & operator << ( std::wostream &, GridField const & );

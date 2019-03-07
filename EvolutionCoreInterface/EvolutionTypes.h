@@ -4,6 +4,7 @@
 #pragma once
 
 #include <functional>
+#include "util.h"
 #include "debug.h"
 #include "NamedType.h"
 
@@ -13,6 +14,16 @@ using IND_ID         = NamedType< long,           struct IND_ID_Parameter >;
 using MEM_INDEX      = NamedType< unsigned short, struct MEM_INDEX_Parameter >;
 using ACTION_COUNT   = NamedType< unsigned int,   struct ACTION_COUNT_Parameter >;
 using PERCENT        = NamedType< short,          struct PERCENT_Parameter >;
+
+constexpr PERCENT operator"" _PERCENT( unsigned long long ull )
+{
+	return PERCENT( CastToShort( ull ) );
+}
+
+constexpr ENERGY_UNITS operator"" _ENERGY_UNITS( unsigned long long ull )
+{
+	return ENERGY_UNITS( CastToShort( ull ) );
+}
 
 static int const IMEMSIZE_MAX = 9;
 

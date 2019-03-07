@@ -88,7 +88,7 @@ public:
 
 	friend std::wostream & operator<< ( std::wostream & out, NamedType const & param )
 	{
-		out << std::setw( 5 ) << param.GetValue();
+		out << param.GetValue();
 		return out;
 	}
 

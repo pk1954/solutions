@@ -53,7 +53,7 @@ void Grid::InitClass( )
 
 Grid::Grid( )
     : m_gpList( ),
-      m_enFoodGrowth( ENERGY_UNITS(0) ),
+      m_enFoodGrowth( 0_ENERGY_UNITS ),
       m_random( ),
       m_idCounter( ),
       m_genEvo( 0L ),
@@ -322,7 +322,7 @@ void Grid::EditSetStrategy
     Strategy::Id    strategy
 )
 {
-	assert( intensity >= PERCENT(0) );
+	assert( intensity >= 0_PERCENT );
 	if ( m_random.NextRandomNumber( ) < intensity.GetValue() * Random::MAX_VAL / 100ul )
 	{
 		GridField & gf       = getGridField( gp );

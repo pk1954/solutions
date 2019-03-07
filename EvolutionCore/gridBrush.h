@@ -25,7 +25,7 @@ public:
 		SetManipulator( tManipulator::add );
 		SetShape( tShape::Circle );
 		SetRadius( 17_GRID_COORD );
-		SetIntensity( PERCENT(50) );
+		SetIntensity( 50_PERCENT );
 	}
 
 	virtual void operator()( GridPoint gpCenter )
@@ -41,7 +41,7 @@ public:
 				[&](GridPoint const gp)
 				{
 					PERCENT intensity = m_filter( gp );
-					if ( intensity >= PERCENT(0) )
+					if ( intensity >= 0_PERCENT )
 						(m_func)( gp + gpCenter, intensity.GetValue() );
 				},
 				ClipToGrid( gpCenter - GridPoint( m_radius ) ) - gpCenter,
