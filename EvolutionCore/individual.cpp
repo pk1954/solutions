@@ -62,7 +62,7 @@ void Individual::Create
     m_origin     = tOrigin::editor;
     m_enCapacity = m_stdEnergyCapacity;
     m_pStrategy  = m_apStrat.at( strategyId );
-    m_stratData.SetMemorySize( static_cast<MEM_INDEX>(m_genome.GetAllele(GeneType::Id::memSize)) );
+    m_stratData.SetMemorySize( static_cast<MEM_INDEX>(m_genome.GetAllele(GeneralGeneType::Id::memSize)) );
     SetEnergy( m_initialEnergy ); // makes IsAlive() true. Last assignment to avoid race conditions  
 }
 

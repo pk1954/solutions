@@ -41,6 +41,7 @@ void DoTest( )
 	HiResTimer m_hrtimer;
 	wofstream  m_traceStream = OpenTraceFile( L"main_trace.out" );
 
+	GridDimensions::DefineGridSize( 200_GRID_X, 100_GRID_Y );
 	Neighborhood::InitClass( 8 );
 
 	m_hrtimer.Start( );

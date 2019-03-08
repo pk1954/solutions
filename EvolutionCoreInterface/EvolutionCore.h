@@ -55,17 +55,16 @@ public:
     virtual Strategy::Id   GetStrategyId( GridPoint const ) const = 0;
     virtual MEM_INDEX      GetMemSize   ( GridPoint const ) const = 0;
     virtual MEM_INDEX      GetMemUsed   ( GridPoint const ) const = 0;
-    virtual IND_ID         GetMemEntry  ( GridPoint const, MEM_INDEX    const ) const = 0;
-    virtual short          GetDistr     ( GridPoint const, Action::Id   const ) const = 0;
-    virtual long           GetGenotype  ( GridPoint const, GeneType::Id const ) const = 0;
+    virtual IND_ID         GetMemEntry  ( GridPoint const, MEM_INDEX           const ) const = 0;
+    virtual short          GetDistr     ( GridPoint const, ActionGeneType::Id  const ) const = 0;
+    virtual long           GetGenotype  ( GridPoint const, GeneralGeneType::Id const ) const = 0;
 	
 	virtual	ACTION_COUNT   GetActionCounter( Strategy::Id const, Action::Id const ) const = 0;
 
-    virtual GridPoint      FindGridPoint( IND_ID const &, GridRect const & = GRID_RECT_FULL()) const = 0;
+    virtual GridPoint      FindGridPoint( IND_ID const & ) const = 0;
 
-    virtual PlannedActivity const & GetPlan( ) const = 0;
+    virtual PlannedActivity const & GetPlan( )  const = 0;
 
-	virtual long  GetGridArea( ) const = 0;
     virtual BYTES GetCoreSize( ) const = 0;
 
 // point of interest
@@ -82,23 +81,24 @@ public:
 	virtual void ResetSelection     ( ) = 0;
     virtual void ResetAll           ( ) = 0;
     virtual void ClearPoi           ( ) = 0;
-    virtual void SetPoi             ( GridPoint           const   ) = 0;
-    virtual void SetSimulationMode  ( tBoolOp             const   ) = 0;
-	virtual void SetSelection       ( GridRect            const & ) = 0;
-    virtual void SetBrushManipulator( tManipulator        const   ) = 0;
-    virtual void SetBrushShape      ( tShape              const   ) = 0;
-    virtual void SetBrushRadius     ( GRID_COORD          const   ) = 0;
-    virtual void SetBrushIntensity  ( PERCENT             const   ) = 0;
-    virtual void SetBrushMode       ( tBrushMode          const   ) = 0;
-    virtual void ModelDoEdit        ( GridPoint           const   ) = 0;
+    virtual void SetPoi             ( GridPoint    const   ) = 0;
+    virtual void SetSimulationMode  ( tBoolOp      const   ) = 0;
+	virtual void SetSelection       ( GridRect     const & ) = 0;
+    virtual void SetBrushManipulator( tManipulator const   ) = 0;
+    virtual void SetBrushShape      ( tShape       const   ) = 0;
+    virtual void SetBrushRadius     ( GRID_COORD   const   ) = 0;
+    virtual void SetBrushIntensity  ( PERCENT      const   ) = 0;
+    virtual void SetBrushMode       ( tBrushMode   const   ) = 0;
+    virtual void ModelDoEdit        ( GridPoint    const   ) = 0;
 
     // static functions
     
-    static EvolutionCore * InitClass( ObserverInterface * const, EventInterface * const );
+    static EvolutionCore * InitClass( int const, ObserverInterface * const, EventInterface * const );
     static EvolutionCore * CreateCore( );
-    static unsigned int GetNrInteractionsWithKnownCulprit( );
+    
+	static unsigned int GetNrInteractionsWithKnownCulprit( );
     static unsigned int GetNrInteractionsWithUnknownCulprit( );
     static unsigned int GetMaxPartnerMemory( );
 	static bool         IsEnabled( Action::Id const );
-	static bool         IsEnabled( GeneType::Id const );
+	static bool         IsEnabled( GeneralGeneType::Id const );
 };

@@ -7,6 +7,7 @@
 #include "BoolOp.h"
 #include "PixelTypes.h"
 #include "pixelCoordinates.h"
+#include "GridDimensions.h"
 #include "EvolutionCore.h"
 #include "d3d_buffer.h"
 #include "win32_util.h"
@@ -53,8 +54,8 @@ void GridWindow::InitClass
 	D3dSystem::Create_D3D_Device
 	( 
 		m_hwndApp, 
-		GRID_WIDTH_VAL, 
-		GRID_HEIGHT_VAL, 
+		GridDimensions::GridWidthVal(), 
+		GridDimensions::GridHeightVal(), 
 		Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 
 	);
 }
@@ -89,7 +90,7 @@ void GridWindow::Start
 		nullptr
     );
 
-	GraphicsInterface * pGraphics = new D3dBuffer( hwnd, m_pCore->GetGridArea( ) );
+	GraphicsInterface * pGraphics = new D3dBuffer( hwnd, GridDimensions::GetGridArea( ) );
 
 	m_pDrawFrame = new DrawFrame
 	( 
@@ -289,7 +290,7 @@ void GridWindow::mouseWheelAction( WPARAM const wParam )
 
 bool GridWindow::IsFullGridVisible() const
 {
-	return IsInClientRect( m_pPixelCoordinates->Grid2PixelRect( GRID_RECT_FULL() ) );
+	return IsInClientRect( m_pPixelCoordinates->Grid2PixelRect( GridDimensions::GridRectFull() ) );
 }
 
 LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -405,11 +406,7 @@ void GridWindow::Size( )
 	(
 		Util::CalcWindowRect
 		( 
-			PixelRect
-			( 
-				PixelPoint( 0_PIXEL ), 
-				m_pPixelCoordinates->Grid2PixelSize( GRID_SIZE() ) 
-			), 
+			m_pPixelCoordinates->Grid2PixelRect( GridDimensions::GridRectFull() ),
 			(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 
 		), 
 		FALSE 

@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "GridDimensions.h"
 #include "win32_textDisplay.h"
 #include "PixelTypes.h"
 
@@ -20,7 +21,7 @@ public:
 	virtual PixelRectSize MinimalSize( )  
 	{                                     
 		m_textDisplay.Clear();
-		FillBuffer( GRID_ORIGIN() );
+		FillBuffer( GridDimensions::GridOrigin() );
 		return SetMinSize( m_textDisplay.CalcRectSize( ) );
 	}                                     
 

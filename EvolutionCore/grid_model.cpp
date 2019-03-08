@@ -8,7 +8,6 @@
 #include "strategy.h"
 #include "individual.h"
 #include "interaction.h"
-#include "gridNeighbor.h"
 #include "grid_model.h"
 #include "gplIterator.h"
 #include "gpList.h"
@@ -33,13 +32,12 @@ ENERGY_UNITS Grid::m_enMarryFoodConsumption;
 ENERGY_UNITS Grid::m_enInteractFoodConsumption;
 bool Grid::m_bNeighborhoodFoodSensitivity;
 
-void Grid::InitClass( )
+void Grid::InitClass( int const iNrOfNeighbors )
 {
     INTERACTION::InitClass( );
     Genome::InitClass( );
     GridField::InitClass( );
     Individual::InitClass( );
-    Neighborhood::InitClass( Config::GetConfigValue( Config::tId::nrOfNeighbors ) );
 
     m_bNeighborhoodFoodSensitivity = Config::GetConfigValueBool( Config::tId::neighborhoodFoodSensitivity );
     m_enFoodGrowthRate             = GROWTH_RATE (Config::GetConfigValueShort( Config::tId::growthRateFood ));
@@ -62,9 +60,9 @@ Grid::Grid( )
 	  m_pActionCounterFill( & m_ActionCounter1 ),
 	  m_pActionCounterRead( & m_ActionCounter2 )
 {
-	m_aGF.resize( GRID_WIDTH_VAL );
+	m_aGF.resize( GridDimensions::GridWidthVal() );
 	for ( auto & col: m_aGF )
-		col.resize( GRID_HEIGHT_VAL );
+		col.resize( GridDimensions::GridHeightVal() );
 
     Apply2Grid    // initialization of grid variables which never change after initialization
 	( 
@@ -90,8 +88,8 @@ Grid::~Grid( )
 BYTES Grid::GetGridExtraSize() const
 {
 	unsigned long gridFieldSize { sizeof ( GridField ) };
-	unsigned long gridRowSize   { sizeof(vector< GridField >) + GRID_HEIGHT_VAL * gridFieldSize };
-	unsigned long gridAreaSize  { GRID_WIDTH_VAL * gridRowSize };
+	unsigned long gridRowSize   { sizeof(vector< GridField >) + GridDimensions::GridHeightVal() * gridFieldSize };
+	unsigned long gridAreaSize  { GridDimensions::GridWidthVal() * gridRowSize };
 	return BYTES( gridAreaSize );
 }
 
@@ -293,7 +291,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
 
         case Action::Id::fertilize:
         {
-            ENERGY_UNITS const enInvest = ENERGY_UNITS(gfRun.GetAllele( GeneType::Id::fertilInvest ));
+            ENERGY_UNITS const enInvest = ENERGY_UNITS(gfRun.GetAllele( GeneralGeneType::Id::fertilInvest ));
             gfRun.Fertilize( enInvest );
             gfRun.DecEnergy( enInvest );
         }
@@ -307,7 +305,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
 
         case Action::Id::eat:  
         {
-            ENERGY_UNITS const enWant    = ENERGY_UNITS( gfRun.GetAllele( GeneType::Id::appetite ) );
+            ENERGY_UNITS const enWant    = ENERGY_UNITS( gfRun.GetAllele( GeneralGeneType::Id::appetite ) );
             ENERGY_UNITS const enReceive = gfRun.GetConsumption( enWant );
             gfRun.IncFoodStock( - enReceive );
             gfRun.IncEnergy   ( enReceive );

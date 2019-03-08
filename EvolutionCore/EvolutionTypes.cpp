@@ -62,37 +62,69 @@ wchar_t const * const Action::GetName( Action::Id const action )
     return mapOptions.at( action );
 }
 
-wchar_t const * const GeneType::GetName( GeneType::Id const gene )
+wchar_t const * const ActionGeneType::GetName( ActionGeneType::Id const gene )
 {
-    static unordered_map < GeneType::Id, wchar_t const * const > mapTitles =
+    static unordered_map < ActionGeneType::Id, wchar_t const * const > mapTitles =
     {
-        { GeneType::Id::appetite,            L"appetite"  },
-        { GeneType::Id::fertilInvest,        L"fert inv"  },
-        { GeneType::Id::memSize,             L"mem size"  },
-        { GeneType::Id::thresholdClone,      L"min clone" },
-        { GeneType::Id::thresholdMarry,      L"min marry" },
-        { GeneType::Id::thresholdMove,       L"min move"  },
-        { GeneType::Id::thresholdFertilize,  L"min fert"  },
-        { GeneType::Id::maxEat,              L"max eat"   },
-        { GeneType::Id::cloneDonation,       L"clone don" }
+        { ActionGeneType::Id::move,      L"move"      },
+        { ActionGeneType::Id::clone,     L"clone"     },
+        { ActionGeneType::Id::marry,     L"marry"     },
+        { ActionGeneType::Id::interact,  L"interact"  },
+        { ActionGeneType::Id::eat,       L"eat"       },
+        { ActionGeneType::Id::fertilize, L"fertilize" },
+        { ActionGeneType::Id::undefined, L"undef"     }
     };
 
     return mapTitles.at( gene );
 }
 
-Action::Id const GetRelatedAction( GeneType::Id const gene )
+wchar_t const * const GeneralGeneType::GetName( GeneralGeneType::Id const gene )
 {
-    static unordered_map < GeneType::Id, Action::Id const > mapActions =
+    static unordered_map < GeneralGeneType::Id, wchar_t const * const > mapTitles =
     {
-        { GeneType::Id::appetite,            Action::Id::eat       },
-        { GeneType::Id::fertilInvest,        Action::Id::fertilize },
-        { GeneType::Id::memSize,             Action::Id::interact  },
-        { GeneType::Id::thresholdClone,      Action::Id::clone     },
-        { GeneType::Id::thresholdMarry,      Action::Id::marry     },
-        { GeneType::Id::thresholdMove,       Action::Id::move      },
-        { GeneType::Id::thresholdFertilize,  Action::Id::fertilize },
-        { GeneType::Id::maxEat,              Action::Id::eat       },
-        { GeneType::Id::cloneDonation,       Action::Id::clone     }
+        { GeneralGeneType::Id::appetite,            L"appetite"  },
+        { GeneralGeneType::Id::fertilInvest,        L"fert inv"  },
+        { GeneralGeneType::Id::memSize,             L"mem size"  },
+        { GeneralGeneType::Id::thresholdClone,      L"min clone" },
+        { GeneralGeneType::Id::thresholdMarry,      L"min marry" },
+        { GeneralGeneType::Id::thresholdMove,       L"min move"  },
+        { GeneralGeneType::Id::thresholdFertilize,  L"min fert"  },
+        { GeneralGeneType::Id::maxEat,              L"max eat"   },
+        { GeneralGeneType::Id::cloneDonation,       L"clone don" }
+    };
+
+    return mapTitles.at( gene );
+}
+
+Action::Id const GetRelatedAction( ActionGeneType::Id const gene )
+{
+    static unordered_map < ActionGeneType::Id, Action::Id const > mapActions =
+    {
+        { ActionGeneType::Id::move,      Action::Id::move      },
+        { ActionGeneType::Id::clone,     Action::Id::clone     },
+        { ActionGeneType::Id::marry,     Action::Id::marry     },
+        { ActionGeneType::Id::interact,  Action::Id::interact  },
+        { ActionGeneType::Id::eat,       Action::Id::eat       },
+        { ActionGeneType::Id::fertilize, Action::Id::fertilize },
+        { ActionGeneType::Id::undefined, Action::Id::undefined }
+    };
+
+    return mapActions.at( gene );
+}
+
+Action::Id const GetRelatedAction( GeneralGeneType::Id const gene )
+{
+    static unordered_map < GeneralGeneType::Id, Action::Id const > mapActions =
+    {
+        { GeneralGeneType::Id::appetite,           Action::Id::eat       },
+        { GeneralGeneType::Id::fertilInvest,       Action::Id::fertilize },
+        { GeneralGeneType::Id::memSize,            Action::Id::interact  },
+        { GeneralGeneType::Id::thresholdClone,     Action::Id::clone     },
+        { GeneralGeneType::Id::thresholdMarry,     Action::Id::marry     },
+        { GeneralGeneType::Id::thresholdMove,      Action::Id::move      },
+        { GeneralGeneType::Id::thresholdFertilize, Action::Id::fertilize },
+        { GeneralGeneType::Id::maxEat,             Action::Id::eat       },
+        { GeneralGeneType::Id::cloneDonation,      Action::Id::clone     }
     };
 
     return mapActions.at( gene );

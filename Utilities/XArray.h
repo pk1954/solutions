@@ -83,7 +83,7 @@ public:
 
     void Add( unsigned int uiIndex, T const op )
     {
-        m_tArray[ uiIndex ] += op;
+        m_tArray.at( uiIndex ) += op;
         m_tGeneral += op;
     }
 
@@ -107,7 +107,7 @@ public:
     }
 
     T & General( ) { return m_tGeneral; }
-    T & operator[] ( unsigned int uiIndex ) { return m_tArray[ uiIndex ]; }
+    T & operator[] ( unsigned int uiIndex ) { return m_tArray.at( uiIndex ); }
 
 	void Apply2All( std::function< void ( T const & ) > const & func )
 	{

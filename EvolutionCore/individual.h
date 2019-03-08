@@ -31,7 +31,7 @@ public:
     Genome const & GetGenome    ( )                       const { return m_genome; }
     MEM_INDEX      GetMemSize   ( )                       const { return m_stratData.GetMemSize( );  }
     MEM_INDEX      GetMemUsed   ( )                       const { return m_stratData.GetMemUsed( ); }
-    short          GetAllele    ( GeneType::Id const gt ) const { return m_genome.GetAllele( gt ); }
+    short          GetAllele    ( GeneralGeneType::Id const gt ) const { return m_genome.GetAllele( gt ); }
     IND_ID         GetMemEntry  ( MEM_INDEX    const ui ) const { return m_stratData.GetMemEntry( ui ); }
 
 	Strategy::Id GetStrategyId( )             const { return m_pStrategy->GetStrategyId(); }

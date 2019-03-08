@@ -36,9 +36,9 @@ public:
 		stopwatch.Stop( L"Copy model" );
 	}
 
-    GridPoint FindGridPoint( IND_ID const & id, GridRect const & rect = GRID_RECT_FULL() ) const
+    GridPoint FindGridPoint( IND_ID const & id ) const
 	{ 
-		return m_pEvolutionCore->FindGridPoint( id, rect );
+		return m_pEvolutionCore->FindGridPoint( id );
 	}
 
 	virtual void OnAppCommand( GenerationCmd const );

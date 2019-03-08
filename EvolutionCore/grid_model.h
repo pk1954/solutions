@@ -27,6 +27,8 @@ class Grid
 {
 public:
 
+	static void InitClass( int const  );
+
     Grid( );
     ~Grid( );
 
@@ -94,7 +96,7 @@ public:
 
 	EVO_GENERATION GetEvoGenerationNr( ) const { return m_genEvo; }
 
-    ENERGY_UNITS GetAverageFoodGrowth    ( ) const { return ENERGY_UNITS(m_enFoodGrowth / GRID_AREA()); }
+    ENERGY_UNITS GetAverageFoodGrowth    ( ) const { return ENERGY_UNITS(m_enFoodGrowth / GridDimensions::GetGridArea()); }
     int          GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
 
 	void PrepareActionCounters( )
@@ -109,17 +111,13 @@ public:
 		return actionCounter( strategy, action );
 	}
 
-	// static functions
-
-    static void InitClass( );
-
 private:
 	ACTION_COUNT & actionCounter( Strategy::Id const strategy, Action::Id const action ) const
 	{
 		unsigned int const uiAction   = static_cast<unsigned int>(action);
 		unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
 
-		assert( uiAction   <= Action::NR_ACTIONS );
+		assert( uiAction   <= Action::COUNT );
 		assert( uiStrategy <= Strategy::COUNT );
 
 		return ( * m_pActionCounterFill )[uiAction][uiStrategy];
@@ -160,7 +158,7 @@ private:
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;
 
-	using tActionCounters = array< array < ACTION_COUNT, Strategy::COUNT>, Action::NR_ACTIONS >;
+	using tActionCounters = array< array < ACTION_COUNT, Strategy::COUNT>, Action::COUNT >;
 
 	tActionCounters   m_ActionCounter1;
 	tActionCounters   m_ActionCounter2;

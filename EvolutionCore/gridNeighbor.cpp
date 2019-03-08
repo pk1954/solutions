@@ -57,14 +57,14 @@ static std::array< GridPoint, 4 > const table4 =
 	GridPoint( EAST,     CENTER_Y )
 }; 
 
-void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization of m_pGridNeighbors
+void Neighborhood::InitClass( int const iNrOfNeighbors ) // Initialization of m_pGridNeighbors
 {
 	assert( ( iNrOfNeighbors == 4 ) || ( iNrOfNeighbors == 6 ) || ( iNrOfNeighbors == 8 ) );
 	m_iNrOfNeighbors = iNrOfNeighbors;
 	m_pGridNeighbors = new NEIGHBOR_GRID;
-	m_pGridNeighbors->resize( GRID_WIDTH_VAL );
+	m_pGridNeighbors->resize( GridDimensions::GridWidthVal() );
 	for ( auto & col: * m_pGridNeighbors )
-		col.resize( GRID_HEIGHT_VAL );
+		col.resize( GridDimensions::GridHeightVal() );
 
 	Apply2Grid  // initialization of grid variables which never change after initialization
 	( 
@@ -81,7 +81,7 @@ void Neighborhood::InitClass( int const iNrOfNeighbors )     // Initialization o
 					                : ( m_iNrOfNeighbors == 8 ) 
 					                    ? table8[i] 
 					                    : table4[i];
-				neighbors[i] = Wrap2Grid( gp + gpDelta );
+				neighbors[i] = GridDimensions::Wrap2Grid( gp + gpDelta );
 			}
 		}
 	);

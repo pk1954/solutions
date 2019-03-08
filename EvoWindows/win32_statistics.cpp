@@ -70,24 +70,24 @@ public:
 		Strategy::Apply2All
 		( 
 			[&]( Strategy::Id strategy )
-			{ DivNonZero( m_auiMemSize[ static_cast<int>(strategy) ], m_gsCounter[ static_cast<int>(strategy) ] ); }
+			{ DivNonZero( m_auiMemSize.at( static_cast<int>(strategy) ), m_gsCounter[ static_cast<int>(strategy) ] ); }
 		);
     };
 
     void add2option( Strategy::Id const s, Action::Id const action, short const sValue )
     {
-        m_axaGenePoolStrategy[ static_cast<int>(action) ].Add( static_cast<int>( s ), static_cast<float>( sValue ) );
+        m_axaGenePoolStrategy.at( static_cast<int>(action) ).Add( static_cast<int>( s ), static_cast<float>( sValue ) );
     }
 
-    void add2Gene( Strategy::Id const s, GeneType::Id const geneType, long const lGenoType )
+    void add2Gene( Strategy::Id const s, GeneralGeneType::Id const geneType, long const lGenoType )
     {
         assert( lGenoType >= 0 );
-        m_aGeneStat[ static_cast<int>(geneType) ].Add( static_cast<int>( s ), static_cast<unsigned int>( lGenoType ) );
+        m_aGeneStat.at( static_cast<int>(geneType) ).Add( static_cast<int>( s ), static_cast<unsigned int>( lGenoType ) );
     }
 
     void addMemSize( Strategy::Id const s, MEM_INDEX const memSize )
     {
-        m_auiMemSize[ static_cast<int>( s ) ] += memSize.GetValue();
+        m_auiMemSize.at( static_cast<int>( s ) ) += memSize.GetValue();
     }
 
     void addAge( Strategy::Id const s, EVO_GENERATION genAge )
@@ -148,12 +148,12 @@ public:
 			}
 		);
 
-		GeneType::Apply2All
+		GeneralGeneType::Apply2All
 		(
-			[&]( GeneType::Id geneType )
+			[&]( GeneralGeneType::Id geneType )
 			{
 				if ( EvolutionCore::IsEnabled( geneType ) )
-					m_aGeneStat[ static_cast<int>(geneType) ].printGeneLine( textBuf, GeneType::GetName( geneType ) );
+					m_aGeneStat[ static_cast<int>(geneType) ].printGeneLine( textBuf, GeneralGeneType::GetName( geneType ) );
 			}
 		);
 	}
@@ -163,7 +163,7 @@ public:
         FloatStat fsAvFood;
 
 		int iEat      = static_cast<int>( Action::Id::eat );
-		int iAppetite = static_cast<int>( GeneType::Id::appetite );
+		int iAppetite = static_cast<int>( GeneralGeneType::Id::appetite );
 
 		Strategy::Apply2All
 		( 
@@ -193,7 +193,7 @@ private:
 
     std::array < FloatStat,      Action::COUNT > m_axaGenePoolStrategy;
     std::array < unsigned int, Strategy::COUNT > m_auiMemSize;
-    std::array < GeneStat,     GeneType::COUNT > m_aGeneStat;
+    std::array < GeneStat,     GeneralGeneType::COUNT > m_aGeneStat;
 };
 
 StatisticsWindow::StatisticsWindow( ):
@@ -246,18 +246,19 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 					  ( age.IsNotNull()  )
 				   )
 				{
-					Action::Apply2All
+					ActionGeneType::Apply2All
 					(
-						[&]( Action::Id action )
+						[&]( auto geneType )
 						{
+							Action::Id action = GetRelatedAction( geneType );
 							if ( EvolutionCore::IsEnabled( action ) )
-								genesStat.add2option( strategy, action, m_pCore->GetDistr( gp, action ) );
+								genesStat.add2option( strategy, action, m_pCore->GetDistr( gp, geneType ) );
 						}
 					);
 
-					GeneType::Apply2All
+					GeneralGeneType::Apply2All
 					(
-						[&]( GeneType::Id geneType )
+						[&]( auto geneType )
 						{ genesStat.add2Gene( strategy, geneType, m_pCore->GetGenotype( gp, geneType ) ); }
 					);
 

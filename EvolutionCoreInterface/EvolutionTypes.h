@@ -72,14 +72,12 @@ public:
 		interact, 
 		eat, 
 		fertilize,
+		passOn,
 		count,
-		passOn = count,
-		nrOfActions,
-		undefined = nrOfActions
+		undefined = count
 	};
 
-	static const int NR_ACTIONS = static_cast<int>( Id::nrOfActions );
-	static const int COUNT      = static_cast<int>( Id::count );
+	static const int COUNT = static_cast<int>( Id::count );
 
 	static void Apply2All( std::function<void(Id const &)> const & func )
 	{
@@ -92,7 +90,35 @@ public:
 	static wchar_t const * const GetName( Id const );
 };
 
-class GeneType
+class ActionGeneType
+{
+public:
+	enum class Id : unsigned short
+	{
+		move, 
+		clone,
+		marry,
+		interact, 
+		eat, 
+		fertilize,
+		count,
+		undefined = count
+	};
+
+	static const int COUNT = static_cast<int>( Id::count );
+
+	static void Apply2All( std::function<void(Id const &)> const & func )
+	{
+        for ( int index = 0; index < COUNT; ++index )
+		{
+            func( static_cast<Id>(index) );
+		}
+	}
+
+	static wchar_t const * const GetName( Id const );
+};
+
+class GeneralGeneType
 {
 public:
 	enum class Id : unsigned short
@@ -182,4 +208,5 @@ wchar_t const * const GetBrushModeNameShort( tBrushMode   const );
 wchar_t const * const GetManipulatorName   ( tManipulator const );
 wchar_t const * const GetColorObjectName   ( tColorObject const );
 
-Action::Id const GetRelatedAction( GeneType::Id const );
+Action::Id const GetRelatedAction( ActionGeneType::Id const );
+Action::Id const GetRelatedAction( GeneralGeneType::Id const );

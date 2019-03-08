@@ -121,8 +121,10 @@ void AppWindow::Start(  )
 	Script::ProcessScript( L"std_configuration.in" );
 	stopwatch.Stop( L"process std_configuration.in" );
 
+	GridDimensions::DefineGridSize( 200_GRID_X, 100_GRID_Y );
+
 	stopwatch.Start();
-	m_pEvolutionCore = EvolutionCore::InitClass( & m_gridObservers, & m_event );
+	m_pEvolutionCore = EvolutionCore::InitClass( Config::GetConfigValue( Config::tId::nrOfNeighbors ), & m_gridObservers, & m_event );
 	stopwatch.Stop( L"EvolutionCore::InitClass" );
 
     // create window objects

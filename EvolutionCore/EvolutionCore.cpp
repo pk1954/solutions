@@ -5,17 +5,20 @@
 #include "strategy.h"
 #include "genome.h"
 #include "grid_model.h"
+#include "gridNeighbor.h"
 #include "EvolutionCore.h"
 #include "EvolutionCoreImpl.h"
 #include "EvolutionCoreWrappers.h"
 
 EvolutionCore * EvolutionCore::InitClass
 ( 
+	int                 const iNrOfNeighbors,
 	ObserverInterface * const pObservers,
 	EventInterface    * const pEvent
 )
 {
-    Grid::InitClass( );
+    Neighborhood::InitClass( iNrOfNeighbors );
+    Grid::InitClass( iNrOfNeighbors );
 	EvolutionCoreImpl::InitClass( pObservers, pEvent );
     EvolutionCore * pEvolutionCore = EvolutionCore::CreateCore( );
 	DefineCoreWrapperFunctions( pEvolutionCore );
@@ -47,7 +50,7 @@ bool EvolutionCore::IsEnabled( Action::Id const action )
 	return Genome::IsEnabled( action );
 }
 
-bool EvolutionCore::IsEnabled( GeneType::Id const gene )
+bool EvolutionCore::IsEnabled( GeneralGeneType::Id const gene )
 {
 	return Genome::IsEnabled( GetRelatedAction( gene ) );
 }

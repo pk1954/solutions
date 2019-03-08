@@ -8,6 +8,7 @@
 #include "config.h"
 #include "trace.h"
 #include "dump.h"
+#include "GridDimensions.h"
 #include "EvoHistorySysGlue.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCore.h"
@@ -35,12 +36,13 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
     Config::SetDefaultConfiguration( );
     Config::DefineConfigWrapperFunctions( );
+	GridDimensions::DefineGridSize( 200_GRID_X, 100_GRID_Y );
 
     Script::ProcessScript( L"std_configuration.in" );
 
 	PIXEL                 const FIELDSIZE            = 8_PIXEL;
-    EvolutionCore       * const pEvolutionCore       = EvolutionCore::InitClass( nullptr, nullptr );
 	int                   const iNrOfNeighbors       = Config::GetConfigValue( Config::tId::nrOfNeighbors );
+    EvolutionCore       * const pEvolutionCore       = EvolutionCore::InitClass( iNrOfNeighbors, nullptr, nullptr );
 	BOOL                  const bHexagonMode         = (iNrOfNeighbors == 6);
 	PixelCoordinates    * const pPixCoords           = new PixelCoordinates( FIELDSIZE, bHexagonMode );
 	EvoHistorySysGlue   * const pEvoHistGlue         = new EvoHistorySysGlue( );

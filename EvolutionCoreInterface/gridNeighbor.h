@@ -70,7 +70,7 @@ public:
 
 private:
 	using NEIGHBORS     = vector< GridPoint >;
-	using NEIGHBOR_GRID = vector < vector < NEIGHBORS > >;
+	using NEIGHBOR_GRID = vector< vector< NEIGHBORS > >;
 
 	static int             m_iNrOfNeighbors;
 	static NEIGHBOR_GRID * m_pGridNeighbors;

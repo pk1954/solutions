@@ -2,6 +2,7 @@
 
 #include <functional>
 #include "BoolOp.h"
+#include "GridDimensions.h"
 #include "gridPoint.h"
 #include "gridRect.h"
 #include "grid_model.h"
@@ -23,7 +24,7 @@ public:
 	)
 	{
 		m_pObservers = pObservers; 
-		m_pEventPOI = pEvent; 
+		m_pEventPOI  = pEvent; 
 	}
 
 	EvolutionCoreImpl( );
@@ -71,9 +72,9 @@ public:
     virtual bool           IsAlive      ( GridPoint const gp ) const { return getGridField( gp ).IsAlive( ); }
     virtual bool           IsDefined    ( GridPoint const gp ) const { return getGridField( gp ).IsDefined( ); }
 
-    virtual IND_ID         GetMemEntry  ( GridPoint const gp, MEM_INDEX    const index ) const { return getGridField( gp ).GetMemEntry( index ); }
-    virtual long           GetGenotype  ( GridPoint const gp, GeneType::Id const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
-    virtual short          GetDistr     ( GridPoint const gp, Action::Id   const at    ) const { return getGenome( gp ).GetDistr( at ); }
+    virtual IND_ID         GetMemEntry  ( GridPoint const gp, MEM_INDEX           const index ) const { return getGridField( gp ).GetMemEntry( index ); }
+    virtual short          GetDistr     ( GridPoint const gp, ActionGeneType::Id  const at    ) const { return getGenome( gp ).GetDistr( at ); }
+    virtual long           GetGenotype  ( GridPoint const gp, GeneralGeneType::Id const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
 
 	virtual EVO_GENERATION GetEvoGenerationNr ( ) const { return m_grid.GetEvoGenerationNr( ); }
 
@@ -83,7 +84,7 @@ public:
     virtual GRID_COORD     GetBrushSize       ( ) const { return m_brush.GetRadius(); }
     virtual tBrushMode     GetBrushMode       ( ) const { return m_brush.GetBrushMode(); }
 
-	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GRID_RECT_FULL() : m_gridRectSelection; }
+	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GridDimensions::GridRectFull() : m_gridRectSelection; }
 	virtual bool           SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
 	virtual bool           SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
 
@@ -96,8 +97,7 @@ public:
     virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
     virtual PlannedActivity       * GetPlan4Writing( )       { return & m_plan; };
 
-	virtual long  GetGridArea( ) const { return GRID_AREA(); };
-	virtual BYTES GetCoreSize( ) const { return BYTES(sizeof(EvolutionCoreImpl)) + m_grid.GetGridExtraSize(); };
+	virtual BYTES GetCoreSize() const { return BYTES(sizeof(EvolutionCoreImpl)) + m_grid.GetGridExtraSize(); };
 
     virtual ENERGY_UNITS GetAverageFoodGrowth( ) const { return m_grid.GetAverageFoodGrowth( ); }
     virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
@@ -113,7 +113,7 @@ public:
 
 	virtual void      SetPoi( GridPoint const );
     virtual GridPoint FindPOI( ) const;
-	virtual GridPoint FindGridPoint( IND_ID const &, GridRect const & rect ) const; 
+	virtual GridPoint FindGridPoint( IND_ID const & ) const; 
 
 private:
     static ObserverInterface * m_pObservers;    // GUI call back for display of current model 

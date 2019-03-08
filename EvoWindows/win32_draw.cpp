@@ -86,7 +86,7 @@ bool DrawFrame::SetHighlightPos( PixelPoint const ptCrsr )
 {
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
-	m_gpHighlight = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
+	m_gpHighlight = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
 	assert( IsInGrid( m_gpHighlight ) );
 	PixelPoint const ppGridpointOffset =  m_pPixelCoordinates->Grid2PixelPos( m_gpHighlight );
 	m_pShapeHighlight = m_gridPointShape->FindShape( ptCrsr - ppGridpointOffset, m_gpHighlight );
@@ -148,7 +148,7 @@ void DrawFrame::drawBackground( )
 	(          
     	[&](GridPoint const gp)
 		{
-			CLUT_INDEX const index   { m_pDspOptWindow->GetIntValue( Wrap2Grid(gp) ) };
+			CLUT_INDEX const index   { m_pDspOptWindow->GetIntValue( GridDimensions::Wrap2Grid(gp) ) };
 			DWORD      const dwColor { getBackgroundColor( index ) };
 			PixelPoint const pnt     { m_pPixelCoordinates->Grid2PixelPosCenter( gp ) };
 			m_pGraphics->AddBackGround( pnt, dwColor, m_fPxSize );
@@ -246,7 +246,7 @@ COLORREF DrawFrame::getBackgroundColor( CLUT_INDEX index ) const
 void DrawFrame::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pnt )
 {
 	PixelPoint    const pp     = Util::POINT2PixelPoint( pnt );
-	GridPoint     const gp     = Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pp ) );
+	GridPoint     const gp     = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pp ) );
 	Shape const * const pShape = m_gridPointShape->FindShape( pp, gp );
 	if ( pShape )
 		pShape->AddContextMenuEntries( hPopupMenu );
