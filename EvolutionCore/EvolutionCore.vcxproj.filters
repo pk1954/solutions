@@ -60,6 +60,9 @@
     <ClInclude Include="gridBrush.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="ActionOptions.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -123,6 +126,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="GridDimensions.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionOptions.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

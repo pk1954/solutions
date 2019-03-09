@@ -55,11 +55,11 @@ void Config::SetDefaultConfiguration( )
    DEF_CONFIG_ID( Config::tId::passOnEnabled,    1 );  
    DEF_CONFIG_ID( Config::tId::eatEnabled,       1 );  
    // thresholds for activities         
-   DEF_CONFIG_ID( Config::tId::thresholdClone,     500 );  
-   DEF_CONFIG_ID( Config::tId::thresholdMarry,     375 );  
-   DEF_CONFIG_ID( Config::tId::thresholdMove,      100 );            // should be > energyConsumptionMove          
-   DEF_CONFIG_ID( Config::tId::thresholdFertilize, 300 );  
-   DEF_CONFIG_ID( Config::tId::maxEat,            5000 );  
+   DEF_CONFIG_ID( Config::tId::thresholdClone,  500 );  
+   DEF_CONFIG_ID( Config::tId::thresholdMarry,  375 );  
+   DEF_CONFIG_ID( Config::tId::thresholdMove,   100 );            // should be > energyConsumptionMove          
+   DEF_CONFIG_ID( Config::tId::thresholdFert,   300 );  
+   DEF_CONFIG_ID( Config::tId::maxEat,         5000 );  
    // food         
    DEF_CONFIG_ID( Config::tId::initialFoodStock,      1000 );  
    DEF_CONFIG_ID( Config::tId::growthRateFood,           5 );  

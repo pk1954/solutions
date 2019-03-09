@@ -56,8 +56,8 @@ public:
     virtual MEM_INDEX      GetMemSize   ( GridPoint const ) const = 0;
     virtual MEM_INDEX      GetMemUsed   ( GridPoint const ) const = 0;
     virtual IND_ID         GetMemEntry  ( GridPoint const, MEM_INDEX           const ) const = 0;
-    virtual short          GetDistr     ( GridPoint const, ActionGeneType::Id  const ) const = 0;
-    virtual long           GetGenotype  ( GridPoint const, GeneralGeneType::Id const ) const = 0;
+    virtual short          GetDistr     ( GridPoint const, GeneType::Id const ) const = 0;
+    virtual long           GetGenotype  ( GridPoint const, GeneType::Id const ) const = 0;
 	
 	virtual	ACTION_COUNT   GetActionCounter( Strategy::Id const, Action::Id const ) const = 0;
 
@@ -100,5 +100,4 @@ public:
     static unsigned int GetNrInteractionsWithUnknownCulprit( );
     static unsigned int GetMaxPartnerMemory( );
 	static bool         IsEnabled( Action::Id const );
-	static bool         IsEnabled( GeneralGeneType::Id const );
 };

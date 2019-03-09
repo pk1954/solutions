@@ -117,8 +117,8 @@ private:
 		unsigned int const uiAction   = static_cast<unsigned int>(action);
 		unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
 
-		assert( uiAction   <= Action::COUNT );
-		assert( uiStrategy <= Strategy::COUNT );
+		assert( uiAction   < Action::COUNT );
+		assert( uiStrategy < Strategy::COUNT );
 
 		return ( * m_pActionCounterFill )[uiAction][uiStrategy];
 	}

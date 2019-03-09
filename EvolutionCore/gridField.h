@@ -67,12 +67,12 @@ public:
     MEM_INDEX      GetMemSize( )    const { return m_Individual.GetMemSize( ); }
     MEM_INDEX      GetMemUsed( )    const { return m_Individual.GetMemUsed( ); }
     Genome const & GetGenome( )     const { return m_Individual.GetGenome( ); }
+    Strategy::Id   GetStrategyId( ) const { return m_Individual.GetStrategyId( ); }
 
-    Strategy::Id GetStrategyId( ) const { return m_Individual.GetStrategyId( ); }
-
-	short  const   GetAllele( GeneralGeneType::Id const geneType ) const { return GetGenome( ).GetAllele( geneType ); }
+	short  GetAllele( GeneType::Id const geneType ) const { return GetGenome( ).GetAllele( geneType ); }
 
     IND_ID GetMemEntry( MEM_INDEX const i ) const { return m_Individual.GetMemEntry( i ); }
+
     void   ResetIndividual( )                     { m_Individual.ResetIndividual( ); }
     void   SetEnergy( ENERGY_UNITS const sInc )   { m_Individual.SetEnergy( sInc ); }
     void   DecEnergy( ENERGY_UNITS const sDec )   { m_Individual.IncEnergy( - sDec ); }
@@ -93,7 +93,7 @@ public:
 	void CloneIndividual( IND_ID const id, EVO_GENERATION const genBirth, Random & random, GridField & gfParent )
 	{
 		m_Individual.Clone( id, genBirth, m_mutRate, random, gfParent.m_Individual );
-		long lDonationRate = static_cast<long>( gfParent.GetAllele( GeneralGeneType::Id::cloneDonation ) );
+		long lDonationRate = static_cast<long>( gfParent.GetAllele( GeneType::Id::cloneDonation ) );
 		long lParentEnergy = static_cast<long>( gfParent.GetEnergy( ).GetValue() );
 		long lDonation = ( lDonationRate * lParentEnergy ) / SHRT_MAX;
 		Donate( gfParent, ENERGY_UNITS(CastToShort( lDonation )) );

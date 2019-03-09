@@ -79,7 +79,7 @@ public:
         m_axaGenePoolStrategy.at( static_cast<int>(action) ).Add( static_cast<int>( s ), static_cast<float>( sValue ) );
     }
 
-    void add2Gene( Strategy::Id const s, GeneralGeneType::Id const geneType, long const lGenoType )
+    void add2Gene( Strategy::Id const s, GeneType::Id const geneType, long const lGenoType )
     {
         assert( lGenoType >= 0 );
         m_aGeneStat.at( static_cast<int>(geneType) ).Add( static_cast<int>( s ), static_cast<unsigned int>( lGenoType ) );
@@ -138,22 +138,25 @@ public:
     {
 		Action::Apply2All
 		(
-			[&]( Action::Id action )
+			[&]( Action::Id action ) -> Action::Id
 			{
 				if ( EvolutionCore::IsEnabled( action ) )
 				{
 					printCounters( textBuf, pCore, action );
-					m_axaGenePoolStrategy[ static_cast<int>(action) ].printFloatLine( textBuf, L"" );
+					if ( GeneType::IsDefined( GetRelatedGeneType( action ) )  )
+						m_axaGenePoolStrategy[ static_cast<int>(action) ].printFloatLine( textBuf, L"" );
 				}
+				return Action::Id::undefined;
 			}
 		);
 
-		GeneralGeneType::Apply2All
+		GeneType::Apply2All
 		(
-			[&]( GeneralGeneType::Id geneType )
+			[&]( GeneType::Id geneType )
 			{
-				if ( EvolutionCore::IsEnabled( geneType ) )
-					m_aGeneStat[ static_cast<int>(geneType) ].printGeneLine( textBuf, GeneralGeneType::GetName( geneType ) );
+		    	Action::Id action = GetRelatedAction( geneType );
+				if ( EvolutionCore::IsEnabled( action ) )
+					m_aGeneStat[ static_cast<int>(geneType) ].printGeneLine( textBuf, GeneType::GetName( geneType ) );
 			}
 		);
 	}
@@ -163,7 +166,7 @@ public:
         FloatStat fsAvFood;
 
 		int iEat      = static_cast<int>( Action::Id::eat );
-		int iAppetite = static_cast<int>( GeneralGeneType::Id::appetite );
+		int iAppetite = static_cast<int>( GeneType::Id::appetite );
 
 		Strategy::Apply2All
 		( 
@@ -193,7 +196,7 @@ private:
 
     std::array < FloatStat,      Action::COUNT > m_axaGenePoolStrategy;
     std::array < unsigned int, Strategy::COUNT > m_auiMemSize;
-    std::array < GeneStat,     GeneralGeneType::COUNT > m_aGeneStat;
+    std::array < GeneStat,     GeneType::COUNT > m_aGeneStat;
 };
 
 StatisticsWindow::StatisticsWindow( ):
@@ -246,7 +249,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 					  ( age.IsNotNull()  )
 				   )
 				{
-					ActionGeneType::Apply2All
+					GeneType::Apply2All
 					(
 						[&]( auto geneType )
 						{
@@ -256,7 +259,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 						}
 					);
 
-					GeneralGeneType::Apply2All
+					GeneType::Apply2All
 					(
 						[&]( auto geneType )
 						{ genesStat.add2Gene( strategy, geneType, m_pCore->GetGenotype( gp, geneType ) ); }

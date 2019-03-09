@@ -6,6 +6,7 @@
 #include <array>
 #include "gene.h"
 #include "config.h"
+#include "ActionOptions.h"
 #include "EvolutionTypes.h"
 
 class Random;
@@ -26,40 +27,33 @@ public:
 
     // for statistics
 
-	short GetDistr( ActionGeneType::Id const actionGene ) const
+	short GetDistr( GeneType::Id const actionGene ) const
 	{ 
-		return m_aGeneActions.at( static_cast<int>( actionGene ) ).m_gene.GetAllele();
+		return m_aGene.at( static_cast<int>( actionGene ) ).m_gene.GetAllele();
 	}
 
-    short GetAllele( GeneralGeneType::Id const geneType ) const 
+    short GetAllele( GeneType::Id const geneType ) const 
 	{ 
-		return m_aGeneGeneral.at( static_cast<int>( geneType ) ).m_gene.GetAllele(); 
+		return m_aGene.at( static_cast<int>( geneType ) ).m_gene.GetAllele(); 
+	};
+
+    short GetAllele( Action::Id const action ) const 
+	{ 
+		return GetAllele( GetRelatedGeneType( action ) ); 
 	};
 
 	static bool IsEnabled( Action::Id const action ) 
 	{ 
 		return enabled( action ); 
-};
+    };
 
 private:
  
-    struct generalGene
-    {
-        GeneralGeneType::Id m_type;
-        Gene                m_gene;
-    };
+    struct GeneStruct { GeneType::Id m_type; Gene m_gene; } ;
 
-    struct actionGene
-    {
-        ActionGeneType::Id m_type;
-        Gene               m_gene;
-    };
-                                          
-    std::array< actionGene,  ActionGeneType ::COUNT > m_aGeneActions;  // 4 * 6 = 24   genes for choosing next action
-    std::array< generalGene, GeneralGeneType::COUNT > m_aGeneGeneral;  // 4 * 9 = 36   general genes 
-                                                                       // sum     66
-    void setGeneralGene( GeneralGeneType::Id const, short const );
-    void setActionGene ( ActionGeneType::Id  const, short const );
+    std::array< GeneStruct, GeneType ::COUNT > m_aGene;  
+                                                                   
+    void setGene( GeneType::Id const, short const );
 
 	// static members and functions
 
@@ -72,10 +66,10 @@ private:
 		return m_abActionEnabled.at( static_cast<unsigned short>( action ) ); 	
 	}
 
-    static Genome m_genomeTemplate;
+    static Genome        m_genomeTemplate;
+	static ActionOptions m_options;
 
-    static std::array< GeneTypeLimits, GeneralGeneType::COUNT > m_aLimitsGeneral;
-    static std::array< GeneTypeLimits, ActionGeneType ::COUNT > m_aLimitsActions;
+    static std::array< GeneTypeLimits, GeneType::COUNT > m_aLimits;
 
-    static void setGeneralLimits( GeneralGeneType::Id, long, long );
+    static void setLimits( GeneType::Id, long, long );
 };

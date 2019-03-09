@@ -56,11 +56,11 @@ public:
         passOnEnabled,
         eatEnabled,
         // thresholds for activities
-        thresholdClone,             // cloning possible if at least that much energy
-        thresholdMarry,             // marriage possible if at least that much energy
-        thresholdMove,              // move only if at least that much energy
-        thresholdFertilize,         // fertilize only if at least that much energy
-        maxEat,                     // eat only if energy not greater than this parameter
+        thresholdClone,       // cloning possible if at least that much energy
+        thresholdMarry,       // marriage possible if at least that much energy
+        thresholdMove,        // move only if at least that much energy
+        thresholdFert,        // fertilize only if at least that much energy
+        maxEat,               // eat only if energy not greater than this parameter
         // food
         initialFoodStock,     // initial food stock per slot
         growthRateFood,       // maximum growth rate in percent

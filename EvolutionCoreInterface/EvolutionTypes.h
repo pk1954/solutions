@@ -61,6 +61,53 @@ public:
 	}
 };
 
+class GeneType
+{
+public:
+	enum class Id : unsigned short
+	{
+		move, 
+		clone,
+		marry,
+		interact, 
+		eat, 
+		fertilize,
+		appetite,
+		fertilInvest,
+		memSize,
+		thresholdClone,  // minimum available energy for considering CLONE
+		thresholdMarry,  // minimum available energy for considering MARRY
+		thresholdMove,   // minimum available energy for considering MOVE
+		thresholdFert,   // minimum available energy for considering FERTILIZE
+		maxEat,          // maximum available energy for considering EAT
+		cloneDonation,   // amount of energy donated to clone. 0 means nothing (clone dies), SHORT_MAX means all available energy (parent dies)
+		count,
+		undefined = count
+	};
+
+	static const int COUNT = static_cast<int>( Id::count );
+
+	static void Apply2All( std::function<void(Id const &)> const & func )
+	{
+        for ( int index = 0; index < COUNT; ++index )
+		{
+            func( static_cast<Id>(index) );
+		}
+	}
+
+	static bool IsDefined( Id const geneType )
+	{
+		return geneType != Id::undefined;
+	}
+
+	static bool IsUndefined( Id const geneType )
+	{
+		return geneType == Id::undefined;
+	}
+
+	static wchar_t const * const GetName( Id const );
+};
+
 class Action
 {
 public:
@@ -79,71 +126,25 @@ public:
 
 	static const int COUNT = static_cast<int>( Id::count );
 
-	static void Apply2All( std::function<void(Id const &)> const & func )
+	static Id Apply2All( std::function< Id (Id const &) > const & func )
 	{
         for ( int index = 0; index < COUNT; ++index )
 		{
-            func( static_cast<Id>(index) );
+            Id actionRes = func( static_cast<Id>(index) );   
+			if ( IsDefined( actionRes ) )                    // if lambda returns defined action
+				return actionRes;                            // break out of loop
 		}
+		return Id::undefined;
 	}
 
-	static wchar_t const * const GetName( Id const );
-};
-
-class ActionGeneType
-{
-public:
-	enum class Id : unsigned short
+	static bool IsDefined( Id const action )
 	{
-		move, 
-		clone,
-		marry,
-		interact, 
-		eat, 
-		fertilize,
-		count,
-		undefined = count
-	};
-
-	static const int COUNT = static_cast<int>( Id::count );
-
-	static void Apply2All( std::function<void(Id const &)> const & func )
-	{
-        for ( int index = 0; index < COUNT; ++index )
-		{
-            func( static_cast<Id>(index) );
-		}
+		return action != Id::undefined;
 	}
 
-	static wchar_t const * const GetName( Id const );
-};
-
-class GeneralGeneType
-{
-public:
-	enum class Id : unsigned short
+	static bool IsUndefined( Id const action )
 	{
-		appetite,
-		fertilInvest,
-		memSize,
-		thresholdClone,       // minimum available energy for considering CLONE
-		thresholdMarry,       // minimum available energy for considering MARRY
-		thresholdMove,        // minimum available energy for considering MOVE
-		thresholdFertilize,   // minimum available energy for considering FERTILIZE
-		maxEat,               // maximum available energy for considering EAT
-		cloneDonation,        // amount of energy donated to clone. 0 means nothing (clone dies), SHORT_MAX means all available energy (parent dies)
-		count,
-		undefined = count
-	};
-
-	static const int COUNT = static_cast<int>( Id::count );
-
-	static void Apply2All( std::function<void(Id const &)> const & func )
-	{
-        for ( int index = 0; index < COUNT; ++index )
-		{
-            func( static_cast<Id>(index) );
-		}
+		return action == Id::undefined;
 	}
 
 	static wchar_t const * const GetName( Id const );
@@ -208,5 +209,5 @@ wchar_t const * const GetBrushModeNameShort( tBrushMode   const );
 wchar_t const * const GetManipulatorName   ( tManipulator const );
 wchar_t const * const GetColorObjectName   ( tColorObject const );
 
-Action::Id const GetRelatedAction( ActionGeneType::Id const );
-Action::Id const GetRelatedAction( GeneralGeneType::Id const );
+Action::Id   const GetRelatedAction( GeneType::Id const );
+GeneType::Id const GetRelatedGeneType( Action::Id const );

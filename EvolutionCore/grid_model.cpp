@@ -209,6 +209,7 @@ void Grid::MakePlan
         break;
 
     case Action::Id::undefined:
+		assert( false );
         break;
 
 	default:
@@ -291,7 +292,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
 
         case Action::Id::fertilize:
         {
-            ENERGY_UNITS const enInvest = ENERGY_UNITS(gfRun.GetAllele( GeneralGeneType::Id::fertilInvest ));
+            ENERGY_UNITS const enInvest = ENERGY_UNITS(gfRun.GetAllele( GeneType::Id::fertilInvest ));
             gfRun.Fertilize( enInvest );
             gfRun.DecEnergy( enInvest );
         }
@@ -305,7 +306,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
 
         case Action::Id::eat:  
         {
-            ENERGY_UNITS const enWant    = ENERGY_UNITS( gfRun.GetAllele( GeneralGeneType::Id::appetite ) );
+            ENERGY_UNITS const enWant    = ENERGY_UNITS( gfRun.GetAllele( GeneType::Id::appetite ) );
             ENERGY_UNITS const enReceive = gfRun.GetConsumption( enWant );
             gfRun.IncFoodStock( - enReceive );
             gfRun.IncEnergy   ( enReceive );
