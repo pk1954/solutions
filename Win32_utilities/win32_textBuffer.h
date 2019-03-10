@@ -10,18 +10,15 @@
 class Win32_TextBuffer : public TextBuffer
 {
 public:
-    Win32_TextBuffer
-	( 
-		HDC const, 
-		PIXEL_X const,
-		PIXEL_Y const,
-		PIXEL_X const
-	);
+    Win32_TextBuffer( HDC const, PixelRectSize const & );
 
 	virtual ~Win32_TextBuffer( ) {}
+
+	virtual void StartPainting( );
 
 	virtual void PrintBuffer( std::wostringstream *, PIXEL_X const, PIXEL_Y const );
 
 private:
-    HDC m_hDC;
+	PixelRect m_pixRect; // text buffer area 
+    HDC       m_hDC;
 };

@@ -21,16 +21,16 @@ class TextBuffer
 public:
 	virtual ~TextBuffer( ) {}
 
-    void Initialize( PIXEL_X const,	PIXEL_Y const, PIXEL_X const );
+    void Initialize( PIXEL_X const,	PIXEL_Y const );
 
 	virtual void PrintBuffer( std::wostringstream *, PIXEL_X const, PIXEL_Y const ) = 0;
 
-	void StartPainting( );
+	virtual void StartPainting( );
 
     void nextLine( TEXT_POSITION iHorPos = 1_TEXT_POSITION )     
     { 
         setHorizontalPos( iHorPos );
-        m_pixVerticalPos += m_cyChar;
+        m_pixVerticalPos += m_pixVertRaster;
     }
 
     void setHorizontalPos( TEXT_POSITION pos )
@@ -62,10 +62,10 @@ private:
 	PIXEL_Y const TOP_MARGIN  {  5_PIXEL_Y };
 
     std::wostringstream m_wBuffer;
-	PixelRect           m_pixRect; // text buffer area 
-    PIXEL_X             m_cxChar;  // horizontal sie of character
-	PIXEL_Y             m_cyChar;  // vertical size of character
-    PIXEL_X             m_pixHorizontalPos;  
-    PIXEL_Y             m_pixVerticalPos;
-    PIXEL_X             m_pixHorRaster;
+
+	PixelRect m_pixRect; // text buffer area 
+    PIXEL_X   m_pixHorizontalPos;  
+    PIXEL_Y   m_pixVerticalPos;
+    PIXEL_X   m_pixHorRaster;
+    PIXEL_Y   m_pixVertRaster;
 };

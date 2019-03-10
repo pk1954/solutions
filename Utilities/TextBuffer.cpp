@@ -14,14 +14,12 @@ using std::setw;
 
 void TextBuffer::Initialize
 ( 
-	PIXEL_X const cxChar,
-	PIXEL_Y const cyChar,
-	PIXEL_X const horRaster
+	PIXEL_X const horRaster,
+	PIXEL_Y const vertRaster
 ) 
 {
-	m_cxChar       = cxChar;
-	m_cyChar       = cyChar;
-	m_pixHorRaster = horRaster;
+	m_pixHorRaster  = horRaster;
+	m_pixVertRaster = vertRaster;
     m_wBuffer.imbue(std::locale(""));
 }
 
