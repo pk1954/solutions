@@ -34,7 +34,7 @@ public:
     short          GetAllele    ( GeneType::Id const gt ) const { return m_genome.GetAllele( gt ); }
     IND_ID         GetMemEntry  ( MEM_INDEX    const ui ) const { return m_stratData.GetMemEntry( ui ); }
 
-	Strategy::Id GetStrategyId( )             const { return m_pStrategy->GetStrategyId(); }
+	Strategy::Id GetStrategyId( ) const { return m_pStrategy->GetStrategyId(); }
 
     void Create( IND_ID const, EVO_GENERATION const, Strategy::Id const );
     void Clone ( IND_ID const, EVO_GENERATION const, PERCENT const, Random &, Individual const & );

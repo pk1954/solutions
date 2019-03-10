@@ -120,8 +120,8 @@ public:
 		eat, 
 		fertilize,
 		passOn,
-		count,
-		undefined = count
+		undefined,
+		count
 	};
 
 	static const int COUNT = static_cast<int>( Id::count );

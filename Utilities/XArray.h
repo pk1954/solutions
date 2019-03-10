@@ -106,7 +106,7 @@ public:
         ::DivNonZero( m_tArray,   div.m_tArray );
     }
 
-    T & General( ) { return m_tGeneral; }
+    T & General() { return m_tGeneral; }
     T & operator[] ( unsigned int uiIndex ) { return m_tArray.at( uiIndex ); }
 
 	void Apply2All( std::function< void ( T const & ) > const & func )

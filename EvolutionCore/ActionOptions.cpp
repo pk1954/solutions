@@ -14,21 +14,21 @@ void ActionOptions::set( Action::Id const action, bool const bValue )
 void ActionOptions::InitOptions
 ( 
 	Genome       const * p,   
-	bool         const   bHasFreeSpace, 
-    bool         const   bHasNeighbor,
+	bool         const   F,  //  hasFreeSpace,
+    bool         const   N,  //  hasNeighbor,
     ENERGY_UNITS const   energy
 )
 {
-	using A  = Action::Id;
-	using GT = GeneType::Id;
-	short en = energy.GetValue();
-    set( A::move,      bHasFreeSpace &&                 (en >= p->GetAllele( GT::thresholdMove) ));
-	set( A::fertilize,                                  (en >= p->GetAllele( GT::thresholdFert) ));
-	set( A::clone,     bHasFreeSpace &&                 (en >= p->GetAllele( GT::thresholdClone)));
-	set( A::marry,     bHasFreeSpace && bHasNeighbor && (en >= p->GetAllele( GT::thresholdMarry)));
-	set( A::interact,                   bHasNeighbor );											 
-	set( A::eat,                                        (en <  p->GetAllele( GT::maxEat)        ));
-	set( A::passOn, false );
+	using A = Action::Id;
+	using G = GeneType::Id;
+	short E = energy.GetValue();
+    set(A::move,      F &&      (E >= p->GetAllele(G::thresholdMove )));
+	set(A::fertilize,           (E >= p->GetAllele(G::thresholdFert )));
+	set(A::clone,     F &&      (E >= p->GetAllele(G::thresholdClone)));
+	set(A::marry,     F && N && (E >= p->GetAllele(G::thresholdMarry)));
+	set(A::interact,       N                                          );											 
+	set(A::eat,                 (E <  p->GetAllele(G::maxEat        )));
+	set(A::passOn,    false                                           );
 }
 
 // sum up all alleles of posible actions
@@ -56,7 +56,7 @@ unsigned int ActionOptions::GetSumOfValidOptions( Genome const * pGenome )
 
 Action::Id ActionOptions::SelectAction( Genome const * pGenome, int iVal )
 {
-	return Action::Apply2All
+	Action::Id const actionRes = Action::Apply2All
 	(
 		[&]( Action::Id action ) -> Action::Id 
 		{
@@ -70,4 +70,5 @@ Action::Id ActionOptions::SelectAction( Genome const * pGenome, int iVal )
 			return Action::Id::undefined;  // continue in loop 
 		}
 	);
+	return actionRes;
 }

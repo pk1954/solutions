@@ -209,7 +209,7 @@ void Grid::MakePlan
         break;
 
     case Action::Id::undefined:
-		assert( false );
+		// can happen, if some actions are disabled
         break;
 
 	default:
@@ -314,6 +314,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
         break;
 
 	    case Action::Id::undefined:
+		// can happen, if some actions are disabled
         break;
 
         default:

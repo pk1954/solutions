@@ -83,12 +83,12 @@ void Genome::InitClass( )
     // static members for caching frequently used configuration items
 
     enabled( Action::Id::move      ) = Config::GetConfigValueBool( Config::tId::moveEnabled      );
-    enabled( Action::Id::fertilize ) = Config::GetConfigValueBool( Config::tId::fertilizeEnabled );
-    enabled( Action::Id::passOn    ) = Config::GetConfigValueBool( Config::tId::passOnEnabled    );
     enabled( Action::Id::clone     ) = Config::GetConfigValueBool( Config::tId::cloneEnabled     );
     enabled( Action::Id::marry     ) = Config::GetConfigValueBool( Config::tId::marryEnabled     );
     enabled( Action::Id::interact  ) = Config::GetConfigValueBool( Config::tId::interactEnabled  );
     enabled( Action::Id::eat       ) = Config::GetConfigValueBool( Config::tId::eatEnabled       );
+    enabled( Action::Id::fertilize ) = Config::GetConfigValueBool( Config::tId::fertilizeEnabled );
+    enabled( Action::Id::passOn    ) = Config::GetConfigValueBool( Config::tId::passOnEnabled    );
 }
 
 //  nonstatic functions 
@@ -166,7 +166,6 @@ Action::Id Genome::GetOption
 		unsigned int uiSum          = m_options.GetSumOfValidOptions( this );
 		int          iVal           = random.NextRandomNumberScaledTo( uiSum );
 		Action::Id   actionSelected = m_options.SelectAction( this, iVal );
-		assert( Action::IsDefined( actionSelected ) );
 		return actionSelected;
 	}
 }
