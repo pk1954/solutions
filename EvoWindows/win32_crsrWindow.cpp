@@ -34,6 +34,12 @@ void CrsrWindow::Start
 	);
 }
 
+CrsrWindow::~CrsrWindow( )
+{
+	m_pCore = nullptr;
+	m_pFocusPoint = nullptr;
+}
+
 void CrsrWindow::DoPaint( TextBuffer & textBuf )
 {
     textBuf.printString( L"Position:" );

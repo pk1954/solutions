@@ -12,6 +12,7 @@ class CrsrWindow: public TextWindow
 {
 public:
     CrsrWindow( );
+    virtual ~CrsrWindow( );
 
     void Start
 	( 

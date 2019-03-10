@@ -6,7 +6,6 @@
 #include "win32_textWindow.h"
 
 class HistorySystem;
-class ObserverInterface;
 
 class HistInfoWindow: public TextWindow
 {

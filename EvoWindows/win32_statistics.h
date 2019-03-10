@@ -4,11 +4,8 @@
 #pragma once
 
 #include "win32_textWindow.h"
-#include "win32_util.h"
 
 class EvolutionCore;
-
-//lint -esym( 1712, StatisticsWindow )  no default constructor for class 
 
 class StatisticsWindow : public TextWindow
 {
