@@ -55,5 +55,14 @@
     <ClInclude Include="EvoStatistics.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="strategy.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneType.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="action.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -146,10 +146,12 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="action.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="dump.h" />
     <ClInclude Include="EvolutionCore.h" />
     <ClInclude Include="EvolutionTypes.h" />
+    <ClInclude Include="GeneType.h" />
     <ClInclude Include="gridCoord.h" />
     <ClInclude Include="GridDimensions.h" />
     <ClInclude Include="gridNeighbor.h" />
@@ -161,6 +163,7 @@
     <ClInclude Include="EvolutionCoreWrappers.h" />
     <ClInclude Include="pixelCoordinates.h" />
     <ClInclude Include="EvoStatistics.h" />
+    <ClInclude Include="strategy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

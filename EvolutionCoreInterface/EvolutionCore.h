@@ -5,6 +5,7 @@
 
 #include "BoolOp.h"
 #include "GridRect.h"
+#include "strategy.h"
 #include "EvolutionTypes.h"
 #include "GridDimensions.h"
 

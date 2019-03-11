@@ -66,10 +66,6 @@ private:
     XaCounter m_gsCounter;          // counter for strategies and sum counter 
     XaCounter m_gsAverageAge;       // average age of all individuals
 
-//    std::array < XaFloatStat,  Action::COUNT   > m_axaGenePoolStrategy;
-//    std::array < XaCounter,    GeneType::COUNT > m_aGeneStat;
-//    std::array < unsigned int, Strategy::COUNT > m_auiMemSize;
-
 	ActionArray< XaFloatStat > m_axaGenePoolStrategy;
     GeneTypeArray< XaCounter > m_aGeneStat;
 	StrategyArray<unsigned int> m_auiMemSize;

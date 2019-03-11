@@ -51,9 +51,6 @@
     <ClInclude Include="interaction.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="strategy.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="geneTypeLimits.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -61,6 +58,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="ActionOptions.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="StrategyData.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -132,6 +132,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="EvoStatistics.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

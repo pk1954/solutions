@@ -4,7 +4,7 @@
 #pragma once
 
 #include <array>
-#include "EvolutionTypes.h"
+#include "strategy.h"
 #include "win32_clut.h"
 
 class ColorManager

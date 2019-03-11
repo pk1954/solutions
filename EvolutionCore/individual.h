@@ -3,12 +3,14 @@
 
 #pragma once
 
-#include "random.h"
-#include "strategy.h"
 #include "genome.h"
+#include "strategy.h"
+#include "StrategyData.h"
 #include "EvolutionTypes.h"
 
 //lint -sem(Individual::ResetIndividual,initializer)
+
+class Random;
 
 class Individual
 {
