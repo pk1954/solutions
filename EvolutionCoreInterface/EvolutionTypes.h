@@ -126,6 +126,24 @@ public:
 	static wchar_t const * const GetName( Id const );
 };
 
+template <typename T>
+class GeneTypeArray
+{
+public:
+    T & operator[] ( GeneType::Id geneType ) 
+	{ 
+		return m_tArray.at( static_cast<unsigned short>( geneType ) ); 
+	}
+
+	void fill(T const val)
+	{
+		m_tArray.fill( val );
+	}
+
+private:
+    std::array < T, GeneType::COUNT > m_tArray;
+};
+
 class Action
 {
 public:
@@ -144,7 +162,15 @@ public:
 
 	static const int COUNT = static_cast<int>( Id::count );
 
-	static Id Apply2All( std::function< Id (Id const &) > const & func )
+	static void Apply2All( std::function<void(Id const &)> const & func )
+	{
+        for ( int index = 0; index < COUNT; ++index )
+		{
+            func( static_cast<Id>(index) );   
+		}
+	}
+
+	static Id Select( std::function< Id (Id const &) > const & func )
 	{
         for ( int index = 0; index < COUNT; ++index )
 		{

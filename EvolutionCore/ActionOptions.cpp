@@ -56,7 +56,7 @@ unsigned int ActionOptions::GetSumOfValidOptions( Genome const * pGenome )
 
 Action::Id ActionOptions::SelectAction( Genome const * pGenome, int iVal )
 {
-	Action::Id const actionRes = Action::Apply2All
+	Action::Id const actionRes = Action::Select
 	(
 		[&]( Action::Id action ) -> Action::Id 
 		{
