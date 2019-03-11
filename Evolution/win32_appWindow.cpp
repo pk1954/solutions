@@ -349,10 +349,11 @@ void AppWindow::adjustChildWindows( )
 
         if ( m_pEvoHistWindow != nullptr )
         {
+			pixAppClientWinHeight -= HIST_WINDOW_HEIGHT, 
             m_pEvoHistWindow->Move   // adapt history window to new size
 			( 
 				0_PIXEL_X, 
-				pixAppClientWinHeight - HIST_WINDOW_HEIGHT, 
+				pixAppClientWinHeight, 
 				pixAppClientWinWidth, 
 				HIST_WINDOW_HEIGHT, 
 				TRUE 
