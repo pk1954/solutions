@@ -28,7 +28,6 @@ public:
 // readOnly functions
 
     virtual int            GetNrOfLivingIndividuals ( ) const = 0;
-    virtual ENERGY_UNITS   GetAverageFoodGrowth     ( ) const = 0;
     virtual EVO_GENERATION GetEvoGenerationNr       ( ) const = 0;
     virtual PERCENT        GetBrushIntensity        ( ) const = 0;
     virtual tShape         GetBrushShape            ( ) const = 0;

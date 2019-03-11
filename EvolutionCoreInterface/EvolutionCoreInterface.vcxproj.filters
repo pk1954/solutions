@@ -52,5 +52,8 @@
     <ClInclude Include="GridDimensions.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="EvoStatistics.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

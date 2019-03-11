@@ -61,6 +61,24 @@ public:
 	}
 };
 
+template <typename T>
+class StrategyArray
+{
+public:
+    T & operator[] ( Strategy::Id strategy ) 
+	{ 
+		return m_tArray.at( static_cast<unsigned short>( strategy ) ); 
+	}
+
+	void fill(T const val)
+	{
+		m_tArray.fill( val );
+	}
+
+private:
+    std::array < T, Strategy::COUNT > m_tArray;
+};
+
 class GeneType
 {
 public:
@@ -148,6 +166,24 @@ public:
 	}
 
 	static wchar_t const * const GetName( Id const );
+};
+
+template <typename T>
+class ActionArray
+{
+public:
+    T & operator[] ( Action::Id action ) 
+	{ 
+		return m_tArray.at( static_cast<unsigned short>( action ) ); 
+	}
+
+	void fill(T const val)
+	{
+		m_tArray.fill( val );
+	}
+
+private:
+    std::array < T, Action::COUNT > m_tArray;
 };
 
 enum class tBrushMode

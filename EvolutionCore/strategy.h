@@ -11,7 +11,9 @@ class StrategyData
 public:
     StrategyData( );
 
-    void SetMemorySize( MEM_INDEX const );
+	static void ResetCounters( );
+
+	void SetMemorySize( short const );
 
     // display information
 
@@ -23,9 +25,12 @@ public:
     static unsigned int GetNrInteractionsWithKnownCulprit( )   { return m_uiNrInteractionsWithKnownCulprit; };
     static unsigned int GetNrInteractionsWithUnknownCulprit( ) { return m_uiNrInteractionsWithUnknownCulprit; };
 
-	MEM_INDEX FindInList( IND_ID const & );
-    void      AddToList ( IND_ID const & );
-    void      RemoveFromList( MEM_INDEX const );
+    static void KnownCulprit( )   { ++m_uiNrInteractionsWithKnownCulprit; };
+    static void UnknownCulprit( ) { ++m_uiNrInteractionsWithUnknownCulprit; };
+
+	MEM_INDEX FindInListOfCulprits    ( IND_ID const );
+    void      AddToListOfCulprits     ( IND_ID const );
+    void      RemoveFromListOfCulprits( MEM_INDEX const );
 
 private:
     static MEM_INDEX    m_uiMaxPartnerMemory;
@@ -35,11 +40,16 @@ private:
     MEM_INDEX m_memUsed;   // number of occopied slots.     
     MEM_INDEX m_memSize;   // number of usable slots.    m_memUsed <= m_memSize <= IMEMSIZE_MAX
 
-    std::array< IND_ID, IMEMSIZE_MAX > m_aIdBadGuys;
+    std::array< IND_ID, IMEMSIZE_MAX > m_aIdCulprits;
 
-	IND_ID getBadGuyId( MEM_INDEX const index ) const
+	IND_ID getCulpritId( MEM_INDEX const index ) const
 	{
-		return m_aIdBadGuys[ index.GetValue() ];
+		return m_aIdCulprits[ index.GetValue() ];
+	}
+
+	void setCulpritId( MEM_INDEX const index, IND_ID const id )
+	{
+		m_aIdCulprits[ index.GetValue() ] = id;
 	}
 };
 

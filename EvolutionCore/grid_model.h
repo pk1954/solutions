@@ -94,13 +94,12 @@ public:
 
 	BYTES GetGridExtraSize() const;
 
-	EVO_GENERATION GetEvoGenerationNr( ) const { return m_genEvo; }
-
-    ENERGY_UNITS GetAverageFoodGrowth    ( ) const { return ENERGY_UNITS(m_enFoodGrowth / GridDimensions::GetGridArea()); }
-    int          GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
+	EVO_GENERATION GetEvoGenerationNr( )       const { return m_genEvo; }
+    int            GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
 
 	void PrepareActionCounters( )
 	{ 
+		StrategyData::ResetCounters( );
 		std::swap( m_pActionCounterFill, m_pActionCounterRead );
 		for ( auto & ax: ( * m_pActionCounterFill ) )
 			ax.fill( ACTION_COUNT(0) ); 
@@ -153,7 +152,6 @@ private:
 	vector< vector < GridField > > m_aGF;                  // 20.000 * 196 byte = 3.920.000 byte
                                                         
     GridPointList  m_gpList;                               //                            10 byte
-    ENERGY_UNITS   m_enFoodGrowth;    // for statistics    //                             8 byte 
     EVO_GENERATION m_genEvo;                               //                             4 byte
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;

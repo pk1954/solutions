@@ -45,7 +45,7 @@ void Individual::ResetIndividual( )
     m_enCapacity = 0_ENERGY_UNITS;
     m_pStrategy  = & StratNull;
     m_action     = Action::Id::undefined;
-    m_stratData.SetMemorySize( MEM_INDEX(0) );
+    m_stratData.SetMemorySize( 0 );
     m_genome.InitGenome( );
 };
 
@@ -62,7 +62,7 @@ void Individual::Create
     m_origin     = tOrigin::editor;
     m_enCapacity = m_stdEnergyCapacity;
     m_pStrategy  = m_apStrat.at( strategyId );
-    m_stratData.SetMemorySize( static_cast<MEM_INDEX>(m_genome.GetAllele(GeneType::Id::memSize)) );
+    m_stratData.SetMemorySize( m_genome.GetAllele(GeneType::Id::memSize) );  // clears memory. Experience not inheritable.
     SetEnergy( m_initialEnergy ); // makes IsAlive() true. Last assignment to avoid race conditions  
 }
 
@@ -84,8 +84,8 @@ void Individual::Clone
     m_enCapacity = indParent.m_enCapacity;
     m_pStrategy  = indParent.m_pStrategy;
     m_action     = Action::Id::undefined;
-    m_stratData.SetMemorySize( indParent.m_stratData.GetMemSize( ) );  // clears memory. Experience not inheritable.
     m_genome.Mutate( mutationRate, random );
+    m_stratData.SetMemorySize( m_genome.GetAllele(GeneType::Id::memSize) );  // clears memory. Experience not inheritable.
 }
 
 static Individual const & selectParent
@@ -117,7 +117,7 @@ void Individual::Breed
     m_action     = Action::Id::undefined;
     m_enCapacity = selectParent( random, indParentA, indParentB ).m_enCapacity;
     m_pStrategy  = selectParent( random, indParentA, indParentB ).m_pStrategy;
-    m_stratData.SetMemorySize( selectParent( random, indParentA, indParentB ).GetMemSize( ) );  // clears memory. Experience not inheritable.
     m_genome.Recombine( indParentA.m_genome, indParentB.m_genome, random );
     m_genome.Mutate( mutationRate, random );
+    m_stratData.SetMemorySize( m_genome.GetAllele(GeneType::Id::memSize) );  // clears memory. Experience not inheritable.
 }

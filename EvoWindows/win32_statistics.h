@@ -6,6 +6,7 @@
 #include "win32_textWindow.h"
 
 class EvolutionCore;
+class EvoStatistics;
 
 class StatisticsWindow : public TextWindow
 {
@@ -19,4 +20,5 @@ public:
 
 private:
     EvolutionCore const * m_pCore;
+	EvoStatistics       * m_pStatistics;
 };

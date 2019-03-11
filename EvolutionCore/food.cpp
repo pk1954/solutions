@@ -32,8 +32,6 @@ void Grid::getBestNeighborSlots( Neighborhood & list )
 
 void Grid::FoodGrowth( )
 {
-	m_enFoodGrowth = 0_ENERGY_UNITS;
-
 	Apply2Grid
 	( 
     	[&](GridPoint const gp)
@@ -48,7 +46,6 @@ void Grid::FoodGrowth( )
 				ENERGY_UNITS enGrowth = (iDelta * m_enFoodGrowthRate.GetValue()) / 100;                                // negative growth is possible
 				if ( enGrowth == 0_ENERGY_UNITS )                                               // if foodstock is greater than maximum
 					enGrowth = (iDelta > 0_ENERGY_UNITS) ? 1_ENERGY_UNITS : -1_ENERGY_UNITS;  // caused by editor
-				m_enFoodGrowth += enGrowth;
 				rGF.IncFoodStock( enGrowth );
 			}
 

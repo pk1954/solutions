@@ -160,6 +160,7 @@
     <ClInclude Include="EvolutionCoreWrapperHelpers.h" />
     <ClInclude Include="EvolutionCoreWrappers.h" />
     <ClInclude Include="pixelCoordinates.h" />
+    <ClInclude Include="EvoStatistics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

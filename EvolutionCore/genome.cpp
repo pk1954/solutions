@@ -119,23 +119,11 @@ void Genome::Mutate( PERCENT const mutationRate, Random & random )
     for ( auto & g : m_aGene )
     {
         g.m_gene.Mutate( dMutationRate, m_aLimits[ static_cast<int>( g.m_type ) ], random );
-    }                                                                                                                     // verified in assembly code  
-
-    for ( auto & g : m_aGene )
-    {
-        g.m_gene.Mutate( dMutationRate, m_aLimits[ static_cast<int>( g.m_type ) ], random );
     }
 }
 
 void Genome::Recombine( Genome const & genomeA, Genome const & genomeB, Random & random )
 {
-    for ( auto & g : m_aGene )
-    {
-        Genome genome     = random.NextBooleanValue( ) ? genomeA : genomeB;
-        short  sNewAllele = genome.m_aGene[ static_cast<int>( g.m_type ) ].m_gene.GetAllele( );
-        g.m_gene.SetAllele( sNewAllele );
-    }                                                                                                                     // verified in assembly code  
-
     for ( auto & g : m_aGene )
     {
         Genome genome     = random.NextBooleanValue( ) ? genomeA : genomeB;

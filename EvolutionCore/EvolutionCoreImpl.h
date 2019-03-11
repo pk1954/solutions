@@ -99,8 +99,7 @@ public:
 
 	virtual BYTES GetCoreSize() const { return BYTES(sizeof(EvolutionCoreImpl)) + m_grid.GetGridExtraSize(); };
 
-    virtual ENERGY_UNITS GetAverageFoodGrowth( ) const { return m_grid.GetAverageFoodGrowth( ); }
-    virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
+	virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
 
 	virtual	ACTION_COUNT GetActionCounter
 	(

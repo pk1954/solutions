@@ -51,7 +51,7 @@ private:
  
     struct GeneStruct { GeneType::Id m_type; Gene m_gene; } ;
 
-    std::array< GeneStruct, GeneType ::COUNT > m_aGene;  
+    std::array< GeneStruct, GeneType::COUNT > m_aGene;  
                                                                    
     void setGene( GeneType::Id const, short const );
 

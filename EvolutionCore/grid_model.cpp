@@ -51,7 +51,6 @@ void Grid::InitClass( int const iNrOfNeighbors )
 
 Grid::Grid( )
     : m_gpList( ),
-      m_enFoodGrowth( 0_ENERGY_UNITS ),
       m_random( ),
       m_idCounter( ),
       m_genEvo( 0L ),
