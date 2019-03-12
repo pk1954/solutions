@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="BoolOp.h" />
     <ClInclude Include="debug.h" />
+    <ClInclude Include="EnumArray.h" />
     <ClInclude Include="EventInterface.h" />
     <ClInclude Include="Int24.h" />
     <ClInclude Include="NamedType.h" />

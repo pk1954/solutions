@@ -109,7 +109,7 @@ public:
     T & General() { return m_tGeneral; }
     T & operator[] ( unsigned int uiIndex ) { return m_tArray.at( uiIndex ); }
 
-	void Apply2All( std::function< void ( T const & ) > const & func )
+	void Apply2XArray( std::function< void ( T const & ) > const & func )
 	{
         for ( auto & elem : m_tArray )
 		{

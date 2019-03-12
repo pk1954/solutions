@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <functional>
 #include <assert.h>
 #include <string>
 #include <limits>

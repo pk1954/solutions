@@ -4,6 +4,7 @@
 
 #pragma once
 #include <array>
+#include <functional>
 #include "EvolutionTypes.h"
 
 class StrategyData;
@@ -38,24 +39,6 @@ public:
             func( static_cast<Id>(index) );
 		}
 	}
-};
-
-template <typename T>
-class StrategyArray
-{
-public:
-    T & operator[] ( Strategy::Id strategy ) 
-	{ 
-		return m_tArray.at( static_cast<unsigned short>( strategy ) ); 
-	}
-
-	void fill(T const val)
-	{
-		m_tArray.fill( val );
-	}
-
-private:
-    std::array < T, Strategy::COUNT > m_tArray;
 };
 
 class DefectAlways: public Strategy

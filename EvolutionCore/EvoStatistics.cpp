@@ -25,10 +25,9 @@ void EvoStatistics::Initialize( TextBuffer * const pTextBuf )
 
 	m_gsCounter.zero();         
     m_gsAverageAge.zero();      
-	Action  ::Apply2All( [&]( auto action   ) -> Action::Id { m_axaGenePoolStrategy[action].zero(); return Action::Id::undefined; }	);
-	GeneType::Apply2All( [&]( auto geneType ) { m_aGeneStat[geneType].zero(); }	);
-	
-	m_auiMemSize.fill( 0 );
+	m_axaGenePoolStrategy.Apply2All( [&](XaFloatStat  & elem) { elem.zero(); } );
+	m_aGeneStat          .Apply2All( [&](XaCounter    & elem) { elem.zero(); } );
+	m_auiMemSize         .Apply2All( [&](unsigned int & elem) { elem = 0; } );
 
 	Apply2Rect
 	( 
@@ -45,13 +44,13 @@ void EvoStatistics::Initialize( TextBuffer * const pTextBuf )
 
 void EvoStatistics::add2option( Strategy::Id const strategy, Action::Id const action, short const sValue )
 {
-    m_axaGenePoolStrategy[action].Add( static_cast<int>( strategy ), static_cast<float>( sValue ) );
+    m_axaGenePoolStrategy[action].Add( strategy, static_cast<float>( sValue ) );
 }
 
-void EvoStatistics::add2Gene( Strategy::Id const s, GeneType::Id const geneType, long const lGenoType )
+void EvoStatistics::add2Gene( Strategy::Id const strategy, GeneType::Id const geneType, long const lGenoType )
 {
     assert( lGenoType >= 0 );
-    m_aGeneStat[geneType].Add( static_cast<int>( s ), static_cast<unsigned int>( lGenoType ) );
+    m_aGeneStat[geneType].Add( strategy, CastToUnsignedInt( lGenoType ) );
 }
 
 void EvoStatistics::addMemSize( Strategy::Id const strategy, MEM_INDEX const memSize )
@@ -59,14 +58,14 @@ void EvoStatistics::addMemSize( Strategy::Id const strategy, MEM_INDEX const mem
     m_auiMemSize[strategy] += memSize.GetValue();
 }
 
-void EvoStatistics::addAge( Strategy::Id const s, EVO_GENERATION genAge )
+void EvoStatistics::addAge( Strategy::Id const strategy, EVO_GENERATION genAge )
 {
-    m_gsAverageAge.Add( static_cast<int>( s ), genAge.GetValue() );
+    m_gsAverageAge.Add( strategy, genAge.GetValue() );
 }
 
-void EvoStatistics::incCounter( Strategy::Id const s )
+void EvoStatistics::incCounter( Strategy::Id const strategy )
 {
-    m_gsCounter.Add( static_cast<int>( s ), 1 );
+    m_gsCounter.Add( strategy, 1 );
 }
 
 void EvoStatistics::aquireData( GridPoint const & gp )
@@ -82,7 +81,7 @@ void EvoStatistics::aquireData( GridPoint const & gp )
 	{
 		GeneType::Apply2All
 		(
-			[&]( auto geneType )
+			[&]( GeneType::Id geneType )
 			{
 				Action::Id action { GetRelatedAction( geneType ) };
 				if ( EvolutionCore::IsEnabled( action ) )
@@ -114,8 +113,7 @@ void EvoStatistics::scale( )
 			(
 				[&]( Strategy::Id strategy )
 				{
-					unsigned int uiStrategy = static_cast<unsigned int>(strategy);
-					DivNonZero( m_aGeneStat[geneType][uiStrategy], m_gsCounter[uiStrategy] );
+					DivNonZero( m_aGeneStat[geneType][strategy], m_gsCounter[strategy] );
 				}
 			);
 			DivNonZero( m_aGeneStat[geneType].General(), m_gsCounter.General() );
@@ -123,23 +121,23 @@ void EvoStatistics::scale( )
 	);
 
 	float fSum { 0.0 };
-	Action::Apply2All( [&](auto action) { fSum += m_axaGenePoolStrategy[action].General(); } );
-	Action::Apply2All( [&](auto action) { Scale( m_axaGenePoolStrategy[action].General(), fSum ); } );
+	m_axaGenePoolStrategy.Apply2All( [&](XaFloatStat & elem) { fSum += elem.General(); } );
+	m_axaGenePoolStrategy.Apply2All( [&](XaFloatStat & elem) { Scale( elem.General(), fSum ); } );
 	
 	Strategy::Apply2All
 	( 
 		[&]( Strategy::Id strategy )
 		{
 			float fSum { 0.0 };
-			Action::Apply2All( [&](auto action) { fSum += m_axaGenePoolStrategy[action][ static_cast<int>(strategy) ]; } );
-			Action::Apply2All( [&](auto action) { Scale( m_axaGenePoolStrategy[action][ static_cast<int>(strategy) ], fSum ); } );
+			m_axaGenePoolStrategy.Apply2All( [&](XaFloatStat & elem) { fSum += elem[strategy]; } );
+			m_axaGenePoolStrategy.Apply2All( [&](XaFloatStat & elem) { Scale(  elem[strategy], fSum ); } );
 		}
 	);
 
 	Strategy::Apply2All
 	( 
 		[&]( Strategy::Id strategy )
-		{ DivNonZero( m_auiMemSize[strategy], m_gsCounter[ static_cast<int>(strategy) ] ); }
+		{ DivNonZero( m_auiMemSize[strategy], m_gsCounter[strategy] ); }
 	);
 };
 
@@ -232,9 +230,8 @@ void EvoStatistics::printAvFood(  wchar_t const * const data )
 	( 
 		[&]( Strategy::Id strategy )
 		{ 
-			int iStrategy { static_cast<int>( strategy ) };
-			fsAvFood[ iStrategy ] = m_aGeneStat[ GeneType::Id::appetite ][ iStrategy ] * 
-				                    m_axaGenePoolStrategy[ Action::Id::eat ][ iStrategy ] / 100; 
+			fsAvFood[ strategy ] = m_aGeneStat[ GeneType::Id::appetite ][ strategy ] * 
+				                    m_axaGenePoolStrategy[ Action::Id::eat ][ strategy ] / 100; 
 		}
 	);
 

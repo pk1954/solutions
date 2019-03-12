@@ -7,8 +7,8 @@
 #include "debug.h"
 #include "config.h"
 #include "strategy.h"
-#include "genome.h"
 #include "random.h"
+#include "genome.h"
 
 //lint  -e1566    initialization 
 
@@ -17,15 +17,14 @@
 ActionOptions Genome::m_options;
 Genome        Genome::m_genomeTemplate;
 
-std::array< bool, Action::COUNT > Genome::m_abActionEnabled; 
-
-std::array< GeneTypeLimits, GeneType::COUNT > Genome::m_aLimits;
+EnumArray< bool,  Action  > Genome::m_abActionEnabled;
+EnumArray< GeneTypeLimits, GeneType > Genome::m_aLimits;
 
 std::array< unsigned int, Genome::MAX_LIFE_SPAN + 1 > Genome::m_mortalityTable;
 
 void Genome::setLimits( GeneType::Id const gene, long const lLo, long const lHi )
 {
-    m_aLimits.at( static_cast<int>( gene ) ).SetLimits( lLo, lHi );
+    m_aLimits[ gene ].SetLimits( lLo, lHi );
 }
 
 void Genome::InitClass( )
@@ -82,13 +81,13 @@ void Genome::InitClass( )
 
     // static members for caching frequently used configuration items
 
-    enabled( Action::Id::move      ) = Config::GetConfigValueBool( Config::tId::moveEnabled      );
-    enabled( Action::Id::clone     ) = Config::GetConfigValueBool( Config::tId::cloneEnabled     );
-    enabled( Action::Id::marry     ) = Config::GetConfigValueBool( Config::tId::marryEnabled     );
-    enabled( Action::Id::interact  ) = Config::GetConfigValueBool( Config::tId::interactEnabled  );
-    enabled( Action::Id::eat       ) = Config::GetConfigValueBool( Config::tId::eatEnabled       );
-    enabled( Action::Id::fertilize ) = Config::GetConfigValueBool( Config::tId::fertilizeEnabled );
-    enabled( Action::Id::passOn    ) = Config::GetConfigValueBool( Config::tId::passOnEnabled    );
+    m_abActionEnabled[ Action::Id::move      ] = Config::GetConfigValueBool( Config::tId::moveEnabled      );
+    m_abActionEnabled[ Action::Id::clone     ] = Config::GetConfigValueBool( Config::tId::cloneEnabled     );
+    m_abActionEnabled[ Action::Id::marry     ] = Config::GetConfigValueBool( Config::tId::marryEnabled     );
+    m_abActionEnabled[ Action::Id::interact  ] = Config::GetConfigValueBool( Config::tId::interactEnabled  );
+    m_abActionEnabled[ Action::Id::eat       ] = Config::GetConfigValueBool( Config::tId::eatEnabled       );
+    m_abActionEnabled[ Action::Id::fertilize ] = Config::GetConfigValueBool( Config::tId::fertilizeEnabled );
+    m_abActionEnabled[ Action::Id::passOn    ] = Config::GetConfigValueBool( Config::tId::passOnEnabled    );
 }
 
 //  nonstatic functions 
@@ -101,7 +100,7 @@ Genome::Genome( )
 void Genome::setGene( GeneType::Id const type, short const sValue )
 {
     int const index = static_cast<int>( type );
-	m_aLimits.at( index ).CheckLimits( sValue );
+	m_aLimits[ type ].CheckLimits( sValue );
     m_aGene  .at( index ).m_gene.SetAllele( sValue );
     m_aGene  .at( index ).m_type = type;
 }
@@ -118,7 +117,7 @@ void Genome::Mutate( PERCENT const mutationRate, Random & random )
 
     for ( auto & g : m_aGene )
     {
-        g.m_gene.Mutate( dMutationRate, m_aLimits[ static_cast<int>( g.m_type ) ], random );
+        g.m_gene.Mutate( dMutationRate, m_aLimits[g.m_type], random );
     }
 }
 
@@ -142,7 +141,7 @@ Action::Id Genome::GetOption
 ) const
 {
 	if (
-		  ( enabled( Action::Id::passOn ) ) && 
+		( m_abActionEnabled[ Action::Id::passOn ] ) && 
 		  ( m_mortalityTable[ age.GetValue() ] > random.NextRandomNumber() )
 	   )
 	{

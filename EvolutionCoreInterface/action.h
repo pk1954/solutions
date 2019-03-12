@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <array>
 #include <functional>
 
 class Action
@@ -54,22 +55,4 @@ public:
 	}
 
 	static wchar_t const * const GetName( Id const );
-};
-
-template <typename T>
-class ActionArray
-{
-public:
-    T & operator[] ( Action::Id action ) 
-	{ 
-		return m_tArray.at( static_cast<unsigned short>( action ) ); 
-	}
-
-	void fill(T const val)
-	{
-		m_tArray.fill( val );
-	}
-
-private:
-    std::array < T, Action::COUNT > m_tArray;
 };

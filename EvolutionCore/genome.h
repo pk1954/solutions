@@ -6,6 +6,7 @@
 #include <array>
 #include "gene.h"
 #include "config.h"
+#include "EnumArray.h"
 #include "ActionOptions.h"
 #include "EvolutionTypes.h"
 
@@ -44,7 +45,7 @@ public:
 
 	static bool IsEnabled( Action::Id const action ) 
 	{ 
-		return enabled( action ); 
+		return m_abActionEnabled[action];; 
     };
 
 private:
@@ -60,16 +61,11 @@ private:
 	static unsigned int const MAX_LIFE_SPAN = 200;
 	static std::array< unsigned int, MAX_LIFE_SPAN + 1 > m_mortalityTable;
 
-	static std::array< bool, Action::COUNT > m_abActionEnabled;
-	static bool & enabled( Action::Id const action ) 
-	{ 
-		return m_abActionEnabled.at( static_cast<unsigned short>( action ) ); 	
-	}
-
+	static EnumArray< bool,           Action  > m_abActionEnabled;
+    static EnumArray< GeneTypeLimits, GeneType > m_aLimits;
     static Genome        m_genomeTemplate;
 	static ActionOptions m_options;
 
-    static std::array< GeneTypeLimits, GeneType::COUNT > m_aLimits;
 
     static void setLimits( GeneType::Id, long, long );
 };

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <array>
 #include <functional>
 
 class GeneType
@@ -52,22 +53,3 @@ public:
 
 	static wchar_t const * const GetName( Id const );
 };
-
-template <typename T>
-class GeneTypeArray
-{
-public:
-    T & operator[] ( GeneType::Id geneType ) 
-	{ 
-		return m_tArray.at( static_cast<unsigned short>( geneType ) ); 
-	}
-
-	void fill(T const val)
-	{
-		m_tArray.fill( val );
-	}
-
-private:
-    std::array < T, GeneType::COUNT > m_tArray;
-};
-
