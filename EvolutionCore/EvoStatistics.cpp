@@ -42,32 +42,6 @@ void EvoStatistics::Initialize( TextBuffer * const pTextBuf )
 	scale( );
 };
 
-void EvoStatistics::add2option( Strategy::Id const strategy, Action::Id const action, short const sValue )
-{
-    m_axaGenePoolStrategy[action].Add( strategy, static_cast<float>( sValue ) );
-}
-
-void EvoStatistics::add2Gene( Strategy::Id const strategy, GeneType::Id const geneType, long const lGenoType )
-{
-    assert( lGenoType >= 0 );
-    m_aGeneStat[geneType].Add( strategy, CastToUnsignedInt( lGenoType ) );
-}
-
-void EvoStatistics::addMemSize( Strategy::Id const strategy, MEM_INDEX const memSize )
-{
-    m_auiMemSize[strategy] += memSize.GetValue();
-}
-
-void EvoStatistics::addAge( Strategy::Id const strategy, EVO_GENERATION genAge )
-{
-    m_gsAverageAge.Add( strategy, genAge.GetValue() );
-}
-
-void EvoStatistics::incCounter( Strategy::Id const strategy )
-{
-    m_gsCounter.Add( strategy, 1 );
-}
-
 void EvoStatistics::aquireData( GridPoint const & gp )
 {
 	Strategy::Id   const strategy { m_pCore->GetStrategyId( gp ) };
@@ -81,23 +55,21 @@ void EvoStatistics::aquireData( GridPoint const & gp )
 	{
 		GeneType::Apply2All
 		(
-			[&]( GeneType::Id geneType )
+			[&]( auto geneType )
 			{
-				Action::Id action { GetRelatedAction( geneType ) };
+				short      sAllele { m_pCore->GetAllele( gp, geneType ) };
+				Action::Id action  { GetRelatedAction( geneType ) };
 				if ( EvolutionCore::IsEnabled( action ) )
-					add2option( strategy, action, m_pCore->GetDistr( gp, geneType ) );
+				{
+				    m_axaGenePoolStrategy[action].Add( strategy, static_cast<float>( sAllele ) );
+				}
+				m_aGeneStat[geneType].Add( strategy, CastToUnsignedInt( sAllele ) );
 			}
 		);
 
-		GeneType::Apply2All
-		(
-			[&]( auto geneType )
-			{ add2Gene( strategy, geneType, m_pCore->GetGenotype( gp, geneType ) ); }
-		);
-
-		addMemSize( strategy, memSize );
-		addAge    ( strategy, age );
-		incCounter( strategy );
+		m_auiMemSize[strategy] += memSize.GetValue();
+		m_gsAverageAge.Add( strategy, age.GetValue() );
+		m_gsCounter.Add( strategy, 1 );
 	}
 }
 
@@ -230,8 +202,7 @@ void EvoStatistics::printAvFood(  wchar_t const * const data )
 	( 
 		[&]( Strategy::Id strategy )
 		{ 
-			fsAvFood[ strategy ] = m_aGeneStat[ GeneType::Id::appetite ][ strategy ] * 
-				                    m_axaGenePoolStrategy[ Action::Id::eat ][ strategy ] / 100; 
+			fsAvFood[ strategy ] = m_aGeneStat[ GeneType::Id::appetite ][ strategy ] * m_axaGenePoolStrategy[ Action::Id::eat ][ strategy ] / 100; 
 		}
 	);
 

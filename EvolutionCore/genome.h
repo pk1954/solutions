@@ -28,11 +28,6 @@ public:
 
     // for statistics
 
-	short GetDistr( GeneType::Id const actionGene ) const
-	{ 
-		return m_aGene.at( static_cast<int>( actionGene ) ).m_gene.GetAllele();
-	}
-
     short GetAllele( GeneType::Id const geneType ) const 
 	{ 
 		return m_aGene.at( static_cast<int>( geneType ) ).m_gene.GetAllele(); 

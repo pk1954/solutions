@@ -73,12 +73,6 @@ private:
 	void aquireData( GridPoint const & );
 	void scale( );
 
-    void add2option( Strategy::Id const, Action::Id const, short const );
-    void add2Gene  ( Strategy::Id const, GeneType::Id const, long const );
-    void addMemSize( Strategy::Id const, MEM_INDEX const );
-    void addAge    ( Strategy::Id const, EVO_GENERATION );
-    void incCounter( Strategy::Id const );
-
 	EvolutionCore const * m_pCore;
 	TextBuffer          * m_pTextBuf;
 
