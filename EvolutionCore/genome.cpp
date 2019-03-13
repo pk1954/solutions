@@ -101,8 +101,8 @@ void Genome::setGene( GeneType::Id const type, short const sValue )
 {
     int const index = static_cast<int>( type );
 	m_aLimits[ type ].CheckLimits( sValue );
-    m_aGene  .at( index ).m_gene.SetAllele( sValue );
-    m_aGene  .at( index ).m_type = type;
+    m_aGene  [ type ].m_gene.SetAllele( sValue );
+    m_aGene  [ type ].m_type = type;
 }
 
 void Genome::InitGenome( )
@@ -115,20 +115,26 @@ void Genome::Mutate( PERCENT const mutationRate, Random & random )
 {
 	double dMutationRate = static_cast<double>(mutationRate.GetValue());
 
-    for ( auto & g : m_aGene )
-    {
-        g.m_gene.Mutate( dMutationRate, m_aLimits[g.m_type], random );
-    }
+	m_aGene.Apply2All
+	( 
+		[&](GeneStruct & elem)
+		{
+			elem.m_gene.Mutate( dMutationRate, m_aLimits[elem.m_type], random );
+		}
+	);
 }
 
 void Genome::Recombine( Genome const & genomeA, Genome const & genomeB, Random & random )
 {
-    for ( auto & g : m_aGene )
-    {
-        Genome genome     = random.NextBooleanValue( ) ? genomeA : genomeB;
-        short  sNewAllele = genome.m_aGene[ static_cast<int>( g.m_type ) ].m_gene.GetAllele( );
-        g.m_gene.SetAllele( sNewAllele );
-    }
+	GeneType::Apply2All
+	(
+		[&]( auto geneType )
+		{
+			Genome genome     = random.NextBooleanValue( ) ? genomeA : genomeB;
+			short  sNewAllele = GetAllele(geneType);
+			m_aGene[geneType].m_gene.SetAllele( sNewAllele );
+		}
+	);
 }
 
 Action::Id Genome::GetOption

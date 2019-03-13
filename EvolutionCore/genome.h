@@ -30,7 +30,7 @@ public:
 
     short GetAllele( GeneType::Id const geneType ) const 
 	{ 
-		return m_aGene.at( static_cast<int>( geneType ) ).m_gene.GetAllele(); 
+		return m_aGene[geneType].m_gene.GetAllele(); 
 	};
 
     short GetAllele( Action::Id const action ) const 
@@ -45,9 +45,9 @@ public:
 
 private:
  
-    struct GeneStruct { GeneType::Id m_type; Gene m_gene; } ;
+    struct GeneStruct { GeneType::Id m_type; Gene m_gene; };
 
-    std::array< GeneStruct, GeneType::COUNT > m_aGene;  
+    EnumArray< GeneStruct, GeneType > m_aGene;  
                                                                    
     void setGene( GeneType::Id const, short const );
 
