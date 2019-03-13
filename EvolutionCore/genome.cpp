@@ -126,7 +126,7 @@ void Genome::Mutate( PERCENT const mutationRate, Random & random )
 
 void Genome::Recombine( Genome const & genomeA, Genome const & genomeB, Random & random )
 {
-	GeneType::Apply2All
+	GeneType::Apply2AllEnabledGeneTypes
 	(
 		[&]( auto geneType )
 		{

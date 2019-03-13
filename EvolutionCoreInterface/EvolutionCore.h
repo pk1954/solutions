@@ -98,5 +98,6 @@ public:
 	static unsigned int GetNrInteractionsWithKnownCulprit( );
     static unsigned int GetNrInteractionsWithUnknownCulprit( );
     static unsigned int GetMaxPartnerMemory( );
+	static bool         IsEnabled( GeneType::Id const );
 	static bool         IsEnabled( Action::Id const );
 };

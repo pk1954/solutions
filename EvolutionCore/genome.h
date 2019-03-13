@@ -33,10 +33,10 @@ public:
 		return m_aGene[geneType].m_gene.GetAllele(); 
 	};
 
-    short GetAllele( Action::Id const action ) const 
-	{ 
-		return GetAllele( GetRelatedGeneType( action ) ); 
-	};
+ //   short GetAllele( Action::Id const action ) const 
+	//{ 
+	//	return GetAllele( GetRelatedGeneType( action ) ); 
+	//};
 
 	static bool IsEnabled( Action::Id const action ) 
 	{ 

@@ -33,13 +33,7 @@ public:
 
 	static const int COUNT = static_cast<int>( Id::count );
 
-	static void Apply2All( std::function<void(Id const &)> const & func )
-	{
-        for ( int index = 0; index < COUNT; ++index )
-		{
-            func( static_cast<Id>(index) );
-		}
-	}
+	static void Apply2AllEnabledGeneTypes( std::function<void(Id const &)> const & );
 
 	static bool IsDefined( Id const geneType )
 	{

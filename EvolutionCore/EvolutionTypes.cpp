@@ -89,7 +89,7 @@ wchar_t const * const GeneType::GetName(GeneType::Id const gene )
 
 Action::Id const GetRelatedAction( GeneType::Id const gene )
 {
-    static unordered_map < GeneType::Id, Action::Id const > mapActions =
+    static const unordered_map < GeneType::Id, Action::Id const > mapActions =
     {
         { GeneType::Id::move,           Action::Id::move      },
         { GeneType::Id::clone,          Action::Id::clone     },

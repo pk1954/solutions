@@ -37,13 +37,13 @@ unsigned int ActionOptions::GetSumOfValidOptions( Genome const * pGenome )
 {
 	unsigned int uiSum = 0;
 
-	Action::Apply2All  
+	Action::Apply2AllEnabledActions  
 	(
 		[&]( Action::Id action ) -> Action::Id
 		{
 			if ( m_abOptions[action] )
 			{
-				uiSum += CastToUnsignedInt( pGenome->GetAllele( action ) );
+				uiSum += CastToUnsignedInt( pGenome->GetAllele( GetRelatedGeneType( action ) ) );
 			}
 			return Action::Id::undefined;
 		}
@@ -62,7 +62,7 @@ Action::Id ActionOptions::SelectAction( Genome const * pGenome, int iVal )
 		{
 			if ( m_abOptions[action] )
 			{
-				if ( (iVal -= pGenome->GetAllele( action )) <= 0 )
+				if ( (iVal -= pGenome->GetAllele( GetRelatedGeneType( action ) )) <= 0 )
 				{
 					return action;         // break out of Apply2All loop
 				}

@@ -1,6 +1,8 @@
 #pragma once
 
+#include <assert.h>
 #include <array>
+#include <limits>
 #include <functional>
 
 template <typename T, size_t SIZE>
@@ -39,7 +41,10 @@ void Scale( T & op, T const div )
     if ( div == 0 )
         op = 0;
     else
-        op *= static_cast< T >( 100 )/ div;
+	{
+		assert( op <= (std::numeric_limits<T>::max)() / 100);
+        op = (op * 100 + 50 ) / div;
+	}
 }
 
 template <typename T>
