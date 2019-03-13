@@ -6,6 +6,7 @@
 
 #include <array>
 #include "random.h"
+#include "EnumArray.h"
 #include "EvolutionTypes.h"
 
 class Genome;
@@ -19,13 +20,8 @@ public:
 
 	Action::Id SelectAction( Genome const *, int );
 
-	bool IsPossible( Action::Id const action )
-	{
-		return abOptions.at( static_cast<int>( action ) );
-	}
-
 private:
 	void set( Action::Id const, bool const );
 
-	std::array <bool, Action::COUNT> abOptions;
+	EnumArray<bool, Action> m_abOptions;
 };

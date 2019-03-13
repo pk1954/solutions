@@ -8,7 +8,7 @@
 
 void ActionOptions::set( Action::Id const action, bool const bValue )
 {
-	abOptions.at( static_cast<int>( action ) ) = Genome::IsEnabled( action ) && bValue;
+	m_abOptions[action] = Genome::IsEnabled( action ) && bValue;
 }
 
 void ActionOptions::InitOptions
@@ -41,7 +41,7 @@ unsigned int ActionOptions::GetSumOfValidOptions( Genome const * pGenome )
 	(
 		[&]( Action::Id action ) -> Action::Id
 		{
-			if ( IsPossible( action ) )
+			if ( m_abOptions[action] )
 			{
 				uiSum += CastToUnsignedInt( pGenome->GetAllele( action ) );
 			}
@@ -60,7 +60,7 @@ Action::Id ActionOptions::SelectAction( Genome const * pGenome, int iVal )
 	(
 		[&]( Action::Id action ) -> Action::Id 
 		{
-			if ( IsPossible( action ) )
+			if ( m_abOptions[action] )
 			{
 				if ( (iVal -= pGenome->GetAllele( action )) <= 0 )
 				{

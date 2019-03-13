@@ -27,7 +27,7 @@ public:
 
 	static void Apply2All( std::function<void(Id const &)> const & func )
 	{
-        for ( int index = 0; index < COUNT; ++index )
+        for ( int index = 0; index < static_cast<int>( Id::count ); ++index )
 		{
             func( static_cast<Id>(index) );   
 		}
@@ -35,7 +35,7 @@ public:
 
 	static Id Select( std::function< Id (Id const &) > const & func )
 	{
-        for ( int index = 0; index < COUNT; ++index )
+        for ( int index = 0; index < static_cast<int>( Id::count ); ++index )
 		{
             Id actionRes = func( static_cast<Id>(index) );   
 			if ( IsDefined( actionRes ) )                    // if lambda returns defined action
