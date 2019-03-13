@@ -25,9 +25,9 @@ void EvoStatistics::Initialize( TextBuffer * const pTextBuf )
 
 	m_gsCounter.zero();         
     m_gsAverageAge.zero();      
-	m_axaGenePoolStrategy.Apply2All( [&](XaFloatStat  & elem) { elem.zero(); } );
-	m_aGeneStat          .Apply2All( [&](XaCounter    & elem) { elem.zero(); } );
-	m_auiMemSize         .Apply2All( [&](unsigned int & elem) { elem = 0; } );
+	m_XaAction  .Apply2All( [&](auto & elem) { elem = 0; } );
+	m_XaGenes .Apply2All( [&](auto & elem) { elem = 0; } );
+	m_auiMemSize.Apply2All( [&](auto & elem) { elem = 0; } );
 
 	Apply2Rect
 	( 
@@ -39,7 +39,7 @@ void EvoStatistics::Initialize( TextBuffer * const pTextBuf )
 		m_pCore->GetSelection( )
 	);
 
-	scale( );
+	scaleData( );
 };
 
 void EvoStatistics::aquireData( GridPoint const & gp )
@@ -57,7 +57,7 @@ void EvoStatistics::aquireData( GridPoint const & gp )
 		(
 			[&]( auto geneType )
 			{
-				m_aGeneStat[geneType].Add( strategy, CastToUnsignedInt( m_pCore->GetAllele( gp, geneType ) ) );
+				m_XaGenes[geneType].Add( strategy, CastToUnsignedInt( m_pCore->GetAllele( gp, geneType ) ) );
 			}
 		);
 
@@ -67,46 +67,51 @@ void EvoStatistics::aquireData( GridPoint const & gp )
 			{
 				GeneType::Id geneType = GetRelatedGeneType(action);
 				if ( GeneType::IsDefined( geneType ) ) 
-					m_axaGenePoolStrategy[action].Add( strategy, static_cast<float>( m_pCore->GetAllele( gp, geneType ) ) );
+					m_XaAction[action].Add( strategy, static_cast<float>( m_pCore->GetAllele( gp, geneType ) ) );
 			}
 		);
 
-		m_auiMemSize[strategy] += memSize.GetValue();
+		m_auiMemSize  [strategy] += memSize.GetValue();
+		m_gsAverageAge[strategy] += age.GetValue();
 		m_gsAverageAge.Add( strategy, age.GetValue() );
 		m_gsCounter.Add( strategy, 1 );
 	}
 }
 
-void EvoStatistics::scale( )
+void EvoStatistics::scale( float & op, float const div )
+{
+    if ( div == 0 )
+        op = 0;
+    else
+	{
+		assert( op <= (std::numeric_limits<float>::max)() / 100);
+        op = (op * 100 + 50 ) / div;
+	}
+}
+
+void EvoStatistics::scaleData( )
 {
 	m_gsAverageAge.DivNonZero( m_gsCounter );
 
 	GeneType::Apply2AllEnabledGeneTypes
 	(
-		[&]( GeneType::Id geneType )
+		[&]( auto geneType )
 		{
-			Strategy::Apply2All
-			(
-				[&]( Strategy::Id strategy )
-				{
-					DivNonZero( m_aGeneStat[geneType][strategy], m_gsCounter[strategy] );
-				}
-			);
-			DivNonZero( m_aGeneStat[geneType].General(), m_gsCounter.General() );
+			m_XaGenes[geneType].DivNonZero( m_gsCounter );
 		}
 	);
 
 	float fSum { 0.0 };
-	m_axaGenePoolStrategy.Apply2All( [&](XaFloatStat & elem) { fSum += elem.General(); } );
-	m_axaGenePoolStrategy.Apply2All( [&](XaFloatStat & elem) { Scale( elem.General(), fSum ); } );
+	m_XaAction.Apply2All( [&](XaFloatStat & elem) { fSum += elem.General(); } );
+	m_XaAction.Apply2All( [&](XaFloatStat & elem) { scale( elem.General(), fSum ); } );
 	
 	Strategy::Apply2All
 	( 
 		[&]( Strategy::Id strategy )
 		{
 			float fSum { 0.0 };
-			m_axaGenePoolStrategy.Apply2All( [&](XaFloatStat & elem) { fSum += elem[strategy]; } );
-			m_axaGenePoolStrategy.Apply2All( [&](XaFloatStat & elem) { Scale(  elem[strategy], fSum ); } );
+			m_XaAction.Apply2All( [&](XaFloatStat & elem) { fSum += elem[strategy]; } );
+			m_XaAction.Apply2All( [&](XaFloatStat & elem) { scale(  elem[strategy], fSum ); } );
 		}
 	);
 
@@ -155,13 +160,7 @@ void EvoStatistics::printCounters( Action::Id const action )
 
 void EvoStatistics::printIncidence( )
 {
-	Action::Apply2AllEnabledActions
-	(
-		[&]( Action::Id action )
-		{
-			printCounters( action );
-		}
-	);
+	Action::Apply2AllEnabledActions( [&]( Action::Id action ) {	printCounters( action ); } );
 }
 
 void EvoStatistics::printProbabilities( )
@@ -171,19 +170,19 @@ void EvoStatistics::printProbabilities( )
 		[&]( Action::Id action )
 		{
 			if ( GeneType::IsDefined( GetRelatedGeneType( action ) )  )
-				m_axaGenePoolStrategy[action].printFloatLine( m_pTextBuf, Action::GetName( action ) );
+				m_XaAction[action].printFloatLine( m_pTextBuf, Action::GetName( action ) );
 		}
 	);
 
 }
 
-void EvoStatistics::printGeneStat(  )
+void EvoStatistics::printGeneStat( )
 {
 	GeneType::Apply2AllEnabledGeneTypes
 	(
 		[&]( GeneType::Id geneType )
 		{
-			m_aGeneStat[geneType].printGeneLine( m_pTextBuf, GeneType::GetName( geneType ) );
+			m_XaGenes[geneType].printGeneLine( m_pTextBuf, GeneType::GetName( geneType ) );
 		}
 	);
 }
@@ -196,11 +195,11 @@ void EvoStatistics::printAvFood( wchar_t const * const data )
 	( 
 		[&]( Strategy::Id strategy )
 		{ 
-			fsAvFood[ strategy ] = m_aGeneStat[ GeneType::Id::appetite ][ strategy ] * m_axaGenePoolStrategy[ Action::Id::eat ][ strategy ] / 100; 
+			fsAvFood[ strategy ] = m_XaGenes[ GeneType::Id::appetite ][ strategy ] * m_XaAction[ Action::Id::eat ][ strategy ] / 100; 
 		}
 	);
 
-    fsAvFood.General() = m_aGeneStat[ GeneType::Id::appetite ].General() * m_axaGenePoolStrategy[ Action::Id::eat ].General() / 100 ;
+    fsAvFood.General() = m_XaGenes[ GeneType::Id::appetite ].General() * m_XaAction[ Action::Id::eat ].General() / 100 ;
 
     fsAvFood.printFloatLine( m_pTextBuf, data );
 }

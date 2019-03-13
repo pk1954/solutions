@@ -15,7 +15,12 @@ class XaCounter: public XArray< unsigned int, Strategy::COUNT  >
 public:
     unsigned int & operator[] ( Strategy::Id strategy ) 
 	{ 
-		return (*(static_cast<XArray *>(this)))[static_cast<unsigned int>( strategy )]; 
+		return XArray::operator[](static_cast<unsigned int>( strategy ));
+	}
+
+	void operator= (unsigned int const op)
+	{
+		Apply2XArray( [&](unsigned int elem) { elem = op; } );
 	}
 
     void Add( Strategy::Id strategy, unsigned int const op )
@@ -33,10 +38,14 @@ public:
 class XaFloatStat : public XArray< float, Strategy::COUNT >
 {
 public:
-
     float & operator[] ( Strategy::Id strategy ) 
 	{ 
-		return (*(static_cast<XArray *>(this)))[static_cast<unsigned int>( strategy )]; 
+		return XArray::operator[](static_cast<unsigned int>( strategy ));
+	}
+
+	void operator= (float const op)
+	{
+		Apply2XArray( [&](float elem) { elem = op; } );
 	}
 
     void Add( Strategy::Id strategy, float const op )
@@ -71,7 +80,8 @@ public:
 
 private:
 	void aquireData( GridPoint const & );
-	void scale( );
+	void scaleData( );
+	void scale( float &, float const );
 
 	EvolutionCore const * m_pCore;
 	TextBuffer          * m_pTextBuf;
@@ -79,7 +89,7 @@ private:
     XaCounter m_gsCounter;          // counter for strategies and sum counter 
     XaCounter m_gsAverageAge;       // average age of all individuals
 
-	EnumArray<XaFloatStat,  Action  > m_axaGenePoolStrategy;
-	EnumArray<XaCounter,    GeneType> m_aGeneStat;
+	EnumArray<XaFloatStat,  Action >  m_XaAction;
+	EnumArray<XaCounter,    GeneType> m_XaGenes;
 	EnumArray<unsigned int, Strategy> m_auiMemSize;
 };
