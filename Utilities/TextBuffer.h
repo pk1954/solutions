@@ -49,11 +49,11 @@ public:
     void printNumber       ( unsigned int );
     void printNumber       ( long long );
     void printNumber       ( unsigned long long );
+    void printNumber       ( float );
     void printPercentage   ( unsigned int );
     void printPercentage   ( unsigned int, unsigned int );
     void printSpan         ( unsigned int, unsigned int );
     void printAsDecFraction( unsigned long );
-    void printFloat        ( float );
 
 private:
 	void printBuffer();

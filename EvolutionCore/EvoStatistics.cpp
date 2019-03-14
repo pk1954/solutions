@@ -102,16 +102,16 @@ void EvoStatistics::scaleData( )
 	);
 
 	float fSum { 0.0 };
-	m_XaAction.Apply2All( [&](XaFloatStat & elem) { fSum += elem.General(); } );
-	m_XaAction.Apply2All( [&](XaFloatStat & elem) { scale( elem.General(), fSum ); } );
+	m_XaAction.Apply2All( [&](XaCounter<float> & elem) { fSum += elem.General(); } );
+	m_XaAction.Apply2All( [&](XaCounter<float> & elem) { scale( elem.General(), fSum ); } );
 	
 	Strategy::Apply2All
 	( 
 		[&]( Strategy::Id strategy )
 		{
 			float fSum { 0.0 };
-			m_XaAction.Apply2All( [&](XaFloatStat & elem) { fSum += elem[strategy]; } );
-			m_XaAction.Apply2All( [&](XaFloatStat & elem) { scale(  elem[strategy], fSum ); } );
+			m_XaAction.Apply2All( [&](XaCounter<float> & elem) { fSum += elem[strategy]; } );
+			m_XaAction.Apply2All( [&](XaCounter<float> & elem) { scale(  elem[strategy], fSum ); } );
 		}
 	);
 
@@ -170,7 +170,7 @@ void EvoStatistics::printProbabilities( )
 		[&]( Action::Id action )
 		{
 			if ( GeneType::IsDefined( GetRelatedGeneType( action ) )  )
-				m_XaAction[action].printFloatLine( m_pTextBuf, Action::GetName( action ) );
+				m_XaAction[action].printGeneLine( m_pTextBuf, Action::GetName( action ) );
 		}
 	);
 
@@ -189,19 +189,19 @@ void EvoStatistics::printGeneStat( )
 
 void EvoStatistics::printAvFood( wchar_t const * const data )
 {
-    XaFloatStat fsAvFood;
+    XaCounter<float> fsAvFood;
 
 	Strategy::Apply2All
 	( 
 		[&]( Strategy::Id strategy )
 		{ 
-			fsAvFood[ strategy ] = m_XaGenes[ GeneType::Id::appetite ][ strategy ] * m_XaAction[ Action::Id::eat ][ strategy ] / 100; 
+			fsAvFood[strategy] = m_XaGenes[GeneType::Id::appetite][strategy] * m_XaAction[Action::Id::eat][strategy] / 100; 
 		}
 	);
 
-    fsAvFood.General() = m_XaGenes[ GeneType::Id::appetite ].General() * m_XaAction[ Action::Id::eat ].General() / 100 ;
+    fsAvFood.General() = m_XaGenes[GeneType::Id::appetite].General() * m_XaAction[Action::Id::eat].General() / 100 ;
 
-    fsAvFood.printFloatLine( m_pTextBuf, data );
+    fsAvFood.printGeneLine( m_pTextBuf, data );
 }
 
 void EvoStatistics::printMemory( wchar_t const * const data )

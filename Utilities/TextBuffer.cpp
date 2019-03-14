@@ -61,7 +61,7 @@ void TextBuffer::printNumber( unsigned long long data )
     printBuffer();
 }
 
-void TextBuffer::printFloat( float data )
+void TextBuffer::printNumber( float data )
 {
 	if ( data > 0 )
 		m_wBuffer << setprecision(3) << data << L"%";

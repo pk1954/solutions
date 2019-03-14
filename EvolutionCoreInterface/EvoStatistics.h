@@ -10,53 +10,29 @@
 #include "EvolutionCore.h"
 #include "EvolutionTypes.h"
 
-class XaCounter: public XArray< unsigned int, Strategy::COUNT  >
+template <typename T>
+class XaCounter : public XArray< T, Strategy::COUNT >
 {
 public:
-    unsigned int & operator[] ( Strategy::Id strategy ) 
+    T & operator[] ( Strategy::Id strategy ) 
 	{ 
 		return XArray::operator[](static_cast<unsigned int>( strategy ));
 	}
 
-	void operator= (unsigned int const op)
+	void operator= (T const op)
 	{
-		Apply2XArray( [&](unsigned int elem) { elem = op; } );
+		Apply2XArray( [&](T elem) { elem = op; } );
 	}
 
-    void Add( Strategy::Id strategy, unsigned int const op )
+    void Add( Strategy::Id strategy, T const op )
     {
 		XArray::Add( static_cast<unsigned int>(strategy), op );
 	}
 
     void printGeneLine( TextBuffer * pTextBuf, wchar_t const * const data )
     {
-        pTextBuf->nextLine( data );
- 		Apply2XArray( [&](unsigned int elem) { pTextBuf->printNumber( elem ); } );
-    };
-};
-
-class XaFloatStat : public XArray< float, Strategy::COUNT >
-{
-public:
-    float & operator[] ( Strategy::Id strategy ) 
-	{ 
-		return XArray::operator[](static_cast<unsigned int>( strategy ));
-	}
-
-	void operator= (float const op)
-	{
-		Apply2XArray( [&](float elem) { elem = op; } );
-	}
-
-    void Add( Strategy::Id strategy, float const op )
-    {
-		XArray::Add( static_cast<unsigned int>(strategy), op );
-	}
-
-    void printFloatLine( TextBuffer * pTextBuf, wchar_t const * const data )
-    {
 		pTextBuf->nextLine( data );
- 		Apply2XArray( [&](float elem) { pTextBuf->printFloat( elem ); } );
+ 		Apply2XArray( [&](T elem) { pTextBuf->printNumber( elem ); } );
     };
 };
 
@@ -86,10 +62,10 @@ private:
 	EvolutionCore const * m_pCore;
 	TextBuffer          * m_pTextBuf;
 
-    XaCounter m_gsCounter;          // counter for strategies and sum counter 
-    XaCounter m_gsAverageAge;       // average age of all individuals
+    XaCounter<unsigned int> m_gsCounter;          // counter for strategies and sum counter 
+    XaCounter<unsigned int> m_gsAverageAge;       // average age of all individuals
 
-	EnumArray<XaFloatStat,  Action >  m_XaAction;
-	EnumArray<XaCounter,    GeneType> m_XaGenes;
-	EnumArray<unsigned int, Strategy> m_auiMemSize;
+	EnumArray<XaCounter<float>,        Action>   m_XaAction;
+	EnumArray<XaCounter<unsigned int>, GeneType> m_XaGenes;
+	EnumArray<unsigned int,            Strategy> m_auiMemSize;
 };
