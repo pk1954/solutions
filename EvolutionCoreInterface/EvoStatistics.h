@@ -6,9 +6,12 @@
 
 #include "XArray.h"
 #include "EnumArray.h"
-#include "TextBuffer.h"
-#include "EvolutionCore.h"
+#include "GridPoint.h"
+#include "strategy.h"
 #include "EvolutionTypes.h"
+
+class TextBuffer;
+class EvolutionCore;
 
 template <typename T>
 class XaCounter : public XArray< T, Strategy::COUNT >
