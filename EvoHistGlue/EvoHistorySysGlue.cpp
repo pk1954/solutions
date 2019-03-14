@@ -33,7 +33,7 @@ HistSlotNr EvoHistorySysGlue::calcHistCacheSize()
 	BYTES      const slotSize             { m_pHistorySystem->GetSlotSize() };
 	long       const lMaxHistSize         { Util::GetMaxNrOfSlots( slotSize ) };
 	long       const lHistEntriesDemanded { Config::GetConfigValue( Config::tId::nrOfHistorySlots ) };
-	long       const lHistEntries         { min( lHistEntriesDemanded, lMaxHistSize * 80 / 100 ) };  // use only 80% of available memory
+	long       const lHistEntries         { min( lHistEntriesDemanded, lMaxHistSize * 70 / 100 ) };  // use only 80% of available memory
 	HistSlotNr const nrOfSlots            { CastToShort( lHistEntries ) }; 
 	return nrOfSlots;
 }

@@ -162,21 +162,20 @@ public:
 private:
     // data for management of neighborhood relation and list of living individuals
 
-    GridPoint  m_gp;             //   4 byte     will stay unchanged after initialization
-    GridPoint  m_gpSenior;       //   4 byte
-    GridPoint  m_gpJunior;       //   4 byte
+    Individual   m_Individual;   //  96 byte    changed by algorithm
+
+	GridPoint    m_gp;           //   4 byte     will stay unchanged after initialization
+    GridPoint    m_gpSenior;     //   4 byte     will stay unchanged after initialization
+    GridPoint    m_gpJunior;     //   4 byte     will stay unchanged after initialization
+
+    ENERGY_UNITS m_enFoodStock;  //   2 byte    changed by algorithm
+    ENERGY_UNITS m_enFertilizer; //   2 byte    changed by algorithm
 
 // configuraton data, changed only by user 
 
     PERCENT      m_mutRate;      //   2 byte
     ENERGY_UNITS m_enFertility;  //   2 byte     normal fertility of soil
-
-// data changed by algorithm
-
-    Individual   m_Individual;   // 176 byte
-    ENERGY_UNITS m_enFoodStock;  //   2 byte 
-    ENERGY_UNITS m_enFertilizer; //   2 byte
-                      // sum        196 byte
+                      // sum        120 byte
 
 // static members for caching frequently used configuration items
 

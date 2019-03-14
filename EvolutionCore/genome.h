@@ -30,13 +30,8 @@ public:
 
     short GetAllele( GeneType::Id const geneType ) const 
 	{ 
-		return m_aGene[geneType].m_gene.GetAllele(); 
+		return m_aGene[geneType].GetAllele(); 
 	};
-
- //   short GetAllele( Action::Id const action ) const 
-	//{ 
-	//	return GetAllele( GetRelatedGeneType( action ) ); 
-	//};
 
 	static bool IsEnabled( Action::Id const action ) 
 	{ 
@@ -45,11 +40,13 @@ public:
 
 private:
  
-    struct GeneStruct { GeneType::Id m_type; Gene m_gene; };
-
-    EnumArray< GeneStruct, GeneType > m_aGene;  
+    EnumArray< Gene, GeneType > m_aGene;  
                                                                    
-    void setGene( GeneType::Id const, short const );
+	void setGene( GeneType::Id const type, short const sValue )
+	{
+		m_aLimits[ type ].CheckLimits( sValue );
+		m_aGene  [ type ].SetAllele( sValue );
+	}
 
 	// static members and functions
 
@@ -60,7 +57,6 @@ private:
     static EnumArray< GeneTypeLimits, GeneType > m_aLimits;
     static Genome        m_genomeTemplate;
 	static ActionOptions m_options;
-
 
     static void setLimits( GeneType::Id, long, long );
 };

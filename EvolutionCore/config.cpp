@@ -82,27 +82,6 @@ void Config::SetDefaultConfiguration( )
    DEF_CONFIG_ID( Config::tId::generationDelay,         50 );
 }
 
-long Config::GetConfigValue( tId const id )
-{
-    return m_mapConfigData.at( id );
-}
-
-short Config::GetConfigValueShort( tId const id )
-{
-    return CastToShort( GetConfigValue( id ) );
-}
-
-bool Config::GetConfigValueBool( tId const id )
-{
-    return GetConfigValue( id ) != 0;
-}
-
-tBoolOp Config::GetConfigValueBoolOp( tId const id )
-{
-    long const lValue = GetConfigValue( id );
-    return (lValue == 0) ? tBoolOp::opFalse : tBoolOp::opTrue;
-}
-
 bool Config::SetConfigValueBoolOp( tId const id, tBoolOp const op )
 {
     long const lValue    = GetConfigValue( id );
@@ -110,12 +89,6 @@ bool Config::SetConfigValueBoolOp( tId const id, tBoolOp const op )
 	bool const bNewState = ApplyOp2( bOldState, op );
 	SetConfigValue( id, bNewState ? 1 : 0 );
 	return bNewState;
-}
-
-Config::tOnOffAuto Config::GetConfigValueOnOffAuto( tId const id )
-{
-    long const lValue = GetConfigValue( id );
-    return static_cast<tOnOffAuto>(lValue);
 }
 
 void Config::SetConfigValue( tId const id, long const lValue )

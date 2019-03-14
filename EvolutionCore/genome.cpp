@@ -97,14 +97,6 @@ Genome::Genome( )
     InitGenome( );
 }
 
-void Genome::setGene( GeneType::Id const type, short const sValue )
-{
-    int const index = static_cast<int>( type );
-	m_aLimits[ type ].CheckLimits( sValue );
-    m_aGene  [ type ].m_gene.SetAllele( sValue );
-    m_aGene  [ type ].m_type = type;
-}
-
 void Genome::InitGenome( )
 {
     if ( this != & m_genomeTemplate )
@@ -115,11 +107,11 @@ void Genome::Mutate( PERCENT const mutationRate, Random & random )
 {
 	double dMutationRate = static_cast<double>(mutationRate.GetValue());
 
-	m_aGene.Apply2All
-	( 
-		[&](GeneStruct & elem)
+	GeneType::Apply2AllEnabledGeneTypes
+	(
+		[&]( auto geneType )
 		{
-			elem.m_gene.Mutate( dMutationRate, m_aLimits[elem.m_type], random );
+			m_aGene[geneType].Mutate( dMutationRate, m_aLimits[geneType], random );
 		}
 	);
 }
@@ -132,7 +124,7 @@ void Genome::Recombine( Genome const & genomeA, Genome const & genomeB, Random &
 		{
 			Genome genome     = random.NextBooleanValue( ) ? genomeA : genomeB;
 			short  sNewAllele = GetAllele(geneType);
-			m_aGene[geneType].m_gene.SetAllele( sNewAllele );
+			m_aGene[geneType].SetAllele( sNewAllele );
 		}
 	);
 }

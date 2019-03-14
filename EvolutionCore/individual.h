@@ -59,6 +59,14 @@ public:
 
 	void SetEnergy( ENERGY_UNITS const energy )
 	{
+       //int sizIND_ID         = sizeof(IND_ID          );
+       //int sizEVO_GENERATION = sizeof(EVO_GENERATION  );
+       //int siztOrigin        = sizeof(tOrigin         );
+       //int sizENERGY_UNITS   = sizeof(ENERGY_UNITS    );
+       //int sizStrategyData   = sizeof(StrategyData    );
+       //int sizGenome         = sizeof(Genome          );
+       //int sizActionId       = sizeof(Action::Id      );
+       //int sizIndividual     = sizeof(Individual      );
 	   m_enStock = ( energy > m_enCapacity ) ? m_enCapacity : energy;
 	}
 
@@ -68,16 +76,17 @@ public:
 	}
 
 private:
+    StrategyData     m_stratData;   // 40 bytes
+	Strategy const * m_pStrategy;   //  8 bytes 
     IND_ID           m_id;          //  4 bytes
     EVO_GENERATION   m_genBirth;    //  4 bytes
     tOrigin          m_origin;      //  2 bytes
     ENERGY_UNITS     m_enCapacity;  //  2 bytes
-    StrategyData     m_stratData;   // 84 bytes
-    Genome           m_genome;      // 68 bytes
-	Strategy const * m_pStrategy;   //  8 bytes 
 	Action::Id       m_action;      //  2 bytes
     ENERGY_UNITS     m_enStock;     //  2 bytes
-                             // sum:  176 bytes
+    Genome           m_genome;      // 30 bytes
+//	short            padding;       //  2 bytes 
+                             // sum:   96 bytes
 
 	static const std::unordered_map< Strategy::Id, Strategy * const > m_apStrat; 
 

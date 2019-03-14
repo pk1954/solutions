@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <string>
 #include "BoolOp.h"
+#include "util.h"
 
 class Config
 {
@@ -83,14 +84,36 @@ public:
 		generationDelay       // initial delay between generations in ms
     };
 
-    static void       SetConfigValue         ( tId const, long const );
-	static bool       SetConfigValueBoolOp   ( tId const, tBoolOp const );
-    static long       GetConfigValue         ( tId const );
-    static short      GetConfigValueShort    ( tId const );
-	static bool       GetConfigValueBool     ( tId const );
-	static tBoolOp    GetConfigValueBoolOp   ( tId const );
-	static tOnOffAuto GetConfigValueOnOffAuto( tId const );
-    static bool       UseHistorySystem( )    { return GetConfigValue( tId::maxGeneration ) > 0; };
+	inline static long GetConfigValue( tId const id )
+	{
+		return m_mapConfigData.at( id );
+	}
+
+	inline static short GetConfigValueShort( tId const id )
+	{
+		return CastToShort( GetConfigValue( id ) );
+	}
+
+	inline static bool GetConfigValueBool( tId const id )
+	{
+		return GetConfigValue( id ) != 0;
+	}
+
+	inline static tBoolOp GetConfigValueBoolOp( tId const id )
+	{
+		long const lValue = GetConfigValue( id );
+		return (lValue == 0) ? tBoolOp::opFalse : tBoolOp::opTrue;
+	}
+
+	inline static tOnOffAuto GetConfigValueOnOffAuto( tId const id )
+	{
+		long const lValue = GetConfigValue( id );
+		return static_cast<tOnOffAuto>(lValue);
+	}
+
+    static void SetConfigValue       ( tId const, long const );
+	static bool SetConfigValueBoolOp ( tId const, tBoolOp const );
+    static bool UseHistorySystem( )  { return GetConfigValue( tId::maxGeneration ) > 0; };
 
 private:
 
