@@ -10,7 +10,7 @@
 
 class PixelCoordinates;
 class EvolutionCore;
-class D3dBuffer;
+class D3D_driver;
 
 class GridPointShape
 {

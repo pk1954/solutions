@@ -56,6 +56,9 @@
 
 #include "Resource.h"
 
+#include "GDI_driver.h"
+#include "D3D_driver.h"
+
 // application
 
 #include "win32_evoController.h"
@@ -150,6 +153,14 @@ void AppWindow::Start(  )
 
 	GridWindow::InitClass( hwndApp, m_pEvolutionCore, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pColorManager );
 
+	D3dSystem::Create_D3D_Device
+	( 
+		hwndApp, 
+		GridDimensions::GridWidthVal(), 
+		GridDimensions::GridHeightVal(), 
+		Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 
+	);
+
 	stopwatch.Start();
     m_pHistorySystem = HistorySystem::CreateHistorySystem( );
 	stopwatch.Stop( L"CreateHistorySystem" );
@@ -163,8 +174,9 @@ void AppWindow::Start(  )
 	stopwatch.Stop( L"Application setup" );
 
 	stopwatch.Start();
-	m_pMainGridWindow     ->Start( WS_CHILD       | WS_CLIPSIBLINGS | WS_VISIBLE,             16_PIXEL );
-    m_pMiniGridWindow     ->Start( WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
+	GraphicsInterface * pGraphics = new D3D_driver( GridDimensions::GetGridArea() );
+	m_pMainGridWindow     ->Start( new GDI_driver(), WS_CHILD       | WS_CLIPSIBLINGS | WS_VISIBLE,             16_PIXEL );
+    m_pMiniGridWindow     ->Start( new GDI_driver(), WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
     m_pHistInfoWindow     ->Start( hwndApp, m_pHistorySystem );
 	m_pEvoHistGlue        ->Start( m_pEvolutionCore, m_pHistorySystem, true, m_pHistInfoWindow );
 	m_pEvoHistWindow      ->Start( hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );

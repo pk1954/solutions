@@ -4,6 +4,7 @@
 #pragma once
 
 #include "windows.h"
+#include "NamedType.h"
 #include "PixelTypes.h"
 #include "BoolOp.h"
 

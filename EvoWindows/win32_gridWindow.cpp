@@ -9,12 +9,12 @@
 #include "pixelCoordinates.h"
 #include "GridDimensions.h"
 #include "EvolutionCore.h"
-#include "d3d_buffer.h"
 #include "win32_util.h"
 #include "win32_draw.h"
 #include "win32_focusPoint.h"
 #include "win32_crsrWindow.h"
 #include "win32_performanceWindow.h"
+#include "win32_graphicsInterface.h"
 #include "win32_workThreadInterface.h"
 #include "win32_packGridPoint.h"
 #include "win32_displayOptions.h"
@@ -50,18 +50,11 @@ void GridWindow::InitClass
 	m_pDspOptWindow        = pDspOptWindow;
     m_pFocusPoint          = pFocusPoint;
 	m_pColorManager        = pColorManager;
-
-	D3dSystem::Create_D3D_Device
-	( 
-		m_hwndApp, 
-		GridDimensions::GridWidthVal(), 
-		GridDimensions::GridHeightVal(), 
-		Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 
-	);
 }
 
 GridWindow::GridWindow( ) :
     BaseWindow( ),
+	m_pGraphics( nullptr ),
     m_pPixelCoordinates( nullptr ),
     m_pGridWindowObserved( nullptr ),
     m_pObserverInterface( nullptr ),
@@ -72,6 +65,7 @@ GridWindow::GridWindow( ) :
 
 void GridWindow::Start
 ( 
+	GraphicsInterface * const pGraphics,
     DWORD const dwStyle,
     PIXEL const pixFieldSize
 )
@@ -80,6 +74,7 @@ void GridWindow::Start
     
 	BOOL bHexagonMode   = (Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6);
     m_pPixelCoordinates = new PixelCoordinates( pixFieldSize, bHexagonMode );
+	m_pGraphics         = pGraphics;
 
 	HWND hwnd = StartBaseWindow
     ( 
@@ -90,14 +85,12 @@ void GridWindow::Start
 		nullptr
     );
 
-	GraphicsInterface * pGraphics = new D3dBuffer( hwnd, GridDimensions::GetGridArea( ) );
-
 	m_pDrawFrame = new DrawFrame
 	( 
 		hwnd, 
 		m_pCore, 
 		m_pPixelCoordinates, 
-		pGraphics,
+		m_pGraphics,
 		m_pDspOptWindow, 
 		m_pColorManager
 	);
@@ -123,6 +116,7 @@ GridWindow::~GridWindow( )
         exit( 1 );
     };
 
+	m_pGraphics            = nullptr;
 	m_pCore                = nullptr;
     m_pGridWindowObserved  = nullptr;
     m_pWorkThreadInterface = nullptr;
@@ -245,19 +239,28 @@ void GridWindow::doPaint( )
 {
     m_pPerformanceWindow->DisplayStart( );
 
-    PixelRect pixRectTarget = PixelRect::ZERO_VAL();
-	
-	if ((m_pGridWindowObserved != nullptr) && CrsrInClientRect())   // if I observe someone and cursor is in client area, show its position
+    if ( IsWindowVisible() )
 	{
-		PixelCoordinates * const pixCoordObserved = m_pGridWindowObserved->m_pPixelCoordinates;
-		PixelRect          const pixRectObserved  = Util::GetClPixelRect( m_pGridWindowObserved->GetWindowHandle( ) );
-		pixRectTarget = Pixel2PixelRect( pixRectObserved, pixCoordObserved, m_pPixelCoordinates );
-	}
-
-    {
         PAINTSTRUCT ps;
-        BeginPaint( &ps );
-        (void)m_pDrawFrame->DoPaint( GetWindowHandle(), pixRectTarget );
+        HDC const hdc = BeginPaint( &ps );
+		if ( m_pGraphics->StartFrame( GetWindowHandle(), hdc ) )
+		{
+			(void)m_pDrawFrame->DoPaint( );
+
+			COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
+
+			if ( m_pCore->SelectionIsNotEmpty() )
+				m_pGraphics->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), 64, color );  
+
+			if ((m_pGridWindowObserved != nullptr) && CrsrInClientRect())   // if I observe someone and cursor is in client area, show its position
+			{
+				PixelCoordinates * const pixCoordObserved = m_pGridWindowObserved->m_pPixelCoordinates;
+				PixelRect          const pixRectObserved  = Util::GetClPixelRect( m_pGridWindowObserved->GetWindowHandle( ) );
+				PixelRect          const pixRectTarget    = Pixel2PixelRect( pixRectObserved, pixCoordObserved, m_pPixelCoordinates );
+				m_pGraphics->RenderTranspRect( pixRectTarget, 128, color );  
+			}
+			m_pGraphics->EndFrame( );
+		}
         (void)EndPaint( &ps );
     }
 

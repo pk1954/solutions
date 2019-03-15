@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "windows.h"
 #include "GridDimensions.h"
 #include "win32_textDisplay.h"
 #include "PixelTypes.h"

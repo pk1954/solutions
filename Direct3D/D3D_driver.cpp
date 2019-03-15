@@ -1,4 +1,4 @@
-// d3d_buffer.cpp
+// D3D_driver.cpp
 //
 
 #include "stdafx.h"
@@ -8,16 +8,16 @@
 #include "win32_util.h"
 #include "PixelTypes.h"
 #include "d3d_system.h"
-#include "d3d_buffer.h"
+#include "D3D_driver.h"
 
 //lint -e534                                   ignoring return code 
-//lint -esym( 613, D3dBuffer::m_d3d_device )   possible use of null pointer
+//lint -esym( 613, D3D_driver::m_d3d_device )   possible use of null pointer
 //lint -e835                                   0 as left argument to << or |
 //lint -e845                                   0 as right argument to << or |
 
 static COLORREF const CLR_WHITE = D3DCOLOR_ARGB( 255, 255, 255, 255 );
 
-D3DXFONT_DESC D3dBuffer::m_d3dx_font_desc =
+D3DXFONT_DESC D3D_driver::m_d3dx_font_desc =
 {
     0,                         //  Height (will be set during initializition)
     0,                         //  Width
@@ -31,11 +31,10 @@ D3DXFONT_DESC D3dBuffer::m_d3dx_font_desc =
     L""                        //  FaceName
 };
 
-D3dBuffer::D3dBuffer( HWND const hwnd, ULONG const ulNrOfPoints ) 
+D3D_driver::D3D_driver( ULONG const ulNrOfPoints ) 
 {
     HRESULT hres;
 
-	m_hwnd = hwnd;
     m_d3d  = D3dSystem::GetSystem( );
 
 	m_ulTrianglesPerPrimitive = m_d3d->GetHexagonMode( ) ? 4 : 2; // Hexagon is made of 4 triangles, rect of 2 triangles
@@ -46,7 +45,7 @@ D3dBuffer::D3dBuffer( HWND const hwnd, ULONG const ulNrOfPoints )
     m_pVertBufPrimitives      = new VertexBuffer( m_ulNrOfVertices );
 
     m_d3d_device = m_d3d->GetDevice( );                                  assert( m_d3d_device != nullptr );
-    hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, FALSE );        assert( hres == D3D_OK );
+    hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, false );        assert( hres == D3D_OK );
     hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE ); assert( hres == D3D_OK );
     hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );          assert( hres == D3D_OK );
 
@@ -66,12 +65,12 @@ D3dBuffer::D3dBuffer( HWND const hwnd, ULONG const ulNrOfPoints )
     m_dwAlphaBlendable = 0;
     m_dwSrcBlend       = 0;
     m_dwDstBlend       = 0;
-    m_bStripMode       = TRUE;
+    m_bStripMode       = true;
     m_id3dx_font       = nullptr;
     SetFontSize( 9_PIXEL );
 }
 
-D3dBuffer::~D3dBuffer()
+D3D_driver::~D3D_driver()
 {
     try
     {
@@ -89,8 +88,8 @@ D3dBuffer::~D3dBuffer()
     m_d3d              = nullptr;
 }
 
-//lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
-PixelRect D3dBuffer::CalcGraphicsRect( std::wstring const & wstr )
+//lint -esym( 613, D3D_driver::m_id3dx_font )  possible use of null pointer
+PixelRect D3D_driver::CalcGraphicsRect( std::wstring const & wstr )
 {
 	RECT rect{ 0, 0, 0, 0 };
     assert( m_id3dx_font != nullptr );
@@ -106,7 +105,7 @@ PixelRect D3dBuffer::CalcGraphicsRect( std::wstring const & wstr )
 	return Util::RECT2PixelRect( rect );
 }
 
-void D3dBuffer::DisplayGraphicsText( PixelRect const & pixRect, std::wstring const & wstr )
+void D3D_driver::DisplayGraphicsText( PixelRect const & pixRect, std::wstring const & wstr )
 {
 	RECT rect( Util::PixelRect2RECT( pixRect ) );			  
     assert( m_id3dx_font != nullptr );
@@ -120,36 +119,37 @@ void D3dBuffer::DisplayGraphicsText( PixelRect const & pixRect, std::wstring con
         CLR_WHITE          // Color
     ); 
 }
-//lint +esym( 613, D3dBuffer::m_id3dx_font ) 
+//lint +esym( 613, D3D_driver::m_id3dx_font ) 
 
 // functions called per frame
 
-BOOL D3dBuffer::StartFrame( )
+bool D3D_driver::StartFrame( HWND const hwnd, HDC const hdc )
 {
     HRESULT hres;
+	m_hwnd = hwnd;
 	m_d3d->ResizeD3dSystem( m_hwnd ); 
-    hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, FALSE );                  if ( hres != D3D_OK ) return FALSE;
-    hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );           if ( hres != D3D_OK ) return FALSE;
-    hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );                    if ( hres != D3D_OK ) return FALSE;
-    hres = m_d3d_device->Clear( 0, nullptr, D3DCLEAR_TARGET, CLR_WHITE, 1.0f, 0 ); if ( hres != D3D_OK ) return FALSE;
-    hres = m_d3d_device->BeginScene( );                                            if ( hres != D3D_OK ) return FALSE;
+    hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, false );                  if ( hres != D3D_OK ) return false;
+    hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );           if ( hres != D3D_OK ) return false;
+    hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );                    if ( hres != D3D_OK ) return false;
+    hres = m_d3d_device->Clear( 0, nullptr, D3DCLEAR_TARGET, CLR_WHITE, 1.0f, 0 ); if ( hres != D3D_OK ) return false;
+    hres = m_d3d_device->BeginScene( );                                            if ( hres != D3D_OK ) return false;
     if ( m_bStripMode )
         m_pVertBufStripMode->ResetVertexBuffer();
     m_pVertBufPrimitives->ResetVertexBuffer();
     if ( ! setFont( ) )
-		return FALSE;
-	return TRUE;
+		return false;
+	return true;
 }
 
-BOOL D3dBuffer::setFont( )
+bool D3D_driver::setFont( )
 {
     HRESULT const hres = D3DXCreateFontIndirect( m_d3d_device, &m_d3dx_font_desc, &m_id3dx_font );   
-    if ( hres != D3D_OK )          return FALSE;
-    if ( m_id3dx_font == nullptr ) return FALSE;
-	return TRUE;
+    if ( hres != D3D_OK )          return false;
+    if ( m_id3dx_font == nullptr ) return false;
+	return true;
 }
 
-void D3dBuffer::SetFontSize( PIXEL const nPointSize )
+void D3D_driver::SetFontSize( PIXEL const nPointSize )
 {
     //
     // To create a Windows friendly font using only a point size, an 
@@ -173,7 +173,7 @@ void D3dBuffer::SetFontSize( PIXEL const nPointSize )
     setFont( );   
 }
 
-void D3dBuffer::addRect2Buffer( float const fWest, float const fNorth, float const fEast, float const fSouth, D3DCOLOR const dwColor )
+void D3D_driver::addRect2Buffer( float const fWest, float const fNorth, float const fEast, float const fSouth, D3DCOLOR const dwColor )
 {    
     m_pVertBufPrimitives->AddVertex( fWest, fNorth, dwColor );
     m_pVertBufPrimitives->AddVertex( fEast, fNorth, dwColor );
@@ -181,7 +181,7 @@ void D3dBuffer::addRect2Buffer( float const fWest, float const fNorth, float con
     m_pVertBufPrimitives->AddVertex( fWest, fSouth, dwColor );
 }
 
-void D3dBuffer::addRectangle( float const fPtPosx, float const fPtPosy, D3DCOLOR const dwColor, float const fPixSize )
+void D3D_driver::addRectangle( float const fPtPosx, float const fPtPosy, D3DCOLOR const dwColor, float const fPixSize )
 {
     addRect2Buffer
     ( 
@@ -193,7 +193,7 @@ void D3dBuffer::addRectangle( float const fPtPosx, float const fPtPosy, D3DCOLOR
     );
 }
 
-void D3dBuffer::addHexagon( float const fPtPosx, float const fPtPosy, D3DCOLOR const dwColor, float const fPixSizeX, float const fPixSizeY )
+void D3D_driver::addHexagon( float const fPtPosx, float const fPtPosy, D3DCOLOR const dwColor, float const fPixSizeX, float const fPixSizeY )
 {
 	m_pVertBufPrimitives->AddVertex( fPtPosx - fPixSizeX     - 0.5f, fPtPosy,                 dwColor );     // west
 	m_pVertBufPrimitives->AddVertex( fPtPosx - fPixSizeX / 2 - 0.5f, fPtPosy - fPixSizeY / 2, dwColor );     // north west
@@ -203,7 +203,7 @@ void D3dBuffer::addHexagon( float const fPtPosx, float const fPtPosy, D3DCOLOR c
 	m_pVertBufPrimitives->AddVertex( fPtPosx + fPixSizeX     + 0.5f, fPtPosy,                 dwColor );     // east
 }
 
-void D3dBuffer::AddIndividual( PixelPoint const ptPos, COLORREF const color, float const fPixSize )
+void D3D_driver::AddIndividual( PixelPoint const ptPos, COLORREF const color, float const fPixSize )
 {
 	static float const SQRT3 = static_cast<float>( sqrt( 3 ) );
 
@@ -225,7 +225,7 @@ void D3dBuffer::AddIndividual( PixelPoint const ptPos, COLORREF const color, flo
 	}
 }
 
-void D3dBuffer::AddBackGround( PixelPoint const ptPos, COLORREF const color, float const fPixSize )
+void D3D_driver::AddBackGround( PixelPoint const ptPos, COLORREF const color, float const fPixSize )
 {
 	static float const INVERSE_SQRT3 = static_cast<float>( 1 / sqrt( 3 ) );
 
@@ -249,27 +249,27 @@ void D3dBuffer::AddBackGround( PixelPoint const ptPos, COLORREF const color, flo
     }
 }
 
-void D3dBuffer::prepareTranspMode( )
+void D3D_driver::prepareTranspMode( )
 {
     m_d3d_device->GetRenderState( D3DRS_ALPHABLENDENABLE, & m_dwAlphaBlendable );
     m_d3d_device->GetRenderState( D3DRS_SRCBLEND,         & m_dwSrcBlend );
     m_d3d_device->GetRenderState( D3DRS_DESTBLEND,        & m_dwDstBlend );    
 
-    m_d3d_device->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+    m_d3d_device->SetRenderState( D3DRS_ALPHABLENDENABLE, true );
     m_d3d_device->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
     m_d3d_device->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );    
 
     m_pVertBufPrimitives->ResetVertexBuffer();
 }
 
-void D3dBuffer::finishTranspMode( )
+void D3D_driver::finishTranspMode( )
 {
     m_d3d_device->SetRenderState( D3DRS_ALPHABLENDENABLE, m_dwAlphaBlendable );
     m_d3d_device->SetRenderState( D3DRS_SRCBLEND, m_dwSrcBlend );
     m_d3d_device->SetRenderState( D3DRS_DESTBLEND, m_dwDstBlend );    
 }
 
-void D3dBuffer::RenderTranspRect
+void D3D_driver::RenderTranspRect
 ( 
 	PixelRect    const & rectTransparent, 
 	unsigned int const   uiALpha,
@@ -296,7 +296,7 @@ void D3dBuffer::RenderTranspRect
 	}
 }
 
-void D3dBuffer::RenderBackground( )
+void D3D_driver::RenderBackground( )
 {
     if ( m_bStripMode )
         renderTriangleStrip( );
@@ -304,12 +304,12 @@ void D3dBuffer::RenderBackground( )
         renderPrimitives( m_d3d->GetIndsIndexBuffer() );
 }
 
-void D3dBuffer::RenderIndividuals( )
+void D3D_driver::RenderIndividuals( )
 {
     renderPrimitives( m_d3d->GetIndsIndexBuffer() );
 }
 
-void D3dBuffer::renderTriangleStrip( ) const
+void D3D_driver::renderTriangleStrip( ) const
 {
 	HRESULT hres;
 
@@ -338,7 +338,7 @@ void D3dBuffer::renderTriangleStrip( ) const
     assert( hres == D3D_OK );
 }
 
-void D3dBuffer::renderPrimitives( D3dIndexBuffer const * const iBuf )
+void D3D_driver::renderPrimitives( D3dIndexBuffer const * const iBuf )
 {
 	ULONG const ulNrOfPrimitives = m_ulTrianglesPerPrimitive * m_pVertBufPrimitives->GetNrOfVertices() / m_ulVerticesPerPrimitive;
 	HRESULT hres;
@@ -365,17 +365,17 @@ void D3dBuffer::renderPrimitives( D3dIndexBuffer const * const iBuf )
 
 // Finish rendering; page flip.
 
-void D3dBuffer::EndFrame( )
+void D3D_driver::EndFrame( )
 {
     HRESULT hres;
     hres = m_d3d_device->EndScene();                                          assert(hres == D3D_OK);
     hres = m_d3d_swapChain->Present( nullptr, nullptr, m_hwnd, nullptr, 0 );  assert(hres == D3D_OK);
-    //lint -esym( 613, D3dBuffer::m_id3dx_font )  possible use of null pointer
+    //lint -esym( 613, D3D_driver::m_id3dx_font )  possible use of null pointer
     m_id3dx_font->Release();      
-    //lint +esym( 613, D3dBuffer::m_id3dx_font ) 
+    //lint +esym( 613, D3D_driver::m_id3dx_font ) 
 }
 
-D3DCOLOR D3dBuffer::COLORREFtoD3DCOLOR( unsigned int const uiALpha, COLORREF const color )
+D3DCOLOR D3D_driver::COLORREFtoD3DCOLOR( unsigned int const uiALpha, COLORREF const color )
 {
 	UINT const uiR = GetRValue ( color ); 
 	UINT const uiG = GetGValue ( color ); 

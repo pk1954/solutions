@@ -8,7 +8,7 @@
 #include "pixelCoordinates.h"
 #include "plannedActivity.h"
 #include "win32_util.h"
-#include "GraphicsInterface.h"
+#include "win32_graphicsInterface.h"
 #include "win32_displayOptions.h"
 #include "win32_gridPointShape.h"
 #include "win32_colorManager.h"
@@ -27,6 +27,7 @@ DrawFrame::DrawFrame
     DspOptWindow      * const pDspOptWindow,
 	ColorManager      * const pColorManager
 ) : 
+	m_hwnd( hwnd ),
     m_pCore( pCore ),
     m_pPixelCoordinates( pPixelCoordinates ),
     m_pDspOptWindow( pDspOptWindow ),
@@ -100,44 +101,27 @@ void DrawFrame::HighlightShape( Shape const * pShape, GridPoint const gp )
 	m_pGraphics->RenderTranspRect( rect, 128, color );  
 }
 
-void DrawFrame::DoPaint( HWND hwnd, PixelRect const & pixRect )
+void DrawFrame::DoPaint( )
 {
-    if ( IsWindowVisible( hwnd ) )
-    {
-		if ( m_pGraphics->StartFrame( ) )
+	drawBackground( );
+
+	if ( m_pDspOptWindow->AreIndividualsVisible( ) )
+	{
+		GridRect const rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hwnd ) ) );
+		drawPOI( m_pCore->FindPOI( ) );
+		drawIndividuals( rcGrid );
+		drawText( rcGrid );
+		if ( m_pShapeHighlight != nullptr )
 		{
-			drawBackground( );
-
-			if ( m_pDspOptWindow->AreIndividualsVisible( ) )
+			HighlightShape( m_pShapeHighlight, m_gpHighlight );
+			GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( m_gpHighlight );
+			if ( gpReferenced.IsNotNull() )
 			{
-				PixelRect const pixRect( Util::GetClPixelRect( hwnd ) );
-				GridRect  const rcGrid( m_pPixelCoordinates->Pixel2GridRect( pixRect ) );
-				drawPOI( m_pCore->FindPOI( ) );
-				drawIndividuals( rcGrid );
-				drawText( rcGrid );
-				if ( m_pShapeHighlight != nullptr )
-				{
-					HighlightShape( m_pShapeHighlight, m_gpHighlight );
-					GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( m_gpHighlight );
-					if ( gpReferenced.IsNotNull() )
-					{
-						Shape const & shapeReferenced = m_gridPointShape->GetIndividualShape().GetLeftColumn().GetIdentifierShape();
-						HighlightShape( & shapeReferenced, gpReferenced );
-					}
-				}
+				Shape const & shapeReferenced = m_gridPointShape->GetIndividualShape().GetLeftColumn().GetIdentifierShape();
+				HighlightShape( & shapeReferenced, gpReferenced );
 			}
-
-			COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
-
-			if ( m_pCore->SelectionIsNotEmpty() )
-				m_pGraphics->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), 64, color );  
-
-			if ( pixRect.IsNotEmpty( ) )
-				m_pGraphics->RenderTranspRect( pixRect, 128, color );  
-
-			m_pGraphics->EndFrame( );
 		}
-    }
+	}
 }
 
 void DrawFrame::drawBackground( )

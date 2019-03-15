@@ -1,4 +1,4 @@
-// d3d_buffer.h : 
+// D3D_driver.h : 
 //
 
 #pragma once
@@ -8,18 +8,18 @@
 #include "d3dx9core.h"
 #include "PixelTypes.h"
 #include "win32_util.h"
-#include "GraphicsInterface.h"
+#include "win32_graphicsInterface.h"
 #include "d3d_system.h"
 #include "d3d_vertexBuffer.h"
 
-class D3dBuffer: public GraphicsInterface
+class D3D_driver: public GraphicsInterface
 {
 public:
 
-    D3dBuffer( HWND const, ULONG const );
-    ~D3dBuffer();
+    D3D_driver( ULONG const );
+    ~D3D_driver();
 
-    virtual BOOL      StartFrame( );
+    virtual bool      StartFrame( HWND const, HDC const  );
     virtual void      SetFontSize( PIXEL const );
     virtual void      AddIndividual( PixelPoint const, COLORREF const, float const );    
     virtual void      AddBackGround( PixelPoint const, COLORREF const, float const );    
@@ -35,7 +35,7 @@ public:
 		ApplyOp( m_bStripMode, bOp ); 
 	};
 
-    virtual BOOL GetStripMode( ) 
+    virtual bool GetStripMode( ) 
 	{ 
 		return m_bStripMode; 
 	};
@@ -63,7 +63,7 @@ private:
 
     static D3DXFONT_DESC    m_d3dx_font_desc;  // identical for all buffers, even on systems with multiple displays
 
-    BOOL setFont( );
+    bool setFont( );
     void addRectangle( float const, float const, D3DCOLOR const, float const );    
     void addHexagon  ( float const, float const, D3DCOLOR const, float const, float const );    
     void addRect2Buffer( float const, float const, float const, float const, D3DCOLOR const );

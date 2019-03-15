@@ -5,6 +5,7 @@
 
 #include "win32_baseWindow.h"
 
+class GraphicsInterface;
 class DrawFrame;
 class PixelCoordinates;
 class WorkThreadInterface;
@@ -32,7 +33,7 @@ public:
     GridWindow( );
     ~GridWindow( );
 
-    void Start( DWORD const, PIXEL const );
+    void Start( GraphicsInterface * const, DWORD const, PIXEL const );
 
     void  Size( );
 	void  Zoom( bool const );
@@ -61,6 +62,7 @@ private:
     static FocusPoint          * m_pFocusPoint;
 	static ColorManager        * m_pColorManager;
 
+	GraphicsInterface * m_pGraphics;
     PixelCoordinates  * m_pPixelCoordinates;   // My own PixelCoordinates
     GridWindow        * m_pGridWindowObserved; // Observed GridWindow (or nullptr)
     ObserverInterface * m_pObserverInterface;

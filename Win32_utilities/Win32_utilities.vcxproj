@@ -147,12 +147,12 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GraphicsInterface.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="win32_baseDialog.h" />
     <ClInclude Include="win32_baseWindow.h" />
     <ClInclude Include="win32_clut.h" />
+    <ClInclude Include="win32_graphicsInterface.h" />
     <ClInclude Include="win32_refreshRateDialog.h" />
     <ClInclude Include="win32_textBuffer.h" />
     <ClInclude Include="win32_event.h" />

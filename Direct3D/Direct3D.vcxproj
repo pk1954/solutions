@@ -23,6 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Direct3D</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <ProjectName>D3D_driver</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -155,7 +156,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="d3d_buffer.h" />
+    <ClInclude Include="D3D_driver.h" />
     <ClInclude Include="d3d_indexBuffer.h" />
     <ClInclude Include="d3d_system.h" />
     <ClInclude Include="d3d_vertexBuffer.h" />
@@ -163,7 +164,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="d3d_buffer.cpp" />
+    <ClCompile Include="D3D_driver.cpp" />
     <ClCompile Include="d3d_indexBuffer.cpp" />
     <ClCompile Include="d3d_system.cpp" />
     <ClCompile Include="d3d_vertexBuffer.cpp" />

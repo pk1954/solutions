@@ -1,4 +1,4 @@
-// d3d_buffer.cpp
+// d3d_system.cpp
 //
 
 #include "stdafx.h"

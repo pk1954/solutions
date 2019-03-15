@@ -5,6 +5,7 @@
 
 #include <algorithm>  // min/max/abs templates
 #include <iostream>
+#include "NamedType.h"
 
 using std::abs;
 using std::max;
@@ -135,9 +136,11 @@ template <typename BASE_TYPE>
 class PosType: public PointType<BASE_TYPE, struct pos_tag> 
 {
 public:
-	using PointType::PointType;
+	using PointType<BASE_TYPE, struct pos_tag>::PointType;
 
-	PosType( PointType const & p ) : PointType( p )	{}
+	PosType( PointType<BASE_TYPE, struct pos_tag> const & p ) 
+		: PointType<BASE_TYPE, struct pos_tag>( p )	
+	{}
 };
 
 // SizeType: A specialized PointType used to denote the size of something
@@ -146,7 +149,9 @@ template <typename BASE_TYPE>
 class SizeType: public PointType<BASE_TYPE, struct siz_tag> 
 {
 public:
-	using PointType::PointType;
+	using PointType<BASE_TYPE, struct siz_tag>::PointType;
 
-	SizeType( PointType const & p ) : PointType( p ) {}
+	SizeType( PointType<BASE_TYPE, struct siz_tag> const & p ) 
+		: PointType<BASE_TYPE, struct siz_tag>( p ) 
+	{}
 };

@@ -78,7 +78,7 @@
     <ClInclude Include="win32_util_resource.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsInterface.h">
+    <ClInclude Include="win32_graphicsInterface.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

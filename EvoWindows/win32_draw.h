@@ -40,7 +40,7 @@ public:
     ~DrawFrame( );
 
     void ResizeDrawFrame( );
-    void DoPaint( HWND, PixelRect const & );
+    void DoPaint( );
     void SetStripMode( tBoolOp );
 	bool SetHighlightPos( PixelPoint const );
 	void HighlightShape( Shape const *, GridPoint const );
@@ -53,6 +53,7 @@ private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
     DrawFrame & operator= ( DrawFrame const & );  // noncopyable class 
 
+	HWND                const m_hwnd;
     EvolutionCore     * const m_pCore;
     PixelCoordinates  * const m_pPixelCoordinates;
     DspOptWindow      * const m_pDspOptWindow;

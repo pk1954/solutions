@@ -5,7 +5,7 @@
 #include <sstream> 
 #include "EvolutionCore.h"
 #include "pixelCoordinates.h"
-#include "GraphicsInterface.h"
+#include "win32_graphicsInterface.h"
 
 class TextDisplay
 {
