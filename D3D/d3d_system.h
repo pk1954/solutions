@@ -21,7 +21,8 @@ public:
     D3dIndexBuffer const * GetIndsIndexBuffer( )        const { return m_d3d_pIndexBufIndividuals; };
     D3dIndexBuffer const * GetRectIndexBuffer( )        const { return m_d3d_pIndexBufRect; };
 
-	static BOOL GetHexagonMode( ) { return m_bHexagon; };
+	static BOOL  GetHexagonMode() { return m_bHexagon; };
+	static ULONG GetNrOfPoints() { return _d3d_.m_ulWidth * _d3d_.m_ulHeight; }
 
 private:
     void createDevice( HWND const, ULONG const, ULONG const );
@@ -34,6 +35,9 @@ private:
 	void rectangleIndices( ULONG * const, ULONG const );
 	void hexagonIndices  ( ULONG * const, ULONG const );
 
+	ULONG m_ulWidth;  // horizontal number of objects
+	ULONG m_ulHeight; // vertical number of objects
+
     IDirect3D9       * m_d3d_object;
     IDirect3DDevice9 * m_d3d_device;
 
@@ -44,7 +48,7 @@ private:
     D3dIndexBuffer      * m_d3d_pIndexBufIndividuals; 
     D3dIndexBuffer      * m_d3d_pIndexBufRect;    // index buffer for one rectangle 
 
-    INT  m_iNrSwapChainsInUse;
+    INT m_iNrSwapChainsInUse;
 
 	static BOOL m_bHexagon;
     static D3dSystem _d3d_;

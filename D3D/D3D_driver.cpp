@@ -31,11 +31,12 @@ D3DXFONT_DESC D3D_driver::m_d3dx_font_desc =
     L""                        //  FaceName
 };
 
-D3D_driver::D3D_driver( ULONG const ulNrOfPoints ) 
+D3D_driver::D3D_driver( ) 
 {
     HRESULT hres;
 
-    m_d3d  = D3dSystem::GetSystem( );
+    m_d3d = D3dSystem::GetSystem( );
+    ULONG const ulNrOfPoints = m_d3d->GetNrOfPoints();
 
 	m_ulTrianglesPerPrimitive = m_d3d->GetHexagonMode( ) ? 4 : 2; // Hexagon is made of 4 triangles, rect of 2 triangles
 	m_ulVerticesPerPrimitive  = m_d3d->GetHexagonMode( ) ? 6 : 4; // Hexagon has 6 vertices, rect has 4

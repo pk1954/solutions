@@ -46,7 +46,6 @@ DrawFrame::DrawFrame
 
 DrawFrame::~DrawFrame( ) 
 { 
-    delete m_pGraphics;
     m_pGraphics = nullptr;
 };
 

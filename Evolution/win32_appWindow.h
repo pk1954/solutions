@@ -29,6 +29,7 @@ class EvoHistorySysGlue;
 class EvoController;
 class HistorySystem;
 class ColorManager;
+class GraphicsInterface;
 
 //lint -esym( 1712, AppWindow )  no default constructor for class 
 
@@ -69,6 +70,7 @@ private:
 	EvoController       * m_pEvoController;
     ScriptHook          * m_pScriptHook;
 	ColorManager        * m_pColorManager;
+	GraphicsInterface   * m_pGraphics;
     
     // History 
     HistorySystem       * m_pHistorySystem;

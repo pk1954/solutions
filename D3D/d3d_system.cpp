@@ -22,6 +22,8 @@ void D3dSystem::Create_D3D_Device( HWND const hwndApp, ULONG const ulWidth, ULON
 {
 	Stopwatch stopwatch;
 	stopwatch.Start();
+	_d3d_.m_ulWidth  = ulWidth;
+	_d3d_.m_ulHeight = ulHeight;
 	m_bHexagon                 = bHexagon;
 	_d3d_.m_d3d_device         = nullptr;
 	_d3d_.m_iNrSwapChainsInUse = 0;

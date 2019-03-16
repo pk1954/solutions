@@ -16,7 +16,7 @@ class D3D_driver: public GraphicsInterface
 {
 public:
 
-    D3D_driver( ULONG const );
+    D3D_driver();
     ~D3D_driver();
 
     virtual bool      StartFrame( HWND const, HDC const  );
