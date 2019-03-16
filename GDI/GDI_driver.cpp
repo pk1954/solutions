@@ -38,30 +38,31 @@ void GDI_driver::SetFontSize( PIXEL const nPointSize )
 {
 }
 
-void GDI_driver::AddIndividual( PixelPoint const ptPos, COLORREF const color, float const fPixSize )
+RECT GDI_driver::getRECT( PixelPoint const ptPos, float const fPixSizeHalf )
 {
     float const fPtPosx = static_cast<float>( ptPos.GetXvalue() );
     float const fPtPosy = static_cast<float>( ptPos.GetYvalue() );
 
-    PIXEL_X pixStartX { static_cast<PIXEL>(CastToLong(fPtPosx - fPixSize)) };
-    PIXEL_Y pixStartY { static_cast<PIXEL>(CastToLong(fPtPosy - fPixSize)) };
-    PIXEL_X pixEndX   { static_cast<PIXEL>(CastToLong(fPtPosx + fPixSize)) };
-	PIXEL_Y pixEndY   { static_cast<PIXEL>(CastToLong(fPtPosy + fPixSize)) };
+    PIXEL_X pixStartX { static_cast<PIXEL>(CastToLong(fPtPosx - fPixSizeHalf)) };
+    PIXEL_Y pixStartY { static_cast<PIXEL>(CastToLong(fPtPosy - fPixSizeHalf)) };
+    PIXEL_X pixEndX   { static_cast<PIXEL>(CastToLong(fPtPosx + fPixSizeHalf)) };
+	PIXEL_Y pixEndY   { static_cast<PIXEL>(CastToLong(fPtPosy + fPixSizeHalf)) };
 
 	PixelRect const pixRect{ pixStartX, pixStartY, pixEndX, pixEndY };
 	RECT      const rect = Util::PixelRect2RECT( pixRect );
-	HBRUSH    const hBrush = CreateSolidBrush( color );
-	FillRect( m_hDC, & rect, hBrush );
-	DeleteObject( hBrush );
+	return rect;
+}
+
+void GDI_driver::AddIndividual( PixelPoint const ptPos, COLORREF const color, float const fPixSizeHalf )
+{
+    SetBkColor( m_hDC, color );
+    Util::FastFill( m_hDC, getRECT( ptPos, fPixSizeHalf ) );
 }
 
 void GDI_driver::AddBackGround( PixelPoint const ptPos, COLORREF const color, float const fPixSize )
 {
-	float const fPtPosx = static_cast<float>( ptPos.GetXvalue() );
-    float const fPtPosy = static_cast<float>( ptPos.GetYvalue() );
-
-	float const fPixSizeHalf = fPixSize / 2;
-
+    SetBkColor( m_hDC, color );
+    Util::FastFill( m_hDC, getRECT( ptPos, fPixSize / 2 ) );
 }
 
 void GDI_driver::RenderTranspRect

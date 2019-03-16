@@ -39,6 +39,9 @@ public:
 	};
 
 private:
-	HDC  m_hDC;
-    bool m_bStripMode;
+	RECT getRECT( PixelPoint const, float const );
+
+	HDC    m_hDC;
+	HBRUSH m_brush;
+    bool   m_bStripMode;
 };

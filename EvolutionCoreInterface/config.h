@@ -79,7 +79,7 @@ public:
         interactionPayOff_P,  // Gegenseitige Defektion führt nur zu P (Penalty). 
 		// misc
 		nrOfNeighbors,        // 6 neighbors: hexagon grid, 4 or 8 neighbors: rectangle grid
-		stripMode,            // 1: strip mode on, 0: strip mode off - see Direct3D
+		stripMode,            // 1: strip mode on, 0: strip mode off - see D3D
 		dimmMode,             // 1: dimm mode on, 0: dimm mode off - see DrawFrame
 		generationDelay       // initial delay between generations in ms
     };

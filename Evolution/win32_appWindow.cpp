@@ -175,8 +175,8 @@ void AppWindow::Start(  )
 
 	stopwatch.Start();
 	GraphicsInterface * pGraphics = new D3D_driver( GridDimensions::GetGridArea() );
-	m_pMainGridWindow     ->Start( new GDI_driver(), WS_CHILD       | WS_CLIPSIBLINGS | WS_VISIBLE,             16_PIXEL );
-    m_pMiniGridWindow     ->Start( new GDI_driver(), WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
+	m_pMainGridWindow     ->Start( pGraphics, WS_CHILD       | WS_CLIPSIBLINGS | WS_VISIBLE,             16_PIXEL );
+    m_pMiniGridWindow     ->Start( pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
     m_pHistInfoWindow     ->Start( hwndApp, m_pHistorySystem );
 	m_pEvoHistGlue        ->Start( m_pEvolutionCore, m_pHistorySystem, true, m_pHistInfoWindow );
 	m_pEvoHistWindow      ->Start( hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );

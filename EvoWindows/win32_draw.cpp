@@ -143,10 +143,10 @@ void DrawFrame::drawBackground( )
 	m_pGraphics->RenderBackground( );
 }
 
-void DrawFrame::addPrimitive( GridPoint const gp, COLORREF const color, float const fPixSize ) const
+void DrawFrame::addPrimitive( GridPoint const gp, COLORREF const color, float const fPixSizeHalf ) const
 {
     if ( gp.IsNotNull( ) )
-		m_pGraphics->AddIndividual( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), color, fPixSize );
+		m_pGraphics->AddIndividual( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), color, fPixSizeHalf );
 }
 
 void DrawFrame::drawPOI( GridPoint const gpPoi )
