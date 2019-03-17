@@ -35,10 +35,7 @@ public:
     virtual tManipulator   GetBrushManipulator      ( ) const = 0;
     virtual GRID_COORD     GetBrushSize             ( ) const = 0;
     virtual tBrushMode     GetBrushMode             ( ) const = 0;
-	virtual GridRect       GetSelection             ( ) const = 0;
 	virtual bool           GetSimulationMode        ( ) const = 0;
-	virtual bool           SelectionIsEmpty         ( ) const = 0;
-	virtual bool           SelectionIsNotEmpty      ( ) const = 0;
 
     virtual bool           IsDead       ( GridPoint const ) const = 0;
     virtual bool           IsAlive      ( GridPoint const ) const = 0;
@@ -64,10 +61,6 @@ public:
 
     virtual PlannedActivity const & GetPlan( )  const = 0;
 
-    virtual BYTES GetCoreSize( ) const = 0;
-
-// point of interest
-
     virtual IND_ID    GetPoiId( )                const = 0;
     virtual bool      IsPoiDefined( )            const = 0; 
     virtual bool      IsPoiId( IND_ID const & )  const = 0;
@@ -77,12 +70,10 @@ public:
 // manipulating functions
 
     virtual void Compute            ( ) = 0;
-	virtual void ResetSelection     ( ) = 0;
     virtual void ResetAll           ( ) = 0;
     virtual void ClearPoi           ( ) = 0;
     virtual void SetPoi             ( GridPoint    const   ) = 0;
     virtual void SetSimulationMode  ( tBoolOp      const   ) = 0;
-	virtual void SetSelection       ( GridRect     const & ) = 0;
     virtual void SetBrushManipulator( tManipulator const   ) = 0;
     virtual void SetBrushShape      ( tShape       const   ) = 0;
     virtual void SetBrushRadius     ( GRID_COORD   const   ) = 0;
@@ -93,8 +84,9 @@ public:
     // static functions
     
     static EvolutionCore * InitClass( int const, ObserverInterface * const, EventInterface * const );
-    static EvolutionCore * CreateCore( );
-    
+    static EvolutionCore * CreateCore();
+ 	static BYTES           GetCoreSize();
+   
 	static unsigned int GetNrInteractionsWithKnownCulprit( );
     static unsigned int GetNrInteractionsWithUnknownCulprit( );
     static unsigned int GetMaxPartnerMemory( );

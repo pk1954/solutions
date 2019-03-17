@@ -6,6 +6,7 @@
 #include "Strsafe.h"
 #include "XArray.h"
 #include "gridRect.h"
+#include "gridSelection.h"
 #include "EvolutionCore.h"
 #include "EvoStatistics.h"
 #include "win32_baseWindow.h"
@@ -50,7 +51,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 	m_pStatistics->Initialize    // aquire and prepare data 
 	( 
 		m_pCore,
-		m_pCore->GetSelection(),
+		GridSelection::GetSelection(),
 		& textBuf 
 	); 
 

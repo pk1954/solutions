@@ -30,6 +30,11 @@ EvolutionCore * EvolutionCore::CreateCore( )
     return new EvolutionCoreImpl( );
 }
 
+BYTES EvolutionCore::GetCoreSize() 
+{ 
+	return BYTES(sizeof(EvolutionCoreImpl)) + Grid::GetGridExtraSize(); 
+};
+
 unsigned int EvolutionCore::GetMaxPartnerMemory( )
 { 
 	return StrategyData::GetMaxPartnerMemory( ).GetValue( ); 

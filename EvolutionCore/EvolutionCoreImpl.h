@@ -34,6 +34,8 @@ public:
 	EvolutionCoreImpl( );
     ~EvolutionCoreImpl( );
 
+	// write access
+
 	void EvolutionCoreImpl::CopyEvolutionCoreData( EvolutionCore const * const src )
 	{
 		* this = * static_cast<EvolutionCoreImpl const *>( src );
@@ -41,20 +43,25 @@ public:
 
     virtual void Compute( );
     
+	virtual void ResetAll();
+
+	virtual void SetBrushMode       ( tBrushMode   const mode  ) { m_brush.SetBrushMode  ( mode  );  }
+	virtual void SetBrushManipulator( tManipulator const op    ) { m_brush.SetManipulator( op    );  }
+	virtual void SetBrushShape      ( tShape       const shape ) { m_brush.SetShape      ( shape );  }
+    virtual void SetBrushRadius     ( GRID_COORD   const rad   ) { m_brush.SetRadius     ( rad   );  }
+    virtual void SetBrushIntensity  ( PERCENT      const perc  ) { m_brush.SetIntensity  ( perc  );  }
+    virtual void SetSimulationMode  ( tBoolOp      const op    ) { ApplyOp( m_bSimulationMode, op ); }
+    virtual void ModelDoEdit        ( GridPoint    const gp )    { (m_brush)( gp ); }
+	virtual void SetPoi             ( GridPoint    const );
+	virtual void ClearPoi           ( )                          { m_idPOI.Set2Null( ); }
+
+	virtual PlannedActivity * GetPlan4Writing( )       { return & m_plan; };
+
+	// read access
+
 	virtual void DumpGridPointList( ) const;
 
-	virtual void           ResetAll();
-
-	virtual void           SetBrushMode       ( tBrushMode   const mode  ) { m_brush.SetBrushMode  ( mode  );  }
-	virtual void           SetBrushManipulator( tManipulator const op    ) { m_brush.SetManipulator( op    );  }
-	virtual void           SetBrushShape      ( tShape       const shape ) { m_brush.SetShape      ( shape );  }
-    virtual void           SetBrushRadius     ( GRID_COORD   const rad   ) { m_brush.SetRadius     ( rad   );  }
-    virtual void           SetBrushIntensity  ( PERCENT      const perc  ) { m_brush.SetIntensity  ( perc  );  }
-    virtual void           SetSimulationMode  ( tBoolOp      const op    ) { ApplyOp( m_bSimulationMode, op ); }
-
-    virtual void           ModelDoEdit        ( GridPoint  const gp )    { (m_brush)( gp ); }
-
-	virtual bool           GetSimulationMode  ( ) const { return m_bSimulationMode; }
+	virtual bool           GetSimulationMode( )                const { return m_bSimulationMode; }
 
     virtual EVO_GENERATION GetAge       ( GridPoint const gp ) const { return m_grid.GetAge( gp ); }
 
@@ -84,23 +91,12 @@ public:
     virtual GRID_COORD     GetBrushSize       ( ) const { return m_brush.GetRadius(); }
     virtual tBrushMode     GetBrushMode       ( ) const { return m_brush.GetBrushMode(); }
 
-	virtual void     ResetSelection( )                       { m_gridRectSelection.Reset(); };
-	virtual void     SetSelection  ( GridRect const & rect ) { m_gridRectSelection = rect; }
-
-	virtual GridRect GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GridDimensions::GridRectFull() : m_gridRectSelection; }
-	virtual bool     SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
-	virtual bool     SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
-
 	virtual IND_ID   GetPoiId    ( )                      const { return m_idPOI; }
 	virtual bool     IsPoiDefined( )                      const { return m_idPOI.IsNotNull( ); }
 	virtual bool     IsPoiId     ( IND_ID    const & id ) const { return m_idPOI == id; }
 	virtual bool     IsPoi       ( GridPoint const   gp ) const { return ( gp.IsNotNull( ) && ( GetId( gp ) == m_idPOI ) ); }
-	virtual void     ClearPoi    ( )                            { m_idPOI.Set2Null( ); }
 	 
     virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
-    virtual PlannedActivity       * GetPlan4Writing( )       { return & m_plan; };
-
-	virtual BYTES GetCoreSize() const { return BYTES(sizeof(EvolutionCoreImpl)) + m_grid.GetGridExtraSize(); };
 
 	virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
 
@@ -113,14 +109,12 @@ public:
 		return m_grid.GetActionCounter( strategy, action );
 	}
 
-	virtual void      SetPoi( GridPoint const );
     virtual GridPoint FindPOI( ) const;
 	virtual GridPoint FindGridPoint( IND_ID const & ) const; 
 
 private:
     static ObserverInterface * m_pObservers;    // GUI call back for display of current model 
 	static EventInterface    * m_pEventPOI;
-	static GridRect            m_gridRectSelection;
 
 	Grid            m_grid;	
     PlannedActivity m_plan;

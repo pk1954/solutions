@@ -16,7 +16,6 @@
 
 ObserverInterface * EvolutionCoreImpl::m_pObservers = nullptr;    // GUI call back for display of current model 
 EventInterface    * EvolutionCoreImpl::m_pEventPOI  = nullptr;
-GridRect            EvolutionCoreImpl::m_gridRectSelection = GridRect::ZERO_VAL();
 
 EvolutionCoreImpl::EvolutionCoreImpl( ) :
 	m_brush( & m_grid )

@@ -8,6 +8,7 @@
 #include "PixelTypes.h"
 #include "pixelCoordinates.h"
 #include "GridDimensions.h"
+#include "gridSelection.h"
 #include "EvolutionCore.h"
 #include "win32_util.h"
 #include "win32_draw.h"
@@ -128,7 +129,7 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 
 	m_pDrawFrame->AddContextMenuEntries( hPopupMenu, pntPos );
 
-    if ( m_pCore->SelectionIsEmpty() )
+    if ( GridSelection::SelectionIsEmpty() )
     {
         (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_FIT_ZOOM, L"Fit Grid Area" );
     }
@@ -178,7 +179,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
             PixelPoint ptOther = m_pCore->IsPoiDefined( ) 
 				                 ? m_pPixelCoordinates->Grid2PixelPosCenter( m_pCore->FindPOI( ) ) * 2 - ptCrsr 
 				                 : m_ptLast;
-			m_pCore->SetSelection( m_pPixelCoordinates->Pixel2GridRect( PixelRect( ptOther, ptCrsr ) ) );
+			GridSelection::SetSelection( m_pPixelCoordinates->Pixel2GridRect( PixelRect( ptOther, ptCrsr ) ) );
         }
         else                                // first time here after RBUTTON pressed
         {
@@ -249,8 +250,8 @@ void GridWindow::doPaint( )
 
 			COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
 
-			if ( m_pCore->SelectionIsNotEmpty() )
-				m_pGraphics->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( m_pCore->GetSelection() ), 64, color );  
+			if ( GridSelection::SelectionIsNotEmpty() )
+				m_pGraphics->RenderTranspRect( m_pPixelCoordinates->Grid2PixelRect( GridSelection::GetSelection() ), 64, color );  
 
 			if ((m_pGridWindowObserved != nullptr) && CrsrInClientRect())   // if I observe someone and cursor is in client area, show its position
 			{
@@ -366,7 +367,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         return FALSE;
 
     case WM_LBUTTONDOWN:
-        if ( m_pCore->SelectionIsEmpty() )
+        if ( GridSelection::SelectionIsEmpty() )
         {
             SetCapture( );
             if ( inObservedClientRect( lParam ) || m_bMoveAllowed )
@@ -374,7 +375,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         }
 		else
 		{
-			m_pCore->ResetSelection( );
+			GridSelection::ResetSelection( );
 			PostCommand2Application( IDM_REFRESH, 0 );
 		}
         SetFocus( );
@@ -446,7 +447,7 @@ void GridWindow::SetFieldSize( PIXEL const pixFieldSize )
 
 void GridWindow::Fit2Rect( )
 {
-	GridRect gridRect = m_pCore->GetSelection();
+	GridRect gridRect = GridSelection::GetSelection();
 
 	newFieldSize
 	( 
@@ -454,7 +455,7 @@ void GridWindow::Fit2Rect( )
 		gridRect.GetCenter() 
 	);
 
-	m_pCore->ResetSelection( );
+	GridSelection::ResetSelection( );
 }
 
 void GridWindow::Zoom( bool const bZoomIn )	
@@ -469,7 +470,7 @@ void GridWindow::ToggleStripMode( )
 
 void GridWindow::Escape( ) 
 { 
-	m_pCore->ResetSelection( ); 
+	GridSelection::ResetSelection( ); 
 }
 
 PIXEL GridWindow::GetFieldSize( ) const

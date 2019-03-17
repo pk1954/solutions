@@ -64,5 +64,8 @@
     <ClInclude Include="action.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="gridSelection.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
