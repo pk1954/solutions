@@ -46,6 +46,7 @@ void EvoStatistics::Initialize( TextBuffer * const pTextBuf )
 
 void EvoStatistics::aquireData( GridPoint const & gp )
 {
+	EVO_GENERATION evoGen { m_pCore->GetEvoGenerationNr() };
 	Strategy::Id   const strategy { m_pCore->GetStrategyId( gp ) };
 	EVO_GENERATION const age      { m_pCore->GetAge( gp ) };
 	MEM_INDEX      const memSize  { m_pCore->GetMemSize( gp ) };
@@ -77,6 +78,11 @@ void EvoStatistics::aquireData( GridPoint const & gp )
 		m_gsAverageAge[strategy] += age.GetValue();
 		m_gsAverageAge.Add( strategy, age.GetValue() );
 		m_gsCounter.Add( strategy, 1 );
+	}
+	EVO_GENERATION evoGenNew { m_pCore->GetEvoGenerationNr() };
+	if (evoGen != evoGenNew)
+	{
+		volatile int x = 42;
 	}
 }
 
