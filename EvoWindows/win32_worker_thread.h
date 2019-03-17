@@ -1,4 +1,6 @@
 // win32_worker_thread.h
+//
+// EvoWindows
 
 #pragma once
 
@@ -29,35 +31,43 @@ class ObserverInterface;
 class EvoHistorySysGlue;
 class WorkThreadInterface;
 
+class WorkerThreadMessage
+{
+public:
+	enum class Id : UINT
+	{
+		REFRESH = WM_APP,
+		STOP,
+		REPEAT_GENERATION_STEP,  // only used internaly, not part of procedural interface
+		GOTO_GENERATION,
+		GENERATION_RUN,
+		SET_POI,
+		DO_EDIT,
+		SET_BRUSH_RADIUS,
+		SET_BRUSH_INTENSITY,
+		SET_BRUSH_SHAPE,
+		SET_BRUSH_OPERATOR,
+		SET_BRUSH_MODE,
+		SET_STRATEGY_COLOR,
+		SET_SELECTION_COLOR,
+		SET_HIGHLIGHT_COLOR,
+		PROCESS_SCRIPT,
+		SET_SIMULATION_MODE,
+		RESET_MODEL,
+		FIRST = REFRESH,
+		LAST = RESET_MODEL
+	};
+
+	static BOOL IsValid( UINT msg )
+	{
+		Id const workerMsg = static_cast<Id>( msg );
+		return (WorkerThreadMessage::Id::FIRST <= workerMsg) && (workerMsg <= WorkerThreadMessage::Id::LAST);
+	}
+};
+
 class WorkThread: public Util::Thread
 {
 public:
-	enum WorkerThreadMessage : UINT
-	{
-		THREAD_MSG_REFRESH = WM_APP,
-		THREAD_MSG_STOP,
-		THREAD_MSG_REPEAT_GENERATION_STEP,  // only used internaly, not part of procedural interface
-		THREAD_MSG_GOTO_GENERATION,
-		THREAD_MSG_GENERATION_RUN,
-		THREAD_MSG_SET_POI,
-		THREAD_MSG_DO_EDIT,
-		THREAD_MSG_SET_BRUSH_RADIUS,
-		THREAD_MSG_SET_BRUSH_INTENSITY,
-		THREAD_MSG_SET_BRUSH_SHAPE,
-		THREAD_MSG_SET_BRUSH_OPERATOR,
-		THREAD_MSG_SET_BRUSH_MODE,
-		THREAD_MSG_SET_STRATEGY_COLOR,
-		THREAD_MSG_SET_SELECTION_COLOR,
-		THREAD_MSG_SET_HIGHLIGHT_COLOR,
-		THREAD_MSG_PROCESS_SCRIPT,
-		THREAD_MSG_SET_SIMULATION_MODE,
-		THREAD_MSG_RESET_MODEL,
-		THREAD_MSG_FIRST = THREAD_MSG_REFRESH,
-		THREAD_MSG_LAST = THREAD_MSG_RESET_MODEL
-	};
-
-	BOOL IsValidThreadMessage( UINT );
-
 	WorkThread( );
 	~WorkThread( );
 
@@ -78,7 +88,7 @@ public:
 	
 	// WorkMessage - process incoming messages from main thread
 
-	void WorkMessage( UINT const, WPARAM const, LPARAM const );
+	void WorkMessage( WorkerThreadMessage::Id const, WPARAM const, LPARAM const );
 	void WorkMessage( MSG const );
 
 	void GenerationStep( );

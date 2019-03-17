@@ -57,7 +57,7 @@ void WorkThreadInterface::postGotoGeneration( HIST_GENERATION const gen )
 {
     assert( gen >= 0 );
 
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_GOTO_GENERATION, 0, static_cast<LPARAM>(gen.GetLong()) );
+    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::GOTO_GENERATION, 0, static_cast<LPARAM>(gen.GetLong()) );
 }
 
 // procedural interface of worker thread
@@ -76,14 +76,14 @@ void WorkThreadInterface::PostReset( BOOL bResetHistSys )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << (bResetHistSys ? 1 : 0) << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_RESET_MODEL, bResetHistSys, 0 );
+    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::RESET_MODEL, bResetHistSys, 0 );
 }
 
 void WorkThreadInterface::PostRefresh( LPARAM const lParam )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_REFRESH, 0, lParam );
+    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::REFRESH, 0, lParam );
 }
 
 void WorkThreadInterface::PostSetPOI( GridPoint const gp )
@@ -92,7 +92,7 @@ void WorkThreadInterface::PostSetPOI( GridPoint const gp )
     {
         if ( m_bTrace )
             * m_pTraceStream << __func__ << L" " << gp << endl;
-        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_POI, gp.GetXvalue(), gp.GetYvalue() );
+        m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_POI, gp.GetXvalue(), gp.GetYvalue() );
     }
 }
 
@@ -102,7 +102,7 @@ void WorkThreadInterface::PostDoEdit( GridPoint const gp )
     {
         if ( m_bTrace )
             * m_pTraceStream << __func__ << L" " << gp << endl;
-        m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_DO_EDIT, gp.GetXvalue(), gp.GetYvalue() );
+        m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::DO_EDIT, gp.GetXvalue(), gp.GetYvalue() );
     }
 }
 
@@ -110,21 +110,21 @@ void WorkThreadInterface::PostSetBrushIntensity( PERCENT const intensity )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << intensity << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_INTENSITY, intensity.GetValue(), 0 );
+    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_BRUSH_INTENSITY, intensity.GetValue(), 0 );
 }
 
 void WorkThreadInterface::PostSetBrushRadius( GRID_COORD const radius )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << radius << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_RADIUS, radius.GetValue(), 0 );
+    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_BRUSH_RADIUS, radius.GetValue(), 0 );
 }
 
 void WorkThreadInterface::PostSetBrushMode( tBrushMode const mode )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetBrushModeName( mode ) << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_MODE, static_cast<WPARAM>( mode ), 0 );
+    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_BRUSH_MODE, static_cast<WPARAM>( mode ), 0 );
 }
 
 void WorkThreadInterface::PostSetSimulationMode( tBoolOp const op )
@@ -132,21 +132,21 @@ void WorkThreadInterface::PostSetSimulationMode( tBoolOp const op )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetBoolOpName( op ) << endl;
 	PostStopComputation( );
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_SIMULATION_MODE, static_cast<WPARAM>( op ), 0 );
+    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_SIMULATION_MODE, static_cast<WPARAM>( op ), 0 );
 }
 
 void WorkThreadInterface::PostSetBrushShape( tShape const shape )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetShapeName( shape ) << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_SHAPE, static_cast<WPARAM>( shape ), 0 );
+    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_BRUSH_SHAPE, static_cast<WPARAM>( shape ), 0 );
 }
 
 void WorkThreadInterface::PostSetBrushManipulator( tManipulator const op )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetManipulatorName( op ) << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_BRUSH_OPERATOR, static_cast<WPARAM>( op ), 0 );
+    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_BRUSH_OPERATOR, static_cast<WPARAM>( op ), 0 );
 }
 
 void WorkThreadInterface::PostSetColor( COLORREF const col, tColorObject const obj, Strategy::Id const strat )
@@ -156,13 +156,13 @@ void WorkThreadInterface::PostSetColor( COLORREF const col, tColorObject const o
 	switch ( obj )
 	{
 	case tColorObject::individual:
-	    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_STRATEGY_COLOR, static_cast<WPARAM>( strat ), static_cast<LPARAM>( col ) );
+	    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_STRATEGY_COLOR, static_cast<WPARAM>( strat ), static_cast<LPARAM>( col ) );
 		break;
 	case tColorObject::selection:
-	    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_SELECTION_COLOR, 0, static_cast<LPARAM>( col ) );
+	    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_SELECTION_COLOR, 0, static_cast<LPARAM>( col ) );
 		break;
 	case tColorObject::highlight:
-	    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_SET_HIGHLIGHT_COLOR, 0, static_cast<LPARAM>( col ) );
+	    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_HIGHLIGHT_COLOR, 0, static_cast<LPARAM>( col ) );
 		break;
 	default:
 		assert( false );
@@ -173,7 +173,7 @@ void WorkThreadInterface::PostRunGenerations( bool const bFirst )
 {
     if ( m_bTrace )
         * m_pTraceStream << L"PostGenerationStep" << endl;
-	m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_GENERATION_RUN, 0, bFirst );
+	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::GENERATION_RUN, 0, bFirst );
 }
 
 void WorkThreadInterface::PostRedo( )
@@ -200,7 +200,7 @@ void WorkThreadInterface::PostRepeatGenerationStep( )
 {
     if ( m_bTrace )
         * m_pTraceStream << L"PostGenerationStep" << endl;
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_REPEAT_GENERATION_STEP, 0, 0 );
+    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::REPEAT_GENERATION_STEP, 0, 0 );
 }
 
 void WorkThreadInterface::PostUndo( )
@@ -246,7 +246,7 @@ void WorkThreadInterface::PostGotoGeneration( HIST_GENERATION const gen )
 
 void WorkThreadInterface::PostStopComputation( )
 {
-	m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_STOP, 0, 0 );
+	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::STOP, 0, 0 );
 }
 
 void WorkThreadInterface::PostProcessScript( wstring const & wstrPath )
@@ -256,7 +256,7 @@ void WorkThreadInterface::PostProcessScript( wstring const & wstrPath )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" \"" << wstrPath.c_str( )  << "\""<< endl;
 
-    m_pWorkThread->WorkMessage( WorkThread::THREAD_MSG_PROCESS_SCRIPT, 0, (LPARAM)pwstr );
+    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::PROCESS_SCRIPT, 0, (LPARAM)pwstr );
 }
 
 // no trace output

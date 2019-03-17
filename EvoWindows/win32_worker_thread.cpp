@@ -70,14 +70,14 @@ WorkThread::~WorkThread( )
 
 // WorkMessage - process incoming messages from main thread
 
-void WorkThread::WorkMessage( UINT const uiMsg, WPARAM const wparam, LPARAM const lparam )
+void WorkThread::WorkMessage( WorkerThreadMessage::Id const msg, WPARAM const wparam, LPARAM const lparam )
 {
-	WorkMessage( MSG { nullptr, uiMsg, wparam, lparam } );
+	WorkMessage( MSG { nullptr, static_cast<UINT>(msg), wparam, lparam } );
 }
 
 void WorkThread::WorkMessage( MSG const msg )
 {
-	assert( IsValidThreadMessage( msg.message ) );
+	assert( WorkerThreadMessage::IsValid( msg.message ) );
 	if ( m_iScriptLevel > 0 )                      // if we are processing a script    
 	{                                              // we run already in worker thread 
 		ThreadMsgDispatcher( msg );                // dispatch message directly to avoid blocking
@@ -109,86 +109,86 @@ void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 
 void WorkThread::dispatch( MSG const msg  )
 {
-	switch ( msg.message )
+	switch ( static_cast<WorkerThreadMessage::Id>(msg.message) )
 	{
 
-	case THREAD_MSG_PROCESS_SCRIPT:
+	case WorkerThreadMessage::Id::PROCESS_SCRIPT:
 		DoProcessScript( (wstring *)msg.lParam );
 		break;
 
-	case THREAD_MSG_REPEAT_GENERATION_STEP:
+	case WorkerThreadMessage::Id::REPEAT_GENERATION_STEP:
 		GenerationStep( );
 		break;
 
-	case THREAD_MSG_GOTO_GENERATION:
+	case WorkerThreadMessage::Id::GOTO_GENERATION:
 		m_genDemanded = HIST_GENERATION(static_cast<long>(msg.lParam));
 		GenerationStep( );
 		break;
 
-	case THREAD_MSG_GENERATION_RUN:
+	case WorkerThreadMessage::Id::GENERATION_RUN:
 		if ( static_cast<bool>(msg.lParam) )
 			m_bContinue = TRUE;
 		generationRun( );
 		break;
 
-	case THREAD_MSG_STOP:
+	case WorkerThreadMessage::Id::STOP:
 		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
 		m_bContinue = FALSE;
 		Script::StopProcessing( );
 		break;
 
-	case THREAD_MSG_RESET_MODEL:
+	case WorkerThreadMessage::Id::RESET_MODEL:
 		editorCommand( tEvoCmd::reset, msg.wParam );
 		if ( static_cast<BOOL>(msg.wParam) )
 			m_pEvoHistGlue->EvoClearHistory( );
 		break;
 
-	case THREAD_MSG_SET_BRUSH_MODE:
+	case WorkerThreadMessage::Id::SET_BRUSH_MODE:
 		editorCommand( tEvoCmd::editSetBrushMode, msg.wParam );
 		break;
 
-	case THREAD_MSG_SET_BRUSH_RADIUS:
+	case WorkerThreadMessage::Id::SET_BRUSH_RADIUS:
 		editorCommand( tEvoCmd::editSetBrushRadius, msg.wParam );
 		break;
 
-	case THREAD_MSG_SET_BRUSH_SHAPE:
+	case WorkerThreadMessage::Id::SET_BRUSH_SHAPE:
 		editorCommand( tEvoCmd::editSetBrushShape, msg.wParam );
 		break;
 
-	case THREAD_MSG_SET_BRUSH_OPERATOR:
+	case WorkerThreadMessage::Id::SET_BRUSH_OPERATOR:
 		editorCommand( tEvoCmd::editSetBrushManipulator, msg.wParam );
 		break;
 
-	case THREAD_MSG_SET_BRUSH_INTENSITY:
+	case WorkerThreadMessage::Id::SET_BRUSH_INTENSITY:
 		editorCommand( tEvoCmd::editSetBrushIntensity, msg.wParam );
 		break;
 
-	case THREAD_MSG_DO_EDIT:
+	case WorkerThreadMessage::Id::DO_EDIT:
 		editorCommand( tEvoCmd::editDoEdit, GridPoint24( CastToUnsignedInt(msg.wParam), CastToUnsignedInt(msg.lParam) ) );
 		break;
 
-	case THREAD_MSG_SET_POI:
+	case WorkerThreadMessage::Id::SET_POI:
 		editorCommand( tEvoCmd::editSetPOI, GridPoint24( CastToUnsignedInt(msg.wParam), CastToUnsignedInt(msg.lParam) ) );
 		break;
 
-	case THREAD_MSG_SET_SIMULATION_MODE:
+	case WorkerThreadMessage::Id::SET_SIMULATION_MODE:
 		if ( editorCommand( tEvoCmd::setSimulationMode, msg.wParam ) )
 			m_pEditorWindow->SetSimulationMode( );
 		break;
 
-	case THREAD_MSG_SET_STRATEGY_COLOR:
+	case WorkerThreadMessage::Id::SET_STRATEGY_COLOR:
 		m_pColorManager->SetColor( static_cast<COLORREF>(msg.lParam), tColorObject::individual, static_cast<Strategy::Id>(msg.wParam) );
 		break;
 
-	case THREAD_MSG_SET_SELECTION_COLOR:
+	case WorkerThreadMessage::Id::SET_SELECTION_COLOR:
 		m_pColorManager->SetColor( static_cast<COLORREF>(msg.lParam), tColorObject::selection );
 		break;
 
-	case THREAD_MSG_SET_HIGHLIGHT_COLOR:
+	case WorkerThreadMessage::Id::SET_HIGHLIGHT_COLOR:
 		m_pColorManager->SetColor( static_cast<COLORREF>(msg.lParam), tColorObject::highlight );
 		break;
 
-	case THREAD_MSG_REFRESH:
+	case WorkerThreadMessage::Id::REFRESH:
 		if (m_pObservers != nullptr)
 			m_pObservers->Notify( msg.lParam != 0 );
 		break;
@@ -226,7 +226,7 @@ void WorkThread::GenerationStep( )
 				m_pEditorWindow->UpdateEditControls( );            // make sure that editor GUI reflects new state
 		}
 
-		WorkMessage( THREAD_MSG_REFRESH, 0, 0 );                   // refresh all views
+		WorkMessage( WorkerThreadMessage::Id::REFRESH, 0, 0 );                   // refresh all views
     
 		if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )   // still not done?
 			m_pWorkThreadInterface->PostRepeatGenerationStep( );   // Loop! Will call indirectly GenerationStep again
@@ -255,9 +255,4 @@ void WorkThread::DoProcessScript( wstring * const pwstr )
 	Script::ProcessScript( * pwstr );
 	--m_iScriptLevel;
 	delete pwstr;
-}
-
-BOOL WorkThread::IsValidThreadMessage( UINT msg )
-{
-	return (THREAD_MSG_FIRST <= msg) && (msg <= THREAD_MSG_LAST);
 }
