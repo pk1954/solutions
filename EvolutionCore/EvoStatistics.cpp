@@ -7,13 +7,8 @@
 #include "EvolutionCore.h"
 #include "EvoStatistics.h"
 
-EvoStatistics::EvoStatistics
-( 
-	EvolutionCore const * const pCore
-) 
-{
-	m_pCore = pCore;
-}
+EvoStatistics::EvoStatistics( ) 
+{ }
 
 EvoStatistics::~EvoStatistics()
 {
@@ -21,14 +16,20 @@ EvoStatistics::~EvoStatistics()
 	m_pTextBuf = nullptr;
 }
 
-void EvoStatistics::Initialize( TextBuffer * const pTextBuf )
+void EvoStatistics::Initialize
+( 
+    EvolutionCore const * const pCore,
+	GridRect              const gridRectSelection,
+	TextBuffer          * const pTextBuf 
+)
 {
+	m_pCore    = pCore;
 	m_pTextBuf = pTextBuf;
 
 	m_gsCounter.zero();         
     m_gsAverageAge.zero();      
 	m_XaAction  .Apply2All( [&](auto & elem) { elem = 0; } );
-	m_XaGenes .Apply2All( [&](auto & elem) { elem = 0; } );
+	m_XaGenes   .Apply2All( [&](auto & elem) { elem = 0; } );
 	m_auiMemSize.Apply2All( [&](auto & elem) { elem = 0; } );
 
 	Apply2Rect
@@ -38,7 +39,7 @@ void EvoStatistics::Initialize( TextBuffer * const pTextBuf )
 			if ( m_pCore->IsAlive( gp ) )
 				aquireData( gp );
 		},
-		m_pCore->GetSelection( )
+		gridRectSelection
 	);
 
 	scaleData( );
@@ -46,7 +47,7 @@ void EvoStatistics::Initialize( TextBuffer * const pTextBuf )
 
 void EvoStatistics::aquireData( GridPoint const & gp )
 {
-	EVO_GENERATION evoGen { m_pCore->GetEvoGenerationNr() };
+	EVO_GENERATION const evoGen   { m_pCore->GetEvoGenerationNr() };
 	Strategy::Id   const strategy { m_pCore->GetStrategyId( gp ) };
 	EVO_GENERATION const age      { m_pCore->GetAge( gp ) };
 	MEM_INDEX      const memSize  { m_pCore->GetMemSize( gp ) };

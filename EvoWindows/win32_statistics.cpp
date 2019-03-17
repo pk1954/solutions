@@ -23,7 +23,7 @@ void StatisticsWindow::Start
 ) 
 {
     m_pCore = pCore;
-	m_pStatistics = new EvoStatistics( m_pCore );
+	m_pStatistics = new EvoStatistics();
     StartTextWindow
 	( 
 		hwndParent, 
@@ -47,7 +47,12 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 {
 //	stopwatch.Start();
  
-	m_pStatistics->Initialize( & textBuf );   // aquire and prepare data 
+	m_pStatistics->Initialize    // aquire and prepare data 
+	( 
+		m_pCore,
+		m_pCore->GetSelection(),
+		& textBuf 
+	); 
 
     // start printing
 

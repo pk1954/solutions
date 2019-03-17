@@ -42,10 +42,15 @@ public:
 class EvoStatistics
 {
 public:
-	EvoStatistics::EvoStatistics( EvolutionCore const * const );
+	EvoStatistics::EvoStatistics( );
 	virtual ~EvoStatistics( );
 
-    void Initialize( TextBuffer * const ); 
+    void Initialize
+	( 
+		EvolutionCore const * const, 
+		GridRect              const,
+		TextBuffer          * const 
+	); 
 
     void printHeader( );
     void printIncidence( );

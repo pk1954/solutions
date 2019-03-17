@@ -16,6 +16,7 @@
 
 ObserverInterface * EvolutionCoreImpl::m_pObservers = nullptr;    // GUI call back for display of current model 
 EventInterface    * EvolutionCoreImpl::m_pEventPOI  = nullptr;
+GridRect            EvolutionCoreImpl::m_gridRectSelection = GridRect::ZERO_VAL();
 
 EvolutionCoreImpl::EvolutionCoreImpl( ) :
 	m_brush( & m_grid )
@@ -30,7 +31,6 @@ void EvolutionCoreImpl::ResetAll( )
     m_grid.ResetGrid( );
 	m_idPOI.Set2Null( );
 	m_plan.SetInvalid( );
-	ResetSelection( );
 	m_brush.Reset( );
 	m_bSimulationMode = false;
 }

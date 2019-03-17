@@ -1,3 +1,7 @@
+// EvolutionCoreImpl.h
+//
+// EvolutionCore
+
 #pragma once
 
 #include <functional>
@@ -116,13 +120,13 @@ public:
 private:
     static ObserverInterface * m_pObservers;    // GUI call back for display of current model 
 	static EventInterface    * m_pEventPOI;
+	static GridRect            m_gridRectSelection;
 
 	Grid            m_grid;	
     PlannedActivity m_plan;
     IND_ID          m_idPOI;
 	GridBrush 	    m_brush;
 	bool	    	m_bSimulationMode;
-	GridRect        m_gridRectSelection;
 
 	void stopOnPoi( GridPoint const, PlannedActivity & );
 
