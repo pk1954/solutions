@@ -41,9 +41,6 @@ public:
 
 	virtual void           ResetAll();
 
-	virtual void           ResetSelection( )                       { m_gridRectSelection.Reset(); };
-	virtual void           SetSelection  ( GridRect const & rect ) { m_gridRectSelection = rect; }
-
 	virtual void           SetBrushMode       ( tBrushMode   const mode  ) { m_brush.SetBrushMode  ( mode  );  }
 	virtual void           SetBrushManipulator( tManipulator const op    ) { m_brush.SetManipulator( op    );  }
 	virtual void           SetBrushShape      ( tShape       const shape ) { m_brush.SetShape      ( shape );  }
@@ -83,15 +80,18 @@ public:
     virtual GRID_COORD     GetBrushSize       ( ) const { return m_brush.GetRadius(); }
     virtual tBrushMode     GetBrushMode       ( ) const { return m_brush.GetBrushMode(); }
 
-	virtual GridRect       GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GridDimensions::GridRectFull() : m_gridRectSelection; }
-	virtual bool           SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
-	virtual bool           SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
+	virtual void     ResetSelection( )                       { m_gridRectSelection.Reset(); };
+	virtual void     SetSelection  ( GridRect const & rect ) { m_gridRectSelection = rect; }
 
-	virtual IND_ID         GetPoiId    ( )                      const { return m_idPOI; }
-	virtual bool           IsPoiDefined( )                      const { return m_idPOI.IsNotNull( ); }
-	virtual bool           IsPoiId     ( IND_ID    const & id ) const { return m_idPOI == id; }
-	virtual bool           IsPoi       ( GridPoint const   gp ) const { return ( gp.IsNotNull( ) && ( GetId( gp ) == m_idPOI ) ); }
-	virtual void           ClearPoi    ( )                            { m_idPOI.Set2Null( ); }
+	virtual GridRect GetSelection       ( ) const { return m_gridRectSelection.IsEmpty( ) ? GridDimensions::GridRectFull() : m_gridRectSelection; }
+	virtual bool     SelectionIsEmpty   ( ) const { return m_gridRectSelection.IsEmpty(); }
+	virtual bool     SelectionIsNotEmpty( ) const { return m_gridRectSelection.IsNotEmpty(); }
+
+	virtual IND_ID   GetPoiId    ( )                      const { return m_idPOI; }
+	virtual bool     IsPoiDefined( )                      const { return m_idPOI.IsNotNull( ); }
+	virtual bool     IsPoiId     ( IND_ID    const & id ) const { return m_idPOI == id; }
+	virtual bool     IsPoi       ( GridPoint const   gp ) const { return ( gp.IsNotNull( ) && ( GetId( gp ) == m_idPOI ) ); }
+	virtual void     ClearPoi    ( )                            { m_idPOI.Set2Null( ); }
 	 
     virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
     virtual PlannedActivity       * GetPlan4Writing( )       { return & m_plan; };

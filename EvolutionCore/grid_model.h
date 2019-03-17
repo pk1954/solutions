@@ -92,7 +92,7 @@ public:
 		return genBirth.IsNull() ? EVO_GENERATION::NULL_VAL() : (m_genEvo - genBirth); 
 	}
 
-	BYTES GetGridExtraSize() const;
+	static BYTES GetGridExtraSize();
 
 	EVO_GENERATION GetEvoGenerationNr( )       const { return m_genEvo; }
     int            GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }

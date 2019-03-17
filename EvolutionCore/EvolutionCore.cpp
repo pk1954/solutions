@@ -20,9 +20,9 @@ EvolutionCore * EvolutionCore::InitClass
     Neighborhood::InitClass( iNrOfNeighbors );
     Grid::InitClass( iNrOfNeighbors );
 	EvolutionCoreImpl::InitClass( pObservers, pEvent );
-    EvolutionCore * pEvolutionCore = EvolutionCore::CreateCore( );
-	DefineCoreWrapperFunctions( pEvolutionCore );
-	return pEvolutionCore;
+    EvolutionCore * pEvolutionCoreWork = EvolutionCore::CreateCore( );
+	DefineCoreWrapperFunctions( pEvolutionCoreWork );
+	return pEvolutionCoreWork;
 }
 
 EvolutionCore * EvolutionCore::CreateCore( )

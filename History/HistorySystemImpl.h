@@ -31,7 +31,7 @@ public:
 
     virtual void InitHistorySystem( HIST_GENERATION const, ModelData * const );
 
-    virtual void StartHistorySystem
+    virtual ModelData const * StartHistorySystem
     ( 
         HistSlotNr          const, 
         ModelFactory      * const,
@@ -51,7 +51,7 @@ public:
 
 	virtual void              ShutDownHistCacheSlot( HistSlotNr const i ) { m_pHistoryCache->ShutDownHistCacheSlot( i ); }
 
-	virtual void              CreateAppCommand( GenerationCmd );
+	virtual ModelData const * CreateAppCommand( GenerationCmd );
 	virtual void              ClearHistory    ( HIST_GENERATION const );
     virtual void              ApproachHistGen ( HIST_GENERATION const );
 	virtual tGenCmd           GetGenerationCmd( HIST_GENERATION const );
@@ -66,7 +66,7 @@ private:
     HistoryCache  * m_pHistoryCache;
     HistCacheItem * m_pHistCacheItemWork;      // The reference item, where history system gets and restores data 
 
-    void                  save2History( );
+    ModelData     const * save2History( );
     void                  step2NextGeneration( GenerationCmd );
 	HistCacheItem const * getCachedItem      ( GenerationCmd );
     void                  checkHistoryStructure( );

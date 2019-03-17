@@ -84,7 +84,7 @@ Grid::~Grid( )
     };
 }
 
-BYTES Grid::GetGridExtraSize() const
+BYTES Grid::GetGridExtraSize()
 {
 	unsigned long gridFieldSize { sizeof ( GridField ) };
 	unsigned long gridRowSize   { sizeof(vector< GridField >) + GridDimensions::GridHeightVal() * gridFieldSize };

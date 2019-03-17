@@ -38,7 +38,7 @@ void HistorySystemImpl::InitHistorySystem
 	m_GenCmdList.Resize( genMaxNrOfGens );
 }
 
-void HistorySystemImpl::StartHistorySystem
+ModelData const * HistorySystemImpl::StartHistorySystem
 (
     HistSlotNr          const nrOfSlots,
     ModelFactory      * const pModelFactory,
@@ -48,7 +48,7 @@ void HistorySystemImpl::StartHistorySystem
 {
     m_pHistoryCache->InitHistoryCache( nrOfSlots, pModelFactory, pObserver );
 	m_pHistCacheItemWork->SetGenerationCommand( cmd );
-    save2History( );
+    return save2History( );
 }
 
 // ClearHistory
@@ -76,11 +76,11 @@ HistoryIterator * HistorySystemImpl::CreateHistoryIterator( ) const
 	return new HistoryIterator( m_pHistoryCache );     	 
 }
 
-void HistorySystemImpl::CreateAppCommand( GenerationCmd const genCmd )
+ModelData const * HistorySystemImpl::CreateAppCommand( GenerationCmd const genCmd )
 {
 	step2NextGeneration( genCmd );
 	m_pHistCacheItemWork->SetGenerationCommand( genCmd );
-	save2History( );
+	return save2History( );
 }
 
 HistCacheItem const * HistorySystemImpl::getCachedItem( GenerationCmd cmd )
@@ -139,7 +139,7 @@ tGenCmd HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
 
 // save2History - Save Generation data (rule how to get to next generation), current Grid, etc. to new slot
 
-void HistorySystemImpl::save2History( )
+ModelData const * HistorySystemImpl::save2History( )
 {
     HistSlotNr    const   slotNr          = m_pHistoryCache->GetFreeCacheSlot( );
     HistCacheItem const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC( slotNr );
@@ -155,9 +155,11 @@ void HistorySystemImpl::save2History( )
     }
 
     CHECK_HISTORY_STRUCTURE;
-    m_pHistoryCache->Save2CacheSlot( * m_pHistCacheItemWork, slotNr );
+    ModelData const * pModelData = m_pHistoryCache->Save2CacheSlot( * m_pHistCacheItemWork, slotNr );
     m_GenCmdList.SetCachedGeneration( m_pHistCacheItemWork->GetHistGenCounter( ), slotNr );
     CHECK_HISTORY_STRUCTURE;
+
+	return pModelData;
 };
 
 // step2NextGeneration - if cached generation: get GenerationCmd from cache

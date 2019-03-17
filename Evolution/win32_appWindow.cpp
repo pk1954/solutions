@@ -79,7 +79,7 @@ AppWindow::AppWindow( ) :
     m_pDspOptWindow( nullptr ),
     m_pFocusPoint( nullptr ),
     m_pWinManager( nullptr ),
-    m_pEvolutionCore( nullptr ),
+    m_pEvolutionCoreWork( nullptr ),
     m_pScriptHook( nullptr ),
     m_pEvoHistWindow( nullptr ),
 	m_pEvoHistGlue( nullptr ),
@@ -127,7 +127,7 @@ void AppWindow::Start(  )
 	GridDimensions::DefineGridSize( 150_GRID_X, 100_GRID_Y );
 
 	stopwatch.Start();
-	m_pEvolutionCore = EvolutionCore::InitClass( Config::GetConfigValue( Config::tId::nrOfNeighbors ), & m_gridObservers, & m_event );
+	m_pEvolutionCoreWork = EvolutionCore::InitClass( Config::GetConfigValue( Config::tId::nrOfNeighbors ), & m_gridObservers, & m_event );
 	stopwatch.Stop( L"EvolutionCore::InitClass" );
 
     // create window objects
@@ -151,7 +151,7 @@ void AppWindow::Start(  )
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
 	stopwatch.Stop( L"create window objects" );
 
-	GridWindow::InitClass( hwndApp, m_pEvolutionCore, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pColorManager );
+	GridWindow::InitClass( hwndApp, m_pEvolutionCoreWork, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pColorManager );
 
 	D3dSystem::Create_D3D_Device
 	( 
@@ -178,15 +178,15 @@ void AppWindow::Start(  )
 	m_pMainGridWindow     ->Start( m_pGraphics, WS_CHILD       | WS_CLIPSIBLINGS | WS_VISIBLE,             16_PIXEL );
     m_pMiniGridWindow     ->Start( m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
     m_pHistInfoWindow     ->Start( hwndApp, m_pHistorySystem );
-	m_pEvoHistGlue        ->Start( m_pEvolutionCore, m_pHistorySystem, true, m_pHistInfoWindow );
+	m_pEvoHistGlue        ->Start( m_pEvolutionCoreWork, m_pHistorySystem, true, m_pHistInfoWindow );
 	m_pEvoHistWindow      ->Start( hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
-    m_pStatusBar          ->Start( hwndApp, m_pEvolutionCore );
-	m_pFocusPoint         ->Start( m_pEvoHistGlue, m_pEvolutionCore );
-	m_pWorkThreadInterface->Start( hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, & m_gridObservers, m_pEvolutionCore, m_pEvoHistGlue );
-	m_pDspOptWindow       ->Start( hwndApp, m_pEvolutionCore );
-    m_pEditorWindow       ->Start( hwndApp, m_pWorkThreadInterface, m_pEvolutionCore, m_pDspOptWindow, m_pStatusBar );
-    m_pStatistics         ->Start( hwndApp, m_pEvolutionCore );
-    m_pCrsrWindow         ->Start( hwndApp, m_pFocusPoint, m_pEvolutionCore );
+    m_pStatusBar          ->Start( hwndApp, m_pEvolutionCoreWork );
+	m_pFocusPoint         ->Start( m_pEvoHistGlue, m_pEvolutionCoreWork );
+	m_pWorkThreadInterface->Start( hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, & m_gridObservers, m_pEvolutionCoreWork, m_pEvoHistGlue );
+	m_pDspOptWindow       ->Start( hwndApp, m_pEvolutionCoreWork );
+    m_pEditorWindow       ->Start( hwndApp, m_pWorkThreadInterface, m_pEvolutionCoreWork, m_pDspOptWindow, m_pStatusBar );
+    m_pStatistics         ->Start( hwndApp, m_pEvolutionCoreWork );
+    m_pCrsrWindow         ->Start( hwndApp, m_pFocusPoint, m_pEvolutionCoreWork );
     m_pPerfWindow         ->Start( hwndApp );
 	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow, m_pColorManager );
 	stopwatch.Stop( L"Start windows" );
@@ -279,7 +279,7 @@ AppWindow::~AppWindow( )
 		delete m_pHistInfoWindow;
 		delete m_pMiniGridWindow;
 		delete m_pMainGridWindow;
-		delete m_pEvolutionCore;
+		delete m_pEvolutionCoreWork;
         delete m_pFocusPoint;
         delete m_pWinManager;
         delete m_pScriptHook;

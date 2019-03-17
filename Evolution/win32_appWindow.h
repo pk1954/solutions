@@ -66,7 +66,7 @@ private:
     DspOptWindow        * m_pDspOptWindow;
     FocusPoint          * m_pFocusPoint;
     WinManager          * m_pWinManager;
-    EvolutionCore       * m_pEvolutionCore;
+    EvolutionCore       * m_pEvolutionCoreWork;
 	EvoController       * m_pEvoController;
     ScriptHook          * m_pScriptHook;
 	ColorManager        * m_pColorManager;

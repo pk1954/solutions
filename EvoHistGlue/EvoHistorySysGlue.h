@@ -48,9 +48,9 @@ public:
 
 	void EvoClearHistory( );
 
-	void EvoCreateNextGenCommand( ) 
-	{ 
-		m_pHistorySystem->CreateAppCommand( NEXT_GEN_CMD );  
+	ModelData const *  EvoCreateNextGenCommand( ) 
+	 { 
+	 	return m_pHistorySystem->CreateAppCommand( NEXT_GEN_CMD );  
 	}  
 
 	bool IsEditorCommand( HIST_GENERATION const gen ) const

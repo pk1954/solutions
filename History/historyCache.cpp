@@ -195,13 +195,13 @@ void HistoryCache::RemoveHistCacheSlot( HistSlotNr const slotNr )
     checkConsistency( );
 }
 
-void HistoryCache::Save2CacheSlot
+ModelData const *  HistoryCache::Save2CacheSlot
 (
     HistCacheItem const & source,
     HistSlotNr    const   slotNr
 )
 {
-    GetHistCacheItem( slotNr )->CopyCacheItem( & source );
+    return GetHistCacheItem( slotNr )->CopyCacheItem( & source );
 }
 
 HistSlotNr HistoryCache::findSlot4Reuse( )
