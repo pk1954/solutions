@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "gridPOI.h"
 #include "gridPoint24.h"
 #include "EvoGenerationCmd.h"
 #include "EvolutionCore.h"
@@ -27,7 +28,7 @@ void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 		break;
 
 	case tEvoCmd::editSetPOI:
-		m_pEvolutionCore->SetPoi( GridPoint24::Unpack( param ) );
+		GridPOI::SetPoi( m_pEvolutionCore->GetId(GridPoint24::Unpack( param )) );
 		break;
 
 	case tEvoCmd::reset:

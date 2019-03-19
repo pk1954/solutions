@@ -155,6 +155,7 @@
     <ClInclude Include="gridCoord.h" />
     <ClInclude Include="GridDimensions.h" />
     <ClInclude Include="gridNeighbor.h" />
+    <ClInclude Include="gridPOI.h" />
     <ClInclude Include="gridPoint.h" />
     <ClInclude Include="gridPoint24.h" />
     <ClInclude Include="gridRect.h" />

@@ -7,6 +7,7 @@
 #include <functional>
 #include "BoolOp.h"
 #include "GridDimensions.h"
+#include "gridPOI.h"
 #include "gridPoint.h"
 #include "gridRect.h"
 #include "grid_model.h"
@@ -51,17 +52,15 @@ public:
     virtual void SetBrushRadius     ( GRID_COORD   const rad   ) { m_brush.SetRadius     ( rad   );  }
     virtual void SetBrushIntensity  ( PERCENT      const perc  ) { m_brush.SetIntensity  ( perc  );  }
     virtual void SetSimulationMode  ( tBoolOp      const op    ) { ApplyOp( m_bSimulationMode, op ); }
-    virtual void ModelDoEdit        ( GridPoint    const gp )    { (m_brush)( gp ); }
-	virtual void SetPoi             ( GridPoint    const );
-	virtual void ClearPoi           ( )                          { m_idPOI.Set2Null( ); }
+    virtual void ModelDoEdit        ( GridPoint    const gp    ) { (m_brush)( gp ); }
 
-	virtual PlannedActivity * GetPlan4Writing( )       { return & m_plan; };
+	virtual PlannedActivity * GetPlan4Writing( ) { return & m_plan; };
 
 	// read access
 
 	virtual void DumpGridPointList( ) const;
 
-	virtual bool           GetSimulationMode( )                const { return m_bSimulationMode; }
+	virtual bool GetSimulationMode( ) const { return m_bSimulationMode; }
 
     virtual EVO_GENERATION GetAge       ( GridPoint const gp ) const { return m_grid.GetAge( gp ); }
 
@@ -91,12 +90,7 @@ public:
     virtual GRID_COORD     GetBrushSize       ( ) const { return m_brush.GetRadius(); }
     virtual tBrushMode     GetBrushMode       ( ) const { return m_brush.GetBrushMode(); }
 
-	virtual IND_ID   GetPoiId    ( )                      const { return m_idPOI; }
-	virtual bool     IsPoiDefined( )                      const { return m_idPOI.IsNotNull( ); }
-	virtual bool     IsPoiId     ( IND_ID    const & id ) const { return m_idPOI == id; }
-	virtual bool     IsPoi       ( GridPoint const   gp ) const { return ( gp.IsNotNull( ) && ( GetId( gp ) == m_idPOI ) ); }
-	 
-    virtual PlannedActivity const & GetPlan( )         const { return   m_plan; };
+    virtual PlannedActivity const & GetPlan( ) const { return m_plan; };
 
 	virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
 
@@ -109,8 +103,9 @@ public:
 		return m_grid.GetActionCounter( strategy, action );
 	}
 
-    virtual GridPoint FindPOI( ) const;
 	virtual GridPoint FindGridPoint( IND_ID const & ) const; 
+
+	virtual GridPoint FindPOI( ) const; 
 
 private:
     static ObserverInterface * m_pObservers;    // GUI call back for display of current model 
@@ -118,11 +113,11 @@ private:
 
 	Grid            m_grid;	
     PlannedActivity m_plan;
-    IND_ID          m_idPOI;
 	GridBrush 	    m_brush;
 	bool	    	m_bSimulationMode;
 
 	void stopOnPoi( GridPoint const, PlannedActivity & );
+	bool IsPoi    ( GridPoint const gp ) { return  gp.IsNotNull( ) &&  GridPOI::IsPoi( GetId(gp) ); }
 
     GridField const & getGridField( GridPoint const gp ) const { return m_grid.GetGridField( gp ); }
     Genome    const & getGenome   ( GridPoint const gp ) const { return getGridField( gp ).GetGenome( ); }

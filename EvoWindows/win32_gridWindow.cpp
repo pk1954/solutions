@@ -9,6 +9,8 @@
 #include "pixelCoordinates.h"
 #include "GridDimensions.h"
 #include "gridSelection.h"
+#include "gridPOI.h"
+#include "gridPoint24.h"
 #include "EvolutionCore.h"
 #include "win32_util.h"
 #include "win32_draw.h"
@@ -176,7 +178,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     {
         if ( m_ptLast.IsNotNull() )  // last cursor pos stored in m_ptLast
         {
-            PixelPoint ptOther = m_pCore->IsPoiDefined( ) 
+            PixelPoint ptOther = GridPOI::IsPoiDefined( ) 
 				                 ? m_pPixelCoordinates->Grid2PixelPosCenter( m_pCore->FindPOI( ) ) * 2 - ptCrsr 
 				                 : m_ptLast;
 			GridSelection::SetSelection( m_pPixelCoordinates->Pixel2GridRect( PixelRect( ptOther, ptCrsr ) ) );
@@ -265,7 +267,7 @@ void GridWindow::doPaint( )
         (void)EndPaint( &ps );
     }
 
-    if ( m_bMoveAllowed && m_pCore->IsPoiDefined( ) )
+    if ( m_bMoveAllowed && GridPOI::IsPoiDefined( ) )
 	{
 		bool bCentered = m_pPixelCoordinates->CenterPoi( GetClRectCenter( ), m_pCore->FindPOI( ) );
 		if ( ! bCentered )
@@ -439,7 +441,7 @@ void GridWindow::SetFieldSize( PIXEL const pixFieldSize )
 	newFieldSize
 	( 
 		pixFieldSize, 
-		m_pCore->IsPoiDefined( ) 
+		GridPOI::IsPoiDefined( ) 
 		? m_pCore->FindPOI( ) 
 		: m_pPixelCoordinates->Pixel2GridPos( GetClRectCenter( ) ) 
 	);

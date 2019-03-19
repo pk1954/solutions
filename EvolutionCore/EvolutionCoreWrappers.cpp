@@ -5,6 +5,7 @@
 #include "assert.h"
 #include "script.h"
 #include "symtab.h"
+#include "gridPOI.h"
 #include "UtilityWrappers.h"
 #include "EvolutionCore.h"
 #include "EvolutionTypes.h"
@@ -23,7 +24,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         GridPoint gp = ScrReadGridPoint( script );
-        m_pCore->SetPoi( gp );
+        GridPOI::SetPoi( m_pCore->GetId(gp) );
     }
 };
 
@@ -32,7 +33,7 @@ class WrapClearPoi : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pCore->ClearPoi( );
+        GridPOI::ClearPoi( );
     }
 };
 

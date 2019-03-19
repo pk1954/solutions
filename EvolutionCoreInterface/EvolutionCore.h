@@ -58,35 +58,28 @@ public:
 	virtual	ACTION_COUNT   GetActionCounter( Strategy::Id const, Action::Id const ) const = 0;
 
     virtual GridPoint      FindGridPoint( IND_ID const & ) const = 0;
+	virtual GridPoint      FindPOI( )                      const = 0; 
 
     virtual PlannedActivity const & GetPlan( )  const = 0;
-
-    virtual IND_ID    GetPoiId( )                const = 0;
-    virtual bool      IsPoiDefined( )            const = 0; 
-    virtual bool      IsPoiId( IND_ID const & )  const = 0;
-    virtual GridPoint FindPOI( )                 const = 0;
-    virtual bool      IsPoi  ( GridPoint const ) const = 0;
 
 // manipulating functions
 
     virtual void Compute            ( ) = 0;
     virtual void ResetAll           ( ) = 0;
-    virtual void ClearPoi           ( ) = 0;
-    virtual void SetPoi             ( GridPoint    const   ) = 0;
-    virtual void SetSimulationMode  ( tBoolOp      const   ) = 0;
-    virtual void SetBrushManipulator( tManipulator const   ) = 0;
-    virtual void SetBrushShape      ( tShape       const   ) = 0;
-    virtual void SetBrushRadius     ( GRID_COORD   const   ) = 0;
-    virtual void SetBrushIntensity  ( PERCENT      const   ) = 0;
-    virtual void SetBrushMode       ( tBrushMode   const   ) = 0;
-    virtual void ModelDoEdit        ( GridPoint    const   ) = 0;
-
+    virtual void SetSimulationMode  ( tBoolOp      const ) = 0;
+    virtual void SetBrushManipulator( tManipulator const ) = 0;
+    virtual void SetBrushShape      ( tShape       const ) = 0;
+    virtual void SetBrushRadius     ( GRID_COORD   const ) = 0;
+    virtual void SetBrushIntensity  ( PERCENT      const ) = 0;
+    virtual void SetBrushMode       ( tBrushMode   const ) = 0;
+    virtual void ModelDoEdit        ( GridPoint    const ) = 0;
+	
     // static functions
     
     static EvolutionCore * InitClass( int const, ObserverInterface * const, EventInterface * const );
     static EvolutionCore * CreateCore();
  	static BYTES           GetCoreSize();
-   
+
 	static unsigned int GetNrInteractionsWithKnownCulprit( );
     static unsigned int GetNrInteractionsWithUnknownCulprit( );
     static unsigned int GetMaxPartnerMemory( );

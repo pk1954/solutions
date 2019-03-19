@@ -193,6 +193,7 @@
     <ClCompile Include="food.cpp" />
     <ClCompile Include="GeneType.cpp" />
     <ClCompile Include="GridDimensions.cpp" />
+    <ClCompile Include="gridPOI.cpp" />
     <ClCompile Include="gridSelection.cpp" />
     <ClCompile Include="pixelCoordinates.cpp" />
     <ClCompile Include="genome.cpp" />

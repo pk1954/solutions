@@ -7,6 +7,7 @@
 #include "dump.h"
 #include "config.h"
 #include "strategy.h"
+#include "gridPOI.h"
 #include "grid_model.h"
 #include "gplIterator.h"
 #include "EventInterface.h"
@@ -28,32 +29,10 @@ EvolutionCoreImpl::~EvolutionCoreImpl( ) { }
 void EvolutionCoreImpl::ResetAll( )
 {
     m_grid.ResetGrid( );
-	m_idPOI.Set2Null( );
 	m_plan.SetInvalid( );
 	m_brush.Reset( );
 	m_bSimulationMode = false;
-}
-
-void EvolutionCoreImpl::SetPoi( GridPoint const  gp )       
-{ 
-	if ( IsInGrid( gp ) )
-	{
-		IND_ID const idPoiNew = GetId( gp );
-		if ( idPoiNew.IsNotNull( ) )
-		{    
-			if ( IsPoiId( idPoiNew ) )
-				ClearPoi( );           // same POI. deactivate POI
-			else
-				m_idPOI = m_grid.GetId( gp ); 
-		}
-	}
-}
-
-GridPoint EvolutionCoreImpl::FindPOI( ) const 
-{ 
-	return IsPoiDefined( ) 
-			? FindGridPoint( m_idPOI ) 
-			: GridPoint::NULL_VAL(); 
+	GridPOI::ClearPoi( );
 }
 
 GridPoint EvolutionCoreImpl::FindGridPoint( IND_ID const & id ) const 
@@ -98,7 +77,7 @@ void EvolutionCoreImpl::stopOnPoi
     PlannedActivity     & plan
 )
 {
-    if ( (m_pObservers != nullptr) && IsPoiDefined( ) ) 
+    if ( (m_pObservers != nullptr) && GridPOI::IsPoiDefined( ) ) 
     {
         if ( IsPoi( gpRun ) || IsPoi( plan.GetPartner( ) ) )
 		{
@@ -108,6 +87,13 @@ void EvolutionCoreImpl::stopOnPoi
 		    plan.SetInvalid( );
 		}
     }
+}
+
+GridPoint EvolutionCoreImpl::FindPOI( ) const
+{ 
+	return GridPOI::IsPoiDefined( ) 
+			? FindGridPoint( GridPOI::GetPoi() ) 
+			: GridPoint::NULL_VAL(); 
 }
 
 void EvolutionCoreImpl::DumpGridPointList( ) const
