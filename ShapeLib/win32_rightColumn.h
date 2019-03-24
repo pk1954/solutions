@@ -16,10 +16,10 @@ public:
 
 	virtual PixelRectSize MinimalSize( );
 	virtual void          PrepareShape  ( PixelPoint const, PixelRectSize const );
-	virtual void          Draw          ( GridPoint const, PixelPoint const  );
-	virtual void          FillBuffer    ( GridPoint const );
+	virtual void          Draw          ( EvolutionCore const * const, GridPoint const, PixelPoint const  );
+	virtual void          FillBuffer    ( EvolutionCore const * const, GridPoint const );
 
-	virtual Shape const * FindShape( PixelPoint const, GridPoint const ) const;
+	virtual Shape const * FindShape( EvolutionCore const * const, PixelPoint const, GridPoint const ) const;
 
 private:
     std::array< MemorySlot *, IMEMSIZE_MAX > m_aMemorySlot; 

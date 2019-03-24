@@ -8,6 +8,7 @@
 #include "pixelCoordinates.h"
 #include "plannedActivity.h"
 #include "win32_util.h"
+#include "win32_readBuffer.h"
 #include "win32_graphicsInterface.h"
 #include "win32_displayOptions.h"
 #include "win32_gridPointShape.h"
@@ -21,14 +22,14 @@ static COLORREF const CLR_WHITE = RGB( 255, 255, 255 );
 DrawFrame::DrawFrame
 ( 
 	HWND                const hwnd,
-    EvolutionCore     * const pCore,
+    ReadBuffer        * const pReadBuffer,
     PixelCoordinates  * const pPixelCoordinates, 
 	GraphicsInterface * const pGraphics,
     DspOptWindow      * const pDspOptWindow,
 	ColorManager      * const pColorManager
 ) : 
 	m_hwnd( hwnd ),
-    m_pCore( pCore ),
+    m_pReadBuffer( pReadBuffer ),
     m_pPixelCoordinates( pPixelCoordinates ),
     m_pDspOptWindow( pDspOptWindow ),
 	m_pColorManager( pColorManager ),
@@ -38,7 +39,7 @@ DrawFrame::DrawFrame
 	m_gpHighlight( GridPoint::NULL_VAL() )
 {
 	m_clutBackground.Allocate( MAX_BG_COLOR() );    // default is grey scale lookup table with entries 0 .. 255
-	m_pTextDisplay    = new TextDisplay( * m_pGraphics, m_wBuffer, * m_pPixelCoordinates, * m_pCore );
+	m_pTextDisplay    = new TextDisplay( * m_pGraphics, m_wBuffer, * m_pPixelCoordinates );
 	m_gridPointShape  = new GridPointShape( * m_pTextDisplay );
 	m_pShapeHighlight = nullptr;
 	m_gridPointShape->RefreshLayout( );
@@ -82,15 +83,18 @@ void DrawFrame::ResizeDrawFrame( )
 	m_gridPointShape->RefreshLayout( );
 }
 
-bool DrawFrame::SetHighlightPos( PixelPoint const ptCrsr )
+bool DrawFrame::SetHighlightPos( EvolutionCore const * const pCore, PixelPoint const ptCrsr )
 {
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
 	m_gpHighlight = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
 	assert( IsInGrid( m_gpHighlight ) );
 	PixelPoint const ppGridpointOffset =  m_pPixelCoordinates->Grid2PixelPos( m_gpHighlight );
-	m_pShapeHighlight = m_gridPointShape->FindShape( ptCrsr - ppGridpointOffset, m_gpHighlight );
-	return ( (gpLast != m_gpHighlight) || (pShapeLast != m_pShapeHighlight) );
+	m_pShapeHighlight = m_gridPointShape->FindShape( pCore, ptCrsr - ppGridpointOffset, m_gpHighlight );
+	return ( 
+			  (m_pShapeHighlight != nullptr) && 
+		      ( (pShapeLast != m_pShapeHighlight) || (gpLast != m_gpHighlight) )
+		   );
 }
 
 void DrawFrame::HighlightShape( Shape const * pShape, GridPoint const gp )
@@ -100,16 +104,16 @@ void DrawFrame::HighlightShape( Shape const * pShape, GridPoint const gp )
 	m_pGraphics->RenderTranspRect( rect, 128, color );  
 }
 
-void DrawFrame::DoPaint( )
+void DrawFrame::DoPaint( EvolutionCore const * pCore )
 {
 	drawBackground( );
 
 	if ( m_pDspOptWindow->AreIndividualsVisible( ) )
 	{
 		GridRect const rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hwnd ) ) );
-		drawPOI( m_pCore->FindPOI( ) );
-		drawIndividuals( rcGrid );
-		drawText( rcGrid );
+		drawPOI( pCore );
+		drawIndividuals( pCore, rcGrid );
+		drawText( pCore, rcGrid );
 		if ( m_pShapeHighlight != nullptr )
 		{
 			HighlightShape( m_pShapeHighlight, m_gpHighlight );
@@ -148,8 +152,9 @@ void DrawFrame::addPrimitive( GridPoint const gp, COLORREF const color, float co
 		m_pGraphics->AddIndividual( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), color, fPixSizeHalf );
 }
 
-void DrawFrame::drawPOI( GridPoint const gpPoi )
+void DrawFrame::drawPOI( EvolutionCore const * const pCore )
 {
+	GridPoint const gpPoi = pCore->FindPOI( );
     if ( gpPoi.IsNotNull( ) )
     {
         PixelPoint const ptCenter = m_pPixelCoordinates->Grid2PixelPosCenter( gpPoi );
@@ -158,7 +163,7 @@ void DrawFrame::drawPOI( GridPoint const gpPoi )
         addPrimitive( gpPoi, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
         addPrimitive( gpPoi, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
 
-        PlannedActivity const planPoi = m_pCore->GetPlan( );
+        PlannedActivity const planPoi = pCore->GetPlan( );
         if ( planPoi.IsValid( ) )
         {
             addPrimitive( planPoi.GetTarget( ),  CLR_GREY, fPixSize * 0.45f );   // mark target
@@ -167,7 +172,7 @@ void DrawFrame::drawPOI( GridPoint const gpPoi )
     }
 }
 
-void DrawFrame::drawIndividuals( GridRect const & rect )
+void DrawFrame::drawIndividuals( EvolutionCore const * const pCore, GridRect const & rect )
 {
 	float const fHalfSizeInd = static_cast<float>( m_gridPointShape->GetIndShapeSize( ).GetValue() );
 
@@ -175,9 +180,9 @@ void DrawFrame::drawIndividuals( GridRect const & rect )
 	( 
 		[&](GridPoint const gp) 
 	    { 
-            if ( m_pCore->IsAlive( gp ) )
+            if ( pCore->IsAlive( gp ) )
             {
-				setIndividualColor( gp, fHalfSizeInd ); 
+				setIndividualColor( pCore, gp, fHalfSizeInd ); 
 			}
 	    },
 		rect
@@ -186,26 +191,26 @@ void DrawFrame::drawIndividuals( GridRect const & rect )
     m_pGraphics->RenderIndividuals( ); 
 }
 
-void DrawFrame::drawText( GridRect const & rect )
+void DrawFrame::drawText( EvolutionCore const * const pCore, GridRect const & rect )
 {
     Apply2Rect
 	( 
 		[&](GridPoint const gp)
 		{
-            if ( m_pCore->IsAlive( gp ) )
+            if ( pCore->IsAlive( gp ) )
             {
-				PixelPoint const ppGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( gp );
-				m_gridPointShape->Draw( gp, ppGridpointOffset );
+				PixelPoint const pntGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( gp );
+				m_gridPointShape->Draw( pCore, gp, pntGridpointOffset );
             }
 		},
 		rect
 	);
 }
 
-void DrawFrame::setIndividualColor( GridPoint const gp, float const fHalfSize ) const
+void DrawFrame::setIndividualColor( EvolutionCore const * const pCore, GridPoint const gp, float const fHalfSize ) const
 {
-    Strategy::Id const strat  = m_pCore->GetStrategyId( gp );
-    ENERGY_UNITS const energy = m_pCore->GetEnergy( gp );
+    Strategy::Id const strat  = pCore->GetStrategyId( gp );
+    ENERGY_UNITS const energy = pCore->GetEnergy( gp );
 
 	if ( static_cast<int>( strat ) >= Strategy::COUNT )  // can happen in case of
         return;                                          // race conditions between 
@@ -226,11 +231,11 @@ COLORREF DrawFrame::getBackgroundColor( CLUT_INDEX index ) const
     return m_clutBackground.GetColor( index );
 }
 
-void DrawFrame::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pnt )
+void DrawFrame::AddContextMenuEntries( EvolutionCore const * const pCore, HMENU const hPopupMenu, POINT const pnt )
 {
 	PixelPoint    const pp     = Util::POINT2PixelPoint( pnt );
 	GridPoint     const gp     = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pp ) );
-	Shape const * const pShape = m_gridPointShape->FindShape( pp, gp );
+	Shape const * const pShape = m_gridPointShape->FindShape( pCore, pp, gp );
 	if ( pShape )
 		pShape->AddContextMenuEntries( hPopupMenu );
 }

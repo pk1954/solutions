@@ -8,11 +8,11 @@
 #include "GridPoint24.h"
 #include "EvoHistorySysGlue.h"
 #include "EventInterface.h"
-#include "ObserverInterface.h"
 #include "win32_script.h"
 #include "win32_editor.h"
 #include "win32_thread.h"
 #include "win32_event.h"
+#include "win32_readBuffer.h"
 #include "win32_colorManager.h"
 #include "win32_performanceWindow.h"
 #include "win32_workThreadInterface.h"
@@ -23,7 +23,7 @@ WorkThread::WorkThread( ):
 	m_pPerformanceWindow  ( nullptr ),
 	m_pEditorWindow       ( nullptr ),   
 	m_pEventPOI           ( nullptr ),   
-	m_pObservers          ( nullptr ),   
+	m_pReadBuffer         ( nullptr ),   
 	m_pEvoHistGlue        ( nullptr ),   
 	m_pWorkThreadInterface( nullptr ),
 	m_bContinue( FALSE ),
@@ -39,7 +39,7 @@ void WorkThread::Start
 	PerformanceWindow   * const pPerformanceWindow,
 	EditorWindow        * const pEditorWindow,
 	EventInterface      * const pEvent,
-	ObserverInterface   * const pObservers, 
+	ReadBuffer          * const pReadBuffer, 
 	EvoHistorySysGlue   * const pEvoHistorySys,
 	WorkThreadInterface * const pWorkThreadInterface
 )
@@ -49,7 +49,7 @@ void WorkThread::Start
 	m_pPerformanceWindow   = pPerformanceWindow;
 	m_pEditorWindow        = pEditorWindow;
 	m_pEventPOI            = pEvent;
-	m_pObservers           = pObservers;
+	m_pReadBuffer          = pReadBuffer;
 	m_pEvoHistGlue         = pEvoHistorySys;
 	m_pWorkThreadInterface = pWorkThreadInterface;
 
@@ -64,7 +64,7 @@ WorkThread::~WorkThread( )
 	m_pPerformanceWindow   = nullptr;
 	m_pEditorWindow        = nullptr;
 	m_pEventPOI            = nullptr;
-	m_pObservers           = nullptr;
+	m_pReadBuffer          = nullptr;
 	m_pEvoHistGlue         = nullptr;
 }
 
@@ -189,16 +189,16 @@ void WorkThread::dispatch( MSG const msg  )
 		break;
 
 	case WorkerThreadMessage::Id::REFRESH:
-		if (m_pObservers != nullptr)
-			m_pObservers->Notify( msg.lParam != 0 );
+		if (m_pReadBuffer != nullptr)
+			m_pReadBuffer->Notify( msg.lParam != 0 );
 		break;
 
 	default:
 		return;  // sometimes strange messages arrive. e.g. uiMsg 1847
-	}             // I cannot find a reason, so I ignore them
+	}            // I cannot find a reason, so I ignore them
 
-	if (m_pObservers != nullptr)
-		m_pObservers->Notify( false );
+	if (m_pReadBuffer != nullptr)
+		m_pReadBuffer->Notify( false );
 }
 
 // GenerationStep - perform one history step towards demanded generation

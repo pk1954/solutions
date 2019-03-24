@@ -14,6 +14,7 @@
 #include "EvolutionCore.h"
 #include "win32_util.h"
 #include "win32_draw.h"
+#include "win32_readBuffer.h"
 #include "win32_focusPoint.h"
 #include "win32_crsrWindow.h"
 #include "win32_performanceWindow.h"
@@ -28,7 +29,7 @@
 //lint -esym( 613, GridWindow::m_pPixelCoordinates )   nullptr will not be used
 
 HWND                  GridWindow::m_hwndApp              = nullptr;
-EvolutionCore       * GridWindow::m_pCore                = nullptr;
+ReadBuffer          * GridWindow::m_pReadBuffer          = nullptr;
 WorkThreadInterface * GridWindow::m_pWorkThreadInterface = nullptr;
 PerformanceWindow   * GridWindow::m_pPerformanceWindow   = nullptr;
 DspOptWindow        * GridWindow::m_pDspOptWindow        = nullptr;
@@ -38,7 +39,7 @@ ColorManager        * GridWindow::m_pColorManager        = nullptr;
 void GridWindow::InitClass
 ( 
 	HWND                  const hwndApp, 
-	EvolutionCore       * const pCore, 
+	ReadBuffer          * const pReadBuffer, 
     WorkThreadInterface * const pWorkThreadInterface,
     FocusPoint          * const pFocusPoint,
     DspOptWindow        * const pDspOptWindow,
@@ -47,7 +48,7 @@ void GridWindow::InitClass
 )
 {
 	m_hwndApp              = hwndApp;
-	m_pCore                = pCore;
+	m_pReadBuffer          = pReadBuffer;
 	m_pWorkThreadInterface = pWorkThreadInterface;
     m_pPerformanceWindow   = pPerformanceWindow;
 	m_pDspOptWindow        = pDspOptWindow;
@@ -91,7 +92,7 @@ void GridWindow::Start
 	m_pDrawFrame = new DrawFrame
 	( 
 		hwnd, 
-		m_pCore, 
+		m_pReadBuffer, 
 		m_pPixelCoordinates, 
 		m_pGraphics,
 		m_pDspOptWindow, 
@@ -120,7 +121,7 @@ GridWindow::~GridWindow( )
     };
 
 	m_pGraphics            = nullptr;
-	m_pCore                = nullptr;
+	m_pReadBuffer          = nullptr;
     m_pGridWindowObserved  = nullptr;
     m_pWorkThreadInterface = nullptr;
 }
@@ -129,7 +130,9 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 {
     UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 
-	m_pDrawFrame->AddContextMenuEntries( hPopupMenu, pntPos );
+	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
+	m_pDrawFrame->AddContextMenuEntries( pCore, hPopupMenu, pntPos );
+	m_pReadBuffer->ReleaseReadBuffer( );
 
     if ( GridSelection::SelectionIsEmpty() )
     {
@@ -167,11 +170,12 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 
 void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
 {
-    PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
+    PixelPoint    const   ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
+	EvolutionCore const * pCore  = m_pReadBuffer->LockReadBuffer( );
 
     m_pFocusPoint->SetFocusPoint( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
 
-	if ( m_pDrawFrame->SetHighlightPos( ptCrsr ) )
+	if ( m_pDrawFrame->SetHighlightPos( pCore, ptCrsr ) )
 		PostCommand2Application( IDM_REFRESH, 1 );   // refresh immediatelly
 
     if ( wParam & MK_RBUTTON )                // Right mouse button: selection
@@ -179,7 +183,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         if ( m_ptLast.IsNotNull() )  // last cursor pos stored in m_ptLast
         {
             PixelPoint ptOther = GridPOI::IsPoiDefined( ) 
-				                 ? m_pPixelCoordinates->Grid2PixelPosCenter( m_pCore->FindPOI( ) ) * 2 - ptCrsr 
+				                 ? m_pPixelCoordinates->Grid2PixelPosCenter( pCore->FindPOI( ) ) * 2 - ptCrsr 
 				                 : m_ptLast;
 			GridSelection::SetSelection( m_pPixelCoordinates->Pixel2GridRect( PixelRect( ptOther, ptCrsr ) ) );
         }
@@ -191,7 +195,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     }
     else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
     {
-        if ( (m_pCore->GetBrushMode() != tBrushMode::move) && (ptCrsr != m_ptLast) )
+        if ( (pCore->GetBrushMode() != tBrushMode::move) && (ptCrsr != m_ptLast) )
         {
             m_pWorkThreadInterface->PostDoEdit( m_pFocusPoint->GetGridPoint( ) );
         }
@@ -208,6 +212,8 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         m_ptLast = PixelPoint::NULL_VAL();    // make m_ptLast invalid
         // no PostRefresh! It would cause repaint for every mouse move.
     }
+
+	m_pReadBuffer->ReleaseReadBuffer( );
 }
 
 BOOL GridWindow::inObservedClientRect( LPARAM const lParam )
@@ -240,6 +246,7 @@ void GridWindow::moveGrid( PixelPoint const ptDiff )
 
 void GridWindow::doPaint( )
 {
+	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
     m_pPerformanceWindow->DisplayStart( );
 
     if ( IsWindowVisible() )
@@ -248,7 +255,7 @@ void GridWindow::doPaint( )
         HDC const hdc = BeginPaint( &ps );
 		if ( m_pGraphics->StartFrame( GetWindowHandle(), hdc ) )
 		{
-			(void)m_pDrawFrame->DoPaint( );
+			(void)m_pDrawFrame->DoPaint( pCore );
 
 			COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
 
@@ -269,12 +276,13 @@ void GridWindow::doPaint( )
 
     if ( m_bMoveAllowed && GridPOI::IsPoiDefined( ) )
 	{
-		bool bCentered = m_pPixelCoordinates->CenterPoi( GetClRectCenter( ), m_pCore->FindPOI( ) );
+		bool bCentered = m_pPixelCoordinates->CenterPoi( GetClRectCenter( ), pCore->FindPOI( ) );
 		if ( ! bCentered )
 		   Invalidate( FALSE );    // repeat if POI is not in center 
 	}
 
     m_pPerformanceWindow->DisplayStop( );
+	m_pReadBuffer->ReleaseReadBuffer( );
 }
 
 void GridWindow::mouseWheelAction( WPARAM const wParam )
@@ -311,9 +319,11 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             {
 			case IDM_CHOOSE_STRATEGY_COLOR:
 			{
-				PixelPoint   const ptCrsr = GetCrsrPosFromLparam( lParam );
-				GridPoint    const gpCrsr = m_pPixelCoordinates->Pixel2GridPos( ptCrsr );
-				Strategy::Id const strat  = m_pCore->GetStrategyId( gpCrsr );
+				PixelPoint    const   ptCrsr = GetCrsrPosFromLparam( lParam );
+				GridPoint     const   gpCrsr = m_pPixelCoordinates->Pixel2GridPos( ptCrsr );
+				EvolutionCore const * pCore  = m_pReadBuffer->LockReadBuffer( );
+				Strategy::Id  const   strat  = pCore->GetStrategyId( gpCrsr );
+				m_pReadBuffer->ReleaseReadBuffer( );
 				m_pDrawFrame->CallStrategyColorDialog( GetWindowHandle(), strat );
 			}
 			break;
@@ -419,7 +429,12 @@ void GridWindow::Size( )
 	);
 }
 
-void GridWindow::newFieldSize( PIXEL const pixfieldSize, GridPoint const gpCenter )
+void GridWindow::newFieldSize
+( 
+	EvolutionCore const * pCore, 
+	PIXEL         const   pixfieldSize, 
+	GridPoint     const   gpCenter 
+)
 {
 	if ( m_pPixelCoordinates->SetGridFieldSize( pixfieldSize ) )
 	{
@@ -427,7 +442,7 @@ void GridWindow::newFieldSize( PIXEL const pixfieldSize, GridPoint const gpCente
 		m_pDrawFrame->ResizeDrawFrame( );  // trigger DrawFrame to adapt font size etc.
 		PixelPoint const ppCrsr = GetRelativeCrsrPosition( );
 		if ( IsInClientRect( ppCrsr ) )
-			m_pDrawFrame->SetHighlightPos( ppCrsr );  
+			m_pDrawFrame->SetHighlightPos( pCore, ppCrsr );  
 		PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );             
 	}
 	else
@@ -438,25 +453,25 @@ void GridWindow::newFieldSize( PIXEL const pixfieldSize, GridPoint const gpCente
 
 void GridWindow::SetFieldSize( PIXEL const pixFieldSize )
 {
-	newFieldSize
-	( 
-		pixFieldSize, 
-		GridPOI::IsPoiDefined( ) 
-		? m_pCore->FindPOI( ) 
-		: m_pPixelCoordinates->Pixel2GridPos( GetClRectCenter( ) ) 
-	);
+	EvolutionCore const * pCore    = m_pReadBuffer->LockReadBuffer( );
+	GridPoint     const   gpCenter = GridPOI::IsPoiDefined( ) 
+									 ? pCore->FindPOI( ) 
+									 : m_pPixelCoordinates->Pixel2GridPos( GetClRectCenter( ) );
+	newFieldSize( pCore, pixFieldSize, gpCenter );
+	m_pReadBuffer->ReleaseReadBuffer( );
 }
 
 void GridWindow::Fit2Rect( )
 {
-	GridRect gridRect = GridSelection::GetSelection();
-
+	GridRect      const   gridRect = GridSelection::GetSelection();
+	EvolutionCore const * pCore    = m_pReadBuffer->LockReadBuffer( );
 	newFieldSize
 	( 
+		pCore,
 		m_pPixelCoordinates->CalcMaximumFieldSize( gridRect.GetSize(), GetClRectSize( ) ), 
 		gridRect.GetCenter() 
 	);
-
+	m_pReadBuffer->ReleaseReadBuffer( );
 	GridSelection::ResetSelection( );
 }
 

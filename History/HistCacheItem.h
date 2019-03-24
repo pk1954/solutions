@@ -24,7 +24,7 @@ public:
 		return new HistCacheItem( pModelFactory->CreateModelData( ) );
 	}
 
-	virtual ModelData const * CopyCacheItem( HistCacheItem const * const pSrc )
+	virtual ModelData const * CopyCacheItemFrom( HistCacheItem const * const pSrc )
     {
 //        std::wcout << __FUNCTION__ << L" Gen" << pSrc->m_genHistCounter << L" ->" << m_genHistCounter << endl;
         m_pModelData->CopyFrom( pSrc->m_pModelData );

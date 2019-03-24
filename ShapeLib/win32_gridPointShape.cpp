@@ -44,26 +44,27 @@ void GridPointShape::RefreshLayout( )
 	}
 }
 
-void GridPointShape::Draw( GridPoint const gp, PixelPoint const ppGridpointOffset )
+void GridPointShape::Draw( EvolutionCore const * const pCore, GridPoint const gp, PixelPoint const ppGridpointOffset )
 {
 	if ( m_shape.IsNotEmpty () )
 	{
 		m_coordShape.Draw( gp, ppGridpointOffset );
-		m_indivShape.Draw( gp, ppGridpointOffset );
+		m_indivShape.Draw( pCore, gp, ppGridpointOffset );
 	}
 }
 
 Shape const * GridPointShape::FindShape
 ( 
-	PixelPoint const pnt, 
-	GridPoint  const gp
+	EvolutionCore const * const pCore, 
+	PixelPoint            const pnt, 
+	GridPoint             const gp
 ) const
 {
  	Shape const * pShapeRes = m_coordShape.FindShape( pnt, gp );
 	if ( pShapeRes != nullptr )
 		return pShapeRes;
 
-	pShapeRes = m_indivShape.FindShape( pnt, gp );
+	pShapeRes = m_indivShape.FindShape( pCore, pnt, gp );
 	if ( pShapeRes != nullptr )
 		return pShapeRes;
 

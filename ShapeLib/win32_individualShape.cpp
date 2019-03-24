@@ -36,28 +36,29 @@ void IndividualShape::PrepareShape( PixelPoint const ppOffset, PixelRectSize con
 	}
 }
 
-void IndividualShape::Draw( GridPoint const gp, PixelPoint const ppGridpointOffset )
+void IndividualShape::Draw( EvolutionCore const * const pCore, GridPoint const gp, PixelPoint const ppGridpointOffset )
 {
 	if ( IsNotEmpty () )
 	{
-		m_leftColumn. Draw( gp, ppGridpointOffset );
-		m_rightColumn.Draw( gp, ppGridpointOffset );
+		m_leftColumn. Draw(        gp, ppGridpointOffset );
+		m_rightColumn.Draw( pCore, gp, ppGridpointOffset );
 	}
 }
 
 Shape const * IndividualShape::FindShape
 ( 
-	PixelPoint const pnt, 
-	GridPoint  const gp
+	EvolutionCore const * const pCore, 
+	PixelPoint    const         pnt, 
+	GridPoint     const         gp
 ) const
 {
 	Shape const * pShapeRes = m_leftColumn.FindShape( pnt, gp );
 	if ( pShapeRes != nullptr )
 		return pShapeRes;
 
-	if ( m_textDisplay.GetStrategyId( gp ) == Strategy::Id::tit4tat )
+	if ( pCore->GetStrategyId( gp ) == Strategy::Id::tit4tat )
 	{
-		pShapeRes = m_rightColumn.FindShape( pnt, gp );
+		pShapeRes = m_rightColumn.FindShape( pCore, pnt, gp );
 		if ( pShapeRes != nullptr )
 			return pShapeRes;
 	}

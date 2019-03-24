@@ -5,7 +5,7 @@
 
 #include "win32_textWindow.h"
 
-class EvolutionCore;
+class ReadBuffer;
 class EvoStatistics;
 
 class StatisticsWindow : public TextWindow
@@ -14,11 +14,11 @@ public:
     StatisticsWindow( );
     virtual ~StatisticsWindow( );
 
-    void Start( HWND const, EvolutionCore const * const );
+    void Start( HWND const, ReadBuffer * const );
 
     virtual void DoPaint( TextBuffer & );
 
 private:
-    EvolutionCore const * m_pCore;
-	EvoStatistics       * m_pStatistics;
+	ReadBuffer    * m_pReadBuffer;
+	EvoStatistics * m_pStatistics;
 };

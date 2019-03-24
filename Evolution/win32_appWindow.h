@@ -6,7 +6,6 @@
 #include <fstream>
 #include <iostream>
 #include "win32_baseWindow.h"
-#include "win32_viewCollection.h"
 #include "win32_event.h"
 
 class GridWindow;
@@ -30,6 +29,7 @@ class EvoController;
 class HistorySystem;
 class ColorManager;
 class GraphicsInterface;
+class ReadBuffer;
 
 //lint -esym( 1712, AppWindow )  no default constructor for class 
 
@@ -52,7 +52,6 @@ private:
 
 	HWND                  m_hwndConsole;
 	Util::Event           m_event;
-    ViewCollection        m_gridObservers;
 
     GridWindow          * m_pMainGridWindow;
     GridWindow          * m_pMiniGridWindow;
@@ -71,6 +70,7 @@ private:
     ScriptHook          * m_pScriptHook;
 	ColorManager        * m_pColorManager;
 	GraphicsInterface   * m_pGraphics;
+	ReadBuffer          * m_pReadBuffer;
     
     // History 
     HistorySystem       * m_pHistorySystem;

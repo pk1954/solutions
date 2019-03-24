@@ -10,11 +10,6 @@
 class ViewCollection : public ObserverInterface
 {
 public:
-    ViewCollection( ) 
-	{ }
-
-	~ViewCollection( )	
-	{ }
 
 	virtual void Notify( bool const bImmediately )
 	{
@@ -31,5 +26,6 @@ public:
 	}
 
 private:
+
     std::vector< ObserverInterface * > m_aView;
 };

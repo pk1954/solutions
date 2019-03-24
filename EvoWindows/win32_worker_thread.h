@@ -27,7 +27,7 @@ class EvolutionCore;
 class WinManager;
 class EditorWindow;
 class EventInterface;
-class ObserverInterface;
+class ReadBuffer;
 class EvoHistorySysGlue;
 class WorkThreadInterface;
 
@@ -78,7 +78,7 @@ public:
 		PerformanceWindow   * const,
 		EditorWindow        * const,
 		EventInterface      * const,
-		ObserverInterface   * const,
+		ReadBuffer          * const,
 		EvoHistorySysGlue   * const,
 		WorkThreadInterface * const
 	);
@@ -123,7 +123,7 @@ private:
     PerformanceWindow   * m_pPerformanceWindow;
     EditorWindow        * m_pEditorWindow;
     EventInterface      * m_pEventPOI;
-    ObserverInterface   * m_pObservers;
+    ReadBuffer          * m_pReadBuffer;
     EvoHistorySysGlue   * m_pEvoHistGlue;
 	WorkThreadInterface * m_pWorkThreadInterface;
     HIST_GENERATION       m_genDemanded;

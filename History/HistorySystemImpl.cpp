@@ -83,18 +83,12 @@ ModelData const * HistorySystemImpl::CreateAppCommand( GenerationCmd const genCm
 	return save2History( );
 }
 
-HistCacheItem const * HistorySystemImpl::getCachedItem( GenerationCmd cmd )
-{
-	HistSlotNr const sSlotNr = cmd.GetSlotNr( );
-    return m_pHistoryCache->GetHistCacheItemC( sSlotNr );
-}
-
 // ApproachHistGen - Get closer to demanded HIST_GENERATION
 //                 - If several steps are neccessary, function returns after one displayed generation
 //                   to allow user interaction
-//                 - But actual history generation as altered by at least 1
+//                 - But actual history generation is altered by at least 1
 
-void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
+ModelData const * HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
 {
     HIST_GENERATION genActual = m_pHistCacheItemWork->GetHistGenCounter( );
 
@@ -110,17 +104,21 @@ void HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genDemanded )
 
     // now we have found a cached generation  
 
-    if ( 
+    if (
           (( genCached <= genActual ) && ( genActual < genDemanded )) || // cached generation is not better than actual generation
           (( genActual == genDemanded - 1 ) && bMicrosteps )
        )
     {
 		step2NextGeneration( m_GenCmdList[ genActual + 1 ] );   // compute forwards
+
+///		XXXXXXXXXXXXXXXXXXXX
     }
     else  // get cached generation
     {
-        m_pHistCacheItemWork->CopyCacheItem( getCachedItem( m_GenCmdList[ genCached ] ) );
+		HistSlotNr const slotNr = m_GenCmdList[ genCached ].GetSlotNr( );
+		m_pHistoryCache->CopyFromCacheSlot( slotNr, m_pHistCacheItemWork );
     }
+	return nullptr;
 }
 
 tGenCmd HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
@@ -129,7 +127,9 @@ tGenCmd HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
 
 	if ( cmd.IsCachedGeneration( ) )
 	{
-		cmd = getCachedItem( cmd )->GetGenCmd( );
+		HistSlotNr    const   sSlotNr = cmd.GetSlotNr( );
+		HistCacheItem const * pItem   = m_pHistoryCache->GetHistCacheItemC( sSlotNr );
+		cmd = pItem->GetGenCmd( );
 	}
 
 	return cmd.GetCommand( );
@@ -138,6 +138,7 @@ tGenCmd HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
 // private member functions
 
 // save2History - Save Generation data (rule how to get to next generation), current Grid, etc. to new slot
+//                Return pointer to this slot to be used for reading
 
 ModelData const * HistorySystemImpl::save2History( )
 {
@@ -155,7 +156,7 @@ ModelData const * HistorySystemImpl::save2History( )
     }
 
     CHECK_HISTORY_STRUCTURE;
-    ModelData const * pModelData = m_pHistoryCache->Save2CacheSlot( * m_pHistCacheItemWork, slotNr );
+    ModelData const * pModelData = m_pHistoryCache->Save2CacheSlot( slotNr, m_pHistCacheItemWork );
     m_GenCmdList.SetCachedGeneration( m_pHistCacheItemWork->GetHistGenCounter( ), slotNr );
     CHECK_HISTORY_STRUCTURE;
 
@@ -171,7 +172,7 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
     if ( genCmd.IsCachedGeneration( ) ) // can happen only in history mode
     {
         assert( IsInHistoryMode( ) );
-        HistSlotNr    const   slotNr        = genCmd.GetSlotNr( );
+        HistSlotNr    const   slotNr         = genCmd.GetSlotNr( );
         HistCacheItem const * pHistCacheItem = m_pHistoryCache->GetHistCacheItemC( slotNr );
         genCmd = pHistCacheItem->GetGenCmd( );
     }

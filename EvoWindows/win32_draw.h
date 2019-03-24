@@ -13,8 +13,7 @@
 #include "win32_util.h"
 #include "win32_clut.h"
 
-//lint -esym( 763, EvolutionCore )  redundant declaration
-
+class ReadBuffer;
 class EvolutionCore;
 class GraphicsInterface;
 class PixelCoordinates;
@@ -30,31 +29,31 @@ public:
 
     DrawFrame
 	( 
-		HWND const, 
-		EvolutionCore * const, 
-		PixelCoordinates * const, 
+		HWND                const, 
+		ReadBuffer        * const, 
+		PixelCoordinates  * const, 
 		GraphicsInterface * const,
-		DspOptWindow * const, 
-		ColorManager * const
+		DspOptWindow      * const, 
+		ColorManager      * const
 	);
     ~DrawFrame( );
 
     void ResizeDrawFrame( );
-    void DoPaint( );
+    void DoPaint( EvolutionCore const * );
     void SetStripMode( tBoolOp );
-	bool SetHighlightPos( PixelPoint const );
+	bool SetHighlightPos( EvolutionCore const * const, PixelPoint const );
 	void HighlightShape( Shape const *, GridPoint const );
 	void CallStrategyColorDialog( HWND const, Strategy::Id const );
 	void CallHighlightColorDialog( HWND const );
 	void CallSelectionColorDialog( HWND const );
-	void AddContextMenuEntries( HMENU const, POINT const );
+	void AddContextMenuEntries( EvolutionCore const * const, HMENU const, POINT const );
 
 private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
     DrawFrame & operator= ( DrawFrame const & );  // noncopyable class 
 
 	HWND                const m_hwnd;
-    EvolutionCore     * const m_pCore;
+    ReadBuffer        * const m_pReadBuffer;
     PixelCoordinates  * const m_pPixelCoordinates;
     DspOptWindow      * const m_pDspOptWindow;
 	ColorManager      * const m_pColorManager;  
@@ -82,11 +81,11 @@ private:
 	}
 
     COLORREF getBackgroundColor( CLUT_INDEX ) const;
-    void     setIndividualColor( GridPoint const, float const ) const;
+    void     setIndividualColor( EvolutionCore const * const, GridPoint const, float const ) const;
 	void     addPrimitive( GridPoint const, COLORREF const, float const ) const;
 	
 	void drawBackground( );
-    void drawText       ( GridRect  const & );
-    void drawIndividuals( GridRect  const & );
-    void drawPOI        ( GridPoint const );
+    void drawText       ( EvolutionCore const * const, GridRect  const & );
+    void drawIndividuals( EvolutionCore const * const, GridRect  const & );
+    void drawPOI        ( EvolutionCore const * const );
 };

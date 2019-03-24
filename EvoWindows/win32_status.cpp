@@ -8,6 +8,7 @@
 #include "config.h"
 #include "pixelCoordinates.h"
 #include "EvolutionCore.h"
+#include "win32_readBuffer.h"
 #include "win32_performanceWindow.h"
 #include "win32_status.h"
 
@@ -38,14 +39,18 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
     switch ( uMsg )
     {
     case WM_PAINT:
-		pStatusBar->DisplayCurrentGeneration( pStatusBar->m_pCore->GetEvoGenerationNr( ) );
+		{
+			ReadBuffer          * pReadBuffer = pStatusBar->m_pReadBuffer;
+			EvolutionCore const * pCore  = pReadBuffer->LockReadBuffer( );
+			EVO_GENERATION        evoGen = pCore->GetEvoGenerationNr( );
+			pReadBuffer->ReleaseReadBuffer( );
+			pStatusBar->DisplayCurrentGeneration( evoGen );
+		}
         break;
 
     case WM_COMMAND:
-	{
 		(void)SendMessage( GetParent( hwnd ), WM_COMMAND, LOWORD(wParam), 0 );
         return FALSE;
-	}
 
     case WM_HSCROLL:
 		{
@@ -155,11 +160,11 @@ void WINAPI StatusBar::createEditorControl( )
 
 void StatusBar::Start
 ( 
-	HWND          const   hwndParent,
-	EvolutionCore const * pCore
+	HWND const   hwndParent,
+	ReadBuffer * pReadBuffer
 )
 {
-	m_pCore = pCore;
+	m_pReadBuffer = pReadBuffer;
 	HWND hwndStatus = CreateWindow
     (
         STATUSCLASSNAME, 

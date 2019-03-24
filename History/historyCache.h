@@ -24,7 +24,6 @@ public:
     bool              AddCacheSlot( );
     void              ResetHistoryCache( );
     HistSlotNr        GetFreeCacheSlot( );
-    ModelData const * Save2CacheSlot( HistCacheItem const &, HistSlotNr const );
     void              RemoveHistCacheSlot( HistSlotNr const );
 
 	void HistoryCache::ResetHistCacheSlot( HistSlotNr const slotNr )  	// reset slot, but leave it in list of used slots
@@ -32,7 +31,25 @@ public:
 		getSlot( slotNr ).ResetSlot( );
 	}
 
-    bool IsEmpty( )    const { return m_histSlotHead.IsNull(); };
+    ModelData const * Save2CacheSlot
+	(
+		HistSlotNr    const   slotNr,
+		HistCacheItem const * pSource
+	)
+	{
+		return GetHistCacheItem( slotNr )->CopyCacheItemFrom( pSource );
+	}
+
+    void CopyFromCacheSlot
+	(
+		HistSlotNr    const slotNr,
+		HistCacheItem     * pTarget
+	)
+	{
+        pTarget->CopyCacheItemFrom( GetHistCacheItemC( slotNr ) );
+	}
+
+	bool IsEmpty( )    const { return m_histSlotHead.IsNull(); };
     bool IsNotEmpty( ) const { return m_histSlotHead.IsNotNull(); };
 
     HistSlotNr GetHead( ) const { return m_histSlotHead; };

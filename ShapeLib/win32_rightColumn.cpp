@@ -39,24 +39,24 @@ void RightColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const p
 	}
 }
 
-void RightColumn::FillBuffer( GridPoint const gp )
+void RightColumn::FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )
 {
 	wostringstream & buffer = m_textDisplay.Buffer();
-	EvolutionCore  & core   = m_textDisplay.Core();
 
-	MEM_INDEX const memSize = core.GetMemSize( gp );  
-	MEM_INDEX const memUsed = core.GetMemUsed( gp ); 
+	MEM_INDEX const memSize = pCore->GetMemSize( gp );  
+	MEM_INDEX const memUsed = pCore->GetMemUsed( gp ); 
         
 	buffer << L"Memory " << memUsed << L"/" << memSize;
 }
 
 Shape const * RightColumn::FindShape
 ( 
-	PixelPoint const pnt,             
-	GridPoint  const gp
+	EvolutionCore const * const pCore, 
+	PixelPoint            const pnt,             
+	GridPoint             const gp
 ) const
 {
-	MEM_INDEX const memUsed = m_textDisplay.Core().GetMemUsed( gp ); 
+	MEM_INDEX const memUsed = pCore->GetMemUsed( gp ); 
 	for	( auto & pSlot : m_aMemorySlot )
 	{
 		if ( pSlot->GetMemIndex() == memUsed )
@@ -68,18 +68,23 @@ Shape const * RightColumn::FindShape
 	return Shape::FindShape( pnt, gp );
 }
 
-void RightColumn::Draw( GridPoint const gp, PixelPoint const ppGridpointOffset )
+void RightColumn::Draw
+( 
+	EvolutionCore const * const pCore, 
+	GridPoint             const gp, 
+	PixelPoint            const pntGridpointOffset 
+)
 {
 	if ( IsNotEmpty () )
 	{
-		Shape::Draw( gp, ppGridpointOffset );
+		Shape::Draw( gp, pntGridpointOffset );
 
-		MEM_INDEX const memUsed = m_textDisplay.Core().GetMemUsed( gp ); 
+		MEM_INDEX const memUsed = pCore->GetMemUsed( gp ); 
 		for	( auto & pSlot : m_aMemorySlot )
 		{
 			if ( pSlot->GetMemIndex() == memUsed )
 				break;
-			pSlot->Draw( gp, ppGridpointOffset );
+			pSlot->Draw( gp, pntGridpointOffset );
 		}
 	}
 }

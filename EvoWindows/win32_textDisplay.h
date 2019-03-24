@@ -14,13 +14,11 @@ public:
 	( 
 		GraphicsInterface   & graphicsInterface, 
 		std::wostringstream & wBuffer,
-		PixelCoordinates    & pixelCoordinates,
-		EvolutionCore       & core
+		PixelCoordinates    & pixelCoordinates
 	) :
 		m_graphics( graphicsInterface ),
 		m_wBuffer( wBuffer ),
-		m_pixelCoordinates( pixelCoordinates ),
-		m_core( core )
+		m_pixelCoordinates( pixelCoordinates )
 	{ }
 
 	void Clear()
@@ -32,16 +30,6 @@ public:
 	std::wostringstream & Buffer() 
 	{
 		return m_wBuffer;
-	}
-
-	EvolutionCore & Core()
-	{
-		return m_core;
-	}
-
-	Strategy::Id GetStrategyId( GridPoint const gp ) const
-	{
-		return  m_core.GetStrategyId( gp );
 	}
 
 	PIXEL GetFieldSize( ) const 
@@ -73,5 +61,4 @@ private:
     GraphicsInterface   & m_graphics;
 	std::wostringstream & m_wBuffer;
 	PixelCoordinates    & m_pixelCoordinates;
-    EvolutionCore       & m_core;
 };

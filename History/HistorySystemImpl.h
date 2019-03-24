@@ -53,7 +53,7 @@ public:
 
 	virtual ModelData const * CreateAppCommand( GenerationCmd );
 	virtual void              ClearHistory    ( HIST_GENERATION const );
-    virtual void              ApproachHistGen ( HIST_GENERATION const );
+    virtual ModelData const * ApproachHistGen ( HIST_GENERATION const );
 	virtual tGenCmd           GetGenerationCmd( HIST_GENERATION const );
 
 	virtual HistoryIterator * CreateHistoryIterator( ) const;
@@ -68,7 +68,6 @@ private:
 
     ModelData     const * save2History( );
     void                  step2NextGeneration( GenerationCmd );
-	HistCacheItem const * getCachedItem      ( GenerationCmd );
     void                  checkHistoryStructure( );
 };
 

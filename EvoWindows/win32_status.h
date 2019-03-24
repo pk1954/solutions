@@ -7,12 +7,14 @@
 #include "PixelTypes.h"
 #include "win32_rootWindow.h"
 
-class EvolutionCore;
+class ReadBuffer;
+
+using std::wstring;
 
 class StatusBar : public RootWindow
 {
 public:
-    void    Start( HWND const, EvolutionCore const * );
+    void    Start( HWND const, ReadBuffer * );
 	void    SetSimuMode( BOOL const );
 	void    SetRunMode( BOOL const );
     PIXEL_Y GetHeight( ) const;
@@ -46,14 +48,14 @@ private:
     void WINAPI createSimulationControl( );
     void WINAPI createEditorControl( );
 
-	PIXEL_Y      m_pixClientHeight;
-    PIXEL_X      m_pixBorderX;
-    PIXEL_Y      m_pixBorderY;
-    PIXEL_X      m_pixPosX;
-    std::wstring m_wstrGeneration;
-    std::wstring m_wstrScriptLine;
+	PIXEL_Y m_pixClientHeight;
+    PIXEL_X m_pixBorderX;
+    PIXEL_Y m_pixBorderY;
+    PIXEL_X m_pixPosX;
+    wstring m_wstrGeneration;
+    wstring m_wstrScriptLine;
 
-	EvolutionCore const * m_pCore;
+	ReadBuffer * m_pReadBuffer;
 
 friend static LRESULT CALLBACK OwnerDrawStatusBar( HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR );
 };

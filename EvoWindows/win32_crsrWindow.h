@@ -6,7 +6,7 @@
 #include "win32_textWindow.h"
 
 class FocusPoint;
-class EvolutionCore;
+class ReadBuffer;
 
 class CrsrWindow: public TextWindow
 {
@@ -16,14 +16,14 @@ public:
 
     void Start
 	( 
-		HWND                  const, 
-		FocusPoint          * const, 
-		EvolutionCore const * const 
+		HWND         const, 
+		FocusPoint * const, 
+		ReadBuffer * const 
 	);
 
     virtual void DoPaint( TextBuffer & );
 
 private:
-    FocusPoint          * m_pFocusPoint;
-    EvolutionCore const * m_pCore;
+    FocusPoint * m_pFocusPoint;
+	ReadBuffer * m_pReadBuffer;
 };

@@ -21,8 +21,8 @@ public:
 		m_coordShape( t )
 	{ }
 
-	void          Draw( GridPoint const, PixelPoint const );
-	Shape const * FindShape( PixelPoint const, GridPoint const ) const;
+	void          Draw( EvolutionCore const * const, GridPoint const, PixelPoint const );
+	Shape const * FindShape( EvolutionCore const * const, PixelPoint const, GridPoint const ) const;
 	void          RefreshLayout( );
 	PIXEL         GetIndShapeSize( );
 

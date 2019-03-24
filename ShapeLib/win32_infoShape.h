@@ -8,6 +8,8 @@
 #include "win32_identifierShape.h"
 #include "win32_shape.h"
 
+class EvolutionCore;
+
 class InfoShape : public Shape
 {
 public:
@@ -16,5 +18,5 @@ public:
 		Shape( t )
 	{}
 
-	virtual void FillBuffer( GridPoint const );
+	virtual void FillBuffer( EvolutionCore const * const, GridPoint const );
 };

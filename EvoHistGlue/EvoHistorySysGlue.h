@@ -37,7 +37,7 @@ public:
     //                      to allow user interaction
     //                    - But actual history generation is alterered by at least 1
 
-    void EvoApproachHistGen( HIST_GENERATION const genDemanded ) { m_pHistorySystem->ApproachHistGen( genDemanded ); } 
+    ModelData const * EvoApproachHistGen( HIST_GENERATION const genDemanded ) { return m_pHistorySystem->ApproachHistGen( genDemanded ); } 
 	
     HistSlotNr      GetNrOfUsedHistCacheSlots( ) const { return m_pHistorySystem->GetNrOfUsedHistCacheSlots( ); }
     HistSlotNr      GetNrOfHistCacheSlots    ( ) const { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
@@ -48,8 +48,8 @@ public:
 
 	void EvoClearHistory( );
 
-	ModelData const *  EvoCreateNextGenCommand( ) 
-	 { 
+	ModelData const * EvoCreateNextGenCommand( )
+	{ 
 	 	return m_pHistorySystem->CreateAppCommand( NEXT_GEN_CMD );  
 	}  
 

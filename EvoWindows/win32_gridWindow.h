@@ -5,12 +5,13 @@
 
 #include "win32_baseWindow.h"
 
+class EvolutionCore;
 class GraphicsInterface;
 class DrawFrame;
 class PixelCoordinates;
 class WorkThreadInterface;
 class DspOptWindow;
-class EvolutionCore;
+class ReadBuffer;
 class ObserverInterface;
 class PerformanceWindow;
 class FocusPoint;
@@ -22,7 +23,7 @@ public:
 	static void InitClass
 	( 
 		HWND                  const, 
-		EvolutionCore       * const,
+		ReadBuffer          * const,
         WorkThreadInterface * const,
         FocusPoint          * const,
         DspOptWindow        * const,
@@ -55,7 +56,7 @@ private:
     GridWindow & operator= ( GridWindow const & );  // noncopyable class 
 
 	static HWND                  m_hwndApp;
-	static EvolutionCore       * m_pCore;
+	static ReadBuffer          * m_pReadBuffer;
     static WorkThreadInterface * m_pWorkThreadInterface;
     static PerformanceWindow   * m_pPerformanceWindow;
     static DspOptWindow        * m_pDspOptWindow;
@@ -74,7 +75,7 @@ private:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 	virtual void    AddContextMenuEntries( HMENU const, POINT const );
 
-	void newFieldSize( PIXEL const, GridPoint const );
+	void newFieldSize( EvolutionCore const *, PIXEL const, GridPoint const );
 	void mouseWheelAction( WPARAM const  );
     BOOL inObservedClientRect( LPARAM const );
     void moveGrid( PixelPoint const );

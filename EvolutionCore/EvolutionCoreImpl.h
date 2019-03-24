@@ -15,7 +15,6 @@
 #include "EvolutionTypes.h"
 #include "EvolutionCore.h"
 
-class EvolutionCore;
 class EventInterface;
 class ObserverInterface;
 

@@ -13,7 +13,7 @@ class PerformanceWindow;
 class EditorWindow;
 class EvolutionCore;
 class EventInterface;
-class ObserverInterface;
+class ReadBuffer;
 class EvoHistorySysGlue;
 class WorkThread;
 
@@ -30,7 +30,7 @@ public:
         PerformanceWindow * const,
 		EditorWindow      * const,  
 		EventInterface    * const,
-		ObserverInterface * const, 
+		ReadBuffer        * const, 
         EvolutionCore     * const,
 	    EvoHistorySysGlue * const
     );

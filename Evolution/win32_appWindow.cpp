@@ -37,6 +37,7 @@
 #include "win32_workThreadInterface.h"
 #include "win32_focusPoint.h"
 #include "win32_colorManager.h"
+#include "win32_readBuffer.h"
 #include "ObserverInterface.h"
 
 // scripting and tracing
@@ -66,7 +67,6 @@
 
 AppWindow::AppWindow( ) :
     BaseWindow( ),
-    m_gridObservers( ),
     m_pMainGridWindow( nullptr ),
     m_pMiniGridWindow( nullptr ),
     m_pWorkThreadInterface( nullptr ),
@@ -127,7 +127,9 @@ void AppWindow::Start(  )
 	GridDimensions::DefineGridSize( 150_GRID_X, 100_GRID_Y );
 
 	stopwatch.Start();
-	m_pEvolutionCoreWork = EvolutionCore::InitClass( Config::GetConfigValue( Config::tId::nrOfNeighbors ), & m_gridObservers, & m_event );
+	m_pReadBuffer = new ReadBuffer( );
+	m_pEvolutionCoreWork = EvolutionCore::InitClass( Config::GetConfigValue( Config::tId::nrOfNeighbors ), m_pReadBuffer, & m_event );
+	m_pReadBuffer->SetWorkCore( m_pEvolutionCoreWork );
 	stopwatch.Stop( L"EvolutionCore::InitClass" );
 
     // create window objects
@@ -151,7 +153,7 @@ void AppWindow::Start(  )
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
 	stopwatch.Stop( L"create window objects" );
 
-	GridWindow::InitClass( hwndApp, m_pEvolutionCoreWork, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pColorManager );
+	GridWindow::InitClass( hwndApp, m_pReadBuffer, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pColorManager );
 
 	D3dSystem::Create_D3D_Device
 	( 
@@ -180,13 +182,13 @@ void AppWindow::Start(  )
     m_pHistInfoWindow     ->Start( hwndApp, m_pHistorySystem );
 	m_pEvoHistGlue        ->Start( m_pEvolutionCoreWork, m_pHistorySystem, true, m_pHistInfoWindow );
 	m_pEvoHistWindow      ->Start( hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
-    m_pStatusBar          ->Start( hwndApp, m_pEvolutionCoreWork );
+    m_pStatusBar          ->Start( hwndApp, m_pReadBuffer );
 	m_pFocusPoint         ->Start( m_pEvoHistGlue, m_pEvolutionCoreWork );
-	m_pWorkThreadInterface->Start( hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, & m_gridObservers, m_pEvolutionCoreWork, m_pEvoHistGlue );
+	m_pWorkThreadInterface->Start( hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, m_pReadBuffer, m_pEvolutionCoreWork, m_pEvoHistGlue );
 	m_pDspOptWindow       ->Start( hwndApp, m_pEvolutionCoreWork );
     m_pEditorWindow       ->Start( hwndApp, m_pWorkThreadInterface, m_pEvolutionCoreWork, m_pDspOptWindow, m_pStatusBar );
-    m_pStatistics         ->Start( hwndApp, m_pEvolutionCoreWork );
-    m_pCrsrWindow         ->Start( hwndApp, m_pFocusPoint, m_pEvolutionCoreWork );
+    m_pStatistics         ->Start( hwndApp, m_pReadBuffer );
+    m_pCrsrWindow         ->Start( hwndApp, m_pFocusPoint, m_pReadBuffer );
     m_pPerfWindow         ->Start( hwndApp );
 	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow, m_pColorManager );
 	stopwatch.Stop( L"Start windows" );
@@ -202,13 +204,13 @@ void AppWindow::Start(  )
     m_pMiniGridWindow->SetRefreshRate( 300 );
     m_pMainGridWindow->SetRefreshRate( 100 );
 	
-    m_gridObservers.AttachObserver( m_pStatusBar      );
-    m_gridObservers.AttachObserver( m_pEvoHistWindow  ); 
-    m_gridObservers.AttachObserver( m_pCrsrWindow     );
-    m_gridObservers.AttachObserver( m_pStatistics     );
-    m_gridObservers.AttachObserver( m_pPerfWindow     );
-    m_gridObservers.AttachObserver( m_pMiniGridWindow );
-    m_gridObservers.AttachObserver( m_pMainGridWindow );
+    m_pReadBuffer->AttachObserver( m_pStatusBar      );
+    m_pReadBuffer->AttachObserver( m_pEvoHistWindow  ); 
+    m_pReadBuffer->AttachObserver( m_pCrsrWindow     );
+    m_pReadBuffer->AttachObserver( m_pStatistics     );
+    m_pReadBuffer->AttachObserver( m_pPerfWindow     );
+    m_pReadBuffer->AttachObserver( m_pMiniGridWindow );
+    m_pReadBuffer->AttachObserver( m_pMainGridWindow );
 	
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, hwndApp,                              TRUE,  TRUE );
     m_pWinManager->AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                        TRUE,  TRUE );

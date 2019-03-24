@@ -7,29 +7,29 @@
 
 using std::wostringstream;
 
-GridPoint MemorySlot::GetReferencedGridPoint( GridPoint const gp ) const 
+GridPoint MemorySlot::GetReferencedGridPoint( EvolutionCore const * const pCore, GridPoint const gp ) const 
 { 
-	return getReferencedGridPoint( getIndId( gp ) );
+	return getReferencedGridPoint( pCore, getIndId( pCore, gp ) );
 }
 
-void MemorySlot::FillBuffer( GridPoint const gp )
+void MemorySlot::FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )
 {
 	wostringstream & buffer = m_textDisplay.Buffer();
-	IND_ID           indId  = getIndId( gp );
+	IND_ID           indId  = getIndId( pCore, gp );
 
 	buffer << std::setw( 10 );
-	if ( getReferencedGridPoint( indId ) == GridPoint::NULL_VAL() ) 
+	if ( getReferencedGridPoint( pCore, indId ) == GridPoint::NULL_VAL() ) 
 		buffer << L"DEAD";
 	else
 		buffer << indId;
 }
 
-GridPoint MemorySlot::getReferencedGridPoint( IND_ID const indId ) const 
+GridPoint MemorySlot::getReferencedGridPoint( EvolutionCore const * const pCore, IND_ID const indId ) const 
 { 
-	return m_textDisplay.Core().FindGridPoint( indId );
+	return pCore->FindGridPoint( indId );
 }
 
-IND_ID MemorySlot::getIndId( GridPoint const gp ) const 
+IND_ID MemorySlot::getIndId( EvolutionCore const * const pCore, GridPoint const gp ) const 
 { 
-	return m_textDisplay.Core().GetMemEntry( gp, m_index );
+	return pCore->GetMemEntry( gp, m_index );
 }

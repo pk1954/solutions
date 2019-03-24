@@ -19,8 +19,8 @@ public:
 		Shape::Draw( gp, ppGridPointOffset ); 
 	}
 
-	virtual void FillBuffer( GridPoint const gp )
+	virtual void FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )
 	{
-		m_textDisplay.Buffer() << L"ID: " << std::setw( 5 ) << m_textDisplay.Core().GetId( gp );
+		m_textDisplay.Buffer() << L"ID: " << std::setw( 5 ) << pCore->GetId( gp );
 	}
 };

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "config.h"
 #include "EvolutionCore.h"
+#include "win32_readBuffer.h"
 #include "win32_focusPoint.h"
 #include "win32_textBuffer.h"
 #include "win32_crsrWindow.h"
@@ -11,17 +12,17 @@
 CrsrWindow::CrsrWindow( ) :
     TextWindow( ),
     m_pFocusPoint( nullptr ),
-    m_pCore( nullptr )
+    m_pReadBuffer( nullptr )
 { }
 
 void CrsrWindow::Start
 (
-    HWND                  const hwndParent,
-    FocusPoint          * const pFocusPoint,
-    EvolutionCore const * const pCore
+    HWND         const hwndParent,
+    FocusPoint * const pFocusPoint,
+    ReadBuffer * const pReadBuffer
 ) 
 {
-    m_pCore = pCore;
+    m_pReadBuffer = pReadBuffer;
     m_pFocusPoint = pFocusPoint;
     m_pFocusPoint->AttachFocusPointObserver( this );
     StartTextWindow
@@ -36,7 +37,7 @@ void CrsrWindow::Start
 
 CrsrWindow::~CrsrWindow( )
 {
-	m_pCore = nullptr;
+	m_pReadBuffer = nullptr;
 	m_pFocusPoint = nullptr;
 }
 
@@ -55,21 +56,30 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
     textBuf.printNumber( gpFocus.GetXvalue() );
     textBuf.printNumber( gpFocus.GetYvalue() );
 
+	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
+
+	ENERGY_UNITS enFoodStock = pCore->GetFoodStock( gpFocus );
+	ENERGY_UNITS enFertility = pCore->GetFertility( gpFocus );
+	ENERGY_UNITS enIndEnergy = pCore->GetEnergy( gpFocus );
+	PERCENT      mutRate     = pCore->GetMutRate( gpFocus );
+    bool         bIsAlive    = pCore->IsAlive( gpFocus );
+
+	m_pReadBuffer->ReleaseReadBuffer( );
+
     textBuf.nextLine( L"Food:" );
     textBuf.setHorizontalPos( 3_TEXT_POSITION );
-    textBuf.printPercentage( m_pCore->GetFoodStock( gpFocus ).GetValue(), m_pCore->GetFertility( gpFocus ).GetValue() );
+    textBuf.printPercentage( enFoodStock.GetValue(), enFertility.GetValue() );
 
     textBuf.nextLine( L"MutRate:" );
     textBuf.setHorizontalPos( 2_TEXT_POSITION );
-    textBuf.printPercentage( m_pCore->GetMutRate( gpFocus ).GetValue() );
+    textBuf.printPercentage( mutRate.GetValue() );
     
-	if ( m_pCore->IsDead( gpFocus ) )
-        return;
-
-    textBuf.nextLine( L"Energy:" );
-    textBuf.setHorizontalPos( 4_TEXT_POSITION );
-    textBuf.printPercentage( m_pCore->GetEnergy( gpFocus ).GetValue(), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
-
+	if ( bIsAlive )
+	{
+		textBuf.nextLine( L"Energy:" );
+		textBuf.setHorizontalPos( 4_TEXT_POSITION );
+		textBuf.printPercentage( enIndEnergy.GetValue(), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
+	}
 	// Deactivated, see win32_focusPoint.cpp
 
     // nextLine( L"Lifespan:" );

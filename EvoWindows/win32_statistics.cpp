@@ -9,6 +9,7 @@
 #include "gridSelection.h"
 #include "EvolutionCore.h"
 #include "EvoStatistics.h"
+#include "win32_readBuffer.h"
 #include "win32_baseWindow.h"
 #include "win32_statistics.h"
 #include "win32_stopwatch.h"
@@ -19,11 +20,11 @@ StatisticsWindow::StatisticsWindow( ):
 
 void StatisticsWindow::Start
 (
-    HWND                  const hwndParent,
-    EvolutionCore const * const pCore
+    HWND         const hwndParent,
+    ReadBuffer * const pReadBuffer
 ) 
 {
-    m_pCore = pCore;
+    m_pReadBuffer = pReadBuffer;
 	m_pStatistics = new EvoStatistics();
     StartTextWindow
 	( 
@@ -39,7 +40,7 @@ StatisticsWindow::~StatisticsWindow( )
 {
 	delete m_pStatistics;
 	m_pStatistics = nullptr;
-	m_pCore = nullptr;
+	m_pReadBuffer = nullptr;
 }
 
 Stopwatch stopwatch;
@@ -48,12 +49,9 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 {
 //	stopwatch.Start();
  
-	m_pStatistics->Initialize    // aquire and prepare data 
-	( 
-		m_pCore,
-		GridSelection::GetSelection(),
-		& textBuf 
-	); 
+	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
+	m_pStatistics->Initialize( pCore, GridSelection::GetSelection(), & textBuf ); 
+	m_pReadBuffer->ReleaseReadBuffer( );
 
     // start printing
 
