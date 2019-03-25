@@ -26,24 +26,24 @@ public:
 
 	EvolutionCore const * LockReadBuffer( ) 
 	{
-		AcquireSRWLockExclusive( & m_SRWLock );
+		AcquireSRWLockShared( & m_SRWLock );
 		return m_pCore4Display;
 	}
 
 	void ReleaseReadBuffer( )
 	{
-		ReleaseSRWLockExclusive( & m_SRWLock );
+		ReleaseSRWLockShared( & m_SRWLock );
 	}
 
 	// called by producer thread
 
 	void Notify( bool const bImmediate )
 	{
-		if (TryAcquireSRWLockExclusive( & m_SRWLock ))
-		{
-			m_pCore4Display->CopyEvolutionCoreData( m_pCoreWork );
-			ReleaseSRWLockExclusive( & m_SRWLock );
-			ViewCollection::Notify( bImmediate );
+		if (TryAcquireSRWLockExclusive( & m_SRWLock ))              // if buffer is locked by readers
+		{                                                           // don't let yoe get stopped.
+			m_pCore4Display->CopyEvolutionCoreData( m_pCoreWork );  // just continue your work. 
+			ReleaseSRWLockExclusive( & m_SRWLock );                 // readers can synchronize with 
+			ViewCollection::Notify( bImmediate );                   // later version
 		}
 	}
 

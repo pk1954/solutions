@@ -52,39 +52,31 @@ void EvoStatistics::aquireData( GridPoint const & gp )
 	EVO_GENERATION const age      { m_pCore->GetAge( gp ) };
 	MEM_INDEX      const memSize  { m_pCore->GetMemSize( gp ) };
 
-	if (  // can happen due to race conditions 
-			( strategy != Strategy::Id::empty ) &&
-			( age.IsNotNull()  )
-		)
-	{
-		GeneType::Apply2AllEnabledGeneTypes
-		(
-			[&]( auto geneType )
-			{
-				m_XaGenes[geneType].Add( strategy, CastToUnsignedInt( m_pCore->GetAllele( gp, geneType ) ) );
-			}
-		);
+	assert( strategy != Strategy::Id::empty );
+	assert( age.IsNotNull() );
+	
+	GeneType::Apply2AllEnabledGeneTypes
+	(
+		[&]( auto geneType )
+		{
+			m_XaGenes[geneType].Add( strategy, CastToUnsignedInt( m_pCore->GetAllele( gp, geneType ) ) );
+		}
+	);
 
-		Action::Apply2AllEnabledActions
-		(
-			[&]( auto action )
-			{
-				GeneType::Id geneType = GetRelatedGeneType(action);
-				if ( GeneType::IsDefined( geneType ) ) 
-					m_XaAction[action].Add( strategy, static_cast<float>( m_pCore->GetAllele( gp, geneType ) ) );
-			}
-		);
+	Action::Apply2AllEnabledActions
+	(
+		[&]( auto action )
+		{
+			GeneType::Id geneType = GetRelatedGeneType(action);
+			if ( GeneType::IsDefined( geneType ) ) 
+				m_XaAction[action].Add( strategy, static_cast<float>( m_pCore->GetAllele( gp, geneType ) ) );
+		}
+	);
 
-		m_auiMemSize  [strategy] += memSize.GetValue();
-		m_gsAverageAge[strategy] += age.GetValue();
-		m_gsAverageAge.Add( strategy, age.GetValue() );
-		m_gsCounter.Add( strategy, 1 );
-	}
-	EVO_GENERATION evoGenNew { m_pCore->GetEvoGenerationNr() };
-	if (evoGen != evoGenNew)
-	{
-		volatile int x = 42;
-	}
+	m_auiMemSize  [strategy] += memSize.GetValue();
+	m_gsAverageAge[strategy] += age.GetValue();
+	m_gsAverageAge.Add( strategy, age.GetValue() );
+	m_gsCounter.Add( strategy, 1 );
 }
 
 void EvoStatistics::scale( float & op, float const div )
