@@ -38,7 +38,7 @@ public:
 	);
     ~DrawFrame( );
 
-    void ResizeDrawFrame( );
+    void ResizeDrawFrame( EvolutionCore const * const );
     void DoPaint( EvolutionCore const * );
     void SetStripMode( tBoolOp );
 	bool SetHighlightPos( EvolutionCore const * const, PixelPoint const );

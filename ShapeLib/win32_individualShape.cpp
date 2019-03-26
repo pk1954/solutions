@@ -4,10 +4,10 @@
 #include "stdafx.h"
 #include "win32_individualShape.h"
 
-PixelRectSize IndividualShape::MinimalSize( )  
+PixelRectSize IndividualShape::MinimalSize( EvolutionCore const * const pCore )  
 {       
-	PixelRectSize minLeft  { m_leftColumn .MinimalSize( ) };
-	PixelRectSize minRight { m_rightColumn.MinimalSize( ) };
+	PixelRectSize minLeft  { m_leftColumn .MinimalSize( pCore ) };
+	PixelRectSize minRight { m_rightColumn.MinimalSize( pCore ) };
 
 	return SetMinSize( minLeft );
 }                                     
@@ -40,7 +40,7 @@ void IndividualShape::Draw( EvolutionCore const * const pCore, GridPoint const g
 {
 	if ( IsNotEmpty () )
 	{
-		m_leftColumn. Draw(        gp, ppGridpointOffset );
+		m_leftColumn. Draw( pCore, gp, ppGridpointOffset );
 		m_rightColumn.Draw( pCore, gp, ppGridpointOffset );
 	}
 }

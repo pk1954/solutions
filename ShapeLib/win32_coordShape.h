@@ -14,7 +14,7 @@ public:
 		Shape( t )
 	{}
 
-	void FillBuffer( GridPoint const gp )
+	void FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )
 	{
 		m_textDisplay.Buffer() << gp;
 	}

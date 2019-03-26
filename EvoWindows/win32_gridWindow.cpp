@@ -439,7 +439,7 @@ void GridWindow::newFieldSize
 	if ( m_pPixelCoordinates->SetGridFieldSize( pixfieldSize ) )
 	{
 		m_pPixelCoordinates->CenterGrid( gpCenter, GetClRectSize( ) ); // center grid around gpCenter
-		m_pDrawFrame->ResizeDrawFrame( );  // trigger DrawFrame to adapt font size etc.
+		m_pDrawFrame->ResizeDrawFrame( pCore );  // trigger DrawFrame to adapt font size etc.
 		PixelPoint const ppCrsr = GetRelativeCrsrPosition( );
 		if ( IsInClientRect( ppCrsr ) )
 			m_pDrawFrame->SetHighlightPos( pCore, ppCrsr );  

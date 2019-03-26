@@ -16,8 +16,8 @@ public:
 		m_rightColumn( t )
 	{}
 
-	virtual PixelRectSize MinimalSize( );
 	virtual void          PrepareShape( PixelPoint const, PixelRectSize const );
+	virtual PixelRectSize MinimalSize ( EvolutionCore const * const );
 	virtual void          Draw        ( EvolutionCore const * const, GridPoint  const, PixelPoint    const );
 	virtual Shape const * FindShape   ( EvolutionCore const * const, PixelPoint const, GridPoint     const ) const;
 

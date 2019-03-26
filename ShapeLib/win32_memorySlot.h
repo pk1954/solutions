@@ -18,8 +18,8 @@ public:
 		m_index( index )
 	{}
 
-	virtual void      FillBuffer( EvolutionCore const * const pCore, GridPoint const gp );
-	virtual GridPoint GetReferencedGridPoint( EvolutionCore const * const pCore, GridPoint const ) const; 
+	virtual void      FillBuffer            ( EvolutionCore const * const, GridPoint const );
+	virtual GridPoint GetReferencedGridPoint( EvolutionCore const * const, GridPoint const ) const; 
 
 	MEM_INDEX GetMemIndex() const {	return m_index;	}
 

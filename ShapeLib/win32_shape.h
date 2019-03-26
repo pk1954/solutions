@@ -19,10 +19,10 @@ public:
 		m_minSize( PixelRectSize( 0_PIXEL_X, 0_PIXEL_Y ) )
 	{}
 
-	virtual PixelRectSize MinimalSize( )  
+	virtual PixelRectSize MinimalSize( EvolutionCore const * const pCore )  
 	{                                     
 		m_textDisplay.Clear();
-		FillBuffer( GridDimensions::GridOrigin() );
+		FillBuffer( pCore, GridDimensions::GridMaximum() );
 		return SetMinSize( m_textDisplay.CalcRectSize( ) );
 	}                                     
 
@@ -48,10 +48,10 @@ public:
 		return GridPoint::NULL_VAL(); 
 	}
 
-	virtual void Draw( GridPoint const, PixelPoint const );
+	virtual void Draw( EvolutionCore const * const, GridPoint const, PixelPoint const );
 	virtual void AddContextMenuEntries( HMENU const ) const {};
 
-	// PrepareShape: Rearrange shape according new size
+	// PrepareShape: Rearrange shape according to new size
 	// no GridPoint parameter, because function is responsible for 
 	// general adjustments, valid for all grid points
 
@@ -117,7 +117,7 @@ protected:
 		return m_rect.GetHeight( );
 	}
 
-	virtual void FillBuffer( GridPoint const ) { };
+	virtual void FillBuffer( EvolutionCore const * const, GridPoint const ) { };
 
 	TextDisplay & m_textDisplay;
 

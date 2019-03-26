@@ -14,9 +14,14 @@ public:
 		Shape( t )
 	{}
 
-	virtual void Draw( GridPoint const gp, PixelPoint const ppGridPointOffset )
+	virtual void Draw
+	( 
+		EvolutionCore const * const pCore, 
+		GridPoint             const gp, 
+		PixelPoint            const pntGridpointOffset 
+	)
 	{
-		Shape::Draw( gp, ppGridPointOffset ); 
+		Shape::Draw( pCore, gp, pntGridpointOffset ); 
 	}
 
 	virtual void FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )

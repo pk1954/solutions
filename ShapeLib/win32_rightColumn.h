@@ -14,10 +14,10 @@ class RightColumn : public Shape
 public:
 	RightColumn( TextDisplay & );
 
-	virtual PixelRectSize MinimalSize( );
-	virtual void          PrepareShape  ( PixelPoint const, PixelRectSize const );
-	virtual void          Draw          ( EvolutionCore const * const, GridPoint const, PixelPoint const  );
-	virtual void          FillBuffer    ( EvolutionCore const * const, GridPoint const );
+	virtual void          PrepareShape( PixelPoint const, PixelRectSize const );
+	virtual PixelRectSize MinimalSize ( EvolutionCore const * const );
+	virtual void          Draw        ( EvolutionCore const * const, GridPoint const, PixelPoint const  );
+	virtual void          FillBuffer  ( EvolutionCore const * const, GridPoint const );
 
 	virtual Shape const * FindShape( EvolutionCore const * const, PixelPoint const, GridPoint const ) const;
 

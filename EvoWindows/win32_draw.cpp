@@ -42,7 +42,10 @@ DrawFrame::DrawFrame
 	m_pTextDisplay    = new TextDisplay( * m_pGraphics, m_wBuffer, * m_pPixelCoordinates );
 	m_gridPointShape  = new GridPointShape( * m_pTextDisplay );
 	m_pShapeHighlight = nullptr;
-	m_gridPointShape->RefreshLayout( );
+
+	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
+	m_gridPointShape->RefreshLayout( pCore );
+	m_pReadBuffer->ReleaseReadBuffer( );
 }
 
 DrawFrame::~DrawFrame( ) 
@@ -70,7 +73,7 @@ void DrawFrame::SetStripMode( tBoolOp const bOp )
     m_pGraphics->SetStripMode( bOp ); 
 };
 
-void DrawFrame::ResizeDrawFrame( )
+void DrawFrame::ResizeDrawFrame( EvolutionCore const * const pCore )
 {
 	int   const MAX_TEXT_LINES = 10;
 	PIXEL const pixFieldSize   = m_pPixelCoordinates->GetFieldSize();
@@ -80,7 +83,7 @@ void DrawFrame::ResizeDrawFrame( )
 	if ( pixFontSize > 16_PIXEL )
 		pixFontSize = 16_PIXEL;
     m_pGraphics->SetFontSize( pixFontSize );
-	m_gridPointShape->RefreshLayout( );
+	m_gridPointShape->RefreshLayout( pCore );
 }
 
 bool DrawFrame::SetHighlightPos( EvolutionCore const * const pCore, PixelPoint const ptCrsr )
@@ -89,7 +92,7 @@ bool DrawFrame::SetHighlightPos( EvolutionCore const * const pCore, PixelPoint c
 	Shape     const * pShapeLast = m_pShapeHighlight;
 	m_gpHighlight = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
 	assert( IsInGrid( m_gpHighlight ) );
-	PixelPoint const ppGridpointOffset =  m_pPixelCoordinates->Grid2PixelPos( m_gpHighlight );
+	PixelPoint const ppGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( m_gpHighlight );
 	m_pShapeHighlight = m_gridPointShape->FindShape( pCore, ptCrsr - ppGridpointOffset, m_gpHighlight );
 	return ( 
 			  (m_pShapeHighlight != nullptr) && 

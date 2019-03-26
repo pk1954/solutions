@@ -16,10 +16,10 @@ public:
 		m_infoShape( t )
 	{ }
 
-	virtual PixelRectSize MinimalSize( );
+	virtual PixelRectSize MinimalSize ( EvolutionCore const * const );
+	virtual void          Draw        ( EvolutionCore const * const, GridPoint  const, PixelPoint const );
+	virtual Shape const * FindShape   ( PixelPoint const, GridPoint const ) const;
 	virtual void          PrepareShape( PixelPoint const, PixelRectSize const );
-	virtual void          Draw        ( GridPoint  const, PixelPoint    const );
-	virtual Shape const * FindShape   ( PixelPoint const, GridPoint     const ) const;
 
 	IdentifierShape const & GetIdentifierShape() const { return m_idShape; }
 

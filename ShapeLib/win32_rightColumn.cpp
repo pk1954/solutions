@@ -17,9 +17,9 @@ RightColumn::RightColumn( TextDisplay & textDisplay ) :
 	}
 }
 
-PixelRectSize RightColumn::MinimalSize( )  
+PixelRectSize RightColumn::MinimalSize( EvolutionCore const * const pCore )  
 {       
-	PixelRectSize minSlotSize = m_aMemorySlot[0]->MinimalSize( );
+	PixelRectSize minSlotSize = m_aMemorySlot[0]->MinimalSize( pCore );
 	return SetMinSize( minSlotSize.GetX( ), minSlotSize.GetY( ) * IMEMSIZE_MAX	);     
 }                                     
 
@@ -77,14 +77,14 @@ void RightColumn::Draw
 {
 	if ( IsNotEmpty () )
 	{
-		Shape::Draw( gp, pntGridpointOffset );
+		Shape::Draw( pCore, gp, pntGridpointOffset );
 
 		MEM_INDEX const memUsed = pCore->GetMemUsed( gp ); 
 		for	( auto & pSlot : m_aMemorySlot )
 		{
 			if ( pSlot->GetMemIndex() == memUsed )
 				break;
-			pSlot->Draw( gp, pntGridpointOffset );
+			pSlot->Draw( pCore, gp, pntGridpointOffset );
 		}
 	}
 }

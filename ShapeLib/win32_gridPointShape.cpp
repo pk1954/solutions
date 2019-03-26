@@ -16,12 +16,12 @@ PIXEL GridPointShape::GetIndShapeSize( ) // returns half of side length
 								          ((pixFieldSize * 3) / 8    );
 }
 
-void GridPointShape::RefreshLayout( )
+void GridPointShape::RefreshLayout( EvolutionCore const * const pCore )
 {
 	static const PIXEL MARGIN = 3_PIXEL;
 
-	PixelRectSize const minCoord     = m_coordShape.MinimalSize( );
-	PixelRectSize const minIndiv     = m_indivShape.MinimalSize( );
+	PixelRectSize const minCoord     = m_coordShape.MinimalSize( pCore );
+	PixelRectSize const minIndiv     = m_indivShape.MinimalSize( pCore );
 	PixelRectSize const minSize      = m_shape.SetMinSize( minIndiv );     
 	PIXEL         const pixFieldSize = m_shape.GetFieldSize();
 
@@ -33,7 +33,7 @@ void GridPointShape::RefreshLayout( )
 
 		m_coordShape.PrepareShape
 		( 
-			PixelPoint   ( PIXEL_X(pixHalfFrame), 0_PIXEL_Y ), 
+			PixelPoint   ( PIXEL_X(pixHalfFrame), PIXEL_Y(0_PIXEL) ), 
 			PixelRectSize( PIXEL_X(pixSizeInd),   PIXEL_Y(pixHalfFrame) ) 
 		);
 		m_indivShape.PrepareShape
@@ -44,11 +44,16 @@ void GridPointShape::RefreshLayout( )
 	}
 }
 
-void GridPointShape::Draw( EvolutionCore const * const pCore, GridPoint const gp, PixelPoint const ppGridpointOffset )
+void GridPointShape::Draw
+( 
+	EvolutionCore const * const pCore, 
+	GridPoint             const gp, 
+	PixelPoint            const ppGridpointOffset 
+)
 {
 	if ( m_shape.IsNotEmpty () )
 	{
-		m_coordShape.Draw( gp, ppGridpointOffset );
+		m_coordShape.Draw( pCore, gp, ppGridpointOffset );
 		m_indivShape.Draw( pCore, gp, ppGridpointOffset );
 	}
 }
