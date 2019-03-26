@@ -12,7 +12,7 @@ BOOL RootWinIsReady( RootWindow const * pRootWin )
 RootWindow::RootWindow( ) : 
 	m_hwnd( nullptr ),
 	m_hwndApp( nullptr ),
-	m_dwRefreshRate( 0 ),
+	m_msRefreshRate( 0ms ),
     m_hTimer( nullptr ),
     m_bTimerActive( FALSE ),
     m_bDirty( TRUE )
@@ -33,7 +33,7 @@ void RootWindow::SetWindowHandle( HWND const hwnd )
 
 void RootWindow::Notify( bool const bImmediately )
 {
-    if ( bImmediately || (m_dwRefreshRate == 0) )
+    if ( bImmediately || (m_msRefreshRate == 0ms) )
         invalidate( );
     else
     {
@@ -42,7 +42,7 @@ void RootWindow::Notify( bool const bImmediately )
         {
             m_bTimerActive = TRUE;
             invalidate( );
-            startTimer( m_dwRefreshRate );
+            startTimer( m_msRefreshRate );
         }
     }
 }
@@ -61,8 +61,9 @@ void CALLBACK RootWindow::TimerProc( void * const lpParam, BOOL const TimerOrWai
     }
 }
 
-void RootWindow::startTimer( DWORD const dwTime )
+void RootWindow::startTimer( milliseconds const msTimer )
 {
+	DWORD dwTime = static_cast<DWORD>(msTimer.count());
     (void)CreateTimerQueueTimer
 	( 
 		& m_hTimer,                     // output parameter 

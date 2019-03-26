@@ -3,6 +3,10 @@
 
 #include "stdafx.h"
 
+#include <chrono>
+
+using namespace std::literals::chrono_literals;
+
 // EvolutionCore interfaces
 
 #include "config.h"
@@ -195,14 +199,14 @@ void AppWindow::Start(  )
 
 	stopwatch.Start();
 	
-    m_pStatusBar->SetRefreshRate     ( 300 );
-    m_pEvoHistWindow->SetRefreshRate ( 200 ); 
-    m_pCrsrWindow->SetRefreshRate    ( 100 );
-    m_pStatistics->SetRefreshRate    ( 100 );
-    m_pPerfWindow->SetRefreshRate    ( 100 );
-	m_pHistInfoWindow->SetRefreshRate( 300 );
-    m_pMiniGridWindow->SetRefreshRate( 300 );
-    m_pMainGridWindow->SetRefreshRate( 100 );
+    m_pStatusBar->SetRefreshRate     ( 300ms );
+    m_pEvoHistWindow->SetRefreshRate ( 200ms ); 
+    m_pCrsrWindow->SetRefreshRate    ( 100ms );
+    m_pStatistics->SetRefreshRate    ( 100ms );
+    m_pPerfWindow->SetRefreshRate    ( 100ms );
+	m_pHistInfoWindow->SetRefreshRate( 300ms );
+    m_pMiniGridWindow->SetRefreshRate( 300ms );
+    m_pMainGridWindow->SetRefreshRate( 100ms );
 	
     m_pReadBuffer->AttachObserver( m_pStatusBar      );
     m_pReadBuffer->AttachObserver( m_pEvoHistWindow  ); 

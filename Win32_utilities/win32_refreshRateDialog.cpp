@@ -8,9 +8,9 @@
 #include "win32_util_resource.h"
 #include "win32_refreshRateDialog.h"
 
-static int const BUFLEN = 20;
-static wchar_t m_wBuffer[BUFLEN];
-static int     m_iRefreshRate; // in milliseconds
+static int const    BUFLEN = 20;
+static wchar_t      m_wBuffer[BUFLEN];
+static milliseconds m_msRefreshRate;
 
 static INT_PTR CALLBACK dialogProc
 ( 
@@ -24,7 +24,7 @@ static INT_PTR CALLBACK dialogProc
     {
     case WM_INITDIALOG:
 	{
-		swprintf_s( m_wBuffer, BUFLEN, L"%d", m_iRefreshRate );
+		swprintf_s( m_wBuffer, BUFLEN, L"%lld", m_msRefreshRate.count() );
 		Util::SetText( GetDlgItem( hDlg, IDD_REFRESH_RATE_EDIT_CTL ), m_wBuffer	);
         return TRUE;
 	}
@@ -37,7 +37,7 @@ static INT_PTR CALLBACK dialogProc
 				int iRate;
 				if ( swscanf_s( m_wBuffer, L"%d", &iRate ) > 0 )
 				{
-					m_iRefreshRate = iRate;
+					m_msRefreshRate = static_cast<milliseconds>(iRate);
 					EndDialog( hDlg, LOWORD(wParam) );
 				}
 				else
@@ -57,11 +57,11 @@ static INT_PTR CALLBACK dialogProc
     return FALSE;
 }
 
-int RefreshRateDialog::Show( HWND const hwndParent, int iRefreshRate )
+milliseconds RefreshRateDialog::Show( HWND const hwndParent, milliseconds msRefreshRate )
 {
-	m_iRefreshRate = iRefreshRate;
+	m_msRefreshRate = msRefreshRate;
 
     DialogBox( nullptr, MAKEINTRESOURCE(IDD_REFRESH_RATE_DIALOG), hwndParent, dialogProc );
 
-	return m_iRefreshRate;
+	return m_msRefreshRate;
 }

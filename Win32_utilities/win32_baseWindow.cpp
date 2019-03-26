@@ -136,9 +136,9 @@ static LRESULT CALLBACK BaseWndProc
 
 	        case IDM_REFRESH_RATE_DIALOG:
 			{
-				DWORD dwRefreshRateOld = pBaseWin->GetRefreshRate( );
-				DWORD dwRefreshRateNew = RefreshRateDialog::Show( hwnd, dwRefreshRateOld );
-				pBaseWin->SetRefreshRate( dwRefreshRateNew );
+				milliseconds msRefreshRateOld = pBaseWin->GetRefreshRate( );
+				milliseconds msRefreshRateNew = RefreshRateDialog::Show( hwnd, msRefreshRateOld );
+				pBaseWin->SetRefreshRate( msRefreshRateNew );
 		        return FALSE;
 			}
 

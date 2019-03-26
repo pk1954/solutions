@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <chrono>
 #include "Windowsx.h"
 #include "commctrl.h"
 #include "PixelTypes.h"
@@ -10,6 +11,8 @@
 #include "win32_util.h"
 
 class Observer;
+
+using namespace std::chrono;
 
 class RootWindow: public ObserverInterface
 {
@@ -44,8 +47,8 @@ public:
     HWND          const GetDlgItem( int const iItem ) const { return ::GetDlgItem     ( m_hwnd, iItem ); }
     BOOL          const IsCaptured( )                 const { return ::GetCapture( ) == m_hwnd; }
 
-	void  SetRefreshRate( DWORD const dwRate ) { m_dwRefreshRate = dwRate; }
-	DWORD GetRefreshRate( )                    { return m_dwRefreshRate; }
+	void         SetRefreshRate( milliseconds const msRate ) { m_msRefreshRate = msRate; }
+	milliseconds GetRefreshRate( )                           { return m_msRefreshRate; }
 	
     void Show( tBoolOp const op ) const { Util::Show( m_hwnd, op ); }
     void Show( BOOL    const b  ) const { Util::Show( m_hwnd, b  ); }
@@ -185,7 +188,7 @@ private:
 		m_bDirty = FALSE;
 	}
 
-    void startTimer( DWORD const );
+    void startTimer( milliseconds const );
 
 	void deleteTimer( )
 	{
@@ -199,10 +202,11 @@ private:
 
     HWND   m_hwnd;
 	HWND   m_hwndApp;
-    DWORD  m_dwRefreshRate; // in milliseconds
     HANDLE m_hTimer;
     BOOL   m_bTimerActive;
     BOOL   m_bDirty;
+
+    milliseconds m_msRefreshRate;
 };
 
 BOOL RootWinIsReady( RootWindow const * );
