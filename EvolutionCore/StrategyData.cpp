@@ -48,9 +48,9 @@ void StrategyData::RemoveFromListOfCulprits( MEM_INDEX const index )
  
     MEM_INDEX const indexStop = --m_memUsed;
     for	( MEM_INDEX iRun = index; iRun < indexStop; ++iRun )
-        getCulpritId(iRun) = getCulpritId(iRun + MEM_INDEX(1));
+        setCulpritId(iRun, getCulpritId(iRun + MEM_INDEX(1)));
 
-    getCulpritId(m_memUsed).Set2Null( );
+    setCulpritId( m_memUsed, IND_ID::NULL_VAL() );
 }
 
 void StrategyData::AddToListOfCulprits( IND_ID const partnerId )

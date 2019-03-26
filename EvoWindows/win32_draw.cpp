@@ -217,7 +217,7 @@ void DrawFrame::setIndividualColor( EvolutionCore const * const pCore, GridPoint
 
 	if ( static_cast<int>( strat ) >= Strategy::COUNT )  // can happen in case of
         return;                                          // race conditions between 
-	if ( energy < 0_ENERGY_UNITS )                      // display thread and 
+	if ( energy < 0_ENERGY_UNITS )                       // display thread and 
 		return;                                          // worker thread
 
 	CLUT_INDEX const index { CastToInt( energy.GetValue() ) };
