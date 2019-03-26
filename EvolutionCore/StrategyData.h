@@ -43,11 +43,11 @@ private:
 
 	IND_ID getCulpritId( MEM_INDEX const index ) const
 	{
-		return m_aIdCulprits[ index.GetValue() ];
+		return m_aIdCulprits.at(index.GetValue());
 	}
 
 	void setCulpritId( MEM_INDEX const index, IND_ID const id )
 	{
-		m_aIdCulprits[ index.GetValue() ] = id;
+		m_aIdCulprits.at(index.GetValue()) = id;
 	}
 };

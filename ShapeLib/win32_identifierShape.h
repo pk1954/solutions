@@ -26,6 +26,6 @@ public:
 
 	virtual void FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )
 	{
-		m_textDisplay.Buffer() << L"ID: " << std::setw( 5 ) << pCore->GetId( gp );
+		m_textDisplay.Buffer() << L"ID: " << std::setbase( 16 ) << pCore->GetId( gp ) << std::setbase( 10 );
 	}
 };

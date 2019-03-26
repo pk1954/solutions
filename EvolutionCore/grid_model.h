@@ -100,18 +100,11 @@ public:
 	void PrepareActionCounters( )
 	{ 
 		StrategyData::ResetCounters( );
-		std::swap( m_pActionCounterFill, m_pActionCounterRead );
-		for ( auto & ax: ( * m_pActionCounterFill ) )
+		for ( auto & ax: ( m_ActionCounter ) )
 			ax.fill( ACTION_COUNT(0) ); 
 	}
 
 	ACTION_COUNT GetActionCounter( Strategy::Id const strategy, Action::Id const action ) const 
-	{
-		return actionCounter( strategy, action );
-	}
-
-private:
-	ACTION_COUNT & actionCounter( Strategy::Id const strategy, Action::Id const action ) const
 	{
 		unsigned int const uiAction   = static_cast<unsigned int>(action);
 		unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
@@ -119,7 +112,20 @@ private:
 		assert( uiAction   < Action::COUNT );
 		assert( uiStrategy < Strategy::COUNT );
 
-		return ( * m_pActionCounterFill )[uiAction][uiStrategy];
+		return m_ActionCounter[uiAction][uiStrategy];
+	}
+
+private:
+		
+	void incActionCounter( Strategy::Id const strategy, Action::Id const action )
+	{
+		unsigned int const uiAction   = static_cast<unsigned int>(action);
+		unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
+
+		assert( uiAction   < Action::COUNT );
+		assert( uiStrategy < Strategy::COUNT );
+
+		++ m_ActionCounter[uiAction][uiStrategy];
 	}
 		
     void deleteAndReset( GridField & gf )
@@ -156,12 +162,7 @@ private:
     Neighborhood   m_emptyNeighborSlots;
     Neighborhood   m_occupiedNeighborSlots;
 
-	using tActionCounters = array< array < ACTION_COUNT, Strategy::COUNT>, Action::COUNT >;
-
-	tActionCounters   m_ActionCounter1;
-	tActionCounters   m_ActionCounter2;
-	tActionCounters * m_pActionCounterFill;
-	tActionCounters * m_pActionCounterRead;
+	array< array < ACTION_COUNT, Strategy::COUNT>, Action::COUNT > m_ActionCounter;
 
     // following members are stored here only to be part of grid history.
 

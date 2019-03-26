@@ -55,9 +55,7 @@ Grid::Grid( )
       m_idCounter( ),
       m_genEvo( 0L ),
 	  m_emptyNeighborSlots( ),
-	  m_occupiedNeighborSlots( ),
-	  m_pActionCounterFill( & m_ActionCounter1 ),
-	  m_pActionCounterRead( & m_ActionCounter2 )
+	  m_occupiedNeighborSlots( )
 {
 	m_aGF.resize( GridDimensions::GridWidthVal() );
 	for ( auto & col: m_aGF )
@@ -228,7 +226,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
     gfRun.SetLastAction( plan.GetActionType( ) );
     gfRun.DecEnergy    ( plan.GetBaseConsumption( ) );
 
-	++ actionCounter( gfRun.GetStrategyId( ), plan.GetActionType( ) );
+	incActionCounter( gfRun.GetStrategyId( ), plan.GetActionType( ) );
 
 	switch ( plan.GetActionType( ) )
     {

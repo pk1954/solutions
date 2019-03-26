@@ -21,7 +21,7 @@ void MemorySlot::FillBuffer( EvolutionCore const * const pCore, GridPoint const 
 	if ( getReferencedGridPoint( pCore, indId ) == GridPoint::NULL_VAL() ) 
 		buffer << L"DEAD";
 	else
-		buffer << indId;
+		buffer << std::setbase( 16 ) << indId << std::setbase( 10 );
 }
 
 GridPoint MemorySlot::getReferencedGridPoint( EvolutionCore const * const pCore, IND_ID const indId ) const 

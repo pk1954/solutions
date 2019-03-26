@@ -26,9 +26,7 @@ void StrategyData::ResetCounters()
 
 IND_ID StrategyData::GetMemEntry( MEM_INDEX const index ) const 
 {
-    return ( index < m_memUsed )
-		   ? getCulpritId( index )
-		   : IND_ID::NULL_VAL();  // Can happen at race conditions
+	return getCulpritId( index );
 }	
 
 MEM_INDEX StrategyData::FindInListOfCulprits( IND_ID const idPartner ) 

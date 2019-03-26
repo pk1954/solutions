@@ -212,13 +212,11 @@ void DrawFrame::drawText( EvolutionCore const * const pCore, GridRect const & re
 
 void DrawFrame::setIndividualColor( EvolutionCore const * const pCore, GridPoint const gp, float const fHalfSize ) const
 {
-    Strategy::Id const strat  = pCore->GetStrategyId( gp );
-    ENERGY_UNITS const energy = pCore->GetEnergy( gp );
+	Strategy::Id const strat  { pCore->GetStrategyId( gp ) };
+	ENERGY_UNITS const energy { pCore->GetEnergy    ( gp ) };
 
-	if ( static_cast<int>( strat ) >= Strategy::COUNT )  // can happen in case of
-        return;                                          // race conditions between 
-	if ( energy < 0_ENERGY_UNITS )                       // display thread and 
-		return;                                          // worker thread
+	assert( static_cast<int>( strat ) < Strategy::COUNT );
+	assert( energy >= 0_ENERGY_UNITS );
 
 	CLUT_INDEX const index { CastToInt( energy.GetValue() ) };
 	COLORREF   const color { m_pColorManager->GetColor( tColorObject::individual, strat, index ) };
