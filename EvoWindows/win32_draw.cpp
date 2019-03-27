@@ -120,7 +120,7 @@ void DrawFrame::DoPaint( EvolutionCore const * pCore )
 		if ( m_pShapeHighlight != nullptr )
 		{
 			HighlightShape( m_pShapeHighlight, m_gpHighlight );
-			GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( m_gpHighlight );
+			GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( pCore, m_gpHighlight );
 			if ( gpReferenced.IsNotNull() )
 			{
 				Shape const & shapeReferenced = m_gridPointShape->GetIndividualShape().GetLeftColumn().GetIdentifierShape();

@@ -16,7 +16,7 @@ public:
 	Shape( TextDisplay & t ) :
 		m_textDisplay( t ),
 		m_rect   ( PixelRect( ) ),
-		m_minSize( PixelRectSize( 0_PIXEL, 0_PIXEL ) )
+		m_minSize( PixelRectSize( 0_PIXEL ) )
 	{}
 
 	virtual PixelRectSize MinimalSize( EvolutionCore const * const pCore )  
@@ -43,7 +43,7 @@ public:
 		return m_rect.Includes( pnt ) ? this : nullptr;
 	}
 
-	virtual GridPoint GetReferencedGridPoint( GridPoint const gp ) const 
+	virtual GridPoint GetReferencedGridPoint( EvolutionCore const * const pCore, GridPoint const gp ) const 
 	{ 
 		return GridPoint::NULL_VAL(); 
 	}
