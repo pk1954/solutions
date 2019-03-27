@@ -128,7 +128,7 @@ void AppWindow::Start(  )
 	Script::ProcessScript( L"std_configuration.in" );
 	stopwatch.Stop( L"process std_configuration.in" );
 
-	GridDimensions::DefineGridSize( 150_GRID_X, 100_GRID_Y );
+	GridDimensions::DefineGridSize( 150_GRID_COORD, 100_GRID_COORD );
 
 	stopwatch.Start();
 	m_pReadBuffer = new ReadBuffer( );
@@ -355,11 +355,11 @@ LRESULT AppWindow::UserProc
 
 void AppWindow::adjustChildWindows( )
 {
-    static PIXEL_Y const HIST_WINDOW_HEIGHT = 30_PIXEL_Y;
+    static PIXEL const HIST_WINDOW_HEIGHT = 30_PIXEL;
 
     PixelRectSize pntAppClientSize( GetClRectSize( ) );
-	PIXEL_X pixAppClientWinWidth  = pntAppClientSize.GetX();
-	PIXEL_Y pixAppClientWinHeight = pntAppClientSize.GetY();
+	PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
+	PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
 
     if ( ! pntAppClientSize.IsZero( ) )
     {
@@ -371,7 +371,7 @@ void AppWindow::adjustChildWindows( )
 			pixAppClientWinHeight -= HIST_WINDOW_HEIGHT, 
             m_pEvoHistWindow->Move   // adapt history window to new size
 			( 
-				0_PIXEL_X, 
+				0_PIXEL, 
 				pixAppClientWinHeight, 
 				pixAppClientWinWidth, 
 				HIST_WINDOW_HEIGHT, 
@@ -381,8 +381,8 @@ void AppWindow::adjustChildWindows( )
 
         m_pMainGridWindow->Move
 		( 
-			0_PIXEL_X, 
-			0_PIXEL_Y, 
+			0_PIXEL, 
+			0_PIXEL, 
 			pixAppClientWinWidth, 
 			pixAppClientWinHeight, 
 			TRUE 

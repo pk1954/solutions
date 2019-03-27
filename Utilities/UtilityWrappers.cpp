@@ -16,8 +16,8 @@ PIXEL ScrReadPixel( Script & script )
 
 PixelPoint ScrReadPixelPoint( Script & script )
 {
-    PIXEL_X const x( ScrReadPixel( script ) );
-    PIXEL_Y const y( ScrReadPixel( script ) );
+    PIXEL const x( ScrReadPixel( script ) );
+    PIXEL const y( ScrReadPixel( script ) );
     return PixelPoint( x, y );
 }
 

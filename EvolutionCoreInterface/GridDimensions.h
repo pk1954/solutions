@@ -16,24 +16,24 @@ using std::max;
 class GridDimensions
 {
 public:
-	static void DefineGridSize(GRID_X const width, GRID_Y const height)
+	static void DefineGridSize(GRID_COORD const width, GRID_COORD const height)
 	{
 		m_gridSize = GridPoint( width, height);
 	}
 
-	static GRID_X    const GridWidth()    { return m_gridSize.GetX(); }
-	static GRID_Y    const GridHeight()   { return m_gridSize.GetY(); }
-	static GRID_X    const GridMinX()     { return 0_GRID_X; }
-	static GRID_Y    const GridMinY()     { return 0_GRID_Y; }
-	static GRID_X    const GridMaxX()     { return GridWidth()  - 1_GRID_X; }
-	static GRID_Y    const GridMaxY()     { return GridHeight() - 1_GRID_Y; }
+	static GRID_COORD    const GridWidth()    { return m_gridSize.GetX(); }
+	static GRID_COORD    const GridHeight()   { return m_gridSize.GetY(); }
+	static GRID_COORD    const GridMinX()     { return 0_GRID_COORD; }
+	static GRID_COORD    const GridMinY()     { return 0_GRID_COORD; }
+	static GRID_COORD    const GridMaxX()     { return GridWidth()  - 1_GRID_COORD; }
+	static GRID_COORD    const GridMaxY()     { return GridHeight() - 1_GRID_COORD; }
 	static GridPoint const GridRectSize() { return m_gridSize; }
 	static GridPoint const GridOrigin()   { return GridPoint::ZERO_VAL(); }
 	static GridPoint const GridMaximum()  { return m_gridSize - 1_GRID_COORD; }
 	static GridRect  const GridRectFull() { return GridRect( GridOrigin(), GridMaximum() ); }
 
-	static int const GridWidthVal()  { return GridWidth() .GetBaseValue(); }; // abbreviations for e.g. array dims
-	static int const GridHeightVal() { return GridHeight().GetBaseValue(); };
+	static int const GridWidthVal()  { return GridWidth() .GetValue(); }; // abbreviations for e.g. array dims
+	static int const GridHeightVal() { return GridHeight().GetValue(); };
 	static int const GetGridArea()   { return GridWidthVal() * GridHeightVal(); };
 
 	static inline GridPoint const Wrap2Grid( GridPoint const gp ) 
@@ -48,11 +48,11 @@ private:
 inline bool const Neighbors( GridPoint const a, GridPoint const b )
 { 
 	GridPoint const gpDiff { a - b };
-	GRID_X    const dx { GRID_COORD(std::abs(gpDiff.GetXvalue())) }; 
-	GRID_Y    const dy { GRID_COORD(std::abs(gpDiff.GetYvalue())) };
+	GRID_COORD    const dx { GRID_COORD(std::abs(gpDiff.GetXvalue())) }; 
+	GRID_COORD    const dy { GRID_COORD(std::abs(gpDiff.GetYvalue())) };
     return ( 
-		      (( dx <= 1_GRID_X ) || ( dx == GridDimensions::GridMaxX() )) && 
-		      (( dy <= 1_GRID_Y ) || ( dy == GridDimensions::GridMaxY() ))
+		      (( dx <= 1_GRID_COORD ) || ( dx == GridDimensions::GridMaxX() )) && 
+		      (( dy <= 1_GRID_COORD ) || ( dy == GridDimensions::GridMaxY() ))
 		   );
 }
 

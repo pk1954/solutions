@@ -26,7 +26,7 @@ void HistInfoWindow::Start
     StartTextWindow
 	( 
 		hwndParent, 
-		PixelRect { 0_PIXEL_X, 300_PIXEL_Y, 300_PIXEL_X, 415_PIXEL_Y }, 
+		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 415_PIXEL }, 
 		L"HistInfoWindow", 
 		100, 
 		TRUE 

@@ -43,10 +43,10 @@ RECT GDI_driver::getRECT( PixelPoint const ptPos, float const fPixSizeHalf )
     float const fPtPosx = static_cast<float>( ptPos.GetXvalue() );
     float const fPtPosy = static_cast<float>( ptPos.GetYvalue() );
 
-    PIXEL_X pixStartX { static_cast<PIXEL>(CastToLong(fPtPosx - fPixSizeHalf)) };
-    PIXEL_Y pixStartY { static_cast<PIXEL>(CastToLong(fPtPosy - fPixSizeHalf)) };
-    PIXEL_X pixEndX   { static_cast<PIXEL>(CastToLong(fPtPosx + fPixSizeHalf)) };
-	PIXEL_Y pixEndY   { static_cast<PIXEL>(CastToLong(fPtPosy + fPixSizeHalf)) };
+    PIXEL pixStartX { static_cast<PIXEL>(CastToLong(fPtPosx - fPixSizeHalf)) };
+    PIXEL pixStartY { static_cast<PIXEL>(CastToLong(fPtPosy - fPixSizeHalf)) };
+    PIXEL pixEndX   { static_cast<PIXEL>(CastToLong(fPtPosx + fPixSizeHalf)) };
+	PIXEL pixEndY   { static_cast<PIXEL>(CastToLong(fPtPosy + fPixSizeHalf)) };
 
 	PixelRect const pixRect{ pixStartX, pixStartY, pixEndX, pixEndY };
 	RECT      const rect = Util::PixelRect2RECT( pixRect );

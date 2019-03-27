@@ -10,12 +10,12 @@
 int                           Neighborhood::m_iNrOfNeighbors = 0;
 Neighborhood::NEIGHBOR_GRID * Neighborhood::m_pGridNeighbors = nullptr;
 
-static GRID_X const WEST     { -1_GRID_COORD };
-static GRID_X const EAST     {  1_GRID_COORD };
-static GRID_Y const NORTH    { -1_GRID_COORD };
-static GRID_Y const SOUTH    {  1_GRID_COORD };
-static GRID_X const CENTER_X {  0_GRID_COORD };
-static GRID_Y const CENTER_Y {  0_GRID_COORD };
+static GRID_COORD const WEST     { -1_GRID_COORD };
+static GRID_COORD const EAST     {  1_GRID_COORD };
+static GRID_COORD const NORTH    { -1_GRID_COORD };
+static GRID_COORD const SOUTH    {  1_GRID_COORD };
+static GRID_COORD const CENTER_X {  0_GRID_COORD };
+static GRID_COORD const CENTER_Y {  0_GRID_COORD };
 
 static std::array< GridPoint, 8 > const table8 = 
 {

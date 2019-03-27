@@ -17,7 +17,7 @@ public:
     void    Start( HWND const, ReadBuffer * );
 	void    SetSimuMode( BOOL const );
 	void    SetRunMode( BOOL const );
-    PIXEL_Y GetHeight( ) const;
+    PIXEL GetHeight( ) const;
     void    Resize( ) const;
     void    SetSizeTrackBar ( PIXEL const ) const;
     void    SetSpeedTrackBar( DWORD const ) const;
@@ -48,10 +48,10 @@ private:
     void WINAPI createSimulationControl( );
     void WINAPI createEditorControl( );
 
-	PIXEL_Y m_pixClientHeight;
-    PIXEL_X m_pixBorderX;
-    PIXEL_Y m_pixBorderY;
-    PIXEL_X m_pixPosX;
+	PIXEL m_pixClientHeight;
+    PIXEL m_pixBorderX;
+    PIXEL m_pixBorderY;
+    PIXEL m_pixPosX;
     wstring m_wstrGeneration;
     wstring m_wstrScriptLine;
 

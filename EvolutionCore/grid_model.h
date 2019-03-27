@@ -21,7 +21,7 @@ using std::vector;
 class GridCircle;
 class Manipulator;
 
-using GROWTH_RATE = NamedType< int, struct GROWTH_RATET_Parameter >;
+using GROWTH_RATE = NamedType< int, struct GROWTH_RATE_Parameter >;
 
 class Grid
 {

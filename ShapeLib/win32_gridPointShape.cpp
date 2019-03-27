@@ -33,8 +33,8 @@ void GridPointShape::RefreshLayout( EvolutionCore const * const pCore )
 
 		m_coordShape.PrepareShape
 		( 
-			PixelPoint   ( PIXEL_X(pixHalfFrame), PIXEL_Y(0_PIXEL) ), 
-			PixelRectSize( PIXEL_X(pixSizeInd),   PIXEL_Y(pixHalfFrame) ) 
+			PixelPoint   ( pixHalfFrame, 0_PIXEL ), 
+			PixelRectSize( pixSizeInd,   pixHalfFrame ) 
 		);
 		m_indivShape.PrepareShape
 		( 

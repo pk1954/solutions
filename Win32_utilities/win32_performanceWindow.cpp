@@ -22,7 +22,7 @@ void PerformanceWindow::Start( HWND const hwndParent )
     StartTextWindow
 	( 
 		hwndParent, 
-		PixelRect { 0_PIXEL_X, 0_PIXEL_Y, 300_PIXEL_X, 130_PIXEL_Y }, 
+		PixelRect { 0_PIXEL, 0_PIXEL, 300_PIXEL, 130_PIXEL }, 
 		L"PerformanceWindow", 
 		100,  // alpha
 		TRUE 

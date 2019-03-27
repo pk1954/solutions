@@ -19,8 +19,8 @@ GRID_COORD ScrReadGridCoord( Script & script )
 
 GridPoint ScrReadGridPoint( Script & script )
 {
-    GRID_X const x(ScrReadGridCoord( script ));
-    GRID_Y const y(ScrReadGridCoord( script ));
+    GRID_COORD const x(ScrReadGridCoord( script ));
+    GRID_COORD const y(ScrReadGridCoord( script ));
     return GridPoint( x, y );
 }
 

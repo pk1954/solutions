@@ -14,8 +14,8 @@ using std::setw;
 
 void TextBuffer::Initialize
 ( 
-	PIXEL_X const horRaster,
-	PIXEL_Y const vertRaster
+	PIXEL const horRaster,
+	PIXEL const vertRaster
 ) 
 {
 	m_pixHorRaster  = horRaster;

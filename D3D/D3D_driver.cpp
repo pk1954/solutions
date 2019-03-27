@@ -284,10 +284,10 @@ void D3D_driver::RenderTranspRect
 
 		addRect2Buffer
 		( 
-			static_cast<float>( rectTransparent.GetLeft  ().GetBaseValue() ), 
-			static_cast<float>( rectTransparent.GetTop   ().GetBaseValue() ), 
-			static_cast<float>( rectTransparent.GetRight ().GetBaseValue() ), 
-			static_cast<float>( rectTransparent.GetBottom().GetBaseValue() ), 
+			static_cast<float>( rectTransparent.GetLeft  ().GetValue() ), 
+			static_cast<float>( rectTransparent.GetTop   ().GetValue() ), 
+			static_cast<float>( rectTransparent.GetRight ().GetValue() ), 
+			static_cast<float>( rectTransparent.GetBottom().GetValue() ), 
 			COLORREFtoD3DCOLOR( uiALpha, color ) 
 		);
 

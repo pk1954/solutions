@@ -37,20 +37,20 @@ PixelRect Util::CalcWindowRect( PixelRect pixRect, DWORD const dwStyle )
 	return pixRect;
 }
 
-void Util::AdjustRight( HWND const hwnd, PIXEL_Y const pixYpos )
+void Util::AdjustRight( HWND const hwnd, PIXEL const pixYpos )
 {
     HWND    const hwndParent     = GetParent( hwnd );
-    PIXEL_X const pixWidthParent = GetClientWindowWidth( hwndParent );
-    PIXEL_X const pixWidth       = GetWindowWidth( hwnd );
-    PIXEL_Y const pixHeight      = GetWindowHeight( hwnd );
+    PIXEL const pixWidthParent = GetClientWindowWidth( hwndParent );
+    PIXEL const pixWidth       = GetWindowWidth( hwnd );
+    PIXEL const pixHeight      = GetWindowHeight( hwnd );
     MoveWindow( hwnd, (pixWidthParent - pixWidth), pixYpos, pixWidth, pixHeight, TRUE );
     (void)BringWindowToTop( hwnd );
 }
 
-void Util::AdjustLeft( HWND const hwnd, PIXEL_Y const pixYpos )
+void Util::AdjustLeft( HWND const hwnd, PIXEL const pixYpos )
 {
 	PixelRectSize pnt = GetWindowSize( hwnd );
-    MoveWindow( hwnd, 0_PIXEL_X, pixYpos, pnt.GetX(), pnt.GetY(), TRUE );
+    MoveWindow( hwnd, 0_PIXEL, pixYpos, pnt.GetX(), pnt.GetY(), TRUE );
     (void)BringWindowToTop( hwnd );
 }
 

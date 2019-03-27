@@ -16,7 +16,7 @@ public:
 
 	virtual void StartPainting( );
 
-	virtual void PrintBuffer( std::wostringstream *, PIXEL_X const, PIXEL_Y const );
+	virtual void PrintBuffer( std::wostringstream *, PIXEL const, PIXEL const );
 
 private:
 	PixelRect m_pixRect; // text buffer area 

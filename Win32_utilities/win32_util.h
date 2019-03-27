@@ -31,7 +31,7 @@ namespace Util
 
 	inline PixelPoint POINT2PixelPoint( POINT const & pnt ) 
 	{ 
-		return PixelPoint{ PIXEL_X(PIXEL(pnt.x)), PIXEL_Y(PIXEL(pnt.y)) }; 
+		return PixelPoint{ PIXEL(pnt.x), PIXEL(pnt.y) }; 
 	}
 
 	inline POINT PixelPoint2POINT( PixelPoint const & pp ) 
@@ -43,10 +43,10 @@ namespace Util
 	{ 
 		return PixelRect
 		{ 
-			PIXEL_X(PIXEL(rect.left)), 
-			PIXEL_Y(PIXEL(rect.top)), 
-			PIXEL_X(PIXEL(rect.right)), 
-			PIXEL_Y(PIXEL(rect.bottom)) 
+			PIXEL(rect.left), 
+			PIXEL(rect.top), 
+			PIXEL(rect.right), 
+			PIXEL(rect.bottom) 
 		}; 
 	}
 
@@ -54,10 +54,10 @@ namespace Util
 	{ 
 		return RECT
 		{ 
-			pixRect.GetLeft  ().GetBaseValue(),	
-			pixRect.GetTop   ().GetBaseValue(), 
-			pixRect.GetRight ().GetBaseValue(), 
-			pixRect.GetBottom().GetBaseValue() 
+			pixRect.GetLeft  ().GetValue(),	
+			pixRect.GetTop   ().GetValue(), 
+			pixRect.GetRight ().GetValue(), 
+			pixRect.GetBottom().GetValue() 
 		}; 
 	}
 
@@ -65,14 +65,14 @@ namespace Util
     {
         return PixelRectSize
 		{ 
-			PIXEL_X(PIXEL(rect.right - rect.left)), 
-			PIXEL_Y(PIXEL(rect.bottom - rect.top)) 
+			PIXEL(rect.right - rect.left), 
+			PIXEL(rect.bottom - rect.top) 
 		};
     }
 
-	inline BOOL MoveWindow( HWND const hwnd, PIXEL_X const xPos, PIXEL_Y const yPos, PIXEL_X const width, PIXEL_Y const height, BOOL const bRedraw )
+	inline BOOL MoveWindow( HWND const hwnd, PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, BOOL const bRedraw )
 	{
-		return ::MoveWindow( hwnd, xPos.GetBaseValue(), yPos.GetBaseValue(), width.GetBaseValue(), height.GetBaseValue(), bRedraw );
+		return ::MoveWindow( hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw );
 	}
 
 	inline void SetText( HWND const hwnd, wchar_t const * const wstrText )
@@ -104,16 +104,16 @@ namespace Util
         return rect;
     }
 
-    inline PIXEL_Y GetClientWindowHeight( HWND const hwnd )
+    inline PIXEL GetClientWindowHeight( HWND const hwnd )
     {
         RECT rect = GetClRect( hwnd );                    
-		return PIXEL_Y(PIXEL(rect.bottom - rect.top));
+		return PIXEL(PIXEL(rect.bottom - rect.top));
     }
 
-    inline PIXEL_X GetClientWindowWidth( HWND const hwnd )
+    inline PIXEL GetClientWindowWidth( HWND const hwnd )
     {
         RECT rect = GetClRect( hwnd );
-		return PIXEL_X(PIXEL(rect.right - rect.left));
+		return PIXEL(PIXEL(rect.right - rect.left));
     }
 
     inline PixelRect GetClPixelRect( HWND const hwnd ) // left / top always 0
@@ -174,42 +174,42 @@ namespace Util
         return PixelRectSizeFromRECT( rect );
     }
 
-    inline PIXEL_X GetWindowWidth( HWND const hwnd )
+    inline PIXEL GetWindowWidth( HWND const hwnd )
     {
 		return GetWindowSize( hwnd ).GetX();
     }
 
-    inline PIXEL_Y GetWindowHeight( HWND const hwnd )
+    inline PIXEL GetWindowHeight( HWND const hwnd )
     {
 		return GetWindowSize( hwnd ).GetY();
     }
 
-    inline PIXEL_Y GetWindowBottom( HWND const hwnd )
+    inline PIXEL GetWindowBottom( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-		return PIXEL_Y(PIXEL(rect.bottom));
+		return PIXEL(PIXEL(rect.bottom));
     }
 
-    inline PIXEL_Y GetWindowTop( HWND const hwnd )
+    inline PIXEL GetWindowTop( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-		return PIXEL_Y(PIXEL(rect.top));
+		return PIXEL(PIXEL(rect.top));
     }
 
-    inline PIXEL_X GetWindowLeftPos( HWND const hwnd )
+    inline PIXEL GetWindowLeftPos( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-		return PIXEL_X(PIXEL(rect.left));
+		return PIXEL(PIXEL(rect.left));
     }
 
-    inline PIXEL_X GetWindowRightPos( HWND const hwnd )
+    inline PIXEL GetWindowRightPos( HWND const hwnd )
     {
         RECT rect;
         (void)GetWindowRect( hwnd, &rect );
-		return PIXEL_X(PIXEL(rect.right));
+		return PIXEL(PIXEL(rect.right));
     }
 
     inline BOOL CrsrInClientRect( HWND const hwnd )  // Is cursor position in client rect?
@@ -266,8 +266,8 @@ namespace Util
 
 	void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );
 
-    void AdjustRight( HWND const, PIXEL_Y const );
-    void AdjustLeft ( HWND const, PIXEL_Y const );
+    void AdjustRight( HWND const, PIXEL const );
+    void AdjustLeft ( HWND const, PIXEL const );
 
     PixelRect CalcWindowRect( PixelRect const, DWORD const );
 

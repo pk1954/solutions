@@ -21,9 +21,9 @@ class TextBuffer
 public:
 	virtual ~TextBuffer( ) {}
 
-    void Initialize( PIXEL_X const,	PIXEL_Y const );
+    void Initialize( PIXEL const,	PIXEL const );
 
-	virtual void PrintBuffer( std::wostringstream *, PIXEL_X const, PIXEL_Y const ) = 0;
+	virtual void PrintBuffer( std::wostringstream *, PIXEL const, PIXEL const ) = 0;
 
 	virtual void StartPainting( );
 
@@ -58,14 +58,14 @@ public:
 private:
 	void printBuffer();
 
-	PIXEL_X const LEFT_MARGIN { 30_PIXEL_X };
-	PIXEL_Y const TOP_MARGIN  {  5_PIXEL_Y };
+	PIXEL const LEFT_MARGIN { 30_PIXEL };
+	PIXEL const TOP_MARGIN  {  5_PIXEL };
 
     std::wostringstream m_wBuffer;
 
 	PixelRect m_pixRect; // text buffer area 
-    PIXEL_X   m_pixHorizontalPos;  
-    PIXEL_Y   m_pixVerticalPos;
-    PIXEL_X   m_pixHorRaster;
-    PIXEL_Y   m_pixVertRaster;
+    PIXEL   m_pixHorizontalPos;  
+    PIXEL   m_pixVerticalPos;
+    PIXEL   m_pixHorRaster;
+    PIXEL   m_pixVertRaster;
 };

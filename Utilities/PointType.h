@@ -10,20 +10,14 @@
 using std::abs;
 using std::max;
 
-struct x_tag {};
-struct y_tag {};
-
 template <typename BASE_TYPE, typename Parameter> 
 class PointType
 {
-	using BASE_X = NamedType< BASE_TYPE, x_tag >;
-	using BASE_Y = NamedType< BASE_TYPE, y_tag >;
-
 public:
 
 	PointType( PointType const & src ) : m_x(src.m_x), m_y(src.m_y) {}
 	PointType( BASE_TYPE const _b ) : m_x(_b), m_y(_b) {}
-	PointType( BASE_X const _x, BASE_Y const _y ) : m_x(_x), m_y(_y) {}
+	PointType( BASE_TYPE const _x, BASE_TYPE const _y ) : m_x(_x), m_y(_y) {}
 
     bool      const operator== (PointType const a) const { return (m_x == a.m_x) && (m_y == a.m_y); }
     bool      const operator!= (PointType const a) const { return (m_x != a.m_x) || (m_y != a.m_y); }
@@ -38,11 +32,11 @@ public:
 	PointType const operator- () const { return PointType { -m_x, -m_y }; };
 	PointType const operator+ () const { return PointType { +m_x, +m_y }; };
 
-	BASE_X const GetX() const { return m_x; }
-	BASE_Y const GetY() const { return m_y; }
+	BASE_TYPE const GetX() const { return m_x; }
+	BASE_TYPE const GetY() const { return m_y; }
 
-	auto const GetXvalue( ) const { return GetX().GetBaseValue(); }
-	auto const GetYvalue( ) const { return GetY().GetBaseValue(); }
+	auto const GetXvalue( ) const { return GetX().GetValue(); }
+	auto const GetYvalue( ) const { return GetY().GetValue(); }
 
 	static PointType const & NULL_VAL() 
 	{ 
@@ -126,8 +120,8 @@ public:
 		return out;
 	}
 private:
-    BASE_X m_x;
-    BASE_Y m_y;
+    BASE_TYPE m_x;
+    BASE_TYPE m_y;
 };
 
 // PosType: A specialized PointType used to denote the position of something

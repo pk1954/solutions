@@ -29,7 +29,7 @@ void StatisticsWindow::Start
     StartTextWindow
 	( 
 		hwndParent, 
-		PixelRect{ 200_PIXEL_X, 200_PIXEL_Y, 600_PIXEL_X, 900_PIXEL_Y }, 
+		PixelRect{ 200_PIXEL, 200_PIXEL, 600_PIXEL, 900_PIXEL }, 
 		L"StatisticsWindow", 
 		100, 
 		TRUE 

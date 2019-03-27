@@ -36,7 +36,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
     Config::SetDefaultConfiguration( );
     Config::DefineConfigWrapperFunctions( );
-	GridDimensions::DefineGridSize( 200_GRID_X, 100_GRID_Y );
+	GridDimensions::DefineGridSize( 200_GRID_COORD, 100_GRID_COORD );
 
     Script::ProcessScript( L"std_configuration.in" );
 

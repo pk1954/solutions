@@ -16,7 +16,7 @@ public:
 	Shape( TextDisplay & t ) :
 		m_textDisplay( t ),
 		m_rect   ( PixelRect( ) ),
-		m_minSize( PixelRectSize( 0_PIXEL_X, 0_PIXEL_Y ) )
+		m_minSize( PixelRectSize( 0_PIXEL, 0_PIXEL ) )
 	{}
 
 	virtual PixelRectSize MinimalSize( EvolutionCore const * const pCore )  
@@ -31,8 +31,8 @@ public:
 		return m_rect + m_textDisplay.GetOffset( gp );
 	}
 
-	PIXEL_X const GetMinWidth ( ) const { return m_minSize.GetX();  }
-	PIXEL_Y const GetMinHeight( ) const { return m_minSize.GetY(); }
+	PIXEL const GetMinWidth ( ) const { return m_minSize.GetX();  }
+	PIXEL const GetMinHeight( ) const { return m_minSize.GetY(); }
 
 	virtual Shape const * FindShape  // for all shapes without subshapes
 	( 
@@ -70,7 +70,7 @@ public:
 		return m_minSize = rect;
 	}
 
-	PixelRectSize SetMinSize( PIXEL_X const iWidth, PIXEL_Y const iHeight )
+	PixelRectSize SetMinSize( PIXEL const iWidth, PIXEL const iHeight )
 	{
 		return SetMinSize( PixelRectSize( iWidth, iHeight ) );
 	}
@@ -107,12 +107,12 @@ protected:
 		return m_rect.GetSize( );
 	}
 
-	PIXEL_X const getShapeWidth()
+	PIXEL const getShapeWidth()
 	{
 		return m_rect.GetWidth( );
 	}
 
-	PIXEL_Y const getShapeHeight()
+	PIXEL const getShapeHeight()
 	{
 		return m_rect.GetHeight( );
 	}
