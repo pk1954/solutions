@@ -27,7 +27,7 @@ void RightColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const p
 {
 	if ( SetShapeRect( ppOffset, ppSize ) )
 	{
-		PIXEL       const pixSlotHeight{ getShapeHeight() / IMEMSIZE_MAX };
+		PIXEL         const pixSlotHeight{ getShapeHeight() / IMEMSIZE_MAX };
 		PixelRectSize const slotSize     { getShapeWidth(), pixSlotHeight };
 
 		PixelPoint posShape = GetShapePos( );

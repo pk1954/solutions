@@ -11,20 +11,34 @@ using std::endl;
 
 void InfoShape::FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )
 {
-	wostringstream & buffer = m_textDisplay.Buffer();
+	ENERGY_UNITS    energy   { 12345 };
+	EVO_GENERATION  evoGen   { 0 };
+	wchar_t const * origin   { L"" };
+	wchar_t const * strategy { L"" };
 
-	buffer << L"En: " << setw( 5 ) << pCore->GetEnergy( gp )                  << endl;
-	buffer << L"Age:" << setw( 5 ) << pCore->GetAge( gp )                     << endl;
-	buffer << L"Or: " << setw( 5 ) << GetOriginName( pCore->GetOrigin( gp ) ) << endl;
+	if (gp.IsNotZero())
+	{
+		energy   = pCore->GetEnergy      ( gp );
+		evoGen   = pCore->GetAge         ( gp );
+		origin   = pCore->GetOriginName  ( gp );
+		strategy = pCore->GetStrategyName( gp );
+	}
+
+	wostringstream & buffer = m_textDisplay.Buffer();
+	buffer << L"En: " << setw( 5 ) << energy << endl;
+	buffer << L"Age:" << setw( 5 ) << evoGen << endl;
+	buffer << L"Or: " << setw( 5 ) << origin << endl;
+	buffer << L"Str:" << setw( 5 ) << strategy;
 
 	PlannedActivity plan = pCore->GetPlan( );
 	if ( plan.IsValid( ) )
 	{
 		if ( (gp == plan.GetActor( )) || (gp == plan.GetPartner( )) )
 		{
+			buffer << endl;
 			buffer << (( gp == plan.GetActor( ) ) ? L"** ACTOR **" : L"** PARTNER **") << endl;
 			buffer << L"** "  <<  Action::GetName( plan.GetActionType( ) ) << L" **"   << endl;
-			buffer << L"BaseCons: " << plan.GetBaseConsumption( )                      << endl;
+			buffer << L"BaseCons: " << plan.GetBaseConsumption( );
 		}
 	}
 }

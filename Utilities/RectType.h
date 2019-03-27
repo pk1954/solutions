@@ -13,7 +13,7 @@ public:
 
     RectType( ) 
 	{ 
-		Reset(); 
+		* this = ZERO_VAL(); 
 	}
 
     RectType( RectType const & rect ) :
@@ -81,14 +81,6 @@ public:
 	{
 		assert( m_Bottom >= m_Top );
 	}
-
-	void Reset( )
-    {
-        m_Left   = BASE_TYPE(0);
-        m_Top    = BASE_TYPE(0);
-        m_Right  = BASE_TYPE(0);
-        m_Bottom = BASE_TYPE(0);
-    };
 
     bool IsEmpty   ( ) const { return (m_Left == m_Right) || (m_Top == m_Bottom); };
 	bool IsNotEmpty( ) const { return (m_Left <  m_Right) && (m_Top <  m_Bottom); };

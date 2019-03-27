@@ -14,7 +14,8 @@ wchar_t const * const Strategy::GetName( Strategy::Id const id )
     { 
         { Strategy::Id::defect,    L"D" },
         { Strategy::Id::cooperate, L"C" },
-        { Strategy::Id::tit4tat,   L"T" }
+        { Strategy::Id::tit4tat,   L"T" },
+        { Strategy::Id::empty,     L"" }
     };
 
     return mapStrategies.at( id );

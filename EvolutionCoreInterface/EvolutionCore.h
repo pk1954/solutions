@@ -57,6 +57,9 @@ public:
 	
 	virtual	ACTION_COUNT   GetActionCounter( Strategy::Id const, Action::Id const ) const = 0;
 
+	wchar_t const * const  GetOriginName  ( GridPoint const gp ) const { return ::GetOriginName( GetOrigin( gp ) ); }
+	wchar_t const * const  GetStrategyName( GridPoint const gp ) const { return Strategy::GetName( GetStrategyId( gp ) ); }
+
     virtual GridPoint      FindGridPoint( IND_ID const & ) const = 0;
 	virtual GridPoint      FindPOI( )                      const = 0; 
 
@@ -74,7 +77,7 @@ public:
     virtual void SetBrushMode       ( tBrushMode   const ) = 0;
     virtual void ModelDoEdit        ( GridPoint    const ) = 0;
 	
-    // static functions
+// static functions
     
     static EvolutionCore * InitClass( int const, ObserverInterface * const, EventInterface * const );
     static EvolutionCore * CreateCore();

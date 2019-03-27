@@ -22,7 +22,7 @@ public:
 	virtual PixelRectSize MinimalSize( EvolutionCore const * const pCore )  
 	{                                     
 		m_textDisplay.Clear();
-		FillBuffer( pCore, GridDimensions::GridMaximum() );
+		FillBuffer( pCore, GridPoint::ZERO_VAL() );
 		return SetMinSize( m_textDisplay.CalcRectSize( ) );
 	}                                     
 
@@ -62,7 +62,7 @@ public:
 
 	void SetShapeEmpty()
 	{
-		return m_rect.Reset( );
+		m_rect = PixelRect::ZERO_VAL( );
 	}
 
 	PixelRectSize SetMinSize( PixelRectSize const rect )
@@ -87,11 +87,12 @@ public:
 
 	bool SetShapeRect( PixelPoint const ppOffset, PixelRectSize const ppSize )
 	{
-		bool bRes = ( ppSize.GetX() >= m_minSize.GetX() ) && ( ppSize.GetY() >= m_minSize.GetY() );
+		bool bRes = ( ppSize.GetX() >= m_minSize.GetX() ) && 
+			        ( ppSize.GetY() >= m_minSize.GetY() );
 		if ( bRes )
 			m_rect = PixelRect( ppOffset, ppSize );
 		else 
-			m_rect.Reset( );
+			m_rect = PixelRect::ZERO_VAL( );
 		return bRes;
 	}
 
