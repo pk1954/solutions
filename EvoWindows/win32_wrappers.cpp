@@ -21,6 +21,16 @@ public:
     }
 };
 
+class WrapPostBenchmark : public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+		int iNrOfGenerations = script.ScrReadInt( );
+        m_pWorkThreadInterface->PostBenchmark( iNrOfGenerations );
+    }
+};
+
 class WrapPostDoEdit : public Script_Functor
 {
 public:
@@ -145,6 +155,7 @@ void DefineWin32WrapperFunctions( WorkThreadInterface * const pWorkThreadInterfa
 
     DEF_FUNC( PostPrevGeneration ); 
 
+	DEF_FUNC( PostBenchmark );
 	DEF_FUNC( PostDoEdit );
     DEF_FUNC( PostSetSimulationMode );
     DEF_FUNC( PostSetBrushMode );

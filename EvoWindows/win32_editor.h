@@ -36,7 +36,7 @@ private:
 	void    setBrushShape      ( WORD const ) const;
 	void    setBrushManipulator( WORD const ) const;
 
-    void updateEditControls( BOOL const );
+    void updateEditControls( );
 	void updateOperationButtons( tBrushMode const ) const;
 
 	EvolutionCore       * m_pCore;

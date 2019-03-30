@@ -5,6 +5,7 @@
 #include <array>
 #include "gridPoint.h"
 #include "gridRect.h"
+#include "grid_model.h"
 #include "gridNeighbor.h"
 
 int                           Neighborhood::m_iNrOfNeighbors = 0;
@@ -85,4 +86,21 @@ void Neighborhood::InitClass( int const iNrOfNeighbors ) // Initialization of m_
 			}
 		}
 	);
+}
+
+void Neighborhood::GetNeighborLists
+(
+	Grid      const & grid,
+	GridPoint const & gpCenter,
+	Neighborhood    * pEmptySlots,
+	Neighborhood    * pOccupiedSlots
+)
+{
+	pEmptySlots   ->m_neighbors.clear();
+	pOccupiedSlots->m_neighbors.clear();
+	NEIGHBORS const & neighbors = (* m_pGridNeighbors)[ gpCenter.GetXvalue() ][ gpCenter.GetYvalue() ];
+	for ( auto gp: neighbors )
+	{
+		(grid.IsAlive(gp) ? pOccupiedSlots : pEmptySlots)->m_neighbors.push_back( gp );
+	}
 }

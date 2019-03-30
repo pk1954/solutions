@@ -109,20 +109,6 @@ BOOL DspOptWindow::AreIndividualsVisible( ) const
     return ( BST_CHECKED == Button_GetCheck( GetDlgItem( IDM_ANIMALS ) ) );
 }
 
-ENERGY_UNITS DspOptWindow::getNeighborHoodMeanValue( GridPoint const gp ) const
-{ 
-	ENERGY_UNITS sum = m_pCore->GetFoodStock( gp );
-	Neighborhood::Apply2All
-	( 
-		gp, 
-		[&](GridPoint const gpNeighbor) 
-	    { 
-			sum += m_pCore->GetFoodStock(gpNeighbor); 
-		} 
-	);
-	return sum / (Neighborhood::GetNrOfNeighbors( ) + 1);
-};
-
 INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
     switch (message)
@@ -146,7 +132,7 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
                 break;
 
             case IDM_FOOD_STOCK:
-				m_IntValueLambda = [&](GridPoint const gp){ return getNeighborHoodMeanValue( gp ).GetValue(); };
+				m_IntValueLambda = [&](GridPoint const gp){ return m_pCore->GetFoodStock( gp ).GetValue(); };
                 break;
 
             case IDM_FERTILIZER:

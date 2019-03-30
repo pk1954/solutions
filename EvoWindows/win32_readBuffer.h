@@ -40,7 +40,7 @@ public:
 	void Notify( bool const bImmediate )
 	{
 		if (TryAcquireSRWLockExclusive( & m_SRWLock ))              // if buffer is locked by readers
-		{                                                           // don't let yoe get stopped.
+		{                                                           // don't let you get stopped.
 			m_pCore4Display->CopyEvolutionCoreData( m_pCoreWork );  // just continue your work. 
 			ReleaseSRWLockExclusive( & m_SRWLock );                 // readers can synchronize with 
 			ViewCollection::Notify( bImmediate );                   // later version

@@ -120,6 +120,10 @@ void WorkThread::dispatch( MSG const msg  )
 		GenerationStep( );
 		break;
 
+	case WorkerThreadMessage::Id::BENCHMARK:
+		NGenerationSteps( static_cast<int>(msg.lParam) );
+		break;
+
 	case WorkerThreadMessage::Id::GOTO_GENERATION:
 		m_genDemanded = HIST_GENERATION(static_cast<long>(msg.lParam));
 		GenerationStep( );
@@ -145,6 +149,7 @@ void WorkThread::dispatch( MSG const msg  )
 
 	case WorkerThreadMessage::Id::SET_BRUSH_MODE:
 		editorCommand( tEvoCmd::editSetBrushMode, msg.wParam );
+		m_pEditorWindow->UpdateEditControls( );
 		break;
 
 	case WorkerThreadMessage::Id::SET_BRUSH_RADIUS:
@@ -231,6 +236,18 @@ void WorkThread::GenerationStep( )
 		if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )   // still not done?
 			m_pWorkThreadInterface->PostRepeatGenerationStep( );   // Loop! Will call indirectly GenerationStep again
 	}
+}
+
+void WorkThread::NGenerationSteps( int iNrOfGenerations )   
+{
+	Stopwatch stopwatch;
+	stopwatch.Start();
+	for (int i = 0; i < iNrOfGenerations; ++i)
+	{
+		m_pEvoHistGlue->EvoCreateNextGenCommand( );
+		WorkMessage( WorkerThreadMessage::Id::REFRESH, 0, 0 );                   // refresh all views
+	}
+	stopwatch.Stop( L"benchmark" );
 }
 
 void WorkThread::generationRun( )

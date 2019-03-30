@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <array>
 #include <unordered_map>
 #include "strategy.h"
 #include "EvolutionTypes.h"
@@ -115,19 +116,18 @@ Action::Id const GetRelatedAction( GeneType::Id const gene )
 
 GeneType::Id const GetRelatedGeneType( Action::Id const action )
 {
-    static unordered_map < Action::Id, GeneType::Id const > mapOptions =
-    { 
-        { Action::Id::move,      GeneType::Id::move      },
-        { Action::Id::clone,     GeneType::Id::clone     },
-        { Action::Id::marry,     GeneType::Id::marry     },
-        { Action::Id::interact,  GeneType::Id::interact  },
-        { Action::Id::eat,       GeneType::Id::eat       },
-        { Action::Id::fertilize, GeneType::Id::fertilize },
-        { Action::Id::passOn,    GeneType::Id::undefined },
-        { Action::Id::undefined, GeneType::Id::undefined }
-    };
+	static GeneType::Id options[Action::COUNT] 
+	{
+        GeneType::Id::move     ,   //  Action::Id::move,     
+        GeneType::Id::clone    ,   //  Action::Id::clone,    
+        GeneType::Id::marry    ,   //  Action::Id::marry,    
+        GeneType::Id::interact ,   //  Action::Id::interact, 
+        GeneType::Id::eat      ,   //  Action::Id::eat,      
+        GeneType::Id::fertilize,   //  Action::Id::fertilize,
+        GeneType::Id::undefined    //  Action::Id::passOn,   
+	};
 
-    return mapOptions.at( action );
+    return options[ static_cast<unsigned short>(action) ];
 }
 
 wchar_t const * const GetBrushModeName( tBrushMode const mode )

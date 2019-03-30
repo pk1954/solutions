@@ -31,9 +31,9 @@ public:
 
 	virtual void CopyFrom( ModelData const * const src )
 	{
-		stopwatch.Start();
+//		stopwatch.Start();
 		m_pEvolutionCore->CopyEvolutionCoreData( static_cast< EvoModelDataGlue const * const >( src )->m_pEvolutionCore );
-		stopwatch.Stop( L"Copy model" );
+//		stopwatch.Stop( L"Copy model" );
 	}
 
     GridPoint FindGridPoint( IND_ID const & id ) const

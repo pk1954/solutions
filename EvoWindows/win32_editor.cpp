@@ -39,7 +39,8 @@ void EditorWindow::Start
 
     SetTrackBarRange( IDM_EDIT_SIZE,      1L,  50L );
     SetTrackBarRange( IDM_EDIT_INTENSITY, 0L, 100L );
-    updateEditControls( FALSE );
+    updateEditControls( );
+	SetSimulationMode( );
 }
 
 EditorWindow::~EditorWindow( )
@@ -52,7 +53,7 @@ EditorWindow::~EditorWindow( )
 
 void EditorWindow::UpdateEditControls( )
 {
-	PostMessage( WM_COMMAND, IDM_UPDATE_EDITOR_CONTROLS, 0 );
+	SendMessage( WM_COMMAND, IDM_UPDATE_EDITOR_CONTROLS, 0 );
 }
 
 LRESULT EditorWindow::sendClick( int const item ) const
@@ -74,7 +75,7 @@ void EditorWindow::updateOperationButtons( tBrushMode const mode ) const
 	EnableWindow( GetDlgItem( IDM_EDIT_OPERATION_SUBTRACT ), bEnableOperationButtons );
 }
 
-void EditorWindow::updateEditControls( BOOL const bHistory ) // Set state of all window widgets according to mode (edit/simu)
+void EditorWindow::updateEditControls( ) // Set state of all window widgets according to mode (edit/simu)
 {
 	static std::unordered_map < tBrushMode, WORD > mapModeTable
 	{
@@ -122,9 +123,6 @@ void EditorWindow::updateEditControls( BOOL const bHistory ) // Set state of all
 	// adjust display options window
 
 	m_pDspOptWindow->UpdateDspOptionsControls( m_pCore->GetBrushMode() );
-
-	if ( ! bHistory )
-		SetSimulationMode( );
 }
 
 void EditorWindow::SetSimulationMode( )  	// adjust window configuration according to simulation or edit mode
@@ -145,22 +143,22 @@ void EditorWindow::setBrushMode( WORD const wId ) const
 {
 	static std::unordered_map < WORD, tBrushMode > mapModeTable
 	{
-		{ IDM_MOVE,            tBrushMode::move         },
-		{ IDM_RANDOM_STRATEGY, tBrushMode::randomStrat  },
-		{ IDM_COOPERATE,       tBrushMode::cooperate    },
-		{ IDM_DEFECT,          tBrushMode::defect       },
-		{ IDM_TIT4TAT,         tBrushMode::tit4tat      },
-		{ IDM_KILL_ANIMALS,    tBrushMode::noAnimals    },
-		{ IDM_MUT_RATE,        tBrushMode::mutRate      },
-		{ IDM_FERTILITY,       tBrushMode::fertility    },
-		{ IDM_FOOD_STOCK,      tBrushMode::food         },
-		{ IDM_FERTILIZER,      tBrushMode::fertilizer   }
+		{ IDM_MOVE,            tBrushMode::move        },
+		{ IDM_RANDOM_STRATEGY, tBrushMode::randomStrat },
+		{ IDM_COOPERATE,       tBrushMode::cooperate   },
+		{ IDM_DEFECT,          tBrushMode::defect      },
+		{ IDM_TIT4TAT,         tBrushMode::tit4tat     },
+		{ IDM_KILL_ANIMALS,    tBrushMode::noAnimals   },
+		{ IDM_MUT_RATE,        tBrushMode::mutRate     },
+		{ IDM_FERTILITY,       tBrushMode::fertility   },
+		{ IDM_FOOD_STOCK,      tBrushMode::food        },
+		{ IDM_FERTILIZER,      tBrushMode::fertilizer  }
 	};
 
 	tBrushMode const brushMode { mapModeTable.at( wId ) };
 	m_pWorkThreadInterface->PostSetBrushMode( brushMode );
-	m_pDspOptWindow->UpdateDspOptionsControls( brushMode );
-	updateOperationButtons( brushMode );
+	//m_pDspOptWindow->UpdateDspOptionsControls( brushMode );
+	//updateOperationButtons( brushMode );
 }
 
 void EditorWindow::setBrushShape( WORD const wId ) const
@@ -247,7 +245,7 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
                 break;
 
 			case IDM_UPDATE_EDITOR_CONTROLS:
-				updateEditControls( TRUE );
+				updateEditControls( );
 				break;
 
             default:

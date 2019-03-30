@@ -31,24 +31,24 @@ void ActionOptions::InitOptions
 	set(A::passOn,    false                                           );
 }
 
-// sum up all alleles of posible actions
+// sum up all alleles of possible actions
 
 unsigned int ActionOptions::GetSumOfValidOptions( Genome const * pGenome )
 {
 	unsigned int uiSum = 0;
-
-	Action::Apply2AllEnabledActions  
-	(
-		[&]( Action::Id action ) -> Action::Id
+    for ( int index = 0; index < static_cast<int>( Action::Id::count ); ++index )
+	{
+		Action::Id action = static_cast<Action::Id>(index);
+		if ( m_abOptions[action] )
 		{
-			if ( m_abOptions[action] )
+			GeneType::Id const geneType = GetRelatedGeneType( action );
+			if ( GeneType::IsDefined( geneType ) )
 			{
-				uiSum += CastToUnsignedInt( pGenome->GetAllele( GetRelatedGeneType( action ) ) );
+				short const sAllele = pGenome->GetAllele( geneType );
+				uiSum += CastToUnsignedInt( sAllele );
 			}
-			return Action::Id::undefined;
 		}
-	);
-
+	}
 	return uiSum;
 }
 
@@ -56,19 +56,19 @@ unsigned int ActionOptions::GetSumOfValidOptions( Genome const * pGenome )
 
 Action::Id ActionOptions::SelectAction( Genome const * pGenome, int iVal )
 {
-	Action::Id const actionRes = Action::Select
-	(
-		[&]( Action::Id action ) -> Action::Id 
+    for ( int index = 0; index < static_cast<int>( Action::Id::count ); ++index )
+	{
+		Action::Id action = static_cast<Action::Id>(index);
+		if ( m_abOptions[action] )
 		{
-			if ( m_abOptions[action] )
+			GeneType::Id const geneType = GetRelatedGeneType( action );
+			if ( GeneType::IsDefined( geneType ) )
 			{
-				if ( (iVal -= pGenome->GetAllele( GetRelatedGeneType( action ) )) <= 0 )
-				{
-					return action;         // break out of Apply2All loop
-				}
+				short const sAllele = pGenome->GetAllele( geneType );
+				if ( (iVal -= sAllele) <= 0 )
+					return action;  
 			}
-			return Action::Id::undefined;  // continue in loop 
 		}
-	);
-	return actionRes;
+	}
+	return Action::Id::undefined;
 }

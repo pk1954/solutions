@@ -214,10 +214,12 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
         case IDM_TOGGLE_SIMU_MODE:
+			m_pWorkThreadInterface->PostStopComputation( );
 			m_pWorkThreadInterface->PostSetSimulationMode( tBoolOp::opToggle );
             break;
 
         case IDM_SET_SIMU_MODE:
+			m_pWorkThreadInterface->PostStopComputation( );
 			m_pWorkThreadInterface->PostSetSimulationMode( static_cast<tBoolOp>(lParam) );
             break;
 

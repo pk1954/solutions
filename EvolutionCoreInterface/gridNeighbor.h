@@ -10,18 +10,14 @@
 
 using std::vector;
 
+class Grid;
+
 class Neighborhood
 {
 public:
     static void InitClass( int const );
 
-	static void Apply2All( GridPoint const gpCenter, GridPointFunc const & func ) 
-	{
-		for ( auto gp: (* m_pGridNeighbors)[ gpCenter.GetXvalue() ][ gpCenter.GetYvalue() ] )
-		{
-			func( gp );
-		}
-	};
+	static void GetNeighborLists( Grid const &, GridPoint const &, Neighborhood *, Neighborhood * );
 
 	static int GetNrOfNeighbors( ) 
 	{ 
@@ -33,21 +29,10 @@ public:
 		m_neighbors.reserve( m_iNrOfNeighbors );
 	}
 
-    void AddToList( GridPoint const gp ) 
-	{ 
-		m_neighbors.push_back( gp ); 
-		assert( static_cast<int>(m_neighbors.size()) <= m_iNrOfNeighbors );
-	}
-
 	void RemoveFromList( int const iIndex )
 	{
 		assert( static_cast<int>(m_neighbors.size()) >= iIndex);
 		m_neighbors.erase( m_neighbors.begin() + iIndex );
-	}
-
-    void ClearList( ) 
-	{ 
-		m_neighbors.clear( ); 
 	}
 
 	size_t GetLength( ) const 

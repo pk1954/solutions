@@ -41,6 +41,7 @@ public:
 		REPEAT_GENERATION_STEP,  // only used internaly, not part of procedural interface
 		GOTO_GENERATION,
 		GENERATION_RUN,
+		BENCHMARK,
 		SET_POI,
 		DO_EDIT,
 		SET_BRUSH_RADIUS,
@@ -92,6 +93,7 @@ public:
 	void WorkMessage( MSG const );
 
 	void GenerationStep( );
+	void NGenerationSteps( int ); 
 
 	void DoProcessScript( wstring * const );
 

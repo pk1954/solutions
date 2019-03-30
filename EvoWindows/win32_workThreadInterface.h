@@ -51,6 +51,7 @@ public:
 	void PostStopComputation();
 	void PostUndo();
 	void PostRedo();
+	void PostBenchmark( int const );
 	void PostPrevGeneration();
 	void PostGotoGeneration( HIST_GENERATION const );
 	void PostHistoryAction( UINT const, GridPoint const );

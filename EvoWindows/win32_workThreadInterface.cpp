@@ -79,6 +79,15 @@ void WorkThreadInterface::PostReset( BOOL bResetHistSys )
     m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::RESET_MODEL, bResetHistSys, 0 );
 }
 
+void WorkThreadInterface::PostBenchmark( int const iNrOfGenerations )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << L" " << iNrOfGenerations <<endl;
+//	HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
+//	postGotoGeneration( gen + iNrOfGenerations );
+    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::BENCHMARK, 0, iNrOfGenerations );
+}
+
 void WorkThreadInterface::PostRefresh( LPARAM const lParam )
 {
     if ( m_bTrace )
@@ -131,7 +140,6 @@ void WorkThreadInterface::PostSetSimulationMode( tBoolOp const op )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetBoolOpName( op ) << endl;
-	PostStopComputation( );
     m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_SIMULATION_MODE, static_cast<WPARAM>( op ), 0 );
 }
 

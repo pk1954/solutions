@@ -139,7 +139,7 @@ Action::Id Genome::GetOption
 ) const
 {
 	if (
-		( m_abActionEnabled[ Action::Id::passOn ] ) && 
+		  ( m_abActionEnabled[ Action::Id::passOn ] ) && 
 		  ( m_mortalityTable[ age.GetValue() ] > random.NextRandomNumber() )
 	   )
 	{

@@ -31,8 +31,6 @@ private:
     DspOptWindow             ( DspOptWindow const & );  // noncopyable class 
     DspOptWindow & operator= ( DspOptWindow const & );  // noncopyable class 
 
-	ENERGY_UNITS getNeighborHoodMeanValue( GridPoint const ) const;
-
 	virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
 
     EvolutionCore const * m_pCore; 

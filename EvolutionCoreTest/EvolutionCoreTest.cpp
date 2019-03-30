@@ -25,7 +25,6 @@ void testee()
 		( 
 			[](GridPoint const gp)
 			{
-				Neighborhood::Apply2All( gp, [&](GridPoint const gpNeighbor) { } );
 			}
 		);
 }

@@ -156,15 +156,12 @@ void Grid::MakePlan
     plan.SetBaseConsumption( m_enBasicFoodConsumption );
     plan.IncBaseConsumption( m_enMemSizeFoodConsumption * gfRun.GetMemSize( ).GetValue() );
 
-	m_emptyNeighborSlots.ClearList( );
-	m_occupiedNeighborSlots.ClearList( );
-    Neighborhood::Apply2All
-	( 
-		gpRun, 
-		[&](GridPoint const gpNeighbor)
-		{
-			(IsAlive(gpNeighbor) ? &m_occupiedNeighborSlots : &m_emptyNeighborSlots)->AddToList( gpNeighbor );
-		}
+	Neighborhood::GetNeighborLists
+	(
+		* this,
+		gpRun,
+		& m_emptyNeighborSlots,
+		& m_occupiedNeighborSlots
 	);
 
     assert( m_emptyNeighborSlots.GetLength() + m_occupiedNeighborSlots.GetLength() == Neighborhood::GetNrOfNeighbors( ) );
