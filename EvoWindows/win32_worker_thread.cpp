@@ -149,7 +149,8 @@ void WorkThread::dispatch( MSG const msg  )
 
 	case WorkerThreadMessage::Id::SET_BRUSH_MODE:
 		editorCommand( tEvoCmd::editSetBrushMode, msg.wParam );
-		m_pEditorWindow->UpdateEditControls( );
+		if ( m_pEditorWindow )
+			m_pEditorWindow->UpdateEditControls( );
 		break;
 
 	case WorkerThreadMessage::Id::SET_BRUSH_RADIUS:
