@@ -41,7 +41,7 @@ void HistoryCache::InitHistoryCache
     if ( m_iNrOfRequestedSlots > HistSlotNr(60) )
         m_iNrOfRequestedSlots = HistSlotNr(60);
 #endif
-    m_aHistSlot.resize( m_iNrOfRequestedSlots.GetValue() );
+    m_aHistSlot.reserve( m_iNrOfRequestedSlots.GetValue() );
 	newSlot( );
     ++m_iNrOfSlots;
 	triggerObserver();

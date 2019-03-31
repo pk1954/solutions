@@ -47,13 +47,14 @@ public:
     virtual HistoryIterator * CreateHistoryIterator( )     const = 0;
     virtual bool              AddHistorySlot( )            const = 0;
 
-	virtual void              ShutDownHistCacheSlot( HistSlotNr const ) = 0;
     virtual ModelData const * CreateAppCommand( GenerationCmd   const ) = 0;
 	virtual void              ClearHistory    ( HIST_GENERATION const ) = 0;
     virtual ModelData const * ApproachHistGen ( HIST_GENERATION const ) = 0;
 	virtual tGenCmd           GetGenerationCmd( HIST_GENERATION const ) = 0;
 
-    virtual HIST_GENERATION FindGenerationWithProperty( GenerationProperty const &, bool const ) const = 0;
+	virtual void              ShutDownHistCache( ) = 0;
+
+	virtual HIST_GENERATION FindGenerationWithProperty( GenerationProperty const &, bool const ) const = 0;
 
     static  BYTES GetSlotWrapperSize( );
 };

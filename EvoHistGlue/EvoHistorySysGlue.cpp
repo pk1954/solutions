@@ -71,7 +71,7 @@ void EvoHistorySysGlue::Start
 EvoHistorySysGlue::~EvoHistorySysGlue( ) 
 {
 	m_pHistAllocThread->Terminate();
-    shutDownHistoryCache( );
+	m_pHistorySystem->ShutDownHistCache();
 	delete m_pHistAllocThread;
 	delete m_pEvoModelFactory;
 	delete m_pEvoModelWork;
@@ -129,23 +129,4 @@ bool EvoHistorySysGlue::askHistoryCut( HistorySystem * pHistSys ) const
     assert( genCurrent < genYoungest );
     wBuffer << L"Gen " << ( genCurrent + 1 ) << L" - " << genYoungest << L" will be deleted.";
     return IDOK == MessageBox( nullptr, L"Cut off history?", wBuffer.str( ).c_str( ), MB_OKCANCEL | MB_SYSTEMMODAL );
-}
-
-void EvoHistorySysGlue::shutDownHistoryCache( )
-{
-    HistSlotNr slotNrMax = GetNrOfHistCacheSlots( ) - HistSlotNr(1);
-//    int iPercentLast = 0;
-    for ( HistSlotNr slotNr = slotNrMax; slotNr >= HistSlotNr(0); --slotNr )
-    {
-/*
-        int iPercent = ( slotNr.GetValue() * 100 ) / iMax;
-        if ( iPercent != iPercentLast )
-        {
-            std::wstring wstrLine = L"... deleting history buffer: " + to_wstring( iPercent ) + L"%";
-            m_pStatusBar->DisplayStatusLine( wstrLine );
-            iPercentLast = iPercent;
-        }
-*/
-        m_pHistorySystem->ShutDownHistCacheSlot( slotNr );
-    }
 }

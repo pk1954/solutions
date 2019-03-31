@@ -78,5 +78,4 @@ private:
 
 	HistSlotNr calcHistCacheSize( );
 	bool       askHistoryCut( HistorySystem * pHistSys ) const;
-    void       shutDownHistoryCache( );
 };

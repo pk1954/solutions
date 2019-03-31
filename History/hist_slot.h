@@ -12,11 +12,17 @@ class HistSlot
 {
 public: 
 
-    HistSlot( ) :
+    HistSlot( ModelFactory const * factory ) :
         m_histSlotSenior( HistSlotNr::NULL_VAL() ),
         m_histSlotJunior( HistSlotNr::NULL_VAL() ),
-        m_pHistCacheItem( nullptr )
+        m_pHistCacheItem( new HistCacheItem( factory->CreateModelData( ) ) )
     {
+	}
+
+	~HistSlot()
+	{
+        delete m_pHistCacheItem;
+        m_pHistCacheItem = nullptr;
 	}
 
     HistSlotNr GetSeniorGen( ) const { return m_histSlotSenior; }
@@ -25,17 +31,6 @@ public:
     void SetSeniorGen( HistSlotNr const slotNrSenior ) { m_histSlotSenior = slotNrSenior; }
     void SetJuniorGen( HistSlotNr const slotNrJunior ) { m_histSlotJunior = slotNrJunior; }
     
-	void SetHistCacheItem( ModelFactory const * factory ) 
-	{ 
-		m_pHistCacheItem = new HistCacheItem( factory->CreateModelData( ) );
-	}
-
-    void ShutDownHistCacheItem( )                                
-    { 
-        delete m_pHistCacheItem;
-        m_pHistCacheItem = nullptr;
-    }
-
     HistCacheItem       * GetHistCacheItem ( ) const { return m_pHistCacheItem; }
     HistCacheItem const * GetHistCacheItemC( ) const { return m_pHistCacheItem; }
 

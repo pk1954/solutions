@@ -49,7 +49,7 @@ public:
     virtual BYTES             GetSlotSize( )               const { return m_pHistCacheItemWork->GetItemSize( );             }
 	virtual bool              IsInHistoryMode( )           const { return GetCurrentGeneration() < GetYoungestGeneration(); };
 
-	virtual void              ShutDownHistCacheSlot( HistSlotNr const i ) { m_pHistoryCache->ShutDownHistCacheSlot( i ); }
+	virtual void              ShutDownHistCache(  ) { m_pHistoryCache->ShutDownHistCache( ); }
 
 	virtual ModelData const * CreateAppCommand( GenerationCmd );
 	virtual void              ClearHistory    ( HIST_GENERATION const );

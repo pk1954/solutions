@@ -63,9 +63,9 @@ public:
     HistSlotNr      GetNrOfUsedHistCacheSlots( ) const { return m_iNrOfUsedSlots; }
     HIST_GENERATION GetYoungestGeneration    ( ) const { return IsEmpty( ) ? -1 : GetGridGen( m_histSlotHead ); };
     
-    void ShutDownHistCacheSlot( HistSlotNr const slotNr )
+    void ShutDownHistCache( )
 	{ 
-		getSlot( slotNr ).ShutDownHistCacheItem( ); 
+		m_aHistSlot.clear();
 	};
 
     HistCacheItem const * HistoryCache::GetHistCacheItemC( HistSlotNr const slotNr ) const
@@ -99,7 +99,8 @@ private:
 
 	void newSlot( )
     {
-        getSlot( m_iNrOfSlots ).SetHistCacheItem( m_pModelFactory );
+		HistSlot * pNewSlot = new HistSlot( m_pModelFactory );
+		m_aHistSlot.push_back( * pNewSlot );
     }
 
 	HistSlotNr m_histSlotHead;     // slot with youngest generation
