@@ -19,11 +19,6 @@ public:
 
     virtual ~HistCacheItem( ) { };
 
-	static HistCacheItem * CreateItem( ModelFactory const * const pModelFactory )
-	{
-		return new HistCacheItem( pModelFactory->CreateModelData( ) );
-	}
-
 	virtual ModelData const * CopyCacheItemFrom( HistCacheItem const * const pSrc )
     {
 //        std::wcout << __FUNCTION__ << L" Gen" << pSrc->m_genHistCounter << L" ->" << m_genHistCounter << endl;

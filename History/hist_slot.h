@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "ModelData.h"
 #include "HistSlotNr.h"
 #include "HistCacheItem.h"
 #include "HistoryGeneration.h"
@@ -15,12 +16,8 @@ public:
         m_histSlotSenior( HistSlotNr::NULL_VAL() ),
         m_histSlotJunior( HistSlotNr::NULL_VAL() ),
         m_pHistCacheItem( nullptr )
-    {}
-
-    virtual ~HistSlot( )
     {
-        ShutDownHistCacheItem( );
-    }
+	}
 
     HistSlotNr GetSeniorGen( ) const { return m_histSlotSenior; }
     HistSlotNr GetJuniorGen( ) const { return m_histSlotJunior; }
@@ -28,9 +25,9 @@ public:
     void SetSeniorGen( HistSlotNr const slotNrSenior ) { m_histSlotSenior = slotNrSenior; }
     void SetJuniorGen( HistSlotNr const slotNrJunior ) { m_histSlotJunior = slotNrJunior; }
     
-	void SetHistCacheItem( HistCacheItem * const pItem ) 
+	void SetHistCacheItem( ModelFactory const * factory ) 
 	{ 
-		m_pHistCacheItem = pItem;   
+		m_pHistCacheItem = new HistCacheItem( factory->CreateModelData( ) );
 	}
 
     void ShutDownHistCacheItem( )                                

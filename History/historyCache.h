@@ -99,8 +99,7 @@ private:
 
 	void newSlot( )
     {
-		HistCacheItem * pHistCacheItemNew = HistCacheItem::CreateItem( m_pModelFactory );
-        getSlot( m_iNrOfSlots ).SetHistCacheItem( pHistCacheItemNew );
+        getSlot( m_iNrOfSlots ).SetHistCacheItem( m_pModelFactory );
     }
 
 	HistSlotNr m_histSlotHead;     // slot with youngest generation
