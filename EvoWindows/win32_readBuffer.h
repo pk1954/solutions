@@ -12,6 +12,7 @@ class ReadBuffer: public ViewCollection
 {
 public:
 	ReadBuffer( )
+		: m_pCoreWork( nullptr )
 	{
 		m_pCore4Display = EvolutionCore::CreateCore();
 		InitializeSRWLock( & m_SRWLock );
