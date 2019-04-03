@@ -50,8 +50,9 @@ private:
 	void adjustMiniWinVisibility( int const );
 	void shutDown( );
 
-	HWND                  m_hwndConsole;
-	Util::Event           m_event;
+	HWND        m_hwndApp;
+	HWND        m_hwndConsole;
+	Util::Event m_event;
 
     GridWindow          * m_pMainGridWindow;
     GridWindow          * m_pMiniGridWindow;

@@ -12,6 +12,8 @@
 #include "win32_performanceWindow.h"
 #include "win32_status.h"
 
+extern int g_AllocHookCounter;
+
 //lint -e1924    C-style casts
 
 static long trackBar2Value( LONG ); 

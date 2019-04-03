@@ -142,13 +142,13 @@ public:
 
 private:
 	
-	Grid            * m_pGrid;
-	tShape			  m_shape;
-    tBrushMode		  m_brushMode;
-	tManipulator	  m_manipulator;
-	PERCENT           m_intensity;
-    GRID_COORD	      m_radius;
-	ManipulatorFunc   m_manFunc;
+	Grid          * m_pGrid;
+	tShape			m_shape;
+    tBrushMode		m_brushMode;
+	tManipulator	m_manipulator;
+	PERCENT         m_intensity;
+    GRID_COORD	    m_radius;
+	ManipulatorFunc m_manFunc;
 
 	std::function<void   (GridPoint const, short const)> m_func;
     std::function<PERCENT(GridPoint const)>              m_filter;

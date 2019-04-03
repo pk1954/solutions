@@ -90,12 +90,9 @@ AppWindow::AppWindow( ) :
 	m_pEvoController( nullptr ),
 	m_hwndConsole( nullptr ),
     m_traceStream( )
-{};
-
-void AppWindow::Start(  )
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
-    HWND      const hwndApp   = StartBaseWindow
+    m_hwndApp = StartBaseWindow
 	( 
 		nullptr, 
 		CS_HREDRAW | CS_VREDRAW, 
@@ -115,7 +112,6 @@ void AppWindow::Start(  )
 	DUMP::SetDumpStream( & std::wcout );
 
 	Stopwatch stopwatch;
-
 	stopwatch.Start();
 	stopwatch.Stop( L"Stopwatch tara" );
 	stopwatch.Start();
@@ -127,14 +123,6 @@ void AppWindow::Start(  )
 	stopwatch.Start();
 	Script::ProcessScript( L"std_configuration.in" );
 	stopwatch.Stop( L"process std_configuration.in" );
-
-	GridDimensions::DefineGridSize( 150_GRID_COORD, 100_GRID_COORD );
-
-	stopwatch.Start();
-	m_pReadBuffer = new ReadBuffer( );
-	m_pEvolutionCoreWork = EvolutionCore::InitClass( Config::GetConfigValue( Config::tId::nrOfNeighbors ), m_pReadBuffer, & m_event );
-	m_pReadBuffer->SetWorkCore( m_pEvolutionCoreWork );
-	stopwatch.Stop( L"EvolutionCore::InitClass" );
 
     // create window objects
 
@@ -157,48 +145,6 @@ void AppWindow::Start(  )
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
 	stopwatch.Stop( L"create window objects" );
 
-	GridWindow::InitClass( hwndApp, m_pReadBuffer, m_pWorkThreadInterface, m_pFocusPoint, m_pDspOptWindow, m_pPerfWindow, m_pColorManager );
-
-	D3dSystem::Create_D3D_Device
-	( 
-		hwndApp, 
-		GridDimensions::GridWidthVal(), 
-		GridDimensions::GridHeightVal(), 
-		Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 
-	);
-	m_pGraphics = new D3D_driver();
-
-	stopwatch.Start();
-    m_pHistorySystem = HistorySystem::CreateHistorySystem( );
-	stopwatch.Stop( L"CreateHistorySystem" );
-
-	stopwatch.Start();
-    SetMenu( hwndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
-	Util::SetApplicationTitle( hwndApp, IDS_APP_TITLE );
-	if ( Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 )
-        EnableMenuItem( GetMenu( hwndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
-    DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
-	stopwatch.Stop( L"Application setup" );
-
-	stopwatch.Start();
-	m_pMainGridWindow     ->Start( m_pGraphics, WS_CHILD       | WS_CLIPSIBLINGS | WS_VISIBLE,             16_PIXEL );
-    m_pMiniGridWindow     ->Start( m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
-    m_pHistInfoWindow     ->Start( hwndApp, m_pHistorySystem );
-	m_pEvoHistGlue        ->Start( m_pEvolutionCoreWork, m_pHistorySystem, true, m_pHistInfoWindow );
-	m_pEvoHistWindow      ->Start( hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
-    m_pStatusBar          ->Start( hwndApp, m_pReadBuffer );
-	m_pFocusPoint         ->Start( m_pEvoHistGlue, m_pEvolutionCoreWork );
-	m_pWorkThreadInterface->Start( hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, m_pReadBuffer, m_pEvolutionCoreWork, m_pEvoHistGlue );
-	m_pDspOptWindow       ->Start( hwndApp, m_pEvolutionCoreWork );
-    m_pEditorWindow       ->Start( hwndApp, m_pWorkThreadInterface, m_pEvolutionCoreWork, m_pDspOptWindow, m_pStatusBar );
-    m_pStatistics         ->Start( hwndApp, m_pReadBuffer );
-    m_pCrsrWindow         ->Start( hwndApp, m_pFocusPoint, m_pReadBuffer );
-    m_pPerfWindow         ->Start( hwndApp );
-	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow, m_pColorManager );
-	stopwatch.Stop( L"Start windows" );
-
-	stopwatch.Start();
-	
     m_pStatusBar->SetRefreshRate     ( 300ms );
     m_pEvoHistWindow->SetRefreshRate ( 200ms ); 
     m_pCrsrWindow->SetRefreshRate    ( 100ms );
@@ -208,6 +154,77 @@ void AppWindow::Start(  )
     m_pMiniGridWindow->SetRefreshRate( 300ms );
     m_pMainGridWindow->SetRefreshRate( 100ms );
 	
+};
+
+void AppWindow::Start(  )
+{
+	Stopwatch stopwatch;
+
+	GridDimensions::DefineGridSize( 150_GRID_COORD, 100_GRID_COORD );
+
+	stopwatch.Start();
+	m_pReadBuffer = new ReadBuffer( );
+	m_pEvolutionCoreWork = EvolutionCore::InitClass
+	( 
+		Config::GetConfigValue( Config::tId::nrOfNeighbors ), 
+		m_pReadBuffer, 
+		& m_event 
+	);
+	m_pReadBuffer->SetWorkCore( m_pEvolutionCoreWork );
+	stopwatch.Stop( L"EvolutionCore::InitClass" );
+
+	GridWindow::InitClass
+	( 
+		m_hwndApp, 
+		m_pReadBuffer, 
+		m_pWorkThreadInterface, 
+		m_pFocusPoint, 
+		m_pDspOptWindow, 
+		m_pPerfWindow, 
+		m_pColorManager 
+	);
+
+	D3dSystem::Create_D3D_Device
+	( 
+		m_hwndApp, 
+		GridDimensions::GridWidthVal(), 
+		GridDimensions::GridHeightVal(), 
+		Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 
+	);
+
+	m_pGraphics = new D3D_driver();
+
+	stopwatch.Start();
+    m_pHistorySystem = HistorySystem::CreateHistorySystem( );
+	stopwatch.Stop( L"CreateHistorySystem" );
+
+	stopwatch.Start();
+    SetMenu( m_hwndApp, LoadMenu( GetModuleHandle( nullptr ), MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
+	Util::SetApplicationTitle( m_hwndApp, IDS_APP_TITLE );
+	if ( Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 )
+        EnableMenuItem( GetMenu( m_hwndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
+    DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
+	stopwatch.Stop( L"Application setup" );
+
+	stopwatch.Start();
+	m_pMainGridWindow     ->Start( m_pGraphics, WS_CHILD       | WS_CLIPSIBLINGS | WS_VISIBLE,             16_PIXEL );
+    m_pMiniGridWindow     ->Start( m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
+    m_pHistInfoWindow     ->Start( m_hwndApp, m_pHistorySystem );
+	m_pEvoHistGlue        ->Start( m_pEvolutionCoreWork, m_pHistorySystem, true, m_pHistInfoWindow );
+	m_pEvoHistWindow      ->Start( m_hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
+    m_pStatusBar          ->Start( m_hwndApp, m_pReadBuffer );
+	m_pFocusPoint         ->Start( m_pEvoHistGlue, m_pEvolutionCoreWork );
+	m_pWorkThreadInterface->Start( m_hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, m_pReadBuffer, m_pEvolutionCoreWork, m_pEvoHistGlue );
+	m_pDspOptWindow       ->Start( m_hwndApp, m_pEvolutionCoreWork );
+    m_pEditorWindow       ->Start( m_hwndApp, m_pWorkThreadInterface, m_pEvolutionCoreWork, m_pDspOptWindow, m_pStatusBar );
+    m_pStatistics         ->Start( m_hwndApp, m_pReadBuffer );
+    m_pCrsrWindow         ->Start( m_hwndApp, m_pFocusPoint, m_pReadBuffer );
+    m_pPerfWindow         ->Start( m_hwndApp );
+	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow, m_pColorManager );
+	stopwatch.Stop( L"Start windows" );
+
+	stopwatch.Start();
+	
     m_pReadBuffer->AttachObserver( m_pStatusBar      );
     m_pReadBuffer->AttachObserver( m_pEvoHistWindow  ); 
     m_pReadBuffer->AttachObserver( m_pCrsrWindow     );
@@ -216,7 +233,7 @@ void AppWindow::Start(  )
     m_pReadBuffer->AttachObserver( m_pMiniGridWindow );
     m_pReadBuffer->AttachObserver( m_pMainGridWindow );
 	
-    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, hwndApp,                              TRUE,  TRUE );
+    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                            TRUE,  TRUE );
     m_pWinManager->AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                        TRUE,  TRUE );
 	m_pWinManager->AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_pStatusBar     ->GetWindowHandle(), FALSE, FALSE );
     m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow ->GetWindowHandle(), FALSE, FALSE ); 
@@ -292,6 +309,7 @@ AppWindow::~AppWindow( )
 		delete m_pEvoController;
 		delete m_pHistorySystem;
 		delete m_pGraphics;
+		delete m_pReadBuffer;
     }
     catch ( ... )
     {

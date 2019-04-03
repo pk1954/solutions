@@ -8,20 +8,6 @@
 
 class HistorySystem;
 
-int MyAllocHook
-(
-	int allocType, 
-	void *userData, 
-	size_t size,
-	int blockType, 
-	long requestNumber,
-	const unsigned char *filename, 
-	int lineNumber
-)
-{
-	return true;
-}
-
 class HistAllocThread: public Util::Thread
 {
 public:
@@ -41,7 +27,6 @@ public:
 		{
 			while (m_pHistorySys->AddHistorySlot()) {}
 		}
-	_CrtSetAllocHook( MyAllocHook );
 	}
 
 	~HistAllocThread() {};

@@ -25,6 +25,7 @@
 
 using namespace std;
 
+int  g_AllocHookCounter = 0;
 HWND G_hwndApp;
 
 int main( int argc, char * argv [ ], char * envp [ ] )
