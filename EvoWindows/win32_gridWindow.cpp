@@ -59,6 +59,7 @@ void GridWindow::InitClass
 GridWindow::GridWindow( ) :
     BaseWindow( ),
 	m_pGraphics( nullptr ),
+	m_hPopupMenu( nullptr ),
     m_pPixelCoordinates( nullptr ),
     m_pGridWindowObserved( nullptr ),
     m_pObserverInterface( nullptr ),
@@ -269,7 +270,7 @@ void GridWindow::doPaint( )
 				PixelRect          const pixRectTarget    = Pixel2PixelRect( pixRectObserved, pixCoordObserved, m_pPixelCoordinates );
 				m_pGraphics->RenderTranspRect( pixRectTarget, 128, color );  
 			}
-			m_pGraphics->EndFrame( );
+			m_pGraphics->EndFrame( GetWindowHandle() );
 		}
         (void)EndPaint( &ps );
     }

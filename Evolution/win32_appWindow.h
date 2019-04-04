@@ -30,6 +30,7 @@ class HistorySystem;
 class ColorManager;
 class GraphicsInterface;
 class ReadBuffer;
+class D3D_driver;
 
 //lint -esym( 1712, AppWindow )  no default constructor for class 
 
@@ -54,7 +55,8 @@ private:
 	HWND        m_hwndConsole;
 	Util::Event m_event;
 
-    GridWindow          * m_pMainGridWindow;
+	D3D_driver          * m_pD3d_driver;
+	GridWindow          * m_pMainGridWindow;
     GridWindow          * m_pMiniGridWindow;
     WorkThreadInterface * m_pWorkThreadInterface;
     PerformanceWindow   * m_pPerfWindow;

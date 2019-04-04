@@ -31,39 +31,50 @@ D3DXFONT_DESC D3D_driver::m_d3dx_font_desc =
     L""                        //  FaceName
 };
 
-D3D_driver::D3D_driver( ) 
+D3D_driver::D3D_driver( )
 {
-    HRESULT hres;
+	m_d3d = new D3dSystem();
+}
 
-    m_d3d = D3dSystem::GetSystem( );
-    ULONG const ulNrOfPoints = m_d3d->GetNrOfPoints();
+D3D_driver::~D3D_driver()
+{
+	try
+	{
+		ULONG const ulres = m_d3d_vertexBuffer->Release( );    
+		assert( ulres == 0 );
+	}
+	catch ( ... )
+	{
+		exit( 1 );
+	};
 
-	m_ulTrianglesPerPrimitive = m_d3d->GetHexagonMode( ) ? 4 : 2; // Hexagon is made of 4 triangles, rect of 2 triangles
-	m_ulVerticesPerPrimitive  = m_d3d->GetHexagonMode( ) ? 6 : 4; // Hexagon has 6 vertices, rect has 4
-    m_ulMaxNrOfPrimitives     = ulNrOfPoints;
-    m_ulNrOfVertices          = m_ulMaxNrOfPrimitives * m_ulVerticesPerPrimitive;
-    m_pVertBufStripMode       = new VertexBuffer( ulNrOfPoints );
-    m_pVertBufPrimitives      = new VertexBuffer( m_ulNrOfVertices );
+	delete m_d3d;
+	m_d3d_vertexBuffer = nullptr;
+	m_d3d_swapChain    = nullptr;
+	m_d3d_device       = nullptr;
+	m_id3dx_font       = nullptr;
+	m_d3d              = nullptr;
+}
 
-    m_d3d_device = m_d3d->GetDevice( );                                  assert( m_d3d_device != nullptr );
-    hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, false );        assert( hres == D3D_OK );
-    hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE ); assert( hres == D3D_OK );
-    hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );          assert( hres == D3D_OK );
+void D3D_driver::Initialize
+( 
+	HWND  const hwndApp, 
+	ULONG const ulModelWidth, 
+	ULONG const ulModelHeight, 
+	BOOL  const bHexagon 
+) 
+{
+	m_d3d_device = m_d3d->Create_D3D_Device( hwndApp, ulModelWidth, ulModelHeight, bHexagon );
 
-    hres = m_d3d_device->CreateVertexBuffer
-    (
-        sizeof( Vertex ) * m_ulNrOfVertices,
-        0,  //D3DUSAGE_DYNAMIC,
-        D3DFVF_XYZRHW | D3DFVF_DIFFUSE,
-        D3DPOOL_MANAGED,   //D3DPOOL_DEFAULT,
-        & m_d3d_vertexBuffer,
-        nullptr
-    );
+	m_pVertBufStripMode  = new VertexBuffer( m_d3d->GetMaxNrOfPrimitives() );
+    m_pVertBufPrimitives = new VertexBuffer( m_d3d->GetNrOfVertices() );
 
-    assert( hres == D3D_OK );
+	m_d3d_vertexBuffer = m_d3d->CreateVertexBuffer( );
 
-    hres = m_d3d_device->GetSwapChain( 0, &m_d3d_swapChain );   assert( hres == D3D_OK );
-    m_dwAlphaBlendable = 0;
+    HRESULT hres = m_d3d_device->GetSwapChain( 0, &m_d3d_swapChain );   
+	assert( hres == D3D_OK );
+    
+	m_dwAlphaBlendable = 0;
     m_dwSrcBlend       = 0;
     m_dwDstBlend       = 0;
     m_bStripMode       = true;
@@ -71,22 +82,9 @@ D3D_driver::D3D_driver( )
     SetFontSize( 9_PIXEL );
 }
 
-D3D_driver::~D3D_driver()
+void D3D_driver::ShutDown( )
 {
-    try
-    {
-        ULONG const ulres = m_d3d_vertexBuffer->Release( );    assert( ulres == 0 );
-    }
-    catch ( ... )
-    {
-        exit( 1 );
-    };
 
-    m_d3d_vertexBuffer = nullptr;
-    m_d3d_swapChain    = nullptr;
-    m_d3d_device       = nullptr;
-    m_id3dx_font       = nullptr;
-    m_d3d              = nullptr;
 }
 
 //lint -esym( 613, D3D_driver::m_id3dx_font )  possible use of null pointer
@@ -127,8 +125,7 @@ void D3D_driver::DisplayGraphicsText( PixelRect const & pixRect, std::wstring co
 bool D3D_driver::StartFrame( HWND const hwnd, HDC const hdc )
 {
     HRESULT hres;
-	m_hwnd = hwnd;
-	m_d3d->ResizeD3dSystem( m_hwnd ); 
+	m_d3d->ResizeD3dSystem( hwnd ); 
     hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, false );                  if ( hres != D3D_OK ) return false;
     hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );           if ( hres != D3D_OK ) return false;
     hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );                    if ( hres != D3D_OK ) return false;
@@ -219,7 +216,7 @@ void D3D_driver::AddIndividual( PixelPoint const ptPos, COLORREF const color, fl
 	}
 	else
 	{
-		if ( m_d3d->GetHexagonMode( ) )
+		if ( m_d3d->IsHexagonMode( ) )
 			addHexagon( fPtPosx, fPtPosy, D3Dcolor, fPixSize, SQRT3 * fPixSize );
 		else
 			addRectangle( fPtPosx, fPtPosy, D3Dcolor, fPixSize );
@@ -243,7 +240,7 @@ void D3D_driver::AddBackGround( PixelPoint const ptPos, COLORREF const color, fl
     }
     else
     {
-		if ( m_d3d->GetHexagonMode( ) )
+		if ( m_d3d->IsHexagonMode( ) )
 			addHexagon( fPtPosx, fPtPosy, D3Dcolor, fPixSize * INVERSE_SQRT3, fPixSize );
 		else
 			addRectangle( fPtPosx, fPtPosy, D3Dcolor, fPixSizeHalf );
@@ -341,12 +338,12 @@ void D3D_driver::renderTriangleStrip( ) const
 
 void D3D_driver::renderPrimitives( D3dIndexBuffer const * const iBuf )
 {
-	ULONG const ulNrOfPrimitives = m_ulTrianglesPerPrimitive * m_pVertBufPrimitives->GetNrOfVertices() / m_ulVerticesPerPrimitive;
-	HRESULT hres;
+	ULONG const ulNrOfPrimitives = m_d3d->GetTrianglesPerPrimitive() * m_pVertBufPrimitives->GetNrOfVertices() / 
+		                           m_d3d->GetVerticesPerPrimitive();
 	
 	if ( ulNrOfPrimitives > 0 )
     {
-        hres = m_pVertBufPrimitives->LoadVertices( m_d3d_vertexBuffer, m_d3d_device );
+		HRESULT hres = m_pVertBufPrimitives->LoadVertices( m_d3d_vertexBuffer, m_d3d_device );
         assert( hres == D3D_OK ); 
 
         iBuf->SetIndices( m_d3d_device );
@@ -366,11 +363,11 @@ void D3D_driver::renderPrimitives( D3dIndexBuffer const * const iBuf )
 
 // Finish rendering; page flip.
 
-void D3D_driver::EndFrame( )
+void D3D_driver::EndFrame( HWND const hwnd )
 {
     HRESULT hres;
-    hres = m_d3d_device->EndScene();                                          assert(hres == D3D_OK);
-    hres = m_d3d_swapChain->Present( nullptr, nullptr, m_hwnd, nullptr, 0 );  assert(hres == D3D_OK);
+    hres = m_d3d_device->EndScene();                                        assert(hres == D3D_OK);
+    hres = m_d3d_swapChain->Present( nullptr, nullptr, hwnd, nullptr, 0 );  assert(hres == D3D_OK);
     //lint -esym( 613, D3D_driver::m_id3dx_font )  possible use of null pointer
     m_id3dx_font->Release();      
     //lint +esym( 613, D3D_driver::m_id3dx_font ) 

@@ -16,9 +16,10 @@ class D3D_driver: public GraphicsInterface
 {
 public:
 
-    D3D_driver();
+	D3D_driver();
     ~D3D_driver();
 
+	virtual void      Initialize( HWND const, ULONG const, ULONG const, BOOL const );
     virtual bool      StartFrame( HWND const, HDC const  );
     virtual void      SetFontSize( PIXEL const );
     virtual void      AddIndividual( PixelPoint const, COLORREF const, float const );    
@@ -28,35 +29,17 @@ public:
     virtual void      RenderTranspRect( PixelRect const &, unsigned int const, COLORREF const );
     virtual void      DisplayGraphicsText( PixelRect const &, std::wstring const & );
     virtual PixelRect CalcGraphicsRect( std::wstring const & );
-	virtual void      EndFrame( );
-	 
-    virtual void SetStripMode( tBoolOp const bOp ) 
-	{ 
-		ApplyOp( m_bStripMode, bOp ); 
-	};
+	virtual void      EndFrame( HWND const );
+	virtual void      ShutDown( );
 
-    virtual bool GetStripMode( ) 
-	{ 
-		return m_bStripMode; 
-	};
-
-private:
-    
-    ULONG m_ulTrianglesPerPrimitive;
-	ULONG m_ulVerticesPerPrimitive;
-	ULONG m_ulMaxNrOfPrimitives;
-    ULONG m_ulNrOfVertices;
-
-    VertexBuffer * m_pVertBufStripMode;
-    VertexBuffer * m_pVertBufPrimitives;
-
-    HWND                    m_hwnd;
+private:   
 	D3dSystem             * m_d3d;
     IDirect3DDevice9      * m_d3d_device;
     LPDIRECT3DVERTEXBUFFER9 m_d3d_vertexBuffer; 
     LPDIRECT3DSWAPCHAIN9    m_d3d_swapChain;
     ID3DXFont             * m_id3dx_font;
-    bool                    m_bStripMode;
+	VertexBuffer          * m_pVertBufStripMode;
+	VertexBuffer          * m_pVertBufPrimitives;
     DWORD                   m_dwAlphaBlendable;
     DWORD                   m_dwSrcBlend;
     DWORD                   m_dwDstBlend;

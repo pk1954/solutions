@@ -63,6 +63,7 @@ using namespace std::literals::chrono_literals;
 
 #include "GDI_driver.h"
 #include "D3D_driver.h"
+#include "d3d_system.h"
 
 // application
 
@@ -71,6 +72,7 @@ using namespace std::literals::chrono_literals;
 
 AppWindow::AppWindow( ) :
     BaseWindow( ),
+	m_pD3d_driver( nullptr ),
     m_pMainGridWindow( nullptr ),
     m_pMiniGridWindow( nullptr ),
     m_pWorkThreadInterface( nullptr ),
@@ -154,6 +156,7 @@ AppWindow::AppWindow( ) :
     m_pMiniGridWindow->SetRefreshRate( 300ms );
     m_pMainGridWindow->SetRefreshRate( 100ms );
 	
+	m_pD3d_driver = new D3D_driver();
 };
 
 void AppWindow::Start(  )
@@ -184,7 +187,7 @@ void AppWindow::Start(  )
 		m_pColorManager 
 	);
 
-	D3dSystem::Create_D3D_Device
+	m_pD3d_driver->Initialize
 	( 
 		m_hwndApp, 
 		GridDimensions::GridWidthVal(), 
@@ -192,7 +195,7 @@ void AppWindow::Start(  )
 		Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 
 	);
 
-	m_pGraphics = new D3D_driver();
+	m_pGraphics = m_pD3d_driver;
 
 	stopwatch.Start();
     m_pHistorySystem = HistorySystem::CreateHistorySystem( );

@@ -6,39 +6,105 @@
 #include <d3dx9core.h>
 #include "win32_util.h"
 #include "win32_stopwatch.h"
+#include "d3d_vertexBuffer.h"
 #include "d3d_system.h"
 
-//lint -esym( 613, D3dSystem::m_d3d_device )   possible use of null pointer
-
-D3dSystem D3dSystem::_d3d_;
-BOOL      D3dSystem::m_bHexagon;
-
-D3dSystem * D3dSystem::GetSystem( void )
-{
-	return & D3dSystem::_d3d_;
-}
-
-void D3dSystem::Create_D3D_Device( HWND const hwndApp, ULONG const ulWidth, ULONG const ulHeight, BOOL const bHexagon )
+D3dSystem::D3dSystem( )
 {
 	Stopwatch stopwatch;
 	stopwatch.Start();
-	_d3d_.m_ulWidth  = ulWidth;
-	_d3d_.m_ulHeight = ulHeight;
-	m_bHexagon                 = bHexagon;
-	_d3d_.m_d3d_device         = nullptr;
-	_d3d_.m_iNrSwapChainsInUse = 0;
-	_d3d_.m_d3d_object         = Direct3DCreate9(D3D_SDK_VERSION); 
-	assert( _d3d_.m_d3d_object != nullptr );
+	m_d3d_object = Direct3DCreate9(D3D_SDK_VERSION);
+	assert( m_d3d_object != nullptr );
 	stopwatch.Stop( L"Direct3DCreate9" );
-	stopwatch.Start();
-	_d3d_.createDevice( hwndApp, ulWidth, ulHeight );
-	stopwatch.Stop( L"createDevice" );
 }
 
-IDirect3DDevice9 * D3dSystem::GetDevice( void )
+IDirect3DDevice9 * D3dSystem::Create_D3D_Device
+( 
+	HWND  const hwndApp, 
+	ULONG const ulModelWidth, 
+	ULONG const ulModelHeight, 
+	BOOL  const bHexagon 
+)
 {
+	Stopwatch stopwatch;
+	stopwatch.Start();
+
+	PixelRectSize const pntSize = Util::GetClRectSize( hwndApp );
+
+	m_bHexagon = bHexagon;
+
+	m_ulTrianglesPerPrimitive = bHexagon ? 4 : 2; // Hexagon is made of 4 triangles, rect of 2 triangles
+	m_ulVerticesPerPrimitive  = bHexagon ? 6 : 4; // Hexagon has 6 vertices, rect has 4
+	m_ulMaxNrOfPrimitives     = ulModelWidth * ulModelHeight;
+	m_ulNrOfVertices          = m_ulMaxNrOfPrimitives * m_ulVerticesPerPrimitive;
+
+	ZeroMemory( & m_d3d_presentationParameters, sizeof(D3DPRESENT_PARAMETERS) );
+	m_d3d_presentationParameters.Windowed               = TRUE;
+	m_d3d_presentationParameters.MultiSampleType        = D3DMULTISAMPLE_NONE;
+	m_d3d_presentationParameters.SwapEffect             = D3DSWAPEFFECT_DISCARD;
+	m_d3d_presentationParameters.EnableAutoDepthStencil = FALSE;
+	m_d3d_presentationParameters.BackBufferFormat       = D3DFMT_X8R8G8B8;
+	m_d3d_presentationParameters.hDeviceWindow          = hwndApp;
+	m_d3d_presentationParameters.Flags                  = 0; //D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
+	m_d3d_presentationParameters.BackBufferCount        = 1;
+	m_d3d_presentationParameters.BackBufferWidth        = static_cast<unsigned int>( pntSize.GetXvalue() );
+	m_d3d_presentationParameters.BackBufferHeight       = static_cast<unsigned int>( pntSize.GetYvalue() );
+	m_d3d_presentationParameters.PresentationInterval   = D3DPRESENT_INTERVAL_IMMEDIATE;
+
+	HRESULT hres = m_d3d_object->CreateDevice
+	(
+		D3DADAPTER_DEFAULT, 
+		D3DDEVTYPE_HAL, 
+		hwndApp,
+		D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED, 
+		& m_d3d_presentationParameters, 
+		& m_d3d_device
+	);
+
+	assert( hres == D3D_OK );
+
+	//lint -e708     union initialization
+	m_d3d_matrix = D3DMATRIX 
+	{
+		1.0f,   0.0f,  0.0f,  0.0f,
+		0.0f,   1.0f,  0.0f,  0.0f,
+		0.0f,   0.0f,  1.0f,  0.0f,
+		-1.0f,   1.0f,  0.0f,  1.0f
+	};
+	//lint +e708
+
+	m_d3d_device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+	m_d3d_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
+
+	m_d3d_pIndexBufBgStripMode    = createStripIndices( ulModelWidth + 2, ulModelHeight + 2 );   // Index buffer for food
+	m_d3d_pIndexBufBgNonStripMode = createIndsIndices ( ulModelWidth, ulModelHeight, bHexagon ); // Index buffer for food
+	m_d3d_pIndexBufIndividuals    = createIndsIndices ( ulModelWidth, ulModelHeight, bHexagon ); // Index buffer for individuals
+	m_d3d_pIndexBufRect           = createRectIndices ( );                                       // Index buffer for one rectangle  
+
+	hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, false );        assert( hres == D3D_OK );
+	hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE ); assert( hres == D3D_OK );
+	hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );          assert( hres == D3D_OK );
+
+	stopwatch.Stop( L"Create_D3D_Device" );
 	assert( m_d3d_device != nullptr );
 	return m_d3d_device;
+}
+
+LPDIRECT3DVERTEXBUFFER9 D3dSystem::CreateVertexBuffer( )
+{
+	LPDIRECT3DVERTEXBUFFER9 buffer;
+
+	HRESULT hres = m_d3d_device->CreateVertexBuffer
+	(
+		sizeof( Vertex ) * m_ulNrOfVertices,
+		0,  //D3DUSAGE_DYNAMIC,
+		D3DFVF_XYZRHW | D3DFVF_DIFFUSE,
+		D3DPOOL_MANAGED,   //D3DPOOL_DEFAULT,
+		& buffer,
+		nullptr
+	);
+	assert( hres == D3D_OK );
+	return buffer;
 }
 
 HRESULT D3dSystem::ResizeD3dSystem( HWND const hwnd )
@@ -58,60 +124,6 @@ HRESULT D3dSystem::ResizeD3dSystem( HWND const hwnd )
 	m_d3d_matrix._22 = -2.0f / static_cast<float>( pntSize.GetYvalue() );
 
 	return m_d3d_device->SetTransform( D3DTS_PROJECTION, &m_d3d_matrix );
-}
-
-void D3dSystem::createDevice( HWND const hwnd, ULONG const ulModelWidth, ULONG const ulModelHeight )
-{
-	Stopwatch stopwatch;
-	stopwatch.Start();
-
-	PixelRectSize const pntSize = Util::GetClRectSize( hwnd );
-
-	ZeroMemory( & m_d3d_presentationParameters, sizeof(D3DPRESENT_PARAMETERS) );
-	m_d3d_presentationParameters.Windowed               = TRUE;
-	m_d3d_presentationParameters.MultiSampleType        = D3DMULTISAMPLE_NONE;
-	m_d3d_presentationParameters.SwapEffect             = D3DSWAPEFFECT_DISCARD;
-	m_d3d_presentationParameters.EnableAutoDepthStencil = FALSE;
-	m_d3d_presentationParameters.BackBufferFormat       = D3DFMT_X8R8G8B8;
-	m_d3d_presentationParameters.hDeviceWindow          = hwnd;
-	m_d3d_presentationParameters.Flags                  = 0; //D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
-	m_d3d_presentationParameters.BackBufferCount        = 1;
-	m_d3d_presentationParameters.BackBufferWidth        = static_cast<unsigned int>( pntSize.GetXvalue() );
-	m_d3d_presentationParameters.BackBufferHeight       = static_cast<unsigned int>( pntSize.GetYvalue() );
-	m_d3d_presentationParameters.PresentationInterval   = D3DPRESENT_INTERVAL_IMMEDIATE;
-
-	HRESULT const hres = m_d3d_object->CreateDevice
-	(
-		D3DADAPTER_DEFAULT, 
-		D3DDEVTYPE_HAL, 
-		hwnd,
-		D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_MULTITHREADED, 
-		& m_d3d_presentationParameters, 
-		& m_d3d_device
-	);
-
-	assert( hres == D3D_OK );
-
-	stopwatch.Stop( L"CreateDevice" );
-
-	//lint -e708     union initialization
-	m_d3d_matrix = D3DMATRIX 
-	{
-		 1.0f,   0.0f,  0.0f,  0.0f,
-		 0.0f,   1.0f,  0.0f,  0.0f,
-		 0.0f,   0.0f,  1.0f,  0.0f,
-		-1.0f,   1.0f,  0.0f,  1.0f
-	};
-	//lint +e708
-
-	m_d3d_device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
-	m_d3d_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
-	stopwatch.Start();
-	m_d3d_pIndexBufBgStripMode    = createStripIndices( ulModelWidth + 2, ulModelHeight + 2 ); // Index buffer for food
-	m_d3d_pIndexBufBgNonStripMode = createIndsIndices ( ulModelWidth, ulModelHeight );    // Index buffer for food
-	m_d3d_pIndexBufIndividuals    = createIndsIndices ( ulModelWidth, ulModelHeight );    // Index buffer for individuals
-	m_d3d_pIndexBufRect           = createRectIndices ( );                                // Index buffer for one rectangle  
-	stopwatch.Stop( L"create indices" );
 }
 
 D3dSystem::~D3dSystem( )
@@ -160,21 +172,23 @@ D3dIndexBuffer * D3dSystem::prepareIndices( ULONG const * const pulIndex, ULONG 
 	return new D3dIndexBuffer( d3d_indexBuffer, ulNrOfIndices );
 }
 
-D3dIndexBuffer * D3dSystem::createIndsIndices( ULONG const ulModelWidth, ULONG const ulModelHeight )
+D3dIndexBuffer * D3dSystem::createIndsIndices
+( 
+	ULONG const ulModelWidth, 
+	ULONG const ulModelHeight, 
+	BOOL  const bHexagon 
+)
 {
-	ULONG   const ulTrianglesPerPrimitive = m_bHexagon ? 4 : 2; // Hexagon is made of 4 triangles, rect of 2 triangles
-	ULONG   const ulVerticesPerPrimitive  = m_bHexagon ? 6 : 4; // Hexagon has 6 vertices, rectangle has 4
-	ULONG   const ulNrOfPrimitives        = ulModelWidth * ulModelHeight;
 	ULONG   const ulVerticesPerTriangle   = 3;
-	ULONG   const ulIndicesPerPrimitive   = ulVerticesPerTriangle * ulTrianglesPerPrimitive;
-	ULONG   const ulNrOfIndices           = ulIndicesPerPrimitive * ulNrOfPrimitives;
+	ULONG   const ulIndicesPerPrimitive   = ulVerticesPerTriangle * m_ulTrianglesPerPrimitive;
+	ULONG   const ulNrOfIndices           = ulIndicesPerPrimitive * m_ulMaxNrOfPrimitives;
 	ULONG * const pulIndices              = new ULONG[ulNrOfIndices];
 	ULONG *       pulIndexRun             = pulIndices;
-	ULONG   const ulStop                  = ulNrOfPrimitives * ulVerticesPerPrimitive;
+	ULONG   const ulStop                  = m_ulMaxNrOfPrimitives * m_ulVerticesPerPrimitive;
 
-	for ( ULONG ulBase = 0; ulBase < ulStop; ulBase += ulVerticesPerPrimitive ) 
+	for ( ULONG ulBase = 0; ulBase < ulStop; ulBase += m_ulVerticesPerPrimitive ) 
 	{
-		if ( m_bHexagon )
+		if ( bHexagon )
 		{
 			hexagonIndices( pulIndexRun, ulBase );
 		}

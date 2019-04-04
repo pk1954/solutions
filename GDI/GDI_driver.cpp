@@ -17,6 +17,21 @@ GDI_driver::~GDI_driver()
 {
 }
 
+void GDI_driver::Initialize
+( 
+	HWND  const hwndApp, 
+	ULONG const ulModelWidth, 
+	ULONG const ulModelHeight, 
+	BOOL  const bHexagon 
+) 
+{
+}
+
+void GDI_driver::ShutDown( )
+{
+
+}
+
 PixelRect GDI_driver::CalcGraphicsRect( std::wstring const & wstr )
 {
 	RECT rect{ 0, 0, 0, 0 };
@@ -85,6 +100,6 @@ void GDI_driver::RenderIndividuals( )
 {
 }
 
-void GDI_driver::EndFrame( )
+void GDI_driver::EndFrame( HWND const )
 {
 }
