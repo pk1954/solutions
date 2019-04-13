@@ -19,36 +19,46 @@ HistorySystemImpl::HistorySystemImpl( ) :
     m_pHistCacheItemWork( nullptr )
 { }
 
-HistorySystemImpl::~HistorySystemImpl( )
-{
-    delete m_pHistoryCache;
-
-    m_pHistoryCache      = nullptr;
-    m_pHistCacheItemWork = nullptr;
-}
-
-void HistorySystemImpl::InitHistorySystem
+ModelData * HistorySystemImpl::StartHistorySystem
 (
-    HIST_GENERATION     const genMaxNrOfGens,
-    ModelData         * const pModelDataWork
-)
-{
-    m_pHistoryCache      = new HistoryCache;
-	m_pHistCacheItemWork = new HistCacheItem( pModelDataWork );
-	m_GenCmdList.Resize( genMaxNrOfGens );
-}
-
-ModelData const * HistorySystemImpl::StartHistorySystem
-(
-    HistSlotNr          const nrOfSlots,
-    ModelFactory      * const pModelFactory,
+	HIST_GENERATION     const genMaxNrOfGens,
+	long                const lHistEntriesDemanded,
+	unsigned long long  const ullMemorySize,
+	ModelFactory      * const pModelFactory,
 	ObserverInterface * const pObserver,
 	GenerationCmd       const cmd
 )
 {
-    m_pHistoryCache->InitHistoryCache( nrOfSlots, pModelFactory, pObserver );
+	m_pHistCacheItemWork = new HistCacheItem( pModelFactory );  //ok
+
+	BYTES      const slotSize        { GetSlotSize( ) };
+	ULONGLONG  const ullMaxNrOfSlots { ullMemorySize / slotSize.GetValue() };    assert( ullMaxNrOfSlots < LONG_MAX );
+	LONG       const lMaxNrOfSlots   { static_cast<LONG>( ullMaxNrOfSlots ) };
+	long       const lHistEntries    { min( lHistEntriesDemanded, lMaxNrOfSlots * 70 / 100 ) };  // use only 70% of available memory
+	HistSlotNr const nrOfSlots       { CastToShort( lHistEntries ) }; 
+
+	m_pHistoryCache  = new HistoryCache;                    //ok
+	m_GenCmdList.Resize( genMaxNrOfGens );
+	m_pHistoryCache->InitHistoryCache( nrOfSlots, pModelFactory, pObserver );
 	m_pHistCacheItemWork->SetGenerationCommand( cmd );
-    return save2History( );
+    save2History( );
+	return m_pHistCacheItemWork->GetModelData();
+}
+
+void HistorySystemImpl::StopHistorySystem( )
+{
+	ShutDownHistCache();
+
+	delete m_pHistCacheItemWork;  //ok
+	delete m_pHistoryCache;       //ok
+
+	m_pHistCacheItemWork = nullptr;
+	m_pHistoryCache      = nullptr;
+}
+
+HistorySystemImpl::~HistorySystemImpl( )
+{
+	StopHistorySystem( );
 }
 
 // ClearHistory

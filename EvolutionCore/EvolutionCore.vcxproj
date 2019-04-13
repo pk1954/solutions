@@ -192,6 +192,7 @@
     <ClCompile Include="EvoStatistics.cpp" />
     <ClCompile Include="food.cpp" />
     <ClCompile Include="GeneType.cpp" />
+    <ClCompile Include="gridBrush.cpp" />
     <ClCompile Include="GridDimensions.cpp" />
     <ClCompile Include="gridPOI.cpp" />
     <ClCompile Include="gridSelection.cpp" />

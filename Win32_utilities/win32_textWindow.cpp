@@ -13,6 +13,7 @@
 TextWindow::TextWindow( ) :  
     BaseWindow( ),
 	m_pTextWindowThread( nullptr ),
+	m_pRefreshTimer( nullptr ),
 	m_hDC_Memory( 0 ),
 	m_hBitmap( 0 )
 { }
@@ -51,7 +52,7 @@ void TextWindow::StartTextWindow
 	Util::MakeLayered( hwnd, TRUE, 0, uiAlpha );
     SetWindowText( hwnd, szClass );
 
-	m_pTextWindowThread = new TextWindowThread
+	m_pTextWindowThread = new TextWindowThread  //ok
 	( 
 		m_hDC_Memory, 
 		PixelRectSize{ rect.GetSize() }, 
@@ -70,7 +71,8 @@ void TextWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 
 void TextWindow::Trigger( )
 {
-	m_pTextWindowThread->Trigger( );
+	if ( m_pTextWindowThread )
+		m_pTextWindowThread->Trigger( );
 }
 
 LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )

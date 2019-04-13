@@ -14,17 +14,17 @@ using std::wstring;
 class StatusBar : public RootWindow
 {
 public:
-    void    Start( HWND const, ReadBuffer * );
-	void    SetSimuMode( BOOL const );
-	void    SetRunMode( BOOL const );
+    void  Start( HWND const, ReadBuffer * );
+	void  SetSimuMode( BOOL const );
+	void  SetRunMode( BOOL const );
     PIXEL GetHeight( ) const;
-    void    Resize( ) const;
-    void    SetSizeTrackBar ( PIXEL const ) const;
-    void    SetSpeedTrackBar( DWORD const ) const;
-    void    ClearStatusLine( );
-    void    DisplayStatusLine( std::wstring const & );
-    void    DisplayScriptLine( std::wstring const &, int, std::wstring const & );
-    void    DisplayCurrentGeneration( EVO_GENERATION const );
+    void  Resize( ) const;
+    void  SetSizeTrackBar ( PIXEL const ) const;
+    void  SetSpeedTrackBar( DWORD const ) const;
+    void  ClearStatusLine( );
+    void  DisplayStatusLine( std::wstring const & );
+    void  DisplayScriptLine( std::wstring const &, int, std::wstring const & );
+    void  DisplayCurrentGeneration( EVO_GENERATION const );
 
 private:
 

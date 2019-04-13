@@ -23,7 +23,7 @@ public:
 		m_iDataApp( 0 )
 	{ }
 
-	virtual BYTES GetModelSize()
+	virtual BYTES GetModelSize( ) const
 	{
 		return BYTES { sizeof( HistTestModelData ) };
 	}
@@ -83,22 +83,18 @@ void gotoGeneration( HistorySystem * const pHistorySys, HIST_GENERATION const hi
 
 void DoTest( )
 {
-	static const HistSlotNr NR_OF_SLOTS {10};
+	static const long NR_OF_SLOTS {10};
 
 	HistorySystem      * pHistorySys = HistorySystem::CreateHistorySystem( );
 	HistTestModelFactory modelFactory;
 	HistTestModelData    modelData( 0 );
 	HIST_GENERATION      histGenDemanded;
 
-	pHistorySys->InitHistorySystem
-	( 
-		1000,           // # of generations
-		& modelData
-	);
-
 	pHistorySys->StartHistorySystem
 	( 
+		1000,           // # of generations
 		NR_OF_SLOTS,    // # of cache slots
+		1024ull * 1024 * 1024 * 16,
 		& modelFactory,
 		nullptr,
 		GenerationCmd::ApplicationCmd( tGenCmd::FIRST_APP_CMD, 0 )
@@ -106,10 +102,10 @@ void DoTest( )
 
 	wcout << L"*** Create " << NR_OF_SLOTS << L" history slots" << endl;
 
-	for ( int i = 1; i < NR_OF_SLOTS.GetValue(); ++i )
+	for ( long i = 1; i < NR_OF_SLOTS; ++i )
 		pHistorySys->AddHistorySlot( );
 
-	assert( pHistorySys->GetNrOfHistCacheSlots( ) == NR_OF_SLOTS );
+	assert( pHistorySys->GetNrOfHistCacheSlots( ).GetValue() == NR_OF_SLOTS );
 
 	wcout << endl << L"*** Iterate thru generations" << endl << endl;
 

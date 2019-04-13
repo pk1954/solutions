@@ -8,8 +8,10 @@ HistoryCache::HistoryCache( ) :
     m_histSlotHead( HistSlotNr::NULL_VAL() ),
     m_iUnused( HistSlotNr::NULL_VAL() ),
     m_iStartSearching( HistSlotNr::NULL_VAL() ),
-    m_iNrOfSlots( 0 ),
-    m_iNrOfUsedSlots( 0 ),
+	m_pModelFactory( nullptr ),
+	m_pObserver( nullptr ),
+	m_iNrOfSlots( 0 ),
+	m_iNrOfUsedSlots( 0 ),
     m_bAllocationRunning( true )
 { }
 

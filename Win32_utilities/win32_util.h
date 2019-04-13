@@ -276,7 +276,6 @@ namespace Util
 	
     DWORD        GetNrOfCPUs( );
     ULONGLONG    GetPhysicalMemory( );
-	LONG         GetMaxNrOfSlots( BYTES );
 	std::wstring GetCurrentDateAndTime( );
 	void         SetApplicationTitle( HWND const, int const );
 };

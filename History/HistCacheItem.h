@@ -11,13 +11,19 @@ class HistCacheItem
 {
 public:
 
-    HistCacheItem( ModelData * const pModelData ) :
-		m_pModelData( pModelData ),
+    HistCacheItem( ModelFactory const * factory ) :
+		m_pModelData( nullptr ),
         m_genHistCounter( 0L ),
         m_genCmd( )
-	{ }
+	{ 
+		m_pModelData = factory->CreateModelData( );
+	}
 
-    virtual ~HistCacheItem( ) { };
+    virtual ~HistCacheItem( ) 
+	{ 
+		delete m_pModelData;
+		m_pModelData = nullptr;
+	};
 
 	virtual ModelData const * CopyCacheItemFrom( HistCacheItem const * const pSrc )
     {
@@ -41,7 +47,7 @@ public:
     void SetGenerationCommand( GenerationCmd cmd ) { m_genCmd = cmd; }
 
 private:
-    ModelData * const m_pModelData;
-    HIST_GENERATION   m_genHistCounter;
-    GenerationCmd     m_genCmd;
+    ModelData     * m_pModelData;
+    HIST_GENERATION m_genHistCounter;
+    GenerationCmd   m_genCmd;
 };

@@ -112,14 +112,6 @@ ULONGLONG Util::GetPhysicalMemory( )  // in bytes
     return ramKB * 1024;                                  // compute number of bytes
 }
 
-LONG Util::GetMaxNrOfSlots( BYTES slotSize )
-{
-	ULONGLONG const ramBytes        = Util::GetPhysicalMemory( );      // compute number of bytes
-    ULONGLONG const ullMaxNrOfSlots = ramBytes / slotSize.GetValue();    assert( ullMaxNrOfSlots < LONG_MAX );
-    LONG      const lMaxNrOfSlots   = static_cast<LONG>( ullMaxNrOfSlots );
-	return lMaxNrOfSlots;
-}
-
 wstring Util::GetCurrentDateAndTime( )
 {
 	std::wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;

@@ -28,8 +28,9 @@ IDC_EVOLUTION_MAIN MENU
         MENUITEM "Goto &Origin", IDM_GOTO_ORIGIN
         MENUITEM "Goto &Death", IDM_GOTO_DEATH
         MENUITEM "Reset", IDM_RESET
-        MENUITEM "Restart", IDM_RESTART
-    }
+		MENUITEM "Restart", IDM_RESTART
+		MENUITEM "&Change Grid", IDM_CHANGE_GRID_TYPE
+	}
     POPUP "&View"
     {
         POPUP "&Zoom"

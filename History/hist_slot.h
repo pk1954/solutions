@@ -15,8 +15,9 @@ public:
     HistSlot( ModelFactory const * factory ) :
         m_histSlotSenior( HistSlotNr::NULL_VAL() ),
         m_histSlotJunior( HistSlotNr::NULL_VAL() ),
-        m_pHistCacheItem( new HistCacheItem( factory->CreateModelData( ) ) )
+        m_pHistCacheItem( nullptr )
     {
+		m_pHistCacheItem = new HistCacheItem( factory );
 	}
 
 	~HistSlot()

@@ -17,16 +17,26 @@ class EvoModelDataGlue: public ModelData
 {
 public:
 	
-    EvoModelDataGlue( EvolutionCore * pCore )
+    EvoModelDataGlue( )
     { 
-		m_pEvolutionCore = pCore;
+		m_pEvolutionCore = EvolutionCore::CreateCore( );
+	}
+
+	~EvoModelDataGlue( )
+	{
+		EvolutionCore::DestroyCore( m_pEvolutionCore );
 	}
 
     EvoModelDataGlue & operator= ( EvoModelDataGlue const & );  // noncopyable class 
 
-	virtual BYTES GetModelSize()
+	EvolutionCore * GetEvolutionCore( )
 	{
-		return m_pEvolutionCore->GetCoreSize( ) + BYTES(sizeof(EvoModelDataGlue));
+		return m_pEvolutionCore;
+	}
+
+	virtual BYTES GetModelSize( ) const
+	{
+		return EvolutionCore::GetCoreSize( ) + BYTES(sizeof(EvoModelDataGlue));
 	}
 
 	virtual void CopyFrom( ModelData const * const src )

@@ -20,11 +20,11 @@ public:
     explicit HistoryCache( );
     ~HistoryCache( );
     
-    void              InitHistoryCache( HistSlotNr const, ModelFactory const * const, ObserverInterface * const );
-    bool              AddCacheSlot( );
-    void              ResetHistoryCache( );
-    HistSlotNr        GetFreeCacheSlot( );
-    void              RemoveHistCacheSlot( HistSlotNr const );
+    void       InitHistoryCache( HistSlotNr const, ModelFactory const * const, ObserverInterface * const );
+    bool       AddCacheSlot( );
+    void       ResetHistoryCache( );
+    HistSlotNr GetFreeCacheSlot( );
+    void       RemoveHistCacheSlot( HistSlotNr const );
 
 	void HistoryCache::ResetHistCacheSlot( HistSlotNr const slotNr )  	// reset slot, but leave it in list of used slots
 	{

@@ -6,18 +6,17 @@
 #include <vector>
 #include <functional>
 #include "gridPoint.h"
-#include "GridDimensions.h"
+
+class Grid;
 
 using std::vector;
 
-class Grid;
+using NEIGHBORS = vector< GridPoint >;
 
 class Neighborhood
 {
 public:
     static void InitClass( int const );
-
-	static void GetNeighborLists( Grid const &, GridPoint const &, Neighborhood *, Neighborhood * );
 
 	static int GetNrOfNeighbors( ) 
 	{ 
@@ -27,6 +26,12 @@ public:
 	Neighborhood( )	: m_neighbors( )
 	{
 		m_neighbors.reserve( m_iNrOfNeighbors );
+	}
+
+	void AddToList( GridPoint const & gp )
+	{
+		assert( static_cast<int>(m_neighbors.size()) < m_iNrOfNeighbors );
+		m_neighbors.push_back( gp );
 	}
 
 	void RemoveFromList( int const iIndex )
@@ -39,7 +44,12 @@ public:
 	{ 
 		return m_neighbors.size( ); 
 	}
-    
+
+	void Clear( ) 
+	{ 
+		return m_neighbors.clear( ); 
+	}
+
 	GridPoint const GetElement( unsigned int const uiIndex  ) const 
 	{ 
 		return m_neighbors[uiIndex]; 
@@ -54,11 +64,8 @@ public:
     }
 
 private:
-	using NEIGHBORS     = vector< GridPoint >;
-	using NEIGHBOR_GRID = vector< vector< NEIGHBORS > >;
 
-	static int             m_iNrOfNeighbors;
-	static NEIGHBOR_GRID * m_pGridNeighbors;
+	static int m_iNrOfNeighbors;
 
     NEIGHBORS m_neighbors;
 };

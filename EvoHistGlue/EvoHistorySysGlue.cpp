@@ -21,26 +21,14 @@ class ObserverInterface;
 GenerationCmd const EvoHistorySysGlue::NEXT_GEN_CMD = EvoHistorySysGlue::EvoCmd( tEvoCmd::nextGen, 0 );
 
 EvoHistorySysGlue::EvoHistorySysGlue( ) :
-    m_pEvoModelWork   ( nullptr ),
 	m_pEvoModelFactory( nullptr ),
     m_pHistorySystem  ( nullptr ),
 	m_pHistAllocThread( nullptr ),
 	m_bAskHistoryCut  ( false )
 {}
 
-HistSlotNr EvoHistorySysGlue::calcHistCacheSize()
-{
-	BYTES      const slotSize             { m_pHistorySystem->GetSlotSize() };
-	long       const lMaxHistSize         { Util::GetMaxNrOfSlots( slotSize ) };
-	long       const lHistEntriesDemanded { Config::GetConfigValue( Config::tId::nrOfHistorySlots ) };
-	long       const lHistEntries         { min( lHistEntriesDemanded, lMaxHistSize * 70 / 100 ) };  // use only 80% of available memory
-	HistSlotNr const nrOfSlots            { CastToShort( lHistEntries ) }; 
-	return nrOfSlots;
-}
-
-void EvoHistorySysGlue::Start
+EvoModelDataGlue * EvoHistorySysGlue::Start
 (
-	EvolutionCore * const pCore, 
 	HistorySystem * const pHistorySystem,
 	bool            const bAskHistoryCut, // true: ask user for history cut, false: cut without asking
 	RootWindow    * const pRootWindow
@@ -48,33 +36,36 @@ void EvoHistorySysGlue::Start
 {
 	m_pHistorySystem   = pHistorySystem;
 	m_bAskHistoryCut   = bAskHistoryCut;
-    m_pEvoModelWork    = new EvoModelDataGlue( pCore );
-	m_pEvoModelFactory = new EvoModelFactory ( );
+	m_pEvoModelFactory = new EvoModelFactory( ); //ok
 
-	pHistorySystem->InitHistorySystem
+	ModelData * pModelWork = m_pHistorySystem->StartHistorySystem
     (
         Config::GetConfigValue( Config::tId::maxGeneration ),
-        m_pEvoModelWork
-    );
-
-	pHistorySystem->StartHistorySystem
-    (
-        calcHistCacheSize(), // needs m_pEvoModelWork in HistorySystem!
+        Config::GetConfigValue( Config::tId::nrOfHistorySlots ),
+		Util::GetPhysicalMemory( ),
         m_pEvoModelFactory,
 		pRootWindow,
 		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( tEvoCmd::reset ), 0 )
     );
 
-	m_pHistAllocThread = new HistAllocThread( m_pHistorySystem, TRUE );   // delegate allocation of history slots to a work thread
+	// delegate allocation of history slots to a work thread
+
+	m_pHistAllocThread = new HistAllocThread( m_pHistorySystem, TRUE );  //ok 
+
+	return static_cast< EvoModelDataGlue * >( pModelWork );
+}
+
+void EvoHistorySysGlue::Stop( )
+{
+	m_pHistorySystem->StopHistorySystem( );
+	m_pHistAllocThread->Terminate();
+	delete m_pEvoModelFactory;  //ok
+	delete m_pHistAllocThread;  //ok
 }
 
 EvoHistorySysGlue::~EvoHistorySysGlue( ) 
 {
-	m_pHistAllocThread->Terminate();
-	m_pHistorySystem->ShutDownHistCache();
-	delete m_pHistAllocThread;
-	delete m_pEvoModelFactory;
-	delete m_pEvoModelWork;
+	Stop( );
 };
 
 class FindGridPointFunctor : public GenerationProperty

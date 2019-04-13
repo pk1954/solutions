@@ -11,7 +11,7 @@
 #include "EvolutionCoreImpl.h"
 #include "EvolutionCoreWrappers.h"
 
-EvolutionCore * EvolutionCore::InitClass
+void EvolutionCore::InitClass
 ( 
 	int                 const iNrOfNeighbors,
 	ObserverInterface * const pObservers,
@@ -21,14 +21,16 @@ EvolutionCore * EvolutionCore::InitClass
     Neighborhood::InitClass( iNrOfNeighbors );
     Grid::InitClass( iNrOfNeighbors );
 	EvolutionCoreImpl::InitClass( pObservers, pEvent );
-    EvolutionCore * pEvolutionCoreWork = EvolutionCore::CreateCore( );
-	DefineCoreWrapperFunctions( pEvolutionCoreWork );
-	return pEvolutionCoreWork;
 }
 
 EvolutionCore * EvolutionCore::CreateCore( )
 {
     return new EvolutionCoreImpl( );
+}
+
+void EvolutionCore::DestroyCore( EvolutionCore * pCore )
+{
+	delete pCore;
 }
 
 BYTES EvolutionCore::GetCoreSize() 

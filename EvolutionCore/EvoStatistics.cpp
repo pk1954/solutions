@@ -7,7 +7,9 @@
 #include "EvolutionCore.h"
 #include "EvoStatistics.h"
 
-EvoStatistics::EvoStatistics( ) 
+EvoStatistics::EvoStatistics( ) :
+	m_pCore( nullptr ),
+	m_pTextBuf( nullptr )
 { }
 
 EvoStatistics::~EvoStatistics()

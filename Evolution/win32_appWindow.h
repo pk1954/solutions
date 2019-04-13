@@ -21,7 +21,6 @@ class WorkThreadInterface;
 class Script;
 class FocusPoint;
 class WinManager;
-class EvolutionCore;
 class NextGenFunctor;
 class ScriptHook;
 class EvoHistorySysGlue;
@@ -31,15 +30,17 @@ class ColorManager;
 class GraphicsInterface;
 class ReadBuffer;
 class D3D_driver;
-
-//lint -esym( 1712, AppWindow )  no default constructor for class 
+class EvoModelDataGlue;
+class ViewCollection;
+class EvolutionCore;
 
 class AppWindow : public BaseWindow
 {
 public:
     AppWindow( );
-    void Start( );
-    ~AppWindow( );
+	void Start( );
+	void Stop( );
+	~AppWindow( );
 
 private:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
@@ -49,7 +50,6 @@ private:
 
 	void adjustChildWindows( );
 	void adjustMiniWinVisibility( int const );
-	void shutDown( );
 
 	HWND        m_hwndApp;
 	HWND        m_hwndConsole;
@@ -68,12 +68,14 @@ private:
     DspOptWindow        * m_pDspOptWindow;
     FocusPoint          * m_pFocusPoint;
     WinManager          * m_pWinManager;
-    EvolutionCore       * m_pEvolutionCoreWork;
 	EvoController       * m_pEvoController;
     ScriptHook          * m_pScriptHook;
 	ColorManager        * m_pColorManager;
 	GraphicsInterface   * m_pGraphics;
 	ReadBuffer          * m_pReadBuffer;
+	EvoModelDataGlue    * m_pModelDataWork;
+	ViewCollection      * m_pCoreObservers;
+	EvolutionCore       * m_pEvoCore4Display;
     
     // History 
     HistorySystem       * m_pHistorySystem;

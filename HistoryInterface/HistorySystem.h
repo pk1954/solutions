@@ -28,14 +28,17 @@ public:
 
     virtual ~HistorySystem( ) { };
 
-    virtual void InitHistorySystem( HIST_GENERATION const, ModelData * const ) = 0;
-    virtual ModelData const * StartHistorySystem
+    virtual ModelData * StartHistorySystem
 	( 
-		HistSlotNr          const, 
+		HIST_GENERATION     const, 
+		long                const, 
+		unsigned long long  const, 
 		ModelFactory      * const, 
 		ObserverInterface * const,
 		GenerationCmd       const
 	) = 0;
+
+	virtual void StopHistorySystem( ) = 0;
 
     virtual BYTES             GetSlotSize( )               const = 0;
     virtual HistSlotNr        GetNrOfUsedHistCacheSlots( ) const = 0;

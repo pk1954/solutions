@@ -11,7 +11,7 @@
 #include "gridRect.h"
 #include "gpList.h"
 #include "gridField.h"
-#include "gridNeighbor.h"
+#include "GridDimensions.h"
 #include "EvolutionTypes.h"
 #include "plannedActivity.h"
 

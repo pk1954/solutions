@@ -37,22 +37,28 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
     Config::SetDefaultConfiguration( );
     Config::DefineConfigWrapperFunctions( );
-	GridDimensions::DefineGridSize( 200_GRID_COORD, 100_GRID_COORD );
+
+	int const iNrOfNeighbors = Config::GetConfigValue( Config::tId::nrOfNeighbors );
+
+	GridDimensions::DefineGridSize( 200_GRID_COORD, 100_GRID_COORD, iNrOfNeighbors );
 
     Script::ProcessScript( L"std_configuration.in" );
 
+	EvolutionCore::InitClass( iNrOfNeighbors, nullptr, nullptr );
+
 	PIXEL                 const FIELDSIZE            = 8_PIXEL;
-	int                   const iNrOfNeighbors       = Config::GetConfigValue( Config::tId::nrOfNeighbors );
-    EvolutionCore       * const pEvolutionCore       = EvolutionCore::InitClass( iNrOfNeighbors, nullptr, nullptr );
+	EvoModelDataGlue    * const pEvoModelData        = new EvoModelDataGlue( );
 	BOOL                  const bHexagonMode         = (iNrOfNeighbors == 6);
 	PixelCoordinates    * const pPixCoords           = new PixelCoordinates( FIELDSIZE, bHexagonMode );
 	EvoHistorySysGlue   * const pEvoHistGlue         = new EvoHistorySysGlue( );
     WorkThreadInterface * const pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
     HistorySystem       * const pHistorySystem       = HistorySystem::CreateHistorySystem( );
+	EvolutionCore       * const pEvolutionCore       = pEvoModelData->GetEvolutionCore( );
 
+	DefineCoreWrapperFunctions( pEvolutionCore );
 	DefinePixelCoordinatesWrapperFunctions( pPixCoords );
 
-	pEvoHistGlue->Start( pEvolutionCore, pHistorySystem, false, nullptr );
+	pEvoHistGlue->Start( pHistorySystem, false, nullptr );
     DefineWin32HistWrapperFunctions( pWorkThreadInterface );
 
 	pWorkThreadInterface->Start( nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, pEvolutionCore, pEvoHistGlue );

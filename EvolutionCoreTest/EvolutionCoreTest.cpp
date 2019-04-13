@@ -9,7 +9,7 @@
 #include "win32_hiResTimer.h"
 #include "gridPoint.h"
 #include "gridRect.h"
-#include "gridNeighbor.h"
+#include "GridDimensions.h"
 
 using std::wofstream;
 using std::wstring;
@@ -40,7 +40,7 @@ void DoTest( )
 	HiResTimer m_hrtimer;
 	wofstream  m_traceStream = OpenTraceFile( L"main_trace.out" );
 
-	GridDimensions::DefineGridSize( 200_GRID_COORD, 100_GRID_COORD );
+	GridDimensions::DefineGridSize( 200_GRID_COORD, 100_GRID_COORD, 8 );
 	Neighborhood::InitClass( 8 );
 
 	m_hrtimer.Start( );

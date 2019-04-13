@@ -32,6 +32,7 @@
 #define IDD_TOGGLE_COORD_DISPLAY                148
 #define IDM_RESET                               149
 #define IDM_RESTART                             150
+#define IDM_CHANGE_GRID_TYPE                    151
 
 #define IDM_CHOOSE_SELECTION_COLOR              161
 #define IDM_CHOOSE_HIGHLIGHT_COLOR              162

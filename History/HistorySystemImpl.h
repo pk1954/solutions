@@ -29,15 +29,17 @@ public:
     HistorySystemImpl( );
     ~HistorySystemImpl( );
 
-    virtual void InitHistorySystem( HIST_GENERATION const, ModelData * const );
-
-    virtual ModelData const * StartHistorySystem
+    virtual ModelData * StartHistorySystem
     ( 
-        HistSlotNr          const, 
-        ModelFactory      * const,
+		HIST_GENERATION     const, 
+		long                const, 
+		unsigned long long  const, 
+		ModelFactory      * const,
 		ObserverInterface * const,
 		GenerationCmd       const
     );
+
+	virtual void StopHistorySystem( );
 
 	virtual bool			  AddHistorySlot( )        const;
 
@@ -66,8 +68,8 @@ private:
     HistoryCache  * m_pHistoryCache;
     HistCacheItem * m_pHistCacheItemWork;      // The reference item, where history system gets and restores data 
 
-    ModelData     const * save2History( );
-    void                  step2NextGeneration( GenerationCmd );
-    void                  checkHistoryStructure( );
+	ModelData  const * save2History( );
+    void               step2NextGeneration( GenerationCmd );
+    void               checkHistoryStructure( );
 };
 

@@ -77,10 +77,11 @@ public:
     virtual void SetBrushMode       ( tBrushMode   const ) = 0;
     virtual void ModelDoEdit        ( GridPoint    const ) = 0;
 	
-// static functions
+// static functions  
     
-    static EvolutionCore * InitClass( int const, ObserverInterface * const, EventInterface * const );
+    static void            InitClass( int const, ObserverInterface * const, EventInterface * const );
     static EvolutionCore * CreateCore();
+	static void            DestroyCore( EvolutionCore * );
  	static BYTES           GetCoreSize();
 
 	static unsigned int GetNrInteractionsWithKnownCulprit( );

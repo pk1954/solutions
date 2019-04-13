@@ -74,7 +74,7 @@ Grid::~Grid( )
 {
     try
     {
-        m_gpList.ResetGpList( );
+		m_gpList.ResetGpList( );
     }
     catch ( ... )
     {
@@ -84,9 +84,9 @@ Grid::~Grid( )
 
 BYTES Grid::GetGridExtraSize()
 {
-	unsigned long gridFieldSize { sizeof ( GridField ) };
-	unsigned long gridRowSize   { sizeof(vector< GridField >) + GridDimensions::GridHeightVal() * gridFieldSize };
-	unsigned long gridAreaSize  { GridDimensions::GridWidthVal() * gridRowSize };
+	unsigned long long gridFieldSize { sizeof ( GridField ) };
+	unsigned long long gridRowSize   { sizeof(vector< GridField >) + GridDimensions::GridHeightVal() * gridFieldSize };
+	unsigned long long gridAreaSize  { GridDimensions::GridWidthVal() * gridRowSize };
 	return BYTES( gridAreaSize );
 }
 
@@ -156,7 +156,7 @@ void Grid::MakePlan
     plan.SetBaseConsumption( m_enBasicFoodConsumption );
     plan.IncBaseConsumption( m_enMemSizeFoodConsumption * gfRun.GetMemSize( ).GetValue() );
 
-	Neighborhood::GetNeighborLists
+	GridDimensions::GetNeighborLists
 	(
 		* this,
 		gpRun,

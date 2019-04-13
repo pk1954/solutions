@@ -2,24 +2,31 @@
 //
 // EvolutionCoreInterface
 //
-// knows static size of the Grid
+// knows static size of the Grid and number of neighbors
 // contains functions directly dependent on Grid size
 
 #pragma once
 
 #include <algorithm>  // min/max templates
+#include <vector>
 #include "gridRect.h"
+#include "gridNeighbor.h"
 
 using std::min;
 using std::max;
+using std::vector;
 
 class GridDimensions
 {
 public:
-	static void DefineGridSize(GRID_COORD const width, GRID_COORD const height)
-	{
-		m_gridSize = GridPoint( width, height);
-	}
+	static void DefineGridSize
+	(
+		GRID_COORD const, 
+		GRID_COORD const,
+		int        const
+	);
+
+	static void GetNeighborLists( Grid const &, GridPoint const &, Neighborhood *, Neighborhood * );
 
 	static GRID_COORD const GridWidth()    { return m_gridSize.GetX(); }
 	static GRID_COORD const GridHeight()   { return m_gridSize.GetY(); }
@@ -42,7 +49,11 @@ public:
 	}
 
 private:
-	static GridPoint m_gridSize; 
+	using NEIGHBOR_GRID = vector< vector< NEIGHBORS > >;
+
+	static GridPoint       m_gridSize; 
+	static int             m_iNrOfNeighbors;
+	static NEIGHBOR_GRID * m_pGridNeighbors;
 };
 
 inline bool const Neighbors( GridPoint const a, GridPoint const b )

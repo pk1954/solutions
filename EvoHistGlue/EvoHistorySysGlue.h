@@ -24,13 +24,14 @@ public:
     EvoHistorySysGlue( );
 	virtual ~EvoHistorySysGlue( );
 
-    void Start
+	EvoModelDataGlue * Start
 	( 
-		EvolutionCore * const, 
 		HistorySystem * const,
 		bool            const,
 		RootWindow    * const
 	);
+
+	void Stop( );
 
     // EvoApproachHistGen - Get closer to demanded HIST_GENERATION
     //                    - If several steps are neccessary, function returns after one displayed generation
@@ -68,7 +69,6 @@ public:
 private:
     static GenerationCmd const NEXT_GEN_CMD;
 	
-	EvoModelDataGlue * m_pEvoModelWork;
 	EvoModelFactory  * m_pEvoModelFactory;
     HistorySystem    * m_pHistorySystem;
 	HistAllocThread  * m_pHistAllocThread;
@@ -76,6 +76,5 @@ private:
 
     // private member functions
 
-	HistSlotNr calcHistCacheSize( );
-	bool       askHistoryCut( HistorySystem * pHistSys ) const;
+	bool askHistoryCut( HistorySystem * pHistSys ) const;
 };
