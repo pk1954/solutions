@@ -14,12 +14,6 @@ EvoHistWindow::EvoHistWindow( ) :
     m_pFocusPoint( nullptr )
 { }
 
-EvoHistWindow::~EvoHistWindow( )
-{
-    m_pWorkThreadInterface = nullptr;
-	m_pFocusPoint          = nullptr;
-}
-
 void EvoHistWindow::Start
 (
     HWND                  const hwndParent,
@@ -35,11 +29,20 @@ void EvoHistWindow::Start
 	Show( Config::GetConfigValueOnOffAuto( Config::tId::historyDisplay ) == Config::tOnOffAuto::on );
 }
 
+void EvoHistWindow::Stop( )
+{
+	HistWindow::Stop( );
+	m_pWorkThreadInterface = nullptr;
+	m_pFocusPoint          = nullptr;
+}
+
 void EvoHistWindow::DoPaint( HDC const hDC )
 {
-    PaintAllGenerations( hDC );
-
-    PaintHighlightGenerations( hDC, m_pWorkThreadInterface->GetGenDemanded( ) );
+	if ( m_pWorkThreadInterface )
+	{
+		PaintAllGenerations( hDC );
+		PaintHighlightGenerations( hDC, m_pWorkThreadInterface->GetGenDemanded( ) );
+	}
 
 // Deactivated, see win32_focusPoint.cpp
 //

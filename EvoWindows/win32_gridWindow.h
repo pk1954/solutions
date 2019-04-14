@@ -32,11 +32,13 @@ public:
 	);
 
     GridWindow( );
-    ~GridWindow( );
 
     void Start( GraphicsInterface * const, DWORD const, PIXEL const );
+	void Stop( );
 
-    void  Size( );
+	~GridWindow( );
+	
+	void  Size( );
 	void  Zoom( bool const );
 	void  ToggleStripMode( );
 	void  Escape( );

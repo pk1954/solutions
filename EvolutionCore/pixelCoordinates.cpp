@@ -16,11 +16,11 @@ PixelCoordinates::PixelCoordinates
     PIXEL const fs, 
 	bool  const bHexagon
 )
-  : m_pixOffset( 0_PIXEL ),
+  : m_pixOffset   ( 0_PIXEL ),
     m_pixFieldSize( fs ),
-    m_smoothMove(  ),
-	m_bMoving   ( false ),
-	m_bHexagon  ( bHexagon )
+    m_smoothMove  (  ),
+	m_bMoving     ( false ),
+	m_bHexagon    ( bHexagon )
 { }
 
 bool PixelCoordinates::isValidFieldSize( PIXEL const pixNewFieldSize ) const 

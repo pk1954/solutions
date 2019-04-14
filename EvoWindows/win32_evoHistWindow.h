@@ -13,7 +13,7 @@ class EvoHistWindow : public HistWindow
 {
 public:
     EvoHistWindow( );
-    virtual ~EvoHistWindow( );
+	virtual ~EvoHistWindow( ) { };
 
     void Start
 	( 
@@ -22,6 +22,8 @@ public:
 		HistorySystem       * const, 
 		WorkThreadInterface * const 
 	);
+
+	void Stop( );
 
 	virtual void GotoGeneration( HIST_GENERATION const );
 	virtual void DoPaint( HDC const );

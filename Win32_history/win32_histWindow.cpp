@@ -45,6 +45,12 @@ void HistWindow::Start
     m_pGenDisplay->StartGenDisplayWindow( GetWindowHandle( ) );
 }
 
+void HistWindow::Stop( )
+{
+	Show( FALSE );
+	m_pHistSys = nullptr;
+}
+
 HistWindow::~HistWindow( )
 {
     //lint -e1551   won't throw exception
@@ -203,7 +209,7 @@ void HistWindow::PaintAllGenerations( HDC const hDC )
 
 void HistWindow::PaintHighlightGenerations( HDC const hDC, HIST_GENERATION const genDemanded ) const
 {
-    HIST_GENERATION const genActive = m_pHistSys->GetCurrentGeneration( );
+	HIST_GENERATION const genActive = m_pHistSys->GetCurrentGeneration( );
 
     paintGeneration( hDC, genActive, CLR_RED );
 
@@ -218,7 +224,7 @@ void HistWindow::PaintHighlightGenerations( HDC const hDC, HIST_GENERATION const
 
 void HistWindow::PaintLifeLine( HDC const hDC, HIST_GENERATION const genBirth, HIST_GENERATION const genDeath ) const
 {
-    PixelRect     pixRect = getGenerationRect( genBirth, max( genBirth, genDeath ) );
+    PixelRect   pixRect = getGenerationRect( genBirth, max( genBirth, genDeath ) );
     PIXEL const height4 = GetClientWindowHeight( ) / 4;
     SetBkColor( hDC, CLR_POI );
 	Util::FastFill

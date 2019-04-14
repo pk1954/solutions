@@ -71,8 +71,8 @@ GridWindow::GridWindow( ) :
 void GridWindow::Start
 ( 
 	GraphicsInterface * const pGraphics,
-    DWORD const dwStyle,
-    PIXEL const pixFieldSize
+    DWORD               const dwStyle,
+    PIXEL               const pixFieldSize
 )
 {
     assert( pixFieldSize > 0_PIXEL );
@@ -106,25 +106,30 @@ void GridWindow::Start
 		? tBoolOp::opFalse 
 		: Config::GetConfigValueBoolOp( Config::tId::stripMode ) 
 	);
-//	SetFieldSize( sFieldSize );
+}
+
+void GridWindow::Stop( )
+{
+	DestroyWindow( GetWindowHandle() );
+
+	try
+	{
+		delete m_pPixelCoordinates;
+		delete m_pDrawFrame;
+	}
+	catch ( ... )
+	{
+		exit( 1 );
+	};
+
+	m_pGraphics            = nullptr;
+	m_pReadBuffer          = nullptr;
+	m_pGridWindowObserved  = nullptr;
+	m_pWorkThreadInterface = nullptr;
 }
 
 GridWindow::~GridWindow( )
 {
-    try
-    {
-        delete m_pPixelCoordinates;
-        delete m_pDrawFrame;
-    }
-    catch ( ... )
-    {
-        exit( 1 );
-    };
-
-	m_pGraphics            = nullptr;
-	m_pReadBuffer          = nullptr;
-    m_pGridWindowObserved  = nullptr;
-    m_pWorkThreadInterface = nullptr;
 }
 
 void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )

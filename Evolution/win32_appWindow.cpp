@@ -279,17 +279,19 @@ void AppWindow::Stop()
 {
 	m_pHistInfoWindow->TerminateTextWindow();
 
+	m_pMiniGridWindow->Stop( );
+	m_pMainGridWindow->Stop( );
+	m_pEvoHistWindow->Stop( );
 	m_pEvoHistGlue->Stop( );  // deletes m_pModelDataWork
+	m_pEditorWindow->Show( FALSE );
+	m_pDspOptWindow->Show( FALSE );
+	m_pStatistics->Show( FALSE );
+	m_pPerfWindow->Show( FALSE );
+	m_pCrsrWindow->Show( FALSE );
+	m_pHistInfoWindow->Show( FALSE );
 
-	try
-	{
-		delete m_pHistorySystem;    //ok
-		delete m_pEvoCore4Display;  //ok
-	}
-	catch ( ... )
-	{
-		exit( 1 );
-	};
+	delete m_pHistorySystem;    //ok
+	delete m_pEvoCore4Display;  //ok
 
 	m_pModelDataWork   = nullptr;
 	m_pGraphics		   = nullptr;
@@ -389,11 +391,21 @@ LRESULT AppWindow::UserProc
     return FALSE;
 
     case WM_SIZE:
-    case WM_MOVE:
-        adjustChildWindows( );
-        break;
+	case WM_MOVE:
+		adjustChildWindows( );
+		break;
 
-    case WM_CLOSE:
+	case WM_PAINT:
+	{
+		static COLORREF const CLR_GREY = RGB( 128, 128, 128 );
+		PAINTSTRUCT   ps;
+		HDC           hDC = BeginPaint( &ps );
+		FillBackground( hDC, CLR_GREY );
+		(void)EndPaint( &ps );
+		return FALSE;
+	}
+
+	case WM_CLOSE:
 		m_pWinManager->StoreWindowConfiguration( );
 		DestroyWindow( GetWindowHandle( ) );        
 		return TRUE;  

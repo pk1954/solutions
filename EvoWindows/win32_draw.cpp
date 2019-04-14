@@ -28,15 +28,15 @@ DrawFrame::DrawFrame
     DspOptWindow      * const pDspOptWindow,
 	ColorManager      * const pColorManager
 ) : 
-	m_hwnd( hwnd ),
-    m_pReadBuffer( pReadBuffer ),
+	m_hwnd             ( hwnd ),
+    m_pReadBuffer      ( pReadBuffer ),
     m_pPixelCoordinates( pPixelCoordinates ),
-    m_pDspOptWindow( pDspOptWindow ),
-	m_pColorManager( pColorManager ),
-    m_pGraphics( pGraphics ), 
-    m_clutBackground( ),
-	m_gridPointShape( nullptr ),
-	m_gpHighlight( GridPoint::NULL_VAL() )
+    m_pDspOptWindow    ( pDspOptWindow ),
+	m_pColorManager    ( pColorManager ),
+    m_pGraphics        ( pGraphics ), 
+    m_clutBackground   ( ),
+	m_gridPointShape   ( nullptr ),
+	m_gpHighlight      ( GridPoint::NULL_VAL() )
 {
 	m_clutBackground.Allocate( MAX_BG_COLOR() );    // default is grey scale lookup table with entries 0 .. 255
 	m_pTextDisplay    = new TextDisplay( * m_pGraphics, m_wBuffer, * m_pPixelCoordinates );
@@ -50,6 +50,11 @@ DrawFrame::DrawFrame
 
 DrawFrame::~DrawFrame( ) 
 { 
+	delete m_gridPointShape;
+	delete m_pTextDisplay;
+
+	m_gridPointShape = nullptr;
+	m_pTextDisplay = nullptr;
     m_pGraphics = nullptr;
 };
 
