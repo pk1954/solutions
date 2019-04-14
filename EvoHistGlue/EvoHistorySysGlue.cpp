@@ -29,9 +29,9 @@ EvoHistorySysGlue::EvoHistorySysGlue( ) :
 
 EvoModelDataGlue * EvoHistorySysGlue::Start
 (
-	HistorySystem * const pHistorySystem,
-	bool            const bAskHistoryCut, // true: ask user for history cut, false: cut without asking
-	RootWindow    * const pRootWindow
+	HistorySystem     * const pHistorySystem,
+	bool                const bAskHistoryCut, // true: ask user for history cut, false: cut without asking
+	ObserverInterface * const pObserver
 )
 {
 	m_pHistorySystem   = pHistorySystem;
@@ -44,7 +44,7 @@ EvoModelDataGlue * EvoHistorySysGlue::Start
         Config::GetConfigValue( Config::tId::nrOfHistorySlots ),
 		Util::GetPhysicalMemory( ),
         m_pEvoModelFactory,
-		pRootWindow,
+		pObserver,
 		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( tEvoCmd::reset ), 0 )
     );
 
@@ -57,16 +57,16 @@ EvoModelDataGlue * EvoHistorySysGlue::Start
 
 void EvoHistorySysGlue::Stop( )
 {
-	m_pHistorySystem->StopHistorySystem( );
 	m_pHistAllocThread->Terminate();
+	m_pHistorySystem->StopHistorySystem( );
+
 	delete m_pEvoModelFactory;  //ok
 	delete m_pHistAllocThread;  //ok
-}
 
-EvoHistorySysGlue::~EvoHistorySysGlue( ) 
-{
-	Stop( );
-};
+	m_pEvoModelFactory = nullptr;
+	m_pHistorySystem   = nullptr;
+	m_pHistAllocThread = nullptr;
+}
 
 class FindGridPointFunctor : public GenerationProperty
 {

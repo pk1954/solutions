@@ -22,13 +22,13 @@ class EvoHistorySysGlue
 public:
 
     EvoHistorySysGlue( );
-	virtual ~EvoHistorySysGlue( );
+	virtual ~EvoHistorySysGlue( ) { };
 
 	EvoModelDataGlue * Start
 	( 
-		HistorySystem * const,
-		bool            const,
-		RootWindow    * const
+		HistorySystem     * const,
+		bool                const,
+		ObserverInterface * const
 	);
 
 	void Stop( );

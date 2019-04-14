@@ -211,7 +211,7 @@ void AppWindow::Start(  )
 {
 	EvolutionCore::InitClass
 	( 
-		Config::GetConfigValue( Config::tId::nrOfNeighbors ), 
+		GridDimensions::GetNrOfNeigbors(), 
 		m_pCoreObservers, 
 		& m_event 
 	);
@@ -221,17 +221,17 @@ void AppWindow::Start(  )
 		m_hwndApp, 
 		GridDimensions::GridWidthVal(), 
 		GridDimensions::GridHeightVal(), 
-		Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 
+		GridDimensions::GetNrOfNeigbors() == 6 
 	);
 
 	m_pGraphics = m_pD3d_driver;
 
     m_pHistorySystem = HistorySystem::CreateHistorySystem( );  //ok, deleted in Stop function
 
-	if ( Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 )
+	if ( GridDimensions::GetNrOfNeigbors() == 6 )
         EnableMenuItem( GetMenu( m_hwndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
 
-	m_pModelDataWork = m_pEvoHistGlue->Start( m_pHistorySystem, true, m_pHistInfoWindow );  //ok, Stop deletes 
+	m_pModelDataWork = m_pEvoHistGlue->Start( m_pHistorySystem, true, m_pHistInfoWindow );  //ok, m_pEvoHistGlue->Stop deletes 
 	EvolutionCore * pCoreWork = m_pModelDataWork->GetEvolutionCore();
 	m_pEvoCore4Display = EvolutionCore::CreateCore( );
 
@@ -277,10 +277,9 @@ void AppWindow::Start(  )
 
 void AppWindow::Stop()
 {
-    m_pWorkThreadInterface->TerminateThread( );
 	m_pHistInfoWindow->TerminateTextWindow();
 
-	m_pEvoHistGlue->Stop( );
+	m_pEvoHistGlue->Stop( );  // deletes m_pModelDataWork
 
 	try
 	{
@@ -300,6 +299,8 @@ void AppWindow::Stop()
 
 AppWindow::~AppWindow( )
 {
+	m_pWorkThreadInterface->TerminateThread( );
+
 	Stop( );
 
 	m_pPerfWindow->TerminateTextWindow();
@@ -394,7 +395,6 @@ LRESULT AppWindow::UserProc
 
     case WM_CLOSE:
 		m_pWinManager->StoreWindowConfiguration( );
-		Stop( );
 		DestroyWindow( GetWindowHandle( ) );        
 		return TRUE;  
 

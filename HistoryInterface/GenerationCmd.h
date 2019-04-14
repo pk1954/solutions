@@ -26,9 +26,8 @@ class GenerationCmd
 { 
 public:
     GenerationCmd( )
-    {
-        InitializeCmd( );
-    }
+	   : m_Cmd( tGenCmd::UNDEFINED )
+    { }
 
     tGenCmd    GetCommand( ) const { return m_Cmd; }
 	Int24      GetParam( )   const { return m_Param; }

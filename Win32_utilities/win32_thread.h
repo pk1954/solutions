@@ -26,14 +26,6 @@ namespace Util
 			assert( m_threadId != 0 );
 		    BOOL const bRes = ::PostThreadMessage( m_threadId, msg.message, msg.wParam, msg.lParam );
 			DWORD err = GetLastError( );
-			if ( !bRes )
-			{
-				if ( err == ERROR_INVALID_THREAD_ID )
-				{
-					int y = 76;
-				}
-				int x = 42;
-			}
 			assert( bRes );
 		}
 

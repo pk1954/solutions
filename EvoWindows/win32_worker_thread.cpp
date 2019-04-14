@@ -18,21 +18,7 @@
 #include "win32_workThreadInterface.h"
 #include "win32_worker_thread.h"
 
-WorkThread::WorkThread( ):
-	m_pColorManager       ( nullptr ),
-	m_pPerformanceWindow  ( nullptr ),
-	m_pEditorWindow       ( nullptr ),   
-	m_pEventPOI           ( nullptr ),   
-	m_pReadBuffer         ( nullptr ),   
-	m_pEvoHistGlue        ( nullptr ),   
-	m_pWorkThreadInterface( nullptr ),
-	m_bContinue( FALSE ),
-	m_iScriptLevel( 0 ),
-	m_genDemanded( 0 ),
-	m_hwndApplication( 0 )
-{}
-
-void WorkThread::Start
+WorkThread::WorkThread
 ( 
 	HWND                  const hwndApplication,
 	ColorManager        * const pColorManager,
@@ -42,17 +28,19 @@ void WorkThread::Start
 	ReadBuffer          * const pReadBuffer, 
 	EvoHistorySysGlue   * const pEvoHistorySys,
 	WorkThreadInterface * const pWorkThreadInterface
-)
+) :
+	m_pColorManager       ( pColorManager ),
+	m_pPerformanceWindow  ( pPerformanceWindow ),
+	m_pEditorWindow       ( pEditorWindow ),   
+	m_pEventPOI           ( pEvent ),   
+	m_pReadBuffer         ( pReadBuffer ),   
+	m_pEvoHistGlue        ( pEvoHistorySys ),   
+	m_pWorkThreadInterface( pWorkThreadInterface ),
+	m_hwndApplication     ( hwndApplication ),
+	m_bContinue           ( FALSE ),
+	m_iScriptLevel        ( 0 ),
+	m_genDemanded         ( 0 )
 {
-	m_hwndApplication      = hwndApplication;
-	m_pColorManager        = pColorManager;
-	m_pPerformanceWindow   = pPerformanceWindow;
-	m_pEditorWindow        = pEditorWindow;
-	m_pEventPOI            = pEvent;
-	m_pReadBuffer          = pReadBuffer;
-	m_pEvoHistGlue         = pEvoHistorySys;
-	m_pWorkThreadInterface = pWorkThreadInterface;
-
 	StartThread( L"WorkerThread" ); 
 }
 

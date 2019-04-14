@@ -36,8 +36,17 @@ void WorkThreadInterface::Start
 {
     m_pCore        = pCore;
 	m_pEvoHistGlue = pEvoHistGlue;
-	m_pWorkThread  = new WorkThread();
-	m_pWorkThread->Start( hwndApplication, pColorManager, pPerformanceWindow, pEditorWindow, pEvent, pReadBuffer, pEvoHistGlue, this );
+	m_pWorkThread  = new WorkThread
+	( 
+		hwndApplication, 
+		pColorManager, 
+		pPerformanceWindow, 
+		pEditorWindow, 
+		pEvent, 
+		pReadBuffer, 
+		pEvoHistGlue, 
+		this
+	);
 }
 
 WorkThreadInterface::~WorkThreadInterface( )
@@ -271,6 +280,5 @@ void WorkThreadInterface::PostProcessScript( wstring const & wstrPath )
 
 void WorkThreadInterface::TerminateThread( )
 {
-	PostStopComputation( );
 	m_pWorkThread->Terminate( );    // wait until thread has stopped
 }

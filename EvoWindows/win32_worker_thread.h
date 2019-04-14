@@ -69,10 +69,7 @@ public:
 class WorkThread: public Util::Thread
 {
 public:
-	WorkThread( );
-	~WorkThread( );
-
-	void Start
+	WorkThread
 	( 
 		HWND                  const,
 		ColorManager        * const,
@@ -83,6 +80,7 @@ public:
 		EvoHistorySysGlue   * const,
 		WorkThreadInterface * const
 	);
+	~WorkThread( );
 
 	virtual void ThreadStartupFunc( );
 	virtual void ThreadMsgDispatcher( MSG const );

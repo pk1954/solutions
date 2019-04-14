@@ -58,7 +58,6 @@ void HistorySystemImpl::StopHistorySystem( )
 
 HistorySystemImpl::~HistorySystemImpl( )
 {
-	StopHistorySystem( );
 }
 
 // ClearHistory

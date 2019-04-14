@@ -28,16 +28,17 @@ public:
 
 	static void GetNeighborLists( Grid const &, GridPoint const &, Neighborhood *, Neighborhood * );
 
-	static GRID_COORD const GridWidth()    { return m_gridSize.GetX(); }
-	static GRID_COORD const GridHeight()   { return m_gridSize.GetY(); }
-	static GRID_COORD const GridMinX()     { return 0_GRID_COORD; }
-	static GRID_COORD const GridMinY()     { return 0_GRID_COORD; }
-	static GRID_COORD const GridMaxX()     { return GridWidth()  - 1_GRID_COORD; }
-	static GRID_COORD const GridMaxY()     { return GridHeight() - 1_GRID_COORD; }
-	static GridPoint  const GridRectSize() { return m_gridSize; }
-	static GridPoint  const GridOrigin()   { return GridPoint::ZERO_VAL(); }
-	static GridPoint  const GridMaximum()  { return m_gridSize - 1_GRID_COORD; }
-	static GridRect   const GridRectFull() { return GridRect( GridOrigin(), GridMaximum() ); }
+	static int        const GetNrOfNeigbors() { return m_iNrOfNeighbors; }
+	static GRID_COORD const GridWidth()       { return m_gridSize.GetX(); }
+	static GRID_COORD const GridHeight()      { return m_gridSize.GetY(); }
+	static GRID_COORD const GridMinX()        { return 0_GRID_COORD; }
+	static GRID_COORD const GridMinY()        { return 0_GRID_COORD; }
+	static GRID_COORD const GridMaxX()        { return GridWidth()  - 1_GRID_COORD; }
+	static GRID_COORD const GridMaxY()        { return GridHeight() - 1_GRID_COORD; }
+	static GridPoint  const GridRectSize()    { return m_gridSize; }
+	static GridPoint  const GridOrigin()      { return GridPoint::ZERO_VAL(); }
+	static GridPoint  const GridMaximum()     { return m_gridSize - 1_GRID_COORD; }
+	static GridRect   const GridRectFull()    { return GridRect( GridOrigin(), GridMaximum() ); }
 
 	static int const GridWidthVal()  { return GridWidth() .GetValue(); }; // abbreviations for e.g. array dims
 	static int const GridHeightVal() { return GridHeight().GetValue(); };

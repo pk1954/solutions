@@ -164,38 +164,44 @@ void DefinePixelCoordinatesWrapperFunctions( PixelCoordinates * pCoords )
 
 void DefineCoreWrapperFunctions( EvolutionCore * pCore )
 {
+	static bool bFirst;
+
     m_pCore = pCore;
 
-	DEF_FUNC( Compute );
-	DEF_FUNC( DumpGridPointList );
-	DEF_FUNC( ResetModel );
-	DEF_FUNC( SetPoi );
-	DEF_FUNC( ClearPoi );
-	DEF_FUNC( Include );
-	DEF_FUNC( Pause );
+	if ( bFirst )
+	{
+		bFirst = false;
+		DEF_FUNC( Compute );
+		DEF_FUNC( DumpGridPointList );
+		DEF_FUNC( ResetModel );
+		DEF_FUNC( SetPoi );
+		DEF_FUNC( ClearPoi );
+		DEF_FUNC( Include );
+		DEF_FUNC( Pause );
 
-	DEF_FUNC( ModelDoEdit );
-	DEF_FUNC( SetBrushShape );
-	DEF_FUNC( SetBrushRadius );
-	DEF_FUNC( SetBrushIntensity );
-	DEF_FUNC( SetBrushMode );
+		DEF_FUNC( ModelDoEdit );
+		DEF_FUNC( SetBrushShape );
+		DEF_FUNC( SetBrushRadius );
+		DEF_FUNC( SetBrushIntensity );
+		DEF_FUNC( SetBrushMode );
 
-	DEF_ULONG_CONST( Strategy::Id::defect );
-	DEF_ULONG_CONST( Strategy::Id::cooperate );
-	DEF_ULONG_CONST( Strategy::Id::tit4tat );
+		DEF_ULONG_CONST( Strategy::Id::defect );
+		DEF_ULONG_CONST( Strategy::Id::cooperate );
+		DEF_ULONG_CONST( Strategy::Id::tit4tat );
 
-	DEF_ULONG_CONST( tShape::Rect );
-	DEF_ULONG_CONST( tShape::Circle );
-	DEF_ULONG_CONST( tShape::Grid );
+		DEF_ULONG_CONST( tShape::Rect );
+		DEF_ULONG_CONST( tShape::Circle );
+		DEF_ULONG_CONST( tShape::Grid );
 
-	DEF_ULONG_CONST( tBrushMode::move );
-	DEF_ULONG_CONST( tBrushMode::randomStrat );
-	DEF_ULONG_CONST( tBrushMode::cooperate );
-	DEF_ULONG_CONST( tBrushMode::defect );
-	DEF_ULONG_CONST( tBrushMode::tit4tat );
-	DEF_ULONG_CONST( tBrushMode::noAnimals );
-	DEF_ULONG_CONST( tBrushMode::mutRate );
-	DEF_ULONG_CONST( tBrushMode::fertility );
-	DEF_ULONG_CONST( tBrushMode::food );
-	DEF_ULONG_CONST( tBrushMode::fertilizer );
+		DEF_ULONG_CONST( tBrushMode::move );
+		DEF_ULONG_CONST( tBrushMode::randomStrat );
+		DEF_ULONG_CONST( tBrushMode::cooperate );
+		DEF_ULONG_CONST( tBrushMode::defect );
+		DEF_ULONG_CONST( tBrushMode::tit4tat );
+		DEF_ULONG_CONST( tBrushMode::noAnimals );
+		DEF_ULONG_CONST( tBrushMode::mutRate );
+		DEF_ULONG_CONST( tBrushMode::fertility );
+		DEF_ULONG_CONST( tBrushMode::food );
+		DEF_ULONG_CONST( tBrushMode::fertilizer );
+	}
 }
