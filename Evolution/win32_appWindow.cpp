@@ -111,6 +111,9 @@ AppWindow::AppWindow( ) :
     SendMessage( WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
     SendMessage( WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL     ) ) );
 
+    SetMenu( m_hwndApp, LoadMenu( GetModuleHandle( nullptr ), MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
+	Util::SetApplicationTitle( m_hwndApp, IDS_APP_TITLE );
+
     m_traceStream = OpenTraceFile( L"main_trace.out" );
 	m_hwndConsole = Util::StdOutConsole( );
 
@@ -152,6 +155,8 @@ AppWindow::AppWindow( ) :
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream ); //ok
 	stopwatch.Stop( L"create window objects" );
 
+	DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
+
     m_pStatusBar->SetRefreshRate     ( 300ms );
     m_pEvoHistWindow->SetRefreshRate ( 200ms ); 
     m_pCrsrWindow->SetRefreshRate    ( 100ms );
@@ -174,6 +179,17 @@ AppWindow::AppWindow( ) :
 	m_pD3d_driver = new D3D_driver( );                  //ok
 	m_pReadBuffer = new ReadBuffer( m_pCoreObservers ); //ok
 
+	GridWindow::InitClass
+	( 
+		m_hwndApp, 
+		m_pReadBuffer, 
+		m_pWorkThreadInterface, 
+		m_pFocusPoint, 
+		m_pDspOptWindow, 
+		m_pPerfWindow, 
+		m_pColorManager 
+	);
+
 	GridDimensions::DefineGridSize( 150_GRID_COORD, 100_GRID_COORD, Config::GetConfigValue( Config::tId::nrOfNeighbors ) );
 };
 
@@ -190,17 +206,6 @@ void AppWindow::Start(  )
 	);
 	stopwatch.Stop( L"EvolutionCore::InitClass" );
 
-	GridWindow::InitClass
-	( 
-		m_hwndApp, 
-		m_pReadBuffer, 
-		m_pWorkThreadInterface, 
-		m_pFocusPoint, 
-		m_pDspOptWindow, 
-		m_pPerfWindow, 
-		m_pColorManager 
-	);
-
 	m_pD3d_driver->Initialize
 	( 
 		m_hwndApp, 
@@ -211,19 +216,11 @@ void AppWindow::Start(  )
 
 	m_pGraphics = m_pD3d_driver;
 
-	stopwatch.Start();
     m_pHistorySystem = HistorySystem::CreateHistorySystem( );  //ok, deleted in Stop function
-	stopwatch.Stop( L"CreateHistorySystem" );
 
-	stopwatch.Start();
-    SetMenu( m_hwndApp, LoadMenu( GetModuleHandle( nullptr ), MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
-	Util::SetApplicationTitle( m_hwndApp, IDS_APP_TITLE );
 	if ( Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6 )
         EnableMenuItem( GetMenu( m_hwndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
-    DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
-	stopwatch.Stop( L"Application setup" );
 
-	stopwatch.Start();
 	m_pModelDataWork = m_pEvoHistGlue->Start( m_pHistorySystem, true, m_pHistInfoWindow );  //ok, Stop deletes 
 	EvolutionCore * pCoreWork = m_pModelDataWork->GetEvolutionCore();
 	m_pEvoCore4Display = EvolutionCore::CreateCore( );
@@ -244,9 +241,6 @@ void AppWindow::Start(  )
     m_pCrsrWindow         ->Start( m_hwndApp, m_pFocusPoint, m_pReadBuffer );
     m_pPerfWindow         ->Start( m_hwndApp );
 	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow, m_pColorManager );
-	stopwatch.Stop( L"Start windows" );
-
-	stopwatch.Start();
 	
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                            TRUE,  TRUE );
     m_pWinManager->AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                        TRUE,  TRUE );
@@ -260,24 +254,19 @@ void AppWindow::Start(  )
     m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow    ->GetWindowHandle(), TRUE, FALSE );
     m_pWinManager->AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_pMiniGridWindow->GetWindowHandle(), TRUE, FALSE );
     m_pWinManager->AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_pMainGridWindow->GetWindowHandle(), TRUE, FALSE );
-	stopwatch.Stop( L"Window manager setup" );
 
-	stopwatch.Start();
     m_pMiniGridWindow->Observe( m_pMainGridWindow );  // mini window observes main grid window
     m_pMiniGridWindow->Size( );
     m_pScriptHook = new ScriptHook( m_pStatusBar );  //ok
     Script::ScrSetWrapHook( m_pScriptHook );
     DefineWin32WrapperFunctions( m_pWorkThreadInterface );
     DefineWin32EditorWrapperFunctions( m_pEditorWindow );
-	stopwatch.Stop( L"Other setup tasks" );
 
-	stopwatch.Start();
-    if ( ! m_pWinManager->GetWindowConfiguration( ) )
+	if ( ! m_pWinManager->GetWindowConfiguration( ) )
 	{
 		std::wcout << L"Using default window positions" << std::endl;
 		Show( TRUE );
 	}
-	stopwatch.Stop( L"Get window configuration" );
 
 	m_pStatusBar->ClearStatusLine( );
 
@@ -426,7 +415,7 @@ void AppWindow::adjustChildWindows( )
 	PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
 	PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
 
-    if ( ! pntAppClientSize.IsZero( ) )
+    if ( pntAppClientSize.IsNotZero( ) && ( m_pStatusBar != nullptr ) )
     {
         m_pStatusBar->Resize( );
         pixAppClientWinHeight -= m_pStatusBar->GetHeight( );

@@ -47,8 +47,6 @@ int APIENTRY _tWinMain
     App.Start( );
 	stopwatch.Stop( L"App.Start" );
 
-//lint -e1924  C-style cast
-
     HACCEL const hAccelTable = LoadAccelerators( hInstance, MAKEINTRESOURCE(IDC_EVOLUTION_MAIN) );
     HWND         hwndApp     = App.GetWindowHandle( );
     MSG          msg;

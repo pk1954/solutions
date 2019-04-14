@@ -23,14 +23,14 @@ public:
 
     HWND GetWindowHandle( ) const { return m_hwnd; };
 
-    PIXEL       const GetWindowTop( )            const { return Util::GetWindowTop           ( m_hwnd ); }
-    PIXEL       const GetWindowWidth( )          const { return Util::GetWindowWidth         ( m_hwnd ); }
-    PIXEL       const GetWindowHeight( )         const { return Util::GetWindowHeight        ( m_hwnd ); }
+    PIXEL         const GetWindowTop( )            const { return Util::GetWindowTop           ( m_hwnd ); }
+    PIXEL         const GetWindowWidth( )          const { return Util::GetWindowWidth         ( m_hwnd ); }
+    PIXEL         const GetWindowHeight( )         const { return Util::GetWindowHeight        ( m_hwnd ); }
     PixelRectSize const GetWindowSize( )           const { return Util::GetWindowSize          ( m_hwnd ); }
     PixelRectSize const GetClRectSize( )           const { return Util::GetClRectSize          ( m_hwnd ); }
     PixelRect     const GetClPixelRect( )          const { return Util::GetClPixelRect         ( m_hwnd ); }
-    PIXEL       const GetClientWindowHeight( )   const { return Util::GetClientWindowHeight  ( m_hwnd ); }
-    PIXEL       const GetClientWindowWidth( )    const { return Util::GetClientWindowWidth   ( m_hwnd ); }
+    PIXEL         const GetClientWindowHeight( )   const { return Util::GetClientWindowHeight  ( m_hwnd ); }
+    PIXEL         const GetClientWindowWidth( )    const { return Util::GetClientWindowWidth   ( m_hwnd ); }
     BOOL          const CrsrInClientRect( )        const { return Util::CrsrInClientRect       ( m_hwnd ); }
     PixelPoint    const GetRelativeCrsrPosition( ) const { return Util::GetRelativeCrsrPosition( m_hwnd ); }
     PixelPoint    const GetClRectCenter( )         const { return Util::GetClRectCenter        ( m_hwnd ); }

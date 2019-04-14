@@ -7,10 +7,9 @@
 
 #define IDM_REFRESH_RATE_DIALOG  10
 
-//lint -e1924                C-style cast
-
-BaseWindow::BaseWindow( )    
-    : RootWindow( )
+BaseWindow::BaseWindow( ) : 
+	RootWindow( ),
+	m_szClass( nullptr )
 {}
 
 BaseWindow::~BaseWindow( )    
