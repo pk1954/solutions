@@ -33,7 +33,69 @@ static wchar_t * SZ_STOP_MODE = L"  Stop    ";
 static wchar_t * SZ_SIMU_MODE = L"Switch to SIMULATION";
 static wchar_t * SZ_EDIT_MODE = L"Switch to EDITOR";
 
-//lint -esym( 715, uIdSubclass )    symbol not referenced
+void StatusBar::Start
+( 
+	HWND const   hwndParent,
+	ReadBuffer * pReadBuffer
+)
+{
+	m_pReadBuffer = pReadBuffer;
+	HWND hwndStatus = CreateWindow
+	(
+		STATUSCLASSNAME, 
+		nullptr, 
+		WS_CHILD | WS_VISIBLE,
+		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT.GetValue(),
+		hwndParent,
+		nullptr, 
+		GetModuleHandle( nullptr ), 
+		nullptr
+	); 
+
+	SetWindowHandle( hwndStatus );
+
+	static std::array< PIXEL, static_cast<int>( tPart::Stop ) + 1> statwidths = 
+	{ 
+		100_PIXEL, // Generation 
+		200_PIXEL, // Mode (Edit/Simu)
+		400_PIXEL, // Size
+		670_PIXEL, // Edit/Simu controls
+		600_PIXEL, // ScriptLine
+		-1_PIXEL  // Stop
+	};
+
+	PIXEL pixPartWidth = statwidths[0];
+	for ( int i = 1; i < static_cast<int>( tPart::Stop ); ++i )
+	{
+		statwidths[i] += pixPartWidth;
+		pixPartWidth = statwidths[i];
+	}
+
+	(void)SetWindowSubclass( hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this ) ;
+
+	m_pixBorderX      = PIXEL(PIXEL(GetSystemMetrics( SM_CXSIZEFRAME )));
+	m_pixBorderY      = PIXEL(PIXEL(GetSystemMetrics( SM_CYSIZEFRAME )));
+	m_pixClientHeight = GetHeight( ) - m_pixBorderY;
+
+	m_pixPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_pixBorderX + 10_PIXEL;
+	createModeControl( );
+
+	m_pixPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_pixBorderX + 10_PIXEL;
+	createSizeControl( );
+
+	m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX + 10_PIXEL;
+	createSimulationControl( );
+
+	m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX + 10_PIXEL;
+	createEditorControl( );
+
+	(void)SendMessage( SB_SETPARTS, sizeof( statwidths ) / sizeof( int ), (LPARAM)( &statwidths ) );
+
+	SetSizeTrackBar ( DEFAULT_FIELD_SIZE );
+	long lDefaultDelay = Config::GetConfigValue( Config::tId::generationDelay );
+	SetSpeedTrackBar( lDefaultDelay );
+	PostCommand2Application( IDM_SIMULATION_SPEED, lDefaultDelay );
+}
 
 static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
 {
@@ -86,7 +148,7 @@ HWND WINAPI StatusBar::createControl
 )
 {
     PIXEL const pixWidth = PIXEL(PIXEL(static_cast<int>( wcslen( lpWindowName ) ) * 9));
-    HWND    const hwnd     = CreateWindow
+    HWND  const hwnd     = CreateWindow
     (
         lpClassName,                     // class name 
         lpWindowName,                    // title (caption) 
@@ -159,70 +221,6 @@ void WINAPI StatusBar::createEditorControl( )
 		createButton( L"   Redo   ", (HMENU)IDM_EDIT_REDO, BS_PUSHBUTTON ); 
 	}
 } 
-
-void StatusBar::Start
-( 
-	HWND const   hwndParent,
-	ReadBuffer * pReadBuffer
-)
-{
-	m_pReadBuffer = pReadBuffer;
-	HWND hwndStatus = CreateWindow
-    (
-        STATUSCLASSNAME, 
-        nullptr, 
-        WS_CHILD | WS_VISIBLE,
-        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT.GetValue(),
-        hwndParent,
-        nullptr, 
-        GetModuleHandle( nullptr ), 
-        nullptr
-    ); 
-
-    SetWindowHandle( hwndStatus );
-
-    static std::array< PIXEL, static_cast<int>( tPart::Stop ) + 1> statwidths = 
-    { 
-        100_PIXEL, // Generation 
-		200_PIXEL, // Mode (Edit/Simu)
-        400_PIXEL, // Size
-        670_PIXEL, // Edit/Simu controls
-        600_PIXEL, // ScriptLine
-         -1_PIXEL  // Stop
-    };
-
-    PIXEL pixPartWidth = statwidths[0];
-    for ( int i = 1; i < static_cast<int>( tPart::Stop ); ++i )
-    {
-        statwidths[i] += pixPartWidth;
-        pixPartWidth = statwidths[i];
-    }
-    
-    (void)SetWindowSubclass( hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this ) ;
-
-    m_pixBorderX      = PIXEL(PIXEL(GetSystemMetrics( SM_CXSIZEFRAME )));
-    m_pixBorderY      = PIXEL(PIXEL(GetSystemMetrics( SM_CYSIZEFRAME )));
-    m_pixClientHeight = GetHeight( ) - m_pixBorderY;
-
-    m_pixPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_pixBorderX + 10_PIXEL;
-    createModeControl( );
-
-    m_pixPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_pixBorderX + 10_PIXEL;
-    createSizeControl( );
-
-    m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX + 10_PIXEL;
-    createSimulationControl( );
-
-    m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX + 10_PIXEL;
-	createEditorControl( );
-
-    (void)SendMessage( SB_SETPARTS, sizeof( statwidths ) / sizeof( int ), (LPARAM)( &statwidths ) );
-
-    SetSizeTrackBar ( DEFAULT_FIELD_SIZE );
-	long lDefaultDelay = Config::GetConfigValue( Config::tId::generationDelay );
-    SetSpeedTrackBar( lDefaultDelay );
-	PostCommand2Application( IDM_SIMULATION_SPEED, lDefaultDelay );
-}
 
 void StatusBar::SetSizeTrackBar( PIXEL const pixFieldSize  ) const 
 { 

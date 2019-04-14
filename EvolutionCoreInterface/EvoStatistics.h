@@ -45,7 +45,7 @@ public:
 	EvoStatistics::EvoStatistics( );
 	virtual ~EvoStatistics( );
 
-    void Initialize
+    void Prepare
 	( 
 		EvolutionCore const * const, 
 		GridRect              const,

@@ -155,7 +155,11 @@ AppWindow::AppWindow( ) :
 	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream ); //ok
 	stopwatch.Stop( L"create window objects" );
 
+	m_pMiniGridWindow->Observe( m_pMainGridWindow );  // mini window observes main grid window
+
 	DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
+	DefineWin32WrapperFunctions( m_pWorkThreadInterface );
+	DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 
     m_pStatusBar->SetRefreshRate     ( 300ms );
     m_pEvoHistWindow->SetRefreshRate ( 200ms ); 
@@ -190,21 +194,27 @@ AppWindow::AppWindow( ) :
 		m_pColorManager 
 	);
 
+	m_pStatusBar ->Start( m_hwndApp, m_pReadBuffer );
+	m_pPerfWindow->Start( m_hwndApp );
+	m_pCrsrWindow->Start( m_hwndApp, m_pFocusPoint, m_pReadBuffer );
+	m_pStatistics->Start( m_hwndApp, m_pReadBuffer );
+
+	m_pEvoController->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow, m_pColorManager );
+
+	m_pScriptHook = new ScriptHook( m_pStatusBar );  //ok
+	Script::ScrSetWrapHook( m_pScriptHook );
+
 	GridDimensions::DefineGridSize( 150_GRID_COORD, 100_GRID_COORD, Config::GetConfigValue( Config::tId::nrOfNeighbors ) );
 };
 
 void AppWindow::Start(  )
 {
-	Stopwatch stopwatch;
-
-	stopwatch.Start();
 	EvolutionCore::InitClass
 	( 
 		Config::GetConfigValue( Config::tId::nrOfNeighbors ), 
 		m_pCoreObservers, 
 		& m_event 
 	);
-	stopwatch.Stop( L"EvolutionCore::InitClass" );
 
 	m_pD3d_driver->Initialize
 	( 
@@ -232,15 +242,10 @@ void AppWindow::Start(  )
     m_pMiniGridWindow     ->Start( m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
     m_pHistInfoWindow     ->Start( m_hwndApp, m_pHistorySystem );
 	m_pEvoHistWindow      ->Start( m_hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
-    m_pStatusBar          ->Start( m_hwndApp, m_pReadBuffer );
 	m_pFocusPoint         ->Start( m_pEvoHistGlue, pCoreWork );
 	m_pWorkThreadInterface->Start( m_hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, m_pReadBuffer, pCoreWork, m_pEvoHistGlue );
 	m_pDspOptWindow       ->Start( m_hwndApp, pCoreWork );
     m_pEditorWindow       ->Start( m_hwndApp, m_pWorkThreadInterface, pCoreWork, m_pDspOptWindow, m_pStatusBar );
-    m_pStatistics         ->Start( m_hwndApp, m_pReadBuffer );
-    m_pCrsrWindow         ->Start( m_hwndApp, m_pFocusPoint, m_pReadBuffer );
-    m_pPerfWindow         ->Start( m_hwndApp );
-	m_pEvoController      ->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow, m_pColorManager );
 	
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                            TRUE,  TRUE );
     m_pWinManager->AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                        TRUE,  TRUE );
@@ -255,12 +260,7 @@ void AppWindow::Start(  )
     m_pWinManager->AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_pMiniGridWindow->GetWindowHandle(), TRUE, FALSE );
     m_pWinManager->AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_pMainGridWindow->GetWindowHandle(), TRUE, FALSE );
 
-    m_pMiniGridWindow->Observe( m_pMainGridWindow );  // mini window observes main grid window
     m_pMiniGridWindow->Size( );
-    m_pScriptHook = new ScriptHook( m_pStatusBar );  //ok
-    Script::ScrSetWrapHook( m_pScriptHook );
-    DefineWin32WrapperFunctions( m_pWorkThreadInterface );
-    DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 
 	if ( ! m_pWinManager->GetWindowConfiguration( ) )
 	{
@@ -278,16 +278,12 @@ void AppWindow::Start(  )
 void AppWindow::Stop()
 {
     m_pWorkThreadInterface->TerminateThread( );
-	m_pStatistics->TerminateTextWindow();
-    m_pPerfWindow->TerminateTextWindow();
-    m_pCrsrWindow->TerminateTextWindow();
 	m_pHistInfoWindow->TerminateTextWindow();
 
 	m_pEvoHistGlue->Stop( );
 
 	try
 	{
-		delete m_pScriptHook;       //ok
 		delete m_pHistorySystem;    //ok
 		delete m_pEvoCore4Display;  //ok
 	}
@@ -297,7 +293,6 @@ void AppWindow::Stop()
 	};
 
 	m_pModelDataWork   = nullptr;
-	m_pScriptHook	   = nullptr;
 	m_pGraphics		   = nullptr;
 	m_pHistorySystem   = nullptr;
 	m_pEvoCore4Display = nullptr;
@@ -306,6 +301,11 @@ void AppWindow::Stop()
 AppWindow::~AppWindow( )
 {
 	Stop( );
+
+	m_pPerfWindow->TerminateTextWindow();
+	m_pCrsrWindow->TerminateTextWindow();
+	m_pStatistics->TerminateTextWindow();
+
 	delete m_pStatusBar;
 	delete m_pWorkThreadInterface;
 	delete m_pEvoHistGlue;
@@ -325,6 +325,7 @@ AppWindow::~AppWindow( )
 	delete m_pD3d_driver;
 	delete m_pCoreObservers;    //ok
 	delete m_pReadBuffer;       //ok
+	delete m_pScriptHook;       //ok
 
 	m_pStatusBar           = nullptr;
 	m_pWorkThreadInterface = nullptr;
@@ -345,6 +346,7 @@ AppWindow::~AppWindow( )
 	m_pD3d_driver		   = nullptr;
 	m_pCoreObservers       = nullptr;
 	m_pReadBuffer	       = nullptr;
+	m_pScriptHook	       = nullptr;
 }
 
 LRESULT AppWindow::UserProc

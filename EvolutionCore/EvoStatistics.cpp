@@ -18,7 +18,7 @@ EvoStatistics::~EvoStatistics()
 	m_pTextBuf = nullptr;
 }
 
-void EvoStatistics::Initialize
+void EvoStatistics::Prepare
 ( 
     EvolutionCore const * const pCore,
 	GridRect              const gridRectSelection,

@@ -15,7 +15,9 @@
 #include "win32_stopwatch.h"
 
 StatisticsWindow::StatisticsWindow( ):
-    TextWindow( )
+    TextWindow( ),
+	m_pReadBuffer( nullptr ),
+	m_pStatistics( nullptr )
 { }
 
 void StatisticsWindow::Start
@@ -50,7 +52,7 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 //	stopwatch.Start();
  
 	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
-	m_pStatistics->Initialize( pCore, GridSelection::GetSelection(), & textBuf ); 
+	m_pStatistics->Prepare( pCore, GridSelection::GetSelection(), & textBuf ); 
 	m_pReadBuffer->ReleaseReadBuffer( );
 
     // start printing
