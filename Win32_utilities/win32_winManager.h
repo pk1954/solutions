@@ -15,9 +15,9 @@ public:
     WinManager( );
     virtual ~WinManager( ) { };
 
-    void AddWindow( std::wstring const, UINT const, HWND const, BOOL const, BOOL const );
+	void AddWindow( std::wstring const, UINT const, HWND const, BOOL const, BOOL const );
 
-    std::wstring const GetWindowName( UINT const id )  const // can throw out_of_range exception
+	std::wstring const GetWindowName( UINT const id )  const // can throw out_of_range exception
     {
         return m_map.at( id ).m_wstr;
     }

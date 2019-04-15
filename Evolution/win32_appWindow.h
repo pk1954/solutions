@@ -54,6 +54,7 @@ private:
 	HWND        m_hwndApp;
 	HWND        m_hwndConsole;
 	Util::Event m_event;
+	BOOL        m_bStopped;  // if true, no grid visible, many functions not available
 
 	D3D_driver          * m_pD3d_driver;
 	GridWindow          * m_pMainGridWindow;

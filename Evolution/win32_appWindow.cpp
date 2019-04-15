@@ -96,7 +96,8 @@ AppWindow::AppWindow( ) :
 	m_hwndConsole( nullptr ),
 	m_pCoreObservers( nullptr ),
 	m_pEvoCore4Display( nullptr ),
-    m_traceStream( )
+    m_traceStream( ),
+	m_bStopped( TRUE )
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
     m_hwndApp = StartBaseWindow
@@ -114,7 +115,7 @@ AppWindow::AppWindow( ) :
     SetMenu( m_hwndApp, LoadMenu( GetModuleHandle( nullptr ), MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
 	Util::SetApplicationTitle( m_hwndApp, IDS_APP_TITLE );
 
-    m_traceStream = OpenTraceFile( L"main_trace.out" );
+	m_traceStream = OpenTraceFile( L"main_trace.out" );
 	m_hwndConsole = Util::StdOutConsole( );
 
 //	ScriptErrorHandler::ScrSetOutputStream( & wcout );
@@ -199,6 +200,12 @@ AppWindow::AppWindow( ) :
 	m_pCrsrWindow->Start( m_hwndApp, m_pFocusPoint, m_pReadBuffer );
 	m_pStatistics->Start( m_hwndApp, m_pReadBuffer );
 
+	m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                            TRUE,  TRUE );
+	m_pWinManager->AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_pStatusBar ->GetWindowHandle(), FALSE, FALSE );
+	m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow->GetWindowHandle(), TRUE, FALSE );
+	m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow->GetWindowHandle(), TRUE, FALSE );
+	m_pWinManager->AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_pStatistics->GetWindowHandle(), TRUE, FALSE );
+
 	m_pEvoController->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow, m_pColorManager );
 
 	m_pScriptHook = new ScriptHook( m_pStatusBar );  //ok
@@ -238,26 +245,21 @@ void AppWindow::Start(  )
 	DefineCoreWrapperFunctions( pCoreWork );
 	m_pReadBuffer->Initialize( pCoreWork, m_pEvoCore4Display );
 
-	m_pMainGridWindow     ->Start( m_pGraphics, WS_CHILD       | WS_CLIPSIBLINGS | WS_VISIBLE,             16_PIXEL );
-    m_pMiniGridWindow     ->Start( m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
-    m_pHistInfoWindow     ->Start( m_hwndApp, m_pHistorySystem );
-	m_pEvoHistWindow      ->Start( m_hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
-	m_pDspOptWindow       ->Start( m_hwndApp, pCoreWork );
-    m_pEditorWindow       ->Start( m_hwndApp, m_pWorkThreadInterface, pCoreWork, m_pDspOptWindow, m_pStatusBar );
+	m_pMainGridWindow->Start( m_pGraphics, WS_CHILD       | WS_CLIPSIBLINGS | WS_VISIBLE,             16_PIXEL );
+    m_pMiniGridWindow->Start( m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
+    m_pHistInfoWindow->Start( m_hwndApp, m_pHistorySystem );
+	m_pEvoHistWindow ->Start( m_hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
+	m_pDspOptWindow  ->Start( m_hwndApp, pCoreWork );
+    m_pEditorWindow  ->Start( m_hwndApp, m_pWorkThreadInterface, pCoreWork, m_pDspOptWindow, m_pStatusBar );
 
 	m_pFocusPoint         ->Start( m_pEvoHistGlue, pCoreWork );
 	m_pWorkThreadInterface->Start( m_hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, m_pReadBuffer, pCoreWork, m_pEvoHistGlue );
 	
-    m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                            TRUE,  TRUE );
     m_pWinManager->AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                        TRUE,  TRUE );
-	m_pWinManager->AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_pStatusBar     ->GetWindowHandle(), FALSE, FALSE );
     m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow ->GetWindowHandle(), FALSE, FALSE ); 
     m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow  ->GetWindowHandle(), TRUE, FALSE );
     m_pWinManager->AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_pEditorWindow  ->GetWindowHandle(), TRUE, FALSE );
     m_pWinManager->AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_pHistInfoWindow->GetWindowHandle(), TRUE, FALSE );
-    m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow    ->GetWindowHandle(), TRUE, FALSE );
-    m_pWinManager->AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_pStatistics    ->GetWindowHandle(), TRUE, FALSE );
-    m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow    ->GetWindowHandle(), TRUE, FALSE );
     m_pWinManager->AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_pMiniGridWindow->GetWindowHandle(), TRUE, FALSE );
     m_pWinManager->AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_pMainGridWindow->GetWindowHandle(), TRUE, FALSE );
 
@@ -274,10 +276,25 @@ void AppWindow::Start(  )
     (void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 	m_pEvoController->ProcessCommand( IDM_SET_SIMU_MODE, static_cast<LPARAM>(tBoolOp::opFalse) );
 //	Script::ProcessScript( L"std_script.in" );
+
+	m_bStopped = FALSE;
 }
 
 void AppWindow::Stop()
 {
+	m_bStopped = TRUE;
+
+	int iRes;
+	HMENU hMenuApp = GetMenu( m_hwndApp );
+	//UINT uiID = GetMenuItemID( hMenuApp, 1 );
+	//iRes = EnableMenuItem( hMenuApp, IDM_GENERATION, MF_GRAYED ); 
+	//iRes = EnableMenuItem( hMenuApp, uiID, MF_GRAYED ); 
+	iRes = EnableMenuItem( hMenuApp, 1, MF_GRAYED|MF_BYPOSITION ); 
+	iRes = EnableMenuItem( hMenuApp, 2, MF_GRAYED|MF_BYPOSITION ); 
+
+	//EnableMenuItem( GetMenu( m_hwndApp ), IDM_GENERATION, MF_GRAYED ); 
+	//EnableMenuItem( GetMenu( m_hwndApp ), IDM_RUN,        MF_GRAYED ); 
+
 	m_pMiniGridWindow->Stop( );
 	m_pMainGridWindow->Stop( );
 	m_pHistInfoWindow->Stop( );
@@ -303,8 +320,6 @@ void AppWindow::Stop()
 AppWindow::~AppWindow( )
 {
 	m_pWorkThreadInterface->TerminateThread( );
-
-	Stop( );
 
 	m_pPerfWindow->TerminateTextWindow();
 	m_pCrsrWindow->TerminateTextWindow();
@@ -408,7 +423,8 @@ LRESULT AppWindow::UserProc
 	}
 
 	case WM_CLOSE:
-		m_pWinManager->StoreWindowConfiguration( );
+		if ( ! m_bStopped )
+			m_pWinManager->StoreWindowConfiguration( );
 		DestroyWindow( GetWindowHandle( ) );        
 		return TRUE;  
 
