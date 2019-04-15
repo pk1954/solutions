@@ -16,6 +16,7 @@ public:
     ~DspOptWindow( );
 
     void Start( HWND const, EvolutionCore const * const );
+	void Stop( );
 
 	int GetIntValue( GridPoint const gp ) 
 	{ 

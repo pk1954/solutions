@@ -12,8 +12,9 @@
 #include "win32_baseDialog.h"
 #include "win32_displayOptions.h"
 
-DspOptWindow::DspOptWindow(  )
-    : BaseDialog( )
+DspOptWindow::DspOptWindow(  ) : 
+	BaseDialog( ),
+	m_pCore( nullptr )
 { }
 
 DspOptWindow::~DspOptWindow( )
@@ -65,6 +66,12 @@ void DspOptWindow::Start
 		assert( lres );
 	}
 */
+}
+
+void DspOptWindow::Stop( )
+{
+	DestroyWindow( GetWindowHandle( ) );
+	m_pCore = nullptr;
 }
 
 void DspOptWindow::UpdateDspOptionsControls( tBrushMode const brushMode )

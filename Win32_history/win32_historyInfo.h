@@ -18,6 +18,8 @@ public:
 		HistorySystem const *
 	);
 
+	void Stop( );
+
     virtual void DoPaint( TextBuffer & );
 
 private:

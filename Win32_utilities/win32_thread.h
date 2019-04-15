@@ -26,7 +26,11 @@ namespace Util
 			assert( m_threadId != 0 );
 		    BOOL const bRes = ::PostThreadMessage( m_threadId, msg.message, msg.wParam, msg.lParam );
 			DWORD err = GetLastError( );
-			assert( bRes );
+			if ( ! bRes )
+			{ 
+				int x = 654654;
+			}
+//			assert( bRes );
 		}
 
 		void PostThreadMsg( unsigned int uiMsg )

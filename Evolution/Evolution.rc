@@ -61,7 +61,6 @@ IDC_EVOLUTION_MAIN MENU
     }
     POPUP "&Help"
     {
-        MENUITEM "&HistorySystem...", IDM_HISTORY_INFO
         MENUITEM "&Info...", IDM_ABOUT
     }
 }
@@ -158,7 +157,6 @@ IDC_EVOLUTION_MAIN ACCELERATORS
     VK_BACK,        IDM_BACKWARDS,    VIRTKEY, ALT
     "?",            IDM_ABOUT,        ASCII,   ALT
     "/",            IDM_ABOUT,        ASCII,   ALT
-    "h",            IDM_HISTORY_INFO, ASCII,   ALT
     "d",            IDM_DISP_WINDOW,  ASCII,   ALT
     "e",            IDM_EDIT_WINDOW,  ASCII,   ALT
     "s",            IDM_STAT_WINDOW,  ASCII,   ALT

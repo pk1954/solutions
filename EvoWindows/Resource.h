@@ -21,7 +21,6 @@
 #define IDM_EXIT                                131
 #define IDM_TOGGLE_SIMU_MODE                    132
 #define IDM_SET_SIMU_MODE                       133
-#define IDM_HISTORY_INFO                        134
 #define IDM_ADJUST_MINI_WIN                     137
 #define IDM_HIST_BUFFER_FULL                    138
 #define IDM_REFRESH                             140

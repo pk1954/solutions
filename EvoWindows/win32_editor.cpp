@@ -43,11 +43,20 @@ void EditorWindow::Start
 	SetSimulationMode( );
 }
 
+void EditorWindow::Stop( )
+{
+	DestroyWindow( GetWindowHandle( ) );
+	m_pWorkThreadInterface = nullptr;
+	m_pCore                = nullptr;
+	m_pDspOptWindow        = nullptr;
+	m_pStatusBar           = nullptr;
+}
+
 EditorWindow::~EditorWindow( )
 {
-    m_pDspOptWindow        = nullptr;
     m_pWorkThreadInterface = nullptr;
     m_pCore                = nullptr;
+    m_pDspOptWindow        = nullptr;
     m_pStatusBar           = nullptr;
 }
 

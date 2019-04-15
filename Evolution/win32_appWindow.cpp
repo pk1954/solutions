@@ -242,10 +242,11 @@ void AppWindow::Start(  )
     m_pMiniGridWindow     ->Start( m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
     m_pHistInfoWindow     ->Start( m_hwndApp, m_pHistorySystem );
 	m_pEvoHistWindow      ->Start( m_hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
-	m_pFocusPoint         ->Start( m_pEvoHistGlue, pCoreWork );
-	m_pWorkThreadInterface->Start( m_hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, m_pReadBuffer, pCoreWork, m_pEvoHistGlue );
 	m_pDspOptWindow       ->Start( m_hwndApp, pCoreWork );
     m_pEditorWindow       ->Start( m_hwndApp, m_pWorkThreadInterface, pCoreWork, m_pDspOptWindow, m_pStatusBar );
+
+	m_pFocusPoint         ->Start( m_pEvoHistGlue, pCoreWork );
+	m_pWorkThreadInterface->Start( m_hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, m_pReadBuffer, pCoreWork, m_pEvoHistGlue );
 	
     m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                            TRUE,  TRUE );
     m_pWinManager->AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                        TRUE,  TRUE );
@@ -277,18 +278,18 @@ void AppWindow::Start(  )
 
 void AppWindow::Stop()
 {
-	m_pHistInfoWindow->TerminateTextWindow();
-
 	m_pMiniGridWindow->Stop( );
 	m_pMainGridWindow->Stop( );
+	m_pHistInfoWindow->Stop( );
 	m_pEvoHistWindow->Stop( );
+	m_pEditorWindow->Stop( );
+	m_pDspOptWindow->Stop( );
+
 	m_pEvoHistGlue->Stop( );  // deletes m_pModelDataWork
-	m_pEditorWindow->Show( FALSE );
-	m_pDspOptWindow->Show( FALSE );
+
 	m_pStatistics->Show( FALSE );
 	m_pPerfWindow->Show( FALSE );
 	m_pCrsrWindow->Show( FALSE );
-	m_pHistInfoWindow->Show( FALSE );
 
 	delete m_pHistorySystem;    //ok
 	delete m_pEvoCore4Display;  //ok
@@ -308,6 +309,7 @@ AppWindow::~AppWindow( )
 	m_pPerfWindow->TerminateTextWindow();
 	m_pCrsrWindow->TerminateTextWindow();
 	m_pStatistics->TerminateTextWindow();
+	m_pHistInfoWindow->TerminateTextWindow();
 
 	delete m_pStatusBar;
 	delete m_pWorkThreadInterface;

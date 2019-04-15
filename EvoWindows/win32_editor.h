@@ -24,6 +24,7 @@ public:
 		DspOptWindow        * const, 
 		StatusBar           * const
 	);
+	void Stop( );
 
 	void UpdateEditControls( );
 	void SetSimulationMode ( );
