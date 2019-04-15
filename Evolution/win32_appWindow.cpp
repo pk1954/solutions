@@ -284,16 +284,9 @@ void AppWindow::Stop()
 {
 	m_bStopped = TRUE;
 
-	int iRes;
 	HMENU hMenuApp = GetMenu( m_hwndApp );
-	//UINT uiID = GetMenuItemID( hMenuApp, 1 );
-	//iRes = EnableMenuItem( hMenuApp, IDM_GENERATION, MF_GRAYED ); 
-	//iRes = EnableMenuItem( hMenuApp, uiID, MF_GRAYED ); 
-	iRes = EnableMenuItem( hMenuApp, 1, MF_GRAYED|MF_BYPOSITION ); 
-	iRes = EnableMenuItem( hMenuApp, 2, MF_GRAYED|MF_BYPOSITION ); 
-
-	//EnableMenuItem( GetMenu( m_hwndApp ), IDM_GENERATION, MF_GRAYED ); 
-	//EnableMenuItem( GetMenu( m_hwndApp ), IDM_RUN,        MF_GRAYED ); 
+	EnableMenuItem( hMenuApp, 1, MF_GRAYED|MF_BYPOSITION ); 
+	EnableMenuItem( hMenuApp, 2, MF_GRAYED|MF_BYPOSITION ); 
 
 	m_pMiniGridWindow->Stop( );
 	m_pMainGridWindow->Stop( );
@@ -304,6 +297,7 @@ void AppWindow::Stop()
 
 	m_pEvoHistGlue->Stop( );  // deletes m_pModelDataWork
 
+	m_pStatusBar->Show( FALSE );
 	m_pStatistics->Show( FALSE );
 	m_pPerfWindow->Show( FALSE );
 	m_pCrsrWindow->Show( FALSE );
