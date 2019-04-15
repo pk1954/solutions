@@ -30,12 +30,12 @@ void EditorWindow::Start
 	StatusBar           * const pStatusBar
 )
 {
-    StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_EDITOR ) );
-
     m_pWorkThreadInterface = pWorkThreadInterface;
     m_pCore                = pCore;
     m_pDspOptWindow        = pDspOptWindow;
 	m_pStatusBar           = pStatusBar;
+
+    StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_EDITOR ) );
 
     SetTrackBarRange( IDM_EDIT_SIZE,      1L,  50L );
     SetTrackBarRange( IDM_EDIT_INTENSITY, 0L, 100L );

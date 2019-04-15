@@ -122,14 +122,14 @@ void GridWindow::Stop( )
 		exit( 1 );
 	};
 
-	m_pGraphics            = nullptr;
-	m_pReadBuffer          = nullptr;
-	m_pGridWindowObserved  = nullptr;
-	m_pWorkThreadInterface = nullptr;
+	m_pGraphics = nullptr;
 }
 
 GridWindow::~GridWindow( )
 {
+	m_pReadBuffer          = nullptr;
+	m_pWorkThreadInterface = nullptr;
+	m_pGridWindowObserved  = nullptr;
 }
 
 void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
