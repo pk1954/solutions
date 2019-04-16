@@ -200,11 +200,12 @@ AppWindow::AppWindow( ) :
 	m_pCrsrWindow->Start( m_hwndApp, m_pFocusPoint, m_pReadBuffer );
 	m_pStatistics->Start( m_hwndApp, m_pReadBuffer );
 
-	m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                            TRUE,  TRUE );
+	m_pWinManager->AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                    TRUE,  TRUE );
+	m_pWinManager->AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                        TRUE,  TRUE );
 	m_pWinManager->AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_pStatusBar ->GetWindowHandle(), FALSE, FALSE );
-	m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow->GetWindowHandle(), TRUE, FALSE );
-	m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow->GetWindowHandle(), TRUE, FALSE );
-	m_pWinManager->AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_pStatistics->GetWindowHandle(), TRUE, FALSE );
+	m_pWinManager->AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_pPerfWindow->GetWindowHandle(), TRUE,  FALSE );
+	m_pWinManager->AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_pCrsrWindow->GetWindowHandle(), TRUE,  FALSE );
+	m_pWinManager->AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_pStatistics->GetWindowHandle(), TRUE,  FALSE );
 
 	m_pEvoController->Start( & m_traceStream, m_pWorkThreadInterface, m_pWinManager, m_pPerfWindow, m_pStatusBar, m_pMainGridWindow, m_pEditorWindow, m_pColorManager );
 
@@ -216,6 +217,8 @@ AppWindow::AppWindow( ) :
 
 void AppWindow::Start(  )
 {
+	EvolutionCore * pCoreWork;
+
 	EvolutionCore::InitClass
 	( 
 		GridDimensions::GetNrOfNeigbors(), 
@@ -238,8 +241,8 @@ void AppWindow::Start(  )
 	if ( GridDimensions::GetNrOfNeigbors() == 6 )
         EnableMenuItem( GetMenu( m_hwndApp ), IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
 
-	m_pModelDataWork = m_pEvoHistGlue->Start( m_pHistorySystem, true, m_pHistInfoWindow );  // m_pEvoHistGlue->Stop deletes 
-	EvolutionCore * pCoreWork = m_pModelDataWork->GetEvolutionCore();
+	m_pModelDataWork   = m_pEvoHistGlue->Start( m_pHistorySystem, true, m_pHistInfoWindow );  // m_pEvoHistGlue->Stop deletes 
+	pCoreWork          = m_pModelDataWork->GetEvolutionCore();
 	m_pEvoCore4Display = EvolutionCore::CreateCore( );
 
 	DefineCoreWrapperFunctions( pCoreWork );
@@ -255,7 +258,6 @@ void AppWindow::Start(  )
 	m_pFocusPoint         ->Start( m_pEvoHistGlue, pCoreWork );
 	m_pWorkThreadInterface->Start( m_hwndApp, m_pColorManager, m_pPerfWindow, m_pEditorWindow, & m_event, m_pReadBuffer, pCoreWork, m_pEvoHistGlue );
 	
-    m_pWinManager->AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                        TRUE,  TRUE );
     m_pWinManager->AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_pEvoHistWindow ->GetWindowHandle(), FALSE, FALSE ); 
     m_pWinManager->AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_pDspOptWindow  ->GetWindowHandle(), TRUE, FALSE );
     m_pWinManager->AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_pEditorWindow  ->GetWindowHandle(), TRUE, FALSE );
@@ -294,6 +296,13 @@ void AppWindow::Stop()
 	m_pEvoHistWindow->Stop( );
 	m_pEditorWindow->Stop( );
 	m_pDspOptWindow->Stop( );
+
+	m_pWinManager->RemoveWindow( IDM_HIST_WINDOW ); 
+	m_pWinManager->RemoveWindow( IDM_DISP_WINDOW );
+	m_pWinManager->RemoveWindow( IDM_EDIT_WINDOW );
+	m_pWinManager->RemoveWindow( IDM_HIST_INFO   );
+	m_pWinManager->RemoveWindow( IDM_MINI_WINDOW );
+	m_pWinManager->RemoveWindow( IDM_MAIN_WINDOW );
 
 	m_pEvoHistGlue->Stop( );  // deletes m_pModelDataWork
 

@@ -170,7 +170,12 @@ namespace Util
     inline PixelRectSize GetWindowSize( HWND const hwnd )
     {
         RECT rect;
-        (void)GetWindowRect( hwnd, &rect );
+        BOOL bRes = GetWindowRect( hwnd, &rect );
+		if ( ! bRes )
+		{
+			DWORD dwErr = GetLastError( );
+			int x = 9876987;
+		}
         return PixelRectSizeFromRECT( rect );
     }
 

@@ -17,6 +17,11 @@ public:
 
 	void AddWindow( std::wstring const, UINT const, HWND const, BOOL const, BOOL const );
 
+	void RemoveWindow( UINT const id )
+	{
+		m_map.erase( id );
+	}
+
 	std::wstring const GetWindowName( UINT const id )  const // can throw out_of_range exception
     {
         return m_map.at( id ).m_wstr;
