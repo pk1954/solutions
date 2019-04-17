@@ -16,14 +16,9 @@ HistInfoWindow::HistInfoWindow( ) :
     m_pHistSystem( nullptr )
 { }
 
-void HistInfoWindow::Start
-(
-    HWND          const   hwndParent,
-	HistorySystem const * pHistSys
-) 
+void HistInfoWindow::Start( HWND const   hwndParent ) 
 {
-	m_pHistSystem = pHistSys;
-    StartTextWindow
+	StartTextWindow
 	( 
 		hwndParent, 
 		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 415_PIXEL }, 
@@ -33,10 +28,9 @@ void HistInfoWindow::Start
 	);
 }
 
-void HistInfoWindow::Stop( )
+void HistInfoWindow::SetHistorySystem( HistorySystem const * pHistSys ) 
 {
-	DestroyWindow( GetWindowHandle( ) );
-	m_pHistSystem = nullptr;
+	m_pHistSystem = pHistSys;
 }
 
 void HistInfoWindow::DoPaint( TextBuffer & textBuf )

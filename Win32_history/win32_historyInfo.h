@@ -12,13 +12,9 @@ class HistInfoWindow: public TextWindow
 public:
     HistInfoWindow( );
 
-    void Start
-	( 
-		HWND const, 
-		HistorySystem const *
-	);
+	void Start(	HWND const );
 
-	void Stop( );
+	void SetHistorySystem( HistorySystem const * );
 
     virtual void DoPaint( TextBuffer & );
 

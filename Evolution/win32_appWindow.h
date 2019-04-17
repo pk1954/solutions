@@ -48,6 +48,7 @@ private:
 	AppWindow             ( AppWindow const & );  // noncopyable class 
     AppWindow & operator= ( AppWindow const & );  // noncopyable class 
 
+	void enableMenues( UINT );
 	void adjustChildWindows( );
 	void adjustMiniWinVisibility( int const );
 
