@@ -1,2 +1,3 @@
-HistoryTest Release x64
-Build at Apr 15 2019 13:13:22
+HistoryTest Debug x64
+Build at Apr 17 2019 16:11:55
+*** Create 10 history slots

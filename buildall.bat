@@ -18,7 +18,7 @@ exit /b
 rem *** subroutines ***
 
 :SET_BUILD_ENVIRONMENT
-set VCVARS=\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\%1
+set VCVARS=\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\%1
 if exist "C:\Program Files%VCVARS%"       call "C:\Program Files%VCVARS%"
 if exist "C:\Program Files (x86)%VCVARS%" call "C:\Program Files (x86)%VCVARS%"
 if ERRORLEVEL 1 (
