@@ -12,6 +12,7 @@
 #include "win32_performanceWindow.h"
 #include "win32_status.h"
 #include "win32_editor.h"
+#include "win32_appMenu.h"
 #include "win32_gridWindow.h"
 #include "win32_packGridPoint.h"
 #include "win32_evoController.h"
@@ -24,9 +25,11 @@ EvoController::EvoController() :
 	m_pWorkThreadInterface ( nullptr ),
 	m_pWinManager          ( nullptr ),
     m_pPerformanceWindow   ( nullptr ),
-    m_pStatusBar           ( nullptr ),
-    m_pGridWindow          ( nullptr ),
-	m_pEditorWindow        ( nullptr )
+	m_pColorManager        ( nullptr ),
+	m_pStatusBar           ( nullptr ),
+	m_pGridWindow          ( nullptr ),
+	m_pEditorWindow        ( nullptr ),
+	m_pAppMenu             ( nullptr )
 { }
 
 EvoController::~EvoController( )
@@ -34,10 +37,12 @@ EvoController::~EvoController( )
     m_pTraceStream         = nullptr;
 	m_pWorkThreadInterface = nullptr;
 	m_pWinManager          = nullptr;
-    m_pPerformanceWindow   = nullptr;
+	m_pColorManager        = nullptr;
+	m_pPerformanceWindow   = nullptr;
     m_pStatusBar           = nullptr;
 	m_pGridWindow          = nullptr;
 	m_pEditorWindow        = nullptr;
+	m_pAppMenu             = nullptr;
 }
 
 void EvoController::Start
@@ -49,7 +54,8 @@ void EvoController::Start
 	StatusBar           * const pStatusBar,
 	GridWindow          * const pGridWindow,
 	EditorWindow        * const pEditorWindow,
-	ColorManager        * const pColorManager
+	ColorManager        * const pColorManager,
+	AppMenu             * const pAppMenu
 )
 {
 	m_pTraceStream         = pTraceStream;
@@ -60,6 +66,7 @@ void EvoController::Start
 	m_pGridWindow          = pGridWindow;
 	m_pEditorWindow        = pEditorWindow;
 	m_pColorManager        = pColorManager;
+	m_pAppMenu             = pAppMenu;
 }
 
 void EvoController::scriptDialog( )
@@ -92,16 +99,14 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
 		case IDM_RUN:
-            m_pWinManager->Show( IDM_HIST_WINDOW, tBoolOp::opFalse );
-			m_pWorkThreadInterface->PostRunGenerations( );
-			m_pStatusBar->SetRunMode( TRUE );
+			m_pWorkThreadInterface->PostRunGenerations( true );
+			m_pAppMenu->RunMode( TRUE );
 			break;
 
 		case IDM_STOP:
             m_pWorkThreadInterface->PostStopComputation( );
-            m_pWinManager->Show( IDM_HIST_WINDOW, tBoolOp::opTrue );
-			m_pStatusBar->SetRunMode( FALSE );
-            break;
+			m_pAppMenu->RunMode( FALSE );
+			break;
 
 		case IDM_RUN_STOP:
 			ProcessCommand( m_pWorkThreadInterface->IsRunning() ? IDM_STOP : IDM_RUN, 0 );

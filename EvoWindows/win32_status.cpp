@@ -137,6 +137,10 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
 void StatusBar::SetRunMode( BOOL const bMode )
 {
 	SetDlgText( IDM_RUN_STOP, bMode ? SZ_STOP_MODE : SZ_RUN_MODE );
+
+	EnableWindow( GetDlgItem( IDM_BACKWARDS        ), ! bMode );
+	EnableWindow( GetDlgItem( IDM_GENERATION       ), ! bMode );
+	EnableWindow( GetDlgItem( IDM_TOGGLE_SIMU_MODE ), ! bMode );
 }
 
 HWND WINAPI StatusBar::createControl

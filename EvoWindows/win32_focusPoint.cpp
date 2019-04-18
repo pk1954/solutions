@@ -32,7 +32,7 @@ void FocusPoint::SetFocusPoint( GridPoint const gpNew )
     {
         m_gp = gpNew;
 
-// Feature deactiveted, takes too much CPU time, stalls UI
+// Feature deactivated, takes too much CPU time, stalls UI
 // Options: 
 //    - Run in separate thread
 //    - Optimize (??)

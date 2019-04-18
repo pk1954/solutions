@@ -12,6 +12,7 @@ class WinManager;
 class GridWindow;
 class EditorWindow;
 class ColorManager;
+class AppMenu;
 
 class EvoController
 {
@@ -29,7 +30,8 @@ public:
 		StatusBar           * const,
 		GridWindow          * const,
 		EditorWindow        * const,
-		ColorManager        * const
+		ColorManager        * const,
+		AppMenu             * const
 	);
 
 	void ProcessCommand( WPARAM const, LPARAM const );
@@ -47,4 +49,5 @@ private:
 	GridWindow          * m_pGridWindow;
 	EditorWindow        * m_pEditorWindow;
 	ColorManager        * m_pColorManager;
+	AppMenu             * m_pAppMenu;
 };

@@ -33,9 +33,9 @@ ModelData * HistorySystemImpl::StartHistorySystem
 
 	BYTES      const slotSize        { GetSlotSize( ) };
 	ULONGLONG  const ullMaxNrOfSlots { ullMemorySize / slotSize.GetValue() };    assert( ullMaxNrOfSlots < LONG_MAX );
-	LONG       const lMaxNrOfSlots   { static_cast<LONG>( ullMaxNrOfSlots ) };
-	long       const lHistEntries    { min( lHistEntriesDemanded, lMaxNrOfSlots * 70 / 100 ) };  // use only 70% of available memory
-	HistSlotNr const nrOfSlots       { CastToShort( lHistEntries ) }; 
+	ULONGLONG  const ullDemanded     { static_cast<ULONGLONG>( lHistEntriesDemanded ) };
+	ULONGLONG  const ullHistEntries  { min( ullDemanded, ullMaxNrOfSlots * 70 / 100 ) };  // use only 70% of available memory
+	HistSlotNr const nrOfSlots       { CastToShort( ullHistEntries ) }; 
 
 	m_pHistoryCache  = new HistoryCache;                    //ok
 	m_GenCmdList.Resize( genMaxNrOfGens );

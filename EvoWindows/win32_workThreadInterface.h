@@ -47,7 +47,7 @@ public:
     void PostRefresh( LPARAM const );
     void PostReset( BOOL );
     void PostProcessScript( std::wstring const & );
-	void PostRunGenerations( bool const bFirst = true );
+	void PostRunGenerations( bool const );
 	void PostStopComputation();
 	void PostUndo();
 	void PostRedo();

@@ -17,9 +17,9 @@ public:
     void Start
 	( 
 		HWND         const, 
-		FocusPoint * const, 
-		ReadBuffer * const 
-	);
+		ReadBuffer * const,
+		FocusPoint * const 
+		);
 
     virtual void DoPaint( TextBuffer & );
 

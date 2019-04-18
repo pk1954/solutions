@@ -164,7 +164,7 @@ void DefinePixelCoordinatesWrapperFunctions( PixelCoordinates * pCoords )
 
 void DefineCoreWrapperFunctions( EvolutionCore * pCore )
 {
-	static bool bFirst;
+	static bool bFirst = true;
 
     m_pCore = pCore;
 

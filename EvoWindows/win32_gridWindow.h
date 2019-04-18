@@ -22,7 +22,6 @@ class GridWindow : public BaseWindow
 public:
 	static void InitClass
 	( 
-		HWND                  const, 
 		ReadBuffer          * const,
         WorkThreadInterface * const,
         FocusPoint          * const,
@@ -33,7 +32,7 @@ public:
 
     GridWindow( );
 
-    void Start( GraphicsInterface * const, DWORD const, PIXEL const );
+    void Start( HWND const, GraphicsInterface * const, DWORD const, PIXEL const );
 	void Stop( );
 
 	~GridWindow( );

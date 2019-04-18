@@ -5,6 +5,7 @@
 
 #include <string>
 #include "PixelTypes.h"
+#include "EvolutionTypes.h"
 #include "win32_rootWindow.h"
 
 class ReadBuffer;

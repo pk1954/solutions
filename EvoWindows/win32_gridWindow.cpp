@@ -26,8 +26,6 @@
 
 #include "Commdlg.h"
 
-//lint -esym( 613, GridWindow::m_pPixelCoordinates )   nullptr will not be used
-
 HWND                  GridWindow::m_hwndApp              = nullptr;
 ReadBuffer          * GridWindow::m_pReadBuffer          = nullptr;
 WorkThreadInterface * GridWindow::m_pWorkThreadInterface = nullptr;
@@ -38,7 +36,6 @@ ColorManager        * GridWindow::m_pColorManager        = nullptr;
 
 void GridWindow::InitClass
 ( 
-	HWND                  const hwndApp, 
 	ReadBuffer          * const pReadBuffer, 
     WorkThreadInterface * const pWorkThreadInterface,
     FocusPoint          * const pFocusPoint,
@@ -47,7 +44,6 @@ void GridWindow::InitClass
 	ColorManager        * const pColorManager
 )
 {
-	m_hwndApp              = hwndApp;
 	m_pReadBuffer          = pReadBuffer;
 	m_pWorkThreadInterface = pWorkThreadInterface;
     m_pPerformanceWindow   = pPerformanceWindow;
@@ -70,6 +66,7 @@ GridWindow::GridWindow( ) :
 
 void GridWindow::Start
 ( 
+	HWND                const hwndApp, 
 	GraphicsInterface * const pGraphics,
     DWORD               const dwStyle,
     PIXEL               const pixFieldSize
@@ -83,7 +80,7 @@ void GridWindow::Start
 
 	HWND hwnd = StartBaseWindow
     ( 
-        m_hwndApp,
+        hwndApp,
         CS_OWNDC | CS_DBLCLKS,
         L"ClassGridWindow",
         dwStyle,

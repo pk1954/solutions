@@ -33,6 +33,7 @@ class D3D_driver;
 class EvoModelDataGlue;
 class ViewCollection;
 class EvolutionCore;
+class AppMenu;
 
 class AppWindow : public BaseWindow
 {
@@ -48,7 +49,6 @@ private:
 	AppWindow             ( AppWindow const & );  // noncopyable class 
     AppWindow & operator= ( AppWindow const & );  // noncopyable class 
 
-	void enableMenues( UINT );
 	void adjustChildWindows( );
 	void adjustMiniWinVisibility( int const );
 
@@ -78,6 +78,7 @@ private:
 	EvoModelDataGlue    * m_pModelDataWork;
 	ViewCollection      * m_pCoreObservers;
 	EvolutionCore       * m_pEvoCore4Display;
+	AppMenu             * m_pAppMenu;
     
     // History 
     HistorySystem       * m_pHistorySystem;

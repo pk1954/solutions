@@ -18,8 +18,8 @@ CrsrWindow::CrsrWindow( ) :
 void CrsrWindow::Start
 (
     HWND         const hwndParent,
-    FocusPoint * const pFocusPoint,
-    ReadBuffer * const pReadBuffer
+	ReadBuffer * const pReadBuffer,
+	FocusPoint * const pFocusPoint
 ) 
 {
     m_pReadBuffer = pReadBuffer;
