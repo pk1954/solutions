@@ -69,6 +69,7 @@ using namespace std::literals::chrono_literals;
 // application
 
 #include "win32_appMenu.h"
+#include "win32_resetDlg.h"
 #include "win32_evoController.h"
 #include "win32_appWindow.h"
 
@@ -395,9 +396,20 @@ LRESULT AppWindow::UserProc
             break;
 
 		case IDM_CHANGE_GRID_TYPE:
-			Stop();
-			GridDimensions::DefineGridSize( 100_GRID_COORD, 100_GRID_COORD, Config::GetConfigValue( Config::tId::nrOfNeighbors ) );
-			Start();
+		{
+			int iRes = ResetDialog::Show( m_hwndApp );
+			if ( iRes >= 0 )
+			{
+				Stop();
+				GridDimensions::DefineGridSize
+				( 
+					GRID_COORD( ResetDialog::GetNewWidth() ), 
+					GRID_COORD( ResetDialog::GetNewHeight() ), 
+					ResetDialog::GetNewNrOfNeighbors()
+				);
+				Start();
+			}
+		}
 			break;
 
 		case IDM_EXIT:

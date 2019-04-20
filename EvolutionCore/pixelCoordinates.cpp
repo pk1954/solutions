@@ -141,7 +141,7 @@ PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint const gp ) const
 	if (m_bHexagon)
 	{
 		ppRes += PixelPoint( 
-			                  PIXEL(PIXEL(static_cast<long>(SQRT3_DIV3 * m_pixFieldSize.GetValue()))),
+			                  PIXEL(static_cast<long>(SQRT3_DIV3 * m_pixFieldSize.GetValue())),
 		                      PIXEL(m_pixFieldSize / 2) 
 			               );
 	}

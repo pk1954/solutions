@@ -15,7 +15,8 @@
 #define IDI_EVOLUTION                           111
 #define IDI_SMALL                               112
 
-#define IDM_SCRIPT_DIALOG                       120
+#define IDM_RESET_DIALOG                        120
+#define IDM_SCRIPT_DIALOG                       121
 
 #define IDM_ABOUT                               130
 #define IDM_EXIT                                131
@@ -32,6 +33,10 @@
 #define IDM_RESET                               149
 #define IDM_RESTART                             150
 #define IDM_CHANGE_GRID_TYPE                    151
+#define IDM_CHANGE_GRID_TYPE_WIDTH              152
+#define IDM_CHANGE_GRID_TYPE_HEIGHT             153
+#define IDM_GRID_TYPE_RECT                      154
+#define IDM_GRID_TYPE_HEX                       155
 
 #define IDM_CHOOSE_SELECTION_COLOR              161
 #define IDM_CHOOSE_HIGHLIGHT_COLOR              162

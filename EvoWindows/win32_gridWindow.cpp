@@ -74,7 +74,7 @@ void GridWindow::Start
 {
     assert( pixFieldSize > 0_PIXEL );
     
-	BOOL bHexagonMode   = (Config::GetConfigValue( Config::tId::nrOfNeighbors ) == 6);
+	BOOL bHexagonMode   = GridDimensions::GetNrOfNeigbors() == 6;
     m_pPixelCoordinates = new PixelCoordinates( pixFieldSize, bHexagonMode );
 	m_pGraphics         = pGraphics;
 

@@ -4,7 +4,7 @@
 #pragma once
 
 #include <chrono>
-#include "Windowsx.h"
+//#include "Windowsx.h"
 
 using namespace std::chrono;
 
