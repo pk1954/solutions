@@ -18,7 +18,7 @@ public:
 
 		m_sMin    = sLo;
 		m_sMax    = max( sHi, sLo );
-		m_dFactor = (static_cast<double>(m_sMax - m_sMin)) / 100;  // percentage
+		m_dFactor = (static_cast<double>(m_sMax) - static_cast<double>(m_sMin)) / 100.0;  // percentage
 	}
 
 	short ClipToLimits( short const sAllele ) const
