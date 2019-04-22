@@ -73,40 +73,40 @@ using namespace std::literals::chrono_literals;
 #include "win32_evoController.h"
 #include "win32_appWindow.h"
 
-int MyAllocHook
-(
-	int allocType, 
-	void * userData, 
-	size_t size,
-	int blockType, 
-	long requestNumber,
-	const unsigned char* filename, 
-	int lineNumber
-)
-{
-	int x;
-
-	switch (allocType)
-	{
-	case _HOOK_ALLOC:
-		x = 1;
-		break;
-
-	case _HOOK_REALLOC:
-		x = 2;
-		break;
-
-	case _HOOK_FREE:
-		x = 3;
-		break;
-
-	default:
-		break;
-	}
-
-	return TRUE;
-}
-
+//int MyAllocHook
+//(
+//	int allocType, 
+//	void * userData, 
+//	size_t size,
+//	int blockType, 
+//	long requestNumber,
+//	const unsigned char* filename, 
+//	int lineNumber
+//)
+//{
+//	int x;
+//
+//	switch (allocType)
+//	{
+//	case _HOOK_ALLOC:
+//		x = 1;
+//		break;
+//
+//	case _HOOK_REALLOC:
+//		x = 2;
+//		break;
+//
+//	case _HOOK_FREE:
+//		x = 3;
+//		break;
+//
+//	default:
+//		break;
+//	}
+//
+//	return TRUE;
+//}
+//
 
 AppWindow::AppWindow( ) :
     BaseWindow( ),
@@ -290,8 +290,8 @@ void AppWindow::Start(  )
 	DefineCoreWrapperFunctions( pCoreWork );
 	m_pReadBuffer->Initialize( pCoreWork, m_pEvoCore4Display );
 
-	m_pMainGridWindow->Start( m_hwndApp, m_pGraphics, WS_CHILD       | WS_CLIPSIBLINGS | WS_VISIBLE,             16_PIXEL );
-    m_pMiniGridWindow->Start( m_hwndApp, m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION, 2_PIXEL );
+	m_pMainGridWindow->Start( m_hwndApp, m_pGraphics, WS_CHILD       | WS_CLIPSIBLINGS,             16_PIXEL );
+    m_pMiniGridWindow->Start( m_hwndApp, m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION, 2_PIXEL );
 	m_pEvoHistWindow ->Start( m_hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
 	m_pDspOptWindow  ->Start( m_hwndApp, pCoreWork );
     m_pEditorWindow  ->Start( m_hwndApp, m_pWorkThreadInterface, pCoreWork, m_pDspOptWindow, m_pStatusBar );
@@ -317,6 +317,7 @@ void AppWindow::Start(  )
 
 	m_pStatusBar->ClearStatusLine( );
 	m_pStatusBar->Show( TRUE );
+	m_pEditorWindow->SetSimulationMode( );
 
 	(void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 	m_pEvoController->ProcessCommand( IDM_SET_SIMU_MODE, static_cast<LPARAM>(tBoolOp::opFalse) );

@@ -16,7 +16,7 @@ class Individual
 {
 public:
     
-    static void InitClass( );
+    static void RefreshCache( );
 
     Individual( );
 

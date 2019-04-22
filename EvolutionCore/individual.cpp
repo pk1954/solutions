@@ -25,7 +25,7 @@ const std::unordered_map< Strategy::Id, Strategy * const > Individual::m_apStrat
 	{ Strategy::Id::tit4tat,   &StratT }
 };
 
-void Individual::InitClass( )
+void Individual::RefreshCache( )
 {
     m_stdEnergyCapacity = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::stdCapacity ));
     m_initialEnergy     = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::initialEnergy ));

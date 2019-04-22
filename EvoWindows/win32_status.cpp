@@ -156,15 +156,15 @@ HWND WINAPI StatusBar::createControl
     (
         lpClassName,                     // class name 
         lpWindowName,                    // title (caption) 
-        WS_CHILD | WS_VISIBLE | dwStyle, // style 
-        m_pixPosX.GetValue(),          // x position
-		m_pixBorderY.GetValue(),       // y position 
-        pixWidth.GetValue(),           // width
-		m_pixClientHeight.GetValue(),  // height
+        WS_CHILD  | dwStyle,             // style 
+        m_pixPosX.GetValue(),            // x position
+		m_pixBorderY.GetValue(),         // y position 
+        pixWidth.GetValue(),             // width
+		m_pixClientHeight.GetValue(),    // height
         GetWindowHandle( ),              // parent window 
         hMenu,                           // control identifier 
         GetModuleHandle( nullptr ),      // instance 
-        nullptr                             // no WM_CREATE parameter 
+        nullptr                          // no WM_CREATE parameter 
     );
     m_pixPosX += pixWidth;
     return hwnd;

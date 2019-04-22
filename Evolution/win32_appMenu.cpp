@@ -50,7 +50,6 @@ void AppMenu::Start( )
 void AppMenu::Stop( )
 {
 	enableMenues( MF_GRAYED ); 
-
 }
 
 void AppMenu::RunMode( BOOL const bMode )

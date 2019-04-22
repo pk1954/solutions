@@ -30,7 +30,7 @@ constexpr ENERGY_UNITS operator"" _ENERGY_UNITS( unsigned long long ull )
 
 static int const IMEMSIZE_MAX = 9;
 
-enum class tBrushMode
+enum class tBrushMode : unsigned short
 {
     randomStrat,
     cooperate,

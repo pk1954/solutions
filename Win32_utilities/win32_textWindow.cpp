@@ -40,7 +40,7 @@ void TextWindow::StartTextWindow
         hwndParent,
         CS_OWNDC | CS_DBLCLKS,
         szClass,
-        WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_VISIBLE | WS_CAPTION,
+        WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION,
 		& rect
     );
 

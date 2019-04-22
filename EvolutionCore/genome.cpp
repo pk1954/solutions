@@ -10,8 +10,6 @@
 #include "random.h"
 #include "genome.h"
 
-//lint  -e1566    initialization 
-
 // static members and functions
 
 ActionOptions Genome::m_options;

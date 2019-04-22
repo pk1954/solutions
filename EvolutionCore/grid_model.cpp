@@ -42,15 +42,14 @@ void Grid::RefreshCache( )
 	m_enCloneFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionClone ));
 	m_enMarryFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMarry ));
 	m_enInteractFoodConsumption    = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionInteraction ));
+	Individual::RefreshCache( );
 	GridField::RefreshCash( );
 	Genome::RefreshCash( );
 }
 
 void Grid::InitClass( int const iNrOfNeighbors )
 {
-    INTERACTION::RefreshCash( );
     Genome::InitClass( );
-    Individual::InitClass( );
 	RefreshCache( );
 }
 

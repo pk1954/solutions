@@ -40,7 +40,6 @@ void EditorWindow::Start
     SetTrackBarRange( IDM_EDIT_SIZE,      1L,  50L );
     SetTrackBarRange( IDM_EDIT_INTENSITY, 0L, 100L );
     updateEditControls( );
-	SetSimulationMode( );
 }
 
 void EditorWindow::Stop( )
