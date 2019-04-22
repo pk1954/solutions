@@ -89,7 +89,7 @@ bool PixelCoordinates::SetGridFieldSize( PIXEL const pixNewFieldSize )
 
 PIXEL PixelCoordinates::ComputeNewFieldSize( bool const bZoomIn ) const
 {
-    PIXEL pixNewFieldSize( m_pixFieldSize );
+	PIXEL pixNewFieldSize { m_pixFieldSize };
     if ( bZoomIn )
     {
         PIXEL const pixDelta
@@ -109,7 +109,7 @@ PIXEL PixelCoordinates::ComputeNewFieldSize( bool const bZoomIn ) const
         PIXEL const pixDelta( ( m_pixFieldSize <= 16_PIXEL ) ? 1_PIXEL : (( m_pixFieldSize <= 64_PIXEL ) ? 16_PIXEL : 32_PIXEL ) );
         pixNewFieldSize -= pixDelta;
     }
-	return pixNewFieldSize;
+	return isValidFieldSize(pixNewFieldSize) ? pixNewFieldSize : m_pixFieldSize;
 }
 
 PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint const gp ) const 
