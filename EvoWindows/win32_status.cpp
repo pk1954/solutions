@@ -44,7 +44,7 @@ void StatusBar::Start
 	(
 		STATUSCLASSNAME, 
 		nullptr, 
-		WS_CHILD | WS_VISIBLE,
+		WS_CHILD,
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT.GetValue(),
 		hwndParent,
 		nullptr, 
@@ -156,7 +156,7 @@ HWND WINAPI StatusBar::createControl
     (
         lpClassName,                     // class name 
         lpWindowName,                    // title (caption) 
-        WS_CHILD  | dwStyle,             // style 
+        WS_CHILD | WS_VISIBLE | dwStyle, // style 
         m_pixPosX.GetValue(),            // x position
 		m_pixBorderY.GetValue(),         // y position 
         pixWidth.GetValue(),             // width
