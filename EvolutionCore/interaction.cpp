@@ -13,7 +13,7 @@ static ENERGY_UNITS S;  // Der Spieler wurde betrogen, er bekommt S (Suckers Pay
 static ENERGY_UNITS T;  // Der Spieler hat den anderen ausgenutzt und erhält T (Temptation).
 static ENERGY_UNITS P;  // Gegenseitige Defektion führt nur zu P (Penalty). 
 
-void INTERACTION::InitClass( )
+void INTERACTION::RefreshCash( )
 {
 	R = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::interactionPayOff_R ));
 	S = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::interactionPayOff_S ));

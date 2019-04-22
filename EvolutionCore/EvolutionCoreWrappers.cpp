@@ -193,6 +193,13 @@ void DefineCoreWrapperFunctions( EvolutionCore * pCore )
 		DEF_ULONG_CONST( tShape::Circle );
 		DEF_ULONG_CONST( tShape::Grid );
 
+		DEF_ULONG_CONST( tManipulator::set );
+		DEF_ULONG_CONST( tManipulator::max );
+		DEF_ULONG_CONST( tManipulator::min );
+		DEF_ULONG_CONST( tManipulator::add );
+		DEF_ULONG_CONST( tManipulator::subtract );
+		DEF_ULONG_CONST( tManipulator::mean );
+
 		DEF_ULONG_CONST( tBrushMode::move );
 		DEF_ULONG_CONST( tBrushMode::randomStrat );
 		DEF_ULONG_CONST( tBrushMode::cooperate );

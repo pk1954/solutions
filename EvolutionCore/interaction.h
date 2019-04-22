@@ -7,6 +7,6 @@ class Individual;
 
 namespace INTERACTION
 {
-	void InitClass( );
+	void RefreshCash( );
 	void Interact( Individual &, Individual & );
 }

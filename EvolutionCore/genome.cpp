@@ -27,6 +27,17 @@ void Genome::setLimits( GeneType::Id const gene, long const lLo, long const lHi 
     m_aLimits[ gene ].SetLimits( lLo, lHi );
 }
 
+void Genome::RefreshCash( )
+{
+	m_abActionEnabled[ Action::Id::move      ] = Config::GetConfigValueBool( Config::tId::moveEnabled      );
+	m_abActionEnabled[ Action::Id::clone     ] = Config::GetConfigValueBool( Config::tId::cloneEnabled     );
+	m_abActionEnabled[ Action::Id::marry     ] = Config::GetConfigValueBool( Config::tId::marryEnabled     );
+	m_abActionEnabled[ Action::Id::interact  ] = Config::GetConfigValueBool( Config::tId::interactEnabled  );
+	m_abActionEnabled[ Action::Id::eat       ] = Config::GetConfigValueBool( Config::tId::eatEnabled       );
+	m_abActionEnabled[ Action::Id::fertilize ] = Config::GetConfigValueBool( Config::tId::fertilizeEnabled );
+	m_abActionEnabled[ Action::Id::passOn    ] = Config::GetConfigValueBool( Config::tId::passOnEnabled    );
+}
+
 void Genome::InitClass( )
 { 
 	double dRandomMax = static_cast<double>(Random::MAX_VAL);
@@ -79,15 +90,7 @@ void Genome::InitClass( )
     m_genomeTemplate.setGene( GeneType::Id::maxEat,         Config::GetConfigValueShort( Config::tId::maxEat              ) );
     m_genomeTemplate.setGene( GeneType::Id::cloneDonation,  SHRT_MAX / 2 );
 
-    // static members for caching frequently used configuration items
-
-    m_abActionEnabled[ Action::Id::move      ] = Config::GetConfigValueBool( Config::tId::moveEnabled      );
-    m_abActionEnabled[ Action::Id::clone     ] = Config::GetConfigValueBool( Config::tId::cloneEnabled     );
-    m_abActionEnabled[ Action::Id::marry     ] = Config::GetConfigValueBool( Config::tId::marryEnabled     );
-    m_abActionEnabled[ Action::Id::interact  ] = Config::GetConfigValueBool( Config::tId::interactEnabled  );
-    m_abActionEnabled[ Action::Id::eat       ] = Config::GetConfigValueBool( Config::tId::eatEnabled       );
-    m_abActionEnabled[ Action::Id::fertilize ] = Config::GetConfigValueBool( Config::tId::fertilizeEnabled );
-    m_abActionEnabled[ Action::Id::passOn    ] = Config::GetConfigValueBool( Config::tId::passOnEnabled    );
+	RefreshCash( );  // static members for caching frequently used configuration items
 }
 
 //  nonstatic functions 

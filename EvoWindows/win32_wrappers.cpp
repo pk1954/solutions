@@ -87,11 +87,22 @@ public:
 class WrapPostSetBrushRadius : public Script_Functor
 {
 public:
-    virtual void operator() ( Script & script ) const
-    {
-        GRID_COORD const size = ScrReadGridCoord( script );
-        m_pWorkThreadInterface->PostSetBrushRadius( size );
-    }
+	virtual void operator() ( Script & script ) const
+	{
+		GRID_COORD const size = ScrReadGridCoord( script );
+		m_pWorkThreadInterface->PostSetBrushRadius( size );
+	}
+};
+
+class WrapPostSetBrushManipulator : public Script_Functor
+{
+public:
+	virtual void operator() ( Script & script ) const
+	{
+		USHORT       const usValue     = script.ScrReadUshort(  );
+		tManipulator const manipulator = static_cast<tManipulator>( usValue );
+		m_pWorkThreadInterface->PostSetBrushManipulator( manipulator );
+	}
 };
 
 class WrapPostGenerationStep : public Script_Functor
@@ -162,6 +173,7 @@ void DefineWin32WrapperFunctions( WorkThreadInterface * const pWorkThreadInterfa
     DEF_FUNC( PostSetBrushShape );
     DEF_FUNC( PostSetBrushIntensity );
     DEF_FUNC( PostSetBrushRadius );
+	DEF_FUNC( PostSetBrushManipulator );
     DEF_FUNC( PostRefresh );
     DEF_FUNC( PostReset );
     DEF_FUNC( PostGenerationStep );

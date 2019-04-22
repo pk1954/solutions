@@ -12,7 +12,7 @@
 class GridField
 {
 public:
-    static void InitClass( )
+	static void RefreshCash( )
 	{
 		m_lFertilizerYield = Config::GetConfigValue( Config::tId::fertilizerYield );
 		m_enMaxFertilizer  = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::maxFertilizer ));

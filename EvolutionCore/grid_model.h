@@ -32,7 +32,9 @@ public:
     Grid( );
     ~Grid( );
 
-    void      ResetGrid    ( );
+	static void RefreshCache( );
+
+	void      ResetGrid    ( );
     void      FoodGrowth   ( );
     void      MakePlan     ( GridPoint const, PlannedActivity & );
     GridPoint ImplementPlan( GridPoint const, PlannedActivity const & );

@@ -47,7 +47,7 @@ enum class tBrushMode
 
 bool IsStrategyBrushMode( tBrushMode const );
 
-enum class tManipulator
+enum class tManipulator : unsigned short
 {
 	set,
 	max,

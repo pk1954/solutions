@@ -162,7 +162,7 @@ void WorkThreadInterface::PostSetBrushShape( tShape const shape )
 void WorkThreadInterface::PostSetBrushManipulator( tManipulator const op )
 {
     if ( m_bTrace )
-        * m_pTraceStream << __func__ << L" " << GetManipulatorName( op ) << endl;
+        * m_pTraceStream << __func__ << L" tManipulator::" << GetManipulatorName( op ) << endl;
     m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_BRUSH_OPERATOR, static_cast<WPARAM>( op ), 0 );
 }
 
