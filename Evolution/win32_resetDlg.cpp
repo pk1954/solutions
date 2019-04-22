@@ -79,8 +79,8 @@ static INT_PTR CALLBACK dialogProc
 		swprintf_s( m_wBuffer, BUFLEN, L"%d", m_iHeight );
 		Util::SetText( GetDlgItem( hDlg, IDM_CHANGE_GRID_TYPE_HEIGHT ), m_wBuffer );
 
-		SendDlgItemMessage( hDlg, m_iGridType, BM_CLICK, 0, 0 );
-		SendDlgItemMessage( hDlg, IDM_RESET,   BM_CLICK, 0, 0 );
+		SendDlgItemMessage( hDlg, m_iGridType,    BM_CLICK, 0, 0 );
+		SendDlgItemMessage( hDlg, IDM_SOFT_RESET, BM_CLICK, 0, 0 );
 
 		return TRUE;
 	}
@@ -107,13 +107,13 @@ static INT_PTR CALLBACK dialogProc
 			m_iGridType = wmId;
 			break;
 
-		case IDM_RESET:
-		case IDM_RESTART:
+		case IDM_SOFT_RESET:
+		case IDM_HISTORY_RESET:
 			enableGridTypeControls( hDlg, false );
 			m_iResult = wmId;
 			break;
 
-		case IDM_CHANGE_GRID_TYPE:
+		case IDM_HARD_RESET:
 			enableGridTypeControls( hDlg, true );
 			m_iResult = wmId;
 			break;

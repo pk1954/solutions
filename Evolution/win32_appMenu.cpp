@@ -63,7 +63,6 @@ void AppMenu::RunMode( BOOL const bMode )
 	EnableMenuItem( m_hMenu, IDM_GOTO_ORIGIN,      state );
 	EnableMenuItem( m_hMenu, IDM_GOTO_DEATH,       state );
 	EnableMenuItem( m_hMenu, IDM_RESET,            state );
-	EnableMenuItem( m_hMenu, IDM_RESTART,          state );
 	EnableMenuItem( m_hMenu, IDM_CHANGE_GRID_TYPE, state );
 
 	m_pWinManager->Show( IDM_HIST_WINDOW, BoolOp( ! bMode ) );

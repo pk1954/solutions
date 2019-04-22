@@ -44,16 +44,16 @@ public:
         printString( data );
     }
 
-    void printString       ( std::wstring );
-    void printNumber       ( int );
-    void printNumber       ( unsigned int );
-    void printNumber       ( long long );
-    void printNumber       ( unsigned long long );
-    void printNumber       ( float );
-    void printPercentage   ( unsigned int );
-    void printPercentage   ( unsigned int, unsigned int );
-    void printSpan         ( unsigned int, unsigned int );
-    void printAsDecFraction( unsigned long );
+    void printString       ( std::wstring const );
+    void printNumber       ( int const );
+    void printNumber       ( unsigned int const );
+    void printNumber       ( long long const );
+    void printNumber       ( unsigned long long const );
+    void printNumber       ( float const );
+    void printPercentage   ( unsigned int const );
+    void printPercentage   ( unsigned int const, unsigned int const );
+    void printSpan         ( unsigned int const, unsigned int const );
+    void printAsDecFraction( unsigned long const );
 
 private:
 	void printBuffer();

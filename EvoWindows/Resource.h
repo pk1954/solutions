@@ -31,12 +31,14 @@
 #define IDD_TOGGLE_CLUT_MODE                    147
 #define IDD_TOGGLE_COORD_DISPLAY                148
 #define IDM_RESET                               149
-#define IDM_RESTART                             150
-#define IDM_CHANGE_GRID_TYPE                    151
-#define IDM_CHANGE_GRID_TYPE_WIDTH              152
-#define IDM_CHANGE_GRID_TYPE_HEIGHT             153
-#define IDM_GRID_TYPE_RECT                      154
-#define IDM_GRID_TYPE_HEX                       155
+#define IDM_SOFT_RESET                          150
+#define IDM_HISTORY_RESET                       151
+#define IDM_HARD_RESET                          152
+#define IDM_CHANGE_GRID_TYPE                    153
+#define IDM_CHANGE_GRID_TYPE_WIDTH              154
+#define IDM_CHANGE_GRID_TYPE_HEIGHT             155
+#define IDM_GRID_TYPE_RECT                      156
+#define IDM_GRID_TYPE_HEX                       157
 
 #define IDM_CHOOSE_SELECTION_COLOR              161
 #define IDM_CHOOSE_HIGHLIGHT_COLOR              162

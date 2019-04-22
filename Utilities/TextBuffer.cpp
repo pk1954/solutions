@@ -37,31 +37,31 @@ void TextBuffer::printBuffer( )
     m_pixHorizontalPos += m_pixHorRaster;
 };
 
-void TextBuffer::printString( wstring data )
-{
+void TextBuffer::printString( wstring const data )
+{ 
 	m_wBuffer << data;
 	printBuffer( );
 }
 
-void TextBuffer::printNumber( int data )
+void TextBuffer::printNumber( int const data )
 {
     m_wBuffer << data;
     printBuffer();
 }
 
-void TextBuffer::printNumber( unsigned int data )
+void TextBuffer::printNumber( unsigned int const data )
 {
     m_wBuffer << data;
     printBuffer();
 }
 
-void TextBuffer::printNumber( unsigned long long data )
+void TextBuffer::printNumber( unsigned long long const data )
 {
     m_wBuffer << data;
     printBuffer();
 }
 
-void TextBuffer::printNumber( float data )
+void TextBuffer::printNumber( float const data )
 {
 	if ( data > 0 )
 		m_wBuffer << setprecision(3) << data << L"%";
@@ -70,7 +70,7 @@ void TextBuffer::printNumber( float data )
     printBuffer();
 }
 
-void TextBuffer::printNumber( long long data )
+void TextBuffer::printNumber( long long const data )
 {
     m_pixHorizontalPos += m_pixHorRaster;
     m_wBuffer << setw(13) << data;
@@ -83,20 +83,20 @@ void TextBuffer::printPercentage( unsigned int data )
     printBuffer();
 }
 
-void TextBuffer::printPercentage( unsigned int val, unsigned int max )
+void TextBuffer::printPercentage( unsigned int const val, unsigned int const max )
 {
     int const iPercentage = ( max == 0 ) ? 0 : ( val * 100 ) / max;
     m_wBuffer << setw(5) << iPercentage << L"% (" << val << L" of " << max << L")";
     printBuffer();
 }
 
-void TextBuffer::printSpan( unsigned int min, unsigned int max )
+void TextBuffer::printSpan( unsigned int const min, unsigned int const max )
 {
     m_wBuffer << setw(5) << L" (" << min << L" - " << max << L")";
     printBuffer();
 }
 
-void TextBuffer::printAsDecFraction( unsigned long ulValue )
+void TextBuffer::printAsDecFraction( unsigned long const ulValue )
 {
 	printString( DecFraction( ulValue ) );
 }

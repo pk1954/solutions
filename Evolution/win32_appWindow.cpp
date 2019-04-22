@@ -73,6 +73,41 @@ using namespace std::literals::chrono_literals;
 #include "win32_evoController.h"
 #include "win32_appWindow.h"
 
+int MyAllocHook
+(
+	int allocType, 
+	void * userData, 
+	size_t size,
+	int blockType, 
+	long requestNumber,
+	const unsigned char* filename, 
+	int lineNumber
+)
+{
+	int x;
+
+	switch (allocType)
+	{
+	case _HOOK_ALLOC:
+		x = 1;
+		break;
+
+	case _HOOK_REALLOC:
+		x = 2;
+		break;
+
+	case _HOOK_FREE:
+		x = 3;
+		break;
+
+	default:
+		break;
+	}
+
+	return TRUE;
+}
+
+
 AppWindow::AppWindow( ) :
     BaseWindow( ),
 	m_pD3d_driver( nullptr ),
@@ -104,6 +139,8 @@ AppWindow::AppWindow( ) :
 	m_bStopped( TRUE )
 {
 	Stopwatch stopwatch;
+
+//	_CrtSetAllocHook( MyAllocHook );
 
 	DefineUtilityWrapperFunctions( );
 
@@ -213,7 +250,12 @@ AppWindow::AppWindow( ) :
 	m_pScriptHook = new ScriptHook( m_pStatusBar );
 	Script::ScrSetWrapHook( m_pScriptHook );
 
-	GridDimensions::DefineGridSize( 150_GRID_COORD, 100_GRID_COORD, Config::GetConfigValue( Config::tId::nrOfNeighbors ) );
+	GridDimensions::DefineGridSize
+	( 
+		GRID_COORD{ Config::GetConfigValueShort( Config::tId::gridWidth ) }, 
+		GRID_COORD{ Config::GetConfigValueShort( Config::tId::gridHeight ) }, 
+		Config::GetConfigValue( Config::tId::nrOfNeighbors ) 
+	);
 };
 
 void AppWindow::Start(  )
@@ -395,11 +437,16 @@ LRESULT AppWindow::UserProc
 			adjustMiniWinVisibility( static_cast<int>(lParam) );
             break;
 
-		case IDM_CHANGE_GRID_TYPE:
+		case IDM_RESET:
 		{
 			int iRes = ResetDialog::Show( m_hwndApp );
-			if ( iRes >= 0 )
+			switch ( iRes )
 			{
+			case IDM_SOFT_RESET:
+			case IDM_HISTORY_RESET:
+				m_pEvoController->ProcessCommand( iRes, 0 );
+				break;
+			case IDM_HARD_RESET:
 				Stop();
 				GridDimensions::DefineGridSize
 				( 
@@ -494,7 +541,7 @@ void AppWindow::adjustChildWindows( )
 
 void AppWindow::adjustMiniWinVisibility( int const iMode )
 {
-	Config::tOnOffAuto onOffAuto;
+	Config::tOnOffAuto onOffAuto = Config::tOnOffAuto::automatic;
 	if ( iMode != 0 )
 	{
 		switch ( iMode )

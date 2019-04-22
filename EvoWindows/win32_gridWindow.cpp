@@ -147,7 +147,8 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
         (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_FIT_ZOOM, L"Fit Selection" );
     }
 
-    (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SCRIPT_DIALOG, L"Script" );
+	(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_RESET,         L"Reset" );
+	(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SCRIPT_DIALOG, L"Script" );
 
     if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
     {

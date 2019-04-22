@@ -28,8 +28,6 @@ IDC_EVOLUTION_MAIN MENU
         MENUITEM "Goto &Origin", IDM_GOTO_ORIGIN
         MENUITEM "Goto &Death", IDM_GOTO_DEATH
         MENUITEM "Reset", IDM_RESET
-		MENUITEM "Restart", IDM_RESTART
-		MENUITEM "&Change Grid", IDM_CHANGE_GRID_TYPE
 	}
     POPUP "&View"
     {
@@ -86,9 +84,9 @@ STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_VIS
 CAPTION "Reset options"
 FONT 8, "Ms Shell Dlg"
 {
-	AUTORADIOBUTTON "Clear grid, keep history",       IDM_RESET,            25, 14, 120,  8, WS_GROUP | WS_TABSTOP, WS_EX_LEFT
-	AUTORADIOBUTTON "Clear grid, delete history",     IDM_RESTART,          25, 34, 120,  8,                     0, WS_EX_LEFT
-	AUTORADIOBUTTON "Redefine grid, delete history ", IDM_CHANGE_GRID_TYPE, 25, 54, 120,  8,                     0, WS_EX_LEFT
+	AUTORADIOBUTTON "Clear grid, keep history",       IDM_SOFT_RESET,    25, 14, 120,  8, WS_GROUP | WS_TABSTOP, WS_EX_LEFT
+	AUTORADIOBUTTON "Clear grid, delete history",     IDM_HISTORY_RESET, 25, 34, 120,  8,                     0, WS_EX_LEFT
+	AUTORADIOBUTTON "Redefine grid, delete history ", IDM_HARD_RESET,    25, 54, 120,  8,                     0, WS_EX_LEFT
 
 	LTEXT    "width",  IDC_STATIC,        38,  70, 20, 10
 	EDITTEXT IDM_CHANGE_GRID_TYPE_WIDTH,  60,  70, 30, 10, ES_NUMBER
