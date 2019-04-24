@@ -169,7 +169,11 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 		}
 
 		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI, L"POI" );
-    }
+	}
+	if ( m_pWorkThreadInterface->IsRunning() )
+		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_STOP, L"Stop" );
+	else
+		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_RUN, L"Run" );
 }
 
 void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )

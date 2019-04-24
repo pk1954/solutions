@@ -98,6 +98,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
 		case IDM_RUN:
+			m_pWorkThreadInterface->PostSetSimulationMode( tBoolOp::opTrue );
 			m_pWorkThreadInterface->PostRunGenerations( true );
 			m_pAppMenu->RunMode( TRUE );
 			break;
@@ -219,13 +220,11 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 
         case IDM_TOGGLE_SIMU_MODE:
 			ProcessCommand( IDM_STOP, 0 );
-			//			m_pWorkThreadInterface->PostStopComputation( );
 			m_pWorkThreadInterface->PostSetSimulationMode( tBoolOp::opToggle );
             break;
 
         case IDM_SET_SIMU_MODE:
 			ProcessCommand( IDM_STOP, 0 );
-//			m_pWorkThreadInterface->PostStopComputation( );
 			m_pWorkThreadInterface->PostSetSimulationMode( static_cast<tBoolOp>(lParam) );
             break;
 

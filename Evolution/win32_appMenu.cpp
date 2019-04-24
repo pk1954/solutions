@@ -57,12 +57,13 @@ void AppMenu::RunMode( BOOL const bMode )
 	UINT state = bMode ? MF_GRAYED : MF_ENABLED;
 
 	EnableMenuItem( m_hMenu, IDM_GENERATION,       state );
-	EnableMenuItem( m_hMenu, IDM_RUN,              state );
 	EnableMenuItem( m_hMenu, IDM_BACKWARDS,        state );
 	EnableMenuItem( m_hMenu, IDM_GOTO_ORIGIN,      state );
 	EnableMenuItem( m_hMenu, IDM_GOTO_DEATH,       state );
 	EnableMenuItem( m_hMenu, IDM_RESET,            state );
 	EnableMenuItem( m_hMenu, IDM_CHANGE_GRID_TYPE, state );
+	EnableMenuItem( m_hMenu, IDM_RUN,              state );
+	EnableMenuItem( m_hMenu, IDM_STOP,             bMode ? MF_ENABLED : MF_GRAYED );
 
 	m_pWinManager->Show( IDM_HIST_WINDOW, BoolOp( ! bMode ) );
 	m_pStatusBar->SetRunMode( bMode );

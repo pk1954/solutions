@@ -220,9 +220,7 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 
 	case WM_ACTIVATE:
 		if ( LOWORD( wParam ) == WA_CLICKACTIVE )  
-		{
 			PostCommand2Application( IDM_SET_SIMU_MODE, static_cast<LPARAM>(tBoolOp::opFalse) );
-		}
 		return FALSE;
 
     case WM_COMMAND:
