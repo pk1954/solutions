@@ -271,6 +271,9 @@ void StatusBar::SetSimuMode( BOOL const bSimuMode )
 	}
 
 	SetDlgText( IDM_TOGGLE_SIMU_MODE, bSimuMode ? SZ_EDIT_MODE : SZ_SIMU_MODE );
+
+	if ( ! bSimuMode )
+		SetRunMode( FALSE );
 }
 
 PIXEL StatusBar::GetHeight( ) const

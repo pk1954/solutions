@@ -67,4 +67,3 @@ void AppMenu::RunMode( BOOL const bMode )
 	m_pWinManager->Show( IDM_HIST_WINDOW, BoolOp( ! bMode ) );
 	m_pStatusBar->SetRunMode( bMode );
 }
-

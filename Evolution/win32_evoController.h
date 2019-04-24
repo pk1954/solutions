@@ -39,7 +39,6 @@ public:
 private:
 	void scriptDialog( );
 
-	bool                  m_bSimulationMode;   // if TRUE: simu mode, FALSE: edit more
 	BOOL                  m_bTrace;
     std::wostream       * m_pTraceStream;
 	WorkThreadInterface * m_pWorkThreadInterface;

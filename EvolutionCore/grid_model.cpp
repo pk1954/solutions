@@ -42,6 +42,7 @@ void Grid::RefreshCache( )
 	m_enCloneFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionClone ));
 	m_enMarryFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMarry ));
 	m_enInteractFoodConsumption    = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionInteraction ));
+	INTERACTION::RefreshCash( );
 	Individual::RefreshCache( );
 	GridField::RefreshCash( );
 	Genome::RefreshCash( );

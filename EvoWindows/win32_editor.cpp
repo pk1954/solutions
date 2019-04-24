@@ -142,7 +142,7 @@ void EditorWindow::SetSimulationMode( )  	// adjust window configuration accordi
 	if ( bSimulationMode )
 		sendClick( IDM_MOVE );
 
-	Show( ! bSimulationMode );
+//	Show( ! bSimulationMode );
 
 	PostCommand2Application( IDM_SHOW_PERF_WINDOW, static_cast<LPARAM>(bSimulationMode) );
 }
@@ -165,8 +165,6 @@ void EditorWindow::setBrushMode( WORD const wId ) const
 
 	tBrushMode const brushMode { mapModeTable.at( wId ) };
 	m_pWorkThreadInterface->PostSetBrushMode( brushMode );
-	//m_pDspOptWindow->UpdateDspOptionsControls( brushMode );
-	//updateOperationButtons( brushMode );
 }
 
 void EditorWindow::setBrushShape( WORD const wId ) const
@@ -220,9 +218,16 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 		}
         return TRUE;
 
+	case WM_ACTIVATE:
+		if ( LOWORD( wParam ) == WA_CLICKACTIVE )  
+		{
+			PostCommand2Application( IDM_SET_SIMU_MODE, static_cast<LPARAM>(tBoolOp::opFalse) );
+		}
+		return FALSE;
+
     case WM_COMMAND:
         {
-		WORD const wId { LOWORD( wParam ) };
+			WORD const wId { LOWORD( wParam ) };
 
             switch ( wId )
             {

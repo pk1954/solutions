@@ -39,7 +39,7 @@ public:
 	void ResetGridField( ENERGY_UNITS const enFood )
 	{
 		CutConnections( );
-		m_mutRate      = 0_PERCENT;
+		m_mutRate      = 30_PERCENT;
 		m_enFertility  = enFood;
 		m_enFoodStock  = enFood;
 		m_enFertilizer = 0_ENERGY_UNITS;

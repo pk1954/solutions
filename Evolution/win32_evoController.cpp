@@ -19,7 +19,6 @@
 #include "win32_colorManager.h"
 
 EvoController::EvoController() :
-	m_bSimulationMode      ( FALSE ),
     m_bTrace               ( TRUE ),
     m_pTraceStream         ( nullptr ),
 	m_pWorkThreadInterface ( nullptr ),
@@ -219,12 +218,14 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
         case IDM_TOGGLE_SIMU_MODE:
-			m_pWorkThreadInterface->PostStopComputation( );
+			ProcessCommand( IDM_STOP, 0 );
+			//			m_pWorkThreadInterface->PostStopComputation( );
 			m_pWorkThreadInterface->PostSetSimulationMode( tBoolOp::opToggle );
             break;
 
         case IDM_SET_SIMU_MODE:
-			m_pWorkThreadInterface->PostStopComputation( );
+			ProcessCommand( IDM_STOP, 0 );
+//			m_pWorkThreadInterface->PostStopComputation( );
 			m_pWorkThreadInterface->PostSetSimulationMode( static_cast<tBoolOp>(lParam) );
             break;
 
