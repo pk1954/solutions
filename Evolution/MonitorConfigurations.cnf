@@ -41,105 +41,16 @@ MonitorConfiguration  "WindowConfiguration3.cnf"
 
 MonitorConfiguration  "WindowConfiguration4.cnf"
 1   # monitor number
-   0   0   2560 1440    # monitor rectangle
-   0   0   2560 1400    # work area rectangle
+0 0 2560 1440   # monitor rectangle
+0 0 2560 1400   # work area rectangle
 1    # primary monitor
-2   # monitor number
- -1920 1072     0 2152    # monitor rectangle
- -1920 1072     0 2112    # work area rectangle
-0    # secondary monitor
-3   # monitor number
- 3840 576   6400 1656    # monitor rectangle
- 3840 576   6400 1616    # work area rectangle
-0    # secondary monitor
-0   # end of MonitorConfiguration
-
-MonitorConfiguration  "WindowConfiguration5.cnf"
-1   # monitor number
-   0   0   2560 1440    # monitor rectangle
-   0   0   2560 1400    # work area rectangle
-1    # primary monitor
-2   # monitor number
- 3840 1072   6400 2152    # monitor rectangle
- 3840 1072   6400 2112    # work area rectangle
-0    # secondary monitor
-3   # monitor number
- -1920 1065     0 2145    # monitor rectangle
- -1920 1065     0 2105    # work area rectangle
-0    # secondary monitor
-0   # end of MonitorConfiguration
-
-MonitorConfiguration  "WindowConfiguration6.cnf"
-1   # monitor number
-   0   0   2560 1440    # monitor rectangle
-   0   0   2560 1400    # work area rectangle
-1    # primary monitor
-2   # monitor number
- -1920 1072     0 2152    # monitor rectangle
- -1920 1072     0 2112    # work area rectangle
-0    # secondary monitor
-3   # monitor number
- 3840 1065   6400 2145    # monitor rectangle
- 3840 1065   6400 2105    # work area rectangle
-0    # secondary monitor
-0   # end of MonitorConfiguration
-MonitorConfiguration  "WindowConfiguration7.cnf"
-1   # monitor number
-   0   0   2560 1440    # monitor rectangle
-   0   0   2560 1400    # work area rectangle
-1    # primary monitor
-2   # monitor number
- -1920 1065     0 2145    # monitor rectangle
- -1920 1065     0 2105    # work area rectangle
-0    # secondary monitor
-3   # monitor number
- 3840 1065   6400 2145    # monitor rectangle
- 3840 1065   6400 2105    # work area rectangle
-0    # secondary monitor
-0   # end of MonitorConfiguration
-
-MonitorConfiguration  "WindowConfiguration8.cnf"
-1   # monitor number
-3840 1065 6400 2145   # monitor rectangle
-3840 1065 6400 2105   # work area rectangle
-0    # secondary monitor
 2   # monitor number
 -1920 1065 0 2145   # monitor rectangle
 -1920 1065 0 2105   # work area rectangle
 0    # secondary monitor
 3   # monitor number
-0 0 2560 1440   # monitor rectangle
-0 0 2560 1400   # work area rectangle
-1    # primary monitor
-0   # end of MonitorConfiguration
-
-MonitorConfiguration  "WindowConfiguration9.cnf"
-1   # monitor number
-0 0 2560 1440   # monitor rectangle
-0 0 2560 1400   # work area rectangle
-1    # primary monitor
-2   # monitor number
 3840 1065 6400 2145   # monitor rectangle
 3840 1065 6400 2105   # work area rectangle
-0    # secondary monitor
-3   # monitor number
--1920 1069 0 2149   # monitor rectangle
--1920 1069 0 2109   # work area rectangle
-0    # secondary monitor
-0   # end of MonitorConfiguration
-
-MonitorConfiguration  "WindowConfiguration10.cnf"
-1   # monitor number
-0 0 2560 1440   # monitor rectangle
-0 0 2560 1400   # work area rectangle
-1    # primary monitor
-2   # monitor number
-3840 1064 6400 2144   # monitor rectangle
-3840 1064 6400 2104   # work area rectangle
-0    # secondary monitor
-3   # monitor number
--1920 1064 0 2144   # monitor rectangle
--1920 1064 0 2104   # work area rectangle
 0    # secondary monitor
 0   # end of MonitorConfiguration
 

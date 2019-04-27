@@ -53,45 +53,44 @@ public:
     virtual void SetSimulationMode  ( tBoolOp      const op    ) { ApplyOp( m_bSimulationMode, op ); }
     virtual void ModelDoEdit        ( GridPoint    const gp    ) { (m_brush)( gp ); }
 
-	virtual PlannedActivity * GetPlan4Writing( ) { return & m_plan; };
+	virtual void SetPlan( GridPoint const gp , PlannedActivity const & plan ) { m_grid.SetPlan( gp, plan ); };
 
 	// read access
 
 	virtual void DumpGridPointList( ) const;
 
-	virtual bool GetSimulationMode( ) const { return m_bSimulationMode; }
+	virtual bool const GetSimulationMode( ) const { return m_bSimulationMode; }
 
-    virtual EVO_GENERATION GetAge       ( GridPoint const gp ) const { return m_grid.GetAge( gp ); }
+    virtual EVO_GENERATION  const GetAge       ( GridPoint const gp ) const { return m_grid.GetAge( gp ); }
 
-    virtual PERCENT        GetMutRate   ( GridPoint const gp ) const { return getGridField( gp ).GetMutRate( ); }
-    virtual ENERGY_UNITS   GetFoodStock ( GridPoint const gp ) const { return getGridField( gp ).GetFoodStock( ); }
-    virtual ENERGY_UNITS   GetFertility ( GridPoint const gp ) const { return getGridField( gp ).GetFertility( ); }
-    virtual ENERGY_UNITS   GetFertilizer( GridPoint const gp ) const { return getGridField( gp ).GetFertilizer( ); }
-    virtual EVO_GENERATION GetGenBirth  ( GridPoint const gp ) const { return getGridField( gp ).GetGenBirth( ); }
-    virtual Strategy::Id   GetStrategyId( GridPoint const gp ) const { return getGridField( gp ).GetStrategyId( ); }
-    virtual IND_ID         GetId        ( GridPoint const gp ) const { return getGridField( gp ).GetId( ); }
-    virtual tOrigin        GetOrigin    ( GridPoint const gp ) const { return getGridField( gp ).GetOrigin( ); }
-    virtual ENERGY_UNITS   GetEnergy    ( GridPoint const gp ) const { return getGridField( gp ).GetEnergy( ); }
-    virtual MEM_INDEX      GetMemSize   ( GridPoint const gp ) const { return getGridField( gp ).GetMemSize( ); }
-    virtual MEM_INDEX      GetMemUsed   ( GridPoint const gp ) const { return getGridField( gp ).GetMemUsed( ); }
-    virtual bool           IsDead       ( GridPoint const gp ) const { return getGridField( gp ).IsDead( ); }
-    virtual bool           IsAlive      ( GridPoint const gp ) const { return getGridField( gp ).IsAlive( ); }
-    virtual bool           IsDefined    ( GridPoint const gp ) const { return getGridField( gp ).IsDefined( ); }
+	virtual PERCENT         const GetMutRate   ( GridPoint const gp ) const { return getGridField( gp ).GetMutRate( ); }
+	virtual ENERGY_UNITS    const GetFoodStock ( GridPoint const gp ) const { return getGridField( gp ).GetFoodStock( ); }
+    virtual ENERGY_UNITS    const GetFertility ( GridPoint const gp ) const { return getGridField( gp ).GetFertility( ); }
+    virtual ENERGY_UNITS    const GetFertilizer( GridPoint const gp ) const { return getGridField( gp ).GetFertilizer( ); }
+    virtual EVO_GENERATION  const GetGenBirth  ( GridPoint const gp ) const { return getGridField( gp ).GetGenBirth( ); }
+    virtual Strategy::Id    const GetStrategyId( GridPoint const gp ) const { return getGridField( gp ).GetStrategyId( ); }
+    virtual IND_ID          const GetId        ( GridPoint const gp ) const { return getGridField( gp ).GetId( ); }
+    virtual tOrigin         const GetOrigin    ( GridPoint const gp ) const { return getGridField( gp ).GetOrigin( ); }
+    virtual ENERGY_UNITS    const GetEnergy    ( GridPoint const gp ) const { return getGridField( gp ).GetEnergy( ); }
+    virtual MEM_INDEX       const GetMemSize   ( GridPoint const gp ) const { return getGridField( gp ).GetMemSize( ); }
+    virtual MEM_INDEX       const GetMemUsed   ( GridPoint const gp ) const { return getGridField( gp ).GetMemUsed( ); }
+    virtual bool            const IsDead       ( GridPoint const gp ) const { return getGridField( gp ).IsDead( ); }
+    virtual bool            const IsAlive      ( GridPoint const gp ) const { return getGridField( gp ).IsAlive( ); }
+    virtual bool            const IsDefined    ( GridPoint const gp ) const { return getGridField( gp ).IsDefined( ); }
+    virtual PlannedActivity const GetPlan      ( GridPoint const gp ) const { return getGridField( gp ).GetPlan( ); };
 
-    virtual IND_ID         GetMemEntry  ( GridPoint const gp, MEM_INDEX    const index ) const { return getGridField( gp ).GetMemEntry( index ); }
-    virtual short          GetAllele    ( GridPoint const gp, GeneType::Id const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
+    virtual IND_ID          const GetMemEntry  ( GridPoint const gp, MEM_INDEX    const index ) const { return getGridField( gp ).GetMemEntry( index ); }
+    virtual short           const GetAllele    ( GridPoint const gp, GeneType::Id const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
+						    	  
+	virtual EVO_GENERATION  const GetEvoGenerationNr ( ) const { return m_grid.GetEvoGenerationNr( ); }
+						    	  
+	virtual tManipulator    const GetBrushManipulator( ) const { return m_brush.GetManipulator(); }
+    virtual PERCENT         const GetBrushIntensity  ( ) const { return m_brush.GetIntensity(); }
+    virtual tShape          const GetBrushShape      ( ) const { return m_brush.GetShape(); }
+    virtual GRID_COORD      const GetBrushSize       ( ) const { return m_brush.GetRadius(); }
+    virtual tBrushMode      const GetBrushMode       ( ) const { return m_brush.GetBrushMode(); }
 
-	virtual EVO_GENERATION GetEvoGenerationNr ( ) const { return m_grid.GetEvoGenerationNr( ); }
-
-	virtual tManipulator   GetBrushManipulator( ) const { return m_brush.GetManipulator(); }
-    virtual PERCENT        GetBrushIntensity  ( ) const { return m_brush.GetIntensity(); }
-    virtual tShape         GetBrushShape      ( ) const { return m_brush.GetShape(); }
-    virtual GRID_COORD     GetBrushSize       ( ) const { return m_brush.GetRadius(); }
-    virtual tBrushMode     GetBrushMode       ( ) const { return m_brush.GetBrushMode(); }
-
-    virtual PlannedActivity const & GetPlan( ) const { return m_plan; };
-
-	virtual int GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
+	virtual int const GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
 
 	virtual	ACTION_COUNT GetActionCounter
 	(
@@ -110,10 +109,9 @@ private:
     static ObserverInterface * m_pObservers;    // GUI call back for display of current model 
 	static EventInterface    * m_pEventPOI;
 
-	Grid            m_grid;	
-    PlannedActivity m_plan;
-	GridBrush 	    m_brush;
-	bool	    	m_bSimulationMode;
+	Grid      m_grid;	
+	GridBrush m_brush;
+	bool	  m_bSimulationMode;
 
 	void stopOnPoi( GridPoint const, PlannedActivity & );
 	bool IsPoi    ( GridPoint const gp ) { return  gp.IsNotNull( ) &&  GridPOI::IsPoi( GetId(gp) ); }

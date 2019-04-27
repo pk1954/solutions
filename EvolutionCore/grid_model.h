@@ -36,8 +36,9 @@ public:
 
 	void      ResetGrid    ( );
     void      FoodGrowth   ( );
-    void      MakePlan     ( GridPoint const, PlannedActivity & );
-    GridPoint ImplementPlan( GridPoint const, PlannedActivity const & );
+
+	PlannedActivity MakePlan     ( GridPoint const );
+    GridPoint       ImplementPlan( GridPoint const, PlannedActivity const & );
 
 	PERCENT      GetMutRate   ( GridPoint const gp ) { return getGridField( gp ).GetMutRate( ); }
 	ENERGY_UNITS GetFertilizer( GridPoint const gp ) { return getGridField( gp ).GetFertilizer( ); }
@@ -49,9 +50,10 @@ public:
 	void Apply2FoodStock (GridPoint const gp, ENERGY_UNITS const s, ManipulatorFunc m) { getGridField( gp ).Apply2FoodStock (s, m); }
 	void Apply2Fertility (GridPoint const gp, ENERGY_UNITS const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertility (s, m); }
 
-	void SetEnergy( GridPoint const gp, ENERGY_UNITS const s ) { getGridField( gp ).SetEnergy( s ); }
-	void IncEnergy( GridPoint const gp, ENERGY_UNITS const s ) { getGridField( gp ).IncEnergy( s ); }
-    void DecEnergy( GridPoint const gp, ENERGY_UNITS const s ) { getGridField( gp ).DecEnergy( s ); }
+	void SetPlan  ( GridPoint const gp, PlannedActivity const & plan ) { getGridField( gp ).SetPlan( plan ); }
+	void SetEnergy( GridPoint const gp, ENERGY_UNITS const s )         { getGridField( gp ).SetEnergy( s ); }
+	void IncEnergy( GridPoint const gp, ENERGY_UNITS const s )         { getGridField( gp ).IncEnergy( s ); }
+    void DecEnergy( GridPoint const gp, ENERGY_UNITS const s )         { getGridField( gp ).DecEnergy( s ); }
 
     void IncGenNr( ) { ++m_genEvo; }
 

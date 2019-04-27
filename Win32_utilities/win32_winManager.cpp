@@ -198,11 +198,17 @@ BOOL WinManager::GetWindowConfiguration( )
 		return FALSE;
 	}
 
-	if ( ! scriptWindowConfig.ScrProcess( m_strWindowConfigurationFile ) )
+	wcout << L"Window configuration file " << m_strWindowConfigurationFile;
+	if ( scriptWindowConfig.ScrProcess( m_strWindowConfigurationFile ) )
 	{
-		wcout << L"Window configuration file " << m_strWindowConfigurationFile << L" missing or bad" << endl;
+		wcout << L" sucessfully processed";
+	}
+	else
+	{
+		wcout << L" missing or bad";
 		return FALSE;
 	}
+	wcout << endl;
 
     return TRUE;
 }

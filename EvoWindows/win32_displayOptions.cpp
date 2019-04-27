@@ -31,41 +31,39 @@ void DspOptWindow::Start
     StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
 	m_pCore          = pCore;
 	m_IntValueLambda = nullptr;
-/* TODO:  Tooltipps 
-	{
-		HWND hwndDlg = GetWindowHandle( );
-		HWND hwndTip = CreateWindowEx
-					  (
-						  nullptr, TOOLTIPS_CLASS, nullptr,
-				          WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP | TTS_BALLOON,
-						  CW_USEDEFAULT, CW_USEDEFAULT,
-						  CW_USEDEFAULT, CW_USEDEFAULT,
-						  hwndDlg, nullptr, GetModuleHandle( nullptr ),
-						  nullptr
-					  );
-		assert( hwndTip != nullptr );
 
-		SetWindowPos
-		(
-			hwndTip, HWND_TOPMOST, 0, 0, 0, 0,
-			SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE
-		);
+	//{
+	//	HWND hwndDlg = GetWindowHandle( );
+	//	HWND hwndTip = CreateWindowEx
+	//				  (
+	//					  WS_EX_TOPMOST, TOOLTIPS_CLASS, nullptr,
+	//			          WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,
+	//					  CW_USEDEFAULT, CW_USEDEFAULT,
+	//					  CW_USEDEFAULT, CW_USEDEFAULT,
+	//					  hwndDlg, nullptr, GetModuleHandle( nullptr ),
+	//					  nullptr
+	//				  );
+	//	assert( hwndTip != nullptr );
 
-		PTSTR pszText = L"Fyxyxyxyxyx";
+	//	SetWindowPos
+	//	(
+	//		hwndTip, HWND_TOPMOST, 0, 0, 0, 0,
+	//		SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE
+	//	);
 
-		// Associate the tooltip with the tool.
-		TOOLINFO toolInfo = { 0 };
-		toolInfo.cbSize = sizeof(toolInfo);
-		toolInfo.hwnd = hwndDlg;
-		toolInfo.uFlags = TTF_SUBCLASS | TTF_IDISHWND;
-		toolInfo.uId = (UINT_PTR)hwndDlg;
-		toolInfo.lpszText = pszText;
-		::GetClientRect (hwndDlg, &toolInfo.rect);
+	//	PTSTR pszText = L"Fyxyxyxyxyx";
 
-		LRESULT lres = ::SendMessage( hwndTip, TTM_ADDTOOL, 0, (LPARAM)&toolInfo );
-		assert( lres );
-	}
-*/
+	//	// Associate the tooltip with the tool.
+	//	TOOLINFO toolInfo = { 0 };
+	//	toolInfo.cbSize = sizeof(toolInfo);
+	//	toolInfo.hwnd = hwndTip;
+	//	toolInfo.uFlags = TTF_ABSOLUTE | TTF_IDISHWND;
+	//	toolInfo.uId = (UINT_PTR)hwndTip;
+	//	toolInfo.lpszText = pszText;
+	//	::GetClientRect (hwndDlg, &toolInfo.rect);
+
+	//	LRESULT lres = ::SendMessage( hwndTip, TTM_ADDTOOL, 0, (LPARAM)&toolInfo );
+	//}
 }
 
 void DspOptWindow::Stop( )

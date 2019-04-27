@@ -19,7 +19,8 @@ ObserverInterface * EvolutionCoreImpl::m_pObservers = nullptr;    // GUI call ba
 EventInterface    * EvolutionCoreImpl::m_pEventPOI  = nullptr;
 
 EvolutionCoreImpl::EvolutionCoreImpl( ) :
-	m_brush( & m_grid )
+	m_brush( & m_grid ),
+	m_bSimulationMode( false )
 { 
 	ResetAll( );
 };
@@ -29,7 +30,6 @@ EvolutionCoreImpl::~EvolutionCoreImpl( ) { }
 void EvolutionCoreImpl::ResetAll( )
 {
     m_grid.ResetGrid( );
-	m_plan.SetInvalid( );
 	m_brush.Reset( );
 	m_bSimulationMode = false;
 	GridPOI::ClearPoi( );
@@ -52,9 +52,8 @@ GridPoint EvolutionCoreImpl::FindGridPoint( IND_ID const & id ) const
 
 void EvolutionCoreImpl::Compute( )
 {
-    GplIterator       m_gplIterator( m_grid );
-    GridPoint         gpRun = m_gplIterator.Begin( );
-	PlannedActivity * pPlan = GetPlan4Writing( );
+    GplIterator m_gplIterator( m_grid );
+    GridPoint   gpRun = m_gplIterator.Begin( );
 
 	m_grid.PrepareActionCounters( );
     while ( gpRun.IsNotNull( ) )
@@ -62,9 +61,10 @@ void EvolutionCoreImpl::Compute( )
         assert( IsInGrid( gpRun ) );
         assert( m_grid.IsAlive( gpRun ) );
 
-        m_grid.MakePlan( gpRun, * pPlan );
-		stopOnPoi      ( gpRun, * pPlan );
-        gpRun = m_grid.ImplementPlan( gpRun, * pPlan );   // may return NULL_VAL
+		PlannedActivity plan = m_grid.MakePlan( gpRun );
+		m_grid.SetPlan( gpRun, plan );
+		stopOnPoi( gpRun, plan );
+        gpRun = m_grid.ImplementPlan( gpRun, plan );   // may return NULL_VAL
     }
 
     m_grid.FoodGrowth( );

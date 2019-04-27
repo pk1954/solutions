@@ -6,6 +6,7 @@
 #include <iostream>
 #include "EvolutionTypes.h"
 #include "gridPoint.h"
+#include "plannedActivity.h"
 #include "interaction.h"
 #include "individual.h"
 
@@ -52,22 +53,23 @@ public:
 		return ENERGY_UNITS( ClipToMinMax( available, 0_ENERGY_UNITS, sWant ) ); 
 	}
 
-    PERCENT        GetMutRate( )    const { return m_mutRate;  }
-    ENERGY_UNITS   GetFoodStock( )  const { return m_enFoodStock;  }
-    ENERGY_UNITS   GetFertility( )  const { return m_enFertility;  }
-    ENERGY_UNITS   GetFertilizer( ) const { return m_enFertilizer; }
-    EVO_GENERATION GetGenBirth( )   const { return m_Individual.GetGenBirth( ); }
-    Action::Id     GetLastAction( ) const { return m_Individual.GetLastAction( ); }
-    IND_ID         GetId( )         const { return m_Individual.GetId( ); }
-    tOrigin        GetOrigin( )     const { return m_Individual.GetOrigin( ); }
-    ENERGY_UNITS   GetEnergy( )     const { return m_Individual.GetEnergy( ); }
-    bool           IsDead( )        const { return m_Individual.IsDead( ); }
-    bool           IsAlive( )       const { return m_Individual.IsAlive( ); };
-    bool           IsDefined( )     const { return m_Individual.IsDefined( ); };
-    MEM_INDEX      GetMemSize( )    const { return m_Individual.GetMemSize( ); }
-    MEM_INDEX      GetMemUsed( )    const { return m_Individual.GetMemUsed( ); }
-    Genome const & GetGenome( )     const { return m_Individual.GetGenome( ); }
-    Strategy::Id   GetStrategyId( ) const { return m_Individual.GetStrategyId( ); }
+	PERCENT           GetMutRate( )      const { return m_mutRate;  }
+	ENERGY_UNITS      GetFoodStock( )    const { return m_enFoodStock;  }
+    ENERGY_UNITS      GetFertility( )    const { return m_enFertility;  }
+    ENERGY_UNITS      GetFertilizer( )   const { return m_enFertilizer; }
+    EVO_GENERATION    GetGenBirth( )     const { return m_Individual.GetGenBirth( ); }
+    Action::Id        GetLastAction( )   const { return m_Individual.GetLastAction( ); }
+    IND_ID            GetId( )           const { return m_Individual.GetId( ); }
+    tOrigin           GetOrigin( )       const { return m_Individual.GetOrigin( ); }
+    ENERGY_UNITS      GetEnergy( )       const { return m_Individual.GetEnergy( ); }
+    bool              IsDead( )          const { return m_Individual.IsDead( ); }
+    bool              IsAlive( )         const { return m_Individual.IsAlive( ); };
+    bool              IsDefined( )       const { return m_Individual.IsDefined( ); };
+    MEM_INDEX         GetMemSize( )      const { return m_Individual.GetMemSize( ); }
+    MEM_INDEX         GetMemUsed( )      const { return m_Individual.GetMemUsed( ); }
+    Genome const &    GetGenome( )       const { return m_Individual.GetGenome( ); }
+    Strategy::Id      GetStrategyId( )   const { return m_Individual.GetStrategyId( ); }
+	PlannedActivity   GetPlan( )         const { return m_Individual.GetPlan( );  }
 
 	short  GetAllele( GeneType::Id const geneType ) const { return GetGenome( ).GetAllele( geneType ); }
 
@@ -159,23 +161,28 @@ public:
 		gfA.SetLastAction( Action::Id::interact );
 	};
 
+	void SetPlan( PlannedActivity const & plan ) 
+	{ 
+		m_Individual.SetPlan( plan ); 
+	};
+
 private:
     // data for management of neighborhood relation and list of living individuals
 
-    Individual   m_Individual;   //  96 byte    changed by algorithm
+    Individual      m_Individual;   // 114 byte    changed by algorithm
 
-	GridPoint    m_gp;           //   4 byte     will stay unchanged after initialization
-    GridPoint    m_gpSenior;     //   4 byte     will stay unchanged after initialization
-    GridPoint    m_gpJunior;     //   4 byte     will stay unchanged after initialization
-
-    ENERGY_UNITS m_enFoodStock;  //   2 byte    changed by algorithm
-    ENERGY_UNITS m_enFertilizer; //   2 byte    changed by algorithm
+	GridPoint       m_gp;           //   4 byte     will stay unchanged after initialization
+    GridPoint       m_gpSenior;     //   4 byte     will stay unchanged after initialization
+    GridPoint       m_gpJunior;     //   4 byte     will stay unchanged after initialization
+				    
+    ENERGY_UNITS    m_enFoodStock;  //   2 byte    changed by algorithm
+    ENERGY_UNITS    m_enFertilizer; //   2 byte    changed by algorithm
 
 // configuraton data, changed only by user 
 
-    PERCENT      m_mutRate;      //   2 byte
-    ENERGY_UNITS m_enFertility;  //   2 byte     normal fertility of soil
-                      // sum        120 byte
+    PERCENT         m_mutRate;      //   2 byte   
+    ENERGY_UNITS    m_enFertility;  //   2 byte     normal fertility of soil
+                         // sum        134 byte
 
 // static members for caching frequently used configuration items
 

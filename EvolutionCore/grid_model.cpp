@@ -145,16 +145,13 @@ GridPoint Grid::choosePartner( Neighborhood & gpListFilled )
     return m_gpPartner;
 }
 
-void Grid::MakePlan
-( 
-    GridPoint       const gpRun, 
-    PlannedActivity     & plan
-)
+PlannedActivity Grid::MakePlan( GridPoint const gpRun )
 {
-    GridField const & gfRun = GetGridField( gpRun );
+	GridField const & gfRun = GetGridField( gpRun );
     assert( gfRun.IsAlive( ) );
 
-    plan.SetActor( gpRun );
+	PlannedActivity plan;
+	plan.SetActor( gpRun );
 
     // basic food consumption
 
@@ -214,6 +211,8 @@ void Grid::MakePlan
 	default:
         assert( false );
     }
+
+	return plan;
 }
 
 GridPoint Grid::ImplementPlan   // may return NULL_VAL

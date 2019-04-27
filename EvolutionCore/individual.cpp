@@ -47,6 +47,7 @@ void Individual::ResetIndividual( )
     m_action     = Action::Id::undefined;
     m_stratData.SetMemorySize( 0 );
     m_genome.InitGenome( );
+	m_plan.SetInvalid( );
 };
 
 void Individual::Create
@@ -66,7 +67,7 @@ void Individual::Create
     SetEnergy( m_initialEnergy ); // makes IsAlive() true. Last assignment to avoid race conditions  
 }
 
-// Clone - creates a mutated clone of this object
+// Clone - creates a mutated clone of this individual
 //         all member variables of new individual are initialized after this function
 
 void Individual::Clone

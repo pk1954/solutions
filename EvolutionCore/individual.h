@@ -6,7 +6,7 @@
 #include "genome.h"
 #include "strategy.h"
 #include "StrategyData.h"
-#include "EvolutionTypes.h"
+#include "plannedActivity.h"
 
 //lint -sem(Individual::ResetIndividual,initializer)
 
@@ -22,19 +22,20 @@ public:
 
     void ResetIndividual( );
     
-    ENERGY_UNITS   GetEnergy    ( )                       const { return m_enStock; };
-    EVO_GENERATION GetGenBirth  ( )                       const { return m_genBirth; };
-    bool           IsDead       ( )                       const { return m_enStock <= 0_ENERGY_UNITS; };
-    bool           IsAlive      ( )                       const { return m_enStock >  0_ENERGY_UNITS; };
-    bool           IsDefined    ( )                       const { return m_id.IsNotNull(); };
-    IND_ID         GetId        ( )                       const { return m_id; };
-    tOrigin        GetOrigin    ( )                       const { return m_origin; }
-    Action::Id     GetLastAction( )                       const { return m_action; }
-    Genome const & GetGenome    ( )                       const { return m_genome; }
-    MEM_INDEX      GetMemSize   ( )                       const { return m_stratData.GetMemSize( );  }
-    MEM_INDEX      GetMemUsed   ( )                       const { return m_stratData.GetMemUsed( ); }
-    short          GetAllele    ( GeneType::Id const gt ) const { return m_genome.GetAllele( gt ); }
-    IND_ID         GetMemEntry  ( MEM_INDEX    const ui ) const { return m_stratData.GetMemEntry( ui ); }
+    ENERGY_UNITS    GetEnergy    ( )                       const { return m_enStock; };
+    EVO_GENERATION  GetGenBirth  ( )                       const { return m_genBirth; };
+    bool            IsDead       ( )                       const { return m_enStock <= 0_ENERGY_UNITS; };
+    bool            IsAlive      ( )                       const { return m_enStock >  0_ENERGY_UNITS; };
+    bool            IsDefined    ( )                       const { return m_id.IsNotNull(); };
+    IND_ID          GetId        ( )                       const { return m_id; };
+    tOrigin         GetOrigin    ( )                       const { return m_origin; }
+    Action::Id      GetLastAction( )                       const { return m_action; }
+    Genome const &  GetGenome    ( )                       const { return m_genome; }
+	PlannedActivity GetPlan      ( )                       const { return m_plan; }
+	MEM_INDEX       GetMemSize   ( )                       const { return m_stratData.GetMemSize( );  }
+    MEM_INDEX       GetMemUsed   ( )                       const { return m_stratData.GetMemUsed( ); }
+    short           GetAllele    ( GeneType::Id const gt ) const { return m_genome.GetAllele( gt ); }
+    IND_ID          GetMemEntry  ( MEM_INDEX    const ui ) const { return m_stratData.GetMemEntry( ui ); }
 
 	Strategy::Id GetStrategyId( ) const { return m_pStrategy->GetStrategyId(); }
 
@@ -55,6 +56,11 @@ public:
 	void SetLastAction( Action::Id const action ) 
 	{ 
 		m_action = action; 
+	}
+
+	void SetPlan( PlannedActivity const & plan ) 
+	{ 
+		m_plan = plan; 
 	}
 
 	void SetEnergy( ENERGY_UNITS const energy )
@@ -78,7 +84,8 @@ public:
 private:
     StrategyData     m_stratData;   // 40 bytes
 	Strategy const * m_pStrategy;   //  8 bytes 
-    IND_ID           m_id;          //  4 bytes
+	PlannedActivity  m_plan;        // 18 byte   
+	IND_ID           m_id;          //  4 bytes
     EVO_GENERATION   m_genBirth;    //  4 bytes
     tOrigin          m_origin;      //  2 bytes
     ENERGY_UNITS     m_enCapacity;  //  2 bytes
@@ -86,7 +93,7 @@ private:
     ENERGY_UNITS     m_enStock;     //  2 bytes
     Genome           m_genome;      // 30 bytes
 //	short            padding;       //  2 bytes 
-                             // sum:   96 bytes
+                             // sum:  114 bytes
 
 	static const std::unordered_map< Strategy::Id, Strategy * const > m_apStrat; 
 

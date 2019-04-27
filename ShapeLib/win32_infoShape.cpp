@@ -30,8 +30,8 @@ void InfoShape::FillBuffer( EvolutionCore const * const pCore, GridPoint const g
 	buffer << L"Or: " << setw( 5 ) << origin << endl;
 	buffer << L"Str:" << setw( 5 ) << strategy;
 
-	PlannedActivity plan = pCore->GetPlan( );
-	if ( plan.IsValid( ) )
+	PlannedActivity plan = pCore->GetPlan( gp );
+//	if ( plan.IsValid( ) )
 	{
 		if ( (gp == plan.GetActor( )) || (gp == plan.GetPartner( )) )
 		{
