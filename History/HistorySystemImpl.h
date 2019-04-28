@@ -57,6 +57,7 @@ public:
 	virtual void              ClearHistory    ( HIST_GENERATION const );
     virtual ModelData const * ApproachHistGen ( HIST_GENERATION const );
 	virtual tGenCmd           GetGenerationCmd( HIST_GENERATION const );
+	virtual ModelData const * GetModelData    ( HIST_GENERATION const );
 
 	virtual HistoryIterator * CreateHistoryIterator( ) const;
 

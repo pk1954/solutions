@@ -8,6 +8,7 @@
 #pragma once
 
 #include "HistorySystem.h"
+#include "plannedActivity.h"
 #include "EvoModelDataGlue.h"
 #include "EvoGenerationCmd.h"
 
@@ -47,12 +48,19 @@ public:
 
 	HIST_GENERATION GetGenWithIndividual( IND_ID const &, bool const ) const; 
 
+	PlannedActivity const GetPlan( HIST_GENERATION const, GridPoint const ) const;
+
 	void EvoClearHistory( );
 
 	ModelData const * EvoCreateNextGenCommand( )
 	{ 
 	 	return m_pHistorySystem->CreateAppCommand( NEXT_GEN_CMD );  
 	}  
+
+	ModelData const * GetModelData( HIST_GENERATION const gen ) const
+	{
+		return m_pHistorySystem->GetModelData( gen );
+	}
 
 	bool IsEditorCommand( HIST_GENERATION const gen ) const
 	{

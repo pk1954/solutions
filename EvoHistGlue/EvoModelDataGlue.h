@@ -34,6 +34,11 @@ public:
 		return m_pEvolutionCore;
 	}
 
+	EvolutionCore const * GetEvolutionCoreC( ) const
+	{
+		return m_pEvolutionCore;
+	}
+
 	virtual BYTES GetModelSize( ) const
 	{
 		return EvolutionCore::GetCoreSize( ) + BYTES(sizeof(EvoModelDataGlue));

@@ -181,8 +181,8 @@ PlannedActivity Grid::MakePlan( GridPoint const gpRun )
 
     switch ( action )
     {
-    case Action::Id::move:	// choose a free neighbour cell and move there
-    case Action::Id::clone:  // choose a free neighbour cell and create a clone there 
+    case Action::Id::move:	    // choose a free neighbour cell and move there
+    case Action::Id::clone:     // choose a free neighbour cell and create a clone there 
         plan.SetTarget ( chooseTarget( m_emptyNeighborSlots ) );
         plan.NoPartner( );
         break;

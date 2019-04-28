@@ -55,6 +55,8 @@ public:
     virtual ModelData const * ApproachHistGen ( HIST_GENERATION const ) = 0;
 	virtual tGenCmd           GetGenerationCmd( HIST_GENERATION const ) = 0;
 
+	virtual ModelData const * GetModelData( HIST_GENERATION const ) = 0;
+
 	virtual void              ShutDownHistCache( ) = 0;
 
 	virtual HIST_GENERATION FindGenerationWithProperty( GenerationProperty const &, bool const ) const = 0;

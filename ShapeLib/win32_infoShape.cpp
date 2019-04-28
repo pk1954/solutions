@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "config.h"
+#include "plannedActivity.h"
 #include "win32_infoShape.h"
 
 using std::wostringstream;
@@ -31,14 +32,11 @@ void InfoShape::FillBuffer( EvolutionCore const * const pCore, GridPoint const g
 	buffer << L"Str:" << setw( 5 ) << strategy;
 
 	PlannedActivity plan = pCore->GetPlan( gp );
-//	if ( plan.IsValid( ) )
+	if ( (gp == plan.GetActor( )) || (gp == plan.GetPartner( )) )
 	{
-		if ( (gp == plan.GetActor( )) || (gp == plan.GetPartner( )) )
-		{
-			buffer << endl;
-			buffer << (( gp == plan.GetActor( ) ) ? L"** ACTOR **" : L"** PARTNER **") << endl;
-			buffer << L"** "  <<  Action::GetName( plan.GetActionType( ) ) << L" **"   << endl;
-			buffer << L"BaseCons: " << plan.GetBaseConsumption( );
-		}
+		buffer << endl;
+		buffer << (( gp == plan.GetActor( ) ) ? L"** ACTOR **" : L"** PARTNER **") << endl;
+		buffer << L"** "  <<  Action::GetName( plan.GetActionType( ) ) << L" **"   << endl;
+		buffer << L"BaseCons: " << plan.GetBaseConsumption( );
 	}
 }

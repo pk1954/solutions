@@ -47,7 +47,6 @@ void Individual::ResetIndividual( )
     m_action     = Action::Id::undefined;
     m_stratData.SetMemorySize( 0 );
     m_genome.InitGenome( );
-	m_plan.SetInvalid( );
 };
 
 void Individual::Create

@@ -144,6 +144,17 @@ tGenCmd HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
 	return cmd.GetCommand( );
 }
 
+ModelData const * HistorySystemImpl::GetModelData( HIST_GENERATION const gen )
+{
+	ModelData     const * pModelData { nullptr };
+	GenerationCmd const   cmd { m_GenCmdList[ gen ] };
+
+	if ( cmd.IsCachedGeneration( ) )
+		pModelData = m_pHistoryCache->GetHistCacheItemC( cmd.GetSlotNr( ) )->GetModelDataC();
+
+	return pModelData;
+}
+
 // private member functions
 
 // save2History - Save Generation data (rule how to get to next generation), current Grid, etc. to new slot

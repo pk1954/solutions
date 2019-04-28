@@ -15,7 +15,6 @@
 #include "HistoryGeneration.h"
 #include "EvolutionTypes.h"
 #include "EvoGenerationCmd.h"
-#include "EvoHistorySysGlue.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 

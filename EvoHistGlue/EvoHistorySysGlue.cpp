@@ -98,6 +98,19 @@ void EvoHistorySysGlue::EvoClearHistory(  )
 	m_pHistorySystem->ClearHistory( 0 );
 }
 
+PlannedActivity const EvoHistorySysGlue::GetPlan
+( 
+	HIST_GENERATION const gen,
+	GridPoint       const gp
+) const
+{
+	ModelData        const * pModelData    { GetModelData( gen ) };
+	EvoModelDataGlue const * pEvoModelData { static_cast< EvoModelDataGlue const * >( pModelData ) };
+	EvolutionCore    const * pCore         { pEvoModelData->GetEvolutionCoreC( ) };
+	PlannedActivity  const   plan          { pCore->GetPlan( gp ) };
+	return plan;
+}
+
 bool EvoHistorySysGlue::EvoCreateEditorCommand( GenerationCmd cmd ) 
 { 
 	if ( 

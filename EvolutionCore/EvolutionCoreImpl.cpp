@@ -81,12 +81,9 @@ void EvolutionCoreImpl::stopOnPoi
     {
         if ( IsPoi( gpRun ) || IsPoi( plan.GetPartner( ) ) )
 		{
-		    plan.SetValid( );
 			if (m_pObservers != nullptr)
 				m_pObservers->Notify( true );
-
             m_pEventPOI->Wait( );
-		    plan.SetInvalid( );
 		}
     }
 }
