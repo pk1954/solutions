@@ -58,7 +58,6 @@ public:
     ENERGY_UNITS      GetFertility( )    const { return m_enFertility;  }
     ENERGY_UNITS      GetFertilizer( )   const { return m_enFertilizer; }
     EVO_GENERATION    GetGenBirth( )     const { return m_Individual.GetGenBirth( ); }
-    Action::Id        GetLastAction( )   const { return m_Individual.GetLastAction( ); }
     IND_ID            GetId( )           const { return m_Individual.GetId( ); }
     tOrigin           GetOrigin( )       const { return m_Individual.GetOrigin( ); }
     ENERGY_UNITS      GetEnergy( )       const { return m_Individual.GetEnergy( ); }
@@ -75,11 +74,10 @@ public:
 
     IND_ID GetMemEntry( MEM_INDEX const i ) const { return m_Individual.GetMemEntry( i ); }
 
-    void   ResetIndividual( )                     { m_Individual.ResetIndividual( ); }
-    void   SetEnergy( ENERGY_UNITS const sInc )   { m_Individual.SetEnergy( sInc ); }
-    void   DecEnergy( ENERGY_UNITS const sDec )   { m_Individual.IncEnergy( - sDec ); }
-    void   IncEnergy( ENERGY_UNITS const sInc )   { m_Individual.IncEnergy( sInc ); }
-    void   SetLastAction( Action::Id const at )   { m_Individual.SetLastAction( at ); }
+    void ResetIndividual( )                   { m_Individual.ResetIndividual( ); }
+    void SetEnergy( ENERGY_UNITS const sInc ) { m_Individual.SetEnergy( sInc ); }
+    void DecEnergy( ENERGY_UNITS const sDec ) { m_Individual.IncEnergy( - sDec ); }
+    void IncEnergy( ENERGY_UNITS const sInc ) { m_Individual.IncEnergy( sInc ); }
 
 	void CreateIndividual( IND_ID const id, EVO_GENERATION const genBirth, Strategy::Id const s )
 	{
@@ -158,7 +156,6 @@ public:
 	static void Interact( GridField & gfA, GridField & gfB )
 	{
 		INTERACTION::Interact( gfA.m_Individual, gfB.m_Individual );
-		gfA.SetLastAction( Action::Id::interact );
 	};
 
 	void SetPlan( PlannedActivity const & plan ) 
@@ -169,20 +166,20 @@ public:
 private:
     // data for management of neighborhood relation and list of living individuals
 
-    Individual      m_Individual;   // 114 byte    changed by algorithm
+    Individual   m_Individual;   // 104 byte    changed by algorithm
 
-	GridPoint       m_gp;           //   4 byte     will stay unchanged after initialization
-    GridPoint       m_gpSenior;     //   4 byte     will stay unchanged after initialization
-    GridPoint       m_gpJunior;     //   4 byte     will stay unchanged after initialization
-				    
-    ENERGY_UNITS    m_enFoodStock;  //   2 byte    changed by algorithm
-    ENERGY_UNITS    m_enFertilizer; //   2 byte    changed by algorithm
+	GridPoint    m_gp;           //   4 byte    will stay unchanged after initialization
+    GridPoint    m_gpSenior;     //   4 byte    
+    GridPoint    m_gpJunior;     //   4 byte    
+				 
+    ENERGY_UNITS m_enFoodStock;  //   2 byte    changed by algorithm
+    ENERGY_UNITS m_enFertilizer; //   2 byte    changed by algorithm
 
 // configuraton data, changed only by user 
 
-    PERCENT         m_mutRate;      //   2 byte   
-    ENERGY_UNITS    m_enFertility;  //   2 byte     normal fertility of soil
-                         // sum        134 byte
+    PERCENT      m_mutRate;      //   2 byte   
+    ENERGY_UNITS m_enFertility;  //   2 byte    normal fertility of soil
+                         // sum        126 byte
 
 // static members for caching frequently used configuration items
 

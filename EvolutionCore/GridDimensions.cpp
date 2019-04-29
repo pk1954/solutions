@@ -95,20 +95,3 @@ void GridDimensions::DefineGridSize
 		}
 	);
 }
-
-void GridDimensions::GetNeighborLists
-(
-	Grid      const & grid,
-	GridPoint const & gpCenter,
-	Neighborhood    * pEmptySlots,
-	Neighborhood    * pOccupiedSlots
-)
-{
-	pEmptySlots   ->Clear();
-	pOccupiedSlots->Clear();
-	NEIGHBORS const & neighbors = (* m_pGridNeighbors)[ gpCenter.GetXvalue() ][ gpCenter.GetYvalue() ];
-	for ( auto gp: neighbors )
-	{
-		(grid.IsAlive(gp) ? pOccupiedSlots : pEmptySlots)->AddToList( gp );
-	}
-}

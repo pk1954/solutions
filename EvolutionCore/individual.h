@@ -3,12 +3,11 @@
 
 #pragma once
 
+#include <array>
 #include "genome.h"
 #include "strategy.h"
 #include "StrategyData.h"
 #include "plannedActivity.h"
-
-//lint -sem(Individual::ResetIndividual,initializer)
 
 class Random;
 
@@ -29,15 +28,13 @@ public:
     bool            IsDefined    ( )                       const { return m_id.IsNotNull(); };
     IND_ID          GetId        ( )                       const { return m_id; };
     tOrigin         GetOrigin    ( )                       const { return m_origin; }
-    Action::Id      GetLastAction( )                       const { return m_action; }
     Genome const &  GetGenome    ( )                       const { return m_genome; }
 	PlannedActivity GetPlan      ( )                       const { return m_plan; }
+	Strategy::Id    GetStrategyId( )                       const { return m_strategyId; }
 	MEM_INDEX       GetMemSize   ( )                       const { return m_stratData.GetMemSize( );  }
     MEM_INDEX       GetMemUsed   ( )                       const { return m_stratData.GetMemUsed( ); }
     short           GetAllele    ( GeneType::Id const gt ) const { return m_genome.GetAllele( gt ); }
     IND_ID          GetMemEntry  ( MEM_INDEX    const ui ) const { return m_stratData.GetMemEntry( ui ); }
-
-	Strategy::Id GetStrategyId( ) const { return m_pStrategy->GetStrategyId(); }
 
     void Create( IND_ID const, EVO_GENERATION const, Strategy::Id const );
     void Clone ( IND_ID const, EVO_GENERATION const, PERCENT const, Random &, Individual const & );
@@ -45,18 +42,13 @@ public:
 
 	void Remember( IND_ID const & partnerId, bool const bPartnerReaction ) 
 	{ 
-		m_pStrategy->Remember( m_stratData, partnerId, bPartnerReaction );
+		m_apStrat.at( static_cast<int>(m_strategyId) )->Remember( m_stratData, partnerId, bPartnerReaction );
 	};
 
 	bool InteractWith( IND_ID const & partnerId ) 
 	{ 
-		return m_pStrategy->InteractWith( m_stratData, partnerId );
+		return m_apStrat.at( static_cast<int>(m_strategyId) )->InteractWith( m_stratData, partnerId );
 	};
-
-	void SetLastAction( Action::Id const action ) 
-	{ 
-		m_action = action; 
-	}
 
 	void SetPlan( PlannedActivity const & plan ) 
 	{ 
@@ -82,20 +74,18 @@ public:
 	}
 
 private:
-    StrategyData     m_stratData;   // 40 bytes
-	Strategy const * m_pStrategy;   //  8 bytes 
-	PlannedActivity  m_plan;        // 18 byte   
-	IND_ID           m_id;          //  4 bytes
-    EVO_GENERATION   m_genBirth;    //  4 bytes
-    tOrigin          m_origin;      //  2 bytes
-    ENERGY_UNITS     m_enCapacity;  //  2 bytes
-	Action::Id       m_action;      //  2 bytes
-    ENERGY_UNITS     m_enStock;     //  2 bytes
-    Genome           m_genome;      // 30 bytes
-//	short            padding;       //  2 bytes 
-                             // sum:  114 bytes
+    StrategyData    m_stratData;   // 40 bytes
+	IND_ID          m_id;          //  4 bytes
+	EVO_GENERATION  m_genBirth;    //  4 bytes
+	PlannedActivity m_plan;        // 18 bytes   
+	Strategy::Id    m_strategyId;  //  2 bytes 
+    Genome          m_genome;      // 30 bytes
+    tOrigin         m_origin;      //  2 bytes
+    ENERGY_UNITS    m_enCapacity;  //  2 bytes
+    ENERGY_UNITS    m_enStock;     //  2 bytes
+                             // sum:  104 bytes
 
-	static const std::unordered_map< Strategy::Id, Strategy * const > m_apStrat; 
+	static const std::array< Strategy * const, Strategy::COUNT > m_apStrat; 
 
     static ENERGY_UNITS m_stdEnergyCapacity;
     static ENERGY_UNITS m_initialEnergy;

@@ -70,5 +70,5 @@ class EmptyStrategy: public Strategy
 public:
     virtual Id   GetStrategyId( )                                         const { return Id::empty; };
 	virtual bool InteractWith( StrategyData &, IND_ID const )             const { return false; };
-	virtual void Remember    ( StrategyData &, IND_ID const, bool const ) const {};
+	virtual void Remember    ( StrategyData &, IND_ID const, bool const ) const { };
 };

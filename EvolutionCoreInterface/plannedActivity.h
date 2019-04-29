@@ -32,9 +32,10 @@ public:
     void NoTarget ( ) { m_gpTarget .Set2Null( ); }
     void NoPartner( ) { m_gpPartner.Set2Null( ); }
 
-    ENERGY_UNITS GetBaseConsumption( ) const   { return m_iBaseConsumption; }
-    void         SetBaseConsumption( ENERGY_UNITS const iVal ) { m_iBaseConsumption  = iVal; }
-    void         IncBaseConsumption( ENERGY_UNITS const iVal ) { m_iBaseConsumption += iVal; }
+    ENERGY_UNITS GetBaseConsumption( ) const { return m_iBaseConsumption; }
+
+    void SetBaseConsumption( ENERGY_UNITS const iVal ) { m_iBaseConsumption  = iVal; }
+    void IncBaseConsumption( ENERGY_UNITS const iVal ) { m_iBaseConsumption += iVal; }
 
     Action::Id GetActionType( ) const { return m_action; }
     void       SetActionType( Action::Id const action ) { m_action = action;}
@@ -47,4 +48,4 @@ private:
     ENERGY_UNITS m_iBaseConsumption;
 };
 
-std::wostream & operator << ( std::wostream & , PlannedActivity const & );  // implemented in dump.cpp
+//std::wostream & operator << ( std::wostream & , PlannedActivity const & );

@@ -5,10 +5,12 @@
 
 #include <algorithm>  // min/max/abs templates
 #include <iostream>
+#include <iomanip>
 #include "NamedType.h"
 
 using std::abs;
 using std::max;
+using std::setw;
 
 template <typename BASE_TYPE, typename Parameter> 
 class PointType
@@ -116,7 +118,7 @@ public:
 
 	friend std::wostream & operator<< ( std::wostream & out, PointType const & param )
 	{
-		out << L" " << param.GetX() << L" " << param.GetY() << L" ";
+		out << L" " << setw(4) << param.GetX() << L" " << setw(4) << param.GetY() << L" ";
 		return out;
 	}
 private:

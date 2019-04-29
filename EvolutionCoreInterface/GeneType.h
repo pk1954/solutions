@@ -27,6 +27,7 @@ public:
 		thresholdFert,   // minimum available energy for considering FERTILIZE
 		maxEat,          // maximum available energy for considering EAT
 		cloneDonation,   // amount of energy donated to clone. 0 means nothing (clone dies), SHORT_MAX means all available energy (parent dies)
+		reserve1,
 		count,
 		undefined = count
 	};

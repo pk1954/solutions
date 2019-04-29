@@ -133,7 +133,7 @@ GridPoint Grid::chooseTarget( Neighborhood & gpListEmpty )
     if ( m_bNeighborhoodFoodSensitivity )
         getBestNeighborSlots( gpListEmpty );   // consider only neighbor slots with best food stock
 
-    GridPoint m_gpTarget = gpListEmpty.GetRandomElement( m_random.NextRandomNumber( ) ); // choose one of them at random
+    GridPoint m_gpTarget = gpListEmpty.GetRandomElement( m_random.NextRandomNumber( ) ); // choose one of them randomly
     assert( IsDead( m_gpTarget ) );
     return m_gpTarget;
 }
@@ -158,15 +158,19 @@ PlannedActivity Grid::MakePlan( GridPoint const gpRun )
     plan.SetBaseConsumption( m_enBasicFoodConsumption );
     plan.IncBaseConsumption( m_enMemSizeFoodConsumption * gfRun.GetMemSize( ).GetValue() );
 
-	GridDimensions::GetNeighborLists
-	(
-		* this,
-		gpRun,
-		& m_emptyNeighborSlots,
-		& m_occupiedNeighborSlots
-	);
+	// inspect neighborhood
+
+	m_emptyNeighborSlots.Clear( );
+	m_occupiedNeighborSlots.Clear( );
+
+	for ( auto gp: GridDimensions::GetNeighbors( gpRun ) )
+	{
+		(IsAlive(gp) ? m_occupiedNeighborSlots : m_emptyNeighborSlots).AddToList( gp );
+	}
 
     assert( m_emptyNeighborSlots.GetLength() + m_occupiedNeighborSlots.GetLength() == Neighborhood::GetNrOfNeighbors( ) );
+
+	// decide on action
 
     Action::Id action = gfRun.GetGenome( ).GetOption
 	( 
@@ -224,8 +228,7 @@ GridPoint Grid::ImplementPlan   // may return NULL_VAL
     GridField & gfRun  = getGridField( gpRun );
     GridPoint   gpNext = gfRun.GetJuniorGp( );      // may be NULL_VAL
 
-    gfRun.SetLastAction( plan.GetActionType( ) );
-    gfRun.DecEnergy    ( plan.GetBaseConsumption( ) );
+    gfRun.DecEnergy( plan.GetBaseConsumption( ) );
 
 	incActionCounter( gfRun.GetStrategyId( ), plan.GetActionType( ) );
 

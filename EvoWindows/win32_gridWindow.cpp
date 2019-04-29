@@ -168,7 +168,8 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 			(void)InsertMenu( hPopupMenu, 0, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hTimeTravelMenu, L"Time travel" );
 		}
 
-		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI, L"POI" );
+		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI,      L"POI" );
+		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SHOW_HISTORY, L"Show individual history" );		
 	}
 	if ( m_pWorkThreadInterface->IsRunning() )
 		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_STOP, L"Stop" );
@@ -335,6 +336,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 				m_pDrawFrame->CallStrategyColorDialog( GetWindowHandle(), strat );
 			}
 			break;
+
 			case IDM_CHOOSE_SELECTION_COLOR:
 			{
 				LOGFONT lf; 
@@ -359,12 +361,16 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 				m_pDrawFrame->CallSelectionColorDialog( GetWindowHandle() );
 			}
 			break;
+
 			case IDM_CHOOSE_HIGHLIGHT_COLOR:
-			{
 				m_pDrawFrame->CallHighlightColorDialog( GetWindowHandle() );
-			}
 			break;
-            case IDM_SET_POI:
+
+			case IDM_SHOW_HISTORY:
+				m_pFocusPoint->ShowIndividualHistory( );
+			break;
+
+			case IDM_SET_POI:
             case IDM_GOTO_ORIGIN:  
             case IDM_GOTO_DEATH:      // commands using cursor pos are handled here
             {

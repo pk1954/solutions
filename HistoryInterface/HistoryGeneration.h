@@ -40,7 +40,6 @@ public:
 
     long const GetLong( ) const { return m_nr; }
 
-
 private:
     static long const INFINITE_VAL = LONG_MAX;
     static long const NULL_VAL     = LONG_MIN;

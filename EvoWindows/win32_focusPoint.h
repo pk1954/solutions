@@ -19,6 +19,7 @@ public:
     void Start( EvoHistorySysGlue *, EvolutionCore * );
 
     void SetFocusPoint( GridPoint const );
+	void ShowIndividualHistory();
 
 	void AttachFocusPointObserver( RootWindow * pRootWin )
 	{
@@ -61,7 +62,7 @@ public:
 	}
 
 private:
-    //EvoHistorySysGlue * m_pEvoHistGlue;
+    EvoHistorySysGlue * m_pEvoHistGlue;
     EvolutionCore     * m_pCore;
     ViewCollection      m_ViewCollection;
     //HIST_GENERATION     m_histGenBirth;

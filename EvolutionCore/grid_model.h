@@ -159,7 +159,7 @@ private:
 
     // member variables
 
-	vector< vector < GridField > > m_aGF;                  // 20.000 * 196 byte = 3.920.000 byte
+	vector< vector < GridField > > m_aGF;                  // 15.000 * 132 byte = 1.980.000 byte
                                                         
     GridPointList  m_gpList;                               //                            10 byte
     EVO_GENERATION m_genEvo;                               //                             4 byte

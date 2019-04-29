@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include <unordered_map>
 #include "assert.h"
 #include "debug.h"
 #include "random.h"
@@ -18,11 +17,11 @@ static EmptyStrategy   StratNull;
 ENERGY_UNITS Individual::m_stdEnergyCapacity;
 ENERGY_UNITS Individual::m_initialEnergy;
 
-const std::unordered_map< Strategy::Id, Strategy * const > Individual::m_apStrat =
+const std::array< Strategy * const, Strategy::COUNT > Individual::m_apStrat =
 { 
-	{ Strategy::Id::defect,    &StratD },
-	{ Strategy::Id::cooperate, &StratC },
-	{ Strategy::Id::tit4tat,   &StratT }
+	&StratD, // Strategy::Id::defect,   
+	&StratC, // Strategy::Id::cooperate,
+	&StratT  // Strategy::Id::tit4tat,  
 };
 
 void Individual::RefreshCache( )
@@ -43,8 +42,7 @@ void Individual::ResetIndividual( )
     m_origin     = tOrigin::undefined;
     m_enStock    = 0_ENERGY_UNITS;
     m_enCapacity = 0_ENERGY_UNITS;
-    m_pStrategy  = & StratNull;
-    m_action     = Action::Id::undefined;
+    m_strategyId = Strategy::Id::empty;
     m_stratData.SetMemorySize( 0 );
     m_genome.InitGenome( );
 };
@@ -61,7 +59,7 @@ void Individual::Create
     m_genBirth   = genBirth;
     m_origin     = tOrigin::editor;
     m_enCapacity = m_stdEnergyCapacity;
-    m_pStrategy  = m_apStrat.at( strategyId );
+    m_strategyId = strategyId;
     m_stratData.SetMemorySize( m_genome.GetAllele(GeneType::Id::memSize) );  // clears memory. Experience not inheritable.
     SetEnergy( m_initialEnergy ); // makes IsAlive() true. Last assignment to avoid race conditions  
 }
@@ -82,8 +80,7 @@ void Individual::Clone
     m_genBirth   = genBirth;
     m_origin     = tOrigin::cloning;
     m_enCapacity = indParent.m_enCapacity;
-    m_pStrategy  = indParent.m_pStrategy;
-    m_action     = Action::Id::undefined;
+    m_strategyId = indParent.m_strategyId;
     m_genome.Mutate( mutationRate, random );
     m_stratData.SetMemorySize( m_genome.GetAllele(GeneType::Id::memSize) );  // clears memory. Experience not inheritable.
 }
@@ -114,9 +111,8 @@ void Individual::Breed
     m_id         = id;
     m_genBirth   = genBirth;
     m_origin     = tOrigin::marriage;
-    m_action     = Action::Id::undefined;
     m_enCapacity = selectParent( random, indParentA, indParentB ).m_enCapacity;
-    m_pStrategy  = selectParent( random, indParentA, indParentB ).m_pStrategy;
+    m_strategyId = selectParent( random, indParentA, indParentB ).m_strategyId;
     m_genome.Recombine( indParentA.m_genome, indParentB.m_genome, random );
     m_genome.Mutate( mutationRate, random );
     m_stratData.SetMemorySize( m_genome.GetAllele(GeneType::Id::memSize) );  // clears memory. Experience not inheritable.

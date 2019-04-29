@@ -108,8 +108,9 @@ Action::Id const GetRelatedAction( GeneType::Id const gene )
         { GeneType::Id::thresholdMove,  Action::Id::move      },
         { GeneType::Id::thresholdFert,  Action::Id::fertilize },
         { GeneType::Id::maxEat,         Action::Id::eat       },
-        { GeneType::Id::cloneDonation,  Action::Id::clone     }
-    };
+		{ GeneType::Id::cloneDonation,  Action::Id::clone     },
+		{ GeneType::Id::reserve1,       Action::Id::undefined }
+	};
 
     return mapActions.at( gene );
 }

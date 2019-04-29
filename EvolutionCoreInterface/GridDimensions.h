@@ -26,8 +26,6 @@ public:
 		int        const
 	);
 
-	static void GetNeighborLists( Grid const &, GridPoint const &, Neighborhood *, Neighborhood * );
-
 	static int        const GetNrOfNeigbors() { return m_iNrOfNeighbors; }
 	static GRID_COORD const GridWidth()       { return m_gridSize.GetX(); }
 	static GRID_COORD const GridHeight()      { return m_gridSize.GetY(); }
@@ -47,6 +45,11 @@ public:
 	static inline GridPoint const Wrap2Grid( GridPoint const gp ) 
 	{ 
 		return (gp + m_gridSize) % m_gridSize; 
+	}
+
+	static NEIGHBORS const & GetNeighbors( GridPoint const gp )
+	{
+		return (* m_pGridNeighbors)[ gp.GetXvalue() ][ gp.GetYvalue() ];
 	}
 
 private:
