@@ -171,7 +171,7 @@ void DrawFrame::drawPOI( EvolutionCore const * const pCore )
         addPrimitive( gpPoi, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
         addPrimitive( gpPoi, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
 
-        PlannedActivity const planPoi = pCore->GetPlan( gpPoi );
+        PlannedActivity const planPoi = pCore->GetPlan( );
         addPrimitive( planPoi.GetTarget( ),  CLR_GREY, fPixSize * 0.45f );   // mark target
         addPrimitive( planPoi.GetPartner( ), CLR_GREY, fPixSize * 0.45f );   // mark target
     }

@@ -11,6 +11,7 @@
 #include "gridRect.h"
 #include "gpList.h"
 #include "gridField.h"
+#include "gridPOI.h"
 #include "GridDimensions.h"
 #include "EvolutionTypes.h"
 #include "plannedActivity.h"
@@ -20,6 +21,8 @@ using std::vector;
 
 class GridCircle;
 class Manipulator;
+class EventInterface;
+class ObserverInterface;
 
 using GROWTH_RATE = NamedType< int, struct GROWTH_RATE_Parameter >;
 
@@ -27,18 +30,19 @@ class Grid
 {
 public:
 
-	static void InitClass( int const  );
+	static void InitClass( ObserverInterface * const, EventInterface * const );
 
     Grid( );
     ~Grid( );
 
 	static void RefreshCache( );
 
-	void      ResetGrid    ( );
-    void      FoodGrowth   ( );
+	void ResetGrid ( );
+    void FoodGrowth( );
 
-	PlannedActivity MakePlan     ( GridPoint const );
-    GridPoint       ImplementPlan( GridPoint const, PlannedActivity const & );
+	GridPoint GenerationStep( GridPoint const );
+
+	PlannedActivity const GetPlan( ) const { return m_plan; };
 
 	PERCENT      GetMutRate   ( GridPoint const gp ) { return getGridField( gp ).GetMutRate( ); }
 	ENERGY_UNITS GetFertilizer( GridPoint const gp ) { return getGridField( gp ).GetFertilizer( ); }
@@ -50,7 +54,6 @@ public:
 	void Apply2FoodStock (GridPoint const gp, ENERGY_UNITS const s, ManipulatorFunc m) { getGridField( gp ).Apply2FoodStock (s, m); }
 	void Apply2Fertility (GridPoint const gp, ENERGY_UNITS const s, ManipulatorFunc m) { getGridField( gp ).Apply2Fertility (s, m); }
 
-	void SetPlan  ( GridPoint const gp, PlannedActivity const & plan ) { getGridField( gp ).SetPlan( plan ); }
 	void SetEnergy( GridPoint const gp, ENERGY_UNITS const s )         { getGridField( gp ).SetEnergy( s ); }
 	void IncEnergy( GridPoint const gp, ENERGY_UNITS const s )         { getGridField( gp ).IncEnergy( s ); }
     void DecEnergy( GridPoint const gp, ENERGY_UNITS const s )         { getGridField( gp ).DecEnergy( s ); }
@@ -154,26 +157,47 @@ private:
         return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
     };
 
-    GridPoint chooseTarget ( Neighborhood & );
+	bool IsPoi ( GridPoint const gp ) 
+	{ 
+		return  gp.IsNotNull( ) &&  GridPOI::IsPoi( GetId(gp) ); 
+	}
+
+	GridPoint chooseTarget ( Neighborhood & );
     GridPoint choosePartner( Neighborhood & );
 
-    // member variables
 
-	vector< vector < GridField > > m_aGF;                  // 15.000 * 132 byte = 1.980.000 byte
+	GridPoint actionMove     ( GridField & );
+	GridPoint actionClone    ( GridField & );
+	GridPoint actionMarry    ( GridField & );
+	GridPoint actionInteract ( GridField & );
+	GridPoint actionPassOn   ( GridField & );
+	GridPoint actionFertilize( GridField & );
+	GridPoint actionEat      ( GridField & );
+	GridPoint actionUndefined( GridField & );
+
+	void stopOnPoi( GridField const & );
+
+	// member variables
+
+	vector< vector < GridField > > m_aGF;                  // 15.000 * 108 byte = 1.620.000 byte
                                                         
-    GridPointList  m_gpList;                               //                            10 byte
-    EVO_GENERATION m_genEvo;                               //                             4 byte
-    Neighborhood   m_emptyNeighborSlots;
-    Neighborhood   m_occupiedNeighborSlots;
+    GridPointList   m_gpList;                              //                            10 byte
+    EVO_GENERATION  m_genEvo;                              //                             4 byte
+    Neighborhood    m_emptyNeighborSlots;
+    Neighborhood    m_occupiedNeighborSlots;
+	PlannedActivity m_plan;                                
 
 	array< array < ACTION_COUNT, Strategy::COUNT>, Action::COUNT > m_ActionCounter;
 
     // following members are stored here only to be part of grid history.
 
     Random m_random;                                               //  16 byte
-    IND_ID m_idCounter;  // Used only by class Individual.         //   4 byte
+    IND_ID m_idCounter;                                            //   4 byte
      
-    // static members 
+    // static members
+
+	static ObserverInterface * m_pObservers;    // GUI call back for display of current model 
+	static EventInterface    * m_pEventPOI;
 
     static GROWTH_RATE  m_enFoodGrowthRate;
     static ENERGY_UNITS m_enBasicFoodConsumption;

@@ -7,7 +7,6 @@
 #include "genome.h"
 #include "strategy.h"
 #include "StrategyData.h"
-#include "plannedActivity.h"
 
 class Random;
 
@@ -29,7 +28,6 @@ public:
     IND_ID          GetId        ( )                       const { return m_id; };
     tOrigin         GetOrigin    ( )                       const { return m_origin; }
     Genome const &  GetGenome    ( )                       const { return m_genome; }
-	PlannedActivity GetPlan      ( )                       const { return m_plan; }
 	Strategy::Id    GetStrategyId( )                       const { return m_strategyId; }
 	MEM_INDEX       GetMemSize   ( )                       const { return m_stratData.GetMemSize( );  }
     MEM_INDEX       GetMemUsed   ( )                       const { return m_stratData.GetMemUsed( ); }
@@ -50,11 +48,6 @@ public:
 		return m_apStrat.at( static_cast<int>(m_strategyId) )->InteractWith( m_stratData, partnerId );
 	};
 
-	void SetPlan( PlannedActivity const & plan ) 
-	{ 
-		m_plan = plan; 
-	}
-
 	void SetEnergy( ENERGY_UNITS const energy )
 	{
        //int sizIND_ID         = sizeof(IND_ID          );
@@ -64,7 +57,7 @@ public:
        //int sizStrategyData   = sizeof(StrategyData    );
        //int sizGenome         = sizeof(Genome          );
        //int sizActionId       = sizeof(Action::Id      );
-       //int sizIndividual     = sizeof(Individual      );
+       int sizIndividual     = sizeof(Individual      );
 	   m_enStock = ( energy > m_enCapacity ) ? m_enCapacity : energy;
 	}
 
@@ -77,13 +70,12 @@ private:
     StrategyData    m_stratData;   // 40 bytes
 	IND_ID          m_id;          //  4 bytes
 	EVO_GENERATION  m_genBirth;    //  4 bytes
-	PlannedActivity m_plan;        // 18 bytes   
-	Strategy::Id    m_strategyId;  //  2 bytes 
     Genome          m_genome;      // 30 bytes
-    tOrigin         m_origin;      //  2 bytes
+	Strategy::Id    m_strategyId;  //  2 bytes 
+	tOrigin         m_origin;      //  2 bytes
     ENERGY_UNITS    m_enCapacity;  //  2 bytes
     ENERGY_UNITS    m_enStock;     //  2 bytes
-                             // sum:  104 bytes
+                             // sum:  88 bytes
 
 	static const std::array< Strategy * const, Strategy::COUNT > m_apStrat; 
 

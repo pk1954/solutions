@@ -47,5 +47,3 @@ private:
     Action::Id   m_action;
     ENERGY_UNITS m_iBaseConsumption;
 };
-
-//std::wostream & operator << ( std::wostream & , PlannedActivity const & );

@@ -19,8 +19,7 @@ void EvolutionCore::InitClass
 )
 {
     Neighborhood::InitClass( iNrOfNeighbors );
-    Grid::InitClass( iNrOfNeighbors );
-	EvolutionCoreImpl::InitClass( pObservers, pEvent );
+    Grid::InitClass( pObservers, pEvent );
 }
 
 EvolutionCore * EvolutionCore::CreateCore( )

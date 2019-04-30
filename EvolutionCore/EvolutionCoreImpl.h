@@ -21,15 +21,6 @@ class ObserverInterface;
 class EvolutionCoreImpl : public EvolutionCore
 {
 public:
-	static void EvolutionCoreImpl::InitClass
-	( 
-		ObserverInterface * const pObservers,
-		EventInterface    * const pEvent
-	)
-	{
-		m_pObservers = pObservers; 
-		m_pEventPOI  = pEvent; 
-	}
 
 	EvolutionCoreImpl( );
     ~EvolutionCoreImpl( );
@@ -53,8 +44,6 @@ public:
     virtual void SetSimulationMode  ( tBoolOp      const op    ) { ApplyOp( m_bSimulationMode, op ); }
     virtual void ModelDoEdit        ( GridPoint    const gp    ) { (m_brush)( gp ); }
 
-	virtual void SetPlan( GridPoint const gp , PlannedActivity const & plan ) { m_grid.SetPlan( gp, plan ); };
-
 	// read access
 
 	virtual void DumpGridPointList( ) const;
@@ -77,18 +66,19 @@ public:
     virtual bool            const IsDead       ( GridPoint const gp ) const { return getGridField( gp ).IsDead( ); }
     virtual bool            const IsAlive      ( GridPoint const gp ) const { return getGridField( gp ).IsAlive( ); }
     virtual bool            const IsDefined    ( GridPoint const gp ) const { return getGridField( gp ).IsDefined( ); }
-    virtual PlannedActivity const GetPlan      ( GridPoint const gp ) const { return getGridField( gp ).GetPlan( ); };
 
     virtual IND_ID          const GetMemEntry  ( GridPoint const gp, MEM_INDEX    const index ) const { return getGridField( gp ).GetMemEntry( index ); }
     virtual short           const GetAllele    ( GridPoint const gp, GeneType::Id const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
 						    	  
 	virtual EVO_GENERATION  const GetEvoGenerationNr ( ) const { return m_grid.GetEvoGenerationNr( ); }
-						    	  
+	virtual PlannedActivity const GetPlan( )             const { return m_grid.GetPlan( ); };
+
 	virtual tManipulator    const GetBrushManipulator( ) const { return m_brush.GetManipulator(); }
     virtual PERCENT         const GetBrushIntensity  ( ) const { return m_brush.GetIntensity(); }
     virtual tShape          const GetBrushShape      ( ) const { return m_brush.GetShape(); }
     virtual GRID_COORD      const GetBrushSize       ( ) const { return m_brush.GetRadius(); }
     virtual tBrushMode      const GetBrushMode       ( ) const { return m_brush.GetBrushMode(); }
+
 
 	virtual int const GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
 
@@ -106,15 +96,9 @@ public:
 	virtual GridPoint FindPOI( ) const; 
 
 private:
-    static ObserverInterface * m_pObservers;    // GUI call back for display of current model 
-	static EventInterface    * m_pEventPOI;
-
 	Grid      m_grid;	
 	GridBrush m_brush;
 	bool	  m_bSimulationMode;
-
-	void stopOnPoi( GridPoint const, PlannedActivity & );
-	bool IsPoi    ( GridPoint const gp ) { return  gp.IsNotNull( ) &&  GridPOI::IsPoi( GetId(gp) ); }
 
     GridField const & getGridField( GridPoint const gp ) const { return m_grid.GetGridField( gp ); }
     Genome    const & getGenome   ( GridPoint const gp ) const { return getGridField( gp ).GetGenome( ); }

@@ -36,7 +36,8 @@ public:
     virtual GRID_COORD      const GetBrushSize            ( ) const = 0;
     virtual tBrushMode      const GetBrushMode            ( ) const = 0;
 	virtual bool            const GetSimulationMode       ( ) const = 0;
-						    
+	virtual PlannedActivity const GetPlan                 ( ) const = 0;
+
     virtual bool            const IsDead       ( GridPoint const ) const = 0;
     virtual bool            const IsAlive      ( GridPoint const ) const = 0;
     virtual bool            const IsDefined    ( GridPoint const ) const = 0;
@@ -52,7 +53,6 @@ public:
     virtual Strategy::Id    const GetStrategyId( GridPoint const ) const = 0;
     virtual MEM_INDEX       const GetMemSize   ( GridPoint const ) const = 0;
     virtual MEM_INDEX       const GetMemUsed   ( GridPoint const ) const = 0;
-	virtual PlannedActivity const GetPlan      ( GridPoint const ) const = 0;
 	virtual IND_ID          const GetMemEntry  ( GridPoint const, MEM_INDEX    const ) const = 0;
     virtual short           const GetAllele    ( GridPoint const, GeneType::Id const ) const = 0;
 

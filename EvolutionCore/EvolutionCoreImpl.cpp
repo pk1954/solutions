@@ -7,16 +7,10 @@
 #include "dump.h"
 #include "config.h"
 #include "strategy.h"
-#include "gridPOI.h"
 #include "grid_model.h"
 #include "gplIterator.h"
-#include "EventInterface.h"
-#include "ObserverInterface.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCoreImpl.h"
-
-ObserverInterface * EvolutionCoreImpl::m_pObservers = nullptr;    // GUI call back for display of current model 
-EventInterface    * EvolutionCoreImpl::m_pEventPOI  = nullptr;
 
 EvolutionCoreImpl::EvolutionCoreImpl( ) :
 	m_brush( & m_grid ),
@@ -61,31 +55,11 @@ void EvolutionCoreImpl::Compute( )
         assert( IsInGrid( gpRun ) );
         assert( m_grid.IsAlive( gpRun ) );
 
-		PlannedActivity plan = m_grid.MakePlan( gpRun );
-		m_grid.SetPlan( gpRun, plan );
-		stopOnPoi( gpRun, plan );
-        gpRun = m_grid.ImplementPlan( gpRun, plan );   // may return NULL_VAL
+		gpRun = m_grid.GenerationStep( gpRun );   // may return NULL_VAL  
     }
 
     m_grid.FoodGrowth( );
     m_grid.IncGenNr( );
-}
-
-void EvolutionCoreImpl::stopOnPoi
-( 
-    GridPoint       const gpRun, 
-    PlannedActivity     & plan
-)
-{
-    if ( (m_pObservers != nullptr) && GridPOI::IsPoiDefined( ) ) 
-    {
-        if ( IsPoi( gpRun ) || IsPoi( plan.GetPartner( ) ) )
-		{
-			if (m_pObservers != nullptr)
-				m_pObservers->Notify( true );
-            m_pEventPOI->Wait( );
-		}
-    }
 }
 
 GridPoint EvolutionCoreImpl::FindPOI( ) const

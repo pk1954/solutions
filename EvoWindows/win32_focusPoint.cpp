@@ -78,7 +78,7 @@ void FocusPoint::ShowIndividualHistory( )
 				if ( gp.IsNull() )
 					break;             // individual not yet born
 
-				PlannedActivity plan { pCore->GetPlan( gp ) };
+				PlannedActivity plan { pCore->GetPlan( ) };
 				if ( plan.GetActor().IsZero() )
 					break;
 
