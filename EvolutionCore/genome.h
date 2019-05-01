@@ -3,26 +3,21 @@
 
 #pragma once
 
-#include <array>
 #include "gene.h"
 #include "config.h"
 #include "EnumArray.h"
-#include "ActionOptions.h"
 #include "EvolutionTypes.h"
 
 class Random;
-
-//lint -sem(Genome::init,initializer)
 
 class Genome
 {
 public:
     
     Genome( );
-	void       InitGenome( );
-	Action::Id GetOption( bool const, bool const, ENERGY_UNITS const, EVO_GENERATION const, Random & ) const;
-    void       Mutate( PERCENT const, Random & );
-    void       Recombine( Genome const &, Genome const &, Random & );
+	void InitGenome( );
+    void Mutate( PERCENT const, Random & );
+    void Recombine( Genome const &, Genome const &, Random & );
 
     static void InitClass( );
 	static void RefreshCash( );
@@ -51,13 +46,9 @@ private:
 
 	// static members and functions
 
-	static unsigned int const MAX_LIFE_SPAN = 200;
-	static std::array< unsigned int, MAX_LIFE_SPAN + 1 > m_mortalityTable;
-
-	static EnumArray< bool,  Action > m_abActionEnabled;
+	static EnumArray<           bool,   Action > m_abActionEnabled;
     static EnumArray< GeneTypeLimits, GeneType > m_aLimits;
-    static Genome        m_genomeTemplate;
-	static ActionOptions m_options;
+    static Genome                                m_genomeTemplate;
 
     static void setLimits( GeneType::Id, long, long );
 };

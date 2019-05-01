@@ -6,6 +6,7 @@
 #include <cstdlib> 
 #include <cmath> 
 #include "EventInterface.h"
+#include "MortalityTable.h"
 #include "ObserverInterface.h"
 #include "strategy.h"
 #include "individual.h"
@@ -29,15 +30,18 @@
 ObserverInterface * Grid::m_pObservers = nullptr;    // GUI call back for display of current model 
 EventInterface    * Grid::m_pEventPOI  = nullptr;
 
-GROWTH_RATE  Grid::m_enFoodGrowthRate;
-ENERGY_UNITS Grid::m_enMoveFoodConsumption;
-ENERGY_UNITS Grid::m_enCloneFoodConsumption;
-ENERGY_UNITS Grid::m_enMarryFoodConsumption;
-ENERGY_UNITS Grid::m_enInteractFoodConsumption;
-bool         Grid::m_bNeighborhoodFoodSensitivity;
+ActionOptions Grid::m_options;
+GROWTH_RATE   Grid::m_enFoodGrowthRate;
+ENERGY_UNITS  Grid::m_enMoveFoodConsumption;
+ENERGY_UNITS  Grid::m_enCloneFoodConsumption;
+ENERGY_UNITS  Grid::m_enMarryFoodConsumption;
+ENERGY_UNITS  Grid::m_enInteractFoodConsumption;
+bool          Grid::m_bNeighborhoodFoodSensitivity;
+bool          Grid::m_bPassOnEnabled;
 
 void Grid::RefreshCache( )
 {
+	m_bPassOnEnabled               = Config::GetConfigValueBool( Config::tId::passOnEnabled );
 	m_bNeighborhoodFoodSensitivity = Config::GetConfigValueBool( Config::tId::neighborhoodFoodSensitivity );
 	m_enFoodGrowthRate             = GROWTH_RATE (Config::GetConfigValueShort( Config::tId::growthRateFood ));
 	m_enMoveFoodConsumption        = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMove ));
@@ -60,6 +64,7 @@ void Grid::InitClass
 	m_pEventPOI  = pEvent; 
 	Genome::InitClass( );
 	RefreshCache( );
+	MortalityTable::InitClass( );
 }
 
 Grid::Grid( )
@@ -310,13 +315,25 @@ GridPoint Grid::GenerationStep( GridPoint const gpRun )
 
 	// decide on action
 
-	m_action = gfRun.GetOption
-	( 
-        m_emptyNeighborSlots.GetLength( ) > 0,     // has free space around? 
-        m_occupiedNeighborSlots.GetLength( ) > 0,  // has neighbor
-	    GetAge( gpRun ),
-		m_random 
-	);
+	if ( m_bPassOnEnabled && ( MortalityTable::GetRate( GetAge( gpRun ) ) > m_random.NextRandomNumber() ) )
+	{
+		m_action = Action::Id::passOn;
+	}
+	else
+	{
+		bool const bHasFreeSpace = m_emptyNeighborSlots   .GetLength( ) > 0;     // has free space around? 
+		bool const bHasNeighbor  = m_occupiedNeighborSlots.GetLength( ) > 0;  // has neighbor
+		m_options.InitOptions
+		( 
+			gfRun.GetGenome( ), 
+			bHasFreeSpace, 
+			bHasNeighbor, 
+			gfRun.GetEnergy( ) 
+		);
+		unsigned int uiSum = m_options.GetSumOfValidOptions( gfRun.GetGenome( ) );
+		unsigned int uiVal = m_random.NextRandomNumberScaledTo( uiSum );
+		m_action = m_options.SelectAction( gfRun.GetGenome( ), uiVal );
+	}
 
     switch ( m_action )
     {

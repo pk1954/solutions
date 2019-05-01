@@ -64,7 +64,7 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="MortalityTable.h">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +150,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="gridBrush.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="MortalityTable.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

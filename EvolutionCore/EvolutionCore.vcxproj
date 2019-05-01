@@ -197,6 +197,7 @@
     <ClCompile Include="GridDimensions.cpp" />
     <ClCompile Include="gridPOI.cpp" />
     <ClCompile Include="gridSelection.cpp" />
+    <ClCompile Include="MortalityTable.cpp" />
     <ClCompile Include="pixelCoordinates.cpp" />
     <ClCompile Include="genome.cpp" />
     <ClCompile Include="gpList.cpp" />

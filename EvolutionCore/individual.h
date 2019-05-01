@@ -66,18 +66,6 @@ public:
 		SetEnergy( ENERGY_UNITS( AssertShortSum( m_enStock.GetValue(), sInc.GetValue() ) ) );
 	}
 
-	Action::Id GetOption
-	(
-		bool           const bHasFreeSpace,
-		bool           const bHasNeighbor,
-		ENERGY_UNITS   const energy,
-		EVO_GENERATION const age,
-		Random             & random
-	) const
-	{
-		return m_genome.GetOption( bHasFreeSpace, bHasNeighbor, energy, age, random );
-	}
-
 private:
     StrategyData   m_stratData;   // 40 bytes
 	IND_ID         m_id;          //  4 bytes

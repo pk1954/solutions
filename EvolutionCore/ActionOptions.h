@@ -14,11 +14,11 @@ class Genome;
 class ActionOptions
 {
 public:
-	void InitOptions( Genome const *, bool const, bool const, ENERGY_UNITS const );
+	void InitOptions( Genome const &, bool const, bool const, ENERGY_UNITS const );
 
-	unsigned int GetSumOfValidOptions( Genome const *  );
+	unsigned int GetSumOfValidOptions( Genome const & );
 
-	Action::Id SelectAction( Genome const *, int );
+	Action::Id SelectAction( Genome const &, unsigned int const  );
 
 private:
 	void set( Action::Id const, bool const );

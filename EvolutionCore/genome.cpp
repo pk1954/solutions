@@ -1,8 +1,8 @@
-// genome.cpp : 
+// genome.cpp 
 //
+// EvolutionCore
 
 #include "stdafx.h"
-#include <array>
 #include "assert.h"
 #include "debug.h"
 #include "config.h"
@@ -12,13 +12,10 @@
 
 // static members and functions
 
-ActionOptions Genome::m_options;
-Genome        Genome::m_genomeTemplate;
+Genome Genome::m_genomeTemplate;
 
 EnumArray< bool,  Action  > Genome::m_abActionEnabled;
 EnumArray< GeneTypeLimits, GeneType > Genome::m_aLimits;
-
-std::array< unsigned int, Genome::MAX_LIFE_SPAN + 1 > Genome::m_mortalityTable;
 
 void Genome::setLimits( GeneType::Id const gene, long const lLo, long const lHi )
 {
@@ -38,20 +35,6 @@ void Genome::RefreshCash( )
 
 void Genome::InitClass( )
 { 
-	double dRandomMax = static_cast<double>(Random::MAX_VAL);
-
-	for ( int age = 0; age <= MAX_LIFE_SPAN; ++age )
-	{
-		double dAge = static_cast<double>(age);
-		double dx   = dAge / MAX_LIFE_SPAN;
-		double dx2  = dx * dx;
-		double dx4  = dx2 * dx2;
-		double dx8  = dx4 * dx4;
-		double dAgeFactor = dx8 * dRandomMax;
-		AssertLimits( dAgeFactor, 0.0, dRandomMax );
-		m_mortalityTable[ age ] = static_cast<unsigned int>( dAgeFactor );
-	}
-
     // initialize limitations
 
     setLimits( GeneType::Id::move,           1, 1000 ); 
@@ -128,30 +111,4 @@ void Genome::Recombine( Genome const & genomeA, Genome const & genomeB, Random &
 			m_aGene[geneType].SetAllele( sNewAllele );
 		}
 	);
-}
-
-Action::Id Genome::GetOption
-( 
-    bool           const bHasFreeSpace, 
-    bool           const bHasNeighbor,
-    ENERGY_UNITS   const energy,
-	EVO_GENERATION const age,
-    Random             & random 
-) const
-{
-	if (
-		  ( m_abActionEnabled[ Action::Id::passOn ] ) && 
-		  ( m_mortalityTable[ age.GetValue() ] > random.NextRandomNumber() )
-	   )
-	{
-		return Action::Id::passOn;
-	}
-	else
-	{
-		m_options.InitOptions( this, bHasFreeSpace, bHasNeighbor, energy );
-		unsigned int uiSum          = m_options.GetSumOfValidOptions( this );
-		int          iVal           = random.NextRandomNumberScaledTo( uiSum );
-		Action::Id   actionSelected = m_options.SelectAction( this, iVal );
-		return actionSelected;
-	}
 }

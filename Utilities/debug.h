@@ -8,7 +8,6 @@
 #include <assert.h>
 #include <limits.h>
 
-
 template<typename SOURCE_TYPE>
 constexpr void AssertLimits( SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_TYPE const max)  
 {                                   

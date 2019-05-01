@@ -12,6 +12,7 @@
 #include "gpList.h"
 #include "gridField.h"
 #include "gridPOI.h"
+#include "ActionOptions.h"
 #include "GridDimensions.h"
 #include "EvolutionTypes.h"
 
@@ -219,12 +220,14 @@ private:
 	static ObserverInterface * m_pObservers;    // GUI call back for display of current model 
 	static EventInterface    * m_pEventPOI;
 
-    static GROWTH_RATE  m_enFoodGrowthRate;
-    static ENERGY_UNITS m_enMoveFoodConsumption;
-    static ENERGY_UNITS m_enCloneFoodConsumption;
-    static ENERGY_UNITS m_enMarryFoodConsumption;
-    static ENERGY_UNITS m_enInteractFoodConsumption;
-    static bool         m_bNeighborhoodFoodSensitivity;
+	static ActionOptions m_options;
+	static GROWTH_RATE   m_enFoodGrowthRate;
+    static ENERGY_UNITS  m_enMoveFoodConsumption;
+    static ENERGY_UNITS  m_enCloneFoodConsumption;
+    static ENERGY_UNITS  m_enMarryFoodConsumption;
+    static ENERGY_UNITS  m_enInteractFoodConsumption;
+    static bool          m_bNeighborhoodFoodSensitivity;
+	static bool          m_bPassOnEnabled;
 };
 
 void CheckIndividuals( Grid & );

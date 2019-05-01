@@ -78,17 +78,6 @@ public:
     void DecEnergy( ENERGY_UNITS const sDec ) { m_Individual.IncEnergy( - sDec ); }
     void IncEnergy( ENERGY_UNITS const sInc ) { m_Individual.IncEnergy( sInc ); }
 
-	Action::Id GetOption
-	(
-		bool           const bHasFreeSpace,
-		bool           const bHasNeighbor,
-		EVO_GENERATION const age,
-		Random & random
-	) const
-	{
-		return m_Individual.GetOption( bHasFreeSpace, bHasNeighbor, GetEnergy( ), age, random );
-	}
-
 	ENERGY_UNITS const GetBaseConsumption( ) const 
 	{
 		return m_enBasicFoodConsumption + m_enMemSizeFoodConsumption * GetMemSize( ).GetValue();

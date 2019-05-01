@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <algorithm>  // min/max templates
 #include "debug.h"
 #include "util.h"
 
