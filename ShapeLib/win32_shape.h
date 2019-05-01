@@ -22,7 +22,7 @@ public:
 	virtual PixelRectSize MinimalSize( EvolutionCore const * const pCore )  
 	{                                     
 		m_textDisplay.Clear();
-		FillBuffer( pCore, GridPoint::ZERO_VAL() );
+		FillBuffer( pCore, GP_ZERO );
 		return SetMinSize( m_textDisplay.CalcRectSize( ) );
 	}                                     
 
@@ -45,7 +45,7 @@ public:
 
 	virtual GridPoint GetReferencedGridPoint( EvolutionCore const * const pCore, GridPoint const gp ) const 
 	{ 
-		return GridPoint::NULL_VAL(); 
+		return GP_NULL; 
 	}
 
 	virtual void Draw( EvolutionCore const * const, GridPoint const, PixelPoint const );

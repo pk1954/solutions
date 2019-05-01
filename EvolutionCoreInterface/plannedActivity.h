@@ -11,9 +11,9 @@ class PlannedActivity
 { 
 public:
     PlannedActivity() 
-      : m_gpActor  ( GridPoint::NULL_VAL() ),
-        m_gpTarget ( GridPoint::NULL_VAL() ),
-        m_gpPartner( GridPoint::NULL_VAL() ),
+      : m_gpActor  ( GP_NULL ),
+        m_gpTarget ( GP_NULL ),
+        m_gpPartner( GP_NULL ),
         m_action   ( Action::Id::undefined ),
         m_iBaseConsumption( 0 )
     {}

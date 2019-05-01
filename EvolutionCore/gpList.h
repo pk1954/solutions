@@ -20,8 +20,8 @@ class GridPointList
 {
 public:
     GridPointList( ) 
-        : m_gpOldest  ( GridPoint::NULL_VAL() ),
-          m_gpYoungest( GridPoint::NULL_VAL() ),
+        : m_gpOldest  ( GP_NULL ),
+          m_gpYoungest( GP_NULL ),
           m_iCount( 0 )
     { };
 

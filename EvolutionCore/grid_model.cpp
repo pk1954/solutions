@@ -305,7 +305,7 @@ GridPoint Grid::actionUndefined( GridField & gfRun )
 
 GridPoint Grid::GenerationStep( GridPoint const gpRun )
 {
-	GridPoint   gpNext( GridPoint::NULL_VAL() );
+	GridPoint   gpNext( GP_NULL );
 	GridField & gfRun = getGridField( gpRun );
     assert( gfRun.IsAlive( ) );
 
@@ -354,7 +354,7 @@ GridPoint Grid::GenerationStep( GridPoint const gpRun )
 		default: assert( false );
     }
 
-	return GridPoint::NULL_VAL();
+	return GP_NULL;
 }
 
 void Grid::EditSetStrategy
@@ -402,5 +402,5 @@ GridPoint Grid::FindGridPoint
             return gp;
         }
 	}
-    return GridPoint::NULL_VAL();
+    return GP_NULL;
 }

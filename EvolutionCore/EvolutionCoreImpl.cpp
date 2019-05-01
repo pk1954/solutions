@@ -32,7 +32,7 @@ void EvolutionCoreImpl::ResetAll( )
 GridPoint EvolutionCoreImpl::FindGridPoint( IND_ID const & id ) const 
 { 
 	return ( id.IsNull() )
-			? GridPoint::NULL_VAL()
+			? GP_NULL
 			: m_grid.FindGridPoint
 			  ( 
 				  [&](GridPoint const gp) { return (GetId(gp) == id); }, 
@@ -66,7 +66,7 @@ GridPoint EvolutionCoreImpl::FindPOI( ) const
 { 
 	return GridPOI::IsPoiDefined( ) 
 			? FindGridPoint( GridPOI::GetPoi() ) 
-			: GridPoint::NULL_VAL(); 
+			: GP_NULL; 
 }
 
 void EvolutionCoreImpl::DumpGridPointList( ) const

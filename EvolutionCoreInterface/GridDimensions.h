@@ -34,7 +34,7 @@ public:
 	static GRID_COORD const GridMaxX()        { return GridWidth()  - 1_GRID_COORD; }
 	static GRID_COORD const GridMaxY()        { return GridHeight() - 1_GRID_COORD; }
 	static GridPoint  const GridRectSize()    { return m_gridSize; }
-	static GridPoint  const GridOrigin()      { return GridPoint::ZERO_VAL(); }
+	static GridPoint  const GridOrigin()      { return GP_ZERO; }
 	static GridPoint  const GridMaximum()     { return m_gridSize - 1_GRID_COORD; }
 	static GridRect   const GridRectFull()    { return GridRect( GridOrigin(), GridMaximum() ); }
 

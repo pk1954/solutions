@@ -14,7 +14,7 @@ using std::setprecision;
 using std::setw;
 
 Win32_TextBuffer::Win32_TextBuffer( HDC const hdc, PixelRectSize const & pixSize ) : 
-	m_pixRect( PixelRect{ PixelPoint::ZERO_VAL(), pixSize } ),
+	m_pixRect( PixelRect{ PP_ZERO, pixSize } ),
 	m_hDC( hdc )
 { 
 	TEXTMETRIC textMetric;

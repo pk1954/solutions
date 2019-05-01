@@ -35,12 +35,12 @@ void DUMP::Dump( wchar_t const * const str )
 
 void DUMP::Dump( GridField const & gf )
 {
-    *m_pDumpStream << gf;
-    *m_pDumpStream << endl;
+	*m_pDumpStream << gf.GetGridPoint( );
+	*m_pDumpStream << L" en=" << std::setw(8) << gf.GetEnergy( );
+	*m_pDumpStream << endl;
 }
 
 void DUMP::Dump( Grid const & grid, GridPoint const gp )
 {
-    *m_pDumpStream << grid.GetGridField( gp );
-    *m_pDumpStream << endl;
+    Dump( grid.GetGridField( gp ) );
 }

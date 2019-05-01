@@ -36,7 +36,7 @@ DrawFrame::DrawFrame
     m_pGraphics        ( pGraphics ), 
     m_clutBackground   ( ),
 	m_gridPointShape   ( nullptr ),
-	m_gpHighlight      ( GridPoint::NULL_VAL() )
+	m_gpHighlight      ( GP_NULL )
 {
 	m_clutBackground.Allocate( MAX_BG_COLOR() );    // default is grey scale lookup table with entries 0 .. 255
 	m_pTextDisplay    = new TextDisplay( * m_pGraphics, m_wBuffer, * m_pPixelCoordinates );

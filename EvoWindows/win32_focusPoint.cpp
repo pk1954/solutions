@@ -19,7 +19,7 @@ FocusPoint::FocusPoint( ) :
     m_pCore( nullptr ),
     //m_histGenBirth( ),
     //m_histGenDeath( ),
-    m_gp( GridPoint::NULL_VAL() )
+    m_gp( GP_NULL )
 { };
 
 void FocusPoint::Start

@@ -17,13 +17,12 @@ public:
 		m_lFertilizerYield = Config::GetConfigValue( Config::tId::fertilizerYield );
 		m_enMaxFertilizer  = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::maxFertilizer ));
 		m_enFoodReserve    = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::reserveFood ));
-		m_enMaxFood        = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::maxFood ));
 	}
 
 	GridField::GridField() :
-		m_gp      ( GridPoint::NULL_VAL() ),
-		m_gpSenior( GridPoint::NULL_VAL() ),
-		m_gpJunior( GridPoint::NULL_VAL() ),   
+		m_gp      ( GP_NULL ),
+		m_gpSenior( GP_NULL ),
+		m_gpJunior( GP_NULL ),   
 		m_mutRate(),   
 		m_enFertility(), 
 		m_Individual(), 
@@ -180,14 +179,15 @@ private:
     static long         m_lFertilizerYield;
     static ENERGY_UNITS m_enMaxFertilizer;
     static ENERGY_UNITS m_enFoodReserve;
-    static ENERGY_UNITS m_enMaxFood;
 
 // private functions
 
 	void setFertilizer( ENERGY_UNITS const s ) { assert( s >= 0_ENERGY_UNITS ); m_enFertilizer = s; }
 	void setFoodStock ( ENERGY_UNITS const s ) { assert( s >= 0_ENERGY_UNITS ); m_enFoodStock  = s; }
 	void setFertility ( ENERGY_UNITS const s ) { assert( s >= 0_ENERGY_UNITS ); m_enFertility  = s; }
-	void setMutRate   ( PERCENT      const s ) { assert( s >= 0_PERCENT       ); m_mutRate = PERCENT{ std::min( s.GetValue(), (short)100 ) }; }
+	void setMutRate   ( PERCENT      const s ) 
+	{ 
+		assert( s >= 0_PERCENT ); 
+		m_mutRate = PERCENT{ std::min( s.GetValue(), (short)100 ) }; 
+	}
 };
-
-std::wostream & operator << ( std::wostream &, GridField const & );

@@ -116,8 +116,8 @@ void HistWindow::dispGenerationWindow( ) const
 	PIXEL      const pixGenDispWidth { 50_PIXEL };
     PIXEL      const pixGenDispHeight{ 20_PIXEL };
     PIXEL      const pixClientWidth  { GetClientWindowWidth( ) };
-    PixelRect  const pixRectGen      { getGenerationRect( m_genSelected ) };      // position is relative to client area
-	PixelPoint const ptClientPos     { Client2Screen( PixelPoint::ZERO_VAL() ) }; // position of client area origin in screen coordinates
+    PixelRect  const pixRectGen      { getGenerationRect( m_genSelected ) };   // position is relative to client area
+	PixelPoint const ptClientPos     { Client2Screen( PP_ZERO ) };             // position of client area origin in screen coordinates
     PIXEL      const pixYpos         { ptClientPos.GetY() - pixGenDispHeight };
     PIXEL            pixXpos         { ( pixRectGen.GetLeft() + pixRectGen.GetRight() - pixGenDispWidth ) / 2 + ptClientPos.GetX() };
 

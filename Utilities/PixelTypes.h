@@ -13,6 +13,9 @@ using PixelPoint    = PosType  < PIXEL >;
 using PixelRectSize = SizeType < PIXEL >;
 using PixelRect     = RectType < PIXEL >;
 
+static PixelPoint const PP_NULL( PixelPoint::NULL_VAL() );   // compiler generates call!
+static PixelPoint const PP_ZERO( PixelPoint::ZERO_VAL() );   // compiler generates call!
+
 constexpr PIXEL operator"" _PIXEL( unsigned long long ull )
 {
 	return PIXEL( CastToShort( ull ) );

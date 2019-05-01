@@ -8,7 +8,7 @@
 #include "GridDimensions.h"
 #include "grid_model.h"
 
-GridPoint                       GridDimensions::m_gridSize       { GridPoint::NULL_VAL() }; 
+GridPoint                       GridDimensions::m_gridSize       { GP_NULL }; 
 int                             GridDimensions::m_iNrOfNeighbors { 0 }; 
 GridDimensions::NEIGHBOR_GRID * GridDimensions::m_pGridNeighbors { nullptr };
 
@@ -80,7 +80,7 @@ void GridDimensions::DefineGridSize
 		[&](GridPoint const gp)
 		{
 			NEIGHBORS & neighbors = ( * m_pGridNeighbors)[ gp.GetXvalue() ][ gp.GetYvalue() ];
-			neighbors.resize( m_iNrOfNeighbors, GridPoint::ZERO_VAL() );
+			neighbors.resize( m_iNrOfNeighbors, GP_ZERO );
 			for ( int i = 0; i < m_iNrOfNeighbors; ++i )
 			{
 				GridPoint gpDelta = ( m_iNrOfNeighbors == 6 ) 

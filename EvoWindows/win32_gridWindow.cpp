@@ -60,7 +60,7 @@ GridWindow::GridWindow( ) :
     m_pGridWindowObserved( nullptr ),
     m_pObserverInterface( nullptr ),
     m_pDrawFrame( nullptr ),
-    m_ptLast( PixelPoint::NULL_VAL() ),
+    m_ptLast( PP_NULL ),
     m_bMoveAllowed( TRUE )
 { }
 
@@ -218,7 +218,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     }
     else
     {
-        m_ptLast = PixelPoint::NULL_VAL();    // make m_ptLast invalid
+        m_ptLast = PP_NULL;    // make m_ptLast invalid
         // no PostRefresh! It would cause repaint for every mouse move.
     }
 
