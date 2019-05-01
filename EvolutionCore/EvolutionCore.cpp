@@ -32,9 +32,9 @@ void EvolutionCore::DestroyCore( EvolutionCore * pCore )
 	delete pCore;
 }
 
-BYTES EvolutionCore::GetCoreSize() 
+BYTES const EvolutionCore::GetCoreSize() 
 { 
-	return BYTES(sizeof(EvolutionCoreImpl)) + Grid::GetGridExtraSize(); 
+	return BYTES(sizeof(EvolutionCoreImpl)) + GetGridHeapSize(); 
 };
 
 unsigned int EvolutionCore::GetMaxPartnerMemory( )

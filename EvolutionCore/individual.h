@@ -66,16 +66,28 @@ public:
 		SetEnergy( ENERGY_UNITS( AssertShortSum( m_enStock.GetValue(), sInc.GetValue() ) ) );
 	}
 
+	Action::Id GetOption
+	(
+		bool           const bHasFreeSpace,
+		bool           const bHasNeighbor,
+		ENERGY_UNITS   const energy,
+		EVO_GENERATION const age,
+		Random             & random
+	) const
+	{
+		return m_genome.GetOption( bHasFreeSpace, bHasNeighbor, energy, age, random );
+	}
+
 private:
-    StrategyData    m_stratData;   // 40 bytes
-	IND_ID          m_id;          //  4 bytes
-	EVO_GENERATION  m_genBirth;    //  4 bytes
-    Genome          m_genome;      // 30 bytes
-	Strategy::Id    m_strategyId;  //  2 bytes 
-	tOrigin         m_origin;      //  2 bytes
-    ENERGY_UNITS    m_enCapacity;  //  2 bytes
-    ENERGY_UNITS    m_enStock;     //  2 bytes
-                             // sum:  88 bytes
+    StrategyData   m_stratData;   // 40 bytes
+	IND_ID         m_id;          //  4 bytes
+	EVO_GENERATION m_genBirth;    //  4 bytes
+    Genome         m_genome;      // 30 bytes
+	Strategy::Id   m_strategyId;  //  2 bytes 
+	tOrigin        m_origin;      //  2 bytes
+    ENERGY_UNITS   m_enCapacity;  //  2 bytes
+    ENERGY_UNITS   m_enStock;     //  2 bytes
+                            // sum:  88 bytes
 
 	static const std::array< Strategy * const, Strategy::COUNT > m_apStrat; 
 

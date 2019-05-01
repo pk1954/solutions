@@ -160,7 +160,6 @@
     <ClInclude Include="gridPoint24.h" />
     <ClInclude Include="gridRect.h" />
     <ClInclude Include="gridSelection.h" />
-    <ClInclude Include="plannedActivity.h" />
     <ClInclude Include="EvolutionCoreWrapperHelpers.h" />
     <ClInclude Include="EvolutionCoreWrappers.h" />
     <ClInclude Include="pixelCoordinates.h" />

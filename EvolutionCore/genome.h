@@ -54,7 +54,7 @@ private:
 	static unsigned int const MAX_LIFE_SPAN = 200;
 	static std::array< unsigned int, MAX_LIFE_SPAN + 1 > m_mortalityTable;
 
-	static EnumArray< bool,  Action  > m_abActionEnabled;
+	static EnumArray< bool,  Action > m_abActionEnabled;
     static EnumArray< GeneTypeLimits, GeneType > m_aLimits;
     static Genome        m_genomeTemplate;
 	static ActionOptions m_options;

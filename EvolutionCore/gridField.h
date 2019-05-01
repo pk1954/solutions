@@ -14,9 +14,11 @@ class GridField
 public:
 	static void RefreshCash( )
 	{
-		m_lFertilizerYield = Config::GetConfigValue( Config::tId::fertilizerYield );
-		m_enMaxFertilizer  = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::maxFertilizer ));
-		m_enFoodReserve    = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::reserveFood ));
+		m_lFertilizerYield         = Config::GetConfigValue( Config::tId::fertilizerYield );
+		m_enMaxFertilizer          = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::maxFertilizer ));
+		m_enFoodReserve            = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::reserveFood ));
+		m_enBasicFoodConsumption   = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionBasicRate ));
+		m_enMemSizeFoodConsumption = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMemSize ));
 	}
 
 	GridField::GridField() :
@@ -75,6 +77,22 @@ public:
     void SetEnergy( ENERGY_UNITS const sInc ) { m_Individual.SetEnergy( sInc ); }
     void DecEnergy( ENERGY_UNITS const sDec ) { m_Individual.IncEnergy( - sDec ); }
     void IncEnergy( ENERGY_UNITS const sInc ) { m_Individual.IncEnergy( sInc ); }
+
+	Action::Id GetOption
+	(
+		bool           const bHasFreeSpace,
+		bool           const bHasNeighbor,
+		EVO_GENERATION const age,
+		Random & random
+	) const
+	{
+		return m_Individual.GetOption( bHasFreeSpace, bHasNeighbor, GetEnergy( ), age, random );
+	}
+
+	ENERGY_UNITS const GetBaseConsumption( ) const 
+	{
+		return m_enBasicFoodConsumption + m_enMemSizeFoodConsumption * GetMemSize( ).GetValue();
+	}
 
 	void CreateIndividual( IND_ID const id, EVO_GENERATION const genBirth, Strategy::Id const s )
 	{
@@ -179,6 +197,8 @@ private:
     static long         m_lFertilizerYield;
     static ENERGY_UNITS m_enMaxFertilizer;
     static ENERGY_UNITS m_enFoodReserve;
+	static ENERGY_UNITS m_enBasicFoodConsumption;
+	static ENERGY_UNITS m_enMemSizeFoodConsumption;
 
 // private functions
 

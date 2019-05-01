@@ -29,22 +29,17 @@
 ObserverInterface * Grid::m_pObservers = nullptr;    // GUI call back for display of current model 
 EventInterface    * Grid::m_pEventPOI  = nullptr;
 
-GROWTH_RATE        Grid::m_enFoodGrowthRate;
-ENERGY_UNITS       Grid::m_enBasicFoodConsumption;
-ENERGY_UNITS       Grid::m_enMemSizeFoodConsumption;
-ENERGY_UNITS       Grid::m_enMoveFoodConsumption;
-ENERGY_UNITS       Grid::m_enCloneFoodConsumption;
-ENERGY_UNITS       Grid::m_enMarryFoodConsumption;
-ENERGY_UNITS       Grid::m_enInteractFoodConsumption;
-
-bool               Grid::m_bNeighborhoodFoodSensitivity;
+GROWTH_RATE  Grid::m_enFoodGrowthRate;
+ENERGY_UNITS Grid::m_enMoveFoodConsumption;
+ENERGY_UNITS Grid::m_enCloneFoodConsumption;
+ENERGY_UNITS Grid::m_enMarryFoodConsumption;
+ENERGY_UNITS Grid::m_enInteractFoodConsumption;
+bool         Grid::m_bNeighborhoodFoodSensitivity;
 
 void Grid::RefreshCache( )
 {
 	m_bNeighborhoodFoodSensitivity = Config::GetConfigValueBool( Config::tId::neighborhoodFoodSensitivity );
 	m_enFoodGrowthRate             = GROWTH_RATE (Config::GetConfigValueShort( Config::tId::growthRateFood ));
-	m_enBasicFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionBasicRate ));
-	m_enMemSizeFoodConsumption     = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMemSize ));
 	m_enMoveFoodConsumption        = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMove ));
 	m_enCloneFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionClone ));
 	m_enMarryFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMarry ));
@@ -73,7 +68,11 @@ Grid::Grid( )
       m_idCounter( ),
       m_genEvo( 0L ),
 	  m_emptyNeighborSlots( ),
-	  m_occupiedNeighborSlots( )
+	  m_occupiedNeighborSlots( ),
+      m_gpTarget( GP_NULL ),     
+      m_gpPartner( GP_NULL ),    
+      m_action( Action::Id::undefined ),
+      m_enBaseConsumption( 0_ENERGY_UNITS )
 {
 	m_aGF.resize( GridDimensions::GridWidthVal() );
 	for ( auto & col: m_aGF )
@@ -100,7 +99,7 @@ Grid::~Grid( )
     };
 }
 
-BYTES Grid::GetGridExtraSize()
+BYTES const Grid::GetGridHeapSize() const
 {
 	unsigned long long gridFieldSize { sizeof ( GridField ) };
 	unsigned long long gridRowSize   { sizeof(vector< GridField >) + GridDimensions::GridHeightVal() * gridFieldSize };
@@ -162,15 +161,13 @@ GridPoint Grid::choosePartner( Neighborhood & gpListFilled )
 GridPoint Grid::actionMove( GridField & gfRun )
 {
 	GridPoint gpNext = gfRun.GetJuniorGp( );      // may be NULL_VAL
-	m_plan.SetTarget( chooseTarget( m_emptyNeighborSlots ) );
-	m_plan.NoPartner( );
+	m_gpTarget = chooseTarget( m_emptyNeighborSlots );
 	stopOnPoi( gfRun );
-	gfRun.DecEnergy( m_plan.GetBaseConsumption( ) );
-	incActionCounter( gfRun.GetStrategyId( ), m_plan.GetActionType( ) );
+	incActionCounter( gfRun.GetStrategyId( ), m_action );
 	gfRun.DecEnergy( m_enMoveFoodConsumption );
 	if ( gfRun.IsAlive( ) )
 	{
-		GridField & gfTarget = getGridField( m_plan.GetTarget( ) );
+		GridField & gfTarget = getGridField( m_gpTarget );
 		m_gpList.ReplaceGridPointInList( * this, gfRun, gfTarget ); 
 		gfTarget.MoveIndividual( gfRun );
 	}
@@ -185,12 +182,10 @@ GridPoint Grid::actionMove( GridField & gfRun )
 GridPoint Grid::actionClone( GridField & gfRun )
 {
 	GridPoint gpNext = gfRun.GetJuniorGp( );      // may be NULL_VAL
-	m_plan.SetTarget( chooseTarget( m_emptyNeighborSlots ) );
-	m_plan.NoPartner( );
+	m_gpTarget = ( chooseTarget( m_emptyNeighborSlots ) );
 	stopOnPoi( gfRun );
-	gfRun.DecEnergy( m_plan.GetBaseConsumption( ) );
-	incActionCounter( gfRun.GetStrategyId( ), m_plan.GetActionType( ) );
-	GridField & gfTarget = getGridField( m_plan.GetTarget( ) );
+	incActionCounter( gfRun.GetStrategyId( ), m_action );
+	GridField & gfTarget = getGridField( m_gpTarget );
 	gfRun.DecEnergy( m_enCloneFoodConsumption );
 	gfTarget.CloneIndividual( ++m_idCounter, m_genEvo, m_random, gfRun );
 	if ( gfTarget.IsAlive( ) )
@@ -203,13 +198,12 @@ GridPoint Grid::actionClone( GridField & gfRun )
 GridPoint Grid::actionMarry( GridField & gfRun )
 {
 	GridPoint gpNext = gfRun.GetJuniorGp( );      // may be NULL_VAL
-	m_plan.SetPartner( choosePartner( m_occupiedNeighborSlots ) );
-	m_plan.SetTarget ( chooseTarget ( m_emptyNeighborSlots ) );
+	m_gpPartner = choosePartner( m_occupiedNeighborSlots );
+	m_gpTarget  = chooseTarget ( m_emptyNeighborSlots );
 	stopOnPoi( gfRun );
-	gfRun.DecEnergy( m_plan.GetBaseConsumption( ) );
-	incActionCounter( gfRun.GetStrategyId( ), m_plan.GetActionType( ) );
-	GridField & gfTarget  = getGridField( m_plan.GetTarget( ) );
-	GridField & gfPartner = getGridField( m_plan.GetPartner( ) );
+	incActionCounter( gfRun.GetStrategyId( ), m_action );
+	GridField & gfTarget  = getGridField( m_gpTarget );
+	GridField & gfPartner = getGridField( m_gpPartner );
 	gfRun.DecEnergy( m_enMarryFoodConsumption );
 	gfTarget.BreedIndividual( ++m_idCounter, m_genEvo, m_random, gfRun, gfPartner );
 	if ( gfTarget.IsAlive( ) )
@@ -223,12 +217,10 @@ GridPoint Grid::actionMarry( GridField & gfRun )
 GridPoint Grid::actionInteract( GridField & gfRun )
 {
 	GridPoint gpNext = gfRun.GetJuniorGp( );      // may be NULL_VAL
-	m_plan.SetPartner( choosePartner( m_occupiedNeighborSlots ) );
-	m_plan.NoTarget( );
+	m_gpPartner = choosePartner( m_occupiedNeighborSlots );
 	stopOnPoi( gfRun );
-	gfRun.DecEnergy( m_plan.GetBaseConsumption( ) );
-	incActionCounter( gfRun.GetStrategyId( ), m_plan.GetActionType( ) );
-	GridField & gfPartner = getGridField( m_plan.GetPartner( ) );
+	incActionCounter( gfRun.GetStrategyId( ), m_action );
+	GridField & gfPartner = getGridField( m_gpPartner );
 	gfRun.DecEnergy( m_enInteractFoodConsumption );
 	GridField::Interact( gfRun, gfPartner );
 	if ( gpNext.IsNotNull( ) )
@@ -246,11 +238,8 @@ GridPoint Grid::actionInteract( GridField & gfRun )
 GridPoint Grid::actionPassOn( GridField & gfRun )
 {
 	GridPoint gpNext = gfRun.GetJuniorGp( );      // may be NULL_VAL
-	m_plan.NoPartner( );
-	m_plan.NoTarget ( );
 	stopOnPoi( gfRun );
-	gfRun.DecEnergy( m_plan.GetBaseConsumption( ) );
-	incActionCounter( gfRun.GetStrategyId( ), m_plan.GetActionType( ) );
+	incActionCounter( gfRun.GetStrategyId( ), m_action );
 	deleteIfDead( gfRun );
 	assert( (gpNext.IsNull() ) || IsAlive( gpNext ) );
 	return gpNext;
@@ -259,11 +248,8 @@ GridPoint Grid::actionPassOn( GridField & gfRun )
 GridPoint Grid::actionFertilize( GridField & gfRun )
 {
 	GridPoint gpNext = gfRun.GetJuniorGp( );      // may be NULL_VAL
-	m_plan.NoPartner( );
-	m_plan.NoTarget ( );
 	stopOnPoi( gfRun );
-	gfRun.DecEnergy( m_plan.GetBaseConsumption( ) );
-	incActionCounter( gfRun.GetStrategyId( ), m_plan.GetActionType( ) );
+	incActionCounter( gfRun.GetStrategyId( ), m_action );
 	ENERGY_UNITS const enInvest = ENERGY_UNITS(gfRun.GetAllele( GeneType::Id::fertilInvest ));
 	gfRun.Fertilize( enInvest );
 	gfRun.DecEnergy( enInvest );
@@ -276,11 +262,8 @@ GridPoint Grid::actionFertilize( GridField & gfRun )
 GridPoint Grid::actionEat( GridField & gfRun )
 {
 	GridPoint gpNext = gfRun.GetJuniorGp( );      // may be NULL_VAL
-	m_plan.NoPartner( );
-	m_plan.NoTarget ( );
 	stopOnPoi( gfRun );
-	gfRun.DecEnergy( m_plan.GetBaseConsumption( ) );
-	incActionCounter( gfRun.GetStrategyId( ), m_plan.GetActionType( ) );
+	incActionCounter( gfRun.GetStrategyId( ), m_action );
 	{
 		ENERGY_UNITS const enWant    = ENERGY_UNITS( gfRun.GetAllele( GeneType::Id::appetite ) );
 		ENERGY_UNITS const enReceive = gfRun.GetConsumption( enWant );
@@ -296,8 +279,7 @@ GridPoint Grid::actionUndefined( GridField & gfRun )
 {
 	GridPoint gpNext = gfRun.GetJuniorGp( );      // may be NULL_VAL
 	stopOnPoi( gfRun );
-	gfRun.DecEnergy( m_plan.GetBaseConsumption( ) );
-	incActionCounter( gfRun.GetStrategyId( ), m_plan.GetActionType( ) );
+	incActionCounter( gfRun.GetStrategyId( ), m_action );
 	deleteIfDead( gfRun );
 	assert( (gpNext.IsNull() ) || IsAlive( gpNext ) );
 	return gpNext;
@@ -309,12 +291,10 @@ GridPoint Grid::GenerationStep( GridPoint const gpRun )
 	GridField & gfRun = getGridField( gpRun );
     assert( gfRun.IsAlive( ) );
 
-	m_plan.SetActor( gpRun );
+	m_gpTarget .Set2Null( );
+	m_gpPartner.Set2Null( );
 
-    // basic food consumption
-
-	m_plan.SetBaseConsumption( m_enBasicFoodConsumption );
-	m_plan.IncBaseConsumption( m_enMemSizeFoodConsumption * gfRun.GetMemSize( ).GetValue() );
+	gfRun.DecEnergy( gfRun.GetBaseConsumption( ) );
 
 	// inspect neighborhood
 
@@ -330,18 +310,15 @@ GridPoint Grid::GenerationStep( GridPoint const gpRun )
 
 	// decide on action
 
-    Action::Id action = gfRun.GetGenome( ).GetOption
+	m_action = gfRun.GetOption
 	( 
-        m_emptyNeighborSlots.GetLength( ) > 0,              // has free space around? 
-        m_occupiedNeighborSlots.GetLength( ) > 0,           // has neighbor
-        gfRun.GetEnergy( ) - m_plan.GetBaseConsumption( ),  // available energy
+        m_emptyNeighborSlots.GetLength( ) > 0,     // has free space around? 
+        m_occupiedNeighborSlots.GetLength( ) > 0,  // has neighbor
 	    GetAge( gpRun ),
 		m_random 
 	);
 
-	m_plan.SetActionType( action );
-
-    switch ( action )
+    switch ( m_action )
     {
 		case Action::Id::move:	    return actionMove     ( gfRun );
 		case Action::Id::clone:     return actionClone    ( gfRun );

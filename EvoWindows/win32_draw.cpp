@@ -6,7 +6,6 @@
 #include "EvolutionCore.h"
 #include "GridDimensions.h"
 #include "pixelCoordinates.h"
-#include "plannedActivity.h"
 #include "win32_util.h"
 #include "win32_readBuffer.h"
 #include "win32_graphicsInterface.h"
@@ -119,7 +118,6 @@ void DrawFrame::DoPaint( EvolutionCore const * pCore )
 	if ( m_pDspOptWindow->AreIndividualsVisible( ) )
 	{
 		GridRect const rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hwnd ) ) );
-		drawPOI( pCore );
 		drawIndividuals( pCore, rcGrid );
 		drawText( pCore, rcGrid );
 		if ( m_pShapeHighlight != nullptr )
@@ -160,26 +158,10 @@ void DrawFrame::addPrimitive( GridPoint const gp, COLORREF const color, float co
 		m_pGraphics->AddIndividual( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), color, fPixSizeHalf );
 }
 
-void DrawFrame::drawPOI( EvolutionCore const * const pCore )
-{
-	GridPoint const gpPoi = pCore->FindPOI( );
-    if ( gpPoi.IsNotNull( ) )
-    {
-        PixelPoint const ptCenter = m_pPixelCoordinates->Grid2PixelPosCenter( gpPoi );
-		float      const fPixSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).GetValue() );
-
-        addPrimitive( gpPoi, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
-        addPrimitive( gpPoi, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
-
-        PlannedActivity const planPoi = pCore->GetPlan( );
-        addPrimitive( planPoi.GetTarget( ),  CLR_GREY, fPixSize * 0.45f );   // mark target
-        addPrimitive( planPoi.GetPartner( ), CLR_GREY, fPixSize * 0.45f );   // mark target
-    }
-}
-
 void DrawFrame::drawIndividuals( EvolutionCore const * const pCore, GridRect const & rect )
 {
 	float const fHalfSizeInd = static_cast<float>( m_gridPointShape->GetIndShapeSize( ).GetValue() );
+	float const fPixSize     = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).GetValue() );
 
     Apply2Rect
 	( 
@@ -187,6 +169,23 @@ void DrawFrame::drawIndividuals( EvolutionCore const * const pCore, GridRect con
 	    { 
             if ( pCore->IsAlive( gp ) )
             {
+				switch ( pCore->GetDisplayMode( gp ) )
+				{
+				case tDisplayMode::POI:
+					{
+						addPrimitive( gp, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
+						addPrimitive( gp, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
+						break;
+					}
+					case tDisplayMode::target:
+					case tDisplayMode::partner:
+					{
+						addPrimitive( gp, CLR_GREY, fPixSize * 0.45f );   // mark target/partner
+						break;
+					}
+					default:
+						break;
+				}
 				setIndividualColor( pCore, gp, fHalfSizeInd ); 
 			}
 	    },

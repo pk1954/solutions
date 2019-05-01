@@ -41,7 +41,7 @@ public:
 
 	virtual BYTES GetModelSize( ) const
 	{
-		return EvolutionCore::GetCoreSize( ) + BYTES(sizeof(EvoModelDataGlue));
+		return m_pEvolutionCore->GetCoreSize( ) + BYTES(sizeof(EvoModelDataGlue));
 	}
 
 	virtual void CopyFrom( ModelData const * const src )

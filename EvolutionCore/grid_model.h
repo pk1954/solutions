@@ -14,7 +14,6 @@
 #include "gridPOI.h"
 #include "GridDimensions.h"
 #include "EvolutionTypes.h"
-#include "plannedActivity.h"
 
 using std::array;
 using std::vector;
@@ -41,8 +40,6 @@ public:
     void FoodGrowth( );
 
 	GridPoint GenerationStep( GridPoint const );
-
-	PlannedActivity const GetPlan( ) const { return m_plan; };
 
 	PERCENT      GetMutRate   ( GridPoint const gp ) { return getGridField( gp ).GetMutRate( ); }
 	ENERGY_UNITS GetFertilizer( GridPoint const gp ) { return getGridField( gp ).GetFertilizer( ); }
@@ -87,19 +84,40 @@ public:
         return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
     };
 
-    bool           IsAlive     ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive( ); }
-    bool           IsDead      ( GridPoint const gp ) const { return GetGridField( gp ).IsDead( ); }
-    ENERGY_UNITS   GetFoodStock( GridPoint const gp ) const { return GetGridField( gp ).GetFoodStock( ); }
-    IND_ID         GetId       ( GridPoint const gp ) const { return GetGridField( gp ).GetId       ( ); }
-    tOrigin        GetOrigin   ( GridPoint const gp ) const { return GetGridField( gp ).GetOrigin   ( ); }
-    EVO_GENERATION GetGenBirth ( GridPoint const gp ) const { return GetGridField( gp ).GetGenBirth( ); }
-    EVO_GENERATION GetAge      ( GridPoint const gp ) const 
+    bool           const IsAlive           ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive( ); }
+    bool           const IsDead            ( GridPoint const gp ) const { return GetGridField( gp ).IsDead( ); }
+    ENERGY_UNITS   const GetFoodStock      ( GridPoint const gp ) const { return GetGridField( gp ).GetFoodStock( ); }
+    IND_ID         const GetId             ( GridPoint const gp ) const { return GetGridField( gp ).GetId       ( ); }
+    tOrigin        const GetOrigin         ( GridPoint const gp ) const { return GetGridField( gp ).GetOrigin   ( ); }
+    EVO_GENERATION const GetGenBirth       ( GridPoint const gp ) const { return GetGridField( gp ).GetGenBirth( ); }
+	ENERGY_UNITS   const GetBaseConsumption( GridPoint const gp ) const { return GetGridField( gp ).GetBaseConsumption( ); }
+
+    EVO_GENERATION GetAge( GridPoint const gp ) const 
 	{
 		EVO_GENERATION genBirth = GetGenBirth( gp );
 		return genBirth.IsNull() ? EVO_GENERATION::NULL_VAL() : (m_genEvo - genBirth); 
 	}
 
-	static BYTES GetGridExtraSize();
+	tDisplayMode const GetDisplayMode( GridPoint const gp ) const 
+	{ 
+		if ( GridPOI::IsPoi( GetId(gp) ) )
+			return tDisplayMode::POI;
+
+		if ( gp == m_gpPartner )
+			return tDisplayMode::partner;
+
+		if ( gp == m_gpTarget )
+			return tDisplayMode::target;
+
+		return tDisplayMode::normal; 
+	};
+
+	//GridPoint const GetTarget ( ) const { return m_gpTarget; }
+	//GridPoint const GetPartner( ) const { return m_gpPartner; }
+
+	//Action::Id const GetActionType( ) const { return m_action; }
+
+	BYTES const  GetGridHeapSize() const;
 
 	EVO_GENERATION GetEvoGenerationNr( )       const { return m_genEvo; }
     int            GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
@@ -123,7 +141,7 @@ public:
 	}
 
 private:
-		
+
 	void incActionCounter( Strategy::Id const strategy, Action::Id const action )
 	{
 		unsigned int const uiAction   = static_cast<unsigned int>(action);
@@ -165,7 +183,6 @@ private:
 	GridPoint chooseTarget ( Neighborhood & );
     GridPoint choosePartner( Neighborhood & );
 
-
 	GridPoint actionMove     ( GridField & );
 	GridPoint actionClone    ( GridField & );
 	GridPoint actionMarry    ( GridField & );
@@ -185,7 +202,10 @@ private:
     EVO_GENERATION  m_genEvo;                              //                             4 byte
     Neighborhood    m_emptyNeighborSlots;
     Neighborhood    m_occupiedNeighborSlots;
-	PlannedActivity m_plan;                                
+	GridPoint       m_gpTarget;       // target for move, clone and marry operations
+	GridPoint       m_gpPartner;      // partner for interaction and marry operations
+	Action::Id      m_action;
+	ENERGY_UNITS    m_enBaseConsumption;
 
 	array< array < ACTION_COUNT, Strategy::COUNT>, Action::COUNT > m_ActionCounter;
 
@@ -200,8 +220,6 @@ private:
 	static EventInterface    * m_pEventPOI;
 
     static GROWTH_RATE  m_enFoodGrowthRate;
-    static ENERGY_UNITS m_enBasicFoodConsumption;
-    static ENERGY_UNITS m_enMemSizeFoodConsumption;
     static ENERGY_UNITS m_enMoveFoodConsumption;
     static ENERGY_UNITS m_enCloneFoodConsumption;
     static ENERGY_UNITS m_enMarryFoodConsumption;

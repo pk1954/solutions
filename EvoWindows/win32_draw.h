@@ -87,5 +87,4 @@ private:
 	void drawBackground( );
     void drawText       ( EvolutionCore const * const, GridRect  const & );
     void drawIndividuals( EvolutionCore const * const, GridRect  const & );
-    void drawPOI        ( EvolutionCore const * const );
 };

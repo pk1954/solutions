@@ -169,7 +169,6 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 		}
 
 		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI,      L"POI" );
-		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SHOW_HISTORY, L"Show individual history" );		
 	}
 	if ( m_pWorkThreadInterface->IsRunning() )
 		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_STOP, L"Stop" );
@@ -364,10 +363,6 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
 			case IDM_CHOOSE_HIGHLIGHT_COLOR:
 				m_pDrawFrame->CallHighlightColorDialog( GetWindowHandle() );
-			break;
-
-			case IDM_SHOW_HISTORY:
-				m_pFocusPoint->ShowIndividualHistory( );
 			break;
 
 			case IDM_SET_POI:

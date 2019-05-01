@@ -50,28 +50,30 @@ public:
 
 	virtual bool const GetSimulationMode( ) const { return m_bSimulationMode; }
 
-    virtual EVO_GENERATION  const GetAge       ( GridPoint const gp ) const { return m_grid.GetAge( gp ); }
+    virtual EVO_GENERATION  const GetAge        ( GridPoint const gp ) const { return m_grid.GetAge( gp ); }
 
-	virtual PERCENT         const GetMutRate   ( GridPoint const gp ) const { return getGridField( gp ).GetMutRate( ); }
-	virtual ENERGY_UNITS    const GetFoodStock ( GridPoint const gp ) const { return getGridField( gp ).GetFoodStock( ); }
-    virtual ENERGY_UNITS    const GetFertility ( GridPoint const gp ) const { return getGridField( gp ).GetFertility( ); }
-    virtual ENERGY_UNITS    const GetFertilizer( GridPoint const gp ) const { return getGridField( gp ).GetFertilizer( ); }
-    virtual EVO_GENERATION  const GetGenBirth  ( GridPoint const gp ) const { return getGridField( gp ).GetGenBirth( ); }
-    virtual Strategy::Id    const GetStrategyId( GridPoint const gp ) const { return getGridField( gp ).GetStrategyId( ); }
-    virtual IND_ID          const GetId        ( GridPoint const gp ) const { return getGridField( gp ).GetId( ); }
-    virtual tOrigin         const GetOrigin    ( GridPoint const gp ) const { return getGridField( gp ).GetOrigin( ); }
-    virtual ENERGY_UNITS    const GetEnergy    ( GridPoint const gp ) const { return getGridField( gp ).GetEnergy( ); }
-    virtual MEM_INDEX       const GetMemSize   ( GridPoint const gp ) const { return getGridField( gp ).GetMemSize( ); }
-    virtual MEM_INDEX       const GetMemUsed   ( GridPoint const gp ) const { return getGridField( gp ).GetMemUsed( ); }
-    virtual bool            const IsDead       ( GridPoint const gp ) const { return getGridField( gp ).IsDead( ); }
-    virtual bool            const IsAlive      ( GridPoint const gp ) const { return getGridField( gp ).IsAlive( ); }
-    virtual bool            const IsDefined    ( GridPoint const gp ) const { return getGridField( gp ).IsDefined( ); }
+	virtual PERCENT         const GetMutRate    ( GridPoint const gp ) const { return getGridField( gp ).GetMutRate( ); }
+	virtual ENERGY_UNITS    const GetFoodStock  ( GridPoint const gp ) const { return getGridField( gp ).GetFoodStock( ); }
+    virtual ENERGY_UNITS    const GetFertility  ( GridPoint const gp ) const { return getGridField( gp ).GetFertility( ); }
+    virtual ENERGY_UNITS    const GetFertilizer ( GridPoint const gp ) const { return getGridField( gp ).GetFertilizer( ); }
+    virtual EVO_GENERATION  const GetGenBirth   ( GridPoint const gp ) const { return getGridField( gp ).GetGenBirth( ); }
+    virtual Strategy::Id    const GetStrategyId ( GridPoint const gp ) const { return getGridField( gp ).GetStrategyId( ); }
+    virtual IND_ID          const GetId         ( GridPoint const gp ) const { return getGridField( gp ).GetId( ); }
+    virtual tOrigin         const GetOrigin     ( GridPoint const gp ) const { return getGridField( gp ).GetOrigin( ); }
+    virtual ENERGY_UNITS    const GetEnergy     ( GridPoint const gp ) const { return getGridField( gp ).GetEnergy( ); }
+    virtual MEM_INDEX       const GetMemSize    ( GridPoint const gp ) const { return getGridField( gp ).GetMemSize( ); }
+    virtual MEM_INDEX       const GetMemUsed    ( GridPoint const gp ) const { return getGridField( gp ).GetMemUsed( ); }
+    virtual bool            const IsDead        ( GridPoint const gp ) const { return getGridField( gp ).IsDead( ); }
+    virtual bool            const IsAlive       ( GridPoint const gp ) const { return getGridField( gp ).IsAlive( ); }
+    virtual bool            const IsDefined     ( GridPoint const gp ) const { return getGridField( gp ).IsDefined( ); }
 
-    virtual IND_ID          const GetMemEntry  ( GridPoint const gp, MEM_INDEX    const index ) const { return getGridField( gp ).GetMemEntry( index ); }
-    virtual short           const GetAllele    ( GridPoint const gp, GeneType::Id const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
+    virtual IND_ID          const GetMemEntry   ( GridPoint const gp, MEM_INDEX    const index ) const { return getGridField( gp ).GetMemEntry( index ); }
+    virtual short           const GetAllele     ( GridPoint const gp, GeneType::Id const gene  ) const { return getGenome( gp ).GetAllele( gene ); }
 						    	  
-	virtual EVO_GENERATION  const GetEvoGenerationNr ( ) const { return m_grid.GetEvoGenerationNr( ); }
-	virtual PlannedActivity const GetPlan( )             const { return m_grid.GetPlan( ); };
+	virtual EVO_GENERATION  const GetEvoGenerationNr( ) const { return m_grid.GetEvoGenerationNr( ); }
+	virtual BYTES           const GetGridHeapSize   ( ) const { return m_grid.GetGridHeapSize( ); };
+
+	virtual tDisplayMode    const GetDisplayMode( GridPoint const gp ) const { return m_grid.GetDisplayMode( gp ); };
 
 	virtual tManipulator    const GetBrushManipulator( ) const { return m_brush.GetManipulator(); }
     virtual PERCENT         const GetBrushIntensity  ( ) const { return m_brush.GetIntensity(); }
@@ -79,8 +81,10 @@ public:
     virtual GRID_COORD      const GetBrushSize       ( ) const { return m_brush.GetRadius(); }
     virtual tBrushMode      const GetBrushMode       ( ) const { return m_brush.GetBrushMode(); }
 
-
 	virtual int const GetNrOfLivingIndividuals( ) const { return m_grid.GetNrOfLivingIndividuals( ); }
+
+	virtual wchar_t const * const GetOriginName  ( GridPoint const gp ) const { return ::GetOriginName( GetOrigin( gp ) ); }
+	virtual wchar_t const * const GetStrategyName( GridPoint const gp ) const { return Strategy::GetName( GetStrategyId( gp ) ); }
 
 	virtual	ACTION_COUNT GetActionCounter
 	(

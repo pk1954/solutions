@@ -19,8 +19,6 @@ public:
     void Start( EvoHistorySysGlue *, EvolutionCore * );
 
     void SetFocusPoint( GridPoint const );
-	void ShowIndividualHistory();
-
 	void AttachFocusPointObserver( RootWindow * pRootWin )
 	{
 		m_ViewCollection.AttachObserver( pRootWin );
@@ -30,16 +28,6 @@ public:
 	{ 
 		return m_gp; 
 	}
-
-	//HIST_GENERATION const GetGenBirth( ) const 
-	//{ 
-	//	return m_histGenBirth; 
-	//}
-
-	//HIST_GENERATION const GetGenDeath( ) const 
-	//{ 
-	//	return m_histGenDeath; 
-	//}
 
 	BOOL const IsInGrid( ) const 
 	{ 
@@ -62,10 +50,8 @@ public:
 	}
 
 private:
+    ViewCollection      m_ViewCollection;
     EvoHistorySysGlue * m_pEvoHistGlue;
     EvolutionCore     * m_pCore;
-    ViewCollection      m_ViewCollection;
-    //HIST_GENERATION     m_histGenBirth;
-    //HIST_GENERATION     m_histGenDeath;
     GridPoint           m_gp;
 };

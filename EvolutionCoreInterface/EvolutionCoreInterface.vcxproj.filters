@@ -28,9 +28,6 @@
     <ClInclude Include="gridNeighbor.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="plannedActivity.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="EvolutionCoreWrapperHelpers.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
