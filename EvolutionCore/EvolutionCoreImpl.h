@@ -73,7 +73,8 @@ public:
 	virtual EVO_GENERATION  const GetEvoGenerationNr( ) const { return m_grid.GetEvoGenerationNr( ); }
 	virtual BYTES           const GetGridHeapSize   ( ) const { return m_grid.GetGridHeapSize( ); };
 
-	virtual tDisplayMode    const GetDisplayMode( GridPoint const gp ) const { return m_grid.GetDisplayMode( gp ); };
+	virtual tDisplayMode    const   GetDisplayMode( GridPoint const gp ) const { return m_grid.GetDisplayMode( gp ); };
+	virtual wchar_t         const * GetExplanation( )                    const { return m_grid.GetExplanation( ); };
 
 	virtual tManipulator    const GetBrushManipulator( ) const { return m_brush.GetManipulator(); }
     virtual PERCENT         const GetBrushIntensity  ( ) const { return m_brush.GetIntensity(); }
@@ -86,7 +87,7 @@ public:
 	virtual wchar_t const * const GetOriginName  ( GridPoint const gp ) const { return ::GetOriginName( GetOrigin( gp ) ); }
 	virtual wchar_t const * const GetStrategyName( GridPoint const gp ) const { return Strategy::GetName( GetStrategyId( gp ) ); }
 
-	virtual	ACTION_COUNT GetActionCounter
+	virtual	ACTION_COUNT const GetActionCounter
 	(
 		Strategy::Id const strategy,
 		Action::Id   const action
@@ -95,9 +96,10 @@ public:
 		return m_grid.GetActionCounter( strategy, action );
 	}
 
-	virtual GridPoint FindGridPoint( IND_ID const & ) const; 
-
-	virtual GridPoint FindPOI( ) const; 
+	virtual GridPoint const FindGridPointFromId( IND_ID const id ) const
+	{ 
+		return m_grid.FindGridPointFromId( id );
+	}
 
 private:
 	Grid      m_grid;	

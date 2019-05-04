@@ -265,8 +265,9 @@ void AppWindow::Start(  )
 	EvolutionCore::InitClass
 	( 
 		GridDimensions::GetNrOfNeigbors(), 
-		m_pCoreObservers, 
-		& m_event 
+		m_pReadBuffer, 
+		& m_event,
+		& std::wcout
 	);
 
 	m_pD3d_driver->Initialize

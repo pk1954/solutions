@@ -10,9 +10,7 @@
 #include "grid_model.h"
 #include "gridField.h"
 
-// returns a list of GRIDPOINTS in pgpList and length of list as return value
-
-void Grid::getBestNeighborSlots( Neighborhood & list )
+ENERGY_UNITS Grid::getBestNeighborSlots( Neighborhood & list )
 {
     ENERGY_UNITS enMaxFoodStock = 0_ENERGY_UNITS;
     for ( unsigned int uiIndex = 0; uiIndex < list.GetLength(); ++ uiIndex )
@@ -23,11 +21,14 @@ void Grid::getBestNeighborSlots( Neighborhood & list )
            enMaxFoodStock = enFoodstock;
     }
 
-    for ( unsigned int uiIndex = 0; uiIndex < list.GetLength(); ++ uiIndex )
-    {
-        if ( GetFoodStock( list.GetElement( uiIndex ) ) != enMaxFoodStock )
-            list.RemoveFromList( uiIndex );
-    }
+	list.RemoveFromList
+	(
+		[&](GridPoint const gp)
+		{
+			return ( GetFoodStock( gp ) != enMaxFoodStock );
+		}
+	);
+	return enMaxFoodStock;
 }
 
 void Grid::FoodGrowth( )
@@ -50,6 +51,7 @@ void Grid::FoodGrowth( )
 			}
 
             rGF.ReduceFertilizer( );
+			return false;
 		}
 	);
 }

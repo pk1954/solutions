@@ -5,15 +5,12 @@
 #include "EvolutionCoreImpl.h"
 #include "gridPOI.h"
 
-IND_ID GridPOI::m_idPOI = IND_ID::NULL_VAL();
+GridPoint GridPOI::m_gpPOI = GP_NULL;
 
-void GridPOI::SetPoi( IND_ID const idNew )       
+void GridPOI::SetPoi( GridPoint const gp )       
 { 
-	if ( idNew.IsNotNull( ) )
-	{    
-		if ( idNew == m_idPOI )
-			ClearPoi( );           // same POI. deactivate POI
-		else
-			m_idPOI = idNew; 
-	}
+	if ( IsPoi( gp ) )
+		ClearPoi( );           // same POI. deactivate POI
+	else
+		m_gpPOI = gp; 
 }

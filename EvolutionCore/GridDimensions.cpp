@@ -92,6 +92,7 @@ void GridDimensions::DefineGridSize
 					: table4[i];
 				neighbors[i] = GridDimensions::Wrap2Grid( gp + gpDelta );
 			}
+			return false;
 		}
 	);
 }

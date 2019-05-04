@@ -28,7 +28,7 @@ void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 		break;
 
 	case tEvoCmd::editSetPOI:
-		GridPOI::SetPoi( m_pEvolutionCore->GetId(GridPoint24::Unpack( param )) );
+		GridPOI::SetPoi( GridPoint24::Unpack( param ) );
 		break;
 
 	case tEvoCmd::reset:

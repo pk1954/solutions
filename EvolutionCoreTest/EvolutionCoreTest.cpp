@@ -25,6 +25,8 @@ void testee()
 		( 
 			[](GridPoint const gp)
 			{
+				// include code to be tested
+				return false; 
 			}
 		);
 }
@@ -32,7 +34,7 @@ void testee()
 void tara()
 {
 	for ( int i = 0; i <= NRUNS; ++i )
-		Apply2Grid( [](GridPoint const gp){} );
+		Apply2Grid( [](GridPoint const gp){ return false; } );
 }
 
 void DoTest( )

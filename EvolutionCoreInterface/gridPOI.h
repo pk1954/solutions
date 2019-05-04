@@ -9,28 +9,28 @@
 class GridPOI  // point of interest
 {
 public:
-	static void SetPoi( IND_ID const ); 
+	static void SetPoi( GridPoint const ); 
 
 	static void ClearPoi( ) 
 	{
-		m_idPOI.Set2Null( ); 
+		m_gpPOI.Set2Null( ); 
 	}
 
 	static bool IsPoiDefined( ) 
 	{ 
-		return m_idPOI.IsNotNull( ); 
+		return m_gpPOI.IsNotNull( ); 
 	}
 
-	static bool IsPoi( IND_ID const id ) 
+	static bool IsPoi( GridPoint const gp ) 
 	{ 
-		return id == m_idPOI; 
+		return gp == m_gpPOI; 
 	}
 
-	static IND_ID GetPoi()
+	static GridPoint const GetPoi()
 	{
-		return m_idPOI;
+		return m_gpPOI;
 	}
 
 private:
-		static IND_ID m_idPOI;
+		static GridPoint m_gpPOI;
 };

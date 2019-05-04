@@ -40,6 +40,7 @@ void EvoStatistics::Prepare
 		{
 			if ( m_pCore->IsAlive( gp ) )
 				aquireData( gp );
+			return false;
 		},
 		gridRectSelection
 	);

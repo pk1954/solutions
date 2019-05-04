@@ -34,10 +34,9 @@ public:
 		m_neighbors.push_back( gp );
 	}
 
-	void RemoveFromList( int const iIndex )
+	void RemoveFromList( std::function<bool(GridPoint const)> const & func )
 	{
-		assert( static_cast<int>(m_neighbors.size()) >= iIndex);
-		m_neighbors.erase( m_neighbors.begin() + iIndex );
+		m_neighbors.erase( std::remove_if(m_neighbors.begin(), m_neighbors.end(), func), m_neighbors.end() ); 
 	}
 
 	size_t GetLength( ) const 
@@ -55,13 +54,24 @@ public:
 		return m_neighbors[uiIndex]; 
 	}
 
-    GridPoint const GetRandomElement( unsigned int const uiRandom ) const 
-    {
-        assert( m_neighbors.size( ) > 0 ); 
-        //lint -e414   possible division by 0
-        return m_neighbors[uiRandom % m_neighbors.size( )];
-        //lint +e414 
-    }
+	GridPoint const GetRandomElement( unsigned int const uiRandom ) const 
+	{
+		assert( m_neighbors.size( ) > 0 ); 
+		return m_neighbors[uiRandom % m_neighbors.size( )];
+	}
+
+	bool const Includes( GridPoint const & gp ) const 
+	{
+		return std::find(m_neighbors.begin(), m_neighbors.end(), gp) != m_neighbors.end();
+	}
+
+	void Apply2All( std::function<void(GridPoint const)> const & func )
+	{
+		for ( auto gp : m_neighbors )
+		{
+			func( gp );   
+		}
+	}
 
 private:
 

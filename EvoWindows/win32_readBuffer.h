@@ -8,7 +8,7 @@
 #include "EvolutionCore.h"
 #include "observerInterface.h"
 
-class ReadBuffer
+class ReadBuffer : public ObserverInterface
 {
 public:
 	ReadBuffer( ObserverInterface * pObservers ) : 
@@ -46,7 +46,7 @@ public:
 
 	// called by producer thread
 
-	void Notify( bool const bImmediate )
+	virtual void Notify( bool const bImmediate )
 	{
 		if (TryAcquireSRWLockExclusive( & m_SRWLock ))              // if buffer is locked by readers
 		{                                                           // don't let you get stopped.

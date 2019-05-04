@@ -191,7 +191,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         if ( m_ptLast.IsNotNull() )  // last cursor pos stored in m_ptLast
         {
             PixelPoint ptOther = GridPOI::IsPoiDefined( ) 
-				                 ? m_pPixelCoordinates->Grid2PixelPosCenter( pCore->FindPOI( ) ) * 2 - ptCrsr 
+				                 ? m_pPixelCoordinates->Grid2PixelPosCenter( GridPOI::GetPoi() ) * 2 - ptCrsr 
 				                 : m_ptLast;
 			GridSelection::SetSelection( m_pPixelCoordinates->Pixel2GridRect( PixelRect( ptOther, ptCrsr ) ) );
         }
@@ -284,7 +284,7 @@ void GridWindow::doPaint( )
 
     if ( m_bMoveAllowed && GridPOI::IsPoiDefined( ) )
 	{
-		bool bCentered = m_pPixelCoordinates->CenterPoi( GetClRectCenter( ), pCore->FindPOI( ) );
+		bool bCentered = m_pPixelCoordinates->CenterPoi( GetClRectCenter( ), GridPOI::GetPoi( ) );
 		if ( ! bCentered )
 		   Invalidate( FALSE );    // repeat if POI is not in center 
 	}
@@ -464,7 +464,7 @@ void GridWindow::SetFieldSize( PIXEL const pixFieldSize )
 {
 	EvolutionCore const * pCore    = m_pReadBuffer->LockReadBuffer( );
 	GridPoint     const   gpCenter = GridPOI::IsPoiDefined( ) 
-									 ? pCore->FindPOI( ) 
+									 ? GridPOI::GetPoi() 
 									 : m_pPixelCoordinates->Pixel2GridPos( GetClRectCenter( ) );
 	newFieldSize( pCore, pixFieldSize, gpCenter );
 	m_pReadBuffer->ReleaseReadBuffer( );

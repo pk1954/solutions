@@ -29,17 +29,6 @@ void EvolutionCoreImpl::ResetAll( )
 	GridPOI::ClearPoi( );
 }
 
-GridPoint EvolutionCoreImpl::FindGridPoint( IND_ID const & id ) const 
-{ 
-	return ( id.IsNull() )
-			? GP_NULL
-			: m_grid.FindGridPoint
-			  ( 
-				  [&](GridPoint const gp) { return (GetId(gp) == id); }, 
-				  GridDimensions::GridRectFull() 
-		      );
-}
-
 // Compute - plan and implement one generation step for all living individuals
 //           let food grow 
 //           increment generation number
@@ -49,24 +38,17 @@ void EvolutionCoreImpl::Compute( )
     GplIterator m_gplIterator( m_grid );
     GridPoint   gpRun = m_gplIterator.Begin( );
 
-	m_grid.PrepareActionCounters( );
+	m_grid.PrepareComputation( );
     while ( gpRun.IsNotNull( ) )
     {
         assert( IsInGrid( gpRun ) );
         assert( m_grid.IsAlive( gpRun ) );
 
-		gpRun = m_grid.GenerationStep( gpRun );   // may return NULL_VAL  
+		gpRun = m_grid.ComputeNextGeneration( gpRun );   // may return NULL_VAL  
     }
 
     m_grid.FoodGrowth( );
     m_grid.IncGenNr( );
-}
-
-GridPoint EvolutionCoreImpl::FindPOI( ) const
-{ 
-	return GridPOI::IsPoiDefined( ) 
-			? FindGridPoint( GridPOI::GetPoi() ) 
-			: GP_NULL; 
 }
 
 void EvolutionCoreImpl::DumpGridPointList( ) const

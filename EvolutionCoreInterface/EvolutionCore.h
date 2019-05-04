@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <iostream>     
 #include "BoolOp.h"
 #include "GridRect.h"
 #include "strategy.h"
@@ -27,43 +28,41 @@ public:
 
 // readOnly functions
 
-    virtual int             const GetNrOfLivingIndividuals( ) const = 0;
-    virtual EVO_GENERATION  const GetEvoGenerationNr      ( ) const = 0;
-    virtual PERCENT         const GetBrushIntensity       ( ) const = 0;
-    virtual tShape          const GetBrushShape           ( ) const = 0;
-    virtual tManipulator    const GetBrushManipulator     ( ) const = 0;
-    virtual GRID_COORD      const GetBrushSize            ( ) const = 0;
-    virtual tBrushMode      const GetBrushMode            ( ) const = 0;
-	virtual bool            const GetSimulationMode       ( ) const = 0;
-	virtual BYTES           const GetGridHeapSize         ( ) const = 0;
+    virtual int            const   GetNrOfLivingIndividuals( ) const = 0;
+    virtual EVO_GENERATION const   GetEvoGenerationNr      ( ) const = 0;
+    virtual PERCENT        const   GetBrushIntensity       ( ) const = 0;
+    virtual tShape         const   GetBrushShape           ( ) const = 0;
+    virtual tManipulator   const   GetBrushManipulator     ( ) const = 0;
+    virtual GRID_COORD     const   GetBrushSize            ( ) const = 0;
+    virtual tBrushMode     const   GetBrushMode            ( ) const = 0;
+	virtual bool           const   GetSimulationMode       ( ) const = 0;
+	virtual BYTES          const   GetGridHeapSize         ( ) const = 0;
+	virtual wchar_t        const * GetExplanation          ( ) const = 0;
 
-	virtual bool            const IsDead        ( GridPoint const ) const = 0;
-	virtual bool            const IsAlive       ( GridPoint const ) const = 0;
-    virtual bool            const IsDefined     ( GridPoint const ) const = 0;
-    virtual IND_ID          const GetId         ( GridPoint const ) const = 0;
-    virtual tOrigin         const GetOrigin     ( GridPoint const ) const = 0;
-    virtual ENERGY_UNITS    const GetEnergy     ( GridPoint const ) const = 0;
-    virtual ENERGY_UNITS    const GetFoodStock  ( GridPoint const ) const = 0;
-    virtual ENERGY_UNITS    const GetFertility  ( GridPoint const ) const = 0;
-    virtual PERCENT         const GetMutRate    ( GridPoint const ) const = 0;
-    virtual ENERGY_UNITS    const GetFertilizer ( GridPoint const ) const = 0;
-    virtual EVO_GENERATION  const GetGenBirth   ( GridPoint const ) const = 0;
-    virtual EVO_GENERATION  const GetAge        ( GridPoint const ) const = 0;
-    virtual Strategy::Id    const GetStrategyId ( GridPoint const ) const = 0;
-    virtual MEM_INDEX       const GetMemSize    ( GridPoint const ) const = 0;
-    virtual MEM_INDEX       const GetMemUsed    ( GridPoint const ) const = 0;
-	virtual tDisplayMode    const GetDisplayMode( GridPoint const ) const = 0;
-	virtual IND_ID          const GetMemEntry   ( GridPoint const, MEM_INDEX    const ) const = 0;
-    virtual short           const GetAllele     ( GridPoint const, GeneType::Id const ) const = 0;
+	virtual tDisplayMode    const GetDisplayMode ( GridPoint const ) const = 0;
+	virtual bool            const IsDead         ( GridPoint const ) const = 0;
+	virtual bool            const IsAlive        ( GridPoint const ) const = 0;
+    virtual bool            const IsDefined      ( GridPoint const ) const = 0;
+    virtual IND_ID          const GetId          ( GridPoint const ) const = 0;
+    virtual tOrigin         const GetOrigin      ( GridPoint const ) const = 0;
+    virtual ENERGY_UNITS    const GetEnergy      ( GridPoint const ) const = 0;
+    virtual ENERGY_UNITS    const GetFoodStock   ( GridPoint const ) const = 0;
+    virtual ENERGY_UNITS    const GetFertility   ( GridPoint const ) const = 0;
+    virtual PERCENT         const GetMutRate     ( GridPoint const ) const = 0;
+    virtual ENERGY_UNITS    const GetFertilizer  ( GridPoint const ) const = 0;
+    virtual EVO_GENERATION  const GetGenBirth    ( GridPoint const ) const = 0;
+    virtual EVO_GENERATION  const GetAge         ( GridPoint const ) const = 0;
+    virtual Strategy::Id    const GetStrategyId  ( GridPoint const ) const = 0;
+    virtual MEM_INDEX       const GetMemSize     ( GridPoint const ) const = 0;
+    virtual MEM_INDEX       const GetMemUsed     ( GridPoint const ) const = 0;
+	virtual wchar_t const * const GetOriginName  ( GridPoint const ) const = 0;
+	virtual wchar_t const * const GetStrategyName( GridPoint const ) const = 0;
 
-	virtual	ACTION_COUNT GetActionCounter( Strategy::Id const, Action::Id const ) const = 0;
-
-	virtual GridPoint FindGridPoint( IND_ID const & ) const = 0;
-	virtual GridPoint FindPOI( )                      const = 0; 
-
-	virtual wchar_t const * const GetOriginName  ( GridPoint const gp ) const = 0;
-	virtual wchar_t const * const GetStrategyName( GridPoint const gp ) const = 0;
-
+	virtual IND_ID          const GetMemEntry        ( GridPoint    const, MEM_INDEX    const ) const = 0;
+    virtual short           const GetAllele          ( GridPoint    const, GeneType::Id const ) const = 0;
+	virtual	ACTION_COUNT    const GetActionCounter   ( Strategy::Id const, Action::Id   const ) const = 0;
+	virtual GridPoint       const FindGridPointFromId( IND_ID       const )                     const = 0;
+	  
 	BYTES const GetCoreSize();
 
 // manipulating functions
@@ -80,7 +79,7 @@ public:
 	
 // static functions  
     
-    static void            InitClass( int const, ObserverInterface * const, EventInterface * const );
+    static void            InitClass( int const, ObserverInterface * const, EventInterface * const, std::wostream * const  );
     static EvolutionCore * CreateCore();
 	static void            DestroyCore( EvolutionCore * );
 

@@ -51,9 +51,9 @@ public:
 //		stopwatch.Stop( L"Copy model" );
 	}
 
-    GridPoint FindGridPoint( IND_ID const & id ) const
+    GridPoint FindGridPointFromId( IND_ID const id ) const
 	{ 
-		return m_pEvolutionCore->FindGridPoint( id );
+		return m_pEvolutionCore->FindGridPointFromId( id );
 	}
 
 	virtual void OnAppCommand( GenerationCmd const );

@@ -11,13 +11,13 @@
 
 void GridPointList::CheckGridPointList( Grid const & grid ) const
 {
-    DUMP::Dump( L" CheckGridPointList start" );
+//    DUMP::Dump( L" CheckGridPointList start" );
 
     if ( ListIsEmpty( ) )
     {
         assert( m_iCount == 0 );
         assert( GetYoungestGp( ).IsNull( ) );
-        DUMP::Dump( L" CheckGridPointList empty" );
+//        DUMP::Dump( L" CheckGridPointList empty" );
         return;
     }
 
@@ -28,7 +28,7 @@ void GridPointList::CheckGridPointList( Grid const & grid ) const
     {
         assert( grid.IsAlive( gpRun ) );
         ++ iCount;
-        DUMP::Dump( grid, gpRun );
+//       DUMP::Dump( grid, gpRun );
 //        DUMP::Flush( );
         if ( IsYoungest( gpRun ) )
             break;
@@ -47,14 +47,15 @@ void GridPointList::CheckGridPointList( Grid const & grid ) const
    
     assert( iCount == m_iCount );
 
-    DUMP::Dump( L" CheckGridPointList end" );
+//    DUMP::Dump( L" CheckGridPointList end" );
+//	DUMP::DumpNL();
 }
 
 // Add: New element is added to start of list
 
 void GridPointList::AddGridPointToList( Grid & grid, GridField & gf )
 {
-//    CHECK_GRIDPOINT_LIST( grid );
+//  CHECK_GRIDPOINT_LIST( grid );
     
     GridPoint gp = gf.GetGridPoint( );
 
@@ -70,7 +71,7 @@ void GridPointList::AddGridPointToList( Grid & grid, GridField & gf )
 
     ++m_iCount;
 
-//    CHECK_GRIDPOINT_LIST( grid );
+//  CHECK_GRIDPOINT_LIST( grid );
 }
 
 void GridPointList::ReplaceGridPointInList( Grid & grid, GridField & gf, GridField & gfNew )
@@ -94,13 +95,15 @@ void GridPointList::ReplaceGridPointInList( Grid & grid, GridField & gf, GridFie
         grid.SetJuniorGp( gpSenior, gpNew  );
               
     gf.CutConnections( );
+//	CHECK_GRIDPOINT_LIST( grid );
 }
 
 // Delete: Element is deleted from list
 
 void GridPointList::DeleteGridPointFromList( Grid & grid, GridField & gf )
 {
-    GridPoint gpJunior = gf.GetJuniorGp( );
+//	CHECK_GRIDPOINT_LIST( grid );
+	GridPoint gpJunior = gf.GetJuniorGp( );
     GridPoint gpSenior = gf.GetSeniorGp( );
     GridPoint gp       = gf.GetGridPoint( );
    
@@ -117,4 +120,5 @@ void GridPointList::DeleteGridPointFromList( Grid & grid, GridField & gf )
     gf.CutConnections( );
 
     --m_iCount;
+//	CHECK_GRIDPOINT_LIST( grid );
 }

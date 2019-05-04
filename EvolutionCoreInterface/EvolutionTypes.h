@@ -35,7 +35,8 @@ enum class tDisplayMode
 	normal,
 	POI,
 	partner,
-	target
+	target,
+	neighbor
 };
 
 enum class tBrushMode : unsigned short

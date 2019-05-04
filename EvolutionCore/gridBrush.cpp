@@ -108,7 +108,14 @@ void GridBrush::operator()( GridPoint gpCenter )
 {
 	if (m_shape == tShape::Grid)
 	{
-		Apply2Grid( [&](GridPoint const gp) { (m_func)( gp, m_intensity.GetValue() ); } );
+		Apply2Grid
+		( 
+			[&](GridPoint const gp) 
+			{ 
+				(m_func)( gp, m_intensity.GetValue() ); 
+				return false;
+			} 
+		);
 	}
 	else
 	{
@@ -119,6 +126,7 @@ void GridBrush::operator()( GridPoint gpCenter )
 				PERCENT intensity = m_filter( gp );
 				if ( intensity >= 0_PERCENT )
 					(m_func)( gp + gpCenter, intensity.GetValue() );
+				return false;
 			},
 			ClipToGrid( gpCenter - GridPoint( m_radius ) ) - gpCenter,
 			ClipToGrid( gpCenter + GridPoint( m_radius ) ) - gpCenter

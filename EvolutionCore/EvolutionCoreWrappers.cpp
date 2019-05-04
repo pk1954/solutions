@@ -24,7 +24,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         GridPoint gp = ScrReadGridPoint( script );
-        GridPOI::SetPoi( m_pCore->GetId(gp) );
+        GridPOI::SetPoi( gp );
     }
 };
 

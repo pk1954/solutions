@@ -26,7 +26,7 @@ void MemorySlot::FillBuffer( EvolutionCore const * const pCore, GridPoint const 
 
 GridPoint MemorySlot::getReferencedGridPoint( EvolutionCore const * const pCore, IND_ID const indId ) const 
 { 
-	return pCore->FindGridPoint( indId );
+	return pCore->FindGridPointFromId( indId );
 }
 
 IND_ID MemorySlot::getIndId( EvolutionCore const * const pCore, GridPoint const gp ) const 

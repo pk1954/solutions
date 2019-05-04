@@ -14,9 +14,10 @@
 #include "win32_colorManager.h"
 #include "win32_draw.h"
 
-static COLORREF const CLR_BLACK = RGB(   0,   0,   0 );
-static COLORREF const CLR_GREY  = RGB( 128, 128, 128 );
-static COLORREF const CLR_WHITE = RGB( 255, 255, 255 );
+static COLORREF const CLR_BLACK  = RGB(   0,   0,   0 );
+static COLORREF const CLR_GREY   = RGB( 128, 128, 128 );
+static COLORREF const CLR_WHITE  = RGB( 255, 255, 255 );
+static COLORREF const CLR_YELLOW = RGB( 255, 255,   0 );
 
 DrawFrame::DrawFrame
 ( 
@@ -92,16 +93,17 @@ void DrawFrame::ResizeDrawFrame( EvolutionCore const * const pCore )
 
 bool DrawFrame::SetHighlightPos( EvolutionCore const * const pCore, PixelPoint const ptCrsr )
 {
-	GridPoint const   gpLast     = m_gpHighlight;
-	Shape     const * pShapeLast = m_pShapeHighlight;
-	m_gpHighlight = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
-	assert( IsInGrid( m_gpHighlight ) );
-	PixelPoint const ppGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( m_gpHighlight );
-	m_pShapeHighlight = m_gridPointShape->FindShape( pCore, ptCrsr - ppGridpointOffset, m_gpHighlight );
-	return ( 
-			  (m_pShapeHighlight != nullptr) && 
-		      ( (pShapeLast != m_pShapeHighlight) || (gpLast != m_gpHighlight) )
-		   );
+	//GridPoint const   gpLast     = m_gpHighlight;
+	//Shape     const * pShapeLast = m_pShapeHighlight;
+	//m_gpHighlight = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
+	//assert( IsInGrid( m_gpHighlight ) );
+	//PixelPoint const ppGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( m_gpHighlight );
+	//m_pShapeHighlight = m_gridPointShape->FindShape( pCore, ptCrsr - ppGridpointOffset, m_gpHighlight );
+	//return ( 
+	//		  (m_pShapeHighlight != nullptr) && 
+	//	      ( (pShapeLast != m_pShapeHighlight) || (gpLast != m_gpHighlight) )
+	//	   );
+	return false;
 }
 
 void DrawFrame::HighlightShape( Shape const * pShape, GridPoint const gp )
@@ -131,6 +133,9 @@ void DrawFrame::DoPaint( EvolutionCore const * pCore )
 			}
 		}
 	}
+	wchar_t const * strExplanation = pCore->GetExplanation( );
+	if ( strExplanation )
+		std::wcout << strExplanation << std::endl;
 }
 
 void DrawFrame::drawBackground( )
@@ -145,6 +150,7 @@ void DrawFrame::drawBackground( )
 			DWORD      const dwColor { getBackgroundColor( index ) };
 			PixelPoint const pnt     { m_pPixelCoordinates->Grid2PixelPosCenter( gp ) };
 			m_pGraphics->AddBackGround( pnt, dwColor, m_fPxSize );
+			return false;
 		},
 		m_pGraphics->GetStripMode() // if strip mode add borders to grid
 	);
@@ -172,22 +178,28 @@ void DrawFrame::drawIndividuals( EvolutionCore const * const pCore, GridRect con
 				switch ( pCore->GetDisplayMode( gp ) )
 				{
 				case tDisplayMode::POI:
-					{
-						addPrimitive( gp, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
-						addPrimitive( gp, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
-						break;
-					}
-					case tDisplayMode::target:
-					case tDisplayMode::partner:
-					{
-						addPrimitive( gp, CLR_GREY, fPixSize * 0.45f );   // mark target/partner
-						break;
-					}
-					default:
-						break;
+				{
+					addPrimitive( gp, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
+					addPrimitive( gp, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
+					break;
+				}
+				case tDisplayMode::target:
+				case tDisplayMode::partner:
+				{
+					addPrimitive( gp, CLR_GREY, fPixSize * 0.45f );   // mark target/partner
+					break;
+				}
+				case tDisplayMode::neighbor:
+				{
+					addPrimitive( gp, CLR_YELLOW, fPixSize * 0.50f );   // mark neighbor
+					break;
+				}
+				default:
+					break;
 				}
 				setIndividualColor( pCore, gp, fHalfSizeInd ); 
 			}
+			return false;
 	    },
 		rect
 	);
@@ -206,6 +218,15 @@ void DrawFrame::drawText( EvolutionCore const * const pCore, GridRect const & re
 				PixelPoint const pntGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( gp );
 				m_gridPointShape->Draw( pCore, gp, pntGridpointOffset );
             }
+			else
+			{
+				if ( ( pCore->GetDisplayMode( gp ) ) == tDisplayMode::neighbor )
+				{
+					PixelPoint const pntGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( gp );
+					m_gridPointShape->Draw( pCore, gp, pntGridpointOffset );
+				}
+			}
+			return false;
 		},
 		rect
 	);

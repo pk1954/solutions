@@ -31,6 +31,18 @@ void ActionOptions::InitOptions
 	set(A::passOn,    false                                          );
 }
 
+void ActionOptions::DisplayValidOptions( std::wostream * const pOut )
+{
+	Action::Apply2AllEnabledActions
+	( 
+		[&]( auto action )
+		{
+			if ( m_abOptions[action] )
+				* pOut << Action::GetName( action ) << std::endl;
+		}
+	);
+}
+
 // sum up all alleles of possible actions
 
 unsigned int ActionOptions::GetSumOfValidOptions( Genome const & genome )

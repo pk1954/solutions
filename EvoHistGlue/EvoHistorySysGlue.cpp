@@ -77,7 +77,7 @@ public:
     virtual bool operator() ( ModelData const * pModelData ) const
     {
         EvoModelDataGlue const * pEvoModelData = static_cast< EvoModelDataGlue const * >( pModelData );
-        return ( pEvoModelData->FindGridPoint( m_id ).IsNotNull( ) );  // id is alive
+        return ( pEvoModelData->FindGridPointFromId( m_id ).IsNotNull( ) );  // id is alive
     }
 
 private:

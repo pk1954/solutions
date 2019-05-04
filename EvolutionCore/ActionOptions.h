@@ -5,6 +5,7 @@
 #pragma once
 
 #include <array>
+#include <iostream>     
 #include "random.h"
 #include "EnumArray.h"
 #include "EvolutionTypes.h"
@@ -19,6 +20,8 @@ public:
 	unsigned int GetSumOfValidOptions( Genome const & );
 
 	Action::Id SelectAction( Genome const &, unsigned int const  );
+
+	void DisplayValidOptions( std::wostream * const );
 
 private:
 	void set( Action::Id const, bool const );

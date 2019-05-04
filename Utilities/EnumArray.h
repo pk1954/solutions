@@ -30,9 +30,19 @@ public:
 		return m_tArray.at( static_cast<unsigned short>( index ) ); 
 	}
 
-    T & operator[] ( typename INDEX_TYPE::Id index )
+	T & operator[] ( typename INDEX_TYPE::Id index )
 	{ 
 		return m_tArray.at( static_cast<unsigned short>( index ) ); 
+	}
+
+	T * begin( )
+	{ 
+		return m_tArray.begin();
+	}
+
+	T * end( )
+	{ 
+		return m_tArray.end(); 
 	}
 
 	void operator= ( T const val )

@@ -44,7 +44,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
     Script::ProcessScript( L"std_configuration.in" );
 
-	EvolutionCore::InitClass( iNrOfNeighbors, nullptr, nullptr );
+	EvolutionCore::InitClass( iNrOfNeighbors, nullptr, nullptr, nullptr );
 
 	PIXEL                 const FIELDSIZE            = 8_PIXEL;
 	EvoModelDataGlue    * const pEvoModelData        = new EvoModelDataGlue( );

@@ -47,12 +47,6 @@ public:
 		m_Individual.ResetIndividual( );
 	}
 
-	ENERGY_UNITS const GetConsumption( ENERGY_UNITS const sWant ) const 
-	{
-		ENERGY_UNITS const available = m_enFoodStock - m_enFoodReserve;
-		return ENERGY_UNITS( ClipToMinMax( available, 0_ENERGY_UNITS, sWant ) ); 
-	}
-
 	PERCENT        GetMutRate( )    const { return m_mutRate;  }
 	ENERGY_UNITS   GetFoodStock( )  const { return m_enFoodStock;  }
     ENERGY_UNITS   GetFertility( )  const { return m_enFertility;  }
@@ -116,6 +110,15 @@ public:
 		ENERGY_UNITS const yield    = (enInvest * m_lFertilizerYield ) / 100;
 		ENERGY_UNITS const newValue = std::min( m_enFertilizer + yield, m_enMaxFertilizer ); 
 		setFertilizer( newValue );
+	}
+
+	void Eat( )
+	{
+		ENERGY_UNITS const enWant    = ENERGY_UNITS( GetAllele( GeneType::Id::appetite ) );
+		ENERGY_UNITS const available = m_enFoodStock - m_enFoodReserve;
+		ENERGY_UNITS const enReceive = ENERGY_UNITS( ClipToMinMax( available, 0_ENERGY_UNITS, enWant ) ); 
+		IncFoodStock( -enReceive );
+		IncEnergy   (  enReceive );
 	}
 
 	void PassOn2Child( IND_ID const id, EVO_GENERATION const genBirth, Random & random )
