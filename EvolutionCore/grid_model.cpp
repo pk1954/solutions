@@ -156,16 +156,15 @@ void Grid::handleBaseConsumption( GridField & gfRun )
 
 	if ( m_bPOI )
 	{
-		* m_pProtocol << L"*** start processing POI: " << setbase( 16 ) << gfRun.GetId() << setbase( 10 ) << L" at" << gfRun.GetGridPoint() << endl;
-		* m_pProtocol << L"available energy: " << setw(4) << gfRun.GetEnergy() << endl;
-		* m_pProtocol << L"base consumption: " << setw(4) << enBase << endl;
+		* m_pProtocol << L"available energy: " << setw(4) << gfRun.GetEnergy().GetValue() << endl;
+		* m_pProtocol << L"base consumption: " << setw(4) << enBase.GetValue() << endl;
 	}
 
 	gfRun.DecEnergy( enBase );
 
 	if ( m_bPOI )
 	{
-		* m_pProtocol << L"remaining energy: " << setw(4) << gfRun.GetEnergy() << endl;
+		* m_pProtocol << L"remaining energy: " << setw(4) << gfRun.GetEnergy().GetValue() << endl;
 		displayAndWait( );
 	}
 }
@@ -231,7 +230,7 @@ GridField & Grid::chooseTarget( )
 		if ( m_bPOI )
 		{
 			* m_pProtocol << L"best free slots: " << m_emptyNeighborSlots.GetLength() 
-				          << L" slots with "      << enBest << L" energy units each" << endl;
+				          << L" slots with "      << enBest.GetValue() << L" energy units each" << endl;
 			m_emptyNeighborSlots.Apply2All( [&](GridPoint const gp)	{ * m_pProtocol << gp << endl; } );
 			displayAndWait( );
 		}
@@ -264,7 +263,7 @@ GridField & Grid::choosePartner( )
 
 	if ( m_bPOI )
 	{
-		* m_pProtocol << L"selected partner: " << m_gpPartner << endl;
+		printGridPoint( L"selected partner: ", m_gpPartner );
 		m_pDisplayList = nullptr;
 		displayAndWait( );
 	}
@@ -342,7 +341,7 @@ void Grid::actionPassOn( GridField & gfRun )
 {
 	if ( m_bPOI )
 	{
-		* m_pProtocol << L"individual dies at age: " << getAge( gfRun ) << endl;
+		* m_pProtocol << L"individual dies at age: " << getAge( gfRun ).GetValue() << endl;
 		displayAndWait( );
 	}
 	gfRun.PassOn2Child( ++m_idCounter, m_genEvo, m_random );
@@ -367,11 +366,11 @@ void Grid::actionEat( GridField & gfRun )
 	ENERGY_UNITS const enReceive   = ENERGY_UNITS( ClipToMinMax( enAvailable, 0_ENERGY_UNITS, enWant ) ); 
 	if ( m_bPOI )
 	{
-		* m_pProtocol << L"individual wants: " << setw(4) << enWant          << endl;
-		* m_pProtocol << L"food stock:       " << setw(4) << enStock         << endl;
-		* m_pProtocol << L"reserve:          " << setw(4) << m_enFoodReserve << endl;
-		* m_pProtocol << L"available:        " << setw(4) << enAvailable     << endl;
-		* m_pProtocol << L"individual gets:  " << setw(4) << enReceive       << endl;
+		* m_pProtocol << L"individual wants: " << setw(4) << enWant.GetValue()          << endl;
+		* m_pProtocol << L"food stock:       " << setw(4) << enStock.GetValue()         << endl;
+		* m_pProtocol << L"reserve:          " << setw(4) << m_enFoodReserve.GetValue() << endl;
+		* m_pProtocol << L"available:        " << setw(4) << enAvailable.GetValue()     << endl;
+		* m_pProtocol << L"individual gets:  " << setw(4) << enReceive.GetValue()       << endl;
 		displayAndWait( );
 	}
 	gfRun.IncFoodStock( -enReceive );
@@ -390,6 +389,11 @@ GridPoint Grid::ComputeNextGeneration( GridPoint const gpRun )
 	assert( gfRun.IsAlive( ) );
 
 	m_bPOI = GridPOI::IsPoi( gpRun );
+
+	if ( m_bPOI )
+	{
+		printGridPoint( L"*** start processing POI: ", gpRun );
+	}
 
 	handleBaseConsumption( gfRun );
 

@@ -8,6 +8,14 @@
 #include "EvolutionTypes.h"
 
 using std::unordered_map;
+using std::setbase;
+using std::setw;
+
+std::wostream & operator<< ( std::wostream & out, IND_ID const & id )
+{ 
+	out << L"[" << setbase( 16 ) << id.GetValue() << setbase( 10 ) << L"]";
+	return out;
+}
 
 wchar_t const * const Strategy::GetName( Strategy::Id const id )
 {

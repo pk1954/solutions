@@ -36,7 +36,7 @@ void DUMP::Dump( wchar_t const * const str )
 void DUMP::Dump( GridField const & gf )
 {
 	*m_pDumpStream << gf.GetGridPoint( );
-	*m_pDumpStream << L" en=" << std::setw(8) << gf.GetEnergy( );
+	*m_pDumpStream << L" en=" << std::setw(8) << gf.GetEnergy( ).GetValue();
 	*m_pDumpStream << endl;
 }
 

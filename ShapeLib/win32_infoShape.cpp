@@ -25,8 +25,8 @@ void InfoShape::FillBuffer( EvolutionCore const * const pCore, GridPoint const g
 	}
 
 	wostringstream & buffer = m_textDisplay.Buffer();
-	buffer << L"En: " << setw( 5 ) << energy << endl;
-	buffer << L"Age:" << setw( 5 ) << evoGen << endl;
+	buffer << L"En: " << setw( 5 ) << energy.GetValue() << endl;
+	buffer << L"Age:" << setw( 5 ) << evoGen.GetValue() << endl;
 	buffer << L"Or: " << setw( 5 ) << origin << endl;
 	buffer << L"Str:" << setw( 5 ) << strategy;
 

@@ -84,11 +84,11 @@ public:
 		return res; 
 	}
 
-	friend std::wostream & operator<< ( std::wostream & out, NamedType const & param )
-	{
-		out << param.GetValue();
-		return out;
-	}
+	//friend std::wostream & operator<< ( std::wostream & out, NamedType const & param )
+	//{
+	//	out << param.GetValue();
+	//	return out;
+	//}
 
 	static NamedType const NULL_VAL()
 	{

@@ -46,7 +46,7 @@ void ActionOptions::DisplayValidOptions( std::wostream * const pOut, Genome cons
 			{
 				short const sAllele     = genome.GetAllele( GetRelatedGeneType( action ) );
 				float const fPercentage = ( uiSum == 0 ) ? 0 : ( sAllele * 100.0f ) / uiSum;
-				* pOut << setw(8) << Action::GetName( action ) << L": " << setprecision(3) << fPercentage << endl;
+				* pOut << setw(8) << Action::GetName( action ) << L": " << setprecision(3) << fPercentage << L"%" << endl;
 			}
 		}
 	);

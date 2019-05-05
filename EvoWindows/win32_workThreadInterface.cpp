@@ -127,14 +127,14 @@ void WorkThreadInterface::PostDoEdit( GridPoint const gp )
 void WorkThreadInterface::PostSetBrushIntensity( PERCENT const intensity )
 {
     if ( m_bTrace )
-        * m_pTraceStream << __func__ << L" " << intensity << endl;
+        * m_pTraceStream << __func__ << L" " << intensity.GetValue() << endl;
     m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_BRUSH_INTENSITY, intensity.GetValue(), 0 );
 }
 
 void WorkThreadInterface::PostSetBrushRadius( GRID_COORD const radius )
 {
     if ( m_bTrace )
-        * m_pTraceStream << __func__ << L" " << radius << endl;
+        * m_pTraceStream << __func__ << L" " << radius.GetValue() << endl;
     m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_BRUSH_RADIUS, radius.GetValue(), 0 );
 }
 

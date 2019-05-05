@@ -5,6 +5,7 @@
 #pragma once
 
 #include <functional>
+#include <iostream>
 #include "util.h"
 #include "debug.h"
 #include "action.h"
@@ -17,6 +18,8 @@ using IND_ID         = NamedType< long,  struct IND_ID_Parameter >;
 using MEM_INDEX      = NamedType< short, struct MEM_INDEX_Parameter >;
 using ACTION_COUNT   = NamedType< long,  struct ACTION_COUNT_Parameter >;
 using PERCENT        = NamedType< short, struct PERCENT_Parameter >;
+
+std::wostream & operator<< ( std::wostream & out, IND_ID const & );
 
 constexpr PERCENT operator"" _PERCENT( unsigned long long ull )
 {

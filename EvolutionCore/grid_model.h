@@ -21,7 +21,6 @@ using std::array;
 using std::vector;
 using std::wostream;
 using std::endl;
-using std::setbase;
 
 class GridCircle;
 class Manipulator;
@@ -150,13 +149,18 @@ public:
 
 private:
 
+	void printGridPoint( wchar_t const * text, GridPoint const gp )
+	{
+		* m_pProtocol << text << GetId( gp ) << L" at " << gp << endl;
+	}
+
 	void decEnergy( GridField & gf, ENERGY_UNITS en )
 	{
 		gf.DecEnergy( en );
 		if ( m_bPOI )
 		{
-			* m_pProtocol << L"consumption: " << en << endl;
-			* m_pProtocol << L"remaining energy: " << gf.GetEnergy() << endl;
+			* m_pProtocol << L"consumption:      " << en.GetValue() << endl;
+			* m_pProtocol << L"remaining energy: " << gf.GetEnergy().GetValue() << endl;
 			displayAndWait( );
 		}
 	}
@@ -167,9 +171,9 @@ private:
 		gfReceiver.IncEnergy( enDonation );
 		if ( m_bPOI )
 		{
-			* m_pProtocol << gfDonator.GetId()  << L" donates " << enDonation << L" units to " << gfReceiver.GetId() << endl;
-			* m_pProtocol << gfDonator.GetId()  << L" now has " << gfDonator .GetEnergy() << endl;
-			* m_pProtocol << gfReceiver.GetId() << L" now has " << gfReceiver.GetEnergy() << endl;
+			* m_pProtocol << gfDonator.GetId()  << L" donates " << enDonation.GetValue() << L" units to " << gfReceiver.GetId() << endl;
+			* m_pProtocol << gfDonator.GetId()  << L" now has " << gfDonator .GetEnergy().GetValue() << L" units" << endl;
+			* m_pProtocol << gfReceiver.GetId() << L" now has " << gfReceiver.GetEnergy().GetValue() << L" units" << endl;
 			displayAndWait( );
 		}
 	}
