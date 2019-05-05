@@ -16,10 +16,10 @@ public:
 		m_rightColumn( t )
 	{}
 
-	virtual void          PrepareShape( PixelPoint const, PixelRectSize const );
-	virtual PixelRectSize MinimalSize ( EvolutionCore const * const );
-	virtual void          Draw        ( EvolutionCore const * const, GridPoint  const, PixelPoint    const );
-	virtual Shape const * FindShape   ( EvolutionCore const * const, PixelPoint const, GridPoint     const ) const;
+	virtual void          PrepareShape ( PixelPoint const, PixelRectSize const );
+	virtual PixelRectSize MinimalSize  ( EvolutionCore const * const );
+	virtual void          Draw         ( EvolutionCore const * const, GridPoint  const, PixelPoint    const );
+	virtual Shape const * FindShape    ( EvolutionCore const * const, PixelPoint const, GridPoint     const ) const;
 
 	LeftColumn  const & GetLeftColumn () const { return m_leftColumn;  }
 	RightColumn const & GetRightColumn() const { return m_rightColumn; }

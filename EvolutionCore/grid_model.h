@@ -20,6 +20,8 @@
 using std::array;
 using std::vector;
 using std::wostream;
+using std::endl;
+using std::setbase;
 
 class GridCircle;
 class Manipulator;
@@ -90,26 +92,23 @@ public:
         return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
     };
 
-    bool           const IsAlive           ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive( ); }
-    bool           const IsDead            ( GridPoint const gp ) const { return GetGridField( gp ).IsDead( ); }
-    ENERGY_UNITS   const GetFoodStock      ( GridPoint const gp ) const { return GetGridField( gp ).GetFoodStock( ); }
-    IND_ID         const GetId             ( GridPoint const gp ) const { return GetGridField( gp ).GetId       ( ); }
-    tOrigin        const GetOrigin         ( GridPoint const gp ) const { return GetGridField( gp ).GetOrigin   ( ); }
-    EVO_GENERATION const GetGenBirth       ( GridPoint const gp ) const { return GetGridField( gp ).GetGenBirth( ); }
-	ENERGY_UNITS   const GetBaseConsumption( GridPoint const gp ) const { return GetGridField( gp ).GetBaseConsumption( ); }
-
-    EVO_GENERATION GetAge( GridPoint const gp ) const { return getAge( GetGridField( gp ) ); }
+    bool           const IsAlive     ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive     ( ); }
+    bool           const IsDead      ( GridPoint const gp ) const { return GetGridField( gp ).IsDead      ( ); }
+    ENERGY_UNITS   const GetFoodStock( GridPoint const gp ) const { return GetGridField( gp ).GetFoodStock( ); }
+    IND_ID         const GetId       ( GridPoint const gp ) const { return GetGridField( gp ).GetId       ( ); }
+    tOrigin        const GetOrigin   ( GridPoint const gp ) const { return GetGridField( gp ).GetOrigin   ( ); }
+    EVO_GENERATION const GetGenBirth ( GridPoint const gp ) const { return GetGridField( gp ).GetGenBirth ( ); }
+    EVO_GENERATION const GetAge      ( GridPoint const gp ) const { return getAge( GetGridField( gp ) ); }
 
     GridPoint const FindGridPoint( GridPointFunc const &, GridRect const & ) const;
 	GridPoint const FindGridPointFromId( IND_ID const ) const;
 
 	BYTES const GetGridHeapSize() const;
 
-	wchar_t const * GetExplanation( )           const { return m_strExplanation; }
 	EVO_GENERATION  GetEvoGenerationNr( )       const { return m_genEvo; }
     int             GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
 
-	void PrepareComputation( )   // called 
+	void PrepareComputation( ) 
 	{ 
 		m_gpTarget .Set2Null( );
 		m_gpPartner.Set2Null( );
@@ -151,11 +150,26 @@ public:
 
 private:
 
-	void protocol( wchar_t const * data )
+	void decEnergy( GridField & gf, ENERGY_UNITS en )
 	{
+		gf.DecEnergy( en );
 		if ( m_bPOI )
 		{
-			* m_pProtocol << data << std::endl;
+			* m_pProtocol << L"consumption: " << en << endl;
+			* m_pProtocol << L"remaining energy: " << gf.GetEnergy() << endl;
+			displayAndWait( );
+		}
+	}
+
+	void Donate( GridField & gfDonator, GridField & gfReceiver, ENERGY_UNITS enDonation )
+	{
+		gfDonator.DecEnergy( enDonation );
+		gfReceiver.IncEnergy( enDonation );
+		if ( m_bPOI )
+		{
+			* m_pProtocol << gfDonator.GetId()  << L" donates " << enDonation << L" units to " << gfReceiver.GetId() << endl;
+			* m_pProtocol << gfDonator.GetId()  << L" now has " << gfDonator .GetEnergy() << endl;
+			* m_pProtocol << gfReceiver.GetId() << L" now has " << gfReceiver.GetEnergy() << endl;
 			displayAndWait( );
 		}
 	}
@@ -173,7 +187,12 @@ private:
 		
     void deleteAndReset( GridField & gf )
     {
-        m_gpList.DeleteGridPointFromList( * this, gf );
+		if ( m_bPOI )
+		{
+			* m_pProtocol << L"individual " << gf.GetGridPoint() << L" dies of starvation" << endl;
+			displayAndWait( );
+		}
+		m_gpList.DeleteGridPointFromList( * this, gf );
         gf.ResetIndividual( );  // zero individual data
 		if ( GridPOI::IsPoi( gf.GetGridPoint() ) )
 			GridPOI::ClearPoi( );
@@ -185,9 +204,13 @@ private:
             deleteAndReset( gf );
     }
 
-    class getSlots;
-
-	ENERGY_UNITS getBestNeighborSlots( Neighborhood & );
+	ENERGY_UNITS Grid::getBestNeighborSlots( Neighborhood & list )
+	{
+		ENERGY_UNITS enMaxFoodStock = 0_ENERGY_UNITS;
+		list.Apply2All(	     [&](GridPoint const gp) { enMaxFoodStock = std::max( enMaxFoodStock, GetFoodStock( gp ) ); } );
+		list.RemoveFromList( [&](GridPoint const gp) { return ( GetFoodStock( gp ) != enMaxFoodStock ); } );
+		return enMaxFoodStock;
+	}
 
     GridField & getGridField( GridPoint const gp )
     {
@@ -218,6 +241,10 @@ private:
 	void actionEat      ( GridField & );
 	void actionUndefined( GridField & );
 
+	void       inspectNeighborHood( GridPoint const );
+	Action::Id decideOnAction( GridField const & );
+	void 	   handleBaseConsumption( GridField & );
+
 	void displayAndWait( );
 
 	// member variables
@@ -234,16 +261,19 @@ private:
 	Action::Id      m_action;
 	ENERGY_UNITS    m_enBaseConsumption;
 	bool            m_bPOI;
-	wchar_t const * m_strExplanation;
 	Neighborhood  * m_pDisplayList;
-
 	ActionOptions   m_options;
 	GROWTH_RATE     m_enFoodGrowthRate;
     ENERGY_UNITS    m_enMoveFoodConsumption;
     ENERGY_UNITS    m_enCloneFoodConsumption;
     ENERGY_UNITS    m_enMarryFoodConsumption;
     ENERGY_UNITS    m_enInteractFoodConsumption;
-    bool            m_bNeighborhoodFoodSensitivity;
+	ENERGY_UNITS    m_enMaxFertilizer;
+	ENERGY_UNITS    m_enFoodReserve;
+	ENERGY_UNITS    m_enBasicFoodConsumption;
+	ENERGY_UNITS    m_enMemSizeFoodConsumption;
+	long            m_lFertilizerYield;
+	bool            m_bNeighborhoodFoodSensitivity;
 	bool            m_bPassOnEnabled;
 
 	array< array < ACTION_COUNT, Strategy::COUNT>, Action::COUNT > m_ActionCounter;

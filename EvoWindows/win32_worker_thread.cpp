@@ -66,15 +66,16 @@ void WorkThread::WorkMessage( WorkerThreadMessage::Id const msg, WPARAM const wp
 void WorkThread::WorkMessage( MSG const msg )
 {
 	assert( WorkerThreadMessage::IsValid( msg.message ) );
-	if ( m_iScriptLevel > 0 )                      // if we are processing a script    
-	{                                              // we run already in worker thread 
-		ThreadMsgDispatcher( msg );                // dispatch message directly to avoid blocking
+
+	if ( m_iScriptLevel > 0 )         // if we are processing a script    
+	{                                 // we run already in worker thread 
+		ThreadMsgDispatcher( msg );   // dispatch message directly to avoid blocking
 	}
-	else                                           // normal case
-	{                                              // we run in main thread
+	else                              // normal case
+	{                                 // we run in main thread
 		if ( m_pEventPOI != nullptr )
-			m_pEventPOI->Continue( );              // trigger worker thread if waiting on POI event
-		PostThreadMsg( msg );                      // post message to worker thread
+			m_pEventPOI->Continue( ); // trigger worker thread if waiting on POI event
+		PostThreadMsg( msg );         // post message to worker thread
 	}
 }
 

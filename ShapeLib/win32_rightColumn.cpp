@@ -9,7 +9,8 @@
 using std::wostringstream;
 
 RightColumn::RightColumn( TextDisplay & textDisplay ) :
-	Shape( textDisplay )
+	Shape( textDisplay ),
+	m_aMemorySlot()
 {
 	for	( MEM_INDEX mem = MEM_INDEX( 0 ); mem < MEM_INDEX(IMEMSIZE_MAX); ++mem )
 	{
@@ -46,7 +47,7 @@ void RightColumn::FillBuffer( EvolutionCore const * const pCore, GridPoint const
 	MEM_INDEX const memSize = pCore->GetMemSize( gp );  
 	MEM_INDEX const memUsed = pCore->GetMemUsed( gp ); 
         
-	buffer << L"Memory " << memUsed << L"/" << memSize;
+	buffer << L"Memory " << memUsed.GetValue() << L"/" << memSize.GetValue();
 }
 
 Shape const * RightColumn::FindShape

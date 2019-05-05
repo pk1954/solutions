@@ -73,8 +73,7 @@ public:
 	virtual EVO_GENERATION  const GetEvoGenerationNr( ) const { return m_grid.GetEvoGenerationNr( ); }
 	virtual BYTES           const GetGridHeapSize   ( ) const { return m_grid.GetGridHeapSize( ); };
 
-	virtual tDisplayMode    const   GetDisplayMode( GridPoint const gp ) const { return m_grid.GetDisplayMode( gp ); };
-	virtual wchar_t         const * GetExplanation( )                    const { return m_grid.GetExplanation( ); };
+	virtual tDisplayMode    const GetDisplayMode( GridPoint const gp ) const { return m_grid.GetDisplayMode( gp ); };
 
 	virtual tManipulator    const GetBrushManipulator( ) const { return m_brush.GetManipulator(); }
     virtual PERCENT         const GetBrushIntensity  ( ) const { return m_brush.GetIntensity(); }

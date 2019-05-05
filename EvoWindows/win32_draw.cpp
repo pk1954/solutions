@@ -133,9 +133,6 @@ void DrawFrame::DoPaint( EvolutionCore const * pCore )
 			}
 		}
 	}
-	wchar_t const * strExplanation = pCore->GetExplanation( );
-	if ( strExplanation )
-		std::wcout << strExplanation << std::endl;
 }
 
 void DrawFrame::drawBackground( )
@@ -218,14 +215,6 @@ void DrawFrame::drawText( EvolutionCore const * const pCore, GridRect const & re
 				PixelPoint const pntGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( gp );
 				m_gridPointShape->Draw( pCore, gp, pntGridpointOffset );
             }
-			else
-			{
-				if ( ( pCore->GetDisplayMode( gp ) ) == tDisplayMode::neighbor )
-				{
-					PixelPoint const pntGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( gp );
-					m_gridPointShape->Draw( pCore, gp, pntGridpointOffset );
-				}
-			}
 			return false;
 		},
 		rect

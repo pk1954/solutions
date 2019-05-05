@@ -34,11 +34,21 @@ public:
 class WrapPostDoEdit : public Script_Functor
 {
 public:
-    virtual void operator() ( Script & script ) const
-    {
-        GridPoint gp = ScrReadGridPoint( script );
-        m_pWorkThreadInterface->PostDoEdit( gp );
-    }
+	virtual void operator() ( Script & script ) const
+	{
+		GridPoint gp = ScrReadGridPoint( script );
+		m_pWorkThreadInterface->PostDoEdit( gp );
+	}
+};
+
+class WrapPostSetPOI : public Script_Functor
+{
+public:
+	virtual void operator() ( Script & script ) const
+	{
+		GridPoint gp = ScrReadGridPoint( script );
+		m_pWorkThreadInterface->PostSetPOI( gp );
+	}
 };
 
 class WrapPostSetSimulationMode : public Script_Functor
@@ -168,7 +178,8 @@ void DefineWin32WrapperFunctions( WorkThreadInterface * const pWorkThreadInterfa
 
 	DEF_FUNC( PostBenchmark );
 	DEF_FUNC( PostDoEdit );
-    DEF_FUNC( PostSetSimulationMode );
+	DEF_FUNC( PostSetPOI );
+	DEF_FUNC( PostSetSimulationMode );
     DEF_FUNC( PostSetBrushMode );
     DEF_FUNC( PostSetBrushShape );
     DEF_FUNC( PostSetBrushIntensity );

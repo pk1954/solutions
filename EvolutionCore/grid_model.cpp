@@ -27,14 +27,13 @@
     #define CHECK_INDIVIDUALS
 //#endif
 
-using std::endl;
-
 ObserverInterface * Grid::m_pObservers = nullptr;    // GUI call back for display of current model 
 EventInterface    * Grid::m_pEventPOI  = nullptr;
 wostream          * Grid::m_pProtocol  = nullptr;
 
 void Grid::RefreshCache( )
 {
+	m_lFertilizerYield             = Config::GetConfigValue( Config::tId::fertilizerYield );
 	m_bPassOnEnabled               = Config::GetConfigValueBool( Config::tId::passOnEnabled );
 	m_bNeighborhoodFoodSensitivity = Config::GetConfigValueBool( Config::tId::neighborhoodFoodSensitivity );
 	m_enFoodGrowthRate             = GROWTH_RATE (Config::GetConfigValueShort( Config::tId::growthRateFood ));
@@ -42,9 +41,12 @@ void Grid::RefreshCache( )
 	m_enCloneFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionClone ));
 	m_enMarryFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMarry ));
 	m_enInteractFoodConsumption    = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionInteraction ));
+	m_enMaxFertilizer              = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::maxFertilizer ));
+	m_enFoodReserve                = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::reserveFood ));
+	m_enBasicFoodConsumption       = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionBasicRate ));
+	m_enMemSizeFoodConsumption     = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::energyConsumptionMemSize ));
 	INTERACTION::RefreshCash( );
 	Individual::RefreshCache( );
-	GridField::RefreshCash( );
 	Genome::RefreshCash( );
 }
 
@@ -74,9 +76,11 @@ Grid::Grid( )
 	  m_gpNext( GP_NULL ),     
 	  m_gpTarget( GP_NULL ),     
 	  m_gpPartner( GP_NULL ),    
-      m_strExplanation( nullptr ),
       m_action( Action::Id::undefined ),
-      m_enBaseConsumption( 0_ENERGY_UNITS )
+      m_enBaseConsumption( 0_ENERGY_UNITS ),
+      m_enMaxFertilizer( 0_ENERGY_UNITS ),
+      m_lFertilizerYield( 0 )
+
 {
 	RefreshCache( );
 
@@ -146,6 +150,72 @@ void Grid::displayAndWait( )
 	m_pEventPOI->Wait( );
 }
 
+void Grid::handleBaseConsumption( GridField & gfRun )
+{
+	ENERGY_UNITS enBase = m_enBasicFoodConsumption + m_enMemSizeFoodConsumption * gfRun.GetMemSize( ).GetValue();
+
+	if ( m_bPOI )
+	{
+		* m_pProtocol << L"*** start processing POI: " << setbase( 16 ) << gfRun.GetId() << setbase( 10 ) << L" at" << gfRun.GetGridPoint() << endl;
+		* m_pProtocol << L"available energy: " << setw(4) << gfRun.GetEnergy() << endl;
+		* m_pProtocol << L"base consumption: " << setw(4) << enBase << endl;
+	}
+
+	gfRun.DecEnergy( enBase );
+
+	if ( m_bPOI )
+	{
+		* m_pProtocol << L"remaining energy: " << setw(4) << gfRun.GetEnergy() << endl;
+		displayAndWait( );
+	}
+}
+
+void Grid::inspectNeighborHood( GridPoint const gpRun )
+{
+	m_emptyNeighborSlots.Clear( );
+	m_occupiedNeighborSlots.Clear( );
+
+	for ( auto gp: GridDimensions::GetNeighbors( gpRun ) )
+	{
+		(IsAlive(gp) ? m_occupiedNeighborSlots : m_emptyNeighborSlots).AddToList( gp );
+	}
+
+	if ( m_bPOI )
+	{
+		* m_pProtocol << L"neighborhood: " 
+			<< m_occupiedNeighborSlots.GetLength() << L" occupied, "
+			<< m_emptyNeighborSlots.   GetLength() << L" free" 
+			<< endl;
+		displayAndWait( );
+	}
+
+	assert( m_emptyNeighborSlots.GetLength() + m_occupiedNeighborSlots.GetLength() == Neighborhood::GetNrOfNeighbors( ) );
+}
+
+Action::Id Grid::decideOnAction( GridField const & gfRun )
+{
+	m_options.InitOptions
+	( 
+		gfRun.GetGenome( ), 
+		m_emptyNeighborSlots   .GetLength( ) > 0,  // has free space around? bHasFreeSpace, 
+		m_occupiedNeighborSlots.GetLength( ) > 0,  // has neighborbHasNeighbor, 
+		gfRun.GetEnergy( ) 
+	);
+	
+	unsigned int const uiSum  = m_options.GetSumOfValidOptions( gfRun.GetGenome( ) );
+	unsigned int const uiVal  = m_random.NextRandomNumberScaledTo( uiSum );
+	Action::Id   const action = m_options.SelectAction( gfRun.GetGenome( ), uiVal );
+		
+	if ( m_bPOI )
+	{
+		m_options.DisplayValidOptions( m_pProtocol, gfRun.GetGenome( ), uiSum );
+		* m_pProtocol << L"selected action: " << Action::GetName( m_action ) << endl; 
+		displayAndWait( );
+	}
+
+	return action;
+}
+
 GridField & Grid::chooseTarget( )
 {
 	if ( m_bPOI )
@@ -182,21 +252,30 @@ GridField & Grid::chooseTarget( )
 
 GridField & Grid::choosePartner( )
 {
-    m_gpPartner = m_occupiedNeighborSlots.GetRandomElement( m_random.NextRandomNumber( ) );
+	if ( m_bPOI )
+	{
+		* m_pProtocol << L"partner candidates: " << m_occupiedNeighborSlots.GetLength() << endl;
+		m_pDisplayList = & m_occupiedNeighborSlots;
+		displayAndWait( );
+	}
+
+	m_gpPartner = m_occupiedNeighborSlots.GetRandomElement( m_random.NextRandomNumber( ) );
 	assert( IsAlive( m_gpPartner ) );
+
 	if ( m_bPOI )
 	{
 		* m_pProtocol << L"selected partner: " << m_gpPartner << endl;
 		m_pDisplayList = nullptr;
 		displayAndWait( );
 	}
+
 	return getGridField( m_gpPartner );
 }
 
 void Grid::actionMove( GridField & gfRun )
 {
 	GridField & gfTarget = chooseTarget( );
-	gfRun.DecEnergy( m_enMoveFoodConsumption );
+	decEnergy( gfRun, m_enMoveFoodConsumption );
 	if ( gfRun.IsAlive( ) )
 	{
 		m_gpList.ReplaceGridPointInList( * this, gfRun, gfTarget ); 
@@ -213,8 +292,18 @@ void Grid::actionMove( GridField & gfRun )
 void Grid::actionClone( GridField & gfRun )
 {
 	GridField & gfTarget = chooseTarget( );
-	gfRun.DecEnergy( m_enCloneFoodConsumption );
+	decEnergy( gfRun, m_enCloneFoodConsumption );
 	gfTarget.CloneIndividual( ++m_idCounter, m_genEvo, m_random, gfRun );
+	long lDonationRate = static_cast<long>( gfRun.GetAllele( GeneType::Id::cloneDonation ) );
+	long lParentEnergy = static_cast<long>( gfRun.GetEnergy( ).GetValue() );
+	long lDonation = ( lDonationRate * lParentEnergy ) / SHRT_MAX;
+	ENERGY_UNITS enDonation = ENERGY_UNITS(CastToShort( lDonation ));
+	if ( m_bPOI )
+	{
+		* m_pProtocol << L"donation rate : " << lDonationRate << endl;
+		* m_pProtocol << L"current energy: " << lParentEnergy << endl;
+	}
+	Donate( gfRun, gfTarget, enDonation );
 	if ( gfTarget.IsAlive( ) )
 		m_gpList.AddGridPointToList( * this, gfTarget );
 	deleteIfDead( gfRun );
@@ -224,8 +313,10 @@ void Grid::actionMarry( GridField & gfRun )
 {
 	GridField & gfPartner = choosePartner( );
 	GridField & gfTarget  = chooseTarget ( );
-	gfRun.DecEnergy( m_enMarryFoodConsumption );
+	decEnergy( gfRun, m_enMarryFoodConsumption );
 	gfTarget.BreedIndividual( ++m_idCounter, m_genEvo, m_random, gfRun, gfPartner );
+	Donate(     gfRun, gfTarget,     gfRun.GetEnergy( ) / 3 );   //TODO:  Make variable, Gene?
+	Donate( gfPartner, gfTarget, gfPartner.GetEnergy( ) / 3 );   //TODO:  Make variable, Gene?
 	if ( gfTarget.IsAlive( ) )
 		m_gpList.AddGridPointToList( * this, gfTarget );
 	deleteIfDead( gfPartner );
@@ -235,8 +326,8 @@ void Grid::actionMarry( GridField & gfRun )
 void Grid::actionInteract( GridField & gfRun )
 {
 	GridField & gfPartner = choosePartner( );
-	gfRun.DecEnergy( m_enInteractFoodConsumption );
-	GridField::Interact( gfRun, gfPartner );
+	decEnergy( gfRun, m_enInteractFoodConsumption );
+	GridField::Interact( gfRun, gfPartner, m_bPOI ? m_pProtocol : nullptr );
 	if ( m_gpNext.IsNotNull( ) )
 	{
 		GridField & gfNext = getGridField( m_gpNext );
@@ -249,6 +340,11 @@ void Grid::actionInteract( GridField & gfRun )
 
 void Grid::actionPassOn( GridField & gfRun )
 {
+	if ( m_bPOI )
+	{
+		* m_pProtocol << L"individual dies at age: " << getAge( gfRun ) << endl;
+		displayAndWait( );
+	}
 	gfRun.PassOn2Child( ++m_idCounter, m_genEvo, m_random );
 	deleteIfDead( gfRun );
 }
@@ -256,14 +352,30 @@ void Grid::actionPassOn( GridField & gfRun )
 void Grid::actionFertilize( GridField & gfRun )
 {
 	ENERGY_UNITS const enInvest = ENERGY_UNITS(gfRun.GetAllele( GeneType::Id::fertilInvest ));
-	gfRun.Fertilize( enInvest );
+	ENERGY_UNITS const yield    = (enInvest * m_lFertilizerYield ) / 100;
+	ENERGY_UNITS const newValue = std::min( gfRun.GetFertilizer( ) + yield, m_enMaxFertilizer ); 
+	gfRun.SetFertilizer( newValue );
 	gfRun.DecEnergy( enInvest );
 	deleteIfDead( gfRun );
 }
 
 void Grid::actionEat( GridField & gfRun )
 {
-	gfRun.Eat( );
+	ENERGY_UNITS const enWant      = gfRun.GetAppetite( );
+	ENERGY_UNITS const enStock     = gfRun.GetFoodStock( );
+	ENERGY_UNITS const enAvailable = enStock - m_enFoodReserve;
+	ENERGY_UNITS const enReceive   = ENERGY_UNITS( ClipToMinMax( enAvailable, 0_ENERGY_UNITS, enWant ) ); 
+	if ( m_bPOI )
+	{
+		* m_pProtocol << L"individual wants: " << setw(4) << enWant          << endl;
+		* m_pProtocol << L"food stock:       " << setw(4) << enStock         << endl;
+		* m_pProtocol << L"reserve:          " << setw(4) << m_enFoodReserve << endl;
+		* m_pProtocol << L"available:        " << setw(4) << enAvailable     << endl;
+		* m_pProtocol << L"individual gets:  " << setw(4) << enReceive       << endl;
+		displayAndWait( );
+	}
+	gfRun.IncFoodStock( -enReceive );
+	gfRun.IncEnergy   (  enReceive );
 	deleteIfDead( gfRun );
 }
 
@@ -274,81 +386,21 @@ void Grid::actionUndefined( GridField & gfRun )
 
 GridPoint Grid::ComputeNextGeneration( GridPoint const gpRun )
 {
-	GridField    & gfRun  = getGridField( gpRun );
-	ENERGY_UNITS   enBase = gfRun.GetBaseConsumption( );
-	EVO_GENERATION age    = getAge( gfRun ); 
+	GridField & gfRun = getGridField( gpRun );
 	assert( gfRun.IsAlive( ) );
 
 	m_bPOI = GridPOI::IsPoi( gpRun );
 
-	if ( m_bPOI )
-	{
-		* m_pProtocol << L"*** start processing POI: " << gpRun << endl;
-		* m_pProtocol << L"base consumption: " << enBase << endl;
-		displayAndWait( );
-	}
+	handleBaseConsumption( gfRun );
 
-	gfRun.DecEnergy( enBase );
-
-	if ( m_bPOI )
-	{
-		* m_pProtocol << L"remaining energy: " << gfRun.GetEnergy() << std::endl;
-		displayAndWait( );
-	}
-
-	if ( m_bPassOnEnabled && ( MortalityTable::GetRate( age ) > m_random.NextRandomNumber() ) )
+	if ( m_bPassOnEnabled && MortalityTable::IsTimeToDie( getAge( gfRun ), m_random ) )
 	{
 		m_action = Action::Id::passOn;
-		if ( m_bPOI )
-		{
-			* m_pProtocol << L"individual dies at age: " << age << std::endl;
-			displayAndWait( );
-		}
 	}
 	else
 	{
-		// inspect neighborhood
-
-		m_emptyNeighborSlots.Clear( );
-		m_occupiedNeighborSlots.Clear( );
-
-		for ( auto gp: GridDimensions::GetNeighbors( gpRun ) )
-		{
-			(IsAlive(gp) ? m_occupiedNeighborSlots : m_emptyNeighborSlots).AddToList( gp );
-		}
-
-		if ( m_bPOI )
-		{
-			* m_pProtocol << L"neighborhood: " 
-				<< m_occupiedNeighborSlots.GetLength() << L" occupied, "
-				<< m_emptyNeighborSlots.GetLength()    << L" free" << std::endl;
-			displayAndWait( );
-		}
-
-		assert( m_emptyNeighborSlots.GetLength() + m_occupiedNeighborSlots.GetLength() == Neighborhood::GetNrOfNeighbors( ) );
-
-		// decide on action
-
-		m_options.InitOptions
-		( 
-			gfRun.GetGenome( ), 
-			m_emptyNeighborSlots   .GetLength( ) > 0,  // has free space around? bHasFreeSpace, 
-			m_occupiedNeighborSlots.GetLength( ) > 0,  // has neighborbHasNeighbor, 
-			gfRun.GetEnergy( ) 
-		);
-		if ( m_bPOI )
-		{
-			m_options.DisplayValidOptions( m_pProtocol );
-			displayAndWait( );
-		}
-		unsigned int uiSum = m_options.GetSumOfValidOptions( gfRun.GetGenome( ) );
-		unsigned int uiVal = m_random.NextRandomNumberScaledTo( uiSum );
-		m_action = m_options.SelectAction( gfRun.GetGenome( ), uiVal );
-		if ( m_bPOI )
-		{
-			* m_pProtocol << L"selected action: " << Action::GetName( m_action ) << endl; 
-			displayAndWait( );
-		}
+		inspectNeighborHood( gpRun );
+		m_action = decideOnAction( gfRun );
 	}
 
 	m_gpNext = gfRun.GetJuniorGp( );   
@@ -372,7 +424,8 @@ GridPoint Grid::ComputeNextGeneration( GridPoint const gpRun )
 		incActionCounter( gfRun.GetStrategyId( ), m_action );
 
 	m_bPOI = false;
-	m_strExplanation = nullptr;
+	m_gpTarget.Set2Null();
+	m_gpPartner.Set2Null();
 
 	return m_gpNext;    // may be NULL_VAL
 }

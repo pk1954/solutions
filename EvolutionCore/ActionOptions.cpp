@@ -6,6 +6,10 @@
 #include "genome.h"
 #include "ActionOptions.h"
 
+using std::endl;
+using std::setw;
+using std::setprecision;
+
 void ActionOptions::set( Action::Id const action, bool const bValue )
 {
 	m_abOptions[action] = Genome::IsEnabled( action ) && bValue;
@@ -31,14 +35,19 @@ void ActionOptions::InitOptions
 	set(A::passOn,    false                                          );
 }
 
-void ActionOptions::DisplayValidOptions( std::wostream * const pOut )
+void ActionOptions::DisplayValidOptions( std::wostream * const pOut, Genome const & genome, unsigned int const uiSum )
 {
+	* pOut << L"valid options:" << endl;
 	Action::Apply2AllEnabledActions
 	( 
 		[&]( auto action )
 		{
 			if ( m_abOptions[action] )
-				* pOut << Action::GetName( action ) << std::endl;
+			{
+				short const sAllele     = genome.GetAllele( GetRelatedGeneType( action ) );
+				float const fPercentage = ( uiSum == 0 ) ? 0 : ( sAllele * 100.0f ) / uiSum;
+				* pOut << setw(8) << Action::GetName( action ) << L": " << setprecision(3) << fPercentage << endl;
+			}
 		}
 	);
 }

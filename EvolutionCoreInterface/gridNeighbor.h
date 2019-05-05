@@ -69,7 +69,7 @@ public:
 	{
 		for ( auto gp : m_neighbors )
 		{
-			func( gp );   
+			func( gp );
 		}
 	}
 

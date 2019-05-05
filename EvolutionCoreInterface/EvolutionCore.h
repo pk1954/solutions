@@ -28,16 +28,15 @@ public:
 
 // readOnly functions
 
-    virtual int            const   GetNrOfLivingIndividuals( ) const = 0;
-    virtual EVO_GENERATION const   GetEvoGenerationNr      ( ) const = 0;
-    virtual PERCENT        const   GetBrushIntensity       ( ) const = 0;
-    virtual tShape         const   GetBrushShape           ( ) const = 0;
-    virtual tManipulator   const   GetBrushManipulator     ( ) const = 0;
-    virtual GRID_COORD     const   GetBrushSize            ( ) const = 0;
-    virtual tBrushMode     const   GetBrushMode            ( ) const = 0;
-	virtual bool           const   GetSimulationMode       ( ) const = 0;
-	virtual BYTES          const   GetGridHeapSize         ( ) const = 0;
-	virtual wchar_t        const * GetExplanation          ( ) const = 0;
+    virtual int             const GetNrOfLivingIndividuals( ) const = 0;
+    virtual EVO_GENERATION  const GetEvoGenerationNr      ( ) const = 0;
+    virtual PERCENT         const GetBrushIntensity       ( ) const = 0;
+    virtual tShape          const GetBrushShape           ( ) const = 0;
+    virtual tManipulator    const GetBrushManipulator     ( ) const = 0;
+    virtual GRID_COORD      const GetBrushSize            ( ) const = 0;
+    virtual tBrushMode      const GetBrushMode            ( ) const = 0;
+	virtual bool            const GetSimulationMode       ( ) const = 0;
+	virtual BYTES           const GetGridHeapSize         ( ) const = 0;
 
 	virtual tDisplayMode    const GetDisplayMode ( GridPoint const ) const = 0;
 	virtual bool            const IsDead         ( GridPoint const ) const = 0;

@@ -36,12 +36,12 @@ void IndividualShape::PrepareShape( PixelPoint const ppOffset, PixelRectSize con
 	}
 }
 
-void IndividualShape::Draw( EvolutionCore const * const pCore, GridPoint const gp, PixelPoint const ppGridpointOffset )
+void IndividualShape::Draw( EvolutionCore const * const pCore, GridPoint const gp, PixelPoint const ppGridPointOffset )
 {
 	if ( IsNotEmpty () )
 	{
-		m_leftColumn. Draw( pCore, gp, ppGridpointOffset );
-		m_rightColumn.Draw( pCore, gp, ppGridpointOffset );
+		m_leftColumn. Draw( pCore, gp, ppGridPointOffset );
+		m_rightColumn.Draw( pCore, gp, ppGridPointOffset );
 	}
 }
 

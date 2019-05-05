@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include <iostream>
 #include "config.h"
 #include "EvolutionTypes.h"
 #include "individual.h"
@@ -21,7 +20,7 @@ void INTERACTION::RefreshCash( )
 	P = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::interactionPayOff_P ));
 }
 
-void INTERACTION::Interact( Individual &IndA, Individual &IndB )
+void INTERACTION::Interact( Individual &IndA, Individual &IndB, std::wostream * pOut )
 {
 	bool const resA = IndA.InteractWith( IndB.GetId() );
 	bool const resB = IndB.InteractWith( IndA.GetId() );
@@ -36,15 +35,13 @@ void INTERACTION::Interact( Individual &IndA, Individual &IndB )
 	IndA.IncEnergy( rewards.first );
 	IndB.IncEnergy( rewards.second );
 
-	int const DUMP = 0;
-
-	if /*lint -e774 */ ( DUMP )
+	if ( pOut )
 	{
-		std::cout << IndA.GetId().GetValue() << "[" << Strategy::GetName( IndA.GetStrategyId() ) << "]/";
-		std::cout << IndB.GetId().GetValue() << "[" << Strategy::GetName( IndB.GetStrategyId() ) << "]  "; 
-		std::cout << resA << "/" << resB << "  ";
-		std::cout << rewards.first.GetValue() << "/" << rewards.second.GetValue() << "  ";
-		std::cout << IndA.GetEnergy().GetValue() << "/" << IndB.GetEnergy().GetValue();
-		std::cout << std::endl;
+		* pOut << IndA.GetId().GetValue() << "[" << Strategy::GetName( IndA.GetStrategyId() ) << "]/";
+		* pOut << IndB.GetId().GetValue() << "[" << Strategy::GetName( IndB.GetStrategyId() ) << "]  "; 
+		* pOut << resA << "/" << resB << "  ";
+		* pOut << rewards.first.GetValue() << "/" << rewards.second.GetValue() << "  ";
+		* pOut << IndA.GetEnergy().GetValue() << "/" << IndB.GetEnergy().GetValue();
+		* pOut << std::endl;
 	}
 }
