@@ -168,32 +168,34 @@ void DrawFrame::drawIndividuals( EvolutionCore const * const pCore, GridRect con
 	( 
 		[&](GridPoint const gp) 
 	    { 
-            if ( pCore->IsAlive( gp ) )
-            {
-				switch ( pCore->GetDisplayMode( gp ) )
-				{
-				case tDisplayMode::POI:
-				{
-					addPrimitive( gp, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
-					addPrimitive( gp, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
-					break;
-				}
-				case tDisplayMode::target:
-				case tDisplayMode::partner:
-				{
-					addPrimitive( gp, CLR_GREY, fPixSize * 0.45f );   // mark target/partner
-					break;
-				}
-				case tDisplayMode::neighbor:
-				{
-					addPrimitive( gp, CLR_YELLOW, fPixSize * 0.50f );   // mark neighbor
-					break;
-				}
-				default:
-					break;
-				}
+			switch ( pCore->GetDisplayMode( gp ) )
+			{
+			case tDisplayMode::POI:
+			{
+				addPrimitive( gp, CLR_WHITE, fPixSize * 0.50f );   // white frame for POI
+				addPrimitive( gp, CLR_BLACK, fPixSize * 0.45f );   // black frame for POI
+				break;
+			}
+			case tDisplayMode::target:
+			case tDisplayMode::partner:
+			{
+				addPrimitive( gp, CLR_GREY, fPixSize * 0.45f );   // mark target/partner
+				break;
+			}
+			case tDisplayMode::neighbor:
+			{
+				addPrimitive( gp, CLR_YELLOW, fPixSize * 0.50f );   // mark neighbor
+				break;
+			}
+			default:
+				break;
+			}
+
+			if ( pCore->IsAlive( gp ) )
+			{
 				setIndividualColor( pCore, gp, fHalfSizeInd ); 
 			}
+
 			return false;
 	    },
 		rect

@@ -208,7 +208,7 @@ Action::Id Grid::decideOnAction( GridField const & gfRun )
 	if ( m_bPOI )
 	{
 		m_options.DisplayValidOptions( m_pProtocol, gfRun.GetGenome( ), uiSum );
-		* m_pProtocol << L"selected action: " << Action::GetName( m_action ) << endl; 
+		* m_pProtocol << L"selected action: " << Action::GetName( action ) << endl; 
 		displayAndWait( );
 	}
 
