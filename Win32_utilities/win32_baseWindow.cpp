@@ -80,8 +80,8 @@ void BaseWindow::contextMenu( LPARAM lParam )
 	{
 		(void)InsertMenu( hPopupMenu, 0, MF_STRING, IDM_REFRESH_RATE_DIALOG, L"Refresh Rate" );
 	}
-	(void)ClientToScreen( GetWindowHandle(), & pntPos );
 	AddContextMenuEntries( hPopupMenu, pntPos );  
+	(void)ClientToScreen( GetWindowHandle(), & pntPos );
     (void)SetForegroundWindow( GetWindowHandle( ) );
 
     UINT const uiID = (UINT)TrackPopupMenu

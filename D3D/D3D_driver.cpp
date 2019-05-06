@@ -87,7 +87,6 @@ void D3D_driver::ShutDown( )
 
 }
 
-//lint -esym( 613, D3D_driver::m_id3dx_font )  possible use of null pointer
 PixelRect D3D_driver::CalcGraphicsRect( std::wstring const & wstr )
 {
 	RECT rect{ 0, 0, 0, 0 };
@@ -118,7 +117,6 @@ void D3D_driver::DisplayGraphicsText( PixelRect const & pixRect, std::wstring co
         CLR_WHITE          // Color
     ); 
 }
-//lint +esym( 613, D3D_driver::m_id3dx_font ) 
 
 // functions called per frame
 

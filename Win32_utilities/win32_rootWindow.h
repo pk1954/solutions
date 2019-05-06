@@ -164,7 +164,7 @@ public:
 
 	PixelPoint const GetCrsrPosFromLparam( LPARAM const lParam ) const
 	{
-		return PixelPoint{ PIXEL(PIXEL(GET_X_LPARAM( lParam ))), PIXEL(PIXEL(GET_Y_LPARAM( lParam ))) };
+		return PixelPoint{ PIXEL(GET_X_LPARAM( lParam )), PIXEL(GET_Y_LPARAM( lParam )) };
 	}
 
 	virtual void Notify( bool const );

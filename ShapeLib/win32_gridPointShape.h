@@ -16,13 +16,14 @@ class GridPointShape
 {
 public:
 	GridPointShape( TextDisplay & t ) :
+		m_textDisplay( t ),
 		m_shape( t ),
 		m_indivShape( t ),
 		m_coordShape( t )
 	{ }
 
-	void          Draw         ( EvolutionCore const * const, GridPoint const, PixelPoint const );
-	Shape const * FindShape    ( EvolutionCore const * const, PixelPoint const, GridPoint const ) const;
+	void          Draw         ( EvolutionCore const * const, GridPoint const );
+	Shape const * FindShape    ( EvolutionCore const * const, GridPoint const, PixelPoint const ) const;
 	void          RefreshLayout( EvolutionCore const * const );
 	PIXEL         GetIndShapeSize( );
 
@@ -32,6 +33,7 @@ public:
 	}
 
 private:
+	TextDisplay   & m_textDisplay;
 	Shape           m_shape;
 	CoordShape      m_coordShape;
 	IndividualShape m_indivShape;

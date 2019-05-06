@@ -47,31 +47,33 @@ void GridPointShape::RefreshLayout( EvolutionCore const * const pCore )
 void GridPointShape::Draw
 ( 
 	EvolutionCore const * const pCore, 
-	GridPoint             const gp, 
-	PixelPoint            const ppGridpointOffset 
+	GridPoint             const gp
 )
 {
+	PixelPoint const pntGridpointOffset = m_textDisplay.GetOffset( gp );
 	if ( m_shape.IsNotEmpty () )
 	{
-		m_coordShape.Draw( pCore, gp, ppGridpointOffset );
-		m_indivShape.Draw( pCore, gp, ppGridpointOffset );
+		m_coordShape.Draw( pCore, gp, pntGridpointOffset );
+		m_indivShape.Draw( pCore, gp, pntGridpointOffset );
 	}
 }
 
 Shape const * GridPointShape::FindShape
 ( 
 	EvolutionCore const * const pCore, 
-	PixelPoint            const pnt, 
-	GridPoint             const gp
+	GridPoint             const gp,
+	PixelPoint            const pnt // client window coordinates
 ) const
 {
- 	Shape const * pShapeRes = m_coordShape.FindShape( pnt, gp );
+	PixelPoint pntShapeRelative = pnt - m_textDisplay.GetOffset( gp );
+
+ 	Shape const * pShapeRes = m_coordShape.FindShape( pntShapeRelative, gp );
 	if ( pShapeRes != nullptr )
 		return pShapeRes;
 
-	pShapeRes = m_indivShape.FindShape( pCore, pnt, gp );
+	pShapeRes = m_indivShape.FindShape( pCore, pntShapeRelative, gp );
 	if ( pShapeRes != nullptr )
 		return pShapeRes;
 
-	return m_shape.FindShape( pnt, gp );
+	return m_shape.FindShape( pntShapeRelative, gp );
 }

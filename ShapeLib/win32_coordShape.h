@@ -5,6 +5,7 @@
 
 #include "windows.h"
 #include "Resource.h"
+#include "config.h"
 #include "win32_shape.h"
 
 class CoordShape : public Shape
@@ -16,7 +17,8 @@ public:
 
 	void FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )
 	{
-		m_textDisplay.Buffer() << gp;
+		if ( Config::GetConfigValueBool( Config::tId::showGridPointCoords ) )
+			m_textDisplay.Buffer() << gp;
 	}
 
 	virtual void AddContextMenuEntries( HMENU const hPopupMenu ) const 

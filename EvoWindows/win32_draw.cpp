@@ -93,16 +93,14 @@ void DrawFrame::ResizeDrawFrame( EvolutionCore const * const pCore )
 
 bool DrawFrame::SetHighlightPos( EvolutionCore const * const pCore, PixelPoint const ptCrsr )
 {
-	//GridPoint const   gpLast     = m_gpHighlight;
-	//Shape     const * pShapeLast = m_pShapeHighlight;
-	//m_gpHighlight = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
-	//assert( IsInGrid( m_gpHighlight ) );
-	//PixelPoint const ppGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( m_gpHighlight );
-	//m_pShapeHighlight = m_gridPointShape->FindShape( pCore, ptCrsr - ppGridpointOffset, m_gpHighlight );
-	//return ( 
-	//		  (m_pShapeHighlight != nullptr) && 
-	//	      ( (pShapeLast != m_pShapeHighlight) || (gpLast != m_gpHighlight) )
-	//	   );
+	GridPoint const   gpLast     = m_gpHighlight;
+	Shape     const * pShapeLast = m_pShapeHighlight;
+	m_gpHighlight     = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
+	m_pShapeHighlight = m_gridPointShape->FindShape( pCore, m_gpHighlight, ptCrsr );
+	return ( 
+			  (m_pShapeHighlight != nullptr) && 
+		      ( (pShapeLast != m_pShapeHighlight) || (gpLast != m_gpHighlight) )
+		   );
 	return false;
 }
 
@@ -212,8 +210,7 @@ void DrawFrame::drawText( EvolutionCore const * const pCore, GridRect const & re
 		{
             if ( pCore->IsAlive( gp ) )
             {
-				PixelPoint const pntGridpointOffset = m_pPixelCoordinates->Grid2PixelPos( gp );
-				m_gridPointShape->Draw( pCore, gp, pntGridpointOffset );
+				m_gridPointShape->Draw( pCore, gp );
             }
 			return false;
 		},
@@ -247,7 +244,7 @@ void DrawFrame::AddContextMenuEntries( EvolutionCore const * const pCore, HMENU 
 {
 	PixelPoint    const pp     = Util::POINT2PixelPoint( pnt );
 	GridPoint     const gp     = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pp ) );
-	Shape const * const pShape = m_gridPointShape->FindShape( pCore, pp, gp );
+	Shape const * const pShape = m_gridPointShape->FindShape( pCore, gp, pp );
 	if ( pShape )
 		pShape->AddContextMenuEntries( hPopupMenu );
 }
