@@ -12,7 +12,16 @@ namespace Util
 	{
 	public:
 		Event( )
-		  : m_event( CreateEvent( nullptr, FALSE, FALSE, nullptr ) )
+		  : m_event
+		    ( 
+				CreateEvent
+				( 
+					nullptr, // no security attributes
+					TRUE,    // manual reset event 
+					FALSE,   // intial state nonsignaled
+					nullptr  // no name for event
+				) 
+			)
 		{ }
 
 		~Event( )

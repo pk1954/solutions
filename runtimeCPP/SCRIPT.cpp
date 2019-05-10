@@ -425,6 +425,8 @@ bool Script::ScrProcess
 
         scan.CloseInputFile( );
         m_pScanAct = nullptr;
+		if ( m_pWrapHook != nullptr )
+			(* m_pWrapHook)( * this );                // call hook function 
     }
     catch ( ScriptErrorHandler::ScriptErrorInfo const & errInfo )
     {
@@ -433,36 +435,6 @@ bool Script::ScrProcess
     }
 
     return true;
-}
-
-wstring const Script::GetActPath( ) const
-{
-   return m_pScanAct->GetActPath( );
-}
-
-wstring const Script::GetActLine( ) const
-{
-   return m_pScanAct->GetActLine( );
-}
-
-int Script::GetActLineNr( ) const
-{
-   return m_pScanAct->GetActLineNr( );
-}
-
-int Script::GetActStartPos( ) const
-{
-   return m_pScanAct->GetActStartPos( );
-}
-
-int Script::GetActEndPos( ) const
-{
-   return m_pScanAct->GetActEndPos( );
-}
-
-wstring const Script::GetActExpectedToken( ) const
-{
-   return m_pScanAct->GetExpectedToken( );
 }
 
 bool Script::ProcessScript( wstring const & wstrScript )

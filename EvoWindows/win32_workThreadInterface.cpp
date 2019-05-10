@@ -8,6 +8,7 @@
 #include "EvolutionTypes.h"
 #include "EvolutionCore.h"
 #include "EvoHistorySysGlue.h"
+#include "win32_script.h"
 #include "win32_worker_thread.h"
 #include "win32_workThreadInterface.h"
 
@@ -15,7 +16,6 @@ using std::wostream;
 using std::endl;
 
 WorkThreadInterface::WorkThreadInterface( wostream * pTraceStream ) :
-	m_pCore( nullptr ),
 	m_pEvoHistGlue( nullptr ),
 	m_pWorkThread( nullptr ),
     m_pTraceStream( pTraceStream ),
@@ -34,7 +34,6 @@ void WorkThreadInterface::Start
     EvoHistorySysGlue  * const pEvoHistGlue
 )
 {
-    m_pCore        = pCore;
 	m_pEvoHistGlue = pEvoHistGlue;
 	m_pWorkThread  = new WorkThread
 	( 
@@ -51,7 +50,6 @@ void WorkThreadInterface::Start
 
 WorkThreadInterface::~WorkThreadInterface( )
 {
-	m_pCore        = nullptr;
 	m_pEvoHistGlue = nullptr;
 	m_pWorkThread  = nullptr;
     m_pTraceStream = nullptr;
@@ -71,11 +69,6 @@ void WorkThreadInterface::postGotoGeneration( HIST_GENERATION const gen )
 
 // procedural interface of worker thread
 
-void WorkThreadInterface::DoProcessScript( wstring * const pwstr )
-{
-	m_pWorkThread->DoProcessScript( pwstr );
-}
-
 HIST_GENERATION WorkThreadInterface::GetGenDemanded( ) const 
 { 
 	return m_pWorkThread->GetGenDemanded( );
@@ -92,8 +85,6 @@ void WorkThreadInterface::PostBenchmark( int const iNrOfGenerations )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << iNrOfGenerations <<endl;
-//	HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
-//	postGotoGeneration( gen + iNrOfGenerations );
     m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::BENCHMARK, 0, iNrOfGenerations );
 }
 
@@ -198,25 +189,24 @@ void WorkThreadInterface::PostRedo( )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
 
-	HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
-
-	if ( ( gen < m_pEvoHistGlue->GetYoungestGeneration( ) ) && m_pEvoHistGlue->IsEditorCommand( gen + 1 ) )
-		postGotoGeneration( gen + 1 );
-	else
-		(void)MessageBeep(MB_OK);  // first generation reached
+	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::REDO, 0, 0 );
 }
 
 void WorkThreadInterface::PostGenerationStep( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-	postGotoGeneration( m_pEvoHistGlue->GetCurrentGeneration( ) + 1 );
+
+	m_pWorkThread->Continue( );     // trigger worker thread if waiting on POI event
+	
+	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::GENERATION_STEP, 0, 0 );
 }
 
 void WorkThreadInterface::PostRepeatGenerationStep( )
 {
     if ( m_bTrace )
         * m_pTraceStream << L"PostGenerationStep" << endl;
+
     m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::REPEAT_GENERATION_STEP, 0, 0 );
 }
 
@@ -225,39 +215,38 @@ void WorkThreadInterface::PostUndo( )
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
 
-	HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
-
-	if ( ( gen > 0 ) && m_pEvoHistGlue->IsEditorCommand( gen - 1 ) )
-		postGotoGeneration( gen - 1 );
-	else
-		(void)MessageBeep(MB_OK);  // first generation reached
+	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::UNDO, 0, 0 );
 }
 
 void WorkThreadInterface::PostPrevGeneration( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-	if (m_pEvoHistGlue->GetCurrentGeneration() > 0)
-		postGotoGeneration( m_pEvoHistGlue->GetCurrentGeneration() - 1 );
-	else
-		(void)MessageBeep(MB_OK);  // first generation reached
+
+	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::PREV_GENERATION, 0, 0 );
 }
 
-void WorkThreadInterface::PostHistoryAction( UINT const uiID, GridPoint const gp )
+void WorkThreadInterface::PostGotoOrigin( GridPoint const gp )
 {
-    if ( m_bTrace )
-        * m_pTraceStream << __func__ << L" " << uiID << L" " << gp << endl;
+	if ( m_bTrace )
+		* m_pTraceStream << __func__ << L" " << gp << endl;
 
-	assert( m_pCore->IsAlive(gp) );
-	assert( (uiID == IDM_GOTO_ORIGIN) || (uiID == IDM_GOTO_DEATH) );
+	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::GOTO_ORIGIN, gp.GetXvalue(), gp.GetYvalue() );
+}
 
-	postGotoGeneration( m_pEvoHistGlue->GetGenWithIndividual( m_pCore->GetId(gp), uiID == IDM_GOTO_DEATH ) );
+void WorkThreadInterface::PostGotoDeath( GridPoint const gp )
+{
+	if ( m_bTrace )
+		* m_pTraceStream << __func__ << L" " << gp << endl;
+
+	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::GOTO_DEATH, gp.GetXvalue(), gp.GetYvalue() );
 }
 
 void WorkThreadInterface::PostGotoGeneration( HIST_GENERATION const gen )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << gen << endl;
+
 	postGotoGeneration( gen );
 }
 
@@ -268,12 +257,12 @@ void WorkThreadInterface::PostStopComputation( )
 
 void WorkThreadInterface::PostProcessScript( wstring const & wstrPath )
 {
-//lint -esym( 429, pwstr )     not freed here, happens in worker thread
-    wstring * const pwstr = new wstring( wstrPath );
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" \"" << wstrPath.c_str( )  << "\""<< endl;
 
-    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::PROCESS_SCRIPT, 0, (LPARAM)pwstr );
+	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::ENTER_SCRIPT, 0, 0 );
+	Script::ProcessScript( wstrPath );
+	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::LEAVE_SCRIPT, 0, 0 );
 }
 
 // no trace output

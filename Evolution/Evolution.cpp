@@ -9,25 +9,14 @@
 #include "win32_stopwatch.h"
 #include "Resource.h"
 
-//lint -e952 some parameters could be declared as const
-//lint -e818 some parameters could be declared as pointing to const
-
-// not possible as WinMain has signature defined by windows
-
-//lint -esym( 714, WinMain(struct HINSTANCE__ *, struct HINSTANCE__ *, wchar_t *, int)     not referenced
-
-int APIENTRY _tWinMain
+int APIENTRY wWinMain
 (
-    HINSTANCE hInstance,
-    HINSTANCE hPrevInstance,
-    LPTSTR    lpCmdLine,
-    int       nCmdShow
+	_In_     HINSTANCE hInstance,
+	_In_opt_ HINSTANCE hPrevInstance,
+	_In_     LPWSTR    lpCmdLine,
+	_In_     int       nCmdShow
 )
 {
-//lint -esym( 550, hPrevInstance )  parameter not used
-//lint -esym( 550, nCmdShow )       parameter not used
-//lint -esym( 715, nCmdShow )       parameter not used
-
     UNREFERENCED_PARAMETER( hPrevInstance );
     UNREFERENCED_PARAMETER( lpCmdLine );
     UNREFERENCED_PARAMETER( nCmdShow );

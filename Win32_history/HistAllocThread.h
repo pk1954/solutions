@@ -21,7 +21,7 @@ public:
 	{
 		if ( bAsync )
 		{
-			StartThread( L"HistAlloc" );  
+			StartThread( L"HistAlloc", true );  
 		}
 		else
 		{
@@ -38,8 +38,10 @@ public:
 
 	void HistAllocThread::ThreadMsgDispatcher( MSG msg )
 	{
-		if ( m_pHistorySys->AddHistorySlot() ) 
-			PostThreadMsg( msg );
+		if ( m_pHistorySys->AddHistorySlot() )                    // if allocation of slot 
+		{                                                         // was successfull,
+			PostThreadMsg( msg.message, msg.wParam, msg.lParam ); // do it again
+		}
 	}
 
 private:

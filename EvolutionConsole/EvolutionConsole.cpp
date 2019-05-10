@@ -77,7 +77,8 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 		}
     }
 
-	pWorkThreadInterface->DoProcessScript( new wstring( wstrInputFile ) );
+	std::wstring wstr( wstrInputFile );
+	Script::ProcessScript( wstr );
 
 	wcout << L" ***** EvolutionConsole terminates successfully *****" << endl;
 

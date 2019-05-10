@@ -38,11 +38,19 @@ public:
 		REFRESH = WM_APP,
 		STOP,
 		REPEAT_GENERATION_STEP,  // only used internaly, not part of procedural interface
-		GOTO_GENERATION,
 		GENERATION_RUN,
+		GOTO_ORIGIN,
+		GOTO_DEATH,
+		GOTO_GENERATION,
+		GENERATION_STEP,
+		PREV_GENERATION,
+	    REDO,
+		UNDO,
 		BENCHMARK,
 		SET_POI,
 		DO_EDIT,
+		ENTER_SCRIPT,
+		LEAVE_SCRIPT,
 		SET_BRUSH_RADIUS,
 		SET_BRUSH_INTENSITY,
 		SET_BRUSH_SHAPE,
@@ -51,17 +59,15 @@ public:
 		SET_STRATEGY_COLOR,
 		SET_SELECTION_COLOR,
 		SET_HIGHLIGHT_COLOR,
-		PROCESS_SCRIPT,
 		SET_SIMULATION_MODE,
 		RESET_MODEL,
 		FIRST = REFRESH,
 		LAST = RESET_MODEL
 	};
 
-	static BOOL IsValid( UINT msg )
+	static BOOL IsValid( WorkerThreadMessage::Id msg )
 	{
-		Id const workerMsg = static_cast<Id>( msg );
-		return (WorkerThreadMessage::Id::FIRST <= workerMsg) && (workerMsg <= WorkerThreadMessage::Id::LAST);
+		return (WorkerThreadMessage::Id::FIRST <= msg) && (msg <= WorkerThreadMessage::Id::LAST);
 	}
 };
 
@@ -87,12 +93,9 @@ public:
 	// WorkMessage - process incoming messages from main thread
 
 	void WorkMessage( WorkerThreadMessage::Id const, WPARAM const, LPARAM const );
-	void WorkMessage( MSG const );
 
 	void GenerationStep( );
 	void NGenerationSteps( int ); 
-
-	void DoProcessScript( wstring * const );
 
 	HIST_GENERATION GetGenDemanded( ) const 
 	{ 
@@ -104,6 +107,12 @@ public:
 		return m_bContinue;
 	}
 
+	void Continue( )
+	{
+		if ( m_pEventPOI != nullptr )
+			m_pEventPOI->Continue( );     // trigger worker thread if waiting on POI event
+	}
+
 private:
 	BOOL editorCommand( tEvoCmd const cmd, WPARAM const wParam )
 	{
@@ -113,6 +122,12 @@ private:
 	BOOL editorCommand( tEvoCmd const cmd, GridPoint24 const gp24 )
 	{
 		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, gp24 ) );
+	}
+
+	void gotoGeneration( HIST_GENERATION const gen )
+	{
+		m_genDemanded = gen;
+		GenerationStep( );
 	}
 
 	void generationRun( );

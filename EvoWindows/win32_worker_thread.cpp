@@ -8,7 +8,6 @@
 #include "GridPoint24.h"
 #include "EvoHistorySysGlue.h"
 #include "EventInterface.h"
-#include "win32_script.h"
 #include "win32_editor.h"
 #include "win32_thread.h"
 #include "win32_event.h"
@@ -41,7 +40,7 @@ WorkThread::WorkThread
 	m_iScriptLevel        ( 0 ),
 	m_genDemanded         ( 0 )
 {
-	StartThread( L"WorkerThread" ); 
+	StartThread( L"WorkerThread", true ); 
 }
 
 WorkThread::~WorkThread( )
@@ -60,23 +59,8 @@ WorkThread::~WorkThread( )
 
 void WorkThread::WorkMessage( WorkerThreadMessage::Id const msg, WPARAM const wparam, LPARAM const lparam )
 {
-	WorkMessage( MSG { nullptr, static_cast<UINT>(msg), wparam, lparam } );
-}
-
-void WorkThread::WorkMessage( MSG const msg )
-{
-	assert( WorkerThreadMessage::IsValid( msg.message ) );
-
-	if ( m_iScriptLevel > 0 )         // if we are processing a script    
-	{                                 // we run already in worker thread 
-		ThreadMsgDispatcher( msg );   // dispatch message directly to avoid blocking
-	}
-	else                              // normal case
-	{                                 // we run in main thread
-		if ( m_pEventPOI != nullptr )
-			m_pEventPOI->Continue( ); // trigger worker thread if waiting on POI event
-		PostThreadMsg( msg );         // post message to worker thread
-	}
+	assert( WorkerThreadMessage::IsValid( msg ) );
+	PostThreadMsg( static_cast<UINT>(msg), wparam, lparam );
 }
 
 void WorkThread::ThreadStartupFunc( ) 
@@ -101,8 +85,12 @@ void WorkThread::dispatch( MSG const msg  )
 	switch ( static_cast<WorkerThreadMessage::Id>(msg.message) )
 	{
 
-	case WorkerThreadMessage::Id::PROCESS_SCRIPT:
-		DoProcessScript( (wstring *)msg.lParam );
+	case WorkerThreadMessage::Id::ENTER_SCRIPT:
+		++m_iScriptLevel;
+		break;
+
+	case WorkerThreadMessage::Id::LEAVE_SCRIPT:
+		--m_iScriptLevel;
 		break;
 
 	case WorkerThreadMessage::Id::REPEAT_GENERATION_STEP:
@@ -114,8 +102,23 @@ void WorkThread::dispatch( MSG const msg  )
 		break;
 
 	case WorkerThreadMessage::Id::GOTO_GENERATION:
-		m_genDemanded = HIST_GENERATION(static_cast<long>(msg.lParam));
-		GenerationStep( );
+		gotoGeneration( HIST_GENERATION(static_cast<long>(msg.lParam)) );
+		break;
+
+	case WorkerThreadMessage::Id::GOTO_ORIGIN:
+	case WorkerThreadMessage::Id::GOTO_DEATH:
+		gotoGeneration
+		( 
+			m_pEvoHistGlue->GetGenWithIndividual
+			(
+				GridPoint
+				( 
+					static_cast<GRID_COORD>( CastToShort(msg.wParam) ), 
+					static_cast<GRID_COORD>( CastToShort(msg.lParam) )
+				),
+				static_cast<WorkerThreadMessage::Id>(msg.message) == WorkerThreadMessage::Id::GOTO_DEATH 
+			)
+		);
 		break;
 
 	case WorkerThreadMessage::Id::GENERATION_RUN:
@@ -123,6 +126,43 @@ void WorkThread::dispatch( MSG const msg  )
 			m_bContinue = TRUE;
 		generationRun( );
 		break;
+
+	case WorkerThreadMessage::Id::GENERATION_STEP:
+		gotoGeneration( m_pEvoHistGlue->GetCurrentGeneration( ) + 1 );
+		break;
+
+	case WorkerThreadMessage::Id::PREV_GENERATION:
+	{
+		HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
+
+		if ( gen > 0 )
+			gotoGeneration( gen - 1 );
+		else
+			(void)MessageBeep(MB_OK);  // first generation reached
+	}
+	break;
+
+	case WorkerThreadMessage::Id::REDO:
+	{
+		HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
+
+		if ( ( gen < m_pEvoHistGlue->GetYoungestGeneration( ) ) && m_pEvoHistGlue->IsEditorCommand( gen + 1 ) )
+			gotoGeneration( gen + 1 );
+		else
+			(void)MessageBeep(MB_OK);  // first generation reached
+	}
+		break;
+
+	case WorkerThreadMessage::Id::UNDO:
+	{
+		HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
+
+		if ( ( gen > 0 ) && m_pEvoHistGlue->IsEditorCommand( gen - 1 ) )
+			gotoGeneration( gen - 1 );
+		else
+			(void)MessageBeep(MB_OK);  // first generation reached
+	}
+	break;
 
 	case WorkerThreadMessage::Id::STOP:
 		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
@@ -192,8 +232,18 @@ void WorkThread::dispatch( MSG const msg  )
 		return;  // sometimes strange messages arrive. e.g. uiMsg 1847
 	}            // I cannot find a reason, so I ignore them
 
-	if (m_pReadBuffer != nullptr)
-		m_pReadBuffer->Notify( false );
+	if (m_pReadBuffer != nullptr)   // Notify main thread, that model has changed
+	{     
+		if ( m_iScriptLevel == 0 )           // Normal (non-script) mode
+		{
+			m_pReadBuffer->Notify( false );  // continue immediately, if main thread is busy
+		}
+		else                                 // Script mode
+		{
+			m_pReadBuffer->Notify( true );   // Update screen immediately
+//			m_pEventPOI->Wait( );            // wait for user input to continue
+		}
+	}                               
 }
 
 // GenerationStep - perform one history step towards demanded generation
@@ -235,7 +285,7 @@ void WorkThread::NGenerationSteps( int iNrOfGenerations )
 	for (int i = 0; i < iNrOfGenerations; ++i)
 	{
 		m_pEvoHistGlue->EvoCreateNextGenCommand( );
-		WorkMessage( WorkerThreadMessage::Id::REFRESH, 0, 0 );                   // refresh all views
+		WorkMessage( WorkerThreadMessage::Id::REFRESH, 0, 0 );   // refresh all views
 	}
 	stopwatch.Stop( L"benchmark" );
 }
@@ -245,21 +295,11 @@ void WorkThread::generationRun( )
 	if ( m_bContinue )
 	{
 		assert( m_iScriptLevel == 0 );
-		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( ) + 1 ;
-    
-		GenerationStep( );
+		gotoGeneration( m_pEvoHistGlue->GetCurrentGeneration( ) + 1 );
 
 		if (m_pPerformanceWindow != nullptr)
 			m_pPerformanceWindow->SleepDelay( );
 
 		m_pWorkThreadInterface->PostRunGenerations( false );
 	}
-}
-
-void WorkThread::DoProcessScript( wstring * const pwstr )
-{
-	++m_iScriptLevel;
-	Script::ProcessScript( * pwstr );
-	--m_iScriptLevel;
-	delete pwstr;
 }

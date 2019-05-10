@@ -48,12 +48,18 @@ public:
 
 	virtual void Notify( bool const bImmediate )
 	{
-		if (TryAcquireSRWLockExclusive( & m_SRWLock ))              // if buffer is locked by readers
-		{                                                           // don't let you get stopped.
-			m_pCore4Display->CopyEvolutionCoreData( m_pCoreWork );  // just continue your work. 
-			ReleaseSRWLockExclusive( & m_SRWLock );                 // readers can synchronize with 
-			m_pObservers->Notify( bImmediate );                     // later version
+		if ( bImmediate )
+		{
+			AcquireSRWLockExclusive( & m_SRWLock );               // if locked by readers, wait
 		}
+		else if ( ! TryAcquireSRWLockExclusive( & m_SRWLock ))    // if buffer is locked by readers
+		{                                                         // just continue your work. 
+			return; 											  // readers can synchronize with
+		}														  // later version
+
+		m_pCore4Display->CopyEvolutionCoreData( m_pCoreWork );  
+		ReleaseSRWLockExclusive( & m_SRWLock );                  
+		m_pObservers->Notify( bImmediate );                     
 	}
 
 private:

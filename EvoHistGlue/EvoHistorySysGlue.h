@@ -45,7 +45,7 @@ public:
     HIST_GENERATION GetCurrentGeneration     ( ) const { return m_pHistorySystem->GetCurrentGeneration( ); }
     HIST_GENERATION GetYoungestGeneration    ( ) const { return m_pHistorySystem->GetYoungestGeneration( ); }
 
-	HIST_GENERATION GetGenWithIndividual( IND_ID const &, bool const ) const; 
+	HIST_GENERATION GetGenWithIndividual( GridPoint const, bool const ) const; 
 
 	void EvoClearHistory( );
 

@@ -8,17 +8,13 @@
 #pragma once
 
 #include <string>
+#include "scanner.h"
 
 using std::wstring;
 
-//lint -esym( 755, DEF_FUNC )
-//lint -esym( 755, DEF_ULONG_CONST )
 #define DEF_FUNC(name)        SymbolTable::ScrDefConst( L#name, new Wrap##name )
 #define DEF_ULONG_CONST(name) SymbolTable::ScrDefConst( L#name, static_cast<unsigned long>(name) )
 
-//lint -esym( 763, Scanner )    // redundant declaration
-
-class Scanner;
 class Script;
 
 class Script_Functor
@@ -45,12 +41,13 @@ public:
     wstring const  ScrReadString( void );
 
 // Helper routines for error handlers 
-    wstring const GetActPath         ( void ) const;
-    wstring const GetActLine         ( void ) const;
-    int           GetActLineNr       ( void ) const;
-    int           GetActStartPos     ( void ) const;
-    int           GetActEndPos       ( void ) const;
-    wstring const GetActExpectedToken( void ) const;
+	wstring const Script::GetActPath         ( ) const { return m_pScanAct->GetActPath      ( ); }
+	wstring const Script::GetActLine         ( ) const { return m_pScanAct->GetActLine      ( ); }
+	int     const Script::GetActLineNr       ( ) const { return m_pScanAct->GetActLineNr    ( ); }
+	int     const Script::GetActStartPos     ( ) const { return m_pScanAct->GetActStartPos  ( ); }
+	int     const Script::GetActEndPos       ( ) const { return m_pScanAct->GetActEndPos    ( ); }
+	wstring const Script::GetActExpectedToken( ) const { return m_pScanAct->GetExpectedToken( ); }
+	bool    const Script::IsActive           ( ) const { return m_pScanAct != nullptr;           }
 
 // utility functions
 

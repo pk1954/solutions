@@ -147,7 +147,7 @@ void Grid::ResetGrid( )
 void Grid::displayAndWait( )
 {
 	m_pObservers->Notify( true );
-	m_pEventPOI->Wait( );
+	m_pEventPOI->Wait( );  // wait for user input to continue
 }
 
 void Grid::handleBaseConsumption( GridField & gfRun )

@@ -14,28 +14,26 @@ namespace Util
 	class Thread
 	{
 	public:
-		void StartThread( wstring const & strName );
+		void StartThread( wstring const &, BOOL const );
 
 		void SetThreadAffinityMask( DWORD_PTR mask )
 		{
 			::SetThreadAffinityMask( m_handle, mask );
 		}
 
-		void PostThreadMsg( MSG msg )
+		void PostThreadMsg( UINT uiMsg, WPARAM const wParam = 0, LPARAM const lParam = 0 )
 		{
-			assert( m_threadId != 0 );
-		    BOOL const bRes = ::PostThreadMessage( m_threadId, msg.message, msg.wParam, msg.lParam );
-			DWORD err = GetLastError( );
-			if ( ! bRes )
-			{ 
-				int x = 654654;
+			if ( m_bAsync )
+			{
+				assert( m_threadId != 0 );
+				BOOL const bRes = ::PostThreadMessage( m_threadId, uiMsg, wParam, lParam );
+				DWORD err = GetLastError( );
+				assert( bRes );
 			}
-//			assert( bRes );
-		}
-
-		void PostThreadMsg( unsigned int uiMsg )
-		{
-			PostThreadMsg( MSG{ nullptr, uiMsg, 0, 0 } );
+			else
+			{
+				ThreadMsgDispatcher( MSG{ nullptr, uiMsg, wParam, lParam } );
+			}
 		}
 
 		void Terminate( ); // Waits until thread has stopped
@@ -49,6 +47,7 @@ namespace Util
 		HANDLE  m_handle;
 		UINT    m_threadId;
 		wstring m_strThreadName;
+		BOOL    m_bAsync;
 
 		friend static unsigned int __stdcall ThreadProc( void * );
 	};

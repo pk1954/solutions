@@ -12,6 +12,7 @@
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
 #include "EvoModelFactory.h"
+#include "EvolutionCore.h"
 #include "EvolutionTypes.h"
 #include "EvoHistorySysGlue.h"
 
@@ -84,11 +85,14 @@ private:
     IND_ID const m_id;
 };
 
-HIST_GENERATION EvoHistorySysGlue::GetGenWithIndividual( IND_ID const & id, bool const bReverse ) const  
-{ 
+HIST_GENERATION EvoHistorySysGlue::GetGenWithIndividual( GridPoint const gp, bool const bReverse ) const
+{
+	HIST_GENERATION       gen   = m_pHistorySystem->GetCurrentGeneration( );
+	EvolutionCore const * pCore = GetEvolutionCore( gen );
+	IND_ID                id    = pCore->GetId( gp );
 	return id.IsNull( ) 
-		   ? HIST_GENERATION()
-           : m_pHistorySystem->FindGenerationWithProperty( FindGridPointFunctor( id ), bReverse );
+		? HIST_GENERATION()
+		: m_pHistorySystem->FindGenerationWithProperty( FindGridPointFunctor( id ), bReverse );
 }
 
 void EvoHistorySysGlue::EvoClearHistory(  ) 
@@ -98,7 +102,7 @@ void EvoHistorySysGlue::EvoClearHistory(  )
 	m_pHistorySystem->ClearHistory( 0 );
 }
 
-EvolutionCore const* EvoHistorySysGlue::GetEvolutionCore( HIST_GENERATION const gen ) const
+EvolutionCore const * EvoHistorySysGlue::GetEvolutionCore( HIST_GENERATION const gen ) const
 {
 	ModelData const * pModelData { GetModelData( gen ) };
 	return ( pModelData == nullptr )

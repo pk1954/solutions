@@ -19,12 +19,11 @@ public:
 		BOOL            bAsync
 	) :
 		m_pTextWindow( pTextWindow ),
-		m_bAsync( bAsync ),
 		m_hDC( hDC_Memory )
 	{ 
 	    m_pTextBuffer = new Win32_TextBuffer( hDC_Memory, pixSize );
 		if ( bAsync )
-			StartThread( strName ); 
+			StartThread( strName, bAsync ); 
 	}
 
 	~TextWindowThread()
@@ -38,14 +37,7 @@ public:
 	{
 		const unsigned int anyMessageWillDo = 42;
 
-		if ( m_bAsync )
-		{
-			PostThreadMsg( anyMessageWillDo );
-		}
-		else
-		{
-			ThreadMsgDispatcher( MSG{ nullptr, anyMessageWillDo, 0, 0 } );
-		}
+		PostThreadMsg( anyMessageWillDo );
 	}
 
 	virtual void ThreadMsgDispatcher( MSG const msg )
@@ -58,6 +50,5 @@ public:
 private:
 	TextWindow * m_pTextWindow;
 	TextBuffer * m_pTextBuffer;
-	BOOL         m_bAsync;
     HDC          m_hDC;
 };

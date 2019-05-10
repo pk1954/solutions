@@ -16,10 +16,17 @@ public:
     {
         if ( m_pStatusBar != nullptr )
         {
-            wstring const & wszPath = script.GetActPath( );
-            wstring const & wszLine = script.GetActLine( );
-            int     const   iLineNr = script.GetActLineNr( );
-            m_pStatusBar->DisplayScriptLine( wszPath, iLineNr, wszLine );
+			if ( script.IsActive() )
+			{
+				wstring const & wszPath = script.GetActPath( );
+				wstring const & wszLine = script.GetActLine( );
+				int     const   iLineNr = script.GetActLineNr( );
+				m_pStatusBar->DisplayScriptLine( wszPath, iLineNr, wszLine );
+			}
+			else 
+			{
+//				m_pStatusBar->ClearStatusLine( );
+			}
         }
     }
 

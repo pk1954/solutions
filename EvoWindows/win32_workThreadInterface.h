@@ -54,10 +54,10 @@ public:
 	void PostBenchmark( int const );
 	void PostPrevGeneration();
 	void PostGotoGeneration( HIST_GENERATION const );
-	void PostHistoryAction( UINT const, GridPoint const );
+	void PostGotoOrigin( GridPoint const );
+	void PostGotoDeath ( GridPoint const );
 	void PostGenerationStep();
 	void PostRepeatGenerationStep();              // Do not call! Used by WorkThread only;
-	void DoProcessScript( std::wstring * const ); // parameter must be created with new, will be deleted here! 
 
 	HIST_GENERATION GetGenDemanded( ) const;
 	BOOL            IsRunning( )      const;
@@ -67,7 +67,6 @@ public:
 private:
 	void postGotoGeneration( HIST_GENERATION const );
 
-    EvolutionCore     * m_pCore;
     EvoHistorySysGlue * m_pEvoHistGlue;
 	WorkThread        * m_pWorkThread;
     std::wostream     * m_pTraceStream;

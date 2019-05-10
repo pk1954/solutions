@@ -131,8 +131,11 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			break;
 
 		case IDM_GOTO_ORIGIN:
+			m_pWorkThreadInterface->PostGotoOrigin( UnpackFromLParam(lParam) );
+			break;
+
 		case IDM_GOTO_DEATH:
-			m_pWorkThreadInterface->PostHistoryAction( wmId, UnpackFromLParam(lParam) );
+			m_pWorkThreadInterface->PostGotoDeath( UnpackFromLParam(lParam) );
 			break;
 
 		case IDM_SIMULATION_SPEED:   // comes from trackbar in statusBar
