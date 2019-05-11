@@ -49,8 +49,6 @@ public:
 		BENCHMARK,
 		SET_POI,
 		DO_EDIT,
-		ENTER_SCRIPT,
-		LEAVE_SCRIPT,
 		SET_BRUSH_RADIUS,
 		SET_BRUSH_INTENSITY,
 		SET_BRUSH_SHAPE,
@@ -94,7 +92,6 @@ public:
 
 	void WorkMessage( WorkerThreadMessage::Id const, WPARAM const, LPARAM const );
 
-	void GenerationStep( );
 	void NGenerationSteps( int ); 
 
 	HIST_GENERATION GetGenDemanded( ) const 
@@ -124,12 +121,7 @@ private:
 		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, gp24 ) );
 	}
 
-	void gotoGeneration( HIST_GENERATION const gen )
-	{
-		m_genDemanded = gen;
-		GenerationStep( );
-	}
-
+	void gotoGeneration( HIST_GENERATION const );
 	void generationRun( );
 	void dispatch( MSG const );
 

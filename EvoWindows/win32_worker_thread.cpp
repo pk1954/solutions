@@ -37,7 +37,6 @@ WorkThread::WorkThread
 	m_pWorkThreadInterface( pWorkThreadInterface ),
 	m_hwndApplication     ( hwndApplication ),
 	m_bContinue           ( FALSE ),
-	m_iScriptLevel        ( 0 ),
 	m_genDemanded         ( 0 )
 {
 	StartThread( L"WorkerThread", true ); 
@@ -85,18 +84,6 @@ void WorkThread::dispatch( MSG const msg  )
 	switch ( static_cast<WorkerThreadMessage::Id>(msg.message) )
 	{
 
-	case WorkerThreadMessage::Id::ENTER_SCRIPT:
-		++m_iScriptLevel;
-		break;
-
-	case WorkerThreadMessage::Id::LEAVE_SCRIPT:
-		--m_iScriptLevel;
-		break;
-
-	case WorkerThreadMessage::Id::REPEAT_GENERATION_STEP:
-		GenerationStep( );
-		break;
-
 	case WorkerThreadMessage::Id::BENCHMARK:
 		NGenerationSteps( static_cast<int>(msg.lParam) );
 		break;
@@ -131,38 +118,42 @@ void WorkThread::dispatch( MSG const msg  )
 		gotoGeneration( m_pEvoHistGlue->GetCurrentGeneration( ) + 1 );
 		break;
 
-	case WorkerThreadMessage::Id::PREV_GENERATION:
-	{
-		HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
+	case WorkerThreadMessage::Id::REPEAT_GENERATION_STEP:
+		gotoGeneration( m_genDemanded );
+		break;
 
-		if ( gen > 0 )
-			gotoGeneration( gen - 1 );
-		else
-			(void)MessageBeep(MB_OK);  // first generation reached
-	}
-	break;
+	case WorkerThreadMessage::Id::PREV_GENERATION:
+		{
+			HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
+
+			if ( gen > 0 )
+				gotoGeneration( gen - 1 );
+			else
+				(void)MessageBeep(MB_OK);  // first generation reached
+		}
+		break;
 
 	case WorkerThreadMessage::Id::REDO:
-	{
-		HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
+		{
+			HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
 
-		if ( ( gen < m_pEvoHistGlue->GetYoungestGeneration( ) ) && m_pEvoHistGlue->IsEditorCommand( gen + 1 ) )
-			gotoGeneration( gen + 1 );
-		else
-			(void)MessageBeep(MB_OK);  // first generation reached
-	}
+			if ( ( gen < m_pEvoHistGlue->GetYoungestGeneration( ) ) && m_pEvoHistGlue->IsEditorCommand( gen + 1 ) )
+				gotoGeneration( gen + 1 );
+			else
+				(void)MessageBeep(MB_OK);  // first generation reached
+		}
 		break;
 
 	case WorkerThreadMessage::Id::UNDO:
-	{
-		HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
+		{
+			HIST_GENERATION gen = m_pEvoHistGlue->GetCurrentGeneration( );
 
-		if ( ( gen > 0 ) && m_pEvoHistGlue->IsEditorCommand( gen - 1 ) )
-			gotoGeneration( gen - 1 );
-		else
-			(void)MessageBeep(MB_OK);  // first generation reached
-	}
-	break;
+			if ( ( gen > 0 ) && m_pEvoHistGlue->IsEditorCommand( gen - 1 ) )
+				gotoGeneration( gen - 1 );
+			else
+				(void)MessageBeep(MB_OK);  // first generation reached
+		}
+		break;
 
 	case WorkerThreadMessage::Id::STOP:
 		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
@@ -226,31 +217,22 @@ void WorkThread::dispatch( MSG const msg  )
 	case WorkerThreadMessage::Id::REFRESH:
 		if (m_pReadBuffer != nullptr)
 			m_pReadBuffer->Notify( msg.lParam != 0 );
-		break;
+		return;
 
 	default:
 		return;  // sometimes strange messages arrive. e.g. uiMsg 1847
 	}            // I cannot find a reason, so I ignore them
 
-	if (m_pReadBuffer != nullptr)   // Notify main thread, that model has changed
-	{     
-		if ( m_iScriptLevel == 0 )           // Normal (non-script) mode
-		{
-			m_pReadBuffer->Notify( false );  // continue immediately, if main thread is busy
-		}
-		else                                 // Script mode
-		{
-			m_pReadBuffer->Notify( true );   // Update screen immediately
-//			m_pEventPOI->Wait( );            // wait for user input to continue
-		}
-	}                               
+	if (m_pReadBuffer != nullptr)            // Notify main thread, that model has changed
+		m_pReadBuffer->Notify( false );  // continue immediately, if main thread is busy
 }
 
-// GenerationStep - perform one history step towards demanded generation
+// gotoGeneration - perform one history step towards demanded generation
 //                - update editor state if neccessary
 
-void WorkThread::GenerationStep( )   
+void WorkThread::gotoGeneration( HIST_GENERATION const gen )   
 {
+	m_genDemanded = gen;
 	if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )  // is something to do at all?
 	{
 		if ( 
@@ -260,7 +242,9 @@ void WorkThread::GenerationStep( )
 		{                                                    // Normal case: Compute next generation
 			if (m_pPerformanceWindow != nullptr)
 				m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
-			m_pEvoHistGlue->EvoCreateNextGenCommand( );
+
+			m_pEvoHistGlue->EvoCreateNextGenCommand( );      //////// here the real work is done! ////////////////
+
 			if (m_pPerformanceWindow != nullptr)
 				m_pPerformanceWindow->ComputationStop( );    // measure computation time
 		}
@@ -271,10 +255,10 @@ void WorkThread::GenerationStep( )
 				m_pEditorWindow->UpdateEditControls( );            // make sure that editor GUI reflects new state
 		}
 
-		WorkMessage( WorkerThreadMessage::Id::REFRESH, 0, 0 );                   // refresh all views
+		WorkMessage( WorkerThreadMessage::Id::REFRESH, 0, 0 );            // refresh all views
     
 		if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )   // still not done?
-			m_pWorkThreadInterface->PostRepeatGenerationStep( );   // Loop! Will call indirectly GenerationStep again
+			m_pWorkThreadInterface->PostRepeatGenerationStep( );          // Loop! Will call indirectly gotoGeneration again
 	}
 }
 
@@ -294,7 +278,6 @@ void WorkThread::generationRun( )
 {
 	if ( m_bContinue )
 	{
-		assert( m_iScriptLevel == 0 );
 		gotoGeneration( m_pEvoHistGlue->GetCurrentGeneration( ) + 1 );
 
 		if (m_pPerformanceWindow != nullptr)

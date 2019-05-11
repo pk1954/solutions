@@ -46,7 +46,6 @@ public:
     void PostSetBrushRadius( GRID_COORD const );
     void PostRefresh( LPARAM const );
     void PostReset( BOOL );
-    void PostProcessScript( std::wstring const & );
 	void PostRunGenerations( bool const );
 	void PostStopComputation();
 	void PostUndo();

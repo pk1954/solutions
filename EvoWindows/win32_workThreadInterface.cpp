@@ -13,6 +13,7 @@
 #include "win32_workThreadInterface.h"
 
 using std::wostream;
+using std::wcout;
 using std::endl;
 
 WorkThreadInterface::WorkThreadInterface( wostream * pTraceStream ) :
@@ -253,16 +254,6 @@ void WorkThreadInterface::PostGotoGeneration( HIST_GENERATION const gen )
 void WorkThreadInterface::PostStopComputation( )
 {
 	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::STOP, 0, 0 );
-}
-
-void WorkThreadInterface::PostProcessScript( wstring const & wstrPath )
-{
-    if ( m_bTrace )
-        * m_pTraceStream << __func__ << L" \"" << wstrPath.c_str( )  << "\""<< endl;
-
-	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::ENTER_SCRIPT, 0, 0 );
-	Script::ProcessScript( wstrPath );
-	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::LEAVE_SCRIPT, 0, 0 );
 }
 
 // no trace output

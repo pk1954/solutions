@@ -133,16 +133,6 @@ public:
     }
 };
 
-class WrapPostProcessScript : public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        wstring const wstrScript = script.ScrReadString( );
-        m_pWorkThreadInterface->PostProcessScript( wstrScript );
-    }
-};
-
 class WrapPostRefresh : public Script_Functor
 {
 public:
@@ -189,7 +179,6 @@ void DefineWin32WrapperFunctions( WorkThreadInterface * const pWorkThreadInterfa
     DEF_FUNC( PostReset );
     DEF_FUNC( PostGenerationStep );
     DEF_FUNC( PostRunGenerations );
-    DEF_FUNC( PostProcessScript );
     DEF_FUNC( Break );
 
     DEF_ULONG_CONST( IDM_GENERATION );

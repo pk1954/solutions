@@ -237,7 +237,8 @@ AppWindow::AppWindow( ) :
 	m_pEvoController->Start
 	( 
 		& m_traceStream, 
-		m_pWorkThreadInterface, 
+		m_pWorkThreadInterface,
+		m_pCoreObservers,
 		m_pWinManager, 
 		m_pPerfWindow, 
 		m_pStatusBar, 

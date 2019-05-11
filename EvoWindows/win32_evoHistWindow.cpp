@@ -46,8 +46,8 @@ void EvoHistWindow::DoPaint( HDC const hDC )
 
 // Deactivated, see win32_focusPoint.cpp
 //
-//    if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
-//    {
+//  if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
+//  {
 //		PaintLifeLine( hDC, m_pFocusPoint->GetGenBirth( ), m_pFocusPoint->GetGenDeath( ) );
 //	}
 }

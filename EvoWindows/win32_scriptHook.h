@@ -25,7 +25,7 @@ public:
 			}
 			else 
 			{
-//				m_pStatusBar->ClearStatusLine( );
+				m_pStatusBar->ClearStatusLine( );
 			}
         }
     }

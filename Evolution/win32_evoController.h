@@ -8,6 +8,7 @@
 class PerformanceWindow;
 class StatusBar;
 class WorkThreadInterface;
+class ViewCollection;
 class WinManager;
 class GridWindow;
 class EditorWindow;
@@ -25,6 +26,7 @@ public:
 	( 
 		std::wostream       *, 
 		WorkThreadInterface * const,
+		ViewCollection      * const,
 		WinManager          * const,
 		PerformanceWindow   * const,
 		StatusBar           * const,
@@ -38,10 +40,13 @@ public:
 
 private:
 	void scriptDialog( );
+	bool processUIcommand( int const, LPARAM const );
+
 
 	BOOL                  m_bTrace;
     std::wostream       * m_pTraceStream;
 	WorkThreadInterface * m_pWorkThreadInterface;
+	ViewCollection      * m_pCoreObservers;
 	WinManager          * m_pWinManager;
     PerformanceWindow   * m_pPerformanceWindow;
 	StatusBar           * m_pStatusBar;

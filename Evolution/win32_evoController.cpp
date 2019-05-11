@@ -8,6 +8,7 @@
 #include "config.h"
 #include "win32_script.h"
 #include "win32_workThreadInterface.h"
+#include "win32_ViewCollection.h"
 #include "win32_winManager.h"
 #include "win32_performanceWindow.h"
 #include "win32_status.h"
@@ -48,6 +49,7 @@ void EvoController::Start
 ( 
     std::wostream       *       pTraceStream,
 	WorkThreadInterface * const pWorkThreadInterface,
+	ViewCollection      * const pCoreObservers,
 	WinManager          * const pWinManager,
     PerformanceWindow   * const pPerformanceWindow,
 	StatusBar           * const pStatusBar,
@@ -59,6 +61,7 @@ void EvoController::Start
 {
 	m_pTraceStream         = pTraceStream;
 	m_pWorkThreadInterface = pWorkThreadInterface;
+	m_pCoreObservers       = pCoreObservers;
 	m_pWinManager          = pWinManager;
     m_pPerformanceWindow   = pPerformanceWindow;
 	m_pStatusBar           = pStatusBar;
@@ -77,12 +80,67 @@ void EvoController::scriptDialog( )
 	wstring const wstrPath( szBuffer );
 	wstring wstrFile = AskForScriptFileName( wstrPath );
 	if ( ! wstrFile.empty( ) )
-		m_pWorkThreadInterface->PostProcessScript( wstrFile );
+	{
+		std::wcout << L"Processing script file " << wstrFile << L"...";
+		Script::ProcessScript( wstrFile );
+		std::wcout << L" done" << std::endl;
+	}
+}
+
+bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
+{
+	switch (wmId)
+	{
+	case IDD_TOGGLE_STRIP_MODE:
+		m_pGridWindow->ToggleStripMode();
+		break;
+
+	case IDD_TOGGLE_CLUT_MODE:
+		m_pColorManager->ToggleClutMode();
+		break;
+
+	case IDD_TOGGLE_COORD_DISPLAY:
+		Config::SetConfigValueBoolOp( Config::tId::showGridPointCoords, tBoolOp::opToggle );
+		break;
+
+	case IDM_FIT_ZOOM:
+		m_pGridWindow->Fit2Rect( );
+		m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
+		break;
+
+	case IDM_ZOOM_OUT:
+	case IDM_ZOOM_IN:
+		m_pGridWindow->Zoom( wmId == IDM_ZOOM_IN );
+		m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
+		break;
+
+	case IDM_SET_ZOOM:
+		m_pGridWindow->SetFieldSize( PIXEL(CastToShort(lParam)));
+		m_pStatusBar->SetSizeTrackBar( PIXEL(CastToShort(lParam)) );
+		break;
+
+	case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
+		(void)m_pGridWindow->SetFieldSize( PIXEL(CastToShort(lParam)) );
+		break;
+
+	case IDM_REFRESH:
+		break;
+
+	default:
+		return FALSE; // command has not been processed
+	}
+
+	m_pCoreObservers->Notify( TRUE );
+	return TRUE;  // command has been processed
 }
 
 void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 {
     int const wmId = LOWORD( wParam );
+	
+	if ( processUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
+		return;                             // but do not concern the model
+
     switch (wmId)
     {
         case IDM_EDIT_UNDO:
@@ -138,6 +196,20 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			m_pWorkThreadInterface->PostGotoDeath( UnpackFromLParam(lParam) );
 			break;
 
+		case IDM_TOGGLE_SIMU_MODE:
+			ProcessCommand( IDM_STOP, 0 );
+			m_pWorkThreadInterface->PostSetSimulationMode( tBoolOp::opToggle );
+			break;
+
+		case IDM_SET_SIMU_MODE:
+			ProcessCommand( IDM_STOP, 0 );
+			m_pWorkThreadInterface->PostSetSimulationMode( static_cast<tBoolOp>(lParam) );
+			break;
+
+		case IDM_SET_POI:
+			m_pWorkThreadInterface->PostSetPOI( UnpackFromLParam(lParam) );
+			break;
+
 		case IDM_SIMULATION_SPEED:   // comes from trackbar in statusBar
 			if (m_pPerformanceWindow != nullptr)
 				m_pPerformanceWindow->SetPerfGenerationDelay( static_cast<DWORD>( lParam ) );
@@ -174,66 +246,9 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             m_pWinManager->Show( IDM_PERF_WINDOW, BoolOp(static_cast<bool>(lParam)) );
             break;
 
-        case IDM_REFRESH:
-			m_pWorkThreadInterface->PostRefresh( lParam );
-            break;
-
-        case IDD_TOGGLE_STRIP_MODE:
-			m_pGridWindow->ToggleStripMode();
-			m_pWorkThreadInterface->PostRefresh( lParam );
-            break;
-
-        case IDD_TOGGLE_CLUT_MODE:
-			m_pColorManager->ToggleClutMode();
-			m_pWorkThreadInterface->PostRefresh( lParam );
-            break;
-
-        case IDD_TOGGLE_COORD_DISPLAY:
-			Config::SetConfigValueBoolOp( Config::tId::showGridPointCoords, tBoolOp::opToggle );
-			m_pWorkThreadInterface->PostRefresh( lParam );
-            break;
-
         case IDM_ESCAPE:
 			m_pGridWindow->Escape();
             break;
-
-        case IDM_FIT_ZOOM:
-			m_pGridWindow->Fit2Rect( );
-			m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
-			m_pWorkThreadInterface->PostRefresh( lParam );
-            break;
-
-        case IDM_ZOOM_OUT:
-        case IDM_ZOOM_IN:
-            m_pGridWindow->Zoom( wmId == IDM_ZOOM_IN );
-			m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
-			m_pWorkThreadInterface->PostRefresh( lParam );
-            break;
-
-		case IDM_SET_ZOOM:
-            m_pGridWindow->SetFieldSize( PIXEL(CastToShort(lParam)));
-			m_pStatusBar->SetSizeTrackBar( PIXEL(CastToShort(lParam)) );
-			m_pWorkThreadInterface->PostRefresh( lParam );
-            break;
-
-        case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
-            (void)m_pGridWindow->SetFieldSize( PIXEL(CastToShort(lParam)) );
-			m_pWorkThreadInterface->PostRefresh( lParam );
-            break;
-
-        case IDM_TOGGLE_SIMU_MODE:
-			ProcessCommand( IDM_STOP, 0 );
-			m_pWorkThreadInterface->PostSetSimulationMode( tBoolOp::opToggle );
-            break;
-
-        case IDM_SET_SIMU_MODE:
-			ProcessCommand( IDM_STOP, 0 );
-			m_pWorkThreadInterface->PostSetSimulationMode( static_cast<tBoolOp>(lParam) );
-            break;
-
-		case IDM_SET_POI:
-			m_pWorkThreadInterface->PostSetPOI( UnpackFromLParam(lParam) );
-			break;
 
 		default:
 			assert( false );
