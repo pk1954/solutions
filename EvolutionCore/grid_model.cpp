@@ -73,6 +73,7 @@ Grid::Grid( )
 	  m_emptyNeighborSlots( ),
 	  m_occupiedNeighborSlots( ),
 	  m_pDisplayList( nullptr ),
+	  m_gpRun( GP_NULL ),     
 	  m_gpNext( GP_NULL ),     
 	  m_gpTarget( GP_NULL ),     
 	  m_gpPartner( GP_NULL ),    
@@ -147,7 +148,8 @@ void Grid::ResetGrid( )
 void Grid::displayAndWait( )
 {
 	m_pObservers->Notify( true );
-	m_pEventPOI->Wait( );  // wait for user input to continue
+	m_pEventPOI->Wait( );                // wait for user input to continue
+	m_bPOI = GridPOI::IsPoi( m_gpRun );  // POI may have changed in the meantime
 }
 
 void Grid::handleBaseConsumption( GridField & gfRun )
@@ -169,12 +171,12 @@ void Grid::handleBaseConsumption( GridField & gfRun )
 	}
 }
 
-void Grid::inspectNeighborHood( GridPoint const gpRun )
+void Grid::inspectNeighborHood( )
 {
 	m_emptyNeighborSlots.Clear( );
 	m_occupiedNeighborSlots.Clear( );
 
-	for ( auto gp: GridDimensions::GetNeighbors( gpRun ) )
+	for ( auto gp: GridDimensions::GetNeighbors( m_gpRun ) )
 	{
 		(IsAlive(gp) ? m_occupiedNeighborSlots : m_emptyNeighborSlots).AddToList( gp );
 	}
@@ -385,14 +387,15 @@ void Grid::actionUndefined( GridField & gfRun )
 
 GridPoint Grid::ComputeNextGeneration( GridPoint const gpRun )
 {
-	GridField & gfRun = getGridField( gpRun );
+	m_gpRun = gpRun;
+	GridField & gfRun = getGridField( m_gpRun );
 	assert( gfRun.IsAlive( ) );
 
-	m_bPOI = GridPOI::IsPoi( gpRun );
+	m_bPOI = GridPOI::IsPoi( m_gpRun );
 
 	if ( m_bPOI )
 	{
-		printGridPoint( L"*** start processing POI: ", gpRun );
+		printGridPoint( L"*** start processing POI: ", m_gpRun );
 	}
 
 	handleBaseConsumption( gfRun );
@@ -403,7 +406,7 @@ GridPoint Grid::ComputeNextGeneration( GridPoint const gpRun )
 	}
 	else
 	{
-		inspectNeighborHood( gpRun );
+		inspectNeighborHood( );
 		m_action = decideOnAction( gfRun );
 	}
 

@@ -245,7 +245,7 @@ private:
 	void actionEat      ( GridField & );
 	void actionUndefined( GridField & );
 
-	void       inspectNeighborHood( GridPoint const );
+	void       inspectNeighborHood( );
 	Action::Id decideOnAction( GridField const & );
 	void 	   handleBaseConsumption( GridField & );
 
@@ -262,6 +262,7 @@ private:
 	GridPoint       m_gpTarget;  // target for move, clone and marry
 	GridPoint       m_gpPartner; // partner for interaction and marry 
 	GridPoint       m_gpNext;
+	GridPoint       m_gpRun;
 	Action::Id      m_action;
 	ENERGY_UNITS    m_enBaseConsumption;
 	bool            m_bPOI;

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "assert.h"
 #include "Resource.h"
+#include "gridPOI.h"
 #include "GridPoint24.h"
 #include "EvolutionTypes.h"
 #include "EvolutionCore.h"
@@ -96,16 +97,6 @@ void WorkThreadInterface::PostRefresh( LPARAM const lParam )
     m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::REFRESH, 0, lParam );
 }
 
-void WorkThreadInterface::PostSetPOI( GridPoint const gp )
-{
-    if ( IsInGrid( gp ) )
-    {
-        if ( m_bTrace )
-            * m_pTraceStream << __func__ << L" " << gp << endl;
-        m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_POI, gp.GetXvalue(), gp.GetYvalue() );
-    }
-}
-
 void WorkThreadInterface::PostDoEdit( GridPoint const gp )
 {
     if ( IsInGrid( gp ) )
@@ -178,6 +169,29 @@ void WorkThreadInterface::PostSetColor( COLORREF const col, tColorObject const o
 	}
 }
 
+void WorkThreadInterface::PostSetPOI( GridPoint const gp )
+{
+	if ( IsInGrid( gp ) )
+	{
+		if ( m_bTrace )
+			* m_pTraceStream << __func__ << L" " << gp << endl;
+
+		GridPOI::SetPoi( gp );
+
+		m_pWorkThread->Continue( );     // trigger worker thread if waiting on POI event
+	}
+}
+
+void WorkThreadInterface::PostGenerationStep( )
+{
+    if ( m_bTrace )
+        * m_pTraceStream << __func__ << endl;
+
+	m_pWorkThread->Continue( );     // trigger worker thread if waiting on POI event
+	
+	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::GENERATION_STEP, 0, 0 );
+}
+
 void WorkThreadInterface::PostRunGenerations( bool const bFirst )
 {
     if ( m_bTrace )
@@ -191,16 +205,6 @@ void WorkThreadInterface::PostRedo( )
         * m_pTraceStream << __func__ << endl;
 
 	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::REDO, 0, 0 );
-}
-
-void WorkThreadInterface::PostGenerationStep( )
-{
-    if ( m_bTrace )
-        * m_pTraceStream << __func__ << endl;
-
-	m_pWorkThread->Continue( );     // trigger worker thread if waiting on POI event
-	
-	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::GENERATION_STEP, 0, 0 );
 }
 
 void WorkThreadInterface::PostRepeatGenerationStep( )

@@ -15,9 +15,9 @@ enum class tEvoCmd : int8_t // enumeration starts after last tGenCmd value
     editSetBrushManipulator,
     editSetBrushRadius,
     editSetBrushIntensity,
-    editDoEdit,
 	editSetPOI,
-	LAST_APP_CMD = editSetPOI
+	editDoEdit,
+	LAST_APP_CMD = editDoEdit
 };
 
 bool IsEditorCommand( tEvoCmd const );

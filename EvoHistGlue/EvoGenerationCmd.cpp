@@ -10,7 +10,7 @@ bool IsEditorCommand( tEvoCmd const cmd )
 {
 	static_assert( (int)tEvoCmd::LAST_APP_CMD < GenerationCmd::MAX_APP_CMD, "Too many tEvoCmd values" );
 
-	return ( tEvoCmd::setSimulationMode <= cmd ) && ( cmd <= tEvoCmd::editSetPOI );
+	return ( tEvoCmd::setSimulationMode <= cmd ) && ( cmd <= tEvoCmd::LAST_APP_CMD );
 }
 
 wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
