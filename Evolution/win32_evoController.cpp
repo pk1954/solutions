@@ -7,6 +7,7 @@
 #include "BoolOp.h"
 #include "config.h"
 #include "win32_script.h"
+#include "win32_stopwatch.h"
 #include "win32_workThreadInterface.h"
 #include "win32_ViewCollection.h"
 #include "win32_winManager.h"
@@ -25,6 +26,7 @@ EvoController::EvoController() :
 	m_pWorkThreadInterface ( nullptr ),
 	m_pWinManager          ( nullptr ),
     m_pPerformanceWindow   ( nullptr ),
+	m_pCoreObservers       ( nullptr ),
 	m_pColorManager        ( nullptr ),
 	m_pStatusBar           ( nullptr ),
 	m_pGridWindow          ( nullptr ),
@@ -37,6 +39,7 @@ EvoController::~EvoController( )
     m_pTraceStream         = nullptr;
 	m_pWorkThreadInterface = nullptr;
 	m_pWinManager          = nullptr;
+	m_pCoreObservers       = nullptr;
 	m_pColorManager        = nullptr;
 	m_pPerformanceWindow   = nullptr;
     m_pStatusBar           = nullptr;
@@ -81,9 +84,11 @@ void EvoController::scriptDialog( )
 	wstring wstrFile = AskForScriptFileName( wstrPath );
 	if ( ! wstrFile.empty( ) )
 	{
+		Stopwatch stopwatch;
+		stopwatch.Start();
 		std::wcout << L"Processing script file " << wstrFile << L"...";
 		Script::ProcessScript( wstrFile );
-		std::wcout << L" done" << std::endl;
+		stopwatch.Stop( L"" );
 	}
 }
 
@@ -156,7 +161,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
 		case IDM_RUN:
-			m_pWorkThreadInterface->PostSetSimulationMode( tBoolOp::opTrue );
+			m_pEditorWindow->SetSimulationMode( true );
 			m_pWorkThreadInterface->PostRunGenerations( true );
 			m_pAppMenu->RunMode( TRUE );
 			break;
@@ -167,13 +172,13 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			break;
 
 		case IDM_RUN_STOP:
-			ProcessCommand( m_pWorkThreadInterface->IsRunning() ? IDM_STOP : IDM_RUN, 0 );
+			ProcessCommand( m_pWorkThreadInterface->IsRunning() ? IDM_STOP : IDM_RUN );
 			break;
 
 		case IDM_HIST_BUFFER_FULL:
 			std::wcout << L"History buffer is full" << std::endl;
 			(void)MessageBeep( MB_ICONWARNING );
-			ProcessCommand( IDM_STOP, 0 );
+			ProcessCommand( IDM_STOP );
 			break;
 
         case IDM_SOFT_RESET:
@@ -196,14 +201,13 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			m_pWorkThreadInterface->PostGotoDeath( UnpackFromLParam(lParam) );
 			break;
 
-		case IDM_TOGGLE_SIMU_MODE:
-			ProcessCommand( IDM_STOP, 0 );
-			m_pWorkThreadInterface->PostSetSimulationMode( tBoolOp::opToggle );
+		case IDM_EDIT_MODE:
+			ProcessCommand( IDM_STOP );
+			m_pEditorWindow->SetSimulationMode( false );
 			break;
 
-		case IDM_SET_SIMU_MODE:
-			ProcessCommand( IDM_STOP, 0 );
-			m_pWorkThreadInterface->PostSetSimulationMode( static_cast<tBoolOp>(lParam) );
+		case IDM_SIMU_MODE:
+			m_pEditorWindow->SetSimulationMode( true );
 			break;
 
 		case IDM_SET_POI:

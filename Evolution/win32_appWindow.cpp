@@ -319,10 +319,10 @@ void AppWindow::Start(  )
 
 	m_pStatusBar->ClearStatusLine( );
 	m_pStatusBar->Show( TRUE );
-	m_pEditorWindow->SetSimulationMode( );
+	m_pEditorWindow->SetSimulationMode( false );
 
 	(void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
-	m_pEvoController->ProcessCommand( IDM_SET_SIMU_MODE, static_cast<LPARAM>(tBoolOp::opFalse) );
+	m_pEvoController->ProcessCommand( IDM_EDIT_MODE );
 //	Script::ProcessScript( L"std_script.in" );
 
 	m_bStopped = FALSE;
@@ -447,7 +447,7 @@ LRESULT AppWindow::UserProc
 			{
 			case IDM_SOFT_RESET:
 			case IDM_HISTORY_RESET:
-				m_pEvoController->ProcessCommand( iRes, 0 );
+				m_pEvoController->ProcessCommand( iRes );
 				break;
 			case IDM_HARD_RESET:
 				Stop();

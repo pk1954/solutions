@@ -10,7 +10,7 @@ bool IsEditorCommand( tEvoCmd const cmd )
 {
 	static_assert( (int)tEvoCmd::LAST_APP_CMD < GenerationCmd::MAX_APP_CMD, "Too many tEvoCmd values" );
 
-	return ( tEvoCmd::setSimulationMode <= cmd ) && ( cmd <= tEvoCmd::LAST_APP_CMD );
+	return ( tEvoCmd::FIRST_EDIT_CMD <= cmd ) && ( cmd <= tEvoCmd::LAST_APP_CMD );
 }
 
 wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
@@ -19,7 +19,6 @@ wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
     {
         { tEvoCmd::nextGen,                 L"NEXT"   },
         { tEvoCmd::reset,                   L"RESET"  },  
-        { tEvoCmd::setSimulationMode,       L"SIMU"   },
         { tEvoCmd::editSetBrushMode,        L"MODE"   },
         { tEvoCmd::editSetBrushShape,       L"SHAPE"  },
         { tEvoCmd::editSetBrushManipulator, L"MANIP"  },
@@ -38,7 +37,6 @@ wchar_t const * const GetEvoCommandName( tEvoCmd const cmd )
     {
         { tEvoCmd::nextGen,                 L"tEvoCmd::nextGen" },
         { tEvoCmd::reset,                   L"tGenCmd::reset" },
-        { tEvoCmd::setSimulationMode,       L"tEvoCmd::setSimulationMode"  },
         { tEvoCmd::editSetBrushMode,        L"tEvoCmd::editSetBrushMode" },
         { tEvoCmd::editSetBrushShape,       L"tEvoCmd::editSetBrushShape" },
         { tEvoCmd::editSetBrushManipulator, L"tEvoCmd::editSetBrushManipulator" },

@@ -30,7 +30,6 @@ void Grid::FoodGrowth( )
 			}
 
             rGF.ReduceFertilizer( );
-			return false;
 		}
 	);
 }

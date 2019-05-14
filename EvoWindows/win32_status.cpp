@@ -61,7 +61,7 @@ void StatusBar::Start
 		400_PIXEL, // Size
 		670_PIXEL, // Edit/Simu controls
 		600_PIXEL, // ScriptLine
-		-1_PIXEL  // Stop
+		-1_PIXEL   // Stop
 	};
 
 	PIXEL pixPartWidth = statwidths[0];
@@ -73,20 +73,23 @@ void StatusBar::Start
 
 	(void)SetWindowSubclass( hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this ) ;
 
-	m_pixBorderX      = PIXEL(PIXEL(GetSystemMetrics( SM_CXSIZEFRAME )));
+	m_pixBorderX      = PIXEL(PIXEL(GetSystemMetrics( SM_CXSIZEFRAME ))) + 10_PIXEL;
 	m_pixBorderY      = PIXEL(PIXEL(GetSystemMetrics( SM_CYSIZEFRAME )));
 	m_pixClientHeight = GetHeight( ) - m_pixBorderY;
 
-	m_pixPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_pixBorderX + 10_PIXEL;
-	createModeControl( );
+	m_pixPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_pixBorderX;
+	(void)createButton( SZ_EDIT_MODE, (HMENU)IDM_EDIT_MODE, BS_PUSHBUTTON );  
 
-	m_pixPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_pixBorderX + 10_PIXEL;
+	m_pixPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_pixBorderX;
+	(void)createButton( SZ_SIMU_MODE, (HMENU)IDM_SIMU_MODE, BS_PUSHBUTTON );  
+
+	m_pixPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_pixBorderX;
 	createSizeControl( );
 
-	m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX + 10_PIXEL;
+	m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX;
 	createSimulationControl( );
 
-	m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX + 10_PIXEL;
+	m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX;
 	createEditorControl( );
 
 	(void)SendMessage( SB_SETPARTS, sizeof( statwidths ) / sizeof( int ), (LPARAM)( &statwidths ) );
@@ -134,13 +137,16 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
     return DefSubclassProc(hwnd, uMsg, wParam, lParam);
 }
 
-void StatusBar::SetRunMode( BOOL const bMode )
+void StatusBar::SetRunMode( BOOL const bRunMode )
 {
-	SetDlgText( IDM_RUN_STOP, bMode ? SZ_STOP_MODE : SZ_RUN_MODE );
+	SetDlgText( IDM_RUN_STOP, bRunMode ? SZ_STOP_MODE : SZ_RUN_MODE );
 
-	EnableWindow( GetDlgItem( IDM_BACKWARDS        ), ! bMode );
-	EnableWindow( GetDlgItem( IDM_GENERATION       ), ! bMode );
-	EnableWindow( GetDlgItem( IDM_TOGGLE_SIMU_MODE ), ! bMode );
+	EnableWindow( GetDlgItem( IDM_BACKWARDS  ), ! bRunMode );
+	EnableWindow( GetDlgItem( IDM_GENERATION ), ! bRunMode );
+	EnableWindow( GetDlgItem( IDM_SIMU_MODE  ), ! bRunMode );
+
+	if ( bRunMode )
+		SetSimuMode( true );
 }
 
 HWND WINAPI StatusBar::createControl
@@ -166,29 +172,27 @@ HWND WINAPI StatusBar::createControl
         GetModuleHandle( nullptr ),      // instance 
         nullptr                          // no WM_CREATE parameter 
     );
-    m_pixPosX += pixWidth;
-    return hwnd;
+	m_pixPosX += pixWidth;
+	return hwnd;
 }
 
 HWND WINAPI StatusBar::createStaticControl( LPCTSTR lpWindowName )
 {
-    return createControl( WC_STATIC, lpWindowName, 0, nullptr );
+    HWND hwnd = createControl( WC_STATIC, lpWindowName, 0, nullptr );
+	return hwnd;
 }
 
 HWND WINAPI StatusBar::createButton( LPCTSTR const lpWindowName, HMENU const hMenu, DWORD const dwStyle )
 { 
-    return createControl( WC_BUTTON, lpWindowName, dwStyle, hMenu );
+	HWND hwnd =  createControl( WC_BUTTON, lpWindowName, dwStyle, hMenu );
+	return hwnd;
 }
 
 HWND WINAPI StatusBar::createTrackBar( HMENU hMenu )
 { 
-    return createControl( TRACKBAR_CLASS, L"   Trackbar Control   ", WS_TABSTOP | WS_BORDER | TBS_NOTICKS, hMenu );
+	HWND hwnd =  createControl( TRACKBAR_CLASS, L"   Trackbar Control   ", WS_TABSTOP | WS_BORDER | TBS_NOTICKS, hMenu );
+	return hwnd;
 };
-
-void WINAPI StatusBar::createModeControl( )
-{ 
-    (void)createButton( SZ_SIMU_MODE, (HMENU)IDM_TOGGLE_SIMU_MODE, BS_PUSHBUTTON );  
-} 
 
 void WINAPI StatusBar::createSizeControl( )
 { 
@@ -258,22 +262,20 @@ static LONG value2Trackbar( long lX )  // f(x) = 1000 * log2(x)
 
 void StatusBar::SetSimuMode( BOOL const bSimuMode )
 {
-    ShowWindow( GetDlgItem( IDM_BACKWARDS        ), bSimuMode );
     ShowWindow( GetDlgItem( IDM_GENERATION       ), bSimuMode );
     ShowWindow( GetDlgItem( IDM_RUN_STOP         ), bSimuMode );
     ShowWindow( GetDlgItem( IDM_SIMULATION_SPEED ), bSimuMode );
     ShowWindow( GetDlgItem( IDM_MAX_SPEED        ), bSimuMode );
 
+	ShowWindow( GetDlgItem( IDM_SIMU_MODE ), ! bSimuMode );
+	ShowWindow( GetDlgItem( IDM_EDIT_MODE ),   bSimuMode );
+
 	if ( Config::UseHistorySystem( ) )
 	{
+	    ShowWindow( GetDlgItem( IDM_BACKWARDS ),   bSimuMode );
 		ShowWindow( GetDlgItem( IDM_EDIT_UNDO ), ! bSimuMode );
 		ShowWindow( GetDlgItem( IDM_EDIT_REDO ), ! bSimuMode );
 	}
-
-	SetDlgText( IDM_TOGGLE_SIMU_MODE, bSimuMode ? SZ_EDIT_MODE : SZ_SIMU_MODE );
-
-	if ( ! bSimuMode )
-		SetRunMode( FALSE );
 }
 
 PIXEL StatusBar::GetHeight( ) const

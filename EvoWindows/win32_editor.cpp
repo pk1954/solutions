@@ -133,16 +133,14 @@ void EditorWindow::updateEditControls( ) // Set state of all window widgets acco
 	m_pDspOptWindow->UpdateDspOptionsControls( m_pCore->GetBrushMode() );
 }
 
-void EditorWindow::SetSimulationMode( )  	// adjust window configuration according to simulation or edit mode
+void EditorWindow::SetSimulationMode( bool const bSimulationMode )  	// adjust window configuration according to simulation or edit mode
 {
-	bool bSimulationMode { m_pCore->GetSimulationMode( ) };
-
 	m_pStatusBar->SetSimuMode( bSimulationMode );
 
 	if ( bSimulationMode )
 		sendClick( IDM_MOVE );
-
-//	Show( ! bSimulationMode );
+	else
+		m_pStatusBar->SetRunMode( FALSE );
 
 	PostCommand2Application( IDM_SHOW_PERF_WINDOW, static_cast<LPARAM>(bSimulationMode) );
 }
@@ -220,7 +218,7 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 
 	case WM_ACTIVATE:
 		if ( LOWORD( wParam ) == WA_CLICKACTIVE )  
-			PostCommand2Application( IDM_SET_SIMU_MODE, static_cast<LPARAM>(tBoolOp::opFalse) );
+			PostCommand2Application( IDM_EDIT_MODE, 0 );
 		return FALSE;
 
     case WM_COMMAND:

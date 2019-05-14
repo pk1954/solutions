@@ -120,16 +120,16 @@ void DrawFrame::DoPaint( EvolutionCore const * pCore )
 		GridRect const rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hwnd ) ) );
 		drawIndividuals( pCore, rcGrid );
 		drawText( pCore, rcGrid );
-		if ( m_pShapeHighlight != nullptr )
-		{
-			HighlightShape( m_pShapeHighlight, m_gpHighlight );
-			GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( pCore, m_gpHighlight );
-			if ( gpReferenced.IsNotNull() )
-			{
-				Shape const & shapeReferenced = m_gridPointShape->GetIndividualShape().GetLeftColumn().GetIdentifierShape();
-				HighlightShape( & shapeReferenced, gpReferenced );
-			}
-		}
+		//if ( m_pShapeHighlight != nullptr )
+		//{
+		//	HighlightShape( m_pShapeHighlight, m_gpHighlight );
+		//	GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( pCore, m_gpHighlight );
+		//	if ( gpReferenced.IsNotNull() )
+		//	{
+		//		Shape const & shapeReferenced = m_gridPointShape->GetIndividualShape().GetLeftColumn().GetIdentifierShape();
+		//		HighlightShape( & shapeReferenced, gpReferenced );
+		//	}
+		//}
 	}
 }
 
@@ -145,7 +145,6 @@ void DrawFrame::drawBackground( )
 			DWORD      const dwColor { getBackgroundColor( index ) };
 			PixelPoint const pnt     { m_pPixelCoordinates->Grid2PixelPosCenter( gp ) };
 			m_pGraphics->AddBackGround( pnt, dwColor, m_fPxSize );
-			return false;
 		},
 		m_pGraphics->GetStripMode() // if strip mode add borders to grid
 	);
@@ -210,10 +209,7 @@ void DrawFrame::drawText( EvolutionCore const * const pCore, GridRect const & re
 	( 
 		[&](GridPoint const gp)
 		{
-            if ( pCore->IsAlive( gp ) )
-            {
-				m_gridPointShape->Draw( pCore, gp );
-            }
+			m_gridPointShape->Draw( pCore, gp );
 			return false;
 		},
 		rect

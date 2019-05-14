@@ -13,8 +13,7 @@
 #include "EvolutionCoreImpl.h"
 
 EvolutionCoreImpl::EvolutionCoreImpl( ) :
-	m_brush( & m_grid ),
-	m_bSimulationMode( false )
+	m_brush( & m_grid )
 { 
 	ResetAll( );
 };
@@ -25,7 +24,6 @@ void EvolutionCoreImpl::ResetAll( )
 {
     m_grid.ResetGrid( );
 	m_brush.Reset( );
-	m_bSimulationMode = false;
 	GridPOI::ClearPoi( );
 }
 

@@ -37,7 +37,7 @@ public:
 
     void PostDoEdit( GridPoint const );
     void PostSetPOI( GridPoint const );
-    void PostSetSimulationMode( tBoolOp const );
+    void PostSetSimulationMode( bool const );
     void PostSetBrushMode( tBrushMode const );
     void PostSetBrushShape( tShape );
 	void PostSetBrushManipulator( tManipulator const );

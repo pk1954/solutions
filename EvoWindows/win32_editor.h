@@ -27,7 +27,7 @@ public:
 	void Stop( );
 
 	void UpdateEditControls( );
-	void SetSimulationMode ( );
+	void SetSimulationMode ( bool const );
 
 private:
     virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );

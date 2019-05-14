@@ -35,10 +35,6 @@ void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 		m_pEvolutionCore->ResetAll( ); 
         break;
 
-	case tEvoCmd::setSimulationMode:
-        m_pEvolutionCore->SetSimulationMode( static_cast<tBoolOp>( param.GetValue() ) );
-        break;
-
 	case tEvoCmd::editSetBrushMode:
         m_pEvolutionCore->SetBrushMode( static_cast<tBrushMode>( param.GetValue() ) );
         break;

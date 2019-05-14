@@ -128,13 +128,6 @@ void WorkThreadInterface::PostSetBrushMode( tBrushMode const mode )
     m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_BRUSH_MODE, static_cast<WPARAM>( mode ), 0 );
 }
 
-void WorkThreadInterface::PostSetSimulationMode( tBoolOp const op )
-{
-    if ( m_bTrace )
-        * m_pTraceStream << __func__ << L" " << GetBoolOpName( op ) << endl;
-    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::SET_SIMULATION_MODE, static_cast<WPARAM>( op ), 0 );
-}
-
 void WorkThreadInterface::PostSetBrushShape( tShape const shape )
 {
     if ( m_bTrace )
@@ -203,7 +196,6 @@ void WorkThreadInterface::PostRedo( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-
 	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::REDO, 0, 0 );
 }
 
@@ -211,7 +203,6 @@ void WorkThreadInterface::PostRepeatGenerationStep( )
 {
     if ( m_bTrace )
         * m_pTraceStream << L"PostGenerationStep" << endl;
-
     m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::REPEAT_GENERATION_STEP, 0, 0 );
 }
 
@@ -219,7 +210,6 @@ void WorkThreadInterface::PostUndo( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-
 	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::UNDO, 0, 0 );
 }
 
@@ -227,7 +217,6 @@ void WorkThreadInterface::PostPrevGeneration( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
-
 	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::PREV_GENERATION, 0, 0 );
 }
 
@@ -235,7 +224,6 @@ void WorkThreadInterface::PostGotoOrigin( GridPoint const gp )
 {
 	if ( m_bTrace )
 		* m_pTraceStream << __func__ << L" " << gp << endl;
-
 	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::GOTO_ORIGIN, gp.GetXvalue(), gp.GetYvalue() );
 }
 
@@ -243,7 +231,6 @@ void WorkThreadInterface::PostGotoDeath( GridPoint const gp )
 {
 	if ( m_bTrace )
 		* m_pTraceStream << __func__ << L" " << gp << endl;
-
 	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::GOTO_DEATH, gp.GetXvalue(), gp.GetYvalue() );
 }
 
@@ -251,7 +238,6 @@ void WorkThreadInterface::PostGotoGeneration( HIST_GENERATION const gen )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << gen << endl;
-
 	postGotoGeneration( gen );
 }
 

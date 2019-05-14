@@ -20,8 +20,6 @@
 
 #define IDM_ABOUT                               130
 #define IDM_EXIT                                131
-#define IDM_TOGGLE_SIMU_MODE                    132
-#define IDM_SET_SIMU_MODE                       133
 #define IDM_ADJUST_MINI_WIN                     137
 #define IDM_HIST_BUFFER_FULL                    138
 #define IDM_REFRESH                             140
@@ -93,23 +91,20 @@
 #define IDM_FOOD_STOCK                          (IDM_EDIT_MODE +  9)
 #define IDM_FERTILIZER                          (IDM_EDIT_MODE + 10)
 #define IDM_DSP_ENV_NOTHING                     (IDM_EDIT_MODE + 11)
-
 #define IDM_UPDATE_EDITOR_CONTROLS              (IDM_EDIT_MODE + 20)
+#define IDM_EDIT_SIZE                           (IDM_EDIT_MODE + 31)
+#define IDM_EDIT_INTENSITY                      (IDM_EDIT_MODE + 32)
+#define IDM_EDIT_UNDO                           (IDM_EDIT_MODE + 33)
+#define IDM_EDIT_REDO                           (IDM_EDIT_MODE + 34)
 
-#define IDM_EDIT_PROPERTY_BASE                  700
-#define IDM_EDIT_SIZE                           (IDM_EDIT_PROPERTY_BASE + 1)
-#define IDM_EDIT_INTENSITY                      (IDM_EDIT_PROPERTY_BASE + 2)
-#define IDM_EDIT_UNDO                           (IDM_EDIT_PROPERTY_BASE + 3)
-#define IDM_EDIT_REDO                           (IDM_EDIT_PROPERTY_BASE + 4)
-
-#define IDM_SIMULATION_MODE                     800
-#define IDM_GENERATION                          (IDM_SIMULATION_MODE +  1)
-#define IDM_BACKWARDS                           (IDM_SIMULATION_MODE +  2)
-#define IDM_RUN                                 (IDM_SIMULATION_MODE +  3)
-#define IDM_STOP                                (IDM_SIMULATION_MODE +  4)
-#define IDM_SIMULATION_SPEED                    (IDM_SIMULATION_MODE +  5)
-#define IDM_MAX_SPEED                           (IDM_SIMULATION_MODE +  6)
-#define IDM_RUN_STOP                            (IDM_SIMULATION_MODE +  7)
+#define IDM_SIMU_MODE                           800
+#define IDM_GENERATION                          (IDM_SIMU_MODE +  1)
+#define IDM_BACKWARDS                           (IDM_SIMU_MODE +  2)
+#define IDM_RUN                                 (IDM_SIMU_MODE +  3)
+#define IDM_STOP                                (IDM_SIMU_MODE +  4)
+#define IDM_SIMULATION_SPEED                    (IDM_SIMU_MODE +  5)
+#define IDM_MAX_SPEED                           (IDM_SIMU_MODE +  6)
+#define IDM_RUN_STOP                            (IDM_SIMU_MODE +  7)
 
 #define IDM_ZOOM_MODE                           850
 #define IDM_FIT_ZOOM                            (IDM_ZOOM_MODE + 1)

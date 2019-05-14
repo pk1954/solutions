@@ -35,7 +35,6 @@ public:
     virtual tManipulator    const GetBrushManipulator     ( ) const = 0;
     virtual GRID_COORD      const GetBrushSize            ( ) const = 0;
     virtual tBrushMode      const GetBrushMode            ( ) const = 0;
-	virtual bool            const GetSimulationMode       ( ) const = 0;
 	virtual BYTES           const GetGridHeapSize         ( ) const = 0;
 
 	virtual tDisplayMode    const GetDisplayMode ( GridPoint const ) const = 0;
@@ -68,7 +67,6 @@ public:
 
     virtual void Compute            ( ) = 0;
     virtual void ResetAll           ( ) = 0;
-    virtual void SetSimulationMode  ( tBoolOp      const ) = 0;
     virtual void SetBrushManipulator( tManipulator const ) = 0;
     virtual void SetBrushShape      ( tShape       const ) = 0;
     virtual void SetBrushRadius     ( GRID_COORD   const ) = 0;

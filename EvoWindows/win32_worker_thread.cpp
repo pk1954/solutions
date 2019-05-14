@@ -197,11 +197,6 @@ void WorkThread::dispatch( MSG const msg  )
 		editorCommand( tEvoCmd::editSetPOI, GridPoint24( CastToUnsignedInt(msg.wParam), CastToUnsignedInt(msg.lParam) ) );
 		break;
 
-	case WorkerThreadMessage::Id::SET_SIMULATION_MODE:
-		if ( editorCommand( tEvoCmd::setSimulationMode, msg.wParam ) )
-			m_pEditorWindow->SetSimulationMode( );
-		break;
-
 	case WorkerThreadMessage::Id::SET_STRATEGY_COLOR:
 		m_pColorManager->SetColor( static_cast<COLORREF>(msg.lParam), tColorObject::individual, static_cast<Strategy::Id>(msg.wParam) );
 		break;

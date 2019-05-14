@@ -1,8 +1,6 @@
 // Evolution.cpp
 //
 
-//lint -esym( 766, Evolution\Resource.h )    header file not used. lint is wrong here
-
 #include "stdafx.h"
 #include "commctrl.h"
 #include "win32_appWindow.h"

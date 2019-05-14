@@ -9,7 +9,6 @@ enum class tEvoCmd : int8_t // enumeration starts after last tGenCmd value
 {
 	nextGen = static_cast<int8_t>(tGenCmd::FIRST_APP_CMD),
     reset,
-	setSimulationMode,   // simulation mode / edit mode
     editSetBrushMode,
     editSetBrushShape,
     editSetBrushManipulator,
@@ -17,7 +16,8 @@ enum class tEvoCmd : int8_t // enumeration starts after last tGenCmd value
     editSetBrushIntensity,
 	editSetPOI,
 	editDoEdit,
-	LAST_APP_CMD = editDoEdit
+	FIRST_EDIT_CMD = editSetBrushMode,
+	LAST_APP_CMD   = editDoEdit
 };
 
 bool IsEditorCommand( tEvoCmd const );

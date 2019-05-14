@@ -44,8 +44,7 @@ private:
     HWND WINAPI createButton       ( LPCTSTR const, HMENU const, DWORD const  );
     HWND WINAPI createTrackBar     ( HMENU );
 
-    void WINAPI createModeControl ( );
-    void WINAPI createSizeControl ( );
+	void WINAPI createSizeControl ( );
     void WINAPI createSimulationControl( );
     void WINAPI createEditorControl( );
 

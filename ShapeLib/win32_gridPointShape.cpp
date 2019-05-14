@@ -50,11 +50,14 @@ void GridPointShape::Draw
 	GridPoint             const gp
 )
 {
-	PixelPoint const pntGridpointOffset = m_textDisplay.GetOffset( gp );
-	if ( m_shape.IsNotEmpty () )
+	if ( pCore->IsAlive( gp ) )
 	{
-		m_coordShape.Draw( pCore, gp, pntGridpointOffset );
-		m_indivShape.Draw( pCore, gp, pntGridpointOffset );
+		PixelPoint const pntGridpointOffset = m_textDisplay.GetOffset( gp );
+		if ( m_shape.IsNotEmpty () )
+		{
+			m_coordShape.Draw( pCore, gp, pntGridpointOffset );
+			m_indivShape.Draw( pCore, gp, pntGridpointOffset );
+		}
 	}
 }
 

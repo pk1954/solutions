@@ -94,7 +94,6 @@ Grid::Grid( )
     	[&](GridPoint const gp)
 		{
            getGridField( gp ).InitGridFieldStructure( gp );
-		   return false;
 		}
 	); 
 }
@@ -129,7 +128,6 @@ void CheckIndividuals( Grid & grid )
 		{
             if ( grid.IsAlive( gp ) )
                ++ iCount;
-			return false;
 		}
 	);
 
@@ -468,8 +466,8 @@ void Grid::EditSetStrategy
 
 GridPoint const Grid::FindGridPoint
 (
-	GridPointFunc const & func, 
-	GridRect      const & rect
+	GridPointBoolFunc const & func, 
+	GridRect          const & rect
 ) const
 {
 	for ( GRID_COORD y = rect.GetTop();  y <= rect.GetBottom(); ++y )

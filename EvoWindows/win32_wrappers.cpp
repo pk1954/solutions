@@ -51,17 +51,6 @@ public:
 	}
 };
 
-class WrapPostSetSimulationMode : public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        ULONG   const ulOp = script.ScrReadUlong( );
-        tBoolOp const op   = static_cast<tBoolOp>( ulOp );
-        m_pWorkThreadInterface->PostSetSimulationMode( op );
-    }
-};
-
 class WrapPostSetBrushMode : public Script_Functor
 {
 public:
@@ -169,7 +158,6 @@ void DefineWin32WrapperFunctions( WorkThreadInterface * const pWorkThreadInterfa
 	DEF_FUNC( PostBenchmark );
 	DEF_FUNC( PostDoEdit );
 	DEF_FUNC( PostSetPOI );
-	DEF_FUNC( PostSetSimulationMode );
     DEF_FUNC( PostSetBrushMode );
     DEF_FUNC( PostSetBrushShape );
     DEF_FUNC( PostSetBrushIntensity );
@@ -186,7 +174,6 @@ void DefineWin32WrapperFunctions( WorkThreadInterface * const pWorkThreadInterfa
     DEF_ULONG_CONST( IDM_RUN );
     DEF_ULONG_CONST( IDM_STOP );
 
-    DEF_ULONG_CONST( tEvoCmd::setSimulationMode );
     DEF_ULONG_CONST( tEvoCmd::editSetBrushMode );
     DEF_ULONG_CONST( tEvoCmd::editSetBrushShape );
     DEF_ULONG_CONST( tEvoCmd::editSetBrushRadius );

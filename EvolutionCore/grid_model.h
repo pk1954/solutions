@@ -99,7 +99,7 @@ public:
     EVO_GENERATION const GetGenBirth ( GridPoint const gp ) const { return GetGridField( gp ).GetGenBirth ( ); }
     EVO_GENERATION const GetAge      ( GridPoint const gp ) const { return getAge( GetGridField( gp ) ); }
 
-    GridPoint const FindGridPoint( GridPointFunc const &, GridRect const & ) const;
+    GridPoint const FindGridPoint( GridPointBoolFunc const &, GridRect const & ) const;
 	GridPoint const FindGridPointFromId( IND_ID const ) const;
 
 	BYTES const GetGridHeapSize() const;

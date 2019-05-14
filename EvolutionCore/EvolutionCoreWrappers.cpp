@@ -13,8 +13,6 @@
 #include "EvolutionCoreWrapperHelpers.h"
 #include "EvolutionCoreWrappers.h"
 
-//lint -esym( 715, script )  // not referenced
-
 static EvolutionCore    * m_pCore;
 static PixelCoordinates * m_pPixCoords;
 

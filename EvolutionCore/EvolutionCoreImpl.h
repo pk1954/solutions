@@ -41,14 +41,11 @@ public:
 	virtual void SetBrushShape      ( tShape       const shape ) { m_brush.SetShape      ( shape );  }
     virtual void SetBrushRadius     ( GRID_COORD   const rad   ) { m_brush.SetRadius     ( rad   );  }
     virtual void SetBrushIntensity  ( PERCENT      const perc  ) { m_brush.SetIntensity  ( perc  );  }
-    virtual void SetSimulationMode  ( tBoolOp      const op    ) { ApplyOp( m_bSimulationMode, op ); }
     virtual void ModelDoEdit        ( GridPoint    const gp    ) { (m_brush)( gp ); }
 
 	// read access
 
 	virtual void DumpGridPointList( ) const;
-
-	virtual bool const GetSimulationMode( ) const { return m_bSimulationMode; }
 
     virtual EVO_GENERATION  const GetAge        ( GridPoint const gp ) const { return m_grid.GetAge( gp ); }
 
@@ -103,7 +100,6 @@ public:
 private:
 	Grid      m_grid;	
 	GridBrush m_brush;
-	bool	  m_bSimulationMode;
 
     GridField const & getGridField( GridPoint const gp ) const { return m_grid.GetGridField( gp ); }
     Genome    const & getGenome   ( GridPoint const gp ) const { return getGridField( gp ).GetGenome( ); }

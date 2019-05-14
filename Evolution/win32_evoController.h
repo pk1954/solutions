@@ -36,7 +36,7 @@ public:
 		AppMenu             * const
 	);
 
-	void ProcessCommand( WPARAM const, LPARAM const );
+	void ProcessCommand( WPARAM const, LPARAM const = 0 );
 
 private:
 	void scriptDialog( );

@@ -113,7 +113,6 @@ void GridBrush::operator()( GridPoint gpCenter )
 			[&](GridPoint const gp) 
 			{ 
 				(m_func)( gp, m_intensity.GetValue() ); 
-				return false;
 			} 
 		);
 	}
