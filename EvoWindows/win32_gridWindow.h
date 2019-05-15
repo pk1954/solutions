@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "GridPoint.h"
 #include "win32_baseWindow.h"
 
 class EvolutionCore;

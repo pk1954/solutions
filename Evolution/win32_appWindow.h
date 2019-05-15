@@ -10,11 +10,14 @@
 
 // interfaces of various windows
 
+#include "win32_evoHistWindow.h"
+#include "win32_gridWindow.h"
 #include "win32_editor.h"
 #include "win32_displayOptions.h"
 #include "win32_statistics.h"
 #include "win32_historyInfo.h"
 #include "win32_crsrWindow.h"
+#include "win32_performanceWindow.h"
 #include "win32_status.h"
 
 // infrastructure
@@ -23,8 +26,6 @@
 #include "win32_winManager.h"
 #include "win32_focusPoint.h"
 
-class GridWindow;
-class PerformanceWindow;
 class WorkThreadInterface;
 class Script;
 class NextGenFunctor;
@@ -38,7 +39,6 @@ class D3D_driver;
 class EvoModelDataGlue;
 class ViewCollection;
 class EvolutionCore;
-class EvoHistWindow;
 class AppMenu;
 
 class AppWindow : public BaseWindow
@@ -63,21 +63,23 @@ private:
 	Util::Event m_event;
 	BOOL        m_bStopped;  // if true, no grid visible, many functions not available
 
-	FocusPoint       m_FocusPoint;
-	WinManager       m_WinManager;
-	ColorManager     m_ColorManager;
-	StatusBar        m_StatusBar;
-	CrsrWindow       m_CrsrWindow;
-	HistInfoWindow   m_HistInfoWindow;
-    EditorWindow     m_EditorWindow;
-    StatisticsWindow m_Statistics;
-    DspOptWindow     m_DspOptWindow;
+	FocusPoint        m_FocusPoint;
+	WinManager        m_WinManager;
+	ColorManager      m_ColorManager;
+	StatusBar         m_StatusBar;
+	CrsrWindow        m_CrsrWindow;
+	HistInfoWindow    m_HistInfoWindow;
+    EditorWindow      m_EditorWindow;
+    StatisticsWindow  m_Statistics;
+    DspOptWindow      m_DspOptWindow;
+	GridWindow        m_MainGridWindow;
+    GridWindow        m_MiniGridWindow;
+	PerformanceWindow m_PerfWindow;
+
+	EvoHistWindow     m_EvoHistWindow;
 
 	D3D_driver          * m_pD3d_driver;
-	GridWindow          * m_pMainGridWindow;
-    GridWindow          * m_pMiniGridWindow;
     WorkThreadInterface * m_pWorkThreadInterface;
-    PerformanceWindow   * m_pPerfWindow;
 	EvoController       * m_pEvoController;
     ScriptHook          * m_pScriptHook;
 	GraphicsInterface   * m_pGraphics;
@@ -90,7 +92,6 @@ private:
     // History 
     HistorySystem       * m_pHistorySystem;
 	EvoHistorySysGlue   * m_pEvoHistGlue;
-    EvoHistWindow       * m_pEvoHistWindow;
 
     std::wofstream m_traceStream;
 };

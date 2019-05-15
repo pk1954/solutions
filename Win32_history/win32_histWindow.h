@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "HistoryGeneration.h"
 #include "win32_baseWindow.h"
 
 class EvolutionCore;
