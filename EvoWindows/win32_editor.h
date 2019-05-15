@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "EvolutionTypes.h"
 #include "win32_baseDialog.h"
 
 class WorkThreadInterface;
