@@ -8,31 +8,37 @@
 #include "win32_baseWindow.h"
 #include "win32_event.h"
 
+// interfaces of various windows
+
+#include "win32_historyInfo.h"
+#include "win32_crsrWindow.h"
+#include "win32_status.h"
+
+// infrastructure
+
+#include "win32_colorManager.h"
+#include "win32_winManager.h"
+#include "win32_focusPoint.h"
+
 class GridWindow;
 class PerformanceWindow;
-class StatusBar;
-class CrsrWindow;
-class HistInfoWindow;
 class StatisticsWindow;
 class EditorWindow;
 class DspOptWindow;
-class EvoHistWindow;
 class WorkThreadInterface;
 class Script;
-class FocusPoint;
-class WinManager;
 class NextGenFunctor;
 class ScriptHook;
 class EvoHistorySysGlue;
 class EvoController;
 class HistorySystem;
-class ColorManager;
 class GraphicsInterface;
 class ReadBuffer;
 class D3D_driver;
 class EvoModelDataGlue;
 class ViewCollection;
 class EvolutionCore;
+class EvoHistWindow;
 class AppMenu;
 
 class AppWindow : public BaseWindow
@@ -57,22 +63,23 @@ private:
 	Util::Event m_event;
 	BOOL        m_bStopped;  // if true, no grid visible, many functions not available
 
+	FocusPoint     m_FocusPoint;
+	WinManager     m_WinManager;
+	ColorManager   m_ColorManager;
+	StatusBar      m_StatusBar;
+	CrsrWindow     m_CrsrWindow;
+	HistInfoWindow m_HistInfoWindow;
+
 	D3D_driver          * m_pD3d_driver;
 	GridWindow          * m_pMainGridWindow;
     GridWindow          * m_pMiniGridWindow;
     WorkThreadInterface * m_pWorkThreadInterface;
     PerformanceWindow   * m_pPerfWindow;
     EditorWindow        * m_pEditorWindow;
-    CrsrWindow          * m_pCrsrWindow;
-	HistInfoWindow      * m_pHistInfoWindow;
-    StatusBar           * m_pStatusBar;
     StatisticsWindow    * m_pStatistics;
     DspOptWindow        * m_pDspOptWindow;
-    FocusPoint          * m_pFocusPoint;
-    WinManager          * m_pWinManager;
 	EvoController       * m_pEvoController;
     ScriptHook          * m_pScriptHook;
-	ColorManager        * m_pColorManager;
 	GraphicsInterface   * m_pGraphics;
 	ReadBuffer          * m_pReadBuffer;
 	EvoModelDataGlue    * m_pModelDataWork;

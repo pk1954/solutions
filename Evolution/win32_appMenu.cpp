@@ -7,18 +7,10 @@
 #include "Resource.h"
 #include "GridDimensions.h"
 #include "win32_util.h"
-#include "win32_winManager.h"
-#include "win32_status.h"
 #include "win32_appMenu.h"
 
-AppMenu::AppMenu
-( 
-	HWND const hwndApp,
-	WinManager * const pWinManager,
-	StatusBar  * const pStatusBar
-) :	m_hwndApp    ( hwndApp ),
-	m_pWinManager( pWinManager ),
-	m_pStatusBar ( pStatusBar )
+AppMenu::AppMenu( HWND const hwndApp ) 
+	: m_hwndApp( hwndApp )
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
 
@@ -64,7 +56,4 @@ void AppMenu::RunMode( BOOL const bMode )
 	EnableMenuItem( m_hMenu, IDM_CHANGE_GRID_TYPE, state );
 	EnableMenuItem( m_hMenu, IDM_RUN,              state );
 	EnableMenuItem( m_hMenu, IDM_STOP,             bMode ? MF_ENABLED : MF_GRAYED );
-
-	m_pWinManager->Show( IDM_HIST_WINDOW, BoolOp( ! bMode ) );
-	m_pStatusBar->SetRunMode( bMode );
 }

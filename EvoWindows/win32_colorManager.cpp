@@ -9,11 +9,12 @@
 #include "win32_util.h"
 #include "win32_colorManager.h"
 
-ColorManager::ColorManager( ) :
-	m_bDimmIndividuals( TRUE ),
-	m_colorSelection( RGB(   0, 217, 255) ),
-	m_colorHighlight( RGB( 255, 217,   0) )
+void ColorManager::Start( )
 {
+	m_bDimmIndividuals = TRUE;
+	m_colorSelection = RGB(   0, 217, 255 );
+	m_colorHighlight = RGB( 255, 217,   0 );
+
 	CLUT_INDEX clutSize { Config::GetConfigValue( Config::tId::stdCapacity ) };
 	for ( auto & strategy : m_aClutStrat )
 		strategy.Allocate( clutSize );

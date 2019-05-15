@@ -199,11 +199,15 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			SetSimulationMode( true );
 			m_pWorkThreadInterface->PostRunGenerations( true );
 			m_pAppMenu->RunMode( TRUE );
+			m_pWinManager->Show( IDM_HIST_WINDOW, tBoolOp::opFalse );
+			m_pStatusBar->SetRunMode( TRUE );
 			break;
 
 		case IDM_STOP:
             m_pWorkThreadInterface->PostStopComputation( );
 			m_pAppMenu->RunMode( FALSE );
+			m_pWinManager->Show( IDM_HIST_WINDOW, tBoolOp::opTrue );
+			m_pStatusBar->SetRunMode( FALSE );
 			break;
 
 		case IDM_RUN_STOP:

@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include "GridDimensions.h"
+#include "GridPoint.h"
+#include "EvolutionCore.h"
 #include "HistoryGeneration.h"
 #include "win32_viewCollection.h"
 

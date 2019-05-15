@@ -6,13 +6,10 @@
 
 #include "windef.h"
 
-class WinManager;
-class StatusBar;
-
 class AppMenu
 {
 public:
-	AppMenu( HWND const, WinManager * const, StatusBar * const );
+	AppMenu( HWND const );
 	~AppMenu() {};
 
 	void Start();
@@ -22,8 +19,6 @@ public:
 private:
 	void enableMenues( UINT );
 
-	HMENU        m_hMenu;
-	HWND         m_hwndApp;
-	WinManager * m_pWinManager;
-	StatusBar  * m_pStatusBar;
+	HMENU m_hMenu;
+	HWND  m_hwndApp;
 };
