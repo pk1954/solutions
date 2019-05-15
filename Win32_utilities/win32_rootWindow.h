@@ -92,12 +92,17 @@ public:
         return ::DefWindowProc( m_hwnd, msg, wParam, lParam );
     }
 
-    void CheckRadioButton( int iFirst, int iLast, int iCheck ) const
-    {
-        (void)::CheckRadioButton( m_hwnd, iFirst, iLast, iCheck );
-    }
+	void CheckRadioButton( int iFirst, int iLast, int iCheck ) const
+	{
+		(void)::CheckRadioButton( m_hwnd, iFirst, iLast, iCheck );
+	}
 
-    void Move( PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, BOOL const bRedraw )
+	UINT IsDlgButtonChecked( int iIdButton ) const
+	{
+		return ::IsDlgButtonChecked( m_hwnd, iIdButton );
+	}
+
+	void Move( PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, BOOL const bRedraw )
     {
         (void)::MoveWindow( m_hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw );
     }

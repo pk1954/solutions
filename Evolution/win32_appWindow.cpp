@@ -239,7 +239,8 @@ AppWindow::AppWindow( ) :
 		& m_traceStream, 
 		m_pWorkThreadInterface,
 		m_pCoreObservers,
-		m_pWinManager, 
+		m_pWinManager,
+		m_pEvoHistGlue,
 		m_pPerfWindow, 
 		m_pStatusBar, 
 		m_pMainGridWindow, 
@@ -285,7 +286,7 @@ void AppWindow::Start(  )
 
 	m_pHistInfoWindow->SetHistorySystem( m_pHistorySystem );
 
-	m_pModelDataWork   = m_pEvoHistGlue->Start( m_pHistorySystem, true, m_pHistInfoWindow );  // m_pEvoHistGlue->Stop deletes 
+	m_pModelDataWork   = m_pEvoHistGlue->Start( m_pHistorySystem, m_pHistInfoWindow );  // m_pEvoHistGlue->Stop deletes 
 	pCoreWork          = m_pModelDataWork->GetEvolutionCore();
 	m_pEvoCore4Display = EvolutionCore::CreateCore( );
 
@@ -296,7 +297,7 @@ void AppWindow::Start(  )
     m_pMiniGridWindow->Start( m_hwndApp, m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION, 2_PIXEL );
 	m_pEvoHistWindow ->Start( m_hwndApp, m_pFocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
 	m_pDspOptWindow  ->Start( m_hwndApp, pCoreWork );
-    m_pEditorWindow  ->Start( m_hwndApp, m_pWorkThreadInterface, pCoreWork, m_pDspOptWindow, m_pStatusBar );
+    m_pEditorWindow  ->Start( m_hwndApp, m_pWorkThreadInterface, pCoreWork, m_pDspOptWindow );
 
 	m_pAppMenu            ->Start();
 	m_pFocusPoint         ->Start( m_pEvoHistGlue, pCoreWork );
@@ -319,7 +320,7 @@ void AppWindow::Start(  )
 
 	m_pStatusBar->ClearStatusLine( );
 	m_pStatusBar->Show( TRUE );
-	m_pEditorWindow->SetSimulationMode( false );
+	m_pEvoController->SetSimulationMode( false );
 
 	(void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 	m_pEvoController->ProcessCommand( IDM_EDIT_MODE );

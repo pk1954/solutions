@@ -59,7 +59,6 @@
 #define IDM_PERF_WINDOW                         (IDM_WINDOWS_BASE + 10)
 #define IDM_MAIN_WINDOW                         (IDM_WINDOWS_BASE + 11)
 #define IDM_STATUS_BAR                          (IDM_WINDOWS_BASE + 12)
-#define IDM_SHOW_PERF_WINDOW                    (IDM_WINDOWS_BASE + 13)
 
 #define IDM_MINI_WINDOW_ON                      (IDM_WINDOWS_BASE + 20)
 #define IDM_MINI_WINDOW_OFF                     (IDM_WINDOWS_BASE + 21)

@@ -6,6 +6,7 @@
 #include "Resource.h"
 #include "BoolOp.h"
 #include "config.h"
+#include "EvoHistorySysGlue.h"
 #include "win32_script.h"
 #include "win32_stopwatch.h"
 #include "win32_workThreadInterface.h"
@@ -25,6 +26,7 @@ EvoController::EvoController() :
     m_pTraceStream         ( nullptr ),
 	m_pWorkThreadInterface ( nullptr ),
 	m_pWinManager          ( nullptr ),
+	m_pEvoHistGlue         ( nullptr ),
     m_pPerformanceWindow   ( nullptr ),
 	m_pCoreObservers       ( nullptr ),
 	m_pColorManager        ( nullptr ),
@@ -39,6 +41,7 @@ EvoController::~EvoController( )
     m_pTraceStream         = nullptr;
 	m_pWorkThreadInterface = nullptr;
 	m_pWinManager          = nullptr;
+	m_pEvoHistGlue         = nullptr;
 	m_pCoreObservers       = nullptr;
 	m_pColorManager        = nullptr;
 	m_pPerformanceWindow   = nullptr;
@@ -54,7 +57,8 @@ void EvoController::Start
 	WorkThreadInterface * const pWorkThreadInterface,
 	ViewCollection      * const pCoreObservers,
 	WinManager          * const pWinManager,
-    PerformanceWindow   * const pPerformanceWindow,
+	EvoHistorySysGlue   * const pEvoHistGlue,
+	PerformanceWindow   * const pPerformanceWindow,
 	StatusBar           * const pStatusBar,
 	GridWindow          * const pGridWindow,
 	EditorWindow        * const pEditorWindow,
@@ -66,6 +70,7 @@ void EvoController::Start
 	m_pWorkThreadInterface = pWorkThreadInterface;
 	m_pCoreObservers       = pCoreObservers;
 	m_pWinManager          = pWinManager;
+	m_pEvoHistGlue         = pEvoHistGlue;
     m_pPerformanceWindow   = pPerformanceWindow;
 	m_pStatusBar           = pStatusBar;
 	m_pGridWindow          = pGridWindow;
@@ -90,6 +95,36 @@ void EvoController::scriptDialog( )
 		Script::ProcessScript( wstrFile );
 		stopwatch.Stop( L"" );
 	}
+}
+
+void EvoController::SetSimulationMode( bool const bSimulationMode )  	// adjust window configuration according to simulation or edit mode
+{
+	m_pStatusBar->SetSimuMode( bSimulationMode );
+	m_pEditorWindow->SetSimuMode( bSimulationMode );
+
+	if ( ! bSimulationMode )
+		m_pStatusBar->SetRunMode( FALSE );
+
+	m_pWinManager->Show( IDM_PERF_WINDOW, BoolOp( bSimulationMode ) );
+}
+
+void EvoController::enterEditMode( )
+{
+	HIST_GENERATION genCurrent  = m_pEvoHistGlue->GetCurrentGeneration( );
+	HIST_GENERATION genYoungest = m_pEvoHistGlue->GetYoungestGeneration( );
+	if ( genCurrent < genYoungest )              // in history mode ?
+	{
+		std::wostringstream wBuffer;
+		wBuffer << L"Gen " << ( genCurrent + 1 ) << L" - " << genYoungest << L" will be deleted.";
+		int iRes = MessageBox( nullptr, L"Cut off history?", wBuffer.str( ).c_str( ), MB_OKCANCEL | MB_SYSTEMMODAL );
+		if ( iRes == IDOK ) 
+			m_pEvoHistGlue->EvoClearHistory( genCurrent );  // cut off future generations
+		else 
+			return;            // user answered no, cancel operation
+	}
+
+	ProcessCommand( IDM_STOP );
+	SetSimulationMode( false );
 }
 
 bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
@@ -161,7 +196,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
 		case IDM_RUN:
-			m_pEditorWindow->SetSimulationMode( true );
+			SetSimulationMode( true );
 			m_pWorkThreadInterface->PostRunGenerations( true );
 			m_pAppMenu->RunMode( TRUE );
 			break;
@@ -202,12 +237,11 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			break;
 
 		case IDM_EDIT_MODE:
-			ProcessCommand( IDM_STOP );
-			m_pEditorWindow->SetSimulationMode( false );
+			enterEditMode( );
 			break;
 
 		case IDM_SIMU_MODE:
-			m_pEditorWindow->SetSimulationMode( true );
+			SetSimulationMode( true );
 			break;
 
 		case IDM_SET_POI:
@@ -244,10 +278,6 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 		case IDM_PERF_WINDOW:
 		case IDM_HIST_INFO:
             m_pWinManager->Show( wmId, tBoolOp::opToggle );
-            break;
-
-		case IDM_SHOW_PERF_WINDOW:
-            m_pWinManager->Show( IDM_PERF_WINDOW, BoolOp(static_cast<bool>(lParam)) );
             break;
 
         case IDM_ESCAPE:

@@ -17,8 +17,7 @@ EditorWindow::EditorWindow( )
   : BaseDialog( ),
     m_pCore               ( nullptr ),
     m_pWorkThreadInterface( nullptr ),
-    m_pDspOptWindow       ( nullptr ),
-    m_pStatusBar          ( nullptr )
+    m_pDspOptWindow       ( nullptr )
 { }
 
 void EditorWindow::Start
@@ -26,14 +25,12 @@ void EditorWindow::Start
     HWND                  const hwndParent,
     WorkThreadInterface * const pWorkThreadInterface,
     EvolutionCore       * const pCore,
-    DspOptWindow        * const pDspOptWindow,
-	StatusBar           * const pStatusBar
+    DspOptWindow        * const pDspOptWindow
 )
 {
     m_pWorkThreadInterface = pWorkThreadInterface;
     m_pCore                = pCore;
     m_pDspOptWindow        = pDspOptWindow;
-	m_pStatusBar           = pStatusBar;
 
     StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_EDITOR ) );
 
@@ -48,7 +45,6 @@ void EditorWindow::Stop( )
 	m_pWorkThreadInterface = nullptr;
 	m_pCore                = nullptr;
 	m_pDspOptWindow        = nullptr;
-	m_pStatusBar           = nullptr;
 }
 
 EditorWindow::~EditorWindow( )
@@ -56,7 +52,6 @@ EditorWindow::~EditorWindow( )
     m_pWorkThreadInterface = nullptr;
     m_pCore                = nullptr;
     m_pDspOptWindow        = nullptr;
-    m_pStatusBar           = nullptr;
 }
 
 void EditorWindow::UpdateEditControls( )
@@ -133,16 +128,10 @@ void EditorWindow::updateEditControls( ) // Set state of all window widgets acco
 	m_pDspOptWindow->UpdateDspOptionsControls( m_pCore->GetBrushMode() );
 }
 
-void EditorWindow::SetSimulationMode( bool const bSimulationMode )  	// adjust window configuration according to simulation or edit mode
+void EditorWindow::SetSimuMode( bool const bSimulationMode )
 {
-	m_pStatusBar->SetSimuMode( bSimulationMode );
-
 	if ( bSimulationMode )
 		sendClick( IDM_MOVE );
-	else
-		m_pStatusBar->SetRunMode( FALSE );
-
-	PostCommand2Application( IDM_SHOW_PERF_WINDOW, static_cast<LPARAM>(bSimulationMode) );
 }
 
 void EditorWindow::setBrushMode( WORD const wId ) const

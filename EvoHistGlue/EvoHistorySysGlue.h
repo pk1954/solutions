@@ -27,7 +27,6 @@ public:
 	EvoModelDataGlue * Start
 	( 
 		HistorySystem     * const,
-		bool                const,
 		ObserverInterface * const
 	);
 
@@ -48,6 +47,7 @@ public:
 	HIST_GENERATION GetGenWithIndividual( GridPoint const, bool const ) const; 
 
 	void EvoClearHistory( );
+	void EvoClearHistory( HIST_GENERATION const genFirst ) { return m_pHistorySystem->ClearHistory( genFirst ); }
 
 	EvolutionCore const * GetEvolutionCore( HIST_GENERATION const ) const;
 
@@ -66,7 +66,7 @@ public:
 		return ::IsEditorCommand( static_cast<tEvoCmd>( m_pHistorySystem->GetGenerationCmd( gen ) ) );
 	}
 
-	bool EvoCreateEditorCommand( GenerationCmd const );
+	void EvoCreateEditorCommand( GenerationCmd const );
 
 	static GenerationCmd EvoCmd( tEvoCmd const cmd, Int24 const param )
 	{ 
@@ -76,12 +76,7 @@ public:
 private:
     static GenerationCmd const NEXT_GEN_CMD;
 	
-	EvoModelFactory  * m_pEvoModelFactory;
-    HistorySystem    * m_pHistorySystem;
-	HistAllocThread  * m_pHistAllocThread;
-	bool               m_bAskHistoryCut;
-
-    // private member functions
-
-	bool askHistoryCut( HistorySystem * pHistSys ) const;
+	EvoModelFactory * m_pEvoModelFactory;
+    HistorySystem   * m_pHistorySystem;
+	HistAllocThread * m_pHistAllocThread;
 };

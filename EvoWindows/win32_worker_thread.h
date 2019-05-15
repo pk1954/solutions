@@ -110,14 +110,14 @@ public:
 	}
 
 private:
-	BOOL editorCommand( tEvoCmd const cmd, WPARAM const wParam )
+	void editorCommand( tEvoCmd const cmd, WPARAM const wParam )
 	{
-		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
+		m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
 	}
 
-	BOOL editorCommand( tEvoCmd const cmd, GridPoint24 const gp24 )
+	void editorCommand( tEvoCmd const cmd, GridPoint24 const gp24 )
 	{
-		return m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, gp24 ) );
+		m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, gp24 ) );
 	}
 
 	void gotoGeneration( HIST_GENERATION const );
@@ -133,6 +133,5 @@ private:
 	WorkThreadInterface * m_pWorkThreadInterface;
     HIST_GENERATION       m_genDemanded;
     BOOL                  m_bContinue;
-    INT                   m_iScriptLevel;
 	HWND                  m_hwndApplication;
 };

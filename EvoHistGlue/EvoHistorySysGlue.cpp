@@ -2,9 +2,6 @@
 //
 
 #include "stdafx.h"
-#include <fstream>
-#include <iostream>
-#include <sstream> 
 #include <limits.h>
 #include "config.h"
 #include "win32_rootWindow.h"
@@ -24,19 +21,16 @@ GenerationCmd const EvoHistorySysGlue::NEXT_GEN_CMD = EvoHistorySysGlue::EvoCmd(
 EvoHistorySysGlue::EvoHistorySysGlue( ) :
 	m_pEvoModelFactory( nullptr ),
     m_pHistorySystem  ( nullptr ),
-	m_pHistAllocThread( nullptr ),
-	m_bAskHistoryCut  ( false )
+	m_pHistAllocThread( nullptr )
 {}
 
 EvoModelDataGlue * EvoHistorySysGlue::Start
 (
 	HistorySystem     * const pHistorySystem,
-	bool                const bAskHistoryCut, // true: ask user for history cut, false: cut without asking
 	ObserverInterface * const pObserver
 )
 {
 	m_pHistorySystem   = pHistorySystem;
-	m_bAskHistoryCut   = bAskHistoryCut;
 	m_pEvoModelFactory = new EvoModelFactory( ); //ok
 
 	ModelData * pModelWork = m_pHistorySystem->StartHistorySystem
@@ -110,26 +104,7 @@ EvolutionCore const * EvoHistorySysGlue::GetEvolutionCore( HIST_GENERATION const
 	: (static_cast< EvoModelDataGlue const * >( pModelData ))->GetEvolutionCoreC( );
 }
 
-bool EvoHistorySysGlue::EvoCreateEditorCommand( GenerationCmd cmd ) 
+void EvoHistorySysGlue::EvoCreateEditorCommand( GenerationCmd cmd ) 
 { 
-	if ( 
-		  m_pHistorySystem->IsInHistoryMode( ) &&  // If in history mode,
-          m_bAskHistoryCut &&                      // and asking user is turned on
-	      ! askHistoryCut( m_pHistorySystem )      // ask user, if all future generations should be erased
-	   )
-		return false;  // user answered no, do not erase
-
-	m_pHistorySystem->ClearHistory( GetCurrentGeneration( ) );  // if in history mode: cut off future generations
 	m_pHistorySystem->CreateAppCommand( cmd ); 
-	return true;
-}
-
-bool EvoHistorySysGlue::askHistoryCut( HistorySystem * pHistSys ) const
-{
-    std::wostringstream wBuffer;
-    HIST_GENERATION  genCurrent  = pHistSys->GetCurrentGeneration( );
-    HIST_GENERATION  genYoungest = pHistSys->GetYoungestGeneration( );
-    assert( genCurrent < genYoungest );
-    wBuffer << L"Gen " << ( genCurrent + 1 ) << L" - " << genYoungest << L" will be deleted.";
-    return IDOK == MessageBox( nullptr, L"Cut off history?", wBuffer.str( ).c_str( ), MB_OKCANCEL | MB_SYSTEMMODAL );
 }

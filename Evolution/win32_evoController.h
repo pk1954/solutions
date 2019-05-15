@@ -8,6 +8,7 @@
 class PerformanceWindow;
 class StatusBar;
 class WorkThreadInterface;
+class EvoHistorySysGlue;
 class ViewCollection;
 class WinManager;
 class GridWindow;
@@ -28,6 +29,7 @@ public:
 		WorkThreadInterface * const,
 		ViewCollection      * const,
 		WinManager          * const,
+		EvoHistorySysGlue   * const,
 		PerformanceWindow   * const,
 		StatusBar           * const,
 		GridWindow          * const,
@@ -37,18 +39,20 @@ public:
 	);
 
 	void ProcessCommand( WPARAM const, LPARAM const = 0 );
+	void SetSimulationMode( bool const );
 
 private:
 	void scriptDialog( );
 	bool processUIcommand( int const, LPARAM const );
-
+	void enterEditMode( );
 
 	BOOL                  m_bTrace;
     std::wostream       * m_pTraceStream;
 	WorkThreadInterface * m_pWorkThreadInterface;
 	ViewCollection      * m_pCoreObservers;
 	WinManager          * m_pWinManager;
-    PerformanceWindow   * m_pPerformanceWindow;
+	EvoHistorySysGlue   * m_pEvoHistGlue;
+	PerformanceWindow   * m_pPerformanceWindow;
 	StatusBar           * m_pStatusBar;
 	GridWindow          * m_pGridWindow;
 	EditorWindow        * m_pEditorWindow;

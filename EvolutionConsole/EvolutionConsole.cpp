@@ -58,7 +58,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	DefineCoreWrapperFunctions( pEvolutionCore );
 	DefinePixelCoordinatesWrapperFunctions( pPixCoords );
 
-	pEvoHistGlue->Start( pHistorySystem, false, nullptr );
+	pEvoHistGlue->Start( pHistorySystem, nullptr );
     DefineWin32HistWrapperFunctions( pWorkThreadInterface );
 
 	pWorkThreadInterface->Start( nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, pEvolutionCore, pEvoHistGlue );

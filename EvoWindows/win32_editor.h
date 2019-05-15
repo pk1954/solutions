@@ -21,13 +21,12 @@ public:
 		HWND const, 
 		WorkThreadInterface * const, 
 		EvolutionCore       * const, 
-		DspOptWindow        * const, 
-		StatusBar           * const
+		DspOptWindow        * const
 	);
 	void Stop( );
 
 	void UpdateEditControls( );
-	void SetSimulationMode ( bool const );
+	void SetSimuMode( bool const );
 
 private:
     virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
@@ -43,5 +42,4 @@ private:
 	EvolutionCore       * m_pCore;
     WorkThreadInterface * m_pWorkThreadInterface;
     DspOptWindow        * m_pDspOptWindow;
-	StatusBar           * m_pStatusBar;
 };
