@@ -22,16 +22,22 @@
 
 // infrastructure
 
+#include "win32_readBuffer.h"
 #include "win32_colorManager.h"
 #include "win32_winManager.h"
 #include "win32_focusPoint.h"
+#include "EvoHistorySysGlue.h"
+#include "GDI_driver.h"
+#include "D3D_driver.h"
+
+// application
+
+#include "win32_evoController.h"
 
 class WorkThreadInterface;
 class Script;
 class NextGenFunctor;
 class ScriptHook;
-class EvoHistorySysGlue;
-class EvoController;
 class HistorySystem;
 class GraphicsInterface;
 class ReadBuffer;
@@ -75,23 +81,22 @@ private:
 	GridWindow        m_MainGridWindow;
     GridWindow        m_MiniGridWindow;
 	PerformanceWindow m_PerfWindow;
-
 	EvoHistWindow     m_EvoHistWindow;
+	EvoController     m_EvoController;
+	EvoHistorySysGlue m_EvoHistGlue;
+	ViewCollection    m_CoreObservers;
+	D3D_driver        m_D3d_driver;
+	ReadBuffer        m_ReadBuffer;
 
-	D3D_driver          * m_pD3d_driver;
     WorkThreadInterface * m_pWorkThreadInterface;
-	EvoController       * m_pEvoController;
     ScriptHook          * m_pScriptHook;
 	GraphicsInterface   * m_pGraphics;
-	ReadBuffer          * m_pReadBuffer;
 	EvoModelDataGlue    * m_pModelDataWork;
-	ViewCollection      * m_pCoreObservers;
 	EvolutionCore       * m_pEvoCore4Display;
 	AppMenu             * m_pAppMenu;
     
     // History 
     HistorySystem       * m_pHistorySystem;
-	EvoHistorySysGlue   * m_pEvoHistGlue;
 
     std::wofstream m_traceStream;
 };

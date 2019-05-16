@@ -11,8 +11,8 @@
 class ReadBuffer : public ObserverInterface
 {
 public:
-	ReadBuffer( ObserverInterface * pObservers ) : 
-		m_pObservers( pObservers ),
+	ReadBuffer( ) : 
+		m_pObservers( nullptr ),
 		m_pCoreWork( nullptr ),
 		m_pCore4Display( nullptr )
 	{
@@ -23,10 +23,12 @@ public:
 
 	void Initialize
 	(
+		ObserverInterface   * pObservers,
 		EvolutionCore const * pCoreWork, 
 		EvolutionCore       * pCore4Display 
 	)
 	{
+		m_pObservers    = pObservers;
 		m_pCoreWork     = pCoreWork;
 		m_pCore4Display = pCore4Display;
 	}
