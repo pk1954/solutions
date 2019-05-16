@@ -51,10 +51,11 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	BOOL                  const bHexagonMode         = (iNrOfNeighbors == 6);
 	PixelCoordinates    * const pPixCoords           = new PixelCoordinates( FIELDSIZE, bHexagonMode );
 	EvoHistorySysGlue   * const pEvoHistGlue         = new EvoHistorySysGlue( );
-    WorkThreadInterface * const pWorkThreadInterface = new WorkThreadInterface( & m_traceStream );
+    WorkThreadInterface * const pWorkThreadInterface = new WorkThreadInterface( );
     HistorySystem       * const pHistorySystem       = HistorySystem::CreateHistorySystem( );
 	EvolutionCore       * const pEvolutionCore       = pEvoModelData->GetEvolutionCore( );
 
+	pWorkThreadInterface->Initialize( & m_traceStream );
 	DefineCoreWrapperFunctions( pEvolutionCore );
 	DefinePixelCoordinatesWrapperFunctions( pPixCoords );
 
@@ -65,7 +66,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	DefineWin32WrapperFunctions( pWorkThreadInterface );
 
-    wstring wstrInputFile = L"Test_4.in";
+    wstring wstrInputFile = L"Test_1.in";
 
 	for ( int iCount = 1; iCount < argc; iCount++ )
     {

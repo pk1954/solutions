@@ -9,26 +9,25 @@
 #include "win32_util.h"
 #include "win32_appMenu.h"
 
-AppMenu::AppMenu( HWND const hwndApp ) 
-	: m_hwndApp( hwndApp )
+void AppMenu::Initialize( HWND const hwndApp ) 
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
 
-    SendMessage( m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
-    SendMessage( m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL     ) ) );
+    SendMessage( hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
+    SendMessage( hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL     ) ) );
 
-	Util::SetApplicationTitle( m_hwndApp, IDS_APP_TITLE );
+	Util::SetApplicationTitle( hwndApp, IDS_APP_TITLE );
 
-	SetMenu( m_hwndApp, LoadMenu( GetModuleHandle( nullptr ), MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
+	BOOL bRes = SetMenu( hwndApp, LoadMenu( GetModuleHandle( nullptr ), MAKEINTRESOURCE( IDC_EVOLUTION_MAIN ) ) );
+	assert( bRes );
 
-	m_hMenu = GetMenu( m_hwndApp );
+	m_hMenu = GetMenu( hwndApp );
 }
 
 void AppMenu::enableMenues( UINT state )
 {
-	HMENU hMenuApp = GetMenu( m_hwndApp );
-	EnableMenuItem( hMenuApp, 1, state|MF_BYPOSITION ); 
-	EnableMenuItem( hMenuApp, 2, state|MF_BYPOSITION ); 
+	EnableMenuItem( m_hMenu, 1, state|MF_BYPOSITION ); 
+	EnableMenuItem( m_hMenu, 2, state|MF_BYPOSITION ); 
 }
 
 void AppMenu::Start( )

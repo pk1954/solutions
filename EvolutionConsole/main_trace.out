@@ -1,1 +1,3 @@
-OpenTraceFile  "main_trace.out"
+PostSetBrushMode tBrushMode::randomStrat
+PostPrevGeneration
+PostGotoGeneration  12

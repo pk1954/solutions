@@ -9,7 +9,7 @@
 #include "win32_util.h"
 #include "win32_colorManager.h"
 
-void ColorManager::Start( )
+void ColorManager::Initialize( )
 {
 	m_bDimmIndividuals = TRUE;
 	m_colorSelection = RGB(   0, 217, 255 );

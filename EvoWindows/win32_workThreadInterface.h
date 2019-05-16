@@ -20,10 +20,12 @@ class WorkThread;
 class WorkThreadInterface
 {
 public:
-	explicit WorkThreadInterface( std::wostream * );
+	WorkThreadInterface( );
     ~WorkThreadInterface( );
 
-    void Start
+	void Initialize( std::wostream * );
+
+	void Start
     ( 
 		HWND                const,
 		ColorManager      * const,

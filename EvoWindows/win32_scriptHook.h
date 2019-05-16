@@ -10,7 +10,10 @@ class ScriptHook : public Script_Functor
 {
 public:
 
-    explicit ScriptHook( StatusBar * const pStatusBar ) : m_pStatusBar( pStatusBar ) {};
+	void Initialize( StatusBar* const pStatusBar )
+	{
+		m_pStatusBar = pStatusBar;
+	}
 
     virtual void operator( ) ( Script & script ) const
     {

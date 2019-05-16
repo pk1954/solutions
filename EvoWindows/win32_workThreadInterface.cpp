@@ -17,12 +17,17 @@ using std::wostream;
 using std::wcout;
 using std::endl;
 
-WorkThreadInterface::WorkThreadInterface( wostream * pTraceStream ) :
+WorkThreadInterface::WorkThreadInterface( ) :
 	m_pEvoHistGlue( nullptr ),
-	m_pWorkThread( nullptr ),
-    m_pTraceStream( pTraceStream ),
-    m_bTrace( TRUE )
+	m_pWorkThread ( nullptr ),
+	m_pTraceStream( nullptr ),
+	m_bTrace( TRUE )
 { }
+
+void WorkThreadInterface::Initialize( wostream * pTraceStream ) 
+{ 
+	m_pTraceStream = pTraceStream;
+}
 
 void WorkThreadInterface::Start
 ( 

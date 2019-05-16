@@ -22,19 +22,21 @@
 
 // infrastructure
 
+#include "win32_scriptHook.h"
 #include "win32_readBuffer.h"
 #include "win32_colorManager.h"
 #include "win32_winManager.h"
 #include "win32_focusPoint.h"
+#include "win32_workThreadInterface.h"
 #include "EvoHistorySysGlue.h"
 #include "GDI_driver.h"
 #include "D3D_driver.h"
 
 // application
 
+#include "win32_appMenu.h"
 #include "win32_evoController.h"
 
-class WorkThreadInterface;
 class Script;
 class NextGenFunctor;
 class ScriptHook;
@@ -69,33 +71,31 @@ private:
 	Util::Event m_event;
 	BOOL        m_bStopped;  // if true, no grid visible, many functions not available
 
-	FocusPoint        m_FocusPoint;
-	WinManager        m_WinManager;
-	ColorManager      m_ColorManager;
-	StatusBar         m_StatusBar;
-	CrsrWindow        m_CrsrWindow;
-	HistInfoWindow    m_HistInfoWindow;
-    EditorWindow      m_EditorWindow;
-    StatisticsWindow  m_Statistics;
-    DspOptWindow      m_DspOptWindow;
-	GridWindow        m_MainGridWindow;
-    GridWindow        m_MiniGridWindow;
-	PerformanceWindow m_PerfWindow;
-	EvoHistWindow     m_EvoHistWindow;
-	EvoController     m_EvoController;
-	EvoHistorySysGlue m_EvoHistGlue;
-	ViewCollection    m_CoreObservers;
-	D3D_driver        m_D3d_driver;
-	ReadBuffer        m_ReadBuffer;
+	FocusPoint          m_FocusPoint;
+	WinManager          m_WinManager;
+	ColorManager        m_ColorManager;
+	StatusBar           m_StatusBar;
+	CrsrWindow          m_CrsrWindow;
+	HistInfoWindow      m_HistInfoWindow;
+    EditorWindow        m_EditorWindow;
+    StatisticsWindow    m_Statistics;
+    DspOptWindow        m_DspOptWindow;
+	GridWindow          m_MainGridWindow;
+    GridWindow          m_MiniGridWindow;
+	PerformanceWindow   m_PerfWindow;
+	EvoHistWindow       m_EvoHistWindow;
+	EvoController       m_EvoController;
+	EvoHistorySysGlue   m_EvoHistGlue;
+	ViewCollection      m_CoreObservers;
+	D3D_driver          m_D3d_driver;
+	ReadBuffer          m_ReadBuffer;
+	AppMenu             m_AppMenu;
+	WorkThreadInterface m_WorkThreadInterface;
+    ScriptHook          m_ScriptHook;
 
-    WorkThreadInterface * m_pWorkThreadInterface;
-    ScriptHook          * m_pScriptHook;
 	GraphicsInterface   * m_pGraphics;
 	EvoModelDataGlue    * m_pModelDataWork;
 	EvolutionCore       * m_pEvoCore4Display;
-	AppMenu             * m_pAppMenu;
-    
-    // History 
     HistorySystem       * m_pHistorySystem;
 
     std::wofstream m_traceStream;

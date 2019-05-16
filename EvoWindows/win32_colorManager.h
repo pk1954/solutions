@@ -10,7 +10,7 @@
 class ColorManager
 {
 public:
-	void     Start();
+	void     Initialize();
 	void     ColorDialog( HWND const, tColorObject const, Strategy::Id const = Strategy::Id::empty );
 	COLORREF GetColor( tColorObject const, Strategy::Id const = Strategy::Id::empty, CLUT_INDEX const = STRATEGY_COLOR() );
 	void     SetColor( COLORREF const, tColorObject const, Strategy::Id const = Strategy::Id::empty );

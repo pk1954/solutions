@@ -25,7 +25,6 @@ using namespace std::literals::chrono_literals;
 
 #include "util.h"
 #include "pixelTypes.h"
-#include "win32_workThreadInterface.h"
 #include "ObserverInterface.h"
 
 // scripting and tracing
@@ -36,7 +35,6 @@ using namespace std::literals::chrono_literals;
 #include "script.h"
 #include "UtilityWrappers.h"
 #include "win32_stopwatch.h"
-#include "win32_scriptHook.h"
 #include "win32_wrappers.h"
 #include "win32_editorWrappers.h"
 #include "win32_histWrappers.h"
@@ -48,20 +46,16 @@ using namespace std::literals::chrono_literals;
 
 // application
 
-#include "win32_appMenu.h"
 #include "win32_resetDlg.h"
 #include "win32_appWindow.h"
 
 AppWindow::AppWindow( ) :
     BaseWindow( ),
-    m_pWorkThreadInterface( nullptr ),
 	m_pGraphics( nullptr ),
 	m_pHistorySystem( nullptr ),
 	m_pModelDataWork( nullptr ),
-    m_pScriptHook( nullptr ),
 	m_hwndConsole( nullptr ),
 	m_pEvoCore4Display( nullptr ),
-	m_pAppMenu( nullptr ),
 	m_traceStream( ),
 	m_bStopped( TRUE )
 {
@@ -91,16 +85,16 @@ AppWindow::AppWindow( ) :
     // create window objects
 
 	stopwatch.Start();
-	m_ColorManager.Start( );
-	m_pWorkThreadInterface = new WorkThreadInterface( & m_traceStream ); 
-	m_pAppMenu             = new AppMenu( m_hwndApp );
+	m_ColorManager.Initialize( );
+	m_WorkThreadInterface.Initialize( & m_traceStream ); 
+	m_AppMenu.Initialize( m_hwndApp );
 
 	stopwatch.Stop( L"create window objects" );
 
 	m_MiniGridWindow.Observe( & m_MainGridWindow );  // mini window observes main grid window
 
-	DefineWin32HistWrapperFunctions( m_pWorkThreadInterface );
-	DefineWin32WrapperFunctions( m_pWorkThreadInterface );
+	DefineWin32HistWrapperFunctions( & m_WorkThreadInterface );
+	DefineWin32WrapperFunctions    ( & m_WorkThreadInterface );
 	DefineWin32EditorWrapperFunctions( & m_EditorWindow );
 
     m_StatusBar     .SetRefreshRate( 300ms );
@@ -123,7 +117,7 @@ AppWindow::AppWindow( ) :
 	GridWindow::InitClass
 	( 
 		& m_ReadBuffer, 
-		m_pWorkThreadInterface, 
+		& m_WorkThreadInterface, 
 		& m_FocusPoint, 
 		& m_DspOptWindow, 
 		& m_PerfWindow, 
@@ -147,7 +141,7 @@ AppWindow::AppWindow( ) :
 	m_EvoController.Start
 	( 
 		& m_traceStream, 
-		m_pWorkThreadInterface,
+		& m_WorkThreadInterface,
 		& m_CoreObservers,
 		& m_WinManager,
 		& m_EvoHistGlue,
@@ -156,11 +150,11 @@ AppWindow::AppWindow( ) :
 		& m_MainGridWindow, 
 		& m_EditorWindow, 
 		& m_ColorManager,
-		m_pAppMenu
+		& m_AppMenu
 	);
 
-	m_pScriptHook = new ScriptHook( & m_StatusBar );
-	Script::ScrSetWrapHook( m_pScriptHook );
+	m_ScriptHook.Initialize( & m_StatusBar );
+	Script::ScrSetWrapHook( & m_ScriptHook );
 
 	GridDimensions::DefineGridSize
 	( 
@@ -205,13 +199,13 @@ void AppWindow::Start(  )
 
 	m_MainGridWindow.Start( m_hwndApp, m_pGraphics, WS_CHILD       | WS_CLIPSIBLINGS,             16_PIXEL );
     m_MiniGridWindow.Start( m_hwndApp, m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION, 2_PIXEL );
-	m_EvoHistWindow .Start( m_hwndApp, & m_FocusPoint, m_pHistorySystem, m_pWorkThreadInterface );
+	m_EvoHistWindow .Start( m_hwndApp, & m_FocusPoint, m_pHistorySystem, & m_WorkThreadInterface );
 	m_DspOptWindow  .Start( m_hwndApp, pCoreWork );
-    m_EditorWindow  .Start( m_hwndApp, m_pWorkThreadInterface, pCoreWork, & m_DspOptWindow );
+    m_EditorWindow  .Start( m_hwndApp, & m_WorkThreadInterface, pCoreWork, & m_DspOptWindow );
 
-	m_pAppMenu ->Start();
+	m_AppMenu.Start();
 	m_FocusPoint.Start( & m_EvoHistGlue, pCoreWork );
-	m_pWorkThreadInterface->Start( m_hwndApp, & m_ColorManager, & m_PerfWindow, & m_EditorWindow, & m_event, & m_ReadBuffer, pCoreWork, & m_EvoHistGlue );
+	m_WorkThreadInterface.Start( m_hwndApp, & m_ColorManager, & m_PerfWindow, & m_EditorWindow, & m_event, & m_ReadBuffer, pCoreWork, & m_EvoHistGlue );
 	
     m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_EvoHistWindow .GetWindowHandle(), FALSE, FALSE ); 
     m_WinManager.AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_DspOptWindow  .GetWindowHandle(), TRUE, FALSE );
@@ -248,7 +242,7 @@ void AppWindow::Stop()
 	m_EvoHistWindow .Stop( );
 	m_EditorWindow  .Stop( );
 	m_DspOptWindow  .Stop( );
-	m_pAppMenu->Stop();
+	m_AppMenu       .Stop( );
 
 	m_HistInfoWindow.SetHistorySystem( nullptr );
 
@@ -276,20 +270,12 @@ void AppWindow::Stop()
 
 AppWindow::~AppWindow( )
 {
-	m_pWorkThreadInterface->TerminateThread( );
+	m_WorkThreadInterface.TerminateThread( );
 
 	m_PerfWindow    .TerminateTextWindow();
 	m_CrsrWindow    .TerminateTextWindow();
 	m_Statistics    .TerminateTextWindow();
 	m_HistInfoWindow.TerminateTextWindow();
-
-	delete m_pWorkThreadInterface;
-	delete m_pScriptHook;  
-	delete m_pAppMenu;
-
-	m_pWorkThreadInterface = nullptr;
-	m_pScriptHook	       = nullptr;
-	m_pAppMenu             = nullptr;
 }
 
 LRESULT AppWindow::UserProc
