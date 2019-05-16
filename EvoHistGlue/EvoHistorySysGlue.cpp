@@ -5,10 +5,8 @@
 #include <limits.h>
 #include "config.h"
 #include "win32_rootWindow.h"
-#include "HistAllocThread.h"
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
-#include "EvoModelFactory.h"
 #include "EvolutionCore.h"
 #include "EvolutionTypes.h"
 #include "EvoHistorySysGlue.h"
@@ -19,9 +17,7 @@ class ObserverInterface;
 GenerationCmd const EvoHistorySysGlue::NEXT_GEN_CMD = EvoHistorySysGlue::EvoCmd( tEvoCmd::nextGen, 0 );
 
 EvoHistorySysGlue::EvoHistorySysGlue( ) :
-	m_pEvoModelFactory( nullptr ),
-    m_pHistorySystem  ( nullptr ),
-	m_pHistAllocThread( nullptr )
+    m_pHistorySystem( nullptr )
 {}
 
 EvoModelDataGlue * EvoHistorySysGlue::Start
@@ -30,37 +26,29 @@ EvoModelDataGlue * EvoHistorySysGlue::Start
 	ObserverInterface * const pObserver
 )
 {
-	m_pHistorySystem   = pHistorySystem;
-	m_pEvoModelFactory = new EvoModelFactory( ); //ok
+	m_pHistorySystem = pHistorySystem;
 
 	ModelData * pModelWork = m_pHistorySystem->StartHistorySystem
     (
         Config::GetConfigValue( Config::tId::maxGeneration ),
         Config::GetConfigValue( Config::tId::nrOfHistorySlots ),
 		Util::GetPhysicalMemory( ),
-        m_pEvoModelFactory,
+        & m_EvoModelFactory,
 		pObserver,
 		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( tEvoCmd::reset ), 0 )
     );
 
-	// delegate allocation of history slots to a work thread
-
-	m_pHistAllocThread = new HistAllocThread( m_pHistorySystem, TRUE );  //ok 
+	m_HistAllocThread.Start( m_pHistorySystem, TRUE );   // delegate allocation of history slots to a work thread
 
 	return static_cast< EvoModelDataGlue * >( pModelWork );
 }
 
 void EvoHistorySysGlue::Stop( )
 {
-	m_pHistAllocThread->Terminate();
+	m_HistAllocThread.Terminate();
 	m_pHistorySystem->StopHistorySystem( );
 
-	delete m_pEvoModelFactory;  //ok
-	delete m_pHistAllocThread;  //ok
-
-	m_pEvoModelFactory = nullptr;
-	m_pHistorySystem   = nullptr;
-	m_pHistAllocThread = nullptr;
+	m_pHistorySystem = nullptr;
 }
 
 class FindGridPointFunctor : public GenerationProperty

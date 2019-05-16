@@ -12,13 +12,18 @@ class HistAllocThread: public Util::Thread
 {
 public:
 
-	HistAllocThread::HistAllocThread
+	HistAllocThread::HistAllocThread( )
+	 :	m_pHistorySys( nullptr )
+	{ }
+
+	void HistAllocThread::Start
 	( 
 		HistorySystem const * const pHistSys,
 		BOOL                  const bAsync      
-	) :
-	m_pHistorySys( pHistSys )
+	) 
 	{
+		m_pHistorySys = pHistSys;
+
 		if ( bAsync )
 		{
 			StartThread( L"HistAlloc", true );  

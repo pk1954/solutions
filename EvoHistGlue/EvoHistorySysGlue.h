@@ -8,12 +8,13 @@
 #pragma once
 
 #include "HistorySystem.h"
+#include "HistAllocThread.h"
 #include "EvoModelDataGlue.h"
+#include "EvoModelFactory.h"
 #include "EvoGenerationCmd.h"
 
 class RootWindow;
 class EvoModelFactory;
-class HistAllocThread;
 class EvolutionCore;
 class ObserverInterface;
 
@@ -75,8 +76,9 @@ public:
 
 private:
     static GenerationCmd const NEXT_GEN_CMD;
-	
-	EvoModelFactory * m_pEvoModelFactory;
-    HistorySystem   * m_pHistorySystem;
-	HistAllocThread * m_pHistAllocThread;
+
+	HistAllocThread  m_HistAllocThread;
+	EvoModelFactory  m_EvoModelFactory;
+
+	HistorySystem   * m_pHistorySystem;
 };
