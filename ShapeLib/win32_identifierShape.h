@@ -10,10 +10,6 @@
 class IdentifierShape : public Shape
 {
 public:
-	IdentifierShape( TextDisplay & t ) :
-		Shape( t )
-	{}
-
 	virtual void Draw
 	( 
 		EvolutionCore const * const pCore, 
@@ -26,6 +22,6 @@ public:
 
 	virtual void FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )
 	{
-		m_textDisplay.Buffer() << L"ID: " << pCore->GetId( gp );
+		m_pTextDisplay->Buffer() << L"ID: " << pCore->GetId( gp );
 	}
 };

@@ -8,13 +8,22 @@
 
 using std::wostringstream;
 
-RightColumn::RightColumn( TextDisplay & textDisplay ) :
-	Shape( textDisplay ),
+RightColumn::RightColumn( ) :
+	Shape( ),
 	m_aMemorySlot()
 {
 	for	( MEM_INDEX mem = MEM_INDEX( 0 ); mem < MEM_INDEX(IMEMSIZE_MAX); ++mem )
 	{
-		m_aMemorySlot[mem.GetValue()] = new MemorySlot( textDisplay, mem );
+		m_aMemorySlot[mem.GetValue()] = new MemorySlot( mem );
+	}
+}
+
+void RightColumn::SetTextDisplay( TextDisplay * pTextDisplay )
+{
+	Shape::SetTextDisplay( pTextDisplay );
+	for	( auto & pSlot : m_aMemorySlot )
+	{
+		pSlot->SetTextDisplay( pTextDisplay );
 	}
 }
 
@@ -42,7 +51,7 @@ void RightColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const p
 
 void RightColumn::FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )
 {
-	wostringstream & buffer = m_textDisplay.Buffer();
+	wostringstream & buffer = m_pTextDisplay->Buffer();
 
 	MEM_INDEX const memSize = pCore->GetMemSize( gp );  
 	MEM_INDEX const memUsed = pCore->GetMemUsed( gp ); 

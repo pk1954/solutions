@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "config.h"
+#include "win32_textDisplay.h"
 #include "win32_gridPointShape.h"
 
 // Can be displayed, if at least IndividualShape has space
@@ -52,7 +53,7 @@ void GridPointShape::Draw
 {
 	if ( pCore->IsAlive( gp ) )
 	{
-		PixelPoint const pntGridpointOffset = m_textDisplay.GetOffset( gp );
+		PixelPoint const pntGridpointOffset = m_pTextDisplay->GetOffset( gp );
 		if ( m_shape.IsNotEmpty () )
 		{
 			m_coordShape.Draw( pCore, gp, pntGridpointOffset );
@@ -68,7 +69,7 @@ Shape const * GridPointShape::FindShape
 	PixelPoint            const pnt // client window coordinates
 ) const
 {
-	PixelPoint pntShapeRelative = pnt - m_textDisplay.GetOffset( gp );
+	PixelPoint pntShapeRelative = pnt - m_pTextDisplay->GetOffset( gp );
 
  	Shape const * pShapeRes = m_coordShape.FindShape( pntShapeRelative, gp );
 	if ( pShapeRes != nullptr )

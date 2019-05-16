@@ -12,10 +12,5 @@ class EvolutionCore;
 class InfoShape : public Shape
 {
 public:
-
-	InfoShape( TextDisplay & t ) :
-		Shape( t )
-	{}
-
 	virtual void FillBuffer( EvolutionCore const * const, GridPoint const );
 };

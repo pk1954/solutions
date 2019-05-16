@@ -13,15 +13,15 @@
 #include "gridRect.h"
 #include "win32_util.h"
 #include "win32_clut.h"
+#include "win32_gridPointShape.h"
+#include "win32_textDisplay.h"
 
 class ReadBuffer;
 class EvolutionCore;
 class GraphicsInterface;
 class PixelCoordinates;
-class GridPointShape;
 class ColorManager;
 class DspOptWindow;
-class TextDisplay;
 class Shape;
 
 class DrawFrame
@@ -56,16 +56,16 @@ private:
     DrawFrame & operator= ( DrawFrame const & );  // noncopyable class 
 
 	HWND                m_hwnd;
-    ReadBuffer        * m_pReadBuffer;
+	GridPoint           m_gpHighlight;
+	TextDisplay         m_TextDisplay;
+	GridPointShape      m_GridPointShape;
+	
+	ReadBuffer        * m_pReadBuffer;
     PixelCoordinates  * m_pPixelCoordinates;
     DspOptWindow      * m_pDspOptWindow;
 	ColorManager      * m_pColorManager;  
-
     GraphicsInterface * m_pGraphics;
-	GridPointShape    * m_gridPointShape;
-	TextDisplay       * m_pTextDisplay;
 	Shape const       * m_pShapeHighlight;
-	GridPoint           m_gpHighlight;
 
 	static CLUT_INDEX const MAX_BG_COLOR()
 	{

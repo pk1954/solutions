@@ -10,7 +10,6 @@
 #include "win32_readBuffer.h"
 #include "win32_graphicsInterface.h"
 #include "win32_displayOptions.h"
-#include "win32_gridPointShape.h"
 #include "win32_colorManager.h"
 #include "win32_draw.h"
 
@@ -26,8 +25,8 @@ DrawFrame::DrawFrame( )
 	m_pDspOptWindow    ( nullptr ),
 	m_pColorManager    ( nullptr ),
 	m_pGraphics        ( nullptr ), 
+	m_pShapeHighlight  ( nullptr ), 
 	m_clutBackground   ( ),
-	m_gridPointShape   ( nullptr ),
 	m_gpHighlight      ( GP_NULL )
 { }
 
@@ -47,23 +46,20 @@ void DrawFrame::Start
 	m_pDspOptWindow     = pDspOptWindow;
 	m_pColorManager     = pColorManager;
 	m_pGraphics         = pGraphics;
-	m_pTextDisplay      = new TextDisplay( * m_pGraphics, m_wBuffer, * m_pPixelCoordinates );
-	m_gridPointShape    = new GridPointShape( * m_pTextDisplay );
 	m_pShapeHighlight   = nullptr;
 	m_gpHighlight       = GP_NULL;
+	m_TextDisplay.Start( m_pGraphics, & m_wBuffer, m_pPixelCoordinates );
+	m_GridPointShape.Start( & m_TextDisplay );
 	m_clutBackground.Allocate( MAX_BG_COLOR() );    // default is grey scale lookup table with entries 0 .. 255
 
-	m_gridPointShape->RefreshLayout( m_pReadBuffer->LockReadBuffer( ) );
+	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
+	assert( pCore != nullptr );
+	m_GridPointShape.RefreshLayout( pCore );
 	m_pReadBuffer->ReleaseReadBuffer( );
 }
 
 DrawFrame::~DrawFrame( ) 
 { 
-	delete m_gridPointShape;
-	delete m_pTextDisplay;
-
-	m_gridPointShape = nullptr;
-	m_pTextDisplay = nullptr;
     m_pGraphics = nullptr;
 };
 
@@ -97,7 +93,7 @@ void DrawFrame::ResizeDrawFrame( EvolutionCore const * const pCore )
 	if ( pixFontSize > 16_PIXEL )
 		pixFontSize = 16_PIXEL;
     m_pGraphics->SetFontSize( pixFontSize );
-	m_gridPointShape->RefreshLayout( pCore );
+	m_GridPointShape.RefreshLayout( pCore );
 }
 
 bool DrawFrame::SetHighlightPos( EvolutionCore const * const pCore, PixelPoint const ptCrsr )
@@ -105,7 +101,7 @@ bool DrawFrame::SetHighlightPos( EvolutionCore const * const pCore, PixelPoint c
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
 	m_gpHighlight     = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
-	m_pShapeHighlight = m_gridPointShape->FindShape( pCore, m_gpHighlight, ptCrsr );
+	m_pShapeHighlight = m_GridPointShape.FindShape( pCore, m_gpHighlight, ptCrsr );
 	return ( 
 			  (m_pShapeHighlight != nullptr) && 
 		      ( (pShapeLast != m_pShapeHighlight) || (gpLast != m_gpHighlight) )
@@ -135,7 +131,7 @@ void DrawFrame::DoPaint( EvolutionCore const * pCore )
 		//	GridPoint gpReferenced = m_pShapeHighlight->GetReferencedGridPoint( pCore, m_gpHighlight );
 		//	if ( gpReferenced.IsNotNull() )
 		//	{
-		//		Shape const & shapeReferenced = m_gridPointShape->GetIndividualShape().GetLeftColumn().GetIdentifierShape();
+		//		Shape const & shapeReferenced = m_GridPointShape.GetIndividualShape().GetLeftColumn().GetIdentifierShape();
 		//		HighlightShape( & shapeReferenced, gpReferenced );
 		//	}
 		//}
@@ -169,7 +165,7 @@ void DrawFrame::addPrimitive( GridPoint const gp, COLORREF const color, float co
 
 void DrawFrame::drawIndividuals( EvolutionCore const * const pCore, GridRect const & rect )
 {
-	float const fHalfSizeInd = static_cast<float>( m_gridPointShape->GetIndShapeSize( ).GetValue() );
+	float const fHalfSizeInd = static_cast<float>( m_GridPointShape.GetIndShapeSize( ).GetValue() );
 	float const fPixSize     = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).GetValue() );
 
     Apply2Rect
@@ -218,7 +214,7 @@ void DrawFrame::drawText( EvolutionCore const * const pCore, GridRect const & re
 	( 
 		[&](GridPoint const gp)
 		{
-			m_gridPointShape->Draw( pCore, gp );
+			m_GridPointShape.Draw( pCore, gp );
 			return false;
 		},
 		rect
@@ -251,7 +247,7 @@ void DrawFrame::AddContextMenuEntries( EvolutionCore const * const pCore, HMENU 
 {
 	PixelPoint    const pp     = Util::POINT2PixelPoint( pnt );
 	GridPoint     const gp     = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pp ) );
-	Shape const * const pShape = m_gridPointShape->FindShape( pCore, gp, pp );
+	Shape const * const pShape = m_GridPointShape.FindShape( pCore, gp, pp );
 	if ( pShape )
 		pShape->AddContextMenuEntries( hPopupMenu );
 }

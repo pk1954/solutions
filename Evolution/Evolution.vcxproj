@@ -81,7 +81,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)GDI;$(SolutionDir)D3D;$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Evolution;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_history;$(SolutionDir)EvoHistGlue;$(SolutionDir)EvoWindows;$(SolutionDir)runtimeCPP;C:\Programme\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)GDI;$(SolutionDir)D3D;$(SolutionDir)ShapeLib;$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Evolution;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_history;$(SolutionDir)EvoHistGlue;$(SolutionDir)EvoWindows;$(SolutionDir)runtimeCPP;C:\Programme\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Debug;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>

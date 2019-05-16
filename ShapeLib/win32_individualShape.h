@@ -10,11 +10,12 @@
 class IndividualShape : public Shape
 {
 public:
-	IndividualShape( TextDisplay & t ) :
-		Shape( t ),
-		m_leftColumn( t ),
-		m_rightColumn( t )
-	{}
+	virtual void SetTextDisplay( TextDisplay * pTextDisplay )
+	{
+		Shape::SetTextDisplay( pTextDisplay );
+		m_leftColumn .SetTextDisplay( pTextDisplay );
+		m_rightColumn.SetTextDisplay( pTextDisplay );
+	}
 
 	virtual void          PrepareShape ( PixelPoint const, PixelRectSize const );
 	virtual PixelRectSize MinimalSize  ( EvolutionCore const * const );

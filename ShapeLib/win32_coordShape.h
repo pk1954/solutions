@@ -11,14 +11,10 @@
 class CoordShape : public Shape
 {
 public:
-	CoordShape( TextDisplay & t ) :
-		Shape( t )
-	{}
-
 	void FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )
 	{
 		if ( Config::GetConfigValueBool( Config::tId::showGridPointCoords ) )
-			m_textDisplay.Buffer() << gp;
+			m_pTextDisplay->Buffer() << gp;
 	}
 
 	virtual void AddContextMenuEntries( HMENU const hPopupMenu ) const 

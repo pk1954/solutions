@@ -15,8 +15,8 @@ void Shape::Draw
 {
 	if ( IsNotEmpty() )
 	{
-		m_textDisplay.Clear();
+		m_pTextDisplay->Clear();
 		FillBuffer( pCore, gp );
-		m_textDisplay.DisplayText( m_rect + ppGridPointOffset );
+		m_pTextDisplay->DisplayText( m_rect + ppGridPointOffset );
 	}
 }

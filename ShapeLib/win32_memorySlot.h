@@ -9,12 +9,7 @@
 class MemorySlot : public Shape
 {
 public:
-	MemorySlot
-	( 
-		TextDisplay & textDisplay, 
-		MEM_INDEX const index 
-	) :
-		Shape( textDisplay ),
+	MemorySlot( MEM_INDEX const index ) :
 		m_index( index )
 	{}
 

@@ -8,6 +8,7 @@
 #include "win32_individualShape.h"
 #include "gridPoint.h"
 
+class TextDisplay;
 class PixelCoordinates;
 class EvolutionCore;
 class D3D_driver;
@@ -15,12 +16,13 @@ class D3D_driver;
 class GridPointShape
 {
 public:
-	GridPointShape( TextDisplay & t ) :
-		m_textDisplay( t ),
-		m_shape( t ),
-		m_indivShape( t ),
-		m_coordShape( t )
-	{ }
+	void Start( TextDisplay * pTextDisplay )
+	{
+		m_pTextDisplay = pTextDisplay;
+		m_shape.SetTextDisplay( pTextDisplay );
+		m_coordShape.SetTextDisplay( pTextDisplay );
+		m_indivShape.SetTextDisplay( pTextDisplay );
+	}
 
 	void          Draw         ( EvolutionCore const * const, GridPoint const );
 	Shape const * FindShape    ( EvolutionCore const * const, GridPoint const, PixelPoint const ) const;
@@ -33,7 +35,7 @@ public:
 	}
 
 private:
-	TextDisplay   & m_textDisplay;
+	TextDisplay   * m_pTextDisplay;
 	Shape           m_shape;
 	CoordShape      m_coordShape;
 	IndividualShape m_indivShape;

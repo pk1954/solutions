@@ -13,22 +13,27 @@
 class Shape
 {
 public:
-	Shape( TextDisplay & t ) :
-		m_textDisplay( t ),
+	Shape( ) :
+		m_pTextDisplay( nullptr ),
 		m_rect   ( PixelRect( ) ),
 		m_minSize( PixelRectSize( 0_PIXEL ) )
 	{}
 
+	virtual void SetTextDisplay( TextDisplay * pTextDisplay )
+	{
+		m_pTextDisplay = pTextDisplay;
+	}
+
 	virtual PixelRectSize MinimalSize( EvolutionCore const * const pCore )  
 	{                                     
-		m_textDisplay.Clear();
+		m_pTextDisplay->Clear();
 		FillBuffer( pCore, GP_ZERO );
-		return SetMinSize( m_textDisplay.CalcRectSize( ) );
+		return SetMinSize( m_pTextDisplay->CalcRectSize( ) );
 	}                                     
 
 	PixelRect const GetAbsoluteShapeRect( GridPoint const gp ) const 
 	{
-		return m_rect + m_textDisplay.GetOffset( gp );
+		return m_rect + m_pTextDisplay->GetOffset( gp );
 	}
 
 	PIXEL const GetMinWidth ( ) const { return m_minSize.GetX();  }
@@ -77,7 +82,7 @@ public:
 
 	PIXEL GetFieldSize()
 	{
-		return m_textDisplay.GetFieldSize( );
+		return m_pTextDisplay->GetFieldSize( );
 	}
 
 	bool IsNotEmpty()
@@ -120,7 +125,7 @@ protected:
 
 	virtual void FillBuffer( EvolutionCore const * const, GridPoint const ) { };
 
-	TextDisplay & m_textDisplay;
+	TextDisplay * m_pTextDisplay;
 
 private:
 	PixelRect     m_rect;      // position is relative to GridPointShape

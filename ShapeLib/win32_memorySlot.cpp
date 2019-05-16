@@ -14,7 +14,7 @@ GridPoint MemorySlot::GetReferencedGridPoint( EvolutionCore const * const pCore,
 
 void MemorySlot::FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )
 {
-	wostringstream & buffer = m_textDisplay.Buffer();
+	wostringstream & buffer = m_pTextDisplay->Buffer();
 	IND_ID           indId  = getIndId( pCore, gp );
 
 	buffer << std::setw( 10 );

@@ -10,11 +10,13 @@
 class LeftColumn : public Shape
 {
 public:
-	LeftColumn( TextDisplay & t ) :
-		Shape( t ),
-		m_idShape  ( t ),
-		m_infoShape( t )
-	{ }
+
+	virtual void SetTextDisplay( TextDisplay * pTextDisplay )
+	{
+		Shape::SetTextDisplay( pTextDisplay );
+		m_idShape  .SetTextDisplay( pTextDisplay );
+		m_infoShape.SetTextDisplay( pTextDisplay );
+	}
 
 	virtual PixelRectSize MinimalSize ( EvolutionCore const * const );
 	virtual void          Draw        ( EvolutionCore const * const, GridPoint  const, PixelPoint const );

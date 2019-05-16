@@ -5,6 +5,7 @@
 #pragma once
 
 #include <string.h>
+#include "windows.h"
 #include "BoolOp.h"
 #include "PixelTypes.h"
 

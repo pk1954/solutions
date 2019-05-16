@@ -10,55 +10,62 @@
 class TextDisplay
 {
 public:
-	TextDisplay
-	( 
-		GraphicsInterface   & graphicsInterface, 
-		std::wostringstream & wBuffer,
-		PixelCoordinates    & pixelCoordinates
-	) :
-		m_graphics( graphicsInterface ),
-		m_wBuffer( wBuffer ),
-		m_pixelCoordinates( pixelCoordinates )
+	TextDisplay( )
+    :	m_pGraphics( nullptr ),
+		m_pBuffer( nullptr ),
+		m_pPixelCoordinates( nullptr )
 	{ }
+
+	void Start
+	( 
+		GraphicsInterface   * pGgraphicsInterface, 
+		std::wostringstream * pBuffer,
+		PixelCoordinates    * PpixelCoordinates
+	)
+	{
+		m_pGraphics         = pGgraphicsInterface;
+		m_pBuffer           = pBuffer;
+		m_pPixelCoordinates = PpixelCoordinates;
+	}
 
 	void Clear()
 	{
-		m_wBuffer.str( std::wstring() );
-		m_wBuffer.clear();
+		m_pBuffer->str( std::wstring() );
+		m_pBuffer->clear();
 	}
 
 	std::wostringstream & Buffer() 
 	{
-		return m_wBuffer;
+		return * m_pBuffer;
 	}
 
 	PIXEL GetFieldSize( ) const 
 	{
-		return m_pixelCoordinates.GetFieldSize();
+		return m_pPixelCoordinates->GetFieldSize();
 	}
 
 	PixelPoint GetOffset( GridPoint const gp )
 	{
-		return m_pixelCoordinates.Grid2PixelPos( gp );
+		return m_pPixelCoordinates->Grid2PixelPos( gp );
 	}
 
 	PixelPoint GetCenterOffset( GridPoint const gp )
 	{
-		return m_pixelCoordinates.Grid2PixelPosCenter( gp );
+		return m_pPixelCoordinates->Grid2PixelPosCenter( gp );
 	}
 
 	PixelRectSize CalcRectSize( )
 	{
-		return m_graphics.CalcGraphicsRect( m_wBuffer.str( ) ).GetSize( );
+		return m_pGraphics->CalcGraphicsRect( m_pBuffer->str( ) ).GetSize( );
 	}
 
 	void DisplayText( PixelRect const & rect )
 	{
-		m_graphics.DisplayGraphicsText( rect, m_wBuffer.str( ) );
+		m_pGraphics->DisplayGraphicsText( rect, m_pBuffer->str( ) );
 	}
 
 private:
-    GraphicsInterface   & m_graphics;
-	std::wostringstream & m_wBuffer;
-	PixelCoordinates    & m_pixelCoordinates;
+    GraphicsInterface   * m_pGraphics;
+	std::wostringstream * m_pBuffer;
+	PixelCoordinates    * m_pPixelCoordinates;
 };
