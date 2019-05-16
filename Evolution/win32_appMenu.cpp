@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "WinUser.h"
 #include "Resource.h"
-#include "GridDimensions.h"
 #include "win32_util.h"
 #include "win32_appMenu.h"
 
@@ -30,11 +29,11 @@ void AppMenu::enableMenues( UINT state )
 	EnableMenuItem( m_hMenu, 2, state|MF_BYPOSITION ); 
 }
 
-void AppMenu::Start( )
+void AppMenu::Start( BOOL const bHexMode )
 {
 	enableMenues( MF_ENABLED ); 
 
-	if ( GridDimensions::GetNrOfNeigbors() == 6 )
+	if ( bHexMode )
 		EnableMenuItem( m_hMenu, IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in heaxagon mode
 }
 

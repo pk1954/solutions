@@ -167,6 +167,9 @@ AppWindow::AppWindow( ) :
 void AppWindow::Start(  )
 {
 	EvolutionCore * pCoreWork;
+	BOOL            bHexMode = (GridDimensions::GetNrOfNeigbors() == 6);
+
+	m_AppMenu.Start( bHexMode );
 
 	EvolutionCore::InitClass
 	( 
@@ -181,7 +184,7 @@ void AppWindow::Start(  )
 		m_hwndApp, 
 		GridDimensions::GridWidthVal(), 
 		GridDimensions::GridHeightVal(), 
-		GridDimensions::GetNrOfNeigbors() == 6 
+		bHexMode 
 	);
 
 	m_pGraphics = & m_D3d_driver;
@@ -202,10 +205,18 @@ void AppWindow::Start(  )
 	m_EvoHistWindow .Start( m_hwndApp, & m_FocusPoint, m_pHistorySystem, & m_WorkThreadInterface );
 	m_DspOptWindow  .Start( m_hwndApp, pCoreWork );
     m_EditorWindow  .Start( m_hwndApp, & m_WorkThreadInterface, pCoreWork, & m_DspOptWindow );
-
-	m_AppMenu.Start();
-	m_FocusPoint.Start( & m_EvoHistGlue, pCoreWork );
-	m_WorkThreadInterface.Start( m_hwndApp, & m_ColorManager, & m_PerfWindow, & m_EditorWindow, & m_event, & m_ReadBuffer, pCoreWork, & m_EvoHistGlue );
+	m_FocusPoint    .Start( & m_EvoHistGlue, pCoreWork );
+	m_WorkThreadInterface.Start
+	( 
+		m_hwndApp, 
+		& m_ColorManager, 
+		& m_PerfWindow, 
+		& m_EditorWindow, 
+		& m_event, 
+		& m_ReadBuffer, 
+		pCoreWork, 
+		& m_EvoHistGlue 
+	);
 	
     m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_EvoHistWindow .GetWindowHandle(), FALSE, FALSE ); 
     m_WinManager.AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_DspOptWindow  .GetWindowHandle(), TRUE, FALSE );

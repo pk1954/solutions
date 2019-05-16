@@ -10,7 +10,7 @@ class AppMenu
 {
 public:
 	void Initialize( HWND const );
-	void Start();
+	void Start( BOOL const );
 	void RunMode( BOOL const );
 	void Stop();
 
