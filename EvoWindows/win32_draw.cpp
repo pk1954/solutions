@@ -19,32 +19,41 @@ static COLORREF const CLR_GREY   = RGB( 128, 128, 128 );
 static COLORREF const CLR_WHITE  = RGB( 255, 255, 255 );
 static COLORREF const CLR_YELLOW = RGB( 255, 255,   0 );
 
-DrawFrame::DrawFrame
-( 
-	HWND                const hwnd,
-    ReadBuffer        * const pReadBuffer,
-    PixelCoordinates  * const pPixelCoordinates, 
-	GraphicsInterface * const pGraphics,
-    DspOptWindow      * const pDspOptWindow,
-	ColorManager      * const pColorManager
-) : 
-	m_hwnd             ( hwnd ),
-    m_pReadBuffer      ( pReadBuffer ),
-    m_pPixelCoordinates( pPixelCoordinates ),
-    m_pDspOptWindow    ( pDspOptWindow ),
-	m_pColorManager    ( pColorManager ),
-    m_pGraphics        ( pGraphics ), 
-    m_clutBackground   ( ),
+DrawFrame::DrawFrame( )
+ : 	m_hwnd             ( nullptr ),
+	m_pReadBuffer      ( nullptr ),
+	m_pPixelCoordinates( nullptr ),
+	m_pDspOptWindow    ( nullptr ),
+	m_pColorManager    ( nullptr ),
+	m_pGraphics        ( nullptr ), 
+	m_clutBackground   ( ),
 	m_gridPointShape   ( nullptr ),
 	m_gpHighlight      ( GP_NULL )
-{
-	m_clutBackground.Allocate( MAX_BG_COLOR() );    // default is grey scale lookup table with entries 0 .. 255
-	m_pTextDisplay    = new TextDisplay( * m_pGraphics, m_wBuffer, * m_pPixelCoordinates );
-	m_gridPointShape  = new GridPointShape( * m_pTextDisplay );
-	m_pShapeHighlight = nullptr;
+{ }
 
-	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
-	m_gridPointShape->RefreshLayout( pCore );
+void DrawFrame::Start
+( 
+	HWND                const hwnd,
+	ReadBuffer        * const pReadBuffer,
+	PixelCoordinates  * const pPixelCoordinates, 
+	GraphicsInterface * const pGraphics,
+	DspOptWindow      * const pDspOptWindow,
+	ColorManager      * const pColorManager
+) 
+{
+	m_hwnd              = hwnd;
+	m_pReadBuffer       = pReadBuffer;
+	m_pPixelCoordinates = pPixelCoordinates;
+	m_pDspOptWindow     = pDspOptWindow;
+	m_pColorManager     = pColorManager;
+	m_pGraphics         = pGraphics;
+	m_pTextDisplay      = new TextDisplay( * m_pGraphics, m_wBuffer, * m_pPixelCoordinates );
+	m_gridPointShape    = new GridPointShape( * m_pTextDisplay );
+	m_pShapeHighlight   = nullptr;
+	m_gpHighlight       = GP_NULL;
+	m_clutBackground.Allocate( MAX_BG_COLOR() );    // default is grey scale lookup table with entries 0 .. 255
+
+	m_gridPointShape->RefreshLayout( m_pReadBuffer->LockReadBuffer( ) );
 	m_pReadBuffer->ReleaseReadBuffer( );
 }
 

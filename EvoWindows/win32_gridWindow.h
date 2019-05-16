@@ -4,12 +4,12 @@
 #pragma once
 
 #include "GridPoint.h"
+#include "pixelCoordinates.h"
 #include "win32_baseWindow.h"
+#include "win32_draw.h"
 
 class EvolutionCore;
 class GraphicsInterface;
-class DrawFrame;
-class PixelCoordinates;
 class WorkThreadInterface;
 class DspOptWindow;
 class ReadBuffer;
@@ -65,11 +65,12 @@ private:
     static FocusPoint          * m_pFocusPoint;
 	static ColorManager        * m_pColorManager;
 
+	PixelCoordinates m_PixelCoordinates;   // My own PixelCoordinates
+	DrawFrame        m_DrawFrame;
+
 	GraphicsInterface * m_pGraphics;
-    PixelCoordinates  * m_pPixelCoordinates;   // My own PixelCoordinates
     GridWindow        * m_pGridWindowObserved; // Observed GridWindow (or nullptr)
     ObserverInterface * m_pObserverInterface;
-    DrawFrame         * m_pDrawFrame;
     PixelPoint 	        m_ptLast;	 	   // Last cursor position during selection 
     BOOL                m_bMoveAllowed;    // TRUE: move with mouse is possible
     HMENU               m_hPopupMenu;

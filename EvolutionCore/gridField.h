@@ -39,22 +39,22 @@ public:
 		m_Individual.ResetIndividual( );
 	}
 
-	PERCENT        GetMutRate( )     const { return m_mutRate;  }
-	ENERGY_UNITS   GetFoodStock( )   const { return m_enFoodStock;  }
-	ENERGY_UNITS   GetAppetite( )    const { return ENERGY_UNITS( GetAllele( GeneType::Id::appetite ) );  }
-	ENERGY_UNITS   GetFertility( )   const { return m_enFertility;  }
-    ENERGY_UNITS   GetFertilizer( )  const { return m_enFertilizer; }
-    EVO_GENERATION GetGenBirth( )    const { return m_Individual.GetGenBirth( ); }
-    IND_ID         GetId( )          const { return m_Individual.GetId( ); }
-    tOrigin        GetOrigin( )      const { return m_Individual.GetOrigin( ); }
-    ENERGY_UNITS   GetEnergy( )      const { return m_Individual.GetEnergy( ); }
-    bool           IsDead( )         const { return m_Individual.IsDead( ); }
-    bool           IsAlive( )        const { return m_Individual.IsAlive( ); };
-    bool           IsDefined( )      const { return m_Individual.IsDefined( ); };
-    MEM_INDEX      GetMemSize( )     const { return m_Individual.GetMemSize( ); }
-    MEM_INDEX      GetMemUsed( )     const { return m_Individual.GetMemUsed( ); }
-    Genome const & GetGenome( )      const { return m_Individual.GetGenome( ); }
-    Strategy::Id   GetStrategyId( )  const { return m_Individual.GetStrategyId( ); }
+	PERCENT        GetMutRate( )    const { return m_mutRate;  }
+	ENERGY_UNITS   GetFoodStock( )  const { return m_enFoodStock;  }
+	ENERGY_UNITS   GetAppetite( )   const { return ENERGY_UNITS( GetAllele( GeneType::Id::appetite ) );  }
+	ENERGY_UNITS   GetFertility( )  const { return m_enFertility;  }
+    ENERGY_UNITS   GetFertilizer( ) const { return m_enFertilizer; }
+    EVO_GENERATION GetGenBirth( )   const { return m_Individual.GetGenBirth( ); }
+    IND_ID         GetId( )         const { return m_Individual.GetId( ); }
+    tOrigin        GetOrigin( )     const { return m_Individual.GetOrigin( ); }
+    ENERGY_UNITS   GetEnergy( )     const { return m_Individual.GetEnergy( ); }
+    bool           IsDead( )        const { return m_Individual.IsDead( ); }
+    bool           IsAlive( )       const { return m_Individual.IsAlive( ); };
+    bool           IsDefined( )     const { return m_Individual.IsDefined( ); };
+    MEM_INDEX      GetMemSize( )    const { return m_Individual.GetMemSize( ); }
+    MEM_INDEX      GetMemUsed( )    const { return m_Individual.GetMemUsed( ); }
+    Genome const & GetGenome( )     const { return m_Individual.GetGenome( ); }
+    Strategy::Id   GetStrategyId( ) const { return m_Individual.GetStrategyId( ); }
 
 	short  GetAllele( GeneType::Id const geneType ) const { return GetGenome( ).GetAllele( geneType ); }
 
@@ -65,7 +65,8 @@ public:
     void DecEnergy( ENERGY_UNITS const sDec ) { m_Individual.IncEnergy( - sDec ); }
     void IncEnergy( ENERGY_UNITS const sInc ) { m_Individual.IncEnergy( sInc ); }
 
-	void SetFertilizer( ENERGY_UNITS const s ) { assert( s >= 0_ENERGY_UNITS ); m_enFertilizer = s; }
+    void ReduceFertilizer( )                   { m_enFertilizer /= 2; }
+	void SetFertilizer( ENERGY_UNITS const s ) { setFertilizer( s ); }
 
 	void CreateIndividual( IND_ID const id, EVO_GENERATION const genBirth, Strategy::Id const s )
 	{
@@ -94,7 +95,7 @@ public:
 	}
 
 	void Apply2MutRate   (PERCENT      const s, ManipulatorFunc f) { setMutRate   ( PERCENT     ((f)( m_mutRate.GetValue(),      s.GetValue() ) ) ); }
-	void Apply2Fertilizer(ENERGY_UNITS const s, ManipulatorFunc f) { SetFertilizer( ENERGY_UNITS((f)( m_enFertilizer.GetValue(), s.GetValue() ) ) ); }
+	void Apply2Fertilizer(ENERGY_UNITS const s, ManipulatorFunc f) { setFertilizer( ENERGY_UNITS((f)( m_enFertilizer.GetValue(), s.GetValue() ) ) ); }
 	void Apply2FoodStock (ENERGY_UNITS const s, ManipulatorFunc f) { setFoodStock ( ENERGY_UNITS((f)( m_enFoodStock.GetValue(),  s.GetValue() ) ) ); }
 	void Apply2Fertility (ENERGY_UNITS const s, ManipulatorFunc f) { setFertility ( ENERGY_UNITS((f)( m_enFertility.GetValue(),  s.GetValue() ) ) ); }
 
@@ -102,8 +103,6 @@ public:
 	{ 
 		setFoodStock( ENERGY_UNITS( AssertShortSum( m_enFoodStock.GetValue(), sInc.GetValue() ) ) ); 
 	}
-
-    void ReduceFertilizer( ) { m_enFertilizer /= 2; }
 
     GridPoint const GetGridPoint( ) const { return m_gp; }
     GridPoint const GetSeniorGp ( ) const { return m_gpSenior; }
@@ -149,6 +148,7 @@ private:
 
 	void setFoodStock ( ENERGY_UNITS const s ) { assert( s >= 0_ENERGY_UNITS ); m_enFoodStock  = s; }
 	void setFertility ( ENERGY_UNITS const s ) { assert( s >= 0_ENERGY_UNITS ); m_enFertility  = s; }
+	void setFertilizer( ENERGY_UNITS const s ) { assert( s >= 0_ENERGY_UNITS ); m_enFertilizer = s; }
 	void setMutRate   ( PERCENT      const s ) 
 	{ 
 		assert( s >= 0_PERCENT ); 

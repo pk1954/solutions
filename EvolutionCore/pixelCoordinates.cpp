@@ -11,17 +11,25 @@
 static double const SQRT3_DIV2 = sqrt(3.) / 2.;
 static double const SQRT3_DIV3 = sqrt(3.) / 3.;
 
-PixelCoordinates::PixelCoordinates
+PixelCoordinates::PixelCoordinates( )
+  : m_pixOffset   ( 0_PIXEL ),
+	m_pixFieldSize( 0_PIXEL ),
+	m_smoothMove  (  ),
+	m_bMoving     ( false ),
+	m_bHexagon    ( false )
+{ }
+
+void PixelCoordinates::Start
 ( 
-    PIXEL const fs, 
+	PIXEL const fs, 
 	bool  const bHexagon
 )
-  : m_pixOffset   ( 0_PIXEL ),
-    m_pixFieldSize( fs ),
-    m_smoothMove  (  ),
-	m_bMoving     ( false ),
-	m_bHexagon    ( bHexagon )
-{ }
+{	
+	m_pixOffset    = 0_PIXEL;
+	m_pixFieldSize = fs;
+	m_bMoving      = false;
+	m_bHexagon     = bHexagon;
+}
 
 bool PixelCoordinates::isValidFieldSize( PIXEL const pixNewFieldSize ) const 
 { 

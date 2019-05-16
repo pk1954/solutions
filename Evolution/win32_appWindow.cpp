@@ -412,29 +412,26 @@ void AppWindow::adjustChildWindows( )
 void AppWindow::adjustMiniWinVisibility( int const iMode )
 {
 	Config::tOnOffAuto onOffAuto = Config::tOnOffAuto::automatic;
-	if ( iMode != 0 )
+	switch ( iMode )
 	{
-		switch ( iMode )
-		{
-			case IDM_MINI_WINDOW_ON:
-				onOffAuto = Config::tOnOffAuto::on; 
-				break;
-			case IDM_MINI_WINDOW_OFF:
-				onOffAuto = Config::tOnOffAuto::off; 
-				break;
-			case IDM_MINI_WINDOW_AUTO:
-				onOffAuto = Config::tOnOffAuto::automatic; 
-				break;
-			default:
-				assert( false );
-				break;
-		}
-		Config::SetConfigValue( Config::tId::miniGridDisplay, static_cast<long>( onOffAuto ) ); 
+		case 0:
+			onOffAuto = Config::GetConfigValueOnOffAuto( Config::tId::miniGridDisplay ); 
+			break;
+		case IDM_MINI_WINDOW_ON:
+			onOffAuto = Config::tOnOffAuto::on; 
+			break;
+		case IDM_MINI_WINDOW_OFF:
+			onOffAuto = Config::tOnOffAuto::off; 
+			break;
+		case IDM_MINI_WINDOW_AUTO:
+			onOffAuto = Config::tOnOffAuto::automatic; 
+			break;
+		default:
+			assert( false );
+			break;
 	}
-	else 
-	{
-		onOffAuto = Config::GetConfigValueOnOffAuto( Config::tId::miniGridDisplay ); 
-	}
+
+	Config::SetConfigValue( Config::tId::miniGridDisplay, static_cast<long>( onOffAuto ) ); 
 
 	switch ( onOffAuto )
 	{

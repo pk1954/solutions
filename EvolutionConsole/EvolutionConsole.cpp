@@ -30,6 +30,8 @@ HWND G_hwndApp;
 
 int main( int argc, char * argv [ ], char * envp [ ] )
 {
+	PixelCoordinates PixCoords;
+
 	wcout << VER_PRODUCTNAME_STR << L" " << VER_FILE_DESCRIPTION_STR << endl;
 	wcout << L"Build at " << __DATE__ << L" " << __TIME__ << endl;
 
@@ -49,7 +51,6 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	PIXEL                 const FIELDSIZE            = 8_PIXEL;
 	EvoModelDataGlue    * const pEvoModelData        = new EvoModelDataGlue( );
 	BOOL                  const bHexagonMode         = (iNrOfNeighbors == 6);
-	PixelCoordinates    * const pPixCoords           = new PixelCoordinates( FIELDSIZE, bHexagonMode );
 	EvoHistorySysGlue   * const pEvoHistGlue         = new EvoHistorySysGlue( );
     WorkThreadInterface * const pWorkThreadInterface = new WorkThreadInterface( );
     HistorySystem       * const pHistorySystem       = HistorySystem::CreateHistorySystem( );
@@ -57,8 +58,9 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	pWorkThreadInterface->Initialize( & m_traceStream );
 	DefineCoreWrapperFunctions( pEvolutionCore );
-	DefinePixelCoordinatesWrapperFunctions( pPixCoords );
+	DefinePixelCoordinatesWrapperFunctions( & PixCoords );
 
+	PixCoords.Start( FIELDSIZE, bHexagonMode );
 	pEvoHistGlue->Start( pHistorySystem, nullptr );
     DefineWin32HistWrapperFunctions( pWorkThreadInterface );
 

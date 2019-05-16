@@ -7,6 +7,7 @@
 #include <array>
 #include <iostream>     
 #include <sstream> 
+#include "Strategy.h"
 #include "PixelTypes.h"
 #include "gridPoint.h"
 #include "gridRect.h"
@@ -27,7 +28,10 @@ class DrawFrame
 {
 public:
 
-    DrawFrame
+	DrawFrame();
+	~DrawFrame( );
+
+    void Start
 	( 
 		HWND                const, 
 		ReadBuffer        * const, 
@@ -36,7 +40,6 @@ public:
 		DspOptWindow      * const, 
 		ColorManager      * const
 	);
-    ~DrawFrame( );
 
     void ResizeDrawFrame( EvolutionCore const * const );
     void DoPaint( EvolutionCore const * );
@@ -52,11 +55,11 @@ private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 
     DrawFrame & operator= ( DrawFrame const & );  // noncopyable class 
 
-	HWND                const m_hwnd;
-    ReadBuffer        * const m_pReadBuffer;
-    PixelCoordinates  * const m_pPixelCoordinates;
-    DspOptWindow      * const m_pDspOptWindow;
-	ColorManager      * const m_pColorManager;  
+	HWND                m_hwnd;
+    ReadBuffer        * m_pReadBuffer;
+    PixelCoordinates  * m_pPixelCoordinates;
+    DspOptWindow      * m_pDspOptWindow;
+	ColorManager      * m_pColorManager;  
 
     GraphicsInterface * m_pGraphics;
 	GridPointShape    * m_gridPointShape;

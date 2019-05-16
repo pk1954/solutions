@@ -14,8 +14,10 @@ class PixelCoordinates
 {
 public:
 
-    PixelCoordinates( PIXEL const, bool const );
-    
+	PixelCoordinates( );
+
+	void Start( PIXEL const, bool const );
+
 	//////// transformations ////////
 
 	PixelPoint Grid2PixelSize( GridPoint  const ) const;
