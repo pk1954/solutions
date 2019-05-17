@@ -95,13 +95,6 @@ void WorkThreadInterface::PostBenchmark( int const iNrOfGenerations )
     m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::BENCHMARK, 0, iNrOfGenerations );
 }
 
-void WorkThreadInterface::PostRefresh( LPARAM const lParam )
-{
-    if ( m_bTrace )
-        * m_pTraceStream << __func__ << endl;
-    m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::REFRESH, 0, lParam );
-}
-
 void WorkThreadInterface::PostDoEdit( GridPoint const gp )
 {
     if ( IsInGrid( gp ) )

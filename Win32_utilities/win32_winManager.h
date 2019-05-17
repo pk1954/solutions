@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include "win32_util.h"
+#include "win32_rootWindow.h"
 
 class RootWindow;
 
@@ -15,7 +16,19 @@ public:
     WinManager( );
     virtual ~WinManager( ) { };
 
-	void AddWindow( std::wstring const, UINT const, HWND const, BOOL const, BOOL const );
+	void AddWindow( std::wstring const, UINT const, HWND, BOOL const, BOOL const );
+
+	void AddWindow
+	( 
+		wstring    const wstrName, 
+		UINT       const id, 
+		RootWindow const & rootWindow,
+		BOOL       const bTrackPosition,
+		BOOL       const bTrackSize
+	)
+	{
+		AddWindow( wstrName, id, rootWindow.GetWindowHandle(), bTrackPosition, bTrackSize );
+	}
 
 	void RemoveWindow( UINT const id )
 	{

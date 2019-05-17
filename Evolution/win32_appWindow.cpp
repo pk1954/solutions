@@ -130,13 +130,13 @@ AppWindow::AppWindow( ) :
 	m_HistInfoWindow.Start( m_hwndApp);
 	m_PerfWindow    .Start( m_hwndApp );
 
-	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                      TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                          TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_StatusBar     .GetWindowHandle(), FALSE, FALSE );
-	m_WinManager.AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_PerfWindow    .GetWindowHandle(), TRUE,  FALSE );
-	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_CrsrWindow    .GetWindowHandle(), TRUE,  FALSE );
-	m_WinManager.AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_Statistics    .GetWindowHandle(), TRUE,  FALSE );
-	m_WinManager.AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_HistInfoWindow.GetWindowHandle(), TRUE,  FALSE );
+	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,    TRUE,  TRUE  );
+	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,        TRUE,  TRUE  );
+	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_StatusBar,      FALSE, FALSE );
+	m_WinManager.AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_PerfWindow,     TRUE,  FALSE );
+	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_CrsrWindow,     TRUE,  FALSE );
+	m_WinManager.AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_Statistics,     TRUE,  FALSE );
+	m_WinManager.AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_HistInfoWindow, TRUE,  FALSE );
 
 	m_EvoController.Start
 	( 

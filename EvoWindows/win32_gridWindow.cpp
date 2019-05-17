@@ -204,7 +204,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     else
     {
         m_ptLast = PP_NULL;    // make m_ptLast invalid
-        // no PostRefresh! It would cause repaint for every mouse move.
+        // no refresh! It would cause repaint for every mouse move.
     }
 
 	m_pReadBuffer->ReleaseReadBuffer( );

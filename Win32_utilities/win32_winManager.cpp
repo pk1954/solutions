@@ -8,7 +8,6 @@
 #include "errhndl.h"
 #include "UtilityWrappers.h"
 #include "win32_util.h"
-#include "win32_rootWindow.h"
 #include "win32_winManager.h"
 
 using std::endl;

@@ -122,15 +122,6 @@ public:
     }
 };
 
-class WrapPostRefresh : public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        m_pWorkThreadInterface->PostRefresh( false );
-    }
-};
-
 class WrapPostReset : public Script_Functor
 {
 public:
@@ -163,7 +154,6 @@ void DefineWin32WrapperFunctions( WorkThreadInterface * const pWorkThreadInterfa
     DEF_FUNC( PostSetBrushIntensity );
     DEF_FUNC( PostSetBrushRadius );
 	DEF_FUNC( PostSetBrushManipulator );
-    DEF_FUNC( PostRefresh );
     DEF_FUNC( PostReset );
     DEF_FUNC( PostGenerationStep );
     DEF_FUNC( PostRunGenerations );

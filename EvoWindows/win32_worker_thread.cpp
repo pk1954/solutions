@@ -210,17 +210,15 @@ void WorkThread::dispatch( MSG const msg  )
 		break;
 
 	case WorkerThreadMessage::Id::REFRESH:
-		if (m_pReadBuffer != nullptr)
-			m_pReadBuffer->Notify( msg.lParam != 0 );
-		return;
+		break;
 
 	default:
 		return;  // sometimes strange messages arrive. e.g. uiMsg 1847
 	}            // I cannot find a reason, so I ignore them
 
-	if (m_pReadBuffer != nullptr)            // Notify main thread, that model has changed
-		m_pReadBuffer->Notify( false );  // continue immediately, if main thread is busy
-}
+	if (m_pReadBuffer != nullptr)                // Notify main thread, that model has changed
+		m_pReadBuffer->Notify( ! m_bContinue );  // continue immediately, if in run mode and
+}                                                // main thread is busy
 
 // gotoGeneration - perform one history step towards demanded generation
 //                - update editor state if neccessary
