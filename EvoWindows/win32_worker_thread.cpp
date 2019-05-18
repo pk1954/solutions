@@ -255,7 +255,7 @@ void WorkThread::gotoGeneration( HIST_GENERATION const gen )
 	}
 }
 
-void WorkThread::NGenerationSteps( int iNrOfGenerations )   
+void WorkThread::NGenerationSteps( int iNrOfGenerations )  // for benchmarks only
 {
 	Stopwatch stopwatch;
 	stopwatch.Start();

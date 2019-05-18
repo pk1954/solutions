@@ -61,6 +61,9 @@ AppWindow::AppWindow( ) :
 {
 	Stopwatch stopwatch;
 
+	m_hwndConsole = GetConsoleWindow( );
+	SetWindowPos( m_hwndConsole, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
+
 //	_CrtSetAllocHook( MyAllocHook );
 
 	DefineUtilityWrapperFunctions( );
@@ -75,7 +78,6 @@ AppWindow::AppWindow( ) :
 	);
 
 	m_traceStream = OpenTraceFile( L"main_trace.out" );
-	m_hwndConsole = Util::StdOutConsole( );
 
 	DUMP::SetDumpStream( & std::wcout );
 	Config::SetDefaultConfiguration( );

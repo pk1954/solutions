@@ -29,16 +29,17 @@ class Script
 public:
 // functions for reading from input script
 
-    double         ScrReadFloat ( void ); 
-    long           ScrReadLong  ( void ); 
-    unsigned long  ScrReadUlong ( void ); 
-    int            ScrReadInt   ( void ); 
-    unsigned int   ScrReadUint  ( void ); 
-    short          ScrReadShort ( void ); 
-    unsigned short ScrReadUshort( void );
-    wchar_t        ScrReadChar  ( void ); 
-    unsigned char  ScrReadUchar ( void ); 
-    wstring const  ScrReadString( void );
+    double         ScrReadFloat  ( void ); 
+    long           ScrReadLong   ( void ); 
+    unsigned long  ScrReadUlong  ( void ); 
+    int            ScrReadInt    ( void ); 
+    unsigned int   ScrReadUint   ( void ); 
+    short          ScrReadShort  ( void ); 
+    unsigned short ScrReadUshort ( void );
+    wchar_t        ScrReadChar   ( void ); 
+    unsigned char  ScrReadUchar  ( void ); 
+    wstring const  ScrReadString ( void );
+	void           ScrReadSpecial( wchar_t const ); 
 
 // Helper routines for error handlers 
 	wstring const Script::GetActPath         ( ) const { return m_pScanAct->GetActPath      ( ); }

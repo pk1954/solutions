@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "commctrl.h"
+#include "win32_util.h"
 #include "win32_appWindow.h"
 #include "win32_stopwatch.h"
 #include "Resource.h"
@@ -27,11 +28,13 @@ int APIENTRY wWinMain
         ICC_STANDARD_CLASSES | ICC_BAR_CLASSES | ICC_TAB_CLASSES
 	};
     InitCommonControlsEx(&icex); 
-    
+
+	Util::StdOutConsole( );
+
  	Stopwatch stopwatch;
 	stopwatch.Start();
-    AppWindow App;
-    App.Start( );
+	AppWindow App;
+	App.Start( );
 	stopwatch.Stop( L"App.Start" );
 
     HACCEL const hAccelTable = LoadAccelerators( hInstance, MAKEINTRESOURCE(IDC_EVOLUTION_MAIN) );

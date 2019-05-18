@@ -260,15 +260,11 @@ namespace Util
         return monInfo;
     }
 
-	inline HWND StdOutConsole( )
+	inline void StdOutConsole( )
 	{
 		FILE * fp;
-		BOOL bRes = AllocConsole( );
-		_wfreopen_s( &fp, L"CONOUT$", L"w", stdout );
-		std::wcout << "console output started" << std::endl << std::flush;
-		HWND hwndConsole = GetConsoleWindow( );
-		SetWindowPos( hwndConsole, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
-		return hwndConsole;
+		BOOL    bRes = AllocConsole( );
+		errno_t res  = _wfreopen_s( &fp, L"CONOUT$", L"w", stdout );
 	}
 
 	void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );

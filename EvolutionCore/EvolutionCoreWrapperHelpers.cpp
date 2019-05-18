@@ -19,9 +19,12 @@ GRID_COORD ScrReadGridCoord( Script & script )
 
 GridPoint ScrReadGridPoint( Script & script )
 {
+	script.ScrReadSpecial( '(' );
     GRID_COORD const x(ScrReadGridCoord( script ));
-    GRID_COORD const y(ScrReadGridCoord( script ));
-    return GridPoint( x, y );
+	script.ScrReadSpecial( '/' );
+	GRID_COORD const y(ScrReadGridCoord( script ));
+	script.ScrReadSpecial( ')' );
+	return GridPoint( x, y );
 }
 
 GridRect ScrReadGridRect( Script & script )

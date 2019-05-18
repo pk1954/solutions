@@ -25,7 +25,29 @@ void Script::ScrSetWrapHook( Script_Functor const * const pHook )
 {
     m_pWrapHook = pHook;
 }
-  
+
+void Script::ScrReadSpecial( wchar_t const wchExpected )
+{
+	static wchar_t strExpected[2] = L"";
+	strExpected[0] = wchExpected;
+	m_pScanAct->SetExpectedToken( strExpected );
+
+	switch ( m_pScanAct->NextToken( true ) )
+	{
+	case tTOKEN::End:         // end of file reached 
+		ScriptErrorHandler::eofError( );
+		break;
+
+	case tTOKEN::Special:
+		if ( m_pScanAct->GetCharacter( ) != wchExpected )
+			ScriptErrorHandler::tokenError( );
+		break;
+
+	default: 
+		ScriptErrorHandler::tokenError( );
+	}             
+}
+
 //   readSign: Read '+' or '-'
 
 bool Script::readSign( )

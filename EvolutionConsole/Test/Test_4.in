@@ -3,48 +3,22 @@
 #
 # Regression test for a subtle bug in GridModel:Compute: dead individual not deleted from GridPointList
 #
-PostRefresh
-PostRefresh
 PostSetBrushMode tBrushMode::randomStrat
-PostDoEdit   90  52 
-PostRefresh
-PostDoEdit  121  49 
-PostRefresh
-PostDoEdit  125  49 
-PostRefresh
-PostDoEdit  130  48 
-PostRefresh
+PostDoEdit (  90 / 52 ) 
+PostDoEdit ( 121 / 49 )
+PostDoEdit ( 125 / 49 )
+PostDoEdit ( 130 / 48 )
 PostSetBrushMode tBrushMode::fertility
-PostRefresh
-PostRefresh
-PostDoEdit   94  44 
-PostRefresh
-PostDoEdit   94  44 
-PostRefresh
-PostDoEdit  124  44 
-PostRefresh
-PostDoEdit  124  44 
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
+PostDoEdit (  94 / 44 )
+PostDoEdit (  94 / 44 )
+PostDoEdit ( 124 / 44 )
+PostDoEdit ( 124 / 44 )
 PostSetBrushMode tBrushMode::mutRate
-PostRefresh
-PostRefresh
-PostDoEdit   93  47 
-PostRefresh
-PostDoEdit   93  47 
-PostRefresh
-PostDoEdit  116  44 
-PostRefresh
-PostDoEdit  119  42 
-PostRefresh
-PostDoEdit  120  42 
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
-PostRefresh
+PostDoEdit (  93 / 47 )
+PostDoEdit (  93 / 47 )
+PostDoEdit ( 116 / 44 )
+PostDoEdit ( 119 / 42 )
+PostDoEdit ( 120 / 42 )
 PostSetBrushMode tBrushMode::move
 PostGenerationStep
 PostGenerationStep
