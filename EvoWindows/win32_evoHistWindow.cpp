@@ -25,7 +25,7 @@ void EvoHistWindow::Start
     HistWindow::Start( hwndParent, pHistorySystem );  // call base class
 	m_pFocusPoint          = pFocusPoint;
 	m_pWorkThreadInterface = pWorkThreadInterface;
-    m_pFocusPoint->AttachFocusPointObserver( this );
+//    m_pFocusPoint->AttachFocusPointObserver( this );
 	Show( Config::GetConfigValueOnOffAuto( Config::tId::historyDisplay ) == Config::tOnOffAuto::on );
 }
 

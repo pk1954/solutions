@@ -194,4 +194,3 @@ void InputBuffer::Close( )
     m_pwchRead  = nullptr;
     m_pwchStart = nullptr;
 }                                          
-

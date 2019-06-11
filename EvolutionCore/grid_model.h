@@ -6,7 +6,8 @@
 #include <array> 
 #include <vector> 
 #include <algorithm>
-#include <iostream>     
+#include <string>     
+#include <sstream>     
 #include "random.h"
 #include "gridPoint.h"
 #include "gridRect.h"
@@ -19,7 +20,7 @@
 
 using std::array;
 using std::vector;
-using std::wostream;
+using std::wostringstream;
 using std::endl;
 
 class GridCircle;
@@ -36,8 +37,7 @@ public:
 	static void InitClass
 	( 
 		ObserverInterface * const, 
-		EventInterface    * const,
-	    wostream          * const 
+		EventInterface    * const
 	);
 
     Grid( );
@@ -90,6 +90,17 @@ public:
         assert( IsInGrid( gp ) );
         return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
     };
+
+	std::wostringstream * GetProtocolData( )
+	{
+		return m_pProtocol;
+	}
+
+	void ClearProtocolData( )
+	{
+		m_pProtocol->str( std::wstring() );
+		m_pProtocol->clear();
+	}
 
     bool           const IsAlive     ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive     ( ); }
     bool           const IsDead      ( GridPoint const gp ) const { return GetGridField( gp ).IsDead      ( ); }
@@ -159,8 +170,8 @@ private:
 		gf.DecEnergy( en );
 		if ( m_bPOI )
 		{
-			* m_pProtocol << L"consumption:      " << en.GetValue() << endl;
-			* m_pProtocol << L"remaining energy: " << gf.GetEnergy().GetValue() << endl;
+			* m_pProtocol << L"   consumption:      " << en.GetValue() << endl;
+			* m_pProtocol << L"   remaining energy: " << gf.GetEnergy().GetValue() << endl;
 			displayAndWait( );
 		}
 	}
@@ -193,7 +204,7 @@ private:
     {
 		if ( m_bPOI )
 		{
-			* m_pProtocol << L"individual " << gf.GetGridPoint() << L" dies of starvation" << endl;
+			* m_pProtocol << L"   individual " << gf.GetGridPoint() << L" dies of starvation" << endl;
 			displayAndWait( );
 		}
 		m_gpList.DeleteGridPointFromList( * this, gf );
@@ -292,7 +303,7 @@ private:
 
 	static ObserverInterface * m_pObservers;    // GUI call back for display of current model 
 	static EventInterface    * m_pEventPOI;
-	static wostream          * m_pProtocol;
+	static wostringstream    * m_pProtocol;
 };
 
 void CheckIndividuals( Grid & );

@@ -17,7 +17,7 @@ void MemorySlot::FillBuffer( EvolutionCore const * const pCore, GridPoint const 
 	wostringstream & buffer = m_pTextDisplay->Buffer();
 	IND_ID           indId  = getIndId( pCore, gp );
 
-	buffer << std::setw( 10 );
+//	buffer << std::setw( 10 );
 	if ( getReferencedGridPoint( pCore, indId ) == GP_NULL ) 
 		buffer << L"DEAD";
 	else

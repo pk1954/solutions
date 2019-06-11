@@ -215,6 +215,9 @@ void WorkThreadInterface::PostPrevGeneration( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
+
+	m_pWorkThread->Continue( );     // trigger worker thread if waiting on POI event
+
 	m_pWorkThread->WorkMessage( WorkerThreadMessage::Id::PREV_GENERATION, 0, 0 );
 }
 

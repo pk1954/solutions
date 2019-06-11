@@ -22,6 +22,9 @@ public:
 
 	virtual void CopyEvolutionCoreData( EvolutionCore const * const ) = 0;
 
+	virtual std::wostringstream * GetProtocolData  ( ) = 0;
+	virtual void 	              ClearProtocolData( ) = 0;
+
 // debugging functions
 
     virtual void DumpGridPointList( ) const = 0;
@@ -76,7 +79,7 @@ public:
 	
 // static functions  
     
-    static void            InitClass( int const, ObserverInterface * const, EventInterface * const, std::wostream * const  );
+    static void            InitClass( int const, ObserverInterface * const, EventInterface * const );
     static EvolutionCore * CreateCore();
 	static void            DestroyCore( EvolutionCore * );
 

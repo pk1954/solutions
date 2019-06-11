@@ -37,8 +37,9 @@ void INTERACTION::Interact( Individual &IndA, Individual &IndB, std::wostream * 
 
 	if ( pOut )
 	{
-		* pOut << IndA.GetId().GetValue() << "[" << Strategy::GetName( IndA.GetStrategyId() ) << "]/";
-		* pOut << IndB.GetId().GetValue() << "[" << Strategy::GetName( IndB.GetStrategyId() ) << "]  "; 
+		* pOut << L"   " << IndA.GetId() << "/" << IndB.GetId() << " "; 
+		* pOut << "[" << Strategy::GetName( IndA.GetStrategyId() ) << "]/";
+		* pOut << "[" << Strategy::GetName( IndB.GetStrategyId() ) << "]  "; 
 		* pOut << resA << "/" << resB << "  ";
 		* pOut << rewards.first.GetValue() << "/" << rewards.second.GetValue() << "  ";
 		* pOut << IndA.GetEnergy().GetValue() << "/" << IndB.GetEnergy().GetValue();

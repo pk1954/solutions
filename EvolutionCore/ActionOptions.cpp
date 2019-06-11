@@ -37,7 +37,7 @@ void ActionOptions::InitOptions
 
 void ActionOptions::DisplayValidOptions( std::wostream * const pOut, Genome const & genome, unsigned int const uiSum )
 {
-	* pOut << L"valid options:" << endl;
+	* pOut << L"   valid options:" << endl;
 	Action::Apply2AllEnabledActions
 	( 
 		[&]( auto action )
@@ -46,7 +46,7 @@ void ActionOptions::DisplayValidOptions( std::wostream * const pOut, Genome cons
 			{
 				short const sAllele     = genome.GetAllele( GetRelatedGeneType( action ) );
 				float const fPercentage = ( uiSum == 0 ) ? 0 : ( sAllele * 100.0f ) / uiSum;
-				* pOut << setw(8) << Action::GetName( action ) << L": " << setprecision(3) << fPercentage << L"%" << endl;
+				* pOut << L"   " << setw(8) << Action::GetName( action ) << L": " << setprecision(3) << fPercentage << L"%" << endl;
 			}
 		}
 	);

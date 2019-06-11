@@ -15,12 +15,11 @@ void EvolutionCore::InitClass
 ( 
 	int                 const iNrOfNeighbors,
 	ObserverInterface * const pObservers,
-	EventInterface    * const pEvent,
-	wostream          * const pProtocol
+	EventInterface    * const pEvent
 )
 {
     Neighborhood::InitClass( iNrOfNeighbors );
-    Grid::InitClass( pObservers, pEvent, pProtocol );
+    Grid::InitClass( pObservers, pEvent );
 }
 
 EvolutionCore * EvolutionCore::CreateCore( )

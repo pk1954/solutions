@@ -19,10 +19,10 @@ public:
 		}
 	}
 
-	void AttachObserver( RootWindow * pRootWin )
+	void AttachObserver( ObserverInterface * pObserver )
 	{
-		assert( pRootWin != nullptr );
-		m_aView.push_back( pRootWin );
+		assert( pObserver != nullptr );
+		m_aView.push_back( pObserver );
 	}
 
 private:

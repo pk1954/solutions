@@ -155,7 +155,6 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="win32_coordShape.h" />
     <ClInclude Include="win32_gridPointShape.h" />
-    <ClInclude Include="win32_identifierShape.h" />
     <ClInclude Include="win32_individualShape.h" />
     <ClInclude Include="win32_infoShape.h" />
     <ClInclude Include="win32_leftColumn.h" />

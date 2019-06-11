@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "win32_identifierShape.h"
 #include "win32_infoShape.h"
 #include "win32_shape.h"
 
@@ -14,7 +13,6 @@ public:
 	virtual void SetTextDisplay( TextDisplay * pTextDisplay )
 	{
 		Shape::SetTextDisplay( pTextDisplay );
-		m_idShape  .SetTextDisplay( pTextDisplay );
 		m_infoShape.SetTextDisplay( pTextDisplay );
 	}
 
@@ -23,9 +21,6 @@ public:
 	virtual Shape const * FindShape   ( PixelPoint const, GridPoint const ) const;
 	virtual void          PrepareShape( PixelPoint const, PixelRectSize const );
 
-	IdentifierShape const & GetIdentifierShape() const { return m_idShape; }
-
 private:
-	IdentifierShape m_idShape;
-	InfoShape       m_infoShape;
+	InfoShape m_infoShape;
 };

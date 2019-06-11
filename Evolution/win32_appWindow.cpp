@@ -115,6 +115,7 @@ AppWindow::AppWindow( ) :
 	m_CoreObservers.AttachObserver( & m_PerfWindow     );
 	m_CoreObservers.AttachObserver( & m_MiniGridWindow );
 	m_CoreObservers.AttachObserver( & m_MainGridWindow );
+	m_CoreObservers.AttachObserver( & m_protocolServer );
 
 	GridWindow::InitClass
 	( 
@@ -166,7 +167,7 @@ AppWindow::AppWindow( ) :
 	);
 };
 
-void AppWindow::Start(  )
+void AppWindow::Start( )
 {
 	EvolutionCore * pCoreWork;
 	BOOL            bHexMode = (GridDimensions::GetNrOfNeigbors() == 6);
@@ -177,8 +178,7 @@ void AppWindow::Start(  )
 	( 
 		GridDimensions::GetNrOfNeigbors(), 
 		& m_ReadBuffer, 
-		& m_event,
-		& std::wcout
+		& m_event
 	);
 
 	m_D3d_driver.Initialize
@@ -199,6 +199,7 @@ void AppWindow::Start(  )
 	pCoreWork          = m_pModelDataWork->GetEvolutionCore();
 	m_pEvoCore4Display = EvolutionCore::CreateCore( );
 
+	m_protocolServer.Start( pCoreWork, m_pHistorySystem );
 	DefineCoreWrapperFunctions( pCoreWork );
 	m_ReadBuffer.Initialize( & m_CoreObservers, pCoreWork, m_pEvoCore4Display );
 
@@ -220,11 +221,11 @@ void AppWindow::Start(  )
 		& m_EvoHistGlue 
 	);
 	
-    m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_EvoHistWindow .GetWindowHandle(), FALSE, FALSE ); 
-    m_WinManager.AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_DspOptWindow  .GetWindowHandle(), TRUE, FALSE );
-    m_WinManager.AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_EditorWindow  .GetWindowHandle(), TRUE, FALSE );
-    m_WinManager.AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_MiniGridWindow.GetWindowHandle(), TRUE, FALSE );
-    m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_MainGridWindow.GetWindowHandle(), TRUE, FALSE );
+    m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_EvoHistWindow,  FALSE, FALSE ); 
+    m_WinManager.AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, m_DspOptWindow,   TRUE,  FALSE );
+    m_WinManager.AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, m_EditorWindow,   TRUE,  FALSE );
+    m_WinManager.AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_MiniGridWindow, TRUE,  FALSE );
+    m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_MainGridWindow, TRUE,  FALSE );
 
     m_MiniGridWindow.Size( );
 	adjustChildWindows( ); 
@@ -267,7 +268,7 @@ void AppWindow::Stop()
 
 	m_EvoHistGlue.Stop( );  // deletes m_pModelDataWork
 
-	m_StatusBar.Show( FALSE );
+	m_StatusBar.Show ( FALSE );
 	m_Statistics.Show( FALSE );
 	m_PerfWindow.Show( FALSE );
 	m_CrsrWindow.Show( FALSE );

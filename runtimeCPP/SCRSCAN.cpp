@@ -277,4 +277,3 @@ tTOKEN Scanner::NextToken( bool const fStartMarker )
       return tTOKEN::Special;
    }  
 }
-

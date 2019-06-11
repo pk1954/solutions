@@ -22,6 +22,7 @@
 
 // infrastructure
 
+#include "win32_protocolServer.h"
 #include "win32_scriptHook.h"
 #include "win32_readBuffer.h"
 #include "win32_colorManager.h"
@@ -92,6 +93,7 @@ private:
 	AppMenu             m_AppMenu;
 	WorkThreadInterface m_WorkThreadInterface;
     ScriptHook          m_ScriptHook;
+	ProtocolServer      m_protocolServer;
 
 	GraphicsInterface   * m_pGraphics;
 	EvoModelDataGlue    * m_pModelDataWork;

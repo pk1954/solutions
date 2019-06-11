@@ -47,7 +47,10 @@ public:
 
 	virtual void DumpGridPointList( ) const;
 
-    virtual EVO_GENERATION  const GetAge        ( GridPoint const gp ) const { return m_grid.GetAge( gp ); }
+	virtual std::wostringstream * GetProtocolData( )   { return m_grid.GetProtocolData( ); }
+	virtual void 	              ClearProtocolData( ) { return m_grid.ClearProtocolData( ); }
+
+	virtual EVO_GENERATION  const GetAge        ( GridPoint const gp ) const { return m_grid.GetAge( gp ); }
 
 	virtual PERCENT         const GetMutRate    ( GridPoint const gp ) const { return getGridField( gp ).GetMutRate( ); }
 	virtual ENERGY_UNITS    const GetFoodStock  ( GridPoint const gp ) const { return getGridField( gp ).GetFoodStock( ); }

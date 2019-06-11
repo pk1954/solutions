@@ -39,9 +39,6 @@
     <ClInclude Include="win32_rightColumn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_identifierShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_infoShape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
