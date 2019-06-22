@@ -23,7 +23,7 @@ ProtocolServer::~ProtocolServer( )
 
 void ProtocolServer::Notify( bool const bImmediate )
 {
-	std::wcout << L"HistGen " << m_pHistorySystem->GetCurrentGeneration().GetLong() << std::endl;
-	std::wcout << m_pCore->GetProtocolData( )->str();
-	m_pCore->ClearProtocolData( );
+//	std::wcout << L"HistGen " << m_pHistorySystem->GetCurrentGeneration().GetLong() << std::endl;
+//	std::wcout << m_pCore->GetProtocolData( )->str();
+//	m_pCore->ClearProtocolData( );
 }

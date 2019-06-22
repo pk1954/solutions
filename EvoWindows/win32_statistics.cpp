@@ -3,6 +3,7 @@
 // EvoWindows
 
 #include "stdafx.h"
+#include "resource.h"
 #include "Strsafe.h"
 #include "XArray.h"
 #include "gridRect.h"
@@ -49,10 +50,14 @@ Stopwatch stopwatch;
 
 void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 {
-//	stopwatch.Start();
+	//	stopwatch.Start();
  
 	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
+
 	m_pStatistics->Prepare( pCore, GridSelection::GetSelection(), & textBuf ); 
+	if ( m_pStatistics->GetNrOfLivingIndividuals() == 0 )
+		PostCommand2Application( IDM_STOP, 0 );
+
 	m_pReadBuffer->ReleaseReadBuffer( );
 
     // start printing
@@ -60,8 +65,8 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
     textBuf.setHorizontalPos( 2_TEXT_POSITION );       
     m_pStatistics->printHeader  ( );  
 
-	m_pStatistics->printCounter ( L"#individuals" );  // number of individuals
-    m_pStatistics->printAvAge   ( L"av. age" );       // average age
+	m_pStatistics->printCounter( L"#individuals" );  // number of individuals
+    m_pStatistics->printAvAge  ( L"av. age" );       // average age
 	
 	textBuf.nextLine( L"---" );
 

@@ -62,6 +62,8 @@ public:
     void printMemory ( wchar_t const * const data );
     void printCounters( Action::Id const action );
 
+	int const GetNrOfLivingIndividuals( ) const { return m_pCore->GetNrOfLivingIndividuals( ); }
+
 private:
 	void aquireData( GridPoint const & );
 	void scaleData( );

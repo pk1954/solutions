@@ -159,7 +159,7 @@ void WorkThread::dispatch( MSG const msg  )
 		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
 		m_bContinue = FALSE;
 		Script::StopProcessing( );
-		break;
+		return;      // do not notify readbuffer, because model has not changed  
 
 	case WorkerThreadMessage::Id::RESET_MODEL:
 		editorCommand( tEvoCmd::reset, msg.wParam );
