@@ -18,25 +18,25 @@ constexpr void AssertLimits( SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_
 template<typename SOURCE_TYPE>
 constexpr void AssertShort( SOURCE_TYPE const value ) 
 {
-	assert( value <= (std::numeric_limits<short>::max)() );         
+	assert( static_cast<long long>(value) <= static_cast<long long>((std::numeric_limits<short>::max)()) );         
 	if ( std::numeric_limits<SOURCE_TYPE>::is_signed )
-		assert( value >= (std::numeric_limits<short>::min)() );
+		assert( static_cast<long long>(value) >= static_cast<long long>((std::numeric_limits<short>::min)()) );         
 }
 
 template<typename SOURCE_TYPE>
 constexpr void AssertInt( SOURCE_TYPE const value ) 
 {
-	assert( value <= (std::numeric_limits<int>::max)() );         
+	assert( static_cast<long long>(value) <= static_cast<long long>((std::numeric_limits<int>::max)()) );         
 	if ( std::numeric_limits<SOURCE_TYPE>::is_signed )
-		assert( value >= (std::numeric_limits<int>::min)() );
+		assert( static_cast<long long>(value) >= static_cast<long long>((std::numeric_limits<int>::min)()) );         
 }
 
 template<typename SOURCE_TYPE>
 constexpr void AssertLong( SOURCE_TYPE const value ) 
 {
-	assert( value <= (std::numeric_limits<long>::max)() );         
+	assert( static_cast<long long>(value) <= static_cast<long long>((std::numeric_limits<long>::max)()) );         
 	if ( std::numeric_limits<SOURCE_TYPE>::is_signed )
-		assert( value >= (std::numeric_limits<long>::min)() );
+		assert( static_cast<long long>(value) >= static_cast<long long>((std::numeric_limits<long>::min)()) );
 }
 
 template<typename SOURCE_TYPE>

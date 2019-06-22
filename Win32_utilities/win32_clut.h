@@ -31,7 +31,7 @@ public:
     COLORREF GetColor( CLUT_INDEX index ) const 
     {
         assert( m_data != nullptr );
-		assert( index.GetValue() < m_data->size() ); 
+		assert( index.GetValue() < static_cast<int>(m_data->size()) ); 
         return (*m_data)[ index.GetValue() ]; 
     };
 
