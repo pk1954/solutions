@@ -84,6 +84,20 @@ void WorkThread::dispatch( MSG const msg  )
 	switch ( static_cast<WorkerThreadMessage::Id>(msg.message) )
 	{
 
+	case WorkerThreadMessage::Id::GENERATION_RUN:
+		if ( static_cast<bool>(msg.lParam) )
+			m_bContinue = TRUE;
+		generationRun( );
+		break;
+
+	case WorkerThreadMessage::Id::REPEAT_GENERATION_STEP:
+		gotoGeneration( m_genDemanded );
+		break;
+
+	case WorkerThreadMessage::Id::GENERATION_STEP:
+		gotoGeneration( m_pEvoHistGlue->GetCurrentGeneration( ) + 1 );
+		break;
+
 	case WorkerThreadMessage::Id::BENCHMARK:
 		NGenerationSteps( static_cast<int>(msg.lParam) );
 		break;
@@ -106,20 +120,6 @@ void WorkThread::dispatch( MSG const msg  )
 				static_cast<WorkerThreadMessage::Id>(msg.message) == WorkerThreadMessage::Id::GOTO_DEATH 
 			)
 		);
-		break;
-
-	case WorkerThreadMessage::Id::GENERATION_RUN:
-		if ( static_cast<bool>(msg.lParam) )
-			m_bContinue = TRUE;
-		generationRun( );
-		break;
-
-	case WorkerThreadMessage::Id::GENERATION_STEP:
-		gotoGeneration( m_pEvoHistGlue->GetCurrentGeneration( ) + 1 );
-		break;
-
-	case WorkerThreadMessage::Id::REPEAT_GENERATION_STEP:
-		gotoGeneration( m_genDemanded );
 		break;
 
 	case WorkerThreadMessage::Id::PREV_GENERATION:

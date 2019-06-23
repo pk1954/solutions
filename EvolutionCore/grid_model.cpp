@@ -415,13 +415,13 @@ GridPoint Grid::ComputeNextGeneration( GridPoint const gpRun )
 
     switch ( m_action )
     {
+		case Action::Id::eat:       actionEat      ( gfRun ); break;
 		case Action::Id::move:	    actionMove     ( gfRun ); break;
 		case Action::Id::clone:     actionClone    ( gfRun ); break; 
 		case Action::Id::marry:     actionMarry    ( gfRun ); break;
 		case Action::Id::interact:  actionInteract ( gfRun ); break;
 		case Action::Id::passOn:    actionPassOn   ( gfRun ); break;
 		case Action::Id::fertilize: actionFertilize( gfRun ); break;
-		case Action::Id::eat:       actionEat      ( gfRun ); break;
 		case Action::Id::undefined:	actionUndefined( gfRun ); break;
 		default: assert( false );
     }

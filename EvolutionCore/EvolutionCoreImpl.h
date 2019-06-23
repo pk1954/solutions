@@ -32,7 +32,7 @@ public:
 		* this = * static_cast<EvolutionCoreImpl const *>( src );
 	}
 
-    virtual void Compute( );
+	virtual void Compute( );
     
 	virtual void ResetAll();
 
