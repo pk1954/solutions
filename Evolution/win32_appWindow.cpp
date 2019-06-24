@@ -200,15 +200,15 @@ void AppWindow::Start( )
 	m_pEvoCore4Display = EvolutionCore::CreateCore( );
 
 	m_protocolServer.Start( pCoreWork, m_pHistorySystem );
-	DefineCoreWrapperFunctions( pCoreWork );
+	DefineCoreWrapperFunctions( pCoreWork );  // Core wrappers run in work thread
 	m_ReadBuffer.Initialize( & m_CoreObservers, pCoreWork, m_pEvoCore4Display );
 
 	m_MainGridWindow.Start( m_hwndApp, m_pGraphics, WS_CHILD       | WS_CLIPSIBLINGS,             16_PIXEL );
     m_MiniGridWindow.Start( m_hwndApp, m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION, 2_PIXEL );
 	m_EvoHistWindow .Start( m_hwndApp, & m_FocusPoint, m_pHistorySystem, & m_WorkThreadInterface );
-	m_DspOptWindow  .Start( m_hwndApp, pCoreWork );
+	m_DspOptWindow  .Start( m_hwndApp );
     m_EditorWindow  .Start( m_hwndApp, & m_WorkThreadInterface, pCoreWork, & m_DspOptWindow );
-	m_FocusPoint    .Start( & m_EvoHistGlue, pCoreWork );
+	m_FocusPoint    .Start( & m_EvoHistGlue );
 	m_WorkThreadInterface.Start
 	( 
 		m_hwndApp, 
@@ -217,7 +217,6 @@ void AppWindow::Start( )
 		& m_EditorWindow, 
 		& m_event, 
 		& m_ReadBuffer, 
-		pCoreWork, 
 		& m_EvoHistGlue 
 	);
 	

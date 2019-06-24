@@ -118,7 +118,7 @@ void DrawFrame::HighlightShape( Shape const * pShape, GridPoint const gp )
 
 void DrawFrame::DoPaint( EvolutionCore const * pCore )
 {
-	drawBackground( );
+	drawBackground( pCore );
 
 	if ( m_pDspOptWindow->AreIndividualsVisible( ) )
 	{
@@ -138,7 +138,7 @@ void DrawFrame::DoPaint( EvolutionCore const * pCore )
 	}
 }
 
-void DrawFrame::drawBackground( )
+void DrawFrame::drawBackground( EvolutionCore const * const pCore )
 {
 	float m_fPxSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).GetValue() );
 
@@ -146,7 +146,7 @@ void DrawFrame::drawBackground( )
 	(          
     	[&](GridPoint const gp)
 		{
-			CLUT_INDEX const index   { m_pDspOptWindow->GetIntValue( GridDimensions::Wrap2Grid(gp) ) };
+			CLUT_INDEX const index   { m_pDspOptWindow->GetIntValue( pCore, GridDimensions::Wrap2Grid(gp) ) };
 			DWORD      const dwColor { getBackgroundColor( index ) };
 			PixelPoint const pnt     { m_pPixelCoordinates->Grid2PixelPosCenter( gp ) };
 			m_pGraphics->AddBackGround( pnt, dwColor, m_fPxSize );

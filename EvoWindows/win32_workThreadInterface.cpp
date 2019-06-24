@@ -37,7 +37,6 @@ void WorkThreadInterface::Start
 	EditorWindow       * const pEditorWindow,
     EventInterface     * const pEvent,
     ReadBuffer         * const pReadBuffer, 
-    EvolutionCore      * const pCore,
     EvoHistorySysGlue  * const pEvoHistGlue
 )
 {

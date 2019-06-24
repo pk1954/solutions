@@ -138,7 +138,7 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 	(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_RESET,         L"Reset" );
 	(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SCRIPT_DIALOG, L"Script" );
 
-    if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
+    if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( * pCore ) )
     {
 		{
 			HMENU const hColorMenu = CreatePopupMenu();

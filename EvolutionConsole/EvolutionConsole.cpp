@@ -64,7 +64,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	pEvoHistGlue->Start( pHistorySystem, nullptr );
     DefineWin32HistWrapperFunctions( pWorkThreadInterface );
 
-	pWorkThreadInterface->Start( nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, pEvolutionCore, pEvoHistGlue );
+	pWorkThreadInterface->Start( nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, pEvoHistGlue );
 
 	DefineWin32WrapperFunctions( pWorkThreadInterface );
 

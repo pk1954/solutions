@@ -19,7 +19,7 @@ public:
     FocusPoint( );
 	virtual ~FocusPoint( ) {};
 
-    void Start( EvoHistorySysGlue *, EvolutionCore * );
+    void Start( EvoHistorySysGlue * );
 
     void SetFocusPoint( GridPoint const );
 	void AttachFocusPointObserver( RootWindow * pRootWin )
@@ -37,24 +37,23 @@ public:
 		return ::IsInGrid( m_gp ); 
 	}
 
-	BOOL const IsAlive( ) const 
+	BOOL const IsAlive( EvolutionCore const & core ) const 
 	{ 
-		return m_pCore->IsAlive( m_gp ); 
+		return core.IsAlive( m_gp ); 
 	}
 
-	BOOL const IsDead( ) const 
+	BOOL const IsDead( EvolutionCore const & core ) const 
 	{ 
-		return m_pCore->IsDead( m_gp ); 
+		return core.IsDead( m_gp ); 
 	}
 
-	BOOL const IsDefined( ) const 
+	BOOL const IsDefined( EvolutionCore const & core ) const 
 	{ 
-		return m_pCore->IsDefined( m_gp ); 
+		return core.IsDefined( m_gp ); 
 	}
 
 private:
     ViewCollection      m_ViewCollection;
     EvoHistorySysGlue * m_pEvoHistGlue;
-    EvolutionCore     * m_pCore;
     GridPoint           m_gp;
 };

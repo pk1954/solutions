@@ -87,7 +87,7 @@ private:
     void     setIndividualColor( EvolutionCore const * const, GridPoint const, float const ) const;
 	void     addPrimitive( GridPoint const, COLORREF const, float const ) const;
 	
-	void drawBackground( );
+	void drawBackground ( EvolutionCore const * const );
     void drawText       ( EvolutionCore const * const, GridRect  const & );
     void drawIndividuals( EvolutionCore const * const, GridRect  const & );
 };

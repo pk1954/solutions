@@ -15,12 +15,12 @@ public:
     DspOptWindow( );
     ~DspOptWindow( );
 
-    void Start( HWND const, EvolutionCore const * const );
+    void Start( HWND const );
 	void Stop( );
 
-	int GetIntValue( GridPoint const gp ) 
+	int GetIntValue( EvolutionCore const * const pCore, GridPoint const gp ) 
 	{ 
-		return (m_IntValueLambda == nullptr) ? 0 : m_IntValueLambda(gp); 
+		return (m_IntValueLambda == nullptr) ? 0 : m_IntValueLambda( pCore, gp ); 
 	}
 
 	void UpdateDspOptionsControls( tBrushMode const );
@@ -34,7 +34,5 @@ private:
 
 	virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
 
-    EvolutionCore const * m_pCore; 
-
-	std::function<int( GridPoint const )> m_IntValueLambda;
+	std::function<int( EvolutionCore const * const, GridPoint const )> m_IntValueLambda;
 };

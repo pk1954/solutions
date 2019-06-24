@@ -43,7 +43,6 @@ class NextGenFunctor;
 class ScriptHook;
 class HistorySystem;
 class GraphicsInterface;
-class ReadBuffer;
 class D3D_driver;
 class EvoModelDataGlue;
 class ViewCollection;

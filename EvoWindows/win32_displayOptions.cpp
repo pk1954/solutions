@@ -13,8 +13,7 @@
 #include "win32_displayOptions.h"
 
 DspOptWindow::DspOptWindow(  ) : 
-	BaseDialog( ),
-	m_pCore( nullptr )
+	BaseDialog( )
 { }
 
 DspOptWindow::~DspOptWindow( )
@@ -22,14 +21,9 @@ DspOptWindow::~DspOptWindow( )
 	m_IntValueLambda = nullptr;
 }
 
-void DspOptWindow::Start
-( 
-    HWND          const         hwndParent, 
-    EvolutionCore const * const pCore 
-)
+void DspOptWindow::Start( HWND const hwndParent )
 {
     StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
-	m_pCore          = pCore;
 	m_IntValueLambda = nullptr;
 
 	//{
@@ -69,7 +63,6 @@ void DspOptWindow::Start
 void DspOptWindow::Stop( )
 {
 	DestroyWindow( GetWindowHandle( ) );
-	m_pCore = nullptr;
 }
 
 void DspOptWindow::UpdateDspOptionsControls( tBrushMode const brushMode )
@@ -129,23 +122,23 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
             switch ( wId )
             {
             case IDM_MUT_RATE:
-				m_IntValueLambda = [&](GridPoint const gp){ return m_pCore->GetMutRate( gp ).GetValue(); };
+				m_IntValueLambda = [&](EvolutionCore const * const pCore, GridPoint const gp){ return pCore->GetMutRate( gp ).GetValue(); };
                 break;
 
             case IDM_FERTILITY:
-				m_IntValueLambda = [&](GridPoint const gp){ return m_pCore->GetFertility( gp ).GetValue(); };
+				m_IntValueLambda = [&](EvolutionCore const * const pCore, GridPoint const gp){ return pCore->GetFertility( gp ).GetValue(); };
                 break;
 
             case IDM_FOOD_STOCK:
-				m_IntValueLambda = [&](GridPoint const gp){ return m_pCore->GetFoodStock( gp ).GetValue(); };
+				m_IntValueLambda = [&](EvolutionCore const * const pCore, GridPoint const gp){ return pCore->GetFoodStock( gp ).GetValue(); };
                 break;
 
             case IDM_FERTILIZER:
-				m_IntValueLambda = [&](GridPoint const gp){ return m_pCore->GetFertilizer( gp ).GetValue(); };
+				m_IntValueLambda = [&](EvolutionCore const * const pCore, GridPoint const gp){ return pCore->GetFertilizer( gp ).GetValue(); };
                 break;
 
             case IDM_DSP_ENV_NOTHING:
-				m_IntValueLambda = [&](GridPoint const gp){ return 0; };
+				m_IntValueLambda = [&](EvolutionCore const * const pCore, GridPoint const gp){ return 0; };
                 break;
 
             case IDCANCEL:

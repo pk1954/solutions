@@ -3,25 +3,21 @@
 
 #include "stdafx.h"
 #include "EvoHistorySysGlue.h"
-#include "EvolutionCore.h"
 #include "win32_viewCollection.h"
 #include "win32_focusPoint.h"
 
 FocusPoint::FocusPoint( ) :
     m_pEvoHistGlue( nullptr ),
-    m_pCore( nullptr ),
     m_gp( GP_NULL )
 { };
 
 void FocusPoint::Start
 ( 
-    EvoHistorySysGlue * pEvoHistGlue,
-    EvolutionCore     * pCore
+    EvoHistorySysGlue * pEvoHistGlue
 )
 {
     assert( pCore != nullptr );
     m_pEvoHistGlue = pEvoHistGlue;
-    m_pCore        = pCore;
 }
 
 void FocusPoint::SetFocusPoint( GridPoint const gpNew )
