@@ -58,6 +58,7 @@ private:
     GridWindow & operator= ( GridWindow const & );  // noncopyable class 
 
 	static HWND                  m_hwndApp;
+	static HCURSOR               m_hCrsrMove;
 	static ReadBuffer          * m_pReadBuffer;
     static WorkThreadInterface * m_pWorkThreadInterface;
     static PerformanceWindow   * m_pPerformanceWindow;

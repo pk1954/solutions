@@ -115,8 +115,8 @@ public:
 
 	BYTES const GetGridHeapSize() const;
 
-	EVO_GENERATION  GetEvoGenerationNr( )       const { return m_genEvo; }
-    int             GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
+	EVO_GENERATION GetEvoGenerationNr( )       const { return m_genEvo; }
+    int            GetNrOfLivingIndividuals( ) const { return m_gpList.GetSize( ); }
 
 	void PrepareComputation( ) 
 	{ 

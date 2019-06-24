@@ -31,6 +31,7 @@ PerformanceWindow   * GridWindow::m_pPerformanceWindow   = nullptr;
 DspOptWindow        * GridWindow::m_pDspOptWindow        = nullptr;
 FocusPoint          * GridWindow::m_pFocusPoint          = nullptr;
 ColorManager        * GridWindow::m_pColorManager        = nullptr;
+HCURSOR               GridWindow::m_hCrsrMove            = nullptr;
 
 void GridWindow::InitClass
 ( 
@@ -48,6 +49,7 @@ void GridWindow::InitClass
 	m_pDspOptWindow        = pDspOptWindow;
     m_pFocusPoint          = pFocusPoint;
 	m_pColorManager        = pColorManager;
+	m_hCrsrMove            = LoadCursor( NULL, IDC_SIZEALL );
 }
 
 GridWindow::GridWindow( ) :
@@ -392,11 +394,21 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         (void)ReleaseCapture( );
         return FALSE;
 
-    case WM_MOUSEMOVE:
-        onMouseMove( lParam, wParam );
-        return FALSE;
+	case WM_MOUSEMOVE:
+		onMouseMove( lParam, wParam );
+		return FALSE;
 
-    case WM_SIZE:
+	case WM_SETCURSOR:
+	{
+		EvolutionCore const * pCore  = m_pReadBuffer->LockReadBuffer( );
+		tBrushMode brushMode = pCore->GetBrushMode();
+		m_pReadBuffer->ReleaseReadBuffer( );
+		if ( brushMode == tBrushMode::move)
+			SetCursor( m_hCrsrMove );
+	}
+		return FALSE;
+
+	case WM_SIZE:
 		PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
 		return FALSE;
 
