@@ -90,7 +90,6 @@
 #define IDM_FOOD_STOCK                          (IDM_EDIT_MODE +  9)
 #define IDM_FERTILIZER                          (IDM_EDIT_MODE + 10)
 #define IDM_DSP_ENV_NOTHING                     (IDM_EDIT_MODE + 11)
-#define IDM_UPDATE_EDITOR_CONTROLS              (IDM_EDIT_MODE + 20)
 #define IDM_EDIT_SIZE                           (IDM_EDIT_MODE + 31)
 #define IDM_EDIT_INTENSITY                      (IDM_EDIT_MODE + 32)
 #define IDM_EDIT_UNDO                           (IDM_EDIT_MODE + 33)

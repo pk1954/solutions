@@ -56,3 +56,13 @@ bool EvolutionCore::IsEnabled( Action::Id const action )
 {
 	return Genome::IsEnabled( action );
 }
+
+std::wostringstream* EvolutionCore::GetProtocolData( )
+{
+	return Grid::GetProtocolData( );
+}
+
+void EvolutionCore::ClearProtocolData( )
+{
+	Grid::ClearProtocolData( );
+}

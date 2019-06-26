@@ -199,7 +199,7 @@ void AppWindow::Start( )
 	pCoreWork          = m_pModelDataWork->GetEvolutionCore();
 	m_pEvoCore4Display = EvolutionCore::CreateCore( );
 
-	m_protocolServer.Start( pCoreWork, m_pHistorySystem );
+	m_protocolServer.Start( m_pHistorySystem );
 	DefineCoreWrapperFunctions( pCoreWork );  // Core wrappers run in work thread
 	m_ReadBuffer.Initialize( & m_CoreObservers, pCoreWork, m_pEvoCore4Display );
 

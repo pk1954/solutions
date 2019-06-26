@@ -91,17 +91,6 @@ public:
         return m_aGF[ gp.GetXvalue() ][ gp.GetYvalue() ];
     };
 
-	std::wostringstream * GetProtocolData( )
-	{
-		return m_pProtocol;
-	}
-
-	void ClearProtocolData( )
-	{
-		m_pProtocol->str( std::wstring() );
-		m_pProtocol->clear();
-	}
-
     bool           const IsAlive     ( GridPoint const gp ) const { return GetGridField( gp ).IsAlive     ( ); }
     bool           const IsDead      ( GridPoint const gp ) const { return GetGridField( gp ).IsDead      ( ); }
     ENERGY_UNITS   const GetFoodStock( GridPoint const gp ) const { return GetGridField( gp ).GetFoodStock( ); }
@@ -157,6 +146,19 @@ public:
 
 		return tDisplayMode::normal; 
 	};
+
+	// static functions
+
+	static std::wostringstream * GetProtocolData( )
+	{
+		return m_pProtocol;
+	}
+
+	static void ClearProtocolData( )
+	{
+		m_pProtocol->str( std::wstring() );
+		m_pProtocol->clear();
+	}
 
 private:
 

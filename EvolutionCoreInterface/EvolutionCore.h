@@ -22,9 +22,6 @@ public:
 
 	virtual void CopyEvolutionCoreData( EvolutionCore const * const ) = 0;
 
-	virtual std::wostringstream * GetProtocolData  ( ) = 0;
-	virtual void 	              ClearProtocolData( ) = 0;
-
 // debugging functions
 
     virtual void DumpGridPointList( ) const = 0;
@@ -82,6 +79,9 @@ public:
     static void            InitClass( int const, ObserverInterface * const, EventInterface * const );
     static EvolutionCore * CreateCore();
 	static void            DestroyCore( EvolutionCore * );
+
+	static std::wostringstream * GetProtocolData  ( );
+	static void 	             ClearProtocolData( );
 
 	static unsigned int GetNrInteractionsWithKnownCulprit( );
     static unsigned int GetNrInteractionsWithUnknownCulprit( );

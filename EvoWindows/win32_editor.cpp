@@ -36,7 +36,7 @@ void EditorWindow::Start
 
     SetTrackBarRange( IDM_EDIT_SIZE,      1L,  50L );
     SetTrackBarRange( IDM_EDIT_INTENSITY, 0L, 100L );
-    updateEditControls( );
+    UpdateEditControls( );
 }
 
 void EditorWindow::Stop( )
@@ -56,7 +56,7 @@ EditorWindow::~EditorWindow( )
 
 void EditorWindow::UpdateEditControls( )
 {
-	SendMessage( WM_COMMAND, IDM_UPDATE_EDITOR_CONTROLS, 0 );
+	updateEditControls( m_pCore );
 }
 
 LRESULT EditorWindow::sendClick( int const item ) const
@@ -78,7 +78,7 @@ void EditorWindow::updateOperationButtons( tBrushMode const mode ) const
 	EnableWindow( GetDlgItem( IDM_EDIT_OPERATION_SUBTRACT ), bEnableOperationButtons );
 }
 
-void EditorWindow::updateEditControls( ) // Set state of all window widgets according to mode (edit/simu)
+void EditorWindow::updateEditControls( EvolutionCore const * const pCore ) // Set state of all window widgets according to mode (edit/simu)
 {
 	static std::unordered_map < tBrushMode, WORD > mapModeTable
 	{
@@ -94,7 +94,7 @@ void EditorWindow::updateEditControls( ) // Set state of all window widgets acco
 		{ tBrushMode::fertilizer,  IDM_FERTILIZER      }
 	};
     
-	CheckRadioButton( IDM_MOVE, IDM_FOOD_STOCK, mapModeTable.at( m_pCore->GetBrushMode() ) );
+	CheckRadioButton( IDM_MOVE, IDM_FOOD_STOCK, mapModeTable.at( pCore->GetBrushMode() ) );
 
 	static std::unordered_map < tShape, WORD > mapShapeTable
 	{
@@ -103,11 +103,11 @@ void EditorWindow::updateEditControls( ) // Set state of all window widgets acco
 		{ tShape::Grid,   IDM_EDIT_GRID_AREA }
 	};
 
-	CheckRadioButton( IDM_EDIT_CIRCLE, IDM_EDIT_GRID_AREA, mapShapeTable.at( m_pCore->GetBrushShape() ) );
+	CheckRadioButton( IDM_EDIT_CIRCLE, IDM_EDIT_GRID_AREA, mapShapeTable.at( pCore->GetBrushShape() ) );
 
 	// ShowWindow  ( GetDlgItem( IDM_EDIT_SIZE ), false );
 
-	updateOperationButtons( m_pCore->GetBrushMode() );
+	updateOperationButtons( pCore->GetBrushMode() );
 
 	static std::unordered_map < tManipulator, WORD > mapOperatorTable
 	{
@@ -118,14 +118,14 @@ void EditorWindow::updateEditControls( ) // Set state of all window widgets acco
 		{ tManipulator::subtract, IDM_EDIT_OPERATION_SUBTRACT },
 	};
 
-	CheckRadioButton( IDM_EDIT_OPERATION_SET, IDM_EDIT_OPERATION_SUBTRACT, mapOperatorTable.at( m_pCore->GetBrushManipulator() ) );
+	CheckRadioButton( IDM_EDIT_OPERATION_SET, IDM_EDIT_OPERATION_SUBTRACT, mapOperatorTable.at( pCore->GetBrushManipulator() ) );
 	
-	SetTrackBarPos( IDM_EDIT_SIZE,      m_pCore->GetBrushSize().GetValue() );
-    SetTrackBarPos( IDM_EDIT_INTENSITY, m_pCore->GetBrushIntensity().GetValue() );
+	SetTrackBarPos( IDM_EDIT_SIZE,      pCore->GetBrushSize().GetValue() );
+    SetTrackBarPos( IDM_EDIT_INTENSITY, pCore->GetBrushIntensity().GetValue() );
 
 	// adjust display options window
 
-	m_pDspOptWindow->UpdateDspOptionsControls( m_pCore->GetBrushMode() );
+	m_pDspOptWindow->UpdateDspOptionsControls( pCore->GetBrushMode() );
 }
 
 void EditorWindow::SetSimuMode( bool const bSimulationMode )
@@ -241,10 +241,6 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 			case IDM_EDIT_OPERATION_SUBTRACT:
 				setBrushManipulator( wId );
                 break;
-
-			case IDM_UPDATE_EDITOR_CONTROLS:
-				updateEditControls( );
-				break;
 
             default:
 				assert( false );

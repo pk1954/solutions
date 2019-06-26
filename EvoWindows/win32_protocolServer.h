@@ -15,19 +15,13 @@ public:
 	ProtocolServer( );
 	~ProtocolServer( );
 
-	void Start
-	( 
-		EvolutionCore * const pCore,
-		HistorySystem * const pHistSys
-	)
+	void Start( HistorySystem * const pHistSys )
 	{
-		m_pCore = pCore;
 		m_pHistorySystem = pHistSys;
 	}
 
 	virtual void Notify( bool const );
 
 private:
-	EvolutionCore * m_pCore;
 	HistorySystem * m_pHistorySystem;
 };
