@@ -39,8 +39,9 @@ IDC_EVOLUTION_MAIN MENU
         POPUP "&Windows"
         {
             MENUITEM "Toggle &disp window", IDM_DISP_WINDOW
-            MENUITEM "Toggle &edit window", IDM_EDIT_WINDOW
-			POPUP "Toggle &mini window"
+				MENUITEM "Toggle &edit window", IDM_EDIT_WINDOW
+				MENUITEM "Toggle &main window", IDM_MAIN_WINDOW
+				POPUP "Toggle &mini window"
 			{
 				MENUITEM "on",   IDM_MINI_WINDOW_ON
 				MENUITEM "off",  IDM_MINI_WINDOW_OFF
@@ -182,8 +183,9 @@ IDC_EVOLUTION_MAIN ACCELERATORS
     "e",            IDM_EDIT_WINDOW,  ASCII,   ALT
     "s",            IDM_STAT_WINDOW,  ASCII,   ALT
     "c",            IDM_CRSR_WINDOW,  ASCII,   ALT
-    "p",            IDM_PERF_WINDOW,  ASCII,   ALT
-    VK_ESCAPE,      IDM_ESCAPE,       VIRTKEY
+	"p",            IDM_PERF_WINDOW,  ASCII,   ALT
+	"m",            IDM_MAIN_WINDOW,  ASCII,   ALT
+	VK_ESCAPE,      IDM_ESCAPE,       VIRTKEY
 }
 
 //

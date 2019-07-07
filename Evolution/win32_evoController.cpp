@@ -275,8 +275,9 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			break;
 
         case IDM_DISP_WINDOW:
-        case IDM_EDIT_WINDOW:
-        case IDM_STAT_WINDOW:
+		case IDM_EDIT_WINDOW:
+		case IDM_MAIN_WINDOW:
+		case IDM_STAT_WINDOW:
         case IDM_HIST_WINDOW:
         case IDM_CRSR_WINDOW:
 		case IDM_PERF_WINDOW:

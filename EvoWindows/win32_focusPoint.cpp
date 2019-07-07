@@ -16,7 +16,6 @@ void FocusPoint::Start
     EvoHistorySysGlue * pEvoHistGlue
 )
 {
-    assert( pCore != nullptr );
     m_pEvoHistGlue = pEvoHistGlue;
 }
 
