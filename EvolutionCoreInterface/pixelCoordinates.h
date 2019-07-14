@@ -65,4 +65,3 @@ PIXEL const MAXIMUM_FIELD_SIZE = 1024_PIXEL;
 PixelPoint Pixel2PixelSize( PixelPoint const,   PixelCoordinates const *, PixelCoordinates const * );
 PixelPoint Pixel2PixelPos ( PixelPoint const,   PixelCoordinates const *, PixelCoordinates const * );
 PixelRect  Pixel2PixelRect( PixelRect  const &, PixelCoordinates const *, PixelCoordinates const * );
-

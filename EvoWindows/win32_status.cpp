@@ -1,5 +1,6 @@
 // win32_status.cpp : Verwaltet die Status Bar
 //
+// EvoWindows
 
 #include "stdafx.h"
 #include <array>
@@ -8,6 +9,7 @@
 #include "config.h"
 #include "pixelCoordinates.h"
 #include "EvolutionCore.h"
+#include "win32_tooltip.h"
 #include "win32_readBuffer.h"
 #include "win32_performanceWindow.h"
 #include "win32_status.h"
@@ -64,6 +66,9 @@ void StatusBar::Start
 		-1_PIXEL   // Stop
 	};
 
+	PixelRect rectEvoGen { 0_PIXEL, 0_PIXEL, statwidths[0], STATUS_BAR_HEIGHT };
+	CreateRectToolTip( hwndStatus, 0, & rectEvoGen, L"EvoGeneration dfsdf sdsgsdf ssgs" );
+
 	PIXEL pixPartWidth = statwidths[0];
 	for ( int i = 1; i < static_cast<int>( tPart::Stop ); ++i )
 	{
@@ -98,6 +103,8 @@ void StatusBar::Start
 	long lDefaultDelay = Config::GetConfigValue( Config::tId::generationDelay );
 	SetSpeedTrackBar( lDefaultDelay );
 	PostCommand2Application( IDM_SIMULATION_SPEED, lDefaultDelay );
+
+	CreateBalloonToolTip( hwndStatus, IDM_SIMU_MODE, L"Simulation" );
 }
 
 static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
@@ -206,6 +213,9 @@ void WINAPI StatusBar::createSizeControl( )
     LONG const lMaxPos = value2Trackbar( MAXIMUM_FIELD_SIZE.GetValue() );
 
     SetTrackBarRange( IDM_ZOOM_TRACKBAR, lMinPos, lMaxPos );  
+
+	CreateBalloonToolTip( GetWindowHandle(), IDM_ZOOM_TRACKBAR, L"Zoom" );
+	CreateBalloonToolTip( GetWindowHandle(), IDM_FIT_ZOOM, L"IDM_FIT_ZOOM" );
 } 
 
 void WINAPI StatusBar::createSimulationControl( )

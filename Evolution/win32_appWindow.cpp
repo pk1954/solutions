@@ -62,7 +62,7 @@ AppWindow::AppWindow( ) :
 	Stopwatch stopwatch;
 
 	m_hwndConsole = GetConsoleWindow( );
-	SetWindowPos( m_hwndConsole, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
+	SetWindowPos( m_hwndConsole, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
 
 //	_CrtSetAllocHook( MyAllocHook );
 
@@ -238,6 +238,7 @@ void AppWindow::Start( )
 	m_StatusBar.ClearStatusLine( );
 	m_StatusBar.Show( TRUE );
 	m_EvoController.SetSimulationMode( false );
+	m_WinManager.Show( IDM_MAIN_WINDOW, tBoolOp::opTrue );
 
 	(void)m_MainGridWindow.SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 	m_EvoController.ProcessCommand( IDM_EDIT_MODE );

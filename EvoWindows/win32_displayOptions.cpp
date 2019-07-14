@@ -21,43 +21,11 @@ DspOptWindow::~DspOptWindow( )
 	m_IntValueLambda = nullptr;
 }
 
+
 void DspOptWindow::Start( HWND const hwndParent )
 {
-    StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
+	HWND hwndDlg = StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
 	m_IntValueLambda = nullptr;
-
-	//{
-	//	HWND hwndDlg = GetWindowHandle( );
-	//	HWND hwndTip = CreateWindowEx
-	//				  (
-	//					  WS_EX_TOPMOST, TOOLTIPS_CLASS, nullptr,
-	//			          WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,
-	//					  CW_USEDEFAULT, CW_USEDEFAULT,
-	//					  CW_USEDEFAULT, CW_USEDEFAULT,
-	//					  hwndDlg, nullptr, GetModuleHandle( nullptr ),
-	//					  nullptr
-	//				  );
-	//	assert( hwndTip != nullptr );
-
-	//	SetWindowPos
-	//	(
-	//		hwndTip, HWND_TOPMOST, 0, 0, 0, 0,
-	//		SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE
-	//	);
-
-	//	PTSTR pszText = L"Fyxyxyxyxyx";
-
-	//	// Associate the tooltip with the tool.
-	//	TOOLINFO toolInfo = { 0 };
-	//	toolInfo.cbSize = sizeof(toolInfo);
-	//	toolInfo.hwnd = hwndTip;
-	//	toolInfo.uFlags = TTF_ABSOLUTE | TTF_IDISHWND;
-	//	toolInfo.uId = (UINT_PTR)hwndTip;
-	//	toolInfo.lpszText = pszText;
-	//	::GetClientRect (hwndDlg, &toolInfo.rect);
-
-	//	LRESULT lres = ::SendMessage( hwndTip, TTM_ADDTOOL, 0, (LPARAM)&toolInfo );
-	//}
 }
 
 void DspOptWindow::Stop( )

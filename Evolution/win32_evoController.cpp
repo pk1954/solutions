@@ -125,6 +125,7 @@ void EvoController::enterEditMode( )
 
 	ProcessCommand( IDM_STOP );
 	SetSimulationMode( false );
+	m_pEditorWindow->Show( TRUE );
 }
 
 bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
