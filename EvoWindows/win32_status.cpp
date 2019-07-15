@@ -66,8 +66,12 @@ void StatusBar::Start
 		-1_PIXEL   // Stop
 	};
 
-	PixelRect rectEvoGen { 0_PIXEL, 0_PIXEL, statwidths[0], STATUS_BAR_HEIGHT };
-	CreateRectToolTip( hwndStatus, 0, & rectEvoGen, L"EvoGeneration dfsdf sdsgsdf ssgs" );
+	CreateRectToolTip
+	( 
+		0, 
+		& PixelRect( 0_PIXEL, 0_PIXEL, statwidths[0], STATUS_BAR_HEIGHT ), 
+		L"EvoGeneration dfsdf sdsgsdf ssgs" 
+	);
 
 	PIXEL pixPartWidth = statwidths[0];
 	for ( int i = 1; i < static_cast<int>( tPart::Stop ); ++i )
@@ -104,7 +108,7 @@ void StatusBar::Start
 	SetSpeedTrackBar( lDefaultDelay );
 	PostCommand2Application( IDM_SIMULATION_SPEED, lDefaultDelay );
 
-	CreateBalloonToolTip( hwndStatus, IDM_SIMU_MODE, L"Simulation" );
+	CreateBalloonToolTip( IDM_SIMU_MODE, L"Simulation" );
 }
 
 static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
@@ -214,8 +218,8 @@ void WINAPI StatusBar::createSizeControl( )
 
     SetTrackBarRange( IDM_ZOOM_TRACKBAR, lMinPos, lMaxPos );  
 
-	CreateBalloonToolTip( GetWindowHandle(), IDM_ZOOM_TRACKBAR, L"Zoom" );
-	CreateBalloonToolTip( GetWindowHandle(), IDM_FIT_ZOOM, L"IDM_FIT_ZOOM" );
+	CreateBalloonToolTip( IDM_ZOOM_TRACKBAR, L"Zoom" );
+	CreateBalloonToolTip( IDM_FIT_ZOOM, L"IDM_FIT_ZOOM" );
 } 
 
 void WINAPI StatusBar::createSimulationControl( )

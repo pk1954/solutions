@@ -8,6 +8,7 @@
 #include "commctrl.h"
 #include "PixelTypes.h"
 #include "ObserverInterface.h"
+#include "win32_tooltip.h"
 #include "win32_util.h"
 
 class Observer;
@@ -56,7 +57,22 @@ public:
 
     HDC  BeginPaint( LPPAINTSTRUCT lpPaint ) const { return ::BeginPaint( m_hwnd, lpPaint ); }
     BOOL EndPaint  ( LPPAINTSTRUCT lpPaint ) const { return ::EndPaint  ( m_hwnd, lpPaint ); }
-    
+
+	HWND CreateBalloonToolTip( int const id, LPWSTR const t ) 
+	{ 
+		return ::CreateBalloonToolTip( m_hwnd, id, t );	
+	}
+
+	HWND CreateStdToolTip( int const id, LPWSTR const t ) 
+	{ 
+		return ::CreateStdToolTip    ( m_hwnd, id, t );	
+	}
+
+	HWND CreateRectToolTip( int const id, PixelRect * const pRect, LPWSTR const t ) 
+	{ 
+		return ::CreateRectToolTip( m_hwnd, id, pRect, t );	
+	}
+
 	HBITMAP const CreateCompatibleBitmap( HDC const hDC )
 	{
 		PixelRectSize rectSize = GetClRectSize( );

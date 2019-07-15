@@ -38,11 +38,11 @@ void EditorWindow::Start
     SetTrackBarRange( IDM_EDIT_SIZE,      1L,  50L );
     SetTrackBarRange( IDM_EDIT_INTENSITY, 0L, 100L );
     UpdateEditControls( );
-	CreateStdToolTip    ( GetWindowHandle(), 0, L"Mit dem Editor kann das Modell (Individuen, Hintergrund) manuell verändert werden" );
+	CreateStdToolTip(  0, L"Mit dem Editor kann das Modell (Individuen, Hintergrund) manuell verändert werden" );
 	
 //	CreateBalloonToolTip( GetWindowHandle(), IDM_EDIT_MODE, L"Legt fest, welche Operation durch die linke Maustaste ausgelöst wird." );
 //  funktioniert nicht	
-	CreateBalloonToolTip( GetWindowHandle(), IDM_MOVE, L"Verschieben" );
+	CreateBalloonToolTip( IDM_MOVE, L"Verschieben" );
 }
 
 void EditorWindow::Stop( )
