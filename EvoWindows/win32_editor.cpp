@@ -8,6 +8,7 @@
 #include "config.h"
 #include "EvolutionCore.h"
 #include "win32_util.h"
+#include "win32_tooltip.h"
 #include "win32_status.h"
 #include "win32_workThreadInterface.h"
 #include "win32_displayOptions.h"
@@ -37,11 +38,16 @@ void EditorWindow::Start
     SetTrackBarRange( IDM_EDIT_SIZE,      1L,  50L );
     SetTrackBarRange( IDM_EDIT_INTENSITY, 0L, 100L );
     UpdateEditControls( );
+	CreateStdToolTip    ( GetWindowHandle(), 0, L"Mit dem Editor kann das Modell (Individuen, Hintergrund) manuell verändert werden" );
+	
+//	CreateBalloonToolTip( GetWindowHandle(), IDM_EDIT_MODE, L"Legt fest, welche Operation durch die linke Maustaste ausgelöst wird." );
+//  funktioniert nicht	
+	CreateBalloonToolTip( GetWindowHandle(), IDM_MOVE, L"Verschieben" );
 }
 
 void EditorWindow::Stop( )
 {
-	DestroyWindow( GetWindowHandle( ) );
+	DestroyWindow( );
 	m_pWorkThreadInterface = nullptr;
 	m_pCore                = nullptr;
 	m_pDspOptWindow        = nullptr;

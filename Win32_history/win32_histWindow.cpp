@@ -47,7 +47,7 @@ void HistWindow::Start
 
 void HistWindow::Stop( )
 {
-	DestroyWindow( GetWindowHandle( ) );
+	DestroyWindow( );
 	m_pHistSys = nullptr;
 }
 

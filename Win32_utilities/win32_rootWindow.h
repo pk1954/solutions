@@ -41,8 +41,9 @@ public:
 	BOOL          const IsInClientRect( PixelPoint const & p ) const { return Util::IsInClientRect( m_hwnd, p ); }
 	BOOL          const IsInClientRect( PixelRect  const & r ) const { return Util::IsInClientRect( m_hwnd, r ); }
 
-    BOOL          const IsWindowVisible( )            const { return ::IsWindowVisible( m_hwnd ); }
-    HWND          const SetCapture( )                 const { return ::SetCapture     ( m_hwnd ); }
+	BOOL          const DestroyWindow( )              const { return ::DestroyWindow  ( m_hwnd ); }
+	BOOL          const IsWindowVisible( )            const { return ::IsWindowVisible( m_hwnd ); }
+	HWND          const SetCapture( )                 const { return ::SetCapture     ( m_hwnd ); }
     HWND          const SetFocus( )                   const { return ::SetFocus       ( m_hwnd ); }
     HWND          const GetDlgItem( int const iItem ) const { return ::GetDlgItem     ( m_hwnd, iItem ); }
     BOOL          const IsCaptured( )                 const { return ::GetCapture( ) == m_hwnd; }

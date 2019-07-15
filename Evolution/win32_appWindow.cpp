@@ -61,6 +61,8 @@ AppWindow::AppWindow( ) :
 {
 	Stopwatch stopwatch;
 
+	m_hCrsrWait = LoadCursor( NULL, IDC_WAIT );
+
 	m_hwndConsole = GetConsoleWindow( );
 	SetWindowPos( m_hwndConsole, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
 
@@ -317,7 +319,8 @@ LRESULT AppWindow::UserProc
 
 		case IDM_RESET:
 		{
-			int iRes = ResetDialog::Show( m_hwndApp );
+			int     iRes    = ResetDialog::Show( m_hwndApp );
+			HCURSOR crsrOld = SetCursor( m_hCrsrWait );
 			switch ( iRes )
 			{
 			case IDM_SOFT_RESET:
@@ -334,6 +337,7 @@ LRESULT AppWindow::UserProc
 				);
 				Start();
 			}
+			SetCursor( crsrOld );
 		}
 			break;
 
@@ -366,7 +370,7 @@ LRESULT AppWindow::UserProc
 	case WM_CLOSE:
 		if ( ! m_bStopped )
 			m_WinManager.StoreWindowConfiguration( );
-		DestroyWindow( GetWindowHandle( ) );        
+		DestroyWindow( );        
 		return TRUE;  
 
     case WM_DESTROY:

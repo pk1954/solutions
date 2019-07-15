@@ -30,7 +30,7 @@ void DspOptWindow::Start( HWND const hwndParent )
 
 void DspOptWindow::Stop( )
 {
-	DestroyWindow( GetWindowHandle( ) );
+	DestroyWindow( );
 }
 
 void DspOptWindow::UpdateDspOptionsControls( tBrushMode const brushMode )

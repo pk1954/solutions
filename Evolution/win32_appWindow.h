@@ -70,6 +70,7 @@ private:
 	HWND        m_hwndConsole;
 	Util::Event m_event;
 	BOOL        m_bStopped;  // if true, no grid visible, many functions not available
+	HCURSOR     m_hCrsrWait;
 
 	FocusPoint          m_FocusPoint;
 	WinManager          m_WinManager;

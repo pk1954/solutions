@@ -105,8 +105,7 @@ void GridWindow::Start
 
 void GridWindow::Stop( )
 {
-	DestroyWindow( GetWindowHandle() );
-
+	DestroyWindow( );
 	m_pGraphics = nullptr;
 }
 
