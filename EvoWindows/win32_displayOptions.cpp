@@ -39,18 +39,18 @@ void DspOptWindow::UpdateDspOptionsControls( tBrushMode const brushMode )
 	{
 		static std::unordered_map < tBrushMode, WORD > mapDspOptTable =
 		{
-			{ tBrushMode::randomStrat, IDM_ANIMALS    },
-			{ tBrushMode::cooperate,   IDM_ANIMALS    },
-			{ tBrushMode::defect,      IDM_ANIMALS    },
-			{ tBrushMode::tit4tat,     IDM_ANIMALS    },
-			{ tBrushMode::noAnimals,   IDM_ANIMALS    },
-			{ tBrushMode::mutRate,     IDM_MUT_RATE   },
-			{ tBrushMode::fertility,   IDM_FERTILITY  },
-			{ tBrushMode::food,        IDM_FOOD_STOCK },
-			{ tBrushMode::fertilizer,  IDM_FERTILIZER }
+			{ tBrushMode::randomStrat, IDM_INDIVIDUALS },
+			{ tBrushMode::cooperate,   IDM_INDIVIDUALS },
+			{ tBrushMode::defect,      IDM_INDIVIDUALS },
+			{ tBrushMode::tit4tat,     IDM_INDIVIDUALS },
+			{ tBrushMode::noAnimals,   IDM_INDIVIDUALS },
+			{ tBrushMode::mutRate,     IDM_MUT_RATE    },
+			{ tBrushMode::fertility,   IDM_FERTILITY   },
+			{ tBrushMode::food,        IDM_FOOD_STOCK  },
+			{ tBrushMode::fertilizer,  IDM_FERTILIZER  }
 		};
 		WORD const wDspOptId = mapDspOptTable.at( brushMode );
-		if ( wDspOptId == IDM_ANIMALS )
+		if ( wDspOptId == IDM_INDIVIDUALS )
 			SetIndividualsVisible( );
 		else 
 			SetDisplayMode( wDspOptId );
@@ -67,12 +67,12 @@ void DspOptWindow::SetDisplayMode( WORD const wMode )
 
 void DspOptWindow::SetIndividualsVisible( )
 {
-	Button_SetCheck( GetDlgItem( IDM_ANIMALS), BST_CHECKED );
+	Button_SetCheck( GetDlgItem( IDM_INDIVIDUALS), BST_CHECKED );
 }
 
 BOOL DspOptWindow::AreIndividualsVisible( ) const
 {
-    return ( BST_CHECKED == Button_GetCheck( GetDlgItem( IDM_ANIMALS ) ) );
+    return ( BST_CHECKED == Button_GetCheck( GetDlgItem( IDM_INDIVIDUALS ) ) );
 }
 
 INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
@@ -80,8 +80,8 @@ INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
     switch (message)
     {
     case WM_INITDIALOG:
-		Button_SetCheck( GetDlgItem( IDM_ANIMALS   ), BST_CHECKED );
-		Button_SetCheck( GetDlgItem( IDM_FOOD_STOCK), BST_CHECKED );
+		Button_SetCheck( GetDlgItem( IDM_INDIVIDUALS ), BST_CHECKED );
+		Button_SetCheck( GetDlgItem( IDM_FOOD_STOCK  ), BST_CHECKED );
         return TRUE;
 
     case WM_COMMAND:

@@ -64,7 +64,7 @@
 #define IDM_MINI_WINDOW_OFF                     (IDM_WINDOWS_BASE + 21)
 #define IDM_MINI_WINDOW_AUTO                    (IDM_WINDOWS_BASE + 22)
 
-#define IDM_ANIMALS                             450
+#define IDM_INDIVIDUALS                         450
 
 #define IDM_EDIT_SHAPE_BASE                     500
 #define IDM_EDIT_CIRCLE                         (IDM_EDIT_SHAPE_BASE + 1)
