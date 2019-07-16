@@ -65,7 +65,12 @@ public:
 
 	HWND CreateStdToolTip( int const id, LPWSTR const t ) 
 	{ 
-		return ::CreateStdToolTip    ( m_hwnd, id, t );	
+		return ::CreateStdToolTip( m_hwnd, id, t );	
+	}
+
+	HWND CreateWindowToolTip( LPWSTR const t ) 
+	{ 
+		return ::CreateWindowToolTip( m_hwnd, t );	
 	}
 
 	HWND CreateRectToolTip( int const id, PixelRect * const pRect, LPWSTR const t ) 

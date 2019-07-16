@@ -9,6 +9,7 @@
 #include "gridNeighbor.h"
 #include "EvolutionCore.h"
 #include "win32_util.h"
+#include "win32_tooltip.h"
 #include "win32_baseDialog.h"
 #include "win32_displayOptions.h"
 
@@ -21,11 +22,19 @@ DspOptWindow::~DspOptWindow( )
 	m_IntValueLambda = nullptr;
 }
 
-
 void DspOptWindow::Start( HWND const hwndParent )
 {
 	HWND hwndDlg = StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
 	m_IntValueLambda = nullptr;
+
+	CreateWindowToolTip( L"Display options allow to show/hide individuals and to choose what is displayed as background." );
+	CreateBalloonToolTip( IDM_INDIVIDUALS,     L"if deselected, individuals are hidden. Rarelay used." );
+	CreateBalloonToolTip( IDM_MUT_RATE,        L"Show mutation rate as background." );
+	CreateBalloonToolTip( IDM_MUT_RATE,        L"Show mutation rate as background." );
+	CreateBalloonToolTip( IDM_FERTILITY ,      L"Show fertility as background." );
+	CreateBalloonToolTip( IDM_FOOD_STOCK,      L"Show available food as background." );
+	CreateBalloonToolTip( IDM_FERTILIZER,      L"Show amount of fertilizer as background." );
+	CreateBalloonToolTip( IDM_DSP_ENV_NOTHING, L"Show no background." );
 }
 
 void DspOptWindow::Stop( )

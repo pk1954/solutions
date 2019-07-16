@@ -171,11 +171,7 @@ namespace Util
     {
         RECT rect;
         BOOL bRes = GetWindowRect( hwnd, &rect );
-		if ( ! bRes )
-		{
-			DWORD dwErr = GetLastError( );
-			int x = 9876987;
-		}
+		assert( bRes );
         return PixelRectSizeFromRECT( rect );
     }
 

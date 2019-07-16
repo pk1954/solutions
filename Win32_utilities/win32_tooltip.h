@@ -9,5 +9,6 @@
 
 HWND CreateToolTipEx     ( HWND const, int const, BOOL const, PixelRect * const, LPWSTR const );
 HWND CreateStdToolTip    ( HWND const, int const, LPWSTR const );
+HWND CreateWindowToolTip ( HWND const, LPWSTR const );
 HWND CreateBalloonToolTip( HWND const, int const, LPWSTR const );
 HWND CreateRectToolTip   ( HWND const, int const, PixelRect * const, LPWSTR const );

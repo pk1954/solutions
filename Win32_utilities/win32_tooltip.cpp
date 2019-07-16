@@ -20,6 +20,15 @@ HWND CreateRectToolTip
 	return CreateToolTipEx( hwndParent, idTool, TRUE, pRect, szText );
 }
 
+HWND CreateWindowToolTip
+(
+	HWND   const hwndParent,
+	LPWSTR const szText
+)
+{
+	return CreateToolTipEx( hwndParent, 0, FALSE, nullptr, szText );
+}
+
 HWND CreateStdToolTip
 (
 	HWND   const hwndParent,

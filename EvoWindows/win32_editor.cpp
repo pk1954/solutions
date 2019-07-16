@@ -38,11 +38,11 @@ void EditorWindow::Start
     SetTrackBarRange( IDM_EDIT_SIZE,      1L,  50L );
     SetTrackBarRange( IDM_EDIT_INTENSITY, 0L, 100L );
     UpdateEditControls( );
-	CreateStdToolTip(  0, L"Mit dem Editor kann das Modell (Individuen, Hintergrund) manuell verändert werden" );
+	CreateWindowToolTip( L"The editor allows to manipulate the model manually (individuals, mutation rate, fertility etc.) by using the left mouse button." );
 	
 //	CreateBalloonToolTip( GetWindowHandle(), IDM_EDIT_MODE, L"Legt fest, welche Operation durch die linke Maustaste ausgelöst wird." );
 //  funktioniert nicht	
-	CreateBalloonToolTip( IDM_MOVE, L"Verschieben" );
+	CreateBalloonToolTip( IDM_MOVE, L"Left mouse button moves the model on the screen (no changes to the model). " );
 }
 
 void EditorWindow::Stop( )
