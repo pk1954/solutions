@@ -70,7 +70,7 @@ void StatusBar::Start
 	( 
 		0, 
 		& PixelRect( 0_PIXEL, 0_PIXEL, statwidths[0], STATUS_BAR_HEIGHT ), 
-		L"EvoGeneration dfsdf sdsgsdf ssgs" 
+		L"Generation number. Is incremented at every computed generation, not influenced by editor operations." 
 	);
 
 	PIXEL pixPartWidth = statwidths[0];
@@ -218,8 +218,10 @@ void WINAPI StatusBar::createSizeControl( )
 
     SetTrackBarRange( IDM_ZOOM_TRACKBAR, lMinPos, lMaxPos );  
 
-	CreateBalloonToolTip( IDM_ZOOM_TRACKBAR, L"Zoom" );
-	CreateBalloonToolTip( IDM_FIT_ZOOM, L"IDM_FIT_ZOOM" );
+	CreateBalloonToolTip( IDM_ZOOM_OUT,      L"Zoom out one step" );
+	CreateBalloonToolTip( IDM_ZOOM_TRACKBAR, L"Move slider to zoom in or out" );
+	CreateBalloonToolTip( IDM_ZOOM_IN,       L"Zoom in one step" );
+	CreateBalloonToolTip( IDM_FIT_ZOOM, L"Zoom to maximum possible size, which fits in actual window" );
 } 
 
 void WINAPI StatusBar::createSimulationControl( )

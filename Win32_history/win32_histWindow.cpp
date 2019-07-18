@@ -9,6 +9,7 @@
 #include "win32_util.h"
 #include "HistorySystem.h"
 #include "historyIterator.h"
+#include "win32_tooltip.h"
 #include "win32_genDisplayWindow.h"
 #include "win32_histWindow.h"
 
@@ -284,6 +285,10 @@ LRESULT HistWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
     case WM_LBUTTONUP:
         (void)ReleaseCapture( );
         return FALSE;
+
+	case WM_SIZE:
+		CreateWindowToolTip( L"The history window allows to step back to earlier versions of the model. Use left mouse button. The past is on the left side." );
+		break;
 
 	default:
         break;

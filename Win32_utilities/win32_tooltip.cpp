@@ -127,7 +127,7 @@ HWND CreateToolTipEx
 	LRESULT res = SendMessage( hwndTip, TTM_ADDTOOL, 0, (LPARAM)&ti );
 	assert( res > 0 );
 
-	SendMessage( hwndTip, TTM_SETMAXTIPWIDTH, 0, 15 );
+	SendMessage( hwndTip, TTM_SETMAXTIPWIDTH, 0, 100 );
 
 	return hwndTip;
 }
