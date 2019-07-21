@@ -43,6 +43,7 @@
 #define IDM_CHOOSE_STRATEGY_COLOR               163
 
 #define IDC_EVOLUTION_MAIN                      202
+#define IDD_TIMESTAMP                           203
 #define IDD_EDITOR                              207
 #define IDD_DISPLAY_OPTIONS                     208
 

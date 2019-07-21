@@ -5,6 +5,8 @@
 #include "resource.h"
 #include "win32_aboutBox.h"
 
+static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);
+
 static INT_PTR CALLBACK About
 ( 
     HWND   const hDlg, 
@@ -17,6 +19,10 @@ static INT_PTR CALLBACK About
 
     switch (message)
     {
+
+	case WM_INITDIALOG:
+		SetDlgItemText( hDlg, IDD_TIMESTAMP, COMPILE_TIMESTAMP );
+		return TRUE;
 
 	case WM_COMMAND:
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
@@ -33,7 +39,7 @@ static INT_PTR CALLBACK About
     return FALSE;
 }
 
-void ShowAboutBox( HWND const hwndParent )
+void ShowAboutBox( HWND const hwndParent ) 
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
     (void)DialogBox( hInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hwndParent, About );
