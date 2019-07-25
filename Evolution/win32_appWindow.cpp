@@ -197,7 +197,7 @@ void AppWindow::Start( )
 
 	m_HistInfoWindow.SetHistorySystem( m_pHistorySystem );
 
-	m_pModelDataWork   = m_EvoHistGlue.Start( m_pHistorySystem, & m_HistInfoWindow ); 
+	m_pModelDataWork   = m_EvoHistGlue.Start( m_pHistorySystem, & m_HistInfoWindow, TRUE ); 
 	pCoreWork          = m_pModelDataWork->GetEvolutionCore();
 	m_pEvoCore4Display = EvolutionCore::CreateCore( );
 

@@ -1,0 +1,14 @@
+[42m
+COMPARE V1.2
+Test performed: 06/24/19 17:50:43
+Spec file:   TEST_4.SPC
+Result file: TEST_4.RES
+[41m
+EvolutionConsole Debug x64
+Build at Jun 24 2019 17:45:25
+ ***** EvolutionConsole terminates successfully *****
+
+[42m
+
+*** Compare: ok
+[40m

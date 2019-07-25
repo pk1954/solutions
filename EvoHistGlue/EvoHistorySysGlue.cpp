@@ -23,7 +23,8 @@ EvoHistorySysGlue::EvoHistorySysGlue( ) :
 EvoModelDataGlue * EvoHistorySysGlue::Start
 (
 	HistorySystem     * const pHistorySystem,
-	ObserverInterface * const pObserver
+	ObserverInterface * const pObserver,
+	BOOL                const bAsync      
 )
 {
 	m_pHistorySystem = pHistorySystem;
@@ -38,7 +39,7 @@ EvoModelDataGlue * EvoHistorySysGlue::Start
 		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( tEvoCmd::reset ), 0 )
     );
 
-	m_HistAllocThread.Start( m_pHistorySystem, TRUE );   // delegate allocation of history slots to a work thread
+	m_HistAllocThread.Start( m_pHistorySystem, bAsync );   // delegate allocation of history slots to a work thread
 
 	return static_cast< EvoModelDataGlue * >( pModelWork );
 }

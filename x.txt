@@ -1,0 +1,49 @@
+ Datentr„ger in Laufwerk F: ist Volume
+ Volumeseriennummer: 946F-4161
+
+ Verzeichnis von F:\SW-projects\Evolution
+
+20.07.2019  23:20    <DIR>          .
+20.07.2019  23:20    <DIR>          ..
+20.04.2019  23:00             2.581 .gitattributes
+20.04.2019  23:00             4.670 .gitignore
+20.04.2019  23:00               928 buildall.bat
+20.04.2019  23:00               507 cloneRepository.bat
+07.05.2019  18:17    <DIR>          Compare
+20.04.2019  23:00             2.340 core-trace.out
+07.05.2019  18:17    <DIR>          D3D
+22.06.2019  22:09    <DIR>          Debug
+20.04.2019  23:06    <DIR>          DirectX-test
+23.06.2019  17:18    <DIR>          EvoHistGlue
+20.07.2019  22:48    <DIR>          Evolution
+20.04.2019  23:00            20.244 Evolution.sln
+24.06.2019  17:45    <DIR>          EvolutionConsole
+26.06.2019  12:08    <DIR>          EvolutionCore
+14.07.2019  17:28    <DIR>          EvolutionCoreInterface
+17.05.2019  19:16    <DIR>          EvolutionCoreTest
+20.04.2019  23:06    <DIR>          EvolutionUnitTests
+10.05.2019  17:13            26.279 Evolution_Architecture.docx
+20.04.2019  23:00            57.106 Evolution_Architecture.pptx
+20.07.2019  22:41    <DIR>          EvoWindows
+20.04.2019  23:06    <DIR>          FoodOptimization
+07.05.2019  18:16    <DIR>          GDI
+20.04.2019  23:06    <DIR>          GenomeTest
+23.06.2019  17:18    <DIR>          History
+23.06.2019  17:18    <DIR>          HistoryInterface
+23.06.2019  17:18    <DIR>          HistoryTest
+20.04.2019  23:00               274 LIN.BAT
+20.04.2019  23:00            16.157 Random.xlsx
+07.07.2019  19:28    <DIR>          Release
+18.05.2019  22:28    <DIR>          runtimeCPP
+18.05.2019  23:48    <DIR>          ShapeLib
+20.04.2019  23:00               753 testall.bat
+04.05.2019  23:57    <DIR>          Tests
+20.04.2019  23:06    <DIR>          TimerTest
+22.06.2019  20:51    <DIR>          Utilities
+18.07.2019  21:59    <DIR>          Win32_history
+18.07.2019  22:04    <DIR>          Win32_utilities
+07.05.2019  18:17    <DIR>          Win32_utilities_test
+20.07.2019  23:21                 0 x.txt
+20.04.2019  23:10    <DIR>          x64
+              12 Datei(en),        131.839 Bytes
+              30 Verzeichnis(se), 490.436.182.016 Bytes frei

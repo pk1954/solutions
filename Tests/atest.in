@@ -1,0 +1,122 @@
+PostSetSimulationMode tBoolOp::opFalse
+PostRefresh
+PostRefresh
+PostSetSimulationMode tBoolOp::opFalse
+PostSetBrushMode tBrushMode::fertility
+PostRefresh
+PostDoEdit    74   49 
+PostRefresh
+PostDoEdit    74   49 
+PostRefresh
+PostDoEdit    74   49 
+PostRefresh
+PostRefresh
+PostSetSimulationMode tBoolOp::opTrue
+PostGenerationStep
+PostRefresh
+PostSetBrushMode tBrushMode::move
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostSetSimulationMode tBoolOp::opFalse
+PostSetBrushMode tBrushMode::randomStrat
+PostRefresh
+PostSetSimulationMode tBoolOp::opToggle
+PostSetBrushMode tBrushMode::move
+PostSetSimulationMode tBoolOp::opToggle
+PostRefresh
+PostSetSimulationMode tBoolOp::opFalse
+PostSetBrushMode tBrushMode::randomStrat
+PostRefresh
+PostDoEdit    55   64 
+PostRefresh
+PostSetPOI    66   54 
+PostRefresh
+PostSetSimulationMode tBoolOp::opToggle
+PostSetBrushMode tBrushMode::move
+PostGenerationStep
+

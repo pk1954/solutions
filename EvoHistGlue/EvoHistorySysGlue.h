@@ -28,7 +28,8 @@ public:
 	EvoModelDataGlue * Start
 	( 
 		HistorySystem     * const,
-		ObserverInterface * const
+		ObserverInterface * const,
+		BOOL                const
 	);
 
 	void Stop( );
