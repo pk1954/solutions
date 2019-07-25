@@ -146,9 +146,11 @@ void Grid::ResetGrid( )
 
 void Grid::displayAndWait( )
 {
-	m_pObservers->Notify( true );
-	m_pEventPOI->Wait( );                // wait for user input to continue
-	m_bPOI = GridPOI::IsPoi( m_gpRun );  // POI may have changed in the meantime
+	if ( m_pObservers )
+		m_pObservers->Notify( true );
+	if ( m_pEventPOI )
+		m_pEventPOI->Wait( );                // wait for user input to continue
+	m_bPOI = GridPOI::IsPoi( m_gpRun );      // POI may have changed in the meantime
 }
 
 void Grid::handleBaseConsumption( GridField & gfRun )

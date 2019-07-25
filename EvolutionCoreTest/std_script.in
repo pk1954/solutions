@@ -1,0 +1,6 @@
+SetBrushShape tShape::Grid
+SetBrushMode tBrushMode::fertility
+ModelDoEdit (0/0)
+ModelDoEdit (0/0)
+SetBrushMode tBrushMode::randomStrat
+ModelDoEdit (0/0)

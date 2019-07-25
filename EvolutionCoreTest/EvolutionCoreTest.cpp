@@ -6,34 +6,35 @@
 #include <iostream>
 #include "config.h"
 #include "trace.h"
+#include "script.h"
 #include "win32_hiResTimer.h"
 #include "gridPoint.h"
 #include "gridRect.h"
 #include "GridDimensions.h"
+#include "EvolutionCoreWrappers.h"
+#include "EvolutionCore.h"
 
 using std::wofstream;
 using std::wstring;
 using std::wcout;
 using std::endl;
 
-int const NRUNS = 5000;
+int const NRUNS = 2000;
+
+EvolutionCore * pCore;
 
 void testee()
 {
 	for ( int i = 0; i <= NRUNS; ++i )
-		Apply2Grid
-		( 
-			[](GridPoint const gp)
-			{
-				// include code to be tested here
-			}
-		);
+	{
+		pCore->Compute( );
+	}
 }
 
 void tara()
 {
 	for ( int i = 0; i <= NRUNS; ++i )
-		Apply2Grid( [](GridPoint const gp){ } );
+	{ }
 }
 
 void DoTest( )
@@ -41,8 +42,21 @@ void DoTest( )
 	HiResTimer m_hrtimer;
 	wofstream  m_traceStream = OpenTraceFile( L"main_trace.out" );
 
-	GridDimensions::DefineGridSize( 200_GRID_COORD, 100_GRID_COORD, 8 );
-	Neighborhood::InitClass( 8 );
+	Config::SetDefaultConfiguration( );
+	Config::DefineConfigWrapperFunctions( );
+	Script::ProcessScript( L"std_configuration.in" );
+	GridDimensions::DefineGridSize
+	( 
+		GRID_COORD{ Config::GetConfigValueShort( Config::tId::gridWidth ) }, 
+		GRID_COORD{ Config::GetConfigValueShort( Config::tId::gridHeight ) }, 
+		Config::GetConfigValue( Config::tId::nrOfNeighbors ) 
+	);
+	EvolutionCore::InitClass( GridDimensions::GetNrOfNeigbors(), nullptr, nullptr );
+
+	pCore = EvolutionCore::CreateCore( );
+	DefineCoreWrapperFunctions( pCore );
+
+	Script::ProcessScript( L"std_script.in" );
 
 	m_hrtimer.Start( );
 	tara( );
@@ -54,6 +68,8 @@ void DoTest( )
 	m_hrtimer.Start( );
 	testee( );
 	m_hrtimer.Stop( );
+
+	wcout << L"Gen " << pCore->GetEvoGenerationNr().GetValue() << L" " << pCore->GetNrOfLivingIndividuals( ) << L" individuals alive" << endl;
 
 	DWORD dwMicroSecsBrutto = m_hrtimer.Get( );
 	DWORD dwMilliSecsBrutto = dwMicroSecsBrutto / 1000;
