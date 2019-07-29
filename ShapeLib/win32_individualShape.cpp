@@ -19,13 +19,14 @@ void IndividualShape::PrepareShape( PixelPoint const ppOffset, PixelRectSize con
 		PIXEL pixWidth  { getShapeWidth()  };
 		PIXEL pixHeight { getShapeHeight() };
 
-		PixelPoint    pixPosSubShape  { GetShapePos( ) };
-		PixelRectSize pixSizeSubShape { PixelRectSize( pixWidth / 2, pixHeight ) };
+		PixelPoint pixPosSubShape { GetShapePos( ) };
+		PIXEL      pixHalfWidth   { pixWidth / 2 };
 
-		if ( m_leftColumn.GetMinWidth() + m_rightColumn.GetMinWidth() <= pixWidth )
+		if ( pixHalfWidth >= m_leftColumn.GetMinWidth() )  // if left column fits in half of available space
 		{
+			PixelRectSize pixSizeSubShape { PixelRectSize( pixHalfWidth, pixHeight ) };
 			m_leftColumn .PrepareShape( pixPosSubShape, pixSizeSubShape );
-			pixPosSubShape += PixelPoint( pixWidth / 2, 0_PIXEL );
+			pixPosSubShape += PixelPoint( pixHalfWidth, 0_PIXEL );
 			m_rightColumn.PrepareShape( pixPosSubShape, pixSizeSubShape );
 		}
 		else

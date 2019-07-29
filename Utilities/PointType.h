@@ -24,6 +24,11 @@ public:
     bool      const operator== (PointType const a) const { return (m_x == a.m_x) && (m_y == a.m_y); }
     bool      const operator!= (PointType const a) const { return (m_x != a.m_x) || (m_y != a.m_y); }
 
+	bool      const operator<= (PointType const a) const { return (m_x <= a.m_x) && (m_y <= a.m_y); }
+	bool      const operator<  (PointType const a) const { return (m_x <  a.m_x) && (m_y <  a.m_y); }
+	bool      const operator>= (PointType const a) const { return (m_x >= a.m_x) && (m_y >= a.m_y); }
+	bool      const operator>  (PointType const a) const { return (m_x >  a.m_x) && (m_y >  a.m_y); }
+		      
     PointType const operator+= (PointType const a) { m_x += a.m_x; m_y += a.m_y; return * this; }
     PointType const operator-= (PointType const a) { m_x -= a.m_x; m_y -= a.m_y; return * this; }
     PointType const operator%= (PointType const a) { m_x %= a.m_x; m_y %= a.m_y; return * this; }

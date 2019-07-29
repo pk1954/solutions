@@ -92,13 +92,12 @@ public:
 
 	bool SetShapeRect( PixelPoint const ppOffset, PixelRectSize const ppSize )
 	{
-		bool bRes = ( ppSize.GetX() >= m_minSize.GetX() ) && 
-			        ( ppSize.GetY() >= m_minSize.GetY() );
-		if ( bRes )
+		bool bBigEnough = ( ppSize >= m_minSize ); 
+		if ( bBigEnough )
 			m_rect = PixelRect( ppOffset, ppSize );
 		else 
 			m_rect = PixelRect::ZERO_VAL( );
-		return bRes;
+		return bBigEnough;
 	}
 
 	PixelPoint const GetShapePos( )
