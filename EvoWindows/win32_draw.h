@@ -69,7 +69,7 @@ private:
 
 	static CLUT_INDEX const MAX_BG_COLOR()
 	{
-		static const CLUT_INDEX res(255);
+		static CLUT_INDEX constexpr res(255);
 		return res;
 	}
 

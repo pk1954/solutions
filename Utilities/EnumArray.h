@@ -62,7 +62,7 @@ public:
 	}
 
 private:
-	static const int COUNT = static_cast<int>( INDEX_TYPE::Id::count );
+	static int constexpr COUNT = static_cast<int>( INDEX_TYPE::Id::count );
 
     std::array < T, COUNT > m_tArray;
 };

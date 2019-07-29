@@ -83,7 +83,7 @@ void gotoGeneration( HistorySystem * const pHistorySys, HIST_GENERATION const hi
 
 void DoTest( )
 {
-	static const long NR_OF_SLOTS {10};
+	static long constexpr NR_OF_SLOTS {10};
 
 	HistorySystem      * pHistorySys = HistorySystem::CreateHistorySystem( );
 	HistTestModelFactory modelFactory;

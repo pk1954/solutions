@@ -18,7 +18,7 @@ public:
 
 	static CLUT_INDEX const STRATEGY_COLOR()
 	{
-		static const CLUT_INDEX res(-1);
+		static CLUT_INDEX constexpr res(-1);
 		return res;
 	}
 

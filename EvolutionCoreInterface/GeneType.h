@@ -32,7 +32,7 @@ public:
 		undefined = count
 	};
 
-	static const int COUNT = static_cast<int>( Id::count );
+	static int constexpr COUNT = static_cast<int>( Id::count );
 
 	static void Apply2AllEnabledGeneTypes( std::function<void(Id const &)> const & );
 

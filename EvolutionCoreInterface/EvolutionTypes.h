@@ -21,17 +21,17 @@ using PERCENT        = NamedType< short, struct PERCENT_Parameter >;
 
 std::wostream & operator<< ( std::wostream & out, IND_ID const & );
 
-constexpr PERCENT operator"" _PERCENT( unsigned long long ull )
+PERCENT constexpr operator"" _PERCENT( unsigned long long ull )
 {
 	return PERCENT( CastToShort( ull ) );
 }
 
-constexpr ENERGY_UNITS operator"" _ENERGY_UNITS( unsigned long long ull )
+ENERGY_UNITS constexpr operator"" _ENERGY_UNITS( unsigned long long ull )
 {
 	return ENERGY_UNITS( CastToShort( ull ) );
 }
 
-static int const IMEMSIZE_MAX = 9;
+int constexpr IMEMSIZE_MAX = 9;
 
 enum class tDisplayMode
 {

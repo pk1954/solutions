@@ -19,7 +19,7 @@ PIXEL GridPointShape::GetIndShapeSize( ) // returns half of side length
 
 void GridPointShape::RefreshLayout( EvolutionCore const * const pCore )
 {
-	static const PIXEL MARGIN = 3_PIXEL;
+	static PIXEL constexpr MARGIN = 3_PIXEL;
 
 	PixelRectSize const minCoord     = m_coordShape.MinimalSize( pCore );
 	PixelRectSize const minIndiv     = m_indivShape.MinimalSize( pCore );

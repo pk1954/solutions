@@ -24,7 +24,7 @@ public:
 		all             // Not really a strategy. Used to mark all strategies
 	};
 
-	static const int COUNT = static_cast<int>( Id::count );
+	static int constexpr COUNT = static_cast<int>( Id::count );
 
 	virtual Id   GetStrategyId( )                                         const = 0;
     virtual bool InteractWith( StrategyData &, IND_ID const )             const = 0;

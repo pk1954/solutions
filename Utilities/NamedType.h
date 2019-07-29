@@ -93,13 +93,13 @@ public:
 	static NamedType const NULL_VAL()
 	{
 		static_assert( std::numeric_limits<BASE_TYPE>::is_specialized, "type has no NULL_VAL"	);
-		static const NamedType res { (std::numeric_limits<BASE_TYPE>::min)() };
+		static NamedType constexpr res { (std::numeric_limits<BASE_TYPE>::min)() };
 		return res;
 	}
 
 	static NamedType const ZERO_VAL()
 	{
-		static const NamedType res { BASE_TYPE(0) };
+		static NamedType constexpr res { BASE_TYPE(0) };
 		return res;
 	}
 

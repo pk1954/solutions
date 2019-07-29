@@ -4,6 +4,12 @@
 #include "assert.h"
 #include "historyCache.h"
 
+#ifndef NDEBUG
+	#define CHECK_CONSISTENCY() checkConsistency()
+#else
+	#define CHECK_CONSISTENCY() ((void)0)
+#endif
+
 HistoryCache::HistoryCache( ) :
     m_histSlotHead( HistSlotNr::NULL_VAL() ),
     m_iUnused( HistSlotNr::NULL_VAL() ),
@@ -72,7 +78,7 @@ void HistoryCache::ResetHistoryCache( )
 
 bool HistoryCache::AddCacheSlot( )
 {
-    try
+	try
     {
 		newSlot( );
     }
@@ -90,7 +96,7 @@ bool HistoryCache::AddCacheSlot( )
         setJunior( m_iNrOfSlots - HistSlotNr(1), m_iNrOfSlots                 );
         ++m_iNrOfSlots;
 		triggerObserver();
-        checkConsistency( );
+		CHECK_CONSISTENCY( );
         m_bAllocationRunning = ( m_iNrOfSlots < m_iNrOfRequestedSlots );
     }
 
@@ -122,7 +128,7 @@ HistSlotNr HistoryCache::GetFreeCacheSlot( )
 {
     static long lSleepCounter = 0;
 
-    checkConsistency( );
+	CHECK_CONSISTENCY( );
 
     while ( m_bAllocationRunning && ( m_iNrOfSlots <= m_iNrOfUsedSlots ) )  // possible race condition during start up
     {                                                                       // slot usage might be faster than slot creation
@@ -194,7 +200,7 @@ void HistoryCache::RemoveHistCacheSlot( HistSlotNr const slotNr )
     ResetHistCacheSlot( slotNr );
     --m_iNrOfUsedSlots;
 	triggerObserver();
-    checkConsistency( );
+	CHECK_CONSISTENCY( );
 }
 
 HistSlotNr HistoryCache::findSlot4Reuse( )
