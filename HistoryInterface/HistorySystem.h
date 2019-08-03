@@ -5,7 +5,6 @@
 
 #include "GenerationCmd.h"
 #include "HistoryGeneration.h"
-#include "util.h"
 
 class ObserverInterface;
 class ObserverInterface;
