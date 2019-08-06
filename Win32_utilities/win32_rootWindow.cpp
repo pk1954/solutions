@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "win32_rootWindow.h"
 
+using namespace std::chrono;
+
 BOOL RootWinIsReady( RootWindow const * pRootWin )
 {
     return ( ( pRootWin != nullptr ) && ( pRootWin->GetWindowHandle( ) != nullptr ) );

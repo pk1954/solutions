@@ -4,14 +4,11 @@
 #pragma once
 
 #include <chrono>
-//#include "Windowsx.h"
-
-using namespace std::chrono;
 
 class RefreshRateDialog
 {
 public:
-	static milliseconds Show( HWND const, milliseconds );
+	static std::chrono::milliseconds Show( HWND const, std::chrono::milliseconds );
 
 private:
 	friend static INT_PTR CALLBACK dialogProc( HWND const, UINT const, WPARAM const, LPARAM const );

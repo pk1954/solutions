@@ -8,6 +8,8 @@
 #include "win32_util_resource.h"
 #include "win32_refreshRateDialog.h"
 
+using namespace std::chrono;
+
 static int const    BUFLEN = 20;
 static wchar_t      m_wBuffer[BUFLEN];
 static milliseconds m_msRefreshRate;

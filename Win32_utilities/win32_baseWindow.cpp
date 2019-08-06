@@ -7,6 +7,8 @@
 
 #define IDM_REFRESH_RATE_DIALOG  10
 
+using namespace std::chrono;
+
 BaseWindow::BaseWindow( ) : 
 	RootWindow( ),
 	m_szClass( nullptr )

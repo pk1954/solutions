@@ -13,8 +13,6 @@
 
 class Observer;
 
-using namespace std::chrono;
-
 class RootWindow: public ObserverInterface
 {
 public:
@@ -49,8 +47,8 @@ public:
     HWND          const GetDlgItem( int const iItem ) const { return ::GetDlgItem     ( m_hwnd, iItem ); }
     BOOL          const IsCaptured( )                 const { return ::GetCapture( ) == m_hwnd; }
 
-	void         SetRefreshRate( milliseconds const msRate ) { m_msRefreshRate = msRate; }
-	milliseconds GetRefreshRate( )                           { return m_msRefreshRate; }
+	void                      SetRefreshRate( std::chrono::milliseconds const msRate ) { m_msRefreshRate = msRate; }
+	std::chrono::milliseconds GetRefreshRate( )                                        { return m_msRefreshRate; }
 	
     void Show( tBoolOp const op ) const { Util::Show( m_hwnd, op ); }
     void Show( BOOL    const b  ) const { Util::Show( m_hwnd, b  ); }
@@ -215,7 +213,7 @@ private:
 		m_bDirty = FALSE;
 	}
 
-    void startTimer( milliseconds const );
+    void startTimer( std::chrono::milliseconds const );
 
 	void deleteTimer( )
 	{
@@ -233,7 +231,7 @@ private:
     BOOL   m_bTimerActive;
     BOOL   m_bDirty;
 
-    milliseconds m_msRefreshRate;
+	std::chrono::milliseconds m_msRefreshRate;
 };
 
 BOOL RootWinIsReady( RootWindow const * );
