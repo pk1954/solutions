@@ -5,6 +5,8 @@
 *.res
 *.prt
 
+SyncToy_*.*
+
 ### from her on git standard stuff
 
 ## Ignore Visual Studio temporary files, build results, and
