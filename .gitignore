@@ -2,6 +2,8 @@
 
 #ignore generated result files
 *_RES.RES
+*.res
+*.prt
 
 ### from her on git standard stuff
 
