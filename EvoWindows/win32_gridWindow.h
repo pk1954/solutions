@@ -59,6 +59,7 @@ private:
 
 	static HWND                  m_hwndApp;
 	static HCURSOR               m_hCrsrMove;
+	static HCURSOR               m_hCrsrArrow;
 	static ReadBuffer          * m_pReadBuffer;
     static WorkThreadInterface * m_pWorkThreadInterface;
     static PerformanceWindow   * m_pPerformanceWindow;

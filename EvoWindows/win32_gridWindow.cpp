@@ -31,6 +31,7 @@ PerformanceWindow   * GridWindow::m_pPerformanceWindow   = nullptr;
 DspOptWindow        * GridWindow::m_pDspOptWindow        = nullptr;
 FocusPoint          * GridWindow::m_pFocusPoint          = nullptr;
 ColorManager        * GridWindow::m_pColorManager        = nullptr;
+HCURSOR               GridWindow::m_hCrsrArrow           = nullptr;
 HCURSOR               GridWindow::m_hCrsrMove            = nullptr;
 
 void GridWindow::InitClass
@@ -49,6 +50,7 @@ void GridWindow::InitClass
 	m_pDspOptWindow        = pDspOptWindow;
     m_pFocusPoint          = pFocusPoint;
 	m_pColorManager        = pColorManager;
+	m_hCrsrArrow           = LoadCursor( NULL, IDC_ARROW );
 	m_hCrsrMove            = LoadCursor( NULL, IDC_SIZEALL );
 }
 
@@ -399,11 +401,12 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
 	case WM_SETCURSOR:
 	{
-		EvolutionCore const * pCore  = m_pReadBuffer->LockReadBuffer( );
-		tBrushMode brushMode = pCore->GetBrushMode();
+		EvolutionCore const * pCore   = m_pReadBuffer->LockReadBuffer( );
+		tBrushMode    const   mode    = pCore->GetBrushMode();
+		BOOL          const   keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
+		HCURSOR       const   hCrsr   = ( (mode == tBrushMode::move) && keyDown ) ? m_hCrsrMove : m_hCrsrArrow;
 		m_pReadBuffer->ReleaseReadBuffer( );
-		if ( brushMode == tBrushMode::move)
-			SetCursor( m_hCrsrMove );
+		SetCursor( hCrsr );
 	}
 		return FALSE;
 
