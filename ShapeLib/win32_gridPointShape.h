@@ -16,6 +16,10 @@ class D3D_driver;
 class GridPointShape
 {
 public:
+	GridPointShape( )
+		: m_pTextDisplay( nullptr )
+	{ }
+
 	void Start( TextDisplay * pTextDisplay )
 	{
 		m_pTextDisplay = pTextDisplay;

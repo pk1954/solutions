@@ -8,11 +8,16 @@
 class Random
 {
 public:
+	Random( )
+	{
+		Initialize( );
+	}
+
     virtual ~Random( ) {};
 
 	static unsigned int const MAX_VAL = 0x7fff;
 	
-	void InitializeRandom( )
+	void Initialize( )
 	{
 		m_ulRandomSeed = 0L;
 		m_bValid       = false;

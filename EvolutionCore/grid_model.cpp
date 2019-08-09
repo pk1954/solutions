@@ -141,7 +141,7 @@ void Grid::ResetGrid( )
     ENERGY_UNITS enFood = ENERGY_UNITS( Config::GetConfigValueShort( Config::tId::minFood ) );
     Apply2Grid( [&](GridPoint const gp) { getGridField( gp ).ResetGridField( enFood ); return false; } );
     m_gpList.ResetGpList( );
-    m_random.InitializeRandom( );
+    m_random.Initialize( );
 }
 
 void Grid::displayAndWait( )
