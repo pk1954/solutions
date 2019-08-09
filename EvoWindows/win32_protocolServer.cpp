@@ -21,7 +21,11 @@ ProtocolServer::~ProtocolServer( )
 
 void ProtocolServer::Notify( bool const bImmediate )
 {
-	std::wcout << L"HistGen " << m_pHistorySystem->GetCurrentGeneration().GetLong() << std::endl;
-	std::wcout << EvolutionCore::GetProtocolData( )->str();
-	EvolutionCore::ClearProtocolData( );
+	auto data = EvolutionCore::GetProtocolData( )->str();
+	if ( ! data.empty() )
+	{
+		std::wcout << L"HistGen " << m_pHistorySystem->GetCurrentGeneration().GetLong() << std::endl;
+		std::wcout << data;
+		EvolutionCore::ClearProtocolData( );
+	}
 }
