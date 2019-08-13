@@ -39,9 +39,6 @@ void EditorWindow::Start
     SetTrackBarRange( IDM_EDIT_INTENSITY, 0L, 100L );
     UpdateEditControls( );
 	CreateWindowToolTip( L"The editor allows to manipulate the model manually (individuals, mutation rate, fertility etc.) by using the left mouse button." );
-	
-//	CreateBalloonToolTip( GetWindowHandle(), IDM_EDIT_MODE, L"Legt fest, welche Operation durch die linke Maustaste ausgelöst wird." );
-//  funktioniert nicht	
 	CreateBalloonToolTip( IDM_MOVE, L"Left mouse button moves the model on the screen (no changes to the model). " );
 }
 
@@ -65,7 +62,7 @@ void EditorWindow::UpdateEditControls( )
 	updateEditControls( m_pCore );
 }
 
-LRESULT EditorWindow::sendClick( int const item ) const
+LRESULT EditorWindow::SendClick( int const item ) const
 {
 	HWND    const hwndOld { SetActiveWindow( GetWindowHandle( ) ) };
 	LRESULT const res     { SendDlgItemMessage( item, BM_CLICK, 0, 0 ) };
@@ -132,12 +129,6 @@ void EditorWindow::updateEditControls( EvolutionCore const * const pCore ) // Se
 	// adjust display options window
 
 	m_pDspOptWindow->UpdateDspOptionsControls( pCore->GetBrushMode() );
-}
-
-void EditorWindow::SetSimuMode( bool const bSimulationMode )
-{
-	if ( bSimulationMode )
-		sendClick( IDM_MOVE );
 }
 
 void EditorWindow::setBrushMode( WORD const wId ) const
@@ -211,11 +202,6 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 		}
         return TRUE;
 
-	case WM_ACTIVATE:
-		if ( LOWORD( wParam ) == WA_CLICKACTIVE )  
-			PostCommand2Application( IDM_EDIT_MODE, 0 );
-		return FALSE;
-
     case WM_COMMAND:
         {
 			WORD const wId { LOWORD( wParam ) };
@@ -248,7 +234,12 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 				setBrushManipulator( wId );
                 break;
 
-            default:
+			case IDM_EDIT_UNDO:
+			case IDM_EDIT_REDO:
+				PostCommand2Application( wId, 0 );
+				break;
+
+			default:
 				assert( false );
                 break;
             }
@@ -257,7 +248,8 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 
     case WM_CLOSE:
         Show( FALSE );
-        return TRUE;
+		PostCommand2Application( IDM_ADJUST_UI, 0 );
+		return TRUE;
 
     default:
         break;

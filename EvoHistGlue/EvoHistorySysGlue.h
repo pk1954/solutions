@@ -45,6 +45,7 @@ public:
     HistSlotNr      GetNrOfHistCacheSlots    ( ) const { return m_pHistorySystem->GetNrOfHistCacheSlots( ); }
     HIST_GENERATION GetCurrentGeneration     ( ) const { return m_pHistorySystem->GetCurrentGeneration( ); }
     HIST_GENERATION GetYoungestGeneration    ( ) const { return m_pHistorySystem->GetYoungestGeneration( ); }
+	bool            IsInHistoryMode          ( ) const { return m_pHistorySystem->IsInHistoryMode(); }
 
 	HIST_GENERATION GetGenWithIndividual( GridPoint const, bool const ) const; 
 
@@ -53,6 +54,7 @@ public:
 
 	EvolutionCore const * GetEvolutionCore( HIST_GENERATION const ) const;
 
+	
 	ModelData const * EvoCreateNextGenCommand( )
 	{ 
 	 	return m_pHistorySystem->CreateAppCommand( NEXT_GEN_CMD );  

@@ -66,7 +66,7 @@ void TextWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 {
     UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 
-    (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_HIDE_WINDOW, L"Hide window" );
+    (void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_HIDE_WINDOW, L"Hide window" );
 }
 
 void TextWindow::Trigger( )

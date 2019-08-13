@@ -42,6 +42,11 @@ public:
         return m_dwGenerationDelay;
     };
 
+	BOOL IsMaxSpeed( )
+	{
+		return m_dwGenerationDelay == 0;
+	};
+
     void SetPerfGenerationDelay( DWORD dwDelay )
     {
         m_dwGenerationDelay = dwDelay;

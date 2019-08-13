@@ -7,6 +7,7 @@
 #endif
 
 // identifiers below 100 are reserved for win32_utilities
+#include "win32_util_resource.h"
 
 // identifiers for application start at 100
 
@@ -20,7 +21,7 @@
 
 #define IDM_ABOUT                               130
 #define IDM_EXIT                                131
-#define IDM_ADJUST_MINI_WIN                     137
+#define IDM_ADJUST_UI                           133
 #define IDM_HIST_BUFFER_FULL                    138
 #define IDM_REFRESH                             140
 #define IDM_SET_POI                             144
@@ -103,7 +104,6 @@
 #define IDM_STOP                                (IDM_SIMU_MODE +  4)
 #define IDM_SIMULATION_SPEED                    (IDM_SIMU_MODE +  5)
 #define IDM_MAX_SPEED                           (IDM_SIMU_MODE +  6)
-#define IDM_RUN_STOP                            (IDM_SIMU_MODE +  7)
 
 #define IDM_ZOOM_MODE                           850
 #define IDM_FIT_ZOOM                            (IDM_ZOOM_MODE + 1)

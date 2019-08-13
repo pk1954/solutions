@@ -91,10 +91,11 @@ namespace Util
         Util::Show( hwnd, IsWindowVisible( hwnd ), bStateNew );
     }
 
-    inline void Show( HWND const hwnd, tBoolOp const op )
+    inline BOOL Show( HWND const hwnd, tBoolOp const op )
     {
         BOOL const bStateOld = IsWindowVisible( hwnd );
         Util::Show( hwnd, ApplyOp2( bStateOld, op ) );
+		return bStateOld;
     }
 
     inline RECT GetClRect( HWND const hwnd ) // left / top always 0

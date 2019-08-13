@@ -91,7 +91,7 @@ AppWindow::AppWindow( ) :
 	stopwatch.Start();
 	m_ColorManager.Initialize( );
 	m_WorkThreadInterface.Initialize( & m_traceStream ); 
-	m_AppMenu.Initialize( m_hwndApp );
+	m_AppMenu.Initialize( m_hwndApp, & m_WorkThreadInterface );
 
 	stopwatch.Stop( L"create window objects" );
 
@@ -130,7 +130,7 @@ AppWindow::AppWindow( ) :
 	);
 
 	m_CrsrWindow    .Start( m_hwndApp, & m_ReadBuffer, & m_FocusPoint );
-	m_StatusBar     .Start( m_hwndApp, & m_ReadBuffer );
+	m_StatusBar     .Start( m_hwndApp, & m_ReadBuffer, & m_WorkThreadInterface );
 	m_Statistics    .Start( m_hwndApp, & m_ReadBuffer );
 	m_HistInfoWindow.Start( m_hwndApp);
 	m_PerfWindow    .Start( m_hwndApp );
@@ -239,11 +239,10 @@ void AppWindow::Start( )
 
 	m_StatusBar.ClearStatusLine( );
 	m_StatusBar.Show( TRUE );
-	m_EvoController.SetSimulationMode( false );
-	m_WinManager.Show( IDM_MAIN_WINDOW, tBoolOp::opTrue );
+	m_EditorWindow.Show( TRUE );
+	m_MainGridWindow.Show( TRUE );
 
 	(void)m_MainGridWindow.SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
-	m_EvoController.ProcessCommand( IDM_EDIT_MODE );
 //	Script::ProcessScript( L"std_script.in" );
 
 	m_bStopped = FALSE;
@@ -309,13 +308,13 @@ LRESULT AppWindow::UserProc
         int const wmId = LOWORD(wParam);
         switch (wmId)
         {
-        case IDM_ABOUT:
+		case IDM_ABOUT:
             ShowAboutBox( GetWindowHandle( ) );
-            break;
+			break;
 
-        case IDM_ADJUST_MINI_WIN:
-			adjustMiniWinVisibility( static_cast<int>(lParam) );
-            break;
+		case IDM_ADJUST_UI:
+			adjustUI( );
+			break;
 
 		case IDM_RESET:
 		{
@@ -416,44 +415,25 @@ void AppWindow::adjustChildWindows( )
     }
 }
 
-void AppWindow::adjustMiniWinVisibility( int const iMode )
+void AppWindow::adjustUI( )
 {
-	Config::tOnOffAuto onOffAuto = Config::tOnOffAuto::automatic;
-	switch ( iMode )
-	{
-		case 0:
-			onOffAuto = Config::GetConfigValueOnOffAuto( Config::tId::miniGridDisplay ); 
-			break;
-		case IDM_MINI_WINDOW_ON:
-			onOffAuto = Config::tOnOffAuto::on; 
-			break;
-		case IDM_MINI_WINDOW_OFF:
-			onOffAuto = Config::tOnOffAuto::off; 
-			break;
-		case IDM_MINI_WINDOW_AUTO:
-			onOffAuto = Config::tOnOffAuto::automatic; 
-			break;
-		default:
-			assert( false );
-			break;
-	}
-
-	Config::SetConfigValue( Config::tId::miniGridDisplay, static_cast<long>( onOffAuto ) ); 
-
-	switch ( onOffAuto )
-	{
-		case Config::tOnOffAuto::on:
-			m_MiniGridWindow.Show( true );
-			break;
-
-		case Config::tOnOffAuto::off:
-			m_MiniGridWindow.Show( false );
-			break;
-
-		case Config::tOnOffAuto::automatic:
-			m_MiniGridWindow.Show( ! m_MainGridWindow.IsFullGridVisible( ) );
-			break;
-	}
+	m_StatusBar.Adjust( );
+	m_AppMenu.AdjustVisibility( );
+	m_EvoHistWindow.AdjustVisibility
+	(
+		Config::GetConfigValueOnOffAuto( Config::tId::historyDisplay ),
+		[&]() { return ! m_WorkThreadInterface.IsRunning(); }
+	);
+	m_PerfWindow.AdjustVisibility
+	(
+		Config::GetConfigValueOnOffAuto( Config::tId::performanceDisplay ),
+		[&]() { return m_WorkThreadInterface.IsRunning(); }
+	);
+	m_MiniGridWindow.AdjustVisibility
+	(
+		Config::GetConfigValueOnOffAuto( Config::tId::miniGridDisplay ),
+		[&]() { return ! m_MainGridWindow.IsFullGridVisible( ); }
+	);
 }
 
 //int MyAllocHook

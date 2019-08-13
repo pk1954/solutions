@@ -39,19 +39,30 @@ IDC_EVOLUTION_MAIN MENU
         POPUP "&Windows"
         {
             MENUITEM "Toggle &disp window", IDM_DISP_WINDOW
-				MENUITEM "Toggle &edit window", IDM_EDIT_WINDOW
-				MENUITEM "Toggle &main window", IDM_MAIN_WINDOW
-				POPUP "Toggle &mini window"
-			{
-				MENUITEM "on",   IDM_MINI_WINDOW_ON
-				MENUITEM "off",  IDM_MINI_WINDOW_OFF
-				MENUITEM "auto", IDM_MINI_WINDOW_AUTO
-			}
+			MENUITEM "Toggle &edit window", IDM_EDIT_WINDOW
+			MENUITEM "Toggle &main window", IDM_MAIN_WINDOW
             MENUITEM "Toggle &stat window", IDM_STAT_WINDOW
             MENUITEM "Toggle &crsr window", IDM_CRSR_WINDOW
             MENUITEM "Toggle &hist info",   IDM_HIST_INFO
-            MENUITEM "Toggle &perf window", IDM_PERF_WINDOW
-        }
+			POPUP "&Perf window"
+			{
+				MENUITEM "on",   IDM_PERF_WINDOW_ON
+				MENUITEM "off",  IDM_PERF_WINDOW_OFF
+				MENUITEM "auto", IDM_PERF_WINDOW_AUTO
+			}
+			//POPUP "&Mini window"
+			//{
+			//	MENUITEM "on",   IDM_MINI_WINDOW_ON
+			//	MENUITEM "off",  IDM_MINI_WINDOW_OFF
+			//	MENUITEM "auto", IDM_MINI_WINDOW_AUTO
+			//}
+			POPUP "&Hist window"
+			{
+				MENUITEM "on",   IDM_HIST_WINDOW_ON
+				MENUITEM "off",  IDM_HIST_WINDOW_OFF
+				MENUITEM "auto", IDM_HIST_WINDOW_AUTO
+			}
+		}
         POPUP "&Display Mode"
         {
             MENUITEM "Toggle Strip Mode", IDD_TOGGLE_STRIP_MODE
@@ -118,7 +129,7 @@ FONT 8, "Ms Shell Dlg"
 }
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-IDD_EDITOR DIALOG 0, 0, 210, 255
+IDD_EDITOR DIALOG 0, 0, 210, 275
 STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_POPUP | WS_SYSMENU
 CAPTION "Editor"
 FONT 8, "Ms Shell Dlg"
@@ -151,6 +162,9 @@ FONT 8, "Ms Shell Dlg"
 
     GROUPBOX        "Intensity", 101,                                                                      10, 209, 185, 35, 0, WS_EX_LEFT
     CONTROL         "Intensity", IDM_EDIT_INTENSITY, TRACKBAR_CLASS, WS_TABSTOP | WS_BORDER | TBS_NOTICKS, 18, 224, 167, 14,    WS_EX_LEFT
+
+	PUSHBUTTON      "   Undo   ", IDM_EDIT_UNDO,   10, 250, 85, 12, WS_EX_LEFT
+	PUSHBUTTON      "   Redo   ", IDM_EDIT_REDO,  110, 250, 85, 12, WS_EX_LEFT
 }
 
 //

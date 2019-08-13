@@ -21,3 +21,16 @@ std::wstring DecFraction( unsigned long ulValue )
     wBuffer << intPlaces << L"." << decPlaces / 100;
 	return wBuffer.str();
 }
+
+bool ApplyAutoCriterion
+( 
+	tOnOffAuto const onOffAuto,
+	std::function<bool()> crit
+)
+{
+	return ( onOffAuto == tOnOffAuto::on )
+		? true
+		: ( onOffAuto == tOnOffAuto::off )
+		? false
+		: crit();
+}

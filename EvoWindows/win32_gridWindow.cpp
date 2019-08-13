@@ -120,50 +120,74 @@ GridWindow::~GridWindow( )
 
 void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
 {
-    UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
+	UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
+
+	if ( m_pWorkThreadInterface->IsRunning() )
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_STOP, L"Stop" );
+	else
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_RUN, L"Run" );
+
+	(void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_SET_POI, L"POI" );
+
+	(void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_SCRIPT_DIALOG, L"Script" );
+	(void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_RESET,         L"Reset" );
+
+	if ( GridSelection::SelectionIsEmpty() )
+	{
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_FIT_ZOOM, L"Fit Grid Area" );
+	}
+	else
+	{
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_FIT_ZOOM, L"Fit Selection" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_ESCAPE,   L"Escape" );
+	}
+
+	addMiniWinMenu( hPopupMenu );
+	addjustMiniWinMenu( hPopupMenu );
 
 	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
-	m_DrawFrame.AddContextMenuEntries( pCore, hPopupMenu, pntPos );
-	m_pReadBuffer->ReleaseReadBuffer( );
 
-    if ( GridSelection::SelectionIsEmpty() )
-    {
-        (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_FIT_ZOOM, L"Fit Grid Area" );
-    }
-    else
-    {
-        (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_ESCAPE,   L"Escape" );
-        (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_FIT_ZOOM, L"Fit Selection" );
-    }
-
-	(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_RESET,         L"Reset" );
-	(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SCRIPT_DIALOG, L"Script" );
-
-    if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( * pCore ) )
-    {
+	if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( * pCore ) )
+	{
 		{
 			HMENU const hColorMenu = CreatePopupMenu();
-			(void)InsertMenu( hColorMenu, 0, STD_FLAGS, IDM_CHOOSE_STRATEGY_COLOR,  L"Choose strategy color" );
-			(void)InsertMenu( hColorMenu, 0, STD_FLAGS, IDM_CHOOSE_HIGHLIGHT_COLOR, L"Choose highlight color" );
-			(void)InsertMenu( hColorMenu, 0, STD_FLAGS, IDM_CHOOSE_SELECTION_COLOR, L"Choose selection color" );
-			(void)InsertMenu( hPopupMenu, 0, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hColorMenu, L"Choose color" );
+			(void)AppendMenu( hColorMenu, STD_FLAGS, IDM_CHOOSE_STRATEGY_COLOR,  L"Choose strategy color" );
+			(void)AppendMenu( hColorMenu, STD_FLAGS, IDM_CHOOSE_HIGHLIGHT_COLOR, L"Choose highlight color" );
+			(void)AppendMenu( hColorMenu, STD_FLAGS, IDM_CHOOSE_SELECTION_COLOR, L"Choose selection color" );
+			(void)AppendMenu( hPopupMenu, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hColorMenu, L"Choose color" );
 		}
 
 		if ( Config::UseHistorySystem( ) )
 		{
 			HMENU const hTimeTravelMenu = CreatePopupMenu();
-			(void)InsertMenu( hTimeTravelMenu, 0, STD_FLAGS, IDM_GOTO_DEATH,  L"Goto death of this individual" );
-			(void)InsertMenu( hTimeTravelMenu, 0, STD_FLAGS, IDM_GOTO_ORIGIN, L"Goto origin of this individual" );
-			(void)InsertMenu( hPopupMenu, 0, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hTimeTravelMenu, L"Time travel" );
+			(void)AppendMenu( hTimeTravelMenu, STD_FLAGS, IDM_GOTO_DEATH,  L"Goto death of this individual" );
+			(void)AppendMenu( hTimeTravelMenu, STD_FLAGS, IDM_GOTO_ORIGIN, L"Goto origin of this individual" );
+			(void)AppendMenu( hPopupMenu, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hTimeTravelMenu, L"Time travel" );
 		}
-
-		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_SET_POI,      L"POI" );
 	}
-	if ( m_pWorkThreadInterface->IsRunning() )
-		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_STOP, L"Stop" );
-	else
-		(void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDM_RUN, L"Run" );
+
+	m_DrawFrame.AddContextMenuEntries( pCore, hPopupMenu, pntPos );
+
+	m_pReadBuffer->ReleaseReadBuffer( );
 }
+
+void GridWindow::addMiniWinMenu( HMENU const hPopupMenu )
+{
+	UINT  const STD_FLAGS    = MF_BYPOSITION | MF_STRING;
+	HMENU const hMiniWinMenu = CreatePopupMenu();
+	(void)AppendMenu( hMiniWinMenu, STD_FLAGS, IDM_MINI_WINDOW_AUTO, L"auto" );
+	(void)AppendMenu( hMiniWinMenu, STD_FLAGS, IDM_MINI_WINDOW_ON,   L"on" );
+	(void)AppendMenu( hMiniWinMenu, STD_FLAGS, IDM_MINI_WINDOW_OFF,  L"off" );
+	(void)AppendMenu( hPopupMenu, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMiniWinMenu, L"Mini window" );
+}
+
+void GridWindow::addjustMiniWinMenu( HMENU const hMenu )
+{
+	tOnOffAuto const onOffAuto = Config::GetConfigValueOnOffAuto( Config::tId::miniGridDisplay );
+	EnableMenuItem( hMenu, IDM_MINI_WINDOW_AUTO, ((onOffAuto == tOnOffAuto::automatic ) ? MF_GRAYED : MF_ENABLED) );
+	EnableMenuItem( hMenu, IDM_MINI_WINDOW_ON,   ((onOffAuto == tOnOffAuto::on        ) ? MF_GRAYED : MF_ENABLED) );
+	EnableMenuItem( hMenu, IDM_MINI_WINDOW_OFF,  ((onOffAuto == tOnOffAuto::off       ) ? MF_GRAYED : MF_ENABLED) );
+}	
 
 void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
 {
@@ -199,7 +223,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         else if ( m_ptLast.IsNotNull() )  // last cursor pos stored in m_ptLast
         {
             moveGrid( ptCrsr - m_ptLast );
-		    PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
+		    PostCommand2Application( IDM_ADJUST_UI, 0 );
         }
         m_ptLast = ptCrsr;
 		PostCommand2Application( IDM_REFRESH, 0 );
@@ -296,7 +320,7 @@ void GridWindow::mouseWheelAction( WPARAM const wParam )
 	}
 
 	PostCommand2Application( IDM_SET_ZOOM, pixNewFieldSize.GetValue() );
-	PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
+	PostCommand2Application( IDM_ADJUST_UI, 0 );
 }
 
 bool GridWindow::IsFullGridVisible() const
@@ -364,7 +388,7 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 			}
             break;
 
-            default:
+			default:
                 PostCommand2Application( wParam, lParam ); // not handled here, delegate to application
             }
         }
@@ -411,14 +435,14 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 		return FALSE;
 
 	case WM_SIZE:
-		PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );
+		PostCommand2Application( IDM_ADJUST_UI, 0 );
 		return FALSE;
 
     case WM_PAINT:
         doPaint( );
         return FALSE;
 
-    default:
+	default:
         break;
     }
 
@@ -452,7 +476,7 @@ void GridWindow::newFieldSize
 		PixelPoint const ppCrsr = GetRelativeCrsrPosition( );
 		if ( IsInClientRect( ppCrsr ) )
 			m_DrawFrame.SetHighlightPos( pCore, ppCrsr );  
-		PostCommand2Application( IDM_ADJUST_MINI_WIN, 0 );             
+		PostCommand2Application( IDM_ADJUST_UI, 0 );             
 	}
 	else
 	{

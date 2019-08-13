@@ -192,6 +192,15 @@ public:
 		return PixelPoint{ PIXEL(GET_X_LPARAM( lParam )), PIXEL(GET_Y_LPARAM( lParam )) };
 	}
 
+	void AdjustVisibility
+	( 
+		tOnOffAuto const onOffAuto,
+		std::function<bool()> visibilityCriterion
+	)
+	{
+		Show( ApplyAutoCriterion( onOffAuto, visibilityCriterion ) );
+	}
+
 	virtual void Notify( bool const );
 
 protected:

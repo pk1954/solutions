@@ -20,6 +20,6 @@ public:
 	virtual void AddContextMenuEntries( HMENU const hPopupMenu ) const 
 	{
 	    UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
-        (void)InsertMenu( hPopupMenu, 0, STD_FLAGS, IDD_TOGGLE_COORD_DISPLAY, L"Toggle coord display" );
+        (void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_TOGGLE_COORD_DISPLAY, L"Toggle coord display" );
 	};
 };

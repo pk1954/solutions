@@ -54,11 +54,66 @@ WorkThread::~WorkThread( )
 	m_pEvoHistGlue         = nullptr;
 }
 
+BOOL WorkThread::IsMaxSpeed( ) const
+{
+	return m_pPerformanceWindow->IsMaxSpeed( );
+}
+
+BOOL WorkThread::IsEditWinVisible( ) const
+{
+	return m_pEditorWindow->IsWindowVisible( );
+}
+
+BOOL WorkThread::IsInHistoryMode( ) const
+{
+	return m_pEvoHistGlue->IsInHistoryMode( );
+}
+
+BOOL WorkThread::IsFirstHistGen( ) const
+{
+	return m_pEvoHistGlue->GetCurrentGeneration( ) == 0;
+}
+
+bool WorkThread::userWantsHistoryCut( ) const
+{
+	HIST_GENERATION genCurrent  = m_pEvoHistGlue->GetCurrentGeneration( );
+	HIST_GENERATION genYoungest = m_pEvoHistGlue->GetYoungestGeneration( );
+	std::wostringstream wBuffer;
+	wBuffer << L"Gen " << ( genCurrent + 1 ) << L" - " << genYoungest << L" will be deleted.";
+	int iRes = MessageBox( nullptr, L"Cut off history?", wBuffer.str( ).c_str( ), MB_OKCANCEL | MB_SYSTEMMODAL );
+	return ( iRes == IDOK );
+}
+
 // WorkMessage - process incoming messages from main thread
 
-void WorkThread::WorkMessage( WorkerThreadMessage::Id const msg, WPARAM const wparam, LPARAM const lparam )
+void WorkThread::WorkMessage
+( 
+	BOOL                    const isEditOperation,
+	WorkerThreadMessage::Id const msg, 
+	WPARAM                  const wparam, 
+	LPARAM                  const lparam
+)
 {
 	assert( WorkerThreadMessage::IsValid( msg ) );
+	
+	if ( isEditOperation )
+	{
+		if ( IsRunning() )
+			m_pEditorWindow->PostCommand2Application( IDM_STOP, 0 );
+
+		if ( IsInHistoryMode() )          
+		{
+			if ( userWantsHistoryCut( ) )
+			{
+				m_pEvoHistGlue->EvoClearHistory( m_pEvoHistGlue->GetCurrentGeneration( ) );  // cut off future generations
+			}
+			else 
+			{
+				return;            // user answered no, cancel operation
+			}
+		}
+	}
+
 	PostThreadMsg( static_cast<UINT>(msg), wparam, lparam );
 }
 
@@ -86,7 +141,12 @@ void WorkThread::dispatch( MSG const msg  )
 
 	case WorkerThreadMessage::Id::GENERATION_RUN:
 		if ( static_cast<bool>(msg.lParam) )
+		{
+			m_pEditorWindow->SendClick( IDM_MOVE );     // change edit mode to move
+			m_pEditorWindow->Show( FALSE );             
 			m_bContinue = TRUE;
+			m_pEditorWindow->PostCommand2Application( IDM_ADJUST_UI, 0 );
+		}
 		generationRun( );
 		break;
 
@@ -158,6 +218,7 @@ void WorkThread::dispatch( MSG const msg  )
 	case WorkerThreadMessage::Id::STOP:
 		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
 		m_bContinue = FALSE;
+		m_pEditorWindow->PostCommand2Application( IDM_ADJUST_UI, 0 );
 		Script::StopProcessing( );
 		return;      // do not notify readbuffer, because model has not changed  
 
@@ -248,7 +309,7 @@ void WorkThread::gotoGeneration( HIST_GENERATION const gen )
 				m_pEditorWindow->UpdateEditControls( );            // make sure that editor GUI reflects new state
 		}
 
-		WorkMessage( WorkerThreadMessage::Id::REFRESH, 0, 0 );            // refresh all views
+		WorkMessage( FALSE, WorkerThreadMessage::Id::REFRESH, 0, 0 );            // refresh all views
     
 		if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )   // still not done?
 			m_pWorkThreadInterface->PostRepeatGenerationStep( );          // Loop! Will call indirectly gotoGeneration again
@@ -262,7 +323,7 @@ void WorkThread::NGenerationSteps( int iNrOfGenerations )  // for benchmarks onl
 	for (int i = 0; i < iNrOfGenerations; ++i)
 	{
 		m_pEvoHistGlue->EvoCreateNextGenCommand( );
-		WorkMessage( WorkerThreadMessage::Id::REFRESH, 0, 0 );   // refresh all views
+		WorkMessage( FALSE, WorkerThreadMessage::Id::REFRESH, 0, 0 );   // refresh all views
 	}
 	stopwatch.Stop( L"benchmark" );
 }

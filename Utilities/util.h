@@ -13,6 +13,15 @@
 
 extern void UpperCase( std::wstring & );
 
+enum class tOnOffAuto : long
+{
+	on,
+	off,
+	automatic
+};
+
+extern bool ApplyAutoCriterion( tOnOffAuto const, std::function<bool()> );
+
 using BYTES = NamedType< unsigned long long, struct BYTES_Parameter >;
 
 // not needed, makes strange problems 

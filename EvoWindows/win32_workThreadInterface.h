@@ -57,8 +57,12 @@ public:
 	void PostGenerationStep();
 	void PostRepeatGenerationStep();              // Do not call! Used by WorkThread only;
 
-	HIST_GENERATION GetGenDemanded( ) const;
-	BOOL            IsRunning( )      const;
+	HIST_GENERATION GetGenDemanded( )   const;
+	BOOL            IsRunning( )        const;
+	BOOL            IsMaxSpeed( )       const;
+	BOOL            IsEditWinVisible( ) const;
+	BOOL            IsInHistoryMode( )  const;
+	BOOL            IsFirstHistGen( )   const;
 
     void TerminateThread( );
 

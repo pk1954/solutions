@@ -9,15 +9,15 @@
 #include "win32_rootWindow.h"
 
 class ReadBuffer;
+class WorkThreadInterface;
 
 using std::wstring;
 
 class StatusBar : public RootWindow
 {
 public:
-    void  Start( HWND const, ReadBuffer * );
-	void  SetSimuMode( BOOL const );
-	void  SetRunMode( BOOL const );
+    void  Start( HWND const, ReadBuffer * const, WorkThreadInterface const * const );
+	void  Adjust( );
     PIXEL GetHeight( ) const;
     void  Resize( ) const;
     void  SetSizeTrackBar ( PIXEL const ) const;
@@ -34,7 +34,7 @@ private:
         Generation,
 		Mode,
         Size,
-        SimuEdit,
+        SimuCtl,
         ScriptLine,
         Stop
     };
@@ -46,7 +46,6 @@ private:
 
 	void WINAPI createSizeControl ( );
     void WINAPI createSimulationControl( );
-    void WINAPI createEditorControl( );
 
 	PIXEL m_pixClientHeight;
     PIXEL m_pixBorderX;
@@ -55,7 +54,8 @@ private:
     wstring m_wstrGeneration;
     wstring m_wstrScriptLine;
 
-	ReadBuffer * m_pReadBuffer;
+	ReadBuffer                * m_pReadBuffer;
+	WorkThreadInterface const * m_pWorkThreadInterface;
 
 friend static LRESULT CALLBACK OwnerDrawStatusBar( HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR );
 };

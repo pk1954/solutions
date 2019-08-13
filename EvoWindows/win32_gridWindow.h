@@ -80,6 +80,8 @@ private:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 	virtual void    AddContextMenuEntries( HMENU const, POINT const );
 
+	void addMiniWinMenu( HMENU const );
+	void addjustMiniWinMenu( HMENU const );
 	void newFieldSize( EvolutionCore const *, PIXEL const, GridPoint const );
 	void mouseWheelAction( WPARAM const  );
     BOOL inObservedClientRect( LPARAM const );

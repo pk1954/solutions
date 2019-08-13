@@ -89,7 +89,7 @@ public:
 	
 	// WorkMessage - process incoming messages from main thread
 
-	void WorkMessage( WorkerThreadMessage::Id const, WPARAM const, LPARAM const );
+	void WorkMessage( BOOL const, WorkerThreadMessage::Id const, WPARAM const, LPARAM const );
 
 	void NGenerationSteps( int ); 
 
@@ -102,6 +102,11 @@ public:
 	{
 		return m_bContinue;
 	}
+
+	BOOL IsMaxSpeed( ) const;
+	BOOL IsEditWinVisible( ) const;
+	BOOL IsInHistoryMode( ) const;
+	BOOL IsFirstHistGen( ) const;
 
 	void Continue( )
 	{
@@ -123,6 +128,7 @@ private:
 	void gotoGeneration( HIST_GENERATION const );
 	void generationRun( );
 	void dispatch( MSG const );
+	bool userWantsHistoryCut( ) const;
 
 	ColorManager        * m_pColorManager;
     PerformanceWindow   * m_pPerformanceWindow;

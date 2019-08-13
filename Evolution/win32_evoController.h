@@ -39,12 +39,12 @@ public:
 	);
 
 	void ProcessCommand( WPARAM const, LPARAM const = 0 );
-	void SetSimulationMode( bool const );
 
 private:
 	void scriptDialog( );
+	void handleOnOffAutoCommand(int const );
 	bool processUIcommand( int const, LPARAM const );
-	void enterEditMode( );
+	void setSimulationSpeed( DWORD const );
 
 	BOOL                  m_bTrace;
     std::wostream       * m_pTraceStream;

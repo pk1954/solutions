@@ -26,7 +26,7 @@ void EvoHistWindow::Start
 	m_pFocusPoint          = pFocusPoint;
 	m_pWorkThreadInterface = pWorkThreadInterface;
 //    m_pFocusPoint->AttachFocusPointObserver( this );
-	Show( Config::GetConfigValueOnOffAuto( Config::tId::historyDisplay ) == Config::tOnOffAuto::on );
+	Show( Config::GetConfigValueOnOffAuto( Config::tId::historyDisplay ) == tOnOffAuto::on );
 }
 
 void EvoHistWindow::Stop( )

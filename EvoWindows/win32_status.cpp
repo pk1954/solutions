@@ -11,12 +11,10 @@
 #include "EvolutionCore.h"
 #include "win32_tooltip.h"
 #include "win32_readBuffer.h"
-#include "win32_performanceWindow.h"
+#include "win32_workThreadInterface.h"
 #include "win32_status.h"
 
 extern int g_AllocHookCounter;
-
-//lint -e1924    C-style casts
 
 static long trackBar2Value( LONG ); 
 static LONG value2Trackbar( long );  
@@ -32,17 +30,18 @@ static PIXEL const STATUS_BAR_HEIGHT = 22_PIXEL;
 
 static wchar_t * SZ_RUN_MODE  = L"   Run    ";
 static wchar_t * SZ_STOP_MODE = L"  Stop    ";
-static wchar_t * SZ_SIMU_MODE = L"Switch to SIMULATION";
-static wchar_t * SZ_EDIT_MODE = L"Switch to EDITOR";
+static wchar_t * SZ_EDIT_MODE = L"Show editor";
 
 void StatusBar::Start
 ( 
-	HWND const   hwndParent,
-	ReadBuffer * pReadBuffer
+	HWND const                        hwndParent,
+	ReadBuffer                * const pReadBuffer,
+	WorkThreadInterface const * const pWorkThreadInterface
 )
 {
-	m_pReadBuffer = pReadBuffer;
-	HWND hwndStatus = CreateWindow
+	m_pReadBuffer          = pReadBuffer;
+	m_pWorkThreadInterface = pWorkThreadInterface;
+	HWND hwndStatus        = CreateWindow
 	(
 		STATUSCLASSNAME, 
 		nullptr, 
@@ -61,7 +60,7 @@ void StatusBar::Start
 		100_PIXEL, // Generation 
 		200_PIXEL, // Mode (Edit/Simu)
 		400_PIXEL, // Size
-		670_PIXEL, // Edit/Simu controls
+		670_PIXEL, // Simu controls
 		600_PIXEL, // ScriptLine
 		-1_PIXEL   // Stop
 	};
@@ -87,19 +86,13 @@ void StatusBar::Start
 	m_pixClientHeight = GetHeight( ) - m_pixBorderY;
 
 	m_pixPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_pixBorderX;
-	(void)createButton( SZ_EDIT_MODE, (HMENU)IDM_EDIT_MODE, BS_PUSHBUTTON );  
-
-	m_pixPosX = statwidths[ static_cast<int>( tPart::Mode ) - 1 ] + m_pixBorderX;
-	(void)createButton( SZ_SIMU_MODE, (HMENU)IDM_SIMU_MODE, BS_PUSHBUTTON );  
+	(void)createButton( SZ_EDIT_MODE, (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );  
 
 	m_pixPosX = statwidths[ static_cast<int>( tPart::Size ) - 1 ] + m_pixBorderX;
 	createSizeControl( );
 
-	m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX;
+	m_pixPosX = statwidths[ static_cast<int>( tPart::SimuCtl ) - 1 ] + m_pixBorderX;
 	createSimulationControl( );
-
-	m_pixPosX = statwidths[ static_cast<int>( tPart::SimuEdit ) - 1 ] + m_pixBorderX;
-	createEditorControl( );
 
 	(void)SendMessage( SB_SETPARTS, sizeof( statwidths ) / sizeof( int ), (LPARAM)( &statwidths ) );
 
@@ -107,8 +100,6 @@ void StatusBar::Start
 	long lDefaultDelay = Config::GetConfigValue( Config::tId::generationDelay );
 	SetSpeedTrackBar( lDefaultDelay );
 	PostCommand2Application( IDM_SIMULATION_SPEED, lDefaultDelay );
-
-	CreateBalloonToolTip( IDM_SIMU_MODE, L"Simulation" );
 }
 
 static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
@@ -146,18 +137,6 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
     }
 
     return DefSubclassProc(hwnd, uMsg, wParam, lParam);
-}
-
-void StatusBar::SetRunMode( BOOL const bRunMode )
-{
-	SetDlgText( IDM_RUN_STOP, bRunMode ? SZ_STOP_MODE : SZ_RUN_MODE );
-
-	EnableWindow( GetDlgItem( IDM_BACKWARDS  ), ! bRunMode );
-	EnableWindow( GetDlgItem( IDM_GENERATION ), ! bRunMode );
-	EnableWindow( GetDlgItem( IDM_SIMU_MODE  ), ! bRunMode );
-
-	if ( bRunMode )
-		SetSimuMode( true );
 }
 
 HWND WINAPI StatusBar::createControl
@@ -221,7 +200,7 @@ void WINAPI StatusBar::createSizeControl( )
 	CreateBalloonToolTip( IDM_ZOOM_OUT,      L"Zoom out one step" );
 	CreateBalloonToolTip( IDM_ZOOM_TRACKBAR, L"Move slider to zoom in or out" );
 	CreateBalloonToolTip( IDM_ZOOM_IN,       L"Zoom in one step" );
-	CreateBalloonToolTip( IDM_FIT_ZOOM, L"Zoom to maximum possible size, which fits in actual window" );
+	CreateBalloonToolTip( IDM_FIT_ZOOM,      L"Zoom to maximum possible size, which fits in actual window" );
 } 
 
 void WINAPI StatusBar::createSimulationControl( )
@@ -230,20 +209,12 @@ void WINAPI StatusBar::createSimulationControl( )
         createButton  ( L"Backwards ", (HMENU)IDM_BACKWARDS, BS_PUSHBUTTON );
 
     createButton  ( L"SingleStep", (HMENU)IDM_GENERATION, BS_PUSHBUTTON ); 
-    createButton  ( SZ_RUN_MODE,   (HMENU)IDM_RUN_STOP,   BS_PUSHBUTTON ); 
-    createTrackBar(                (HMENU)IDM_SIMULATION_SPEED ); 
+	createButton  ( SZ_RUN_MODE,   (HMENU)IDM_RUN,        BS_PUSHBUTTON ); 
+	createButton  ( SZ_STOP_MODE,  (HMENU)IDM_STOP,       BS_PUSHBUTTON ); 
+	createTrackBar(                (HMENU)IDM_SIMULATION_SPEED ); 
     createButton  ( L" MaxSpeed ", (HMENU)IDM_MAX_SPEED,  BS_PUSHBUTTON ); 
 
     SetTrackBarRange( IDM_SIMULATION_SPEED, SPEED_TRACKBAR_MIN, SPEED_TRACKBAR_MAX );
-} 
-
-void WINAPI StatusBar::createEditorControl( )
-{ 
-	if ( Config::UseHistorySystem( ) )
-	{
-		createButton( L"   Undo   ", (HMENU)IDM_EDIT_UNDO, BS_PUSHBUTTON ); 
-		createButton( L"   Redo   ", (HMENU)IDM_EDIT_REDO, BS_PUSHBUTTON ); 
-	}
 } 
 
 void StatusBar::SetSizeTrackBar( PIXEL const pixFieldSize  ) const 
@@ -276,22 +247,20 @@ static LONG value2Trackbar( long lX )  // f(x) = 1000 * log2(x)
     return static_cast<LONG>( dY );
 }
 
-void StatusBar::SetSimuMode( BOOL const bSimuMode )
+void StatusBar::Adjust( )
 {
-    ShowWindow( GetDlgItem( IDM_GENERATION       ), bSimuMode );
-    ShowWindow( GetDlgItem( IDM_RUN_STOP         ), bSimuMode );
-    ShowWindow( GetDlgItem( IDM_SIMULATION_SPEED ), bSimuMode );
-    ShowWindow( GetDlgItem( IDM_MAX_SPEED        ), bSimuMode );
+	BOOL const bRunMode = m_pWorkThreadInterface->IsRunning();
 
-	ShowWindow( GetDlgItem( IDM_SIMU_MODE ), ! bSimuMode );
-	ShowWindow( GetDlgItem( IDM_EDIT_MODE ),   bSimuMode );
+	EnableWindow( GetDlgItem( IDM_RUN  ), ! bRunMode );
+	EnableWindow( GetDlgItem( IDM_STOP ),   bRunMode );
+
+	EnableWindow( GetDlgItem( IDM_GENERATION ), ! bRunMode );
+	EnableWindow( GetDlgItem( IDM_MAX_SPEED  ), ! m_pWorkThreadInterface->IsMaxSpeed() );
+
+	ShowWindow( GetDlgItem( IDM_EDIT_WINDOW ), ! m_pWorkThreadInterface->IsEditWinVisible( ) );
 
 	if ( Config::UseHistorySystem( ) )
-	{
-	    ShowWindow( GetDlgItem( IDM_BACKWARDS ),   bSimuMode );
-		ShowWindow( GetDlgItem( IDM_EDIT_UNDO ), ! bSimuMode );
-		ShowWindow( GetDlgItem( IDM_EDIT_REDO ), ! bSimuMode );
-	}
+		EnableWindow( GetDlgItem( IDM_BACKWARDS ), (! bRunMode) && (! m_pWorkThreadInterface->IsFirstHistGen()) );
 }
 
 PIXEL StatusBar::GetHeight( ) const

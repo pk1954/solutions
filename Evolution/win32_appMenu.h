@@ -6,16 +6,24 @@
 
 #include "windef.h"
 
+class WorkThreadInterface;
+
 class AppMenu
 {
 public:
-	void Initialize( HWND const );
+	AppMenu() :
+		m_hMenu( nullptr ),
+		m_pWorkThreadInterface( nullptr )
+	{}
+
+	void Initialize( HWND const, WorkThreadInterface const * const );
 	void Start( BOOL const );
-	void RunMode( BOOL const );
+	void AdjustVisibility( );
 	void Stop();
 
 private:
 	void enableMenues( UINT );
 
-	HMENU m_hMenu;
+	HMENU                       m_hMenu;
+	WorkThreadInterface const * m_pWorkThreadInterface;
 };

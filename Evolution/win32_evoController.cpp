@@ -97,41 +97,33 @@ void EvoController::scriptDialog( )
 	}
 }
 
-void EvoController::SetSimulationMode( bool const bSimulationMode )  	// adjust window configuration according to simulation or edit mode
-{
-	m_pStatusBar->SetSimuMode( bSimulationMode );
-	m_pEditorWindow->SetSimuMode( bSimulationMode );
-
-	if ( ! bSimulationMode )
-		m_pStatusBar->SetRunMode( FALSE );
-
-	m_pWinManager->Show( IDM_PERF_WINDOW, BoolOp( bSimulationMode ) );
-}
-
-void EvoController::enterEditMode( )
-{
-	HIST_GENERATION genCurrent  = m_pEvoHistGlue->GetCurrentGeneration( );
-	HIST_GENERATION genYoungest = m_pEvoHistGlue->GetYoungestGeneration( );
-	if ( genCurrent < genYoungest )              // in history mode ?
-	{
-		std::wostringstream wBuffer;
-		wBuffer << L"Gen " << ( genCurrent + 1 ) << L" - " << genYoungest << L" will be deleted.";
-		int iRes = MessageBox( nullptr, L"Cut off history?", wBuffer.str( ).c_str( ), MB_OKCANCEL | MB_SYSTEMMODAL );
-		if ( iRes == IDOK ) 
-			m_pEvoHistGlue->EvoClearHistory( genCurrent );  // cut off future generations
-		else 
-			return;            // user answered no, cancel operation
-	}
-
-	ProcessCommand( IDM_STOP );
-	SetSimulationMode( false );
-	m_pEditorWindow->Show( TRUE );
-}
-
 bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 {
 	switch (wmId)
 	{
+	case IDM_PERF_WINDOW_ON:
+	case IDM_PERF_WINDOW_OFF:
+	case IDM_PERF_WINDOW_AUTO:
+	case IDM_HIST_WINDOW_ON:
+	case IDM_HIST_WINDOW_OFF:
+	case IDM_HIST_WINDOW_AUTO:
+	case IDM_MINI_WINDOW_ON:
+	case IDM_MINI_WINDOW_OFF:
+	case IDM_MINI_WINDOW_AUTO:
+		handleOnOffAutoCommand( wmId );
+		break;
+
+	case IDM_DISP_WINDOW:
+	case IDM_EDIT_WINDOW:
+	case IDM_MAIN_WINDOW:
+	case IDM_STAT_WINDOW:
+	case IDM_HIST_WINDOW:
+	case IDM_CRSR_WINDOW:
+	case IDM_PERF_WINDOW:
+	case IDM_HIST_INFO:
+		m_pWinManager->Show( wmId, tBoolOp::opToggle );
+		break;
+
 	case IDD_TOGGLE_STRIP_MODE:
 		m_pGridWindow->ToggleStripMode();
 		break;
@@ -197,22 +189,11 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
 		case IDM_RUN:
-			SetSimulationMode( true );
 			m_pWorkThreadInterface->PostRunGenerations( true );
-			m_pAppMenu->RunMode( TRUE );
-			m_pWinManager->Show( IDM_HIST_WINDOW, tBoolOp::opFalse );
-			m_pStatusBar->SetRunMode( TRUE );
 			break;
 
 		case IDM_STOP:
             m_pWorkThreadInterface->PostStopComputation( );
-			m_pAppMenu->RunMode( FALSE );
-			m_pWinManager->Show( IDM_HIST_WINDOW, tBoolOp::opTrue );
-			m_pStatusBar->SetRunMode( FALSE );
-			break;
-
-		case IDM_RUN_STOP:
-			ProcessCommand( m_pWorkThreadInterface->IsRunning() ? IDM_STOP : IDM_RUN );
 			break;
 
 		case IDM_HIST_BUFFER_FULL:
@@ -241,50 +222,22 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			m_pWorkThreadInterface->PostGotoDeath( UnpackFromLParam(lParam) );
 			break;
 
-		case IDM_EDIT_MODE:
-			enterEditMode( );
-			break;
-
-		case IDM_SIMU_MODE:
-			SetSimulationMode( true );
-			break;
-
 		case IDM_SET_POI:
 			m_pWorkThreadInterface->PostSetPOI( UnpackFromLParam(lParam) );
 			break;
 
 		case IDM_SIMULATION_SPEED:   // comes from trackbar in statusBar
-			if (m_pPerformanceWindow != nullptr)
-				m_pPerformanceWindow->SetPerfGenerationDelay( static_cast<DWORD>( lParam ) );
+			setSimulationSpeed( static_cast<DWORD>( lParam ) );
             break;
 
 		case IDM_MAX_SPEED:
-			if (m_pPerformanceWindow != nullptr)
-				m_pPerformanceWindow->SetPerfGenerationDelay( static_cast<DWORD>( lParam ) );
-			if (m_pStatusBar != nullptr)
-				m_pStatusBar->SetSpeedTrackBar( 0 );
-            break;
+			setSimulationSpeed( 0 );
+			m_pStatusBar->SetSpeedTrackBar( 0 );
+			break;
 
         case IDM_SCRIPT_DIALOG:
 			scriptDialog( );
-            break;
-                 
-		case IDM_MINI_WINDOW_ON:
-		case IDM_MINI_WINDOW_OFF:
-		case IDM_MINI_WINDOW_AUTO:
-			m_pGridWindow->PostCommand2Application( IDM_ADJUST_MINI_WIN, wmId );
 			break;
-
-        case IDM_DISP_WINDOW:
-		case IDM_EDIT_WINDOW:
-		case IDM_MAIN_WINDOW:
-		case IDM_STAT_WINDOW:
-        case IDM_HIST_WINDOW:
-        case IDM_CRSR_WINDOW:
-		case IDM_PERF_WINDOW:
-		case IDM_HIST_INFO:
-            m_pWinManager->Show( wmId, tBoolOp::opToggle );
-            break;
 
         case IDM_ESCAPE:
 			m_pGridWindow->Escape();
@@ -294,4 +247,70 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			assert( false );
 	        break;
     }
+}
+
+void EvoController::handleOnOffAutoCommand( int const wmId )
+{
+	Config::tId configId;
+	tOnOffAuto  mode;
+
+	switch ( wmId )
+	{
+		case IDM_PERF_WINDOW_ON:
+		case IDM_PERF_WINDOW_OFF:
+		case IDM_PERF_WINDOW_AUTO:
+			configId = Config::tId::performanceDisplay;
+			break;
+
+		case IDM_HIST_WINDOW_ON:
+		case IDM_HIST_WINDOW_OFF:
+		case IDM_HIST_WINDOW_AUTO:
+			configId = Config::tId::historyDisplay;
+			break;
+
+		case IDM_MINI_WINDOW_ON:
+		case IDM_MINI_WINDOW_OFF:
+		case IDM_MINI_WINDOW_AUTO:
+			configId = Config::tId::miniGridDisplay;
+			break;
+
+		default:
+			assert( false );
+	}
+
+	switch ( wmId )
+	{
+		case IDM_PERF_WINDOW_ON:
+		case IDM_HIST_WINDOW_ON:
+		case IDM_MINI_WINDOW_ON:
+			mode = tOnOffAuto::on;
+			break;
+
+		case IDM_PERF_WINDOW_OFF:
+		case IDM_HIST_WINDOW_OFF:
+		case IDM_MINI_WINDOW_OFF:
+			mode = tOnOffAuto::off;
+			break;
+
+		case IDM_PERF_WINDOW_AUTO:
+		case IDM_HIST_WINDOW_AUTO:
+		case IDM_MINI_WINDOW_AUTO:
+			mode = tOnOffAuto::automatic;
+			break;
+
+		default:
+			assert( false );
+	}
+
+	Config::SetConfigValueOnOffAuto( configId, mode ); 
+	m_pGridWindow->PostCommand2Application( IDM_ADJUST_UI, 0 );
+}
+
+void EvoController::setSimulationSpeed( DWORD const dwDelay )
+{
+	if (m_pPerformanceWindow != nullptr)
+	{
+		m_pPerformanceWindow->SetPerfGenerationDelay( dwDelay );
+		m_pGridWindow->PostCommand2Application( IDM_ADJUST_UI, 0 );
+	}
 }

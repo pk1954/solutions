@@ -78,11 +78,12 @@ void BaseWindow::contextMenu( LPARAM lParam )
 	HMENU const hPopupMenu{ CreatePopupMenu() };
 	POINT       pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
 
+	AddContextMenuEntries( hPopupMenu, pntPos );  
 	if ( GetRefreshRate( ) > 0ms )
 	{
-		(void)InsertMenu( hPopupMenu, 0, MF_STRING, IDM_REFRESH_RATE_DIALOG, L"Refresh Rate" );
+		(void)AppendMenu( hPopupMenu, MF_STRING, IDM_REFRESH_RATE_DIALOG, L"Refresh Rate" );
 	}
-	AddContextMenuEntries( hPopupMenu, pntPos );  
+
 	(void)ClientToScreen( GetWindowHandle(), & pntPos );
     (void)SetForegroundWindow( GetWindowHandle( ) );
 

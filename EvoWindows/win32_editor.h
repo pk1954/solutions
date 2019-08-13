@@ -26,13 +26,12 @@ public:
 	);
 	void Stop( );
 
-	void UpdateEditControls( );
-	void SetSimuMode( bool const );
+	void    UpdateEditControls( );
+	LRESULT SendClick( int ) const;
 
 private:
     virtual INT_PTR UserProc( UINT const, WPARAM const, LPARAM const );
 
-    LRESULT sendClick          ( int )        const;
 	void    setBrushMode       ( WORD const ) const;
 	void    setBrushShape      ( WORD const ) const;
 	void    setBrushManipulator( WORD const ) const;
