@@ -14,6 +14,15 @@ namespace Util
 	class Thread
 	{
 	public:
+
+		Thread( ) :
+			m_handle( nullptr ),
+			m_threadId( 0 ),
+			m_bAsync( false )
+		{}
+
+		~Thread() {};
+
 		void StartThread( wstring const &, BOOL const );
 
 		void SetThreadAffinityMask( DWORD_PTR mask )

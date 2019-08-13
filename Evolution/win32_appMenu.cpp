@@ -7,6 +7,7 @@
 #include "config.h"
 #include "resource.h"
 #include "win32_util.h"
+#include "win32_util_menus.h"
 #include "win32_workThreadInterface.h"
 #include "win32_menus.h"
 #include "win32_appMenu.h"
@@ -30,6 +31,8 @@ void AppMenu::Initialize( HWND const hwndApp, WorkThreadInterface const * const 
 	HMENU hMenuWindows = GetSubMenu( hMenuView, 1 );
 
 	AddMiniWinMenu( hMenuWindows );
+	Util::AddHistWinMenu( hMenuWindows );
+	Util::AddPerfWinMenu( hMenuWindows );
 }
 
 void AppMenu::enableMenues( UINT state )
@@ -66,4 +69,6 @@ void AppMenu::AdjustVisibility( )
 	EnableMenuItem( m_hMenu, IDM_STOP,             bRunning ? MF_ENABLED : MF_GRAYED );
 
 	AdjustMiniWinMenu( m_hMenu );
+	AdjustHistWinMenu( m_hMenu );
+	AdjustPerfWinMenu( m_hMenu );
 }

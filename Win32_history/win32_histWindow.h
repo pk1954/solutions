@@ -27,8 +27,6 @@ protected:
     void PaintHighlightGenerations( HDC const, HIST_GENERATION const ) const;
 	void PaintLifeLine            ( HDC const, HIST_GENERATION const, HIST_GENERATION const ) const;
 
-	virtual void AddContextMenuEntries( HMENU const, POINT const );
-
 	// callbacks
 
 	virtual void DoPaint       ( HDC const )             = 0;

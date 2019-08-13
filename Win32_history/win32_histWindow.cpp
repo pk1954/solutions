@@ -9,7 +9,6 @@
 #include "win32_util.h"
 #include "HistorySystem.h"
 #include "historyIterator.h"
-#include "win32_util_resource.h"
 #include "win32_tooltip.h"
 #include "win32_genDisplayWindow.h"
 #include "win32_histWindow.h"
@@ -62,16 +61,6 @@ HistWindow::~HistWindow( )
     m_pHistSys = nullptr;
     m_pHistIter = nullptr;
     m_pGenDisplay = nullptr;
-}
-
-void HistWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
-{
-	UINT  const STD_FLAGS    = MF_BYPOSITION | MF_STRING;
-	HMENU const hHistWinMenu = CreatePopupMenu();
-	(void)AppendMenu( hHistWinMenu, STD_FLAGS, IDM_HIST_WINDOW_AUTO, L"auto" );
-	(void)AppendMenu( hHistWinMenu, STD_FLAGS, IDM_HIST_WINDOW_ON,  L"on" );
-	(void)AppendMenu( hHistWinMenu, STD_FLAGS, IDM_HIST_WINDOW_OFF, L"off" );
-	(void)AppendMenu( hPopupMenu, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hHistWinMenu, L"Hist window" );
 }
 
 PixelRect HistWindow::getGenerationRect( HIST_GENERATION const gen ) const
@@ -256,26 +245,10 @@ LRESULT HistWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 {
     switch ( message )
     {
+
 	case WM_COMMAND:
-	{
-		UINT uiCmdId = LOWORD( wParam );
-		//switch ( uiCmdId )
-		//{
-		//case IDM_WINDOW_ON:
-		//	Config::SetConfigValueOnOffAuto( Config::tId::miniGridDisplay, tOnOffAuto::on ); 
-		//	break;
-		//case IDM_WINDOW_OFF:
-		//	Config::SetConfigValueOnOffAuto( Config::tId::miniGridDisplay, tOnOffAuto::off ); 
-		//	break;
-		//case IDM_WINDOW_AUTO:
-		//	Config::SetConfigValueOnOffAuto( Config::tId::miniGridDisplay, tOnOffAuto::automatic ); 
-		//	break;
-		//default:
-		//	assert( false );
-		//	break;
-		//}
+		PostCommand2Application( wParam, lParam ); // not handled here, delegate to application
 		return FALSE;
-	}
 
     case WM_PAINT:
     {

@@ -44,24 +44,24 @@ IDC_EVOLUTION_MAIN MENU
             MENUITEM "Toggle &stat window", IDM_STAT_WINDOW
             MENUITEM "Toggle &crsr window", IDM_CRSR_WINDOW
             MENUITEM "Toggle &hist info",   IDM_HIST_INFO
-			POPUP "&Perf window"
-			{
-				MENUITEM "on",   IDM_PERF_WINDOW_ON
-				MENUITEM "off",  IDM_PERF_WINDOW_OFF
-				MENUITEM "auto", IDM_PERF_WINDOW_AUTO
-			}
+			//POPUP "&Perf window"
+			//{
+			//	MENUITEM "on",   IDM_PERF_WINDOW_ON
+			//	MENUITEM "off",  IDM_PERF_WINDOW_OFF
+			//	MENUITEM "auto", IDM_PERF_WINDOW_AUTO
+			//}
 			//POPUP "&Mini window"
 			//{
 			//	MENUITEM "on",   IDM_MINI_WINDOW_ON
 			//	MENUITEM "off",  IDM_MINI_WINDOW_OFF
 			//	MENUITEM "auto", IDM_MINI_WINDOW_AUTO
 			//}
-			POPUP "&Hist window"
-			{
-				MENUITEM "on",   IDM_HIST_WINDOW_ON
-				MENUITEM "off",  IDM_HIST_WINDOW_OFF
-				MENUITEM "auto", IDM_HIST_WINDOW_AUTO
-			}
+			//POPUP "&Hist window"
+			//{
+			//	MENUITEM "on",   IDM_HIST_WINDOW_ON
+			//	MENUITEM "off",  IDM_HIST_WINDOW_OFF
+			//	MENUITEM "auto", IDM_HIST_WINDOW_AUTO
+			//}
 		}
         POPUP "&Display Mode"
         {

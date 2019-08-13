@@ -165,6 +165,7 @@
     <ClInclude Include="win32_thread.h" />
     <ClInclude Include="win32_tooltip.h" />
     <ClInclude Include="win32_util.h" />
+    <ClInclude Include="win32_util_menus.h" />
     <ClInclude Include="win32_util_resource.h" />
     <ClInclude Include="win32_viewCollection.h" />
     <ClInclude Include="win32_winManager.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="win32_thread.cpp" />
     <ClCompile Include="win32_tooltip.cpp" />
     <ClCompile Include="win32_util.cpp" />
+    <ClCompile Include="win32_util_menus.cpp" />
     <ClCompile Include="win32_winManager.cpp" />
   </ItemGroup>
   <ItemGroup>

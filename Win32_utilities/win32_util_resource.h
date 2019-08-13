@@ -1,3 +1,7 @@
+// win32_util_resource.h
+//
+// win32_utilities
+
 #pragma once
 
 // identifiers below 100 are reserved for win32_utilities

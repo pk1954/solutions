@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "config.h"
 #include "EvoHistorySysGlue.h"
+#include "win32_menus.h"
+#include "win32_util_menus.h"
 #include "win32_focusPoint.h"
 #include "win32_workThreadInterface.h"
 #include "win32_evoHistWindow.h"
@@ -34,6 +36,12 @@ void EvoHistWindow::Stop( )
 	HistWindow::Stop( );
 	m_pWorkThreadInterface = nullptr;
 	m_pFocusPoint          = nullptr;
+}
+
+void EvoHistWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
+{
+	Util::AddHistWinMenu( hPopupMenu );
+	AdjustHistWinMenu( hPopupMenu );
 }
 
 void EvoHistWindow::DoPaint( HDC const hDC )

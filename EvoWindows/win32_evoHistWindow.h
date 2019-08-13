@@ -15,7 +15,7 @@ public:
     EvoHistWindow( );
 	virtual ~EvoHistWindow( ) { };
 
-    void Start
+	void Start
 	( 
 		HWND                  const, 
 		FocusPoint          * const, 
@@ -25,6 +25,7 @@ public:
 
 	void Stop( );
 
+	virtual void AddContextMenuEntries( HMENU const, POINT const );
 	virtual void GotoGeneration( HIST_GENERATION const );
 	virtual void DoPaint( HDC const );
 
