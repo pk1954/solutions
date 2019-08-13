@@ -12,6 +12,7 @@
 #include "gridPoint24.h"
 #include "EvolutionCore.h"
 #include "win32_util.h"
+#include "win32_menus.h"
 #include "win32_readBuffer.h"
 #include "win32_focusPoint.h"
 #include "win32_crsrWindow.h"
@@ -142,8 +143,8 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_ESCAPE,   L"Escape" );
 	}
 
-	addMiniWinMenu( hPopupMenu );
-	addjustMiniWinMenu( hPopupMenu );
+	AddMiniWinMenu( hPopupMenu );
+	AdjustMiniWinMenu( hPopupMenu );
 
 	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
 
@@ -170,24 +171,6 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 
 	m_pReadBuffer->ReleaseReadBuffer( );
 }
-
-void GridWindow::addMiniWinMenu( HMENU const hPopupMenu )
-{
-	UINT  const STD_FLAGS    = MF_BYPOSITION | MF_STRING;
-	HMENU const hMiniWinMenu = CreatePopupMenu();
-	(void)AppendMenu( hMiniWinMenu, STD_FLAGS, IDM_MINI_WINDOW_AUTO, L"auto" );
-	(void)AppendMenu( hMiniWinMenu, STD_FLAGS, IDM_MINI_WINDOW_ON,   L"on" );
-	(void)AppendMenu( hMiniWinMenu, STD_FLAGS, IDM_MINI_WINDOW_OFF,  L"off" );
-	(void)AppendMenu( hPopupMenu, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMiniWinMenu, L"Mini window" );
-}
-
-void GridWindow::addjustMiniWinMenu( HMENU const hMenu )
-{
-	tOnOffAuto const onOffAuto = Config::GetConfigValueOnOffAuto( Config::tId::miniGridDisplay );
-	EnableMenuItem( hMenu, IDM_MINI_WINDOW_AUTO, ((onOffAuto == tOnOffAuto::automatic ) ? MF_GRAYED : MF_ENABLED) );
-	EnableMenuItem( hMenu, IDM_MINI_WINDOW_ON,   ((onOffAuto == tOnOffAuto::on        ) ? MF_GRAYED : MF_ENABLED) );
-	EnableMenuItem( hMenu, IDM_MINI_WINDOW_OFF,  ((onOffAuto == tOnOffAuto::off       ) ? MF_GRAYED : MF_ENABLED) );
-}	
 
 void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
 {

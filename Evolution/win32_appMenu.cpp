@@ -5,9 +5,10 @@
 #include "stdafx.h"
 #include "WinUser.h"
 #include "config.h"
-#include "Resource.h"
+#include "resource.h"
 #include "win32_util.h"
 #include "win32_workThreadInterface.h"
+#include "win32_menus.h"
 #include "win32_appMenu.h"
 
 void AppMenu::Initialize( HWND const hwndApp, WorkThreadInterface const * const pWworkThreadInterface ) 
@@ -28,15 +29,7 @@ void AppMenu::Initialize( HWND const hwndApp, WorkThreadInterface const * const 
 	HMENU hMenuView  = GetSubMenu( m_hMenu, 2 );
 	HMENU hMenuWindows = GetSubMenu( hMenuView, 1 );
 
-	HMENU hPopupMenu = hMenuWindows;
-	{
-		UINT  const STD_FLAGS    = MF_BYPOSITION | MF_STRING;
-		HMENU const hMiniWinMenu = CreatePopupMenu();
-		(void)AppendMenu( hMiniWinMenu, STD_FLAGS, IDM_MINI_WINDOW_AUTO, L"auto" );
-		(void)AppendMenu( hMiniWinMenu, STD_FLAGS, IDM_MINI_WINDOW_ON,   L"on" );
-		(void)AppendMenu( hMiniWinMenu, STD_FLAGS, IDM_MINI_WINDOW_OFF,  L"off" );
-		(void)AppendMenu( hPopupMenu, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMiniWinMenu, L"Mini window" );
-	}	
+	AddMiniWinMenu( hMenuWindows );
 }
 
 void AppMenu::enableMenues( UINT state )
@@ -72,11 +65,5 @@ void AppMenu::AdjustVisibility( )
 	EnableMenuItem( m_hMenu, IDM_RUN,              state );
 	EnableMenuItem( m_hMenu, IDM_STOP,             bRunning ? MF_ENABLED : MF_GRAYED );
 
-	HMENU const hMenu = m_hMenu;
-	{
-		tOnOffAuto const onOffAuto = Config::GetConfigValueOnOffAuto( Config::tId::miniGridDisplay );
-		EnableMenuItem( hMenu, IDM_MINI_WINDOW_AUTO, ((onOffAuto == tOnOffAuto::automatic ) ? MF_GRAYED : MF_ENABLED) );
-		EnableMenuItem( hMenu, IDM_MINI_WINDOW_ON,   ((onOffAuto == tOnOffAuto::on        ) ? MF_GRAYED : MF_ENABLED) );
-		EnableMenuItem( hMenu, IDM_MINI_WINDOW_OFF,  ((onOffAuto == tOnOffAuto::off       ) ? MF_GRAYED : MF_ENABLED) );
-	}	
+	AdjustMiniWinMenu( m_hMenu );
 }
