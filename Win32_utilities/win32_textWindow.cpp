@@ -41,7 +41,8 @@ void TextWindow::StartTextWindow
         CS_OWNDC | CS_DBLCLKS,
         szClass,
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION,
-		& rect
+		& rect,
+		nullptr
     );
 
 	HDC const hDC = GetDC( hwnd );   assert( hDC != nullptr );

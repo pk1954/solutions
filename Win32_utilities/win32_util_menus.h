@@ -8,8 +8,8 @@
 
 namespace Util
 {
-	void AddHistWinMenu( HMENU const );
-	void AdjustHistWinMenu( HMENU const, tOnOffAuto const );
+	//void AddHistWinMenu( HMENU const );
+	//void AdjustHistWinMenu( HMENU const, tOnOffAuto const );
 	void AddPerfWinMenu( HMENU const );
 	void AdjustPerfWinMenu( HMENU const, tOnOffAuto const );
 }

@@ -24,7 +24,7 @@ void HistInfoWindow::Start( HWND const   hwndParent )
 		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 415_PIXEL }, 
 		L"HistInfoWindow", 
 		100, 
-		TRUE 
+		TRUE
 	);
 }
 

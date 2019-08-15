@@ -20,7 +20,7 @@ public:
 	virtual ~HistWindow( );
 
 protected:
-	void Start( HWND const, HistorySystem * );
+	void Start( HWND const, HistorySystem *, std::function<bool()> const );
 	void Stop( );
 
     void PaintAllGenerations      ( HDC const );

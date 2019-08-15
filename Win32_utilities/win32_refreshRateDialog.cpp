@@ -63,7 +63,7 @@ milliseconds RefreshRateDialog::Show( HWND const hwndParent, milliseconds msRefr
 {
 	m_msRefreshRate = msRefreshRate;
 
-    DialogBox( nullptr, MAKEINTRESOURCE(IDD_REFRESH_RATE_DIALOG), hwndParent, dialogProc );
+    DialogBox( nullptr, MAKEINTRESOURCE(IDM_REFRESH_RATE_DIALOG), hwndParent, dialogProc );
 
 	return m_msRefreshRate;
 }

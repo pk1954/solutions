@@ -24,8 +24,9 @@ HistWindow::HistWindow( ) :
 
 void HistWindow::Start
 (
-    HWND      const hwndParent,
-    HistorySystem * pHistSys
+    HWND                  const hwndParent,
+    HistorySystem       *       pHistSys,
+	std::function<bool()> const visibilityCriterion
 )
 {
     HWND const hwndHistory = StartBaseWindow
@@ -34,7 +35,8 @@ void HistWindow::Start
         CS_OWNDC | CS_DBLCLKS,
         L"ClassHistWindow",
         WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
-		nullptr
+		nullptr,
+		visibilityCriterion
     );
 
     Util::AddWindowStyle( hwndHistory, WS_EX_STATICEDGE );
@@ -54,10 +56,8 @@ void HistWindow::Stop( )
 
 HistWindow::~HistWindow( )
 {
-    //lint -e1551   won't throw exception
     delete m_pHistIter;
     delete m_pGenDisplay;
-    //lint +e1551
     m_pHistSys = nullptr;
     m_pHistIter = nullptr;
     m_pGenDisplay = nullptr;

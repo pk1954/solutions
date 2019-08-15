@@ -9,14 +9,21 @@
 #include "win32_util.h"
 #include "win32_util_menus.h"
 #include "win32_workThreadInterface.h"
+#include "win32_winManager.h"
 #include "win32_menus.h"
 #include "win32_appMenu.h"
 
-void AppMenu::Initialize( HWND const hwndApp, WorkThreadInterface const * const pWworkThreadInterface ) 
+void AppMenu::Initialize
+( 
+	HWND                        const hwndApp, 
+	WorkThreadInterface const * const pWworkThreadInterface,
+	WinManager          const * const pWinManager
+) 
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
 
 	m_pWorkThreadInterface = pWworkThreadInterface;
+	m_pWinManager          = pWinManager;
 
     SendMessage( hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
     SendMessage( hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL     ) ) );
@@ -30,12 +37,12 @@ void AppMenu::Initialize( HWND const hwndApp, WorkThreadInterface const * const 
 	HMENU hMenuView  = GetSubMenu( m_hMenu, 2 );
 	HMENU hMenuWindows = GetSubMenu( hMenuView, 1 );
 
-	AddMiniWinMenu( hMenuWindows );
-	Util::AddHistWinMenu( hMenuWindows );
-	Util::AddPerfWinMenu( hMenuWindows );
+	//AddMiniWinMenu( hMenuWindows );
+	//m_pWinManager->GetBaseWindow( IDM_HIST_WINDOW )->AddWinMenu( hMenuWindows, L"Hist window" );
+	//Util::AddPerfWinMenu( hMenuWindows );
 }
 
-void AppMenu::enableMenues( UINT state )
+void AppMenu::enableMenues( UINT const state )
 {
 	EnableMenuItem( m_hMenu, 1, state|MF_BYPOSITION ); 
 	EnableMenuItem( m_hMenu, 2, state|MF_BYPOSITION ); 
@@ -68,7 +75,17 @@ void AppMenu::AdjustVisibility( )
 	EnableMenuItem( m_hMenu, IDM_RUN,              state );
 	EnableMenuItem( m_hMenu, IDM_STOP,             bRunning ? MF_ENABLED : MF_GRAYED );
 
+	disableIfVisible( IDM_DISP_WINDOW );
+	disableIfVisible( IDM_EDIT_WINDOW );
+	disableIfVisible( IDM_MAIN_WINDOW );
+	disableIfVisible( IDM_STAT_WINDOW );
+	disableIfVisible( IDM_CRSR_WINDOW );
+	disableIfVisible( IDM_HIST_INFO   );
+	disableIfVisible( IDM_PERF_WINDOW );
+	disableIfVisible( IDM_MINI_WINDOW );
+	disableIfVisible( IDM_HIST_WINDOW );
+
 	AdjustMiniWinMenu( m_hMenu );
-	AdjustHistWinMenu( m_hMenu );
 	AdjustPerfWinMenu( m_hMenu );
+	m_pWinManager->GetBaseWindow( IDM_HIST_WINDOW )->AdjustWinMenu( m_hMenu );
 }

@@ -67,10 +67,11 @@ GridWindow::GridWindow( ) :
 
 void GridWindow::Start
 ( 
-	HWND                const hwndApp, 
-	GraphicsInterface * const pGraphics,
-    DWORD               const dwStyle,
-    PIXEL               const pixFieldSize
+	HWND                  const hwndApp, 
+	GraphicsInterface   * const pGraphics,
+    DWORD                 const dwStyle,
+    PIXEL                 const pixFieldSize,
+	std::function<bool()> const visibilityCriterion
 )
 {
     assert( pixFieldSize > 0_PIXEL );
@@ -85,7 +86,8 @@ void GridWindow::Start
         CS_OWNDC | CS_DBLCLKS,
         L"ClassGridWindow",
         dwStyle,
-		nullptr
+		nullptr,
+		visibilityCriterion
     );
 
 	m_DrawFrame.Start

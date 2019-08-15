@@ -23,7 +23,7 @@ public:
         maxGeneration,        // Maximum number of generations, -1 means: no history system 
         nrOfHistorySlots,     // Number of history slots (if enough memory)
 		performanceDisplay,   // MODE_ON/OFF/AUTO
-		historyDisplay,       // MODE_ON/OFF/AUTO
+		//historyDisplay,       // MODE_ON/OFF/AUTO
 		miniGridDisplay,      // MODE_ON/OFF/AUTO
 		showGridPointCoords,  // show coordinates of grid points on/off
         stdMemSize,           // for strategies with memory (e.g. TFT)

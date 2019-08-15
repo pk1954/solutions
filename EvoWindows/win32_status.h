@@ -57,5 +57,7 @@ private:
 	ReadBuffer                * m_pReadBuffer;
 	WorkThreadInterface const * m_pWorkThreadInterface;
 
+	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+
 friend static LRESULT CALLBACK OwnerDrawStatusBar( HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR );
 };

@@ -33,7 +33,14 @@ public:
 
     GridWindow( );
 
-    void Start( HWND const, GraphicsInterface * const, DWORD const, PIXEL const );
+    void Start
+	( 
+		HWND                  const, 
+		GraphicsInterface   * const, 
+		DWORD                 const, 
+		PIXEL                 const, 
+		std::function<bool()> const
+	);
 	void Stop( );
 
 	~GridWindow( );

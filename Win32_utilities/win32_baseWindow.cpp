@@ -1,17 +1,18 @@
 // win32_baseWindow.cpp
 //
+// win32_utilities
 
 #include "stdafx.h"
+#include "win32_util_resource.h"
 #include "win32_refreshRateDialog.h"
 #include "win32_baseWindow.h"
-
-#define IDM_REFRESH_RATE_DIALOG  10
 
 using namespace std::chrono;
 
 BaseWindow::BaseWindow( ) : 
 	RootWindow( ),
-	m_szClass( nullptr )
+	m_visibilityMode( tOnOffAuto::on ),
+	m_visibilityCriterion( nullptr )
 {}
 
 BaseWindow::~BaseWindow( )    
@@ -19,18 +20,20 @@ BaseWindow::~BaseWindow( )
 
 HWND BaseWindow::StartBaseWindow
 ( 
-    HWND      const   hwndParent,
-    UINT      const   uiClassStyle,
-    LPCTSTR   const   szClass,
-    DWORD     const   dwWindowStyle,
-	PixelRect const * pRect
+    HWND                  const   hwndParent,
+    UINT                  const   uiClassStyle,
+    LPCTSTR               const   szClass,
+    DWORD                 const   dwWindowStyle,
+	PixelRect             const * pRect,
+	std::function<bool()> const   visibilityCriterion
 )
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
     WNDCLASSEX      wcex;
 
     assert( szClass != nullptr );
-	m_szClass = szClass;
+
+	m_visibilityCriterion = visibilityCriterion;
 
     wcex.cbSize = sizeof( WNDCLASSEX );
 
@@ -70,7 +73,29 @@ HWND BaseWindow::StartBaseWindow
     );
     assert( hwnd != nullptr );
     SetWindowHandle( hwnd );
+	m_visibilityMode = m_visibilityCriterion 
+		               ? tOnOffAuto::automatic 
+		               : dwWindowStyle & WS_VISIBLE 
+						  ? tOnOffAuto::on 
+		                  : tOnOffAuto::off;
     return hwnd;
+}
+
+void BaseWindow::AddWinMenu( HMENU const hMenuParent, std::wstring const strTitle ) const
+{
+	UINT  const STD_FLAGS = MF_BYPOSITION | MF_STRING;
+	HMENU const hMenu = CreatePopupMenu();
+	(void)AppendMenu( hMenu, STD_FLAGS, IDM_WINDOW_AUTO, L"auto" );
+	(void)AppendMenu( hMenu, STD_FLAGS, IDM_WINDOW_ON,   L"on"   );
+	(void)AppendMenu( hMenu, STD_FLAGS, IDM_WINDOW_OFF,  L"off"  );
+	(void)AppendMenu( hMenuParent, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu, strTitle.c_str() );
+}
+
+void BaseWindow::AdjustWinMenu( HMENU const hMenu ) const
+{
+	EnableMenuItem( hMenu, IDM_WINDOW_AUTO, ((m_visibilityMode == tOnOffAuto::automatic ) ? MF_GRAYED : MF_ENABLED) );
+	EnableMenuItem( hMenu, IDM_WINDOW_ON,   ((m_visibilityMode == tOnOffAuto::on        ) ? MF_GRAYED : MF_ENABLED) );
+	EnableMenuItem( hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off       ) ? MF_GRAYED : MF_ENABLED) );
 }
 
 void BaseWindow::contextMenu( LPARAM lParam )
@@ -78,7 +103,14 @@ void BaseWindow::contextMenu( LPARAM lParam )
 	HMENU const hPopupMenu{ CreatePopupMenu() };
 	POINT       pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
 
-	AddContextMenuEntries( hPopupMenu, pntPos );  
+	AddContextMenuEntries( hPopupMenu, pntPos );
+
+	if ( m_visibilityCriterion )
+	{
+		AddWinMenu( hPopupMenu, L"Show window" );
+		AdjustWinMenu( hPopupMenu );
+	}
+
 	if ( GetRefreshRate( ) > 0ms )
 	{
 		(void)AppendMenu( hPopupMenu, MF_STRING, IDM_REFRESH_RATE_DIALOG, L"Refresh Rate" );
@@ -139,12 +171,24 @@ static LRESULT CALLBACK BaseWndProc
             switch ( uiCmdId )
             {
 
-	        case IDM_REFRESH_RATE_DIALOG:
+			case IDM_WINDOW_ON:
+				pBaseWin->Show( TRUE );
+				return FALSE;
+
+			case IDM_WINDOW_OFF:
+				pBaseWin->Show( FALSE );
+				return FALSE;
+
+			case IDM_WINDOW_AUTO:
+				pBaseWin->AdjustVisibility( tOnOffAuto::automatic, pBaseWin->m_visibilityCriterion );
+				return FALSE;
+
+			case IDM_REFRESH_RATE_DIALOG:
 			{
 				milliseconds msRefreshRateOld = pBaseWin->GetRefreshRate( );
 				milliseconds msRefreshRateNew = RefreshRateDialog::Show( hwnd, msRefreshRateOld );
 				pBaseWin->SetRefreshRate( msRefreshRateNew );
-		        return FALSE;
+				return FALSE;
 			}
 
             default:
@@ -156,11 +200,9 @@ static LRESULT CALLBACK BaseWndProc
 	default:
  			break;
 	}
-	{
-		BOOL bReady = RootWinIsReady( pBaseWin );
-		if ( bReady )
-			return pBaseWin->UserProc( message, wParam, lParam );         // normal case
-		else
-			return DefWindowProc( hwnd, message, wParam, lParam );
-	}
+
+	if ( RootWinIsReady( pBaseWin ) )
+		return pBaseWin->UserProc( message, wParam, lParam );         // normal case
+	else
+		return DefWindowProc( hwnd, message, wParam, lParam );
 }

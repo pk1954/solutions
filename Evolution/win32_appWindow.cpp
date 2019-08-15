@@ -76,6 +76,7 @@ AppWindow::AppWindow( ) :
 		CS_HREDRAW | CS_VREDRAW, 
 		L"ClassAppWindow", 
 		WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,
+		nullptr,
 		nullptr
 	);
 
@@ -91,7 +92,7 @@ AppWindow::AppWindow( ) :
 	stopwatch.Start();
 	m_ColorManager.Initialize( );
 	m_WorkThreadInterface.Initialize( & m_traceStream ); 
-	m_AppMenu.Initialize( m_hwndApp, & m_WorkThreadInterface );
+//	m_AppMenu.Initialize( m_hwndApp, & m_WorkThreadInterface );  moved down
 
 	stopwatch.Stop( L"create window objects" );
 
@@ -135,13 +136,13 @@ AppWindow::AppWindow( ) :
 	m_HistInfoWindow.Start( m_hwndApp);
 	m_PerfWindow    .Start( m_hwndApp );
 
-	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,    TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,        TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_StatusBar,      FALSE, FALSE );
-	m_WinManager.AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_PerfWindow,     TRUE,  FALSE );
-	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_CrsrWindow,     TRUE,  FALSE );
-	m_WinManager.AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_Statistics,     TRUE,  FALSE );
-	m_WinManager.AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_HistInfoWindow, TRUE,  FALSE );
+	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,    TRUE,   TRUE  );
+	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,        TRUE,   TRUE  );
+	m_WinManager.AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, m_PerfWindow,     TRUE,   FALSE );
+	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, m_CrsrWindow,     TRUE,   FALSE );
+	m_WinManager.AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, m_Statistics,     TRUE,   FALSE );
+	m_WinManager.AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_HistInfoWindow, TRUE,   FALSE );
+	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_StatusBar.GetWindowHandle(), FALSE, FALSE );
 
 	m_EvoController.Start
 	( 
@@ -205,8 +206,22 @@ void AppWindow::Start( )
 	DefineCoreWrapperFunctions( pCoreWork );  // Core wrappers run in work thread
 	m_ReadBuffer.Initialize( & m_CoreObservers, pCoreWork, m_pEvoCore4Display );
 
-	m_MainGridWindow.Start( m_hwndApp, m_pGraphics, WS_CHILD       | WS_CLIPSIBLINGS,             16_PIXEL );
-    m_MiniGridWindow.Start( m_hwndApp, m_pGraphics, WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION, 2_PIXEL );
+	m_MainGridWindow.Start
+	( 
+		m_hwndApp, 
+		m_pGraphics, 
+		WS_CHILD | WS_CLIPSIBLINGS, 
+		16_PIXEL, 
+		nullptr
+	);
+    m_MiniGridWindow.Start
+	( 
+		m_hwndApp, 
+		m_pGraphics, 
+		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION, 
+		2_PIXEL, 
+		[&]() { return ! m_MainGridWindow.IsFullGridVisible( ); }
+	);
 	m_EvoHistWindow .Start( m_hwndApp, & m_FocusPoint, m_pHistorySystem, & m_WorkThreadInterface );
 	m_DspOptWindow  .Start( m_hwndApp );
     m_EditorWindow  .Start( m_hwndApp, & m_WorkThreadInterface, pCoreWork, & m_DspOptWindow );
@@ -228,7 +243,9 @@ void AppWindow::Start( )
     m_WinManager.AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, m_MiniGridWindow, TRUE,  FALSE );
     m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, m_MainGridWindow, TRUE,  FALSE );
 
-    m_MiniGridWindow.Size( );
+	m_AppMenu.Initialize( m_hwndApp, & m_WorkThreadInterface, & m_WinManager );
+
+	m_MiniGridWindow.Size( );
 	adjustChildWindows( ); 
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
@@ -303,7 +320,12 @@ LRESULT AppWindow::UserProc
     switch ( message )
     {
 
-    case WM_COMMAND:
+	case WM_ENTERMENULOOP:
+		if ( wParam == FALSE )
+			m_AppMenu.AdjustVisibility( );
+		break;
+
+	case WM_COMMAND:
     {
         int const wmId = LOWORD(wParam);
         switch (wmId)
@@ -418,12 +440,11 @@ void AppWindow::adjustChildWindows( )
 void AppWindow::adjustUI( )
 {
 	m_StatusBar.Adjust( );
-	m_AppMenu.AdjustVisibility( );
-	m_EvoHistWindow.AdjustVisibility
-	(
-		Config::GetConfigValueOnOffAuto( Config::tId::historyDisplay ),
-		[&]() { return ! m_WorkThreadInterface.IsRunning(); }
-	);
+	//m_EvoHistWindow.AdjustVisibility
+	//(
+	//	Config::GetConfigValueOnOffAuto( Config::tId::historyDisplay ),
+	//	[&]() { return ! m_WorkThreadInterface.IsRunning(); }
+	//);
 	m_PerfWindow.AdjustVisibility
 	(
 		Config::GetConfigValueOnOffAuto( Config::tId::performanceDisplay ),

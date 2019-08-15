@@ -6,7 +6,8 @@
 #include <string>
 #include <unordered_map>
 #include "win32_util.h"
-#include "win32_rootWindow.h"
+#include "win32_baseWindow.h"
+#include "win32_baseDialog.h"
 
 class RootWindow;
 
@@ -17,18 +18,8 @@ public:
     virtual ~WinManager( ) { };
 
 	void AddWindow( std::wstring const, UINT const, HWND, BOOL const, BOOL const );
-
-	void AddWindow
-	( 
-		wstring    const wstrName, 
-		UINT       const id, 
-		RootWindow const & rootWindow,
-		BOOL       const bTrackPosition,
-		BOOL       const bTrackSize
-	)
-	{
-		AddWindow( wstrName, id, rootWindow.GetWindowHandle(), bTrackPosition, bTrackSize );
-	}
+	void AddWindow( std::wstring const, UINT const, BaseWindow const &, BOOL const, BOOL const );
+	void AddWindow( std::wstring const, UINT const, BaseDialog const &, BOOL const, BOOL const );
 
 	void RemoveWindow( UINT const id )
 	{
@@ -40,10 +31,15 @@ public:
         return m_map.at( id ).m_wstr;
     }
 
-    HWND const GetHWND( UINT const id )  const // can throw out_of_range exception
-    {
-        return m_map.at( id ).m_hwnd;
-    }
+	HWND const GetHWND( UINT const id )  const // can throw out_of_range exception
+	{
+		return m_map.at( id ).m_hwnd;
+	}
+
+	BaseWindow const * const GetBaseWindow( UINT const id )  const // can throw out_of_range exception
+	{
+		return m_map.at( id ).m_pBaseWindow;
+	}
 
 	INT const GetIdFromRootWindow( HWND const hwnd )
 	{
@@ -59,12 +55,17 @@ public:
         return m_map.at( id ).m_bTrackPosition;
     }
 
-    BOOL const IsSizeable( UINT const id )  const // can throw out_of_range exception
-    {
-        return m_map.at( id ).m_bTrackSize;
-    }
+	BOOL const IsSizeable( UINT const id )  const // can throw out_of_range exception
+	{
+		return m_map.at( id ).m_bTrackSize;
+	}
 
-    void Show( UINT const id, tBoolOp const op ) const
+	BOOL const IsVisible( UINT const id )  const // can throw out_of_range exception
+	{
+		return IsWindowVisible( GetHWND( id ) );
+	}
+
+	void Show( UINT const id, tBoolOp const op ) const
     {
         Util::Show( GetHWND( id ), op );
     }
@@ -88,10 +89,11 @@ private:
 
     struct MAP_ELEMENT
     {
-        std::wstring const m_wstr;
-        HWND         const m_hwnd;
-		BOOL         const m_bTrackPosition; // if TRUE, winManager sets window position from config file
-		BOOL         const m_bTrackSize;     // if TRUE, winManager sets window size from config file
+        std::wstring const   m_wstr;
+		BaseWindow   const * m_pBaseWindow;    // Normally BaseWindows are managed, but in same cases
+		HWND         const   m_hwnd;           // also naked HWNDs are used
+		BOOL         const   m_bTrackPosition; // if TRUE, winManager sets window position from config file
+		BOOL         const   m_bTrackSize;     // if TRUE, winManager sets window size from config file
     };
 
     std::unordered_map< UINT, MAP_ELEMENT > m_map;

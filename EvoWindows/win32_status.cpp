@@ -102,6 +102,16 @@ void StatusBar::Start
 	PostCommand2Application( IDM_SIMULATION_SPEED, lDefaultDelay );
 }
 
+LRESULT StatusBar::UserProc
+( 
+	UINT   const uMsg, 
+	WPARAM const wParam, 
+	LPARAM const lParam 
+)
+{
+	return DefSubclassProc( GetWindowHandle(), uMsg, wParam, lParam );
+}
+
 static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
 {
     StatusBar * const pStatusBar = (StatusBar *)dwRefData;
@@ -118,7 +128,10 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
         break;
 
     case WM_COMMAND:
+	{
+		HWND hwndParent = GetParent( hwnd );
 		(void)SendMessage( GetParent( hwnd ), WM_COMMAND, LOWORD(wParam), 0 );
+	}
         return FALSE;
 
     case WM_HSCROLL:

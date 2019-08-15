@@ -38,30 +38,15 @@ IDC_EVOLUTION_MAIN MENU
         }
         POPUP "&Windows"
         {
-            MENUITEM "Toggle &disp window", IDM_DISP_WINDOW
-			MENUITEM "Toggle &edit window", IDM_EDIT_WINDOW
-			MENUITEM "Toggle &main window", IDM_MAIN_WINDOW
-            MENUITEM "Toggle &stat window", IDM_STAT_WINDOW
-            MENUITEM "Toggle &crsr window", IDM_CRSR_WINDOW
-            MENUITEM "Toggle &hist info",   IDM_HIST_INFO
-			//POPUP "&Perf window"
-			//{
-			//	MENUITEM "on",   IDM_PERF_WINDOW_ON
-			//	MENUITEM "off",  IDM_PERF_WINDOW_OFF
-			//	MENUITEM "auto", IDM_PERF_WINDOW_AUTO
-			//}
-			//POPUP "&Mini window"
-			//{
-			//	MENUITEM "on",   IDM_MINI_WINDOW_ON
-			//	MENUITEM "off",  IDM_MINI_WINDOW_OFF
-			//	MENUITEM "auto", IDM_MINI_WINDOW_AUTO
-			//}
-			//POPUP "&Hist window"
-			//{
-			//	MENUITEM "on",   IDM_HIST_WINDOW_ON
-			//	MENUITEM "off",  IDM_HIST_WINDOW_OFF
-			//	MENUITEM "auto", IDM_HIST_WINDOW_AUTO
-			//}
+            MENUITEM "Show &disp window", IDM_DISP_WINDOW
+			MENUITEM "Show &edit window", IDM_EDIT_WINDOW
+			MENUITEM "Show &main window", IDM_MAIN_WINDOW
+            MENUITEM "Show &stat window", IDM_STAT_WINDOW
+            MENUITEM "Show &crsr window", IDM_CRSR_WINDOW
+            MENUITEM "Show &hist info",   IDM_HIST_INFO
+			MENUITEM "Show &perf window", IDM_PERF_WINDOW
+			MENUITEM "Show &mini window", IDM_MINI_WINDOW
+			MENUITEM "Show &hist window", IDM_HIST_WINDOW
 		}
         POPUP "&Display Mode"
         {

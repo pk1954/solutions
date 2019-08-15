@@ -24,11 +24,10 @@ void EvoHistWindow::Start
 	WorkThreadInterface * const pWorkThreadInterface
 )
 {
-    HistWindow::Start( hwndParent, pHistorySystem );  // call base class
+    HistWindow::Start( hwndParent, pHistorySystem, [&]() { return ! m_pWorkThreadInterface->IsRunning(); } );  // call base class
 	m_pFocusPoint          = pFocusPoint;
 	m_pWorkThreadInterface = pWorkThreadInterface;
 //    m_pFocusPoint->AttachFocusPointObserver( this );
-	Show( Config::GetConfigValueOnOffAuto( Config::tId::historyDisplay ) == tOnOffAuto::on );
 }
 
 void EvoHistWindow::Stop( )
@@ -36,12 +35,6 @@ void EvoHistWindow::Stop( )
 	HistWindow::Stop( );
 	m_pWorkThreadInterface = nullptr;
 	m_pFocusPoint          = nullptr;
-}
-
-void EvoHistWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
-{
-	Util::AddHistWinMenu( hPopupMenu );
-	AdjustHistWinMenu( hPopupMenu );
 }
 
 void EvoHistWindow::DoPaint( HDC const hDC )

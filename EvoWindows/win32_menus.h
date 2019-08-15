@@ -8,5 +8,5 @@
 
 void AddMiniWinMenu( HMENU const );
 void AdjustMiniWinMenu( HMENU const );
-void AdjustHistWinMenu( HMENU const );
+//void AdjustHistWinMenu( HMENU const );
 void AdjustPerfWinMenu( HMENU const );

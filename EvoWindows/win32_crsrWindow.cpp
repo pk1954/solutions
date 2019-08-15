@@ -31,7 +31,7 @@ void CrsrWindow::Start
 		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 415_PIXEL }, 
 		L"CrsrWindow", 
 		100, 
-		TRUE 
+		TRUE
 	);
 }
 

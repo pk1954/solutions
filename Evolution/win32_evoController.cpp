@@ -104,9 +104,9 @@ bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 	case IDM_PERF_WINDOW_ON:
 	case IDM_PERF_WINDOW_OFF:
 	case IDM_PERF_WINDOW_AUTO:
-	case IDM_HIST_WINDOW_ON:
-	case IDM_HIST_WINDOW_OFF:
-	case IDM_HIST_WINDOW_AUTO:
+	//case IDM_HIST_WINDOW_ON:
+	//case IDM_HIST_WINDOW_OFF:
+	//case IDM_HIST_WINDOW_AUTO:
 	case IDM_MINI_WINDOW_ON:
 	case IDM_MINI_WINDOW_OFF:
 	case IDM_MINI_WINDOW_AUTO:
@@ -117,11 +117,12 @@ bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 	case IDM_EDIT_WINDOW:
 	case IDM_MAIN_WINDOW:
 	case IDM_STAT_WINDOW:
-	case IDM_HIST_WINDOW:
 	case IDM_CRSR_WINDOW:
-	case IDM_PERF_WINDOW:
 	case IDM_HIST_INFO:
-		m_pWinManager->Show( wmId, tBoolOp::opToggle );
+	case IDM_PERF_WINDOW:
+	case IDM_MINI_WINDOW:
+	case IDM_HIST_WINDOW:
+		m_pWinManager->Show( wmId, tBoolOp::opTrue );
 		break;
 
 	case IDD_TOGGLE_STRIP_MODE:
@@ -262,11 +263,11 @@ void EvoController::handleOnOffAutoCommand( int const wmId )
 			configId = Config::tId::performanceDisplay;
 			break;
 
-		case IDM_HIST_WINDOW_ON:
-		case IDM_HIST_WINDOW_OFF:
-		case IDM_HIST_WINDOW_AUTO:
-			configId = Config::tId::historyDisplay;
-			break;
+		//case IDM_HIST_WINDOW_ON:
+		//case IDM_HIST_WINDOW_OFF:
+		//case IDM_HIST_WINDOW_AUTO:
+		//	configId = Config::tId::historyDisplay;
+		//	break;
 
 		case IDM_MINI_WINDOW_ON:
 		case IDM_MINI_WINDOW_OFF:
@@ -281,19 +282,19 @@ void EvoController::handleOnOffAutoCommand( int const wmId )
 	switch ( wmId )
 	{
 		case IDM_PERF_WINDOW_ON:
-		case IDM_HIST_WINDOW_ON:
+//		case IDM_HIST_WINDOW_ON:
 		case IDM_MINI_WINDOW_ON:
 			mode = tOnOffAuto::on;
 			break;
 
 		case IDM_PERF_WINDOW_OFF:
-		case IDM_HIST_WINDOW_OFF:
+//		case IDM_HIST_WINDOW_OFF:
 		case IDM_MINI_WINDOW_OFF:
 			mode = tOnOffAuto::off;
 			break;
 
 		case IDM_PERF_WINDOW_AUTO:
-		case IDM_HIST_WINDOW_AUTO:
+//		case IDM_HIST_WINDOW_AUTO:
 		case IDM_MINI_WINDOW_AUTO:
 			mode = tOnOffAuto::automatic;
 			break;
