@@ -17,7 +17,7 @@ PerformanceWindow::PerformanceWindow( ) :
     m_dwCounter( 0 )
 { }
 
-void PerformanceWindow::Start( HWND const hwndParent )
+void PerformanceWindow::Start( HWND const hwndParent, std::function<bool()> const visibilityCriterion )
 {
     StartTextWindow
 	( 
@@ -25,7 +25,8 @@ void PerformanceWindow::Start( HWND const hwndParent )
 		PixelRect { 0_PIXEL, 0_PIXEL, 300_PIXEL, 130_PIXEL }, 
 		L"PerformanceWindow", 
 		100,  // alpha
-		TRUE
+		TRUE,
+		visibilityCriterion
 	);
 }
 

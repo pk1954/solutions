@@ -75,13 +75,13 @@ HWND BaseWindow::StartBaseWindow
     SetWindowHandle( hwnd );
 	m_visibilityMode = m_visibilityCriterion 
 		               ? tOnOffAuto::automatic 
-		               : dwWindowStyle & WS_VISIBLE 
+		               : IsWindowVisible( )
 						  ? tOnOffAuto::on 
 		                  : tOnOffAuto::off;
     return hwnd;
 }
 
-void BaseWindow::AddWinMenu( HMENU const hMenuParent, std::wstring const strTitle ) const
+void BaseWindow::addWinMenu( HMENU const hMenuParent, std::wstring const strTitle ) const
 {
 	UINT  const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 	HMENU const hMenu = CreatePopupMenu();
@@ -91,7 +91,7 @@ void BaseWindow::AddWinMenu( HMENU const hMenuParent, std::wstring const strTitl
 	(void)AppendMenu( hMenuParent, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu, strTitle.c_str() );
 }
 
-void BaseWindow::AdjustWinMenu( HMENU const hMenu ) const
+void BaseWindow::adjustWinMenu( HMENU const hMenu ) const
 {
 	EnableMenuItem( hMenu, IDM_WINDOW_AUTO, ((m_visibilityMode == tOnOffAuto::automatic ) ? MF_GRAYED : MF_ENABLED) );
 	EnableMenuItem( hMenu, IDM_WINDOW_ON,   ((m_visibilityMode == tOnOffAuto::on        ) ? MF_GRAYED : MF_ENABLED) );
@@ -107,8 +107,8 @@ void BaseWindow::contextMenu( LPARAM lParam )
 
 	if ( m_visibilityCriterion )
 	{
-		AddWinMenu( hPopupMenu, L"Show window" );
-		AdjustWinMenu( hPopupMenu );
+		addWinMenu( hPopupMenu, L"Show window" );
+		adjustWinMenu( hPopupMenu );
 	}
 
 	if ( GetRefreshRate( ) > 0ms )
@@ -153,9 +153,9 @@ static LRESULT CALLBACK BaseWndProc
         return TRUE;
 
 	case WM_ERASEBKGND:
-        return TRUE;			// Do not erase background
+		return TRUE;			// Do not erase background
 
-    case WM_RBUTTONDOWN:
+	case WM_RBUTTONDOWN:
         pBaseWin->SetCapture( );
         pBaseWin->SetFocus( );
         return FALSE;
@@ -165,22 +165,29 @@ static LRESULT CALLBACK BaseWndProc
         pBaseWin->contextMenu( lParam );
         return FALSE;
 
-    case WM_COMMAND:
+	case WM_CLOSE:   
+		pBaseWin->m_visibilityMode = tOnOffAuto::off;
+		break;
+
+	case WM_COMMAND:
         {
             UINT uiCmdId = LOWORD( wParam );
             switch ( uiCmdId )
             {
 
 			case IDM_WINDOW_ON:
+				pBaseWin->m_visibilityMode = tOnOffAuto::on;
 				pBaseWin->Show( TRUE );
 				return FALSE;
 
 			case IDM_WINDOW_OFF:
+				pBaseWin->m_visibilityMode = tOnOffAuto::off;
 				pBaseWin->Show( FALSE );
 				return FALSE;
 
 			case IDM_WINDOW_AUTO:
-				pBaseWin->AdjustVisibility( tOnOffAuto::automatic, pBaseWin->m_visibilityCriterion );
+				pBaseWin->m_visibilityMode = tOnOffAuto::automatic;
+				pBaseWin->Show( ApplyAutoCriterion( tOnOffAuto::automatic, pBaseWin->m_visibilityCriterion ) );
 				return FALSE;
 
 			case IDM_REFRESH_RATE_DIALOG:

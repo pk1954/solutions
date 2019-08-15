@@ -12,7 +12,6 @@
 #include "gridPoint24.h"
 #include "EvolutionCore.h"
 #include "win32_util.h"
-#include "win32_menus.h"
 #include "win32_readBuffer.h"
 #include "win32_focusPoint.h"
 #include "win32_crsrWindow.h"
@@ -145,9 +144,6 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_ESCAPE,   L"Escape" );
 	}
 
-	AddMiniWinMenu( hPopupMenu );
-	AdjustMiniWinMenu( hPopupMenu );
-
 	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
 
 	if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( * pCore ) )
@@ -208,7 +204,6 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
         else if ( m_ptLast.IsNotNull() )  // last cursor pos stored in m_ptLast
         {
             moveGrid( ptCrsr - m_ptLast );
-		    PostCommand2Application( IDM_ADJUST_UI, 0 );
         }
         m_ptLast = ptCrsr;
 		PostCommand2Application( IDM_REFRESH, 0 );
@@ -305,7 +300,6 @@ void GridWindow::mouseWheelAction( WPARAM const wParam )
 	}
 
 	PostCommand2Application( IDM_SET_ZOOM, pixNewFieldSize.GetValue() );
-	PostCommand2Application( IDM_ADJUST_UI, 0 );
 }
 
 bool GridWindow::IsFullGridVisible() const
@@ -419,10 +413,6 @@ LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 	}
 		return FALSE;
 
-	case WM_SIZE:
-		PostCommand2Application( IDM_ADJUST_UI, 0 );
-		return FALSE;
-
     case WM_PAINT:
         doPaint( );
         return FALSE;
@@ -461,7 +451,6 @@ void GridWindow::newFieldSize
 		PixelPoint const ppCrsr = GetRelativeCrsrPosition( );
 		if ( IsInClientRect( ppCrsr ) )
 			m_DrawFrame.SetHighlightPos( pCore, ppCrsr );  
-		PostCommand2Application( IDM_ADJUST_UI, 0 );             
 	}
 	else
 	{

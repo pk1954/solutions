@@ -24,15 +24,14 @@ public:
 		std::function<bool()> const
 	);
 
-	void AddWinMenu   ( HMENU const, std::wstring const ) const;
-	void AdjustWinMenu( HMENU const ) const;
-	
 	virtual void AddContextMenuEntries( HMENU const, POINT const ) {}
 
 private:
 	tOnOffAuto            m_visibilityMode;
 	std::function<bool()> m_visibilityCriterion;
 
+	void addWinMenu( HMENU const, std::wstring const ) const;
+	void adjustWinMenu( HMENU const ) const;
 	void contextMenu( LPARAM );
 	
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) = 0;
@@ -40,8 +39,8 @@ private:
 	void adjustVisibility( tOnOffAuto const onOffAuto )
 	{
 		if ( m_visibilityCriterion )
-			AdjustVisibility( onOffAuto, m_visibilityCriterion );
+			Show( ApplyAutoCriterion( onOffAuto, m_visibilityCriterion ) );
 	}
 	
-friend static LRESULT CALLBACK BaseWndProc( HWND const, UINT const, WPARAM const, LPARAM const );
+	friend static LRESULT CALLBACK BaseWndProc( HWND const, UINT const, WPARAM const, LPARAM const );
 };

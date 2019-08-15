@@ -14,7 +14,7 @@ class TextWindow : public BaseWindow
 public:
     TextWindow( );
 
-    void StartTextWindow( HWND const, PixelRect const &, LPCTSTR const, UINT const, BOOL const );
+    void StartTextWindow( HWND const, PixelRect const &, LPCTSTR const, UINT const, BOOL const, std::function<bool()> const );
 	void TerminateTextWindow( );
 
     virtual void DoPaint( TextBuffer & ) = 0;

@@ -12,7 +12,7 @@ public:
     PerformanceWindow( );
     ~PerformanceWindow( ) {}; 
 
-    void Start( HWND const );
+    void Start( HWND const, std::function<bool()> const );
 
     void ComputationStart( )
     {

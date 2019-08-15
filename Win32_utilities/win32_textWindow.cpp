@@ -28,11 +28,12 @@ void TextWindow::TerminateTextWindow()
 
 void TextWindow::StartTextWindow
 (
-    HWND      const   hwndParent,
-	PixelRect const & rect,
-	LPCTSTR   const   szClass,
-    UINT      const   uiAlpha,
-	BOOL      const   bAsync
+    HWND                  const   hwndParent,
+	PixelRect             const & rect,
+	LPCTSTR               const   szClass,
+    UINT                  const   uiAlpha,
+	BOOL                  const   bAsync,
+	std::function<bool()> const   visibilityCriterion
 )
 {
     HWND const hwnd = StartBaseWindow
@@ -42,7 +43,7 @@ void TextWindow::StartTextWindow
         szClass,
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION,
 		& rect,
-		nullptr
+		visibilityCriterion
     );
 
 	HDC const hDC = GetDC( hwnd );   assert( hDC != nullptr );

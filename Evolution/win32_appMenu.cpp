@@ -7,10 +7,8 @@
 #include "config.h"
 #include "resource.h"
 #include "win32_util.h"
-#include "win32_util_menus.h"
 #include "win32_workThreadInterface.h"
 #include "win32_winManager.h"
-#include "win32_menus.h"
 #include "win32_appMenu.h"
 
 void AppMenu::Initialize
@@ -34,12 +32,6 @@ void AppMenu::Initialize
 	assert( bRes );
 
 	m_hMenu = GetMenu( hwndApp );
-	HMENU hMenuView  = GetSubMenu( m_hMenu, 2 );
-	HMENU hMenuWindows = GetSubMenu( hMenuView, 1 );
-
-	//AddMiniWinMenu( hMenuWindows );
-	//m_pWinManager->GetBaseWindow( IDM_HIST_WINDOW )->AddWinMenu( hMenuWindows, L"Hist window" );
-	//Util::AddPerfWinMenu( hMenuWindows );
 }
 
 void AppMenu::enableMenues( UINT const state )
@@ -64,28 +56,24 @@ void AppMenu::Stop( )
 void AppMenu::AdjustVisibility( )
 {
 	BOOL const bRunning = m_pWorkThreadInterface->IsRunning();
-	UINT const state    = bRunning ? MF_GRAYED : MF_ENABLED;
 
-	EnableMenuItem( m_hMenu, IDM_GENERATION,       state );
-	EnableMenuItem( m_hMenu, IDM_BACKWARDS,        state );
-	EnableMenuItem( m_hMenu, IDM_GOTO_ORIGIN,      state );
-	EnableMenuItem( m_hMenu, IDM_GOTO_DEATH,       state );
-	EnableMenuItem( m_hMenu, IDM_RESET,            state );
-	EnableMenuItem( m_hMenu, IDM_CHANGE_GRID_TYPE, state );
-	EnableMenuItem( m_hMenu, IDM_RUN,              state );
+	EnableMenuItem( m_hMenu, IDM_GENERATION,       bRunning ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_BACKWARDS,        bRunning ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_GOTO_ORIGIN,      bRunning ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_GOTO_DEATH,       bRunning ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_RESET,            bRunning ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_CHANGE_GRID_TYPE, bRunning ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_RUN,              bRunning ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_STOP,             bRunning ? MF_ENABLED : MF_GRAYED );
 
-	disableIfVisible( IDM_DISP_WINDOW );
-	disableIfVisible( IDM_EDIT_WINDOW );
-	disableIfVisible( IDM_MAIN_WINDOW );
-	disableIfVisible( IDM_STAT_WINDOW );
-	disableIfVisible( IDM_CRSR_WINDOW );
-	disableIfVisible( IDM_HIST_INFO   );
-	disableIfVisible( IDM_PERF_WINDOW );
-	disableIfVisible( IDM_MINI_WINDOW );
-	disableIfVisible( IDM_HIST_WINDOW );
-
-	AdjustMiniWinMenu( m_hMenu );
-	AdjustPerfWinMenu( m_hMenu );
-	m_pWinManager->GetBaseWindow( IDM_HIST_WINDOW )->AdjustWinMenu( m_hMenu );
+	BOOL b = m_pWinManager->IsVisible( IDM_DISP_WINDOW );
+	EnableMenuItem( m_hMenu, IDM_DISP_WINDOW, m_pWinManager->IsVisible( IDM_DISP_WINDOW ) ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_EDIT_WINDOW, m_pWinManager->IsVisible( IDM_EDIT_WINDOW ) ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_MAIN_WINDOW, m_pWinManager->IsVisible( IDM_MAIN_WINDOW ) ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_STAT_WINDOW, m_pWinManager->IsVisible( IDM_STAT_WINDOW ) ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_CRSR_WINDOW, m_pWinManager->IsVisible( IDM_CRSR_WINDOW ) ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_HIST_INFO  , m_pWinManager->IsVisible( IDM_HIST_INFO   ) ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_PERF_WINDOW, m_pWinManager->IsVisible( IDM_PERF_WINDOW ) ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_MINI_WINDOW, m_pWinManager->IsVisible( IDM_MINI_WINDOW ) ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_HIST_WINDOW, m_pWinManager->IsVisible( IDM_HIST_WINDOW ) ? MF_GRAYED : MF_ENABLED );
 }

@@ -101,18 +101,6 @@ bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 {
 	switch (wmId)
 	{
-	case IDM_PERF_WINDOW_ON:
-	case IDM_PERF_WINDOW_OFF:
-	case IDM_PERF_WINDOW_AUTO:
-	//case IDM_HIST_WINDOW_ON:
-	//case IDM_HIST_WINDOW_OFF:
-	//case IDM_HIST_WINDOW_AUTO:
-	case IDM_MINI_WINDOW_ON:
-	case IDM_MINI_WINDOW_OFF:
-	case IDM_MINI_WINDOW_AUTO:
-		handleOnOffAutoCommand( wmId );
-		break;
-
 	case IDM_DISP_WINDOW:
 	case IDM_EDIT_WINDOW:
 	case IDM_MAIN_WINDOW:
@@ -122,7 +110,7 @@ bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 	case IDM_PERF_WINDOW:
 	case IDM_MINI_WINDOW:
 	case IDM_HIST_WINDOW:
-		m_pWinManager->Show( wmId, tBoolOp::opTrue );
+		SendMessage( m_pWinManager->GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
 		break;
 
 	case IDD_TOGGLE_STRIP_MODE:
@@ -248,63 +236,6 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			assert( false );
 	        break;
     }
-}
-
-void EvoController::handleOnOffAutoCommand( int const wmId )
-{
-	Config::tId configId;
-	tOnOffAuto  mode;
-
-	switch ( wmId )
-	{
-		case IDM_PERF_WINDOW_ON:
-		case IDM_PERF_WINDOW_OFF:
-		case IDM_PERF_WINDOW_AUTO:
-			configId = Config::tId::performanceDisplay;
-			break;
-
-		//case IDM_HIST_WINDOW_ON:
-		//case IDM_HIST_WINDOW_OFF:
-		//case IDM_HIST_WINDOW_AUTO:
-		//	configId = Config::tId::historyDisplay;
-		//	break;
-
-		case IDM_MINI_WINDOW_ON:
-		case IDM_MINI_WINDOW_OFF:
-		case IDM_MINI_WINDOW_AUTO:
-			configId = Config::tId::miniGridDisplay;
-			break;
-
-		default:
-			assert( false );
-	}
-
-	switch ( wmId )
-	{
-		case IDM_PERF_WINDOW_ON:
-//		case IDM_HIST_WINDOW_ON:
-		case IDM_MINI_WINDOW_ON:
-			mode = tOnOffAuto::on;
-			break;
-
-		case IDM_PERF_WINDOW_OFF:
-//		case IDM_HIST_WINDOW_OFF:
-		case IDM_MINI_WINDOW_OFF:
-			mode = tOnOffAuto::off;
-			break;
-
-		case IDM_PERF_WINDOW_AUTO:
-//		case IDM_HIST_WINDOW_AUTO:
-		case IDM_MINI_WINDOW_AUTO:
-			mode = tOnOffAuto::automatic;
-			break;
-
-		default:
-			assert( false );
-	}
-
-	Config::SetConfigValueOnOffAuto( configId, mode ); 
-	m_pGridWindow->PostCommand2Application( IDM_ADJUST_UI, 0 );
 }
 
 void EvoController::setSimulationSpeed( DWORD const dwDelay )

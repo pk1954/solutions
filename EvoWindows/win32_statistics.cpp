@@ -35,7 +35,8 @@ void StatisticsWindow::Start
 		PixelRect{ 200_PIXEL, 200_PIXEL, 600_PIXEL, 900_PIXEL }, 
 		L"StatisticsWindow", 
 		100, 
-		TRUE
+		TRUE,
+		nullptr
 	);
 }
 

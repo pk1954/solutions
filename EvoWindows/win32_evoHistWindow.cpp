@@ -4,8 +4,6 @@
 #include "stdafx.h"
 #include "config.h"
 #include "EvoHistorySysGlue.h"
-#include "win32_menus.h"
-#include "win32_util_menus.h"
 #include "win32_focusPoint.h"
 #include "win32_workThreadInterface.h"
 #include "win32_evoHistWindow.h"

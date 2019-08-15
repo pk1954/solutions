@@ -19,16 +19,12 @@ public:
 	{}
 
 	void Initialize( HWND const, WorkThreadInterface const * const, WinManager const * const );
-	void Start( BOOL const );
 	void AdjustVisibility( );
+	void Start( BOOL const );
 	void Stop();
 
 private:
 	void enableMenues( UINT const );
-	void disableIfVisible( UINT const id )
-	{
-		EnableMenuItem( m_hMenu, id, m_pWinManager->IsVisible( id ) );
-	}
 
 	HMENU                       m_hMenu;
 	WorkThreadInterface const * m_pWorkThreadInterface;

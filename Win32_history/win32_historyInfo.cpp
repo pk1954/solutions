@@ -16,7 +16,7 @@ HistInfoWindow::HistInfoWindow( ) :
     m_pHistSystem( nullptr )
 { }
 
-void HistInfoWindow::Start( HWND const   hwndParent ) 
+void HistInfoWindow::Start( HWND const hwndParent, std::function<bool()> const visibilityCriterion ) 
 {
 	StartTextWindow
 	( 
@@ -24,7 +24,8 @@ void HistInfoWindow::Start( HWND const   hwndParent )
 		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 415_PIXEL }, 
 		L"HistInfoWindow", 
 		100, 
-		TRUE
+		TRUE,
+		visibilityCriterion
 	);
 }
 

@@ -64,7 +64,6 @@ private:
     AppWindow & operator= ( AppWindow const & );  // noncopyable class 
 
 	void adjustChildWindows( );
-	void adjustUI( );
 
 	HWND        m_hwndApp;
 	HWND        m_hwndConsole;

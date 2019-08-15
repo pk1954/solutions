@@ -81,9 +81,6 @@
     <ClInclude Include="win32_tooltip.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_util_menus.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_baseWindow.cpp">
@@ -132,9 +129,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_tooltip.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_util_menus.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

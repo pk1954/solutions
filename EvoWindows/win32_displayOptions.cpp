@@ -24,7 +24,7 @@ DspOptWindow::~DspOptWindow( )
 
 void DspOptWindow::Start( HWND const hwndParent )
 {
-	HWND hwndDlg = StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ) );
+	HWND hwndDlg = StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ), nullptr );
 	m_IntValueLambda = nullptr;
 
 	CreateWindowToolTip( L"Display options allow to show/hide individuals and to choose what is displayed as background." );

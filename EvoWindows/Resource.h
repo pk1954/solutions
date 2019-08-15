@@ -62,10 +62,6 @@
 #define IDM_MAIN_WINDOW                         (IDM_WINDOWS_BASE + 11)
 #define IDM_STATUS_BAR                          (IDM_WINDOWS_BASE + 12)
 
-#define IDM_MINI_WINDOW_ON                      (IDM_WINDOWS_BASE + 20)
-#define IDM_MINI_WINDOW_OFF                     (IDM_WINDOWS_BASE + 21)
-#define IDM_MINI_WINDOW_AUTO                    (IDM_WINDOWS_BASE + 22)
-
 #define IDM_INDIVIDUALS                         450
 
 #define IDM_EDIT_SHAPE_BASE                     500

@@ -33,7 +33,7 @@ void EditorWindow::Start
     m_pCore                = pCore;
     m_pDspOptWindow        = pDspOptWindow;
 
-    StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_EDITOR ) );
+	StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_EDITOR ), nullptr );  //[&](){ return ! m_pWorkThreadInterface->IsRunning(); } );
 
     SetTrackBarRange( IDM_EDIT_SIZE,      1L,  50L );
     SetTrackBarRange( IDM_EDIT_INTENSITY, 0L, 100L );

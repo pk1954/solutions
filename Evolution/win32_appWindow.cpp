@@ -133,8 +133,8 @@ AppWindow::AppWindow( ) :
 	m_CrsrWindow    .Start( m_hwndApp, & m_ReadBuffer, & m_FocusPoint );
 	m_StatusBar     .Start( m_hwndApp, & m_ReadBuffer, & m_WorkThreadInterface );
 	m_Statistics    .Start( m_hwndApp, & m_ReadBuffer );
-	m_HistInfoWindow.Start( m_hwndApp);
-	m_PerfWindow    .Start( m_hwndApp );
+	m_HistInfoWindow.Start( m_hwndApp, nullptr );
+	m_PerfWindow    .Start( m_hwndApp, [&](){ return m_WorkThreadInterface.IsRunning(); } );
 
 	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,    TRUE,   TRUE  );
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,        TRUE,   TRUE  );
@@ -222,10 +222,11 @@ void AppWindow::Start( )
 		2_PIXEL, 
 		[&]() { return ! m_MainGridWindow.IsFullGridVisible( ); }
 	);
-	m_EvoHistWindow .Start( m_hwndApp, & m_FocusPoint, m_pHistorySystem, & m_WorkThreadInterface );
-	m_DspOptWindow  .Start( m_hwndApp );
-    m_EditorWindow  .Start( m_hwndApp, & m_WorkThreadInterface, pCoreWork, & m_DspOptWindow );
-	m_FocusPoint    .Start( & m_EvoHistGlue );
+	m_EvoHistWindow.Start( m_hwndApp, & m_FocusPoint, m_pHistorySystem, & m_WorkThreadInterface );
+	m_DspOptWindow .Start( m_hwndApp );
+    m_EditorWindow .Start( m_hwndApp, & m_WorkThreadInterface, pCoreWork, & m_DspOptWindow );
+	m_FocusPoint   .Start( & m_EvoHistGlue );
+
 	m_WorkThreadInterface.Start
 	( 
 		m_hwndApp, 
@@ -335,7 +336,7 @@ LRESULT AppWindow::UserProc
 			break;
 
 		case IDM_ADJUST_UI:
-			adjustUI( );
+			m_StatusBar.Adjust( );
 			break;
 
 		case IDM_RESET:
@@ -435,26 +436,6 @@ void AppWindow::adjustChildWindows( )
 			TRUE 
 		);
     }
-}
-
-void AppWindow::adjustUI( )
-{
-	m_StatusBar.Adjust( );
-	//m_EvoHistWindow.AdjustVisibility
-	//(
-	//	Config::GetConfigValueOnOffAuto( Config::tId::historyDisplay ),
-	//	[&]() { return ! m_WorkThreadInterface.IsRunning(); }
-	//);
-	m_PerfWindow.AdjustVisibility
-	(
-		Config::GetConfigValueOnOffAuto( Config::tId::performanceDisplay ),
-		[&]() { return m_WorkThreadInterface.IsRunning(); }
-	);
-	m_MiniGridWindow.AdjustVisibility
-	(
-		Config::GetConfigValueOnOffAuto( Config::tId::miniGridDisplay ),
-		[&]() { return ! m_MainGridWindow.IsFullGridVisible( ); }
-	);
 }
 
 //int MyAllocHook
