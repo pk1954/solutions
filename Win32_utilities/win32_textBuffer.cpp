@@ -30,8 +30,17 @@ void Win32_TextBuffer::StartPainting()
 	COLORREF const CLR_BACK { RGB( 200, 200, 200 ) };
 	SetBkColor( m_hDC, CLR_BACK );
 	Util::FastFill( m_hDC, m_pixRect );
-	SetTextAlign( m_hDC, TA_RIGHT );
 	TextBuffer::StartPainting();
+}
+
+void Win32_TextBuffer::AlignLeft( )
+{
+	SetTextAlign( m_hDC, TA_LEFT );
+}
+
+void Win32_TextBuffer::AlignRight( )
+{
+	SetTextAlign( m_hDC, TA_RIGHT );
 }
 
 void Win32_TextBuffer::PrintBuffer

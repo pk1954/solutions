@@ -143,12 +143,18 @@ void WorkThread::dispatch( MSG const msg  )
 		if ( static_cast<bool>(msg.lParam) )
 		{
 			m_pEditorWindow->SendClick( IDM_MOVE );     // change edit mode to move
-			m_pEditorWindow->Show( FALSE );             
 			m_bContinue = TRUE;
 			m_pEditorWindow->PostCommand2Application( IDM_ADJUST_UI, 0 );
 		}
 		generationRun( );
 		break;
+
+	case WorkerThreadMessage::Id::STOP:
+		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
+		m_bContinue = FALSE;
+		m_pEditorWindow->PostCommand2Application( IDM_ADJUST_UI, 0 );
+		Script::StopProcessing( );
+		return;      // do not notify readbuffer, because model has not changed  
 
 	case WorkerThreadMessage::Id::REPEAT_GENERATION_STEP:
 		gotoGeneration( m_genDemanded );
@@ -214,13 +220,6 @@ void WorkThread::dispatch( MSG const msg  )
 				(void)MessageBeep(MB_OK);  // first generation reached
 		}
 		break;
-
-	case WorkerThreadMessage::Id::STOP:
-		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
-		m_bContinue = FALSE;
-		m_pEditorWindow->PostCommand2Application( IDM_ADJUST_UI, 0 );
-		Script::StopProcessing( );
-		return;      // do not notify readbuffer, because model has not changed  
 
 	case WorkerThreadMessage::Id::RESET_MODEL:
 		editorCommand( tEvoCmd::reset, msg.wParam );

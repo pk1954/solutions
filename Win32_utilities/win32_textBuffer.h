@@ -18,6 +18,9 @@ public:
 
 	virtual void PrintBuffer( std::wostringstream *, PIXEL const, PIXEL const );
 
+	virtual void AlignLeft();
+	virtual void AlignRight();
+
 private:
 	PixelRect m_pixRect; // text buffer area 
     HDC       m_hDC;

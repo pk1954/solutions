@@ -25,7 +25,8 @@ void TextBuffer::Initialize
 
 void TextBuffer::StartPainting( ) 
 { 
-    setHorizontalPos( 1_TEXT_POSITION );
+	AlignRight( );
+	setHorizontalPos( 1_TEXT_POSITION );
     m_pixVerticalPos = TOP_MARGIN;
 }
 

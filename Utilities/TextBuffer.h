@@ -25,6 +25,9 @@ public:
 
 	virtual void PrintBuffer( std::wostringstream *, PIXEL const, PIXEL const ) = 0;
 
+	virtual void AlignLeft() = 0;
+	virtual void AlignRight() = 0;
+
 	virtual void StartPainting( );
 
     void nextLine( TEXT_POSITION iHorPos = 1_TEXT_POSITION )     
@@ -38,13 +41,21 @@ public:
         m_pixHorizontalPos = LEFT_MARGIN + m_pixHorRaster * pos.GetValue();
     }
 
-    void nextLine( std::wstring data, TEXT_POSITION iHorPos = 1_TEXT_POSITION )
-    {
-        nextLine( iHorPos );
-        printString( data );
-    }
+	void nextLine( std::wstring data, TEXT_POSITION iHorPos = 1_TEXT_POSITION )
+	{
+		nextLine( iHorPos );
+		AlignRight();
+		printString( data );
+	}
 
-    void printString       ( std::wstring const );
+	void header( std::wstring data )
+	{
+		nextLine( );
+		AlignLeft();
+		printString( data );
+	}
+
+	void printString       ( std::wstring const );
     void printNumber       ( int const );
     void printNumber       ( unsigned int const );
     void printNumber       ( long long const );

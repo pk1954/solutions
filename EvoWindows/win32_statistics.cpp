@@ -64,24 +64,24 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
     // start printing
 
     textBuf.setHorizontalPos( 2_TEXT_POSITION );       
-    m_pStatistics->printHeader  ( );  
+    m_pStatistics->printHeader( );  
 
 	m_pStatistics->printCounter( L"#individuals" );  // number of individuals
     m_pStatistics->printAvAge  ( L"av. age" );       // average age
 	
-	textBuf.nextLine( L"---" );
+	textBuf.header( L"--- incidence in last generation ---" );
 
     m_pStatistics->printIncidence( );
 	
-	textBuf.nextLine( L"---" );
+	textBuf.header( L"--- probabilities of actions ---" );
 
     m_pStatistics->printProbabilities();
 	
-	textBuf.nextLine( L"---" );
+	textBuf.header( L"--- gene statistics ---" );
 
     m_pStatistics->printGeneStat(  );          // percentage numbers for options
 
-	textBuf.nextLine( L"---" );
+	textBuf.header( L"--- other values ---" );
 
 	if ( EvolutionCore::IsEnabled( Action::Id::eat ) )
 		m_pStatistics->printAvFood(  L"av. food" );  // average food consumption 

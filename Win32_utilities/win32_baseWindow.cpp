@@ -3,20 +3,8 @@
 // win32_utilities
 
 #include "stdafx.h"
-#include "win32_util_resource.h"
 #include "win32_refreshRateDialog.h"
 #include "win32_baseWindow.h"
-
-using namespace std::chrono;
-
-BaseWindow::BaseWindow( ) : 
-	RootWindow( ),
-	m_visibilityMode( tOnOffAuto::on ),
-	m_visibilityCriterion( nullptr )
-{}
-
-BaseWindow::~BaseWindow( )    
-{}
 
 HWND BaseWindow::StartBaseWindow
 ( 
@@ -32,8 +20,6 @@ HWND BaseWindow::StartBaseWindow
     WNDCLASSEX      wcex;
 
     assert( szClass != nullptr );
-
-	m_visibilityCriterion = visibilityCriterion;
 
     wcex.cbSize = sizeof( WNDCLASSEX );
 
@@ -73,66 +59,10 @@ HWND BaseWindow::StartBaseWindow
     );
     assert( hwnd != nullptr );
     SetWindowHandle( hwnd );
-	m_visibilityMode = m_visibilityCriterion 
-		               ? tOnOffAuto::automatic 
-		               : IsWindowVisible( )
-						  ? tOnOffAuto::on 
-		                  : tOnOffAuto::off;
-    return hwnd;
-}
 
-void BaseWindow::addWinMenu( HMENU const hMenuParent, std::wstring const strTitle ) const
-{
-	UINT  const STD_FLAGS = MF_BYPOSITION | MF_STRING;
-	HMENU const hMenu = CreatePopupMenu();
-	(void)AppendMenu( hMenu, STD_FLAGS, IDM_WINDOW_AUTO, L"auto" );
-	(void)AppendMenu( hMenu, STD_FLAGS, IDM_WINDOW_ON,   L"on"   );
-	(void)AppendMenu( hMenu, STD_FLAGS, IDM_WINDOW_OFF,  L"off"  );
-	(void)AppendMenu( hMenuParent, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu, strTitle.c_str() );
-}
+	StartRootWindow( visibilityCriterion );
 
-void BaseWindow::adjustWinMenu( HMENU const hMenu ) const
-{
-	EnableMenuItem( hMenu, IDM_WINDOW_AUTO, ((m_visibilityMode == tOnOffAuto::automatic ) ? MF_GRAYED : MF_ENABLED) );
-	EnableMenuItem( hMenu, IDM_WINDOW_ON,   ((m_visibilityMode == tOnOffAuto::on        ) ? MF_GRAYED : MF_ENABLED) );
-	EnableMenuItem( hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off       ) ? MF_GRAYED : MF_ENABLED) );
-}
-
-void BaseWindow::contextMenu( LPARAM lParam )
-{
-	HMENU const hPopupMenu{ CreatePopupMenu() };
-	POINT       pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
-
-	AddContextMenuEntries( hPopupMenu, pntPos );
-
-	if ( m_visibilityCriterion )
-	{
-		addWinMenu( hPopupMenu, L"Show window" );
-		adjustWinMenu( hPopupMenu );
-	}
-
-	if ( GetRefreshRate( ) > 0ms )
-	{
-		(void)AppendMenu( hPopupMenu, MF_STRING, IDM_REFRESH_RATE_DIALOG, L"Refresh Rate" );
-	}
-
-	(void)ClientToScreen( GetWindowHandle(), & pntPos );
-    (void)SetForegroundWindow( GetWindowHandle( ) );
-
-    UINT const uiID = (UINT)TrackPopupMenu
-	                  ( 
-						  hPopupMenu, 
-						  TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, 
-						  pntPos.x, pntPos.y, 
-						  0, 
-						  GetWindowHandle( ), 
-						  nullptr 
-					  );         	// Result is send as WM_COMMAND to this window
-
-	if ( uiID != 0 )
-	    SendMessage( WM_COMMAND, uiID, lParam );
-
-	(void)DestroyMenu( hPopupMenu );
+	return hwnd;
 }
 
 static LRESULT CALLBACK BaseWndProc
@@ -143,11 +73,8 @@ static LRESULT CALLBACK BaseWndProc
     LPARAM const lParam 
 )
 {
-	BaseWindow * pBaseWin = reinterpret_cast<BaseWindow *>(GetWindowLongPtr( hwnd, GWLP_USERDATA ));
-
     switch (message)
     {
-
 	case WM_NCCREATE:    // retrieve Window instance from window creation data and associate    
         (void)SetWindowLongPtr( hwnd, GWLP_USERDATA, (LONG_PTR)( (LPCREATESTRUCT)lParam )->lpCreateParams );
         return TRUE;
@@ -155,61 +82,15 @@ static LRESULT CALLBACK BaseWndProc
 	case WM_ERASEBKGND:
 		return TRUE;			// Do not erase background
 
-	case WM_RBUTTONDOWN:
-        pBaseWin->SetCapture( );
-        pBaseWin->SetFocus( );
-        return FALSE;
-
-    case WM_RBUTTONUP:
-        (void)ReleaseCapture( );
-        pBaseWin->contextMenu( lParam );
-        return FALSE;
-
-	case WM_CLOSE:   
-		pBaseWin->m_visibilityMode = tOnOffAuto::off;
-		break;
-
-	case WM_COMMAND:
-        {
-            UINT uiCmdId = LOWORD( wParam );
-            switch ( uiCmdId )
-            {
-
-			case IDM_WINDOW_ON:
-				pBaseWin->m_visibilityMode = tOnOffAuto::on;
-				pBaseWin->Show( TRUE );
-				return FALSE;
-
-			case IDM_WINDOW_OFF:
-				pBaseWin->m_visibilityMode = tOnOffAuto::off;
-				pBaseWin->Show( FALSE );
-				return FALSE;
-
-			case IDM_WINDOW_AUTO:
-				pBaseWin->m_visibilityMode = tOnOffAuto::automatic;
-				pBaseWin->Show( ApplyAutoCriterion( tOnOffAuto::automatic, pBaseWin->m_visibilityCriterion ) );
-				return FALSE;
-
-			case IDM_REFRESH_RATE_DIALOG:
-			{
-				milliseconds msRefreshRateOld = pBaseWin->GetRefreshRate( );
-				milliseconds msRefreshRateNew = RefreshRateDialog::Show( hwnd, msRefreshRateOld );
-				pBaseWin->SetRefreshRate( msRefreshRateNew );
-				return FALSE;
-			}
-
-            default:
- 				break;
-           }
-        }
-		break;
-
 	default:
  			break;
 	}
+	{
+		BaseWindow * pBaseWin = reinterpret_cast<BaseWindow *>(GetWindowLongPtr( hwnd, GWLP_USERDATA ));
 
-	if ( RootWinIsReady( pBaseWin ) )
-		return pBaseWin->UserProc( message, wParam, lParam );         // normal case
-	else
-		return DefWindowProc( hwnd, message, wParam, lParam );
+		if ( ! RootWinIsReady( pBaseWin ) )
+			return DefWindowProc( hwnd, message, wParam, lParam );
+	
+		return pBaseWin->RootWindowProc( hwnd, message, wParam, lParam );         // normal case
+	}
 }

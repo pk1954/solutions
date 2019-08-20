@@ -20,6 +20,8 @@ public:
     RootWindow( );
     virtual ~RootWindow( );
 
+	void StartRootWindow( std::function<bool()> const );
+
     HWND GetWindowHandle( ) const { return m_hwnd; };
 
     PIXEL         const GetWindowTop( )            const { return Util::GetWindowTop           ( m_hwnd ); }
@@ -192,14 +194,7 @@ public:
 		return PixelPoint{ PIXEL(GET_X_LPARAM( lParam )), PIXEL(GET_Y_LPARAM( lParam )) };
 	}
 
-	//void AdjustVisibility
-	//( 
-	//	tOnOffAuto const onOffAuto,
-	//	std::function<bool()> visibilityCriterion
-	//)
-	//{
-	//	Show( ApplyAutoCriterion( onOffAuto, visibilityCriterion ) );
-	//}
+	virtual void AddContextMenuEntries( HMENU const, POINT const ) {}
 
 	virtual void Notify( bool const );
 
@@ -212,9 +207,18 @@ protected:
 		Invalidate( FALSE );
 	}
 
+	LRESULT RootWindowProc( HWND const, UINT const, WPARAM const, LPARAM const );
+
 private:
 
-    static void CALLBACK TimerProc( void * const, BOOL const );
+	HWND                      m_hwnd;
+	HWND                      m_hwndApp;
+	HANDLE                    m_hTimer;
+	BOOL                      m_bTimerActive;
+	BOOL                      m_bDirty;
+	std::chrono::milliseconds m_msRefreshRate;
+	tOnOffAuto                m_visibilityMode;
+	std::function<bool()>     m_visibilityCriterion;
 
 	void invalidate( )
 	{
@@ -234,13 +238,19 @@ private:
         }
 	}
 
-    HWND   m_hwnd;
-	HWND   m_hwndApp;
-    HANDLE m_hTimer;
-    BOOL   m_bTimerActive;
-    BOOL   m_bDirty;
+	void addWinMenu( HMENU const, std::wstring const ) const;
+	void adjustWinMenu( HMENU const ) const;
+	void contextMenu( LPARAM );
 
-	std::chrono::milliseconds m_msRefreshRate;
+	void adjustVisibility( tOnOffAuto const onOffAuto )
+	{
+		if ( m_visibilityCriterion )
+			Show( ApplyAutoCriterion( onOffAuto, m_visibilityCriterion ) );
+	}
+
+	static void CALLBACK TimerProc( void * const, BOOL const );
+
+	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) = 0;
 };
 
 BOOL RootWinIsReady( RootWindow const * );
