@@ -1,5 +1,6 @@
 // win32_scriptHook.h
 //
+// win32_EvoWindows
 
 #pragma once
 
@@ -9,6 +10,9 @@
 class ScriptHook : public Script_Functor
 {
 public:
+	ScriptHook()
+	: m_pStatusBar( nullptr )
+	{}
 
 	void Initialize( StatusBar* const pStatusBar )
 	{

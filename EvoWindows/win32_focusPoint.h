@@ -6,8 +6,8 @@
 #include "GridDimensions.h"
 #include "GridPoint.h"
 #include "EvolutionCore.h"
+#include "ViewCollection.h"
 #include "HistoryGeneration.h"
-#include "win32_viewCollection.h"
 
 class RootWindow;
 class EvoHistorySysGlue;
@@ -22,9 +22,9 @@ public:
     void Start( EvoHistorySysGlue * );
 
     void SetFocusPoint( GridPoint const );
-	void AttachFocusPointObserver( RootWindow * pRootWin )
+	void RegisterFocusPointObserver( ObserverInterface * pObserver )
 	{
-		m_ViewCollection.AttachObserver( pRootWin );
+		m_ViewCollection.Register( pObserver );
 	}
     
 	GridPoint const GetGridPoint( ) const 

@@ -33,7 +33,7 @@ void WorkThreadInterface::Start
 ( 
 	HWND                 const hwndApplication,
     ColorManager       * const pColorManager,
-    PerformanceWindow  * const pPerformanceWindow,
+    Delay              * const pDelay,
 	EditorWindow       * const pEditorWindow,
     EventInterface     * const pEvent,
     ReadBuffer         * const pReadBuffer, 
@@ -45,7 +45,7 @@ void WorkThreadInterface::Start
 	( 
 		hwndApplication, 
 		pColorManager, 
-		pPerformanceWindow, 
+		pDelay, 
 		pEditorWindow, 
 		pEvent, 
 		pReadBuffer, 
@@ -61,29 +61,19 @@ WorkThreadInterface::~WorkThreadInterface( )
     m_pTraceStream = nullptr;
 }
 
+void WorkThreadInterface::RegisterRunObserver( ObserverInterface * const pObserver )
+{
+	m_pWorkThread->RegisterRunObserver( pObserver );
+}
+
+void WorkThreadInterface::Stop( )
+{
+	m_pWorkThread->UnregisterAllObservers();
+}
+
 BOOL WorkThreadInterface::IsRunning( ) const
 {
 	return m_pWorkThread->IsRunning( );
-}
-
-BOOL WorkThreadInterface::IsMaxSpeed( ) const
-{
-	return m_pWorkThread->IsMaxSpeed( );
-}
-
-BOOL WorkThreadInterface::IsEditWinVisible( ) const
-{
-	return m_pWorkThread->IsEditWinVisible( );
-}
-
-BOOL WorkThreadInterface::IsInHistoryMode( ) const
-{
-	return m_pWorkThread->IsInHistoryMode( );
-}
-
-BOOL WorkThreadInterface::IsFirstHistGen( ) const
-{
-	return m_pWorkThread->IsFirstHistGen( );
 }
 
 void WorkThreadInterface::postGotoGeneration( HIST_GENERATION const gen )

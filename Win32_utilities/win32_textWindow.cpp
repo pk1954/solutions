@@ -18,7 +18,7 @@ TextWindow::TextWindow( ) :
 	m_hBitmap( 0 )
 { }
 
-void TextWindow::TerminateTextWindow()
+TextWindow::~TextWindow()
 {
 	m_pTextWindowThread->Terminate( );
 	DeleteObject( m_hBitmap );

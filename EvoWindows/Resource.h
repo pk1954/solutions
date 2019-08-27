@@ -21,7 +21,6 @@
 
 #define IDM_ABOUT                               130
 #define IDM_EXIT                                131
-#define IDM_ADJUST_UI                           133
 #define IDM_HIST_BUFFER_FULL                    138
 #define IDM_REFRESH                             140
 #define IDM_SET_POI                             144

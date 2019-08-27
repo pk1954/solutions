@@ -48,6 +48,7 @@ public:
 	void  Size( );
 	void  Zoom( bool const );
 	void  ToggleStripMode( );
+	void  ToggleClutMode( );
 	void  Escape( );
 	void  SetFieldSize( PIXEL const );
 	void  Fit2Rect( );
@@ -58,6 +59,11 @@ public:
 	{
 		m_pGridWindowObserved = pGridWin;
 		m_bMoveAllowed = FALSE; 
+	}
+
+	void Refresh( )
+	{
+		Trigger( );
 	}
 
 private:
@@ -87,7 +93,7 @@ private:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 	virtual void    AddContextMenuEntries( HMENU const, POINT const );
 
-	void newFieldSize( EvolutionCore const *, PIXEL const, GridPoint const );
+	void newFieldSize( PIXEL const, GridPoint const );
 	void mouseWheelAction( WPARAM const  );
     BOOL inObservedClientRect( LPARAM const );
     void moveGrid( PixelPoint const );

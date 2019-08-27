@@ -92,7 +92,6 @@ AppWindow::AppWindow( ) :
 	stopwatch.Start();
 	m_ColorManager.Initialize( );
 	m_WorkThreadInterface.Initialize( & m_traceStream ); 
-//	m_AppMenu.Initialize( m_hwndApp, & m_WorkThreadInterface );  moved down
 
 	stopwatch.Stop( L"create window objects" );
 
@@ -111,15 +110,6 @@ AppWindow::AppWindow( ) :
     m_MiniGridWindow.SetRefreshRate( 300ms );
     m_MainGridWindow.SetRefreshRate( 100ms );
 	
-	m_CoreObservers.AttachObserver( & m_StatusBar      );
-	m_CoreObservers.AttachObserver( & m_EvoHistWindow  ); 
-	m_CoreObservers.AttachObserver( & m_CrsrWindow     );
-	m_CoreObservers.AttachObserver( & m_Statistics     );
-	m_CoreObservers.AttachObserver( & m_PerfWindow     );
-	m_CoreObservers.AttachObserver( & m_MiniGridWindow );
-	m_CoreObservers.AttachObserver( & m_MainGridWindow );
-	m_CoreObservers.AttachObserver( & m_protocolServer );
-
 	GridWindow::InitClass
 	( 
 		& m_ReadBuffer, 
@@ -131,10 +121,10 @@ AppWindow::AppWindow( ) :
 	);
 
 	m_CrsrWindow    .Start( m_hwndApp, & m_ReadBuffer, & m_FocusPoint );
-	m_StatusBar     .Start( m_hwndApp, & m_ReadBuffer, & m_WorkThreadInterface );
+	m_StatusBar     .Start( m_hwndApp, & m_ReadBuffer, &m_EvoHistGlue, & m_WorkThreadInterface, & m_Delay, & m_EditorWindow );
 	m_Statistics    .Start( m_hwndApp, & m_ReadBuffer );
 	m_HistInfoWindow.Start( m_hwndApp, nullptr );
-	m_PerfWindow    .Start( m_hwndApp, [&](){ return m_WorkThreadInterface.IsRunning(); } );
+	m_PerfWindow    .Start( m_hwndApp, m_Delay, [&](){ return m_WorkThreadInterface.IsRunning(); } );
 
 	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,    TRUE,   TRUE  );
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,        TRUE,   TRUE  );
@@ -148,10 +138,9 @@ AppWindow::AppWindow( ) :
 	( 
 		& m_traceStream, 
 		& m_WorkThreadInterface,
-		& m_CoreObservers,
 		& m_WinManager,
 		& m_EvoHistGlue,
-		& m_PerfWindow, 
+		& m_Delay, 
 		& m_StatusBar, 
 		& m_MainGridWindow, 
 		& m_EditorWindow, 
@@ -198,13 +187,13 @@ void AppWindow::Start( )
 
 	m_HistInfoWindow.SetHistorySystem( m_pHistorySystem );
 
-	m_pModelDataWork   = m_EvoHistGlue.Start( m_pHistorySystem, & m_HistInfoWindow, TRUE ); 
+	m_pModelDataWork   = m_EvoHistGlue.Start( m_pHistorySystem, TRUE ); 
 	pCoreWork          = m_pModelDataWork->GetEvolutionCore();
 	m_pEvoCore4Display = EvolutionCore::CreateCore( );
 
 	m_protocolServer.Start( m_pHistorySystem );
 	DefineCoreWrapperFunctions( pCoreWork );  // Core wrappers run in work thread
-	m_ReadBuffer.Initialize( & m_CoreObservers, pCoreWork, m_pEvoCore4Display );
+	m_ReadBuffer.Initialize( pCoreWork, m_pEvoCore4Display );
 
 	m_MainGridWindow.Start
 	( 
@@ -231,7 +220,7 @@ void AppWindow::Start( )
 	( 
 		m_hwndApp, 
 		& m_ColorManager, 
-		& m_PerfWindow, 
+		& m_Delay, 
 		& m_EditorWindow, 
 		& m_event, 
 		& m_ReadBuffer, 
@@ -270,22 +259,23 @@ void AppWindow::Stop()
 {
 	m_bStopped = TRUE;
 
-	m_MiniGridWindow.Stop( );
-	m_MainGridWindow.Stop( );
-	m_EvoHistWindow .Stop( );
-	m_EditorWindow  .Stop( );
-	m_DspOptWindow  .Stop( );
-	m_AppMenu       .Stop( );
-
-	m_HistInfoWindow.SetHistorySystem( nullptr );
+	m_MiniGridWindow     .Stop( );
+	m_MainGridWindow     .Stop( );
+	m_EvoHistWindow      .Stop( );
+	m_EditorWindow       .Stop( );
+	m_DspOptWindow       .Stop( );
+	m_AppMenu            .Stop( );
+	m_HistInfoWindow     .Stop( );
+	m_Delay              .Stop( );
+	m_ReadBuffer         .Stop( );
+	m_WorkThreadInterface.Stop( );
+	m_EvoHistGlue        .Stop( );  // deletes m_pModelDataWork
 
 	m_WinManager.RemoveWindow( IDM_HIST_WINDOW ); 
 	m_WinManager.RemoveWindow( IDM_DISP_WINDOW );
 	m_WinManager.RemoveWindow( IDM_EDIT_WINDOW );
 	m_WinManager.RemoveWindow( IDM_MINI_WINDOW );
 	m_WinManager.RemoveWindow( IDM_MAIN_WINDOW );
-
-	m_EvoHistGlue.Stop( );  // deletes m_pModelDataWork
 
 	m_StatusBar.Show ( FALSE );
 	m_Statistics.Show( FALSE );
@@ -304,11 +294,6 @@ void AppWindow::Stop()
 AppWindow::~AppWindow( )
 {
 	m_WorkThreadInterface.TerminateThread( );
-
-	m_PerfWindow    .TerminateTextWindow();
-	m_CrsrWindow    .TerminateTextWindow();
-	m_Statistics    .TerminateTextWindow();
-	m_HistInfoWindow.TerminateTextWindow();
 }
 
 LRESULT AppWindow::UserProc
@@ -333,10 +318,6 @@ LRESULT AppWindow::UserProc
         {
 		case IDM_ABOUT:
             ShowAboutBox( GetWindowHandle( ) );
-			break;
-
-		case IDM_ADJUST_UI:
-			m_StatusBar.Adjust( );
 			break;
 
 		case IDM_RESET:

@@ -7,6 +7,7 @@
 #include <iostream>
 #include "win32_baseWindow.h"
 #include "win32_event.h"
+#include "win32_delay.h"
 
 // interfaces of various windows
 
@@ -45,7 +46,6 @@ class HistorySystem;
 class GraphicsInterface;
 class D3D_driver;
 class EvoModelDataGlue;
-class ViewCollection;
 class EvolutionCore;
 class AppMenu;
 
@@ -71,6 +71,7 @@ private:
 	BOOL        m_bStopped;  // if true, no grid visible, many functions not available
 	HCURSOR     m_hCrsrWait;
 
+	Delay               m_Delay;
 	FocusPoint          m_FocusPoint;
 	WinManager          m_WinManager;
 	ColorManager        m_ColorManager;
@@ -86,7 +87,6 @@ private:
 	EvoHistWindow       m_EvoHistWindow;
 	EvoController       m_EvoController;
 	EvoHistorySysGlue   m_EvoHistGlue;
-	ViewCollection      m_CoreObservers;
 	D3D_driver          m_D3d_driver;
 	ReadBuffer          m_ReadBuffer;
 	AppMenu             m_AppMenu;

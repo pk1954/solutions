@@ -2,18 +2,19 @@
 //
 
 #include "stdafx.h"
+#include <sstream> 
 #include "gridRect.h"
 #include "SCRIPT.H"
 #include "Resource.h"
 #include "GridPoint24.h"
 #include "EvoHistorySysGlue.h"
 #include "EventInterface.h"
+#include "win32_delay.h"
 #include "win32_editor.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 #include "win32_readBuffer.h"
 #include "win32_colorManager.h"
-#include "win32_performanceWindow.h"
 #include "win32_workThreadInterface.h"
 #include "win32_worker_thread.h"
 
@@ -21,7 +22,7 @@ WorkThread::WorkThread
 ( 
 	HWND                  const hwndApplication,
 	ColorManager        * const pColorManager,
-	PerformanceWindow   * const pPerformanceWindow,
+	Delay               * const pDelay,
 	EditorWindow        * const pEditorWindow,
 	EventInterface      * const pEvent,
 	ReadBuffer          * const pReadBuffer, 
@@ -29,7 +30,7 @@ WorkThread::WorkThread
 	WorkThreadInterface * const pWorkThreadInterface
 ) :
 	m_pColorManager       ( pColorManager ),
-	m_pPerformanceWindow  ( pPerformanceWindow ),
+	m_pDelay              ( pDelay ),
 	m_pEditorWindow       ( pEditorWindow ),   
 	m_pEventPOI           ( pEvent ),   
 	m_pReadBuffer         ( pReadBuffer ),   
@@ -47,31 +48,11 @@ WorkThread::~WorkThread( )
 	m_hwndApplication      = nullptr;
 	m_pColorManager        = nullptr;
 	m_pWorkThreadInterface = nullptr;
-	m_pPerformanceWindow   = nullptr;
+	m_pDelay               = nullptr;
 	m_pEditorWindow        = nullptr;
 	m_pEventPOI            = nullptr;
 	m_pReadBuffer          = nullptr;
 	m_pEvoHistGlue         = nullptr;
-}
-
-BOOL WorkThread::IsMaxSpeed( ) const
-{
-	return m_pPerformanceWindow->IsMaxSpeed( );
-}
-
-BOOL WorkThread::IsEditWinVisible( ) const
-{
-	return m_pEditorWindow->IsWindowVisible( );
-}
-
-BOOL WorkThread::IsInHistoryMode( ) const
-{
-	return m_pEvoHistGlue->IsInHistoryMode( );
-}
-
-BOOL WorkThread::IsFirstHistGen( ) const
-{
-	return m_pEvoHistGlue->GetCurrentGeneration( ) == 0;
 }
 
 bool WorkThread::userWantsHistoryCut( ) const
@@ -101,7 +82,7 @@ void WorkThread::WorkMessage
 		if ( IsRunning() )
 			m_pEditorWindow->PostCommand2Application( IDM_STOP, 0 );
 
-		if ( IsInHistoryMode() )          
+		if ( m_pEvoHistGlue->IsInHistoryMode() )          
 		{
 			if ( userWantsHistoryCut( ) )
 			{
@@ -143,16 +124,14 @@ void WorkThread::dispatch( MSG const msg  )
 		if ( static_cast<bool>(msg.lParam) )
 		{
 			m_pEditorWindow->SendClick( IDM_MOVE );     // change edit mode to move
-			m_bContinue = TRUE;
-			m_pEditorWindow->PostCommand2Application( IDM_ADJUST_UI, 0 );
+			setContinueFlag( TRUE );
 		}
 		generationRun( );
 		break;
 
 	case WorkerThreadMessage::Id::STOP:
 		m_genDemanded = m_pEvoHistGlue->GetCurrentGeneration( );
-		m_bContinue = FALSE;
-		m_pEditorWindow->PostCommand2Application( IDM_ADJUST_UI, 0 );
+		setContinueFlag( FALSE );
 		Script::StopProcessing( );
 		return;      // do not notify readbuffer, because model has not changed  
 
@@ -276,9 +255,9 @@ void WorkThread::dispatch( MSG const msg  )
 		return;  // sometimes strange messages arrive. e.g. uiMsg 1847
 	}            // I cannot find a reason, so I ignore them
 
-	if (m_pReadBuffer != nullptr)                // Notify main thread, that model has changed
+	if (m_pReadBuffer != nullptr)                // notify main thread, that model has changed.
 		m_pReadBuffer->Notify( ! m_bContinue );  // continue immediately, if in run mode and
-}                                                // main thread is busy
+}                                                // main thread is busy.
 
 // gotoGeneration - perform one history step towards demanded generation
 //                - update editor state if neccessary
@@ -293,13 +272,13 @@ void WorkThread::gotoGeneration( HIST_GENERATION const gen )
 				(m_pEvoHistGlue->GetCurrentGeneration( ) == m_pEvoHistGlue->GetYoungestGeneration( ))
 			)     
 		{                                                    // Normal case: Compute next generation
-			if (m_pPerformanceWindow != nullptr)
-				m_pPerformanceWindow->ComputationStart( );   // prepare for time measurement
+			if (m_pDelay != nullptr)
+				m_pDelay->ComputationStart( );               // prepare for time measurement
 
 			m_pEvoHistGlue->EvoCreateNextGenCommand( );      //////// here the real work is done! ////////////////
 
-			if (m_pPerformanceWindow != nullptr)
-				m_pPerformanceWindow->ComputationStop( );    // measure computation time
+			if (m_pDelay != nullptr)
+				m_pDelay->ComputationStop( );                     // measure computation time
 		}
 		else  // we are somewhere in history
 		{
@@ -333,8 +312,8 @@ void WorkThread::generationRun( )
 	{
 		gotoGeneration( m_pEvoHistGlue->GetCurrentGeneration( ) + 1 );
 
-		if (m_pPerformanceWindow != nullptr)
-			m_pPerformanceWindow->SleepDelay( );
+		if (m_pDelay != nullptr)
+			m_pDelay->SleepDelay( );
 
 		m_pWorkThreadInterface->PostRunGenerations( false );
 	}

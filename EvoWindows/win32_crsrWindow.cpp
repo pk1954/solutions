@@ -13,7 +13,7 @@ CrsrWindow::CrsrWindow( ) :
     TextWindow( ),
     m_pFocusPoint( nullptr ),
     m_pReadBuffer( nullptr )
-{ }
+{}
 
 void CrsrWindow::Start
 (
@@ -24,7 +24,7 @@ void CrsrWindow::Start
 {
     m_pReadBuffer = pReadBuffer;
     m_pFocusPoint = pFocusPoint;
-    m_pFocusPoint->AttachFocusPointObserver( this );
+    m_pFocusPoint->RegisterFocusPointObserver( this );
     StartTextWindow
 	( 
 		hwndParent, 
@@ -34,6 +34,7 @@ void CrsrWindow::Start
 		TRUE,
 		nullptr
 	);
+	m_pReadBuffer->RegisterObserver( this );
 }
 
 CrsrWindow::~CrsrWindow( )

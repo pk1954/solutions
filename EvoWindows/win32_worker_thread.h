@@ -12,14 +12,15 @@
 #include "gridRect.h"
 #include "gridPoint.h"
 #include "GridPoint24.h"
+#include "ViewCollection.h"
 #include "HistoryGeneration.h"
 #include "EvolutionTypes.h"
 #include "EvoGenerationCmd.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 
+class Delay;
 class ColorManager;
-class PerformanceWindow;
 class EditorWindow;
 class RootWindow;
 class EvolutionCore;
@@ -75,7 +76,7 @@ public:
 	( 
 		HWND                  const,
 		ColorManager        * const,
-		PerformanceWindow   * const,
+		Delay               * const,
 		EditorWindow        * const,
 		EventInterface      * const,
 		ReadBuffer          * const,
@@ -103,15 +104,20 @@ public:
 		return m_bContinue;
 	}
 
-	BOOL IsMaxSpeed( ) const;
-	BOOL IsEditWinVisible( ) const;
-	BOOL IsInHistoryMode( ) const;
-	BOOL IsFirstHistGen( ) const;
-
 	void Continue( )
 	{
 		if ( m_pEventPOI != nullptr )
 			m_pEventPOI->Continue( );     // trigger worker thread if waiting on POI event
+	}
+
+	virtual void RegisterRunObserver( ObserverInterface * const pObserver )
+	{
+		m_runObservers.Register( pObserver );
+	}
+
+	virtual void UnregisterAllObservers( )
+	{
+		m_runObservers.Clear();
 	}
 
 private:
@@ -125,13 +131,19 @@ private:
 		m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, gp24 ) );
 	}
 
+	void setContinueFlag( BOOL const bState )
+	{
+		m_bContinue = bState;
+		m_runObservers.NotifyAll( FALSE  );
+	}
+
 	void gotoGeneration( HIST_GENERATION const );
 	void generationRun( );
 	void dispatch( MSG const );
 	bool userWantsHistoryCut( ) const;
 
 	ColorManager        * m_pColorManager;
-    PerformanceWindow   * m_pPerformanceWindow;
+    Delay               * m_pDelay;
     EditorWindow        * m_pEditorWindow;
     EventInterface      * m_pEventPOI;
     ReadBuffer          * m_pReadBuffer;
@@ -140,4 +152,5 @@ private:
     HIST_GENERATION       m_genDemanded;
     BOOL                  m_bContinue;
 	HWND                  m_hwndApplication;
+	ViewCollection        m_runObservers;    // observers interested in m_bContinue
 };

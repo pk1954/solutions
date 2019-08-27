@@ -13,11 +13,12 @@ public:
     HistInfoWindow( );
 
 	void Start(	HWND const, std::function<bool()> const );
+	void Stop( );
 
-	void SetHistorySystem( HistorySystem const * );
+	void SetHistorySystem( HistorySystem * );
 
     virtual void DoPaint( TextBuffer & );
 
 private:
-	HistorySystem const * m_pHistSystem;
+	HistorySystem * m_pHistSys;
 };

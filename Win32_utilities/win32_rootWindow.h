@@ -11,9 +11,7 @@
 #include "win32_tooltip.h"
 #include "win32_util.h"
 
-class Observer;
-
-class RootWindow: public ObserverInterface
+class RootWindow : public ObserverInterface
 {
 public:
 

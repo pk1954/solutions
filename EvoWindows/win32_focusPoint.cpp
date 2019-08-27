@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "EvoHistorySysGlue.h"
-#include "win32_viewCollection.h"
 #include "win32_focusPoint.h"
 
 FocusPoint::FocusPoint( ) :
@@ -24,6 +23,6 @@ void FocusPoint::SetFocusPoint( GridPoint const gpNew )
     if ( gpNew != m_gp )
     {
         m_gp = gpNew;
-        m_ViewCollection.Notify( false );
+        m_ViewCollection.NotifyAll( false );
     }
 }

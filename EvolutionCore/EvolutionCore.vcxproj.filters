@@ -152,11 +152,5 @@
     <ClCompile Include="MortalityTable.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="$(MICROPROFILERDIR)\micro-profiler.initializer.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="$(MICROPROFILERDIR)\micro-profiler_$(PlatformName).lib" />
   </ItemGroup>
 </Project>

@@ -23,7 +23,8 @@ public:
 	{ 
 	    m_pTextBuffer = new Win32_TextBuffer( hDC_Memory, pixSize );
 		if ( bAsync )
-			StartThread( strName, bAsync ); 
+			StartThread( strName, bAsync );
+		Trigger( );
 	}
 
 	~TextWindowThread()

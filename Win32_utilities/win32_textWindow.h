@@ -13,17 +13,17 @@ class TextWindow : public BaseWindow
 {
 public:
     TextWindow( );
+	virtual ~TextWindow( );
 
     void StartTextWindow( HWND const, PixelRect const &, LPCTSTR const, UINT const, BOOL const, std::function<bool()> const );
-	void TerminateTextWindow( );
 
     virtual void DoPaint( TextBuffer & ) = 0;
+	virtual void Trigger( );
 
 private:
 
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) override;
 	virtual void    AddContextMenuEntries( HMENU const, POINT const );
-	virtual void    Trigger( );
 
 	RefreshTimer     * m_pRefreshTimer;
 	TextWindowThread * m_pTextWindowThread;

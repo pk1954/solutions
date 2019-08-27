@@ -43,7 +43,7 @@ public:
 
     void ResizeDrawFrame( EvolutionCore const * const );
     void DoPaint( EvolutionCore const * );
-    void SetStripMode( tBoolOp );
+	void SetStripMode( tBoolOp );
 	bool SetHighlightPos( EvolutionCore const * const, PixelPoint const );
 	void HighlightShape( Shape const *, GridPoint const );
 	void CallStrategyColorDialog( HWND const, Strategy::Id const );

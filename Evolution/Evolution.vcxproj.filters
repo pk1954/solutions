@@ -24,9 +24,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Evolution.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_appWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -62,9 +59,6 @@
     <ClCompile Include="win32_resetDlg.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="$(MICROPROFILERDIR)\micro-profiler.initializer.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Evolution.rc">
@@ -81,8 +75,5 @@
     <Image Include="Evolution.ico">
       <Filter>Ressourcendateien</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="$(MICROPROFILERDIR)\micro-profiler_$(PlatformName).lib" />
   </ItemGroup>
 </Project>

@@ -25,7 +25,7 @@ void EvoHistWindow::Start
     HistWindow::Start( hwndParent, pHistorySystem, [&]() { return ! m_pWorkThreadInterface->IsRunning(); } );  // call base class
 	m_pFocusPoint          = pFocusPoint;
 	m_pWorkThreadInterface = pWorkThreadInterface;
-//    m_pFocusPoint->AttachFocusPointObserver( this );
+//    m_pFocusPoint->RegisterFocusPointObserver( this );
 }
 
 void EvoHistWindow::Stop( )

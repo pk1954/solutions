@@ -8,7 +8,10 @@
 #include "EvolutionTypes.h"
 #include "win32_rootWindow.h"
 
+class Delay;
 class ReadBuffer;
+class EditorWindow;
+class EvoHistorySysGlue;
 class WorkThreadInterface;
 
 using std::wstring;
@@ -16,9 +19,10 @@ using std::wstring;
 class StatusBar : public RootWindow
 {
 public:
-    void  Start( HWND const, ReadBuffer * const, WorkThreadInterface const * const );
-	void  Adjust( );
-    PIXEL GetHeight( ) const;
+	StatusBar();
+
+	void  Start( HWND const, ReadBuffer * const, EvoHistorySysGlue const * const, WorkThreadInterface const * const, Delay * const, EditorWindow * const );
+	PIXEL GetHeight( ) const;
     void  Resize( ) const;
     void  SetSizeTrackBar ( PIXEL const ) const;
     void  SetSpeedTrackBar( DWORD const ) const;
@@ -39,6 +43,10 @@ private:
         Stop
     };
 
+	void adjust( );
+	void maxSpeed( );
+	void scrollBarMessage( int const );
+
 	HWND WINAPI createControl      ( LPCTSTR, LPCTSTR, DWORD, HMENU );
     HWND WINAPI createStaticControl( LPCTSTR );
     HWND WINAPI createButton       ( LPCTSTR const, HMENU const, DWORD const  );
@@ -54,7 +62,10 @@ private:
     wstring m_wstrGeneration;
     wstring m_wstrScriptLine;
 
+	Delay                     * m_pDelay;
 	ReadBuffer                * m_pReadBuffer;
+	EditorWindow              * m_pEditorWindow;
+	EvoHistorySysGlue   const * m_pEvoHistorySys;
 	WorkThreadInterface const * m_pWorkThreadInterface;
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );

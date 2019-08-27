@@ -9,7 +9,8 @@
 #include "EvolutionTypes.h"
 #include "win32_colorManager.h"
 
-class PerformanceWindow;
+class Delay;
+class ObserverInterface;
 class EditorWindow;
 class EvolutionCore;
 class EventInterface;
@@ -29,12 +30,16 @@ public:
     ( 
 		HWND                const,
 		ColorManager      * const,
-        PerformanceWindow * const,
+        Delay             * const,
 		EditorWindow      * const,  
 		EventInterface    * const,
 		ReadBuffer        * const, 
 	    EvoHistorySysGlue * const
     );
+
+	void Stop( );
+
+	void RegisterRunObserver( ObserverInterface * const );
 
     void PostDoEdit( GridPoint const );
     void PostSetPOI( GridPoint const );
@@ -57,12 +62,8 @@ public:
 	void PostGenerationStep();
 	void PostRepeatGenerationStep();              // Do not call! Used by WorkThread only;
 
-	HIST_GENERATION GetGenDemanded( )   const;
-	BOOL            IsRunning( )        const;
-	BOOL            IsMaxSpeed( )       const;
-	BOOL            IsEditWinVisible( ) const;
-	BOOL            IsInHistoryMode( )  const;
-	BOOL            IsFirstHistGen( )   const;
+	HIST_GENERATION GetGenDemanded( ) const;
+	BOOL            IsRunning( )      const;
 
     void TerminateThread( );
 

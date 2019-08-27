@@ -61,7 +61,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	DefinePixelCoordinatesWrapperFunctions( & PixCoords );
 
 	PixCoords.Start( FIELDSIZE, bHexagonMode );
-	pEvoHistGlue->Start( pHistorySystem, nullptr, FALSE );  // do history cache allocation **not** asynchroniously
+	pEvoHistGlue->Start( pHistorySystem, FALSE );  // do history cache allocation **not** asynchroniously
     DefineWin32HistWrapperFunctions( pWorkThreadInterface );
 
 	pWorkThreadInterface->Start( nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, pEvoHistGlue );

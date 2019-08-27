@@ -18,8 +18,8 @@ public:
 
 	void HistAllocThread::Start
 	( 
-		HistorySystem const * const pHistSys,
-		BOOL                  const bAsync      
+		HistorySystem * const pHistSys,
+		BOOL            const bAsync      
 	) 
 	{
 		m_pHistorySys = pHistSys;
@@ -50,5 +50,5 @@ public:
 	}
 
 private:
-	HistorySystem const * m_pHistorySys;
+	HistorySystem * m_pHistorySys;
 };

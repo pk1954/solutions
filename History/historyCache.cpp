@@ -34,12 +34,10 @@ HistoryCache::~HistoryCache( )
 void HistoryCache::InitHistoryCache
 ( 
 	HistSlotNr           const nrOfSlots, 
-	ModelFactory const * const pModelFactory,
-	ObserverInterface  * const pObserver
+	ModelFactory const * const pModelFactory
 )
 {
 	m_pModelFactory = pModelFactory;
-	m_pObserver     = pObserver;
 
     assert( nrOfSlots >= HistSlotNr(2) );
 

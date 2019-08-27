@@ -22,9 +22,8 @@ EvoHistorySysGlue::EvoHistorySysGlue( ) :
 
 EvoModelDataGlue * EvoHistorySysGlue::Start
 (
-	HistorySystem     * const pHistorySystem,
-	ObserverInterface * const pObserver,
-	BOOL                const bAsync      
+	HistorySystem * const pHistorySystem,
+	BOOL            const bAsync      
 )
 {
 	m_pHistorySystem = pHistorySystem;
@@ -35,7 +34,6 @@ EvoModelDataGlue * EvoHistorySysGlue::Start
         Config::GetConfigValue( Config::tId::nrOfHistorySlots ),
 		Util::GetPhysicalMemory( ),
         & m_EvoModelFactory,
-		pObserver,
 		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( tEvoCmd::reset ), 0 )
     );
 

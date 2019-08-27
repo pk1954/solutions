@@ -20,7 +20,7 @@ public:
     explicit HistoryCache( );
     ~HistoryCache( );
     
-    void       InitHistoryCache( HistSlotNr const, ModelFactory const * const, ObserverInterface * const );
+    void       InitHistoryCache( HistSlotNr const, ModelFactory const * const );
     bool       AddCacheSlot( );
     void       ResetHistoryCache( );
     HistSlotNr GetFreeCacheSlot( );

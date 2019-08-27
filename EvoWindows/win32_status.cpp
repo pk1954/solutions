@@ -9,9 +9,12 @@
 #include "config.h"
 #include "pixelCoordinates.h"
 #include "EvolutionCore.h"
+#include "EvoHistorySysGlue.h"
+#include "win32_delay.h"
 #include "win32_tooltip.h"
 #include "win32_readBuffer.h"
 #include "win32_workThreadInterface.h"
+#include "win32_editor.h"
 #include "win32_status.h"
 
 extern int g_AllocHookCounter;
@@ -32,16 +35,31 @@ static wchar_t * SZ_RUN_MODE  = L"   Run    ";
 static wchar_t * SZ_STOP_MODE = L"  Stop    ";
 static wchar_t * SZ_EDIT_MODE = L"Show editor";
 
+StatusBar::StatusBar()
+:	m_pDelay( nullptr ),
+	m_pReadBuffer( nullptr ),
+	m_pEditorWindow( nullptr ),
+	m_pEvoHistorySys( nullptr ),
+	m_pWorkThreadInterface( nullptr )
+{ }
+
 void StatusBar::Start
 ( 
 	HWND const                        hwndParent,
 	ReadBuffer                * const pReadBuffer,
-	WorkThreadInterface const * const pWorkThreadInterface
+	EvoHistorySysGlue   const * const pEvoHistorySys,
+	WorkThreadInterface const * const pWorkThreadInterface,
+	Delay                     * const pDelay,
+	EditorWindow              * const pEditorWindow
 )
 {
+	m_pDelay               = pDelay;
 	m_pReadBuffer          = pReadBuffer;
+	m_pEditorWindow        = pEditorWindow;
+	m_pEvoHistorySys       = pEvoHistorySys;
 	m_pWorkThreadInterface = pWorkThreadInterface;
-	HWND hwndStatus        = CreateWindow
+
+	HWND hwndStatus = CreateWindow
 	(
 		STATUSCLASSNAME, 
 		nullptr, 
@@ -96,10 +114,16 @@ void StatusBar::Start
 
 	(void)SendMessage( SB_SETPARTS, sizeof( statwidths ) / sizeof( int ), (LPARAM)( &statwidths ) );
 
-	SetSizeTrackBar ( DEFAULT_FIELD_SIZE );
-	long lDefaultDelay = Config::GetConfigValue( Config::tId::generationDelay );
-	SetSpeedTrackBar( lDefaultDelay );
-	PostCommand2Application( IDM_SIMULATION_SPEED, lDefaultDelay );
+	SetSizeTrackBar( DEFAULT_FIELD_SIZE );
+
+	{
+		long lDefaultDelay = Config::GetConfigValue( Config::tId::generationDelay );
+		SetSpeedTrackBar( lDefaultDelay );
+		m_pDelay->SetDelay( lDefaultDelay );
+	}
+
+	m_pReadBuffer->RegisterObserver( this );
+	m_pEditorWindow->RegisterObserver( this );
 }
 
 LRESULT StatusBar::UserProc
@@ -124,25 +148,28 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
 			EVO_GENERATION        evoGen = pCore->GetEvoGenerationNr( );
 			pReadBuffer->ReleaseReadBuffer( );
 			pStatusBar->DisplayCurrentGeneration( evoGen );
+			pStatusBar->adjust();
 		}
         break;
 
     case WM_COMMAND:
-	{
-		HWND hwndParent = GetParent( hwnd );
-		(void)SendMessage( GetParent( hwnd ), WM_COMMAND, LOWORD(wParam), 0 );
-	}
+		{
+			int const wmId = LOWORD( wParam );
+			switch (wmId)
+			{
+			case IDM_MAX_SPEED:
+				pStatusBar->maxSpeed( );
+				break;
+
+			default:
+				pStatusBar->PostCommand2Application( LOWORD(wParam), 0 );
+				break;
+			}
+		}
         return FALSE;
 
     case WM_HSCROLL:
-		{
-			HWND const hwndTrackBar = (HWND)lParam;
-			INT  const iCtrlId      = GetDlgCtrlID( hwndTrackBar );
-			LONG const lLogicalPos  = pStatusBar->GetTrackBarPos( iCtrlId );
-			LONG const lValue       = ( iCtrlId == IDM_ZOOM_TRACKBAR ) ? lLogicalPos : ( SPEED_TRACKBAR_MAX - lLogicalPos );
-
-	        (void)SendMessage( GetParent( hwnd ), WM_COMMAND, iCtrlId, trackBar2Value( lValue )  );
-		}
+		pStatusBar->scrollBarMessage( GetDlgCtrlID( (HWND)lParam ) );
         return TRUE;
 
     default: 
@@ -260,7 +287,32 @@ static LONG value2Trackbar( long lX )  // f(x) = 1000 * log2(x)
     return static_cast<LONG>( dY );
 }
 
-void StatusBar::Adjust( )
+void StatusBar::maxSpeed()
+{
+	SetSpeedTrackBar( 0 );
+	m_pDelay->SetDelay( 0 );
+	EnableWindow( GetDlgItem( IDM_MAX_SPEED  ), FALSE );
+}
+
+void StatusBar::scrollBarMessage( int const iCtrlId )
+{
+	LONG const lLogicalPos = GetTrackBarPos( iCtrlId );
+	if ( iCtrlId == IDM_ZOOM_TRACKBAR )
+	{
+		LONG const lValue = lLogicalPos;
+		LONG const lPos   = trackBar2Value( lValue );
+		PostCommand2Application( IDM_ZOOM_TRACKBAR, lPos );
+	}
+	else
+	{
+		LONG const lValue = SPEED_TRACKBAR_MAX - lLogicalPos;
+		LONG const lPos   = trackBar2Value( lValue );
+		m_pDelay->SetDelay( lPos );
+		EnableWindow( GetDlgItem( IDM_MAX_SPEED ), TRUE );
+	}
+}
+
+void StatusBar::adjust( )
 {
 	BOOL const bRunMode = m_pWorkThreadInterface->IsRunning();
 
@@ -268,12 +320,11 @@ void StatusBar::Adjust( )
 	EnableWindow( GetDlgItem( IDM_STOP ),   bRunMode );
 
 	EnableWindow( GetDlgItem( IDM_GENERATION ), ! bRunMode );
-	EnableWindow( GetDlgItem( IDM_MAX_SPEED  ), ! m_pWorkThreadInterface->IsMaxSpeed() );
 
-	ShowWindow( GetDlgItem( IDM_EDIT_WINDOW ), ! m_pWorkThreadInterface->IsEditWinVisible( ) );
+	ShowWindow( GetDlgItem( IDM_EDIT_WINDOW ), ! m_pEditorWindow->IsWindowVisible( ) );
 
 	if ( Config::UseHistorySystem( ) )
-		EnableWindow( GetDlgItem( IDM_BACKWARDS ), (! bRunMode) && (! m_pWorkThreadInterface->IsFirstHistGen()) );
+		EnableWindow( GetDlgItem( IDM_BACKWARDS ), (! bRunMode) && (! m_pEvoHistorySys->IsFirstHistGen() ) );
 }
 
 PIXEL StatusBar::GetHeight( ) const

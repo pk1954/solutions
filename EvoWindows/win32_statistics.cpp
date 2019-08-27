@@ -15,11 +15,12 @@
 #include "win32_statistics.h"
 #include "win32_stopwatch.h"
 
-StatisticsWindow::StatisticsWindow( ):
-    TextWindow( ),
+StatisticsWindow::StatisticsWindow( )
+:  TextWindow( ),
 	m_pReadBuffer( nullptr ),
 	m_pStatistics( nullptr )
-{ }
+{ 
+}
 
 void StatisticsWindow::Start
 (
@@ -38,6 +39,7 @@ void StatisticsWindow::Start
 		TRUE,
 		nullptr
 	);
+	m_pReadBuffer->RegisterObserver( this );
 }
 
 StatisticsWindow::~StatisticsWindow( )
@@ -54,6 +56,8 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 	//	stopwatch.Start();
  
 	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
+	if ( ! pCore  )
+		return;
 
 	m_pStatistics->Prepare( pCore, GridSelection::GetSelection(), & textBuf ); 
 	if ( m_pStatistics->GetNrOfLivingIndividuals() == 0 )

@@ -96,7 +96,6 @@ void DoTest( )
 		NR_OF_SLOTS,    // # of cache slots
 		1024ull * 1024 * 1024 * 16,
 		& modelFactory,
-		nullptr,
 		GenerationCmd::ApplicationCmd( tGenCmd::FIRST_APP_CMD, 0 )
 	);
 

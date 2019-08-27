@@ -9,7 +9,6 @@
 #include "EvolutionCore.h"
 #include "win32_util.h"
 #include "win32_tooltip.h"
-#include "win32_status.h"
 #include "win32_workThreadInterface.h"
 #include "win32_displayOptions.h"
 #include "win32_editor.h"
@@ -45,6 +44,7 @@ void EditorWindow::Start
 void EditorWindow::Stop( )
 {
 	DestroyWindow( );
+	m_observers.Clear();
 	m_pWorkThreadInterface = nullptr;
 	m_pCore                = nullptr;
 	m_pDspOptWindow        = nullptr;
@@ -227,7 +227,7 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
                 break;
 
 			case IDM_EDIT_OPERATION_SET:     
-			case IDM_EDIT_OPERATION_MIN:     
+			case IDM_EDIT_OPERATION_MIN:
 			case IDM_EDIT_OPERATION_MAX:     
 			case IDM_EDIT_OPERATION_ADD:     
 			case IDM_EDIT_OPERATION_SUBTRACT:
@@ -246,10 +246,14 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
         }
         break;
 
-    case WM_CLOSE:
-        Show( FALSE );
-		PostCommand2Application( IDM_ADJUST_UI, 0 );
-		return TRUE;
+	case WM_ACTIVATE:
+		m_observers.NotifyAll( FALSE );
+		break;
+
+	case WM_CLOSE:
+		AnimateWindow( GetWindowHandle(), 200, AW_HIDE | AW_VER_POSITIVE );
+		m_observers.NotifyAll( FALSE );
+		return TRUE; 
 
     default:
         break;

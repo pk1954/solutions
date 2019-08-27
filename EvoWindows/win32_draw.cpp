@@ -80,7 +80,7 @@ void DrawFrame::CallHighlightColorDialog( HWND const hwndOwner )
 
 void DrawFrame::SetStripMode( tBoolOp const bOp ) 
 { 
-    m_pGraphics->SetStripMode( bOp ); 
+	m_pGraphics->SetStripMode( bOp ); 
 };
 
 void DrawFrame::ResizeDrawFrame( EvolutionCore const * const pCore )

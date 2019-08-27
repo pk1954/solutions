@@ -12,6 +12,7 @@
 #include "gridPoint24.h"
 #include "EvolutionCore.h"
 #include "win32_util.h"
+#include "win32_clut.h"
 #include "win32_readBuffer.h"
 #include "win32_focusPoint.h"
 #include "win32_crsrWindow.h"
@@ -76,8 +77,9 @@ void GridWindow::Start
     assert( pixFieldSize > 0_PIXEL );
     
 	BOOL bHexagonMode   = GridDimensions::GetNrOfNeigbors() == 6;
+
 	m_PixelCoordinates.Start( pixFieldSize, bHexagonMode );
-	m_pGraphics         = pGraphics;
+	m_pGraphics = pGraphics;
 
 	HWND hwnd = StartBaseWindow
     ( 
@@ -105,6 +107,8 @@ void GridWindow::Start
 		? tBoolOp::opFalse 
 		: Config::GetConfigValueBoolOp( Config::tId::stripMode ) 
 	);
+
+	m_pReadBuffer->RegisterObserver( this );
 }
 
 void GridWindow::Stop( )
@@ -439,18 +443,20 @@ void GridWindow::Size( )
 
 void GridWindow::newFieldSize
 ( 
-	EvolutionCore const * pCore, 
-	PIXEL         const   pixfieldSize, 
-	GridPoint     const   gpCenter 
+	PIXEL     const pixfieldSize, 
+	GridPoint const gpCenter 
 )
 {
 	if ( m_PixelCoordinates.SetGridFieldSize( pixfieldSize ) )
 	{
+		EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
 		m_PixelCoordinates.CenterGrid( gpCenter, GetClRectSize( ) ); // center grid around gpCenter
-		m_DrawFrame.ResizeDrawFrame( pCore );  // trigger DrawFrame to adapt font size etc.
+		m_DrawFrame.ResizeDrawFrame( pCore );                        // trigger DrawFrame to adapt font size etc.
 		PixelPoint const ppCrsr = GetRelativeCrsrPosition( );
 		if ( IsInClientRect( ppCrsr ) )
 			m_DrawFrame.SetHighlightPos( pCore, ppCrsr );  
+		m_pReadBuffer->ReleaseReadBuffer( );
+		Trigger( );   // cause repaint
 	}
 	else
 	{
@@ -460,25 +466,20 @@ void GridWindow::newFieldSize
 
 void GridWindow::SetFieldSize( PIXEL const pixFieldSize )
 {
-	EvolutionCore const * pCore    = m_pReadBuffer->LockReadBuffer( );
-	GridPoint     const   gpCenter = GridPOI::IsPoiDefined( ) 
-									 ? GridPOI::GetPoi() 
-									 : m_PixelCoordinates.Pixel2GridPos( GetClRectCenter( ) );
-	newFieldSize( pCore, pixFieldSize, gpCenter );
-	m_pReadBuffer->ReleaseReadBuffer( );
+	GridPoint const gpCenter = GridPOI::IsPoiDefined( ) 
+			       		      ? GridPOI::GetPoi() 
+							  : m_PixelCoordinates.Pixel2GridPos( GetClRectCenter( ) );
+	newFieldSize( pixFieldSize, gpCenter );
 }
 
 void GridWindow::Fit2Rect( )
 {
-	GridRect      const   gridRect = GridSelection::GetSelection();
-	EvolutionCore const * pCore    = m_pReadBuffer->LockReadBuffer( );
+	GridRect const gridRect = GridSelection::GetSelection();
 	newFieldSize
 	( 
-		pCore,
 		m_PixelCoordinates.CalcMaximumFieldSize( gridRect.GetSize(), GetClRectSize( ) ), 
 		gridRect.GetCenter() 
 	);
-	m_pReadBuffer->ReleaseReadBuffer( );
 	GridSelection::ResetSelection( );
 }
 
@@ -489,7 +490,14 @@ void GridWindow::Zoom( bool const bZoomIn )
 
 void GridWindow::ToggleStripMode( ) 
 { 
-	m_DrawFrame.SetStripMode( tBoolOp::opToggle ); 
+	m_DrawFrame.SetStripMode( tBoolOp::opToggle );
+	Trigger( );   // cause repaint
+}
+
+void GridWindow::ToggleClutMode( ) 
+{ 
+	m_pColorManager->ToggleClutMode();
+	Trigger( );   // cause repaint
 }
 
 void GridWindow::Escape( ) 

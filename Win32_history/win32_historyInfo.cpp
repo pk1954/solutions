@@ -13,7 +13,7 @@
 
 HistInfoWindow::HistInfoWindow( ) :
     TextWindow( ),
-    m_pHistSystem( nullptr )
+    m_pHistSys( nullptr )
 { }
 
 void HistInfoWindow::Start( HWND const hwndParent, std::function<bool()> const visibilityCriterion ) 
@@ -29,18 +29,25 @@ void HistInfoWindow::Start( HWND const hwndParent, std::function<bool()> const v
 	);
 }
 
-void HistInfoWindow::SetHistorySystem( HistorySystem const * pHistSys ) 
+void HistInfoWindow::Stop( ) 
 {
-	m_pHistSystem = pHistSys;
+	m_pHistSys->UnregisterAllObservers();
+	m_pHistSys = nullptr;
+}
+
+void HistInfoWindow::SetHistorySystem( HistorySystem * pHistSys ) 
+{
+	m_pHistSys = pHistSys;
+	m_pHistSys->RegisterObserver( this );  // Trigger me, if something happens in history system
 }
 
 void HistInfoWindow::DoPaint( TextBuffer & textBuf )
 {
-	if ( m_pHistSystem )
+	if ( m_pHistSys )
 	{
-		int iNrOfUsedSlots { m_pHistSystem->GetNrOfUsedHistCacheSlots( ).GetValue() };
-		int iNrOfSlots     { m_pHistSystem->GetNrOfHistCacheSlots( ).GetValue() };
-		BYTES slotSize     { m_pHistSystem->GetSlotSize( ) };
+		int iNrOfUsedSlots { m_pHistSys->GetNrOfUsedHistCacheSlots( ).GetValue() };
+		int iNrOfSlots     { m_pHistSys->GetNrOfHistCacheSlots( ).GetValue() };
+		BYTES slotSize     { m_pHistSys->GetSlotSize( ) };
 		BYTES totalSize    { slotSize.GetValue() * iNrOfSlots };
 
 		textBuf.printString( L"used slots  " );
@@ -57,6 +64,6 @@ void HistInfoWindow::DoPaint( TextBuffer & textBuf )
 
 		textBuf.nextLine( L"genCurrent  " );
 		textBuf.setHorizontalPos( 3_TEXT_POSITION );
-		textBuf.printNumber( m_pHistSystem->GetCurrentGeneration( ).GetLong() );
+		textBuf.printNumber( m_pHistSys->GetCurrentGeneration( ).GetLong() );
 	}
 }

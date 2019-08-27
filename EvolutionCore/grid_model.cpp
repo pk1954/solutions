@@ -7,7 +7,7 @@
 #include <cmath> 
 #include "EventInterface.h"
 #include "MortalityTable.h"
-#include "ObserverInterface.h"
+#include "ViewCollection.h"
 #include "strategy.h"
 #include "individual.h"
 #include "interaction.h"

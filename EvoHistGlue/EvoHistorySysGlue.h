@@ -25,16 +25,11 @@ public:
     EvoHistorySysGlue( );
 	virtual ~EvoHistorySysGlue( ) { };
 
-	EvoModelDataGlue * Start
-	( 
-		HistorySystem     * const,
-		ObserverInterface * const,
-		BOOL                const
-	);
+	EvoModelDataGlue * Start( HistorySystem * const, BOOL const	);
 
 	void Stop( );
 
-    // EvoApproachHistGen - Get closer to demanded HIST_GENERATION
+	// EvoApproachHistGen - Get closer to demanded HIST_GENERATION
     //                    - If several steps are neccessary, function returns after one displayed generation
     //                      to allow user interaction
     //                    - But actual history generation is alterered by at least 1
@@ -46,6 +41,7 @@ public:
     HIST_GENERATION GetCurrentGeneration     ( ) const { return m_pHistorySystem->GetCurrentGeneration( ); }
     HIST_GENERATION GetYoungestGeneration    ( ) const { return m_pHistorySystem->GetYoungestGeneration( ); }
 	bool            IsInHistoryMode          ( ) const { return m_pHistorySystem->IsInHistoryMode(); }
+	BOOL            IsFirstHistGen           ( ) const { return GetCurrentGeneration( ) == 0; }
 
 	HIST_GENERATION GetGenWithIndividual( GridPoint const, bool const ) const; 
 
@@ -53,11 +49,10 @@ public:
 	void EvoClearHistory( HIST_GENERATION const genFirst ) { return m_pHistorySystem->ClearHistory( genFirst ); }
 
 	EvolutionCore const * GetEvolutionCore( HIST_GENERATION const ) const;
-
 	
 	ModelData const * EvoCreateNextGenCommand( )
 	{ 
-	 	return m_pHistorySystem->CreateAppCommand( NEXT_GEN_CMD );  
+		return m_pHistorySystem->CreateAppCommand( NEXT_GEN_CMD );
 	}  
 
 	ModelData const * GetModelData( HIST_GENERATION const gen ) const

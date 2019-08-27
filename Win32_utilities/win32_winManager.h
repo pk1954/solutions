@@ -90,8 +90,8 @@ private:
     struct MAP_ELEMENT
     {
         std::wstring const   m_wstr;
-		BaseWindow   const * m_pBaseWindow;    // Normally BaseWindows are managed, but in same cases
-		HWND         const   m_hwnd;           // also naked HWNDs are used
+		BaseWindow   const * m_pBaseWindow;    // Normally WinManager handles BaseWindows
+		HWND         const   m_hwnd;           // but in some cases also naked HWNDs are used
 		BOOL         const   m_bTrackPosition; // if TRUE, winManager sets window position from config file
 		BOOL         const   m_bTrackSize;     // if TRUE, winManager sets window size from config file
     };

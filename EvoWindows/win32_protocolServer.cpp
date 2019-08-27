@@ -12,6 +12,7 @@
 ProtocolServer::ProtocolServer( )
   : m_pHistorySystem( nullptr )
 {
+//	EvolutionCore::RegisterObserver( this );
 }
 
 ProtocolServer::~ProtocolServer( )

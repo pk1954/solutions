@@ -25,7 +25,6 @@ ModelData * HistorySystemImpl::StartHistorySystem
 	long                const lHistEntriesDemanded,
 	unsigned long long  const ullMemorySize,
 	ModelFactory      * const pModelFactory,
-	ObserverInterface * const pObserver,
 	GenerationCmd       const cmd
 )
 {
@@ -39,7 +38,7 @@ ModelData * HistorySystemImpl::StartHistorySystem
 
 	m_pHistoryCache  = new HistoryCache;                    //ok
 	m_GenCmdList.Resize( genMaxNrOfGens );
-	m_pHistoryCache->InitHistoryCache( nrOfSlots, pModelFactory, pObserver );
+	m_pHistoryCache->InitHistoryCache( nrOfSlots, pModelFactory );
 	m_pHistCacheItemWork->SetGenerationCommand( cmd );
     save2History( );
 	return m_pHistCacheItemWork->GetModelData();
@@ -54,6 +53,8 @@ void HistorySystemImpl::StopHistorySystem( )
 
 	m_pHistCacheItemWork = nullptr;
 	m_pHistoryCache      = nullptr;
+
+	UnregisterAllObservers( );
 }
 
 HistorySystemImpl::~HistorySystemImpl( )
@@ -73,11 +74,14 @@ void HistorySystemImpl::ClearHistory( HIST_GENERATION const genFirst )
 
 		m_GenCmdList.ResetGenerationCmd( gen );
 	}
+	m_observers.NotifyAll( FALSE );
 }
 
-bool HistorySystemImpl::AddHistorySlot( ) const 
+bool HistorySystemImpl::AddHistorySlot( )
 { 
-	return m_pHistoryCache->AddCacheSlot( );
+	bool bRes = m_pHistoryCache->AddCacheSlot( );
+	m_observers.NotifyAll( FALSE );
+	return bRes;
 }
 
 HistoryIterator * HistorySystemImpl::CreateHistoryIterator( ) const 
@@ -119,14 +123,15 @@ ModelData const * HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genD
        )
     {
 		step2NextGeneration( m_GenCmdList[ genActual + 1 ] );   // compute forwards
-
-///		XXXXXXXXXXXXXXXXXXXX
     }
     else  // get cached generation
     {
 		HistSlotNr const slotNr = m_GenCmdList[ genCached ].GetSlotNr( );
 		m_pHistoryCache->CopyFromCacheSlot( slotNr, m_pHistCacheItemWork );
     }
+
+	m_observers.NotifyAll( FALSE );
+
 	return nullptr;
 }
 
@@ -179,6 +184,8 @@ ModelData const * HistorySystemImpl::save2History( )
     ModelData const * pModelData = m_pHistoryCache->Save2CacheSlot( slotNr, m_pHistCacheItemWork );
     m_GenCmdList.SetCachedGeneration( m_pHistCacheItemWork->GetHistGenCounter( ), slotNr );
     CHECK_HISTORY_STRUCTURE;
+
+	m_observers.NotifyAll( FALSE );
 
 	return pModelData;
 };

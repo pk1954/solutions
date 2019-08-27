@@ -1,5 +1,5 @@
 
-// win32_histWindow.cpp
+// Win32_history/win32_histWindow.cpp
 //
 
 #include "stdafx.h"
@@ -46,6 +46,7 @@ void HistWindow::Start
     m_pHistIter   = m_pHistSys->CreateHistoryIterator( );
     m_pGenDisplay = new GenDisplayWindow( );
     m_pGenDisplay->StartGenDisplayWindow( GetWindowHandle( ) );
+	m_pHistSys->RegisterObserver( this );  // Trigger me, if something happens in history system
 }
 
 void HistWindow::Stop( )

@@ -10,9 +10,8 @@
 #include "win32_script.h"
 #include "win32_stopwatch.h"
 #include "win32_workThreadInterface.h"
-#include "win32_ViewCollection.h"
 #include "win32_winManager.h"
-#include "win32_performanceWindow.h"
+#include "win32_delay.h"
 #include "win32_status.h"
 #include "win32_editor.h"
 #include "win32_appMenu.h"
@@ -27,8 +26,7 @@ EvoController::EvoController() :
 	m_pWorkThreadInterface ( nullptr ),
 	m_pWinManager          ( nullptr ),
 	m_pEvoHistGlue         ( nullptr ),
-    m_pPerformanceWindow   ( nullptr ),
-	m_pCoreObservers       ( nullptr ),
+    m_pDelay               ( nullptr ),
 	m_pColorManager        ( nullptr ),
 	m_pStatusBar           ( nullptr ),
 	m_pGridWindow          ( nullptr ),
@@ -42,9 +40,8 @@ EvoController::~EvoController( )
 	m_pWorkThreadInterface = nullptr;
 	m_pWinManager          = nullptr;
 	m_pEvoHistGlue         = nullptr;
-	m_pCoreObservers       = nullptr;
 	m_pColorManager        = nullptr;
-	m_pPerformanceWindow   = nullptr;
+	m_pDelay               = nullptr;
     m_pStatusBar           = nullptr;
 	m_pGridWindow          = nullptr;
 	m_pEditorWindow        = nullptr;
@@ -55,10 +52,9 @@ void EvoController::Start
 ( 
     std::wostream       *       pTraceStream,
 	WorkThreadInterface * const pWorkThreadInterface,
-	ViewCollection      * const pCoreObservers,
 	WinManager          * const pWinManager,
 	EvoHistorySysGlue   * const pEvoHistGlue,
-	PerformanceWindow   * const pPerformanceWindow,
+	Delay               * const pDelay,
 	StatusBar           * const pStatusBar,
 	GridWindow          * const pGridWindow,
 	EditorWindow        * const pEditorWindow,
@@ -68,10 +64,9 @@ void EvoController::Start
 {
 	m_pTraceStream         = pTraceStream;
 	m_pWorkThreadInterface = pWorkThreadInterface;
-	m_pCoreObservers       = pCoreObservers;
 	m_pWinManager          = pWinManager;
 	m_pEvoHistGlue         = pEvoHistGlue;
-    m_pPerformanceWindow   = pPerformanceWindow;
+    m_pDelay               = pDelay;
 	m_pStatusBar           = pStatusBar;
 	m_pGridWindow          = pGridWindow;
 	m_pEditorWindow        = pEditorWindow;
@@ -118,11 +113,12 @@ bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDD_TOGGLE_CLUT_MODE:
-		m_pColorManager->ToggleClutMode();
+		m_pGridWindow->ToggleClutMode();
 		break;
 
 	case IDD_TOGGLE_COORD_DISPLAY:
 		Config::SetConfigValueBoolOp( Config::tId::showGridPointCoords, tBoolOp::opToggle );
+		m_pGridWindow->Refresh();
 		break;
 
 	case IDM_FIT_ZOOM:
@@ -146,13 +142,13 @@ bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_REFRESH:
+		m_pGridWindow->Refresh();
 		break;
 
 	default:
 		return FALSE; // command has not been processed
 	}
 
-	m_pCoreObservers->Notify( TRUE );
 	return TRUE;  // command has been processed
 }
 
@@ -215,14 +211,9 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			m_pWorkThreadInterface->PostSetPOI( UnpackFromLParam(lParam) );
 			break;
 
-		case IDM_SIMULATION_SPEED:   // comes from trackbar in statusBar
-			setSimulationSpeed( static_cast<DWORD>( lParam ) );
-            break;
-
-		case IDM_MAX_SPEED:
-			setSimulationSpeed( 0 );
-			m_pStatusBar->SetSpeedTrackBar( 0 );
-			break;
+		//case IDM_SIMULATION_SPEED:   // comes from trackbar in statusBar
+		//	m_pDelay->SetDelay( static_cast<DWORD>( lParam ) );
+  //          break;
 
         case IDM_SCRIPT_DIALOG:
 			scriptDialog( );
@@ -236,13 +227,4 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			assert( false );
 	        break;
     }
-}
-
-void EvoController::setSimulationSpeed( DWORD const dwDelay )
-{
-	if (m_pPerformanceWindow != nullptr)
-	{
-		m_pPerformanceWindow->SetPerfGenerationDelay( dwDelay );
-		m_pGridWindow->PostCommand2Application( IDM_ADJUST_UI, 0 );
-	}
 }

@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "ViewCollection.h"
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
 #include "historyCache.h"
@@ -15,7 +16,6 @@
 #define CHECK_HISTORY_STRUCTURE
 #endif
 
-class ObserverInterface;
 class ObserverInterface;
 class NextGenFunctor;
 class HistoryIterator;
@@ -35,13 +35,12 @@ public:
 		long                const, 
 		unsigned long long  const, 
 		ModelFactory      * const,
-		ObserverInterface * const,
 		GenerationCmd       const
     );
 
 	virtual void StopHistorySystem( );
 
-	virtual bool			  AddHistorySlot( )        const;
+	virtual bool			  AddHistorySlot( );
 
     virtual HistSlotNr        GetNrOfUsedHistCacheSlots( ) const { return m_pHistoryCache->GetNrOfUsedHistCacheSlots( );    }
     virtual HistSlotNr        GetNrOfHistCacheSlots( )     const { return m_pHistoryCache->GetNrOfHistCacheSlots( );        }
@@ -63,11 +62,22 @@ public:
 
     virtual HIST_GENERATION   FindGenerationWithProperty( GenerationProperty const &, bool const ) const;
 
+	virtual void RegisterObserver( ObserverInterface * const pObserver )
+	{
+		m_observers.Register( pObserver );
+	}
+
+	virtual void UnregisterAllObservers( )
+	{
+		m_observers.Clear();
+	}
+
 private:
 
     GenCmdList      m_GenCmdList;
     HistoryCache  * m_pHistoryCache;
     HistCacheItem * m_pHistCacheItemWork;      // The reference item, where history system gets and restores data 
+	ViewCollection  m_observers;
 
 	ModelData  const * save2History( );
     void               step2NextGeneration( GenerationCmd );

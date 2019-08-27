@@ -5,11 +5,10 @@
 
 #include <fstream>
 
-class PerformanceWindow;
+class Delay;
 class StatusBar;
 class WorkThreadInterface;
 class EvoHistorySysGlue;
-class ViewCollection;
 class WinManager;
 class GridWindow;
 class EditorWindow;
@@ -27,10 +26,9 @@ public:
 	( 
 		std::wostream       *, 
 		WorkThreadInterface * const,
-		ViewCollection      * const,
 		WinManager          * const,
 		EvoHistorySysGlue   * const,
-		PerformanceWindow   * const,
+		Delay               * const,
 		StatusBar           * const,
 		GridWindow          * const,
 		EditorWindow        * const,
@@ -42,17 +40,14 @@ public:
 
 private:
 	void scriptDialog( );
-	void handleOnOffAutoCommand(int const );
 	bool processUIcommand( int const, LPARAM const );
-	void setSimulationSpeed( DWORD const );
 
 	BOOL                  m_bTrace;
     std::wostream       * m_pTraceStream;
 	WorkThreadInterface * m_pWorkThreadInterface;
-	ViewCollection      * m_pCoreObservers;
 	WinManager          * m_pWinManager;
 	EvoHistorySysGlue   * m_pEvoHistGlue;
-	PerformanceWindow   * m_pPerformanceWindow;
+	Delay               * m_pDelay;
 	StatusBar           * m_pStatusBar;
 	GridWindow          * m_pGridWindow;
 	EditorWindow        * m_pEditorWindow;

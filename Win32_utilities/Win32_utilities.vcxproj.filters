@@ -36,9 +36,6 @@
     <ClInclude Include="win32_util.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_viewCollection.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_winManager.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -79,6 +76,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="win32_tooltip.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_delay.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
