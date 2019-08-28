@@ -181,7 +181,7 @@ void EditorWindow::setBrushManipulator( WORD const wId ) const
 	m_pWorkThreadInterface->PostSetBrushManipulator( brushOperator );
 }
 
-INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+LRESULT EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
     switch (message)
     {

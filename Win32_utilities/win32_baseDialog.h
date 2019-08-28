@@ -19,5 +19,5 @@ public:
 
 private:
 
-	friend static LRESULT CALLBACK BaseDialogProc( HWND const, UINT const, WPARAM const, LPARAM const );
+	friend static INT_PTR CALLBACK BaseDialogProc( HWND const, UINT const, WPARAM const, LPARAM const );
 };

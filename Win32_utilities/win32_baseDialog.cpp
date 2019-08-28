@@ -29,7 +29,7 @@ HWND BaseDialog::StartBaseDialog
 	return hwnd;
 }
 
-static LRESULT CALLBACK BaseDialogProc
+static INT_PTR CALLBACK BaseDialogProc
 ( 
     HWND   const hwnd,
     UINT   const message, 
