@@ -86,7 +86,7 @@ BOOL DspOptWindow::AreIndividualsVisible( ) const
     return ( BST_CHECKED == Button_GetCheck( GetDlgItem( IDM_INDIVIDUALS ) ) );
 }
 
-INT_PTR DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+LRESULT DspOptWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
     switch (message)
     {
