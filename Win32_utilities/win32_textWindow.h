@@ -13,7 +13,7 @@ class TextWindow : public BaseWindow
 {
 public:
     TextWindow( );
-	virtual ~TextWindow( );
+	virtual ~TextWindow( ) { };
 
     void StartTextWindow( HWND const, PixelRect const &, LPCTSTR const, UINT const, BOOL const, std::function<bool()> const );
 	void StopTextWindow( );

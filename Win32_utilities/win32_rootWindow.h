@@ -40,7 +40,6 @@ public:
 	BOOL          const IsInClientRect( PixelPoint const & p ) const { return Util::IsInClientRect( m_hwnd, p ); }
 	BOOL          const IsInClientRect( PixelRect  const & r ) const { return Util::IsInClientRect( m_hwnd, r ); }
 
-	BOOL          const DestroyWindow( )              const { return ::DestroyWindow  ( m_hwnd ); }
 	BOOL          const IsWindowVisible( )            const { return ::IsWindowVisible( m_hwnd ); }
 	HWND          const SetCapture( )                 const { return ::SetCapture     ( m_hwnd ); }
     HWND          const SetFocus( )                   const { return ::SetFocus       ( m_hwnd ); }
@@ -55,6 +54,12 @@ public:
 
     HDC  BeginPaint( LPPAINTSTRUCT lpPaint ) const { return ::BeginPaint( m_hwnd, lpPaint ); }
     BOOL EndPaint  ( LPPAINTSTRUCT lpPaint ) const { return ::EndPaint  ( m_hwnd, lpPaint ); }
+
+	void const DestroyWindow( ) 
+	{ 
+		::DestroyWindow( m_hwnd );
+		m_hwnd = nullptr;
+	}
 
 	HWND CreateBalloonToolTip( int const id, LPWSTR const t ) 
 	{ 

@@ -22,6 +22,8 @@ public:
 	StatusBar();
 
 	void  Start( HWND const, ReadBuffer * const, EvoHistorySysGlue const * const, WorkThreadInterface const * const, Delay * const, EditorWindow * const );
+	void  Stop( );
+
 	PIXEL GetHeight( ) const;
     void  Resize( ) const;
     void  SetSizeTrackBar ( PIXEL const ) const;

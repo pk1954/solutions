@@ -270,14 +270,11 @@ LRESULT HistWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         (void)TrackMouseEvent( &m_trackStruct );
         if ( wParam & MK_LBUTTON )                // Left mouse button
 			gotoNewGeneration( lParam );
-        //else
-        //    Invalidate( FALSE );   // Redraw, do not erase background
         return FALSE;
 
     case WM_MOUSELEAVE:
         m_pGenDisplay->Show( FALSE );
         m_genSelected = -1L;
-        //Invalidate( FALSE );   // Redraw, do not erase background
         return FALSE;
 
     case WM_LBUTTONDOWN:

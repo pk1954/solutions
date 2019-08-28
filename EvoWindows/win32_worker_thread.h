@@ -110,16 +110,6 @@ public:
 			m_pEventPOI->Continue( );     // trigger worker thread if waiting on POI event
 	}
 
-	virtual void RegisterRunObserver( ObserverInterface * const pObserver )
-	{
-		m_runObservers.Register( pObserver );
-	}
-
-	virtual void UnregisterAllObservers( )
-	{
-		m_runObservers.Clear();
-	}
-
 private:
 	void editorCommand( tEvoCmd const cmd, WPARAM const wParam )
 	{
@@ -134,7 +124,6 @@ private:
 	void setContinueFlag( BOOL const bState )
 	{
 		m_bContinue = bState;
-		m_runObservers.NotifyAll( FALSE  );
 	}
 
 	void gotoGeneration( HIST_GENERATION const );
@@ -153,5 +142,4 @@ private:
     HIST_GENERATION       m_genDemanded;
     BOOL                  m_bContinue;
 	HWND                  m_hwndApplication;
-	ViewCollection        m_runObservers;    // observers interested in m_bContinue
 };

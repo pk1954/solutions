@@ -51,8 +51,8 @@ void StatisticsWindow::Start
 
 void StatisticsWindow::Stop( )
 {
-	TextWindow::StopTextWindow( );
 	Show( FALSE );
+	TextWindow::StopTextWindow( );
 }
 
 void StatisticsWindow::DoPaint( TextBuffer & textBuf )

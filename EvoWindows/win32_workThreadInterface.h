@@ -39,8 +39,6 @@ public:
 
 	void Stop( );
 
-	void RegisterRunObserver( ObserverInterface * const );
-
     void PostDoEdit( GridPoint const );
     void PostSetPOI( GridPoint const );
     void PostSetBrushMode( tBrushMode const );

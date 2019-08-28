@@ -3,10 +3,14 @@
 
 #include "stdafx.h"
 #include "Windowsx.h"
+#include "Windows.h"
 #include "Resource.h"
 #include "BoolOp.h"
 #include "config.h"
+#include "GridDimensions.h"
 #include "EvoHistorySysGlue.h"
+#include "win32_aboutBox.h"
+#include "win32_appWindow.h"
 #include "win32_script.h"
 #include "win32_stopwatch.h"
 #include "win32_workThreadInterface.h"
@@ -19,6 +23,7 @@
 #include "win32_packGridPoint.h"
 #include "win32_evoController.h"
 #include "win32_colorManager.h"
+#include "win32_resetDlg.h"
 
 EvoController::EvoController() :
     m_bTrace               ( TRUE ),
@@ -48,8 +53,9 @@ EvoController::~EvoController( )
 	m_pAppMenu             = nullptr;
 }
 
-void EvoController::Start
+void EvoController::Initialize
 ( 
+ 	AppWindow           * const pAppwindow,
     std::wostream       *       pTraceStream,
 	WorkThreadInterface * const pWorkThreadInterface,
 	WinManager          * const pWinManager,
@@ -63,6 +69,7 @@ void EvoController::Start
 )
 {
 	m_pTraceStream         = pTraceStream;
+	m_pAppWindow           = pAppwindow;
 	m_pWorkThreadInterface = pWorkThreadInterface;
 	m_pWinManager          = pWinManager;
 	m_pEvoHistGlue         = pEvoHistGlue;
@@ -72,6 +79,7 @@ void EvoController::Start
 	m_pEditorWindow        = pEditorWindow;
 	m_pColorManager        = pColorManager;
 	m_pAppMenu             = pAppMenu;
+	m_hCrsrWait            = LoadCursor( NULL, IDC_WAIT );
 }
 
 void EvoController::scriptDialog( )
@@ -161,7 +169,11 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 
     switch (wmId)
     {
-        case IDM_EDIT_UNDO:
+		case IDM_ABOUT:
+			ShowAboutBox( m_pAppWindow->GetWindowHandle( ) );
+			break;
+
+		case IDM_EDIT_UNDO:
 			m_pWorkThreadInterface->PostUndo( );
 			break;
 
@@ -188,7 +200,35 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			ProcessCommand( IDM_STOP );
 			break;
 
-        case IDM_SOFT_RESET:
+		case IDM_RESET:
+		{
+			int     iRes    = ResetDialog::Show( m_pAppWindow->GetWindowHandle( ) );
+			HCURSOR crsrOld = SetCursor( m_hCrsrWait );
+			switch ( iRes )
+			{
+			case IDM_SOFT_RESET:
+				m_pWorkThreadInterface->PostReset( FALSE );
+				break;
+
+			case IDM_HISTORY_RESET:
+				m_pWorkThreadInterface->PostReset( TRUE );
+				break;
+
+			case IDM_HARD_RESET:
+				m_pAppWindow->Stop();
+				GridDimensions::DefineGridSize
+				( 
+					GRID_COORD( ResetDialog::GetNewWidth() ), 
+					GRID_COORD( ResetDialog::GetNewHeight() ), 
+					ResetDialog::GetNewNrOfNeighbors()
+				);
+				m_pAppWindow->Start();
+			}
+			SetCursor( crsrOld );
+		}
+		break;
+
+		case IDM_SOFT_RESET:
             m_pWorkThreadInterface->PostReset( FALSE );
             break;
 
@@ -212,10 +252,6 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			m_pWorkThreadInterface->PostSetPOI( UnpackFromLParam(lParam) );
 			break;
 
-		//case IDM_SIMULATION_SPEED:   // comes from trackbar in statusBar
-		//	m_pDelay->SetDelay( static_cast<DWORD>( lParam ) );
-  //          break;
-
         case IDM_SCRIPT_DIALOG:
 			scriptDialog( );
 			break;
@@ -223,6 +259,10 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
         case IDM_ESCAPE:
 			m_pGridWindow->Escape();
             break;
+
+		case IDM_EXIT:
+			PostMessage (m_pAppWindow->GetWindowHandle( ),  WM_CLOSE, 0, 0 );
+			break;
 
 		default:
 			assert( false );

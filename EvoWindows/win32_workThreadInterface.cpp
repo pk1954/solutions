@@ -24,6 +24,13 @@ WorkThreadInterface::WorkThreadInterface( ) :
 	m_bTrace( TRUE )
 { }
 
+WorkThreadInterface::~WorkThreadInterface( )
+{
+	m_pEvoHistGlue = nullptr;
+	m_pWorkThread  = nullptr;
+    m_pTraceStream = nullptr;
+}
+
 void WorkThreadInterface::Initialize( wostream * pTraceStream ) 
 { 
 	m_pTraceStream = pTraceStream;
@@ -54,21 +61,11 @@ void WorkThreadInterface::Start
 	);
 }
 
-WorkThreadInterface::~WorkThreadInterface( )
-{
-	m_pEvoHistGlue = nullptr;
-	m_pWorkThread  = nullptr;
-    m_pTraceStream = nullptr;
-}
-
-void WorkThreadInterface::RegisterRunObserver( ObserverInterface * const pObserver )
-{
-	m_pWorkThread->RegisterRunObserver( pObserver );
-}
-
 void WorkThreadInterface::Stop( )
 {
-	m_pWorkThread->UnregisterAllObservers();
+	m_pWorkThread->Terminate( );
+	delete m_pWorkThread;
+	m_pWorkThread = nullptr;
 }
 
 BOOL WorkThreadInterface::IsRunning( ) const

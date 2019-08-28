@@ -26,6 +26,11 @@ public:
 		m_map.erase( id );
 	}
 
+	void RemoveAll( )
+	{
+		m_map.clear ();
+	}
+
 	std::wstring const GetWindowName( UINT const id )  const // can throw out_of_range exception
     {
         return m_map.at( id ).m_wstr;

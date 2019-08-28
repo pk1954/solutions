@@ -122,8 +122,14 @@ void StatusBar::Start
 		m_pDelay->SetDelay( lDefaultDelay );
 	}
 
-	m_pReadBuffer->RegisterObserver( this );
-	m_pEditorWindow->RegisterObserver( this );
+	m_pReadBuffer->RegisterObserver( this );   // notify me, if model has changed
+	m_pEditorWindow->RegisterObserver( this ); // notify me, if editor window has been closed or opened
+}
+
+void StatusBar::Stop( )
+{
+	Show( FALSE );
+	DestroyWindow( );
 }
 
 LRESULT StatusBar::UserProc

@@ -18,13 +18,6 @@ TextWindow::TextWindow( ) :
 	m_hBitmap( 0 )
 { }
 
-TextWindow::~TextWindow()
-{
-	m_pTextWindowThread->Terminate( );
-	DeleteObject( m_hBitmap );
-	DeleteDC( m_hDC_Memory );
-}
-
 void TextWindow::StartTextWindow
 (
     HWND                  const   hwndParent,
@@ -65,7 +58,15 @@ void TextWindow::StartTextWindow
 
 void TextWindow::StopTextWindow( )
 {
+	m_pTextWindowThread->Terminate( );
 	delete m_pTextWindowThread;
+	m_pTextWindowThread = nullptr;
+
+	DeleteObject( m_hBitmap );
+	m_hBitmap = 0;
+
+	DeleteDC( m_hDC_Memory );
+	m_hDC_Memory = 0;
 }
 
 void TextWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )

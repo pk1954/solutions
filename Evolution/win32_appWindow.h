@@ -65,8 +65,7 @@ private:
 	HWND                m_hwndApp;
 	HWND                m_hwndConsole;
 	Util::Event         m_event;
-	BOOL                m_bStopped;  // if true, no grid visible, many functions not available
-	HCURSOR             m_hCrsrWait;
+	BOOL                m_bStarted;  // if true, grid is visible, all functions available
 
 	ActionTimer         m_atComputation;
 	ActionTimer         m_atDisplay;

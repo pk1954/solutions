@@ -5,6 +5,7 @@
 
 #include <fstream>
 
+class AppWindow;
 class Delay;
 class StatusBar;
 class WorkThreadInterface;
@@ -22,9 +23,10 @@ public:
 
 	virtual ~EvoController( );
 
-	void EvoController::Start
+	void EvoController::Initialize
 	( 
-		std::wostream       *, 
+		AppWindow           * const,
+		std::wostream       *,
 		WorkThreadInterface * const,
 		WinManager          * const,
 		EvoHistorySysGlue   * const,
@@ -44,6 +46,7 @@ private:
 
 	BOOL                  m_bTrace;
     std::wostream       * m_pTraceStream;
+	AppWindow           * m_pAppWindow;
 	WorkThreadInterface * m_pWorkThreadInterface;
 	WinManager          * m_pWinManager;
 	EvoHistorySysGlue   * m_pEvoHistGlue;
@@ -53,4 +56,5 @@ private:
 	EditorWindow        * m_pEditorWindow;
 	ColorManager        * m_pColorManager;
 	AppMenu             * m_pAppMenu;
+	HCURSOR               m_hCrsrWait;
 };
