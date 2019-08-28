@@ -31,6 +31,7 @@ void HistInfoWindow::Start( HWND const hwndParent, std::function<bool()> const v
 
 void HistInfoWindow::Stop( ) 
 {
+	TextWindow::StopTextWindow( );
 	m_pHistSys->UnregisterAllObservers();
 	m_pHistSys = nullptr;
 }

@@ -14,7 +14,7 @@ class WorkThreadInterface;
 class DspOptWindow;
 class ReadBuffer;
 class ObserverInterface;
-class PerformanceWindow;
+class ActionTimer;
 class FocusPoint;
 class ColorManager;
 
@@ -27,7 +27,7 @@ public:
         WorkThreadInterface * const,
         FocusPoint          * const,
         DspOptWindow        * const,
-        PerformanceWindow   * const, 
+        ActionTimer         * const, 
 		ColorManager        * const 
 	);
 
@@ -75,7 +75,7 @@ private:
 	static HCURSOR               m_hCrsrArrow;
 	static ReadBuffer          * m_pReadBuffer;
     static WorkThreadInterface * m_pWorkThreadInterface;
-    static PerformanceWindow   * m_pPerformanceWindow;
+    static ActionTimer         * m_pActionTimer;
     static DspOptWindow        * m_pDspOptWindow;
     static FocusPoint          * m_pFocusPoint;
 	static ColorManager        * m_pColorManager;

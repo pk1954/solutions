@@ -19,7 +19,9 @@ public:
 		HWND         const, 
 		ReadBuffer * const,
 		FocusPoint * const 
-		);
+	);
+
+	void Stop( );
 
     virtual void DoPaint( TextBuffer & );
 

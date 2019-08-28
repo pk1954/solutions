@@ -33,10 +33,10 @@ void WorkThreadInterface::Start
 ( 
 	HWND                 const hwndApplication,
     ColorManager       * const pColorManager,
-    Delay              * const pDelay,
-	EditorWindow       * const pEditorWindow,
+	ActionTimer        * const pActionTimer,
     EventInterface     * const pEvent,
-    ReadBuffer         * const pReadBuffer, 
+	Delay              * const pDelay,
+	ReadBuffer         * const pReadBuffer, 
     EvoHistorySysGlue  * const pEvoHistGlue
 )
 {
@@ -45,9 +45,9 @@ void WorkThreadInterface::Start
 	( 
 		hwndApplication, 
 		pColorManager, 
-		pDelay, 
-		pEditorWindow, 
+		pActionTimer,
 		pEvent, 
+		pDelay, 
 		pReadBuffer, 
 		pEvoHistGlue, 
 		this

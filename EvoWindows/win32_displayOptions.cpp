@@ -26,6 +26,8 @@ void DspOptWindow::Start( HWND const hwndParent )
 {
 	HWND hwndDlg = StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_DISPLAY_OPTIONS ), nullptr );
 	m_IntValueLambda = nullptr;
+	SetIndividualsVisible( );
+	SetDisplayMode( IDM_DSP_ENV_NOTHING );
 
 	CreateWindowToolTip( L"Display options allow to show/hide individuals and to choose what is displayed as background." );
 	CreateBalloonToolTip( IDM_INDIVIDUALS,     L"if deselected, individuals are hidden. Rarelay used." );

@@ -16,6 +16,7 @@ public:
 	virtual ~TextWindow( );
 
     void StartTextWindow( HWND const, PixelRect const &, LPCTSTR const, UINT const, BOOL const, std::function<bool()> const );
+	void StopTextWindow( );
 
     virtual void DoPaint( TextBuffer & ) = 0;
 	virtual void Trigger( );

@@ -16,7 +16,7 @@
 #include "win32_readBuffer.h"
 #include "win32_focusPoint.h"
 #include "win32_crsrWindow.h"
-#include "win32_performanceWindow.h"
+#include "win32_actionTimer.h"
 #include "win32_graphicsInterface.h"
 #include "win32_workThreadInterface.h"
 #include "win32_packGridPoint.h"
@@ -28,7 +28,7 @@
 HWND                  GridWindow::m_hwndApp              = nullptr;
 ReadBuffer          * GridWindow::m_pReadBuffer          = nullptr;
 WorkThreadInterface * GridWindow::m_pWorkThreadInterface = nullptr;
-PerformanceWindow   * GridWindow::m_pPerformanceWindow   = nullptr;
+ActionTimer         * GridWindow::m_pActionTimer         = nullptr;
 DspOptWindow        * GridWindow::m_pDspOptWindow        = nullptr;
 FocusPoint          * GridWindow::m_pFocusPoint          = nullptr;
 ColorManager        * GridWindow::m_pColorManager        = nullptr;
@@ -41,13 +41,13 @@ void GridWindow::InitClass
     WorkThreadInterface * const pWorkThreadInterface,
     FocusPoint          * const pFocusPoint,
     DspOptWindow        * const pDspOptWindow,
-    PerformanceWindow   * const pPerformanceWindow,
+	ActionTimer         * const pActionTimer,
 	ColorManager        * const pColorManager
 )
 {
 	m_pReadBuffer          = pReadBuffer;
 	m_pWorkThreadInterface = pWorkThreadInterface;
-    m_pPerformanceWindow   = pPerformanceWindow;
+    m_pActionTimer         = pActionTimer;
 	m_pDspOptWindow        = pDspOptWindow;
     m_pFocusPoint          = pFocusPoint;
 	m_pColorManager        = pColorManager;
@@ -252,7 +252,7 @@ void GridWindow::moveGrid( PixelPoint const ptDiff )
 void GridWindow::doPaint( )
 {
 	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
-    m_pPerformanceWindow->DisplayStart( );
+	m_pActionTimer->TimerStart( );
 
     if ( IsWindowVisible() )
 	{
@@ -286,7 +286,7 @@ void GridWindow::doPaint( )
 		   Invalidate( FALSE );    // repeat if POI is not in center 
 	}
 
-    m_pPerformanceWindow->DisplayStop( );
+	m_pActionTimer->TimerStop( );
 	m_pReadBuffer->ReleaseReadBuffer( );
 }
 

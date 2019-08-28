@@ -29,11 +29,11 @@ public:
 		WinManager          * const,
 		EvoHistorySysGlue   * const,
 		Delay               * const,
+		ColorManager        * const,
+		AppMenu             * const,
 		StatusBar           * const,
 		GridWindow          * const,
-		EditorWindow        * const,
-		ColorManager        * const,
-		AppMenu             * const
+		EditorWindow        * const
 	);
 
 	void ProcessCommand( WPARAM const, LPARAM const = 0 );

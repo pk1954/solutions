@@ -10,10 +10,10 @@
 #include "EvoHistorySysGlue.h"
 #include "EventInterface.h"
 #include "win32_delay.h"
-#include "win32_editor.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 #include "win32_readBuffer.h"
+#include "win32_actionTimer.h"
 #include "win32_colorManager.h"
 #include "win32_workThreadInterface.h"
 #include "win32_worker_thread.h"
@@ -22,16 +22,16 @@ WorkThread::WorkThread
 ( 
 	HWND                  const hwndApplication,
 	ColorManager        * const pColorManager,
-	Delay               * const pDelay,
-	EditorWindow        * const pEditorWindow,
+	ActionTimer         * const pActionTimer,
 	EventInterface      * const pEvent,
+	Delay               * const pDelay,
 	ReadBuffer          * const pReadBuffer, 
 	EvoHistorySysGlue   * const pEvoHistorySys,
 	WorkThreadInterface * const pWorkThreadInterface
 ) :
 	m_pColorManager       ( pColorManager ),
-	m_pDelay              ( pDelay ),
-	m_pEditorWindow       ( pEditorWindow ),   
+	m_pActionTimer        ( pActionTimer ),
+	m_pDelay              ( pDelay ),   
 	m_pEventPOI           ( pEvent ),   
 	m_pReadBuffer         ( pReadBuffer ),   
 	m_pEvoHistGlue        ( pEvoHistorySys ),   
@@ -48,11 +48,11 @@ WorkThread::~WorkThread( )
 	m_hwndApplication      = nullptr;
 	m_pColorManager        = nullptr;
 	m_pWorkThreadInterface = nullptr;
-	m_pDelay               = nullptr;
-	m_pEditorWindow        = nullptr;
+	m_pActionTimer         = nullptr;
 	m_pEventPOI            = nullptr;
 	m_pReadBuffer          = nullptr;
 	m_pEvoHistGlue         = nullptr;
+	m_pDelay               = nullptr;
 }
 
 bool WorkThread::userWantsHistoryCut( ) const
@@ -77,21 +77,15 @@ void WorkThread::WorkMessage
 {
 	assert( WorkerThreadMessage::IsValid( msg ) );
 	
-	if ( isEditOperation )
+	if ( isEditOperation &&  m_pEvoHistGlue->IsInHistoryMode() )
 	{
-		if ( IsRunning() )
-			m_pEditorWindow->PostCommand2Application( IDM_STOP, 0 );
-
-		if ( m_pEvoHistGlue->IsInHistoryMode() )          
+		if ( userWantsHistoryCut( ) )
 		{
-			if ( userWantsHistoryCut( ) )
-			{
-				m_pEvoHistGlue->EvoClearHistory( m_pEvoHistGlue->GetCurrentGeneration( ) );  // cut off future generations
-			}
-			else 
-			{
-				return;            // user answered no, cancel operation
-			}
+			m_pEvoHistGlue->EvoClearHistory( m_pEvoHistGlue->GetCurrentGeneration( ) );  // cut off future generations
+		}
+		else 
+		{
+			return;            // user answered no, cancel operation
 		}
 	}
 
@@ -121,11 +115,8 @@ void WorkThread::dispatch( MSG const msg  )
 	{
 
 	case WorkerThreadMessage::Id::GENERATION_RUN:
-		if ( static_cast<bool>(msg.lParam) )
-		{
-			m_pEditorWindow->SendClick( IDM_MOVE );     // change edit mode to move
+		if ( static_cast<bool>(msg.lParam) )          // if first RUN message ...
 			setContinueFlag( TRUE );
-		}
 		generationRun( );
 		break;
 
@@ -208,8 +199,6 @@ void WorkThread::dispatch( MSG const msg  )
 
 	case WorkerThreadMessage::Id::SET_BRUSH_MODE:
 		editorCommand( tEvoCmd::editSetBrushMode, msg.wParam );
-		if ( m_pEditorWindow )
-			m_pEditorWindow->UpdateEditControls( );
 		break;
 
 	case WorkerThreadMessage::Id::SET_BRUSH_RADIUS:
@@ -272,22 +261,20 @@ void WorkThread::gotoGeneration( HIST_GENERATION const gen )
 				(m_pEvoHistGlue->GetCurrentGeneration( ) == m_pEvoHistGlue->GetYoungestGeneration( ))
 			)     
 		{                                                    // Normal case: Compute next generation
-			if (m_pDelay != nullptr)
-				m_pDelay->ComputationStart( );               // prepare for time measurement
+			if (m_pActionTimer != nullptr)
+				m_pActionTimer->TimerStart( );               // prepare for time measurement
 
 			m_pEvoHistGlue->EvoCreateNextGenCommand( );      //////// here the real work is done! ////////////////
 
-			if (m_pDelay != nullptr)
-				m_pDelay->ComputationStop( );                     // measure computation time
+			if (m_pActionTimer != nullptr)
+				m_pActionTimer->TimerStop( );                     // measure computation time
 		}
 		else  // we are somewhere in history
 		{
 			m_pEvoHistGlue->EvoApproachHistGen( m_genDemanded );   // Get a stored generation from history system
-			if (m_pEditorWindow != nullptr)              
-				m_pEditorWindow->UpdateEditControls( );            // make sure that editor GUI reflects new state
 		}
 
-		WorkMessage( FALSE, WorkerThreadMessage::Id::REFRESH, 0, 0 );            // refresh all views
+		WorkMessage( FALSE, WorkerThreadMessage::Id::REFRESH, 0, 0 );     // refresh all views
     
 		if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )   // still not done?
 			m_pWorkThreadInterface->PostRepeatGenerationStep( );          // Loop! Will call indirectly gotoGeneration again

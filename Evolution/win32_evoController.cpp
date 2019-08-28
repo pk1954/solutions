@@ -55,11 +55,11 @@ void EvoController::Start
 	WinManager          * const pWinManager,
 	EvoHistorySysGlue   * const pEvoHistGlue,
 	Delay               * const pDelay,
+	ColorManager        * const pColorManager,
+	AppMenu             * const pAppMenu,
 	StatusBar           * const pStatusBar,
 	GridWindow          * const pGridWindow,
-	EditorWindow        * const pEditorWindow,
-	ColorManager        * const pColorManager,
-	AppMenu             * const pAppMenu
+	EditorWindow        * const pEditorWindow
 )
 {
 	m_pTraceStream         = pTraceStream;
@@ -174,6 +174,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
 		case IDM_RUN:
+			m_pEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
 			m_pWorkThreadInterface->PostRunGenerations( true );
 			break;
 

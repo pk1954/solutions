@@ -9,13 +9,14 @@
 #include "EvolutionCore.h"
 #include "win32_util.h"
 #include "win32_tooltip.h"
+#include "win32_readBuffer.h"
 #include "win32_workThreadInterface.h"
 #include "win32_displayOptions.h"
 #include "win32_editor.h"
 
 EditorWindow::EditorWindow( )
   : BaseDialog( ),
-    m_pCore               ( nullptr ),
+    m_pReadBuffer         ( nullptr ),
     m_pWorkThreadInterface( nullptr ),
     m_pDspOptWindow       ( nullptr )
 { }
@@ -24,21 +25,25 @@ void EditorWindow::Start
 (  
     HWND                  const hwndParent,
     WorkThreadInterface * const pWorkThreadInterface,
-    EvolutionCore       * const pCore,
+    ReadBuffer          * const pReadBuffer,
     DspOptWindow        * const pDspOptWindow
 )
 {
     m_pWorkThreadInterface = pWorkThreadInterface;
-    m_pCore                = pCore;
+    m_pReadBuffer          = pReadBuffer;
     m_pDspOptWindow        = pDspOptWindow;
 
 	StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDD_EDITOR ), nullptr );  //[&](){ return ! m_pWorkThreadInterface->IsRunning(); } );
 
     SetTrackBarRange( IDM_EDIT_SIZE,      1L,  50L );
     SetTrackBarRange( IDM_EDIT_INTENSITY, 0L, 100L );
-    UpdateEditControls( );
+
+	UpdateEditControls( );
+
 	CreateWindowToolTip( L"The editor allows to manipulate the model manually (individuals, mutation rate, fertility etc.) by using the left mouse button." );
 	CreateBalloonToolTip( IDM_MOVE, L"Left mouse button moves the model on the screen (no changes to the model). " );
+
+	m_pReadBuffer->RegisterObserver( this );
 }
 
 void EditorWindow::Stop( )
@@ -46,20 +51,15 @@ void EditorWindow::Stop( )
 	DestroyWindow( );
 	m_observers.Clear();
 	m_pWorkThreadInterface = nullptr;
-	m_pCore                = nullptr;
+	m_pReadBuffer          = nullptr;
 	m_pDspOptWindow        = nullptr;
 }
 
 EditorWindow::~EditorWindow( )
 {
     m_pWorkThreadInterface = nullptr;
-    m_pCore                = nullptr;
+    m_pReadBuffer          = nullptr;
     m_pDspOptWindow        = nullptr;
-}
-
-void EditorWindow::UpdateEditControls( )
-{
-	updateEditControls( m_pCore );
 }
 
 LRESULT EditorWindow::SendClick( int const item ) const
@@ -81,8 +81,10 @@ void EditorWindow::updateOperationButtons( tBrushMode const mode ) const
 	EnableWindow( GetDlgItem( IDM_EDIT_OPERATION_SUBTRACT ), bEnableOperationButtons );
 }
 
-void EditorWindow::updateEditControls( EvolutionCore const * const pCore ) // Set state of all window widgets according to mode (edit/simu)
+void EditorWindow::UpdateEditControls( ) // Set state of all window widgets according to mode (edit/simu)
 {
+	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
+
 	static std::unordered_map < tBrushMode, WORD > mapModeTable
 	{
 		{ tBrushMode::move,        IDM_MOVE            },
@@ -108,8 +110,6 @@ void EditorWindow::updateEditControls( EvolutionCore const * const pCore ) // Se
 
 	CheckRadioButton( IDM_EDIT_CIRCLE, IDM_EDIT_GRID_AREA, mapShapeTable.at( pCore->GetBrushShape() ) );
 
-	// ShowWindow  ( GetDlgItem( IDM_EDIT_SIZE ), false );
-
 	updateOperationButtons( pCore->GetBrushMode() );
 
 	static std::unordered_map < tManipulator, WORD > mapOperatorTable
@@ -129,6 +129,7 @@ void EditorWindow::updateEditControls( EvolutionCore const * const pCore ) // Se
 	// adjust display options window
 
 	m_pDspOptWindow->UpdateDspOptionsControls( pCore->GetBrushMode() );
+	m_pReadBuffer->ReleaseReadBuffer( );
 }
 
 void EditorWindow::setBrushMode( WORD const wId ) const
@@ -149,6 +150,7 @@ void EditorWindow::setBrushMode( WORD const wId ) const
 
 	tBrushMode const brushMode { mapModeTable.at( wId ) };
 	m_pWorkThreadInterface->PostSetBrushMode( brushMode );
+	m_pDspOptWindow->UpdateDspOptionsControls( brushMode );
 }
 
 void EditorWindow::setBrushShape( WORD const wId ) const
@@ -202,9 +204,13 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
 		}
         return TRUE;
 
-    case WM_COMMAND:
-        {
-			WORD const wId { LOWORD( wParam ) };
+	case WM_PAINT:
+		UpdateEditControls( );
+		break;
+
+	case WM_COMMAND:
+	{
+		WORD const wId { LOWORD( wParam ) };
 
             switch ( wId )
             {
@@ -218,7 +224,7 @@ INT_PTR EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
             case IDM_FERTILITY:
             case IDM_FOOD_STOCK:
 				setBrushMode( wId );
-                break;
+				break;
 
             case IDM_EDIT_CIRCLE:
             case IDM_EDIT_RECTANGLE:

@@ -15,6 +15,7 @@ public:
     virtual ~StatisticsWindow( );
 
     void Start( HWND const, ReadBuffer * const );
+	void Stop( );
 
     virtual void DoPaint( TextBuffer & );
 

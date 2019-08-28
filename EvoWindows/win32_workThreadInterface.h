@@ -10,8 +10,8 @@
 #include "win32_colorManager.h"
 
 class Delay;
+class ActionTimer;
 class ObserverInterface;
-class EditorWindow;
 class EvolutionCore;
 class EventInterface;
 class ReadBuffer;
@@ -30,9 +30,9 @@ public:
     ( 
 		HWND                const,
 		ColorManager      * const,
-        Delay             * const,
-		EditorWindow      * const,  
+		ActionTimer       * const,
 		EventInterface    * const,
+		Delay             * const,
 		ReadBuffer        * const, 
 	    EvoHistorySysGlue * const
     );

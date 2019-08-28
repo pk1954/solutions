@@ -15,6 +15,12 @@ CrsrWindow::CrsrWindow( ) :
     m_pReadBuffer( nullptr )
 {}
 
+CrsrWindow::~CrsrWindow( )
+{
+	m_pReadBuffer = nullptr;
+	m_pFocusPoint = nullptr;
+}
+
 void CrsrWindow::Start
 (
     HWND         const hwndParent,
@@ -37,10 +43,10 @@ void CrsrWindow::Start
 	m_pReadBuffer->RegisterObserver( this );
 }
 
-CrsrWindow::~CrsrWindow( )
+void CrsrWindow::Stop( )
 {
-	m_pReadBuffer = nullptr;
-	m_pFocusPoint = nullptr;
+	TextWindow::StopTextWindow( );
+	Show( FALSE );
 }
 
 void CrsrWindow::DoPaint( TextBuffer & textBuf )

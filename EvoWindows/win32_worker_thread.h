@@ -20,12 +20,12 @@
 #include "win32_event.h"
 
 class Delay;
+class ActionTimer;
 class ColorManager;
 class EditorWindow;
 class RootWindow;
 class EvolutionCore;
 class WinManager;
-class EditorWindow;
 class EventInterface;
 class ReadBuffer;
 class EvoHistorySysGlue;
@@ -76,9 +76,9 @@ public:
 	( 
 		HWND                  const,
 		ColorManager        * const,
-		Delay               * const,
-		EditorWindow        * const,
+		ActionTimer         * const,
 		EventInterface      * const,
+		Delay               * const,
 		ReadBuffer          * const,
 		EvoHistorySysGlue   * const,
 		WorkThreadInterface * const
@@ -142,8 +142,9 @@ private:
 	void dispatch( MSG const );
 	bool userWantsHistoryCut( ) const;
 
+	Delay               * m_pDelay;
 	ColorManager        * m_pColorManager;
-    Delay               * m_pDelay;
+	ActionTimer         * m_pActionTimer;
     EditorWindow        * m_pEditorWindow;
     EventInterface      * m_pEventPOI;
     ReadBuffer          * m_pReadBuffer;

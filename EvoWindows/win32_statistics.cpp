@@ -22,6 +22,13 @@ StatisticsWindow::StatisticsWindow( )
 { 
 }
 
+StatisticsWindow::~StatisticsWindow( )
+{
+	delete m_pStatistics;
+	m_pStatistics = nullptr;
+	m_pReadBuffer = nullptr;
+}
+
 void StatisticsWindow::Start
 (
     HWND         const hwndParent,
@@ -42,19 +49,14 @@ void StatisticsWindow::Start
 	m_pReadBuffer->RegisterObserver( this );
 }
 
-StatisticsWindow::~StatisticsWindow( )
+void StatisticsWindow::Stop( )
 {
-	delete m_pStatistics;
-	m_pStatistics = nullptr;
-	m_pReadBuffer = nullptr;
+	TextWindow::StopTextWindow( );
+	Show( FALSE );
 }
-
-Stopwatch stopwatch;
 
 void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 {
-	//	stopwatch.Start();
- 
 	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
 	if ( ! pCore  )
 		return;
@@ -112,5 +114,4 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 		textBuf.setHorizontalPos( 4_TEXT_POSITION );
 		textBuf.printNumber( EvolutionCore::GetNrInteractionsWithUnknownCulprit( ) );
 	}
-//	stopwatch.Stop( L"Statistics" );
 }

@@ -9,7 +9,7 @@
 
 class WorkThreadInterface;
 class DspOptWindow;
-class EvolutionCore;
+class ReadBuffer;
 class StatusBar;
 
 class EditorWindow : public BaseDialog
@@ -22,7 +22,7 @@ public:
 	( 
 		HWND const, 
 		WorkThreadInterface * const, 
-		EvolutionCore       * const, 
+		ReadBuffer          * const, 
 		DspOptWindow        * const
 	);
 
@@ -43,10 +43,9 @@ private:
 	void setBrushShape      ( WORD const ) const;
 	void setBrushManipulator( WORD const ) const;
 
-    void updateEditControls( EvolutionCore const * const );
 	void updateOperationButtons( tBrushMode const ) const;
 
-	EvolutionCore       * m_pCore;
+	ReadBuffer          * m_pReadBuffer;
     WorkThreadInterface * m_pWorkThreadInterface;
     DspOptWindow        * m_pDspOptWindow;
 	ViewCollection        m_observers;    // observers who want to know if edit window becomes visible or hidden

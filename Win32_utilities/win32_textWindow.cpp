@@ -23,7 +23,6 @@ TextWindow::~TextWindow()
 	m_pTextWindowThread->Terminate( );
 	DeleteObject( m_hBitmap );
 	DeleteDC( m_hDC_Memory );
-	delete m_pTextWindowThread;
 }
 
 void TextWindow::StartTextWindow
@@ -54,7 +53,7 @@ void TextWindow::StartTextWindow
 	Util::MakeLayered( hwnd, TRUE, 0, uiAlpha );
     SetWindowText( hwnd, szClass );
 
-	m_pTextWindowThread = new TextWindowThread  //ok
+	m_pTextWindowThread = new TextWindowThread
 	( 
 		m_hDC_Memory, 
 		PixelRectSize{ rect.GetSize() }, 
@@ -62,6 +61,11 @@ void TextWindow::StartTextWindow
 		szClass, 
 		bAsync 
 	);
+}
+
+void TextWindow::StopTextWindow( )
+{
+	delete m_pTextWindowThread;
 }
 
 void TextWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
