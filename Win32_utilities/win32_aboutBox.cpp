@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "resource.h"
+#include "win32_util_resource.h"
 #include "win32_aboutBox.h"
 
 static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);

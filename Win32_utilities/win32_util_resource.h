@@ -6,6 +6,9 @@
 
 // identifiers below 100 are reserved for win32_utilities
 
+#define IDD_ABOUTBOX                    2
+#define IDD_TIMESTAMP                   3
+
 #define IDM_REFRESH_RATE_DIALOG        10
 #define IDD_REFRESH_RATE_EDIT_CTL      11
 

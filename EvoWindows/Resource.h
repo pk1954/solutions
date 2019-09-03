@@ -12,7 +12,6 @@
 // identifiers for application start at 100
 
 #define IDS_APP_TITLE                           100
-#define IDD_ABOUTBOX                            102
 #define IDI_EVOLUTION                           111
 #define IDI_SMALL                               112
 
@@ -43,7 +42,6 @@
 #define IDM_CHOOSE_STRATEGY_COLOR               163
 
 #define IDC_EVOLUTION_MAIN                      202
-#define IDD_TIMESTAMP                           203
 #define IDD_EDITOR                              207
 #define IDD_DISPLAY_OPTIONS                     208
 
