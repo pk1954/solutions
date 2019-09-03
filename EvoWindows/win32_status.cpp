@@ -46,7 +46,7 @@ StatusBar::StatusBar()
 void StatusBar::Start
 ( 
 	HWND const                        hwndParent,
-	ReadBuffer                * const pReadBuffer,
+	ReadBuffer<EvolutionCore> * const pReadBuffer,
 	EvoHistorySysGlue   const * const pEvoHistorySys,
 	WorkThreadInterface const * const pWorkThreadInterface,
 	Delay                     * const pDelay,
@@ -149,9 +149,9 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
     {
     case WM_PAINT:
 		{
-			ReadBuffer          * pReadBuffer = pStatusBar->m_pReadBuffer;
-			EvolutionCore const * pCore  = pReadBuffer->LockReadBuffer( );
-			EVO_GENERATION        evoGen = pCore->GetEvoGenerationNr( );
+		ReadBuffer<EvolutionCore> * pReadBuffer = pStatusBar->m_pReadBuffer;
+			EvolutionCore   const * pCore       = pReadBuffer->LockReadBuffer( );
+			EVO_GENERATION          evoGen      = pCore->GetEvoGenerationNr( );
 			pReadBuffer->ReleaseReadBuffer( );
 			pStatusBar->DisplayCurrentGeneration( evoGen );
 			pStatusBar->adjust();

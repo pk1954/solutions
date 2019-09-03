@@ -23,10 +23,10 @@ EditorWindow::EditorWindow( )
 
 void EditorWindow::Start
 (  
-    HWND                  const hwndParent,
-    WorkThreadInterface * const pWorkThreadInterface,
-    ReadBuffer          * const pReadBuffer,
-    DspOptWindow        * const pDspOptWindow
+    HWND                        const hwndParent,
+    WorkThreadInterface       * const pWorkThreadInterface,
+	ReadBuffer<EvolutionCore> * const pReadBuffer,
+    DspOptWindow              * const pDspOptWindow
 )
 {
     m_pWorkThreadInterface = pWorkThreadInterface;

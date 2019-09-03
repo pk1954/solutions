@@ -134,9 +134,6 @@
     <ClInclude Include="win32_colorManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_readBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_protocolServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -1,27 +1,31 @@
 // EvoWindows/win32_readBuffer.h : 
 //
-// Handle read access from UI threads to EvolutionCore
+// Handle read access from UI threads to Model
 //
-// A read only copy of Evolutioncore is present in * m_pCore4Display 
-// UI threads acquire non exclusive read access to * m_pCore4Display by calling LockReadBuffer and relase it by ReleaseReadBuffer.
-// Worker thread computes new generations of EvolutionCore in * m_pCoreWork and tries to copy them into * m_pCore4Display.
-// Copy operation is possible only if * m_pCore4Display is not locked by one or several reader threads.
-// As uninterrupted operation of worker thread has higher priority, the worker thread simply continues 
-// and tries to update the read buffer later, if the read buffer is locked.
+// A read only copy of Model is present in * m_pModel4Display 
+// UI threads acquire non exclusive read access to * m_pModel4Display 
+// by calling LockReadBuffer and relase it by ReleaseReadBuffer.
+//
+// Worker thread computes new generations of EvolutionModel in * m_pModelWork 
+// and tries to copy them into * m_pModel4Display.
+// Copy operation is possible only if * m_pModel4Display is not locked by one 
+// or several reader threads. As uninterrupted operation of worker thread has 
+// higher priority, the worker thread simply continues and tries to update 
+// the read buffer later, if the read buffer is locked.
 
 #pragma once
 
 #include "synchapi.h"
-#include "EvolutionCore.h"
 #include "observerInterface.h"
 #include "ViewCollection.h"
 
+template <typename MODEL>
 class ReadBuffer : public ObserverInterface
 {
 public:
 	ReadBuffer( ) : 
-		m_pCoreWork( nullptr ),
-		m_pCore4Display( nullptr )
+		m_pModelWork( nullptr ),
+		m_pModel4Display( nullptr )
 	{
 		InitializeSRWLock( & m_SRWLock );
 	}
@@ -30,12 +34,12 @@ public:
 
 	void Initialize
 	(
-		EvolutionCore const * pCoreWork, 
-		EvolutionCore       * pCore4Display 
+		MODEL const * pModelWork, 
+		MODEL       * pModel4Display 
 	)
 	{
-		m_pCoreWork     = pCoreWork;
-		m_pCore4Display = pCore4Display;
+		m_pModelWork     = pModelWork;
+		m_pModel4Display = pModel4Display;
 	}
 
 	// called by consumer threads
@@ -50,11 +54,11 @@ public:
 		m_observers.Clear();
 	}
 
-	EvolutionCore const * LockReadBuffer( ) 
+	MODEL const * LockReadBuffer( ) 
 	{
-		if ( m_pCore4Display )
+		if ( m_pModel4Display )
 			AcquireSRWLockShared( & m_SRWLock );
-		return m_pCore4Display;
+		return m_pModel4Display;
 	}
 
 	void ReleaseReadBuffer( )
@@ -75,14 +79,14 @@ public:
 			return;                                               // readers can synchronize with
 		}														  // later version
 
-		m_pCore4Display->CopyEvolutionCoreData( m_pCoreWork );  
+		m_pModel4Display->CopyModelData( m_pModelWork );  
 		ReleaseSRWLockExclusive( & m_SRWLock );                  
 		m_observers.NotifyAll( bImmediate );                     
 	}
 
 private:
-	SRWLOCK               m_SRWLock;
-	ViewCollection        m_observers;
-	EvolutionCore       * m_pCore4Display;
-	EvolutionCore const * m_pCoreWork;
+	SRWLOCK          m_SRWLock;
+	ViewCollection   m_observers;
+	MODEL          * m_pModel4Display;
+	MODEL    const * m_pModelWork;
 };

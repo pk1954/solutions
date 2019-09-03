@@ -155,6 +155,7 @@
     <ClInclude Include="win32_clut.h" />
     <ClInclude Include="win32_delay.h" />
     <ClInclude Include="win32_graphicsInterface.h" />
+    <ClInclude Include="win32_readBuffer.h" />
     <ClInclude Include="win32_refreshRateDialog.h" />
     <ClInclude Include="win32_textBuffer.h" />
     <ClInclude Include="win32_event.h" />

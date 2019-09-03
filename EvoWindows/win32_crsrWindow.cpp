@@ -23,9 +23,9 @@ CrsrWindow::~CrsrWindow( )
 
 void CrsrWindow::Start
 (
-    HWND         const hwndParent,
-	ReadBuffer * const pReadBuffer,
-	FocusPoint * const pFocusPoint
+    HWND                        const hwndParent,
+	ReadBuffer<EvolutionCore> * const pReadBuffer,
+	FocusPoint                * const pFocusPoint
 ) 
 {
     m_pReadBuffer = pReadBuffer;

@@ -158,6 +158,7 @@
     <ClInclude Include="EnumArray.h" />
     <ClInclude Include="EventInterface.h" />
     <ClInclude Include="Int24.h" />
+    <ClInclude Include="ModelInterface.h" />
     <ClInclude Include="NamedType.h" />
     <ClInclude Include="observerInterface.h" />
     <ClInclude Include="PixelTypes.h" />

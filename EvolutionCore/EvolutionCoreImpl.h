@@ -28,7 +28,7 @@ public:
 
 	// write access
 
-	void EvolutionCoreImpl::CopyEvolutionCoreData( EvolutionCore const * const src )
+	void EvolutionCoreImpl::CopyModelData( ModelInterface const * const src )
 	{
 		* this = * static_cast<EvolutionCoreImpl const *>( src );
 	}

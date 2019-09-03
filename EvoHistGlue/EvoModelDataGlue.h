@@ -47,7 +47,7 @@ public:
 	virtual void CopyFrom( ModelData const * const src )
 	{
 //		stopwatch.Start();
-		m_pEvolutionCore->CopyEvolutionCoreData( static_cast< EvoModelDataGlue const * const >( src )->m_pEvolutionCore );
+		m_pEvolutionCore->CopyModelData( static_cast< EvoModelDataGlue const * const >( src )->m_pEvolutionCore );
 //		stopwatch.Stop( L"Copy model" );
 	}
 

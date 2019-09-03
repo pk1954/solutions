@@ -6,10 +6,10 @@
 #include <string>
 #include "PixelTypes.h"
 #include "EvolutionTypes.h"
+#include "win32_readBuffer.h"
 #include "win32_rootWindow.h"
 
 class Delay;
-class ReadBuffer;
 class EditorWindow;
 class EvoHistorySysGlue;
 class WorkThreadInterface;
@@ -21,7 +21,15 @@ class StatusBar : public RootWindow
 public:
 	StatusBar();
 
-	void  Start( HWND const, ReadBuffer * const, EvoHistorySysGlue const * const, WorkThreadInterface const * const, Delay * const, EditorWindow * const );
+	void  Start
+	( 
+		HWND                        const, 
+		ReadBuffer<EvolutionCore> * const, 
+		EvoHistorySysGlue   const * const, 
+		WorkThreadInterface const * const, 
+		Delay                     * const, 
+		EditorWindow              * const 
+	);
 	void  Stop( );
 
 	PIXEL GetHeight( ) const;
@@ -65,7 +73,7 @@ private:
     wstring m_wstrScriptLine;
 
 	Delay                     * m_pDelay;
-	ReadBuffer                * m_pReadBuffer;
+	ReadBuffer<EvolutionCore> * m_pReadBuffer;
 	EditorWindow              * m_pEditorWindow;
 	EvoHistorySysGlue   const * m_pEvoHistorySys;
 	WorkThreadInterface const * m_pWorkThreadInterface;

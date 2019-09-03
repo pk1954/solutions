@@ -7,6 +7,7 @@
 #include "gridRect.h"
 #include "HistoryGeneration.h"
 #include "EvolutionTypes.h"
+#include "win32_readBuffer.h"
 #include "win32_colorManager.h"
 
 class Delay;
@@ -14,7 +15,6 @@ class ActionTimer;
 class ObserverInterface;
 class EvolutionCore;
 class EventInterface;
-class ReadBuffer;
 class EvoHistorySysGlue;
 class WorkThread;
 
@@ -28,13 +28,13 @@ public:
 
 	void Start
     ( 
-		HWND                const,
-		ColorManager      * const,
-		ActionTimer       * const,
-		EventInterface    * const,
-		Delay             * const,
-		ReadBuffer        * const, 
-	    EvoHistorySysGlue * const
+		HWND                        const,
+		ColorManager              * const,
+		ActionTimer               * const,
+		EventInterface            * const,
+		Delay                     * const,
+		ReadBuffer<EvolutionCore> * const, 
+	    EvoHistorySysGlue         * const
     );
 
 	void Stop( );

@@ -25,24 +25,24 @@
 
 #include "Commdlg.h"
 
-HWND                  GridWindow::m_hwndApp              = nullptr;
-ReadBuffer          * GridWindow::m_pReadBuffer          = nullptr;
-WorkThreadInterface * GridWindow::m_pWorkThreadInterface = nullptr;
-ActionTimer         * GridWindow::m_pActionTimer         = nullptr;
-DspOptWindow        * GridWindow::m_pDspOptWindow        = nullptr;
-FocusPoint          * GridWindow::m_pFocusPoint          = nullptr;
-ColorManager        * GridWindow::m_pColorManager        = nullptr;
-HCURSOR               GridWindow::m_hCrsrArrow           = nullptr;
-HCURSOR               GridWindow::m_hCrsrMove            = nullptr;
-
+HWND                        GridWindow::m_hwndApp              = nullptr;
+ReadBuffer<EvolutionCore> * GridWindow::m_pReadBuffer          = nullptr;
+WorkThreadInterface       * GridWindow::m_pWorkThreadInterface = nullptr;
+ActionTimer               * GridWindow::m_pActionTimer         = nullptr;
+DspOptWindow              * GridWindow::m_pDspOptWindow        = nullptr;
+FocusPoint                * GridWindow::m_pFocusPoint          = nullptr;
+ColorManager              * GridWindow::m_pColorManager        = nullptr;
+HCURSOR                     GridWindow::m_hCrsrArrow           = nullptr;
+HCURSOR                     GridWindow::m_hCrsrMove            = nullptr;
+					      
 void GridWindow::InitClass
 ( 
-	ReadBuffer          * const pReadBuffer, 
-    WorkThreadInterface * const pWorkThreadInterface,
-    FocusPoint          * const pFocusPoint,
-    DspOptWindow        * const pDspOptWindow,
-	ActionTimer         * const pActionTimer,
-	ColorManager        * const pColorManager
+	ReadBuffer<EvolutionCore> * const pReadBuffer, 
+    WorkThreadInterface       * const pWorkThreadInterface,
+    FocusPoint                * const pFocusPoint,
+    DspOptWindow              * const pDspOptWindow,
+	ActionTimer               * const pActionTimer,
+	ColorManager              * const pColorManager
 )
 {
 	m_pReadBuffer          = pReadBuffer;

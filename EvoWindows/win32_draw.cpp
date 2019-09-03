@@ -32,12 +32,12 @@ DrawFrame::DrawFrame( )
 
 void DrawFrame::Start
 ( 
-	HWND                const hwnd,
-	ReadBuffer        * const pReadBuffer,
-	PixelCoordinates  * const pPixelCoordinates, 
-	GraphicsInterface * const pGraphics,
-	DspOptWindow      * const pDspOptWindow,
-	ColorManager      * const pColorManager
+	HWND                        const hwnd,
+	ReadBuffer<EvolutionCore> * const pReadBuffer,
+	PixelCoordinates          * const pPixelCoordinates, 
+	GraphicsInterface         * const pGraphics,
+	DspOptWindow              * const pDspOptWindow,
+	ColorManager              * const pColorManager
 ) 
 {
 	m_hwnd              = hwnd;

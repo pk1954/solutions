@@ -7,20 +7,19 @@
 #include "BoolOp.h"
 #include "GridRect.h"
 #include "strategy.h"
+#include "ModelInterface.h"
 #include "EvolutionTypes.h"
 #include "GridDimensions.h"
 
 class ObserverInterface;
 class EventInterface;
-class EvolutionCore;
 
-class EvolutionCore
+class EvolutionCore : public ModelInterface
 {
 public:
 
     virtual ~EvolutionCore( ) { };
 
-	virtual void CopyEvolutionCoreData( EvolutionCore const * const ) = 0;
 
 // debugging functions
 

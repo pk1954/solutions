@@ -38,13 +38,13 @@ void WorkThreadInterface::Initialize( wostream * pTraceStream )
 
 void WorkThreadInterface::Start
 ( 
-	HWND                 const hwndApplication,
-    ColorManager       * const pColorManager,
-	ActionTimer        * const pActionTimer,
-    EventInterface     * const pEvent,
-	Delay              * const pDelay,
-	ReadBuffer         * const pReadBuffer, 
-    EvoHistorySysGlue  * const pEvoHistGlue
+	HWND                        const hwndApplication,
+    ColorManager              * const pColorManager,
+	ActionTimer               * const pActionTimer,
+    EventInterface            * const pEvent,
+	Delay                     * const pDelay,
+	ReadBuffer<EvolutionCore> * const pReadBuffer, 
+    EvoHistorySysGlue         * const pEvoHistGlue
 )
 {
 	m_pEvoHistGlue = pEvoHistGlue;

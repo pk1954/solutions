@@ -179,7 +179,6 @@
     <ClInclude Include="win32_histWrappers.h" />
     <ClInclude Include="win32_packGridPoint.h" />
     <ClInclude Include="win32_protocolServer.h" />
-    <ClInclude Include="win32_readBuffer.h" />
     <ClInclude Include="win32_scriptHook.h" />
     <ClInclude Include="win32_statistics.h" />
     <ClInclude Include="win32_status.h" />

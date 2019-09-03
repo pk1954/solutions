@@ -20,14 +20,14 @@
 
 WorkThread::WorkThread
 ( 
-	HWND                  const hwndApplication,
-	ColorManager        * const pColorManager,
-	ActionTimer         * const pActionTimer,
-	EventInterface      * const pEvent,
-	Delay               * const pDelay,
-	ReadBuffer          * const pReadBuffer, 
-	EvoHistorySysGlue   * const pEvoHistorySys,
-	WorkThreadInterface * const pWorkThreadInterface
+	HWND                        const hwndApplication,
+	ColorManager              * const pColorManager,
+	ActionTimer               * const pActionTimer,
+	EventInterface            * const pEvent,
+	Delay                     * const pDelay,
+	ReadBuffer<EvolutionCore> * const pReadBuffer, 
+	EvoHistorySysGlue         * const pEvoHistorySys,
+	WorkThreadInterface       * const pWorkThreadInterface
 ) :
 	m_pColorManager       ( pColorManager ),
 	m_pActionTimer        ( pActionTimer ),
