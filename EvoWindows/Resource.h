@@ -1,7 +1,5 @@
 #pragma once
 
-//lint -e1923    macro could become const variable
-
 #ifndef IDC_STATIC
 #define IDC_STATIC (-1)
 #endif
@@ -91,7 +89,7 @@
 #define IDM_EDIT_REDO                           (IDM_EDIT_MODE + 34)
 
 #define IDM_SIMU_MODE                           800
-#define IDM_GENERATION                          (IDM_SIMU_MODE +  1)
+#define IDM_FORWARD                             (IDM_SIMU_MODE +  1)
 #define IDM_BACKWARDS                           (IDM_SIMU_MODE +  2)
 #define IDM_RUN                                 (IDM_SIMU_MODE +  3)
 #define IDM_STOP                                (IDM_SIMU_MODE +  4)

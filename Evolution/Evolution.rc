@@ -21,7 +21,7 @@ IDC_EVOLUTION_MAIN MENU
     }
     POPUP "&Action"
     {
-        MENUITEM "&Generation", IDM_GENERATION
+        MENUITEM "&Generation", IDM_FORWARD
         MENUITEM "&Run", IDM_RUN
         MENUITEM "&Stop", IDM_STOP
         MENUITEM "&Backward", IDM_BACKWARDS
@@ -168,14 +168,14 @@ STRINGTABLE
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
 IDC_EVOLUTION_MAIN ACCELERATORS
 {
-    "g",            IDM_GENERATION,   ASCII
+    "g",            IDM_FORWARD,   ASCII
     "r",            IDM_RUN,          ASCII
     "s",            IDM_STOP,         ASCII
     "+",            IDM_ZOOM_IN,      ASCII
     "-",            IDM_ZOOM_OUT,     ASCII
     "b",            IDM_BACKWARDS,    ASCII
     "z",            IDM_BACKWARDS,    VIRTKEY, CONTROL
-    "y",            IDM_GENERATION,   VIRTKEY, CONTROL
+    "y",            IDM_FORWARD,   VIRTKEY, CONTROL
     VK_BACK,        IDM_BACKWARDS,    VIRTKEY, ALT
     "?",            IDM_ABOUT,        ASCII,   ALT
     "/",            IDM_ABOUT,        ASCII,   ALT

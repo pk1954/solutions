@@ -159,7 +159,7 @@ void DefineWin32WrapperFunctions( WorkThreadInterface * const pWorkThreadInterfa
     DEF_FUNC( PostRunGenerations );
     DEF_FUNC( Break );
 
-    DEF_ULONG_CONST( IDM_GENERATION );
+    DEF_ULONG_CONST( IDM_FORWARD );
     DEF_ULONG_CONST( IDM_BACKWARDS );
     DEF_ULONG_CONST( IDM_RUN );
     DEF_ULONG_CONST( IDM_STOP );

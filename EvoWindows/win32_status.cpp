@@ -254,7 +254,7 @@ void WINAPI StatusBar::createSimulationControl( )
     if ( Config::UseHistorySystem( ) )
         createButton  ( L"Backwards ", (HMENU)IDM_BACKWARDS, BS_PUSHBUTTON );
 
-    createButton  ( L"SingleStep", (HMENU)IDM_GENERATION, BS_PUSHBUTTON ); 
+    createButton  ( L"SingleStep", (HMENU)IDM_FORWARD, BS_PUSHBUTTON ); 
 	createButton  ( SZ_RUN_MODE,   (HMENU)IDM_RUN,        BS_PUSHBUTTON ); 
 	createButton  ( SZ_STOP_MODE,  (HMENU)IDM_STOP,       BS_PUSHBUTTON ); 
 	createTrackBar(                (HMENU)IDM_SIMULATION_SPEED ); 
@@ -325,7 +325,7 @@ void StatusBar::adjust( )
 	EnableWindow( GetDlgItem( IDM_RUN  ), ! bRunMode );
 	EnableWindow( GetDlgItem( IDM_STOP ),   bRunMode );
 
-	EnableWindow( GetDlgItem( IDM_GENERATION ), ! bRunMode );
+	EnableWindow( GetDlgItem( IDM_FORWARD ), ! bRunMode );
 
 	ShowWindow( GetDlgItem( IDM_EDIT_WINDOW ), ! m_pEditorWindow->IsWindowVisible( ) );
 

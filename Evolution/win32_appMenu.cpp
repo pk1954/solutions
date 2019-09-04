@@ -57,7 +57,7 @@ void AppMenu::AdjustVisibility( )
 {
 	BOOL const bRunning = m_pWorkThreadInterface->IsRunning();
 
-	EnableMenuItem( m_hMenu, IDM_GENERATION,       bRunning ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_FORWARD,       bRunning ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_BACKWARDS,        bRunning ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_GOTO_ORIGIN,      bRunning ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_GOTO_DEATH,       bRunning ? MF_GRAYED : MF_ENABLED );

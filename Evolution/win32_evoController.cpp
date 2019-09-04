@@ -181,7 +181,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
  			m_pWorkThreadInterface->PostRedo( );
 			break;
 
-	    case IDM_GENERATION:
+	    case IDM_FORWARD:
             m_pWorkThreadInterface->PostGenerationStep( );
             break;
 

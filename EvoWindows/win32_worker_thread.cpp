@@ -6,7 +6,6 @@
 #include "gridRect.h"
 #include "SCRIPT.H"
 #include "Resource.h"
-#include "GridPoint24.h"
 #include "EvoHistorySysGlue.h"
 #include "EventInterface.h"
 #include "win32_delay.h"

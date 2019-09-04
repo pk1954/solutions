@@ -79,11 +79,11 @@
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)Evolution;$(SolutionDir)Utilities;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_history;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoWindows;$(SolutionDir)HistoryInterface;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Evolution;$(SolutionDir)EvoWindows;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)..\Toolbox\Utilities;$(SolutionDir)..\Toolbox\Win32_utilities;$(SolutionDir)..\Toolbox\Win32_history;$(SolutionDir)..\Toolbox\HistoryInterface;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)Evolution;$(SolutionDir)Utilities;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_history;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoWindows;$(SolutionDir)HistoryInterface;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Evolution;$(SolutionDir)EvoWindows;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)..\Toolbox\Utilities;$(SolutionDir)..\Toolbox\Win32_utilities;$(SolutionDir)..\Toolbox\Win32_history;$(SolutionDir)..\Toolbox\HistoryInterface;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
