@@ -4,6 +4,7 @@
 //
 // EvoHistorySysGlue is ** above ** HISTORY (calls HISTORY)
 //
+// EvoHistGlue
 
 #pragma once
 
@@ -45,8 +46,8 @@ public:
 
 	HIST_GENERATION GetGenWithIndividual( GridPoint const, bool const ) const; 
 
-	void EvoClearHistory( );
-	void EvoClearHistory( HIST_GENERATION const genFirst ) { return m_pHistorySystem->ClearHistory( genFirst ); }
+	void EvoClearHistory   ( HIST_GENERATION const genFirst ) { return m_pHistorySystem->ClearHistory( genFirst ); }
+	void EvoClearAllHistory( )                                { return m_pHistorySystem->ClearAllHistory(); }
 
 	EvolutionCore const * GetEvolutionCore( HIST_GENERATION const ) const;
 	

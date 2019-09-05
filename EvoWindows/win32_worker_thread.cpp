@@ -1,11 +1,11 @@
 // win32_worker_thread.cpp
 //
+// EvoWindows
 
 #include "stdafx.h"
 #include <sstream> 
 #include "gridRect.h"
 #include "SCRIPT.H"
-#include "Resource.h"
 #include "EvoHistorySysGlue.h"
 #include "EventInterface.h"
 #include "EvoReadBuffer.h"
@@ -14,6 +14,7 @@
 #include "win32_event.h"
 #include "win32_actionTimer.h"
 #include "win32_colorManager.h"
+#include "win32_util_resource.h"
 #include "win32_workThreadInterface.h"
 #include "win32_worker_thread.h"
 
@@ -24,7 +25,7 @@ WorkThread::WorkThread
 	ActionTimer         * const pActionTimer,
 	EventInterface      * const pEvent,
 	Delay               * const pDelay,
-	EvoReadBuffer       * const pReadBuffer, 
+	ObserverInterface   * const pObserver, 
 	EvoHistorySysGlue   * const pEvoHistorySys,
 	WorkThreadInterface * const pWorkThreadInterface
 ) :
@@ -32,7 +33,7 @@ WorkThread::WorkThread
 	m_pActionTimer        ( pActionTimer ),
 	m_pDelay              ( pDelay ),   
 	m_pEventPOI           ( pEvent ),   
-	m_pReadBuffer         ( pReadBuffer ),   
+	m_pObserver           ( pObserver ),   
 	m_pEvoHistGlue        ( pEvoHistorySys ),   
 	m_pWorkThreadInterface( pWorkThreadInterface ),
 	m_hwndApplication     ( hwndApplication ),
@@ -49,7 +50,7 @@ WorkThread::~WorkThread( )
 	m_pWorkThreadInterface = nullptr;
 	m_pActionTimer         = nullptr;
 	m_pEventPOI            = nullptr;
-	m_pReadBuffer          = nullptr;
+	m_pObserver            = nullptr;
 	m_pEvoHistGlue         = nullptr;
 	m_pDelay               = nullptr;
 }
@@ -193,7 +194,7 @@ void WorkThread::dispatch( MSG const msg  )
 	case WorkerThreadMessage::Id::RESET_MODEL:
 		editorCommand( tEvoCmd::reset, msg.wParam );
 		if ( static_cast<BOOL>(msg.wParam) )
-			m_pEvoHistGlue->EvoClearHistory( );
+			m_pEvoHistGlue->EvoClearAllHistory( );
 		break;
 
 	case WorkerThreadMessage::Id::SET_BRUSH_MODE:
@@ -243,9 +244,9 @@ void WorkThread::dispatch( MSG const msg  )
 		return;  // sometimes strange messages arrive. e.g. uiMsg 1847
 	}            // I cannot find a reason, so I ignore them
 
-	if (m_pReadBuffer != nullptr)                // notify main thread, that model has changed.
-		m_pReadBuffer->Notify( ! m_bContinue );  // continue immediately, if in run mode and
-}                                                // main thread is busy.
+	if (m_pObserver != nullptr)                // notify main thread, that model has changed.
+		m_pObserver->Notify( ! m_bContinue );  // continue immediately, if in run mode and
+}                                              // main thread is busy.
 
 // gotoGeneration - perform one history step towards demanded generation
 //                - update editor state if neccessary

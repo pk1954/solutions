@@ -33,7 +33,7 @@ public:
 		ActionTimer       * const,
 		EventInterface    * const,
 		Delay             * const,
-		EvoReadBuffer     * const, 
+		ObserverInterface * const, 
 	    EvoHistorySysGlue * const
     );
 

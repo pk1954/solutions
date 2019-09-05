@@ -16,7 +16,7 @@
 #include "HistoryGeneration.h"
 #include "EvolutionTypes.h"
 #include "EvoGenerationCmd.h"
-#include "EvoReadBuffer.h"
+//#include "EvoReadBuffer.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 
@@ -79,7 +79,7 @@ public:
 		ActionTimer         * const,
 		EventInterface      * const,
 		Delay               * const,
-		EvoReadBuffer       * const,
+		ObserverInterface   * const,
 		EvoHistorySysGlue   * const,
 		WorkThreadInterface * const
 	);
@@ -135,7 +135,7 @@ private:
 	ColorManager        * m_pColorManager;
 	ActionTimer         * m_pActionTimer;
     EventInterface      * m_pEventPOI;
-	EvoReadBuffer       * m_pReadBuffer;
+	ObserverInterface   * m_pObserver;
     EvoHistorySysGlue   * m_pEvoHistGlue;
 	WorkThreadInterface * m_pWorkThreadInterface;
     HIST_GENERATION       m_genDemanded;

@@ -1,10 +1,11 @@
 // EvoHistorySysGlue.cpp
 //
+// EvoHistGlue
 
 #include "stdafx.h"
 #include <limits.h>
 #include "config.h"
-#include "win32_rootWindow.h"
+#include "win32_util.h"
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
 #include "EvolutionCore.h"
@@ -46,7 +47,6 @@ void EvoHistorySysGlue::Stop( )
 {
 	m_HistAllocThread.Terminate();
 	m_pHistorySystem->StopHistorySystem( );
-
 	m_pHistorySystem = nullptr;
 }
 
@@ -74,13 +74,6 @@ HIST_GENERATION EvoHistorySysGlue::GetGenWithIndividual( GridPoint const gp, boo
 	return id.IsNull( ) 
 		? HIST_GENERATION()
 		: m_pHistorySystem->FindGenerationWithProperty( FindGridPointFunctor( id ), bReverse );
-}
-
-void EvoHistorySysGlue::EvoClearHistory(  ) 
-{ 
-    m_pHistorySystem->ApproachHistGen( 0 );
-	assert( m_pHistorySystem->GetCurrentGeneration( ) == 0 );
-	m_pHistorySystem->ClearHistory( 0 );
 }
 
 EvolutionCore const * EvoHistorySysGlue::GetEvolutionCore( HIST_GENERATION const gen ) const

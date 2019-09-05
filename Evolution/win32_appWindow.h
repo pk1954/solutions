@@ -19,6 +19,7 @@
 #include "win32_winManager.h"
 #include "win32_workThreadInterface.h"
 #include "EvoHistorySysGlue.h"
+#include "EvoReadBuffer.h"
 #include "GDI_driver.h"
 #include "D3D_driver.h"
 
@@ -62,40 +63,40 @@ private:
 
 	void adjustChildWindows( );
 
-	HWND                      m_hwndApp;
-	HWND                      m_hwndConsole;
-	Util::Event               m_event;
-	BOOL                      m_bStarted;  // if true, grid is visible, all functions available
-					       
-	ActionTimer               m_atComputation;
-	ActionTimer               m_atDisplay;
-	Delay                     m_Delay;
-	WinManager                m_WinManager;
-	ColorManager              m_ColorManager;
-	EvoController             m_EvoController;
-	D3D_driver                m_D3d_driver;
-	ReadBuffer<EvolutionCore> m_ReadBuffer;
-	AppMenu                   m_AppMenu;
-	WorkThreadInterface       m_WorkThreadInterface;
-	EvoHistorySysGlue         m_EvoHistGlue;
-    ScriptHook                m_ScriptHook;
-	ProtocolServer            m_protocolServer;
-					         
-	GridWindow                * m_pMainGridWindow;
-    GridWindow                * m_pMiniGridWindow;
-	EvoHistWindow             * m_pEvoHistWindow;
-    EditorWindow              * m_pEditorWindow;
-	DspOptWindow              * m_pDspOptWindow;
-	StatusBar                 * m_pStatusBar;
-	PerformanceWindow         * m_pPerfWindow;
-	CrsrWindow                * m_pCrsrWindow;
-	HistInfoWindow            * m_pHistInfoWindow;
-	StatisticsWindow          * m_pStatistics;
-	GraphicsInterface         * m_pGraphics;
-	EvoModelDataGlue          * m_pModelDataWork;
-	EvolutionCore             * m_pEvoCore4Display;
-    HistorySystem             * m_pHistorySystem;
-	FocusPoint                * m_pFocusPoint;
+	HWND                m_hwndApp;
+	HWND                m_hwndConsole;
+	Util::Event         m_event;
+	BOOL                m_bStarted;  // if true, grid is visible, all functions available
+					    
+	ActionTimer         m_atComputation;
+	ActionTimer         m_atDisplay;
+	Delay               m_Delay;
+	WinManager          m_WinManager;
+	ColorManager        m_ColorManager;
+	EvoController       m_EvoController;
+	D3D_driver          m_D3d_driver;
+	EvoReadBuffer       m_ReadBuffer;
+	AppMenu             m_AppMenu;
+	WorkThreadInterface m_WorkThreadInterface;
+	EvoHistorySysGlue   m_EvoHistGlue;
+    ScriptHook          m_ScriptHook;
+	ProtocolServer      m_protocolServer;
+					    
+	GridWindow          * m_pMainGridWindow;
+    GridWindow          * m_pMiniGridWindow;
+	EvoHistWindow       * m_pEvoHistWindow;
+    EditorWindow        * m_pEditorWindow;
+	DspOptWindow        * m_pDspOptWindow;
+	StatusBar           * m_pStatusBar;
+	PerformanceWindow   * m_pPerfWindow;
+	CrsrWindow          * m_pCrsrWindow;
+	HistInfoWindow      * m_pHistInfoWindow;
+	StatisticsWindow    * m_pStatistics;
+	GraphicsInterface   * m_pGraphics;
+	EvoModelDataGlue    * m_pModelDataWork;
+	EvolutionCore       * m_pEvoCore4Display;
+    HistorySystem       * m_pHistorySystem;
+	FocusPoint          * m_pFocusPoint;
 
     std::wofstream m_traceStream;
 };

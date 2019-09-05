@@ -44,7 +44,7 @@ void WorkThreadInterface::Start
 	ActionTimer       * const pActionTimer,
     EventInterface    * const pEvent,
 	Delay             * const pDelay,
-	EvoReadBuffer     * const pReadBuffer, 
+	ObserverInterface * const pObserver, 
     EvoHistorySysGlue * const pEvoHistGlue
 )
 {
@@ -56,7 +56,7 @@ void WorkThreadInterface::Start
 		pActionTimer,
 		pEvent, 
 		pDelay, 
-		pReadBuffer, 
+		pObserver, 
 		pEvoHistGlue, 
 		this
 	);
