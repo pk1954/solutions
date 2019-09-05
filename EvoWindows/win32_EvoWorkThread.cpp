@@ -1,4 +1,4 @@
-// win32_worker_thread.cpp
+// win32_EvoWorkThread.cpp
 //
 // EvoWindows
 
@@ -15,19 +15,19 @@
 #include "win32_actionTimer.h"
 #include "win32_colorManager.h"
 #include "win32_util_resource.h"
-#include "win32_workThreadInterface.h"
-#include "win32_worker_thread.h"
+#include "win32_EvoWorkThreadInterface.h"
+#include "win32_EvoWorkThread.h"
 
-WorkThread::WorkThread
+EvoWorkThread::EvoWorkThread
 ( 
-	HWND                  const hwndApplication,
-	ColorManager        * const pColorManager,
-	ActionTimer         * const pActionTimer,
-	EventInterface      * const pEvent,
-	Delay               * const pDelay,
-	ObserverInterface   * const pObserver, 
-	EvoHistorySysGlue   * const pEvoHistorySys,
-	WorkThreadInterface * const pWorkThreadInterface
+	HWND                     const hwndApplication,
+	ColorManager           * const pColorManager,
+	ActionTimer            * const pActionTimer,
+	EventInterface         * const pEvent,
+	Delay                  * const pDelay,
+	ObserverInterface      * const pObserver, 
+	EvoHistorySysGlue      * const pEvoHistorySys,
+	EvoWorkThreadInterface * const pWorkThreadInterface
 ) :
 	m_pColorManager       ( pColorManager ),
 	m_pActionTimer        ( pActionTimer ),
@@ -43,7 +43,7 @@ WorkThread::WorkThread
 	StartThread( L"WorkerThread", true ); 
 }
 
-WorkThread::~WorkThread( )
+EvoWorkThread::~EvoWorkThread( )
 {
 	m_hwndApplication      = nullptr;
 	m_pColorManager        = nullptr;
@@ -55,7 +55,7 @@ WorkThread::~WorkThread( )
 	m_pDelay               = nullptr;
 }
 
-bool WorkThread::userWantsHistoryCut( ) const
+bool EvoWorkThread::userWantsHistoryCut( ) const
 {
 	HIST_GENERATION genCurrent  = m_pEvoHistGlue->GetCurrentGeneration( );
 	HIST_GENERATION genYoungest = m_pEvoHistGlue->GetYoungestGeneration( );
@@ -67,7 +67,7 @@ bool WorkThread::userWantsHistoryCut( ) const
 
 // WorkMessage - process incoming messages from main thread
 
-void WorkThread::WorkMessage
+void EvoWorkThread::WorkMessage
 ( 
 	BOOL                    const isEditOperation,
 	WorkerThreadMessage::Id const msg, 
@@ -92,12 +92,12 @@ void WorkThread::WorkMessage
 	PostThreadMsg( static_cast<UINT>(msg), wparam, lparam );
 }
 
-void WorkThread::ThreadStartupFunc( ) 
+void EvoWorkThread::ThreadStartupFunc( ) 
 { 
 	SetThreadAffinityMask( 0x0002 );
 }
 
-void WorkThread::ThreadMsgDispatcher( MSG const msg  )
+void EvoWorkThread::ThreadMsgDispatcher( MSG const msg  )
 {
 	try
 	{
@@ -109,7 +109,7 @@ void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 	}
 }
 
-void WorkThread::dispatch( MSG const msg  )
+void EvoWorkThread::dispatch( MSG const msg  )
 {
 	switch ( static_cast<WorkerThreadMessage::Id>(msg.message) )
 	{
@@ -251,7 +251,7 @@ void WorkThread::dispatch( MSG const msg  )
 // gotoGeneration - perform one history step towards demanded generation
 //                - update editor state if neccessary
 
-void WorkThread::gotoGeneration( HIST_GENERATION const gen )   
+void EvoWorkThread::gotoGeneration( HIST_GENERATION const gen )   
 {
 	m_genDemanded = gen;
 	if ( m_pEvoHistGlue->GetCurrentGeneration( ) != m_genDemanded )  // is something to do at all?
@@ -281,7 +281,7 @@ void WorkThread::gotoGeneration( HIST_GENERATION const gen )
 	}
 }
 
-void WorkThread::NGenerationSteps( int iNrOfGenerations )  // for benchmarks only
+void EvoWorkThread::NGenerationSteps( int iNrOfGenerations )  // for benchmarks only
 {
 	Stopwatch stopwatch;
 	stopwatch.Start();
@@ -293,7 +293,7 @@ void WorkThread::NGenerationSteps( int iNrOfGenerations )  // for benchmarks onl
 	stopwatch.Stop( L"benchmark" );
 }
 
-void WorkThread::generationRun( )
+void EvoWorkThread::generationRun( )
 {
 	if ( m_bContinue )
 	{

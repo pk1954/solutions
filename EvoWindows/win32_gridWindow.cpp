@@ -18,31 +18,31 @@
 #include "win32_crsrWindow.h"
 #include "win32_actionTimer.h"
 #include "win32_graphicsInterface.h"
-#include "win32_workThreadInterface.h"
+#include "win32_EvoWorkThreadInterface.h"
 #include "win32_packGridPoint.h"
 #include "win32_displayOptions.h"
 #include "win32_gridWindow.h"
 
 #include "Commdlg.h"
 
-HWND                  GridWindow::m_hwndApp              = nullptr;
-EvoReadBuffer       * GridWindow::m_pReadBuffer          = nullptr;
-WorkThreadInterface * GridWindow::m_pWorkThreadInterface = nullptr;
-ActionTimer         * GridWindow::m_pActionTimer         = nullptr;
-DspOptWindow        * GridWindow::m_pDspOptWindow        = nullptr;
-FocusPoint          * GridWindow::m_pFocusPoint          = nullptr;
-ColorManager        * GridWindow::m_pColorManager        = nullptr;
-HCURSOR               GridWindow::m_hCrsrArrow           = nullptr;
-HCURSOR               GridWindow::m_hCrsrMove            = nullptr;
+HWND                     GridWindow::m_hwndApp              = nullptr;
+EvoReadBuffer          * GridWindow::m_pReadBuffer          = nullptr;
+EvoWorkThreadInterface * GridWindow::m_pWorkThreadInterface = nullptr;
+ActionTimer            * GridWindow::m_pActionTimer         = nullptr;
+DspOptWindow           * GridWindow::m_pDspOptWindow        = nullptr;
+FocusPoint             * GridWindow::m_pFocusPoint          = nullptr;
+ColorManager           * GridWindow::m_pColorManager        = nullptr;
+HCURSOR                  GridWindow::m_hCrsrArrow           = nullptr;
+HCURSOR                  GridWindow::m_hCrsrMove            = nullptr;
 					      
 void GridWindow::InitClass
 (        
-	EvoReadBuffer       * const pReadBuffer, 
-    WorkThreadInterface * const pWorkThreadInterface,
-    FocusPoint          * const pFocusPoint,
-    DspOptWindow        * const pDspOptWindow,
-	ActionTimer         * const pActionTimer,
-	ColorManager        * const pColorManager
+	EvoReadBuffer          * const pReadBuffer, 
+    EvoWorkThreadInterface * const pWorkThreadInterface,
+    FocusPoint             * const pFocusPoint,
+    DspOptWindow           * const pDspOptWindow,
+	ActionTimer            * const pActionTimer,
+	ColorManager           * const pColorManager
 )
 {
 	m_pReadBuffer          = pReadBuffer;

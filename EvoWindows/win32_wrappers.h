@@ -3,6 +3,6 @@
 
 #pragma once
 
-class WorkThreadInterface;
+class EvoWorkThreadInterface;
 
-extern void DefineWin32WrapperFunctions( WorkThreadInterface * const );
+extern void DefineWin32WrapperFunctions( EvoWorkThreadInterface * const );

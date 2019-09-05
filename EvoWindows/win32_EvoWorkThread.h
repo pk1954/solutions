@@ -1,24 +1,11 @@
-// win32_worker_thread.h
+// win32_EvoWorkThread.h
 //
 // EvoWindows
 
 #pragma once
 
-#include <string>
-#include <fstream>
-#include <wtypes.h>
-#include "util.h"
-#include "assert.h"
-#include "gridRect.h"
-#include "gridPoint.h"
 #include "GridPoint24.h"
-#include "ViewCollection.h"
 #include "HistoryGeneration.h"
-#include "EvolutionTypes.h"
-#include "EvoGenerationCmd.h"
-//#include "EvoReadBuffer.h"
-#include "win32_thread.h"
-#include "win32_event.h"
 
 class Delay;
 class ActionTimer;
@@ -29,7 +16,7 @@ class EvolutionCore;
 class WinManager;
 class EventInterface;
 class EvoHistorySysGlue;
-class WorkThreadInterface;
+class EvoWorkThreadInterface;
 
 class WorkerThreadMessage
 {
@@ -69,21 +56,21 @@ public:
 	}
 };
 
-class WorkThread: public Util::Thread
+class EvoWorkThread: public Util::Thread
 {
 public:
-	WorkThread
+	EvoWorkThread
 	( 
-		HWND                  const,
-		ColorManager        * const,
-		ActionTimer         * const,
-		EventInterface      * const,
-		Delay               * const,
-		ObserverInterface   * const,
-		EvoHistorySysGlue   * const,
-		WorkThreadInterface * const
+		HWND                     const,
+		ColorManager           * const,
+		ActionTimer            * const,
+		EventInterface         * const,
+		Delay                  * const,
+		ObserverInterface      * const,
+		EvoHistorySysGlue      * const,
+		EvoWorkThreadInterface * const
 	);
-	~WorkThread( );
+	~EvoWorkThread( );
 
 	virtual void ThreadStartupFunc( );
 	virtual void ThreadMsgDispatcher( MSG const );
@@ -131,14 +118,14 @@ private:
 	void dispatch( MSG const );
 	bool userWantsHistoryCut( ) const;
 
-	Delay               * m_pDelay;
-	ColorManager        * m_pColorManager;
-	ActionTimer         * m_pActionTimer;
-    EventInterface      * m_pEventPOI;
-	ObserverInterface   * m_pObserver;
-    EvoHistorySysGlue   * m_pEvoHistGlue;
-	WorkThreadInterface * m_pWorkThreadInterface;
-    HIST_GENERATION       m_genDemanded;
-    BOOL                  m_bContinue;
-	HWND                  m_hwndApplication;
+	Delay                  * m_pDelay;
+	ColorManager           * m_pColorManager;
+	ActionTimer            * m_pActionTimer;
+    EventInterface         * m_pEventPOI;
+	ObserverInterface      * m_pObserver;
+    EvoHistorySysGlue      * m_pEvoHistGlue;
+	EvoWorkThreadInterface * m_pWorkThreadInterface;
+    HIST_GENERATION          m_genDemanded;
+    BOOL                     m_bContinue;
+	HWND                     m_hwndApplication;
 };

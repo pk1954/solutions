@@ -6,7 +6,7 @@
 #include "config.h"
 #include "EvoHistorySysGlue.h"
 #include "win32_focusPoint.h"
-#include "win32_workThreadInterface.h"
+#include "win32_EvoWorkThreadInterface.h"
 #include "win32_evoHistWindow.h"
 
 EvoHistWindow::EvoHistWindow( ) :
@@ -17,10 +17,10 @@ EvoHistWindow::EvoHistWindow( ) :
 
 void EvoHistWindow::Start
 (
-    HWND                  const hwndParent,
-    FocusPoint          * const pFocusPoint,
-	HistorySystem       * const pHistorySystem,
-	WorkThreadInterface * const pWorkThreadInterface
+    HWND                     const hwndParent,
+    FocusPoint             * const pFocusPoint,
+	HistorySystem          * const pHistorySystem,
+	EvoWorkThreadInterface * const pWorkThreadInterface
 )
 {
     HistWindow::Start( hwndParent, pHistorySystem, [&]() { return ! m_pWorkThreadInterface->IsRunning(); } );  // call base class

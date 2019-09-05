@@ -9,7 +9,7 @@
 #include "EvoReadBuffer.h"
 #include "win32_baseDialog.h"
 
-class WorkThreadInterface;
+class EvoWorkThreadInterface;
 class DspOptWindow;
 class StatusBar;
 
@@ -22,9 +22,9 @@ public:
     void Start
 	( 
 		HWND const, 
-		WorkThreadInterface * const, 
-		EvoReadBuffer       * const, 
-		DspOptWindow        * const
+		EvoWorkThreadInterface * const, 
+		EvoReadBuffer          * const, 
+		DspOptWindow           * const
 	);
 
 	void Stop( );
@@ -46,8 +46,8 @@ private:
 
 	void updateOperationButtons( tBrushMode const ) const;
 
-	EvoReadBuffer       * m_pReadBuffer;
-    WorkThreadInterface * m_pWorkThreadInterface;
-    DspOptWindow        * m_pDspOptWindow;
-	ViewCollection        m_observers;    // observers who want to know if edit window becomes visible or hidden
+	EvoReadBuffer          * m_pReadBuffer;
+    EvoWorkThreadInterface * m_pWorkThreadInterface;
+    DspOptWindow           * m_pDspOptWindow;
+	ViewCollection           m_observers;    // observers who want to know if edit window becomes visible or hidden
 };

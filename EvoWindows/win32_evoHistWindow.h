@@ -8,7 +8,7 @@
 
 class FocusPoint;
 class HistorySystem;
-class WorkThreadInterface;
+class EvoWorkThreadInterface;
 
 class EvoHistWindow : public HistWindow
 {
@@ -18,10 +18,10 @@ public:
 
 	void Start
 	( 
-		HWND                  const, 
-		FocusPoint          * const, 
-		HistorySystem       * const, 
-		WorkThreadInterface * const 
+		HWND                     const, 
+		FocusPoint             * const, 
+		HistorySystem          * const, 
+		EvoWorkThreadInterface * const 
 	);
 
 	void Stop( );
@@ -30,6 +30,6 @@ public:
 	virtual void DoPaint( HDC const );
 
 private:
-    WorkThreadInterface * m_pWorkThreadInterface;
-    FocusPoint          * m_pFocusPoint;
+    EvoWorkThreadInterface * m_pWorkThreadInterface;
+    FocusPoint             * m_pFocusPoint;
 };

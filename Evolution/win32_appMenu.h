@@ -6,7 +6,7 @@
 
 #include "windef.h"
 
-class WorkThreadInterface;
+class EvoWorkThreadInterface;
 class WinManager;
 
 class AppMenu
@@ -18,7 +18,7 @@ public:
 		m_pWinManager( nullptr )
 	{}
 
-	void Initialize( HWND const, WorkThreadInterface const * const, WinManager const * const );
+	void Initialize( HWND const, EvoWorkThreadInterface const * const, WinManager const * const );
 	void AdjustVisibility( );
 	void Start( BOOL const );
 	void Stop();
@@ -26,7 +26,7 @@ public:
 private:
 	void enableMenues( UINT const );
 
-	HMENU                       m_hMenu;
-	WorkThreadInterface const * m_pWorkThreadInterface;
-	WinManager          const * m_pWinManager;
+	HMENU                          m_hMenu;
+	EvoWorkThreadInterface const * m_pWorkThreadInterface;
+	WinManager             const * m_pWinManager;
 };

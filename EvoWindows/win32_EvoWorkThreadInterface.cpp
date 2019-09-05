@@ -1,5 +1,6 @@
-// win32_workThreadInterface.cpp
+// win32_EvoWorkThreadInterface.cpp
 //
+// EvoWindows
 
 #include "stdafx.h"
 #include "assert.h"
@@ -11,33 +12,33 @@
 #include "EvoReadBuffer.h"
 #include "EvoHistorySysGlue.h"
 #include "win32_script.h"
-#include "win32_worker_thread.h"
-#include "win32_workThreadInterface.h"
+#include "win32_EvoWorkThread.h"
+#include "win32_EvoWorkThreadInterface.h"
 
 using std::wostream;
 using std::wcout;
 using std::endl;
 
-WorkThreadInterface::WorkThreadInterface( ) :
+EvoWorkThreadInterface::EvoWorkThreadInterface( ) :
 	m_pEvoHistGlue( nullptr ),
 	m_pWorkThread ( nullptr ),
 	m_pTraceStream( nullptr ),
 	m_bTrace( TRUE )
 { }
 
-WorkThreadInterface::~WorkThreadInterface( )
+EvoWorkThreadInterface::~EvoWorkThreadInterface( )
 {
 	m_pEvoHistGlue = nullptr;
 	m_pWorkThread  = nullptr;
     m_pTraceStream = nullptr;
 }
 
-void WorkThreadInterface::Initialize( wostream * pTraceStream ) 
+void EvoWorkThreadInterface::Initialize( wostream * pTraceStream ) 
 { 
 	m_pTraceStream = pTraceStream;
 }
 
-void WorkThreadInterface::Start
+void EvoWorkThreadInterface::Start
 ( 
 	HWND                const hwndApplication,
     ColorManager      * const pColorManager,
@@ -49,7 +50,7 @@ void WorkThreadInterface::Start
 )
 {
 	m_pEvoHistGlue = pEvoHistGlue;
-	m_pWorkThread  = new WorkThread
+	m_pWorkThread  = new EvoWorkThread
 	( 
 		hwndApplication, 
 		pColorManager, 
@@ -62,19 +63,19 @@ void WorkThreadInterface::Start
 	);
 }
 
-void WorkThreadInterface::Stop( )
+void EvoWorkThreadInterface::Stop( )
 {
 	m_pWorkThread->Terminate( );
 	delete m_pWorkThread;
 	m_pWorkThread = nullptr;
 }
 
-BOOL WorkThreadInterface::IsRunning( ) const
+BOOL EvoWorkThreadInterface::IsRunning( ) const
 {
 	return m_pWorkThread->IsRunning( );
 }
 
-void WorkThreadInterface::postGotoGeneration( HIST_GENERATION const gen )
+void EvoWorkThreadInterface::postGotoGeneration( HIST_GENERATION const gen )
 {
     assert( gen >= 0 );
 
@@ -83,26 +84,26 @@ void WorkThreadInterface::postGotoGeneration( HIST_GENERATION const gen )
 
 // procedural interface of worker thread
 
-HIST_GENERATION WorkThreadInterface::GetGenDemanded( ) const 
+HIST_GENERATION EvoWorkThreadInterface::GetGenDemanded( ) const 
 { 
 	return m_pWorkThread->GetGenDemanded( );
 }
 
-void WorkThreadInterface::PostReset( BOOL bResetHistSys )
+void EvoWorkThreadInterface::PostReset( BOOL bResetHistSys )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << (bResetHistSys ? 1 : 0) << endl;
     m_pWorkThread->WorkMessage( TRUE, WorkerThreadMessage::Id::RESET_MODEL, bResetHistSys, 0 );
 }
 
-void WorkThreadInterface::PostBenchmark( int const iNrOfGenerations )
+void EvoWorkThreadInterface::PostBenchmark( int const iNrOfGenerations )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << iNrOfGenerations <<endl;
     m_pWorkThread->WorkMessage( FALSE, WorkerThreadMessage::Id::BENCHMARK, 0, iNrOfGenerations );
 }
 
-void WorkThreadInterface::PostDoEdit( GridPoint const gp )
+void EvoWorkThreadInterface::PostDoEdit( GridPoint const gp )
 {
     if ( IsInGrid( gp ) )
     {
@@ -112,42 +113,42 @@ void WorkThreadInterface::PostDoEdit( GridPoint const gp )
     }
 }
 
-void WorkThreadInterface::PostSetBrushIntensity( PERCENT const intensity )
+void EvoWorkThreadInterface::PostSetBrushIntensity( PERCENT const intensity )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << intensity.GetValue() << endl;
     m_pWorkThread->WorkMessage( TRUE, WorkerThreadMessage::Id::SET_BRUSH_INTENSITY, intensity.GetValue(), 0 );
 }
 
-void WorkThreadInterface::PostSetBrushRadius( GRID_COORD const radius )
+void EvoWorkThreadInterface::PostSetBrushRadius( GRID_COORD const radius )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << radius.GetValue() << endl;
     m_pWorkThread->WorkMessage( TRUE, WorkerThreadMessage::Id::SET_BRUSH_RADIUS, radius.GetValue(), 0 );
 }
 
-void WorkThreadInterface::PostSetBrushMode( tBrushMode const mode )
+void EvoWorkThreadInterface::PostSetBrushMode( tBrushMode const mode )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetBrushModeName( mode ) << endl;
     m_pWorkThread->WorkMessage( TRUE, WorkerThreadMessage::Id::SET_BRUSH_MODE, static_cast<WPARAM>( mode ), 0 );
 }
 
-void WorkThreadInterface::PostSetBrushShape( tShape const shape )
+void EvoWorkThreadInterface::PostSetBrushShape( tShape const shape )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetShapeName( shape ) << endl;
     m_pWorkThread->WorkMessage( TRUE, WorkerThreadMessage::Id::SET_BRUSH_SHAPE, static_cast<WPARAM>( shape ), 0 );
 }
 
-void WorkThreadInterface::PostSetBrushManipulator( tManipulator const op )
+void EvoWorkThreadInterface::PostSetBrushManipulator( tManipulator const op )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" tManipulator::" << GetManipulatorName( op ) << endl;
     m_pWorkThread->WorkMessage( TRUE, WorkerThreadMessage::Id::SET_BRUSH_OPERATOR, static_cast<WPARAM>( op ), 0 );
 }
 
-void WorkThreadInterface::PostSetColor( COLORREF const col, tColorObject const obj, Strategy::Id const strat )
+void EvoWorkThreadInterface::PostSetColor( COLORREF const col, tColorObject const obj, Strategy::Id const strat )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << GetColorObjectName( obj ) << endl;
@@ -167,7 +168,7 @@ void WorkThreadInterface::PostSetColor( COLORREF const col, tColorObject const o
 	}
 }
 
-void WorkThreadInterface::PostSetPOI( GridPoint const gp )
+void EvoWorkThreadInterface::PostSetPOI( GridPoint const gp )
 {
 	if ( IsInGrid( gp ) )
 	{
@@ -180,7 +181,7 @@ void WorkThreadInterface::PostSetPOI( GridPoint const gp )
 	}
 }
 
-void WorkThreadInterface::PostGenerationStep( )
+void EvoWorkThreadInterface::PostGenerationStep( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
@@ -190,35 +191,35 @@ void WorkThreadInterface::PostGenerationStep( )
 	m_pWorkThread->WorkMessage( FALSE, WorkerThreadMessage::Id::GENERATION_STEP, 0, 0 );
 }
 
-void WorkThreadInterface::PostRunGenerations( bool const bFirst )
+void EvoWorkThreadInterface::PostRunGenerations( bool const bFirst )
 {
     if ( m_bTrace )
         * m_pTraceStream << L"PostGenerationStep" << endl;
 	m_pWorkThread->WorkMessage( FALSE, WorkerThreadMessage::Id::GENERATION_RUN, 0, bFirst );
 }
 
-void WorkThreadInterface::PostRedo( )
+void EvoWorkThreadInterface::PostRedo( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
 	m_pWorkThread->WorkMessage( FALSE, WorkerThreadMessage::Id::REDO, 0, 0 );
 }
 
-void WorkThreadInterface::PostRepeatGenerationStep( )
+void EvoWorkThreadInterface::PostRepeatGenerationStep( )
 {
     if ( m_bTrace )
         * m_pTraceStream << L"PostGenerationStep" << endl;
     m_pWorkThread->WorkMessage( FALSE, WorkerThreadMessage::Id::REPEAT_GENERATION_STEP, 0, 0 );
 }
 
-void WorkThreadInterface::PostUndo( )
+void EvoWorkThreadInterface::PostUndo( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
 	m_pWorkThread->WorkMessage( FALSE, WorkerThreadMessage::Id::UNDO, 0, 0 );
 }
 
-void WorkThreadInterface::PostPrevGeneration( )
+void EvoWorkThreadInterface::PostPrevGeneration( )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << endl;
@@ -228,35 +229,35 @@ void WorkThreadInterface::PostPrevGeneration( )
 	m_pWorkThread->WorkMessage( FALSE, WorkerThreadMessage::Id::PREV_GENERATION, 0, 0 );
 }
 
-void WorkThreadInterface::PostGotoOrigin( GridPoint const gp )
+void EvoWorkThreadInterface::PostGotoOrigin( GridPoint const gp )
 {
 	if ( m_bTrace )
 		* m_pTraceStream << __func__ << L" " << gp << endl;
 	m_pWorkThread->WorkMessage( FALSE, WorkerThreadMessage::Id::GOTO_ORIGIN, gp.GetXvalue(), gp.GetYvalue() );
 }
 
-void WorkThreadInterface::PostGotoDeath( GridPoint const gp )
+void EvoWorkThreadInterface::PostGotoDeath( GridPoint const gp )
 {
 	if ( m_bTrace )
 		* m_pTraceStream << __func__ << L" " << gp << endl;
 	m_pWorkThread->WorkMessage( FALSE, WorkerThreadMessage::Id::GOTO_DEATH, gp.GetXvalue(), gp.GetYvalue() );
 }
 
-void WorkThreadInterface::PostGotoGeneration( HIST_GENERATION const gen )
+void EvoWorkThreadInterface::PostGotoGeneration( HIST_GENERATION const gen )
 {
     if ( m_bTrace )
         * m_pTraceStream << __func__ << L" " << gen << endl;
 	postGotoGeneration( gen );
 }
 
-void WorkThreadInterface::PostStopComputation( )
+void EvoWorkThreadInterface::PostStopComputation( )
 {
 	m_pWorkThread->WorkMessage( FALSE, WorkerThreadMessage::Id::STOP, 0, 0 );
 }
 
 // no trace output
 
-void WorkThreadInterface::TerminateThread( )
+void EvoWorkThreadInterface::TerminateThread( )
 {
 	m_pWorkThread->Terminate( );    // wait until thread has stopped
 }

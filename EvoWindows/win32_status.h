@@ -12,7 +12,7 @@
 class Delay;
 class EditorWindow;
 class EvoHistorySysGlue;
-class WorkThreadInterface;
+class EvoWorkThreadInterface;
 
 using std::wstring;
 
@@ -23,12 +23,12 @@ public:
 
 	void  Start
 	( 
-		HWND                        const, 
-		EvoReadBuffer             * const, 
-		EvoHistorySysGlue   const * const, 
-		WorkThreadInterface const * const, 
-		Delay                     * const, 
-		EditorWindow              * const 
+		HWND                           const, 
+		EvoReadBuffer                * const, 
+		EvoHistorySysGlue      const * const, 
+		EvoWorkThreadInterface const * const, 
+		Delay                        * const, 
+		EditorWindow                 * const 
 	);
 	void  Stop( );
 
@@ -72,11 +72,11 @@ private:
     wstring m_wstrGeneration;
     wstring m_wstrScriptLine;
 
-	Delay                     * m_pDelay;
-	EvoReadBuffer             * m_pReadBuffer;
-	EditorWindow              * m_pEditorWindow;
-	EvoHistorySysGlue   const * m_pEvoHistorySys;
-	WorkThreadInterface const * m_pWorkThreadInterface;
+	Delay                        * m_pDelay;
+	EvoReadBuffer                * m_pReadBuffer;
+	EditorWindow                 * m_pEditorWindow;
+	EvoHistorySysGlue      const * m_pEvoHistorySys;
+	EvoWorkThreadInterface const * m_pWorkThreadInterface;
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 

@@ -13,7 +13,7 @@
 #include "EvoReadBuffer.h"
 #include "win32_delay.h"
 #include "win32_tooltip.h"
-#include "win32_workThreadInterface.h"
+#include "win32_EvoWorkThreadInterface.h"
 #include "win32_editor.h"
 #include "win32_status.h"
 
@@ -45,12 +45,12 @@ StatusBar::StatusBar()
 
 void StatusBar::Start
 ( 
-	HWND                        const hwndParent,
-	EvoReadBuffer             * const pReadBuffer,
-	EvoHistorySysGlue   const * const pEvoHistorySys,
-	WorkThreadInterface const * const pWorkThreadInterface,
-	Delay                     * const pDelay,
-	EditorWindow              * const pEditorWindow
+	HWND                           const hwndParent,
+	EvoReadBuffer                * const pReadBuffer,
+	EvoHistorySysGlue      const * const pEvoHistorySys,
+	EvoWorkThreadInterface const * const pWorkThreadInterface,
+	Delay                        * const pDelay,
+	EditorWindow                 * const pEditorWindow
 )
 {
 	m_pDelay               = pDelay;

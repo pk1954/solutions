@@ -51,22 +51,22 @@
     <ClCompile Include="win32_status.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_worker_thread.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32_wrappers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_workThreadInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32_colorManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_protocolServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_EvoWorkThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_EvoWorkThreadInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,9 +110,6 @@
     <ClInclude Include="win32_status.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_worker_thread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_wrappers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -125,9 +122,6 @@
     <ClInclude Include="win32_packGridPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_workThreadInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_textDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -138,6 +132,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EvoReadBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_EvoWorkThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_EvoWorkThreadInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

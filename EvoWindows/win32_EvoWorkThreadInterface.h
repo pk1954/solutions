@@ -1,4 +1,6 @@
-// win32_workThreadInterface.h
+// win32_EvoWorkThreadInterface.h
+//
+// EvoWindows
 
 #pragma once
 
@@ -16,13 +18,13 @@ class ObserverInterface;
 class EvolutionCore;
 class EventInterface;
 class EvoHistorySysGlue;
-class WorkThread;
+class EvoWorkThread;
 
-class WorkThreadInterface
+class EvoWorkThreadInterface
 {
 public:
-	WorkThreadInterface( );
-    ~WorkThreadInterface( );
+	EvoWorkThreadInterface( );
+    ~EvoWorkThreadInterface( );
 
 	void Initialize( std::wostream * );
 
@@ -69,7 +71,7 @@ private:
 	void postGotoGeneration( HIST_GENERATION const );
 
     EvoHistorySysGlue * m_pEvoHistGlue;
-	WorkThread        * m_pWorkThread;
+	EvoWorkThread     * m_pWorkThread;
     std::wostream     * m_pTraceStream;
 	BOOL                m_bTrace;
 }; 

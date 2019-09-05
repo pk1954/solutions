@@ -6,11 +6,11 @@
 #include "Resource.h"
 #include "EvoGenerationCmd.h"
 #include "EvolutionCoreWrapperHelpers.h"
-#include "win32_workThreadInterface.h"
+#include "win32_EvoWorkThreadInterface.h"
 #include "win32_wrappers.h"
 #include "win32_util.h"
 
-static WorkThreadInterface * m_pWorkThreadInterface;
+static EvoWorkThreadInterface * m_pWorkThreadInterface;
 
 class WrapPostPrevGeneration : public Script_Functor
 {
@@ -140,7 +140,7 @@ public:
     }
 };
 
-void DefineWin32WrapperFunctions( WorkThreadInterface * const pWorkThreadInterface )
+void DefineWin32WrapperFunctions( EvoWorkThreadInterface * const pWorkThreadInterface )
 {
     m_pWorkThreadInterface = pWorkThreadInterface;
 

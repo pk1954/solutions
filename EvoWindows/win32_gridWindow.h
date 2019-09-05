@@ -11,7 +11,7 @@
 
 class EvolutionCore;
 class GraphicsInterface;
-class WorkThreadInterface;
+class EvoWorkThreadInterface;
 class DspOptWindow;
 class ObserverInterface;
 class ActionTimer;
@@ -23,12 +23,12 @@ class GridWindow : public BaseWindow
 public:
 	static void InitClass
 	( 
-		EvoReadBuffer       * const,
-        WorkThreadInterface * const,
-        FocusPoint          * const,
-        DspOptWindow        * const,
-        ActionTimer         * const, 
-		ColorManager        * const 
+		EvoReadBuffer          * const,
+        EvoWorkThreadInterface * const,
+        FocusPoint             * const,
+        DspOptWindow           * const,
+        ActionTimer            * const, 
+		ColorManager           * const 
 	);
 
     GridWindow( );
@@ -70,15 +70,15 @@ private:
     GridWindow             ( GridWindow const & );  // noncopyable class 
     GridWindow & operator= ( GridWindow const & );  // noncopyable class 
 
-	static HWND                  m_hwndApp;
-	static HCURSOR               m_hCrsrMove;
-	static HCURSOR               m_hCrsrArrow;
-	static EvoReadBuffer       * m_pReadBuffer;
-    static WorkThreadInterface * m_pWorkThreadInterface;
-    static ActionTimer         * m_pActionTimer;
-    static DspOptWindow        * m_pDspOptWindow;
-    static FocusPoint          * m_pFocusPoint;
-	static ColorManager        * m_pColorManager;
+	static HWND                     m_hwndApp;
+	static HCURSOR                  m_hCrsrMove;
+	static HCURSOR                  m_hCrsrArrow;
+	static EvoReadBuffer          * m_pReadBuffer;
+    static EvoWorkThreadInterface * m_pWorkThreadInterface;
+    static ActionTimer            * m_pActionTimer;
+    static DspOptWindow           * m_pDspOptWindow;
+    static FocusPoint             * m_pFocusPoint;
+	static ColorManager           * m_pColorManager;
 
 	PixelCoordinates m_PixelCoordinates;   // My own PixelCoordinates
 	DrawFrame        m_DrawFrame;

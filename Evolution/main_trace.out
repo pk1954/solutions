@@ -1,13 +1,6 @@
 PostSetBrushMode tBrushMode::randomStrat
-PostDoEdit (51/48)
-PostDoEdit (50/48)
-PostDoEdit (69/53)
-PostDoEdit (66/53)
-PostGenerationStep
-PostGenerationStep
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
+PostDoEdit (72/49)
+PostDoEdit (72/57)
 PostSetBrushMode tBrushMode::move
 PostGenerationStep
 PostGenerationStep
@@ -18,6 +11,7 @@ PostGenerationStep
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
+PostGotoGeneration  7
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
@@ -28,7 +22,15 @@ PostGenerationStep
 PostGenerationStep
 PostGenerationStep
 PostGenerationStep
-PostPrevGeneration
-PostPrevGeneration
-PostPrevGeneration
-PostGotoGeneration  14
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGenerationStep
+PostGotoGeneration  13

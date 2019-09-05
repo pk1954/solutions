@@ -6,9 +6,9 @@
 #include "SCRIPT.H"
 #include "config.h"
 #include "Resource.h"
-#include "win32_workThreadInterface.h"
+#include "win32_EvoWorkThreadInterface.h"
 
-static WorkThreadInterface * m_pWorkThreadInterface;
+static EvoWorkThreadInterface * m_pWorkThreadInterface;
 
 class WrapPostGotoGeneration : public Script_Functor
 {
@@ -21,7 +21,7 @@ public:
     }
 };
 
-void DefineWin32HistWrapperFunctions( WorkThreadInterface * pWorkThreadInterface )
+void DefineWin32HistWrapperFunctions( EvoWorkThreadInterface * pWorkThreadInterface )
 {
     m_pWorkThreadInterface = pWorkThreadInterface;
 

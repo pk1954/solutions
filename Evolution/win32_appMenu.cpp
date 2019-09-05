@@ -7,15 +7,15 @@
 #include "config.h"
 #include "resource.h"
 #include "win32_util.h"
-#include "win32_workThreadInterface.h"
+#include "win32_EvoWorkThreadInterface.h"
 #include "win32_winManager.h"
 #include "win32_appMenu.h"
 
 void AppMenu::Initialize
 ( 
-	HWND                        const hwndApp, 
-	WorkThreadInterface const * const pWworkThreadInterface,
-	WinManager          const * const pWinManager
+	HWND                           const hwndApp, 
+	EvoWorkThreadInterface const * const pWworkThreadInterface,
+	WinManager             const * const pWinManager
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );

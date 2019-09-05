@@ -159,8 +159,8 @@
     <ClCompile Include="win32_protocolServer.cpp" />
     <ClCompile Include="win32_statistics.cpp" />
     <ClCompile Include="win32_status.cpp" />
-    <ClCompile Include="win32_worker_thread.cpp" />
-    <ClCompile Include="win32_workThreadInterface.cpp" />
+    <ClCompile Include="win32_EvoWorkThread.cpp" />
+    <ClCompile Include="win32_EvoWorkThreadInterface.cpp" />
     <ClCompile Include="win32_wrappers.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -184,8 +184,8 @@
     <ClInclude Include="win32_statistics.h" />
     <ClInclude Include="win32_status.h" />
     <ClInclude Include="win32_textDisplay.h" />
-    <ClInclude Include="win32_worker_thread.h" />
-    <ClInclude Include="win32_workThreadInterface.h" />
+    <ClInclude Include="win32_EvoWorkThread.h" />
+    <ClInclude Include="win32_EvoWorkThreadInterface.h" />
     <ClInclude Include="win32_wrappers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

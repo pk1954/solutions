@@ -13,7 +13,7 @@
 #include "win32_appWindow.h"
 #include "win32_script.h"
 #include "win32_stopwatch.h"
-#include "win32_workThreadInterface.h"
+#include "win32_EvoWorkThreadInterface.h"
 #include "win32_winManager.h"
 #include "win32_delay.h"
 #include "win32_status.h"
@@ -55,17 +55,17 @@ EvoController::~EvoController( )
 
 void EvoController::Initialize
 ( 
- 	AppWindow           * const pAppwindow,
-    std::wostream       *       pTraceStream,
-	WorkThreadInterface * const pWorkThreadInterface,
-	WinManager          * const pWinManager,
-	EvoHistorySysGlue   * const pEvoHistGlue,
-	Delay               * const pDelay,
-	ColorManager        * const pColorManager,
-	AppMenu             * const pAppMenu,
-	StatusBar           * const pStatusBar,
-	GridWindow          * const pGridWindow,
-	EditorWindow        * const pEditorWindow
+ 	AppWindow              * const pAppwindow,
+    std::wostream          *       pTraceStream,
+	EvoWorkThreadInterface * const pWorkThreadInterface,
+	WinManager             * const pWinManager,
+	EvoHistorySysGlue      * const pEvoHistGlue,
+	Delay                  * const pDelay,
+	ColorManager           * const pColorManager,
+	AppMenu                * const pAppMenu,
+	StatusBar              * const pStatusBar,
+	GridWindow             * const pGridWindow,
+	EditorWindow           * const pEditorWindow
 )
 {
 	m_pTraceStream         = pTraceStream;

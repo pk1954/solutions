@@ -13,7 +13,7 @@
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCore.h"
 #include "pixelCoordinates.h"
-#include "win32_workThreadInterface.h"
+#include "win32_EvoWorkThreadInterface.h"
 #include "win32_wrappers.h"
 #include "win32_histWrappers.h"
 #include "win32_util.h"
@@ -48,13 +48,13 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	EvolutionCore::InitClass( iNrOfNeighbors, nullptr, nullptr );
 
-	PIXEL                 const FIELDSIZE            = 8_PIXEL;
-	EvoModelDataGlue    * const pEvoModelData        = new EvoModelDataGlue( );
-	BOOL                  const bHexagonMode         = (iNrOfNeighbors == 6);
-	EvoHistorySysGlue   * const pEvoHistGlue         = new EvoHistorySysGlue( );
-    WorkThreadInterface * const pWorkThreadInterface = new WorkThreadInterface( );
-    HistorySystem       * const pHistorySystem       = HistorySystem::CreateHistorySystem( );
-	EvolutionCore       * const pEvolutionCore       = pEvoModelData->GetEvolutionCore( );
+	PIXEL                    const FIELDSIZE            = 8_PIXEL;
+	EvoModelDataGlue       * const pEvoModelData        = new EvoModelDataGlue( );
+	BOOL                     const bHexagonMode         = (iNrOfNeighbors == 6);
+	EvoHistorySysGlue      * const pEvoHistGlue         = new EvoHistorySysGlue( );
+    EvoWorkThreadInterface * const pWorkThreadInterface = new EvoWorkThreadInterface( );
+    HistorySystem          * const pHistorySystem       = HistorySystem::CreateHistorySystem( );
+	EvolutionCore          * const pEvolutionCore       = pEvoModelData->GetEvolutionCore( );
 
 	pWorkThreadInterface->Initialize( & m_traceStream );
 	DefineCoreWrapperFunctions( pEvolutionCore );
