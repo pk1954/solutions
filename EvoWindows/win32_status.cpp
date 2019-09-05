@@ -10,9 +10,9 @@
 #include "pixelCoordinates.h"
 #include "EvolutionCore.h"
 #include "EvoHistorySysGlue.h"
+#include "EvoReadBuffer.h"
 #include "win32_delay.h"
 #include "win32_tooltip.h"
-#include "win32_readBuffer.h"
 #include "win32_workThreadInterface.h"
 #include "win32_editor.h"
 #include "win32_status.h"
@@ -45,8 +45,8 @@ StatusBar::StatusBar()
 
 void StatusBar::Start
 ( 
-	HWND const                        hwndParent,
-	ReadBuffer<EvolutionCore> * const pReadBuffer,
+	HWND                        const hwndParent,
+	EvoReadBuffer             * const pReadBuffer,
 	EvoHistorySysGlue   const * const pEvoHistorySys,
 	WorkThreadInterface const * const pWorkThreadInterface,
 	Delay                     * const pDelay,
@@ -149,7 +149,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
     {
     case WM_PAINT:
 		{
-		ReadBuffer<EvolutionCore> * pReadBuffer = pStatusBar->m_pReadBuffer;
+			EvoReadBuffer         * pReadBuffer = pStatusBar->m_pReadBuffer;
 			EvolutionCore   const * pCore       = pReadBuffer->LockReadBuffer( );
 			EVO_GENERATION          evoGen      = pCore->GetEvoGenerationNr( );
 			pReadBuffer->ReleaseReadBuffer( );

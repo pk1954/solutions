@@ -6,7 +6,7 @@
 #include "ViewCollection.h"
 #include "EvolutionTypes.h"
 #include "EvolutionCore.h"
-#include "win32_readBuffer.h"
+#include "EvoReadBuffer.h"
 #include "win32_baseDialog.h"
 
 class WorkThreadInterface;
@@ -22,9 +22,9 @@ public:
     void Start
 	( 
 		HWND const, 
-		WorkThreadInterface       * const, 
-		ReadBuffer<EvolutionCore> * const, 
-		DspOptWindow              * const
+		WorkThreadInterface * const, 
+		EvoReadBuffer       * const, 
+		DspOptWindow        * const
 	);
 
 	void Stop( );
@@ -46,8 +46,8 @@ private:
 
 	void updateOperationButtons( tBrushMode const ) const;
 
-	ReadBuffer<EvolutionCore> * m_pReadBuffer;
-    WorkThreadInterface       * m_pWorkThreadInterface;
-    DspOptWindow              * m_pDspOptWindow;
-	ViewCollection              m_observers;    // observers who want to know if edit window becomes visible or hidden
+	EvoReadBuffer       * m_pReadBuffer;
+    WorkThreadInterface * m_pWorkThreadInterface;
+    DspOptWindow        * m_pDspOptWindow;
+	ViewCollection        m_observers;    // observers who want to know if edit window becomes visible or hidden
 };

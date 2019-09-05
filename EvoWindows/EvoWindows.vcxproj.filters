@@ -137,5 +137,8 @@
     <ClInclude Include="win32_protocolServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EvoReadBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

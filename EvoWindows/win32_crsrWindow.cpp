@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "config.h"
 #include "EvolutionCore.h"
-#include "win32_readBuffer.h"
+#include "EvoReadBuffer.h"
 #include "win32_focusPoint.h"
 #include "win32_textBuffer.h"
 #include "win32_crsrWindow.h"
@@ -23,9 +23,9 @@ CrsrWindow::~CrsrWindow( )
 
 void CrsrWindow::Start
 (
-    HWND                        const hwndParent,
-	ReadBuffer<EvolutionCore> * const pReadBuffer,
-	FocusPoint                * const pFocusPoint
+    HWND            const hwndParent,
+	EvoReadBuffer * const pReadBuffer,
+	FocusPoint    * const pFocusPoint
 ) 
 {
     m_pReadBuffer = pReadBuffer;

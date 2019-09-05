@@ -6,7 +6,7 @@
 #include <string>
 #include "PixelTypes.h"
 #include "EvolutionTypes.h"
-#include "win32_readBuffer.h"
+#include "EvoReadBuffer.h"
 #include "win32_rootWindow.h"
 
 class Delay;
@@ -24,7 +24,7 @@ public:
 	void  Start
 	( 
 		HWND                        const, 
-		ReadBuffer<EvolutionCore> * const, 
+		EvoReadBuffer             * const, 
 		EvoHistorySysGlue   const * const, 
 		WorkThreadInterface const * const, 
 		Delay                     * const, 
@@ -73,7 +73,7 @@ private:
     wstring m_wstrScriptLine;
 
 	Delay                     * m_pDelay;
-	ReadBuffer<EvolutionCore> * m_pReadBuffer;
+	EvoReadBuffer             * m_pReadBuffer;
 	EditorWindow              * m_pEditorWindow;
 	EvoHistorySysGlue   const * m_pEvoHistorySys;
 	WorkThreadInterface const * m_pWorkThreadInterface;

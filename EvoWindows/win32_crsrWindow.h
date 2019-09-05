@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "EvoReadBuffer.h"
 #include "win32_textWindow.h"
 
 class FocusPoint;
@@ -15,9 +16,9 @@ public:
 
     void Start
 	( 
-		HWND                        const, 
-		ReadBuffer<EvolutionCore> * const,
-		FocusPoint                * const 
+		HWND            const, 
+		EvoReadBuffer * const,
+		FocusPoint    * const 
 	);
 
 	void Stop( );
@@ -25,6 +26,6 @@ public:
     virtual void DoPaint( TextBuffer & );
 
 private:
-    FocusPoint                * m_pFocusPoint;
-	ReadBuffer<EvolutionCore> * m_pReadBuffer;
+    FocusPoint    * m_pFocusPoint;
+	EvoReadBuffer * m_pReadBuffer;
 };

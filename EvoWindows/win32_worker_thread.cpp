@@ -8,10 +8,10 @@
 #include "Resource.h"
 #include "EvoHistorySysGlue.h"
 #include "EventInterface.h"
+#include "EvoReadBuffer.h"
 #include "win32_delay.h"
 #include "win32_thread.h"
 #include "win32_event.h"
-#include "win32_readBuffer.h"
 #include "win32_actionTimer.h"
 #include "win32_colorManager.h"
 #include "win32_workThreadInterface.h"
@@ -19,14 +19,14 @@
 
 WorkThread::WorkThread
 ( 
-	HWND                        const hwndApplication,
-	ColorManager              * const pColorManager,
-	ActionTimer               * const pActionTimer,
-	EventInterface            * const pEvent,
-	Delay                     * const pDelay,
-	ReadBuffer<EvolutionCore> * const pReadBuffer, 
-	EvoHistorySysGlue         * const pEvoHistorySys,
-	WorkThreadInterface       * const pWorkThreadInterface
+	HWND                  const hwndApplication,
+	ColorManager        * const pColorManager,
+	ActionTimer         * const pActionTimer,
+	EventInterface      * const pEvent,
+	Delay               * const pDelay,
+	EvoReadBuffer       * const pReadBuffer, 
+	EvoHistorySysGlue   * const pEvoHistorySys,
+	WorkThreadInterface * const pWorkThreadInterface
 ) :
 	m_pColorManager       ( pColorManager ),
 	m_pActionTimer        ( pActionTimer ),

@@ -16,7 +16,7 @@
 #include "HistoryGeneration.h"
 #include "EvolutionTypes.h"
 #include "EvoGenerationCmd.h"
-#include "win32_readBuffer.h"
+#include "EvoReadBuffer.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 
@@ -74,14 +74,14 @@ class WorkThread: public Util::Thread
 public:
 	WorkThread
 	( 
-		HWND                        const,
-		ColorManager              * const,
-		ActionTimer               * const,
-		EventInterface            * const,
-		Delay                     * const,
-		ReadBuffer<EvolutionCore> * const,
-		EvoHistorySysGlue         * const,
-		WorkThreadInterface       * const
+		HWND                  const,
+		ColorManager        * const,
+		ActionTimer         * const,
+		EventInterface      * const,
+		Delay               * const,
+		EvoReadBuffer       * const,
+		EvoHistorySysGlue   * const,
+		WorkThreadInterface * const
 	);
 	~WorkThread( );
 
@@ -131,14 +131,14 @@ private:
 	void dispatch( MSG const );
 	bool userWantsHistoryCut( ) const;
 
-	Delay                     * m_pDelay;
-	ColorManager              * m_pColorManager;
-	ActionTimer               * m_pActionTimer;
-    EventInterface            * m_pEventPOI;
-	ReadBuffer<EvolutionCore> * m_pReadBuffer;
-    EvoHistorySysGlue         * m_pEvoHistGlue;
-	WorkThreadInterface       * m_pWorkThreadInterface;
-    HIST_GENERATION             m_genDemanded;
-    BOOL                        m_bContinue;
-	HWND                        m_hwndApplication;
+	Delay               * m_pDelay;
+	ColorManager        * m_pColorManager;
+	ActionTimer         * m_pActionTimer;
+    EventInterface      * m_pEventPOI;
+	EvoReadBuffer       * m_pReadBuffer;
+    EvoHistorySysGlue   * m_pEvoHistGlue;
+	WorkThreadInterface * m_pWorkThreadInterface;
+    HIST_GENERATION       m_genDemanded;
+    BOOL                  m_bContinue;
+	HWND                  m_hwndApplication;
 };

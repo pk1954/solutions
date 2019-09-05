@@ -12,9 +12,9 @@
 #include "gridPoint.h"
 #include "gridRect.h"
 #include "EvolutionCore.h"
+#include "EvoReadBuffer.h"
 #include "win32_util.h"
 #include "win32_clut.h"
-#include "win32_readBuffer.h"
 #include "win32_gridPointShape.h"
 #include "win32_textDisplay.h"
 
@@ -33,12 +33,12 @@ public:
 
     void Start
 	( 
-		HWND                        const, 
-		ReadBuffer<EvolutionCore> * const, 
-		PixelCoordinates          * const, 
-		GraphicsInterface         * const,
-		DspOptWindow              * const, 
-		ColorManager              * const
+		HWND                const, 
+		EvoReadBuffer     * const, 
+		PixelCoordinates  * const, 
+		GraphicsInterface * const,
+		DspOptWindow      * const, 
+		ColorManager      * const
 	);
 
     void ResizeDrawFrame( EvolutionCore const * const );
@@ -60,12 +60,12 @@ private:
 	TextDisplay         m_TextDisplay;
 	GridPointShape      m_GridPointShape;
 	
-	ReadBuffer<EvolutionCore> * m_pReadBuffer;
-    PixelCoordinates          * m_pPixelCoordinates;
-    DspOptWindow              * m_pDspOptWindow;
-	ColorManager              * m_pColorManager;  
-    GraphicsInterface         * m_pGraphics;
-	Shape const               * m_pShapeHighlight;
+	EvoReadBuffer     * m_pReadBuffer;
+    PixelCoordinates  * m_pPixelCoordinates;
+    DspOptWindow      * m_pDspOptWindow;
+	ColorManager      * m_pColorManager;  
+    GraphicsInterface * m_pGraphics;
+	Shape const       * m_pShapeHighlight;
 
 	static CLUT_INDEX const MAX_BG_COLOR()
 	{

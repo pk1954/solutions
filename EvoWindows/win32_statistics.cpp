@@ -10,6 +10,7 @@
 #include "gridSelection.h"
 #include "EvolutionCore.h"
 #include "EvoStatistics.h"
+#include "EvoReadBuffer.h"
 #include "win32_baseWindow.h"
 #include "win32_statistics.h"
 #include "win32_stopwatch.h"
@@ -30,8 +31,8 @@ StatisticsWindow::~StatisticsWindow( )
 
 void StatisticsWindow::Start
 (
-    HWND                        const hwndParent,
-	ReadBuffer<EvolutionCore> * const pReadBuffer
+    HWND            const hwndParent,
+	EvoReadBuffer * const pReadBuffer
 ) 
 {
     m_pReadBuffer = pReadBuffer;

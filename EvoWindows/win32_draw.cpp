@@ -6,8 +6,8 @@
 #include "EvolutionCore.h"
 #include "GridDimensions.h"
 #include "pixelCoordinates.h"
+#include "EvoReadBuffer.h"
 #include "win32_util.h"
-#include "win32_readBuffer.h"
 #include "win32_graphicsInterface.h"
 #include "win32_displayOptions.h"
 #include "win32_colorManager.h"
@@ -32,12 +32,12 @@ DrawFrame::DrawFrame( )
 
 void DrawFrame::Start
 ( 
-	HWND                        const hwnd,
-	ReadBuffer<EvolutionCore> * const pReadBuffer,
-	PixelCoordinates          * const pPixelCoordinates, 
-	GraphicsInterface         * const pGraphics,
-	DspOptWindow              * const pDspOptWindow,
-	ColorManager              * const pColorManager
+	HWND                const hwnd,
+	EvoReadBuffer     * const pReadBuffer,
+	PixelCoordinates  * const pPixelCoordinates, 
+	GraphicsInterface * const pGraphics,
+	DspOptWindow      * const pDspOptWindow,
+	ColorManager      * const pColorManager
 ) 
 {
 	m_hwnd              = hwnd;

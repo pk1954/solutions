@@ -4,7 +4,7 @@
 #pragma once
 
 #include "EvolutionCore.h"
-#include "win32_readBuffer.h"
+#include "EvoReadBuffer.h"
 #include "win32_textWindow.h"
 
 class EvoStatistics;
@@ -15,12 +15,12 @@ public:
     StatisticsWindow( );
     virtual ~StatisticsWindow( );
 
-    void Start( HWND const, ReadBuffer<EvolutionCore> * const );
+    void Start( HWND const, EvoReadBuffer * const );
 	void Stop( );
 
     virtual void DoPaint( TextBuffer & );
 
 private:
-	ReadBuffer<EvolutionCore> * m_pReadBuffer;
-	EvoStatistics             * m_pStatistics;
+	EvoReadBuffer * m_pReadBuffer;
+	EvoStatistics * m_pStatistics;
 };

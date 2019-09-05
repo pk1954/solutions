@@ -7,9 +7,9 @@
 #include "Resource.h"
 #include "config.h"
 #include "EvolutionCore.h"
+#include "EvoReadBuffer.h"
 #include "win32_util.h"
 #include "win32_tooltip.h"
-#include "win32_readBuffer.h"
 #include "win32_workThreadInterface.h"
 #include "win32_displayOptions.h"
 #include "win32_editor.h"
@@ -23,10 +23,10 @@ EditorWindow::EditorWindow( )
 
 void EditorWindow::Start
 (  
-    HWND                        const hwndParent,
-    WorkThreadInterface       * const pWorkThreadInterface,
-	ReadBuffer<EvolutionCore> * const pReadBuffer,
-    DspOptWindow              * const pDspOptWindow
+    HWND                  const hwndParent,
+    WorkThreadInterface * const pWorkThreadInterface,
+	EvoReadBuffer       * const pReadBuffer,
+    DspOptWindow        * const pDspOptWindow
 )
 {
     m_pWorkThreadInterface = pWorkThreadInterface;

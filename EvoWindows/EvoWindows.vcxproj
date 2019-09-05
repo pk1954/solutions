@@ -164,6 +164,7 @@
     <ClCompile Include="win32_wrappers.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EvoReadBuffer.h" />
     <ClInclude Include="win32_colorManager.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />

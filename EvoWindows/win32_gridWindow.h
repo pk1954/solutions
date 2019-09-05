@@ -5,7 +5,7 @@
 
 #include "GridPoint.h"
 #include "pixelCoordinates.h"
-#include "win32_readBuffer.h"
+#include "EvoReadBuffer.h"
 #include "win32_baseWindow.h"
 #include "win32_draw.h"
 
@@ -23,12 +23,12 @@ class GridWindow : public BaseWindow
 public:
 	static void InitClass
 	( 
-		ReadBuffer<EvolutionCore> * const,
-        WorkThreadInterface       * const,
-        FocusPoint                * const,
-        DspOptWindow              * const,
-        ActionTimer               * const, 
-		ColorManager              * const 
+		EvoReadBuffer       * const,
+        WorkThreadInterface * const,
+        FocusPoint          * const,
+        DspOptWindow        * const,
+        ActionTimer         * const, 
+		ColorManager        * const 
 	);
 
     GridWindow( );
@@ -70,15 +70,15 @@ private:
     GridWindow             ( GridWindow const & );  // noncopyable class 
     GridWindow & operator= ( GridWindow const & );  // noncopyable class 
 
-	static HWND                        m_hwndApp;
-	static HCURSOR                     m_hCrsrMove;
-	static HCURSOR                     m_hCrsrArrow;
-	static ReadBuffer<EvolutionCore> * m_pReadBuffer;
-    static WorkThreadInterface       * m_pWorkThreadInterface;
-    static ActionTimer               * m_pActionTimer;
-    static DspOptWindow              * m_pDspOptWindow;
-    static FocusPoint                * m_pFocusPoint;
-	static ColorManager              * m_pColorManager;
+	static HWND                  m_hwndApp;
+	static HCURSOR               m_hCrsrMove;
+	static HCURSOR               m_hCrsrArrow;
+	static EvoReadBuffer       * m_pReadBuffer;
+    static WorkThreadInterface * m_pWorkThreadInterface;
+    static ActionTimer         * m_pActionTimer;
+    static DspOptWindow        * m_pDspOptWindow;
+    static FocusPoint          * m_pFocusPoint;
+	static ColorManager        * m_pColorManager;
 
 	PixelCoordinates m_PixelCoordinates;   // My own PixelCoordinates
 	DrawFrame        m_DrawFrame;

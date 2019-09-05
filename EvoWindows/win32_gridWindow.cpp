@@ -13,7 +13,7 @@
 #include "EvolutionCore.h"
 #include "win32_util.h"
 #include "win32_clut.h"
-#include "win32_readBuffer.h"
+#include "EvoReadBuffer.h"
 #include "win32_focusPoint.h"
 #include "win32_crsrWindow.h"
 #include "win32_actionTimer.h"
@@ -25,24 +25,24 @@
 
 #include "Commdlg.h"
 
-HWND                        GridWindow::m_hwndApp              = nullptr;
-ReadBuffer<EvolutionCore> * GridWindow::m_pReadBuffer          = nullptr;
-WorkThreadInterface       * GridWindow::m_pWorkThreadInterface = nullptr;
-ActionTimer               * GridWindow::m_pActionTimer         = nullptr;
-DspOptWindow              * GridWindow::m_pDspOptWindow        = nullptr;
-FocusPoint                * GridWindow::m_pFocusPoint          = nullptr;
-ColorManager              * GridWindow::m_pColorManager        = nullptr;
-HCURSOR                     GridWindow::m_hCrsrArrow           = nullptr;
-HCURSOR                     GridWindow::m_hCrsrMove            = nullptr;
+HWND                  GridWindow::m_hwndApp              = nullptr;
+EvoReadBuffer       * GridWindow::m_pReadBuffer          = nullptr;
+WorkThreadInterface * GridWindow::m_pWorkThreadInterface = nullptr;
+ActionTimer         * GridWindow::m_pActionTimer         = nullptr;
+DspOptWindow        * GridWindow::m_pDspOptWindow        = nullptr;
+FocusPoint          * GridWindow::m_pFocusPoint          = nullptr;
+ColorManager        * GridWindow::m_pColorManager        = nullptr;
+HCURSOR               GridWindow::m_hCrsrArrow           = nullptr;
+HCURSOR               GridWindow::m_hCrsrMove            = nullptr;
 					      
 void GridWindow::InitClass
-( 
-	ReadBuffer<EvolutionCore> * const pReadBuffer, 
-    WorkThreadInterface       * const pWorkThreadInterface,
-    FocusPoint                * const pFocusPoint,
-    DspOptWindow              * const pDspOptWindow,
-	ActionTimer               * const pActionTimer,
-	ColorManager              * const pColorManager
+(        
+	EvoReadBuffer       * const pReadBuffer, 
+    WorkThreadInterface * const pWorkThreadInterface,
+    FocusPoint          * const pFocusPoint,
+    DspOptWindow        * const pDspOptWindow,
+	ActionTimer         * const pActionTimer,
+	ColorManager        * const pColorManager
 )
 {
 	m_pReadBuffer          = pReadBuffer;
@@ -76,7 +76,7 @@ void GridWindow::Start
 {
     assert( pixFieldSize > 0_PIXEL );
     
-	BOOL bHexagonMode   = GridDimensions::GetNrOfNeigbors() == 6;
+	BOOL bHexagonMode = GridDimensions::GetNrOfNeigbors() == 6;
 
 	m_PixelCoordinates.Start( pixFieldSize, bHexagonMode );
 	m_pGraphics = pGraphics;

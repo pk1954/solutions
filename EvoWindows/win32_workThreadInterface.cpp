@@ -8,6 +8,7 @@
 #include "GridPoint24.h"
 #include "EvolutionTypes.h"
 #include "EvolutionCore.h"
+#include "EvoReadBuffer.h"
 #include "EvoHistorySysGlue.h"
 #include "win32_script.h"
 #include "win32_worker_thread.h"
@@ -38,13 +39,13 @@ void WorkThreadInterface::Initialize( wostream * pTraceStream )
 
 void WorkThreadInterface::Start
 ( 
-	HWND                        const hwndApplication,
-    ColorManager              * const pColorManager,
-	ActionTimer               * const pActionTimer,
-    EventInterface            * const pEvent,
-	Delay                     * const pDelay,
-	ReadBuffer<EvolutionCore> * const pReadBuffer, 
-    EvoHistorySysGlue         * const pEvoHistGlue
+	HWND                const hwndApplication,
+    ColorManager      * const pColorManager,
+	ActionTimer       * const pActionTimer,
+    EventInterface    * const pEvent,
+	Delay             * const pDelay,
+	EvoReadBuffer     * const pReadBuffer, 
+    EvoHistorySysGlue * const pEvoHistGlue
 )
 {
 	m_pEvoHistGlue = pEvoHistGlue;
