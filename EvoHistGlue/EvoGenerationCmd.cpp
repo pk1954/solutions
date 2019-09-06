@@ -18,7 +18,6 @@ wchar_t const * const GetEvoCommandNameShort( tEvoCmd const cmd )
 {
     static std::unordered_map < tEvoCmd, wchar_t const * const > mapNames =
     {
-        { tEvoCmd::nextGen,                 L"NEXT"   },
         { tEvoCmd::reset,                   L"RESET"  },  
         { tEvoCmd::editSetBrushMode,        L"MODE"   },
         { tEvoCmd::editSetBrushShape,       L"SHAPE"  },
@@ -36,7 +35,6 @@ wchar_t const * const GetEvoCommandName( tEvoCmd const cmd )
 {
     static std::unordered_map < tEvoCmd, wchar_t const * const > mapNames =
     {
-        { tEvoCmd::nextGen,                 L"tEvoCmd::nextGen" },
         { tEvoCmd::reset,                   L"tGenCmd::reset" },
         { tEvoCmd::editSetBrushMode,        L"tEvoCmd::editSetBrushMode" },
         { tEvoCmd::editSetBrushShape,       L"tEvoCmd::editSetBrushShape" },

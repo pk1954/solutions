@@ -17,8 +17,8 @@ void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 	Int24   const param  = cmd.GetParam( );
 	switch ( evoCmd )
 	{
-	case tEvoCmd::nextGen:
 
+	case static_cast<tEvoCmd>(tGenCmd::NEXT_GEN):
 //		stopwatch.Start();
 		m_pEvolutionCore->Compute( );  // compute next generation
 //		stopwatch.Stop( L"Compute" );

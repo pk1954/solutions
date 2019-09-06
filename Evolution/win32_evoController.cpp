@@ -26,8 +26,8 @@
 #include "win32_resetDlg.h"
 
 EvoController::EvoController() :
-    m_bTrace               ( TRUE ),
     m_pTraceStream         ( nullptr ),
+	m_pAppWindow           ( nullptr ),
 	m_pWorkThreadInterface ( nullptr ),
 	m_pWinManager          ( nullptr ),
 	m_pEvoHistGlue         ( nullptr ),
@@ -36,12 +36,14 @@ EvoController::EvoController() :
 	m_pStatusBar           ( nullptr ),
 	m_pGridWindow          ( nullptr ),
 	m_pEditorWindow        ( nullptr ),
-	m_pAppMenu             ( nullptr )
+	m_pAppMenu             ( nullptr ),
+	m_hCrsrWait            ( nullptr )
 { }
 
 EvoController::~EvoController( )
 {
     m_pTraceStream         = nullptr;
+	m_pAppWindow           = nullptr;
 	m_pWorkThreadInterface = nullptr;
 	m_pWinManager          = nullptr;
 	m_pEvoHistGlue         = nullptr;
@@ -51,6 +53,7 @@ EvoController::~EvoController( )
 	m_pGridWindow          = nullptr;
 	m_pEditorWindow        = nullptr;
 	m_pAppMenu             = nullptr;
+	m_hCrsrWait            = nullptr;
 }
 
 void EvoController::Initialize

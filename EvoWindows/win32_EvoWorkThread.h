@@ -6,6 +6,7 @@
 
 #include "GridPoint24.h"
 #include "HistoryGeneration.h"
+#include "win32_WorkThread.h"
 
 class Delay;
 class ActionTimer;
@@ -14,26 +15,20 @@ class EditorWindow;
 class RootWindow;
 class EvolutionCore;
 class WinManager;
+class HistorySystem;
 class EventInterface;
 class EvoHistorySysGlue;
 class EvoWorkThreadInterface;
 
-class WorkerThreadMessage
+class EvoWorkThreadMessage
 {
 public:
 	enum class Id : UINT
 	{
-		REFRESH = WM_APP,
-		STOP,
-		REPEAT_GENERATION_STEP,  // only used internaly, not part of procedural interface
-		GENERATION_RUN,
+	    REDO = WorkThreadMessage::FIRST_APP_MESSAGE,
+		UNDO,
 		GOTO_ORIGIN,
 		GOTO_DEATH,
-		GOTO_GENERATION,
-		GENERATION_STEP,
-		PREV_GENERATION,
-	    REDO,
-		UNDO,
 		BENCHMARK,
 		SET_POI,
 		DO_EDIT,
@@ -46,17 +41,17 @@ public:
 		SET_SELECTION_COLOR,
 		SET_HIGHLIGHT_COLOR,
 		RESET_MODEL,
-		FIRST = REFRESH,
+		FIRST = REDO,
 		LAST = RESET_MODEL
 	};
 
-	static BOOL IsValid( WorkerThreadMessage::Id msg )
+	static BOOL IsValid( EvoWorkThreadMessage::Id msg )
 	{
-		return (WorkerThreadMessage::Id::FIRST <= msg) && (msg <= WorkerThreadMessage::Id::LAST);
+		return (EvoWorkThreadMessage::Id::FIRST <= msg) && (msg <= EvoWorkThreadMessage::Id::LAST);
 	}
 };
 
-class EvoWorkThread: public Util::Thread
+class EvoWorkThread: public WorkThread
 {
 public:
 	EvoWorkThread
@@ -71,61 +66,30 @@ public:
 		EvoWorkThreadInterface * const
 	);
 	~EvoWorkThread( );
-
-	virtual void ThreadStartupFunc( );
-	virtual void ThreadMsgDispatcher( MSG const );
 	
-	// WorkMessage - process incoming messages from main thread
-
-	void WorkMessage( BOOL const, WorkerThreadMessage::Id const, WPARAM const, LPARAM const );
-
-	void NGenerationSteps( int ); 
-
-	HIST_GENERATION GetGenDemanded( ) const 
-	{ 
-		return m_genDemanded; 
-	}
-
-	BOOL IsRunning() const
-	{
-		return m_bContinue;
-	}
-
-	void Continue( )
-	{
-		if ( m_pEventPOI != nullptr )
-			m_pEventPOI->Continue( );     // trigger worker thread if waiting on POI event
-	}
-
 private:
+	GenerationCmd EvoCmd( tEvoCmd const cmd, Int24 const param )
+	{ 
+		return GenerationCmd::ApplicationCmd( static_cast<tGenCmd>(cmd), param );  
+	}  
+
 	void editorCommand( tEvoCmd const cmd, WPARAM const wParam )
 	{
-		m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
+		GetHistorySystem( )->CreateAppCommand( EvoCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
 	}
 
 	void editorCommand( tEvoCmd const cmd, GridPoint24 const gp24 )
 	{
-		m_pEvoHistGlue->EvoCreateEditorCommand( EvoHistorySysGlue::EvoCmd( cmd, gp24 ) );
+		GetHistorySystem( )->CreateAppCommand( EvoCmd( cmd, gp24 ) );
 	}
 
-	void setContinueFlag( BOOL const bState )
+	bool isEditorCommand( HIST_GENERATION const gen )
 	{
-		m_bContinue = bState;
+		return ::IsEditorCommand( static_cast<tEvoCmd>( GetHistorySystem( )->GetGenerationCmd( gen ) ) );
 	}
 
-	void gotoGeneration( HIST_GENERATION const );
-	void generationRun( );
-	void dispatch( MSG const );
-	bool userWantsHistoryCut( ) const;
+	virtual BOOL Dispatch( MSG const );
 
-	Delay                  * m_pDelay;
-	ColorManager           * m_pColorManager;
-	ActionTimer            * m_pActionTimer;
-    EventInterface         * m_pEventPOI;
-	ObserverInterface      * m_pObserver;
-    EvoHistorySysGlue      * m_pEvoHistGlue;
-	EvoWorkThreadInterface * m_pWorkThreadInterface;
-    HIST_GENERATION          m_genDemanded;
-    BOOL                     m_bContinue;
-	HWND                     m_hwndApplication;
+	ColorManager      * m_pColorManager;
+    EvoHistorySysGlue * m_pEvoHistGlue;
 };

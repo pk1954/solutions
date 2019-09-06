@@ -14,6 +14,7 @@
 #include "win32_util.h"
 #include "win32_clut.h"
 #include "EvoReadBuffer.h"
+#include "win32_colorManager.h"
 #include "win32_focusPoint.h"
 #include "win32_crsrWindow.h"
 #include "win32_actionTimer.h"

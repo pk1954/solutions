@@ -44,7 +44,6 @@ private:
 	void scriptDialog( );
 	bool processUIcommand( int const, LPARAM const );
 
-	BOOL                     m_bTrace;
     std::wostream          * m_pTraceStream;
 	AppWindow              * m_pAppWindow;
 	EvoWorkThreadInterface * m_pWorkThreadInterface;

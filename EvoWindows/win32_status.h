@@ -11,7 +11,7 @@
 
 class Delay;
 class EditorWindow;
-class EvoHistorySysGlue;
+class HistorySystem;
 class EvoWorkThreadInterface;
 
 using std::wstring;
@@ -25,7 +25,7 @@ public:
 	( 
 		HWND                           const, 
 		EvoReadBuffer                * const, 
-		EvoHistorySysGlue      const * const, 
+		HistorySystem          const * const, 
 		EvoWorkThreadInterface const * const, 
 		Delay                        * const, 
 		EditorWindow                 * const 
@@ -75,7 +75,7 @@ private:
 	Delay                        * m_pDelay;
 	EvoReadBuffer                * m_pReadBuffer;
 	EditorWindow                 * m_pEditorWindow;
-	EvoHistorySysGlue      const * m_pEvoHistorySys;
+	HistorySystem          const * m_pHistorySystem;
 	EvoWorkThreadInterface const * m_pWorkThreadInterface;
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );

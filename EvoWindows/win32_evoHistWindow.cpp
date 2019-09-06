@@ -26,7 +26,6 @@ void EvoHistWindow::Start
     HistWindow::Start( hwndParent, pHistorySystem, [&]() { return ! m_pWorkThreadInterface->IsRunning(); } );  // call base class
 	m_pFocusPoint          = pFocusPoint;
 	m_pWorkThreadInterface = pWorkThreadInterface;
-//    m_pFocusPoint->RegisterFocusPointObserver( this );
 }
 
 void EvoHistWindow::Stop( )
@@ -43,13 +42,6 @@ void EvoHistWindow::DoPaint( HDC const hDC )
 		PaintAllGenerations( hDC );
 		PaintHighlightGenerations( hDC, m_pWorkThreadInterface->GetGenDemanded( ) );
 	}
-
-// Deactivated, see win32_focusPoint.cpp
-//
-//  if ( m_pFocusPoint->IsInGrid( ) && m_pFocusPoint->IsAlive( ) )
-//  {
-//		PaintLifeLine( hDC, m_pFocusPoint->GetGenBirth( ), m_pFocusPoint->GetGenDeath( ) );
-//	}
 }
 
 void EvoHistWindow::GotoGeneration( HIST_GENERATION const gen ) 

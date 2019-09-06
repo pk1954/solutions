@@ -7,26 +7,23 @@
 #include <fstream>
 #include "boolOp.h"
 #include "gridRect.h"
-#include "HistoryGeneration.h"
+#include "strategy.h"
 #include "EvolutionTypes.h"
-#include "EvoReadBuffer.h"
-#include "win32_colorManager.h"
+#include "win32_WorkThreadInterface.h"
 
-class Delay;
+class ColorManager;
 class ActionTimer;
-class ObserverInterface;
-class EvolutionCore;
 class EventInterface;
+class Delay;
+class ObserverInterface;
 class EvoHistorySysGlue;
 class EvoWorkThread;
 
-class EvoWorkThreadInterface
+class EvoWorkThreadInterface : public WorkThreadInterface
 {
 public:
 	EvoWorkThreadInterface( );
     ~EvoWorkThreadInterface( );
-
-	void Initialize( std::wostream * );
 
 	void Start
     ( 
@@ -39,8 +36,6 @@ public:
 	    EvoHistorySysGlue * const
     );
 
-	void Stop( );
-
     void PostDoEdit( GridPoint const );
     void PostSetPOI( GridPoint const );
     void PostSetBrushMode( tBrushMode const );
@@ -50,28 +45,12 @@ public:
     void PostSetColor( COLORREF const, tColorObject const, Strategy::Id const );
     void PostSetBrushRadius( GRID_COORD const );
     void PostReset( BOOL );
-	void PostRunGenerations( bool const );
-	void PostStopComputation();
 	void PostUndo();
 	void PostRedo();
 	void PostBenchmark( int const );
-	void PostPrevGeneration();
-	void PostGotoGeneration( HIST_GENERATION const );
 	void PostGotoOrigin( GridPoint const );
 	void PostGotoDeath ( GridPoint const );
-	void PostGenerationStep();
-	void PostRepeatGenerationStep();              // Do not call! Used by WorkThread only;
-
-	HIST_GENERATION GetGenDemanded( ) const;
-	BOOL            IsRunning( )      const;
-
-    void TerminateThread( );
 
 private:
-	void postGotoGeneration( HIST_GENERATION const );
-
-    EvoHistorySysGlue * m_pEvoHistGlue;
-	EvoWorkThread     * m_pWorkThread;
-    std::wostream     * m_pTraceStream;
-	BOOL                m_bTrace;
+	EvoWorkThread * m_pEvoWorkThread;
 }; 

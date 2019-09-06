@@ -106,7 +106,7 @@ AppWindow::AppWindow( ) :
 
 	stopwatch.Start();
 	m_ColorManager.Initialize( );
-	m_WorkThreadInterface.Initialize( & m_traceStream ); 
+	m_EvoWorkThreadInterface.Initialize( & m_traceStream ); 
 
 	stopwatch.Stop( L"create window objects" );
 
@@ -126,7 +126,7 @@ AppWindow::AppWindow( ) :
 	( 
 		this,
 		& m_traceStream,
-		& m_WorkThreadInterface,
+		& m_EvoWorkThreadInterface,
 		& m_WinManager,
 		& m_EvoHistGlue,
 		& m_Delay, 
@@ -139,8 +139,8 @@ AppWindow::AppWindow( ) :
 
 	m_pMiniGridWindow->Observe( m_pMainGridWindow );  // mini window observes main grid window
 
-	DefineWin32HistWrapperFunctions( & m_WorkThreadInterface );
-	DefineWin32WrapperFunctions    ( & m_WorkThreadInterface );
+	DefineWin32HistWrapperFunctions( & m_EvoWorkThreadInterface );
+	DefineWin32WrapperFunctions    ( & m_EvoWorkThreadInterface );
 	DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 
 	m_ScriptHook.Initialize( m_pStatusBar );
@@ -158,7 +158,7 @@ AppWindow::AppWindow( ) :
 	GridWindow::InitClass
 	( 
 		& m_ReadBuffer, 
-		& m_WorkThreadInterface, 
+		& m_EvoWorkThreadInterface, 
 		  m_pFocusPoint, 
 		  m_pDspOptWindow, 
 		& m_atDisplay, 
@@ -244,10 +244,10 @@ void AppWindow::Start( )
 	m_pCrsrWindow    ->Start( m_hwndApp, & m_ReadBuffer, m_pFocusPoint );
 	m_pStatistics    ->Start( m_hwndApp, & m_ReadBuffer );
 	m_pHistInfoWindow->Start( m_hwndApp, nullptr );
-	m_pPerfWindow    ->Start( m_hwndApp, m_Delay, m_atComputation, m_atDisplay, [&](){ return m_WorkThreadInterface.IsRunning(); } );
-	m_pStatusBar     ->Start( m_hwndApp, & m_ReadBuffer, &m_EvoHistGlue, & m_WorkThreadInterface, & m_Delay, m_pEditorWindow );
+	m_pPerfWindow    ->Start( m_hwndApp, m_Delay, m_atComputation, m_atDisplay, [&](){ return m_EvoWorkThreadInterface.IsRunning(); } );
+	m_pStatusBar     ->Start( m_hwndApp, & m_ReadBuffer, m_EvoHistGlue.GetHistorySystem(), & m_EvoWorkThreadInterface, & m_Delay, m_pEditorWindow );
 
-	m_WorkThreadInterface.Start
+	m_EvoWorkThreadInterface.Start
 	( 
 		  m_hwndApp, 
 		& m_ColorManager, 
@@ -258,9 +258,9 @@ void AppWindow::Start( )
 		& m_EvoHistGlue
 	);
 	
-	m_pEvoHistWindow->Start( m_hwndApp, m_pFocusPoint, m_pHistorySystem, & m_WorkThreadInterface );
+	m_pEvoHistWindow->Start( m_hwndApp, m_pFocusPoint, m_pHistorySystem, & m_EvoWorkThreadInterface );
 	m_pDspOptWindow ->Start( m_hwndApp );
-	m_pEditorWindow ->Start( m_hwndApp, & m_WorkThreadInterface, & m_ReadBuffer, m_pDspOptWindow );
+	m_pEditorWindow ->Start( m_hwndApp, & m_EvoWorkThreadInterface, & m_ReadBuffer, m_pDspOptWindow );
 	m_pFocusPoint   ->Start( & m_EvoHistGlue );
 
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,    m_pStatusBar->GetWindowHandle(), FALSE, FALSE );
@@ -276,7 +276,7 @@ void AppWindow::Start( )
     m_WinManager.AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, * m_pMiniGridWindow,               TRUE,  FALSE );
     m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainGridWindow,               TRUE,  FALSE );
 
-	m_AppMenu.Initialize( m_hwndApp, & m_WorkThreadInterface, & m_WinManager );
+	m_AppMenu.Initialize( m_hwndApp, & m_EvoWorkThreadInterface, & m_WinManager );
 
 	m_pMiniGridWindow->Size( );
 	adjustChildWindows( ); 
@@ -317,7 +317,7 @@ void AppWindow::Stop()
 	m_AppMenu            .Stop( );
 	m_Delay              .Stop( );
 	m_ReadBuffer         .Stop( );
-	m_WorkThreadInterface.Stop( );
+	m_EvoWorkThreadInterface.Stop( );
 	m_EvoHistGlue        .Stop( );  // deletes m_pModelDataWork
 
 	m_WinManager.RemoveAll( );

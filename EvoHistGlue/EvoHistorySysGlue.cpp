@@ -3,19 +3,14 @@
 // EvoHistGlue
 
 #include "stdafx.h"
-#include <limits.h>
 #include "config.h"
 #include "win32_util.h"
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
-#include "EvolutionCore.h"
 #include "EvolutionTypes.h"
 #include "EvoHistorySysGlue.h"
 
 class WorkThread;
-class ObserverInterface;
-
-GenerationCmd const EvoHistorySysGlue::NEXT_GEN_CMD = EvoHistorySysGlue::EvoCmd( tEvoCmd::nextGen, 0 );
 
 EvoHistorySysGlue::EvoHistorySysGlue( ) :
     m_pHistorySystem( nullptr )
@@ -78,13 +73,8 @@ HIST_GENERATION EvoHistorySysGlue::GetGenWithIndividual( GridPoint const gp, boo
 
 EvolutionCore const * EvoHistorySysGlue::GetEvolutionCore( HIST_GENERATION const gen ) const
 {
-	ModelData const * pModelData { GetModelData( gen ) };
+	ModelData const * pModelData { m_pHistorySystem->GetModelData( gen ) };
 	return ( pModelData == nullptr )
 	? nullptr  // gen not in cache
 	: (static_cast< EvoModelDataGlue const * >( pModelData ))->GetEvolutionCoreC( );
-}
-
-void EvoHistorySysGlue::EvoCreateEditorCommand( GenerationCmd cmd ) 
-{ 
-	m_pHistorySystem->CreateAppCommand( cmd ); 
 }

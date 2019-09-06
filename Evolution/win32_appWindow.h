@@ -77,7 +77,7 @@ private:
 	D3D_driver             m_D3d_driver;
 	EvoReadBuffer          m_ReadBuffer;
 	AppMenu                m_AppMenu;
-	EvoWorkThreadInterface m_WorkThreadInterface;
+	EvoWorkThreadInterface m_EvoWorkThreadInterface;
 	EvoHistorySysGlue      m_EvoHistGlue;
     ScriptHook             m_ScriptHook;
 	ProtocolServer         m_protocolServer;

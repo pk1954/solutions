@@ -1,5 +1,6 @@
 // pixelCoordinates.cpp
 //
+// EvolutionCoreInterface
 
 #include "stdafx.h"
 #include <algorithm>  // min/max templates
@@ -204,7 +205,7 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 		}
 		if ( pixPoint.GetY() < 0_PIXEL ) 
 		{
-			pixPoint -= ( 0_PIXEL, m_pixFieldSize - 1_PIXEL );
+			pixPoint -= PixelPoint( 0_PIXEL, m_pixFieldSize - 1_PIXEL );
 		}
 
 		GridPoint gp = GridPoint

@@ -9,7 +9,7 @@
 #include "config.h"
 #include "pixelCoordinates.h"
 #include "EvolutionCore.h"
-#include "EvoHistorySysGlue.h"
+#include "HistorySystem.h"
 #include "EvoReadBuffer.h"
 #include "win32_delay.h"
 #include "win32_tooltip.h"
@@ -39,7 +39,7 @@ StatusBar::StatusBar()
 :	m_pDelay( nullptr ),
 	m_pReadBuffer( nullptr ),
 	m_pEditorWindow( nullptr ),
-	m_pEvoHistorySys( nullptr ),
+	m_pHistorySystem( nullptr ),
 	m_pWorkThreadInterface( nullptr )
 { }
 
@@ -47,7 +47,7 @@ void StatusBar::Start
 ( 
 	HWND                           const hwndParent,
 	EvoReadBuffer                * const pReadBuffer,
-	EvoHistorySysGlue      const * const pEvoHistorySys,
+	HistorySystem          const * const pHistorySystem,
 	EvoWorkThreadInterface const * const pWorkThreadInterface,
 	Delay                        * const pDelay,
 	EditorWindow                 * const pEditorWindow
@@ -56,7 +56,7 @@ void StatusBar::Start
 	m_pDelay               = pDelay;
 	m_pReadBuffer          = pReadBuffer;
 	m_pEditorWindow        = pEditorWindow;
-	m_pEvoHistorySys       = pEvoHistorySys;
+	m_pHistorySystem       = pHistorySystem;
 	m_pWorkThreadInterface = pWorkThreadInterface;
 
 	HWND hwndStatus = CreateWindow
@@ -330,7 +330,7 @@ void StatusBar::adjust( )
 	ShowWindow( GetDlgItem( IDM_EDIT_WINDOW ), ! m_pEditorWindow->IsWindowVisible( ) );
 
 	if ( Config::UseHistorySystem( ) )
-		EnableWindow( GetDlgItem( IDM_BACKWARDS ), (! bRunMode) && (! m_pEvoHistorySys->IsFirstHistGen() ) );
+		EnableWindow( GetDlgItem( IDM_BACKWARDS ), (! bRunMode) && (m_pHistorySystem->GetCurrentGeneration( ) > 0 ) );
 }
 
 PIXEL StatusBar::GetHeight( ) const
