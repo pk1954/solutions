@@ -88,6 +88,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 		textBuf.setHorizontalPos( 4_TEXT_POSITION );
 		textBuf.printPercentage( enIndEnergy.GetValue(), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
 	}
+
 	// Deactivated, see win32_focusPoint.cpp
 
     // nextLine( L"Lifespan:" );

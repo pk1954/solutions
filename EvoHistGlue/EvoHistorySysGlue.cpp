@@ -64,14 +64,14 @@ private:
 HIST_GENERATION EvoHistorySysGlue::GetGenWithIndividual( GridPoint const gp, bool const bReverse ) const
 {
 	HIST_GENERATION       gen   = m_pHistorySystem->GetCurrentGeneration( );
-	EvolutionCore const * pCore = GetEvolutionCore( gen );
+	EvolutionCore const * pCore = getEvolutionCore( gen );
 	IND_ID                id    = pCore->GetId( gp );
 	return id.IsNull( ) 
 		? HIST_GENERATION()
 		: m_pHistorySystem->FindGenerationWithProperty( FindGridPointFunctor( id ), bReverse );
 }
 
-EvolutionCore const * EvoHistorySysGlue::GetEvolutionCore( HIST_GENERATION const gen ) const
+EvolutionCore const * EvoHistorySysGlue::getEvolutionCore( HIST_GENERATION const gen ) const
 {
 	ModelData const * pModelData { m_pHistorySystem->GetModelData( gen ) };
 	return ( pModelData == nullptr )

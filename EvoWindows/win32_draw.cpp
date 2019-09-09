@@ -13,6 +13,9 @@
 #include "win32_colorManager.h"
 #include "win32_draw.h"
 
+//TODOX
+#include "win32_stopwatch.h"
+
 static COLORREF const CLR_BLACK  = RGB(   0,   0,   0 );
 static COLORREF const CLR_GREY   = RGB( 128, 128, 128 );
 static COLORREF const CLR_WHITE  = RGB( 255, 255, 255 );
@@ -140,8 +143,12 @@ void DrawFrame::DoPaint( EvolutionCore const * pCore )
 
 void DrawFrame::drawBackground( EvolutionCore const * const pCore )
 {
+	//TODOX
+	static Stopwatch stopwatch;
+
 	float m_fPxSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).GetValue() );
 
+	stopwatch.Start();
 	Apply2Grid    // strip mode works only with full grid
 	(          
     	[&](GridPoint const gp)
@@ -154,6 +161,7 @@ void DrawFrame::drawBackground( EvolutionCore const * const pCore )
 		m_pGraphics->GetStripMode() // if strip mode add borders to grid
 	);
 
+	stopwatch.Stop( L"DrawFrame background" );
 	m_pGraphics->RenderBackground( );
 }
 

@@ -13,7 +13,6 @@
 #include "EvoReadBuffer.h"
 #include "win32_baseWindow.h"
 #include "win32_statistics.h"
-#include "win32_stopwatch.h"
 
 StatisticsWindow::StatisticsWindow( )
 :  TextWindow( ),

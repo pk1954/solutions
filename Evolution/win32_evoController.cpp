@@ -264,7 +264,7 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
             break;
 
 		case IDM_EXIT:
-			PostMessage (m_pAppWindow->GetWindowHandle( ),  WM_CLOSE, 0, 0 );
+			PostMessage( m_pAppWindow->GetWindowHandle( ), WM_CLOSE, 0, 0 );
 			break;
 
 		default:

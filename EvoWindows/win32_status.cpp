@@ -148,7 +148,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
     switch ( uMsg )
     {
     case WM_PAINT:
-		{
+		{   
 			EvoReadBuffer         * pReadBuffer = pStatusBar->m_pReadBuffer;
 			EvolutionCore   const * pCore       = pReadBuffer->LockReadBuffer( );
 			EVO_GENERATION          evoGen      = pCore->GetEvoGenerationNr( );

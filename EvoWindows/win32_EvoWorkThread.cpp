@@ -42,8 +42,7 @@ EvoWorkThread::EvoWorkThread
 	),
 	m_pColorManager( pColorManager ),
 	m_pEvoHistGlue ( pEvoHistorySys )
-{
-}
+{ }
 
 EvoWorkThread::~EvoWorkThread( )
 {
@@ -78,10 +77,11 @@ BOOL EvoWorkThread::Dispatch( MSG const msg  )
 
 	case EvoWorkThreadMessage::Id::REDO:
 		{
-			HIST_GENERATION gen = GetHistorySystem( )->GetCurrentGeneration( );
+			HIST_GENERATION genCurrent  = GetHistorySystem( )->GetCurrentGeneration( );
+			HIST_GENERATION genYoungest = GetHistorySystem( )->GetYoungestGeneration( );
 
-			if ( ( gen < GetHistorySystem( )->GetYoungestGeneration( ) ) && isEditorCommand( gen + 1 ) )
-				GotoGeneration( gen + 1 );
+			if ( ( genCurrent < genYoungest ) && isEditorCommand( genCurrent + 1 ) )
+				GotoGeneration( genCurrent + 1 );
 			else
 				(void)MessageBeep(MB_OK);  // first generation reached
 		}
@@ -89,10 +89,10 @@ BOOL EvoWorkThread::Dispatch( MSG const msg  )
 
 	case EvoWorkThreadMessage::Id::UNDO:
 		{
-			HIST_GENERATION gen = GetHistorySystem( )->GetCurrentGeneration( );
+			HIST_GENERATION genCurrent = GetHistorySystem( )->GetCurrentGeneration( );
 
-			if ( ( gen > 0 ) && isEditorCommand( gen - 1 ) )
-				GotoGeneration( gen - 1 );
+			if ( ( genCurrent > 0 ) && isEditorCommand( genCurrent - 1 ) )
+				GotoGeneration( genCurrent - 1 );
 			else
 				(void)MessageBeep(MB_OK);  // first generation reached
 		}
