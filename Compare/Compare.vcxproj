@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\Toolbox\runtimeCPP;$(SolutionDir)..\Toolbox\Win32_utilities;$(SolutionDir)..\Toolbox\Utilities;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)runtimeCPP;$(SolutionDir)Win32_utilities;$(SolutionDir)Utilities;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Debug;$(SolutionDir)..\Toolbox\x64\Debug;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -90,7 +90,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\Toolbox\runtimeCPP;$(SolutionDir)..\Toolbox\Win32_utilities;$(SolutionDir)..\Toolbox\Utilities;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)runtimeCPP;$(SolutionDir)Win32_utilities;$(SolutionDir)Utilities;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Release;$(SolutionDir)..\Toolbox\x64\Release;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

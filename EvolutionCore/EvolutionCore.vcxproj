@@ -78,11 +78,11 @@
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)..\Toolbox\Utilities;$(SolutionDir)..\Toolbox\runtimeCPP;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)..\Toolbox\Utilities;$(SolutionDir)..\Toolbox\runtimeCPP;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

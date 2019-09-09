@@ -59,9 +59,6 @@
     <ClCompile Include="win32_resetDlg.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="$(MICROPROFILERDIR)\micro-profiler.initializer.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Evolution.rc">
@@ -78,8 +75,5 @@
     <Image Include="Evolution.ico">
       <Filter>Ressourcendateien</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="$(MICROPROFILERDIR)\micro-profiler_$(PlatformName).lib" />
   </ItemGroup>
 </Project>
