@@ -8,24 +8,21 @@
 #include "EvoStatistics.h"
 
 EvoStatistics::EvoStatistics( ) :
-	m_pCore( nullptr ),
 	m_pTextBuf( nullptr )
 { }
 
 EvoStatistics::~EvoStatistics()
 {
-	m_pCore = nullptr;
 	m_pTextBuf = nullptr;
 }
 
 void EvoStatistics::Prepare
 ( 
-    EvolutionCore const * const pCore,
-	GridRect              const gridRectSelection,
-	TextBuffer          * const pTextBuf 
+    EvolutionCore const & core,
+	GridRect      const gridRectSelection,
+	TextBuffer  * const pTextBuf 
 )
 {
-	m_pCore    = pCore;
 	m_pTextBuf = pTextBuf;
 
 	m_gsCounter.zero();         
@@ -38,8 +35,8 @@ void EvoStatistics::Prepare
 	( 
 		[&](GridPoint const gp)
 		{
-			if ( m_pCore->IsAlive( gp ) )
-				aquireData( gp );
+			if ( core.IsAlive( gp ) )
+				aquireData( core, gp );
 			return false;
 		},
 		gridRectSelection
@@ -48,12 +45,16 @@ void EvoStatistics::Prepare
 	scaleData( );
 };
 
-void EvoStatistics::aquireData( GridPoint const & gp )
+void EvoStatistics::aquireData
+(
+	EvolutionCore const & core, 
+	GridPoint     const & gp 
+)
 {
-	EVO_GENERATION const evoGen   { m_pCore->GetEvoGenerationNr() };
-	Strategy::Id   const strategy { m_pCore->GetStrategyId( gp ) };
-	EVO_GENERATION const age      { m_pCore->GetAge( gp ) };
-	MEM_INDEX      const memSize  { m_pCore->GetMemSize( gp ) };
+	EVO_GENERATION const evoGen   { core.GetEvoGenerationNr() };
+	Strategy::Id   const strategy { core.GetStrategyId( gp ) };
+	EVO_GENERATION const age      { core.GetAge( gp ) };
+	MEM_INDEX      const memSize  { core.GetMemSize( gp ) };
 
 	assert( strategy != Strategy::Id::empty );
 	assert( age.IsNotNull() );
@@ -62,7 +63,7 @@ void EvoStatistics::aquireData( GridPoint const & gp )
 	(
 		[&]( auto geneType )
 		{
-			m_XaGenes[geneType].Add( strategy, CastToUnsignedInt( m_pCore->GetAllele( gp, geneType ) ) );
+			m_XaGenes[geneType].Add( strategy, CastToUnsignedInt( core.GetAllele( gp, geneType ) ) );
 		}
 	);
 
@@ -72,7 +73,7 @@ void EvoStatistics::aquireData( GridPoint const & gp )
 		{
 			GeneType::Id geneType = GetRelatedGeneType(action);
 			if ( GeneType::IsDefined( geneType ) ) 
-				m_XaAction[action].Add( strategy, static_cast<float>( m_pCore->GetAllele( gp, geneType ) ) );
+				m_XaAction[action].Add( strategy, static_cast<float>( core.GetAllele( gp, geneType ) ) );
 		}
 	);
 
@@ -146,7 +147,11 @@ void EvoStatistics::printAvAge( wchar_t const * const data )
     m_gsAverageAge.printGeneLine( m_pTextBuf, data );
 }
 
-void EvoStatistics::printCounters( Action::Id const action )
+void EvoStatistics::printCounters
+(
+	EvolutionCore const & core,
+	Action::Id    const   action 
+)
 {
 	ACTION_COUNT sum { 0 };
 	m_pTextBuf->nextLine( Action::GetName( action ) );
@@ -154,7 +159,7 @@ void EvoStatistics::printCounters( Action::Id const action )
 	( 
 		[&]( Strategy::Id strat )
 		{
-			ACTION_COUNT counter { m_pCore->GetActionCounter( strat, action ) };
+			ACTION_COUNT counter { core.GetActionCounter( strat, action ) };
 			m_pTextBuf->printNumber( counter.GetValue() );
 			sum += counter;
 		}
@@ -162,9 +167,9 @@ void EvoStatistics::printCounters( Action::Id const action )
 	m_pTextBuf->printNumber( sum.GetValue() );
 }
 
-void EvoStatistics::printIncidence( )
+void EvoStatistics::printIncidence( EvolutionCore const & core )
 {
-	Action::Apply2AllEnabledActions( [&]( Action::Id action ) {	printCounters( action ); } );
+	Action::Apply2AllEnabledActions( [&]( Action::Id action ) {	printCounters( core, action ); } );
 }
 
 void EvoStatistics::printProbabilities( )

@@ -47,30 +47,27 @@ public:
 
     void Prepare
 	( 
-		EvolutionCore const * const, 
-		GridRect              const,
-		TextBuffer          * const 
+		EvolutionCore const &, 
+		GridRect      const,
+		TextBuffer  * const 
 	); 
 
     void printHeader( );
-    void printIncidence( );
+    void printIncidence( EvolutionCore const & );
     void printProbabilities( );
     void printGeneStat(  );
     void printCounter( wchar_t const * const data );
     void printAvAge  ( wchar_t const * const data );
     void printAvFood ( wchar_t const * const data );
     void printMemory ( wchar_t const * const data );
-    void printCounters( Action::Id const action );
-
-	int const GetNrOfLivingIndividuals( ) const { return m_pCore->GetNrOfLivingIndividuals( ); }
+    void printCounters( EvolutionCore const &, Action::Id const action );
 
 private:
-	void aquireData( GridPoint const & );
+	void aquireData( EvolutionCore const &, GridPoint const & );
 	void scaleData( );
 	void scale( float &, float const );
 
-	EvolutionCore const * m_pCore;
-	TextBuffer          * m_pTextBuf;
+	TextBuffer * m_pTextBuf;
 
     XaCounter<unsigned int> m_gsCounter;          // counter for strategies and sum counter 
     XaCounter<unsigned int> m_gsAverageAge;       // average age of all individuals

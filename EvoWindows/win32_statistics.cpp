@@ -57,14 +57,10 @@ void StatisticsWindow::Stop( )
 void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 {
 	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
-	if ( ! pCore  )
-		return;
 
-	m_pStatistics->Prepare( pCore, GridSelection::GetSelection(), & textBuf ); 
-	if ( m_pStatistics->GetNrOfLivingIndividuals() == 0 )
+	m_pStatistics->Prepare( * pCore, GridSelection::GetSelection(), & textBuf ); 
+	if ( pCore->GetNrOfLivingIndividuals( ) == 0 )
 		PostCommand2Application( IDM_STOP, 0 );
-
-	m_pReadBuffer->ReleaseReadBuffer( );
 
     // start printing
 
@@ -76,8 +72,10 @@ void StatisticsWindow::DoPaint( TextBuffer & textBuf )
 	
 	textBuf.header( L"--- incidence in last generation ---" );
 
-    m_pStatistics->printIncidence( );
+    m_pStatistics->printIncidence( * pCore );
 	
+	m_pReadBuffer->ReleaseReadBuffer( );
+
 	textBuf.header( L"--- probabilities of actions ---" );
 
     m_pStatistics->printProbabilities();

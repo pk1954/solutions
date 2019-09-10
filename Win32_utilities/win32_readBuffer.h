@@ -1,4 +1,4 @@
-// EvoWindows/win32_readBuffer.h : 
+// win32_utilities/win32_readBuffer.h : 
 //
 // Handle read access from UI threads to Model
 //
@@ -6,7 +6,7 @@
 // UI threads acquire non exclusive read access to * m_pModel4Display 
 // by calling LockReadBuffer and relase it by ReleaseReadBuffer.
 //
-// Worker thread computes new generations of EvolutionModel in * m_pModelWork 
+// Worker thread computes new generations of Model in * m_pModelWork 
 // and tries to copy them into * m_pModel4Display.
 // Copy operation is possible only if * m_pModel4Display is not locked by one 
 // or several reader threads. As uninterrupted operation of worker thread has 

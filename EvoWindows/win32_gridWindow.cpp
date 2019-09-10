@@ -252,7 +252,6 @@ void GridWindow::moveGrid( PixelPoint const ptDiff )
 
 void GridWindow::doPaint( )
 {
-	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
 	m_pActionTimer->TimerStart( );
 
     if ( IsWindowVisible() )
@@ -261,7 +260,9 @@ void GridWindow::doPaint( )
         HDC const hdc = BeginPaint( &ps );
 		if ( m_pGraphics->StartFrame( GetWindowHandle(), hdc ) )
 		{
+			EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
 			(void)m_DrawFrame.DoPaint( pCore );
+			m_pReadBuffer->ReleaseReadBuffer( );
 
 			COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
 
@@ -288,7 +289,6 @@ void GridWindow::doPaint( )
 	}
 
 	m_pActionTimer->TimerStop( );
-	m_pReadBuffer->ReleaseReadBuffer( );
 }
 
 void GridWindow::mouseWheelAction( WPARAM const wParam )
