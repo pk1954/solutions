@@ -70,11 +70,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)\Utilities;$(SolutionDir)\runtimeCPP;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Utilities;$(SolutionDir)\runtimeCPP;$(SolutionDir)\HistoryInterface;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)\Utilities;$(SolutionDir)\runtimeCPP;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Utilities;$(SolutionDir)\runtimeCPP;$(SolutionDir)\HistoryInterface;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
