@@ -10,10 +10,23 @@
 
 static EvoWorkThreadInterface * m_pWorkThreadInterface;
 
+class WrapPostGotoGeneration : public Script_Functor
+{
+public:
+	virtual void operator() ( Script & script ) const
+	{
+		HIST_GENERATION const gen = static_cast<HIST_GENERATION>( script.ScrReadLong( ) );
+		if ( Config::UseHistorySystem( ) )
+			m_pWorkThreadInterface->PostGotoGeneration( gen );
+	}
+};
+
 void DefineWin32HistWrapperFunctions( EvoWorkThreadInterface * pWorkThreadInterface )
 {
     m_pWorkThreadInterface = pWorkThreadInterface;
 
-    DEF_ULONG_CONST( IDM_GOTO_ORIGIN );
+	DEF_FUNC( PostGotoGeneration );
+
+	DEF_ULONG_CONST( IDM_GOTO_ORIGIN );
     DEF_ULONG_CONST( IDM_GOTO_DEATH );
 }
