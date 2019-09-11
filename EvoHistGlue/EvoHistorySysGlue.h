@@ -39,7 +39,6 @@ public:
 	
 	HIST_GENERATION GetGenWithIndividual( GridPoint const, bool const ) const; 
 
-	
 	HistorySystem * GetHistorySystem( )
 	{
 		return m_pHistorySystem;

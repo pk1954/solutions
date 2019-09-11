@@ -6,7 +6,6 @@
 #include <sstream> 
 #include "gridRect.h"
 #include "SCRIPT.H"
-#include "HistorySystem.h"
 #include "EvoHistorySysGlue.h"
 #include "EventInterface.h"
 #include "EvoReadBuffer.h"
