@@ -28,7 +28,7 @@ public:
 		m_hrtimerSingleAction.Stop( );
 		m_dwSingleActionTime = m_hrtimerSingleAction.Get( );
 		++m_dwCounter;
-		m_observers.NotifyAll( FALSE );
+		m_observers.NotifyAll( false );
 	};
 
 	DWORD GetSingleActionTime( )

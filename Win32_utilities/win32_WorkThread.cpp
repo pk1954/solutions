@@ -94,14 +94,17 @@ void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 {
 	try
 	{
-		if ( WorkThread::Dispatch( msg ) || Dispatch( msg ) )
+		if ( 
+			  WorkThread::Dispatch( msg )  // Give WorkThread a chance to handle message by itself. 
+			  || Dispatch( msg )           // Otherwise hand over to application
+		   )                               // If one of these could handle the message, ...
 		{
-			if (m_pObserver != nullptr)                // notify main thread, that model has changed.
-				m_pObserver->Notify( ! m_bContinue );  // continue immediately, if in run mode and
+			if (m_pObserver != nullptr)              // ... notify main thread, that model has changed.
+				m_pObserver->Notify( m_bContinue );  // Continue immediately, if in run mode and
 		}
-		else
+		else  // Nobody could handle message
 		{
-			// sometimes strange messages arrive. e.g. uiMsg 1847
+			// Sometimes strange messages arrive. e.g. uiMsg 1847
 	    }   // I cannot find a reason, so I ignore them
 	}
 	catch ( HistoryBufferException e )

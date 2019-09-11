@@ -253,12 +253,12 @@ LRESULT EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
         break;
 
 	case WM_ACTIVATE:
-		m_observers.NotifyAll( FALSE );
+		m_observers.NotifyAll( false );
 		break;
 
 	case WM_CLOSE:
 		AnimateWindow( GetWindowHandle(), 200, AW_HIDE | AW_VER_POSITIVE );
-		m_observers.NotifyAll( FALSE );
+		m_observers.NotifyAll( false );
 		return TRUE; 
 
     default:

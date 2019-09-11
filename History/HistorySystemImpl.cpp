@@ -41,7 +41,7 @@ ModelData * HistorySystemImpl::StartHistorySystem
 	m_pHistoryCache->InitHistoryCache( nrOfSlots, pModelFactory );
 	m_pHistCacheItemWork->SetGenerationCommand( cmd );
     save2History( );
-	m_observers.NotifyAll( FALSE );
+	m_observers.NotifyAll( false );
 	return m_pHistCacheItemWork->GetModelData();
 }
 
@@ -75,7 +75,7 @@ void HistorySystemImpl::ClearHistory( HIST_GENERATION const genFirst )
 
 		m_GenCmdList.ResetGenerationCmd( gen );
 	}
-	m_observers.NotifyAll( FALSE );
+	m_observers.NotifyAll( false );
 }
 
 void HistorySystemImpl::ClearAllHistory(  ) 
@@ -88,7 +88,7 @@ void HistorySystemImpl::ClearAllHistory(  )
 bool HistorySystemImpl::AddHistorySlot( )
 { 
 	bool bRes = m_pHistoryCache->AddCacheSlot( );
-	m_observers.NotifyAll( FALSE );
+	m_observers.NotifyAll( false );
 	return bRes;
 }
 
@@ -138,7 +138,7 @@ ModelData const * HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genD
 		m_pHistoryCache->CopyFromCacheSlot( slotNr, m_pHistCacheItemWork );
     }
 
-	m_observers.NotifyAll( FALSE );
+	m_observers.NotifyAll( false );
 
 	return nullptr;
 }

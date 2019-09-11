@@ -68,20 +68,20 @@ public:
 
 	// called by producer thread
 
-	virtual void Notify( bool const bImmediate )
+	virtual void Notify( bool const bRunning )
 	{
-		if ( bImmediate )
-		{
+		if ( ! bRunning )                                         // In normal (not running) mode
+		{                                                         // acquire lock definitely
 			AcquireSRWLockExclusive( & m_SRWLock );               // if locked by readers, wait
 		}
-		else if ( ! TryAcquireSRWLockExclusive( & m_SRWLock ))    // if buffer is locked by readers
-		{                                                         // just continue your work. 
-			return;                                               // readers can synchronize with
-		}														  // later version
+		else if ( ! TryAcquireSRWLockExclusive( & m_SRWLock ))    // In running mode, try to aquire lock. 
+		{                                                         // If buffer is locked by readers,
+			return;                                               // just continue your work.
+		}														  // Readers can synchronize with later version
 
 		m_pModel4Display->CopyModelData( m_pModelWork );  
 		ReleaseSRWLockExclusive( & m_SRWLock );
-		m_observers.NotifyAll( bImmediate );
+		m_observers.NotifyAll( ! bRunning );   // If not running, readers should update immediately    
 	}
 
 private:

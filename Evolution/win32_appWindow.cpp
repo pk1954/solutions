@@ -154,7 +154,9 @@ AppWindow::AppWindow( ) :
 	m_pEvoHistWindow ->SetRefreshRate( 200ms ); 
 	m_pMiniGridWindow->SetRefreshRate( 300ms );
     m_pMainGridWindow->SetRefreshRate( 100ms );
-	
+	m_pEditorWindow  ->SetRefreshRate( 300ms );
+	m_pDspOptWindow  ->SetRefreshRate( 300ms );
+
 	GridWindow::InitClass
 	( 
 		& m_ReadBuffer, 

@@ -28,7 +28,7 @@ public:
 	void SetDelay( DWORD dwDelay )
 	{
 		m_dwGenerationDelay = dwDelay;
-		m_observers.NotifyAll( FALSE );
+		m_observers.NotifyAll( false );
 	};
 
 	void SleepDelay( ) const
