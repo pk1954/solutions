@@ -315,11 +315,11 @@ void AppWindow::Stop()
 	m_pCrsrWindow    ->Stop( );
 	m_pStatusBar     ->Stop( );
 
-	m_AppMenu            .Stop( );
-	m_Delay              .Stop( );
+	m_AppMenu               .Stop( );
+	m_Delay                 .Stop( );
 	m_EvoReadBuffer         .Stop( );
 	m_EvoWorkThreadInterface.Stop( );
-	m_EvoHistGlue        .Stop( );  // deletes m_pModelDataWork
+	m_EvoHistGlue           .Stop( );
 
 	m_WinManager.RemoveAll( );
 

@@ -6,8 +6,6 @@
 #include <unordered_map>
 #include "GenerationCmd.h"
 
-GenerationCmd const GenerationCmd::NEXT_GEN_CMD = GenerationCmd(tGenCmd::NEXT_GEN, 0 );
-
 wchar_t const * const GetGenerationCmdNameShort( tGenCmd const cmd )
 {
     static std::unordered_map < tGenCmd, wchar_t const * const > mapNames =

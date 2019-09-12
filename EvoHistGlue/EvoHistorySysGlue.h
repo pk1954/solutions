@@ -47,8 +47,6 @@ public:
 private:
 	EvolutionCore const * getEvolutionCore( HIST_GENERATION const ) const;
 
-    static GenerationCmd const NEXT_GEN_CMD;
-
 	HistAllocThread  m_HistAllocThread;
 	EvoModelFactory  m_EvoModelFactory;
 	HistorySystem  * m_pHistorySystem;

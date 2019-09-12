@@ -119,7 +119,7 @@ BOOL WorkThread::Dispatch( MSG const msg  )
 	{
 
 	case WorkThreadMessage::Id::RESET_MODEL:
-		GetHistorySystem( )->CreateAppCommand( GenerationCmd::ApplicationCmd( tGenCmd::RESET, Int24(CastToUnsignedInt(msg.wParam)) ) );
+		GetHistorySystem( )->CreateAppCommand( GenerationCmd::ResetCmd( CastToUnsignedInt( msg.wParam ) ) );
 		if ( static_cast<BOOL>(msg.wParam) )
 			GetHistorySystem( )->ClearAllHistory( );
 		break;
@@ -185,7 +185,7 @@ void WorkThread::GotoGeneration( HIST_GENERATION const gen )
 			if (m_pActionTimer != nullptr)
 				m_pActionTimer->TimerStart( );               // prepare for time measurement
 
-			m_pHistorySystem->CreateAppCommand( GenerationCmd::NEXT_GEN_CMD );  //////// here the real work is done! ////////////////
+			m_pHistorySystem->CreateAppCommand( GenerationCmd::NextGenCmd() );  //////// here the real work is done! ////////////////
 
 			if (m_pActionTimer != nullptr)
 				m_pActionTimer->TimerStop( );                     // measure computation time
@@ -208,7 +208,7 @@ void WorkThread::NGenerationSteps( int iNrOfGenerations )  // for benchmarks onl
 	stopwatch.Start();
 	for (int i = 0; i < iNrOfGenerations; ++i)
 	{
-		m_pHistorySystem->CreateAppCommand( GenerationCmd::NEXT_GEN_CMD );
+		m_pHistorySystem->CreateAppCommand( GenerationCmd::NextGenCmd() );
 		WorkMessage( FALSE, WorkThreadMessage::Id::REFRESH, 0, 0 );   // refresh all views
 	}
 	stopwatch.Stop( L"benchmark" );

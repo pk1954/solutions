@@ -54,10 +54,10 @@ private:
 		return GenerationCmd::ApplicationCmd( static_cast<tGenCmd>(cmd), param );  
 	}  
 
-	//void editorCommand( tGenCmd const cmd, WPARAM const wParam )
-	//{
-	//	GetHistorySystem( )->CreateAppCommand( NNetCmd( static_cast<tNNetCmd>(cmd), Int24(CastToUnsignedInt(wParam)) ) );
-	//}
+	void editorCommand( tNNetCmd const cmd, WPARAM const wParam )
+	{
+		EditorCommand( static_cast<tGenCmd>(cmd), wParam );
+	}
 
 	bool isEditorCommand( HIST_GENERATION const gen )
 	{

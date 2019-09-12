@@ -43,7 +43,6 @@ public:
 	}
 
 private:
-    static GenerationCmd const NEXT_GEN_CMD;
 
 	HistAllocThread  m_HistAllocThread;
 	NNetModelFactory m_NNetModelFactory;

@@ -24,8 +24,7 @@ ModelData * HistorySystemImpl::StartHistorySystem
 	HIST_GENERATION     const genMaxNrOfGens,
 	long                const lHistEntriesDemanded,
 	unsigned long long  const ullMemorySize,
-	ModelFactory      * const pModelFactory,
-	GenerationCmd       const cmd
+	ModelFactory      * const pModelFactory
 )
 {
 	m_pHistCacheItemWork = new HistCacheItem( pModelFactory );  //ok
@@ -39,7 +38,7 @@ ModelData * HistorySystemImpl::StartHistorySystem
 	m_pHistoryCache  = new HistoryCache;                    //ok
 	m_GenCmdList.Resize( genMaxNrOfGens );
 	m_pHistoryCache->InitHistoryCache( nrOfSlots, pModelFactory );
-	m_pHistCacheItemWork->SetGenerationCommand( cmd );
+	m_pHistCacheItemWork->SetGenerationCommand( GenerationCmd::ResetCmd( 0 ) );
     save2History( );
 	m_observers.NotifyAll( false );
 	return m_pHistCacheItemWork->GetModelData();

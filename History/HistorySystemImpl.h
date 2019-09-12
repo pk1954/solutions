@@ -30,11 +30,10 @@ public:
 
     virtual ModelData * StartHistorySystem
     ( 
-		HIST_GENERATION     const, 
-		long                const, 
-		unsigned long long  const, 
-		ModelFactory      * const,
-		GenerationCmd       const
+		HIST_GENERATION    const, 
+		long               const, 
+		unsigned long long const, 
+		ModelFactory     * const
     );
 
 	virtual void StopHistorySystem( );

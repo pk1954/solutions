@@ -55,14 +55,22 @@ public:
 
 	static bool IsAppCmd( tGenCmd const cmd ) { return cmd >= tGenCmd::FIRST_APP_CMD; }
 
-	static GenerationCmd const NEXT_GEN_CMD;
-
 	static GenerationCmd CachedCmd( HistSlotNr const slotNr )
-    {
+	{
 		return GenerationCmd( tGenCmd::CACHED, slotNr.GetValue() );
-    }
+	}
 
-    static GenerationCmd ApplicationCmd( tGenCmd cmd, Int24 const param )
+	static GenerationCmd NextGenCmd( )
+	{
+		return GenerationCmd( tGenCmd::NEXT_GEN, 0 );
+	}
+
+	static GenerationCmd ResetCmd( unsigned int const uiParam )
+	{
+		return GenerationCmd( tGenCmd::RESET,Int24(CastToUnsignedInt(uiParam)) );
+	}
+
+	static GenerationCmd ApplicationCmd( tGenCmd cmd, Int24 const param )
     {
 		AssertLimits( static_cast<int>(cmd), MIN_APP_CMD, MAX_APP_CMD );
 		return GenerationCmd( cmd, param );

@@ -98,7 +98,7 @@ BOOL EvoWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case EvoWorkThreadMessage::Id::SET_BRUSH_MODE:
-		EditorCommand( static_cast<tGenCmd>(tEvoCmd::editSetBrushMode), msg.wParam );
+		editorCommand( tEvoCmd::editSetBrushMode, msg.wParam );
 		break;
 
 	case EvoWorkThreadMessage::Id::SET_BRUSH_RADIUS:

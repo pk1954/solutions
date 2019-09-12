@@ -29,8 +29,7 @@ EvoModelDataGlue * EvoHistorySysGlue::Start
         Config::GetConfigValue( Config::tId::maxGeneration ),
         Config::GetConfigValue( Config::tId::nrOfHistorySlots ),
 		Util::GetPhysicalMemory( ),
-        & m_EvoModelFactory,
-		GenerationCmd::ApplicationCmd( tGenCmd::RESET, 0 )
+        & m_EvoModelFactory
     );
 
 	m_HistAllocThread.Start( m_pHistorySystem, bAsync );   // delegate allocation of history slots to a work thread

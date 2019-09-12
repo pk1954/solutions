@@ -99,8 +99,7 @@ void DoTest( )
 		1000,           // # of generations
 		NR_OF_SLOTS,    // # of cache slots
 		1024ull * 1024 * 1024 * 16,
-		& modelFactory,
-		GenerationCmd::ApplicationCmd( tGenCmd::FIRST_APP_CMD, 0 )
+		& modelFactory
 	);
 
 	wcout << L"*** Create " << NR_OF_SLOTS << L" history slots" << endl;
