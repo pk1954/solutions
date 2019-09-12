@@ -44,7 +44,6 @@ public:
     void PostSetBrushIntensity( PERCENT const );
     void PostSetColor( COLORREF const, tColorObject const, Strategy::Id const );
     void PostSetBrushRadius( GRID_COORD const );
-    void PostReset( BOOL );
 	void PostUndo();
 	void PostRedo();
 	void PostBenchmark( int const );

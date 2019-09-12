@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <fstream>
+#include "win32_controller.h"
 
 class AppWindow;
 class Delay;
@@ -16,7 +16,7 @@ class EditorWindow;
 class ColorManager;
 class AppMenu;
 
-class EvoController
+class EvoController : public Controller
 {
 public:
 	EvoController( );
@@ -26,7 +26,6 @@ public:
 	void EvoController::Initialize
 	( 
 		AppWindow              * const,
-		std::wostream          *,
 		EvoWorkThreadInterface * const,
 		WinManager             * const,
 		EvoHistorySysGlue      * const,
@@ -44,9 +43,8 @@ private:
 	void scriptDialog( );
 	bool processUIcommand( int const, LPARAM const );
 
-    std::wostream          * m_pTraceStream;
 	AppWindow              * m_pAppWindow;
-	EvoWorkThreadInterface * m_pWorkThreadInterface;
+	EvoWorkThreadInterface * m_pEvoWorkThreadInterface;
 	WinManager             * m_pWinManager;
 	EvoHistorySysGlue      * m_pEvoHistGlue;
 	Delay                  * m_pDelay;

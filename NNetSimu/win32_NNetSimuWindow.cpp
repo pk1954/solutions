@@ -10,6 +10,7 @@ using namespace std::literals::chrono_literals;
 
 // Model interfaces
 
+#include "NNetModel.h"
 
 // interfaces of various windows
 
@@ -64,12 +65,14 @@ NNetSimuWindow::NNetSimuWindow( ) :
 
 	stopwatch.Start();
 
+	m_NNetWorkThreadInterface.Initialize( & m_traceStream ); 
+
 	stopwatch.Stop( L"create window objects" );
 
 	m_NNetSimuController.Initialize
 	( 
 		this,
-		& m_traceStream,
+		& m_NNetWorkThreadInterface,
 		& m_WinManager,
 		& m_Delay, 
 		& m_AppMenu
@@ -82,7 +85,31 @@ NNetSimuWindow::~NNetSimuWindow( )
 
 void NNetSimuWindow::Start( )
 {
+	NNetModel * pModelWork;
+
 	m_AppMenu.Start( );
+
+/////////////////////
+
+	m_pHistorySystem = HistorySystem::CreateHistorySystem( );  // deleted in Stop function
+
+///	m_pHistInfoWindow->SetHistorySystem( m_pHistorySystem );
+
+	m_pModelDataWork     = m_NNetHistGlue.Start( m_pHistorySystem, TRUE ); 
+	pModelWork           = m_pModelDataWork->GetNNetModel();
+	m_pNNetModel4Display = NNetModel::CreateCore( );
+
+	m_NNetReadBuffer.Initialize( pModelWork, m_pNNetModel4Display );
+
+	m_NNetWorkThreadInterface.Start
+	( 
+		m_hwndApp, 
+		& m_atComputation,
+		& m_event, 
+		& m_Delay, 
+		& m_NNetReadBuffer, 
+		& m_NNetHistGlue
+	);
 
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp, TRUE,  TRUE  );
 

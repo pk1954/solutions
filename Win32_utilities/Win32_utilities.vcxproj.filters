@@ -99,6 +99,9 @@
     <ClInclude Include="win32_WorkThreadInterface.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="win32_controller.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_baseWindow.cpp">
@@ -156,6 +159,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_WorkThread.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_controller.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

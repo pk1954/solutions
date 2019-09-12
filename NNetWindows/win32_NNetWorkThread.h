@@ -22,9 +22,8 @@ public:
 	{
 		REDO = WorkThreadMessage::FIRST_APP_MESSAGE,
 		UNDO,
-		RESET_MODEL,
 		FIRST = REDO,
-		LAST = RESET_MODEL
+		LAST = UNDO
 	};
 
 	static BOOL IsValid( NNetWorkThreadMessage::Id msg )
@@ -50,15 +49,20 @@ public:
 
 private:
 
-	bool isEditorCommand( HIST_GENERATION const gen )
-	{
-		return ::IsEditorCommand( static_cast<tNNetCmd>( GetHistorySystem( )->GetGenerationCmd( gen ) ) );
-	}
-
 	GenerationCmd NNetCmd( tNNetCmd const cmd, Int24 const param )
 	{ 
 		return GenerationCmd::ApplicationCmd( static_cast<tGenCmd>(cmd), param );  
 	}  
+
+	//void editorCommand( tGenCmd const cmd, WPARAM const wParam )
+	//{
+	//	GetHistorySystem( )->CreateAppCommand( NNetCmd( static_cast<tNNetCmd>(cmd), Int24(CastToUnsignedInt(wParam)) ) );
+	//}
+
+	bool isEditorCommand( HIST_GENERATION const gen )
+	{
+		return ::IsEditorCommand( static_cast<tNNetCmd>( GetHistorySystem( )->GetGenerationCmd( gen ) ) );
+	}
 
 	virtual BOOL Dispatch( MSG const );
 };

@@ -5,6 +5,8 @@
 #pragma once
 
 #include "util.h"
+#include "GenerationCmd.h"
+#include "HistorySystem.h"
 #include "HistoryGeneration.h"
 #include "win32_thread.h"
 
@@ -25,6 +27,7 @@ public:
 	{
 		REFRESH = WM_APP,
 		STOP,
+		RESET_MODEL,
 		REPEAT_NEXT_GENERATION,  // only used internally, not part of procedural interface
 		GENERATION_RUN,
 		GOTO_GENERATION,
@@ -84,11 +87,21 @@ protected:
 
 	HistorySystem * GetHistorySystem( ) { return m_pHistorySystem; }
 
+	void EditorCommand( tGenCmd const cmd, WPARAM const wParam )
+	{
+		GetHistorySystem( )->CreateAppCommand( MakeGenerationCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
+	}
+
 private:
 	void setContinueFlag( BOOL const bState )
 	{
 		m_bContinue = bState;
 	}
+
+	GenerationCmd MakeGenerationCmd( tGenCmd const cmd, Int24 const param )
+	{ 
+		return GenerationCmd::ApplicationCmd( static_cast<tGenCmd>(cmd), param );  
+	}  
 
 	void generationRun( );
 	bool userWantsHistoryCut( ) const;

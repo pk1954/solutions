@@ -1,4 +1,4 @@
-// NNetSimuReadBuffer.h 
+// win32_NNetReadBuffer.h 
 //
 // NNetWindows
 

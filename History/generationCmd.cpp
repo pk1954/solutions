@@ -1,5 +1,6 @@
 // generationCmd.cpp
 //
+// HistoryInterface
 
 #include "stdafx.h"
 #include <unordered_map>
@@ -13,8 +14,9 @@ wchar_t const * const GetGenerationCmdNameShort( tGenCmd const cmd )
     {
 		{ tGenCmd::CACHED,    L"CACHE" },
 		{ tGenCmd::NEXT_GEN,  L"NEXT"  },
-        { tGenCmd::UNDEFINED, L"UNDEF" }
-    };
+        { tGenCmd::UNDEFINED, L"UNDEF" },
+	    { tGenCmd::RESET,     L"RESET" }
+	};
 
     return mapNames.at( cmd );
 }
@@ -25,8 +27,9 @@ wchar_t const * const GetGenerationCmdName( tGenCmd const cmd )
     {
 	    { tGenCmd::CACHED,    L"tGenCmd::cached"    },
 		{ tGenCmd::NEXT_GEN,  L"tGenCmd::nextGen"   },
-        { tGenCmd::UNDEFINED, L"tGenCmd::undefined" }
-    };
+		{ tGenCmd::UNDEFINED, L"tGenCmd::undefined" },
+		{ tGenCmd::RESET,     L"tGenCmd::reset"     }
+	};
 
     return mapNames.at( cmd );
 }

@@ -18,12 +18,6 @@ void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 	switch ( evoCmd )
 	{
 
-	case static_cast<tEvoCmd>(tGenCmd::NEXT_GEN):
-//		stopwatch.Start();
-		m_pEvolutionCore->Compute( );  // compute next generation
-//		stopwatch.Stop( L"Compute" );
-		break;
-
 	case tEvoCmd::editDoEdit:
 		m_pEvolutionCore->ModelDoEdit( GridPoint24::Unpack( param ) );
 		break;
@@ -31,10 +25,6 @@ void EvoModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 	case tEvoCmd::editSetPOI:
 		GridPOI::SetPoi( GridPoint24::Unpack( param ) );
 		break;
-
-	case tEvoCmd::reset:
-		m_pEvolutionCore->ResetAll( ); 
-        break;
 
 	case tEvoCmd::editSetBrushMode:
         m_pEvolutionCore->SetBrushMode( static_cast<tBrushMode>( param.GetValue() ) );

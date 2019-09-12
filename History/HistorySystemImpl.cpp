@@ -202,7 +202,9 @@ ModelData const * HistorySystemImpl::save2History( )
 
 void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
 {
-    if ( genCmd.IsCachedGeneration( ) ) // can happen only in history mode
+	ModelData * pModelDate = m_pHistCacheItemWork->GetModelData();
+	
+	if ( genCmd.IsCachedGeneration( ) ) // can happen only in history mode
     {
         assert( IsInHistoryMode( ) );
         HistSlotNr    const   slotNr         = genCmd.GetSlotNr( );
@@ -213,7 +215,15 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
     if ( m_pHistCacheItemWork->GetHistGenCounter() >= m_GenCmdList.GetMaxGeneration() )
 		throw HistoryBufferException();
 
-	m_pHistCacheItemWork->GetModelData()->OnAppCommand( genCmd );    // Apply application defined operation to step to next generation
+	if ( genCmd.GetCommand( ) == tGenCmd::NEXT_GEN )
+	{
+		pModelDate->Compute( );  // compute next generation
+	}
+	else
+	{
+		pModelDate->OnAppCommand( genCmd );    // Apply application defined operation to step to next generation
+	}
+
 	m_pHistCacheItemWork->IncHistGenCounter( );
 }
 

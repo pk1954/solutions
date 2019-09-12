@@ -14,14 +14,19 @@
 
 #include "win32_readBuffer.h"
 #include "win32_winManager.h"
+#include "win32_NNetWorkThreadInterface.h"
 
 // application
 
+#include "NNetHistorySysGlue.h"
 #include "win32_NNetSimuMenu.h"
+#include "win32_NNetReadBuffer.h"
 #include "win32_NNetSimuController.h"
 
 class Script;
 class AppMenu;
+class NNetModel;
+class HistInfoWindow;
 
 class NNetSimuWindow : public BaseWindow
 {
@@ -44,12 +49,20 @@ private:
 	Util::Event         m_event;
 	BOOL                m_bStarted;  // if true, model is visible, all functions available
 
-	NNetSimuController  m_NNetSimuController;
-	ActionTimer         m_atComputation;
-	ActionTimer         m_atDisplay;
-	Delay               m_Delay;
-	WinManager          m_WinManager;
-	NNetSimuMenu        m_AppMenu;
+	HistorySystem          * m_pHistorySystem;
+	HistInfoWindow         * m_pHistInfoWindow;
+	NNetModelDataGlue      * m_pModelDataWork;
+	NNetModel              * m_pNNetModel4Display;
+
+	NNetWorkThreadInterface m_NNetWorkThreadInterface;
+	NNetSimuController      m_NNetSimuController;
+	ActionTimer             m_atComputation;
+	ActionTimer             m_atDisplay;
+	Delay                   m_Delay;
+	WinManager              m_WinManager;
+	NNetReadBuffer          m_NNetReadBuffer;
+	NNetHistorySysGlue      m_NNetHistGlue;
+	NNetSimuMenu            m_AppMenu;
 
     std::wofstream m_traceStream;
 };

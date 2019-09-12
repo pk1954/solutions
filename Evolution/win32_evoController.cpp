@@ -5,7 +5,6 @@
 #include "Windowsx.h"
 #include "Windows.h"
 #include "Resource.h"
-#include "BoolOp.h"
 #include "config.h"
 #include "GridDimensions.h"
 #include "EvoHistorySysGlue.h"
@@ -13,7 +12,6 @@
 #include "win32_appWindow.h"
 #include "win32_script.h"
 #include "win32_stopwatch.h"
-#include "win32_EvoWorkThreadInterface.h"
 #include "win32_winManager.h"
 #include "win32_delay.h"
 #include "win32_status.h"
@@ -21,46 +19,44 @@
 #include "win32_appMenu.h"
 #include "win32_gridWindow.h"
 #include "win32_packGridPoint.h"
-#include "win32_evoController.h"
 #include "win32_colorManager.h"
 #include "win32_resetDlg.h"
+#include "win32_EvoWorkThreadInterface.h"
+#include "win32_evoController.h"
 
 EvoController::EvoController() :
-    m_pTraceStream         ( nullptr ),
-	m_pAppWindow           ( nullptr ),
-	m_pWorkThreadInterface ( nullptr ),
-	m_pWinManager          ( nullptr ),
-	m_pEvoHistGlue         ( nullptr ),
-    m_pDelay               ( nullptr ),
-	m_pColorManager        ( nullptr ),
-	m_pStatusBar           ( nullptr ),
-	m_pGridWindow          ( nullptr ),
-	m_pEditorWindow        ( nullptr ),
-	m_pAppMenu             ( nullptr ),
-	m_hCrsrWait            ( nullptr )
+	m_pAppWindow              ( nullptr ),
+	m_pEvoWorkThreadInterface ( nullptr ),
+	m_pWinManager             ( nullptr ),
+	m_pEvoHistGlue            ( nullptr ),
+    m_pDelay                  ( nullptr ),
+	m_pColorManager           ( nullptr ),
+	m_pStatusBar              ( nullptr ),
+	m_pGridWindow             ( nullptr ),
+	m_pEditorWindow           ( nullptr ),
+	m_pAppMenu                ( nullptr ),
+	m_hCrsrWait               ( nullptr )
 { }
 
 EvoController::~EvoController( )
 {
-    m_pTraceStream         = nullptr;
-	m_pAppWindow           = nullptr;
-	m_pWorkThreadInterface = nullptr;
-	m_pWinManager          = nullptr;
-	m_pEvoHistGlue         = nullptr;
-	m_pColorManager        = nullptr;
-	m_pDelay               = nullptr;
-    m_pStatusBar           = nullptr;
-	m_pGridWindow          = nullptr;
-	m_pEditorWindow        = nullptr;
-	m_pAppMenu             = nullptr;
-	m_hCrsrWait            = nullptr;
+	m_pAppWindow              = nullptr;
+	m_pEvoWorkThreadInterface = nullptr;
+	m_pWinManager             = nullptr;
+	m_pEvoHistGlue            = nullptr;
+	m_pColorManager           = nullptr;
+	m_pDelay                  = nullptr;
+    m_pStatusBar              = nullptr;
+	m_pGridWindow             = nullptr;
+	m_pEditorWindow           = nullptr;
+	m_pAppMenu                = nullptr;
+	m_hCrsrWait               = nullptr;
 }
 
 void EvoController::Initialize
 ( 
- 	AppWindow              * const pAppwindow,
-    std::wostream          *       pTraceStream,
-	EvoWorkThreadInterface * const pWorkThreadInterface,
+ 	AppWindow              * const pAppWindow,
+	EvoWorkThreadInterface * const pEvoWorkThreadInterface,
 	WinManager             * const pWinManager,
 	EvoHistorySysGlue      * const pEvoHistGlue,
 	Delay                  * const pDelay,
@@ -71,18 +67,18 @@ void EvoController::Initialize
 	EditorWindow           * const pEditorWindow
 )
 {
-	m_pTraceStream         = pTraceStream;
-	m_pAppWindow           = pAppwindow;
-	m_pWorkThreadInterface = pWorkThreadInterface;
-	m_pWinManager          = pWinManager;
-	m_pEvoHistGlue         = pEvoHistGlue;
-    m_pDelay               = pDelay;
-	m_pStatusBar           = pStatusBar;
-	m_pGridWindow          = pGridWindow;
-	m_pEditorWindow        = pEditorWindow;
-	m_pColorManager        = pColorManager;
-	m_pAppMenu             = pAppMenu;
-	m_hCrsrWait            = LoadCursor( NULL, IDC_WAIT );
+	Controller::Initialize( pAppWindow, pEvoWorkThreadInterface );
+	m_pEvoWorkThreadInterface = pEvoWorkThreadInterface;
+	m_pAppWindow              = pAppWindow;
+	m_pWinManager             = pWinManager;
+	m_pEvoHistGlue            = pEvoHistGlue;
+    m_pDelay                  = pDelay;
+	m_pStatusBar              = pStatusBar;
+	m_pGridWindow             = pGridWindow;
+	m_pEditorWindow           = pEditorWindow;
+	m_pColorManager           = pColorManager;
+	m_pAppMenu                = pAppMenu;
+	m_hCrsrWait               = LoadCursor( NULL, IDC_WAIT );
 }
 
 void EvoController::scriptDialog( )
@@ -167,40 +163,21 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 {
     int const wmId = LOWORD( wParam );
 	
+	if ( Controller::ProcessCommand( wmId, lParam ) )  // Some commands are handled by 
+		return;                                        // the framework controller
+
 	if ( processUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
 		return;                             // but do not concern the model
 
     switch (wmId)
     {
-		case IDM_ABOUT:
-			ShowAboutBox( m_pAppWindow->GetWindowHandle( ) );
-			break;
-
-		case IDM_EDIT_UNDO:
-			m_pWorkThreadInterface->PostUndo( );
-			break;
-
         case IDM_EDIT_REDO:
- 			m_pWorkThreadInterface->PostRedo( );
+ 			m_pEvoWorkThreadInterface->PostRedo( );
 			break;
-
-	    case IDM_FORWARD:
-            m_pWorkThreadInterface->PostGenerationStep( );
-            break;
 
 		case IDM_RUN:
 			m_pEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
-			m_pWorkThreadInterface->PostRunGenerations( true );
-			break;
-
-		case IDM_STOP:
-            m_pWorkThreadInterface->PostStopComputation( );
-			break;
-
-		case IDM_HIST_BUFFER_FULL:
-			std::wcout << L"History buffer is full" << std::endl;
-			(void)MessageBeep( MB_ICONWARNING );
-			ProcessCommand( IDM_STOP );
+			m_pEvoWorkThreadInterface->PostRunGenerations( true );
 			break;
 
 		case IDM_RESET:
@@ -210,11 +187,11 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 			switch ( iRes )
 			{
 			case IDM_SOFT_RESET:
-				m_pWorkThreadInterface->PostReset( FALSE );
+				m_pEvoWorkThreadInterface->PostReset( FALSE );
 				break;
 
 			case IDM_HISTORY_RESET:
-				m_pWorkThreadInterface->PostReset( TRUE );
+				m_pEvoWorkThreadInterface->PostReset( TRUE );
 				break;
 
 			case IDM_HARD_RESET:
@@ -232,27 +209,23 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 		break;
 
 		case IDM_SOFT_RESET:
-            m_pWorkThreadInterface->PostReset( FALSE );
+            m_pEvoWorkThreadInterface->PostReset( FALSE );
             break;
 
         case IDM_HISTORY_RESET:
-            m_pWorkThreadInterface->PostReset( TRUE );
+            m_pEvoWorkThreadInterface->PostReset( TRUE );
             break;
 
-		case IDM_BACKWARDS:
-			m_pWorkThreadInterface->PostPrevGeneration( );
-			break;
-
 		case IDM_GOTO_ORIGIN:
-			m_pWorkThreadInterface->PostGotoOrigin( UnpackFromLParam(lParam) );
+			m_pEvoWorkThreadInterface->PostGotoOrigin( UnpackFromLParam(lParam) );
 			break;
 
 		case IDM_GOTO_DEATH:
-			m_pWorkThreadInterface->PostGotoDeath( UnpackFromLParam(lParam) );
+			m_pEvoWorkThreadInterface->PostGotoDeath( UnpackFromLParam(lParam) );
 			break;
 
 		case IDM_SET_POI:
-			m_pWorkThreadInterface->PostSetPOI( UnpackFromLParam(lParam) );
+			m_pEvoWorkThreadInterface->PostSetPOI( UnpackFromLParam(lParam) );
 			break;
 
         case IDM_SCRIPT_DIALOG:
@@ -262,10 +235,6 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
         case IDM_ESCAPE:
 			m_pGridWindow->Escape();
             break;
-
-		case IDM_EXIT:
-			PostMessage( m_pAppWindow->GetWindowHandle( ), WM_CLOSE, 0, 0 );
-			break;
 
 		default:
 			assert( false );

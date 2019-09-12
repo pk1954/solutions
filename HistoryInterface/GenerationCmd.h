@@ -20,6 +20,7 @@ enum class tGenCmd : int8_t
 	UNDEFINED,
 	CACHED,
 	NEXT_GEN,
+	RESET,
 	FIRST_APP_CMD
 };
 

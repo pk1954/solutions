@@ -8,10 +8,8 @@
 
 enum class tNNetCmd : int8_t // enumeration starts after last tGenCmd value
 {
-	nextGen = static_cast<int8_t>(tGenCmd::FIRST_APP_CMD),
-    reset,
-    editFirst,  // placeholder
-	editLast,   // placeholder
+    editFirst = static_cast<int8_t>(tGenCmd::FIRST_APP_CMD),  // placeholder
+	editLast,                                                 // placeholder
 	FIRST_EDIT_CMD = editFirst,
 	LAST_APP_CMD   = editLast
 };

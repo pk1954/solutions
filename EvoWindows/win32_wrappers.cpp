@@ -122,16 +122,6 @@ public:
     }
 };
 
-class WrapPostReset : public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        INT const iValue = script.ScrReadInt( );
-        m_pWorkThreadInterface->PostReset( iValue != 0 );
-    }
-};
-
 class WrapBreak : public Script_Functor
 {
 public:
@@ -154,7 +144,6 @@ void DefineWin32WrapperFunctions( EvoWorkThreadInterface * const pWorkThreadInte
     DEF_FUNC( PostSetBrushIntensity );
     DEF_FUNC( PostSetBrushRadius );
 	DEF_FUNC( PostSetBrushManipulator );
-    DEF_FUNC( PostReset );
     DEF_FUNC( PostGenerationStep );
     DEF_FUNC( PostRunGenerations );
     DEF_FUNC( Break );

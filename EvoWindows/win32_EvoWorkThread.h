@@ -30,7 +30,6 @@ public:
 		GOTO_ORIGIN,
 		GOTO_DEATH,
 		BENCHMARK,
-		SET_POI,
 		DO_EDIT,
 		SET_BRUSH_RADIUS,
 		SET_BRUSH_INTENSITY,
@@ -40,9 +39,9 @@ public:
 		SET_STRATEGY_COLOR,
 		SET_SELECTION_COLOR,
 		SET_HIGHLIGHT_COLOR,
-		RESET_MODEL,
+		SET_POI,
 		FIRST = REDO,
-		LAST = RESET_MODEL
+		LAST = SET_POI
 	};
 
 	static BOOL IsValid( EvoWorkThreadMessage::Id msg )
@@ -75,7 +74,7 @@ private:
 
 	void editorCommand( tEvoCmd const cmd, WPARAM const wParam )
 	{
-		GetHistorySystem( )->CreateAppCommand( EvoCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
+		EditorCommand( static_cast<tGenCmd>(cmd), wParam );
 	}
 
 	void editorCommand( tEvoCmd const cmd, GridPoint24 const gp24 )

@@ -29,7 +29,7 @@ NNetModelDataGlue * NNetHistorySysGlue::Start
         1000,    //TODO 
 		Util::GetPhysicalMemory( ),
         & m_NNetModelFactory,
-		GenerationCmd::ApplicationCmd( static_cast< tGenCmd >( tNNetCmd::reset ), 0 )
+		GenerationCmd::ApplicationCmd( tGenCmd::RESET, 0 )
     );
 
 	m_HistAllocThread.Start( m_pHistorySystem, bAsync );   // delegate allocation of history slots to a work thread

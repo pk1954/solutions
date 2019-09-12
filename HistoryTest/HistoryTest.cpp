@@ -23,6 +23,10 @@ public:
 		m_iDataApp( 0 )
 	{ }
 
+	virtual void Compute( )
+	{
+
+	}
 	virtual BYTES GetModelSize( ) const
 	{
 		return BYTES { sizeof( HistTestModelData ) };

@@ -4,10 +4,18 @@
 
 #pragma once
 
+#ifndef IDC_STATIC
+#define IDC_STATIC				-1
+#endif
+
 // identifiers below 100 are reserved for win32_utilities
 
+#define IDS_APP_TITLE                   1
 #define IDD_ABOUTBOX                    2
 #define IDD_TIMESTAMP                   3
+
+#define IDM_ABOUT                       4
+#define IDM_EXIT                        5
 
 #define IDM_REFRESH_RATE_DIALOG        10
 #define IDD_REFRESH_RATE_EDIT_CTL      11
@@ -19,5 +27,13 @@
 #define IDM_HIDE_WINDOW                50
 
 #define IDM_HIST_BUFFER_FULL           60
+
+#define IDM_SIMU_MODE                  80
+#define IDM_FORWARD                    81
+#define IDM_BACKWARDS                  82
+#define IDM_RUN                        83
+#define IDM_STOP                       84
+#define IDM_SIMULATION_SPEED           85
+#define IDM_MAX_SPEED                  86
 
 // application identifiers start at 100

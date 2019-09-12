@@ -26,6 +26,7 @@ public:
 
 	void Stop( );
 
+	void PostReset( BOOL );
 	void PostRunGenerations( BOOL const );
 	void PostStopComputation();
 	void PostPrevGeneration();

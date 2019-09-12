@@ -118,6 +118,12 @@ BOOL WorkThread::Dispatch( MSG const msg  )
 	switch ( static_cast<WorkThreadMessage::Id>(msg.message) )
 	{
 
+	case WorkThreadMessage::Id::RESET_MODEL:
+		GetHistorySystem( )->CreateAppCommand( GenerationCmd::ApplicationCmd( tGenCmd::RESET, Int24(CastToUnsignedInt(msg.wParam)) ) );
+		if ( static_cast<BOOL>(msg.wParam) )
+			GetHistorySystem( )->ClearAllHistory( );
+		break;
+
 	case WorkThreadMessage::Id::GENERATION_RUN:
 		if ( static_cast<bool>(msg.lParam) )          // if first RUN message ...
 			setContinueFlag( TRUE );

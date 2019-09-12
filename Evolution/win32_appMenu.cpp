@@ -20,7 +20,7 @@ void AppMenu::Initialize
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
 
-	m_pWorkThreadInterface = pWworkThreadInterface;
+	m_pEvoWorkThreadInterface = pWworkThreadInterface;
 	m_pWinManager          = pWinManager;
 
     SendMessage( hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
@@ -55,9 +55,9 @@ void AppMenu::Stop( )
 
 void AppMenu::AdjustVisibility( )
 {
-	BOOL const bRunning = m_pWorkThreadInterface->IsRunning();
+	BOOL const bRunning = m_pEvoWorkThreadInterface->IsRunning();
 
-	EnableMenuItem( m_hMenu, IDM_FORWARD,       bRunning ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_FORWARD,          bRunning ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_BACKWARDS,        bRunning ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_GOTO_ORIGIN,      bRunning ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_GOTO_DEATH,       bRunning ? MF_GRAYED : MF_ENABLED );

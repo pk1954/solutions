@@ -76,7 +76,7 @@ private:
 
     GenCmdList      m_GenCmdList;
     HistoryCache  * m_pHistoryCache;
-    HistCacheItem * m_pHistCacheItemWork;      // The reference item, where history system gets and restores data 
+    HistCacheItem * m_pHistCacheItemWork;  // The reference item, where history system gets and restores data 
 	ViewCollection  m_observers;
 
 	ModelData  const * save2History( );

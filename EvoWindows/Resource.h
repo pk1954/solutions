@@ -1,23 +1,16 @@
 #pragma once
 
-#ifndef IDC_STATIC
-#define IDC_STATIC (-1)
-#endif
-
 // identifiers below 100 are reserved for win32_utilities
 #include "win32_util_resource.h"
 
 // identifiers for application start at 100
 
-#define IDS_APP_TITLE                           100
 #define IDI_EVOLUTION                           111
 #define IDI_SMALL                               112
 
 #define IDM_RESET_DIALOG                        120
 #define IDM_SCRIPT_DIALOG                       121
 
-#define IDM_ABOUT                               130
-#define IDM_EXIT                                131
 #define IDM_REFRESH                             140
 #define IDM_SET_POI                             144
 #define IDM_ESCAPE                              145
@@ -86,14 +79,6 @@
 #define IDM_EDIT_INTENSITY                      (IDM_EDIT_MODE + 32)
 #define IDM_EDIT_UNDO                           (IDM_EDIT_MODE + 33)
 #define IDM_EDIT_REDO                           (IDM_EDIT_MODE + 34)
-
-#define IDM_SIMU_MODE                           800
-#define IDM_FORWARD                             (IDM_SIMU_MODE +  1)
-#define IDM_BACKWARDS                           (IDM_SIMU_MODE +  2)
-#define IDM_RUN                                 (IDM_SIMU_MODE +  3)
-#define IDM_STOP                                (IDM_SIMU_MODE +  4)
-#define IDM_SIMULATION_SPEED                    (IDM_SIMU_MODE +  5)
-#define IDM_MAX_SPEED                           (IDM_SIMU_MODE +  6)
 
 #define IDM_ZOOM_MODE                           850
 #define IDM_FIT_ZOOM                            (IDM_ZOOM_MODE + 1)

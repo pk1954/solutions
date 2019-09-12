@@ -73,12 +73,6 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		}
 		break;
 
-	case NNetWorkThreadMessage::Id::RESET_MODEL:
-//		editorCommand( tNNetCmd::reset, msg.wParam );
-		if ( static_cast<BOOL>(msg.wParam) )
-			GetHistorySystem( )->ClearAllHistory( );
-		break;
-
 	default:
 		return FALSE;
 	} 

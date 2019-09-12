@@ -3,15 +3,16 @@
 
 #pragma once
 
-#include <fstream>
+#include "win32_controller.h"
 
 class NNetSimuWindow;
+class NNetWorkThreadInterface;
 class Delay;
 class StatusBar;
 class WinManager;
 class NNetSimuMenu;
 
-class NNetSimuController
+class NNetSimuController : public Controller
 {
 public:
 	NNetSimuController( );
@@ -20,11 +21,11 @@ public:
 
 	void Initialize
 	( 
-		NNetSimuWindow * const,
-		std::wostream  *,
-		WinManager     * const,
-		Delay          * const,
-		NNetSimuMenu   * const
+		NNetSimuWindow          * const,
+		NNetWorkThreadInterface * const,
+		WinManager              * const,
+		Delay                   * const,
+		NNetSimuMenu            * const
 	);
 
 	void ProcessCommand( WPARAM const, LPARAM const = 0 );
@@ -32,12 +33,11 @@ public:
 private:
 	bool processUIcommand( int const, LPARAM const );
 
-	BOOL             m_bTrace;
-    std::wostream  * m_pTraceStream;
-	NNetSimuWindow * m_pAppWindow;
-	WinManager     * m_pWinManager;
-	Delay          * m_pDelay;
-	StatusBar      * m_pStatusBar;
-	NNetSimuMenu   * m_pAppMenu;
-	HCURSOR          m_hCrsrWait;
-};
+	NNetSimuWindow          * m_pAppWindow;
+	NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
+	WinManager              * m_pWinManager;
+	Delay                   * m_pDelay;
+	StatusBar               * m_pStatusBar;
+	NNetSimuMenu            * m_pAppMenu;
+	HCURSOR                   m_hCrsrWait;
+};				          

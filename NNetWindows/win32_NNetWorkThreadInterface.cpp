@@ -5,15 +5,13 @@
 #include "stdafx.h"
 #include "assert.h"
 #include "Resource.h"
+#include "win32_script.h"
 #include "NNetModel.h"
 #include "NNetReadBuffer.h"
 #include "NNetHistorySysGlue.h"
-#include "win32_script.h"
 #include "win32_NNetWorkThread.h"
 #include "win32_NNetWorkThreadInterface.h"
 
-using std::wostream;
-using std::wcout;
 using std::endl;
 
 NNetWorkThreadInterface::NNetWorkThreadInterface( ) :

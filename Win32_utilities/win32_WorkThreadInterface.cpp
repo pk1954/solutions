@@ -75,6 +75,13 @@ void WorkThreadInterface::WorkMessage
 	m_pWorkThread->WorkMessage( isEditOperation, msg, wparam, lparam );
 }
 
+void WorkThreadInterface::PostReset( BOOL bResetHistSys )
+{
+	if ( IsTraceOn( ) )
+		* m_pTraceStream << __func__ << (bResetHistSys ? 1 : 0) << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(WorkThreadMessage::Id::RESET_MODEL), bResetHistSys, 0 );
+}
+
 void WorkThreadInterface::PostGenerationStep( )
 {
     if ( m_bTrace )

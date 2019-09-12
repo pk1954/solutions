@@ -97,14 +97,8 @@ BOOL EvoWorkThread::Dispatch( MSG const msg  )
 		}
 		break;
 
-	case EvoWorkThreadMessage::Id::RESET_MODEL:
-		editorCommand( tEvoCmd::reset, msg.wParam );
-		if ( static_cast<BOOL>(msg.wParam) )
-			GetHistorySystem( )->ClearAllHistory( );
-		break;
-
 	case EvoWorkThreadMessage::Id::SET_BRUSH_MODE:
-		editorCommand( tEvoCmd::editSetBrushMode, msg.wParam );
+		EditorCommand( static_cast<tGenCmd>(tEvoCmd::editSetBrushMode), msg.wParam );
 		break;
 
 	case EvoWorkThreadMessage::Id::SET_BRUSH_RADIUS:

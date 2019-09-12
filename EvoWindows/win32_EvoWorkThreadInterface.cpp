@@ -54,13 +54,6 @@ void EvoWorkThreadInterface::Start
 	WorkThreadInterface::Start( m_pEvoWorkThread );
 }
 
-void EvoWorkThreadInterface::PostReset( BOOL bResetHistSys )
-{
-    if ( IsTraceOn( ) )
-        TraceStream( ) << __func__ << (bResetHistSys ? 1 : 0) << endl;
-    WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(EvoWorkThreadMessage::Id::RESET_MODEL), bResetHistSys, 0 );
-}
-
 void EvoWorkThreadInterface::PostBenchmark( int const iNrOfGenerations )
 {
     if ( IsTraceOn( ) )

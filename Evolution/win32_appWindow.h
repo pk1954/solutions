@@ -75,7 +75,7 @@ private:
 	ColorManager           m_ColorManager;
 	EvoController          m_EvoController;
 	D3D_driver             m_D3d_driver;
-	EvoReadBuffer          m_ReadBuffer;
+	EvoReadBuffer          m_EvoReadBuffer;
 	AppMenu                m_AppMenu;
 	EvoWorkThreadInterface m_EvoWorkThreadInterface;
 	EvoHistorySysGlue      m_EvoHistGlue;

@@ -40,7 +40,7 @@ StatusBar::StatusBar()
 	m_pReadBuffer( nullptr ),
 	m_pEditorWindow( nullptr ),
 	m_pHistorySystem( nullptr ),
-	m_pWorkThreadInterface( nullptr )
+	m_pEvoWorkThreadInterface( nullptr )
 { }
 
 void StatusBar::Start
@@ -57,7 +57,7 @@ void StatusBar::Start
 	m_pReadBuffer          = pReadBuffer;
 	m_pEditorWindow        = pEditorWindow;
 	m_pHistorySystem       = pHistorySystem;
-	m_pWorkThreadInterface = pWorkThreadInterface;
+	m_pEvoWorkThreadInterface = pWorkThreadInterface;
 
 	HWND hwndStatus = CreateWindow
 	(
@@ -320,7 +320,7 @@ void StatusBar::scrollBarMessage( int const iCtrlId )
 
 void StatusBar::adjust( )
 {
-	BOOL const bRunMode = m_pWorkThreadInterface->IsRunning();
+	BOOL const bRunMode = m_pEvoWorkThreadInterface->IsRunning();
 
 	EnableWindow( GetDlgItem( IDM_RUN  ), ! bRunMode );
 	EnableWindow( GetDlgItem( IDM_STOP ),   bRunMode );

@@ -14,7 +14,7 @@ class AppMenu
 public:
 	AppMenu() :
 		m_hMenu( nullptr ),
-		m_pWorkThreadInterface( nullptr ),
+		m_pEvoWorkThreadInterface( nullptr ),
 		m_pWinManager( nullptr )
 	{}
 
@@ -27,6 +27,6 @@ private:
 	void enableMenues( UINT const );
 
 	HMENU                          m_hMenu;
-	EvoWorkThreadInterface const * m_pWorkThreadInterface;
+	EvoWorkThreadInterface const * m_pEvoWorkThreadInterface;
 	WinManager             const * m_pWinManager;
 };

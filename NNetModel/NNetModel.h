@@ -30,8 +30,9 @@ public:
 		* this = * static_cast<NNetModel const *>( src );
 	}
 
-	void Compute ( );
-	void ResetAll( );
+	virtual void Compute( );
+
+	virtual void ResetAll( );
 
 	// static functions  
 

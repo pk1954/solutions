@@ -59,6 +59,16 @@ public:
 
 	virtual void OnAppCommand( GenerationCmd const );
 
+	virtual void Compute( )
+	{
+		m_pEvolutionCore->Compute( );  // compute next generation
+	}
+
+	virtual void ResetAll( )
+	{
+		m_pEvolutionCore->ResetAll( );
+	}
+
 private:
    static Stopwatch stopwatch;
 

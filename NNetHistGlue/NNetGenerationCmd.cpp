@@ -18,9 +18,9 @@ wchar_t const * const GetNNetCommandNameShort( tNNetCmd const cmd )
 {
     static std::unordered_map < tNNetCmd, wchar_t const * const > mapNames =
     {
-        { tNNetCmd::nextGen, L"NEXT"  },
-        { tNNetCmd::reset,   L"RESET" } 
-    };
+		{ tNNetCmd::editFirst, L"EDIT_1" },
+		{ tNNetCmd::editLast,  L"EDIT_2" } 
+	};
 
     return mapNames.at( cmd );
 }
@@ -29,9 +29,9 @@ wchar_t const * const GetNNetCommandName( tNNetCmd const cmd )
 {
     static std::unordered_map < tNNetCmd, wchar_t const * const > mapNames =
     {
-        { tNNetCmd::nextGen, L"tNNetCmd::nextGen" },
-        { tNNetCmd::reset,   L"tGenCmd::reset"    }
-    };
+		{ tNNetCmd::editFirst, L"tGenCmd::editFirst" },
+		{ tNNetCmd::editLast,  L"tGenCmd::editLast"  }
+	};
 
     return mapNames.at( cmd );
 }

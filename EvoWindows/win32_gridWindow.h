@@ -74,7 +74,7 @@ private:
 	static HCURSOR                  m_hCrsrMove;
 	static HCURSOR                  m_hCrsrArrow;
 	static EvoReadBuffer          * m_pReadBuffer;
-    static EvoWorkThreadInterface * m_pWorkThreadInterface;
+    static EvoWorkThreadInterface * m_pEvoWorkThreadInterface;
     static ActionTimer            * m_pActionTimer;
     static DspOptWindow           * m_pDspOptWindow;
     static FocusPoint             * m_pFocusPoint;

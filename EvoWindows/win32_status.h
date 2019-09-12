@@ -76,7 +76,7 @@ private:
 	EvoReadBuffer                * m_pReadBuffer;
 	EditorWindow                 * m_pEditorWindow;
 	HistorySystem          const * m_pHistorySystem;
-	EvoWorkThreadInterface const * m_pWorkThreadInterface;
+	EvoWorkThreadInterface const * m_pEvoWorkThreadInterface;
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 

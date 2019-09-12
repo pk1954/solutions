@@ -28,6 +28,16 @@ public:
 
     NNetModelDataGlue & operator= ( NNetModelDataGlue const & );  // noncopyable class 
 
+	virtual void Compute( )
+	{
+		m_pNNetModel->Compute( );
+	}
+
+	virtual void ResetAll( )
+	{
+		m_pNNetModel->ResetAll( );
+	}
+
 	NNetModel * GetNNetModel( )
 	{
 		return m_pNNetModel;

@@ -8,8 +8,7 @@
 
 enum class tEvoCmd : int8_t // enumeration starts after last tGenCmd value
 {
-    reset = static_cast<int8_t>(tGenCmd::FIRST_APP_CMD),
-    editSetBrushMode,
+    editSetBrushMode = static_cast<int8_t>(tGenCmd::FIRST_APP_CMD),
     editSetBrushShape,
     editSetBrushManipulator,
     editSetBrushRadius,

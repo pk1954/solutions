@@ -26,15 +26,15 @@
 
 #include "Commdlg.h"
 
-HWND                     GridWindow::m_hwndApp              = nullptr;
-EvoReadBuffer          * GridWindow::m_pReadBuffer          = nullptr;
-EvoWorkThreadInterface * GridWindow::m_pWorkThreadInterface = nullptr;
-ActionTimer            * GridWindow::m_pActionTimer         = nullptr;
-DspOptWindow           * GridWindow::m_pDspOptWindow        = nullptr;
-FocusPoint             * GridWindow::m_pFocusPoint          = nullptr;
-ColorManager           * GridWindow::m_pColorManager        = nullptr;
-HCURSOR                  GridWindow::m_hCrsrArrow           = nullptr;
-HCURSOR                  GridWindow::m_hCrsrMove            = nullptr;
+HWND                     GridWindow::m_hwndApp                 = nullptr;
+EvoReadBuffer          * GridWindow::m_pReadBuffer             = nullptr;
+EvoWorkThreadInterface * GridWindow::m_pEvoWorkThreadInterface = nullptr;
+ActionTimer            * GridWindow::m_pActionTimer            = nullptr;
+DspOptWindow           * GridWindow::m_pDspOptWindow           = nullptr;
+FocusPoint             * GridWindow::m_pFocusPoint             = nullptr;
+ColorManager           * GridWindow::m_pColorManager           = nullptr;
+HCURSOR                  GridWindow::m_hCrsrArrow              = nullptr;
+HCURSOR                  GridWindow::m_hCrsrMove               = nullptr;
 					      
 void GridWindow::InitClass
 (        
@@ -46,14 +46,14 @@ void GridWindow::InitClass
 	ColorManager           * const pColorManager
 )
 {
-	m_pReadBuffer          = pReadBuffer;
-	m_pWorkThreadInterface = pWorkThreadInterface;
-    m_pActionTimer         = pActionTimer;
-	m_pDspOptWindow        = pDspOptWindow;
-    m_pFocusPoint          = pFocusPoint;
-	m_pColorManager        = pColorManager;
-	m_hCrsrArrow           = LoadCursor( NULL, IDC_ARROW );
-	m_hCrsrMove            = LoadCursor( NULL, IDC_SIZEALL );
+	m_pReadBuffer             = pReadBuffer;
+	m_pEvoWorkThreadInterface = pWorkThreadInterface;
+    m_pActionTimer            = pActionTimer;
+	m_pDspOptWindow           = pDspOptWindow;
+    m_pFocusPoint             = pFocusPoint;
+	m_pColorManager           = pColorManager;
+	m_hCrsrArrow              = LoadCursor( NULL, IDC_ARROW );
+	m_hCrsrMove               = LoadCursor( NULL, IDC_SIZEALL );
 }
 
 GridWindow::GridWindow( ) :
@@ -121,7 +121,7 @@ void GridWindow::Stop( )
 GridWindow::~GridWindow( )
 {
 	m_pReadBuffer          = nullptr;
-	m_pWorkThreadInterface = nullptr;
+	m_pEvoWorkThreadInterface = nullptr;
 	m_pGridWindowObserved  = nullptr;
 }
 
@@ -129,7 +129,7 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 {
 	UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 
-	if ( m_pWorkThreadInterface->IsRunning() )
+	if ( m_pEvoWorkThreadInterface->IsRunning() )
 		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_STOP, L"Stop" );
 	else
 		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_RUN, L"Run" );
@@ -204,7 +204,7 @@ void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
     {
         if ( (pCore->GetBrushMode() != tBrushMode::move) && (ptCrsr != m_ptLast) )
         {
-            m_pWorkThreadInterface->PostDoEdit( m_pFocusPoint->GetGridPoint( ) );
+            m_pEvoWorkThreadInterface->PostDoEdit( m_pFocusPoint->GetGridPoint( ) );
         }
         else if ( m_ptLast.IsNotNull() )  // last cursor pos stored in m_ptLast
         {
