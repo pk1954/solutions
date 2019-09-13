@@ -26,6 +26,7 @@
 class Script;
 class AppMenu;
 class NNetModel;
+class NNetWindow;
 class HistInfoWindow;
 
 class NNetSimuWindow : public BaseWindow
@@ -49,6 +50,7 @@ private:
 	Util::Event         m_event;
 	BOOL                m_bStarted;  // if true, model is visible, all functions available
 
+	NNetWindow             * m_pMainNNetWindow;
 	HistorySystem          * m_pHistorySystem;
 	HistInfoWindow         * m_pHistInfoWindow;
 	NNetModelDataGlue      * m_pModelDataWork;

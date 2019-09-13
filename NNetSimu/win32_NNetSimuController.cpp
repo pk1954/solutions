@@ -55,6 +55,30 @@ bool NNetSimuController::processUIcommand( int const wmId, LPARAM const lParam )
 	switch (wmId)
 	{
 
+	case IDM_FIT_ZOOM:
+		//m_pGridWindow->Fit2Rect( );
+		//m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
+		break;
+
+	case IDM_ZOOM_OUT:
+	case IDM_ZOOM_IN:
+		//m_pGridWindow->Zoom( wmId == IDM_ZOOM_IN );
+		//m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
+		break;
+
+	case IDM_SET_ZOOM:
+		//m_pGridWindow->SetFieldSize( PIXEL(CastToShort(lParam)));
+		//m_pStatusBar->SetSizeTrackBar( PIXEL(CastToShort(lParam)) );
+		break;
+
+	case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
+		//(void)m_pGridWindow->SetFieldSize( PIXEL(CastToShort(lParam)) );
+		break;
+
+	case IDM_REFRESH:
+		//m_pGridWindow->Refresh();
+		break;
+
 	default:
 		return FALSE; // command has not been processed
 	}

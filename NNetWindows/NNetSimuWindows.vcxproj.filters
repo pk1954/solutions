@@ -36,6 +36,9 @@
     <ClInclude Include="win32_NNetReadBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="win32_NNetWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_NNetHistWindow.cpp">
@@ -45,6 +48,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_NNetWorkThreadInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_NNetWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

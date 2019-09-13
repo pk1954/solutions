@@ -1,5 +1,6 @@
 // win32_gridWindow.cpp
 //
+// EvoWindows
 
 #include "stdafx.h"
 #include "Resource.h"
@@ -17,7 +18,6 @@
 #include "win32_colorManager.h"
 #include "win32_focusPoint.h"
 #include "win32_crsrWindow.h"
-#include "win32_actionTimer.h"
 #include "win32_graphicsInterface.h"
 #include "win32_EvoWorkThreadInterface.h"
 #include "win32_packGridPoint.h"
@@ -26,15 +26,11 @@
 
 #include "Commdlg.h"
 
-HWND                     GridWindow::m_hwndApp                 = nullptr;
 EvoReadBuffer          * GridWindow::m_pReadBuffer             = nullptr;
 EvoWorkThreadInterface * GridWindow::m_pEvoWorkThreadInterface = nullptr;
-ActionTimer            * GridWindow::m_pActionTimer            = nullptr;
 DspOptWindow           * GridWindow::m_pDspOptWindow           = nullptr;
 FocusPoint             * GridWindow::m_pFocusPoint             = nullptr;
 ColorManager           * GridWindow::m_pColorManager           = nullptr;
-HCURSOR                  GridWindow::m_hCrsrArrow              = nullptr;
-HCURSOR                  GridWindow::m_hCrsrMove               = nullptr;
 					      
 void GridWindow::InitClass
 (        
@@ -46,18 +42,16 @@ void GridWindow::InitClass
 	ColorManager           * const pColorManager
 )
 {
+	ModelWindow::InitClass( pActionTimer );
 	m_pReadBuffer             = pReadBuffer;
 	m_pEvoWorkThreadInterface = pWorkThreadInterface;
-    m_pActionTimer            = pActionTimer;
 	m_pDspOptWindow           = pDspOptWindow;
     m_pFocusPoint             = pFocusPoint;
 	m_pColorManager           = pColorManager;
-	m_hCrsrArrow              = LoadCursor( NULL, IDC_ARROW );
-	m_hCrsrMove               = LoadCursor( NULL, IDC_SIZEALL );
 }
 
 GridWindow::GridWindow( ) :
-    BaseWindow( ),
+    ModelWindow( ),
 	m_pGraphics( nullptr ),
 	m_hPopupMenu( nullptr ),
     m_pGridWindowObserved( nullptr ),
@@ -120,9 +114,9 @@ void GridWindow::Stop( )
 
 GridWindow::~GridWindow( )
 {
-	m_pReadBuffer          = nullptr;
+	m_pReadBuffer             = nullptr;
 	m_pEvoWorkThreadInterface = nullptr;
-	m_pGridWindowObserved  = nullptr;
+	m_pGridWindowObserved     = nullptr;
 }
 
 void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
@@ -175,7 +169,7 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 	m_pReadBuffer->ReleaseReadBuffer( );
 }
 
-void GridWindow::onMouseMove( LPARAM const lParam, WPARAM const wParam )
+void GridWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
     PixelPoint    const   ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
 	EvolutionCore const * pCore  = m_pReadBuffer->LockReadBuffer( );
@@ -250,10 +244,8 @@ void GridWindow::moveGrid( PixelPoint const ptDiff )
     }
 }
 
-void GridWindow::doPaint( )
+void GridWindow::OnPaint( )
 {
-	m_pActionTimer->TimerStart( );
-
     if ( IsWindowVisible() )
 	{
         PAINTSTRUCT ps;
@@ -287,11 +279,9 @@ void GridWindow::doPaint( )
 		if ( ! bCentered )
 		   Invalidate( FALSE );    // repeat if POI is not in center 
 	}
-
-	m_pActionTimer->TimerStop( );
 }
 
-void GridWindow::mouseWheelAction( WPARAM const wParam )
+void GridWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 {
 	int        iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;
 	BOOL const bDirection = ( iDelta > 0 );
@@ -312,121 +302,96 @@ bool GridWindow::IsFullGridVisible() const
 	return IsInClientRect( m_PixelCoordinates.Grid2PixelRect( GridDimensions::GridRectFull() ) );
 }
 
-LRESULT GridWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+void GridWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )
 {
-    switch (message)
-    {
-
-    case WM_COMMAND:
-        {
-            UINT uiCmdId = LOWORD( wParam );
-            switch ( uiCmdId )
-            {
-			case IDM_CHOOSE_STRATEGY_COLOR:
-			{
-				PixelPoint    const   ptCrsr = GetCrsrPosFromLparam( lParam );
-				GridPoint     const   gpCrsr = m_PixelCoordinates.Pixel2GridPos( ptCrsr );
-				EvolutionCore const * pCore  = m_pReadBuffer->LockReadBuffer( );
-				Strategy::Id  const   strat  = pCore->GetStrategyId( gpCrsr );
-				m_pReadBuffer->ReleaseReadBuffer( );
-				m_DrawFrame.CallStrategyColorDialog( GetWindowHandle(), strat );
-			}
-			break;
-
-			case IDM_CHOOSE_SELECTION_COLOR:
-			{
-				LOGFONT lf; 
-				CHOOSEFONT cf;
-				cf.lStructSize = sizeof(CHOOSEFONT); 
-				cf.hwndOwner = (HWND)nullptr; 
-				cf.hDC = (HDC)nullptr; 
-				cf.lpLogFont = &lf; 
-				cf.iPointSize = 0; 
-				cf.Flags = CF_SCREENFONTS | CF_FIXEDPITCHONLY; 
-				cf.rgbColors = RGB(0,0,0); 
-				cf.lCustData = 0L; 
-				cf.lpfnHook = (LPCFHOOKPROC)nullptr; 
-				cf.lpTemplateName = (LPCTSTR)nullptr; 
-				cf.hInstance = (HINSTANCE) nullptr; 
-				cf.lpszStyle = (LPTSTR)nullptr; 
-				cf.nFontType = SCREEN_FONTTYPE; 
-				cf.nSizeMin = 0; 
-				cf.nSizeMax = 0; 
-				BOOL bRes = ChooseFont( & cf );
-
-				m_DrawFrame.CallSelectionColorDialog( GetWindowHandle() );
-			}
-			break;
-
-			case IDM_CHOOSE_HIGHLIGHT_COLOR:
-				m_DrawFrame.CallHighlightColorDialog( GetWindowHandle() );
-			break;
-
-			case IDM_SET_POI:
-            case IDM_GOTO_ORIGIN:  
-            case IDM_GOTO_DEATH:      // commands using cursor pos are handled here
-            {
-                PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );
-                GridPoint  const gpCrsr = m_PixelCoordinates.Pixel2GridPos( ptCrsr );
-				PostCommand2Application( wParam, Pack2LParam( gpCrsr ) );
-			}
-            break;
-
-			default:
-                PostCommand2Application( wParam, lParam ); // not handled here, delegate to application
-            }
-        }
-
-		PostCommand2Application( IDM_REFRESH, 0 );
-        return FALSE;
-
-    case WM_MOUSEWHEEL:
-		mouseWheelAction( wParam );
-        return FALSE;
-
-    case WM_LBUTTONDOWN:
-        if ( GridSelection::SelectionIsEmpty() )
-        {
-            SetCapture( );
-            if ( inObservedClientRect( lParam ) || m_bMoveAllowed )
-                onMouseMove( lParam, wParam );
-        }
-		else
-		{
-			GridSelection::ResetSelection( );
-			PostCommand2Application( IDM_REFRESH, 0 );
-		}
-        SetFocus( );
-        return TRUE;
-
-    case WM_LBUTTONUP:
-        (void)ReleaseCapture( );
-        return FALSE;
-
-	case WM_MOUSEMOVE:
-		onMouseMove( lParam, wParam );
-		return FALSE;
-
-	case WM_SETCURSOR:
+	if ( GridSelection::SelectionIsEmpty() )
 	{
-		EvolutionCore const * pCore   = m_pReadBuffer->LockReadBuffer( );
-		tBrushMode    const   mode    = pCore->GetBrushMode();
-		BOOL          const   keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
-		HCURSOR       const   hCrsr   = ( (mode == tBrushMode::move) && keyDown ) ? m_hCrsrMove : m_hCrsrArrow;
-		m_pReadBuffer->ReleaseReadBuffer( );
-		SetCursor( hCrsr );
+		SetCapture( );
+		if ( inObservedClientRect( lParam ) || m_bMoveAllowed )
+			OnMouseMove( wParam, lParam );
 	}
-		return FALSE;
+	else
+	{
+		GridSelection::ResetSelection( );
+		PostCommand2Application( IDM_REFRESH, 0 );
+	}
+	SetFocus( );
+}
 
-    case WM_PAINT:
-        doPaint( );
-        return FALSE;
+void GridWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
+{
+	(void)ReleaseCapture( );
+}
+
+void GridWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
+{
+	EvolutionCore const * pCore   = m_pReadBuffer->LockReadBuffer( );
+	tBrushMode    const   mode    = pCore->GetBrushMode();
+	BOOL          const   keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
+	HCURSOR       const   hCrsr   = ( (mode == tBrushMode::move) && keyDown ) ? m_hCrsrMove : m_hCrsrArrow;
+	m_pReadBuffer->ReleaseReadBuffer( );
+	SetCursor( hCrsr );
+}
+
+BOOL GridWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
+{
+	UINT uiCmdId = LOWORD( wParam );
+	switch ( uiCmdId )
+	{
+	case IDM_CHOOSE_STRATEGY_COLOR:
+	{
+		PixelPoint    const   ptCrsr = GetCrsrPosFromLparam( lParam );
+		GridPoint     const   gpCrsr = m_PixelCoordinates.Pixel2GridPos( ptCrsr );
+		EvolutionCore const * pCore  = m_pReadBuffer->LockReadBuffer( );
+		Strategy::Id  const   strat  = pCore->GetStrategyId( gpCrsr );
+		m_pReadBuffer->ReleaseReadBuffer( );
+		m_DrawFrame.CallStrategyColorDialog( GetWindowHandle(), strat );
+	}
+	break;
+
+	case IDM_CHOOSE_SELECTION_COLOR:
+	{
+		LOGFONT lf; 
+		CHOOSEFONT cf;
+		cf.lStructSize = sizeof(CHOOSEFONT); 
+		cf.hwndOwner = (HWND)nullptr; 
+		cf.hDC = (HDC)nullptr; 
+		cf.lpLogFont = &lf; 
+		cf.iPointSize = 0; 
+		cf.Flags = CF_SCREENFONTS | CF_FIXEDPITCHONLY; 
+		cf.rgbColors = RGB(0,0,0); 
+		cf.lCustData = 0L; 
+		cf.lpfnHook = (LPCFHOOKPROC)nullptr; 
+		cf.lpTemplateName = (LPCTSTR)nullptr; 
+		cf.hInstance = (HINSTANCE) nullptr; 
+		cf.lpszStyle = (LPTSTR)nullptr; 
+		cf.nFontType = SCREEN_FONTTYPE; 
+		cf.nSizeMin = 0; 
+		cf.nSizeMax = 0; 
+		BOOL bRes = ChooseFont( & cf );
+
+		m_DrawFrame.CallSelectionColorDialog( GetWindowHandle() );
+	}
+	break;
+
+	case IDM_CHOOSE_HIGHLIGHT_COLOR:
+		m_DrawFrame.CallHighlightColorDialog( GetWindowHandle() );
+		break;
+
+	case IDM_SET_POI:
+	case IDM_GOTO_ORIGIN:  
+	case IDM_GOTO_DEATH:      // commands using cursor pos are handled here
+	{
+		PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );
+		GridPoint  const gpCrsr = m_PixelCoordinates.Pixel2GridPos( ptCrsr );
+		PostCommand2Application( wParam, Pack2LParam( gpCrsr ) );
+	}
+	break;
 
 	default:
-        break;
-    }
-
-    return DefWindowProc( message, wParam, lParam );
+		return TRUE;
+	}
+	return FALSE;
 }
 
 void GridWindow::Size( )

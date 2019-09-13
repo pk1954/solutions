@@ -114,7 +114,7 @@ private:
 	bool userWantsHistoryCut( ) const;
 
 	Delay               * m_pDelay;
-	ActionTimer         * m_pActionTimer;
+	ActionTimer         * m_pComputeTimer;
     EventInterface      * m_pEventPOI;
 	ObserverInterface   * m_pObserver;
     HistorySystem       * m_pHistorySystem;

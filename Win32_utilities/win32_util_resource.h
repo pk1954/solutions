@@ -17,6 +17,8 @@
 #define IDM_ABOUT                       4
 #define IDM_EXIT                        5
 
+#define IDM_REFRESH                     7
+
 #define IDM_REFRESH_RATE_DIALOG        10
 #define IDD_REFRESH_RATE_EDIT_CTL      11
 
@@ -27,6 +29,13 @@
 #define IDM_HIDE_WINDOW                50
 
 #define IDM_HIST_BUFFER_FULL           60
+
+#define IDM_ZOOM_MODE                  70      
+#define IDM_FIT_ZOOM                   71      
+#define IDM_SET_ZOOM                   72    
+#define IDM_ZOOM_IN                    73    
+#define IDM_ZOOM_OUT                   74    
+#define IDM_ZOOM_TRACKBAR              75    
 
 #define IDM_SIMU_MODE                  80
 #define IDM_FORWARD                    81

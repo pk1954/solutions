@@ -110,17 +110,28 @@ AppWindow::AppWindow( ) :
 
 	stopwatch.Stop( L"create window objects" );
 
-	m_pMainGridWindow = new GridWindow( );
-	m_pMiniGridWindow = new GridWindow( );
+	m_pDspOptWindow   = new DspOptWindow( );
+	m_pFocusPoint     = new FocusPoint( );
 	m_pPerfWindow     = new PerformanceWindow( );
 	m_pStatistics     = new StatisticsWindow( );
 	m_pHistInfoWindow = new HistInfoWindow( );
 	m_pCrsrWindow     = new CrsrWindow( );
 	m_pStatusBar      = new StatusBar( );
-	m_pFocusPoint     = new FocusPoint( );
 	m_pEditorWindow   = new EditorWindow( );
 	m_pEvoHistWindow  = new EvoHistWindow( );
-	m_pDspOptWindow   = new DspOptWindow( );
+
+	GridWindow::InitClass
+	( 
+		& m_EvoReadBuffer, 
+		& m_EvoWorkThreadInterface, 
+		  m_pFocusPoint, 
+		  m_pDspOptWindow, 
+		& m_atDisplay, 
+		& m_ColorManager 
+	);
+
+	m_pMainGridWindow = new GridWindow( );
+	m_pMiniGridWindow = new GridWindow( );
 
 	m_EvoController.Initialize
 	( 
@@ -155,16 +166,6 @@ AppWindow::AppWindow( ) :
     m_pMainGridWindow->SetRefreshRate( 100ms );
 	m_pEditorWindow  ->SetRefreshRate( 300ms );
 	m_pDspOptWindow  ->SetRefreshRate( 300ms );
-
-	GridWindow::InitClass
-	( 
-		& m_EvoReadBuffer, 
-		& m_EvoWorkThreadInterface, 
-		  m_pFocusPoint, 
-		  m_pDspOptWindow, 
-		& m_atDisplay, 
-		& m_ColorManager 
-	);
 
 	GridDimensions::DefineGridSize
 	( 

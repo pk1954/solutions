@@ -1,12 +1,13 @@
 // win32_gridWindow.h : 
 //
+// EvoWindows
 
 #pragma once
 
 #include "GridPoint.h"
 #include "pixelCoordinates.h"
 #include "EvoReadBuffer.h"
-#include "win32_baseWindow.h"
+#include "win32_modelWindow.h"
 #include "win32_draw.h"
 
 class EvolutionCore;
@@ -18,7 +19,7 @@ class ActionTimer;
 class FocusPoint;
 class ColorManager;
 
-class GridWindow : public BaseWindow
+class GridWindow : public ModelWindow
 {
 public:
 	static void InitClass
@@ -61,21 +62,12 @@ public:
 		m_bMoveAllowed = FALSE; 
 	}
 
-	void Refresh( )
-	{
-		Trigger( );
-	}
-
 private:
     GridWindow             ( GridWindow const & );  // noncopyable class 
     GridWindow & operator= ( GridWindow const & );  // noncopyable class 
 
-	static HWND                     m_hwndApp;
-	static HCURSOR                  m_hCrsrMove;
-	static HCURSOR                  m_hCrsrArrow;
 	static EvoReadBuffer          * m_pReadBuffer;
     static EvoWorkThreadInterface * m_pEvoWorkThreadInterface;
-    static ActionTimer            * m_pActionTimer;
     static DspOptWindow           * m_pDspOptWindow;
     static FocusPoint             * m_pFocusPoint;
 	static ColorManager           * m_pColorManager;
@@ -90,13 +82,17 @@ private:
     BOOL                m_bMoveAllowed;    // TRUE: move with mouse is possible
     HMENU               m_hPopupMenu;
 
-    virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
-	virtual void    AddContextMenuEntries( HMENU const, POINT const );
+	virtual void AddContextMenuEntries( HMENU const, POINT const );
+
+	virtual void OnMouseWheel ( WPARAM const, LPARAM const );
+	virtual void OnMouseMove  ( WPARAM const, LPARAM const );
+	virtual BOOL OnCommand    ( WPARAM const, LPARAM const );
+	virtual void OnLButtonDown( WPARAM const, LPARAM const );
+	virtual void OnLButtonUp  ( WPARAM const, LPARAM const );
+	virtual void OnSetCursor  ( WPARAM const, LPARAM const );
+	virtual void OnPaint( );
 
 	void newFieldSize( PIXEL const, GridPoint const );
-	void mouseWheelAction( WPARAM const  );
     BOOL inObservedClientRect( LPARAM const );
     void moveGrid( PixelPoint const );
-    void onMouseMove( LPARAM const, WPARAM const );
-    void doPaint( );
 };

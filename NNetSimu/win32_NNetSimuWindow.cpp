@@ -14,6 +14,7 @@ using namespace std::literals::chrono_literals;
 
 // interfaces of various windows
 
+#include "win32_NNetWindow.h"
 
 // infrastructure
 
@@ -37,7 +38,8 @@ using namespace std::literals::chrono_literals;
 NNetSimuWindow::NNetSimuWindow( ) :
     BaseWindow( ),
 	m_hwndConsole( nullptr ),
-    m_traceStream( ),
+	m_pMainNNetWindow( nullptr ),
+	m_traceStream( ),
 	m_bStarted( FALSE )
 {
 	Stopwatch stopwatch;
@@ -69,6 +71,10 @@ NNetSimuWindow::NNetSimuWindow( ) :
 
 	stopwatch.Stop( L"create window objects" );
 
+	NNetWindow::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
+
+	m_pMainNNetWindow = new NNetWindow( );
+
 	m_NNetSimuController.Initialize
 	( 
 		this,
@@ -77,10 +83,13 @@ NNetSimuWindow::NNetSimuWindow( ) :
 		& m_Delay, 
 		& m_AppMenu
 	);
+
+	m_pMainNNetWindow->SetRefreshRate( 100ms );
 };
 
 NNetSimuWindow::~NNetSimuWindow( )
 {
+	delete m_pMainNNetWindow;
 }
 
 void NNetSimuWindow::Start( )
@@ -101,6 +110,13 @@ void NNetSimuWindow::Start( )
 
 	m_NNetReadBuffer.Initialize( pModelWork, m_pNNetModel4Display );
 
+	m_pMainNNetWindow->Start
+	( 
+		m_hwndApp, 
+		WS_CHILD | WS_CLIPSIBLINGS, 
+		[&]() { return true; }	
+	);
+		
 	m_NNetWorkThreadInterface.Start
 	( 
 		m_hwndApp, 
@@ -111,7 +127,8 @@ void NNetSimuWindow::Start( )
 		& m_NNetHistGlue
 	);
 
-	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp, TRUE,  TRUE  );
+	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW,   m_hwndApp,         TRUE,  TRUE  );
+	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow, TRUE,  FALSE );
 
 	m_AppMenu.Initialize( m_hwndApp, & m_WinManager );
 
@@ -121,12 +138,16 @@ void NNetSimuWindow::Start( )
 		Show( TRUE );
 	}
 
+	m_pMainNNetWindow->Show( TRUE );
+
 	m_bStarted = TRUE;
 }
 
 void NNetSimuWindow::Stop()
 {
 	m_bStarted = FALSE;
+
+	m_pMainNNetWindow->Stop( );
 
 	m_AppMenu.Stop( );
 	m_Delay  .Stop( );
@@ -198,5 +219,24 @@ void NNetSimuWindow::adjustChildWindows( )
 
     if ( pntAppClientSize.IsNotZero( ) )
     {
-    }
+		//m_pStatusBar->Resize( );
+		//pixAppClientWinHeight -= m_pStatusBar->GetHeight( );
+		pixAppClientWinHeight -= HIST_WINDOW_HEIGHT, 
+		//	m_pEvoHistWindow->Move   // adapt history window to new size
+		//	( 
+		//		0_PIXEL, 
+		//		pixAppClientWinHeight, 
+		//		pixAppClientWinWidth, 
+		//		HIST_WINDOW_HEIGHT, 
+		//		TRUE 
+		//	); 
+		m_pMainNNetWindow->Move
+		( 
+			0_PIXEL, 
+			0_PIXEL, 
+			pixAppClientWinWidth, 
+			pixAppClientWinHeight, 
+			TRUE 
+		);
+	}
 }

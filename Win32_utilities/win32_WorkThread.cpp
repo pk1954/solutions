@@ -26,7 +26,7 @@ WorkThread::WorkThread
 	HistorySystem       * const pHistSystem,
 	WorkThreadInterface * const pWorkThreadInterface
 ) :
-	m_pActionTimer        ( pActionTimer ),
+	m_pComputeTimer       ( pActionTimer ),
 	m_pDelay              ( pDelay ),   
 	m_pEventPOI           ( pEvent ),   
 	m_pObserver           ( pObserver ),   
@@ -43,7 +43,7 @@ WorkThread::~WorkThread( )
 {
 	m_hwndApplication      = nullptr;
 	m_pWorkThreadInterface = nullptr;
-	m_pActionTimer         = nullptr;
+	m_pComputeTimer        = nullptr;
 	m_pEventPOI            = nullptr;
 	m_pObserver            = nullptr;
 	m_pHistorySystem       = nullptr;
@@ -205,13 +205,13 @@ void WorkThread::GotoGeneration( HIST_GENERATION const gen )
 				(m_pHistorySystem->GetCurrentGeneration( ) == m_pHistorySystem->GetYoungestGeneration( ))
 			)     
 		{                                                    // Normal case: Compute next generation
-			if (m_pActionTimer != nullptr)
-				m_pActionTimer->TimerStart( );               // prepare for time measurement
+			if (m_pComputeTimer != nullptr)
+				m_pComputeTimer->TimerStart( );               // prepare for time measurement
 
 			m_pHistorySystem->CreateAppCommand( GenerationCmd::NextGenCmd() );  //////// here the real work is done! ////////////////
 
-			if (m_pActionTimer != nullptr)
-				m_pActionTimer->TimerStop( );                     // measure computation time
+			if (m_pComputeTimer != nullptr)
+				m_pComputeTimer->TimerStop( );                     // measure computation time
 		}
 		else  // we are somewhere in history
 		{

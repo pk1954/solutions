@@ -157,6 +157,7 @@
     <ClInclude Include="win32_controller.h" />
     <ClInclude Include="win32_delay.h" />
     <ClInclude Include="win32_graphicsInterface.h" />
+    <ClInclude Include="win32_modelWindow.h" />
     <ClInclude Include="win32_readBuffer.h" />
     <ClInclude Include="win32_refreshRateDialog.h" />
     <ClInclude Include="win32_textBuffer.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="win32_baseWindow.cpp" />
     <ClCompile Include="win32_clut.cpp" />
     <ClCompile Include="win32_controller.cpp" />
+    <ClCompile Include="win32_modelWindow.cpp" />
     <ClCompile Include="win32_refreshRateDialog.cpp" />
     <ClCompile Include="win32_textBuffer.cpp" />
     <ClCompile Include="win32_hiResTimer.cpp" />

@@ -11,7 +11,6 @@
 #define IDM_RESET_DIALOG                        120
 #define IDM_SCRIPT_DIALOG                       121
 
-#define IDM_REFRESH                             140
 #define IDM_SET_POI                             144
 #define IDM_ESCAPE                              145
 #define IDD_TOGGLE_STRIP_MODE                   146
@@ -77,13 +76,6 @@
 #define IDM_DSP_ENV_NOTHING                     (IDM_EDIT_MODE + 11)
 #define IDM_EDIT_SIZE                           (IDM_EDIT_MODE + 31)
 #define IDM_EDIT_INTENSITY                      (IDM_EDIT_MODE + 32)
-
-#define IDM_ZOOM_MODE                           850
-#define IDM_FIT_ZOOM                            (IDM_ZOOM_MODE + 1)
-#define IDM_SET_ZOOM                            (IDM_ZOOM_MODE + 2)
-#define IDM_ZOOM_IN                             (IDM_ZOOM_MODE + 3)
-#define IDM_ZOOM_OUT                            (IDM_ZOOM_MODE + 4)
-#define IDM_ZOOM_TRACKBAR                       (IDM_ZOOM_MODE + 5)
 
 #define IDM_GOTO_CMD_BASE                       900
 #define IDM_GOTO_ORIGIN                         (IDM_GOTO_CMD_BASE + 1)
