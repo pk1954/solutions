@@ -7,40 +7,33 @@
 #include <fstream>
 #include "NNetGenerationCmd.h"
 
-bool IsEditorCommand( tNNetCmd const cmd )
+wchar_t const * const GetNNetCommandNameShort( NNetGenerationCmd::Id const cmd )
 {
-	static_assert( (int)tNNetCmd::LAST_APP_CMD < GenerationCmd::MAX_APP_CMD, "Too many tNNetCmd values" );
-
-	return ( tNNetCmd::FIRST_EDIT_CMD <= cmd ) && ( cmd <= tNNetCmd::LAST_APP_CMD );
-}
-
-wchar_t const * const GetNNetCommandNameShort( tNNetCmd const cmd )
-{
-    static std::unordered_map < tNNetCmd, wchar_t const * const > mapNames =
+    static std::unordered_map < NNetGenerationCmd::Id, wchar_t const * const > mapNames =
     {
-		{ tNNetCmd::editFirst, L"EDIT_1" },
-		{ tNNetCmd::editLast,  L"EDIT_2" } 
+		{ NNetGenerationCmd::Id::editFirst, L"EDIT_1" },
+		{ NNetGenerationCmd::Id::editLast,  L"EDIT_2" } 
 	};
 
     return mapNames.at( cmd );
 }
 
-wchar_t const * const GetNNetCommandName( tNNetCmd const cmd )
+wchar_t const * const GetNNetCommandName( NNetGenerationCmd::Id const cmd )
 {
-    static std::unordered_map < tNNetCmd, wchar_t const * const > mapNames =
+    static std::unordered_map < NNetGenerationCmd::Id, wchar_t const * const > mapNames =
     {
-		{ tNNetCmd::editFirst, L"tGenCmd::editFirst" },
-		{ tNNetCmd::editLast,  L"tGenCmd::editLast"  }
+		{ NNetGenerationCmd::Id::editFirst, L"GenerationCmd::Id::editFirst" },
+		{ NNetGenerationCmd::Id::editLast,  L"GenerationCmd::Id::editLast"  }
 	};
 
     return mapNames.at( cmd );
 }
 
-std::wostream & operator << ( std::wostream & out, tNNetCmd const & cmd )
+std::wostream & operator << ( std::wostream & out, NNetGenerationCmd::Id const & cmd )
 {
-	if ( GenerationCmd::IsAppCmd( static_cast<tGenCmd>(cmd) ) )
+	if ( GenerationCmd::IsAppCmd( static_cast<GenerationCmd::Id>(cmd) ) )
 		out << GetNNetCommandNameShort( cmd  );
 	else 
-		out << GetGenerationCmdNameShort( static_cast<tGenCmd>(cmd) );
+		out << GetGenerationCmdNameShort( static_cast<GenerationCmd::Id>(cmd) );
     return out;
 };

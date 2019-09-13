@@ -106,6 +106,20 @@ void WorkThreadInterface::PostRepeatGenerationStep( )
     m_pWorkThread->WorkMessage( FALSE, WorkThreadMessage::Id::REPEAT_NEXT_GENERATION, 0, 0 );
 }
 
+void WorkThreadInterface::PostRedo( )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+	m_pWorkThread->WorkMessage( FALSE, WorkThreadMessage::Id::REDO_OPERATION, 0, 0 );
+}
+
+void WorkThreadInterface::PostUndo( )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+	m_pWorkThread->WorkMessage( FALSE, WorkThreadMessage::Id::UNDO_OPERATION, 0, 0 );
+}
+
 void WorkThreadInterface::PostPrevGeneration( )
 {
     if ( m_bTrace )

@@ -35,5 +35,7 @@
 #define IDM_STOP                       84
 #define IDM_SIMULATION_SPEED           85
 #define IDM_MAX_SPEED                  86
+#define IDM_EDIT_UNDO                  87
+#define IDM_EDIT_REDO                  88
 
 // application identifiers start at 100

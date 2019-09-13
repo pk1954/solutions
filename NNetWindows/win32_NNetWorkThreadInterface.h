@@ -31,9 +31,6 @@ public:
 	    NNetHistorySysGlue * const
     );
 
-	void PostUndo();
-	void PostRedo();
-
 private:
 	NNetWorkThread * m_pNNetWorkThread;
 }; 

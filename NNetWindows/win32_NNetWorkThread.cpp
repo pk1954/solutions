@@ -37,7 +37,6 @@ NNetWorkThread::NNetWorkThread
 		pWorkThreadInterface 
 	)
 {
-	StartThread( L"NNetWorkThread", true ); 
 }
 
 NNetWorkThread::~NNetWorkThread( )
@@ -49,29 +48,6 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	switch ( static_cast<NNetWorkThreadMessage::Id>(msg.message) )
 	{
 
-	case NNetWorkThreadMessage::Id::REDO:
-		{
-		HIST_GENERATION genCurrent  = GetHistorySystem( )->GetCurrentGeneration( );
-		HIST_GENERATION genYoungest = GetHistorySystem( )->GetYoungestGeneration( );
-
-
-			if ( ( genCurrent < genYoungest ) && isEditorCommand( genCurrent + 1 ) )
-				GotoGeneration( genCurrent + 1 );
-			else
-				(void)MessageBeep(MB_OK);  // first generation reached
-		}
-		break;
-
-	case NNetWorkThreadMessage::Id::UNDO:
-		{
-		HIST_GENERATION genCurrent = GetHistorySystem( )->GetCurrentGeneration( );
-
-			if ( ( genCurrent > 0 ) && isEditorCommand( genCurrent - 1 ) )
-				GotoGeneration( genCurrent - 1 );
-			else
-				(void)MessageBeep(MB_OK);  // first generation reached
-		}
-		break;
 
 	default:
 		return FALSE;

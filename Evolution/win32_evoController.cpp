@@ -171,10 +171,6 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 
     switch (wmId)
     {
-        case IDM_EDIT_REDO:
- 			m_pEvoWorkThreadInterface->PostRedo( );
-			break;
-
 		case IDM_RUN:
 			m_pEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
 			m_pEvoWorkThreadInterface->PostRunGenerations( true );

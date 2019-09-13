@@ -15,78 +15,80 @@
 #include "util.h"
 #include "HistSlotNr.h"
 
-enum class tGenCmd : int8_t
-{
-	UNDEFINED,
-	CACHED,
-	NEXT_GEN,
-	RESET,
-	FIRST_APP_CMD
-};
-
 class GenerationCmd
 { 
 public:
-    GenerationCmd( )
-	   : m_Cmd( tGenCmd::UNDEFINED )
+	enum class Id : int8_t
+	{
+		UNDEFINED,
+		CACHED,
+		NEXT_GEN,
+		UNDO,
+		REDO,
+		RESET,
+		FIRST_APP_CMD
+	};
+
+	GenerationCmd( )
+	   : m_Cmd( Id::UNDEFINED )
     { }
 
-    tGenCmd    GetCommand( ) const { return m_Cmd; }
+    Id         GetCommand( ) const { return m_Cmd; }
 	Int24      GetParam  ( ) const { return m_Param; }
 	HistSlotNr GetSlotNr ( ) const
 	{
-		assert( m_Cmd == tGenCmd::CACHED );
+		assert( m_Cmd == Id::CACHED );
 		return HistSlotNr{ m_Param.GetValue( ) };
 	}
 
-	bool IsDefined( )             const { return m_Cmd != tGenCmd::UNDEFINED; }
-    bool IsUndefined( )           const { return m_Cmd == tGenCmd::UNDEFINED; }
-    bool IsCachedGeneration( )    const { return m_Cmd == tGenCmd::CACHED; }
-    bool IsNotCachedGeneration( ) const { return m_Cmd != tGenCmd::CACHED; }
-	bool IsAppCommand( )          const { IsAppCmd( m_Cmd ); }
+	bool IsDefined( )             const { return m_Cmd != Id::UNDEFINED; }
+    bool IsUndefined( )           const { return m_Cmd == Id::UNDEFINED; }
+    bool IsCachedGeneration( )    const { return m_Cmd == Id::CACHED; }
+    bool IsNotCachedGeneration( ) const { return m_Cmd != Id::CACHED; }
+	bool IsAppCommand( )          const { return IsAppCmd( m_Cmd ); }
 
-    void InitializeCmd( )
+	void InitializeCmd( )
     {
-        m_Cmd = tGenCmd::UNDEFINED;
+        m_Cmd = Id::UNDEFINED;
     }
 
- 	static int const MIN_APP_CMD = static_cast<int>(tGenCmd::FIRST_APP_CMD);
+ 	static int const MIN_APP_CMD = static_cast<int>(Id::FIRST_APP_CMD);
  	static int const MAX_APP_CMD = 0xff;
 
-	static bool IsAppCmd( tGenCmd const cmd ) { return cmd >= tGenCmd::FIRST_APP_CMD; }
+	static bool IsAppCmd( Id const cmd ) { return cmd >= Id::FIRST_APP_CMD; }
 
 	static GenerationCmd CachedCmd( HistSlotNr const slotNr )
 	{
-		return GenerationCmd( tGenCmd::CACHED, slotNr.GetValue() );
+		return GenerationCmd( Id::CACHED, slotNr.GetValue() );
 	}
 
 	static GenerationCmd NextGenCmd( )
 	{
-		return GenerationCmd( tGenCmd::NEXT_GEN, 0 );
+		return GenerationCmd( Id::NEXT_GEN, 0 );
 	}
 
 	static GenerationCmd ResetCmd( unsigned int const uiParam )
 	{
-		return GenerationCmd( tGenCmd::RESET,Int24(CastToUnsignedInt(uiParam)) );
+		return GenerationCmd( Id::RESET,Int24(CastToUnsignedInt(uiParam)) );
 	}
 
-	static GenerationCmd ApplicationCmd( tGenCmd cmd, Int24 const param )
+	static GenerationCmd ApplicationCmd( Id cmd, Int24 const param )
     {
 		AssertLimits( static_cast<int>(cmd), MIN_APP_CMD, MAX_APP_CMD );
 		return GenerationCmd( cmd, param );
     }
 
 private:
-    GenerationCmd( tGenCmd const cmd, Int24 const p ) :
+    GenerationCmd( Id const cmd, Int24 const p ) :
         m_Cmd( cmd ),
 		m_Param( p )
 	{ }
 
-    tGenCmd m_Cmd;
-	Int24   m_Param;
+    Id    m_Cmd;
+	Int24 m_Param;
 };
 
-wchar_t const * const GetGenerationCmdNameShort( tGenCmd const );
-wchar_t const * const GetGenerationCmdName     ( tGenCmd const );
+wchar_t const * const GetGenerationCmdNameShort( GenerationCmd::Id const );
+wchar_t const * const GetGenerationCmdName     ( GenerationCmd::Id const );
 
 std::wostream & operator << ( std::wostream &, GenerationCmd const & );

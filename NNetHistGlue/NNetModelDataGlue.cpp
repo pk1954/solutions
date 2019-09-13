@@ -11,7 +11,7 @@ Stopwatch NNetModelDataGlue::stopwatch;
 
 void NNetModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 {
-	tNNetCmd const nnetCmd = static_cast<tNNetCmd>( cmd.GetCommand() );
+	NNetGenerationCmd::Id const nnetCmd = static_cast<NNetGenerationCmd::Id>( cmd.GetCommand() );
 	Int24    const param   = cmd.GetParam( );
 	switch ( nnetCmd )
 	{

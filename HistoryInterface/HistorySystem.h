@@ -48,7 +48,7 @@ public:
 
     virtual ModelData const * CreateAppCommand( GenerationCmd   const ) = 0;
 	virtual ModelData const * ApproachHistGen ( HIST_GENERATION const ) = 0;
-	virtual tGenCmd           GetGenerationCmd( HIST_GENERATION const ) = 0;
+	virtual GenerationCmd     GetGenerationCmd( HIST_GENERATION const ) = 0;
 	virtual void              ClearHistory    ( HIST_GENERATION const ) = 0;
 	virtual void              ClearAllHistory ( )                       = 0;
 

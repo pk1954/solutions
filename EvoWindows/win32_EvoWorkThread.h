@@ -25,12 +25,10 @@ class EvoWorkThreadMessage
 public:
 	enum class Id : UINT
 	{
-	    REDO = WorkThreadMessage::FIRST_APP_MESSAGE,
-		UNDO,
+		DO_EDIT = WorkThreadMessage::FIRST_APP_MESSAGE,
 		GOTO_ORIGIN,
 		GOTO_DEATH,
 		BENCHMARK,
-		DO_EDIT,
 		SET_BRUSH_RADIUS,
 		SET_BRUSH_INTENSITY,
 		SET_BRUSH_SHAPE,
@@ -40,7 +38,7 @@ public:
 		SET_SELECTION_COLOR,
 		SET_HIGHLIGHT_COLOR,
 		SET_POI,
-		FIRST = REDO,
+		FIRST = DO_EDIT,
 		LAST = SET_POI
 	};
 
@@ -67,24 +65,19 @@ public:
 	~EvoWorkThread( );
 	
 private:
-	GenerationCmd EvoCmd( tEvoCmd const cmd, Int24 const param )
+	GenerationCmd EvoCmd( EvoGenerationCmd::Id const cmd, Int24 const param )
 	{ 
-		return GenerationCmd::ApplicationCmd( static_cast<tGenCmd>(cmd), param );  
+		return GenerationCmd::ApplicationCmd( static_cast<GenerationCmd::Id>(cmd), param );  
 	}  
 
-	void editorCommand( tEvoCmd const cmd, WPARAM const wParam )
+	void editorCommand( EvoGenerationCmd::Id const cmd, WPARAM const wParam )
 	{
-		EditorCommand( static_cast<tGenCmd>(cmd), wParam );
+		EditorCommand( static_cast<GenerationCmd::Id>(cmd), wParam );
 	}
 
-	void editorCommand( tEvoCmd const cmd, GridPoint24 const gp24 )
+	void editorCommand( EvoGenerationCmd::Id const cmd, GridPoint24 const gp24 )
 	{
 		GetHistorySystem( )->CreateAppCommand( EvoCmd( cmd, gp24 ) );
-	}
-
-	bool isEditorCommand( HIST_GENERATION const gen )
-	{
-		return ::IsEditorCommand( static_cast<tEvoCmd>( GetHistorySystem( )->GetGenerationCmd( gen ) ) );
 	}
 
 	virtual BOOL Dispatch( MSG const );

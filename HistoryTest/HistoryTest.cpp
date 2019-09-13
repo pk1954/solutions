@@ -74,7 +74,7 @@ void gotoGeneration( HistorySystem * const pHistorySys, HIST_GENERATION const hi
 	{
 		if ( histGenDemanded > pHistorySys->GetYoungestGeneration( ) )
 		{
-			pHistorySys->CreateAppCommand( GenerationCmd::ApplicationCmd(static_cast<tGenCmd>( 42 ), 0) );
+			pHistorySys->CreateAppCommand( GenerationCmd::ApplicationCmd(static_cast<GenerationCmd::Id>( 42 ), 0) );
 		}
 		else
 		{

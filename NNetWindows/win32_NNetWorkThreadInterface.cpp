@@ -33,7 +33,7 @@ void NNetWorkThreadInterface::Start
     NNetHistorySysGlue * const pNNetHistGlue
 )
 {
-	m_pNNetWorkThread  = new NNetWorkThread
+	m_pNNetWorkThread = new NNetWorkThread
 	( 
 		hwndApplication, 
 		pActionTimer,
@@ -45,18 +45,4 @@ void NNetWorkThreadInterface::Start
 	);
 
 	WorkThreadInterface::Start( m_pNNetWorkThread );
-}
-
-void NNetWorkThreadInterface::PostRedo( )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
-	WorkMessage( FALSE,static_cast<WorkThreadMessage::Id>( NNetWorkThreadMessage::Id::REDO), 0, 0 );
-}
-
-void NNetWorkThreadInterface::PostUndo( )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
-	WorkMessage( FALSE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::UNDO), 0, 0 );
 }

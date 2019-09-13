@@ -139,20 +139,6 @@ void EvoWorkThreadInterface::PostSetPOI( GridPoint const gp )
 	}
 }
 
-void EvoWorkThreadInterface::PostRedo( )
-{
-    if ( IsTraceOn( ) )
-        TraceStream( ) << __func__ << endl;
-	WorkMessage( FALSE, static_cast<WorkThreadMessage::Id>(EvoWorkThreadMessage::Id::REDO), 0, 0 );
-}
-
-void EvoWorkThreadInterface::PostUndo( )
-{
-    if ( IsTraceOn( ) )
-        TraceStream( ) << __func__ << endl;
-	WorkMessage( FALSE,static_cast<WorkThreadMessage::Id>( EvoWorkThreadMessage::Id::UNDO), 0, 0 );
-}
-
 void EvoWorkThreadInterface::PostGotoOrigin( GridPoint const gp )
 {
 	if ( IsTraceOn( ) )

@@ -153,10 +153,10 @@ void DefineWin32WrapperFunctions( EvoWorkThreadInterface * const pWorkThreadInte
     DEF_ULONG_CONST( IDM_RUN );
     DEF_ULONG_CONST( IDM_STOP );
 
-    DEF_ULONG_CONST( tEvoCmd::editSetBrushMode );
-    DEF_ULONG_CONST( tEvoCmd::editSetBrushShape );
-    DEF_ULONG_CONST( tEvoCmd::editSetBrushRadius );
-    DEF_ULONG_CONST( tEvoCmd::editSetBrushIntensity );
-    DEF_ULONG_CONST( tEvoCmd::editDoEdit );
-    DEF_ULONG_CONST( tEvoCmd::editSetPOI );
+    DEF_ULONG_CONST( EvoGenerationCmd::Id::editSetBrushMode );
+    DEF_ULONG_CONST( EvoGenerationCmd::Id::editSetBrushShape );
+    DEF_ULONG_CONST( EvoGenerationCmd::Id::editSetBrushRadius );
+    DEF_ULONG_CONST( EvoGenerationCmd::Id::editSetBrushIntensity );
+    DEF_ULONG_CONST( EvoGenerationCmd::Id::editDoEdit );
+    DEF_ULONG_CONST( EvoGenerationCmd::Id::editSetPOI );
 }

@@ -41,7 +41,8 @@ EvoWorkThread::EvoWorkThread
 	),
 	m_pColorManager( pColorManager ),
 	m_pEvoHistGlue ( pEvoHistorySys )
-{ }
+{ 
+}
 
 EvoWorkThread::~EvoWorkThread( )
 {
@@ -74,55 +75,32 @@ BOOL EvoWorkThread::Dispatch( MSG const msg  )
 		);
 		break;
 
-	case EvoWorkThreadMessage::Id::REDO:
-		{
-			HIST_GENERATION genCurrent  = GetHistorySystem( )->GetCurrentGeneration( );
-			HIST_GENERATION genYoungest = GetHistorySystem( )->GetYoungestGeneration( );
-
-			if ( ( genCurrent < genYoungest ) && isEditorCommand( genCurrent + 1 ) )
-				GotoGeneration( genCurrent + 1 );
-			else
-				(void)MessageBeep(MB_OK);  // first generation reached
-		}
-		break;
-
-	case EvoWorkThreadMessage::Id::UNDO:
-		{
-			HIST_GENERATION genCurrent = GetHistorySystem( )->GetCurrentGeneration( );
-
-			if ( ( genCurrent > 0 ) && isEditorCommand( genCurrent - 1 ) )
-				GotoGeneration( genCurrent - 1 );
-			else
-				(void)MessageBeep(MB_OK);  // first generation reached
-		}
-		break;
-
 	case EvoWorkThreadMessage::Id::SET_BRUSH_MODE:
-		editorCommand( tEvoCmd::editSetBrushMode, msg.wParam );
+		editorCommand( EvoGenerationCmd::Id::editSetBrushMode, msg.wParam );
 		break;
 
 	case EvoWorkThreadMessage::Id::SET_BRUSH_RADIUS:
-		editorCommand( tEvoCmd::editSetBrushRadius, msg.wParam );
+		editorCommand( EvoGenerationCmd::Id::editSetBrushRadius, msg.wParam );
 		break;
 
 	case EvoWorkThreadMessage::Id::SET_BRUSH_SHAPE:
-		editorCommand( tEvoCmd::editSetBrushShape, msg.wParam );
+		editorCommand( EvoGenerationCmd::Id::editSetBrushShape, msg.wParam );
 		break;
 
 	case EvoWorkThreadMessage::Id::SET_BRUSH_OPERATOR:
-		editorCommand( tEvoCmd::editSetBrushManipulator, msg.wParam );
+		editorCommand( EvoGenerationCmd::Id::editSetBrushManipulator, msg.wParam );
 		break;
 
 	case EvoWorkThreadMessage::Id::SET_BRUSH_INTENSITY:
-		editorCommand( tEvoCmd::editSetBrushIntensity, msg.wParam );
+		editorCommand( EvoGenerationCmd::Id::editSetBrushIntensity, msg.wParam );
 		break;
 
 	case EvoWorkThreadMessage::Id::DO_EDIT:
-		editorCommand( tEvoCmd::editDoEdit, GridPoint24( CastToUnsignedInt(msg.wParam), CastToUnsignedInt(msg.lParam) ) );
+		editorCommand( EvoGenerationCmd::Id::editDoEdit, GridPoint24( CastToUnsignedInt(msg.wParam), CastToUnsignedInt(msg.lParam) ) );
 		break;
 
 	case EvoWorkThreadMessage::Id::SET_POI:
-		editorCommand( tEvoCmd::editSetPOI, GridPoint24( CastToUnsignedInt(msg.wParam), CastToUnsignedInt(msg.lParam) ) );
+		editorCommand( EvoGenerationCmd::Id::editSetPOI, GridPoint24( CastToUnsignedInt(msg.wParam), CastToUnsignedInt(msg.lParam) ) );
 		break;
 
 	case EvoWorkThreadMessage::Id::SET_STRATEGY_COLOR:

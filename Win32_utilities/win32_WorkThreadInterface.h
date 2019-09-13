@@ -26,6 +26,8 @@ public:
 
 	void Stop( );
 
+	void PostUndo( );
+	void PostRedo( );
 	void PostReset( BOOL );
 	void PostRunGenerations( BOOL const );
 	void PostStopComputation();

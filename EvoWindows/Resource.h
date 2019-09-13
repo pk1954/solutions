@@ -77,8 +77,6 @@
 #define IDM_DSP_ENV_NOTHING                     (IDM_EDIT_MODE + 11)
 #define IDM_EDIT_SIZE                           (IDM_EDIT_MODE + 31)
 #define IDM_EDIT_INTENSITY                      (IDM_EDIT_MODE + 32)
-#define IDM_EDIT_UNDO                           (IDM_EDIT_MODE + 33)
-#define IDM_EDIT_REDO                           (IDM_EDIT_MODE + 34)
 
 #define IDM_ZOOM_MODE                           850
 #define IDM_FIT_ZOOM                            (IDM_ZOOM_MODE + 1)

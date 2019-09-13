@@ -118,6 +118,29 @@ BOOL WorkThread::Dispatch( MSG const msg  )
 	switch ( static_cast<WorkThreadMessage::Id>(msg.message) )
 	{
 
+	case WorkThreadMessage::Id::REDO_OPERATION:
+		{
+			HIST_GENERATION genCurrent  = GetHistorySystem( )->GetCurrentGeneration( );
+			HIST_GENERATION genYoungest = GetHistorySystem( )->GetYoungestGeneration( );
+
+			if ( ( genCurrent < genYoungest ) && IsEditorCommand( genCurrent + 1 ) )
+				GotoGeneration( genCurrent + 1 );
+			else
+				(void)MessageBeep(MB_OK);  // first generation reached
+		}
+		break;
+
+	case WorkThreadMessage::Id::UNDO_OPERATION:
+		{
+			HIST_GENERATION genCurrent = GetHistorySystem( )->GetCurrentGeneration( );
+
+			if ( ( genCurrent > 0 ) && IsEditorCommand( genCurrent - 1 ) )
+				GotoGeneration( genCurrent - 1 );
+			else
+				(void)MessageBeep(MB_OK);  // first generation reached
+		}
+		break;
+
 	case WorkThreadMessage::Id::RESET_MODEL:
 		GetHistorySystem( )->CreateAppCommand( GenerationCmd::ResetCmd( CastToUnsignedInt( msg.wParam ) ) );
 		if ( static_cast<BOOL>(msg.wParam) )

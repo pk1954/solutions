@@ -6,6 +6,7 @@
 
 #include "HistoryGeneration.h"
 #include "win32_WorkThread.h"
+#include "NNetGenerationCmd.h"
 
 class Delay;
 class ActionTimer;
@@ -20,10 +21,10 @@ class NNetWorkThreadMessage
 public:
 	enum class Id : UINT
 	{
-		REDO = WorkThreadMessage::FIRST_APP_MESSAGE,
-		UNDO,
-		FIRST = REDO,
-		LAST = UNDO
+		NNET_FIRST = WorkThreadMessage::FIRST_APP_MESSAGE,
+		NNET_LAST,
+		FIRST = NNET_FIRST,
+		LAST = NNET_LAST
 	};
 
 	static BOOL IsValid( NNetWorkThreadMessage::Id msg )
@@ -49,19 +50,14 @@ public:
 
 private:
 
-	GenerationCmd NNetCmd( tNNetCmd const cmd, Int24 const param )
+	GenerationCmd NNetCmd( NNetGenerationCmd::Id const cmd, Int24 const param )
 	{ 
-		return GenerationCmd::ApplicationCmd( static_cast<tGenCmd>(cmd), param );  
+		return GenerationCmd::ApplicationCmd( static_cast<GenerationCmd::Id>(cmd), param );  
 	}  
 
-	void editorCommand( tNNetCmd const cmd, WPARAM const wParam )
+	void editorCommand( NNetGenerationCmd::Id const cmd, WPARAM const wParam )
 	{
-		EditorCommand( static_cast<tGenCmd>(cmd), wParam );
-	}
-
-	bool isEditorCommand( HIST_GENERATION const gen )
-	{
-		return ::IsEditorCommand( static_cast<tNNetCmd>( GetHistorySystem( )->GetGenerationCmd( gen ) ) );
+		EditorCommand( static_cast<GenerationCmd::Id>(cmd), wParam );
 	}
 
 	virtual BOOL Dispatch( MSG const );

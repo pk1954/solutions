@@ -6,17 +6,29 @@
 
 #include "GenerationCmd.h"
 
-enum class tNNetCmd : int8_t // enumeration starts after last tGenCmd value
+class NNetGenerationCmd : public GenerationCmd
 {
-    editFirst = static_cast<int8_t>(tGenCmd::FIRST_APP_CMD),  // placeholder
-	editLast,                                                 // placeholder
-	FIRST_EDIT_CMD = editFirst,
-	LAST_APP_CMD   = editLast
+public:
+
+	enum class Id : int8_t // enumeration starts after last GenerationCmd::Id value
+	{
+		editFirst = static_cast<int8_t>(GenerationCmd::Id::FIRST_APP_CMD),  // placeholder
+		editLast,                                                           // placeholder
+		FIRST_EDIT_CMD = editFirst,
+		LAST_APP_CMD   = editLast
+	};
+
+	static_assert( (int)Id::LAST_APP_CMD < GenerationCmd::MAX_APP_CMD, "Too many NNetGenerationCmd::Id values" );
+
+	virtual bool IsEditorCommand( )
+	{
+		Id const cmd = static_cast<Id>( GetCommand() );
+
+		return ( Id::FIRST_EDIT_CMD <= cmd ) && ( cmd <= Id::LAST_APP_CMD );
+	}
 };
 
-bool IsEditorCommand( tNNetCmd const );
-
-wchar_t const * const GetNNetCommandName     ( tNNetCmd const );
-wchar_t const * const GetNNetCommandNameShort( tNNetCmd const );
+wchar_t const * const GetNNetCommandName     ( NNetGenerationCmd::Id const );
+wchar_t const * const GetNNetCommandNameShort( NNetGenerationCmd::Id const );
 
 std::wostream & operator << ( std::wostream &, GenerationCmd const & );

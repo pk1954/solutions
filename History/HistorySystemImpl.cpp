@@ -142,7 +142,7 @@ ModelData const * HistorySystemImpl::ApproachHistGen( HIST_GENERATION const genD
 	return nullptr;
 }
 
-tGenCmd HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
+GenerationCmd HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
 {
 	GenerationCmd cmd = m_GenCmdList[ gen ];
 
@@ -153,7 +153,7 @@ tGenCmd HistorySystemImpl::GetGenerationCmd( HIST_GENERATION const gen )
 		cmd = pItem->GetGenCmd( );
 	}
 
-	return cmd.GetCommand( );
+	return cmd;
 }
 
 ModelData const * HistorySystemImpl::GetModelData( HIST_GENERATION const gen )
@@ -214,7 +214,7 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
     if ( m_pHistCacheItemWork->GetHistGenCounter() >= m_GenCmdList.GetMaxGeneration() )
 		throw HistoryBufferException();
 
-	if ( genCmd.GetCommand( ) == tGenCmd::NEXT_GEN )
+	if ( genCmd.GetCommand( ) == GenerationCmd::Id::NEXT_GEN )
 	{
 		pModelDate->Compute( );  // compute next generation
 	}

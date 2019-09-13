@@ -27,14 +27,16 @@ public:
 	{
 		REFRESH = WM_APP,
 		STOP,
-		RESET_MODEL,
 		REPEAT_NEXT_GENERATION,  // only used internally, not part of procedural interface
 		GENERATION_RUN,
 		GOTO_GENERATION,
 		NEXT_GENERATION,
 		PREV_GENERATION,
+		UNDO_OPERATION,
+		REDO_OPERATION,
+		RESET_MODEL,
 		FIRST = REFRESH,
-		LAST = PREV_GENERATION
+		LAST = RESET_MODEL
 	};
 
 	static UINT const FIRST_APP_MESSAGE = static_cast<UINT>(Id::LAST) + 1;
@@ -80,6 +82,11 @@ public:
 			m_pEventPOI->Continue( );     // trigger worker thread if waiting on POI event
 	}
 
+	bool IsEditorCommand( HIST_GENERATION const gen )
+	{
+		return GetHistorySystem()->GetGenerationCmd( gen ).IsAppCommand( );
+	}
+
 protected:
 	virtual BOOL Dispatch( MSG const );
 
@@ -87,7 +94,7 @@ protected:
 
 	HistorySystem * GetHistorySystem( ) { return m_pHistorySystem; }
 
-	void EditorCommand( tGenCmd const cmd, WPARAM const wParam )
+	void EditorCommand( GenerationCmd::Id const cmd, WPARAM const wParam )
 	{
 		GetHistorySystem( )->CreateAppCommand( MakeGenerationCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
 	}
@@ -98,9 +105,9 @@ private:
 		m_bContinue = bState;
 	}
 
-	GenerationCmd MakeGenerationCmd( tGenCmd const cmd, Int24 const param )
+	GenerationCmd MakeGenerationCmd( GenerationCmd::Id const cmd, Int24 const param )
 	{ 
-		return GenerationCmd::ApplicationCmd( static_cast<tGenCmd>(cmd), param );  
+		return GenerationCmd::ApplicationCmd( static_cast<GenerationCmd::Id>(cmd), param );  
 	}  
 
 	void generationRun( );
