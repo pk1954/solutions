@@ -2,8 +2,8 @@
 
 rem *** main program starts here ***
 
-call :SET_BUILD_ENVIRONMENT vcvars32.bat
-for %%C in ( "Debug|x86", "Release|x86" ) do call :BUILD_CONFIGURATION %%C
+rem call :SET_BUILD_ENVIRONMENT vcvars32.bat
+rem for %%C in ( "Debug|x86", "Release|x86" ) do call :BUILD_CONFIGURATION %%C
 
 if %PROCESSOR_ARCHITECTURE% == AMD64 (
 call :SET_BUILD_ENVIRONMENT vcvars64.bat
