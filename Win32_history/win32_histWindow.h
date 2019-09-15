@@ -1,16 +1,17 @@
-// win32_histWindow.h : 
+// win32_histWindow.h
 //
+// Win32_history
 
 #pragma once
 
 #include "HistoryGeneration.h"
 #include "win32_baseWindow.h"
 
-class EvolutionCore;
 class WorkThread;
 class GenDisplayWindow;
 class HistorySystem;
 class HistoryIterator;
+class WorkThreadInterface;
 class RootWinDisplayFunctor;
 
 class HistWindow : public BaseWindow
@@ -19,18 +20,13 @@ public:
     HistWindow( );
 	virtual ~HistWindow( );
 
-protected:
-	void Start( HWND const, HistorySystem *, std::function<bool()> const );
+	void Start
+	( 
+		HWND const, 
+		HistorySystem *, 
+		WorkThreadInterface * const
+	);
 	void Stop( );
-
-    void PaintAllGenerations      ( HDC const );
-    void PaintHighlightGenerations( HDC const, HIST_GENERATION const ) const;
-	void PaintLifeLine            ( HDC const, HIST_GENERATION const, HIST_GENERATION const ) const;
-
-	// callbacks
-
-	virtual void DoPaint       ( HDC const )             = 0;
-    virtual void GotoGeneration( HIST_GENERATION const ) = 0;
 
 private:
 
@@ -45,7 +41,14 @@ private:
     static COLORREF const CLR_POI    = RGB(  32,  32, 255 );
     static COLORREF const CLR_EDIT   = RGB( 255, 128,   0 );
 
-    PixelRect getGenerationRect( HIST_GENERATION const ) const;
+	void gotoGeneration( HIST_GENERATION const );
+	void doPaint( HDC const );
+
+	void paintAllGenerations      ( HDC const );
+	void paintHighlightGenerations( HDC const, HIST_GENERATION const ) const;
+	void paintLifeLine            ( HDC const, HIST_GENERATION const, HIST_GENERATION const ) const;
+
+	PixelRect getGenerationRect( HIST_GENERATION const ) const;
     PixelRect getGenerationRect( HIST_GENERATION const, HIST_GENERATION const ) const;
 
     void paintGeneration( HDC const, HIST_GENERATION const, COLORREF const ) const;
@@ -55,9 +58,10 @@ private:
     HIST_GENERATION getGenFromXpos( LPARAM const) const;
     void            dispGenerationWindow( )       const;
 
-    HistorySystem    * m_pHistSys;   // Do not change the order
-    HistoryIterator  * m_pHistIter;  // declarations!
-    GenDisplayWindow * m_pGenDisplay;
-    TRACKMOUSEEVENT    m_trackStruct;
-    HIST_GENERATION    m_genSelected;
+	WorkThreadInterface * m_pWorkThreadInterface;
+    HistorySystem       * m_pHistSys;             // Do not change the order
+    HistoryIterator     * m_pHistIter;            // declarations!
+	GenDisplayWindow    * m_pGenDisplay;
+    TRACKMOUSEEVENT       m_trackStruct;
+    HIST_GENERATION       m_genSelected;
 };

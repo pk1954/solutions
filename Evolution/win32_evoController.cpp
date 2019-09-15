@@ -6,6 +6,7 @@
 #include "Windows.h"
 #include "Resource.h"
 #include "config.h"
+#include "LogarithmicTrackbar.h"
 #include "GridDimensions.h"
 #include "EvoHistorySysGlue.h"
 #include "win32_aboutBox.h"
@@ -14,6 +15,8 @@
 #include "win32_stopwatch.h"
 #include "win32_winManager.h"
 #include "win32_delay.h"
+#include "win32_speedControl.h"
+#include "win32_zoomControl.h"
 #include "win32_status.h"
 #include "win32_editor.h"
 #include "win32_appMenu.h"
@@ -130,18 +133,44 @@ bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 
 	case IDM_FIT_ZOOM:
 		m_pGridWindow->Fit2Rect( );
-		m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
+		ZoomControl::SetSizeTrackBar( m_pStatusBar, m_pGridWindow->GetFieldSize() );
+		break;
+
+	case IDM_MAX_SPEED:
+		SpeedControl::Set2MaxSpeed( m_pStatusBar );
+		m_pDelay->SetDelay( 0 );
+		break;
+
+	case IDM_TRACKBAR:
+		switch ( lParam )
+		{
+		case IDM_ZOOM_TRACKBAR:
+		{
+			LONG const lLogicalPos = m_pStatusBar->GetTrackBarPos( IDM_ZOOM_TRACKBAR );
+			LONG const lValue      = lLogicalPos;
+			LONG const lPos        = LogarithmicTrackbar::TrackBar2Value( lValue );
+			processUIcommand( IDM_ZOOM_TRACKBAR, lPos );
+		}
+		break;
+
+		case IDM_SIMULATION_SPEED:
+			m_pDelay->SetDelay( SpeedControl::GetTrackBarPos( m_pStatusBar ) );
+			break;
+
+		default:
+			assert( false );
+		}
 		break;
 
 	case IDM_ZOOM_OUT:
 	case IDM_ZOOM_IN:
 		m_pGridWindow->Zoom( wmId == IDM_ZOOM_IN );
-		m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
+		ZoomControl::SetSizeTrackBar( m_pStatusBar, m_pGridWindow->GetFieldSize() );
 		break;
 
 	case IDM_SET_ZOOM:
 		m_pGridWindow->SetFieldSize( PIXEL(CastToShort(lParam)));
-		m_pStatusBar->SetSizeTrackBar( PIXEL(CastToShort(lParam)) );
+		ZoomControl::SetSizeTrackBar( m_pStatusBar, PIXEL(CastToShort(lParam)) );
 		break;
 
 	case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar

@@ -15,6 +15,7 @@ using namespace std::literals::chrono_literals;
 // interfaces of various windows
 
 #include "win32_NNetWindow.h"
+#include "win32_histWindow.h"
 
 // infrastructure
 
@@ -39,6 +40,7 @@ NNetSimuWindow::NNetSimuWindow( ) :
     BaseWindow( ),
 	m_hwndConsole( nullptr ),
 	m_pMainNNetWindow( nullptr ),
+	m_pHistWindow( nullptr ),
 	m_traceStream( ),
 	m_bStarted( FALSE )
 {
@@ -74,6 +76,7 @@ NNetSimuWindow::NNetSimuWindow( ) :
 	NNetWindow::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
 
 	m_pMainNNetWindow = new NNetWindow( );
+	m_pHistWindow     = new HistWindow( );
 
 	m_NNetSimuController.Initialize
 	( 
@@ -85,11 +88,13 @@ NNetSimuWindow::NNetSimuWindow( ) :
 	);
 
 	m_pMainNNetWindow->SetRefreshRate( 100ms );
+	m_pHistWindow    ->SetRefreshRate( 200ms ); 
 };
 
 NNetSimuWindow::~NNetSimuWindow( )
 {
 	delete m_pMainNNetWindow;
+	delete m_pHistWindow;
 }
 
 void NNetSimuWindow::Start( )
@@ -127,8 +132,11 @@ void NNetSimuWindow::Start( )
 		& m_NNetHistGlue
 	);
 
+	m_pHistWindow  ->Start( m_hwndApp, m_pHistorySystem, & m_NNetWorkThreadInterface );
+
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW,   m_hwndApp,         TRUE,  TRUE  );
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow, TRUE,  FALSE );
+	m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, * m_pHistWindow,                   FALSE, FALSE ); 
 
 	m_AppMenu.Initialize( m_hwndApp, & m_WinManager );
 
@@ -222,14 +230,14 @@ void NNetSimuWindow::adjustChildWindows( )
 		//m_pStatusBar->Resize( );
 		//pixAppClientWinHeight -= m_pStatusBar->GetHeight( );
 		pixAppClientWinHeight -= HIST_WINDOW_HEIGHT, 
-		//	m_pEvoHistWindow->Move   // adapt history window to new size
-		//	( 
-		//		0_PIXEL, 
-		//		pixAppClientWinHeight, 
-		//		pixAppClientWinWidth, 
-		//		HIST_WINDOW_HEIGHT, 
-		//		TRUE 
-		//	); 
+		m_pHistWindow->Move   // adapt history window to new size
+		( 
+			0_PIXEL, 
+			pixAppClientWinHeight, 
+			pixAppClientWinWidth, 
+			HIST_WINDOW_HEIGHT, 
+			TRUE 
+		); 
 		m_pMainNNetWindow->Move
 		( 
 			0_PIXEL, 

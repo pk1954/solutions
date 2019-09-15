@@ -7,12 +7,14 @@
 #include "windows.h"
 #include "ViewCollection.h"
 
+DWORD const DEFAULT_DELAY = 50;  // milliseconds
+
 class Delay
 {
 public:
 
 	Delay()
-	  : m_dwGenerationDelay( 0 )
+	  : m_dwGenerationDelay( DEFAULT_DELAY )
 	{}
 
 	DWORD GetDelay( )

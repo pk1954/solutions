@@ -25,13 +25,17 @@ using namespace std::literals::chrono_literals;
 #include "win32_performanceWindow.h"
 #include "win32_displayOptions.h"
 #include "win32_status.h"
-#include "win32_evoHistWindow.h"
+#include "GenerationDisplay.h"
+#include "win32_histWindow.h"
 #include "win32_gridWindow.h"
 #include "win32_editor.h"
+#include "win32_speedControl.h"
+#include "win32_zoomControl.h"
 
 // infrastructure
 
 #include "util.h"
+#include "LogarithmicTrackbar.h"
 #include "pixelTypes.h"
 #include "ObserverInterface.h"
 #include "win32_focusPoint.h"
@@ -71,8 +75,9 @@ AppWindow::AppWindow( ) :
     m_pCrsrWindow( nullptr ),
     m_pHistInfoWindow( nullptr ),
     m_pStatistics( nullptr ),
-	m_pEvoHistWindow( nullptr ),
+	m_pHistWindow( nullptr ),
 	m_pDspOptWindow( nullptr ),
+	m_pGenerationDisplay( nullptr ),
     m_traceStream( ),
 	m_bStarted( FALSE )
 {
@@ -118,7 +123,7 @@ AppWindow::AppWindow( ) :
 	m_pCrsrWindow     = new CrsrWindow( );
 	m_pStatusBar      = new StatusBar( );
 	m_pEditorWindow   = new EditorWindow( );
-	m_pEvoHistWindow  = new EvoHistWindow( );
+	m_pHistWindow     = new HistWindow( );
 
 	GridWindow::InitClass
 	( 
@@ -153,15 +158,12 @@ AppWindow::AppWindow( ) :
 	DefineWin32WrapperFunctions    ( & m_EvoWorkThreadInterface );
 	DefineWin32EditorWrapperFunctions( m_pEditorWindow );
 
-	m_ScriptHook.Initialize( m_pStatusBar );
-	Script::ScrSetWrapHook( & m_ScriptHook );
-
     m_pStatusBar     ->SetRefreshRate( 300ms );
     m_pCrsrWindow    ->SetRefreshRate( 100ms );
     m_pStatistics    ->SetRefreshRate( 100ms );
     m_pPerfWindow    ->SetRefreshRate( 100ms );
 	m_pHistInfoWindow->SetRefreshRate( 300ms );
-	m_pEvoHistWindow ->SetRefreshRate( 200ms ); 
+	m_pHistWindow    ->SetRefreshRate( 200ms ); 
 	m_pMiniGridWindow->SetRefreshRate( 300ms );
     m_pMainGridWindow->SetRefreshRate( 100ms );
 	m_pEditorWindow  ->SetRefreshRate( 300ms );
@@ -186,8 +188,9 @@ AppWindow::~AppWindow( )
 	delete m_pStatusBar;     
 	delete m_pFocusPoint;     
 	delete m_pEditorWindow;
-	delete m_pEvoHistWindow;
+	delete m_pHistWindow;
 	delete m_pDspOptWindow;
+	delete m_pGenerationDisplay;
 }
 
 void AppWindow::Start( )
@@ -247,7 +250,9 @@ void AppWindow::Start( )
 	m_pStatistics    ->Start( m_hwndApp, & m_EvoReadBuffer );
 	m_pHistInfoWindow->Start( m_hwndApp, nullptr );
 	m_pPerfWindow    ->Start( m_hwndApp, m_Delay, m_atComputation, m_atDisplay, [&](){ return m_EvoWorkThreadInterface.IsRunning(); } );
-	m_pStatusBar     ->Start( m_hwndApp, & m_EvoReadBuffer, m_EvoHistGlue.GetHistorySystem(), & m_EvoWorkThreadInterface, & m_Delay, m_pEditorWindow );
+	m_pStatusBar     ->Start( m_hwndApp, m_EvoHistGlue.GetHistorySystem(), & m_EvoWorkThreadInterface, m_pEditorWindow );
+
+	configureStatusBar( );
 
 	m_EvoWorkThreadInterface.Start
 	( 
@@ -260,15 +265,15 @@ void AppWindow::Start( )
 		& m_EvoHistGlue
 	);
 	
-	m_pEvoHistWindow->Start( m_hwndApp, m_pFocusPoint, m_pHistorySystem, & m_EvoWorkThreadInterface );
-	m_pDspOptWindow ->Start( m_hwndApp );
-	m_pEditorWindow ->Start( m_hwndApp, & m_EvoWorkThreadInterface, & m_EvoReadBuffer, m_pDspOptWindow );
-	m_pFocusPoint   ->Start( & m_EvoHistGlue );
+	m_pHistWindow  ->Start( m_hwndApp, m_pHistorySystem, & m_EvoWorkThreadInterface );
+	m_pDspOptWindow->Start( m_hwndApp );
+	m_pEditorWindow->Start( m_hwndApp, & m_EvoWorkThreadInterface, & m_EvoReadBuffer, m_pDspOptWindow );
+	m_pFocusPoint  ->Start( & m_EvoHistGlue );
 
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,    m_pStatusBar->GetWindowHandle(), FALSE, FALSE );
 	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW,   m_hwndConsole,                   TRUE,  TRUE  );
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW,   m_hwndApp,                       TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, * m_pEvoHistWindow,                FALSE, FALSE ); 
+	m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, * m_pHistWindow,                   FALSE, FALSE ); 
 	m_WinManager.AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, * m_pPerfWindow,                   TRUE,  FALSE );
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, * m_pCrsrWindow,                   TRUE,  FALSE );
 	m_WinManager.AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, * m_pStatistics,                   TRUE,  FALSE );
@@ -289,8 +294,6 @@ void AppWindow::Start( )
 		Show( TRUE );
 	}
 
-	m_pStatusBar->ClearStatusLine( );
-
 	m_pStatusBar     ->Show( TRUE );
 	m_pEditorWindow  ->Show( TRUE );
 	m_pMainGridWindow->Show( TRUE );
@@ -307,7 +310,7 @@ void AppWindow::Stop()
 
 	m_pMiniGridWindow->Stop( );
 	m_pMainGridWindow->Stop( );
-	m_pEvoHistWindow ->Stop( );
+	m_pHistWindow    ->Stop( );
 	m_pEditorWindow  ->Stop( );
 	m_pDspOptWindow  ->Stop( );
 	m_pHistInfoWindow->Stop( );
@@ -387,6 +390,29 @@ LRESULT AppWindow::UserProc
     return DefWindowProc( message, wParam, lParam );
 }
 
+void AppWindow::configureStatusBar( )
+{
+	m_pGenerationDisplay = new GenerationDisplay( m_pStatusBar, & m_EvoReadBuffer, 0 );
+
+	m_pStatusBar->NewPart( );
+	m_pStatusBar->AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
+
+	m_pStatusBar->NewPart( );
+	ZoomControl::AddSizeControl( m_pStatusBar, MINIMUM_FIELD_SIZE.GetValue(), MAXIMUM_FIELD_SIZE.GetValue() );
+	ZoomControl::SetSizeTrackBar( m_pStatusBar, DEFAULT_FIELD_SIZE );
+
+	m_pStatusBar->NewPart( );
+	SpeedControl::AddSimulationControl( m_pStatusBar, Config::UseHistorySystem( ) );
+	SpeedControl::SetSpeedTrackBar( m_pStatusBar, DEFAULT_DELAY );
+
+	int iPartScriptLine = m_pStatusBar->NewPart( );
+	m_ScriptHook.Initialize( m_pStatusBar, iPartScriptLine );
+	m_pStatusBar->DisplayInPart( iPartScriptLine, L"" );
+	Script::ScrSetWrapHook( & m_ScriptHook );
+
+	m_pStatusBar->LastPart( );
+}
+
 void AppWindow::adjustChildWindows( )
 {
     static PIXEL const HIST_WINDOW_HEIGHT = 30_PIXEL;
@@ -400,7 +426,7 @@ void AppWindow::adjustChildWindows( )
         m_pStatusBar->Resize( );
         pixAppClientWinHeight -= m_pStatusBar->GetHeight( );
 		pixAppClientWinHeight -= HIST_WINDOW_HEIGHT, 
-        m_pEvoHistWindow->Move   // adapt history window to new size
+        m_pHistWindow->Move   // adapt history window to new size
 		( 
 			0_PIXEL, 
 			pixAppClientWinHeight, 

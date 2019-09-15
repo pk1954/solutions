@@ -98,6 +98,15 @@ void NNetSimuController::ProcessCommand( WPARAM const wParam, LPARAM const lPara
 
     switch (wmId)
     {
+	case IDM_RUN:
+//		m_pEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
+		m_pNNetWorkThreadInterface->PostRunGenerations( true );
+		break;
+
+	case IDM_RESET:
+	{
+	}
+	break;
 
 		default:
 			assert( false );

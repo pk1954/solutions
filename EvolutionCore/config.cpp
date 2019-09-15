@@ -82,7 +82,6 @@ void Config::SetDefaultConfiguration( )
    DEF_CONFIG_ID( Config::tId::nrOfNeighbors,            8 );  
    DEF_CONFIG_ID( Config::tId::stripMode,                0 );
    DEF_CONFIG_ID( Config::tId::dimmMode,                 0 );
-   DEF_CONFIG_ID( Config::tId::generationDelay,         50 );
 }
 
 bool Config::SetConfigValueBoolOp( tId const id, tBoolOp const op )

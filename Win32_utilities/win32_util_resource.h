@@ -30,6 +30,8 @@
 
 #define IDM_HIST_BUFFER_FULL           60
 
+#define IDM_TRACKBAR                   65    
+
 #define IDM_ZOOM_MODE                  70      
 #define IDM_FIT_ZOOM                   71      
 #define IDM_SET_ZOOM                   72    
@@ -42,8 +44,6 @@
 #define IDM_BACKWARDS                  82
 #define IDM_RUN                        83
 #define IDM_STOP                       84
-#define IDM_SIMULATION_SPEED           85
-#define IDM_MAX_SPEED                  86
 #define IDM_EDIT_UNDO                  87
 #define IDM_EDIT_REDO                  88
 

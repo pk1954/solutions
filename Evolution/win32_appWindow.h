@@ -31,12 +31,13 @@
 class Script;
 class FocusPoint;
 class GridWindow;
-class EvoHistWindow;
+class HistWindow;
 class EditorWindow;
 class StatisticsWindow;
 class HistInfoWindow;
 class CrsrWindow;
 class PerformanceWindow;
+class GenerationDisplay;
 class StatusBar;
 class ScriptHook;
 class HistorySystem;
@@ -61,6 +62,7 @@ private:
 	AppWindow             ( AppWindow const & );  // noncopyable class 
     AppWindow & operator= ( AppWindow const & );  // noncopyable class 
 
+	void configureStatusBar( );
 	void adjustChildWindows( );
 
 	HWND                   m_hwndApp;
@@ -84,7 +86,7 @@ private:
 					       
 	GridWindow             * m_pMainGridWindow;
     GridWindow             * m_pMiniGridWindow;
-	EvoHistWindow          * m_pEvoHistWindow;
+	HistWindow             * m_pHistWindow;
     EditorWindow           * m_pEditorWindow;
 	DspOptWindow           * m_pDspOptWindow;
 	StatusBar              * m_pStatusBar;
@@ -97,6 +99,7 @@ private:
 	EvolutionCore          * m_pEvoCore4Display;
     HistorySystem          * m_pHistorySystem;
 	FocusPoint             * m_pFocusPoint;
+	GenerationDisplay      * m_pGenerationDisplay;
 
     std::wofstream m_traceStream;
 };

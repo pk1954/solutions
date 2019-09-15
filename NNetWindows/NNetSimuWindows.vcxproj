@@ -161,13 +161,11 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="win32_NNetHistWindow.h" />
     <ClInclude Include="win32_NNetWorkThread.h" />
     <ClInclude Include="win32_NNetWorkThreadInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_NNetWindow.cpp" />
-    <ClCompile Include="win32_NNetHistWindow.cpp" />
     <ClCompile Include="win32_NNetWorkThread.cpp" />
     <ClCompile Include="win32_NNetWorkThreadInterface.cpp" />
   </ItemGroup>

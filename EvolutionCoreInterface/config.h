@@ -76,8 +76,7 @@ public:
 		gridHeight,           // intial height of grid in GRID_COORDS
 		nrOfNeighbors,        // 6 neighbors: hexagon grid, 4 or 8 neighbors: rectangle grid
 		stripMode,            // 1: strip mode on, 0: strip mode off - see D3D
-		dimmMode,             // 1: dimm mode on, 0: dimm mode off - see DrawFrame
-		generationDelay       // initial delay between generations in ms
+		dimmMode              // 1: dimm mode on, 0: dimm mode off - see DrawFrame
     };
 
 	inline static long GetConfigValue( tId const id )

@@ -152,11 +152,11 @@
     <ClCompile Include="win32_draw.cpp" />
     <ClCompile Include="win32_editor.cpp" />
     <ClCompile Include="win32_editorWrappers.cpp" />
-    <ClCompile Include="win32_evoHistWindow.cpp" />
     <ClCompile Include="win32_focusPoint.cpp" />
     <ClCompile Include="win32_gridWindow.cpp" />
     <ClCompile Include="win32_histWrappers.cpp" />
     <ClCompile Include="win32_protocolServer.cpp" />
+    <ClCompile Include="win32_speedControl.cpp" />
     <ClCompile Include="win32_statistics.cpp" />
     <ClCompile Include="win32_status.cpp" />
     <ClCompile Include="win32_EvoWorkThread.cpp" />
@@ -174,19 +174,20 @@
     <ClInclude Include="win32_draw.h" />
     <ClInclude Include="win32_editor.h" />
     <ClInclude Include="win32_editorWrappers.h" />
-    <ClInclude Include="win32_evoHistWindow.h" />
     <ClInclude Include="win32_focusPoint.h" />
     <ClInclude Include="win32_gridWindow.h" />
     <ClInclude Include="win32_histWrappers.h" />
     <ClInclude Include="win32_packGridPoint.h" />
     <ClInclude Include="win32_protocolServer.h" />
     <ClInclude Include="win32_scriptHook.h" />
+    <ClInclude Include="win32_speedControl.h" />
     <ClInclude Include="win32_statistics.h" />
     <ClInclude Include="win32_status.h" />
     <ClInclude Include="win32_textDisplay.h" />
     <ClInclude Include="win32_EvoWorkThread.h" />
     <ClInclude Include="win32_EvoWorkThreadInterface.h" />
     <ClInclude Include="win32_wrappers.h" />
+    <ClInclude Include="win32_zoomControl.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

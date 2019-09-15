@@ -10,11 +10,6 @@
 #include "d3d_system.h"
 #include "D3D_driver.h"
 
-//lint -e534                                   ignoring return code 
-//lint -esym( 613, D3D_driver::m_d3d_device )   possible use of null pointer
-//lint -e835                                   0 as left argument to << or |
-//lint -e845                                   0 as right argument to << or |
-
 static COLORREF const CLR_WHITE = D3DCOLOR_ARGB( 255, 255, 255, 255 );
 
 D3DXFONT_DESC D3D_driver::m_d3dx_font_desc =

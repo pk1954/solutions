@@ -1,15 +1,16 @@
-
-// Win32_history/win32_histWindow.cpp
+// win32_histWindow.cpp
 //
+// Win32_history
 
 #include "stdafx.h"
 #include "assert.h"
 #include "Windowsx.h"
 #include "strsafe.h"
-#include "win32_util.h"
 #include "HistorySystem.h"
 #include "historyIterator.h"
+#include "win32_util.h"
 #include "win32_tooltip.h"
+#include "win32_WorkThreadInterface.h"
 #include "win32_genDisplayWindow.h"
 #include "win32_histWindow.h"
 
@@ -26,7 +27,7 @@ void HistWindow::Start
 (
     HWND                  const hwndParent,
     HistorySystem       *       pHistSys,
-	std::function<bool()> const visibilityCriterion
+	WorkThreadInterface * const pWorkThreadInterface
 )
 {
     HWND const hwndHistory = StartBaseWindow
@@ -36,15 +37,16 @@ void HistWindow::Start
         L"ClassHistWindow",
         WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		nullptr,
-		visibilityCriterion
+		[&]() { return ! m_pWorkThreadInterface->IsRunning(); }
     );
 
     Util::AddWindowStyle( hwndHistory, WS_EX_STATICEDGE );
     m_trackStruct.hwndTrack = hwndHistory;
 
-    m_pHistSys    = pHistSys;
-    m_pHistIter   = m_pHistSys->CreateHistoryIterator( );
-    m_pGenDisplay = new GenDisplayWindow( );
+    m_pHistSys             = pHistSys;
+    m_pHistIter            = m_pHistSys->CreateHistoryIterator( );
+	m_pWorkThreadInterface = pWorkThreadInterface;
+	m_pGenDisplay          = new GenDisplayWindow( );
     m_pGenDisplay->StartGenDisplayWindow( GetWindowHandle( ) );
 	m_pHistSys->RegisterObserver( this );  // Trigger me, if something happens in history system
 }
@@ -53,6 +55,7 @@ void HistWindow::Stop( )
 {
 	DestroyWindow( );
 	m_pHistSys = nullptr;
+	m_pWorkThreadInterface = nullptr;
 }
 
 HistWindow::~HistWindow( )
@@ -62,6 +65,20 @@ HistWindow::~HistWindow( )
     m_pHistSys = nullptr;
     m_pHistIter = nullptr;
     m_pGenDisplay = nullptr;
+}
+
+void HistWindow::doPaint( HDC const hDC )
+{
+	if ( m_pWorkThreadInterface )
+	{
+		paintAllGenerations( hDC );
+		paintHighlightGenerations( hDC, m_pWorkThreadInterface->GetGenDemanded( ) );
+	}
+}
+
+void HistWindow::gotoGeneration( HIST_GENERATION const gen ) 
+{ 
+	m_pWorkThreadInterface->PostGotoGeneration( gen ); 
 }
 
 PixelRect HistWindow::getGenerationRect( HIST_GENERATION const gen ) const
@@ -109,7 +126,7 @@ void HistWindow::gotoNewGeneration( LPARAM const lParam )
 	if (genSelNew != m_genSelected)     // can be triggered several times with same value
 	{
 		m_genSelected = genSelNew;
-		GotoGeneration( m_genSelected );
+		gotoGeneration( m_genSelected );
 	}
 }
 
@@ -179,7 +196,7 @@ void HistWindow::paintPixelPos( HDC const hDC, PIXEL const pixPosX ) const
     Util::FastFill( hDC, PixelRect{ pixPosX, 0_PIXEL, pixPosX + 1_PIXEL, GetClientWindowHeight( ) } );
 }
 
-void HistWindow::PaintAllGenerations( HDC const hDC )
+void HistWindow::paintAllGenerations( HDC const hDC )
 {
     PIXEL const pixSizeX = GetClientWindowWidth( );
 
@@ -209,7 +226,7 @@ void HistWindow::PaintAllGenerations( HDC const hDC )
     }
 }
 
-void HistWindow::PaintHighlightGenerations( HDC const hDC, HIST_GENERATION const genDemanded ) const
+void HistWindow::paintHighlightGenerations( HDC const hDC, HIST_GENERATION const genDemanded ) const
 {
 	HIST_GENERATION const genActive = m_pHistSys->GetCurrentGeneration( );
 
@@ -224,7 +241,7 @@ void HistWindow::PaintHighlightGenerations( HDC const hDC, HIST_GENERATION const
         paintGeneration( hDC, genDemanded, CLR_GREEN );
 }
 
-void HistWindow::PaintLifeLine( HDC const hDC, HIST_GENERATION const genBirth, HIST_GENERATION const genDeath ) const
+void HistWindow::paintLifeLine( HDC const hDC, HIST_GENERATION const genBirth, HIST_GENERATION const genDeath ) const
 {
     PixelRect   pixRect = getGenerationRect( genBirth, max( genBirth, genDeath ) );
     PIXEL const height4 = GetClientWindowHeight( ) / 4;
@@ -255,7 +272,7 @@ LRESULT HistWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
     {
         PAINTSTRUCT ps;
         HDC hDC = BeginPaint( &ps );
-        DoPaint( hDC );
+        doPaint( hDC );
         (void)EndPaint( &ps );
 
         if ( ( CrsrInClientRect( ) || IsCaptured( ) ) && ( m_genSelected >= 0 ) )
