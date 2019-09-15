@@ -161,7 +161,7 @@ HWND WINAPI StatusBar::AddButton( LPCTSTR const lpWindowName, HMENU const hMenu,
 
 HWND WINAPI StatusBar::AddTrackBar( HMENU hMenu )
 { 
-	HWND hwnd =  addControl( TRACKBAR_CLASS, L"   Trackbar Control   ", WS_TABSTOP | WS_BORDER | TBS_NOTICKS, hMenu );
+	HWND hwnd = addControl( TRACKBAR_CLASS, L"   Trackbar Control   ", WS_TABSTOP | WS_BORDER | TBS_NOTICKS, hMenu );
 	return hwnd;
 };
 
