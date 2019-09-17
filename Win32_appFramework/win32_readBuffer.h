@@ -1,4 +1,6 @@
-// win32_utilities/win32_readBuffer.h : 
+// win32_readBuffer.h : 
+//
+// Win32_appFramework
 //
 // Handle read access from UI threads to Model
 //

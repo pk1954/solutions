@@ -16,11 +16,13 @@ using namespace std::literals::chrono_literals;
 
 #include "win32_NNetWindow.h"
 #include "win32_histWindow.h"
+#include "win32_status.h"
 
 // infrastructure
 
 #include "util.h"
 #include "ObserverInterface.h"
+#include "win32_baseAppWindow.h"
 
 // scripting and tracing
 
@@ -40,6 +42,7 @@ NNetSimuWindow::NNetSimuWindow( ) :
     BaseWindow( ),
 	m_hwndConsole( nullptr ),
 	m_pMainNNetWindow( nullptr ),
+	m_pStatusBar( nullptr ),
 	m_pHistWindow( nullptr ),
 	m_traceStream( ),
 	m_bStarted( FALSE )
@@ -77,6 +80,7 @@ NNetSimuWindow::NNetSimuWindow( ) :
 
 	m_pMainNNetWindow = new NNetWindow( );
 	m_pHistWindow     = new HistWindow( );
+	m_pStatusBar      = new StatusBar( );
 
 	m_NNetSimuController.Initialize
 	( 
@@ -87,6 +91,7 @@ NNetSimuWindow::NNetSimuWindow( ) :
 		& m_AppMenu
 	);
 
+	m_pStatusBar     ->SetRefreshRate( 300ms );
 	m_pMainNNetWindow->SetRefreshRate( 100ms );
 	m_pHistWindow    ->SetRefreshRate( 200ms ); 
 };
@@ -95,6 +100,7 @@ NNetSimuWindow::~NNetSimuWindow( )
 {
 	delete m_pMainNNetWindow;
 	delete m_pHistWindow;
+	delete m_pStatusBar;     
 }
 
 void NNetSimuWindow::Start( )
@@ -140,6 +146,8 @@ void NNetSimuWindow::Start( )
 
 	m_AppMenu.Initialize( m_hwndApp, & m_WinManager );
 
+	BaseAppWindow::AdjustChildWindows( m_pMainNNetWindow, m_pHistWindow, m_pStatusBar );
+
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
 		std::wcout << L"Using default window positions" << std::endl;
@@ -184,7 +192,7 @@ LRESULT NNetSimuWindow::UserProc
 
     case WM_SIZE:
 	case WM_MOVE:
-		adjustChildWindows( );
+		BaseAppWindow::AdjustChildWindows( m_pMainNNetWindow, m_pHistWindow, m_pStatusBar );
 		break;
 
 	case WM_PAINT:
@@ -215,36 +223,4 @@ LRESULT NNetSimuWindow::UserProc
     }
     
     return DefWindowProc( message, wParam, lParam );
-}
-
-void NNetSimuWindow::adjustChildWindows( )
-{
-    static PIXEL const HIST_WINDOW_HEIGHT = 30_PIXEL;
-
-    PixelRectSize pntAppClientSize( GetClRectSize( ) );
-	PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
-	PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
-
-    if ( pntAppClientSize.IsNotZero( ) )
-    {
-		//m_pStatusBar->Resize( );
-		//pixAppClientWinHeight -= m_pStatusBar->GetHeight( );
-		pixAppClientWinHeight -= HIST_WINDOW_HEIGHT, 
-		m_pHistWindow->Move   // adapt history window to new size
-		( 
-			0_PIXEL, 
-			pixAppClientWinHeight, 
-			pixAppClientWinWidth, 
-			HIST_WINDOW_HEIGHT, 
-			TRUE 
-		); 
-		m_pMainNNetWindow->Move
-		( 
-			0_PIXEL, 
-			0_PIXEL, 
-			pixAppClientWinWidth, 
-			pixAppClientWinHeight, 
-			TRUE 
-		);
-	}
 }

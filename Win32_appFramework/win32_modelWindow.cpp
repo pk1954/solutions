@@ -1,6 +1,6 @@
 // win32_modelWindow.cpp : 
 //
-// win32_utilities
+// Win32_appFramework
 
 #include "stdafx.h"
 #include "win32_util_resource.h"

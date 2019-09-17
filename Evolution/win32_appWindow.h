@@ -63,7 +63,6 @@ private:
     AppWindow & operator= ( AppWindow const & );  // noncopyable class 
 
 	void configureStatusBar( );
-	void adjustChildWindows( );
 
 	HWND                   m_hwndApp;
 	HWND                   m_hwndConsole;

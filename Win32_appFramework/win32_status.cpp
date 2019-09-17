@@ -1,21 +1,36 @@
 // win32_status.cpp : Verwaltet die Status Bar
 //
-// EvoWindows
+// Win32_appFramework
 
 #include "stdafx.h"
-#include "Resource.h"
-#include "commctrl.h"
-#include "config.h"
-#include "pixelCoordinates.h"
 #include "HistorySystem.h"
 #include "win32_tooltip.h"
+#include "win32_util_resource.h"
 #include "win32_WorkThreadInterface.h"
 #include "win32_status.h"
 
-extern int g_AllocHookCounter;
-
-
 static PIXEL const STATUS_BAR_HEIGHT = 22_PIXEL;
+
+static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
+{
+	StatusBar * const pStatusBar = (StatusBar *)dwRefData;
+	switch ( uMsg )
+	{
+
+	case WM_COMMAND:
+		pStatusBar->PostCommand2Application( LOWORD(wParam), 0 );
+		return FALSE;
+
+	case WM_HSCROLL:
+		pStatusBar->PostCommand2Application( IDM_TRACKBAR, GetDlgCtrlID( (HWND)lParam ) );
+		return FALSE;
+
+	default: 
+		break;
+	}
+
+	return DefSubclassProc(hwnd, uMsg, wParam, lParam);
+}
 
 StatusBar::StatusBar() :
 	m_pEditorWindow( nullptr ),
@@ -91,27 +106,6 @@ LRESULT StatusBar::UserProc
 )
 {
 	return DefSubclassProc( GetWindowHandle(), uMsg, wParam, lParam );
-}
-
-static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
-{
-    StatusBar * const pStatusBar = (StatusBar *)dwRefData;
-    switch ( uMsg )
-    {
-
-    case WM_COMMAND:
-		pStatusBar->PostCommand2Application( LOWORD(wParam), 0 );
-        return FALSE;
-
-    case WM_HSCROLL:
-		pStatusBar->PostCommand2Application( IDM_TRACKBAR, GetDlgCtrlID( (HWND)lParam ) );
-        return FALSE;
-
-    default: 
-        break;
-    }
-
-    return DefSubclassProc(hwnd, uMsg, wParam, lParam);
 }
 
 HWND WINAPI StatusBar::addControl

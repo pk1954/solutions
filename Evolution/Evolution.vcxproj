@@ -81,7 +81,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Evolution;$(SolutionDir)GDI;$(SolutionDir)D3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoHistGlue;$(SolutionDir)EvoWindows;$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)runtimeCPP;C:\Programme\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Evolution;$(SolutionDir)GDI;$(SolutionDir)D3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoHistGlue;$(SolutionDir)EvoWindows;$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)runtimeCPP;C:\Programme\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Debug;$(SolutionDir)x64\Debug;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
@@ -100,7 +100,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Evolution;$(SolutionDir)GDI;$(SolutionDir)D3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoHistGlue;$(SolutionDir)EvoWindows;$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)runtimeCPP;C:\Programme\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Evolution;$(SolutionDir)GDI;$(SolutionDir)D3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)EvoHistGlue;$(SolutionDir)EvoWindows;$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)runtimeCPP;C:\Programme\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Release;$(SolutionDir)x64\Release;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
@@ -155,7 +155,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;GDI.lib;runtimeCPP.lib;D3D.lib;EvolutionCore.lib;EvoHistGlue.lib;EvoWindows.lib;History.lib;Utilities.lib;ShapeLib.lib;Win32_utilities.lib;Win32_history.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;GDI.lib;runtimeCPP.lib;D3D.lib;EvolutionCore.lib;EvoHistGlue.lib;EvoWindows.lib;History.lib;Utilities.lib;ShapeLib.lib;Win32_utilities.lib;Win32_history.lib;Win32_appFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
       <Command>
@@ -229,7 +229,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;GDI.lib;runtimeCPP.lib;D3D.lib;EvolutionCore.lib;EvoHistGlue.lib;EvoWindows.lib;History.lib;Utilities.lib;ShapeLib.lib;Win32_utilities.lib;Win32_history.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;GDI.lib;runtimeCPP.lib;D3D.lib;EvolutionCore.lib;EvoHistGlue.lib;EvoWindows.lib;History.lib;Utilities.lib;ShapeLib.lib;Win32_utilities.lib;Win32_history.lib;Win32_appFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
       <Command>

@@ -19,6 +19,7 @@ HistWindow::HistWindow( ) :
     m_pHistSys( nullptr ),
     m_pHistIter( nullptr ),
     m_pGenDisplay( nullptr ),
+	m_pWorkThreadInterface( nullptr ),
     m_trackStruct( { sizeof( TRACKMOUSEEVENT ), TME_LEAVE, nullptr, 0L } ),
     m_genSelected( )
 { }
@@ -30,6 +31,11 @@ void HistWindow::Start
 	WorkThreadInterface * const pWorkThreadInterface
 )
 {
+    m_pHistSys             = pHistSys;
+    m_pHistIter            = m_pHistSys->CreateHistoryIterator( );
+	m_pWorkThreadInterface = pWorkThreadInterface;
+	m_pGenDisplay          = new GenDisplayWindow( );
+
     HWND const hwndHistory = StartBaseWindow
     (
         hwndParent,
@@ -43,10 +49,6 @@ void HistWindow::Start
     Util::AddWindowStyle( hwndHistory, WS_EX_STATICEDGE );
     m_trackStruct.hwndTrack = hwndHistory;
 
-    m_pHistSys             = pHistSys;
-    m_pHistIter            = m_pHistSys->CreateHistoryIterator( );
-	m_pWorkThreadInterface = pWorkThreadInterface;
-	m_pGenDisplay          = new GenDisplayWindow( );
     m_pGenDisplay->StartGenDisplayWindow( GetWindowHandle( ) );
 	m_pHistSys->RegisterObserver( this );  // Trigger me, if something happens in history system
 }

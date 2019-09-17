@@ -72,20 +72,20 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Debug;$(SolutionDir)..\Toolbox\x64\Debug;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Release;$(SolutionDir)..\Toolbox\x64\Release;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -100,7 +100,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;NNetModel.lib;NNetWindows.lib;NNetHistGlue.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;Win32_appFramework.lib;NNetModel.lib;NNetWindows.lib;NNetHistGlue.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -155,7 +155,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;NNetModel.lib;NNetWindows.lib;NNetHistGlue.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;Win32_appFramework.lib;NNetModel.lib;NNetWindows.lib;NNetHistGlue.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 // win32_controller.cpp
 //
-// Win32_utilities.h
+// Win32_appFramework
 
 #include "stdafx.h"
 #include "win32_aboutBox.h"

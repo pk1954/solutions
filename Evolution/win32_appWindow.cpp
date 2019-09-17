@@ -1,5 +1,6 @@
 // win32_appWindow.cpp
 //
+// Evolutopn
 
 #include "stdafx.h"
 
@@ -39,6 +40,7 @@ using namespace std::literals::chrono_literals;
 #include "pixelTypes.h"
 #include "ObserverInterface.h"
 #include "win32_focusPoint.h"
+#include "win32_baseAppWindow.h"
 
 // scripting and tracing
 
@@ -286,7 +288,7 @@ void AppWindow::Start( )
 	m_AppMenu.Initialize( m_hwndApp, & m_EvoWorkThreadInterface, & m_WinManager );
 
 	m_pMiniGridWindow->Size( );
-	adjustChildWindows( ); 
+	BaseAppWindow::AdjustChildWindows( m_pMainGridWindow, m_pHistWindow, m_pStatusBar );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
@@ -357,7 +359,7 @@ LRESULT AppWindow::UserProc
 
     case WM_SIZE:
 	case WM_MOVE:
-		adjustChildWindows( );
+		BaseAppWindow::AdjustChildWindows( m_pMainGridWindow, m_pHistWindow, m_pStatusBar );
 		break;
 
 	case WM_PAINT:
@@ -412,70 +414,3 @@ void AppWindow::configureStatusBar( )
 
 	m_pStatusBar->LastPart( );
 }
-
-void AppWindow::adjustChildWindows( )
-{
-    static PIXEL const HIST_WINDOW_HEIGHT = 30_PIXEL;
-
-    PixelRectSize pntAppClientSize( GetClRectSize( ) );
-	PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
-	PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
-
-    if ( pntAppClientSize.IsNotZero( ) )
-    {
-        m_pStatusBar->Resize( );
-        pixAppClientWinHeight -= m_pStatusBar->GetHeight( );
-		pixAppClientWinHeight -= HIST_WINDOW_HEIGHT, 
-        m_pHistWindow->Move   // adapt history window to new size
-		( 
-			0_PIXEL, 
-			pixAppClientWinHeight, 
-			pixAppClientWinWidth, 
-			HIST_WINDOW_HEIGHT, 
-			TRUE 
-		); 
-        m_pMainGridWindow->Move
-		( 
-			0_PIXEL, 
-			0_PIXEL, 
-			pixAppClientWinWidth, 
-			pixAppClientWinHeight, 
-			TRUE 
-		);
-    }
-}
-
-//int MyAllocHook
-//(
-//	int allocType, 
-//	void * userData, 
-//	size_t size,
-//	int blockType, 
-//	long requestNumber,
-//	const unsigned char* filename, 
-//	int lineNumber
-//)
-//{
-//	int x;
-//
-//	switch (allocType)
-//	{
-//	case _HOOK_ALLOC:
-//		x = 1;
-//		break;
-//
-//	case _HOOK_REALLOC:
-//		x = 2;
-//		break;
-//
-//	case _HOOK_FREE:
-//		x = 3;
-//		break;
-//
-//	default:
-//		break;
-//	}
-//
-//	return TRUE;
-//}
-//

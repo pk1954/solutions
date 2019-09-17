@@ -25,6 +25,8 @@
 
 class Script;
 class AppMenu;
+class StatusBar;
+class ModelWindow;
 class NNetModel;
 class NNetWindow;
 class HistWindow;
@@ -44,8 +46,6 @@ private:
 	NNetSimuWindow             ( NNetSimuWindow const & );  // noncopyable class 
 	NNetSimuWindow & operator= ( NNetSimuWindow const & );  // noncopyable class 
 
-	void adjustChildWindows( );
-
 	HWND                m_hwndApp;
 	HWND                m_hwndConsole;
 	Util::Event         m_event;
@@ -57,6 +57,7 @@ private:
 	HistInfoWindow         * m_pHistInfoWindow;
 	NNetModelDataGlue      * m_pModelDataWork;
 	NNetModel              * m_pNNetModel4Display;
+	StatusBar              * m_pStatusBar;
 
 	NNetWorkThreadInterface m_NNetWorkThreadInterface;
 	NNetSimuController      m_NNetSimuController;
