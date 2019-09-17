@@ -8,6 +8,7 @@
 #include "win32_winManager.h"
 
 class WorkThreadInterface;
+class HistInfoWindow;
 class HistorySystem;
 class ModelWindow;
 class HistWindow;
@@ -16,24 +17,20 @@ class StatusBar;
 class BaseAppWindow : public BaseWindow
 {
 public:
-	BaseAppWindow( );
-	void Start
-	( 
-		HWND const,
-		WorkThreadInterface * const
-	);
+	BaseAppWindow( WorkThreadInterface * const );
+	void Start( HWND const );
 	void Stop( );
 	virtual ~BaseAppWindow(); 
 
 	void AdjustChildWindows( ModelWindow * const );
 
-
-
 protected:
 	HWND         m_hwndConsole;
 	WinManager   m_WinManager;
 
-	StatusBar     * m_pStatusBar;
-	HistWindow    * m_pHistWindow;
-	HistorySystem * m_pHistorySystem;
+	StatusBar           * m_pStatusBar;
+	HistWindow          * m_pHistWindow;
+	HistorySystem       * m_pHistorySystem;
+	HistInfoWindow      * m_pHistInfoWindow;
+	WorkThreadInterface * m_pWorkThreadInterface;
 };

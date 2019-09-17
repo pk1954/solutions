@@ -38,7 +38,7 @@ using namespace std::literals::chrono_literals;
 #include "win32_NNetSimuWindow.h"
 
 NNetSimuWindow::NNetSimuWindow( ) :
-    BaseAppWindow( ),
+    BaseAppWindow( & m_NNetWorkThreadInterface ),
 	m_pMainNNetWindow( nullptr ),
 	m_traceStream( ),
 	m_bStarted( FALSE )
@@ -101,6 +101,8 @@ void NNetSimuWindow::Start( )
 
 ///	m_pHistInfoWindow->SetHistorySystem( m_pHistorySystem );
 
+	BaseAppWindow::Start( m_hwndApp );
+
 	m_pModelDataWork     = m_NNetHistGlue.Start( m_pHistorySystem, TRUE ); 
 	pModelWork           = m_pModelDataWork->GetNNetModel();
 	m_pNNetModel4Display = NNetModel::CreateCore( );
@@ -123,8 +125,6 @@ void NNetSimuWindow::Start( )
 		& m_NNetReadBuffer, 
 		& m_NNetHistGlue
 	);
-
-	BaseAppWindow::Start( m_hwndApp, & m_NNetWorkThreadInterface );
 
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW,   m_hwndApp,         TRUE,  TRUE  );
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow, TRUE,  FALSE );

@@ -21,7 +21,7 @@ using namespace std::literals::chrono_literals;
 
 #include "win32_appWindow.h"
 #include "win32_statistics.h"
-#include "win32_historyInfo.h"
+//#include "win32_historyInfo.h"
 #include "win32_crsrWindow.h"
 #include "win32_performanceWindow.h"
 #include "win32_displayOptions.h"
@@ -63,7 +63,7 @@ using namespace std::literals::chrono_literals;
 #include "win32_appWindow.h"
 
 AppWindow::AppWindow( ) :
-    BaseAppWindow( ),
+    BaseAppWindow( & m_EvoWorkThreadInterface ),
 	m_pGraphics( nullptr ),
 	m_pModelDataWork( nullptr ),
 	m_pEvoCore4Display( nullptr ),
@@ -71,7 +71,6 @@ AppWindow::AppWindow( ) :
     m_pMiniGridWindow( nullptr ),
     m_pPerfWindow( nullptr ),
     m_pCrsrWindow( nullptr ),
-    m_pHistInfoWindow( nullptr ),
     m_pStatistics( nullptr ),
 	m_pDspOptWindow( nullptr ),
 	m_pGenerationDisplay( nullptr ),
@@ -113,7 +112,6 @@ AppWindow::AppWindow( ) :
 	m_pFocusPoint     = new FocusPoint( );
 	m_pPerfWindow     = new PerformanceWindow( );
 	m_pStatistics     = new StatisticsWindow( );
-	m_pHistInfoWindow = new HistInfoWindow( );
 	m_pCrsrWindow     = new CrsrWindow( );
 	m_pEditorWindow   = new EditorWindow( );
 
@@ -153,7 +151,6 @@ AppWindow::AppWindow( ) :
     m_pCrsrWindow    ->SetRefreshRate( 100ms );
     m_pStatistics    ->SetRefreshRate( 100ms );
     m_pPerfWindow    ->SetRefreshRate( 100ms );
-	m_pHistInfoWindow->SetRefreshRate( 300ms );
 	m_pMiniGridWindow->SetRefreshRate( 300ms );
     m_pMainGridWindow->SetRefreshRate( 100ms );
 	m_pEditorWindow  ->SetRefreshRate( 300ms );
@@ -173,7 +170,6 @@ AppWindow::~AppWindow( )
 	delete m_pMiniGridWindow; 
 	delete m_pPerfWindow;     
 	delete m_pStatistics;     
-	delete m_pHistInfoWindow;
 	delete m_pCrsrWindow;
 	delete m_pFocusPoint;     
 	delete m_pEditorWindow;
@@ -205,8 +201,7 @@ void AppWindow::Start( )
 
 	m_pGraphics = & m_D3d_driver;
 
-	BaseAppWindow::Start( m_hwndApp, & m_EvoWorkThreadInterface );
-	m_pHistInfoWindow->SetHistorySystem( m_pHistorySystem );
+	BaseAppWindow::Start( m_hwndApp );
 	m_pModelDataWork = m_EvoHistGlue.Start( m_pHistorySystem, TRUE ); 
 	m_protocolServer.Start( m_pHistorySystem );
 
@@ -250,7 +245,6 @@ void AppWindow::Start( )
 	m_pFocusPoint    ->Start( & m_EvoHistGlue );
 	m_pCrsrWindow    ->Start( m_hwndApp, & m_EvoReadBuffer, m_pFocusPoint );
 	m_pStatistics    ->Start( m_hwndApp, & m_EvoReadBuffer );
-	m_pHistInfoWindow->Start( m_hwndApp, nullptr );
 	m_pPerfWindow    ->Start( m_hwndApp, m_Delay, m_atComputation, m_atDisplay, [&](){ return m_EvoWorkThreadInterface.IsRunning(); } );
 
 	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW,   m_hwndConsole,                   TRUE,  TRUE  );
@@ -258,7 +252,6 @@ void AppWindow::Start( )
 	m_WinManager.AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, * m_pPerfWindow,                   TRUE,  FALSE );
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, * m_pCrsrWindow,                   TRUE,  FALSE );
 	m_WinManager.AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, * m_pStatistics,                   TRUE,  FALSE );
-	m_WinManager.AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   * m_pHistInfoWindow,               TRUE,  FALSE );
     m_WinManager.AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, * m_pDspOptWindow,                 TRUE,  FALSE );
     m_WinManager.AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, * m_pEditorWindow,                 TRUE,  FALSE );
     m_WinManager.AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, * m_pMiniGridWindow,               TRUE,  FALSE );
@@ -289,9 +282,6 @@ void AppWindow::Start( )
 
 void AppWindow::Stop()
 {
-	m_pHistInfoWindow->Stop( );
-
-
 	m_bStarted = FALSE;
 
 	m_pMiniGridWindow->Stop( );

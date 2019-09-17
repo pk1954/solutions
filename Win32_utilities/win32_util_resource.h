@@ -28,6 +28,7 @@
 
 #define IDM_STATUS_BAR                 30
 #define IDM_HIST_WINDOW                31
+#define IDM_HIST_INFO                  32
 
 #define IDM_HIDE_WINDOW                50
 

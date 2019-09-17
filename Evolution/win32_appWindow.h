@@ -32,7 +32,6 @@ class FocusPoint;
 class GridWindow;
 class EditorWindow;
 class StatisticsWindow;
-class HistInfoWindow;
 class CrsrWindow;
 class PerformanceWindow;
 class GenerationDisplay;
@@ -84,7 +83,6 @@ private:
 	DspOptWindow           * m_pDspOptWindow;
 	PerformanceWindow      * m_pPerfWindow;
 	CrsrWindow             * m_pCrsrWindow;
-	HistInfoWindow         * m_pHistInfoWindow;
 	StatisticsWindow       * m_pStatistics;
 	GraphicsInterface      * m_pGraphics;
 	EvoModelDataGlue       * m_pModelDataWork;

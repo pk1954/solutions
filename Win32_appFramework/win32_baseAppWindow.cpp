@@ -9,57 +9,66 @@
 #include "win32_util.h"
 #include "win32_util_resource.h"
 #include "win32_modelWindow.h"
+#include "win32_historyInfo.h"
 #include "win32_histWindow.h"
 #include "win32_status.h"
 #include "win32_baseAppWindow.h"
 
 using namespace std::literals::chrono_literals;
 
-BaseAppWindow::BaseAppWindow( ) : 
-	  m_hwndConsole( nullptr ),
-	  m_pStatusBar( nullptr ),
-      m_pHistWindow( nullptr ),
-      m_pHistorySystem( nullptr )
-
+BaseAppWindow::BaseAppWindow
+( 	
+	WorkThreadInterface * const pWorkThreadInterface
+) : 
+	m_hwndConsole( nullptr ),
+	m_pStatusBar( nullptr ),
+	m_pHistWindow( nullptr ),
+	m_pHistInfoWindow( nullptr ),
+	m_pHistorySystem( nullptr ),
+	m_pWorkThreadInterface( pWorkThreadInterface )
 {
 	m_hwndConsole = GetConsoleWindow( );
 	SetWindowPos( m_hwndConsole, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
 
-	m_pStatusBar  = new StatusBar( );
-	m_pHistWindow = new HistWindow( );
+	m_pStatusBar      = new StatusBar( );
+	m_pHistWindow     = new HistWindow( );
+	m_pHistInfoWindow = new HistInfoWindow( );
 
-	m_pStatusBar ->SetRefreshRate( 300ms );
-	m_pHistWindow->SetRefreshRate( 200ms ); 
+	m_pStatusBar     ->SetRefreshRate( 300ms );
+	m_pHistWindow    ->SetRefreshRate( 200ms ); 
+	m_pHistInfoWindow->SetRefreshRate( 300ms );
 }
 
 BaseAppWindow::~BaseAppWindow() 
 {
 	delete m_pStatusBar;     
 	delete m_pHistWindow;
+	delete m_pHistInfoWindow;
 };
 
-void BaseAppWindow::Start
-( 
-	HWND                  const hwndParent,
-	WorkThreadInterface * const pWorkThreadInterface
-)
+void BaseAppWindow::Start( HWND const hwndParent )
 {
 	m_pHistorySystem = HistorySystem::CreateHistorySystem( );  // deleted in Stop function
 
-	m_pHistWindow->Start( hwndParent, m_pHistorySystem, pWorkThreadInterface );
-	m_pStatusBar ->Start( hwndParent, m_pHistorySystem, pWorkThreadInterface );
+	m_pHistWindow    ->Start( hwndParent, m_pHistorySystem, m_pWorkThreadInterface );
+	m_pStatusBar     ->Start( hwndParent, m_pHistorySystem, m_pWorkThreadInterface );
+	m_pHistInfoWindow->Start( hwndParent, nullptr );
 
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,    m_pStatusBar->GetWindowHandle(), FALSE, FALSE );
 	m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, * m_pHistWindow,                   FALSE, FALSE ); 
+	m_WinManager.AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   * m_pHistInfoWindow,               TRUE,  FALSE );
+
+	m_pHistInfoWindow->SetHistorySystem( m_pHistorySystem );
 }
 
 void BaseAppWindow::Stop( )
 {
-	m_pHistWindow->Stop( );
+	m_pHistInfoWindow->Stop( );
+	m_pHistWindow    ->Stop( );
 
 	delete m_pHistorySystem;   
 
-	m_pHistorySystem   = nullptr;
+	m_pHistorySystem = nullptr;
 }
 
 void BaseAppWindow::AdjustChildWindows(	ModelWindow * const pModelWindow )
