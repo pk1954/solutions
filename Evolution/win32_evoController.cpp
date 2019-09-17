@@ -135,9 +135,9 @@ bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 		m_pGridWindow->Fit2Rect( );
 		ZoomControl::SetSizeTrackBar( m_pStatusBar, m_pGridWindow->GetFieldSize() );
 		break;
-
+		
 	case IDM_MAX_SPEED:
-		SpeedControl::Set2MaxSpeed( m_pStatusBar );
+		SpeedControl::Set2MaxSpeed( );
 		m_pDelay->SetDelay( 0 );
 		break;
 
@@ -154,12 +154,16 @@ bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 		case IDM_SIMULATION_SPEED:
-			m_pDelay->SetDelay( SpeedControl::GetTrackBarPos( m_pStatusBar ) );
+			m_pDelay->SetDelay( SpeedControl::GetTrackBarPos( ) );
 			break;
 
 		default:
 			assert( false );
 		}
+		break;
+
+	case IDD_EDITOR:
+		ShowWindow( m_pStatusBar->GetDlgItem( IDM_EDIT_WINDOW ), ! m_pEditorWindow->IsWindowVisible( ) );
 		break;
 
 	case IDM_ZOOM_OUT:
@@ -192,19 +196,25 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 {
     int const wmId = LOWORD( wParam );
 	
-	if ( Controller::ProcessCommand( wmId, lParam ) )  // Some commands are handled by 
-		return;                                        // the framework controller
+	if ( Controller::ProcessCommand( wmId, lParam ) )  // Some commands are handled by the framework controller
+	{                                                        
+		SpeedControl::Adjust
+		(
+			m_pEvoWorkThreadInterface->IsRunning(),
+			m_pEvoWorkThreadInterface->GetCurrentGeneration( ) > 0
+		);
+
+		if ( wmId == IDM_RUN )
+			m_pEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
+
+		return;                                        
+	}
 
 	if ( processUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
 		return;                             // but do not concern the model
 
     switch (wmId)
     {
-		case IDM_RUN:
-			m_pEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
-			m_pEvoWorkThreadInterface->PostRunGenerations( true );
-			break;
-
 		case IDM_RESET:
 		{
 			int     iRes    = ResetDialog::Show( m_pAppWindow->GetWindowHandle( ) );

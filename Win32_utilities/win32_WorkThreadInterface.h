@@ -36,8 +36,9 @@ public:
 	void PostGenerationStep();
 	void PostRepeatGenerationStep();       // Do not call! Used by WorkThread only;
 
-	HIST_GENERATION GetGenDemanded( ) const;
-	BOOL            IsRunning( )      const;
+	HIST_GENERATION GetGenDemanded( )        const;
+	HIST_GENERATION GetCurrentGeneration ( ) const;
+	BOOL            IsRunning( )             const;
 
 protected:
 

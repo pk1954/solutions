@@ -60,6 +60,10 @@ bool Controller::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 		m_pWorkThreadInterface->PostRedo( );
 		break;
 
+	case IDM_RUN:
+		m_pWorkThreadInterface->PostRunGenerations( true );
+		break;
+
 	case IDM_STOP:
 		m_pWorkThreadInterface->PostStopComputation( );
 		break;

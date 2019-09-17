@@ -87,6 +87,11 @@ public:
 		return GetHistorySystem()->GetGenerationCmd( gen ).IsAppCommand( );
 	}
 
+	HIST_GENERATION GetCurrentGeneration( )
+	{
+		return GetHistorySystem()->GetCurrentGeneration();
+	}
+
 protected:
 	virtual BOOL Dispatch( MSG const );
 

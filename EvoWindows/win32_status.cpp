@@ -10,7 +10,6 @@
 #include "HistorySystem.h"
 #include "win32_tooltip.h"
 #include "win32_WorkThreadInterface.h"
-#include "win32_editor.h"
 #include "win32_status.h"
 
 extern int g_AllocHookCounter;
@@ -29,7 +28,7 @@ void StatusBar::Start
 	HWND                        const hwndParent,
 	HistorySystem       const * const pHistorySystem,
 	WorkThreadInterface const * const pWorkThreadInterface,
-	EditorWindow              * const pEditorWindow
+	RootWindow                * const pEditorWindow
 )
 {
 	m_pEditorWindow        = pEditorWindow;
@@ -55,8 +54,6 @@ void StatusBar::Start
 	m_pixBorderX      = PIXEL(PIXEL(GetSystemMetrics( SM_CXSIZEFRAME ))) + 10_PIXEL;
 	m_pixBorderY      = PIXEL(PIXEL(GetSystemMetrics( SM_CYSIZEFRAME )));
 	m_pixClientHeight = GetHeight( ) - m_pixBorderY;
-
-	m_pEditorWindow->RegisterObserver( this ); // notify me, if editor window has been closed or opened
 
 	m_pixPosX = 0_PIXEL;
 }
@@ -101,9 +98,6 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
     StatusBar * const pStatusBar = (StatusBar *)dwRefData;
     switch ( uMsg )
     {
-    case WM_PAINT:
-		pStatusBar->adjust();
-        break;
 
     case WM_COMMAND:
 		pStatusBar->PostCommand2Application( LOWORD(wParam), 0 );
@@ -164,21 +158,6 @@ HWND WINAPI StatusBar::AddTrackBar( HMENU hMenu )
 	HWND hwnd = addControl( TRACKBAR_CLASS, L"   Trackbar Control   ", WS_TABSTOP | WS_BORDER | TBS_NOTICKS, hMenu );
 	return hwnd;
 };
-
-void StatusBar::adjust( )
-{
-	BOOL const bRunMode = m_pWorkThreadInterface->IsRunning();
-
-	EnableWindow( GetDlgItem( IDM_RUN  ), ! bRunMode );
-	EnableWindow( GetDlgItem( IDM_STOP ),   bRunMode );
-
-	EnableWindow( GetDlgItem( IDM_FORWARD ), ! bRunMode );
-
-	ShowWindow( GetDlgItem( IDM_EDIT_WINDOW ), ! m_pEditorWindow->IsWindowVisible( ) );
-
-	if ( Config::UseHistorySystem( ) )
-		EnableWindow( GetDlgItem( IDM_BACKWARDS ), (! bRunMode) && (m_pHistorySystem->GetCurrentGeneration( ) > 0 ) );
-}
 
 PIXEL StatusBar::GetHeight( ) const
 {

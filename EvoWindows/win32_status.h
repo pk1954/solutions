@@ -8,7 +8,6 @@
 #include "PixelTypes.h"
 #include "win32_rootWindow.h"
 
-class EditorWindow;
 class HistorySystem;
 class WorkThreadInterface;
 
@@ -24,7 +23,7 @@ public:
 		HWND                        const, 
 		HistorySystem       const * const, 
 		WorkThreadInterface const * const, 
-		EditorWindow              * const 
+		RootWindow                * const 
 	);
 	void  Stop( );
 
@@ -46,7 +45,7 @@ private:
 
 	HWND WINAPI addControl( LPCTSTR, LPCTSTR, DWORD, HMENU );
 
-	void adjust( );
+//	void adjust( );
 
 	std::vector< PIXEL > m_statWidths;
 
@@ -55,7 +54,7 @@ private:
     PIXEL m_pixBorderY;
     PIXEL m_pixPosX;
 
-	EditorWindow              * m_pEditorWindow;
+	RootWindow                * m_pEditorWindow;
 	HistorySystem       const * m_pHistorySystem;
 	WorkThreadInterface const * m_pWorkThreadInterface;
 

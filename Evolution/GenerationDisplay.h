@@ -41,11 +41,14 @@ public:
 		EvolutionCore  const * pCore  = m_pReadBuffer->LockReadBuffer( );
 		EVO_GENERATION         evoGen = pCore->GetEvoGenerationNr( );
 		m_pReadBuffer->ReleaseReadBuffer( );
-		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, wstringText + to_wstring( evoGen.GetValue() ) );
+		m_wstrBuffer = wstringText + to_wstring( evoGen.GetValue() );
+		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstrBuffer );
 	}
 
 private:
 	static wstring const wstringText;
+
+	static wstring m_wstrBuffer;
 
 	StatusBar     * m_pStatusBar;
 	EvoReadBuffer * m_pReadBuffer;

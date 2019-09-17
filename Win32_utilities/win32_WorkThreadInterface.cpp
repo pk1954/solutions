@@ -64,6 +64,11 @@ HIST_GENERATION WorkThreadInterface::GetGenDemanded( ) const
 	return m_pWorkThread->GetGenDemanded( );
 }
 
+HIST_GENERATION WorkThreadInterface::GetCurrentGeneration( ) const 
+{ 
+	return m_pWorkThread->GetCurrentGeneration( );
+}
+
 void WorkThreadInterface::WorkMessage
 ( 
 	BOOL                  const isEditOperation,

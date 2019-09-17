@@ -402,8 +402,8 @@ void AppWindow::configureStatusBar( )
 	ZoomControl::SetSizeTrackBar( m_pStatusBar, DEFAULT_FIELD_SIZE );
 
 	m_pStatusBar->NewPart( );
-	SpeedControl::AddSimulationControl( m_pStatusBar, Config::UseHistorySystem( ) );
-	SpeedControl::SetSpeedTrackBar( m_pStatusBar, DEFAULT_DELAY );
+	SpeedControl::AddSimulationControl( m_pStatusBar, & m_EvoWorkThreadInterface, m_pHistorySystem, Config::UseHistorySystem( ) );
+	SpeedControl::SetSpeedTrackBar( DEFAULT_DELAY );
 
 	int iPartScriptLine = m_pStatusBar->NewPart( );
 	m_ScriptHook.Initialize( m_pStatusBar, iPartScriptLine );

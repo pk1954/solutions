@@ -253,12 +253,12 @@ LRESULT EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM 
         break;
 
 	case WM_ACTIVATE:
-		m_observers.NotifyAll( false );
+		PostCommand2Application( IDD_EDITOR, TRUE );
 		break;
 
 	case WM_CLOSE:
 		AnimateWindow( GetWindowHandle(), 200, AW_HIDE | AW_VER_POSITIVE );
-		m_observers.NotifyAll( false );
+		PostCommand2Application( IDD_EDITOR, FALSE );
 		return TRUE; 
 
     default:
