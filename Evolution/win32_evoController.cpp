@@ -197,15 +197,25 @@ void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
     int const wmId = LOWORD( wParam );
 	
 	if ( Controller::ProcessCommand( wmId, lParam ) )  // Some commands are handled by the framework controller
-	{                                                        
-		SpeedControl::Adjust
-		(
-			m_pEvoWorkThreadInterface->IsRunning(),
-			m_pEvoWorkThreadInterface->GetCurrentGeneration( ) > 0
-		);
-
+	{                                       
 		if ( wmId == IDM_RUN )
+		{
 			m_pEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
+			SpeedControl::Adjust
+			(
+				TRUE,
+				m_pEvoWorkThreadInterface->GetCurrentGeneration( ) > 0
+			);
+		}
+
+		if ( wmId == IDM_STOP )
+		{
+			SpeedControl::Adjust
+			(
+				FALSE,
+				m_pEvoWorkThreadInterface->GetCurrentGeneration( ) > 0
+			);
+		}
 
 		return;                                        
 	}

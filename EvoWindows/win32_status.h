@@ -45,8 +45,6 @@ private:
 
 	HWND WINAPI addControl( LPCTSTR, LPCTSTR, DWORD, HMENU );
 
-//	void adjust( );
-
 	std::vector< PIXEL > m_statWidths;
 
 	PIXEL m_pixClientHeight;
