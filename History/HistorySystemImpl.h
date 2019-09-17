@@ -61,6 +61,11 @@ public:
 
     virtual HIST_GENERATION   FindGenerationWithProperty( GenerationProperty const &, bool const ) const;
 
+	virtual HistoryCache const * GetHistoryCache( ) const
+	{
+		return m_pHistoryCache;
+	}
+
 	virtual void RegisterObserver( ObserverInterface * const pObserver )
 	{
 		m_observers.Register( pObserver );

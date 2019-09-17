@@ -22,7 +22,6 @@ using namespace std::literals::chrono_literals;
 
 #include "util.h"
 #include "ObserverInterface.h"
-#include "win32_baseAppWindow.h"
 
 // scripting and tracing
 
@@ -39,18 +38,12 @@ using namespace std::literals::chrono_literals;
 #include "win32_NNetSimuWindow.h"
 
 NNetSimuWindow::NNetSimuWindow( ) :
-    BaseWindow( ),
-	m_hwndConsole( nullptr ),
+    BaseAppWindow( ),
 	m_pMainNNetWindow( nullptr ),
-	m_pStatusBar( nullptr ),
-	m_pHistWindow( nullptr ),
 	m_traceStream( ),
 	m_bStarted( FALSE )
 {
 	Stopwatch stopwatch;
-
-	m_hwndConsole = GetConsoleWindow( );
-	SetWindowPos( m_hwndConsole, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
 
 //	_CrtSetAllocHook( MyAllocHook );
 
@@ -79,8 +72,6 @@ NNetSimuWindow::NNetSimuWindow( ) :
 	NNetWindow::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
 
 	m_pMainNNetWindow = new NNetWindow( );
-	m_pHistWindow     = new HistWindow( );
-	m_pStatusBar      = new StatusBar( );
 
 	m_NNetSimuController.Initialize
 	( 
@@ -91,16 +82,12 @@ NNetSimuWindow::NNetSimuWindow( ) :
 		& m_AppMenu
 	);
 
-	m_pStatusBar     ->SetRefreshRate( 300ms );
 	m_pMainNNetWindow->SetRefreshRate( 100ms );
-	m_pHistWindow    ->SetRefreshRate( 200ms ); 
 };
 
 NNetSimuWindow::~NNetSimuWindow( )
 {
 	delete m_pMainNNetWindow;
-	delete m_pHistWindow;
-	delete m_pStatusBar;     
 }
 
 void NNetSimuWindow::Start( )
@@ -111,7 +98,6 @@ void NNetSimuWindow::Start( )
 
 /////////////////////
 
-	m_pHistorySystem = HistorySystem::CreateHistorySystem( );  // deleted in Stop function
 
 ///	m_pHistInfoWindow->SetHistorySystem( m_pHistorySystem );
 
@@ -138,15 +124,14 @@ void NNetSimuWindow::Start( )
 		& m_NNetHistGlue
 	);
 
-	m_pHistWindow  ->Start( m_hwndApp, m_pHistorySystem, & m_NNetWorkThreadInterface );
+	BaseAppWindow::Start( m_hwndApp, & m_NNetWorkThreadInterface );
 
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW,   m_hwndApp,         TRUE,  TRUE  );
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow, TRUE,  FALSE );
-	m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, * m_pHistWindow,                   FALSE, FALSE ); 
 
 	m_AppMenu.Initialize( m_hwndApp, & m_WinManager );
 
-	BaseAppWindow::AdjustChildWindows( m_pMainNNetWindow, m_pHistWindow, m_pStatusBar );
+	AdjustChildWindows( m_pMainNNetWindow );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
@@ -161,6 +146,8 @@ void NNetSimuWindow::Start( )
 
 void NNetSimuWindow::Stop()
 {
+	BaseAppWindow::Stop();
+
 	m_bStarted = FALSE;
 
 	m_pMainNNetWindow->Stop( );
@@ -192,7 +179,7 @@ LRESULT NNetSimuWindow::UserProc
 
     case WM_SIZE:
 	case WM_MOVE:
-		BaseAppWindow::AdjustChildWindows( m_pMainNNetWindow, m_pHistWindow, m_pStatusBar );
+		AdjustChildWindows( m_pMainNNetWindow );
 		break;
 
 	case WM_PAINT:

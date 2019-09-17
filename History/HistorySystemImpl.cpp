@@ -35,7 +35,7 @@ ModelData * HistorySystemImpl::StartHistorySystem
 	ULONGLONG  const ullHistEntries  { min( ullDemanded, ullMaxNrOfSlots * 70 / 100 ) };  // use only 70% of available memory
 	HistSlotNr const nrOfSlots       { CastToShort( ullHistEntries ) }; 
 
-	m_pHistoryCache  = new HistoryCache;                    //ok
+	m_pHistoryCache = new HistoryCache;                    //ok
 	m_GenCmdList.Resize( genMaxNrOfGens );
 	m_pHistoryCache->InitHistoryCache( nrOfSlots, pModelFactory );
 	m_pHistCacheItemWork->SetGenerationCommand( GenerationCmd::ResetCmd( 0 ) );

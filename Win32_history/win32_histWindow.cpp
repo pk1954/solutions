@@ -17,7 +17,6 @@
 HistWindow::HistWindow( ) :
     BaseWindow( ),
     m_pHistSys( nullptr ),
-    m_pHistIter( nullptr ),
     m_pGenDisplay( nullptr ),
 	m_pWorkThreadInterface( nullptr ),
     m_trackStruct( { sizeof( TRACKMOUSEEVENT ), TME_LEAVE, nullptr, 0L } ),
@@ -32,7 +31,6 @@ void HistWindow::Start
 )
 {
     m_pHistSys             = pHistSys;
-    m_pHistIter            = m_pHistSys->CreateHistoryIterator( );
 	m_pWorkThreadInterface = pWorkThreadInterface;
 	m_pGenDisplay          = new GenDisplayWindow( );
 
@@ -62,10 +60,8 @@ void HistWindow::Stop( )
 
 HistWindow::~HistWindow( )
 {
-    delete m_pHistIter;
     delete m_pGenDisplay;
     m_pHistSys = nullptr;
-    m_pHistIter = nullptr;
     m_pGenDisplay = nullptr;
 }
 
@@ -157,7 +153,7 @@ void HistWindow::paintGeneration( HDC const hDC, HIST_GENERATION const gen, COLO
     Util::FastFill( hDC, getGenerationRect( gen ) );
 }
 
-void HistWindow::paintPixelPos( HDC const hDC, PIXEL const pixPosX ) const
+void HistWindow::paintPixelPos( HDC const hDC, PIXEL const pixPosX, HistoryIterator & histIter ) const
 {
     PIXEL           const pixClientWidth = GetClientWindowWidth( );
     HIST_GENERATION const genNrOfGens    = m_pHistSys->GetNrOfGenerations( );
@@ -169,23 +165,23 @@ void HistWindow::paintPixelPos( HDC const hDC, PIXEL const pixPosX ) const
     if ( genMax < genMin )
         genMax = genMin;
 
-    while ( m_pHistIter->GetCurrentGeneration( ) >= genMin )  // move backwards before genMin
-        ( void )m_pHistIter->Set2Senior( );
+    while ( histIter.GetCurrentGeneration( ) >= genMin )  // move backwards before genMin
+        ( void )histIter.Set2Senior( );
 
     do
     {
-        HIST_GENERATION gen = m_pHistIter->GetCurrentGeneration( );
+        HIST_GENERATION gen = histIter.GetCurrentGeneration( );
 
         if ( ( genMin <= gen ) && ( gen <= genMax ) )  // gen maps to lPixPos
             bFoundPos = TRUE;
 
-        if ( m_pHistIter->Set2Junior( ).IsNull() )
+        if ( histIter.Set2Junior( ).IsNull() )
             break;
 
-        if ( m_pHistIter->GetCurrentGeneration( ) > gen + 1 )
+        if ( histIter.GetCurrentGeneration( ) > gen + 1 )
             bFoundNeg = TRUE;       // gap found
 
-    } while ( m_pHistIter->GetCurrentGeneration( ) <= genMax );  // move forwards after genMax
+    } while ( histIter.GetCurrentGeneration( ) <= genMax );  // move forwards after genMax
 
     SetBkColor
     (
@@ -205,25 +201,29 @@ void HistWindow::paintAllGenerations( HDC const hDC )
     if ( m_pHistSys->GetNrOfGenerations( ) <= 1 )
         return;
 
-    if ( m_pHistSys->GetNrOfGenerations( ) < pixSizeX.GetValue() )
+	if ( m_pHistSys->GetNrOfGenerations( ) < pixSizeX.GetValue() )
     {
-        HistSlotNr slotNr = m_pHistIter->Set2Oldest( );
+		HistoryIterator histIter( m_pHistSys->GetHistoryCache() ); 
+        
+		HistSlotNr slotNr = histIter.Set2Oldest( );
 
         for ( HIST_GENERATION genRun = 0; slotNr.IsNotNull(); ++genRun )
         {
-            BOOL bGenRunInHistory = (genRun >= m_pHistIter->GetCurrentGeneration( ));
+            BOOL bGenRunInHistory = (genRun >= histIter.GetCurrentGeneration( ));
             paintGeneration( hDC, genRun, bGenRunInHistory ? CLR_DARK : CLR_BACK );
             if ( bGenRunInHistory )
-                slotNr = m_pHistIter->Set2Junior( );
+                slotNr = histIter.Set2Junior( );
         }
     }
     else // more generations than pixels
     {
-        (void)m_pHistIter->Set2Oldest( );
+		HistoryIterator histIter( m_pHistSys->GetHistoryCache() ); 
+
+		(void)histIter.Set2Oldest( );
 
         for ( PIXEL pixX = 0_PIXEL; pixX < pixSizeX; ++pixX )
         {
-            paintPixelPos( hDC, pixX );
+            paintPixelPos( hDC, pixX, histIter );
         }
     }
 }

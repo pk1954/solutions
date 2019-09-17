@@ -26,6 +26,9 @@
 #define IDM_WINDOW_OFF                 21
 #define IDM_WINDOW_AUTO                22
 
+#define IDM_STATUS_BAR                 30
+#define IDM_HIST_WINDOW                31
+
 #define IDM_HIDE_WINDOW                50
 
 #define IDM_HIST_BUFFER_FULL           60

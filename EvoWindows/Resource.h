@@ -44,12 +44,10 @@
 #define IDM_DISP_WINDOW                         (IDM_WINDOWS_BASE +  4)
 #define IDM_EDIT_WINDOW                         (IDM_WINDOWS_BASE +  5)
 #define IDM_STAT_WINDOW                         (IDM_WINDOWS_BASE +  6)
-#define IDM_HIST_WINDOW                         (IDM_WINDOWS_BASE +  7)
 #define IDM_CRSR_WINDOW                         (IDM_WINDOWS_BASE +  8)
 #define IDM_HIST_INFO                           (IDM_WINDOWS_BASE +  9)
 #define IDM_PERF_WINDOW                         (IDM_WINDOWS_BASE + 10)
 #define IDM_MAIN_WINDOW                         (IDM_WINDOWS_BASE + 11)
-#define IDM_STATUS_BAR                          (IDM_WINDOWS_BASE + 12)
 
 #define IDM_INDIVIDUALS                         450
 

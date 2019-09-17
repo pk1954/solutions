@@ -33,7 +33,6 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
 }
 
 StatusBar::StatusBar() :
-	m_pEditorWindow( nullptr ),
 	m_pHistorySystem( nullptr ),
 	m_pWorkThreadInterface( nullptr )
 { }
@@ -42,11 +41,9 @@ void StatusBar::Start
 ( 
 	HWND                        const hwndParent,
 	HistorySystem       const * const pHistorySystem,
-	WorkThreadInterface const * const pWorkThreadInterface,
-	RootWindow                * const pEditorWindow
+	WorkThreadInterface const * const pWorkThreadInterface
 )
 {
-	m_pEditorWindow        = pEditorWindow;
 	m_pHistorySystem       = pHistorySystem;
 	m_pWorkThreadInterface = pWorkThreadInterface;
 

@@ -58,14 +58,12 @@ public:
 
 void showHistorySlots( HistorySystem * const pHistorySys )
 {
-	HistoryIterator * iter = pHistorySys->CreateHistoryIterator( );
+	HistoryIterator iter( pHistorySys->GetHistoryCache() ); 
 
-    for ( HistSlotNr slotNr = iter->Set2Oldest( ); slotNr.IsNotNull(); slotNr = iter->Set2Junior( ) )
-        wcout << iter->GetCurrentGeneration( ) << L" ";
+    for ( HistSlotNr slotNr = iter.Set2Oldest( ); slotNr.IsNotNull(); slotNr = iter.Set2Junior( ) )
+        wcout << iter.GetCurrentGeneration( ) << L" ";
 
 	wcout << endl;
-
-	delete iter;
 }
 
 void gotoGeneration( HistorySystem * const pHistorySys, HIST_GENERATION const histGenDemanded )

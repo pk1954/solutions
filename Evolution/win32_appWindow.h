@@ -5,18 +5,17 @@
 
 #include <fstream>
 #include <iostream>
-#include "win32_baseWindow.h"
 #include "win32_event.h"
 #include "win32_delay.h"
 #include "win32_actionTimer.h"
 
 // infrastructure
 
+#include "win32_baseAppWindow.h"
 #include "win32_protocolServer.h"
 #include "win32_scriptHook.h"
 #include "win32_readBuffer.h"
 #include "win32_colorManager.h"
-#include "win32_winManager.h"
 #include "win32_EvoWorkThreadInterface.h"
 #include "EvoHistorySysGlue.h"
 #include "EvoReadBuffer.h"
@@ -31,7 +30,6 @@
 class Script;
 class FocusPoint;
 class GridWindow;
-class HistWindow;
 class EditorWindow;
 class StatisticsWindow;
 class HistInfoWindow;
@@ -40,7 +38,6 @@ class PerformanceWindow;
 class GenerationDisplay;
 class StatusBar;
 class ScriptHook;
-class HistorySystem;
 class GraphicsInterface;
 class D3D_driver;
 class EvoModelDataGlue;
@@ -48,7 +45,7 @@ class EvolutionCore;
 class DspOptWindow;
 class AppMenu;
 
-class AppWindow : public BaseWindow
+class AppWindow : public BaseAppWindow
 {
 public:
     AppWindow( );
@@ -65,14 +62,12 @@ private:
 	void configureStatusBar( );
 
 	HWND                   m_hwndApp;
-	HWND                   m_hwndConsole;
 	Util::Event            m_event;
 	BOOL                   m_bStarted;  // if true, grid is visible, all functions available
 					       
 	ActionTimer            m_atComputation;
 	ActionTimer            m_atDisplay;
 	Delay                  m_Delay;
-	WinManager             m_WinManager;
 	ColorManager           m_ColorManager;
 	EvoController          m_EvoController;
 	D3D_driver             m_D3d_driver;
@@ -85,10 +80,8 @@ private:
 					       
 	GridWindow             * m_pMainGridWindow;
     GridWindow             * m_pMiniGridWindow;
-	HistWindow             * m_pHistWindow;
     EditorWindow           * m_pEditorWindow;
 	DspOptWindow           * m_pDspOptWindow;
-	StatusBar              * m_pStatusBar;
 	PerformanceWindow      * m_pPerfWindow;
 	CrsrWindow             * m_pCrsrWindow;
 	HistInfoWindow         * m_pHistInfoWindow;
@@ -96,7 +89,6 @@ private:
 	GraphicsInterface      * m_pGraphics;
 	EvoModelDataGlue       * m_pModelDataWork;
 	EvolutionCore          * m_pEvoCore4Display;
-    HistorySystem          * m_pHistorySystem;
 	FocusPoint             * m_pFocusPoint;
 	GenerationDisplay      * m_pGenerationDisplay;
 

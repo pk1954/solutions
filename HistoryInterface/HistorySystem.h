@@ -8,6 +8,7 @@
 
 class ObserverInterface;
 class HistoryIterator;
+class HistoryCache;
 class ModelFactory;
 class ModelData;
 
@@ -51,6 +52,8 @@ public:
 	virtual GenerationCmd     GetGenerationCmd( HIST_GENERATION const ) = 0;
 	virtual void              ClearHistory    ( HIST_GENERATION const ) = 0;
 	virtual void              ClearAllHistory ( )                       = 0;
+
+	virtual HistoryCache const * GetHistoryCache( ) const = 0;
 
 	virtual ModelData const * GetModelData( HIST_GENERATION const ) = 0;
 

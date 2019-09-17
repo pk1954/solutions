@@ -23,8 +23,7 @@ public:
 	( 
 		HWND                        const, 
 		HistorySystem       const * const, 
-		WorkThreadInterface const * const, 
-		RootWindow                * const 
+		WorkThreadInterface const * const
 	);
 	void  Stop( );
 
@@ -53,7 +52,6 @@ private:
     PIXEL m_pixBorderY;
     PIXEL m_pixPosX;
 
-	RootWindow                * m_pEditorWindow;
 	HistorySystem       const * m_pHistorySystem;
 	WorkThreadInterface const * m_pWorkThreadInterface;
 
