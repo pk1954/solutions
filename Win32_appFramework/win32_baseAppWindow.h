@@ -27,22 +27,22 @@ public:
 	void AdjustChildWindows( );
 
 protected:
-	HWND       m_hwndConsole;
 	WinManager m_WinManager;
 
-	BOOL       m_bStarted;  // if true, model is visible, all functions available
+	AppMenu       * m_pAppMenu;
+	StatusBar     * m_pStatusBar;
+	HistorySystem * m_pHistorySystem;  //TODO: make private
 
-	AppMenu             * m_pAppMenu;
-	StatusBar           * m_pStatusBar;
+private:
+
+	HWND m_hwndConsole;
+	BOOL m_bStarted;  // if true, model is visible, all functions available
+
 	Controller          * m_pController;
 	HistWindow          * m_pHistWindow;
 	ModelWindow         * m_pModelWindow;
-	HistorySystem       * m_pHistorySystem;
 	HistInfoWindow      * m_pHistInfoWindow;
 	WorkThreadInterface * m_pWorkThreadInterface;
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
-
-private:
-
 };
