@@ -181,8 +181,6 @@ void AppWindow::Start( )
 {
 	EvolutionCore * pCoreWork;
 
-	m_pAppMenu->Start( );
-
 	EvolutionCore::InitClass
 	( 
 		GridDimensions::GetNrOfNeigbors(), 

@@ -6,6 +6,7 @@
 
 #include "win32_baseWindow.h"
 #include "win32_winManager.h"
+#include "win32_histWindow.h"
 
 class WorkThreadInterface;
 class HistInfoWindow;
@@ -38,8 +39,9 @@ private:
 	HWND m_hwndConsole;
 	BOOL m_bStarted;  // if true, model is visible, all functions available
 
+	HistWindow m_HistWindow;
+
 	Controller          * m_pController;
-	HistWindow          * m_pHistWindow;
 	ModelWindow         * m_pModelWindow;
 	HistInfoWindow      * m_pHistInfoWindow;
 	WorkThreadInterface * m_pWorkThreadInterface;

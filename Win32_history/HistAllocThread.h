@@ -1,6 +1,6 @@
 // HistAllocThread.h
 //
-// Tooolbox/Win32_history
+// Win32_history
 
 #pragma once
 

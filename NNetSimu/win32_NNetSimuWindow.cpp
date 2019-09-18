@@ -94,8 +94,6 @@ void NNetSimuWindow::Start( )
 {
 	NNetModel * pModelWork;
 
-	m_pAppMenu->Start( );
-
 	BaseAppWindow::Start( m_pMainNNetWindow, m_hwndApp, & m_NNetSimuController );
 	m_pAppMenu->Initialize
 	( 
