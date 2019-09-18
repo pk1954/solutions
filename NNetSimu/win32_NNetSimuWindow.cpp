@@ -132,8 +132,6 @@ void NNetSimuWindow::Start( )
 		Show( TRUE );
 	}
 
-	m_pMainNNetWindow->Show( TRUE );
-
 	m_bStarted = TRUE;
 }
 

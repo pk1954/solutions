@@ -64,6 +64,9 @@ void BaseAppWindow::Start( ModelWindow * const pModelWindow, HWND const hwndPare
 	m_pHistInfoWindow->SetHistorySystem( m_pHistorySystem );
 
 	m_pStatusBar->Show( TRUE );
+	pModelWindow->Show( TRUE );
+
+	AdjustChildWindows( );
 }
 
 void BaseAppWindow::Stop( )

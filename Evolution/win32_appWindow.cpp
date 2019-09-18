@@ -261,7 +261,6 @@ void AppWindow::Start( )
 	configureStatusBar( );
 
 	m_pMiniGridWindow->Size( );
-	AdjustChildWindows( );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
@@ -269,8 +268,7 @@ void AppWindow::Start( )
 		Show( TRUE );
 	}
 
-	m_pEditorWindow  ->Show( TRUE );
-	m_pMainGridWindow->Show( TRUE );
+	m_pEditorWindow->Show( TRUE );
 
 	(void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 //	Script::ProcessScript( L"std_script.in" );
