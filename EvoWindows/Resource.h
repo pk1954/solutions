@@ -39,14 +39,12 @@
 
 #define IDM_WINDOWS_BASE                        400
 #define IDM_CONS_WINDOW                         (IDM_WINDOWS_BASE +  1)
-#define IDM_APPL_WINDOW                         (IDM_WINDOWS_BASE +  2)
 #define IDM_MINI_WINDOW                         (IDM_WINDOWS_BASE +  3)
 #define IDM_DISP_WINDOW                         (IDM_WINDOWS_BASE +  4)
 #define IDM_EDIT_WINDOW                         (IDM_WINDOWS_BASE +  5)
 #define IDM_STAT_WINDOW                         (IDM_WINDOWS_BASE +  6)
 #define IDM_CRSR_WINDOW                         (IDM_WINDOWS_BASE +  8)
 #define IDM_PERF_WINDOW                         (IDM_WINDOWS_BASE + 10)
-#define IDM_MAIN_WINDOW                         (IDM_WINDOWS_BASE + 11)
 
 #define IDM_INDIVIDUALS                         450
 

@@ -201,7 +201,9 @@ void AppWindow::Start( )
 
 	m_pGraphics = & m_D3d_driver;
 
-	BaseAppWindow::Start( m_hwndApp );
+	BaseAppWindow::Start( m_pMainGridWindow, m_hwndApp );
+	m_AppMenu.Initialize( m_hwndApp, & m_EvoWorkThreadInterface, & m_WinManager );
+
 	m_pModelDataWork = m_EvoHistGlue.Start( m_pHistorySystem, TRUE ); 
 	m_protocolServer.Start( m_pHistorySystem );
 
@@ -247,22 +249,19 @@ void AppWindow::Start( )
 	m_pStatistics    ->Start( m_hwndApp, & m_EvoReadBuffer );
 	m_pPerfWindow    ->Start( m_hwndApp, m_Delay, m_atComputation, m_atDisplay, [&](){ return m_EvoWorkThreadInterface.IsRunning(); } );
 
-	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW,   m_hwndConsole,                   TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW,   m_hwndApp,                       TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, * m_pPerfWindow,                   TRUE,  FALSE );
-	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, * m_pCrsrWindow,                   TRUE,  FALSE );
-	m_WinManager.AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, * m_pStatistics,                   TRUE,  FALSE );
-    m_WinManager.AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, * m_pDspOptWindow,                 TRUE,  FALSE );
-    m_WinManager.AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, * m_pEditorWindow,                 TRUE,  FALSE );
-    m_WinManager.AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, * m_pMiniGridWindow,               TRUE,  FALSE );
-    m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainGridWindow,               TRUE,  FALSE );
-
-	m_AppMenu.Initialize( m_hwndApp, & m_EvoWorkThreadInterface, & m_WinManager );
+	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW,   m_hwndConsole,     TRUE, TRUE  );
+	m_WinManager.AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, * m_pPerfWindow,     TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, * m_pCrsrWindow,     TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDM_STAT_WINDOW", IDM_STAT_WINDOW, * m_pStatistics,     TRUE, FALSE );
+    m_WinManager.AddWindow( L"IDM_DISP_WINDOW", IDM_DISP_WINDOW, * m_pDspOptWindow,   TRUE, FALSE );
+    m_WinManager.AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, * m_pEditorWindow,   TRUE, FALSE );
+    m_WinManager.AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, * m_pMiniGridWindow, TRUE, FALSE );
+    m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainGridWindow, TRUE, FALSE );
 
 	configureStatusBar( );
 
 	m_pMiniGridWindow->Size( );
-	AdjustChildWindows( m_pMainGridWindow );
+	AdjustChildWindows( );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
@@ -270,7 +269,6 @@ void AppWindow::Start( )
 		Show( TRUE );
 	}
 
-	m_pStatusBar     ->Show( TRUE );
 	m_pEditorWindow  ->Show( TRUE );
 	m_pMainGridWindow->Show( TRUE );
 
@@ -331,7 +329,7 @@ LRESULT AppWindow::UserProc
 
     case WM_SIZE:
 	case WM_MOVE:
-		AdjustChildWindows( m_pMainGridWindow );
+		AdjustChildWindows( );
 		break;
 
 	case WM_PAINT:

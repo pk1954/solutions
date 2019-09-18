@@ -17,7 +17,5 @@
 
 #define IDM_WINDOWS_BASE        400
 #define IDM_CONS_WINDOW         (IDM_WINDOWS_BASE +  1)
-#define IDM_APPL_WINDOW         (IDM_WINDOWS_BASE +  2)
 #define IDM_MINI_WINDOW         (IDM_WINDOWS_BASE +  3)
 #define IDM_EDIT_WINDOW         (IDM_WINDOWS_BASE +  5)
-#define IDM_MAIN_WINDOW         (IDM_WINDOWS_BASE + 11)

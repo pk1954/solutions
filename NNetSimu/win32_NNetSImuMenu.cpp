@@ -3,7 +3,6 @@
 // NNetSimu
 
 #include "stdafx.h"
-//#include "WinUser.h"
 #include "Resource.h"
 #include "win32_util.h"
 #include "win32_winManager.h"

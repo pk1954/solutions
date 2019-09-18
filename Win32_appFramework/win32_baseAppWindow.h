@@ -18,18 +18,19 @@ class BaseAppWindow : public BaseWindow
 {
 public:
 	BaseAppWindow( WorkThreadInterface * const );
-	void Start( HWND const );
+	void Start( ModelWindow * const, HWND const );
 	void Stop( );
 	virtual ~BaseAppWindow(); 
 
-	void AdjustChildWindows( ModelWindow * const );
+	void AdjustChildWindows( );
 
 protected:
-	HWND         m_hwndConsole;
-	WinManager   m_WinManager;
+	HWND       m_hwndConsole;
+	WinManager m_WinManager;
 
 	StatusBar           * m_pStatusBar;
 	HistWindow          * m_pHistWindow;
+	ModelWindow         * m_pModelWindow;
 	HistorySystem       * m_pHistorySystem;
 	HistInfoWindow      * m_pHistInfoWindow;
 	WorkThreadInterface * m_pWorkThreadInterface;

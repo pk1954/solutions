@@ -46,19 +46,24 @@ BaseAppWindow::~BaseAppWindow()
 	delete m_pHistInfoWindow;
 };
 
-void BaseAppWindow::Start( HWND const hwndParent )
+void BaseAppWindow::Start( ModelWindow * const pModelWindow, HWND const hwndParent )
 {
+	m_pModelWindow = pModelWindow;
+
 	m_pHistorySystem = HistorySystem::CreateHistorySystem( );  // deleted in Stop function
 
 	m_pHistWindow    ->Start( hwndParent, m_pHistorySystem, m_pWorkThreadInterface );
 	m_pStatusBar     ->Start( hwndParent, m_pHistorySystem, m_pWorkThreadInterface );
 	m_pHistInfoWindow->Start( hwndParent, nullptr );
 
+	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW,   hwndParent,                      TRUE,  TRUE  );
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,    m_pStatusBar->GetWindowHandle(), FALSE, FALSE );
 	m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, * m_pHistWindow,                   FALSE, FALSE ); 
 	m_WinManager.AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   * m_pHistInfoWindow,               TRUE,  FALSE );
 
 	m_pHistInfoWindow->SetHistorySystem( m_pHistorySystem );
+
+	m_pStatusBar->Show( TRUE );
 }
 
 void BaseAppWindow::Stop( )
@@ -71,11 +76,11 @@ void BaseAppWindow::Stop( )
 	m_pHistorySystem = nullptr;
 }
 
-void BaseAppWindow::AdjustChildWindows(	ModelWindow * const pModelWindow )
+void BaseAppWindow::AdjustChildWindows( )
 {
 	static PIXEL const HIST_WINDOW_HEIGHT = 30_PIXEL;
 
-	HWND hwndApp = GetParent( pModelWindow->GetWindowHandle() );
+	HWND hwndApp = GetParent( m_pModelWindow->GetWindowHandle() );
 
 	PixelRectSize pntAppClientSize( Util::GetClRectSize( hwndApp ) );
 	PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
@@ -94,7 +99,7 @@ void BaseAppWindow::AdjustChildWindows(	ModelWindow * const pModelWindow )
 			HIST_WINDOW_HEIGHT, 
 			TRUE 
 		); 
-		pModelWindow->Move
+		m_pModelWindow->Move
 		( 
 			0_PIXEL, 
 			0_PIXEL, 

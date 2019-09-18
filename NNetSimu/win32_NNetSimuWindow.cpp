@@ -96,12 +96,8 @@ void NNetSimuWindow::Start( )
 
 	m_AppMenu.Start( );
 
-/////////////////////
-
-
-///	m_pHistInfoWindow->SetHistorySystem( m_pHistorySystem );
-
-	BaseAppWindow::Start( m_hwndApp );
+	BaseAppWindow::Start( m_pMainNNetWindow, m_hwndApp );
+	m_AppMenu.Initialize( m_hwndApp, & m_WinManager );
 
 	m_pModelDataWork     = m_NNetHistGlue.Start( m_pHistorySystem, TRUE ); 
 	pModelWork           = m_pModelDataWork->GetNNetModel();
@@ -126,12 +122,9 @@ void NNetSimuWindow::Start( )
 		& m_NNetHistGlue
 	);
 
-	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW,   m_hwndApp,         TRUE,  TRUE  );
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow, TRUE,  FALSE );
 
-	m_AppMenu.Initialize( m_hwndApp, & m_WinManager );
-
-	AdjustChildWindows( m_pMainNNetWindow );
+	AdjustChildWindows( );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
@@ -179,7 +172,7 @@ LRESULT NNetSimuWindow::UserProc
 
     case WM_SIZE:
 	case WM_MOVE:
-		AdjustChildWindows( m_pMainNNetWindow );
+		AdjustChildWindows( );
 		break;
 
 	case WM_PAINT:
