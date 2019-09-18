@@ -40,8 +40,7 @@ using namespace std::literals::chrono_literals;
 NNetSimuWindow::NNetSimuWindow( ) :
     BaseAppWindow( & m_NNetWorkThreadInterface ),
 	m_pMainNNetWindow( nullptr ),
-	m_traceStream( ),
-	m_bStarted( FALSE )
+	m_traceStream( )
 {
 	Stopwatch stopwatch;
 
@@ -71,6 +70,7 @@ NNetSimuWindow::NNetSimuWindow( ) :
 
 	NNetWindow::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
 
+	m_pAppMenu        = new NNetSimuMenu( );
 	m_pMainNNetWindow = new NNetWindow( );
 
 	m_NNetSimuController.Initialize
@@ -78,8 +78,7 @@ NNetSimuWindow::NNetSimuWindow( ) :
 		this,
 		& m_NNetWorkThreadInterface,
 		& m_WinManager,
-		& m_Delay, 
-		& m_AppMenu
+		& m_Delay
 	);
 
 	m_pMainNNetWindow->SetRefreshRate( 100ms );
@@ -88,16 +87,22 @@ NNetSimuWindow::NNetSimuWindow( ) :
 NNetSimuWindow::~NNetSimuWindow( )
 {
 	delete m_pMainNNetWindow;
+	delete m_pAppMenu;
 }
 
 void NNetSimuWindow::Start( )
 {
 	NNetModel * pModelWork;
 
-	m_AppMenu.Start( );
+	m_pAppMenu->Start( );
 
-	BaseAppWindow::Start( m_pMainNNetWindow, m_hwndApp );
-	m_AppMenu.Initialize( m_hwndApp, & m_WinManager );
+	BaseAppWindow::Start( m_pMainNNetWindow, m_hwndApp, & m_NNetSimuController );
+	m_pAppMenu->Initialize
+	( 
+		m_hwndApp, 
+		nullptr,   //TODO
+		& m_WinManager 
+	);
 
 	m_pModelDataWork     = m_NNetHistGlue.Start( m_pHistorySystem, TRUE ); 
 	pModelWork           = m_pModelDataWork->GetNNetModel();
@@ -131,74 +136,15 @@ void NNetSimuWindow::Start( )
 		std::wcout << L"Using default window positions" << std::endl;
 		Show( TRUE );
 	}
-
-	m_bStarted = TRUE;
 }
 
 void NNetSimuWindow::Stop()
 {
 	BaseAppWindow::Stop();
 
-	m_bStarted = FALSE;
-
 	m_pMainNNetWindow->Stop( );
 
-	m_AppMenu.Stop( );
-	m_Delay  .Stop( );
+	m_Delay.Stop( );
 
 	m_WinManager.RemoveAll( );
-}
-
-LRESULT NNetSimuWindow::UserProc
-( 
-    UINT   const message, 
-    WPARAM const wParam, 
-    LPARAM const lParam 
-)
-{
-    switch ( message )
-    {
-
-	case WM_ENTERMENULOOP:
-		if ( wParam == FALSE )
-			m_AppMenu.AdjustVisibility( );
-		break;
-
-	case WM_COMMAND:
-		m_NNetSimuController.ProcessCommand( wParam, lParam );
-	    return FALSE;
-
-    case WM_SIZE:
-	case WM_MOVE:
-		AdjustChildWindows( );
-		break;
-
-	case WM_PAINT:
-	{
-		static COLORREF const CLR_GREY = RGB( 128, 128, 128 );
-		PAINTSTRUCT   ps;
-		HDC           hDC = BeginPaint( &ps );
-		FillBackground( hDC, CLR_GREY );
-		(void)EndPaint( &ps );
-		return FALSE;
-	}
-
-	case WM_CLOSE:
-		if ( m_bStarted )
-		{
-			m_WinManager.StoreWindowConfiguration( );
-		    Stop( );
-		}
-		DestroyWindow( );        
-		return TRUE;  
-
-    case WM_DESTROY:
-        PostQuitMessage( 0 );
-        break;
-
-    default:
-        break;
-    }
-    
-    return DefWindowProc( message, wParam, lParam );
 }

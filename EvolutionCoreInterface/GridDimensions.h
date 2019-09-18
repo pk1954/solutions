@@ -52,6 +52,11 @@ public:
 		return (* m_pGridNeighbors)[ gp.GetXvalue() ][ gp.GetYvalue() ];
 	}
 
+	static bool const IsHexMode( )
+	{
+		return m_iNrOfNeighbors == 6;
+	}
+
 private:
 	using NEIGHBOR_GRID = vector< vector< NEIGHBORS > >;
 

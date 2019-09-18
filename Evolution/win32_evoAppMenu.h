@@ -1,21 +1,19 @@
-// win32_NNetSimuMenu.h
+// win32_evoAppMenu.h
 //
-// NNetSimuMenu
+// Evolution
 
 #pragma once
 
 #include "win32_appMenu.h"
 
-class NNetSimuMenu : public AppMenu
+class EvoAppMenu : public AppMenu
 {
 public:
-	NNetSimuMenu() :
+	EvoAppMenu() :
 		m_hMenu( nullptr ),
 		m_pWorkThreadInterface( nullptr ),
 		m_pWinManager( nullptr )
 	{}
-
-	virtual ~NNetSimuMenu() {}
 
 	virtual void Initialize( HWND const, WorkThreadInterface const * const, WinManager const * const );
 	virtual void AdjustVisibility( );

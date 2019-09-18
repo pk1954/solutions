@@ -10,8 +10,9 @@
 
 void NNetSimuMenu::Initialize
 ( 
-	HWND               const hwndApp, 
-	WinManager const * const pWinManager
+	HWND                        const hwndApp, 
+	WorkThreadInterface const * const pWorkThreadInterface,
+	WinManager          const * const pWinManager
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );

@@ -24,7 +24,7 @@
 
 // application
 
-#include "win32_appMenu.h"
+#include "win32_evoAppMenu.h"
 #include "win32_evoController.h"
 
 class Script;
@@ -42,6 +42,7 @@ class D3D_driver;
 class EvoModelDataGlue;
 class EvolutionCore;
 class DspOptWindow;
+class EvoController;
 class AppMenu;
 
 class AppWindow : public BaseAppWindow
@@ -53,8 +54,6 @@ public:
 	~AppWindow( );
 
 private:
-    virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
-
 	AppWindow             ( AppWindow const & );  // noncopyable class 
     AppWindow & operator= ( AppWindow const & );  // noncopyable class 
 
@@ -62,21 +61,19 @@ private:
 
 	HWND                   m_hwndApp;
 	Util::Event            m_event;
-	BOOL                   m_bStarted;  // if true, grid is visible, all functions available
 					       
 	ActionTimer            m_atComputation;
 	ActionTimer            m_atDisplay;
 	Delay                  m_Delay;
 	ColorManager           m_ColorManager;
-	EvoController          m_EvoController;
 	D3D_driver             m_D3d_driver;
 	EvoReadBuffer          m_EvoReadBuffer;
-	AppMenu                m_AppMenu;
 	EvoWorkThreadInterface m_EvoWorkThreadInterface;
 	EvoHistorySysGlue      m_EvoHistGlue;
     ScriptHook             m_ScriptHook;
 	ProtocolServer         m_protocolServer;
 					       
+	EvoController          * m_pEvoController;
 	GridWindow             * m_pMainGridWindow;
     GridWindow             * m_pMiniGridWindow;
     EditorWindow           * m_pEditorWindow;

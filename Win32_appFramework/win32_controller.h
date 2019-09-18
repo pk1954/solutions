@@ -20,7 +20,9 @@ public:
 		WorkThreadInterface * const
 	);
 
-	bool ProcessCommand( WPARAM const, LPARAM const = 0 );
+	bool ProcessFrameworkCommand( WPARAM const, LPARAM const = 0 );
+
+	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 ) = 0;
 
 private:
 	BaseWindow          * m_pAppWindow;

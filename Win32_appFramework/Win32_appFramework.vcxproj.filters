@@ -42,6 +42,9 @@
     <ClInclude Include="win32_baseAppWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="win32_appMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">

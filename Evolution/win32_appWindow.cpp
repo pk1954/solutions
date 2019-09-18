@@ -21,7 +21,6 @@ using namespace std::literals::chrono_literals;
 
 #include "win32_appWindow.h"
 #include "win32_statistics.h"
-//#include "win32_historyInfo.h"
 #include "win32_crsrWindow.h"
 #include "win32_performanceWindow.h"
 #include "win32_displayOptions.h"
@@ -74,8 +73,7 @@ AppWindow::AppWindow( ) :
     m_pStatistics( nullptr ),
 	m_pDspOptWindow( nullptr ),
 	m_pGenerationDisplay( nullptr ),
-    m_traceStream( ),
-	m_bStarted( FALSE )
+    m_traceStream( )
 {
 	Stopwatch stopwatch;
 
@@ -108,12 +106,13 @@ AppWindow::AppWindow( ) :
 
 	stopwatch.Stop( L"create window objects" );
 
-	m_pDspOptWindow   = new DspOptWindow( );
-	m_pFocusPoint     = new FocusPoint( );
-	m_pPerfWindow     = new PerformanceWindow( );
-	m_pStatistics     = new StatisticsWindow( );
-	m_pCrsrWindow     = new CrsrWindow( );
-	m_pEditorWindow   = new EditorWindow( );
+	m_pAppMenu       = new EvoAppMenu( );
+	m_pDspOptWindow  = new DspOptWindow( );
+	m_pFocusPoint    = new FocusPoint( );
+	m_pPerfWindow    = new PerformanceWindow( );
+	m_pStatistics    = new StatisticsWindow( );
+	m_pCrsrWindow    = new CrsrWindow( );
+	m_pEditorWindow  = new EditorWindow( );
 
 	GridWindow::InitClass
 	( 
@@ -128,19 +127,18 @@ AppWindow::AppWindow( ) :
 	m_pMainGridWindow = new GridWindow( );
 	m_pMiniGridWindow = new GridWindow( );
 
-	m_EvoController.Initialize
+	m_pEvoController = new EvoController
 	( 
-		this,
-		& m_EvoWorkThreadInterface,
 		& m_WinManager,
 		& m_EvoHistGlue,
 		& m_Delay, 
 		& m_ColorManager,
-		& m_AppMenu,
 		  m_pStatusBar, 
 		  m_pMainGridWindow, 
 		  m_pEditorWindow
 	);
+
+	m_pEvoController->Initialize( this, & m_EvoWorkThreadInterface	);
 
 	m_pMiniGridWindow->Observe( m_pMainGridWindow );  // mini window observes main grid window
 
@@ -166,6 +164,7 @@ AppWindow::AppWindow( ) :
 
 AppWindow::~AppWindow( )
 {
+	delete m_pEvoController;
 	delete m_pMainGridWindow; 
 	delete m_pMiniGridWindow; 
 	delete m_pPerfWindow;     
@@ -175,14 +174,14 @@ AppWindow::~AppWindow( )
 	delete m_pEditorWindow;
 	delete m_pDspOptWindow;
 	delete m_pGenerationDisplay;
+	delete m_pAppMenu;
 }
 
 void AppWindow::Start( )
 {
 	EvolutionCore * pCoreWork;
-	BOOL            bHexMode = (GridDimensions::GetNrOfNeigbors() == 6);
 
-	m_AppMenu.Start( bHexMode );
+	m_pAppMenu->Start( );
 
 	EvolutionCore::InitClass
 	( 
@@ -196,13 +195,13 @@ void AppWindow::Start( )
 		m_hwndApp, 
 		GridDimensions::GridWidthVal(), 
 		GridDimensions::GridHeightVal(), 
-		bHexMode 
+		GridDimensions::IsHexMode() 
 	);
 
 	m_pGraphics = & m_D3d_driver;
 
-	BaseAppWindow::Start( m_pMainGridWindow, m_hwndApp );
-	m_AppMenu.Initialize( m_hwndApp, & m_EvoWorkThreadInterface, & m_WinManager );
+	BaseAppWindow::Start( m_pMainGridWindow, m_hwndApp, m_pEvoController );
+	m_pAppMenu->Initialize( m_hwndApp, & m_EvoWorkThreadInterface, & m_WinManager );
 
 	m_pModelDataWork = m_EvoHistGlue.Start( m_pHistorySystem, TRUE ); 
 	m_protocolServer.Start( m_pHistorySystem );
@@ -272,14 +271,10 @@ void AppWindow::Start( )
 
 	(void)m_pMainGridWindow->SendMessage( WM_COMMAND, IDM_FIT_ZOOM, 0 );
 //	Script::ProcessScript( L"std_script.in" );
-
-	m_bStarted = TRUE;
 }
 
 void AppWindow::Stop()
 {
-	m_bStarted = FALSE;
-
 	m_pMiniGridWindow->Stop( );
 	m_pMainGridWindow->Stop( );
 	m_pEditorWindow  ->Stop( );
@@ -289,7 +284,6 @@ void AppWindow::Stop()
 	m_pCrsrWindow    ->Stop( );
 	m_pStatusBar     ->Stop( );
 
-	m_AppMenu               .Stop( );
 	m_Delay                 .Stop( );
 	m_EvoReadBuffer         .Stop( );
 	m_EvoWorkThreadInterface.Stop( );
@@ -306,60 +300,6 @@ void AppWindow::Stop()
 	m_pEvoCore4Display = nullptr;
 }
 
-LRESULT AppWindow::UserProc
-( 
-    UINT   const message, 
-    WPARAM const wParam, 
-    LPARAM const lParam 
-)
-{
-    switch ( message )
-    {
-
-	case WM_ENTERMENULOOP:
-		if ( wParam == FALSE )
-			m_AppMenu.AdjustVisibility( );
-		break;
-
-	case WM_COMMAND:
-		m_EvoController.ProcessCommand( wParam, lParam );
-	    return FALSE;
-
-    case WM_SIZE:
-	case WM_MOVE:
-		AdjustChildWindows( );
-		break;
-
-	case WM_PAINT:
-	{
-		static COLORREF const CLR_GREY = RGB( 128, 128, 128 );
-		PAINTSTRUCT   ps;
-		HDC           hDC = BeginPaint( &ps );
-		FillBackground( hDC, CLR_GREY );
-		(void)EndPaint( &ps );
-		return FALSE;
-	}
-
-	case WM_CLOSE:
-		if ( m_bStarted )
-		{
-			m_WinManager.StoreWindowConfiguration( );
-		    Stop( );
-		}
-		DestroyWindow( );        
-		return TRUE;  
-
-    case WM_DESTROY:
-        PostQuitMessage( 0 );
-        break;
-
-    default:
-        break;
-    }
-    
-    return DefWindowProc( message, wParam, lParam );
-}
-
 void AppWindow::configureStatusBar( )
 {
 	m_pGenerationDisplay = new GenerationDisplay( m_pStatusBar, & m_EvoReadBuffer, 0 );
@@ -372,7 +312,7 @@ void AppWindow::configureStatusBar( )
 	ZoomControl::SetSizeTrackBar( m_pStatusBar, DEFAULT_FIELD_SIZE );
 
 	m_pStatusBar->NewPart( );
-	SpeedControl::AddSimulationControl( m_pStatusBar, & m_EvoWorkThreadInterface, m_pHistorySystem, Config::UseHistorySystem( ) );
+	SpeedControl::AddSimulationControl( m_pStatusBar, m_pHistorySystem, Config::UseHistorySystem( ) );
 	SpeedControl::SetSpeedTrackBar( DEFAULT_DELAY );
 
 	int iPartScriptLine = m_pStatusBar->NewPart( );

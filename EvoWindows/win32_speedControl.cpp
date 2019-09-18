@@ -8,9 +8,8 @@
 
 BOOL SpeedControl::m_bWithHistory = FALSE;
 
-StatusBar           * SpeedControl::m_pStatusBar           = nullptr;
-WorkThreadInterface * SpeedControl::m_pWorkThreadInterface = nullptr;
-HistorySystem       * SpeedControl::m_pHistorySystem       = nullptr;
+StatusBar     * SpeedControl::m_pStatusBar           = nullptr;
+HistorySystem * SpeedControl::m_pHistorySystem       = nullptr;
 
 long const SpeedControl::MAX_DELAY = 2048;    // in msecs
 

@@ -5,12 +5,12 @@
 
 #include "win32_controller.h"
 
-class NNetSimuWindow;
 class NNetWorkThreadInterface;
-class Delay;
-class StatusBar;
-class WinManager;
+class NNetSimuWindow;
 class NNetSimuMenu;
+class WinManager;
+class StatusBar;
+class Delay;
 
 class NNetSimuController : public Controller
 {
@@ -24,11 +24,10 @@ public:
 		NNetSimuWindow          * const,
 		NNetWorkThreadInterface * const,
 		WinManager              * const,
-		Delay                   * const,
-		NNetSimuMenu            * const
+		Delay                   * const
 	);
 
-	void ProcessCommand( WPARAM const, LPARAM const = 0 );
+	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 );
 
 private:
 	bool processUIcommand( int const, LPARAM const );
@@ -38,6 +37,5 @@ private:
 	WinManager              * m_pWinManager;
 	Delay                   * m_pDelay;
 	StatusBar               * m_pStatusBar;
-	NNetSimuMenu            * m_pAppMenu;
 	HCURSOR                   m_hCrsrWait;
 };				          

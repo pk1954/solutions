@@ -3,6 +3,7 @@
 // Win32_appFramework
 
 #include "stdafx.h"
+#include "assert.h"
 #include "win32_aboutBox.h"
 #include "win32_baseWindow.h"
 #include "win32_util_resource.h"
@@ -22,15 +23,17 @@ Controller::~Controller( )
 
 void Controller::Initialize
 ( 
-	BaseWindow          * const pAppwindow,
+	BaseWindow          * const pAppWindow,
 	WorkThreadInterface * const pWorkThreadInterface
 )
 {
+	assert( pAppWindow );
+	assert( pWorkThreadInterface );
 	m_pWorkThreadInterface = pWorkThreadInterface;
-	m_pAppWindow           = pAppwindow;
+	m_pAppWindow           = pAppWindow;
 }
 
-bool Controller::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
+bool Controller::ProcessFrameworkCommand( WPARAM const wParam, LPARAM const lParam )
 {
 	int const wmId = LOWORD( wParam );
 
@@ -71,7 +74,7 @@ bool Controller::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
 	case IDM_HIST_BUFFER_FULL:
 		std::wcout << L"History buffer is full" << std::endl;
 		(void)MessageBeep( MB_ICONWARNING );
-		ProcessCommand( IDM_STOP );
+		ProcessFrameworkCommand( IDM_STOP );
 		break;
 
 	default:

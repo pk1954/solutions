@@ -11,6 +11,8 @@
 #include "win32_modelWindow.h"
 #include "win32_historyInfo.h"
 #include "win32_histWindow.h"
+#include "win32_controller.h"
+#include "win32_appMenu.h"
 #include "win32_status.h"
 #include "win32_baseAppWindow.h"
 
@@ -20,9 +22,13 @@ BaseAppWindow::BaseAppWindow
 ( 	
 	WorkThreadInterface * const pWorkThreadInterface
 ) : 
+	m_bStarted( FALSE ),
 	m_hwndConsole( nullptr ),
+	m_pController( nullptr ),
+	m_pAppMenu( nullptr ),
 	m_pStatusBar( nullptr ),
 	m_pHistWindow( nullptr ),
+	m_pModelWindow( nullptr ),
 	m_pHistInfoWindow( nullptr ),
 	m_pHistorySystem( nullptr ),
 	m_pWorkThreadInterface( pWorkThreadInterface )
@@ -46,9 +52,15 @@ BaseAppWindow::~BaseAppWindow()
 	delete m_pHistInfoWindow;
 };
 
-void BaseAppWindow::Start( ModelWindow * const pModelWindow, HWND const hwndParent )
+void BaseAppWindow::Start
+( 
+	ModelWindow * const pModelWindow, 
+	HWND          const hwndParent,
+	Controller  * const pController
+)
 {
 	m_pModelWindow = pModelWindow;
+	m_pController  = pController;
 
 	m_pHistorySystem = HistorySystem::CreateHistorySystem( );  // deleted in Stop function
 
@@ -67,12 +79,17 @@ void BaseAppWindow::Start( ModelWindow * const pModelWindow, HWND const hwndPare
 	pModelWindow->Show( TRUE );
 
 	AdjustChildWindows( );
+
+	m_bStarted = TRUE;
 }
 
 void BaseAppWindow::Stop( )
 {
+	m_bStarted = FALSE;
+
 	m_pHistInfoWindow->Stop( );
 	m_pHistWindow    ->Stop( );
+	m_pAppMenu       ->Stop( );
 
 	delete m_pHistorySystem;   
 
@@ -113,3 +130,56 @@ void BaseAppWindow::AdjustChildWindows( )
 	}
 }
 
+LRESULT BaseAppWindow::UserProc
+( 
+	UINT   const message, 
+	WPARAM const wParam, 
+	LPARAM const lParam 
+)
+{
+	switch ( message )
+	{
+
+	case WM_ENTERMENULOOP:
+		if ( wParam == FALSE )
+			m_pAppMenu->AdjustVisibility( );
+		break;
+
+	case WM_COMMAND:
+		m_pController->ProcessAppCommand( wParam, lParam );
+		return FALSE;
+
+	case WM_PAINT:
+	{
+		static COLORREF const CLR_GREY = RGB( 128, 128, 128 );
+		PAINTSTRUCT   ps;
+		HDC           hDC = BeginPaint( &ps );
+		FillBackground( hDC, CLR_GREY );
+		(void)EndPaint( &ps );
+		return FALSE;
+	}
+
+	case WM_SIZE:
+	case WM_MOVE:
+		AdjustChildWindows( );
+		break;
+
+	case WM_CLOSE:
+		if ( m_bStarted )
+		{
+			m_WinManager.StoreWindowConfiguration( );
+			Stop( );
+		}
+		DestroyWindow( );        
+		return TRUE;  
+
+	case WM_DESTROY:
+		PostQuitMessage( 0 );
+		break;
+
+	default:
+		break;
+	}
+
+	return DefWindowProc( message, wParam, lParam );
+}

@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="win32_appMenu.h" />
     <ClInclude Include="win32_baseAppWindow.h" />
     <ClInclude Include="win32_controller.h" />
     <ClInclude Include="win32_modelWindow.h" />

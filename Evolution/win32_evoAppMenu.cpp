@@ -6,21 +6,22 @@
 #include "WinUser.h"
 #include "config.h"
 #include "resource.h"
+#include "GridDimensions.h"
 #include "win32_util.h"
-#include "win32_EvoWorkThreadInterface.h"
+#include "win32_WorkThreadInterface.h"
 #include "win32_winManager.h"
-#include "win32_appMenu.h"
+#include "win32_evoAppMenu.h"
 
-void AppMenu::Initialize
+void EvoAppMenu::Initialize
 ( 
-	HWND                           const hwndApp, 
-	EvoWorkThreadInterface const * const pWworkThreadInterface,
-	WinManager             const * const pWinManager
+	HWND                        const hwndApp, 
+	WorkThreadInterface const * const pWworkThreadInterface,
+	WinManager          const * const pWinManager
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
 
-	m_pEvoWorkThreadInterface = pWworkThreadInterface;
+	m_pWorkThreadInterface = pWworkThreadInterface;
 	m_pWinManager          = pWinManager;
 
     SendMessage( hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_EVOLUTION ) ) );
@@ -34,28 +35,28 @@ void AppMenu::Initialize
 	m_hMenu = GetMenu( hwndApp );
 }
 
-void AppMenu::enableMenues( UINT const state )
+void EvoAppMenu::enableMenues( UINT const state )
 {
 	EnableMenuItem( m_hMenu, 1, state|MF_BYPOSITION ); 
 	EnableMenuItem( m_hMenu, 2, state|MF_BYPOSITION ); 
 }
 
-void AppMenu::Start( BOOL const bHexMode )
+void EvoAppMenu::Start( )
 {
 	enableMenues( MF_ENABLED ); 
 
-	if ( bHexMode )
+	if ( GridDimensions::IsHexMode() )
 		EnableMenuItem( m_hMenu, IDD_TOGGLE_STRIP_MODE, MF_GRAYED );  // strip mode looks ugly in hexagon mode
 }
 
-void AppMenu::Stop( )
+void EvoAppMenu::Stop( )
 {
 	enableMenues( MF_GRAYED ); 
 }
 
-void AppMenu::AdjustVisibility( )
+void EvoAppMenu::AdjustVisibility( )
 {
-	BOOL const bRunning = m_pEvoWorkThreadInterface->IsRunning();
+	BOOL const bRunning = m_pWorkThreadInterface->IsRunning();
 
 	EnableMenuItem( m_hMenu, IDM_FORWARD,          bRunning ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_BACKWARDS,        bRunning ? MF_GRAYED : MF_ENABLED );

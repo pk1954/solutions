@@ -40,14 +40,11 @@ public:
 	~NNetSimuWindow( );
 
 private:
-    virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
-
 	NNetSimuWindow             ( NNetSimuWindow const & );  // noncopyable class 
 	NNetSimuWindow & operator= ( NNetSimuWindow const & );  // noncopyable class 
 
-	HWND                m_hwndApp;
-	Util::Event         m_event;
-	BOOL                m_bStarted;  // if true, model is visible, all functions available
+	HWND        m_hwndApp;
+	Util::Event m_event;
 
 	NNetWindow             * m_pMainNNetWindow;
 	HistInfoWindow         * m_pHistInfoWindow;
@@ -61,7 +58,6 @@ private:
 	Delay                   m_Delay;
 	NNetReadBuffer          m_NNetReadBuffer;
 	NNetHistorySysGlue      m_NNetHistGlue;
-	NNetSimuMenu            m_AppMenu;
 
     std::wofstream m_traceStream;
 };

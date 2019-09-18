@@ -39,16 +39,14 @@ public:
 
 	static void AddSimulationControl
 	( 
-		StatusBar           * const pStatusBar, 
-		WorkThreadInterface * const pWorkThreadInterface,
-		HistorySystem       * const pHistorySystem,
-		BOOL                  const bWithHistory 
+		StatusBar     * const pStatusBar, 
+		HistorySystem * const pHistorySystem,
+		BOOL            const bWithHistory 
 	)
 	{ 
-		m_bWithHistory         = bWithHistory;
-		m_pStatusBar           = pStatusBar;
-		m_pWorkThreadInterface = pWorkThreadInterface;
-		m_pHistorySystem       = pHistorySystem;
+		m_bWithHistory   = bWithHistory;
+		m_pStatusBar     = pStatusBar;
+		m_pHistorySystem = pHistorySystem;
 
 		if ( bWithHistory )
 			pStatusBar->AddButton  ( L"Backwards ", (HMENU)IDM_BACKWARDS, BS_PUSHBUTTON );
@@ -64,9 +62,9 @@ public:
 
 	static void Adjust
 	(
-		BOOL const bIsRunning,
-		BOOL const bIsFirstGeneration
-	)
+		BOOL                  const bIsRunning,
+		WorkThreadInterface * const pWorkThreadInterface
+    )
 	{
 		EnableWindow( m_pStatusBar->GetDlgItem( IDM_RUN  ), ! bIsRunning );
 		EnableWindow( m_pStatusBar->GetDlgItem( IDM_STOP ),   bIsRunning );
@@ -74,15 +72,17 @@ public:
 		EnableWindow( m_pStatusBar->GetDlgItem( IDM_FORWARD ), ! bIsRunning );
 
 		if ( m_bWithHistory )
-			EnableWindow( m_pStatusBar-> GetDlgItem( IDM_BACKWARDS ), (! bIsRunning) && bIsFirstGeneration );
+		{
+			BOOL bIsFirstGeneration = pWorkThreadInterface->GetCurrentGeneration( ) == 0;
+			EnableWindow( m_pStatusBar-> GetDlgItem( IDM_BACKWARDS ), ! (bIsRunning || bIsFirstGeneration) );
+		}
 	}
 
 private:
 	static BOOL m_bWithHistory;
 
-	static StatusBar           * m_pStatusBar;
-	static WorkThreadInterface * m_pWorkThreadInterface;
-	static HistorySystem       * m_pHistorySystem;
+	static StatusBar     * m_pStatusBar;
+	static HistorySystem * m_pHistorySystem;
 
 	static long const MAX_DELAY;    // in msecs
 

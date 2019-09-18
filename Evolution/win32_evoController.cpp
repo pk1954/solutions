@@ -1,5 +1,6 @@
 // win32_evoController.cpp
 //
+// Evolution
 
 #include "stdafx.h"
 #include "Windowsx.h"
@@ -19,7 +20,7 @@
 #include "win32_zoomControl.h"
 #include "win32_status.h"
 #include "win32_editor.h"
-#include "win32_appMenu.h"
+#include "win32_evoAppMenu.h"
 #include "win32_gridWindow.h"
 #include "win32_packGridPoint.h"
 #include "win32_colorManager.h"
@@ -27,17 +28,25 @@
 #include "win32_EvoWorkThreadInterface.h"
 #include "win32_evoController.h"
 
-EvoController::EvoController() :
+EvoController::EvoController
+(
+	WinManager        * const pWinManager,
+	EvoHistorySysGlue * const pEvoHistGlue,
+	Delay             * const pDelay,
+	ColorManager      * const pColorManager,
+	StatusBar         * const pStatusBar,
+	GridWindow        * const pGridWindow,
+	EditorWindow      * const pEditorWindow
+) :
 	m_pAppWindow              ( nullptr ),
 	m_pEvoWorkThreadInterface ( nullptr ),
-	m_pWinManager             ( nullptr ),
-	m_pEvoHistGlue            ( nullptr ),
-    m_pDelay                  ( nullptr ),
-	m_pColorManager           ( nullptr ),
-	m_pStatusBar              ( nullptr ),
-	m_pGridWindow             ( nullptr ),
-	m_pEditorWindow           ( nullptr ),
-	m_pAppMenu                ( nullptr ),
+	m_pWinManager             ( pWinManager   ),
+	m_pEvoHistGlue            ( pEvoHistGlue  ),
+    m_pDelay                  ( pDelay        ),
+	m_pColorManager           ( pColorManager ),
+	m_pStatusBar              ( pStatusBar    ),
+	m_pGridWindow             ( pGridWindow   ),
+	m_pEditorWindow           ( pEditorWindow ),
 	m_hCrsrWait               ( nullptr )
 { }
 
@@ -52,35 +61,18 @@ EvoController::~EvoController( )
     m_pStatusBar              = nullptr;
 	m_pGridWindow             = nullptr;
 	m_pEditorWindow           = nullptr;
-	m_pAppMenu                = nullptr;
 	m_hCrsrWait               = nullptr;
 }
 
 void EvoController::Initialize
 ( 
  	AppWindow              * const pAppWindow,
-	EvoWorkThreadInterface * const pEvoWorkThreadInterface,
-	WinManager             * const pWinManager,
-	EvoHistorySysGlue      * const pEvoHistGlue,
-	Delay                  * const pDelay,
-	ColorManager           * const pColorManager,
-	AppMenu                * const pAppMenu,
-	StatusBar              * const pStatusBar,
-	GridWindow             * const pGridWindow,
-	EditorWindow           * const pEditorWindow
+	EvoWorkThreadInterface * const pEvoWorkThreadInterface
 )
 {
 	Controller::Initialize( pAppWindow, pEvoWorkThreadInterface );
 	m_pEvoWorkThreadInterface = pEvoWorkThreadInterface;
 	m_pAppWindow              = pAppWindow;
-	m_pWinManager             = pWinManager;
-	m_pEvoHistGlue            = pEvoHistGlue;
-    m_pDelay                  = pDelay;
-	m_pStatusBar              = pStatusBar;
-	m_pGridWindow             = pGridWindow;
-	m_pEditorWindow           = pEditorWindow;
-	m_pColorManager           = pColorManager;
-	m_pAppMenu                = pAppMenu;
 	m_hCrsrWait               = LoadCursor( NULL, IDC_WAIT );
 }
 
@@ -192,29 +184,21 @@ bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 	return TRUE;  // command has been processed
 }
 
-void EvoController::ProcessCommand( WPARAM const wParam, LPARAM const lParam )
+void EvoController::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam )
 {
     int const wmId = LOWORD( wParam );
 	
-	if ( Controller::ProcessCommand( wmId, lParam ) )  // Some commands are handled by the framework controller
+	if ( ProcessFrameworkCommand( wmId, lParam ) )  // Some commands are handled by the framework controller
 	{                                       
 		if ( wmId == IDM_RUN )
 		{
 			m_pEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
-			SpeedControl::Adjust
-			(
-				TRUE,
-				m_pEvoWorkThreadInterface->GetCurrentGeneration( ) > 0
-			);
+			SpeedControl::Adjust( TRUE, m_pEvoWorkThreadInterface );
 		}
 
 		if ( wmId == IDM_STOP )
 		{
-			SpeedControl::Adjust
-			(
-				FALSE,
-				m_pEvoWorkThreadInterface->GetCurrentGeneration( ) > 0
-			);
+			SpeedControl::Adjust( FALSE, m_pEvoWorkThreadInterface );
 		}
 
 		return;                                        

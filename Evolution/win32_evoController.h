@@ -14,30 +14,30 @@ class WinManager;
 class GridWindow;
 class EditorWindow;
 class ColorManager;
-class AppMenu;
 
 class EvoController : public Controller
 {
 public:
-	EvoController( );
+	EvoController
+	(
+		WinManager        * const,
+		EvoHistorySysGlue * const,
+		Delay             * const,
+		ColorManager      * const,
+		StatusBar         * const,
+		GridWindow        * const,
+		EditorWindow      * const
+	);
 
 	virtual ~EvoController( );
 
 	void EvoController::Initialize
 	( 
 		AppWindow              * const,
-		EvoWorkThreadInterface * const,
-		WinManager             * const,
-		EvoHistorySysGlue      * const,
-		Delay                  * const,
-		ColorManager           * const,
-		AppMenu                * const,
-		StatusBar              * const,
-		GridWindow             * const,
-		EditorWindow           * const
+		EvoWorkThreadInterface * const
 	);
 
-	void ProcessCommand( WPARAM const, LPARAM const = 0 );
+	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 );
 
 private:
 	void scriptDialog( );
@@ -52,6 +52,5 @@ private:
 	GridWindow             * m_pGridWindow;
 	EditorWindow           * m_pEditorWindow;
 	ColorManager           * m_pColorManager;
-	AppMenu                * m_pAppMenu;
 	HCURSOR                  m_hCrsrWait;
 };
