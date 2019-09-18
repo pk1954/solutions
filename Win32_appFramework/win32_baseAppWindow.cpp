@@ -9,10 +9,8 @@
 #include "win32_util.h"
 #include "win32_util_resource.h"
 #include "win32_modelWindow.h"
-#include "win32_historyInfo.h"
 #include "win32_controller.h"
 #include "win32_appMenu.h"
-#include "win32_status.h"
 #include "win32_baseAppWindow.h"
 
 using namespace std::literals::chrono_literals;
@@ -25,27 +23,20 @@ BaseAppWindow::BaseAppWindow
 	m_hwndConsole( nullptr ),
 	m_pController( nullptr ),
 	m_pAppMenu( nullptr ),
-	m_pStatusBar( nullptr ),
 	m_pModelWindow( nullptr ),
-	m_pHistInfoWindow( nullptr ),
 	m_pHistorySystem( nullptr ),
 	m_pWorkThreadInterface( pWorkThreadInterface )
 {
 	m_hwndConsole = GetConsoleWindow( );
 	SetWindowPos( m_hwndConsole, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
 
-	m_pStatusBar      = new StatusBar( );
-	m_pHistInfoWindow = new HistInfoWindow( );
-
-	m_pStatusBar     ->SetRefreshRate( 300ms );
-	m_HistWindow.SetRefreshRate( 200ms ); 
-	m_pHistInfoWindow->SetRefreshRate( 300ms );
+	m_StatusBar     .SetRefreshRate( 300ms );
+	m_HistWindow    .SetRefreshRate( 200ms ); 
+	m_HistInfoWindow.SetRefreshRate( 300ms );
 }
 
 BaseAppWindow::~BaseAppWindow() 
 {
-	delete m_pStatusBar;     
-	delete m_pHistInfoWindow;
 };
 
 void BaseAppWindow::Start
@@ -60,20 +51,20 @@ void BaseAppWindow::Start
 
 	m_pHistorySystem = HistorySystem::CreateHistorySystem( );  // deleted in Stop function
 
-	m_pAppMenu       ->Start( );
-	m_HistWindow.Start( hwndParent, m_pHistorySystem, m_pWorkThreadInterface );
-	m_pStatusBar     ->Start( hwndParent, m_pHistorySystem, m_pWorkThreadInterface );
-	m_pHistInfoWindow->Start( hwndParent, nullptr );
+	m_pAppMenu->Start( );
+	m_HistWindow    .Start( hwndParent, m_pHistorySystem, m_pWorkThreadInterface );
+	m_StatusBar     .Start( hwndParent, m_pHistorySystem, m_pWorkThreadInterface );
+	m_HistInfoWindow.Start( hwndParent, nullptr );
 
-	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW,   m_hwndConsole,                   TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW,   hwndParent,                      TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,    m_pStatusBar->GetWindowHandle(), FALSE, FALSE );
-	m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW,   m_HistWindow,                   FALSE, FALSE ); 
-	m_WinManager.AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   * m_pHistInfoWindow,               TRUE,  FALSE );
+	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                   TRUE,  TRUE  );
+	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, hwndParent,                      TRUE,  TRUE  );
+	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_StatusBar.GetWindowHandle(), FALSE, FALSE );
+	m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_HistWindow,                    FALSE, FALSE ); 
+	m_WinManager.AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_HistInfoWindow,                TRUE,  FALSE );
 
-	m_pHistInfoWindow->SetHistorySystem( m_pHistorySystem );
+	m_HistInfoWindow.SetHistorySystem( m_pHistorySystem );
 
-	m_pStatusBar->Show( TRUE );
+	m_StatusBar.Show( TRUE );
 	pModelWindow->Show( TRUE );
 
 	AdjustChildWindows( );
@@ -85,9 +76,10 @@ void BaseAppWindow::Stop( )
 {
 	m_bStarted = FALSE;
 
-	m_pHistInfoWindow->Stop( );
-	m_HistWindow.Stop( );
-	m_pAppMenu       ->Stop( );
+	m_HistInfoWindow.Stop( );
+	m_HistWindow    .Stop( );
+	m_StatusBar     .Stop( );
+	m_pAppMenu->Stop( );
 
 	delete m_pHistorySystem;   
 
@@ -106,8 +98,8 @@ void BaseAppWindow::AdjustChildWindows( )
 
 	if ( pntAppClientSize.IsNotZero( ) )
 	{
-		m_pStatusBar->Resize( );
-		pixAppClientWinHeight -= m_pStatusBar->GetHeight( );
+		m_StatusBar.Resize( );
+		pixAppClientWinHeight -= m_StatusBar.GetHeight( );
 		pixAppClientWinHeight -= HIST_WINDOW_HEIGHT, 
 		m_HistWindow.Move   // adapt history window to new size
 		( 

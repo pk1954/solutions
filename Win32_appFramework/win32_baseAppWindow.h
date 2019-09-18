@@ -7,13 +7,12 @@
 #include "win32_baseWindow.h"
 #include "win32_winManager.h"
 #include "win32_histWindow.h"
+#include "win32_historyInfo.h"
+#include "win32_status.h"
 
 class WorkThreadInterface;
-class HistInfoWindow;
 class HistorySystem;
 class ModelWindow;
-class HistWindow;
-class StatusBar;
 class Controller;
 class AppMenu;
 
@@ -29,21 +28,21 @@ public:
 
 protected:
 	WinManager m_WinManager;
+	StatusBar  m_StatusBar;
 
-	AppMenu       * m_pAppMenu;
-	StatusBar     * m_pStatusBar;
-	HistorySystem * m_pHistorySystem;  //TODO: make private
+	AppMenu       * m_pAppMenu;        // allocated by application
+	HistorySystem * m_pHistorySystem;  // allocated here
 
 private:
 
 	HWND m_hwndConsole;
 	BOOL m_bStarted;  // if true, model is visible, all functions available
 
-	HistWindow m_HistWindow;
+	HistWindow     m_HistWindow;
+	HistInfoWindow m_HistInfoWindow;
 
 	Controller          * m_pController;
 	ModelWindow         * m_pModelWindow;
-	HistInfoWindow      * m_pHistInfoWindow;
 	WorkThreadInterface * m_pWorkThreadInterface;
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );

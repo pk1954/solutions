@@ -133,7 +133,7 @@ AppWindow::AppWindow( ) :
 		& m_EvoHistGlue,
 		& m_Delay, 
 		& m_ColorManager,
-		  m_pStatusBar, 
+		& m_StatusBar, 
 		  m_pMainGridWindow, 
 		  m_pEditorWindow
 	);
@@ -279,7 +279,6 @@ void AppWindow::Stop()
 	m_pPerfWindow    ->Stop( );
 	m_pStatistics    ->Stop( );
 	m_pCrsrWindow    ->Stop( );
-	m_pStatusBar     ->Stop( );
 
 	m_Delay                 .Stop( );
 	m_EvoReadBuffer         .Stop( );
@@ -299,23 +298,23 @@ void AppWindow::Stop()
 
 void AppWindow::configureStatusBar( )
 {
-	m_pGenerationDisplay = new GenerationDisplay( m_pStatusBar, & m_EvoReadBuffer, 0 );
+	m_pGenerationDisplay = new GenerationDisplay( & m_StatusBar, & m_EvoReadBuffer, 0 );
 
-	m_pStatusBar->NewPart( );
-	m_pStatusBar->AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
+	m_StatusBar.NewPart( );
+	m_StatusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
 
-	m_pStatusBar->NewPart( );
-	ZoomControl::AddSizeControl( m_pStatusBar, MINIMUM_FIELD_SIZE.GetValue(), MAXIMUM_FIELD_SIZE.GetValue() );
-	ZoomControl::SetSizeTrackBar( m_pStatusBar, DEFAULT_FIELD_SIZE );
+	m_StatusBar.NewPart( );
+	ZoomControl::AddSizeControl( & m_StatusBar, MINIMUM_FIELD_SIZE.GetValue(), MAXIMUM_FIELD_SIZE.GetValue() );
+	ZoomControl::SetSizeTrackBar( & m_StatusBar, DEFAULT_FIELD_SIZE );
 
-	m_pStatusBar->NewPart( );
-	SpeedControl::AddSimulationControl( m_pStatusBar, m_pHistorySystem, Config::UseHistorySystem( ) );
+	m_StatusBar.NewPart( );
+	SpeedControl::AddSimulationControl( & m_StatusBar, m_pHistorySystem, Config::UseHistorySystem( ) );
 	SpeedControl::SetSpeedTrackBar( DEFAULT_DELAY );
 
-	int iPartScriptLine = m_pStatusBar->NewPart( );
-	m_ScriptHook.Initialize( m_pStatusBar, iPartScriptLine );
-	m_pStatusBar->DisplayInPart( iPartScriptLine, L"" );
+	int iPartScriptLine = m_StatusBar.NewPart( );
+	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine );
+	m_StatusBar.DisplayInPart( iPartScriptLine, L"" );
 	Script::ScrSetWrapHook( & m_ScriptHook );
 
-	m_pStatusBar->LastPart( );
+	m_StatusBar.LastPart( );
 }
