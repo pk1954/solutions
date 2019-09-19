@@ -85,7 +85,7 @@ void NNetSimuWindow::Start( )
 	m_pAppMenu->Initialize
 	( 
 		m_hwndApp, 
-		nullptr,   //TODO
+		& m_NNetWorkThreadInterface, 
 		& m_WinManager 
 	);
 

@@ -75,11 +75,11 @@ void BaseAppWindow::Start
 	m_StatusBar     .Start( hwndParent, m_pHistorySystem, m_pWorkThreadInterface );
 	m_HistInfoWindow.Start( hwndParent, nullptr );
 
-	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                   TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, hwndParent,                      TRUE,  TRUE  );
+	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                 TRUE,  TRUE  );
+	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, hwndParent,                    TRUE,  TRUE  );
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_StatusBar.GetWindowHandle(), FALSE, FALSE );
-	m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_HistWindow,                    FALSE, FALSE ); 
-	m_WinManager.AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_HistInfoWindow,                TRUE,  FALSE );
+	m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_HistWindow,                  FALSE, FALSE ); 
+	m_WinManager.AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_HistInfoWindow,              TRUE,  FALSE );
 
 	m_HistInfoWindow.SetHistorySystem( m_pHistorySystem );
 
