@@ -11,7 +11,7 @@
 #include "GridDimensions.h"
 #include "EvoHistorySysGlue.h"
 #include "win32_aboutBox.h"
-#include "win32_appWindow.h"
+#include "win32_evoAppWindow.h"
 #include "win32_script.h"
 #include "win32_stopwatch.h"
 #include "win32_winManager.h"
@@ -66,11 +66,10 @@ EvoController::~EvoController( )
 
 void EvoController::Initialize
 ( 
- 	AppWindow              * const pAppWindow,
+ 	EvoAppWindow           * const pAppWindow,
 	EvoWorkThreadInterface * const pEvoWorkThreadInterface
 )
 {
-	Controller::Initialize( pAppWindow, pEvoWorkThreadInterface );
 	m_pEvoWorkThreadInterface = pEvoWorkThreadInterface;
 	m_pAppWindow              = pAppWindow;
 	m_hCrsrWait               = LoadCursor( NULL, IDC_WAIT );
@@ -94,7 +93,7 @@ void EvoController::scriptDialog( )
 	}
 }
 
-bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
+bool EvoController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 {
 	switch (wmId)
 	{
@@ -141,7 +140,7 @@ bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 			LONG const lLogicalPos = m_pStatusBar->GetTrackBarPos( IDM_ZOOM_TRACKBAR );
 			LONG const lValue      = lLogicalPos;
 			LONG const lPos        = LogarithmicTrackbar::TrackBar2Value( lValue );
-			processUIcommand( IDM_ZOOM_TRACKBAR, lPos );
+			ProcessUIcommand( IDM_ZOOM_TRACKBAR, lPos );
 		}
 		break;
 
@@ -184,89 +183,79 @@ bool EvoController::processUIcommand( int const wmId, LPARAM const lParam )
 	return TRUE;  // command has been processed
 }
 
-void EvoController::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam )
+bool EvoController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 {
-    int const wmId = LOWORD( wParam );
-	
-	if ( ProcessFrameworkCommand( wmId, lParam ) )  // Some commands are handled by the framework controller
-	{                                       
-		if ( wmId == IDM_RUN )
-		{
-			m_pEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
-			SpeedControl::Adjust( TRUE, m_pEvoWorkThreadInterface );
-		}
+	switch ( wmId )
+	{
+	case IDM_RUN:
+		m_pEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
+		SpeedControl::Adjust( TRUE, m_pEvoWorkThreadInterface );
+		return true;
 
-		if ( wmId == IDM_STOP )
-		{
-			SpeedControl::Adjust( FALSE, m_pEvoWorkThreadInterface );
-		}
+	case IDM_STOP:
+		SpeedControl::Adjust( FALSE, m_pEvoWorkThreadInterface );
+		return true;
 
-		return;                                        
+	case IDM_RESET:
+	{
+		int     iRes    = ResetDialog::Show( m_pAppWindow->GetWindowHandle( ) );
+		HCURSOR crsrOld = SetCursor( m_hCrsrWait );
+		switch ( iRes )
+		{
+		case IDM_SOFT_RESET:
+			m_pEvoWorkThreadInterface->PostReset( FALSE );
+			break;
+
+		case IDM_HISTORY_RESET:
+			m_pEvoWorkThreadInterface->PostReset( TRUE );
+			break;
+
+		case IDM_HARD_RESET:
+			m_pAppWindow->Stop();
+			GridDimensions::DefineGridSize
+			( 
+				GRID_COORD( ResetDialog::GetNewWidth() ), 
+				GRID_COORD( ResetDialog::GetNewHeight() ), 
+				ResetDialog::GetNewNrOfNeighbors()
+			);
+			m_pAppWindow->Start();
+		}
+		SetCursor( crsrOld );
 	}
+	break;
 
-	if ( processUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
-		return;                             // but do not concern the model
-
-    switch (wmId)
-    {
-		case IDM_RESET:
-		{
-			int     iRes    = ResetDialog::Show( m_pAppWindow->GetWindowHandle( ) );
-			HCURSOR crsrOld = SetCursor( m_hCrsrWait );
-			switch ( iRes )
-			{
-			case IDM_SOFT_RESET:
-				m_pEvoWorkThreadInterface->PostReset( FALSE );
-				break;
-
-			case IDM_HISTORY_RESET:
-				m_pEvoWorkThreadInterface->PostReset( TRUE );
-				break;
-
-			case IDM_HARD_RESET:
-				m_pAppWindow->Stop();
-				GridDimensions::DefineGridSize
-				( 
-					GRID_COORD( ResetDialog::GetNewWidth() ), 
-					GRID_COORD( ResetDialog::GetNewHeight() ), 
-					ResetDialog::GetNewNrOfNeighbors()
-				);
-				m_pAppWindow->Start();
-			}
-			SetCursor( crsrOld );
-		}
+	case IDM_SOFT_RESET:
+		m_pEvoWorkThreadInterface->PostReset( FALSE );
 		break;
 
-		case IDM_SOFT_RESET:
-            m_pEvoWorkThreadInterface->PostReset( FALSE );
-            break;
+	case IDM_HISTORY_RESET:
+		m_pEvoWorkThreadInterface->PostReset( TRUE );
+		break;
 
-        case IDM_HISTORY_RESET:
-            m_pEvoWorkThreadInterface->PostReset( TRUE );
-            break;
+	case IDM_GOTO_ORIGIN:
+		m_pEvoWorkThreadInterface->PostGotoOrigin( UnpackFromLParam(lParam) );
+		break;
 
-		case IDM_GOTO_ORIGIN:
-			m_pEvoWorkThreadInterface->PostGotoOrigin( UnpackFromLParam(lParam) );
-			break;
+	case IDM_GOTO_DEATH:
+		m_pEvoWorkThreadInterface->PostGotoDeath( UnpackFromLParam(lParam) );
+		break;
 
-		case IDM_GOTO_DEATH:
-			m_pEvoWorkThreadInterface->PostGotoDeath( UnpackFromLParam(lParam) );
-			break;
+	case IDM_SET_POI:
+		m_pEvoWorkThreadInterface->PostSetPOI( UnpackFromLParam(lParam) );
+		break;
 
-		case IDM_SET_POI:
-			m_pEvoWorkThreadInterface->PostSetPOI( UnpackFromLParam(lParam) );
-			break;
+	case IDM_SCRIPT_DIALOG:
+		scriptDialog( );
+		break;
 
-        case IDM_SCRIPT_DIALOG:
-			scriptDialog( );
-			break;
+	case IDM_ESCAPE:
+		m_pGridWindow->Escape();
+		break;
 
-        case IDM_ESCAPE:
-			m_pGridWindow->Escape();
-            break;
+	default:
+		return true;
+	}
 
-		default:
-			assert( false );
-	        break;
-    }
+	return false;
 }
+

@@ -1,4 +1,4 @@
-// win32_appWindow.cpp
+// win32_evoAppWindow.cpp
 //
 // Evolutopn
 
@@ -19,7 +19,7 @@ using namespace std::literals::chrono_literals;
 
 // interfaces of various windows
 
-#include "win32_appWindow.h"
+#include "win32_evoAppWindow.h"
 #include "win32_statistics.h"
 #include "win32_crsrWindow.h"
 #include "win32_performanceWindow.h"
@@ -59,10 +59,9 @@ using namespace std::literals::chrono_literals;
 
 // application
 
-#include "win32_appWindow.h"
+#include "win32_evoAppWindow.h"
 
-AppWindow::AppWindow( ) :
-    BaseAppWindow( & m_EvoWorkThreadInterface ),
+EvoAppWindow::EvoAppWindow( ) :
 	m_pGraphics( nullptr ),
 	m_pModelDataWork( nullptr ),
 	m_pEvoCore4Display( nullptr ),
@@ -72,23 +71,22 @@ AppWindow::AppWindow( ) :
     m_pCrsrWindow( nullptr ),
     m_pStatistics( nullptr ),
 	m_pDspOptWindow( nullptr ),
-	m_pGenerationDisplay( nullptr ),
-    m_traceStream( )
+	m_pGenerationDisplay( nullptr )
 {
 	Stopwatch stopwatch;
+
+	WorkThreadInterface * const pI = & m_EvoWorkThreadInterface;
+
+	Initialize( pI );
 
 	DUMP::SetDumpStream( & std::wcout );
 	Config::SetDefaultConfiguration( );
     Config::DefineConfigWrapperFunctions( );
 	Script::ProcessScript( L"std_configuration.in" );
 
-    // create window objects
-
 	stopwatch.Start();
-	m_ColorManager.Initialize( );
-	m_EvoWorkThreadInterface.Initialize( & m_traceStream ); 
 
-	stopwatch.Stop( L"create window objects" );
+	m_ColorManager.Initialize( );
 
 	m_pAppMenu      = new EvoAppMenu( );
 	m_pDspOptWindow = new DspOptWindow( );
@@ -122,6 +120,8 @@ AppWindow::AppWindow( ) :
 		  m_pEditorWindow
 	);
 
+	stopwatch.Stop( L"create window objects" );
+
 	m_pEvoController->Initialize( this, & m_EvoWorkThreadInterface	);
 
 	m_pMiniGridWindow->Observe( m_pMainGridWindow );  // mini window observes main grid window
@@ -146,7 +146,7 @@ AppWindow::AppWindow( ) :
 	);
 };
 
-AppWindow::~AppWindow( )
+EvoAppWindow::~EvoAppWindow( )
 {
 	delete m_pEvoController;
 	delete m_pMainGridWindow; 
@@ -161,7 +161,7 @@ AppWindow::~AppWindow( )
 	delete m_pAppMenu;
 }
 
-void AppWindow::Start( )
+void EvoAppWindow::Start( )
 {
 	EvolutionCore * pCoreWork;
 
@@ -169,7 +169,7 @@ void AppWindow::Start( )
 	( 
 		GridDimensions::GetNrOfNeigbors(), 
 		& m_EvoReadBuffer, 
-		& m_event
+		& m_eventPOI
 	);
 
 	m_D3d_driver.Initialize
@@ -182,7 +182,7 @@ void AppWindow::Start( )
 
 	m_pGraphics = & m_D3d_driver;
 
-	BaseAppWindow::Start( m_pMainGridWindow, m_hwndApp, m_pEvoController );
+	BaseAppWindow::Start( m_pMainGridWindow );
 	m_pAppMenu->Initialize( m_hwndApp, & m_EvoWorkThreadInterface, & m_WinManager );
 
 	m_pModelDataWork = m_EvoHistGlue.Start( m_pHistorySystem, TRUE ); 
@@ -199,7 +199,7 @@ void AppWindow::Start( )
 		  m_hwndApp, 
 		& m_ColorManager, 
 		& m_atComputation,
-		& m_event, 
+		& m_eventPOI, 
 		& m_Delay, 
 		& m_EvoReadBuffer, 
 		& m_EvoHistGlue
@@ -223,12 +223,12 @@ void AppWindow::Start( )
 		[&]() { return ! m_pMainGridWindow->IsFullGridVisible( ); }
 	);
 
-	m_pDspOptWindow  ->Start( m_hwndApp );
-	m_pEditorWindow  ->Start( m_hwndApp, & m_EvoWorkThreadInterface, & m_EvoReadBuffer, m_pDspOptWindow );
-	m_pFocusPoint    ->Start( & m_EvoHistGlue );
-	m_pCrsrWindow    ->Start( m_hwndApp, & m_EvoReadBuffer, m_pFocusPoint );
-	m_pStatistics    ->Start( m_hwndApp, & m_EvoReadBuffer );
-	m_pPerfWindow    ->Start( m_hwndApp, m_Delay, m_atComputation, m_atDisplay, [&](){ return m_EvoWorkThreadInterface.IsRunning(); } );
+	m_pDspOptWindow->Start( m_hwndApp );
+	m_pEditorWindow->Start( m_hwndApp, & m_EvoWorkThreadInterface, & m_EvoReadBuffer, m_pDspOptWindow );
+	m_pFocusPoint  ->Start( & m_EvoHistGlue );
+	m_pCrsrWindow  ->Start( m_hwndApp, & m_EvoReadBuffer, m_pFocusPoint );
+	m_pStatistics  ->Start( m_hwndApp, & m_EvoReadBuffer );
+	m_pPerfWindow  ->Start( m_hwndApp, m_Delay, m_atComputation, m_atDisplay, [&](){ return m_EvoWorkThreadInterface.IsRunning(); } );
 
 	m_WinManager.AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, * m_pPerfWindow,     TRUE, FALSE );
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, * m_pCrsrWindow,     TRUE, FALSE );
@@ -238,7 +238,7 @@ void AppWindow::Start( )
     m_WinManager.AddWindow( L"IDM_MINI_WINDOW", IDM_MINI_WINDOW, * m_pMiniGridWindow, TRUE, FALSE );
     m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainGridWindow, TRUE, FALSE );
 
-	configureStatusBar( );
+	configureStatusBar( m_StatusBar );
 
 	m_pMiniGridWindow->Size( );
 
@@ -254,7 +254,7 @@ void AppWindow::Start( )
 //	Script::ProcessScript( L"std_script.in" );
 }
 
-void AppWindow::Stop()
+void EvoAppWindow::Stop()
 {
 	m_pMiniGridWindow->Stop( );
 	m_pMainGridWindow->Stop( );
@@ -280,25 +280,36 @@ void AppWindow::Stop()
 	m_pEvoCore4Display = nullptr;
 }
 
-void AppWindow::configureStatusBar( )
+void EvoAppWindow::configureStatusBar( StatusBar & statusBar)
 {
-	m_pGenerationDisplay = new GenerationDisplay( & m_StatusBar, & m_EvoReadBuffer, 0 );
+	m_pGenerationDisplay = new GenerationDisplay( & statusBar, & m_EvoReadBuffer, 0 );
 
-	m_StatusBar.NewPart( );
-	m_StatusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
+	statusBar.NewPart( );
+	statusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
 
-	m_StatusBar.NewPart( );
-	ZoomControl::AddSizeControl( & m_StatusBar, MINIMUM_FIELD_SIZE.GetValue(), MAXIMUM_FIELD_SIZE.GetValue() );
-	ZoomControl::SetSizeTrackBar( & m_StatusBar, DEFAULT_FIELD_SIZE );
+	statusBar.NewPart( );
+	ZoomControl::AddSizeControl( & statusBar, MINIMUM_FIELD_SIZE.GetValue(), MAXIMUM_FIELD_SIZE.GetValue() );
+	ZoomControl::SetSizeTrackBar( & statusBar, DEFAULT_FIELD_SIZE );
 
-	m_StatusBar.NewPart( );
-	SpeedControl::AddSimulationControl( & m_StatusBar, m_pHistorySystem, Config::UseHistorySystem( ) );
+	statusBar.NewPart( );
+	SpeedControl::AddSimulationControl( & statusBar, m_pHistorySystem, Config::UseHistorySystem( ) );
 	SpeedControl::SetSpeedTrackBar( DEFAULT_DELAY );
 
-	int iPartScriptLine = m_StatusBar.NewPart( );
-	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine );
-	m_StatusBar.DisplayInPart( iPartScriptLine, L"" );
+	int iPartScriptLine = statusBar.NewPart( );
+	m_ScriptHook.Initialize( & statusBar, iPartScriptLine );
+	statusBar.DisplayInPart( iPartScriptLine, L"" );
 	Script::ScrSetWrapHook( & m_ScriptHook );
 
-	m_StatusBar.LastPart( );
+	statusBar.LastPart( );
+}
+
+void EvoAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam )
+{
+	int const wmId = LOWORD( wParam );
+
+	if ( m_pEvoController->ProcessUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
+		return;                                               // but do not concern the model
+
+	if ( m_pEvoController->ProcessModelCommand( wmId, lParam ) )
+		ProcessFrameworkCommand( wmId, lParam ); 
 }

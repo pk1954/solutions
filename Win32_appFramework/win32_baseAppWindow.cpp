@@ -10,30 +10,39 @@
 #include "win32_util.h"
 #include "win32_util_resource.h"
 #include "UtilityWrappers.h"
+#include "win32_aboutBox.h"
 #include "win32_modelWindow.h"
-#include "win32_controller.h"
 #include "win32_appMenu.h"
+#include "win32_WorkThreadInterface.h"
 #include "win32_baseAppWindow.h"
 
 using namespace std::literals::chrono_literals;
 
-BaseAppWindow::BaseAppWindow
-( 	
-	WorkThreadInterface * const pWorkThreadInterface
-) : 
-	m_bStarted( FALSE ),
+BaseAppWindow::BaseAppWindow( )
+ : 	m_bStarted( FALSE ),
 	m_hwndConsole( nullptr ),
-	m_pController( nullptr ),
 	m_pAppMenu( nullptr ),
 	m_pModelWindow( nullptr ),
 	m_pHistorySystem( nullptr ),
-	m_pWorkThreadInterface( pWorkThreadInterface ),
+	m_pWorkThreadInterface( nullptr ),
 	m_traceStream( )
+{
+}
+
+void BaseAppWindow::Initialize( WorkThreadInterface * const pWorkThreadInterface )
 {
 	//	_CrtSetAllocHook( MyAllocHook );
 
+	m_pWorkThreadInterface = pWorkThreadInterface;
+
 	m_hwndConsole = GetConsoleWindow( );
 	SetWindowPos( m_hwndConsole, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
+
+	DefineUtilityWrapperFunctions( );
+
+	m_traceStream = OpenTraceFile( L"main_trace.out" );
+
+	m_pWorkThreadInterface->Initialize( & m_traceStream );
 
 	m_StatusBar     .SetRefreshRate( 300ms );
 	m_HistWindow    .SetRefreshRate( 200ms ); 
@@ -48,35 +57,25 @@ BaseAppWindow::BaseAppWindow
 		nullptr,
 		nullptr
 	);
-
-	DefineUtilityWrapperFunctions( );
-
-	m_traceStream = OpenTraceFile( L"main_trace.out" );
 }
 
 BaseAppWindow::~BaseAppWindow() 
 {
 };
 
-void BaseAppWindow::Start
-( 
-	ModelWindow * const pModelWindow, 
-	HWND          const hwndParent,
-	Controller  * const pController
-)
+void BaseAppWindow::Start( ModelWindow * const pModelWindow )
 {
 	m_pModelWindow = pModelWindow;
-	m_pController  = pController;
 
 	m_pHistorySystem = HistorySystem::CreateHistorySystem( );  // deleted in Stop function
 
 	m_pAppMenu->Start( );
-	m_HistWindow    .Start( hwndParent, m_pHistorySystem, m_pWorkThreadInterface );
-	m_StatusBar     .Start( hwndParent, m_pHistorySystem, m_pWorkThreadInterface );
-	m_HistInfoWindow.Start( hwndParent, nullptr );
+	m_HistWindow    .Start( m_hwndApp, m_pHistorySystem, m_pWorkThreadInterface );
+	m_StatusBar     .Start( m_hwndApp, m_pHistorySystem, m_pWorkThreadInterface );
+	m_HistInfoWindow.Start( m_hwndApp, nullptr );
 
 	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                 TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, hwndParent,                    TRUE,  TRUE  );
+	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                     TRUE,  TRUE  );
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_StatusBar.GetWindowHandle(), FALSE, FALSE );
 	m_WinManager.AddWindow( L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_HistWindow,                  FALSE, FALSE ); 
 	m_WinManager.AddWindow( L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_HistInfoWindow,              TRUE,  FALSE );
@@ -86,7 +85,7 @@ void BaseAppWindow::Start
 	m_StatusBar.Show( TRUE );
 	pModelWindow->Show( TRUE );
 
-	AdjustChildWindows( );
+	adjustChildWindows( );
 
 	m_bStarted = TRUE;
 }
@@ -105,7 +104,7 @@ void BaseAppWindow::Stop( )
 	m_pHistorySystem = nullptr;
 }
 
-void BaseAppWindow::AdjustChildWindows( )
+void BaseAppWindow::adjustChildWindows( )
 {
 	static PIXEL const HIST_WINDOW_HEIGHT = 30_PIXEL;
 
@@ -155,7 +154,7 @@ LRESULT BaseAppWindow::UserProc
 		break;
 
 	case WM_COMMAND:
-		m_pController->ProcessAppCommand( wParam, lParam );
+		ProcessAppCommand( wParam, lParam );
 		return FALSE;
 
 	case WM_PAINT:
@@ -170,7 +169,7 @@ LRESULT BaseAppWindow::UserProc
 
 	case WM_SIZE:
 	case WM_MOVE:
-		AdjustChildWindows( );
+		adjustChildWindows( );
 		break;
 
 	case WM_CLOSE:
@@ -191,4 +190,61 @@ LRESULT BaseAppWindow::UserProc
 	}
 
 	return DefWindowProc( message, wParam, lParam );
+}
+
+bool BaseAppWindow::ProcessFrameworkCommand( WPARAM const wParam, LPARAM const lParam )
+{
+	int const wmId = LOWORD( wParam );
+
+	switch (wmId)
+	{
+	case IDM_ABOUT:
+		ShowAboutBox( GetWindowHandle( ) );
+		break;
+
+	case IDM_EXIT:
+		PostMessage( WM_CLOSE, 0, 0 );
+		break;
+
+	case IDM_MAIN_WINDOW:
+	case IDM_HIST_INFO:
+	case IDM_HIST_WINDOW:
+		::SendMessage( m_WinManager.GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
+		break;
+
+	case IDM_FORWARD:
+		m_pWorkThreadInterface->PostGenerationStep( );
+		break;
+
+	case IDM_BACKWARDS:
+		m_pWorkThreadInterface->PostPrevGeneration( );
+		break;
+
+	case IDM_EDIT_UNDO:
+		m_pWorkThreadInterface->PostUndo( );
+		break;
+
+	case IDM_EDIT_REDO:
+		m_pWorkThreadInterface->PostRedo( );
+		break;
+
+	case IDM_RUN:
+		m_pWorkThreadInterface->PostRunGenerations( true );
+		break;
+
+	case IDM_STOP:
+		m_pWorkThreadInterface->PostStopComputation( );
+		break;
+
+	case IDM_HIST_BUFFER_FULL:
+		std::wcout << L"History buffer is full" << std::endl;
+		(void)MessageBeep( MB_ICONWARNING );
+		ProcessFrameworkCommand( IDM_STOP );
+		break;
+
+	default:
+		return FALSE; // command has not been processed
+	}
+
+	return TRUE;  // command has been processed
 }

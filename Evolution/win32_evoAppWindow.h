@@ -1,5 +1,6 @@
-// win32_appWindow.h : 
+// win32_evoAppWindow.h : 
 //
+// Evolution
 
 #pragma once
 
@@ -45,46 +46,47 @@ class DspOptWindow;
 class EvoController;
 class AppMenu;
 
-class AppWindow : public BaseAppWindow
+class EvoAppWindow : public BaseAppWindow
 {
 public:
-    AppWindow( );
+    EvoAppWindow( );
 	void Start( );
 	void Stop( );
-	~AppWindow( );
+	~EvoAppWindow( );
 
 private:
-	AppWindow             ( AppWindow const & );  // noncopyable class 
-    AppWindow & operator= ( AppWindow const & );  // noncopyable class 
+	EvoAppWindow             ( EvoAppWindow const & );  // noncopyable class 
+    EvoAppWindow & operator= ( EvoAppWindow const & );  // noncopyable class 
 
-	void configureStatusBar( );
+	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 );
 
-	Util::Event            m_event;
+	void configureStatusBar( StatusBar & );
+
+	Util::Event            m_eventPOI;
 					       
+	EvoWorkThreadInterface m_EvoWorkThreadInterface;
 	ActionTimer            m_atComputation;
 	ActionTimer            m_atDisplay;
 	Delay                  m_Delay;
+	EvoReadBuffer          m_EvoReadBuffer;
+	EvoHistorySysGlue      m_EvoHistGlue;
 	ColorManager           m_ColorManager;
 	D3D_driver             m_D3d_driver;
-	EvoReadBuffer          m_EvoReadBuffer;
-	EvoWorkThreadInterface m_EvoWorkThreadInterface;
-	EvoHistorySysGlue      m_EvoHistGlue;
     ScriptHook             m_ScriptHook;
 	ProtocolServer         m_protocolServer;
 					       
-	EvoController          * m_pEvoController;
-	GridWindow             * m_pMainGridWindow;
-    GridWindow             * m_pMiniGridWindow;
-    EditorWindow           * m_pEditorWindow;
-	DspOptWindow           * m_pDspOptWindow;
-	PerformanceWindow      * m_pPerfWindow;
-	CrsrWindow             * m_pCrsrWindow;
-	StatisticsWindow       * m_pStatistics;
-	GraphicsInterface      * m_pGraphics;
-	EvoModelDataGlue       * m_pModelDataWork;
-	EvolutionCore          * m_pEvoCore4Display;
-	FocusPoint             * m_pFocusPoint;
-	GenerationDisplay      * m_pGenerationDisplay;
+	EvoController        * m_pEvoController;
+	EvolutionCore        * m_pEvoCore4Display;
+	GridWindow           * m_pMainGridWindow;
+	EvoModelDataGlue     * m_pModelDataWork;
 
-    std::wofstream m_traceStream;
+    GridWindow           * m_pMiniGridWindow;
+    EditorWindow         * m_pEditorWindow;
+	DspOptWindow         * m_pDspOptWindow;
+	PerformanceWindow    * m_pPerfWindow;
+	CrsrWindow           * m_pCrsrWindow;
+	StatisticsWindow     * m_pStatistics;
+	GraphicsInterface    * m_pGraphics;
+	FocusPoint           * m_pFocusPoint;
+	GenerationDisplay    * m_pGenerationDisplay;
 };

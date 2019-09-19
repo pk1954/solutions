@@ -259,8 +259,8 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Version.h" />
-    <ClInclude Include="win32_appWindow.h" />
     <ClInclude Include="win32_evoAppMenu.h" />
+    <ClInclude Include="win32_evoAppWindow.h" />
     <ClInclude Include="win32_evoController.h" />
     <ClInclude Include="win32_resetDlg.h" />
   </ItemGroup>
@@ -273,8 +273,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="win32_appWindow.cpp" />
     <ClCompile Include="win32_evoAppMenu.cpp" />
+    <ClCompile Include="win32_evoAppWindow.cpp" />
     <ClCompile Include="win32_evoController.cpp" />
     <ClCompile Include="win32_resetDlg.cpp" />
   </ItemGroup>

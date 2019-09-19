@@ -12,7 +12,7 @@ namespace Util
 	{
 	public:
 		Event( )
-		  : m_event
+		  : m_eventHandle
 		    ( 
 				CreateEvent
 				( 
@@ -26,22 +26,22 @@ namespace Util
 
 		~Event( )
 		{
-			(void)CloseHandle( m_event );
-			m_event = nullptr;
+			(void)CloseHandle( m_eventHandle );
+			m_eventHandle = nullptr;
 		}
 
 		virtual void Wait( )
 		{
-			(void)ResetEvent( m_event );
-			(void)WaitForSingleObject( m_event, INFINITE );
+			(void)ResetEvent( m_eventHandle );
+			(void)WaitForSingleObject( m_eventHandle, INFINITE );
 		}
 
 		virtual void Continue( )
 		{
-			(void)SetEvent( m_event );
+			(void)SetEvent( m_eventHandle );
 		}
 
 	private:
-		HANDLE m_event;
+		HANDLE m_eventHandle;
 	};
 };

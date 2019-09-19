@@ -24,9 +24,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_appWindow.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Version.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -42,15 +39,15 @@
     <ClInclude Include="win32_evoAppMenu.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="win32_evoAppWindow.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Evolution.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_appWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_evoController.cpp">
@@ -63,6 +60,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_evoAppMenu.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_evoAppWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

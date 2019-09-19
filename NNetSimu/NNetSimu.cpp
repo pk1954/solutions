@@ -7,7 +7,7 @@
 #include "Resource.h"
 #include "win32_util.h"
 #include "win32_stopwatch.h"
-#include "win32_NNetSimuWindow.h"
+#include "win32_NNetAppWindow.h"
 
 int APIENTRY wWinMain
 (
@@ -31,13 +31,14 @@ int APIENTRY wWinMain
 		ICC_TAB_CLASSES | 
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
+
     InitCommonControlsEx(&icex); 
 
 	Util::StdOutConsole( );
 
  	Stopwatch stopwatch;
 	stopwatch.Start();
-	NNetSimuWindow App;
+	NNetAppWindow App;
 	App.Start( );
 	stopwatch.Stop( L"App.Start" );
 

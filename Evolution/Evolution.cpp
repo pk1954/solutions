@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "commctrl.h"
 #include "win32_util.h"
-#include "win32_appWindow.h"
+#include "win32_evoAppWindow.h"
 #include "win32_stopwatch.h"
 #include "Resource.h"
 
@@ -36,7 +36,7 @@ int APIENTRY wWinMain
 
  	Stopwatch stopwatch;
 	stopwatch.Start();
-	AppWindow App;
+	EvoAppWindow App;
 	App.Start( );
 	stopwatch.Stop( L"App.Start" );
 

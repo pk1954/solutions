@@ -159,7 +159,6 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="win32_appMenu.h" />
     <ClInclude Include="win32_baseAppWindow.h" />
-    <ClInclude Include="win32_controller.h" />
     <ClInclude Include="win32_modelWindow.h" />
     <ClInclude Include="win32_readBuffer.h" />
     <ClInclude Include="win32_status.h" />
@@ -171,7 +170,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_baseAppWindow.cpp" />
-    <ClCompile Include="win32_controller.cpp" />
     <ClCompile Include="win32_modelWindow.cpp" />
     <ClCompile Include="win32_status.cpp" />
     <ClCompile Include="win32_WorkThread.cpp" />

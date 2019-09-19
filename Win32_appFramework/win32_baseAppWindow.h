@@ -13,18 +13,17 @@
 class WorkThreadInterface;
 class HistorySystem;
 class ModelWindow;
-class Controller;
 class AppMenu;
 
 class BaseAppWindow : public BaseWindow
 {
 public:
-	BaseAppWindow( WorkThreadInterface * const );
-	void Start( ModelWindow * const, HWND const, Controller * const );
-	void Stop( );
+	BaseAppWindow( );
 	virtual ~BaseAppWindow(); 
 
-	void AdjustChildWindows( );
+	void Initialize( WorkThreadInterface * const );
+
+	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 ) = 0;
 
 protected:
 	HWND       m_hwndApp;
@@ -34,7 +33,10 @@ protected:
 	AppMenu       * m_pAppMenu;        // allocated by application
 	HistorySystem * m_pHistorySystem;  // allocated here
 
-	std::wofstream m_traceStream;
+	void Start( ModelWindow * const );
+	void Stop( );
+
+    bool ProcessFrameworkCommand( WPARAM const, LPARAM const = 0 );
 
 private:
 
@@ -44,9 +46,12 @@ private:
 	HistWindow     m_HistWindow;
 	HistInfoWindow m_HistInfoWindow;
 
-	Controller          * m_pController;
 	ModelWindow         * m_pModelWindow;
 	WorkThreadInterface * m_pWorkThreadInterface;
+
+	std::wofstream m_traceStream;
+
+	void adjustChildWindows( );
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 };

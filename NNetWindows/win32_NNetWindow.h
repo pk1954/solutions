@@ -31,12 +31,12 @@ public:
 	~NNetWindow( );
 
 private:
-	static NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
-
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	HMENU               m_hPopupMenu;
+	static NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
+
+	HMENU m_hPopupMenu;
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const );
 

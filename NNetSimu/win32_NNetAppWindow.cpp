@@ -1,4 +1,4 @@
-// win32_NNetSimuWindow.cpp
+// win32_NNetAppWindow.cpp
 //
 // NNetSimu
 
@@ -35,53 +35,45 @@ using namespace std::literals::chrono_literals;
 
 // application
 
-#include "win32_NNetSimuWindow.h"
+#include "win32_NNetAppWindow.h"
 
-NNetSimuWindow::NNetSimuWindow( ) :
-    BaseAppWindow( & m_NNetWorkThreadInterface ),
+NNetAppWindow::NNetAppWindow( ) :
 	m_pMainNNetWindow( nullptr ),
-	m_pHistInfoWindow( nullptr ),
 	m_pModelDataWork( nullptr ),
-	m_pNNetModel4Display( nullptr ),
-	m_traceStream( )
+	m_pNNetModel4Display( nullptr )
 {
 	Stopwatch stopwatch;
 
-    // create window objects
-
-	stopwatch.Start();
-
-	m_NNetWorkThreadInterface.Initialize( & m_traceStream ); 
-
-	stopwatch.Stop( L"create window objects" );
-
+	Initialize( & m_NNetWorkThreadInterface ),
+		
 	NNetWindow::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
 
 	m_pAppMenu        = new NNetAppMenu( );
 	m_pMainNNetWindow = new NNetWindow( );
 
-	m_NNetSimuController.Initialize
+	m_pNNetSimuController = new NNetSimuController( & m_WinManager );
+
+	m_pNNetSimuController->Initialize
 	( 
 		this,
 		& m_NNetWorkThreadInterface,
-		& m_WinManager,
 		& m_Delay
 	);
 
 	m_pMainNNetWindow->SetRefreshRate( 100ms );
 };
 
-NNetSimuWindow::~NNetSimuWindow( )
+NNetAppWindow::~NNetAppWindow( )
 {
 	delete m_pMainNNetWindow;
 	delete m_pAppMenu;
 }
 
-void NNetSimuWindow::Start( )
+void NNetAppWindow::Start( )
 {
 	NNetModel * pModelWork;
 
-	BaseAppWindow::Start( m_pMainNNetWindow, m_hwndApp, & m_NNetSimuController );
+	BaseAppWindow::Start( m_pMainNNetWindow );
 	m_pAppMenu->Initialize
 	( 
 		m_hwndApp, 
@@ -106,15 +98,13 @@ void NNetSimuWindow::Start( )
 	( 
 		m_hwndApp, 
 		& m_atComputation,
-		& m_event, 
+		& m_eventPOI, 
 		& m_Delay, 
 		& m_NNetReadBuffer, 
 		& m_NNetHistGlue
 	);
 
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow, TRUE,  FALSE );
-
-	AdjustChildWindows( );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
@@ -123,7 +113,7 @@ void NNetSimuWindow::Start( )
 	}
 }
 
-void NNetSimuWindow::Stop()
+void NNetAppWindow::Stop()
 {
 	BaseAppWindow::Stop();
 
@@ -132,4 +122,15 @@ void NNetSimuWindow::Stop()
 	m_Delay.Stop( );
 
 	m_WinManager.RemoveAll( );
+}
+
+void NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam )
+{
+	int const wmId = LOWORD( wParam );
+
+	if ( m_pNNetSimuController->ProcessUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
+		return;                                                    // but do not concern the model
+
+	if ( m_pNNetSimuController->ProcessModelCommand( wmId, lParam ) )
+		ProcessFrameworkCommand( wmId, lParam );                   // Some commands are handled by the framework controller
 }

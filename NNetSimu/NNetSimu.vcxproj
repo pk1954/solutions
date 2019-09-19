@@ -164,6 +164,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Version.h" />
     <ClInclude Include="win32_NNetAppMenu.h" />
+    <ClInclude Include="win32_NNetAppWindow.h" />
     <ClInclude Include="win32_NNetSimuWindow.h" />
     <ClInclude Include="win32_NNetSimuController.h" />
   </ItemGroup>
@@ -171,7 +172,7 @@
     <ClCompile Include="NNetSimu.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="win32_NNetAppMenu.cpp" />
-    <ClCompile Include="win32_NNetSimuWindow.cpp" />
+    <ClCompile Include="win32_NNetAppWindow.cpp" />
     <ClCompile Include="win32_NNetSimuController.cpp" />
   </ItemGroup>
   <ItemGroup>

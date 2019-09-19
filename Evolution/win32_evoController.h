@@ -3,9 +3,7 @@
 
 #pragma once
 
-#include "win32_controller.h"
-
-class AppWindow;
+class EvoAppWindow;
 class Delay;
 class StatusBar;
 class EvoWorkThreadInterface;
@@ -15,7 +13,7 @@ class GridWindow;
 class EditorWindow;
 class ColorManager;
 
-class EvoController : public Controller
+class EvoController 
 {
 public:
 	EvoController
@@ -32,18 +30,18 @@ public:
 	virtual ~EvoController( );
 
 	void EvoController::Initialize
-	( 
-		AppWindow              * const,
+	(
+		EvoAppWindow           * const,
 		EvoWorkThreadInterface * const
 	);
 
-	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 );
+	bool ProcessUIcommand   ( int const, LPARAM const );
+	bool ProcessModelCommand( int const, LPARAM const );
 
 private:
 	void scriptDialog( );
-	bool processUIcommand( int const, LPARAM const );
 
-	AppWindow              * m_pAppWindow;
+	EvoAppWindow           * m_pAppWindow;
 	EvoWorkThreadInterface * m_pEvoWorkThreadInterface;
 	WinManager             * m_pWinManager;
 	EvoHistorySysGlue      * m_pEvoHistGlue;

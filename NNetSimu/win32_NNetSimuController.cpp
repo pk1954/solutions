@@ -9,13 +9,16 @@
 #include "BoolOp.h"
 #include "win32_aboutBox.h"
 #include "win32_NNetWorkThreadInterface.h"
-#include "win32_NNetSimuWindow.h"
+#include "win32_NNetAppWindow.h"
 #include "win32_NNetSimuController.h"
 
-NNetSimuController::NNetSimuController() :
+NNetSimuController::NNetSimuController
+(
+	WinManager * const pWinManager
+) : 
 	m_pAppWindow              ( nullptr ),
 	m_pNNetWorkThreadInterface( nullptr ),
-	m_pWinManager             ( nullptr ),
+	m_pWinManager             ( pWinManager ),
     m_pDelay                  ( nullptr ),
 	m_pStatusBar              ( nullptr ),
 	m_hCrsrWait               ( 0 )
@@ -32,21 +35,18 @@ NNetSimuController::~NNetSimuController( )
 
 void NNetSimuController::Initialize
 ( 
-	NNetSimuWindow          * const pAppWindow,
+	NNetAppWindow           * const pAppWindow,
 	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
-	WinManager              * const pWinManager,
 	Delay                   * const pDelay
 )
 {
-	Controller::Initialize( pAppWindow,  pNNetWorkThreadInterface );
 	m_pNNetWorkThreadInterface = pNNetWorkThreadInterface;
 	m_pAppWindow               = pAppWindow;
-	m_pWinManager              = pWinManager;
     m_pDelay                   = pDelay;
 	m_hCrsrWait                = LoadCursor( NULL, IDC_WAIT );
 }
 
-bool NNetSimuController::processUIcommand( int const wmId, LPARAM const lParam )
+bool NNetSimuController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 {
 	switch (wmId)
 	{
@@ -82,30 +82,13 @@ bool NNetSimuController::processUIcommand( int const wmId, LPARAM const lParam )
 	return TRUE;  // command has been processed
 }
 
-void NNetSimuController::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam )
+bool NNetSimuController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 {
-    int const wmId = LOWORD( wParam );
-	
-	if ( ProcessFrameworkCommand( wmId, lParam ) )  // Some commands are handled by 
-		return;                                        // the framework controller
-
-	if ( processUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
-		return;                             // but do not concern the model
-
-    switch (wmId)
-    {
-	case IDM_RUN:
-//		m_pEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
-		m_pNNetWorkThreadInterface->PostRunGenerations( true );
-		break;
-
-	case IDM_RESET:
+	switch ( wmId )
 	{
-	}
-	break;
 
-		default:
-			assert( false );
-	        break;
-    }
+	default:
+		return true;  // Some commands are handled by the framework controller
+		break;
+	}
 }

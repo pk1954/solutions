@@ -4,36 +4,36 @@
 
 #pragma once
 
-#include "win32_controller.h"
-
 class NNetWorkThreadInterface;
-class NNetSimuWindow;
+class NNetAppWindow;
 class NNetAppMenu;
 class WinManager;
 class StatusBar;
 class Delay;
 
-class NNetSimuController : public Controller
+class NNetSimuController
 {
 public:
-	NNetSimuController( );
+	NNetSimuController
+	( 
+		WinManager * const
+	);
 
 	virtual ~NNetSimuController( );
 
 	void Initialize
 	( 
-		NNetSimuWindow          * const,
+		NNetAppWindow           * const,
 		NNetWorkThreadInterface * const,
-		WinManager              * const,
 		Delay                   * const
 	);
 
-	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 );
+	bool ProcessUIcommand   ( int const, LPARAM const );
+	bool ProcessModelCommand( int const, LPARAM const );
 
 private:
-	bool processUIcommand( int const, LPARAM const );
 
-	NNetSimuWindow          * m_pAppWindow;
+	NNetAppWindow          * m_pAppWindow;
 	NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 	WinManager              * m_pWinManager;
 	Delay                   * m_pDelay;

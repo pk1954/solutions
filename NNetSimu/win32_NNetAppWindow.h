@@ -1,5 +1,6 @@
-// win32_appWindow.h : 
+// win32_NNetAppWindow.h : 
 //
+// NNetSimu
 
 #pragma once
 
@@ -31,32 +32,31 @@ class NNetModel;
 class NNetWindow;
 class HistInfoWindow;
 
-class NNetSimuWindow : public BaseAppWindow
+class NNetAppWindow : public BaseAppWindow
 {
 public:
-	NNetSimuWindow( );
+	NNetAppWindow( );
 	void Start( );
 	void Stop( );
-	~NNetSimuWindow( );
+	~NNetAppWindow( );
 
 private:
-	NNetSimuWindow             ( NNetSimuWindow const & );  // noncopyable class 
-	NNetSimuWindow & operator= ( NNetSimuWindow const & );  // noncopyable class 
+	NNetAppWindow             ( NNetAppWindow const & );  // noncopyable class 
+	NNetAppWindow & operator= ( NNetAppWindow const & );  // noncopyable class 
 
-	Util::Event m_event;
+	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 );
 
-	NNetWindow             * m_pMainNNetWindow;
-	HistInfoWindow         * m_pHistInfoWindow;
-	NNetModelDataGlue      * m_pModelDataWork;
-	NNetModel              * m_pNNetModel4Display;
+	Util::Event              m_eventPOI;
 
 	NNetWorkThreadInterface m_NNetWorkThreadInterface;
-	NNetSimuController      m_NNetSimuController;
 	ActionTimer             m_atComputation;
 	ActionTimer             m_atDisplay;
 	Delay                   m_Delay;
 	NNetReadBuffer          m_NNetReadBuffer;
 	NNetHistorySysGlue      m_NNetHistGlue;
 
-    std::wofstream m_traceStream;
+	NNetSimuController    * m_pNNetSimuController;
+	NNetModel             * m_pNNetModel4Display;
+	NNetWindow            * m_pMainNNetWindow;
+	NNetModelDataGlue     * m_pModelDataWork;
 };

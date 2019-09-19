@@ -36,6 +36,9 @@
     <ClInclude Include="win32_NNetAppMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="win32_NNetAppWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NNetSimu.cpp">
@@ -44,13 +47,13 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_NNetSimuWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32_NNetSimuController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_NNetAppMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_NNetAppWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
