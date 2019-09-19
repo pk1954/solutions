@@ -77,22 +77,6 @@ AppWindow::AppWindow( ) :
 {
 	Stopwatch stopwatch;
 
-//	_CrtSetAllocHook( MyAllocHook );
-
-	DefineUtilityWrapperFunctions( );
-
-	m_hwndApp = StartBaseWindow
-	( 
-		nullptr, 
-		CS_HREDRAW | CS_VREDRAW, 
-		L"ClassAppWindow", 
-		WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,
-		nullptr,
-		nullptr
-	);
-
-	m_traceStream = OpenTraceFile( L"main_trace.out" );
-
 	DUMP::SetDumpStream( & std::wcout );
 	Config::SetDefaultConfiguration( );
     Config::DefineConfigWrapperFunctions( );
@@ -106,13 +90,13 @@ AppWindow::AppWindow( ) :
 
 	stopwatch.Stop( L"create window objects" );
 
-	m_pAppMenu       = new EvoAppMenu( );
-	m_pDspOptWindow  = new DspOptWindow( );
-	m_pFocusPoint    = new FocusPoint( );
-	m_pPerfWindow    = new PerformanceWindow( );
-	m_pStatistics    = new StatisticsWindow( );
-	m_pCrsrWindow    = new CrsrWindow( );
-	m_pEditorWindow  = new EditorWindow( );
+	m_pAppMenu      = new EvoAppMenu( );
+	m_pDspOptWindow = new DspOptWindow( );
+	m_pFocusPoint   = new FocusPoint( );
+	m_pPerfWindow   = new PerformanceWindow( );
+	m_pStatistics   = new StatisticsWindow( );
+	m_pCrsrWindow   = new CrsrWindow( );
+	m_pEditorWindow = new EditorWindow( );
 
 	GridWindow::InitClass
 	( 

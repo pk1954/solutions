@@ -63,15 +63,13 @@ IDirect3DDevice9 * D3dSystem::Create_D3D_Device
 
 	assert( hres == D3D_OK );
 
-	//lint -e708     union initialization
 	m_d3d_matrix = D3DMATRIX 
 	{
 		1.0f,   0.0f,  0.0f,  0.0f,
 		0.0f,   1.0f,  0.0f,  0.0f,
 		0.0f,   0.0f,  1.0f,  0.0f,
-		-1.0f,   1.0f,  0.0f,  1.0f
+       -1.0f,   1.0f,  0.0f,  1.0f
 	};
-	//lint +e708
 
 	m_d3d_device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
 	m_d3d_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);

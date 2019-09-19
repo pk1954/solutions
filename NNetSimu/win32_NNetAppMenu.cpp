@@ -1,4 +1,4 @@
-// win32_NNetSimuMenu.cpp
+// win32_NNetAppMenu.cpp
 //
 // NNetSimu
 
@@ -6,9 +6,9 @@
 #include "Resource.h"
 #include "win32_util.h"
 #include "win32_winManager.h"
-#include "win32_NNetSimuMenu.h"
+#include "win32_NNetAppMenu.h"
 
-void NNetSimuMenu::Initialize
+void NNetAppMenu::Initialize
 ( 
 	HWND                        const hwndApp, 
 	WorkThreadInterface const * const pWorkThreadInterface,
@@ -30,22 +30,22 @@ void NNetSimuMenu::Initialize
 	m_hMenu = GetMenu( hwndApp );
 }
 
-void NNetSimuMenu::enableMenues( UINT const state )
+void NNetAppMenu::enableMenues( UINT const state )
 {
 	EnableMenuItem( m_hMenu, 1, state|MF_BYPOSITION ); 
 	EnableMenuItem( m_hMenu, 2, state|MF_BYPOSITION ); 
 }
 
-void NNetSimuMenu::Start( )
+void NNetAppMenu::Start( )
 {
 	enableMenues( MF_ENABLED ); 
 }
 
-void NNetSimuMenu::Stop( )
+void NNetAppMenu::Stop( )
 {
 	enableMenues( MF_GRAYED ); 
 }
 
-void NNetSimuMenu::AdjustVisibility( )
+void NNetAppMenu::AdjustVisibility( )
 {
 }

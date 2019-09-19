@@ -30,10 +30,10 @@
     <ClInclude Include="win32_NNetSimuController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_NNetSimuMenu.h">
+    <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
+    <ClInclude Include="win32_NNetAppMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,7 +50,7 @@
     <ClCompile Include="win32_NNetSimuController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_NNetSimuMenu.cpp">
+    <ClCompile Include="win32_NNetAppMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

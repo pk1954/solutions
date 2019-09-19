@@ -59,7 +59,6 @@ private:
 
 	void configureStatusBar( );
 
-	HWND                   m_hwndApp;
 	Util::Event            m_event;
 					       
 	ActionTimer            m_atComputation;

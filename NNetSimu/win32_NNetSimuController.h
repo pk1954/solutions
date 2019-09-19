@@ -7,7 +7,7 @@
 
 class NNetWorkThreadInterface;
 class NNetSimuWindow;
-class NNetSimuMenu;
+class NNetAppMenu;
 class WinManager;
 class StatusBar;
 class Delay;

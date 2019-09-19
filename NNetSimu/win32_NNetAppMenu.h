@@ -1,21 +1,21 @@
-// win32_NNetSimuMenu.h
+// win32_NNetAppMenu.h
 //
-// NNetSimuMenu
+// NNetAppMenu
 
 #pragma once
 
 #include "win32_appMenu.h"
 
-class NNetSimuMenu : public AppMenu
+class NNetAppMenu : public AppMenu
 {
 public:
-	NNetSimuMenu() :
+	NNetAppMenu() :
 		m_hMenu( nullptr ),
 		m_pWorkThreadInterface( nullptr ),
 		m_pWinManager( nullptr )
 	{}
 
-	virtual ~NNetSimuMenu() {}
+	virtual ~NNetAppMenu() {}
 
 	virtual void Initialize( HWND const, WorkThreadInterface const * const, WinManager const * const );
 	virtual void AdjustVisibility( );

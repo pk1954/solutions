@@ -19,7 +19,7 @@
 // application
 
 #include "NNetHistorySysGlue.h"
-#include "win32_NNetSimuMenu.h"
+#include "win32_NNetAppMenu.h"
 #include "win32_NNetReadBuffer.h"
 #include "win32_NNetSimuController.h"
 
@@ -43,7 +43,6 @@ private:
 	NNetSimuWindow             ( NNetSimuWindow const & );  // noncopyable class 
 	NNetSimuWindow & operator= ( NNetSimuWindow const & );  // noncopyable class 
 
-	HWND        m_hwndApp;
 	Util::Event m_event;
 
 	NNetWindow             * m_pMainNNetWindow;

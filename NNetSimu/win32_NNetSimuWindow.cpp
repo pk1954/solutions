@@ -44,22 +44,6 @@ NNetSimuWindow::NNetSimuWindow( ) :
 {
 	Stopwatch stopwatch;
 
-//	_CrtSetAllocHook( MyAllocHook );
-
-	DefineUtilityWrapperFunctions( );
-
-	m_hwndApp = StartBaseWindow
-	( 
-		nullptr, 
-		CS_HREDRAW | CS_VREDRAW, 
-		L"ClassAppWindow", 
-		WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,
-		nullptr,
-		nullptr
-	);
-
-	m_traceStream = OpenTraceFile( L"main_trace.out" );
-
     // create window objects
 
 	stopwatch.Start();
@@ -70,7 +54,7 @@ NNetSimuWindow::NNetSimuWindow( ) :
 
 	NNetWindow::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
 
-	m_pAppMenu        = new NNetSimuMenu( );
+	m_pAppMenu        = new NNetAppMenu( );
 	m_pMainNNetWindow = new NNetWindow( );
 
 	m_NNetSimuController.Initialize

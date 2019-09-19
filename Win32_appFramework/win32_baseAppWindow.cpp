@@ -5,9 +5,11 @@
 
 #include "stdafx.h"
 #include <chrono>
+#include "trace.h"
 #include "HistorySystem.h"
 #include "win32_util.h"
 #include "win32_util_resource.h"
+#include "UtilityWrappers.h"
 #include "win32_modelWindow.h"
 #include "win32_controller.h"
 #include "win32_appMenu.h"
@@ -25,14 +27,31 @@ BaseAppWindow::BaseAppWindow
 	m_pAppMenu( nullptr ),
 	m_pModelWindow( nullptr ),
 	m_pHistorySystem( nullptr ),
-	m_pWorkThreadInterface( pWorkThreadInterface )
+	m_pWorkThreadInterface( pWorkThreadInterface ),
+	m_traceStream( )
 {
+	//	_CrtSetAllocHook( MyAllocHook );
+
 	m_hwndConsole = GetConsoleWindow( );
 	SetWindowPos( m_hwndConsole, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
 
 	m_StatusBar     .SetRefreshRate( 300ms );
 	m_HistWindow    .SetRefreshRate( 200ms ); 
 	m_HistInfoWindow.SetRefreshRate( 300ms );
+
+	m_hwndApp = StartBaseWindow
+	( 
+		nullptr, 
+		CS_HREDRAW | CS_VREDRAW, 
+		L"ClassAppWindow", 
+		WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,
+		nullptr,
+		nullptr
+	);
+
+	DefineUtilityWrapperFunctions( );
+
+	m_traceStream = OpenTraceFile( L"main_trace.out" );
 }
 
 BaseAppWindow::~BaseAppWindow() 
