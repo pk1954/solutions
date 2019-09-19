@@ -36,6 +36,7 @@ private:
 
 	static NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 
+	BOOL  m_bMoveAllowed;    // TRUE: move with mouse is possible
 	HMENU m_hPopupMenu;
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const );
@@ -47,4 +48,6 @@ private:
 	virtual void OnLButtonUp  ( WPARAM const, LPARAM const );
 	virtual void OnSetCursor  ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
+
+	BOOL inObservedClientRect( LPARAM const );
 };

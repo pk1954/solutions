@@ -1,5 +1,6 @@
 // win32_editor.cpp 
 //
+// EvoWindows
 
 #include "stdafx.h"
 #include <unordered_map>
@@ -49,7 +50,6 @@ void EditorWindow::Start
 void EditorWindow::Stop( )
 {
 	DestroyWindow( );
-	m_observers.Clear();
 	m_pWorkThreadInterface = nullptr;
 	m_pReadBuffer          = nullptr;
 	m_pDspOptWindow        = nullptr;

@@ -32,6 +32,7 @@
 #define IDM_HIST_WINDOW                33
 #define IDM_HIST_INFO                  34
 #define IDM_CONS_WINDOW                35
+#define IDD_EDITOR                     36
 
 #define IDM_HIDE_WINDOW                50
 
@@ -53,5 +54,7 @@
 #define IDM_STOP                       84
 #define IDM_EDIT_UNDO                  87
 #define IDM_EDIT_REDO                  88
+
+#define IDM_MOVE                       90
 
 // application identifiers start at 100

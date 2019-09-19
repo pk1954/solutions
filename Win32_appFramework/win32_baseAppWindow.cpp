@@ -19,7 +19,8 @@
 using namespace std::literals::chrono_literals;
 
 BaseAppWindow::BaseAppWindow( )
- : 	m_bStarted( FALSE ),
+ : 	m_hwndApp( nullptr ),
+	m_bStarted( FALSE ),
 	m_hwndConsole( nullptr ),
 	m_pAppMenu( nullptr ),
 	m_pModelWindow( nullptr ),

@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "ViewCollection.h"
 #include "EvolutionTypes.h"
 #include "EvolutionCore.h"
 #include "EvoReadBuffer.h"
@@ -33,10 +32,6 @@ public:
 	void    UpdateEditControls( );
 	LRESULT SendClick( int ) const;
 
-	void RegisterObserver( ObserverInterface * const pObserver )
-	{
-		m_observers.Register( pObserver );
-	}
 
 private:
     virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
@@ -50,5 +45,4 @@ private:
 	EvoReadBuffer          * m_pReadBuffer;
     EvoWorkThreadInterface * m_pWorkThreadInterface;
     DspOptWindow           * m_pDspOptWindow;
-	ViewCollection           m_observers;    // observers who want to know if edit window becomes visible or hidden
 };

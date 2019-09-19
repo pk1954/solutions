@@ -34,7 +34,6 @@
 #define IDM_CHOOSE_STRATEGY_COLOR               163
 
 #define IDC_EVOLUTION_MAIN                      202
-#define IDD_EDITOR                              207
 #define IDD_DISPLAY_OPTIONS                     208
 
 #define IDM_WINDOWS_BASE                        400
@@ -60,7 +59,6 @@
 #define IDM_EDIT_OPERATION_SUBTRACT             (IDM_EDIT_OPERATION_BASE + 5)
 
 #define IDM_EDIT_MODE                           600
-#define IDM_MOVE                                (IDM_EDIT_MODE +  1)
 #define IDM_RANDOM_STRATEGY                     (IDM_EDIT_MODE +  2)
 #define IDM_COOPERATE                           (IDM_EDIT_MODE +  3)
 #define IDM_DEFECT                              (IDM_EDIT_MODE +  4)

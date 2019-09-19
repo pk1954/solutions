@@ -45,7 +45,7 @@ public:
 	void  CenterGrid( GridPoint const, PixelRectSize const );
 
 	bool  CenterPoi( PixelPoint const, GridPoint const );
-    void  MoveGrid( PixelPoint const);
+    void  MoveGrid( PixelPoint const );
 
 private:
 

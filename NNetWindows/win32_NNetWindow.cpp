@@ -20,7 +20,8 @@ void NNetWindow::InitClass
 
 NNetWindow::NNetWindow( ) :
 	ModelWindow( ),
-	m_hPopupMenu( nullptr )
+	m_hPopupMenu( nullptr ),
+	m_bMoveAllowed( TRUE )
 { }
 
 void NNetWindow::Start
@@ -78,6 +79,8 @@ void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 
 void NNetWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )
 {
+	if ( inObservedClientRect( lParam ) || m_bMoveAllowed )
+		OnMouseMove( wParam, lParam );
 }
 
 void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
@@ -99,4 +102,9 @@ BOOL NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 		return TRUE;
 	}
 	return FALSE;
+}
+
+BOOL NNetWindow::inObservedClientRect( LPARAM const lParam )
+{
+	return TRUE;  // Is cursor position in observed client rect?
 }
