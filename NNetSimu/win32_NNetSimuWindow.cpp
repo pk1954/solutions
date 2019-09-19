@@ -40,6 +40,9 @@ using namespace std::literals::chrono_literals;
 NNetSimuWindow::NNetSimuWindow( ) :
     BaseAppWindow( & m_NNetWorkThreadInterface ),
 	m_pMainNNetWindow( nullptr ),
+	m_pHistInfoWindow( nullptr ),
+	m_pModelDataWork( nullptr ),
+	m_pNNetModel4Display( nullptr ),
 	m_traceStream( )
 {
 	Stopwatch stopwatch;
