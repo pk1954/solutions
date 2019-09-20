@@ -24,7 +24,7 @@ public:
 		ColorManager      * const,
 		StatusBar         * const,
 		GridWindow        * const,
-		EvoEditorWindow      * const
+		EvoEditorWindow   * const
 	);
 
 	virtual ~EvoController( );
@@ -48,7 +48,7 @@ private:
 	Delay                  * m_pDelay;
 	StatusBar              * m_pStatusBar;
 	GridWindow             * m_pGridWindow;
-	EvoEditorWindow           * m_pEditorWindow;
+	EvoEditorWindow        * m_pEvoEditorWindow;
 	ColorManager           * m_pColorManager;
 	HCURSOR                  m_hCrsrWait;
 };

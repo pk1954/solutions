@@ -19,7 +19,7 @@ NNetEditorWindow::NNetEditorWindow( )
 
 void NNetEditorWindow::Start
 (  
-	HWND                     const hwndParent,
+	HWND                      const hwndParent,
 	NNetWorkThreadInterface * const pWorkThreadInterface,
 	NNetReadBuffer          * const pReadBuffer
 )

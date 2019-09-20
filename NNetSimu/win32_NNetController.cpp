@@ -1,4 +1,4 @@
-// win32_NNetSimuController.cpp
+// win32_NNetController.cpp
 //
 // NNetSimu
 
@@ -8,23 +8,29 @@
 #include "Resource.h"
 #include "BoolOp.h"
 #include "win32_aboutBox.h"
-#include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetAppWindow.h"
-#include "win32_NNetSimuController.h"
+#include "win32_NNetWindow.h"
+#include "win32_NNetEditor.h"
+#include "win32_NNetWorkThreadInterface.h"
+#include "win32_NNetController.h"
 
-NNetSimuController::NNetSimuController
+NNetController::NNetController
 (
-	WinManager * const pWinManager
+	WinManager       * const pWinManager,
+	NNetWindow       * const pNNetWindow,
+	NNetEditorWindow * const pNNetEditorWindow
 ) : 
 	m_pAppWindow              ( nullptr ),
 	m_pNNetWorkThreadInterface( nullptr ),
 	m_pWinManager             ( pWinManager ),
     m_pDelay                  ( nullptr ),
 	m_pStatusBar              ( nullptr ),
+	m_pNNetWindow             ( pNNetWindow ),
+	m_pNNetEditorWindow       ( pNNetEditorWindow ),
 	m_hCrsrWait               ( 0 )
 { }
 
-NNetSimuController::~NNetSimuController( )
+NNetController::~NNetController( )
 {
 	m_pNNetWorkThreadInterface = nullptr;
 	m_pAppWindow               = nullptr;
@@ -33,7 +39,7 @@ NNetSimuController::~NNetSimuController( )
     m_pStatusBar               = nullptr;
 }
 
-void NNetSimuController::Initialize
+void NNetController::Initialize
 ( 
 	NNetAppWindow           * const pAppWindow,
 	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
@@ -46,33 +52,33 @@ void NNetSimuController::Initialize
 	m_hCrsrWait                = LoadCursor( NULL, IDC_WAIT );
 }
 
-bool NNetSimuController::ProcessUIcommand( int const wmId, LPARAM const lParam )
+bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 {
 	switch (wmId)
 	{
 
 	case IDM_FIT_ZOOM:
-		//m_pGridWindow->Fit2Rect( );
+		//m_pNNetWindow->Fit2Rect( );
 		//m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
 		break;
 
 	case IDM_ZOOM_OUT:
 	case IDM_ZOOM_IN:
-		//m_pGridWindow->Zoom( wmId == IDM_ZOOM_IN );
+		//m_pNNetWindow->Zoom( wmId == IDM_ZOOM_IN );
 		//m_pStatusBar->SetSizeTrackBar( m_pGridWindow->GetFieldSize() );
 		break;
 
 	case IDM_SET_ZOOM:
-		//m_pGridWindow->SetFieldSize( PIXEL(CastToShort(lParam)));
+		//m_pNNetWindow->SetFieldSize( PIXEL(CastToShort(lParam)));
 		//m_pStatusBar->SetSizeTrackBar( PIXEL(CastToShort(lParam)) );
 		break;
 
 	case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
-		//(void)m_pGridWindow->SetFieldSize( PIXEL(CastToShort(lParam)) );
+		//m_pNNetWindow->SetFieldSize( PIXEL(CastToShort(lParam)) );
 		break;
 
 	case IDM_REFRESH:
-		//m_pGridWindow->Refresh();
+		//m_pNNetWindow->Refresh();
 		break;
 
 	default:
@@ -82,7 +88,7 @@ bool NNetSimuController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 	return TRUE;  // command has been processed
 }
 
-bool NNetSimuController::ProcessModelCommand( int const wmId, LPARAM const lParam )
+bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 {
 	switch ( wmId )
 	{

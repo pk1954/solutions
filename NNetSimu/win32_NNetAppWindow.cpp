@@ -15,6 +15,7 @@ using namespace std::literals::chrono_literals;
 
 // interfaces of various windows
 
+#include "win32_NNetEditor.h"
 #include "win32_NNetWindow.h"
 #include "win32_histWindow.h"
 #include "win32_status.h"
@@ -49,23 +50,35 @@ NNetAppWindow::NNetAppWindow( ) :
 		
 	NNetWindow::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
 
-	m_pAppMenu        = new NNetAppMenu( );
-	m_pMainNNetWindow = new NNetWindow( );
+	m_pAppMenu          = new NNetAppMenu( );
+	m_pMainNNetWindow   = new NNetWindow( );
+	m_pNNetEditorWindow = new NNetEditorWindow( );
 
-	m_pNNetSimuController = new NNetSimuController( & m_WinManager );
+	m_pNNetController = new NNetController
+	( 
+		& m_WinManager,
+		  m_pMainNNetWindow,
+		  m_pNNetEditorWindow
+	);
 
-	m_pNNetSimuController->Initialize
+	m_pNNetController->Initialize
 	( 
 		this,
 		& m_NNetWorkThreadInterface,
 		& m_Delay
 	);
 
-	m_pMainNNetWindow->SetRefreshRate( 100ms );
+	//DefineWin32HistWrapperFunctions( & m_EvoWorkThreadInterface );
+	//DefineWin32WrapperFunctions    ( & m_EvoWorkThreadInterface );
+	//DefineWin32EditorWrapperFunctions( m_pEvoEditorWindow );
+
+	m_pMainNNetWindow  ->SetRefreshRate( 100ms );
+	m_pNNetEditorWindow->SetRefreshRate( 300ms );
 };
 
 NNetAppWindow::~NNetAppWindow( )
 {
+	delete m_pNNetEditorWindow;
 	delete m_pMainNNetWindow;
 	delete m_pAppMenu;
 }
@@ -106,20 +119,26 @@ void NNetAppWindow::Start( )
 		& m_NNetHistGlue
 	);
 
-	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow, TRUE,  FALSE );
+	m_pNNetEditorWindow->Start( m_hwndApp, & m_NNetWorkThreadInterface, & m_NNetReadBuffer );
+
+	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow,   TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, * m_pNNetEditorWindow, TRUE, FALSE );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
 		std::wcout << L"Using default window positions" << std::endl;
 		Show( TRUE );
 	}
+
+	m_pNNetEditorWindow->Show( TRUE );
 }
 
 void NNetAppWindow::Stop()
 {
 	BaseAppWindow::Stop();
 
-	m_pMainNNetWindow->Stop( );
+	m_pMainNNetWindow  ->Stop( );
+	m_pNNetEditorWindow->Stop( );
 
 	m_Delay.Stop( );
 
@@ -130,9 +149,9 @@ void NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam 
 {
 	int const wmId = LOWORD( wParam );
 
-	if ( m_pNNetSimuController->ProcessUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
+	if ( m_pNNetController->ProcessUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
 		return;                                                    // but do not concern the model
 
-	if ( m_pNNetSimuController->ProcessModelCommand( wmId, lParam ) )
+	if ( m_pNNetController->ProcessModelCommand( wmId, lParam ) )
 		ProcessFrameworkCommand( wmId, lParam );                   // Some commands are handled by the framework controller
 }

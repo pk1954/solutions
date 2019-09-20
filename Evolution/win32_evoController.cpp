@@ -36,7 +36,7 @@ EvoController::EvoController
 	ColorManager      * const pColorManager,
 	StatusBar         * const pStatusBar,
 	GridWindow        * const pGridWindow,
-	EvoEditorWindow      * const pEditorWindow
+	EvoEditorWindow   * const pEditorWindow
 ) :
 	m_pAppWindow              ( nullptr ),
 	m_pEvoWorkThreadInterface ( nullptr ),
@@ -46,7 +46,7 @@ EvoController::EvoController
 	m_pColorManager           ( pColorManager ),
 	m_pStatusBar              ( pStatusBar    ),
 	m_pGridWindow             ( pGridWindow   ),
-	m_pEditorWindow           ( pEditorWindow ),
+	m_pEvoEditorWindow        ( pEditorWindow ),
 	m_hCrsrWait               ( nullptr )
 { }
 
@@ -60,7 +60,7 @@ EvoController::~EvoController( )
 	m_pDelay                  = nullptr;
     m_pStatusBar              = nullptr;
 	m_pGridWindow             = nullptr;
-	m_pEditorWindow           = nullptr;
+	m_pEvoEditorWindow        = nullptr;
 	m_hCrsrWait               = nullptr;
 }
 
@@ -154,7 +154,7 @@ bool EvoController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDD_EDITOR:
-		ShowWindow( m_pStatusBar->GetDlgItem( IDM_EDIT_WINDOW ), ! m_pEditorWindow->IsWindowVisible( ) );
+		ShowWindow( m_pStatusBar->GetDlgItem( IDM_EDIT_WINDOW ), ! m_pEvoEditorWindow->IsWindowVisible( ) );
 		break;
 
 	case IDM_ZOOM_OUT:
@@ -188,7 +188,7 @@ bool EvoController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	switch ( wmId )
 	{
 	case IDM_RUN:
-		m_pEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
+		m_pEvoEditorWindow->SendClick( IDM_MOVE );   // change edit mode to move
 		SpeedControl::Adjust( TRUE, m_pEvoWorkThreadInterface );
 		return true;
 

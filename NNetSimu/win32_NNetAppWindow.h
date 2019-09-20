@@ -20,9 +20,10 @@
 // application
 
 #include "NNetHistorySysGlue.h"
+#include "win32_NNetWindow.h"
 #include "win32_NNetAppMenu.h"
 #include "win32_NNetReadBuffer.h"
-#include "win32_NNetSimuController.h"
+#include "win32_NNetController.h"
 
 class Script;
 class AppMenu;
@@ -55,8 +56,9 @@ private:
 	NNetReadBuffer          m_NNetReadBuffer;
 	NNetHistorySysGlue      m_NNetHistGlue;
 
-	NNetSimuController    * m_pNNetSimuController;
+	NNetController        * m_pNNetController;
 	NNetModel             * m_pNNetModel4Display;
 	NNetWindow            * m_pMainNNetWindow;
 	NNetModelDataGlue     * m_pModelDataWork;
+	NNetEditorWindow      * m_pNNetEditorWindow;
 };

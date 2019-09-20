@@ -11,11 +11,11 @@
 #include "win32_EvoEditor.h"
 #include "win32_EvoEditorWrappers.h"
 
-static EvoEditorWindow const * m_pEditorWindow;
+static EvoEditorWindow const * m_pEvoEditorWindow;
  
 void DefineWin32EditorWrapperFunctions( EvoEditorWindow const * const pEditorWindow )
 {
-    m_pEditorWindow = pEditorWindow;
+    m_pEvoEditorWindow = pEditorWindow;
 
     DEF_ULONG_CONST( IDCANCEL );
 

@@ -81,7 +81,7 @@ private:
 	EvoModelDataGlue     * m_pModelDataWork;
 
     GridWindow           * m_pMiniGridWindow;
-    EvoEditorWindow         * m_pEditorWindow;
+    EvoEditorWindow      * m_pEvoEditorWindow;
 	DspOptWindow         * m_pDspOptWindow;
 	PerformanceWindow    * m_pPerfWindow;
 	CrsrWindow           * m_pCrsrWindow;

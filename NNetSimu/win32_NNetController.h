@@ -1,25 +1,29 @@
-// win32_NNetSimuController.h
+// win32_NNetController.h
 //
 // NNetSimu
 
 #pragma once
 
 class NNetWorkThreadInterface;
+class NNetEditorWindow;
 class NNetAppWindow;
 class NNetAppMenu;
+class NNetWindow;
 class WinManager;
 class StatusBar;
 class Delay;
 
-class NNetSimuController
+class NNetController
 {
 public:
-	NNetSimuController
+	NNetController
 	( 
-		WinManager * const
+		WinManager       * const,
+		NNetWindow       * const,
+		NNetEditorWindow * const
 	);
 
-	virtual ~NNetSimuController( );
+	virtual ~NNetController( );
 
 	void Initialize
 	( 
@@ -33,10 +37,12 @@ public:
 
 private:
 
-	NNetAppWindow          * m_pAppWindow;
+	NNetAppWindow           * m_pAppWindow;
 	NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 	WinManager              * m_pWinManager;
 	Delay                   * m_pDelay;
 	StatusBar               * m_pStatusBar;
+	NNetWindow              * m_pNNetWindow;
+	NNetEditorWindow        * m_pNNetEditorWindow;
 	HCURSOR                   m_hCrsrWait;
 };				          
