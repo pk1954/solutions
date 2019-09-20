@@ -1,4 +1,4 @@
-// pixelCoordinates.h : 
+// EvoPixelCoords.h : 
 //
 // EvolutionCoreInterface
 
@@ -11,11 +11,11 @@
 
 class EvolutionCore;
 
-class PixelCoordinates
+class EvoPixelCoords
 {
 public:
 
-	PixelCoordinates( );
+	EvoPixelCoords( );
 
 	void Start( PIXEL const, bool const );
 
@@ -63,6 +63,6 @@ PIXEL const MINIMUM_FIELD_SIZE =    1_PIXEL;
 PIXEL const DEFAULT_FIELD_SIZE =    8_PIXEL;
 PIXEL const MAXIMUM_FIELD_SIZE = 1024_PIXEL;
 
-PixelPoint Pixel2PixelSize( PixelPoint const,   PixelCoordinates const *, PixelCoordinates const * );
-PixelPoint Pixel2PixelPos ( PixelPoint const,   PixelCoordinates const *, PixelCoordinates const * );
-PixelRect  Pixel2PixelRect( PixelRect  const &, PixelCoordinates const *, PixelCoordinates const * );
+PixelPoint EvoPixel2PixelSize( PixelPoint const,   EvoPixelCoords const *, EvoPixelCoords const * );
+PixelPoint EvoPixel2PixelPos ( PixelPoint const,   EvoPixelCoords const *, EvoPixelCoords const * );
+PixelRect  EvoPixel2PixelRect( PixelRect  const &, EvoPixelCoords const *, EvoPixelCoords const * );

@@ -4,7 +4,7 @@
 
 #include <sstream> 
 #include "EvolutionCore.h"
-#include "pixelCoordinates.h"
+#include "EvoPixelCoords.h"
 #include "win32_graphicsInterface.h"
 
 class TextDisplay
@@ -13,19 +13,19 @@ public:
 	TextDisplay( )
     :	m_pGraphics( nullptr ),
 		m_pBuffer( nullptr ),
-		m_pPixelCoordinates( nullptr )
+		m_pEvoPixelCoords( nullptr )
 	{ }
 
 	void Start
 	( 
 		GraphicsInterface   * pGgraphicsInterface, 
 		std::wostringstream * pBuffer,
-		PixelCoordinates    * PpixelCoordinates
+		EvoPixelCoords      * pEvoPixelCoords
 	)
 	{
-		m_pGraphics         = pGgraphicsInterface;
-		m_pBuffer           = pBuffer;
-		m_pPixelCoordinates = PpixelCoordinates;
+		m_pGraphics       = pGgraphicsInterface;
+		m_pBuffer         = pBuffer;
+		m_pEvoPixelCoords = pEvoPixelCoords;
 	}
 
 	void Clear()
@@ -41,17 +41,17 @@ public:
 
 	PIXEL GetFieldSize( ) const 
 	{
-		return m_pPixelCoordinates->GetFieldSize();
+		return m_pEvoPixelCoords->GetFieldSize();
 	}
 
 	PixelPoint GetOffset( GridPoint const gp )
 	{
-		return m_pPixelCoordinates->Grid2PixelPos( gp );
+		return m_pEvoPixelCoords->Grid2PixelPos( gp );
 	}
 
 	PixelPoint GetCenterOffset( GridPoint const gp )
 	{
-		return m_pPixelCoordinates->Grid2PixelPosCenter( gp );
+		return m_pEvoPixelCoords->Grid2PixelPosCenter( gp );
 	}
 
 	PixelRectSize CalcRectSize( )
@@ -67,5 +67,5 @@ public:
 private:
     GraphicsInterface   * m_pGraphics;
 	std::wostringstream * m_pBuffer;
-	PixelCoordinates    * m_pPixelCoordinates;
+	EvoPixelCoords      * m_pEvoPixelCoords;
 };

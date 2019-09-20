@@ -19,7 +19,7 @@
 #include "win32_speedControl.h"
 #include "win32_zoomControl.h"
 #include "win32_status.h"
-#include "win32_editor.h"
+#include "win32_EvoEditor.h"
 #include "win32_evoAppMenu.h"
 #include "win32_gridWindow.h"
 #include "win32_packGridPoint.h"
@@ -36,7 +36,7 @@ EvoController::EvoController
 	ColorManager      * const pColorManager,
 	StatusBar         * const pStatusBar,
 	GridWindow        * const pGridWindow,
-	EditorWindow      * const pEditorWindow
+	EvoEditorWindow      * const pEditorWindow
 ) :
 	m_pAppWindow              ( nullptr ),
 	m_pEvoWorkThreadInterface ( nullptr ),

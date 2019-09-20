@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "NNetCoord.h"
+#include "NNetPixelCoords.h"
 #include "win32_modelWindow.h"
 
 class ActionTimer;
@@ -24,11 +26,18 @@ public:
 	( 
 		HWND  const, 
 		DWORD const,
+		nm    const,
 		std::function<bool()> const
 	);
+
 	void Stop( );
 
 	~NNetWindow( );
+
+//	void  Size( );
+	void  Zoom( bool const );
+	void  SetPixelSize( nm const );
+	nm    GetPixelSize( ) const;
 
 private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
@@ -36,8 +45,10 @@ private:
 
 	static NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 
-	BOOL  m_bMoveAllowed;    // TRUE: move with mouse is possible
 	HMENU m_hPopupMenu;
+	BOOL  m_bMoveAllowed;    // TRUE: move with mouse is possible
+
+	NNetPixelCoords m_NNetPixelCoords;
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const );
 

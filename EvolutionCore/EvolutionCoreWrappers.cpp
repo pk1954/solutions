@@ -9,12 +9,12 @@
 #include "UtilityWrappers.h"
 #include "EvolutionCore.h"
 #include "EvolutionTypes.h"
-#include "pixelCoordinates.h"
+#include "EvoPixelCoords.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "EvolutionCoreWrappers.h"
 
 static EvolutionCore    * m_pCore;
-static PixelCoordinates * m_pPixCoords;
+static EvoPixelCoords * m_pPixCoords;
 
 class WrapSetPoi : public Script_Functor
 {
@@ -151,7 +151,7 @@ public:
     }
 };
 
-void DefinePixelCoordinatesWrapperFunctions( PixelCoordinates * pCoords )
+void DefineEvoPixelCoordsWrapperFunctions( EvoPixelCoords * pCoords )
 {
     m_pPixCoords = pCoords;
 

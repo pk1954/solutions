@@ -119,9 +119,6 @@
     <ClCompile Include="EvolutionCoreWrappers.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="pixelCoordinates.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="GridDimensions.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -150,6 +147,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="MortalityTable.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="EvoPixelCoords.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

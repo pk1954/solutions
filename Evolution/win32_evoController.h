@@ -10,7 +10,7 @@ class EvoWorkThreadInterface;
 class EvoHistorySysGlue;
 class WinManager;
 class GridWindow;
-class EditorWindow;
+class EvoEditorWindow;
 class ColorManager;
 
 class EvoController 
@@ -24,7 +24,7 @@ public:
 		ColorManager      * const,
 		StatusBar         * const,
 		GridWindow        * const,
-		EditorWindow      * const
+		EvoEditorWindow      * const
 	);
 
 	virtual ~EvoController( );
@@ -48,7 +48,7 @@ private:
 	Delay                  * m_pDelay;
 	StatusBar              * m_pStatusBar;
 	GridWindow             * m_pGridWindow;
-	EditorWindow           * m_pEditorWindow;
+	EvoEditorWindow           * m_pEditorWindow;
 	ColorManager           * m_pColorManager;
 	HCURSOR                  m_hCrsrWait;
 };

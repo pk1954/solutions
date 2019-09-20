@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "EvolutionCore.h"
 #include "GridDimensions.h"
-#include "pixelCoordinates.h"
+#include "EvoPixelCoords.h"
 #include "EvoReadBuffer.h"
 #include "win32_util.h"
 #include "win32_graphicsInterface.h"
@@ -21,7 +21,7 @@ static COLORREF const CLR_YELLOW = RGB( 255, 255,   0 );
 DrawFrame::DrawFrame( )
  : 	m_hwnd             ( nullptr ),
 	m_pReadBuffer      ( nullptr ),
-	m_pPixelCoordinates( nullptr ),
+	m_pEvoPixelCoords( nullptr ),
 	m_pDspOptWindow    ( nullptr ),
 	m_pColorManager    ( nullptr ),
 	m_pGraphics        ( nullptr ), 
@@ -34,21 +34,21 @@ void DrawFrame::Start
 ( 
 	HWND                const hwnd,
 	EvoReadBuffer     * const pReadBuffer,
-	PixelCoordinates  * const pPixelCoordinates, 
+	EvoPixelCoords    * const pEvoPixelCoords, 
 	GraphicsInterface * const pGraphics,
 	DspOptWindow      * const pDspOptWindow,
 	ColorManager      * const pColorManager
 ) 
 {
-	m_hwnd              = hwnd;
-	m_pReadBuffer       = pReadBuffer;
-	m_pPixelCoordinates = pPixelCoordinates;
-	m_pDspOptWindow     = pDspOptWindow;
-	m_pColorManager     = pColorManager;
-	m_pGraphics         = pGraphics;
-	m_pShapeHighlight   = nullptr;
-	m_gpHighlight       = GP_NULL;
-	m_TextDisplay.Start( m_pGraphics, & m_wBuffer, m_pPixelCoordinates );
+	m_hwnd            = hwnd;
+	m_pReadBuffer     = pReadBuffer;
+	m_pEvoPixelCoords = pEvoPixelCoords;
+	m_pDspOptWindow   = pDspOptWindow;
+	m_pColorManager   = pColorManager;
+	m_pGraphics       = pGraphics;
+	m_pShapeHighlight = nullptr;
+	m_gpHighlight     = GP_NULL;
+	m_TextDisplay.Start( m_pGraphics, & m_wBuffer, m_pEvoPixelCoords );
 	m_GridPointShape.Start( & m_TextDisplay );
 	m_clutBackground.Allocate( MAX_BG_COLOR() );    // default is grey scale lookup table with entries 0 .. 255
 
@@ -86,7 +86,7 @@ void DrawFrame::SetStripMode( tBoolOp const bOp )
 void DrawFrame::ResizeDrawFrame( EvolutionCore const * const pCore )
 {
 	int   const MAX_TEXT_LINES = 10;
-	PIXEL const pixFieldSize   = m_pPixelCoordinates->GetFieldSize();
+	PIXEL const pixFieldSize   = m_pEvoPixelCoords->GetFieldSize();
 	PIXEL       pixFontSize    = pixFieldSize / MAX_TEXT_LINES;
 	if ( pixFontSize < 9_PIXEL )
 		pixFontSize = 9_PIXEL;
@@ -100,7 +100,7 @@ bool DrawFrame::SetHighlightPos( EvolutionCore const * const pCore, PixelPoint c
 {
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
-	m_gpHighlight     = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( ptCrsr ) );
+	m_gpHighlight     = GridDimensions::Wrap2Grid( m_pEvoPixelCoords->Pixel2GridPos( ptCrsr ) );
 	m_pShapeHighlight = m_GridPointShape.FindShape( pCore, m_gpHighlight, ptCrsr );
 	return ( 
 			  (m_pShapeHighlight != nullptr) && 
@@ -122,7 +122,7 @@ void DrawFrame::DoPaint( EvolutionCore const * pCore )
 
 	if ( m_pDspOptWindow->AreIndividualsVisible( ) )
 	{
-		GridRect const rcGrid( m_pPixelCoordinates->Pixel2GridRect( Util::GetClPixelRect( m_hwnd ) ) );
+		GridRect const rcGrid( m_pEvoPixelCoords->Pixel2GridRect( Util::GetClPixelRect( m_hwnd ) ) );
 		drawIndividuals( pCore, rcGrid );
 		drawText( pCore, rcGrid );
 		//if ( m_pShapeHighlight != nullptr )
@@ -140,7 +140,7 @@ void DrawFrame::DoPaint( EvolutionCore const * pCore )
 
 void DrawFrame::drawBackground( EvolutionCore const * const pCore )
 {
-	float m_fPxSize = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).GetValue() );
+	float m_fPxSize = static_cast<float>( m_pEvoPixelCoords->GetFieldSize( ).GetValue() );
 
 	Apply2Grid    // strip mode works only with full grid
 	(          
@@ -148,7 +148,7 @@ void DrawFrame::drawBackground( EvolutionCore const * const pCore )
 		{
 			CLUT_INDEX const index   { m_pDspOptWindow->GetIntValue( pCore, GridDimensions::Wrap2Grid(gp) ) };
 			DWORD      const dwColor { getBackgroundColor( index ) };
-			PixelPoint const pnt     { m_pPixelCoordinates->Grid2PixelPosCenter( gp ) };
+			PixelPoint const pnt     { m_pEvoPixelCoords->Grid2PixelPosCenter( gp ) };
 			m_pGraphics->AddBackGround( pnt, dwColor, m_fPxSize );
 		},
 		m_pGraphics->GetStripMode() // if strip mode add borders to grid
@@ -160,13 +160,13 @@ void DrawFrame::drawBackground( EvolutionCore const * const pCore )
 void DrawFrame::addPrimitive( GridPoint const gp, COLORREF const color, float const fPixSizeHalf ) const
 {
     if ( gp.IsNotNull( ) )
-		m_pGraphics->AddIndividual( m_pPixelCoordinates->Grid2PixelPosCenter( gp ), color, fPixSizeHalf );
+		m_pGraphics->AddIndividual( m_pEvoPixelCoords->Grid2PixelPosCenter( gp ), color, fPixSizeHalf );
 }
 
 void DrawFrame::drawIndividuals( EvolutionCore const * const pCore, GridRect const & rect )
 {
 	float const fHalfSizeInd = static_cast<float>( m_GridPointShape.GetIndShapeSize( ).GetValue() );
-	float const fPixSize     = static_cast<float>( m_pPixelCoordinates->GetFieldSize( ).GetValue() );
+	float const fPixSize     = static_cast<float>( m_pEvoPixelCoords->GetFieldSize( ).GetValue() );
 
     Apply2Rect
 	( 
@@ -246,7 +246,7 @@ COLORREF DrawFrame::getBackgroundColor( CLUT_INDEX index ) const
 void DrawFrame::AddContextMenuEntries( EvolutionCore const * const pCore, HMENU const hPopupMenu, POINT const pnt )
 {
 	PixelPoint    const pp     = Util::POINT2PixelPoint( pnt );
-	GridPoint     const gp     = GridDimensions::Wrap2Grid( m_pPixelCoordinates->Pixel2GridPos( pp ) );
+	GridPoint     const gp     = GridDimensions::Wrap2Grid( m_pEvoPixelCoords->Pixel2GridPos( pp ) );
 	Shape const * const pShape = m_GridPointShape.FindShape( pCore, gp, pp );
 	if ( pShape )
 		pShape->AddContextMenuEntries( hPopupMenu );

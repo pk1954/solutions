@@ -31,7 +31,7 @@
 class Script;
 class FocusPoint;
 class GridWindow;
-class EditorWindow;
+class EvoEditorWindow;
 class StatisticsWindow;
 class CrsrWindow;
 class PerformanceWindow;
@@ -81,7 +81,7 @@ private:
 	EvoModelDataGlue     * m_pModelDataWork;
 
     GridWindow           * m_pMiniGridWindow;
-    EditorWindow         * m_pEditorWindow;
+    EvoEditorWindow         * m_pEditorWindow;
 	DspOptWindow         * m_pDspOptWindow;
 	PerformanceWindow    * m_pPerfWindow;
 	CrsrWindow           * m_pCrsrWindow;

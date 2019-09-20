@@ -1,4 +1,4 @@
-// pixelCoordinates.cpp
+// EvoPixelCoords.cpp
 //
 // EvolutionCoreInterface
 
@@ -7,12 +7,12 @@
 #include "gridPoint.h"
 #include "GridDimensions.h"
 #include "PixelTypes.h"
-#include "pixelCoordinates.h"
+#include "EvoPixelCoords.h"
 
 static double const SQRT3_DIV2 = sqrt(3.) / 2.;
 static double const SQRT3_DIV3 = sqrt(3.) / 3.;
 
-PixelCoordinates::PixelCoordinates( )
+EvoPixelCoords::EvoPixelCoords( )
   : m_pixOffset   ( 0_PIXEL ),
 	m_pixFieldSize( 0_PIXEL ),
 	m_smoothMove  (  ),
@@ -20,7 +20,7 @@ PixelCoordinates::PixelCoordinates( )
 	m_bHexagon    ( false )
 { }
 
-void PixelCoordinates::Start
+void EvoPixelCoords::Start
 ( 
 	PIXEL const fs, 
 	bool  const bHexagon
@@ -32,17 +32,17 @@ void PixelCoordinates::Start
 	m_bHexagon     = bHexagon;
 }
 
-bool PixelCoordinates::isValidFieldSize( PIXEL const pixNewFieldSize ) const 
+bool EvoPixelCoords::isValidFieldSize( PIXEL const pixNewFieldSize ) const 
 { 
     return (MINIMUM_FIELD_SIZE <= pixNewFieldSize) && (pixNewFieldSize <= MAXIMUM_FIELD_SIZE); 
 };
 
-void PixelCoordinates::MoveGrid( PixelPoint const pntDelta )
+void EvoPixelCoords::MoveGrid( PixelPoint const pntDelta )
 {
     m_pixOffset -= pntDelta;
 }
 
-PixelPoint PixelCoordinates::calcCenterOffset  // calculate new pixel offset,
+PixelPoint EvoPixelCoords::calcCenterOffset  // calculate new pixel offset,
 (                                              // which moves gridRect to center of window.
 	GridPoint  const gpCenter,                 // do not yet set m_pixOffset to this value!
 	PixelPoint const pixCenter 
@@ -54,7 +54,7 @@ PixelPoint PixelCoordinates::calcCenterOffset  // calculate new pixel offset,
 	return pixOffset;
 }
 
-bool PixelCoordinates::CenterPoi( PixelPoint const pixCenter, GridPoint const gpPoi ) // returns TRUE, if POI was already centered, or if no POI defined
+bool EvoPixelCoords::CenterPoi( PixelPoint const pixCenter, GridPoint const gpPoi ) // returns TRUE, if POI was already centered, or if no POI defined
 {
     if ( gpPoi.IsNull( ) )
         return true;
@@ -68,7 +68,7 @@ bool PixelCoordinates::CenterPoi( PixelPoint const pixCenter, GridPoint const gp
     return bCentered;
 }
 
-void PixelCoordinates::CenterGrid
+void EvoPixelCoords::CenterGrid
 ( 
 	GridPoint     const gpCenter,   
 	PixelRectSize const pntPixSize  // available size 
@@ -77,7 +77,7 @@ void PixelCoordinates::CenterGrid
     m_pixOffset = calcCenterOffset( gpCenter, PixelPoint( pntPixSize.GetX(), pntPixSize.GetY() ) / 2 );
 }
 
-PIXEL PixelCoordinates::CalcMaximumFieldSize
+PIXEL EvoPixelCoords::CalcMaximumFieldSize
 ( 
 	GridRectSize  const & gpGridRectSize,   // Grid size to fit into window
 	PixelRectSize const & pntPixSize        // available pixel size 
@@ -88,7 +88,7 @@ PIXEL PixelCoordinates::CalcMaximumFieldSize
 	return PIXEL( std::min( xSize.GetValue(), ySize.GetValue() ) );
 }
 
-bool PixelCoordinates::SetGridFieldSize( PIXEL const pixNewFieldSize )
+bool EvoPixelCoords::SetGridFieldSize( PIXEL const pixNewFieldSize )
 {
     bool bValid = isValidFieldSize( pixNewFieldSize );
 	if ( bValid )
@@ -96,7 +96,7 @@ bool PixelCoordinates::SetGridFieldSize( PIXEL const pixNewFieldSize )
 	return bValid;
 }
 
-PIXEL PixelCoordinates::ComputeNewFieldSize( bool const bZoomIn ) const
+PIXEL EvoPixelCoords::ComputeNewFieldSize( bool const bZoomIn ) const
 {
 	PIXEL pixNewFieldSize { m_pixFieldSize };
     if ( bZoomIn )
@@ -121,7 +121,7 @@ PIXEL PixelCoordinates::ComputeNewFieldSize( bool const bZoomIn ) const
 	return isValidFieldSize(pixNewFieldSize) ? pixNewFieldSize : m_pixFieldSize;
 }
 
-PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint const gp ) const 
+PixelPoint EvoPixelCoords::Grid2PixelSize( GridPoint const gp ) const 
 { 
 	PIXEL pixX { m_pixFieldSize * gp.GetXvalue() };
 	PIXEL pixY { m_pixFieldSize * gp.GetYvalue() };
@@ -134,7 +134,7 @@ PixelPoint PixelCoordinates::Grid2PixelSize( GridPoint const gp ) const
 	return PixelPoint( PIXEL(pixX), PIXEL(pixY) );
 }
 
-PixelPoint PixelCoordinates::Grid2PixelPos( GridPoint const gp ) const 
+PixelPoint EvoPixelCoords::Grid2PixelPos( GridPoint const gp ) const 
 { 
 	PixelPoint ppRes { Grid2PixelSize( gp ) - m_pixOffset };
 
@@ -144,7 +144,7 @@ PixelPoint PixelCoordinates::Grid2PixelPos( GridPoint const gp ) const
 	return ppRes;
 }
 
-PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint const gp ) const 
+PixelPoint EvoPixelCoords::Grid2PixelPosCenter( GridPoint const gp ) const 
 { 
 	PixelPoint ppRes { Grid2PixelPos( gp ) };
 	if (m_bHexagon)
@@ -161,7 +161,7 @@ PixelPoint PixelCoordinates::Grid2PixelPosCenter( GridPoint const gp ) const
 	return ppRes;
 }
 
-GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const 
+GridPoint EvoPixelCoords::Pixel2GridPos( PixelPoint const pp ) const 
 { 
 	PixelPoint pixPoint( pp + m_pixOffset );
 
@@ -218,7 +218,7 @@ GridPoint PixelCoordinates::Pixel2GridPos( PixelPoint const pp ) const
 	}
 }
 
-GridRect PixelCoordinates::Pixel2GridRect(PixelRect const & rect ) const 
+GridRect EvoPixelCoords::Pixel2GridRect(PixelRect const & rect ) const 
 {
     GridRect gridRect
     ( 
@@ -228,7 +228,7 @@ GridRect PixelCoordinates::Pixel2GridRect(PixelRect const & rect ) const
 	return gridRect;
 }
 
-PixelRect PixelCoordinates::Grid2PixelRect( GridRect const & rcGrid ) const 
+PixelRect EvoPixelCoords::Grid2PixelRect( GridRect const & rcGrid ) const 
 {
     return PixelRect
     ( 
@@ -237,22 +237,22 @@ PixelRect PixelCoordinates::Grid2PixelRect( GridRect const & rcGrid ) const
     );
 }
 
-PixelPoint Pixel2PixelSize( PixelPoint const ptSizeIn, PixelCoordinates const * pSrc, PixelCoordinates const * pDst )
+PixelPoint EvoPixel2PixelSize( PixelPoint const ptSizeIn, EvoPixelCoords const * pSrc, EvoPixelCoords const * pDst )
 {
     return ( ptSizeIn * pDst->GetFieldSize().GetValue() ) / pSrc->GetFieldSize().GetValue();
 }
 
-PixelPoint Pixel2PixelPos( PixelPoint const ptPosIn, PixelCoordinates const * pSrc, PixelCoordinates const * pDst ) 
+PixelPoint EvoPixel2PixelPos( PixelPoint const ptPosIn, EvoPixelCoords const * pSrc, EvoPixelCoords const * pDst ) 
 {
-    return Pixel2PixelSize( ptPosIn + pSrc->GetPixelOffset(), pSrc, pDst ) - pDst->GetPixelOffset();
+    return EvoPixel2PixelSize( ptPosIn + pSrc->GetPixelOffset(), pSrc, pDst ) - pDst->GetPixelOffset();
 }
 
-PixelRect Pixel2PixelRect(PixelRect const & rect, PixelCoordinates const * pSrc, PixelCoordinates const * pDst )
+PixelRect EvoPixel2PixelRect(PixelRect const & rect, EvoPixelCoords const * pSrc, EvoPixelCoords const * pDst )
 {
 	return PixelRect
 	(
-		Pixel2PixelPos( rect.GetStartPoint(), pSrc, pDst ),
-		Pixel2PixelPos( rect.GetEndPoint(),   pSrc, pDst )
+		EvoPixel2PixelPos( rect.GetStartPoint(), pSrc, pDst ),
+		EvoPixel2PixelPos( rect.GetEndPoint(),   pSrc, pDst )
 	);
 }
 

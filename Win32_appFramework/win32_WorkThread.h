@@ -12,7 +12,7 @@
 
 class Delay;
 class ActionTimer;
-class EditorWindow;
+class EvoEditorWindow;
 class RootWindow;
 class WinManager;
 class HistorySystem;

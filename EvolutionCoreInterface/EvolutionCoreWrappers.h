@@ -4,7 +4,7 @@
 #pragma once
 
 class EvolutionCore;
-class PixelCoordinates;
+class EvoPixelCoords;
 
 extern void DefineCoreWrapperFunctions( EvolutionCore * );
-extern void DefinePixelCoordinatesWrapperFunctions( PixelCoordinates * );
+extern void DefineEvoPixelCoordsWrapperFunctions( EvoPixelCoords * );

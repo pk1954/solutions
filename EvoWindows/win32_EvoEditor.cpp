@@ -1,4 +1,4 @@
-// win32_editor.cpp 
+// win32_EvoEditor.cpp 
 //
 // EvoWindows
 
@@ -13,16 +13,16 @@
 #include "win32_tooltip.h"
 #include "win32_EvoWorkThreadInterface.h"
 #include "win32_displayOptions.h"
-#include "win32_editor.h"
+#include "win32_EvoEditor.h"
 
-EditorWindow::EditorWindow( )
+EvoEditorWindow::EvoEditorWindow( )
   : BaseDialog( ),
     m_pReadBuffer         ( nullptr ),
     m_pWorkThreadInterface( nullptr ),
     m_pDspOptWindow       ( nullptr )
 { }
 
-void EditorWindow::Start
+void EvoEditorWindow::Start
 (  
     HWND                     const hwndParent,
     EvoWorkThreadInterface * const pWorkThreadInterface,
@@ -47,7 +47,7 @@ void EditorWindow::Start
 	m_pReadBuffer->RegisterObserver( this );
 }
 
-void EditorWindow::Stop( )
+void EvoEditorWindow::Stop( )
 {
 	DestroyWindow( );
 	m_pWorkThreadInterface = nullptr;
@@ -55,14 +55,14 @@ void EditorWindow::Stop( )
 	m_pDspOptWindow        = nullptr;
 }
 
-EditorWindow::~EditorWindow( )
+EvoEditorWindow::~EvoEditorWindow( )
 {
     m_pWorkThreadInterface = nullptr;
     m_pReadBuffer          = nullptr;
     m_pDspOptWindow        = nullptr;
 }
 
-LRESULT EditorWindow::SendClick( int const item ) const
+LRESULT EvoEditorWindow::SendClick( int const item ) const
 {
 	HWND    const hwndOld { SetActiveWindow( GetWindowHandle( ) ) };
 	LRESULT const res     { SendDlgItemMessage( item, BM_CLICK, 0, 0 ) };
@@ -70,7 +70,7 @@ LRESULT EditorWindow::SendClick( int const item ) const
     return res;
 }
 
-void EditorWindow::updateOperationButtons( tBrushMode const mode ) const
+void EvoEditorWindow::updateOperationButtons( tBrushMode const mode ) const
 {
 	bool bEnableOperationButtons = ! IsStrategyBrushMode( mode );
 
@@ -81,7 +81,7 @@ void EditorWindow::updateOperationButtons( tBrushMode const mode ) const
 	EnableWindow( GetDlgItem( IDM_EDIT_OPERATION_SUBTRACT ), bEnableOperationButtons );
 }
 
-void EditorWindow::UpdateEditControls( ) // Set state of all window widgets according to mode (edit/simu)
+void EvoEditorWindow::UpdateEditControls( ) // Set state of all window widgets according to mode (edit/simu)
 {
 	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
 
@@ -132,7 +132,7 @@ void EditorWindow::UpdateEditControls( ) // Set state of all window widgets acco
 	m_pReadBuffer->ReleaseReadBuffer( );
 }
 
-void EditorWindow::setBrushMode( WORD const wId ) const
+void EvoEditorWindow::setBrushMode( WORD const wId ) const
 {
 	static std::unordered_map < WORD, tBrushMode > mapModeTable
 	{
@@ -153,7 +153,7 @@ void EditorWindow::setBrushMode( WORD const wId ) const
 	m_pDspOptWindow->UpdateDspOptionsControls( brushMode );
 }
 
-void EditorWindow::setBrushShape( WORD const wId ) const
+void EvoEditorWindow::setBrushShape( WORD const wId ) const
 {
 	static std::unordered_map < WORD, tShape > mapShapeTable
 	{
@@ -166,7 +166,7 @@ void EditorWindow::setBrushShape( WORD const wId ) const
 	m_pWorkThreadInterface->PostSetBrushShape( brushShape );
 }
 
-void EditorWindow::setBrushManipulator( WORD const wId ) const
+void EvoEditorWindow::setBrushManipulator( WORD const wId ) const
 {
 	static std::unordered_map < WORD, tManipulator > mapOperationTable
 	{
@@ -181,7 +181,7 @@ void EditorWindow::setBrushManipulator( WORD const wId ) const
 	m_pWorkThreadInterface->PostSetBrushManipulator( brushOperator );
 }
 
-LRESULT EditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+LRESULT EvoEditorWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
     switch (message)
     {

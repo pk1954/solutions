@@ -156,7 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="win32_editor.h" />
+    <ClInclude Include="win32_NNetEditor.h" />
     <ClInclude Include="win32_NNetReadBuffer.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -166,7 +166,7 @@
     <ClInclude Include="win32_NNetWorkThreadInterface.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="win32_editor.cpp" />
+    <ClCompile Include="win32_NNetEditor.cpp" />
     <ClCompile Include="win32_NNetWindow.cpp" />
     <ClCompile Include="win32_NNetWorkThread.cpp" />
     <ClCompile Include="win32_NNetWorkThreadInterface.cpp" />

@@ -73,7 +73,7 @@ void GridWindow::Start
     
 	BOOL bHexagonMode = GridDimensions::GetNrOfNeigbors() == 6;
 
-	m_PixelCoordinates.Start( pixFieldSize, bHexagonMode );
+	m_EvoPixelCoords.Start( pixFieldSize, bHexagonMode );
 	m_pGraphics = pGraphics;
 
 	HWND hwnd = StartBaseWindow
@@ -90,7 +90,7 @@ void GridWindow::Start
 	( 
 		hwnd, 
 		m_pReadBuffer, 
-		& m_PixelCoordinates, 
+		& m_EvoPixelCoords, 
 		m_pGraphics,
 		m_pDspOptWindow, 
 		m_pColorManager
@@ -174,7 +174,7 @@ void GridWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
     PixelPoint    const   ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
 	EvolutionCore const * pCore  = m_pReadBuffer->LockReadBuffer( );
 
-    m_pFocusPoint->SetFocusPoint( m_PixelCoordinates.Pixel2GridPos( ptCrsr ) );
+    m_pFocusPoint->SetFocusPoint( m_EvoPixelCoords.Pixel2GridPos( ptCrsr ) );
 
 	if ( m_DrawFrame.SetHighlightPos( pCore, ptCrsr ) )
 		PostCommand2Application( IDM_REFRESH, 1 );   // refresh immediatelly
@@ -184,9 +184,9 @@ void GridWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
         if ( m_ptLast.IsNotNull() )  // last cursor pos stored in m_ptLast
         {
             PixelPoint ptOther = GridPOI::IsPoiDefined( ) 
-				                 ? m_PixelCoordinates.Grid2PixelPosCenter( GridPOI::GetPoi() ) * 2 - ptCrsr 
+				                 ? m_EvoPixelCoords.Grid2PixelPosCenter( GridPOI::GetPoi() ) * 2 - ptCrsr 
 				                 : m_ptLast;
-			GridSelection::SetSelection( m_PixelCoordinates.Pixel2GridRect( PixelRect( ptOther, ptCrsr ) ) );
+			GridSelection::SetSelection( m_EvoPixelCoords.Pixel2GridRect( PixelRect( ptOther, ptCrsr ) ) );
         }
         else                                // first time here after RBUTTON pressed
         {
@@ -221,10 +221,10 @@ BOOL GridWindow::inObservedClientRect( LPARAM const lParam )
     if ( m_pGridWindowObserved == nullptr )
         return FALSE;
 
-	PixelCoordinates const * pixCoordObserved = & m_pGridWindowObserved->m_PixelCoordinates;
-    PixelPoint       const   ptCrsr           = GetCrsrPosFromLparam( lParam );
-    PixelPoint       const   ptCrsrCheck      = Pixel2PixelPos( ptCrsr, & m_PixelCoordinates, pixCoordObserved );
-	HWND             const   hwndObserved     = m_pGridWindowObserved->GetWindowHandle( );
+	EvoPixelCoords const * pixCoordObserved = & m_pGridWindowObserved->m_EvoPixelCoords;
+    PixelPoint     const   ptCrsr           = GetCrsrPosFromLparam( lParam );
+    PixelPoint     const   ptCrsrCheck      = EvoPixel2PixelPos( ptCrsr, & m_EvoPixelCoords, pixCoordObserved );
+	HWND           const   hwndObserved     = m_pGridWindowObserved->GetWindowHandle( );
 
     return Util::IsInClientRect( hwndObserved, ptCrsrCheck );  // Is cursor position in observed client rect?
 }
@@ -233,14 +233,14 @@ void GridWindow::moveGrid( PixelPoint const ptDiff )
 {
     if ( m_pGridWindowObserved != nullptr )     // I observe someone
     {
-		PixelCoordinates * const pixCoordObserved = & m_pGridWindowObserved->m_PixelCoordinates;
-        PixelPoint         const ptDiffObserved   = Pixel2PixelSize( ptDiff, & m_PixelCoordinates, pixCoordObserved );
+		EvoPixelCoords * const pixCoordObserved = & m_pGridWindowObserved->m_EvoPixelCoords;
+        PixelPoint       const ptDiffObserved   = EvoPixel2PixelSize( ptDiff, & m_EvoPixelCoords, pixCoordObserved );
         pixCoordObserved->MoveGrid( -ptDiffObserved );   // move the observed in opposite direction 
     }
 
     if ( m_bMoveAllowed )
     {
-        m_PixelCoordinates.MoveGrid( ptDiff );
+        m_EvoPixelCoords.MoveGrid( ptDiff );
     }
 }
 
@@ -259,13 +259,13 @@ void GridWindow::OnPaint( )
 			COLORREF const color = m_pColorManager->GetColor( tColorObject::selection );
 
 			if ( GridSelection::SelectionIsNotEmpty() )
-				m_pGraphics->RenderTranspRect( m_PixelCoordinates.Grid2PixelRect( GridSelection::GetSelection() ), 64, color );  
+				m_pGraphics->RenderTranspRect( m_EvoPixelCoords.Grid2PixelRect( GridSelection::GetSelection() ), 64, color );  
 
 			if ((m_pGridWindowObserved != nullptr) && CrsrInClientRect())   // if I observe someone and cursor is in client area, show its position
 			{
-				PixelCoordinates * const pixCoordObserved = & m_pGridWindowObserved->m_PixelCoordinates;
-				PixelRect          const pixRectObserved  = Util::GetClPixelRect( m_pGridWindowObserved->GetWindowHandle( ) );
-				PixelRect          const pixRectTarget    = Pixel2PixelRect( pixRectObserved, pixCoordObserved, & m_PixelCoordinates );
+				EvoPixelCoords * const pixCoordObserved = & m_pGridWindowObserved->m_EvoPixelCoords;
+				PixelRect        const pixRectObserved  = Util::GetClPixelRect( m_pGridWindowObserved->GetWindowHandle( ) );
+				PixelRect        const pixRectTarget    = EvoPixel2PixelRect( pixRectObserved, pixCoordObserved, & m_EvoPixelCoords );
 				m_pGraphics->RenderTranspRect( pixRectTarget, 128, color );  
 			}
 			m_pGraphics->EndFrame( GetWindowHandle() );
@@ -275,7 +275,7 @@ void GridWindow::OnPaint( )
 
     if ( m_bMoveAllowed && GridPOI::IsPoiDefined( ) )
 	{
-		bool bCentered = m_PixelCoordinates.CenterPoi( GetClRectCenter( ), GridPOI::GetPoi( ) );
+		bool bCentered = m_EvoPixelCoords.CenterPoi( GetClRectCenter( ), GridPOI::GetPoi( ) );
 		if ( ! bCentered )
 		   Invalidate( FALSE );    // repeat if POI is not in center 
 	}
@@ -291,7 +291,7 @@ void GridWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 			
 	while ( --iDelta >= 0 )
 	{
-		pixNewFieldSize = m_PixelCoordinates.ComputeNewFieldSize( bDirection );
+		pixNewFieldSize = m_EvoPixelCoords.ComputeNewFieldSize( bDirection );
 	}
 
 	PostCommand2Application( IDM_SET_ZOOM, pixNewFieldSize.GetValue() );
@@ -299,7 +299,7 @@ void GridWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 
 bool GridWindow::IsFullGridVisible() const
 {
-	return IsInClientRect( m_PixelCoordinates.Grid2PixelRect( GridDimensions::GridRectFull() ) );
+	return IsInClientRect( m_EvoPixelCoords.Grid2PixelRect( GridDimensions::GridRectFull() ) );
 }
 
 void GridWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )
@@ -341,7 +341,7 @@ BOOL GridWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 	case IDM_CHOOSE_STRATEGY_COLOR:
 	{
 		PixelPoint    const   ptCrsr = GetCrsrPosFromLparam( lParam );
-		GridPoint     const   gpCrsr = m_PixelCoordinates.Pixel2GridPos( ptCrsr );
+		GridPoint     const   gpCrsr = m_EvoPixelCoords.Pixel2GridPos( ptCrsr );
 		EvolutionCore const * pCore  = m_pReadBuffer->LockReadBuffer( );
 		Strategy::Id  const   strat  = pCore->GetStrategyId( gpCrsr );
 		m_pReadBuffer->ReleaseReadBuffer( );
@@ -383,7 +383,7 @@ BOOL GridWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 	case IDM_GOTO_DEATH:      // commands using cursor pos are handled here
 	{
 		PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );
-		GridPoint  const gpCrsr = m_PixelCoordinates.Pixel2GridPos( ptCrsr );
+		GridPoint  const gpCrsr = m_EvoPixelCoords.Pixel2GridPos( ptCrsr );
 		PostCommand2Application( wParam, Pack2LParam( gpCrsr ) );
 	}
 	break;
@@ -400,7 +400,7 @@ void GridWindow::Size( )
 	(
 		Util::CalcWindowRect
 		( 
-			m_PixelCoordinates.Grid2PixelRect( GridDimensions::GridRectFull() ),
+			m_EvoPixelCoords.Grid2PixelRect( GridDimensions::GridRectFull() ),
 			(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 
 		), 
 		FALSE 
@@ -413,10 +413,10 @@ void GridWindow::newFieldSize
 	GridPoint const gpCenter 
 )
 {
-	if ( m_PixelCoordinates.SetGridFieldSize( pixfieldSize ) )
+	if ( m_EvoPixelCoords.SetGridFieldSize( pixfieldSize ) )
 	{
 		EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
-		m_PixelCoordinates.CenterGrid( gpCenter, GetClRectSize( ) ); // center grid around gpCenter
+		m_EvoPixelCoords.CenterGrid( gpCenter, GetClRectSize( ) ); // center grid around gpCenter
 		m_DrawFrame.ResizeDrawFrame( pCore );                        // trigger DrawFrame to adapt font size etc.
 		PixelPoint const ppCrsr = GetRelativeCrsrPosition( );
 		if ( IsInClientRect( ppCrsr ) )
@@ -434,7 +434,7 @@ void GridWindow::SetFieldSize( PIXEL const pixFieldSize )
 {
 	GridPoint const gpCenter = GridPOI::IsPoiDefined( ) 
 			       		      ? GridPOI::GetPoi() 
-							  : m_PixelCoordinates.Pixel2GridPos( GetClRectCenter( ) );
+							  : m_EvoPixelCoords.Pixel2GridPos( GetClRectCenter( ) );
 	newFieldSize( pixFieldSize, gpCenter );
 }
 
@@ -443,7 +443,7 @@ void GridWindow::Fit2Rect( )
 	GridRect const gridRect = GridSelection::GetSelection();
 	newFieldSize
 	( 
-		m_PixelCoordinates.CalcMaximumFieldSize( gridRect.GetSize(), GetClRectSize( ) ), 
+		m_EvoPixelCoords.CalcMaximumFieldSize( gridRect.GetSize(), GetClRectSize( ) ), 
 		gridRect.GetCenter() 
 	);
 	GridSelection::ResetSelection( );
@@ -451,7 +451,7 @@ void GridWindow::Fit2Rect( )
 
 void GridWindow::Zoom( bool const bZoomIn )	
 { 
-	SetFieldSize( m_PixelCoordinates.ComputeNewFieldSize( bZoomIn ) ); 
+	SetFieldSize( m_EvoPixelCoords.ComputeNewFieldSize( bZoomIn ) ); 
 }
 
 void GridWindow::ToggleStripMode( ) 
@@ -473,5 +473,5 @@ void GridWindow::Escape( )
 
 PIXEL GridWindow::GetFieldSize( ) const
 { 
-	return m_PixelCoordinates.GetFieldSize( ); 
+	return m_EvoPixelCoords.GetFieldSize( ); 
 };

@@ -109,7 +109,8 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <StructMemberAlignment>Default</StructMemberAlignment>
-      <AdditionalOptions> </AdditionalOptions>
+      <AdditionalOptions>
+      </AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -193,6 +194,7 @@
     <ClCompile Include="EvolutionCore.cpp" />
     <ClCompile Include="EvolutionCoreImpl.cpp" />
     <ClCompile Include="EvolutionTypes.cpp" />
+    <ClCompile Include="EvoPixelCoords.cpp" />
     <ClCompile Include="EvoStatistics.cpp" />
     <ClCompile Include="food.cpp" />
     <ClCompile Include="GeneType.cpp" />
@@ -201,7 +203,6 @@
     <ClCompile Include="gridPOI.cpp" />
     <ClCompile Include="gridSelection.cpp" />
     <ClCompile Include="MortalityTable.cpp" />
-    <ClCompile Include="pixelCoordinates.cpp" />
     <ClCompile Include="genome.cpp" />
     <ClCompile Include="gpList.cpp" />
     <ClCompile Include="gridNeighbor.cpp" />

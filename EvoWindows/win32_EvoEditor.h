@@ -1,4 +1,4 @@
-// win32_editor.h 
+// win32_EvoEditor.h 
 //
 // EvoWindows
 
@@ -13,11 +13,11 @@ class EvoWorkThreadInterface;
 class DspOptWindow;
 class StatusBar;
 
-class EditorWindow : public BaseDialog
+class EvoEditorWindow : public BaseDialog
 {
 public:
-    EditorWindow( );
-    ~EditorWindow( );
+    EvoEditorWindow( );
+    ~EvoEditorWindow( );
 
     void Start
 	( 

@@ -36,7 +36,7 @@
     <ClInclude Include="win32_NNetWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_editor.h">
+    <ClInclude Include="win32_NNetEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,7 +50,7 @@
     <ClCompile Include="win32_NNetWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_editor.cpp">
+    <ClCompile Include="win32_NNetEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

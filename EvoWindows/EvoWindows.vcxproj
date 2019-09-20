@@ -150,8 +150,8 @@
     <ClCompile Include="win32_crsrWindow.cpp" />
     <ClCompile Include="win32_displayOptions.cpp" />
     <ClCompile Include="win32_draw.cpp" />
-    <ClCompile Include="win32_editor.cpp" />
-    <ClCompile Include="win32_editorWrappers.cpp" />
+    <ClCompile Include="win32_EvoEditor.cpp" />
+    <ClCompile Include="win32_EvoEditorWrappers.cpp" />
     <ClCompile Include="win32_focusPoint.cpp" />
     <ClCompile Include="win32_gridWindow.cpp" />
     <ClCompile Include="win32_histWrappers.cpp" />
@@ -171,8 +171,8 @@
     <ClInclude Include="win32_crsrWindow.h" />
     <ClInclude Include="win32_displayOptions.h" />
     <ClInclude Include="win32_draw.h" />
-    <ClInclude Include="win32_editor.h" />
-    <ClInclude Include="win32_editorWrappers.h" />
+    <ClInclude Include="win32_EvoEditor.h" />
+    <ClInclude Include="win32_EvoEditorWrappers.h" />
     <ClInclude Include="win32_focusPoint.h" />
     <ClInclude Include="win32_gridWindow.h" />
     <ClInclude Include="win32_histWrappers.h" />

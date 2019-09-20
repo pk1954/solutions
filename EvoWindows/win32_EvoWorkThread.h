@@ -11,7 +11,7 @@
 class Delay;
 class ActionTimer;
 class ColorManager;
-class EditorWindow;
+class EvoEditorWindow;
 class RootWindow;
 class EvolutionCore;
 class WinManager;

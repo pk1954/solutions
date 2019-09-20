@@ -3,6 +3,7 @@
 // NNetWindows
 
 #include "stdafx.h"
+#include "NNetPixelCoords.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWindow.h"
 
@@ -26,11 +27,14 @@ NNetWindow::NNetWindow( ) :
 
 void NNetWindow::Start
 ( 
-	HWND  const hwndApp, 
-	DWORD const dwStyle,
+	HWND                  const hwndApp, 
+	DWORD                 const dwStyle,
+	nm                    const npPixelSize,
 	std::function<bool()> const visibilityCriterion
 )
 {
+	m_NNetPixelCoords.Start( npPixelSize );
+	
 	HWND hwnd = StartBaseWindow
 	( 
 		hwndApp,
@@ -50,6 +54,34 @@ void NNetWindow::Stop( )
 NNetWindow::~NNetWindow( )
 {
 	m_pNNetWorkThreadInterface = nullptr;
+}
+
+//void NNetWindow::Size( )
+//{
+//	Move
+//	(
+//		Util::CalcWindowRect
+//		( 
+//			m_NNetPixelCoords.NNet2PixelRect( GridDimensions::GridRectFull() ),
+//			(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 
+//		), 
+//		FALSE 
+//	);
+//}
+
+void NNetWindow::Zoom( bool const )
+{
+
+}
+
+void NNetWindow::SetPixelSize( nm const nmNewSize )
+{
+
+}
+
+nm NNetWindow::GetPixelSize( ) const
+{
+	return m_NNetPixelCoords.GetPixelSize( );
 }
 
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )

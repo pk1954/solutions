@@ -5,7 +5,7 @@
 #pragma once
 
 #include "GridPoint.h"
-#include "pixelCoordinates.h"
+#include "EvoPixelCoords.h"
 #include "EvoReadBuffer.h"
 #include "win32_modelWindow.h"
 #include "win32_draw.h"
@@ -72,8 +72,8 @@ private:
     static FocusPoint             * m_pFocusPoint;
 	static ColorManager           * m_pColorManager;
 
-	PixelCoordinates m_PixelCoordinates;   // My own PixelCoordinates
-	DrawFrame        m_DrawFrame;
+	EvoPixelCoords m_EvoPixelCoords; 
+	DrawFrame      m_DrawFrame;
 
 	GraphicsInterface * m_pGraphics;
     GridWindow        * m_pGridWindowObserved; // Observed GridWindow (or nullptr)

@@ -28,7 +28,7 @@ using namespace std::literals::chrono_literals;
 #include "GenerationDisplay.h"
 #include "win32_histWindow.h"
 #include "win32_gridWindow.h"
-#include "win32_editor.h"
+#include "win32_EvoEditor.h"
 #include "win32_speedControl.h"
 #include "win32_zoomControl.h"
 
@@ -49,7 +49,7 @@ using namespace std::literals::chrono_literals;
 #include "UtilityWrappers.h"
 #include "win32_stopwatch.h"
 #include "win32_wrappers.h"
-#include "win32_editorWrappers.h"
+#include "win32_EvoEditorWrappers.h"
 #include "win32_histWrappers.h"
 
 // system and resources
@@ -94,7 +94,7 @@ EvoAppWindow::EvoAppWindow( ) :
 	m_pPerfWindow   = new PerformanceWindow( );
 	m_pStatistics   = new StatisticsWindow( );
 	m_pCrsrWindow   = new CrsrWindow( );
-	m_pEditorWindow = new EditorWindow( );
+	m_pEditorWindow = new EvoEditorWindow( );
 
 	GridWindow::InitClass
 	( 

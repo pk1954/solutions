@@ -19,7 +19,7 @@
 #include "win32_textDisplay.h"
 
 class GraphicsInterface;
-class PixelCoordinates;
+class EvoPixelCoords;
 class ColorManager;
 class DspOptWindow;
 class Shape;
@@ -35,7 +35,7 @@ public:
 	( 
 		HWND                const, 
 		EvoReadBuffer     * const, 
-		PixelCoordinates  * const, 
+		EvoPixelCoords    * const, 
 		GraphicsInterface * const,
 		DspOptWindow      * const, 
 		ColorManager      * const
@@ -61,7 +61,7 @@ private:
 	GridPointShape      m_GridPointShape;
 	
 	EvoReadBuffer     * m_pReadBuffer;
-    PixelCoordinates  * m_pPixelCoordinates;
+    EvoPixelCoords    * m_pEvoPixelCoords;
     DspOptWindow      * m_pDspOptWindow;
 	ColorManager      * m_pColorManager;  
     GraphicsInterface * m_pGraphics;

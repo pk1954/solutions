@@ -12,7 +12,7 @@
 #include "EvoHistorySysGlue.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCore.h"
-#include "pixelCoordinates.h"
+#include "EvoPixelCoords.h"
 #include "win32_EvoWorkThreadInterface.h"
 #include "win32_wrappers.h"
 #include "win32_histWrappers.h"
@@ -29,7 +29,7 @@ HWND G_hwndApp;
 
 int main( int argc, char * argv [ ], char * envp [ ] )
 {
-	PixelCoordinates PixCoords;
+	EvoPixelCoords PixCoords;
 
 	wcout << VER_PRODUCTNAME_STR << L" " << VER_FILE_DESCRIPTION_STR << endl;
 	wcout << L"Build at " << __DATE__ << L" " << __TIME__ << endl;
@@ -57,7 +57,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	pWorkThreadInterface->Initialize( & m_traceStream );
 	DefineCoreWrapperFunctions( pEvolutionCore );
-	DefinePixelCoordinatesWrapperFunctions( & PixCoords );
+	DefineEvoPixelCoordsWrapperFunctions( & PixCoords );
 
 	PixCoords.Start( FIELDSIZE, bHexagonMode );
 	pEvoHistGlue->Start( pHistorySystem, FALSE );  // do history cache allocation **not** asynchroniously

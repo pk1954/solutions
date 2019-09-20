@@ -30,7 +30,7 @@
     <ClInclude Include="NNetPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pixelCoordinates.h">
+    <ClInclude Include="NNetPixelCoords.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

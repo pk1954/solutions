@@ -1,5 +1,6 @@
-// win32_editorWrappers.cpp : wrapper functions for unit tests and scripting of application
+// win32_EvoEditorWrappers.cpp : wrapper functions for unit tests and scripting of application
 //
+// EvoWindows
 
 #include "stdafx.h"
 #include "symtab.h"
@@ -7,12 +8,12 @@
 #include "Resource.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "EvolutionTypes.h"
-#include "win32_editor.h"
-#include "win32_editorWrappers.h"
+#include "win32_EvoEditor.h"
+#include "win32_EvoEditorWrappers.h"
 
-static EditorWindow const * m_pEditorWindow;
+static EvoEditorWindow const * m_pEditorWindow;
  
-void DefineWin32EditorWrapperFunctions( EditorWindow const * const pEditorWindow )
+void DefineWin32EditorWrapperFunctions( EvoEditorWindow const * const pEditorWindow )
 {
     m_pEditorWindow = pEditorWindow;
 

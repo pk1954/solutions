@@ -9,7 +9,7 @@
 #include "gridPoint.h"
 
 class TextDisplay;
-class PixelCoordinates;
+class EvoPixelCoords;
 class EvolutionCore;
 class D3D_driver;
 

@@ -10,6 +10,7 @@ using namespace std::literals::chrono_literals;
 
 // Model interfaces
 
+#include "NNetCoord.h"
 #include "NNetModel.h"
 
 // interfaces of various windows
@@ -90,7 +91,8 @@ void NNetAppWindow::Start( )
 	m_pMainNNetWindow->Start
 	( 
 		m_hwndApp, 
-		WS_CHILD | WS_CLIPSIBLINGS, 
+		WS_CHILD | WS_CLIPSIBLINGS,
+		DEFAULT_PIXEL_SIZE,
 		[&]() { return true; }	
 	);
 		
