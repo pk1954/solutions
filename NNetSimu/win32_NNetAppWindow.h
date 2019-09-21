@@ -12,7 +12,7 @@
 
 // infrastructure
 
-#include "win32_baseAppWindow.h"
+#include "win32_appWindowInterface.h"
 #include "win32_readBuffer.h"
 #include "win32_winManager.h"
 #include "win32_NNetWorkThreadInterface.h"
@@ -33,13 +33,15 @@ class NNetModel;
 class NNetWindow;
 class HistInfoWindow;
 
-class NNetAppWindow : public BaseAppWindow
+class NNetAppWindow : public AppWindowInterface
 {
 public:
 	NNetAppWindow( );
-	void Start( );
-	void Stop( );
 	~NNetAppWindow( );
+
+	virtual void Start( );
+
+	void Stop( );
 
 private:
 	NNetAppWindow             ( NNetAppWindow const & );  // noncopyable class 

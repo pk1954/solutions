@@ -12,7 +12,7 @@
 
 // infrastructure
 
-#include "win32_baseAppWindow.h"
+#include "win32_appWindowInterface.h"
 #include "win32_protocolServer.h"
 #include "win32_scriptHook.h"
 #include "win32_readBuffer.h"
@@ -46,13 +46,15 @@ class DspOptWindow;
 class EvoController;
 class AppMenu;
 
-class EvoAppWindow : public BaseAppWindow
+class EvoAppWindow : public AppWindowInterface
 {
 public:
     EvoAppWindow( );
-	void Start( );
-	void Stop( );
 	~EvoAppWindow( );
+
+	virtual void Start( );
+
+	void Stop( );
 
 private:
 	EvoAppWindow             ( EvoAppWindow const & );  // noncopyable class 

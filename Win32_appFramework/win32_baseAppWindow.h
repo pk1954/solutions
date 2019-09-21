@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <fstream>
+#include <iostream>
 #include "win32_baseWindow.h"
 #include "win32_winManager.h"
 #include "win32_histWindow.h"
@@ -23,6 +25,8 @@ public:
 
 	void Initialize( WorkThreadInterface * const );
 
+	void Start( ModelWindow * const );
+
 	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 ) = 0;
 
 protected:
@@ -33,7 +37,6 @@ protected:
 	AppMenu       * m_pAppMenu;        // allocated by application
 	HistorySystem * m_pHistorySystem;  // allocated here
 
-	void Start( ModelWindow * const );
 	void Stop( );
 
     bool ProcessFrameworkCommand( WPARAM const, LPARAM const = 0 );

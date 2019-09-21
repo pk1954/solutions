@@ -217,4 +217,3 @@ LRESULT RootWindow::RootWindowProc
 
 	return pRootWin->UserProc( message, wParam, lParam );
 }
-

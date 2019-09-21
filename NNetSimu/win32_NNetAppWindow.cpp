@@ -68,9 +68,9 @@ NNetAppWindow::NNetAppWindow( ) :
 		& m_Delay
 	);
 
-	//DefineWin32HistWrapperFunctions( & m_EvoWorkThreadInterface );
-	//DefineWin32WrapperFunctions    ( & m_EvoWorkThreadInterface );
-	//DefineWin32EditorWrapperFunctions( m_pEvoEditorWindow );
+	//DefineWin32HistWrapperFunctions( & m_NNetWorkThreadInterface );
+	//DefineWin32WrapperFunctions    ( & m_NNetWorkThreadInterface );
+	//DefineWin32EditorWrapperFunctions( m_pNNetEditorWindow );
 
 	m_pMainNNetWindow  ->SetRefreshRate( 100ms );
 	m_pNNetEditorWindow->SetRefreshRate( 300ms );
