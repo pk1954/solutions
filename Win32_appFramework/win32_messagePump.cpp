@@ -29,8 +29,6 @@ int MessagePump
 
 	InitCommonControlsEx( &icex ); 
 
-	Util::StdOutConsole( );
-
 	Stopwatch stopwatch;
 	stopwatch.Start();
 	appWindow.Start( );

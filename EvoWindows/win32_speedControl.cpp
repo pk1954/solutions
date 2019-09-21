@@ -6,8 +6,6 @@
 #include "LogarithmicTrackbar.h"
 #include "win32_speedControl.h"
 
-BOOL SpeedControl::m_bWithHistory = FALSE;
-
 StatusBar     * SpeedControl::m_pStatusBar           = nullptr;
 HistorySystem * SpeedControl::m_pHistorySystem       = nullptr;
 

@@ -40,17 +40,13 @@ public:
 	static void AddSimulationControl
 	( 
 		StatusBar     * const pStatusBar, 
-		HistorySystem * const pHistorySystem,
-		BOOL            const bWithHistory 
+		HistorySystem * const pHistorySystem
 	)
 	{ 
-		m_bWithHistory   = bWithHistory;
 		m_pStatusBar     = pStatusBar;
 		m_pHistorySystem = pHistorySystem;
 
-		if ( bWithHistory )
-			pStatusBar->AddButton  ( L"Backwards ", (HMENU)IDM_BACKWARDS, BS_PUSHBUTTON );
-
+		m_pStatusBar->AddButton  ( L"Backwards ", (HMENU)IDM_BACKWARDS, BS_PUSHBUTTON );
 		m_pStatusBar->AddButton  ( L"SingleStep", (HMENU)IDM_FORWARD,   BS_PUSHBUTTON ); 
 		m_pStatusBar->AddButton  ( L"   Run    ", (HMENU)IDM_RUN,       BS_PUSHBUTTON ); 
 		m_pStatusBar->AddButton  ( L"  Stop    ", (HMENU)IDM_STOP,      BS_PUSHBUTTON ); 
@@ -71,7 +67,6 @@ public:
 
 		EnableWindow( m_pStatusBar->GetDlgItem( IDM_FORWARD ), ! bIsRunning );
 
-		if ( m_bWithHistory )
 		{
 			BOOL bIsFirstGeneration = pWorkThreadInterface->GetCurrentGeneration( ) == 0;
 			EnableWindow( m_pStatusBar-> GetDlgItem( IDM_BACKWARDS ), ! (bIsRunning || bIsFirstGeneration) );
@@ -79,8 +74,6 @@ public:
 	}
 
 private:
-	static BOOL m_bWithHistory;
-
 	static StatusBar     * m_pStatusBar;
 	static HistorySystem * m_pHistorySystem;
 

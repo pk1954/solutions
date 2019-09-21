@@ -19,6 +19,8 @@ int APIENTRY wWinMain
     UNREFERENCED_PARAMETER( lpCmdLine );
     UNREFERENCED_PARAMETER( nCmdShow );
 
+	Util::StdOutConsole( );
+
 	NNetAppWindow App;
 
 	return MessagePump( hInstance, App, IDC_NNET_SIMU_MAIN );

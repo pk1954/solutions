@@ -46,7 +46,7 @@ NNetAppWindow::NNetAppWindow( ) :
 {
 	Stopwatch stopwatch;
 
-	Initialize( & m_NNetWorkThreadInterface ),
+	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface ),
 		
 	NNetWindow::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
 
@@ -67,10 +67,6 @@ NNetAppWindow::NNetAppWindow( ) :
 		& m_NNetWorkThreadInterface,
 		& m_Delay
 	);
-
-	//DefineWin32HistWrapperFunctions( & m_NNetWorkThreadInterface );
-	//DefineWin32WrapperFunctions    ( & m_NNetWorkThreadInterface );
-	//DefineWin32EditorWrapperFunctions( m_pNNetEditorWindow );
 
 	m_pMainNNetWindow  ->SetRefreshRate( 100ms );
 	m_pNNetEditorWindow->SetRefreshRate( 300ms );

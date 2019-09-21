@@ -155,7 +155,6 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 			(void)AppendMenu( hPopupMenu, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hColorMenu, L"Choose color" );
 		}
 
-		if ( Config::UseHistorySystem( ) )
 		{
 			HMENU const hTimeTravelMenu = CreatePopupMenu();
 			(void)AppendMenu( hTimeTravelMenu, STD_FLAGS, IDM_GOTO_DEATH,  L"Goto death of this individual" );

@@ -75,9 +75,7 @@ EvoAppWindow::EvoAppWindow( ) :
 {
 	Stopwatch stopwatch;
 
-	WorkThreadInterface * const pI = & m_EvoWorkThreadInterface;
-
-	Initialize( pI );
+	BaseAppWindow::Initialize( & m_EvoWorkThreadInterface );
 
 	DUMP::SetDumpStream( & std::wcout );
 	Config::SetDefaultConfiguration( );
@@ -292,7 +290,7 @@ void EvoAppWindow::configureStatusBar( StatusBar & statusBar)
 	ZoomControl::SetSizeTrackBar( & statusBar, DEFAULT_FIELD_SIZE );
 
 	statusBar.NewPart( );
-	SpeedControl::AddSimulationControl( & statusBar, m_pHistorySystem, Config::UseHistorySystem( ) );
+	SpeedControl::AddSimulationControl( & statusBar, m_pHistorySystem );
 	SpeedControl::SetSpeedTrackBar( DEFAULT_DELAY );
 
 	int iPartScriptLine = statusBar.NewPart( );

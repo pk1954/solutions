@@ -45,7 +45,7 @@
     <ClInclude Include="win32_messagePump.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_appWIndowInterface.h">
+    <ClInclude Include="win32_appWindowInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

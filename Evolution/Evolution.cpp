@@ -19,8 +19,9 @@ int APIENTRY wWinMain
     UNREFERENCED_PARAMETER( lpCmdLine );
     UNREFERENCED_PARAMETER( nCmdShow );
 
+	Util::StdOutConsole( );
+
 	EvoAppWindow App;
 
 	return MessagePump( hInstance, App, IDC_EVOLUTION_MAIN );
 }
-

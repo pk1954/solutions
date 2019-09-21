@@ -33,9 +33,6 @@
     <ClCompile Include="win32_gridWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_histWrappers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32_statistics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,6 +63,9 @@
     <ClCompile Include="win32_EvoEditorWrappers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="win32_histWrappers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -84,9 +84,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_gridWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_histWrappers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_scriptHook.h">
@@ -135,6 +132,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_EvoEditorWrappers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_histWrappers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

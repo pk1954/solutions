@@ -1,10 +1,10 @@
 // win32_histWrappers.cpp : wrapper functions for unit tests and scripting of win32_history library
 //
+// EvoWindows
 
 #include "stdafx.h"
 #include "symtab.h"
 #include "SCRIPT.H"
-#include "config.h"
 #include "Resource.h"
 #include "win32_WorkThreadInterface.h"
 
@@ -16,8 +16,7 @@ public:
 	virtual void operator() ( Script & script ) const
 	{
 		HIST_GENERATION const gen = static_cast<HIST_GENERATION>( script.ScrReadLong( ) );
-		if ( Config::UseHistorySystem( ) )
-			m_pWorkThreadInterface->PostGotoGeneration( gen );
+		m_pWorkThreadInterface->PostGotoGeneration( gen );
 	}
 };
 
