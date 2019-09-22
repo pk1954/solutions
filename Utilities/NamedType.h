@@ -37,8 +37,8 @@ public:
     NamedType& operator-= (NamedType const other) { m_value -= other.GetValue(); return * this; }
     NamedType& operator%= (NamedType const other) { m_value %= other.GetValue(); return * this; }
 
-    NamedType& operator*= (int const i) { m_value *= i; return * this; }
-	NamedType& operator/= (int const i) { m_value /= i; return * this; }
+    NamedType& operator*= (BASE_TYPE const i) { m_value *= i; return * this; }
+	NamedType& operator/= (BASE_TYPE const i) { m_value /= i; return * this; }
 
 	NamedType  operator- () const { NamedType res { -m_value }; return res; }
 	NamedType  operator+ () const { NamedType res { +m_value }; return res; }
@@ -70,14 +70,14 @@ public:
 		return res; 
 	}
 
-	friend NamedType operator* (NamedType const a, int const i )
+	friend NamedType operator* (NamedType const a, BASE_TYPE const i )
 	{ 
 		NamedType res { a };
 		res *= i; 
 		return res; 
 	}
 
-	friend NamedType operator/ (NamedType const a, int const i )
+	friend NamedType operator/ (NamedType const a, BASE_TYPE const i )
 	{ 
 		NamedType res { a };
 		res /= i; 

@@ -14,4 +14,4 @@ constexpr const nm operator"" _nm( const long double d )
 	return nm( d );
 }
 
-nm const MAX_NM{ 10000000000.0_nm };
+nm const MAX_NM{ 1.0e10_nm };

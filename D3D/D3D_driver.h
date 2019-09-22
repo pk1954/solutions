@@ -32,6 +32,8 @@ public:
 	virtual void      EndFrame( HWND const );
 	virtual void      ShutDown( );
 
+	virtual void	  AddLine( PixelPoint const &, PixelPoint const &, PIXEL const, COLORREF const );
+
 private:   
 	D3dSystem             * m_d3d;
     IDirect3DDevice9      * m_d3d_device;

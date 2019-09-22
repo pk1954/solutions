@@ -9,6 +9,7 @@
 #include "win32_modelWindow.h"
 
 class ActionTimer;
+class GraphicsInterface;
 class NNetWorkThreadInterface;
 
 class NNetWindow : public ModelWindow
@@ -24,9 +25,10 @@ public:
 
 	void Start
 	( 
-		HWND  const, 
-		DWORD const,
-		nm    const,
+		HWND                  const, 
+		GraphicsInterface   * const, 
+		DWORD                 const,
+		nm                    const,
 		std::function<bool()> const
 	);
 
@@ -48,7 +50,13 @@ private:
 	HMENU m_hPopupMenu;
 	BOOL  m_bMoveAllowed;    // TRUE: move with mouse is possible
 
+	GraphicsInterface * m_pGraphics;
+
 	NNetPixelCoords m_NNetPixelCoords;
+	PixelPoint      m_ptLast;	 	   // Last cursor position during selection 
+
+	void newPixelSize( nm const, NNetPoint const );
+	void moveNNet( PixelPoint const );
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const );
 

@@ -34,6 +34,7 @@ using namespace std::literals::chrono_literals;
 // system and resources
 
 #include "resource.h"
+#include "d3d_system.h"
 
 // application
 
@@ -83,6 +84,16 @@ void NNetAppWindow::Start( )
 {
 	NNetModel * pModelWork;
 
+	m_D3d_driver.Initialize
+	( 
+		m_hwndApp, 
+		200, 
+		100, 
+		FALSE 
+	);
+
+	m_pGraphics = & m_D3d_driver;
+
 	BaseAppWindow::Start( m_pMainNNetWindow );
 	m_pAppMenu->Initialize
 	( 
@@ -100,6 +111,7 @@ void NNetAppWindow::Start( )
 	m_pMainNNetWindow->Start
 	( 
 		m_hwndApp, 
+		m_pGraphics, 
 		WS_CHILD | WS_CLIPSIBLINGS,
 		DEFAULT_PIXEL_SIZE,
 		[&]() { return true; }	
@@ -115,10 +127,10 @@ void NNetAppWindow::Start( )
 		& m_NNetHistGlue
 	);
 
-	m_pNNetEditorWindow->Start( m_hwndApp, & m_NNetWorkThreadInterface, & m_NNetReadBuffer );
+//	m_pNNetEditorWindow->Start( m_hwndApp, & m_NNetWorkThreadInterface, & m_NNetReadBuffer );
 
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow,   TRUE, FALSE );
-	m_WinManager.AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, * m_pNNetEditorWindow, TRUE, FALSE );
+//	m_WinManager.AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, * m_pNNetEditorWindow, TRUE, FALSE );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
@@ -126,7 +138,7 @@ void NNetAppWindow::Start( )
 		Show( TRUE );
 	}
 
-	m_pNNetEditorWindow->Show( TRUE );
+//	m_pNNetEditorWindow->Show( TRUE );
 }
 
 void NNetAppWindow::Stop()
@@ -134,7 +146,7 @@ void NNetAppWindow::Stop()
 	BaseAppWindow::Stop();
 
 	m_pMainNNetWindow  ->Stop( );
-	m_pNNetEditorWindow->Stop( );
+//	m_pNNetEditorWindow->Stop( );
 
 	m_Delay.Stop( );
 

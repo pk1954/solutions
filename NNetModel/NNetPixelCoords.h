@@ -31,12 +31,20 @@ public:
 
 	//////// transformations ////////
 
+	PIXEL Nm2Pixel( nm const nmParam ) const
+	{ 
+		nm nmRes( nmParam / m_nmPixelSize.GetValue() );
+		return PIXEL( CastToLong( nmRes.GetValue() ) );
+	}
+
+	nm Pixel2Nm( PIXEL const pixel ) const
+	{ 
+		return nm( pixel.GetValue() * m_nmPixelSize.GetValue() );
+	}
+
 	PixelPoint NNet2PixelSize( NNetPoint const np ) const
 	{ 
-		auto pixX = PIXEL( CastToLong( np.GetXvalue() / m_nmPixelSize.GetValue() ) );
-		auto pixY = PIXEL( CastToLong( np.GetYvalue() / m_nmPixelSize.GetValue() ) );
-
-		return PixelPoint( pixX, pixY );
+		return PixelPoint( Nm2Pixel( np.GetX() ), Nm2Pixel( np.GetY() ) );
 	}
 
 	NNetPoint Pixel2NNetPos ( PixelPoint const pp ) const
@@ -45,8 +53,8 @@ public:
 
 		auto np = NNetPoint
 		( 
-			nm( pixPoint.GetXvalue() * m_nmPixelSize.GetValue()), 
-			nm( pixPoint.GetYvalue() * m_nmPixelSize.GetValue()) 
+			Pixel2Nm( pixPoint.GetX() ), 
+			Pixel2Nm( pixPoint.GetY() )
 		); 
 
 		return np;
@@ -62,13 +70,28 @@ public:
 	nm         GetPixelSize( )   const { return m_nmPixelSize; };
 	PixelPoint GetPixelOffset( ) const { return m_pixOffset; }
 
-	PIXEL      ComputeNewFieldSize( bool const ) const;  // does not modify field size
+	nm         ComputeNewPixelSize( bool const bZoomIn ) const  // does not modify field size
+	{
+		nm nmNewPixelSize { m_nmPixelSize };
+		if ( bZoomIn )
+		{
+			nmNewPixelSize = nmNewPixelSize * 1.3;
+		}
+		else
+		{
+			nmNewPixelSize = nmNewPixelSize / 1.3;
+		}
+		return isValidPixelSize(nmNewPixelSize) ? nmNewPixelSize : m_nmPixelSize;
+	}
 
 	//////// manipulation functions ////////
 
 	bool SetPixelSize( nm const nmPixelSize )
 	{
-		m_nmPixelSize = nmPixelSize;
+		bool bValid = isValidPixelSize( nmPixelSize );
+		if ( bValid )
+			m_nmPixelSize = nmPixelSize;
+		return bValid;
 	}
 
 	void MoveNNet( PixelPoint const pntDelta )
@@ -78,7 +101,7 @@ public:
 
 private:
 
-	bool isValidFieldSize( nm const nmNewPixelSize ) const
+	bool isValidPixelSize( nm const nmNewPixelSize ) const
 	{
 		return (MINIMUM_PIXEL_SIZE <= nmNewPixelSize) && (nmNewPixelSize <= MAXIMUM_PIXEL_SIZE); 
 	}

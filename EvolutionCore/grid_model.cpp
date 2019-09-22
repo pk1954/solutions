@@ -5,6 +5,7 @@
 #include "assert.h"
 #include <cstdlib> 
 #include <cmath> 
+#include "util.h"
 #include "EventInterface.h"
 #include "MortalityTable.h"
 #include "ViewCollection.h"
@@ -354,9 +355,9 @@ void Grid::actionPassOn( GridField & gfRun )
 
 void Grid::actionFertilize( GridField & gfRun )
 {
-	ENERGY_UNITS const enInvest = ENERGY_UNITS(gfRun.GetAllele( GeneType::Id::fertilInvest ));
-	ENERGY_UNITS const yield    = (enInvest * m_lFertilizerYield ) / 100;
-	ENERGY_UNITS const newValue = std::min( gfRun.GetFertilizer( ) + yield, m_enMaxFertilizer ); 
+	ENERGY_UNITS const enInvest { ENERGY_UNITS(gfRun.GetAllele( GeneType::Id::fertilInvest )) };
+	ENERGY_UNITS const yield    { CastToShort( (enInvest.GetValue( ) * m_lFertilizerYield ) / 100L ) };
+	ENERGY_UNITS const newValue { std::min( gfRun.GetFertilizer( ) + yield, m_enMaxFertilizer ) };
 	gfRun.SetFertilizer( newValue );
 	gfRun.DecEnergy( enInvest );
 	deleteIfDead( gfRun );

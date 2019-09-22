@@ -9,7 +9,18 @@
 #include "d3d_vertexBuffer.h"
 #include "d3d_system.h"
 
-D3dSystem::D3dSystem( )
+D3dSystem::D3dSystem( ) :
+	m_bHexagon( FALSE ),
+	m_ulTrianglesPerPrimitive( 0 ),
+	m_ulVerticesPerPrimitive( 0 ),
+	m_ulMaxNrOfPrimitives( 0 ),
+	m_ulNrOfVertices( 0 ),
+	m_d3d_object( nullptr ),
+	m_d3d_device( nullptr ),
+	m_d3d_pIndexBufBgStripMode( nullptr ),
+    m_d3d_pIndexBufBgNonStripMode( nullptr ), 
+    m_d3d_pIndexBufIndividuals( nullptr ),
+    m_d3d_pIndexBufRect( nullptr )
 {
 	Stopwatch stopwatch;
 	stopwatch.Start();

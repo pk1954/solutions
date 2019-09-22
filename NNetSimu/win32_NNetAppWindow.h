@@ -16,6 +16,7 @@
 #include "win32_readBuffer.h"
 #include "win32_winManager.h"
 #include "win32_NNetWorkThreadInterface.h"
+#include "D3D_driver.h"
 
 // application
 
@@ -32,6 +33,7 @@ class ModelWindow;
 class NNetModel;
 class NNetWindow;
 class HistInfoWindow;
+class GraphicsInterface;
 
 class NNetAppWindow : public AppWindowInterface
 {
@@ -51,6 +53,7 @@ private:
 
 	Util::Event              m_eventPOI;
 
+	D3D_driver              m_D3d_driver;
 	NNetWorkThreadInterface m_NNetWorkThreadInterface;
 	ActionTimer             m_atComputation;
 	ActionTimer             m_atDisplay;
@@ -58,6 +61,7 @@ private:
 	NNetReadBuffer          m_NNetReadBuffer;
 	NNetHistorySysGlue      m_NNetHistGlue;
 
+	GraphicsInterface     * m_pGraphics;
 	NNetController        * m_pNNetController;
 	NNetModel             * m_pNNetModel4Display;
 	NNetWindow            * m_pMainNNetWindow;

@@ -361,9 +361,7 @@ void D3D_driver::EndFrame( HWND const hwnd )
     HRESULT hres;
     hres = m_d3d_device->EndScene();                                        assert(hres == D3D_OK);
     hres = m_d3d_swapChain->Present( nullptr, nullptr, hwnd, nullptr, 0 );  assert(hres == D3D_OK);
-    //lint -esym( 613, D3D_driver::m_id3dx_font )  possible use of null pointer
     m_id3dx_font->Release();      
-    //lint +esym( 613, D3D_driver::m_id3dx_font ) 
 }
 
 D3DCOLOR D3D_driver::COLORREFtoD3DCOLOR( unsigned int const uiALpha, COLORREF const color )
@@ -374,3 +372,58 @@ D3DCOLOR D3D_driver::COLORREFtoD3DCOLOR( unsigned int const uiALpha, COLORREF co
 
 	return D3DCOLOR_ARGB( uiALpha, uiR, uiG, uiB );
 }
+
+///// NNet support ---- experimental ----- ////////////////////
+
+void D3D_driver::AddLine
+( 
+	PixelPoint const & pp1, 
+	PixelPoint const & pp2, 
+	PIXEL      const   pixWidth, 
+	COLORREF   const   color
+)
+{
+	float const fX1( static_cast<float>(pp1.GetXvalue()) );
+	float const fY1( static_cast<float>(pp1.GetYvalue()) );
+	float const fX2( static_cast<float>(pp2.GetXvalue()) );
+	float const fY2( static_cast<float>(pp2.GetYvalue()) );
+
+	float const fDeltaX = fX2 - fX1;
+	float const fDeltaY = fY2 - fY1;
+
+	float const fOrthoX =   fDeltaY;
+	float const fOrthoY = - fDeltaX;
+
+	float const fScaleFactor = static_cast<float>(pixWidth.GetValue()) / sqrt( fOrthoX * fOrthoX + fOrthoY * fOrthoY );
+
+	float const fOrthoScaledX = fOrthoX * fScaleFactor; 
+	float const fOrthoScaledY = fOrthoY * fScaleFactor; 
+
+	m_pVertBufPrimitives->AddVertex( fX1 + fOrthoScaledX, fY1 + fOrthoScaledY, color );
+	m_pVertBufPrimitives->AddVertex( fX1 - fOrthoScaledX, fY1 - fOrthoScaledY, color );
+	m_pVertBufPrimitives->AddVertex( fX2 - fOrthoScaledX, fY2 - fOrthoScaledY, color );
+	m_pVertBufPrimitives->AddVertex( fX2 + fOrthoScaledX, fY2 + fOrthoScaledY, color );
+}
+
+//void D3D_driver::AddLine
+//( 
+//	NNetPoint const & np1, 
+//	NNetPoint const & np2, 
+//	nm        const   nmWidth, 
+//	COLORREF  const   color
+//)
+//{
+//	NNetPoint const npDirection = np2 - np1;
+//	NNetPoint       npOrtho( npDirection.GetX(), - npDirection.GetY() );
+//	double    const scaleFactor = nmWidth.GetValue() *
+//		sqrt( 
+//			npDirection.GetXvalue() * npDirection.GetXvalue() + 
+//			npDirection.GetYvalue() * npDirection.GetYvalue()
+//		);
+//	npOrtho *= scaleFactor;
+//
+//	addNNetPoint( np1 + npOrtho, color );
+//	addNNetPoint( np1 - npOrtho, color );
+//	addNNetPoint( np2 + npOrtho, color );
+//	addNNetPoint( np2 - npOrtho, color );
+//}
