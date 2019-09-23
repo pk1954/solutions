@@ -39,12 +39,11 @@ public:
 
 	void Step()
 	{
-		for ( int i = 0; i < NR_OF_ELEMENTS; ++i )
+		for ( int i = NR_OF_ELEMENTS - 1; i > 0; --i )
 		{
-			int iPos = m_iWaveStart - i;
-			if ( iPos >= 0 )
-				m_potential[i] = BASE_POTENTIAL + ( 256 * iPos ) / ( iPos * iPos + 1 );
+			m_potential[i] = m_potential[i-1];
 		}
+		m_potential[0] = BASE_POTENTIAL + ( 256 * m_iWaveStart ) / ( m_iWaveStart * m_iWaveStart + 1 );
 		++ m_iWaveStart;
 	}
 

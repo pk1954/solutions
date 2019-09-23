@@ -1,5 +1,6 @@
 // PixelTypes.h
 //
+// Utilities
 
 #pragma once
 
@@ -19,4 +20,17 @@ static PixelPoint const PP_ZERO( PixelPoint::ZERO_VAL() );   // compiler generat
 constexpr PIXEL operator"" _PIXEL( unsigned long long ull )
 {
 	return PIXEL( CastToShort( ull ) );
+}
+
+using fPIXEL         = NamedType< double, struct fPIXEL_Parameter >;
+using fPixelPoint    = PosType  < fPIXEL >;
+using fPixelRectSize = SizeType < fPIXEL >;
+using fPixelRect     = RectType < fPIXEL >;
+
+static fPixelPoint const fPP_NULL( fPixelPoint::NULL_VAL() );   // compiler generates call!
+static fPixelPoint const fPP_ZERO( fPixelPoint::ZERO_VAL() );   // compiler generates call!
+
+constexpr fPIXEL operator"" _fPIXEL( long double ld )
+{
+	return fPIXEL( static_cast<double>( ld ) );
 }

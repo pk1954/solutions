@@ -45,11 +45,11 @@ void NNetModel::DestroyCore( NNetModel * pCore )
 void NNetModel::Compute( )
 {
 	m_pipeline.Step( );
-	if ( ++ m_iCounter == 50 )
-	{
-		m_pipeline.Start();
-		m_iCounter = 0;
-	}
+	//if ( ++ m_iCounter == 50 )
+	//{
+	//	m_pipeline.Start();
+	//	m_iCounter = 0;
+	//}
 }
 
 void NNetModel::ResetAll( )

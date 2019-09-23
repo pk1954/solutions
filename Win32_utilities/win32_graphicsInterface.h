@@ -28,7 +28,8 @@ public:
 	virtual void      EndFrame( HWND const ) = 0;
 	virtual void      ShutDown( ) = 0;
 
-	virtual void	  AddLine( PixelPoint const &, PixelPoint const &, PIXEL const, COLORREF const ) = 0;
+	virtual void	  AddPixelLine (  PixelPoint const &,  PixelPoint const &, PIXEL const, COLORREF const ) = 0;
+	virtual void	  AddfPixelLine( fPixelPoint const &, fPixelPoint const &, PIXEL const, COLORREF const ) = 0;
 
 	void SetStripMode( tBoolOp const bOp ) 
 	{ 

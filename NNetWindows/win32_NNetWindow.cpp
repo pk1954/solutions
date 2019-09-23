@@ -182,20 +182,14 @@ void NNetWindow::OnPaint( )
 			unsigned int uiSegmentNr = 0;
 			while ( pPipeline->GetSegment( uiSegmentNr, segment, iPotential ) )
 			{
-				PixelPoint const pixPoint1( m_NNetPixelCoords.NNet2PixelPos( segment.GetStartPoint() ) );
-				PixelPoint const pixPoint2( m_NNetPixelCoords.NNet2PixelPos( segment.GetEndPoint  () ) );
+				fPixelPoint const fPixPoint1( m_NNetPixelCoords.NNet2fPixelPos( segment.GetStartPoint() ) );
+				fPixelPoint const fPixPoint2( m_NNetPixelCoords.NNet2fPixelPos( segment.GetEndPoint  () ) );
 				PIXEL      const pixWidth ( m_NNetPixelCoords.Nm2Pixel( segment.GetWidth() ) );
 				COLORREF   const color = RGB(   0, 255 - iPotential, 0 );
-				m_pGraphics->AddLine( pixPoint1, pixPoint2, pixWidth, color );
+				m_pGraphics->AddfPixelLine( fPixPoint1, fPixPoint2, pixWidth, color );
 				++ uiSegmentNr;
 			}
 			m_pReadBuffer->ReleaseReadBuffer( );
-
-			//PixelPoint const pixPoint1( m_NNetPixelCoords.NNet2PixelPos( segment.GetStartPoint() ) );
-			//PixelPoint const pixPoint2( m_NNetPixelCoords.NNet2PixelPos( segment.GetEndPoint  () ) );
-			//PIXEL      const pixWidth ( m_NNetPixelCoords.Nm2Pixel( segment.GetWidth() ) );
-
-			//m_pGraphics->AddLine( pixPoint1, pixPoint2, pixWidth, CLR_GREEN );
 
 			m_pGraphics->RenderIndividuals( );
 			m_pGraphics->EndFrame( GetWindowHandle() );

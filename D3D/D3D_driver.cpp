@@ -375,12 +375,12 @@ D3DCOLOR D3D_driver::COLORREFtoD3DCOLOR( unsigned int const uiALpha, COLORREF co
 
 ///// NNet support ---- experimental ----- ////////////////////
 
-void D3D_driver::AddLine
+void D3D_driver::AddPixelLine
 ( 
 	PixelPoint const & pp1, 
 	PixelPoint const & pp2, 
-	PIXEL      const   pixWidth, 
-	COLORREF   const   color
+	PIXEL    const   pixWidth, 
+	COLORREF const   color
 )
 {
 	float const fX1( static_cast<float>(pp1.GetXvalue()) );
@@ -405,25 +405,24 @@ void D3D_driver::AddLine
 	m_pVertBufPrimitives->AddVertex( fX2 + fOrthoScaledX, fY2 + fOrthoScaledY, color );
 }
 
-//void D3D_driver::AddLine
-//( 
-//	NNetPoint const & np1, 
-//	NNetPoint const & np2, 
-//	NanoMeter const   nmWidth, 
-//	COLORREF  const   color
-//)
-//{
-//	NNetPoint const npDirection = np2 - np1;
-//	NNetPoint       npOrtho( npDirection.GetX(), - npDirection.GetY() );
-//	double    const scaleFactor = nmWidth.GetValue() *
-//		sqrt( 
-//			npDirection.GetXvalue() * npDirection.GetXvalue() + 
-//			npDirection.GetYvalue() * npDirection.GetYvalue()
-//		);
-//	npOrtho *= scaleFactor;
-//
-//	addNNetPoint( np1 + npOrtho, color );
-//	addNNetPoint( np1 - npOrtho, color );
-//	addNNetPoint( np2 + npOrtho, color );
-//	addNNetPoint( np2 - npOrtho, color );
-//}
+void D3D_driver::AddfPixelLine
+( 
+	fPixelPoint const & fpp1, 
+	fPixelPoint const & fpp2, 
+	PIXEL       const   pixWidth, 
+	COLORREF    const   color
+)
+{
+	fPixelPoint fDelta = fpp2 - fpp1;
+
+	fPixelPoint fOrtho { fDelta.GetY(), -fDelta.GetX() };
+
+	float const fScaleFactor = static_cast<float>(pixWidth.GetValue()) / sqrt( fOrtho.GetXvalue() * fOrtho.GetXvalue() + fOrtho.GetYvalue() * fOrtho.GetYvalue() );
+
+	fPixelPoint fOrthoScaled = fOrtho * fScaleFactor;
+
+	m_pVertBufPrimitives->AddVertex( fpp1.GetXvalue() + fOrthoScaled.GetXvalue(), fpp1.GetYvalue() + fOrthoScaled.GetYvalue(), color );
+	m_pVertBufPrimitives->AddVertex( fpp1.GetXvalue() - fOrthoScaled.GetXvalue(), fpp1.GetYvalue() - fOrthoScaled.GetYvalue(), color );
+	m_pVertBufPrimitives->AddVertex( fpp2.GetXvalue() - fOrthoScaled.GetXvalue(), fpp2.GetYvalue() - fOrthoScaled.GetYvalue(), color );
+	m_pVertBufPrimitives->AddVertex( fpp2.GetXvalue() + fOrthoScaled.GetXvalue(), fpp2.GetYvalue() + fOrthoScaled.GetYvalue(), color );
+}
