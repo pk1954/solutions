@@ -6,27 +6,32 @@
 
 #include <assert.h>
 #include <math.h>       // pow
+#include "util.h"
 
 class LogarithmicTrackbar
 {
 public:
 	static double const TRACKBAR_SCALING_FACTOR;
 
-	static long TrackBar2Value( long lX ) // f(x) = 2 power (x/1000)
+	static double TrackBar2ValueD( double dX ) // f(x) = 2 power (x/1000)
 	{
-		double const dX = static_cast<double>( lX ) / TRACKBAR_SCALING_FACTOR;
-		double dRes = pow( 2.0, dX );
-		return static_cast<long>( dRes );
+		return pow( 2.0, dX / TRACKBAR_SCALING_FACTOR );
 	}
 
-	static long Value2Trackbar( long lX )  // f(x) = 1000 * log2(x)
+	static long TrackBar2ValueL( long lX )
+	{
+		return CastToLong( TrackBar2ValueD( static_cast<double>( lX ) ) );
+	}
+
+	static double Value2TrackbarD( double dX )  // f(x) = 1000 * log2(x)
 	{
 		static double const dFactor = TRACKBAR_SCALING_FACTOR / log( 2 );
-
-		assert( lX > 0 );
-		double const dX = static_cast<double>( lX );
-		double const dY = log( dX ) * dFactor;
-		return static_cast<long>( dY );
+		assert( dX > 0.0 );
+		return log( dX ) * dFactor;
 	}
 
+	static long Value2TrackbarL( long lX )
+	{
+		return CastToLong( Value2TrackbarD( static_cast<double>( lX ) ) );
+	}
 };

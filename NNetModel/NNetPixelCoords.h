@@ -9,9 +9,9 @@
 #include "NNetPoint.h"
 #include "SmoothMove.h"
 
-nm const MINIMUM_PIXEL_SIZE =     100.0_nm;
-nm const DEFAULT_PIXEL_SIZE =    1000.0_nm;  // 1 um
-nm const MAXIMUM_PIXEL_SIZE = 2000000.0_nm;  // 2 Meter
+NanoMeter const MINIMUM_PIXEL_SIZE =     100.0_NanoMeter;
+NanoMeter const DEFAULT_PIXEL_SIZE =    1000.0_NanoMeter;  // 1 um
+NanoMeter const MAXIMUM_PIXEL_SIZE = 2000000.0_NanoMeter;  // 2 Meter
 
 class NNetPixelCoords
 {
@@ -19,27 +19,27 @@ public:
 
 	NNetPixelCoords()
 	  : m_pixOffset( 0_PIXEL ),
-		m_nmPixelSize( 0.0_nm ),
+		m_nmPixelSize( 0.0_NanoMeter ),
 		m_bMoving    ( false ),
 		m_smoothMove ( )
 	{}
 
-	void Start( nm const nmPixelSize )
+	void Start( NanoMeter const nmPixelSize )
 	{
 		m_nmPixelSize = nmPixelSize;
 	}
 
 	//////// transformations ////////
 
-	PIXEL Nm2Pixel( nm const nmParam ) const
+	PIXEL Nm2Pixel( NanoMeter const nmParam ) const
 	{ 
-		nm nmRes( nmParam / m_nmPixelSize.GetValue() );
+		NanoMeter nmRes( nmParam / m_nmPixelSize.GetValue() );
 		return PIXEL( CastToLong( nmRes.GetValue() ) );
 	}
 
-	nm Pixel2Nm( PIXEL const pixel ) const
+	NanoMeter Pixel2Nm( PIXEL const pixel ) const
 	{ 
-		return nm( pixel.GetValue() * m_nmPixelSize.GetValue() );
+		return NanoMeter( pixel.GetValue() * m_nmPixelSize.GetValue() );
 	}
 
 	PixelPoint NNet2PixelSize( NNetPoint const np ) const
@@ -67,12 +67,12 @@ public:
 
 	//////// queries ////////
 
-	nm         GetPixelSize( )   const { return m_nmPixelSize; };
+	NanoMeter  GetPixelSize( )   const { return m_nmPixelSize; };
 	PixelPoint GetPixelOffset( ) const { return m_pixOffset; }
 
-	nm         ComputeNewPixelSize( bool const bZoomIn ) const  // does not modify field size
+	NanoMeter ComputeNewPixelSize( bool const bZoomIn ) const  // does not modify field size
 	{
-		nm nmNewPixelSize { m_nmPixelSize };
+		NanoMeter nmNewPixelSize { m_nmPixelSize };
 		if ( bZoomIn )
 		{
 			nmNewPixelSize = nmNewPixelSize * 1.3;
@@ -86,7 +86,7 @@ public:
 
 	//////// manipulation functions ////////
 
-	bool SetPixelSize( nm const nmPixelSize )
+	bool SetPixelSize( NanoMeter const nmPixelSize )
 	{
 		bool bValid = isValidPixelSize( nmPixelSize );
 		if ( bValid )
@@ -101,13 +101,13 @@ public:
 
 private:
 
-	bool isValidPixelSize( nm const nmNewPixelSize ) const
+	bool isValidPixelSize( NanoMeter const nmNewPixelSize ) const
 	{
 		return (MINIMUM_PIXEL_SIZE <= nmNewPixelSize) && (nmNewPixelSize <= MAXIMUM_PIXEL_SIZE); 
 	}
 
 	PixelPoint m_pixOffset;
-	nm         m_nmPixelSize;
+	NanoMeter         m_nmPixelSize;
 	SmoothMove m_smoothMove;
 	bool       m_bMoving;
 };

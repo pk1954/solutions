@@ -139,7 +139,7 @@ bool EvoController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		{
 			LONG const lLogicalPos = m_pStatusBar->GetTrackBarPos( IDM_ZOOM_TRACKBAR );
 			LONG const lValue      = lLogicalPos;
-			LONG const lPos        = LogarithmicTrackbar::TrackBar2Value( lValue );
+			LONG const lPos        = LogarithmicTrackbar::TrackBar2ValueL( lValue );
 			ProcessUIcommand( IDM_ZOOM_TRACKBAR, lPos );
 		}
 		break;

@@ -278,7 +278,7 @@ void EvoAppWindow::Stop()
 	m_pEvoCore4Display = nullptr;
 }
 
-void EvoAppWindow::configureStatusBar( StatusBar & statusBar)
+void EvoAppWindow::configureStatusBar( StatusBar & statusBar )
 {
 	m_pGenerationDisplay = new GenerationDisplay( & statusBar, & m_EvoReadBuffer, 0 );
 

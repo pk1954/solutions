@@ -201,7 +201,7 @@ ModelData const * HistorySystemImpl::save2History( )
 
 void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
 {
-	ModelData * pModelDate = m_pHistCacheItemWork->GetModelData();
+	ModelData * pModelData = m_pHistCacheItemWork->GetModelData();
 	
 	if ( genCmd.IsCachedGeneration( ) ) // can happen only in history mode
     {
@@ -216,11 +216,11 @@ void HistorySystemImpl::step2NextGeneration( GenerationCmd genCmd )
 
 	if ( genCmd.GetCommand( ) == GenerationCmd::Id::NEXT_GEN )
 	{
-		pModelDate->Compute( );  // compute next generation
+		pModelData->Compute( );  // compute next generation
 	}
 	else
 	{
-		pModelDate->OnAppCommand( genCmd );    // Apply application defined operation to step to next generation
+		pModelData->OnAppCommand( genCmd );    // Apply application defined operation to step to next generation
 	}
 
 	m_pHistCacheItemWork->IncHistGenCounter( );

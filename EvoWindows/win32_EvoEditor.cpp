@@ -42,7 +42,7 @@ void EvoEditorWindow::Start
 	UpdateEditControls( );
 
 	CreateWindowToolTip( L"The editor allows to manipulate the model manually (individuals, mutation rate, fertility etc.) by using the left mouse button." );
-	CreateBalloonToolTip( IDM_MOVE, L"Left mouse button moves the model on the screen (no changes to the model). " );
+	CreateBalloonToolTip( IDM_MOVE, L"Left mouse button moves the model on the screen (no changes to the model)." );
 
 	m_pReadBuffer->RegisterObserver( this );
 }

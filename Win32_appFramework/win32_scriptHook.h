@@ -1,6 +1,6 @@
 // win32_scriptHook.h
 //
-// win32_EvoWindows
+// win32_appFramework
 
 #pragma once
 
@@ -15,7 +15,7 @@ public:
 	   m_iStatusBarPart( 0 )
 	{}
 
-	void Initialize( StatusBar* const pStatusBar, int iPart )
+	void Initialize( StatusBar * const pStatusBar, int iPart )
 	{
 		m_pStatusBar = pStatusBar;
 		m_iStatusBarPart = iPart;

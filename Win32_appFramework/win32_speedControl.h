@@ -1,11 +1,11 @@
 // win32_speedControl.h
 //
-// EvoWindows
+// win32_appFramework
 
 #pragma once
 
-#include "Resource.h"
 #include "LogarithmicTrackbar.h"
+#include "win32_util_resource.h"
 #include "win32_WorkThreadInterface.h"
 #include "win32_status.h"
 
@@ -17,7 +17,7 @@ public:
 	{
 		LONG const lLogicalPos = m_pStatusBar->GetTrackBarPos( IDM_SIMULATION_SPEED );
 		LONG const lValue      = SPEED_TRACKBAR_MAX - lLogicalPos;
-		LONG const lPos        = LogarithmicTrackbar::TrackBar2Value( lValue );
+		LONG const lPos        = LogarithmicTrackbar::TrackBar2ValueL( lValue );
 		EnableWindow( m_pStatusBar->GetDlgItem( IDM_MAX_SPEED ), TRUE );
 		return lPos;
 	}
@@ -26,7 +26,7 @@ public:
 	{ 
 		LONG const lPos = ( dwDelay == 0 )
 			? 0
-			: LogarithmicTrackbar::Value2Trackbar( dwDelay );
+			: LogarithmicTrackbar::Value2TrackbarL( dwDelay );
 		m_pStatusBar->SetTrackBarPos( IDM_SIMULATION_SPEED, SPEED_TRACKBAR_MAX - lPos );                
 	}
 

@@ -13,9 +13,9 @@
 // infrastructure
 
 #include "win32_appWindowInterface.h"
-#include "win32_readBuffer.h"
 #include "win32_winManager.h"
 #include "win32_NNetWorkThreadInterface.h"
+#include "win32_scriptHook.h"
 #include "D3D_driver.h"
 
 // application
@@ -51,14 +51,17 @@ private:
 
 	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 );
 
+	void configureStatusBar( StatusBar & );
+
 	Util::Event              m_eventPOI;
 
 	D3D_driver              m_D3d_driver;
 	NNetWorkThreadInterface m_NNetWorkThreadInterface;
+	NNetReadBuffer          m_NNetReadBuffer;
 	ActionTimer             m_atComputation;
 	ActionTimer             m_atDisplay;
 	Delay                   m_Delay;
-	NNetReadBuffer          m_NNetReadBuffer;
+	ScriptHook              m_ScriptHook;
 	NNetHistorySysGlue      m_NNetHistGlue;
 
 	GraphicsInterface     * m_pGraphics;

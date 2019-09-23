@@ -24,13 +24,19 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NNetCoord.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="NNetPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NNetPixelCoords.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoMeter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Segment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipeline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

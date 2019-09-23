@@ -11,9 +11,6 @@
 #define IDM_RESET_DIALOG                        120
 #define IDM_SCRIPT_DIALOG                       121
 
-#define IDM_MAX_SPEED                           130
-#define IDM_SIMULATION_SPEED                    131
-
 #define IDM_SET_POI                             144
 #define IDM_ESCAPE                              145
 #define IDD_TOGGLE_STRIP_MODE                   146

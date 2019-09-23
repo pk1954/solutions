@@ -4,7 +4,8 @@
 
 #pragma once
 
-#include "NNetCoord.h"
+#include "NanoMeter.h"
+#include "NNetReadBuffer.h"  // do not remove! class definition not sufficient.
 #include "NNetPixelCoords.h"
 #include "win32_modelWindow.h"
 
@@ -17,6 +18,7 @@ class NNetWindow : public ModelWindow
 public:
 	static void InitClass
 	( 
+		NNetReadBuffer          * const,
 		NNetWorkThreadInterface * const,
 		ActionTimer             * const
 	);
@@ -28,7 +30,7 @@ public:
 		HWND                  const, 
 		GraphicsInterface   * const, 
 		DWORD                 const,
-		nm                    const,
+		NanoMeter             const,
 		std::function<bool()> const
 	);
 
@@ -38,13 +40,14 @@ public:
 
 //	void  Size( );
 	void  Zoom( bool const );
-	void  SetPixelSize( nm const );
-	nm    GetPixelSize( ) const;
+	void  SetPixelSize( NanoMeter const );
+	NanoMeter    GetPixelSize( ) const;
 
 private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
+	static NNetReadBuffer          * m_pReadBuffer;
 	static NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 
 	HMENU m_hPopupMenu;
@@ -55,7 +58,7 @@ private:
 	NNetPixelCoords m_NNetPixelCoords;
 	PixelPoint      m_ptLast;	 	   // Last cursor position during selection 
 
-	void newPixelSize( nm const, NNetPoint const );
+	void newPixelSize( NanoMeter const, NNetPoint const );
 	void moveNNet( PixelPoint const );
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const );

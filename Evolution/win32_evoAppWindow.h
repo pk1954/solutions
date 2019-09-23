@@ -15,7 +15,6 @@
 #include "win32_appWindowInterface.h"
 #include "win32_protocolServer.h"
 #include "win32_scriptHook.h"
-#include "win32_readBuffer.h"
 #include "win32_colorManager.h"
 #include "win32_EvoWorkThreadInterface.h"
 #include "EvoHistorySysGlue.h"

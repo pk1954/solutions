@@ -3,21 +3,26 @@
 // NNetWindows
 
 #include "stdafx.h"
+#include "Segment.h"
+#include "Pipeline.h"
 #include "NNetPixelCoords.h"
 #include "win32_util_resource.h"
 #include "win32_graphicsInterface.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWindow.h"
 
+NNetReadBuffer          * NNetWindow::m_pReadBuffer             = nullptr;
 NNetWorkThreadInterface * NNetWindow::m_pNNetWorkThreadInterface = nullptr;
 
 void NNetWindow::InitClass
 (        
+	NNetReadBuffer          * const pReadBuffer,
 	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
 	ActionTimer             * const pActionTimer
 )
 {
 	ModelWindow::InitClass( pActionTimer );
+	m_pReadBuffer              = pReadBuffer;
 	m_pNNetWorkThreadInterface = pNNetWorkThreadInterface;
 }
 
@@ -34,7 +39,7 @@ void NNetWindow::Start
 	HWND                  const hwndApp, 
 	GraphicsInterface   * const pGraphics,
 	DWORD                 const dwStyle,
-	nm                    const npPixelSize,
+	NanoMeter             const npPixelSize,
 	std::function<bool()> const visibilityCriterion
 )
 {
@@ -50,6 +55,8 @@ void NNetWindow::Start
 		nullptr,
 		visibilityCriterion
 	);
+
+	m_pReadBuffer->RegisterObserver( this );
 }
 
 void NNetWindow::Stop( )
@@ -76,14 +83,14 @@ NNetWindow::~NNetWindow( )
 //	);
 //}
 
-void NNetWindow::Zoom( bool const )
+void NNetWindow::Zoom( bool const bZoomIn  )
 {
-
+	SetPixelSize( m_NNetPixelCoords.ComputeNewPixelSize( bZoomIn ) );
 }
 
 void NNetWindow::newPixelSize
 ( 
-	nm        const nmPixelSize, 
+	NanoMeter const nmPixelSize, 
 	NNetPoint const npCenter 
 )
 {
@@ -104,14 +111,14 @@ void NNetWindow::newPixelSize
 	}
 }
 
-void NNetWindow::SetPixelSize( nm const nmNewSize )
+void NNetWindow::SetPixelSize( NanoMeter const nmNewSize )
 {
 	NNetPoint const npCenter = m_NNetPixelCoords.Pixel2NNetPos( GetClRectCenter( ) );
 	m_NNetPixelCoords.SetPixelSize( nmNewSize );
 	newPixelSize( nmNewSize, npCenter );
 }
 
-nm NNetWindow::GetPixelSize( ) const
+NanoMeter NNetWindow::GetPixelSize( ) const
 {
 	return m_NNetPixelCoords.GetPixelSize( );
 }
@@ -162,22 +169,34 @@ void NNetWindow::OnPaint( )
 {
 	if ( IsWindowVisible() )
 	{
-		static COLORREF const CLR_GREEN = RGB(   0, 128, 0 );
-
 		PAINTSTRUCT ps;
 		HDC const hDC = BeginPaint( &ps );
 
 		if ( m_pGraphics->StartFrame( GetWindowHandle(), hDC ) )
 		{
-			NNetPoint const nnetPoint1(  20e3_nm,  20e3_nm );
-			NNetPoint const nnetPoint2( 800e3_nm, 400e3_nm );
-			nm        const nmWidth( 40e3_nm );
+			NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
 
-			PixelPoint const pixPoint1( m_NNetPixelCoords.NNet2PixelPos( nnetPoint1 ) );
-			PixelPoint const pixPoint2( m_NNetPixelCoords.NNet2PixelPos( nnetPoint2 ) );
-			PIXEL      const pixWidth ( m_NNetPixelCoords.Nm2Pixel( nmWidth ) );
+			Segment segment;
+			Pipeline const * pPipeline = pModel->GetPipeline( );
+			int iPotential;
+			unsigned int uiSegmentNr = 0;
+			while ( pPipeline->GetSegment( uiSegmentNr, segment, iPotential ) )
+			{
+				PixelPoint const pixPoint1( m_NNetPixelCoords.NNet2PixelPos( segment.GetStartPoint() ) );
+				PixelPoint const pixPoint2( m_NNetPixelCoords.NNet2PixelPos( segment.GetEndPoint  () ) );
+				PIXEL      const pixWidth ( m_NNetPixelCoords.Nm2Pixel( segment.GetWidth() ) );
+				COLORREF   const color = RGB(   0, 255 - iPotential, 0 );
+				m_pGraphics->AddLine( pixPoint1, pixPoint2, pixWidth, color );
+				++ uiSegmentNr;
+			}
+			m_pReadBuffer->ReleaseReadBuffer( );
 
-			m_pGraphics->AddLine( pixPoint1, pixPoint2, pixWidth, CLR_GREEN );
+			//PixelPoint const pixPoint1( m_NNetPixelCoords.NNet2PixelPos( segment.GetStartPoint() ) );
+			//PixelPoint const pixPoint2( m_NNetPixelCoords.NNet2PixelPos( segment.GetEndPoint  () ) );
+			//PIXEL      const pixWidth ( m_NNetPixelCoords.Nm2Pixel( segment.GetWidth() ) );
+
+			//m_pGraphics->AddLine( pixPoint1, pixPoint2, pixWidth, CLR_GREEN );
+
 			m_pGraphics->RenderIndividuals( );
 			m_pGraphics->EndFrame( GetWindowHandle() );
 		}
@@ -190,7 +209,7 @@ void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 {
 	int        iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;
 	BOOL const bDirection = ( iDelta > 0 );
-	nm         nmNewPixelSize;
+	NanoMeter  nmNewPixelSize;
 
 	iDelta = abs( iDelta );
 

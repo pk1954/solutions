@@ -72,20 +72,20 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)D3D;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;C:\Programme\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)D3D;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;C:\Programme\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Debug;$(SolutionDir)..\Toolbox\x64\Debug;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)D3D;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)D3D;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)D3D;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)D3D;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)D3D;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;C:\Programme\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)D3D;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;C:\Programme\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Release;$(SolutionDir)..\Toolbox\x64\Release;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

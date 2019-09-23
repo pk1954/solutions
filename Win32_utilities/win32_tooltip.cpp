@@ -14,7 +14,7 @@ HWND CreateRectToolTip
 	HWND        const hwndParent,
 	int         const idTool,
 	PixelRect * const pRect,
-	LPWSTR      const szText
+	LPCTSTR     const szText
 )
 {
 	return CreateToolTipEx( hwndParent, idTool, TRUE, pRect, szText );
@@ -22,8 +22,8 @@ HWND CreateRectToolTip
 
 HWND CreateWindowToolTip
 (
-	HWND   const hwndParent,
-	LPWSTR const szText
+	HWND    const hwndParent,
+	LPCTSTR const szText
 )
 {
 	return CreateToolTipEx( hwndParent, 0, FALSE, nullptr, szText );
@@ -31,9 +31,9 @@ HWND CreateWindowToolTip
 
 HWND CreateStdToolTip
 (
-	HWND   const hwndParent,
-	int    const idTool,
-	LPWSTR const szText
+	HWND    const hwndParent,
+	int     const idTool,
+	LPCTSTR const szText
 )
 {
 	return CreateToolTipEx( hwndParent, idTool, FALSE, nullptr, szText );
@@ -41,9 +41,9 @@ HWND CreateStdToolTip
 
 HWND CreateBalloonToolTip
 ( 
-	HWND   const hwndParent,
-	int    const idTool,
-	LPWSTR const szText
+	HWND    const hwndParent,
+	int     const idTool,
+	LPCTSTR const szText
 )
 {
 	return CreateToolTipEx( hwndParent, idTool, TRUE, nullptr, szText );
@@ -55,7 +55,7 @@ HWND CreateToolTipEx
 	int         const idTool,
 	BOOL        const bBalloon,
 	PixelRect * const pRect,
-	LPWSTR      const szText
+	LPCTSTR     const szText
 )
 {
 	DWORD dwStyle = WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP; 
@@ -94,7 +94,7 @@ HWND CreateToolTipEx
 		UINT_PTR  uId;
 		RECT      rect;
 		HINSTANCE hinst;
-		LPWSTR    lpszText;
+		LPCTSTR   lpszText;
 		LPARAM    lParam;
 //		void *lpReserved;
 	};

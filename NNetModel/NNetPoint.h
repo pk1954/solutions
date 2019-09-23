@@ -5,10 +5,10 @@
 #pragma once
 
 #include <functional>
-#include "NNetCoord.h"
+#include "NanoMeter.h"
 #include "PointType.h"
 
-using NNetPoint = PosType< nm >;
+using NNetPoint = PosType< NanoMeter >;
 
 static NNetPoint const NP_NULL( NNetPoint::NULL_VAL() );   // compiler generates call!
 static NNetPoint const NP_ZERO( NNetPoint::ZERO_VAL() );   // compiler generates call!

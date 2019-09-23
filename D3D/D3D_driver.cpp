@@ -409,7 +409,7 @@ void D3D_driver::AddLine
 //( 
 //	NNetPoint const & np1, 
 //	NNetPoint const & np2, 
-//	nm        const   nmWidth, 
+//	NanoMeter const   nmWidth, 
 //	COLORREF  const   color
 //)
 //{

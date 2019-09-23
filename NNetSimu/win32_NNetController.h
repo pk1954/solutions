@@ -20,6 +20,7 @@ public:
 	( 
 		WinManager       * const,
 		NNetWindow       * const,
+		StatusBar        * const,
 		NNetEditorWindow * const
 	);
 

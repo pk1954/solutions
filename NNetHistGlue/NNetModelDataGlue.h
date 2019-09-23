@@ -18,7 +18,7 @@ public:
 	
     NNetModelDataGlue( )
     { 
-		m_pNNetModel = NNetModel::CreateCore( );
+		m_pNNetModel = NNetModel::CreateModel( );
 	}
 
 	~NNetModelDataGlue( )
