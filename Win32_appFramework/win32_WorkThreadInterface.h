@@ -48,7 +48,6 @@ protected:
 	void WorkMessage( BOOL const, WorkThreadMessage::Id const, WPARAM const, LPARAM const );
 
 	void Continue( ) { m_pWorkThread->Continue(); }
-    void TerminateThread( );
 
 private:
 	void postGotoGeneration( HIST_GENERATION const );

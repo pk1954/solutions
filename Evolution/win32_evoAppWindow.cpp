@@ -286,11 +286,23 @@ void EvoAppWindow::configureStatusBar( )
 	m_StatusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
 
 	m_StatusBar.NewPart( );
-	ZoomControl::AddSizeControl( & m_StatusBar, MINIMUM_FIELD_SIZE.GetValue(), MAXIMUM_FIELD_SIZE.GetValue(), DEFAULT_FIELD_SIZE.GetValue() );
-	
+	ZoomControl::AddSizeControl
+	( 
+		& m_StatusBar, 
+		LogarithmicTrackbar::Value2TrackbarD( MINIMUM_FIELD_SIZE.GetValue() ), 
+		LogarithmicTrackbar::Value2TrackbarD( MAXIMUM_FIELD_SIZE.GetValue() ), 
+		LogarithmicTrackbar::Value2TrackbarD( DEFAULT_FIELD_SIZE.GetValue() ) 
+	);
+
 	m_StatusBar.NewPart( );
-	SpeedControl::AddSimulationControl( & m_StatusBar, m_pHistorySystem );
-	SpeedControl::SetSpeedTrackBar( DEFAULT_DELAY );
+	SpeedControl::AddSimulationControl
+	( 
+		& m_StatusBar, 
+		m_pHistorySystem, 
+		LogarithmicTrackbar::Value2TrackbarL( 0 ), 
+		LogarithmicTrackbar::Value2TrackbarL( MAX_DELAY ), 
+		LogarithmicTrackbar::Value2TrackbarL( DEFAULT_DELAY ) 
+	);
 
 	int iPartScriptLine = m_StatusBar.NewPart( );
 	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine );

@@ -146,10 +146,3 @@ void WorkThreadInterface::PostStopComputation( )
 {
 	m_pWorkThread->WorkMessage( FALSE, WorkThreadMessage::Id::STOP, 0, 0 );
 }
-
-// no trace output
-
-void WorkThreadInterface::TerminateThread( )
-{
-	m_pWorkThread->Terminate( );    // wait until thread has stopped
-}

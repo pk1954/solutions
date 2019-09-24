@@ -61,8 +61,12 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 	{
 
 	case IDM_MAX_SPEED:
-		SpeedControl::Set2MaxSpeed( );
-		m_pDelay->SetDelay( 0 );
+		{
+			HWND hwndStatusBar = m_pStatusBar->GetWindowHandle( );
+			m_pStatusBar->SetTrackBarPos( IDM_SIMULATION_SPEED, MAX_DELAY );                
+			EnableWindow( GetDlgItem( hwndStatusBar, IDM_MAX_SPEED ), FALSE );
+			m_pDelay->SetDelay( 0 );
+		}
 		break;
 
 	case IDM_TRACKBAR:
@@ -78,7 +82,13 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 		case IDM_SIMULATION_SPEED:
-			m_pDelay->SetDelay( SpeedControl::GetTrackBarPos( ) );
+		{
+			LONG const lLogicalPos = m_pStatusBar->GetTrackBarPos( IDM_SIMULATION_SPEED );
+			LONG const lValue      = LogarithmicTrackbar::Value2TrackbarL( MAX_DELAY ) - lLogicalPos;
+			LONG const lPos        = LogarithmicTrackbar::TrackBar2ValueL( lValue );
+			EnableWindow( m_pStatusBar->GetDlgItem( IDM_MAX_SPEED ), TRUE );
+			m_pDelay->SetDelay( lPos );
+		}
 			break;
 
 		default:

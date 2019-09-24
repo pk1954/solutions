@@ -7,7 +7,8 @@
 #include "windows.h"
 #include "ViewCollection.h"
 
-DWORD const DEFAULT_DELAY = 50;  // milliseconds
+DWORD const DEFAULT_DELAY =   50;  // milliseconds
+DWORD const MAX_DELAY     = 2048;  // milliseconds
 
 class Delay
 {

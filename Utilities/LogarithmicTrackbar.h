@@ -26,8 +26,7 @@ public:
 	static double Value2TrackbarD( double dX )  // f(x) = 1000 * log2(x)
 	{
 		static double const dFactor = TRACKBAR_SCALING_FACTOR / log( 2 );
-		assert( dX > 0.0 );
-		return log( dX ) * dFactor;
+		return ( dX > 0.0 ) ? log( dX ) * dFactor : 0.0;
 	}
 
 	static long Value2TrackbarL( long lX )
