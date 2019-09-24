@@ -92,18 +92,18 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 
 	case IDM_FIT_ZOOM:
 		//m_pNNetWindow->Fit2Rect( );
-		//ZoomControl::SetSizeTrackBar( m_pStatusBar, m_pNNetWindow->GetPixelSize() );
+		//setSizeTrackBar( m_pNNetWindow->GetPixelSize() );
 		break;
 
 	case IDM_ZOOM_OUT:
 	case IDM_ZOOM_IN:
 		m_pNNetWindow->Zoom( wmId == IDM_ZOOM_IN );
-		ZoomControl::SetSizeTrackBar( m_pStatusBar, m_pNNetWindow->GetPixelSize() );
+		setSizeTrackBar( m_pNNetWindow->GetPixelSize() );
 		break;
 
 	case IDM_SET_ZOOM:
 		m_pNNetWindow->SetPixelSize( NanoMeter( static_cast<double>(lParam) ) );
-		ZoomControl::SetSizeTrackBar( m_pStatusBar, NanoMeter(CastToLong(lParam)) );
+		setSizeTrackBar( NanoMeter(CastToLong(lParam)) );
 		break;
 
 	case IDM_REFRESH:
@@ -126,4 +126,9 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		return true;  // Some commands are handled by the framework controller
 		break;
 	}
+}
+
+void NNetController::setSizeTrackBar( NanoMeter const nmPixelSize )
+{ 
+	m_pStatusBar->SetTrackBarPos( IDM_ZOOM_TRACKBAR, CastToLong( LogarithmicTrackbar::Value2TrackbarD( nmPixelSize.GetValue() ) ) ); 
 }

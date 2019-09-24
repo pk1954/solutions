@@ -51,7 +51,7 @@ private:
 
 	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 );
 
-	void configureStatusBar( StatusBar & );
+	void configureStatusBar( );
 
 	Util::Event              m_eventPOI;
 

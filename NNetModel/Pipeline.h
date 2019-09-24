@@ -22,7 +22,7 @@ public:
 		m_npStart( npStart ),
 		m_npEnd  ( npEnd   ),
 		m_nmWidth( nmWidth ),
-		m_iWaveStart( 0 ),
+		m_dWave( 0.0 ),
 		m_potential( NR_OF_ELEMENTS, BASE_POTENTIAL )
 	{
 	}
@@ -33,18 +33,19 @@ public:
 
 	void Start( )
 	{
-		m_iWaveStart = 0;
+		m_dWave = 0.0;
 		std::fill( m_potential.begin(), m_potential.end(), BASE_POTENTIAL );
 	}
 
 	void Step()
 	{
-		for ( int i = NR_OF_ELEMENTS - 1; i > 0; --i )
+		for ( long i = NR_OF_ELEMENTS - 1; i > 0; --i )
 		{
 			m_potential[i] = m_potential[i-1];
 		}
-		m_potential[0] = BASE_POTENTIAL + ( 256 * m_iWaveStart ) / ( m_iWaveStart * m_iWaveStart + 1 );
-		++ m_iWaveStart;
+		double dY = m_dWave / ( m_dWave * m_dWave + 1.0 );
+		m_potential[0] = BASE_POTENTIAL + CastToInt( 256.0 * dY );
+		m_dWave += 0.1;
 	}
 
 	bool GetSegment( unsigned int const uiNr, Segment & seg, int & iPotential ) const
@@ -66,12 +67,12 @@ public:
 	}
 
 private:
-	static int const NR_OF_ELEMENTS = 500;
+	static int const NR_OF_ELEMENTS = 2000;
 	static int const BASE_POTENTIAL = 32;
 
 	NNetPoint m_npStart;
 	NNetPoint m_npEnd;
 	NanoMeter m_nmWidth;
-	int       m_iWaveStart;
+	double    m_dWave;
 	vector<unsigned int> m_potential;
 };

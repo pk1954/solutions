@@ -121,11 +121,11 @@ public:
 		NanoMeter nmNewPixelSize { m_nmPixelSize };
 		if ( bZoomIn )
 		{
-			nmNewPixelSize = nmNewPixelSize * 1.3;
+			nmNewPixelSize = nmNewPixelSize / 1.3;
 		}
 		else
 		{
-			nmNewPixelSize = nmNewPixelSize / 1.3;
+			nmNewPixelSize = nmNewPixelSize * 1.3;
 		}
 		return isValidPixelSize(nmNewPixelSize) ? nmNewPixelSize : m_nmPixelSize;
 	}

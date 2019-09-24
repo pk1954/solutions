@@ -41,6 +41,7 @@ public:
 
 private:
 	void scriptDialog( );
+	void setSizeTrackBar( PIXEL const );
 
 	EvoAppWindow           * m_pAppWindow;
 	EvoWorkThreadInterface * m_pEvoWorkThreadInterface;

@@ -164,7 +164,6 @@
     <ClInclude Include="win32_NNetWindow.h" />
     <ClInclude Include="win32_NNetWorkThread.h" />
     <ClInclude Include="win32_NNetWorkThreadInterface.h" />
-    <ClInclude Include="win32_zoomControl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_NNetEditor.cpp" />

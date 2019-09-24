@@ -142,7 +142,7 @@ void NNetAppWindow::Start( )
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow,   TRUE, FALSE );
 //	m_WinManager.AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, * m_pNNetEditorWindow, TRUE, FALSE );
 
-	configureStatusBar( m_StatusBar );
+	configureStatusBar( );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
@@ -166,27 +166,26 @@ void NNetAppWindow::Stop()
 	m_WinManager.RemoveAll( );
 }
 
-void NNetAppWindow::configureStatusBar( StatusBar & statusBar )
+void NNetAppWindow::configureStatusBar( )
 {
 //	m_pGenerationDisplay = new GenerationDisplay( & statusBar, & m_EvoReadBuffer, 0 );
 
-	statusBar.NewPart( );
-	statusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
+	m_StatusBar.NewPart( );
+	m_StatusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
 
-	statusBar.NewPart( );
-	ZoomControl::AddSizeControl( & statusBar, MINIMUM_PIXEL_SIZE.GetValue(), MAXIMUM_PIXEL_SIZE.GetValue() );
-	ZoomControl::SetSizeTrackBar( & statusBar, DEFAULT_PIXEL_SIZE );
+	m_StatusBar.NewPart( );
+	ZoomControl::AddSizeControl( & m_StatusBar, MINIMUM_PIXEL_SIZE.GetValue(), MAXIMUM_PIXEL_SIZE.GetValue(), DEFAULT_PIXEL_SIZE.GetValue() );
 
-	statusBar.NewPart( );
-	SpeedControl::AddSimulationControl( & statusBar, m_pHistorySystem );
+	m_StatusBar.NewPart( );
+	SpeedControl::AddSimulationControl( & m_StatusBar, m_pHistorySystem );
 	SpeedControl::SetSpeedTrackBar( DEFAULT_DELAY );
 
-	int iPartScriptLine = statusBar.NewPart( );
-	m_ScriptHook.Initialize( & statusBar, iPartScriptLine );
-	statusBar.DisplayInPart( iPartScriptLine, L"" );
+	int iPartScriptLine = m_StatusBar.NewPart( );
+	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine );
+	m_StatusBar.DisplayInPart( iPartScriptLine, L"" );
 	Script::ScrSetWrapHook( & m_ScriptHook );
 
-	statusBar.LastPart( );
+	m_StatusBar.LastPart( );
 }
 
 void NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam )

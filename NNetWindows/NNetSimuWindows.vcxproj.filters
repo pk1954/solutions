@@ -39,9 +39,6 @@
     <ClInclude Include="win32_NNetEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_zoomControl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_NNetWorkThread.cpp">

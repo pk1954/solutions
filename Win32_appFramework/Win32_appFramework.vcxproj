@@ -168,6 +168,7 @@
     <ClInclude Include="win32_status.h" />
     <ClInclude Include="win32_WorkThread.h" />
     <ClInclude Include="win32_WorkThreadInterface.h" />
+    <ClInclude Include="win32_zoomControl.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico" />

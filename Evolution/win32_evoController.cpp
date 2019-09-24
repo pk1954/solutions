@@ -124,7 +124,7 @@ bool EvoController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 
 	case IDM_FIT_ZOOM:
 		m_pGridWindow->Fit2Rect( );
-		ZoomControl::SetSizeTrackBar( m_pStatusBar, m_pGridWindow->GetFieldSize() );
+		setSizeTrackBar( m_pGridWindow->GetFieldSize() );
 		break;
 		
 	case IDM_MAX_SPEED:
@@ -160,12 +160,12 @@ bool EvoController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 	case IDM_ZOOM_OUT:
 	case IDM_ZOOM_IN:
 		m_pGridWindow->Zoom( wmId == IDM_ZOOM_IN );
-		ZoomControl::SetSizeTrackBar( m_pStatusBar, m_pGridWindow->GetFieldSize() );
+		setSizeTrackBar( m_pGridWindow->GetFieldSize() );
 		break;
 
 	case IDM_SET_ZOOM:
 		m_pGridWindow->SetFieldSize( PIXEL(CastToShort(lParam)));
-		ZoomControl::SetSizeTrackBar( m_pStatusBar, PIXEL(CastToShort(lParam)) );
+		setSizeTrackBar( PIXEL(CastToShort(lParam)) );
 		break;
 
 	case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
@@ -259,3 +259,7 @@ bool EvoController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	return false;
 }
 
+void EvoController::setSizeTrackBar( PIXEL const pixFieldSize )
+{ 
+	m_pStatusBar->SetTrackBarPos( IDM_ZOOM_TRACKBAR, LogarithmicTrackbar::Value2TrackbarL( pixFieldSize.GetValue() ) ); 
+}

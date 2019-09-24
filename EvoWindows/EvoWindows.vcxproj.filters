@@ -125,8 +125,5 @@
     <ClInclude Include="win32_histWrappers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_zoomControl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
