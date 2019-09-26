@@ -80,17 +80,17 @@ void PerformanceWindow::printLine
 
 void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 {      
-	milliseconds const msDelay           = m_pDelay->GetDelay();
-	microseconds const usDelay           = duration_cast<microseconds>(msDelay);
-	microseconds const usModelTime       = m_pAtComputation->GetSingleActionTime( );
-	microseconds const usSum             = usModelTime + usDelay;
-	MilliHertz   const milliHerzComputed = m_pAtComputation->CalcFrequency( 1000, usSum );
-	MilliHertz   const miliHerzcMeasured = m_pAtComputation->GetMeasuredPerformance( );
-	microseconds const usDisplayTime     = m_pAtDisplay->GetSingleActionTime( );
+	milliseconds const msDelay            = m_pDelay->GetDelay();
+	microseconds const usDelay            = duration_cast<microseconds>(msDelay);
+	microseconds const usModelTime        = m_pAtComputation->GetSingleActionTime( );
+	microseconds const usSum              = usModelTime + usDelay;
+	MilliHertz   const milliHertzComputed = m_pAtComputation->CalcActionFrequency( 1000, usSum );
+	MilliHertz   const miliHertzMeasured  = m_pAtComputation->GetMeasuredPerformance( );
+	microseconds const usDisplayTime      = m_pAtDisplay->GetSingleActionTime( );
 
     printLine( textBuf, L"Model:  ", usModelTime );
     printLine( textBuf, L"Delay:  ", usDelay );
-    printLine( textBuf, L"Comp:   ", milliHerzComputed );
-    printLine( textBuf, L"Meas:   ", miliHerzcMeasured );
+    printLine( textBuf, L"Comp:   ", milliHertzComputed );
+    printLine( textBuf, L"Meas:   ", miliHertzMeasured );
     printLine( textBuf, L"Display:", usDisplayTime );
 }

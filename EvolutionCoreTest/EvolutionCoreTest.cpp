@@ -66,7 +66,7 @@ void DoTest( )
 	tara( );
 	m_hrtimer.Stop( );
 
-	microseconds usTara = m_hrtimer.GetAndReset( );
+	microseconds usTara = m_hrtimer.GetDuration( );
 	milliseconds msTara = duration_cast<milliseconds>(usTara);
 
 	m_hrtimer.Start( );
@@ -75,7 +75,7 @@ void DoTest( )
 
 	wcout << L"Gen " << pCore->GetEvoGenerationNr().GetValue() << L" " << pCore->GetNrOfLivingIndividuals( ) << L" individuals alive" << endl;
 
-	microseconds usBrutto = m_hrtimer.GetAndReset( );
+	microseconds usBrutto = m_hrtimer.GetDuration( );
 	milliseconds msBrutto = duration_cast<milliseconds>(usBrutto);
 
 	microseconds usNetto = usBrutto - usTara;

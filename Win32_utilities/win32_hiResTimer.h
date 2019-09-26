@@ -9,6 +9,9 @@
 
 using std::chrono::microseconds;
 
+using Hertz = NamedType< long long, struct Hertz_Parameter >;
+using Ticks = NamedType< long long, struct Ticks_Parameter >;
+
 class HiResTimer
 {
 public:
@@ -18,15 +21,14 @@ public:
     void  Start( );
     void  Stop( );
 
-	microseconds GetAndReset( );
+	microseconds GetDuration( );
 
 private:
 
-    static LONGLONG m_llFrequency;
+    static Hertz m_frequency;
 
-    LONGLONG m_llTime;
-    LONGLONG m_llAcc;
-    LONGLONG m_llDivisor;
+	Ticks m_ticksOnStart;
+	Ticks m_ticksAccumulated;
 
-    LONGLONG readHiResTimer( ) const;
+	Ticks readHiResTimer( ) const;
 };

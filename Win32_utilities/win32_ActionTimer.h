@@ -13,7 +13,7 @@
 
 using std::chrono::milliseconds;
 
-using MilliHertz = NamedType< unsigned long, struct MilliHerz_Parameter >;
+using MilliHertz = NamedType< unsigned long, struct MilliHertz_Parameter >;
 
 class ActionTimer
 {
@@ -33,7 +33,7 @@ public:
 	void TimerStop( )
 	{
 		m_hrtimerSingleAction.Stop( );
-		m_usSingleActionTime = m_hrtimerSingleAction.GetAndReset( );
+		m_usSingleActionTime = m_hrtimerSingleAction.GetDuration( );
 		++m_dwCounter;
 		m_observers.NotifyAll( false );
 	};
@@ -43,7 +43,7 @@ public:
 		return m_usSingleActionTime;
 	}
 
-	MilliHertz CalcFrequency( DWORD dwCount, microseconds us )
+	MilliHertz CalcActionFrequency( DWORD dwCount, microseconds us )
 	{
 		if ( us == microseconds::zero() )
 			return  MilliHertz(0);
@@ -55,8 +55,8 @@ public:
 	MilliHertz GetMeasuredPerformance( )
 	{
 		m_hrtimerOverall.Stop( );
-		microseconds usOverallTime = m_hrtimerOverall.GetAndReset( );
-		MilliHertz result = CalcFrequency( m_dwCounter, usOverallTime ) * 1000;
+		microseconds usOverallTime = m_hrtimerOverall.GetDuration( );
+		MilliHertz result = CalcActionFrequency( m_dwCounter, usOverallTime ) * 1000;
 		m_dwCounter = 0;
 		m_hrtimerOverall.Start( );
 		return result;

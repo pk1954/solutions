@@ -31,6 +31,6 @@ void Stopwatch::Stop( std::wstring const wstr )
 		std::wcout << L"      ";
 	std::wcout << std::setw(30) << std::left << wstr;
 	std::wcout << std::setw( 6) << std::right;
-	std::wcout << DecFraction( CastToUnsignedLong(m_hrtimer.GetAndReset( ).count()) );
+	std::wcout << DecFraction( CastToUnsignedLong(m_hrtimer.GetDuration( ).count()) );
 	std::wcout << L" ms" << std::endl;
 }
