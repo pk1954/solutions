@@ -27,6 +27,8 @@ private:
 
     static Hertz m_frequency;
 
+	bool  m_bStarted;
+
 	Ticks m_ticksOnStart;
 	Ticks m_ticksAccumulated;
 

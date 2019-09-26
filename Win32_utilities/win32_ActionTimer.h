@@ -23,7 +23,9 @@ public:
 	      m_usSingleActionTime( 0 ),
 		  m_hrtimerOverall( ),
 		  m_dwCounter( 0 )
-	{}
+	{
+		m_hrtimerOverall.Start( );
+	}
 
 	void TimerStart( )
 	{
