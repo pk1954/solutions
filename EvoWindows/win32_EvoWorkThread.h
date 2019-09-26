@@ -82,6 +82,9 @@ private:
 
 	virtual BOOL Dispatch( MSG const );
 
+	virtual void WaitTilNextActivation( );
+
+	Delay             * m_pDelay;
 	ColorManager      * m_pColorManager;
     EvoHistorySysGlue * m_pEvoHistGlue;
 };

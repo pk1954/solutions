@@ -170,6 +170,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextBuffer.h" />
+    <ClInclude Include="TimeTypes.h" />
     <ClInclude Include="trace.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="UtilityWrappers.h" />

@@ -188,8 +188,8 @@ void NNetAppWindow::configureStatusBar( )
 		& m_StatusBar, 
 		m_pHistorySystem, 
 		LogarithmicTrackbar::Value2TrackbarL( 0 ), 
-		LogarithmicTrackbar::Value2TrackbarL( MAX_DELAY ), 
-		LogarithmicTrackbar::Value2TrackbarL( DEFAULT_DELAY ) 
+		LogarithmicTrackbar::Value2TrackbarL( CastToLong( MAX_DELAY.count()) ), 
+		LogarithmicTrackbar::Value2TrackbarL( CastToLong( DEFAULT_DELAY.count()) ) 
 	);
 
 	int iPartScriptLine = m_StatusBar.NewPart( );

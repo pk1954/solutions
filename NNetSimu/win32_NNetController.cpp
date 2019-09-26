@@ -3,6 +3,7 @@
 // NNetSimu
 
 #include "stdafx.h"
+#include <chrono>
 #include "Windowsx.h"
 #include "Windows.h"
 #include "Resource.h"
@@ -63,9 +64,9 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 	case IDM_MAX_SPEED:
 		{
 			HWND hwndStatusBar = m_pStatusBar->GetWindowHandle( );
-			m_pStatusBar->SetTrackBarPos( IDM_SIMULATION_SPEED, MAX_DELAY );                
+			m_pStatusBar->SetTrackBarPos( IDM_SIMULATION_SPEED, CastToLong( MAX_DELAY.count() ) );                
 			EnableWindow( GetDlgItem( hwndStatusBar, IDM_MAX_SPEED ), FALSE );
-			m_pDelay->SetDelay( 0 );
+			m_pDelay->SetDelay( milliseconds( 0 ) );
 		}
 		break;
 
@@ -84,10 +85,10 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		case IDM_SIMULATION_SPEED:
 		{
 			LONG const lLogicalPos = m_pStatusBar->GetTrackBarPos( IDM_SIMULATION_SPEED );
-			LONG const lValue      = LogarithmicTrackbar::Value2TrackbarL( MAX_DELAY ) - lLogicalPos;
+			LONG const lValue      = LogarithmicTrackbar::Value2TrackbarL( CastToLong( MAX_DELAY.count() ) ) - lLogicalPos;
 			LONG const lPos        = LogarithmicTrackbar::TrackBar2ValueL( lValue );
 			EnableWindow( m_pStatusBar->GetDlgItem( IDM_MAX_SPEED ), TRUE );
-			m_pDelay->SetDelay( lPos );
+			m_pDelay->SetDelay( milliseconds( lPos ) );
 		}
 			break;
 

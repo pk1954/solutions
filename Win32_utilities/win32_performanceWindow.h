@@ -29,7 +29,8 @@ public:
     virtual void DoPaint( TextBuffer & );
 
 private:
-    void printLine( TextBuffer &, wchar_t const * const, DWORD const, wchar_t const * const );
+	void printLine( TextBuffer &, wchar_t const * const, microseconds const );
+	void printLine( TextBuffer &, wchar_t const * const, MilliHertz   const );
 
 	ActionTimer * m_pAtComputation;
 	ActionTimer * m_pAtDisplay;

@@ -21,13 +21,11 @@ WorkThread::WorkThread
 	HWND                  const hwndApplication,
 	ActionTimer         * const pActionTimer,
 	EventInterface      * const pEvent,
-	Delay               * const pDelay,
 	ObserverInterface   * const pObserver,
 	HistorySystem       * const pHistSystem,
 	WorkThreadInterface * const pWorkThreadInterface
 ) :
 	m_pComputeTimer       ( pActionTimer ),
-	m_pDelay              ( pDelay ),   
 	m_pEventPOI           ( pEvent ),   
 	m_pObserver           ( pObserver ),   
 	m_pHistorySystem      ( pHistSystem ),   
@@ -47,7 +45,6 @@ WorkThread::~WorkThread( )
 	m_pEventPOI            = nullptr;
 	m_pObserver            = nullptr;
 	m_pHistorySystem       = nullptr;
-	m_pDelay               = nullptr;
 }
 
 bool WorkThread::userWantsHistoryCut( ) const
@@ -221,7 +218,7 @@ void WorkThread::GotoGeneration( HIST_GENERATION const gen )
 		WorkMessage( FALSE, WorkThreadMessage::Id::REFRESH, 0, 0 );     // refresh all views
     
 		if ( m_pHistorySystem->GetCurrentGeneration( ) != m_genDemanded ) // still not done?
-			m_pWorkThreadInterface->PostRepeatGenerationStep( );          // Loop! Will call indirectly gotoGeneration again
+			m_pWorkThreadInterface->PostRepeatGenerationStep( );          // Loop! Will call indirectly GotoGeneration again
 	}
 }
 
@@ -243,8 +240,7 @@ void WorkThread::generationRun( )
 	{
 		GotoGeneration( m_pHistorySystem->GetCurrentGeneration( ) + 1 );
 
-		if (m_pDelay != nullptr)
-			m_pDelay->SleepDelay( );
+		WaitTilNextActivation( );
 
 		m_pWorkThreadInterface->PostRunGenerations( false );
 	}

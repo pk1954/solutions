@@ -34,11 +34,11 @@ EvoWorkThread::EvoWorkThread
 		hwndApplication, 
 		pActionTimer, 
 		pEvent, 
-		pDelay, 
 		pObserver, 
 		pEvoHistorySys->GetHistorySystem( ), 
 		pWorkThreadInterface 
 	),
+	m_pDelay( pDelay ),
 	m_pColorManager( pColorManager ),
 	m_pEvoHistGlue ( pEvoHistorySys )
 { 
@@ -120,4 +120,10 @@ BOOL EvoWorkThread::Dispatch( MSG const msg  )
 	} 
 
 	return TRUE;
+}
+
+void EvoWorkThread::WaitTilNextActivation( )
+{
+	if (m_pDelay != nullptr)
+		m_pDelay->SleepDelay( );
 }

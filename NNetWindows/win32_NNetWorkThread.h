@@ -61,4 +61,8 @@ private:
 	}
 
 	virtual BOOL Dispatch( MSG const );
+
+	virtual void WaitTilNextActivation( );
+
+	Delay * m_pDelay;
 };

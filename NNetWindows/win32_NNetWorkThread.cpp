@@ -31,11 +31,11 @@ NNetWorkThread::NNetWorkThread
 		hwndApplication, 
 		pActionTimer, 
 		pEvent, 
-		pDelay, 
 		pObserver, 
 		pNNetHistorySys->GetHistorySystem( ), 
 		pWorkThreadInterface 
-	)
+	),
+	m_pDelay( pDelay )
 {
 }
 
@@ -54,4 +54,10 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	} 
 
 	return TRUE;
+}
+
+void NNetWorkThread::WaitTilNextActivation( )
+{
+	if (m_pDelay != nullptr)
+		m_pDelay->SleepDelay( );
 }

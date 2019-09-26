@@ -1,10 +1,13 @@
 // win32_hiResTimer.h : 
 //
-// Toolbox/win32_utilities
+// win32_utilities
 
 #pragma once
 
+#include <chrono>
 #include "windows.h"
+
+using std::chrono::microseconds;
 
 class HiResTimer
 {
@@ -14,7 +17,8 @@ public:
 
     void  Start( );
     void  Stop( );
-    DWORD Get( );
+
+	microseconds GetAndReset( );
 
 private:
 

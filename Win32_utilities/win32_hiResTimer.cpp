@@ -1,5 +1,6 @@
 // win32_HiResTimer.cpp :
 //
+// win32_utilities
 
 #include "stdafx.h"
 #include "win32_HiResTimer.h"
@@ -41,9 +42,9 @@ void HiResTimer::Stop( )
     m_llDivisor += m_llFrequency;
 }
 
-DWORD HiResTimer::Get( )
+microseconds HiResTimer::GetAndReset( )
 {
-    DWORD const dwAverage = static_cast<DWORD>( ( m_llDivisor == 0 ) ? 0 : ( m_llAcc * 1000000 ) / m_llDivisor );
+	microseconds const dwAverage( ( m_llDivisor == 0 ) ? 0 : ( m_llAcc * 1000000 ) / m_llDivisor );
 
     m_llAcc = 0;
     m_llDivisor = 0;

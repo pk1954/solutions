@@ -10,7 +10,6 @@
 #include "HistoryGeneration.h"
 #include "win32_thread.h"
 
-class Delay;
 class ActionTimer;
 class EvoEditorWindow;
 class RootWindow;
@@ -50,7 +49,6 @@ public:
 		HWND                  const,
 		ActionTimer         * const,
 		EventInterface      * const,
-		Delay               * const,
 		ObserverInterface   * const,
 		HistorySystem       * const,
 		WorkThreadInterface * const
@@ -104,6 +102,8 @@ protected:
 		GetHistorySystem( )->CreateAppCommand( MakeGenerationCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
 	}
 
+	virtual void WaitTilNextActivation( ) = 0;
+
 private:
 	void setContinueFlag( BOOL const bState )
 	{
@@ -118,7 +118,6 @@ private:
 	void generationRun( );
 	bool userWantsHistoryCut( ) const;
 
-	Delay               * m_pDelay;
 	ActionTimer         * m_pComputeTimer;
     EventInterface      * m_pEventPOI;
 	ObserverInterface   * m_pObserver;

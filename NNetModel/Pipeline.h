@@ -39,7 +39,7 @@ public:
 
 	void Step()
 	{
-		for ( long i = NR_OF_ELEMENTS - 1; i > 0; --i )
+		for (std::size_t i = NR_OF_ELEMENTS - 1; i > 0; --i )
 		{
 			m_potential[i] = m_potential[i-1];
 		}

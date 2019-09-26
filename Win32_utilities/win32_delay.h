@@ -4,40 +4,44 @@
 
 #pragma once
 
+#include <chrono>
+#include "util.h"
 #include "windows.h"
 #include "ViewCollection.h"
 
-DWORD const DEFAULT_DELAY =   50;  // milliseconds
-DWORD const MAX_DELAY     = 2048;  // milliseconds
+using std::chrono::milliseconds;
+
+milliseconds const DEFAULT_DELAY( 50 );  
+milliseconds const MAX_DELAY  ( 2048 );  
 
 class Delay
 {
 public:
 
 	Delay()
-	  : m_dwGenerationDelay( DEFAULT_DELAY )
+	  : m_msGenerationDelay( DEFAULT_DELAY )
 	{}
 
-	DWORD GetDelay( )
+	milliseconds GetDelay( )
 	{
-		return m_dwGenerationDelay;
+		return m_msGenerationDelay;
 	};
 
 	BOOL IsMaxSpeed( ) const
 	{
-		return m_dwGenerationDelay == 0;
+		return m_msGenerationDelay == milliseconds::zero();
 	};
 
-	void SetDelay( DWORD dwDelay )
+	void SetDelay( milliseconds delay )
 	{
-		m_dwGenerationDelay = dwDelay;
+		m_msGenerationDelay = delay;
 		m_observers.NotifyAll( false );
 	};
 
 	void SleepDelay( ) const
 	{
-		if ( m_dwGenerationDelay > 0 )
-			Sleep( m_dwGenerationDelay );
+		if ( m_msGenerationDelay > milliseconds::zero() )
+			Sleep( CastToUnsignedLong(m_msGenerationDelay.count()) );
 	};
 
 	void RegisterObserver( ObserverInterface * const pObserver )
@@ -52,6 +56,6 @@ public:
 
 private:
 
-	DWORD          m_dwGenerationDelay;  // in milliseconds
+	milliseconds   m_msGenerationDelay;  // in milliseconds
 	ViewCollection m_observers;
 };

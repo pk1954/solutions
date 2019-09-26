@@ -4,16 +4,23 @@
 
 #pragma once
 
+#include <chrono>
+#include "util.h"
+#include "NamedType.h"
 #include "windows.h"
 #include "win32_hiResTimer.h"
 #include "ViewCollection.h"
+
+using std::chrono::milliseconds;
+
+using MilliHertz = NamedType< unsigned long, struct MilliHerz_Parameter >;
 
 class ActionTimer
 {
 public:
 	ActionTimer()
 		: m_hrtimerSingleAction( ),
-		  m_dwSingleActionTime(0  ),
+	      m_usSingleActionTime( 0 ),
 		  m_hrtimerOverall( ),
 		  m_dwCounter( 0 )
 	{}
@@ -26,28 +33,33 @@ public:
 	void TimerStop( )
 	{
 		m_hrtimerSingleAction.Stop( );
-		m_dwSingleActionTime = m_hrtimerSingleAction.Get( );
+		m_usSingleActionTime = m_hrtimerSingleAction.GetAndReset( );
 		++m_dwCounter;
 		m_observers.NotifyAll( false );
 	};
 
-	DWORD GetSingleActionTime( )
+	microseconds GetSingleActionTime( )
 	{
-		return m_dwSingleActionTime;
+		return m_usSingleActionTime;
 	}
 
-	DWORD CalcFrequency( DWORD dwCount, DWORD dwMicroSecs )
+	MilliHertz CalcFrequency( DWORD dwCount, microseconds us )
 	{
-		return dwMicroSecs ? ( ( dwCount * 1000 * 1000 ) / dwMicroSecs ) : 0;
+		if ( us == microseconds::zero() )
+			return  MilliHertz(0);
+
+		unsigned long long ullFrequency = ( dwCount * 1000000ull ) / us.count();
+		return MilliHertz( CastToLong(ullFrequency) );
 	}
 
-	DWORD GetMeasuredPerformance( )
+	MilliHertz GetMeasuredPerformance( )
 	{
 		m_hrtimerOverall.Stop( );
-		DWORD dwResult = CalcFrequency( m_dwCounter, m_hrtimerOverall.Get( ) ) * 1000;
+		microseconds usOverallTime = m_hrtimerOverall.GetAndReset( );
+		MilliHertz result = CalcFrequency( m_dwCounter, usOverallTime ) * 1000;
 		m_dwCounter = 0;
 		m_hrtimerOverall.Start( );
-		return dwResult;
+		return result;
 	}
 
 	void RegisterObserver( ObserverInterface * const pObserver )
@@ -63,7 +75,7 @@ public:
 private:
 	HiResTimer     m_hrtimerSingleAction;
 	HiResTimer     m_hrtimerOverall;
-	DWORD          m_dwSingleActionTime;   // in microseconds
+	microseconds   m_usSingleActionTime; 
 	DWORD          m_dwCounter;            // nr of executions
 	ViewCollection m_observers;
 };

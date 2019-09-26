@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "version.h"
+#include <chrono>
 #include <iostream>
 #include "config.h"
 #include "trace.h"
@@ -14,6 +15,9 @@
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCore.h"
 
+using std::chrono::microseconds;
+using std::chrono::milliseconds;
+using std::chrono::duration_cast;
 using std::wofstream;
 using std::wstring;
 using std::wcout;
@@ -62,8 +66,8 @@ void DoTest( )
 	tara( );
 	m_hrtimer.Stop( );
 
-	DWORD dwMicroSecsTara = m_hrtimer.Get( );
-	DWORD dwMilliSecsTara = dwMicroSecsTara / 1000;
+	microseconds usTara = m_hrtimer.GetAndReset( );
+	milliseconds msTara = duration_cast<milliseconds>(usTara);
 
 	m_hrtimer.Start( );
 	testee( );
@@ -71,16 +75,16 @@ void DoTest( )
 
 	wcout << L"Gen " << pCore->GetEvoGenerationNr().GetValue() << L" " << pCore->GetNrOfLivingIndividuals( ) << L" individuals alive" << endl;
 
-	DWORD dwMicroSecsBrutto = m_hrtimer.Get( );
-	DWORD dwMilliSecsBrutto = dwMicroSecsBrutto / 1000;
+	microseconds usBrutto = m_hrtimer.GetAndReset( );
+	milliseconds msBrutto = duration_cast<milliseconds>(usBrutto);
 
-	DWORD dwMicroSecsNetto = dwMicroSecsBrutto - dwMicroSecsTara;
-	DWORD dwMilliSecsNetto = dwMicroSecsNetto / 1000;
+	microseconds usNetto = usBrutto - usTara;
+	milliseconds msNetto = duration_cast<milliseconds>(usNetto);
 
-	wcout << L"Brutto " << dwMilliSecsBrutto << L" msecs" << endl;
-	wcout << L"Tara   " << dwMilliSecsTara   << L" msecs" << endl;
-	wcout << L"Netto  " << dwMilliSecsNetto  << L" msecs" << endl;
-	wcout << dwMicroSecsNetto / NRUNS << L" usecs/run" << endl;
+	wcout << L"Brutto " << msBrutto.count() << L" msecs" << endl;
+	wcout << L"Tara   " << msTara.count()   << L" msecs" << endl;
+	wcout << L"Netto  " << msNetto.count()  << L" msecs" << endl;
+	wcout << usNetto.count() / NRUNS << L" usecs/run" << endl;
 
 	wcout << endl << L"*** EvolutionCoreTest finished" << endl;
 }

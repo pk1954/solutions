@@ -3,8 +3,14 @@
 
 #include "stdafx.h"
 #include "Strsafe.h"
+#include <chrono>
+#include "util.h"
 #include "win32_actionTimer.h"
 #include "win32_performanceWindow.h"
+
+using std::chrono::milliseconds;
+using std::chrono::microseconds;
+using std::chrono::duration_cast;
 
 PerformanceWindow::PerformanceWindow( ) : 
     TextWindow( ),
@@ -50,28 +56,41 @@ void PerformanceWindow::printLine
 (
 	TextBuffer          & textBuf,
 	wchar_t const * const pwch1, 
-	DWORD           const dwValue, 
-	wchar_t const * const pwch2 
+	microseconds    const duration
 )
 {
-    textBuf.printString       ( pwch1 );
-    textBuf.printAsDecFraction( dwValue );
-    textBuf.printString       ( pwch2 );
-    textBuf.nextLine          ( );
+	textBuf.printString       ( pwch1 );
+	textBuf.printAsDecFraction( CastToUnsignedLong(duration.count()) );
+	textBuf.printString       (  L"ms"  );
+	textBuf.nextLine          ( );
+}
+
+void PerformanceWindow::printLine
+(
+	TextBuffer          & textBuf,
+	wchar_t const * const pwch1, 
+	MilliHertz      const frequency
+)
+{
+	textBuf.printString       ( pwch1 );
+	textBuf.printAsDecFraction( CastToUnsignedLong(frequency.GetValue()) );
+	textBuf.printString       ( L"Gen/s" );
+	textBuf.nextLine          ( );
 }
 
 void PerformanceWindow::DoPaint( TextBuffer & textBuf )
-{
-	DWORD const dwDelay              = m_pDelay->GetDelay();
-	DWORD const dwModelTime          = m_pAtComputation->GetSingleActionTime();
-	DWORD const dwSumInMicroSeconds  = dwModelTime + dwDelay * 1000;
-    DWORD const dwGensPer1000SecComp = m_pAtComputation->CalcFrequency( 1000, dwSumInMicroSeconds );
-    DWORD const dwGensPer1000SecMeas = m_pAtComputation->GetMeasuredPerformance( );
-	DWORD const dwDisplayTime        = m_pAtDisplay->GetSingleActionTime( );
+{      
+	milliseconds const msDelay           = m_pDelay->GetDelay();
+	microseconds const usDelay           = duration_cast<microseconds>(msDelay);
+	microseconds const usModelTime       = m_pAtComputation->GetSingleActionTime( );
+	microseconds const usSum             = usModelTime + usDelay;
+	MilliHertz   const milliHerzComputed = m_pAtComputation->CalcFrequency( 1000, usSum );
+	MilliHertz   const miliHerzcMeasured = m_pAtComputation->GetMeasuredPerformance( );
+	microseconds const usDisplayTime     = m_pAtDisplay->GetSingleActionTime( );
 
-    printLine( textBuf, L"Model:  ", dwModelTime,          L"ms"    );
-    printLine( textBuf, L"Delay:  ", dwDelay * 1000,       L"ms"    );
-    printLine( textBuf, L"Comp:   ", dwGensPer1000SecComp, L"Gen/s" );
-    printLine( textBuf, L"Meas:   ", dwGensPer1000SecMeas, L"Gen/s" );
-    printLine( textBuf, L"Display:", dwDisplayTime,        L"ms"    );
+    printLine( textBuf, L"Model:  ", usModelTime );
+    printLine( textBuf, L"Delay:  ", usDelay );
+    printLine( textBuf, L"Comp:   ", milliHerzComputed );
+    printLine( textBuf, L"Meas:   ", miliHerzcMeasured );
+    printLine( textBuf, L"Display:", usDisplayTime );
 }
