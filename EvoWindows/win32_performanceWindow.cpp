@@ -1,10 +1,12 @@
 // win32_performanceWindow.cpp :
 //
+// EvoWindows
 
 #include "stdafx.h"
 #include "Strsafe.h"
 #include <chrono>
 #include "util.h"
+#include "win32_delay.h"
 #include "win32_actionTimer.h"
 #include "win32_performanceWindow.h"
 
@@ -42,8 +44,8 @@ void PerformanceWindow::Start
 		visibilityCriterion
 	);
 	m_pAtComputation->RegisterObserver( this );  // notify me on computation performance data changes 
-	m_pAtDisplay->RegisterObserver( this );      // notify me on display performance data changes 
-	m_pDelay->RegisterObserver( this );          // notify me if delay changes
+	m_pAtDisplay    ->RegisterObserver( this );  // notify me on display performance data changes 
+	m_pDelay        ->RegisterObserver( this );  // notify me if delay changes
 }
 
 void PerformanceWindow::Stop( )

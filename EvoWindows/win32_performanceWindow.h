@@ -1,13 +1,13 @@
 // win32_performanceWindow.h 
 //
-// Toolbox/win32_utilities
+// EvoWindows
 
 #pragma once
 
-#include "win32_delay.h"
 #include "win32_textWindow.h"
 
 class ActionTimer;
+class Delay;
 
 class PerformanceWindow: public TextWindow
 {

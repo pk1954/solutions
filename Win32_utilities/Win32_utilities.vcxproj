@@ -160,7 +160,6 @@
     <ClInclude Include="win32_textBuffer.h" />
     <ClInclude Include="win32_event.h" />
     <ClInclude Include="win32_hiResTimer.h" />
-    <ClInclude Include="win32_performanceWindow.h" />
     <ClInclude Include="win32_rootWindow.h" />
     <ClInclude Include="win32_script.h" />
     <ClInclude Include="win32_stopwatch.h" />
@@ -186,7 +185,6 @@
     <ClCompile Include="win32_refreshRateDialog.cpp" />
     <ClCompile Include="win32_textBuffer.cpp" />
     <ClCompile Include="win32_hiResTimer.cpp" />
-    <ClCompile Include="win32_performanceWindow.cpp" />
     <ClCompile Include="win32_rootWindow.cpp" />
     <ClCompile Include="win32_script.cpp" />
     <ClCompile Include="win32_stopwatch.cpp" />
