@@ -104,10 +104,14 @@ protected:
 
 	virtual void WaitTilNextActivation( ) = 0;
 
+	virtual void SetRunModeHook( BOOL const ) {};  // hook for application when run mode starts/stops
+
 private:
-	void setContinueFlag( BOOL const bState )
+
+	void SetRunMode( BOOL const bState )
 	{
 		m_bContinue = bState;
+		SetRunModeHook( bState );
 	}
 
 	GenerationCmd MakeGenerationCmd( GenerationCmd::Id const cmd, Int24 const param )

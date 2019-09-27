@@ -28,8 +28,8 @@ void NNetWorkThreadInterface::Start
 	HWND                 const hwndApplication,
 	ActionTimer        * const pActionTimer,
     EventInterface     * const pEvent,
-	Delay              * const pDelay,
-	ObserverInterface  * const pObserver, 
+	ObserverInterface  * const pObserver,
+	SlowMotionRatio    * const pSlowMotionRatio,
     NNetHistorySysGlue * const pNNetHistGlue
 )
 {
@@ -38,8 +38,8 @@ void NNetWorkThreadInterface::Start
 		hwndApplication, 
 		pActionTimer,
 		pEvent, 
-		pDelay, 
-		pObserver, 
+		pObserver,
+		pSlowMotionRatio,
 		pNNetHistGlue, 
 		this
 	);

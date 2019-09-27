@@ -76,7 +76,7 @@ NNetAppWindow::NNetAppWindow( ) :
 	( 
 		this,
 		& m_NNetWorkThreadInterface,
-		& m_Delay
+		& m_SlowMotionRatio
 	);
 
 	m_pMainNNetWindow  ->SetRefreshRate( 100ms );
@@ -132,8 +132,8 @@ void NNetAppWindow::Start( )
 		m_hwndApp, 
 		& m_atComputation,
 		& m_eventPOI, 
-		& m_Delay, 
-		& m_NNetReadBuffer, 
+		& m_NNetReadBuffer,
+		& m_SlowMotionRatio,
 		& m_NNetHistGlue
 	);
 
@@ -158,7 +158,6 @@ void NNetAppWindow::Stop()
 	m_pMainNNetWindow  ->Stop( );
 //	m_pNNetEditorWindow->Stop( );
 
-	m_Delay.Stop( );
 	m_NNetReadBuffer.Stop( );
 	m_NNetWorkThreadInterface.Stop( );
 	m_NNetHistGlue           .Stop( );
@@ -189,9 +188,9 @@ void NNetAppWindow::configureStatusBar( )
 	( 
 		& m_StatusBar, 
 		m_pHistorySystem, 
-		LogarithmicTrackbar::Value2TrackbarL( 0 ), 
-		LogarithmicTrackbar::Value2TrackbarL( CastToLong( MAX_DELAY.count()) ), 
-		LogarithmicTrackbar::Value2TrackbarL( CastToLong( DEFAULT_DELAY.count()) ) 
+		LogarithmicTrackbar::Value2TrackbarL( CastToLong( SlowMotionRatio::MIN) ), 
+		LogarithmicTrackbar::Value2TrackbarL( CastToLong( SlowMotionRatio::MAX) ), 
+		LogarithmicTrackbar::Value2TrackbarL( CastToLong( SlowMotionRatio::DEFAULT ) ) 
 	);
 
 	int iPartScriptLine = m_StatusBar.NewPart( );

@@ -9,11 +9,11 @@
 #include "win32_WorkThread.h"
 #include "NNetGenerationCmd.h"
 
-class Delay;
 class ActionTimer;
 class RootWindow;
 class WinManager;
 class EventInterface;
+class SlowMotionRatio;
 class NNetHistorySysGlue;
 class NNetWorkThreadInterface;
 
@@ -42,8 +42,8 @@ public:
 		HWND                      const,
 		ActionTimer             * const,
 		EventInterface          * const,
-		Delay                   * const,
 		ObserverInterface       * const,
+		SlowMotionRatio         * const,
 		NNetHistorySysGlue      * const,
 		NNetWorkThreadInterface * const
 	);
@@ -61,11 +61,16 @@ private:
 		EditorCommand( static_cast<GenerationCmd::Id>(cmd), wParam );
 	}
 
+	virtual void SetRunModeHook( BOOL const bState ) 
+	{
+		m_timerTicks = Ticks( 0 );
+	}
+	
 	virtual BOOL Dispatch( MSG const );
 
 	virtual void WaitTilNextActivation( );
 
-	Delay * m_pDelay;
-
-	HiResTimer m_hrTimer;
+	SlowMotionRatio * m_pSlowMotionRatio;
+	Ticks             m_timerTicks;
+	HiResTimer        m_hrTimer;
 };

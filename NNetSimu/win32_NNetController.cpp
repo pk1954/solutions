@@ -8,6 +8,7 @@
 #include "Windows.h"
 #include "Resource.h"
 #include "BoolOp.h"
+#include "SlowMotionRatio.h"
 #include "win32_speedControl.h"
 #include "win32_zoomControl.h"
 #include "win32_aboutBox.h"
@@ -27,7 +28,7 @@ NNetController::NNetController
 	m_pAppWindow              ( nullptr ),
 	m_pNNetWorkThreadInterface( nullptr ),
 	m_pWinManager             ( pWinManager ),
-    m_pDelay                  ( nullptr ),
+    m_pSlowMotionRatio        ( nullptr ),
 	m_pStatusBar              ( pStatusBar ),
 	m_pNNetWindow             ( pNNetWindow ),
 	m_pNNetEditorWindow       ( pNNetEditorWindow ),
@@ -39,7 +40,7 @@ NNetController::~NNetController( )
 	m_pNNetWorkThreadInterface = nullptr;
 	m_pAppWindow               = nullptr;
 	m_pWinManager              = nullptr;
-	m_pDelay                   = nullptr;
+	m_pSlowMotionRatio         = nullptr;
     m_pStatusBar               = nullptr;
 }
 
@@ -47,12 +48,12 @@ void NNetController::Initialize
 ( 
 	NNetAppWindow           * const pAppWindow,
 	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
-	Delay                   * const pDelay
+	SlowMotionRatio         * const pSlowMotionRatio
 )
 {
 	m_pNNetWorkThreadInterface = pNNetWorkThreadInterface;
 	m_pAppWindow               = pAppWindow;
-    m_pDelay                   = pDelay;
+    m_pSlowMotionRatio         = pSlowMotionRatio;
 	m_hCrsrWait                = LoadCursor( NULL, IDC_WAIT );
 }
 
@@ -64,9 +65,9 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 	case IDM_MAX_SPEED:
 		{
 			HWND hwndStatusBar = m_pStatusBar->GetWindowHandle( );
-			m_pStatusBar->SetTrackBarPos( IDM_SIMULATION_SPEED, CastToLong( MAX_DELAY.count() ) );                
+			m_pStatusBar->SetTrackBarPos( IDM_SIMULATION_SPEED, CastToLong( SlowMotionRatio::MAX ) );                
 			EnableWindow( GetDlgItem( hwndStatusBar, IDM_MAX_SPEED ), FALSE );
-			m_pDelay->SetDelay( milliseconds( 0 ) );
+			m_pSlowMotionRatio->SetRatio( SlowMotionRatio::MAX );
 		}
 		break;
 
@@ -85,12 +86,12 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		case IDM_SIMULATION_SPEED:
 		{
 			LONG const lLogicalPos = m_pStatusBar->GetTrackBarPos( IDM_SIMULATION_SPEED );
-			LONG const lValue      = LogarithmicTrackbar::Value2TrackbarL( CastToLong( MAX_DELAY.count() ) ) - lLogicalPos;
+			LONG const lValue      = LogarithmicTrackbar::Value2TrackbarL( CastToLong( SlowMotionRatio::MAX ) ) - lLogicalPos;
 			LONG const lPos        = LogarithmicTrackbar::TrackBar2ValueL( lValue );
 			EnableWindow( m_pStatusBar->GetDlgItem( IDM_MAX_SPEED ), TRUE );
-			m_pDelay->SetDelay( milliseconds( lPos ) );
+			m_pSlowMotionRatio->SetRatio( lPos );
 		}
-			break;
+		break;
 
 		default:
 			assert( false );
@@ -132,11 +133,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 {
 	switch ( wmId )
 	{
+	case 0:
+		break;
 
 	default:
-		return true;  // Some commands are handled by the framework controller
-		break;
+		return true;
 	}
+
+	return false;
 }
 
 void NNetController::setSizeTrackBar( NanoMeter const nmPixelSize )

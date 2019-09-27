@@ -75,9 +75,6 @@
     <ClInclude Include="win32_tooltip.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_delay.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_actionTimer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -85,6 +82,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_delay.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

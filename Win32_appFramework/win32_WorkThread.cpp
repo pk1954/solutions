@@ -109,7 +109,7 @@ void WorkThread::ThreadMsgDispatcher( MSG const msg  )
 	}
 }
 
-BOOL WorkThread::Dispatch( MSG const msg  )
+BOOL WorkThread::Dispatch( MSG const msg )
 {
 	switch ( static_cast<WorkThreadMessage::Id>(msg.message) )
 	{
@@ -145,13 +145,13 @@ BOOL WorkThread::Dispatch( MSG const msg  )
 
 	case WorkThreadMessage::Id::GENERATION_RUN:
 		if ( static_cast<bool>(msg.lParam) )          // if first RUN message ...
-			setContinueFlag( TRUE );
+			SetRunMode( TRUE );
 		generationRun( );
 		break;
 
 	case WorkThreadMessage::Id::STOP:
 		m_genDemanded = m_pHistorySystem->GetCurrentGeneration( );
-		setContinueFlag( FALSE );
+		SetRunMode( FALSE );
 		Script::StopProcessing( );
 		return FALSE;      // do not notify observers, because model has not changed  
 
@@ -182,10 +182,10 @@ BOOL WorkThread::Dispatch( MSG const msg  )
 		break;
 
 	default:
-		return FALSE;
+		return FALSE; // could not handle message
 	} 
 
-	return TRUE;
+	return TRUE; // message handled, all done
 }
 
 // GotoGeneration - perform one history step towards demanded generation

@@ -25,7 +25,7 @@ public:
 	microseconds TicksToMicroseconds( Ticks const );
 	Ticks        MicroSecondsToTicks( microseconds const );
 
-	void BusyWait( microseconds const );
+	void BusyWait( microseconds const, Ticks & );
 
 private:
 	unsigned long long const MICROSECONDS_TO_SECONDS = microseconds::period::den;

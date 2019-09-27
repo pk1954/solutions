@@ -8,12 +8,12 @@
 #include "boolOp.h"
 #include "win32_WorkThreadInterface.h"
 
-class Delay;
 class ActionTimer;
 class ObserverInterface;
 class EventInterface;
 class NNetHistorySysGlue;
 class NNetWorkThread;
+class SlowMotionRatio;
 
 class NNetWorkThreadInterface: public WorkThreadInterface
 {
@@ -26,8 +26,8 @@ public:
 		HWND                 const,
 		ActionTimer        * const,
 		EventInterface     * const,
-		Delay              * const,
-		ObserverInterface  * const, 
+		ObserverInterface  * const,
+		SlowMotionRatio    * const,
 	    NNetHistorySysGlue * const
     );
 

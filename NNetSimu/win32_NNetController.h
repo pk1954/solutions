@@ -5,13 +5,13 @@
 #pragma once
 
 class NNetWorkThreadInterface;
+class SlowMotionRatio;
 class NNetEditorWindow;
 class NNetAppWindow;
 class NNetAppMenu;
 class NNetWindow;
 class WinManager;
 class StatusBar;
-class Delay;
 
 class NNetController
 {
@@ -30,7 +30,7 @@ public:
 	( 
 		NNetAppWindow           * const,
 		NNetWorkThreadInterface * const,
-		Delay                   * const
+		SlowMotionRatio         * const
 	);
 
 	bool ProcessUIcommand   ( int const, LPARAM const );
@@ -42,9 +42,9 @@ private:
 	NNetAppWindow           * m_pAppWindow;
 	NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 	WinManager              * m_pWinManager;
-	Delay                   * m_pDelay;
 	StatusBar               * m_pStatusBar;
 	NNetWindow              * m_pNNetWindow;
 	NNetEditorWindow        * m_pNNetEditorWindow;
+	SlowMotionRatio         * m_pSlowMotionRatio;
 	HCURSOR                   m_hCrsrWait;
 };				          

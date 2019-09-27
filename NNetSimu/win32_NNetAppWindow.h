@@ -7,7 +7,6 @@
 #include <fstream>
 #include <iostream>
 #include "win32_event.h"
-#include "win32_delay.h"
 #include "win32_actionTimer.h"
 
 // infrastructure
@@ -16,6 +15,7 @@
 #include "win32_winManager.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_scriptHook.h"
+#include "SlowMotionRatio.h"
 #include "D3D_driver.h"
 
 // application
@@ -59,9 +59,9 @@ private:
 	NNetReadBuffer          m_NNetReadBuffer;
 	ActionTimer             m_atComputation;
 	ActionTimer             m_atDisplay;
-	Delay                   m_Delay;
 	ScriptHook              m_ScriptHook;
 	NNetHistorySysGlue      m_NNetHistGlue;
+	SlowMotionRatio         m_SlowMotionRatio;
 
 	GraphicsInterface     * m_pGraphics;
 	NNetController        * m_pNNetController;

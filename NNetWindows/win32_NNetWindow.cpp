@@ -236,6 +236,8 @@ BOOL NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 	UINT uiCmdId = LOWORD( wParam );
 	switch ( uiCmdId )
 	{
+	case 0:
+		break;
 
 	default:
 		return TRUE;

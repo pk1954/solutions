@@ -5,10 +5,10 @@
 #include "stdafx.h"
 #include <sstream> 
 #include "SCRIPT.H"
+#include "SlowMotionRatio.h"
 #include "EventInterface.h"
 #include "NNetHistorySysGlue.h"
 #include "NNetReadBuffer.h"
-#include "win32_delay.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 #include "win32_actionTimer.h"
@@ -21,8 +21,8 @@ NNetWorkThread::NNetWorkThread
 	HWND                      const hwndApplication,
 	ActionTimer             * const pActionTimer,
 	EventInterface          * const pEvent,
-	Delay                   * const pDelay,
 	ObserverInterface       * const pObserver, 
+	SlowMotionRatio         * const pSLowMotionRatio,
 	NNetHistorySysGlue      * const pNNetHistorySys,
 	NNetWorkThreadInterface * const pWorkThreadInterface
 ):
@@ -31,11 +31,12 @@ NNetWorkThread::NNetWorkThread
 		hwndApplication, 
 		pActionTimer, 
 		pEvent, 
-		pObserver, 
+		pObserver,
 		pNNetHistorySys->GetHistorySystem( ), 
 		pWorkThreadInterface 
 	),
-	m_pDelay( pDelay )
+	m_pSlowMotionRatio( pSLowMotionRatio ),
+	m_timerTicks( Ticks( 0 ) )
 {
 }
 
@@ -47,7 +48,8 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 {
 	switch ( static_cast<NNetWorkThreadMessage::Id>(msg.message) )
 	{
-
+	case NNetWorkThreadMessage::Id::NNET_FIRST:
+		break;
 
 	default:
 		return FALSE;
@@ -58,11 +60,10 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 
 void NNetWorkThread::WaitTilNextActivation( )
 {
-	static microseconds  const TIME_RESOLUTION    =  microseconds( 100 );
-	static unsigned long const SLOW_MOTION_FACTOR = 100;
+	static microseconds  const TIME_RESOLUTION =  microseconds( 100 );
 
 	//if (m_pDelay != nullptr)
 	//	m_pDelay->SleepDelay( );
 
-	m_hrTimer.BusyWait( TIME_RESOLUTION * SLOW_MOTION_FACTOR );
+	m_hrTimer.BusyWait( TIME_RESOLUTION * m_pSlowMotionRatio->GetRatio(), m_timerTicks );
 }

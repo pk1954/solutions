@@ -74,14 +74,15 @@ microseconds HiResTimer::GetDuration( )
 	return result;
 }
 
-void HiResTimer::BusyWait( microseconds const us )
+void HiResTimer::BusyWait( microseconds const us, Ticks & ticks )
 {
-	Ticks ticks;
-	Ticks ticksToWait  = MicroSecondsToTicks( us );
-	Ticks ticksTarget  = readHiResTimer( ) + ticksToWait;
+	Ticks ticksToWait = MicroSecondsToTicks( us );
+	if ( ticks == Ticks( 0 ) ) 
+		ticks = readHiResTimer( );
+	Ticks ticksTarget = ticks + ticksToWait;
+
 	do
 	{ 
 		ticks = readHiResTimer( );
 	} while ( ticks < ticksTarget );
 }
-
