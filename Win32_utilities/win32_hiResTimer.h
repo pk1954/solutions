@@ -25,18 +25,10 @@ public:
 	microseconds TicksToMicroseconds( Ticks const );
 	Ticks        MicroSecondsToTicks( microseconds const );
 
-	void BusyWait( microseconds const us )
-	{
-		Ticks ticks;
-		Ticks ticksToWait  = MicroSecondsToTicks( us );
-		Ticks ticksTarget  = readHiResTimer( ) + ticksToWait;
-		do
-		{ 
-			ticks = readHiResTimer( );
-		} while ( ticks < ticksTarget );
-	}
+	void BusyWait( microseconds const );
 
 private:
+	unsigned long long const MICROSECONDS_TO_SECONDS = microseconds::period::den;
 
     static Hertz m_frequency;
 

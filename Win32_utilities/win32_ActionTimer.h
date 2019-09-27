@@ -47,7 +47,7 @@ public:
 
 	MilliHertz CalcActionFrequency( microseconds us, DWORD dwCount = 1 )
 	{
-		static unsigned long long MICROSECONDS_TO_MILLIHERTZ_FACTOR = 1000ull * 1000ull  * 1000ull;
+		static unsigned long long MICROSECONDS_TO_MILLIHERTZ_FACTOR = 1000ull * microseconds::period::den;
 		if ( us == microseconds::zero() )
 			return  MilliHertz(0);
 

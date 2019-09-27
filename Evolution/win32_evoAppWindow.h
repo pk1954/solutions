@@ -52,8 +52,7 @@ public:
 	~EvoAppWindow( );
 
 	virtual void Start( );
-
-	void Stop( );
+	virtual void Stop( );
 
 private:
 	EvoAppWindow             ( EvoAppWindow const & );  // noncopyable class 

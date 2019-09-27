@@ -58,8 +58,11 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 
 void NNetWorkThread::WaitTilNextActivation( )
 {
+	static microseconds  const TIME_RESOLUTION    =  microseconds( 100 );
+	static unsigned long const SLOW_MOTION_FACTOR = 100;
+
 	//if (m_pDelay != nullptr)
 	//	m_pDelay->SleepDelay( );
 
-	m_hrTimer.BusyWait( microseconds( 100 ) );
+	m_hrTimer.BusyWait( TIME_RESOLUTION * SLOW_MOTION_FACTOR );
 }

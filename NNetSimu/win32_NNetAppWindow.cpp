@@ -155,13 +155,15 @@ void NNetAppWindow::Start( )
 
 void NNetAppWindow::Stop()
 {
-	BaseAppWindow::Stop();
-
 	m_pMainNNetWindow  ->Stop( );
 //	m_pNNetEditorWindow->Stop( );
 
 	m_Delay.Stop( );
 	m_NNetReadBuffer.Stop( );
+	m_NNetWorkThreadInterface.Stop( );
+	m_NNetHistGlue           .Stop( );
+
+	BaseAppWindow::Stop();
 
 	m_WinManager.RemoveAll( );
 }

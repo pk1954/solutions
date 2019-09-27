@@ -49,17 +49,17 @@ void HiResTimer::Stop( )
 Ticks HiResTimer::MicroSecondsToTicks( microseconds const us )
 {
 	assert( us.count() < LLONG_MAX / m_frequency.GetValue() );
-	return Ticks( (us.count() * m_frequency.GetValue()) / 1000000ull ); 
+	return Ticks( (us.count() * m_frequency.GetValue()) / MICROSECONDS_TO_SECONDS ); 
 }
 
 microseconds HiResTimer::TicksToMicroseconds( Ticks const ticks )
 {
-	assert( ticks.GetValue() < LLONG_MAX / 1000000ull );
+	assert( ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS );
 	microseconds result
-	(                                        // multiplication with 1,000,000 
-		( ticks.GetValue() * 1000000ull )    // converts from seconds to microseconds.
-		/ m_frequency.GetValue()             // multiply *before* division, otherwise
-	);                                       // division would truncate too many signuficant digits
+	(                                                  
+		( ticks.GetValue() * MICROSECONDS_TO_SECONDS ) // converts from seconds to microseconds.
+		/ m_frequency.GetValue()                       // multiply *before* division, otherwise
+	);                                                 // division would truncate too many signuficant digits
 
 	return result;
 }
@@ -73,3 +73,15 @@ microseconds HiResTimer::GetDuration( )
 
 	return result;
 }
+
+void HiResTimer::BusyWait( microseconds const us )
+{
+	Ticks ticks;
+	Ticks ticksToWait  = MicroSecondsToTicks( us );
+	Ticks ticksTarget  = readHiResTimer( ) + ticksToWait;
+	do
+	{ 
+		ticks = readHiResTimer( );
+	} while ( ticks < ticksTarget );
+}
+

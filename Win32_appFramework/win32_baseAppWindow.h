@@ -37,7 +37,7 @@ protected:
 	AppMenu       * m_pAppMenu;        // allocated by application
 	HistorySystem * m_pHistorySystem;  // allocated here
 
-	void Stop( );
+	virtual void Stop( );
 
     bool ProcessFrameworkCommand( WPARAM const, LPARAM const = 0 );
 

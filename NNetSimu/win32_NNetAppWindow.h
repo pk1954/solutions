@@ -42,8 +42,7 @@ public:
 	~NNetAppWindow( );
 
 	virtual void Start( );
-
-	void Stop( );
+	virtual void Stop( );
 
 private:
 	NNetAppWindow             ( NNetAppWindow const & );  // noncopyable class 
