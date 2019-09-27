@@ -61,7 +61,7 @@ void PerformanceWindow::printLine
 {
 	textBuf.printString       ( pwch1 );
 	textBuf.printAsDecFraction( CastToUnsignedLong(duration.count()) );
-	textBuf.printString       (  L"ms"  );
+	textBuf.printString       ( L"ms" );
 	textBuf.nextLine          ( );
 }
 
@@ -84,12 +84,12 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 	microseconds const usDelay            = duration_cast<microseconds>(msDelay);
 	microseconds const usModelTime        = m_pAtComputation->GetSingleActionTime( );
 	microseconds const usSum              = usModelTime + usDelay;
-	MilliHertz   const milliHertzComputed = m_pAtComputation->CalcActionFrequency( 1000, usSum );
+	MilliHertz   const milliHertzComputed = m_pAtComputation->CalcActionFrequency( usSum );
 	MilliHertz   const miliHertzMeasured  = m_pAtComputation->GetMeasuredPerformance( );
 	microseconds const usDisplayTime      = m_pAtDisplay->GetSingleActionTime( );
 
-    printLine( textBuf, L"Model:  ", usModelTime );
     printLine( textBuf, L"Delay:  ", usDelay );
+    printLine( textBuf, L"Model:  ", usModelTime );
     printLine( textBuf, L"Comp:   ", milliHertzComputed );
     printLine( textBuf, L"Meas:   ", miliHertzMeasured );
     printLine( textBuf, L"Display:", usDisplayTime );

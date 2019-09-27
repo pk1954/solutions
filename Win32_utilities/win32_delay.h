@@ -56,6 +56,6 @@ public:
 
 private:
 
-	milliseconds   m_msGenerationDelay;  // in milliseconds
+	milliseconds   m_msGenerationDelay; 
 	ViewCollection m_observers;
 };

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "HistoryGeneration.h"
+#include "win32_hiResTimer.h"
 #include "win32_WorkThread.h"
 #include "NNetGenerationCmd.h"
 
@@ -65,4 +66,6 @@ private:
 	virtual void WaitTilNextActivation( );
 
 	Delay * m_pDelay;
+
+	HiResTimer m_hrTimer;
 };

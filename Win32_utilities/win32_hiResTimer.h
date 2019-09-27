@@ -18,10 +18,23 @@ public:
     HiResTimer( );
     ~HiResTimer( ) {};
 
-    void  Start( );
-    void  Stop( );
+    void Start( );
+    void Stop( );
 
 	microseconds GetDuration( );
+	microseconds TicksToMicroseconds( Ticks const );
+	Ticks        MicroSecondsToTicks( microseconds const );
+
+	void BusyWait( microseconds const us )
+	{
+		Ticks ticks;
+		Ticks ticksToWait  = MicroSecondsToTicks( us );
+		Ticks ticksTarget  = readHiResTimer( ) + ticksToWait;
+		do
+		{ 
+			ticks = readHiResTimer( );
+		} while ( ticks < ticksTarget );
+	}
 
 private:
 

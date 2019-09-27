@@ -3,6 +3,7 @@
 // win32_utilities
 
 #include "stdafx.h"
+#include <limits>     
 #include "NamedType.h"
 #include "win32_HiResTimer.h"
 
@@ -45,15 +46,29 @@ void HiResTimer::Stop( )
 	m_bStarted = false;
 }
 
+Ticks HiResTimer::MicroSecondsToTicks( microseconds const us )
+{
+	assert( us.count() < LLONG_MAX / m_frequency.GetValue() );
+	return Ticks( (us.count() * m_frequency.GetValue()) / 1000000ull ); 
+}
+
+microseconds HiResTimer::TicksToMicroseconds( Ticks const ticks )
+{
+	assert( ticks.GetValue() < LLONG_MAX / 1000000ull );
+	microseconds result
+	(                                        // multiplication with 1,000,000 
+		( ticks.GetValue() * 1000000ull )    // converts from seconds to microseconds.
+		/ m_frequency.GetValue()             // multiply *before* division, otherwise
+	);                                       // division would truncate too many signuficant digits
+
+	return result;
+}
+
 microseconds HiResTimer::GetDuration( )
 {
 	assert( ! m_bStarted );
-	microseconds result
-	(                                                    // multiplication with 1,000,000 
-		( m_ticksAccumulated.GetValue() * 1000000ull ) /  // converts from seconds to microseconds.
-		m_frequency.GetValue()                            // multiply *before* division, otherwise
-	);                                                   // division would truncate too many signuficant digits
 
+	microseconds result = TicksToMicroseconds( m_ticksAccumulated );
 	m_ticksAccumulated = Ticks( 0 );
 
 	return result;

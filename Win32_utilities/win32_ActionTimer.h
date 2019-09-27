@@ -45,12 +45,14 @@ public:
 		return m_usSingleActionTime;
 	}
 
-	MilliHertz CalcActionFrequency( DWORD dwCount, microseconds us )
+	MilliHertz CalcActionFrequency( microseconds us, DWORD dwCount = 1 )
 	{
+		static unsigned long long MICROSECONDS_TO_MILLIHERTZ_FACTOR = 1000ull * 1000ull  * 1000ull;
 		if ( us == microseconds::zero() )
 			return  MilliHertz(0);
 
-		unsigned long long ullFrequency = ( dwCount * 1000000ull ) / us.count();
+		assert( dwCount < ULLONG_MAX / MICROSECONDS_TO_MILLIHERTZ_FACTOR );    // avoid ull overflow
+		unsigned long long ullFrequency = ( dwCount * MICROSECONDS_TO_MILLIHERTZ_FACTOR ) / us.count();
 		return MilliHertz( CastToLong(ullFrequency) );
 	}
 
@@ -58,7 +60,7 @@ public:
 	{
 		m_hrtimerOverall.Stop( );
 		microseconds usOverallTime = m_hrtimerOverall.GetDuration( );
-		MilliHertz result = CalcActionFrequency( m_dwCounter, usOverallTime ) * 1000;
+		MilliHertz  result         = CalcActionFrequency( usOverallTime, m_dwCounter );
 		m_dwCounter = 0;
 		m_hrtimerOverall.Start( );
 		return result;
@@ -75,6 +77,7 @@ public:
 	}
 
 private:
+
 	HiResTimer     m_hrtimerSingleAction;
 	HiResTimer     m_hrtimerOverall;
 	microseconds   m_usSingleActionTime; 

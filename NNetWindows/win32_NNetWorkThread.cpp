@@ -58,6 +58,8 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 
 void NNetWorkThread::WaitTilNextActivation( )
 {
-	if (m_pDelay != nullptr)
-		m_pDelay->SleepDelay( );
+	//if (m_pDelay != nullptr)
+	//	m_pDelay->SleepDelay( );
+
+	m_hrTimer.BusyWait( microseconds( 100 ) );
 }

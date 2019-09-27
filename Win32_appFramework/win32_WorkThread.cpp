@@ -7,7 +7,6 @@
 #include "SCRIPT.H"
 #include "HistorySystem.h"
 #include "EventInterface.h"
-#include "win32_delay.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 #include "win32_stopwatch.h"
