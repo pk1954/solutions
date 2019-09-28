@@ -5,7 +5,9 @@
 #pragma once
 
 #include "util.h"
+#include "NNetTypes.h"
 #include "Segment.h"
+#include "Neuron.h"
 #include "Pipeline.h"
 #include "ModelInterface.h"
 
@@ -22,10 +24,15 @@ public:
 
 	// readOnly functions
 
-	BYTES const GetCoreSize()
+	BYTES const GetCoreSize() const 
 	{ 
 		return BYTES(sizeof(NNetModel)); 
 	};
+
+	microseconds GetSimulationTime( ) const 
+	{
+		return m_timeStamp;
+	}
 
 	// manipulating functions
 
@@ -38,8 +45,6 @@ public:
 
 	virtual void ResetAll( );
 
-	Segment GetSegment( ) const { return m_segment; }
-
 	Pipeline const * GetPipeline( ) const { return & m_pipeline; }
 
 	// static functions  
@@ -51,6 +56,9 @@ public:
 private:
 
 	int      m_iCounter;
+	Neuron   m_neuron;
+	Knot     m_knot;
 	Pipeline m_pipeline;
-	Segment  m_segment;
+
+	microseconds m_timeStamp;
 };

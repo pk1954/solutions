@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "NNetTypes.h"
 #include "NNetPoint.h"
 #include "NNetModel.h"
 
@@ -16,20 +17,14 @@ void NNetModel::InitClass
 }
 
 NNetModel::NNetModel( )
-	: m_segment
-	(
-		NNetPoint(  20e3_NanoMeter,  20e3_NanoMeter ),
-		NNetPoint( 800e3_NanoMeter, 400e3_NanoMeter ),
-		NanoMeter( 40e3_NanoMeter )
-	),
-	m_pipeline
-	(
-		NNetPoint(  20e3_NanoMeter,  20e3_NanoMeter ),
-		NNetPoint( 800e3_NanoMeter, 400e3_NanoMeter ),
-		NanoMeter( 10e3_NanoMeter )
-	),
+  : m_timeStamp( microseconds( 0 ) ),
+	m_neuron  ( NNetPoint(   20.0_MicroMeter,   20.0_MicroMeter ) ),
+	m_knot    ( NNetPoint( 1000.0_MicroMeter, 1400.0_MicroMeter ) ),
+	m_pipeline( ),
 	m_iCounter( 0 )
 {
+	m_neuron.AddOutgoing( & m_pipeline );
+	m_knot.AddIncomming( & m_pipeline );
 }
 
 NNetModel * NNetModel::CreateModel( )
@@ -44,15 +39,22 @@ void NNetModel::DestroyCore( NNetModel * pCore )
 
 void NNetModel::Compute( )
 {
-	if ( ++ m_iCounter == 50 )
+	int iFrequency = 50; // Hertz
+	int iStepsBetweenTrigger = CastToInt( microseconds::period::den / ( TIME_RESOLUTION.count() * iFrequency ) );
+	
+	m_pipeline.Step( );
+
+	if ( m_iCounter == 0 )
 	{
-		m_pipeline.Start();
-		m_iCounter = 0;
+		m_neuron.Trigger();
+		m_iCounter = iStepsBetweenTrigger;
 	}
 	else
 	{
-		m_pipeline.Step( );
+		--m_iCounter;
 	}
+
+	m_timeStamp += TIME_RESOLUTION;
 }
 
 void NNetModel::ResetAll( )

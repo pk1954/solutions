@@ -32,6 +32,8 @@ class StatusBar;
 class ModelWindow;
 class NNetModel;
 class NNetWindow;
+class TimeDisplay;
+class SpeedDisplay;
 class HistInfoWindow;
 class GraphicsInterface;
 
@@ -69,4 +71,6 @@ private:
 	NNetWindow            * m_pMainNNetWindow;
 	NNetModelDataGlue     * m_pModelDataWork;
 	NNetEditorWindow      * m_pNNetEditorWindow;
+	TimeDisplay           * m_pTimeDisplay;
+	SpeedDisplay          * m_pSpeedDisplay;
 };

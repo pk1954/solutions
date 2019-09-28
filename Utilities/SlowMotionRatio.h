@@ -14,6 +14,11 @@ public:
 	static unsigned int const MIN     =    1;
 	static unsigned int const MAX     = 1000;
 
+	SlowMotionRatio( )
+	  : m_ratio( DEFAULT )
+	{
+	}
+
 	unsigned int GetRatio( )
 	{
 		return m_ratio;

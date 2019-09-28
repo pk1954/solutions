@@ -41,6 +41,13 @@ SOURCE_TYPE ClipToMinMax(SOURCE_TYPE const val, SOURCE_TYPE const min, SOURCE_TY
 }
 
 template<typename SOURCE_TYPE>
+constexpr const float CastToFloat( SOURCE_TYPE const value ) 
+{
+	AssertFloat( value );
+	return static_cast<float>( value );
+}
+
+template<typename SOURCE_TYPE>
 constexpr const short CastToShort( SOURCE_TYPE const value ) 
 {
 	AssertShort( value );

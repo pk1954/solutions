@@ -80,11 +80,12 @@ int StatusBar::NewPart( )
 	m_pixPosX += m_pixBorderX;
 	m_statWidths.push_back( m_pixPosX );
 	m_pixPosX += m_pixBorderX;
-	return static_cast<int>(m_statWidths.size()) - 1;
+	return static_cast<int>(m_statWidths.size());
 }
 
 void StatusBar::LastPart( )
 {
+	NewPart( );
 	m_statWidths.push_back( -1_PIXEL  ); // Stop
 	(void)SendMessage( SB_SETPARTS, m_statWidths.size(), (LPARAM)( m_statWidths.data() ) );
 }
@@ -140,7 +141,7 @@ HWND WINAPI StatusBar::AddStaticControl( LPCTSTR lpWindowName )
 
 HWND WINAPI StatusBar::AddButton( LPCTSTR const lpWindowName, HMENU const hMenu, DWORD const dwStyle )
 { 
-	HWND hwnd =  addControl( WC_BUTTON, lpWindowName, dwStyle, hMenu );
+	HWND hwnd = addControl( WC_BUTTON, lpWindowName, dwStyle, hMenu );
 	return hwnd;
 }
 

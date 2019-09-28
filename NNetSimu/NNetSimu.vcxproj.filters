@@ -36,6 +36,12 @@
     <ClInclude Include="win32_NNetController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TimeDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NNetSimu.cpp">

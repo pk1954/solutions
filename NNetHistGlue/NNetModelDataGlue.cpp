@@ -15,7 +15,8 @@ void NNetModelDataGlue::OnAppCommand( GenerationCmd const cmd )
 	Int24    const param   = cmd.GetParam( );
 	switch ( nnetCmd )
 	{
-
+	case NNetGenerationCmd::Id::editFirst:
+		break;
 
 	default:
 		assert( false );

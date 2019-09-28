@@ -31,9 +31,7 @@ public:
     virtual PixelRect CalcGraphicsRect( std::wstring const & );
 	virtual void      EndFrame( HWND const );
 	virtual void      ShutDown( );
-
-	virtual void	  AddPixelLine (  PixelPoint const &,  PixelPoint const &, PIXEL const, COLORREF const );
-	virtual void	  AddfPixelLine( fPixelPoint const &, fPixelPoint const &, PIXEL const, COLORREF const );
+	virtual void	  AddfPixelLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const );
 
 private:   
 	D3dSystem             * m_d3d;

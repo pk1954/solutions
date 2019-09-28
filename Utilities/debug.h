@@ -24,6 +24,14 @@ constexpr void AssertShort( SOURCE_TYPE const value )
 }
 
 template<typename SOURCE_TYPE>
+constexpr void AssertFloat( SOURCE_TYPE const value ) 
+{
+	assert( static_cast<long double>(value) <= static_cast<long double>((std::numeric_limits<float>::max)()) );         
+	if ( std::numeric_limits<SOURCE_TYPE>::is_signed )
+		assert( static_cast<long double>(value) >= static_cast<long double>((std::numeric_limits<float>::min)()) );         
+}
+
+template<typename SOURCE_TYPE>
 constexpr void AssertInt( SOURCE_TYPE const value ) 
 {
 	assert( static_cast<long long>(value) <= static_cast<long long>((std::numeric_limits<int>::max)()) );         
@@ -70,12 +78,13 @@ constexpr short AssertShortSum( SOURCE_TYPE const a, SOURCE_TYPE const b )
 
 #else
 template<typename SOURCE_TYPE> constexpr void AssertLimits( SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_TYPE const max) {} 
-template<typename SOURCE_TYPE> constexpr void AssertShort(SOURCE_TYPE const value ) {}
-template<typename SOURCE_TYPE> constexpr void AssertInt(SOURCE_TYPE const value ) {}
-template<typename SOURCE_TYPE> constexpr void AssertLong(SOURCE_TYPE const value ) {}
+template<typename SOURCE_TYPE> constexpr void AssertFloat        (SOURCE_TYPE const value ) {}
+template<typename SOURCE_TYPE> constexpr void AssertShort        (SOURCE_TYPE const value ) {}
+template<typename SOURCE_TYPE> constexpr void AssertInt          (SOURCE_TYPE const value ) {}
+template<typename SOURCE_TYPE> constexpr void AssertLong         (SOURCE_TYPE const value ) {}
 template<typename SOURCE_TYPE> constexpr void AssertUnsignedShort(SOURCE_TYPE const value ) {}
-template<typename SOURCE_TYPE> constexpr void AssertUnsignedInt(SOURCE_TYPE const value ) {}
-template<typename SOURCE_TYPE> constexpr void AssertUnsignedLong(SOURCE_TYPE const value ) {}
+template<typename SOURCE_TYPE> constexpr void AssertUnsignedInt  (SOURCE_TYPE const value ) {}
+template<typename SOURCE_TYPE> constexpr void AssertUnsignedLong (SOURCE_TYPE const value ) {}
 template<typename SOURCE_TYPE> 
 constexpr short AssertShortSum( SOURCE_TYPE const a, SOURCE_TYPE const b ) 
 {

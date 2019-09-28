@@ -33,8 +33,11 @@ public:
     PointType const operator-= (PointType const a) { m_x -= a.m_x; m_y -= a.m_y; return * this; }
     PointType const operator%= (PointType const a) { m_x %= a.m_x; m_y %= a.m_y; return * this; }
 
-    PointType const operator*= (int const i) { m_x *= i; m_y *= i; return * this; };
-    PointType const operator/= (int const i) { m_x /= i; m_y /= i; return * this; }
+	PointType const operator*= (int       const i) { m_x *= i; m_y *= i; return * this; }
+	PointType const operator/= (int       const i) { m_x /= i; m_y /= i; return * this; }
+
+	PointType const operator*= (double    const d) { m_x *= d; m_y *= d; return * this; }
+	PointType const operator/= (double    const d) { m_x /= d; m_y /= d; return * this; }
 
 	PointType const operator- () const { return PointType { -m_x, -m_y }; };
 	PointType const operator+ () const { return PointType { +m_x, +m_y }; };
@@ -86,31 +89,59 @@ public:
 		return res; 
 	};
 
-	friend PointType const operator+ (PointType const a, BASE_TYPE const base) 
+	friend PointType const operator+ (PointType const a, int const i) 
 	{ 
 		PointType res { a }; 
-		res += base; 
+		res += i; 
 		return res; 
 	};
 
-	friend PointType const operator- (PointType const a, BASE_TYPE const base) 
+	friend PointType const operator+ (PointType const a, double const d) 
 	{ 
 		PointType res { a }; 
-		res -= base; 
+		res += d; 
 		return res; 
 	};
 
-	friend PointType const operator* (PointType const a, long const l) 
+	friend PointType const operator- (PointType const a, int const i) 
 	{ 
 		PointType res { a }; 
-		res *= l; 
+		res -= i; 
 		return res; 
 	};
 
-	friend PointType const operator/ (PointType const a, long const l) 
+	friend PointType const operator- (PointType const a, double const d) 
 	{ 
 		PointType res { a }; 
-		res /= l; 
+		res -= d; 
+		return res; 
+	};
+
+	friend PointType const operator* (PointType const a,  double const d) 
+	{ 
+		PointType res { a }; 
+		res *= d; 
+		return res; 
+	};
+
+	friend PointType const operator* (PointType const a,  int const i) 
+	{ 
+		PointType res { a }; 
+		res *= i; 
+		return res; 
+	};
+
+	friend PointType const operator/ (PointType const a, double const d) 
+	{ 
+		PointType res { a }; 
+		res /= d; 
+		return res; 
+	};
+
+	friend PointType const operator/ (PointType const a, int const i) 
+	{ 
+		PointType res { a }; 
+		res /= i; 
 		return res; 
 	};
 

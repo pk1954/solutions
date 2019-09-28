@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "NanoMeter.h"
+#include "NNetTypes.h"
 #include "NNetReadBuffer.h"  // do not remove! class definition not sufficient.
 #include "NNetPixelCoords.h"
 #include "win32_modelWindow.h"
@@ -38,10 +38,10 @@ public:
 
 	~NNetWindow( );
 
-//	void  Size( );
-	void  Zoom( bool const );
-	void  SetPixelSize( NanoMeter const );
-	NanoMeter    GetPixelSize( ) const;
+//	void      Size( );
+	void      Zoom( bool const );
+	void      SetPixelSize( NanoMeter const );
+	NanoMeter GetPixelSize( ) const;
 
 private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 

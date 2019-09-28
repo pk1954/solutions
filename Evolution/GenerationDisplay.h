@@ -24,7 +24,7 @@ public:
 			m_pReadBuffer     (pReadBuffer),
 			m_iPartInStatusBar(iPartInStatusBar)
 	{
-		static PIXEL const PIX_WIDTH = PIXEL( ( static_cast<int>(wstringText.size()) + 7) * 9 );   //TODO: magic numbers
+		static PIXEL const PIX_WIDTH = PIXEL( ( static_cast<int>(wstringText.size()) + 7) * 9 );   //TODO: avoid magic numbers
 		m_pReadBuffer->RegisterObserver( this );   // notify me, if model has changed
 		m_pStatusBar->CreateRectToolTip
 		( 

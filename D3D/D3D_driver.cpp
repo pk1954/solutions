@@ -5,6 +5,7 @@
 #include <string.h>
 #include <d3d9.h>
 #include <d3dx9core.h>
+#include "util.h"
 #include "win32_util.h"
 #include "PixelTypes.h"
 #include "d3d_system.h"
@@ -375,41 +376,11 @@ D3DCOLOR D3D_driver::COLORREFtoD3DCOLOR( unsigned int const uiALpha, COLORREF co
 
 ///// NNet support ---- experimental ----- ////////////////////
 
-void D3D_driver::AddPixelLine
-( 
-	PixelPoint const & pp1, 
-	PixelPoint const & pp2, 
-	PIXEL    const   pixWidth, 
-	COLORREF const   color
-)
-{
-	float const fX1( static_cast<float>(pp1.GetXvalue()) );
-	float const fY1( static_cast<float>(pp1.GetYvalue()) );
-	float const fX2( static_cast<float>(pp2.GetXvalue()) );
-	float const fY2( static_cast<float>(pp2.GetYvalue()) );
-
-	float const fDeltaX = fX2 - fX1;
-	float const fDeltaY = fY2 - fY1;
-
-	float const fOrthoX =   fDeltaY;
-	float const fOrthoY = - fDeltaX;
-
-	float const fScaleFactor = static_cast<float>(pixWidth.GetValue()) / sqrt( fOrthoX * fOrthoX + fOrthoY * fOrthoY );
-
-	float const fOrthoScaledX = fOrthoX * fScaleFactor; 
-	float const fOrthoScaledY = fOrthoY * fScaleFactor; 
-
-	m_pVertBufPrimitives->AddVertex( fX1 + fOrthoScaledX, fY1 + fOrthoScaledY, color );
-	m_pVertBufPrimitives->AddVertex( fX1 - fOrthoScaledX, fY1 - fOrthoScaledY, color );
-	m_pVertBufPrimitives->AddVertex( fX2 - fOrthoScaledX, fY2 - fOrthoScaledY, color );
-	m_pVertBufPrimitives->AddVertex( fX2 + fOrthoScaledX, fY2 + fOrthoScaledY, color );
-}
-
 void D3D_driver::AddfPixelLine
 ( 
 	fPixelPoint const & fpp1, 
 	fPixelPoint const & fpp2, 
-	PIXEL       const   pixWidth, 
+	fPIXEL      const   fpixWidth, 
 	COLORREF    const   color
 )
 {
@@ -417,12 +388,12 @@ void D3D_driver::AddfPixelLine
 
 	fPixelPoint fOrtho { fDelta.GetY(), -fDelta.GetX() };
 
-	float const fScaleFactor = static_cast<float>(pixWidth.GetValue()) / sqrt( fOrtho.GetXvalue() * fOrtho.GetXvalue() + fOrtho.GetYvalue() * fOrtho.GetYvalue() );
+	double const dScaleFactor = fpixWidth.GetValue() / sqrt( fOrtho.GetXvalue() * fOrtho.GetXvalue() + fOrtho.GetYvalue() * fOrtho.GetYvalue() );
 
-	fPixelPoint fOrthoScaled = fOrtho * fScaleFactor;
+	fPixelPoint fOrthoScaled = fOrtho * dScaleFactor;
 
-	m_pVertBufPrimitives->AddVertex( fpp1.GetXvalue() + fOrthoScaled.GetXvalue(), fpp1.GetYvalue() + fOrthoScaled.GetYvalue(), color );
-	m_pVertBufPrimitives->AddVertex( fpp1.GetXvalue() - fOrthoScaled.GetXvalue(), fpp1.GetYvalue() - fOrthoScaled.GetYvalue(), color );
-	m_pVertBufPrimitives->AddVertex( fpp2.GetXvalue() - fOrthoScaled.GetXvalue(), fpp2.GetYvalue() - fOrthoScaled.GetYvalue(), color );
-	m_pVertBufPrimitives->AddVertex( fpp2.GetXvalue() + fOrthoScaled.GetXvalue(), fpp2.GetYvalue() + fOrthoScaled.GetYvalue(), color );
+	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp1.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp1.GetYvalue() + fOrthoScaled.GetYvalue()), color );
+	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp1.GetXvalue() - fOrthoScaled.GetXvalue()), CastToFloat(fpp1.GetYvalue() - fOrthoScaled.GetYvalue()), color );
+	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp2.GetXvalue() - fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() - fOrthoScaled.GetYvalue()), color );
+	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp2.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() + fOrthoScaled.GetYvalue()), color );
 }

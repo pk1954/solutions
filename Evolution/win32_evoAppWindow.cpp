@@ -280,7 +280,9 @@ void EvoAppWindow::Stop()
 
 void EvoAppWindow::configureStatusBar( )
 {
-	m_pGenerationDisplay = new GenerationDisplay( & m_StatusBar, & m_EvoReadBuffer, 0 );
+	int iPartScriptLine = 0;
+
+	m_pGenerationDisplay = new GenerationDisplay( & m_StatusBar, & m_EvoReadBuffer, iPartScriptLine );
 
 	m_StatusBar.NewPart( );
 	m_StatusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
@@ -304,7 +306,7 @@ void EvoAppWindow::configureStatusBar( )
 		LogarithmicTrackbar::Value2TrackbarL( CastToUnsignedLong(DEFAULT_DELAY.count()) ) 
 	);
 
-	int iPartScriptLine = m_StatusBar.NewPart( );
+	iPartScriptLine = m_StatusBar.NewPart( );
 	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine );
 	m_StatusBar.DisplayInPart( iPartScriptLine, L"" );
 	Script::ScrSetWrapHook( & m_ScriptHook );

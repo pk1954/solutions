@@ -113,7 +113,11 @@ void NNetWindow::newPixelSize
 
 void NNetWindow::SetPixelSize( NanoMeter const nmNewSize )
 {
-	NNetPoint const npCenter = m_NNetPixelCoords.Pixel2NNetPos( GetClRectCenter( ) );
+	PixelPoint  const pixPoint = GetClRectCenter( );
+	fPIXEL      const fpX( static_cast<double>(pixPoint.GetXvalue()) );
+	fPIXEL      const fpY( static_cast<double>(pixPoint.GetYvalue()) );
+	fPixelPoint const fPixPoint( fpX, fpY );
+	NNetPoint   const npCenter = m_NNetPixelCoords.fPixel2NNetPos( fPixPoint );
 	m_NNetPixelCoords.SetPixelSize( nmNewSize );
 	newPixelSize( nmNewSize, npCenter );
 }
@@ -176,17 +180,17 @@ void NNetWindow::OnPaint( )
 		{
 			NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
 
-			Segment segment;
+			Segment          segment;
+			mV               potential;
 			Pipeline const * pPipeline = pModel->GetPipeline( );
-			int iPotential;
-			unsigned int uiSegmentNr = 0;
-			while ( pPipeline->GetSegment( uiSegmentNr, segment, iPotential ) )
+			unsigned int     uiSegmentNr = 0;
+			while ( pPipeline->GetSegment( uiSegmentNr, segment, potential ) )
 			{
 				fPixelPoint const fPixPoint1( m_NNetPixelCoords.NNet2fPixelPos( segment.GetStartPoint() ) );
 				fPixelPoint const fPixPoint2( m_NNetPixelCoords.NNet2fPixelPos( segment.GetEndPoint  () ) );
-				PIXEL      const pixWidth ( m_NNetPixelCoords.Nm2Pixel( segment.GetWidth() ) );
-				COLORREF   const color = RGB(   0, 255 - iPotential, 0 );
-				m_pGraphics->AddfPixelLine( fPixPoint1, fPixPoint2, pixWidth, color );
+				fPIXEL      const fPixWidth ( m_NNetPixelCoords.MicroMeter2fPixel( segment.GetWidth() ) );
+				COLORREF    const color = RGB(   0, 255 - potential.GetValue(), 0 );
+				m_pGraphics->AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth, color );
 				++ uiSegmentNr;
 			}
 			m_pReadBuffer->ReleaseReadBuffer( );
@@ -212,8 +216,7 @@ void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 		nmNewPixelSize = m_NNetPixelCoords.ComputeNewPixelSize( bDirection );
 	}
 
-	LPARAM lParamPixelSize = static_cast<LPARAM>( nmNewPixelSize.GetValue() );
-	PostCommand2Application( IDM_SET_ZOOM, lParamPixelSize );
+	PostCommand2Application( IDM_SET_ZOOM, static_cast<LPARAM>( nmNewPixelSize.GetValue() ) ); 
 }
 
 void NNetWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )

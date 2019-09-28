@@ -10,7 +10,7 @@ using namespace std::literals::chrono_literals;
 
 // Model interfaces
 
-#include "NanoMeter.h"
+#include "NNetTypes.h"
 #include "NNetModel.h"
 
 // interfaces of various windows
@@ -21,6 +21,8 @@ using namespace std::literals::chrono_literals;
 #include "win32_status.h"
 #include "win32_speedControl.h"
 #include "win32_zoomControl.h"
+#include "SpeedDisplay.h"
+#include "TimeDisplay.h"
 
 // infrastructure
 
@@ -169,12 +171,13 @@ void NNetAppWindow::Stop()
 
 void NNetAppWindow::configureStatusBar( )
 {
-//	m_pGenerationDisplay = new GenerationDisplay( & statusBar, & m_EvoReadBuffer, 0 );
+	int iPartScriptLine = 0;
+	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, & m_NNetReadBuffer, iPartScriptLine );
 
-	m_StatusBar.NewPart( );
+	iPartScriptLine = m_StatusBar.NewPart( );
 	m_StatusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
 
-	m_StatusBar.NewPart( );
+	iPartScriptLine = m_StatusBar.NewPart( );
 	ZoomControl::AddSizeControl
 	( 
 		& m_StatusBar, 
@@ -183,7 +186,7 @@ void NNetAppWindow::configureStatusBar( )
 		LogarithmicTrackbar::Value2TrackbarD( DEFAULT_PIXEL_SIZE.GetValue() ) 
 	);
 
-	m_StatusBar.NewPart( );
+	iPartScriptLine = m_StatusBar.NewPart( );
 	SpeedControl::AddSimulationControl
 	( 
 		& m_StatusBar, 
@@ -193,7 +196,10 @@ void NNetAppWindow::configureStatusBar( )
 		LogarithmicTrackbar::Value2TrackbarL( CastToLong( SlowMotionRatio::DEFAULT ) ) 
 	);
 
-	int iPartScriptLine = m_StatusBar.NewPart( );
+	iPartScriptLine = m_StatusBar.NewPart( );
+	m_pSpeedDisplay = new SpeedDisplay( & m_StatusBar, & m_SlowMotionRatio, iPartScriptLine );
+
+	iPartScriptLine = m_StatusBar.NewPart( );
 	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine );
 	m_StatusBar.DisplayInPart( iPartScriptLine, L"" );
 	Script::ScrSetWrapHook( & m_ScriptHook );

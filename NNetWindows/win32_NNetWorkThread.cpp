@@ -9,6 +9,7 @@
 #include "EventInterface.h"
 #include "NNetHistorySysGlue.h"
 #include "NNetReadBuffer.h"
+#include "NNetTypes.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 #include "win32_actionTimer.h"
@@ -60,8 +61,6 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 
 void NNetWorkThread::WaitTilNextActivation( )
 {
-	static microseconds  const TIME_RESOLUTION =  microseconds( 100 );
-
 	//if (m_pDelay != nullptr)
 	//	m_pDelay->SleepDelay( );
 

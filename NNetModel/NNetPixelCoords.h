@@ -10,7 +10,7 @@
 #include "SmoothMove.h"
 
 NanoMeter const MINIMUM_PIXEL_SIZE =     100.0_NanoMeter;
-NanoMeter const DEFAULT_PIXEL_SIZE =    1000.0_NanoMeter;  // 1 um
+NanoMeter const DEFAULT_PIXEL_SIZE =   50000.0_NanoMeter;  
 NanoMeter const MAXIMUM_PIXEL_SIZE = 2000000.0_NanoMeter;  // 2 Meter
 
 class NNetPixelCoords
@@ -18,89 +18,47 @@ class NNetPixelCoords
 public:
 
 	NNetPixelCoords()
-	  : m_pixOffset(  0_PIXEL ),
-		m_fPixOffset( 0.0_fPIXEL ),
-		m_nmPixelSize( 0.0_NanoMeter ),
+	  : m_pixOffset  ( 0_PIXEL ),
+		m_fPixOffset ( 0.0_fPIXEL ),
+		m_pixelSize  ( DEFAULT_PIXEL_SIZE ),
 		m_bMoving    ( false ),
 		m_smoothMove ( )
 	{}
 
-	void Start( NanoMeter const nmPixelSize )
+	void Start( NanoMeter const pixelSize )
 	{
-		m_nmPixelSize = nmPixelSize;
+		m_pixelSize = pixelSize;
 	}
 
 	//////// transformations ////////
 
-	PIXEL Nm2Pixel( NanoMeter const nmParam ) const
+	fPIXEL MicroMeter2fPixel( MicroMeter const param ) const
 	{ 
-		NanoMeter nmRes( nmParam / m_nmPixelSize.GetValue() );
-		return PIXEL( CastToLong( nmRes.GetValue() ) );
+		MicroMeter res( ( param * 1000.0 ) / m_pixelSize.GetValue() );
+		return fPIXEL( res.GetValue() );
 	}
 
-	fPIXEL Nm2fPixel( NanoMeter const nmParam ) const
+	MicroMeter fPixel2MicroMeter( fPIXEL const fPixel ) const
 	{ 
-		NanoMeter nmRes( nmParam / m_nmPixelSize.GetValue() );
-		return fPIXEL( nmRes.GetValue() );
-	}
-
-	///////////////////
-
-	NanoMeter Pixel2Nm( PIXEL const pixel ) const
-	{ 
-		return NanoMeter( pixel.GetValue() * m_nmPixelSize.GetValue() );
-	}
-
-	NanoMeter fPixel2Nm( fPIXEL const fPixel ) const
-	{ 
-		return NanoMeter( fPixel.GetValue() * m_nmPixelSize.GetValue() );
-	}
-
-	///////////////////
-
-	PixelPoint NNet2PixelSize( NNetPoint const np ) const
-	{ 
-		return PixelPoint( Nm2Pixel( np.GetX() ), Nm2Pixel( np.GetY() ) );
+		return MicroMeter( fPixel.GetValue() * m_pixelSize.GetValue() / 1000.0 );
 	}
 
 	fPixelPoint NNet2fPixelSize( NNetPoint const np ) const
 	{ 
-		return fPixelPoint( Nm2fPixel( np.GetX() ), Nm2fPixel( np.GetY() ) );
+		return fPixelPoint( MicroMeter2fPixel( np.GetX() ), MicroMeter2fPixel( np.GetY() ) );
 	}
 
-	///////////////////
-
-	NNetPoint Pixel2NNetPos ( PixelPoint const pp ) const
-	{ 
-		auto pixPoint = PixelPoint( pp + m_pixOffset );
-
-		auto np = NNetPoint
-		( 
-			Pixel2Nm( pixPoint.GetX() ), 
-			Pixel2Nm( pixPoint.GetY() )
-		); 
-
-		return np;
-	}
-
-	NNetPoint fPixel2NNetPos ( fPixelPoint const pp ) const
+	NNetPoint fPixel2NNetPos( fPixelPoint const pp ) const
 	{ 
 		auto fPixPoint = fPixelPoint( pp + m_fPixOffset );
 
 		auto np = NNetPoint
 		( 
-			fPixel2Nm( fPixPoint.GetX() ), 
-			fPixel2Nm( fPixPoint.GetY() )
+			fPixel2MicroMeter( fPixPoint.GetX() ), 
+			fPixel2MicroMeter( fPixPoint.GetY() )
 		); 
 
 		return np;
-	}
-
-	///////////////////
-
-	PixelPoint NNet2PixelPos( NNetPoint const np ) const
-	{ 
-		return NNet2PixelSize( np ) - m_pixOffset;
 	}
 
 	fPixelPoint NNet2fPixelPos( NNetPoint const np ) const
@@ -110,24 +68,22 @@ public:
 
 	//////// queries ////////
 
-	NanoMeter  GetPixelSize( )   const { return m_nmPixelSize; };
+	NanoMeter   GetPixelSize( )    const { return m_pixelSize; };
 	
-	PixelPoint GetPixelOffset( ) const { return m_pixOffset; }
-
 	fPixelPoint GetfPixelOffset( ) const { return m_fPixOffset; }
 
 	NanoMeter ComputeNewPixelSize( bool const bZoomIn ) const  // does not modify field size
 	{
-		NanoMeter nmNewPixelSize { m_nmPixelSize };
+		NanoMeter newPixelSize { m_pixelSize };
 		if ( bZoomIn )
 		{
-			nmNewPixelSize = nmNewPixelSize / 1.3;
+			newPixelSize = newPixelSize / 1.3;
 		}
 		else
 		{
-			nmNewPixelSize = nmNewPixelSize * 1.3;
+			newPixelSize = newPixelSize * 1.3;
 		}
-		return isValidPixelSize(nmNewPixelSize) ? nmNewPixelSize : m_nmPixelSize;
+		return isValidPixelSize(newPixelSize) ? newPixelSize : m_pixelSize;
 	}
 
 	//////// manipulation functions ////////
@@ -136,7 +92,7 @@ public:
 	{
 		bool bValid = isValidPixelSize( nmPixelSize );
 		if ( bValid )
-			m_nmPixelSize = nmPixelSize;
+			m_pixelSize = nmPixelSize;
 		return bValid;
 	}
 
@@ -160,7 +116,7 @@ private:
 
 	PixelPoint  m_pixOffset;
 	fPixelPoint m_fPixOffset;
-	NanoMeter   m_nmPixelSize;
+	NanoMeter   m_pixelSize;
 	SmoothMove  m_smoothMove;
 	bool        m_bMoving;
 };

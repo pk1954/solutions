@@ -67,7 +67,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 			HWND hwndStatusBar = m_pStatusBar->GetWindowHandle( );
 			m_pStatusBar->SetTrackBarPos( IDM_SIMULATION_SPEED, CastToLong( SlowMotionRatio::MAX ) );                
 			EnableWindow( GetDlgItem( hwndStatusBar, IDM_MAX_SPEED ), FALSE );
-			m_pSlowMotionRatio->SetRatio( SlowMotionRatio::MAX );
+			m_pSlowMotionRatio->SetRatio( SlowMotionRatio::MIN );
 		}
 		break;
 
@@ -99,7 +99,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
-		(void)m_pNNetWindow->SetPixelSize( NanoMeter(CastToShort(lParam)) );
+		(void)m_pNNetWindow->SetPixelSize( NanoMeter( static_cast<double>(lParam) ) );
 		break;
 
 	case IDM_FIT_ZOOM:

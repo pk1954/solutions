@@ -19,7 +19,7 @@ public:
 	(  
 		NNetPoint const npStart,
 		NNetPoint const npEnd,
-		NanoMeter const nmWidth
+		MicroMeter const nmWidth
 	) :
 		m_npStart( npStart ),
 		m_npEnd  ( npEnd   ),
@@ -28,10 +28,10 @@ public:
 
 	NNetPoint GetStartPoint( ) const { return m_npStart; }
 	NNetPoint GetEndPoint  ( ) const { return m_npEnd; }
-	NanoMeter GetWidth     ( ) const { return m_nmWidth; }
+	MicroMeter GetWidth     ( ) const { return m_nmWidth; }
 
 private:
 	NNetPoint m_npStart;
 	NNetPoint m_npEnd;
-	NanoMeter m_nmWidth;
+	MicroMeter m_nmWidth;
 };
