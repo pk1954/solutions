@@ -193,14 +193,35 @@ void NNetWindow::OnPaint( )
 				m_pGraphics->AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth, color );
 				++ uiSegmentNr;
 			}
+
 			m_pReadBuffer->ReleaseReadBuffer( );
+			showScale( hDC );
 
 			m_pGraphics->RenderIndividuals( );
+
 			m_pGraphics->EndFrame( GetWindowHandle() );
 		}
 
 		(void)EndPaint( &ps );
 	}
+}
+
+void NNetWindow::showScale( HDC hDC )
+{
+	fPIXEL height( static_cast<double>( GetClientWindowHeight().GetValue() ) );
+	fPIXEL const vertPos = height - 20._fPIXEL;
+	fPIXEL const horzPos = 100._fPIXEL;
+	fPIXEL const length  = 400._fPIXEL;
+
+	fPIXEL const mmLength = m_NNetPixelCoords.MicroMeter2fPixel( 1000._MicroMeter );
+
+	fPixelPoint const fPixPoint1( horzPos, vertPos );
+	fPixelPoint const fPixPoint2( horzPos + mmLength, vertPos );
+
+	COLORREF    const color = RGB(   0, 0, 0 );
+	m_pGraphics->AddfPixelLine( fPixPoint1, fPixPoint2, 1._fPIXEL, color );
+	m_pGraphics->AddfPixelLine( fPixPoint1 - fPixelPoint( 0._fPIXEL, 5._fPIXEL), fPixPoint1, 1._fPIXEL, color );
+	m_pGraphics->AddfPixelLine( fPixPoint2 - fPixelPoint( 0._fPIXEL, 5._fPIXEL), fPixPoint2, 1._fPIXEL, color );
 }
 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )

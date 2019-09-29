@@ -23,7 +23,7 @@ public:
     virtual void      RenderIndividuals( ) = 0;
     virtual void      RenderBackground( ) = 0;
     virtual void      RenderTranspRect( PixelRect const &, unsigned int const, COLORREF const ) = 0;
-    virtual void      DisplayGraphicsText( PixelRect const &, std::wstring const & ) = 0;
+    virtual void      DisplayGraphicsText( PixelRect const &, std::wstring const &, COLORREF const ) = 0;
     virtual PixelRect CalcGraphicsRect( std::wstring const & ) = 0;
 	virtual void      EndFrame( HWND const ) = 0;
 	virtual void      ShutDown( ) = 0;

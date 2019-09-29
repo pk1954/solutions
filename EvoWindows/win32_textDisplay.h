@@ -61,11 +61,13 @@ public:
 
 	void DisplayText( PixelRect const & rect )
 	{
-		m_pGraphics->DisplayGraphicsText( rect, m_pBuffer->str( ) );
+		m_pGraphics->DisplayGraphicsText( rect, m_pBuffer->str( ), CLR_WHITE );
 	}
 
 private:
-    GraphicsInterface   * m_pGraphics;
+	static COLORREF const CLR_WHITE = RGB( 255, 255, 255 );
+
+	GraphicsInterface   * m_pGraphics;
 	std::wostringstream * m_pBuffer;
 	EvoPixelCoords      * m_pEvoPixelCoords;
 };

@@ -99,7 +99,12 @@ PixelRect D3D_driver::CalcGraphicsRect( std::wstring const & wstr )
 	return Util::RECT2PixelRect( rect );
 }
 
-void D3D_driver::DisplayGraphicsText( PixelRect const & pixRect, std::wstring const & wstr )
+void D3D_driver::DisplayGraphicsText
+( 
+	PixelRect    const & pixRect, 
+	std::wstring const & wstr, 
+	COLORREF     const   col 
+)
 {
 	RECT rect( Util::PixelRect2RECT( pixRect ) );			  
     assert( m_id3dx_font != nullptr );
@@ -110,7 +115,7 @@ void D3D_driver::DisplayGraphicsText( PixelRect const & pixRect, std::wstring co
         -1,                // Count
         &rect,             // pRect
         DT_LEFT,           // Format
-        CLR_WHITE          // Color
+        col                // Color
     ); 
 }
 

@@ -60,6 +60,7 @@ private:
 
 	void newPixelSize( NanoMeter const, NNetPoint const );
 	void moveNNet( PixelPoint const );
+	void showScale( HDC );
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const );
 
