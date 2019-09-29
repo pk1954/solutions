@@ -13,12 +13,36 @@ extern void UpperCase( std::wstring & str )
 		c = toupper(c);
 }
 
-std::wstring DecFraction( unsigned long ulValue )
+unsigned long decFraction( wostringstream & wBuffer, unsigned long ulValue )
 {
-    wostringstream wBuffer;
-    unsigned long const intPlaces = ulValue / 1000;
-    unsigned long const decPlaces = ulValue - 1000 * intPlaces;
-    wBuffer << intPlaces << L"." << decPlaces / 100;
+	unsigned long const intPlaces = ulValue / 1000;
+	unsigned long const decPlaces = ulValue - 1000 * intPlaces;
+	wBuffer << intPlaces << L".";
+	return decPlaces;
+}
+
+std::wstring DecFraction( unsigned long ulValue )  // TODO: find better solution
+{ 
+	wostringstream wBuffer;
+	unsigned long const decPlaces = decFraction( wBuffer, ulValue );
+
+	unsigned long decPlace1 = decPlaces / 100;
+	wBuffer << decPlace1;
+
+	return wBuffer.str();
+}
+
+std::wstring DecFraction2( unsigned long ulValue )  // TODO: find better solution
+{
+	wostringstream wBuffer;
+	unsigned long decPlaces = decFraction( wBuffer, ulValue );
+
+	unsigned long decPlace1 = decPlaces / 100;
+	wBuffer << decPlace1;
+
+	unsigned long decPlace2 = (decPlaces - 100 * decPlace1) / 10;
+	wBuffer << decPlace2;
+
 	return wBuffer.str();
 }
 

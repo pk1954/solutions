@@ -89,4 +89,5 @@ constexpr const unsigned int CastToUnsignedLong( SOURCE_TYPE const value )
 	return static_cast<unsigned long>( value );
 }
 
-std::wstring DecFraction( unsigned long );
+std::wstring DecFraction ( unsigned long );
+std::wstring DecFraction2( unsigned long );

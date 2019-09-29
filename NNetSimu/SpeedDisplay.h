@@ -24,7 +24,7 @@ public:
 		m_pSlowMotionRatio(pSlowMotionRatio),
 		m_iPartInStatusBar(iPartInStatusBar)
 	{
-		static PIXEL const PIX_WIDTH = PIXEL( 9 ) * 18;   //TODO: avoid magic numbers
+		static PIXEL const PIX_WIDTH = PIXEL( 9 ) * 18;  // TODO: avoid magic numbers
 		m_pSlowMotionRatio->RegisterObserver( this );    // notify me, if model has changed
 		m_pStatusBar->AddCustomControl( PIX_WIDTH ); 
 		Notify( false );

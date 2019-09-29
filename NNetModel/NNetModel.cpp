@@ -39,7 +39,7 @@ void NNetModel::DestroyCore( NNetModel * pCore )
 
 void NNetModel::Compute( )
 {
-	int iFrequency = 50; // Hertz
+	int iFrequency = 500; // Hertz
 	int iStepsBetweenTrigger = CastToInt( microseconds::period::den / ( TIME_RESOLUTION.count() * iFrequency ) );
 	
 	m_pipeline.Step( );

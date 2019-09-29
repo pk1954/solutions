@@ -16,19 +16,19 @@ constexpr void AssertLimits( SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_
 }
 
 template<typename SOURCE_TYPE>
+constexpr void AssertFloat( SOURCE_TYPE const value ) 
+{
+	assert( static_cast<long double>(value) <= static_cast<long double>((std::numeric_limits<float>::max)()) );         
+	if ( std::numeric_limits<SOURCE_TYPE>::is_signed )
+		assert( static_cast<long double>(value) >= static_cast<long double>((std::numeric_limits<float>::lowest)()) );         
+}
+
+template<typename SOURCE_TYPE>
 constexpr void AssertShort( SOURCE_TYPE const value ) 
 {
 	assert( static_cast<long long>(value) <= static_cast<long long>((std::numeric_limits<short>::max)()) );         
 	if ( std::numeric_limits<SOURCE_TYPE>::is_signed )
 		assert( static_cast<long long>(value) >= static_cast<long long>((std::numeric_limits<short>::min)()) );         
-}
-
-template<typename SOURCE_TYPE>
-constexpr void AssertFloat( SOURCE_TYPE const value ) 
-{
-	assert( static_cast<long double>(value) <= static_cast<long double>((std::numeric_limits<float>::max)()) );         
-	if ( std::numeric_limits<SOURCE_TYPE>::is_signed )
-		assert( static_cast<long double>(value) >= static_cast<long double>((std::numeric_limits<float>::min)()) );         
 }
 
 template<typename SOURCE_TYPE>

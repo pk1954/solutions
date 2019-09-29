@@ -11,7 +11,7 @@
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWindow.h"
 
-NNetReadBuffer          * NNetWindow::m_pReadBuffer             = nullptr;
+NNetReadBuffer          * NNetWindow::m_pReadBuffer              = nullptr;
 NNetWorkThreadInterface * NNetWindow::m_pNNetWorkThreadInterface = nullptr;
 
 void NNetWindow::InitClass

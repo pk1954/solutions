@@ -39,11 +39,11 @@ public:
 		if ( time > std::chrono::seconds( 1 ) )
 		{
 			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>( time );
-			m_wstrBuffer = DecFraction( CastToUnsignedLong( ms.count() ) ) + L" s";
+			m_wstrBuffer = DecFraction2( CastToUnsignedLong( ms.count() ) ) + L" s";
 		}
 		else
 		{
-			m_wstrBuffer = DecFraction( CastToUnsignedLong( time.count() ) ) + L" ms";
+			m_wstrBuffer = DecFraction2( CastToUnsignedLong( time.count() ) ) + L" ms";
 		}
 		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstrBuffer );
 	}

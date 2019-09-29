@@ -37,4 +37,4 @@ mV const BASE_POTENTIAL( 32.0_mV );
 
 using std::chrono::microseconds;
 
-microseconds const TIME_RESOLUTION = microseconds( 10 );
+microseconds const TIME_RESOLUTION = microseconds( 2 );
