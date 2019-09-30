@@ -421,7 +421,7 @@ void GridWindow::newFieldSize
 		if ( IsInClientRect( ppCrsr ) )
 			m_DrawFrame.SetHighlightPos( pCore, ppCrsr );  
 		m_pReadBuffer->ReleaseReadBuffer( );
-		Refresh( );   // cause repaint
+		Notify( TRUE );   // cause immediate repaint
 	}
 	else
 	{
@@ -456,13 +456,13 @@ void GridWindow::Zoom( bool const bZoomIn )
 void GridWindow::ToggleStripMode( ) 
 { 
 	m_DrawFrame.SetStripMode( tBoolOp::opToggle );
-	Refresh( );   // cause repaint
+	Notify( TRUE );   // cause immediate repaint
 }
 
 void GridWindow::ToggleClutMode( ) 
 { 
 	m_pColorManager->ToggleClutMode();
-	Refresh( );   // cause repaint
+	Notify( TRUE );   // cause immediate repaint
 }
 
 void GridWindow::Escape( ) 

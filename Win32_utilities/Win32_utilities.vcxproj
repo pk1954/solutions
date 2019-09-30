@@ -170,7 +170,6 @@
     <ClInclude Include="win32_tooltip.h" />
     <ClInclude Include="win32_util.h" />
     <ClInclude Include="win32_util_resource.h" />
-    <ClInclude Include="win32_windowRefreshRate.h" />
     <ClInclude Include="win32_winManager.h" />
   </ItemGroup>
   <ItemGroup>

@@ -119,7 +119,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_REFRESH:
-		m_pNNetWindow->Refresh();
+		m_pNNetWindow->Notify( lParam != 0 );
 		break;
 
 	default:

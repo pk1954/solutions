@@ -32,7 +32,11 @@ private:
 
 	void startTimer( milliseconds const );
 	void deleteTimer( );
-	void invalidate( );
+	void trigger( )
+	{
+		Trigger( );
+		m_bDirty = FALSE;
+	}
 
 	static void CALLBACK TimerProc( void * const, BOOL const );
 };

@@ -104,7 +104,7 @@ void NNetWindow::newPixelSize
 		//if ( IsInClientRect( ppCrsr ) )
 		//	m_DrawFrame.SetHighlightPos( pCore, ppCrsr );  
 		//m_pReadBuffer->ReleaseReadBuffer( );
-		Refresh( );   // cause repaint
+		Notify( TRUE );     // cause immediate repaint
 	}
 	else
 	{

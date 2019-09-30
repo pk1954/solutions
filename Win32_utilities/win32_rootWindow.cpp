@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "win32_util_resource.h"
-#include "win32_windowRefreshRate.h"
+#include "win32_refreshRate.h"
 #include "win32_refreshRateDialog.h"
 #include "win32_rootWindow.h"
 
@@ -14,6 +14,22 @@ BOOL RootWinIsReady( RootWindow const * pRootWin )
 {
     return ( ( pRootWin != nullptr ) && ( pRootWin->GetWindowHandle( ) != nullptr ) );
 }
+
+class RootWindow::WindowRefreshRate : public RefreshRate
+{
+public:
+	WindowRefreshRate( RootWindow * const pRootWin )
+		: m_pRootWin( pRootWin )
+	{ }
+
+	virtual void Trigger( )
+	{
+		m_pRootWin->Invalidate( FALSE );
+	}
+
+private:
+	RootWindow * const m_pRootWin;
+};
 
 RootWindow::RootWindow( ) : 
 	m_hwnd( nullptr ),
@@ -118,9 +134,32 @@ void RootWindow::Notify( bool const bImmediately )
 	m_pRefreshRate->Notify( bImmediately );
 }
 
-void RootWindow::Refresh( )
+void RootWindow::SetTrackBarPos( INT const idTrackbar, LONG const lPos ) const
 {
-	m_pRefreshRate->Trigger( );
+	(void)SendDlgItemMessage
+	(   
+		idTrackbar, TBM_SETPOS, 
+		static_cast<WPARAM>( TRUE ),                   // redraw flag 
+		static_cast<LPARAM>( lPos )
+	); 
+}
+
+void RootWindow::SetTrackBarRange( INT const idTrackbar, LONG const lMin, LONG const lMax ) const
+{
+	(void)SendDlgItemMessage
+	( 
+		idTrackbar, 
+		TBM_SETRANGEMIN, 
+		static_cast<WPARAM>( FALSE ),                   // redraw flag 
+		static_cast<LPARAM>( lMin ) 
+	);
+	(void)SendDlgItemMessage
+	( 
+		idTrackbar, 
+		TBM_SETRANGEMAX, 
+		static_cast<WPARAM>( TRUE ),                   // redraw flag 
+		static_cast<LPARAM>( lMax ) 
+	);
 }
 
 LRESULT RootWindow::RootWindowProc

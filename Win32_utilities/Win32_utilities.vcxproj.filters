@@ -90,9 +90,6 @@
     <ClInclude Include="win32_refreshRate.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_windowRefreshRate.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_baseWindow.cpp">

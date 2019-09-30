@@ -31,14 +31,14 @@ milliseconds RefreshRate::GetRefreshRate( )
 void RefreshRate::Notify( bool const bImmediately )
 {
 	if ( bImmediately || (m_msRefreshRate == 0ms) )
-		invalidate( );
+		trigger( );
 	else
 	{
 		m_bDirty = TRUE;
 		if ( !m_bTimerActive )
 		{
 			m_bTimerActive = TRUE;
-			invalidate( );
+			trigger( );
 			startTimer( m_msRefreshRate );
 		}
 	}
@@ -69,18 +69,12 @@ void RefreshRate::deleteTimer( )
 	}
 }
 
-void RefreshRate::invalidate( )
-{
-	Trigger( );
-	m_bDirty = FALSE;
-}
-
 void CALLBACK RefreshRate::TimerProc( void * const lpParam, BOOL const TimerOrWaitFired )
 {
 	RefreshRate * const pRefreshRate = reinterpret_cast<RefreshRate *>( lpParam );
 	if ( pRefreshRate->m_bDirty )
 	{
-		pRefreshRate->invalidate( );
+		pRefreshRate->trigger( );
 	}
 	else
 	{

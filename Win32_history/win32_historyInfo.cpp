@@ -39,7 +39,7 @@ void HistInfoWindow::Stop( )
 void HistInfoWindow::SetHistorySystem( HistorySystem * pHistSys ) 
 {
 	m_pHistSys = pHistSys;
-	m_pHistSys->RegisterObserver( this );  // Trigger me, if something happens in history system
+	m_pHistSys->RegisterObserver( this );  // Notify me, if something happens in history system
 }
 
 void HistInfoWindow::DoPaint( TextBuffer & textBuf )

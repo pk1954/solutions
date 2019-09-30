@@ -14,8 +14,6 @@
 
 using std::chrono::milliseconds;
 
-class WindowRefreshRate;
-
 class RootWindow : public ObserverInterface
 {
 public:
@@ -59,6 +57,9 @@ public:
 
     HDC  BeginPaint( LPPAINTSTRUCT lpPaint ) const { return ::BeginPaint( m_hwnd, lpPaint ); }
     BOOL EndPaint  ( LPPAINTSTRUCT lpPaint ) const { return ::EndPaint  ( m_hwnd, lpPaint ); }
+
+	void SetTrackBarPos( INT const, LONG const ) const;
+	void SetTrackBarRange( INT const, LONG const, LONG const ) const;
 
 	void const DestroyWindow( ) 
 	{ 
@@ -164,34 +165,6 @@ public:
 		return CastToShort( SendDlgItemMessage( idTrackbar, TBM_GETPOS, 0, 0 ) ); 
 	}
 
-	void SetTrackBarPos( INT const idTrackbar, LONG const lPos ) const
-	{
-		(void)SendDlgItemMessage
-		(   
-			idTrackbar, TBM_SETPOS, 
-			static_cast<WPARAM>( TRUE ),                   // redraw flag 
-			static_cast<LPARAM>( lPos )
-		); 
-	}
-
-	void SetTrackBarRange( INT const idTrackbar, LONG const lMin, LONG const lMax ) const
-	{
-		(void)SendDlgItemMessage
-		( 
-			idTrackbar, 
-			TBM_SETRANGEMIN, 
-			static_cast<WPARAM>( FALSE ),                   // redraw flag 
-			static_cast<LPARAM>( lMin ) 
-		);
-		(void)SendDlgItemMessage
-		( 
-			idTrackbar, 
-			TBM_SETRANGEMAX, 
-			static_cast<WPARAM>( TRUE ),                   // redraw flag 
-			static_cast<LPARAM>( lMax ) 
-		);
-	}
-
 	LRESULT PostCommand2Application( WPARAM const wParam, LPARAM const lParam )
 	{
 		return ::PostMessage( m_hwndApp, WM_COMMAND, wParam, lParam );
@@ -203,9 +176,7 @@ public:
 	}
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const ) {}
-
 	virtual void Notify( bool const );
-	virtual void Refresh( );
 
 protected:
 
@@ -214,6 +185,8 @@ protected:
 	LRESULT RootWindowProc( HWND const, UINT const, WPARAM const, LPARAM const );
 
 private:
+
+	class WindowRefreshRate;
 
 	HWND                  m_hwnd;
 	HWND                  m_hwndApp;

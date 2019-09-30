@@ -119,7 +119,7 @@ bool EvoController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 
 	case IDD_TOGGLE_COORD_DISPLAY:
 		Config::SetConfigValueBoolOp( Config::tId::showGridPointCoords, tBoolOp::opToggle );
-		m_pGridWindow->Refresh();
+		m_pGridWindow->Notify( TRUE );
 		break;
 
 	case IDM_FIT_ZOOM:
@@ -183,7 +183,7 @@ bool EvoController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_REFRESH:
-		m_pGridWindow->Refresh();
+		m_pGridWindow->Notify( lParam != 0 );
 		break;
 
 	default:
