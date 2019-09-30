@@ -72,7 +72,7 @@ void StatusBar::Start
 
 void StatusBar::AddCustomControl
 ( 
-	PIXEL const pixWidth
+	PIXEL const  pixWidth
 )
 {
 	m_pixPosX += pixWidth;

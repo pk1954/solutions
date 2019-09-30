@@ -11,7 +11,6 @@
 using std::to_wstring;
 
 static wstring wstringText = L"EvoGen ";
-static wstring m_wstrBuffer;
 
 /////// inner class GenerationDisplay::RefreshRate ///////
 
@@ -39,6 +38,7 @@ public:
 	}
 
 private:
+	wstring         m_wstrBuffer;
 	StatusBar     * m_pStatusBar;
 	EvoReadBuffer * m_pReadBuffer;
 	int             m_iPartInStatusBar;

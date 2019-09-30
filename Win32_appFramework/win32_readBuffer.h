@@ -22,7 +22,8 @@
 #include "observerInterface.h"
 
 template <typename MODEL>
-class ReadBuffer : public ObserverInterface, public Observable
+class ReadBuffer : public ObserverInterface,  // Observes producer thread
+	               public Observable          // Can be observed by consumer threads
 {
 public:
 	ReadBuffer( ) : 
@@ -46,12 +47,12 @@ public:
 
 	// called by consumer threads
 
-	MODEL const * LockReadBuffer( ) 
-	{
-		if ( m_pModel4Display )
-			AcquireSRWLockShared( & m_SRWLock );
-		return m_pModel4Display;
-	}
+	MODEL const * LockReadBuffer( )                // Consumers call LockReadBuffer 
+	{                                              // for read access to model
+		if ( m_pModel4Display )                    // and call RealeaseReadBuffer afterwards
+			AcquireSRWLockShared( & m_SRWLock );   // The MODEL pointer provided by LockReadBuffer
+		return m_pModel4Display;                   // is no longer valid after ReleaseReadBuffer call
+	}                                              
 
 	void ReleaseReadBuffer( )
 	{
@@ -60,20 +61,20 @@ public:
 
 	// called by producer thread
 
-	virtual void Notify( bool const bRunning )
+	virtual void Notify( bool const bImmediately )
 	{
-		if ( ! bRunning )                                         // In normal (not running) mode
-		{                                                         // acquire lock definitely
-			AcquireSRWLockExclusive( & m_SRWLock );               // if locked by readers, wait
+		if ( ! bImmediately )                                   // In normal mode
+		{                                                       // acquire lock definitely
+			AcquireSRWLockExclusive( & m_SRWLock );             // if locked by readers, wait
 		}
-		else if ( ! TryAcquireSRWLockExclusive( & m_SRWLock ))    // In running mode, try to aquire lock. 
-		{                                                         // If buffer is locked by readers,
-			return;                                               // just continue your work.
-		}														  // Readers can synchronize with later version
+		else if ( ! TryAcquireSRWLockExclusive( & m_SRWLock ))  // In high frequency mode, try to aquire lock. 
+		{                                                       // If buffer is locked by readers,
+			return;                                             // just continue your work.
+		}														// Readers can synchronize with later version
 
-		m_pModel4Display->CopyModelData( m_pModelWork );  
-		ReleaseSRWLockExclusive( & m_SRWLock );
-		NotifyAll( ! bRunning );   // If not running, readers should update immediately    
+		m_pModel4Display->CopyModelData( m_pModelWork );        // We have exclusive access, copy Model
+		ReleaseSRWLockExclusive( & m_SRWLock );                 // Release lock
+		NotifyAll( ! bImmediately );                            // Notify Observers  
 	}
 
 private:
