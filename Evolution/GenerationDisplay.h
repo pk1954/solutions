@@ -17,8 +17,8 @@ public:
 	virtual void Notify( bool const );
 
 private:
-	class GenerationDisplayRefreshRate;
+	class RefreshRate;
 
-	GenerationDisplayRefreshRate * m_pRefreshRate;
+	RefreshRate * m_pRefreshRate;
 };
 

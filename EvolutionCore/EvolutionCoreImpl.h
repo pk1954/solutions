@@ -6,7 +6,6 @@
 
 #include <functional>
 #include "BoolOp.h"
-#include "ViewCollection.h"
 #include "GridDimensions.h"
 #include "gridPOI.h"
 #include "gridPoint.h"

@@ -6,14 +6,14 @@
 
 #include <chrono>
 #include "util.h"
-#include "ViewCollection.h"
+#include "observable.h"
 
 using std::chrono::milliseconds;
 
 milliseconds const DEFAULT_DELAY( 50 );  
 milliseconds const MAX_DELAY  ( 2048 );  
 
-class Delay
+class Delay: public Observable
 {
 public:
 
@@ -34,7 +34,7 @@ public:
 	void SetDelay( milliseconds delay )
 	{
 		m_msGenerationDelay = delay;
-		m_observers.NotifyAll( false );
+		NotifyAll( false );
 	};
 
 	void SleepDelay( ) const
@@ -43,18 +43,7 @@ public:
 			Sleep( CastToUnsignedLong(m_msGenerationDelay.count()) );
 	};
 
-	void RegisterObserver( ObserverInterface * const pObserver )
-	{
-		m_observers.Register( pObserver );
-	}
-
-	void Stop( )
-	{
-		m_observers.Clear();
-	}
-
 private:
 
-	milliseconds   m_msGenerationDelay; 
-	ViewCollection m_observers;
+	milliseconds m_msGenerationDelay; 
 };

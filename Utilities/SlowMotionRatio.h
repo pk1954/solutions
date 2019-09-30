@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "ViewCollection.h"
+#include "observable.h"
 
-class SlowMotionRatio
+class SlowMotionRatio : public Observable
 {
 public:
 
@@ -27,20 +27,9 @@ public:
 	void SetRatio( unsigned int const ratio )
 	{
 		m_ratio = ratio;
-		m_observers.NotifyAll( false );
-	}
-
-	void RegisterObserver( ObserverInterface * const pObserver )
-	{
-		m_observers.Register( pObserver );
-	}
-
-	void Stop( )
-	{
-		m_observers.Clear();
+		NotifyAll( false );
 	}
 
 private:
-	unsigned int   m_ratio;   // 1 means realtime, 10 means slow motion factor 10
-	ViewCollection m_observers;
+	unsigned int m_ratio;   // 1 means realtime, 10 means slow motion factor 10
 };

@@ -27,9 +27,6 @@
     <ClCompile Include="win32_draw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_focusPoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32_gridWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

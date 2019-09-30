@@ -18,11 +18,11 @@
 #pragma once
 
 #include "synchapi.h"
+#include "observable.h"
 #include "observerInterface.h"
-#include "ViewCollection.h"
 
 template <typename MODEL>
-class ReadBuffer : public ObserverInterface
+class ReadBuffer : public ObserverInterface, public Observable
 {
 public:
 	ReadBuffer( ) : 
@@ -45,16 +45,6 @@ public:
 	}
 
 	// called by consumer threads
-
-	void RegisterObserver( ObserverInterface * const pObserver )
-	{
-		m_observers.Register( pObserver );
-	}
-
-	void Stop( )
-	{
-		m_observers.Clear();
-	}
 
 	MODEL const * LockReadBuffer( ) 
 	{
@@ -83,12 +73,11 @@ public:
 
 		m_pModel4Display->CopyModelData( m_pModelWork );  
 		ReleaseSRWLockExclusive( & m_SRWLock );
-		m_observers.NotifyAll( ! bRunning );   // If not running, readers should update immediately    
+		NotifyAll( ! bRunning );   // If not running, readers should update immediately    
 	}
 
 private:
-	SRWLOCK          m_SRWLock;
-	ViewCollection   m_observers;
-	MODEL          * m_pModel4Display;
-	MODEL    const * m_pModelWork;
+	SRWLOCK       m_SRWLock;
+	MODEL       * m_pModel4Display;
+	MODEL const * m_pModelWork;
 };

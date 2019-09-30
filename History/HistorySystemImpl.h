@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "ViewCollection.h"
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
 #include "historyCache.h"
@@ -66,22 +65,11 @@ public:
 		return m_pHistoryCache;
 	}
 
-	virtual void RegisterObserver( ObserverInterface * const pObserver )
-	{
-		m_observers.Register( pObserver );
-	}
-
-	virtual void UnregisterAllObservers( )
-	{
-		m_observers.Clear();
-	}
-
 private:
 
-    GenCmdList      m_GenCmdList;
-    HistoryCache  * m_pHistoryCache;
-    HistCacheItem * m_pHistCacheItemWork;  // The reference item, where history system gets and restores data 
-	ViewCollection  m_observers;
+    GenCmdList         m_GenCmdList;
+    HistoryCache     * m_pHistoryCache;
+    HistCacheItem    * m_pHistCacheItemWork;  // The reference item, where history system gets and restores data 
 
 	ModelData  const * save2History( );
     void               step2NextGeneration( GenerationCmd );

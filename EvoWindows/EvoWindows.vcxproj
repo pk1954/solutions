@@ -152,7 +152,6 @@
     <ClCompile Include="win32_draw.cpp" />
     <ClCompile Include="win32_EvoEditor.cpp" />
     <ClCompile Include="win32_EvoEditorWrappers.cpp" />
-    <ClCompile Include="win32_focusPoint.cpp" />
     <ClCompile Include="win32_gridWindow.cpp" />
     <ClCompile Include="win32_histWrappers.cpp" />
     <ClCompile Include="win32_performanceWindow.cpp" />

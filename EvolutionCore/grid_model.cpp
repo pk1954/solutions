@@ -83,7 +83,6 @@ Grid::Grid( )
       m_enBaseConsumption( 0_ENERGY_UNITS ),
       m_enMaxFertilizer( 0_ENERGY_UNITS ),
       m_lFertilizerYield( 0 )
-
 {
 	RefreshCache( );
 

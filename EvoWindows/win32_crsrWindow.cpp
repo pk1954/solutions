@@ -30,7 +30,7 @@ void CrsrWindow::Start
 {
     m_pReadBuffer = pReadBuffer;
     m_pFocusPoint = pFocusPoint;
-    m_pFocusPoint->RegisterFocusPointObserver( this );
+    m_pFocusPoint->RegisterObserver( this );
     StartTextWindow
 	( 
 		hwndParent, 

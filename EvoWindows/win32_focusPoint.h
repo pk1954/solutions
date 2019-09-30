@@ -1,32 +1,35 @@
 // win32_focusPoint.h
 //
+// EvoWindows
 
 #pragma once
 
 #include "GridDimensions.h"
 #include "GridPoint.h"
 #include "EvolutionCore.h"
-#include "ViewCollection.h"
+#include "observable.h"
 #include "HistoryGeneration.h"
 
 class RootWindow;
-class EvoHistorySysGlue;
 class EvolutionCore;
 
-class FocusPoint
+class FocusPoint: public Observable
 {
 public:
-    FocusPoint( );
+	FocusPoint( ) :
+		m_gp( GP_NULL )
+	{ };
 	virtual ~FocusPoint( ) {};
 
-    void Start( EvoHistorySysGlue * );
-
-    void SetFocusPoint( GridPoint const );
-	void RegisterFocusPointObserver( ObserverInterface * pObserver )
+	void SetFocusPoint( GridPoint const gpNew )
 	{
-		m_ViewCollection.Register( pObserver );
+		if ( gpNew != m_gp )
+		{
+			m_gp = gpNew;
+			NotifyAll( false );
+		}
 	}
-    
+
 	GridPoint const GetGridPoint( ) const 
 	{ 
 		return m_gp; 
@@ -53,7 +56,5 @@ public:
 	}
 
 private:
-    ViewCollection      m_ViewCollection;
-    EvoHistorySysGlue * m_pEvoHistGlue;
-    GridPoint           m_gp;
+    GridPoint m_gp;
 };

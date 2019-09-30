@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "observable.h"
 #include "GenerationCmd.h"
 #include "HistoryGeneration.h"
 
@@ -20,7 +21,7 @@ public:
 
 class HistoryBufferException : public std::exception { };
 
-class HistorySystem
+class HistorySystem : public Observable
 {
 public:
 	static HistorySystem * CreateHistorySystem( );
@@ -60,9 +61,6 @@ public:
 	virtual void              ShutDownHistCache( ) = 0;
 
 	virtual HIST_GENERATION   FindGenerationWithProperty( GenerationProperty const &, bool const ) const = 0;
-
-	virtual void              RegisterObserver( ObserverInterface * const ) = 0;
-	virtual void              UnregisterAllObservers( ) = 0;
 
     static  BYTES GetSlotWrapperSize( );
 };

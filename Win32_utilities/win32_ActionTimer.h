@@ -6,16 +6,16 @@
 
 #include <chrono>
 #include "util.h"
-#include "NamedType.h"
 #include "windows.h"
+#include "NamedType.h"
+#include "observable.h"
 #include "win32_hiResTimer.h"
-#include "ViewCollection.h"
 
 using std::chrono::milliseconds;
 
 using MilliHertz = NamedType< unsigned long, struct MilliHertz_Parameter >;
 
-class ActionTimer
+class ActionTimer : public Observable
 {
 public:
 	ActionTimer()
@@ -37,7 +37,7 @@ public:
 		m_hrtimerSingleAction.Stop( );
 		m_usSingleActionTime = m_hrtimerSingleAction.GetDuration( );
 		++m_dwCounter;
-		m_observers.NotifyAll( false );
+		NotifyAll( false );
 	};
 
 	microseconds GetSingleActionTime( )
@@ -66,21 +66,10 @@ public:
 		return result;
 	}
 
-	void RegisterObserver( ObserverInterface * const pObserver )
-	{
-		m_observers.Register( pObserver );
-	}
-
-	void Stop( )
-	{
-		m_observers.Clear();
-	}
-
 private:
 
-	HiResTimer     m_hrtimerSingleAction;
-	HiResTimer     m_hrtimerOverall;
-	microseconds   m_usSingleActionTime; 
-	DWORD          m_dwCounter;            // nr of executions
-	ViewCollection m_observers;
+	HiResTimer   m_hrtimerSingleAction;
+	HiResTimer   m_hrtimerOverall;
+	microseconds m_usSingleActionTime; 
+	DWORD        m_dwCounter;            // nr of executions
 };

@@ -20,8 +20,8 @@ public:
 
 private:
 
-	class TimeDisplayRefreshRate;
+	class RefreshRate;
 
-	TimeDisplayRefreshRate * m_pRefreshRate;
+	RefreshRate * m_pRefreshRate;
 };
 

@@ -223,7 +223,6 @@ void EvoAppWindow::Start( )
 
 	m_pDspOptWindow   ->Start( m_hwndApp );
 	m_pEvoEditorWindow->Start( m_hwndApp, & m_EvoWorkThreadInterface, & m_EvoReadBuffer, m_pDspOptWindow );
-	m_pFocusPoint     ->Start( & m_EvoHistGlue );
 	m_pCrsrWindow     ->Start( m_hwndApp, & m_EvoReadBuffer, m_pFocusPoint );
 	m_pStatistics     ->Start( m_hwndApp, & m_EvoReadBuffer );
 	m_pPerfWindow     ->Start( m_hwndApp, m_Delay, m_atComputation, m_atDisplay, [&](){ return m_EvoWorkThreadInterface.IsRunning(); } );
@@ -262,8 +261,8 @@ void EvoAppWindow::Stop()
 	m_pStatistics     ->Stop( );
 	m_pCrsrWindow     ->Stop( );
 
-	m_Delay                 .Stop( );
-	m_EvoReadBuffer         .Stop( );
+	m_Delay                 .UnregisterAllObservers( );
+	m_EvoReadBuffer         .UnregisterAllObservers( );
 	m_EvoWorkThreadInterface.Stop( );
 	m_EvoHistGlue           .Stop( );
 

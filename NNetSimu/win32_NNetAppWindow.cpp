@@ -160,7 +160,7 @@ void NNetAppWindow::Stop()
 	m_pMainNNetWindow  ->Stop( );
 //	m_pNNetEditorWindow->Stop( );
 
-	m_NNetReadBuffer.Stop( );
+	m_NNetReadBuffer.UnregisterAllObservers( );
 	m_NNetWorkThreadInterface.Stop( );
 	m_NNetHistGlue           .Stop( );
 
