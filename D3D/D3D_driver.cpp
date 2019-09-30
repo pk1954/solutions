@@ -102,7 +102,8 @@ PixelRect D3D_driver::CalcGraphicsRect( std::wstring const & wstr )
 void D3D_driver::DisplayGraphicsText
 ( 
 	PixelRect    const & pixRect, 
-	std::wstring const & wstr, 
+	std::wstring const & wstr,
+	DWORD        const   format,
 	COLORREF     const   col 
 )
 {
@@ -114,8 +115,8 @@ void D3D_driver::DisplayGraphicsText
         wstr.c_str( ),     // pString
         -1,                // Count
         &rect,             // pRect
-        DT_LEFT,           // Format
-        col                // Color
+		format,           // Format
+		COLORREFtoD3DCOLOR( 255, col )  
     ); 
 }
 

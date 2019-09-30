@@ -25,7 +25,7 @@ void Pipeline::initialize( )
 {
 	if ( m_pKnotStart && m_pKnotEnd )
 	{
-		static double     const IMPULSE_SPEED  = 20.0; // in units of micrometer/microsecond
+		static double     const IMPULSE_SPEED  = 0.1; // in units of micrometer/microsecond
 		static MicroMeter const SEGMENT_LENGTH = MicroMeter( IMPULSE_SPEED * TIME_RESOLUTION.count() );
 		
 		MicroMeter   const pipelineLength = distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() );

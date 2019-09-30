@@ -38,7 +38,7 @@ PixelRect GDI_driver::CalcGraphicsRect( std::wstring const & wstr )
 	return Util::RECT2PixelRect( rect );
 }
 
-void GDI_driver::DisplayGraphicsText( PixelRect const & pixRect, std::wstring const & wstr, COLORREF const )
+void GDI_driver::DisplayGraphicsText( PixelRect const & pixRect, std::wstring const & wstr, DWORD const, COLORREF const )
 {
 	RECT rect( Util::PixelRect2RECT( pixRect ) );			  
 }

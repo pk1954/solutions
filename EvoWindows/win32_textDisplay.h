@@ -61,7 +61,7 @@ public:
 
 	void DisplayText( PixelRect const & rect )
 	{
-		m_pGraphics->DisplayGraphicsText( rect, m_pBuffer->str( ), CLR_WHITE );
+		m_pGraphics->DisplayGraphicsText( rect, m_pBuffer->str( ), DT_LEFT, CLR_WHITE );
 	}
 
 private:

@@ -27,7 +27,7 @@ public:
     virtual void      RenderIndividuals( );
     virtual void      RenderBackground( );
     virtual void      RenderTranspRect( PixelRect const &, unsigned int const, COLORREF const );
-    virtual void      DisplayGraphicsText( PixelRect const &, std::wstring const &, COLORREF const );
+    virtual void      DisplayGraphicsText( PixelRect const &, std::wstring const &, DWORD const, COLORREF const );
     virtual PixelRect CalcGraphicsRect( std::wstring const & );
 	virtual void      EndFrame( HWND const );
 	virtual void      ShutDown( );
