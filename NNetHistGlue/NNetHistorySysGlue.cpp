@@ -25,8 +25,8 @@ NNetModelDataGlue * NNetHistorySysGlue::Start
 
 	ModelData * pModelWork = m_pHistorySystem->StartHistorySystem
     (
-        100000,  //TODO
-        1000,    //TODO 
+        1000000,  //TODO
+        1000,     //TODO 
 		Util::GetPhysicalMemory( ),
         & m_NNetModelFactory
     );

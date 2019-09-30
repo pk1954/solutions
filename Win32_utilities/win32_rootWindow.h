@@ -178,6 +178,11 @@ public:
 	virtual void AddContextMenuEntries( HMENU const, POINT const ) {}
 	virtual void Notify( bool const );
 
+	virtual void Trigger( )
+	{
+		Invalidate( FALSE );
+	}
+
 protected:
 
 	void SetWindowHandle( HWND const );

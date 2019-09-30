@@ -3,10 +3,11 @@
 // Win32_utilities
 
 #include "stdafx.h"
+#include "win32_refreshRateDialog.h"
 #include "win32_refreshRate.h"
 
 RefreshRate::RefreshRate( )
-	:	m_hTimer( nullptr ),
+ :	m_hTimer( nullptr ),
 	m_bTimerActive( FALSE ),
 	m_bDirty( TRUE ),
 	m_msRefreshRate( 0ms )
@@ -42,6 +43,13 @@ void RefreshRate::Notify( bool const bImmediately )
 			startTimer( m_msRefreshRate );
 		}
 	}
+}
+
+void RefreshRate::RefreshRateDialog( HWND const hwnd )
+{
+	milliseconds msRefreshRateOld = GetRefreshRate( );
+	milliseconds msRefreshRateNew = RefreshRateDialog::Show( hwnd, msRefreshRateOld );
+	SetRefreshRate( msRefreshRateNew );
 }
 
 void RefreshRate::startTimer( milliseconds const msTimer )

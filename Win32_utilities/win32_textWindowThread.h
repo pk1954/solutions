@@ -34,7 +34,7 @@ public:
 		m_pTextBuffer = nullptr;
 	}
 
-	void Trigger( )
+	virtual void Trigger( )
 	{
 		const unsigned int anyMessageWillDo = 42;
 

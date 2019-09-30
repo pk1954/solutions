@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "win32_util_resource.h"
 #include "win32_refreshRate.h"
-#include "win32_refreshRateDialog.h"
 #include "win32_rootWindow.h"
 
 using namespace std::chrono;
@@ -24,7 +23,7 @@ public:
 
 	virtual void Trigger( )
 	{
-		m_pRootWin->Invalidate( FALSE );
+		m_pRootWin->Trigger( );
 	}
 
 private:
@@ -208,12 +207,8 @@ LRESULT RootWindow::RootWindowProc
 			return FALSE;
 
 		case IDM_REFRESH_RATE_DIALOG:
-		{
-			milliseconds msRefreshRateOld = GetRefreshRate( );
-			milliseconds msRefreshRateNew = RefreshRateDialog::Show( hwnd, msRefreshRateOld );
-			SetRefreshRate( msRefreshRateNew );
+			pRootWin->m_pRefreshRate->RefreshRateDialog( hwnd );
 			return FALSE;
-		}
 
 		default:
 			break;

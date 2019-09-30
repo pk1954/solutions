@@ -24,6 +24,8 @@ public:
 
 	void Notify( bool const );
 
+	void RefreshRateDialog( HWND const );
+
 private:
 	HANDLE       m_hTimer;
 	milliseconds m_msRefreshRate;
