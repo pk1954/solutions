@@ -143,6 +143,9 @@
     <ClCompile Include="win32_aboutBox.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="win32_refreshRate.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="win32_utilities.rc">

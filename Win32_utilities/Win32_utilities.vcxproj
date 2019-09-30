@@ -184,6 +184,7 @@
     <ClCompile Include="win32_baseDialog.cpp" />
     <ClCompile Include="win32_baseWindow.cpp" />
     <ClCompile Include="win32_clut.cpp" />
+    <ClCompile Include="win32_refreshRate.cpp" />
     <ClCompile Include="win32_refreshRateDialog.cpp" />
     <ClCompile Include="win32_textBuffer.cpp" />
     <ClCompile Include="win32_hiResTimer.cpp" />
