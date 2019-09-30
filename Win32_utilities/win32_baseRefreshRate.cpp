@@ -4,32 +4,32 @@
 
 #include "stdafx.h"
 #include "win32_refreshRateDialog.h"
-#include "win32_refreshRate.h"
+#include "win32_baseRefreshRate.h"
 
-RefreshRate::RefreshRate( )
+BaseRefreshRate::BaseRefreshRate( )
  :	m_hTimer( nullptr ),
 	m_bTimerActive( FALSE ),
 	m_bDirty( TRUE ),
 	m_msRefreshRate( 0ms )
 {}
 
-RefreshRate::~RefreshRate( )
+BaseRefreshRate::~BaseRefreshRate( )
 {
 	deleteTimer( );
 	m_hTimer = nullptr;
 }
 
-void RefreshRate::SetRefreshRate( milliseconds const msRate ) 
+void BaseRefreshRate::SetRefreshRate( milliseconds const msRate ) 
 { 
 	m_msRefreshRate = msRate; 
 }
 
-milliseconds RefreshRate::GetRefreshRate( )
+milliseconds BaseRefreshRate::GetRefreshRate( )
 { 
 	return m_msRefreshRate; 
 }
 
-void RefreshRate::Notify( bool const bImmediately )
+void BaseRefreshRate::Notify( bool const bImmediately )
 {
 	if ( bImmediately || (m_msRefreshRate == 0ms) )
 		trigger( );
@@ -45,14 +45,14 @@ void RefreshRate::Notify( bool const bImmediately )
 	}
 }
 
-void RefreshRate::RefreshRateDialog( HWND const hwnd )
+void BaseRefreshRate::RefreshRateDialog( HWND const hwnd )
 {
 	milliseconds msRefreshRateOld = GetRefreshRate( );
 	milliseconds msRefreshRateNew = RefreshRateDialog::Show( hwnd, msRefreshRateOld );
 	SetRefreshRate( msRefreshRateNew );
 }
 
-void RefreshRate::startTimer( milliseconds const msTimer )
+void BaseRefreshRate::startTimer( milliseconds const msTimer )
 {
 	DWORD dwTime = static_cast<DWORD>(msTimer.count());
 	(void)CreateTimerQueueTimer
@@ -67,7 +67,7 @@ void RefreshRate::startTimer( milliseconds const msTimer )
 	);
 }
 
-void RefreshRate::deleteTimer( )
+void BaseRefreshRate::deleteTimer( )
 {
 	if ( m_hTimer != nullptr )
 	{
@@ -77,9 +77,9 @@ void RefreshRate::deleteTimer( )
 	}
 }
 
-void CALLBACK RefreshRate::TimerProc( void * const lpParam, BOOL const TimerOrWaitFired )
+void CALLBACK BaseRefreshRate::TimerProc( void * const lpParam, BOOL const TimerOrWaitFired )
 {
-	RefreshRate * const pRefreshRate = reinterpret_cast<RefreshRate *>( lpParam );
+	BaseRefreshRate * const pRefreshRate = reinterpret_cast<BaseRefreshRate *>( lpParam );
 	if ( pRefreshRate->m_bDirty )
 	{
 		pRefreshRate->trigger( );

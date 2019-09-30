@@ -1,4 +1,4 @@
-// win32_refreshRate.h : 
+// win32_baseRefreshRate.h : 
 //
 // Win32_utilities
 
@@ -10,12 +10,12 @@
 using std::chrono::milliseconds;
 using namespace std::chrono;
 
-class RefreshRate
+class BaseRefreshRate
 {
 public:
 
-	RefreshRate( );
-	~RefreshRate( );
+	BaseRefreshRate( );
+	~BaseRefreshRate( );
 
 	virtual void Trigger( ) = 0;
 

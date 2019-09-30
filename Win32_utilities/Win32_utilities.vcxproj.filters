@@ -87,7 +87,7 @@
     <ClInclude Include="win32_delay.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_refreshRate.h">
+    <ClInclude Include="win32_baseRefreshRate.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -140,7 +140,7 @@
     <ClCompile Include="win32_aboutBox.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_refreshRate.cpp">
+    <ClCompile Include="win32_baseRefreshRate.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "win32_util_resource.h"
-#include "win32_refreshRate.h"
+#include "win32_baseRefreshRate.h"
 #include "win32_rootWindow.h"
 
 using namespace std::chrono;
@@ -14,7 +14,7 @@ BOOL RootWinIsReady( RootWindow const * pRootWin )
     return ( ( pRootWin != nullptr ) && ( pRootWin->GetWindowHandle( ) != nullptr ) );
 }
 
-class RootWindow::WindowRefreshRate : public RefreshRate
+class RootWindow::WindowRefreshRate : public BaseRefreshRate
 {
 public:
 	WindowRefreshRate( RootWindow * const pRootWin )
