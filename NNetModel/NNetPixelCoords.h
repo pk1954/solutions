@@ -88,6 +88,15 @@ public:
 
 	//////// manipulation functions ////////
 
+	//void newPixelSize
+	//(
+	//	NanoMeter   const newPixelSize,
+	//	fPixelPoint const fPixPntNewCenter
+	//)
+	//{
+
+	//}
+
 	bool SetPixelSize( NanoMeter const nmPixelSize )
 	{
 		bool bValid = isValidPixelSize( nmPixelSize );

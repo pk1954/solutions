@@ -25,11 +25,10 @@ void Pipeline::initialize( )
 {
 	if ( m_pKnotStart && m_pKnotEnd )
 	{
-		static double     const IMPULSE_SPEED  = 0.1; // in units of micrometer/microsecond
-		static MicroMeter const SEGMENT_LENGTH = MicroMeter( IMPULSE_SPEED * TIME_RESOLUTION.count() );
-		
+		MicroMeter   const segmentLength  = CoveredDistance( m_impulseSpeed, TIME_RESOLUTION );
 		MicroMeter   const pipelineLength = distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() );
-		unsigned int const iNrOfSegments  = CastToUnsignedInt(round(pipelineLength.GetValue() / SEGMENT_LENGTH.GetValue()));
+		unsigned int const iNrOfSegments  = CastToUnsignedInt(round(pipelineLength / segmentLength));
+
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 	}
 }

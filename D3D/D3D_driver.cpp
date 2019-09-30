@@ -403,3 +403,16 @@ void D3D_driver::AddfPixelLine
 	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp2.GetXvalue() - fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() - fOrthoScaled.GetYvalue()), color );
 	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp2.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() + fOrthoScaled.GetYvalue()), color );
 }
+
+void D3D_driver::AddRect( fPixelPoint const ptPos, COLORREF const color, fPIXEL const fPixSize )
+{
+	static float const SQRT3 = static_cast<float>( sqrt( 3 ) );
+
+	float const fPtPosx = static_cast<float>( ptPos.GetXvalue() );
+	float const fPtPosy = static_cast<float>( ptPos.GetYvalue() );
+
+	D3DCOLOR const D3Dcolor = color; // COLORREFtoD3DCOLOR( 255, color );
+
+	addRectangle( fPtPosx, fPtPosy, D3Dcolor, CastToFloat(fPixSize.GetValue()) );
+}
+

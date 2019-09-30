@@ -32,6 +32,7 @@ public:
 	virtual void      EndFrame( HWND const );
 	virtual void      ShutDown( );
 	virtual void	  AddfPixelLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const );
+	virtual void      AddRect( fPixelPoint const, COLORREF const, fPIXEL const );
 
 private:   
 	D3dSystem             * m_d3d;

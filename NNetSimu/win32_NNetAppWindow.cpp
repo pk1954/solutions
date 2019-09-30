@@ -174,8 +174,8 @@ void NNetAppWindow::configureStatusBar( )
 	int iPartScriptLine = 0;
 	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, & m_NNetReadBuffer, iPartScriptLine );
 
-	iPartScriptLine = m_StatusBar.NewPart( );
-	m_StatusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
+	//iPartScriptLine = m_StatusBar.NewPart( );
+	//m_StatusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	ZoomControl::AddSizeControl
@@ -185,6 +185,7 @@ void NNetAppWindow::configureStatusBar( )
 		LogarithmicTrackbar::Value2TrackbarD( MAXIMUM_PIXEL_SIZE.GetValue() ), 
 		LogarithmicTrackbar::Value2TrackbarD( DEFAULT_PIXEL_SIZE.GetValue() ) 
 	);
+	EnableWindow( m_StatusBar.GetDlgItem( IDM_FIT_ZOOM ), FALSE );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	SpeedControl::AddSimulationControl

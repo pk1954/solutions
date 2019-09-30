@@ -84,6 +84,11 @@ public:
 		return res; 
 	}
 
+	friend BASE_TYPE operator/ (NamedType const a, NamedType const b )
+	{ 
+		return BASE_TYPE( a.GetValue() / b.GetValue() );
+	}
+
 	//friend std::wostream & operator<< ( std::wostream & out, NamedType const & param )
 	//{
 	//	out << param.GetValue();

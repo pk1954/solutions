@@ -180,6 +180,10 @@ void NNetWindow::OnPaint( )
 		if ( m_pGraphics->StartFrame( GetWindowHandle(), hDC ) )
 		{
 			NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
+			
+			fPIXEL fPixWidth;
+
+			// Pipeline
 
 			Segment          segment;
 			mV               potential;
@@ -189,11 +193,23 @@ void NNetWindow::OnPaint( )
 			{
 				fPixelPoint const fPixPoint1( m_NNetPixelCoords.NNet2fPixelPos( segment.GetStartPoint() ) );
 				fPixelPoint const fPixPoint2( m_NNetPixelCoords.NNet2fPixelPos( segment.GetEndPoint  () ) );
-				fPIXEL      const fPixWidth ( m_NNetPixelCoords.MicroMeter2fPixel( segment.GetWidth() ) );
+				                  fPixWidth = fPIXEL( m_NNetPixelCoords.MicroMeter2fPixel( segment.GetWidth() ) );
 				COLORREF    const color = RGB(   0, 255 - potential.GetValue(), 0 );
 				m_pGraphics->AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth, color );
 				++ uiSegmentNr;
 			}
+
+			// Neuron 
+
+			fPIXEL const fPixNeuronSize = fPixWidth * 5.0;
+
+			Neuron const * pNeuron = pModel->GetNeuron( );
+			m_pGraphics->AddRect( m_NNetPixelCoords.NNet2fPixelPos( pNeuron->GetPosition() ), RGB( 128, 128, 128 ), fPixNeuronSize );
+
+			// Knot
+
+			Knot const * pKnot = pModel->GetKnot( );
+			m_pGraphics->AddRect( m_NNetPixelCoords.NNet2fPixelPos( pKnot->GetPosition() ), RGB( 128, 128, 128 ), fPixNeuronSize );
 
 			m_pReadBuffer->ReleaseReadBuffer( );
 			showScale( hDC );

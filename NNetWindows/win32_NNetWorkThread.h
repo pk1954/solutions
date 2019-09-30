@@ -72,5 +72,7 @@ private:
 
 	SlowMotionRatio * m_pSlowMotionRatio;
 	Ticks             m_timerTicks;
+	Ticks             m_timerTicksLastTime;
+	double            m_dutyCycle;
 	HiResTimer        m_hrTimer;
 };

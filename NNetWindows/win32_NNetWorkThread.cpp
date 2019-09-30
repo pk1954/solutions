@@ -37,7 +37,9 @@ NNetWorkThread::NNetWorkThread
 		pWorkThreadInterface 
 	),
 	m_pSlowMotionRatio( pSLowMotionRatio ),
-	m_timerTicks( Ticks( 0 ) )
+	m_timerTicksLastTime( Ticks( 0 ) ),
+	m_timerTicks( Ticks( 0 ) ),
+	m_dutyCycle( 0.0 )
 {
 }
 
@@ -61,8 +63,14 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 
 void NNetWorkThread::WaitTilNextActivation( )
 {
-	//if (m_pDelay != nullptr)
-	//	m_pDelay->SleepDelay( );
+	Ticks workTicks = m_hrTimer.ReadHiResTimer() - m_timerTicksLastTime;
 
 	m_hrTimer.BusyWait( TIME_RESOLUTION * m_pSlowMotionRatio->GetRatio(), m_timerTicks );
-}
+
+	Ticks ticksAct   = m_hrTimer.ReadHiResTimer();
+	Ticks cycleTicks = ticksAct - m_timerTicksLastTime;
+
+	m_dutyCycle = static_cast<double>( workTicks.GetValue() ) / static_cast<double>( cycleTicks.GetValue() ); 
+
+	m_timerTicksLastTime = ticksAct;
+} 

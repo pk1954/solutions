@@ -10,7 +10,7 @@
 Hertz HiResTimer::m_frequency = Hertz( 0 );
 
 // Gets the high-resolution timer's value
-inline Ticks HiResTimer::readHiResTimer( ) const
+inline Ticks HiResTimer::ReadHiResTimer( ) const
 {
     LARGE_INTEGER value;
     (void)QueryPerformanceCounter( & value );
@@ -33,13 +33,13 @@ HiResTimer::HiResTimer( ) :
 void HiResTimer::Start( )
 {
 	assert( ! m_bStarted );
-    m_ticksOnStart = readHiResTimer( );
+    m_ticksOnStart = ReadHiResTimer( );
 	m_bStarted = true;
 }
 
 void HiResTimer::Stop( )
 {
-	Ticks const ticksActual = readHiResTimer( );
+	Ticks const ticksActual = ReadHiResTimer( );
 	Ticks const ticksDiff   = ticksActual - m_ticksOnStart;
 	assert( m_bStarted );
 	m_ticksAccumulated += ticksDiff;
@@ -78,11 +78,11 @@ void HiResTimer::BusyWait( microseconds const us, Ticks & ticks )
 {
 	Ticks ticksToWait = MicroSecondsToTicks( us );
 	if ( ticks == Ticks( 0 ) ) 
-		ticks = readHiResTimer( );
+		ticks = ReadHiResTimer( );
 	Ticks ticksTarget = ticks + ticksToWait;
 
 	do
 	{ 
-		ticks = readHiResTimer( );
+		ticks = ReadHiResTimer( );
 	} while ( ticks < ticksTarget );
 }

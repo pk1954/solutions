@@ -18,9 +18,9 @@ void NNetModel::InitClass
 
 NNetModel::NNetModel( )
   : m_timeStamp( microseconds( 0 ) ),
-	m_neuron  ( NNetPoint(   20.0_MicroMeter,   20.0_MicroMeter ) ),
-	m_knot    ( NNetPoint( 1000.0_MicroMeter, 1400.0_MicroMeter ) ),
-	m_pipeline( ),
+	m_neuron  ( NNetPoint( 400.0_MicroMeter,  200.0_MicroMeter ) ),
+	m_knot    ( NNetPoint( 400.0_MicroMeter, 1400.0_MicroMeter ) ),
+	m_pipeline( 0.1_meterPerSec ), // STD_IMPULSE_SPEED ),
 	m_iCounter( 0 )
 {
 	m_neuron.AddOutgoing( & m_pipeline );

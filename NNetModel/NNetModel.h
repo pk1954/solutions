@@ -46,6 +46,8 @@ public:
 	virtual void ResetAll( );
 
 	Pipeline const * GetPipeline( ) const { return & m_pipeline; }
+	Neuron   const * GetNeuron( )   const { return & m_neuron; }
+	Knot     const * GetKnot( )     const { return & m_knot; }
 
 	// static functions  
 
@@ -55,10 +57,9 @@ public:
 
 private:
 
-	int      m_iCounter;
-	Neuron   m_neuron;
-	Knot     m_knot;
-	Pipeline m_pipeline;
-
+	int          m_iCounter;
+	Neuron       m_neuron;
+	Knot         m_knot;
+	Pipeline     m_pipeline;
 	microseconds m_timeStamp;
 };

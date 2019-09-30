@@ -21,6 +21,8 @@ public:
     void Start( );
     void Stop( );
 
+	Ticks ReadHiResTimer( ) const;
+
 	microseconds GetDuration( );
 	microseconds TicksToMicroseconds( Ticks const );
 	Ticks        MicroSecondsToTicks( microseconds const );
@@ -37,5 +39,4 @@ private:
 	Ticks m_ticksOnStart;
 	Ticks m_ticksAccumulated;
 
-	Ticks readHiResTimer( ) const;
 };
