@@ -28,11 +28,6 @@ public:
 		m_hCrsrMove     = LoadCursor( NULL, IDC_SIZEALL );
 	}
 
-	void Refresh( )
-	{
-		Trigger( );
-	}
-
 protected:
 
 	virtual void OnMouseWheel ( WPARAM const, LPARAM const ) = 0;

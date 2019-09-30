@@ -12,6 +12,10 @@
 #include "win32_tooltip.h"
 #include "win32_util.h"
 
+using std::chrono::milliseconds;
+
+class WindowRefreshRate;
+
 class RootWindow : public ObserverInterface
 {
 public:
@@ -47,8 +51,8 @@ public:
     HWND          const GetDlgItem( int const iItem ) const { return ::GetDlgItem     ( m_hwnd, iItem ); }
     BOOL          const IsCaptured( )                 const { return ::GetCapture( ) == m_hwnd; }
 
-	void                      SetRefreshRate( std::chrono::milliseconds const msRate ) { m_msRefreshRate = msRate; }
-	std::chrono::milliseconds GetRefreshRate( )                                        { return m_msRefreshRate; }
+	void         SetRefreshRate( milliseconds const );
+	milliseconds GetRefreshRate( );         
 	
     void Show( tBoolOp const op ) const { Util::Show( m_hwnd, op ); }
     void Show( BOOL    const b  ) const { Util::Show( m_hwnd, b  ); }
@@ -201,46 +205,21 @@ public:
 	virtual void AddContextMenuEntries( HMENU const, POINT const ) {}
 
 	virtual void Notify( bool const );
+	virtual void Refresh( );
 
 protected:
 
 	void SetWindowHandle( HWND const );
 
-	virtual void Trigger( )
-	{
-		Invalidate( FALSE );
-	}
-
 	LRESULT RootWindowProc( HWND const, UINT const, WPARAM const, LPARAM const );
 
 private:
 
-	HWND                      m_hwnd;
-	HWND                      m_hwndApp;
-	HANDLE                    m_hTimer;
-	BOOL                      m_bTimerActive;
-	BOOL                      m_bDirty;
-	std::chrono::milliseconds m_msRefreshRate;
-	tOnOffAuto                m_visibilityMode;
-	std::function<bool()>     m_visibilityCriterion;
-
-	void invalidate( )
-	{
-		Trigger( );
-		m_bDirty = FALSE;
-	}
-
-    void startTimer( std::chrono::milliseconds const );
-
-	void deleteTimer( )
-	{
-	    if ( m_hTimer != nullptr )
-        {
-			HANDLE handle = m_hTimer;
-            m_hTimer = nullptr;
-            (void)DeleteTimerQueueTimer( nullptr, handle, 0 );
-        }
-	}
+	HWND                  m_hwnd;
+	HWND                  m_hwndApp;
+	WindowRefreshRate   * m_pRefreshRate;
+	tOnOffAuto            m_visibilityMode;
+	std::function<bool()> m_visibilityCriterion;
 
 	void addWinMenu( HMENU const, std::wstring const ) const;
 	void adjustWinMenu( HMENU const ) const;
@@ -251,8 +230,6 @@ private:
 		if ( m_visibilityCriterion )
 			Show( ApplyAutoCriterion( onOffAuto, m_visibilityCriterion ) );
 	}
-
-	static void CALLBACK TimerProc( void * const, BOOL const );
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) = 0;
 };

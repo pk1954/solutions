@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "win32_util_resource.h"
+#include "win32_windowRefreshRate.h"
 #include "win32_refreshRateDialog.h"
 #include "win32_rootWindow.h"
 
@@ -17,19 +18,18 @@ BOOL RootWinIsReady( RootWindow const * pRootWin )
 RootWindow::RootWindow( ) : 
 	m_hwnd( nullptr ),
 	m_hwndApp( nullptr ),
-    m_hTimer( nullptr ),
-    m_bTimerActive( FALSE ),
-    m_bDirty( TRUE ),
-	m_msRefreshRate( 0ms ),
+	m_pRefreshRate( nullptr ),
 	m_visibilityMode( tOnOffAuto::on ),
 	m_visibilityCriterion( nullptr )
-{ }
+{
+	m_pRefreshRate = new WindowRefreshRate( this );
+}
 
 RootWindow::~RootWindow( ) 
 { 
-	deleteTimer( );
-	m_hwnd   = nullptr; 
-    m_hTimer = nullptr;
+	delete m_pRefreshRate;
+	m_pRefreshRate = nullptr;
+	m_hwnd         = nullptr; 
 }
 
 void RootWindow::StartRootWindow( std::function<bool()> const visibilityCriterion )
@@ -103,49 +103,24 @@ void RootWindow::SetWindowHandle( HWND const hwnd )
 	m_hwndApp = GetAncestor( m_hwnd, GA_ROOTOWNER );
 };
 
+void RootWindow::SetRefreshRate( milliseconds const msRate ) 
+{ 
+	m_pRefreshRate->SetRefreshRate( msRate ); 
+}
+
+milliseconds RootWindow::GetRefreshRate( )                           
+{ 
+	return m_pRefreshRate->GetRefreshRate( ); 
+}
+
 void RootWindow::Notify( bool const bImmediately )
 {
-    if ( bImmediately || (m_msRefreshRate == 0ms) )
-        invalidate( );
-    else
-    {
-        m_bDirty = TRUE;
-        if ( !m_bTimerActive )
-        {
-            m_bTimerActive = TRUE;
-            invalidate( );
-            startTimer( m_msRefreshRate );
-        }
-    }
+	m_pRefreshRate->Notify( bImmediately );
 }
 
-void CALLBACK RootWindow::TimerProc( void * const lpParam, BOOL const TimerOrWaitFired )
+void RootWindow::Refresh( )
 {
-    RootWindow * const pRootWin = reinterpret_cast<RootWindow *>( lpParam );
-    if ( pRootWin->m_bDirty )
-    {
-        pRootWin->invalidate( );
-    }
-    else
-    {
-		pRootWin->deleteTimer( );
-		pRootWin->m_bTimerActive = FALSE;
-    }
-}
-
-void RootWindow::startTimer( milliseconds const msTimer )
-{
-	DWORD dwTime = static_cast<DWORD>(msTimer.count());
-    (void)CreateTimerQueueTimer
-	( 
-		& m_hTimer,                     // output parameter 
-		nullptr,                        // use default timer queue
-		(WAITORTIMERCALLBACK)TimerProc, // the timer procedure
-		static_cast<void *>( this ),    // pointer to this object as parameter to TimerProc
-		dwTime,                         // timer is signaled the first time after dwTime msecs
-		dwTime,                         // timer is signaled periodically every dwTime msecs
-		0                               // no flags
-	);
+	m_pRefreshRate->Trigger( );
 }
 
 LRESULT RootWindow::RootWindowProc

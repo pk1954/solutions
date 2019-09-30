@@ -87,7 +87,10 @@
     <ClInclude Include="win32_delay.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RefreshRate.h">
+    <ClInclude Include="win32_refreshRate.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_windowRefreshRate.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
