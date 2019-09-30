@@ -1,9 +1,14 @@
-// win32_refreshRate.cpp
+// TimeDisplay.cpp
 //
 // NNetSimu
 
 #include "stdafx.h"
+#include "win32_refreshRate.h"
+#include "win32_status.h"
+#include "NNetModel.h"
 #include "TimeDisplay.h"
+
+/////// inner class TimeDisplay::TimeDisplayRefreshRate ///////
 
 class TimeDisplay::TimeDisplayRefreshRate : public RefreshRate
 {
@@ -14,7 +19,7 @@ public:
 		NNetReadBuffer * pReadBuffer,
 		int              iPartInStatusBar
 	)
-		:	m_pStatusBar      (pStatusBar),
+	:	m_pStatusBar      (pStatusBar),
 		m_pReadBuffer     (pReadBuffer),
 		m_iPartInStatusBar(iPartInStatusBar)
 	{}
@@ -43,13 +48,15 @@ private:
 	int              m_iPartInStatusBar;
 };
 
+/////// functions of class TimeDisplay ///////
+
 TimeDisplay::TimeDisplay
 (
 	StatusBar      * pStatusBar,
 	NNetReadBuffer * pReadBuffer,
 	int              iPartInStatusBar
 )
-	:	m_pRefreshRate( nullptr )
+  :	m_pRefreshRate( nullptr )
 {
 	static PIXEL const PIX_WIDTH = PIXEL( 9 ) * 8;   //TODO: avoid magic numbers
 	m_pRefreshRate = new TimeDisplayRefreshRate

@@ -4,15 +4,12 @@
 
 #pragma once
 
-#include "util.h"
-#include "ObserverInterface.h"
-#include "win32_refreshRate.h"
-#include "win32_status.h"
 #include "NNetReadBuffer.h"
-#include "NNetModel.h"
+#include "ObserverInterface.h"
 
 using std::to_wstring;
 
+class StatusBar;
 
 class TimeDisplay : public ObserverInterface
 {
