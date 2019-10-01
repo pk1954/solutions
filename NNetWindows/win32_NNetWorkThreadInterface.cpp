@@ -46,3 +46,10 @@ void NNetWorkThreadInterface::Start
 
 	WorkThreadInterface::Start( m_pNNetWorkThread );
 }
+
+void NNetWorkThreadInterface::PostHighlight( ShapeId const id )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::HIGHLIGHT), 0, id.GetValue() );
+}

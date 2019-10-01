@@ -12,9 +12,9 @@ public:
 
 	enum class Id : int8_t // enumeration starts after last GenerationCmd::Id value
 	{
-		editFirst = static_cast<int8_t>(GenerationCmd::Id::FIRST_APP_CMD),  // placeholder
+		highlight = static_cast<int8_t>(GenerationCmd::Id::FIRST_APP_CMD),  // placeholder
 		editLast,                                                           // placeholder
-		FIRST_EDIT_CMD = editFirst,
+		FIRST_EDIT_CMD = highlight,
 		LAST_APP_CMD   = editLast
 	};
 

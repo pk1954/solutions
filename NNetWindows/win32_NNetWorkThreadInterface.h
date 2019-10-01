@@ -6,6 +6,7 @@
 
 #include <fstream>
 #include "boolOp.h"
+#include "Shape.h"
 #include "win32_WorkThreadInterface.h"
 
 class ActionTimer;
@@ -30,6 +31,8 @@ public:
 		SlowMotionRatio    * const,
 	    NNetHistorySysGlue * const
     );
+
+	void PostHighlight( ShapeId const );
 
 private:
 	NNetWorkThread * m_pNNetWorkThread;

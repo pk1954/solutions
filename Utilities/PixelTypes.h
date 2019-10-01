@@ -10,6 +10,8 @@
 #include "PointType.h"
 #include "RectType.h"
 
+/////////////////// PIXEL ///////////////////////////////////
+
 using PIXEL         = NamedType< long, struct PIXEL_Parameter >;
 using PixelPoint    = PosType  < PIXEL >;
 using PixelRectSize = SizeType < PIXEL >;
@@ -22,6 +24,8 @@ constexpr PIXEL operator"" _PIXEL( unsigned long long ull )
 {
 	return PIXEL( CastToShort( ull ) );
 }
+
+/////////////////// fPIXEL ///////////////////////////////////
 
 using fPIXEL         = NamedType< double, struct fPIXEL_Parameter >;
 using fPixelPoint    = PosType  < fPIXEL >;

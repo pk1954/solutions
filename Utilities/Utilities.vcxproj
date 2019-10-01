@@ -158,6 +158,7 @@
     <ClInclude Include="EnumArray.h" />
     <ClInclude Include="EventInterface.h" />
     <ClInclude Include="fPixelCoords.h" />
+    <ClInclude Include="Geometry.h" />
     <ClInclude Include="Int24.h" />
     <ClInclude Include="LogarithmicTrackbar.h" />
     <ClInclude Include="ModelInterface.h" />

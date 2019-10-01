@@ -28,7 +28,7 @@ public:
 
 	MicroMeterPoint GetStartPoint( ) const { return m_npStart; }
 	MicroMeterPoint GetEndPoint  ( ) const { return m_npEnd; }
-	MicroMeter GetWidth     ( ) const { return m_nmWidth; }
+	MicroMeter      GetWidth     ( ) const { return m_nmWidth; }
 
 private:
 	MicroMeterPoint m_npStart;

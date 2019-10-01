@@ -133,7 +133,8 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 {
 	switch ( wmId )
 	{
-	case 0:
+	case IDM_HIGHLIGHT:
+		m_pNNetWorkThreadInterface->PostHighlight( ShapeId( CastToUnsignedLong( lParam ) ) );
 		break;
 
 	default:

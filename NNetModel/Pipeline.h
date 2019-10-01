@@ -6,13 +6,14 @@
 
 #include <vector>
 #include "MoreTypes.h"
+#include "Shape.h"
 #include "Segment.h"
 
 using std::vector;
 
 class Knot;
 
-class Pipeline
+class Pipeline : public Shape
 {
 public:
 	Pipeline( meterPerSec const impulseSpeed )
@@ -27,13 +28,15 @@ public:
 	void SetStartKnot( Knot * );
 	void SetEndKnot  ( Knot * );
 
-	MicroMeterPoint  GetStartPoint( ) const; 
-	MicroMeterPoint  GetEndPoint  ( ) const; 
-	MicroMeter GetWidth     ( ) const; 
+	MicroMeterPoint GetStartPoint( ) const; 
+	MicroMeterPoint GetEndPoint  ( ) const; 
+	MicroMeter      GetWidth     ( ) const; 
 
 	void Step();
 
 	bool GetSegment( int const, Segment &, mV & ) const;
+
+	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 
 private:
 	MicroMeter distance( MicroMeterPoint const &, MicroMeterPoint const & );

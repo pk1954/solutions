@@ -11,7 +11,7 @@ wchar_t const * const GetNNetCommandNameShort( NNetGenerationCmd::Id const cmd )
 {
     static std::unordered_map < NNetGenerationCmd::Id, wchar_t const * const > mapNames =
     {
-		{ NNetGenerationCmd::Id::editFirst, L"EDIT_1" },
+		{ NNetGenerationCmd::Id::highlight, L"HIGHLIGHT" },
 		{ NNetGenerationCmd::Id::editLast,  L"EDIT_2" } 
 	};
 
@@ -22,7 +22,7 @@ wchar_t const * const GetNNetCommandName( NNetGenerationCmd::Id const cmd )
 {
     static std::unordered_map < NNetGenerationCmd::Id, wchar_t const * const > mapNames =
     {
-		{ NNetGenerationCmd::Id::editFirst, L"GenerationCmd::Id::editFirst" },
+		{ NNetGenerationCmd::Id::highlight, L"GenerationCmd::Id::highlight" },
 		{ NNetGenerationCmd::Id::editLast,  L"GenerationCmd::Id::editLast"  }
 	};
 

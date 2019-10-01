@@ -4,8 +4,10 @@
 
 #include "stdafx.h"
 #include <sstream> 
+#include "Resource.h"
 #include "Segment.h"
 #include "Pipeline.h"
+#include "PixelTypes.h"
 #include "fPixelCoords.h"
 #include "win32_scale.h"
 #include "win32_util_resource.h"
@@ -46,10 +48,10 @@ void NNetWindow::Start
 	std::function<bool()> const visibilityCriterion
 )
 {
-	m_fPixelCoords.Start( npPixelSize );
+	m_coord.Start( npPixelSize );
 	m_pGraphics = pGraphics;
 
-	m_pScale = new Scale( m_pGraphics, & m_fPixelCoords );
+	m_pScale = new Scale( m_pGraphics, & m_coord );
 
 	HWND hwnd = StartBaseWindow
 	( 
@@ -83,7 +85,7 @@ NNetWindow::~NNetWindow( )
 //	(
 //		Util::CalcWindowRect
 //		( 
-//			m_fPixelCoords.NNet2PixelRect( GridDimensions::GridRectFull() ),
+//			m_coord.NNet2PixelRect( GridDimensions::GridRectFull() ),
 //			(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 
 //		), 
 //		FALSE 
@@ -92,7 +94,7 @@ NNetWindow::~NNetWindow( )
 
 void NNetWindow::Zoom( bool const bZoomIn  )
 {
-	SetPixelSize( m_fPixelCoords.ComputeNewPixelSize( bZoomIn ) );
+	SetPixelSize( m_coord.ComputeNewPixelSize( bZoomIn ) );
 }
 
 void NNetWindow::newPixelSize
@@ -101,7 +103,7 @@ void NNetWindow::newPixelSize
 	MicroMeterPoint const npCenter 
 )
 {
-	if ( m_fPixelCoords.SetPixelSize( nmPixelSize ) )
+	if ( m_coord.SetPixelSize( nmPixelSize ) )
 	{
 		//EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
 		//m_EvoPixelCoords.CenterGrid( gpCenter, GetClRectSize( ) ); // center grid around gpCenter
@@ -120,18 +122,15 @@ void NNetWindow::newPixelSize
 
 void NNetWindow::SetPixelSize( NanoMeter const nmNewSize )
 {
-	PixelPoint      const pixPoint = GetClRectCenter( );
-	fPIXEL          const fpX( static_cast<double>(pixPoint.GetXvalue()) );
-	fPIXEL          const fpY( static_cast<double>(pixPoint.GetYvalue()) );
-	fPixelPoint     const fPixPoint( fpX, fpY );
-	MicroMeterPoint const npCenter = m_fPixelCoords.fPixel2NNetPos( fPixPoint );
-	m_fPixelCoords.SetPixelSize( nmNewSize );
-	newPixelSize( nmNewSize, npCenter );
+	PixelPoint      const pixPoint  = GetClRectCenter( );
+	MicroMeterPoint const umCenter  = m_coord.convert2MicroMeterPoint( pixPoint );
+	m_coord.SetPixelSize( nmNewSize );
+	newPixelSize( nmNewSize, umCenter );
 }
 
 NanoMeter NNetWindow::GetPixelSize( ) const
 {
-	return m_fPixelCoords.GetPixelSize( );
+	return m_coord.GetPixelSize( );
 }
 
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
@@ -142,7 +141,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
 	PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
 
-	if ( wParam & MK_RBUTTON )                // Right mouse button: selection
+	if ( wParam & MK_RBUTTON )           // Right mouse button: selection
 	{
 	}
 	else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
@@ -156,6 +155,22 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	}
 	else
 	{
+		{
+			MicroMeterPoint const   umCrsrPos = m_coord.convert2MicroMeterPoint( ptCrsr );
+			Shape           const * pShape;
+			{
+				NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
+				pShape = pModel->GetShapeUnderPoint( umCrsrPos );
+				if ( pShape )
+				{
+					int x = 8765;
+				}
+				m_pReadBuffer->ReleaseReadBuffer( );
+			}
+			ShapeId shapeId = pShape ? pShape->GetId() : NO_SHAPE;
+			PostCommand2Application( IDM_HIGHLIGHT, shapeId.GetValue() );
+		}
+
 		m_ptLast = PP_NULL;    // make m_ptLast invalid
 							   // no refresh! It would cause repaint for every mouse move.
 	}
@@ -172,7 +187,7 @@ void NNetWindow::moveNNet( PixelPoint const ptDiff )
 
 	if ( m_bMoveAllowed )
 	{
-		m_fPixelCoords.MoveNNet( ptDiff );
+		m_coord.MoveNNet( ptDiff );
 	}
 }
 
@@ -185,10 +200,9 @@ void NNetWindow::OnPaint( )
 
 		if ( m_pGraphics->StartFrame( GetWindowHandle(), hDC ) )
 		{
+			fPIXEL fPixWidth;
 			NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
 			
-			fPIXEL fPixWidth;
-
 			// Pipeline
 
 			Segment          segment;
@@ -197,25 +211,46 @@ void NNetWindow::OnPaint( )
 			unsigned int     uiSegmentNr = 0;
 			while ( pPipeline->GetSegment( uiSegmentNr, segment, potential ) )
 			{
-				fPixelPoint const fPixPoint1( m_fPixelCoords.NNet2fPixelPos( segment.GetStartPoint() ) );
-				fPixelPoint const fPixPoint2( m_fPixelCoords.NNet2fPixelPos( segment.GetEndPoint  () ) );
-				                  fPixWidth = fPIXEL( m_fPixelCoords.MicroMeter2fPixel( segment.GetWidth() ) );
-				COLORREF    const color = RGB(   0, 255 - potential.GetValue(), 0 );
+				fPixelPoint const fPixPoint1( m_coord.convert2fPixelPos( segment.GetStartPoint() ) );
+				fPixelPoint const fPixPoint2( m_coord.convert2fPixelPos( segment.GetEndPoint  () ) );
+				                  fPixWidth = fPIXEL( m_coord.convert2fPixel( segment.GetWidth() ) );
+				int         const iLevel    = 255 - CastToInt( potential.GetValue() );
+				COLORREF    const color     = pPipeline->IsHighlighted( )
+					                          ? RGB(   iLevel, 0, iLevel )
+                                              : RGB(   0, iLevel, 0 );
 				m_pGraphics->AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth, color );
 				++ uiSegmentNr;
 			}
 
-			// Neuron 
-
 			fPIXEL const fPixNeuronSize = fPixWidth * 5.0;
 
-			Neuron const * pNeuron = pModel->GetNeuron( );
-			m_pGraphics->AddRect( m_fPixelCoords.NNet2fPixelPos( pNeuron->GetPosition() ), RGB( 128, 128, 128 ), fPixNeuronSize );
+			// Neuron 
+			{
+				Neuron   const * pNeuron = pModel->GetNeuron( );
+				COLORREF const   color   = pNeuron->IsHighlighted( )
+					? RGB( 255, 200, 200 )
+					: RGB( 128, 128, 128 );
+				m_pGraphics->AddRect
+				( 
+					m_coord.convert2fPixelPos( pNeuron->GetPosition() ), 
+					color, 
+					m_coord.convert2fPixel( pNeuron->GetExtension() )
+				);
+			}
 
 			// Knot
-
-			Knot const * pKnot = pModel->GetKnot( );
-			m_pGraphics->AddRect( m_fPixelCoords.NNet2fPixelPos( pKnot->GetPosition() ), RGB( 128, 128, 128 ), fPixNeuronSize );
+			{
+				Knot     const * pKnot = pModel->GetKnot( );
+				COLORREF const   color = pKnot->IsHighlighted( )
+					? RGB( 255, 200, 200 )
+					: RGB( 128, 128, 128 );
+				m_pGraphics->AddRect
+				( 
+					m_coord.convert2fPixelPos( pKnot->GetPosition() ), 
+					color, 
+					m_coord.convert2fPixel( pKnot->GetExtension() )
+				);
+			}
 
 			m_pReadBuffer->ReleaseReadBuffer( );
 
@@ -240,7 +275,7 @@ void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 
 	while ( --iDelta >= 0 )
 	{
-		nmNewPixelSize = m_fPixelCoords.ComputeNewPixelSize( bDirection );
+		nmNewPixelSize = m_coord.ComputeNewPixelSize( bDirection );
 	}
 
 	PostCommand2Application( IDM_SET_ZOOM, static_cast<LPARAM>( nmNewPixelSize.GetValue() ) ); 

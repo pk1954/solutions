@@ -23,6 +23,7 @@ public:
 	enum class Id : UINT
 	{
 		NNET_FIRST = WorkThreadMessage::FIRST_APP_MESSAGE,
+		HIGHLIGHT,
 		NNET_LAST,
 		FIRST = NNET_FIRST,
 		LAST = NNET_LAST

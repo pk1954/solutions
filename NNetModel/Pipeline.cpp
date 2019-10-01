@@ -3,7 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "MoreTypes.h"
+#include "Geometry.h"
 #include "Knot.h"
 #include "Pipeline.h"
 
@@ -74,7 +74,7 @@ bool Pipeline::GetSegment( int const iNr, Segment & seg, mV & potential ) const
 {
 	if ( iNr < m_potential.size() )
 	{
-		MicroMeterPoint npDiff = GetEndPoint() - GetStartPoint();
+		MicroMeterPoint const npDiff = GetEndPoint() - GetStartPoint();
 		seg = Segment
 		{
 			GetStartPoint() + (npDiff *  iNr     ) / static_cast<int>(m_potential.size()),
@@ -87,4 +87,20 @@ bool Pipeline::GetSegment( int const iNr, Segment & seg, mV & potential ) const
 	}
 	else 
 		return false;
+}
+
+bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const
+{
+	MicroMeterPoint fDelta { GetEndPoint()  - GetStartPoint() };
+	MicroMeterPoint fOrtho { fDelta.GetY(), - fDelta.GetX()   };
+
+	double const dScaleFactor = m_width.GetValue() / sqrt( fOrtho.GetXvalue() * fOrtho.GetXvalue() + fOrtho.GetYvalue() * fOrtho.GetYvalue() );
+
+	MicroMeterPoint fOrthoScaled = fOrtho * dScaleFactor;
+
+	MicroMeterPoint const corner1 = GetStartPoint() + fOrthoScaled;
+	MicroMeterPoint const corner2 = GetStartPoint() - fOrthoScaled;
+	MicroMeterPoint const corner3 = GetEndPoint  () + fOrthoScaled;
+
+	return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
 }

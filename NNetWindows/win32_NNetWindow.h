@@ -57,7 +57,7 @@ private:
 	GraphicsInterface * m_pGraphics;
 	Scale             * m_pScale;
 
-	fPixelCoords m_fPixelCoords;
+	fPixelCoords m_coord;
 	PixelPoint   m_ptLast;	 	   // Last cursor position during selection 
 
 	void newPixelSize( NanoMeter const, MicroMeterPoint const );

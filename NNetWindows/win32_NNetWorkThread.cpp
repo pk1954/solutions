@@ -51,7 +51,8 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 {
 	switch ( static_cast<NNetWorkThreadMessage::Id>(msg.message) )
 	{
-	case NNetWorkThreadMessage::Id::NNET_FIRST:
+	case NNetWorkThreadMessage::Id::HIGHLIGHT:
+		GetHistorySystem( )->CreateAppCommand( NNetCmd( NNetGenerationCmd::Id::highlight, CastToInt(msg.lParam) ) );
 		break;
 
 	default:

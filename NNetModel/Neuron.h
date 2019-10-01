@@ -6,6 +6,7 @@
 
 #include <chrono>
 #include "MoreTypes.h"
+#include "Shape.h"
 #include "Knot.h"
 
 using std::chrono::microseconds;

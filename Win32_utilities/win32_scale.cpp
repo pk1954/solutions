@@ -22,7 +22,7 @@ void Scale::ShowScale (fPIXEL const height )
 	fPIXEL const lengthMax  = 500._fPIXEL;
 
 	double           dIntegerPart;
-	MicroMeter const umLengthExact = m_pfPixelCoords->fPixel2MicroMeter( lengthMax );
+	MicroMeter const umLengthExact = m_pfPixelCoords->convert2MicroMeter( lengthMax );
 	double     const logValue      = log10( umLengthExact.GetValue() );
 	double     const fractPart     = modf( logValue, & dIntegerPart );
 	double     const nextPowerOf10 = pow( 10.0, dIntegerPart );
@@ -34,7 +34,7 @@ void Scale::ShowScale (fPIXEL const height )
 		? 2
 		: 1;
 
-	fPIXEL      const fPixLength = m_pfPixelCoords->MicroMeter2fPixel( umLength * iFirstDigit );
+	fPIXEL      const fPixLength = m_pfPixelCoords->convert2fPixel( umLength * iFirstDigit );
 	fPixelPoint const fPixPoint1( horzPos, vertPos );
 	fPixelPoint const fPixPoint2( horzPos + fPixLength, vertPos );
 
