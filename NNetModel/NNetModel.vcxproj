@@ -158,9 +158,6 @@
     <ClInclude Include="Knot.h" />
     <ClInclude Include="Neuron.h" />
     <ClInclude Include="NNetModel.h" />
-    <ClInclude Include="NNetPixelCoords.h" />
-    <ClInclude Include="NNetPoint.h" />
-    <ClInclude Include="NNetTypes.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="stdafx.h" />

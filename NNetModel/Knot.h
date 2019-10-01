@@ -5,8 +5,7 @@
 #pragma once
 
 #include <vector>
-#include "NNetPoint.h"
-#include "NNetTypes.h"
+#include "MoreTypes.h"
 #include "Pipeline.h"
 
 using std::vector;
@@ -14,13 +13,13 @@ using std::vector;
 class Knot
 {
 public:
-	Knot( NNetPoint const npCenter )
+	Knot( MicroMeterPoint const npCenter )
 	  : m_npCenter( npCenter ),
 		m_potential( 0 )
 	{
 	}
 
-	NNetPoint GetPosition( ) const
+	MicroMeterPoint GetPosition( ) const
 	{
 		return m_npCenter;
 	}
@@ -50,5 +49,5 @@ private:
 	vector<Pipeline *> m_incomming;
 	vector<Pipeline *> m_outgoing;
 
-	NNetPoint m_npCenter;
+	MicroMeterPoint m_npCenter;
 };

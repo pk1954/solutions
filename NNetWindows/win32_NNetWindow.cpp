@@ -6,7 +6,8 @@
 #include <sstream> 
 #include "Segment.h"
 #include "Pipeline.h"
-#include "NNetPixelCoords.h"
+#include "fPixelCoords.h"
+#include "win32_scale.h"
 #include "win32_util_resource.h"
 #include "win32_graphicsInterface.h"
 #include "win32_NNetWorkThreadInterface.h"
@@ -31,6 +32,7 @@ NNetWindow::NNetWindow( ) :
 	ModelWindow( ),
 	m_hPopupMenu( nullptr ),
 	m_pGraphics( nullptr ),
+	m_pScale( nullptr ),
 	m_ptLast( PP_NULL ),
 	m_bMoveAllowed( TRUE )
 { }
@@ -44,8 +46,10 @@ void NNetWindow::Start
 	std::function<bool()> const visibilityCriterion
 )
 {
-	m_NNetPixelCoords.Start( npPixelSize );
+	m_fPixelCoords.Start( npPixelSize );
 	m_pGraphics = pGraphics;
+
+	m_pScale = new Scale( m_pGraphics, & m_fPixelCoords );
 
 	HWND hwnd = StartBaseWindow
 	( 
@@ -62,6 +66,8 @@ void NNetWindow::Start
 
 void NNetWindow::Stop( )
 {
+	delete m_pScale;
+	m_pScale = nullptr;
 	DestroyWindow( );
 }
 
@@ -77,7 +83,7 @@ NNetWindow::~NNetWindow( )
 //	(
 //		Util::CalcWindowRect
 //		( 
-//			m_NNetPixelCoords.NNet2PixelRect( GridDimensions::GridRectFull() ),
+//			m_fPixelCoords.NNet2PixelRect( GridDimensions::GridRectFull() ),
 //			(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 
 //		), 
 //		FALSE 
@@ -86,16 +92,16 @@ NNetWindow::~NNetWindow( )
 
 void NNetWindow::Zoom( bool const bZoomIn  )
 {
-	SetPixelSize( m_NNetPixelCoords.ComputeNewPixelSize( bZoomIn ) );
+	SetPixelSize( m_fPixelCoords.ComputeNewPixelSize( bZoomIn ) );
 }
 
 void NNetWindow::newPixelSize
 ( 
 	NanoMeter const nmPixelSize, 
-	NNetPoint const npCenter 
+	MicroMeterPoint const npCenter 
 )
 {
-	if ( m_NNetPixelCoords.SetPixelSize( nmPixelSize ) )
+	if ( m_fPixelCoords.SetPixelSize( nmPixelSize ) )
 	{
 		//EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
 		//m_EvoPixelCoords.CenterGrid( gpCenter, GetClRectSize( ) ); // center grid around gpCenter
@@ -114,18 +120,18 @@ void NNetWindow::newPixelSize
 
 void NNetWindow::SetPixelSize( NanoMeter const nmNewSize )
 {
-	PixelPoint  const pixPoint = GetClRectCenter( );
-	fPIXEL      const fpX( static_cast<double>(pixPoint.GetXvalue()) );
-	fPIXEL      const fpY( static_cast<double>(pixPoint.GetYvalue()) );
-	fPixelPoint const fPixPoint( fpX, fpY );
-	NNetPoint   const npCenter = m_NNetPixelCoords.fPixel2NNetPos( fPixPoint );
-	m_NNetPixelCoords.SetPixelSize( nmNewSize );
+	PixelPoint      const pixPoint = GetClRectCenter( );
+	fPIXEL          const fpX( static_cast<double>(pixPoint.GetXvalue()) );
+	fPIXEL          const fpY( static_cast<double>(pixPoint.GetYvalue()) );
+	fPixelPoint     const fPixPoint( fpX, fpY );
+	MicroMeterPoint const npCenter = m_fPixelCoords.fPixel2NNetPos( fPixPoint );
+	m_fPixelCoords.SetPixelSize( nmNewSize );
 	newPixelSize( nmNewSize, npCenter );
 }
 
 NanoMeter NNetWindow::GetPixelSize( ) const
 {
-	return m_NNetPixelCoords.GetPixelSize( );
+	return m_fPixelCoords.GetPixelSize( );
 }
 
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
@@ -166,7 +172,7 @@ void NNetWindow::moveNNet( PixelPoint const ptDiff )
 
 	if ( m_bMoveAllowed )
 	{
-		m_NNetPixelCoords.MoveNNet( ptDiff );
+		m_fPixelCoords.MoveNNet( ptDiff );
 	}
 }
 
@@ -191,9 +197,9 @@ void NNetWindow::OnPaint( )
 			unsigned int     uiSegmentNr = 0;
 			while ( pPipeline->GetSegment( uiSegmentNr, segment, potential ) )
 			{
-				fPixelPoint const fPixPoint1( m_NNetPixelCoords.NNet2fPixelPos( segment.GetStartPoint() ) );
-				fPixelPoint const fPixPoint2( m_NNetPixelCoords.NNet2fPixelPos( segment.GetEndPoint  () ) );
-				                  fPixWidth = fPIXEL( m_NNetPixelCoords.MicroMeter2fPixel( segment.GetWidth() ) );
+				fPixelPoint const fPixPoint1( m_fPixelCoords.NNet2fPixelPos( segment.GetStartPoint() ) );
+				fPixelPoint const fPixPoint2( m_fPixelCoords.NNet2fPixelPos( segment.GetEndPoint  () ) );
+				                  fPixWidth = fPIXEL( m_fPixelCoords.MicroMeter2fPixel( segment.GetWidth() ) );
 				COLORREF    const color = RGB(   0, 255 - potential.GetValue(), 0 );
 				m_pGraphics->AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth, color );
 				++ uiSegmentNr;
@@ -204,15 +210,16 @@ void NNetWindow::OnPaint( )
 			fPIXEL const fPixNeuronSize = fPixWidth * 5.0;
 
 			Neuron const * pNeuron = pModel->GetNeuron( );
-			m_pGraphics->AddRect( m_NNetPixelCoords.NNet2fPixelPos( pNeuron->GetPosition() ), RGB( 128, 128, 128 ), fPixNeuronSize );
+			m_pGraphics->AddRect( m_fPixelCoords.NNet2fPixelPos( pNeuron->GetPosition() ), RGB( 128, 128, 128 ), fPixNeuronSize );
 
 			// Knot
 
 			Knot const * pKnot = pModel->GetKnot( );
-			m_pGraphics->AddRect( m_NNetPixelCoords.NNet2fPixelPos( pKnot->GetPosition() ), RGB( 128, 128, 128 ), fPixNeuronSize );
+			m_pGraphics->AddRect( m_fPixelCoords.NNet2fPixelPos( pKnot->GetPosition() ), RGB( 128, 128, 128 ), fPixNeuronSize );
 
 			m_pReadBuffer->ReleaseReadBuffer( );
-			showScale( hDC );
+
+			m_pScale->ShowScale( fPIXEL( static_cast<double>( GetClientWindowHeight().GetValue() ) ) );
 
 			m_pGraphics->RenderIndividuals( );
 
@@ -221,174 +228,6 @@ void NNetWindow::OnPaint( )
 
 		(void)EndPaint( &ps );
 	}
-}
-
-void NNetWindow::showScale( HDC hDC )
-{
-	m_pGraphics->SetFontSize( 12_PIXEL );
-
-	fPIXEL height( static_cast<double>( GetClientWindowHeight().GetValue() ) );
-	fPIXEL const vertPos    = height - 20._fPIXEL;
-	fPIXEL const horzPos    = 100._fPIXEL;
-	fPIXEL const lengthMax  = 500._fPIXEL;
-
-	double           dIntegerPart;
-	MicroMeter const umLengthExact = m_NNetPixelCoords.fPixel2MicroMeter( lengthMax );
-	double     const logValue      = log10( umLengthExact.GetValue() );
-	double     const fractPart     = modf( logValue, & dIntegerPart );
-	double     const nextPowerOf10 = pow( 10.0, dIntegerPart );
-	MicroMeter const umLength      = MicroMeter( nextPowerOf10 );
-
-	int iFirstDigit = ( fractPart >= log10( 5 ) ) 
-		              ? 5
-		              : ( fractPart >= log10( 2 ) )
-                        ? 2
-		                : 1;
-
-	fPIXEL      const fPixLength = m_NNetPixelCoords.MicroMeter2fPixel( umLength * iFirstDigit );
-	fPixelPoint const fPixPoint1( horzPos, vertPos );
-	fPixelPoint const fPixPoint2( horzPos + fPixLength, vertPos );
-
-	m_pGraphics->AddfPixelLine( fPixPoint1, fPixPoint2, 1._fPIXEL, SCALE_COLOR );
-	displayTicks( fPixPoint1, fPixPoint2, dIntegerPart, iFirstDigit );
-	displayScaleText( fPixPoint2, dIntegerPart );
-}
-
-void NNetWindow::displayTicks( fPixelPoint const fPixPoint1, fPixelPoint const fPixPoint2, double const dLog10, int const iFirstDigit )
-{
-	fPixelPoint fLongTick  (  0._fPIXEL, 10._fPIXEL );
-	fPixelPoint fMiddleTick(  0._fPIXEL,  7._fPIXEL );
-	fPixelPoint fSmallTick (  0._fPIXEL,  5._fPIXEL );
-
-	fPixelPoint fTickPos( fPixPoint1 );
-	fPixelPoint fTickDist( (fPixPoint2.GetX() - fPixPoint1.GetX()) / 10, 0._fPIXEL );
-
-	m_pGraphics->AddfPixelLine( fPixPoint1 - fLongTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
-
-	displayScaleNumber( fTickPos, dLog10, 0 );
-
-	if ( iFirstDigit == 1 )
-	{
-		for ( int i = 1; i <= 4; ++i )
-		{
-			fTickPos += fTickDist;
-			m_pGraphics->AddfPixelLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
-		}
-
-		fTickPos += fTickDist;
-		m_pGraphics->AddfPixelLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
-		displayScaleNumber( fTickPos, dLog10 - 1.0, 5 );
-
-		for ( int i = 6; i <= 9; ++i )
-		{
-			fTickPos += fTickDist;
-			m_pGraphics->AddfPixelLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
-		}
-	}
-	else if ( iFirstDigit == 2 )
-	{
-		for ( int i = 1; i <= 4; ++i )
-		{
-			fTickPos += fTickDist;
-			m_pGraphics->AddfPixelLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
-		}
-
-		fTickPos += fTickDist;
-		m_pGraphics->AddfPixelLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
-		displayScaleNumber( fTickPos, dLog10, 1 );
-
-		for ( int i = 6; i <= 9; ++i )
-		{
-			fTickPos += fTickDist;
-			m_pGraphics->AddfPixelLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
-		}
-	}
-	else if ( iFirstDigit == 5 )
-	{
-		for ( int i = 0;; )
-		{
-			fTickPos += fTickDist;
-			m_pGraphics->AddfPixelLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
-
-			if ( ++i > 4 )
-				break;
-
-			fTickPos += fTickDist;
-			m_pGraphics->AddfPixelLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
-			displayScaleNumber( fTickPos, dLog10, i );
-		}
-	}
-	else 
-		assert( false );
-
-	displayScaleNumber( fPixPoint2, dLog10, iFirstDigit );
-	m_pGraphics->AddfPixelLine( fPixPoint2 - fLongTick, fPixPoint2, 1._fPIXEL, SCALE_COLOR );
-}
-
-void NNetWindow::displayScaleNumber( fPixelPoint const fPos, double const dLog10, int const iFirstDigit )
-{
-	static PIXEL const textWidth  = 40_PIXEL;
-	static PIXEL const textHeight = 20_PIXEL;
-	static PIXEL const horzDist   =  2_PIXEL;
-	static PIXEL const vertDist   = 12_PIXEL;
-
-	PIXEL posX = PIXEL(static_cast<long>(fPos.GetXvalue()));
-	PIXEL posY = PIXEL(static_cast<long>(fPos.GetYvalue()));
-
-	PixelRect pixRect
-	( 
-		posX + horzDist - textWidth,  // left
-		posY - vertDist - textHeight, // top
-		posX + horzDist + textWidth,  // right
-		posY - vertDist               // bottom
-	);
-
-	m_wBuffer.str( std::wstring() );
-	m_wBuffer.clear();
-
-	m_wBuffer << iFirstDigit;
-
-	if ( iFirstDigit > 0 )
-	{
-		int iLog10  = static_cast<int>( floor(dLog10) );
-		int nDigits = iLog10 % 3;
-
-		while ( nDigits-- )
-			m_wBuffer << L"0";
-	}
-
-	m_pGraphics->DisplayGraphicsText( pixRect, m_wBuffer.str( ), DT_CENTER, SCALE_COLOR );
-}
-
-void NNetWindow::displayScaleText( fPixelPoint const fPos, double const dLog10 )
-{
-	static PIXEL const textWidth  = 40_PIXEL;
-	static PIXEL const textHeight = 20_PIXEL;
-	static PIXEL const horzDist   = 16_PIXEL;
-	static PIXEL const vertDist   = 12_PIXEL;
-
-	PIXEL posX = PIXEL(static_cast<long>(fPos.GetXvalue()));
-	PIXEL posY = PIXEL(static_cast<long>(fPos.GetYvalue()));
-
-	PixelRect pixRect
-	( 
-		posX + horzDist,              // left
-		posY - vertDist - textHeight, // top
-		posX + horzDist + textWidth,  // right
-		posY - vertDist               // bottom
-	);
-
-	m_wBuffer.str( std::wstring() );
-	m_wBuffer.clear();
-
-	if ( dLog10 < 3 )
-		m_wBuffer << L"\u03BCm";
-	else if ( dLog10 < 6 )
-		m_wBuffer << L"mm";
-	else
-		m_wBuffer << L"m";
-
-	m_pGraphics->DisplayGraphicsText( pixRect, m_wBuffer.str( ), DT_LEFT, SCALE_COLOR );
 }
 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
@@ -401,7 +240,7 @@ void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 
 	while ( --iDelta >= 0 )
 	{
-		nmNewPixelSize = m_NNetPixelCoords.ComputeNewPixelSize( bDirection );
+		nmNewPixelSize = m_fPixelCoords.ComputeNewPixelSize( bDirection );
 	}
 
 	PostCommand2Application( IDM_SET_ZOOM, static_cast<LPARAM>( nmNewPixelSize.GetValue() ) ); 

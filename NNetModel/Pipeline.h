@@ -5,8 +5,7 @@
 #pragma once
 
 #include <vector>
-#include "NNetPoint.h"
-#include "NNetTypes.h"
+#include "MoreTypes.h"
 #include "Segment.h"
 
 using std::vector;
@@ -28,8 +27,8 @@ public:
 	void SetStartKnot( Knot * );
 	void SetEndKnot  ( Knot * );
 
-	NNetPoint  GetStartPoint( ) const; 
-	NNetPoint  GetEndPoint  ( ) const; 
+	MicroMeterPoint  GetStartPoint( ) const; 
+	MicroMeterPoint  GetEndPoint  ( ) const; 
 	MicroMeter GetWidth     ( ) const; 
 
 	void Step();
@@ -37,7 +36,7 @@ public:
 	bool GetSegment( int const, Segment &, mV & ) const;
 
 private:
-	MicroMeter distance( NNetPoint const &, NNetPoint const & );
+	MicroMeter distance( MicroMeterPoint const &, MicroMeterPoint const & );
 
 	void initialize( );
 

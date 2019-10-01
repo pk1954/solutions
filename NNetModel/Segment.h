@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "NNetPoint.h"
+#include "MoreTypes.h"
 
 class Segment
 {
@@ -17,8 +17,8 @@ public:
 
 	Segment
 	(  
-		NNetPoint const npStart,
-		NNetPoint const npEnd,
+		MicroMeterPoint const npStart,
+		MicroMeterPoint const npEnd,
 		MicroMeter const nmWidth
 	) :
 		m_npStart( npStart ),
@@ -26,12 +26,12 @@ public:
 		m_nmWidth( nmWidth )
 	{}
 
-	NNetPoint GetStartPoint( ) const { return m_npStart; }
-	NNetPoint GetEndPoint  ( ) const { return m_npEnd; }
+	MicroMeterPoint GetStartPoint( ) const { return m_npStart; }
+	MicroMeterPoint GetEndPoint  ( ) const { return m_npEnd; }
 	MicroMeter GetWidth     ( ) const { return m_nmWidth; }
 
 private:
-	NNetPoint m_npStart;
-	NNetPoint m_npEnd;
-	MicroMeter m_nmWidth;
+	MicroMeterPoint m_npStart;
+	MicroMeterPoint m_npEnd;
+	MicroMeter      m_nmWidth;
 };

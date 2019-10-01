@@ -4,12 +4,12 @@
 
 #pragma once
 
-#include <sstream> 
-#include "NNetTypes.h"
+#include "MoreTypes.h"
+#include "fPixelCoords.h"
 #include "NNetReadBuffer.h"  // do not remove! class definition not sufficient.
-#include "NNetPixelCoords.h"
 #include "win32_modelWindow.h"
 
+class Scale;
 class ActionTimer;
 class GraphicsInterface;
 class NNetWorkThreadInterface;
@@ -45,30 +45,23 @@ public:
 	NanoMeter GetPixelSize( ) const;
 
 private:
-	static COLORREF const SCALE_COLOR = RGB( 0, 0, 0 );  // CLR_BLACK
-
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
 	static NNetReadBuffer          * m_pReadBuffer;
 	static NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 
-	std::wostringstream m_wBuffer;
-
 	HMENU m_hPopupMenu;
 	BOOL  m_bMoveAllowed;    // TRUE: move with mouse is possible
 
 	GraphicsInterface * m_pGraphics;
+	Scale             * m_pScale;
 
-	NNetPixelCoords m_NNetPixelCoords;
-	PixelPoint      m_ptLast;	 	   // Last cursor position during selection 
+	fPixelCoords m_fPixelCoords;
+	PixelPoint   m_ptLast;	 	   // Last cursor position during selection 
 
-	void newPixelSize( NanoMeter const, NNetPoint const );
+	void newPixelSize( NanoMeter const, MicroMeterPoint const );
 	void moveNNet( PixelPoint const );
-	void showScale( HDC );
-	void displayTicks( fPixelPoint const, fPixelPoint const, double const, int const );
-	void displayScaleNumber( fPixelPoint const, double const, int const );
-	void displayScaleText( fPixelPoint const, double const );
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const );
 

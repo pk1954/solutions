@@ -5,7 +5,7 @@
 #pragma once
 
 #include "util.h"
-#include "NNetTypes.h"
+#include "MoreTypes.h"
 #include "Segment.h"
 #include "Neuron.h"
 #include "Pipeline.h"

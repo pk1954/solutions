@@ -3,8 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "NNetTypes.h"
-#include "NNetPoint.h"
+#include "MoreTypes.h"
 #include "NNetModel.h"
 
 void NNetModel::InitClass
@@ -18,8 +17,8 @@ void NNetModel::InitClass
 
 NNetModel::NNetModel( )
   : m_timeStamp( microseconds( 0 ) ),
-	m_neuron  ( NNetPoint( 400.0_MicroMeter,  200.0_MicroMeter ) ),
-	m_knot    ( NNetPoint( 400.0_MicroMeter, 1400.0_MicroMeter ) ),
+	m_neuron  ( MicroMeterPoint( 400.0_MicroMeter,  200.0_MicroMeter ) ),
+	m_knot    ( MicroMeterPoint( 400.0_MicroMeter, 1400.0_MicroMeter ) ),
 	m_pipeline( 0.1_meterPerSec ), // STD_IMPULSE_SPEED ),
 	m_iCounter( 0 )
 {

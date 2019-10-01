@@ -1,23 +1,18 @@
-// pixelCoordinates.h : 
+// fPixelCoords.h : 
 //
-// NNetModel
+// Utilities
 
 #pragma once
 
 #include "util.h"
 #include "PixelTypes.h"
-#include "NNetPoint.h"
 #include "SmoothMove.h"
 
-NanoMeter const MINIMUM_PIXEL_SIZE =     100.0_NanoMeter;
-NanoMeter const DEFAULT_PIXEL_SIZE =    2000.0_NanoMeter;  
-NanoMeter const MAXIMUM_PIXEL_SIZE = 2000000.0_NanoMeter;  // 2 Meter
-
-class NNetPixelCoords
+class fPixelCoords
 {
 public:
 
-	NNetPixelCoords()
+	fPixelCoords()
 	  : m_pixOffset  ( 0_PIXEL ),
 		m_fPixOffset ( 0.0_fPIXEL ),
 		m_pixelSize  ( DEFAULT_PIXEL_SIZE ),
@@ -43,16 +38,16 @@ public:
 		return MicroMeter( fPixel.GetValue() * m_pixelSize.GetValue() / 1000.0 );
 	}
 
-	fPixelPoint NNet2fPixelSize( NNetPoint const np ) const
+	fPixelPoint NNet2fPixelSize( MicroMeterPoint const np ) const
 	{ 
 		return fPixelPoint( MicroMeter2fPixel( np.GetX() ), MicroMeter2fPixel( np.GetY() ) );
 	}
 
-	NNetPoint fPixel2NNetPos( fPixelPoint const pp ) const
+	MicroMeterPoint fPixel2NNetPos( fPixelPoint const pp ) const
 	{ 
 		auto fPixPoint = fPixelPoint( pp + m_fPixOffset );
 
-		auto np = NNetPoint
+		auto np = MicroMeterPoint
 		( 
 			fPixel2MicroMeter( fPixPoint.GetX() ), 
 			fPixel2MicroMeter( fPixPoint.GetY() )
@@ -61,7 +56,7 @@ public:
 		return np;
 	}
 
-	fPixelPoint NNet2fPixelPos( NNetPoint const np ) const
+	fPixelPoint NNet2fPixelPos( MicroMeterPoint const np ) const
 	{ 
 		return NNet2fPixelSize( np ) - m_fPixOffset;
 	}
@@ -130,6 +125,6 @@ private:
 	bool        m_bMoving;
 };
 
-PixelPoint NNetPixel2PixelSize( PixelPoint const,   NNetPixelCoords const *, NNetPixelCoords const * );
-PixelPoint NNetPixel2PixelPos ( PixelPoint const,   NNetPixelCoords const *, NNetPixelCoords const * );
-PixelRect  NNetPixel2PixelRect( PixelRect  const &, NNetPixelCoords const *, NNetPixelCoords const * );
+PixelPoint NNetPixel2PixelSize( PixelPoint const,   fPixelCoords const *, fPixelCoords const * );
+PixelPoint NNetPixel2PixelPos ( PixelPoint const,   fPixelCoords const *, fPixelCoords const * );
+PixelRect  NNetPixel2PixelRect( PixelRect  const &, fPixelCoords const *, fPixelCoords const * );

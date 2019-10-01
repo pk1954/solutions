@@ -5,8 +5,7 @@
 #pragma once
 
 #include <chrono>
-#include "NNetTypes.h"
-#include "NNetPoint.h"
+#include "MoreTypes.h"
 #include "Knot.h"
 
 using std::chrono::microseconds;
@@ -14,7 +13,7 @@ using std::chrono::microseconds;
 class Neuron : public Knot
 {
 public:
-	Neuron( NNetPoint const npCenter )
+	Neuron( MicroMeterPoint const npCenter )
 	  : Knot( npCenter ),
 		m_fTriggered( false ),
 		m_timeSinceTrigger( microseconds( 0 ) )

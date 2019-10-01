@@ -9,7 +9,7 @@
 #include "EventInterface.h"
 #include "NNetHistorySysGlue.h"
 #include "NNetReadBuffer.h"
-#include "NNetTypes.h"
+#include "MoreTypes.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 #include "win32_actionTimer.h"

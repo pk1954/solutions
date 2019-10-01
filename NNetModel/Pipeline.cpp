@@ -3,13 +3,13 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "NNetTypes.h"
+#include "MoreTypes.h"
 #include "Knot.h"
 #include "Pipeline.h"
 
-MicroMeter Pipeline::distance( NNetPoint const & npA, NNetPoint const & npB )
+MicroMeter Pipeline::distance( MicroMeterPoint const & npA, MicroMeterPoint const & npB )
 {
-	NNetPoint  npDiff   = npA - npB;
+	MicroMeterPoint  npDiff   = npA - npB;
 	MicroMeter distance = MicroMeter
 	(
 		sqrt
@@ -45,14 +45,14 @@ void Pipeline::SetEndKnot( Knot * pKnot )
 	initialize();
 }
 
-NNetPoint Pipeline::GetStartPoint( ) const 
+MicroMeterPoint Pipeline::GetStartPoint( ) const 
 { 
-	return m_pKnotStart ? m_pKnotStart->GetPosition() : NNetPoint::NULL_VAL(); 
+	return m_pKnotStart ? m_pKnotStart->GetPosition() : MicroMeterPoint::NULL_VAL(); 
 }
 
-NNetPoint Pipeline::GetEndPoint( ) const 
+MicroMeterPoint Pipeline::GetEndPoint( ) const 
 { 
-	return m_pKnotEnd ? m_pKnotEnd->GetPosition() : NNetPoint::NULL_VAL();
+	return m_pKnotEnd ? m_pKnotEnd->GetPosition() : MicroMeterPoint::NULL_VAL();
 }
 
 MicroMeter Pipeline::GetWidth( ) const 
@@ -74,7 +74,7 @@ bool Pipeline::GetSegment( int const iNr, Segment & seg, mV & potential ) const
 {
 	if ( iNr < m_potential.size() )
 	{
-		NNetPoint npDiff = GetEndPoint() - GetStartPoint();
+		MicroMeterPoint npDiff = GetEndPoint() - GetStartPoint();
 		seg = Segment
 		{
 			GetStartPoint() + (npDiff *  iNr     ) / static_cast<int>(m_potential.size()),

@@ -10,7 +10,7 @@ using namespace std::literals::chrono_literals;
 
 // Model interfaces
 
-#include "NNetTypes.h"
+#include "MoreTypes.h"
 #include "NNetModel.h"
 
 // interfaces of various windows

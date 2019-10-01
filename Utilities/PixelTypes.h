@@ -6,6 +6,7 @@
 
 #include "util.h"
 #include "NamedType.h"
+#include "MoreTypes.h"
 #include "PointType.h"
 #include "RectType.h"
 

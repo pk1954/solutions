@@ -24,12 +24,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NNetPoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NNetPixelCoords.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Segment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -40,9 +34,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Knot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NNetTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
