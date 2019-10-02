@@ -89,7 +89,6 @@ private:
 		return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() - 1 ];
 	}
 
-	int             m_iCounter;
 	Neuron          m_neuron;
 	Knot            m_knot;
 	Pipeline        m_pipeline;

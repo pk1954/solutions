@@ -126,7 +126,7 @@ void NNetAppWindow::Start( )
 		m_pGraphics, 
 		WS_CHILD | WS_CLIPSIBLINGS,
 		DEFAULT_PIXEL_SIZE,
-		[&]() { return true; }	
+		nullptr  // no visibility criterion. Allways visible
 	);
 		
 	m_NNetWorkThreadInterface.Start

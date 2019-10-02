@@ -7,6 +7,7 @@
 #include <richedit.h>
 #include "Resource.h"
 #include "version.h"
+#include "win32_utilities.rc"
 
 //
 // Menu resources

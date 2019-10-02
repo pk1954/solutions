@@ -27,7 +27,8 @@ int MessagePump
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
 
-	InitCommonControlsEx( &icex ); 
+	//BOOL bRes = InitCommonControlsEx( &icex );
+	//assert( bRes );
 
 	Stopwatch stopwatch;
 	stopwatch.Start();

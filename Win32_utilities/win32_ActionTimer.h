@@ -6,14 +6,11 @@
 
 #include <chrono>
 #include "util.h"
-#include "windows.h"
-#include "NamedType.h"
+#include "MoreTypes.h"
 #include "observable.h"
 #include "win32_hiResTimer.h"
 
 using std::chrono::milliseconds;
-
-using MilliHertz = NamedType< unsigned long, struct MilliHertz_Parameter >;
 
 class ActionTimer : public Observable
 {

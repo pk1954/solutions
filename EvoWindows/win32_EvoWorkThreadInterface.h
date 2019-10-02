@@ -5,6 +5,7 @@
 #pragma once
 
 #include <fstream>
+#include "MoreTypes.h"
 #include "boolOp.h"
 #include "gridRect.h"
 #include "strategy.h"

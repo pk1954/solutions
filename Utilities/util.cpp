@@ -32,7 +32,7 @@ std::wstring DecFraction( unsigned long ulValue )  // TODO: find better solution
 	return wBuffer.str();
 }
 
-std::wstring DecFraction2( unsigned long ulValue )  // TODO: find better solution
+std::wstring DecFraction3( unsigned long ulValue )  // TODO: find better solution
 {
 	wostringstream wBuffer;
 	unsigned long decPlaces = decFraction( wBuffer, ulValue );
@@ -42,6 +42,9 @@ std::wstring DecFraction2( unsigned long ulValue )  // TODO: find better solutio
 
 	unsigned long decPlace2 = (decPlaces - 100 * decPlace1) / 10;
 	wBuffer << decPlace2;
+
+	unsigned long decPlace3 = (decPlaces - 100 * decPlace1 - 10 * decPlace2) / 1;
+	wBuffer << decPlace3;
 
 	return wBuffer.str();
 }

@@ -17,14 +17,8 @@ using EVO_GENERATION = NamedType< long,  struct EVO_GENERATION_Parameter >;
 using IND_ID         = NamedType< long,  struct IND_ID_Parameter >;
 using MEM_INDEX      = NamedType< short, struct MEM_INDEX_Parameter >;
 using ACTION_COUNT   = NamedType< long,  struct ACTION_COUNT_Parameter >;
-using PERCENT        = NamedType< short, struct PERCENT_Parameter >;
 
 std::wostream & operator<< ( std::wostream & out, IND_ID const & );
-
-PERCENT constexpr operator"" _PERCENT( unsigned long long ull )
-{
-	return PERCENT( CastToShort( ull ) );
-}
 
 ENERGY_UNITS constexpr operator"" _ENERGY_UNITS( unsigned long long ull )
 {

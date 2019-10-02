@@ -10,8 +10,8 @@ class SlowMotionRatio : public Observable
 {
 public:
 
-	static unsigned int const DEFAULT =    100;
-	static unsigned int const MIN     =      1;
+	static unsigned int const DEFAULT =   1000;
+	static unsigned int const MIN     =    100;
 	static unsigned int const MAX     = 100000;
 
 	SlowMotionRatio( )

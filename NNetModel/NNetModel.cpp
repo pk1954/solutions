@@ -11,7 +11,6 @@ NNetModel::NNetModel( )
 	m_neuron  ( MicroMeterPoint( 400.0_MicroMeter,  200.0_MicroMeter ) ),
 	m_knot    ( MicroMeterPoint( 400.0_MicroMeter, 1400.0_MicroMeter ) ),
 	m_pipeline( 0.1_meterPerSec ), // STD_IMPULSE_SPEED ),
-	m_iCounter( 0 ),
 	m_Shapes( ),
 	m_shapeHighlighted( NO_SHAPE )
 {
@@ -35,20 +34,8 @@ void NNetModel::DestroyCore( NNetModel * pCore )
 
 void NNetModel::Compute( )
 {
-	int iFrequency = 500; // Hertz
-	int iStepsBetweenTrigger = CastToInt( microseconds::period::den / ( TIME_RESOLUTION.count() * iFrequency ) );
-	
+	m_neuron.Step( );
 	m_pipeline.Step( );
-
-	if ( m_iCounter == 0 )
-	{
-		m_neuron.Trigger();
-		m_iCounter = iStepsBetweenTrigger;
-	}
-	else
-	{
-		--m_iCounter;
-	}
 
 	m_timeStamp += TIME_RESOLUTION;
 }

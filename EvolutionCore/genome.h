@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "MoreTypes.h"
 #include "gene.h"
 #include "config.h"
 #include "EnumArray.h"

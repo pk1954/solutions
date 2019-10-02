@@ -4,6 +4,7 @@
 #pragma once
 
 #include <iostream>     
+#include "MoreTypes.h"
 #include "BoolOp.h"
 #include "GridRect.h"
 #include "strategy.h"

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "util.h"
+#include "MoreTypes.h"
 #include "PixelTypes.h"
 #include "SmoothMove.h"
 

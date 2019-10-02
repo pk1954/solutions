@@ -226,15 +226,25 @@ void NNetWindow::OnPaint( )
 
 			// Neuron 
 			{
-				Neuron   const * pNeuron = pModel->GetNeuron( );
-				COLORREF const   color   = pNeuron->IsHighlighted( )
-					? RGB( 255, 200, 200 )
-					: RGB( 128, 128, 128 );
+				Neuron   const * pNeuron    = pModel->GetNeuron( );
+				COLORREF const   colorFrame = pNeuron->IsHighlighted( )
+					? RGB( 255,   0,   0 )
+					: RGB(   0,   0,   0 );
+				m_pGraphics->AddRect
+				( 
+					m_coord.convert2fPixelPos( pNeuron->GetPosition() ), 
+					colorFrame, 
+					m_coord.convert2fPixel( pNeuron->GetExtension() )
+				);
+
+				PERCENT  const fillLevel = pNeuron->GetFillLevel();
+				int      const colElem   = 255 - ( 255 * fillLevel.GetValue() ) / 100;
+				COLORREF const color     = RGB( colElem, colElem, colElem );
 				m_pGraphics->AddRect
 				( 
 					m_coord.convert2fPixelPos( pNeuron->GetPosition() ), 
 					color, 
-					m_coord.convert2fPixel( pNeuron->GetExtension() )
+					m_coord.convert2fPixel( pNeuron->GetExtension() * 0.9 )
 				);
 			}
 

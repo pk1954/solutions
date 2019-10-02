@@ -42,6 +42,19 @@ constexpr const mV operator"" _mV( const long double d )
 	return mV( d );
 }
 
+////////////// PERCENT /////////////////////////////////////
+
+using PERCENT = NamedType< short, struct PERCENT_Parameter >;
+
+PERCENT constexpr operator"" _PERCENT( unsigned long long ull )
+{
+	return PERCENT( CastToShort( ull ) );
+}
+
+////////////// MilliHertz /////////////////////////////////////
+
+using MilliHertz = NamedType< unsigned long, struct MilliHertz_Parameter >;
+
 ////////////// MicroMeterPoint /////////////////////////////////////
 
 using MicroMeterPoint = PosType< MicroMeter >;
