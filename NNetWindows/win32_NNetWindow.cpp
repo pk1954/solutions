@@ -191,25 +191,6 @@ void NNetWindow::moveNNet( PixelPoint const ptDiff )
 	}
 }
 
-//void NNetWindow::drawPipeline( Pipeline const * pPipeline )
-//{
-//	Segment      segment;
-//	mV           potential;
-//	unsigned int uiSegmentNr = 0;
-//	while ( pPipeline->GetSegment( uiSegmentNr, segment, potential ) )
-//	{
-//		fPixelPoint const fPixPoint1( m_coord.convert2fPixelPos( segment.GetStartPoint() ) );
-//		fPixelPoint const fPixPoint2( m_coord.convert2fPixelPos( segment.GetEndPoint  () ) );
-//		fPIXEL      const fPixWidth ( m_coord.convert2fPixel   ( segment.GetWidth() ) );
-//		int         const iLevel    = 255 - CastToInt( potential.GetValue() );
-//		COLORREF    const color     = pPipeline->IsHighlighted( )
-//			? RGB(   iLevel, 0, iLevel )
-//			: RGB(   0, iLevel, 0 );
-//		m_pGraphics->AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth, color );
-//		++ uiSegmentNr;
-//	}
-//}
-
 void NNetWindow::OnPaint( )
 {
 	if ( IsWindowVisible() )
@@ -223,56 +204,7 @@ void NNetWindow::OnPaint( )
 			NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
 			
 			pModel->GetPipeline()->Draw( * m_pGraphics, m_coord );
-
-			fPIXEL const fPixNeuronSize = fPixWidth * 5.0;
-
-			// Neuron 1
-			{
-				InputNeuron const * pNeuron    = pModel->GetNeuron1( );
-				COLORREF    const   colorFrame = pNeuron->IsHighlighted( )
-					? RGB( 255,   0,   0 )
-					: RGB(   0,   0,   0 );
-				m_pGraphics->AddRect
-				( 
-					m_coord.convert2fPixelPos( pNeuron->GetPosition() ), 
-					colorFrame, 
-					m_coord.convert2fPixel( pNeuron->GetExtension() )
-				);
-
-				PERCENT  const fillLevel = pNeuron->GetFillLevel();
-				int      const colElem   = 255 - ( 255 * fillLevel.GetValue() ) / 100;
-				COLORREF const color     = RGB( colElem, colElem, colElem );
-				m_pGraphics->AddRect
-				( 
-					m_coord.convert2fPixelPos( pNeuron->GetPosition() ), 
-					color, 
-					m_coord.convert2fPixel( pNeuron->GetExtension() * 0.9 )
-				);
-			}
-
-			// Neuron 2
-			{
-				Neuron   const * pNeuron    = pModel->GetNeuron2( );
-				COLORREF const   colorFrame = pNeuron->IsHighlighted( )
-					? RGB( 255, 200, 200 )
-					: RGB( 128, 128, 128 );
-				m_pGraphics->AddRect
-				( 
-					m_coord.convert2fPixelPos( pNeuron->GetPosition() ), 
-					colorFrame, 
-					m_coord.convert2fPixel( pNeuron->GetExtension() )
-				);
-
-				//PERCENT  const fillLevel = pNeuron->GetFillLevel();
-				//int      const colElem   = 255 - ( 255 * fillLevel.GetValue() ) / 100;
-				//COLORREF const color     = RGB( colElem, colElem, colElem );
-				//m_pGraphics->AddRect
-				//( 
-				//	m_coord.convert2fPixelPos( pNeuron->GetPosition() ), 
-				//	color, 
-				//	m_coord.convert2fPixel( pNeuron->GetExtension() * 0.9 )
-				//);
-			}
+			pModel->GetNeuron1( )->Draw( * m_pGraphics, m_coord );
 
 			m_pReadBuffer->ReleaseReadBuffer( );
 

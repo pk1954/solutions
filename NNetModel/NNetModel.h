@@ -38,7 +38,7 @@ public:
 
 	Pipeline    const * GetPipeline( ) const { return & m_pipeline; }
 	InputNeuron const * GetNeuron1( )  const { return & m_neuron1; }
-	Neuron      const * GetNeuron2( )  const { return & m_neuron2; }
+	Knot        const * GetKnot( )     const { return & m_knot; }
 
 	Shape const * GetShapeUnderPoint( MicroMeterPoint const ) const;
 
@@ -91,7 +91,7 @@ private:
 	}
 
 	InputNeuron     m_neuron1;
-	Neuron          m_neuron2;
+	Knot            m_knot;
 	Pipeline        m_pipeline;
 	microseconds    m_timeStamp;
 	vector<Shape *> m_Shapes;
