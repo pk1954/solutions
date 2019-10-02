@@ -171,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NNetSimu.cpp" />
+    <ClCompile Include="SpeedDisplay.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TimeDisplay.cpp" />
     <ClCompile Include="win32_NNetAppMenu.cpp" />

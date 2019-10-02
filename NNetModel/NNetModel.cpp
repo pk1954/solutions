@@ -8,18 +8,18 @@
 
 NNetModel::NNetModel( )
   : m_timeStamp( microseconds( 0 ) ),
-	m_neuron  ( MicroMeterPoint( 400.0_MicroMeter,  200.0_MicroMeter ) ),
-	m_knot    ( MicroMeterPoint( 400.0_MicroMeter, 1400.0_MicroMeter ) ),
+	m_neuron1  ( MicroMeterPoint( 400.0_MicroMeter,  200.0_MicroMeter ) ),
+	m_neuron2  ( MicroMeterPoint( 400.0_MicroMeter, 1400.0_MicroMeter ) ),
 	m_pipeline( 0.1_meterPerSec ), // STD_IMPULSE_SPEED ),
 	m_Shapes( ),
 	m_shapeHighlighted( NO_SHAPE )
 {
-	AddShape( m_neuron );
-	AddShape( m_knot );
+	AddShape( m_neuron1 );
+	AddShape( m_neuron2 );
 	AddShape( m_pipeline );
 
-	m_neuron.AddOutgoing( & m_pipeline );
-	m_knot.AddIncomming( & m_pipeline );
+	m_neuron1.AddOutgoing( & m_pipeline );
+	m_neuron2.AddIncomming( & m_pipeline );
 }
 
 NNetModel * NNetModel::CreateModel( )
@@ -34,8 +34,11 @@ void NNetModel::DestroyCore( NNetModel * pCore )
 
 void NNetModel::Compute( )
 {
-	m_neuron.Step( );
-	m_pipeline.Step( );
+	mV pot;
+	
+	pot = m_neuron1.Step( );
+	pot = m_pipeline.Step( pot );
+	m_neuron2.Step( pot );
 
 	m_timeStamp += TIME_RESOLUTION;
 }
@@ -47,10 +50,10 @@ void NNetModel::ResetAll( )
 
 Shape const * NNetModel::GetShapeUnderPoint( MicroMeterPoint const pnt ) const
 {
-	if ( m_neuron.IsPointInShape( pnt ) )
-		return & m_neuron;
-	else if ( m_knot.IsPointInShape( pnt ) )
-		return & m_knot;
+	if ( m_neuron1.IsPointInShape( pnt ) )
+		return & m_neuron1;
+	else if ( m_neuron2.IsPointInShape( pnt ) )
+		return & m_neuron2;
 	else if ( m_pipeline.IsPointInShape( pnt ) )
 		return & m_pipeline;
 	else

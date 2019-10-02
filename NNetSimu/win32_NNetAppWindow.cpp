@@ -90,6 +90,8 @@ NNetAppWindow::~NNetAppWindow( )
 	delete m_pNNetEditorWindow;
 	delete m_pMainNNetWindow;
 	delete m_pAppMenu;
+	delete m_pTimeDisplay;
+	delete m_pSpeedDisplay;
 }
 
 void NNetAppWindow::Start( )
@@ -206,6 +208,8 @@ void NNetAppWindow::configureStatusBar( )
 	Script::ScrSetWrapHook( & m_ScriptHook );
 
 	m_StatusBar.LastPart( );
+	m_pTimeDisplay->Notify( true );
+	m_pSpeedDisplay->Notify( true );
 }
 
 void NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam )

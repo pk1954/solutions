@@ -44,9 +44,9 @@ public:
 		pPipe->SetStartKnot( this );
 	}
 
-	virtual mV GetNextPotential( )
+	virtual mV Step( mV const mVInput )
 	{
-		return m_potential;
+		return mVInput;
 	}
 
 	bool IsPointInShape( MicroMeterPoint const & point ) const

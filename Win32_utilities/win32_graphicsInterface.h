@@ -1,6 +1,6 @@
 // GraphicsInterface.h
 //
-// Utilities
+// Win32_utilities
 
 #pragma once
 

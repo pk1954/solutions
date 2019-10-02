@@ -16,6 +16,8 @@ class TimeDisplay : public ObserverInterface
 public:
 	TimeDisplay( StatusBar *, NNetReadBuffer *, int );
 
+	~TimeDisplay();
+
 	virtual void Notify( bool const );
 
 private:

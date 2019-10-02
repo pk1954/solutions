@@ -5,7 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "fPixelCoords.h"
+#include "PixelCoordsFp.h"
 #include "NNetReadBuffer.h"  // do not remove! class definition not sufficient.
 #include "win32_modelWindow.h"
 
@@ -57,7 +57,7 @@ private:
 	GraphicsInterface * m_pGraphics;
 	Scale             * m_pScale;
 
-	fPixelCoords m_coord;
+	PixelCoordsFp m_coord;
 	PixelPoint   m_ptLast;	 	   // Last cursor position during selection 
 
 	void newPixelSize( NanoMeter const, MicroMeterPoint const );

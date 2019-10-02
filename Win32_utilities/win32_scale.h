@@ -8,12 +8,12 @@
 #include "PixelTypes.h"
 
 class GraphicsInterface;
-class fPixelCoords;
+class PixelCoordsFp;
 
 class Scale
 {
 public:
-	Scale( GraphicsInterface * const,  fPixelCoords * const );
+	Scale( GraphicsInterface * const,  PixelCoordsFp * const );
 
 	void ShowScale( fPIXEL const );
 
@@ -23,7 +23,7 @@ private:
 	std::wostringstream m_wBuffer;
 
 	GraphicsInterface * m_pGraphics;
-	fPixelCoords      * m_pfPixelCoords;
+	PixelCoordsFp      * m_pfPixelCoords;
 
 	void displayTicks( fPixelPoint const, fPixelPoint const, double const, int const );
 	void displayScaleNumber( fPixelPoint const, double const, int const );

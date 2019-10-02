@@ -1,4 +1,4 @@
-// fPixelCoords.h : 
+// PixelCoordsFp.h : 
 //
 // Utilities
 
@@ -9,11 +9,11 @@
 #include "PixelTypes.h"
 #include "SmoothMove.h"
 
-class fPixelCoords
+class PixelCoordsFp
 {
 public:
 
-	fPixelCoords()
+	PixelCoordsFp()
 	  : m_pixOffset  ( 0_PIXEL ),
 		m_fPixOffset ( 0.0_fPIXEL ),
 		m_pixelSize  ( DEFAULT_PIXEL_SIZE ),
@@ -192,6 +192,6 @@ private:
 	bool        m_bMoving;
 };
 
-PixelPoint NNetPixel2PixelSize( PixelPoint const,   fPixelCoords const *, fPixelCoords const * );
-PixelPoint NNetPixel2PixelPos ( PixelPoint const,   fPixelCoords const *, fPixelCoords const * );
-PixelRect  NNetPixel2PixelRect( PixelRect  const &, fPixelCoords const *, fPixelCoords const * );
+PixelPoint NNetPixel2PixelSize( PixelPoint const,   PixelCoordsFp const *, PixelCoordsFp const * );
+PixelPoint NNetPixel2PixelPos ( PixelPoint const,   PixelCoordsFp const *, PixelCoordsFp const * );
+PixelRect  NNetPixel2PixelRect( PixelRect  const &, PixelCoordsFp const *, PixelCoordsFp const * );

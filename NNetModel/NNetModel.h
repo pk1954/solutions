@@ -8,6 +8,7 @@
 #include "util.h"
 #include "MoreTypes.h"
 #include "Segment.h"
+#include "INputNeuron.h"
 #include "Neuron.h"
 #include "Pipeline.h"
 #include "ModelInterface.h"
@@ -35,9 +36,9 @@ public:
 		return m_timeStamp;
 	}
 
-	Pipeline const * GetPipeline( ) const { return & m_pipeline; }
-	Neuron   const * GetNeuron( )   const { return & m_neuron; }
-	Knot     const * GetKnot( )     const { return & m_knot; }
+	Pipeline    const * GetPipeline( ) const { return & m_pipeline; }
+	InputNeuron const * GetNeuron1( )  const { return & m_neuron1; }
+	Neuron      const * GetNeuron2( )  const { return & m_neuron2; }
 
 	Shape const * GetShapeUnderPoint( MicroMeterPoint const ) const;
 
@@ -89,8 +90,8 @@ private:
 		return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() - 1 ];
 	}
 
-	Neuron          m_neuron;
-	Knot            m_knot;
+	InputNeuron     m_neuron1;
+	Neuron          m_neuron2;
 	Pipeline        m_pipeline;
 	microseconds    m_timeStamp;
 	vector<Shape *> m_Shapes;

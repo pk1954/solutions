@@ -11,6 +11,8 @@
 
 using std::vector;
 
+class GraphicsInterface;
+class PixelCoordsFp;
 class Knot;
 
 class Pipeline : public Shape
@@ -32,14 +34,15 @@ public:
 	MicroMeterPoint GetEndPoint  ( ) const; 
 	MicroMeter      GetWidth     ( ) const; 
 
-	void Step();
+	mV Step( mV const );
 
-	bool GetSegment( int const, Segment &, mV & ) const;
+	void Draw( GraphicsInterface &,	PixelCoordsFp const & ) const;
 
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 
 private:
 	MicroMeter distance( MicroMeterPoint const &, MicroMeterPoint const & );
+	bool GetSegment( int const, Segment &, mV & ) const;
 
 	void initialize( );
 

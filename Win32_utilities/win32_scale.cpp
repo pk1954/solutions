@@ -4,11 +4,11 @@
 
 #include "stdafx.h"
 #include "MoreTypes.h"
-#include "fPixelCoords.h"
+#include "PixelCoordsFp.h"
 #include "win32_graphicsInterface.h"
 #include "win32_scale.h"
 
-Scale::Scale( GraphicsInterface * const pGraphics, fPixelCoords * const pCoords )
+Scale::Scale( GraphicsInterface * const pGraphics, PixelCoordsFp * const pCoords )
  : m_pGraphics( pGraphics ),
    m_pfPixelCoords( pCoords )
 { }

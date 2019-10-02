@@ -26,8 +26,8 @@ public:
 
 	virtual void Trigger( )
 	{
-		NNetModel    const * pCore = m_pReadBuffer->LockReadBuffer( );
-		microseconds const   time  = pCore->GetSimulationTime( );
+		NNetModel    const * pModel = m_pReadBuffer->LockReadBuffer( );
+		microseconds const   time   = pModel->GetSimulationTime( );
 		m_pReadBuffer->ReleaseReadBuffer( );
 		if ( time > std::chrono::seconds( 1 ) )
 		{
@@ -44,8 +44,8 @@ public:
 private:
 	wstring          m_wstrBuffer;
 	StatusBar      * m_pStatusBar;
-	NNetReadBuffer * m_pReadBuffer;
 	int              m_iPartInStatusBar;
+	NNetReadBuffer * m_pReadBuffer;
 };
 
 /////// functions of class TimeDisplay ///////
@@ -68,7 +68,12 @@ TimeDisplay::TimeDisplay
 	m_pRefreshRate->SetRefreshRate( 300ms );
 	pReadBuffer->RegisterObserver( this );         // notify me, if model has changed
 	pStatusBar->AddCustomControl( PIX_WIDTH ); 
-	Notify( false );
+}
+
+TimeDisplay::~TimeDisplay( )
+{
+	delete m_pRefreshRate;
+	m_pRefreshRate = nullptr;
 }
 
 void TimeDisplay::Notify( bool const bImmediately )
