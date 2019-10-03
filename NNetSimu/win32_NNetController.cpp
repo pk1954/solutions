@@ -20,20 +20,24 @@
 
 NNetController::NNetController
 (
-	WinManager       * const pWinManager,
-	NNetWindow       * const pNNetWindow,
-	StatusBar        * const pStatusBar,
-	NNetEditorWindow * const pNNetEditorWindow
-) : 
-	m_pAppWindow              ( nullptr ),
-	m_pNNetWorkThreadInterface( nullptr ),
-	m_pWinManager             ( pWinManager ),
-    m_pSlowMotionRatio        ( nullptr ),
-	m_pStatusBar              ( pStatusBar ),
+	NNetAppWindow           * const pAppWindow,
+	NNetWindow              * const pNNetWindow,
+	NNetEditorWindow        * const pNNetEditorWindow,
+	WinManager              * const pWinManager,
+	StatusBar               * const pStatusBar,
+	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
+	SlowMotionRatio         * const pSlowMotionRatio
+) 
+  :	m_pAppWindow              ( nullptr ),
 	m_pNNetWindow             ( pNNetWindow ),
 	m_pNNetEditorWindow       ( pNNetEditorWindow ),
-	m_hCrsrWait               ( 0 )
-{ }
+	m_pWinManager             ( pWinManager ),
+	m_pStatusBar              ( pStatusBar ),
+	m_pNNetWorkThreadInterface( pNNetWorkThreadInterface ),
+	m_pSlowMotionRatio        ( pSlowMotionRatio ),
+	m_hCrsrWait               ( LoadCursor( NULL, IDC_WAIT ) )
+{
+}
 
 NNetController::~NNetController( )
 {
@@ -42,19 +46,6 @@ NNetController::~NNetController( )
 	m_pWinManager              = nullptr;
 	m_pSlowMotionRatio         = nullptr;
     m_pStatusBar               = nullptr;
-}
-
-void NNetController::Initialize
-( 
-	NNetAppWindow           * const pAppWindow,
-	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
-	SlowMotionRatio         * const pSlowMotionRatio
-)
-{
-	m_pNNetWorkThreadInterface = pNNetWorkThreadInterface;
-	m_pAppWindow               = pAppWindow;
-    m_pSlowMotionRatio         = pSlowMotionRatio;
-	m_hCrsrWait                = LoadCursor( NULL, IDC_WAIT );
 }
 
 bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )

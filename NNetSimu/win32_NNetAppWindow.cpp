@@ -6,8 +6,6 @@
 #include <chrono>
 #include "WinUser.h"
 
-using namespace std::literals::chrono_literals;
-
 // Model interfaces
 
 #include "MoreTypes.h"
@@ -44,6 +42,8 @@ using namespace std::literals::chrono_literals;
 
 #include "win32_NNetAppWindow.h"
 
+using namespace std::literals::chrono_literals;
+
 NNetAppWindow::NNetAppWindow( ) :
 	m_pMainNNetWindow( nullptr ),
 	m_pModelDataWork( nullptr ),
@@ -69,15 +69,11 @@ NNetAppWindow::NNetAppWindow( ) :
 
 	m_pNNetController = new NNetController
 	( 
-		& m_WinManager,
-		  m_pMainNNetWindow,
-		& m_StatusBar, 
-		  m_pNNetEditorWindow
-	);
-
-	m_pNNetController->Initialize
-	( 
 		this,
+		  m_pMainNNetWindow,
+		  m_pNNetEditorWindow,
+		& m_WinManager,
+		& m_StatusBar, 
 		& m_NNetWorkThreadInterface,
 		& m_SlowMotionRatio
 	);
