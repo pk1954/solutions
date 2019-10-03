@@ -42,7 +42,6 @@ public:
 
 private:
 	MicroMeter distance( MicroMeterPoint const &, MicroMeterPoint const & );
-	bool GetSegment( int const, Segment &, mV & ) const;
 
 	void initialize( );
 

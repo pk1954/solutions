@@ -66,31 +66,12 @@ mV Pipeline::Step( mV const mVinput )
 {
 	mV mVcarry = mVinput;
 
-	for ( vector <mV>::iterator iter = m_potential.begin( ); iter != m_potential.end( ); iter++ )
+	for ( vector<mV>::iterator iter = m_potential.begin( ); iter != m_potential.end( ); iter++ )
 	{
 		std::swap( * iter, mVcarry );
 	}
 
 	return mVcarry;
-}
-
-bool Pipeline::GetSegment( int const iNr, Segment & seg, mV & potential ) const
-{
-	if ( iNr < m_potential.size() )
-	{
-		MicroMeterPoint const npDiff = GetEndPoint() - GetStartPoint();
-		seg = Segment
-		{
-			GetStartPoint() + (npDiff *  iNr     ) / static_cast<int>(m_potential.size()),
-			GetStartPoint() + (npDiff * (iNr + 1)) / static_cast<int>(m_potential.size()),
-			m_width
-		};
-		potential = m_potential[ iNr ];
-		assert ( potential < 200.0_mV );
-		return true;
-	}
-	else 
-		return false;
 }
 
 bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const
@@ -111,23 +92,25 @@ bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const
 
 void Pipeline::Draw
 ( 
-	GraphicsInterface  & Graphics,
+	GraphicsInterface   & Graphics,
 	PixelCoordsFp const & coord
 ) const
 {
-	Segment      segment;
-	mV           potential;
-	unsigned int uiSegmentNr = 0;
-	while ( GetSegment( uiSegmentNr, segment, potential ) )
+	MicroMeterPoint const vector        = GetEndPoint() - GetStartPoint();
+	MicroMeterPoint const segmentVector = vector / static_cast<double>(m_potential.size());
+	fPIXEL          const fPixWidth     = coord.convert2fPixel( m_width ) ;
+	fPixelPoint           fPixPoint1    = coord.convert2fPixelPos( GetStartPoint() );
+	MicroMeterPoint       point2        = GetStartPoint() + segmentVector;
+
+	for ( std::vector<mV>::const_iterator iter = m_potential.begin( ); iter != m_potential.end( ); iter++ )
 	{
-		fPixelPoint const fPixPoint1( coord.convert2fPixelPos( segment.GetStartPoint() ) );
-		fPixelPoint const fPixPoint2( coord.convert2fPixelPos( segment.GetEndPoint  () ) );
-		fPIXEL      const fPixWidth ( coord.convert2fPixel   ( segment.GetWidth() ) );
-		int         const iLevel    = 255 - CastToInt( potential.GetValue() );
-		COLORREF    const color     = IsHighlighted( )
-			? RGB(   iLevel, 0, iLevel )
-			: RGB(   0, iLevel, 0 );
+		assert( * iter < 200.0_mV );
+		fPixelPoint     const fPixPoint2 = coord.convert2fPixelPos( point2 );
+		int             const iLevel     = CastToInt( iter->GetValue() );
+		assert( iLevel <= 255 );
+		COLORREF        const color      = IsHighlighted( )	? RGB( iLevel, 0, iLevel ) : RGB( iLevel, 0, 0 );
 		Graphics.AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth, color );
-		++ uiSegmentNr;
+		point2    += segmentVector; 
+		fPixPoint1 = fPixPoint2;
 	}
 }

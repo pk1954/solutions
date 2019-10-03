@@ -390,7 +390,8 @@ void D3D_driver::AddfPixelLine
 	COLORREF    const   color
 )
 {
-	fPixelPoint fDelta = fpp2 - fpp1;
+	D3DCOLOR    D3Dcolor = COLORREFtoD3DCOLOR( 255, color );
+	fPixelPoint fDelta   = fpp2 - fpp1;
 
 	fPixelPoint fOrtho { fDelta.GetY(), -fDelta.GetX() };
 
@@ -398,10 +399,10 @@ void D3D_driver::AddfPixelLine
 
 	fPixelPoint fOrthoScaled = fOrtho * dScaleFactor;
 
-	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp1.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp1.GetYvalue() + fOrthoScaled.GetYvalue()), color );
-	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp1.GetXvalue() - fOrthoScaled.GetXvalue()), CastToFloat(fpp1.GetYvalue() - fOrthoScaled.GetYvalue()), color );
-	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp2.GetXvalue() - fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() - fOrthoScaled.GetYvalue()), color );
-	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp2.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() + fOrthoScaled.GetYvalue()), color );
+	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp1.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp1.GetYvalue() + fOrthoScaled.GetYvalue()), D3Dcolor );
+	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp1.GetXvalue() - fOrthoScaled.GetXvalue()), CastToFloat(fpp1.GetYvalue() - fOrthoScaled.GetYvalue()), D3Dcolor );
+	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp2.GetXvalue() - fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() - fOrthoScaled.GetYvalue()), D3Dcolor );
+	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp2.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() + fOrthoScaled.GetYvalue()), D3Dcolor );
 }
 
 void D3D_driver::AddRect( fPixelPoint const ptPos, COLORREF const color, fPIXEL const fPixSize )
@@ -411,7 +412,7 @@ void D3D_driver::AddRect( fPixelPoint const ptPos, COLORREF const color, fPIXEL 
 	float const fPtPosx = static_cast<float>( ptPos.GetXvalue() );
 	float const fPtPosy = static_cast<float>( ptPos.GetYvalue() );
 
-	D3DCOLOR const D3Dcolor = color; // COLORREFtoD3DCOLOR( 255, color );
+	D3DCOLOR const D3Dcolor = COLORREFtoD3DCOLOR( 255, color );
 
 	addRectangle( fPtPosx, fPtPosy, D3Dcolor, CastToFloat(fPixSize.GetValue()) );
 }

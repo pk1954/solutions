@@ -31,6 +31,6 @@ private:
 
 	double waveFunction( double x )
 	{
-		return 256.0 * x / ( x * x + 1.0 );
+		return 255.0 * x / ( x * x + 1.0 );
 	}
 };

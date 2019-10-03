@@ -77,11 +77,11 @@ void InputNeuron::Draw
 
 	PERCENT  const fillLevel = GetFillLevel();
 	int      const colElem   = 255 - ( 255 * fillLevel.GetValue() ) / 100;
-	COLORREF const color     = RGB( colElem, colElem, colElem );
+	COLORREF const color     = RGB( colElem, 0, 0 );
 	Graphics.AddRect
 	( 
 		coord.convert2fPixelPos( GetPosition() ), 
 		color, 
-		coord.convert2fPixel( GetExtension() * 0.9 )
+		coord.convert2fPixel( GetExtension() * 0.8 )
 	);
 }

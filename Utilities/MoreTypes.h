@@ -88,5 +88,5 @@ mV const BASE_POTENTIAL( 32.0_mV );
 microseconds const TIME_RESOLUTION = microseconds( 1 );
 
 NanoMeter const MINIMUM_PIXEL_SIZE =     100.0_NanoMeter;
-NanoMeter const DEFAULT_PIXEL_SIZE =    2000.0_NanoMeter;  
+NanoMeter const DEFAULT_PIXEL_SIZE =    1000.0_NanoMeter;  
 NanoMeter const MAXIMUM_PIXEL_SIZE = 2000000.0_NanoMeter;  // 2 Meter

@@ -108,56 +108,7 @@ public:
 		return convert2MicroMeterPoint( fPnt );
 	}
 
-	//////// other stuff ////////
-
-	//bool IsPointInRect
-	//(
-	//	MicroMeterPoint const P,
-	//	MicroMeterPoint const A,
-	//	MicroMeterPoint const B,
-	//	MicroMeterPoint const D
-	//)
-	//{
-	//	MicroMeterPoint const BA = B - A;
-	//	MicroMeterPoint const DA = D - A;
-
-	//	if ((P.GetXvalue() - A.GetXvalue()) * BA.GetXvalue() + (P.GetYvalue() - A.GetYvalue()) * BA.GetYvalue() < 0.0) return false;
-	//	if ((P.GetXvalue() - B.GetXvalue()) * BA.GetXvalue() + (P.GetYvalue() - B.GetYvalue()) * BA.GetYvalue() > 0.0) return false;
-	//	if ((P.GetXvalue() - A.GetXvalue()) * DA.GetXvalue() + (P.GetYvalue() - A.GetYvalue()) * DA.GetYvalue() < 0.0) return false;
-	//	if ((P.GetXvalue() - D.GetXvalue()) * DA.GetXvalue() + (P.GetYvalue() - D.GetYvalue()) * DA.GetYvalue() > 0.0) return false;
-
-	//	return true;
-	//}
-
-	//bool IsPointInRect
-	//(
-	//	fPixelPoint const P,
-	//	fPixelPoint const A,
-	//	fPixelPoint const B,
-	//	fPixelPoint const D
-	//)
-	//{
-	//	fPixelPoint const BA = B - A;
-	//	fPixelPoint const DA = D - A;
-
-	//	if ((P.GetXvalue() - A.GetXvalue()) * BA.GetXvalue() + (P.GetYvalue() - A.GetYvalue()) * BA.GetYvalue() < 0.0) return false;
-	//	if ((P.GetXvalue() - B.GetXvalue()) * BA.GetXvalue() + (P.GetYvalue() - B.GetYvalue()) * BA.GetYvalue() > 0.0) return false;
-	//	if ((P.GetXvalue() - A.GetXvalue()) * DA.GetXvalue() + (P.GetYvalue() - A.GetYvalue()) * DA.GetYvalue() < 0.0) return false;
-	//	if ((P.GetXvalue() - D.GetXvalue()) * DA.GetXvalue() + (P.GetYvalue() - D.GetYvalue()) * DA.GetYvalue() > 0.0) return false;
-
-	//	return true;
-	//}
-
 	//////// manipulation functions ////////
-
-	//void newPixelSize
-	//(
-	//	NanoMeter   const newPixelSize,
-	//	fPixelPoint const fPixPntNewCenter
-	//)
-	//{
-
-	//}
 
 	bool SetPixelSize( NanoMeter const nmPixelSize )
 	{
