@@ -7,8 +7,8 @@
 #include "SCRIPT.H"
 #include "SlowMotionRatio.h"
 #include "EventInterface.h"
-#include "NNetHistorySysGlue.h"
 #include "NNetReadBuffer.h"
+#include "NNetModel.h"
 #include "MoreTypes.h"
 #include "win32_thread.h"
 #include "win32_event.h"
@@ -24,16 +24,18 @@ NNetWorkThread::NNetWorkThread
 	EventInterface          * const pEvent,
 	ObserverInterface       * const pObserver, 
 	SlowMotionRatio         * const pSLowMotionRatio,
-	NNetHistorySysGlue      * const pNNetHistorySys,
-	NNetWorkThreadInterface * const pWorkThreadInterface
+	NNetWorkThreadInterface * const pWorkThreadInterface,
+	NNetModel               * const pNNetModel
 ):
+	m_pNNetModel( pNNetModel ),
 	WorkThread
 	( 
 		hwndApplication, 
 		pActionTimer, 
 		pEvent, 
 		pObserver,
-		pNNetHistorySys->GetHistorySystem( ), 
+		nullptr,    // no history system
+		pNNetModel,
 		pWorkThreadInterface 
 	),
 	m_pSlowMotionRatio( pSLowMotionRatio ),
@@ -52,7 +54,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	switch ( static_cast<NNetWorkThreadMessage::Id>(msg.message) )
 	{
 	case NNetWorkThreadMessage::Id::HIGHLIGHT:
-		GetHistorySystem( )->CreateAppCommand( NNetCmd( NNetGenerationCmd::Id::highlight, CastToInt(msg.lParam) ) );
+		m_pNNetModel->HighlightShape( ShapeId( CastToInt(msg.lParam) ) );
 		break;
 
 	default:

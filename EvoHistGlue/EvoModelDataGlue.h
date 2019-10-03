@@ -25,7 +25,7 @@ public:
 
 	~EvoModelDataGlue( )
 	{
-		EvolutionCore::DestroyCore( m_pEvolutionCore );
+		EvolutionCore::DestroyModel( m_pEvolutionCore );
 	}
 
     EvoModelDataGlue & operator= ( EvoModelDataGlue const & );  // noncopyable class 

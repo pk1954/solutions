@@ -20,7 +20,9 @@ void SpeedControl::AddSimulationControl
 	m_pStatusBar     = pStatusBar;
 	m_pHistorySystem = pHistorySystem;
 
-	m_pStatusBar->AddButton  ( L"Backwards ", (HMENU)IDM_BACKWARDS, BS_PUSHBUTTON );
+	if ( m_pHistorySystem )
+		m_pStatusBar->AddButton  ( L"Backwards ", (HMENU)IDM_BACKWARDS, BS_PUSHBUTTON );
+
 	m_pStatusBar->AddButton  ( L"SingleStep", (HMENU)IDM_FORWARD,   BS_PUSHBUTTON ); 
 	m_pStatusBar->AddButton  ( L"   Run    ", (HMENU)IDM_RUN,       BS_PUSHBUTTON ); 
 	m_pStatusBar->AddButton  ( L"  Stop    ", (HMENU)IDM_STOP,      BS_PUSHBUTTON ); 
@@ -37,11 +39,11 @@ void SpeedControl::Adjust
 	WorkThreadInterface * const pWorkThreadInterface
 )
 {
-	EnableWindow( m_pStatusBar->GetDlgItem( IDM_RUN  ), ! bIsRunning );
-	EnableWindow( m_pStatusBar->GetDlgItem( IDM_STOP ),   bIsRunning );
-
+	EnableWindow( m_pStatusBar->GetDlgItem( IDM_RUN  ),    ! bIsRunning );
+	EnableWindow( m_pStatusBar->GetDlgItem( IDM_STOP ),      bIsRunning );
 	EnableWindow( m_pStatusBar->GetDlgItem( IDM_FORWARD ), ! bIsRunning );
 
+	if ( m_pHistorySystem )
 	{
 		BOOL bIsFirstGeneration = pWorkThreadInterface->GetCurrentGeneration( ) == 0;
 		EnableWindow( m_pStatusBar-> GetDlgItem( IDM_BACKWARDS ), ! (bIsRunning || bIsFirstGeneration) );

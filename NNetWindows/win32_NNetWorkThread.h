@@ -4,16 +4,15 @@
 
 #pragma once
 
-#include "HistoryGeneration.h"
 #include "win32_hiResTimer.h"
 #include "win32_WorkThread.h"
-#include "NNetGenerationCmd.h"
 
 class ActionTimer;
 class RootWindow;
 class WinManager;
 class EventInterface;
 class SlowMotionRatio;
+class NNetModel;
 class NNetHistorySysGlue;
 class NNetWorkThreadInterface;
 
@@ -45,22 +44,22 @@ public:
 		EventInterface          * const,
 		ObserverInterface       * const,
 		SlowMotionRatio         * const,
-		NNetHistorySysGlue      * const,
-		NNetWorkThreadInterface * const
+		NNetWorkThreadInterface * const,
+		NNetModel               * const
 	);
 	~NNetWorkThread( );
 
 private:
 
-	GenerationCmd NNetCmd( NNetGenerationCmd::Id const cmd, Int24 const param )
-	{ 
-		return GenerationCmd::ApplicationCmd( static_cast<GenerationCmd::Id>(cmd), param );  
-	}  
+	//GenerationCmd NNetCmd( NNetGenerationCmd::Id const cmd, Int24 const param )
+	//{ 
+	//	return GenerationCmd::ApplicationCmd( static_cast<GenerationCmd::Id>(cmd), param );  
+	//}  
 
-	void editorCommand( NNetGenerationCmd::Id const cmd, WPARAM const wParam )
-	{
-		EditorCommand( static_cast<GenerationCmd::Id>(cmd), wParam );
-	}
+	//void editorCommand( NNetGenerationCmd::Id const cmd, WPARAM const wParam )
+	//{
+	//	EditorCommand( static_cast<GenerationCmd::Id>(cmd), wParam );
+	//}
 
 	virtual void SetRunModeHook( BOOL const bState ) 
 	{
@@ -71,6 +70,7 @@ private:
 
 	virtual void WaitTilNextActivation( );
 
+	NNetModel       * m_pNNetModel;
 	SlowMotionRatio * m_pSlowMotionRatio;
 	Ticks             m_timerTicks;
 	Ticks             m_timerTicksLastTime;

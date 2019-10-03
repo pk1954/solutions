@@ -75,7 +75,7 @@ EvoAppWindow::EvoAppWindow( ) :
 {
 	Stopwatch stopwatch;
 
-	BaseAppWindow::Initialize( & m_EvoWorkThreadInterface );
+	BaseAppWindow::Initialize( & m_EvoWorkThreadInterface, TRUE );
 
 	DUMP::SetDumpStream( & std::wcout );
 	Config::SetDefaultConfiguration( );

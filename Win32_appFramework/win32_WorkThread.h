@@ -16,6 +16,7 @@ class RootWindow;
 class WinManager;
 class HistorySystem;
 class EventInterface;
+class ModelInterface;
 class ObserverInterface;
 class WorkThreadInterface;
 
@@ -51,6 +52,7 @@ public:
 		EventInterface      * const,
 		ObserverInterface   * const,
 		HistorySystem       * const,
+		ModelInterface      * const,
 		WorkThreadInterface * const
 	);
 	~WorkThread( );
@@ -125,7 +127,8 @@ private:
 	ActionTimer         * m_pComputeTimer;
     EventInterface      * m_pEventPOI;
 	ObserverInterface   * m_pObserver;
-    HistorySystem       * m_pHistorySystem;
+    HistorySystem       * m_pHistorySystem;   // if HistorySystem is not used: nullptr 
+	ModelInterface      * m_pModel;           // if HistorySystem is     used: nullptr
 	WorkThreadInterface * m_pWorkThreadInterface;
     HIST_GENERATION       m_genDemanded;
     BOOL                  m_bContinue;

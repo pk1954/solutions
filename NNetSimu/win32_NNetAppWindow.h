@@ -13,14 +13,13 @@
 
 #include "win32_appWindowInterface.h"
 #include "win32_winManager.h"
-#include "win32_NNetWorkThreadInterface.h"
 #include "win32_scriptHook.h"
 #include "SlowMotionRatio.h"
 #include "D3D_driver.h"
 
 // application
 
-#include "NNetHistorySysGlue.h"
+#include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWindow.h"
 #include "win32_NNetAppMenu.h"
 #include "win32_NNetReadBuffer.h"
@@ -34,7 +33,6 @@ class NNetModel;
 class NNetWindow;
 class TimeDisplay;
 class SpeedDisplay;
-class HistInfoWindow;
 class GraphicsInterface;
 
 class NNetAppWindow : public AppWindowInterface
@@ -62,14 +60,13 @@ private:
 	ActionTimer             m_atComputation;
 	ActionTimer             m_atDisplay;
 	ScriptHook              m_ScriptHook;
-	NNetHistorySysGlue      m_NNetHistGlue;
 	SlowMotionRatio         m_SlowMotionRatio;
 
 	GraphicsInterface     * m_pGraphics;
 	NNetController        * m_pNNetController;
+	NNetModel             * m_pModelDataWork;
 	NNetModel             * m_pNNetModel4Display;
 	NNetWindow            * m_pMainNNetWindow;
-	NNetModelDataGlue     * m_pModelDataWork;
 	NNetEditorWindow      * m_pNNetEditorWindow;
 	TimeDisplay           * m_pTimeDisplay;
 	SpeedDisplay          * m_pSpeedDisplay;

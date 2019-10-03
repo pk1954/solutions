@@ -81,7 +81,7 @@ public:
 	// static functions  
 
 	static NNetModel * CreateModel();
-	static void        DestroyCore( NNetModel * );
+	static void        DestroyModel( NNetModel * );
 
 private:
 

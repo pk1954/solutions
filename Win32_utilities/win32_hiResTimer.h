@@ -5,7 +5,7 @@
 #pragma once
 
 #include <chrono>
-#include "windows.h"
+#include "NamedType.h"
 
 using std::chrono::microseconds;
 
@@ -30,7 +30,7 @@ public:
 	void BusyWait( microseconds const, Ticks & );
 
 private:
-	unsigned long long const MICROSECONDS_TO_SECONDS = microseconds::period::den;
+	long long const MICROSECONDS_TO_SECONDS = microseconds::period::den;
 
     static Hertz m_frequency;
 

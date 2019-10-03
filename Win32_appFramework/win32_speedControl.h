@@ -9,11 +9,12 @@
 #include "win32_WorkThreadInterface.h"
 #include "win32_status.h"
 
+class HistorySystem;
+
 class SpeedControl
 {
 public:
 
-	static void SetSpeedTrackBar( long const );
 	static void AddSimulationControl( StatusBar * const, HistorySystem * const, long const, long const, long const );
 	static void Adjust( BOOL const,	WorkThreadInterface * const );
 

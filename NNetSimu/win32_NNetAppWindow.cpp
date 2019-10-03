@@ -17,7 +17,6 @@ using namespace std::literals::chrono_literals;
 
 #include "win32_NNetEditor.h"
 #include "win32_NNetWindow.h"
-#include "win32_histWindow.h"
 #include "win32_status.h"
 #include "win32_speedControl.h"
 #include "win32_zoomControl.h"
@@ -49,11 +48,13 @@ NNetAppWindow::NNetAppWindow( ) :
 	m_pMainNNetWindow( nullptr ),
 	m_pModelDataWork( nullptr ),
 	m_pGraphics( nullptr ),
+	m_pSpeedDisplay( nullptr ),
+	m_pTimeDisplay( nullptr ),
 	m_pNNetModel4Display( nullptr )
 {
 	Stopwatch stopwatch;
 
-	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface ),
+	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface, FALSE ),
 		
 	NNetWindow::InitClass
 	( 
@@ -96,8 +97,6 @@ NNetAppWindow::~NNetAppWindow( )
 
 void NNetAppWindow::Start( )
 {
-	NNetModel * pModelWork;
-
 	m_D3d_driver.Initialize
 	( 
 		m_hwndApp, 
@@ -116,11 +115,10 @@ void NNetAppWindow::Start( )
 		& m_WinManager 
 	);
 
-	m_pModelDataWork     = m_NNetHistGlue.Start( m_pHistorySystem, TRUE ); 
-	pModelWork           = m_pModelDataWork->GetNNetModel();
+	m_pModelDataWork     = NNetModel::CreateModel( );
 	m_pNNetModel4Display = NNetModel::CreateModel( );
 
-	m_NNetReadBuffer.Initialize( pModelWork, m_pNNetModel4Display );
+	m_NNetReadBuffer.Initialize( m_pModelDataWork, m_pNNetModel4Display );
 
 	m_pMainNNetWindow->Start
 	( 
@@ -138,7 +136,7 @@ void NNetAppWindow::Start( )
 		& m_eventPOI, 
 		& m_NNetReadBuffer,
 		& m_SlowMotionRatio,
-		& m_NNetHistGlue
+		m_pModelDataWork
 	);
 
 //	m_pNNetEditorWindow->Start( m_hwndApp, & m_NNetWorkThreadInterface, & m_NNetReadBuffer );
@@ -164,9 +162,11 @@ void NNetAppWindow::Stop()
 
 	m_NNetReadBuffer.UnregisterAllObservers( );
 	m_NNetWorkThreadInterface.Stop( );
-	m_NNetHistGlue           .Stop( );
 
 	BaseAppWindow::Stop();
+
+	NNetModel::DestroyModel( m_pModelDataWork );
+	NNetModel::DestroyModel( m_pNNetModel4Display );
 
 	m_WinManager.RemoveAll( );
 }
@@ -216,7 +216,7 @@ void NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam 
 {
 	int const wmId = LOWORD( wParam );
 
-	if ( m_pNNetController->ProcessUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
+	if ( m_pNNetController->ProcessUIcommand( wmId, lParam ) )     // handle all commands that affect the UI
 		return;                                                    // but do not concern the model
 
 	if ( m_pNNetController->ProcessModelCommand( wmId, lParam ) )

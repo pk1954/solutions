@@ -27,7 +27,7 @@ EvolutionCore * EvolutionCore::CreateCore( )
     return new EvolutionCoreImpl( );
 }
 
-void EvolutionCore::DestroyCore( EvolutionCore * pCore )
+void EvolutionCore::DestroyModel( EvolutionCore * pCore )
 {
 	delete pCore;
 }

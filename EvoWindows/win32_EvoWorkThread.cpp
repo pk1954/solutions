@@ -36,6 +36,7 @@ EvoWorkThread::EvoWorkThread
 		pEvent, 
 		pObserver, 
 		pEvoHistorySys->GetHistorySystem( ), 
+		nullptr,
 		pWorkThreadInterface 
 	),
 	m_pDelay( pDelay ),

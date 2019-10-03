@@ -5,8 +5,8 @@
 #include "stdafx.h"
 #include <sstream> 
 #include "SCRIPT.H"
-#include "HistorySystem.h"
 #include "EventInterface.h"
+#include "ModelInterface.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 #include "win32_stopwatch.h"
@@ -22,17 +22,21 @@ WorkThread::WorkThread
 	EventInterface      * const pEvent,
 	ObserverInterface   * const pObserver,
 	HistorySystem       * const pHistSystem,
+	ModelInterface      * const pModel,
 	WorkThreadInterface * const pWorkThreadInterface
 ) :
 	m_pComputeTimer       ( pActionTimer ),
 	m_pEventPOI           ( pEvent ),   
 	m_pObserver           ( pObserver ),   
-	m_pHistorySystem      ( pHistSystem ),   
+	m_pHistorySystem      ( pHistSystem ),
+	m_pModel              ( pModel ),
 	m_pWorkThreadInterface( pWorkThreadInterface ),
 	m_hwndApplication     ( hwndApplication ),
 	m_bContinue           ( FALSE ),
 	m_genDemanded         ( 0 )
 {
+	assert( (m_pHistorySystem != nullptr ) || (m_pModel != nullptr) ); // one of them must be != nullptr
+	assert( (m_pHistorySystem == nullptr ) || (m_pModel == nullptr) ); // one of them must be == nullptr
 	StartThread( L"WorkerThread", true ); 
 }
 
@@ -66,7 +70,7 @@ void WorkThread::WorkMessage
 	LPARAM                const lparam
 )
 {
-	if ( isEditOperation &&  m_pHistorySystem->IsInHistoryMode() )
+	if ( isEditOperation && m_pHistorySystem &&  m_pHistorySystem->IsInHistoryMode()  )
 	{
 		if ( userWantsHistoryCut( ) )
 		{
@@ -150,7 +154,8 @@ BOOL WorkThread::Dispatch( MSG const msg )
 		break;
 
 	case WorkThreadMessage::Id::STOP:
-		m_genDemanded = m_pHistorySystem->GetCurrentGeneration( );
+		if ( m_pHistorySystem )
+			m_genDemanded = m_pHistorySystem->GetCurrentGeneration( );
 		SetRunMode( FALSE );
 		Script::StopProcessing( );
 		return FALSE;      // do not notify observers, because model has not changed  
@@ -160,7 +165,10 @@ BOOL WorkThread::Dispatch( MSG const msg )
 		break;
 
 	case WorkThreadMessage::Id::NEXT_GENERATION:
-		GotoGeneration( m_pHistorySystem->GetCurrentGeneration( ) + 1 );
+		if ( m_pHistorySystem )
+			GotoGeneration( m_pHistorySystem->GetCurrentGeneration( ) + 1 );
+		else
+			m_pModel->Compute( );  // compute next generation
 		break;
 
 	case WorkThreadMessage::Id::GOTO_GENERATION:
@@ -169,6 +177,8 @@ BOOL WorkThread::Dispatch( MSG const msg )
 
 	case WorkThreadMessage::Id::PREV_GENERATION:
 		{
+			assert( m_pHistorySystem );
+
 			HIST_GENERATION gen = m_pHistorySystem->GetCurrentGeneration( );
 
 			if ( gen > 0 )
@@ -193,7 +203,10 @@ BOOL WorkThread::Dispatch( MSG const msg )
 
 void WorkThread::GotoGeneration( HIST_GENERATION const gen )   
 {
+	assert( m_pHistorySystem );
+
 	m_genDemanded = gen;
+
 	if ( m_pHistorySystem->GetCurrentGeneration( ) != m_genDemanded )  // is something to do at all?
 	{
 		if ( 
@@ -227,7 +240,10 @@ void WorkThread::NGenerationSteps( int iNrOfGenerations )  // for benchmarks onl
 	stopwatch.Start();
 	for (int i = 0; i < iNrOfGenerations; ++i)
 	{
-		m_pHistorySystem->CreateAppCommand( GenerationCmd::NextGenCmd() );
+		if ( m_pHistorySystem )
+			m_pHistorySystem->CreateAppCommand( GenerationCmd::NextGenCmd() );
+		else
+			m_pModel->Compute( );  // compute next generation
 		WorkMessage( FALSE, WorkThreadMessage::Id::REFRESH, 0, 0 );   // refresh all views
 	}
 	stopwatch.Stop( L"benchmark" );
@@ -237,7 +253,10 @@ void WorkThread::generationRun( )
 {
 	if ( m_bContinue )
 	{
-		GotoGeneration( m_pHistorySystem->GetCurrentGeneration( ) + 1 );
+		if ( m_pHistorySystem )
+			GotoGeneration( m_pHistorySystem->GetCurrentGeneration( ) + 1 );
+		else
+			m_pModel->Compute( );  // compute next generation
 
 		WaitTilNextActivation( );
 

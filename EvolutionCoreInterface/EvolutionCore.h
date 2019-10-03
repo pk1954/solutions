@@ -78,7 +78,7 @@ public:
     
     static void            InitClass( int const, ObserverInterface * const, EventInterface * const );
     static EvolutionCore * CreateCore();
-	static void            DestroyCore( EvolutionCore * );
+	static void            DestroyModel( EvolutionCore * );
 
 	static std::wostringstream * GetProtocolData  ( );
 	static void 	             ClearProtocolData( );

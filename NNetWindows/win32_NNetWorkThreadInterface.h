@@ -12,8 +12,8 @@
 class ActionTimer;
 class ObserverInterface;
 class EventInterface;
-class NNetHistorySysGlue;
 class NNetWorkThread;
+class NNetModel;
 class SlowMotionRatio;
 
 class NNetWorkThreadInterface: public WorkThreadInterface
@@ -29,8 +29,8 @@ public:
 		EventInterface     * const,
 		ObserverInterface  * const,
 		SlowMotionRatio    * const,
-	    NNetHistorySysGlue * const
-    );
+		NNetModel          * const 
+	);
 
 	void PostHighlight( ShapeId const );
 

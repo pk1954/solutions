@@ -3,7 +3,6 @@
 // Win32_appFramework
 
 #include "stdafx.h"
-#include "HistorySystem.h"
 #include "win32_tooltip.h"
 #include "win32_util_resource.h"
 #include "win32_WorkThreadInterface.h"
@@ -33,18 +32,15 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
 }
 
 StatusBar::StatusBar() :
-	m_pHistorySystem( nullptr ),
 	m_pWorkThreadInterface( nullptr )
 { }
 
 void StatusBar::Start
 ( 
 	HWND                        const hwndParent,
-	HistorySystem       const * const pHistorySystem,
 	WorkThreadInterface const * const pWorkThreadInterface
 )
 {
-	m_pHistorySystem       = pHistorySystem;
 	m_pWorkThreadInterface = pWorkThreadInterface;
 
 	HWND hwndStatus = CreateWindow

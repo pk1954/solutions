@@ -200,14 +200,13 @@ BOOL WinManager::GetWindowConfiguration( )
 	wcout << L"Window configuration file " << m_strWindowConfigurationFile;
 	if ( scriptWindowConfig.ScrProcess( m_strWindowConfigurationFile ) )
 	{
-		wcout << L" sucessfully processed";
+		wcout << L" sucessfully processed" << endl;
 	}
 	else
 	{
-		wcout << L" missing or bad";
+		wcout << L" missing or bad" << endl;
 		return FALSE;
 	}
-	wcout << endl;
 
     return TRUE;
 }

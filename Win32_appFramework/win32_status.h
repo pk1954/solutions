@@ -9,7 +9,6 @@
 #include "PixelTypes.h"
 #include "win32_rootWindow.h"
 
-class HistorySystem;
 class WorkThreadInterface;
 
 using std::wstring;
@@ -22,7 +21,6 @@ public:
 	void Start
 	( 
 		HWND                        const, 
-		HistorySystem       const * const, 
 		WorkThreadInterface const * const
 	);
 	void  Stop( );
@@ -52,7 +50,6 @@ private:
     PIXEL m_pixBorderY;
     PIXEL m_pixPosX;
 
-	HistorySystem       const * m_pHistorySystem;
 	WorkThreadInterface const * m_pWorkThreadInterface;
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );

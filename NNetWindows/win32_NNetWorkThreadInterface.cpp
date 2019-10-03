@@ -6,9 +6,7 @@
 #include "assert.h"
 #include "Resource.h"
 #include "win32_script.h"
-#include "NNetModel.h"
 #include "NNetReadBuffer.h"
-#include "NNetHistorySysGlue.h"
 #include "win32_NNetWorkThread.h"
 #include "win32_NNetWorkThreadInterface.h"
 
@@ -30,7 +28,7 @@ void NNetWorkThreadInterface::Start
     EventInterface     * const pEvent,
 	ObserverInterface  * const pObserver,
 	SlowMotionRatio    * const pSlowMotionRatio,
-    NNetHistorySysGlue * const pNNetHistGlue
+	NNetModel          * const pNNetModel
 )
 {
 	m_pNNetWorkThread = new NNetWorkThread
@@ -40,8 +38,8 @@ void NNetWorkThreadInterface::Start
 		pEvent, 
 		pObserver,
 		pSlowMotionRatio,
-		pNNetHistGlue, 
-		this
+		this,
+		pNNetModel
 	);
 
 	WorkThreadInterface::Start( m_pNNetWorkThread );

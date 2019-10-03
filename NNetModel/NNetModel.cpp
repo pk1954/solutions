@@ -27,9 +27,9 @@ NNetModel * NNetModel::CreateModel( )
 	return new NNetModel( );
 }
 
-void NNetModel::DestroyCore( NNetModel * pCore )
+void NNetModel::DestroyModel( NNetModel * pModel )
 {
-	delete pCore;
+	delete pModel;
 }
 
 void NNetModel::Compute( )
