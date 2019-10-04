@@ -157,8 +157,8 @@
     <ClInclude Include="win32_clut.h" />
     <ClInclude Include="win32_delay.h" />
     <ClInclude Include="win32_graphicsInterface.h" />
-    <ClInclude Include="win32_refreshRateDialog.h" />
     <ClInclude Include="win32_scale.h" />
+    <ClInclude Include="win32_stdDialogBox.h" />
     <ClInclude Include="win32_textBuffer.h" />
     <ClInclude Include="win32_event.h" />
     <ClInclude Include="win32_hiResTimer.h" />
@@ -185,7 +185,6 @@
     <ClCompile Include="win32_baseRefreshRate.cpp" />
     <ClCompile Include="win32_baseWindow.cpp" />
     <ClCompile Include="win32_clut.cpp" />
-    <ClCompile Include="win32_refreshRateDialog.cpp" />
     <ClCompile Include="win32_scale.cpp" />
     <ClCompile Include="win32_textBuffer.cpp" />
     <ClCompile Include="win32_hiResTimer.cpp" />

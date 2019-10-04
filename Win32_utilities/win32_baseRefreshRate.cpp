@@ -3,7 +3,7 @@
 // Win32_utilities
 
 #include "stdafx.h"
-#include "win32_refreshRateDialog.h"
+#include "win32_stdDialogBox.h"
 #include "win32_baseRefreshRate.h"
 
 BaseRefreshRate::BaseRefreshRate( )
@@ -47,9 +47,14 @@ void BaseRefreshRate::Notify( bool const bImmediately )
 
 void BaseRefreshRate::RefreshRateDialog( HWND const hwnd )
 {
-	milliseconds msRefreshRateOld = GetRefreshRate( );
-	milliseconds msRefreshRateNew = RefreshRateDialog::Show( hwnd, msRefreshRateOld );
-	SetRefreshRate( msRefreshRateNew );
+	double dNewValue = StdDialogBox::Show
+	( 
+		hwnd,
+		static_cast<double>( GetRefreshRate( ).count() ),
+		L"Refresh Rate",
+		L"milliseconds"
+	);
+	SetRefreshRate( static_cast<milliseconds>(static_cast<long long>(dNewValue)) );
 }
 
 void BaseRefreshRate::startTimer( milliseconds const msTimer )

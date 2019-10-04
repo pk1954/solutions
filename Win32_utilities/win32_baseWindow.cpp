@@ -3,7 +3,6 @@
 // win32_utilities
 
 #include "stdafx.h"
-#include "win32_refreshRateDialog.h"
 #include "win32_baseWindow.h"
 
 HWND BaseWindow::StartBaseWindow

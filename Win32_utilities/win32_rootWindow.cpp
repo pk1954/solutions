@@ -90,7 +90,7 @@ void RootWindow::contextMenu( LPARAM lParam )
 
 	if ( GetRefreshRate( ) > 0ms )
 	{
-		(void)AppendMenu( hPopupMenu, MF_STRING, IDM_REFRESH_RATE_DIALOG, L"Refresh Rate" );
+		(void)AppendMenu( hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Refresh Rate" );
 	}
 
 	(void)ClientToScreen( GetWindowHandle(), & pntPos );
@@ -206,7 +206,7 @@ LRESULT RootWindow::RootWindowProc
 			pRootWin->Show( ApplyAutoCriterion( tOnOffAuto::automatic, pRootWin->m_visibilityCriterion ) );
 			return FALSE;
 
-		case IDM_REFRESH_RATE_DIALOG:
+		case IDD_REFRESH_RATE_DIALOG:
 			pRootWin->m_pRefreshRate->RefreshRateDialog( hwnd );
 			return FALSE;
 

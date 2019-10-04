@@ -161,10 +161,6 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			{
 				NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
 				pShape = pModel->GetShapeUnderPoint( umCrsrPos );
-				if ( pShape )
-				{
-					int x = 8765;
-				}
 				m_pReadBuffer->ReleaseReadBuffer( );
 			}
 			ShapeId shapeId = pShape ? pShape->GetId() : NO_SHAPE;
@@ -203,8 +199,8 @@ void NNetWindow::OnPaint( )
 			fPIXEL fPixWidth;
 			NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
 			
-			pModel->GetPipeline()->Draw( * m_pGraphics, m_coord );
 			pModel->GetNeuron1( )->Draw( * m_pGraphics, m_coord );
+			pModel->GetPipeline()->Draw( * m_pGraphics, m_coord );
 
 			m_pReadBuffer->ReleaseReadBuffer( );
 

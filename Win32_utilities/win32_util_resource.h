@@ -18,9 +18,10 @@
 #define IDM_EXIT                        5
 
 #define IDM_REFRESH                     7
+#define IDD_REFRESH_RATE_DIALOG         9
 
-#define IDM_REFRESH_RATE_DIALOG        10
-#define IDD_REFRESH_RATE_EDIT_CTL      11
+#define IDD_STD_EDIT_DIALOG            10
+#define IDD_EDIT_CTL                   11
 
 #define IDM_WINDOW_ON                  20
 #define IDM_WINDOW_OFF                 21

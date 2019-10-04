@@ -96,17 +96,20 @@ void Pipeline::Draw
 	PixelCoordsFp const & coord
 ) const
 {
-	MicroMeterPoint const vector        = GetEndPoint() - GetStartPoint();
+	MicroMeter      const startOffset   = m_pKnotStart->GetExtension( ) * 0.8;
+	MicroMeterPoint const startPoint    = GetStartPoint() + MicroMeterPoint( 0._MicroMeter, startOffset );
+
+	MicroMeterPoint const vector        = GetEndPoint() - startPoint;
 	MicroMeterPoint const segmentVector = vector / static_cast<double>(m_potential.size());
 	fPIXEL          const fPixWidth     = coord.convert2fPixel( m_width ) ;
-	fPixelPoint           fPixPoint1    = coord.convert2fPixelPos( GetStartPoint() );
-	MicroMeterPoint       point2        = GetStartPoint() + segmentVector;
+	fPixelPoint           fPixPoint1    = coord.convert2fPixelPos( startPoint );
+	MicroMeterPoint       point2        = startPoint + segmentVector;
 
 	for ( std::vector<mV>::const_iterator iter = m_potential.begin( ); iter != m_potential.end( ); iter++ )
 	{
 		assert( * iter < 200.0_mV );
 		fPixelPoint     const fPixPoint2 = coord.convert2fPixelPos( point2 );
-		int             const iLevel     = CastToInt( iter->GetValue() );
+		int             const iLevel     = 255 - CastToInt( iter->GetValue() );
 		assert( iLevel <= 255 );
 		COLORREF        const color      = IsHighlighted( )	? RGB( iLevel, 0, iLevel ) : RGB( iLevel, 0, 0 );
 		Graphics.AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth, color );
