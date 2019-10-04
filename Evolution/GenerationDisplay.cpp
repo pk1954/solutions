@@ -46,6 +46,8 @@ private:
 
 /////// functions of class GenerationDisplay ///////
 
+using namespace std::chrono;
+
 GenerationDisplay::GenerationDisplay
 (
 	StatusBar     * pStatusBar,

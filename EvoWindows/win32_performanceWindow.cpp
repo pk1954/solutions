@@ -71,28 +71,28 @@ void PerformanceWindow::printLine
 (
 	TextBuffer          & textBuf,
 	wchar_t const * const pwch1, 
-	MilliHertz      const frequency
+	Hertz           const frequency
 )
 {
-	textBuf.printString       ( pwch1 );
-	textBuf.printAsDecFraction( CastToUnsignedLong(frequency.GetValue()) );
-	textBuf.printString       ( L"Gen/s" );
-	textBuf.nextLine          ( );
+	textBuf.printString( pwch1 );
+	textBuf.printNumber( CastToUnsignedLong(frequency.GetValue()) );
+	textBuf.printString( L"Gen/s" );
+	textBuf.nextLine   ( );
 }
 
 void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 {      
-	milliseconds const msDelay            = m_pDelay->GetDelay();
-	microseconds const usDelay            = duration_cast<microseconds>(msDelay);
-	microseconds const usModelTime        = m_pAtComputation->GetSingleActionTime( );
-	microseconds const usSum              = usModelTime + usDelay;
-	MilliHertz   const milliHertzComputed = m_pAtComputation->CalcActionFrequency( usSum );
-	MilliHertz   const miliHertzMeasured  = m_pAtComputation->GetMeasuredPerformance( );
-	microseconds const usDisplayTime      = m_pAtDisplay->GetSingleActionTime( );
+	milliseconds const msDelay       = m_pDelay->GetDelay();
+	microseconds const usDelay       = duration_cast<microseconds>(msDelay);
+	microseconds const usModelTime   = m_pAtComputation->GetSingleActionTime( );
+	microseconds const usSum         = usModelTime + usDelay;
+	Hertz        const HertzComputed = m_pAtComputation->CalcActionFrequency( usSum );
+	Hertz        const HertzMeasured = m_pAtComputation->GetMeasuredPerformance( );
+	microseconds const usDisplayTime = m_pAtDisplay->GetSingleActionTime( );
 
     printLine( textBuf, L"Delay:  ", usDelay );
     printLine( textBuf, L"Model:  ", usModelTime );
-    printLine( textBuf, L"Comp:   ", milliHertzComputed );
-    printLine( textBuf, L"Meas:   ", miliHertzMeasured );
+    printLine( textBuf, L"Comp:   ", HertzComputed );
+    printLine( textBuf, L"Meas:   ", HertzMeasured );
     printLine( textBuf, L"Display:", usDisplayTime );
 }

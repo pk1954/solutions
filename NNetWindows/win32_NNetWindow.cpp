@@ -7,8 +7,10 @@
 #include "Resource.h"
 #include "Segment.h"
 #include "Pipeline.h"
+#include "InputNeuron.h"
 #include "PixelTypes.h"
 #include "PixelCoordsFp.h"
+#include "win32_stdDialogBox.h"
 #include "win32_scale.h"
 #include "win32_util_resource.h"
 #include "win32_graphicsInterface.h"
@@ -35,6 +37,7 @@ NNetWindow::NNetWindow( ) :
 	m_hPopupMenu( nullptr ),
 	m_pGraphics( nullptr ),
 	m_pScale( nullptr ),
+	m_pShapeSelected( nullptr ),
 	m_ptLast( PP_NULL ),
 	m_bMoveAllowed( TRUE )
 { }
@@ -135,6 +138,51 @@ NanoMeter NNetWindow::GetPixelSize( ) const
 
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
 {
+	PixelPoint      const   pp        = Util::POINT2PixelPoint( pntPos );
+	MicroMeterPoint const   umCrsrPos = m_coord.convert2MicroMeterPoint( pp );
+	Shape           const * pShape;
+	{
+		NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
+		pShape = pModel->GetShapeUnderPoint( umCrsrPos );
+		m_pReadBuffer->ReleaseReadBuffer( );
+	}
+	if ( pShape )
+	{
+		UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
+		switch ( pShape->GetShapeType( ) )
+		{
+		case tShapeType::inputNeuron:
+			m_pShapeSelected = pShape;
+			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE_DIALOG, L"Pulse Rate" );
+			break;
+
+		case tShapeType::knot:
+			break;
+
+		case tShapeType::neuron:
+			break;
+
+		case tShapeType::pipeline:
+			break;
+
+		default:
+			assert( false );
+		}
+	}
+}
+
+void NNetWindow::PulseRateDialog( )
+{
+	InputNeuron const * pInputNeuron = Cast2InputNeuron( m_pShapeSelected );
+	Hertz       const   pulseRateOld = pInputNeuron->GetPulseFrequency();
+	double dNewValue = StdDialogBox::Show
+	( 
+		GetWindowHandle(),
+		static_cast<double>( pulseRateOld.GetValue() ),
+		L"Pulse Rate",
+		L"Hertz"
+	);
+	PostCommand2Application( IDM_PULSE_FREQ, Util::Pack2UINT64( m_pShapeSelected->GetId().GetValue(), CastToUnsignedLong( dNewValue ) ) );
 }
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )

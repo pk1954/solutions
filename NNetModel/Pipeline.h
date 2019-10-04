@@ -19,7 +19,8 @@ class Pipeline : public Shape
 {
 public:
 	Pipeline( meterPerSec const impulseSpeed )
-    :	m_pKnotStart  ( nullptr ),
+    :	Shape( tShapeType::pipeline ),
+		m_pKnotStart  ( nullptr ),
 		m_pKnotEnd    ( nullptr ),
 		m_width       ( 10.0_MicroMeter ),
 		m_potential   ( ),

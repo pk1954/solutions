@@ -9,6 +9,7 @@
 #include "Resource.h"
 #include "BoolOp.h"
 #include "SlowMotionRatio.h"
+#include "win32_util.h"
 #include "win32_speedControl.h"
 #include "win32_zoomControl.h"
 #include "win32_aboutBox.h"
@@ -113,6 +114,10 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		m_pNNetWindow->Notify( lParam != 0 );
 		break;
 
+	case IDD_PULSE_RATE_DIALOG:
+		m_pNNetWindow->PulseRateDialog();
+		break;
+
 	default:
 		return FALSE; // command has not been processed
 	}
@@ -126,6 +131,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	{
 	case IDM_HIGHLIGHT:
 		m_pNNetWorkThreadInterface->PostHighlight( ShapeId( CastToUnsignedLong( lParam ) ) );
+		break;
+
+	case IDM_PULSE_FREQ:
+		{
+			ShapeId const shapeId   { Util::HiPart( lParam ) };
+			Hertz   const pulseFreq { Util::LoPart( lParam ) };
+			m_pNNetWorkThreadInterface->PostPulseFrequency( shapeId,  pulseFreq );
+		}
 		break;
 
 	default:

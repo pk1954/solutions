@@ -51,9 +51,18 @@ PERCENT constexpr operator"" _PERCENT( unsigned long long ull )
 	return PERCENT( CastToShort( ull ) );
 }
 
+////////////// Hertz //////////////////////////////////////////
+
+using Hertz = NamedType< unsigned long, struct Hertz_Parameter >;
+
+Hertz constexpr operator"" _Hertz( unsigned long long ull )
+{
+	return Hertz( CastToUnsignedLong( ull ) );
+}
+
 ////////////// MilliHertz /////////////////////////////////////
 
-using MilliHertz = NamedType< unsigned long, struct MilliHertz_Parameter >;
+//using MilliHertz = NamedType< unsigned long, struct MilliHertz_Parameter >;
 
 ////////////// MicroMeterPoint /////////////////////////////////////
 

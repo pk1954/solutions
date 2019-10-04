@@ -23,6 +23,7 @@ public:
 	{
 		NNET_FIRST = WorkThreadMessage::FIRST_APP_MESSAGE,
 		HIGHLIGHT,
+		PULSE_FREQ,
 		NNET_LAST,
 		FIRST = NNET_FIRST,
 		LAST = NNET_LAST

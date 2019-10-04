@@ -33,6 +33,7 @@ public:
 	);
 
 	void PostHighlight( ShapeId const );
+	void PostPulseFrequency( ShapeId const, Hertz const freq );
 
 private:
 	NNetWorkThread * m_pNNetWorkThread;

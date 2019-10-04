@@ -54,7 +54,17 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	switch ( static_cast<NNetWorkThreadMessage::Id>(msg.message) )
 	{
 	case NNetWorkThreadMessage::Id::HIGHLIGHT:
-		m_pNNetModel->HighlightShape( ShapeId( CastToInt(msg.lParam) ) );
+		m_pNNetModel->HighlightShape( ShapeId( CastToInt(msg.wParam) ) );
+		break;
+
+	case NNetWorkThreadMessage::Id::PULSE_FREQ:
+		{
+			ShapeId const id  ( CastToUnsignedLong( msg.wParam ) );
+			Hertz   const freq( CastToUnsignedLong( msg.lParam ) );
+			Shape       * shape( m_pNNetModel->GetShape( id ) );
+			InputNeuron * pInputNeuron = Cast2InputNeuron( shape );
+			pInputNeuron->SetPulseFrequency( freq );
+		}
 		break;
 
 	default:

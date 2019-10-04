@@ -30,7 +30,7 @@ public:
 
 private:
 	void printLine( TextBuffer &, wchar_t const * const, microseconds const );
-	void printLine( TextBuffer &, wchar_t const * const, MilliHertz   const );
+	void printLine( TextBuffer &, wchar_t const * const, Hertz        const );
 
 	ActionTimer * m_pAtComputation;
 	ActionTimer * m_pAtDisplay;

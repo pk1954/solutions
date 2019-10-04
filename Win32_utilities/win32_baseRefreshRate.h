@@ -8,7 +8,6 @@
 #include "win32_util.h"
 
 using std::chrono::milliseconds;
-using namespace std::chrono;
 
 class BaseRefreshRate
 {

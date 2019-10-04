@@ -10,6 +10,7 @@
 #include "SpeedDisplay.h"
 
 using std::to_wstring;
+using namespace std::chrono;
 
 /////// inner class SpeedDisplay::RefreshRate ///////
 

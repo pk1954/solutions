@@ -10,18 +10,13 @@
 #include "InputNeuron.h"
 
 InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
-	: Knot( upCenter ),
+	: Knot( upCenter, tShapeType::inputNeuron ),
 	m_fTriggered( false ),
 	m_timeSinceTrigger( microseconds( 0 ) ),
 	m_iCounter( 0 ),
-	m_pulseFrequency( MilliHertz( 50000 ) )
+	m_pulseFrequency( 500_Hertz )
 { 
-	m_iStepsBetweenTrigger = 
-	CastToInt
-	( 
-		( microseconds::period::den * 100 )
-		/ ( TIME_RESOLUTION.count() * m_pulseFrequency.GetValue() ) 
-	);
+	setSteps();
 }
 
 void InputNeuron::Trigger( )
@@ -84,4 +79,16 @@ void InputNeuron::Draw
 		color, 
 		coord.convert2fPixel( GetExtension() * 0.8 )
 	);
+}
+
+InputNeuron const * Cast2InputNeuron( Shape const * shape )
+{
+	assert( shape->GetShapeType() == tShapeType::inputNeuron );
+	return static_cast<InputNeuron const *>(shape);
+}
+
+InputNeuron * Cast2InputNeuron( Shape * shape )
+{
+	assert( shape->GetShapeType() == tShapeType::inputNeuron );
+	return static_cast<InputNeuron *>(shape);
 }

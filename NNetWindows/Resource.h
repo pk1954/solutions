@@ -16,6 +16,7 @@
 #define IDM_RESET               149
 
 #define IDM_HIGHLIGHT           200
+#define IDM_PULSE_FREQ          201
 
 #define IDM_WINDOWS_BASE        400
 #define IDM_MINI_WINDOW         (IDM_WINDOWS_BASE +  3)

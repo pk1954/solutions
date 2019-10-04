@@ -19,6 +19,21 @@ namespace Util
 
     RECT ScrReadRECT( Script & );
 
+	inline UINT64 Pack2UINT64( UINT32 const hi, UINT32 const lo )
+	{
+		return unsigned __int64( static_cast<UINT64>(hi) << 32 | lo );
+	}
+
+	inline UINT32 HiPart( UINT64 const lParam )
+	{
+		return lParam >> 32;
+	}
+
+	inline UINT32 LoPart( UINT64 const lParam )
+	{
+		return lParam & 0xffffffff;
+	}
+
 	inline bool operator== ( RECT const & a, RECT const & b ) 
 	{ 
 		return ( a.left == b.left ) && ( a.top == b.top ) && ( a.right == b.right ) && ( a.bottom == b.bottom ); 

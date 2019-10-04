@@ -6,10 +6,10 @@
 
 #include <chrono>
 #include "NamedType.h"
+#include "MOreTypes.h"
 
 using std::chrono::microseconds;
 
-using Hertz = NamedType< long long, struct Hertz_Parameter >;
 using Ticks = NamedType< long long, struct Ticks_Parameter >;
 
 class HiResTimer

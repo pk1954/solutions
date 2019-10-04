@@ -6,6 +6,8 @@
 #include "win32_stdDialogBox.h"
 #include "win32_baseRefreshRate.h"
 
+using namespace std::chrono;
+
 BaseRefreshRate::BaseRefreshRate( )
  :	m_hTimer( nullptr ),
 	m_bTimerActive( FALSE ),

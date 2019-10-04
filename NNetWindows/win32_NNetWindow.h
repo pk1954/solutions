@@ -5,6 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
+#include "Shape.h"
 #include "PixelCoordsFp.h"
 #include "NNetReadBuffer.h"  // do not remove! class definition not sufficient.
 #include "win32_modelWindow.h"
@@ -41,6 +42,7 @@ public:
 
 //	void      Size( );
 	void      Zoom( bool const );
+	void      PulseRateDialog( );
 	void      SetPixelSize( NanoMeter const );
 	NanoMeter GetPixelSize( ) const;
 
@@ -56,9 +58,10 @@ private:
 
 	GraphicsInterface * m_pGraphics;
 	Scale             * m_pScale;
+	Shape       const * m_pShapeSelected;
 
 	PixelCoordsFp m_coord;
-	PixelPoint   m_ptLast;	 	   // Last cursor position during selection 
+	PixelPoint    m_ptLast;	 	   // Last cursor position during selection 
 
 	void newPixelSize( NanoMeter const, MicroMeterPoint const );
 	void moveNNet( PixelPoint const );

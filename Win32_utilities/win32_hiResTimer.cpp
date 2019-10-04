@@ -7,7 +7,7 @@
 #include "NamedType.h"
 #include "win32_HiResTimer.h"
 
-Hertz HiResTimer::m_frequency = Hertz( 0 );
+Hertz HiResTimer::m_frequency = 0_Hertz;
 
 // Gets the high-resolution timer's value
 inline Ticks HiResTimer::ReadHiResTimer( ) const
@@ -22,11 +22,11 @@ HiResTimer::HiResTimer( ) :
     m_ticksOnStart    (Ticks( 0 )),
 	m_bStarted( false )
 {
-    if ( m_frequency == Hertz( 0 ) )               // frequency is constant for given CPU
+    if ( m_frequency == 0_Hertz )                  // frequency is constant for given CPU
     {                                              // first time in application the constructor is called
         LARGE_INTEGER value;                       // frequency is acquired and stored for all HiResTimers
         (void)QueryPerformanceFrequency( &value );
-        m_frequency = Hertz( value.QuadPart );
+        m_frequency = Hertz( CastToUnsignedLong( value.QuadPart ) );
     }
 }
 
@@ -46,20 +46,22 @@ void HiResTimer::Stop( )
 	m_bStarted = false;
 }
 
-Ticks HiResTimer::MicroSecondsToTicks( microseconds const us )
+Ticks HiResTimer::MicroSecondsToTicks( microseconds const time )
 {
-	assert( us.count() < LLONG_MAX / m_frequency.GetValue() );
-	return Ticks( (us.count() * m_frequency.GetValue()) / MICROSECONDS_TO_SECONDS ); 
+	assert( time.count() < LLONG_MAX / m_frequency.GetValue() );
+	ULONGLONG ullTime = static_cast<ULONGLONG>( time.count() );
+	return Ticks( (ullTime * m_frequency.GetValue()) / MICROSECONDS_TO_SECONDS ); 
 }
 
 microseconds HiResTimer::TicksToMicroseconds( Ticks const ticks )
 {
 	assert( ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS );
+	ULONGLONG ullTicks = static_cast<ULONGLONG>( ticks.GetValue() );
 	microseconds result
 	(                                                  
-		( ticks.GetValue() * MICROSECONDS_TO_SECONDS ) // converts from seconds to microseconds.
-		/ m_frequency.GetValue()                       // multiply *before* division, otherwise
-	);                                                 // division would truncate too many signuficant digits
+		( ullTicks * MICROSECONDS_TO_SECONDS ) // converts from seconds to microseconds.
+		/ m_frequency.GetValue()               // multiply *before* division, otherwise
+	);                                         // division would truncate too many signuficant digits
 
 	return result;
 }

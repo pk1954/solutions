@@ -15,8 +15,13 @@ using std::vector;
 class Knot : public Shape
 {
 public:
-	Knot( MicroMeterPoint const center )
-	  : m_center( center ),
+	Knot
+	( 
+		MicroMeterPoint const center,
+		tShapeType      const type = tShapeType::knot
+	)
+	  : Shape( type ),
+		m_center( center ),
 		m_extension( 50.0_MicroMeter ),
 		m_potential( 0 )
 	{

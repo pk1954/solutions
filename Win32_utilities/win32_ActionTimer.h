@@ -5,6 +5,7 @@
 #pragma once
 
 #include <chrono>
+#include "minwindef.h"
 #include "util.h"
 #include "MoreTypes.h"
 #include "observable.h"
@@ -42,22 +43,22 @@ public:
 		return m_usSingleActionTime;
 	}
 
-	MilliHertz CalcActionFrequency( microseconds us, DWORD dwCount = 1 )
+	Hertz CalcActionFrequency( microseconds us, DWORD dwCount = 1 )
 	{
-		static unsigned long long MICROSECONDS_TO_MILLIHERTZ_FACTOR = 1000ull * microseconds::period::den;
+		static unsigned long long MICROSECONDS_TO_HERTZ_FACTOR = microseconds::period::den;
 		if ( us == microseconds::zero() )
-			return  MilliHertz(0);
+			return  0_Hertz;
 
-		assert( dwCount < ULLONG_MAX / MICROSECONDS_TO_MILLIHERTZ_FACTOR );    // avoid ull overflow
-		unsigned long long ullFrequency = ( dwCount * MICROSECONDS_TO_MILLIHERTZ_FACTOR ) / us.count();
-		return MilliHertz( CastToLong(ullFrequency) );
+		assert( dwCount < ULLONG_MAX / MICROSECONDS_TO_HERTZ_FACTOR );    // avoid ull overflow
+		unsigned long long ullFrequency = ( dwCount * MICROSECONDS_TO_HERTZ_FACTOR ) / us.count();
+		return Hertz( CastToLong(ullFrequency) );
 	}
 
-	MilliHertz GetMeasuredPerformance( )
+	Hertz GetMeasuredPerformance( )
 	{
 		m_hrtimerOverall.Stop( );
 		microseconds usOverallTime = m_hrtimerOverall.GetDuration( );
-		MilliHertz   result        = CalcActionFrequency( usOverallTime, m_dwCounter );
+		Hertz        result        = CalcActionFrequency( usOverallTime, m_dwCounter );
 		m_dwCounter = 0;
 		m_hrtimerOverall.Start( );
 		return result;

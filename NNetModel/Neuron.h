@@ -15,7 +15,7 @@ class Neuron : public Knot
 {
 public:
 	Neuron( MicroMeterPoint const npCenter )
-	  : Knot( npCenter )
+	  : Knot( npCenter, tShapeType::neuron )
 	{ 
 	}
 

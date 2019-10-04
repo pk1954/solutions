@@ -40,6 +40,11 @@ public:
 	InputNeuron const * GetNeuron1( )  const { return & m_neuron1; }
 	Knot        const * GetKnot( )     const { return & m_knot; }
 
+	Shape * GetShape( ShapeId const id )
+	{
+		return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() - 1 ];
+	}
+
 	Shape const * GetShapeUnderPoint( MicroMeterPoint const ) const;
 
 	// manipulating functions
@@ -48,19 +53,19 @@ public:
 	{
 		if ( m_shapeHighlighted != NO_SHAPE )
 		{
-			getShape( m_shapeHighlighted )->SetHighlightState( false );
+			GetShape( m_shapeHighlighted )->SetHighlightState( false );
 		}
 
 		if ( idHighlight != NO_SHAPE )
 		{
-			Shape * pShape = getShape( idHighlight );
+			Shape * pShape = GetShape( idHighlight );
 			assert( pShape );
 			assert( pShape->GetId() == idHighlight );
 			pShape->SetHighlightState( true );
 		}
 
 		m_shapeHighlighted = idHighlight;
-}
+	}
 
 	ShapeId const AddShape( Shape & shape )
 	{
@@ -84,11 +89,6 @@ public:
 	static void        DestroyModel( NNetModel * );
 
 private:
-
-	Shape * getShape( ShapeId const id )
-	{
-		return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() - 1 ];
-	}
 
 	InputNeuron     m_neuron1;
 	Knot            m_knot;
