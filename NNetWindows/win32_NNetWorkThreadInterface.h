@@ -32,8 +32,9 @@ public:
 		NNetModel          * const 
 	);
 
-	void PostHighlight( ShapeId const );
-	void PostPulseFrequency( ShapeId const, Hertz const freq );
+	void PostHighlight     ( ShapeId const );
+	void PostPulseFrequency( ShapeId const, Hertz            const );
+	void PostPulseSpeed    ( ShapeId const, milliMeterPerSec const );
 
 private:
 	NNetWorkThread * m_pNNetWorkThread;

@@ -93,3 +93,15 @@ InputNeuron * Cast2InputNeuron( Shape * shape )
 	assert( shape->GetShapeType() == tShapeType::inputNeuron );
 	return static_cast<InputNeuron *>(shape);
 }
+
+Pipeline const * Cast2Pipeline( Shape const * shape )
+{
+	assert( shape->GetShapeType() == tShapeType::pipeline );
+	return static_cast<Pipeline const *>(shape);
+}
+
+Pipeline * Cast2Pipeline( Shape * shape )
+{
+	assert( shape->GetShapeType() == tShapeType::pipeline );
+	return static_cast<Pipeline *>(shape);
+}

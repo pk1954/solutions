@@ -58,14 +58,25 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::PULSE_FREQ:
-		{
-			ShapeId const id  ( CastToUnsignedLong( msg.wParam ) );
-			Hertz   const freq( CastToUnsignedLong( msg.lParam ) );
-			Shape       * shape( m_pNNetModel->GetShape( id ) );
-			InputNeuron * pInputNeuron = Cast2InputNeuron( shape );
-			pInputNeuron->SetPulseFrequency( freq );
-		}
-		break;
+	{
+		ShapeId const id  ( CastToUnsignedLong( msg.wParam ) );
+		Hertz   const freq( CastToUnsignedLong( msg.lParam ) );
+		Shape       * shape( m_pNNetModel->GetShape( id ) );
+		InputNeuron * pInputNeuron = Cast2InputNeuron( shape );
+		pInputNeuron->SetPulseFrequency( freq );
+	}
+	break;
+
+	case NNetWorkThreadMessage::Id::PULSE_SPEED:
+	{
+		ShapeId          const id( CastToUnsignedLong( msg.wParam ) );
+		milliMeterPerSec const mmPsSpeed( CastToLong( msg.lParam ) );
+		meterPerSec      const mPsSpeed( Convert2meterPerSec( mmPsSpeed ) );
+		Shape    * shape( m_pNNetModel->GetShape( id ) );
+		Pipeline * pPipeline = Cast2Pipeline( shape );
+		pPipeline->SetPulseSpeed( mPsSpeed );
+	}
+	break;
 
 	default:
 		return FALSE;

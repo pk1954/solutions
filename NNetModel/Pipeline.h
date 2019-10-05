@@ -32,10 +32,16 @@ public:
 	void SetStartKnot( Knot * );
 	void SetEndKnot  ( Knot * );
 
-	void SetImpulseSpeed( meterPerSec const newSpeed )
+	void SetPulseSpeed( meterPerSec const newSpeed )
 	{
 		m_impulseSpeed = newSpeed;
+		m_initialized = false;
 		initialize();
+	}
+
+	meterPerSec GetPulseSpeed( ) const
+	{
+		return m_impulseSpeed;
 	}
 
 	MicroMeterPoint GetStartPoint( ) const; 

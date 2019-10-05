@@ -118,6 +118,10 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		m_pNNetWindow->PulseRateDialog();
 		break;
 
+	case IDD_PULSE_SPEED_DIALOG:
+		m_pNNetWindow->PulseSpeedDialog();
+		break;
+
 	default:
 		return FALSE; // command has not been processed
 	}
@@ -134,12 +138,20 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_PULSE_FREQ:
-		{
-			ShapeId const shapeId   { Util::HiPart( lParam ) };
-			Hertz   const pulseFreq { Util::LoPart( lParam ) };
-			m_pNNetWorkThreadInterface->PostPulseFrequency( shapeId,  pulseFreq );
-		}
-		break;
+	{
+		ShapeId const shapeId   { Util::HiPart( lParam ) };
+		Hertz   const pulseFreq { Util::LoPart( lParam ) };
+		m_pNNetWorkThreadInterface->PostPulseFrequency( shapeId, pulseFreq );
+	}
+	break;
+
+	case IDM_PULSE_SPEED:
+	{
+		ShapeId          const shapeId{ Util::HiPart( lParam ) };
+		milliMeterPerSec const mmPs   { CastToLong( Util::LoPart( lParam ) ) };
+		m_pNNetWorkThreadInterface->PostPulseSpeed( shapeId, mmPs );
+	}
+	break;
 
 	default:
 		return true;

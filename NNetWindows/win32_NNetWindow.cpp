@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include <sstream> 
 #include "Resource.h"
+#include "MoreTypes.h"
 #include "Segment.h"
 #include "Pipeline.h"
 #include "InputNeuron.h"
@@ -163,6 +164,8 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 			break;
 
 		case tShapeType::pipeline:
+			m_pShapeSelected = pShape;
+			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_SPEED_DIALOG, L"Pulse Speed" );
 			break;
 
 		default:
@@ -182,7 +185,38 @@ void NNetWindow::PulseRateDialog( )
 		L"Pulse Rate",
 		L"Hertz"
 	);
-	PostCommand2Application( IDM_PULSE_FREQ, Util::Pack2UINT64( m_pShapeSelected->GetId().GetValue(), CastToUnsignedLong( dNewValue ) ) );
+	PostCommand2Application
+	( 
+		IDM_PULSE_FREQ, 
+		Util::Pack2UINT64
+		(
+			m_pShapeSelected->GetId().GetValue(), 
+			CastToUnsignedLong( dNewValue ) 
+		) 
+	);
+}
+
+void NNetWindow::PulseSpeedDialog( )
+{
+	Pipeline    const * pPipeline     = Cast2Pipeline( m_pShapeSelected );
+	meterPerSec const   pulseSpeedOld = pPipeline->GetPulseSpeed();
+	double dNewValue = StdDialogBox::Show
+	( 
+		GetWindowHandle(),
+		static_cast<double>( pulseSpeedOld.GetValue() ),
+		L"Pulse Speed",
+		L"m/sec"
+	);
+	meterPerSec const pulseSpeedNew( dNewValue );
+	PostCommand2Application
+	( 
+		IDM_PULSE_SPEED, 
+		Util::Pack2UINT64
+		( 
+			m_pShapeSelected->GetId().GetValue(), 
+			Convert2milliMeterPerSec(pulseSpeedNew).GetValue() 
+		) 
+	);
 }
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
@@ -203,17 +237,15 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	}
 	else
 	{
+		MicroMeterPoint const   umCrsrPos = m_coord.convert2MicroMeterPoint( ptCrsr );
+		Shape           const * pShape;
 		{
-			MicroMeterPoint const   umCrsrPos = m_coord.convert2MicroMeterPoint( ptCrsr );
-			Shape           const * pShape;
-			{
-				NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
-				pShape = pModel->GetShapeUnderPoint( umCrsrPos );
-				m_pReadBuffer->ReleaseReadBuffer( );
-			}
-			ShapeId shapeId = pShape ? pShape->GetId() : NO_SHAPE;
-			PostCommand2Application( IDM_HIGHLIGHT, shapeId.GetValue() );
+			NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
+			pShape = pModel->GetShapeUnderPoint( umCrsrPos );
+			m_pReadBuffer->ReleaseReadBuffer( );
 		}
+		ShapeId shapeId = pShape ? pShape->GetId() : NO_SHAPE;
+		PostCommand2Application( IDM_HIGHLIGHT, shapeId.GetValue() );
 
 		m_ptLast = PP_NULL;    // make m_ptLast invalid
 							   // no refresh! It would cause repaint for every mouse move.

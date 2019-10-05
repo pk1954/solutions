@@ -17,8 +17,7 @@
 #define IDM_ABOUT                       4
 #define IDM_EXIT                        5
 
-#define IDM_REFRESH                     7
-#define IDD_PULSE_RATE_DIALOG           8
+#define IDM_REFRESH                     6
 #define IDD_REFRESH_RATE_DIALOG         9
 
 #define IDD_STD_EDIT_DIALOG            10

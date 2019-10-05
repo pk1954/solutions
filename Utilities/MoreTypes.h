@@ -89,6 +89,20 @@ static MicroMeter CoveredDistance( meterPerSec const speed, microseconds const t
 	return MicroMeter( speed.GetValue() * time.count( ) );
 }
 
+////////////// milliMeterPerSec - used in messages (LPARAM) ///////////////////////
+
+using milliMeterPerSec = NamedType<long, struct milliMeterPerSec_Parameter >;
+
+static milliMeterPerSec Convert2milliMeterPerSec( meterPerSec const mPs )
+{
+	return milliMeterPerSec( CastToLong( mPs.GetValue() * 1000.0 ) );
+}
+
+static meterPerSec Convert2meterPerSec( milliMeterPerSec const mmPs )
+{
+	return meterPerSec( static_cast<double>( mmPs.GetValue() / 1000.0 ) );
+}
+
 /////////// TODO: move constants to application
 
 meterPerSec const STD_IMPULSE_SPEED( 20._meterPerSec );

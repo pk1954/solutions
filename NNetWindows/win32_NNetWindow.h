@@ -43,6 +43,7 @@ public:
 //	void      Size( );
 	void      Zoom( bool const );
 	void      PulseRateDialog( );
+	void      PulseSpeedDialog( );
 	void      SetPixelSize( NanoMeter const );
 	NanoMeter GetPixelSize( ) const;
 
