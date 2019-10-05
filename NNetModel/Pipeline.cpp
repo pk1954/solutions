@@ -7,6 +7,7 @@
 #include "Knot.h"
 #include "PixelCoordsFp.h"
 #include "win32_graphicsInterface.h"
+#include "NNetModel.h"
 #include "Pipeline.h"
 
 MicroMeter Pipeline::distance( MicroMeterPoint const & npA, MicroMeterPoint const & npB )
@@ -25,13 +26,14 @@ MicroMeter Pipeline::distance( MicroMeterPoint const & npA, MicroMeterPoint cons
 
 void Pipeline::initialize( )
 {
-	if ( m_pKnotStart && m_pKnotEnd )
+	if ( ! m_initialized && m_pKnotStart && m_pKnotEnd )
 	{
 		MicroMeter   const segmentLength  = CoveredDistance( m_impulseSpeed, TIME_RESOLUTION );
 		MicroMeter   const pipelineLength = distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() );
 		unsigned int const iNrOfSegments  = CastToUnsignedInt(round(pipelineLength / segmentLength));
 
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
+		m_initialized = true;
 	}
 }
 
@@ -107,11 +109,11 @@ void Pipeline::Draw
 
 	for ( std::vector<mV>::const_iterator iter = m_potential.begin( ); iter != m_potential.end( ); iter++ )
 	{
-		assert( * iter < 200.0_mV );
-		fPixelPoint     const fPixPoint2 = coord.convert2fPixelPos( point2 );
-		int             const iLevel     = 255 - CastToInt( iter->GetValue() );
-		assert( iLevel <= 255 );
-		COLORREF        const color      = IsHighlighted( )	? RGB( iLevel, 0, iLevel ) : RGB( iLevel, 0, 0 );
+		assert( * iter <= NNetModel::PEAK_VOLTAGE );
+		mV              const mVperColLevel = NNetModel::PEAK_VOLTAGE / 255;
+		int             const iLevel        = CastToInt( * iter / mVperColLevel );
+		fPixelPoint     const fPixPoint2    = coord.convert2fPixelPos( point2 );
+		COLORREF        const color         = IsHighlighted( )	? RGB( iLevel, 127, 127 ) : RGB( iLevel, 0, 0 );
 		Graphics.AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth, color );
 		point2    += segmentVector; 
 		fPixPoint1 = fPixPoint2;

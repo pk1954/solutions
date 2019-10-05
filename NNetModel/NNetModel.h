@@ -8,7 +8,7 @@
 #include "util.h"
 #include "MoreTypes.h"
 #include "Segment.h"
-#include "INputNeuron.h"
+#include "InputNeuron.h"
 #include "Neuron.h"
 #include "Pipeline.h"
 #include "ModelInterface.h"
@@ -19,7 +19,6 @@ class EventInterface;
 class NNetModel : public ModelInterface
 {
 public:
-
 	NNetModel();
 
 	virtual ~NNetModel( ) { };
@@ -87,6 +86,9 @@ public:
 
 	static NNetModel * CreateModel();
 	static void        DestroyModel( NNetModel * );
+
+	static mV           const PEAK_VOLTAGE;
+	static microseconds const PEAK_TIME;
 
 private:
 

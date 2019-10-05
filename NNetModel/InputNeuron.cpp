@@ -6,54 +6,57 @@
 #include "Knot.h"
 #include "PixelCoordsFp.h"
 #include "win32_graphicsInterface.h"
+#include "NNetModel.h"
 #include "Pipeline.h"
 #include "InputNeuron.h"
 
+using namespace std::chrono;
+
 InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
 	: Knot( upCenter, tShapeType::inputNeuron ),
-	m_fTriggered( false ),
-	m_timeSinceTrigger( microseconds( 0 ) ),
-	m_iCounter( 0 ),
-	m_pulseFrequency( 500_Hertz )
+	m_timeSinceLastPulse( microseconds( 0 ) ),
+	m_pulseFrequency( 50_Hertz )
 { 
-	setSteps();
 }
 
 void InputNeuron::Trigger( )
 {
-	m_fTriggered = true;
-	m_timeSinceTrigger = microseconds( 0 );
+	m_timeSinceLastPulse = microseconds( 0 );
+}
+
+mV InputNeuron::waveFunction( microseconds time )
+{
+	assert( time >= 0ms );
+	if ( time <= NNetModel::PEAK_TIME )
+	{
+		double x = time.count() / 1000.0; // x in milliseconds 
+//		x /= NNetModel::PEAK_TIME.count();
+		return NNetModel::PEAK_VOLTAGE * ( 1 - (x - 1) * (x - 1) );
+	}
+	else 
+		return BASE_POTENTIAL;
+//	return NNetModel::PEAK_VOLTAGE * 2 * ( x / ( x * x + 1.0 ) );
 }
 
 mV InputNeuron::Step( )
 {
-	if ( m_iCounter == 0 )
+	m_timeSinceLastPulse += TIME_RESOLUTION;
+
+	if ( m_timeSinceLastPulse >= PulseDuration( m_pulseFrequency ) )
 	{
 		Trigger();
-		m_iCounter = m_iStepsBetweenTrigger;
-	}
-	else
-	{
-		--m_iCounter;
 	}
 	{
-		static microseconds const AP_DURATION = microseconds( 4000 );
-
 		mV mVoutput = BASE_POTENTIAL;
-		if ( m_fTriggered )
-		{
-			mVoutput += mV( waveFunction( static_cast<double>(m_timeSinceTrigger.count()) / 1000.0 ) );
-			m_timeSinceTrigger += TIME_RESOLUTION;
-			if ( m_timeSinceTrigger > AP_DURATION )  
-				m_fTriggered = false;
-		}
+		mV mVWave( waveFunction( m_timeSinceLastPulse ) );
+		mVoutput += mVWave;
 		return mVoutput;
 	}
 }
 
 PERCENT InputNeuron::GetFillLevel( ) const
 {
-	return PERCENT( (m_iCounter * 100 ) / m_iStepsBetweenTrigger );
+	return PERCENT( CastToShort((m_timeSinceLastPulse * 100 ) / PulseDuration( m_pulseFrequency ) ) );
 }
 
 void InputNeuron::Draw
@@ -62,7 +65,7 @@ void InputNeuron::Draw
 	PixelCoordsFp const & coord
 ) const
 {
-	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 255, 0, 0 )	: RGB( 0, 0, 0 );
+	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 255, 0, 0 )	: RGB( 0, 0, 255 );
 	Graphics.AddRect
 	( 
 		coord.convert2fPixelPos( GetPosition() ), 
@@ -71,7 +74,7 @@ void InputNeuron::Draw
 	);
 
 	PERCENT  const fillLevel = GetFillLevel();
-	int      const colElem   = 255 - ( 255 * fillLevel.GetValue() ) / 100;
+	int      const colElem   = ( 255 * fillLevel.GetValue() ) / 100;
 	COLORREF const color     = RGB( colElem, 0, 0 );
 	Graphics.AddRect
 	( 

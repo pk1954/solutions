@@ -20,6 +20,7 @@ class Pipeline : public Shape
 public:
 	Pipeline( meterPerSec const impulseSpeed )
     :	Shape( tShapeType::pipeline ),
+		m_initialized ( false ),
 		m_pKnotStart  ( nullptr ),
 		m_pKnotEnd    ( nullptr ),
 		m_width       ( 10.0_MicroMeter ),
@@ -46,6 +47,7 @@ private:
 
 	void initialize( );
 
+	bool        m_initialized;
 	Knot    *   m_pKnotStart;
 	Knot    *   m_pKnotEnd;
 	MicroMeter  m_width;

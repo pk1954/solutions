@@ -28,6 +28,8 @@
 #include "win32_EvoWorkThreadInterface.h"
 #include "win32_evoController.h"
 
+using namespace std::chrono;
+
 EvoController::EvoController
 (
 	WinManager        * const pWinManager,
@@ -132,7 +134,7 @@ bool EvoController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 			HWND hwndStatusBar = m_pStatusBar->GetWindowHandle( );
 			m_pStatusBar->SetTrackBarPos( IDM_SIMULATION_SPEED,  CastToLong( MAX_DELAY.count()) );                
 			EnableWindow( GetDlgItem( hwndStatusBar, IDM_MAX_SPEED ), FALSE );
-			m_pDelay->SetDelay( milliseconds( 0 ) );
+			m_pDelay->SetDelay( 0ms );
 		}
 		break;
 

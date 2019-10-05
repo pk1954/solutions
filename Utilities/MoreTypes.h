@@ -60,9 +60,10 @@ Hertz constexpr operator"" _Hertz( unsigned long long ull )
 	return Hertz( CastToUnsignedLong( ull ) );
 }
 
-////////////// MilliHertz /////////////////////////////////////
-
-//using MilliHertz = NamedType< unsigned long, struct MilliHertz_Parameter >;
+static microseconds const PulseDuration( Hertz const freq )
+{
+	return microseconds( 1000000L / freq.GetValue() );
+}
 
 ////////////// MicroMeterPoint /////////////////////////////////////
 
@@ -92,9 +93,9 @@ static MicroMeter CoveredDistance( meterPerSec const speed, microseconds const t
 
 meterPerSec const STD_IMPULSE_SPEED( 20._meterPerSec );
 
-mV const BASE_POTENTIAL( 32.0_mV );
+mV const BASE_POTENTIAL( 0.0_mV );
 
-microseconds const TIME_RESOLUTION = microseconds( 1 );
+microseconds const TIME_RESOLUTION = microseconds( 100 );
 
 NanoMeter const MINIMUM_PIXEL_SIZE =     100.0_NanoMeter;
 NanoMeter const DEFAULT_PIXEL_SIZE =    1000.0_NanoMeter;  

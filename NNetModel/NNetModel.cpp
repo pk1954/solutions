@@ -6,6 +6,11 @@
 #include "MoreTypes.h"
 #include "NNetModel.h"
 
+using namespace std::chrono;
+
+mV           const NNetModel::PEAK_VOLTAGE = 100._mV;
+microseconds const NNetModel::PEAK_TIME    = 2ms;
+
 NNetModel::NNetModel( )
   : m_timeStamp( microseconds( 0 ) ),
 	m_neuron1  ( MicroMeterPoint( 400.0_MicroMeter,  200.0_MicroMeter ) ),
