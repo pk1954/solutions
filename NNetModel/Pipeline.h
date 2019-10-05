@@ -32,6 +32,12 @@ public:
 	void SetStartKnot( Knot * );
 	void SetEndKnot  ( Knot * );
 
+	void SetImpulseSpeed( meterPerSec const newSpeed )
+	{
+		m_impulseSpeed = newSpeed;
+		initialize();
+	}
+
 	MicroMeterPoint GetStartPoint( ) const; 
 	MicroMeterPoint GetEndPoint  ( ) const; 
 	MicroMeter      GetWidth     ( ) const; 
@@ -47,10 +53,12 @@ private:
 
 	void initialize( );
 
-	bool        m_initialized;
+	bool m_initialized;
+	
 	Knot    *   m_pKnotStart;
 	Knot    *   m_pKnotEnd;
 	MicroMeter  m_width;
+
 	vector<mV>  m_potential;
 	meterPerSec m_impulseSpeed;
 };

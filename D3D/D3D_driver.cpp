@@ -302,7 +302,7 @@ void D3D_driver::RenderBackground( )
         renderPrimitives( m_d3d->GetIndsIndexBuffer() );
 }
 
-void D3D_driver::RenderIndividuals( )
+void D3D_driver::RenderForegroundObjects( )
 {
     renderPrimitives( m_d3d->GetIndsIndexBuffer() );
 }

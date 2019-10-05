@@ -254,7 +254,7 @@ void NNetWindow::OnPaint( )
 
 			m_pScale->ShowScale( fPIXEL( static_cast<double>( GetClientWindowHeight().GetValue() ) ) );
 
-			m_pGraphics->RenderIndividuals( );
+			m_pGraphics->RenderForegroundObjects( );
 
 			m_pGraphics->EndFrame( GetWindowHandle() );
 		}

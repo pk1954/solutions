@@ -205,7 +205,7 @@ void DrawFrame::drawIndividuals( EvolutionCore const * const pCore, GridRect con
 		rect
 	);
 
-    m_pGraphics->RenderIndividuals( ); 
+    m_pGraphics->RenderForegroundObjects( ); 
 }
 
 void DrawFrame::drawText( EvolutionCore const * const pCore, GridRect const & rect )

@@ -96,7 +96,7 @@ void GDI_driver::RenderBackground( )
 {
 }
 
-void GDI_driver::RenderIndividuals( )
+void GDI_driver::RenderForegroundObjects( )
 {
 }
 

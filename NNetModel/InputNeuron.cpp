@@ -29,13 +29,11 @@ mV InputNeuron::waveFunction( microseconds time )
 	assert( time >= 0ms );
 	if ( time <= NNetModel::PEAK_TIME )
 	{
-		double x = time.count() / 1000.0; // x in milliseconds 
-//		x /= NNetModel::PEAK_TIME.count();
-		return NNetModel::PEAK_VOLTAGE * ( 1 - (x - 1) * (x - 1) );
+		double x = time.count() / 1000.0 - 1;
+		return NNetModel::PEAK_VOLTAGE * ( 1 - x * x );
 	}
 	else 
 		return BASE_POTENTIAL;
-//	return NNetModel::PEAK_VOLTAGE * 2 * ( x / ( x * x + 1.0 ) );
 }
 
 mV InputNeuron::Step( )

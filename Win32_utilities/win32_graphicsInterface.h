@@ -20,7 +20,7 @@ public:
     virtual void      SetFontSize( PIXEL const ) = 0;
     virtual void      AddIndividual( PixelPoint const, COLORREF const, float const ) = 0;    
     virtual void      AddBackGround( PixelPoint const, COLORREF const, float const ) = 0;    
-    virtual void      RenderIndividuals( ) = 0;
+    virtual void      RenderForegroundObjects( ) = 0;
     virtual void      RenderBackground( ) = 0;
     virtual void      RenderTranspRect( PixelRect const &, unsigned int const, COLORREF const ) = 0;
     virtual void      DisplayGraphicsText( PixelRect const &, std::wstring const &, DWORD const, COLORREF const ) = 0;
