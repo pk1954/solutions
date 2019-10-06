@@ -21,9 +21,3 @@ StdAfx.h, StdAfx.cpp
     Mit diesen Dateien werden eine vorkompilierte Headerdatei (PCH) mit dem Namen HistoryInterface.pch und eine vorkompilierte Typendatei mit dem Namen StdAfx.obj erstellt.
 
 /////////////////////////////////////////////////////////////////////////////
-Weitere Hinweise:
-
-Der Anwendungs-Assistent weist Sie mit "TODO:"-Kommentaren auf Teile des
-Quellcodes hin, die Sie ergänzen oder anpassen sollten.
-
-/////////////////////////////////////////////////////////////////////////////

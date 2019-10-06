@@ -14,9 +14,3 @@ Win32_utilities.vcxproj.filters
     Dies ist die Filterdatei für VC++-Projekte, die mithilfe eines Anwendungs-Assistenten erstellt werden. Sie enthält Informationen über die Zuordnung zwischen den Dateien im Projekt und den Filtern. Diese Zuordnung wird in der IDE zur Darstellung der Gruppierung von Dateien mit ähnlichen Erweiterungen unter einem bestimmten Knoten verwendet (z. B. sind CPP-Dateien dem Filter "Quelldateien" zugeordnet).
 
 /////////////////////////////////////////////////////////////////////////////
-Weitere Hinweise:
-
-Der Anwendungs-Assistent weist Sie mit "TODO:"-Kommentaren auf Teile des
-Quellcodes hin, die Sie ergänzen oder anpassen sollten.
-
-/////////////////////////////////////////////////////////////////////////////
