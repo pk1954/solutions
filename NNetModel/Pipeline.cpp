@@ -30,7 +30,10 @@ void Pipeline::initialize( )
 	{
 		MicroMeter   const segmentLength  = CoveredDistance( m_impulseSpeed, TIME_RESOLUTION );
 		MicroMeter   const pipelineLength = distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() );
-		unsigned int const iNrOfSegments  = CastToUnsignedInt(round(pipelineLength / segmentLength));
+		unsigned int       iNrOfSegments  = CastToUnsignedInt(round(pipelineLength / segmentLength));
+
+		if ( iNrOfSegments == 0 )
+			iNrOfSegments = 1;
 
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_initialized = true;

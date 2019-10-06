@@ -122,7 +122,7 @@ void NNetAppWindow::Start( )
 	( 
 		m_hwndApp, 
 		m_pGraphics, 
-		WS_CHILD | WS_CLIPSIBLINGS,
+		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		DEFAULT_PIXEL_SIZE,
 		nullptr  // no visibility criterion. Allways visible
 	);
