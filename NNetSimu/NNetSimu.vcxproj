@@ -100,7 +100,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>GDI.lib;D3D.lib;ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;Win32_appFramework.lib;NNetModel.lib;NNetWindows.lib;NNetHistGlue.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GDI.lib;D3D.lib;ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;Win32_appFramework.lib;NNetModel.lib;NNetWindows.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -155,7 +155,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>GDI.lib;D3D.lib;ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;Win32_appFramework.lib;NNetModel.lib;NNetWindows.lib;NNetHistGlue.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GDI.lib;D3D.lib;ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;Win32_appFramework.lib;NNetModel.lib;NNetWindows.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
