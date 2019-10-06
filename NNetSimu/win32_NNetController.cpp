@@ -8,9 +8,10 @@
 #include "Windows.h"
 #include "Resource.h"
 #include "BoolOp.h"
+#include "LogarithmicTrackBar.h"
 #include "SlowMotionRatio.h"
 #include "win32_util.h"
-#include "win32_speedControl.h"
+#include "win32_simulationControl.h"
 #include "win32_zoomControl.h"
 #include "win32_aboutBox.h"
 #include "win32_NNetAppWindow.h"
@@ -54,40 +55,31 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 	switch (wmId)
 	{
 
-	case IDM_MAX_SPEED:
-		{
-			HWND hwndStatusBar = m_pStatusBar->GetWindowHandle( );
-			m_pStatusBar->SetTrackBarPos( IDM_SIMULATION_SPEED, CastToLong( SlowMotionRatio::MAX ) );                
-			EnableWindow( GetDlgItem( hwndStatusBar, IDM_MAX_SPEED ), FALSE );
-			m_pSlowMotionRatio->SetRatio( SlowMotionRatio::MIN );
-		}
-		break;
-
 	case IDM_TRACKBAR:
 		switch ( lParam )
 		{
 		case IDM_ZOOM_TRACKBAR:
 		{
 			LONG const lLogicalPos = m_pStatusBar->GetTrackBarPos( IDM_ZOOM_TRACKBAR );
-			LONG const lValue      = lLogicalPos;
+			LONG const lValue      = LogarithmicTrackbar::Value2TrackbarL( CastToLong( MAXIMUM_PIXEL_SIZE.GetValue()) ) - lLogicalPos;
 			LONG const lPos        = LogarithmicTrackbar::TrackBar2ValueL( lValue );
 			ProcessUIcommand( IDM_ZOOM_TRACKBAR, lPos );
-		}
-		break;
-
-		case IDM_SIMULATION_SPEED:
-		{
-			LONG const lLogicalPos = m_pStatusBar->GetTrackBarPos( IDM_SIMULATION_SPEED );
-			LONG const lValue      = LogarithmicTrackbar::Value2TrackbarL( CastToLong( SlowMotionRatio::MAX ) ) - lLogicalPos;
-			LONG const lPos        = LogarithmicTrackbar::TrackBar2ValueL( lValue );
-			EnableWindow( m_pStatusBar->GetDlgItem( IDM_MAX_SPEED ), TRUE );
-			m_pSlowMotionRatio->SetRatio( lPos );
 		}
 		break;
 
 		default:
 			assert( false );
 		}
+		break;
+
+	case IDM_SLOWER:
+		if ( ! m_pSlowMotionRatio->IncRatio( ) )
+			MessageBeep( MB_ICONWARNING );
+		break;
+
+	case IDM_FASTER:
+		if ( ! m_pSlowMotionRatio->DecRatio( ) )
+			MessageBeep( MB_ICONWARNING );
 		break;
 
 	case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar

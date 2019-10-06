@@ -1,4 +1,4 @@
-// SpeedDisplay.h
+// SlowMotionDisplay.h
 //
 // NNetSimu
 
@@ -12,12 +12,12 @@ using std::to_wstring;
 class StatusBar;
 class SlowMotionRatio;
 
-class SpeedDisplay : public ObserverInterface
+class SlowMotionDisplay : public ObserverInterface
 {
 public:
-	SpeedDisplay( StatusBar *, SlowMotionRatio *, int );
+	SlowMotionDisplay( StatusBar *, SlowMotionRatio *, int );
 
-	~SpeedDisplay();
+	~SlowMotionDisplay();
 
 	virtual void Notify( bool const );
 

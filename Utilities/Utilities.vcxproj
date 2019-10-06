@@ -184,6 +184,7 @@
   <ItemGroup>
     <ClCompile Include="BoolOp.cpp" />
     <ClCompile Include="LogarithmicTrackbar.cpp" />
+    <ClCompile Include="SlowMotionRatio.cpp" />
     <ClCompile Include="SmoothMove.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

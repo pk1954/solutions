@@ -21,11 +21,10 @@ IDC_NNET_SIMU_MAIN MENU
     }
     POPUP "&Action"
     {
-        MENUITEM "&Generation", IDM_FORWARD
+        MENUITEM "&Proceed single step", IDM_FORWARD
         MENUITEM "&Run", IDM_RUN
         MENUITEM "&Stop", IDM_STOP
-        MENUITEM "&Backward", IDM_BACKWARDS
-        MENUITEM "Reset", IDM_RESET
+//        MENUITEM "Reset", IDM_RESET
 	}
     POPUP "&View"
     {
@@ -34,10 +33,10 @@ IDC_NNET_SIMU_MAIN MENU
             MENUITEM "Zoom &In", IDM_ZOOM_IN
             MENUITEM "Zoom &Out", IDM_ZOOM_OUT
         }
-        POPUP "&Windows"
-        {
-			MENUITEM "Show &hist window", IDM_HIST_WINDOW
-		}
+  //      POPUP "&Windows"
+  //      {
+		//	MENUITEM "Show &hist window", IDM_HIST_WINDOW
+		//}
     }
     POPUP "&Help"
     {
@@ -82,10 +81,7 @@ IDC_EVOLUTION_MAIN ACCELERATORS
     "s",            IDM_STOP,         ASCII
     "+",            IDM_ZOOM_IN,      ASCII
     "-",            IDM_ZOOM_OUT,     ASCII
-    "b",            IDM_BACKWARDS,    ASCII
-    "z",            IDM_BACKWARDS,    VIRTKEY, CONTROL
     "y",            IDM_FORWARD,      VIRTKEY, CONTROL
-    VK_BACK,        IDM_BACKWARDS,    VIRTKEY, ALT
     "?",            IDM_ABOUT,        ASCII,   ALT
 	VK_ESCAPE,      IDM_ESCAPE,       VIRTKEY
 }

@@ -1,20 +1,22 @@
-// SpeedDisplay.cpp
+// SlowMotionDisplay.cpp
 //
 // NNetSimu
+//
+// Displays slow motion ratio in status bar field
 
 #include "stdafx.h"
 #include "util.h"
 #include "win32_baseRefreshRate.h"
 #include "SlowMotionRatio.h"
 #include "win32_status.h"
-#include "SpeedDisplay.h"
+#include "SlowMotionDisplay.h"
 
 using std::to_wstring;
 using namespace std::chrono;
 
-/////// inner class SpeedDisplay::RefreshRate ///////
+/////// inner class SlowMotionDisplay::RefreshRate ///////
 
-class SpeedDisplay::RefreshRate : public BaseRefreshRate
+class SlowMotionDisplay::RefreshRate : public BaseRefreshRate
 {
 public:
 	RefreshRate	
@@ -47,7 +49,7 @@ private:
 
 /////// functions of class TimeDisplay ///////
 
-SpeedDisplay::SpeedDisplay
+SlowMotionDisplay::SlowMotionDisplay
 (
 	StatusBar       * pStatusBar,
 	SlowMotionRatio * pSlowMotionRatio,
@@ -55,7 +57,7 @@ SpeedDisplay::SpeedDisplay
 ) 
   :	m_pRefreshRate( nullptr )
 {
-	static PIXEL const PIX_WIDTH = PIXEL( 9 ) * 18;  // TODO: avoid magic numbers
+	static PIXEL const PIX_WIDTH = PIXEL( 9 ) * 11;  // TODO: avoid magic numbers
 	m_pRefreshRate = new RefreshRate
 	( 
 		pStatusBar,
@@ -67,13 +69,13 @@ SpeedDisplay::SpeedDisplay
 	pStatusBar->AddCustomControl( PIX_WIDTH ); 
 }
 
-SpeedDisplay::~SpeedDisplay( )
+SlowMotionDisplay::~SlowMotionDisplay( )
 {
 	delete m_pRefreshRate;
 	m_pRefreshRate = nullptr;
 }
 
-void SpeedDisplay::Notify( bool const bImmediately )
+void SlowMotionDisplay::Notify( bool const bImmediately )
 {
 	m_pRefreshRate->Notify( bImmediately );
 }

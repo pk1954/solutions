@@ -25,7 +25,7 @@ public:
 	{
 		m_pDisplayTimer = pActionTimer;
 		m_hCrsrArrow    = LoadCursor( NULL, IDC_ARROW );
-		m_hCrsrMove     = LoadCursor( NULL, IDC_SIZEALL );
+		m_hCrsrMove     = LoadCursor( NULL, IDC_HAND );
 	}
 
 protected:

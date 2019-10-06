@@ -90,7 +90,7 @@ void RootWindow::contextMenu( LPARAM lParam )
 
 	if ( GetRefreshRate( ) > 0ms )
 	{
-		(void)AppendMenu( hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Refresh Rate" );
+		(void)AppendMenu( hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate" );
 	}
 
 	(void)ClientToScreen( GetWindowHandle(), & pntPos );

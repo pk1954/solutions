@@ -32,7 +32,7 @@ class ModelWindow;
 class NNetModel;
 class NNetWindow;
 class TimeDisplay;
-class SpeedDisplay;
+class SlowMotionDisplay;
 class GraphicsInterface;
 
 class NNetAppWindow : public AppWindowInterface
@@ -69,5 +69,5 @@ private:
 	NNetWindow            * m_pMainNNetWindow;
 	NNetEditorWindow      * m_pNNetEditorWindow;
 	TimeDisplay           * m_pTimeDisplay;
-	SpeedDisplay          * m_pSpeedDisplay;
+	SlowMotionDisplay     * m_pSlowMotionDisplay;
 };

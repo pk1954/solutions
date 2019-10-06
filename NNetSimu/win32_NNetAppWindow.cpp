@@ -16,14 +16,16 @@
 #include "win32_NNetEditor.h"
 #include "win32_NNetWindow.h"
 #include "win32_status.h"
-#include "win32_speedControl.h"
+#include "win32_simulationControl.h"
+#include "win32_slowMotionControl.h"
 #include "win32_zoomControl.h"
-#include "SpeedDisplay.h"
+#include "SlowMotionDisplay.h"
 #include "TimeDisplay.h"
 
 // infrastructure
 
 #include "util.h"
+#include "LogarithmicTrackBar.h"
 #include "ObserverInterface.h"
 
 // scripting and tracing
@@ -48,7 +50,7 @@ NNetAppWindow::NNetAppWindow( ) :
 	m_pMainNNetWindow( nullptr ),
 	m_pModelDataWork( nullptr ),
 	m_pGraphics( nullptr ),
-	m_pSpeedDisplay( nullptr ),
+	m_pSlowMotionDisplay( nullptr ),
 	m_pTimeDisplay( nullptr ),
 	m_pNNetModel4Display( nullptr )
 {
@@ -88,7 +90,7 @@ NNetAppWindow::~NNetAppWindow( )
 	delete m_pMainNNetWindow;
 	delete m_pAppMenu;
 	delete m_pTimeDisplay;
-	delete m_pSpeedDisplay;
+	delete m_pSlowMotionDisplay;
 }
 
 void NNetAppWindow::Start( )
@@ -170,33 +172,30 @@ void NNetAppWindow::Stop()
 void NNetAppWindow::configureStatusBar( )
 {
 	int iPartScriptLine = 0;
-	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, & m_NNetReadBuffer, iPartScriptLine );
 
 	//iPartScriptLine = m_StatusBar.NewPart( );
 	//m_StatusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
 
-	iPartScriptLine = m_StatusBar.NewPart( );
-	ZoomControl::AddSizeControl
-	( 
-		& m_StatusBar, 
-		LogarithmicTrackbar::Value2TrackbarD( MINIMUM_PIXEL_SIZE.GetValue() ), 
-		LogarithmicTrackbar::Value2TrackbarD( MAXIMUM_PIXEL_SIZE.GetValue() ), 
-		LogarithmicTrackbar::Value2TrackbarD( DEFAULT_PIXEL_SIZE.GetValue() ) 
-	);
-	EnableWindow( m_StatusBar.GetDlgItem( IDM_FIT_ZOOM ), FALSE );
+	//ZoomControl::AddSizeControl
+	//( 
+	//	& m_StatusBar, 
+	//	LogarithmicTrackbar::Value2TrackbarD( MINIMUM_PIXEL_SIZE.GetValue() ), 
+	//	LogarithmicTrackbar::Value2TrackbarD( MAXIMUM_PIXEL_SIZE.GetValue() ), 
+	//	LogarithmicTrackbar::Value2TrackbarD( DEFAULT_PIXEL_SIZE.GetValue() ) 
+	//);
+	//EnableWindow( m_StatusBar.GetDlgItem( IDM_FIT_ZOOM ), FALSE );
+
+	//iPartScriptLine = m_StatusBar.NewPart( );
+	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, & m_NNetReadBuffer, iPartScriptLine );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
-	SpeedControl::AddSimulationControl
-	( 
-		& m_StatusBar, 
-		m_pHistorySystem, 
-		LogarithmicTrackbar::Value2TrackbarL( CastToLong( SlowMotionRatio::MIN) ), 
-		LogarithmicTrackbar::Value2TrackbarL( CastToLong( SlowMotionRatio::MAX) ), 
-		LogarithmicTrackbar::Value2TrackbarL( CastToLong( SlowMotionRatio::DEFAULT ) ) 
-	);
+	SimulationControl::Add( & m_StatusBar );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
-	m_pSpeedDisplay = new SpeedDisplay( & m_StatusBar, & m_SlowMotionRatio, iPartScriptLine );
+	m_pSlowMotionDisplay = new SlowMotionDisplay( & m_StatusBar, & m_SlowMotionRatio, iPartScriptLine );
+
+	iPartScriptLine = m_StatusBar.NewPart( );
+	SlowMotionControl::Add( & m_StatusBar );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine );
@@ -205,7 +204,7 @@ void NNetAppWindow::configureStatusBar( )
 
 	m_StatusBar.LastPart( );
 	m_pTimeDisplay->Notify( true );
-	m_pSpeedDisplay->Notify( true );
+	m_pSlowMotionDisplay->Notify( true );
 }
 
 void NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam )

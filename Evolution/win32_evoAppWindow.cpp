@@ -296,7 +296,7 @@ void EvoAppWindow::configureStatusBar( )
 	);
 
 	m_StatusBar.NewPart( );
-	SpeedControl::AddSimulationControl
+	SpeedControl::Add
 	( 
 		& m_StatusBar, 
 		m_pHistorySystem, 

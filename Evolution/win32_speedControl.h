@@ -15,7 +15,7 @@ class SpeedControl
 {
 public:
 
-	static void AddSimulationControl( StatusBar * const, HistorySystem * const, long const, long const, long const );
+	static void Add( StatusBar * const, HistorySystem * const, long const, long const, long const );
 	static void Adjust( BOOL const,	WorkThreadInterface * const );
 
 private:

@@ -8,7 +8,7 @@
 StatusBar     * SpeedControl::m_pStatusBar     = nullptr;
 HistorySystem * SpeedControl::m_pHistorySystem = nullptr;
 
-void SpeedControl::AddSimulationControl
+void SpeedControl::Add
 ( 
 	StatusBar     * const pStatusBar, 
 	HistorySystem * const pHistorySystem,

@@ -98,12 +98,21 @@ void Pipeline::Draw
 	PixelCoordsFp const & coord
 ) const
 {
-	MicroMeter      const startOffset   = m_pKnotStart->GetExtension( ) * 0.8;
-	MicroMeterPoint const startPoint    = GetStartPoint() + MicroMeterPoint( 0._MicroMeter, startOffset );
+	MicroMeter      const startOffset = m_pKnotStart->GetExtension( ) * 0.8;
+	MicroMeterPoint const startPoint  = GetStartPoint() + MicroMeterPoint( 0._MicroMeter, startOffset );
+	fPIXEL          const fPixWidth   = coord.convert2fPixel( m_width ) ;
+
+	///// draw border
+
+	fPixelPoint const fStartPoint = coord.convert2fPixelPos( startPoint );
+	fPixelPoint const fEndPoint   = coord.convert2fPixelPos( GetEndPoint() );
+	COLORREF    const colorBorder = IsHighlighted( ) ? RGB( 0, 127, 127 )	: RGB( 0, 0, 255 );
+	Graphics.AddfPixelLine( fStartPoint, fEndPoint, fPixWidth, colorBorder );
+
+	///// draw interior
 
 	MicroMeterPoint const vector        = GetEndPoint() - startPoint;
 	MicroMeterPoint const segmentVector = vector / static_cast<double>(m_potential.size());
-	fPIXEL          const fPixWidth     = coord.convert2fPixel( m_width ) ;
 	fPixelPoint           fPixPoint1    = coord.convert2fPixelPos( startPoint );
 	MicroMeterPoint       point2        = startPoint + segmentVector;
 
@@ -113,8 +122,8 @@ void Pipeline::Draw
 		mV              const mVperColLevel = NNetModel::PEAK_VOLTAGE / 255;
 		int             const iLevel        = CastToInt( * iter / mVperColLevel );
 		fPixelPoint     const fPixPoint2    = coord.convert2fPixelPos( point2 );
-		COLORREF        const color         = IsHighlighted( )	? RGB( iLevel, 127, 127 ) : RGB( iLevel, 0, 0 );
-		Graphics.AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth, color );
+		COLORREF        const color         = RGB( iLevel, 0, 0 );
+		Graphics.AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth * 0.6, color );
 		point2    += segmentVector; 
 		fPixPoint1 = fPixPoint2;
 	}

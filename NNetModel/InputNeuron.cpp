@@ -13,10 +13,12 @@
 using namespace std::chrono;
 
 InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
-	: Knot( upCenter, tShapeType::inputNeuron ),
+  : Knot( upCenter, tShapeType::inputNeuron ),
 	m_timeSinceLastPulse( microseconds( 0 ) ),
-	m_pulseFrequency( 50_Hertz )
+	m_pulseFrequency( 0_Hertz )
 { 
+	SetPulseFrequency( 50_Hertz );
+	m_timeSinceLastPulse = NNetModel::PEAK_TIME;
 }
 
 void InputNeuron::Trigger( )
@@ -40,7 +42,7 @@ mV InputNeuron::Step( )
 {
 	m_timeSinceLastPulse += TIME_RESOLUTION;
 
-	if ( m_timeSinceLastPulse >= PulseDuration( m_pulseFrequency ) )
+	if ( m_timeSinceLastPulse >= m_pulseDuration )
 	{
 		Trigger();
 	}
@@ -54,7 +56,7 @@ mV InputNeuron::Step( )
 
 PERCENT InputNeuron::GetFillLevel( ) const
 {
-	return PERCENT( CastToShort((m_timeSinceLastPulse * 100 ) / PulseDuration( m_pulseFrequency ) ) );
+	return PERCENT( CastToShort((m_timeSinceLastPulse * 100 ) / m_pulseDuration ) );
 }
 
 void InputNeuron::Draw
@@ -62,14 +64,16 @@ void InputNeuron::Draw
 	GraphicsInterface   & Graphics,
 	PixelCoordsFp const & coord
 ) const
-{
-	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 255, 0, 0 )	: RGB( 0, 0, 255 );
+{         ///// draw frame
+
+	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 )	: RGB( 0, 0, 255 );
 	Graphics.AddRect
 	( 
 		coord.convert2fPixelPos( GetPosition() ), 
 		colorFrame, 
 		coord.convert2fPixel( GetExtension() )
 	);
+	      ///// draw interior
 
 	PERCENT  const fillLevel = GetFillLevel();
 	int      const colElem   = ( 255 * fillLevel.GetValue() ) / 100;

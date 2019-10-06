@@ -4,32 +4,56 @@
 
 #pragma once
 
+#include <array>
 #include "observable.h"
 
 class SlowMotionRatio : public Observable
 {
 public:
 
-	static unsigned int const DEFAULT =   1000;
-	static unsigned int const MIN     =    100;
-	static unsigned int const MAX     = 100000;
-
 	SlowMotionRatio( )
-	  : m_ratio( DEFAULT )
+	  : m_ratioIndex( DEFAULT_INDEX )
 	{
 	}
 
 	unsigned int GetRatio( )
 	{
-		return m_ratio;
+		return m_ratios[ m_ratioIndex ];
 	}
 
-	void SetRatio( unsigned int const ratio )
+	bool IncRatio( )
 	{
-		m_ratio = ratio;
-		NotifyAll( false );
+		if ( m_ratioIndex < MAX_INDEX )
+		{
+			setIndex( m_ratioIndex + 1 );
+			return true;
+		}
+		else 
+			return false;
 	}
+
+	bool DecRatio( )
+	{
+		if ( m_ratioIndex > 0 )
+		{
+			setIndex( m_ratioIndex - 1 );
+			return true;
+		}
+		else 
+			return false;
+}
 
 private:
-	unsigned int m_ratio;   // 1 means realtime, 10 means slow motion factor 10
+	static unsigned int const DEFAULT_INDEX =  3;
+	static unsigned int const MAX_INDEX     = 15;
+
+	static std::array< unsigned int, MAX_INDEX + 1 > const m_ratios;
+
+	unsigned int m_ratioIndex;   // index to m_ratios
+
+	void setIndex( unsigned int const index )
+	{
+		m_ratioIndex = index;
+		NotifyAll( true );
+	}
 };

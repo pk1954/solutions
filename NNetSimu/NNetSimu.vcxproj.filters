@@ -39,7 +39,13 @@
     <ClInclude Include="TimeDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SpeedDisplay.h">
+    <ClInclude Include="win32_simulationControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_slowMotionControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SlowMotionDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,7 +68,10 @@
     <ClCompile Include="TimeDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SpeedDisplay.cpp">
+    <ClCompile Include="win32_simulationControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SlowMotionDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

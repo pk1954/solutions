@@ -1,6 +1,8 @@
 // TimeDisplay.cpp
 //
 // NNetSimu
+//
+// Displays time since start of simulation in status bar field
 
 #include "stdafx.h"
 #include "win32_baseRefreshRate.h"

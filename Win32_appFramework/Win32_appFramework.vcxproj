@@ -164,7 +164,6 @@
     <ClInclude Include="win32_modelWindow.h" />
     <ClInclude Include="win32_readBuffer.h" />
     <ClInclude Include="win32_scriptHook.h" />
-    <ClInclude Include="win32_speedControl.h" />
     <ClInclude Include="win32_status.h" />
     <ClInclude Include="win32_WorkThread.h" />
     <ClInclude Include="win32_WorkThreadInterface.h" />
@@ -177,7 +176,6 @@
     <ClCompile Include="win32_baseAppWindow.cpp" />
     <ClCompile Include="win32_messagePump.cpp" />
     <ClCompile Include="win32_modelWindow.cpp" />
-    <ClCompile Include="win32_speedControl.cpp" />
     <ClCompile Include="win32_status.cpp" />
     <ClCompile Include="win32_WorkThread.cpp" />
     <ClCompile Include="win32_WorkThreadInterface.cpp" />

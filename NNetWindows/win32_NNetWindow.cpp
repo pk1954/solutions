@@ -154,7 +154,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 		{
 		case tShapeType::inputNeuron:
 			m_pShapeSelected = pShape;
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE_DIALOG, L"Pulse Rate" );
+			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE_DIALOG, L"Pulse rate" );
 			break;
 
 		case tShapeType::knot:
@@ -165,7 +165,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 
 		case tShapeType::pipeline:
 			m_pShapeSelected = pShape;
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_SPEED_DIALOG, L"Pulse Speed" );
+			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_SPEED_DIALOG, L"Conduction velocity" );
 			break;
 
 		default:
@@ -182,7 +182,7 @@ void NNetWindow::PulseRateDialog( )
 	( 
 		GetWindowHandle(),
 		static_cast<double>( pulseRateOld.GetValue() ),
-		L"Pulse Rate",
+		L"Pulse rate",
 		L"Hertz"
 	);
 	PostCommand2Application
@@ -204,7 +204,7 @@ void NNetWindow::PulseSpeedDialog( )
 	( 
 		GetWindowHandle(),
 		static_cast<double>( pulseSpeedOld.GetValue() ),
-		L"Pulse Speed",
+		L"Conduction velocity",
 		L"m/sec"
 	);
 	meterPerSec const pulseSpeedNew( dNewValue );
@@ -324,6 +324,9 @@ void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 
 void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 {
+	BOOL    const   keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
+	HCURSOR const   hCrsr   = keyDown ? m_hCrsrMove : m_hCrsrArrow;
+	SetCursor( hCrsr );
 }
 
 BOOL NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
