@@ -148,6 +148,7 @@ void NNetAppWindow::Start( )
 	{
 		std::wcout << L"Using default window positions" << std::endl;
 		Show( TRUE );
+		m_pMainNNetWindow->Show( TRUE );
 	}
 
 //	m_pNNetEditorWindow->Show( TRUE );
