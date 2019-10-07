@@ -107,6 +107,18 @@ public:
 		return convert2MicroMeterPoint( fPnt );
 	}
 
+	fPixelPoint calcCenterOffset            // calculate new pixel offset,
+	(                                       // which moves gridRect to center of window.
+		MicroMeterPoint const umPntCenter,  // do not yet set m_fPixOffset to this value!
+		fPixelPoint     const fPixCenter 
+	)  
+	{
+//		assert( IsInSimulationArea( umPntCenter ) );
+		fPixelPoint const fPixPnt( convert2fPixelSize( umPntCenter ) );
+		fPixelPoint const fPixOffset( fPixPnt - fPixCenter );
+		return fPixOffset;
+	}
+	
 	//////// manipulation functions ////////
 
 	bool SetPixelSize( NanoMeter const nmPixelSize )
@@ -126,6 +138,15 @@ public:
 		);
 		m_pixOffset  -= pntDelta;
 		m_fPixOffset -= fPntDelta;
+	}
+
+	void CenterSimulationArea
+	( 
+		MicroMeterPoint const umPntCenter,   
+		fPixelRectSize  const fPntPixSize  // available size 
+	)
+	{
+		m_fPixOffset = calcCenterOffset( umPntCenter, fPixelPoint( fPntPixSize.GetX(), fPntPixSize.GetY() ) / 2 );
 	}
 
 private:

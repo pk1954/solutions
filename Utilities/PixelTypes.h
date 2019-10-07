@@ -39,3 +39,20 @@ constexpr fPIXEL operator"" _fPIXEL( long double ld )
 {
 	return fPIXEL( static_cast<double>( ld ) );
 }
+
+/////////////////// conversions ///////////////////////////////////
+
+static fPIXEL convert2fPIXEL( PIXEL const pixel )
+{
+	return fPIXEL( static_cast<double>( pixel.GetValue() ) );
+}
+
+static fPixelPoint convert2fPixelPoint( PixelPoint const pixPoint )
+{
+	return fPixelPoint( convert2fPIXEL( pixPoint.GetX() ), convert2fPIXEL( pixPoint.GetY() ) );
+}
+
+static fPixelRectSize convert2fPixelRectSize( PixelRectSize const rectSize )
+{
+	return fPixelRectSize( convert2fPIXEL( rectSize.GetX() ), convert2fPIXEL( rectSize.GetY() ) );
+}

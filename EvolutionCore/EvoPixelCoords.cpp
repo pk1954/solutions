@@ -42,7 +42,7 @@ void EvoPixelCoords::MoveGrid( PixelPoint const pntDelta )
     m_pixOffset -= pntDelta;
 }
 
-PixelPoint EvoPixelCoords::calcCenterOffset  // calculate new pixel offset,
+PixelPoint EvoPixelCoords::calcCenterOffset    // calculate new pixel offset,
 (                                              // which moves gridRect to center of window.
 	GridPoint  const gpCenter,                 // do not yet set m_pixOffset to this value!
 	PixelPoint const pixCenter 

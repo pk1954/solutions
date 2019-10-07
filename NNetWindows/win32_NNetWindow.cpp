@@ -107,13 +107,9 @@ void NNetWindow::newPixelSize
 {
 	if ( m_coord.SetPixelSize( nmPixelSize ) )
 	{
-		//EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
-		//m_EvoPixelCoords.CenterGrid( gpCenter, GetClRectSize( ) ); // center grid around gpCenter
-		//m_DrawFrame.ResizeDrawFrame( pCore );                        // trigger DrawFrame to adapt font size etc.
-		//PixelPoint const ppCrsr = GetRelativeCrsrPosition( );
-		//if ( IsInClientRect( ppCrsr ) )
-		//	m_DrawFrame.SetHighlightPos( pCore, ppCrsr );  
-		//m_pReadBuffer->ReleaseReadBuffer( );
+		NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
+		m_coord.CenterSimulationArea( npCenter, convert2fPixelRectSize( GetClRectSize( ) ) ); 
+		m_pReadBuffer->ReleaseReadBuffer( );
 		Notify( TRUE );     // cause immediate repaint
 	}
 	else
