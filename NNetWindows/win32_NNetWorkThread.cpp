@@ -7,6 +7,7 @@
 #include "SCRIPT.H"
 #include "SlowMotionRatio.h"
 #include "EventInterface.h"
+#include "NNetParameters.h"
 #include "NNetReadBuffer.h"
 #include "NNetModel.h"
 #include "MoreTypes.h"

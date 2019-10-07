@@ -6,7 +6,7 @@
 #include "Knot.h"
 #include "PixelCoordsFp.h"
 #include "win32_graphicsInterface.h"
-#include "NNetModel.h"
+#include "NNetParameters.h"
 #include "Pipeline.h"
 #include "InputNeuron.h"
 
@@ -18,7 +18,7 @@ InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
 	m_pulseFrequency( 0_Hertz )
 { 
 	SetPulseFrequency( 50_Hertz );
-	m_timeSinceLastPulse = NNetModel::PEAK_TIME;
+	m_timeSinceLastPulse = PEAK_TIME;
 }
 
 void InputNeuron::Trigger( )
@@ -29,10 +29,10 @@ void InputNeuron::Trigger( )
 mV InputNeuron::waveFunction( microseconds time ) const
 {
 	assert( time >= 0ms );
-	if ( time <= NNetModel::PEAK_TIME )
+	if ( time <= PEAK_TIME )
 	{
 		double x = time.count() / 1000.0 - 1;
-		return NNetModel::PEAK_VOLTAGE * ( 1 - x * x );
+		return PEAK_VOLTAGE * ( 1 - x * x );
 	}
 	else 
 		return BASE_POTENTIAL;

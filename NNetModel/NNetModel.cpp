@@ -4,19 +4,13 @@
 
 #include "stdafx.h"
 #include "MoreTypes.h"
+#include "NNetParameters.h"
 #include "NNetModel.h"
 
 using namespace std::chrono;
 
-mV           const NNetModel::PEAK_VOLTAGE      = 100._mV;
-microseconds const NNetModel::PEAK_TIME         = 2ms;
-meterPerSec  const NNetModel::STD_IMPULSE_SPEED = 20._meterPerSec;
-
 NNetModel::NNetModel( )
   : m_timeStamp( microseconds( 0 ) ),
-	//m_neuron1  ( MicroMeterPoint( 400.0_MicroMeter,  200.0_MicroMeter ) ),
-	//m_knot     ( MicroMeterPoint( 400.0_MicroMeter, 1400.0_MicroMeter ) ),
-	//m_pipeline ( 0.1_meterPerSec ), // STD_IMPULSE_SPEED ),
 	m_Shapes( ),
 	m_shapeHighlighted( NO_SHAPE )
 {

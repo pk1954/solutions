@@ -9,6 +9,10 @@
 #include "PixelTypes.h"
 #include "SmoothMove.h"
 
+NanoMeter const MINIMUM_PIXEL_SIZE =     100.0_NanoMeter;
+NanoMeter const DEFAULT_PIXEL_SIZE =    1000.0_NanoMeter;  
+NanoMeter const MAXIMUM_PIXEL_SIZE = 2000000.0_NanoMeter;  // 2 Meter
+
 class PixelCoordsFp
 {
 public:

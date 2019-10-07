@@ -160,6 +160,7 @@
     <ClInclude Include="Knot.h" />
     <ClInclude Include="Neuron.h" />
     <ClInclude Include="NNetModel.h" />
+    <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Shape.h" />

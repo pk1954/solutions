@@ -36,10 +36,6 @@ public:
 		return m_timeStamp;
 	}
 
-	//Pipeline    const * GetPipeline( ) const { return & m_pipeline; }
-	//InputNeuron const * GetNeuron1( )  const { return & m_neuron1; }
-	//Knot        const * GetKnot( )     const { return & m_knot; }
-
 	Shape * GetShape( ShapeId const id )
 	{
 		return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() - 1 ];
@@ -95,10 +91,6 @@ public:
 
 	static NNetModel * CreateModel();
 	static void        DestroyModel( NNetModel * );
-
-	static mV           const PEAK_VOLTAGE;
-	static microseconds const PEAK_TIME;
-	static meterPerSec  const STD_IMPULSE_SPEED;
 
 private:
 

@@ -7,7 +7,7 @@
 #include "Knot.h"
 #include "PixelCoordsFp.h"
 #include "win32_graphicsInterface.h"
-#include "NNetModel.h"
+#include "NNetParameters.h"
 #include "Pipeline.h"
 
 MicroMeter Pipeline::distance( MicroMeterPoint const & npA, MicroMeterPoint const & npB )
@@ -130,8 +130,8 @@ void Pipeline::Draw
 
 	for ( std::vector<mV>::const_iterator iter = m_potential.begin( ); iter != m_potential.end( ); iter++ )
 	{
-		assert( * iter <= NNetModel::PEAK_VOLTAGE );
-		mV              const mVperColLevel = NNetModel::PEAK_VOLTAGE / 255;
+		assert( * iter <= PEAK_VOLTAGE );
+		mV              const mVperColLevel = PEAK_VOLTAGE / 255;
 		int             const iLevel        = CastToInt( * iter / mVperColLevel );
 		fPixelPoint     const fPixPoint2    = coord.convert2fPixelPos( point2 );
 		COLORREF        const color         = RGB( iLevel, 0, 0 );
