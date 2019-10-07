@@ -26,7 +26,7 @@ void InputNeuron::Trigger( )
 	m_timeSinceLastPulse = microseconds( 0 );
 }
 
-mV InputNeuron::waveFunction( microseconds time )
+mV InputNeuron::waveFunction( microseconds time ) const
 {
 	assert( time >= 0ms );
 	if ( time <= NNetModel::PEAK_TIME )
@@ -38,20 +38,25 @@ mV InputNeuron::waveFunction( microseconds time )
 		return BASE_POTENTIAL;
 }
 
-mV InputNeuron::Step( )
+void InputNeuron::Prepare( )
+{
+	// nothing to prepare
+}
+
+void InputNeuron::Step( )
 {
 	m_timeSinceLastPulse += TIME_RESOLUTION;
 
 	if ( m_timeSinceLastPulse >= m_pulseDuration )
-	{
 		Trigger();
-	}
-	{
-		mV mVoutput = BASE_POTENTIAL;
-		mV mVWave( waveFunction( m_timeSinceLastPulse ) );
-		mVoutput += mVWave;
-		return mVoutput;
-	}
+}
+
+mV InputNeuron::GetNextOutput( ) const
+{
+	mV mVoutput = BASE_POTENTIAL;
+	mV mVWave( waveFunction( m_timeSinceLastPulse ) );
+	mVoutput += mVWave;
+	return mVoutput;
 }
 
 PERCENT InputNeuron::GetFillLevel( ) const
@@ -66,7 +71,7 @@ void InputNeuron::Draw
 ) const
 {         ///// draw frame
 
-	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 )	: RGB( 0, 0, 255 );
+	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 0, 255 );
 	Graphics.AddRect
 	( 
 		coord.convert2fPixelPos( GetPosition() ), 

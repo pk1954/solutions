@@ -32,7 +32,6 @@ public:
 		HWND                  const, 
 		GraphicsInterface   * const, 
 		DWORD                 const,
-		NanoMeter             const,
 		std::function<bool()> const
 	);
 

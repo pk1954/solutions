@@ -5,6 +5,7 @@
 #pragma once
 
 #include <vector>
+#include <functional>
 #include "util.h"
 #include "MoreTypes.h"
 #include "Segment.h"
@@ -35,9 +36,9 @@ public:
 		return m_timeStamp;
 	}
 
-	Pipeline    const * GetPipeline( ) const { return & m_pipeline; }
-	InputNeuron const * GetNeuron1( )  const { return & m_neuron1; }
-	Knot        const * GetKnot( )     const { return & m_knot; }
+	//Pipeline    const * GetPipeline( ) const { return & m_pipeline; }
+	//InputNeuron const * GetNeuron1( )  const { return & m_neuron1; }
+	//Knot        const * GetKnot( )     const { return & m_knot; }
 
 	Shape * GetShape( ShapeId const id )
 	{
@@ -74,6 +75,14 @@ public:
 		return id;
 	}
 
+	void Apply2AllShapes( std::function<void(Shape * const)> const & func ) const
+	{
+		for ( auto shape : m_Shapes )
+		{
+			func( shape );
+		}
+	}
+
 	virtual void CopyModelData( ModelInterface const * const src )
 	{
 		* this = * static_cast<NNetModel const *>( src );
@@ -89,12 +98,14 @@ public:
 
 	static mV           const PEAK_VOLTAGE;
 	static microseconds const PEAK_TIME;
+	static meterPerSec  const STD_IMPULSE_SPEED;
 
 private:
 
-	InputNeuron     m_neuron1;
-	Knot            m_knot;
-	Pipeline        m_pipeline;
+	//InputNeuron     m_neuron1;
+	//Knot            m_knot;
+	//Pipeline        m_pipeline;
+
 	microseconds    m_timeStamp;
 	vector<Shape *> m_Shapes;
 	ShapeId         m_shapeHighlighted;

@@ -12,6 +12,9 @@
 
 using std::vector;
 
+class GraphicsInterface;
+class PixelCoordsFp;
+
 class Knot : public Shape
 {
 public:
@@ -49,9 +52,17 @@ public:
 		pPipe->SetStartKnot( this );
 	}
 
-	virtual mV Step( mV const mVInput )
+	virtual void Prepare( )
 	{
-		return mVInput;
+	}
+
+	virtual void Step( )
+	{
+	}
+
+	virtual mV GetNextOutput( ) const
+	{
+		return 0._mV;
 	}
 
 	bool IsPointInShape( MicroMeterPoint const & point ) const
@@ -62,6 +73,8 @@ public:
 
 		return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
 	}
+
+	virtual void Draw( GraphicsInterface &,	PixelCoordsFp const & ) const {};
 
 protected:
 	mV m_potential;

@@ -25,7 +25,8 @@ public:
 		m_pKnotEnd    ( nullptr ),
 		m_width       ( 10.0_MicroMeter ),
 		m_potential   ( ),
-		m_impulseSpeed( impulseSpeed )
+		m_impulseSpeed( impulseSpeed ),
+		m_mVinputBuffer( 0._mV )
 	{
 	}
 
@@ -48,11 +49,13 @@ public:
 	MicroMeterPoint GetEndPoint  ( ) const; 
 	MicroMeter      GetWidth     ( ) const; 
 
-	mV Step( mV const );
+	virtual void Step( );
+	virtual void Prepare( );
 
 	void Draw( GraphicsInterface &,	PixelCoordsFp const & ) const;
 
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
+	virtual mV   GetNextOutput( ) const;
 
 private:
 	MicroMeter distance( MicroMeterPoint const &, MicroMeterPoint const & );
@@ -67,4 +70,5 @@ private:
 
 	vector<mV>  m_potential;
 	meterPerSec m_impulseSpeed;
+	mV          m_mVinputBuffer;
 };

@@ -8,6 +8,9 @@
 
 using ShapeId = NamedType< unsigned long, struct ShapeIdParam >;
 
+class GraphicsInterface;
+class PixelCoordsFp;
+
 ShapeId const NO_SHAPE( 0 );
 
 enum class tShapeType
@@ -29,7 +32,11 @@ public:
 	{
 	}
 
-	virtual bool IsPointInShape( MicroMeterPoint const & point ) const = 0;
+	virtual void Draw( GraphicsInterface &,	PixelCoordsFp const & ) const = 0;
+	virtual bool IsPointInShape( MicroMeterPoint const & point )    const = 0;
+	virtual mV   GetNextOutput( )                                   const = 0;
+	virtual void Step( )                                                  = 0;
+	virtual void Prepare( )                                               = 0;
 
 	void SetHighlightState( bool const bState )
 	{

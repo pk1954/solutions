@@ -14,17 +14,12 @@ class PixelCoordsFp
 public:
 
 	PixelCoordsFp()
-	  : m_pixOffset  ( 0_PIXEL ),
-		m_fPixOffset ( 0.0_fPIXEL ),
-		m_pixelSize  ( DEFAULT_PIXEL_SIZE ),
-		m_bMoving    ( false ),
-		m_smoothMove ( )
+	  : m_pixOffset ( 0_PIXEL ),
+		m_fPixOffset( 0.0_fPIXEL ),
+		m_pixelSize ( DEFAULT_PIXEL_SIZE ),
+		m_bMoving   ( false ),
+		m_smoothMove( )
 	{}
-
-	void Start( NanoMeter const pixelSize )
-	{
-		m_pixelSize = pixelSize;
-	}
 
 	//////// transformations ////////
 

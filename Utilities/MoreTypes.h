@@ -105,8 +105,6 @@ static meterPerSec Convert2meterPerSec( milliMeterPerSec const mmPs )
 
 /////////// TODO: move constants to application
 
-meterPerSec const STD_IMPULSE_SPEED( 20._meterPerSec );
-
 mV const BASE_POTENTIAL( 0.0_mV );
 
 microseconds const TIME_RESOLUTION = microseconds( 100 );

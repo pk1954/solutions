@@ -16,7 +16,10 @@ public:
 
 	InputNeuron( MicroMeterPoint const );
 
-	mV      Step( );
+	virtual void Prepare( );
+	virtual void Step( );
+	virtual mV   GetNextOutput( ) const;
+
 	void    Trigger( );
 	PERCENT GetFillLevel( ) const;
 	void    Draw( GraphicsInterface &,	PixelCoordsFp const & ) const;
@@ -38,7 +41,7 @@ private:
 	Hertz        m_pulseFrequency;
 	microseconds m_pulseDuration;   // inverse of pulse frequency 
 
-	mV waveFunction( microseconds );
+	mV waveFunction( microseconds ) const;
 };	
 
 InputNeuron const * Cast2InputNeuron( Shape const * );

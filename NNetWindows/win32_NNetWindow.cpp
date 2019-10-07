@@ -48,11 +48,9 @@ void NNetWindow::Start
 	HWND                  const hwndApp, 
 	GraphicsInterface   * const pGraphics,
 	DWORD                 const dwStyle,
-	NanoMeter             const npPixelSize,
 	std::function<bool()> const visibilityCriterion
 )
 {
-	m_coord.Start( npPixelSize );
 	m_pGraphics = pGraphics;
 
 	m_pScale = new Scale( m_pGraphics, & m_coord );
@@ -276,16 +274,17 @@ void NNetWindow::OnPaint( )
 
 		if ( m_pGraphics->StartFrame( GetWindowHandle(), hDC ) )
 		{
-			fPIXEL fPixWidth;
 			NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
-			
-			pModel->GetNeuron1( )->Draw( * m_pGraphics, m_coord );
-			pModel->GetPipeline()->Draw( * m_pGraphics, m_coord );
-
+			pModel->Apply2AllShapes
+			( 
+				[&]( Shape * const pShape ) 
+				{ 
+					pShape->Draw( * m_pGraphics, m_coord );	
+				} 
+			);
 			m_pReadBuffer->ReleaseReadBuffer( );
 
 			m_pScale->ShowScale( fPIXEL( static_cast<double>( GetClientWindowHeight().GetValue() ) ) );
-
 			m_pGraphics->RenderForegroundObjects( );
 
 			m_pGraphics->EndFrame( GetWindowHandle() );

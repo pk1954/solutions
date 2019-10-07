@@ -67,16 +67,25 @@ MicroMeter Pipeline::GetWidth( ) const
 	return m_width; 
 }
 
-mV Pipeline::Step( mV const mVinput )
+void Pipeline::Prepare( )
 {
-	mV mVcarry = mVinput;
+	m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
+}
+
+void Pipeline::Step( )
+{
+	mV mVcarry = m_mVinputBuffer;
 
 	for ( vector<mV>::iterator iter = m_potential.begin( ); iter != m_potential.end( ); iter++ )
 	{
 		std::swap( * iter, mVcarry );
 	}
+}
 
-	return mVcarry;
+mV Pipeline::GetNextOutput( ) const
+{
+	assert( m_potential.size() > 0 );
+	return m_potential.back();
 }
 
 bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const
@@ -109,7 +118,7 @@ void Pipeline::Draw
 
 	fPixelPoint const fStartPoint = coord.convert2fPixelPos( startPoint );
 	fPixelPoint const fEndPoint   = coord.convert2fPixelPos( GetEndPoint() );
-	COLORREF    const colorBorder = IsHighlighted( ) ? RGB( 0, 127, 127 )	: RGB( 0, 0, 255 );
+	COLORREF    const colorBorder = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 0, 255 );
 	Graphics.AddfPixelLine( fStartPoint, fEndPoint, fPixWidth, colorBorder );
 
 	///// draw interior

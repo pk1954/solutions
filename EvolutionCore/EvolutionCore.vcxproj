@@ -153,6 +153,7 @@
       <StructMemberAlignment>Default</StructMemberAlignment>
       <AdditionalOptions>
       </AdditionalOptions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
