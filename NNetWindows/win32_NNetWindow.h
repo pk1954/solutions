@@ -76,6 +76,7 @@ private:
 	virtual void OnSetCursor  ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
-	BOOL inObservedClientRect( LPARAM const );
+	BOOL          inObservedClientRect( LPARAM const );
 	Shape const * getShapeUnderPoint( PixelPoint const );
+	void          doPaint( );
 };

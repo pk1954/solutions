@@ -37,7 +37,7 @@ public:
 	virtual mV   GetNextOutput( )                                   const = 0;
 	virtual void Step( )                                                  = 0;
 	virtual void Prepare( )                                               = 0;
-	virtual void Move( MicroMeterPoint const & )                          = 0;
+	virtual void MoveTo( MicroMeterPoint const & )                        = 0;
 
 	void SetHighlightState( bool const bState )
 	{

@@ -53,7 +53,7 @@ public:
 	virtual void Prepare( );
 
 	virtual void Draw( GraphicsInterface &,	PixelCoordsFp const & ) const;
-	virtual void Move( MicroMeterPoint const & );
+	virtual void MoveTo( MicroMeterPoint const & );
 
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 	virtual mV   GetNextOutput( ) const;

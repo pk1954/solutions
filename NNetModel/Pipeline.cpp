@@ -40,10 +40,9 @@ void Pipeline::initialize( )
 	}
 }
 
-void Pipeline::Move( MicroMeterPoint const & delta )
+void Pipeline::MoveTo( MicroMeterPoint const & newCenter )
 {
-	m_pKnotStart ->Move( delta );
-	m_pKnotEnd   ->Move( delta );
+//	m_center = newCenter;
 }
 
 void Pipeline::SetStartKnot( Knot * pKnot )

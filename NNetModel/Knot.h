@@ -76,9 +76,9 @@ public:
 
 	virtual void Draw( GraphicsInterface &,	PixelCoordsFp const & ) const {};
 
-	virtual void Move( MicroMeterPoint const & delta )
+	virtual void MoveTo( MicroMeterPoint const & newCenter )
 	{
-		m_center += delta;
+		m_center = newCenter;
 	}
 
 protected:

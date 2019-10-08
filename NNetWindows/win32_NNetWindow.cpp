@@ -210,7 +210,7 @@ void NNetWindow::PulseSpeedDialog( )
 		Util::Pack2UINT64
 		( 
 			m_pShapeSelected->GetId().GetValue(), 
-			pulseSpeedNew.GetValue() 
+			(UINT32&)pulseSpeedNew.GetValue() 
 		) 
 	);
 }
@@ -227,15 +227,14 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	{
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
-			PixelPoint const ptDelta = ptCrsr - m_ptLast;
 			if ( pShape )
 				m_pNNetWorkThreadInterface->PostMoveShape
 				( 
 					pShape->GetId(), 
-					m_coord.convert2MicroMeterPoint( ptDelta ) 
+					m_coord.convert2MicroMeterPoint( ptCrsr ) 
 				);
 			else
-				moveNNet( ptDelta );
+				moveNNet( ptCrsr - m_ptLast );
 		}
 		m_ptLast = ptCrsr;
 		PostCommand2Application( IDM_REFRESH, 0 );
@@ -265,31 +264,33 @@ void NNetWindow::moveNNet( PixelPoint const ptDiff )
 	}
 }
 
+void NNetWindow::doPaint( )
+{
+	NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
+	pModel->Apply2AllShapes
+	( 
+		[&]( Shape * const pShape ) 
+		{ 
+			pShape->Draw( * m_pGraphics, m_coord );	
+		} 
+	);
+	m_pReadBuffer->ReleaseReadBuffer( );
+
+	m_pScale->ShowScale( fPIXEL( static_cast<float>( GetClientWindowHeight().GetValue() ) ) );
+	m_pGraphics->RenderForegroundObjects( );
+}
+
 void NNetWindow::OnPaint( )
 {
 	if ( IsWindowVisible() )
 	{
 		PAINTSTRUCT ps;
 		HDC const hDC = BeginPaint( &ps );
-
 		if ( m_pGraphics->StartFrame( GetWindowHandle(), hDC ) )
 		{
-			NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
-			pModel->Apply2AllShapes
-			( 
-				[&]( Shape * const pShape ) 
-				{ 
-					pShape->Draw( * m_pGraphics, m_coord );	
-				} 
-			);
-			m_pReadBuffer->ReleaseReadBuffer( );
-
-			m_pScale->ShowScale( fPIXEL( static_cast<float>( GetClientWindowHeight().GetValue() ) ) );
-			m_pGraphics->RenderForegroundObjects( );
-
+			doPaint( );
 			m_pGraphics->EndFrame( GetWindowHandle() );
 		}
-
 		(void)EndPaint( &ps );
 	}
 }

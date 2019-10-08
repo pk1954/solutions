@@ -80,12 +80,12 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	}
 	break;
 
-	case NNetWorkThreadMessage::Id::MOVE_SHAPE:
+	case NNetWorkThreadMessage::Id::MOVE_SHAPE_TO:
 	{
 		ShapeId         const id( CastToUnsignedLong( msg.wParam ) );
 		Shape               * pShape( m_pNNetModel->GetShape( id ) );
-		MicroMeterPoint const umPntDelta( Util::Unpack2MicroMeterPoint(msg.lParam) );
-		pShape->Move( umPntDelta );
+		MicroMeterPoint const newPos( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		pShape->MoveTo( newPos );
 	}
 	break;
 
