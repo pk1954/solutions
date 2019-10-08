@@ -76,6 +76,11 @@ public:
 
 	virtual void Draw( GraphicsInterface &,	PixelCoordsFp const & ) const {};
 
+	virtual void Move( MicroMeterPoint const & delta )
+	{
+		m_center += delta;
+	}
+
 protected:
 	mV m_potential;
 

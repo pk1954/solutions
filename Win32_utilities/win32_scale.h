@@ -25,7 +25,7 @@ private:
 	GraphicsInterface * m_pGraphics;
 	PixelCoordsFp      * m_pfPixelCoords;
 
-	void displayTicks( fPixelPoint const, fPixelPoint const, double const, int const );
-	void displayScaleNumber( fPixelPoint const, double const, int const );
-	void displayScaleText( fPixelPoint const, double const );
+	void displayTicks( fPixelPoint const, fPixelPoint const, float const, int const );
+	void displayScaleNumber( fPixelPoint const, float const, int const );
+	void displayScaleText( fPixelPoint const, float const );
 };

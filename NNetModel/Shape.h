@@ -33,10 +33,11 @@ public:
 	}
 
 	virtual void Draw( GraphicsInterface &,	PixelCoordsFp const & ) const = 0;
-	virtual bool IsPointInShape( MicroMeterPoint const & point )    const = 0;
+	virtual bool IsPointInShape( MicroMeterPoint const & )          const = 0;
 	virtual mV   GetNextOutput( )                                   const = 0;
 	virtual void Step( )                                                  = 0;
 	virtual void Prepare( )                                               = 0;
+	virtual void Move( MicroMeterPoint const & )                          = 0;
 
 	void SetHighlightState( bool const bState )
 	{

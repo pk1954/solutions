@@ -36,8 +36,8 @@ public:
 	PointType const operator*= (int       const i) { m_x *= i; m_y *= i; return * this; }
 	PointType const operator/= (int       const i) { m_x /= i; m_y /= i; return * this; }
 
-	PointType const operator*= (double    const d) { m_x *= d; m_y *= d; return * this; }
-	PointType const operator/= (double    const d) { m_x /= d; m_y /= d; return * this; }
+	PointType const operator*= (float     const d) { m_x *= d; m_y *= d; return * this; }
+	PointType const operator/= (float     const d) { m_x /= d; m_y /= d; return * this; }
 
 	PointType const operator- () const { return PointType { -m_x, -m_y }; };
 	PointType const operator+ () const { return PointType { +m_x, +m_y }; };
@@ -96,7 +96,7 @@ public:
 		return res; 
 	};
 
-	friend PointType const operator+ (PointType const a, double const d) 
+	friend PointType const operator+ (PointType const a, float const d) 
 	{ 
 		PointType res { a }; 
 		res += d; 
@@ -110,14 +110,14 @@ public:
 		return res; 
 	};
 
-	friend PointType const operator- (PointType const a, double const d) 
+	friend PointType const operator- (PointType const a, float const d) 
 	{ 
 		PointType res { a }; 
 		res -= d; 
 		return res; 
 	};
 
-	friend PointType const operator* (PointType const a,  double const d) 
+	friend PointType const operator* (PointType const a,  float const d) 
 	{ 
 		PointType res { a }; 
 		res *= d; 
@@ -131,7 +131,7 @@ public:
 		return res; 
 	};
 
-	friend PointType const operator/ (PointType const a, double const d) 
+	friend PointType const operator/ (PointType const a, float const d) 
 	{ 
 		PointType res { a }; 
 		res /= d; 

@@ -27,7 +27,7 @@ constexpr PIXEL operator"" _PIXEL( unsigned long long ull )
 
 /////////////////// fPIXEL ///////////////////////////////////
 
-using fPIXEL         = NamedType< double, struct fPIXEL_Parameter >;
+using fPIXEL         = NamedType< float, struct fPIXEL_Parameter >;
 using fPixelPoint    = PosType  < fPIXEL >;
 using fPixelRectSize = SizeType < fPIXEL >;
 using fPixelRect     = RectType < fPIXEL >;
@@ -37,14 +37,14 @@ static fPixelPoint const fPP_ZERO( fPixelPoint::ZERO_VAL() );   // compiler gene
 
 constexpr fPIXEL operator"" _fPIXEL( long double ld )
 {
-	return fPIXEL( static_cast<double>( ld ) );
+	return fPIXEL( CastToFloat( ld ) );
 }
 
 /////////////////// conversions ///////////////////////////////////
 
 static fPIXEL convert2fPIXEL( PIXEL const pixel )
 {
-	return fPIXEL( static_cast<double>( pixel.GetValue() ) );
+	return fPIXEL( CastToFloat( pixel.GetValue() ) );
 }
 
 static fPixelPoint convert2fPixelPoint( PixelPoint const pixPoint )

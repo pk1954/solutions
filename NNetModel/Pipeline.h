@@ -52,7 +52,8 @@ public:
 	virtual void Step( );
 	virtual void Prepare( );
 
-	void Draw( GraphicsInterface &,	PixelCoordsFp const & ) const;
+	virtual void Draw( GraphicsInterface &,	PixelCoordsFp const & ) const;
+	virtual void Move( MicroMeterPoint const & );
 
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 	virtual mV   GetNextOutput( ) const;

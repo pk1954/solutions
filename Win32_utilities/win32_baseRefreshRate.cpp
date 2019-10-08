@@ -52,7 +52,7 @@ void BaseRefreshRate::RefreshRateDialog( HWND const hwnd )
 	double dNewValue = StdDialogBox::Show
 	( 
 		hwnd,
-		static_cast<double>( GetRefreshRate( ).count() ),
+		static_cast<float>( GetRefreshRate( ).count() ),
 		L"Refresh Rate",
 		L"milliseconds"
 	);

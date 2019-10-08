@@ -77,4 +77,5 @@ private:
 	virtual void OnPaint( );
 
 	BOOL inObservedClientRect( LPARAM const );
+	Shape const * getShapeUnderPoint( PixelPoint const );
 };

@@ -13,7 +13,7 @@
 using std::wostringstream;
 using std::wstring;
 
-static double  m_dValue;     // the value to be edited in the dialog
+static float   m_fValue;     // the value to be edited in the dialog
 static wstring m_wstrUnit;   // the text to be displayed right of the edit box
 static wstring m_wstrTitle;  // the title bar text of the dialog
 
@@ -23,22 +23,22 @@ private:
 	friend static INT_PTR CALLBACK dialogProc( HWND const, UINT const, WPARAM const, LPARAM const );
 
 public:
-	static double Show
+	static float Show
 	( 
 		HWND    const hwndParent, 
-		double        dValue,
+		float         fValue,
 		wstring const wstrTitle,
 		wstring const wstrUnit
 	)
 	{
 		m_wstrTitle = wstrTitle;
 		m_wstrUnit  = wstrUnit;
-		m_dValue    = dValue;
+		m_fValue    = fValue;
 
 		if ( IDOK == DialogBox( nullptr, MAKEINTRESOURCE(IDD_STD_EDIT_DIALOG), hwndParent, dialogProc ) )
-			dValue = m_dValue;
+			fValue = m_fValue;
 
-		return dValue;
+		return fValue;
 	}
 
 private:
@@ -55,7 +55,7 @@ private:
 		case WM_INITDIALOG:
 		{
 			wostringstream m_wstrBuffer;
-			m_wstrBuffer << m_dValue;
+			m_wstrBuffer << m_fValue;
 			SetWindowText( hDlg, m_wstrTitle.c_str() );
 			SetWindowText( GetDlgItem( hDlg, IDD_EDIT_CTL ), m_wstrBuffer.str().c_str() );
 			SetWindowText( GetDlgItem( hDlg, IDC_STATIC ), m_wstrUnit.c_str() );
@@ -71,7 +71,7 @@ private:
 				if ( GetWindowText( GetDlgItem( hDlg, IDD_EDIT_CTL ), wBuffer, BUFLEN ) )
 				{
 					wstring wstrEdit( wBuffer );
-					m_dValue = stod( wstrEdit );
+					m_fValue = stof( wstrEdit );
 					EndDialog( hDlg, LOWORD(wParam) );
 					//else
 					//{

@@ -18,8 +18,7 @@ class PixelCoordsFp
 public:
 
 	PixelCoordsFp()
-	  : m_pixOffset ( 0_PIXEL ),
-		m_fPixOffset( 0.0_fPIXEL ),
+	  : m_fPixOffset( 0.0_fPIXEL ),
 		m_pixelSize ( DEFAULT_PIXEL_SIZE ),
 		m_bMoving   ( false ),
 		m_smoothMove( )
@@ -29,13 +28,13 @@ public:
 
 	fPIXEL convert2fPixel( MicroMeter const param ) const
 	{ 
-		MicroMeter res( ( param * 1000.0 ) / m_pixelSize.GetValue() );
+		MicroMeter res( ( param * 1000.0f ) / m_pixelSize.GetValue() );
 		return fPIXEL( res.GetValue() );
 	}
 
 	MicroMeter convert2MicroMeter( fPIXEL const fPixel ) const
 	{ 
-		return MicroMeter( fPixel.GetValue() * m_pixelSize.GetValue() / 1000.0 );
+		return MicroMeter( fPixel.GetValue() * m_pixelSize.GetValue() / 1000.0f );
 	}
 
 	fPixelPoint convert2fPixelSize( MicroMeterPoint const np ) const
@@ -72,11 +71,11 @@ public:
 		NanoMeter newPixelSize { m_pixelSize };
 		if ( bZoomIn )
 		{
-			newPixelSize = newPixelSize / 1.3;
+			newPixelSize = newPixelSize / 1.3f;
 		}
 		else
 		{
-			newPixelSize = newPixelSize * 1.3;
+			newPixelSize = newPixelSize * 1.3f;
 		}
 		return isValidPixelSize(newPixelSize) ? newPixelSize : m_pixelSize;
 	}
@@ -88,7 +87,7 @@ public:
 
 	fPIXEL convert2fPIXEL( PIXEL const p ) const
 	{
-		return fPIXEL( static_cast<double>( p.GetValue() ) );
+		return fPIXEL( static_cast<float>( p.GetValue() ) );
 	}
 
 	PixelPoint convert2PixelPoint( fPixelPoint const fPnt ) const
@@ -133,10 +132,9 @@ public:
 	{
 		auto fPntDelta = fPixelPoint
 		( 
-			fPIXEL( static_cast<double>(pntDelta.GetXvalue()) ), 
-			fPIXEL( static_cast<double>(pntDelta.GetYvalue()) )
+			fPIXEL( static_cast<float>(pntDelta.GetXvalue()) ), 
+			fPIXEL( static_cast<float>(pntDelta.GetYvalue()) )
 		);
-		m_pixOffset  -= pntDelta;
 		m_fPixOffset -= fPntDelta;
 	}
 
@@ -146,7 +144,7 @@ public:
 		fPixelRectSize  const fPntPixSize  // available size 
 	)
 	{
-		m_fPixOffset = calcCenterOffset( umPntCenter, fPixelPoint( fPntPixSize.GetX(), fPntPixSize.GetY() ) / 2 );
+		m_fPixOffset = calcCenterOffset( umPntCenter, fPixelPoint( fPntPixSize.GetX(), fPntPixSize.GetY() ) / 2.0f );
 	}
 
 private:
@@ -156,7 +154,6 @@ private:
 		return (MINIMUM_PIXEL_SIZE <= nmNewPixelSize) && (nmNewPixelSize <= MAXIMUM_PIXEL_SIZE); 
 	}
 
-	PixelPoint  m_pixOffset;
 	fPixelPoint m_fPixOffset;
 	NanoMeter   m_pixelSize;
 	SmoothMove  m_smoothMove;

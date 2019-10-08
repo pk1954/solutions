@@ -131,16 +131,18 @@ NanoMeter NNetWindow::GetPixelSize( ) const
 	return m_coord.GetPixelSize( );
 }
 
+Shape const * NNetWindow::getShapeUnderPoint( PixelPoint const pnt )
+{
+	MicroMeterPoint const   umCrsrPos = m_coord.convert2MicroMeterPoint( pnt );
+	NNetModel       const * pModel    = m_pReadBuffer->LockReadBuffer( );
+	Shape           const * pShape    = pModel->GetShapeUnderPoint( umCrsrPos );
+	m_pReadBuffer->ReleaseReadBuffer( );
+	return pShape;
+}
+
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
 {
-	PixelPoint      const   pp        = Util::POINT2PixelPoint( pntPos );
-	MicroMeterPoint const   umCrsrPos = m_coord.convert2MicroMeterPoint( pp );
-	Shape           const * pShape;
-	{
-		NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
-		pShape = pModel->GetShapeUnderPoint( umCrsrPos );
-		m_pReadBuffer->ReleaseReadBuffer( );
-	}
+	Shape const * pShape = getShapeUnderPoint( Util::POINT2PixelPoint( pntPos ) );
 	if ( pShape )
 	{
 		UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
@@ -172,10 +174,10 @@ void NNetWindow::PulseRateDialog( )
 {
 	InputNeuron const * pInputNeuron = Cast2InputNeuron( m_pShapeSelected );
 	Hertz       const   pulseRateOld = pInputNeuron->GetPulseFrequency();
-	double dNewValue = StdDialogBox::Show
+	float fNewValue = StdDialogBox::Show
 	( 
 		GetWindowHandle(),
-		static_cast<double>( pulseRateOld.GetValue() ),
+		static_cast<float>( pulseRateOld.GetValue() ),
 		L"Pulse rate",
 		L"Hertz"
 	);
@@ -185,7 +187,7 @@ void NNetWindow::PulseRateDialog( )
 		Util::Pack2UINT64
 		(
 			m_pShapeSelected->GetId().GetValue(), 
-			CastToUnsignedLong( dNewValue ) 
+			CastToUnsignedLong( fNewValue ) 
 		) 
 	);
 }
@@ -194,14 +196,14 @@ void NNetWindow::PulseSpeedDialog( )
 {
 	Pipeline    const * pPipeline     = Cast2Pipeline( m_pShapeSelected );
 	meterPerSec const   pulseSpeedOld = pPipeline->GetPulseSpeed();
-	double dNewValue = StdDialogBox::Show
+	float fNewValue = StdDialogBox::Show
 	( 
 		GetWindowHandle(),
-		static_cast<double>( pulseSpeedOld.GetValue() ),
+		static_cast<float>( pulseSpeedOld.GetValue() ),
 		L"Conduction velocity",
 		L"m/sec"
 	);
-	meterPerSec const pulseSpeedNew( dNewValue );
+	meterPerSec const pulseSpeedNew( fNewValue );
 	PostCommand2Application
 	( 
 		IDM_PULSE_SPEED, 
@@ -215,31 +217,33 @@ void NNetWindow::PulseSpeedDialog( )
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
-	PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
+	PixelPoint const   ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
+	Shape      const * pShape = getShapeUnderPoint( ptCrsr );
 
-	if ( wParam & MK_RBUTTON )           // Right mouse button: selection
+	if ( wParam & MK_RBUTTON )          // Right mouse button: selection
 	{
 	}
 	else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
 	{
-		if ( m_ptLast.IsNotNull() )  // last cursor pos stored in m_ptLast
+		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
-			moveNNet( ptCrsr - m_ptLast );
+			PixelPoint const ptDelta = ptCrsr - m_ptLast;
+			if ( pShape )
+				m_pNNetWorkThreadInterface->PostMoveShape
+				( 
+					pShape->GetId(), 
+					m_coord.convert2MicroMeterPoint( ptDelta ) 
+				);
+			else
+				moveNNet( ptDelta );
 		}
 		m_ptLast = ptCrsr;
 		PostCommand2Application( IDM_REFRESH, 0 );
 	}
 	else
 	{
-		MicroMeterPoint const   umCrsrPos = m_coord.convert2MicroMeterPoint( ptCrsr );
-		Shape           const * pShape;
-		{
-			NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
-			pShape = pModel->GetShapeUnderPoint( umCrsrPos );
-			m_pReadBuffer->ReleaseReadBuffer( );
-		}
-		ShapeId shapeId = pShape ? pShape->GetId() : NO_SHAPE;
-		PostCommand2Application( IDM_HIGHLIGHT, shapeId.GetValue() );
+		if ( pShape )
+			PostCommand2Application( IDM_HIGHLIGHT, pShape->GetId().GetValue() );
 
 		m_ptLast = PP_NULL;    // make m_ptLast invalid
 							   // no refresh! It would cause repaint for every mouse move.
@@ -280,7 +284,7 @@ void NNetWindow::OnPaint( )
 			);
 			m_pReadBuffer->ReleaseReadBuffer( );
 
-			m_pScale->ShowScale( fPIXEL( static_cast<double>( GetClientWindowHeight().GetValue() ) ) );
+			m_pScale->ShowScale( fPIXEL( static_cast<float>( GetClientWindowHeight().GetValue() ) ) );
 			m_pGraphics->RenderForegroundObjects( );
 
 			m_pGraphics->EndFrame( GetWindowHandle() );

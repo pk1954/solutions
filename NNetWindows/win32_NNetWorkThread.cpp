@@ -5,12 +5,14 @@
 #include "stdafx.h"
 #include <sstream> 
 #include "SCRIPT.H"
+#include "PixelTypes.h"
 #include "SlowMotionRatio.h"
 #include "EventInterface.h"
 #include "NNetParameters.h"
 #include "NNetReadBuffer.h"
 #include "NNetModel.h"
 #include "MoreTypes.h"
+#include "win32_util.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 #include "win32_actionTimer.h"
@@ -76,6 +78,15 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		Shape    * shape( m_pNNetModel->GetShape( id ) );
 		Pipeline * pPipeline = Cast2Pipeline( shape );
 		pPipeline->SetPulseSpeed( mPsSpeed );
+	}
+	break;
+
+	case NNetWorkThreadMessage::Id::MOVE_SHAPE:
+	{
+		ShapeId         const id( CastToUnsignedLong( msg.wParam ) );
+		Shape               * pShape( m_pNNetModel->GetShape( id ) );
+		MicroMeterPoint const umPntDelta( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		pShape->Move( umPntDelta );
 	}
 	break;
 

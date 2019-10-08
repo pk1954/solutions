@@ -34,6 +34,31 @@ namespace Util
 		return lParam & 0xffffffff;
 	}
 
+	union U64Bit
+	{
+		struct twoFloats
+		{
+			float floatA;
+			float floatB;
+		} f2;
+		UINT64 ui64;
+	};
+
+	inline UINT64 Pack2UINT64( MicroMeterPoint const pnt )
+	{
+		U64Bit u;
+		u.f2.floatA = pnt.GetXvalue();
+		u.f2.floatB = pnt.GetYvalue();
+		return u.ui64;
+	}
+
+	inline MicroMeterPoint Unpack2MicroMeterPoint( UINT64 ui64 )
+	{
+		U64Bit u;
+		u.ui64 = ui64;
+		return MicroMeterPoint( MicroMeter(u.f2.floatA), MicroMeter(u.f2.floatB) );
+	}
+
 	inline bool operator== ( RECT const & a, RECT const & b ) 
 	{ 
 		return ( a.left == b.left ) && ( a.top == b.top ) && ( a.right == b.right ) && ( a.bottom == b.bottom ); 

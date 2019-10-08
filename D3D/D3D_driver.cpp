@@ -395,9 +395,9 @@ void D3D_driver::AddfPixelLine
 
 	fPixelPoint fOrtho { fDelta.GetY(), -fDelta.GetX() };
 
-	double const dScaleFactor = fpixWidth.GetValue() / sqrt( fOrtho.GetXvalue() * fOrtho.GetXvalue() + fOrtho.GetYvalue() * fOrtho.GetYvalue() );
+	float const fScaleFactor = fpixWidth.GetValue() / sqrt( fOrtho.GetXvalue() * fOrtho.GetXvalue() + fOrtho.GetYvalue() * fOrtho.GetYvalue() );
 
-	fPixelPoint fOrthoScaled = fOrtho * dScaleFactor;
+	fPixelPoint fOrthoScaled = fOrtho * fScaleFactor;
 
 	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp1.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp1.GetYvalue() + fOrthoScaled.GetYvalue()), D3Dcolor );
 	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp1.GetXvalue() - fOrthoScaled.GetXvalue()), CastToFloat(fpp1.GetYvalue() - fOrthoScaled.GetYvalue()), D3Dcolor );

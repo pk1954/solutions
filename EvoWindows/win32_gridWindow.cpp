@@ -416,7 +416,7 @@ void GridWindow::newFieldSize
 	{
 		EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
 		m_EvoPixelCoords.CenterGrid( gpCenter, GetClRectSize( ) ); // center grid around gpCenter
-		m_DrawFrame.ResizeDrawFrame( pCore );                        // trigger DrawFrame to adapt font size etc.
+		m_DrawFrame.ResizeDrawFrame( pCore );                      // trigger DrawFrame to adapt font size etc.
 		PixelPoint const ppCrsr = GetRelativeCrsrPosition( );
 		if ( IsInClientRect( ppCrsr ) )
 			m_DrawFrame.SetHighlightPos( pCore, ppCrsr );  

@@ -35,6 +35,7 @@ public:
 	void PostHighlight     ( ShapeId const );
 	void PostPulseFrequency( ShapeId const, Hertz            const );
 	void PostPulseSpeed    ( ShapeId const, milliMeterPerSec const );
+	void PostMoveShape     ( ShapeId const, MicroMeterPoint  const );
 
 private:
 	NNetWorkThread * m_pNNetWorkThread;

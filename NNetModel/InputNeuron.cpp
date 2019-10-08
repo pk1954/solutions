@@ -31,8 +31,8 @@ mV InputNeuron::waveFunction( microseconds time ) const
 	assert( time >= 0ms );
 	if ( time <= PEAK_TIME )
 	{
-		double x = time.count() / 1000.0 - 1;
-		return PEAK_VOLTAGE * ( 1 - x * x );
+		float x = CastToFloat(time.count()) / 1000.0f - 1.0f;
+		return PEAK_VOLTAGE * ( 1.0f - x * x );
 	}
 	else 
 		return BASE_POTENTIAL;
@@ -87,7 +87,7 @@ void InputNeuron::Draw
 	( 
 		coord.convert2fPixelPos( GetPosition() ), 
 		color, 
-		coord.convert2fPixel( GetExtension() * 0.8 )
+		coord.convert2fPixel( GetExtension() * 0.8f )
 	);
 }
 

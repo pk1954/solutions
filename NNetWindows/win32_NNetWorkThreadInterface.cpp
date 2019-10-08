@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "assert.h"
 #include "Resource.h"
+#include "PixelTypes.h"
+#include "win32_util.h"
 #include "win32_script.h"
 #include "NNetReadBuffer.h"
 #include "win32_NNetWorkThread.h"
@@ -64,4 +66,11 @@ void NNetWorkThreadInterface::PostPulseSpeed( ShapeId const id, milliMeterPerSec
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << speed.GetValue() << endl;
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), id.GetValue(), speed.GetValue() );
+}
+
+void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const delta )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << delta << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::MOVE_SHAPE), id.GetValue(), Util::Pack2UINT64(delta) );
 }

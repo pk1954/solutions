@@ -40,6 +40,12 @@ void Pipeline::initialize( )
 	}
 }
 
+void Pipeline::Move( MicroMeterPoint const & delta )
+{
+	m_pKnotStart ->Move( delta );
+	m_pKnotEnd   ->Move( delta );
+}
+
 void Pipeline::SetStartKnot( Knot * pKnot )
 {
 	m_pKnotStart = pKnot;
@@ -93,9 +99,9 @@ bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const
 	MicroMeterPoint fDelta { GetEndPoint()  - GetStartPoint() };
 	MicroMeterPoint fOrtho { fDelta.GetY(), - fDelta.GetX()   };
 
-	double const dScaleFactor = m_width.GetValue() / sqrt( fOrtho.GetXvalue() * fOrtho.GetXvalue() + fOrtho.GetYvalue() * fOrtho.GetYvalue() );
+	float const fScaleFactor = m_width.GetValue() / sqrt( fOrtho.GetXvalue() * fOrtho.GetXvalue() + fOrtho.GetYvalue() * fOrtho.GetYvalue() );
 
-	MicroMeterPoint fOrthoScaled = fOrtho * dScaleFactor;
+	MicroMeterPoint fOrthoScaled = fOrtho * fScaleFactor;
 
 	MicroMeterPoint const corner1 = GetStartPoint() + fOrthoScaled;
 	MicroMeterPoint const corner2 = GetStartPoint() - fOrthoScaled;
@@ -110,7 +116,7 @@ void Pipeline::Draw
 	PixelCoordsFp const & coord
 ) const
 {
-	MicroMeter      const startOffset = m_pKnotStart->GetExtension( ) * 0.8;
+	MicroMeter      const startOffset = m_pKnotStart->GetExtension( ) * 0.8f;
 	MicroMeterPoint const startPoint  = GetStartPoint() + MicroMeterPoint( 0._MicroMeter, startOffset );
 	fPIXEL          const fPixWidth   = coord.convert2fPixel( m_width ) ;
 
@@ -124,18 +130,18 @@ void Pipeline::Draw
 	///// draw interior
 
 	MicroMeterPoint const vector        = GetEndPoint() - startPoint;
-	MicroMeterPoint const segmentVector = vector / static_cast<double>(m_potential.size());
+	MicroMeterPoint const segmentVector = vector / CastToFloat(m_potential.size());
 	fPixelPoint           fPixPoint1    = coord.convert2fPixelPos( startPoint );
 	MicroMeterPoint       point2        = startPoint + segmentVector;
 
 	for ( std::vector<mV>::const_iterator iter = m_potential.begin( ); iter != m_potential.end( ); iter++ )
 	{
 		assert( * iter <= PEAK_VOLTAGE );
-		mV              const mVperColLevel = PEAK_VOLTAGE / 255;
+		mV              const mVperColLevel = PEAK_VOLTAGE / 255.0f;
 		int             const iLevel        = CastToInt( * iter / mVperColLevel );
 		fPixelPoint     const fPixPoint2    = coord.convert2fPixelPos( point2 );
 		COLORREF        const color         = RGB( iLevel, 0, 0 );
-		Graphics.AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth * 0.6, color );
+		Graphics.AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth * 0.6f, color );
 		point2    += segmentVector; 
 		fPixPoint1 = fPixPoint2;
 	}

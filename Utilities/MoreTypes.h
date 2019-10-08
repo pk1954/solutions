@@ -13,33 +13,33 @@ using std::chrono::microseconds;
 
 ////////////// MIcroMeter /////////////////////////////////////
 
-using MicroMeter = NamedType< double, struct MicroMeter_Parameter >;
+using MicroMeter = NamedType< float, struct MicroMeter_Parameter >;
 
 constexpr const MicroMeter operator"" _MicroMeter( const long double d )
 {
-	return MicroMeter( d );
+	return MicroMeter( CastToFloat( d ) );
 }
 
 MicroMeter const MAX_MICRO_METER{ 1e7_MicroMeter };  // 10 meter
 
 ////////////// NanoMeter /////////////////////////////////////
 
-using NanoMeter = NamedType< double, struct NanoMeter_Parameter >;
+using NanoMeter = NamedType< float, struct NanoMeter_Parameter >;
 
 constexpr const NanoMeter operator"" _NanoMeter( const long double d )
 {
-	return NanoMeter( d );
+	return NanoMeter( CastToFloat( d ) );
 }
 
 MicroMeter const MAX_NANO_METER{ 1e10_MicroMeter };  // 10 meter
 
 ////////////// mV /////////////////////////////////////
 
-using mV = NamedType<double, struct mV_Parameter >;
+using mV = NamedType<float, struct mV_Parameter >;
 
 constexpr const mV operator"" _mV( const long double d )
 { 
-	return mV( d );
+	return mV( CastToFloat( d ) );
 }
 
 ////////////// PERCENT /////////////////////////////////////
@@ -77,11 +77,11 @@ using NNetPointBoolFunc = std::function<bool (MicroMeterPoint const)>;
 
 ////////////// meterPerSec /////////////////////////////////////
 
-using meterPerSec = NamedType<double, struct meterPerSec_Parameter >;
+using meterPerSec = NamedType<float, struct meterPerSec_Parameter >;
 
 constexpr const meterPerSec operator"" _meterPerSec( const long double d )
 { 
-	return meterPerSec( d );
+	return meterPerSec( CastToFloat( d ) );
 }
 
 static MicroMeter CoveredDistance( meterPerSec const speed, microseconds const time )
@@ -91,14 +91,14 @@ static MicroMeter CoveredDistance( meterPerSec const speed, microseconds const t
 
 ////////////// milliMeterPerSec - used in messages (LPARAM) ///////////////////////
 
-using milliMeterPerSec = NamedType<long, struct milliMeterPerSec_Parameter >;
+using milliMeterPerSec = NamedType<long, struct milliMeterPerSec_Parameter>;
 
 static milliMeterPerSec Convert2milliMeterPerSec( meterPerSec const mPs )
 {
-	return milliMeterPerSec( CastToLong( mPs.GetValue() * 1000.0 ) );
+	return milliMeterPerSec( CastToLong( mPs.GetValue() * 1000.0f ) );
 }
 
 static meterPerSec Convert2meterPerSec( milliMeterPerSec const mmPs )
 {
-	return meterPerSec( static_cast<double>( mmPs.GetValue() / 1000.0 ) );
+	return meterPerSec( static_cast<float>( mmPs.GetValue() / 1000.0f ) );
 }
