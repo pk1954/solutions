@@ -22,17 +22,6 @@ constexpr const MicroMeter operator"" _MicroMeter( const long double d )
 
 MicroMeter const MAX_MICRO_METER{ 1e7_MicroMeter };  // 10 meter
 
-////////////// NanoMeter /////////////////////////////////////
-
-using NanoMeter = NamedType< float, struct NanoMeter_Parameter >;
-
-constexpr const NanoMeter operator"" _NanoMeter( const long double d )
-{
-	return NanoMeter( CastToFloat( d ) );
-}
-
-MicroMeter const MAX_NANO_METER{ 1e10_MicroMeter };  // 10 meter
-
 ////////////// mV /////////////////////////////////////
 
 using mV = NamedType<float, struct mV_Parameter >;

@@ -101,14 +101,14 @@ void NNetWindow::Zoom( bool const bZoomIn  )
 
 void NNetWindow::newPixelSize
 ( 
-	NanoMeter const nmPixelSize, 
-	MicroMeterPoint const npCenter 
+	MicroMeter      const pixelSize, 
+	MicroMeterPoint const center 
 )
 {
-	if ( m_coord.SetPixelSize( nmPixelSize ) )
+	if ( m_coord.SetPixelSize( pixelSize ) )
 	{
 		NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
-		m_coord.CenterSimulationArea( npCenter, convert2fPixelRectSize( GetClRectSize( ) ) ); 
+		m_coord.CenterSimulationArea( center, convert2fPixelRectSize( GetClRectSize( ) ) ); 
 		m_pReadBuffer->ReleaseReadBuffer( );
 		Notify( TRUE );     // cause immediate repaint
 	}
@@ -118,15 +118,15 @@ void NNetWindow::newPixelSize
 	}
 }
 
-void NNetWindow::SetPixelSize( NanoMeter const nmNewSize )
+void NNetWindow::SetPixelSize( MicroMeter const newSize )
 {
-	PixelPoint      const pixPoint  = GetClRectCenter( );
-	MicroMeterPoint const umCenter  = m_coord.convert2MicroMeterPoint( pixPoint );
-	m_coord.SetPixelSize( nmNewSize );
-	newPixelSize( nmNewSize, umCenter );
+	PixelPoint      const pixPoint = GetClRectCenter( );
+	MicroMeterPoint const center   = m_coord.convert2MicroMeterPoint( pixPoint );
+	m_coord.SetPixelSize( newSize );
+	newPixelSize( newSize, center );
 }
 
-NanoMeter NNetWindow::GetPixelSize( ) const
+MicroMeter NNetWindow::GetPixelSize( ) const
 {
 	return m_coord.GetPixelSize( );
 }
@@ -298,16 +298,16 @@ void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 {
 	int        iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;
 	BOOL const bDirection = ( iDelta > 0 );
-	NanoMeter  nmNewPixelSize;
+	MicroMeter  newPixelSize;
 
 	iDelta = abs( iDelta );
 
 	while ( --iDelta >= 0 )
 	{
-		nmNewPixelSize = m_coord.ComputeNewPixelSize( bDirection );
+		newPixelSize = m_coord.ComputeNewPixelSize( bDirection );
 	}
 
-	PostCommand2Application( IDM_SET_ZOOM, static_cast<LPARAM>( nmNewPixelSize.GetValue() ) ); 
+	PostCommand2Application( IDM_SET_ZOOM, (LPARAM &)newPixelSize.GetValue() ); 
 }
 
 void NNetWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )

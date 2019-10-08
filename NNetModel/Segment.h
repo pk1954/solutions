@@ -10,28 +10,28 @@ class Segment
 {
 public:
 	Segment( )
-	:	m_npStart( NP_NULL ),
-		m_npEnd  ( NP_NULL ),
-		m_nmWidth( 0 )
+	:	m_startPnt( NP_NULL ),
+		m_endPnt  ( NP_NULL ),
+		m_width   ( 0.0f )
 	{}
 
 	Segment
 	(  
-		MicroMeterPoint const npStart,
-		MicroMeterPoint const npEnd,
-		MicroMeter const nmWidth
+		MicroMeterPoint const startPnt,
+		MicroMeterPoint const endPnt,
+		MicroMeter      const width
 	) :
-		m_npStart( npStart ),
-		m_npEnd  ( npEnd   ),
-		m_nmWidth( nmWidth )
+		m_startPnt( startPnt ),
+		m_endPnt  ( endPnt   ),
+		m_width   ( width )
 	{}
 
-	MicroMeterPoint GetStartPoint( ) const { return m_npStart; }
-	MicroMeterPoint GetEndPoint  ( ) const { return m_npEnd; }
-	MicroMeter      GetWidth     ( ) const { return m_nmWidth; }
+	MicroMeterPoint GetStartPoint( ) const { return m_startPnt; }
+	MicroMeterPoint GetEndPoint  ( ) const { return m_endPnt; }
+	MicroMeter      GetWidth     ( ) const { return m_width; }
 
 private:
-	MicroMeterPoint m_npStart;
-	MicroMeterPoint m_npEnd;
-	MicroMeter      m_nmWidth;
+	MicroMeterPoint m_startPnt;
+	MicroMeterPoint m_endPnt;
+	MicroMeter      m_width;
 };

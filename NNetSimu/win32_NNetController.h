@@ -33,7 +33,7 @@ public:
 	bool ProcessModelCommand( int const, LPARAM const );
 
 private:
-	void setSizeTrackBar( NanoMeter const );
+	void setSizeTrackBar( MicroMeter const );
 
 	NNetAppWindow           * m_pAppWindow;
 	NNetWindow              * m_pNNetWindow;

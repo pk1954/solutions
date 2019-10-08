@@ -83,7 +83,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
-		(void)m_pNNetWindow->SetPixelSize( NanoMeter( CastToFloat(lParam) ) );
+		(void)m_pNNetWindow->SetPixelSize( MicroMeter( CastToFloat(lParam) ) );
 		break;
 
 	case IDM_FIT_ZOOM:
@@ -98,8 +98,8 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_SET_ZOOM:
-		m_pNNetWindow->SetPixelSize( NanoMeter( CastToFloat(lParam) ) );
-		setSizeTrackBar( NanoMeter(CastToFloat(lParam)) );
+		m_pNNetWindow->SetPixelSize( MicroMeter((float &)lParam) );
+		setSizeTrackBar( MicroMeter((float &)lParam) );
 		break;
 
 	case IDM_REFRESH:
@@ -152,7 +152,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	return false;
 }
 
-void NNetController::setSizeTrackBar( NanoMeter const nmPixelSize )
+void NNetController::setSizeTrackBar( MicroMeter const pixelSize )
 { 
-	m_pStatusBar->SetTrackBarPos( IDM_ZOOM_TRACKBAR, CastToLong( LogarithmicTrackbar::Value2TrackbarD( nmPixelSize.GetValue() ) ) ); 
+	m_pStatusBar->SetTrackBarPos( IDM_ZOOM_TRACKBAR, CastToLong( LogarithmicTrackbar::Value2TrackbarD( pixelSize.GetValue() ) ) ); 
 }

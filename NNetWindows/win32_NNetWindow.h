@@ -43,8 +43,8 @@ public:
 	void      Zoom( bool const );
 	void      PulseRateDialog( );
 	void      PulseSpeedDialog( );
-	void      SetPixelSize( NanoMeter const );
-	NanoMeter GetPixelSize( ) const;
+	void      SetPixelSize( MicroMeter const );
+	MicroMeter GetPixelSize( ) const;
 
 private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
@@ -63,7 +63,7 @@ private:
 	PixelCoordsFp m_coord;
 	PixelPoint    m_ptLast;	 	   // Last cursor position during selection 
 
-	void newPixelSize( NanoMeter const, MicroMeterPoint const );
+	void newPixelSize( MicroMeter const, MicroMeterPoint const );
 	void moveNNet( PixelPoint const );
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const );
