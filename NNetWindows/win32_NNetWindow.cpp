@@ -232,8 +232,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	}
 	else
 	{
-		if ( pShape )
-			PostCommand2Application( IDM_HIGHLIGHT, pShape->GetId().GetValue() );
+		PostCommand2Application( IDM_HIGHLIGHT, (pShape ? pShape->GetId() : NO_SHAPE).GetValue() );
 
 		m_ptLast = PP_NULL;    // make m_ptLast invalid
 							   // no refresh! It would cause repaint for every mouse move.
