@@ -68,16 +68,16 @@ public:
 
 	MicroMeter ComputeNewPixelSize( bool const bZoomIn ) const  // does not modify field size
 	{
-		MicroMeter newPixelSize { m_pixelSize };
+		MicroMeter newSize { m_pixelSize };
 		if ( bZoomIn )
 		{
-			newPixelSize = newPixelSize / 1.3f;
+			newSize /= 1.3f;
 		}
 		else
 		{
-			newPixelSize = newPixelSize * 1.3f;
+			newSize *= 1.3f;
 		}
-		return isValidPixelSize(newPixelSize) ? newPixelSize : m_pixelSize;
+		return isValidPixelSize(newSize) ? newSize : m_pixelSize;
 	}
 
 	PIXEL convert2PIXEL( fPIXEL const fP ) const
@@ -107,7 +107,7 @@ public:
 	}
 
 	fPixelPoint calcCenterOffset            // calculate new pixel offset,
-	(                                       // which moves gridRect to center of window.
+	(                                       // which keeps umPntCenter at fPixCenter
 		MicroMeterPoint const umPntCenter,  // do not yet set m_fPixOffset to this value!
 		fPixelPoint     const fPixCenter 
 	)  
@@ -120,7 +120,7 @@ public:
 	
 	//////// manipulation functions ////////
 
-	bool SetPixelSize( MicroMeter const pixelSize )
+	bool ZoomNNet( MicroMeter const pixelSize )
 	{
 		bool bValid = isValidPixelSize( pixelSize );
 		if ( bValid )
@@ -141,17 +141,17 @@ public:
 	void CenterSimulationArea
 	( 
 		MicroMeterPoint const umPntCenter,   
-		fPixelRectSize  const fPntPixSize  // available size 
+		fPixelPoint     const fPntPix  
 	)
 	{
-		m_fPixOffset = calcCenterOffset( umPntCenter, fPixelPoint( fPntPixSize.GetX(), fPntPixSize.GetY() ) / 2.0f );
+		m_fPixOffset = calcCenterOffset( umPntCenter, fPntPix );
 	}
 
 private:
 
-	bool isValidPixelSize( MicroMeter const newPixelSize ) const
+	bool isValidPixelSize( MicroMeter const newSize ) const
 	{
-		return (MINIMUM_PIXEL_SIZE <= newPixelSize) && (newPixelSize <= MAXIMUM_PIXEL_SIZE); 
+		return (MINIMUM_PIXEL_SIZE <= newSize) && (newSize <= MAXIMUM_PIXEL_SIZE); 
 	}
 
 	fPixelPoint m_fPixOffset;

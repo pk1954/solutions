@@ -83,7 +83,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
-		(void)m_pNNetWindow->SetPixelSize( MicroMeter( CastToFloat(lParam) ) );
+		m_pNNetWindow->SetPixelSize( MicroMeter((float &)lParam) );
 		break;
 
 	case IDM_FIT_ZOOM:
@@ -99,7 +99,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 
 	case IDM_SET_ZOOM:
 		m_pNNetWindow->SetPixelSize( MicroMeter((float &)lParam) );
-		setSizeTrackBar( MicroMeter((float &)lParam) );
+		setSizeTrackBar( MicroMeter((float &)lParam));
 		break;
 
 	case IDM_REFRESH:

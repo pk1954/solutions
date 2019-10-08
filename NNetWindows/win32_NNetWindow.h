@@ -40,10 +40,10 @@ public:
 	~NNetWindow( );
 
 //	void      Size( );
-	void      Zoom( bool const );
-	void      PulseRateDialog( );
-	void      PulseSpeedDialog( );
-	void      SetPixelSize( MicroMeter const );
+	void       Zoom( bool const );
+	void       PulseRateDialog( );
+	void       PulseSpeedDialog( );
+	void       SetPixelSize( MicroMeter const );
 	MicroMeter GetPixelSize( ) const;
 
 private:
@@ -63,7 +63,6 @@ private:
 	PixelCoordsFp m_coord;
 	PixelPoint    m_ptLast;	 	   // Last cursor position during selection 
 
-	void newPixelSize( MicroMeter const, MicroMeterPoint const );
 	void moveNNet( PixelPoint const );
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const );

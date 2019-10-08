@@ -99,16 +99,15 @@ void NNetWindow::Zoom( bool const bZoomIn  )
 	SetPixelSize( m_coord.ComputeNewPixelSize( bZoomIn ) );
 }
 
-void NNetWindow::newPixelSize
-( 
-	MicroMeter      const pixelSize, 
-	MicroMeterPoint const center 
-)
+void NNetWindow::SetPixelSize( MicroMeter const newSize )
 {
-	if ( m_coord.SetPixelSize( pixelSize ) )
+	PixelPoint      const pixPointCenter  = GetRelativeCrsrPosition();  //GetClRectCenter( );
+	fPixelPoint     const fPixPointCenter = convert2fPixelPoint( pixPointCenter );
+	MicroMeterPoint const umPointcenter   = m_coord.convert2MicroMeterPoint( fPixPointCenter );
+	if ( m_coord.ZoomNNet( newSize ) ) 
 	{
 		NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
-		m_coord.CenterSimulationArea( center, convert2fPixelRectSize( GetClRectSize( ) ) ); 
+		m_coord.CenterSimulationArea( umPointcenter, fPixPointCenter ); 
 		m_pReadBuffer->ReleaseReadBuffer( );
 		Notify( TRUE );     // cause immediate repaint
 	}
@@ -116,14 +115,6 @@ void NNetWindow::newPixelSize
 	{
 		MessageBeep( MB_ICONWARNING );
 	}
-}
-
-void NNetWindow::SetPixelSize( MicroMeter const newSize )
-{
-	PixelPoint      const pixPoint = GetClRectCenter( );
-	MicroMeterPoint const center   = m_coord.convert2MicroMeterPoint( pixPoint );
-	m_coord.SetPixelSize( newSize );
-	newPixelSize( newSize, center );
 }
 
 MicroMeter NNetWindow::GetPixelSize( ) const
@@ -299,16 +290,16 @@ void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 {
 	int        iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;
 	BOOL const bDirection = ( iDelta > 0 );
-	MicroMeter  newPixelSize;
+	MicroMeter newSize;
 
 	iDelta = abs( iDelta );
 
 	while ( --iDelta >= 0 )
 	{
-		newPixelSize = m_coord.ComputeNewPixelSize( bDirection );
+		newSize = m_coord.ComputeNewPixelSize( bDirection );
 	}
 
-	PostCommand2Application( IDM_SET_ZOOM, (LPARAM &)newPixelSize.GetValue() ); 
+	PostCommand2Application( IDM_SET_ZOOM, (LPARAM &)newSize.GetValue() ); 
 }
 
 void NNetWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )
