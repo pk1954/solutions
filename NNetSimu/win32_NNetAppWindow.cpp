@@ -98,7 +98,7 @@ void NNetAppWindow::Start( )
 	m_D3d_driver.Initialize
 	( 
 		m_hwndApp, 
-		200, 
+		200,   // TODO ????
 		100, 
 		FALSE 
 	);

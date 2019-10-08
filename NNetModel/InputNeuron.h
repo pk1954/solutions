@@ -22,7 +22,7 @@ public:
 
 	void    Trigger( );
 	PERCENT GetFillLevel( ) const;
-	void    Draw( GraphicsInterface &,	PixelCoordsFp const & ) const;
+	void    Draw( GraphicsInterface &, PixelCoordsFp const & ) const;
 
 	Hertz GetPulseFrequency( ) const
 	{

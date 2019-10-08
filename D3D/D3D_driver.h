@@ -33,6 +33,7 @@ public:
 	virtual void      ShutDown( );
 	virtual void	  AddfPixelLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const );
 	virtual void      AddRect( fPixelPoint const, COLORREF const, fPIXEL const );
+	virtual void      DrawCircle( fPixelPoint const, COLORREF const, fPIXEL const );
 
 private:   
 	D3dSystem             * m_d3d;
@@ -42,7 +43,8 @@ private:
     ID3DXFont             * m_id3dx_font;
 	VertexBuffer          * m_pVertBufStripMode;
 	VertexBuffer          * m_pVertBufPrimitives;
-    DWORD                   m_dwAlphaBlendable;
+	VertexBuffer          * m_pVertBufFan;
+	DWORD                   m_dwAlphaBlendable;
     DWORD                   m_dwSrcBlend;
     DWORD                   m_dwDstBlend;
 

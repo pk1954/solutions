@@ -144,4 +144,8 @@ void Pipeline::Draw
 		point2    += segmentVector; 
 		fPixPoint1 = fPixPoint2;
 	}
+
+	///// draw end connector
+
+	Graphics.DrawCircle( fEndPoint, RGB( 255,  50,  50 ), fPixWidth );
 }

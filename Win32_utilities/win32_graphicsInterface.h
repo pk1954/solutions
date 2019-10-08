@@ -30,6 +30,7 @@ public:
 
 	virtual void	  AddfPixelLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const ) = 0;
 	virtual void      AddRect( fPixelPoint const, COLORREF const, fPIXEL const ) = 0;
+	virtual void      DrawCircle( fPixelPoint const, COLORREF const, fPIXEL const ) = 0;
 
 	void SetStripMode( tBoolOp const bOp ) 
 	{ 

@@ -64,6 +64,7 @@ void D3D_driver::Initialize
 
 	m_pVertBufStripMode  = new VertexBuffer( m_d3d->GetMaxNrOfPrimitives() );
     m_pVertBufPrimitives = new VertexBuffer( m_d3d->GetNrOfVertices() );
+	m_pVertBufFan        = new VertexBuffer( 100 );   // TODO: avoid magic number
 
 	m_d3d_vertexBuffer = m_d3d->CreateVertexBuffer( );
 
@@ -417,3 +418,53 @@ void D3D_driver::AddRect( fPixelPoint const ptPos, COLORREF const color, fPIXEL 
 	addRectangle( fPtPosx, fPtPosy, D3Dcolor, CastToFloat(fPixSize.GetValue()) );
 }
 
+void D3D_driver::DrawCircle( fPixelPoint const ptPos, COLORREF const color, fPIXEL const fPixRadius )
+{
+	static const int   CIRCLE_RESOLUTION = 24;
+	static const float STEP = 2.0f * D3DX_PI / CIRCLE_RESOLUTION;
+
+	D3DCOLOR const D3Dcolor = COLORREFtoD3DCOLOR( 255, color );
+	HRESULT hres;
+
+	m_pVertBufStripMode->AddVertex
+	(
+		ptPos.GetXvalue() - fPixRadius.GetValue(),
+		ptPos.GetYvalue(),
+		D3Dcolor 
+	);
+
+	for ( float f = 0.0; f <= STEP * CIRCLE_RESOLUTION / 2; f += STEP )
+	{
+		float fX = fPixRadius.GetValue() * cos( f );
+		float fY = fPixRadius.GetValue() * sin( f );
+		m_pVertBufStripMode->AddVertex
+		(
+			ptPos.GetXvalue() + fX, 
+			ptPos.GetYvalue() + fY,	
+			D3Dcolor 
+		);
+
+		m_pVertBufStripMode->AddVertex
+		(
+			ptPos.GetXvalue() + fX, 
+			ptPos.GetYvalue() - fY,	
+			D3Dcolor 
+		);
+	}
+
+	m_pVertBufStripMode->AddVertex
+	(
+		ptPos.GetXvalue() + fPixRadius.GetValue(),
+		ptPos.GetYvalue(),
+		D3Dcolor 
+	);
+
+	{
+		hres = m_pVertBufStripMode->LoadVertices( m_d3d_vertexBuffer, m_d3d_device ); 
+		assert( hres == D3D_OK ); 
+
+		hres = m_d3d_device->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, CIRCLE_RESOLUTION ); 
+
+		m_pVertBufStripMode->ResetVertexBuffer();
+	}
+}
