@@ -72,12 +72,11 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 
 	case NNetWorkThreadMessage::Id::PULSE_SPEED:
 	{
-		ShapeId          const id( CastToUnsignedLong( msg.wParam ) );
-		milliMeterPerSec const mmPsSpeed( CastToLong( msg.lParam ) );
-		meterPerSec      const mPsSpeed( Convert2meterPerSec( mmPsSpeed ) );
-		Shape    * shape( m_pNNetModel->GetShape( id ) );
-		Pipeline * pPipeline = Cast2Pipeline( shape );
-		pPipeline->SetPulseSpeed( mPsSpeed );
+		ShapeId     const id   ( CastToUnsignedLong( msg.wParam ) );
+		meterPerSec const speed( (float&) msg.lParam );
+		Shape           * shape( m_pNNetModel->GetShape( id ) );
+		Pipeline        * pPipe( Cast2Pipeline( shape ) );
+		pPipe->SetPulseSpeed( speed );
 	}
 	break;
 

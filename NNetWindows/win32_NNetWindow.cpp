@@ -210,7 +210,7 @@ void NNetWindow::PulseSpeedDialog( )
 		Util::Pack2UINT64
 		( 
 			m_pShapeSelected->GetId().GetValue(), 
-			Convert2milliMeterPerSec(pulseSpeedNew).GetValue() 
+			pulseSpeedNew.GetValue() 
 		) 
 	);
 }

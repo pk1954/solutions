@@ -61,11 +61,11 @@ void NNetWorkThreadInterface::PostPulseFrequency( ShapeId const id, Hertz const 
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_FREQ), id.GetValue(), freq.GetValue() );
 }
 
-void NNetWorkThreadInterface::PostPulseSpeed( ShapeId const id, milliMeterPerSec const speed )
+void NNetWorkThreadInterface::PostPulseSpeed( ShapeId const id, meterPerSec const speed )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << speed.GetValue() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), id.GetValue(), speed.GetValue() );
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), id.GetValue(), (LPARAM &)speed.GetValue() );
 }
 
 void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const delta )

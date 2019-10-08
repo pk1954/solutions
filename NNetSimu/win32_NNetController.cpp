@@ -139,9 +139,10 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDM_PULSE_SPEED:
 	{
-		ShapeId          const shapeId{ Util::HiPart( lParam ) };
-		milliMeterPerSec const mmPs   { CastToLong( Util::LoPart( lParam ) ) };
-		m_pNNetWorkThreadInterface->PostPulseSpeed( shapeId, mmPs );
+		ShapeId     const shapeId{ Util::HiPart( lParam ) };
+		UINT32      const loPart { Util::LoPart( lParam ) };
+		meterPerSec const mPs    { (float &)loPart };
+		m_pNNetWorkThreadInterface->PostPulseSpeed( shapeId, mPs );
 	}
 	break;
 

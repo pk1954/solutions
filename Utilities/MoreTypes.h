@@ -11,7 +11,7 @@
 
 using std::chrono::microseconds;
 
-////////////// MIcroMeter /////////////////////////////////////
+////////////// MicroMeter /////////////////////////////////////
 
 using MicroMeter = NamedType< float, struct MicroMeter_Parameter >;
 
@@ -76,18 +76,4 @@ constexpr const meterPerSec operator"" _meterPerSec( const long double d )
 static MicroMeter CoveredDistance( meterPerSec const speed, microseconds const time )
 {
 	return MicroMeter( speed.GetValue() * time.count( ) );
-}
-
-////////////// milliMeterPerSec - used in messages (LPARAM) ///////////////////////
-
-using milliMeterPerSec = NamedType<long, struct milliMeterPerSec_Parameter>;
-
-static milliMeterPerSec Convert2milliMeterPerSec( meterPerSec const mPs )
-{
-	return milliMeterPerSec( CastToLong( mPs.GetValue() * 1000.0f ) );
-}
-
-static meterPerSec Convert2meterPerSec( milliMeterPerSec const mmPs )
-{
-	return meterPerSec( static_cast<float>( mmPs.GetValue() / 1000.0f ) );
 }
