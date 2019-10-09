@@ -15,9 +15,10 @@ using namespace std::chrono;
 InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
   : Knot( upCenter, tShapeType::inputNeuron ),
 	m_timeSinceLastPulse( microseconds( 0 ) ),
-	m_pulseFrequency( 0_Hertz )
+	m_pulseFrequency( 0_Hertz ),
+	m_pulseDuration( 0ms )
 { 
-	SetPulseFrequency( 50_Hertz );
+	SetPulseFrequency( 0_Hertz );  // set m_pulseDuration to correct value
 	m_timeSinceLastPulse = PEAK_TIME;
 }
 
@@ -48,7 +49,7 @@ void InputNeuron::Step( )
 	m_timeSinceLastPulse += TIME_RESOLUTION;
 
 	if ( m_timeSinceLastPulse >= m_pulseDuration )
-		Trigger();
+		m_timeSinceLastPulse = microseconds( 0 );
 }
 
 mV InputNeuron::GetNextOutput( ) const
@@ -61,7 +62,7 @@ mV InputNeuron::GetNextOutput( ) const
 
 PERCENT InputNeuron::GetFillLevel( ) const
 {
-	return PERCENT( CastToShort((m_timeSinceLastPulse * 100 ) / m_pulseDuration ) );
+	return PERCENT( CastToShort( (m_timeSinceLastPulse * 100) / m_pulseDuration ) );
 }
 
 void InputNeuron::Draw

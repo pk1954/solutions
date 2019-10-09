@@ -151,6 +151,8 @@ void NNetAppWindow::Start( )
 	}
 
 //	m_pNNetEditorWindow->Show( TRUE );
+
+	PostCommand2Application( IDM_RUN, true );
 }
 
 void NNetAppWindow::Stop()

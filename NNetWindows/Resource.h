@@ -27,6 +27,8 @@
 
 #define IDM_MOVE_SHAPE          300
 
+#define IDD_TRIGGER             350
+
 #define IDM_WINDOWS_BASE        400
 #define IDM_MINI_WINDOW         (IDM_WINDOWS_BASE +  3)
 #define IDM_EDIT_WINDOW         (IDM_WINDOWS_BASE +  5)

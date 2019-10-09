@@ -26,7 +26,8 @@ class Shape
 {
 public:
 	Shape( tShapeType const type )
-	  :	m_bHighlighted( false ),
+	  :	m_mVinputBuffer( 0._mV ),
+		m_bHighlighted( false ),
 		m_identifier( -1 ),
 		m_type( type )
 	{
@@ -63,6 +64,9 @@ public:
 	{
 		return m_type;
 	}
+
+protected:
+	mV m_mVinputBuffer;
 
 private:
 	ShapeId    m_identifier;

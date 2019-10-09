@@ -84,6 +84,7 @@ private:
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const );
 
+	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const ) {};
 	virtual void OnMouseWheel ( WPARAM const, LPARAM const );
 	virtual void OnMouseMove  ( WPARAM const, LPARAM const );
 	virtual BOOL OnCommand    ( WPARAM const, LPARAM const );

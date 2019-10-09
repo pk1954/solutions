@@ -67,12 +67,13 @@ private:
 
 	virtual void AddContextMenuEntries( HMENU const, POINT const );
 
-	virtual void OnMouseWheel ( WPARAM const, LPARAM const );
-	virtual void OnMouseMove  ( WPARAM const, LPARAM const );
-	virtual BOOL OnCommand    ( WPARAM const, LPARAM const );
-	virtual void OnLButtonDown( WPARAM const, LPARAM const );
-	virtual void OnLButtonUp  ( WPARAM const, LPARAM const );
-	virtual void OnSetCursor  ( WPARAM const, LPARAM const );
+	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const );
+	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
+	virtual void OnMouseMove         ( WPARAM const, LPARAM const );
+	virtual BOOL OnCommand           ( WPARAM const, LPARAM const );
+	virtual void OnLButtonDown       ( WPARAM const, LPARAM const );
+	virtual void OnLButtonUp         ( WPARAM const, LPARAM const );
+	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
 	BOOL          inObservedClientRect( LPARAM const );

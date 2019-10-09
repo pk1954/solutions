@@ -56,6 +56,15 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 {
 	switch ( static_cast<NNetWorkThreadMessage::Id>(msg.message) )
 	{
+	case NNetWorkThreadMessage::Id::TRIGGER:
+	{
+		ShapeId const id  ( CastToUnsignedLong( msg.wParam ) );
+		Shape       * shape( m_pNNetModel->GetShape( id ) );
+		InputNeuron * pInputNeuron( Cast2InputNeuron( shape ) );
+		pInputNeuron->Trigger();
+	}
+	break;
+
 	case NNetWorkThreadMessage::Id::HIGHLIGHT:
 		m_pNNetModel->HighlightShape( ShapeId( CastToUnsignedLong(msg.wParam) ) );
 		break;

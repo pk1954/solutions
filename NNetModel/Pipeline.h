@@ -25,13 +25,14 @@ public:
 		m_pKnotEnd    ( nullptr ),
 		m_width       ( 10.0_MicroMeter ),
 		m_potential   ( ),
-		m_impulseSpeed( impulseSpeed ),
-		m_mVinputBuffer( 0._mV )
+		m_impulseSpeed( impulseSpeed )
 	{
 	}
 
 	void SetStartKnot( Knot * );
 	void SetEndKnot  ( Knot * );
+
+	void Resize( );
 
 	void SetPulseSpeed( meterPerSec const newSpeed )
 	{
@@ -71,5 +72,4 @@ private:
 
 	vector<mV>  m_potential;
 	meterPerSec m_impulseSpeed;
-	mV          m_mVinputBuffer;
 };

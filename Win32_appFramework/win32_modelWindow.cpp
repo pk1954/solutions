@@ -25,6 +25,10 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 		OnMouseMove( wParam, lParam );
 		return FALSE;
 
+	case WM_LBUTTONDBLCLK:
+		OnLeftButtonDblClick( wParam, lParam );
+		return FALSE;
+
 	case WM_MOUSEWHEEL:
 		OnMouseWheel( wParam, lParam );
 		return FALSE;

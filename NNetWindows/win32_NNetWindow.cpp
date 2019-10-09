@@ -278,6 +278,15 @@ void NNetWindow::OnPaint( )
 	}
 }
 
+void NNetWindow::OnLeftButtonDblClick(WPARAM const wParam, LPARAM const lParam )
+{
+	PixelPoint const   ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
+	Shape      const * pShape = getShapeUnderPoint( ptCrsr );
+
+	if ( pShape && (pShape->GetShapeType() == tShapeType::inputNeuron) )
+		PostCommand2Application( IDD_TRIGGER, pShape->GetId().GetValue() );
+}
+
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 {
 	int        iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;

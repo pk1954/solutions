@@ -25,8 +25,7 @@ public:
 	)
 	  : Shape( type ),
 		m_center( center ),
-		m_extension( 50.0_MicroMeter ),
-		m_potential( 0 )
+		m_extension( 50.0_MicroMeter )
 	{
 	}
 
@@ -54,6 +53,9 @@ public:
 
 	virtual void Prepare( )
 	{
+		m_mVinputBuffer = 0._mV;
+		for ( auto pipe : m_incomming )
+			m_mVinputBuffer += pipe->GetNextOutput();
 	}
 
 	virtual void Step( )
@@ -62,7 +64,7 @@ public:
 
 	virtual mV GetNextOutput( ) const
 	{
-		return 0._mV;
+		return m_mVinputBuffer;
 	}
 
 	bool IsPointInShape( MicroMeterPoint const & point ) const
@@ -79,10 +81,11 @@ public:
 	virtual void MoveTo( MicroMeterPoint const & newCenter )
 	{
 		m_center = newCenter;
+		for ( auto pipe : m_incomming )
+			pipe->Resize();
+		for ( auto pipe : m_outgoing )
+			pipe->Resize();
 	}
-
-protected:
-	mV m_potential;
 
 private:
 

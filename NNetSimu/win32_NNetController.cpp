@@ -125,6 +125,10 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 {
 	switch ( wmId )
 	{
+	case IDD_TRIGGER:
+		m_pNNetWorkThreadInterface->PostTrigger( ShapeId( CastToUnsignedLong( lParam ) ) );
+		break;
+
 	case IDM_HIGHLIGHT:
 		m_pNNetWorkThreadInterface->PostHighlight( ShapeId( CastToUnsignedLong( lParam ) ) );
 		break;

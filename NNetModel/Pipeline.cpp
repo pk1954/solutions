@@ -24,9 +24,9 @@ MicroMeter Pipeline::distance( MicroMeterPoint const & npA, MicroMeterPoint cons
 	return distance;
 }
 
-void Pipeline::initialize( )
+void Pipeline::Resize( )
 {
-	if ( ! m_initialized && m_pKnotStart && m_pKnotEnd )
+	if ( m_pKnotStart && m_pKnotEnd )
 	{
 		MicroMeter   const segmentLength  = CoveredDistance( m_impulseSpeed, TIME_RESOLUTION );
 		MicroMeter   const pipelineLength = distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() );
@@ -38,6 +38,12 @@ void Pipeline::initialize( )
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_initialized = true;
 	}
+}
+
+void Pipeline::initialize( )
+{
+	if ( ! m_initialized  )
+		Resize();
 }
 
 void Pipeline::MoveTo( MicroMeterPoint const & newCenter )
@@ -115,7 +121,9 @@ void Pipeline::Draw
 	PixelCoordsFp const & coord
 ) const
 {
-	MicroMeter      const startOffset = m_pKnotStart->GetExtension( ) * 0.8f;
+	MicroMeter      const startOffset = ( m_pKnotStart->GetShapeType() == tShapeType::knot ) 
+		                                ? 0.0_MicroMeter
+		                                : m_pKnotStart->GetExtension( ) * 0.8f;
 	MicroMeterPoint const startPoint  = GetStartPoint() + MicroMeterPoint( 0._MicroMeter, startOffset );
 	fPIXEL          const fPixWidth   = coord.convert2fPixel( m_width ) ;
 

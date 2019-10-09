@@ -22,6 +22,7 @@ public:
 	enum class Id : UINT
 	{
 		NNET_FIRST = WorkThreadMessage::FIRST_APP_MESSAGE,
+		TRIGGER,
 		HIGHLIGHT,
 		PULSE_FREQ,
 		PULSE_SPEED,

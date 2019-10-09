@@ -14,16 +14,28 @@ NNetModel::NNetModel( )
 	m_Shapes( ),
 	m_shapeHighlighted( NO_SHAPE )
 {
-	InputNeuron * pNeuron1  = new InputNeuron( MicroMeterPoint( 400.0_MicroMeter,  200.0_MicroMeter ) );
-	Knot        * pKnot     = new Knot( MicroMeterPoint( 400.0_MicroMeter, 1400.0_MicroMeter ) );
-	Pipeline    * pPipeline = new Pipeline( 0.1_meterPerSec );
+	InputNeuron * pNeuron1   = new InputNeuron( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
+	Knot        * pKnot1     = new Knot( MicroMeterPoint( 400.0_MicroMeter, 400.0_MicroMeter ) );
+	Knot        * pKnot2     = new Knot( MicroMeterPoint( 300.0_MicroMeter, 800.0_MicroMeter ) );
+	Knot        * pKnot3     = new Knot( MicroMeterPoint( 500.0_MicroMeter, 800.0_MicroMeter ) );
+	Pipeline    * pPipeline1 = new Pipeline( 0.1_meterPerSec );
+	Pipeline    * pPipeline2 = new Pipeline( 0.1_meterPerSec );
+	Pipeline    * pPipeline3 = new Pipeline( 0.1_meterPerSec );
 
 	AddShape( * pNeuron1 );
-	AddShape( * pKnot );
-	AddShape( * pPipeline );
+	AddShape( * pKnot1 );
+	AddShape( * pKnot2 );
+	AddShape( * pKnot3 );
+	AddShape( * pPipeline1 );
+	AddShape( * pPipeline2 );
+	AddShape( * pPipeline3 );
 
-	pNeuron1->AddOutgoing( pPipeline );
-	pKnot->AddIncomming  ( pPipeline );
+	pNeuron1->AddOutgoing( pPipeline1 );
+	pKnot1->AddIncomming ( pPipeline1 );
+	pKnot1->AddOutgoing  ( pPipeline2 );
+	pKnot1->AddOutgoing  ( pPipeline3 );
+	pKnot2->AddIncomming ( pPipeline2 );
+	pKnot3->AddIncomming ( pPipeline3 );
 }
 
 NNetModel * NNetModel::CreateModel( )

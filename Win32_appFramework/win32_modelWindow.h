@@ -30,13 +30,14 @@ public:
 
 protected:
 
-	virtual void OnMouseWheel ( WPARAM const, LPARAM const ) = 0;
-	virtual void OnMouseMove  ( WPARAM const, LPARAM const ) = 0;
-	virtual BOOL OnCommand    ( WPARAM const, LPARAM const ) = 0;
-	virtual void OnLButtonDown( WPARAM const, LPARAM const ) = 0;
-	virtual void OnLButtonUp  ( WPARAM const, LPARAM const ) = 0;
-	virtual void OnSetCursor  ( WPARAM const, LPARAM const ) = 0;
-	virtual void OnPaint      ( )                            = 0;
+	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const ) = 0;
+	virtual void OnMouseWheel        ( WPARAM const, LPARAM const ) = 0;
+	virtual void OnMouseMove         ( WPARAM const, LPARAM const ) = 0;
+	virtual BOOL OnCommand           ( WPARAM const, LPARAM const ) = 0;
+	virtual void OnLButtonDown       ( WPARAM const, LPARAM const ) = 0;
+	virtual void OnLButtonUp         ( WPARAM const, LPARAM const ) = 0;
+	virtual void OnSetCursor         ( WPARAM const, LPARAM const ) = 0;
+	virtual void OnPaint             ( )                            = 0;
 
 	static ActionTimer * m_pDisplayTimer;
 	static HCURSOR       m_hCrsrMove;

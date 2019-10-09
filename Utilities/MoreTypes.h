@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <limits>
 #include <chrono>
 #include "util.h"
 #include "NamedType.h"
@@ -51,7 +52,9 @@ Hertz constexpr operator"" _Hertz( unsigned long long ull )
 
 static microseconds const PulseDuration( Hertz const freq )
 {
-	return microseconds( 1000000L / freq.GetValue() );
+	return (freq.GetValue() == 0) 
+		? microseconds( (std::numeric_limits<long long>::max)() )
+		: microseconds( 1000000L / freq.GetValue() );
 }
 
 ////////////// MicroMeterPoint /////////////////////////////////////
