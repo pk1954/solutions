@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "Geometry.h"
-#include "Knot.h"
+#include "BaseKnot.h"
 #include "PixelCoordsFp.h"
 #include "win32_graphicsInterface.h"
 #include "NNetParameters.h"
@@ -51,13 +51,13 @@ void Pipeline::MoveTo( MicroMeterPoint const & newCenter )
 //	m_center = newCenter;
 }
 
-void Pipeline::SetStartKnot( Knot * pKnot )
+void Pipeline::SetStartKnot( BaseKnot * pKnot )
 {
 	m_pKnotStart = pKnot;
 	initialize();
 }
 
-void Pipeline::SetEndKnot( Knot * pKnot )
+void Pipeline::SetEndKnot( BaseKnot * pKnot )
 {
 	m_pKnotEnd = pKnot;
 	initialize();

@@ -13,7 +13,7 @@ using std::vector;
 
 class GraphicsInterface;
 class PixelCoordsFp;
-class Knot;
+class BaseKnot;
 
 class Pipeline : public Shape
 {
@@ -29,8 +29,8 @@ public:
 	{
 	}
 
-	void SetStartKnot( Knot * );
-	void SetEndKnot  ( Knot * );
+	void SetStartKnot( BaseKnot * );
+	void SetEndKnot  ( BaseKnot * );
 
 	void Resize( );
 
@@ -66,9 +66,9 @@ private:
 
 	bool m_initialized;
 	
-	Knot    *   m_pKnotStart;
-	Knot    *   m_pKnotEnd;
-	MicroMeter  m_width;
+	BaseKnot * m_pKnotStart;
+	BaseKnot * m_pKnotEnd;
+	MicroMeter m_width;
 
 	vector<mV>  m_potential;
 	meterPerSec m_impulseSpeed;

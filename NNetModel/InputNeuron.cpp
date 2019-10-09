@@ -13,18 +13,16 @@
 using namespace std::chrono;
 
 InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
-  : Knot( upCenter, tShapeType::inputNeuron ),
-	m_timeSinceLastPulse( microseconds( 0 ) ),
-	m_pulseFrequency( 0_Hertz ),
-	m_pulseDuration( 0ms )
+  : BaseKnot( tShapeType::inputNeuron, upCenter, 50.0_MicroMeter ),
+	m_timeSinceLastPulse( 0ms ),
+	m_pulseFrequency( 0_Hertz )
 { 
-	SetPulseFrequency( 0_Hertz );  // set m_pulseDuration to correct value
 	m_timeSinceLastPulse = PEAK_TIME;
 }
 
 void InputNeuron::Trigger( )
 {
-	m_timeSinceLastPulse = microseconds( 0 );
+	m_mVinputBuffer = PEAK_VOLTAGE;
 }
 
 mV InputNeuron::waveFunction( microseconds time ) const
@@ -46,10 +44,27 @@ void InputNeuron::Prepare( )
 
 void InputNeuron::Step( )
 {
-	m_timeSinceLastPulse += TIME_RESOLUTION;
+	static float        const FACTOR    ( PEAK_VOLTAGE.GetValue() * CastToFloat(TIME_RESOLUTION.count()) );
+	static microseconds const DECAY_TIME( PEAK_TIME );
+	static mV           const DECAY_INC ( FACTOR / DECAY_TIME.count() );
 
-	if ( m_timeSinceLastPulse >= m_pulseDuration )
-		m_timeSinceLastPulse = microseconds( 0 );
+//	mV mVexternalInput( FACTOR / CastToFloat( PulseDuration( m_pulseFrequency ) );
+	mV mVexternalInput( (FACTOR / 1000000.f ) * m_pulseFrequency.GetValue()  );
+
+	if ( m_mVinputBuffer >= PEAK_VOLTAGE )  
+	{
+		m_timeSinceLastPulse = 0ms;   
+	}
+	else
+	{
+		m_mVinputBuffer      += mVexternalInput;
+		m_timeSinceLastPulse += TIME_RESOLUTION;
+	}
+
+	if ( m_timeSinceLastPulse < DECAY_TIME )
+		m_mVinputBuffer = (m_mVinputBuffer > DECAY_INC) 
+		                  ? m_mVinputBuffer - DECAY_INC 
+		                  : 0._mV;
 }
 
 mV InputNeuron::GetNextOutput( ) const
@@ -62,7 +77,7 @@ mV InputNeuron::GetNextOutput( ) const
 
 PERCENT InputNeuron::GetFillLevel( ) const
 {
-	return PERCENT( CastToShort( (m_timeSinceLastPulse * 100) / m_pulseDuration ) );
+	return PERCENT( CastToShort( (m_mVinputBuffer * 100) / PEAK_VOLTAGE ) );
 }
 
 void InputNeuron::Draw

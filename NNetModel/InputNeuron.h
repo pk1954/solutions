@@ -6,11 +6,11 @@
 
 #include <chrono>
 #include "MoreTypes.h"
-#include "Knot.h"
+#include "BaseKnot.h"
 
 using std::chrono::microseconds;
 
-class InputNeuron : public Knot
+class InputNeuron : public BaseKnot
 {
 public:
 
@@ -32,14 +32,12 @@ public:
 	void SetPulseFrequency( Hertz const freq )
 	{
 		m_pulseFrequency = freq;
-		m_pulseDuration = PulseDuration( m_pulseFrequency );
 	}
 
 private:
 
 	microseconds m_timeSinceLastPulse;
 	Hertz        m_pulseFrequency;
-	microseconds m_pulseDuration;   // inverse of pulse frequency 
 
 	mV waveFunction( microseconds ) const;
 };	

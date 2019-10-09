@@ -156,6 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BaseKnot.h" />
     <ClInclude Include="InputNeuron.h" />
     <ClInclude Include="Knot.h" />
     <ClInclude Include="Neuron.h" />

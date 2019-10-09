@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "MoreTypes.h"
 #include "NNetParameters.h"
+#include "Knot.h"
 #include "NNetModel.h"
 
 using namespace std::chrono;

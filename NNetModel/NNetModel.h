@@ -94,10 +94,6 @@ public:
 
 private:
 
-	//InputNeuron     m_neuron1;
-	//Knot            m_knot;
-	//Pipeline        m_pipeline;
-
 	microseconds    m_timeStamp;
 	vector<Shape *> m_Shapes;
 	ShapeId         m_shapeHighlighted;
