@@ -23,12 +23,7 @@ public:
 	{
 	}
 
-	virtual void Prepare( )
-	{
-		m_mVinputBuffer = 0._mV;
-		for ( auto pipe : m_incomming )
-			m_mVinputBuffer += pipe->GetNextOutput();
-	}
+	virtual void Prepare( NNetModel & );
 
 	virtual void Step( )
 	{
@@ -39,7 +34,7 @@ public:
 		return m_mVinputBuffer;
 	}
 
-	virtual void Draw( GraphicsInterface &,	PixelCoordsFp const & ) const {};
+	virtual void Draw( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const {};
 
 private:
 

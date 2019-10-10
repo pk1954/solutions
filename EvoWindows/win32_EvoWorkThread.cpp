@@ -37,7 +37,8 @@ EvoWorkThread::EvoWorkThread
 		pObserver, 
 		pEvoHistorySys->GetHistorySystem( ), 
 		nullptr,
-		pWorkThreadInterface 
+		pWorkThreadInterface,
+		TRUE
 	),
 	m_pDelay( pDelay ),
 	m_pColorManager( pColorManager ),

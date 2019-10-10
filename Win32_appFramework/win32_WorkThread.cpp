@@ -23,7 +23,8 @@ WorkThread::WorkThread
 	ObserverInterface   * const pObserver,
 	HistorySystem       * const pHistSystem,
 	ModelInterface      * const pModel,
-	WorkThreadInterface * const pWorkThreadInterface
+	WorkThreadInterface * const pWorkThreadInterface,
+	BOOL                  const bAsync
 ) :
 	m_pComputeTimer       ( pActionTimer ),
 	m_pEventPOI           ( pEvent ),   
@@ -37,7 +38,7 @@ WorkThread::WorkThread
 {
 	assert( (m_pHistorySystem != nullptr ) || (m_pModel != nullptr) ); // one of them must be != nullptr
 	assert( (m_pHistorySystem == nullptr ) || (m_pModel == nullptr) ); // one of them must be == nullptr
-	StartThread( L"WorkerThread", true ); 
+	StartThread( L"WorkerThread", bAsync ); 
 }
 
 WorkThread::~WorkThread( )

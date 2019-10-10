@@ -10,29 +10,28 @@
 
 using std::chrono::microseconds;
 
+class Pipeline;
+
 class InputNeuron : public BaseKnot
 {
 public:
 
 	InputNeuron( MicroMeterPoint const );
 
-	virtual void Prepare( );
+	virtual void Prepare( NNetModel & );
 	virtual void Step( );
 	virtual mV   GetNextOutput( ) const;
 
 	void    Trigger( );
 	PERCENT GetFillLevel( ) const;
-	void    Draw( GraphicsInterface &, PixelCoordsFp const & ) const;
+	void    Draw( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
 
 	Hertz GetPulseFrequency( ) const
 	{
 		return m_pulseFrequency;
 	}
 
-	void SetPulseFrequency( Hertz const freq )
-	{
-		m_pulseFrequency = freq;
-	}
+	void SetPulseFrequency( Hertz const );
 
 private:
 

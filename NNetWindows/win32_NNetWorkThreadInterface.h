@@ -29,8 +29,10 @@ public:
 		EventInterface     * const,
 		ObserverInterface  * const,
 		SlowMotionRatio    * const,
-		NNetModel          * const 
+		NNetModel          * const,
+		BOOL                 const
 	);
+	void Stop(); 
 
 	void PostTrigger       ( ShapeId const );
 	void PostHighlight     ( ShapeId const );

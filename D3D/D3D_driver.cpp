@@ -418,7 +418,12 @@ void D3D_driver::AddRect( fPixelPoint const ptPos, COLORREF const color, fPIXEL 
 	addRectangle( fPtPosx, fPtPosy, D3Dcolor, CastToFloat(fPixSize.GetValue()) );
 }
 
-void D3D_driver::DrawCircle( fPixelPoint const ptPos, COLORREF const color, fPIXEL const fPixRadius )
+void D3D_driver::DrawCircle
+( 
+	fPixelPoint const ptPos,
+	COLORREF    const color, 
+	fPIXEL const fPixRadius 
+)
 {
 	static const int   CIRCLE_RESOLUTION = 24;
 	static const float STEP = 2.0f * D3DX_PI / CIRCLE_RESOLUTION;

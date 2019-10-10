@@ -41,7 +41,6 @@ void WorkThreadInterface::Start
 void WorkThreadInterface::Stop( )
 {
 	m_pWorkThread->Terminate( );
-	delete m_pWorkThread;
 	m_pWorkThread = nullptr;
 }
 

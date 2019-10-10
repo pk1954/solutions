@@ -28,7 +28,8 @@ NNetWorkThread::NNetWorkThread
 	ObserverInterface       * const pObserver, 
 	SlowMotionRatio         * const pSLowMotionRatio,
 	NNetWorkThreadInterface * const pWorkThreadInterface,
-	NNetModel               * const pNNetModel
+	NNetModel               * const pNNetModel,
+	BOOL                      const bAsync
 ):
 	m_pNNetModel( pNNetModel ),
 	WorkThread
@@ -39,7 +40,8 @@ NNetWorkThread::NNetWorkThread
 		pObserver,
 		nullptr,    // no history system
 		pNNetModel,
-		pWorkThreadInterface 
+		pWorkThreadInterface,
+		bAsync
 	),
 	m_pSlowMotionRatio( pSLowMotionRatio ),
 	m_timerTicksLastTime( Ticks( 0 ) ),
@@ -85,7 +87,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		Shape           * shape( m_pNNetModel->GetShape( id ) );
 		Pipeline        * pPipe( Cast2Pipeline( shape ) );
 		meterPerSec const speed( (float&) msg.lParam );
-		pPipe->SetPulseSpeed( speed );
+		pPipe->SetPulseSpeed( * m_pNNetModel, speed );
 	}
 	break;
 
@@ -94,7 +96,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		ShapeId         const id( CastToUnsignedLong( msg.wParam ) );
 		Shape               * pShape( m_pNNetModel->GetShape( id ) );
 		MicroMeterPoint const newPos( Util::Unpack2MicroMeterPoint(msg.lParam) );
-		pShape->MoveTo( newPos );
+		pShape->MoveTo( * m_pNNetModel, newPos );
 	}
 	break;
 

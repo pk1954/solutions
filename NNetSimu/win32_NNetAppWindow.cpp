@@ -86,11 +86,10 @@ NNetAppWindow::NNetAppWindow( ) :
 
 NNetAppWindow::~NNetAppWindow( )
 {
+	delete m_pNNetController;
 	delete m_pNNetEditorWindow;
 	delete m_pMainNNetWindow;
 	delete m_pAppMenu;
-	delete m_pTimeDisplay;
-	delete m_pSlowMotionDisplay;
 }
 
 void NNetAppWindow::Start( )
@@ -113,8 +112,8 @@ void NNetAppWindow::Start( )
 		& m_WinManager 
 	);
 
-	m_pModelDataWork     = NNetModel::CreateModel( );
-	m_pNNetModel4Display = NNetModel::CreateModel( );
+	m_pModelDataWork     = new NNetModel( );
+	m_pNNetModel4Display = new NNetModel( );
 
 	m_NNetReadBuffer.Initialize( m_pModelDataWork, m_pNNetModel4Display );
 
@@ -133,7 +132,8 @@ void NNetAppWindow::Start( )
 		& m_eventPOI, 
 		& m_NNetReadBuffer,
 		& m_SlowMotionRatio,
-		m_pModelDataWork
+		m_pModelDataWork,
+		TRUE
 	);
 
 //	m_pNNetEditorWindow->Start( m_hwndApp, & m_NNetWorkThreadInterface, & m_NNetReadBuffer );
@@ -165,8 +165,10 @@ void NNetAppWindow::Stop()
 
 	BaseAppWindow::Stop();
 
-	NNetModel::DestroyModel( m_pModelDataWork );
-	NNetModel::DestroyModel( m_pNNetModel4Display );
+	delete m_pModelDataWork;
+	delete m_pNNetModel4Display;
+	delete m_pTimeDisplay;
+	delete m_pSlowMotionDisplay;
 
 	m_WinManager.RemoveAll( );
 }

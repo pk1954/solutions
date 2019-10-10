@@ -257,7 +257,7 @@ void NNetWindow::moveNNet( PixelPoint const ptDiff )
 void NNetWindow::doPaint( )
 {
 	NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
-	pModel->Apply2AllShapes( [&]( Shape * const pShape ) { pShape->Draw( * m_pGraphics, m_coord ); } );
+	pModel->Apply2AllShapes( [&]( Shape * const pShape ) { pShape->Draw( * pModel, * m_pGraphics, m_coord ); } );
 	m_pReadBuffer->ReleaseReadBuffer( );
 	m_pScale->ShowScale( fPIXEL( static_cast<float>( GetClientWindowHeight().GetValue() ) ) );
 	m_pGraphics->RenderForegroundObjects( );

@@ -18,27 +18,18 @@ class BaseKnot;
 class Pipeline : public Shape
 {
 public:
-	Pipeline( meterPerSec const impulseSpeed )
-    :	Shape( tShapeType::pipeline ),
-		m_initialized ( false ),
-		m_pKnotStart  ( nullptr ),
-		m_pKnotEnd    ( nullptr ),
-		m_width       ( 10.0_MicroMeter ),
-		m_potential   ( ),
-		m_impulseSpeed( impulseSpeed )
-	{
-	}
+	Pipeline( meterPerSec const );
 
-	void SetStartKnot( BaseKnot * );
-	void SetEndKnot  ( BaseKnot * );
+	void SetStartKnot( NNetModel &, ShapeId const );
+	void SetEndKnot  ( NNetModel &, ShapeId const );
 
-	void Resize( );
+	void Resize( NNetModel & );
 
-	void SetPulseSpeed( meterPerSec const newSpeed )
+	void SetPulseSpeed( NNetModel & model, meterPerSec const newSpeed )
 	{
 		m_impulseSpeed = newSpeed;
 		m_initialized = false;
-		initialize();
+		initialize( model );
 	}
 
 	meterPerSec GetPulseSpeed( ) const
@@ -46,28 +37,28 @@ public:
 		return m_impulseSpeed;
 	}
 
-	MicroMeterPoint GetStartPoint( ) const; 
-	MicroMeterPoint GetEndPoint  ( ) const; 
+	MicroMeterPoint GetStartPoint( NNetModel const & ) const; 
+	MicroMeterPoint GetEndPoint  ( NNetModel const & ) const; 
 	MicroMeter      GetWidth     ( ) const; 
 
 	virtual void Step( );
-	virtual void Prepare( );
+	virtual void Prepare( NNetModel & );
 
-	virtual void Draw( GraphicsInterface &,	PixelCoordsFp const & ) const;
-	virtual void MoveTo( MicroMeterPoint const & );
+	virtual void Draw( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
+	virtual void MoveTo( NNetModel &, MicroMeterPoint const & );
 
-	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
+	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
 	virtual mV   GetNextOutput( ) const;
 
 private:
 	MicroMeter distance( MicroMeterPoint const &, MicroMeterPoint const & );
 
-	void initialize( );
+	void initialize( NNetModel & );
 
 	bool m_initialized;
 	
-	BaseKnot * m_pKnotStart;
-	BaseKnot * m_pKnotEnd;
+	ShapeId    m_idKnotStart;
+	ShapeId    m_idKnotEnd;
 	MicroMeter m_width;
 
 	vector<mV>  m_potential;

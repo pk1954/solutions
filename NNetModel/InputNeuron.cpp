@@ -3,11 +3,10 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "Knot.h"
 #include "PixelCoordsFp.h"
 #include "win32_graphicsInterface.h"
 #include "NNetParameters.h"
-#include "Pipeline.h"
+#include "NNetModel.h"
 #include "InputNeuron.h"
 
 using namespace std::chrono;
@@ -18,6 +17,11 @@ InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
 	m_pulseFrequency( 0_Hertz )
 { 
 	m_timeSinceLastPulse = PEAK_TIME;
+}
+
+void InputNeuron::SetPulseFrequency( Hertz const freq )
+{
+	m_pulseFrequency = freq;
 }
 
 void InputNeuron::Trigger( )
@@ -37,7 +41,7 @@ mV InputNeuron::waveFunction( microseconds time ) const
 		return BASE_POTENTIAL;
 }
 
-void InputNeuron::Prepare( )
+void InputNeuron::Prepare( NNetModel & )
 {
 	// nothing to prepare
 }
@@ -82,6 +86,7 @@ PERCENT InputNeuron::GetFillLevel( ) const
 
 void InputNeuron::Draw
 ( 
+	NNetModel     const & model,
 	GraphicsInterface   & Graphics,
 	PixelCoordsFp const & coord
 ) const

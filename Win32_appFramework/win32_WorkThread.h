@@ -53,7 +53,8 @@ public:
 		ObserverInterface   * const,
 		HistorySystem       * const,
 		ModelInterface      * const,
-		WorkThreadInterface * const
+		WorkThreadInterface * const,
+		BOOL                  const
 	);
 	~WorkThread( );
 

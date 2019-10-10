@@ -49,21 +49,12 @@ public:
 		ObserverInterface       * const,
 		SlowMotionRatio         * const,
 		NNetWorkThreadInterface * const,
-		NNetModel               * const
+		NNetModel               * const,
+		BOOL                      const
 	);
 	~NNetWorkThread( );
 
 private:
-
-	//GenerationCmd NNetCmd( NNetGenerationCmd::Id const cmd, Int24 const param )
-	//{ 
-	//	return GenerationCmd::ApplicationCmd( static_cast<GenerationCmd::Id>(cmd), param );  
-	//}  
-
-	//void editorCommand( NNetGenerationCmd::Id const cmd, WPARAM const wParam )
-	//{
-	//	EditorCommand( static_cast<GenerationCmd::Id>(cmd), wParam );
-	//}
 
 	virtual void SetRunModeHook( BOOL const bState ) 
 	{

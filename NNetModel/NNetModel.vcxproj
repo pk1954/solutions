@@ -169,7 +169,9 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseKnot.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
+    <ClCompile Include="Knot.cpp" />
     <ClCompile Include="NNetModel.cpp" />
     <ClCompile Include="Pipeline.cpp" />
   </ItemGroup>

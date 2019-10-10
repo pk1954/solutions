@@ -16,13 +16,14 @@
 
 class ObserverInterface;
 class EventInterface;
+class Knot;
 
 class NNetModel : public ModelInterface
 {
 public:
 	NNetModel();
 
-	virtual ~NNetModel( ) { };
+	virtual ~NNetModel( );
 
 	// readOnly functions
 
@@ -41,59 +42,66 @@ public:
 		return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() - 1 ];
 	}
 
+	Shape const * GetConstShape( ShapeId const id ) const
+	{
+		return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() - 1 ];
+	}
+
 	Shape const * GetShapeUnderPoint( MicroMeterPoint const ) const;
+
+	Pipeline * GetPipeline( ShapeId const id ) 
+	{
+		Shape * pShape = GetShape( id );
+		assert( pShape );
+		assert( pShape->GetShapeType() == tShapeType::pipeline );
+		return static_cast<Pipeline *>( pShape );
+	}
+
+	Pipeline const * GetConstPipeline( ShapeId const id ) const
+	{
+		Shape const * pShape { GetConstShape( id ) };
+		assert( pShape );
+		assert( pShape->GetShapeType() == tShapeType::pipeline );
+		return static_cast<Pipeline const *>( pShape );
+	}
+
+	BaseKnot * GetBaseKnot( ShapeId const id ) 
+	{
+		Shape * pShape = GetShape( id );
+		assert( pShape );
+		assert( IsBaseKnotType( pShape->GetShapeType() ) );
+		return static_cast<BaseKnot *>( pShape );
+	}
+
+	BaseKnot const * GetConstBaseKnot( ShapeId const id ) const
+	{
+		Shape const * pShape = GetConstShape( id );
+		assert( pShape );
+		assert( IsBaseKnotType( pShape->GetShapeType() ) );
+		return static_cast<BaseKnot const *>( pShape );
+	}
 
 	// manipulating functions
 
-	void HighlightShape( ShapeId const idHighlight )
-	{
-		if ( m_shapeHighlighted != NO_SHAPE )
-		{
-			GetShape( m_shapeHighlighted )->SetHighlightState( false );
-		}
+	ShapeId const AddShape( Shape &  );
+	void HighlightShape( ShapeId const );
+	void Apply2AllShapes( std::function<void(Shape * const)> const & ) const;
 
-		if ( idHighlight != NO_SHAPE )
-		{
-			Shape * pShape = GetShape( idHighlight );
-			assert( pShape );
-			assert( pShape->GetId() == idHighlight );
-			pShape->SetHighlightState( true );
-		}
-
-		m_shapeHighlighted = idHighlight;
-	}
-
-	ShapeId const AddShape( Shape & shape )
-	{
-		m_Shapes.push_back( & shape );                        // ShapeId 0 is reserved
-		ShapeId id( CastToUnsignedLong( m_Shapes.size() ) );  // after first push_back, size = 1
-		shape.SetId( id );
-		return id;
-	}
-
-	void Apply2AllShapes( std::function<void(Shape * const)> const & func ) const
-	{
-		for ( auto shape : m_Shapes )
-		{
-			func( shape );
-		}
-	}
-
-	virtual void CopyModelData( ModelInterface const * const src )
-	{
-		* this = * static_cast<NNetModel const *>( src );
-	}
-
+	virtual void CopyModelData( ModelInterface const * const );
 	virtual void Compute( );
 	virtual void ResetAll( );
 
-	// static functions  
-
-	static NNetModel * CreateModel();
-	static void        DestroyModel( NNetModel * );
-
 private:
-
+	ShapeId m_idNeuron1;  
+	ShapeId m_idKnot1;    
+	ShapeId m_idKnot2;    
+	ShapeId m_idKnot3;    
+	ShapeId m_idKnot4;    
+	ShapeId m_idPipeline1;
+	ShapeId m_idPipeline2;
+	ShapeId m_idPipeline3;
+	ShapeId m_idPipeline4;
+			  
 	microseconds    m_timeStamp;
 	vector<Shape *> m_Shapes;
 	ShapeId         m_shapeHighlighted;

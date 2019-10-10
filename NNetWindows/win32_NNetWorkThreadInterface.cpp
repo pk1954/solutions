@@ -30,7 +30,8 @@ void NNetWorkThreadInterface::Start
     EventInterface     * const pEvent,
 	ObserverInterface  * const pObserver,
 	SlowMotionRatio    * const pSlowMotionRatio,
-	NNetModel          * const pNNetModel
+	NNetModel          * const pNNetModel,
+	BOOL                 const bAsync
 )
 {
 	m_pNNetWorkThread = new NNetWorkThread
@@ -41,10 +42,17 @@ void NNetWorkThreadInterface::Start
 		pObserver,
 		pSlowMotionRatio,
 		this,
-		pNNetModel
+		pNNetModel,
+		bAsync
 	);
 
 	WorkThreadInterface::Start( m_pNNetWorkThread );
+}
+
+void NNetWorkThreadInterface::Stop( )
+{
+	WorkThreadInterface::Stop();
+	delete m_pNNetWorkThread;
 }
 
 void NNetWorkThreadInterface::PostTrigger( ShapeId const id )
