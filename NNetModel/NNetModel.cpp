@@ -6,6 +6,8 @@
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "Knot.h"
+#include "Neuron.h"
+#include "InputNeuron.h"
 #include "NNetModel.h"
 
 using namespace std::chrono;
@@ -14,39 +16,41 @@ NNetModel::NNetModel( )
   : m_timeStamp( microseconds( 0 ) ),
 	m_Shapes( ),
 	m_shapeHighlighted( NO_SHAPE )
-{
-	InputNeuron * pNeuron1   = new InputNeuron( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
-	Knot        * pKnot1     = new Knot( MicroMeterPoint( 400.0_MicroMeter, 400.0_MicroMeter ) );
-	Knot        * pKnot2     = new Knot( MicroMeterPoint( 300.0_MicroMeter, 800.0_MicroMeter ) );
-	Knot        * pKnot3     = new Knot( MicroMeterPoint( 500.0_MicroMeter, 800.0_MicroMeter ) );
-	Knot        * pKnot4     = new Knot( MicroMeterPoint( 600.0_MicroMeter, 700.0_MicroMeter ) );
-	Pipeline    * pPipeline1 = new Pipeline( 0.1_meterPerSec );
-	Pipeline    * pPipeline2 = new Pipeline( 0.1_meterPerSec );
-	Pipeline    * pPipeline3 = new Pipeline( 0.1_meterPerSec );
-	Pipeline    * pPipeline4 = new Pipeline( 0.1_meterPerSec );
+{					
+	m_idNeuron1   = AddInputNeuron( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
+    m_idKnot1     = AddKnot       ( MicroMeterPoint( 400.0_MicroMeter, 400.0_MicroMeter ) );
+    m_idKnot2     = AddKnot       ( MicroMeterPoint( 300.0_MicroMeter, 800.0_MicroMeter ) );
+    m_idKnot3     = AddKnot       ( MicroMeterPoint( 500.0_MicroMeter, 800.0_MicroMeter ) );
+    m_idKnot4     = AddKnot       ( MicroMeterPoint( 600.0_MicroMeter, 700.0_MicroMeter ) );
+    m_idPipeline1 = AddPipeline   ( 0.1_meterPerSec );
+    m_idPipeline2 = AddPipeline   ( 0.1_meterPerSec );
+    m_idPipeline3 = AddPipeline   ( 0.1_meterPerSec );
+	m_idPipeline4 = AddPipeline   ( 0.1_meterPerSec );
 
-	m_idKnot1     = AddShape( * pKnot1 );
-	m_idKnot2     = AddShape( * pKnot2 );
-	m_idKnot3     = AddShape( * pKnot3 );
-	m_idKnot4     = AddShape( * pKnot4 );
-	m_idPipeline1 = AddShape( * pPipeline1 );
-	m_idPipeline2 = AddShape( * pPipeline2 );
-	m_idPipeline3 = AddShape( * pPipeline3 );
-	m_idPipeline4 = AddShape( * pPipeline4 );
-	m_idNeuron1   = AddShape( * pNeuron1 );
-
-	pNeuron1->AddOutgoing( * this, m_idPipeline1 );
-	pKnot1->AddIncomming ( * this, m_idPipeline1 );
-	pKnot1->AddOutgoing  ( * this, m_idPipeline2 );
-	pKnot1->AddOutgoing  ( * this, m_idPipeline3 );
-	pKnot3->AddOutgoing  ( * this, m_idPipeline4 );
-	pKnot2->AddIncomming ( * this, m_idPipeline2 );
-	pKnot3->AddIncomming ( * this, m_idPipeline3 );
-	pKnot4->AddIncomming ( * this, m_idPipeline4 );
+	AddOutgoing ( m_idNeuron1, m_idPipeline1 );
+	AddIncomming( m_idKnot1,   m_idPipeline1 );
+	AddOutgoing ( m_idKnot1,   m_idPipeline2 );
+	AddOutgoing ( m_idKnot1,   m_idPipeline3 );
+	AddOutgoing ( m_idKnot3,   m_idPipeline4 );
+	AddIncomming( m_idKnot2,   m_idPipeline2 );
+	AddIncomming( m_idKnot3,   m_idPipeline3 );
+	AddIncomming( m_idKnot4,   m_idPipeline4 );
 }
 
 NNetModel::~NNetModel( )
 {
+}
+
+void NNetModel::AddIncomming( ShapeId const idBaseKnot, ShapeId const idPipeline )
+{
+	GetBaseKnot( idBaseKnot )->AddIncomming( idPipeline );
+	GetPipeline( idPipeline )->SetEndKnot( * this, idBaseKnot );
+}
+
+void NNetModel::AddOutgoing( ShapeId const idBaseKnot, ShapeId const idPipeline )
+{
+	GetBaseKnot( idBaseKnot )->AddOutgoing( idPipeline );
+	GetPipeline( idPipeline )->SetStartKnot( * this, idBaseKnot );
 }
 
 void NNetModel::HighlightShape( ShapeId const idHighlight )
@@ -67,12 +71,32 @@ void NNetModel::HighlightShape( ShapeId const idHighlight )
 	m_shapeHighlighted = idHighlight;
 }
 
-ShapeId const NNetModel::AddShape( Shape & shape )
+ShapeId const NNetModel::addShape( Shape * pShape )
 {
-	m_Shapes.push_back( & shape );                        // ShapeId 0 is reserved
+	m_Shapes.push_back( pShape );                        // ShapeId 0 is reserved
 	ShapeId id( CastToUnsignedLong( m_Shapes.size() ) );  // after first push_back, size = 1
-	shape.SetId( id );
+	pShape->SetId( id );
 	return id;
+}
+
+ShapeId const NNetModel::AddInputNeuron( MicroMeterPoint const& upCenter )
+{
+	return addShape( new InputNeuron( upCenter ) );
+}
+
+ShapeId const NNetModel::AddNeuron( MicroMeterPoint const & upCenter )
+{
+	return addShape( new Neuron( upCenter ) );
+}
+
+ShapeId const NNetModel::AddKnot( MicroMeterPoint const & upCenter )
+{
+	return addShape( new Knot( upCenter ) );
+}
+
+ShapeId const NNetModel::AddPipeline( meterPerSec const impulseSpeed )
+{
+	return addShape( new Pipeline( impulseSpeed ) );
 }
 
 void NNetModel::Apply2AllShapes( std::function<void(Shape * const)> const & func ) const

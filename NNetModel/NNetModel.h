@@ -81,9 +81,16 @@ public:
 		return static_cast<BaseKnot const *>( pShape );
 	}
 
+	void AddIncomming( ShapeId const, ShapeId const );
+	void AddOutgoing ( ShapeId const, ShapeId const );
+		
 	// manipulating functions
 
-	ShapeId const AddShape( Shape &  );
+	ShapeId const AddInputNeuron( MicroMeterPoint const & );
+	ShapeId const AddNeuron     ( MicroMeterPoint const & );
+	ShapeId const AddKnot       ( MicroMeterPoint const & );
+	ShapeId const AddPipeline   ( meterPerSec     const );
+
 	void HighlightShape( ShapeId const );
 	void Apply2AllShapes( std::function<void(Shape * const)> const & ) const;
 
@@ -105,4 +112,6 @@ private:
 	microseconds    m_timeStamp;
 	vector<Shape *> m_Shapes;
 	ShapeId         m_shapeHighlighted;
+
+	ShapeId const addShape( Shape * );
 };

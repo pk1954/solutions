@@ -76,6 +76,7 @@ mV InputNeuron::GetNextOutput( ) const
 	mV mVoutput = BASE_POTENTIAL;
 	mV mVWave( waveFunction( m_timeSinceLastPulse ) );
 	mVoutput += mVWave;
+	assert( mVoutput <= PEAK_VOLTAGE );
 	return mVoutput;
 }
 

@@ -31,6 +31,7 @@ public:
 
 	virtual mV GetNextOutput( ) const
 	{
+		assert( m_mVinputBuffer <= PEAK_VOLTAGE );
 		return m_mVinputBuffer;
 	}
 

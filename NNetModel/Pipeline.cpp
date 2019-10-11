@@ -11,7 +11,6 @@
 #include "NNetModel.h"
 #include "Pipeline.h"
 
-
 Pipeline::Pipeline( meterPerSec const impulseSpeed )
 	:	Shape( tShapeType::pipeline ),
 	m_initialized ( false ),
@@ -101,21 +100,25 @@ void Pipeline::Prepare( NNetModel & model )
 {
 	BaseKnot * const m_pKnotStart = model.GetBaseKnot( m_idKnotStart );   
 	m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
+	assert( m_mVinputBuffer <= PEAK_VOLTAGE );
 }
 
 void Pipeline::Step( )
 {
 	mV mVcarry = m_mVinputBuffer;
+	assert( m_mVinputBuffer <= PEAK_VOLTAGE );
 
 	for ( vector<mV>::iterator iter = m_potential.begin( ); iter != m_potential.end( ); iter++ )
 	{
 		std::swap( * iter, mVcarry );
+		assert( * iter <= PEAK_VOLTAGE );
 	}
 }
 
 mV Pipeline::GetNextOutput( ) const
 {
 	assert( m_potential.size() > 0 );
+	assert( m_potential.back() <= PEAK_VOLTAGE );
 	return m_potential.back();
 }
 
