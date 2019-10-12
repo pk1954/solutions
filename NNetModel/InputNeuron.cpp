@@ -94,7 +94,7 @@ void InputNeuron::Draw
 {         ///// draw frame
 
 	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 0, 255 );
-	Graphics.AddRect
+	Graphics.DrawCircle
 	( 
 		coord.convert2fPixelPos( GetPosition() ), 
 		colorFrame, 
@@ -105,7 +105,7 @@ void InputNeuron::Draw
 	PERCENT  const fillLevel = GetFillLevel();
 	int      const colElem   = ( 255 * fillLevel.GetValue() ) / 100;
 	COLORREF const color     = RGB( colElem, 0, 0 );
-	Graphics.AddRect
+	Graphics.DrawCircle
 	( 
 		coord.convert2fPixelPos( GetPosition() ), 
 		color, 

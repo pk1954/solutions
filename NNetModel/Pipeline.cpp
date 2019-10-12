@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include <cmath>
 #include "assert.h"
 #include "Geometry.h"
 #include "PixelCoordsFp.h"
@@ -81,14 +82,14 @@ void Pipeline::SetEndKnot( NNetModel & model, ShapeId const id )
 
 MicroMeterPoint Pipeline::GetStartPoint( NNetModel const & model ) const 
 { 
-	BaseKnot const * const m_pKnotStart { model.GetConstBaseKnot( m_idKnotStart ) };
-	return m_pKnotStart ? m_pKnotStart->GetPosition() : MicroMeterPoint::NULL_VAL(); 
+	BaseKnot const * const pKnotStart { model.GetConstBaseKnot( m_idKnotStart ) };
+	return pKnotStart ? pKnotStart->GetPosition() : MicroMeterPoint::NULL_VAL(); 
 }
 
 MicroMeterPoint Pipeline::GetEndPoint( NNetModel const & model ) const 
 { 
-	BaseKnot const * const m_pKnotEnd { model.GetConstBaseKnot( m_idKnotEnd ) };   
-	return m_pKnotEnd ? m_pKnotEnd->GetPosition() : MicroMeterPoint::NULL_VAL();
+	BaseKnot const * const pKnotEnd { model.GetConstBaseKnot( m_idKnotEnd ) };   
+	return pKnotEnd ? pKnotEnd->GetPosition() : MicroMeterPoint::NULL_VAL();
 }
 
 MicroMeter Pipeline::GetWidth( ) const 
@@ -145,25 +146,34 @@ void Pipeline::Draw
 	PixelCoordsFp const & coord
 ) const
 {
-	MicroMeter      const startOffset = ( model.GetConstBaseKnot( m_idKnotStart )->GetShapeType() == tShapeType::knot ) 
-		                                ? 0.0_MicroMeter
-		                                : model.GetConstBaseKnot( m_idKnotStart )->GetExtension( ) * 0.8f;
-	MicroMeterPoint const startPoint  = GetStartPoint( model ); // + MicroMeterPoint( 0._MicroMeter, startOffset );
-	fPIXEL          const fPixWidth   = coord.convert2fPixel( m_width ) ;
+	fPIXEL           const fPixWidth  { coord.convert2fPixel( m_width ) };
+	BaseKnot const * const pStartKnot { model.GetConstBaseKnot( m_idKnotStart ) };
+	BaseKnot const * const pEndKnot   { model.GetConstBaseKnot( m_idKnotEnd   ) };
+	MicroMeterPoint        startPnt   { pStartKnot->GetPosition() };
+	MicroMeterPoint        endPnt     { pEndKnot  ->GetPosition() };
+	MicroMeterPoint        vector     { endPnt - startPnt };
+	
+	if ( pStartKnot->GetShapeType( ) != tShapeType::knot ) 
+	{
+		float           const extension = pStartKnot->GetExtension( ).GetValue() * 0.8f;
+		float           const factor    = hypotf( vector.GetXvalue(), vector.GetYvalue() );
+		MicroMeterPoint const diff      = vector * (extension / factor) * 0.99f;
+		startPnt  += diff;
+		vector    -= diff;
+	}
 
 	///// draw border
 
-	fPixelPoint const fStartPoint = coord.convert2fPixelPos( startPoint );
-	fPixelPoint const fEndPoint   = coord.convert2fPixelPos( GetEndPoint( model ) );
+	fPixelPoint const fStartPoint = coord.convert2fPixelPos( startPnt );
+	fPixelPoint const fEndPoint   = coord.convert2fPixelPos( endPnt );
 	COLORREF    const colorBorder = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 0, 255 );
 	Graphics.AddfPixelLine( fStartPoint, fEndPoint, fPixWidth, colorBorder );
 
 	///// draw interior
 
-	MicroMeterPoint const vector        = GetEndPoint( model ) - startPoint;
 	MicroMeterPoint const segmentVector = vector / CastToFloat(m_potential.size());
-	fPixelPoint           fPixPoint1    = coord.convert2fPixelPos( startPoint );
-	MicroMeterPoint       point2        = startPoint + segmentVector;
+	fPixelPoint           fPixPoint1    = coord.convert2fPixelPos( startPnt );
+	MicroMeterPoint       point2        = startPnt + segmentVector;
 
 	for ( std::vector<mV>::const_iterator iter = m_potential.begin( ); iter != m_potential.end( ); iter++ )
 	{

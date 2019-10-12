@@ -406,7 +406,12 @@ void D3D_driver::AddfPixelLine
 	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp2.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() + fOrthoScaled.GetYvalue()), D3Dcolor );
 }
 
-void D3D_driver::AddRect( fPixelPoint const ptPos, COLORREF const color, fPIXEL const fPixSize )
+void D3D_driver::AddRect
+( 
+	fPixelPoint const ptPos, 
+	COLORREF    const color, 
+	fPIXEL      const fPixSize 
+)
 {
 	static float const SQRT3 = static_cast<float>( sqrt( 3 ) );
 
@@ -422,7 +427,7 @@ void D3D_driver::DrawCircle
 ( 
 	fPixelPoint const ptPos,
 	COLORREF    const color, 
-	fPIXEL const fPixRadius 
+	fPIXEL      const fPixRadius 
 )
 {
 	static const int   CIRCLE_RESOLUTION = 24;
