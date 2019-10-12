@@ -139,7 +139,7 @@ bool Pipeline::IsPointInShape( NNetModel const & model, MicroMeterPoint const & 
 	return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
 }
 
-void Pipeline::Draw
+void Pipeline::DrawExterior
 ( 
 	NNetModel     const & model,
 	GraphicsInterface   & Graphics,
@@ -162,18 +162,44 @@ void Pipeline::Draw
 		vector    -= diff;
 	}
 
-	///// draw border
-
 	fPixelPoint const fStartPoint = coord.convert2fPixelPos( startPnt );
 	fPixelPoint const fEndPoint   = coord.convert2fPixelPos( endPnt );
-	COLORREF    const colorBorder = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 0, 255 );
-	Graphics.AddfPixelLine( fStartPoint, fEndPoint, fPixWidth, colorBorder );
+	COLORREF    const color       = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 );
+	Graphics.AddfPixelLine( fStartPoint, fEndPoint, fPixWidth, color );
 
-	///// draw interior
+	///// draw end connector
 
+	Graphics.DrawCircle( fEndPoint, color, fPixWidth );
+}
+
+void Pipeline::DrawInterior
+( 
+	NNetModel     const & model,
+	GraphicsInterface   & Graphics,
+	PixelCoordsFp const & coord
+) const
+{
+	fPIXEL           const fPixWidth  { coord.convert2fPixel( m_width ) * 0.6f };
+	BaseKnot const * const pStartKnot { model.GetConstBaseKnot( m_idKnotStart ) };
+	BaseKnot const * const pEndKnot   { model.GetConstBaseKnot( m_idKnotEnd   ) };
+	MicroMeterPoint        startPnt   { pStartKnot->GetPosition() };
+	MicroMeterPoint        endPnt     { pEndKnot  ->GetPosition() };
+	MicroMeterPoint        vector     { endPnt - startPnt };
+
+	if ( pStartKnot->GetShapeType( ) != tShapeType::knot ) 
+	{
+		float           const extension = pStartKnot->GetExtension( ).GetValue() * 0.8f;
+		float           const factor    = hypotf( vector.GetXvalue(), vector.GetYvalue() );
+		MicroMeterPoint const diff      = vector * (extension / factor) * 0.99f;
+		startPnt  += diff;
+		vector    -= diff;
+	}
+
+	fPixelPoint     const fEndPoint     = coord.convert2fPixelPos( endPnt );
 	MicroMeterPoint const segmentVector = vector / CastToFloat(m_potential.size());
 	fPixelPoint           fPixPoint1    = coord.convert2fPixelPos( startPnt );
 	MicroMeterPoint       point2        = startPnt + segmentVector;
+	COLORREF              color;
 
 	for ( std::vector<mV>::const_iterator iter = m_potential.begin( ); iter != m_potential.end( ); iter++ )
 	{
@@ -181,13 +207,13 @@ void Pipeline::Draw
 		mV              const mVperColLevel = PEAK_VOLTAGE / 255.0f;
 		int             const iLevel        = CastToInt( * iter / mVperColLevel );
 		fPixelPoint     const fPixPoint2    = coord.convert2fPixelPos( point2 );
-		COLORREF        const color         = RGB( iLevel, 0, 0 );
-		Graphics.AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth * 0.6f, color );
+		                      color         = RGB( iLevel, 0, 0 );
+		Graphics.AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth, color );
 		point2    += segmentVector; 
 		fPixPoint1 = fPixPoint2;
 	}
 
 	///// draw end connector
 
-	Graphics.DrawCircle( fEndPoint, RGB( 255,  50,  50 ), fPixWidth );
+	Graphics.DrawCircle( fEndPoint, color, fPixWidth );
 }

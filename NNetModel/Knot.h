@@ -35,7 +35,8 @@ public:
 		return m_mVinputBuffer;
 	}
 
-	virtual void Draw( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const {};
+	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const {};
+	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const {};
 
 private:
 

@@ -85,23 +85,29 @@ PERCENT InputNeuron::GetFillLevel( ) const
 	return PERCENT( CastToShort( (m_mVinputBuffer * 100) / PEAK_VOLTAGE ) );
 }
 
-void InputNeuron::Draw
+void InputNeuron::DrawExterior
 ( 
 	NNetModel     const & model,
 	GraphicsInterface   & Graphics,
 	PixelCoordsFp const & coord
 ) const
-{         ///// draw frame
-
-	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 0, 255 );
+{
+	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 );
 	Graphics.DrawCircle
 	( 
 		coord.convert2fPixelPos( GetPosition() ), 
-		colorFrame, 
+		IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ), 
 		coord.convert2fPixel( GetExtension() )
 	);
-	      ///// draw interior
+}
 
+void InputNeuron::DrawInterior
+( 
+	NNetModel     const & model,
+	GraphicsInterface   & Graphics,
+	PixelCoordsFp const & coord
+) const
+{ 
 	PERCENT  const fillLevel = GetFillLevel();
 	int      const colElem   = ( 255 * fillLevel.GetValue() ) / 100;
 	COLORREF const color     = RGB( colElem, 0, 0 );

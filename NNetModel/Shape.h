@@ -44,7 +44,8 @@ public:
 	{
 	}
 
-	virtual void Draw( NNetModel const &, GraphicsInterface &,	PixelCoordsFp const & ) const = 0;
+	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const = 0;
+	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const = 0;
 	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & )           const = 0;
 	virtual mV   GetNextOutput( )                                                       const = 0;
 	virtual void Step( )                                                                      = 0;

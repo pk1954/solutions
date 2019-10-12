@@ -24,7 +24,8 @@ public:
 
 	void    Trigger( );
 	PERCENT GetFillLevel( ) const;
-	void    Draw( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
+	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
+	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
 
 	Hertz GetPulseFrequency( ) const
 	{
