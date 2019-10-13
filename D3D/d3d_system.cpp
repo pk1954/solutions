@@ -50,8 +50,21 @@ IDirect3DDevice9 * D3dSystem::Create_D3D_Device
 	m_ulNrOfVertices          = m_ulMaxNrOfPrimitives * m_ulVerticesPerPrimitive;
 
 	ZeroMemory( & m_d3d_presentationParameters, sizeof(D3DPRESENT_PARAMETERS) );
+
+	HRESULT hRes = m_d3d_object->CheckDeviceMultiSampleType
+	( 
+		D3DADAPTER_DEFAULT,
+		D3DDEVTYPE_HAL, 
+		D3DFMT_X8R8G8B8, 
+		FALSE,
+		D3DMULTISAMPLE_2_SAMPLES, 
+		NULL
+	);
+
+	BOOL bAntiAliasing = ( D3D_OK == hRes );
+
 	m_d3d_presentationParameters.Windowed               = TRUE;
-	m_d3d_presentationParameters.MultiSampleType        = D3DMULTISAMPLE_NONE;
+	m_d3d_presentationParameters.MultiSampleType        = bAntiAliasing ? D3DMULTISAMPLE_2_SAMPLES : D3DMULTISAMPLE_NONE;
 	m_d3d_presentationParameters.SwapEffect             = D3DSWAPEFFECT_DISCARD;
 	m_d3d_presentationParameters.EnableAutoDepthStencil = FALSE;
 	m_d3d_presentationParameters.BackBufferFormat       = D3DFMT_X8R8G8B8;
@@ -90,6 +103,11 @@ IDirect3DDevice9 * D3dSystem::Create_D3D_Device
 	m_d3d_pIndexBufIndividuals    = createIndsIndices ( ulModelWidth, ulModelHeight, bHexagon ); // Index buffer for individuals
 	m_d3d_pIndexBufRect           = createRectIndices ( );                                       // Index buffer for one rectangle  
 
+	if ( bAntiAliasing )
+	{
+		hres = m_d3d_device->SetRenderState( D3DRS_MULTISAMPLEANTIALIAS, true ); 
+		assert( hres == D3D_OK );
+	}
 	hres = m_d3d_device->SetRenderState( D3DRS_LIGHTING, false );        assert( hres == D3D_OK );
 	hres = m_d3d_device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE ); assert( hres == D3D_OK );
 	hres = m_d3d_device->SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE );          assert( hres == D3D_OK );
