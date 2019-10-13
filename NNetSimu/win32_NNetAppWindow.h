@@ -56,16 +56,15 @@ private:
 
 	D3D_driver              m_D3d_driver;
 	NNetWorkThreadInterface m_NNetWorkThreadInterface;
-	NNetReadBuffer          m_NNetReadBuffer;
 	ActionTimer             m_atComputation;
 	ActionTimer             m_atDisplay;
 	ScriptHook              m_ScriptHook;
 	SlowMotionRatio         m_SlowMotionRatio;
 
+	NNetReadBuffer        * m_pNNetReadBuffer;
 	GraphicsInterface     * m_pGraphics;
 	NNetController        * m_pNNetController;
 	NNetModel             * m_pModelDataWork;
-	NNetModel             * m_pNNetModel4Display;
 	NNetWindow            * m_pMainNNetWindow;
 	NNetEditorWindow      * m_pNNetEditorWindow;
 	TimeDisplay           * m_pTimeDisplay;

@@ -68,13 +68,13 @@ private:
 	ActionTimer            m_atComputation;
 	ActionTimer            m_atDisplay;
 	Delay                  m_Delay;
-	EvoReadBuffer          m_EvoReadBuffer;
 	EvoHistorySysGlue      m_EvoHistGlue;
 	ColorManager           m_ColorManager;
 	D3D_driver             m_D3d_driver;
     ScriptHook             m_ScriptHook;
 	ProtocolServer         m_protocolServer;
 					       
+	EvoReadBuffer        * m_pEvoReadBuffer;
 	EvoController        * m_pEvoController;
 	EvolutionCore        * m_pEvoCore4Display;
 	GridWindow           * m_pMainGridWindow;

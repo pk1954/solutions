@@ -51,16 +51,17 @@ NNetAppWindow::NNetAppWindow( ) :
 	m_pModelDataWork( nullptr ),
 	m_pGraphics( nullptr ),
 	m_pSlowMotionDisplay( nullptr ),
-	m_pTimeDisplay( nullptr ),
-	m_pNNetModel4Display( nullptr )
+	m_pTimeDisplay( nullptr )
 {
 	Stopwatch stopwatch;
 
 	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface, FALSE ),
 		
+	m_pNNetReadBuffer = new NNetReadBuffer( FALSE );  // no double buffering
+
 	NNetWindow::InitClass
 	( 
-		& m_NNetReadBuffer,
+		  m_pNNetReadBuffer,
 		& m_NNetWorkThreadInterface, 
 		& m_atDisplay 
 	);
@@ -112,10 +113,9 @@ void NNetAppWindow::Start( )
 		& m_WinManager 
 	);
 
-	m_pModelDataWork     = new NNetModel( );
-	m_pNNetModel4Display = new NNetModel( );
+	m_pModelDataWork = new NNetModel( );
 
-	m_NNetReadBuffer.Initialize( m_pModelDataWork, m_pNNetModel4Display );
+	m_pNNetReadBuffer->Initialize( m_pModelDataWork, m_pModelDataWork );
 
 	m_pMainNNetWindow->Start
 	( 
@@ -130,7 +130,7 @@ void NNetAppWindow::Start( )
 		m_hwndApp, 
 		& m_atComputation,
 		& m_eventPOI, 
-		& m_NNetReadBuffer,
+		  m_pNNetReadBuffer,
 		& m_SlowMotionRatio,
 		m_pModelDataWork,
 		TRUE
@@ -160,13 +160,12 @@ void NNetAppWindow::Stop()
 	m_pMainNNetWindow  ->Stop( );
 //	m_pNNetEditorWindow->Stop( );
 
-	m_NNetReadBuffer.UnregisterAllObservers( );
+	m_pNNetReadBuffer->UnregisterAllObservers( );
 	m_NNetWorkThreadInterface.Stop( );
 
 	BaseAppWindow::Stop();
 
 	delete m_pModelDataWork;
-	delete m_pNNetModel4Display;
 	delete m_pTimeDisplay;
 	delete m_pSlowMotionDisplay;
 
@@ -190,7 +189,7 @@ void NNetAppWindow::configureStatusBar( )
 	//EnableWindow( m_StatusBar.GetDlgItem( IDM_FIT_ZOOM ), FALSE );
 
 	//iPartScriptLine = m_StatusBar.NewPart( );
-	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, & m_NNetReadBuffer, iPartScriptLine );
+	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pNNetReadBuffer, iPartScriptLine );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	SimulationControl::Add( & m_StatusBar );

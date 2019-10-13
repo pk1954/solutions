@@ -28,9 +28,8 @@ public:
 
 	virtual void Trigger( )
 	{
-		NNetModel    const * pModel = m_pReadBuffer->LockReadBuffer( );
+		NNetModel    const * pModel = m_pReadBuffer->GetModel( );
 		microseconds const   time   = pModel->GetSimulationTime( );
-		m_pReadBuffer->ReleaseReadBuffer( );
 		if ( time > std::chrono::seconds( 1 ) )
 		{
 			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>( time );

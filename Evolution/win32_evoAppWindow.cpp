@@ -77,6 +77,8 @@ EvoAppWindow::EvoAppWindow( ) :
 
 	BaseAppWindow::Initialize( & m_EvoWorkThreadInterface, TRUE );
 
+	m_pEvoReadBuffer = new EvoReadBuffer( TRUE );  // use double buffering
+
 	DUMP::SetDumpStream( & std::wcout );
 	Config::SetDefaultConfiguration( );
     Config::DefineConfigWrapperFunctions( );
@@ -96,7 +98,7 @@ EvoAppWindow::EvoAppWindow( ) :
 
 	GridWindow::InitClass
 	( 
-		& m_EvoReadBuffer, 
+		  m_pEvoReadBuffer, 
 		& m_EvoWorkThreadInterface, 
 		  m_pFocusPoint, 
 		  m_pDspOptWindow, 
@@ -166,7 +168,7 @@ void EvoAppWindow::Start( )
 	EvolutionCore::InitClass
 	( 
 		GridDimensions::GetNrOfNeigbors(), 
-		& m_EvoReadBuffer, 
+		  m_pEvoReadBuffer, 
 		& m_eventPOI
 	);
 
@@ -190,7 +192,7 @@ void EvoAppWindow::Start( )
 	m_pEvoCore4Display = EvolutionCore::CreateCore( );
 
 	DefineCoreWrapperFunctions( pCoreWork );  // Core wrappers run in work thread
-	m_EvoReadBuffer.Initialize( pCoreWork, m_pEvoCore4Display );
+	m_pEvoReadBuffer->Initialize( pCoreWork, m_pEvoCore4Display );
 
 	m_EvoWorkThreadInterface.Start
 	( 
@@ -199,7 +201,7 @@ void EvoAppWindow::Start( )
 		& m_atComputation,
 		& m_eventPOI, 
 		& m_Delay, 
-		& m_EvoReadBuffer, 
+		  m_pEvoReadBuffer, 
 		& m_EvoHistGlue
 	);
 	
@@ -222,9 +224,9 @@ void EvoAppWindow::Start( )
 	);
 
 	m_pDspOptWindow   ->Start( m_hwndApp );
-	m_pEvoEditorWindow->Start( m_hwndApp, & m_EvoWorkThreadInterface, & m_EvoReadBuffer, m_pDspOptWindow );
-	m_pCrsrWindow     ->Start( m_hwndApp, & m_EvoReadBuffer, m_pFocusPoint );
-	m_pStatistics     ->Start( m_hwndApp, & m_EvoReadBuffer );
+	m_pEvoEditorWindow->Start( m_hwndApp, & m_EvoWorkThreadInterface, m_pEvoReadBuffer, m_pDspOptWindow );
+	m_pCrsrWindow     ->Start( m_hwndApp, m_pEvoReadBuffer, m_pFocusPoint );
+	m_pStatistics     ->Start( m_hwndApp, m_pEvoReadBuffer );
 	m_pPerfWindow     ->Start( m_hwndApp, m_Delay, m_atComputation, m_atDisplay, [&](){ return m_EvoWorkThreadInterface.IsRunning(); } );
 
 	m_WinManager.AddWindow( L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, * m_pPerfWindow,      TRUE, FALSE );
@@ -261,8 +263,9 @@ void EvoAppWindow::Stop()
 	m_pStatistics     ->Stop( );
 	m_pCrsrWindow     ->Stop( );
 
-	m_Delay                 .UnregisterAllObservers( );
-	m_EvoReadBuffer         .UnregisterAllObservers( );
+	m_pEvoReadBuffer->UnregisterAllObservers( );
+	m_Delay          .UnregisterAllObservers( );
+
 	m_EvoWorkThreadInterface.Stop( );
 	m_EvoHistGlue           .Stop( );
 
@@ -281,7 +284,7 @@ void EvoAppWindow::configureStatusBar( )
 {
 	int iPartScriptLine = 0;
 
-	m_pGenerationDisplay = new GenerationDisplay( & m_StatusBar, & m_EvoReadBuffer, iPartScriptLine );
+	m_pGenerationDisplay = new GenerationDisplay( & m_StatusBar, m_pEvoReadBuffer, iPartScriptLine );
 
 	m_StatusBar.NewPart( );
 	m_StatusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );

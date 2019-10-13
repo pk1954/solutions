@@ -106,9 +106,7 @@ void NNetWindow::SetPixelSize( MicroMeter const newSize )
 	MicroMeterPoint const umPointcenter   = m_coord.convert2MicroMeterPoint( fPixPointCenter );
 	if ( m_coord.ZoomNNet( newSize ) ) 
 	{
-		NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
 		m_coord.CenterSimulationArea( umPointcenter, fPixPointCenter ); 
-		m_pReadBuffer->ReleaseReadBuffer( );
 		Notify( TRUE );     // cause immediate repaint
 	}
 	else
@@ -125,9 +123,8 @@ MicroMeter NNetWindow::GetPixelSize( ) const
 Shape const * NNetWindow::getShapeUnderPoint( PixelPoint const pnt )
 {
 	MicroMeterPoint const   umCrsrPos = m_coord.convert2MicroMeterPoint( pnt );
-	NNetModel       const * pModel    = m_pReadBuffer->LockReadBuffer( );
+	NNetModel       const * pModel    = m_pReadBuffer->GetModel( );
 	Shape           const * pShape    = pModel->GetShapeUnderPoint( umCrsrPos );
-	m_pReadBuffer->ReleaseReadBuffer( );
 	return pShape;
 }
 
@@ -256,10 +253,9 @@ void NNetWindow::moveNNet( PixelPoint const ptDiff )
 
 void NNetWindow::doPaint( )
 {
-	NNetModel const * pModel = m_pReadBuffer->LockReadBuffer( );
+	NNetModel const * pModel = m_pReadBuffer->GetModel( );
 	pModel->Apply2AllShapes( [&]( Shape * const pShape ) { pShape->DrawExterior( * pModel, * m_pGraphics, m_coord ); } );
 	pModel->Apply2AllShapes( [&]( Shape * const pShape ) { pShape->DrawInterior( * pModel, * m_pGraphics, m_coord ); } );
-	m_pReadBuffer->ReleaseReadBuffer( );
 	m_pScale->ShowScale( fPIXEL( static_cast<float>( GetClientWindowHeight().GetValue() ) ) );
 	m_pGraphics->RenderForegroundObjects( );
 }
