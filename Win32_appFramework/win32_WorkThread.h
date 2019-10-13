@@ -6,6 +6,7 @@
 
 #include "util.h"
 #include "GenerationCmd.h"
+#include "ModelInterface.h"
 #include "HistorySystem.h"
 #include "HistoryGeneration.h"
 #include "win32_thread.h"
@@ -16,7 +17,6 @@ class RootWindow;
 class WinManager;
 class HistorySystem;
 class EventInterface;
-class ModelInterface;
 class ObserverInterface;
 class WorkThreadInterface;
 
@@ -104,6 +104,8 @@ protected:
 	{
 		GetHistorySystem( )->CreateAppCommand( MakeGenerationCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
 	}
+
+	virtual void Compute() { m_pModel->Compute(); }
 
 	virtual void WaitTilNextActivation( ) = 0;
 

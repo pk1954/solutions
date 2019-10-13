@@ -72,16 +72,6 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		}
 		break;
 
-	case IDM_SLOWER:
-		if ( ! m_pSlowMotionRatio->IncRatio( ) )
-			MessageBeep( MB_ICONWARNING );
-		break;
-
-	case IDM_FASTER:
-		if ( ! m_pSlowMotionRatio->DecRatio( ) )
-			MessageBeep( MB_ICONWARNING );
-		break;
-
 	case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
 		m_pNNetWindow->SetPixelSize( MicroMeter((float &)lParam) );
 		break;
@@ -149,6 +139,20 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWorkThreadInterface->PostPulseSpeed( shapeId, mPs );
 	}
 	break;
+
+	case IDM_SLOWER:
+		if ( m_pSlowMotionRatio->IncRatio( ) )
+			m_pNNetWorkThreadInterface->PostSlowMotionChanged( );
+		else
+			MessageBeep( MB_ICONWARNING );
+		break;
+
+	case IDM_FASTER:
+		if ( ! m_pSlowMotionRatio->DecRatio( ) )
+			m_pNNetWorkThreadInterface->PostSlowMotionChanged( );
+		else
+			MessageBeep( MB_ICONWARNING );
+		break;
 
 	default:
 		return true;

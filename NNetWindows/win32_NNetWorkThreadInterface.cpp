@@ -89,3 +89,10 @@ void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint c
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << newPos << endl;
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::MOVE_SHAPE_TO), id.GetValue(), Util::Pack2UINT64(newPos) );
 }
+
+void NNetWorkThreadInterface::PostSlowMotionChanged( )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED), 0, 0 );
+}

@@ -37,6 +37,11 @@ public:
 		return m_timeStamp;
 	}
 
+	void ResetSimulationTime( )
+	{
+		m_timeStamp = microseconds( 0 );
+	}
+
 	Shape * GetShape( ShapeId const id )
 	{
 		return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() - 1 ];

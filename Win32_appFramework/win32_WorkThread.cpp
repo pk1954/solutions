@@ -6,7 +6,6 @@
 #include <sstream> 
 #include "SCRIPT.H"
 #include "EventInterface.h"
-#include "ModelInterface.h"
 #include "win32_thread.h"
 #include "win32_event.h"
 #include "win32_stopwatch.h"
@@ -169,7 +168,7 @@ BOOL WorkThread::Dispatch( MSG const msg )
 		if ( m_pHistorySystem )
 			GotoGeneration( m_pHistorySystem->GetCurrentGeneration( ) + 1 );
 		else
-			m_pModel->Compute( );  // compute next generation
+			Compute( );  // compute next generation
 		break;
 
 	case WorkThreadMessage::Id::GOTO_GENERATION:
@@ -244,7 +243,7 @@ void WorkThread::NGenerationSteps( int iNrOfGenerations )  // for benchmarks onl
 		if ( m_pHistorySystem )
 			m_pHistorySystem->CreateAppCommand( GenerationCmd::NextGenCmd() );
 		else
-			m_pModel->Compute( );  // compute next generation
+			Compute( );  // compute next generation
 		WorkMessage( FALSE, WorkThreadMessage::Id::REFRESH, 0, 0 );   // refresh all views
 	}
 	stopwatch.Stop( L"benchmark" );
@@ -257,7 +256,7 @@ void WorkThread::generationRun( )
 		if ( m_pHistorySystem )
 			GotoGeneration( m_pHistorySystem->GetCurrentGeneration( ) + 1 );
 		else
-			m_pModel->Compute( );  // compute next generation
+			Compute( );  // compute next generation
 
 		WaitTilNextActivation( );
 

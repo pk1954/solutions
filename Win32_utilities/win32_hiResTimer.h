@@ -18,8 +18,14 @@ public:
     HiResTimer( );
     ~HiResTimer( ) {};
 
-    void Start( );
-    void Stop( );
+	void  Start( );
+	Ticks GetTicksTilStart( );
+	void  Stop( );
+	void  Restart( )
+	{
+		Stop();
+		Start();
+	}
 
 	Ticks ReadHiResTimer( ) const;
 

@@ -118,8 +118,6 @@ void NNetModel::Compute( )
 	Apply2AllShapes( [&]( Shape * const pShape ) { pShape->Step(); } );
 
 	m_timeStamp += TIME_RESOLUTION;
-
-	////////////////
 }
 
 void NNetModel::ResetAll( )

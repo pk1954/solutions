@@ -27,6 +27,7 @@ public:
 		PULSE_FREQ,
 		PULSE_SPEED,
 		MOVE_SHAPE_TO,
+		SLOW_MOTION_CHANGED,
 		NNET_LAST,
 		FIRST = NNET_FIRST,
 		LAST = NNET_LAST
@@ -56,19 +57,24 @@ public:
 
 private:
 
+	void ResetTimer()
+	{
+		m_hrTimer.Restart();
+	}
+
 	virtual void SetRunModeHook( BOOL const bState ) 
 	{
-		m_timerTicks = Ticks( 0 );
+		ResetTimer();
 	}
 	
 	virtual BOOL Dispatch( MSG const );
 
 	virtual void WaitTilNextActivation( );
 
+	virtual void Compute();
+
 	NNetModel       * m_pNNetModel;
 	SlowMotionRatio * m_pSlowMotionRatio;
-	Ticks             m_timerTicks;
-	Ticks             m_timerTicksLastTime;
 	double            m_dutyCycle;
 	HiResTimer        m_hrTimer;
 };

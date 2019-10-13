@@ -26,7 +26,7 @@ NNetWorkThread::NNetWorkThread
 	ActionTimer             * const pActionTimer,
 	EventInterface          * const pEvent,
 	ObserverInterface       * const pObserver, 
-	SlowMotionRatio         * const pSLowMotionRatio,
+	SlowMotionRatio         * const pSlowMotionRatio,
 	NNetWorkThreadInterface * const pWorkThreadInterface,
 	NNetModel               * const pNNetModel,
 	BOOL                      const bAsync
@@ -43,11 +43,10 @@ NNetWorkThread::NNetWorkThread
 		pWorkThreadInterface,
 		bAsync
 	),
-	m_pSlowMotionRatio( pSLowMotionRatio ),
-	m_timerTicksLastTime( Ticks( 0 ) ),
-	m_timerTicks( Ticks( 0 ) ),
+	m_pSlowMotionRatio( pSlowMotionRatio ),
 	m_dutyCycle( 0.0 )
 {
+	m_hrTimer.Start();
 }
 
 NNetWorkThread::~NNetWorkThread( )
@@ -100,6 +99,11 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	}
 	break;
 
+	case NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED:
+		ResetTimer();
+		m_pNNetModel->ResetSimulationTime();
+	break;
+
 	default:
 		return FALSE;
 	} 
@@ -109,14 +113,21 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 
 void NNetWorkThread::WaitTilNextActivation( )
 {
-	Ticks workTicks = m_hrTimer.ReadHiResTimer() - m_timerTicksLastTime;
-
-	m_hrTimer.BusyWait( TIME_RESOLUTION * m_pSlowMotionRatio->GetRatio(), m_timerTicks );
-
-	Ticks ticksAct   = m_hrTimer.ReadHiResTimer();
-	Ticks cycleTicks = ticksAct - m_timerTicksLastTime;
-
-	m_dutyCycle = static_cast<double>( workTicks.GetValue() ) / static_cast<double>( cycleTicks.GetValue() ); 
-
-	m_timerTicksLastTime = ticksAct;
+	Sleep( 10 );
 } 
+
+void NNetWorkThread::Compute() 
+{ 
+	Ticks        const ticksTilStart      = m_hrTimer.GetTicksTilStart( );                  // 
+	microseconds const usTilStartRealTime = m_hrTimer.TicksToMicroseconds( ticksTilStart ); // 
+	microseconds const usTilStartSimuTime = usTilStartRealTime / m_pSlowMotionRatio->GetRatio();
+	microseconds const usActualSimuTime   = m_pNNetModel->GetSimulationTime( );             // get actual time stamp
+	microseconds const usMissingSimuTime  = usTilStartSimuTime - usActualSimuTime;          // compute missing simulation time
+	if ( usMissingSimuTime > 0ms )
+	{
+		unsigned long ulCyclesTodo = CastToUnsignedLong( usMissingSimuTime / TIME_RESOLUTION ); // compute cycles to be computed
+		do
+			m_pNNetModel->Compute(); 
+		while ( ulCyclesTodo-- );
+	}
+}
