@@ -19,7 +19,7 @@ class Knot : public BaseKnot
 {
 public:
 	Knot( MicroMeterPoint const center )
-	  : BaseKnot( tShapeType::knot, center, 50.0_MicroMeter )
+	  : BaseKnot( tShapeType::knot, center, 10.0_MicroMeter )
 	{
 	}
 
@@ -35,8 +35,8 @@ public:
 		return m_mVinputBuffer;
 	}
 
-	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const {};
-	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const {};
+	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
+	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
 
 private:
 

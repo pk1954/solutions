@@ -166,10 +166,6 @@ void Pipeline::DrawExterior
 	fPixelPoint const fEndPoint   = coord.convert2fPixelPos( endPnt );
 	COLORREF    const color       = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 );
 	Graphics.AddfPixelLine( fStartPoint, fEndPoint, fPixWidth, color );
-
-	///// draw end connector
-
-	Graphics.DrawCircle( fEndPoint, color, fPixWidth );
 }
 
 void Pipeline::DrawInterior
@@ -212,8 +208,4 @@ void Pipeline::DrawInterior
 		point2    += segmentVector; 
 		fPixPoint1 = fPixPoint2;
 	}
-
-	///// draw end connector
-
-	Graphics.DrawCircle( fEndPoint, color, fPixWidth );
 }

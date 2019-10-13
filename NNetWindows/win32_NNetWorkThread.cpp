@@ -118,11 +118,11 @@ void NNetWorkThread::WaitTilNextActivation( )
 
 void NNetWorkThread::Compute() 
 { 
-	Ticks        const ticksTilStart      = m_hrTimer.GetTicksTilStart( );                  // 
-	microseconds const usTilStartRealTime = m_hrTimer.TicksToMicroseconds( ticksTilStart ); // 
+	Ticks        const ticksTilStart      = m_hrTimer.GetTicksTilStart( );                   
+	microseconds const usTilStartRealTime = m_hrTimer.TicksToMicroseconds( ticksTilStart ); 
 	microseconds const usTilStartSimuTime = usTilStartRealTime / m_pSlowMotionRatio->GetRatio();
-	microseconds const usActualSimuTime   = m_pNNetModel->GetSimulationTime( );             // get actual time stamp
-	microseconds const usMissingSimuTime  = usTilStartSimuTime - usActualSimuTime;          // compute missing simulation time
+	microseconds const usActualSimuTime   = m_pNNetModel->GetSimulationTime( );                // get actual time stamp
+	microseconds const usMissingSimuTime  = usTilStartSimuTime - usActualSimuTime;             // compute missing simulation time
 	if ( usMissingSimuTime > 0ms )
 	{
 		unsigned long ulCyclesTodo = CastToUnsignedLong( usMissingSimuTime / TIME_RESOLUTION ); // compute cycles to be computed
