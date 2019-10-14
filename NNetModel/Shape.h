@@ -18,6 +18,7 @@ enum class tShapeType
 {
 	undefined,
 	inputNeuron,
+	outputNeuron,
 	neuron,
 	pipeline,
 	knot
@@ -30,7 +31,10 @@ static bool IsDefined( ShapeId const id )
 
 static bool IsBaseKnotType( tShapeType const type )
 {
-	return (type == tShapeType::knot) || (type == tShapeType::neuron) || (type == tShapeType::inputNeuron);
+	return (type == tShapeType::knot)        || 
+		   (type == tShapeType::neuron)      || 
+		   (type == tShapeType::inputNeuron) ||
+		   (type == tShapeType::outputNeuron);
 }
 
 class Shape

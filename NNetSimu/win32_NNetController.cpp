@@ -148,7 +148,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_FASTER:
-		if ( ! m_pSlowMotionRatio->DecRatio( ) )
+		if ( m_pSlowMotionRatio->DecRatio( ) )
 			m_pNNetWorkThreadInterface->PostSlowMotionChanged( );
 		else
 			MessageBeep( MB_ICONWARNING );

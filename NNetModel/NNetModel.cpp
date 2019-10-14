@@ -17,24 +17,24 @@ NNetModel::NNetModel( )
 	m_Shapes( ),
 	m_shapeHighlighted( NO_SHAPE )
 {					
-	m_idNeuron1   = AddInputNeuron( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
-    m_idKnot1     = AddKnot       ( MicroMeterPoint( 400.0_MicroMeter, 400.0_MicroMeter ) );
-    m_idKnot2     = AddKnot       ( MicroMeterPoint( 300.0_MicroMeter, 800.0_MicroMeter ) );
-    m_idKnot3     = AddKnot       ( MicroMeterPoint( 500.0_MicroMeter, 800.0_MicroMeter ) );
-    m_idKnot4     = AddKnot       ( MicroMeterPoint( 600.0_MicroMeter, 700.0_MicroMeter ) );
-    m_idPipeline1 = AddPipeline   ( 0.1_meterPerSec );
-    m_idPipeline2 = AddPipeline   ( 0.1_meterPerSec );
-    m_idPipeline3 = AddPipeline   ( 0.1_meterPerSec );
-	m_idPipeline4 = AddPipeline   ( 0.1_meterPerSec );
+	m_idNeuron1       = AddInputNeuron ( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
+    m_idKnot1         = AddKnot        ( MicroMeterPoint( 400.0_MicroMeter, 400.0_MicroMeter ) );
+	m_idKnot2         = AddKnot        ( MicroMeterPoint( 500.0_MicroMeter, 800.0_MicroMeter ) );
+    m_idPipeline1     = AddPipeline    ( 0.1_meterPerSec );
+    m_idPipeline2     = AddPipeline    ( 0.1_meterPerSec );
+    m_idPipeline3     = AddPipeline    ( 0.1_meterPerSec );
+	m_idPipeline4     = AddPipeline    ( 0.1_meterPerSec );
+    m_idOutputNeuron1 = AddOutputNeuron( MicroMeterPoint( 300.0_MicroMeter, 800.0_MicroMeter ) );
+	//m_idOutputNeuron2 = AddOutputNeuron( MicroMeterPoint( 600.0_MicroMeter, 700.0_MicroMeter ) );
 
-	AddOutgoing ( m_idNeuron1, m_idPipeline1 );
-	AddIncomming( m_idKnot1,   m_idPipeline1 );
-	AddOutgoing ( m_idKnot1,   m_idPipeline2 );
-	AddOutgoing ( m_idKnot1,   m_idPipeline3 );
-	AddOutgoing ( m_idKnot3,   m_idPipeline4 );
-	AddIncomming( m_idKnot2,   m_idPipeline2 );
-	AddIncomming( m_idKnot3,   m_idPipeline3 );
-	AddIncomming( m_idKnot4,   m_idPipeline4 );
+	AddOutgoing ( m_idNeuron1,       m_idPipeline1 );
+	AddIncomming( m_idKnot1,         m_idPipeline1 );
+	AddOutgoing ( m_idKnot1,         m_idPipeline2 );
+	AddOutgoing ( m_idKnot1,         m_idPipeline3 );
+	AddOutgoing ( m_idKnot2,         m_idPipeline4 );
+	AddIncomming( m_idOutputNeuron1, m_idPipeline2 );
+	AddIncomming( m_idKnot2,         m_idPipeline3 );
+	AddIncomming( m_idOutputNeuron1, m_idPipeline4 );
 }
 
 NNetModel::~NNetModel( )
@@ -82,6 +82,11 @@ ShapeId const NNetModel::addShape( Shape * pShape )
 ShapeId const NNetModel::AddInputNeuron( MicroMeterPoint const& upCenter )
 {
 	return addShape( new InputNeuron( upCenter ) );
+}
+
+ShapeId const NNetModel::AddOutputNeuron( MicroMeterPoint const& upCenter )
+{
+	return addShape( new OutputNeuron( upCenter ) );
 }
 
 ShapeId const NNetModel::AddNeuron( MicroMeterPoint const & upCenter )

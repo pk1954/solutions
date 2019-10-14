@@ -53,8 +53,8 @@ public:
 
 private:
 	MicroMeter distance( MicroMeterPoint const &, MicroMeterPoint const & );
-
-	void initialize( NNetModel & );
+	void       initialize( NNetModel & );
+	COLORREF   pulseColor( mV const ) const;
 
 	bool m_initialized;
 	
@@ -65,3 +65,6 @@ private:
 	vector<mV>  m_potential;
 	meterPerSec m_impulseSpeed;
 };
+
+Pipeline const * Cast2Pipeline( Shape const * );
+Pipeline       * Cast2Pipeline( Shape       * );

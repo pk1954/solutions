@@ -10,6 +10,7 @@
 #include "MoreTypes.h"
 #include "Segment.h"
 #include "InputNeuron.h"
+#include "OutputNeuron.h"
 #include "Neuron.h"
 #include "Pipeline.h"
 #include "ModelInterface.h"
@@ -91,10 +92,11 @@ public:
 		
 	// manipulating functions
 
-	ShapeId const AddInputNeuron( MicroMeterPoint const & );
-	ShapeId const AddNeuron     ( MicroMeterPoint const & );
-	ShapeId const AddKnot       ( MicroMeterPoint const & );
-	ShapeId const AddPipeline   ( meterPerSec     const );
+	ShapeId const AddInputNeuron ( MicroMeterPoint const & );
+	ShapeId const AddOutputNeuron( MicroMeterPoint const & );
+	ShapeId const AddNeuron      ( MicroMeterPoint const & );
+	ShapeId const AddKnot        ( MicroMeterPoint const & );
+	ShapeId const AddPipeline    ( meterPerSec     const );
 
 	void HighlightShape( ShapeId const );
 	void Apply2AllShapes( std::function<void(Shape * const)> const & ) const;
@@ -107,8 +109,8 @@ private:
 	ShapeId m_idNeuron1;  
 	ShapeId m_idKnot1;    
 	ShapeId m_idKnot2;    
-	ShapeId m_idKnot3;    
-	ShapeId m_idKnot4;    
+	ShapeId m_idOutputNeuron1;    
+	ShapeId m_idOutputNeuron2;    
 	ShapeId m_idPipeline1;
 	ShapeId m_idPipeline2;
 	ShapeId m_idPipeline3;

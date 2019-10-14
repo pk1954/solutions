@@ -32,8 +32,10 @@ public:
 	virtual void      EndFrame( HWND const );
 	virtual void      ShutDown( );
 	virtual void	  AddfPixelLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const );
-	virtual void      AddRect( fPixelPoint const, COLORREF const, fPIXEL const );
-	virtual void      DrawCircle( fPixelPoint const, COLORREF const, fPIXEL const );
+	virtual void      DrawPolygon( int const, fPixelPoint const, COLORREF const, fPIXEL const );
+	virtual void      StartPipeline( fPixelPoint const &, fPixelPoint const &, fPIXEL const,	COLORREF const );
+	virtual void      AddPipelinePoint( fPixelPoint const &, COLORREF const );
+	virtual void      RenderPipeline( );
 
 private:   
 	D3dSystem             * m_d3d;
@@ -47,6 +49,7 @@ private:
 	DWORD                   m_dwAlphaBlendable;
     DWORD                   m_dwSrcBlend;
     DWORD                   m_dwDstBlend;
+	fPixelPoint             m_fOrtho;       // pipelines
 
     static D3DXFONT_DESC    m_d3dx_font_desc;  // identical for all buffers, even on systems with multiple displays
 
@@ -54,10 +57,11 @@ private:
     void addRectangle( float const, float const, D3DCOLOR const, float const );    
     void addHexagon  ( float const, float const, D3DCOLOR const, float const, float const );    
     void addRect2Buffer( float const, float const, float const, float const, D3DCOLOR const );
-    void renderTriangleStrip( ) const;
+    void renderIndexedTriangleStrip( ) const;
     void renderPrimitives( D3dIndexBuffer const * const );
     void prepareTranspMode( );
     void finishTranspMode( );
+	void renderTriangleStrip( int );
 
 	D3DCOLOR COLORREFtoD3DCOLOR( unsigned int const, COLORREF const );
 };

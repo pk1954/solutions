@@ -162,6 +162,7 @@
     <ClInclude Include="Neuron.h" />
     <ClInclude Include="NNetModel.h" />
     <ClInclude Include="NNetParameters.h" />
+    <ClInclude Include="OutputNeuron.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Shape.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="InputNeuron.cpp" />
     <ClCompile Include="Knot.cpp" />
     <ClCompile Include="NNetModel.cpp" />
+    <ClCompile Include="OutputNeuron.cpp" />
     <ClCompile Include="Pipeline.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

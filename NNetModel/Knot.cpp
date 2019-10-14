@@ -27,7 +27,7 @@ void Knot::DrawExterior
 	fPIXEL      const fPixWidth { coord.convert2fPixel( IsHighlighted( ) ? 30.0_MicroMeter : GetExtension( ) ) };
 	COLORREF    const color     { IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ) };
 
-	Graphics.DrawCircle( fPosition, color, fPixWidth );
+	Graphics.DrawPolygon( 24, fPosition, color, fPixWidth );
 }
 
 void Knot::DrawInterior
@@ -37,9 +37,11 @@ void Knot::DrawInterior
 	PixelCoordsFp const & coord
 ) const
 {
-	fPixelPoint const fPosition { coord.convert2fPixelPos( GetPosition( ) ) };
-	fPIXEL      const fPixWidth { coord.convert2fPixel( GetExtension( ) ) * 0.6f };
-	COLORREF    const color     { RGB( 0, 0, 0 ) };
+	fPixelPoint const fPosition     { coord.convert2fPixelPos( GetPosition( ) ) };
+	fPIXEL      const fPixWidth     { coord.convert2fPixel( GetExtension( ) ) * 0.6f };
+	mV          const mVperColLevel { PEAK_VOLTAGE / 255.0f };
+	int         const iLevel        { CastToInt( m_mVinputBuffer / mVperColLevel ) };
+	COLORREF    const color         { RGB( iLevel, 0, 0 ) };
 
-	Graphics.DrawCircle( fPosition, color, fPixWidth );
+	Graphics.DrawPolygon( 24, fPosition, color, fPixWidth );
 }

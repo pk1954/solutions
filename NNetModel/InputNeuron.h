@@ -44,6 +44,3 @@ private:
 
 InputNeuron const * Cast2InputNeuron( Shape const * );
 InputNeuron       * Cast2InputNeuron( Shape       * );
-
-Pipeline const * Cast2Pipeline( Shape const * );
-Pipeline       * Cast2Pipeline( Shape       * );

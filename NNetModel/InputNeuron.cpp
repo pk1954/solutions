@@ -93,8 +93,9 @@ void InputNeuron::DrawExterior
 ) const
 {
 	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 );
-	Graphics.DrawCircle
+	Graphics.DrawPolygon
 	( 
+		24,
 		coord.convert2fPixelPos( GetPosition() ), 
 		IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ), 
 		coord.convert2fPixel( GetExtension() )
@@ -111,8 +112,9 @@ void InputNeuron::DrawInterior
 	PERCENT  const fillLevel = GetFillLevel();
 	int      const colElem   = ( 255 * fillLevel.GetValue() ) / 100;
 	COLORREF const color     = RGB( colElem, 0, 0 );
-	Graphics.DrawCircle
+	Graphics.DrawPolygon
 	( 
+		24,
 		coord.convert2fPixelPos( GetPosition() ), 
 		color, 
 		coord.convert2fPixel( GetExtension() * 0.8f )
@@ -129,16 +131,4 @@ InputNeuron * Cast2InputNeuron( Shape * shape )
 {
 	assert( shape->GetShapeType() == tShapeType::inputNeuron );
 	return static_cast<InputNeuron *>(shape);
-}
-
-Pipeline const * Cast2Pipeline( Shape const * shape )
-{
-	assert( shape->GetShapeType() == tShapeType::pipeline );
-	return static_cast<Pipeline const *>(shape);
-}
-
-Pipeline * Cast2Pipeline( Shape * shape )
-{
-	assert( shape->GetShapeType() == tShapeType::pipeline );
-	return static_cast<Pipeline *>(shape);
 }

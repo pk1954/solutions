@@ -152,7 +152,7 @@ void Pipeline::DrawExterior
 	MicroMeterPoint        startPnt   { pStartKnot->GetPosition() };
 	MicroMeterPoint        endPnt     { pEndKnot  ->GetPosition() };
 	MicroMeterPoint        vector     { endPnt - startPnt };
-	
+
 	if ( pStartKnot->GetShapeType( ) != tShapeType::knot ) 
 	{
 		float           const extension = pStartKnot->GetExtension( ).GetValue() * 0.8f;
@@ -165,7 +165,10 @@ void Pipeline::DrawExterior
 	fPixelPoint const fStartPoint = coord.convert2fPixelPos( startPnt );
 	fPixelPoint const fEndPoint   = coord.convert2fPixelPos( endPnt );
 	COLORREF    const color       = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 );
-	Graphics.AddfPixelLine( fStartPoint, fEndPoint, fPixWidth, color );
+
+	Graphics.StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
+	Graphics.AddPipelinePoint( fEndPoint, color );
+	Graphics.RenderPipeline( );
 }
 
 void Pipeline::DrawInterior
@@ -194,18 +197,36 @@ void Pipeline::DrawInterior
 	fPixelPoint     const fEndPoint     = coord.convert2fPixelPos( endPnt );
 	MicroMeterPoint const segmentVector = vector / CastToFloat(m_potential.size());
 	fPixelPoint           fPixPoint1    = coord.convert2fPixelPos( startPnt );
-	MicroMeterPoint       point2        = startPnt + segmentVector;
-	COLORREF              color;
+	MicroMeterPoint       umPoint       = startPnt;
+
+	Graphics.StartPipeline( fPixPoint1, fEndPoint, fPixWidth, pulseColor( * m_potential.begin() ) );
 
 	for ( std::vector<mV>::const_iterator iter = m_potential.begin( ); iter != m_potential.end( ); iter++ )
 	{
-		assert( * iter <= PEAK_VOLTAGE );
-		mV              const mVperColLevel = PEAK_VOLTAGE / 255.0f;
-		int             const iLevel        = CastToInt( * iter / mVperColLevel );
-		fPixelPoint     const fPixPoint2    = coord.convert2fPixelPos( point2 );
-		                      color         = RGB( iLevel, 0, 0 );
-		Graphics.AddfPixelLine( fPixPoint1, fPixPoint2, fPixWidth, color );
-		point2    += segmentVector; 
-		fPixPoint1 = fPixPoint2;
+		umPoint += segmentVector; 
+		fPixelPoint const fPixPoint2 = coord.convert2fPixelPos( umPoint );
+		Graphics.AddPipelinePoint( fPixPoint2, pulseColor( * iter ) );
 	}
+
+	Graphics.RenderPipeline( );
+}
+
+COLORREF Pipeline::pulseColor( mV const current ) const 
+{
+	assert( current <= PEAK_VOLTAGE );
+	mV    const mVperColLevel = PEAK_VOLTAGE / 255.0f;
+	int   const iLevel        = CastToInt( current / mVperColLevel );
+	return RGB( iLevel, 0, 0 );
+}
+
+Pipeline const * Cast2Pipeline( Shape const * shape )
+{
+	assert( shape->GetShapeType() == tShapeType::pipeline );
+	return static_cast<Pipeline const *>(shape);
+}
+
+Pipeline * Cast2Pipeline( Shape * shape )
+{
+	assert( shape->GetShapeType() == tShapeType::pipeline );
+	return static_cast<Pipeline *>(shape);
 }

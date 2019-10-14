@@ -27,7 +27,14 @@ D3DXFONT_DESC D3D_driver::m_d3dx_font_desc =
     L""                        //  FaceName
 };
 
-D3D_driver::D3D_driver( )
+D3D_driver::D3D_driver( ):
+	m_fOrtho( fPixelPoint::NULL_VAL() ),
+	m_d3d( nullptr ),
+    m_d3d_device( nullptr ),
+    m_id3dx_font( nullptr ),
+    m_pVertBufStripMode( nullptr ),
+    m_pVertBufPrimitives( nullptr ),
+    m_pVertBufFan( nullptr )
 {
 	m_d3d = new D3dSystem();
 }
@@ -298,7 +305,7 @@ void D3D_driver::RenderTranspRect
 void D3D_driver::RenderBackground( )
 {
     if ( m_bStripMode )
-        renderTriangleStrip( );
+        renderIndexedTriangleStrip( );
     else
         renderPrimitives( m_d3d->GetIndsIndexBuffer() );
 }
@@ -308,7 +315,7 @@ void D3D_driver::RenderForegroundObjects( )
     renderPrimitives( m_d3d->GetIndsIndexBuffer() );
 }
 
-void D3D_driver::renderTriangleStrip( ) const
+void D3D_driver::renderIndexedTriangleStrip( ) const
 {
 	HRESULT hres;
 
@@ -406,35 +413,62 @@ void D3D_driver::AddfPixelLine
 	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp2.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() + fOrthoScaled.GetYvalue()), D3Dcolor );
 }
 
-void D3D_driver::AddRect
-( 
-	fPixelPoint const ptPos, 
-	COLORREF    const color, 
-	fPIXEL      const fPixSize 
-)
+void D3D_driver::renderTriangleStrip( int const iNrOfPrimitives )
 {
-	static float const SQRT3 = static_cast<float>( sqrt( 3 ) );
+	HRESULT hres = m_pVertBufStripMode->LoadVertices( m_d3d_vertexBuffer, m_d3d_device ); 
+	assert( hres == D3D_OK ); 
 
-	float const fPtPosx = static_cast<float>( ptPos.GetXvalue() );
-	float const fPtPosy = static_cast<float>( ptPos.GetYvalue() );
+	hres = m_d3d_device->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, iNrOfPrimitives ); 
 
-	D3DCOLOR const D3Dcolor = COLORREFtoD3DCOLOR( 255, color );
-
-	addRectangle( fPtPosx, fPtPosy, D3Dcolor, CastToFloat(fPixSize.GetValue()) );
+	m_pVertBufStripMode->ResetVertexBuffer();
 }
 
-void D3D_driver::DrawCircle
-( 
+void D3D_driver::StartPipeline
+(
+	fPixelPoint const & fppStart, 
+	fPixelPoint const & fppEnd, 
+	fPIXEL      const   fpixWidth, 
+	COLORREF    const   color
+)
+{
+	fPixelPoint const fDelta       { fppEnd - fppStart };
+	fPixelPoint const fOrtho       { fDelta.GetY(), -fDelta.GetX() };
+	float       const fScaleFactor { fpixWidth.GetValue() / sqrt( fOrtho.GetXvalue() * fOrtho.GetXvalue() + fOrtho.GetYvalue() * fOrtho.GetYvalue() ) };
+
+	m_fOrtho = fOrtho * fScaleFactor;
+
+	m_pVertBufStripMode->ResetVertexBuffer();
+	AddPipelinePoint( fppStart, color );
+}
+
+void D3D_driver::AddPipelinePoint
+(
+	fPixelPoint const & fpp, 
+	COLORREF    const   color
+)
+{
+	D3DCOLOR D3Dcolor = COLORREFtoD3DCOLOR( 255, color );
+
+	m_pVertBufStripMode->AddVertex( CastToFloat(fpp.GetXvalue() + m_fOrtho.GetXvalue()), CastToFloat(fpp.GetYvalue() + m_fOrtho.GetYvalue()), D3Dcolor );
+	m_pVertBufStripMode->AddVertex( CastToFloat(fpp.GetXvalue() - m_fOrtho.GetXvalue()), CastToFloat(fpp.GetYvalue() - m_fOrtho.GetYvalue()), D3Dcolor );
+}
+
+void D3D_driver::RenderPipeline( )
+{
+	renderTriangleStrip( m_pVertBufStripMode->GetNrOfVertices() - 2 );
+}
+
+void D3D_driver::DrawPolygon
+(
+	int         const iNrOfEdges,
 	fPixelPoint const ptPos,
 	COLORREF    const color, 
 	fPIXEL      const fPixRadius 
 )
 {
-	static const int   CIRCLE_RESOLUTION = 24;
-	static const float STEP = 2.0f * D3DX_PI / CIRCLE_RESOLUTION;
+    float STEP = 2.0f * D3DX_PI / iNrOfEdges;
 
 	D3DCOLOR const D3Dcolor = COLORREFtoD3DCOLOR( 255, color );
-	HRESULT hres;
 
 	m_pVertBufStripMode->AddVertex
 	(
@@ -443,7 +477,7 @@ void D3D_driver::DrawCircle
 		D3Dcolor 
 	);
 
-	for ( float f = 0.0; f <= STEP * CIRCLE_RESOLUTION / 2; f += STEP )
+	for ( float f = 0.0; f <= STEP * iNrOfEdges / 2; f += STEP )
 	{
 		float fX = fPixRadius.GetValue() * cos( f );
 		float fY = fPixRadius.GetValue() * sin( f );
@@ -469,12 +503,5 @@ void D3D_driver::DrawCircle
 		D3Dcolor 
 	);
 
-	{
-		hres = m_pVertBufStripMode->LoadVertices( m_d3d_vertexBuffer, m_d3d_device ); 
-		assert( hres == D3D_OK ); 
-
-		hres = m_d3d_device->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, CIRCLE_RESOLUTION ); 
-
-		m_pVertBufStripMode->ResetVertexBuffer();
-	}
+	renderTriangleStrip( iNrOfEdges );
 }

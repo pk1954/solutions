@@ -16,10 +16,10 @@ bool IsPointInRect  // check if point is in given rectangle
 	T const BA = B - A;
 	T const DA = D - A;
 
-	if ((P.GetXvalue() - A.GetXvalue()) * BA.GetXvalue() + (P.GetYvalue() - A.GetYvalue()) * BA.GetYvalue() < 0.0) return false;
-	if ((P.GetXvalue() - B.GetXvalue()) * BA.GetXvalue() + (P.GetYvalue() - B.GetYvalue()) * BA.GetYvalue() > 0.0) return false;
-	if ((P.GetXvalue() - A.GetXvalue()) * DA.GetXvalue() + (P.GetYvalue() - A.GetYvalue()) * DA.GetYvalue() < 0.0) return false;
-	if ((P.GetXvalue() - D.GetXvalue()) * DA.GetXvalue() + (P.GetYvalue() - D.GetYvalue()) * DA.GetYvalue() > 0.0) return false;
+	if ((P.GetXvalue() - A.GetXvalue()) * BA.GetXvalue() + (P.GetYvalue() - A.GetYvalue()) * BA.GetYvalue() < 0.0f) return false;
+	if ((P.GetXvalue() - B.GetXvalue()) * BA.GetXvalue() + (P.GetYvalue() - B.GetYvalue()) * BA.GetYvalue() > 0.0f) return false;
+	if ((P.GetXvalue() - A.GetXvalue()) * DA.GetXvalue() + (P.GetYvalue() - A.GetYvalue()) * DA.GetYvalue() < 0.0f) return false;
+	if ((P.GetXvalue() - D.GetXvalue()) * DA.GetXvalue() + (P.GetYvalue() - D.GetYvalue()) * DA.GetYvalue() > 0.0f) return false;
 
 	return true;
 }

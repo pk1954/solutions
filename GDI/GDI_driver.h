@@ -28,6 +28,10 @@ public:
     virtual PixelRect CalcGraphicsRect( std::wstring const & );
 	virtual void      EndFrame( HWND const );
 	virtual void      ShutDown( );
+	virtual void      StartPipeline( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const ) {};
+	virtual void      AddPipelinePoint( fPixelPoint const &, COLORREF const ) {};
+	virtual void      RenderPipeline( ) {};
+
 private:
 	RECT getRECT( PixelPoint const, float const );
 
