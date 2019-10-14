@@ -205,8 +205,7 @@ void NNetWindow::PulseSpeedDialog( )
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
-	PixelPoint const   ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
-	Shape      const * pShape = getShapeUnderPoint( ptCrsr );
+	PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
 
 	if ( wParam & MK_RBUTTON )          // Right mouse button: selection
 	{
@@ -215,10 +214,10 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	{
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
-			if ( pShape )
+			if ( m_pShapeSelected )
 				m_pNNetWorkThreadInterface->PostMoveShape
 				( 
-					pShape->GetId(), 
+					m_pShapeSelected->GetId(), 
 					m_coord.convert2MicroMeterPoint( ptCrsr ) 
 				);
 			else
@@ -229,6 +228,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	}
 	else
 	{
+		Shape const * pShape = getShapeUnderPoint( ptCrsr );
 		PostCommand2Application( IDM_HIGHLIGHT, (pShape ? pShape->GetId() : NO_SHAPE).GetValue() );
 
 		m_ptLast = PP_NULL;    // make m_ptLast invalid
@@ -303,11 +303,16 @@ void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 void NNetWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )
 {
 	if ( inObservedClientRect( lParam ) || m_bMoveAllowed )
+	{
+		PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
+		m_pShapeSelected = getShapeUnderPoint( ptCrsr );
 		OnMouseMove( wParam, lParam );
+	}
 }
 
 void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
+	m_pShapeSelected = nullptr;
 	(void)ReleaseCapture( );
 }
 

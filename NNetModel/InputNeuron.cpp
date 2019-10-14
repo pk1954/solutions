@@ -52,8 +52,7 @@ void InputNeuron::Step( )
 	static microseconds const DECAY_TIME( PEAK_TIME );
 	static mV           const DECAY_INC ( FACTOR / DECAY_TIME.count() );
 
-//	mV mVexternalInput( FACTOR / CastToFloat( PulseDuration( m_pulseFrequency ) );
-	mV mVexternalInput( (FACTOR / 1000000.f ) * m_pulseFrequency.GetValue()  );
+	mV mVexternalInput( (FACTOR / 1000000.f ) * m_pulseFrequency.GetValue() );
 
 	if ( m_mVinputBuffer >= PEAK_VOLTAGE )  
 	{
