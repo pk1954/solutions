@@ -6,6 +6,7 @@
 #include <algorithm>  // min/max/abs templates
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 #include "NamedType.h"
 
 using std::abs;
@@ -157,6 +158,7 @@ public:
 		out << L"(" << param.GetXvalue() << L"/" << param.GetYvalue() << L")";
 		return out;
 	}
+
 private:
     BASE_TYPE m_x;
     BASE_TYPE m_y;

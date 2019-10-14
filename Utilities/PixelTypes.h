@@ -40,6 +40,16 @@ constexpr fPIXEL operator"" _fPIXEL( long double ld )
 	return fPIXEL( CastToFloat( ld ) );
 }
 
+inline static fPIXEL Hypot( fPixelPoint const pt ) 
+{ 
+	return fPIXEL( std::hypotf(pt.GetXvalue(), pt.GetYvalue() ) );
+};
+
+inline static fPixelPoint OrthoVector( fPixelPoint const & vect, fPIXEL const width )
+{
+	return fPixelPoint( vect.GetY(), - vect.GetX() ) * (width / Hypot( vect ));
+}
+
 /////////////////// conversions ///////////////////////////////////
 
 static fPIXEL convert2fPIXEL( PIXEL const pixel )

@@ -64,6 +64,21 @@ using MicroMeterPoint = PosType< MicroMeter >;
 static MicroMeterPoint const NP_NULL( MicroMeterPoint::NULL_VAL() );   // compiler generates call!
 static MicroMeterPoint const NP_ZERO( MicroMeterPoint::ZERO_VAL() );   // compiler generates call!
 
+inline static MicroMeter Hypot( MicroMeterPoint const pt ) 
+{ 
+	return MicroMeter( std::hypotf(pt.GetXvalue(), pt.GetYvalue() ) );
+};
+
+inline static MicroMeter Distance( MicroMeterPoint const & npA, MicroMeterPoint const & npB )
+{
+	return Hypot( npA - npB );
+}
+
+inline static MicroMeterPoint OrthoVector( MicroMeterPoint const & vect, MicroMeter const width )
+{
+	return MicroMeterPoint( vect.GetY(), - vect.GetX() ) * (width / Hypot( vect ));
+}
+
 using NNetPointFunc     = std::function<void (MicroMeterPoint const)>;
 using NNetPointBoolFunc = std::function<bool (MicroMeterPoint const)>;
 

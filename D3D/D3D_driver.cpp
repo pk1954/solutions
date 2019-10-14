@@ -398,15 +398,8 @@ void D3D_driver::AddfPixelLine
 	COLORREF    const   color
 )
 {
-	D3DCOLOR    D3Dcolor = COLORREFtoD3DCOLOR( 255, color );
-	fPixelPoint fDelta   = fpp2 - fpp1;
-
-	fPixelPoint fOrtho { fDelta.GetY(), -fDelta.GetX() };
-
-	float const fScaleFactor = fpixWidth.GetValue() / sqrt( fOrtho.GetXvalue() * fOrtho.GetXvalue() + fOrtho.GetYvalue() * fOrtho.GetYvalue() );
-
-	fPixelPoint fOrthoScaled = fOrtho * fScaleFactor;
-
+	D3DCOLOR    const D3Dcolor { COLORREFtoD3DCOLOR( 255, color ) };
+	fPixelPoint const fOrthoScaled { OrthoVector( fpp1 - fpp2, fpixWidth ) };
 	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp1.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp1.GetYvalue() + fOrthoScaled.GetYvalue()), D3Dcolor );
 	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp1.GetXvalue() - fOrthoScaled.GetXvalue()), CastToFloat(fpp1.GetYvalue() - fOrthoScaled.GetYvalue()), D3Dcolor );
 	m_pVertBufPrimitives->AddVertex( CastToFloat(fpp2.GetXvalue() - fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() - fOrthoScaled.GetYvalue()), D3Dcolor );
@@ -431,12 +424,7 @@ void D3D_driver::StartPipeline
 	COLORREF    const   color
 )
 {
-	fPixelPoint const fDelta       { fppEnd - fppStart };
-	fPixelPoint const fOrtho       { fDelta.GetY(), -fDelta.GetX() };
-	float       const fScaleFactor { fpixWidth.GetValue() / sqrt( fOrtho.GetXvalue() * fOrtho.GetXvalue() + fOrtho.GetYvalue() * fOrtho.GetYvalue() ) };
-
-	m_fOrtho = fOrtho * fScaleFactor;
-
+	m_fOrtho = OrthoVector( fppEnd - fppStart, fpixWidth );
 	m_pVertBufStripMode->ResetVertexBuffer();
 	AddPipelinePoint( fppStart, color );
 }

@@ -21,10 +21,10 @@ public:
 	virtual void Prepare( NNetModel & );
 	virtual void Step( );
 	virtual mV   GetNextOutput( ) const { return 0._mV; };
-
-	PERCENT GetFillLevel( ) const;
 	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
 	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
+
+	PERCENT GetFillLevel( ) const;
 };	
 
 OutputNeuron const * Cast2OutputNeuron( Shape const * );

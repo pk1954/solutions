@@ -43,20 +43,17 @@ public:
 
 	virtual void Step( );
 	virtual void Prepare( NNetModel & );
-
 	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
 	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
-	virtual void MoveTo( NNetModel &, MicroMeterPoint const & );
-
+	virtual void MoveTo( NNetModel &, MicroMeterPoint const & ) {}
 	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
 	virtual mV   GetNextOutput( ) const;
 
 private:
-	MicroMeter distance( MicroMeterPoint const &, MicroMeterPoint const & );
 	void       initialize( NNetModel & );
 	COLORREF   pulseColor( mV const ) const;
 
-	bool m_initialized;
+	bool       m_initialized;
 	
 	ShapeId    m_idKnotStart;
 	ShapeId    m_idKnotEnd;
