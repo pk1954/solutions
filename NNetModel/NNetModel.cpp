@@ -132,9 +132,15 @@ void NNetModel::ResetAll( )
 
 Shape const * NNetModel::GetShapeUnderPoint( MicroMeterPoint const pnt ) const
 {
-	for ( auto pShape : m_Shapes )
+	for ( auto pShape : m_Shapes )  // first test all knot shapes
 	{
-		if ( pShape->IsPointInShape( * this, pnt ) ) 
+		if ( IsBaseKnotType( pShape->GetShapeType() ) && pShape->IsPointInShape( * this, pnt ) ) 
+			return pShape;
+	};
+
+	for ( auto pShape : m_Shapes )  // now try pipelines
+	{
+		if ( ( ! IsBaseKnotType( pShape->GetShapeType() ) ) && pShape->IsPointInShape( * this, pnt ) ) 
 			return pShape;
 	};
 
