@@ -26,11 +26,13 @@ void Stopwatch::Stop( std::wstring const wstr )
 	assert( m_iLevel > 0 );  // no Stop without Start
 
 	m_hrtimer.Stop( );
+	microseconds microSecs = m_hrtimer.GetDuration( );
+	float        millisecs = CastToFloat( microSecs.count() ) / 1000.0f;
 	--m_iLevel;
 	for ( int i = 0; i < m_iLevel; ++i )
 		std::wcout << L"      ";
 	std::wcout << std::setw(30) << std::left << wstr;
 	std::wcout << std::setw( 6) << std::right;
-	std::wcout << DecFraction( CastToUnsignedLong(m_hrtimer.GetDuration( ).count()) );
+	std::wcout << std::fixed << std::setprecision(2) << millisecs;
 	std::wcout << L" ms" << std::endl;
 }

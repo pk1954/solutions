@@ -88,6 +88,3 @@ constexpr const unsigned int CastToUnsignedLong( SOURCE_TYPE const value )
 	AssertUnsignedLong( value );
 	return static_cast<unsigned long>( value );
 }
-
-std::wstring DecFraction ( unsigned long );
-std::wstring DecFraction3( unsigned long );

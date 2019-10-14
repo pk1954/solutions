@@ -97,7 +97,9 @@ void TextBuffer::printSpan( unsigned int const min, unsigned int const max )
     printBuffer();
 }
 
-void TextBuffer::printAsDecFraction( unsigned long const ulValue )
+void TextBuffer::printAsMillisecs( microseconds const microSecs )
 {
-	printString( DecFraction( ulValue ) );
+	float millisecs = CastToFloat( microSecs.count() ) / 1000.0f;
+	m_wBuffer << std::fixed << std::setprecision(2) << millisecs << L"ms";
+	printBuffer( );
 }

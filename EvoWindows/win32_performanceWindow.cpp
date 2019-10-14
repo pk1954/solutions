@@ -61,10 +61,9 @@ void PerformanceWindow::printLine
 	microseconds    const duration
 )
 {
-	textBuf.printString       ( pwch1 );
-	textBuf.printAsDecFraction( CastToUnsignedLong(duration.count()) );
-	textBuf.printString       ( L"ms" );
-	textBuf.nextLine          ( );
+	textBuf.printString( pwch1 );
+	textBuf.printAsMillisecs( duration );
+	textBuf.nextLine( );
 }
 
 void PerformanceWindow::printLine

@@ -7,8 +7,6 @@
 #include "NNetReadBuffer.h"
 #include "ObserverInterface.h"
 
-using std::to_wstring;
-
 class StatusBar;
 
 class TimeDisplay : public ObserverInterface

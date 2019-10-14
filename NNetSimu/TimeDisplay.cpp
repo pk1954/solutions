@@ -5,10 +5,17 @@
 // Displays time since start of simulation in status bar field
 
 #include "stdafx.h"
+#include <iostream>
+#include <sstream> 
+#include <string> 
 #include "win32_baseRefreshRate.h"
 #include "win32_status.h"
 #include "NNetModel.h"
 #include "TimeDisplay.h"
+
+using std::to_wstring;
+using std::wstring;
+using std::wostringstream;
 
 /////// inner class TimeDisplay::RefreshRate ///////
 
@@ -30,20 +37,26 @@ public:
 	{
 		NNetModel    const * pModel = m_pReadBuffer->GetModel( );
 		microseconds const   time   = pModel->GetSimulationTime( );
+		m_wstrBuffer.str( wstring() );
+		m_wstrBuffer.clear();
+		m_wstrBuffer << std::fixed << std::setprecision(2);
 		if ( time > std::chrono::seconds( 1 ) )
 		{
-			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>( time );
-			m_wstrBuffer = DecFraction3( CastToUnsignedLong( ms.count() ) ) + L" s";
+			float seconds = CastToFloat( time.count() ) / 1000000.0f;
+			m_wstrBuffer << seconds << L" s";
 		}
 		else
 		{
-			m_wstrBuffer = DecFraction3( CastToUnsignedLong( time.count() ) ) + L" ms";
+			float millisecs = CastToFloat( time.count() ) / 1000.0f;
+			m_wstrBuffer << millisecs << L" ms";
 		}
-		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstrBuffer );
+		m_wstring = m_wstrBuffer.str();
+		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstring );
 	}
 
 private:
-	wstring          m_wstrBuffer;
+	wstring          m_wstring;
+	wostringstream   m_wstrBuffer;
 	StatusBar      * m_pStatusBar;
 	int              m_iPartInStatusBar;
 	NNetReadBuffer * m_pReadBuffer;
