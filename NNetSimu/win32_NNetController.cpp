@@ -103,7 +103,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 	case IDD_PULSE_SPEED_DIALOG:
 		m_pNNetWindow->PulseSpeedDialog();
 		break;
-
+ 
 	default:
 		return FALSE; // command has not been processed
 	}
@@ -124,21 +124,21 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_PULSE_FREQ:
-	{
-		ShapeId const shapeId   { Util::HiPart( lParam ) };
-		Hertz   const pulseFreq { Util::LoPart( lParam ) };
-		m_pNNetWorkThreadInterface->PostPulseFrequency( shapeId, pulseFreq );
-	}
-	break;
+		{
+			ShapeId const shapeId   { Util::HiPart( lParam ) };
+			Hertz   const pulseFreq { Util::LoPart( lParam ) };
+			m_pNNetWorkThreadInterface->PostPulseFrequency( shapeId, pulseFreq );
+		}
+		break;
 
 	case IDM_PULSE_SPEED:
-	{
-		ShapeId     const shapeId{ Util::HiPart( lParam ) };
-		UINT32      const loPart { Util::LoPart( lParam ) };
-		meterPerSec const mPs    { (float &)loPart };
-		m_pNNetWorkThreadInterface->PostPulseSpeed( shapeId, mPs );
-	}
-	break;
+		{
+			ShapeId     const shapeId{ Util::HiPart( lParam ) };
+			UINT32      const loPart { Util::LoPart( lParam ) };
+			meterPerSec const mPs    { (float &)loPart };
+			m_pNNetWorkThreadInterface->PostPulseSpeed( shapeId, mPs );
+		}
+		break;
 
 	case IDM_SLOWER:
 		if ( m_pSlowMotionRatio->IncRatio( ) )
@@ -152,6 +152,10 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 			m_pNNetWorkThreadInterface->PostSlowMotionChanged( );
 		else
 			MessageBeep( MB_ICONWARNING );
+		break;
+
+	case IDD_CREATE_NEW_BRANCH:
+		m_pNNetWorkThreadInterface->PostCreateNewBranch( m_pNNetWindow->GetShapeSelected() );
 		break;
 
 	default:

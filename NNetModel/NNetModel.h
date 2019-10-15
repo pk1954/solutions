@@ -12,12 +12,12 @@
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
 #include "Neuron.h"
+#include "Knot.h"
 #include "Pipeline.h"
 #include "ModelInterface.h"
 
 class ObserverInterface;
 class EventInterface;
-class Knot;
 
 class NNetModel : public ModelInterface
 {
@@ -87,6 +87,22 @@ public:
 		return static_cast<BaseKnot const *>( pShape );
 	}
 
+	Knot * GetKnot( ShapeId const id ) 
+	{
+		Shape * pShape = GetShape( id );
+		assert( pShape );
+		assert( pShape->GetShapeType() == tShapeType::knot );
+		return static_cast<Knot *>( pShape );
+	}
+
+	Knot const * GetConstKnot( ShapeId const id ) const
+	{
+		Shape const * pShape = GetConstShape( id );
+		assert( pShape );
+		assert( pShape->GetShapeType() == tShapeType::knot );
+		return static_cast<Knot const *>( pShape );
+	}
+
 	void AddIncomming( ShapeId const, ShapeId const );
 	void AddOutgoing ( ShapeId const, ShapeId const );
 		
@@ -97,6 +113,8 @@ public:
 	ShapeId const AddNeuron      ( MicroMeterPoint const & );
 	ShapeId const AddKnot        ( MicroMeterPoint const & );
 	ShapeId const AddPipeline    ( meterPerSec     const );
+
+	void CreateNewBranch( ShapeId const );
 
 	void HighlightShape( ShapeId const );
 	void Apply2AllShapes( std::function<void(Shape * const)> const & ) const;

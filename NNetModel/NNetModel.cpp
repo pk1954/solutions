@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include <vector>
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "Knot.h"
@@ -104,6 +105,16 @@ ShapeId const NNetModel::AddPipeline( meterPerSec const impulseSpeed )
 	return addShape( new Pipeline( impulseSpeed ) );
 }
 
+void NNetModel::CreateNewBranch( ShapeId const id )
+{
+	Knot    const * pKnot         { GetConstKnot( id ) };
+	ShapeId const   idNewKnot     { addShape( new Knot( pKnot->GetPosition() ) ) };
+	ShapeId const   idNewPipeline { addShape( new Pipeline( ) ) };
+	Pipeline      * newPipeline   { GetPipeline( idNewPipeline ) };
+	newPipeline->SetStartKnot( * this, id );
+	newPipeline->SetEndKnot  ( * this, idNewKnot );
+}
+
 void NNetModel::Apply2AllShapes( std::function<void(Shape * const)> const & func ) const
 {
 	for ( auto shape : m_Shapes )
@@ -132,16 +143,18 @@ void NNetModel::ResetAll( )
 
 Shape const * NNetModel::GetShapeUnderPoint( MicroMeterPoint const pnt ) const
 {
-	for ( auto pShape : m_Shapes )  // first test all knot shapes
+	// iterate in reverse order, so that newer shapes are checked first
+
+	for ( unsigned i = m_Shapes.size(); i --> 0; )	// first test all knot shapes
 	{
-		if ( IsBaseKnotType( pShape->GetShapeType() ) && pShape->IsPointInShape( * this, pnt ) ) 
-			return pShape;
+		if ( IsBaseKnotType( m_Shapes[i]->GetShapeType() ) &&  m_Shapes[i]->IsPointInShape( * this, pnt ) ) 
+			return m_Shapes[i];
 	};
 
-	for ( auto pShape : m_Shapes )  // now try pipelines
+	for ( unsigned i = m_Shapes.size(); i --> 0; )	 // now try pipelines
 	{
-		if ( ( ! IsBaseKnotType( pShape->GetShapeType() ) ) && pShape->IsPointInShape( * this, pnt ) ) 
-			return pShape;
+		if ( ! IsBaseKnotType( m_Shapes[i]->GetShapeType() ) &&  m_Shapes[i]->IsPointInShape( * this, pnt ) ) 
+			return m_Shapes[i];
 	};
 
 	return nullptr;

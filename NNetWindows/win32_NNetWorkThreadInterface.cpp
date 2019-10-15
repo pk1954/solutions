@@ -96,3 +96,10 @@ void NNetWorkThreadInterface::PostSlowMotionChanged( )
 		TraceStream( ) << __func__ << endl;
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED), 0, 0 );
 }
+
+void NNetWorkThreadInterface::PostCreateNewBranch( ShapeId const id )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::CREATE_NEW_BRANCH), id.GetValue(), 0 );
+}

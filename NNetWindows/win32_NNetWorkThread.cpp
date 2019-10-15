@@ -102,6 +102,13 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	case NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED:
 		ResetTimer();
 		m_pNNetModel->ResetSimulationTime();
+		break;
+
+	case NNetWorkThreadMessage::Id::CREATE_NEW_BRANCH:
+	{
+		ShapeId const id { CastToUnsignedLong( msg.wParam ) };
+		m_pNNetModel->CreateNewBranch( id );
+	}
 	break;
 
 	default:

@@ -46,6 +46,8 @@ public:
 	void       SetPixelSize( MicroMeter const );
 	MicroMeter GetPixelSize( ) const;
 
+	ShapeId GetShapeSelected() const { return m_pShapeSelected->GetId(); };
+
 private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 

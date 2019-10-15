@@ -141,7 +141,9 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE_DIALOG, L"Pulse rate" );
 			break;
 
-		case tShapeType::knot:
+		case tShapeType::knot:  
+			m_pShapeSelected = pShape;
+			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_CREATE_NEW_BRANCH, L"New Branch" );
 			break;
 
 		case tShapeType::neuron:

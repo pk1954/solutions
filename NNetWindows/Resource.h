@@ -20,6 +20,7 @@
 
 #define IDD_PULSE_RATE_DIALOG   160
 #define IDD_PULSE_SPEED_DIALOG  161
+#define IDD_CREATE_NEW_BRANCH   162
 
 #define IDM_HIGHLIGHT           200
 #define IDM_PULSE_FREQ          201

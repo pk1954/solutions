@@ -6,6 +6,7 @@
 
 #include <vector>
 #include "MoreTypes.h"
+#include "NNetParameters.h"
 #include "Shape.h"
 #include "Segment.h"
 
@@ -18,7 +19,7 @@ class BaseKnot;
 class Pipeline : public Shape
 {
 public:
-	Pipeline( meterPerSec const );
+	Pipeline( meterPerSec const = STD_IMPULSE_SPEED );
 
 	void SetStartKnot( NNetModel &, ShapeId const );
 	void SetEndKnot  ( NNetModel &, ShapeId const );
