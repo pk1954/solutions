@@ -25,7 +25,6 @@ EvoWorkThreadInterface::EvoWorkThreadInterface( ) :
 
 EvoWorkThreadInterface::~EvoWorkThreadInterface( )
 {
-	WorkThreadInterface::Stop();
 	delete m_pEvoWorkThread;
 	m_pEvoWorkThread = nullptr;
 }
