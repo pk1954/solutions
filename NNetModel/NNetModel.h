@@ -126,9 +126,9 @@ public:
 	virtual void ResetAll( );
 
 private:
-	ShapeId m_idNeuron1;  
+	ShapeId m_idInputNeuron1;  
 	ShapeId m_idKnot1;    
-	ShapeId m_idKnot2;    
+	ShapeId m_idNeuron1;    
 	ShapeId m_idOutputNeuron1;    
 	ShapeId m_idOutputNeuron2;    
 	ShapeId m_idPipeline1;

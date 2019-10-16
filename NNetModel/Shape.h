@@ -49,13 +49,13 @@ public:
 	{
 	}
 
-	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const = 0;
-	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const = 0;
-	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & )           const = 0;
-	virtual mV   GetNextOutput( )                                                       const = 0;
-	virtual void Step( )                                                                      = 0;
-	virtual void Prepare( NNetModel & )                                                       = 0;
-	virtual void MoveTo( NNetModel &, MicroMeterPoint const & )                               = 0;
+	virtual void DrawExterior  ( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const = 0;
+	virtual void DrawInterior  ( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const = 0;
+	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & )                    const = 0;
+	virtual void MoveTo        ( NNetModel       &, MicroMeterPoint const & )                          = 0;
+	virtual void Prepare       ( NNetModel       & )                                                   = 0;
+	virtual void Step( )                                                                               = 0;
+	virtual mV   GetNextOutput( )                                                                const = 0;
 
 	void SetHighlightState( bool const bState )
 	{

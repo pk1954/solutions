@@ -152,15 +152,13 @@ void Pipeline::DrawInterior
 	BaseKnot const * const pEndKnot     { model.GetConstBaseKnot( m_idKnotEnd   ) };
 	MicroMeterPoint        umStartPoint { pStartKnot->GetPosition() };
 	MicroMeterPoint        umEndPoint   { pEndKnot  ->GetPosition() };
-	if ( umStartPoint != umEndPoint )
+	MicroMeterPoint        umVector     { umEndPoint - umStartPoint };
+	if ( ! IsCloseToZero( umVector ) )
 	{
-		MicroMeterPoint umVector { umEndPoint - umStartPoint };
-
 		if ( pStartKnot->GetShapeType( ) != tShapeType::knot ) // pipeline stops at neuron border
 		{
-			MicroMeter umHypot = Hypot( umVector );
-			assert( ! IsCloseToZero( umHypot ) );
-			MicroMeterPoint const diff = umVector * (pStartKnot->GetExtension( ) * 0.79f / umHypot);
+			MicroMeter      const umHypot { Hypot( umVector ) };
+			MicroMeterPoint const diff    { umVector * (pStartKnot->GetExtension( ) * 0.79f / umHypot) };
 			umStartPoint += diff;
 			umVector     -= diff;
 		}
@@ -172,7 +170,7 @@ void Pipeline::DrawInterior
 		( 
 			coord.convert2fPixelPos( umStartPoint ), 
 			coord.convert2fPixelPos( umEndPoint ), 
-			coord.convert2fPixel   ( m_width ) * 0.6f, 
+			coord.convert2fPixel   ( m_width * 0.6f ), 
 			pulseColor( * m_potential.begin() ) 
 		);
 
