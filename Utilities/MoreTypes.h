@@ -76,7 +76,14 @@ inline static MicroMeter Distance( MicroMeterPoint const & npA, MicroMeterPoint 
 
 inline static MicroMeterPoint OrthoVector( MicroMeterPoint const & vect, MicroMeter const width )
 {
-	return MicroMeterPoint( vect.GetY(), - vect.GetX() ) * (width / Hypot( vect ));
+	MicroMeter umHypot = Hypot( vect );
+	assert( ! IsCloseToZero( umHypot.GetValue() ) );
+	return MicroMeterPoint( vect.GetY(), - vect.GetX() ) * (width / umHypot);
+}
+
+inline bool IsCloseToZero( MicroMeterPoint const pnt )
+{
+	return IsCloseToZero( pnt.GetXvalue() ) && IsCloseToZero( pnt.GetYvalue() );
 }
 
 using NNetPointFunc     = std::function<void (MicroMeterPoint const)>;

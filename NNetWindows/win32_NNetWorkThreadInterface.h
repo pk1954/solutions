@@ -41,6 +41,7 @@ public:
 	void PostMoveShape     ( ShapeId const, MicroMeterPoint  const );
 	void PostSlowMotionChanged( );
 	void PostCreateNewBranch( ShapeId const );
+	void PostCreateNewNeuron( MicroMeterPoint const & );
 
 private:
 	NNetWorkThread * m_pNNetWorkThread;

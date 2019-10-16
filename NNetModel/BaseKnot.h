@@ -21,8 +21,8 @@ class BaseKnot : public Shape
 public:
 	BaseKnot
 	( 
-		tShapeType      const type,
 		MicroMeterPoint const center,
+		tShapeType      const type,
 		MicroMeter      const extension
  	)
 	  : Shape( type ),

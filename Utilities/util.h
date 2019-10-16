@@ -30,6 +30,11 @@ using BYTES = NamedType< unsigned long long, struct BYTES_Parameter >;
 //    return (SOURCE_TYPE(0) < val) - (val < SOURCE_TYPE(0));
 //}
 
+inline bool IsCloseToZero( float const f )
+{
+	return std::abs( f ) < 1.e-10f;
+}
+
 template<typename SOURCE_TYPE>
 SOURCE_TYPE ClipToMinMax(SOURCE_TYPE const val, SOURCE_TYPE const min, SOURCE_TYPE const max)
 {

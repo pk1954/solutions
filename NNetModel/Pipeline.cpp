@@ -106,11 +106,17 @@ mV Pipeline::GetNextOutput( ) const
 
 bool Pipeline::IsPointInShape( NNetModel const & model, MicroMeterPoint const & point ) const
 {
-	MicroMeterPoint const fOrthoScaled { OrthoVector( GetEndPoint( model ) - GetStartPoint( model ), m_width ) };
-	MicroMeterPoint const corner1      { GetStartPoint( model ) + fOrthoScaled };
-	MicroMeterPoint const corner2      { GetStartPoint( model ) - fOrthoScaled };
-	MicroMeterPoint const corner3      { GetEndPoint  ( model ) + fOrthoScaled };
-	return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
+	MicroMeterPoint const fDelta { GetEndPoint( model ) - GetStartPoint( model ) };
+	if ( IsCloseToZero( fDelta ) )
+		return false;
+	else
+	{
+		MicroMeterPoint const fOrthoScaled { OrthoVector( fDelta, m_width ) };
+		MicroMeterPoint const corner1      { GetStartPoint( model ) + fOrthoScaled };
+		MicroMeterPoint const corner2      { GetStartPoint( model ) - fOrthoScaled };
+		MicroMeterPoint const corner3      { GetEndPoint  ( model ) + fOrthoScaled };
+		return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
+	}
 }
 
 void Pipeline::DrawExterior
@@ -120,14 +126,19 @@ void Pipeline::DrawExterior
 	PixelCoordsFp const & coord
 ) const
 {
-	fPIXEL      const fPixWidth  { coord.convert2fPixel( m_width ) };
-	fPixelPoint const fStartPoint{ coord.convert2fPixelPos( model.GetConstBaseKnot( m_idKnotStart )->GetPosition() ) };
-	fPixelPoint const fEndPoint  { coord.convert2fPixelPos( model.GetConstBaseKnot( m_idKnotEnd   )->GetPosition() ) };
-	COLORREF    const color      { IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ) };
+	MicroMeterPoint const umStartPoint { model.GetConstBaseKnot( m_idKnotStart )->GetPosition() };
+	MicroMeterPoint const umEndPoint   { model.GetConstBaseKnot( m_idKnotEnd   )->GetPosition() };
+	if ( umStartPoint != umEndPoint )
+	{
+		fPIXEL      const fPixWidth  { coord.convert2fPixel( m_width ) };
+		fPixelPoint const fStartPoint{ coord.convert2fPixelPos( umStartPoint ) };
+		fPixelPoint const fEndPoint  { coord.convert2fPixelPos( umEndPoint   ) };
+		COLORREF    const color      { IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ) };
 
-	Graphics.StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
-	Graphics.AddPipelinePoint( fEndPoint, color );
-	Graphics.RenderPipeline( );
+		Graphics.StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
+		Graphics.AddPipelinePoint( fEndPoint, color );
+		Graphics.RenderPipeline( );
+	}
 }
 
 void Pipeline::DrawInterior
@@ -137,41 +148,46 @@ void Pipeline::DrawInterior
 	PixelCoordsFp const & coord
 ) const
 {
-	BaseKnot const * const pStartKnot{ model.GetConstBaseKnot( m_idKnotStart ) };
-	BaseKnot const * const pEndKnot  { model.GetConstBaseKnot( m_idKnotEnd   ) };
-	MicroMeterPoint        startPnt  { pStartKnot->GetPosition() };
-	MicroMeterPoint        endPnt    { pEndKnot  ->GetPosition() };
-	MicroMeterPoint        umVector  { endPnt - startPnt };
-
-	if ( pStartKnot->GetShapeType( ) != tShapeType::knot ) // pipeline stops at neuron border
+	BaseKnot const * const pStartKnot   { model.GetConstBaseKnot( m_idKnotStart ) };
+	BaseKnot const * const pEndKnot     { model.GetConstBaseKnot( m_idKnotEnd   ) };
+	MicroMeterPoint        umStartPoint { pStartKnot->GetPosition() };
+	MicroMeterPoint        umEndPoint   { pEndKnot  ->GetPosition() };
+	if ( umStartPoint != umEndPoint )
 	{
-		MicroMeterPoint const diff = umVector * (pStartKnot->GetExtension( ) * 0.79f / Hypot( umVector ));
-		startPnt  += diff;
-		umVector  -= diff;
-	}
+		MicroMeterPoint umVector { umEndPoint - umStartPoint };
 
-	MicroMeterPoint const segmentVector = umVector / CastToFloat(m_potential.size());
-	MicroMeterPoint       umPoint       = startPnt;
+		if ( pStartKnot->GetShapeType( ) != tShapeType::knot ) // pipeline stops at neuron border
+		{
+			MicroMeter umHypot = Hypot( umVector );
+			assert( ! IsCloseToZero( umHypot ) );
+			MicroMeterPoint const diff = umVector * (pStartKnot->GetExtension( ) * 0.79f / umHypot);
+			umStartPoint += diff;
+			umVector     -= diff;
+		}
 
-	Graphics.StartPipeline
-	( 
-		coord.convert2fPixelPos( startPnt ), 
-		coord.convert2fPixelPos( endPnt ), 
-		coord.convert2fPixel   ( m_width ) * 0.6f, 
-		pulseColor( * m_potential.begin() ) 
-	);
+		MicroMeterPoint const segmentVector = umVector / CastToFloat(m_potential.size());
+		MicroMeterPoint       umPoint       = umStartPoint;
 
-	for ( auto & iter : m_potential )
-	{
-		umPoint += segmentVector; 
-		Graphics.AddPipelinePoint
+		Graphics.StartPipeline
 		( 
-			coord.convert2fPixelPos( umPoint ), 
-			pulseColor( iter ) 
+			coord.convert2fPixelPos( umStartPoint ), 
+			coord.convert2fPixelPos( umEndPoint ), 
+			coord.convert2fPixel   ( m_width ) * 0.6f, 
+			pulseColor( * m_potential.begin() ) 
 		);
-	}
 
-	Graphics.RenderPipeline( );
+		for ( auto & iter : m_potential )
+		{
+			umPoint += segmentVector; 
+			Graphics.AddPipelinePoint
+			( 
+				coord.convert2fPixelPos( umPoint ), 
+				pulseColor( iter ) 
+			);
+		}
+
+		Graphics.RenderPipeline( );
+	}
 }
 
 COLORREF Pipeline::pulseColor( mV const current ) const 

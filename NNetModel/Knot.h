@@ -19,7 +19,7 @@ class Knot : public BaseKnot
 {
 public:
 	Knot( MicroMeterPoint const center )
-	  : BaseKnot( tShapeType::knot, center, 10.0_MicroMeter )
+	  : BaseKnot( center, tShapeType::knot, 10.0_MicroMeter )
 	{
 	}
 

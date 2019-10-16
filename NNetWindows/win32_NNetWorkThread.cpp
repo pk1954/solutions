@@ -111,6 +111,17 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	}
 	break;
 
+	case NNetWorkThreadMessage::Id::CREATE_NEW_NEURON:
+	{
+		MicroMeterPoint const pnt 
+		{ 
+			static_cast<MicroMeter>((float &)msg.wParam), 
+			static_cast<MicroMeter>((float &)msg.lParam) 
+		};
+		m_pNNetModel->CreateNewNeuron( pnt );
+	}
+	break;
+
 	default:
 		return FALSE;
 	} 

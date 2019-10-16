@@ -47,7 +47,9 @@ inline static fPIXEL Hypot( fPixelPoint const pt )
 
 inline static fPixelPoint OrthoVector( fPixelPoint const & vect, fPIXEL const width )
 {
-	return fPixelPoint( vect.GetY(), - vect.GetX() ) * (width / Hypot( vect ));
+	fPIXEL fHypot = Hypot( vect );
+	assert( ! IsCloseToZero( fHypot.GetValue() ) );
+	return fPixelPoint( vect.GetY(), - vect.GetX() ) * (width / fHypot);
 }
 
 /////////////////// conversions ///////////////////////////////////

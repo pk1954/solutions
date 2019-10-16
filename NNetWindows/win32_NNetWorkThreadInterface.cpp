@@ -103,3 +103,13 @@ void NNetWorkThreadInterface::PostCreateNewBranch( ShapeId const id )
 		TraceStream( ) << __func__ << endl;
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::CREATE_NEW_BRANCH), id.GetValue(), 0 );
 }
+
+void NNetWorkThreadInterface::PostCreateNewNeuron( MicroMeterPoint const & pos )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+
+	auto x = pos.GetXvalue();
+	auto y = pos.GetYvalue();
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::CREATE_NEW_NEURON), (WPARAM &)x, (LPARAM &)y );
+}

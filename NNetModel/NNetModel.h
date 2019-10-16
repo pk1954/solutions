@@ -8,6 +8,7 @@
 #include <functional>
 #include "util.h"
 #include "MoreTypes.h"
+#include "PixelCoordsFp.h"
 #include "Segment.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
@@ -115,6 +116,7 @@ public:
 	ShapeId const AddPipeline    ( meterPerSec     const );
 
 	void CreateNewBranch( ShapeId const );
+	void CreateNewNeuron( MicroMeterPoint const & );
 
 	void HighlightShape( ShapeId const );
 	void Apply2AllShapes( std::function<void(Shape * const)> const & ) const;

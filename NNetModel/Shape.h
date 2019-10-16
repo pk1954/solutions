@@ -5,6 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
+#include "NNetParameters.h"
 
 using ShapeId = NamedType< unsigned long, struct ShapeIdParam >;
 
@@ -79,6 +80,11 @@ public:
 	tShapeType GetShapeType( ) const
 	{
 		return m_type;
+	}
+
+	PERCENT GetFillLevel( ) const
+	{
+		return PERCENT( CastToShort( (m_mVinputBuffer * 100) / PEAK_VOLTAGE ) );
 	}
 
 protected:

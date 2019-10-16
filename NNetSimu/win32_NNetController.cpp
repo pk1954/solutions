@@ -158,6 +158,13 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWorkThreadInterface->PostCreateNewBranch( m_pNNetWindow->GetShapeSelected() );
 		break;
 
+	case IDD_CREATE_NEW_NEURON:
+		{
+		    MicroMeterPoint pnt = Util::Unpack2MicroMeterPoint( lParam );
+			m_pNNetWorkThreadInterface->PostCreateNewNeuron( pnt );
+		}
+		break;
+
 	default:
 		return true;
 	}

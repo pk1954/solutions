@@ -12,8 +12,7 @@
 using namespace std::chrono;
 
 InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
-  : BaseKnot( tShapeType::inputNeuron, upCenter, 50.0_MicroMeter ),
-	m_timeSinceLastPulse( 0ms ),
+  : Neuron( upCenter, tShapeType::inputNeuron ),
 	m_pulseFrequency( 0_Hertz )
 { 
 	m_timeSinceLastPulse = PEAK_TIME;
@@ -27,18 +26,6 @@ void InputNeuron::SetPulseFrequency( Hertz const freq )
 void InputNeuron::Trigger( )
 {
 	m_mVinputBuffer = PEAK_VOLTAGE;
-}
-
-mV InputNeuron::waveFunction( microseconds time ) const
-{
-	assert( time >= 0ms );
-	if ( time <= PEAK_TIME )
-	{
-		float x = CastToFloat(time.count()) / 1000.0f - 1.0f;
-		return PEAK_VOLTAGE * ( 1.0f - x * x );
-	}
-	else 
-		return BASE_POTENTIAL;
 }
 
 void InputNeuron::Prepare( NNetModel & )
@@ -79,11 +66,6 @@ mV InputNeuron::GetNextOutput( ) const
 	return mVoutput;
 }
 
-PERCENT InputNeuron::GetFillLevel( ) const
-{
-	return PERCENT( CastToShort( (m_mVinputBuffer * 100) / PEAK_VOLTAGE ) );
-}
-
 void InputNeuron::DrawExterior
 ( 
 	NNetModel     const & model,
@@ -91,14 +73,7 @@ void InputNeuron::DrawExterior
 	PixelCoordsFp const & coord
 ) const
 {
-	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 );
-	Graphics.DrawPolygon
-	( 
-		24,
-		coord.convert2fPixelPos( GetPosition() ), 
-		IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ), 
-		coord.convert2fPixel( GetExtension() )
-	);
+	drawExterior( model, Graphics, coord, 24 );
 }
 
 void InputNeuron::DrawInterior
@@ -108,16 +83,7 @@ void InputNeuron::DrawInterior
 	PixelCoordsFp const & coord
 ) const
 { 
-	PERCENT  const fillLevel = GetFillLevel();
-	int      const colElem   = ( 255 * fillLevel.GetValue() ) / 100;
-	COLORREF const color     = RGB( colElem, 0, 0 );
-	Graphics.DrawPolygon
-	( 
-		24,
-		coord.convert2fPixelPos( GetPosition() ), 
-		color, 
-		coord.convert2fPixel( GetExtension() * 0.8f )
-	);
+	drawInterior( model, Graphics, coord, 24 );
 }
 
 InputNeuron const * Cast2InputNeuron( Shape const * shape )

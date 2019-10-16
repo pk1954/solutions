@@ -74,7 +74,7 @@ void NNetModel::HighlightShape( ShapeId const idHighlight )
 
 ShapeId const NNetModel::addShape( Shape * pShape )
 {
-	m_Shapes.push_back( pShape );                        // ShapeId 0 is reserved
+	m_Shapes.push_back( pShape );                         // ShapeId 0 is reserved
 	ShapeId id( CastToUnsignedLong( m_Shapes.size() ) );  // after first push_back, size = 1
 	pShape->SetId( id );
 	return id;
@@ -115,6 +115,16 @@ void NNetModel::CreateNewBranch( ShapeId const id )
 	newPipeline->SetEndKnot  ( * this, idNewKnot );
 }
 
+void NNetModel::CreateNewNeuron( MicroMeterPoint const & pnt )
+{
+	ShapeId const idNewNeuron   { addShape( new Neuron( pnt ) ) };
+	ShapeId const idNewKnot     { addShape( new Knot  ( pnt ) ) };
+	ShapeId const idNewPipeline { addShape( new Pipeline( ) ) };
+	Pipeline    * newPipeline   { GetPipeline( idNewPipeline ) };
+	newPipeline->SetStartKnot( * this, idNewNeuron );
+	newPipeline->SetEndKnot  ( * this, idNewKnot );
+}
+
 void NNetModel::Apply2AllShapes( std::function<void(Shape * const)> const & func ) const
 {
 	for ( auto shape : m_Shapes )
@@ -145,13 +155,13 @@ Shape const * NNetModel::GetShapeUnderPoint( MicroMeterPoint const pnt ) const
 {
 	// iterate in reverse order, so that newer shapes are checked first
 
-	for ( unsigned i = m_Shapes.size(); i --> 0; )	// first test all knot shapes
+	for ( size_t i = m_Shapes.size(); i --> 0; )	// first test all knot shapes
 	{
 		if ( IsBaseKnotType( m_Shapes[i]->GetShapeType() ) &&  m_Shapes[i]->IsPointInShape( * this, pnt ) ) 
 			return m_Shapes[i];
 	};
 
-	for ( unsigned i = m_Shapes.size(); i --> 0; )	 // now try pipelines
+	for ( size_t i = m_Shapes.size(); i --> 0; )	 // now try pipelines
 	{
 		if ( ! IsBaseKnotType( m_Shapes[i]->GetShapeType() ) &&  m_Shapes[i]->IsPointInShape( * this, pnt ) ) 
 			return m_Shapes[i];

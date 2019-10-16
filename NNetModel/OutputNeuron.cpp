@@ -12,7 +12,7 @@
 using namespace std::chrono;
 
 OutputNeuron::OutputNeuron( MicroMeterPoint const upCenter )
-	: BaseKnot( tShapeType::outputNeuron, upCenter, 50.0_MicroMeter )
+	: Neuron( upCenter, tShapeType::outputNeuron )
 { 
 }
 
@@ -28,11 +28,6 @@ void OutputNeuron::Step( )
 {
 }
 
-PERCENT OutputNeuron::GetFillLevel( ) const
-{
-	return PERCENT( CastToShort( (m_mVinputBuffer * 100) / PEAK_VOLTAGE ) );
-}
-
 void OutputNeuron::DrawExterior
 ( 
 	NNetModel     const & model,
@@ -40,14 +35,7 @@ void OutputNeuron::DrawExterior
 	PixelCoordsFp const & coord
 ) const
 {
-	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 );
-	Graphics.DrawPolygon
-	( 
-		8,
-		coord.convert2fPixelPos( GetPosition() ), 
-		IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ), 
-		coord.convert2fPixel( GetExtension() )
-	);
+	drawExterior( model, Graphics, coord, 8 );
 }
 
 void OutputNeuron::DrawInterior
@@ -57,17 +45,9 @@ void OutputNeuron::DrawInterior
 	PixelCoordsFp const & coord
 ) const
 { 
-	PERCENT  const fillLevel = GetFillLevel();
-	int      const colElem   = ( 255 * fillLevel.GetValue() ) / 100;
-	COLORREF const color     = RGB( colElem, 0, 0 );
-	Graphics.DrawPolygon
-	( 
-		8,
-		coord.convert2fPixelPos( GetPosition() ), 
-		color, 
-		coord.convert2fPixel( GetExtension() * 0.8f )
-	);
+	drawInterior( model, Graphics, coord, 8 );
 }
+
 
 OutputNeuron const * Cast2OutputNeuron( Shape const * shape )
 {

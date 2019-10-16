@@ -6,13 +6,13 @@
 
 #include <chrono>
 #include "MoreTypes.h"
-#include "BaseKnot.h"
+#include "Neuron.h"
 
 using std::chrono::microseconds;
 
 class Pipeline;
 
-class OutputNeuron : public BaseKnot
+class OutputNeuron : public Neuron
 {
 public:
 
@@ -23,8 +23,6 @@ public:
 	virtual mV   GetNextOutput( ) const { return 0._mV; };
 	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
 	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
-
-	PERCENT GetFillLevel( ) const;
 };	
 
 OutputNeuron const * Cast2OutputNeuron( Shape const * );

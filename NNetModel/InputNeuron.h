@@ -6,24 +6,24 @@
 
 #include <chrono>
 #include "MoreTypes.h"
-#include "BaseKnot.h"
+#include "Neuron.h"
 
 using std::chrono::microseconds;
 
 class Pipeline;
 
-class InputNeuron : public BaseKnot
+class InputNeuron : public Neuron
 {
 public:
 
 	InputNeuron( MicroMeterPoint const );
 
+	void Trigger( );
+
 	virtual void Prepare( NNetModel & );
 	virtual void Step( );
 	virtual mV   GetNextOutput( ) const;
 
-	void    Trigger( );
-	PERCENT GetFillLevel( ) const;
 	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
 	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
 
@@ -36,10 +36,7 @@ public:
 
 private:
 
-	microseconds m_timeSinceLastPulse;
-	Hertz        m_pulseFrequency;
-
-	mV waveFunction( microseconds ) const;
+	Hertz m_pulseFrequency;
 };	
 
 InputNeuron const * Cast2InputNeuron( Shape const * );

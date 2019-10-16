@@ -1,0 +1,138 @@
+// Neuron.cpp 
+//
+// NNetModel
+
+#include "stdafx.h"
+#include "PixelCoordsFp.h"
+#include "win32_graphicsInterface.h"
+#include "NNetParameters.h"
+#include "NNetModel.h"
+#include "Neuron.h"
+
+using namespace std::chrono;
+
+Neuron::Neuron( MicroMeterPoint const upCenter, tShapeType const type )
+  : BaseKnot( upCenter, type, 50.0_MicroMeter )
+{ 
+	m_timeSinceLastPulse = PEAK_TIME;
+}
+
+mV Neuron::waveFunction( microseconds time ) const
+{
+	assert( time >= 0ms );
+	if ( time <= PEAK_TIME )
+	{
+		float x = CastToFloat(time.count()) / 1000.0f - 1.0f;
+		return PEAK_VOLTAGE * ( 1.0f - x * x );
+	}
+	else 
+		return BASE_POTENTIAL;
+}
+
+void Neuron::Prepare( NNetModel & model )
+{
+	m_mVinputBuffer = 0._mV;
+	for ( auto idPipeline : m_incomming )
+		m_mVinputBuffer += model.GetPipeline( idPipeline )->GetNextOutput();
+	assert( m_mVinputBuffer <= PEAK_VOLTAGE );
+}
+
+void Neuron::Step( )
+{
+	static float        const FACTOR    ( PEAK_VOLTAGE.GetValue() * CastToFloat(TIME_RESOLUTION.count()) );
+	static microseconds const DECAY_TIME( PEAK_TIME );
+	static mV           const DECAY_INC ( FACTOR / DECAY_TIME.count() );
+
+	if ( m_mVinputBuffer >= PEAK_VOLTAGE )  
+	{
+		m_timeSinceLastPulse = 0ms;   
+	}
+	else
+	{
+		m_timeSinceLastPulse += TIME_RESOLUTION;
+	}
+
+	if ( m_timeSinceLastPulse < DECAY_TIME )
+		m_mVinputBuffer = (m_mVinputBuffer > DECAY_INC) 
+		? m_mVinputBuffer - DECAY_INC 
+		: 0._mV;
+}
+
+mV Neuron::GetNextOutput( ) const
+{
+	mV mVoutput = BASE_POTENTIAL;
+	mV mVWave( waveFunction( m_timeSinceLastPulse ) );
+	mVoutput += mVWave;
+	assert( mVoutput <= PEAK_VOLTAGE );
+	return mVoutput;
+}
+
+void Neuron::DrawExterior
+( 
+	NNetModel     const & model,
+	GraphicsInterface   & Graphics,
+	PixelCoordsFp const & coord
+) const
+{
+	drawExterior( model, Graphics, coord, 24 );
+}
+
+void Neuron::DrawInterior
+( 
+	NNetModel     const & model,
+	GraphicsInterface   & Graphics,
+	PixelCoordsFp const & coord
+) const
+{ 
+	drawInterior( model, Graphics, coord, 24 );
+}
+
+void Neuron::drawExterior
+( 
+	NNetModel     const & model,
+	GraphicsInterface   & Graphics,
+	PixelCoordsFp const & coord,
+	int           const   iNrOfEdges
+) const
+{
+	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 );
+	Graphics.DrawPolygon
+	( 
+		iNrOfEdges,
+		coord.convert2fPixelPos( GetPosition() ), 
+		IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ), 
+		coord.convert2fPixel( GetExtension() )
+	);
+}
+
+void Neuron::drawInterior
+( 
+	NNetModel     const & model,
+	GraphicsInterface   & Graphics,
+	PixelCoordsFp const & coord,
+	int           const   iNrOfEdges
+) const
+{ 
+	PERCENT  const fillLevel = GetFillLevel();
+	int      const colElem   = ( 255 * fillLevel.GetValue() ) / 100;
+	COLORREF const color     = RGB( colElem, 0, 0 );
+	Graphics.DrawPolygon
+	( 
+		iNrOfEdges,
+		coord.convert2fPixelPos( GetPosition() ), 
+		color, 
+		coord.convert2fPixel( GetExtension() * 0.8f )
+	);
+}
+
+Neuron const * Cast2Neuron( Shape const * shape )
+{
+	assert( shape->GetShapeType() == tShapeType::neuron );
+	return static_cast<Neuron const *>(shape);
+}
+
+Neuron * Cast2Neuron( Shape * shape )
+{
+	assert( shape->GetShapeType() == tShapeType::neuron );
+	return static_cast<Neuron *>(shape);
+}

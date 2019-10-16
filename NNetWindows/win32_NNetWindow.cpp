@@ -101,9 +101,9 @@ void NNetWindow::Zoom( bool const bZoomIn  )
 
 void NNetWindow::SetPixelSize( MicroMeter const newSize )
 {
-	PixelPoint      const pixPointCenter  = GetRelativeCrsrPosition();  //GetClRectCenter( );
-	fPixelPoint     const fPixPointCenter = convert2fPixelPoint( pixPointCenter );
-	MicroMeterPoint const umPointcenter   = m_coord.convert2MicroMeterPoint( fPixPointCenter );
+	PixelPoint      const pixPointCenter  { GetRelativeCrsrPosition() };
+	fPixelPoint     const fPixPointCenter { convert2fPixelPoint( pixPointCenter ) };
+	MicroMeterPoint const umPointcenter   { m_coord.convert2MicroMeterPoint( fPixPointCenter ) };
 	if ( m_coord.ZoomNNet( newSize ) ) 
 	{
 		m_coord.CenterSimulationArea( umPointcenter, fPixPointCenter ); 
@@ -130,10 +130,11 @@ Shape const * NNetWindow::getShapeUnderPoint( PixelPoint const pnt )
 
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
 {
+	UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
+
 	Shape const * pShape = getShapeUnderPoint( Util::POINT2PixelPoint( pntPos ) );
 	if ( pShape )
 	{
-		UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 		switch ( pShape->GetShapeType( ) )
 		{
 		case tShapeType::inputNeuron:
@@ -157,6 +158,10 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 		default:
 			assert( false );
 		}
+	}
+	else
+	{
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_NEURON, L"New neuron" );
 	}
 }
 
@@ -320,8 +325,8 @@ void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 
 void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 {
-	BOOL    const   keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
-	HCURSOR const   hCrsr   = keyDown ? m_hCrsrMove : m_hCrsrArrow;
+	BOOL    const keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
+	HCURSOR const hCrsr   = keyDown ? m_hCrsrMove : m_hCrsrArrow;
 	SetCursor( hCrsr );
 }
 
@@ -330,7 +335,13 @@ BOOL NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 	UINT uiCmdId = LOWORD( wParam );
 	switch ( uiCmdId )
 	{
-	case 0:
+	case IDD_NNETW_NEW_NEURON:
+		{
+			PixelPoint      const pixPoint  { GetRelativeCrsrPosition() };
+			fPixelPoint     const fPixPoint { convert2fPixelPoint( pixPoint ) };
+			MicroMeterPoint const umPoint   { m_coord.convert2MicroMeterPoint( fPixPoint ) };
+			PostCommand2Application( IDD_CREATE_NEW_NEURON, Util::Pack2UINT64(umPoint) );
+		}
 		break;
 
 	default:
