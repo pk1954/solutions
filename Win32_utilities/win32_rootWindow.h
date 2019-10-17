@@ -201,7 +201,7 @@ private:
 
 	void addWinMenu( HMENU const, std::wstring const ) const;
 	void adjustWinMenu( HMENU const ) const;
-	void contextMenu( LPARAM );
+	void contextMenu( PixelPoint const & );
 
 	void adjustVisibility( tOnOffAuto const onOffAuto )
 	{

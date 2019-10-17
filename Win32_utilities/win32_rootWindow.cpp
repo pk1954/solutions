@@ -75,12 +75,11 @@ void RootWindow::adjustWinMenu( HMENU const hMenu ) const
 	EnableMenuItem( hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off      ) ? MF_GRAYED : MF_ENABLED) );
 }
 
-void RootWindow::contextMenu( LPARAM lParam )
+void RootWindow::contextMenu( PixelPoint const & pntPos )
 {
-	HMENU      const hPopupMenu { CreatePopupMenu() };
-	PixelPoint const pntCrsrPos { GetCrsrPosFromLparam( lParam ) };
+	HMENU const hPopupMenu { CreatePopupMenu() };
 
-	AddContextMenuEntries( hPopupMenu, pntCrsrPos );
+	AddContextMenuEntries( hPopupMenu, pntPos );
 
 	if ( m_visibilityCriterion )
 	{
@@ -93,7 +92,7 @@ void RootWindow::contextMenu( LPARAM lParam )
 		(void)AppendMenu( hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate" );
 	}
 
-	PixelPoint pntScreen = Client2Screen( pntCrsrPos );
+	PixelPoint pntScreen = Client2Screen( pntPos );
 	(void)SetForegroundWindow( GetWindowHandle( ) );
 
 	UINT const uiID = (UINT)TrackPopupMenu
@@ -107,7 +106,7 @@ void RootWindow::contextMenu( LPARAM lParam )
 	);         	// Result is send as WM_COMMAND to this window
 
 	if ( uiID != 0 )
-		SendMessage( WM_COMMAND, uiID, lParam );
+		SendMessage( WM_COMMAND, uiID, 0 );
 
 	(void)DestroyMenu( hPopupMenu );
 }
@@ -181,7 +180,7 @@ LRESULT RootWindow::RootWindowProc
 
 	case WM_RBUTTONUP:
 		(void)ReleaseCapture( );
-		pRootWin->contextMenu( lParam );
+		pRootWin->contextMenu( GetCrsrPosFromLparam( lParam ) );
 		return FALSE;
 
 	case WM_COMMAND:
