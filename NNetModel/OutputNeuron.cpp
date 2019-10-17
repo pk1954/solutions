@@ -48,7 +48,6 @@ void OutputNeuron::DrawInterior
 	drawInterior( model, Graphics, coord, 8 );
 }
 
-
 OutputNeuron const * Cast2OutputNeuron( Shape const * shape )
 {
 	assert( shape->GetShapeType() == tShapeType::outputNeuron );

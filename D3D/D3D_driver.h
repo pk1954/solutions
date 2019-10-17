@@ -45,7 +45,6 @@ private:
     ID3DXFont             * m_id3dx_font;
 	VertexBuffer          * m_pVertBufStripMode;
 	VertexBuffer          * m_pVertBufPrimitives;
-	VertexBuffer          * m_pVertBufFan;
 	DWORD                   m_dwAlphaBlendable;
     DWORD                   m_dwSrcBlend;
     DWORD                   m_dwDstBlend;

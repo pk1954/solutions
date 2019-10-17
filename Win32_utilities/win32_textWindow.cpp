@@ -69,7 +69,7 @@ void TextWindow::StopTextWindow( )
 	m_hDC_Memory = 0;
 }
 
-void TextWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
+void TextWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const pntPos )
 {
     UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 

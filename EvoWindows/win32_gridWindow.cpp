@@ -119,7 +119,7 @@ GridWindow::~GridWindow( )
 	m_pGridWindowObserved     = nullptr;
 }
 
-void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
+void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const pntPos )
 {
 	UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 

@@ -128,11 +128,11 @@ Shape const * NNetWindow::getShapeUnderPoint( PixelPoint const pnt )
 	return pShape;
 }
 
-void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntPos )
+void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const pntPos )
 {
 	UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 
-	Shape const * pShape = getShapeUnderPoint( Util::POINT2PixelPoint( pntPos ) );
+	Shape const * pShape = getShapeUnderPoint( pntPos );
 	if ( pShape )
 	{
 		switch ( pShape->GetShapeType( ) )
@@ -148,6 +148,9 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, POINT const pntP
 			break;
 
 		case tShapeType::neuron:
+			break;
+
+		case tShapeType::outputNeuron:
 			break;
 
 		case tShapeType::pipeline:
@@ -214,6 +217,9 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
 	PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
 
+	Shape const * pShape = getShapeUnderPoint( ptCrsr );
+	PostCommand2Application( IDM_HIGHLIGHT, (pShape ? pShape->GetId() : NO_SHAPE).GetValue() );
+
 	if ( wParam & MK_RBUTTON )          // Right mouse button: selection
 	{
 	}
@@ -234,12 +240,8 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		PostCommand2Application( IDM_REFRESH, 0 );
 	}
 	else
-	{
-		Shape const * pShape = getShapeUnderPoint( ptCrsr );
-		PostCommand2Application( IDM_HIGHLIGHT, (pShape ? pShape->GetId() : NO_SHAPE).GetValue() );
-
-		m_ptLast = PP_NULL;    // make m_ptLast invalid
-							   // no refresh! It would cause repaint for every mouse move.
+	{                         // make m_ptLast invalid
+		m_ptLast = PP_NULL;   // no refresh! It would cause repaint for every mouse move 
 	}
 }
 

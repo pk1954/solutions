@@ -243,11 +243,10 @@ COLORREF DrawFrame::getBackgroundColor( CLUT_INDEX index ) const
     return m_clutBackground.GetColor( index );
 }
 
-void DrawFrame::AddContextMenuEntries( EvolutionCore const * const pCore, HMENU const hPopupMenu, POINT const pnt )
+void DrawFrame::AddContextMenuEntries( EvolutionCore const * const pCore, HMENU const hPopupMenu, PixelPoint const pnt )
 {
-	PixelPoint    const pp     = Util::POINT2PixelPoint( pnt );
-	GridPoint     const gp     = GridDimensions::Wrap2Grid( m_pEvoPixelCoords->Pixel2GridPos( pp ) );
-	Shape const * const pShape = m_GridPointShape.FindShape( pCore, gp, pp );
+	GridPoint     const gp     = GridDimensions::Wrap2Grid( m_pEvoPixelCoords->Pixel2GridPos( pnt ) );
+	Shape const * const pShape = m_GridPointShape.FindShape( pCore, gp, pnt );
 	if ( pShape )
 		pShape->AddContextMenuEntries( hPopupMenu );
 }

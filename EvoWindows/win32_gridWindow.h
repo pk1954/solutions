@@ -82,7 +82,7 @@ private:
     BOOL                m_bMoveAllowed;    // TRUE: move with mouse is possible
     HMENU               m_hPopupMenu;
 
-	virtual void AddContextMenuEntries( HMENU const, POINT const );
+	virtual void AddContextMenuEntries( HMENU const, PixelPoint const );
 
 	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const ) {};
 	virtual void OnMouseWheel ( WPARAM const, LPARAM const );

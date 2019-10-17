@@ -49,7 +49,7 @@ public:
 	void CallStrategyColorDialog( HWND const, Strategy::Id const );
 	void CallHighlightColorDialog( HWND const );
 	void CallSelectionColorDialog( HWND const );
-	void AddContextMenuEntries( EvolutionCore const * const, HMENU const, POINT const );
+	void AddContextMenuEntries( EvolutionCore const * const, HMENU const, PixelPoint const );
 
 private:
     DrawFrame             ( DrawFrame const & );  // noncopyable class 

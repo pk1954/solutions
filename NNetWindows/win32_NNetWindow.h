@@ -67,7 +67,7 @@ private:
 
 	void moveNNet( PixelPoint const );
 
-	virtual void AddContextMenuEntries( HMENU const, POINT const );
+	virtual void AddContextMenuEntries( HMENU const, PixelPoint const );
 
 	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );

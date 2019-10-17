@@ -33,8 +33,7 @@ D3D_driver::D3D_driver( ):
     m_d3d_device( nullptr ),
     m_id3dx_font( nullptr ),
     m_pVertBufStripMode( nullptr ),
-    m_pVertBufPrimitives( nullptr ),
-    m_pVertBufFan( nullptr )
+	m_pVertBufPrimitives( nullptr )
 {
 	m_d3d = new D3dSystem();
 }
@@ -71,7 +70,6 @@ void D3D_driver::Initialize
 
 	m_pVertBufStripMode  = new VertexBuffer( m_d3d->GetMaxNrOfPrimitives() );
     m_pVertBufPrimitives = new VertexBuffer( m_d3d->GetNrOfVertices() );
-	m_pVertBufFan        = new VertexBuffer( 100 );   // TODO: avoid magic number
 
 	m_d3d_vertexBuffer = m_d3d->CreateVertexBuffer( );
 
@@ -408,11 +406,8 @@ void D3D_driver::AddfPixelLine
 
 void D3D_driver::renderTriangleStrip( int const iNrOfPrimitives )
 {
-	HRESULT hres = m_pVertBufStripMode->LoadVertices( m_d3d_vertexBuffer, m_d3d_device ); 
-	assert( hres == D3D_OK ); 
-
-	hres = m_d3d_device->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, iNrOfPrimitives ); 
-
+	HRESULT hres = m_pVertBufStripMode->LoadVertices( m_d3d_vertexBuffer, m_d3d_device ); assert( hres == D3D_OK ); 
+	hres = m_d3d_device->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, iNrOfPrimitives );        assert( hres == D3D_OK ); 
 	m_pVertBufStripMode->ResetVertexBuffer();
 }
 

@@ -70,17 +70,17 @@ void RootWindow::addWinMenu( HMENU const hMenuParent, std::wstring const strTitl
 
 void RootWindow::adjustWinMenu( HMENU const hMenu ) const
 {
-	EnableMenuItem( hMenu, IDM_WINDOW_AUTO, ((m_visibilityMode == tOnOffAuto::automatic ) ? MF_GRAYED : MF_ENABLED) );
-	EnableMenuItem( hMenu, IDM_WINDOW_ON,   ((m_visibilityMode == tOnOffAuto::on        ) ? MF_GRAYED : MF_ENABLED) );
-	EnableMenuItem( hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off       ) ? MF_GRAYED : MF_ENABLED) );
+	EnableMenuItem( hMenu, IDM_WINDOW_AUTO, ((m_visibilityMode == tOnOffAuto::automatic) ? MF_GRAYED : MF_ENABLED) );
+	EnableMenuItem( hMenu, IDM_WINDOW_ON,   ((m_visibilityMode == tOnOffAuto::on       ) ? MF_GRAYED : MF_ENABLED) );
+	EnableMenuItem( hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off      ) ? MF_GRAYED : MF_ENABLED) );
 }
 
 void RootWindow::contextMenu( LPARAM lParam )
 {
-	HMENU const hPopupMenu{ CreatePopupMenu() };
-	POINT       pntPos{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
+	HMENU      const hPopupMenu { CreatePopupMenu() };
+	PixelPoint const pntCrsrPos { GetCrsrPosFromLparam( lParam ) };
 
-	AddContextMenuEntries( hPopupMenu, pntPos );
+	AddContextMenuEntries( hPopupMenu, pntCrsrPos );
 
 	if ( m_visibilityCriterion )
 	{
@@ -93,14 +93,14 @@ void RootWindow::contextMenu( LPARAM lParam )
 		(void)AppendMenu( hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate" );
 	}
 
-	(void)ClientToScreen( GetWindowHandle(), & pntPos );
+	PixelPoint pntScreen = Client2Screen( pntCrsrPos );
 	(void)SetForegroundWindow( GetWindowHandle( ) );
 
 	UINT const uiID = (UINT)TrackPopupMenu
 	( 
 		hPopupMenu, 
 		TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, 
-		pntPos.x, pntPos.y, 
+		pntScreen.GetXvalue(), pntScreen.GetYvalue(), 
 		0, 
 		GetWindowHandle( ), 
 		nullptr 
