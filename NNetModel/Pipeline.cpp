@@ -17,7 +17,7 @@ Pipeline::Pipeline( meterPerSec const impulseSpeed )
 	m_initialized ( false ),
 	m_idKnotStart ( NO_SHAPE ),
 	m_idKnotEnd   ( NO_SHAPE ),
-	m_width       ( 10.0_MicroMeter ),
+	m_width       ( PIPELINE_WIDTH ),
 	m_potential   ( ),
 	m_impulseSpeed( impulseSpeed )
 {
@@ -158,9 +158,9 @@ void Pipeline::DrawInterior
 		if ( pStartKnot->GetShapeType( ) != tShapeType::knot ) // pipeline stops at neuron border
 		{
 			MicroMeter      const umHypot { Hypot( umVector ) };
-			MicroMeterPoint const diff    { umVector * (pStartKnot->GetExtension( ) * 0.79f / umHypot) };
-			umStartPoint += diff;
-			umVector     -= diff;
+			//MicroMeterPoint const diff    { umVector * (pStartKnot->GetExtension( ) * NEURON_INTERIOR / umHypot) };
+			//umStartPoint += diff;
+			//umVector     -= diff;
 		}
 
 		MicroMeterPoint const segmentVector = umVector / CastToFloat(m_potential.size());
@@ -170,7 +170,7 @@ void Pipeline::DrawInterior
 		( 
 			coord.convert2fPixelPos( umStartPoint ), 
 			coord.convert2fPixelPos( umEndPoint ), 
-			coord.convert2fPixel   ( m_width * 0.6f ), 
+			coord.convert2fPixel   ( m_width * PIPELINE_INTERIOR ), 
 			pulseColor( * m_potential.begin() ) 
 		);
 

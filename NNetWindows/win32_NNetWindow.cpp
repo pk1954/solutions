@@ -261,8 +261,9 @@ void NNetWindow::moveNNet( PixelPoint const ptDiff )
 void NNetWindow::doPaint( )
 {
 	NNetModel const * pModel = m_pReadBuffer->GetModel( );
-	pModel->Apply2AllShapes( [&]( Shape * const pShape ) { pShape->DrawExterior( * pModel, * m_pGraphics, m_coord ); } );
-	pModel->Apply2AllShapes( [&]( Shape * const pShape ) { pShape->DrawInterior( * pModel, * m_pGraphics, m_coord ); } );
+	pModel->Apply2AllShapes   ( [&]( Shape & shape ) { shape.DrawExterior( * pModel, * m_pGraphics, m_coord ); } );
+	pModel->Apply2AllPipelines( [&]( Shape & shape ) { shape.DrawInterior( * pModel, * m_pGraphics, m_coord ); } );
+	pModel->Apply2AllNeurons  ( [&]( Shape & shape ) { shape.DrawInterior( * pModel, * m_pGraphics, m_coord ); } );
 	m_pScale->ShowScale( fPIXEL( static_cast<float>( GetClientWindowHeight().GetValue() ) ) );
 	m_pGraphics->RenderForegroundObjects( );
 }

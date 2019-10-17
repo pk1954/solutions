@@ -39,7 +39,7 @@ void InputNeuron::Step( )
 	static microseconds const DECAY_TIME( PEAK_TIME );
 	static mV           const DECAY_INC ( FACTOR / DECAY_TIME.count() );
 
-	mV mVexternalInput( (FACTOR / 1000000.f ) * m_pulseFrequency.GetValue() );
+	mV mVexternalInput( (FACTOR / 1000000.f ) * m_pulseFrequency.GetValue() );  // TODO make clearer
 
 	if ( m_mVinputBuffer >= PEAK_VOLTAGE )  
 	{
@@ -81,6 +81,7 @@ void InputNeuron::DrawExterior
 	MicroMeterPoint  const umVector   { umEnd - umStart };
 	MicroMeter       const umHypot    { Hypot( umVector ) };
 	MicroMeterPoint  const umExtVector{ umVector * (GetExtension() / umHypot) };
+
 	MicroMeterPoint  const umStartPnt { umCenter + umExtVector };
 	MicroMeterPoint  const umEndPnt   { umCenter - umExtVector };
 
@@ -109,12 +110,13 @@ void InputNeuron::DrawInterior
 	MicroMeterPoint  const umVector   { umEnd - umStart };
 	MicroMeter       const umHypot    { Hypot( umVector ) };
 	MicroMeterPoint  const umExtVector{ umVector * (GetExtension() / umHypot) };
-	MicroMeterPoint  const umStartPnt { umCenter + umExtVector * 0.8f};
+
+	MicroMeterPoint  const umStartPnt { umCenter + umExtVector * NEURON_INTERIOR};
 	MicroMeterPoint  const umEndPnt   { umCenter - umExtVector };			         
 	fPixelPoint      const fStartPoint{ coord.convert2fPixelPos( umStartPnt ) };
 	fPixelPoint      const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
-	fPIXEL           const fPixWidth  { coord.convert2fPixel( GetExtension() * 0.8f ) };
-	int              const colElem    { ( 255 * GetFillLevel().GetValue() ) / 100 };
+	fPIXEL           const fPixWidth  { coord.convert2fPixel( GetExtension() * NEURON_INTERIOR ) };
+	int              const colElem    { CastToInt(GetFillLevel() * 255.0f) };
 	COLORREF         const color      { RGB( colElem, 0, 0 ) };
 
 	Graphics.StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );

@@ -12,7 +12,7 @@
 using namespace std::chrono;
 
 Neuron::Neuron( MicroMeterPoint const upCenter, tShapeType const type )
-  : BaseKnot( upCenter, type, 50.0_MicroMeter )
+  : BaseKnot( upCenter, type, NEURON_RADIUS )
 { 
 	m_timeSinceLastPulse = PEAK_TIME;
 }
@@ -113,15 +113,14 @@ void Neuron::drawInterior
 	int           const   iNrOfEdges
 ) const
 { 
-	PERCENT  const fillLevel = GetFillLevel();
-	int      const colElem   = ( 255 * fillLevel.GetValue() ) / 100;
-	COLORREF const color     = RGB( colElem, 0, 0 );
+	int      const colElem { CastToInt(GetFillLevel() * 255.0f) };
+	COLORREF const color   { RGB( colElem, 0, 0 ) };
 	Graphics.DrawPolygon
 	( 
 		iNrOfEdges,
 		coord.convert2fPixelPos( GetPosition() ), 
 		color, 
-		coord.convert2fPixel( GetExtension() * 0.8f )
+		coord.convert2fPixel( GetExtension() * NEURON_INTERIOR )
 	);
 }
 

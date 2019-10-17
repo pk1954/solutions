@@ -119,7 +119,10 @@ public:
 	void CreateNewNeuron( MicroMeterPoint const & );
 
 	void HighlightShape( ShapeId const );
-	void Apply2AllShapes( std::function<void(Shape * const)> const & ) const;
+
+	void Apply2AllShapes   ( std::function<void(Shape &)> const & ) const;
+	void Apply2AllNeurons  ( std::function<void(Shape &)> const & ) const;
+	void Apply2AllPipelines( std::function<void(Shape &)> const & ) const;
 
 	virtual void CopyModelData( ModelInterface const * const );
 	virtual void Compute( );

@@ -38,7 +38,7 @@ void Knot::DrawInterior
 ) const
 {
 	fPixelPoint const fPosition     { coord.convert2fPixelPos( GetPosition( ) ) };
-	fPIXEL      const fPixWidth     { coord.convert2fPixel( GetExtension( ) ) * 0.6f };
+	fPIXEL      const fPixWidth     { coord.convert2fPixel( GetExtension( ) ) * PIPELINE_INTERIOR };
 	mV          const mVperColLevel { PEAK_VOLTAGE / 255.0f };
 	int         const iLevel        { CastToInt( m_mVinputBuffer / mVperColLevel ) };
 	COLORREF    const color         { RGB( iLevel, 0, 0 ) };

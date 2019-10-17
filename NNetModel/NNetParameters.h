@@ -14,3 +14,7 @@ static mV           const PEAK_VOLTAGE      = 100._mV;
 static microseconds const PEAK_TIME         = 2ms;
 static meterPerSec  const STD_IMPULSE_SPEED = 20._meterPerSec;     // Adjustable per pipeline
 static mV           const BASE_POTENTIAL    = 0.0_mV;
+static float        const NEURON_INTERIOR   = 0.8f;                // Neurons of all kinds have 80% interior, 20 % border 
+static float        const PIPELINE_INTERIOR = 0.6f;                // Neurons of all kinds have 80% interior, 20 % border 
+static MicroMeter   const NEURON_RADIUS     = 50.0_MicroMeter;    
+static MicroMeter   const PIPELINE_WIDTH    = 10.0_MicroMeter;    

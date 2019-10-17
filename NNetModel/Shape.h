@@ -82,9 +82,11 @@ public:
 		return m_type;
 	}
 
-	PERCENT GetFillLevel( ) const
+	float GetFillLevel( ) const  // 1.0 means 100% filled
 	{
-		return PERCENT( CastToShort( (m_mVinputBuffer * 100) / PEAK_VOLTAGE ) );
+		float res = m_mVinputBuffer / PEAK_VOLTAGE;
+		assert( res <= 1.0f );
+		return res;
 	}
 
 protected:

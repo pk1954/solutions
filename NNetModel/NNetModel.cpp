@@ -20,7 +20,7 @@ NNetModel::NNetModel( )
 {					
 	m_idInputNeuron1  = AddInputNeuron ( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
     m_idKnot1         = AddKnot        ( MicroMeterPoint( 400.0_MicroMeter, 400.0_MicroMeter ) );
-	m_idNeuron1       = AddNeuron      ( MicroMeterPoint( 500.0_MicroMeter, 800.0_MicroMeter ) );
+	m_idNeuron1       = AddNeuron      ( MicroMeterPoint( 500.0_MicroMeter, 500.0_MicroMeter ) );
     m_idPipeline1     = AddPipeline    ( 0.1_meterPerSec );
     m_idPipeline2     = AddPipeline    ( 0.1_meterPerSec );
     m_idPipeline3     = AddPipeline    ( 0.1_meterPerSec );
@@ -124,11 +124,29 @@ void NNetModel::CreateNewNeuron( MicroMeterPoint const & pnt )
 	newPipeline->SetEndKnot  ( * this, idNewKnot );
 }
 
-void NNetModel::Apply2AllShapes( std::function<void(Shape * const)> const & func ) const
+void NNetModel::Apply2AllShapes( std::function<void(Shape &)> const & func ) const
 {
-	for ( auto shape : m_Shapes )
+	for ( auto pShape : m_Shapes )
 	{
-		func( shape );
+		func( * pShape );
+	}
+}
+
+void NNetModel::Apply2AllNeurons( std::function<void(Shape &)> const & func ) const
+{
+	for ( auto pShape : m_Shapes )
+	{
+		if ( pShape->GetShapeType() != tShapeType::pipeline )
+			func( * pShape );
+	}
+}
+
+void NNetModel::Apply2AllPipelines( std::function<void(Shape &)> const & func ) const
+{
+	for ( auto pShape : m_Shapes )
+	{
+		if ( pShape->GetShapeType() == tShapeType::pipeline )
+			func( * pShape );
 	}
 }
 
@@ -139,8 +157,8 @@ void NNetModel::CopyModelData( ModelInterface const * const src )
 
 void NNetModel::Compute( )
 {
-	Apply2AllShapes( [&]( Shape * const pShape ) { pShape->Prepare( * this ); } );
-	Apply2AllShapes( [&]( Shape * const pShape ) { pShape->Step(); } );
+	Apply2AllShapes( [&]( Shape & shape ) { shape.Prepare( * this ); } );
+	Apply2AllShapes( [&]( Shape & shape ) { shape.Step(); } );
 
 	m_timeStamp += TIME_RESOLUTION;
 }
