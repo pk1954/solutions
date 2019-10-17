@@ -16,7 +16,8 @@ using namespace std::chrono;
 NNetModel::NNetModel( )
   : m_timeStamp( microseconds( 0 ) ),
 	m_Shapes( ),
-	m_shapeHighlighted( NO_SHAPE )
+	m_shapeHighlighted( NO_SHAPE ),
+	m_shapeSuperHighlighted( NO_SHAPE )
 {					
 	m_idInputNeuron1  = AddInputNeuron ( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
     m_idKnot1         = AddKnot        ( MicroMeterPoint( 400.0_MicroMeter, 400.0_MicroMeter ) );
@@ -69,6 +70,24 @@ void NNetModel::HighlightShape( ShapeId const idHighlight )
 	}
 
 	m_shapeHighlighted = idHighlight;
+}
+
+void NNetModel::SuperHighlightShape( ShapeId const idSuperHighlight )
+{
+	if ( m_shapeSuperHighlighted != NO_SHAPE )
+	{
+		GetShape( m_shapeSuperHighlighted )->SetSuperHighlightState( false );
+	}
+
+	if ( idSuperHighlight != NO_SHAPE )
+	{
+		Shape * pShape = GetShape( idSuperHighlight );
+		assert( pShape );
+		assert( pShape->GetId() == idSuperHighlight );
+		pShape->SetSuperHighlightState( true );
+	}
+
+	m_shapeSuperHighlighted = idSuperHighlight;
 }
 
 ShapeId const NNetModel::addShape( Shape * pShape )
@@ -168,21 +187,37 @@ void NNetModel::ResetAll( )
 
 }
 
-Shape const * NNetModel::GetShapeUnderPoint( MicroMeterPoint const pnt ) const
+Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt, std::function<bool(Shape const &)> const & crit ) const
 {
-	// iterate in reverse order, so that newer shapes are checked first
-
-	for ( size_t i = m_Shapes.size(); i --> 0; )	// first test all knot shapes
+	for ( size_t i = m_Shapes.size(); i --> 0; )	
 	{
-		if ( IsBaseKnotType( m_Shapes[i]->GetShapeType() ) &&  m_Shapes[i]->IsPointInShape( * this, pnt ) ) 
-			return m_Shapes[i];
-	};
-
-	for ( size_t i = m_Shapes.size(); i --> 0; )	 // now try pipelines
-	{
-		if ( ! IsBaseKnotType( m_Shapes[i]->GetShapeType() ) &&  m_Shapes[i]->IsPointInShape( * this, pnt ) ) 
+		if ( crit( * m_Shapes[i] ) && m_Shapes[i]->IsPointInShape( * this, pnt ) ) 
 			return m_Shapes[i];
 	};
 
 	return nullptr;
+}
+
+Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt ) const
+{
+	Shape const * pShapeResult = FindShapeUnderPoint  // first test all knot shapes
+	    ( 
+			pnt, 
+			[&]( Shape const & shape ) 
+			{ 
+				return IsBaseKnotType( shape.GetShapeType() ); 
+			} 
+	    ); 	
+
+	if ( ! pShapeResult ) 
+		pShapeResult = FindShapeUnderPoint   // if nothing found, try pipelines
+		( 
+			pnt, 
+			[&]( Shape const & shape ) 
+			{ 
+				return ! IsBaseKnotType( shape.GetShapeType() ); 
+			} 
+	    );
+
+	return pShapeResult;
 }

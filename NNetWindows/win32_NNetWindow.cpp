@@ -122,9 +122,9 @@ MicroMeter NNetWindow::GetPixelSize( ) const
 
 Shape const * NNetWindow::getShapeUnderPoint( PixelPoint const pnt )
 {
-	MicroMeterPoint const   umCrsrPos = m_coord.convert2MicroMeterPoint( pnt );
-	NNetModel       const * pModel    = m_pReadBuffer->GetModel( );
-	Shape           const * pShape    = pModel->GetShapeUnderPoint( umCrsrPos );
+	MicroMeterPoint const   umCrsrPos { m_coord.convert2MicroMeterPoint( pnt ) };
+	NNetModel       const * pModel    { m_pReadBuffer->GetModel( ) };
+	Shape           const * pShape    { pModel->FindShapeUnderPoint( umCrsrPos ) };
 	return pShape;
 }
 
@@ -217,9 +217,6 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
 	PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
 
-	Shape const * pShape = getShapeUnderPoint( ptCrsr );
-	PostCommand2Application( IDM_HIGHLIGHT, (pShape ? pShape->GetId() : NO_SHAPE).GetValue() );
-
 	if ( wParam & MK_RBUTTON )          // Right mouse button: selection
 	{
 	}
@@ -227,20 +224,37 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	{
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
+			Shape const * pShapeSuper = nullptr;
 			if ( m_pShapeSelected )
-				m_pNNetWorkThreadInterface->PostMoveShape
-				( 
-					m_pShapeSelected->GetId(), 
-					m_coord.convert2MicroMeterPoint( ptCrsr ) 
-				);
+			{
+				ShapeId         const idSelected { m_pShapeSelected->GetId() };
+				MicroMeterPoint const umPoint    { m_coord.convert2MicroMeterPoint( ptCrsr ) };
+				m_pNNetWorkThreadInterface->PostMoveShape( idSelected, umPoint );
+				if ( m_pShapeSelected->GetShapeType() == tShapeType::knot )
+				{
+					pShapeSuper = m_pReadBuffer->GetModel( )->FindShapeUnderPoint
+					( 
+						umPoint, 
+						[&]( Shape const & shape ) 
+						{ 
+							return (shape.GetId() != idSelected) && IsNeuronType(shape.GetShapeType());
+						} 
+					);
+				}
+			}
 			else
 				moveNNet( ptCrsr - m_ptLast );
+
+			PostCommand2Application( IDM_SUPER_HIGHLIGHT, (pShapeSuper ? pShapeSuper->GetId() : NO_SHAPE).GetValue() );
 		}
 		m_ptLast = ptCrsr;
 		PostCommand2Application( IDM_REFRESH, 0 );
 	}
 	else
-	{                         // make m_ptLast invalid
+	{                         
+		Shape const * pShape = getShapeUnderPoint( ptCrsr );
+		PostCommand2Application( IDM_HIGHLIGHT, (pShape ? pShape->GetId() : NO_SHAPE).GetValue() );
+							  // make m_ptLast invalid
 		m_ptLast = PP_NULL;   // no refresh! It would cause repaint for every mouse move 
 	}
 }
@@ -260,12 +274,24 @@ void NNetWindow::moveNNet( PixelPoint const ptDiff )
 	}
 }
 
+void NNetWindow::drawHighlightedShape( NNetModel const &  model)
+{
+	ShapeId const shapeIdHighlighted = model.GetHighlightedShapeId();
+	if ( shapeIdHighlighted != NO_SHAPE )
+	{
+		Shape const * pShape = model.GetConstShape( shapeIdHighlighted );
+		pShape->DrawExterior( model, * m_pGraphics, m_coord );
+		pShape->DrawInterior( model, * m_pGraphics, m_coord );
+	}
+}
+
 void NNetWindow::doPaint( )
 {
 	NNetModel const * pModel = m_pReadBuffer->GetModel( );
 	pModel->Apply2AllShapes   ( [&]( Shape & shape ) { shape.DrawExterior( * pModel, * m_pGraphics, m_coord ); } );
 	pModel->Apply2AllPipelines( [&]( Shape & shape ) { shape.DrawInterior( * pModel, * m_pGraphics, m_coord ); } );
 	pModel->Apply2AllNeurons  ( [&]( Shape & shape ) { shape.DrawInterior( * pModel, * m_pGraphics, m_coord ); } );
+	drawHighlightedShape( * pModel );
 	m_pScale->ShowScale( fPIXEL( static_cast<float>( GetClientWindowHeight().GetValue() ) ) );
 	m_pGraphics->RenderForegroundObjects( );
 }

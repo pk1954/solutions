@@ -95,12 +95,20 @@ void Neuron::drawExterior
 	int           const   iNrOfEdges
 ) const
 {
-	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 );
+//	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 );
+	COLORREF const colorFrame 
+	{ 
+		IsSuperHighlighted( ) 
+		? RGB( 255, 0, 0 ) 
+		: IsHighlighted( ) 
+    	  ? RGB( 0, 127, 127 ) 
+    	  : RGB( 0, 127, 255 ) 
+	};
 	Graphics.DrawPolygon
 	( 
 		iNrOfEdges,
 		coord.convert2fPixelPos( GetPosition() ), 
-		IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ), 
+		colorFrame, 
 		coord.convert2fPixel( GetExtension() )
 	);
 }

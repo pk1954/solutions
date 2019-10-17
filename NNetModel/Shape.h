@@ -32,10 +32,19 @@ static bool IsDefined( ShapeId const id )
 
 static bool IsBaseKnotType( tShapeType const type )
 {
-	return (type == tShapeType::knot)        || 
-		   (type == tShapeType::neuron)      || 
-		   (type == tShapeType::inputNeuron) ||
-		   (type == tShapeType::outputNeuron);
+	return 
+		(type == tShapeType::knot)        || 
+		(type == tShapeType::neuron)      || 
+		(type == tShapeType::inputNeuron) ||
+		(type == tShapeType::outputNeuron);
+}
+
+static bool IsNeuronType( tShapeType const type )
+{
+	return  
+		(type == tShapeType::neuron)      || 
+		(type == tShapeType::inputNeuron) ||
+		(type == tShapeType::outputNeuron);
 }
 
 class Shape
@@ -44,6 +53,7 @@ public:
 	Shape( tShapeType const type )
 	  :	m_mVinputBuffer( 0._mV ),
 		m_bHighlighted( false ),
+		m_bSuperHighlighted( false ),
 		m_identifier( NO_SHAPE ),
 		m_type( type )
 	{
@@ -62,9 +72,19 @@ public:
 		m_bHighlighted = bState;
 	}
 
+	void SetSuperHighlightState( bool const bState )
+	{
+		m_bSuperHighlighted = bState;
+	}
+
 	bool IsHighlighted( ) const
 	{
 		return m_bHighlighted;
+	}
+
+	bool IsSuperHighlighted( ) const
+	{
+		return m_bSuperHighlighted;
 	}
 
 	ShapeId GetId( ) const
@@ -95,5 +115,6 @@ protected:
 private:
 	ShapeId    m_identifier;
 	bool       m_bHighlighted;
+	bool       m_bSuperHighlighted;
 	tShapeType m_type;
 };

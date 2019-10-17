@@ -54,8 +54,9 @@ public:
 		return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() - 1 ];
 	}
 
-	Shape const * GetShapeUnderPoint( MicroMeterPoint const ) const;
-
+	Shape const * FindShapeUnderPoint( MicroMeterPoint const, std::function<bool(Shape const &)> const & ) const;
+	Shape const * FindShapeUnderPoint( MicroMeterPoint const ) const;
+	
 	Pipeline * GetPipeline( ShapeId const id ) 
 	{
 		Shape * pShape = GetShape( id );
@@ -118,22 +119,28 @@ public:
 	void CreateNewBranch( ShapeId const );
 	void CreateNewNeuron( MicroMeterPoint const & );
 
-	void HighlightShape( ShapeId const );
+	void HighlightShape     ( ShapeId const );
+	void SuperHighlightShape( ShapeId const );
 
 	void Apply2AllShapes   ( std::function<void(Shape &)> const & ) const;
 	void Apply2AllNeurons  ( std::function<void(Shape &)> const & ) const;
 	void Apply2AllPipelines( std::function<void(Shape &)> const & ) const;
+
+	ShapeId GetHighlightedShapeId( ) const
+	{
+		return m_shapeHighlighted;
+	}
 
 	virtual void CopyModelData( ModelInterface const * const );
 	virtual void Compute( );
 	virtual void ResetAll( );
 
 private:
-	ShapeId m_idInputNeuron1;  
-	ShapeId m_idKnot1;    
-	ShapeId m_idNeuron1;    
-	ShapeId m_idOutputNeuron1;    
-	ShapeId m_idOutputNeuron2;    
+	ShapeId m_idInputNeuron1;
+	ShapeId m_idKnot1;
+	ShapeId m_idNeuron1;
+	ShapeId m_idOutputNeuron1;
+	ShapeId m_idOutputNeuron2;
 	ShapeId m_idPipeline1;
 	ShapeId m_idPipeline2;
 	ShapeId m_idPipeline3;
@@ -142,6 +149,7 @@ private:
 	microseconds    m_timeStamp;
 	vector<Shape *> m_Shapes;
 	ShapeId         m_shapeHighlighted;
+	ShapeId         m_shapeSuperHighlighted;
 
 	ShapeId const addShape( Shape * );
 };

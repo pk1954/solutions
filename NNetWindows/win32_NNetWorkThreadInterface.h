@@ -36,6 +36,7 @@ public:
 
 	void PostTrigger       ( ShapeId const );
 	void PostHighlight     ( ShapeId const );
+	void PostSuperHighlight( ShapeId const );
 	void PostPulseFrequency( ShapeId const, Hertz            const );
 	void PostPulseSpeed    ( ShapeId const, meterPerSec      const );
 	void PostMoveShape     ( ShapeId const, MicroMeterPoint  const );

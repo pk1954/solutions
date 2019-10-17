@@ -70,6 +70,10 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		m_pNNetModel->HighlightShape( ShapeId( CastToUnsignedLong(msg.wParam) ) );
 		break;
 
+	case NNetWorkThreadMessage::Id::SUPER_HIGHLIGHT:
+		m_pNNetModel->SuperHighlightShape( ShapeId( CastToUnsignedLong(msg.wParam) ) );
+		break;
+
 	case NNetWorkThreadMessage::Id::PULSE_FREQ:
 	{
 		ShapeId const id  ( CastToUnsignedLong( msg.wParam ) );

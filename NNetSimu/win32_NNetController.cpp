@@ -123,6 +123,10 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWorkThreadInterface->PostHighlight( ShapeId( CastToUnsignedLong( lParam ) ) );
 		break;
 
+	case IDM_SUPER_HIGHLIGHT:
+		m_pNNetWorkThreadInterface->PostSuperHighlight( ShapeId( CastToUnsignedLong( lParam ) ) );
+		break;
+
 	case IDM_PULSE_FREQ:
 		{
 			ShapeId const shapeId   { Util::HiPart( lParam ) };

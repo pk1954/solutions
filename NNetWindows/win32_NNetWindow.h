@@ -80,5 +80,6 @@ private:
 
 	BOOL          inObservedClientRect( LPARAM const );
 	Shape const * getShapeUnderPoint( PixelPoint const );
+	void          drawHighlightedShape( NNetModel const & );
 	void          doPaint( );
 };

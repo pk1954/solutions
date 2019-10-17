@@ -24,8 +24,10 @@
 #define IDD_CREATE_NEW_NEURON   163
 
 #define IDM_HIGHLIGHT           200
-#define IDM_PULSE_FREQ          201
-#define IDM_PULSE_SPEED         202
+#define IDM_SUPER_HIGHLIGHT     201
+
+#define IDM_PULSE_FREQ          210
+#define IDM_PULSE_SPEED         212
 
 #define IDM_MOVE_SHAPE          300
 
