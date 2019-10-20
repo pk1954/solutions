@@ -9,7 +9,7 @@
 
 void BaseKnot::AddIncomming( ShapeId const idPipeline )
 {
-	m_incomming.push_back( idPipeline );
+	m_incoming.push_back( idPipeline );
 }
 
 void BaseKnot::AddOutgoing( ShapeId const idPipeline )
@@ -29,7 +29,7 @@ bool BaseKnot::IsPointInShape( NNetModel const & model, MicroMeterPoint const & 
 void BaseKnot::MoveTo( NNetModel & model, MicroMeterPoint const & newCenter )
 {
 	m_center = newCenter;
-	for ( auto const idPipeline : m_incomming )
+	for ( auto const idPipeline : m_incoming )
 		model.GetPipeline( idPipeline )->Resize( model );
 
 	for ( auto const idPipeline : m_outgoing )

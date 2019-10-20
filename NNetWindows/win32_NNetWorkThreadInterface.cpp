@@ -55,6 +55,13 @@ void NNetWorkThreadInterface::Stop( )
 	delete m_pNNetWorkThread;
 }
 
+void NNetWorkThreadInterface::PostConnect( )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::CONNECT), 0, 0 );
+}
+
 void NNetWorkThreadInterface::PostTrigger( ShapeId const id )
 {
 	if ( IsTraceOn( ) )

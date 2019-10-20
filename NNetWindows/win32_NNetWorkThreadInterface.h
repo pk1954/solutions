@@ -34,6 +34,7 @@ public:
 	);
 	void Stop(); 
 
+	void PostConnect       ( );
 	void PostTrigger       ( ShapeId const );
 	void PostHighlight     ( ShapeId const );
 	void PostSuperHighlight( ShapeId const );

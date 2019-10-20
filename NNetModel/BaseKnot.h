@@ -45,11 +45,19 @@ public:
 	void AddOutgoing   ( ShapeId const );
 	bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
 
+	void Apply2AllIncomingPipelines( NNetModel & model, std::function<void(ShapeId const &)> const & func ) const
+	{
+		for ( auto id : m_incoming )
+		{
+			func( id );
+		}
+	}
+
 	virtual void MoveTo( NNetModel &, MicroMeterPoint const & );
 
 protected:
 
-	vector<ShapeId> m_incomming;
+	vector<ShapeId> m_incoming;
 	vector<ShapeId> m_outgoing;
 
 private:

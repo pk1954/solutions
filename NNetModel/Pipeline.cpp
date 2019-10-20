@@ -196,6 +196,24 @@ COLORREF Pipeline::pulseColor( mV const current ) const
 	return RGB( iLevel, 0, 0 );
 }
 
+void Pipeline::CheckConsistency( NNetModel const & model ) const
+{
+	Shape const * pShapeStartKnot = model.GetConstShape( m_idKnotStart );
+	Shape const * pShapeEndKnot   = model.GetConstShape( m_idKnotEnd );
+	tShapeType typeStartKnot = pShapeStartKnot->GetShapeType();
+	tShapeType typeEndKnot   = pShapeEndKnot->GetShapeType();
+	assert(
+		(typeStartKnot == tShapeType::knot)        || 
+		(typeStartKnot == tShapeType::inputNeuron) || 
+		(typeStartKnot == tShapeType::neuron)
+	);
+	assert(
+		(typeEndKnot == tShapeType::knot)         || 
+		(typeEndKnot == tShapeType::outputNeuron) || 
+		(typeEndKnot == tShapeType::neuron)
+	);
+}
+
 Pipeline const * Cast2Pipeline( Shape const * shape )
 {
 	assert( shape->GetShapeType() == tShapeType::pipeline );

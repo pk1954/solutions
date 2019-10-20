@@ -276,12 +276,10 @@ void NNetWindow::moveNNet( PixelPoint const ptDiff )
 
 void NNetWindow::drawHighlightedShape( NNetModel const &  model)
 {
-	ShapeId const shapeIdHighlighted = model.GetHighlightedShapeId();
-	if ( shapeIdHighlighted != NO_SHAPE )
+	if ( m_pShapeSelected && IsNeuronType( m_pShapeSelected->GetShapeType() ) )
 	{
-		Shape const * pShape = model.GetConstShape( shapeIdHighlighted );
-		pShape->DrawExterior( model, * m_pGraphics, m_coord );
-		pShape->DrawInterior( model, * m_pGraphics, m_coord );
+		m_pShapeSelected->DrawExterior( model, * m_pGraphics, m_coord );
+		m_pShapeSelected->DrawInterior( model, * m_pGraphics, m_coord );
 	}
 }
 
@@ -348,6 +346,7 @@ void NNetWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )
 
 void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
+	PostCommand2Application( IDD_CONNECT, 0 );
 	m_pShapeSelected = nullptr;
 	(void)ReleaseCapture( );
 }

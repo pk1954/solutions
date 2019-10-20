@@ -116,20 +116,24 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	switch ( wmId )
 	{
 	case IDD_TRIGGER:
-		m_pNNetWorkThreadInterface->PostTrigger( ShapeId( CastToUnsignedLong( lParam ) ) );
+		m_pNNetWorkThreadInterface->PostTrigger( ShapeId( CastToLong( lParam ) ) );
+		break;
+
+	case IDD_CONNECT:
+		m_pNNetWorkThreadInterface->PostConnect( );
 		break;
 
 	case IDM_HIGHLIGHT:
-		m_pNNetWorkThreadInterface->PostHighlight( ShapeId( CastToUnsignedLong( lParam ) ) );
+		m_pNNetWorkThreadInterface->PostHighlight( ShapeId( CastToLong( lParam ) ) );
 		break;
 
 	case IDM_SUPER_HIGHLIGHT:
-		m_pNNetWorkThreadInterface->PostSuperHighlight( ShapeId( CastToUnsignedLong( lParam ) ) );
+		m_pNNetWorkThreadInterface->PostSuperHighlight( ShapeId( CastToLong( lParam ) ) );
 		break;
 
 	case IDM_PULSE_FREQ:
 		{
-			ShapeId const shapeId   { Util::HiPart( lParam ) };
+			ShapeId const shapeId   { CastToLong( Util::HiPart( lParam ) ) };
 			Hertz   const pulseFreq { Util::LoPart( lParam ) };
 			m_pNNetWorkThreadInterface->PostPulseFrequency( shapeId, pulseFreq );
 		}
@@ -137,7 +141,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDM_PULSE_SPEED:
 		{
-			ShapeId     const shapeId{ Util::HiPart( lParam ) };
+			ShapeId     const shapeId{ CastToLong( Util::HiPart( lParam ) ) };
 			UINT32      const loPart { Util::LoPart( lParam ) };
 			meterPerSec const mPs    { (float &)loPart };
 			m_pNNetWorkThreadInterface->PostPulseSpeed( shapeId, mPs );

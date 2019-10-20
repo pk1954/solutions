@@ -42,6 +42,8 @@ public:
 	MicroMeterPoint GetEndPoint  ( NNetModel const & ) const; 
 	MicroMeter      GetWidth     ( ) const; 
 
+	void CheckConsistency( NNetModel const & ) const;
+
 	virtual void Step( );
 	virtual void Prepare( NNetModel & );
 	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;

@@ -7,13 +7,13 @@
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 
-using ShapeId = NamedType< unsigned long, struct ShapeIdParam >;
+using ShapeId = NamedType< long, struct ShapeIdParam >;
 
 class GraphicsInterface;
 class PixelCoordsFp;
 class NNetModel;
 
-ShapeId const NO_SHAPE( 0 );
+ShapeId const NO_SHAPE( -1 );
 
 enum class tShapeType
 {
@@ -105,7 +105,7 @@ public:
 	float GetFillLevel( ) const  // 1.0 means 100% filled
 	{
 		float res = m_mVinputBuffer / PEAK_VOLTAGE;
-		assert( res <= 1.0f );
+//		assert( res <= 1.0f );
 		return res;
 	}
 

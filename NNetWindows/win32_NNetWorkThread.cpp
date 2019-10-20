@@ -58,50 +58,54 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	switch ( static_cast<NNetWorkThreadMessage::Id>(msg.message) )
 	{
 	case NNetWorkThreadMessage::Id::TRIGGER:
-	{
-		ShapeId const id  ( CastToUnsignedLong( msg.wParam ) );
-		Shape       * shape( m_pNNetModel->GetShape( id ) );
-		InputNeuron * pInputNeuron( Cast2InputNeuron( shape ) );
-		pInputNeuron->Trigger();
-	}
-	break;
+		{
+			ShapeId const id( CastToLong( msg.wParam ) );
+			Shape       * shape( m_pNNetModel->GetShape( id ) );
+			InputNeuron * pInputNeuron( Cast2InputNeuron( shape ) );
+			pInputNeuron->Trigger();
+		}
+		break;
+
+	case NNetWorkThreadMessage::Id::CONNECT:
+		m_pNNetModel->Connect( );
+		break;
 
 	case NNetWorkThreadMessage::Id::HIGHLIGHT:
-		m_pNNetModel->HighlightShape( ShapeId( CastToUnsignedLong(msg.wParam) ) );
+		m_pNNetModel->HighlightShape( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
 	case NNetWorkThreadMessage::Id::SUPER_HIGHLIGHT:
-		m_pNNetModel->SuperHighlightShape( ShapeId( CastToUnsignedLong(msg.wParam) ) );
+		m_pNNetModel->SuperHighlightShape( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
 	case NNetWorkThreadMessage::Id::PULSE_FREQ:
-	{
-		ShapeId const id  ( CastToUnsignedLong( msg.wParam ) );
-		Shape       * shape( m_pNNetModel->GetShape( id ) );
-		InputNeuron * pInputNeuron( Cast2InputNeuron( shape ) );
-		Hertz   const freq( CastToUnsignedLong( msg.lParam ) );
-		pInputNeuron->SetPulseFrequency( freq );
-	}
-	break;
+		{
+			ShapeId const id  ( CastToLong( msg.wParam ) );
+			Shape       * shape( m_pNNetModel->GetShape( id ) );
+			InputNeuron * pInputNeuron( Cast2InputNeuron( shape ) );
+			Hertz   const freq( CastToUnsignedLong( msg.lParam ) );
+			pInputNeuron->SetPulseFrequency( freq );
+		}
+		break;
 
 	case NNetWorkThreadMessage::Id::PULSE_SPEED:
-	{
-		ShapeId     const id   ( CastToUnsignedLong( msg.wParam ) );
-		Shape           * shape( m_pNNetModel->GetShape( id ) );
-		Pipeline        * pPipe( Cast2Pipeline( shape ) );
-		meterPerSec const speed( (float&) msg.lParam );
-		pPipe->SetPulseSpeed( * m_pNNetModel, speed );
-	}
-	break;
+		{
+			ShapeId     const id   ( CastToLong( msg.wParam ) );
+			Shape           * shape( m_pNNetModel->GetShape( id ) );
+			Pipeline        * pPipe( Cast2Pipeline( shape ) );
+			meterPerSec const speed( (float&) msg.lParam );
+			pPipe->SetPulseSpeed( * m_pNNetModel, speed );
+		}
+		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE_TO:
-	{
-		ShapeId         const id( CastToUnsignedLong( msg.wParam ) );
-		Shape               * pShape( m_pNNetModel->GetShape( id ) );
-		MicroMeterPoint const newPos( Util::Unpack2MicroMeterPoint(msg.lParam) );
-		pShape->MoveTo( * m_pNNetModel, newPos );
-	}
-	break;
+		{
+			ShapeId         const id( CastToLong( msg.wParam ) );
+			Shape               * pShape( m_pNNetModel->GetShape( id ) );
+			MicroMeterPoint const newPos( Util::Unpack2MicroMeterPoint(msg.lParam) );
+			pShape->MoveTo( * m_pNNetModel, newPos );
+		}
+		break;
 
 	case NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED:
 		ResetTimer();
@@ -109,22 +113,22 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::CREATE_NEW_BRANCH:
-	{
-		ShapeId const id { CastToUnsignedLong( msg.wParam ) };
-		m_pNNetModel->CreateNewBranch( id );
-	}
-	break;
+		{
+			ShapeId const id { CastToLong( msg.wParam ) };
+			m_pNNetModel->CreateNewBranch( id );
+		}
+		break;
 
 	case NNetWorkThreadMessage::Id::CREATE_NEW_NEURON:
-	{
-		MicroMeterPoint const pnt 
-		{ 
-			static_cast<MicroMeter>((float &)msg.wParam), 
-			static_cast<MicroMeter>((float &)msg.lParam) 
-		};
-		m_pNNetModel->CreateNewNeuron( pnt );
-	}
-	break;
+		{
+			MicroMeterPoint const pnt 
+			{ 
+				static_cast<MicroMeter>((float &)msg.wParam), 
+				static_cast<MicroMeter>((float &)msg.lParam) 
+			};
+			m_pNNetModel->CreateNewNeuron( pnt );
+		}
+		break;
 
 	default:
 		return FALSE;

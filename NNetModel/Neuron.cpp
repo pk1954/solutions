@@ -32,9 +32,10 @@ mV Neuron::waveFunction( microseconds time ) const
 void Neuron::Prepare( NNetModel & model )
 {
 	m_mVinputBuffer = 0._mV;
-	for ( auto idPipeline : m_incomming )
+	for ( auto idPipeline : m_incoming )
 		m_mVinputBuffer += model.GetPipeline( idPipeline )->GetNextOutput();
-	assert( m_mVinputBuffer <= PEAK_VOLTAGE );
+	if (m_mVinputBuffer > PEAK_VOLTAGE)
+		m_mVinputBuffer = PEAK_VOLTAGE;
 }
 
 void Neuron::Step( )

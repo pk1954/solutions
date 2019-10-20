@@ -44,66 +44,17 @@ public:
 		m_timeStamp = microseconds( 0 );
 	}
 
-	Shape * GetShape( ShapeId const id )
-	{
-		return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() - 1 ];
-	}
-
-	Shape const * GetConstShape( ShapeId const id ) const
-	{
-		return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() - 1 ];
-	}
-
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const, std::function<bool(Shape const &)> const & ) const;
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const ) const;
 	
-	Pipeline * GetPipeline( ShapeId const id ) 
-	{
-		Shape * pShape = GetShape( id );
-		assert( pShape );
-		assert( pShape->GetShapeType() == tShapeType::pipeline );
-		return static_cast<Pipeline *>( pShape );
-	}
-
-	Pipeline const * GetConstPipeline( ShapeId const id ) const
-	{
-		Shape const * pShape { GetConstShape( id ) };
-		assert( pShape );
-		assert( pShape->GetShapeType() == tShapeType::pipeline );
-		return static_cast<Pipeline const *>( pShape );
-	}
-
-	BaseKnot * GetBaseKnot( ShapeId const id ) 
-	{
-		Shape * pShape = GetShape( id );
-		assert( pShape );
-		assert( IsBaseKnotType( pShape->GetShapeType() ) );
-		return static_cast<BaseKnot *>( pShape );
-	}
-
-	BaseKnot const * GetConstBaseKnot( ShapeId const id ) const
-	{
-		Shape const * pShape = GetConstShape( id );
-		assert( pShape );
-		assert( IsBaseKnotType( pShape->GetShapeType() ) );
-		return static_cast<BaseKnot const *>( pShape );
-	}
-
-	Knot * GetKnot( ShapeId const id ) 
-	{
-		Shape * pShape = GetShape( id );
-		assert( pShape );
-		assert( pShape->GetShapeType() == tShapeType::knot );
-		return static_cast<Knot *>( pShape );
-	}
-
-	Knot const * GetConstKnot( ShapeId const id ) const
-	{
-		Shape const * pShape = GetConstShape( id );
-		assert( pShape );
-		assert( pShape->GetShapeType() == tShapeType::knot );
-		return static_cast<Knot const *>( pShape );
-	}
+	Shape          * GetShape        ( ShapeId const );
+	Shape    const * GetConstShape   ( ShapeId const ) const;
+	Pipeline       * GetPipeline     ( ShapeId const ); 
+	Pipeline const * GetConstPipeline( ShapeId const ) const;
+	BaseKnot       * GetBaseKnot     ( ShapeId const ); 
+	BaseKnot const * GetConstBaseKnot( ShapeId const ) const;
+	Knot           * GetKnot         ( ShapeId const ); 
+	Knot     const * GetConstKnot    ( ShapeId const ) const;
 
 	void AddIncomming( ShapeId const, ShapeId const );
 	void AddOutgoing ( ShapeId const, ShapeId const );
@@ -118,6 +69,7 @@ public:
 
 	void CreateNewBranch( ShapeId const );
 	void CreateNewNeuron( MicroMeterPoint const & );
+	void Connect( );
 
 	void HighlightShape     ( ShapeId const );
 	void SuperHighlightShape( ShapeId const );
@@ -152,4 +104,6 @@ private:
 	ShapeId         m_shapeSuperHighlighted;
 
 	ShapeId const addShape( Shape * );
+	void          deleteShape( ShapeId const );
+	void          checkConsistency( Shape * ) const;
 };

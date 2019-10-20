@@ -39,7 +39,91 @@ NNetModel::NNetModel( )
 }
 
 NNetModel::~NNetModel( )
+{}
+
+Shape * NNetModel::GetShape( ShapeId const id )
 {
+	return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() ];
+}
+
+Shape const * NNetModel::GetConstShape( ShapeId const id ) const
+{
+	return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() ];
+}
+
+void NNetModel::deleteShape( ShapeId const id )
+{
+	delete m_Shapes[ id.GetValue() ];
+	m_Shapes[ id.GetValue() ] = nullptr;
+}
+
+Pipeline * NNetModel::GetPipeline( ShapeId const id ) 
+{
+	Shape * pShape = GetShape( id );
+	assert( pShape );
+	assert( pShape->GetShapeType() == tShapeType::pipeline );
+	return static_cast<Pipeline *>( pShape );
+}
+
+Pipeline const * NNetModel::GetConstPipeline( ShapeId const id ) const
+{
+	Shape const * pShape { GetConstShape( id ) };
+	assert( pShape );
+	assert( pShape->GetShapeType() == tShapeType::pipeline );
+	return static_cast<Pipeline const *>( pShape );
+}
+
+BaseKnot * NNetModel::GetBaseKnot( ShapeId const id ) 
+{
+	Shape * pShape = GetShape( id );
+	assert( pShape );
+	assert( IsBaseKnotType( pShape->GetShapeType() ) );
+	return static_cast<BaseKnot *>( pShape );
+}
+
+BaseKnot const * NNetModel::GetConstBaseKnot( ShapeId const id ) const
+{
+	Shape const * pShape = GetConstShape( id );
+	assert( pShape );
+	assert( IsBaseKnotType( pShape->GetShapeType() ) );
+	return static_cast<BaseKnot const *>( pShape );
+}
+
+Knot * NNetModel::GetKnot( ShapeId const id ) 
+{
+	Shape * pShape = GetShape( id );
+	assert( pShape );
+	assert( pShape->GetShapeType() == tShapeType::knot );
+	return static_cast<Knot *>( pShape );
+}
+
+Knot const * NNetModel::GetConstKnot( ShapeId const id ) const
+{
+	Shape const * pShape = GetConstShape( id );
+	assert( pShape );
+	assert( pShape->GetShapeType() == tShapeType::knot );
+	return static_cast<Knot const *>( pShape );
+}
+
+void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
+{
+	if ( (m_shapeHighlighted != NO_SHAPE) && (m_shapeSuperHighlighted != NO_SHAPE) )
+	{
+		Knot * pKnot = GetKnot( m_shapeHighlighted );
+		pKnot->Apply2AllIncomingPipelines
+		( 
+			* this, 
+			[&]( ShapeId const & idPipeline ) 
+			{ 
+				AddIncomming( m_shapeSuperHighlighted, idPipeline );
+			}
+		);
+
+		deleteShape( m_shapeHighlighted );
+		m_shapeHighlighted = NO_SHAPE;
+
+		SuperHighlightShape( NO_SHAPE );
+	}
 }
 
 void NNetModel::AddIncomming( ShapeId const idBaseKnot, ShapeId const idPipeline )
@@ -58,7 +142,9 @@ void NNetModel::HighlightShape( ShapeId const idHighlight )
 {
 	if ( m_shapeHighlighted != NO_SHAPE )
 	{
-		GetShape( m_shapeHighlighted )->SetHighlightState( false );
+		Shape * pShape = GetShape( m_shapeHighlighted );
+		assert( pShape );
+		pShape->SetHighlightState( false );
 	}
 
 	if ( idHighlight != NO_SHAPE )
@@ -92,8 +178,8 @@ void NNetModel::SuperHighlightShape( ShapeId const idSuperHighlight )
 
 ShapeId const NNetModel::addShape( Shape * pShape )
 {
-	m_Shapes.push_back( pShape );                         // ShapeId 0 is reserved
-	ShapeId id( CastToUnsignedLong( m_Shapes.size() ) );  // after first push_back, size = 1
+	ShapeId id( CastToLong( m_Shapes.size() ) );  
+	m_Shapes.push_back( pShape );                 
 	pShape->SetId( id );
 	return id;
 }
@@ -123,14 +209,17 @@ ShapeId const NNetModel::AddPipeline( meterPerSec const impulseSpeed )
 	return addShape( new Pipeline( impulseSpeed ) );
 }
 
-void NNetModel::CreateNewBranch( ShapeId const id )
+void NNetModel::CreateNewBranch( ShapeId const idKnot )
 {
-	Knot    const * pKnot         { GetConstKnot( id ) };
-	ShapeId const   idNewKnot     { addShape( new Knot( pKnot->GetPosition() ) ) };
-	ShapeId const   idNewPipeline { addShape( new Pipeline( ) ) };
-	Pipeline      * newPipeline   { GetPipeline( idNewPipeline ) };
-	newPipeline->SetStartKnot( * this, id );
-	newPipeline->SetEndKnot  ( * this, idNewKnot );
+	Knot          * pKnot         { GetKnot( idKnot ) };
+	MicroMeterPoint position      { pKnot->GetPosition() };
+	Knot          * pKnotNew      { new Knot( position ) };
+	ShapeId const   idNewKnot     { addShape( pKnotNew ) };
+	Pipeline      * pPipelineNew  { new Pipeline( ) };
+	ShapeId const   idNewPipeline { addShape( pPipelineNew ) };
+
+	AddIncomming( idNewKnot, idNewPipeline );
+	AddOutgoing ( idKnot,    idNewPipeline );
 }
 
 void NNetModel::CreateNewNeuron( MicroMeterPoint const & pnt )
@@ -141,13 +230,50 @@ void NNetModel::CreateNewNeuron( MicroMeterPoint const & pnt )
 	Pipeline    * newPipeline   { GetPipeline( idNewPipeline ) };
 	newPipeline->SetStartKnot( * this, idNewNeuron );
 	newPipeline->SetEndKnot  ( * this, idNewKnot );
+	AddIncomming( idNewKnot, idNewPipeline );
+}
+
+void NNetModel::checkConsistency( Shape * pShape ) const
+{
+	switch ( pShape->GetShapeType() )
+	{
+	case tShapeType::inputNeuron:
+		break;
+
+	case tShapeType::knot:
+		break;
+
+	case tShapeType::neuron:
+		break;
+
+	case tShapeType::outputNeuron:
+		break;
+
+	case tShapeType::pipeline:
+	{
+		Pipeline * pPipeline = static_cast<Pipeline *>( pShape );
+		pPipeline->CheckConsistency( * this );
+	}
+		break;
+
+	case tShapeType::undefined:
+		assert( false );
+		break;
+
+	default:
+		assert( false );
+	}
 }
 
 void NNetModel::Apply2AllShapes( std::function<void(Shape &)> const & func ) const
 {
 	for ( auto pShape : m_Shapes )
 	{
-		func( * pShape );
+		if ( pShape )
+		{
+		    func( * pShape );
+			checkConsistency( pShape );
+		}
 	}
 }
 
@@ -155,7 +281,7 @@ void NNetModel::Apply2AllNeurons( std::function<void(Shape &)> const & func ) co
 {
 	for ( auto pShape : m_Shapes )
 	{
-		if ( pShape->GetShapeType() != tShapeType::pipeline )
+		if ( pShape && (pShape->GetShapeType() != tShapeType::pipeline) )
 			func( * pShape );
 	}
 }
@@ -164,7 +290,7 @@ void NNetModel::Apply2AllPipelines( std::function<void(Shape &)> const & func ) 
 {
 	for ( auto pShape : m_Shapes )
 	{
-		if ( pShape->GetShapeType() == tShapeType::pipeline )
+		if ( pShape && ( pShape->GetShapeType() == tShapeType::pipeline ))
 			func( * pShape );
 	}
 }
@@ -191,8 +317,9 @@ Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt, std::fu
 {
 	for ( size_t i = m_Shapes.size(); i --> 0; )	
 	{
-		if ( crit( * m_Shapes[i] ) && m_Shapes[i]->IsPointInShape( * this, pnt ) ) 
-			return m_Shapes[i];
+		Shape * pShape = m_Shapes[i];
+		if ( pShape && crit( * pShape ) && pShape->IsPointInShape( * this, pnt ) ) 
+			return pShape;
 	};
 
 	return nullptr;

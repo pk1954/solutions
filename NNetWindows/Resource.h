@@ -22,6 +22,7 @@
 #define IDD_PULSE_SPEED_DIALOG  161
 #define IDD_CREATE_NEW_BRANCH   162
 #define IDD_CREATE_NEW_NEURON   163
+#define IDD_CONNECT             164
 
 #define IDM_HIGHLIGHT           200
 #define IDM_SUPER_HIGHLIGHT     201

@@ -133,7 +133,7 @@ void NNetAppWindow::Start( )
 		  m_pNNetReadBuffer,
 		& m_SlowMotionRatio,
 		m_pModelDataWork,
-		TRUE
+		TRUE            // no async worker thread
 	);
 
 //	m_pNNetEditorWindow->Start( m_hwndApp, & m_NNetWorkThreadInterface, & m_NNetReadBuffer );
