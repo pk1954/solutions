@@ -127,3 +127,13 @@ void NNetWorkThreadInterface::PostCreateNewNeuron( MicroMeterPoint const & pos )
 	auto y = pos.GetYvalue();
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::CREATE_NEW_NEURON), (WPARAM &)x, (LPARAM &)y );
 }
+
+void NNetWorkThreadInterface::PostCreateNewInputNeuron( MicroMeterPoint const & pos )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+
+	auto x = pos.GetXvalue();
+	auto y = pos.GetYvalue();
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::CREATE_NEW_INPUT_NEURON), (WPARAM &)x, (LPARAM &)y );
+}

@@ -120,15 +120,26 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::CREATE_NEW_NEURON:
-		{
-			MicroMeterPoint const pnt 
-			{ 
-				static_cast<MicroMeter>((float &)msg.wParam), 
-				static_cast<MicroMeter>((float &)msg.lParam) 
-			};
-			m_pNNetModel->CreateNewNeuron( pnt );
-		}
-		break;
+	{
+		MicroMeterPoint const pnt 
+		{ 
+			static_cast<MicroMeter>((float &)msg.wParam), 
+			static_cast<MicroMeter>((float &)msg.lParam) 
+		};
+		m_pNNetModel->CreateNewNeuron( pnt );
+	}
+	break;
+
+	case NNetWorkThreadMessage::Id::CREATE_NEW_INPUT_NEURON:
+	{
+		MicroMeterPoint const pnt 
+		{ 
+			static_cast<MicroMeter>((float &)msg.wParam), 
+			static_cast<MicroMeter>((float &)msg.lParam) 
+		};
+		m_pNNetModel->CreateNewInputNeuron( pnt );
+	}
+	break;
 
 	default:
 		return FALSE;

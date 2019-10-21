@@ -15,7 +15,6 @@ InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
   : Neuron( upCenter, tShapeType::inputNeuron ),
 	m_pulseFrequency( 0_Hertz )
 { 
-	m_timeSinceLastPulse = PEAK_TIME;
 }
 
 void InputNeuron::SetPulseFrequency( Hertz const freq )
@@ -53,8 +52,8 @@ void InputNeuron::Step( )
 
 	if ( m_timeSinceLastPulse < DECAY_TIME )
 		m_mVinputBuffer = (m_mVinputBuffer > DECAY_INC) 
-		                  ? m_mVinputBuffer - DECAY_INC 
-		                  : 0._mV;
+		                ? m_mVinputBuffer - DECAY_INC 
+		                : 0._mV;
 }
 
 mV InputNeuron::GetNextOutput( ) const
@@ -73,7 +72,8 @@ void InputNeuron::DrawExterior
 	PixelCoordsFp const & coord
 ) const
 {
-	MicroMeterPoint  const umCenter   { GetPosition() };
+	//if ( m_outgoing.size() == 0 )
+	//	return;
 	ShapeId          const idAxon     { * m_outgoing.begin() };
 	Pipeline const * const pAxon      { model.GetConstPipeline( idAxon ) };
 	MicroMeterPoint  const umStart    { pAxon->GetStartPoint( model ) };
@@ -81,14 +81,13 @@ void InputNeuron::DrawExterior
 	MicroMeterPoint  const umVector   { umEnd - umStart };
 	MicroMeter       const umHypot    { Hypot( umVector ) };
 	MicroMeterPoint  const umExtVector{ umVector * (GetExtension() / umHypot) };
-
+	MicroMeterPoint  const umCenter   { GetPosition() };
 	MicroMeterPoint  const umStartPnt { umCenter + umExtVector };
 	MicroMeterPoint  const umEndPnt   { umCenter - umExtVector };
-
-	fPixelPoint const fStartPoint{ coord.convert2fPixelPos( umStartPnt ) };
-	fPixelPoint const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
-	fPIXEL      const fPixWidth  { coord.convert2fPixel( GetExtension() ) };
-	COLORREF    const color      { IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ) };
+	fPixelPoint      const fStartPoint{ coord.convert2fPixelPos( umStartPnt ) };
+	fPixelPoint      const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
+	fPIXEL           const fPixWidth  { coord.convert2fPixel( GetExtension() ) };
+	COLORREF         const color      { IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ) };
 
 	Graphics.StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
 	Graphics.AddPipelinePoint( fEndPoint, color );
@@ -102,7 +101,8 @@ void InputNeuron::DrawInterior
 	PixelCoordsFp const & coord
 ) const
 { 
-	MicroMeterPoint  const umCenter   { GetPosition() };
+	//if ( m_outgoing.size() == 0 )
+	//	return;
 	ShapeId          const idAxon     { * m_outgoing.begin() };
 	Pipeline const * const pAxon      { model.GetConstPipeline( idAxon ) };
 	MicroMeterPoint  const umStart    { pAxon->GetStartPoint( model ) };
@@ -110,7 +110,7 @@ void InputNeuron::DrawInterior
 	MicroMeterPoint  const umVector   { umEnd - umStart };
 	MicroMeter       const umHypot    { Hypot( umVector ) };
 	MicroMeterPoint  const umExtVector{ umVector * (GetExtension() / umHypot) };
-
+	MicroMeterPoint  const umCenter   { GetPosition() };
 	MicroMeterPoint  const umStartPnt { umCenter + umExtVector * NEURON_INTERIOR};
 	MicroMeterPoint  const umEndPnt   { umCenter - umExtVector };			         
 	fPixelPoint      const fStartPoint{ coord.convert2fPixelPos( umStartPnt ) };

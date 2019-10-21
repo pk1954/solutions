@@ -217,20 +217,28 @@ void NNetModel::CreateNewBranch( ShapeId const idKnot )
 	ShapeId const   idNewKnot     { addShape( pKnotNew ) };
 	Pipeline      * pPipelineNew  { new Pipeline( ) };
 	ShapeId const   idNewPipeline { addShape( pPipelineNew ) };
-
 	AddIncomming( idNewKnot, idNewPipeline );
 	AddOutgoing ( idKnot,    idNewPipeline );
 }
 
 void NNetModel::CreateNewNeuron( MicroMeterPoint const & pnt )
 {
-	ShapeId const idNewNeuron   { addShape( new Neuron( pnt ) ) };
-	ShapeId const idNewKnot     { addShape( new Knot  ( pnt ) ) };
-	ShapeId const idNewPipeline { addShape( new Pipeline( ) ) };
-	Pipeline    * newPipeline   { GetPipeline( idNewPipeline ) };
-	newPipeline->SetStartKnot( * this, idNewNeuron );
-	newPipeline->SetEndKnot  ( * this, idNewKnot );
-	AddIncomming( idNewKnot, idNewPipeline );
+	ShapeId         const idNewInputNeuron { addShape( new Neuron( pnt ) ) };
+	MicroMeterPoint const knotPos          { pnt + MicroMeterPoint( 0._MicroMeter, NEURON_RADIUS * 2 ) };
+	ShapeId         const idNewKnot        { addShape( new Knot( knotPos ) ) };
+	ShapeId         const idNewPipeline    { addShape( new Pipeline( ) ) };
+	AddOutgoing ( idNewInputNeuron, idNewPipeline );
+	AddIncomming( idNewKnot,        idNewPipeline );
+}
+
+void NNetModel::CreateNewInputNeuron( MicroMeterPoint const & pnt )
+{
+	ShapeId         const idNewInputNeuron { addShape( new InputNeuron( pnt ) ) };
+	MicroMeterPoint const knotPos          { pnt + MicroMeterPoint( 0._MicroMeter, NEURON_RADIUS * 2 ) };
+	ShapeId         const idNewKnot        { addShape( new Knot( knotPos ) ) };
+	ShapeId         const idNewPipeline    { addShape( new Pipeline( ) ) };
+	AddOutgoing ( idNewInputNeuron, idNewPipeline );
+	AddIncomming( idNewKnot,        idNewPipeline );
 }
 
 void NNetModel::checkConsistency( Shape * pShape ) const
@@ -272,7 +280,7 @@ void NNetModel::Apply2AllShapes( std::function<void(Shape &)> const & func ) con
 		if ( pShape )
 		{
 		    func( * pShape );
-			checkConsistency( pShape );
+//			checkConsistency( pShape );
 		}
 	}
 }

@@ -164,7 +164,8 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	}
 	else
 	{
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_NEURON, L"New neuron" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_NEURON,       L"New neuron" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_INPUT_NEURON, L"New input neuron" );
 	}
 }
 
@@ -364,13 +365,22 @@ BOOL NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 	switch ( uiCmdId )
 	{
 	case IDD_NNETW_NEW_NEURON:
-		{
-			PixelPoint      const pixPoint  { GetRelativeCrsrPosition() };
-			fPixelPoint     const fPixPoint { convert2fPixelPoint( pixPoint ) };
-			MicroMeterPoint const umPoint   { m_coord.convert2MicroMeterPoint( fPixPoint ) };
-			PostCommand2Application( IDD_CREATE_NEW_NEURON, Util::Pack2UINT64(umPoint) );
-		}
-		break;
+	{
+		PixelPoint      const pixPoint  { GetRelativeCrsrPosition() };
+		fPixelPoint     const fPixPoint { convert2fPixelPoint( pixPoint ) };
+		MicroMeterPoint const umPoint   { m_coord.convert2MicroMeterPoint( fPixPoint ) };
+		PostCommand2Application( IDD_CREATE_NEW_NEURON, Util::Pack2UINT64(umPoint) );
+	}
+	break;
+
+	case IDD_NNETW_NEW_INPUT_NEURON:
+	{
+		PixelPoint      const pixPoint  { GetRelativeCrsrPosition() };
+		fPixelPoint     const fPixPoint { convert2fPixelPoint( pixPoint ) };
+		MicroMeterPoint const umPoint   { m_coord.convert2MicroMeterPoint( fPixPoint ) };
+		PostCommand2Application( IDD_CREATE_NEW_INPUT_NEURON, Util::Pack2UINT64(umPoint) );
+	}
+	break;
 
 	default:
 		return TRUE;

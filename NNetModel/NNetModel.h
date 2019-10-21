@@ -69,6 +69,7 @@ public:
 
 	void CreateNewBranch( ShapeId const );
 	void CreateNewNeuron( MicroMeterPoint const & );
+	void CreateNewInputNeuron( MicroMeterPoint const & );
 	void Connect( );
 
 	void HighlightShape     ( ShapeId const );

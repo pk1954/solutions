@@ -12,9 +12,9 @@
 using namespace std::chrono;
 
 Neuron::Neuron( MicroMeterPoint const upCenter, tShapeType const type )
-  : BaseKnot( upCenter, type, NEURON_RADIUS )
+  : BaseKnot( upCenter, type, NEURON_RADIUS ),
+	m_timeSinceLastPulse( PEAK_TIME )
 { 
-	m_timeSinceLastPulse = PEAK_TIME;
 }
 
 mV Neuron::waveFunction( microseconds time ) const
@@ -55,8 +55,8 @@ void Neuron::Step( )
 
 	if ( m_timeSinceLastPulse < DECAY_TIME )
 		m_mVinputBuffer = (m_mVinputBuffer > DECAY_INC) 
-		? m_mVinputBuffer - DECAY_INC 
-		: 0._mV;
+						? m_mVinputBuffer - DECAY_INC 
+						: 0._mV;
 }
 
 mV Neuron::GetNextOutput( ) const
