@@ -35,6 +35,14 @@ public:
 	void SetPulseFrequency( Hertz const );
 
 private:
+	void drawInputNeuron
+	(  
+		NNetModel     const &, 
+		GraphicsInterface   &, 
+		PixelCoordsFp const &,
+		COLORREF      const,
+		float         const
+	) const;
 
 	Hertz m_pulseFrequency;
 };	

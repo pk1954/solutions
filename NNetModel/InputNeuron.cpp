@@ -65,15 +65,15 @@ mV InputNeuron::GetNextOutput( ) const
 	return mVoutput;
 }
 
-void InputNeuron::DrawExterior
+void InputNeuron::drawInputNeuron
 ( 
 	NNetModel     const & model,
 	GraphicsInterface   & Graphics,
-	PixelCoordsFp const & coord
+	PixelCoordsFp const & coord,
+	COLORREF      const   color,
+	float         const   fReductionFactor
 ) const
 {
-	//if ( m_outgoing.size() == 0 )
-	//	return;
 	ShapeId          const idAxon     { * m_outgoing.begin() };
 	Pipeline const * const pAxon      { model.GetConstPipeline( idAxon ) };
 	MicroMeterPoint  const umStart    { pAxon->GetStartPoint( model ) };
@@ -82,16 +82,26 @@ void InputNeuron::DrawExterior
 	MicroMeter       const umHypot    { Hypot( umVector ) };
 	MicroMeterPoint  const umExtVector{ umVector * (GetExtension() / umHypot) };
 	MicroMeterPoint  const umCenter   { GetPosition() };
-	MicroMeterPoint  const umStartPnt { umCenter + umExtVector };
+	MicroMeterPoint  const umStartPnt { umCenter + umExtVector  * fReductionFactor };
 	MicroMeterPoint  const umEndPnt   { umCenter - umExtVector };
 	fPixelPoint      const fStartPoint{ coord.convert2fPixelPos( umStartPnt ) };
 	fPixelPoint      const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
-	fPIXEL           const fPixWidth  { coord.convert2fPixel( GetExtension() ) };
-	COLORREF         const color      { IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ) };
+	fPIXEL           const fPixWidth  { coord.convert2fPixel( GetExtension() * fReductionFactor ) };
 
 	Graphics.StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
 	Graphics.AddPipelinePoint( fEndPoint, color );
 	Graphics.RenderPipeline( );
+}
+
+void InputNeuron::DrawExterior
+( 
+	NNetModel     const & model,
+	GraphicsInterface   & Graphics,
+	PixelCoordsFp const & coord
+) const
+{
+	COLORREF const color { IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ) };
+	drawInputNeuron( model, Graphics, coord, color,	1.0f );
 }
 
 void InputNeuron::DrawInterior
@@ -101,27 +111,9 @@ void InputNeuron::DrawInterior
 	PixelCoordsFp const & coord
 ) const
 { 
-	//if ( m_outgoing.size() == 0 )
-	//	return;
-	ShapeId          const idAxon     { * m_outgoing.begin() };
-	Pipeline const * const pAxon      { model.GetConstPipeline( idAxon ) };
-	MicroMeterPoint  const umStart    { pAxon->GetStartPoint( model ) };
-	MicroMeterPoint  const umEnd      { pAxon->GetEndPoint( model ) };
-	MicroMeterPoint  const umVector   { umEnd - umStart };
-	MicroMeter       const umHypot    { Hypot( umVector ) };
-	MicroMeterPoint  const umExtVector{ umVector * (GetExtension() / umHypot) };
-	MicroMeterPoint  const umCenter   { GetPosition() };
-	MicroMeterPoint  const umStartPnt { umCenter + umExtVector * NEURON_INTERIOR};
-	MicroMeterPoint  const umEndPnt   { umCenter - umExtVector };			         
-	fPixelPoint      const fStartPoint{ coord.convert2fPixelPos( umStartPnt ) };
-	fPixelPoint      const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
-	fPIXEL           const fPixWidth  { coord.convert2fPixel( GetExtension() * NEURON_INTERIOR ) };
-	int              const colElem    { CastToInt(GetFillLevel() * 255.0f) };
-	COLORREF         const color      { RGB( colElem, 0, 0 ) };
-
-	Graphics.StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
-	Graphics.AddPipelinePoint( fEndPoint, color );
-	Graphics.RenderPipeline( );
+	int      const colElem { CastToInt(GetFillLevel() * 255.0f) };
+	COLORREF const color   { RGB( colElem, 0, 0 ) };
+	drawInputNeuron( model, Graphics, coord, color,	NEURON_INTERIOR );
 }
 
 InputNeuron const * Cast2InputNeuron( Shape const * shape )
