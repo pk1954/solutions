@@ -21,16 +21,16 @@ class Pipeline : public Shape
 public:
 	Pipeline( meterPerSec const = STD_IMPULSE_SPEED );
 
-	void SetStartKnot( NNetModel &, ShapeId const );
-	void SetEndKnot  ( NNetModel &, ShapeId const );
+	void SetStartKnot(ShapeId const );
+	void SetEndKnot  (ShapeId const );
 
-	void Resize( NNetModel & );
+	void Resize( );
 
-	void SetPulseSpeed( NNetModel & model, meterPerSec const newSpeed )
+	void SetPulseSpeed( meterPerSec const newSpeed )
 	{
 		m_impulseSpeed = newSpeed;
 		m_initialized = false;
-		initialize( model );
+		initialize( );
 	}
 
 	meterPerSec GetPulseSpeed( ) const
@@ -38,22 +38,22 @@ public:
 		return m_impulseSpeed;
 	}
 
-	MicroMeterPoint GetStartPoint( NNetModel const & ) const; 
-	MicroMeterPoint GetEndPoint  ( NNetModel const & ) const; 
+	MicroMeterPoint GetStartPoint( ) const; 
+	MicroMeterPoint GetEndPoint  ( ) const; 
 	MicroMeter      GetWidth     ( ) const; 
 
-	void CheckConsistency( NNetModel const & ) const;
+	void CheckConsistency( ) const;
 
 	virtual void Step( );
-	virtual void Prepare( NNetModel & );
-	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
-	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
-	virtual void MoveTo( NNetModel &, MicroMeterPoint const & ) {}
-	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
+	virtual void Prepare( );
+	virtual void DrawExterior( ) const;
+	virtual void DrawInterior( ) const;
+	virtual void MoveTo( MicroMeterPoint const & ) {}
+	virtual bool IsPointInShape(  MicroMeterPoint const & ) const;
 	virtual mV   GetNextOutput( ) const;
 
 private:
-	void       initialize( NNetModel & );
+	void       initialize( );
 	COLORREF   pulseColor( mV const ) const;
 
 	bool       m_initialized;

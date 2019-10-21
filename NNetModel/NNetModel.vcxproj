@@ -177,6 +177,7 @@
     <ClCompile Include="NNetModel.cpp" />
     <ClCompile Include="OutputNeuron.cpp" />
     <ClCompile Include="Pipeline.cpp" />
+    <ClCompile Include="Shape.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

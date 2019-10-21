@@ -18,11 +18,11 @@ public:
 
 	OutputNeuron( MicroMeterPoint const );
 
-	virtual void Prepare( NNetModel & );
+	virtual void Prepare( );
 	virtual void Step( );
 	virtual mV   GetNextOutput( ) const { return 0._mV; };
-	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
-	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
+	virtual void DrawExterior( ) const;
+	virtual void DrawInterior( ) const;
 };	
 
 OutputNeuron const * Cast2OutputNeuron( Shape const * );

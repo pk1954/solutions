@@ -59,13 +59,13 @@ public:
 	{
 	}
 
-	virtual void DrawExterior  ( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const = 0;
-	virtual void DrawInterior  ( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const = 0;
-	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & )                    const = 0;
-	virtual void MoveTo        ( NNetModel       &, MicroMeterPoint const & )                          = 0;
-	virtual void Prepare       ( NNetModel       & )                                                   = 0;
-	virtual void Step( )                                                                               = 0;
-	virtual mV   GetNextOutput( )                                                                const = 0;
+	virtual void DrawExterior  ( )                         const = 0;
+	virtual void DrawInterior  ( )                         const = 0;
+	virtual bool IsPointInShape( MicroMeterPoint const & ) const = 0;
+	virtual void MoveTo        ( MicroMeterPoint const & )       = 0;
+	virtual void Prepare       ( )                               = 0;
+	virtual void Step( )                                         = 0;
+	virtual mV   GetNextOutput( )                          const = 0;
 
 	void SetHighlightState( bool const bState )
 	{
@@ -105,14 +105,33 @@ public:
 	float GetFillLevel( ) const  // 1.0 means 100% filled
 	{
 		float res = m_mVinputBuffer / PEAK_VOLTAGE;
-//		assert( res <= 1.0f );
 		return res;
+	}
+
+	static void SetModel( NNetModel * const pModel	)
+	{
+		m_pModel = pModel;
+	}
+
+	static void SetGraphics( GraphicsInterface * const pGraphics	)
+	{
+		m_pGraphics = pGraphics;
+	}
+
+	static void SetCoordSystem( PixelCoordsFp const * const pCoord )
+	{
+		m_pCoord = pCoord;
 	}
 
 protected:
 	mV m_mVinputBuffer;
 
+	static NNetModel               * m_pModel;
+	static GraphicsInterface       * m_pGraphics;
+	static PixelCoordsFp     const * m_pCoord;
+
 private:
+
 	ShapeId    m_identifier;
 	bool       m_bHighlighted;
 	bool       m_bSuperHighlighted;

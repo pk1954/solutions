@@ -27,7 +27,7 @@ void InputNeuron::Trigger( )
 	m_mVinputBuffer = PEAK_VOLTAGE;
 }
 
-void InputNeuron::Prepare( NNetModel & )
+void InputNeuron::Prepare( )
 {
 	// nothing to prepare
 }
@@ -67,53 +67,40 @@ mV InputNeuron::GetNextOutput( ) const
 
 void InputNeuron::drawInputNeuron
 ( 
-	NNetModel     const & model,
-	GraphicsInterface   & Graphics,
-	PixelCoordsFp const & coord,
-	COLORREF      const   color,
-	float         const   fReductionFactor
+	COLORREF const color,
+	float    const fReductionFactor
 ) const
 {
 	ShapeId          const idAxon     { * m_outgoing.begin() };
-	Pipeline const * const pAxon      { model.GetConstPipeline( idAxon ) };
-	MicroMeterPoint  const umStart    { pAxon->GetStartPoint( model ) };
-	MicroMeterPoint  const umEnd      { pAxon->GetEndPoint( model ) };
+	Pipeline const * const pAxon      { m_pModel->GetConstPipeline( idAxon ) };
+	MicroMeterPoint  const umStart    { pAxon->GetStartPoint( ) };
+	MicroMeterPoint  const umEnd      { pAxon->GetEndPoint( ) };
 	MicroMeterPoint  const umVector   { umEnd - umStart };
 	MicroMeter       const umHypot    { Hypot( umVector ) };
 	MicroMeterPoint  const umExtVector{ umVector * (GetExtension() / umHypot) };
 	MicroMeterPoint  const umCenter   { GetPosition() };
 	MicroMeterPoint  const umStartPnt { umCenter + umExtVector  * fReductionFactor };
 	MicroMeterPoint  const umEndPnt   { umCenter - umExtVector };
-	fPixelPoint      const fStartPoint{ coord.convert2fPixelPos( umStartPnt ) };
-	fPixelPoint      const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
-	fPIXEL           const fPixWidth  { coord.convert2fPixel( GetExtension() * fReductionFactor ) };
+	fPixelPoint      const fStartPoint{ m_pCoord->convert2fPixelPos( umStartPnt ) };
+	fPixelPoint      const fEndPoint  { m_pCoord->convert2fPixelPos( umEndPnt   ) };
+	fPIXEL           const fPixWidth  { m_pCoord->convert2fPixel( GetExtension() * fReductionFactor ) };
 
-	Graphics.StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
-	Graphics.AddPipelinePoint( fEndPoint, color );
-	Graphics.RenderPipeline( );
+	m_pGraphics->StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
+	m_pGraphics->AddPipelinePoint( fEndPoint, color );
+	m_pGraphics->RenderPipeline( );
 }
 
-void InputNeuron::DrawExterior
-( 
-	NNetModel     const & model,
-	GraphicsInterface   & Graphics,
-	PixelCoordsFp const & coord
-) const
+void InputNeuron::DrawExterior( ) const
 {
 	COLORREF const color { IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ) };
-	drawInputNeuron( model, Graphics, coord, color,	1.0f );
+	drawInputNeuron( color,	1.0f );
 }
 
-void InputNeuron::DrawInterior
-( 
-	NNetModel     const & model,
-	GraphicsInterface   & Graphics,
-	PixelCoordsFp const & coord
-) const
+void InputNeuron::DrawInterior( ) const
 { 
 	int      const colElem { CastToInt(GetFillLevel() * 255.0f) };
 	COLORREF const color   { RGB( colElem, 0, 0 ) };
-	drawInputNeuron( model, Graphics, coord, color,	NEURON_INTERIOR );
+	drawInputNeuron( color,	NEURON_INTERIOR );
 }
 
 InputNeuron const * Cast2InputNeuron( Shape const * shape )

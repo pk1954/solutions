@@ -23,7 +23,7 @@ public:
 	{
 	}
 
-	virtual void Prepare( NNetModel & );
+	virtual void Prepare( );
 
 	virtual void Step( )
 	{
@@ -35,8 +35,8 @@ public:
 		return m_mVinputBuffer;
 	}
 
-	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
-	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
+	virtual void DrawExterior( ) const;
+	virtual void DrawInterior( ) const;
 
 private:
 

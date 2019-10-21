@@ -17,7 +17,7 @@ void BaseKnot::AddOutgoing( ShapeId const idPipeline )
 	m_outgoing.push_back( idPipeline );
 }
 
-bool BaseKnot::IsPointInShape( NNetModel const & model, MicroMeterPoint const & point ) const
+bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
 {
 	MicroMeterPoint const corner1 = m_center + MicroMeterPoint( + m_extension, + m_extension );
 	MicroMeterPoint const corner2 = m_center + MicroMeterPoint( + m_extension, - m_extension );
@@ -26,12 +26,12 @@ bool BaseKnot::IsPointInShape( NNetModel const & model, MicroMeterPoint const & 
 	return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
 }
 
-void BaseKnot::MoveTo( NNetModel & model, MicroMeterPoint const & newCenter )
+void BaseKnot::MoveTo( MicroMeterPoint const & newCenter )
 {
 	m_center = newCenter;
 	for ( auto const idPipeline : m_incoming )
-		model.GetPipeline( idPipeline )->Resize( model );
+		m_pModel->GetPipeline( idPipeline )->Resize( );
 
 	for ( auto const idPipeline : m_outgoing )
-		model.GetPipeline( idPipeline )->Resize( model );
+		m_pModel->GetPipeline( idPipeline )->Resize( );
 }

@@ -16,11 +16,11 @@ OutputNeuron::OutputNeuron( MicroMeterPoint const upCenter )
 { 
 }
 
-void OutputNeuron::Prepare( NNetModel & model )
+void OutputNeuron::Prepare( )
 {
 	m_mVinputBuffer = 0._mV;
 	for ( auto idPipeline : m_incoming )
-		m_mVinputBuffer += model.GetPipeline( idPipeline )->GetNextOutput();
+		m_mVinputBuffer += m_pModel->GetPipeline( idPipeline )->GetNextOutput();
 	if (m_mVinputBuffer > PEAK_VOLTAGE)
 		m_mVinputBuffer = PEAK_VOLTAGE;
 }
@@ -29,24 +29,14 @@ void OutputNeuron::Step( )
 {
 }
 
-void OutputNeuron::DrawExterior
-( 
-	NNetModel     const & model,
-	GraphicsInterface   & Graphics,
-	PixelCoordsFp const & coord
-) const
+void OutputNeuron::DrawExterior( ) const
 {
-	drawExterior( model, Graphics, coord, 8 );
+	drawExterior( 8 );
 }
 
-void OutputNeuron::DrawInterior
-( 
-	NNetModel     const & model,
-	GraphicsInterface   & Graphics,
-	PixelCoordsFp const & coord
-) const
+void OutputNeuron::DrawInterior( ) const
 { 
-	drawInterior( model, Graphics, coord, 8 );
+	drawInterior( 8 );
 }
 
 OutputNeuron const * Cast2OutputNeuron( Shape const * shape )

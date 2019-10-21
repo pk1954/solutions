@@ -19,6 +19,8 @@ NNetModel::NNetModel( )
 	m_shapeHighlighted( NO_SHAPE ),
 	m_shapeSuperHighlighted( NO_SHAPE )
 {					
+	Shape::SetModel( this );
+
 	m_idInputNeuron1  = AddInputNeuron ( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
     m_idKnot1         = AddKnot        ( MicroMeterPoint( 400.0_MicroMeter, 400.0_MicroMeter ) );
 	m_idNeuron1       = AddNeuron      ( MicroMeterPoint( 500.0_MicroMeter, 500.0_MicroMeter ) );
@@ -112,7 +114,6 @@ void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
 		Knot * pKnot = GetKnot( m_shapeHighlighted );
 		pKnot->Apply2AllIncomingPipelines
 		( 
-			* this, 
 			[&]( ShapeId const & idPipeline ) 
 			{ 
 				AddIncomming( m_shapeSuperHighlighted, idPipeline );
@@ -129,13 +130,13 @@ void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
 void NNetModel::AddIncomming( ShapeId const idBaseKnot, ShapeId const idPipeline )
 {
 	GetBaseKnot( idBaseKnot )->AddIncomming( idPipeline );
-	GetPipeline( idPipeline )->SetEndKnot( * this, idBaseKnot );
+	GetPipeline( idPipeline )->SetEndKnot( idBaseKnot );
 }
 
 void NNetModel::AddOutgoing( ShapeId const idBaseKnot, ShapeId const idPipeline )
 {
 	GetBaseKnot( idBaseKnot )->AddOutgoing( idPipeline );
-	GetPipeline( idPipeline )->SetStartKnot( * this, idBaseKnot );
+	GetPipeline( idPipeline )->SetStartKnot( idBaseKnot );
 }
 
 void NNetModel::HighlightShape( ShapeId const idHighlight )
@@ -260,7 +261,7 @@ void NNetModel::checkConsistency( Shape * pShape ) const
 	case tShapeType::pipeline:
 	{
 		Pipeline * pPipeline = static_cast<Pipeline *>( pShape );
-		pPipeline->CheckConsistency( * this );
+		pPipeline->CheckConsistency( );
 	}
 		break;
 
@@ -310,7 +311,7 @@ void NNetModel::CopyModelData( ModelInterface const * const src )
 
 void NNetModel::Compute( )
 {
-	Apply2AllShapes( [&]( Shape & shape ) { shape.Prepare( * this ); } );
+	Apply2AllShapes( [&]( Shape & shape ) { shape.Prepare( ); } );
 	Apply2AllShapes( [&]( Shape & shape ) { shape.Step(); } );
 
 	m_timeStamp += TIME_RESOLUTION;
@@ -326,7 +327,7 @@ Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt, std::fu
 	for ( size_t i = m_Shapes.size(); i --> 0; )	
 	{
 		Shape * pShape = m_Shapes[i];
-		if ( pShape && crit( * pShape ) && pShape->IsPointInShape( * this, pnt ) ) 
+		if ( pShape && crit( * pShape ) && pShape->IsPointInShape( pnt ) ) 
 			return pShape;
 	};
 

@@ -29,11 +29,11 @@ mV Neuron::waveFunction( microseconds time ) const
 		return BASE_POTENTIAL;
 }
 
-void Neuron::Prepare( NNetModel & model )
+void Neuron::Prepare( )
 {
 	m_mVinputBuffer = 0._mV;
 	for ( auto idPipeline : m_incoming )
-		m_mVinputBuffer += model.GetPipeline( idPipeline )->GetNextOutput();
+		m_mVinputBuffer += m_pModel->GetPipeline( idPipeline )->GetNextOutput();
 	if (m_mVinputBuffer > PEAK_VOLTAGE)
 		m_mVinputBuffer = PEAK_VOLTAGE;
 }
@@ -68,33 +68,17 @@ mV Neuron::GetNextOutput( ) const
 	return mVoutput;
 }
 
-void Neuron::DrawExterior
-( 
-	NNetModel     const & model,
-	GraphicsInterface   & Graphics,
-	PixelCoordsFp const & coord
-) const
+void Neuron::DrawExterior( ) const
 {
-	drawExterior( model, Graphics, coord, 24 );
+	drawExterior( 24 );
 }
 
-void Neuron::DrawInterior
-( 
-	NNetModel     const & model,
-	GraphicsInterface   & Graphics,
-	PixelCoordsFp const & coord
-) const
+void Neuron::DrawInterior( ) const
 { 
-	drawInterior( model, Graphics, coord, 24 );
+	drawInterior( 24 );
 }
 
-void Neuron::drawExterior
-( 
-	NNetModel     const & model,
-	GraphicsInterface   & Graphics,
-	PixelCoordsFp const & coord,
-	int           const   iNrOfEdges
-) const
+void Neuron::drawExterior( int const iNrOfEdges ) const
 {
 //	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 );
 	COLORREF const colorFrame 
@@ -105,31 +89,25 @@ void Neuron::drawExterior
     	  ? RGB( 0, 127, 127 ) 
     	  : RGB( 0, 127, 255 ) 
 	};
-	Graphics.DrawPolygon
+	m_pGraphics->DrawPolygon
 	( 
 		iNrOfEdges,
-		coord.convert2fPixelPos( GetPosition() ), 
+		m_pCoord->convert2fPixelPos( GetPosition() ), 
 		colorFrame, 
-		coord.convert2fPixel( GetExtension() )
+		m_pCoord->convert2fPixel( GetExtension() )
 	);
 }
 
-void Neuron::drawInterior
-( 
-	NNetModel     const & model,
-	GraphicsInterface   & Graphics,
-	PixelCoordsFp const & coord,
-	int           const   iNrOfEdges
-) const
+void Neuron::drawInterior( int const iNrOfEdges ) const
 { 
 	int      const colElem { CastToInt(GetFillLevel() * 255.0f) };
 	COLORREF const color   { RGB( colElem, 0, 0 ) };
-	Graphics.DrawPolygon
+	m_pGraphics->DrawPolygon
 	( 
 		iNrOfEdges,
-		coord.convert2fPixelPos( GetPosition() ), 
+		m_pCoord->convert2fPixelPos( GetPosition() ), 
 		color, 
-		coord.convert2fPixel( GetExtension() * NEURON_INTERIOR )
+		m_pCoord->convert2fPixel( GetExtension() * NEURON_INTERIOR )
 	);
 }
 

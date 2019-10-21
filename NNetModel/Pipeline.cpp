@@ -23,13 +23,13 @@ Pipeline::Pipeline( meterPerSec const impulseSpeed )
 {
 }
 
-void Pipeline::Resize( NNetModel & model )
+void Pipeline::Resize( )
 {
 	if ( IsDefined(m_idKnotStart)  && IsDefined(m_idKnotEnd) )
 	{
 		MicroMeter const segmentLength  = CoveredDistance( m_impulseSpeed, TIME_RESOLUTION );
-		BaseKnot * const m_pKnotStart   = model.GetBaseKnot( m_idKnotStart );   
-		BaseKnot * const m_pKnotEnd     = model.GetBaseKnot( m_idKnotEnd   );   
+		BaseKnot * const m_pKnotStart   = m_pModel->GetBaseKnot( m_idKnotStart );   
+		BaseKnot * const m_pKnotEnd     = m_pModel->GetBaseKnot( m_idKnotEnd   );   
 		MicroMeter const pipelineLength = Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() );
 		unsigned int     iNrOfSegments  = CastToUnsignedInt(round(pipelineLength / segmentLength));
 
@@ -41,35 +41,35 @@ void Pipeline::Resize( NNetModel & model )
 	}
 }
 
-void Pipeline::initialize( NNetModel & model )
+void Pipeline::initialize( )
 {
 	if ( ! m_initialized  )
-		Resize( model );
+		Resize( );
 }
 
-void Pipeline::SetStartKnot( NNetModel & model, ShapeId const id )
+void Pipeline::SetStartKnot( ShapeId const id )
 {
-	assert( IsBaseKnotType(	model.GetShape( id )->GetShapeType() ) );
+	assert( IsBaseKnotType(	m_pModel->GetShape( id )->GetShapeType() ) );
 	m_idKnotStart = id;
-	initialize( model );
+	initialize( );
 }
 
-void Pipeline::SetEndKnot( NNetModel & model, ShapeId const id )
+void Pipeline::SetEndKnot( ShapeId const id )
 {
-	assert( IsBaseKnotType(	model.GetShape( id )->GetShapeType() ) );
+	assert( IsBaseKnotType(	m_pModel->GetShape( id )->GetShapeType() ) );
 	m_idKnotEnd = id;
-	initialize( model );
+	initialize( );
 }
 
-MicroMeterPoint Pipeline::GetStartPoint( NNetModel const & model ) const 
+MicroMeterPoint Pipeline::GetStartPoint( ) const 
 { 
-	BaseKnot const * const pKnotStart { model.GetConstBaseKnot( m_idKnotStart ) };
+	BaseKnot const * const pKnotStart { m_pModel->GetConstBaseKnot( m_idKnotStart ) };
 	return pKnotStart ? pKnotStart->GetPosition() : MicroMeterPoint::NULL_VAL(); 
 }
 
-MicroMeterPoint Pipeline::GetEndPoint( NNetModel const & model ) const 
+MicroMeterPoint Pipeline::GetEndPoint( ) const 
 { 
-	BaseKnot const * const pKnotEnd { model.GetConstBaseKnot( m_idKnotEnd ) };   
+	BaseKnot const * const pKnotEnd { m_pModel->GetConstBaseKnot( m_idKnotEnd ) };   
 	return pKnotEnd ? pKnotEnd->GetPosition() : MicroMeterPoint::NULL_VAL();
 }
 
@@ -78,9 +78,9 @@ MicroMeter Pipeline::GetWidth( ) const
 	return m_width; 
 }
 
-void Pipeline::Prepare( NNetModel & model )
+void Pipeline::Prepare( )
 {
-	BaseKnot * const m_pKnotStart = model.GetBaseKnot( m_idKnotStart );   
+	BaseKnot * const m_pKnotStart = m_pModel->GetBaseKnot( m_idKnotStart );   
 	m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
 	assert( m_mVinputBuffer <= PEAK_VOLTAGE );
 }
@@ -104,52 +104,42 @@ mV Pipeline::GetNextOutput( ) const
 	return m_potential.back();
 }
 
-bool Pipeline::IsPointInShape( NNetModel const & model, MicroMeterPoint const & point ) const
+bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const
 {
-	MicroMeterPoint const fDelta { GetEndPoint( model ) - GetStartPoint( model ) };
+	MicroMeterPoint const fDelta { GetEndPoint( ) - GetStartPoint( ) };
 	if ( IsCloseToZero( fDelta ) )
 		return false;
 	else
 	{
 		MicroMeterPoint const fOrthoScaled { OrthoVector( fDelta, m_width ) };
-		MicroMeterPoint const corner1      { GetStartPoint( model ) + fOrthoScaled };
-		MicroMeterPoint const corner2      { GetStartPoint( model ) - fOrthoScaled };
-		MicroMeterPoint const corner3      { GetEndPoint  ( model ) + fOrthoScaled };
+		MicroMeterPoint const corner1      { GetStartPoint( ) + fOrthoScaled };
+		MicroMeterPoint const corner2      { GetStartPoint( ) - fOrthoScaled };
+		MicroMeterPoint const corner3      { GetEndPoint  ( ) + fOrthoScaled };
 		return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
 	}
 }
 
-void Pipeline::DrawExterior
-( 
-	NNetModel     const & model,
-	GraphicsInterface   & Graphics,
-	PixelCoordsFp const & coord
-) const
+void Pipeline::DrawExterior( ) const
 {
-	MicroMeterPoint const umStartPoint { model.GetConstBaseKnot( m_idKnotStart )->GetPosition() };
-	MicroMeterPoint const umEndPoint   { model.GetConstBaseKnot( m_idKnotEnd   )->GetPosition() };
+	MicroMeterPoint const umStartPoint { m_pModel->GetConstBaseKnot( m_idKnotStart )->GetPosition() };
+	MicroMeterPoint const umEndPoint   { m_pModel->GetConstBaseKnot( m_idKnotEnd   )->GetPosition() };
 	if ( umStartPoint != umEndPoint )
 	{
-		fPIXEL      const fPixWidth  { coord.convert2fPixel( m_width ) };
-		fPixelPoint const fStartPoint{ coord.convert2fPixelPos( umStartPoint ) };
-		fPixelPoint const fEndPoint  { coord.convert2fPixelPos( umEndPoint   ) };
+		fPIXEL      const fPixWidth  { m_pCoord->convert2fPixel( m_width ) };
+		fPixelPoint const fStartPoint{ m_pCoord->convert2fPixelPos( umStartPoint ) };
+		fPixelPoint const fEndPoint  { m_pCoord->convert2fPixelPos( umEndPoint   ) };
 		COLORREF    const color      { IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ) };
 
-		Graphics.StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
-		Graphics.AddPipelinePoint( fEndPoint, color );
-		Graphics.RenderPipeline( );
+		m_pGraphics->StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
+		m_pGraphics->AddPipelinePoint( fEndPoint, color );
+		m_pGraphics->RenderPipeline( );
 	}
 }
 
-void Pipeline::DrawInterior
-( 
-	NNetModel     const & model,
-	GraphicsInterface   & Graphics,
-	PixelCoordsFp const & coord
-) const
+void Pipeline::DrawInterior( ) const
 {
-	BaseKnot const * const pStartKnot   { model.GetConstBaseKnot( m_idKnotStart ) };
-	BaseKnot const * const pEndKnot     { model.GetConstBaseKnot( m_idKnotEnd   ) };
+	BaseKnot const * const pStartKnot   { m_pModel->GetConstBaseKnot( m_idKnotStart ) };
+	BaseKnot const * const pEndKnot     { m_pModel->GetConstBaseKnot( m_idKnotEnd   ) };
 	MicroMeterPoint        umStartPoint { pStartKnot->GetPosition() };
 	MicroMeterPoint        umEndPoint   { pEndKnot  ->GetPosition() };
 	MicroMeterPoint        umVector     { umEndPoint - umStartPoint };
@@ -166,25 +156,25 @@ void Pipeline::DrawInterior
 		MicroMeterPoint const segmentVector = umVector / CastToFloat(m_potential.size());
 		MicroMeterPoint       umPoint       = umStartPoint;
 
-		Graphics.StartPipeline
+		m_pGraphics->StartPipeline
 		( 
-			coord.convert2fPixelPos( umStartPoint ), 
-			coord.convert2fPixelPos( umEndPoint ), 
-			coord.convert2fPixel   ( m_width * PIPELINE_INTERIOR ), 
+			m_pCoord->convert2fPixelPos( umStartPoint ), 
+			m_pCoord->convert2fPixelPos( umEndPoint ), 
+			m_pCoord->convert2fPixel   ( m_width * PIPELINE_INTERIOR ), 
 			pulseColor( * m_potential.begin() ) 
 		);
 
 		for ( auto & iter : m_potential )
 		{
 			umPoint += segmentVector; 
-			Graphics.AddPipelinePoint
+			m_pGraphics->AddPipelinePoint
 			( 
-				coord.convert2fPixelPos( umPoint ), 
+				m_pCoord->convert2fPixelPos( umPoint ), 
 				pulseColor( iter ) 
 			);
 		}
 
-		Graphics.RenderPipeline( );
+		m_pGraphics->RenderPipeline( );
 	}
 }
 
@@ -196,10 +186,10 @@ COLORREF Pipeline::pulseColor( mV const current ) const
 	return RGB( iLevel, 0, 0 );
 }
 
-void Pipeline::CheckConsistency( NNetModel const & model ) const
+void Pipeline::CheckConsistency( ) const
 {
-	Shape const * pShapeStartKnot = model.GetConstShape( m_idKnotStart );
-	Shape const * pShapeEndKnot   = model.GetConstShape( m_idKnotEnd );
+	Shape const * pShapeStartKnot = m_pModel->GetConstShape( m_idKnotStart );
+	Shape const * pShapeEndKnot   = m_pModel->GetConstShape( m_idKnotEnd );
 	tShapeType typeStartKnot = pShapeStartKnot->GetShapeType();
 	tShapeType typeEndKnot   = pShapeEndKnot->GetShapeType();
 	assert(

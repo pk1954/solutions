@@ -105,6 +105,7 @@ void NNetAppWindow::Start( )
 
 	m_pGraphics = & m_D3d_driver;
 
+	Shape::SetGraphics( m_pGraphics );
 	BaseAppWindow::Start( m_pMainNNetWindow );
 	m_pAppMenu->Initialize
 	( 

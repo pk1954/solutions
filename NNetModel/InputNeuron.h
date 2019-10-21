@@ -20,12 +20,12 @@ public:
 
 	void Trigger( );
 
-	virtual void Prepare( NNetModel & );
+	virtual void Prepare( );
 	virtual void Step( );
 	virtual mV   GetNextOutput( ) const;
 
-	virtual void DrawExterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
-	virtual void DrawInterior( NNetModel const &, GraphicsInterface &, PixelCoordsFp const & ) const;
+	virtual void DrawExterior( ) const;
+	virtual void DrawInterior( ) const;
 
 	Hertz GetPulseFrequency( ) const
 	{
@@ -35,14 +35,7 @@ public:
 	void SetPulseFrequency( Hertz const );
 
 private:
-	void drawInputNeuron
-	(  
-		NNetModel     const &, 
-		GraphicsInterface   &, 
-		PixelCoordsFp const &,
-		COLORREF      const,
-		float         const
-	) const;
+	void drawInputNeuron( COLORREF const, float const ) const;
 
 	Hertz m_pulseFrequency;
 };	

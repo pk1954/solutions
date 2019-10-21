@@ -52,6 +52,7 @@ private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
+	static PixelCoordsFp             m_coord;
 	static NNetReadBuffer          * m_pReadBuffer;
 	static NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 
@@ -62,7 +63,6 @@ private:
 	Scale             * m_pScale;
 	Shape       const * m_pShapeSelected;
 
-	PixelCoordsFp m_coord;
 	PixelPoint    m_ptLast;	 	   // Last cursor position during selection 
 
 	void moveNNet( PixelPoint const );
@@ -80,6 +80,6 @@ private:
 
 	BOOL          inObservedClientRect( LPARAM const );
 	Shape const * getShapeUnderPoint( PixelPoint const );
-	void          drawHighlightedShape( NNetModel const & );
+	void          drawHighlightedShape( );
 	void          doPaint( );
 };

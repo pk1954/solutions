@@ -155,7 +155,7 @@ private:
 	}
 
 	fPixelPoint m_fPixOffset;
-	MicroMeter   m_pixelSize;
+	MicroMeter  m_pixelSize;
 	SmoothMove  m_smoothMove;
 	bool        m_bMoving;
 };
