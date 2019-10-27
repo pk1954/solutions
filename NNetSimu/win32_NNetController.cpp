@@ -181,6 +181,13 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	}
 	break;
 
+	case IDD_CREATE_NEW_OUTPUT_NEURON:
+	{
+		MicroMeterPoint pnt = Util::Unpack2MicroMeterPoint( lParam );
+		m_pNNetWorkThreadInterface->PostCreateNewOutputNeuron( pnt );
+	}
+	break;
+
 	default:
 		return true;
 	}

@@ -78,6 +78,7 @@ private:
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
+	LPARAM        crsPos2LPARAM( );
 	BOOL          inObservedClientRect( LPARAM const );
 	Shape const * getShapeUnderPoint( PixelPoint const );
 	void          drawHighlightedShape( );

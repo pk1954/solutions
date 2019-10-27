@@ -242,6 +242,11 @@ void NNetModel::CreateNewInputNeuron( MicroMeterPoint const & pnt )
 	AddIncomming( idNewKnot,        idNewPipeline );
 }
 
+void NNetModel::CreateNewOutputNeuron( MicroMeterPoint const & pnt )
+{
+	addShape( new OutputNeuron( pnt ) );
+}
+
 void NNetModel::checkConsistency( Shape * pShape ) const
 {
 	switch ( pShape->GetShapeType() )
