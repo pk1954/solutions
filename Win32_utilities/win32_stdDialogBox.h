@@ -59,6 +59,8 @@ private:
 			SetWindowText( hDlg, m_wstrTitle.c_str() );
 			SetWindowText( GetDlgItem( hDlg, IDD_EDIT_CTL ), m_wstrBuffer.str().c_str() );
 			SetWindowText( GetDlgItem( hDlg, IDC_STATIC ), m_wstrUnit.c_str() );
+			SendMessage( hDlg, DM_SETDEFID, IDOK, 0);
+			SendMessage( GetDlgItem( hDlg, IDCANCEL ), BM_SETSTYLE, BS_PUSHBUTTON, 0);
 			return TRUE;
 		}
 
@@ -71,12 +73,14 @@ private:
 				if ( GetWindowText( GetDlgItem( hDlg, IDD_EDIT_CTL ), wBuffer, BUFLEN ) )
 				{
 					wstring wstrEdit( wBuffer );
-					m_fValue = stof( wstrEdit );
-					EndDialog( hDlg, LOWORD(wParam) );
-					//else
-					//{
-					//	MessageBeep( MB_ICONWARNING );
-					//}
+					try
+					{
+						m_fValue = stof( wstrEdit );
+						EndDialog( hDlg, LOWORD(wParam) );
+					} catch(...)
+					{
+						MessageBeep( MB_ICONWARNING );
+					}
 				}
 
 				return TRUE;
