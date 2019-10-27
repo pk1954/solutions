@@ -83,7 +83,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 			ShapeId const id  ( CastToLong( msg.wParam ) );
 			Shape       * shape( m_pNNetModel->GetShape( id ) );
 			InputNeuron * pInputNeuron( Cast2InputNeuron( shape ) );
-			Hertz   const freq( CastToUnsignedLong( msg.lParam ) );
+			fHertz  const freq( (float &)msg.lParam );
 			pInputNeuron->SetPulseFrequency( freq );
 		}
 		break;

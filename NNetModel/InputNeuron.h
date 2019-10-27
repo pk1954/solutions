@@ -27,17 +27,17 @@ public:
 	virtual void DrawExterior( ) const;
 	virtual void DrawInterior( ) const;
 
-	Hertz GetPulseFrequency( ) const
+	fHertz GetPulseFrequency( ) const
 	{
 		return m_pulseFrequency;
 	}
 
-	void SetPulseFrequency( Hertz const );
+	void SetPulseFrequency( fHertz const );
 
 private:
 	void drawInputNeuron( COLORREF const, float const ) const;
 
-	Hertz m_pulseFrequency;
+	fHertz m_pulseFrequency;
 };	
 
 InputNeuron const * Cast2InputNeuron( Shape const * );

@@ -83,11 +83,11 @@ void NNetWorkThreadInterface::PostSuperHighlight( ShapeId const id )
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::SUPER_HIGHLIGHT), id.GetValue(), 0 );
 }
 
-void NNetWorkThreadInterface::PostPulseFrequency( ShapeId const id, Hertz const freq )
+void NNetWorkThreadInterface::PostPulseFrequency( ShapeId const id, fHertz const freq )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << freq.GetValue() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_FREQ), id.GetValue(), freq.GetValue() );
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_FREQ), id.GetValue(), (LPARAM &)freq.GetValue() );
 }
 
 void NNetWorkThreadInterface::PostPulseSpeed( ShapeId const id, meterPerSec const speed )

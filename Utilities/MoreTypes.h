@@ -57,6 +57,22 @@ static microseconds const PulseDuration( Hertz const freq )
 		: microseconds( 1000000L / freq.GetValue() );
 }
 
+////////////// fHertz //////////////////////////////////////////
+
+using fHertz = NamedType< float, struct fHertz_Parameter >;
+
+fHertz constexpr operator"" _fHertz( long double dl )
+{
+	return fHertz( CastToFloat( dl ) );
+}
+
+static microseconds const PulseDuration( fHertz const freq )
+{
+	return (freq.GetValue() == 0) 
+		? microseconds( (std::numeric_limits<long long>::max)() )
+		: microseconds( static_cast< long long >(1000000.0L / freq.GetValue()) );
+}
+
 ////////////// MicroMeterPoint /////////////////////////////////////
 
 using MicroMeterPoint = PosType< MicroMeter >;

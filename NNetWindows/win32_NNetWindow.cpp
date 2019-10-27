@@ -174,7 +174,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 void NNetWindow::PulseRateDialog( )
 {
 	InputNeuron const * pInputNeuron = Cast2InputNeuron( m_pShapeSelected );
-	Hertz       const   pulseRateOld = pInputNeuron->GetPulseFrequency();
+	fHertz      const   pulseRateOld = pInputNeuron->GetPulseFrequency();
 	float fNewValue = StdDialogBox::Show
 	( 
 		GetWindowHandle(),
@@ -188,7 +188,7 @@ void NNetWindow::PulseRateDialog( )
 		Util::Pack2UINT64
 		(
 			m_pShapeSelected->GetId().GetValue(), 
-			CastToUnsignedLong( fNewValue ) 
+			(UINT32&)fNewValue
 		) 
 	);
 }

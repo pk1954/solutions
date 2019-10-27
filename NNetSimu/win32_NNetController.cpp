@@ -134,7 +134,8 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	case IDM_PULSE_FREQ:
 		{
 			ShapeId const shapeId   { CastToLong( Util::HiPart( lParam ) ) };
-			Hertz   const pulseFreq { Util::LoPart( lParam ) };
+			UINT32  const loPart    { Util::LoPart( lParam ) };
+			fHertz  const pulseFreq { (float &)loPart };
 			m_pNNetWorkThreadInterface->PostPulseFrequency( shapeId, pulseFreq );
 		}
 		break;
