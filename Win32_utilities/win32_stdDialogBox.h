@@ -73,6 +73,10 @@ private:
 				if ( GetWindowText( GetDlgItem( hDlg, IDD_EDIT_CTL ), wBuffer, BUFLEN ) )
 				{
 					wstring wstrEdit( wBuffer );
+
+					for ( auto & c : wstrEdit )  // change german decimal comma to
+						if ( c == L',' )         // decimal point
+							c = L'.';
 					try
 					{
 						m_fValue = stof( wstrEdit );
