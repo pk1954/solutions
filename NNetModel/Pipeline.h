@@ -21,8 +21,8 @@ class Pipeline : public Shape
 public:
 	Pipeline( meterPerSec const = STD_IMPULSE_SPEED );
 
-	void SetStartKnot(ShapeId const );
-	void SetEndKnot  (ShapeId const );
+	void SetStartKnot( ShapeId const );
+	void SetEndKnot  ( ShapeId const );
 
 	void Resize( );
 
@@ -33,10 +33,9 @@ public:
 		initialize( );
 	}
 
-	meterPerSec GetPulseSpeed( ) const
-	{
-		return m_impulseSpeed;
-	}
+	meterPerSec GetPulseSpeed( ) const { return m_impulseSpeed;	}
+	ShapeId     GetStartKnot ( ) const { return m_idKnotStart;  }
+	ShapeId     GetEndKnot   ( ) const { return m_idKnotEnd;    }
 
 	MicroMeterPoint GetStartPoint( ) const; 
 	MicroMeterPoint GetEndPoint  ( ) const; 

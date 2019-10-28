@@ -157,7 +157,8 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 		case tShapeType::pipeline:
 			m_pShapeSelected = pShape;
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_SPEED_DIALOG, L"Conduction velocity" );
+			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_SPLIT_PIPELINE, L"Split" );
+			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_SPEED_DIALOG,   L"Conduction velocity" );
 			break;
 
 		default:
@@ -236,14 +237,19 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 				m_pNNetWorkThreadInterface->PostMoveShape( idSelected, umPoint );
 				if ( m_pShapeSelected->GetShapeType() == tShapeType::knot )
 				{
-					pShapeSuper = m_pReadBuffer->GetModel( )->FindShapeUnderPoint
-					( 
-						umPoint, 
-						[&]( Shape const & shape ) 
-						{ 
-							return (shape.GetId() != idSelected) && IsNeuronType(shape.GetShapeType());
-						} 
-					);
+					NNetModel const * pModel { m_pReadBuffer->GetModel() };
+					Knot      const * pKnot  { pModel->GetConstKnot( idSelected ) };
+					if ( ! pKnot->HasOutgoing() )
+					{
+						pShapeSuper = m_pReadBuffer->GetModel( )->FindShapeUnderPoint
+						( 
+							umPoint, 
+							[&]( Shape const & shape ) 
+							{ 
+								return (shape.GetId() != idSelected) && IsNeuronType(shape.GetShapeType());
+							} 
+						);
+					}
 				}
 			}
 			else
@@ -318,8 +324,23 @@ void NNetWindow::OnLeftButtonDblClick(WPARAM const wParam, LPARAM const lParam )
 	PixelPoint const   ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
 	Shape      const * pShape = getShapeUnderPoint( ptCrsr );
 
-	if ( pShape && (pShape->GetShapeType() == tShapeType::inputNeuron) )
-		PostCommand2Application( IDD_TRIGGER, pShape->GetId().GetValue() );
+	if ( pShape )
+	{
+		switch ( pShape->GetShapeType() )
+		{
+		case tShapeType::inputNeuron:
+			PostCommand2Application( IDD_TRIGGER, pShape->GetId().GetValue() );
+			break;
+		
+		case tShapeType::pipeline:
+			m_pShapeSelected = pShape;
+			PostCommand2Application( IDD_SPLIT_PIPELINE, pixelPoint2LPARAM( ptCrsr ) );
+			break;
+
+		default:
+			break;
+		}
+	}
 }
 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
@@ -352,7 +373,7 @@ void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
 	PostCommand2Application( IDD_CONNECT, 0 );
 	m_pShapeSelected = nullptr;
-	(void)ReleaseCapture( );
+//	(void)ReleaseCapture( );
 }
 
 void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
@@ -362,12 +383,16 @@ void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 	SetCursor( hCrsr );
 }
 
-LPARAM NNetWindow::crsPos2LPARAM( )
+LPARAM NNetWindow::pixelPoint2LPARAM( PixelPoint const pixPoint )
 {
-	PixelPoint      const pixPoint  { GetRelativeCrsrPosition() };
 	fPixelPoint     const fPixPoint { convert2fPixelPoint( pixPoint ) };
 	MicroMeterPoint const umPoint   { m_coord.convert2MicroMeterPoint( fPixPoint ) };
 	return Util::Pack2UINT64(umPoint);
+}
+
+LPARAM NNetWindow::crsPos2LPARAM( )
+{
+	return pixelPoint2LPARAM( GetRelativeCrsrPosition() );
 }
 
 BOOL NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
@@ -375,6 +400,10 @@ BOOL NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 	UINT uiCmdId = LOWORD( wParam );
 	switch ( uiCmdId )
 	{
+	case IDD_NNETW_SPLIT_PIPELINE:
+		PostCommand2Application( IDD_SPLIT_PIPELINE, crsPos2LPARAM( ) );
+		break;
+
 	case IDD_NNETW_NEW_NEURON:
 		PostCommand2Application( IDD_CREATE_NEW_NEURON, crsPos2LPARAM( ) );
 		break;

@@ -79,6 +79,7 @@ private:
 	virtual void OnPaint( );
 
 	LPARAM        crsPos2LPARAM( );
+	LPARAM        pixelPoint2LPARAM( PixelPoint const );
 	BOOL          inObservedClientRect( LPARAM const );
 	Shape const * getShapeUnderPoint( PixelPoint const );
 	void          drawHighlightedShape( );

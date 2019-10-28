@@ -130,6 +130,14 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	}
 	break;
 
+	case NNetWorkThreadMessage::Id::SPLIT_PIPELINE:
+	{
+		ShapeId         const id( CastToLong( msg.wParam ) );
+		MicroMeterPoint const pos( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		m_pNNetModel->SplitPipeline( id, pos );
+	}
+	break;
+
 	case NNetWorkThreadMessage::Id::CREATE_NEW_INPUT_NEURON:
 	{
 		MicroMeterPoint const pnt 

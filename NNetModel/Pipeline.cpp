@@ -145,14 +145,6 @@ void Pipeline::DrawInterior( ) const
 	MicroMeterPoint        umVector     { umEndPoint - umStartPoint };
 	if ( ! IsCloseToZero( umVector ) )
 	{
-		if ( pStartKnot->GetShapeType( ) != tShapeType::knot ) // pipeline stops at neuron border
-		{
-			MicroMeter      const umHypot { Hypot( umVector ) };
-			//MicroMeterPoint const diff    { umVector * (pStartKnot->GetExtension( ) * NEURON_INTERIOR / umHypot) };
-			//umStartPoint += diff;
-			//umVector     -= diff;
-		}
-
 		MicroMeterPoint const segmentVector = umVector / CastToFloat(m_potential.size());
 		MicroMeterPoint       umPoint       = umStartPoint;
 

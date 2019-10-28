@@ -35,13 +35,14 @@ public:
 	void Stop(); 
 
 	void PostConnect       ( );
+	void PostSlowMotionChanged( );
 	void PostTrigger       ( ShapeId const );
 	void PostHighlight     ( ShapeId const );
 	void PostSuperHighlight( ShapeId const );
 	void PostPulseFrequency( ShapeId const, fHertz           const );
 	void PostPulseSpeed    ( ShapeId const, meterPerSec      const );
-	void PostMoveShape     ( ShapeId const, MicroMeterPoint  const );
-	void PostSlowMotionChanged( );
+	void PostMoveShape     ( ShapeId const, MicroMeterPoint  const & );
+	void PostSplitPipeline ( ShapeId const, MicroMeterPoint  const & );
 	void PostCreateNewBranch      ( ShapeId const );
 	void PostCreateNewNeuron      ( MicroMeterPoint const & );
 	void PostCreateNewInputNeuron ( MicroMeterPoint const & );

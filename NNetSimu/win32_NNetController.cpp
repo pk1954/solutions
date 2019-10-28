@@ -174,6 +174,13 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	}
 	break;
 
+	case IDD_SPLIT_PIPELINE:
+	{
+		MicroMeterPoint pnt = Util::Unpack2MicroMeterPoint( lParam );
+		m_pNNetWorkThreadInterface->PostSplitPipeline( m_pNNetWindow->GetShapeSelected(), pnt );
+	}
+	break;
+
 	case IDD_CREATE_NEW_INPUT_NEURON:
 	{
 		MicroMeterPoint pnt = Util::Unpack2MicroMeterPoint( lParam );

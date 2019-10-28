@@ -45,6 +45,9 @@ public:
 	void AddOutgoing   ( ShapeId const );
 	bool IsPointInShape( MicroMeterPoint const & ) const;
 
+	bool HasIncoming( ) const { return m_incoming.size() > 0; }
+	bool HasOutgoing( ) const { return m_outgoing.size() > 0; }
+
 	void Apply2AllIncomingPipelines( std::function<void(ShapeId const &)> const & func ) const
 	{
 		for ( auto id : m_incoming )

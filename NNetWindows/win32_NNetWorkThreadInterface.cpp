@@ -97,7 +97,7 @@ void NNetWorkThreadInterface::PostPulseSpeed( ShapeId const id, meterPerSec cons
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), id.GetValue(), (LPARAM &)speed.GetValue() );
 }
 
-void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const newPos )
+void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const & newPos )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << newPos << endl;
@@ -116,6 +116,16 @@ void NNetWorkThreadInterface::PostCreateNewBranch( ShapeId const id )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::CREATE_NEW_BRANCH), id.GetValue(), 0 );
+}
+
+void NNetWorkThreadInterface::PostSplitPipeline( ShapeId const id, MicroMeterPoint const & pos )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << pos << endl;
+
+	auto x = pos.GetXvalue();
+	auto y = pos.GetYvalue();
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::SPLIT_PIPELINE), id.GetValue(), Util::Pack2UINT64(pos));
 }
 
 void NNetWorkThreadInterface::PostCreateNewNeuron( MicroMeterPoint const & pos )

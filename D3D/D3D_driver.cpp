@@ -373,7 +373,7 @@ void D3D_driver::EndFrame( HWND const hwnd )
 {
     HRESULT hres;
     hres = m_d3d_device->EndScene();                                        assert(hres == D3D_OK);
-    hres = m_d3d_swapChain->Present( nullptr, nullptr, hwnd, nullptr, 0 );  assert(hres == D3D_OK);
+	hres = m_d3d_swapChain->Present( nullptr, nullptr, hwnd, nullptr, 0 );  assert(hres == D3D_OK);
     m_id3dx_font->Release();      
 }
 

@@ -13,7 +13,7 @@ using namespace std::chrono;
 
 InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
   : Neuron( upCenter, tShapeType::inputNeuron ),
-	m_pulseFrequency( 0.0_fHertz )
+	m_pulseFrequency( STD_PULSE_FREQ )
 { 
 }
 

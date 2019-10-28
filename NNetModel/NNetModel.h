@@ -71,6 +71,7 @@ public:
 	void CreateNewNeuron( MicroMeterPoint const & );
 	void CreateNewInputNeuron( MicroMeterPoint const & );
 	void CreateNewOutputNeuron( MicroMeterPoint const & );
+	void SplitPipeline( ShapeId const, MicroMeterPoint const & );
 	void Connect( );
 
 	void HighlightShape     ( ShapeId const );

@@ -17,4 +17,5 @@ static mV           const BASE_POTENTIAL    = 0.0_mV;
 static float        const NEURON_INTERIOR   = 0.8f;                // Neurons of all kinds have 80% interior, 20 % border 
 static float        const PIPELINE_INTERIOR = 0.6f;                // Neurons of all kinds have 80% interior, 20 % border 
 static MicroMeter   const NEURON_RADIUS     = 50.0_MicroMeter;    
-static MicroMeter   const PIPELINE_WIDTH    = 10.0_MicroMeter;    
+static MicroMeter   const PIPELINE_WIDTH    = 10.0_MicroMeter;
+static fHertz       const STD_PULSE_FREQ    = 50.0_fHertz; 
