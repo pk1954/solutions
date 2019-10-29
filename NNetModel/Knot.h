@@ -35,9 +35,13 @@ public:
 		return m_mVinputBuffer;
 	}
 
-	virtual void DrawExterior( ) const;
-	virtual void DrawInterior( ) const;
+	virtual void DrawExterior( ) const
+	{
+		drawPolygon( 24, GetFrameColor( ), IsHighlighted( ) ? 30.0_MicroMeter : GetExtension( ) );
+	}
 
-private:
-
+	virtual void DrawInterior( ) const
+	{
+		drawPolygon( 24, GetInteriorColor( ), GetExtension() * PIPELINE_INTERIOR );
+	}
 };

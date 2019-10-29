@@ -63,6 +63,8 @@ protected:
 	vector<ShapeId> m_incoming;
 	vector<ShapeId> m_outgoing;
 
+	void drawPolygon( int const, COLORREF const, MicroMeter const ) const;
+
 private:
 
 	MicroMeterPoint m_center;

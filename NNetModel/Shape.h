@@ -102,12 +102,6 @@ public:
 		return m_type;
 	}
 
-	float GetFillLevel( ) const  // 1.0 means 100% filled
-	{
-		float res = m_mVinputBuffer / PEAK_VOLTAGE;
-		return res;
-	}
-
 	static void SetModel( NNetModel * const pModel	)
 	{
 		m_pModel = pModel;
@@ -129,6 +123,27 @@ protected:
 	static NNetModel               * m_pModel;
 	static GraphicsInterface       * m_pGraphics;
 	static PixelCoordsFp     const * m_pCoord;
+
+	COLORREF GetFrameColor( ) const 
+	{ 
+		return IsSuperHighlighted( ) 
+			   ? EXT_COLOR_SUPER_HIGHLIGHT 
+			   : IsHighlighted( ) 
+			      ? EXT_COLOR_HIGHLIGHT 
+			      : EXT_COLOR_NORMAL;
+	};
+
+	COLORREF GetInteriorColor( mV const voltage ) const
+	{
+		int      const colElem { CastToInt( voltage  * 255.0f / PEAK_VOLTAGE) };
+		COLORREF const color   { RGB( colElem, 0, 0 ) };
+		return color;
+	}
+
+	COLORREF GetInteriorColor( ) const
+	{
+		return GetInteriorColor( m_mVinputBuffer );
+	}
 
 private:
 

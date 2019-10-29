@@ -220,6 +220,7 @@ void NNetModel::CreateNewBranch( ShapeId const idKnot )
 	ShapeId const   idNewPipeline { addShape( pPipelineNew ) };
 	AddIncomming( idNewKnot, idNewPipeline );
 	AddOutgoing ( idKnot,    idNewPipeline );
+	HighlightShape( idNewKnot );
 }
 
 void NNetModel::SplitPipeline( ShapeId const idPipeline, MicroMeterPoint const & splitPoint )

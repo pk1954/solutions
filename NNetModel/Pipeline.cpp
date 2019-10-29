@@ -106,29 +106,29 @@ mV Pipeline::GetNextOutput( ) const
 
 bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const
 {
-	MicroMeterPoint const fDelta { GetEndPoint( ) - GetStartPoint( ) };
+	MicroMeterPoint const fDelta{ GetEndPoint( ) - GetStartPoint( ) };
 	if ( IsCloseToZero( fDelta ) )
 		return false;
 	else
 	{
-		MicroMeterPoint const fOrthoScaled { OrthoVector( fDelta, m_width ) };
-		MicroMeterPoint const corner1      { GetStartPoint( ) + fOrthoScaled };
-		MicroMeterPoint const corner2      { GetStartPoint( ) - fOrthoScaled };
-		MicroMeterPoint const corner3      { GetEndPoint  ( ) + fOrthoScaled };
+		MicroMeterPoint const fOrthoScaled{ OrthoVector( fDelta, m_width ) };
+		MicroMeterPoint const corner1     { GetStartPoint( ) + fOrthoScaled };
+		MicroMeterPoint const corner2     { GetStartPoint( ) - fOrthoScaled };
+		MicroMeterPoint const corner3     { GetEndPoint  ( ) + fOrthoScaled };
 		return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
 	}
 }
 
 void Pipeline::DrawExterior( ) const
 {
-	MicroMeterPoint const umStartPoint { m_pModel->GetConstBaseKnot( m_idKnotStart )->GetPosition() };
-	MicroMeterPoint const umEndPoint   { m_pModel->GetConstBaseKnot( m_idKnotEnd   )->GetPosition() };
+	MicroMeterPoint const umStartPoint{ m_pModel->GetConstBaseKnot( m_idKnotStart )->GetPosition() };
+	MicroMeterPoint const umEndPoint  { m_pModel->GetConstBaseKnot( m_idKnotEnd   )->GetPosition() };
 	if ( umStartPoint != umEndPoint )
 	{
 		fPIXEL      const fPixWidth  { m_pCoord->convert2fPixel( m_width ) };
 		fPixelPoint const fStartPoint{ m_pCoord->convert2fPixelPos( umStartPoint ) };
 		fPixelPoint const fEndPoint  { m_pCoord->convert2fPixelPos( umEndPoint   ) };
-		COLORREF    const color      { IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ) };
+		COLORREF    const color      { GetFrameColor( ) };
 
 		m_pGraphics->StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
 		m_pGraphics->AddPipelinePoint( fEndPoint, color );
@@ -138,11 +138,11 @@ void Pipeline::DrawExterior( ) const
 
 void Pipeline::DrawInterior( ) const
 {
-	BaseKnot const * const pStartKnot   { m_pModel->GetConstBaseKnot( m_idKnotStart ) };
-	BaseKnot const * const pEndKnot     { m_pModel->GetConstBaseKnot( m_idKnotEnd   ) };
-	MicroMeterPoint        umStartPoint { pStartKnot->GetPosition() };
-	MicroMeterPoint        umEndPoint   { pEndKnot  ->GetPosition() };
-	MicroMeterPoint        umVector     { umEndPoint - umStartPoint };
+	BaseKnot const * const pStartKnot  { m_pModel->GetConstBaseKnot( m_idKnotStart ) };
+	BaseKnot const * const pEndKnot    { m_pModel->GetConstBaseKnot( m_idKnotEnd   ) };
+	MicroMeterPoint        umStartPoint{ pStartKnot->GetPosition() };
+	MicroMeterPoint        umEndPoint  { pEndKnot  ->GetPosition() };
+	MicroMeterPoint        umVector    { umEndPoint - umStartPoint };
 	if ( ! IsCloseToZero( umVector ) )
 	{
 		MicroMeterPoint const segmentVector = umVector / CastToFloat(m_potential.size());
@@ -153,7 +153,7 @@ void Pipeline::DrawInterior( ) const
 			m_pCoord->convert2fPixelPos( umStartPoint ), 
 			m_pCoord->convert2fPixelPos( umEndPoint ), 
 			m_pCoord->convert2fPixel   ( m_width * PIPELINE_INTERIOR ), 
-			pulseColor( * m_potential.begin() ) 
+			GetInteriorColor( * m_potential.begin() ) 
 		);
 
 		for ( auto & iter : m_potential )
@@ -162,7 +162,7 @@ void Pipeline::DrawInterior( ) const
 			m_pGraphics->AddPipelinePoint
 			( 
 				m_pCoord->convert2fPixelPos( umPoint ), 
-				pulseColor( iter ) 
+				GetInteriorColor( iter ) 
 			);
 		}
 
@@ -170,20 +170,12 @@ void Pipeline::DrawInterior( ) const
 	}
 }
 
-COLORREF Pipeline::pulseColor( mV const current ) const 
-{
-	assert( current <= PEAK_VOLTAGE );
-	mV    const mVperColLevel = PEAK_VOLTAGE / 255.0f;
-	int   const iLevel        = CastToInt( current / mVperColLevel );
-	return RGB( iLevel, 0, 0 );
-}
-
 void Pipeline::CheckConsistency( ) const
 {
-	Shape const * pShapeStartKnot = m_pModel->GetConstShape( m_idKnotStart );
-	Shape const * pShapeEndKnot   = m_pModel->GetConstShape( m_idKnotEnd );
-	tShapeType typeStartKnot = pShapeStartKnot->GetShapeType();
-	tShapeType typeEndKnot   = pShapeEndKnot->GetShapeType();
+	Shape const * pShapeStartKnot{ m_pModel->GetConstShape( m_idKnotStart ) };
+	Shape const * pShapeEndKnot  { m_pModel->GetConstShape( m_idKnotEnd ) };
+	tShapeType    typeStartKnot  { pShapeStartKnot->GetShapeType() };
+	tShapeType    typeEndKnot    { pShapeEndKnot->GetShapeType() };
 	assert(
 		(typeStartKnot == tShapeType::knot)        || 
 		(typeStartKnot == tShapeType::inputNeuron) || 

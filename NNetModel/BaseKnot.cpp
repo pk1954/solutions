@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "Geometry.h"
 #include "NNetModel.h"
+#include "win32_graphicsInterface.h"
 #include "BaseKnot.h"
 
 void BaseKnot::AddIncomming( ShapeId const idPipeline )
@@ -34,4 +35,20 @@ void BaseKnot::MoveTo( MicroMeterPoint const & newCenter )
 
 	for ( auto const idPipeline : m_outgoing )
 		m_pModel->GetPipeline( idPipeline )->Resize( );
+}
+
+void BaseKnot::drawPolygon
+(
+	int        const iNrOfEdges,
+	COLORREF   const color, 
+	MicroMeter const umWidth
+) const
+{
+	m_pGraphics->DrawPolygon
+	( 
+		iNrOfEdges,
+		m_pCoord->convert2fPixelPos( GetPosition() ), 
+		color, 
+		m_pCoord->convert2fPixel( umWidth )
+	);
 }

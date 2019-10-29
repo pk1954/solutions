@@ -92,15 +92,12 @@ void InputNeuron::drawInputNeuron
 
 void InputNeuron::DrawExterior( ) const
 {
-	COLORREF const color { IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 ) };
-	drawInputNeuron( color,	1.0f );
+	drawInputNeuron( GetFrameColor( ),	1.0f );
 }
 
 void InputNeuron::DrawInterior( ) const
 { 
-	int      const colElem { CastToInt(GetFillLevel() * 255.0f) };
-	COLORREF const color   { RGB( colElem, 0, 0 ) };
-	drawInputNeuron( color,	NEURON_INTERIOR );
+	drawInputNeuron( GetInteriorColor( ), NEURON_INTERIOR );
 }
 
 InputNeuron const * Cast2InputNeuron( Shape const * shape )

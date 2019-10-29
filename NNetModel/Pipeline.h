@@ -52,15 +52,12 @@ public:
 	virtual mV   GetNextOutput( ) const;
 
 private:
-	void       initialize( );
-	COLORREF   pulseColor( mV const ) const;
+	void initialize( );
 
-	bool       m_initialized;
-	
-	ShapeId    m_idKnotStart;
-	ShapeId    m_idKnotEnd;
-	MicroMeter m_width;
-
+	bool        m_initialized;
+	ShapeId     m_idKnotStart;
+	ShapeId     m_idKnotEnd;
+	MicroMeter  m_width;
 	vector<mV>  m_potential;
 	meterPerSec m_impulseSpeed;
 };

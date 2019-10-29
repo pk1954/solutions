@@ -3,8 +3,6 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "PixelCoordsFp.h"
-#include "win32_graphicsInterface.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
 #include "Neuron.h"
@@ -80,35 +78,12 @@ void Neuron::DrawInterior( ) const
 
 void Neuron::drawExterior( int const iNrOfEdges ) const
 {
-//	COLORREF const colorFrame = IsHighlighted( ) ? RGB( 0, 127, 127 ) : RGB( 0, 127, 255 );
-	COLORREF const colorFrame 
-	{ 
-		IsSuperHighlighted( ) 
-		? RGB( 255, 0, 0 ) 
-		: IsHighlighted( ) 
-    	  ? RGB( 0, 127, 127 ) 
-    	  : RGB( 0, 127, 255 ) 
-	};
-	m_pGraphics->DrawPolygon
-	( 
-		iNrOfEdges,
-		m_pCoord->convert2fPixelPos( GetPosition() ), 
-		colorFrame, 
-		m_pCoord->convert2fPixel( GetExtension() )
-	);
+	drawPolygon( iNrOfEdges, GetFrameColor( ), GetExtension() );
 }
 
 void Neuron::drawInterior( int const iNrOfEdges ) const
 { 
-	int      const colElem { CastToInt(GetFillLevel() * 255.0f) };
-	COLORREF const color   { RGB( colElem, 0, 0 ) };
-	m_pGraphics->DrawPolygon
-	( 
-		iNrOfEdges,
-		m_pCoord->convert2fPixelPos( GetPosition() ), 
-		color, 
-		m_pCoord->convert2fPixel( GetExtension() * NEURON_INTERIOR )
-	);
+	drawPolygon( iNrOfEdges, GetInteriorColor( ), GetExtension()  * NEURON_INTERIOR);
 }
 
 Neuron const * Cast2Neuron( Shape const * shape )
