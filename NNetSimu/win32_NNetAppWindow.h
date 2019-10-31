@@ -31,6 +31,7 @@ class StatusBar;
 class ModelWindow;
 class NNetModel;
 class NNetWindow;
+class CrsrWindow;
 class TimeDisplay;
 class SlowMotionDisplay;
 class GraphicsInterface;
@@ -69,4 +70,5 @@ private:
 	NNetEditorWindow      * m_pNNetEditorWindow;
 	TimeDisplay           * m_pTimeDisplay;
 	SlowMotionDisplay     * m_pSlowMotionDisplay;
+	CrsrWindow            * m_pCrsrWindow;
 };

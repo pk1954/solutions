@@ -16,6 +16,7 @@
 #include "win32_NNetEditor.h"
 #include "win32_NNetWindow.h"
 #include "win32_status.h"
+#include "win32_crsrWindow.h"
 #include "win32_simulationControl.h"
 #include "win32_slowMotionControl.h"
 #include "win32_zoomControl.h"
@@ -51,7 +52,8 @@ NNetAppWindow::NNetAppWindow( ) :
 	m_pModelDataWork( nullptr ),
 	m_pGraphics( nullptr ),
 	m_pSlowMotionDisplay( nullptr ),
-	m_pTimeDisplay( nullptr )
+	m_pTimeDisplay( nullptr ),
+	m_pCrsrWindow( nullptr )
 {
 	Stopwatch stopwatch;
 
@@ -69,6 +71,7 @@ NNetAppWindow::NNetAppWindow( ) :
 	m_pAppMenu          = new NNetAppMenu( );
 	m_pMainNNetWindow   = new NNetWindow( );
 	m_pNNetEditorWindow = new NNetEditorWindow( );
+	m_pCrsrWindow       = new CrsrWindow( );
 
 	m_pNNetController = new NNetController
 	( 
@@ -83,6 +86,7 @@ NNetAppWindow::NNetAppWindow( ) :
 
 	m_pMainNNetWindow  ->SetRefreshRate( 100ms );
 	m_pNNetEditorWindow->SetRefreshRate( 300ms );
+	m_pCrsrWindow      ->SetRefreshRate( 100ms );
 };
 
 NNetAppWindow::~NNetAppWindow( )
@@ -91,6 +95,7 @@ NNetAppWindow::~NNetAppWindow( )
 	delete m_pNNetEditorWindow;
 	delete m_pMainNNetWindow;
 	delete m_pAppMenu;
+	delete m_pCrsrWindow;
 }
 
 void NNetAppWindow::Start( )
@@ -137,10 +142,10 @@ void NNetAppWindow::Start( )
 		TRUE            // no async worker thread
 	);
 
-//	m_pNNetEditorWindow->Start( m_hwndApp, & m_NNetWorkThreadInterface, & m_NNetReadBuffer );
+	m_pCrsrWindow->Start( m_hwndApp, m_pNNetReadBuffer, m_pMainNNetWindow );
 
-	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow,   TRUE, FALSE );
-//	m_WinManager.AddWindow( L"IDM_EDIT_WINDOW", IDM_EDIT_WINDOW, * m_pNNetEditorWindow, TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, * m_pCrsrWindow,     TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow, TRUE, FALSE );
 
 	configureStatusBar( );
 
@@ -151,15 +156,15 @@ void NNetAppWindow::Start( )
 		m_pMainNNetWindow->Show( TRUE );
 	}
 
-//	m_pNNetEditorWindow->Show( TRUE );
+	m_pCrsrWindow->Show( TRUE );
 
 	PostCommand2Application( IDM_RUN, true );
 }
 
 void NNetAppWindow::Stop()
 {
-	m_pMainNNetWindow  ->Stop( );
-//	m_pNNetEditorWindow->Stop( );
+	m_pMainNNetWindow->Stop( );
+	m_pCrsrWindow    ->Stop( );
 
 	m_pNNetReadBuffer->UnregisterAllObservers( );
 	m_NNetWorkThreadInterface.Stop( );

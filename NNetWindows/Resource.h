@@ -27,6 +27,8 @@
 #define IDD_CREATE_NEW_INPUT_NEURON  172
 #define IDD_CREATE_NEW_OUTPUT_NEURON 173
 								   
+#define IDM_CRSR_WINDOW              180
+
 #define IDM_HIGHLIGHT                200
 #define IDM_SUPER_HIGHLIGHT          201
 								   	 

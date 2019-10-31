@@ -92,6 +92,7 @@ void Pipeline::Step( )
 
 	for ( auto & iter : m_potential )
 	{
+		mVcarry *= 0.98f;  
 		std::swap( iter, mVcarry );
 		assert( iter <= PEAK_VOLTAGE );
 	}

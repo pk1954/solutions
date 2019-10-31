@@ -160,7 +160,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="NNetSimu.h" />
     <ClInclude Include="SlowMotionDisplay.h" />
     <ClInclude Include="win32_slowMotionControl.h" />
     <ClInclude Include="stdafx.h" />

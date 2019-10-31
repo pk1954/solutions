@@ -62,7 +62,7 @@ HWND CreateToolTipEx
 	if ( bBalloon )
 		dwStyle |= TTS_BALLOON;
 
-	HWND hwndTip  = CreateWindowEx
+	HWND hwndTip = CreateWindowEx
 	(
 		WS_EX_TOPMOST,                   // ex style
 		TOOLTIPS_CLASS,                  // class name - defined in commctrl.h

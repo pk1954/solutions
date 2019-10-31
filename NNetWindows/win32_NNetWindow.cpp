@@ -11,6 +11,7 @@
 #include "InputNeuron.h"
 #include "PixelTypes.h"
 #include "PixelCoordsFp.h"
+#include "win32_tooltip.h"
 #include "win32_stdDialogBox.h"
 #include "win32_scale.h"
 #include "win32_util_resource.h"
@@ -383,14 +384,20 @@ void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 	SetCursor( hCrsr );
 }
 
-LPARAM NNetWindow::pixelPoint2LPARAM( PixelPoint const pixPoint )
+MicroMeterPoint NNetWindow::PixelPoint2MicroMeterPoint( PixelPoint const pixPoint ) const
 {
 	fPixelPoint     const fPixPoint { convert2fPixelPoint( pixPoint ) };
 	MicroMeterPoint const umPoint   { m_coord.convert2MicroMeterPoint( fPixPoint ) };
+	return umPoint;
+}
+
+LPARAM NNetWindow::pixelPoint2LPARAM( PixelPoint const pixPoint ) const
+{
+	MicroMeterPoint const umPoint { PixelPoint2MicroMeterPoint( pixPoint ) };
 	return Util::Pack2UINT64(umPoint);
 }
 
-LPARAM NNetWindow::crsPos2LPARAM( )
+LPARAM NNetWindow::crsPos2LPARAM( ) const 
 {
 	return pixelPoint2LPARAM( GetRelativeCrsrPosition() );
 }

@@ -157,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="win32_crsrWindow.h" />
     <ClInclude Include="win32_NNetEditor.h" />
     <ClInclude Include="win32_NNetReadBuffer.h" />
     <ClInclude Include="Resource.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="win32_NNetWorkThreadInterface.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="win32_crsrWindow.cpp" />
     <ClCompile Include="win32_NNetEditor.cpp" />
     <ClCompile Include="win32_NNetWindow.cpp" />
     <ClCompile Include="win32_NNetWorkThread.cpp" />

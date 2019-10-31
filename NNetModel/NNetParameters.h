@@ -9,17 +9,24 @@
 
 using namespace std::chrono;
 
-static microseconds const TIME_RESOLUTION    { microseconds( 100 ) };
-static mV           const PEAK_VOLTAGE       { 100._mV };
-static microseconds const PEAK_TIME          { 2ms };
-static meterPerSec  const STD_IMPULSE_SPEED  { 0.1_meterPerSec };     // Adjustable per pipeline
+static microseconds const TIME_RESOLUTION    { 100us };
+
+// dynamic model 
+static mV           const THRESHHOLD_POTENTIAL{  20._mV };
+static mV           const PEAK_VOLTAGE        { 100._mV };
+static microseconds const PEAK_DURATION       { 2ms };
+static microseconds const PEAK_TIME           { 2ms };
+static meterPerSec  const STD_IMPULSE_SPEED   { 0.1_meterPerSec };     // Adjustable per pipeline
+static fHertz       const STD_PULSE_FREQ      { 50.0_fHertz };         // Input neurons
+
+// geometry
 static mV           const BASE_POTENTIAL     { 0.0_mV };
 static float        const NEURON_INTERIOR    { 0.8f };                // Neurons of all kinds have 80% interior, 20 % border 
 static float        const PIPELINE_INTERIOR  { 0.6f };                // PIPELINES have 60% interior, 40 % border 
 static MicroMeter   const NEURON_RADIUS      { 50.0_MicroMeter };    
 static MicroMeter   const PIPELINE_WIDTH     { 10.0_MicroMeter };
-static fHertz       const STD_PULSE_FREQ     { 50.0_fHertz };
 
+// colors
 static COLORREF     const EXT_COLOR_NORMAL         { RGB(   0, 127, 255 ) };
 static COLORREF     const EXT_COLOR_HIGHLIGHT      { RGB(   0, 127, 127 ) };
 static COLORREF     const EXT_COLOR_SUPER_HIGHLIGHT{ RGB( 255,   0,   0 ) };

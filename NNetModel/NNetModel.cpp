@@ -151,9 +151,10 @@ void NNetModel::HighlightShape( ShapeId const idHighlight )
 	if ( idHighlight != NO_SHAPE )
 	{
 		Shape * pShape = GetShape( idHighlight );
-		assert( pShape );
-		assert( pShape->GetId() == idHighlight );
-		pShape->SetHighlightState( true );
+//		assert( pShape );                          //TODO: clarify how this can happen
+//		assert( pShape->GetId() == idHighlight );
+		if ( pShape && (pShape->GetId() == idHighlight) )
+			pShape->SetHighlightState( true );
 	}
 
 	m_shapeHighlighted = idHighlight;

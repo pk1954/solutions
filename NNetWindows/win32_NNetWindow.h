@@ -48,6 +48,8 @@ public:
 
 	ShapeId GetShapeSelected() const { return m_pShapeSelected->GetId(); };
 
+	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
+
 private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
@@ -78,8 +80,8 @@ private:
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
-	LPARAM        crsPos2LPARAM( );
-	LPARAM        pixelPoint2LPARAM( PixelPoint const );
+	LPARAM        crsPos2LPARAM( ) const;
+	LPARAM        pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL          inObservedClientRect( LPARAM const );
 	Shape const * getShapeUnderPoint( PixelPoint const );
 	void          drawHighlightedShape( );
