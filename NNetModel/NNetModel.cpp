@@ -13,11 +13,11 @@
 
 using namespace std::chrono;
 
-float        const NNetModel:: m_dampingFactor      { 0.9995f };    // signal loss per um  
-mV           const NNetModel:: m_thresholdPotential {  20._mV };
-mV           const NNetModel:: m_peakVoltage        {  10._mV };
-microseconds const NNetModel:: m_pulseWidth         {     2ms };
-microseconds const NNetModel:: m_refractoryPeriod   {   500us };
+float        NNetModel:: m_dampingFactor      { 0.9995f };    // signal loss per um  
+mV           NNetModel:: m_thresholdPotential {  20._mV };
+mV           NNetModel:: m_peakVoltage        {  10._mV };
+microseconds NNetModel:: m_pulseWidth         {     2ms };
+microseconds NNetModel:: m_refractoryPeriod   {   500us };
 
 NNetModel::NNetModel( )
   : m_timeStamp( microseconds( 0 ) ),

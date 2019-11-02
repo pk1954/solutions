@@ -83,7 +83,13 @@ public:
 	static mV           const GetPeakVoltage( )        { return m_peakVoltage; }    
 	static microseconds const GetPulseWidth( )         { return m_pulseWidth; }     
 	static microseconds const GetRefractoryPeriod( )   { return m_refractoryPeriod; } 
-
+	    
+	static void SetDampingFactor     ( float        const x ) { m_dampingFactor      = x; }  
+	static void SetThresholdPotential( mV           const x ) { m_thresholdPotential = x; }
+	static void SetPeakVoltage       ( mV           const x ) { m_peakVoltage        = x; }    
+	static void SetPulseWidth        ( microseconds const x ) { m_pulseWidth         = x; }     
+	static void SetRefractoryPeriod  ( microseconds const x ) { m_refractoryPeriod   = x; } 
+																									   
 private:
 	// initial shapes 
 	ShapeId m_idInputNeuron;
@@ -99,11 +105,11 @@ private:
 	ShapeId m_shapeSuperHighlighted;
 
 	// global parameters
-	static float        const m_dampingFactor;     // signal loss per um  
-    static mV           const m_thresholdPotential;
-    static mV           const m_peakVoltage;   
-    static microseconds const m_pulseWidth;   
-    static microseconds const m_refractoryPeriod;
+	static float        m_dampingFactor;     // signal loss per um  
+    static mV           m_thresholdPotential;
+    static mV           m_peakVoltage;   
+    static microseconds m_pulseWidth;   
+    static microseconds m_refractoryPeriod;
 
 	// local functions
 	ShapeId const addShape( Shape * );
