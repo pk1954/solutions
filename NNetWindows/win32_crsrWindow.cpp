@@ -14,6 +14,7 @@
 
 using std::wostringstream;
 using std::setprecision;
+using std::endl;
 
 CrsrWindow::CrsrWindow( ) :
 	TextWindow( ),
@@ -39,7 +40,7 @@ void CrsrWindow::Start
 	StartTextWindow
 	(
 		hwndParent, 
-		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 415_PIXEL }, 
+		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 500_PIXEL }, 
 		L"CrsrWindow", 
 		100, 
 		TRUE,
@@ -61,7 +62,13 @@ void CrsrWindow::printMicroMeter
 )
 {
 	wostringstream wBuffer;
-	wBuffer << setprecision(3) << um.GetValue() << L" um";
+	wBuffer << setprecision(3);
+	if ( um < 1000.0_MicroMeter )
+		wBuffer << um.GetValue() << L" um";
+	else if ( um < 1000000.0_MicroMeter )
+		wBuffer << um.GetValue() / 1000.0f << L" mm";
+	else
+		wBuffer << um.GetValue() / 1000000.0f << L" m";
 	textBuf.printString( wBuffer.str() );
 }
 
@@ -74,4 +81,46 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
 	printMicroMeter( textBuf, umPoint.GetX() );
 	printMicroMeter( textBuf, umPoint.GetY() );
+
+	NNetModel const * pModel  = m_pReadBuffer->GetModel();
+	ShapeId   const   shapeId = pModel->GetHighlightedShapeId();
+	if ( shapeId != NO_SHAPE )
+	{
+		Shape const * pShape = pModel->GetConstShape( shapeId );
+		switch ( pShape->GetShapeType() )
+		{
+		case tShapeType::inputNeuron:
+			break;
+
+		case tShapeType::knot:
+			break;
+
+		case tShapeType::neuron:
+			break;
+
+		case tShapeType::outputNeuron:
+			break;
+
+		case tShapeType::pipeline:
+		{
+			Pipeline const * pPipeline = static_cast<Pipeline const *>( pShape );
+			wostringstream wBuffer;
+			textBuf.nextLine( L"Pipeline" );
+			textBuf.nextLine( L"Segments: " );
+			textBuf.printNumber( pPipeline->GetNrOfSegments( ) );
+			textBuf.nextLine( L"Speed:" );
+			textBuf.printFloat( pPipeline->GetPulseSpeed( ).GetValue() );
+			textBuf.printString( L" m/s" );
+		}
+		break;
+
+		case tShapeType::undefined:
+			assert( false );
+			break;
+
+		default:
+			assert( false );
+		}
+
+	}
 }

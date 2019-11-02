@@ -59,10 +59,10 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	{
 	case NNetWorkThreadMessage::Id::TRIGGER:
 		{
-			ShapeId const id( CastToLong( msg.wParam ) );
-			Shape       * shape( m_pNNetModel->GetShape( id ) );
-			InputNeuron * pInputNeuron( Cast2InputNeuron( shape ) );
-			pInputNeuron->Trigger();
+			//ShapeId const id( CastToLong( msg.wParam ) );
+			//Shape       * shape( m_pNNetModel->GetShape( id ) );
+			//InputNeuron * pInputNeuron( Cast2InputNeuron( shape ) );
+			//pInputNeuron->Trigger();
 		}
 		break;
 

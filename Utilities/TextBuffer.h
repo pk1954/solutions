@@ -60,8 +60,9 @@ public:
     void printNumber     ( unsigned int const );
     void printNumber     ( long long const );
     void printNumber     ( unsigned long long const );
-    void printNumber     ( float const );
-    void printPercentage ( unsigned int const );
+	void printNumber     ( float const );
+	void printFloat      ( float const );
+	void printPercentage ( unsigned int const );
     void printPercentage ( unsigned int const, unsigned int const );
     void printSpan       ( unsigned int const, unsigned int const );
 	void printAsMillisecs( microseconds const );

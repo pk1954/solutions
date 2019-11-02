@@ -21,23 +21,12 @@ NNetModel::NNetModel( )
 {					
 	Shape::SetModel( this );
 
-	m_idInputNeuron1  = AddInputNeuron ( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
- //   m_idKnot1         = AddKnot        ( MicroMeterPoint( 400.0_MicroMeter, 400.0_MicroMeter ) );
-	//m_idNeuron1       = AddNeuron      ( MicroMeterPoint( 500.0_MicroMeter, 500.0_MicroMeter ) );
- //   m_idPipeline1     = AddPipeline    ( 0.1_meterPerSec );
- //   m_idPipeline2     = AddPipeline    ( 0.1_meterPerSec );
- //   m_idPipeline3     = AddPipeline    ( 0.1_meterPerSec );
-	m_idPipeline4     = AddPipeline    ( 0.1_meterPerSec );
-    m_idOutputNeuron1 = AddOutputNeuron( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) );
+	m_idInputNeuron  = AddInputNeuron ( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
+    m_idOutputNeuron = AddOutputNeuron( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) );
+	m_idPipeline     = AddPipeline    ( 0.1_meterPerSec );
 
-	AddOutgoing ( m_idInputNeuron1,  m_idPipeline4 );
-	//AddIncomming( m_idKnot1,         m_idPipeline1 );
-	//AddOutgoing ( m_idKnot1,         m_idPipeline2 );
-	//AddOutgoing ( m_idKnot1,         m_idPipeline3 );
-	//AddOutgoing ( m_idNeuron1,       m_idPipeline4 );
-	//AddIncomming( m_idOutputNeuron1, m_idPipeline2 );
-	//AddIncomming( m_idNeuron1,       m_idPipeline3 );
-	AddIncomming( m_idOutputNeuron1, m_idPipeline4 );
+	AddOutgoing ( m_idInputNeuron,  m_idPipeline );
+	AddIncomming( m_idOutputNeuron, m_idPipeline );
 }
 
 NNetModel::~NNetModel( )
@@ -332,7 +321,7 @@ void NNetModel::CopyModelData( ModelInterface const * const src )
 void NNetModel::Compute( )
 {
 	Apply2AllShapes( [&]( Shape & shape ) { shape.Prepare( ); } );
-	Apply2AllShapes( [&]( Shape & shape ) { shape.Step(); } );
+	Apply2AllShapes( [&]( Shape & shape ) { shape.Step( ); } );
 
 	m_timeStamp += TIME_RESOLUTION;
 }

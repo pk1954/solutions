@@ -18,11 +18,8 @@ public:
 
 	InputNeuron( MicroMeterPoint const );
 
-	void Trigger( );
-
 	virtual void Prepare( );
 	virtual void Step( );
-	virtual mV   GetNextOutput( ) const;
 
 	virtual void DrawExterior( ) const;
 	virtual void DrawInterior( ) const;
@@ -37,7 +34,9 @@ public:
 private:
 	void drawInputNeuron( COLORREF const, float const ) const;
 
-	fHertz m_pulseFrequency;
+	fHertz       m_pulseFrequency; // pulse frequency and pulse duration depend on each other
+	microseconds m_pulseDuration;  // in principle one variable would be enough, but to avoid 
+	                               // floating point rounding effects, both are stored
 };	
 
 InputNeuron const * Cast2InputNeuron( Shape const * );

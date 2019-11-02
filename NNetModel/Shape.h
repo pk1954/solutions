@@ -120,9 +120,9 @@ public:
 protected:
 	mV m_mVinputBuffer;
 
-	static NNetModel               * m_pModel;
-	static GraphicsInterface       * m_pGraphics;
-	static PixelCoordsFp     const * m_pCoord;
+	static NNetModel           * m_pModel;
+	static GraphicsInterface   * m_pGraphics;
+	static PixelCoordsFp const * m_pCoord;
 
 	COLORREF GetFrameColor( ) const 
 	{ 
@@ -133,8 +133,9 @@ protected:
 			      : EXT_COLOR_NORMAL;
 	};
 
-	COLORREF GetInteriorColor( mV const voltage ) const
+	COLORREF GetInteriorColor( mV const voltageInput ) const
 	{
+		mV       const voltage { min( voltageInput, PEAK_VOLTAGE ) };
 		int      const colElem { CastToInt( voltage  * 255.0f / PEAK_VOLTAGE) };
 		COLORREF const color   { RGB( colElem, 0, 0 ) };
 		return color;

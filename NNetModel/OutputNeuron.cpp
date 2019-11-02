@@ -16,18 +16,11 @@ OutputNeuron::OutputNeuron( MicroMeterPoint const upCenter )
 { 
 }
 
-void OutputNeuron::Prepare( )
+mV OutputNeuron::GetNextOutput( ) const 
 {
-	m_mVinputBuffer = 0._mV;
-	for ( auto idPipeline : m_incoming )
-		m_mVinputBuffer += m_pModel->GetPipeline( idPipeline )->GetNextOutput();
-	if (m_mVinputBuffer > PEAK_VOLTAGE)
-		m_mVinputBuffer = PEAK_VOLTAGE;
-}
-
-void OutputNeuron::Step( )
-{
-}
+	assert( false );  // Should never be called, as output neurons have no successor
+	return 0._mV; 
+};
 
 void OutputNeuron::DrawExterior( ) const
 {

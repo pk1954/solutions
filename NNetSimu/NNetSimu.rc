@@ -33,10 +33,10 @@ IDC_NNET_SIMU_MAIN MENU
             MENUITEM "Zoom &In", IDM_ZOOM_IN
             MENUITEM "Zoom &Out", IDM_ZOOM_OUT
         }
-  //      POPUP "&Windows"
-  //      {
-		//	MENUITEM "Show &hist window", IDM_HIST_WINDOW
-		//}
+        POPUP "&Windows"
+        {
+			MENUITEM "Show &cursor window", IDM_CRSR_WINDOW
+		}
     }
     POPUP "&Help"
     {
@@ -82,7 +82,8 @@ IDC_EVOLUTION_MAIN ACCELERATORS
     "+",            IDM_ZOOM_IN,      ASCII
     "-",            IDM_ZOOM_OUT,     ASCII
     "y",            IDM_FORWARD,      VIRTKEY, CONTROL
-    "?",            IDM_ABOUT,        ASCII,   ALT
+	"c",            IDM_CRSR_WINDOW,  ASCII,   ALT
+	"?",            IDM_ABOUT,        ASCII,   ALT
 	VK_ESCAPE,      IDM_ESCAPE,       VIRTKEY
 }
 

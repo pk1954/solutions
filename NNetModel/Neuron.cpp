@@ -11,14 +11,14 @@ using namespace std::chrono;
 
 Neuron::Neuron( MicroMeterPoint const upCenter, tShapeType const type )
   : BaseKnot( upCenter, type, NEURON_RADIUS ),
-	m_timeSinceLastPulse( PEAK_TIME )
+	m_timeSinceLastPulse( 0ms )
 { 
 }
 
 mV Neuron::waveFunction( microseconds time ) const
 {
 	assert( time >= 0ms );
-	if ( time <= PEAK_TIME )
+	if ( time <= PULSE_WIDTH )
 	{
 		float x = CastToFloat(time.count()) / 1000.0f - 1.0f;
 		return PEAK_VOLTAGE * ( 1.0f - x * x );
@@ -32,17 +32,14 @@ void Neuron::Prepare( )
 	m_mVinputBuffer = 0._mV;
 	for ( auto idPipeline : m_incoming )
 		m_mVinputBuffer += m_pModel->GetPipeline( idPipeline )->GetNextOutput();
-	if (m_mVinputBuffer > PEAK_VOLTAGE)
-		m_mVinputBuffer = PEAK_VOLTAGE;
 }
 
 void Neuron::Step( )
 {
-	static float        const FACTOR    ( PEAK_VOLTAGE.GetValue() * CastToFloat(TIME_RESOLUTION.count()) );
-	static microseconds const DECAY_TIME( PEAK_TIME );
-	static mV           const DECAY_INC ( FACTOR / DECAY_TIME.count() );
-
-	if ( m_mVinputBuffer >= PEAK_VOLTAGE )  
+	if ( 
+		  (m_mVinputBuffer >= THRESHHOLD_POTENTIAL) &&
+		  (m_timeSinceLastPulse >= MIN_PULSE_DURATION)
+	   )  
 	{
 		m_timeSinceLastPulse = 0ms;   
 	}
@@ -50,20 +47,13 @@ void Neuron::Step( )
 	{
 		m_timeSinceLastPulse += TIME_RESOLUTION;
 	}
-
-	if ( m_timeSinceLastPulse < DECAY_TIME )
-		m_mVinputBuffer = (m_mVinputBuffer > DECAY_INC) 
-						? m_mVinputBuffer - DECAY_INC 
-						: 0._mV;
 }
 
 mV Neuron::GetNextOutput( ) const
 {
-	mV mVoutput = BASE_POTENTIAL;
-	mV mVWave( waveFunction( m_timeSinceLastPulse ) );
-	mVoutput += mVWave;
-	assert( mVoutput <= PEAK_VOLTAGE );
-	return mVoutput;
+	return ( m_timeSinceLastPulse <= PULSE_WIDTH )
+		   ? waveFunction( m_timeSinceLastPulse )
+		   : BASE_POTENTIAL;
 }
 
 void Neuron::DrawExterior( ) const

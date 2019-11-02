@@ -329,10 +329,10 @@ void NNetWindow::OnLeftButtonDblClick(WPARAM const wParam, LPARAM const lParam )
 	{
 		switch ( pShape->GetShapeType() )
 		{
-		case tShapeType::inputNeuron:
-			PostCommand2Application( IDD_TRIGGER, pShape->GetId().GetValue() );
-			break;
-		
+		//case tShapeType::inputNeuron:
+		//	PostCommand2Application( IDD_TRIGGER, pShape->GetId().GetValue() );
+		//	break;
+		//
 		case tShapeType::pipeline:
 			m_pShapeSelected = pShape;
 			PostCommand2Application( IDD_SPLIT_PIPELINE, pixelPoint2LPARAM( ptCrsr ) );

@@ -68,7 +68,13 @@ void TextBuffer::printNumber( float const data )
 		m_wBuffer << setprecision(3) << data << L"%";
 	else 
 		m_wBuffer << L"-";
-    printBuffer();
+	printBuffer();
+}
+
+void TextBuffer::printFloat( float const data )
+{
+	m_wBuffer << setprecision(3) << data;
+	printBuffer();
 }
 
 void TextBuffer::printNumber( long long const data )

@@ -33,9 +33,10 @@ public:
 		initialize( );
 	}
 
-	meterPerSec GetPulseSpeed( ) const { return m_impulseSpeed;	}
-	ShapeId     GetStartKnot ( ) const { return m_idKnotStart;  }
-	ShapeId     GetEndKnot   ( ) const { return m_idKnotEnd;    }
+	meterPerSec GetPulseSpeed  ( ) const { return m_impulseSpeed;	}
+	ShapeId     GetStartKnot   ( ) const { return m_idKnotStart;  }
+	ShapeId     GetEndKnot     ( ) const { return m_idKnotEnd;    }
+	size_t      GetNrOfSegments( ) const { return m_potential.size(); }
 
 	MicroMeterPoint GetStartPoint( ) const; 
 	MicroMeterPoint GetEndPoint  ( ) const; 

@@ -91,15 +91,9 @@ public:
 	virtual void ResetAll( );
 
 private:
-	ShapeId m_idInputNeuron1;
-	ShapeId m_idKnot1;
-	ShapeId m_idNeuron1;
-	ShapeId m_idOutputNeuron1;
-	ShapeId m_idOutputNeuron2;
-	ShapeId m_idPipeline1;
-	ShapeId m_idPipeline2;
-	ShapeId m_idPipeline3;
-	ShapeId m_idPipeline4;
+	ShapeId m_idInputNeuron;
+	ShapeId m_idOutputNeuron;
+	ShapeId m_idPipeline;
 			  
 	microseconds    m_timeStamp;
 	vector<Shape *> m_Shapes;
