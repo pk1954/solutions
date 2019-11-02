@@ -124,22 +124,8 @@ protected:
 	static GraphicsInterface   * m_pGraphics;
 	static PixelCoordsFp const * m_pCoord;
 
-	COLORREF GetFrameColor( ) const 
-	{ 
-		return IsSuperHighlighted( ) 
-			   ? EXT_COLOR_SUPER_HIGHLIGHT 
-			   : IsHighlighted( ) 
-			      ? EXT_COLOR_HIGHLIGHT 
-			      : EXT_COLOR_NORMAL;
-	};
-
-	COLORREF GetInteriorColor( mV const voltageInput ) const
-	{
-		mV       const voltage { min( voltageInput, PEAK_VOLTAGE ) };
-		int      const colElem { CastToInt( voltage  * 255.0f / PEAK_VOLTAGE) };
-		COLORREF const color   { RGB( colElem, 0, 0 ) };
-		return color;
-	}
+	COLORREF GetFrameColor( ) const;
+	COLORREF GetInteriorColor( mV const ) const;
 
 	COLORREF GetInteriorColor( ) const
 	{

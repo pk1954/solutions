@@ -1,5 +1,6 @@
 // d3d_vertexBuffer.cpp
 //
+// D3D
 
 #include "stdafx.h"
 #include "assert.h"
@@ -22,13 +23,13 @@ HRESULT VertexBuffer::LoadVertices   // lock m_d3d_vertexBuffer and load the ver
     HRESULT hres;
     VOID   *pVoid;
 
-    hres = d3d_vertexBuffer->Lock( 0, 0, static_cast<void**>(&pVoid), 0 );
+	UINT uiBytesToLoad = m_vertexVector.size() * sizeof(Vertex);
+
+    hres = d3d_vertexBuffer->Lock( 0, uiBytesToLoad, static_cast<void**>(&pVoid), 0 );
 	if (hres != D3D_OK)
 		return hres;
     
-	//lint -e1415   Pointer to non-POD class Vertex function memcpy (arg. no. 2) 
-    memcpy( pVoid, m_vertexVector.data(), m_vertexVector.size() * sizeof(Vertex) );
-    //lint +e1415
+    memcpy( pVoid, m_vertexVector.data(), uiBytesToLoad );
     
 	hres = d3d_vertexBuffer->Unlock( );
 	if (hres != D3D_OK)

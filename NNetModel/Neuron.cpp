@@ -18,10 +18,10 @@ Neuron::Neuron( MicroMeterPoint const upCenter, tShapeType const type )
 mV Neuron::waveFunction( microseconds time ) const
 {
 	assert( time >= 0ms );
-	if ( time <= PULSE_WIDTH )
+	if ( time <= NNetModel::GetPulseWidth() )
 	{
 		float x = CastToFloat(time.count()) / 1000.0f - 1.0f;
-		return PEAK_VOLTAGE * ( 1.0f - x * x );
+		return NNetModel::GetPeakVoltage() * ( 1.0f - x * x );
 	}
 	else 
 		return BASE_POTENTIAL;
@@ -37,8 +37,8 @@ void Neuron::Prepare( )
 void Neuron::Step( )
 {
 	if ( 
-		  (m_mVinputBuffer >= THRESHHOLD_POTENTIAL) &&
-		  (m_timeSinceLastPulse >= MIN_PULSE_DURATION)
+		  (m_mVinputBuffer >= NNetModel::GetThresholdPotential()) &&
+		  (m_timeSinceLastPulse >= NNetModel::GetPulseWidth() + NNetModel::GetRefractoryPeriod())
 	   )  
 	{
 		m_timeSinceLastPulse = 0ms;   
@@ -51,7 +51,7 @@ void Neuron::Step( )
 
 mV Neuron::GetNextOutput( ) const
 {
-	return ( m_timeSinceLastPulse <= PULSE_WIDTH )
+	return ( m_timeSinceLastPulse <= NNetModel::GetPulseWidth() )
 		   ? waveFunction( m_timeSinceLastPulse )
 		   : BASE_POTENTIAL;
 }

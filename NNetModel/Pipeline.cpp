@@ -38,6 +38,8 @@ void Pipeline::Resize( )
 
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_initialized = true;
+
+		m_fDampingPerSegment = pow( NNetModel::GetDampingFactor(), segmentLength.GetValue() );
 	}
 }
 
@@ -82,26 +84,26 @@ void Pipeline::Prepare( )
 {
 	BaseKnot * const m_pKnotStart = m_pModel->GetBaseKnot( m_idKnotStart );   
 	m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
-	assert( m_mVinputBuffer <= PEAK_VOLTAGE );
+	assert( m_mVinputBuffer <= NNetModel::GetPeakVoltage() );
 }
 
 void Pipeline::Step( )
 {
 	mV mVcarry = m_mVinputBuffer;
-	assert( m_mVinputBuffer <= PEAK_VOLTAGE );
+	assert( m_mVinputBuffer <= NNetModel::GetPeakVoltage() );
 
 	for ( auto & iter : m_potential )
 	{
-		mVcarry *= 0.98f;  
+		mVcarry *= m_fDampingPerSegment;  
 		std::swap( iter, mVcarry );
-		assert( iter <= PEAK_VOLTAGE );
+		assert( iter <= NNetModel::GetPeakVoltage() );
 	}
 }
 
 mV Pipeline::GetNextOutput( ) const
 {
 	assert( m_potential.size() > 0 );
-	assert( m_potential.back() <= PEAK_VOLTAGE );
+	assert( m_potential.back() <= NNetModel::GetPeakVoltage() );
 	return m_potential.back();
 }
 

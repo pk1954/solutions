@@ -61,6 +61,7 @@ private:
 	MicroMeter  m_width;
 	vector<mV>  m_potential;
 	meterPerSec m_impulseSpeed;
+	float       m_fDampingPerSegment;
 };
 
 Pipeline const * Cast2Pipeline( Shape const * );

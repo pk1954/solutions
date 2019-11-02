@@ -9,14 +9,9 @@
 
 using namespace std::chrono;
 
-static microseconds const TIME_RESOLUTION    { 100us };
+static microseconds const TIME_RESOLUTION     { 100us };
 
 // dynamic model 
-static mV           const THRESHHOLD_POTENTIAL{  20._mV };
-static mV           const PEAK_VOLTAGE        {  10._mV };
-static microseconds const PULSE_WIDTH         {     2ms };
-static microseconds const REFRACTORY_PERIOD   {   500us };
-static microseconds const MIN_PULSE_DURATION  { PULSE_WIDTH + REFRACTORY_PERIOD };
 static meterPerSec  const STD_IMPULSE_SPEED   { 0.1_meterPerSec };     // Adjustable per pipeline
 static fHertz       const STD_PULSE_FREQ      { 50.0_fHertz };         // Input neurons
 

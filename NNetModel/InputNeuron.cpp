@@ -27,7 +27,7 @@ void InputNeuron::SetPulseFrequency( fHertz const freq )
 void InputNeuron::Prepare( )
 {
 	float fillLevel = static_cast<float>(m_timeSinceLastPulse.count()) / static_cast<float>(m_pulseDuration.count());
-	m_mVinputBuffer = PEAK_VOLTAGE * fillLevel;
+	m_mVinputBuffer = NNetModel::GetPeakVoltage() * fillLevel;
 }
 
 void InputNeuron::Step( )
