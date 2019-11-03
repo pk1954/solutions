@@ -12,7 +12,6 @@ using namespace std::chrono;
 static microseconds const TIME_RESOLUTION     { 100us };
 
 // dynamic model 
-static meterPerSec  const STD_IMPULSE_SPEED   { 0.1_meterPerSec };     // Adjustable per pipeline
 static fHertz       const STD_PULSE_FREQ      { 50.0_fHertz };         // Input neurons
 
 // geometry

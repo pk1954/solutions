@@ -15,30 +15,34 @@ Neuron::Neuron( MicroMeterPoint const upCenter, tShapeType const type )
 { 
 }
 
-mV Neuron::waveFunction( microseconds time ) const
+mV Neuron::waveFunction
+( 
+	NNetModel    const & model,
+	microseconds const   time 
+) const
 {
 	assert( time >= 0ms );
-	if ( time <= NNetModel::GetPulseWidth() )
+	if ( time <= model.GetPulseWidth() )
 	{
 		float x = CastToFloat(time.count()) / 1000.0f - 1.0f;
-		return NNetModel::GetPeakVoltage() * ( 1.0f - x * x );
+		return model.GetPeakVoltage() * ( 1.0f - x * x );
 	}
 	else 
 		return BASE_POTENTIAL;
 }
 
-void Neuron::Prepare( )
+void Neuron::Prepare( NNetModel const & model )
 {
 	m_mVinputBuffer = 0._mV;
 	for ( auto idPipeline : m_incoming )
-		m_mVinputBuffer += m_pModel->GetPipeline( idPipeline )->GetNextOutput();
+		m_mVinputBuffer += model.GetConstPipeline( idPipeline )->GetNextOutput( model );
 }
 
-void Neuron::Step( )
+void Neuron::Step( NNetModel const & model )
 {
 	if ( 
-		  (m_mVinputBuffer >= NNetModel::GetThresholdPotential()) &&
-		  (m_timeSinceLastPulse >= NNetModel::GetPulseWidth() + NNetModel::GetRefractoryPeriod())
+		  (m_mVinputBuffer >= model.GetThresholdPotential()) &&
+		  (m_timeSinceLastPulse >= model.GetPulseWidth() + model.GetRefractoryPeriod())
 	   )  
 	{
 		m_timeSinceLastPulse = 0ms;   
@@ -49,31 +53,31 @@ void Neuron::Step( )
 	}
 }
 
-mV Neuron::GetNextOutput( ) const
+mV Neuron::GetNextOutput( NNetModel const & model ) const
 {
-	return ( m_timeSinceLastPulse <= NNetModel::GetPulseWidth() )
-		   ? waveFunction( m_timeSinceLastPulse )
+	return ( m_timeSinceLastPulse <= model.GetPulseWidth() )
+		   ? waveFunction( model, m_timeSinceLastPulse )
 		   : BASE_POTENTIAL;
 }
 
-void Neuron::DrawExterior( ) const
+void Neuron::DrawExterior( NNetModel const & model, PixelCoordsFp  & coord ) const
 {
-	drawExterior( 24 );
+	drawExterior( coord, 24 );
 }
 
-void Neuron::DrawInterior( ) const
+void Neuron::DrawInterior( NNetModel const & model, PixelCoordsFp  & coord ) const
 { 
-	drawInterior( 24 );
+	drawInterior(model, coord, 24 );
 }
 
-void Neuron::drawExterior( int const iNrOfEdges ) const
+void Neuron::drawExterior( PixelCoordsFp & coord, int const iNrOfEdges ) const
 {
-	drawPolygon( iNrOfEdges, GetFrameColor( ), GetExtension() );
+	drawPolygon( coord, iNrOfEdges, GetFrameColor( ), GetExtension() );
 }
 
-void Neuron::drawInterior( int const iNrOfEdges ) const
+void Neuron::drawInterior( NNetModel const & model, PixelCoordsFp & coord, int const iNrOfEdges ) const
 { 
-	drawPolygon( iNrOfEdges, GetInteriorColor( ), GetExtension()  * NEURON_INTERIOR);
+	drawPolygon( coord, iNrOfEdges, GetInteriorColor( model ), GetExtension() * NEURON_INTERIOR);
 }
 
 Neuron const * Cast2Neuron( Shape const * shape )

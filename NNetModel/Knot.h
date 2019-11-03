@@ -23,9 +23,9 @@ public:
 	{
 	}
 
-	virtual void Prepare( );
-	virtual void Step( ) { }
-	virtual mV GetNextOutput( ) const;
-	virtual void DrawExterior( ) const;
-	virtual void DrawInterior( ) const;
+	virtual void Prepare      ( NNetModel const & );
+	virtual void Step         ( NNetModel const & ) { }
+	virtual mV   GetNextOutput( NNetModel const & ) const;
+	virtual void DrawExterior ( NNetModel const &, PixelCoordsFp & ) const;
+	virtual void DrawInterior ( NNetModel const &, PixelCoordsFp & ) const;
 };

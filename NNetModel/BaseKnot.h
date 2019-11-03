@@ -43,7 +43,7 @@ public:
 
 	void AddIncomming  ( ShapeId const );
 	void AddOutgoing   ( ShapeId const );
-	bool IsPointInShape( MicroMeterPoint const & ) const;
+	bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
 
 	bool HasIncoming( ) const { return m_incoming.size() > 0; }
 	bool HasOutgoing( ) const { return m_outgoing.size() > 0; }
@@ -56,14 +56,14 @@ public:
 		}
 	}
 
-	virtual void MoveTo( MicroMeterPoint const & );
+	virtual void MoveTo( NNetModel &, MicroMeterPoint const & );
 
 protected:
 
 	vector<ShapeId> m_incoming;
 	vector<ShapeId> m_outgoing;
 
-	void drawPolygon( int const, COLORREF const, MicroMeter const ) const;
+	void drawPolygon( PixelCoordsFp &, int const, COLORREF const, MicroMeter const ) const;
 
 private:
 

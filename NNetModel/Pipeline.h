@@ -19,49 +19,40 @@ class BaseKnot;
 class Pipeline : public Shape
 {
 public:
-	Pipeline( meterPerSec const = STD_IMPULSE_SPEED );
+	Pipeline( );
 
-	void SetStartKnot( ShapeId const );
-	void SetEndKnot  ( ShapeId const );
+	void SetStartKnot( NNetModel const &, ShapeId const );
+	void SetEndKnot  ( NNetModel const &, ShapeId const );
 
-	void Resize( );
+	void Resize( NNetModel const & );
 
-	void SetPulseSpeed( meterPerSec const newSpeed )
-	{
-		m_impulseSpeed = newSpeed;
-		m_initialized = false;
-		initialize( );
-	}
+	ShapeId GetStartKnot   ( ) const { return m_idKnotStart;  }
+	ShapeId GetEndKnot     ( ) const { return m_idKnotEnd;    }
+	size_t  GetNrOfSegments( ) const { return m_potential.size(); }
 
-	meterPerSec GetPulseSpeed  ( ) const { return m_impulseSpeed;	}
-	ShapeId     GetStartKnot   ( ) const { return m_idKnotStart;  }
-	ShapeId     GetEndKnot     ( ) const { return m_idKnotEnd;    }
-	size_t      GetNrOfSegments( ) const { return m_potential.size(); }
-
-	MicroMeterPoint GetStartPoint( ) const; 
-	MicroMeterPoint GetEndPoint  ( ) const; 
+	MicroMeterPoint GetStartPoint( NNetModel const & ) const; 
+	MicroMeterPoint GetEndPoint  ( NNetModel const & ) const; 
 	MicroMeter      GetWidth     ( ) const; 
 
-	void CheckConsistency( ) const;
+	void CheckConsistency( NNetModel const & ) const;
 
-	virtual void Step( );
-	virtual void Prepare( );
-	virtual void DrawExterior( ) const;
-	virtual void DrawInterior( ) const;
-	virtual void MoveTo( MicroMeterPoint const & ) {}
-	virtual bool IsPointInShape(  MicroMeterPoint const & ) const;
-	virtual mV   GetNextOutput( ) const;
+	virtual void Step   ( NNetModel const & );
+	virtual void Prepare( NNetModel const & );
+	virtual void DrawExterior( NNetModel const &, PixelCoordsFp  & ) const;
+	virtual void DrawInterior( NNetModel const &, PixelCoordsFp  & ) const;
+	virtual void MoveTo( NNetModel &, MicroMeterPoint const & ) {}
+	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
+	virtual mV   GetNextOutput( NNetModel const & ) const;
 
 private:
-	void initialize( );
+	void initialize( NNetModel const & );
 
-	bool        m_initialized;
-	ShapeId     m_idKnotStart;
-	ShapeId     m_idKnotEnd;
-	MicroMeter  m_width;
-	vector<mV>  m_potential;
-	meterPerSec m_impulseSpeed;
-	float       m_fDampingPerSegment;
+	bool       m_initialized;
+	ShapeId    m_idKnotStart;
+	ShapeId    m_idKnotEnd;
+	MicroMeter m_width;
+	vector<mV> m_potential;
+	float      m_fDampingPerSegment;
 };
 
 Pipeline const * Cast2Pipeline( Shape const * );

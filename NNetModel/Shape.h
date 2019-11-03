@@ -59,13 +59,13 @@ public:
 	{
 	}
 
-	virtual void DrawExterior  ( )                         const = 0;
-	virtual void DrawInterior  ( )                         const = 0;
-	virtual bool IsPointInShape( MicroMeterPoint const & ) const = 0;
-	virtual void MoveTo        ( MicroMeterPoint const & )       = 0;
-	virtual void Prepare       ( )                               = 0;
-	virtual void Step( )                                         = 0;
-	virtual mV   GetNextOutput( )                          const = 0;
+	virtual void DrawExterior  ( NNetModel const &, PixelCoordsFp  & )        const = 0;
+	virtual void DrawInterior  ( NNetModel const &, PixelCoordsFp  & )        const = 0;
+	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const = 0;
+	virtual mV   GetNextOutput ( NNetModel const & )                          const = 0;
+	virtual void Prepare       ( NNetModel const & )                                = 0;
+	virtual void Step          ( NNetModel const & )                                = 0;
+	virtual void MoveTo        ( NNetModel       &, MicroMeterPoint const & )       = 0;
 
 	void SetHighlightState( bool const bState )
 	{
@@ -102,34 +102,23 @@ public:
 		return m_type;
 	}
 
-	static void SetModel( NNetModel * const pModel	)
-	{
-		m_pModel = pModel;
-	}
-
 	static void SetGraphics( GraphicsInterface * const pGraphics	)
 	{
 		m_pGraphics = pGraphics;
 	}
 
-	static void SetCoordSystem( PixelCoordsFp const * const pCoord )
-	{
-		m_pCoord = pCoord;
-	}
-
 protected:
+
 	mV m_mVinputBuffer;
 
-	static NNetModel           * m_pModel;
-	static GraphicsInterface   * m_pGraphics;
-	static PixelCoordsFp const * m_pCoord;
+	static GraphicsInterface * m_pGraphics;
 
 	COLORREF GetFrameColor( ) const;
-	COLORREF GetInteriorColor( mV const ) const;
+	COLORREF GetInteriorColor( NNetModel const &, mV const ) const;
 
-	COLORREF GetInteriorColor( ) const
+	COLORREF GetInteriorColor( NNetModel const & model ) const
 	{
-		return GetInteriorColor( m_mVinputBuffer );
+		return GetInteriorColor( model, m_mVinputBuffer );
 	}
 
 private:

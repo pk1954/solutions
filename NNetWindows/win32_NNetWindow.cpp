@@ -33,7 +33,6 @@ void NNetWindow::InitClass
 	ModelWindow::InitClass( pActionTimer );
 	m_pReadBuffer              = pReadBuffer;
 	m_pNNetWorkThreadInterface = pNNetWorkThreadInterface;
-	Shape::SetCoordSystem( & m_coord );
 }
 
 NNetWindow::NNetWindow( ) :
@@ -198,8 +197,9 @@ void NNetWindow::PulseRateDialog( )
 
 void NNetWindow::PulseSpeedDialog( )
 {
+	NNetModel   const * pModel        = m_pReadBuffer->GetModel( );
 	Pipeline    const * pPipeline     = Cast2Pipeline( m_pShapeSelected );
-	meterPerSec const   pulseSpeedOld = pPipeline->GetPulseSpeed();
+	meterPerSec const   pulseSpeedOld = pModel->GetImpulseSpeed();
 	float fNewValue = StdDialogBox::Show
 	( 
 		GetWindowHandle(),
@@ -285,22 +285,22 @@ void NNetWindow::moveNNet( PixelPoint const ptDiff )
 	}
 }
 
-void NNetWindow::drawHighlightedShape( )
+void NNetWindow::drawHighlightedShape( NNetModel const & model, PixelCoordsFp & coord )
 {
 	if ( m_pShapeSelected && IsNeuronType( m_pShapeSelected->GetShapeType() ) )
 	{
-		m_pShapeSelected->DrawExterior( );
-		m_pShapeSelected->DrawInterior( );
+		m_pShapeSelected->DrawExterior( model, coord );
+		m_pShapeSelected->DrawInterior( model, coord );
 	}
 }
 
 void NNetWindow::doPaint( )
 {
 	NNetModel const * pModel = m_pReadBuffer->GetModel( );
-	pModel->Apply2AllShapes   ( [&]( Shape & shape ) { shape.DrawExterior( ); } );
-	pModel->Apply2AllPipelines( [&]( Shape & shape ) { shape.DrawInterior( ); } );
-	pModel->Apply2AllNeurons  ( [&]( Shape & shape ) { shape.DrawInterior( ); } );
-	drawHighlightedShape( );
+	pModel->Apply2AllPipelines( [&]( Shape & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
+	pModel->Apply2AllShapes   ( [&]( Shape & shape ) { shape.DrawExterior( * pModel, m_coord ); } );
+	pModel->Apply2AllNeurons  ( [&]( Shape & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
+	drawHighlightedShape( * pModel, m_coord );
 	m_pScale->ShowScale( fPIXEL( static_cast<float>( GetClientWindowHeight().GetValue() ) ) );
 	m_pGraphics->RenderForegroundObjects( );
 }

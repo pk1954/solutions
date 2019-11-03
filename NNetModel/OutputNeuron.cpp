@@ -16,20 +16,20 @@ OutputNeuron::OutputNeuron( MicroMeterPoint const upCenter )
 { 
 }
 
-mV OutputNeuron::GetNextOutput( ) const 
+mV OutputNeuron::GetNextOutput( NNetModel const & ) const 
 {
 	assert( false );  // Should never be called, as output neurons have no successor
 	return 0._mV; 
 };
 
-void OutputNeuron::DrawExterior( ) const
+void OutputNeuron::DrawExterior( NNetModel const & model, PixelCoordsFp & coord ) const
 {
-	drawExterior( 8 );
+	drawExterior( coord, 8 );
 }
 
-void OutputNeuron::DrawInterior( ) const
+void OutputNeuron::DrawInterior( NNetModel const & model, PixelCoordsFp & coord ) const
 { 
-	drawInterior( 8 );
+	drawInterior( model, coord, 8 );
 }
 
 OutputNeuron const * Cast2OutputNeuron( Shape const * shape )

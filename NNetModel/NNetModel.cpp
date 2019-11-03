@@ -13,30 +13,34 @@
 
 using namespace std::chrono;
 
-float        NNetModel:: m_dampingFactor      { 0.9995f };    // signal loss per um  
-mV           NNetModel:: m_thresholdPotential {  20._mV };
-mV           NNetModel:: m_peakVoltage        {  10._mV };
-microseconds NNetModel:: m_pulseWidth         {     2ms };
-microseconds NNetModel:: m_refractoryPeriod   {   500us };
-
 NNetModel::NNetModel( )
   : m_timeStamp( microseconds( 0 ) ),
 	m_Shapes( ),
-	m_shapeHighlighted( NO_SHAPE ),
-	m_shapeSuperHighlighted( NO_SHAPE )
+	m_shapeHighlighted     ( NO_SHAPE ),
+	m_shapeSuperHighlighted( NO_SHAPE ),
+	m_dampingFactor        ( 0.9995f ), 
+	m_thresholdPotential   ( 20._mV ),
+	m_peakVoltage          ( 10._mV ),
+	m_pulseWidth           ( 2ms ),
+	m_refractoryPeriod     ( 500us ),
+	m_impulseSpeed         ( 0.1_meterPerSec )
 {					
-	Shape::SetModel( this );
+	m_idInputNeuron  = addShape( new InputNeuron( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) );
+	m_idOutputNeuron = addShape( new OutputNeuron( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) );
+	m_idPipeline     = addShape( new Pipeline( ) );
 
-	m_idInputNeuron  = AddInputNeuron ( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
-    m_idOutputNeuron = AddOutputNeuron( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) );
-	m_idPipeline     = AddPipeline    ( 0.1_meterPerSec );
-
-	AddOutgoing ( m_idInputNeuron,  m_idPipeline );
-	AddIncomming( m_idOutputNeuron, m_idPipeline );
+	AddOutgoing ( * this, m_idInputNeuron,  m_idPipeline );
+	AddIncomming( * this, m_idOutputNeuron, m_idPipeline );
 }
 
 NNetModel::~NNetModel( )
 {}
+
+void NNetModel::SetImpulseSpeed( meterPerSec const newSpeed ) 
+{ 
+	m_impulseSpeed = newSpeed; 
+	Apply2AllPipelines( [&]( Shape & shape ) { static_cast<Pipeline &>( shape ).Resize( * this ); } );
+} 
 
 Shape * NNetModel::GetShape( ShapeId const id )
 {
@@ -74,7 +78,7 @@ BaseKnot * NNetModel::GetBaseKnot( ShapeId const id )
 {
 	Shape * pShape = GetShape( id );
 	assert( pShape );
-	assert( IsBaseKnotType( pShape->GetShapeType() ) );
+	assert( IsBaseKnotType( id ) );
 	return static_cast<BaseKnot *>( pShape );
 }
 
@@ -82,7 +86,7 @@ BaseKnot const * NNetModel::GetConstBaseKnot( ShapeId const id ) const
 {
 	Shape const * pShape = GetConstShape( id );
 	assert( pShape );
-	assert( IsBaseKnotType( pShape->GetShapeType() ) );
+	assert( IsBaseKnotType( id ) );
 	return static_cast<BaseKnot const *>( pShape );
 }
 
@@ -102,7 +106,7 @@ Knot const * NNetModel::GetConstKnot( ShapeId const id ) const
 	return static_cast<Knot const *>( pShape );
 }
 
-void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
+void NNetModel::Connect( NNetModel const & model )  // highlighted knot to super highlighted neuron
 {
 	if ( (m_shapeHighlighted != NO_SHAPE) && (m_shapeSuperHighlighted != NO_SHAPE) )
 	{
@@ -111,7 +115,7 @@ void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
 		( 
 			[&]( ShapeId const & idPipeline ) 
 			{ 
-				AddIncomming( m_shapeSuperHighlighted, idPipeline );
+				AddIncomming( model, m_shapeSuperHighlighted, idPipeline );
 			}
 		);
 
@@ -122,16 +126,16 @@ void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
 	}
 }
 
-void NNetModel::AddIncomming( ShapeId const idBaseKnot, ShapeId const idPipeline )
+void NNetModel::AddIncomming( NNetModel const & model,ShapeId const idBaseKnot, ShapeId const idPipeline )
 {
 	GetBaseKnot( idBaseKnot )->AddIncomming( idPipeline );
-	GetPipeline( idPipeline )->SetEndKnot( idBaseKnot );
+	GetPipeline( idPipeline )->SetEndKnot( model, idBaseKnot );
 }
 
-void NNetModel::AddOutgoing( ShapeId const idBaseKnot, ShapeId const idPipeline )
+void NNetModel::AddOutgoing( NNetModel const & model,ShapeId const idBaseKnot, ShapeId const idPipeline )
 {
 	GetBaseKnot( idBaseKnot )->AddOutgoing( idPipeline );
-	GetPipeline( idPipeline )->SetStartKnot( idBaseKnot );
+	GetPipeline( idPipeline )->SetStartKnot( model, idBaseKnot );
 }
 
 void NNetModel::HighlightShape( ShapeId const idHighlight )
@@ -181,31 +185,6 @@ ShapeId const NNetModel::addShape( Shape * pShape )
 	return id;
 }
 
-ShapeId const NNetModel::AddInputNeuron( MicroMeterPoint const& upCenter )
-{
-	return addShape( new InputNeuron( upCenter ) );
-}
-
-ShapeId const NNetModel::AddOutputNeuron( MicroMeterPoint const& upCenter )
-{
-	return addShape( new OutputNeuron( upCenter ) );
-}
-
-ShapeId const NNetModel::AddNeuron( MicroMeterPoint const & upCenter )
-{
-	return addShape( new Neuron( upCenter ) );
-}
-
-ShapeId const NNetModel::AddKnot( MicroMeterPoint const & upCenter )
-{
-	return addShape( new Knot( upCenter ) );
-}
-
-ShapeId const NNetModel::AddPipeline( meterPerSec const impulseSpeed )
-{
-	return addShape( new Pipeline( impulseSpeed ) );
-}
-
 void NNetModel::CreateNewBranch( ShapeId const idKnot )
 {
 	Knot          * pKnot         { GetKnot( idKnot ) };
@@ -214,8 +193,8 @@ void NNetModel::CreateNewBranch( ShapeId const idKnot )
 	ShapeId const   idNewKnot     { addShape( pKnotNew ) };
 	Pipeline      * pPipelineNew  { new Pipeline( ) };
 	ShapeId const   idNewPipeline { addShape( pPipelineNew ) };
-	AddIncomming( idNewKnot, idNewPipeline );
-	AddOutgoing ( idKnot,    idNewPipeline );
+	AddIncomming( * this, idNewKnot, idNewPipeline );
+	AddOutgoing ( * this, idKnot,    idNewPipeline );
 	HighlightShape( idNewKnot );
 }
 
@@ -226,9 +205,9 @@ void NNetModel::SplitPipeline( ShapeId const idPipeline, MicroMeterPoint const &
 	Knot        * pKnotNew      { new Knot( splitPoint ) };
 	ShapeId const idNewKnot     { addShape( pKnotNew ) };
 	ShapeId const idNewPipeline { addShape( pPipeNew ) };
-	pPipeNew->SetEndKnot( pPipeExisting->GetEndKnot() );
-	AddIncomming( idNewKnot, idPipeline );
-	AddOutgoing ( idNewKnot, idNewPipeline );
+	pPipeNew->SetEndKnot( * this, pPipeExisting->GetEndKnot() );
+	AddIncomming( * this, idNewKnot, idPipeline );
+	AddOutgoing ( * this, idNewKnot, idNewPipeline );
     CreateNewBranch( idNewKnot );
 }
 
@@ -238,8 +217,8 @@ void NNetModel::CreateNewNeuron( MicroMeterPoint const & pnt )
 	MicroMeterPoint const knotPos          { pnt + MicroMeterPoint( 0._MicroMeter, NEURON_RADIUS * 2 ) };
 	ShapeId         const idNewKnot        { addShape( new Knot( knotPos ) ) };
 	ShapeId         const idNewPipeline    { addShape( new Pipeline( ) ) };
-	AddOutgoing ( idNewInputNeuron, idNewPipeline );
-	AddIncomming( idNewKnot,        idNewPipeline );
+	AddOutgoing ( * this, idNewInputNeuron, idNewPipeline );
+	AddIncomming( * this, idNewKnot,        idNewPipeline );
 }
 
 void NNetModel::CreateNewInputNeuron( MicroMeterPoint const & pnt )
@@ -248,8 +227,8 @@ void NNetModel::CreateNewInputNeuron( MicroMeterPoint const & pnt )
 	MicroMeterPoint const knotPos          { pnt + MicroMeterPoint( 0._MicroMeter, NEURON_RADIUS * 2 ) };
 	ShapeId         const idNewKnot        { addShape( new Knot( knotPos ) ) };
 	ShapeId         const idNewPipeline    { addShape( new Pipeline( ) ) };
-	AddOutgoing ( idNewInputNeuron, idNewPipeline );
-	AddIncomming( idNewKnot,        idNewPipeline );
+	AddOutgoing ( * this, idNewInputNeuron, idNewPipeline );
+	AddIncomming( * this, idNewKnot,        idNewPipeline );
 }
 
 void NNetModel::CreateNewOutputNeuron( MicroMeterPoint const & pnt )
@@ -276,7 +255,7 @@ void NNetModel::checkConsistency( Shape * pShape ) const
 	case tShapeType::pipeline:
 	{
 		Pipeline * pPipeline = static_cast<Pipeline *>( pShape );
-		pPipeline->CheckConsistency( );
+		pPipeline->CheckConsistency( * this );
 	}
 		break;
 
@@ -326,8 +305,8 @@ void NNetModel::CopyModelData( ModelInterface const * const src )
 
 void NNetModel::Compute( )
 {
-	Apply2AllShapes( [&]( Shape & shape ) { shape.Prepare( ); } );
-	Apply2AllShapes( [&]( Shape & shape ) { shape.Step( ); } );
+	Apply2AllShapes( [&]( Shape & shape ) { shape.Prepare( * this ); } );
+	Apply2AllShapes( [&]( Shape & shape ) { shape.Step   ( * this ); } );
 
 	m_timeStamp += TIME_RESOLUTION;
 }
@@ -342,7 +321,7 @@ Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt, std::fu
 	for ( size_t i = m_Shapes.size(); i --> 0; )	
 	{
 		Shape * pShape = m_Shapes[i];
-		if ( pShape && crit( * pShape ) && pShape->IsPointInShape( pnt ) ) 
+		if ( pShape && crit( * pShape ) && pShape->IsPointInShape( * this, pnt ) ) 
 			return pShape;
 	};
 
@@ -356,7 +335,7 @@ Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt ) const
 			pnt, 
 			[&]( Shape const & shape ) 
 			{ 
-				return IsBaseKnotType( shape.GetShapeType() ); 
+				return ::IsBaseKnotType( shape.GetShapeType() ); 
 			} 
 	    ); 	
 
@@ -366,7 +345,7 @@ Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt ) const
 			pnt, 
 			[&]( Shape const & shape ) 
 			{ 
-				return ! IsBaseKnotType( shape.GetShapeType() ); 
+				return ! ::IsBaseKnotType( shape.GetShapeType() ); 
 			} 
 	    );
 

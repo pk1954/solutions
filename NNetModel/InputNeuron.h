@@ -18,11 +18,11 @@ public:
 
 	InputNeuron( MicroMeterPoint const );
 
-	virtual void Prepare( );
-	virtual void Step( );
+	virtual void Prepare( NNetModel const & );
+	virtual void Step   ( NNetModel const & );
 
-	virtual void DrawExterior( ) const;
-	virtual void DrawInterior( ) const;
+	virtual void DrawExterior( NNetModel const &, PixelCoordsFp & ) const;
+	virtual void DrawInterior( NNetModel const &, PixelCoordsFp & ) const;
 
 	fHertz GetPulseFrequency( ) const
 	{
@@ -32,7 +32,7 @@ public:
 	void SetPulseFrequency( fHertz const );
 
 private:
-	void drawInputNeuron( COLORREF const, float const ) const;
+	void drawInputNeuron( NNetModel const &, PixelCoordsFp const &,	COLORREF const, float const ) const;
 
 	fHertz       m_pulseFrequency; // pulse frequency and pulse duration depend on each other
 	microseconds m_pulseDuration;  // in principle one variable would be enough, but to avoid 

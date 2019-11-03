@@ -7,26 +7,26 @@
 #include "NNetModel.h"
 #include "Knot.h"
 
-void Knot::Prepare( )
+void Knot::Prepare( NNetModel const & model )
 {
 	m_mVinputBuffer = 0._mV;
 	for ( auto idPipeline : m_incoming )
-		m_mVinputBuffer += m_pModel->GetPipeline( idPipeline )->GetNextOutput();
-	assert( m_mVinputBuffer <= NNetModel::GetPeakVoltage() );
+		m_mVinputBuffer += model.GetConstPipeline( idPipeline )->GetNextOutput( model );
+	assert( m_mVinputBuffer <= model.GetPeakVoltage() );
 }
 
-mV Knot::GetNextOutput( ) const
+mV Knot::GetNextOutput( NNetModel const & model ) const
 {
-	assert( m_mVinputBuffer <= NNetModel::GetPeakVoltage() );
+	assert( m_mVinputBuffer <= model.GetPeakVoltage() );
 	return m_mVinputBuffer;
 }
 
-void Knot::DrawExterior( ) const
+void Knot::DrawExterior( NNetModel const & model, PixelCoordsFp & coord ) const
 {
-	drawPolygon( 24, GetFrameColor( ), IsHighlighted( ) ? 30.0_MicroMeter : GetExtension( ) );
+	drawPolygon( coord, 24, GetFrameColor( ), IsHighlighted( ) ? 30.0_MicroMeter : GetExtension( ) );
 }
 
-void Knot::DrawInterior( ) const
+void Knot::DrawInterior( NNetModel const & model, PixelCoordsFp & coord ) const
 {
-	drawPolygon( 24, GetInteriorColor( ), GetExtension() * PIPELINE_INTERIOR );
+	drawPolygon( coord, 24, GetInteriorColor( model ), GetExtension( ) * PIPELINE_INTERIOR );
 }

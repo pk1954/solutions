@@ -17,20 +17,20 @@ class Neuron : public BaseKnot
 public:
 	Neuron( MicroMeterPoint const, tShapeType const = tShapeType::neuron );
 
-	virtual void Prepare( );
-	virtual void Step( );
-	virtual mV   GetNextOutput( ) const;
+	virtual void Prepare( NNetModel const & );
+	virtual void Step   ( NNetModel const & );
+	virtual mV   GetNextOutput( NNetModel const & ) const;
 
-	virtual void DrawExterior( ) const;
-	virtual void DrawInterior( ) const;
+	virtual void DrawExterior( NNetModel const &, PixelCoordsFp & ) const;
+	virtual void DrawInterior( NNetModel const &, PixelCoordsFp & ) const;
 
 protected:
 	microseconds m_timeSinceLastPulse;
 
-	mV waveFunction( microseconds ) const;
+	mV waveFunction( NNetModel const &, microseconds const ) const;
 
-	void drawExterior( int const ) const;
-	void drawInterior( int const ) const;
+	void drawExterior( PixelCoordsFp &, int const ) const;
+	void drawInterior( NNetModel const &, PixelCoordsFp &, int const ) const;
 
 private:
 

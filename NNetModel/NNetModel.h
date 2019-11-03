@@ -45,25 +45,19 @@ public:
 	Knot           * GetKnot         ( ShapeId const ); 
 	Knot     const * GetConstKnot    ( ShapeId const ) const;
 
-	void AddIncomming( ShapeId const, ShapeId const );
-	void AddOutgoing ( ShapeId const, ShapeId const );
+	void AddIncomming( NNetModel const &, ShapeId const, ShapeId const );
+	void AddOutgoing ( NNetModel const &, ShapeId const, ShapeId const );
 		
 	// manipulating functions
 
 	void ResetSimulationTime( )	{ m_timeStamp = microseconds( 0 ); }
 
-	ShapeId const AddInputNeuron ( MicroMeterPoint const & );
-	ShapeId const AddOutputNeuron( MicroMeterPoint const & );
-	ShapeId const AddNeuron      ( MicroMeterPoint const & );
-	ShapeId const AddKnot        ( MicroMeterPoint const & );
-	ShapeId const AddPipeline    ( meterPerSec     const );
-
-	void CreateNewBranch( ShapeId const );
-	void CreateNewNeuron( MicroMeterPoint const & );
-	void CreateNewInputNeuron( MicroMeterPoint const & );
+	void CreateNewBranch      ( ShapeId const );
+	void CreateNewNeuron      ( MicroMeterPoint const & );
+	void CreateNewInputNeuron ( MicroMeterPoint const & );
 	void CreateNewOutputNeuron( MicroMeterPoint const & );
-	void SplitPipeline( ShapeId const, MicroMeterPoint const & );
-	void Connect( );
+	void SplitPipeline        ( ShapeId const, MicroMeterPoint const & );
+	void Connect              ( NNetModel const & );
 
 	void HighlightShape     ( ShapeId const );
 	void SuperHighlightShape( ShapeId const );
@@ -76,20 +70,25 @@ public:
 	virtual void Compute( );
 	virtual void ResetAll( );
 
-	// static functions
+	float        const GetDampingFactor( )      const { return m_dampingFactor; }  
+	mV           const GetThresholdPotential( ) const { return m_thresholdPotential; }
+	mV           const GetPeakVoltage( )        const { return m_peakVoltage; }    
+	microseconds const GetPulseWidth( )         const { return m_pulseWidth; }     
+	microseconds const GetRefractoryPeriod( )   const { return m_refractoryPeriod; } 
+	meterPerSec  const GetImpulseSpeed( )       const { return m_impulseSpeed; } 
 
-	static float        const GetDampingFactor( )      { return m_dampingFactor; }  
-	static mV           const GetThresholdPotential( ) { return m_thresholdPotential; }
-	static mV           const GetPeakVoltage( )        { return m_peakVoltage; }    
-	static microseconds const GetPulseWidth( )         { return m_pulseWidth; }     
-	static microseconds const GetRefractoryPeriod( )   { return m_refractoryPeriod; } 
-	    
-	static void SetDampingFactor     ( float        const x ) { m_dampingFactor      = x; }  
-	static void SetThresholdPotential( mV           const x ) { m_thresholdPotential = x; }
-	static void SetPeakVoltage       ( mV           const x ) { m_peakVoltage        = x; }    
-	static void SetPulseWidth        ( microseconds const x ) { m_pulseWidth         = x; }     
-	static void SetRefractoryPeriod  ( microseconds const x ) { m_refractoryPeriod   = x; } 
-																									   
+	void SetDampingFactor     ( float        const x ) { m_dampingFactor      = x; }  
+	void SetThresholdPotential( mV           const x ) { m_thresholdPotential = x; }
+	void SetPeakVoltage       ( mV           const x ) { m_peakVoltage        = x; }    
+	void SetPulseWidth        ( microseconds const x ) { m_pulseWidth         = x; }     
+	void SetRefractoryPeriod  ( microseconds const x ) { m_refractoryPeriod   = x; } 
+	void SetImpulseSpeed      ( meterPerSec  const );
+
+	bool IsBaseKnotType( ShapeId const id ) const
+	{
+		return ::IsBaseKnotType( GetConstShape( id )->GetShapeType() );
+	}
+
 private:
 	// initial shapes 
 	ShapeId m_idInputNeuron;
@@ -105,11 +104,12 @@ private:
 	ShapeId m_shapeSuperHighlighted;
 
 	// global parameters
-	static float        m_dampingFactor;     // signal loss per um  
-    static mV           m_thresholdPotential;
-    static mV           m_peakVoltage;   
-    static microseconds m_pulseWidth;   
-    static microseconds m_refractoryPeriod;
+	float        m_dampingFactor;     // signal loss per um  
+    mV           m_thresholdPotential;
+    mV           m_peakVoltage;   
+    microseconds m_pulseWidth;   
+    microseconds m_refractoryPeriod;
+	meterPerSec  m_impulseSpeed;
 
 	// local functions
 	ShapeId const addShape( Shape * );

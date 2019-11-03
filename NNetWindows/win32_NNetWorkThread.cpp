@@ -67,7 +67,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::CONNECT:
-		m_pNNetModel->Connect( );
+		m_pNNetModel->Connect( * m_pNNetModel );
 		break;
 
 	case NNetWorkThreadMessage::Id::HIGHLIGHT:
@@ -94,7 +94,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 			Shape           * shape( m_pNNetModel->GetShape( id ) );
 			Pipeline        * pPipe( Cast2Pipeline( shape ) );
 			meterPerSec const speed( (float&) msg.lParam );
-			pPipe->SetPulseSpeed( speed );
+			m_pNNetModel->SetImpulseSpeed( speed );
 		}
 		break;
 
@@ -103,7 +103,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 			ShapeId         const id( CastToLong( msg.wParam ) );
 			Shape               * pShape( m_pNNetModel->GetShape( id ) );
 			MicroMeterPoint const newPos( Util::Unpack2MicroMeterPoint(msg.lParam) );
-			pShape->MoveTo( newPos );
+			pShape->MoveTo( * m_pNNetModel, newPos );
 		}
 		break;
 

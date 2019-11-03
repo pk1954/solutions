@@ -18,7 +18,11 @@ void BaseKnot::AddOutgoing( ShapeId const idPipeline )
 	m_outgoing.push_back( idPipeline );
 }
 
-bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
+bool BaseKnot::IsPointInShape
+( 
+	NNetModel       const & model, 
+	MicroMeterPoint const & point 
+) const
 {
 	MicroMeterPoint const corner1 = m_center + MicroMeterPoint( + m_extension, + m_extension );
 	MicroMeterPoint const corner2 = m_center + MicroMeterPoint( + m_extension, - m_extension );
@@ -27,18 +31,23 @@ bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
 	return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
 }
 
-void BaseKnot::MoveTo( MicroMeterPoint const & newCenter )
+void BaseKnot::MoveTo
+( 
+	NNetModel             & model,
+	MicroMeterPoint const & newCenter 
+)
 {
 	m_center = newCenter;
 	for ( auto const idPipeline : m_incoming )
-		m_pModel->GetPipeline( idPipeline )->Resize( );
+		model.GetPipeline( idPipeline )->Resize( model );
 
 	for ( auto const idPipeline : m_outgoing )
-		m_pModel->GetPipeline( idPipeline )->Resize( );
+		model.GetPipeline( idPipeline )->Resize( model );
 }
 
 void BaseKnot::drawPolygon
 (
+	PixelCoordsFp  & coord,
 	int        const iNrOfEdges,
 	COLORREF   const color, 
 	MicroMeter const umWidth
@@ -47,8 +56,8 @@ void BaseKnot::drawPolygon
 	m_pGraphics->DrawPolygon
 	( 
 		iNrOfEdges,
-		m_pCoord->convert2fPixelPos( GetPosition() ), 
+		coord.convert2fPixelPos( GetPosition() ), 
 		color, 
-		m_pCoord->convert2fPixel( umWidth )
+		coord.convert2fPixel( umWidth )
 	);
 }
