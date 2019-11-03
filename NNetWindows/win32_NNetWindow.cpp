@@ -210,12 +210,8 @@ void NNetWindow::PulseSpeedDialog( )
 	meterPerSec const pulseSpeedNew( fNewValue );
 	PostCommand2Application
 	( 
-		IDM_PULSE_SPEED, 
-		Util::Pack2UINT64
-		( 
-			m_pShapeSelected->GetId().GetValue(), 
-			(UINT32&)pulseSpeedNew.GetValue() 
-		) 
+		IDM_PULSE_SPEED,
+		(LPARAM &)pulseSpeedNew
 	);
 }
 

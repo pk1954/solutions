@@ -90,11 +90,46 @@ void NNetWorkThreadInterface::PostPulseFrequency( ShapeId const id, fHertz const
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_FREQ), id.GetValue(), (LPARAM &)freq.GetValue() );
 }
 
-void NNetWorkThreadInterface::PostPulseSpeed( ShapeId const id, meterPerSec const speed )
+void NNetWorkThreadInterface::PostPulseSpeed( meterPerSec const speed )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << speed.GetValue() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), id.GetValue(), (LPARAM &)speed.GetValue() );
+		TraceStream( ) << __func__ << L" " << speed.GetValue() << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), 0, (LPARAM &)speed.GetValue() );
+}
+
+void NNetWorkThreadInterface::PostSetDampingFactor( float const factor )  
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << factor << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), 0, (LPARAM &)factor );
+}
+
+void NNetWorkThreadInterface::PostSetThresholdPotential( mV const pot )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << pot.GetValue() << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), 0, (LPARAM &)pot.GetValue() );
+}
+
+void NNetWorkThreadInterface::PostSetPeakVoltage( mV const voltage )    
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << voltage.GetValue() << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), 0, (LPARAM &)voltage.GetValue() );
+}
+
+void NNetWorkThreadInterface::PostSetPulseWidth( microseconds const ms )     
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << ms.count() << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), 0, (LPARAM &)ms );
+}
+
+void NNetWorkThreadInterface::PostSetRefractoryPeriod( microseconds const ms ) 
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << ms.count() << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), 0, (LPARAM &)ms );
 }
 
 void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const & newPos )

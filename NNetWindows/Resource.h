@@ -34,7 +34,12 @@
 								   	 
 #define IDM_PULSE_FREQ               210
 #define IDM_PULSE_SPEED              212
-								   	 
+#define IDM_DAMPING_FACTOR           213
+#define IDM_THRESHHOLD_POTENTIAL     214
+#define IDM_PEAK_VOLTAGE             215
+#define IDM_PULSE_WIDTH              216
+#define IDM_REFRACTORY_PERIOD        217
+
 #define IDM_MOVE_SHAPE               300
 								   	 
 #define IDD_TRIGGER                  350

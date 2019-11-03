@@ -80,28 +80,38 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 
 	case NNetWorkThreadMessage::Id::PULSE_FREQ:
 		{
-			ShapeId const id  ( CastToLong( msg.wParam ) );
-			Shape       * shape( m_pNNetModel->GetShape( id ) );
-			InputNeuron * pInputNeuron( Cast2InputNeuron( shape ) );
-			fHertz  const freq( (float &)msg.lParam );
-			pInputNeuron->SetPulseFrequency( freq );
+			InputNeuron * pInputNeuron( m_pNNetModel->GetInputNeuron( ShapeId( CastToLong(msg.wParam) ) ) );
+			pInputNeuron->SetPulseFrequency( fHertz( (float &)msg.lParam ) );
 		}
 		break;
 
+	case NNetWorkThreadMessage::Id::DAMPING_FACTOR:
+		m_pNNetModel->SetDampingFactor( (float &)msg.lParam );
+		break;
+
+	case NNetWorkThreadMessage::Id::THRESHHOLD_POTENTIAL:
+		m_pNNetModel->SetThresholdPotential( mV( (float &)msg.lParam ) );
+		break;
+
+	case NNetWorkThreadMessage::Id::PEAK_VOLTAGE:
+		m_pNNetModel->SetPeakVoltage( mV( (float &)msg.lParam ) );
+		break;
+
+	case NNetWorkThreadMessage::Id::PULSE_WIDTH:       
+		m_pNNetModel->SetPulseWidth( microseconds( msg.lParam ) );
+		break;
+
+	case NNetWorkThreadMessage::Id::REFRACTORY_PERIOD:
+		m_pNNetModel->SetRefractoryPeriod( microseconds( msg.lParam ) );
+		break;
+
 	case NNetWorkThreadMessage::Id::PULSE_SPEED:
-		{
-			ShapeId     const id   ( CastToLong( msg.wParam ) );
-			Shape           * shape( m_pNNetModel->GetShape( id ) );
-			Pipeline        * pPipe( Cast2Pipeline( shape ) );
-			meterPerSec const speed( (float&) msg.lParam );
-			m_pNNetModel->SetImpulseSpeed( speed );
-		}
+		m_pNNetModel->SetImpulseSpeed( meterPerSec( (float &)msg.lParam ) );
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE_TO:
 		{
-			ShapeId         const id( CastToLong( msg.wParam ) );
-			Shape               * pShape( m_pNNetModel->GetShape( id ) );
+			Shape               * pShape( m_pNNetModel->GetShape( ShapeId( CastToLong(msg.wParam) ) ) );
 			MicroMeterPoint const newPos( Util::Unpack2MicroMeterPoint(msg.lParam) );
 			pShape->MoveTo( * m_pNNetModel, newPos );
 		}
@@ -113,10 +123,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::CREATE_NEW_BRANCH:
-		{
-			ShapeId const id { CastToLong( msg.wParam ) };
-			m_pNNetModel->CreateNewBranch( id );
-		}
+		m_pNNetModel->CreateNewBranch( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
 	case NNetWorkThreadMessage::Id::CREATE_NEW_NEURON:

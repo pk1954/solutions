@@ -135,21 +135,36 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWorkThreadInterface->PostSuperHighlight( ShapeId( CastToLong( lParam ) ) );
 		break;
 
+	case IDM_DAMPING_FACTOR:
+		m_pNNetWorkThreadInterface->PostSetDampingFactor( (float &)lParam );
+		break;
+
+	case IDM_THRESHHOLD_POTENTIAL:
+		m_pNNetWorkThreadInterface->PostSetThresholdPotential( mV( (float &)lParam ) );
+		break;
+
+	case IDM_PEAK_VOLTAGE:
+		m_pNNetWorkThreadInterface->PostSetPeakVoltage( mV( (float &)lParam ) );
+		break;
+
+	case IDM_PULSE_WIDTH:
+		m_pNNetWorkThreadInterface->PostSetPulseWidth( microseconds( lParam ) );
+		break;
+
+	case IDM_REFRACTORY_PERIOD:
+		m_pNNetWorkThreadInterface->PostSetRefractoryPeriod( microseconds( lParam ) );
+		break;
+
+	case IDM_PULSE_SPEED:
+		m_pNNetWorkThreadInterface->PostPulseSpeed( meterPerSec( (float &)lParam ) );
+		break;
+
 	case IDM_PULSE_FREQ:
 		{
 			ShapeId const shapeId   { CastToLong( Util::HiPart( lParam ) ) };
 			UINT32  const loPart    { Util::LoPart( lParam ) };
 			fHertz  const pulseFreq { (float &)loPart };
 			m_pNNetWorkThreadInterface->PostPulseFrequency( shapeId, pulseFreq );
-		}
-		break;
-
-	case IDM_PULSE_SPEED:
-		{
-			ShapeId     const shapeId{ CastToLong( Util::HiPart( lParam ) ) };
-			UINT32      const loPart { Util::LoPart( lParam ) };
-			meterPerSec const mPs    { (float &)loPart };
-			m_pNNetWorkThreadInterface->PostPulseSpeed( shapeId, mPs );
 		}
 		break;
 

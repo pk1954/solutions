@@ -106,6 +106,38 @@ Knot const * NNetModel::GetConstKnot( ShapeId const id ) const
 	return static_cast<Knot const *>( pShape );
 }
 
+InputNeuron * NNetModel::GetInputNeuron( ShapeId const id )
+{
+	Shape * pShape = GetShape( id );
+	assert( pShape );
+	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
+	return static_cast<InputNeuron *>( pShape );
+}
+
+InputNeuron const * NNetModel::GetConstInputNeuron( ShapeId const id ) const
+{
+	Shape const * pShape = GetConstShape( id );
+	assert( pShape );
+	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
+	return static_cast<InputNeuron const *>( pShape );
+}
+
+OutputNeuron * NNetModel::GetOutputNeuron( ShapeId const id )
+{
+	Shape * pShape = GetShape( id );
+	assert( pShape );
+	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
+	return static_cast<OutputNeuron *>( pShape );
+}
+
+OutputNeuron const * NNetModel::GetConstOutputNeuron( ShapeId const id ) const
+{
+	Shape const * pShape = GetConstShape( id );
+	assert( pShape );
+	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
+	return static_cast<OutputNeuron const *>( pShape );
+}
+
 void NNetModel::Connect( NNetModel const & model )  // highlighted knot to super highlighted neuron
 {
 	if ( (m_shapeHighlighted != NO_SHAPE) && (m_shapeSuperHighlighted != NO_SHAPE) )

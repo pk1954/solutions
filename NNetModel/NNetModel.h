@@ -36,14 +36,18 @@ public:
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const, std::function<bool(Shape const &)> const & ) const;
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const ) const;
 	
-	Shape          * GetShape        ( ShapeId const );
-	Shape    const * GetConstShape   ( ShapeId const ) const;
-	Pipeline       * GetPipeline     ( ShapeId const ); 
-	Pipeline const * GetConstPipeline( ShapeId const ) const;
-	BaseKnot       * GetBaseKnot     ( ShapeId const ); 
-	BaseKnot const * GetConstBaseKnot( ShapeId const ) const;
-	Knot           * GetKnot         ( ShapeId const ); 
-	Knot     const * GetConstKnot    ( ShapeId const ) const;
+	Shape              * GetShape            ( ShapeId const );
+	Shape        const * GetConstShape       ( ShapeId const ) const;
+	Pipeline           * GetPipeline         ( ShapeId const ); 
+	Pipeline     const * GetConstPipeline    ( ShapeId const ) const;
+	BaseKnot           * GetBaseKnot         ( ShapeId const ); 
+	BaseKnot     const * GetConstBaseKnot    ( ShapeId const ) const;
+	Knot               * GetKnot             ( ShapeId const ); 
+	Knot         const * GetConstKnot        ( ShapeId const ) const;
+	InputNeuron        * GetInputNeuron      ( ShapeId const );
+	InputNeuron  const * GetConstInputNeuron ( ShapeId const ) const;
+	OutputNeuron       * GetOutputNeuron     ( ShapeId const );
+	OutputNeuron const * GetConstOutputNeuron( ShapeId const ) const;
 
 	void AddIncomming( NNetModel const &, ShapeId const, ShapeId const );
 	void AddOutgoing ( NNetModel const &, ShapeId const, ShapeId const );

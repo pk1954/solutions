@@ -24,25 +24,30 @@ public:
 
 	void Start
     ( 
-		HWND                 const,
-		ActionTimer        * const,
-		EventInterface     * const,
-		ObserverInterface  * const,
-		SlowMotionRatio    * const,
-		NNetModel          * const,
-		BOOL                 const
+		HWND                const,
+		ActionTimer       * const,
+		EventInterface    * const,
+		ObserverInterface * const,
+		SlowMotionRatio   * const,
+		NNetModel         * const,
+		BOOL                const
 	);
 	void Stop(); 
 
-	void PostConnect       ( );
-	void PostSlowMotionChanged( );
-	void PostTrigger       ( ShapeId const );
-	void PostHighlight     ( ShapeId const );
-	void PostSuperHighlight( ShapeId const );
-	void PostPulseFrequency( ShapeId const, fHertz           const );
-	void PostPulseSpeed    ( ShapeId const, meterPerSec      const );
-	void PostMoveShape     ( ShapeId const, MicroMeterPoint  const & );
-	void PostSplitPipeline ( ShapeId const, MicroMeterPoint  const & );
+	void PostConnect              ( );
+	void PostSlowMotionChanged    ( );
+	void PostSetDampingFactor     ( float        const );  
+	void PostSetThresholdPotential( mV           const );
+	void PostSetPeakVoltage       ( mV           const );    
+	void PostSetPulseWidth        ( microseconds const );     
+	void PostSetRefractoryPeriod  ( microseconds const ); 
+	void PostPulseSpeed           ( meterPerSec  const );
+	void PostTrigger              ( ShapeId const );
+	void PostHighlight            ( ShapeId const );
+	void PostSuperHighlight       ( ShapeId const );
+	void PostPulseFrequency       ( ShapeId const, fHertz           const );
+	void PostMoveShape            ( ShapeId const, MicroMeterPoint const & );
+	void PostSplitPipeline        ( ShapeId const, MicroMeterPoint const & );
 	void PostCreateNewBranch      ( ShapeId const );
 	void PostCreateNewNeuron      ( MicroMeterPoint const & );
 	void PostCreateNewInputNeuron ( MicroMeterPoint const & );
