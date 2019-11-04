@@ -107,7 +107,27 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 	case IDD_PULSE_SPEED_DIALOG:
 		m_pNNetWindow->PulseSpeedDialog();
 		break;
- 
+
+	case IDD_PULSE_WIDTH_DIALOG:
+		m_pNNetWindow->PulseWidthDialog();
+		break;
+
+	case IDD_DAMPING_FACTOR_DIALOG:
+		m_pNNetWindow->DampingFactorDialog();
+		break;
+
+	case IDD_THRESHOLD_POTENTIAL_DIALOG:
+		m_pNNetWindow->ThresholdPotentialDialog();
+		break;
+
+	case IDD_PEAK_VOLTAGE_DIALOG:
+		m_pNNetWindow->PeakVoltageDialog();
+		break;
+
+	case IDD_REFRACTORY_PERIOD_DIALOG:
+		m_pNNetWindow->RefractoryPeriodDialog();
+		break;
+
 	default:
 		return FALSE; // command has not been processed
 	}
