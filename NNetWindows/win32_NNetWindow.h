@@ -43,6 +43,11 @@ public:
 	void       Zoom( bool const );
 	void       PulseRateDialog( );
 	void       PulseSpeedDialog( );
+	void       PulseWidthDialog( );
+	void       DampingFactorDialog( );
+	void       ThresholdPotentialDialog( );
+	void       PeakVoltageDialog( );
+	void       RefractoryPeriodDialog( );
 	void       SetPixelSize( MicroMeter const );
 	MicroMeter GetPixelSize( ) const;
 

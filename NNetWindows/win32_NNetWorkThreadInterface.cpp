@@ -101,35 +101,35 @@ void NNetWorkThreadInterface::PostSetDampingFactor( float const factor )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << factor << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), 0, (LPARAM &)factor );
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::DAMPING_FACTOR), 0, (LPARAM &)factor );
 }
 
 void NNetWorkThreadInterface::PostSetThresholdPotential( mV const pot )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << pot.GetValue() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), 0, (LPARAM &)pot.GetValue() );
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::THRESHHOLD_POTENTIAL), 0, (LPARAM &)pot.GetValue() );
 }
 
 void NNetWorkThreadInterface::PostSetPeakVoltage( mV const voltage )    
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << voltage.GetValue() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), 0, (LPARAM &)voltage.GetValue() );
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PEAK_VOLTAGE), 0, (LPARAM &)voltage.GetValue() );
 }
 
 void NNetWorkThreadInterface::PostSetPulseWidth( microseconds const ms )     
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << ms.count() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), 0, (LPARAM &)ms );
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_WIDTH), 0, (LPARAM &)ms );
 }
 
 void NNetWorkThreadInterface::PostSetRefractoryPeriod( microseconds const ms ) 
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << ms.count() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), 0, (LPARAM &)ms );
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::REFRACTORY_PERIOD), 0, (LPARAM &)ms );
 }
 
 void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const & newPos )

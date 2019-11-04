@@ -167,9 +167,14 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	}
 	else
 	{
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_NEURON,        L"New neuron" );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_INPUT_NEURON,  L"New input neuron" );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_OUTPUT_NEURON, L"New output neuron" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_DAMPING_FACTOR_DIALOG,      L"Damping factor" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_THRESHOLD_POTENTIAL_DIALOG, L"Threshold potential" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PEAK_VOLTAGE_DIALOG,      	 L"Peak voltage" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_REFRACTORY_PERIOD_DIALOG,   L"Refractory period" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_WIDTH_DIALOG,         L"Pulse width" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_NEURON,           L"New neuron" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_INPUT_NEURON,     L"New input neuron" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_OUTPUT_NEURON,    L"New output neuron" );
 	}
 }
 
@@ -198,7 +203,6 @@ void NNetWindow::PulseRateDialog( )
 void NNetWindow::PulseSpeedDialog( )
 {
 	NNetModel   const * pModel        = m_pReadBuffer->GetModel( );
-	Pipeline    const * pPipeline     = Cast2Pipeline( m_pShapeSelected );
 	meterPerSec const   pulseSpeedOld = pModel->GetImpulseSpeed();
 	float fNewValue = StdDialogBox::Show
 	( 
@@ -212,6 +216,101 @@ void NNetWindow::PulseSpeedDialog( )
 	( 
 		IDM_PULSE_SPEED,
 		(LPARAM &)pulseSpeedNew
+	);
+}
+
+void NNetWindow::PulseWidthDialog( )
+{
+	NNetModel    const * pModel        = m_pReadBuffer->GetModel( );
+	microseconds const   pulseWidthOld = pModel->GetPulseWidth();
+	float fNewValue = StdDialogBox::Show
+	( 
+		GetWindowHandle(),
+		static_cast<float>( pulseWidthOld.count() ),
+		L"Pulse width",
+		L"µs"
+	);
+	microseconds const pulseWidthNew( static_cast<long long>(fNewValue) );
+	PostCommand2Application
+	( 
+		IDM_PULSE_WIDTH,
+		(LPARAM &)pulseWidthNew
+	);
+}
+
+void NNetWindow::DampingFactorDialog( )
+{
+	NNetModel const * pModel            = m_pReadBuffer->GetModel( );
+	float     const   fDampingFactorOld = pModel->GetDampingFactor();
+	float fNewValue = StdDialogBox::Show
+	( 
+		GetWindowHandle(),
+		fDampingFactorOld,
+		L"Damping factor",
+		L"1/µm"
+	);
+	float const fDampingFactorNew( fNewValue );
+	PostCommand2Application
+	( 
+		IDM_DAMPING_FACTOR,
+		(LPARAM &)fDampingFactorNew
+	);
+}
+
+void NNetWindow::ThresholdPotentialDialog( )
+{
+	NNetModel const * pModel                = m_pReadBuffer->GetModel( );
+	mV        const   thresholdPotentialOld = pModel->GetThresholdPotential();
+	float fNewValue = StdDialogBox::Show
+	( 
+		GetWindowHandle(),
+		static_cast<float>( thresholdPotentialOld.GetValue() ),
+		L"Pulse width",
+		L"µs"
+	);
+	mV const thresholdPotentialNew( fNewValue );
+	PostCommand2Application
+	( 
+		IDM_THRESHHOLD_POTENTIAL,
+		(LPARAM &)thresholdPotentialNew
+	);
+}
+
+void NNetWindow::PeakVoltageDialog( )
+{
+	NNetModel const * pModel         = m_pReadBuffer->GetModel( );
+	mV        const   peakVoltageOld = pModel->GetPeakVoltage();
+	float fNewValue = StdDialogBox::Show
+	( 
+		GetWindowHandle(),
+		static_cast<float>( peakVoltageOld.GetValue() ),
+		L"Peak voltage",
+		L"mV"
+	);
+	mV const peakVoltageNew( fNewValue );
+	PostCommand2Application
+	( 
+		IDM_PEAK_VOLTAGE,
+		(LPARAM &)peakVoltageNew
+	);
+}
+
+void NNetWindow::RefractoryPeriodDialog( )
+{
+	NNetModel    const * pModel              = m_pReadBuffer->GetModel( );
+	microseconds const   refractoryPeriodOld = pModel->GetRefractoryPeriod();
+	float fNewValue = StdDialogBox::Show
+	( 
+		GetWindowHandle(),
+		static_cast<float>( refractoryPeriodOld.count() ),
+		L"Refractory period",
+		L"µs"
+	);
+	microseconds const refractoryPeriodNew( static_cast<long long>(fNewValue) );
+	PostCommand2Application
+	( 
+		IDM_REFRACTORY_PERIOD,
+		(LPARAM &)refractoryPeriodNew
 	);
 }
 
@@ -293,8 +392,8 @@ void NNetWindow::drawHighlightedShape( NNetModel const & model, PixelCoordsFp & 
 void NNetWindow::doPaint( )
 {
 	NNetModel const * pModel = m_pReadBuffer->GetModel( );
-	pModel->Apply2AllPipelines( [&]( Shape & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
 	pModel->Apply2AllShapes   ( [&]( Shape & shape ) { shape.DrawExterior( * pModel, m_coord ); } );
+	pModel->Apply2AllPipelines( [&]( Shape & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
 	pModel->Apply2AllNeurons  ( [&]( Shape & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
 	drawHighlightedShape( * pModel, m_coord );
 	m_pScale->ShowScale( fPIXEL( static_cast<float>( GetClientWindowHeight().GetValue() ) ) );

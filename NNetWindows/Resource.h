@@ -18,14 +18,20 @@
 #define IDM_ESCAPE                   145
 #define IDM_RESET                    149
 								    
-#define IDD_PULSE_RATE_DIALOG        160
-#define IDD_PULSE_SPEED_DIALOG       161
-#define IDD_CONNECT                  162
-#define IDD_SPLIT_PIPELINE           163
-#define IDD_CREATE_NEW_BRANCH        170
-#define IDD_CREATE_NEW_NEURON        171
-#define IDD_CREATE_NEW_INPUT_NEURON  172
-#define IDD_CREATE_NEW_OUTPUT_NEURON 173
+#define IDD_PULSE_RATE_DIALOG          150
+#define IDD_PULSE_SPEED_DIALOG         151
+#define IDD_PULSE_WIDTH_DIALOG         152
+#define IDD_DAMPING_FACTOR_DIALOG      153
+#define IDD_THRESHOLD_POTENTIAL_DIALOG 154
+#define IDD_PEAK_VOLTAGE_DIALOG        155
+#define IDD_REFRACTORY_PERIOD_DIALOG   156
+
+#define IDD_CONNECT                  160
+#define IDD_SPLIT_PIPELINE           161
+#define IDD_CREATE_NEW_BRANCH        162
+#define IDD_CREATE_NEW_NEURON        163
+#define IDD_CREATE_NEW_INPUT_NEURON  164
+#define IDD_CREATE_NEW_OUTPUT_NEURON 165
 								   
 #define IDM_CRSR_WINDOW              180
 
