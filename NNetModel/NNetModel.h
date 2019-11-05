@@ -117,6 +117,6 @@ private:
 
 	// local functions
 	ShapeId const addShape( Shape * );
-	void          deleteShape( ShapeId const );
+	void          deleteHighlightedShape( );
 	void          checkConsistency( Shape * ) const;
 };

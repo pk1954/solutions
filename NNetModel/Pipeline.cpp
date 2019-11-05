@@ -14,11 +14,12 @@
 
 Pipeline::Pipeline( )
   :	Shape( tShapeType::pipeline ),
-	m_initialized ( false ),
-	m_idKnotStart ( NO_SHAPE ),
-	m_idKnotEnd   ( NO_SHAPE ),
-	m_width       ( PIPELINE_WIDTH ),
-	m_potential   ( )
+	m_initialized       ( false ),
+	m_idKnotStart       ( NO_SHAPE ),
+	m_idKnotEnd         ( NO_SHAPE ),
+	m_width             ( PIPELINE_WIDTH ),
+	m_fDampingPerSegment( 1.0f ),
+	m_potential         ( )
 {
 }
 

@@ -17,8 +17,8 @@ class Neuron : public BaseKnot
 public:
 	Neuron( MicroMeterPoint const, tShapeType const = tShapeType::neuron );
 
-	virtual void Prepare( NNetModel const & );
-	virtual void Step   ( NNetModel const & );
+	virtual void Prepare      ( NNetModel const & );
+	virtual void Step         ( NNetModel const & );
 	virtual mV   GetNextOutput( NNetModel const & ) const;
 
 	virtual void DrawExterior( NNetModel const &, PixelCoordsFp & ) const;

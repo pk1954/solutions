@@ -51,8 +51,8 @@ private:
 	ShapeId    m_idKnotStart;
 	ShapeId    m_idKnotEnd;
 	MicroMeter m_width;
-	vector<mV> m_potential;
 	float      m_fDampingPerSegment;
+	vector<mV> m_potential;
 };
 
 Pipeline const * Cast2Pipeline( Shape const * );

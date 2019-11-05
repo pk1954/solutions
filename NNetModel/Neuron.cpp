@@ -24,8 +24,14 @@ mV Neuron::waveFunction
 	assert( time >= 0ms );
 	if ( time <= model.GetPulseWidth() )
 	{
-		float x = CastToFloat(time.count()) / 1000.0f - 1.0f;
-		return model.GetPeakVoltage() * ( 1.0f - x * x );
+		float x { CastToFloat( time.count() ) };
+		float w { CastToFloat( model.GetPulseWidth().count() ) };
+		float p { model.GetPeakVoltage().GetValue() };
+		float u { 4.0f * p / w };
+		float y { u * x * ( 1.0f - x / w ) };
+		return mV( y );
+		//float x = CastToFloat(time.count()) / 1000.0f - 1.0f;
+		//return model.GetPeakVoltage() * ( 1.0f - x * x );
 	}
 	else 
 		return BASE_POTENTIAL;

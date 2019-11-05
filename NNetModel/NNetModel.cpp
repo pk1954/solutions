@@ -44,16 +44,18 @@ void NNetModel::SetImpulseSpeed( meterPerSec const newSpeed )
 
 Shape * NNetModel::GetShape( ShapeId const id )
 {
-	return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() ];
+	return ( IsDefined( id ) ) ? m_Shapes[ id.GetValue() ] : nullptr;
 }
 
 Shape const * NNetModel::GetConstShape( ShapeId const id ) const
 {
-	return ( id == NO_SHAPE ) ? nullptr : m_Shapes[ id.GetValue() ];
+	return ( IsDefined( id ) ) ? m_Shapes[ id.GetValue() ] : nullptr;
 }
 
-void NNetModel::deleteShape( ShapeId const id )
+void NNetModel::deleteHighlightedShape( )
 {
+	ShapeId const id = m_shapeHighlighted;
+	m_shapeHighlighted = NO_SHAPE;
 	delete m_Shapes[ id.GetValue() ];
 	m_Shapes[ id.GetValue() ] = nullptr;
 }
@@ -140,7 +142,7 @@ OutputNeuron const * NNetModel::GetConstOutputNeuron( ShapeId const id ) const
 
 void NNetModel::Connect( NNetModel const & model )  // highlighted knot to super highlighted neuron
 {
-	if ( (m_shapeHighlighted != NO_SHAPE) && (m_shapeSuperHighlighted != NO_SHAPE) )
+	if ( IsDefined( m_shapeHighlighted ) && IsDefined( m_shapeSuperHighlighted ) )
 	{
 		Knot * pKnot = GetKnot( m_shapeHighlighted );
 		pKnot->Apply2AllIncomingPipelines
@@ -151,9 +153,7 @@ void NNetModel::Connect( NNetModel const & model )  // highlighted knot to super
 			}
 		);
 
-		deleteShape( m_shapeHighlighted );
-		m_shapeHighlighted = NO_SHAPE;
-
+		deleteHighlightedShape( );
 		SuperHighlightShape( NO_SHAPE );
 	}
 }
@@ -172,18 +172,18 @@ void NNetModel::AddOutgoing( NNetModel const & model,ShapeId const idBaseKnot, S
 
 void NNetModel::HighlightShape( ShapeId const idHighlight )
 {
-	if ( m_shapeHighlighted != NO_SHAPE )
+	if ( IsDefined( m_shapeHighlighted ) )
 	{
 		Shape * pShape = GetShape( m_shapeHighlighted );
 		assert( pShape );
 		pShape->SetHighlightState( false );
 	}
 
-	if ( idHighlight != NO_SHAPE )
+	if ( IsDefined( idHighlight ) )
 	{
 		Shape * pShape = GetShape( idHighlight );
-//		assert( pShape );                          //TODO: clarify how this can happen
-//		assert( pShape->GetId() == idHighlight );
+		assert( pShape );                        
+		assert( pShape->GetId() == idHighlight );
 		if ( pShape && (pShape->GetId() == idHighlight) )
 			pShape->SetHighlightState( true );
 	}
@@ -193,12 +193,12 @@ void NNetModel::HighlightShape( ShapeId const idHighlight )
 
 void NNetModel::SuperHighlightShape( ShapeId const idSuperHighlight )
 {
-	if ( m_shapeSuperHighlighted != NO_SHAPE )
+	if ( IsDefined( m_shapeSuperHighlighted ) )
 	{
 		GetShape( m_shapeSuperHighlighted )->SetSuperHighlightState( false );
 	}
 
-	if ( idSuperHighlight != NO_SHAPE )
+	if ( IsDefined( idSuperHighlight ) )
 	{
 		Shape * pShape = GetShape( idSuperHighlight );
 		assert( pShape );

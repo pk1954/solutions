@@ -84,7 +84,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
 	NNetModel const * pModel  = m_pReadBuffer->GetModel();
 	ShapeId   const   shapeId = pModel->GetHighlightedShapeId();
-	if ( shapeId != NO_SHAPE )
+	if ( IsDefined( shapeId ) )
 	{
 		Shape const * pShape = pModel->GetConstShape( shapeId );
 		switch ( pShape->GetShapeType() )
