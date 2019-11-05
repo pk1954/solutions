@@ -168,11 +168,11 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_PULSE_WIDTH:
-		m_pNNetWorkThreadInterface->PostSetPulseWidth( microseconds( static_cast<long long>((float &)lParam ) ) );
+		m_pNNetWorkThreadInterface->PostSetPulseWidth( MicroSecs( (float &)lParam ) );
 		break;
 
 	case IDM_REFRACTORY_PERIOD:
-		m_pNNetWorkThreadInterface->PostSetRefractoryPeriod( microseconds( static_cast<long long>((float &)lParam ) ) );
+		m_pNNetWorkThreadInterface->PostSetRefractoryPeriod( MicroSecs( (float &)lParam ) );
 		break;
 
 	case IDM_PULSE_SPEED:

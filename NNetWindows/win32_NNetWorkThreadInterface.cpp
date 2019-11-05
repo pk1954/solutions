@@ -118,18 +118,18 @@ void NNetWorkThreadInterface::PostSetPeakVoltage( mV const voltage )
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PEAK_VOLTAGE), 0, (LPARAM &)voltage.GetValue() );
 }
 
-void NNetWorkThreadInterface::PostSetPulseWidth( microseconds const ms )     
+void NNetWorkThreadInterface::PostSetPulseWidth( MicroSecs const us )     
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << ms.count() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_WIDTH), 0, (LPARAM &)ms );
+		TraceStream( ) << __func__ << L" " << us.GetValue() << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_WIDTH), 0, (LPARAM &)us );
 }
 
-void NNetWorkThreadInterface::PostSetRefractoryPeriod( microseconds const ms ) 
+void NNetWorkThreadInterface::PostSetRefractoryPeriod( MicroSecs const us ) 
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << ms.count() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::REFRACTORY_PERIOD), 0, (LPARAM &)ms );
+		TraceStream( ) << __func__ << L" " << us.GetValue() << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::REFRACTORY_PERIOD), 0, (LPARAM &)us );
 }
 
 void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const & newPos )

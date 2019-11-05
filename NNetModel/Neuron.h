@@ -10,8 +10,6 @@
 #include "Shape.h"
 #include "BaseKnot.h"
 
-using std::chrono::microseconds;
-
 class Neuron : public BaseKnot
 {
 public:
@@ -25,9 +23,9 @@ public:
 	virtual void DrawInterior( NNetModel const &, PixelCoordsFp & ) const;
 
 protected:
-	microseconds m_timeSinceLastPulse;
+	MicroSecs m_timeSinceLastPulse;
 
-	mV waveFunction( NNetModel const &, microseconds const ) const;
+	mV waveFunction( NNetModel const &, MicroSecs const ) const;
 
 	void drawExterior( PixelCoordsFp &, int const ) const;
 	void drawInterior( NNetModel const &, PixelCoordsFp &, int const ) const;

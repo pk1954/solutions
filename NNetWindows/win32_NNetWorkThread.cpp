@@ -98,11 +98,11 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::PULSE_WIDTH:       
-		m_pNNetModel->SetPulseWidth( microseconds( msg.lParam ) );
+		m_pNNetModel->SetPulseWidth( MicroSecs( (float &)msg.lParam ) );
 		break;
 
 	case NNetWorkThreadMessage::Id::REFRACTORY_PERIOD:
-		m_pNNetModel->SetRefractoryPeriod( microseconds( msg.lParam ) );
+		m_pNNetModel->SetRefractoryPeriod( MicroSecs( (float &)msg.lParam ) );
 		break;
 
 	case NNetWorkThreadMessage::Id::PULSE_SPEED:
@@ -181,12 +181,12 @@ void NNetWorkThread::WaitTilNextActivation( )
 
 void NNetWorkThread::Compute() 
 { 
-	Ticks        const ticksTilStart      = m_hrTimer.GetTicksTilStart( );                   
-	microseconds const usTilStartRealTime = m_hrTimer.TicksToMicroseconds( ticksTilStart ); 
-	microseconds const usTilStartSimuTime = usTilStartRealTime / m_pSlowMotionRatio->GetRatio();
-	microseconds const usActualSimuTime   = m_pNNetModel->GetSimulationTime( );                // get actual time stamp
-	microseconds const usMissingSimuTime  = usTilStartSimuTime - usActualSimuTime;             // compute missing simulation time
-	if ( usMissingSimuTime > 0ms )
+	Ticks     const ticksTilStart      = m_hrTimer.GetTicksTilStart( );                   
+	MicroSecs const usTilStartRealTime = m_hrTimer.TicksToMicroSecs( ticksTilStart ); 
+	MicroSecs const usTilStartSimuTime = usTilStartRealTime / m_pSlowMotionRatio->GetRatio();
+	MicroSecs const usActualSimuTime   = m_pNNetModel->GetSimulationTime( );                // get actual time stamp
+	MicroSecs const usMissingSimuTime  = usTilStartSimuTime - usActualSimuTime;             // compute missing simulation time
+	if ( usMissingSimuTime > 0._MicroSecs )
 	{
 		unsigned long ulCyclesTodo = CastToUnsignedLong( usMissingSimuTime / TIME_RESOLUTION ); // compute cycles to be computed
 		do

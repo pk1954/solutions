@@ -11,27 +11,25 @@ using namespace std::chrono;
 
 Neuron::Neuron( MicroMeterPoint const upCenter, tShapeType const type )
   : BaseKnot( upCenter, type, NEURON_RADIUS ),
-	m_timeSinceLastPulse( 0ms )
+	m_timeSinceLastPulse( 0._MicroSecs )
 { 
 }
 
 mV Neuron::waveFunction
 ( 
-	NNetModel    const & model,
-	microseconds const   time 
+	NNetModel const & model,
+	MicroSecs const   time 
 ) const
 {
-	assert( time >= 0ms );
+	assert( time >= 0._MicroSecs );
 	if ( time <= model.GetPulseWidth() )
 	{
-		float x { CastToFloat( time.count() ) };
-		float w { CastToFloat( model.GetPulseWidth().count() ) };
+		float x { time.GetValue() };
+		float w { model.GetPulseWidth().GetValue() };
 		float p { model.GetPeakVoltage().GetValue() };
 		float u { 4.0f * p / w };
 		float y { u * x * ( 1.0f - x / w ) };
 		return mV( y );
-		//float x = CastToFloat(time.count()) / 1000.0f - 1.0f;
-		//return model.GetPeakVoltage() * ( 1.0f - x * x );
 	}
 	else 
 		return BASE_POTENTIAL;
@@ -51,7 +49,7 @@ void Neuron::Step( NNetModel const & model )
 		  (m_timeSinceLastPulse >= model.GetPulseWidth() + model.GetRefractoryPeriod())
 	   )  
 	{
-		m_timeSinceLastPulse = 0ms;   
+		m_timeSinceLastPulse = 0._MicroSecs;   
 	}
 	else
 	{

@@ -35,19 +35,19 @@ public:
 
 	virtual void Trigger( )
 	{
-		NNetModel    const * pModel = m_pReadBuffer->GetModel( );
-		microseconds const   time   = pModel->GetSimulationTime( );
+		NNetModel const * pModel = m_pReadBuffer->GetModel( );
+		MicroSecs const   time   = pModel->GetSimulationTime( );
 		m_wstrBuffer.str( wstring() );
 		m_wstrBuffer.clear();
 		m_wstrBuffer << std::fixed << std::setprecision(2);
-		if ( time > std::chrono::seconds( 1 ) )
+		if ( time > 1.e6_MicroSecs )  // more than one second
 		{
-			float seconds = CastToFloat( time.count() ) / 1000000.0f;
+			float seconds = CastToFloat( time.GetValue() ) / 1000000.0f;
 			m_wstrBuffer << seconds << L" s";
 		}
 		else
 		{
-			float millisecs = CastToFloat( time.count() ) / 1000.0f;
+			float millisecs = CastToFloat( time.GetValue() ) / 1000.0f;
 			m_wstrBuffer << millisecs << L" ms";
 		}
 		m_wstring = m_wstrBuffer.str();

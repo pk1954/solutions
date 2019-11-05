@@ -8,8 +8,6 @@
 #include "MoreTypes.h"
 #include "Neuron.h"
 
-using std::chrono::microseconds;
-
 class Pipeline;
 
 class OutputNeuron : public Neuron

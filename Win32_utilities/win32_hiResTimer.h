@@ -31,6 +31,7 @@ public:
 
 	microseconds GetDuration( );
 	microseconds TicksToMicroseconds( Ticks const );
+	MicroSecs    TicksToMicroSecs   ( Ticks const );
 	Ticks        MicroSecondsToTicks( microseconds const );
 
 	void BusyWait( microseconds const, Ticks & );

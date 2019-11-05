@@ -14,15 +14,15 @@
 using namespace std::chrono;
 
 NNetModel::NNetModel( )
-  : m_timeStamp( microseconds( 0 ) ),
-	m_Shapes( ),
+  : m_Shapes( ),
+	m_timeStamp            ( 0._MicroSecs ),
 	m_shapeHighlighted     ( NO_SHAPE ),
 	m_shapeSuperHighlighted( NO_SHAPE ),
 	m_dampingFactor        ( 0.9995f ), 
 	m_thresholdPotential   ( 20._mV ),
 	m_peakVoltage          ( 10._mV ),
-	m_pulseWidth           ( 2ms ),
-	m_refractoryPeriod     ( 500us ),
+	m_pulseWidth           ( 2000._MicroSecs ),
+	m_refractoryPeriod     ( 500._MicroSecs ),
 	m_impulseSpeed         ( 0.1_meterPerSec )
 {					
 	m_idInputNeuron  = addShape( new InputNeuron( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) );

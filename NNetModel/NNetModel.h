@@ -29,9 +29,9 @@ public:
 
 	// readOnly functions
 
-	BYTES        const GetCoreSize()            const { return BYTES(sizeof(NNetModel)); };
-	microseconds const GetSimulationTime( )     const { return m_timeStamp; }
-	ShapeId      const GetHighlightedShapeId( ) const { return m_shapeHighlighted; }
+	BYTES     const GetCoreSize()            const { return BYTES(sizeof(NNetModel)); };
+	MicroSecs const GetSimulationTime( )     const { return m_timeStamp; }
+	ShapeId   const GetHighlightedShapeId( ) const { return m_shapeHighlighted; }
 
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const, std::function<bool(Shape const &)> const & ) const;
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const ) const;
@@ -54,7 +54,7 @@ public:
 		
 	// manipulating functions
 
-	void ResetSimulationTime( )	{ m_timeStamp = microseconds( 0 ); }
+	void ResetSimulationTime( )	{ m_timeStamp = 0._MicroSecs; }
 
 	void CreateNewBranch      ( ShapeId const );
 	void CreateNewNeuron      ( MicroMeterPoint const & );
@@ -74,19 +74,19 @@ public:
 	virtual void Compute( );
 	virtual void ResetAll( );
 
-	float        const GetDampingFactor( )      const { return m_dampingFactor; }  
-	mV           const GetThresholdPotential( ) const { return m_thresholdPotential; }
-	mV           const GetPeakVoltage( )        const { return m_peakVoltage; }    
-	microseconds const GetPulseWidth( )         const { return m_pulseWidth; }     
-	microseconds const GetRefractoryPeriod( )   const { return m_refractoryPeriod; } 
-	meterPerSec  const GetImpulseSpeed( )       const { return m_impulseSpeed; } 
+	float       const GetDampingFactor( )      const { return m_dampingFactor; }  
+	mV          const GetThresholdPotential( ) const { return m_thresholdPotential; }
+	mV          const GetPeakVoltage( )        const { return m_peakVoltage; }    
+	MicroSecs   const GetPulseWidth( )         const { return m_pulseWidth; }     
+	MicroSecs   const GetRefractoryPeriod( )   const { return m_refractoryPeriod; } 
+	meterPerSec const GetImpulseSpeed( )       const { return m_impulseSpeed; } 
 
-	void SetDampingFactor     ( float        const x ) { m_dampingFactor      = x; }  
-	void SetThresholdPotential( mV           const x ) { m_thresholdPotential = x; }
-	void SetPeakVoltage       ( mV           const x ) { m_peakVoltage        = x; }    
-	void SetPulseWidth        ( microseconds const x ) { m_pulseWidth         = x; }     
-	void SetRefractoryPeriod  ( microseconds const x ) { m_refractoryPeriod   = x; } 
-	void SetImpulseSpeed      ( meterPerSec  const );
+	void SetDampingFactor     ( float       const x ) { m_dampingFactor      = x; }  
+	void SetThresholdPotential( mV          const x ) { m_thresholdPotential = x; }
+	void SetPeakVoltage       ( mV          const x ) { m_peakVoltage        = x; }    
+	void SetPulseWidth        ( MicroSecs   const x ) { m_pulseWidth         = x; }     
+	void SetRefractoryPeriod  ( MicroSecs   const x ) { m_refractoryPeriod   = x; } 
+	void SetImpulseSpeed      ( meterPerSec const );
 
 	bool IsBaseKnotType( ShapeId const id ) const
 	{
@@ -101,7 +101,7 @@ private:
 			  
 	// modal data
 	vector<Shape *> m_Shapes;
-	microseconds    m_timeStamp;
+	MicroSecs       m_timeStamp;
 
     // used by editor
 	ShapeId m_shapeHighlighted;
@@ -111,8 +111,8 @@ private:
 	float        m_dampingFactor;     // signal loss per um  
     mV           m_thresholdPotential;
     mV           m_peakVoltage;   
-    microseconds m_pulseWidth;   
-    microseconds m_refractoryPeriod;
+	MicroSecs    m_pulseWidth;   
+	MicroSecs    m_refractoryPeriod;
 	meterPerSec  m_impulseSpeed;
 
 	// local functions

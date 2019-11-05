@@ -227,11 +227,11 @@ void NNetWindow::PulseSpeedDialog( )
 
 void NNetWindow::PulseWidthDialog( )
 {
-	NNetModel    const * pModel        = m_pReadBuffer->GetModel( );
-	microseconds const   pulseWidthOld = pModel->GetPulseWidth();
+	NNetModel const * pModel        = m_pReadBuffer->GetModel( );
+	MicroSecs const   pulseWidthOld = pModel->GetPulseWidth();
 	parameterDialog
 	( 
-		static_cast<float>( pulseWidthOld.count() ),
+		pulseWidthOld.GetValue(),
 		L"Pulse width",
 		L"µs",
 		IDM_PULSE_WIDTH
@@ -278,11 +278,11 @@ void NNetWindow::PeakVoltageDialog( )
 
 void NNetWindow::RefractoryPeriodDialog( )
 {
-	NNetModel    const * pModel              = m_pReadBuffer->GetModel( );
-	microseconds const   refractoryPeriodOld = pModel->GetRefractoryPeriod();
+	NNetModel const * pModel              = m_pReadBuffer->GetModel( );
+	MicroSecs const   refractoryPeriodOld = pModel->GetRefractoryPeriod();
 	parameterDialog
 	( 
-		static_cast<float>( refractoryPeriodOld.count() ),
+		refractoryPeriodOld.GetValue(),
 		L"Refractory period",
 		L"µs",
 		IDM_REFRACTORY_PERIOD

@@ -34,9 +34,9 @@ public:
 private:
 	void drawInputNeuron( NNetModel const &, PixelCoordsFp const &,	COLORREF const, float const ) const;
 
-	fHertz       m_pulseFrequency; // pulse frequency and pulse duration depend on each other
-	microseconds m_pulseDuration;  // in principle one variable would be enough, but to avoid 
-	                               // floating point rounding effects, both are stored
+	fHertz    m_pulseFrequency; // pulse frequency and pulse duration depend on each other
+	MicroSecs m_pulseDuration;  // in principle one variable would be enough, but to avoid 
+	                            // floating point rounding effects, both are stored
 };	
 
 InputNeuron const * Cast2InputNeuron( Shape const * );

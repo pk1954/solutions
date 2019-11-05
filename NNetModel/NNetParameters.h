@@ -9,10 +9,10 @@
 
 using namespace std::chrono;
 
-static microseconds const TIME_RESOLUTION     { 100us };
+static MicroSecs    const TIME_RESOLUTION    { 100._MicroSecs };
 
 // dynamic model 
-static fHertz       const STD_PULSE_FREQ      { 50.0_fHertz };         // Input neurons
+static fHertz       const STD_PULSE_FREQ     { 50.0_fHertz };         // Input neurons
 
 // geometry
 static mV           const BASE_POTENTIAL     { 0.0_mV };

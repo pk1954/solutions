@@ -9,8 +9,6 @@
 #include "NNetModel.h"
 #include "OutputNeuron.h"
 
-using namespace std::chrono;
-
 OutputNeuron::OutputNeuron( MicroMeterPoint const upCenter )
 	: Neuron( upCenter, tShapeType::outputNeuron )
 { 

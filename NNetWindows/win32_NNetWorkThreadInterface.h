@@ -36,16 +36,16 @@ public:
 
 	void PostConnect              ( );
 	void PostSlowMotionChanged    ( );
-	void PostSetDampingFactor     ( float        const );  
-	void PostSetThresholdPotential( mV           const );
-	void PostSetPeakVoltage       ( mV           const );    
-	void PostSetPulseWidth        ( microseconds const );     
-	void PostSetRefractoryPeriod  ( microseconds const ); 
-	void PostPulseSpeed           ( meterPerSec  const );
+	void PostSetDampingFactor     ( float       const );  
+	void PostSetThresholdPotential( mV          const );
+	void PostSetPeakVoltage       ( mV          const );    
+	void PostSetPulseWidth        ( MicroSecs   const );     
+	void PostSetRefractoryPeriod  ( MicroSecs   const ); 
+	void PostPulseSpeed           ( meterPerSec const );
 	void PostTrigger              ( ShapeId const );
 	void PostHighlight            ( ShapeId const );
 	void PostSuperHighlight       ( ShapeId const );
-	void PostPulseFrequency       ( ShapeId const, fHertz           const );
+	void PostPulseFrequency       ( ShapeId const, fHertz          const );
 	void PostMoveShape            ( ShapeId const, MicroMeterPoint const & );
 	void PostSplitPipeline        ( ShapeId const, MicroMeterPoint const & );
 	void PostCreateNewBranch      ( ShapeId const );
