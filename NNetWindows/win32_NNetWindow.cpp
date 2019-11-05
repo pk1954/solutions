@@ -200,22 +200,28 @@ void NNetWindow::PulseRateDialog( )
 	);
 }
 
+void NNetWindow::parameterDialog
+( 
+	float   const   fOldValue,
+	wstring const & header, 
+	wstring const & unit,
+	int     const   msgId
+)
+{
+	float const fNewValue = StdDialogBox::Show( GetWindowHandle(), fOldValue, header, unit );
+	PostCommand2Application( msgId, (LPARAM &)fNewValue );
+}
+
 void NNetWindow::PulseSpeedDialog( )
 {
 	NNetModel   const * pModel        = m_pReadBuffer->GetModel( );
 	meterPerSec const   pulseSpeedOld = pModel->GetImpulseSpeed();
-	float fNewValue = StdDialogBox::Show
+	parameterDialog
 	( 
-		GetWindowHandle(),
-		static_cast<float>( pulseSpeedOld.GetValue() ),
+		pulseSpeedOld.GetValue(),
 		L"Conduction velocity",
-		L"m/sec"
-	);
-	meterPerSec const pulseSpeedNew( fNewValue );
-	PostCommand2Application
-	( 
-		IDM_PULSE_SPEED,
-		(LPARAM &)pulseSpeedNew
+		L"m/sec",
+		IDM_PULSE_SPEED
 	);
 }
 
@@ -223,37 +229,24 @@ void NNetWindow::PulseWidthDialog( )
 {
 	NNetModel    const * pModel        = m_pReadBuffer->GetModel( );
 	microseconds const   pulseWidthOld = pModel->GetPulseWidth();
-	float fNewValue = StdDialogBox::Show
+	parameterDialog
 	( 
-		GetWindowHandle(),
 		static_cast<float>( pulseWidthOld.count() ),
 		L"Pulse width",
-		L"µs"
-	);
-	microseconds const pulseWidthNew( static_cast<long long>(fNewValue) );
-	PostCommand2Application
-	( 
-		IDM_PULSE_WIDTH,
-		(LPARAM &)pulseWidthNew
+		L"µs",
+		IDM_PULSE_WIDTH
 	);
 }
 
 void NNetWindow::DampingFactorDialog( )
 {
-	NNetModel const * pModel            = m_pReadBuffer->GetModel( );
-	float     const   fDampingFactorOld = pModel->GetDampingFactor();
-	float fNewValue = StdDialogBox::Show
+	NNetModel const * pModel = m_pReadBuffer->GetModel( );
+	parameterDialog
 	( 
-		GetWindowHandle(),
-		fDampingFactorOld,
+		pModel->GetDampingFactor(),
 		L"Damping factor",
-		L"1/µm"
-	);
-	float const fDampingFactorNew( fNewValue );
-	PostCommand2Application
-	( 
-		IDM_DAMPING_FACTOR,
-		(LPARAM &)fDampingFactorNew
+		L"1/µm",
+		IDM_DAMPING_FACTOR
 	);
 }
 
@@ -261,18 +254,12 @@ void NNetWindow::ThresholdPotentialDialog( )
 {
 	NNetModel const * pModel                = m_pReadBuffer->GetModel( );
 	mV        const   thresholdPotentialOld = pModel->GetThresholdPotential();
-	float fNewValue = StdDialogBox::Show
+	parameterDialog
 	( 
-		GetWindowHandle(),
-		static_cast<float>( thresholdPotentialOld.GetValue() ),
-		L"Pulse width",
-		L"µs"
-	);
-	mV const thresholdPotentialNew( fNewValue );
-	PostCommand2Application
-	( 
-		IDM_THRESHHOLD_POTENTIAL,
-		(LPARAM &)thresholdPotentialNew
+		thresholdPotentialOld.GetValue(),
+		L"Threshold potential",
+		L"mV",
+		IDM_THRESHHOLD_POTENTIAL
 	);
 }
 
@@ -280,18 +267,12 @@ void NNetWindow::PeakVoltageDialog( )
 {
 	NNetModel const * pModel         = m_pReadBuffer->GetModel( );
 	mV        const   peakVoltageOld = pModel->GetPeakVoltage();
-	float fNewValue = StdDialogBox::Show
+	parameterDialog
 	( 
-		GetWindowHandle(),
-		static_cast<float>( peakVoltageOld.GetValue() ),
+		peakVoltageOld.GetValue(),
 		L"Peak voltage",
-		L"mV"
-	);
-	mV const peakVoltageNew( fNewValue );
-	PostCommand2Application
-	( 
-		IDM_PEAK_VOLTAGE,
-		(LPARAM &)peakVoltageNew
+		L"mV",
+		IDM_PEAK_VOLTAGE
 	);
 }
 
@@ -299,18 +280,12 @@ void NNetWindow::RefractoryPeriodDialog( )
 {
 	NNetModel    const * pModel              = m_pReadBuffer->GetModel( );
 	microseconds const   refractoryPeriodOld = pModel->GetRefractoryPeriod();
-	float fNewValue = StdDialogBox::Show
+	parameterDialog
 	( 
-		GetWindowHandle(),
 		static_cast<float>( refractoryPeriodOld.count() ),
 		L"Refractory period",
-		L"µs"
-	);
-	microseconds const refractoryPeriodNew( static_cast<long long>(fNewValue) );
-	PostCommand2Application
-	( 
-		IDM_REFRACTORY_PERIOD,
-		(LPARAM &)refractoryPeriodNew
+		L"µs",
+		IDM_REFRACTORY_PERIOD
 	);
 }
 

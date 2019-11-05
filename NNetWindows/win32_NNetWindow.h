@@ -10,6 +10,8 @@
 #include "NNetReadBuffer.h"  // do not remove! class definition not sufficient.
 #include "win32_modelWindow.h"
 
+using std::wstring;
+
 class Scale;
 class ActionTimer;
 class GraphicsInterface;
@@ -85,7 +87,8 @@ private:
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
-	LPARAM        crsPos2LPARAM( ) const;
+	void          parameterDialog( float const, wstring const &, wstring const &, int const );
+    LPARAM        crsPos2LPARAM( ) const;
 	LPARAM        pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL          inObservedClientRect( LPARAM const );
 	Shape const * getShapeUnderPoint( PixelPoint const );
