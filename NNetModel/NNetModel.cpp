@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include <vector>
+#include <unordered_map>
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "Knot.h"
@@ -12,6 +13,39 @@
 #include "NNetModel.h"
 
 using namespace std::chrono;
+using std::unordered_map;
+
+wchar_t const * const NNetModel::GetParameterName( tParameter const p ) const
+{
+	static unordered_map < tParameter, wchar_t const * const > mapParam =
+	{
+		{ tParameter::pulseRate,        L"Pulse rate"        },
+		{ tParameter::pulseSpeed,       L"Pulse speed"       },
+		{ tParameter::pulseWidth,       L"Pulse width"       },
+		{ tParameter::dampingFactor,    L"Damping factor"    },
+		{ tParameter::threshold,        L"Threshold"         },
+		{ tParameter::peakVoltage,      L"Peak voltage"      },
+		{ tParameter::refractoryPeriod, L"Refractory period" }
+	};				  
+
+	return mapParam.at( p );
+}
+
+wchar_t const * const NNetModel::GetParameterUnit( tParameter const p ) const
+{
+	static unordered_map < tParameter, wchar_t const * const > mapParam =
+	{
+		{ tParameter::pulseRate,        L"Hertz" },
+		{ tParameter::pulseSpeed,       L"m/sec" },
+		{ tParameter::pulseWidth,       L"µs"    },
+		{ tParameter::dampingFactor,    L"1/µm"  },
+		{ tParameter::threshold,        L"mV"    },
+		{ tParameter::peakVoltage,      L"mV"    },
+		{ tParameter::refractoryPeriod, L"µs"    }
+	};				  
+
+	return mapParam.at( p );
+}
 
 NNetModel::NNetModel( )
   : m_Shapes( ),
@@ -19,11 +53,11 @@ NNetModel::NNetModel( )
 	m_shapeHighlighted     ( NO_SHAPE ),
 	m_shapeSuperHighlighted( NO_SHAPE ),
 	m_dampingFactor        ( 0.9995f ), 
-	m_thresholdPotential   ( 20._mV ),
+	m_threshold            ( 20._mV ),
 	m_peakVoltage          ( 10._mV ),
 	m_pulseWidth           ( 2000._MicroSecs ),
 	m_refractoryPeriod     ( 500._MicroSecs ),
-	m_impulseSpeed         ( 0.1_meterPerSec )
+	m_pulseSpeed           ( 0.1_meterPerSec )
 {					
 	m_idInputNeuron  = addShape( new InputNeuron( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) );
 	m_idOutputNeuron = addShape( new OutputNeuron( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) );
@@ -36,10 +70,9 @@ NNetModel::NNetModel( )
 NNetModel::~NNetModel( )
 {}
 
-void NNetModel::SetImpulseSpeed( meterPerSec const newSpeed ) 
+void NNetModel::RecalcPipelines( ) 
 { 
-	m_impulseSpeed = newSpeed; 
-	Apply2AllPipelines( [&]( Shape & shape ) { static_cast<Pipeline &>( shape ).Resize( * this ); } );
+	Apply2AllPipelines( [&]( Pipeline & pipe ) { pipe.Recalc( * this ); } );
 } 
 
 Shape * NNetModel::GetShape( ShapeId const id )
@@ -138,6 +171,80 @@ OutputNeuron const * NNetModel::GetConstOutputNeuron( ShapeId const id ) const
 	assert( pShape );
 	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
 	return static_cast<OutputNeuron const *>( pShape );
+}
+
+float const NNetModel::GetParameter
+( 
+	tParameter const         param,
+	Shape      const * const pShape
+) const
+{
+	switch ( param )
+	{
+	case tParameter::pulseRate:
+		return Cast2InputNeuron( pShape )->GetPulseFrequency().GetValue();
+
+	case tParameter::pulseSpeed:
+		return m_pulseSpeed.GetValue();
+
+	case tParameter::pulseWidth:
+		return m_pulseWidth.GetValue();
+
+	case tParameter::dampingFactor:
+		return m_dampingFactor;
+
+	case tParameter::threshold:
+		return m_threshold.GetValue();
+
+	case tParameter::peakVoltage:
+		return m_peakVoltage.GetValue();
+
+	case tParameter::refractoryPeriod:
+		return m_refractoryPeriod.GetValue();
+
+	default  :
+		assert( false );
+	}
+	return 0.f;
+}
+
+void const NNetModel::SetParameter( tParameter const param,	float const fNewValue, Shape * const pShape )
+{
+	switch ( param )
+	{
+	case tParameter::pulseRate:
+		Cast2InputNeuron( pShape )->SetPulseFrequency( static_cast< fHertz >( fNewValue ) );
+		break;
+
+	case tParameter::pulseSpeed:
+		m_pulseSpeed = static_cast< meterPerSec >( fNewValue );
+		RecalcPipelines( );
+		break;
+
+	case tParameter::pulseWidth:
+		m_pulseWidth = static_cast< MicroSecs >( fNewValue );
+		break;
+
+	case tParameter::dampingFactor:
+		m_dampingFactor = fNewValue;
+		RecalcPipelines( );
+		break;
+
+	case tParameter::threshold:
+		m_threshold = static_cast< mV >( fNewValue );
+		break;
+
+	case tParameter::peakVoltage:
+		m_peakVoltage = static_cast< mV >( fNewValue );
+		break;
+
+	case tParameter::refractoryPeriod:
+		m_refractoryPeriod = static_cast< MicroSecs >( fNewValue );
+		break;
+
+	default  :
+		assert( false );
+	}
 }
 
 void NNetModel::Connect( NNetModel const & model )  // highlighted knot to super highlighted neuron
@@ -321,12 +428,14 @@ void NNetModel::Apply2AllNeurons( std::function<void(Shape &)> const & func ) co
 	}
 }
 
-void NNetModel::Apply2AllPipelines( std::function<void(Shape &)> const & func ) const
+void NNetModel::Apply2AllPipelines( std::function<void(Pipeline &)> const & func ) const
 {
 	for ( auto pShape : m_Shapes )
 	{
 		if ( pShape && ( pShape->GetShapeType() == tShapeType::pipeline ))
-			func( * pShape );
+		{
+			func( static_cast<Pipeline &>( * pShape ) );
+		}
 	}
 }
 

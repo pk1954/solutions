@@ -39,10 +39,10 @@ void BaseKnot::MoveTo
 {
 	m_center = newCenter;
 	for ( auto const idPipeline : m_incoming )
-		model.GetPipeline( idPipeline )->Resize( model );
+		model.GetPipeline( idPipeline )->Recalc( model );
 
 	for ( auto const idPipeline : m_outgoing )
-		model.GetPipeline( idPipeline )->Resize( model );
+		model.GetPipeline( idPipeline )->Recalc( model );
 }
 
 void BaseKnot::drawPolygon

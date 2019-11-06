@@ -23,8 +23,8 @@ COLORREF Shape::GetInteriorColor
 	mV        const voltageInput 
 ) const
 {
-	mV       const voltage { min( voltageInput, model.GetPeakVoltage() ) };
-	int      const colElem { CastToInt( voltage  * 255.0f / model.GetPeakVoltage()) };
+	mV       const voltage { min( voltageInput, mV(model.GetParameter( tParameter::peakVoltage )) ) };
+	int      const colElem { CastToInt( voltage  * 255.0f / mV(model.GetParameter( tParameter::peakVoltage )) ) };
 	COLORREF const color   { RGB( colElem, 0, 0 ) };
 	return color;
 }

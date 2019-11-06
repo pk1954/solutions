@@ -22,11 +22,11 @@ mV Neuron::waveFunction
 ) const
 {
 	assert( time >= 0._MicroSecs );
-	if ( time <= model.GetPulseWidth() )
+	if ( time <= MicroSecs( model.GetParameter( tParameter::pulseWidth ) ) )
 	{
 		float x { time.GetValue() };
-		float w { model.GetPulseWidth().GetValue() };
-		float p { model.GetPeakVoltage().GetValue() };
+		float w { model.GetParameter( tParameter::pulseWidth ) };
+		float p { model.GetParameter( tParameter::peakVoltage ) };
 		float u { 4.0f * p / w };
 		float y { u * x * ( 1.0f - x / w ) };
 		return mV( y );
@@ -45,8 +45,8 @@ void Neuron::Prepare( NNetModel const & model )
 void Neuron::Step( NNetModel const & model )
 {
 	if ( 
-		  (m_mVinputBuffer >= model.GetThresholdPotential()) &&
-		  (m_timeSinceLastPulse >= model.GetPulseWidth() + model.GetRefractoryPeriod())
+		  (m_mVinputBuffer >= mV( model.GetParameter( tParameter::threshold ) )) &&
+		  (m_timeSinceLastPulse >= MicroSecs( model.GetParameter( tParameter::pulseWidth ) + model.GetParameter( tParameter::refractoryPeriod )) )
 	   )  
 	{
 		m_timeSinceLastPulse = 0._MicroSecs;   
@@ -59,7 +59,7 @@ void Neuron::Step( NNetModel const & model )
 
 mV Neuron::GetNextOutput( NNetModel const & model ) const
 {
-	return ( m_timeSinceLastPulse <= model.GetPulseWidth() )
+	return ( m_timeSinceLastPulse <= MicroSecs( model.GetParameter( tParameter::pulseWidth ) ) )
 		   ? waveFunction( model, m_timeSinceLastPulse )
 		   : BASE_POTENTIAL;
 }

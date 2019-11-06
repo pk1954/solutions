@@ -7,13 +7,13 @@
 #include <fstream>
 #include "boolOp.h"
 #include "Shape.h"
+#include "NNetModel.h"
 #include "win32_WorkThreadInterface.h"
 
 class ActionTimer;
 class ObserverInterface;
 class EventInterface;
 class NNetWorkThread;
-class NNetModel;
 class SlowMotionRatio;
 
 class NNetWorkThreadInterface: public WorkThreadInterface
@@ -34,18 +34,12 @@ public:
 	);
 	void Stop(); 
 
+	void PostSetParameter         ( tParameter const, float const, ShapeId const = NO_SHAPE );
 	void PostConnect              ( );
 	void PostSlowMotionChanged    ( );
-	void PostSetDampingFactor     ( float       const );  
-	void PostSetThresholdPotential( mV          const );
-	void PostSetPeakVoltage       ( mV          const );    
-	void PostSetPulseWidth        ( MicroSecs   const );     
-	void PostSetRefractoryPeriod  ( MicroSecs   const ); 
-	void PostPulseSpeed           ( meterPerSec const );
 	void PostTrigger              ( ShapeId const );
 	void PostHighlight            ( ShapeId const );
 	void PostSuperHighlight       ( ShapeId const );
-	void PostPulseFrequency       ( ShapeId const, fHertz          const );
 	void PostMoveShape            ( ShapeId const, MicroMeterPoint const & );
 	void PostSplitPipeline        ( ShapeId const, MicroMeterPoint const & );
 	void PostCreateNewBranch      ( ShapeId const );
@@ -54,5 +48,6 @@ public:
 	void PostCreateNewOutputNeuron( MicroMeterPoint const & );
 
 private:
-	NNetWorkThread * m_pNNetWorkThread;
+	NNetWorkThread  * m_pNNetWorkThread;
+	NNetModel const * m_pModel;
 }; 

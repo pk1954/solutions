@@ -43,19 +43,14 @@ public:
 
 //	void      Size( );
 	void       Zoom( bool const );
-	void       PulseRateDialog( );
-	void       PulseSpeedDialog( );
-	void       PulseWidthDialog( );
-	void       DampingFactorDialog( );
-	void       ThresholdPotentialDialog( );
-	void       PeakVoltageDialog( );
-	void       RefractoryPeriodDialog( );
 	void       SetPixelSize( MicroMeter const );
 	MicroMeter GetPixelSize( ) const;
 
-	ShapeId GetShapeSelected() const { return m_pShapeSelected->GetId(); };
+	ShapeId GetShapeSelected() const { return m_pShapeSelected ? m_pShapeSelected->GetId() : NO_SHAPE; };
 
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
+
+	float ParameterDialog( tParameter param );
 
 private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
@@ -87,7 +82,6 @@ private:
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
-	void          parameterDialog( float const, wstring const &, wstring const &, int const );
     LPARAM        crsPos2LPARAM( ) const;
 	LPARAM        pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL          inObservedClientRect( LPARAM const );

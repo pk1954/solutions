@@ -132,7 +132,8 @@ Shape const * NNetWindow::getShapeUnderPoint( PixelPoint const pnt )
 
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const pntPos )
 {
-	UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
+	NNetModel const * pModel    { m_pReadBuffer->GetModel( ) };
+	UINT      const   STD_FLAGS { MF_BYPOSITION | MF_STRING };
 
 	Shape const * pShape = getShapeUnderPoint( pntPos );
 	if ( pShape )
@@ -141,7 +142,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		{
 		case tShapeType::inputNeuron:
 			m_pShapeSelected = pShape;
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE_DIALOG, L"Pulse rate" );
+			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE, pModel->GetParameterName( tParameter::pulseRate ) );
 			break;
 
 		case tShapeType::knot:  
@@ -157,8 +158,8 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 		case tShapeType::pipeline:
 			m_pShapeSelected = pShape;
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_SPLIT_PIPELINE, L"Split" );
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_SPEED_DIALOG,   L"Conduction velocity" );
+			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_SPLIT_PIPELINE, L"Split" );
+			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_SPEED, pModel->GetParameterName( tParameter::pulseSpeed ) );
 			break;
 
 		default:
@@ -167,126 +168,25 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	}
 	else
 	{
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_DAMPING_FACTOR_DIALOG,      L"Damping factor" );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_THRESHOLD_POTENTIAL_DIALOG, L"Threshold potential" );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PEAK_VOLTAGE_DIALOG,      	 L"Peak voltage" );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_REFRACTORY_PERIOD_DIALOG,   L"Refractory period" );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_WIDTH_DIALOG,         L"Pulse width" );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_NEURON,           L"New neuron" );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_INPUT_NEURON,     L"New input neuron" );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_NNETW_NEW_OUTPUT_NEURON,    L"New output neuron" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_DAMPING_FACTOR,    pModel->GetParameterName( tParameter::dampingFactor    ) );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_THRESHOLD,         pModel->GetParameterName( tParameter::threshold        ) );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PEAK_VOLTAGE,      pModel->GetParameterName( tParameter::peakVoltage      ) );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_REFRACTORY_PERIOD, pModel->GetParameterName( tParameter::refractoryPeriod ) );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_WIDTH,       pModel->GetParameterName( tParameter::pulseWidth       ) );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_CREATE_NEW_NEURON,        L"New neuron" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_CREATE_NEW_INPUT_NEURON,  L"New input neuron" );
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_CREATE_NEW_OUTPUT_NEURON, L"New output neuron" );
 	}
 }
 
-void NNetWindow::PulseRateDialog( )
+float NNetWindow::ParameterDialog( tParameter const param )
 {
-	InputNeuron const * pInputNeuron = Cast2InputNeuron( m_pShapeSelected );
-	fHertz      const   pulseRateOld = pInputNeuron->GetPulseFrequency();
-	float fNewValue = StdDialogBox::Show
-	( 
-		GetWindowHandle(),
-		static_cast<float>( pulseRateOld.GetValue() ),
-		L"Pulse rate",
-		L"Hertz"
-	);
-	PostCommand2Application
-	( 
-		IDM_PULSE_FREQ, 
-		Util::Pack2UINT64
-		(
-			m_pShapeSelected->GetId().GetValue(), 
-			(UINT32&)fNewValue
-		) 
-	);
-}
-
-void NNetWindow::parameterDialog
-( 
-	float   const   fOldValue,
-	wstring const & header, 
-	wstring const & unit,
-	int     const   msgId
-)
-{
-	float const fNewValue = StdDialogBox::Show( GetWindowHandle(), fOldValue, header, unit );
-	PostCommand2Application( msgId, (LPARAM &)fNewValue );
-}
-
-void NNetWindow::PulseSpeedDialog( )
-{
-	NNetModel   const * pModel        = m_pReadBuffer->GetModel( );
-	meterPerSec const   pulseSpeedOld = pModel->GetImpulseSpeed();
-	parameterDialog
-	( 
-		pulseSpeedOld.GetValue(),
-		L"Conduction velocity",
-		L"m/sec",
-		IDM_PULSE_SPEED
-	);
-}
-
-void NNetWindow::PulseWidthDialog( )
-{
-	NNetModel const * pModel        = m_pReadBuffer->GetModel( );
-	MicroSecs const   pulseWidthOld = pModel->GetPulseWidth();
-	parameterDialog
-	( 
-		pulseWidthOld.GetValue(),
-		L"Pulse width",
-		L"µs",
-		IDM_PULSE_WIDTH
-	);
-}
-
-void NNetWindow::DampingFactorDialog( )
-{
-	NNetModel const * pModel = m_pReadBuffer->GetModel( );
-	parameterDialog
-	( 
-		pModel->GetDampingFactor(),
-		L"Damping factor",
-		L"1/µm",
-		IDM_DAMPING_FACTOR
-	);
-}
-
-void NNetWindow::ThresholdPotentialDialog( )
-{
-	NNetModel const * pModel                = m_pReadBuffer->GetModel( );
-	mV        const   thresholdPotentialOld = pModel->GetThresholdPotential();
-	parameterDialog
-	( 
-		thresholdPotentialOld.GetValue(),
-		L"Threshold potential",
-		L"mV",
-		IDM_THRESHHOLD_POTENTIAL
-	);
-}
-
-void NNetWindow::PeakVoltageDialog( )
-{
-	NNetModel const * pModel         = m_pReadBuffer->GetModel( );
-	mV        const   peakVoltageOld = pModel->GetPeakVoltage();
-	parameterDialog
-	( 
-		peakVoltageOld.GetValue(),
-		L"Peak voltage",
-		L"mV",
-		IDM_PEAK_VOLTAGE
-	);
-}
-
-void NNetWindow::RefractoryPeriodDialog( )
-{
-	NNetModel const * pModel              = m_pReadBuffer->GetModel( );
-	MicroSecs const   refractoryPeriodOld = pModel->GetRefractoryPeriod();
-	parameterDialog
-	( 
-		refractoryPeriodOld.GetValue(),
-		L"Refractory period",
-		L"µs",
-		IDM_REFRACTORY_PERIOD
-	);
+	NNetModel const * pModel    { m_pReadBuffer->GetModel( ) };
+	float     const   fOldValue { pModel->GetParameter( param, m_pShapeSelected ) };
+	wstring   const   header    { pModel->GetParameterName( param ) }; 
+	wstring   const   unit      { pModel->GetParameterUnit( param ) }; 
+	float     const   fNewValue { StdDialogBox::Show( GetWindowHandle(), fOldValue, header, unit ) };
+	return fNewValue;
 }
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
@@ -367,9 +267,9 @@ void NNetWindow::drawHighlightedShape( NNetModel const & model, PixelCoordsFp & 
 void NNetWindow::doPaint( )
 {
 	NNetModel const * pModel = m_pReadBuffer->GetModel( );
-	pModel->Apply2AllShapes   ( [&]( Shape & shape ) { shape.DrawExterior( * pModel, m_coord ); } );
-	pModel->Apply2AllPipelines( [&]( Shape & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
-	pModel->Apply2AllNeurons  ( [&]( Shape & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
+	pModel->Apply2AllShapes   ( [&]( Shape    & shape ) { shape.DrawExterior( * pModel, m_coord ); } );
+	pModel->Apply2AllPipelines( [&]( Pipeline & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
+	pModel->Apply2AllNeurons  ( [&]( Shape    & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
 	drawHighlightedShape( * pModel, m_coord );
 	m_pScale->ShowScale( fPIXEL( static_cast<float>( GetClientWindowHeight().GetValue() ) ) );
 	m_pGraphics->RenderForegroundObjects( );
@@ -474,28 +374,7 @@ LPARAM NNetWindow::crsPos2LPARAM( ) const
 
 BOOL NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 {
-	UINT uiCmdId = LOWORD( wParam );
-	switch ( uiCmdId )
-	{
-	case IDD_NNETW_SPLIT_PIPELINE:
-		PostCommand2Application( IDD_SPLIT_PIPELINE, crsPos2LPARAM( ) );
-		break;
-
-	case IDD_NNETW_NEW_NEURON:
-		PostCommand2Application( IDD_CREATE_NEW_NEURON, crsPos2LPARAM( ) );
-		break;
-
-	case IDD_NNETW_NEW_INPUT_NEURON:
-		PostCommand2Application( IDD_CREATE_NEW_INPUT_NEURON, crsPos2LPARAM( ) );
-		break;
-
-	case IDD_NNETW_NEW_OUTPUT_NEURON:
-		PostCommand2Application( IDD_CREATE_NEW_OUTPUT_NEURON, crsPos2LPARAM( ) );
-		break;
-
-	default:
-		return TRUE;
-	}
+	PostCommand2Application( wParam, crsPos2LPARAM( ) );
 	return FALSE;
 }
 

@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include <sstream> 
+#include <unordered_map>
 #include "SCRIPT.H"
 #include "PixelTypes.h"
 #include "SlowMotionRatio.h"
@@ -19,6 +20,8 @@
 #include "win32_util_resource.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWorkThread.h"
+
+using std::unordered_map;
 
 NNetWorkThread::NNetWorkThread
 ( 
@@ -53,9 +56,26 @@ NNetWorkThread::~NNetWorkThread( )
 {
 }
 
+static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
+{
+	static unordered_map < NNetWorkThreadMessage::Id, tParameter const > mapParam =
+	{
+		{ NNetWorkThreadMessage::Id::PULSE_RATE,        tParameter::pulseRate        },
+		{ NNetWorkThreadMessage::Id::PULSE_SPEED,       tParameter::pulseSpeed       },
+		{ NNetWorkThreadMessage::Id::PULSE_WIDTH,       tParameter::pulseWidth       },
+		{ NNetWorkThreadMessage::Id::DAMPING_FACTOR,    tParameter::dampingFactor    },
+		{ NNetWorkThreadMessage::Id::THRESHOLD,         tParameter::threshold        },
+		{ NNetWorkThreadMessage::Id::PEAK_VOLTAGE,      tParameter::peakVoltage      },
+		{ NNetWorkThreadMessage::Id::REFRACTORY_PERIOD, tParameter::refractoryPeriod }
+	};				  
+
+	return mapParam.at( m );
+}
+
 BOOL NNetWorkThread::Dispatch( MSG const msg  )
 {
-	switch ( static_cast<NNetWorkThreadMessage::Id>(msg.message) )
+	NNetWorkThreadMessage::Id const id { static_cast<NNetWorkThreadMessage::Id>(msg.message) };
+	switch ( id )
 	{
 	case NNetWorkThreadMessage::Id::TRIGGER:
 		{
@@ -78,35 +98,19 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		m_pNNetModel->SuperHighlightShape( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
-	case NNetWorkThreadMessage::Id::PULSE_FREQ:
-		{
-			InputNeuron * pInputNeuron( m_pNNetModel->GetInputNeuron( ShapeId( CastToLong(msg.wParam) ) ) );
-			pInputNeuron->SetPulseFrequency( fHertz( (float &)msg.lParam ) );
-		}
-		break;
-
+	case NNetWorkThreadMessage::Id::PULSE_RATE:
 	case NNetWorkThreadMessage::Id::DAMPING_FACTOR:
-		m_pNNetModel->SetDampingFactor( (float &)msg.lParam );
-		break;
-
-	case NNetWorkThreadMessage::Id::THRESHHOLD_POTENTIAL:
-		m_pNNetModel->SetThresholdPotential( mV( (float &)msg.lParam ) );
-		break;
-
+	case NNetWorkThreadMessage::Id::THRESHOLD:
 	case NNetWorkThreadMessage::Id::PEAK_VOLTAGE:
-		m_pNNetModel->SetPeakVoltage( mV( (float &)msg.lParam ) );
-		break;
-
 	case NNetWorkThreadMessage::Id::PULSE_WIDTH:       
-		m_pNNetModel->SetPulseWidth( MicroSecs( (float &)msg.lParam ) );
-		break;
-
 	case NNetWorkThreadMessage::Id::REFRACTORY_PERIOD:
-		m_pNNetModel->SetRefractoryPeriod( MicroSecs( (float &)msg.lParam ) );
-		break;
-
 	case NNetWorkThreadMessage::Id::PULSE_SPEED:
-		m_pNNetModel->SetImpulseSpeed( meterPerSec( (float &)msg.lParam ) );
+		m_pNNetModel->SetParameter
+		( 
+			GetParameterType( id ), 
+			(float &)msg.lParam, 
+			m_pNNetModel->GetShape( ShapeId( CastToLong(msg.wParam) ) )
+		);
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE_TO:
@@ -183,7 +187,7 @@ void NNetWorkThread::Compute()
 { 
 	Ticks     const ticksTilStart      = m_hrTimer.GetTicksTilStart( );                   
 	MicroSecs const usTilStartRealTime = m_hrTimer.TicksToMicroSecs( ticksTilStart ); 
-	MicroSecs const usTilStartSimuTime = usTilStartRealTime / m_pSlowMotionRatio->GetRatio();
+	MicroSecs const usTilStartSimuTime = usTilStartRealTime / CastToFloat( m_pSlowMotionRatio->GetRatio() );
 	MicroSecs const usActualSimuTime   = m_pNNetModel->GetSimulationTime( );                // get actual time stamp
 	MicroSecs const usMissingSimuTime  = usTilStartSimuTime - usActualSimuTime;             // compute missing simulation time
 	if ( usMissingSimuTime > 0._MicroSecs )

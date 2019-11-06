@@ -24,7 +24,7 @@ public:
 	void SetStartKnot( NNetModel const &, ShapeId const );
 	void SetEndKnot  ( NNetModel const &, ShapeId const );
 
-	void Resize( NNetModel const & );
+	void Recalc( NNetModel const & );
 
 	ShapeId GetStartKnot   ( ) const { return m_idKnotStart;  }
 	ShapeId GetEndKnot     ( ) const { return m_idKnotEnd;    }

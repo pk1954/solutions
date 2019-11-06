@@ -3,6 +3,7 @@
 // NNetSimu
 
 #include "stdafx.h"
+#include <unordered_map>
 #include <chrono>
 #include "Windowsx.h"
 #include "Windows.h"
@@ -19,6 +20,8 @@
 #include "win32_NNetEditor.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetController.h"
+
+using std::unordered_map;
 
 NNetController::NNetController
 (
@@ -100,32 +103,34 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		m_pNNetWindow->Notify( lParam != 0 );
 		break;
 
-	case IDD_PULSE_RATE_DIALOG:
-		m_pNNetWindow->PulseRateDialog();
-		break;
+	case IDD_PULSE_RATE:
+	case IDD_PULSE_SPEED:
+	case IDD_PULSE_WIDTH:
+	case IDD_DAMPING_FACTOR:
+	case IDD_THRESHOLD:
+	case IDD_PEAK_VOLTAGE:
+	case IDD_REFRACTORY_PERIOD:
+		{
+			static unordered_map < int, tParameter const > mapParam
+			{
+				{ IDD_PULSE_RATE,        tParameter::pulseRate        },
+				{ IDD_PULSE_SPEED,       tParameter::pulseSpeed       },
+				{ IDD_PULSE_WIDTH,       tParameter::pulseWidth       },
+				{ IDD_DAMPING_FACTOR,    tParameter::dampingFactor    },
+				{ IDD_THRESHOLD,         tParameter::threshold        },
+				{ IDD_PEAK_VOLTAGE,      tParameter::peakVoltage      },
+				{ IDD_REFRACTORY_PERIOD, tParameter::refractoryPeriod }
+			};				  
 
-	case IDD_PULSE_SPEED_DIALOG:
-		m_pNNetWindow->PulseSpeedDialog();
-		break;
-
-	case IDD_PULSE_WIDTH_DIALOG:
-		m_pNNetWindow->PulseWidthDialog();
-		break;
-
-	case IDD_DAMPING_FACTOR_DIALOG:
-		m_pNNetWindow->DampingFactorDialog();
-		break;
-
-	case IDD_THRESHOLD_POTENTIAL_DIALOG:
-		m_pNNetWindow->ThresholdPotentialDialog();
-		break;
-
-	case IDD_PEAK_VOLTAGE_DIALOG:
-		m_pNNetWindow->PeakVoltageDialog();
-		break;
-
-	case IDD_REFRACTORY_PERIOD_DIALOG:
-		m_pNNetWindow->RefractoryPeriodDialog();
+			tParameter param     { mapParam.at( wmId ) };
+			float      fNewValue { m_pNNetWindow->ParameterDialog( param ) };
+			m_pNNetWorkThreadInterface->PostSetParameter
+			( 
+				param, 
+				fNewValue, 
+				m_pNNetWindow->GetShapeSelected( ) 
+			);
+		}
 		break;
 
 	default:
@@ -153,39 +158,6 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDM_SUPER_HIGHLIGHT:
 		m_pNNetWorkThreadInterface->PostSuperHighlight( ShapeId( CastToLong( lParam ) ) );
-		break;
-
-	case IDM_DAMPING_FACTOR:
-		m_pNNetWorkThreadInterface->PostSetDampingFactor( (float &)lParam );
-		break;
-
-	case IDM_THRESHHOLD_POTENTIAL:
-		m_pNNetWorkThreadInterface->PostSetThresholdPotential( mV( (float &)lParam ) );
-		break;
-
-	case IDM_PEAK_VOLTAGE:
-		m_pNNetWorkThreadInterface->PostSetPeakVoltage( mV( (float &)lParam ) );
-		break;
-
-	case IDM_PULSE_WIDTH:
-		m_pNNetWorkThreadInterface->PostSetPulseWidth( MicroSecs( (float &)lParam ) );
-		break;
-
-	case IDM_REFRACTORY_PERIOD:
-		m_pNNetWorkThreadInterface->PostSetRefractoryPeriod( MicroSecs( (float &)lParam ) );
-		break;
-
-	case IDM_PULSE_SPEED:
-		m_pNNetWorkThreadInterface->PostPulseSpeed( meterPerSec( (float &)lParam ) );
-		break;
-
-	case IDM_PULSE_FREQ:
-		{
-			ShapeId const shapeId   { CastToLong( Util::HiPart( lParam ) ) };
-			UINT32  const loPart    { Util::LoPart( lParam ) };
-			fHertz  const pulseFreq { (float &)loPart };
-			m_pNNetWorkThreadInterface->PostPulseFrequency( shapeId, pulseFreq );
-		}
 		break;
 
 	case IDM_SLOWER:

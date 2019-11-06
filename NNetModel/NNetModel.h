@@ -20,6 +20,17 @@
 class ObserverInterface;
 class EventInterface;
 
+enum class tParameter
+{
+	pulseRate,
+	pulseSpeed,
+	pulseWidth,
+	dampingFactor,
+	threshold,
+	peakVoltage,
+	refractoryPeriod
+};
+
 class NNetModel : public ModelInterface
 {
 public:
@@ -49,6 +60,9 @@ public:
 	OutputNeuron       * GetOutputNeuron     ( ShapeId const );
 	OutputNeuron const * GetConstOutputNeuron( ShapeId const ) const;
 
+	wchar_t const * const GetParameterName( tParameter const ) const;
+	wchar_t const * const GetParameterUnit( tParameter const ) const;
+
 	void AddIncomming( NNetModel const &, ShapeId const, ShapeId const );
 	void AddOutgoing ( NNetModel const &, ShapeId const, ShapeId const );
 		
@@ -66,27 +80,18 @@ public:
 	void HighlightShape     ( ShapeId const );
 	void SuperHighlightShape( ShapeId const );
 
-	void Apply2AllShapes   ( std::function<void(Shape &)> const & ) const;
-	void Apply2AllNeurons  ( std::function<void(Shape &)> const & ) const;
-	void Apply2AllPipelines( std::function<void(Shape &)> const & ) const;
+	void Apply2AllShapes   ( std::function<void(Shape    &)> const & ) const;
+	void Apply2AllNeurons  ( std::function<void(Shape    &)> const & ) const;
+	void Apply2AllPipelines( std::function<void(Pipeline &)> const & ) const;
+
+	void RecalcPipelines( );
 
 	virtual void CopyModelData( ModelInterface const * const );
 	virtual void Compute( );
 	virtual void ResetAll( );
 
-	float       const GetDampingFactor( )      const { return m_dampingFactor; }  
-	mV          const GetThresholdPotential( ) const { return m_thresholdPotential; }
-	mV          const GetPeakVoltage( )        const { return m_peakVoltage; }    
-	MicroSecs   const GetPulseWidth( )         const { return m_pulseWidth; }     
-	MicroSecs   const GetRefractoryPeriod( )   const { return m_refractoryPeriod; } 
-	meterPerSec const GetImpulseSpeed( )       const { return m_impulseSpeed; } 
-
-	void SetDampingFactor     ( float       const x ) { m_dampingFactor      = x; }  
-	void SetThresholdPotential( mV          const x ) { m_thresholdPotential = x; }
-	void SetPeakVoltage       ( mV          const x ) { m_peakVoltage        = x; }    
-	void SetPulseWidth        ( MicroSecs   const x ) { m_pulseWidth         = x; }     
-	void SetRefractoryPeriod  ( MicroSecs   const x ) { m_refractoryPeriod   = x; } 
-	void SetImpulseSpeed      ( meterPerSec const );
+	float const GetParameter( tParameter const,	             Shape const * const = nullptr ) const;
+	void  const SetParameter( tParameter const,	float const, Shape       * const = nullptr );
 
 	bool IsBaseKnotType( ShapeId const id ) const
 	{
@@ -109,11 +114,11 @@ private:
 
 	// global parameters
 	float        m_dampingFactor;     // signal loss per um  
-    mV           m_thresholdPotential;
+    mV           m_threshold;
     mV           m_peakVoltage;   
 	MicroSecs    m_pulseWidth;   
 	MicroSecs    m_refractoryPeriod;
-	meterPerSec  m_impulseSpeed;
+	meterPerSec  m_pulseSpeed;
 
 	// local functions
 	ShapeId const addShape( Shape * );

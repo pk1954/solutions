@@ -108,9 +108,9 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 			textBuf.nextLine( L"Pipeline" );
 			textBuf.nextLine( L"Segments: " );
 			textBuf.printNumber( pPipeline->GetNrOfSegments( ) );
-			textBuf.nextLine( L"Speed:" );
-			textBuf.printFloat( pModel->GetImpulseSpeed( ).GetValue() );
-			textBuf.printString( L" m/s" );
+			textBuf.nextLine   ( pModel->GetParameterName( tParameter::pulseSpeed ) );
+			textBuf.printFloat ( pModel->GetParameter    ( tParameter::pulseSpeed ) );
+			textBuf.printString( pModel->GetParameterUnit( tParameter::pulseSpeed ) );
 		}
 		break;
 

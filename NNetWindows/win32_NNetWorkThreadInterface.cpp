@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "assert.h"
+#include <unordered_map>
 #include "Resource.h"
 #include "PixelTypes.h"
 #include "win32_util.h"
@@ -13,6 +14,7 @@
 #include "win32_NNetWorkThreadInterface.h"
 
 using std::endl;
+using std::unordered_map;
 
 NNetWorkThreadInterface::NNetWorkThreadInterface( ) :
 	m_pNNetWorkThread( nullptr )
@@ -30,10 +32,11 @@ void NNetWorkThreadInterface::Start
     EventInterface     * const pEvent,
 	ObserverInterface  * const pObserver,
 	SlowMotionRatio    * const pSlowMotionRatio,
-	NNetModel          * const pNNetModel,
+	NNetModel          * const pModel,
 	BOOL                 const bAsync
 )
 {
+	m_pModel = pModel;
 	m_pNNetWorkThread = new NNetWorkThread
 	( 
 		hwndApplication, 
@@ -42,7 +45,7 @@ void NNetWorkThreadInterface::Start
 		pObserver,
 		pSlowMotionRatio,
 		this,
-		pNNetModel,
+		pModel,
 		bAsync
 	);
 
@@ -83,53 +86,29 @@ void NNetWorkThreadInterface::PostSuperHighlight( ShapeId const id )
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::SUPER_HIGHLIGHT), id.GetValue(), 0 );
 }
 
-void NNetWorkThreadInterface::PostPulseFrequency( ShapeId const id, fHertz const freq )
+static WorkThreadMessage::Id const GetWorkThreadMessage( tParameter const p )
 {
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << freq.GetValue() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_FREQ), id.GetValue(), (LPARAM &)freq.GetValue() );
+	static unordered_map < tParameter, NNetWorkThreadMessage::Id const > mapParam =
+	{
+		{ tParameter::pulseRate,        NNetWorkThreadMessage::Id::PULSE_RATE        },
+		{ tParameter::pulseSpeed,       NNetWorkThreadMessage::Id::PULSE_SPEED       },
+		{ tParameter::pulseWidth,       NNetWorkThreadMessage::Id::PULSE_WIDTH       },
+		{ tParameter::dampingFactor,    NNetWorkThreadMessage::Id::DAMPING_FACTOR    },
+		{ tParameter::threshold,        NNetWorkThreadMessage::Id::THRESHOLD         },
+		{ tParameter::peakVoltage,      NNetWorkThreadMessage::Id::PEAK_VOLTAGE      },
+		{ tParameter::refractoryPeriod, NNetWorkThreadMessage::Id::REFRACTORY_PERIOD }
+	};				  
+
+	return static_cast< WorkThreadMessage::Id >( mapParam.at( p ) );
 }
 
-void NNetWorkThreadInterface::PostPulseSpeed( meterPerSec const speed )
+void NNetWorkThreadInterface::PostSetParameter( tParameter const param, float const fNewValue, ShapeId const id )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << speed.GetValue() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_SPEED), 0, (LPARAM &)speed.GetValue() );
-}
-
-void NNetWorkThreadInterface::PostSetDampingFactor( float const factor )  
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << factor << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::DAMPING_FACTOR), 0, (LPARAM &)factor );
-}
-
-void NNetWorkThreadInterface::PostSetThresholdPotential( mV const pot )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << pot.GetValue() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::THRESHHOLD_POTENTIAL), 0, (LPARAM &)pot.GetValue() );
-}
-
-void NNetWorkThreadInterface::PostSetPeakVoltage( mV const voltage )    
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << voltage.GetValue() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PEAK_VOLTAGE), 0, (LPARAM &)voltage.GetValue() );
-}
-
-void NNetWorkThreadInterface::PostSetPulseWidth( MicroSecs const us )     
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << us.GetValue() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_WIDTH), 0, (LPARAM &)us );
-}
-
-void NNetWorkThreadInterface::PostSetRefractoryPeriod( MicroSecs const us ) 
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << us.GetValue() << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::REFRACTORY_PERIOD), 0, (LPARAM &)us );
+	{
+		TraceStream( ) << __func__ << L" " << m_pModel->GetParameterName( param ) << L" " << fNewValue << id.GetValue() << endl;
+	}
+	WorkMessage( TRUE, GetWorkThreadMessage( param ), id.GetValue(), (LPARAM &)fNewValue );
 }
 
 void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const & newPos )
