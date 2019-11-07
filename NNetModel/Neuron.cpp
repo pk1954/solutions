@@ -69,11 +69,7 @@ MicroMeterPoint Neuron::getAxonHillockPos( NNetModel const & model, PixelCoordsF
 {
 	ShapeId          const idAxon         { * m_outgoing.begin() };
 	Pipeline const * const pAxon          { model.GetConstPipeline( idAxon ) };
-	MicroMeterPoint  const umStart        { pAxon->GetStartPoint( model ) };
-	MicroMeterPoint  const umEnd          { pAxon->GetEndPoint  ( model ) };
-	MicroMeterPoint  const umvector       { umEnd - umStart };
-
-	MicroMeterPoint  const vectorScaled   { umvector * ( GetExtension() / pAxon->GetLength( model ) ) };
+	MicroMeterPoint  const vectorScaled   { pAxon->GetVector( model ) * ( GetExtension() / pAxon->GetLength( model ) ) };
 	MicroMeterPoint  const axonHillockPos { GetPosition( ) + vectorScaled * NEURON_INTERIOR };
 	return axonHillockPos;
 }

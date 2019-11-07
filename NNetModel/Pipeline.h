@@ -34,6 +34,7 @@ public:
 	MicroMeterPoint GetStartPoint( NNetModel const & ) const; 
 	MicroMeterPoint GetEndPoint  ( NNetModel const & ) const; 
 	MicroMeter      GetLength    ( NNetModel const & ) const;
+	MicroMeterPoint GetVector    ( NNetModel const & ) const; 
 
 	void CheckConsistency( NNetModel const & ) const;
 

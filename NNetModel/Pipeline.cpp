@@ -126,6 +126,14 @@ bool Pipeline::IsPointInShape
 	}
 }
 
+MicroMeterPoint Pipeline::GetVector( NNetModel const & model ) const
+{
+	MicroMeterPoint const umStart { GetStartPoint( model ) };
+	MicroMeterPoint const umEnd   { GetEndPoint  ( model ) };
+	MicroMeterPoint const umvector{ umEnd - umStart };
+	return umvector;
+}
+
 void Pipeline::DrawExterior
 ( 
 	NNetModel const & model, 

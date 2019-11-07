@@ -116,21 +116,19 @@ void Scale::displayTicks( fPixelPoint const fPixPoint1, fPixelPoint const fPixPo
 
 void Scale::displayScaleNumber( fPixelPoint const fPos, float const fLog10, int const iFirstDigit )
 {
-	static PIXEL const textWidth  = 40_PIXEL;
-	static PIXEL const textHeight = 20_PIXEL;
-	static PIXEL const horzDist   =  2_PIXEL;
-	static PIXEL const vertDist   = 12_PIXEL;
+	static PIXEL const textWidth  { 40_PIXEL };
+	static PIXEL const textHeight { 20_PIXEL };
+	static PIXEL const horzDist   {  2_PIXEL };
+	static PIXEL const vertDist   { 12_PIXEL };
 
-	PIXEL posX = PIXEL(static_cast<long>(fPos.GetXvalue()));
-	PIXEL posY = PIXEL(static_cast<long>(fPos.GetYvalue()));
-
-	PixelRect pixRect
-	( 
-		posX + horzDist - textWidth,  // left
-		posY - vertDist - textHeight, // top
-		posX + horzDist + textWidth,  // right
-		posY - vertDist               // bottom
-	);
+	PixelPoint const pixPos { convert2PixelPoint( fPos ) };
+	PixelRect  const pixRect
+	{ 
+		pixPos.GetX() + horzDist - textWidth,  // left
+		pixPos.GetY() - vertDist - textHeight, // top
+		pixPos.GetX() + horzDist + textWidth,  // right
+		pixPos.GetY() - vertDist               // bottom
+	};
 
 	m_wBuffer.str( std::wstring() );
 	m_wBuffer.clear();

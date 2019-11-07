@@ -35,7 +35,7 @@ wchar_t const * const NNetModel::GetParameterUnit( tParameter const p ) const
 {
 	static unordered_map < tParameter, wchar_t const * const > mapParam =
 	{
-		{ tParameter::pulseRate,        L"Hertz" },
+		{ tParameter::pulseRate,        L"Hz"    },
 		{ tParameter::pulseSpeed,       L"m/sec" },
 		{ tParameter::pulseWidth,       L"µs"    },
 		{ tParameter::dampingFactor,    L"1/µm"  },
@@ -412,19 +412,25 @@ void NNetModel::Apply2AllShapes( std::function<void(Shape &)> const & func ) con
 	for ( auto pShape : m_Shapes )
 	{
 		if ( pShape )
-		{
 		    func( * pShape );
-//			checkConsistency( pShape );
-		}
 	}
 }
 
-void NNetModel::Apply2AllNeurons( std::function<void(Shape &)> const & func ) const
+void NNetModel::Apply2AllNeurons( std::function<void(Neuron &)> const & func ) const
 {
 	for ( auto pShape : m_Shapes )
 	{
 		if ( pShape && (pShape->GetShapeType() != tShapeType::pipeline) )
-			func( * pShape );
+			func( static_cast<Neuron &>( * pShape ) );
+	}
+}
+
+void NNetModel::Apply2AllInputNeurons( std::function<void(InputNeuron &)> const & func ) const
+{
+	for ( auto pShape : m_Shapes )
+	{
+		if ( pShape && (pShape->GetShapeType() == tShapeType::inputNeuron) )
+			func( static_cast<InputNeuron &>( * pShape ) );
 	}
 }
 

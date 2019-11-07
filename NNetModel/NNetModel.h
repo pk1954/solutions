@@ -80,9 +80,10 @@ public:
 	void HighlightShape     ( ShapeId const );
 	void SuperHighlightShape( ShapeId const );
 
-	void Apply2AllShapes   ( std::function<void(Shape    &)> const & ) const;
-	void Apply2AllNeurons  ( std::function<void(Shape    &)> const & ) const;
-	void Apply2AllPipelines( std::function<void(Pipeline &)> const & ) const;
+	void Apply2AllShapes      ( std::function<void(Shape       &)> const & ) const;
+	void Apply2AllNeurons     ( std::function<void(Neuron      &)> const & ) const;
+	void Apply2AllPipelines   ( std::function<void(Pipeline    &)> const & ) const;
+	void Apply2AllInputNeurons( std::function<void(InputNeuron &)> const & ) const;
 
 	void RecalcPipelines( );
 

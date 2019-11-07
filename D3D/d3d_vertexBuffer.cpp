@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "assert.h"
 #include <d3d9.h>
+#include "util.h"
 #include "d3d_vertexBuffer.h"
 
 VertexBuffer::VertexBuffer( ULONG const ulSize )
@@ -23,13 +24,13 @@ HRESULT VertexBuffer::LoadVertices   // lock m_d3d_vertexBuffer and load the ver
     HRESULT hres;
     VOID   *pVoid;
 
-	UINT uiBytesToLoad = m_vertexVector.size() * sizeof(Vertex);
+	size_t bytesToLoad = m_vertexVector.size() * sizeof(Vertex);
 
-    hres = d3d_vertexBuffer->Lock( 0, uiBytesToLoad, static_cast<void**>(&pVoid), 0 );
+    hres = d3d_vertexBuffer->Lock( 0, CastToUnsignedInt( bytesToLoad ), static_cast<void**>(&pVoid), 0 );
 	if (hres != D3D_OK)
 		return hres;
     
-    memcpy( pVoid, m_vertexVector.data(), uiBytesToLoad );
+    memcpy( pVoid, m_vertexVector.data(), bytesToLoad );
     
 	hres = d3d_vertexBuffer->Unlock( );
 	if (hres != D3D_OK)

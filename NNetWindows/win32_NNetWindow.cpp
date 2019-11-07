@@ -267,11 +267,13 @@ void NNetWindow::drawHighlightedShape( NNetModel const & model, PixelCoordsFp & 
 void NNetWindow::doPaint( )
 {
 	NNetModel const * pModel = m_pReadBuffer->GetModel( );
-	pModel->Apply2AllShapes   ( [&]( Shape    & shape ) { shape.DrawExterior( * pModel, m_coord ); } );
-	pModel->Apply2AllPipelines( [&]( Pipeline & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
-	pModel->Apply2AllNeurons  ( [&]( Shape    & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
+	pModel->Apply2AllShapes   ( [&]( Shape       & shape ) { shape.DrawExterior( * pModel, m_coord ); } );
+	pModel->Apply2AllPipelines( [&]( Pipeline    & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
+	pModel->Apply2AllNeurons  ( [&]( Neuron      & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
 	drawHighlightedShape( * pModel, m_coord );
-	m_pScale->ShowScale( fPIXEL( static_cast<float>( GetClientWindowHeight().GetValue() ) ) );
+	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
+//	m_pGraphics->SetFontSize( 15_PIXEL );
+	pModel->Apply2AllInputNeurons( [&]( InputNeuron & shape ) { shape.DrawNeuronText( * pModel, m_coord ); } );
 	m_pGraphics->RenderForegroundObjects( );
 }
 

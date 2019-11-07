@@ -54,6 +54,21 @@ inline static fPixelPoint OrthoVector( fPixelPoint const & vect, fPIXEL const wi
 
 /////////////////// conversions ///////////////////////////////////
 
+static PIXEL convert2PIXEL( fPIXEL const fPixel )
+{
+	return PIXEL( CastToLong( fPixel.GetValue() ) );
+}
+
+static PixelPoint convert2PixelPoint( fPixelPoint const fPixPoint )
+{
+	return PixelPoint( convert2PIXEL( fPixPoint.GetX() ), convert2PIXEL( fPixPoint.GetY() ) );
+}
+
+static PixelRectSize convert2PixelRectSize( fPixelRectSize const fRectSize )
+{
+	return PixelRectSize( convert2PIXEL( fRectSize.GetX() ), convert2PIXEL( fRectSize.GetY() ) );
+}
+
 static fPIXEL convert2fPIXEL( PIXEL const pixel )
 {
 	return fPIXEL( CastToFloat( pixel.GetValue() ) );

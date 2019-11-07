@@ -110,6 +110,12 @@ public:
 		return ( GetWidth() >= size.GetX() ) && ( GetHeight() >= size.GetY() );
 	}
 
+	bool Includes( RectType const & rect ) const
+	{
+		return (m_Left <= rect.GetLeft()) && (rect.GetRight () < m_Right ) && 
+			   (m_Top  <= rect.GetTop ()) && (rect.GetBottom() < m_Bottom);
+	}
+
 	bool const operator== ( RectType const & a ) const 
 	{ 
 		return ( a.m_Left  == m_Left  ) && ( a.m_Top    == m_Top    ) && 

@@ -121,7 +121,7 @@ void D3D_driver::DisplayGraphicsText
         wstr.c_str( ),     // pString
         -1,                // Count
         &rect,             // pRect
-		format,           // Format
+		format,            // Format
 		COLORREFtoD3DCOLOR( 255, col )  
     ); 
 }
