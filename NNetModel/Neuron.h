@@ -32,6 +32,7 @@ protected:
 
 private:
 
+	MicroMeterPoint getAxonHillockPos( NNetModel const &, PixelCoordsFp & ) const;
 };
 
 Neuron const * Cast2Neuron( Shape const * );

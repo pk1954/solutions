@@ -75,9 +75,9 @@ MicroMeterPoint Pipeline::GetEndPoint( NNetModel const & model) const
 	return pKnotEnd ? pKnotEnd->GetPosition() : MicroMeterPoint::NULL_VAL();
 }
 
-MicroMeter Pipeline::GetWidth( ) const 
-{ 
-	return m_width; 
+MicroMeter Pipeline::GetLength( NNetModel const & model ) const
+{
+	return Distance( GetStartPoint(model), GetEndPoint(model) );
 }
 
 void Pipeline::Prepare ( NNetModel const & model )

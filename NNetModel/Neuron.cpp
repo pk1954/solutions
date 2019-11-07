@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "win32_graphicsInterface.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
 #include "Neuron.h"
@@ -64,14 +65,43 @@ mV Neuron::GetNextOutput( NNetModel const & model ) const
 		   : BASE_POTENTIAL;
 }
 
-void Neuron::DrawExterior( NNetModel const & model, PixelCoordsFp  & coord ) const
+MicroMeterPoint Neuron::getAxonHillockPos( NNetModel const & model, PixelCoordsFp & coord ) const
+{
+	ShapeId          const idAxon         { * m_outgoing.begin() };
+	Pipeline const * const pAxon          { model.GetConstPipeline( idAxon ) };
+	MicroMeterPoint  const umStart        { pAxon->GetStartPoint( model ) };
+	MicroMeterPoint  const umEnd          { pAxon->GetEndPoint  ( model ) };
+	MicroMeterPoint  const umvector       { umEnd - umStart };
+
+	MicroMeterPoint  const vectorScaled   { umvector * ( GetExtension() / pAxon->GetLength( model ) ) };
+	MicroMeterPoint  const axonHillockPos { GetPosition( ) + vectorScaled * NEURON_INTERIOR };
+	return axonHillockPos;
+}
+
+void Neuron::DrawExterior( NNetModel const & model, PixelCoordsFp & coord ) const
 {
 	drawExterior( coord, 24 );
+	drawPolygon
+	( 
+		coord, 
+		12, 
+		GetFrameColor( ), 
+		getAxonHillockPos( model, coord ), 
+		GetExtension() * 0.5f 
+	);
 }
 
 void Neuron::DrawInterior( NNetModel const & model, PixelCoordsFp  & coord ) const
 { 
-	drawInterior(model, coord, 24 );
+	drawInterior( model, coord, 24 );
+	drawPolygon
+	( 
+		coord, 
+		12, 
+		GetInteriorColor( model ), 
+		getAxonHillockPos( model, coord ), 
+		GetExtension() * (NEURON_INTERIOR - 0.5f) 
+	);
 }
 
 void Neuron::drawExterior( PixelCoordsFp & coord, int const iNrOfEdges ) const

@@ -63,7 +63,8 @@ protected:
 	vector<ShapeId> m_incoming;
 	vector<ShapeId> m_outgoing;
 
-	void drawPolygon( PixelCoordsFp &, int const, COLORREF const, MicroMeter const ) const;
+	void drawPolygon( PixelCoordsFp const &, int const, COLORREF const, MicroMeterPoint const, MicroMeter const ) const;
+	void drawPolygon( PixelCoordsFp const &, int const, COLORREF const, MicroMeter const ) const;
 
 private:
 

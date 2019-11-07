@@ -26,13 +26,14 @@ public:
 
 	void Recalc( NNetModel const & );
 
-	ShapeId GetStartKnot   ( ) const { return m_idKnotStart;  }
-	ShapeId GetEndKnot     ( ) const { return m_idKnotEnd;    }
-	size_t  GetNrOfSegments( ) const { return m_potential.size(); }
+	ShapeId    GetStartKnot   ( ) const { return m_idKnotStart;  }
+	ShapeId    GetEndKnot     ( ) const { return m_idKnotEnd;    }
+	size_t     GetNrOfSegments( ) const { return m_potential.size(); }
+	MicroMeter GetWidth       ( ) const { return m_width; }
 
 	MicroMeterPoint GetStartPoint( NNetModel const & ) const; 
 	MicroMeterPoint GetEndPoint  ( NNetModel const & ) const; 
-	MicroMeter      GetWidth     ( ) const; 
+	MicroMeter      GetLength    ( NNetModel const & ) const;
 
 	void CheckConsistency( NNetModel const & ) const;
 

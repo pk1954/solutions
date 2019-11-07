@@ -47,17 +47,29 @@ void BaseKnot::MoveTo
 
 void BaseKnot::drawPolygon
 (
-	PixelCoordsFp  & coord,
-	int        const iNrOfEdges,
-	COLORREF   const color, 
-	MicroMeter const umWidth
+	PixelCoordsFp   const & coord,
+	int             const   iNrOfEdges,
+	COLORREF        const   color, 
+	MicroMeterPoint const   umCenter,
+	MicroMeter      const   umWidth
 ) const
 {
 	m_pGraphics->DrawPolygon
 	( 
 		iNrOfEdges,
-		coord.convert2fPixelPos( GetPosition() ), 
+		coord.convert2fPixelPos( umCenter ), 
 		color, 
 		coord.convert2fPixel( umWidth )
 	);
+}
+
+void BaseKnot::drawPolygon
+(
+	PixelCoordsFp const & coord,
+	int           const   iNrOfEdges,
+	COLORREF      const   color, 
+	MicroMeter    const   umWidth
+) const
+{
+	drawPolygon( coord, iNrOfEdges, color, GetPosition(), umWidth );
 }

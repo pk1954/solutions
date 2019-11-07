@@ -55,6 +55,7 @@ void InputNeuron::drawInputNeuron
 	MicroMeterPoint  const umStart    { pAxon->GetStartPoint( model ) };
 	MicroMeterPoint  const umEnd      { pAxon->GetEndPoint  ( model ) };
 	MicroMeterPoint  const umVector   { umEnd - umStart };
+
 	MicroMeter       const umHypot    { Hypot( umVector ) };
 	MicroMeterPoint  const umExtVector{ umVector * (GetExtension() / umHypot) };
 	MicroMeterPoint  const umCenter   { GetPosition() };
