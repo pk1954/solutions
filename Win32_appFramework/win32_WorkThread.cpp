@@ -260,6 +260,13 @@ void WorkThread::generationRun( )
 
 		WaitTilNextActivation( );
 
-		m_pWorkThreadInterface->PostRunGenerations( false );
+		if ( m_pWorkThreadInterface->IsAsyncThread() )
+		{
+			m_pWorkThreadInterface->PostRunGenerations( false );
+		}
+		else
+		{
+			PostMessage( m_hwndApplication, WM_COMMAND, IDM_RUN, 0 );
+		}
 	}
 }

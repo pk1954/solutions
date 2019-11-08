@@ -9,7 +9,7 @@
 #include "HistoryGeneration.h"
 #include "win32_WorkThread.h"
 
-class WorkThread;
+//class WorkThread;
 
 class WorkThreadInterface
 {
@@ -19,11 +19,7 @@ public:
 
 	void Initialize( std::wostream * );
 
-	void Start
-    ( 
-		WorkThread * const
-    );
-
+	void Start( WorkThread * const );
 	void Stop( );
 
 	void PostUndo( );
@@ -38,7 +34,9 @@ public:
 
 	HIST_GENERATION GetGenDemanded( )        const;
 	HIST_GENERATION GetCurrentGeneration ( ) const;
-	BOOL            IsRunning( )             const;
+
+	BOOL IsRunning    ( ) const	{ return m_pWorkThread->IsRunning    ( ); }
+	BOOL IsAsyncThread( ) const	{ return m_pWorkThread->IsAsyncThread( ); }
 
 protected:
 

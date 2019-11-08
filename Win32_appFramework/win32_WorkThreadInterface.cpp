@@ -44,11 +44,6 @@ void WorkThreadInterface::Stop( )
 	m_pWorkThread = nullptr;
 }
 
-BOOL WorkThreadInterface::IsRunning( ) const
-{
-	return m_pWorkThread->IsRunning( );
-}
-
 void WorkThreadInterface::postGotoGeneration( HIST_GENERATION const gen )
 {
     assert( gen >= 0 );

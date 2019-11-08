@@ -13,16 +13,22 @@ void Util::Thread::StartThread
 {
 	m_strThreadName = strName;
 	m_bAsync        = bAsync;
-	m_handle = (HANDLE)_beginthreadex( 0, 0, Util::ThreadProc, this, 0, & m_threadId );
-	assert( m_handle != nullptr );
-	m_eventThreadStarter.Wait();
+	if ( m_bAsync )
+	{
+		m_handle = (HANDLE)_beginthreadex( 0, 0, Util::ThreadProc, this, 0, & m_threadId );
+		assert( m_handle != nullptr );
+		m_eventThreadStarter.Wait();
+	}
 }
 
 void Util::Thread::Terminate( )   // to be called from different thread
 {
-	PostThreadMessage( m_threadId, WM_QUIT, 0, 0 ); // PostQuitMessage( 0 );  but doesn't work
-	WaitForSingleObject( m_handle, INFINITE );      // wait until thread has stopped
-	CloseHandle( m_handle );
+	if ( m_bAsync )
+	{
+		PostThreadMessage( m_threadId, WM_QUIT, 0, 0 ); // PostQuitMessage( 0 );  but doesn't work
+		WaitForSingleObject( m_handle, INFINITE );      // wait until thread has stopped
+		CloseHandle( m_handle );
+	}
 }
 
 static unsigned int __stdcall Util::ThreadProc( void * data ) 

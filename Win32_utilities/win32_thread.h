@@ -42,11 +42,13 @@ namespace Util
 			}
 			else
 			{
-				ThreadMsgDispatcher( MSG{ nullptr, uiMsg, wParam, lParam } );
+				ThreadMsgDispatcher( MSG { nullptr, uiMsg, wParam, lParam } );
 			}
 		}
 
 		void Terminate( ); // Waits until thread has stopped
+
+		BOOL IsAsyncThread( ) { return m_bAsync; }
 
 		virtual void ThreadStartupFunc( ) {};
 		virtual void ThreadMsgDispatcher( MSG const ) = 0;
