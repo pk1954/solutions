@@ -445,6 +445,14 @@ void NNetModel::Apply2AllPipelines( std::function<void(Pipeline &)> const & func
 	}
 }
 
+void NNetModel::Apply2AllParameters( std::function<void(tParameter const &)> const & func ) const
+{
+	for ( int i = 0; static_cast<tParameter>(i) <= tParameter::refractoryPeriod; ++i )
+	{
+		func( static_cast<tParameter>( i ) );
+	}
+}
+
 void NNetModel::CopyModelData( ModelInterface const * const src )
 {
 	* this = * static_cast<NNetModel const *>( src );

@@ -63,8 +63,12 @@ public:
 	wchar_t const * const GetParameterName( tParameter const ) const;
 	wchar_t const * const GetParameterUnit( tParameter const ) const;
 
-	void AddIncomming( NNetModel const &, ShapeId const, ShapeId const );
-	void AddOutgoing ( NNetModel const &, ShapeId const, ShapeId const );
+	float const GetParameter( tParameter const, Shape const * const = nullptr ) const;
+
+	bool IsBaseKnotType( ShapeId const id ) const
+	{
+		return ::IsBaseKnotType( GetConstShape( id )->GetShapeType() );
+	}
 		
 	// manipulating functions
 
@@ -77,6 +81,9 @@ public:
 	void SplitPipeline        ( ShapeId const, MicroMeterPoint const & );
 	void Connect              ( NNetModel const & );
 
+	void AddIncomming( NNetModel const &, ShapeId const, ShapeId const );
+	void AddOutgoing ( NNetModel const &, ShapeId const, ShapeId const );
+
 	void HighlightShape     ( ShapeId const );
 	void SuperHighlightShape( ShapeId const );
 
@@ -85,19 +92,15 @@ public:
 	void Apply2AllPipelines   ( std::function<void(Pipeline    &)> const & ) const;
 	void Apply2AllInputNeurons( std::function<void(InputNeuron &)> const & ) const;
 
+	void Apply2AllParameters( std::function<void(tParameter const &)> const & ) const;
+
 	void RecalcPipelines( );
 
 	virtual void CopyModelData( ModelInterface const * const );
 	virtual void Compute( );
 	virtual void ResetAll( );
 
-	float const GetParameter( tParameter const,	             Shape const * const = nullptr ) const;
-	void  const SetParameter( tParameter const,	float const, Shape       * const = nullptr );
-
-	bool IsBaseKnotType( ShapeId const id ) const
-	{
-		return ::IsBaseKnotType( GetConstShape( id )->GetShapeType() );
-	}
+	void  const SetParameter( tParameter const,	float const, Shape * const = nullptr );
 
 private:
 	// initial shapes 
@@ -113,7 +116,7 @@ private:
 	ShapeId m_shapeHighlighted;
 	ShapeId m_shapeSuperHighlighted;
 
-	// global parameters
+	// parameters
 	float        m_dampingFactor;     // signal loss per um  
     mV           m_threshold;
     mV           m_peakVoltage;   

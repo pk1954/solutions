@@ -25,16 +25,14 @@ Pipeline::Pipeline( )
 
 void Pipeline::Recalc( NNetModel const & model )
 {
-	if ( IsDefined(m_idKnotStart) && IsDefined(m_idKnotEnd) )
+	if ( ::IsDefined(m_idKnotStart) && ::IsDefined(m_idKnotEnd) )
 	{
-		MicroMeter       const segmentLength  = CoveredDistance( meterPerSec( model.GetParameter( tParameter::pulseSpeed ) ), TIME_RESOLUTION );
-		BaseKnot const * const m_pKnotStart   = model.GetConstBaseKnot( m_idKnotStart );   
-		BaseKnot const * const m_pKnotEnd     = model.GetConstBaseKnot( m_idKnotEnd   );   
-		MicroMeter       const pipelineLength = Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() );
-		unsigned int           iNrOfSegments  = CastToUnsignedInt(round(pipelineLength / segmentLength));
-
-		if ( iNrOfSegments == 0 )
-			iNrOfSegments = 1;
+		BaseKnot     const * const pKnotStart     { model.GetConstBaseKnot( m_idKnotStart ) };   
+		BaseKnot     const * const pKnotEnd       { model.GetConstBaseKnot( m_idKnotEnd   ) };   
+		meterPerSec  const         pulseSpeed     { meterPerSec( model.GetParameter( tParameter::pulseSpeed ) ) };
+		MicroMeter   const         segmentLength  { CoveredDistance( pulseSpeed, TIME_RESOLUTION ) };
+		MicroMeter   const         pipelineLength { Distance( pKnotStart->GetPosition(), pKnotEnd->GetPosition() ) };
+		unsigned int const         iNrOfSegments  { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
 
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_initialized = true;

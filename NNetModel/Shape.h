@@ -87,6 +87,11 @@ public:
 		return m_bSuperHighlighted;
 	}
 
+	bool IsDefined( ) const
+	{
+		return ::IsDefined( m_identifier );
+	}
+
 	ShapeId GetId( ) const
 	{
 		return m_identifier;

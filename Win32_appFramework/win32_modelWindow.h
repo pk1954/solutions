@@ -14,14 +14,9 @@ class ModelWindow : public BaseWindow
 public:
 	ModelWindow( ) :
 		BaseWindow( )
-	{
+	{ }
 
-	}
-
-	static void InitClass
-	( 
-		ActionTimer * const pActionTimer
-	)
+	static void InitClass( ActionTimer * const pActionTimer	)
 	{
 		m_pDisplayTimer = pActionTimer;
 		m_hCrsrArrow    = LoadCursor( NULL, IDC_ARROW );
@@ -46,5 +41,4 @@ protected:
 private:
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
-
 };

@@ -17,7 +17,8 @@ using std::endl;
 using std::unordered_map;
 
 NNetWorkThreadInterface::NNetWorkThreadInterface( ) :
-	m_pNNetWorkThread( nullptr )
+	m_pNNetWorkThread( nullptr ),
+	m_pModel( nullptr )
 { }
 
 NNetWorkThreadInterface::~NNetWorkThreadInterface( )

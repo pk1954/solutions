@@ -10,6 +10,7 @@
 
 #include "MoreTypes.h"
 #include "NNetModel.h"
+#include "NNetModelStorage.h"
 
 // interfaces of various windows
 
@@ -159,6 +160,8 @@ void NNetAppWindow::Start( )
 	m_pCrsrWindow->Show( TRUE );
 
 	PostCommand2Application( IDM_RUN, true );
+
+	WriteModel( * m_pModelDataWork, std::wcout );
 }
 
 void NNetAppWindow::Stop()

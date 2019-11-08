@@ -161,6 +161,7 @@
     <ClInclude Include="Knot.h" />
     <ClInclude Include="Neuron.h" />
     <ClInclude Include="NNetModel.h" />
+    <ClInclude Include="NNetModelStorage.h" />
     <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="OutputNeuron.h" />
     <ClInclude Include="Pipeline.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="Knot.cpp" />
     <ClCompile Include="Neuron.cpp" />
     <ClCompile Include="NNetModel.cpp" />
+    <ClCompile Include="NNetModelStorage.cpp" />
     <ClCompile Include="OutputNeuron.cpp" />
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="Shape.cpp" />
