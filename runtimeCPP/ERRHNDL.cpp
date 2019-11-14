@@ -72,9 +72,14 @@ void ScriptErrorHandler::eofError( )
 
 void ScriptErrorHandler::charError( )
 {                    
-   throwError( 930, L"unknown character" );
+	throwError( 930, L"unknown character" );
 }
-                 
+
+void ScriptErrorHandler::stringError( )
+{                    
+	throwError( 940, L"unexpected string" );
+}
+
 //   ScriptTokenError: Unexpected token in script file
 
 void ScriptErrorHandler::tokenError( )
@@ -169,7 +174,7 @@ void ScriptErrorHandler::handleScriptError
         * m_pScriptTrace << L"+++ " << errInfo.m_wstrMessage << endl;
 
     if ( !scanner.GetExpectedToken().empty() )
-        * m_pScriptTrace << L"+++ expected " << scanner.GetExpectedToken().c_str() << endl;
+        * m_pScriptTrace << L"+++ expected \"" << scanner.GetExpectedToken().c_str() << L"\""<< endl;
 
     * m_pScriptTrace << L"+++ error exit +++" << endl;
 

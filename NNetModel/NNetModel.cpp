@@ -31,6 +31,22 @@ wchar_t const * const NNetModel::GetParameterName( tParameter const p ) const
 	return mapParam.at( p );
 }
 
+wchar_t const * const NNetModel::GetParameterLiteral( tParameter const p ) const
+{
+	static unordered_map < tParameter, wchar_t const * const > mapParam =
+	{
+		{ tParameter::pulseRate,        L"tParameter::pulseRate"        },
+		{ tParameter::pulseSpeed,       L"tParameter::pulseSpeed"       },
+		{ tParameter::pulseWidth,       L"tParameter::pulseWidth"       },
+		{ tParameter::dampingFactor,    L"tParameter::dampingFactor"    },
+		{ tParameter::threshold,        L"tParameter::threshold"        },
+		{ tParameter::peakVoltage,      L"tParameter::peakVoltage"      },
+		{ tParameter::refractoryPeriod, L"tParameter::refractoryPeriod" }
+	};				  
+
+	return mapParam.at( p );
+}
+
 wchar_t const * const NNetModel::GetParameterUnit( tParameter const p ) const
 {
 	static unordered_map < tParameter, wchar_t const * const > mapParam =
@@ -173,7 +189,7 @@ OutputNeuron const * NNetModel::GetConstOutputNeuron( ShapeId const id ) const
 	return static_cast<OutputNeuron const *>( pShape );
 }
 
-float const NNetModel::GetParameter
+float const NNetModel::GetParameterValue
 ( 
 	tParameter const         param,
 	Shape      const * const pShape

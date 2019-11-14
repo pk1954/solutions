@@ -12,12 +12,12 @@ void Knot::Prepare( NNetModel const & model )
 	m_mVinputBuffer = 0._mV;
 	for ( auto idPipeline : m_incoming )
 		m_mVinputBuffer += model.GetConstPipeline( idPipeline )->GetNextOutput( model );
-	assert( m_mVinputBuffer <= mV( model.GetParameter( tParameter::peakVoltage ) ) );
+	assert( m_mVinputBuffer <= mV( model.GetParameterValue( tParameter::peakVoltage ) ) );
 }
 
 mV Knot::GetNextOutput( NNetModel const & model ) const
 {
-	assert( m_mVinputBuffer <= mV( model.GetParameter( tParameter::peakVoltage ) ) );
+	assert( m_mVinputBuffer <= mV( model.GetParameterValue( tParameter::peakVoltage ) ) );
 	return m_mVinputBuffer;
 }
 

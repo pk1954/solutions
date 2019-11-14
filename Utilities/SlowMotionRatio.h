@@ -44,8 +44,8 @@ public:
 }
 
 private:
-	static unsigned int const DEFAULT_INDEX =  3;
-	static unsigned int const MAX_INDEX     = 15;
+	static unsigned int const DEFAULT_INDEX =  6;
+	static unsigned int const MAX_INDEX     = 18;
 
 	static std::array< unsigned int, MAX_INDEX + 1 > const m_ratios;
 

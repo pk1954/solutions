@@ -60,10 +60,11 @@ public:
 	OutputNeuron       * GetOutputNeuron     ( ShapeId const );
 	OutputNeuron const * GetConstOutputNeuron( ShapeId const ) const;
 
-	wchar_t const * const GetParameterName( tParameter const ) const;
-	wchar_t const * const GetParameterUnit( tParameter const ) const;
+	wchar_t const * const GetParameterLiteral( tParameter const ) const;
+	wchar_t const * const GetParameterName   ( tParameter const ) const;
+	wchar_t const * const GetParameterUnit   ( tParameter const ) const;
 
-	float const GetParameter( tParameter const, Shape const * const = nullptr ) const;
+	float const GetParameterValue( tParameter const, Shape const * const = nullptr ) const;
 
 	bool IsBaseKnotType( ShapeId const id ) const
 	{

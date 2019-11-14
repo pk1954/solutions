@@ -35,6 +35,7 @@ class CrsrWindow;
 class TimeDisplay;
 class SlowMotionDisplay;
 class GraphicsInterface;
+class NNetModelStorage;
 
 class NNetAppWindow : public AppWindowInterface
 {
@@ -71,4 +72,5 @@ private:
 	TimeDisplay           * m_pTimeDisplay;
 	SlowMotionDisplay     * m_pSlowMotionDisplay;
 	CrsrWindow            * m_pCrsrWindow;
+	NNetModelStorage      * m_pNNetModelStorage;
 };

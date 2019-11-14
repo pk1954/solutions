@@ -23,8 +23,9 @@ public:
     static void throwError( short const, wstring const & );
     static void eofError( void );
     static void charError( void );
-    static void tokenError( void );
-    static void numericError( void );
+	static void tokenError( void );
+	static void stringError( void );
+	static void numericError( void );
     static void negativeError( void );
     static void symbolError( std::wstring const & );
 	static void semanticError( std::wstring const & );

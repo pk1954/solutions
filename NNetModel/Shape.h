@@ -107,7 +107,11 @@ public:
 		return m_type;
 	}
 
-	static void SetGraphics( GraphicsInterface * const pGraphics	)
+	wchar_t const * const GetName( ) const;
+
+	static tShapeType const GetShapeType( wchar_t const * const );
+
+	static void SetGraphics( GraphicsInterface * const pGraphics )
 	{
 		m_pGraphics = pGraphics;
 	}

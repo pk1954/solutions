@@ -120,7 +120,8 @@ void NNetAppWindow::Start( )
 		& m_WinManager 
 	);
 
-	m_pModelDataWork = new NNetModel( );
+	m_pModelDataWork    = new NNetModel( );
+	m_pNNetModelStorage = new NNetModelStorage( m_pModelDataWork );
 
 	m_pNNetReadBuffer->Initialize( m_pModelDataWork, m_pModelDataWork );
 
@@ -161,7 +162,8 @@ void NNetAppWindow::Start( )
 
 	PostCommand2Application( IDM_RUN, true );
 
-	WriteModel( * m_pModelDataWork, std::wcout );
+	m_pNNetModelStorage->Write( std::wcout );
+	m_pNNetModelStorage->Read( L"F:\\SW-projects\\Evolution\\NNetSimu\\test.nmod" );
 }
 
 void NNetAppWindow::Stop()

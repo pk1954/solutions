@@ -29,7 +29,7 @@ void Pipeline::Recalc( NNetModel const & model )
 	{
 		BaseKnot     const * const pKnotStart     { model.GetConstBaseKnot( m_idKnotStart ) };   
 		BaseKnot     const * const pKnotEnd       { model.GetConstBaseKnot( m_idKnotEnd   ) };   
-		meterPerSec  const         pulseSpeed     { meterPerSec( model.GetParameter( tParameter::pulseSpeed ) ) };
+		meterPerSec  const         pulseSpeed     { meterPerSec( model.GetParameterValue( tParameter::pulseSpeed ) ) };
 		MicroMeter   const         segmentLength  { CoveredDistance( pulseSpeed, TIME_RESOLUTION ) };
 		MicroMeter   const         pipelineLength { Distance( pKnotStart->GetPosition(), pKnotEnd->GetPosition() ) };
 		unsigned int const         iNrOfSegments  { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
@@ -37,7 +37,7 @@ void Pipeline::Recalc( NNetModel const & model )
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_initialized = true;
 
-		m_fDampingPerSegment = pow( model.GetParameter( tParameter::dampingFactor ), segmentLength.GetValue() );
+		m_fDampingPerSegment = pow( model.GetParameterValue( tParameter::dampingFactor ), segmentLength.GetValue() );
 	}
 }
 
@@ -82,26 +82,26 @@ void Pipeline::Prepare ( NNetModel const & model )
 {
 	BaseKnot const * const m_pKnotStart { model.GetConstBaseKnot( m_idKnotStart ) };
 	m_mVinputBuffer = m_pKnotStart->GetNextOutput( model );
-	assert( m_mVinputBuffer <= mV( model.GetParameter( tParameter::peakVoltage ) ) );
+	assert( m_mVinputBuffer <= mV( model.GetParameterValue( tParameter::peakVoltage ) ) );
 }
 
 void Pipeline::Step( NNetModel const & model )
 {
 	mV mVcarry = m_mVinputBuffer;
-	assert( m_mVinputBuffer <= mV( model.GetParameter( tParameter::peakVoltage ) ) );
+	assert( m_mVinputBuffer <= mV( model.GetParameterValue( tParameter::peakVoltage ) ) );
 
 	for ( auto & iter : m_potential )
 	{
 		mVcarry *= m_fDampingPerSegment;  
 		std::swap( iter, mVcarry );
-		assert( iter <= mV( model.GetParameter( tParameter::peakVoltage ) ) );
+		assert( iter <= mV( model.GetParameterValue( tParameter::peakVoltage ) ) );
 	}
 }
 
 mV Pipeline::GetNextOutput( NNetModel const & model ) const
 {
 	assert( m_potential.size() > 0 );
-	assert( m_potential.back() <= mV( model.GetParameter( tParameter::peakVoltage ) ) );
+	assert( m_potential.back() <= mV( model.GetParameterValue( tParameter::peakVoltage ) ) );
 	return m_potential.back();
 }
 

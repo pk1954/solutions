@@ -182,7 +182,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 float NNetWindow::ParameterDialog( tParameter const param )
 {
 	NNetModel const * pModel    { m_pReadBuffer->GetModel( ) };
-	float     const   fOldValue { pModel->GetParameter( param, m_pShapeSelected ) };
+	float     const   fOldValue { pModel->GetParameterValue( param, m_pShapeSelected ) };
 	wstring   const   header    { pModel->GetParameterName( param ) }; 
 	wstring   const   unit      { pModel->GetParameterUnit( param ) }; 
 	float     const   fNewValue { StdDialogBox::Show( GetWindowHandle(), fOldValue, header, unit ) };

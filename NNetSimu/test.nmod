@@ -1,0 +1,15 @@
+# NNetModel
+# Created 14-11-2019 21-32-05
+# Computer name: DESKTOP-QSTRQ06
+# User name: peter
+Version 0.2
+CreateShape tShapeType::inputNeuron (400.00|200.00) id = 0
+CreateShape tShapeType::outputNeuron (400.00|800.00) id = 1
+CreateShape tShapeType::pipeline (0-1) id = 2
+GlobalParameter tParameter::pulseSpeed = 0.10
+GlobalParameter tParameter::pulseWidth = 2000.00
+GlobalParameter tParameter::dampingFactor = 1.00
+GlobalParameter tParameter::threshold = 20.00
+GlobalParameter tParameter::peakVoltage = 10.00
+GlobalParameter tParameter::refractoryPeriod = 500.00
+ShapeParameter InputNeuron 0 tParameter::pulseRate = 50.00

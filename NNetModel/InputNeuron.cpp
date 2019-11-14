@@ -26,7 +26,7 @@ void InputNeuron::SetPulseFrequency( fHertz const freq )
 void InputNeuron::Prepare( NNetModel const & model )
 {
 	float fillLevel { m_timeSinceLastPulse.GetValue() / m_pulseDuration.GetValue() };
-	m_mVinputBuffer = mV( model.GetParameter( tParameter::peakVoltage ) * fillLevel );
+	m_mVinputBuffer = mV( model.GetParameterValue( tParameter::peakVoltage ) * fillLevel );
 }
 
 void InputNeuron::Step( NNetModel const & model )

@@ -48,6 +48,26 @@ void Script::ScrReadSpecial( wchar_t const wchExpected )
 	}             
 }
 
+void Script::ScrReadString( wstring const wstrExpected )
+{
+	m_pScanAct->SetExpectedToken( wstrExpected );
+
+	switch ( m_pScanAct->NextToken( true ) )
+	{
+	case tTOKEN::End:         // end of file reached 
+		ScriptErrorHandler::eofError( );
+		break;
+
+	case tTOKEN::Name:
+		if ( m_pScanAct->GetString() != wstrExpected )
+			ScriptErrorHandler::stringError( );
+		break;
+
+	default: 
+		ScriptErrorHandler::stringError( );
+	}             
+}
+
 //   readSign: Read '+' or '-'
 
 bool Script::readSign( )

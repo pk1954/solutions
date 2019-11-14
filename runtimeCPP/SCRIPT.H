@@ -38,7 +38,8 @@ public:
     unsigned short ScrReadUshort ( void );
     wchar_t        ScrReadChar   ( void ); 
     unsigned char  ScrReadUchar  ( void ); 
-    wstring const  ScrReadString ( void );
+	wstring const  ScrReadString ( void );
+	void           ScrReadString ( wstring const );
 	void           ScrReadSpecial( wchar_t const ); 
 
 // Helper routines for error handlers 

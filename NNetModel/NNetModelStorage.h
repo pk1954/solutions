@@ -7,16 +7,25 @@
 #include <fstream>
 
 using std::wostream;
-using std::wistream;
+using std::wstring;
 
 class NNetModel;
 class Shape;
 
-void WriteModel( NNetModel const &, wostream & );
+class NNetModelStorage
+{
+public:
+	NNetModelStorage( NNetModel * const );
 
-void WriteShape( NNetModel const &, wostream &, Shape & );
-void WriteMicroMeter( wostream &, MicroMeter const & );
-void WriteMicroMeterPoint( wostream &, MicroMeterPoint const & );
+	void Write( wostream & );
+	bool Read ( wstring const & wstrPath );
 
+	NNetModel * GetModel( ) { return m_pModel; }
 
-void ReadModel ( NNetModel       &, wistream & );
+private:
+	NNetModel * m_pModel;
+
+	void WriteShape(  wostream &, Shape & );
+	void WriteMicroMeterPoint( wostream &, MicroMeterPoint const & );
+	void WritePipeline( wostream &, Shape const & );
+};
