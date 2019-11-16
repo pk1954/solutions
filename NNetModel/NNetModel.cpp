@@ -484,7 +484,8 @@ void NNetModel::Compute( )
 
 void NNetModel::ResetAll( )
 {
-
+	Apply2AllShapes( [&]( Shape & shape ) { delete & shape; } );
+	m_Shapes.clear();
 }
 
 Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt, std::function<bool(Shape const &)> const & crit ) const

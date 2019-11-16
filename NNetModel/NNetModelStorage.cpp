@@ -48,26 +48,36 @@ public:
 
 	virtual void operator() ( Script & script ) const
 	{
-		tShapeType const shapeType( static_cast<tShapeType>(script.ScrReadInt( )) );
+		ShapeId           idModel;
+		NNetModel * const pModel    { m_pNNetModelStorage->GetModel() };
+		tShapeType  const shapeType { static_cast<tShapeType>(script.ScrReadInt( )) };
 		script.ScrReadSpecial( L'(' );
 		switch ( shapeType )
 		{
 		case tShapeType::inputNeuron:
+			idModel = pModel->addShape( new InputNeuron( readPoint( script ) ) );
+			break;
+
 		case tShapeType::outputNeuron:
+			idModel = pModel->addShape( new OutputNeuron( readPoint( script ) ) );
+			break;
+
 		case tShapeType::neuron:
+			idModel = pModel->addShape( new Neuron( readPoint( script ) ) );
+			break;
+
 		case tShapeType::knot:
-			{
-				double const dXcoord { script.ScrReadFloat() };
-				script.ScrReadSpecial( L'|' );
-				double const dYcoord { script.ScrReadFloat() };
-			}
+			idModel = pModel->addShape( new Knot( readPoint( script ) ) );
 			break;
 
 		case tShapeType::pipeline:
 		{
-			unsigned int const idStart { script.ScrReadUint() };
+			ShapeId const idStart { script.ScrReadLong() };
 			script.ScrReadSpecial( L'-' );
-			unsigned int const idEnd { script.ScrReadUint() };
+			ShapeId const idEnd { script.ScrReadLong() };
+			idModel = pModel->addShape( new Pipeline( ) );
+			pModel->AddOutgoing ( * pModel, idStart, idModel );
+			pModel->AddIncomming( * pModel, idEnd,   idModel );
 		}
 		break;
 
@@ -78,10 +88,19 @@ public:
 		script.ScrReadSpecial( L')' );
 		script.ScrReadString( L"id" );
 		script.ScrReadSpecial( L'=' );
-		unsigned int uiShapeId { script.ScrReadUint() };
+		ShapeId idFromScript { script.ScrReadLong() };
+		assert( idFromScript == idModel );
 	}
 
 private:
+	MicroMeterPoint const readPoint( Script & script ) const
+	{
+		MicroMeter const xCoord { CastToFloat( script.ScrReadFloat() ) };
+		script.ScrReadSpecial( L'|' );
+		MicroMeter const yCoord { CastToFloat( script.ScrReadFloat() ) };
+		return MicroMeterPoint( xCoord, yCoord );
+	}
+
 	NNetModelStorage * m_pNNetModelStorage;
 };
 
@@ -94,10 +113,11 @@ public:
 
 	virtual void operator() ( Script & script ) const 
 	{
-		tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
+		NNetModel * const pModel { m_pNNetModelStorage->GetModel() };
+		tParameter  const param( static_cast< tParameter >( script.ScrReadUint() ) );
 		script.ScrReadSpecial( L'=' );
 		float const fValue { CastToFloat( script.ScrReadFloat() ) };
-		m_pNNetModelStorage->GetModel()->SetParameter( param, fValue );
+		pModel->SetParameter( param, fValue );
 	}
 
 private:
@@ -128,6 +148,7 @@ private:
 bool NNetModelStorage::Read( wstring const & wstrPath )
 {
 	Script scriptModel;
+	m_pModel->ResetAll();
 	wcout << L"NNet model file " << wstrPath;
 	if ( scriptModel.ScrProcess( wstrPath ) )
 	{
@@ -141,7 +162,7 @@ bool NNetModelStorage::Read( wstring const & wstrPath )
 	}
 }
 
-////////////////////////// constructot /////////////////////////////////////////////
+////////////////////////// constructor /////////////////////////////////////////////
 
 NNetModelStorage::NNetModelStorage(  NNetModel * const pModel )
 	: m_pModel( pModel )

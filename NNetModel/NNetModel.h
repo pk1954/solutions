@@ -103,6 +103,8 @@ public:
 
 	void  const SetParameter( tParameter const,	float const, Shape * const = nullptr );
 
+	ShapeId const addShape( Shape * );
+
 private:
 	// initial shapes 
 	ShapeId m_idInputNeuron;
@@ -126,7 +128,6 @@ private:
 	meterPerSec  m_pulseSpeed;
 
 	// local functions
-	ShapeId const addShape( Shape * );
 	void          deleteHighlightedShape( );
 	void          checkConsistency( Shape * ) const;
 };
