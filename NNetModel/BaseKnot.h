@@ -31,22 +31,19 @@ public:
 	{
 	}
 
-	MicroMeterPoint GetPosition( ) const
-	{
-		return m_center;
-	}
+	MicroMeterPoint GetPosition( )  const { return m_center;	}
+	MicroMeter      GetExtension( ) const { return m_extension;	}
 
-	MicroMeter GetExtension( ) const
-	{
-		return m_extension;
-	}
+	bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
 
 	void AddIncomming  ( ShapeId const );
 	void AddOutgoing   ( ShapeId const );
-	bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
+	void RemoveIncoming( ShapeId const );
+	void RemoveOutgoing( ShapeId const );
 
-	bool HasIncoming( ) const { return m_incoming.size() > 0; }
-	bool HasOutgoing( ) const { return m_outgoing.size() > 0; }
+	bool HasIncoming( ) const { return ! m_incoming.empty(); }
+	bool HasOutgoing( ) const { return ! m_outgoing.empty(); }
+	bool IsOrphan( )    const {	return m_incoming.empty() && m_outgoing.empty(); }
 
 	void Apply2AllIncomingPipelines( std::function<void(ShapeId const &)> const & func ) const
 	{

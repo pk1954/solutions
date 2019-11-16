@@ -55,19 +55,19 @@ public:
 		switch ( shapeType )
 		{
 		case tShapeType::inputNeuron:
-			idModel = pModel->addShape( new InputNeuron( readPoint( script ) ) );
+			idModel = pModel->NewInputNeuron( readPoint( script ) );
 			break;
 
 		case tShapeType::outputNeuron:
-			idModel = pModel->addShape( new OutputNeuron( readPoint( script ) ) );
+			idModel = pModel->NewOutputNeuron( readPoint( script ) );
 			break;
 
 		case tShapeType::neuron:
-			idModel = pModel->addShape( new Neuron( readPoint( script ) ) );
+			idModel = pModel->NewNeuron( readPoint( script ) );
 			break;
 
 		case tShapeType::knot:
-			idModel = pModel->addShape( new Knot( readPoint( script ) ) );
+			idModel = pModel->NewKnot( readPoint( script ) );
 			break;
 
 		case tShapeType::pipeline:
@@ -75,9 +75,7 @@ public:
 			ShapeId const idStart { script.ScrReadLong() };
 			script.ScrReadSpecial( L'-' );
 			ShapeId const idEnd { script.ScrReadLong() };
-			idModel = pModel->addShape( new Pipeline( ) );
-			pModel->AddOutgoing ( * pModel, idStart, idModel );
-			pModel->AddIncomming( * pModel, idEnd,   idModel );
+			idModel = pModel->NewPipeline( idStart, idEnd );
 		}
 		break;
 

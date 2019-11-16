@@ -8,6 +8,10 @@
 #include "win32_graphicsInterface.h"
 #include "BaseKnot.h"
 
+using std::find;
+using std::begin;
+using std::end;
+
 void BaseKnot::AddIncomming( ShapeId const idPipeline )
 {
 	m_incoming.push_back( idPipeline );
@@ -16,6 +20,18 @@ void BaseKnot::AddIncomming( ShapeId const idPipeline )
 void BaseKnot::AddOutgoing( ShapeId const idPipeline )
 {
 	m_outgoing.push_back( idPipeline );
+}
+
+void BaseKnot::RemoveIncoming( ShapeId const idPipeline )
+{
+	auto res = find( begin(m_incoming), end(m_incoming), idPipeline );
+	m_incoming.erase( res );
+}
+
+void BaseKnot::RemoveOutgoing( ShapeId const idPipeline )
+{
+	auto res = find( begin(m_outgoing), end(m_outgoing), idPipeline );
+	m_outgoing.erase( res );
 }
 
 bool BaseKnot::IsPointInShape

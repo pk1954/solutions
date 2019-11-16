@@ -78,7 +78,9 @@ private:
 	{
 		ResetTimer();
 	}
-	
+
+	MicroMeterPoint const msg2MicroMeterPoint( MSG const) const;
+
 	virtual BOOL Dispatch( MSG const );
 
 	virtual void WaitTilNextActivation( );

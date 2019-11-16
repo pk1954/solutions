@@ -75,12 +75,9 @@ NNetModel::NNetModel( )
 	m_refractoryPeriod     ( 500._MicroSecs ),
 	m_pulseSpeed           ( 0.1_meterPerSec )
 {					
-	m_idInputNeuron  = addShape( new InputNeuron( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) );
-	m_idOutputNeuron = addShape( new OutputNeuron( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) );
-	m_idPipeline     = addShape( new Pipeline( ) );
-
-	AddOutgoing ( * this, m_idInputNeuron,  m_idPipeline );
-	AddIncomming( * this, m_idOutputNeuron, m_idPipeline );
+	m_idInputNeuron  = NewInputNeuron( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
+	m_idOutputNeuron = NewOutputNeuron( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) );
+	m_idPipeline     = NewPipeline( m_idInputNeuron, m_idOutputNeuron );
 }
 
 NNetModel::~NNetModel( )
@@ -101,12 +98,17 @@ Shape const * NNetModel::GetConstShape( ShapeId const id ) const
 	return ( IsDefined( id ) ) ? m_Shapes[ id.GetValue() ] : nullptr;
 }
 
+void NNetModel::deleteShape( ShapeId const id )
+{
+	delete m_Shapes[ id.GetValue() ];
+	m_Shapes[ id.GetValue() ] = nullptr;
+}
+
 void NNetModel::deleteHighlightedShape( )
 {
 	ShapeId const id = m_shapeHighlighted;
 	m_shapeHighlighted = NO_SHAPE;
-	delete m_Shapes[ id.GetValue() ];
-	m_Shapes[ id.GetValue() ] = nullptr;
+	deleteShape( id );
 }
 
 Pipeline * NNetModel::GetPipeline( ShapeId const id ) 
@@ -145,7 +147,7 @@ Knot * NNetModel::GetKnot( ShapeId const id )
 {
 	Shape * pShape = GetShape( id );
 	assert( pShape );
-	assert( pShape->GetShapeType() == tShapeType::knot );
+	assert( IsBaseKnotType( id ) );
 	return static_cast<Knot *>( pShape );
 }
 
@@ -153,7 +155,7 @@ Knot const * NNetModel::GetConstKnot( ShapeId const id ) const
 {
 	Shape const * pShape = GetConstShape( id );
 	assert( pShape );
-	assert( pShape->GetShapeType() == tShapeType::knot );
+	assert( IsBaseKnotType( id ) );
 	return static_cast<Knot const *>( pShape );
 }
 
@@ -263,7 +265,7 @@ void const NNetModel::SetParameter( tParameter const param,	float const fNewValu
 	}
 }
 
-void NNetModel::Connect( NNetModel const & model )  // highlighted knot to super highlighted neuron
+void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
 {
 	if ( IsDefined( m_shapeHighlighted ) && IsDefined( m_shapeSuperHighlighted ) )
 	{
@@ -272,7 +274,7 @@ void NNetModel::Connect( NNetModel const & model )  // highlighted knot to super
 		( 
 			[&]( ShapeId const & idPipeline ) 
 			{ 
-				AddIncomming( model, m_shapeSuperHighlighted, idPipeline );
+				AddIncomming( m_shapeSuperHighlighted, idPipeline );
 			}
 		);
 
@@ -281,16 +283,16 @@ void NNetModel::Connect( NNetModel const & model )  // highlighted knot to super
 	}
 }
 
-void NNetModel::AddIncomming( NNetModel const & model,ShapeId const idBaseKnot, ShapeId const idPipeline )
+void NNetModel::AddIncomming( ShapeId const idBaseKnot, ShapeId const idPipeline )
 {
 	GetBaseKnot( idBaseKnot )->AddIncomming( idPipeline );
-	GetPipeline( idPipeline )->SetEndKnot( model, idBaseKnot );
+	GetPipeline( idPipeline )->SetEndKnot( * this, idBaseKnot );
 }
 
-void NNetModel::AddOutgoing( NNetModel const & model,ShapeId const idBaseKnot, ShapeId const idPipeline )
+void NNetModel::AddOutgoing( ShapeId const idBaseKnot, ShapeId const idPipeline )
 {
 	GetBaseKnot( idBaseKnot )->AddOutgoing( idPipeline );
-	GetPipeline( idPipeline )->SetStartKnot( model, idBaseKnot );
+	GetPipeline( idPipeline )->SetStartKnot( * this, idBaseKnot );
 }
 
 void NNetModel::HighlightShape( ShapeId const idHighlight )
@@ -340,55 +342,88 @@ ShapeId const NNetModel::addShape( Shape * pShape )
 	return id;
 }
 
+ShapeId NNetModel::NewInputNeuron( MicroMeterPoint const & pos )
+{
+	return addShape( new InputNeuron( pos ) );
+}
+
+ShapeId NNetModel::NewOutputNeuron( MicroMeterPoint const & pos )
+{
+	return addShape( new OutputNeuron( pos ) );
+}
+
+ShapeId NNetModel::NewNeuron( MicroMeterPoint const & pos )
+{
+	return addShape( new Neuron( pos ) );
+}
+
+ShapeId NNetModel::NewKnot( MicroMeterPoint const & pos )
+{
+	return addShape( new Knot( pos ) );
+}
+
+void NNetModel::RemovePipeline( ShapeId const idPipeline )
+{
+	Pipeline * pPipeline   { GetPipeline( idPipeline ) };
+	ShapeId    idStartKnot { pPipeline->GetStartKnot() };
+	ShapeId    idEndKnot   { pPipeline->GetEndKnot  () };
+	Knot     * pStartKnot  { GetKnot( idStartKnot ) };
+	Knot     * pEndKnot    { GetKnot( idEndKnot ) };
+	pStartKnot->RemoveOutgoing( idPipeline );
+	pEndKnot  ->RemoveIncoming( idPipeline );
+	if ( pStartKnot->IsOrphan() )
+		deleteShape( idStartKnot );
+	if ( pEndKnot->IsOrphan() )
+		deleteShape( idEndKnot );
+	deleteShape( idPipeline );
+}
+
+ShapeId NNetModel::NewPipeline( ShapeId const idStart, ShapeId const idEnd )
+{
+	ShapeId const id { addShape( new Pipeline( ) ) };
+	AddOutgoing ( idStart, id );
+	AddIncomming( idEnd,   id );
+	return id;
+}
+
 void NNetModel::CreateNewBranch( ShapeId const idKnot )
 {
-	Knot          * pKnot         { GetKnot( idKnot ) };
-	MicroMeterPoint position      { pKnot->GetPosition() };
-	Knot          * pKnotNew      { new Knot( position ) };
-	ShapeId const   idNewKnot     { addShape( pKnotNew ) };
-	Pipeline      * pPipelineNew  { new Pipeline( ) };
-	ShapeId const   idNewPipeline { addShape( pPipelineNew ) };
-	AddIncomming( * this, idNewKnot, idNewPipeline );
-	AddOutgoing ( * this, idKnot,    idNewPipeline );
+	ShapeId const   idNewKnot     { NewKnot( GetKnot( idKnot )->GetPosition() ) };
+	ShapeId const   idNewPipeline { NewPipeline( idKnot, idNewKnot ) };
 	HighlightShape( idNewKnot );
 }
 
 void NNetModel::SplitPipeline( ShapeId const idPipeline, MicroMeterPoint const & splitPoint )
 {
-	Pipeline    * pPipeExisting { GetPipeline( idPipeline ) };
-	Pipeline    * pPipeNew      { new Pipeline( ) };
-	Knot        * pKnotNew      { new Knot( splitPoint ) };
-	ShapeId const idNewKnot     { addShape( pKnotNew ) };
-	ShapeId const idNewPipeline { addShape( pPipeNew ) };
-	pPipeNew->SetEndKnot( * this, pPipeExisting->GetEndKnot() );
-	AddIncomming( * this, idNewKnot, idPipeline );
-	AddOutgoing ( * this, idNewKnot, idNewPipeline );
+	Pipeline * const pPipeline   { GetPipeline( idPipeline ) };
+	ShapeId    const idNewKnot      { NewKnot( splitPoint ) };
+	ShapeId    const idNewPipeline1 { NewPipeline( pPipeline->GetStartKnot(), idNewKnot               ) };
+	ShapeId    const idNewPipeline2 { NewPipeline( idNewKnot,                 pPipeline->GetEndKnot() ) };
     CreateNewBranch( idNewKnot );
+	RemovePipeline( idPipeline );
+}
+
+void NNetModel::createAxon( ShapeId const idNeuron )
+{
+	MicroMeterPoint const neuronPos     { GetConstBaseKnot( idNeuron)->GetPosition( ) };
+	MicroMeterPoint const knotPos       { neuronPos + MicroMeterPoint( 0._MicroMeter, NEURON_RADIUS * 2 ) };
+	ShapeId         const idNewKnot     { NewKnot( knotPos ) };
+	ShapeId         const idNewPipeline { NewPipeline( idNeuron, idNewKnot ) };
 }
 
 void NNetModel::CreateNewNeuron( MicroMeterPoint const & pnt )
 {
-	ShapeId         const idNewInputNeuron { addShape( new Neuron( pnt ) ) };
-	MicroMeterPoint const knotPos          { pnt + MicroMeterPoint( 0._MicroMeter, NEURON_RADIUS * 2 ) };
-	ShapeId         const idNewKnot        { addShape( new Knot( knotPos ) ) };
-	ShapeId         const idNewPipeline    { addShape( new Pipeline( ) ) };
-	AddOutgoing ( * this, idNewInputNeuron, idNewPipeline );
-	AddIncomming( * this, idNewKnot,        idNewPipeline );
+	createAxon( NewNeuron( pnt ) );
 }
 
 void NNetModel::CreateNewInputNeuron( MicroMeterPoint const & pnt )
 {
-	ShapeId         const idNewInputNeuron { addShape( new InputNeuron( pnt ) ) };
-	MicroMeterPoint const knotPos          { pnt + MicroMeterPoint( 0._MicroMeter, NEURON_RADIUS * 2 ) };
-	ShapeId         const idNewKnot        { addShape( new Knot( knotPos ) ) };
-	ShapeId         const idNewPipeline    { addShape( new Pipeline( ) ) };
-	AddOutgoing ( * this, idNewInputNeuron, idNewPipeline );
-	AddIncomming( * this, idNewKnot,        idNewPipeline );
+	createAxon( NewInputNeuron( pnt ) );
 }
 
 void NNetModel::CreateNewOutputNeuron( MicroMeterPoint const & pnt )
 {
-	addShape( new OutputNeuron( pnt ) );
+	NewOutputNeuron( pnt ) ;
 }
 
 void NNetModel::checkConsistency( Shape * pShape ) const

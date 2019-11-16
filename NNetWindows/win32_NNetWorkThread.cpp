@@ -56,6 +56,16 @@ NNetWorkThread::~NNetWorkThread( )
 {
 }
 
+MicroMeterPoint const NNetWorkThread::msg2MicroMeterPoint( MSG const msg ) const
+{
+	MicroMeterPoint const pnt 
+	{ 
+		static_cast<MicroMeter>((float &)msg.wParam), 
+		static_cast<MicroMeter>((float &)msg.lParam) 
+	};
+	return pnt;
+}
+
 static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
 {
 	static unordered_map < NNetWorkThreadMessage::Id, tParameter const > mapParam =
@@ -87,7 +97,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::CONNECT:
-		m_pNNetModel->Connect( * m_pNNetModel );
+		m_pNNetModel->Connect( );
 		break;
 
 	case NNetWorkThreadMessage::Id::HIGHLIGHT:
@@ -131,15 +141,8 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::CREATE_NEW_NEURON:
-	{
-		MicroMeterPoint const pnt 
-		{ 
-			static_cast<MicroMeter>((float &)msg.wParam), 
-			static_cast<MicroMeter>((float &)msg.lParam) 
-		};
-		m_pNNetModel->CreateNewNeuron( pnt );
-	}
-	break;
+		m_pNNetModel->CreateNewNeuron( msg2MicroMeterPoint( msg ) );
+		break;
 
 	case NNetWorkThreadMessage::Id::SPLIT_PIPELINE:
 	{
@@ -150,26 +153,12 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	break;
 
 	case NNetWorkThreadMessage::Id::CREATE_NEW_INPUT_NEURON:
-	{
-		MicroMeterPoint const pnt 
-		{ 
-			static_cast<MicroMeter>((float &)msg.wParam), 
-			static_cast<MicroMeter>((float &)msg.lParam) 
-		};
-		m_pNNetModel->CreateNewInputNeuron( pnt );
-	}
-	break;
+		m_pNNetModel->CreateNewInputNeuron( msg2MicroMeterPoint( msg ) );
+		break;
 
 	case NNetWorkThreadMessage::Id::CREATE_NEW_OUTPUT_NEURON:
-	{
-		MicroMeterPoint const pnt 
-		{ 
-			static_cast<MicroMeter>((float &)msg.wParam), 
-			static_cast<MicroMeter>((float &)msg.lParam) 
-		};
-		m_pNNetModel->CreateNewOutputNeuron( pnt );
-	}
-	break;
+		m_pNNetModel->CreateNewOutputNeuron( msg2MicroMeterPoint( msg ) );
+		break;
 
 	default:
 		return FALSE;

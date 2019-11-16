@@ -75,15 +75,23 @@ public:
 
 	void ResetSimulationTime( )	{ m_timeStamp = 0._MicroSecs; }
 
+	ShapeId NewInputNeuron ( MicroMeterPoint const & );
+	ShapeId NewOutputNeuron( MicroMeterPoint const & );
+	ShapeId NewNeuron      ( MicroMeterPoint const & );
+	ShapeId NewKnot        ( MicroMeterPoint const & );
+	ShapeId NewPipeline    ( ShapeId const, ShapeId const );
+
 	void CreateNewBranch      ( ShapeId const );
 	void CreateNewNeuron      ( MicroMeterPoint const & );
 	void CreateNewInputNeuron ( MicroMeterPoint const & );
 	void CreateNewOutputNeuron( MicroMeterPoint const & );
 	void SplitPipeline        ( ShapeId const, MicroMeterPoint const & );
-	void Connect              ( NNetModel const & );
+	void Connect              ( );
 
-	void AddIncomming( NNetModel const &, ShapeId const, ShapeId const );
-	void AddOutgoing ( NNetModel const &, ShapeId const, ShapeId const );
+	void AddIncomming( ShapeId const, ShapeId const );
+	void AddOutgoing ( ShapeId const, ShapeId const );
+
+	void RemovePipeline( ShapeId const );
 
 	void HighlightShape     ( ShapeId const );
 	void SuperHighlightShape( ShapeId const );
@@ -102,8 +110,6 @@ public:
 	virtual void ResetAll( );
 
 	void  const SetParameter( tParameter const,	float const, Shape * const = nullptr );
-
-	ShapeId const addShape( Shape * );
 
 private:
 	// initial shapes 
@@ -128,6 +134,9 @@ private:
 	meterPerSec  m_pulseSpeed;
 
 	// local functions
+	void          deleteShape( ShapeId const );
 	void          deleteHighlightedShape( );
 	void          checkConsistency( Shape * ) const;
+	ShapeId const addShape( Shape * );
+	void          createAxon( ShapeId const );
 };
