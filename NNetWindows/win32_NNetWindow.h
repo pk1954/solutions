@@ -66,6 +66,7 @@ private:
 	GraphicsInterface * m_pGraphics;
 	Scale             * m_pScale;
 	Shape       const * m_pShapeSelected;
+	Shape       const * m_pShapeUnderCursor;
 
 	PixelPoint    m_ptLast;	 	   // Last cursor position during selection 
 

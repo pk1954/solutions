@@ -93,15 +93,15 @@ void WorkThreadInterface::PostGenerationStep( )
 
 void WorkThreadInterface::PostRunGenerations( BOOL const bFirst )
 {
-    if ( m_bTrace )
-        * m_pTraceStream << L"PostGenerationStep" << endl;
+    //if ( m_bTrace )
+    //    * m_pTraceStream << L"PostGenerationStep" << endl;
 	m_pWorkThread->WorkMessage( FALSE, WorkThreadMessage::Id::GENERATION_RUN, 0, bFirst );
 }
 
 void WorkThreadInterface::PostRepeatGenerationStep( )
 {
-    if ( m_bTrace )
-        * m_pTraceStream << L"PostGenerationStep" << endl;
+    //if ( m_bTrace )
+    //    * m_pTraceStream << L"PostGenerationStep" << endl;
     m_pWorkThread->WorkMessage( FALSE, WorkThreadMessage::Id::REPEAT_NEXT_GENERATION, 0, 0 );
 }
 

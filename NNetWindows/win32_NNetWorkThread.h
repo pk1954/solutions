@@ -76,7 +76,10 @@ private:
 
 	virtual void SetRunModeHook( BOOL const bState ) 
 	{
-		ResetTimer();
+		if ( bState )
+			m_hrTimer.Start();
+		else
+			m_hrTimer.Stop();
 	}
 
 	MicroMeterPoint const msg2MicroMeterPoint( MSG const) const;

@@ -45,5 +45,4 @@ private:
 
 	Ticks m_ticksOnStart;
 	Ticks m_ticksAccumulated;
-
 };

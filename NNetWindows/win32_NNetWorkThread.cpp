@@ -49,7 +49,6 @@ NNetWorkThread::NNetWorkThread
 	m_pSlowMotionRatio( pSlowMotionRatio ),
 	m_dutyCycle( 0.0 )
 {
-	m_hrTimer.Start();
 }
 
 NNetWorkThread::~NNetWorkThread( )
@@ -181,9 +180,9 @@ void NNetWorkThread::Compute()
 	MicroSecs const usMissingSimuTime  = usTilStartSimuTime - usActualSimuTime;             // compute missing simulation time
 	if ( usMissingSimuTime > 0._MicroSecs )
 	{
-		unsigned long ulCyclesTodo = CastToUnsignedLong( usMissingSimuTime / TIME_RESOLUTION ); // compute cycles to be computed
+		unsigned long ulCyclesTodo = CastToUnsignedLong( usMissingSimuTime / TIME_RESOLUTION ); // compute # cycles to be computed
 		do
-			m_pNNetModel->Compute(); 
+			m_pNNetModel->Compute();
 		while ( ulCyclesTodo-- );
 	}
 }

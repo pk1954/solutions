@@ -24,6 +24,12 @@ public:
 	void SetStartKnot( NNetModel const &, ShapeId const );
 	void SetEndKnot  ( NNetModel const &, ShapeId const );
 
+	void FixKnotIds( ShapeId const idLimit )
+	{
+		::FixShapeId( m_idKnotStart, idLimit );
+		::FixShapeId( m_idKnotEnd,   idLimit );
+	}
+
 	void Recalc( NNetModel const & );
 
 	ShapeId    GetStartKnot   ( ) const { return m_idKnotStart;  }
@@ -35,8 +41,6 @@ public:
 	MicroMeterPoint GetEndPoint  ( NNetModel const & ) const; 
 	MicroMeter      GetLength    ( NNetModel const & ) const;
 	MicroMeterPoint GetVector    ( NNetModel const & ) const; 
-
-	void CheckConsistency( NNetModel const & ) const;
 
 	virtual void Step   ( NNetModel const & );
 	virtual void Prepare( NNetModel const & );

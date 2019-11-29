@@ -13,6 +13,12 @@ class GraphicsInterface;
 class PixelCoordsFp;
 class NNetModel;
 
+static void FixShapeId( ShapeId & idToBeFixed, ShapeId const idLimit )
+{
+	if ( idToBeFixed > idLimit )
+		--idToBeFixed;
+}
+
 ShapeId const NO_SHAPE( -1 );
 
 enum class tShapeType
@@ -36,6 +42,22 @@ static bool IsBaseKnotType( tShapeType const type )
 		(type == tShapeType::knot)        || 
 		(type == tShapeType::neuron)      || 
 		(type == tShapeType::inputNeuron) ||
+		(type == tShapeType::outputNeuron);
+}
+
+static bool IsStartKnotType( tShapeType const type )
+{
+	return 
+		(type == tShapeType::knot)        || 
+		(type == tShapeType::neuron)      || 
+		(type == tShapeType::inputNeuron);
+}
+
+static bool IsEndKnotType( tShapeType const type )
+{
+	return 
+		(type == tShapeType::knot)        || 
+		(type == tShapeType::neuron)      || 
 		(type == tShapeType::outputNeuron);
 }
 
@@ -107,6 +129,11 @@ public:
 		return m_type;
 	}
 
+	void FixShapeId( ShapeId const idLimit )
+	{
+		::FixShapeId( m_identifier, idLimit );
+	}
+		
 	wchar_t const * const GetName( ) const;
 
 	static tShapeType const GetShapeType( wchar_t const * const );

@@ -12,6 +12,12 @@
 #include "InputNeuron.h"
 #include "NNetModel.h"
 
+#ifndef NDEBUG
+	#define CHECK_CONSISTENCY checkConsistency( )
+#else
+	#define CHECK_CONSISTENCY
+#endif
+
 using namespace std::chrono;
 using std::unordered_map;
 
@@ -102,6 +108,10 @@ void NNetModel::deleteShape( ShapeId const id )
 {
 	delete m_Shapes[ id.GetValue() ];
 	m_Shapes[ id.GetValue() ] = nullptr;
+	m_Shapes.erase( m_Shapes.begin() + id.GetValue() );
+	Apply2AllShapes   ( [&]( Shape    & shape ) { shape.FixShapeId( id ); } );
+	Apply2AllPipelines( [&]( Pipeline & pipe  ) { pipe.FixKnotIds ( id ); } );
+	CHECK_CONSISTENCY;
 }
 
 void NNetModel::deleteHighlightedShape( )
@@ -109,6 +119,7 @@ void NNetModel::deleteHighlightedShape( )
 	ShapeId const id = m_shapeHighlighted;
 	m_shapeHighlighted = NO_SHAPE;
 	deleteShape( id );
+	CHECK_CONSISTENCY;
 }
 
 Pipeline * NNetModel::GetPipeline( ShapeId const id ) 
@@ -281,6 +292,7 @@ void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
 		deleteHighlightedShape( );
 		SuperHighlightShape( NO_SHAPE );
 	}
+	CHECK_CONSISTENCY;
 }
 
 void NNetModel::AddIncomming( ShapeId const idBaseKnot, ShapeId const idPipeline )
@@ -376,6 +388,7 @@ void NNetModel::RemovePipeline( ShapeId const idPipeline )
 	if ( pEndKnot->IsOrphan() )
 		deleteShape( idEndKnot );
 	deleteShape( idPipeline );
+	CHECK_CONSISTENCY;
 }
 
 ShapeId NNetModel::NewPipeline( ShapeId const idStart, ShapeId const idEnd )
@@ -383,6 +396,7 @@ ShapeId NNetModel::NewPipeline( ShapeId const idStart, ShapeId const idEnd )
 	ShapeId const id { addShape( new Pipeline( ) ) };
 	AddOutgoing ( idStart, id );
 	AddIncomming( idEnd,   id );
+	CHECK_CONSISTENCY;
 	return id;
 }
 
@@ -391,16 +405,18 @@ void NNetModel::CreateNewBranch( ShapeId const idKnot )
 	ShapeId const   idNewKnot     { NewKnot( GetKnot( idKnot )->GetPosition() ) };
 	ShapeId const   idNewPipeline { NewPipeline( idKnot, idNewKnot ) };
 	HighlightShape( idNewKnot );
+	CHECK_CONSISTENCY;
 }
 
 void NNetModel::SplitPipeline( ShapeId const idPipeline, MicroMeterPoint const & splitPoint )
 {
-	Pipeline * const pPipeline   { GetPipeline( idPipeline ) };
+	Pipeline * const pPipeline      { GetPipeline( idPipeline ) };
 	ShapeId    const idNewKnot      { NewKnot( splitPoint ) };
 	ShapeId    const idNewPipeline1 { NewPipeline( pPipeline->GetStartKnot(), idNewKnot               ) };
 	ShapeId    const idNewPipeline2 { NewPipeline( idNewKnot,                 pPipeline->GetEndKnot() ) };
     CreateNewBranch( idNewKnot );
 	RemovePipeline( idPipeline );
+	CHECK_CONSISTENCY;
 }
 
 void NNetModel::createAxon( ShapeId const idNeuron )
@@ -409,6 +425,7 @@ void NNetModel::createAxon( ShapeId const idNeuron )
 	MicroMeterPoint const knotPos       { neuronPos + MicroMeterPoint( 0._MicroMeter, NEURON_RADIUS * 2 ) };
 	ShapeId         const idNewKnot     { NewKnot( knotPos ) };
 	ShapeId         const idNewPipeline { NewPipeline( idNeuron, idNewKnot ) };
+	CHECK_CONSISTENCY;
 }
 
 void NNetModel::CreateNewNeuron( MicroMeterPoint const & pnt )
@@ -431,7 +448,11 @@ void NNetModel::checkConsistency( Shape * pShape ) const
 	switch ( pShape->GetShapeType() )
 	{
 	case tShapeType::inputNeuron:
-		break;
+	{
+		InputNeuron * pInputNeuron = static_cast<InputNeuron *>( pShape );
+		assert( ! pInputNeuron->HasIncoming() );
+	}
+	break;
 
 	case tShapeType::knot:
 		break;
@@ -440,14 +461,19 @@ void NNetModel::checkConsistency( Shape * pShape ) const
 		break;
 
 	case tShapeType::outputNeuron:
-		break;
+	{
+		OutputNeuron * pOutputNeuron = static_cast<OutputNeuron *>( pShape );
+		assert( ! pOutputNeuron->HasOutgoing() );
+	}
+	break;
 
 	case tShapeType::pipeline:
 	{
 		Pipeline * pPipeline = static_cast<Pipeline *>( pShape );
-		pPipeline->CheckConsistency( * this );
-	}
-		break;
+		assert( IsStartKnotType( pPipeline->GetStartKnot() ) );
+		assert( IsEndKnotType  ( pPipeline->GetEndKnot  () ) );
+	}  
+	break;
 
 	case tShapeType::undefined:
 		assert( false );
@@ -456,6 +482,11 @@ void NNetModel::checkConsistency( Shape * pShape ) const
 	default:
 		assert( false );
 	}
+}
+
+void NNetModel::checkConsistency( ) const
+{
+	Apply2AllShapes( [&]( Shape & shape ) { checkConsistency( & shape ); } );
 }
 
 void NNetModel::Apply2AllShapes( std::function<void(Shape &)> const & func ) const

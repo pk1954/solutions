@@ -41,6 +41,7 @@ NNetWindow::NNetWindow( ) :
 	m_pGraphics( nullptr ),
 	m_pScale( nullptr ),
 	m_pShapeSelected( nullptr ),
+	m_pShapeUnderCursor( nullptr ),
 	m_ptLast( PP_NULL ),
 	m_bMoveAllowed( TRUE )
 { }
@@ -234,7 +235,11 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	else
 	{                         
 		Shape const * pShape = getShapeUnderPoint( ptCrsr );
-		PostCommand2Application( IDM_HIGHLIGHT, (pShape ? pShape->GetId() : NO_SHAPE).GetValue() );
+		if ( pShape != m_pShapeUnderCursor )
+		{
+			PostCommand2Application( IDM_HIGHLIGHT, (pShape ? pShape->GetId() : NO_SHAPE).GetValue() );
+			m_pShapeUnderCursor = pShape;
+		}
 							  // make m_ptLast invalid
 		m_ptLast = PP_NULL;   // no refresh! It would cause repaint for every mouse move 
 	}

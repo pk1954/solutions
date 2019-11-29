@@ -75,10 +75,13 @@ MicroSecs HiResTimer::TicksToMicroSecs( Ticks const ticks )
 	assert( ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS );
 	ULONGLONG ullTicks = static_cast<ULONGLONG>( ticks.GetValue() );
 	MicroSecs result
-	(                                                  
-		( ullTicks * MICROSECONDS_TO_SECONDS ) // converts from seconds to microseconds.
-		/ m_frequency.GetValue()               // multiply *before* division, otherwise
-	);                                         // division would truncate too many significant digits
+	( 
+		CastToFloat
+		(
+			( ullTicks * MICROSECONDS_TO_SECONDS ) // converts from seconds to microseconds.
+			/ m_frequency.GetValue()               // multiply *before* division, otherwise
+		)                                          // division would truncate too many significant digits
+	);                                         
 
 	return result;
 }

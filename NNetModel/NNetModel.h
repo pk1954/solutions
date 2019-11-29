@@ -66,11 +66,10 @@ public:
 
 	float const GetParameterValue( tParameter const, Shape const * const = nullptr ) const;
 
-	bool IsBaseKnotType( ShapeId const id ) const
-	{
-		return ::IsBaseKnotType( GetConstShape( id )->GetShapeType() );
-	}
-		
+	bool IsBaseKnotType ( ShapeId const id ) const { return ::IsBaseKnotType ( GetConstShape( id )->GetShapeType() ); }
+	bool IsStartKnotType( ShapeId const id ) const { return ::IsStartKnotType( GetConstShape( id )->GetShapeType() ); }
+	bool IsEndKnotType  ( ShapeId const id ) const { return ::IsEndKnotType  ( GetConstShape( id )->GetShapeType() ); }
+
 	// manipulating functions
 
 	void ResetSimulationTime( )	{ m_timeStamp = 0._MicroSecs; }
@@ -137,6 +136,7 @@ private:
 	void          deleteShape( ShapeId const );
 	void          deleteHighlightedShape( );
 	void          checkConsistency( Shape * ) const;
+	void          checkConsistency( ) const;
 	ShapeId const addShape( Shape * );
 	void          createAxon( ShapeId const );
 };
