@@ -144,6 +144,10 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 {
 	switch ( wmId )
 	{
+	case IDM_RUN:
+		m_pNNetWorkThreadInterface->PostResetTimer( );
+		return true;
+
 	case IDD_TRIGGER:
 		m_pNNetWorkThreadInterface->PostTrigger( ShapeId( CastToLong( lParam ) ) );
 		break;

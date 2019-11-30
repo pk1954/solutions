@@ -95,6 +95,10 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		}
 		break;
 
+	case NNetWorkThreadMessage::Id::RESET_TIMER:
+		m_pNNetModel->ResetSimulationTime();
+		break;
+
 	case NNetWorkThreadMessage::Id::CONNECT:
 		m_pNNetModel->Connect( );
 		break;

@@ -35,6 +35,7 @@ public:
 	void Stop(); 
 
 	void PostSetParameter         ( tParameter const, float const, ShapeId const = NO_SHAPE );
+	void PostResetTimer           ( );
 	void PostConnect              ( );
 	void PostSlowMotionChanged    ( );
 	void PostTrigger              ( ShapeId const );

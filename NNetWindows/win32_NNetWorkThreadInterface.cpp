@@ -59,6 +59,13 @@ void NNetWorkThreadInterface::Stop( )
 	delete m_pNNetWorkThread;
 }
 
+void NNetWorkThreadInterface::PostResetTimer( )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::RESET_TIMER), 0, 0 );
+}
+
 void NNetWorkThreadInterface::PostConnect( )
 {
 	if ( IsTraceOn( ) )
