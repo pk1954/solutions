@@ -96,7 +96,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::RESET_TIMER:
-		m_pNNetModel->ResetSimulationTime();
+		m_pNNetModel->ResetSimulationTime( );
 		break;
 
 	case NNetWorkThreadMessage::Id::CONNECT:
@@ -172,11 +172,15 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 
 void NNetWorkThread::WaitTilNextActivation( )
 {
-	Sleep( 10 );
+//	Sleep( 10 );
 } 
 
 void NNetWorkThread::Compute() 
-{ 
+{
+	static DWORD nrOfCalls  = 0;
+	static DWORD nrOfSleeps = 0;
+	static DWORD nrOfCycles = 0;
+	++nrOfCalls;
 	Ticks     const ticksTilStart      = m_hrTimer.GetTicksTilStart( );                   
 	MicroSecs const usTilStartRealTime = m_hrTimer.TicksToMicroSecs( ticksTilStart ); 
 	MicroSecs const usTilStartSimuTime = usTilStartRealTime / CastToFloat( m_pSlowMotionRatio->GetRatio() );
@@ -185,8 +189,16 @@ void NNetWorkThread::Compute()
 	if ( usMissingSimuTime > 0._MicroSecs )
 	{
 		unsigned long ulCyclesTodo = CastToUnsignedLong( usMissingSimuTime / TIME_RESOLUTION ); // compute # cycles to be computed
+		nrOfCycles += ulCyclesTodo;
 		do
 			m_pNNetModel->Compute();
 		while ( ulCyclesTodo-- );
 	}
+	else
+	{
+		Sleep( 10 );
+		++nrOfSleeps;
+	}
+	double averageCyclesTodo = double(nrOfCycles) / double(nrOfCalls);
+	int x = 55;
 }

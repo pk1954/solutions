@@ -147,7 +147,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions> /GH /Gh</AdditionalOptions>
+      <AdditionalOptions> </AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -172,16 +172,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MICROPROFILERDIR)\micro-profiler.initializer.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="BaseKnot.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
     <ClCompile Include="Knot.cpp" />
@@ -191,9 +181,6 @@
     <ClCompile Include="OutputNeuron.cpp" />
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="Shape.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="$(MICROPROFILERDIR)\micro-profiler_$(PlatformName).lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

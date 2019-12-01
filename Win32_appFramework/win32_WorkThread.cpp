@@ -148,20 +148,15 @@ BOOL WorkThread::Dispatch( MSG const msg )
 		break;
 
 	case WorkThreadMessage::Id::GENERATION_RUN:
-		if ( static_cast<bool>(msg.lParam) )          // if first RUN message ...
-			SetRunMode( TRUE );
-		generationRun( );
+		generationRun( static_cast<bool>(msg.lParam) );
 		break;
 
 	case WorkThreadMessage::Id::STOP:
-		if ( m_pHistorySystem )
-			m_genDemanded = m_pHistorySystem->GetCurrentGeneration( );
-		SetRunMode( FALSE );
-		Script::StopProcessing( );
+		generationStop( );
 		return FALSE;      // do not notify observers, because model has not changed  
 
 	case WorkThreadMessage::Id::REPEAT_NEXT_GENERATION:
-		GotoGeneration( m_genDemanded );
+	    GotoGeneration( m_genDemanded );
 		break;
 
 	case WorkThreadMessage::Id::NEXT_GENERATION:
@@ -249,8 +244,11 @@ void WorkThread::NGenerationSteps( int iNrOfGenerations )  // for benchmarks onl
 	stopwatch.Stop( L"benchmark" );
 }
 
-void WorkThread::generationRun( )
+void WorkThread::generationRun( bool const bFirst )
 {
+	if ( bFirst )               // if first RUN message ...
+		setRunMode( TRUE );
+
 	if ( m_bContinue )
 	{
 		if ( m_pHistorySystem )
@@ -269,4 +267,12 @@ void WorkThread::generationRun( )
 			PostMessage( m_hwndApplication, WM_COMMAND, IDM_RUN, 0 );
 		}
 	}
+}
+
+void WorkThread::generationStop( )
+{
+	if ( m_pHistorySystem )
+		m_genDemanded = m_pHistorySystem->GetCurrentGeneration( );
+	setRunMode( FALSE );
+	Script::StopProcessing( );
 }

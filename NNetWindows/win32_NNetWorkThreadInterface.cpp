@@ -70,7 +70,9 @@ void NNetWorkThreadInterface::PostConnect( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
+//	WorkThreadInterface::PostStopComputation();
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::CONNECT), 0, 0 );
+//	WorkThreadInterface::PostRunGenerations( true );
 }
 
 void NNetWorkThreadInterface::PostTrigger( ShapeId const id )

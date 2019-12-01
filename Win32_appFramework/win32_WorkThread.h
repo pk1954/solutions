@@ -102,7 +102,7 @@ protected:
 
 	void EditorCommand( GenerationCmd::Id const cmd, WPARAM const wParam )
 	{
-		GetHistorySystem( )->CreateAppCommand( MakeGenerationCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
+		GetHistorySystem( )->CreateAppCommand( makeGenerationCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
 	}
 
 	virtual void Compute() { m_pModel->Compute(); }
@@ -113,18 +113,20 @@ protected:
 
 private:
 
-	void SetRunMode( BOOL const bState )
+	void generationRun( bool const );
+	void generationStop( );
+
+	void setRunMode( BOOL const bState )
 	{
 		m_bContinue = bState;
 		SetRunModeHook( bState );
 	}
 
-	GenerationCmd MakeGenerationCmd( GenerationCmd::Id const cmd, Int24 const param )
+	GenerationCmd makeGenerationCmd( GenerationCmd::Id const cmd, Int24 const param )
 	{ 
 		return GenerationCmd::ApplicationCmd( static_cast<GenerationCmd::Id>(cmd), param );  
 	}  
 
-	void generationRun( );
 	bool userWantsHistoryCut( ) const;
 
 	ActionTimer         * m_pComputeTimer;

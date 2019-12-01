@@ -146,16 +146,10 @@
     <ClCompile Include="win32_scale.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="$(MICROPROFILERDIR)\micro-profiler.initializer.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="win32_utilities.rc">
       <Filter>Ressourcendateien</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="$(MICROPROFILERDIR)\micro-profiler_$(PlatformName).lib" />
   </ItemGroup>
 </Project>
