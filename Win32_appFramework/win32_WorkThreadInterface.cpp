@@ -53,27 +53,6 @@ void WorkThreadInterface::postGotoGeneration( HIST_GENERATION const gen )
 
 // procedural interface of worker thread
 
-HIST_GENERATION WorkThreadInterface::GetGenDemanded( ) const 
-{ 
-	return m_pWorkThread->GetGenDemanded( );
-}
-
-HIST_GENERATION WorkThreadInterface::GetCurrentGeneration( ) const 
-{ 
-	return m_pWorkThread->GetCurrentGeneration( );
-}
-
-void WorkThreadInterface::WorkMessage
-( 
-	BOOL                  const isEditOperation,
-	WorkThreadMessage::Id const msg, 
-	WPARAM                const wparam, 
-	LPARAM                const lparam
-)
-{
-	m_pWorkThread->WorkMessage( isEditOperation, msg, wparam, lparam );
-}
-
 void WorkThreadInterface::PostReset( BOOL bResetHistSys )
 {
 	if ( IsTraceOn( ) )

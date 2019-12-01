@@ -45,12 +45,32 @@ public:
 	bool HasOutgoing( ) const { return ! m_outgoing.empty(); }
 	bool IsOrphan( )    const {	return m_incoming.empty() && m_outgoing.empty(); }
 
-	void Apply2AllIncomingPipelines( std::function<void(ShapeId const &)> const & func ) const
+	void Apply2AllIncomingPipelines( std::function<void(ShapeId &)> const & func )
 	{
-		for ( auto id : m_incoming )
+		for ( auto & id : m_incoming )
 		{
 			func( id );
 		}
+	}
+
+	void Apply2AllOutgoingPipelines( std::function<void(ShapeId &)> const & func )
+	{
+		for ( auto & id : m_outgoing )
+		{
+			func( id );
+		}
+	}
+
+    void Apply2AllConnectedPipelines( std::function<void(ShapeId &)> const & func )
+	{
+		Apply2AllIncomingPipelines( [&]( ShapeId & idPipeline ) { func( idPipeline ); } );
+		Apply2AllOutgoingPipelines( [&]( ShapeId & idPipeline ) { func( idPipeline ); } );
+	}
+
+	virtual void FixShapeIds( ShapeId const idLimit )
+	{
+		Shape::FixShapeIds( idLimit );
+		Apply2AllConnectedPipelines( [&]( ShapeId & idPipeline ) { ::FixShapeId( idPipeline, idLimit ); } );
 	}
 
 	virtual void MoveTo( NNetModel &, MicroMeterPoint const & );

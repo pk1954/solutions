@@ -24,8 +24,9 @@ public:
 	void SetStartKnot( NNetModel const &, ShapeId const );
 	void SetEndKnot  ( NNetModel const &, ShapeId const );
 
-	void FixKnotIds( ShapeId const idLimit )
+	virtual void FixShapeIds( ShapeId const idLimit )
 	{
+		Shape::FixShapeIds( idLimit );
 		::FixShapeId( m_idKnotStart, idLimit );
 		::FixShapeId( m_idKnotEnd,   idLimit );
 	}

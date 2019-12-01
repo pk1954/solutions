@@ -54,7 +54,8 @@ NNetAppWindow::NNetAppWindow( ) :
 	m_pGraphics( nullptr ),
 	m_pSlowMotionDisplay( nullptr ),
 	m_pTimeDisplay( nullptr ),
-	m_pCrsrWindow( nullptr )
+	m_pCrsrWindow( nullptr ),
+	m_pNNetModelStorage( nullptr )
 {
 	Stopwatch stopwatch;
 

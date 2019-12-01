@@ -28,7 +28,8 @@ enum class tParameter
 	dampingFactor,
 	threshold,
 	peakVoltage,
-	refractoryPeriod
+	refractoryPeriod,
+	tParameterLast = refractoryPeriod
 };
 
 class NNetModel : public ModelInterface
@@ -37,6 +38,9 @@ public:
 	NNetModel();
 
 	virtual ~NNetModel( );
+
+	class ModelInconsistencyException : public std::exception {};
+	static ModelInconsistencyException const ModelInconsistency;
 
 	// readOnly functions
 
@@ -66,6 +70,7 @@ public:
 
 	float const GetParameterValue( tParameter const, Shape const * const = nullptr ) const;
 
+	bool IsPipelineType ( ShapeId const id ) const { return ::IsPipelineType ( GetConstShape( id )->GetShapeType() ); }
 	bool IsBaseKnotType ( ShapeId const id ) const { return ::IsBaseKnotType ( GetConstShape( id )->GetShapeType() ); }
 	bool IsStartKnotType( ShapeId const id ) const { return ::IsStartKnotType( GetConstShape( id )->GetShapeType() ); }
 	bool IsEndKnotType  ( ShapeId const id ) const { return ::IsEndKnotType  ( GetConstShape( id )->GetShapeType() ); }
@@ -97,6 +102,7 @@ public:
 
 	void Apply2AllShapes      ( std::function<void(Shape       &)> const & ) const;
 	void Apply2AllNeurons     ( std::function<void(Neuron      &)> const & ) const;
+	void Apply2AllBaseKnots   ( std::function<void(BaseKnot    &)> const & ) const;
 	void Apply2AllPipelines   ( std::function<void(Pipeline    &)> const & ) const;
 	void Apply2AllInputNeurons( std::function<void(InputNeuron &)> const & ) const;
 
@@ -111,10 +117,6 @@ public:
 	void  const SetParameter( tParameter const,	float const, Shape * const = nullptr );
 
 private:
-	// initial shapes 
-	ShapeId m_idInputNeuron;
-	ShapeId m_idOutputNeuron;
-	ShapeId m_idPipeline;
 			  
 	// modal data
 	vector<Shape *> m_Shapes;
@@ -135,8 +137,8 @@ private:
 	// local functions
 	void          deleteShape( ShapeId const );
 	void          deleteHighlightedShape( );
-	void          checkConsistency( Shape * ) const;
-	void          checkConsistency( ) const;
+	void          checkConsistency( Shape * );
+	void          checkConsistency( );
 	ShapeId const addShape( Shape * );
 	void          createAxon( ShapeId const );
 };

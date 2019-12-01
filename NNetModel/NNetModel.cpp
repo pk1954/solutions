@@ -21,6 +21,8 @@
 using namespace std::chrono;
 using std::unordered_map;
 
+NNetModel::ModelInconsistencyException const NNetModel::ModelInconsistency;
+
 wchar_t const * const NNetModel::GetParameterName( tParameter const p ) const
 {
 	static unordered_map < tParameter, wchar_t const * const > mapParam =
@@ -81,9 +83,10 @@ NNetModel::NNetModel( )
 	m_refractoryPeriod     ( 500._MicroSecs ),
 	m_pulseSpeed           ( 0.1_meterPerSec )
 {					
-	m_idInputNeuron  = NewInputNeuron( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
-	m_idOutputNeuron = NewOutputNeuron( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) );
-	m_idPipeline     = NewPipeline( m_idInputNeuron, m_idOutputNeuron );
+	// initial shapes 
+	ShapeId m_idInputNeuron  = NewInputNeuron( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
+	ShapeId m_idOutputNeuron = NewOutputNeuron( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) );
+	ShapeId m_idPipeline     = NewPipeline( m_idInputNeuron, m_idOutputNeuron );
 }
 
 NNetModel::~NNetModel( )
@@ -94,23 +97,14 @@ void NNetModel::RecalcPipelines( )
 	Apply2AllPipelines( [&]( Pipeline & pipe ) { pipe.Recalc( * this ); } );
 } 
 
-Shape * NNetModel::GetShape( ShapeId const id )
-{
-	return ( IsDefined( id ) ) ? m_Shapes[ id.GetValue() ] : nullptr;
-}
-
-Shape const * NNetModel::GetConstShape( ShapeId const id ) const
-{
-	return ( IsDefined( id ) ) ? m_Shapes[ id.GetValue() ] : nullptr;
-}
-
 void NNetModel::deleteShape( ShapeId const id )
 {
 	delete m_Shapes[ id.GetValue() ];
 	m_Shapes[ id.GetValue() ] = nullptr;
 	m_Shapes.erase( m_Shapes.begin() + id.GetValue() );
-	Apply2AllShapes   ( [&]( Shape    & shape ) { shape.FixShapeId( id ); } );
-	Apply2AllPipelines( [&]( Pipeline & pipe  ) { pipe.FixKnotIds ( id ); } );
+	Apply2AllShapes( [&]( Shape & shape ) { shape.FixShapeIds( id ); } );
+	FixShapeId( m_shapeHighlighted,      id );
+	FixShapeId( m_shapeSuperHighlighted, id );
 	CHECK_CONSISTENCY;
 }
 
@@ -122,11 +116,26 @@ void NNetModel::deleteHighlightedShape( )
 	CHECK_CONSISTENCY;
 }
 
+Shape * NNetModel::GetShape( ShapeId const id )
+{
+	if ( id.GetValue() >= m_Shapes.size() )
+		throw ModelInconsistency;
+	return ( IsDefined( id ) ) ? m_Shapes[ id.GetValue() ] : nullptr;
+}
+
+Shape const * NNetModel::GetConstShape( ShapeId const id ) const
+{
+	if ( id.GetValue() >= m_Shapes.size() )
+		throw ModelInconsistency;
+	return ( IsDefined( id ) ) ? m_Shapes[ id.GetValue() ] : nullptr;
+}
+
 Pipeline * NNetModel::GetPipeline( ShapeId const id ) 
 {
 	Shape * pShape = GetShape( id );
 	assert( pShape );
-	assert( pShape->GetShapeType() == tShapeType::pipeline );
+	if ( pShape->GetShapeType() != tShapeType::pipeline ) 
+		throw ModelInconsistency;
 	return static_cast<Pipeline *>( pShape );
 }
 
@@ -134,7 +143,8 @@ Pipeline const * NNetModel::GetConstPipeline( ShapeId const id ) const
 {
 	Shape const * pShape { GetConstShape( id ) };
 	assert( pShape );
-	assert( pShape->GetShapeType() == tShapeType::pipeline );
+	if ( pShape->GetShapeType() != tShapeType::pipeline ) 
+		throw ModelInconsistency;
 	return static_cast<Pipeline const *>( pShape );
 }
 
@@ -142,7 +152,8 @@ BaseKnot * NNetModel::GetBaseKnot( ShapeId const id )
 {
 	Shape * pShape = GetShape( id );
 	assert( pShape );
-	assert( IsBaseKnotType( id ) );
+	if ( ! IsBaseKnotType( id ) ) 
+		throw ModelInconsistency;
 	return static_cast<BaseKnot *>( pShape );
 }
 
@@ -150,7 +161,8 @@ BaseKnot const * NNetModel::GetConstBaseKnot( ShapeId const id ) const
 {
 	Shape const * pShape = GetConstShape( id );
 	assert( pShape );
-	assert( IsBaseKnotType( id ) );
+	if ( ! IsBaseKnotType( id ) ) 
+		throw ModelInconsistency;
 	return static_cast<BaseKnot const *>( pShape );
 }
 
@@ -158,7 +170,8 @@ Knot * NNetModel::GetKnot( ShapeId const id )
 {
 	Shape * pShape = GetShape( id );
 	assert( pShape );
-	assert( IsBaseKnotType( id ) );
+	if ( ! IsBaseKnotType( id ) ) 
+		throw ModelInconsistency;
 	return static_cast<Knot *>( pShape );
 }
 
@@ -166,7 +179,8 @@ Knot const * NNetModel::GetConstKnot( ShapeId const id ) const
 {
 	Shape const * pShape = GetConstShape( id );
 	assert( pShape );
-	assert( IsBaseKnotType( id ) );
+	if ( ! IsBaseKnotType( id ) ) 
+		throw ModelInconsistency;
 	return static_cast<Knot const *>( pShape );
 }
 
@@ -174,7 +188,8 @@ InputNeuron * NNetModel::GetInputNeuron( ShapeId const id )
 {
 	Shape * pShape = GetShape( id );
 	assert( pShape );
-	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
+	if ( pShape->GetShapeType() != tShapeType::inputNeuron ) 
+		throw ModelInconsistency;
 	return static_cast<InputNeuron *>( pShape );
 }
 
@@ -182,7 +197,8 @@ InputNeuron const * NNetModel::GetConstInputNeuron( ShapeId const id ) const
 {
 	Shape const * pShape = GetConstShape( id );
 	assert( pShape );
-	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
+	if ( pShape->GetShapeType() != tShapeType::inputNeuron ) 
+		throw ModelInconsistency;
 	return static_cast<InputNeuron const *>( pShape );
 }
 
@@ -190,7 +206,8 @@ OutputNeuron * NNetModel::GetOutputNeuron( ShapeId const id )
 {
 	Shape * pShape = GetShape( id );
 	assert( pShape );
-	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
+	if ( pShape->GetShapeType() != tShapeType::outputNeuron ) 
+		throw ModelInconsistency;
 	return static_cast<OutputNeuron *>( pShape );
 }
 
@@ -198,7 +215,8 @@ OutputNeuron const * NNetModel::GetConstOutputNeuron( ShapeId const id ) const
 {
 	Shape const * pShape = GetConstShape( id );
 	assert( pShape );
-	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
+	if ( pShape->GetShapeType() != tShapeType::outputNeuron ) 
+		throw ModelInconsistency;
 	return static_cast<OutputNeuron const *>( pShape );
 }
 
@@ -443,37 +461,40 @@ void NNetModel::CreateNewOutputNeuron( MicroMeterPoint const & pnt )
 	NewOutputNeuron( pnt ) ;
 }
 
-void NNetModel::checkConsistency( Shape * pShape ) const
+void NNetModel::checkConsistency( Shape * pShape )
 {
-	switch ( pShape->GetShapeType() )
+	tShapeType type = pShape->GetShapeType();
+
+	if ( ::IsBaseKnotType( type ) )
+		static_cast<BaseKnot &>( * pShape ).Apply2AllConnectedPipelines
+		( 
+			[&]( ShapeId & id ) 
+			{ 
+				assert( IsPipelineType( id ) ); 
+			} 
+	    );
+
+	switch ( type )
 	{
 	case tShapeType::inputNeuron:
-	{
-		InputNeuron * pInputNeuron = static_cast<InputNeuron *>( pShape );
-		assert( ! pInputNeuron->HasIncoming() );
-	}
-	break;
+		assert( ! static_cast<InputNeuron *>( pShape )->HasIncoming() );
+		break;
 
 	case tShapeType::knot:
 		break;
 
 	case tShapeType::neuron:
+		assert( static_cast<Neuron *>( pShape )->HasOutgoing() );
 		break;
 
 	case tShapeType::outputNeuron:
-	{
-		OutputNeuron * pOutputNeuron = static_cast<OutputNeuron *>( pShape );
-		assert( ! pOutputNeuron->HasOutgoing() );
-	}
-	break;
+		assert( ! static_cast<OutputNeuron *>( pShape )->HasOutgoing() );
+		break;
 
 	case tShapeType::pipeline:
-	{
-		Pipeline * pPipeline = static_cast<Pipeline *>( pShape );
-		assert( IsStartKnotType( pPipeline->GetStartKnot() ) );
-		assert( IsEndKnotType  ( pPipeline->GetEndKnot  () ) );
-	}  
-	break;
+		assert( IsStartKnotType( static_cast<Pipeline *>( pShape )->GetStartKnot() ) );
+		assert( IsEndKnotType  ( static_cast<Pipeline *>( pShape )->GetEndKnot  () ) );
+		break;
 
 	case tShapeType::undefined:
 		assert( false );
@@ -484,7 +505,7 @@ void NNetModel::checkConsistency( Shape * pShape ) const
 	}
 }
 
-void NNetModel::checkConsistency( ) const
+void NNetModel::checkConsistency( )
 {
 	Apply2AllShapes( [&]( Shape & shape ) { checkConsistency( & shape ); } );
 }
@@ -494,7 +515,16 @@ void NNetModel::Apply2AllShapes( std::function<void(Shape &)> const & func ) con
 	for ( auto pShape : m_Shapes )
 	{
 		if ( pShape )
-		    func( * pShape );
+			func( * pShape );
+	}
+}
+
+void NNetModel::Apply2AllBaseKnots( std::function<void(BaseKnot &)> const & func ) const
+{
+	for ( auto pShape : m_Shapes )
+	{
+		if ( pShape && ( ::IsBaseKnotType( pShape->GetShapeType() ) ) )
+			func( static_cast<BaseKnot &>( * pShape ) );
 	}
 }
 
@@ -521,18 +551,14 @@ void NNetModel::Apply2AllPipelines( std::function<void(Pipeline &)> const & func
 	for ( auto pShape : m_Shapes )
 	{
 		if ( pShape && ( pShape->GetShapeType() == tShapeType::pipeline ))
-		{
 			func( static_cast<Pipeline &>( * pShape ) );
-		}
 	}
 }
 
 void NNetModel::Apply2AllParameters( std::function<void(tParameter const &)> const & func ) const
 {
-	for ( int i = 0; static_cast<tParameter>(i) <= tParameter::refractoryPeriod; ++i )
-	{
+	for ( int i = 0; static_cast<tParameter>(i) <= tParameter::tParameterLast; ++i )
 		func( static_cast<tParameter>( i ) );
-	}
 }
 
 void NNetModel::CopyModelData( ModelInterface const * const src )

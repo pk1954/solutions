@@ -36,6 +36,11 @@ static bool IsDefined( ShapeId const id )
 	return id != NO_SHAPE;
 }
 
+static bool IsPipelineType( tShapeType const type )
+{
+	return type == tShapeType::pipeline;
+}
+
 static bool IsBaseKnotType( tShapeType const type )
 {
 	return 
@@ -129,7 +134,7 @@ public:
 		return m_type;
 	}
 
-	void FixShapeId( ShapeId const idLimit )
+	virtual void FixShapeIds( ShapeId const idLimit )
 	{
 		::FixShapeId( m_identifier, idLimit );
 	}
