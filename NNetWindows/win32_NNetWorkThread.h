@@ -25,6 +25,8 @@ public:
 		RESET_TIMER,
 		TRIGGER,
 		CONNECT,
+		SELECT_SHAPE,
+		SELECT_SHAPE_UNDER_POINT,
 		HIGHLIGHT,
 		SUPER_HIGHLIGHT,
 		PULSE_RATE,
@@ -82,8 +84,6 @@ private:
 		else
 			m_hrTimer.Stop();
 	}
-
-	MicroMeterPoint const msg2MicroMeterPoint( MSG const) const;
 
 	virtual BOOL Dispatch( MSG const );
 

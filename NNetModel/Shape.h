@@ -13,13 +13,15 @@ class GraphicsInterface;
 class PixelCoordsFp;
 class NNetModel;
 
+ShapeId const NO_SHAPE( -1 );
+
 static void FixShapeId( ShapeId & idToBeFixed, ShapeId const idLimit )
 {
-	if ( idToBeFixed > idLimit )
+	if ( idToBeFixed == idLimit )
+		idToBeFixed = NO_SHAPE;
+	else if ( idToBeFixed > idLimit )
 		--idToBeFixed;
 }
-
-ShapeId const NO_SHAPE( -1 );
 
 enum class tShapeType
 {
@@ -39,6 +41,11 @@ static bool IsDefined( ShapeId const id )
 static bool IsPipelineType( tShapeType const type )
 {
 	return type == tShapeType::pipeline;
+}
+
+static bool IsKnotType( tShapeType const type )
+{
+	return type == tShapeType::knot;
 }
 
 static bool IsBaseKnotType( tShapeType const type )

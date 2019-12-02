@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "win32_graphicsInterface.h"
+#include "PixelCoordsFp.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
 #include "InputNeuron.h"

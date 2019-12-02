@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "Geometry.h"
 #include "NNetModel.h"
+#include "PixelCoordsFp.h"
 #include "win32_graphicsInterface.h"
 #include "BaseKnot.h"
 

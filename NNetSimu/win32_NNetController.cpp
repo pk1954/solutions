@@ -124,12 +124,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 
 			tParameter param     { mapParam.at( wmId ) };
 			float      fNewValue { m_pNNetWindow->ParameterDialog( param ) };
-			m_pNNetWorkThreadInterface->PostSetParameter
-			( 
-				param, 
-				fNewValue, 
-				m_pNNetWindow->GetShapeSelected( ) 
-			);
+			m_pNNetWorkThreadInterface->PostSetParameter( param, fNewValue );
 		}
 		break;
 
@@ -179,7 +174,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDD_CREATE_NEW_BRANCH:
-		m_pNNetWorkThreadInterface->PostCreateNewBranch( m_pNNetWindow->GetShapeSelected() );
+		m_pNNetWorkThreadInterface->PostCreateNewBranch( );
 		break;
 
 	case IDD_CREATE_NEW_NEURON:
@@ -192,7 +187,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	case IDD_SPLIT_PIPELINE:
 	{
 		MicroMeterPoint pnt = Util::Unpack2MicroMeterPoint( lParam );
-		m_pNNetWorkThreadInterface->PostSplitPipeline( m_pNNetWindow->GetShapeSelected(), pnt );
+		m_pNNetWorkThreadInterface->PostSplitPipeline( pnt );
 	}
 	break;
 

@@ -34,7 +34,7 @@ public:
 	);
 	void Stop(); 
 
-	void PostSetParameter         ( tParameter const, float const, ShapeId const = NO_SHAPE );
+	void PostSetParameter         ( tParameter const, float const );
 	void PostResetTimer           ( );
 	void PostConnect              ( );
 	void PostSlowMotionChanged    ( );
@@ -42,8 +42,10 @@ public:
 	void PostHighlight            ( ShapeId const );
 	void PostSuperHighlight       ( ShapeId const );
 	void PostMoveShape            ( ShapeId const, MicroMeterPoint const & );
-	void PostSplitPipeline        ( ShapeId const, MicroMeterPoint const & );
-	void PostCreateNewBranch      ( ShapeId const );
+	void PostSplitPipeline        ( MicroMeterPoint const & );
+	void PostCreateNewBranch      ( );
+	void PostSelectShape          ( ShapeId const );
+	void PostSelectShape          ( MicroMeterPoint const & );
 	void PostCreateNewNeuron      ( MicroMeterPoint const & );
 	void PostCreateNewInputNeuron ( MicroMeterPoint const & );
 	void PostCreateNewOutputNeuron( MicroMeterPoint const & );

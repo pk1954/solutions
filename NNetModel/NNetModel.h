@@ -8,7 +8,6 @@
 #include <functional>
 #include "util.h"
 #include "MoreTypes.h"
-#include "PixelCoordsFp.h"
 #include "Segment.h"
 #include "InputNeuron.h"
 #include "OutputNeuron.h"
@@ -47,6 +46,10 @@ public:
 	BYTES     const GetCoreSize()            const { return BYTES(sizeof(NNetModel)); };
 	MicroSecs const GetSimulationTime( )     const { return m_timeStamp; }
 	ShapeId   const GetHighlightedShapeId( ) const { return m_shapeHighlighted; }
+	ShapeId   const GetSelectedShapeId( )    const { return m_shapeSelected; }
+
+	void SelectShape( MicroMeterPoint const );
+	void SelectShape( ShapeId const );
 
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const, std::function<bool(Shape const &)> const & ) const;
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const ) const;
@@ -68,12 +71,14 @@ public:
 	wchar_t const * const GetParameterName   ( tParameter const ) const;
 	wchar_t const * const GetParameterUnit   ( tParameter const ) const;
 
-	float const GetParameterValue( tParameter const, Shape const * const = nullptr ) const;
+	float const GetParameterValue( tParameter const, Shape const * = nullptr ) const;
 
 	bool IsPipelineType ( ShapeId const id ) const { return ::IsPipelineType ( GetConstShape( id )->GetShapeType() ); }
 	bool IsBaseKnotType ( ShapeId const id ) const { return ::IsBaseKnotType ( GetConstShape( id )->GetShapeType() ); }
 	bool IsStartKnotType( ShapeId const id ) const { return ::IsStartKnotType( GetConstShape( id )->GetShapeType() ); }
 	bool IsEndKnotType  ( ShapeId const id ) const { return ::IsEndKnotType  ( GetConstShape( id )->GetShapeType() ); }
+	bool IsKnotType     ( ShapeId const id ) const { return ::IsKnotType     ( GetConstShape( id )->GetShapeType() ); }
+	bool IsNeuronType   ( ShapeId const id ) const { return ::IsNeuronType   ( GetConstShape( id )->GetShapeType() ); }
 
 	// manipulating functions
 
@@ -85,11 +90,11 @@ public:
 	ShapeId NewKnot        ( MicroMeterPoint const & );
 	ShapeId NewPipeline    ( ShapeId const, ShapeId const );
 
-	void CreateNewBranch      ( ShapeId const );
+	void CreateNewBranch      ( );
 	void CreateNewNeuron      ( MicroMeterPoint const & );
 	void CreateNewInputNeuron ( MicroMeterPoint const & );
 	void CreateNewOutputNeuron( MicroMeterPoint const & );
-	void SplitPipeline        ( ShapeId const, MicroMeterPoint const & );
+	void SplitPipeline        ( MicroMeterPoint const & );
 	void Connect              ( );
 
 	void AddIncomming( ShapeId const, ShapeId const );
@@ -114,7 +119,14 @@ public:
 	virtual void Compute( );
 	virtual void ResetAll( );
 
-	void  const SetParameter( tParameter const,	float const, Shape * const = nullptr );
+	void  const SetParameter( tParameter const,	float const );
+
+	void CheckConsistency( Shape const * ) const;
+
+	ShapeId GetId( Shape const * pShape ) const
+	{
+		return pShape ? pShape->GetId( ) : NO_SHAPE;
+	}
 
 private:
 			  
@@ -125,6 +137,7 @@ private:
     // used by editor
 	ShapeId m_shapeHighlighted;
 	ShapeId m_shapeSuperHighlighted;
+	ShapeId m_shapeSelected;
 
 	// parameters
 	float        m_dampingFactor;     // signal loss per um  
@@ -137,7 +150,6 @@ private:
 	// local functions
 	void          deleteShape( ShapeId const );
 	void          deleteHighlightedShape( );
-	void          checkConsistency( Shape * );
 	void          checkConsistency( );
 	ShapeId const addShape( Shape * );
 	void          createAxon( ShapeId const );

@@ -46,8 +46,6 @@ public:
 	void       SetPixelSize( MicroMeter const );
 	MicroMeter GetPixelSize( ) const;
 
-	ShapeId GetShapeSelected() const { return m_pShapeSelected ? m_pShapeSelected->GetId() : NO_SHAPE; };
-
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
 
 	float ParameterDialog( tParameter param );
@@ -65,10 +63,9 @@ private:
 
 	GraphicsInterface * m_pGraphics;
 	Scale             * m_pScale;
-	Shape       const * m_pShapeSelected;
 	Shape       const * m_pShapeUnderCursor;
 
-	PixelPoint    m_ptLast;	 	   // Last cursor position during selection 
+	PixelPoint m_ptLast;	 	   // Last cursor position during selection 
 
 	void moveNNet( PixelPoint const );
 
@@ -87,6 +84,7 @@ private:
 	LPARAM        pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL          inObservedClientRect( LPARAM const );
 	Shape const * getShapeUnderPoint( PixelPoint const );
+	void          selectShapeUnderPoint( PixelPoint const );
 	void          drawHighlightedShape( NNetModel const & , PixelCoordsFp & );
 	void          doPaint( );
 };

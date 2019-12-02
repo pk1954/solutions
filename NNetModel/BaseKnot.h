@@ -61,10 +61,32 @@ public:
 		}
 	}
 
-    void Apply2AllConnectedPipelines( std::function<void(ShapeId &)> const & func )
+	void Apply2AllIncomingPipelinesConst( std::function<void(ShapeId const)> const & func ) const
+	{
+		for ( auto id : m_incoming )
+		{
+			func( id );
+		}
+	}
+
+	void Apply2AllOutgoingPipelinesConst( std::function<void(ShapeId const)> const & func ) const
+	{
+		for ( auto id : m_outgoing )
+		{
+			func( id );
+		}
+	}
+
+	void Apply2AllConnectedPipelines( std::function<void(ShapeId &)> const & func )
 	{
 		Apply2AllIncomingPipelines( [&]( ShapeId & idPipeline ) { func( idPipeline ); } );
 		Apply2AllOutgoingPipelines( [&]( ShapeId & idPipeline ) { func( idPipeline ); } );
+	}
+
+	void Apply2AllConnectedPipelinesConst( std::function<void(ShapeId const)> const & func ) const
+	{
+		Apply2AllIncomingPipelinesConst( [&]( ShapeId idPipeline ) { func( idPipeline ); } );
+		Apply2AllOutgoingPipelinesConst( [&]( ShapeId idPipeline ) { func( idPipeline ); } );
 	}
 
 	virtual void FixShapeIds( ShapeId const idLimit )
