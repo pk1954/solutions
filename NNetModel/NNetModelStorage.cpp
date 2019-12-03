@@ -136,7 +136,7 @@ public:
 		tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
 		script.ScrReadSpecial( L'=' );
 		float const fValue { CastToFloat( script.ScrReadFloat() ) };
-		m_pNNetModelStorage->GetModel()->SelectShape( id );
+		m_pNNetModelStorage->GetModel()->HighlightShape( id );
 		m_pNNetModelStorage->GetModel()->SetParameter( param, fValue );
 	}
 

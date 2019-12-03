@@ -46,10 +46,8 @@ public:
 	BYTES     const GetCoreSize()            const { return BYTES(sizeof(NNetModel)); };
 	MicroSecs const GetSimulationTime( )     const { return m_timeStamp; }
 	ShapeId   const GetHighlightedShapeId( ) const { return m_shapeHighlighted; }
-	ShapeId   const GetSelectedShapeId( )    const { return m_shapeSelected; }
 
-	void SelectShape( MicroMeterPoint const );
-	void SelectShape( ShapeId const );
+	void DeleteShape( );
 
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const, std::function<bool(Shape const &)> const & ) const;
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const ) const;
@@ -73,6 +71,7 @@ public:
 
 	float const GetParameterValue( tParameter const, Shape const * = nullptr ) const;
 
+	bool HasAxon        ( ShapeId const id ) const { return ::HasAxon        ( GetConstShape( id )->GetShapeType() ); }
 	bool IsPipelineType ( ShapeId const id ) const { return ::IsPipelineType ( GetConstShape( id )->GetShapeType() ); }
 	bool IsBaseKnotType ( ShapeId const id ) const { return ::IsBaseKnotType ( GetConstShape( id )->GetShapeType() ); }
 	bool IsStartKnotType( ShapeId const id ) const { return ::IsStartKnotType( GetConstShape( id )->GetShapeType() ); }
@@ -90,7 +89,6 @@ public:
 	ShapeId NewKnot        ( MicroMeterPoint const & );
 	ShapeId NewPipeline    ( ShapeId const, ShapeId const );
 
-	void CreateNewBranch      ( );
 	void CreateNewNeuron      ( MicroMeterPoint const & );
 	void CreateNewInputNeuron ( MicroMeterPoint const & );
 	void CreateNewOutputNeuron( MicroMeterPoint const & );
@@ -137,7 +135,7 @@ private:
     // used by editor
 	ShapeId m_shapeHighlighted;
 	ShapeId m_shapeSuperHighlighted;
-	ShapeId m_shapeSelected;
+//	ShapeId m_shapeSelected;
 
 	// parameters
 	float        m_dampingFactor;     // signal loss per um  
@@ -149,7 +147,6 @@ private:
 
 	// local functions
 	void          deleteShape( ShapeId const );
-	void          deleteHighlightedShape( );
 	void          checkConsistency( );
 	ShapeId const addShape( Shape * );
 	void          createAxon( ShapeId const );

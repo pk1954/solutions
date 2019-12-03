@@ -20,6 +20,3 @@ public:
 	virtual void DrawExterior ( NNetModel const &, PixelCoordsFp & ) const;
 	virtual void DrawInterior ( NNetModel const &, PixelCoordsFp & ) const;
 };	
-
-OutputNeuron const * Cast2OutputNeuron( Shape const * );
-OutputNeuron       * Cast2OutputNeuron( Shape       * );

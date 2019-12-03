@@ -29,15 +29,3 @@ void OutputNeuron::DrawInterior( NNetModel const & model, PixelCoordsFp & coord 
 { 
 	drawInterior( model, coord, 8 );
 }
-
-OutputNeuron const * Cast2OutputNeuron( Shape const * shape )
-{
-	assert( shape->GetShapeType() == tShapeType::outputNeuron );
-	return static_cast<OutputNeuron const *>(shape);
-}
-
-OutputNeuron * Cast2OutputNeuron( Shape * shape )
-{
-	assert( shape->GetShapeType() == tShapeType::outputNeuron );
-	return static_cast<OutputNeuron *>(shape);
-}

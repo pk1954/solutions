@@ -37,18 +37,15 @@ public:
 	void PostSetParameter         ( tParameter const, float const );
 	void PostResetTimer           ( );
 	void PostConnect              ( );
+	void PostDeleteShape          ( );
 	void PostSlowMotionChanged    ( );
-	void PostTrigger              ( ShapeId const );
 	void PostHighlight            ( ShapeId const );
 	void PostSuperHighlight       ( ShapeId const );
 	void PostMoveShape            ( ShapeId const, MicroMeterPoint const & );
-	void PostSplitPipeline        ( MicroMeterPoint const & );
-	void PostCreateNewBranch      ( );
-	void PostSelectShape          ( ShapeId const );
-	void PostSelectShape          ( MicroMeterPoint const & );
 	void PostCreateNewNeuron      ( MicroMeterPoint const & );
 	void PostCreateNewInputNeuron ( MicroMeterPoint const & );
 	void PostCreateNewOutputNeuron( MicroMeterPoint const & );
+	void PostSplitPipeline        ( MicroMeterPoint const & );
 
 private:
 	NNetWorkThread  * m_pNNetWorkThread;

@@ -43,13 +43,13 @@ public:
 	MicroMeter      GetLength    ( NNetModel const & ) const;
 	MicroMeterPoint GetVector    ( NNetModel const & ) const; 
 
-	virtual void Step   ( NNetModel const & );
-	virtual void Prepare( NNetModel const & );
-	virtual void DrawExterior( NNetModel const &, PixelCoordsFp  & ) const;
-	virtual void DrawInterior( NNetModel const &, PixelCoordsFp  & ) const;
-	virtual void MoveTo( NNetModel &, MicroMeterPoint const & ) {}
+	virtual void Step          ( NNetModel const & );
+	virtual void Prepare       ( NNetModel const & );
+	virtual mV   GetNextOutput ( NNetModel const & ) const;
+	virtual void DrawExterior  ( NNetModel const &, PixelCoordsFp  & ) const;
+	virtual void DrawInterior  ( NNetModel const &, PixelCoordsFp  & ) const;
+	virtual void MoveTo        ( NNetModel       &, MicroMeterPoint const & ) {}
 	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
-	virtual mV   GetNextOutput( NNetModel const & ) const;
 
 private:
 	void initialize( NNetModel const & );

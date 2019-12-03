@@ -143,16 +143,12 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWorkThreadInterface->PostResetTimer( );
 		return true;
 
-	case IDD_TRIGGER:
-		m_pNNetWorkThreadInterface->PostTrigger( ShapeId( CastToLong( lParam ) ) );
-		break;
-
 	case IDD_CONNECT:
 		m_pNNetWorkThreadInterface->PostConnect( );
 		break;
 
-	case IDM_HIGHLIGHT:
-		m_pNNetWorkThreadInterface->PostHighlight( ShapeId( CastToLong( lParam ) ) );
+	case IDD_DELETE_SHAPE:
+		m_pNNetWorkThreadInterface->PostDeleteShape( );
 		break;
 
 	case IDM_SUPER_HIGHLIGHT:
@@ -173,37 +169,21 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 			MessageBeep( MB_ICONWARNING );
 		break;
 
-	case IDD_CREATE_NEW_BRANCH:
-		m_pNNetWorkThreadInterface->PostCreateNewBranch( );
+	case IDD_CREATE_NEW_NEURON:
+		m_pNNetWorkThreadInterface->PostCreateNewNeuron( Util::Unpack2MicroMeterPoint( lParam ) );
 		break;
 
-	case IDD_CREATE_NEW_NEURON:
-	{
-		MicroMeterPoint pnt = Util::Unpack2MicroMeterPoint( lParam );
-		m_pNNetWorkThreadInterface->PostCreateNewNeuron( pnt );
-	}
-	break;
-
 	case IDD_SPLIT_PIPELINE:
-	{
-		MicroMeterPoint pnt = Util::Unpack2MicroMeterPoint( lParam );
-		m_pNNetWorkThreadInterface->PostSplitPipeline( pnt );
-	}
-	break;
+		m_pNNetWorkThreadInterface->PostSplitPipeline( Util::Unpack2MicroMeterPoint( lParam ) );
+		break;
 
 	case IDD_CREATE_NEW_INPUT_NEURON:
-	{
-		MicroMeterPoint pnt = Util::Unpack2MicroMeterPoint( lParam );
-		m_pNNetWorkThreadInterface->PostCreateNewInputNeuron( pnt );
-	}
-	break;
+		m_pNNetWorkThreadInterface->PostCreateNewInputNeuron( Util::Unpack2MicroMeterPoint( lParam ) );
+		break;
 
 	case IDD_CREATE_NEW_OUTPUT_NEURON:
-	{
-		MicroMeterPoint pnt = Util::Unpack2MicroMeterPoint( lParam );
-		m_pNNetWorkThreadInterface->PostCreateNewOutputNeuron( pnt );
-	}
-	break;
+		m_pNNetWorkThreadInterface->PostCreateNewOutputNeuron( Util::Unpack2MicroMeterPoint( lParam ) );
+		break;
 
 	default:
 		return true;

@@ -97,24 +97,36 @@ void NNetModel::RecalcPipelines( )
 	Apply2AllPipelines( [&]( Pipeline & pipe ) { pipe.Recalc( * this ); } );
 } 
 
+void NNetModel::DeleteShape( )
+{
+	if ( IsDefined( m_shapeHighlighted ) )
+	{
+		tShapeType const type { GetShape( m_shapeHighlighted )->GetShapeType( ) };
+		if ( ::HasAxon( type ) )
+		{
+			deleteShape( GetConstBaseKnot( m_shapeHighlighted )->GetAxon( ) );
+		}
+		else if ( ::IsPipelineType( type ) )
+		{
+			ShapeId idStartKnot { GetConstPipeline( m_shapeHighlighted )->GetStartKnot() };
+			if ( HasAxon( idStartKnot ) )
+				deleteShape( idStartKnot );
+		}
+		deleteShape( m_shapeHighlighted );
+		CHECK_CONSISTENCY;
+	}
+}
+
 void NNetModel::deleteShape( ShapeId const id )
 {
-	delete m_Shapes[ id.GetValue() ];
-	m_Shapes[ id.GetValue() ] = nullptr;
+	Shape * pShapeToBeDeleted = m_Shapes[ id.GetValue() ];
+//	m_Shapes[ id.GetValue() ] = nullptr;
 	m_Shapes.erase( m_Shapes.begin() + id.GetValue() );
 	Apply2AllShapes( [&]( Shape & shape ) { shape.FixShapeIds( id ); } );
 	FixShapeId( m_shapeHighlighted,      id );
 	FixShapeId( m_shapeSuperHighlighted, id );
-	FixShapeId( m_shapeSelected,         id );
-	CHECK_CONSISTENCY;
-}
-
-void NNetModel::deleteHighlightedShape( )
-{
-	ShapeId const id = m_shapeHighlighted;
-	m_shapeHighlighted = NO_SHAPE;
-	deleteShape( id );
-	CHECK_CONSISTENCY;
+//	FixShapeId( m_shapeSelected,         id );
+	delete pShapeToBeDeleted;
 }
 
 Shape * NNetModel::GetShape( ShapeId const id )
@@ -232,7 +244,7 @@ float const NNetModel::GetParameterValue
 	case tParameter::pulseRate:
 	{
 		if ( ! pShape )
-			pShape = GetConstShape( m_shapeSelected );
+			pShape = GetConstShape( m_shapeHighlighted );
 		assert( pShape );
 		return Cast2InputNeuron( pShape )->GetPulseFrequency().GetValue();
 	}
@@ -263,9 +275,9 @@ float const NNetModel::GetParameterValue
 
 void const NNetModel::SetParameter( tParameter const param,	float const fNewValue )
 {
-	if ( IsDefined( m_shapeSelected ) )
+	if ( IsDefined( m_shapeHighlighted ) )
 	{
-		Shape * pShape { GetShape( m_shapeSelected ) };
+		Shape * pShape { GetShape( m_shapeHighlighted ) };
 		switch ( param )
 		{
 		case tParameter::pulseRate:
@@ -308,6 +320,8 @@ void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
 {
 	if ( IsDefined( m_shapeHighlighted ) && IsDefined( m_shapeSuperHighlighted ) )
 	{
+		assert( IsKnotType  ( m_shapeHighlighted ) );
+		assert( IsNeuronType( m_shapeSuperHighlighted ) );
 		Knot * pKnot = GetKnot( m_shapeHighlighted );
 		pKnot->Apply2AllIncomingPipelines
 		( 
@@ -317,9 +331,8 @@ void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
 			}
 		);
 
-		deleteHighlightedShape( );
+		deleteShape( m_shapeHighlighted );
 		SuperHighlightShape( NO_SHAPE );
-		SelectShape( NO_SHAPE );
 	}
 	CHECK_CONSISTENCY;
 }
@@ -338,23 +351,26 @@ void NNetModel::AddOutgoing( ShapeId const idBaseKnot, ShapeId const idPipeline 
 
 void NNetModel::HighlightShape( ShapeId const idHighlight )
 {
-	if ( IsDefined( m_shapeHighlighted ) )
+	if ( m_shapeHighlighted != idHighlight )
 	{
-		Shape * pShape = GetShape( m_shapeHighlighted );
-		assert( pShape );
-		pShape->SetHighlightState( false );
-	}
+		if ( IsDefined( m_shapeHighlighted ) )
+		{
+			Shape * pShape = GetShape( m_shapeHighlighted );
+			assert( pShape );
+			pShape->SetHighlightState( false );
+		}
 
-	if ( IsDefined( idHighlight ) )
-	{
-		Shape * pShape = GetShape( idHighlight );
-		assert( pShape );                        
-		assert( pShape->GetId() == idHighlight );
-		if ( pShape && (pShape->GetId() == idHighlight) )
-			pShape->SetHighlightState( true );
-	}
+		if ( IsDefined( idHighlight ) )
+		{
+			Shape * pShape = GetShape( idHighlight );
+			assert( pShape );                        
+			assert( pShape->GetId() == idHighlight );
+			if ( pShape && (pShape->GetId() == idHighlight) )
+				pShape->SetHighlightState( true );
+		}
 
-	m_shapeHighlighted = idHighlight;
+		m_shapeHighlighted = idHighlight;
+	}
 }
 
 void NNetModel::SuperHighlightShape( ShapeId const idSuperHighlight )
@@ -429,25 +445,17 @@ ShapeId NNetModel::NewPipeline( ShapeId const idStart, ShapeId const idEnd )
 	return id;
 }
 
-void NNetModel::CreateNewBranch( )
-{
-	ShapeId const   idKnot        { m_shapeSelected };
-	ShapeId const   idNewKnot     { NewKnot( GetKnot( idKnot )->GetPosition() ) };
-	ShapeId const   idNewPipeline { NewPipeline( idKnot, idNewKnot ) };
-	HighlightShape( idNewKnot );
-	CHECK_CONSISTENCY;
-}
-
 void NNetModel::SplitPipeline( MicroMeterPoint const & splitPoint )
 {
-	ShapeId    const idPipeline     { m_shapeSelected };
-	Pipeline * const pPipeline      { GetPipeline( idPipeline ) };
-	ShapeId    const idNewKnot      { NewKnot( splitPoint ) };
-	ShapeId    const idNewPipeline1 { NewPipeline( pPipeline->GetStartKnot(), idNewKnot               ) };
-	ShapeId    const idNewPipeline2 { NewPipeline( idNewKnot,                 pPipeline->GetEndKnot() ) };
-	SelectShape( idNewKnot );
-	CreateNewBranch( );
-	RemovePipeline( idPipeline );
+	ShapeId    const idOldPipeline  { m_shapeHighlighted };
+	Pipeline * const pOldPipeline   { GetPipeline( idOldPipeline ) };
+	ShapeId    const idNewKnot1     { NewKnot( splitPoint ) };
+	ShapeId    const idNewPipeline1 { NewPipeline( pOldPipeline->GetStartKnot(), idNewKnot1                 ) };
+	ShapeId    const idNewPipeline2 { NewPipeline( idNewKnot1,                   pOldPipeline->GetEndKnot() ) };
+	ShapeId    const idNewKnot2     { NewKnot( GetKnot( idNewKnot1 )->GetPosition() ) };
+	ShapeId    const idNewPipeline3 { NewPipeline( idNewKnot1, idNewKnot2 ) };
+	RemovePipeline( idOldPipeline );
+	HighlightShape( idNewKnot2 );
 	CHECK_CONSISTENCY;
 }
 
@@ -628,14 +636,4 @@ Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt ) const
 	    );
 
 	return pShapeResult;
-}
-
-void NNetModel::SelectShape( MicroMeterPoint const umPos )
-{
-	SelectShape( GetId( FindShapeUnderPoint( umPos ) ) );
-}
-
-void NNetModel::SelectShape( ShapeId const id )
-{
-	m_shapeSelected = id;
 }

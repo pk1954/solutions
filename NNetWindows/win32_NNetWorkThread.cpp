@@ -76,21 +76,16 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	NNetWorkThreadMessage::Id const id { static_cast<NNetWorkThreadMessage::Id>(msg.message) };
 	switch ( id )
 	{
-	case NNetWorkThreadMessage::Id::TRIGGER:
-		{
-			//ShapeId const id( CastToLong( msg.wParam ) );
-			//Shape       * shape( m_pNNetModel->GetShape( id ) );
-			//InputNeuron * pInputNeuron( Cast2InputNeuron( shape ) );
-			//pInputNeuron->Trigger();
-		}
-		break;
-
 	case NNetWorkThreadMessage::Id::RESET_TIMER:
 		m_pNNetModel->ResetSimulationTime( );
 		break;
 
 	case NNetWorkThreadMessage::Id::CONNECT:
 		m_pNNetModel->Connect( );
+		break;
+
+	case NNetWorkThreadMessage::Id::DELETE_SHAPE:
+		m_pNNetModel->DeleteShape( );
 		break;
 
 	case NNetWorkThreadMessage::Id::HIGHLIGHT:
@@ -124,20 +119,8 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		m_pNNetModel->ResetSimulationTime();
 		break;
 
-	case NNetWorkThreadMessage::Id::CREATE_NEW_BRANCH:
-		m_pNNetModel->CreateNewBranch( );
-		break;
-
 	case NNetWorkThreadMessage::Id::CREATE_NEW_NEURON:
 		m_pNNetModel->CreateNewNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
-		break;
-
-	case NNetWorkThreadMessage::Id::SELECT_SHAPE_UNDER_POINT:
-		m_pNNetModel->SelectShape(  Util::Unpack2MicroMeterPoint(msg.lParam) );
-		break;
-
-	case NNetWorkThreadMessage::Id::SELECT_SHAPE:
-		m_pNNetModel->SelectShape( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
 	case NNetWorkThreadMessage::Id::SPLIT_PIPELINE:

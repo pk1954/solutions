@@ -45,6 +45,13 @@ public:
 	bool HasOutgoing( ) const { return ! m_outgoing.empty(); }
 	bool IsOrphan( )    const {	return m_incoming.empty() && m_outgoing.empty(); }
 
+	ShapeId const GetAxon( ) const
+	{
+		assert( HasAxon( GetShapeType( ) ) );
+		assert( m_outgoing.size() == 1 );
+		return m_outgoing.front();
+	}
+
 	void Apply2AllIncomingPipelines( std::function<void(ShapeId &)> const & func )
 	{
 		for ( auto & id : m_incoming )

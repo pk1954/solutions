@@ -40,7 +40,6 @@ NNetWindow::NNetWindow( ) :
 	m_hPopupMenu( nullptr ),
 	m_pGraphics( nullptr ),
 	m_pScale( nullptr ),
-	m_pShapeUnderCursor( nullptr ),
 	m_ptLast( PP_NULL ),
 	m_bMoveAllowed( TRUE )
 { }
@@ -130,11 +129,6 @@ Shape const * NNetWindow::getShapeUnderPoint( PixelPoint const pnt )
 	return pShape;
 }
 
-void NNetWindow::selectShapeUnderPoint( PixelPoint const pnt )
-{
-	m_pNNetWorkThreadInterface->PostSelectShape( m_coord.convert2MicroMeterPoint( pnt ) );
-}
-
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const pntPos )
 {
 	NNetModel const * pModel    { m_pReadBuffer->GetModel( ) };
@@ -146,13 +140,10 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		switch ( pShape->GetShapeType( ) )
 		{
 		case tShapeType::inputNeuron:
-			m_pNNetWorkThreadInterface->PostSelectShape( pShape->GetId( ) );
 			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE, pModel->GetParameterName( tParameter::pulseRate ) );
 			break;
 
 		case tShapeType::knot:  
-			m_pNNetWorkThreadInterface->PostSelectShape( pShape->GetId( ) );
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_CREATE_NEW_BRANCH, L"New Branch" );
 			break;
 
 		case tShapeType::neuron:
@@ -162,7 +153,6 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 			break;
 
 		case tShapeType::pipeline:
-			m_pNNetWorkThreadInterface->PostSelectShape( pShape->GetId( ) );
 			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_SPLIT_PIPELINE, L"Split" );
 			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_SPEED, pModel->GetParameterName( tParameter::pulseSpeed ) );
 			break;
@@ -170,6 +160,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		default:
 			assert( false );
 		}
+		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_DELETE_SHAPE, L"Delete" );
 	}
 	else
 	{
@@ -206,20 +197,20 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	{
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
-			Shape   const * pShapeSuper { nullptr };
-			ShapeId const   idSelected  { pModel->GetSelectedShapeId( ) };
-			if ( IsDefined( idSelected ) )
+			Shape   const * pShapeSuper   { nullptr };
+			ShapeId const   idHighlighted { pModel->GetHighlightedShapeId( ) };
+			if ( IsDefined( idHighlighted ) )
 			{
 				MicroMeterPoint const umPoint { m_coord.convert2MicroMeterPoint( ptCrsr ) };
-				m_pNNetWorkThreadInterface->PostMoveShape( idSelected, umPoint );
-				if ( pModel->IsKnotType( idSelected ) && ! pModel->GetConstKnot( idSelected )->HasOutgoing( ) )
+				m_pNNetWorkThreadInterface->PostMoveShape( idHighlighted, umPoint );
+				if ( pModel->IsKnotType( idHighlighted ) && ! pModel->GetConstKnot( idHighlighted )->HasOutgoing( ) )
 				{
 					pShapeSuper = pModel->FindShapeUnderPoint
 					( 
 						umPoint, 
 						[&]( Shape const & shape ) 
 						{ 
-							return (shape.GetId() != idSelected) && IsNeuronType(shape.GetShapeType());
+							return (shape.GetId() != idHighlighted) && IsNeuronType(shape.GetShapeType());
 						} 
 					);
 				}
@@ -236,14 +227,9 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	}
 	else  // no mouse button pressed
 	{                         
-		Shape const * pShape = getShapeUnderPoint( ptCrsr );
-		if ( pShape != m_pShapeUnderCursor )
-		{
-			PostCommand2Application( IDM_HIGHLIGHT, pModel->GetId( pShape ).GetValue() );
-			m_pShapeUnderCursor = pShape;
-		}
-							  // make m_ptLast invalid
-		m_ptLast = PP_NULL;   // no refresh! It would cause repaint for every mouse move 
+		m_pNNetWorkThreadInterface->PostHighlight( pModel->GetId( getShapeUnderPoint( ptCrsr ) ) );
+		m_ptLast = PP_NULL;   // make m_ptLast invalid
+		 // no refresh! It would cause repaint for every mouse move 
 	}
 }
 
@@ -264,12 +250,12 @@ void NNetWindow::moveNNet( PixelPoint const ptDiff )
 
 void NNetWindow::drawHighlightedShape( NNetModel const & model, PixelCoordsFp & coord )
 {
-	ShapeId const idSelected { model.GetSelectedShapeId( ) };
-	if ( IsDefined( idSelected ) && model.IsNeuronType( idSelected ) )
+	ShapeId const idHighlighted { model.GetHighlightedShapeId( ) };
+	if ( IsDefined( idHighlighted ) && model.IsNeuronType( idHighlighted ) )
 	{
-		Shape const * pShapeSelected = model.GetConstShape( idSelected );
-		pShapeSelected->DrawExterior( model, coord );
-		pShapeSelected->DrawInterior( model, coord );
+		Shape const * pShapeHighlighted = model.GetConstShape( idHighlighted );
+		pShapeHighlighted->DrawExterior( model, coord );
+		pShapeHighlighted->DrawInterior( model, coord );
 	}
 }
 
@@ -308,7 +294,7 @@ void NNetWindow::OnPaint( )
 	}
 }
 
-void NNetWindow::OnLeftButtonDblClick(WPARAM const wParam, LPARAM const lParam )
+void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )
 {
 	PixelPoint const   ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
 	Shape      const * pShape = getShapeUnderPoint( ptCrsr );
@@ -322,7 +308,7 @@ void NNetWindow::OnLeftButtonDblClick(WPARAM const wParam, LPARAM const lParam )
 		//	break;
 		//
 		case tShapeType::pipeline:
-			m_pNNetWorkThreadInterface->PostSelectShape( pShape->GetId( ) );
+			m_pNNetWorkThreadInterface->PostHighlight( pShape->GetId( ) );
 			PostCommand2Application( IDD_SPLIT_PIPELINE, pixelPoint2LPARAM( ptCrsr ) );
 			break;
 
@@ -352,8 +338,10 @@ void NNetWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )
 {
 	if ( inObservedClientRect( lParam ) || m_bMoveAllowed )
 	{
-		PixelPoint const ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
-		selectShapeUnderPoint( ptCrsr );
+		PixelPoint const   ptCrsr { GetCrsrPosFromLparam( lParam ) };  // relative to client area
+		Shape      const * pShape { getShapeUnderPoint( ptCrsr ) };
+		NNetModel  const * pModel { m_pReadBuffer->GetModel( ) };
+		m_pNNetWorkThreadInterface->PostHighlight( pModel->GetId( pShape ) );
 		OnMouseMove( wParam, lParam );
 	}
 }
