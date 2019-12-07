@@ -21,6 +21,11 @@ class Pipeline : public Shape
 public:
 	Pipeline( );
 
+	static bool TypeFits( tShapeType const type )
+	{
+		return type == tShapeType::pipeline;
+	}
+
 	void SetStartKnot( NNetModel const &, ShapeId const );
 	void SetEndKnot  ( NNetModel const &, ShapeId const );
 
@@ -52,9 +57,6 @@ public:
 	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
 
 private:
-	void initialize( NNetModel const & );
-
-	bool       m_initialized;
 	ShapeId    m_idKnotStart;
 	ShapeId    m_idKnotEnd;
 	MicroMeter m_width;

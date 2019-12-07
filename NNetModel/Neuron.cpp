@@ -40,7 +40,7 @@ void Neuron::Prepare( NNetModel const & model )
 {
 	m_mVinputBuffer = 0._mV;
 	for ( auto idPipeline : m_incoming )
-		m_mVinputBuffer += model.GetConstPipeline( idPipeline )->GetNextOutput( model );
+		m_mVinputBuffer += model.GetConstTypedShape<Pipeline>( idPipeline )->GetNextOutput( model );
 }
 
 void Neuron::Step( NNetModel const & model )
@@ -67,42 +67,36 @@ mV Neuron::GetNextOutput( NNetModel const & model ) const
 
 MicroMeterPoint Neuron::getAxonHillockPos( NNetModel const & model, PixelCoordsFp & coord ) const
 {
-	ShapeId          const idAxon         { * m_outgoing.begin() };
-	Pipeline const * const pAxon          { model.GetConstPipeline( idAxon ) };
-	MicroMeterPoint  const vectorScaled   { pAxon->GetVector( model ) * ( GetExtension() / pAxon->GetLength( model ) ) };
-	MicroMeterPoint  const axonHillockPos { GetPosition( ) + vectorScaled * NEURON_INTERIOR };
+	MicroMeterPoint axonHillockPos { NP_NULL };
+	if ( m_outgoing.size() > 0 )
+	{
+		ShapeId          const idAxon       { * m_outgoing.begin() };
+		Pipeline const * const pAxon        { model.GetConstTypedShape<Pipeline>( idAxon ) };
+		MicroMeterPoint  const vectorScaled { pAxon->GetVector( model ) * ( GetExtension() / pAxon->GetLength( model ) ) };
+		axonHillockPos = GetPosition( ) + vectorScaled * NEURON_INTERIOR;
+	}
 	return axonHillockPos;
 }
 
 void Neuron::DrawExterior( NNetModel const & model, PixelCoordsFp & coord ) const
 {
-	drawExterior( coord, 24 );
-	drawPolygon
-	( 
-		coord, 
-		12, 
-		GetFrameColor( ), 
-		getAxonHillockPos( model, coord ), 
-		GetExtension() * 0.5f 
-	);
+	MicroMeterPoint axonHillockPos { getAxonHillockPos( model, coord ) };
+	drawExterior( model, coord, 24 );
+	if ( axonHillockPos != NP_NULL )
+		drawPolygon( coord, 12, model.GetFrameColor( * this ), axonHillockPos, GetExtension() * 0.5f );
 }
 
-void Neuron::DrawInterior( NNetModel const & model, PixelCoordsFp  & coord ) const
+void Neuron::DrawInterior( NNetModel const & model, PixelCoordsFp & coord ) const
 { 
+	MicroMeterPoint axonHillockPos { getAxonHillockPos( model, coord ) };
 	drawInterior( model, coord, 24 );
-	drawPolygon
-	( 
-		coord, 
-		12, 
-		GetInteriorColor( model ), 
-		getAxonHillockPos( model, coord ), 
-		GetExtension() * (NEURON_INTERIOR - 0.5f) 
-	);
+	if ( axonHillockPos != NP_NULL )
+		drawPolygon( coord, 12, GetInteriorColor( model ), axonHillockPos, GetExtension() * (NEURON_INTERIOR - 0.5f) );
 }
 
-void Neuron::drawExterior( PixelCoordsFp & coord, int const iNrOfEdges ) const
+void Neuron::drawExterior( NNetModel const & model, PixelCoordsFp & coord, int const iNrOfEdges ) const
 {
-	drawPolygon( coord, iNrOfEdges, GetFrameColor( ), GetExtension() );
+	drawPolygon( coord, iNrOfEdges, model.GetFrameColor( * this ), GetExtension() );
 }
 
 void Neuron::drawInterior( NNetModel const & model, PixelCoordsFp & coord, int const iNrOfEdges ) const

@@ -11,19 +11,19 @@ void Knot::Prepare( NNetModel const & model )
 {
 	m_mVinputBuffer = 0._mV;
 	for ( auto idPipeline : m_incoming )
-		m_mVinputBuffer += model.GetConstPipeline( idPipeline )->GetNextOutput( model );
-	assert( m_mVinputBuffer <= mV( model.GetParameterValue( tParameter::peakVoltage ) ) );
+		m_mVinputBuffer += model.GetConstTypedShape<Pipeline>( idPipeline )->GetNextOutput( model );
+	CheckInputBuffer( model );
 }
 
 mV Knot::GetNextOutput( NNetModel const & model ) const
 {
-	assert( m_mVinputBuffer <= mV( model.GetParameterValue( tParameter::peakVoltage ) ) );
+	CheckInputBuffer( model );
 	return m_mVinputBuffer;
 }
 
 void Knot::DrawExterior( NNetModel const & model, PixelCoordsFp & coord ) const
 {
-	drawPolygon( coord, 24, GetFrameColor( ), IsHighlighted( ) ? 30.0_MicroMeter : GetExtension( ) );
+	drawPolygon( coord, 24, model.GetFrameColor( * this ), model.IsHighlighted( * this ) ? 30.0_MicroMeter : GetExtension( ) );
 }
 
 void Knot::DrawInterior( NNetModel const & model, PixelCoordsFp & coord ) const

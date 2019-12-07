@@ -84,16 +84,15 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		m_pNNetModel->Connect( );
 		break;
 
-	case NNetWorkThreadMessage::Id::DELETE_SHAPE:
-		m_pNNetModel->DeleteShape( );
+	case NNetWorkThreadMessage::Id::REMOVE_SHAPE:
+		m_pNNetModel->RemoveShape( );
 		break;
 
 	case NNetWorkThreadMessage::Id::HIGHLIGHT:
-		m_pNNetModel->HighlightShape( ShapeId( CastToLong(msg.wParam) ) );
-		break;
-
-	case NNetWorkThreadMessage::Id::SUPER_HIGHLIGHT:
-		m_pNNetModel->SuperHighlightShape( ShapeId( CastToLong(msg.wParam) ) );
+		if ( static_cast<bool>( msg.lParam ) )
+			m_pNNetModel->SuperHighlightShape( ShapeId( CastToLong(msg.wParam) ) );
+		else
+			m_pNNetModel->HighlightShape( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
 	case NNetWorkThreadMessage::Id::PULSE_RATE:
@@ -103,7 +102,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	case NNetWorkThreadMessage::Id::PULSE_WIDTH:       
 	case NNetWorkThreadMessage::Id::REFRACTORY_PERIOD:
 	case NNetWorkThreadMessage::Id::PULSE_SPEED:
-		m_pNNetModel->SetParameter( GetParameterType( id ), (float &)msg.lParam	);
+		m_pNNetModel->SetParameter( m_pNNetModel->GetHighlightedShapeId( ), GetParameterType( id ), (float &)msg.lParam	);
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE_TO:
@@ -119,20 +118,20 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		m_pNNetModel->ResetSimulationTime();
 		break;
 
-	case NNetWorkThreadMessage::Id::CREATE_NEW_NEURON:
-		m_pNNetModel->CreateNewNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
+	case NNetWorkThreadMessage::Id::INSERT_NEURON:
+		m_pNNetModel->InsertNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	case NNetWorkThreadMessage::Id::SPLIT_PIPELINE:
-		m_pNNetModel->SplitPipeline(  Util::Unpack2MicroMeterPoint(msg.lParam) );
-	break;
-
-	case NNetWorkThreadMessage::Id::CREATE_NEW_INPUT_NEURON:
-		m_pNNetModel->CreateNewInputNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		m_pNNetModel->SplitPipeline( Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
-	case NNetWorkThreadMessage::Id::CREATE_NEW_OUTPUT_NEURON:
-		m_pNNetModel->CreateNewOutputNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
+	case NNetWorkThreadMessage::Id::ADD_OUTPUT_NEURON:
+		m_pNNetModel->AddOutputNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		break;
+
+	case NNetWorkThreadMessage::Id::ADD_INPUT_NEURON:
+		m_pNNetModel->AddInputNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	default:

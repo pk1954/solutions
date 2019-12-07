@@ -50,9 +50,12 @@ void InputNeuron::drawInputNeuron
 	float         const   fReductionFactor
 ) const
 {
+	if ( m_outgoing.empty() )
+		throw NNetModel::ModelInconsistency;
+
 	ShapeId          const idAxon     { * m_outgoing.begin() };
-	Pipeline const * const pAxon      { model.GetConstPipeline( idAxon ) };
-	MicroMeterPoint  const axonVector { pAxon->GetVector( model ) };
+	Pipeline const * const pAxon      { model.GetConstTypedShape<Pipeline>( idAxon ) };
+	MicroMeterPoint  const axonVector { pAxon->GetVector( model ) };  
 	MicroMeter       const umHypot    { Hypot( axonVector ) };
 	MicroMeterPoint  const umExtVector{ axonVector * (GetExtension() / umHypot) };
 	MicroMeterPoint  const umCenter   { GetPosition() };
@@ -69,7 +72,7 @@ void InputNeuron::drawInputNeuron
 
 void InputNeuron::DrawExterior( NNetModel const & model, PixelCoordsFp & coord ) const
 {
-	drawInputNeuron( model, coord, GetFrameColor( ), 1.0f );
+	drawInputNeuron( model, coord, model.GetFrameColor( * this ), 1.0f );
 }
 
 void InputNeuron::DrawInterior( NNetModel const & model, PixelCoordsFp & coord ) const

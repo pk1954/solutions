@@ -19,6 +19,11 @@ public:
 
 	InputNeuron( MicroMeterPoint const );
 
+	static bool TypeFits( tShapeType const type )
+	{
+		return type == tShapeType::inputNeuron;
+	}
+
 	virtual void Prepare( NNetModel const & );
 	virtual void Step   ( NNetModel const & );
 

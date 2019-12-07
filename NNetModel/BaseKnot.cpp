@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "assert.h"
 #include "Geometry.h"
 #include "NNetModel.h"
 #include "PixelCoordsFp.h"
@@ -15,11 +16,13 @@ using std::end;
 
 void BaseKnot::AddIncomming( ShapeId const idPipeline )
 {
+	assert( find( begin(m_incoming), end(m_incoming), idPipeline ) == end(m_incoming) );
 	m_incoming.push_back( idPipeline );
 }
 
 void BaseKnot::AddOutgoing( ShapeId const idPipeline )
 {
+	assert( find( begin(m_outgoing), end(m_outgoing), idPipeline ) == end(m_outgoing) );
 	m_outgoing.push_back( idPipeline );
 }
 
@@ -33,6 +36,18 @@ void BaseKnot::RemoveOutgoing( ShapeId const idPipeline )
 {
 	auto res = find( begin(m_outgoing), end(m_outgoing), idPipeline );
 	m_outgoing.erase( res );
+}
+
+void BaseKnot::ReplaceIncoming( ShapeId const idPipelineOld, ShapeId const idPipelineNew )
+{
+	assert( find( begin(m_incoming), end(m_incoming), idPipelineNew ) == end(m_incoming) );
+	* find( begin(m_incoming), end(m_incoming), idPipelineOld ) = idPipelineNew;
+}
+
+void BaseKnot::ReplaceOutgoing( ShapeId const idPipelineOld, ShapeId const idPipelineNew )
+{
+	assert( find( begin(m_outgoing), end(m_outgoing), idPipelineNew ) == end(m_outgoing) );
+	* find( begin(m_outgoing), end(m_outgoing), idPipelineOld ) = idPipelineNew;
 }
 
 bool BaseKnot::IsPointInShape
@@ -56,10 +71,10 @@ void BaseKnot::MoveTo
 {
 	m_center = newCenter;
 	for ( auto const idPipeline : m_incoming )
-		model.GetPipeline( idPipeline )->Recalc( model );
+		model.GetTypedShape<Pipeline>( idPipeline )->Recalc( model );
 
 	for ( auto const idPipeline : m_outgoing )
-		model.GetPipeline( idPipeline )->Recalc( model );
+		model.GetTypedShape<Pipeline>( idPipeline )->Recalc( model );
 }
 
 void BaseKnot::drawPolygon

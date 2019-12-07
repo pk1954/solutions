@@ -23,6 +23,11 @@ public:
 	{
 	}
 
+	static bool TypeFits( tShapeType const type )
+	{
+		return type == tShapeType::knot;
+	}
+
 	virtual void Prepare      ( NNetModel const & );
 	virtual void Step         ( NNetModel const & ) { }
 	virtual mV   GetNextOutput( NNetModel const & ) const;

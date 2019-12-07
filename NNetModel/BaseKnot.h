@@ -31,15 +31,19 @@ public:
 	{
 	}
 
+	static bool TypeFits( tShapeType const type ) { return IsBaseKnotType( type ); }
+
 	MicroMeterPoint GetPosition( )  const { return m_center;	}
 	MicroMeter      GetExtension( ) const { return m_extension;	}
 
 	bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
 
-	void AddIncomming  ( ShapeId const );
-	void AddOutgoing   ( ShapeId const );
-	void RemoveIncoming( ShapeId const );
-	void RemoveOutgoing( ShapeId const );
+	void AddIncomming   ( ShapeId const );
+	void AddOutgoing    ( ShapeId const );
+	void RemoveIncoming ( ShapeId const );
+	void RemoveOutgoing ( ShapeId const );
+	void ReplaceIncoming( ShapeId const, ShapeId const );
+	void ReplaceOutgoing( ShapeId const, ShapeId const );
 
 	bool HasIncoming( ) const { return ! m_incoming.empty(); }
 	bool HasOutgoing( ) const { return ! m_outgoing.empty(); }
@@ -47,7 +51,7 @@ public:
 
 	ShapeId const GetAxon( ) const
 	{
-		assert( HasAxon( GetShapeType( ) ) );
+		assert( HasAxon( ) );
 		assert( m_outgoing.size() == 1 );
 		return m_outgoing.front();
 	}
@@ -56,7 +60,8 @@ public:
 	{
 		for ( auto & id : m_incoming )
 		{
-			func( id );
+			if ( ::IsDefined( id ) )
+				func( id );
 		}
 	}
 
@@ -64,7 +69,8 @@ public:
 	{
 		for ( auto & id : m_outgoing )
 		{
-			func( id );
+			if ( ::IsDefined( id ) )
+				func( id );
 		}
 	}
 
@@ -72,7 +78,8 @@ public:
 	{
 		for ( auto id : m_incoming )
 		{
-			func( id );
+			if ( ::IsDefined( id ) )
+				func( id );
 		}
 	}
 
@@ -80,7 +87,8 @@ public:
 	{
 		for ( auto id : m_outgoing )
 		{
-			func( id );
+			if ( ::IsDefined( id ) )
+				func( id );
 		}
 	}
 
@@ -103,6 +111,9 @@ public:
 	}
 
 	virtual void MoveTo( NNetModel &, MicroMeterPoint const & );
+
+	virtual void DrawExterior( NNetModel const &, PixelCoordsFp & ) const = 0;
+	virtual void DrawInterior( NNetModel const &, PixelCoordsFp & ) const = 0;
 
 protected:
 

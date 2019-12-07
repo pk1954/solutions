@@ -15,6 +15,11 @@ class Neuron : public BaseKnot
 public:
 	Neuron( MicroMeterPoint const, tShapeType const = tShapeType::neuron );
 
+	static bool TypeFits( tShapeType const type )
+	{
+		return type == tShapeType::neuron;
+	}
+
 	virtual void Prepare      ( NNetModel const & );
 	virtual void Step         ( NNetModel const & );
 	virtual mV   GetNextOutput( NNetModel const & ) const;
@@ -27,7 +32,7 @@ protected:
 
 	mV waveFunction( NNetModel const &, MicroSecs const ) const;
 
-	void drawExterior( PixelCoordsFp &, int const ) const;
+	void drawExterior( NNetModel const &, PixelCoordsFp &, int const ) const;
 	void drawInterior( NNetModel const &, PixelCoordsFp &, int const ) const;
 
 private:

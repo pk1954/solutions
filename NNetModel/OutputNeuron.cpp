@@ -22,7 +22,7 @@ mV OutputNeuron::GetNextOutput( NNetModel const & ) const
 
 void OutputNeuron::DrawExterior( NNetModel const & model, PixelCoordsFp & coord ) const
 {
-	drawExterior( coord, 8 );
+	drawExterior( model, coord, 8 );
 }
 
 void OutputNeuron::DrawInterior( NNetModel const & model, PixelCoordsFp & coord ) const

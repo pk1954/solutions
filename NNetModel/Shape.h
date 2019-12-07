@@ -17,9 +17,10 @@ ShapeId const NO_SHAPE( -1 );
 
 static void FixShapeId( ShapeId & idToBeFixed, ShapeId const idLimit )
 {
-	if ( idToBeFixed == idLimit )
-		idToBeFixed = NO_SHAPE;
-	else if ( idToBeFixed > idLimit )
+	//if ( idToBeFixed == idLimit )
+	//	idToBeFixed = NO_SHAPE;
+	//else 
+		if ( idToBeFixed > idLimit )
 		--idToBeFixed;
 }
 
@@ -88,17 +89,24 @@ static bool IsNeuronType( tShapeType const type )
 		(type == tShapeType::outputNeuron);
 }
 
+static bool IsTerminalType( tShapeType const type )
+{
+	return  
+		(type == tShapeType::inputNeuron) ||
+		(type == tShapeType::outputNeuron);
+}
+
 class Shape
 {
 public:
 	Shape( tShapeType const type )
 	  :	m_mVinputBuffer( 0._mV ),
-		m_bHighlighted( false ),
-		m_bSuperHighlighted( false ),
 		m_identifier( NO_SHAPE ),
 		m_type( type )
 	{
 	}
+
+	static bool TypeFits( tShapeType const type ) {	return true; }  // avery shape type is a Shape
 
 	virtual void DrawExterior  ( NNetModel const &, PixelCoordsFp  & )        const = 0;
 	virtual void DrawInterior  ( NNetModel const &, PixelCoordsFp  & )        const = 0;
@@ -107,26 +115,6 @@ public:
 	virtual void Prepare       ( NNetModel const & )                                = 0;
 	virtual void Step          ( NNetModel const & )                                = 0;
 	virtual void MoveTo        ( NNetModel       &, MicroMeterPoint const & )       = 0;
-
-	void SetHighlightState( bool const bState )
-	{
-		m_bHighlighted = bState;
-	}
-
-	void SetSuperHighlightState( bool const bState )
-	{
-		m_bSuperHighlighted = bState;
-	}
-
-	bool IsHighlighted( ) const
-	{
-		return m_bHighlighted;
-	}
-
-	bool IsSuperHighlighted( ) const
-	{
-		return m_bSuperHighlighted;
-	}
 
 	bool IsDefined( ) const
 	{
@@ -155,6 +143,8 @@ public:
 		
 	wchar_t const * const GetName( ) const;
 
+	bool HasAxon( ) const {	return ::HasAxon( GetShapeType( ) ); }
+
 	static tShapeType const GetShapeType( wchar_t const * const );
 
 	static void SetGraphics( GraphicsInterface * const pGraphics )
@@ -168,7 +158,6 @@ protected:
 
 	static GraphicsInterface * m_pGraphics;
 
-	COLORREF GetFrameColor( ) const;
 	COLORREF GetInteriorColor( NNetModel const &, mV const ) const;
 
 	COLORREF GetInteriorColor( NNetModel const & model ) const
@@ -176,10 +165,10 @@ protected:
 		return GetInteriorColor( model, m_mVinputBuffer );
 	}
 
+	void CheckInputBuffer( NNetModel const & ) const;
+
 private:
 
 	ShapeId    m_identifier;
-	bool       m_bHighlighted;
-	bool       m_bSuperHighlighted;
 	tShapeType m_type;
 };

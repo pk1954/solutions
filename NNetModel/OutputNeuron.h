@@ -16,6 +16,11 @@ public:
 
 	OutputNeuron( MicroMeterPoint const );
 
+	static bool TypeFits( tShapeType const type )
+	{
+		return type == tShapeType::outputNeuron;
+	}
+
 	virtual mV   GetNextOutput( NNetModel const & ) const;
 	virtual void DrawExterior ( NNetModel const &, PixelCoordsFp & ) const;
 	virtual void DrawInterior ( NNetModel const &, PixelCoordsFp & ) const;

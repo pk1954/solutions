@@ -82,11 +82,11 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 	printMicroMeter( textBuf, umPoint.GetX() );
 	printMicroMeter( textBuf, umPoint.GetY() );
 
-	NNetModel const * pModel  = m_pReadBuffer->GetModel();
-	ShapeId   const   shapeId = pModel->GetHighlightedShapeId();
-	if ( IsDefined( shapeId ) )
+	NNetModel const * pModel  { m_pReadBuffer->GetModel() };
+	ShapeId   const   shapeId { pModel->GetHighlightedShapeId() };
+	Shape     const * pShape  { pModel->GetConstShape( shapeId ) };
+	if ( pShape )
 	{
-		Shape const * pShape = pModel->GetConstShape( shapeId );
 		switch ( pShape->GetShapeType() )
 		{
 		case tShapeType::inputNeuron:
@@ -108,9 +108,9 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 			textBuf.nextLine( L"Pipeline" );
 			textBuf.nextLine( L"Segments: " );
 			textBuf.printNumber( pPipeline->GetNrOfSegments( ) );
-			textBuf.nextLine   ( pModel->GetParameterName( tParameter::pulseSpeed ) );
-			textBuf.printFloat ( pModel->GetParameterValue    ( tParameter::pulseSpeed ) );
-			textBuf.printString( pModel->GetParameterUnit( tParameter::pulseSpeed ) );
+			textBuf.nextLine   ( pModel->GetParameterName ( tParameter::pulseSpeed ) );
+			textBuf.printFloat ( pModel->GetParameterValue( tParameter::pulseSpeed ) );
+			textBuf.printString( pModel->GetParameterUnit ( tParameter::pulseSpeed ) );
 		}
 		break;
 

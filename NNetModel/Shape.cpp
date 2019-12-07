@@ -11,15 +11,6 @@ using std::unordered_map;
 
 GraphicsInterface * Shape::m_pGraphics { nullptr };
 
-COLORREF Shape::GetFrameColor( ) const 
-{ 
-	return IsSuperHighlighted( ) 
-		? EXT_COLOR_SUPER_HIGHLIGHT 
-		: IsHighlighted( ) 
-		? EXT_COLOR_HIGHLIGHT 
-		: EXT_COLOR_NORMAL;
-};
-
 COLORREF Shape::GetInteriorColor
 (
 	NNetModel const & model,
@@ -30,6 +21,11 @@ COLORREF Shape::GetInteriorColor
 	int      const colElem { CastToInt( voltage  * 255.0f / mV(model.GetParameterValue( tParameter::peakVoltage )) ) };
 	COLORREF const color   { RGB( colElem, 0, 0 ) };
 	return color;
+}
+
+void Shape::CheckInputBuffer( NNetModel const & model ) const
+{
+	assert( m_mVinputBuffer <= mV( model.GetParameterValue( tParameter::peakVoltage ) * 2 ) );
 }
 
 wchar_t const * const Shape::GetName( ) const

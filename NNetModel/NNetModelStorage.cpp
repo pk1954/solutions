@@ -115,7 +115,7 @@ public:
 		tParameter  const param( static_cast< tParameter >( script.ScrReadUint() ) );
 		script.ScrReadSpecial( L'=' );
 		float const fValue { CastToFloat( script.ScrReadFloat() ) };
-		pModel->SetParameter( param, fValue );
+		pModel->SetParameter( pModel->GetHighlightedShapeId( ), param, fValue );
 	}
 
 private:
@@ -136,8 +136,7 @@ public:
 		tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
 		script.ScrReadSpecial( L'=' );
 		float const fValue { CastToFloat( script.ScrReadFloat() ) };
-		m_pNNetModelStorage->GetModel()->HighlightShape( id );
-		m_pNNetModelStorage->GetModel()->SetParameter( param, fValue );
+		m_pNNetModelStorage->GetModel()->SetParameter( id, param, fValue );
 	}
 
 private:
@@ -216,7 +215,7 @@ void NNetModelStorage::Write( wostream & out )
 
 	out << L"Version " << MAJOR_VERSION << L"." << MINOR_VERSION  << endl;
 
-	m_pModel->Apply2AllShapes
+	m_pModel->Apply2All<Shape>
 	( 
 		[&]( Shape & shape ) 
 		{ 
@@ -235,7 +234,7 @@ void NNetModelStorage::Write( wostream & out )
 		}
 	);
 
-	m_pModel->Apply2AllInputNeurons
+	m_pModel->Apply2All<InputNeuron>
 	(
 		[&]( InputNeuron & inpNeuron )
 		{ 

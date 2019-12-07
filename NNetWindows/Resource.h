@@ -27,15 +27,13 @@
 #define IDD_REFRACTORY_PERIOD        156
 
 #define IDD_CONNECT                  160
-#define IDD_SPLIT_PIPELINE           161
-#define IDD_CREATE_NEW_NEURON        163
-#define IDD_CREATE_NEW_INPUT_NEURON  164
-#define IDD_CREATE_NEW_OUTPUT_NEURON 165
-#define IDD_DELETE_SHAPE             166
+#define IDD_INSERT_NEURON            161
+#define IDD_ADD_OUTPUT_NEURON        162
+#define IDD_ADD_INPUT_NEURON         163
+#define IDD_SPLIT_PIPELINE           164
+#define IDD_REMOVE_SHAPE             166
 
 #define IDM_CRSR_WINDOW              180
 
-#define IDM_SUPER_HIGHLIGHT          201
-								   	 
 #define IDM_MOVE_SHAPE               300
 								   	 									 

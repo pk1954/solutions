@@ -14,7 +14,6 @@
 
 Pipeline::Pipeline( )
   :	Shape( tShapeType::pipeline ),
-	m_initialized       ( false ),
 	m_idKnotStart       ( NO_SHAPE ),
 	m_idKnotEnd         ( NO_SHAPE ),
 	m_width             ( PIPELINE_WIDTH ),
@@ -27,49 +26,42 @@ void Pipeline::Recalc( NNetModel const & model )
 {
 	if ( ::IsDefined(m_idKnotStart) && ::IsDefined(m_idKnotEnd) )
 	{
-		BaseKnot     const * const pKnotStart     { model.GetConstBaseKnot( m_idKnotStart ) };   
-		BaseKnot     const * const pKnotEnd       { model.GetConstBaseKnot( m_idKnotEnd   ) };   
+		BaseKnot     const * const pKnotStart     { model.GetConstTypedShape<BaseKnot>( m_idKnotStart ) };   
+		BaseKnot     const * const pKnotEnd       { model.GetConstTypedShape<BaseKnot>( m_idKnotEnd   ) };   
 		meterPerSec  const         pulseSpeed     { meterPerSec( model.GetParameterValue( tParameter::pulseSpeed ) ) };
 		MicroMeter   const         segmentLength  { CoveredDistance( pulseSpeed, TIME_RESOLUTION ) };
 		MicroMeter   const         pipelineLength { Distance( pKnotStart->GetPosition(), pKnotEnd->GetPosition() ) };
 		unsigned int const         iNrOfSegments  { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
 
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
-		m_initialized = true;
 
 		m_fDampingPerSegment = pow( model.GetParameterValue( tParameter::dampingFactor ), segmentLength.GetValue() );
 	}
-}
-
-void Pipeline::initialize( NNetModel const & model )
-{
-	if ( ! m_initialized  )
-		Recalc( model );
 }
 
 void Pipeline::SetStartKnot( NNetModel const & model, ShapeId const id )
 {
 	assert( model.IsBaseKnotType( id ) );
 	m_idKnotStart = id;
-	initialize( model );
+	Recalc( model );
 }
 
 void Pipeline::SetEndKnot( NNetModel const & model, ShapeId const id )
 {
 	assert( model.IsBaseKnotType( id ) );
 	m_idKnotEnd = id;
-	initialize( model );
+	Recalc( model );
 }
 
 MicroMeterPoint Pipeline::GetStartPoint( NNetModel const & model ) const 
 { 
-	BaseKnot const * const pKnotStart { model.GetConstBaseKnot( m_idKnotStart ) };
+	BaseKnot const * const pKnotStart { model.GetConstTypedShape<BaseKnot>( m_idKnotStart ) };
 	return pKnotStart ? pKnotStart->GetPosition() : MicroMeterPoint::NULL_VAL(); 
 }
 
 MicroMeterPoint Pipeline::GetEndPoint( NNetModel const & model) const 
 { 
-	BaseKnot const * const pKnotEnd { model.GetConstBaseKnot( m_idKnotEnd ) };   
+	BaseKnot const * const pKnotEnd { model.GetConstTypedShape<BaseKnot>( m_idKnotEnd ) };   
 	return pKnotEnd ? pKnotEnd->GetPosition() : MicroMeterPoint::NULL_VAL();
 }
 
@@ -80,28 +72,27 @@ MicroMeter Pipeline::GetLength( NNetModel const & model ) const
 
 void Pipeline::Prepare ( NNetModel const & model )
 {
-	BaseKnot const * const m_pKnotStart { model.GetConstBaseKnot( m_idKnotStart ) };
+	BaseKnot const * const m_pKnotStart { model.GetConstTypedShape<BaseKnot>( m_idKnotStart ) };
 	m_mVinputBuffer = m_pKnotStart->GetNextOutput( model );
-	assert( m_mVinputBuffer <= mV( model.GetParameterValue( tParameter::peakVoltage ) ) );
+	CheckInputBuffer( model );
 }
 
 void Pipeline::Step( NNetModel const & model )
 {
-	mV mVcarry = m_mVinputBuffer;
-	assert( m_mVinputBuffer <= mV( model.GetParameterValue( tParameter::peakVoltage ) ) );
-
+	CheckInputBuffer( model );
+	mV mVcarry { m_mVinputBuffer };
 	for ( auto & iter : m_potential )
 	{
 		mVcarry *= m_fDampingPerSegment;  
 		std::swap( iter, mVcarry );
-		assert( iter <= mV( model.GetParameterValue( tParameter::peakVoltage ) ) );
+		CheckInputBuffer( model );
 	}
 }
 
 mV Pipeline::GetNextOutput( NNetModel const & model ) const
 {
 	assert( m_potential.size() > 0 );
-	assert( m_potential.back() <= mV( model.GetParameterValue( tParameter::peakVoltage ) ) );
+	assert( m_potential.back() <= mV( model.GetParameterValue( tParameter::peakVoltage ) * 2 ) );
 	return m_potential.back();
 }
 
@@ -129,6 +120,7 @@ MicroMeterPoint Pipeline::GetVector( NNetModel const & model ) const
 	MicroMeterPoint const umStart { GetStartPoint( model ) };
 	MicroMeterPoint const umEnd   { GetEndPoint  ( model ) };
 	MicroMeterPoint const umvector{ umEnd - umStart };
+	assert( ! IsCloseToZero( umvector ) );
 	return umvector;
 }
 
@@ -138,14 +130,14 @@ void Pipeline::DrawExterior
 	PixelCoordsFp   & coord 
 ) const
 {
-	MicroMeterPoint const umStartPoint{ model.GetConstBaseKnot( m_idKnotStart )->GetPosition() };
-	MicroMeterPoint const umEndPoint  { model.GetConstBaseKnot( m_idKnotEnd   )->GetPosition() };
+	MicroMeterPoint const umStartPoint{ model.GetConstTypedShape<BaseKnot>( m_idKnotStart )->GetPosition() };
+	MicroMeterPoint const umEndPoint  { model.GetConstTypedShape<BaseKnot>( m_idKnotEnd   )->GetPosition() };
 	if ( umStartPoint != umEndPoint )
 	{
 		fPIXEL      const fPixWidth  { coord.convert2fPixel( m_width ) };
 		fPixelPoint const fStartPoint{ coord.convert2fPixelPos( umStartPoint ) };
 		fPixelPoint const fEndPoint  { coord.convert2fPixelPos( umEndPoint   ) };
-		COLORREF    const color      { GetFrameColor( ) };
+		COLORREF    const color      { model.GetFrameColor( * this ) };
 
 		m_pGraphics->StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
 		m_pGraphics->AddPipelinePoint( fEndPoint, color );
@@ -159,8 +151,8 @@ void Pipeline::DrawInterior
 	PixelCoordsFp   & coord 
 ) const
 {
-	BaseKnot const * const pStartKnot  { model.GetConstBaseKnot( m_idKnotStart ) };
-	BaseKnot const * const pEndKnot    { model.GetConstBaseKnot( m_idKnotEnd   ) };
+	BaseKnot const * const pStartKnot  { model.GetConstTypedShape<BaseKnot>( m_idKnotStart ) };
+	BaseKnot const * const pEndKnot    { model.GetConstTypedShape<BaseKnot>( m_idKnotEnd   ) };
 	MicroMeterPoint        umStartPoint{ pStartKnot->GetPosition() };
 	MicroMeterPoint        umEndPoint  { pEndKnot  ->GetPosition() };
 	MicroMeterPoint        umVector    { umEndPoint - umStartPoint };

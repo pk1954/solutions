@@ -34,18 +34,22 @@ public:
 	);
 	void Stop(); 
 
-	void PostSetParameter         ( tParameter const, float const );
-	void PostResetTimer           ( );
-	void PostConnect              ( );
-	void PostDeleteShape          ( );
-	void PostSlowMotionChanged    ( );
-	void PostHighlight            ( ShapeId const );
-	void PostSuperHighlight       ( ShapeId const );
-	void PostMoveShape            ( ShapeId const, MicroMeterPoint const & );
-	void PostCreateNewNeuron      ( MicroMeterPoint const & );
-	void PostCreateNewInputNeuron ( MicroMeterPoint const & );
-	void PostCreateNewOutputNeuron( MicroMeterPoint const & );
-	void PostSplitPipeline        ( MicroMeterPoint const & );
+	void PostSetParameter     ( tParameter const, float const );
+	void PostResetTimer       ( );
+	void PostConnect          ( );
+	void PostRemoveShape      ( );
+	void PostSlowMotionChanged( );
+	void PostHighlight        ( ShapeId const, bool const );
+	void PostMoveShape        ( ShapeId const, MicroMeterPoint const & );
+	void PostSplitPipeline    ( MicroMeterPoint const & );
+	void PostInsertNeuron     ( MicroMeterPoint const & );
+	void PostAddOutputNeuron  ( MicroMeterPoint const & );
+	void PostAddInputNeuron   ( MicroMeterPoint const & );
+
+	bool const HighlightedShapeCanBeDeleted( ) const 
+	{ 
+		return m_pModel->HighlightedShapeCanBeDeleted();
+	}
 
 private:
 	NNetWorkThread  * m_pNNetWorkThread;
