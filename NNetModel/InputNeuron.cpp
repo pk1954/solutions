@@ -11,11 +11,17 @@
 
 using namespace std::chrono;
 
-InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
-  : Neuron( upCenter, tShapeType::inputNeuron ),
+InputNeuron::InputNeuron( NNetModel * pModel, MicroMeterPoint const upCenter )
+  : Neuron( pModel, upCenter, tShapeType::inputNeuron ),
 	m_pulseFrequency( STD_PULSE_FREQ ),
 	m_pulseDuration( PulseDuration( STD_PULSE_FREQ ) )
 { 
+	m_pNNetModel->IncNrOfInputNeurons();
+}
+
+InputNeuron::~InputNeuron( )
+{
+	m_pNNetModel->DecNrOfInputNeurons();
 }
 
 void InputNeuron::SetPulseFrequency( fHertz const freq )
@@ -24,13 +30,13 @@ void InputNeuron::SetPulseFrequency( fHertz const freq )
 	m_pulseDuration  = PulseDuration( m_pulseFrequency );
 }
 
-void InputNeuron::Prepare( NNetModel const & model )
+void InputNeuron::Prepare( )
 {
 	float fillLevel { m_timeSinceLastPulse.GetValue() / m_pulseDuration.GetValue() };
-	m_mVinputBuffer = mV( model.GetParameterValue( tParameter::peakVoltage ) * fillLevel );
+	m_mVinputBuffer = mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) * fillLevel );
 }
 
-void InputNeuron::Step( NNetModel const & model )
+void InputNeuron::Step( )
 {
 	if ( m_timeSinceLastPulse >= m_pulseDuration )  
 	{
@@ -44,7 +50,6 @@ void InputNeuron::Step( NNetModel const & model )
 
 void InputNeuron::drawInputNeuron
 ( 
-	NNetModel     const & model,
 	PixelCoordsFp const & coord,
 	COLORREF      const   color,
 	float         const   fReductionFactor
@@ -54,8 +59,8 @@ void InputNeuron::drawInputNeuron
 		throw NNetModel::ModelInconsistency;
 
 	ShapeId          const idAxon     { * m_outgoing.begin() };
-	Pipeline const * const pAxon      { model.GetConstTypedShape<Pipeline>( idAxon ) };
-	MicroMeterPoint  const axonVector { pAxon->GetVector( model ) };  
+	Pipeline const * const pAxon      { m_pNNetModel->GetConstTypedShape<Pipeline>( idAxon ) };
+	MicroMeterPoint  const axonVector { pAxon->GetVector( ) };  
 	MicroMeter       const umHypot    { Hypot( axonVector ) };
 	MicroMeterPoint  const umExtVector{ axonVector * (GetExtension() / umHypot) };
 	MicroMeterPoint  const umCenter   { GetPosition() };
@@ -70,17 +75,17 @@ void InputNeuron::drawInputNeuron
 	m_pGraphics->RenderPipeline( );
 }
 
-void InputNeuron::DrawExterior( NNetModel const & model, PixelCoordsFp & coord ) const
+void InputNeuron::DrawExterior( PixelCoordsFp & coord ) const
 {
-	drawInputNeuron( model, coord, model.GetFrameColor( * this ), 1.0f );
+	drawInputNeuron( coord, m_pNNetModel->GetFrameColor( * this ), 1.0f );
 }
 
-void InputNeuron::DrawInterior( NNetModel const & model, PixelCoordsFp & coord ) const
+void InputNeuron::DrawInterior( PixelCoordsFp & coord ) const
 { 
-	drawInputNeuron( model, coord, GetInteriorColor( model ), NEURON_INTERIOR );
+	drawInputNeuron( coord, GetInteriorColor( ), NEURON_INTERIOR );
 }
 
-void InputNeuron::DrawNeuronText( NNetModel const & model, PixelCoordsFp & coord )
+void InputNeuron::DrawNeuronText( PixelCoordsFp & coord )
 { 
 	static COLORREF const color { RGB( 0, 255, 0 ) };
 
@@ -97,7 +102,7 @@ void InputNeuron::DrawNeuronText( NNetModel const & model, PixelCoordsFp & coord
 	};
 	m_wBuffer.clear( );
 	m_wBuffer.str( std::wstring() );
-	m_wBuffer << GetPulseFrequency().GetValue() << L" " << model.GetParameterUnit( tParameter::pulseRate );
+	m_wBuffer << GetPulseFrequency().GetValue() << L" " << m_pNNetModel->GetParameterUnit( tParameter::pulseRate );
 	if ( pixRect.Includes( m_pGraphics->CalcGraphicsRect( m_wBuffer.str( ) ).GetSize() ) )
 	{
 		m_pGraphics->DisplayGraphicsText( pixRect, m_wBuffer.str( ), DT_CENTER|DT_VCENTER, color );

@@ -10,24 +10,20 @@
 
 using namespace std::chrono;
 
-Neuron::Neuron( MicroMeterPoint const upCenter, tShapeType const type )
-  : BaseKnot( upCenter, type, NEURON_RADIUS ),
+Neuron::Neuron( NNetModel * pModel, MicroMeterPoint const upCenter, tShapeType const type )
+  : BaseKnot( pModel, upCenter, type, NEURON_RADIUS ),
 	m_timeSinceLastPulse( 0._MicroSecs )
 { 
 }
 
-mV Neuron::waveFunction
-( 
-	NNetModel const & model,
-	MicroSecs const   time 
-) const
+mV Neuron::waveFunction( MicroSecs const time ) const
 {
 	assert( time >= 0._MicroSecs );
-	if ( time <= MicroSecs( model.GetParameterValue( tParameter::pulseWidth ) ) )
+	if ( time <= MicroSecs( m_pNNetModel->GetParameterValue( tParameter::pulseWidth ) ) )
 	{
 		float x { time.GetValue() };
-		float w { model.GetParameterValue( tParameter::pulseWidth ) };
-		float p { model.GetParameterValue( tParameter::peakVoltage ) };
+		float w { m_pNNetModel->GetParameterValue( tParameter::pulseWidth ) };
+		float p { m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) };
 		float u { 4.0f * p / w };
 		float y { u * x * ( 1.0f - x / w ) };
 		return mV( y );
@@ -36,18 +32,18 @@ mV Neuron::waveFunction
 		return BASE_POTENTIAL;
 }
 
-void Neuron::Prepare( NNetModel const & model )
+void Neuron::Prepare( )
 {
 	m_mVinputBuffer = 0._mV;
 	for ( auto idPipeline : m_incoming )
-		m_mVinputBuffer += model.GetConstTypedShape<Pipeline>( idPipeline )->GetNextOutput( model );
+		m_mVinputBuffer += m_pNNetModel->GetConstTypedShape<Pipeline>( idPipeline )->GetNextOutput( );
 }
 
-void Neuron::Step( NNetModel const & model )
+void Neuron::Step( )
 {
 	if ( 
-		  (m_mVinputBuffer >= mV( model.GetParameterValue( tParameter::threshold ) )) &&
-		  (m_timeSinceLastPulse >= MicroSecs( model.GetParameterValue( tParameter::pulseWidth ) + model.GetParameterValue( tParameter::refractoryPeriod )) )
+		  (m_mVinputBuffer >= mV( m_pNNetModel->GetParameterValue( tParameter::threshold ) )) &&
+		  (m_timeSinceLastPulse >= MicroSecs( m_pNNetModel->GetParameterValue( tParameter::pulseWidth ) + m_pNNetModel->GetParameterValue( tParameter::refractoryPeriod )) )
 	   )  
 	{
 		m_timeSinceLastPulse = 0._MicroSecs;   
@@ -58,50 +54,50 @@ void Neuron::Step( NNetModel const & model )
 	}
 }
 
-mV Neuron::GetNextOutput( NNetModel const & model ) const
+mV Neuron::GetNextOutput( ) const
 {
-	return ( m_timeSinceLastPulse <= MicroSecs( model.GetParameterValue( tParameter::pulseWidth ) ) )
-		   ? waveFunction( model, m_timeSinceLastPulse )
+	return ( m_timeSinceLastPulse <= MicroSecs( m_pNNetModel->GetParameterValue( tParameter::pulseWidth ) ) )
+		   ? waveFunction( m_timeSinceLastPulse )
 		   : BASE_POTENTIAL;
 }
 
-MicroMeterPoint Neuron::getAxonHillockPos( NNetModel const & model, PixelCoordsFp & coord ) const
+MicroMeterPoint Neuron::getAxonHillockPos( PixelCoordsFp & coord ) const
 {
 	MicroMeterPoint axonHillockPos { NP_NULL };
 	if ( m_outgoing.size() > 0 )
 	{
 		ShapeId          const idAxon       { * m_outgoing.begin() };
-		Pipeline const * const pAxon        { model.GetConstTypedShape<Pipeline>( idAxon ) };
-		MicroMeterPoint  const vectorScaled { pAxon->GetVector( model ) * ( GetExtension() / pAxon->GetLength( model ) ) };
+		Pipeline const * const pAxon        { m_pNNetModel->GetConstTypedShape<Pipeline>( idAxon ) };
+		MicroMeterPoint  const vectorScaled { pAxon->GetVector( ) * ( GetExtension() / pAxon->GetLength( ) ) };
 		axonHillockPos = GetPosition( ) + vectorScaled * NEURON_INTERIOR;
 	}
 	return axonHillockPos;
 }
 
-void Neuron::DrawExterior( NNetModel const & model, PixelCoordsFp & coord ) const
+void Neuron::DrawExterior( PixelCoordsFp & coord ) const
 {
-	MicroMeterPoint axonHillockPos { getAxonHillockPos( model, coord ) };
-	drawExterior( model, coord, 24 );
+	MicroMeterPoint axonHillockPos { getAxonHillockPos( coord ) };
+	drawExterior( coord, 24 );
 	if ( axonHillockPos != NP_NULL )
-		drawPolygon( coord, 12, model.GetFrameColor( * this ), axonHillockPos, GetExtension() * 0.5f );
+		drawPolygon( coord, 12, m_pNNetModel->GetFrameColor( * this ), axonHillockPos, GetExtension() * 0.5f );
 }
 
-void Neuron::DrawInterior( NNetModel const & model, PixelCoordsFp & coord ) const
+void Neuron::DrawInterior( PixelCoordsFp & coord ) const
 { 
-	MicroMeterPoint axonHillockPos { getAxonHillockPos( model, coord ) };
-	drawInterior( model, coord, 24 );
+	MicroMeterPoint axonHillockPos { getAxonHillockPos( coord ) };
+	drawInterior( coord, 24 );
 	if ( axonHillockPos != NP_NULL )
-		drawPolygon( coord, 12, GetInteriorColor( model ), axonHillockPos, GetExtension() * (NEURON_INTERIOR - 0.5f) );
+		drawPolygon( coord, 12, GetInteriorColor( ), axonHillockPos, GetExtension() * (NEURON_INTERIOR - 0.5f) );
 }
 
-void Neuron::drawExterior( NNetModel const & model, PixelCoordsFp & coord, int const iNrOfEdges ) const
+void Neuron::drawExterior( PixelCoordsFp & coord, int const iNrOfEdges ) const
 {
-	drawPolygon( coord, iNrOfEdges, model.GetFrameColor( * this ), GetExtension() );
+	drawPolygon( coord, iNrOfEdges, m_pNNetModel->GetFrameColor( * this ), GetExtension() );
 }
 
-void Neuron::drawInterior( NNetModel const & model, PixelCoordsFp & coord, int const iNrOfEdges ) const
+void Neuron::drawInterior( PixelCoordsFp & coord, int const iNrOfEdges ) const
 { 
-	drawPolygon( coord, iNrOfEdges, GetInteriorColor( model ), GetExtension() * NEURON_INTERIOR);
+	drawPolygon( coord, iNrOfEdges, GetInteriorColor( ), GetExtension() * NEURON_INTERIOR);
 }
 
 Neuron const * Cast2Neuron( Shape const * shape )

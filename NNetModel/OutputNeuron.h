@@ -9,19 +9,21 @@
 #include "Neuron.h"
 
 class Pipeline;
+class NNetModel;
 
 class OutputNeuron : public Neuron
 {
 public:
 
-	OutputNeuron( MicroMeterPoint const );
+	OutputNeuron( NNetModel *, MicroMeterPoint const );
+	virtual ~OutputNeuron( );
 
 	static bool TypeFits( tShapeType const type )
 	{
 		return type == tShapeType::outputNeuron;
 	}
 
-	virtual mV   GetNextOutput( NNetModel const & ) const;
-	virtual void DrawExterior ( NNetModel const &, PixelCoordsFp & ) const;
-	virtual void DrawInterior ( NNetModel const &, PixelCoordsFp & ) const;
+	virtual mV   GetNextOutput( ) const;
+	virtual void DrawExterior ( PixelCoordsFp & ) const;
+	virtual void DrawInterior ( PixelCoordsFp & ) const;
 };	

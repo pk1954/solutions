@@ -9,23 +9,29 @@
 #include "NNetModel.h"
 #include "OutputNeuron.h"
 
-OutputNeuron::OutputNeuron( MicroMeterPoint const upCenter )
-	: Neuron( upCenter, tShapeType::outputNeuron )
+OutputNeuron::OutputNeuron( NNetModel * pModel, MicroMeterPoint const upCenter )
+	: Neuron( pModel, upCenter, tShapeType::outputNeuron )
 { 
+	m_pNNetModel->IncNrOfOutputNeurons();
 }
 
-mV OutputNeuron::GetNextOutput( NNetModel const & ) const 
+OutputNeuron::~OutputNeuron( )
+{
+	m_pNNetModel->DecNrOfOutputNeurons();
+}
+
+mV OutputNeuron::GetNextOutput( ) const 
 {
 	assert( false );  // Should never be called, as output neurons have no successor
 	return 0._mV; 
 };
 
-void OutputNeuron::DrawExterior( NNetModel const & model, PixelCoordsFp & coord ) const
+void OutputNeuron::DrawExterior( PixelCoordsFp & coord ) const
 {
-	drawExterior( model, coord, 8 );
+	drawExterior( coord, 8 );
 }
 
-void OutputNeuron::DrawInterior( NNetModel const & model, PixelCoordsFp & coord ) const
+void OutputNeuron::DrawInterior( PixelCoordsFp & coord ) const
 { 
-	drawInterior( model, coord, 8 );
+	drawInterior( coord, 8 );
 }

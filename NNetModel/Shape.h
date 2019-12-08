@@ -99,22 +99,24 @@ static bool IsTerminalType( tShapeType const type )
 class Shape
 {
 public:
-	Shape( tShapeType const type )
-	  :	m_mVinputBuffer( 0._mV ),
+	Shape( NNetModel * pModel, tShapeType const type )
+	  :	m_pNNetModel( pModel ),
+		m_mVinputBuffer( 0._mV ),
 		m_identifier( NO_SHAPE ),
 		m_type( type )
-	{
-	}
+	{ }
+
+	virtual ~Shape() {}
 
 	static bool TypeFits( tShapeType const type ) {	return true; }  // avery shape type is a Shape
 
-	virtual void DrawExterior  ( NNetModel const &, PixelCoordsFp  & )        const = 0;
-	virtual void DrawInterior  ( NNetModel const &, PixelCoordsFp  & )        const = 0;
-	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const = 0;
-	virtual mV   GetNextOutput ( NNetModel const & )                          const = 0;
-	virtual void Prepare       ( NNetModel const & )                                = 0;
-	virtual void Step          ( NNetModel const & )                                = 0;
-	virtual void MoveTo        ( NNetModel       &, MicroMeterPoint const & )       = 0;
+	virtual void DrawExterior  ( PixelCoordsFp  & )        const = 0;
+	virtual void DrawInterior  ( PixelCoordsFp  & )        const = 0;
+	virtual bool IsPointInShape( MicroMeterPoint const & ) const = 0;
+	virtual mV   GetNextOutput ( )                         const = 0;
+	virtual void Prepare       ( )                               = 0;
+	virtual void Step          ( )                               = 0;
+	virtual void MoveTo        ( MicroMeterPoint const & )       = 0;
 
 	bool IsDefined( ) const
 	{
@@ -154,21 +156,18 @@ public:
 
 protected:
 
-	mV m_mVinputBuffer;
+	NNetModel * m_pNNetModel;
+	mV          m_mVinputBuffer;
 
 	static GraphicsInterface * m_pGraphics;
 
-	COLORREF GetInteriorColor( NNetModel const &, mV const ) const;
+	COLORREF GetInteriorColor( mV const ) const;
+	COLORREF GetInteriorColor( ) const { return GetInteriorColor( m_mVinputBuffer ); }
 
-	COLORREF GetInteriorColor( NNetModel const & model ) const
-	{
-		return GetInteriorColor( model, m_mVinputBuffer );
-	}
-
-	void CheckInputBuffer( NNetModel const & ) const;
+	void CheckInputBuffer( ) const;
 
 private:
 
-	ShapeId    m_identifier;
-	tShapeType m_type;
+	ShapeId     m_identifier;
+	tShapeType  m_type;
 };

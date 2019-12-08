@@ -125,18 +125,13 @@ public:
 
 	bool HasAxon( ShapeId const id ) const { return GetConstShape( id )->HasAxon( ); }
 
-	bool IsPipelineType ( ShapeId const id ) const { return ::IsPipelineType ( GetConstShape( id )->GetShapeType() ); }
-	bool IsBaseKnotType ( ShapeId const id ) const { return ::IsBaseKnotType ( GetConstShape( id )->GetShapeType() ); }
+	template <typename T> bool IsType( ShapeId const id ) const { return T::TypeFits( GetConstShape( id )->GetShapeType() ); }
+
+	bool IsTerminalType ( ShapeId const id ) const { return ::IsTerminalType ( GetConstShape( id )->GetShapeType() ); }
 	bool IsStartKnotType( ShapeId const id ) const { return ::IsStartKnotType( GetConstShape( id )->GetShapeType() ); }
 	bool IsEndKnotType  ( ShapeId const id ) const { return ::IsEndKnotType  ( GetConstShape( id )->GetShapeType() ); }
-	bool IsKnotType     ( ShapeId const id ) const { return ::IsKnotType     ( GetConstShape( id )->GetShapeType() ); }
-	bool IsNeuronType   ( ShapeId const id ) const { return ::IsNeuronType   ( GetConstShape( id )->GetShapeType() ); }
-	bool IsTerminalType ( ShapeId const id ) const { return ::IsTerminalType ( GetConstShape( id )->GetShapeType() ); }
 
-	bool IsPointInShape ( Shape const * const pShape, MicroMeterPoint const & point ) const 
-	{ 
-		return pShape->IsPointInShape( * this, point ); 
-	}
+	bool IsPointInShape ( Shape const * const pShape, MicroMeterPoint const & point ) const { return pShape->IsPointInShape( point ); }
 
 	bool IsHighlighted     ( Shape const & shape ) const { return shape.GetId() == m_shapeHighlighted; }
 	bool IsSuperHighlighted( Shape const & shape ) const { return shape.GetId() == m_shapeSuperHighlighted; }
@@ -159,11 +154,9 @@ public:
 
 	void ResetSimulationTime( )	{ m_timeStamp = 0._MicroSecs; }
 
-	ShapeId NewInputNeuron ( MicroMeterPoint const & );
-	ShapeId NewOutputNeuron( MicroMeterPoint const & );
-	ShapeId NewNeuron      ( MicroMeterPoint const & );
-	ShapeId NewKnot        ( MicroMeterPoint const & );
-	ShapeId NewPipeline    ( ShapeId const, ShapeId const );
+	template <typename T> ShapeId NewShape( MicroMeterPoint const & pos ) { return addShape( new T( this, pos ) ); }
+
+	ShapeId NewPipeline( ShapeId const, ShapeId const );
 
 	void SplitPipeline  ( MicroMeterPoint const & );
 	void InsertNeuron   ( MicroMeterPoint const & );
@@ -206,6 +199,24 @@ public:
 	virtual void ResetAll( );
 
 	void  const SetParameter( ShapeId const, tParameter const,	float const );
+
+	void IncNrOfInputNeurons () 
+	{ 
+		++m_nrOfInputNeurons; 
+	}
+	void IncNrOfOutputNeurons() 
+	{ 
+		++m_nrOfOutputNeurons; 
+	}
+
+	void DecNrOfInputNeurons () 
+	{ 
+		--m_nrOfInputNeurons; 
+	}
+	void DecNrOfOutputNeurons() 
+	{ 
+		--m_nrOfOutputNeurons; 
+	}
 
 private:
 			  

@@ -83,6 +83,6 @@ private:
 	LPARAM        pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL          inObservedClientRect( LPARAM const );
 	ShapeId const getShapeUnderPoint( PixelPoint const );
-	void          drawHighlightedShape( NNetModel const & , PixelCoordsFp & );
+	void          drawHighlightedShape( NNetModel const &, PixelCoordsFp & );
 	void          doPaint( );
 };

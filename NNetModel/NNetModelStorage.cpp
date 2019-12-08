@@ -55,19 +55,19 @@ public:
 		switch ( shapeType )
 		{
 		case tShapeType::inputNeuron:
-			idModel = pModel->NewInputNeuron( readPoint( script ) );
+			idModel = pModel->NewShape<InputNeuron>( readPoint( script ) );
 			break;
 
 		case tShapeType::outputNeuron:
-			idModel = pModel->NewOutputNeuron( readPoint( script ) );
+			idModel = pModel->NewShape<OutputNeuron>( readPoint( script ) );
 			break;
 
 		case tShapeType::neuron:
-			idModel = pModel->NewNeuron( readPoint( script ) );
+			idModel = pModel->NewShape<Neuron>( readPoint( script ) );
 			break;
 
 		case tShapeType::knot:
-			idModel = pModel->NewKnot( readPoint( script ) );
+			idModel = pModel->NewShape<Knot>( readPoint( script ) );
 			break;
 
 		case tShapeType::pipeline:

@@ -12,35 +12,34 @@
 using std::chrono::microseconds;
 
 class Pipeline;
+class NNetModel;
 
 class InputNeuron : public Neuron
 {
 public:
 
-	InputNeuron( MicroMeterPoint const );
+	InputNeuron( NNetModel *, MicroMeterPoint const );
+	virtual ~InputNeuron( );
 
 	static bool TypeFits( tShapeType const type )
 	{
 		return type == tShapeType::inputNeuron;
 	}
 
-	virtual void Prepare( NNetModel const & );
-	virtual void Step   ( NNetModel const & );
+	virtual void Prepare( );
+	virtual void Step   ( );
 
-	virtual void DrawExterior( NNetModel const &, PixelCoordsFp & ) const;
-	virtual void DrawInterior( NNetModel const &, PixelCoordsFp & ) const;
+	virtual void DrawExterior( PixelCoordsFp & ) const;
+	virtual void DrawInterior( PixelCoordsFp & ) const;
 
-	void DrawNeuronText( NNetModel const &, PixelCoordsFp & );
+	void DrawNeuronText( PixelCoordsFp & );
 
-	fHertz GetPulseFrequency( ) const
-	{
-		return m_pulseFrequency;
-	}
+	fHertz GetPulseFrequency( ) const {	return m_pulseFrequency; }
 
 	void SetPulseFrequency( fHertz const );
 
 private:
-	void drawInputNeuron( NNetModel const &, PixelCoordsFp const &,	COLORREF const, float const ) const;
+	void drawInputNeuron( PixelCoordsFp const &,	COLORREF const, float const ) const;
 
 	std::wostringstream m_wBuffer;
 

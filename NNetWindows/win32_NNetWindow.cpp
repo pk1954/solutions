@@ -261,21 +261,21 @@ void NNetWindow::drawHighlightedShape( NNetModel const & model, PixelCoordsFp & 
 	Shape const * const pShapeHighlighted { model.GetConstShape( model.GetHighlightedShapeId( ) ) };
 	if ( pShapeHighlighted && IsNeuronType(pShapeHighlighted->GetShapeType()) )
 	{
-		pShapeHighlighted->DrawExterior( model, coord );
-		pShapeHighlighted->DrawInterior( model, coord );
+		pShapeHighlighted->DrawExterior( coord );
+		pShapeHighlighted->DrawInterior( coord );
 	}
 }
 
 void NNetWindow::doPaint( ) 
 {
 	NNetModel const * pModel = m_pReadBuffer->GetModel( );
-	pModel->Apply2All<Shape>   ( [&]( Shape    & shape ) { shape.DrawExterior( * pModel, m_coord ); } );
-	pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
-	pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawInterior( * pModel, m_coord ); } );
+	pModel->Apply2All<Shape>   ( [&]( Shape    & shape ) { shape.DrawExterior( m_coord ); } );
+	pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { shape.DrawInterior( m_coord ); } );
+	pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawInterior( m_coord ); } );
 	drawHighlightedShape( * pModel, m_coord );
 	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
 //	m_pGraphics->SetFontSize( 15_PIXEL );
-	pModel->Apply2All<InputNeuron>( [&]( InputNeuron & shape ) { shape.DrawNeuronText( * pModel, m_coord ); } );
+	pModel->Apply2All<InputNeuron>( [&]( InputNeuron & shape ) { shape.DrawNeuronText( m_coord ); } );
 	m_pGraphics->RenderForegroundObjects( );
 }
 

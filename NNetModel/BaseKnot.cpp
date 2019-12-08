@@ -50,11 +50,7 @@ void BaseKnot::ReplaceOutgoing( ShapeId const idPipelineOld, ShapeId const idPip
 	* find( begin(m_outgoing), end(m_outgoing), idPipelineOld ) = idPipelineNew;
 }
 
-bool BaseKnot::IsPointInShape
-( 
-	NNetModel       const & model, 
-	MicroMeterPoint const & point 
-) const
+bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
 {
 	MicroMeterPoint const corner1 = m_center + MicroMeterPoint( + m_extension, + m_extension );
 	MicroMeterPoint const corner2 = m_center + MicroMeterPoint( + m_extension, - m_extension );
@@ -63,18 +59,14 @@ bool BaseKnot::IsPointInShape
 	return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
 }
 
-void BaseKnot::MoveTo
-( 
-	NNetModel             & model,
-	MicroMeterPoint const & newCenter 
-)
+void BaseKnot::MoveTo( MicroMeterPoint const & newCenter )
 {
 	m_center = newCenter;
 	for ( auto const idPipeline : m_incoming )
-		model.GetTypedShape<Pipeline>( idPipeline )->Recalc( model );
+		m_pNNetModel->GetTypedShape<Pipeline>( idPipeline )->Recalc( );
 
 	for ( auto const idPipeline : m_outgoing )
-		model.GetTypedShape<Pipeline>( idPipeline )->Recalc( model );
+		m_pNNetModel->GetTypedShape<Pipeline>( idPipeline )->Recalc( );
 }
 
 void BaseKnot::drawPolygon

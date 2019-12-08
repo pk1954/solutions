@@ -13,31 +13,32 @@
 class Neuron : public BaseKnot
 {
 public:
-	Neuron( MicroMeterPoint const, tShapeType const = tShapeType::neuron );
+	Neuron( NNetModel *, MicroMeterPoint const, tShapeType const = tShapeType::neuron );
+	virtual ~Neuron() {}
 
 	static bool TypeFits( tShapeType const type )
 	{
 		return type == tShapeType::neuron;
 	}
 
-	virtual void Prepare      ( NNetModel const & );
-	virtual void Step         ( NNetModel const & );
-	virtual mV   GetNextOutput( NNetModel const & ) const;
+	virtual void Prepare( );
+	virtual void Step( );
+	virtual mV   GetNextOutput( ) const;
 
-	virtual void DrawExterior( NNetModel const &, PixelCoordsFp & ) const;
-	virtual void DrawInterior( NNetModel const &, PixelCoordsFp & ) const;
+	virtual void DrawExterior( PixelCoordsFp & ) const;
+	virtual void DrawInterior( PixelCoordsFp & ) const;
 
 protected:
 	MicroSecs m_timeSinceLastPulse;
 
-	mV waveFunction( NNetModel const &, MicroSecs const ) const;
+	mV waveFunction( MicroSecs const ) const;
 
-	void drawExterior( NNetModel const &, PixelCoordsFp &, int const ) const;
-	void drawInterior( NNetModel const &, PixelCoordsFp &, int const ) const;
+	void drawExterior( PixelCoordsFp &, int const ) const;
+	void drawInterior( PixelCoordsFp &, int const ) const;
 
 private:
 
-	MicroMeterPoint getAxonHillockPos( NNetModel const &, PixelCoordsFp & ) const;
+	MicroMeterPoint getAxonHillockPos( PixelCoordsFp & ) const;
 };
 
 Neuron const * Cast2Neuron( Shape const * );

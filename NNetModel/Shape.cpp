@@ -11,21 +11,17 @@ using std::unordered_map;
 
 GraphicsInterface * Shape::m_pGraphics { nullptr };
 
-COLORREF Shape::GetInteriorColor
-(
-	NNetModel const & model,
-	mV        const voltageInput 
-) const
+COLORREF Shape::GetInteriorColor( mV const voltageInput ) const
 {
-	mV       const voltage { min( voltageInput, mV(model.GetParameterValue( tParameter::peakVoltage )) ) };
-	int      const colElem { CastToInt( voltage  * 255.0f / mV(model.GetParameterValue( tParameter::peakVoltage )) ) };
+	mV       const voltage { min( voltageInput, mV(m_pNNetModel->GetParameterValue( tParameter::peakVoltage )) ) };
+	int      const colElem { CastToInt( voltage  * 255.0f / mV(m_pNNetModel->GetParameterValue( tParameter::peakVoltage )) ) };
 	COLORREF const color   { RGB( colElem, 0, 0 ) };
 	return color;
 }
 
-void Shape::CheckInputBuffer( NNetModel const & model ) const
+void Shape::CheckInputBuffer( ) const
 {
-	assert( m_mVinputBuffer <= mV( model.GetParameterValue( tParameter::peakVoltage ) * 2 ) );
+	assert( m_mVinputBuffer <= mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) * 2 ) );
 }
 
 wchar_t const * const Shape::GetName( ) const

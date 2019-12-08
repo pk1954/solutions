@@ -86,8 +86,8 @@ NNetModel::NNetModel( )
 	m_nrOfOutputNeurons    ( 0 )
 {					
 	// initial shapes 
-	ShapeId m_idInputNeuron  = NewInputNeuron( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
-	ShapeId m_idOutputNeuron = NewOutputNeuron( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) );
+	ShapeId m_idInputNeuron  = NewShape<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
+	ShapeId m_idOutputNeuron = NewShape<OutputNeuron>( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) );
 	ShapeId m_idPipeline     = NewPipeline( m_idInputNeuron, m_idOutputNeuron );
 }
 
@@ -96,39 +96,18 @@ NNetModel::~NNetModel( )
 
 void NNetModel::RecalcPipelines( ) 
 { 
-	Apply2All<Pipeline>( [&]( Pipeline & pipe ) { pipe.Recalc( * this ); } );
+	Apply2All<Pipeline>( [&]( Pipeline & pipe ) { pipe.Recalc( ); } );
 } 
 
 void NNetModel::RemoveShape( )
 {
-	switch ( GetHighlightedShapeType() )
+	if ( HighlightedShapeCanBeDeleted() )
 	{
-	case tShapeType::inputNeuron:
-		if ( m_nrOfInputNeurons <= 1 )
-			return;
-		--m_nrOfInputNeurons;
-		break;
-
-	case tShapeType::outputNeuron:
-		if ( m_nrOfOutputNeurons <= 1 )
-			return;
-		--m_nrOfOutputNeurons;
-		break;
-
-	case tShapeType::knot:
-	case tShapeType::neuron:
-	case tShapeType::pipeline:
-	case tShapeType::undefined:
-		return;
-
-	default:
-		assert( false );
+		ShapeId idShapeToBeDeleted { m_shapeHighlighted };
+		m_shapeHighlighted = NO_SHAPE;
+		deleteBaseKnot( idShapeToBeDeleted );
+		CHECK_CONSISTENCY;
 	}
-
-	ShapeId idShapeToBeDeleted { m_shapeHighlighted };
-	m_shapeHighlighted = NO_SHAPE;
-	deleteBaseKnot( idShapeToBeDeleted );
-	CHECK_CONSISTENCY;
 }
 
 void NNetModel::deleteBaseKnot( ShapeId const id )
@@ -268,7 +247,7 @@ void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
 			{ 
 				pSuperHighlighted->AddIncomming( idPipeline );
 				pHighlighted->RemoveIncoming( idPipeline );
-				GetTypedShape<Pipeline>(idPipeline)->SetEndKnot( * this, m_shapeSuperHighlighted );
+				GetTypedShape<Pipeline>(idPipeline)->SetEndKnot( m_shapeSuperHighlighted );
 			}
 		);
 
@@ -286,34 +265,12 @@ ShapeId const NNetModel::addShape( Shape * pShape )
 	return id;
 }
 
-ShapeId NNetModel::NewInputNeuron( MicroMeterPoint const & pos )
-{
-	++m_nrOfInputNeurons;
-	return addShape( new InputNeuron( pos ) );
-}
-
-ShapeId NNetModel::NewOutputNeuron( MicroMeterPoint const & pos )
-{
-	++m_nrOfOutputNeurons;
-	return addShape( new OutputNeuron( pos ) );
-}
-
-ShapeId NNetModel::NewNeuron( MicroMeterPoint const & pos )
-{
-	return addShape( new Neuron( pos ) );
-}
-
-ShapeId NNetModel::NewKnot( MicroMeterPoint const & pos )
-{
-	return addShape( new Knot( pos ) );
-}
-
 ShapeId NNetModel::NewPipeline( ShapeId const idStart, ShapeId const idEnd )
 {
-	Pipeline * pPipelineNew { new Pipeline( ) };
+	Pipeline * pPipelineNew { new Pipeline( this ) };
 	ShapeId const id { addShape( pPipelineNew ) };
-	pPipelineNew->SetStartKnot( * this, idStart );
-	pPipelineNew->SetEndKnot  ( * this, idEnd );
+	pPipelineNew->SetStartKnot( idStart );
+	pPipelineNew->SetEndKnot  ( idEnd );
 	GetTypedShape<BaseKnot>( idStart )->AddOutgoing ( id );
 	GetTypedShape<BaseKnot>( idEnd   )->AddIncomming( id );
 	return id;
@@ -329,7 +286,7 @@ void NNetModel::insertNewBaseKnot( BaseKnot * const pNewBaseKnot )
 		NewPipeline( idStartKnot, idNewShape );
 		GetTypedShape<BaseKnot>( idStartKnot )->RemoveOutgoing( m_shapeHighlighted );
 		GetTypedShape<BaseKnot>( idNewShape  )->AddOutgoing   ( m_shapeHighlighted );
-		pPipelineHighlighted->SetStartKnot( * this, idNewShape );
+		pPipelineHighlighted->SetStartKnot( idNewShape );
 		HighlightShape( idNewShape );
 		CHECK_CONSISTENCY;
 	}
@@ -337,19 +294,19 @@ void NNetModel::insertNewBaseKnot( BaseKnot * const pNewBaseKnot )
 
 void NNetModel::SplitPipeline( MicroMeterPoint const & splitPoint )
 {
-	insertNewBaseKnot( new Knot( splitPoint ) );
+	insertNewBaseKnot( new Knot( this, splitPoint ) );
 }
 
 void NNetModel::InsertNeuron( MicroMeterPoint const & splitPoint )
 {
-	insertNewBaseKnot( new Neuron( splitPoint ) );
+	insertNewBaseKnot( new Neuron( this, splitPoint ) );
 }
 
 void NNetModel::prepareSplit( MicroMeterPoint const & splitPoint )
 {
 	if ( GetHighlightedShapeType( ) == tShapeType::pipeline )
 	{
-		insertNewBaseKnot( new Knot( splitPoint ) );
+		insertNewBaseKnot( new Knot( this, splitPoint ) );
 	}
 }
 
@@ -359,7 +316,7 @@ void NNetModel::AddOutputNeuron( MicroMeterPoint const & splitPoint )
 	if ( ( typeHighlighted == tShapeType::pipeline ) || ( typeHighlighted == tShapeType::knot ) )
 	{
 		prepareSplit( splitPoint );
-		ShapeId const idOutputNeuron { NewOutputNeuron( GetHighlightedShapePos() + STD_OFFSET) };
+		ShapeId const idOutputNeuron { NewShape<OutputNeuron>( GetHighlightedShapePos() + STD_OFFSET) };
 		NewPipeline( m_shapeHighlighted, idOutputNeuron );
 		HighlightShape( idOutputNeuron );
 		CHECK_CONSISTENCY;
@@ -371,7 +328,7 @@ void NNetModel::AddInputNeuron( MicroMeterPoint const & splitPoint )
 	if ( m_shapeHighlighted != NO_SHAPE )
 	{
 		prepareSplit( splitPoint );
-		ShapeId const idInputNeuron { NewInputNeuron( GetHighlightedShapePos() - STD_OFFSET ) };
+		ShapeId const idInputNeuron { NewShape<InputNeuron>( GetHighlightedShapePos() - STD_OFFSET ) };
 		NewPipeline( idInputNeuron, m_shapeHighlighted );
 		HighlightShape( idInputNeuron );
 		CHECK_CONSISTENCY;
@@ -387,7 +344,7 @@ void NNetModel::CheckConsistency( Shape const * pShape ) const
 		( 
 			[&]( ShapeId const id ) 
 			{ 
-				assert( IsPipelineType( id ) ); 
+				assert( IsType<Pipeline>( id ) ); 
 			} 
 	    );
 
@@ -440,18 +397,22 @@ void NNetModel::CopyModelData( ModelInterface const * const src )
 
 void NNetModel::Compute( )
 {
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Prepare( * this ); } );
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Step   ( * this ); } );
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Prepare( ); } );
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Step   ( ); } );
 
 	m_timeStamp += TIME_RESOLUTION;
 }
 
 void NNetModel::ResetAll( )
 {
-	Apply2All<Shape>( [&]( Shape & shape ) { delete & shape; } );
+	Apply2All<Shape>
+	( 
+		[&]( Shape & shape ) 
+		{ 
+			delete & shape; 
+		} 
+	);
 	m_Shapes.clear();
-	m_nrOfInputNeurons  = 0;
-	m_nrOfOutputNeurons = 0;
 }
 
 Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt, std::function<bool(Shape const &)> const & crit ) const

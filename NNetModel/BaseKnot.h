@@ -21,22 +21,24 @@ class BaseKnot : public Shape
 public:
 	BaseKnot
 	( 
+		NNetModel     * const pModel,
 		MicroMeterPoint const center,
 		tShapeType      const type,
 		MicroMeter      const extension
  	)
-	  : Shape( type ),
+	  : Shape( pModel, type ),
 		m_center( center ),
 		m_extension( extension )
-	{
-	}
+	{ }
+
+	virtual ~BaseKnot() {}
 
 	static bool TypeFits( tShapeType const type ) { return IsBaseKnotType( type ); }
 
 	MicroMeterPoint GetPosition( )  const { return m_center;	}
 	MicroMeter      GetExtension( ) const { return m_extension;	}
 
-	bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
+	bool IsPointInShape( MicroMeterPoint const & ) const;
 
 	void AddIncomming   ( ShapeId const );
 	void AddOutgoing    ( ShapeId const );
@@ -110,10 +112,10 @@ public:
 		Apply2AllConnectedPipelines( [&]( ShapeId & idPipeline ) { ::FixShapeId( idPipeline, idLimit ); } );
 	}
 
-	virtual void MoveTo( NNetModel &, MicroMeterPoint const & );
+	virtual void MoveTo( MicroMeterPoint const & );
 
-	virtual void DrawExterior( NNetModel const &, PixelCoordsFp & ) const = 0;
-	virtual void DrawInterior( NNetModel const &, PixelCoordsFp & ) const = 0;
+	virtual void DrawExterior( PixelCoordsFp & ) const = 0;
+	virtual void DrawInterior( PixelCoordsFp & ) const = 0;
 
 protected:
 

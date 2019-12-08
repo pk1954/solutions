@@ -109,7 +109,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		{
 			Shape               * pShape( m_pNNetModel->GetShape( ShapeId( CastToLong(msg.wParam) ) ) );
 			MicroMeterPoint const newPos( Util::Unpack2MicroMeterPoint(msg.lParam) );
-			pShape->MoveTo( * m_pNNetModel, newPos );
+			pShape->MoveTo( newPos );
 		}
 		break;
 

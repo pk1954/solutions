@@ -19,15 +19,16 @@ class BaseKnot;
 class Pipeline : public Shape
 {
 public:
-	Pipeline( );
+	Pipeline( NNetModel * );
+	virtual ~Pipeline() {}
 
 	static bool TypeFits( tShapeType const type )
 	{
 		return type == tShapeType::pipeline;
 	}
 
-	void SetStartKnot( NNetModel const &, ShapeId const );
-	void SetEndKnot  ( NNetModel const &, ShapeId const );
+	void SetStartKnot( ShapeId const );
+	void SetEndKnot  ( ShapeId const );
 
 	virtual void FixShapeIds( ShapeId const idLimit )
 	{
@@ -36,25 +37,25 @@ public:
 		::FixShapeId( m_idKnotEnd,   idLimit );
 	}
 
-	void Recalc( NNetModel const & );
+	void Recalc( );
 
 	ShapeId    GetStartKnot   ( ) const { return m_idKnotStart;  }
 	ShapeId    GetEndKnot     ( ) const { return m_idKnotEnd;    }
 	size_t     GetNrOfSegments( ) const { return m_potential.size(); }
 	MicroMeter GetWidth       ( ) const { return m_width; }
 
-	MicroMeterPoint GetStartPoint( NNetModel const & ) const; 
-	MicroMeterPoint GetEndPoint  ( NNetModel const & ) const; 
-	MicroMeter      GetLength    ( NNetModel const & ) const;
-	MicroMeterPoint GetVector    ( NNetModel const & ) const; 
+	MicroMeterPoint GetStartPoint( ) const; 
+	MicroMeterPoint GetEndPoint  ( ) const; 
+	MicroMeter      GetLength    ( ) const;
+	MicroMeterPoint GetVector    ( ) const; 
 
-	virtual void Step          ( NNetModel const & );
-	virtual void Prepare       ( NNetModel const & );
-	virtual mV   GetNextOutput ( NNetModel const & ) const;
-	virtual void DrawExterior  ( NNetModel const &, PixelCoordsFp  & ) const;
-	virtual void DrawInterior  ( NNetModel const &, PixelCoordsFp  & ) const;
-	virtual void MoveTo        ( NNetModel       &, MicroMeterPoint const & ) {}
-	virtual bool IsPointInShape( NNetModel const &, MicroMeterPoint const & ) const;
+	virtual void Step          ( );
+	virtual void Prepare       ( );
+	virtual mV   GetNextOutput ( ) const;
+	virtual void DrawExterior  ( PixelCoordsFp  & ) const;
+	virtual void DrawInterior  ( PixelCoordsFp  & ) const;
+	virtual void MoveTo        ( MicroMeterPoint const & ) {}
+	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 
 private:
 	ShapeId    m_idKnotStart;

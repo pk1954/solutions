@@ -14,23 +14,25 @@ using std::vector;
 
 class GraphicsInterface;
 class PixelCoordsFp;
+class NNetModel;
 
 class Knot : public BaseKnot
 {
 public:
-	Knot( MicroMeterPoint const center )
-	  : BaseKnot( center, tShapeType::knot, PIPELINE_WIDTH )
-	{
-	}
+	Knot( NNetModel * pModel, MicroMeterPoint const center )
+	  : BaseKnot( pModel, center, tShapeType::knot, PIPELINE_WIDTH )
+	{}
+
+	virtual ~Knot() {}
 
 	static bool TypeFits( tShapeType const type )
 	{
 		return type == tShapeType::knot;
 	}
 
-	virtual void Prepare      ( NNetModel const & );
-	virtual void Step         ( NNetModel const & ) { }
-	virtual mV   GetNextOutput( NNetModel const & ) const;
-	virtual void DrawExterior ( NNetModel const &, PixelCoordsFp & ) const;
-	virtual void DrawInterior ( NNetModel const &, PixelCoordsFp & ) const;
+	virtual void Prepare      ( );
+	virtual void Step         ( ) { }
+	virtual mV   GetNextOutput( ) const;
+	virtual void DrawExterior ( PixelCoordsFp & ) const;
+	virtual void DrawInterior ( PixelCoordsFp & ) const;
 };
