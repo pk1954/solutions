@@ -240,13 +240,13 @@ void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
 	if ( pHighlighted && pSuperHighlighted )
 	{
 		assert( pHighlighted->GetShapeType() == tShapeType::outputNeuron );
-		assert( ::IsNeuronType( pSuperHighlighted->GetShapeType() ) );
+		assert( NeuronType::TypeFits( pSuperHighlighted->GetShapeType() ) );
 		pHighlighted->Apply2AllIncomingPipelines
 		( 
 			[&]( ShapeId const & idPipeline ) 
 			{ 
-				pSuperHighlighted->AddIncomming( idPipeline );
 				pHighlighted->RemoveIncoming( idPipeline );
+				pSuperHighlighted->AddIncomming( idPipeline );
 				GetTypedShape<Pipeline>(idPipeline)->SetEndKnot( m_shapeSuperHighlighted );
 			}
 		);
@@ -366,8 +366,8 @@ void NNetModel::CheckConsistency( Shape const * pShape ) const
 		break;
 
 	case tShapeType::pipeline:
-		assert( IsStartKnotType( static_cast<Pipeline const *>( pShape )->GetStartKnot() ) );
-		assert( IsEndKnotType  ( static_cast<Pipeline const *>( pShape )->GetEndKnot  () ) );
+		assert( IsType<StartKnotType>( static_cast<Pipeline const *>( pShape )->GetStartKnot() ) );
+		assert( IsType<EndKnotType  >( static_cast<Pipeline const *>( pShape )->GetEndKnot  () ) );
 		break;
 
 	case tShapeType::undefined:

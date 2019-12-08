@@ -26,12 +26,12 @@ void Pipeline::Recalc( )
 {
 	if ( ::IsDefined(m_idKnotStart) && ::IsDefined(m_idKnotEnd) )
 	{
-		BaseKnot     const * const pKnotStart     { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotStart ) };   
-		BaseKnot     const * const pKnotEnd       { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotEnd   ) };   
-		meterPerSec  const         pulseSpeed     { meterPerSec( m_pNNetModel->GetParameterValue( tParameter::pulseSpeed ) ) };
-		MicroMeter   const         segmentLength  { CoveredDistance( pulseSpeed, TIME_RESOLUTION ) };
-		MicroMeter   const         pipelineLength { Distance( pKnotStart->GetPosition(), pKnotEnd->GetPosition() ) };
-		unsigned int const         iNrOfSegments  { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
+		BaseKnot const * const pKnotStart     { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotStart ) };   
+		BaseKnot const * const pKnotEnd       { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotEnd   ) };   
+		meterPerSec      const pulseSpeed     { meterPerSec( m_pNNetModel->GetParameterValue( tParameter::pulseSpeed ) ) };
+		MicroMeter       const segmentLength  { CoveredDistance( pulseSpeed, TIME_RESOLUTION ) };
+		MicroMeter       const pipelineLength { Distance( pKnotStart->GetPosition(), pKnotEnd->GetPosition() ) };
+		unsigned int     const iNrOfSegments  { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
 
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 

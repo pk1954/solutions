@@ -65,36 +65,52 @@ static bool HasAxon( tShapeType const type )
 		(type == tShapeType::inputNeuron);
 }
 
-static bool IsStartKnotType( tShapeType const type )
+class StartKnotType
 {
-	return 
-		(type == tShapeType::knot)        || 
-		(type == tShapeType::neuron)      || 
-		(type == tShapeType::inputNeuron);
-}
+public:
+	static bool TypeFits( tShapeType const type ) 
+	{
+		return 
+			(type == tShapeType::knot)        || 
+			(type == tShapeType::neuron)      || 
+			(type == tShapeType::inputNeuron);
+	}
+};
 
-static bool IsEndKnotType( tShapeType const type )
+class NeuronType
 {
-	return 
-		(type == tShapeType::knot)        || 
-		(type == tShapeType::neuron)      || 
-		(type == tShapeType::outputNeuron);
-}
+public:
+	static bool TypeFits( tShapeType const type ) 
+	{
+		return 
+			(type == tShapeType::neuron)      || 
+			(type == tShapeType::inputNeuron) ||
+			(type == tShapeType::outputNeuron);
+	}
+};
 
-static bool IsNeuronType( tShapeType const type )
+class EndKnotType
 {
-	return  
-		(type == tShapeType::neuron)      || 
-		(type == tShapeType::inputNeuron) ||
-		(type == tShapeType::outputNeuron);
-}
+public:
+	static bool TypeFits( tShapeType const type ) 
+	{
+		return 
+			(type == tShapeType::knot)        || 
+			(type == tShapeType::neuron)      || 
+			(type == tShapeType::outputNeuron);
+	}
+};
 
-static bool IsTerminalType( tShapeType const type )
+class TerminalType
 {
-	return  
-		(type == tShapeType::inputNeuron) ||
-		(type == tShapeType::outputNeuron);
-}
+public:
+	static bool TypeFits( tShapeType const type ) 
+	{
+		return  
+			(type == tShapeType::inputNeuron) ||
+			(type == tShapeType::outputNeuron);
+	}
+};
 
 class Shape
 {
@@ -108,15 +124,15 @@ public:
 
 	virtual ~Shape() {}
 
-	static bool TypeFits( tShapeType const type ) {	return true; }  // avery shape type is a Shape
+	static bool TypeFits( tShapeType const type ) {	return true; }  // every shape type is a Shape
 
-	virtual void DrawExterior  ( PixelCoordsFp  & )        const = 0;
-	virtual void DrawInterior  ( PixelCoordsFp  & )        const = 0;
-	virtual bool IsPointInShape( MicroMeterPoint const & ) const = 0;
 	virtual mV   GetNextOutput ( )                         const = 0;
+	virtual void DrawExterior  ( PixelCoordsFp & )         const = 0;
+	virtual void DrawInterior  ( PixelCoordsFp & )         const = 0;
+	virtual bool IsPointInShape( MicroMeterPoint const & ) const = 0;
+	virtual void MoveTo        ( MicroMeterPoint const & )       = 0;
 	virtual void Prepare       ( )                               = 0;
 	virtual void Step          ( )                               = 0;
-	virtual void MoveTo        ( MicroMeterPoint const & )       = 0;
 
 	bool IsDefined( ) const
 	{

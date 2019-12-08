@@ -127,10 +127,6 @@ public:
 
 	template <typename T> bool IsType( ShapeId const id ) const { return T::TypeFits( GetConstShape( id )->GetShapeType() ); }
 
-	bool IsTerminalType ( ShapeId const id ) const { return ::IsTerminalType ( GetConstShape( id )->GetShapeType() ); }
-	bool IsStartKnotType( ShapeId const id ) const { return ::IsStartKnotType( GetConstShape( id )->GetShapeType() ); }
-	bool IsEndKnotType  ( ShapeId const id ) const { return ::IsEndKnotType  ( GetConstShape( id )->GetShapeType() ); }
-
 	bool IsPointInShape ( Shape const * const pShape, MicroMeterPoint const & point ) const { return pShape->IsPointInShape( point ); }
 
 	bool IsHighlighted     ( Shape const & shape ) const { return shape.GetId() == m_shapeHighlighted; }

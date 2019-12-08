@@ -217,7 +217,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 						umPoint, 
 						[&]( Shape const & shape ) 
 						{ 
-							return (shape.GetId() != idHighlighted) && IsNeuronType(shape.GetShapeType());
+							return (shape.GetId() != idHighlighted) && NeuronType::TypeFits(shape.GetShapeType());
 						} 
 					);
 				}
@@ -259,7 +259,7 @@ void NNetWindow::drawHighlightedShape( NNetModel const & model, PixelCoordsFp & 
 {
 	ShapeId       const idHighlighted     { model.GetHighlightedShapeId( ) };
 	Shape const * const pShapeHighlighted { model.GetConstShape( model.GetHighlightedShapeId( ) ) };
-	if ( pShapeHighlighted && IsNeuronType(pShapeHighlighted->GetShapeType()) )
+	if ( pShapeHighlighted && NeuronType::TypeFits(pShapeHighlighted->GetShapeType()) )
 	{
 		pShapeHighlighted->DrawExterior( coord );
 		pShapeHighlighted->DrawInterior( coord );
@@ -351,12 +351,10 @@ void NNetWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )
 
 void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
-	NNetModel const * pModel              { m_pReadBuffer->GetModel( ) };
-	ShapeId   const   idHighlighted       { pModel->GetHighlightedShapeId( ) };
-	ShapeId   const   idHSuperhighlighted { pModel->GetSuperHighlightedShapeId( ) };
+	NNetModel const * pModel { m_pReadBuffer->GetModel( ) };
 	if ( 
-		  ( pModel->GetHighlightedShapeType() == tShapeType::outputNeuron ) &&
-		  IsEndKnotType( pModel->GetSuperHighlightedShapeType() ) 
+		  OutputNeuron::TypeFits( pModel->GetHighlightedShapeType() ) &&
+		  EndKnotType ::TypeFits( pModel->GetSuperHighlightedShapeType() ) 
 	   )
        PostCommand2Application( IDD_CONNECT, 0 );
 //	(void)ReleaseCapture( );
