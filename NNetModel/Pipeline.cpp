@@ -14,11 +14,11 @@
 
 Pipeline::Pipeline( NNetModel * pModel )
   :	Shape( pModel, tShapeType::pipeline ),
-	m_idKnotStart       ( NO_SHAPE ),
-	m_idKnotEnd         ( NO_SHAPE ),
-	m_width             ( PIPELINE_WIDTH ),
-	m_fDampingPerSegment( 1.0f ),
-	m_potential         ( )
+	m_idKnotStart   ( NO_SHAPE ),
+	m_idKnotEnd     ( NO_SHAPE ),
+	m_width         ( PIPELINE_WIDTH ),
+	m_fDampingFactor( 1.0f ),
+	m_potential     ( )
 {
 }
 
@@ -35,7 +35,7 @@ void Pipeline::Recalc( )
 
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 
-		m_fDampingPerSegment = pow( m_pNNetModel->GetParameterValue( tParameter::dampingFactor ), segmentLength.GetValue() );
+		m_fDampingFactor = pow( 1.0f - m_pNNetModel->GetParameterValue( tParameter::signalLoss ), segmentLength.GetValue() );
 	}
 }
 
@@ -83,7 +83,7 @@ void Pipeline::Step( )
 	mV mVcarry { m_mVinputBuffer };
 	for ( auto & iter : m_potential )
 	{
-		mVcarry *= m_fDampingPerSegment;  
+		mVcarry *= m_fDampingFactor;  
 		std::swap( iter, mVcarry );
 		CheckInputBuffer( );
 	}

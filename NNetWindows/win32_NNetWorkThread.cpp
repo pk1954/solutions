@@ -46,8 +46,7 @@ NNetWorkThread::NNetWorkThread
 		pWorkThreadInterface,
 		bAsync
 	),
-	m_pSlowMotionRatio( pSlowMotionRatio ),
-	m_dutyCycle( 0.0 )
+	m_pSlowMotionRatio( pSlowMotionRatio )
 {
 }
 
@@ -62,7 +61,7 @@ static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
 		{ NNetWorkThreadMessage::Id::PULSE_RATE,        tParameter::pulseRate        },
 		{ NNetWorkThreadMessage::Id::PULSE_SPEED,       tParameter::pulseSpeed       },
 		{ NNetWorkThreadMessage::Id::PULSE_WIDTH,       tParameter::pulseWidth       },
-		{ NNetWorkThreadMessage::Id::DAMPING_FACTOR,    tParameter::dampingFactor    },
+		{ NNetWorkThreadMessage::Id::DAMPING_FACTOR,    tParameter::signalLoss       },
 		{ NNetWorkThreadMessage::Id::THRESHOLD,         tParameter::threshold        },
 		{ NNetWorkThreadMessage::Id::PEAK_VOLTAGE,      tParameter::peakVoltage      },
 		{ NNetWorkThreadMessage::Id::REFRACTORY_PERIOD, tParameter::refractoryPeriod }
@@ -148,10 +147,6 @@ void NNetWorkThread::WaitTilNextActivation( )
 
 void NNetWorkThread::Compute() 
 {
-	static DWORD nrOfCalls  = 0;
-	static DWORD nrOfSleeps = 0;
-	static DWORD nrOfCycles = 0;
-	++nrOfCalls;
 	Ticks     const ticksTilStart      = m_hrTimer.GetTicksTilStart( );                   
 	MicroSecs const usTilStartRealTime = m_hrTimer.TicksToMicroSecs( ticksTilStart ); 
 	MicroSecs const usTilStartSimuTime = usTilStartRealTime / CastToFloat( m_pSlowMotionRatio->GetRatio() );
@@ -160,7 +155,6 @@ void NNetWorkThread::Compute()
 	if ( usMissingSimuTime > 0._MicroSecs )
 	{
 		unsigned long ulCyclesTodo = CastToUnsignedLong( usMissingSimuTime / TIME_RESOLUTION ); // compute # cycles to be computed
-		nrOfCycles += ulCyclesTodo;
 		do
 			m_pNNetModel->Compute();
 		while ( ulCyclesTodo-- );
@@ -168,8 +162,5 @@ void NNetWorkThread::Compute()
 	else
 	{
 		Sleep( 10 );
-		++nrOfSleeps;
 	}
-	double averageCyclesTodo = double(nrOfCycles) / double(nrOfCalls);
-	int x = 55;
 }

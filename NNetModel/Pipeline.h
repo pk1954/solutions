@@ -61,7 +61,7 @@ private:
 	ShapeId    m_idKnotStart;
 	ShapeId    m_idKnotEnd;
 	MicroMeter m_width;
-	float      m_fDampingPerSegment;
+	float      m_fDampingFactor;
 	vector<mV> m_potential;
 };
 

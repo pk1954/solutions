@@ -17,8 +17,12 @@ IDC_NNET_SIMU_MAIN MENU
 {
     POPUP "&File"
     {
-        MENUITEM "&Exit", IDM_EXIT
-    }
+		MENUITEM "&New model" ,    IDM_NEW_MODEL
+		MENUITEM "&Open model",    IDM_OPEN_MODEL
+		MENUITEM "&Save model",    IDM_SAVE_MODEL
+		MENUITEM "Save model &as", IDM_SAVE_MODEL_AS
+		MENUITEM "&Exit",          IDM_EXIT
+	}
     POPUP "&Action"
     {
         MENUITEM "&Proceed single step", IDM_FORWARD
@@ -58,6 +62,14 @@ FONT 8, "MS Shell Dlg", 0, 0, 1
 	LTEXT         "Compile time",       IDC_STATIC,    42, 26, 114,  8, SS_LEFT,  WS_EX_LEFT
 	LTEXT         "",                   IDD_TIMESTAMP, 42, 38, 114,  8, SS_LEFT,  WS_EX_LEFT
 	DEFPUSHBUTTON "OK",                 IDOK,         113, 53,  50, 14, WS_GROUP, WS_EX_LEFT
+}
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDD_PARAMETER_DLG DIALOG 0, 0, 200, 150
+STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_POPUP | WS_SYSMENU
+CAPTION "Global parameters"
+FONT 8, "Ms Shell Dlg"
+{
 }
 
 //

@@ -24,7 +24,7 @@ enum class tParameter
 	pulseRate,
 	pulseSpeed,
 	pulseWidth,
-	dampingFactor,
+	signalLoss,
 	threshold,
 	peakVoltage,
 	refractoryPeriod,
@@ -227,7 +227,7 @@ private:
 	ShapeId m_shapeSuperHighlighted;
 
 	// parameters
-	float        m_dampingFactor;     // signal loss per um  
+	float        m_signalLoss;     // signal loss per um  
     mV           m_threshold;
     mV           m_peakVoltage;   
 	MicroSecs    m_pulseWidth;   

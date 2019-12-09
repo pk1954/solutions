@@ -30,7 +30,7 @@ wchar_t const * const NNetModel::GetParameterName( tParameter const p ) const
 		{ tParameter::pulseRate,        L"Pulse rate"        },
 		{ tParameter::pulseSpeed,       L"Pulse speed"       },
 		{ tParameter::pulseWidth,       L"Pulse width"       },
-		{ tParameter::dampingFactor,    L"Damping factor"    },
+		{ tParameter::signalLoss,       L"Signal loss"       },
 		{ tParameter::threshold,        L"Threshold"         },
 		{ tParameter::peakVoltage,      L"Peak voltage"      },
 		{ tParameter::refractoryPeriod, L"Refractory period" }
@@ -46,7 +46,7 @@ wchar_t const * const NNetModel::GetParameterLiteral( tParameter const p ) const
 		{ tParameter::pulseRate,        L"tParameter::pulseRate"        },
 		{ tParameter::pulseSpeed,       L"tParameter::pulseSpeed"       },
 		{ tParameter::pulseWidth,       L"tParameter::pulseWidth"       },
-		{ tParameter::dampingFactor,    L"tParameter::dampingFactor"    },
+		{ tParameter::signalLoss,       L"tParameter::signalLoss"       },
 		{ tParameter::threshold,        L"tParameter::threshold"        },
 		{ tParameter::peakVoltage,      L"tParameter::peakVoltage"      },
 		{ tParameter::refractoryPeriod, L"tParameter::refractoryPeriod" }
@@ -62,7 +62,7 @@ wchar_t const * const NNetModel::GetParameterUnit( tParameter const p ) const
 		{ tParameter::pulseRate,        L"Hz"    },
 		{ tParameter::pulseSpeed,       L"m/sec" },
 		{ tParameter::pulseWidth,       L"µs"    },
-		{ tParameter::dampingFactor,    L"1/µm"  },
+		{ tParameter::signalLoss,       L"1/µm"  },
 		{ tParameter::threshold,        L"mV"    },
 		{ tParameter::peakVoltage,      L"mV"    },
 		{ tParameter::refractoryPeriod, L"µs"    }
@@ -76,7 +76,7 @@ NNetModel::NNetModel( )
 	m_timeStamp            ( 0._MicroSecs ),
 	m_shapeHighlighted     ( NO_SHAPE ),
 	m_shapeSuperHighlighted( NO_SHAPE ),
-	m_dampingFactor        ( 0.9995f ), 
+	m_signalLoss           ( 0.0005f ), 
 	m_threshold            ( 20._mV ),
 	m_peakVoltage          ( 10._mV ),
 	m_pulseWidth           ( 2000._MicroSecs ),
@@ -172,8 +172,8 @@ float const NNetModel::GetParameterValue
 	case tParameter::pulseWidth:
 		return m_pulseWidth.GetValue();
 
-	case tParameter::dampingFactor:
-		return m_dampingFactor;
+	case tParameter::signalLoss:
+		return m_signalLoss;
 
 	case tParameter::threshold:
 		return m_threshold.GetValue();
@@ -190,7 +190,12 @@ float const NNetModel::GetParameterValue
 	return 0.f;
 }
 
-void const NNetModel::SetParameter( ShapeId const id, tParameter const param, float const fNewValue )
+void const NNetModel::SetParameter
+( 
+	ShapeId    const id, 
+	tParameter const param, 
+	float      const fNewValue 
+)
 {
 	switch ( param )
 	{
@@ -211,8 +216,8 @@ void const NNetModel::SetParameter( ShapeId const id, tParameter const param, fl
 		m_pulseWidth = static_cast< MicroSecs >( fNewValue );
 		break;
 
-	case tParameter::dampingFactor:
-		m_dampingFactor = fNewValue;
+	case tParameter::signalLoss:
+		m_signalLoss = fNewValue;
 		RecalcPipelines( );
 		break;
 
@@ -233,7 +238,7 @@ void const NNetModel::SetParameter( ShapeId const id, tParameter const param, fl
 	}
 }
 
-void NNetModel::Connect( )  // highlighted knot to super highlighted neuron
+void NNetModel::Connect( )  // highlighted knot to super highlighted shape
 {
 	BaseKnot * pHighlighted      = GetTypedShape<BaseKnot>( m_shapeHighlighted );
 	BaseKnot * pSuperHighlighted = GetTypedShape<BaseKnot>( m_shapeSuperHighlighted );

@@ -148,7 +148,8 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions> </AdditionalOptions>
+      <AdditionalOptions>
+      </AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -159,7 +160,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="win32_crsrWindow.h" />
-    <ClInclude Include="win32_NNetEditor.h" />
     <ClInclude Include="win32_NNetReadBuffer.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -167,13 +167,14 @@
     <ClInclude Include="win32_NNetWindow.h" />
     <ClInclude Include="win32_NNetWorkThread.h" />
     <ClInclude Include="win32_NNetWorkThreadInterface.h" />
+    <ClInclude Include="win32_parameterDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_crsrWindow.cpp" />
-    <ClCompile Include="win32_NNetEditor.cpp" />
     <ClCompile Include="win32_NNetWindow.cpp" />
     <ClCompile Include="win32_NNetWorkThread.cpp" />
     <ClCompile Include="win32_NNetWorkThreadInterface.cpp" />
+    <ClCompile Include="win32_parameterDlg.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

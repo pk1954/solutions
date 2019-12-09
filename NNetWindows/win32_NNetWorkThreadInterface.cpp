@@ -82,8 +82,6 @@ void NNetWorkThreadInterface::PostRemoveShape( )
 
 void NNetWorkThreadInterface::PostHighlight( ShapeId const id, bool const bSuper )
 {
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::HIGHLIGHT), id.GetValue(), bSuper );
 }
 
@@ -94,7 +92,7 @@ static WorkThreadMessage::Id const GetWorkThreadMessage( tParameter const p )
 		{ tParameter::pulseRate,        NNetWorkThreadMessage::Id::PULSE_RATE        },
 		{ tParameter::pulseSpeed,       NNetWorkThreadMessage::Id::PULSE_SPEED       },
 		{ tParameter::pulseWidth,       NNetWorkThreadMessage::Id::PULSE_WIDTH       },
-		{ tParameter::dampingFactor,    NNetWorkThreadMessage::Id::DAMPING_FACTOR    },
+		{ tParameter::signalLoss,       NNetWorkThreadMessage::Id::DAMPING_FACTOR    },
 		{ tParameter::threshold,        NNetWorkThreadMessage::Id::THRESHOLD         },
 		{ tParameter::peakVoltage,      NNetWorkThreadMessage::Id::PEAK_VOLTAGE      },
 		{ tParameter::refractoryPeriod, NNetWorkThreadMessage::Id::REFRACTORY_PERIOD }

@@ -41,6 +41,43 @@ public:
 		return fValue;
 	}
 
+	static void SetParameterValue( HWND const hwndEditField, float const fValue )
+	{
+		wostringstream m_wstrBuffer;
+		m_wstrBuffer << fValue;
+		SetWindowText( hwndEditField, m_wstrBuffer.str().c_str() );
+	}
+
+	static bool Evaluate( HWND const hwndEditField, float & fValue )
+	{
+		static int const BUFLEN = 20;
+		static wchar_t wBuffer[BUFLEN];
+
+		float fNewValue { fValue };
+		bool  bResult   { false };
+
+		if ( GetWindowText( hwndEditField, wBuffer, BUFLEN ) )
+		{
+			wstring wstrEdit( wBuffer );
+
+			for ( auto & c : wstrEdit )  // change german decimal comma to
+				if ( c == L',' )         // decimal point
+					c = L'.';
+			try
+			{
+				fNewValue = stof( wstrEdit );
+				fValue = fNewValue;
+				bResult = true;
+			} catch(...)
+			{
+				MessageBeep( MB_ICONWARNING );
+			}
+		}
+
+		SetParameterValue( hwndEditField, fValue );
+		return bResult;
+	}
+
 private:
 	static INT_PTR CALLBACK dialogProc
 	( 
@@ -54,10 +91,8 @@ private:
 		{
 		case WM_INITDIALOG:
 		{
-			wostringstream m_wstrBuffer;
-			m_wstrBuffer << m_fValue;
 			SetWindowText( hDlg, m_wstrTitle.c_str() );
-			SetWindowText( GetDlgItem( hDlg, IDD_EDIT_CTL ), m_wstrBuffer.str().c_str() );
+			SetParameterValue( GetDlgItem( hDlg, IDD_EDIT_CTL ), m_fValue );
 			SetWindowText( GetDlgItem( hDlg, IDC_STATIC ), m_wstrUnit.c_str() );
 			SendMessage( hDlg, DM_SETDEFID, IDOK, 0);
 			SendMessage( GetDlgItem( hDlg, IDCANCEL ), BM_SETSTYLE, BS_PUSHBUTTON, 0);
@@ -65,28 +100,18 @@ private:
 		}
 
 		case WM_COMMAND:
-			if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+			if ( LOWORD(wParam) == IDOK )
 			{
-				static int const BUFLEN = 20;
-				static wchar_t wBuffer[BUFLEN];
-
-				if ( GetWindowText( GetDlgItem( hDlg, IDD_EDIT_CTL ), wBuffer, BUFLEN ) )
-				{
-					wstring wstrEdit( wBuffer );
-
-					for ( auto & c : wstrEdit )  // change german decimal comma to
-						if ( c == L',' )         // decimal point
-							c = L'.';
-					try
-					{
-						m_fValue = stof( wstrEdit );
-						EndDialog( hDlg, LOWORD(wParam) );
-					} catch(...)
-					{
-						MessageBeep( MB_ICONWARNING );
-					}
-				}
-
+				HWND hwndEditCtl { GetDlgItem( hDlg, IDD_EDIT_CTL ) };
+				if ( Evaluate( hwndEditCtl, m_fValue ) )
+					EndDialog( hDlg, LOWORD(wParam) );
+				else 
+					SetFocus( hwndEditCtl );
+				return TRUE;
+			}
+			else if ( LOWORD(wParam) == IDCANCEL )
+			{
+				EndDialog( hDlg, LOWORD(wParam) );
 				return TRUE;
 			}
 			break;

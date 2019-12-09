@@ -14,10 +14,10 @@
 
 // interfaces of various windows
 
-#include "win32_NNetEditor.h"
 #include "win32_NNetWindow.h"
 #include "win32_status.h"
 #include "win32_crsrWindow.h"
+#include "win32_parameterDlg.h"
 #include "win32_simulationControl.h"
 #include "win32_slowMotionControl.h"
 #include "win32_zoomControl.h"
@@ -55,7 +55,8 @@ NNetAppWindow::NNetAppWindow( ) :
 	m_pSlowMotionDisplay( nullptr ),
 	m_pTimeDisplay( nullptr ),
 	m_pCrsrWindow( nullptr ),
-	m_pNNetModelStorage( nullptr )
+	m_pNNetModelStorage( nullptr ),
+	m_pParameterDlg( nullptr )
 {
 	Stopwatch stopwatch;
 
@@ -70,34 +71,32 @@ NNetAppWindow::NNetAppWindow( ) :
 		& m_atDisplay 
 	);
 
-	m_pAppMenu          = new NNetAppMenu( );
-	m_pMainNNetWindow   = new NNetWindow( );
-	m_pNNetEditorWindow = new NNetEditorWindow( );
-	m_pCrsrWindow       = new CrsrWindow( );
+	m_pAppMenu        = new NNetAppMenu( );
+	m_pMainNNetWindow = new NNetWindow( );
+	m_pCrsrWindow     = new CrsrWindow( );
+	m_pParameterDlg   = new ParameterDialog( & m_NNetWorkThreadInterface );
 
 	m_pNNetController = new NNetController
 	( 
 		this,
 		  m_pMainNNetWindow,
-		  m_pNNetEditorWindow,
 		& m_WinManager,
 		& m_StatusBar, 
 		& m_NNetWorkThreadInterface,
 		& m_SlowMotionRatio
 	);
 
-	m_pMainNNetWindow  ->SetRefreshRate( 100ms );
-	m_pNNetEditorWindow->SetRefreshRate( 300ms );
-	m_pCrsrWindow      ->SetRefreshRate( 100ms );
+	m_pMainNNetWindow->SetRefreshRate( 100ms );
+	m_pCrsrWindow    ->SetRefreshRate( 100ms );
 };
 
 NNetAppWindow::~NNetAppWindow( )
 {
 	delete m_pNNetController;
-	delete m_pNNetEditorWindow;
 	delete m_pMainNNetWindow;
 	delete m_pAppMenu;
 	delete m_pCrsrWindow;
+	delete m_pParameterDlg;
 }
 
 void NNetAppWindow::Start( )
@@ -146,6 +145,7 @@ void NNetAppWindow::Start( )
 	);
 
 	m_pCrsrWindow->Start( m_hwndApp, m_pNNetReadBuffer, m_pMainNNetWindow );
+	m_pParameterDlg->Start( m_hwndApp, m_pModelDataWork );
 
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, * m_pCrsrWindow,     TRUE, FALSE );
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow, TRUE, FALSE );
@@ -159,7 +159,8 @@ void NNetAppWindow::Start( )
 		m_pMainNNetWindow->Show( TRUE );
 	}
 
-	m_pCrsrWindow->Show( TRUE );
+	m_pCrsrWindow  ->Show( TRUE );
+	m_pParameterDlg->Show( TRUE );
 
 	PostCommand2Application( IDM_RUN, true );
 
@@ -171,6 +172,7 @@ void NNetAppWindow::Stop()
 {
 	m_pMainNNetWindow->Stop( );
 	m_pCrsrWindow    ->Stop( );
+	m_pParameterDlg  ->Stop( );
 
 	m_pNNetReadBuffer->UnregisterAllObservers( );
 	m_NNetWorkThreadInterface.Stop( );
@@ -188,19 +190,6 @@ void NNetAppWindow::configureStatusBar( )
 {
 	int iPartScriptLine = 0;
 
-	//iPartScriptLine = m_StatusBar.NewPart( );
-	//m_StatusBar.AddButton( L"Show editor", (HMENU)IDM_EDIT_WINDOW, BS_PUSHBUTTON );
-
-	//ZoomControl::AddSizeControl
-	//( 
-	//	& m_StatusBar, 
-	//	LogarithmicTrackbar::Value2TrackbarD( MINIMUM_PIXEL_SIZE.GetValue() ), 
-	//	LogarithmicTrackbar::Value2TrackbarD( MAXIMUM_PIXEL_SIZE.GetValue() ), 
-	//	LogarithmicTrackbar::Value2TrackbarD( DEFAULT_PIXEL_SIZE.GetValue() ) 
-	//);
-	//EnableWindow( m_StatusBar.GetDlgItem( IDM_FIT_ZOOM ), FALSE );
-
-	//iPartScriptLine = m_StatusBar.NewPart( );
 	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pNNetReadBuffer, iPartScriptLine );
 
 	iPartScriptLine = m_StatusBar.NewPart( );

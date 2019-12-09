@@ -48,7 +48,7 @@ public:
 
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
 
-	float ParameterDialog( tParameter param );
+	void ParameterDlg( tParameter param );
 
 private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 

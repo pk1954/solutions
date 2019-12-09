@@ -36,10 +36,10 @@
     <ClInclude Include="win32_NNetWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_NNetEditor.h">
+    <ClInclude Include="win32_crsrWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_crsrWindow.h">
+    <ClInclude Include="win32_parameterDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,10 +53,10 @@
     <ClCompile Include="win32_NNetWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_NNetEditor.cpp">
+    <ClCompile Include="win32_crsrWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_crsrWindow.cpp">
+    <ClCompile Include="win32_parameterDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

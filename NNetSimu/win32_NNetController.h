@@ -6,7 +6,6 @@
 
 class NNetWorkThreadInterface;
 class SlowMotionRatio;
-class NNetEditorWindow;
 class NNetAppWindow;
 class NNetAppMenu;
 class NNetWindow;
@@ -20,7 +19,6 @@ public:
 	( 
 		NNetAppWindow           * const,
 		NNetWindow              * const,
-		NNetEditorWindow        * const,
 		WinManager              * const,
 		StatusBar               * const,
 		NNetWorkThreadInterface * const,
@@ -33,11 +31,9 @@ public:
 	bool ProcessModelCommand( int const, LPARAM const );
 
 private:
-	void setSizeTrackBar( MicroMeter const );
 
 	NNetAppWindow           * m_pAppWindow;
 	NNetWindow              * m_pNNetWindow;
-	NNetEditorWindow        * m_pNNetEditorWindow;
 	WinManager              * m_pWinManager;
 	StatusBar               * m_pStatusBar;
 	NNetWorkThreadInterface * m_pNNetWorkThreadInterface;

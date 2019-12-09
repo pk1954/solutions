@@ -134,15 +134,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	NNetModel const * pModel    { m_pReadBuffer->GetModel( ) };
 	UINT      const   STD_FLAGS { MF_BYPOSITION | MF_STRING };
 
-	if ( pModel->GetHighlightedShapeId( ) == NO_SHAPE )  
-	{
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_DAMPING_FACTOR,    pModel->GetParameterName( tParameter::dampingFactor    ) );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_THRESHOLD,         pModel->GetParameterName( tParameter::threshold        ) );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PEAK_VOLTAGE,      pModel->GetParameterName( tParameter::peakVoltage      ) );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_REFRACTORY_PERIOD, pModel->GetParameterName( tParameter::refractoryPeriod ) );
-		(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_WIDTH,       pModel->GetParameterName( tParameter::pulseWidth       ) );
-	}
-	else
+	if ( pModel->GetHighlightedShapeId( ) != NO_SHAPE )  
 	{
 		switch ( pModel->GetHighlightedShapeType( ) )
 		{
@@ -172,7 +164,6 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON,  L"Add input neuron" );
 			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_INSERT_NEURON,     L"Insert neuron" );
 			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_SPLIT_PIPELINE,    L"Split" );
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_SPEED, pModel->GetParameterName( tParameter::pulseSpeed ) );
 			break;
 
 		default:
@@ -181,14 +172,14 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	}
 }
 
-float NNetWindow::ParameterDialog( tParameter const param )
+void NNetWindow::ParameterDlg( tParameter const param )
 {
 	NNetModel const * pModel    { m_pReadBuffer->GetModel( ) };
 	float     const   fOldValue { pModel->GetParameterValue( param ) };
 	wstring   const   header    { pModel->GetParameterName ( param ) }; 
 	wstring   const   unit      { pModel->GetParameterUnit ( param ) }; 
 	float     const   fNewValue { StdDialogBox::Show( GetWindowHandle(), fOldValue, header, unit ) };
-	return fNewValue;
+	m_pNNetWorkThreadInterface->PostSetParameter( param, fNewValue );
 }
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )

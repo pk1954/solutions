@@ -36,6 +36,7 @@ class TimeDisplay;
 class SlowMotionDisplay;
 class GraphicsInterface;
 class NNetModelStorage;
+class ParameterDialog;
 
 class NNetAppWindow : public AppWindowInterface
 {
@@ -68,9 +69,9 @@ private:
 	NNetController        * m_pNNetController;
 	NNetModel             * m_pModelDataWork;
 	NNetWindow            * m_pMainNNetWindow;
-	NNetEditorWindow      * m_pNNetEditorWindow;
 	TimeDisplay           * m_pTimeDisplay;
 	SlowMotionDisplay     * m_pSlowMotionDisplay;
 	CrsrWindow            * m_pCrsrWindow;
 	NNetModelStorage      * m_pNNetModelStorage;
+	ParameterDialog       * m_pParameterDlg;
 };

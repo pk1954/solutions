@@ -90,6 +90,5 @@ private:
 
 	NNetModel       * m_pNNetModel;
 	SlowMotionRatio * m_pSlowMotionRatio;
-	double            m_dutyCycle;
 	HiResTimer        m_hrTimer;
 };

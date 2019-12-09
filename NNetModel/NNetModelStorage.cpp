@@ -18,20 +18,20 @@ using std::wcout;
 using std::endl;
 using std::put_time;
 
-static unsigned int MAJOR_VERSION { 0 };
-static unsigned int MINOR_VERSION { 2 };
+static float const PROTOCOL_VERSION { 1.3f };
 
 ////////////////////////// Read /////////////////////////////////////////////
 
-class WrapVersion : public Script_Functor
+class WrapProtocol : public Script_Functor
 {
 public:
-	WrapVersion( NNetModelStorage * const pNNetModelStorage ) :
+	WrapProtocol( NNetModelStorage * const pNNetModelStorage ) :
 		m_pNNetModelStorage( pNNetModelStorage )
 	{ };
 
 	virtual void operator() ( Script & script ) const 
 	{
+		script.ScrReadString( L"version" );
 		double dVersion = script.ScrReadFloat();
 	}
 
@@ -167,7 +167,7 @@ NNetModelStorage::NNetModelStorage(  NNetModel * const pModel )
 {
 #define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( this ) )
 
-	DEF_NNET_FUNC( Version );
+	DEF_NNET_FUNC( Protocol );
 	DEF_NNET_FUNC( CreateShape );
 	DEF_NNET_FUNC( GlobalParameter );
 	DEF_NNET_FUNC( ShapeParameter );
@@ -181,7 +181,7 @@ NNetModelStorage::NNetModelStorage(  NNetModel * const pModel )
 	DEF_ULONG_CONST( tParameter::pulseRate        );
 	DEF_ULONG_CONST( tParameter::pulseSpeed       );
 	DEF_ULONG_CONST( tParameter::pulseWidth       );
-	DEF_ULONG_CONST( tParameter::dampingFactor    );
+	DEF_ULONG_CONST( tParameter::signalLoss       );
 	DEF_ULONG_CONST( tParameter::threshold        );
 	DEF_ULONG_CONST( tParameter::peakVoltage      );
 	DEF_ULONG_CONST( tParameter::refractoryPeriod );
@@ -213,7 +213,7 @@ void NNetModelStorage::Write( wostream & out )
 	GetUserName( infoBuf, &bufCharCount );
 	out << L"# User name: " << infoBuf << endl;
 
-	out << L"Version " << MAJOR_VERSION << L"." << MINOR_VERSION  << endl;
+	out << L"Protocol version " << PROTOCOL_VERSION << endl;
 
 	m_pModel->Apply2All<Shape>
 	( 
