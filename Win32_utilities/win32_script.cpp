@@ -6,36 +6,67 @@
 #include <iostream>
 #include <sstream> 
 #include <string> 
-#include <string>
+#include <vector>
+#include "pathcch.h"
 #include "SCRIPT.H"
 #include "win32_script.h"
 
+using std::vector;
 using std::wstring;
 using std::wostringstream;
 using std::endl;
 
+wstring GetPathOfExecutable( )
+{
+	int iBufSize { 256 };
+	vector<wchar_t> buffer;
+
+	do
+	{
+		iBufSize *= 2;
+		buffer.resize( iBufSize );
+	} while ( GetModuleFileName( nullptr, buffer.data(), iBufSize ) == iBufSize );
+
+	return wstring( buffer.data() );
+}
+
 wstring AskForFileName
 ( 
-	wstring       path, 
-	wstring const filter, 
-	wstring const description 
+	wstring         path, 
+	wstring   const filter, 
+	wstring   const description,
+	tFileMode const mode
 )
 {
 	static int const MAXPATH = 512;
 
-	wstring wBufferPath   { path + L"\\" + filter };
+	wstring wBufferPath   { path };
 	wstring wBufferFilter { description + wstring(L"\0", 1) + filter + wstring(L"\0\0", 2) };
+	PCWSTR  strExtension  { nullptr };
+
+	path = L"\0";
 	path.resize( MAXPATH );
+	wBufferPath += L'\0';
+
+	HRESULT res = PathCchFindExtension( wBufferPath.c_str(), wBufferPath.size(), & strExtension );
+	++strExtension;  // skip '.' befor extension
+	PathCchRemoveFileSpec( &wBufferPath[0], MAXPATH );
 
     OPENFILENAME ofn;                  // common dialog box structure    
 	ZeroMemory( &ofn, sizeof( ofn ) );
-    ofn.lStructSize  = sizeof( OPENFILENAME );
-    ofn.lpstrFile    = &path[0];
-    ofn.nMaxFile     = MAXPATH;
-    ofn.lpstrFilter  = wBufferFilter.c_str();
-    ofn.nFilterIndex = 1;
+    ofn.lStructSize     = sizeof( OPENFILENAME );
+	ofn.lpstrFile       = &path[0];
+	ofn.lpstrDefExt     = strExtension;
+	ofn.lpstrInitialDir = wBufferPath.c_str();
+    ofn.nMaxFile        = MAXPATH;
+    ofn.lpstrFilter     = wBufferFilter.c_str();
+    ofn.nFilterIndex    = 1;
 
-    if ( ! GetOpenFileName( &ofn ) )
+	bool bRes = (mode == tFileMode::read)
+		        ? GetOpenFileName( &ofn )
+		        : GetSaveFileName( &ofn );
+
+	if ( bRes == false )
 		path = L"";
 
 	wstring wstrRes( path.c_str() );

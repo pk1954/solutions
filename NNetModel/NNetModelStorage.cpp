@@ -323,17 +323,36 @@ void NNetModelStorage::WriteShape( wostream & out, Shape & shape )
 
 void NNetModelStorage::OpenModel( )
 {
-	m_wstrPathOfOpenModel = AskForFileName( L"F:\\SW-projects\\Evolution\\NNetSimu", L"*.nmod", L"Model files" );
+	m_wstrPathOfOpenModel = AskForFileName( GetPathOfExecutable( ), L"*.mod", L"Model files", tFileMode::read );
 	if ( m_wstrPathOfOpenModel != L"" )
 		Read( m_wstrPathOfOpenModel );
 }
 
+void NNetModelStorage::writeModel( )
+{
+	std::wofstream modelFile( m_wstrPathOfOpenModel );
+	Write( modelFile );
+	modelFile.close( );
+}
+
+void NNetModelStorage::SaveModelAs( )
+{
+	if ( m_wstrPathOfOpenModel == L"" )
+		m_wstrPathOfOpenModel = GetPathOfExecutable( );
+
+	m_wstrPathOfOpenModel = AskForFileName( m_wstrPathOfOpenModel, L"*.mod", L"Model files", tFileMode::write );
+
+	writeModel( );
+}
+
 void NNetModelStorage::SaveModel( )
 {
-	if ( m_wstrPathOfOpenModel != L"" )
+	if ( m_wstrPathOfOpenModel == L"" )
 	{
-		std::wofstream modelFile( m_wstrPathOfOpenModel );
-		Write( modelFile );
-		modelFile.close( );
+		SaveModelAs( );
+	}
+	else
+	{
+		writeModel( );
 	}
 }

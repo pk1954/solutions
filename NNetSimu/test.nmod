@@ -1,5 +1,5 @@
 # NNetModel
-# Created 10-12-2019 01-01-23
+# Created 10-12-2019 15-25-29
 # Computer name: DESKTOP-QSTRQ06
 # User name: peter
 
@@ -18,7 +18,7 @@ CreateShape 0 inputNeuron (400|200)
 CreateShape 1 outputNeuron (400|800)
 CreateShape 3 knot (447|514)
 CreateShape 5 knot (474|680)
-CreateShape 7 inputNeuron (701|194)
+CreateShape 7 inputNeuron (855|396)
 CreateShape 9 knot (518|742)
 CreateShape 11 outputNeuron (778|822)
 CreateShape 2 pipeline (9->1)

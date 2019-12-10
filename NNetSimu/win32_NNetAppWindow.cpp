@@ -145,9 +145,10 @@ void NNetAppWindow::Start( )
 	m_pCrsrWindow->Start( m_hwndApp, m_pNNetReadBuffer, m_pMainNNetWindow );
 	m_pParameterDlg->Start( m_hwndApp, m_pModelDataWork );
 
-	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, * m_pCrsrWindow,     TRUE, FALSE );
-	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW", IDM_MAIN_WINDOW, * m_pMainNNetWindow, TRUE, FALSE );
-
+	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",   IDM_CRSR_WINDOW,   * m_pCrsrWindow,     TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",   IDM_MAIN_WINDOW,   * m_pMainNNetWindow, TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDD_PARAMETER_DLG", IDD_PARAMETER_DLG, * m_pParameterDlg,   TRUE, FALSE );
+	
 	configureStatusBar( );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )

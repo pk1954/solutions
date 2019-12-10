@@ -28,17 +28,16 @@ public:
 
 	void OpenModel( );
 	void SaveModel( );
+	void SaveModelAs( );
 
 private:
 	NNetModel     * m_pModel;
 	wstring         m_wstrPathOfOpenModel;
 	vector<ShapeId> m_CompactIds;
 
-	long getCompactIdVal( ShapeId const id )
-	{
-		return m_CompactIds[ id.GetValue() ].GetValue();
-	}
+	long getCompactIdVal( ShapeId const id ) { return m_CompactIds[ id.GetValue() ].GetValue();	}
 
+	void writeModel( );
 	void WriteShape(  wostream &, Shape & );
 	void WriteMicroMeterPoint( wostream &, MicroMeterPoint const & );
 	void WritePipeline( wostream &, Shape const & );

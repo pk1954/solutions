@@ -84,7 +84,7 @@ void EvoController::scriptDialog( )
 	DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer);
 	assert( dwRes > 0 );
 	wstring const wstrPath( szBuffer );
-	wstring wstrFile = AskForFileName( wstrPath, L"*.in", L"Script files" );
+	wstring wstrFile = AskForFileName( wstrPath, L"*.in", L"Script files", tFileMode::read );
 	if ( ! wstrFile.empty( ) )
 	{
 		Stopwatch stopwatch;

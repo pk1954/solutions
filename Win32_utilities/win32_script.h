@@ -11,4 +11,11 @@
 
 using std::wstring;
 
-extern wstring AskForFileName( wstring, wstring const, wstring const );
+enum class tFileMode
+{
+	read,
+	write
+};
+
+extern wstring GetPathOfExecutable( );
+extern wstring AskForFileName( wstring, wstring const, wstring const, tFileMode const );

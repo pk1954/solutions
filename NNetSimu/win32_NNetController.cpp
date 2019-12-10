@@ -88,6 +88,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_SAVE_MODEL_AS:
+		m_pStorage->SaveModelAs( );
 		break;
 
 	case IDM_OPEN_MODEL:
