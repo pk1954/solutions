@@ -47,6 +47,8 @@ public:
 	virtual void Start( );
 	virtual void Stop( );
 
+	void OpenModel( );
+
 private:
 	NNetAppWindow             ( NNetAppWindow const & );  // noncopyable class 
 	NNetAppWindow & operator= ( NNetAppWindow const & );  // noncopyable class 

@@ -21,35 +21,17 @@
 using namespace std::chrono;
 using std::unordered_map;
 
-NNetModel::ModelInconsistencyException const NNetModel::ModelInconsistency;
-
 wchar_t const * const NNetModel::GetParameterName( tParameter const p ) const
 {
 	static unordered_map < tParameter, wchar_t const * const > mapParam =
 	{
-		{ tParameter::pulseRate,        L"Pulse rate"        },
-		{ tParameter::pulseSpeed,       L"Pulse speed"       },
-		{ tParameter::pulseWidth,       L"Pulse width"       },
-		{ tParameter::signalLoss,       L"Signal loss"       },
-		{ tParameter::threshold,        L"Threshold"         },
-		{ tParameter::peakVoltage,      L"Peak voltage"      },
-		{ tParameter::refractoryPeriod, L"Refractory period" }
-	};				  
-
-	return mapParam.at( p );
-}
-
-wchar_t const * const NNetModel::GetParameterLiteral( tParameter const p ) const
-{
-	static unordered_map < tParameter, wchar_t const * const > mapParam =
-	{
-		{ tParameter::pulseRate,        L"tParameter::pulseRate"        },
-		{ tParameter::pulseSpeed,       L"tParameter::pulseSpeed"       },
-		{ tParameter::pulseWidth,       L"tParameter::pulseWidth"       },
-		{ tParameter::signalLoss,       L"tParameter::signalLoss"       },
-		{ tParameter::threshold,        L"tParameter::threshold"        },
-		{ tParameter::peakVoltage,      L"tParameter::peakVoltage"      },
-		{ tParameter::refractoryPeriod, L"tParameter::refractoryPeriod" }
+		{ tParameter::pulseRate,        L"PulseRate"        },
+		{ tParameter::pulseSpeed,       L"PulseSpeed"       },
+		{ tParameter::pulseWidth,       L"PulseWidth"       },
+		{ tParameter::signalLoss,       L"SignalLoss"       },
+		{ tParameter::threshold,        L"Threshold"        },
+		{ tParameter::peakVoltage,      L"PeakVoltage"      },
+		{ tParameter::refractoryPeriod, L"RefractoryPeriod" }
 	};				  
 
 	return mapParam.at( p );
@@ -270,14 +252,25 @@ ShapeId const NNetModel::addShape( Shape * pShape )
 	return id;
 }
 
+void NNetModel::ConnectPipeline
+(
+	Pipeline *    pPipeline,
+	ShapeId const idPipeline,
+	ShapeId const idStart, 
+	ShapeId const idEnd 
+)
+{
+	pPipeline->SetStartKnot( idStart );
+	pPipeline->SetEndKnot  ( idEnd );
+	GetTypedShape<BaseKnot>( idStart )->AddOutgoing ( idPipeline );
+	GetTypedShape<BaseKnot>( idEnd   )->AddIncomming( idPipeline );
+}
+
 ShapeId NNetModel::NewPipeline( ShapeId const idStart, ShapeId const idEnd )
 {
 	Pipeline * pPipelineNew { new Pipeline( this ) };
 	ShapeId const id { addShape( pPipelineNew ) };
-	pPipelineNew->SetStartKnot( idStart );
-	pPipelineNew->SetEndKnot  ( idEnd );
-	GetTypedShape<BaseKnot>( idStart )->AddOutgoing ( id );
-	GetTypedShape<BaseKnot>( idEnd   )->AddIncomming( id );
+	ConnectPipeline( pPipelineNew, id, idStart, idEnd );
 	return id;
 }
 
@@ -286,8 +279,8 @@ void NNetModel::insertNewBaseKnot( BaseKnot * const pNewBaseKnot )
 	Pipeline * const pPipelineHighlighted { GetTypedShape<Pipeline>( m_shapeHighlighted )};
 	if ( pPipelineHighlighted )
 	{
-		ShapeId    const idStartKnot          { pPipelineHighlighted->GetStartKnot() };
-		ShapeId    const idNewShape           { addShape( pNewBaseKnot ) };
+		ShapeId const idStartKnot{ pPipelineHighlighted->GetStartKnot() };
+		ShapeId const idNewShape { addShape( pNewBaseKnot ) };
 		NewPipeline( idStartKnot, idNewShape );
 		GetTypedShape<BaseKnot>( idStartKnot )->RemoveOutgoing( m_shapeHighlighted );
 		GetTypedShape<BaseKnot>( idNewShape  )->AddOutgoing   ( m_shapeHighlighted );
@@ -389,9 +382,15 @@ void NNetModel::checkConsistency( )
 	Apply2All<Shape>( [&]( Shape & shape ) { CheckConsistency( & shape ); } );
 }
 
+void NNetModel::Apply2GlobalParameters( std::function<void(tParameter const &)> const & func ) const
+{
+	for ( int i = 0; i <= static_cast<int>(tParameter::tParameterLastGlobal); ++i )
+		func( static_cast<tParameter>( i ) );
+}
+
 void NNetModel::Apply2AllParameters( std::function<void(tParameter const &)> const & func ) const
 {
-	for ( int i = 0; static_cast<tParameter>(i) <= tParameter::tParameterLast; ++i )
+	for ( int i = 0; i <= static_cast<int>(tParameter::tParameterLast); ++i )
 		func( static_cast<tParameter>( i ) );
 }
 

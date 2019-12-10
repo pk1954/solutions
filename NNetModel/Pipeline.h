@@ -30,13 +30,6 @@ public:
 	void SetStartKnot( ShapeId const );
 	void SetEndKnot  ( ShapeId const );
 
-	virtual void FixShapeIds( ShapeId const idLimit )
-	{
-		Shape::FixShapeIds( idLimit );
-		::FixShapeId( m_idKnotStart, idLimit );
-		::FixShapeId( m_idKnotEnd,   idLimit );
-	}
-
 	void Recalc( );
 
 	ShapeId    GetStartKnot   ( ) const { return m_idKnotStart;  }

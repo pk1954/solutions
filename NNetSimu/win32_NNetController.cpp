@@ -9,14 +9,14 @@
 #include "Windows.h"
 #include "Resource.h"
 #include "BoolOp.h"
-#include "LogarithmicTrackBar.h"
 #include "SlowMotionRatio.h"
+#include "NNetModelStorage.h"
 #include "win32_util.h"
 #include "win32_simulationControl.h"
 #include "win32_zoomControl.h"
 #include "win32_aboutBox.h"
-#include "win32_NNetAppWindow.h"
 #include "win32_NNetWindow.h"
+#include "win32_winManager.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetController.h"
 
@@ -24,14 +24,14 @@ using std::unordered_map;
 
 NNetController::NNetController
 (
-	NNetAppWindow           * const pAppWindow,
+	NNetModelStorage        * const pStorage,
 	NNetWindow              * const pNNetWindow,
 	WinManager              * const pWinManager,
 	StatusBar               * const pStatusBar,
 	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
 	SlowMotionRatio         * const pSlowMotionRatio
 ) 
-  :	m_pAppWindow              ( nullptr ),
+  :	m_pStorage                ( pStorage ),
 	m_pNNetWindow             ( pNNetWindow ),
 	m_pWinManager             ( pWinManager ),
 	m_pStatusBar              ( pStatusBar ),
@@ -44,7 +44,7 @@ NNetController::NNetController
 NNetController::~NNetController( )
 {
 	m_pNNetWorkThreadInterface = nullptr;
-	m_pAppWindow               = nullptr;
+	m_pStorage                 = nullptr;
 	m_pWinManager              = nullptr;
 	m_pSlowMotionRatio         = nullptr;
     m_pStatusBar               = nullptr;
@@ -84,12 +84,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	switch ( wmId )
 	{
 	case IDM_SAVE_MODEL:
+		m_pStorage->SaveModel( );
 		break;
 
 	case IDM_SAVE_MODEL_AS:
 		break;
 
 	case IDM_OPEN_MODEL:
+		m_pStorage->OpenModel( );
 		break;
 
 	case IDM_NEW_MODEL:

@@ -24,7 +24,7 @@ void Shape::CheckInputBuffer( ) const
 	assert( m_mVinputBuffer <= mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) * 2 ) );
 }
 
-wchar_t const * const Shape::GetName( ) const
+wchar_t const * GetName( tShapeType const type )
 {
 	static unordered_map < tShapeType, wchar_t const * const > mapShape =
 	{
@@ -36,7 +36,7 @@ wchar_t const * const Shape::GetName( ) const
 		{ tShapeType::knot,			L"knot"         }
 	};				  
 
-	return mapShape.at( m_type );
+	return mapShape.at( type );
 }
 
 tShapeType const Shape::GetShapeType( wchar_t const * const name )
@@ -52,4 +52,30 @@ tShapeType const Shape::GetShapeType( wchar_t const * const name )
 	};				  
 
 	return mapShape.at( name );
+}
+
+bool IsPipelineType( tShapeType const type )
+{
+	return type == tShapeType::pipeline;
+}
+
+bool IsKnotType( tShapeType const type )
+{
+	return type == tShapeType::knot;
+}
+
+bool IsBaseKnotType( tShapeType const type )
+{
+	return 
+		(type == tShapeType::knot)        || 
+		(type == tShapeType::neuron)      || 
+		(type == tShapeType::inputNeuron) ||
+		(type == tShapeType::outputNeuron);
+}
+
+bool HasAxon( tShapeType const type )
+{
+	return 
+		(type == tShapeType::neuron)      || 
+		(type == tShapeType::inputNeuron);
 }

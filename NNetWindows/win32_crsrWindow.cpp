@@ -104,7 +104,6 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 		case tShapeType::pipeline:
 		{
 			Pipeline const * pPipeline = static_cast<Pipeline const *>( pShape );
-			wostringstream wBuffer;
 			textBuf.nextLine( L"Pipeline" );
 			textBuf.nextLine( L"Segments: " );
 			textBuf.printNumber( pPipeline->GetNrOfSegments( ) );

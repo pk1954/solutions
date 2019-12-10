@@ -278,14 +278,7 @@ void NNetWindow::OnPaint( )
 		HDC const hDC = BeginPaint( &ps );
 		if ( m_pGraphics->StartFrame( GetWindowHandle(), hDC ) )
 		{
-			try
-			{
-				doPaint( );
-			}
-			catch ( NNetModel::ModelInconsistencyException )
-			{
-				int x = 5;
-			}
+			doPaint( );
 			m_pGraphics->EndFrame( GetWindowHandle() );
 		}
 		(void)EndPaint( &ps );

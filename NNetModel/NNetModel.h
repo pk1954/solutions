@@ -21,14 +21,15 @@ class EventInterface;
 
 enum class tParameter
 {
-	pulseRate,
 	pulseSpeed,
 	pulseWidth,
 	signalLoss,
 	threshold,
 	peakVoltage,
 	refractoryPeriod,
-	tParameterLast = refractoryPeriod
+	tParameterLastGlobal = refractoryPeriod,
+	pulseRate,
+	tParameterLast = pulseRate
 };
 
 class NNetModel : public ModelInterface
@@ -38,36 +39,26 @@ public:
 
 	virtual ~NNetModel( );
 
-	class ModelInconsistencyException : public std::exception {};
-	static ModelInconsistencyException const ModelInconsistency;
-
 	// readOnly functions
 
 	void CheckConsistency( Shape const * ) const;
 
-	ShapeId GetId( Shape const * pShape ) const
-	{
-		return pShape ? pShape->GetId( ) : NO_SHAPE;
-	}
-
-	bool IsValidShapeId( ShapeId id ) const { return id.GetValue() < m_Shapes.size(); }
+	ShapeId GetId         ( Shape const * pShape ) const { return pShape ? pShape->GetId( ) : NO_SHAPE; }
+	bool    IsValidShapeId( ShapeId const id )     const { return id.GetValue() < m_Shapes.size(); }
+	long    GetNrOfShapes ( )                      const { return CastToLong( m_Shapes.size() ); }
 
 	Shape * GetShape( ShapeId const id )
 	{
-		if ( ! IsDefined( id ) )
-			return nullptr;
-		if ( ! IsValidShapeId( id ) )
-			throw ModelInconsistency;
-		return m_Shapes[ id.GetValue() ];
+		return ( IsDefined( id ) && IsValidShapeId( id ) )
+			   ? m_Shapes[ id.GetValue() ]
+			   : nullptr;
 	}
 
 	Shape const * GetConstShape( ShapeId const id ) const
 	{
-		if ( ! IsDefined( id ) )
-			return nullptr;
-		if ( ! IsValidShapeId( id ) )
-			throw ModelInconsistency;
-		return m_Shapes[ id.GetValue() ];
+		return ( IsDefined( id ) && IsValidShapeId( id ) )
+			   ? m_Shapes[ id.GetValue() ]
+			   : nullptr;
 	}
 
 	template <typename T>
@@ -117,7 +108,6 @@ public:
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const, std::function<bool(Shape const &)> const & ) const;
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const ) const;
 
-	wchar_t const * const GetParameterLiteral( tParameter const ) const;
 	wchar_t const * const GetParameterName   ( tParameter const ) const;
 	wchar_t const * const GetParameterUnit   ( tParameter const ) const;
 
@@ -152,7 +142,11 @@ public:
 
 	template <typename T> ShapeId NewShape( MicroMeterPoint const & pos ) { return addShape( new T( this, pos ) ); }
 
+	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
+
 	ShapeId NewPipeline( ShapeId const, ShapeId const );
+
+	void ConnectPipeline( Pipeline *, ShapeId const, ShapeId const, ShapeId const );
 
 	void SplitPipeline  ( MicroMeterPoint const & );
 	void InsertNeuron   ( MicroMeterPoint const & );
@@ -186,7 +180,8 @@ public:
 		}
 	}
 
-	void Apply2AllParameters( std::function<void(tParameter const &)> const & ) const;
+	void Apply2GlobalParameters( std::function<void(tParameter const &)> const & ) const;
+	void Apply2AllParameters   ( std::function<void(tParameter const &)> const & ) const;
 
 	void RecalcPipelines( );
 
@@ -196,23 +191,12 @@ public:
 
 	void  const SetParameter( ShapeId const, tParameter const,	float const );
 
-	void IncNrOfInputNeurons () 
-	{ 
-		++m_nrOfInputNeurons; 
-	}
-	void IncNrOfOutputNeurons() 
-	{ 
-		++m_nrOfOutputNeurons; 
-	}
+	void IncNrOfInputNeurons () { ++m_nrOfInputNeurons;  }
+	void IncNrOfOutputNeurons() { ++m_nrOfOutputNeurons; }
+	void DecNrOfInputNeurons () { --m_nrOfInputNeurons;  }
+	void DecNrOfOutputNeurons() { --m_nrOfOutputNeurons; }
 
-	void DecNrOfInputNeurons () 
-	{ 
-		--m_nrOfInputNeurons; 
-	}
-	void DecNrOfOutputNeurons() 
-	{ 
-		--m_nrOfOutputNeurons; 
-	}
+	void SetNrOfShapes ( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
 private:
 			  

@@ -106,12 +106,6 @@ public:
 		Apply2AllOutgoingPipelinesConst( [&]( ShapeId idPipeline ) { func( idPipeline ); } );
 	}
 
-	virtual void FixShapeIds( ShapeId const idLimit )
-	{
-		Shape::FixShapeIds( idLimit );
-		Apply2AllConnectedPipelines( [&]( ShapeId & idPipeline ) { ::FixShapeId( idPipeline, idLimit ); } );
-	}
-
 	virtual void MoveTo( MicroMeterPoint const & );
 
 	virtual void DrawExterior( PixelCoordsFp & ) const = 0;

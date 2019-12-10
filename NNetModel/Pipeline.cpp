@@ -73,8 +73,11 @@ MicroMeter Pipeline::GetLength( ) const
 void Pipeline::Prepare( )
 {
 	BaseKnot const * const m_pKnotStart { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotStart ) };
-	m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
-	CheckInputBuffer( );
+	if ( m_pKnotStart )
+	{
+		m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
+		CheckInputBuffer( );
+	}
 }
 
 void Pipeline::Step( )
@@ -113,17 +116,17 @@ bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const
 
 MicroMeterPoint Pipeline::GetVector( ) const
 {
-	MicroMeterPoint const umStart { GetStartPoint( ) };
-	MicroMeterPoint const umEnd   { GetEndPoint  ( ) };
-	MicroMeterPoint const umvector{ umEnd - umStart };
+	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
+	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
+	MicroMeterPoint const umvector{ umEndPoint - umStartPoint };
 	assert( ! IsCloseToZero( umvector ) );
 	return umvector;
 }
 
 void Pipeline::DrawExterior( PixelCoordsFp & coord ) const
 {
-	MicroMeterPoint const umStartPoint{ m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotStart )->GetPosition() };
-	MicroMeterPoint const umEndPoint  { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotEnd   )->GetPosition() };
+	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
+	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
 	if ( umStartPoint != umEndPoint )
 	{
 		fPIXEL      const fPixWidth  { coord.convert2fPixel( m_width ) };
@@ -139,11 +142,9 @@ void Pipeline::DrawExterior( PixelCoordsFp & coord ) const
 
 void Pipeline::DrawInterior( PixelCoordsFp & coord ) const
 {
-	BaseKnot const * const pStartKnot  { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotStart ) };
-	BaseKnot const * const pEndKnot    { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotEnd   ) };
-	MicroMeterPoint        umStartPoint{ pStartKnot->GetPosition() };
-	MicroMeterPoint        umEndPoint  { pEndKnot  ->GetPosition() };
-	MicroMeterPoint        umVector    { umEndPoint - umStartPoint };
+	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
+	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
+	MicroMeterPoint umVector           { umEndPoint - umStartPoint };
 	if ( ! IsCloseToZero( umVector ) )
 	{
 		MicroMeterPoint const segmentVector = umVector / CastToFloat(m_potential.size());

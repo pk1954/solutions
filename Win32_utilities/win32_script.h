@@ -9,4 +9,6 @@
 #include <string>
 #include "symtab.h"
 
-extern std::wstring AskForScriptFileName( std::wstring );
+using std::wstring;
+
+extern wstring AskForFileName( wstring, wstring const, wstring const );

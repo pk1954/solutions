@@ -55,24 +55,24 @@ void InputNeuron::drawInputNeuron
 	float         const   fReductionFactor
 ) const
 {
-	if ( m_outgoing.empty() )
-		throw NNetModel::ModelInconsistency;
+	if ( ! m_outgoing.empty() )
+	{
+		ShapeId          const idAxon     { * m_outgoing.begin() };
+		Pipeline const * const pAxon      { m_pNNetModel->GetConstTypedShape<Pipeline>( idAxon ) };
+		MicroMeterPoint  const axonVector { pAxon->GetVector( ) };  
+		MicroMeter       const umHypot    { Hypot( axonVector ) };
+		MicroMeterPoint  const umExtVector{ axonVector * (GetExtension() / umHypot) };
+		MicroMeterPoint  const umCenter   { GetPosition() };
+		MicroMeterPoint  const umStartPnt { umCenter + umExtVector * fReductionFactor };
+		MicroMeterPoint  const umEndPnt   { umCenter - umExtVector };
+		fPixelPoint      const fStartPoint{ coord.convert2fPixelPos( umStartPnt ) };
+		fPixelPoint      const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
+		fPIXEL           const fPixWidth  { coord.convert2fPixel( GetExtension() * fReductionFactor ) };
 
-	ShapeId          const idAxon     { * m_outgoing.begin() };
-	Pipeline const * const pAxon      { m_pNNetModel->GetConstTypedShape<Pipeline>( idAxon ) };
-	MicroMeterPoint  const axonVector { pAxon->GetVector( ) };  
-	MicroMeter       const umHypot    { Hypot( axonVector ) };
-	MicroMeterPoint  const umExtVector{ axonVector * (GetExtension() / umHypot) };
-	MicroMeterPoint  const umCenter   { GetPosition() };
-	MicroMeterPoint  const umStartPnt { umCenter + umExtVector * fReductionFactor };
-	MicroMeterPoint  const umEndPnt   { umCenter - umExtVector };
-	fPixelPoint      const fStartPoint{ coord.convert2fPixelPos( umStartPnt ) };
-	fPixelPoint      const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
-	fPIXEL           const fPixWidth  { coord.convert2fPixel( GetExtension() * fReductionFactor ) };
-
-	m_pGraphics->StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
-	m_pGraphics->AddPipelinePoint( fEndPoint, color );
-	m_pGraphics->RenderPipeline( );
+		m_pGraphics->StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
+		m_pGraphics->AddPipelinePoint( fEndPoint, color );
+		m_pGraphics->RenderPipeline( );
+	}
 }
 
 void InputNeuron::DrawExterior( PixelCoordsFp & coord ) const

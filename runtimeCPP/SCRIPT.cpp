@@ -447,7 +447,7 @@ bool Script::ScrProcess
 				if ( m_pWrapHook != nullptr )
                     (* m_pWrapHook)( * this );                // call hook function 
             
-                Symbol  const & symbol = SymbolTable::GetSymbolFromName( wstrName );       // find entry in symbol table 
+                Symbol const & symbol = SymbolTable::GetSymbolFromName( wstrName );       // find entry in symbol table 
 
                 if ( symbol.GetSymbolType( ) != tSTYPE::Function )
                    ScriptErrorHandler::typeError( );          // wrong symbol type 

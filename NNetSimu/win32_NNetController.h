@@ -6,7 +6,7 @@
 
 class NNetWorkThreadInterface;
 class SlowMotionRatio;
-class NNetAppWindow;
+class NNetModelStorage;
 class NNetAppMenu;
 class NNetWindow;
 class WinManager;
@@ -17,7 +17,7 @@ class NNetController
 public:
 	NNetController
 	( 
-		NNetAppWindow           * const,
+		NNetModelStorage        * const,
 		NNetWindow              * const,
 		WinManager              * const,
 		StatusBar               * const,
@@ -32,7 +32,7 @@ public:
 
 private:
 
-	NNetAppWindow           * m_pAppWindow;
+	NNetModelStorage        * m_pStorage;
 	NNetWindow              * m_pNNetWindow;
 	WinManager              * m_pWinManager;
 	StatusBar               * m_pStatusBar;

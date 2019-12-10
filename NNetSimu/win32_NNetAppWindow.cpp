@@ -27,7 +27,6 @@
 // infrastructure
 
 #include "util.h"
-#include "LogarithmicTrackBar.h"
 #include "ObserverInterface.h"
 
 // scripting and tracing
@@ -76,23 +75,12 @@ NNetAppWindow::NNetAppWindow( ) :
 	m_pCrsrWindow     = new CrsrWindow( );
 	m_pParameterDlg   = new ParameterDialog( & m_NNetWorkThreadInterface );
 
-	m_pNNetController = new NNetController
-	( 
-		this,
-		  m_pMainNNetWindow,
-		& m_WinManager,
-		& m_StatusBar, 
-		& m_NNetWorkThreadInterface,
-		& m_SlowMotionRatio
-	);
-
 	m_pMainNNetWindow->SetRefreshRate( 100ms );
 	m_pCrsrWindow    ->SetRefreshRate( 100ms );
 };
 
 NNetAppWindow::~NNetAppWindow( )
 {
-	delete m_pNNetController;
 	delete m_pMainNNetWindow;
 	delete m_pAppMenu;
 	delete m_pCrsrWindow;
@@ -122,6 +110,16 @@ void NNetAppWindow::Start( )
 
 	m_pModelDataWork    = new NNetModel( );
 	m_pNNetModelStorage = new NNetModelStorage( m_pModelDataWork );
+
+	m_pNNetController = new NNetController
+	( 
+		m_pNNetModelStorage,
+		m_pMainNNetWindow,
+		& m_WinManager,
+		& m_StatusBar, 
+		& m_NNetWorkThreadInterface,
+		& m_SlowMotionRatio
+	);
 
 	m_pNNetReadBuffer->Initialize( m_pModelDataWork, m_pModelDataWork );
 
@@ -165,7 +163,6 @@ void NNetAppWindow::Start( )
 	PostCommand2Application( IDM_RUN, true );
 
 	m_pNNetModelStorage->Write( std::wcout );
-	m_pNNetModelStorage->Read( L"F:\\SW-projects\\Evolution\\NNetSimu\\test.nmod" );
 }
 
 void NNetAppWindow::Stop()
@@ -182,6 +179,7 @@ void NNetAppWindow::Stop()
 	delete m_pModelDataWork;
 	delete m_pTimeDisplay;
 	delete m_pSlowMotionDisplay;
+	delete m_pNNetController;
 
 	m_WinManager.RemoveAll( );
 }
@@ -221,3 +219,4 @@ void NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam 
 	if ( m_pNNetController->ProcessModelCommand( wmId, lParam ) )
 		ProcessFrameworkCommand( wmId, lParam );                   // Some commands are handled by the framework controller
 }
+

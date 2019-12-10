@@ -11,7 +11,9 @@
 #include "SCRIPT.H"
 #include "symtab.h"
 #include "errhndl.h"
+#include "MoreTypes.h"
 #include "NNetModel.h"
+#include "win32_script.h"
 #include "NNetModelStorage.h"
 
 using std::wcout;
@@ -25,8 +27,8 @@ static float const PROTOCOL_VERSION { 1.3f };
 class WrapProtocol : public Script_Functor
 {
 public:
-	WrapProtocol( NNetModelStorage * const pNNetModelStorage ) :
-		m_pNNetModelStorage( pNNetModelStorage )
+	WrapProtocol( NNetModel * const pNNetModel ) :
+		m_pModel( pNNetModel )
 	{ };
 
 	virtual void operator() ( Script & script ) const 
@@ -36,97 +38,114 @@ public:
 	}
 
 private:
-	NNetModelStorage * m_pNNetModelStorage;
+	NNetModel * m_pModel;
 };
 
 class WrapCreateShape : public Script_Functor
 {
 public:
-	WrapCreateShape( NNetModelStorage * const pNNetModelStorage ) :
-		m_pNNetModelStorage( pNNetModelStorage )
+	WrapCreateShape( NNetModel * const pNNetModel ) :
+		m_pModel( pNNetModel )
 	{ };
 
 	virtual void operator() ( Script & script ) const
-	{
-		ShapeId           idModel;
-		NNetModel * const pModel    { m_pNNetModelStorage->GetModel() };
-		tShapeType  const shapeType { static_cast<tShapeType>(script.ScrReadInt( )) };
+	{   
+		ShapeId     const idFromScript{ script.ScrReadLong() };
+		tShapeType  const shapeType   { static_cast<tShapeType>(script.ScrReadInt( )) };
+		Shape     *       pShape      { nullptr };
+
 		script.ScrReadSpecial( L'(' );
-		switch ( shapeType )
-		{
-		case tShapeType::inputNeuron:
-			idModel = pModel->NewShape<InputNeuron>( readPoint( script ) );
-			break;
-
-		case tShapeType::outputNeuron:
-			idModel = pModel->NewShape<OutputNeuron>( readPoint( script ) );
-			break;
-
-		case tShapeType::neuron:
-			idModel = pModel->NewShape<Neuron>( readPoint( script ) );
-			break;
-
-		case tShapeType::knot:
-			idModel = pModel->NewShape<Knot>( readPoint( script ) );
-			break;
-
-		case tShapeType::pipeline:
+		if ( shapeType == tShapeType::pipeline )
 		{
 			ShapeId const idStart { script.ScrReadLong() };
 			script.ScrReadSpecial( L'-' );
+			script.ScrReadSpecial( L'>' );
 			ShapeId const idEnd { script.ScrReadLong() };
-			idModel = pModel->NewPipeline( idStart, idEnd );
+			Pipeline * pPipeline = new Pipeline( m_pModel );
+			m_pModel->ConnectPipeline( pPipeline, idFromScript, idStart, idEnd );
+			pShape = pPipeline;
 		}
-		break;
+		else 
+		{
+			MicroMeter      const xCoord { CastToFloat( script.ScrReadFloat() ) };
+			script.ScrReadSpecial( L'|' );
+			MicroMeter      const yCoord { CastToFloat( script.ScrReadFloat() ) };
+			MicroMeterPoint const umPosition( xCoord, yCoord );
+			switch ( shapeType )
+			{
+			case tShapeType::inputNeuron:
+				pShape = new InputNeuron( m_pModel, umPosition );
+				break;
 
-		default:
-			assert( false );
-			break;
+			case tShapeType::outputNeuron:
+				pShape = new OutputNeuron( m_pModel, umPosition );
+				break;
+
+			case tShapeType::neuron:
+				pShape = new Neuron( m_pModel, umPosition );
+				break;
+
+			case tShapeType::knot:
+				pShape = new Knot( m_pModel, umPosition );
+				break;
+
+			default:
+				assert( false );
+				break;
+			}
 		}
 		script.ScrReadSpecial( L')' );
-		script.ScrReadString( L"id" );
-		script.ScrReadSpecial( L'=' );
-		ShapeId idFromScript { script.ScrReadLong() };
-		assert( idFromScript == idModel );
+
+		m_pModel->SetShape( pShape, idFromScript );
+		pShape->SetId( idFromScript );
 	}
 
 private:
-	MicroMeterPoint const readPoint( Script & script ) const
-	{
-		MicroMeter const xCoord { CastToFloat( script.ScrReadFloat() ) };
-		script.ScrReadSpecial( L'|' );
-		MicroMeter const yCoord { CastToFloat( script.ScrReadFloat() ) };
-		return MicroMeterPoint( xCoord, yCoord );
-	}
 
-	NNetModelStorage * m_pNNetModelStorage;
+	NNetModel * m_pModel;
 };
 
 class WrapGlobalParameter : public Script_Functor
 {
 public:
-	WrapGlobalParameter( NNetModelStorage * const pNNetModelStorage ) :
-		m_pNNetModelStorage( pNNetModelStorage )
+	WrapGlobalParameter( NNetModel * const pNNetModel ) :
+		m_pModel( pNNetModel )
 	{ };
 
 	virtual void operator() ( Script & script ) const 
 	{
-		NNetModel * const pModel { m_pNNetModelStorage->GetModel() };
-		tParameter  const param( static_cast< tParameter >( script.ScrReadUint() ) );
+		tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
 		script.ScrReadSpecial( L'=' );
 		float const fValue { CastToFloat( script.ScrReadFloat() ) };
-		pModel->SetParameter( pModel->GetHighlightedShapeId( ), param, fValue );
+		m_pModel->SetParameter( m_pModel->GetHighlightedShapeId( ), param, fValue );
 	}
 
 private:
-	NNetModelStorage * m_pNNetModelStorage;
+	NNetModel * m_pModel;
+};
+
+class WrapNrOfShapes : public Script_Functor
+{
+public:
+	WrapNrOfShapes( NNetModel * const pNNetModel ) :
+		m_pModel( pNNetModel )
+	{ };
+
+	virtual void operator() ( Script & script ) const 
+	{
+		script.ScrReadSpecial( L'=' );
+		m_pModel->SetNrOfShapes( script.ScrReadLong() );
+	}
+
+private:
+	NNetModel * m_pModel;
 };
 
 class WrapShapeParameter : public Script_Functor
 {
 public:
-	WrapShapeParameter( NNetModelStorage * const pNNetModelStorage ) :
-		m_pNNetModelStorage( pNNetModelStorage )
+	WrapShapeParameter( NNetModel * const pNNetModel ) :
+		m_pModel( pNNetModel )
 	{ };
 
 	virtual void operator() ( Script & script ) const 
@@ -136,11 +155,11 @@ public:
 		tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
 		script.ScrReadSpecial( L'=' );
 		float const fValue { CastToFloat( script.ScrReadFloat() ) };
-		m_pNNetModelStorage->GetModel()->SetParameter( id, param, fValue );
+		m_pModel->SetParameter( id, param, fValue );
 	}
 
 private:
-	NNetModelStorage * m_pNNetModelStorage;
+	NNetModel * m_pModel;
 };
 
 bool NNetModelStorage::Read( wstring const & wstrPath )
@@ -163,28 +182,32 @@ bool NNetModelStorage::Read( wstring const & wstrPath )
 ////////////////////////// constructor /////////////////////////////////////////////
 
 NNetModelStorage::NNetModelStorage(  NNetModel * const pModel )
-	: m_pModel( pModel )
+	: m_pModel( pModel ),
+	  m_wstrPathOfOpenModel( L"" )
 {
-#define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( this ) )
-
+#define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( m_pModel ) )
 	DEF_NNET_FUNC( Protocol );
-	DEF_NNET_FUNC( CreateShape );
 	DEF_NNET_FUNC( GlobalParameter );
 	DEF_NNET_FUNC( ShapeParameter );
+	DEF_NNET_FUNC( NrOfShapes );
+	DEF_NNET_FUNC( CreateShape );
+#undef DEF_NET_FUNC
 
-	DEF_ULONG_CONST( tShapeType::inputNeuron  );
-	DEF_ULONG_CONST( tShapeType::outputNeuron );
-	DEF_ULONG_CONST( tShapeType::neuron       );
-	DEF_ULONG_CONST( tShapeType::pipeline     );
-	DEF_ULONG_CONST( tShapeType::knot         );
+	Apply2AllShapeTypes
+	( 
+		[&]( tShapeType const & type ) 
+		{
+			SymbolTable::ScrDefConst( ::GetName( type ), static_cast<unsigned long>(type) );
+		}
+	);
 
-	DEF_ULONG_CONST( tParameter::pulseRate        );
-	DEF_ULONG_CONST( tParameter::pulseSpeed       );
-	DEF_ULONG_CONST( tParameter::pulseWidth       );
-	DEF_ULONG_CONST( tParameter::signalLoss       );
-	DEF_ULONG_CONST( tParameter::threshold        );
-	DEF_ULONG_CONST( tParameter::peakVoltage      );
-	DEF_ULONG_CONST( tParameter::refractoryPeriod );
+	m_pModel->Apply2AllParameters
+	( 
+		[&]( tParameter const & param ) 
+		{
+			SymbolTable::ScrDefConst( pModel->GetParameterName( param ), static_cast<unsigned long>( param ) );
+		}
+	);
 
 #undef DEF_NNET_FUNC
 }
@@ -212,34 +235,45 @@ void NNetModelStorage::Write( wostream & out )
 	// Get and display the user name.
 	GetUserName( infoBuf, &bufCharCount );
 	out << L"# User name: " << infoBuf << endl;
+	out << endl;
 
 	out << L"Protocol version " << PROTOCOL_VERSION << endl;
+	out << endl;
 
-	m_pModel->Apply2All<Shape>
-	( 
-		[&]( Shape & shape ) 
-		{ 
-			WriteShape( out, shape ); 
-		} 
-	);
-
-	m_pModel->Apply2AllParameters
+	m_pModel->Apply2GlobalParameters
 	( 
 		[&]( tParameter const & param ) 
 		{
-			if ( param != tParameter::pulseRate )
-				out << L"GlobalParameter " << m_pModel->GetParameterLiteral( param ) << L" = "
-				<< m_pModel->GetParameterValue( param, nullptr ) 
-			    << endl; 
+			out << L"GlobalParameter " << m_pModel->GetParameterName( param ) << L" = "
+			<< m_pModel->GetParameterValue( param, nullptr ) 
+			<< endl; 
 		}
 	);
+
+	m_CompactIds.resize( m_pModel->GetNrOfShapes() );
+	ShapeId idCompact( 0 );
+	for ( int i = 0; i < m_CompactIds.size( ); ++i )
+	{
+		m_CompactIds[ i ] = m_pModel->GetConstShape( ShapeId( i ) )
+			              ? idCompact++
+			              : NO_SHAPE;
+	}
+
+	out << endl;
+	out << L"NrOfShapes = " << m_CompactIds.size() << endl;
+	out << endl;
+
+	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); } );
+	m_pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { WriteShape( out, shape ); } );
+
+	out << endl;
 
 	m_pModel->Apply2All<InputNeuron>
 	(
 		[&]( InputNeuron & inpNeuron )
 		{ 
-			out << L"ShapeParameter InputNeuron " << inpNeuron.GetId().GetValue() << L" "
-				<< m_pModel->GetParameterLiteral( tParameter::pulseRate ) 
+			out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
+				<< m_pModel->GetParameterName( tParameter::pulseRate ) 
 				<< L" = " << m_pModel->GetParameterValue( tParameter::pulseRate, & inpNeuron )
      			<< endl; 
 		}
@@ -249,19 +283,20 @@ void NNetModelStorage::Write( wostream & out )
 void NNetModelStorage::WritePipeline( wostream & out, Shape const & shape )
 {
 	Pipeline const & pipe { static_cast<Pipeline const &>( shape ) };
-	out << L"(" << pipe.GetStartKnot().GetValue() << L"-" << pipe.GetEndKnot().GetValue() << L")";
+	out << getCompactIdVal( pipe.GetStartKnot() ) << L"->" << getCompactIdVal( pipe.GetEndKnot() ) ;
 }
 
 void NNetModelStorage::WriteMicroMeterPoint( wostream & out, MicroMeterPoint const & pnt )
 {
-	out << L"(" << pnt.GetXvalue() << L"|" << pnt.GetYvalue() << L")";
+	out << pnt.GetXvalue() << L"|" << pnt.GetYvalue();
 }
 
 void NNetModelStorage::WriteShape( wostream & out, Shape & shape )
 {
 	if ( shape.IsDefined() )
 	{
-		out << L"CreateShape tShapeType::" << shape.GetName() << L" ";;
+		out << L"CreateShape " << getCompactIdVal( shape.GetId() ) << L" " << shape.GetName();
+		out << L" (";
 		switch ( shape.GetShapeType( ) )
 		{
 			case tShapeType::inputNeuron:
@@ -279,7 +314,26 @@ void NNetModelStorage::WriteShape( wostream & out, Shape & shape )
 				assert( false );
 				break;
 		}
-		out << L" id = " << shape.GetId().GetValue();
+		out << L")";
 		out << endl;
+	}
+}
+
+/////////////////////////////////////////////
+
+void NNetModelStorage::OpenModel( )
+{
+	m_wstrPathOfOpenModel = AskForFileName( L"F:\\SW-projects\\Evolution\\NNetSimu", L"*.nmod", L"Model files" );
+	if ( m_wstrPathOfOpenModel != L"" )
+		Read( m_wstrPathOfOpenModel );
+}
+
+void NNetModelStorage::SaveModel( )
+{
+	if ( m_wstrPathOfOpenModel != L"" )
+	{
+		std::wofstream modelFile( m_wstrPathOfOpenModel );
+		Write( modelFile );
+		modelFile.close( );
 	}
 }

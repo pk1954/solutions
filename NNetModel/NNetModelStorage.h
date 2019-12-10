@@ -4,10 +4,14 @@
 
 #pragma once
 
+#include <vector>
 #include <fstream>
+#include "Shape.h"
+#include "MoreTypes.h"
 
 using std::wostream;
 using std::wstring;
+using std::vector;
 
 class NNetModel;
 class Shape;
@@ -22,8 +26,18 @@ public:
 
 	NNetModel * GetModel( ) { return m_pModel; }
 
+	void OpenModel( );
+	void SaveModel( );
+
 private:
-	NNetModel * m_pModel;
+	NNetModel     * m_pModel;
+	wstring         m_wstrPathOfOpenModel;
+	vector<ShapeId> m_CompactIds;
+
+	long getCompactIdVal( ShapeId const id )
+	{
+		return m_CompactIds[ id.GetValue() ].GetValue();
+	}
 
 	void WriteShape(  wostream &, Shape & );
 	void WriteMicroMeterPoint( wostream &, MicroMeterPoint const & );
