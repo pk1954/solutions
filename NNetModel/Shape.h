@@ -131,10 +131,13 @@ protected:
 	COLORREF GetInteriorColor( mV const ) const;
 	COLORREF GetInteriorColor( ) const { return GetInteriorColor( m_mVinputBuffer ); }
 
+	float GetFillLevel( mV const ) const;
+	float GetFillLevel( ) const { return GetFillLevel( m_mVinputBuffer ); };
+
 	void CheckInputBuffer( ) const;
 
 private:
 
-	ShapeId     m_identifier;
-	tShapeType  m_type;
+	ShapeId    m_identifier;
+	tShapeType m_type;
 };

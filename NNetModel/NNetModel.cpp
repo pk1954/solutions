@@ -55,17 +55,17 @@ wchar_t const * const NNetModel::GetParameterUnit( tParameter const p ) const
 
 NNetModel::NNetModel( )
   : m_Shapes( ),
-	m_timeStamp            ( 0._MicroSecs ),
-	m_shapeHighlighted     ( NO_SHAPE ),
-	m_shapeSuperHighlighted( NO_SHAPE ),
-	m_signalLoss           ( 0.0005f ), 
-	m_threshold            ( 20._mV ),
-	m_peakVoltage          ( 10._mV ),
-	m_pulseWidth           ( 2000._MicroSecs ),
-	m_refractoryPeriod     ( 500._MicroSecs ),
-	m_pulseSpeed           ( 0.1_meterPerSec ),
-	m_nrOfInputNeurons     ( 0 ),
-	m_nrOfOutputNeurons    ( 0 )
+	m_timeStamp               ( 0._MicroSecs ),
+	m_shapeHighlighted        ( NO_SHAPE ),
+	m_shapeSuperHighlighted   ( NO_SHAPE ),
+	m_signalLoss              ( 0.0005f ), 
+	m_threshold               ( 20._mV ),
+	m_peakVoltage             ( 10._mV ),
+	m_pulseWidth              ( 2000._MicroSecs ),
+	m_refractoryPeriod        ( 500._MicroSecs ),
+	m_pulseSpeed              ( 0.1_meterPerSec ),
+	m_nrOfInputNeuronsInModel ( 0 ),
+	m_nrOfOutputNeuronsInModel( 0 )
 {					
 	// initial shapes 
 	ShapeId m_idInputNeuron  = NewShape<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
@@ -81,30 +81,50 @@ void NNetModel::RecalcPipelines( )
 	Apply2All<Pipeline>( [&]( Pipeline & pipe ) { pipe.Recalc( ); } );
 } 
 
+long const NNetModel::GetNrOfShapes( ) const
+{
+	long lCounter = 0;
+	Apply2All<Shape>( [&]( Shape & shape ) { ++ lCounter; } );
+	return lCounter;
+}
+
 void NNetModel::RemoveShape( )
 {
 	if ( HighlightedShapeCanBeDeleted() )
 	{
 		ShapeId idShapeToBeDeleted { m_shapeHighlighted };
 		m_shapeHighlighted = NO_SHAPE;
-		deleteBaseKnot( idShapeToBeDeleted );
+		BaseKnot * pBaseKnot { GetTypedShape<BaseKnot>( idShapeToBeDeleted ) };
+		if ( pBaseKnot->GetNrOfConnections() == 2 )
+		{
+			long lNrOfShapes = GetNrOfShapes();
+			ShapeId idStartKnot{ pBaseKnot->GetPrecursor() };
+			ShapeId idEndKnot  { pBaseKnot->GetSuccessor() };
+			deleteBaseKnot( idShapeToBeDeleted, false );
+			NewPipeline( idStartKnot, idEndKnot );
+			assert( GetNrOfShapes() == lNrOfShapes - 2 );
+		}
+		else 
+		{
+			deleteBaseKnot( idShapeToBeDeleted, true );
+		}
 		CHECK_CONSISTENCY;
 	}
 }
 
-void NNetModel::deleteBaseKnot( ShapeId const id )
+void NNetModel::deleteBaseKnot( ShapeId const id, bool const bRecursive )
 {
 	BaseKnot * pToBeDeleted { GetTypedShape<BaseKnot>( id ) };
 	if ( pToBeDeleted )
 	{
 		assert( ::IsBaseKnotType( pToBeDeleted->GetShapeType( ) ) );
 		m_Shapes[ id.GetValue() ] = nullptr;
-		pToBeDeleted->Apply2AllConnectedPipelines( [&]( ShapeId const id ) { deletePipeline( id ); } );
+		pToBeDeleted->Apply2AllConnectedPipelines( [&]( ShapeId const id ) { deletePipeline( id, bRecursive ); } );
 		delete pToBeDeleted;
 	}
 }
 
-void NNetModel::deletePipeline( ShapeId const id )
+void NNetModel::deletePipeline( ShapeId const id, bool const bRecursive )
 {
 	Pipeline * pPipelineToBeDeleted { GetTypedShape<Pipeline>( id ) };
 	assert( pPipelineToBeDeleted );
@@ -116,8 +136,8 @@ void NNetModel::deletePipeline( ShapeId const id )
 	if ( pStartKnot )
 	{
 		pStartKnot->RemoveOutgoing( id );
-		if ( ! pStartKnot->HasOutgoing( ) )
-			deleteBaseKnot( idStartKnot );
+		if ( bRecursive && ! pStartKnot->HasOutgoing( ) )
+			deleteBaseKnot( idStartKnot, true );
 	}
 
 	ShapeId    idEndKnot { pPipelineToBeDeleted->GetEndKnot() };
@@ -125,8 +145,8 @@ void NNetModel::deletePipeline( ShapeId const id )
 	if ( pEndKnot )
 	{
 		pEndKnot->RemoveIncoming( id );
-		if ( ! pEndKnot->HasIncoming( ) )
-			deleteBaseKnot( idEndKnot );
+		if ( bRecursive && ! pEndKnot->HasIncoming( ) )
+			deleteBaseKnot( idEndKnot, true );
 	}
 
 	delete pPipelineToBeDeleted;
@@ -220,8 +240,61 @@ void const NNetModel::SetParameter
 	}
 }
 
-void NNetModel::Connect( )  // highlighted knot to super highlighted shape
+bool const NNetModel::HighlightedShapeCanBeDeleted( ) const 
 {
+	switch ( GetHighlightedShapeType( ) )
+	{
+	case tShapeType::neuron:
+	case tShapeType::knot:  
+		return GetConstTypedShape<BaseKnot>( m_shapeHighlighted )->GetNrOfConnections( ) == 2;
+
+	case tShapeType::outputNeuron:
+		return m_nrOfOutputNeuronsInModel > 1;
+
+	case tShapeType::inputNeuron:
+		return m_nrOfInputNeuronsInModel > 1;
+
+	default:
+		return false;
+	}
+}
+
+ShapeId const NNetModel::HighlightShape( ShapeId const id ) 
+{
+	ShapeId idOld = m_shapeHighlighted;
+	m_shapeHighlighted = id;
+	return idOld;
+};
+
+ShapeId const NNetModel::SuperHighlightShape( ShapeId const id ) 
+{ 
+	ShapeId idOld = m_shapeSuperHighlighted;
+	m_shapeSuperHighlighted = id;
+	return idOld;
+}
+
+tShapeType const NNetModel::GetHighlightedShapeType( ) const 
+{ 
+	Shape const * const pHighlighted{ GetConstShape( m_shapeHighlighted ) };
+	return ( pHighlighted ) ? pHighlighted->GetShapeType( ) : tShapeType::undefined;
+}
+
+tShapeType const NNetModel::GetSuperHighlightedShapeType( ) const 
+{ 
+	Shape const * const pSuperHighlighted{ GetConstShape( m_shapeSuperHighlighted ) };
+	return ( pSuperHighlighted ) ? pSuperHighlighted->GetShapeType( ) : tShapeType::undefined;
+}
+
+MicroMeterPoint const NNetModel::GetHighlightedShapePos( ) const 
+{ 
+	return IsDefined( m_shapeHighlighted ) 
+		? GetConstTypedShape<BaseKnot>( m_shapeHighlighted )->GetPosition()
+		: NP_NULL;
+}
+
+void NNetModel::Connect( )  // merge highlighted shape into super highlighted shape
+{
+	long lNrOfShapes = GetNrOfShapes();
 	BaseKnot * pHighlighted      = GetTypedShape<BaseKnot>( m_shapeHighlighted );
 	BaseKnot * pSuperHighlighted = GetTypedShape<BaseKnot>( m_shapeSuperHighlighted );
 	if ( pHighlighted && pSuperHighlighted )
@@ -241,6 +314,7 @@ void NNetModel::Connect( )  // highlighted knot to super highlighted shape
 		RemoveShape( );
 		SuperHighlightShape( NO_SHAPE );
 	}
+	assert( GetNrOfShapes() == lNrOfShapes - 1 );
 	CHECK_CONSISTENCY;
 }
 
@@ -424,7 +498,7 @@ Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt, std::fu
 	for ( size_t i = m_Shapes.size(); i --> 0; )	
 	{
 		Shape * pShape = m_Shapes[i];
-		if ( pShape && crit( * pShape ) && IsPointInShape( pShape, pnt ) ) 
+		if ( pShape && crit( * pShape ) && pShape->IsPointInShape( pnt ) ) 
 			return pShape;
 	};
 

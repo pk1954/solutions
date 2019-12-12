@@ -41,12 +41,6 @@ public:
 
 	// readOnly functions
 
-	void CheckConsistency( Shape const * ) const;
-
-	ShapeId GetId         ( Shape const * pShape ) const { return pShape ? pShape->GetId( ) : NO_SHAPE; }
-	bool    IsValidShapeId( ShapeId const id )     const { return id.GetValue() < m_Shapes.size(); }
-	long    GetNrOfShapes ( )                      const { return CastToLong( m_Shapes.size() ); }
-
 	Shape * GetShape( ShapeId const id )
 	{
 		return ( IsDefined( id ) && IsValidShapeId( id ) )
@@ -79,62 +73,32 @@ public:
 			: nullptr;
 	}
 
-	BYTES     const GetCoreSize()                 const { return BYTES(sizeof(NNetModel)); };
-	MicroSecs const GetSimulationTime( )          const { return m_timeStamp; }
-	ShapeId   const GetHighlightedShapeId( )      const { return m_shapeHighlighted; }
-	ShapeId   const GetSuperHighlightedShapeId( ) const { return m_shapeSuperHighlighted; }
+	template <typename T> bool IsType( ShapeId const id ) const { return T::TypeFits( GetConstShape( id )->GetShapeType() ); }
 
-	tShapeType const GetHighlightedShapeType( ) const 
-	{ 
-		Shape const * const pHighlighted{ GetConstShape( m_shapeHighlighted ) };
-		return ( pHighlighted ) ? pHighlighted->GetShapeType( ) : tShapeType::undefined;
-	}
-
-	tShapeType const GetSuperHighlightedShapeType( ) const 
-	{ 
-		Shape const * const pSuperHighlighted{ GetConstShape( m_shapeSuperHighlighted ) };
-		return ( pSuperHighlighted ) ? pSuperHighlighted->GetShapeType( ) : tShapeType::undefined;
-	}
-
-	MicroMeterPoint const GetHighlightedShapePos( ) const 
-	{ 
-		return IsDefined( m_shapeHighlighted ) 
-			? GetConstTypedShape<BaseKnot>( m_shapeHighlighted )->GetPosition()
-			: NP_NULL;
-	}
-
-	COLORREF const GetFrameColor( Shape const & ) const;
+	MicroSecs       const GetSimulationTime( )                         const { return m_timeStamp; }
+	ShapeId         const GetHighlightedShapeId( )                     const { return m_shapeHighlighted; }
+	ShapeId         const GetSuperHighlightedShapeId( )                const { return m_shapeSuperHighlighted; }
+	ShapeId         const GetId             ( Shape   const * pShape ) const { return pShape ? pShape->GetId( ) : NO_SHAPE; }
+	bool            const IsHighlighted     ( Shape   const & shape  ) const { return shape.GetId() == m_shapeHighlighted; }
+	bool            const IsSuperHighlighted( Shape   const & shape  ) const { return shape.GetId() == m_shapeSuperHighlighted; }
+	bool            const IsValidShapeId    ( ShapeId const   id     ) const { return id.GetValue() < m_Shapes.size(); }
+	bool            const HasAxon           ( ShapeId const   id     ) const { return GetConstShape( id )->HasAxon( ); }
+	long            const GetSizeOfShapeList( )                        const { return CastToLong( m_Shapes.size() ); }
+	long            const GetNrOfShapes( )                             const;
+	tShapeType      const GetHighlightedShapeType( )                   const;
+	tShapeType      const GetSuperHighlightedShapeType( )              const;
+	MicroMeterPoint const GetHighlightedShapePos( )                    const;
+	COLORREF        const GetFrameColor( Shape const & )               const;
+	wchar_t const * const GetParameterName( tParameter const )         const;
+	wchar_t const * const GetParameterUnit( tParameter const )         const;
+	bool            const HighlightedShapeCanBeDeleted( )              const;
 
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const, std::function<bool(Shape const &)> const & ) const;
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const ) const;
 
-	wchar_t const * const GetParameterName   ( tParameter const ) const;
-	wchar_t const * const GetParameterUnit   ( tParameter const ) const;
-
 	float const GetParameterValue( tParameter const, Shape const * = nullptr ) const;
-
-	bool HasAxon( ShapeId const id ) const { return GetConstShape( id )->HasAxon( ); }
-
-	template <typename T> bool IsType( ShapeId const id ) const { return T::TypeFits( GetConstShape( id )->GetShapeType() ); }
-
-	bool IsPointInShape ( Shape const * const pShape, MicroMeterPoint const & point ) const { return pShape->IsPointInShape( point ); }
-
-	bool IsHighlighted     ( Shape const & shape ) const { return shape.GetId() == m_shapeHighlighted; }
-	bool IsSuperHighlighted( Shape const & shape ) const { return shape.GetId() == m_shapeSuperHighlighted; }
-
-	int const GetNrOfInputNeurons ( ) const { return m_nrOfInputNeurons; }
-	int const GetNrOfOutputNeurons( ) const { return m_nrOfOutputNeurons; }
-
-	bool const HighlightedShapeCanBeDeleted( ) const 
-	{
-		tShapeType type { GetHighlightedShapeType() };
-		if ( type == tShapeType::inputNeuron )
-			return m_nrOfInputNeurons > 1;
-		else if ( type == tShapeType::outputNeuron )
-			return m_nrOfOutputNeurons > 1;
-		else 
-			return false;
-	}
+	
+	void CheckConsistency( Shape const * ) const;
 
 	// manipulating functions
 
@@ -156,19 +120,8 @@ public:
 
 	void RemoveShape( );
 
-	ShapeId const HighlightShape( ShapeId const id ) 
-	{
-		ShapeId idOld = m_shapeHighlighted;
-		m_shapeHighlighted = id;
-		return idOld;
-	};
-
-	ShapeId const SuperHighlightShape( ShapeId const id ) 
-	{ 
-		ShapeId idOld = m_shapeSuperHighlighted;
-		m_shapeSuperHighlighted = id;
-		return idOld;
-	}
+	ShapeId const HighlightShape     ( ShapeId const );
+	ShapeId const SuperHighlightShape( ShapeId const );
 
 	template <typename T>
 	void Apply2All( std::function<void(T &)> const & func ) const
@@ -191,20 +144,20 @@ public:
 
 	void  const SetParameter( ShapeId const, tParameter const,	float const );
 
-	void IncNrOfInputNeurons () { ++m_nrOfInputNeurons;  }
-	void IncNrOfOutputNeurons() { ++m_nrOfOutputNeurons; }
-	void DecNrOfInputNeurons () { --m_nrOfInputNeurons;  }
-	void DecNrOfOutputNeurons() { --m_nrOfOutputNeurons; }
+	void IncNrOfInputNeurons () { ++m_nrOfInputNeuronsInModel;  }
+	void IncNrOfOutputNeurons() { ++m_nrOfOutputNeuronsInModel; }
+	void DecNrOfInputNeurons () { --m_nrOfInputNeuronsInModel;  }
+	void DecNrOfOutputNeurons() { --m_nrOfOutputNeuronsInModel; }
 
-	void SetNrOfShapes ( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
+	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
 private:
 			  
 	// model data
 	vector<Shape *> m_Shapes;
 	MicroSecs       m_timeStamp;
-	int             m_nrOfInputNeurons;
-	int             m_nrOfOutputNeurons;
+	int             m_nrOfInputNeuronsInModel;
+	int             m_nrOfOutputNeuronsInModel;
 
     // used by editor
 	ShapeId m_shapeHighlighted;
@@ -219,10 +172,10 @@ private:
 	meterPerSec  m_pulseSpeed;
 
 	// local functions
-	void          deleteBaseKnot( ShapeId const );
-	void          deletePipeline( ShapeId const );
-	void          checkConsistency( );
-	ShapeId const addShape( Shape * );
+	void          deleteBaseKnot( ShapeId const, bool const );
+	void          deletePipeline( ShapeId const, bool const );
 	void          insertNewBaseKnot( BaseKnot * const );
 	void          prepareSplit( MicroMeterPoint const & );
+	void          checkConsistency( );
+	ShapeId const addShape( Shape * );
 };

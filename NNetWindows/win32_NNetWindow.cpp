@@ -134,41 +134,41 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	NNetModel const * pModel    { m_pReadBuffer->GetModel( ) };
 	UINT      const   STD_FLAGS { MF_BYPOSITION | MF_STRING };
 
-	if ( pModel->GetHighlightedShapeId( ) != NO_SHAPE )  
+	ShapeId const idShapeHighlighted( pModel->GetHighlightedShapeId( ) ); 
+	if ( idShapeHighlighted != NO_SHAPE )  
 	{
 		switch ( pModel->GetHighlightedShapeType( ) )
 		{
 		case tShapeType::knot:  
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON,  L"Add input neuron" );
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTPUT_NEURON, L"Add output neuron" );
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON,  L"Add input neuron" );
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTPUT_NEURON, L"Add output neuron" );
 			break;
 
 		case tShapeType::inputNeuron:
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE, pModel->GetParameterName( tParameter::pulseRate ) );
-			if ( pModel->GetNrOfInputNeurons( ) > 1 )
-				(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE, L"Remove" );
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE, pModel->GetParameterName( tParameter::pulseRate ) );
 			break;
 
 		case tShapeType::neuron:
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON,  L"Add input neuron" );
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON,  L"Add input neuron" );
 			break;
 
 		case tShapeType::outputNeuron:
- 			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON, L"Add input neuron" );
-			if ( pModel->GetNrOfOutputNeurons( ) > 1 )
-				(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE, L"Remove" );
+ 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON, L"Add input neuron" );
 			break;
 
 		case tShapeType::pipeline:
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTPUT_NEURON, L"Add output neuron" );
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON,  L"Add input neuron" );
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_INSERT_NEURON,     L"Insert neuron" );
-			(void)AppendMenu( hPopupMenu, STD_FLAGS, IDD_SPLIT_PIPELINE,    L"Split" );
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTPUT_NEURON, L"Add output neuron" );
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON,  L"Add input neuron" );
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_INSERT_NEURON,     L"Insert neuron" );
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_SPLIT_PIPELINE,    L"Split" );
 			break;
 
 		default:
 			assert( false );
 		}
+
+		if ( pModel->HighlightedShapeCanBeDeleted( ) )
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE, L"Remove" );
 	}
 }
 
@@ -233,13 +233,6 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 
 void NNetWindow::moveNNet( PixelPoint const ptDiff )
 {
-	//if ( m_pGridWindowObserved != nullptr )     // I observe someone
-	//{
-	//	EvoPixelCoords * const pixCoordObserved = & m_pGridWindowObserved->m_EvoPixelCoords;
-	//	PixelPoint       const ptDiffObserved   = EvoPixel2PixelSize( ptDiff, & m_EvoPixelCoords, pixCoordObserved );
-	//	pixCoordObserved->MoveGrid( -ptDiffObserved );   // move the observed in opposite direction 
-	//}
-
 	if ( m_bMoveAllowed )
 	{
 		m_coord.MoveNNet( ptDiff );
@@ -266,7 +259,7 @@ void NNetWindow::doPaint( )
 	drawHighlightedShape( * pModel, m_coord );
 	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
 //	m_pGraphics->SetFontSize( 15_PIXEL );
-	pModel->Apply2All<InputNeuron>( [&]( InputNeuron & shape ) { shape.DrawNeuronText( m_coord ); } );
+	pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawText( m_coord ); } );
 	m_pGraphics->RenderForegroundObjects( );
 }
 
@@ -281,7 +274,7 @@ void NNetWindow::OnPaint( )
 			doPaint( );
 			m_pGraphics->EndFrame( GetWindowHandle() );
 		}
-		(void)EndPaint( &ps );
+		EndPaint( &ps );
 	}
 }
 
@@ -341,7 +334,7 @@ void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 		  EndKnotType ::TypeFits( pModel->GetSuperHighlightedShapeType() ) 
 	   )
        PostCommand2Application( IDD_CONNECT, 0 );
-//	(void)ReleaseCapture( );
+//	ReleaseCapture( );
 }
 
 void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )

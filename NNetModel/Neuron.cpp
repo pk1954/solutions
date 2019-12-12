@@ -4,11 +4,13 @@
 
 #include "stdafx.h"
 #include "win32_graphicsInterface.h"
+#include "PixelCoordsFp.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
 #include "Neuron.h"
 
-using namespace std::chrono;
+using std::chrono::microseconds;
+using std::wostringstream;
 
 Neuron::Neuron( NNetModel * pModel, MicroMeterPoint const upCenter, tShapeType const type )
   : BaseKnot( pModel, upCenter, type, NEURON_RADIUS ),

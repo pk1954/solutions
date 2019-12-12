@@ -47,6 +47,7 @@ void CrsrWindow::Start
 		nullptr
 	);
 	m_pReadBuffer->RegisterObserver( this );
+	::CreateWindowToolTip( GetWindowHandle(), L"Cursor window" );
 }
 
 void CrsrWindow::Stop( )

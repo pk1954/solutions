@@ -250,7 +250,7 @@ void NNetModelStorage::Write( wostream & out )
 		}
 	);
 
-	m_CompactIds.resize( m_pModel->GetNrOfShapes() );
+	m_CompactIds.resize( m_pModel->GetSizeOfShapeList() );
 	ShapeId idCompact( 0 );
 	for ( int i = 0; i < m_CompactIds.size( ); ++i )
 	{

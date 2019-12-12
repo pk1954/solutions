@@ -35,4 +35,6 @@ public:
 	virtual mV   GetNextOutput( ) const;
 	virtual void DrawExterior ( PixelCoordsFp & ) const;
 	virtual void DrawInterior ( PixelCoordsFp & ) const;
+
+	virtual void DrawText( PixelCoordsFp & ) const {};
 };

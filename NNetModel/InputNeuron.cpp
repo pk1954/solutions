@@ -9,7 +9,8 @@
 #include "NNetModel.h"
 #include "InputNeuron.h"
 
-using namespace std::chrono;
+using std::chrono::microseconds;
+using std::wostringstream;
 
 InputNeuron::InputNeuron( NNetModel * pModel, MicroMeterPoint const upCenter )
   : Neuron( pModel, upCenter, tShapeType::inputNeuron ),
@@ -85,36 +86,25 @@ void InputNeuron::DrawInterior( PixelCoordsFp & coord ) const
 	drawInputNeuron( coord, GetInteriorColor( ), NEURON_INTERIOR );
 }
 
-void InputNeuron::DrawNeuronText( PixelCoordsFp & coord )
+void InputNeuron::DrawText( PixelCoordsFp & coord ) const
 { 
-	static COLORREF const color { RGB( 0, 255, 0 ) };
 
-	fPixelPoint const fPos   { coord.convert2fPixelPos( GetPosition() ) }; 
-	fPIXEL      const fExt   { coord.convert2fPixel( GetExtension() ) };
-	PixelPoint  const pixPos { convert2PixelPoint( fPos ) };
-	PIXEL       const pixExt { PIXEL(static_cast<long>(fExt.GetValue())) };
-	PixelRect   const pixRect
-	{
-		pixPos.GetX() - pixExt,  // left
-		pixPos.GetY() - pixExt,  // top
-		pixPos.GetX() + pixExt,  // right
-		pixPos.GetY() + pixExt   // bottom
-	};
+	PixelRect const pixRect { GetPixRect4Text( coord ) };
+
+	wostringstream m_wBuffer;
+
 	m_wBuffer.clear( );
 	m_wBuffer.str( std::wstring() );
 	m_wBuffer << GetPulseFrequency().GetValue() << L" " << m_pNNetModel->GetParameterUnit( tParameter::pulseRate );
-	if ( pixRect.Includes( m_pGraphics->CalcGraphicsRect( m_wBuffer.str( ) ).GetSize() ) )
-	{
-		m_pGraphics->DisplayGraphicsText( pixRect, m_wBuffer.str( ), DT_CENTER|DT_VCENTER, color );
+
+	if ( DisplayText( pixRect, m_wBuffer.str( ) )  )
 		return;
-	}
+
 	m_wBuffer.clear( );
 	m_wBuffer.str( std::wstring() );
 	m_wBuffer << GetPulseFrequency().GetValue();
-	if ( pixRect.Includes( m_pGraphics->CalcGraphicsRect( m_wBuffer.str( ) ).GetSize() ) )
-	{
-		m_pGraphics->DisplayGraphicsText( pixRect, m_wBuffer.str( ), DT_CENTER|DT_VCENTER, color );
-	}
+
+	DisplayText( pixRect, m_wBuffer.str( ) );
 }
 
 InputNeuron const * Cast2InputNeuron( Shape const * shape )

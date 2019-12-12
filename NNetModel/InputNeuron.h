@@ -9,8 +9,6 @@
 #include "MoreTypes.h"
 #include "Neuron.h"
 
-using std::chrono::microseconds;
-
 class Pipeline;
 class NNetModel;
 
@@ -31,17 +29,14 @@ public:
 
 	virtual void DrawExterior( PixelCoordsFp & ) const;
 	virtual void DrawInterior( PixelCoordsFp & ) const;
-
-	void DrawNeuronText( PixelCoordsFp & );
+	virtual void DrawText    ( PixelCoordsFp & ) const;
 
 	fHertz GetPulseFrequency( ) const {	return m_pulseFrequency; }
 
 	void SetPulseFrequency( fHertz const );
 
 private:
-	void drawInputNeuron( PixelCoordsFp const &,	COLORREF const, float const ) const;
-
-	std::wostringstream m_wBuffer;
+	void drawInputNeuron( PixelCoordsFp const &, COLORREF const, float const ) const;
 
 	fHertz    m_pulseFrequency; // pulse frequency and pulse duration depend on each other
 	MicroSecs m_pulseDuration;  // in principle one variable would be enough, but to avoid 

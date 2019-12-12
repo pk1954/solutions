@@ -8,7 +8,6 @@
 // identifiers for application start at 100
 
 #define IDC_NNET_SIMU_MAIN  	     102
-#define IDD_PARAMETER_DLG  	         103
 #define IDD_APPLY_PARAMETERS         105
 #define IDD_RESET_PARAMETERS         106
 #define IDI_NNETSIMU			     120
@@ -36,6 +35,4 @@
 #define IDD_REMOVE_SHAPE             566
 
 #define IDM_CRSR_WINDOW              580
-
-#define IDM_MOVE_SHAPE               600
-								   	 									 
+#define IDM_PARAM_WINDOW  	         581

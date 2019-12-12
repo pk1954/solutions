@@ -24,5 +24,5 @@ static MicroMeterPoint const STD_OFFSET        { MicroMeterPoint( 0._MicroMeter,
 
 // colors
 static COLORREF const EXT_COLOR_NORMAL         { RGB(   0, 127, 255 ) };
-static COLORREF const EXT_COLOR_HIGHLIGHT      { RGB(   0, 127, 127 ) };
+static COLORREF const EXT_COLOR_HIGHLIGHT      { RGB(   0, 200, 200 ) };
 static COLORREF const EXT_COLOR_SUPER_HIGHLIGHT{ RGB( 255,   0,   0 ) };

@@ -59,6 +59,10 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		SendMessage( m_pWinManager->GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
 		break;
 
+	case IDM_PARAM_WINDOW:
+		SendMessage( m_pWinManager->GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
+		break;
+
 	case IDM_ZOOM_OUT:
 	case IDM_ZOOM_IN:
 		m_pNNetWindow->Zoom( wmId == IDM_ZOOM_IN );

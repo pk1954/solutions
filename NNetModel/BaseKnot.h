@@ -7,10 +7,12 @@
 #pragma once
 
 #include <vector>
+#include "PixelTypes.h"
 #include "MoreTypes.h"
 #include "Shape.h"
 
 using std::vector;
+using std::wstring;
 
 class GraphicsInterface;
 class PixelCoordsFp;
@@ -47,9 +49,13 @@ public:
 	void ReplaceIncoming( ShapeId const, ShapeId const );
 	void ReplaceOutgoing( ShapeId const, ShapeId const );
 
-	bool HasIncoming( ) const { return ! m_incoming.empty(); }
-	bool HasOutgoing( ) const { return ! m_outgoing.empty(); }
-	bool IsOrphan( )    const {	return m_incoming.empty() && m_outgoing.empty(); }
+	bool   HasIncoming( )        const { return ! m_incoming.empty(); }
+	bool   HasOutgoing( )        const { return ! m_outgoing.empty(); }
+	size_t GetNrOfConnections( ) const { return m_incoming.size() + m_outgoing.size(); }
+	bool   IsOrphan( )           const { return m_incoming.empty() && m_outgoing.empty(); }
+
+	ShapeId GetPrecursor( ) const;
+	ShapeId GetSuccessor( ) const;
 
 	ShapeId const GetAxon( ) const
 	{
@@ -108,8 +114,7 @@ public:
 
 	virtual void MoveTo( MicroMeterPoint const & );
 
-	virtual void DrawExterior( PixelCoordsFp & ) const = 0;
-	virtual void DrawInterior( PixelCoordsFp & ) const = 0;
+	virtual void DrawText( PixelCoordsFp & ) const;
 
 protected:
 
@@ -118,6 +123,9 @@ protected:
 
 	void drawPolygon( PixelCoordsFp const &, int const, COLORREF const, MicroMeterPoint const, MicroMeter const ) const;
 	void drawPolygon( PixelCoordsFp const &, int const, COLORREF const, MicroMeter const ) const;
+
+	PixelRect const GetPixRect4Text( PixelCoordsFp const & ) const;
+	bool      const DisplayText( PixelRect const, wstring const ) const;
 
 private:
 
