@@ -46,10 +46,7 @@ public:
     PixelRect CalcGraphicsRect( wstring const & );
     void      EndFrame( HWND const );
     void      ShutDown( );
-    void      StartPipeline( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const );
-    void      AddPipelinePoint( fPixelPoint const &, COLORREF const );
-    void      RenderPipeline( );
-    void	  AddfPixelLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const );
+    void	  DrawLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const );
     void      DrawPolygon( int const, fPixelPoint const, COLORREF const, fPIXEL const );
     void      Resize( int const, int const );
 
@@ -59,11 +56,4 @@ private:
     ID2D1Factory          * m_pD2DFactory;
     ID2D1HwndRenderTarget * m_pRenderTarget;
     ID2D1SolidColorBrush  * m_pBlackBrush;
-    ID2D1PathGeometry     * m_pPathGeometry;
-    ID2D1GeometrySink     * m_pSink;
-
-    fPixelPoint m_fOrtho;
-    fPixelPoint m_fp1;
-    fPixelPoint m_fp2;
-
 };

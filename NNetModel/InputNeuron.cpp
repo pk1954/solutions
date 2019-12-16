@@ -70,9 +70,7 @@ void InputNeuron::drawInputNeuron
 		fPixelPoint      const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
 		fPIXEL           const fPixWidth  { coord.convert2fPixel( GetExtension() * fReductionFactor ) };
 
-		m_pGraphics->StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
-		m_pGraphics->AddPipelinePoint( fEndPoint, color );
-		m_pGraphics->RenderPipeline( );
+		m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth * 2, color );
 	}
 }
 

@@ -14,12 +14,7 @@ D2D_driver::D2D_driver( ):
 	m_pD2DFactory( nullptr ),
 	m_pRenderTarget( nullptr ),
 	m_pBlackBrush( nullptr ),
-	m_pPathGeometry( nullptr ),
-	m_pSink( nullptr ),
-	m_hr( 0 ),
-	m_fOrtho( fPixelPoint::NULL_VAL() ),
-	m_fp1( fPixelPoint::NULL_VAL() ),
-	m_fp2( fPixelPoint::NULL_VAL() )
+	m_hr( 0 )
 {
 	m_hr = D2D1CreateFactory
 	(
@@ -110,10 +105,6 @@ void D2D_driver::SetFontSize( PIXEL const nPointSize )
 {
 }
 
-void D2D_driver::AddIndividual( PixelPoint const ptPos, COLORREF const color, float const fPixSize )
-{
-}
-
 void D2D_driver::AddBackGround( PixelPoint const ptPos, COLORREF const color, float const fPixSize )
 {
 }
@@ -140,13 +131,10 @@ void D2D_driver::RenderForegroundObjects( )
 void D2D_driver::EndFrame( HWND const hwnd )
 {
 	m_hr = m_pRenderTarget->EndDraw();
-	if ( ! SUCCEEDED( m_hr ) )
-	{
-		int x = 8765;
-	}
+	assert( SUCCEEDED( m_hr ) );
 }
 
-void D2D_driver::AddfPixelLine
+void D2D_driver::DrawLine
 ( 
 	fPixelPoint const & fpp1, 
 	fPixelPoint const & fpp2, 
@@ -154,65 +142,24 @@ void D2D_driver::AddfPixelLine
 	COLORREF    const   color
 )
 {
-}
+	ID2D1SolidColorBrush * m_pBrush;
+	D2D1::ColorF d2dCol
+	{
+		GetRValue(color) / 255.0, 
+		GetGValue(color) / 255.0, 
+		GetBValue(color) / 255.0, 
+		1.f 
+	};
 
-void D2D_driver::StartPipeline
-(
-	fPixelPoint const & fppStart, 
-	fPixelPoint const & fppEnd, 
-	fPIXEL      const   fpixWidth, 
-	COLORREF    const   color
-)
-{
-	D2D1_ELLIPSE ellipse = D2D1::Ellipse( D2D1::Point2F(0.f, 0.f), 750.f, 500.f );
-	m_pRenderTarget->DrawEllipse( ellipse, m_pBlackBrush, 10.f );
+	m_pRenderTarget->CreateSolidColorBrush( d2dCol, & m_pBrush ); 
 
-	D2D1_RECT_F rectangle = D2D1::Rect( 100.f, 100.f, 300.f, 200.f );
-
-	ID2D1RectangleGeometry * pRectangle;
-	m_pD2DFactory->CreateRectangleGeometry( rectangle, &pRectangle );
-	m_pRenderTarget->SetTransform( D2D1::Matrix3x2F::Rotation( 30.f, D2D1_POINT_2F{ 150.f, 150.f } ) );
-	m_pRenderTarget->FillRectangle( rectangle, m_pBlackBrush );
-	m_pRenderTarget->DrawLine( D2D1_POINT_2F{ 250.f, 250.f }, D2D1_POINT_2F{ 670.f, 350.f }, m_pBlackBrush, 30.f );
-	//m_hr = m_pD2DFactory->CreatePathGeometry( & m_pPathGeometry ); 
-	//if ( ! SUCCEEDED( m_hr ) )
-	//{
-	//	int x = 8765;
-	//}
-	//m_fOrtho = OrthoVector( fppEnd - fppStart, fpixWidth );
-	//m_hr = m_pPathGeometry->Open( & m_pSink ); 
-	//if ( ! SUCCEEDED( m_hr ) )
-	//{
-	//	int x = 8765;
-	//}
-}
-
-void D2D_driver::AddPipelinePoint
-(
-	fPixelPoint const & fpp, 
-	COLORREF    const   color
-)
-{
-	fPixelPoint fp3 = fpp + m_fOrtho;
-	fPixelPoint fp4 = fpp - m_fOrtho;
-
-	//m_pSink->BeginFigure( D2D1::Point2F( m_fp1.GetXvalue(), m_fp1.GetYvalue() ), D2D1_FIGURE_BEGIN_FILLED	);
-	//m_pSink->AddLine    ( D2D1::Point2F( m_fp2.GetXvalue(), m_fp2.GetYvalue() ));
-	//m_pSink->AddLine    ( D2D1::Point2F( fp3  .GetXvalue(), fp3  .GetYvalue() ));
-	//m_pSink->AddLine    ( D2D1::Point2F( fp4  .GetXvalue(), fp4  .GetYvalue() ));
-	//m_pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-}
-
-void D2D_driver::RenderPipeline( )
-{
-	//m_hr = m_pSink->Close();
-	//if ( ! SUCCEEDED( m_hr ) )
-	//{
-	//	int x = 8765;
-	//}
-
-	//SafeRelease( & m_pSink );
-	//SafeRelease( & m_pPathGeometry );
+	m_pRenderTarget->DrawLine
+	( 
+		D2D1_POINT_2F{ fpp1.GetXvalue(), fpp1.GetYvalue() }, 
+		D2D1_POINT_2F{ fpp2.GetXvalue(), fpp2.GetYvalue() },
+		m_pBrush,
+		fpixWidth.GetValue()
+	);
 }
 
 void D2D_driver::DrawPolygon

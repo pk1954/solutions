@@ -19,7 +19,7 @@ static mV              const BASE_POTENTIAL    { 0.0_mV };
 static float           const NEURON_INTERIOR   { 0.8f };                // Neurons of all kinds have 80% interior, 20 % border 
 static float           const PIPELINE_INTERIOR { 0.6f };                // PIPELINES have 60% interior, 40 % border 
 static MicroMeter      const NEURON_RADIUS     { 50.0_MicroMeter };    
-static MicroMeter      const PIPELINE_WIDTH    { 10.0_MicroMeter };
+static MicroMeter      const PIPELINE_WIDTH    { 20.0_MicroMeter };
 static MicroMeterPoint const STD_OFFSET        { MicroMeterPoint( 0._MicroMeter, NEURON_RADIUS * 2.0 ) };
 
 // colors

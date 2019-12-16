@@ -38,7 +38,7 @@ void Scale::ShowScale (fPIXEL const height )
 	fPixelPoint const fPixPoint1( horzPos, vertPos );
 	fPixelPoint const fPixPoint2( horzPos + fPixLength, vertPos );
 
-	m_pGraphics->AddfPixelLine( fPixPoint1, fPixPoint2, 1._fPIXEL, SCALE_COLOR );
+	m_pGraphics->DrawLine( fPixPoint1, fPixPoint2, 1._fPIXEL, SCALE_COLOR );
 	displayTicks( fPixPoint1, fPixPoint2, fIntegerPart, iFirstDigit );
 	displayScaleText( fPixPoint2, fIntegerPart );
 }
@@ -52,7 +52,7 @@ void Scale::displayTicks( fPixelPoint const fPixPoint1, fPixelPoint const fPixPo
 	fPixelPoint fTickPos( fPixPoint1 );
 	fPixelPoint fTickDist( (fPixPoint2.GetX() - fPixPoint1.GetX()) / 10, 0._fPIXEL );
 
-	m_pGraphics->AddfPixelLine( fPixPoint1 - fLongTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+	m_pGraphics->DrawLine( fPixPoint1 - fLongTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 
 	displayScaleNumber( fTickPos, fLog10, 0 );
 
@@ -61,17 +61,17 @@ void Scale::displayTicks( fPixelPoint const fPixPoint1, fPixelPoint const fPixPo
 		for ( int i = 1; i <= 4; ++i )
 		{
 			fTickPos += fTickDist;
-			m_pGraphics->AddfPixelLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+			m_pGraphics->DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 		}
 
 		fTickPos += fTickDist;
-		m_pGraphics->AddfPixelLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+		m_pGraphics->DrawLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 		displayScaleNumber( fTickPos, fLog10 - 1.0f, 5 );
 
 		for ( int i = 6; i <= 9; ++i )
 		{
 			fTickPos += fTickDist;
-			m_pGraphics->AddfPixelLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+			m_pGraphics->DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 		}
 	}
 	else if ( iFirstDigit == 2 )
@@ -79,17 +79,17 @@ void Scale::displayTicks( fPixelPoint const fPixPoint1, fPixelPoint const fPixPo
 		for ( int i = 1; i <= 4; ++i )
 		{
 			fTickPos += fTickDist;
-			m_pGraphics->AddfPixelLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+			m_pGraphics->DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 		}
 
 		fTickPos += fTickDist;
-		m_pGraphics->AddfPixelLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+		m_pGraphics->DrawLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 		displayScaleNumber( fTickPos, fLog10, 1 );
 
 		for ( int i = 6; i <= 9; ++i )
 		{
 			fTickPos += fTickDist;
-			m_pGraphics->AddfPixelLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+			m_pGraphics->DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 		}
 	}
 	else if ( iFirstDigit == 5 )
@@ -97,13 +97,13 @@ void Scale::displayTicks( fPixelPoint const fPixPoint1, fPixelPoint const fPixPo
 		for ( int i = 0;; )
 		{
 			fTickPos += fTickDist;
-			m_pGraphics->AddfPixelLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+			m_pGraphics->DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 
 			if ( ++i > 4 )
 				break;
 
 			fTickPos += fTickDist;
-			m_pGraphics->AddfPixelLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+			m_pGraphics->DrawLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 			displayScaleNumber( fTickPos, fLog10, i );
 		}
 	}
@@ -111,7 +111,7 @@ void Scale::displayTicks( fPixelPoint const fPixPoint1, fPixelPoint const fPixPo
 		assert( false );
 
 	displayScaleNumber( fPixPoint2, fLog10, iFirstDigit );
-	m_pGraphics->AddfPixelLine( fPixPoint2 - fLongTick, fPixPoint2, 1._fPIXEL, SCALE_COLOR );
+	m_pGraphics->DrawLine( fPixPoint2 - fLongTick, fPixPoint2, 1._fPIXEL, SCALE_COLOR );
 }
 
 void Scale::displayScaleNumber( fPixelPoint const fPos, float const fLog10, int const iFirstDigit )

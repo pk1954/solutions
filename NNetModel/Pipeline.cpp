@@ -134,9 +134,7 @@ void Pipeline::DrawExterior( PixelCoordsFp & coord ) const
 		fPixelPoint const fEndPoint  { coord.convert2fPixelPos( umEndPoint   ) };
 		COLORREF    const color      { m_pNNetModel->GetFrameColor( * this ) };
 
-		m_pGraphics->StartPipeline( fStartPoint, fEndPoint, fPixWidth, color );
-		m_pGraphics->AddPipelinePoint( fEndPoint, color );
-		m_pGraphics->RenderPipeline( );
+		m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth, color );
 	}
 }
 
@@ -144,31 +142,25 @@ void Pipeline::DrawInterior( PixelCoordsFp & coord ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
-	MicroMeterPoint umVector           { umEndPoint - umStartPoint };
+	MicroMeterPoint const umVector     { umEndPoint - umStartPoint };
 	if ( ! IsCloseToZero( umVector ) )
 	{
-		MicroMeterPoint const segmentVector = umVector / CastToFloat(m_potential.size());
-		MicroMeterPoint       umPoint       = umStartPoint;
-
-		m_pGraphics->StartPipeline
-		( 
-			coord.convert2fPixelPos( umStartPoint ), 
-			coord.convert2fPixelPos( umEndPoint ), 
-			coord.convert2fPixel   ( m_width * PIPELINE_INTERIOR ), 
-			GetInteriorColor( * m_potential.begin() ) 
-		);
+		MicroMeterPoint const segmentVector{ umVector / CastToFloat(m_potential.size()) };
+		fPIXEL          const fWidth       { coord.convert2fPixel( m_width * PIPELINE_INTERIOR ) };
+		MicroMeterPoint       umPoint      { umStartPoint };
+		fPixelPoint           fPoint1      { coord.convert2fPixelPos( umPoint ) };
 
 		for ( auto & iter : m_potential )
 		{
 			umPoint += segmentVector; 
-			m_pGraphics->AddPipelinePoint
+			fPixelPoint fPoint2 { coord.convert2fPixelPos( umPoint ) };
+			m_pGraphics->DrawLine
 			( 
-				coord.convert2fPixelPos( umPoint ), 
+				fPoint1, fPoint2, fWidth,
 				GetInteriorColor( iter ) 
 			);
+			fPoint1 = fPoint2;
 		}
-
-		m_pGraphics->RenderPipeline( );
 	}
 }
 
