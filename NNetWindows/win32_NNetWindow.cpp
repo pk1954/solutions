@@ -15,7 +15,7 @@
 #include "win32_stdDialogBox.h"
 #include "win32_scale.h"
 #include "win32_util_resource.h"
-#include "win32_graphicsInterface.h"
+#include "Direct2D.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWindow.h"
 
@@ -38,7 +38,6 @@ void NNetWindow::InitClass
 NNetWindow::NNetWindow( ) :
 	ModelWindow( ),
 	m_hPopupMenu( nullptr ),
-	m_pGraphics( nullptr ),
 	m_pScale( nullptr ),
 	m_ptLast( PP_NULL ),
 	m_bMoveAllowed( TRUE )
@@ -47,15 +46,10 @@ NNetWindow::NNetWindow( ) :
 void NNetWindow::Start
 ( 
 	HWND                  const hwndApp, 
-	GraphicsInterface   * const pGraphics,
 	DWORD                 const dwStyle,
 	std::function<bool()> const visibilityCriterion
 )
 {
-	m_pGraphics = pGraphics;
-
-	m_pScale = new Scale( m_pGraphics, & m_coord );
-
 	HWND hwnd = StartBaseWindow
 	( 
 		hwndApp,
@@ -66,11 +60,24 @@ void NNetWindow::Start
 		visibilityCriterion
 	);
 
+	m_D2d_driver.Initialize
+	( 
+		hwnd, 
+		200,   // TODO ????
+		100, 
+		FALSE 
+	);
+
+	Shape::SetGraphics( & m_D2d_driver );
+
 	m_pReadBuffer->RegisterObserver( this );
+
+	m_pScale = new Scale( & m_D2d_driver, & m_coord );
 }
 
 void NNetWindow::Stop( )
 {
+	m_D2d_driver.ShutDown();
 	delete m_pScale;
 	m_pScale = nullptr;
 	DestroyWindow( );
@@ -79,21 +86,7 @@ void NNetWindow::Stop( )
 NNetWindow::~NNetWindow( )
 {
 	m_pNNetWorkThreadInterface = nullptr;
-	m_pGraphics = nullptr;
 }
-
-//void NNetWindow::Size( )
-//{
-//	Move
-//	(
-//		Util::CalcWindowRect
-//		( 
-//			m_coord.NNet2PixelRect( GridDimensions::GridRectFull() ),
-//			(DWORD)GetWindowLongPtr( GetWindowHandle( ), GWL_STYLE ) 
-//		), 
-//		FALSE 
-//	);
-//}
 
 void NNetWindow::Zoom( bool const bZoomIn  )
 {
@@ -252,6 +245,13 @@ void NNetWindow::drawHighlightedShape( NNetModel const & model, PixelCoordsFp & 
 
 void NNetWindow::doPaint( ) 
 {
+	//m_D2d_driver.StartPipeline
+	//( 
+	//	fPixelPoint::NULL_VAL(), 
+	//	fPixelPoint::NULL_VAL(), 
+	//	fPIXEL::NULL_VAL(), 
+	//	COLORREF( 0 )
+	//);
 	NNetModel const * pModel = m_pReadBuffer->GetModel( );
 	pModel->Apply2All<Shape>   ( [&]( Shape    & shape ) { shape.DrawExterior( m_coord ); } );
 	pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { shape.DrawInterior( m_coord ); } );
@@ -260,7 +260,7 @@ void NNetWindow::doPaint( )
 	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
 //	m_pGraphics->SetFontSize( 15_PIXEL );
 	pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawText( m_coord ); } );
-	m_pGraphics->RenderForegroundObjects( );
+	m_D2d_driver.RenderForegroundObjects( );
 }
 
 void NNetWindow::OnPaint( )
@@ -269,13 +269,20 @@ void NNetWindow::OnPaint( )
 	{
 		PAINTSTRUCT ps;
 		HDC const hDC = BeginPaint( &ps );
-		if ( m_pGraphics->StartFrame( GetWindowHandle(), hDC ) )
+		if ( m_D2d_driver.StartFrame( GetWindowHandle(), hDC ) )
 		{
 			doPaint( );
-			m_pGraphics->EndFrame( GetWindowHandle() );
+			m_D2d_driver.EndFrame( GetWindowHandle() );
 		}
 		EndPaint( &ps );
 	}
+}
+
+void NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
+{
+	UINT width  = LOWORD(lParam);
+	UINT height = HIWORD(lParam);
+	m_D2d_driver.Resize( width, height );
 }
 
 void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )

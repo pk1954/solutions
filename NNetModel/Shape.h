@@ -9,7 +9,7 @@
 
 using ShapeId = NamedType< long, struct ShapeIdParam >;
 
-class GraphicsInterface;
+class D2D_driver;
 class PixelCoordsFp;
 class NNetModel;
 
@@ -119,14 +119,14 @@ public:
 	void SetId( ShapeId const id ) { m_identifier = id;	}
 
 	static tShapeType const GetShapeType( wchar_t const * const );
-	static void SetGraphics( GraphicsInterface * const pGraphics ) { m_pGraphics = pGraphics; }
+	static void SetGraphics( D2D_driver * const pGraphics ) { m_pGraphics = pGraphics; }
 
 protected:
 
 	NNetModel * m_pNNetModel;
 	mV          m_mVinputBuffer;
 
-	static GraphicsInterface * m_pGraphics;
+	static D2D_driver * m_pGraphics;
 
 	COLORREF GetInteriorColor( mV const ) const;
 	COLORREF GetInteriorColor( ) const { return GetInteriorColor( m_mVinputBuffer ); }

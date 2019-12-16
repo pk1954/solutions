@@ -9,7 +9,7 @@
 
 using std::unordered_map;
 
-GraphicsInterface * Shape::m_pGraphics { nullptr };
+D2D_driver * Shape::m_pGraphics { nullptr };
 
 COLORREF Shape::GetInteriorColor( mV const voltageInput ) const
 {

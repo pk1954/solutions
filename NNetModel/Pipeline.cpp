@@ -7,7 +7,7 @@
 #include "assert.h"
 #include "Geometry.h"
 #include "PixelCoordsFp.h"
-#include "win32_graphicsInterface.h"
+#include "Direct2D.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
 #include "Pipeline.h"

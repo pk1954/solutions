@@ -3,7 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "win32_graphicsInterface.h"
+#include "Direct2D.h"
 #include "PixelCoordsFp.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"

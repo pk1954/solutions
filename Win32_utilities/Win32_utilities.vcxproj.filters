@@ -87,9 +87,6 @@
     <ClInclude Include="win32_baseRefreshRate.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_scale.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_stdDialogBox.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -141,9 +138,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_baseRefreshRate.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_scale.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

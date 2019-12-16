@@ -91,6 +91,7 @@ private:
 	virtual void OnLButtonDown( WPARAM const, LPARAM const );
 	virtual void OnLButtonUp  ( WPARAM const, LPARAM const );
 	virtual void OnSetCursor  ( WPARAM const, LPARAM const );
+	virtual void OnSize       ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
 	void newFieldSize( PIXEL const, GridPoint const );

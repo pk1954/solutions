@@ -25,4 +25,3 @@ int APIENTRY wWinMain
 
 	return MessagePump( hInstance, App, IDC_NNET_SIMU_MAIN );
 }
-

@@ -406,6 +406,12 @@ void GridWindow::Size( )
 	);
 }
 
+void GridWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
+{
+	UINT width  = LOWORD(lParam);
+	UINT height = HIWORD(lParam);
+}
+
 void GridWindow::newFieldSize
 ( 
 	PIXEL     const pixfieldSize, 

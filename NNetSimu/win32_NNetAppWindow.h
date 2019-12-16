@@ -15,7 +15,6 @@
 #include "win32_winManager.h"
 #include "win32_scriptHook.h"
 #include "SlowMotionRatio.h"
-#include "D3D_driver.h"
 
 // application
 
@@ -25,16 +24,10 @@
 #include "win32_NNetReadBuffer.h"
 #include "win32_NNetController.h"
 
-class Script;
-class AppMenu;
-class StatusBar;
-class ModelWindow;
 class NNetModel;
-class NNetWindow;
 class CrsrWindow;
 class TimeDisplay;
 class SlowMotionDisplay;
-class GraphicsInterface;
 class NNetModelStorage;
 class ParameterDialog;
 
@@ -59,7 +52,6 @@ private:
 
 	Util::Event              m_eventPOI;
 
-	D3D_driver              m_D3d_driver;
 	NNetWorkThreadInterface m_NNetWorkThreadInterface;
 	ActionTimer             m_atComputation;
 	ActionTimer             m_atDisplay;
@@ -67,7 +59,6 @@ private:
 	SlowMotionRatio         m_SlowMotionRatio;
 
 	NNetReadBuffer        * m_pNNetReadBuffer;
-	GraphicsInterface     * m_pGraphics;
 	NNetController        * m_pNNetController;
 	NNetModel             * m_pModelDataWork;
 	NNetWindow            * m_pMainNNetWindow;

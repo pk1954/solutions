@@ -6,6 +6,7 @@
 
 #include "MoreTypes.h"
 #include "Shape.h"
+#include "Direct2D.h"
 #include "PixelCoordsFp.h"
 #include "NNetReadBuffer.h"  // do not remove! class definition not sufficient.
 #include "win32_modelWindow.h"
@@ -14,7 +15,6 @@ using std::wstring;
 
 class Scale;
 class ActionTimer;
-class GraphicsInterface;
 class NNetWorkThreadInterface;
 
 class NNetWindow : public ModelWindow
@@ -32,7 +32,6 @@ public:
 	void Start
 	( 
 		HWND                  const, 
-		GraphicsInterface   * const, 
 		DWORD                 const,
 		std::function<bool()> const
 	);
@@ -61,8 +60,8 @@ private:
 	HMENU m_hPopupMenu;
 	BOOL  m_bMoveAllowed;    // TRUE: move with mouse is possible
 
-	GraphicsInterface * m_pGraphics;
-	Scale             * m_pScale;
+	D2D_driver m_D2d_driver;
+	Scale    * m_pScale;
 
 	PixelPoint m_ptLast;	 	   // Last cursor position during selection 
 
@@ -77,6 +76,7 @@ private:
 	virtual void OnLButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const );
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
+	virtual void OnSize              ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
     LPARAM        crsPos2LPARAM( ) const;

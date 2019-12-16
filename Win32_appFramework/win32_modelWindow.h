@@ -32,6 +32,7 @@ protected:
 	virtual void OnLButtonDown       ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const ) = 0;
+	virtual void OnSize              ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnPaint             ( )                            = 0;
 
 	static ActionTimer * m_pDisplayTimer;

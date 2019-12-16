@@ -7,13 +7,13 @@
 #include <sstream> 
 #include "PixelTypes.h"
 
-class GraphicsInterface;
+class D2D_driver;
 class PixelCoordsFp;
 
 class Scale
 {
 public:
-	Scale( GraphicsInterface * const,  PixelCoordsFp * const );
+	Scale( D2D_driver * const,  PixelCoordsFp * const );
 
 	void ShowScale( fPIXEL const );
 
@@ -22,8 +22,8 @@ private:
 
 	std::wostringstream m_wBuffer;
 
-	GraphicsInterface * m_pGraphics;
-	PixelCoordsFp      * m_pfPixelCoords;
+	D2D_driver    * m_pGraphics;
+	PixelCoordsFp * m_pfPixelCoords;
 
 	void displayTicks( fPixelPoint const, fPixelPoint const, float const, int const );
 	void displayScaleNumber( fPixelPoint const, float const, int const );

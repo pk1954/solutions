@@ -2,7 +2,6 @@
 //
 // Win32_appFramework
 
-
 #include "stdafx.h"
 #include <chrono>
 #include "trace.h"
@@ -13,6 +12,11 @@
 #include "win32_aboutBox.h"
 #include "win32_modelWindow.h"
 #include "win32_appMenu.h"
+#include "win32_baseWindow.h"
+#include "win32_winManager.h"
+#include "win32_histWindow.h"
+#include "win32_historyInfo.h"
+#include "win32_status.h"
 #include "win32_WorkThreadInterface.h"
 #include "win32_baseAppWindow.h"
 

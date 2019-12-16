@@ -73,7 +73,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)Direct2D;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -168,6 +168,7 @@
     <ClInclude Include="win32_NNetWorkThread.h" />
     <ClInclude Include="win32_NNetWorkThreadInterface.h" />
     <ClInclude Include="win32_parameterDlg.h" />
+    <ClInclude Include="win32_scale.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_crsrWindow.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="win32_NNetWorkThread.cpp" />
     <ClCompile Include="win32_NNetWorkThreadInterface.cpp" />
     <ClCompile Include="win32_parameterDlg.cpp" />
+    <ClCompile Include="win32_scale.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

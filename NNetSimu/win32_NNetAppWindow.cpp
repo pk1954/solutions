@@ -39,7 +39,6 @@
 // system and resources
 
 #include "Resource.h"
-#include "d3d_system.h"
 
 // application
 
@@ -50,7 +49,6 @@ using namespace std::literals::chrono_literals;
 NNetAppWindow::NNetAppWindow( ) :
 	m_pMainNNetWindow( nullptr ),
 	m_pModelDataWork( nullptr ),
-	m_pGraphics( nullptr ),
 	m_pSlowMotionDisplay( nullptr ),
 	m_pTimeDisplay( nullptr ),
 	m_pCrsrWindow( nullptr ),
@@ -90,17 +88,6 @@ NNetAppWindow::~NNetAppWindow( )
 
 void NNetAppWindow::Start( )
 {
-	m_D3d_driver.Initialize
-	( 
-		m_hwndApp, 
-		200,   // TODO ????
-		100, 
-		FALSE 
-	);
-
-	m_pGraphics = & m_D3d_driver;
-
-	Shape::SetGraphics( m_pGraphics );
 	BaseAppWindow::Start( m_pMainNNetWindow );
 	m_pAppMenu->Initialize
 	( 
@@ -127,7 +114,6 @@ void NNetAppWindow::Start( )
 	m_pMainNNetWindow->Start
 	( 
 		m_hwndApp, 
-		m_pGraphics, 
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		nullptr  // no visibility criterion. Allways visible
 	);

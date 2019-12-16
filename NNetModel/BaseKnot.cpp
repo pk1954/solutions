@@ -8,7 +8,7 @@
 #include "Geometry.h"
 #include "NNetModel.h"
 #include "PixelCoordsFp.h"
-#include "win32_graphicsInterface.h"
+#include "Direct2D.h"
 #include "BaseKnot.h"
 
 using std::find;
