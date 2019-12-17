@@ -6,7 +6,7 @@
 #include "Genome.h"
 #include "GeneType.h"
 
-void GeneType::Apply2AllEnabledGeneTypes( std::function<void(Id const &)> const & func )
+void GeneType::Apply2AllEnabledGeneTypes( function<void(Id const &)> const & func )
 {
     for ( int index = 0; index < static_cast<int>( Id::count ); ++index )
 	{

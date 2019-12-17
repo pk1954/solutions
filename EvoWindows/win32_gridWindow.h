@@ -36,11 +36,11 @@ public:
 
     void Start
 	( 
-		HWND                  const, 
-		GraphicsInterface   * const, 
-		DWORD                 const, 
-		PIXEL                 const, 
-		std::function<bool()> const
+		HWND                const, 
+		GraphicsInterface * const, 
+		DWORD               const, 
+		PIXEL               const, 
+		function<bool()>    const
 	);
 	void Stop( );
 

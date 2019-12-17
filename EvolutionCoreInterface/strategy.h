@@ -32,7 +32,7 @@ public:
 
 	static wchar_t const * const GetName( Id const );
 
-	static void Apply2All( std::function<void(Id const &)> const & func )
+	static void Apply2All( function<void(Id const &)> const & func )
 	{
         for ( int index = 0; index < COUNT; ++index )
 		{

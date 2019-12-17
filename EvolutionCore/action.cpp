@@ -6,7 +6,7 @@
 #include "Genome.h"
 #include "action.h"
 
-void Action::Apply2AllEnabledActions( std::function<void(Id const &)> const & func )
+void Action::Apply2AllEnabledActions( function<void(Id const &)> const & func )
 {
     for ( int index = 0; index < static_cast<int>( Id::count ); ++index )
 	{

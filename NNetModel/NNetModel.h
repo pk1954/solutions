@@ -93,7 +93,7 @@ public:
 	wchar_t const * const GetParameterUnit( tParameter const )         const;
 	bool            const HighlightedShapeCanBeDeleted( )              const;
 
-	Shape const * FindShapeUnderPoint( MicroMeterPoint const, std::function<bool(Shape const &)> const & ) const;
+	Shape const * FindShapeUnderPoint( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const ) const;
 
 	float const GetParameterValue( tParameter const, Shape const * = nullptr ) const;
@@ -124,7 +124,7 @@ public:
 	ShapeId const SuperHighlightShape( ShapeId const );
 
 	template <typename T>
-	void Apply2All( std::function<void(T &)> const & func ) const
+	void Apply2All( function<void(T &)> const & func ) const
 	{
 		for ( auto pShape : m_Shapes )
 		{
@@ -133,8 +133,8 @@ public:
 		}
 	}
 
-	void Apply2GlobalParameters( std::function<void(tParameter const &)> const & ) const;
-	void Apply2AllParameters   ( std::function<void(tParameter const &)> const & ) const;
+	void Apply2GlobalParameters( function<void(tParameter const &)> const & ) const;
+	void Apply2AllParameters   ( function<void(tParameter const &)> const & ) const;
 
 	void RecalcPipelines( );
 

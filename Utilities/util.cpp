@@ -16,7 +16,7 @@ extern void UpperCase( std::wstring & str )
 bool ApplyAutoCriterion
 ( 
 	tOnOffAuto const onOffAuto,
-	std::function<bool()> crit
+	function<bool()> crit
 )
 {
 	return ( onOffAuto == tOnOffAuto::on )

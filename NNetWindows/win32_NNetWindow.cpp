@@ -19,6 +19,8 @@
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWindow.h"
 
+using std::function;
+
 NNetReadBuffer          * NNetWindow::m_pReadBuffer              = nullptr;
 NNetWorkThreadInterface * NNetWindow::m_pNNetWorkThreadInterface = nullptr;
 PixelCoordsFp             NNetWindow::m_coord;
@@ -50,9 +52,9 @@ NNetWindow::NNetWindow( ) :
 
 void NNetWindow::Start
 ( 
-	HWND                  const hwndApp, 
-	DWORD                 const dwStyle,
-	std::function<bool()> const visibilityCriterion
+	HWND             const hwndApp, 
+	DWORD            const dwStyle,
+	function<bool()> const visibilityCriterion
 )
 {
 	HWND hwnd = StartBaseWindow

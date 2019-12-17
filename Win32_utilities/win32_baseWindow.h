@@ -13,12 +13,12 @@ public:
 
     HWND StartBaseWindow
 	( 
-		HWND                  const, 
-		UINT                  const, 
-		LPCTSTR               const, 
-		DWORD                 const, 
-		PixelRect             const *,
-		std::function<bool()> const
+		HWND             const, 
+		UINT             const, 
+		LPCTSTR          const, 
+		DWORD            const, 
+		PixelRect        const *,
+		function<bool()> const
 	);
 
 private:

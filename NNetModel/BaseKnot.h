@@ -67,7 +67,7 @@ public:
 		return m_outgoing.front();
 	}
 
-	void Apply2AllIncomingPipelines( std::function<void(ShapeId &)> const & func )
+	void Apply2AllIncomingPipelines( function<void(ShapeId &)> const & func )
 	{
 		for ( auto & id : m_incoming )
 		{
@@ -76,7 +76,7 @@ public:
 		}
 	}
 
-	void Apply2AllOutgoingPipelines( std::function<void(ShapeId &)> const & func )
+	void Apply2AllOutgoingPipelines( function<void(ShapeId &)> const & func )
 	{
 		for ( auto & id : m_outgoing )
 		{
@@ -85,7 +85,7 @@ public:
 		}
 	}
 
-	void Apply2AllIncomingPipelinesConst( std::function<void(ShapeId const)> const & func ) const
+	void Apply2AllIncomingPipelinesConst( function<void(ShapeId const)> const & func ) const
 	{
 		for ( auto id : m_incoming )
 		{
@@ -94,7 +94,7 @@ public:
 		}
 	}
 
-	void Apply2AllOutgoingPipelinesConst( std::function<void(ShapeId const)> const & func ) const
+	void Apply2AllOutgoingPipelinesConst( function<void(ShapeId const)> const & func ) const
 	{
 		for ( auto id : m_outgoing )
 		{
@@ -103,13 +103,13 @@ public:
 		}
 	}
 
-	void Apply2AllConnectedPipelines( std::function<void(ShapeId &)> const & func )
+	void Apply2AllConnectedPipelines( function<void(ShapeId &)> const & func )
 	{
 		Apply2AllIncomingPipelines( [&]( ShapeId & idPipeline ) { func( idPipeline ); } );
 		Apply2AllOutgoingPipelines( [&]( ShapeId & idPipeline ) { func( idPipeline ); } );
 	}
 
-	void Apply2AllConnectedPipelinesConst( std::function<void(ShapeId const)> const & func ) const
+	void Apply2AllConnectedPipelinesConst( function<void(ShapeId const)> const & func ) const
 	{
 		Apply2AllIncomingPipelinesConst( [&]( ShapeId idPipeline ) { func( idPipeline ); } );
 		Apply2AllOutgoingPipelinesConst( [&]( ShapeId idPipeline ) { func( idPipeline ); } );

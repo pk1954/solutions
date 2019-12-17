@@ -16,7 +16,7 @@ HistInfoWindow::HistInfoWindow( ) :
     m_pHistSys( nullptr )
 { }
 
-void HistInfoWindow::Start( HWND const hwndParent, std::function<bool()> const visibilityCriterion ) 
+void HistInfoWindow::Start( HWND const hwndParent, function<bool()> const visibilityCriterion ) 
 {
 	StartTextWindow
 	( 

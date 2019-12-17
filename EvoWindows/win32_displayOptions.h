@@ -34,5 +34,5 @@ private:
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 
-	std::function<int( EvolutionCore const * const, GridPoint const )> m_IntValueLambda;
+	function<int( EvolutionCore const * const, GridPoint const )> m_IntValueLambda;
 };

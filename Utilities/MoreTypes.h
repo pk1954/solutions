@@ -111,8 +111,8 @@ inline bool IsCloseToZero( MicroMeterPoint const pnt )
 	return IsCloseToZero( pnt.GetXvalue() ) && IsCloseToZero( pnt.GetYvalue() );
 }
 
-using NNetPointFunc     = std::function<void (MicroMeterPoint const)>;
-using NNetPointBoolFunc = std::function<bool (MicroMeterPoint const)>;
+using NNetPointFunc     = function<void (MicroMeterPoint const)>;
+using NNetPointBoolFunc = function<bool (MicroMeterPoint const)>;
 
 ////////////// meterPerSec /////////////////////////////////////
 

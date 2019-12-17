@@ -13,6 +13,7 @@
 #include "win32_util.h"
 
 using std::chrono::milliseconds;
+using std::function;
 
 class RootWindow : public ObserverInterface
 {
@@ -21,7 +22,7 @@ public:
     RootWindow( );
     virtual ~RootWindow( );
 
-	void StartRootWindow( std::function<bool()> const );
+	void StartRootWindow( function<bool()> const );
 
     HWND GetWindowHandle( ) const { return m_hwnd; };
 
@@ -193,11 +194,11 @@ private:
 
 	class WindowRefreshRate;
 
-	HWND                  m_hwnd;
-	HWND                  m_hwndApp;
-	WindowRefreshRate   * m_pRefreshRate;
-	tOnOffAuto            m_visibilityMode;
-	std::function<bool()> m_visibilityCriterion;
+	HWND                m_hwnd;
+	HWND                m_hwndApp;
+	WindowRefreshRate * m_pRefreshRate;
+	tOnOffAuto          m_visibilityMode;
+	function<bool()>    m_visibilityCriterion;
 
 	void addWinMenu( HMENU const, std::wstring const ) const;
 	void adjustWinMenu( HMENU const ) const;

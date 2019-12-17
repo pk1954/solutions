@@ -21,7 +21,7 @@ public:
 		Delay &, 
 		ActionTimer &, 
 		ActionTimer &,
-		std::function<bool()> const 
+		function<bool()> const 
 	);
 
 	void Stop( );

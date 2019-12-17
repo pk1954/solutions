@@ -53,7 +53,7 @@ public:
 		}
 	}
 
-	void Apply2All( std::function<void(T &)> const & func )
+	void Apply2All( function<void(T &)> const & func )
 	{
         for ( T & elem : m_tArray )
 		{

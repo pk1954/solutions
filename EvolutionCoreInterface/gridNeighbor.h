@@ -34,7 +34,7 @@ public:
 		m_neighbors.push_back( gp );
 	}
 
-	void RemoveFromList( std::function<bool(GridPoint const)> const & func )
+	void RemoveFromList( function<bool(GridPoint const)> const & func )
 	{
 		m_neighbors.erase( std::remove_if(m_neighbors.begin(), m_neighbors.end(), func), m_neighbors.end() ); 
 	}
@@ -65,7 +65,7 @@ public:
 		return std::find(m_neighbors.begin(), m_neighbors.end(), gp) != m_neighbors.end();
 	}
 
-	void Apply2All( std::function<void(GridPoint const)> const & func )
+	void Apply2All( function<void(GridPoint const)> const & func )
 	{
 		for ( auto gp : m_neighbors )
 		{

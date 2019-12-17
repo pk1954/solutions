@@ -16,7 +16,7 @@ public:
 
 void Clock
 ( 
-	std::wstring const wstr, std::function<void( )> code
+	std::wstring const wstr, function<void( )> code
 )
 {
 	Start( );

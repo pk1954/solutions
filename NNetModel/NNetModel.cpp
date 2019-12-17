@@ -456,13 +456,13 @@ void NNetModel::checkConsistency( )
 	Apply2All<Shape>( [&]( Shape & shape ) { CheckConsistency( & shape ); } );
 }
 
-void NNetModel::Apply2GlobalParameters( std::function<void(tParameter const &)> const & func ) const
+void NNetModel::Apply2GlobalParameters( function<void(tParameter const &)> const & func ) const
 {
 	for ( int i = 0; i <= static_cast<int>(tParameter::tParameterLastGlobal); ++i )
 		func( static_cast<tParameter>( i ) );
 }
 
-void NNetModel::Apply2AllParameters( std::function<void(tParameter const &)> const & func ) const
+void NNetModel::Apply2AllParameters( function<void(tParameter const &)> const & func ) const
 {
 	for ( int i = 0; i <= static_cast<int>(tParameter::tParameterLast); ++i )
 		func( static_cast<tParameter>( i ) );
@@ -493,7 +493,7 @@ void NNetModel::ResetAll( )
 	m_Shapes.clear();
 }
 
-Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt, std::function<bool(Shape const &)> const & crit ) const
+Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt, function<bool(Shape const &)> const & crit ) const
 {
 	for ( size_t i = m_Shapes.size(); i --> 0; )	
 	{

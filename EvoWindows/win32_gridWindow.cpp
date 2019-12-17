@@ -62,11 +62,11 @@ GridWindow::GridWindow( ) :
 
 void GridWindow::Start
 ( 
-	HWND                  const hwndApp, 
-	GraphicsInterface   * const pGraphics,
-    DWORD                 const dwStyle,
-    PIXEL                 const pixFieldSize,
-	std::function<bool()> const visibilityCriterion
+	HWND                const hwndApp, 
+	GraphicsInterface * const pGraphics,
+    DWORD               const dwStyle,
+    PIXEL               const pixFieldSize,
+	function<bool()>    const visibilityCriterion
 )
 {
     assert( pixFieldSize > 0_PIXEL );

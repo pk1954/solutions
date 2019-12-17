@@ -10,6 +10,8 @@
 #include "win32_textWindowThread.h"
 #include "win32_textWindow.h"
 
+using std::function;
+
 TextWindow::TextWindow( ) :  
     BaseWindow( ),
 	m_pTextWindowThread( nullptr ),
@@ -20,12 +22,12 @@ TextWindow::TextWindow( ) :
 
 void TextWindow::StartTextWindow
 (
-    HWND                  const   hwndParent,
-	PixelRect             const & rect,
-	LPCTSTR               const   szClass,
-    UINT                  const   uiAlpha,
-	BOOL                  const   bAsync,
-	std::function<bool()> const   visibilityCriterion
+    HWND             const   hwndParent,
+	PixelRect        const & rect,
+	LPCTSTR          const   szClass,
+    UINT             const   uiAlpha,
+	BOOL             const   bAsync,
+	function<bool()> const   visibilityCriterion
 )
 {
     HWND const hwnd = StartBaseWindow

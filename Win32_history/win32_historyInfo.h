@@ -12,7 +12,7 @@ class HistInfoWindow: public TextWindow
 public:
     HistInfoWindow( );
 
-	void Start(	HWND const, std::function<bool()> const );
+	void Start(	HWND const, function<bool()> const );
 	void Stop( );
 
 	void SetHistorySystem( HistorySystem * );

@@ -24,11 +24,11 @@ PerformanceWindow::PerformanceWindow( ) :
 
 void PerformanceWindow::Start
 ( 
-	HWND                  const hwndParent, 
-	Delay                     & delay,
-	ActionTimer               & atCompute, 
-	ActionTimer               & atDisplay,
-	std::function<bool()> const visibilityCriterion 
+	HWND             const hwndParent, 
+	Delay                & delay,
+	ActionTimer          & atCompute, 
+	ActionTimer          & atDisplay,
+	function<bool()> const visibilityCriterion 
 )
 {
 	m_pDelay         = & delay;

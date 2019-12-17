@@ -12,9 +12,9 @@ public:
 
     HWND StartBaseDialog
 	( 
-		HWND                  const, 
-		LPCTSTR               const, 
-		std::function<bool()> const 
+		HWND             const, 
+		LPCTSTR          const, 
+		function<bool()> const 
 	);
 
 private:

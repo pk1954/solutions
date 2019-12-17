@@ -12,6 +12,7 @@
 #include "win32_modelWindow.h"
 
 using std::wstring;
+using std::function;
 
 class Scale;
 class ActionTimer;
@@ -31,16 +32,15 @@ public:
 
 	void Start
 	( 
-		HWND                  const, 
-		DWORD                 const,
-		std::function<bool()> const
+		HWND             const, 
+		DWORD            const,
+		function<bool()> const
 	);
 
 	void Stop( );
 
 	~NNetWindow( );
 
-//	void      Size( );
 	void       Zoom( bool const );
 	void       SetPixelSize( MicroMeter const );
 	MicroMeter GetPixelSize( ) const;

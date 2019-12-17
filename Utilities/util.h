@@ -11,6 +11,8 @@
 #include "NamedType.h"
 #include "debug.h"
 
+using std::function;
+
 extern void UpperCase( std::wstring & );
 
 enum class tOnOffAuto : long
@@ -20,7 +22,7 @@ enum class tOnOffAuto : long
 	automatic
 };
 
-extern bool ApplyAutoCriterion( tOnOffAuto const, std::function<bool()> );
+extern bool ApplyAutoCriterion( tOnOffAuto const, function<bool()> );
 
 using BYTES = NamedType< unsigned long long, struct BYTES_Parameter >;
 

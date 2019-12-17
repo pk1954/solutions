@@ -26,7 +26,7 @@ enum class tShapeType
 	undefined,
 };
 
-static void Apply2AllShapeTypes( std::function<void(tShapeType const &)> const & func )
+static void Apply2AllShapeTypes( function<void(tShapeType const &)> const & func )
 {
 	for ( int i = 0; i <= static_cast<int>(tShapeType::shapeTypeLast); ++i )
 		func( static_cast<tShapeType>( i ) );

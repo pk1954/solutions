@@ -44,6 +44,6 @@ private:
     GRID_COORD	    m_radius;
 	ManipulatorFunc m_manFunc;
 
-	std::function<void   (GridPoint const, short const)> m_func;
-    std::function<PERCENT(GridPoint const)>              m_filter;
+	function<void   (GridPoint const, short const)> m_func;
+    function<PERCENT(GridPoint const)>              m_filter;
 };

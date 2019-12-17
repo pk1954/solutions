@@ -40,8 +40,6 @@ public:
 	virtual void Start( );
 	virtual void Stop( );
 
-	void OpenModel( );
-
 private:
 	NNetAppWindow             ( NNetAppWindow const & );  // noncopyable class 
 	NNetAppWindow & operator= ( NNetAppWindow const & );  // noncopyable class 
@@ -50,7 +48,7 @@ private:
 
 	void configureStatusBar( );
 
-	Util::Event              m_eventPOI;
+	Util::Event             m_eventPOI;
 
 	NNetWorkThreadInterface m_NNetWorkThreadInterface;
 	ActionTimer             m_atComputation;
@@ -58,13 +56,13 @@ private:
 	ScriptHook              m_ScriptHook;
 	SlowMotionRatio         m_SlowMotionRatio;
 
-	NNetReadBuffer        * m_pNNetReadBuffer;
-	NNetController        * m_pNNetController;
-	NNetModel             * m_pModelDataWork;
-	NNetWindow            * m_pMainNNetWindow;
-	TimeDisplay           * m_pTimeDisplay;
-	SlowMotionDisplay     * m_pSlowMotionDisplay;
-	CrsrWindow            * m_pCrsrWindow;
-	NNetModelStorage      * m_pNNetModelStorage;
-	ParameterDialog       * m_pParameterDlg;
+	NNetReadBuffer    * m_pNNetReadBuffer;
+	NNetController    * m_pNNetController;
+	NNetModel         * m_pModelDataWork;
+	NNetWindow        * m_pMainNNetWindow;
+	TimeDisplay       * m_pTimeDisplay;
+	SlowMotionDisplay * m_pSlowMotionDisplay;
+	CrsrWindow        * m_pCrsrWindow;
+	NNetModelStorage  * m_pNNetModelStorage;
+	ParameterDialog   * m_pParameterDlg;
 };

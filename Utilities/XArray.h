@@ -5,6 +5,8 @@
 #include <limits>
 #include <functional>
 
+using std::function;
+
 template <typename T>
 void DivNonZero( T & op, T const div )
 {
@@ -50,7 +52,7 @@ public:
     T & General() { return m_tGeneral; }
     T & operator[] ( unsigned int uiIndex ) { return m_tArray.at( uiIndex ); }
 
-	void Apply2XArray( std::function< void ( T & ) > const & func )
+	void Apply2XArray( function< void ( T & ) > const & func )
 	{
         for ( auto & elem : m_tArray )
 		{
