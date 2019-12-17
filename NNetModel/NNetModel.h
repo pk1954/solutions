@@ -152,7 +152,7 @@ public:
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
 private:
-			  
+
 	// model data
 	vector<Shape *> m_Shapes;
 	MicroSecs       m_timeStamp;

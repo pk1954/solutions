@@ -35,6 +35,11 @@ void NNetWindow::InitClass
 	m_pNNetWorkThreadInterface = pNNetWorkThreadInterface;
 }
 
+void NNetWindow::setStdFontSize( )
+{
+	m_D2d_driver.SetStdFontSize( m_coord.convert2fPixel( 20._MicroMeter ).GetValue() );
+}
+
 NNetWindow::NNetWindow( ) :
 	ModelWindow( ),
 	m_hPopupMenu( nullptr ),
@@ -59,19 +64,10 @@ void NNetWindow::Start
 		nullptr,
 		visibilityCriterion
 	);
-
-	m_D2d_driver.Initialize
-	( 
-		hwnd, 
-		200,   // TODO ????
-		100, 
-		FALSE 
-	);
-
+	m_D2d_driver.Initialize( hwnd );
+	setStdFontSize( );
 	Shape::SetGraphics( & m_D2d_driver );
-
 	m_pReadBuffer->RegisterObserver( this );
-
 	m_pScale = new Scale( & m_D2d_driver, & m_coord );
 }
 
@@ -102,6 +98,7 @@ void NNetWindow::SetPixelSize( MicroMeter const newSize )
 	{
 		m_coord.CenterSimulationArea( umPointcenter, fPixPointCenter ); 
 		Notify( TRUE );     // cause immediate repaint
+		setStdFontSize( );
 	}
 	else
 	{
@@ -245,13 +242,6 @@ void NNetWindow::drawHighlightedShape( NNetModel const & model, PixelCoordsFp & 
 
 void NNetWindow::doPaint( ) 
 {
-	//m_D2d_driver.StartPipeline
-	//( 
-	//	fPixelPoint::NULL_VAL(), 
-	//	fPixelPoint::NULL_VAL(), 
-	//	fPIXEL::NULL_VAL(), 
-	//	COLORREF( 0 )
-	//);
 	NNetModel const * pModel = m_pReadBuffer->GetModel( );
 	pModel->Apply2All<Shape>   ( [&]( Shape    & shape ) { shape.DrawExterior( m_coord ); } );
 	pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { shape.DrawInterior( m_coord ); } );
@@ -260,7 +250,6 @@ void NNetWindow::doPaint( )
 	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
 //	m_pGraphics->SetFontSize( 15_PIXEL );
 	pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawText( m_coord ); } );
-	m_D2d_driver.RenderForegroundObjects( );
 }
 
 void NNetWindow::OnPaint( )

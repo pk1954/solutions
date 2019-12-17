@@ -100,7 +100,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Pathcch.lib;GDI.lib;d2d1.lib;Direct2D.lib;ComCtl32.lib;msimg32.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;Win32_appFramework.lib;NNetModel.lib;NNetWindows.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Pathcch.lib;GDI.lib;d2d1.lib;Dwrite.lib;Direct2D.lib;ComCtl32.lib;msimg32.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;Win32_appFramework.lib;NNetModel.lib;NNetWindows.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

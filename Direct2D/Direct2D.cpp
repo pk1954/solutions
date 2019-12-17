@@ -5,6 +5,7 @@
 #include <string.h>
 #include "d2d1.h"
 #include "d2d1helper.h"
+#include "dwrite.h"
 #include "util.h"
 #include "win32_util.h"
 #include "PixelTypes.h"
@@ -13,8 +14,19 @@
 D2D_driver::D2D_driver( ):
 	m_pD2DFactory( nullptr ),
 	m_pRenderTarget( nullptr ),
-	m_pBlackBrush( nullptr ),
+	m_pDWriteFactory( nullptr ),
+	m_pStdTextFormat( nullptr ),
+	m_hwnd( nullptr ),
 	m_hr( 0 )
+{
+}
+
+D2D_driver::~D2D_driver()
+{
+	discardResources( );
+}
+
+void D2D_driver::createResources( ) 
 {
 	m_hr = D2D1CreateFactory
 	(
@@ -22,49 +34,44 @@ D2D_driver::D2D_driver( ):
 		& m_pD2DFactory
 	);
 	assert( SUCCEEDED( m_hr ) );
-}
 
-D2D_driver::~D2D_driver()
-{
-	SafeRelease( &  m_pD2DFactory );
-}
+	m_hr = DWriteCreateFactory
+	(
+		DWRITE_FACTORY_TYPE_SHARED,
+		__uuidof(m_pDWriteFactory),
+		reinterpret_cast<IUnknown **>(& m_pDWriteFactory)
+	);
+	assert( SUCCEEDED( m_hr ) );
 
-void D2D_driver::Initialize
-( 
-	HWND  const hwndApp, 
-	ULONG const ulModelWidth, 
-	ULONG const ulModelHeight, 
-	BOOL  const bHexagon 
-) 
-{
-	RECT rc;
-	GetClientRect( hwndApp, &rc );
+	RECT rc = Util::GetClRect( m_hwnd );
 
 	m_hr = m_pD2DFactory->CreateHwndRenderTarget
 	(
 		D2D1::RenderTargetProperties(),
-		D2D1::HwndRenderTargetProperties
-		(
-			hwndApp,
-			D2D1::SizeU( rc.right - rc.left, rc.bottom - rc.top )
-		),
+		D2D1::HwndRenderTargetProperties( m_hwnd, D2D1::SizeU( rc.right - rc.left, rc.bottom - rc.top )	),
 		& m_pRenderTarget
 	);
 	assert( SUCCEEDED( m_hr ) );
 
-//	m_pRenderTarget->SetTransform( D2D1::Matrix3x2F::Identity() );
+	//	m_pRenderTarget->SetTransform( D2D1::Matrix3x2F::Identity() );
+}
 
-	m_pRenderTarget->CreateSolidColorBrush
-	(
-		D2D1::ColorF( D2D1::ColorF::Black ),
-		& m_pBlackBrush
-	); 
-	assert( SUCCEEDED( m_hr ) );
+void D2D_driver::discardResources( ) 
+{
+	SafeRelease( & m_pD2DFactory );
+	SafeRelease( & m_pDWriteFactory );
+	SafeRelease( & m_pRenderTarget );
+}
+
+void D2D_driver::Initialize( HWND const hwndApp ) 
+{
+	m_hwnd = hwndApp;
+	createResources( );
 }
 
 void D2D_driver::Resize( int const iWidth, int const iHeight )
 {
-	if (m_pRenderTarget)
+	if ( m_pRenderTarget )
 	{
 		m_pRenderTarget->Resize( D2D1::SizeU( iWidth, iHeight ) );
 	}
@@ -72,58 +79,71 @@ void D2D_driver::Resize( int const iWidth, int const iHeight )
 
 void D2D_driver::ShutDown( )
 {
-	SafeRelease( & m_pRenderTarget );
-	SafeRelease( & m_pBlackBrush );
+	discardResources( );
 }
 
-PixelRect D2D_driver::CalcGraphicsRect( wstring const & wstr )
+void D2D_driver::DeleteTextFormat( IDWriteTextFormat ** ppFormat )
 {
-	RECT rect{ 0, 0, 0, 0 };
-	return Util::RECT2PixelRect( rect );
+	SafeRelease( ppFormat );
 }
 
-void D2D_driver::DisplayGraphicsText
-( 
-	PixelRect    const & pixRect, 
-	std::wstring const & wstr,
-	DWORD        const   format,
-	COLORREF     const   col 
-)
+IDWriteTextFormat * D2D_driver::NewTextFormat( float const fSize )
 {
+	IDWriteTextFormat * pTextFormat;
+	m_hr = m_pDWriteFactory->CreateTextFormat
+	(
+		L"",
+		NULL,
+		DWRITE_FONT_WEIGHT_NORMAL,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		fSize,
+		L"", //locale
+		& pTextFormat
+	);
+	assert( SUCCEEDED( m_hr ) );
+
+	m_hr = pTextFormat->SetTextAlignment( DWRITE_TEXT_ALIGNMENT_CENTER );
+
+	return pTextFormat;
+}
+
+void D2D_driver::SetStdFontSize( float const fSize )
+{
+	SafeRelease( & m_pStdTextFormat );
+	m_pStdTextFormat = NewTextFormat( fSize );
 }
 
 // functions called per frame
 
 bool D2D_driver::StartFrame( HWND const hwnd, HDC const hdc )
 {
+	if ( ! m_pRenderTarget )
+		createResources( );
 	m_pRenderTarget->BeginDraw();
 	m_pRenderTarget->Clear( D2D1::ColorF(D2D1::ColorF::Azure) );
 	return true;
 }
 
-void D2D_driver::SetFontSize( PIXEL const nPointSize )
-{
-}
-
-void D2D_driver::AddBackGround( PixelPoint const ptPos, COLORREF const color, float const fPixSize )
-{
-}
-
-void D2D_driver::RenderTranspRect
+void D2D_driver::DisplayText
 ( 
-	PixelRect    const & rectTransparent, 
-	unsigned int const   uiALpha,
-	COLORREF     const   color
+	PixelRect           const & pixRect, 
+	std::wstring        const & wstr,
+	COLORREF            const   color,
+	IDWriteTextFormat * const   pTextFormat
 )
 {
-}
-
-void D2D_driver::RenderBackground( )
-{
-}
-
-void D2D_driver::RenderForegroundObjects( )
-{
+	IDWriteTextFormat    * pTF { pTextFormat ? pTextFormat : m_pStdTextFormat };
+	ID2D1SolidColorBrush * pBrush { createBrush( color ) };
+	D2D1_RECT_F            d2Rect 
+	{ 
+		static_cast<float>(pixRect.GetLeft  ().GetValue()),
+		static_cast<float>(pixRect.GetTop   ().GetValue()),
+		static_cast<float>(pixRect.GetRight ().GetValue()),
+		static_cast<float>(pixRect.GetBottom().GetValue())
+	};
+	m_pRenderTarget->DrawText( wstr.c_str(), static_cast<UINT32>(wstr.length()), pTF, d2Rect, pBrush );
+	SafeRelease( & pBrush );
 }
 
 // Finish rendering; page flip.
@@ -131,7 +151,11 @@ void D2D_driver::RenderForegroundObjects( )
 void D2D_driver::EndFrame( HWND const hwnd )
 {
 	m_hr = m_pRenderTarget->EndDraw();
-	assert( SUCCEEDED( m_hr ) );
+	if (m_hr == D2DERR_RECREATE_TARGET)
+	{
+		m_hr = S_OK;
+		discardResources( );
+	}
 }
 
 void D2D_driver::DrawLine
@@ -142,24 +166,17 @@ void D2D_driver::DrawLine
 	COLORREF    const   color
 )
 {
-	ID2D1SolidColorBrush * m_pBrush;
-	D2D1::ColorF d2dCol
-	{
-		GetRValue(color) / 255.0, 
-		GetGValue(color) / 255.0, 
-		GetBValue(color) / 255.0, 
-		1.f 
-	};
-
-	m_pRenderTarget->CreateSolidColorBrush( d2dCol, & m_pBrush ); 
+	ID2D1SolidColorBrush * pBrush = createBrush( color );
 
 	m_pRenderTarget->DrawLine
 	( 
 		D2D1_POINT_2F{ fpp1.GetXvalue(), fpp1.GetYvalue() }, 
 		D2D1_POINT_2F{ fpp2.GetXvalue(), fpp2.GetYvalue() },
-		m_pBrush,
+		pBrush,
 		fpixWidth.GetValue()
 	);
+
+	SafeRelease( & pBrush );
 }
 
 void D2D_driver::DrawPolygon
@@ -170,4 +187,33 @@ void D2D_driver::DrawPolygon
 	fPIXEL      const fPixRadius 
 )
 {
+	DrawCircle( ptPos, color, fPixRadius );
+}
+
+void D2D_driver::DrawCircle
+(
+	fPixelPoint const ptPos,
+	COLORREF    const color, 
+	fPIXEL      const fPixRadius 
+)
+{
+	ID2D1SolidColorBrush * pBrush = createBrush( color );
+	D2D1_ELLIPSE ellipse { D2D1_POINT_2F{ ptPos.GetXvalue(), ptPos.GetYvalue() }, fPixRadius.GetValue(), fPixRadius.GetValue() }; 
+	m_pRenderTarget->FillEllipse( & ellipse, pBrush	);
+	SafeRelease( & pBrush );
+}
+
+ID2D1SolidColorBrush * D2D_driver::createBrush( COLORREF const color )
+{
+	D2D1::ColorF d2dCol
+	{
+		static_cast<float>(GetRValue(color) / 255.0), 
+		static_cast<float>(GetGValue(color) / 255.0), 
+		static_cast<float>(GetBValue(color) / 255.0), 
+		1.0f 
+	};
+
+	ID2D1SolidColorBrush * pBrush;
+	m_pRenderTarget->CreateSolidColorBrush( d2dCol, & pBrush ); 
+	return pBrush;
 }

@@ -18,6 +18,8 @@ class GraphicsInterface;
 class PixelCoordsFp;
 class NNetModel;
 
+struct IDWriteTextFormat;
+
 class BaseKnot : public Shape
 {
 public:
@@ -30,7 +32,8 @@ public:
  	)
 	  : Shape( pModel, type ),
 		m_center( center ),
-		m_extension( extension )
+		m_extension( extension ),
+		m_pTextFormat( nullptr )
 	{ }
 
 	virtual ~BaseKnot() {}
@@ -129,6 +132,7 @@ protected:
 
 private:
 
-	MicroMeterPoint m_center;
-	MicroMeter      m_extension;
+	MicroMeterPoint     m_center;
+	MicroMeter          m_extension;
+	IDWriteTextFormat * m_pTextFormat;
 };

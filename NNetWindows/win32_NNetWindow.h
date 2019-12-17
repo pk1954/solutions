@@ -79,7 +79,8 @@ private:
 	virtual void OnSize              ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
-    LPARAM        crsPos2LPARAM( ) const;
+	void          setStdFontSize( );
+	LPARAM        crsPos2LPARAM( ) const;
 	LPARAM        pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL          inObservedClientRect( LPARAM const );
 	ShapeId const getShapeUnderPoint( PixelPoint const );

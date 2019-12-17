@@ -84,10 +84,10 @@ PixelRect const BaseKnot::GetPixRect4Text( PixelCoordsFp const & coord ) const
 	PIXEL       const pixExt { PIXEL(static_cast<long>(fExt.GetValue())) };
 	PixelRect   const pixRect
 	{
-		pixPos.GetX() - pixExt,  // left
-		pixPos.GetY() - pixExt,  // top
-		pixPos.GetX() + pixExt,  // right
-		pixPos.GetY() + pixExt   // bottom
+		pixPos.GetX() - pixExt,      // left
+		pixPos.GetY() - pixExt / 2,  // top
+		pixPos.GetX() + pixExt,      // right
+		pixPos.GetY() + pixExt       // bottom
 	};
 	return pixRect;
 }
@@ -96,12 +96,9 @@ bool const BaseKnot::DisplayText( PixelRect const pixRect, wstring const text ) 
 {
 	static COLORREF const color { RGB( 0, 255, 0 ) };
 
-	bool bTextFits { pixRect.Includes( m_pGraphics->CalcGraphicsRect( text ).GetSize() ) };
-	
-	if ( bTextFits )
-		m_pGraphics->DisplayGraphicsText( pixRect, text, DT_CENTER|DT_VCENTER, color );
+	m_pGraphics->DisplayText( pixRect, text, color );
 
-	return bTextFits;
+	return true;
 }
 
 void BaseKnot::DrawText( PixelCoordsFp & coord ) const

@@ -10,12 +10,19 @@
 
 Scale::Scale( D2D_driver * const pGraphics, PixelCoordsFp * const pCoords )
  : m_pGraphics( pGraphics ),
-   m_pfPixelCoords( pCoords )
+   m_pfPixelCoords( pCoords ),
+   m_pTextFormat( nullptr )
 { }
+
+Scale::~Scale( )
+{
+	m_pGraphics->DeleteTextFormat( & m_pTextFormat );
+}
 
 void Scale::ShowScale (fPIXEL const height )
 {
-	m_pGraphics->SetFontSize( 12_PIXEL );
+	if ( ! m_pTextFormat )
+		m_pTextFormat = m_pGraphics->NewTextFormat( 12.f );
 
 	fPIXEL const vertPos    = height - 20._fPIXEL;
 	fPIXEL const horzPos    = 100._fPIXEL;
@@ -31,8 +38,8 @@ void Scale::ShowScale (fPIXEL const height )
 	int iFirstDigit = ( fractPart >= log10f( 5.0f ) ) 
 		? 5
 		: ( fractPart >= log10f( 2.0f ) )
-		? 2
-		: 1;
+	    	? 2
+		    : 1;
 
 	fPIXEL      const fPixLength = m_pfPixelCoords->convert2fPixel( umLength * static_cast<float>(iFirstDigit) );
 	fPixelPoint const fPixPoint1( horzPos, vertPos );
@@ -144,7 +151,7 @@ void Scale::displayScaleNumber( fPixelPoint const fPos, float const fLog10, int 
 			m_wBuffer << L"0";
 	}
 
-	m_pGraphics->DisplayGraphicsText( pixRect, m_wBuffer.str( ), DT_CENTER, SCALE_COLOR );
+	m_pGraphics->DisplayText( pixRect, m_wBuffer.str( ), SCALE_COLOR, m_pTextFormat );
 }
 
 void Scale::displayScaleText( fPixelPoint const fPos, float const fLog10 )
@@ -175,5 +182,5 @@ void Scale::displayScaleText( fPixelPoint const fPos, float const fLog10 )
 	else
 		m_wBuffer << L"m";
 
-	m_pGraphics->DisplayGraphicsText( pixRect, m_wBuffer.str( ), DT_LEFT, SCALE_COLOR );
+	m_pGraphics->DisplayText( pixRect, m_wBuffer.str( ), SCALE_COLOR, m_pTextFormat );
 }

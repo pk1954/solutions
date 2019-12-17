@@ -28,3 +28,18 @@ MonitorConfiguration  "WindowConfiguration2.cnf"
 0    # secondary monitor
 0   # end of MonitorConfiguration
 
+MonitorConfiguration  "WindowConfiguration3.cnf"
+1   # monitor number
+0 0 2560 1440   # monitor rectangle
+0 0 2560 1400   # work area rectangle
+1    # primary monitor
+2   # monitor number
+-1920 348 0 1428   # monitor rectangle
+-1920 348 0 1388   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+2560 347 5120 1427   # monitor rectangle
+2560 347 5120 1387   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
