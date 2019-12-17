@@ -117,7 +117,7 @@ public:
 
 	virtual void MoveTo( MicroMeterPoint const & );
 
-	virtual void DrawText( PixelCoordsFp & ) const;
+	virtual void DrawNeuronText( PixelCoordsFp & ) const;
 
 protected:
 
@@ -128,7 +128,7 @@ protected:
 	void drawPolygon( PixelCoordsFp const &, int const, COLORREF const, MicroMeter const ) const;
 
 	PixelRect const GetPixRect4Text( PixelCoordsFp const & ) const;
-	bool      const DisplayText( PixelRect const, wstring const ) const;
+	void      const DisplayText( PixelRect const, wstring const ) const;
 
 private:
 

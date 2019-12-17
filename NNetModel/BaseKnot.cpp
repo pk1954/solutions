@@ -92,16 +92,14 @@ PixelRect const BaseKnot::GetPixRect4Text( PixelCoordsFp const & coord ) const
 	return pixRect;
 }
 
-bool const BaseKnot::DisplayText( PixelRect const pixRect, wstring const text ) const
+void const BaseKnot::DisplayText( PixelRect const pixRect, wstring const text ) const
 {
 	static COLORREF const color { RGB( 0, 255, 0 ) };
 
 	m_pGraphics->DisplayText( pixRect, text, color );
-
-	return true;
 }
 
-void BaseKnot::DrawText( PixelCoordsFp & coord ) const
+void BaseKnot::DrawNeuronText( PixelCoordsFp & coord ) const
 { 
 	wostringstream m_wBuffer;
 	m_wBuffer.precision(2);

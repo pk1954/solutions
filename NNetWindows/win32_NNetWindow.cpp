@@ -243,13 +243,14 @@ void NNetWindow::drawHighlightedShape( NNetModel const & model, PixelCoordsFp & 
 void NNetWindow::doPaint( ) 
 {
 	NNetModel const * pModel = m_pReadBuffer->GetModel( );
-	pModel->Apply2All<Shape>   ( [&]( Shape    & shape ) { shape.DrawExterior( m_coord ); } );
+	if ( m_coord.GetPixelSize() <= 5._MicroMeter )
+		pModel->Apply2All<Shape>   ( [&]( Shape    & shape ) { shape.DrawExterior( m_coord ); } );
 	pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { shape.DrawInterior( m_coord ); } );
 	pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawInterior( m_coord ); } );
 	drawHighlightedShape( * pModel, m_coord );
 	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
-//	m_pGraphics->SetFontSize( 15_PIXEL );
-	pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawText( m_coord ); } );
+	if ( m_coord.GetPixelSize() <= 2.5_MicroMeter )
+		pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawNeuronText( m_coord ); } );
 }
 
 void NNetWindow::OnPaint( )

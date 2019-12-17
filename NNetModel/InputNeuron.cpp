@@ -84,7 +84,7 @@ void InputNeuron::DrawInterior( PixelCoordsFp & coord ) const
 	drawInputNeuron( coord, GetInteriorColor( ), NEURON_INTERIOR );
 }
 
-void InputNeuron::DrawText( PixelCoordsFp & coord ) const
+void InputNeuron::DrawNeuronText( PixelCoordsFp & coord ) const
 { 
 
 	PixelRect const pixRect { GetPixRect4Text( coord ) };
@@ -94,13 +94,6 @@ void InputNeuron::DrawText( PixelCoordsFp & coord ) const
 	m_wBuffer.clear( );
 	m_wBuffer.str( std::wstring() );
 	m_wBuffer << GetPulseFrequency().GetValue() << L" " << m_pNNetModel->GetParameterUnit( tParameter::pulseRate );
-
-	if ( DisplayText( pixRect, m_wBuffer.str( ) )  )
-		return;
-
-	m_wBuffer.clear( );
-	m_wBuffer.str( std::wstring() );
-	m_wBuffer << GetPulseFrequency().GetValue();
 
 	DisplayText( pixRect, m_wBuffer.str( ) );
 }
