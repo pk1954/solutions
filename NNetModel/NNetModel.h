@@ -178,4 +178,5 @@ private:
 	void          prepareSplit( MicroMeterPoint const & );
 	void          checkConsistency( );
 	ShapeId const addShape( Shape * );
+	bool          areConnected( ShapeId const, ShapeId const );
 };

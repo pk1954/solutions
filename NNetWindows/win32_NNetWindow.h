@@ -53,15 +53,15 @@ private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	static PixelCoordsFp             m_coord;
 	static NNetReadBuffer          * m_pReadBuffer;
 	static NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 
 	HMENU m_hPopupMenu;
 	BOOL  m_bMoveAllowed;    // TRUE: move with mouse is possible
 
-	D2D_driver m_D2d_driver;
-	Scale    * m_pScale;
+	D2D_driver    m_D2d_driver;
+	PixelCoordsFp m_coord;
+	Scale       * m_pScale;
 
 	PixelPoint m_ptLast;	 	   // Last cursor position during selection 
 

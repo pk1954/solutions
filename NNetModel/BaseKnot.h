@@ -54,7 +54,10 @@ public:
 
 	bool   HasIncoming( )        const { return ! m_incoming.empty(); }
 	bool   HasOutgoing( )        const { return ! m_outgoing.empty(); }
-	size_t GetNrOfConnections( ) const { return m_incoming.size() + m_outgoing.size(); }
+	size_t GetNrOfConnections( ) const 
+	{ 
+		return m_incoming.size() + m_outgoing.size(); 
+	}
 	bool   IsOrphan( )           const { return m_incoming.empty() && m_outgoing.empty(); }
 
 	ShapeId GetPrecursor( ) const;

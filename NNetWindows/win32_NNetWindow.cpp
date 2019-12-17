@@ -23,7 +23,6 @@ using std::function;
 
 NNetReadBuffer          * NNetWindow::m_pReadBuffer              = nullptr;
 NNetWorkThreadInterface * NNetWindow::m_pNNetWorkThreadInterface = nullptr;
-PixelCoordsFp             NNetWindow::m_coord;
 
 void NNetWindow::InitClass
 (        
@@ -342,6 +341,9 @@ void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 	HCURSOR const hCrsr   = keyDown ? m_hCrsrMove : m_hCrsrArrow;
 	SetCursor( hCrsr );
 }
+
+// PixelPoint2MicroMeterPoint belongs to NNetWindow
+// because every NNetWindow needs its own coordinate system
 
 MicroMeterPoint NNetWindow::PixelPoint2MicroMeterPoint( PixelPoint const pixPoint ) const
 {

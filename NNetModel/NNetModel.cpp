@@ -88,6 +88,35 @@ long const NNetModel::GetNrOfShapes( ) const
 	return lCounter;
 }
 
+bool NNetModel::areConnected( ShapeId const id1, ShapeId const id2 )
+{
+	bool bConnectionFound { false };
+
+	GetTypedShape<BaseKnot>( id1 )->Apply2AllIncomingPipelines
+	( 
+		[&]( ShapeId & idPipeline ) 
+		{
+			if ( GetTypedShape<Pipeline>( idPipeline )->GetStartKnot() == id2 ) 
+				bConnectionFound = true; 
+		} 
+	);
+
+	if ( bConnectionFound )
+		return true;
+
+	GetTypedShape<BaseKnot>( id2 )->Apply2AllIncomingPipelines
+	( 
+		[&]( ShapeId & idPipeline ) 
+		{
+			if ( GetTypedShape<Pipeline>( idPipeline )->GetStartKnot() == id1 ) 
+				bConnectionFound = true; 
+		} 
+	);
+
+	return bConnectionFound;
+}
+
+
 void NNetModel::RemoveShape( )
 {
 	if ( HighlightedShapeCanBeDeleted() )
@@ -101,8 +130,8 @@ void NNetModel::RemoveShape( )
 			ShapeId idStartKnot{ pBaseKnot->GetPrecursor() };
 			ShapeId idEndKnot  { pBaseKnot->GetSuccessor() };
 			deleteBaseKnot( idShapeToBeDeleted, false );
-			NewPipeline( idStartKnot, idEndKnot );
-			assert( GetNrOfShapes() == lNrOfShapes - 2 );
+			if ( ! areConnected( idStartKnot, idEndKnot ) )
+				NewPipeline( idStartKnot, idEndKnot );
 		}
 		else 
 		{
