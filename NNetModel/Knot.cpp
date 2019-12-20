@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "assert.h"
 #include "NNetModel.h"
+#include "PixelCoordsFp.h"
+#include "Direct2D.h"
 #include "Knot.h"
 
 void Knot::Prepare( )
@@ -23,10 +25,11 @@ mV Knot::GetNextOutput( ) const
 
 void Knot::DrawExterior( PixelCoordsFp & coord ) const
 {
-	drawPolygon( coord, 24, m_pNNetModel->GetFrameColor( * this ), m_pNNetModel->IsHighlighted( * this ) ? 30.0_MicroMeter : GetExtension( ) );
+	COLORREF color = m_pNNetModel->GetFrameColor( * this );
+	drawCircle( coord, color, m_pNNetModel->IsHighlighted( * this ) ? 30.0_MicroMeter : GetExtension( ) );
 }
 
 void Knot::DrawInterior( PixelCoordsFp & coord ) const
 {
-	drawPolygon( coord, 24, GetInteriorColor( ), GetExtension( ) * PIPELINE_INTERIOR );
+	drawCircle( coord, GetInteriorColor( ), GetExtension( ) * PIPELINE_INTERIOR );
 }

@@ -10,7 +10,6 @@
 #include "MoreTypes.h"
 #include "Segment.h"
 #include "InputNeuron.h"
-#include "OutputNeuron.h"
 #include "Neuron.h"
 #include "Knot.h"
 #include "Pipeline.h"
@@ -91,7 +90,6 @@ public:
 	COLORREF        const GetFrameColor( Shape const & )               const;
 	wchar_t const * const GetParameterName( tParameter const )         const;
 	wchar_t const * const GetParameterUnit( tParameter const )         const;
-	bool            const HighlightedShapeCanBeDeleted( )              const;
 
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
 	Shape const * FindShapeUnderPoint( MicroMeterPoint const ) const;
@@ -114,8 +112,11 @@ public:
 
 	void SplitPipeline  ( MicroMeterPoint const & );
 	void InsertNeuron   ( MicroMeterPoint const & );
-	void AddOutputNeuron( MicroMeterPoint const & );
+	void AddNeuron      ( MicroMeterPoint const & );
 	void AddInputNeuron ( MicroMeterPoint const & );
+	void AddOutgoing    ( MicroMeterPoint const & );
+	void AddIncoming    ( MicroMeterPoint const & );
+	void MoveShape      ( MicroMeterPoint const & );
 	void Connect( );
 
 	void RemoveShape( );
@@ -144,11 +145,6 @@ public:
 
 	void  const SetParameter( ShapeId const, tParameter const,	float const );
 
-	void IncNrOfInputNeurons () { ++m_nrOfInputNeuronsInModel;  }
-	void IncNrOfOutputNeurons() { ++m_nrOfOutputNeuronsInModel; }
-	void DecNrOfInputNeurons () { --m_nrOfInputNeuronsInModel;  }
-	void DecNrOfOutputNeurons() { --m_nrOfOutputNeuronsInModel; }
-
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
 private:
@@ -156,8 +152,6 @@ private:
 	// model data
 	vector<Shape *> m_Shapes;
 	MicroSecs       m_timeStamp;
-	int             m_nrOfInputNeuronsInModel;
-	int             m_nrOfOutputNeuronsInModel;
 
     // used by editor
 	ShapeId m_shapeHighlighted;
@@ -172,10 +166,9 @@ private:
 	meterPerSec  m_pulseSpeed;
 
 	// local functions
-	void          deleteBaseKnot( ShapeId const, bool const );
-	void          deletePipeline( ShapeId const, bool const );
+	void          deleteBaseKnot( ShapeId const );
+	void          deletePipeline( ShapeId const );
 	void          insertNewBaseKnot( BaseKnot * const );
-	void          prepareSplit( MicroMeterPoint const & );
 	void          checkConsistency( );
 	ShapeId const addShape( Shape * );
 	bool          areConnected( ShapeId const, ShapeId const );

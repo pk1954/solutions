@@ -65,8 +65,6 @@ private:
 
 	PixelPoint m_ptLast;	 	   // Last cursor position during selection 
 
-	void moveNNet( PixelPoint const );
-
 	virtual void AddContextMenuEntries( HMENU const, PixelPoint const );
 
 	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const );

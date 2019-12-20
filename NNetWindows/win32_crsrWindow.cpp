@@ -99,9 +99,6 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 		case tShapeType::neuron:
 			break;
 
-		case tShapeType::outputNeuron:
-			break;
-
 		case tShapeType::pipeline:
 		{
 			Pipeline const * pPipeline = static_cast<Pipeline const *>( pShape );

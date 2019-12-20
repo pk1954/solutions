@@ -31,10 +31,12 @@
 
 #define IDD_CONNECT                  560
 #define IDD_INSERT_NEURON            561
-#define IDD_ADD_OUTPUT_NEURON        562
+#define IDD_ADD_NEURON               562
 #define IDD_ADD_INPUT_NEURON         563
 #define IDD_SPLIT_PIPELINE           564
 #define IDD_REMOVE_SHAPE             566
+#define IDD_ADD_INCOMING             567
+#define IDD_ADD_OUTGOING             568
 
 #define IDM_CRSR_WINDOW              580
 #define IDM_PARAM_WINDOW  	         581

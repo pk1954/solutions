@@ -33,8 +33,8 @@ protected:
 
 	mV waveFunction( MicroSecs const ) const;
 
-	void drawExterior( PixelCoordsFp &, int const ) const;
-	void drawInterior( PixelCoordsFp &, int const ) const;
+	void drawExterior( PixelCoordsFp & ) const;
+	void drawInterior( PixelCoordsFp & ) const;
 
 private:
 

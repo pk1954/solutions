@@ -166,7 +166,7 @@ void D2D_driver::DrawLine
 	COLORREF    const   color
 )
 {
-	ID2D1SolidColorBrush * pBrush = createBrush( color );
+	ID2D1SolidColorBrush * pBrush { createBrush( color ) };
 
 	m_pRenderTarget->DrawLine
 	( 
@@ -179,17 +179,6 @@ void D2D_driver::DrawLine
 	SafeRelease( & pBrush );
 }
 
-void D2D_driver::DrawPolygon
-(
-	int         const iNrOfEdges,
-	fPixelPoint const ptPos,
-	COLORREF    const color, 
-	fPIXEL      const fPixRadius 
-)
-{
-	DrawCircle( ptPos, color, fPixRadius );
-}
-
 void D2D_driver::DrawCircle
 (
 	fPixelPoint const ptPos,
@@ -197,10 +186,35 @@ void D2D_driver::DrawCircle
 	fPIXEL      const fPixRadius 
 )
 {
-	ID2D1SolidColorBrush * pBrush = createBrush( color );
+	ID2D1SolidColorBrush * pBrush { createBrush( color ) };
 	D2D1_ELLIPSE ellipse { D2D1_POINT_2F{ ptPos.GetXvalue(), ptPos.GetYvalue() }, fPixRadius.GetValue(), fPixRadius.GetValue() }; 
 	m_pRenderTarget->FillEllipse( & ellipse, pBrush	);
 	SafeRelease( & pBrush );
+}
+
+void D2D_driver::DrawArrow
+(
+	fPixelPoint const ptPos,
+	fPixelPoint const ptVector,
+	COLORREF    const color, 
+	fPIXEL      const fPixSize,  
+	fPIXEL      const fPixWidth 
+)
+{
+	if ( ! IsCloseToZero( ptVector ) )
+	{
+		ID2D1SolidColorBrush * pBrush { createBrush( color ) };
+
+		fPixelPoint const ptVectorScaled { ptVector * ( fPixSize / Hypot( ptVector ) )  };
+		fPixelPoint const ptOrtho        { OrthoVector( ptVectorScaled, fPixSize ) };
+		fPixelPoint const ptEndPoint1    { ptPos - ptVectorScaled + ptOrtho };
+		fPixelPoint const ptEndPoint2    { ptPos - ptVectorScaled - ptOrtho };
+
+		DrawLine( ptPos, ptEndPoint1, fPixWidth, color );
+		DrawLine( ptPos, ptEndPoint2, fPixWidth, color );
+
+		SafeRelease( & pBrush );
+	}
 }
 
 ID2D1SolidColorBrush * D2D_driver::createBrush( COLORREF const color )

@@ -115,10 +115,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDD_REMOVE_SHAPE:
-		if ( m_pNNetWorkThreadInterface->HighlightedShapeCanBeDeleted() )
-			m_pNNetWorkThreadInterface->PostRemoveShape( );
-		else
-			MessageBeep( MB_ICONWARNING );
+		m_pNNetWorkThreadInterface->PostRemoveShape( );
 		break;
 
 	case IDM_SLOWER:
@@ -143,12 +140,20 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWorkThreadInterface->PostInsertNeuron( Util::Unpack2MicroMeterPoint( lParam ) );
 		break;
 
-	case IDD_ADD_OUTPUT_NEURON:
-		m_pNNetWorkThreadInterface->PostAddOutputNeuron( Util::Unpack2MicroMeterPoint( lParam ) );
+	case IDD_ADD_NEURON:
+		m_pNNetWorkThreadInterface->PostAddNeuron( Util::Unpack2MicroMeterPoint( lParam ) );
 		break;
 
 	case IDD_ADD_INPUT_NEURON:
 		m_pNNetWorkThreadInterface->PostAddInputNeuron( Util::Unpack2MicroMeterPoint( lParam ) );
+		break;
+
+	case IDD_ADD_OUTGOING:
+		m_pNNetWorkThreadInterface->PostAddOutgoing( Util::Unpack2MicroMeterPoint( lParam ) );
+		break;
+
+	case IDD_ADD_INCOMING:
+		m_pNNetWorkThreadInterface->PostAddIncoming( Util::Unpack2MicroMeterPoint( lParam ) );
 		break;
 
 	default:

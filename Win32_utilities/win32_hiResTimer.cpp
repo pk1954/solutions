@@ -32,6 +32,10 @@ HiResTimer::HiResTimer( ) :
 
 void HiResTimer::Start( )
 {
+	if ( m_bStarted )
+	{
+		int x = 76576;
+	}
 	assert( ! m_bStarted );
 	m_ticksOnStart = ReadHiResTimer( );
 	m_bStarted = true;

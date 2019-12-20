@@ -52,6 +52,11 @@ inline static fPixelPoint OrthoVector( fPixelPoint const & vect, fPIXEL const wi
 	return fPixelPoint( vect.GetY(), - vect.GetX() ) * (width / fHypot);
 }
 
+inline bool IsCloseToZero( fPixelPoint const vect )
+{
+	return IsCloseToZero( vect.GetXvalue() ) && IsCloseToZero( vect.GetYvalue() );
+}
+
 /////////////////// conversions ///////////////////////////////////
 
 static PIXEL convert2PIXEL( fPIXEL const fPixel )

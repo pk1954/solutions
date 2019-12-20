@@ -104,29 +104,33 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		m_pNNetModel->SetParameter( m_pNNetModel->GetHighlightedShapeId( ), GetParameterType( id ), (float &)msg.lParam	);
 		break;
 
-	case NNetWorkThreadMessage::Id::MOVE_SHAPE_TO:
-		{
-			Shape               * pShape( m_pNNetModel->GetShape( ShapeId( CastToLong(msg.wParam) ) ) );
-			MicroMeterPoint const newPos( Util::Unpack2MicroMeterPoint(msg.lParam) );
-			pShape->MoveTo( newPos );
-		}
-		break;
-
 	case NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED:
 		ResetTimer();
 		m_pNNetModel->ResetSimulationTime();
+		break;
+
+	case NNetWorkThreadMessage::Id::MOVE_SHAPE:
+		m_pNNetModel->MoveShape( Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	case NNetWorkThreadMessage::Id::INSERT_NEURON:
 		m_pNNetModel->InsertNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
+	case NNetWorkThreadMessage::Id::ADD_OUTGOING:
+		m_pNNetModel->AddOutgoing( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		break;
+
+	case NNetWorkThreadMessage::Id::ADD_INCOMING:
+		m_pNNetModel->AddIncoming( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		break;
+
 	case NNetWorkThreadMessage::Id::SPLIT_PIPELINE:
 		m_pNNetModel->SplitPipeline( Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
-	case NNetWorkThreadMessage::Id::ADD_OUTPUT_NEURON:
-		m_pNNetModel->AddOutputNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
+	case NNetWorkThreadMessage::Id::ADD_NEURON:
+		m_pNNetModel->AddNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	case NNetWorkThreadMessage::Id::ADD_INPUT_NEURON:

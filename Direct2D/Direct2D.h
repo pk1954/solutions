@@ -41,8 +41,8 @@ public:
     void EndFrame( HWND const );
     void ShutDown( );
     void DrawLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const );
-    void DrawPolygon( int const, fPixelPoint const, COLORREF const, fPIXEL const );
     void DrawCircle( fPixelPoint const, COLORREF const, fPIXEL const );
+    void DrawArrow( fPixelPoint const, fPixelPoint const, COLORREF const, fPIXEL const, fPIXEL const );
     void Resize( int const, int const );
 
     IDWriteTextFormat * NewTextFormat( float const );

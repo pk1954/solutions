@@ -33,12 +33,11 @@ wchar_t const * GetName( tShapeType const type )
 {
 	static unordered_map < tShapeType, wchar_t const * const > mapShape =
 	{
-		{ tShapeType::undefined,    L"undefined"    },
-		{ tShapeType::inputNeuron,	L"inputNeuron"  },
-		{ tShapeType::outputNeuron,	L"outputNeuron" },
-		{ tShapeType::neuron,		L"neuron"       },
-		{ tShapeType::pipeline,		L"pipeline"     },
-		{ tShapeType::knot,			L"knot"         }
+		{ tShapeType::undefined,   L"undefined"   },
+		{ tShapeType::inputNeuron, L"inputNeuron" },
+		{ tShapeType::neuron,	   L"neuron"      },
+		{ tShapeType::pipeline,	   L"pipeline"    },
+		{ tShapeType::knot,		   L"knot"        }
 	};				  
 
 	return mapShape.at( type );
@@ -48,12 +47,11 @@ tShapeType const Shape::GetShapeType( wchar_t const * const name )
 {
 	static unordered_map < wchar_t const *, tShapeType > mapShape =
 	{
-		{ L"undefined",    tShapeType::undefined    },
-		{ L"inputNeuron",  tShapeType::inputNeuron	},
-		{ L"outputNeuron", tShapeType::outputNeuron	},
-		{ L"neuron",       tShapeType::neuron		},
-		{ L"pipeline",     tShapeType::pipeline		},
-		{ L"knot",         tShapeType::knot,		}
+		{ L"undefined",   tShapeType::undefined   },
+		{ L"inputNeuron", tShapeType::inputNeuron },
+		{ L"neuron",      tShapeType::neuron	   },
+		{ L"pipeline",    tShapeType::pipeline	   },
+		{ L"knot",        tShapeType::knot        }
 	};				  
 
 	return mapShape.at( name );
@@ -74,8 +72,7 @@ bool IsBaseKnotType( tShapeType const type )
 	return 
 		(type == tShapeType::knot)        || 
 		(type == tShapeType::neuron)      || 
-		(type == tShapeType::inputNeuron) ||
-		(type == tShapeType::outputNeuron);
+		(type == tShapeType::inputNeuron);
 }
 
 bool HasAxon( tShapeType const type )

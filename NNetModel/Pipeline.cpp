@@ -135,6 +135,15 @@ void Pipeline::DrawExterior( PixelCoordsFp & coord ) const
 		COLORREF    const color      { m_pNNetModel->GetFrameColor( * this ) };
 
 		m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth, color );
+
+		m_pGraphics->DrawArrow
+		(
+			coord.convert2fPixelPos( (umEndPoint + umStartPoint) / 2.f ), 
+			coord.convert2fPixelSize( umEndPoint - umStartPoint ), 
+			color, 
+			coord.convert2fPixel( 30.0_MicroMeter ),
+			fPixWidth / 2 
+		);
 	}
 }
 

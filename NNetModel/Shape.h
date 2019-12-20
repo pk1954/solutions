@@ -18,7 +18,6 @@ ShapeId const NO_SHAPE( -1 );
 enum class tShapeType
 {
 	inputNeuron,
-	outputNeuron,
 	neuron,
 	pipeline,
 	knot,
@@ -58,10 +57,7 @@ class NeuronType
 public:
 	static bool TypeFits( tShapeType const type ) 
 	{
-		return 
-			(type == tShapeType::neuron)      || 
-			(type == tShapeType::inputNeuron) ||
-			(type == tShapeType::outputNeuron);
+		return (type == tShapeType::neuron) || (type == tShapeType::inputNeuron);
 	}
 };
 
@@ -70,10 +66,7 @@ class EndKnotType
 public:
 	static bool TypeFits( tShapeType const type ) 
 	{
-		return 
-			(type == tShapeType::knot)        || 
-			(type == tShapeType::neuron)      || 
-			(type == tShapeType::outputNeuron);
+		return (type == tShapeType::knot) || (type == tShapeType::neuron);
 	}
 };
 
@@ -83,8 +76,7 @@ public:
 	static bool TypeFits( tShapeType const type ) 
 	{
 		return  
-			(type == tShapeType::inputNeuron) ||
-			(type == tShapeType::outputNeuron);
+			(type == tShapeType::inputNeuron);
 	}
 };
 
@@ -106,7 +98,6 @@ public:
 	virtual void DrawExterior  ( PixelCoordsFp & )         const = 0;
 	virtual void DrawInterior  ( PixelCoordsFp & )         const = 0;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const = 0;
-	virtual void MoveTo        ( MicroMeterPoint const & )       = 0;
 	virtual void Prepare       ( )                               = 0;
 	virtual void Step          ( )                               = 0;
 

@@ -52,13 +52,13 @@ public:
 	void ReplaceIncoming( ShapeId const, ShapeId const );
 	void ReplaceOutgoing( ShapeId const, ShapeId const );
 
-	bool   HasIncoming( )        const { return ! m_incoming.empty(); }
-	bool   HasOutgoing( )        const { return ! m_outgoing.empty(); }
-	size_t GetNrOfConnections( ) const 
-	{ 
-		return m_incoming.size() + m_outgoing.size(); 
-	}
-	bool   IsOrphan( )           const { return m_incoming.empty() && m_outgoing.empty(); }
+	bool   HasIncoming( )                const { return ! m_incoming.empty(); }
+	bool   HasOutgoing( )                const { return ! m_outgoing.empty(); }
+	size_t GetNrOfIncomingConnections( ) const { return m_incoming.size(); }
+	size_t GetNrOfOutgoingConnections( ) const { return m_outgoing.size(); }
+	size_t GetNrOfConnections( )         const { return m_incoming.size() + m_outgoing.size(); }
+	bool   IsOrphan( )                   const { return m_incoming.empty() && m_outgoing.empty(); }
+	bool   IsOrphanedKnot( )             const { return (GetShapeType() == tShapeType::knot) && IsOrphan(); }
 
 	ShapeId GetPrecursor( ) const;
 	ShapeId GetSuccessor( ) const;
@@ -118,7 +118,7 @@ public:
 		Apply2AllOutgoingPipelinesConst( [&]( ShapeId idPipeline ) { func( idPipeline ); } );
 	}
 
-	virtual void MoveTo( MicroMeterPoint const & );
+	virtual void MoveShape( MicroMeterPoint const & );
 
 	virtual void DrawNeuronText( PixelCoordsFp & ) const;
 
@@ -127,8 +127,8 @@ protected:
 	vector<ShapeId> m_incoming;
 	vector<ShapeId> m_outgoing;
 
-	void drawPolygon( PixelCoordsFp const &, int const, COLORREF const, MicroMeterPoint const, MicroMeter const ) const;
-	void drawPolygon( PixelCoordsFp const &, int const, COLORREF const, MicroMeter const ) const;
+	void drawCircle( PixelCoordsFp const &, COLORREF const, MicroMeterPoint const, MicroMeter const ) const;
+	void drawCircle( PixelCoordsFp const &, COLORREF const, MicroMeter const ) const;
 
 	PixelRect const GetPixRect4Text( PixelCoordsFp const & ) const;
 	void      const DisplayText( PixelRect const, wstring const ) const;

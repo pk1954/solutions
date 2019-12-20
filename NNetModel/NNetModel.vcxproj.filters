@@ -48,9 +48,6 @@
     <ClInclude Include="BaseKnot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OutputNeuron.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="NNetModelStorage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,9 +66,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Knot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OutputNeuron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Neuron.cpp">

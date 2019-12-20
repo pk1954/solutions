@@ -125,42 +125,40 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	NNetModel const * pModel    { m_pReadBuffer->GetModel( ) };
 	UINT      const   STD_FLAGS { MF_BYPOSITION | MF_STRING };
 
-	ShapeId const idShapeHighlighted( pModel->GetHighlightedShapeId( ) ); 
-	if ( idShapeHighlighted != NO_SHAPE )  
+	switch ( pModel->GetHighlightedShapeType( ) )
 	{
-		switch ( pModel->GetHighlightedShapeType( ) )
-		{
-		case tShapeType::knot:  
-			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON,  L"Add input neuron" );
-			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTPUT_NEURON, L"Add output neuron" );
-			break;
+	case tShapeType::inputNeuron:
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE, pModel->GetParameterName( tParameter::pulseRate ) );
+		break;
 
-		case tShapeType::inputNeuron:
-			AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE, pModel->GetParameterName( tParameter::pulseRate ) );
-			break;
+	case tShapeType::neuron:
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON,  L"Add input neuron" );
+		break;
 
-		case tShapeType::neuron:
-			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON,  L"Add input neuron" );
-			break;
+	case tShapeType::knot:  
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_NEURON,        L"Add neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON,  L"Add input neuron" );
+		break;
 
-		case tShapeType::outputNeuron:
- 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON, L"Add input neuron" );
-			break;
+	case tShapeType::pipeline:
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING,     L"Add outgoing dendrite" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING,     L"Add incoming dendrite" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_NEURON,       L"Add neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON, L"Add input neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_INSERT_NEURON,    L"Insert neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_SPLIT_PIPELINE,   L"Split" );
+		break;
 
-		case tShapeType::pipeline:
-			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTPUT_NEURON, L"Add output neuron" );
-			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON,  L"Add input neuron" );
-			AppendMenu( hPopupMenu, STD_FLAGS, IDD_INSERT_NEURON,     L"Insert neuron" );
-			AppendMenu( hPopupMenu, STD_FLAGS, IDD_SPLIT_PIPELINE,    L"Split" );
-			break;
+	case tShapeType::undefined: // noshape selected
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_NEURON,       L"Add neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON, L"Add input neuron" );
+		break;
 
-		default:
-			assert( false );
-		}
-
-		if ( pModel->HighlightedShapeCanBeDeleted( ) )
-			AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE, L"Remove" );
+	default:
+		assert( false );
 	}
+
+	AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE, L"Remove" );
 }
 
 void NNetWindow::ParameterDlg( tParameter const param )
@@ -189,14 +187,15 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			ShapeId const   idHighlighted { pModel->GetHighlightedShapeId( ) };
 			if ( IsDefined( idHighlighted ) )
 			{
-				MicroMeterPoint const umPoint { m_coord.convert2MicroMeterPoint( ptCrsr ) };
-				m_pNNetWorkThreadInterface->PostMoveShape( idHighlighted, umPoint );
-				tShapeType const type { pModel->GetHighlightedShapeType( ) };
-				if ( type == tShapeType::outputNeuron )
+				MicroMeterPoint const umOldPos { m_coord.convert2MicroMeterPoint( m_ptLast ) };
+				MicroMeterPoint const umNewPos { m_coord.convert2MicroMeterPoint( ptCrsr   ) };
+				m_pNNetWorkThreadInterface->PostMoveShape( idHighlighted, umNewPos - umOldPos );
+
+				if ( pModel->GetHighlightedShapeType( ) == tShapeType::neuron )
 				{
 					pShapeSuper = pModel->FindShapeUnderPoint
 					( 
-						umPoint, 
+						umNewPos, 
 						[&]( Shape const & shape ) 
 						{ 
 							return (shape.GetId() != idHighlighted) && NeuronType::TypeFits(shape.GetShapeType());
@@ -204,9 +203,9 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 					);
 				}
 			}
-			else
+			else if ( m_bMoveAllowed )
 			{
-				moveNNet( ptCrsr - m_ptLast );
+				m_coord.MoveNNet( ptCrsr - m_ptLast );
 			}
 
 			m_pNNetWorkThreadInterface->PostHighlight( pModel->GetId( pShapeSuper ), true );
@@ -219,14 +218,6 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		m_pNNetWorkThreadInterface->PostHighlight( getShapeUnderPoint( ptCrsr ), false );
 		m_ptLast = PP_NULL;   // make m_ptLast invalid
 		 // no refresh! It would cause repaint for every mouse move 
-	}
-}
-
-void NNetWindow::moveNNet( PixelPoint const ptDiff )
-{
-	if ( m_bMoveAllowed )
-	{
-		m_coord.MoveNNet( ptDiff );
 	}
 }
 
@@ -328,8 +319,8 @@ void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
 	NNetModel const * pModel { m_pReadBuffer->GetModel( ) };
 	if ( 
-		  OutputNeuron::TypeFits( pModel->GetHighlightedShapeType() ) &&
-		  EndKnotType ::TypeFits( pModel->GetSuperHighlightedShapeType() ) 
+		  Neuron     ::TypeFits( pModel->GetHighlightedShapeType() ) &&
+		  EndKnotType::TypeFits( pModel->GetSuperHighlightedShapeType() ) 
 	   )
        PostCommand2Application( IDD_CONNECT, 0 );
 //	ReleaseCapture( );

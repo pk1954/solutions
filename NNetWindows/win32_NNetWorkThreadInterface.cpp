@@ -110,12 +110,12 @@ void NNetWorkThreadInterface::PostSetParameter( tParameter const param, float co
 	WorkMessage( TRUE, GetWorkThreadMessage( param ), 0, (LPARAM &)fNewValue );
 }
 
-void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const & newPos )
+void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << newPos << endl;
+		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << delta << endl;
 
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::MOVE_SHAPE_TO), id.GetValue(), Util::Pack2UINT64(newPos) );
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::MOVE_SHAPE), id.GetValue(), Util::Pack2UINT64(delta) );
 }
 
 void NNetWorkThreadInterface::PostSlowMotionChanged( )
@@ -126,12 +126,12 @@ void NNetWorkThreadInterface::PostSlowMotionChanged( )
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED), 0, 0 );
 }
 
-void NNetWorkThreadInterface::PostAddOutputNeuron( MicroMeterPoint const & pos )
+void NNetWorkThreadInterface::PostAddNeuron( MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << pos << endl;
 
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::ADD_OUTPUT_NEURON), 0, Util::Pack2UINT64(pos) );
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::ADD_NEURON), 0, Util::Pack2UINT64(pos) );
 }
 
 void NNetWorkThreadInterface::PostAddInputNeuron( MicroMeterPoint const & pos )
@@ -140,6 +140,22 @@ void NNetWorkThreadInterface::PostAddInputNeuron( MicroMeterPoint const & pos )
 		TraceStream( ) << __func__ << endl;
 
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::ADD_INPUT_NEURON), 0, Util::Pack2UINT64(pos) );
+}
+
+void NNetWorkThreadInterface::PostAddOutgoing( MicroMeterPoint const & pos )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::ADD_OUTGOING), 0, Util::Pack2UINT64(pos) );
+}
+
+void NNetWorkThreadInterface::PostAddIncoming( MicroMeterPoint const & pos )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::ADD_INCOMING), 0, Util::Pack2UINT64(pos) );
 }
 
 void NNetWorkThreadInterface::PostInsertNeuron( MicroMeterPoint const & pos )

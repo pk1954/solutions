@@ -16,14 +16,10 @@ InputNeuron::InputNeuron( NNetModel * pModel, MicroMeterPoint const upCenter )
   : Neuron( pModel, upCenter, tShapeType::inputNeuron ),
 	m_pulseFrequency( STD_PULSE_FREQ ),
 	m_pulseDuration( PulseDuration( STD_PULSE_FREQ ) )
-{ 
-	m_pNNetModel->IncNrOfInputNeurons();
-}
+{ }
 
 InputNeuron::~InputNeuron( )
-{
-	m_pNNetModel->DecNrOfInputNeurons();
-}
+{ }
 
 void InputNeuron::SetPulseFrequency( fHertz const freq )
 {
@@ -56,22 +52,22 @@ void InputNeuron::drawInputNeuron
 	float         const   fReductionFactor
 ) const
 {
-	if ( ! m_outgoing.empty() )
+	MicroMeterPoint const axonVector
 	{
-		ShapeId          const idAxon     { * m_outgoing.begin() };
-		Pipeline const * const pAxon      { m_pNNetModel->GetConstTypedShape<Pipeline>( idAxon ) };
-		MicroMeterPoint  const axonVector { pAxon->GetVector( ) };  
-		MicroMeter       const umHypot    { Hypot( axonVector ) };
-		MicroMeterPoint  const umExtVector{ axonVector * (GetExtension() / umHypot) };
-		MicroMeterPoint  const umCenter   { GetPosition() };
-		MicroMeterPoint  const umStartPnt { umCenter + umExtVector * fReductionFactor };
-		MicroMeterPoint  const umEndPnt   { umCenter - umExtVector };
-		fPixelPoint      const fStartPoint{ coord.convert2fPixelPos( umStartPnt ) };
-		fPixelPoint      const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
-		fPIXEL           const fPixWidth  { coord.convert2fPixel( GetExtension() * fReductionFactor ) };
+		m_outgoing.empty( )
+		? MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
+	    : m_pNNetModel->GetConstTypedShape<Pipeline>( * m_outgoing.begin() )->GetVector( )
+	};
+	MicroMeter      const umHypot    { Hypot( axonVector ) };
+	MicroMeterPoint const umExtVector{ axonVector * (GetExtension() / umHypot) };
+	MicroMeterPoint const umCenter   { GetPosition() };
+	MicroMeterPoint const umStartPnt { umCenter + umExtVector * fReductionFactor };
+	MicroMeterPoint const umEndPnt   { umCenter - umExtVector };
+	fPixelPoint     const fStartPoint{ coord.convert2fPixelPos( umStartPnt ) };
+	fPixelPoint     const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
+	fPIXEL          const fPixWidth  { coord.convert2fPixel( GetExtension() * fReductionFactor ) };
 
-		m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth * 2, color );
-	}
+	m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth * 2, color );
 }
 
 void InputNeuron::DrawExterior( PixelCoordsFp & coord ) const

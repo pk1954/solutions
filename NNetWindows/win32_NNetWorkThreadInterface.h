@@ -43,13 +43,10 @@ public:
 	void PostMoveShape        ( ShapeId const, MicroMeterPoint const & );
 	void PostSplitPipeline    ( MicroMeterPoint const & );
 	void PostInsertNeuron     ( MicroMeterPoint const & );
-	void PostAddOutputNeuron  ( MicroMeterPoint const & );
+	void PostAddNeuron        ( MicroMeterPoint const & );
 	void PostAddInputNeuron   ( MicroMeterPoint const & );
-
-	bool const HighlightedShapeCanBeDeleted( ) const 
-	{ 
-		return m_pModel->HighlightedShapeCanBeDeleted();
-	}
+	void PostAddOutgoing      ( MicroMeterPoint const & );
+	void PostAddIncoming      ( MicroMeterPoint const & );
 
 private:
 	NNetWorkThread  * m_pNNetWorkThread;

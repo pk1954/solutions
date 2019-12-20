@@ -77,10 +77,6 @@ public:
 				pShape = new InputNeuron( m_pModel, umPosition );
 				break;
 
-			case tShapeType::outputNeuron:
-				pShape = new OutputNeuron( m_pModel, umPosition );
-				break;
-
 			case tShapeType::neuron:
 				pShape = new Neuron( m_pModel, umPosition );
 				break;
@@ -300,7 +296,6 @@ void NNetModelStorage::WriteShape( wostream & out, Shape & shape )
 		switch ( shape.GetShapeType( ) )
 		{
 			case tShapeType::inputNeuron:
-			case tShapeType::outputNeuron:
 			case tShapeType::neuron:
 			case tShapeType::knot:
 				WriteMicroMeterPoint( out, static_cast<BaseKnot &>( shape ).GetPosition() );

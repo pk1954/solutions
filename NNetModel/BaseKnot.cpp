@@ -115,9 +115,9 @@ void BaseKnot::DrawNeuronText( PixelCoordsFp & coord ) const
 	DisplayText( pixRect, m_wBuffer.str( ) );
 }
 
-void BaseKnot::MoveTo( MicroMeterPoint const & newCenter )
+void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 {
-	m_center = newCenter;
+	m_center += delta;
 	for ( auto const idPipeline : m_incoming )
 		m_pNNetModel->GetTypedShape<Pipeline>( idPipeline )->Recalc( );
 
@@ -125,31 +125,33 @@ void BaseKnot::MoveTo( MicroMeterPoint const & newCenter )
 		m_pNNetModel->GetTypedShape<Pipeline>( idPipeline )->Recalc( );
 }
 
-void BaseKnot::drawPolygon
+void BaseKnot::drawCircle
 (
 	PixelCoordsFp   const & coord,
-	int             const   iNrOfEdges,
 	COLORREF        const   color, 
 	MicroMeterPoint const   umCenter,
 	MicroMeter      const   umWidth
 ) const
 {
-	m_pGraphics->DrawPolygon
+	m_pGraphics->DrawCircle
 	( 
-		iNrOfEdges,
 		coord.convert2fPixelPos( umCenter ), 
 		color, 
 		coord.convert2fPixel( umWidth )
 	);
 }
 
-void BaseKnot::drawPolygon
+void BaseKnot::drawCircle
 (
 	PixelCoordsFp const & coord,
-	int           const   iNrOfEdges,
 	COLORREF      const   color, 
 	MicroMeter    const   umWidth
 ) const
 {
-	drawPolygon( coord, iNrOfEdges, color, GetPosition(), umWidth );
+	m_pGraphics->DrawCircle
+	( 
+		coord.convert2fPixelPos( GetPosition() ), 
+		color, 
+		coord.convert2fPixel( umWidth )
+	);
 }

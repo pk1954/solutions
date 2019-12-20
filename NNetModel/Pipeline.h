@@ -47,7 +47,6 @@ public:
 	virtual mV   GetNextOutput ( ) const;
 	virtual void DrawExterior  ( PixelCoordsFp  & ) const;
 	virtual void DrawInterior  ( PixelCoordsFp  & ) const;
-	virtual void MoveTo        ( MicroMeterPoint const & ) {}
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 
 private:

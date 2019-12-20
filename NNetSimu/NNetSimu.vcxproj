@@ -85,7 +85,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)Direct2D;$(SolutionDir)runtimeCPP;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)Win32_history;$(SolutionDir)HistoryInterface;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)Direct2D;$(SolutionDir)Direct2D;$(SolutionDir)runtimeCPP;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)Win32_history;$(SolutionDir)HistoryInterface;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Release;$(SolutionDir)..\Toolbox\x64\Release;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -158,7 +158,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Pathcch.lib;GDI.lib;d2d1.lib;Direct2D.lib;ComCtl32.lib;msimg32.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;Win32_appFramework.lib;NNetModel.lib;NNetWindows.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Pathcch.lib;GDI.lib;d2d1.lib;Dwrite.lib;Direct2D.lib;ComCtl32.lib;msimg32.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;Win32_appFramework.lib;NNetModel.lib;NNetWindows.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -79,27 +79,27 @@ MicroMeterPoint Neuron::getAxonHillockPos( PixelCoordsFp & coord ) const
 void Neuron::DrawExterior( PixelCoordsFp & coord ) const
 {
 	MicroMeterPoint axonHillockPos { getAxonHillockPos( coord ) };
-	drawExterior( coord, 24 );
+	drawExterior( coord );
 	if ( axonHillockPos != NP_NULL )
-		drawPolygon( coord, 12, m_pNNetModel->GetFrameColor( * this ), axonHillockPos, GetExtension() * 0.5f );
+		drawCircle( coord, m_pNNetModel->GetFrameColor( * this ), axonHillockPos, GetExtension() * 0.5f );
 }
 
 void Neuron::DrawInterior( PixelCoordsFp & coord ) const
 { 
 	MicroMeterPoint axonHillockPos { getAxonHillockPos( coord ) };
-	drawInterior( coord, 24 );
+	drawInterior( coord );
 	if ( axonHillockPos != NP_NULL )
-		drawPolygon( coord, 12, GetInteriorColor( ), axonHillockPos, GetExtension() * (NEURON_INTERIOR - 0.5f) );
+		drawCircle( coord, GetInteriorColor( ), axonHillockPos, GetExtension() * (NEURON_INTERIOR - 0.5f) );
 }
 
-void Neuron::drawExterior( PixelCoordsFp & coord, int const iNrOfEdges ) const
+void Neuron::drawExterior( PixelCoordsFp & coord ) const
 {
-	drawPolygon( coord, iNrOfEdges, m_pNNetModel->GetFrameColor( * this ), GetExtension() );
+	drawCircle( coord, m_pNNetModel->GetFrameColor( * this ), GetExtension() );
 }
 
-void Neuron::drawInterior( PixelCoordsFp & coord, int const iNrOfEdges ) const
+void Neuron::drawInterior( PixelCoordsFp & coord ) const
 { 
-	drawPolygon( coord, iNrOfEdges, GetInteriorColor( ), GetExtension() * NEURON_INTERIOR);
+	drawCircle( coord, GetInteriorColor( ), GetExtension() * NEURON_INTERIOR);
 }
 
 Neuron const * Cast2Neuron( Shape const * shape )
