@@ -67,17 +67,17 @@ bool IsKnotType( tShapeType const type )
 	return type == tShapeType::knot;
 }
 
-bool IsBaseKnotType( tShapeType const type )
+bool IsNeuronType( tShapeType const type )
 {
 	return 
-		(type == tShapeType::knot)        || 
 		(type == tShapeType::neuron)      || 
 		(type == tShapeType::inputNeuron);
 }
 
-bool HasAxon( tShapeType const type )
+bool IsBaseKnotType( tShapeType const type )
 {
 	return 
+		(type == tShapeType::knot)        || 
 		(type == tShapeType::neuron)      || 
 		(type == tShapeType::inputNeuron);
 }

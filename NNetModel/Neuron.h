@@ -29,6 +29,8 @@ public:
 	virtual void DrawExterior( PixelCoordsFp &, tHighlightType const ) const;
 	virtual void DrawInterior( PixelCoordsFp & ) const;
 
+	bool const HasAxon( ) const	{ return m_outgoing.size() == 1; }
+
 protected:
 	MicroSecs m_timeSinceLastPulse;
 

@@ -139,7 +139,7 @@ void Pipeline::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) 
 
 		m_pGraphics->DrawArrow
 		(
-			coord.convert2fPixelPos( (umEndPoint + umStartPoint) / 2.f ), 
+			coord.convert2fPixelPos( (umEndPoint * 2.f + umStartPoint) / 3.f ), 
 			coord.convert2fPixelSize( umEndPoint - umStartPoint ), 
 			color, 
 			coord.convert2fPixel( 30.0_MicroMeter ),

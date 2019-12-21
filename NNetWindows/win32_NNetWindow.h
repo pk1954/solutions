@@ -70,6 +70,7 @@ private:
 	Scale       * m_pScale;
 
 	PixelPoint m_ptLast;	 	   // Last cursor position during selection 
+	PixelPoint m_ptCommandPosition;
 
 	ShapeId m_shapeHighlighted;
 	ShapeId m_shapeSuperHighlighted;

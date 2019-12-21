@@ -87,8 +87,8 @@ public:
 	wchar_t const * const GetParameterName( tParameter const )         const;
 	wchar_t const * const GetParameterUnit( tParameter const )         const;
 
-	Shape const * FindShapeUnderPoint( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
-	Shape const * FindShapeUnderPoint( MicroMeterPoint const ) const;
+	Shape const * FindShapeAt( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
+	Shape const * FindShapeAt( MicroMeterPoint const ) const;
 
 	float const GetPulseRate     ( Shape const * )    const;
 	float const GetParameterValue( tParameter const ) const;
@@ -107,8 +107,9 @@ public:
 
 	void ConnectPipeline( Pipeline *, ShapeId const, ShapeId const, ShapeId const );
 
-	void SplitPipeline  ( ShapeId const, MicroMeterPoint const & );
-	void InsertNeuron   ( ShapeId const, MicroMeterPoint const & );
+	ShapeId const SplitPipeline( ShapeId const, MicroMeterPoint const & );
+	ShapeId const InsertNeuron ( ShapeId const, MicroMeterPoint const & );
+
 	void AddNeuron      ( ShapeId const, MicroMeterPoint const & );
 	void AddInputNeuron ( ShapeId const, MicroMeterPoint const & );
 	void AddOutgoing    ( ShapeId const, MicroMeterPoint const & );
@@ -157,10 +158,11 @@ private:
 	meterPerSec  m_pulseSpeed;
 
 	// local functions
-	void          deleteBaseKnot( ShapeId const );
-	void          deletePipeline( ShapeId const );
-	void          insertNewBaseKnot( ShapeId const, BaseKnot * const );
-	void          checkConsistency( );
-	ShapeId const addShape( Shape * );
-	bool          areConnected( ShapeId const, ShapeId const );
+	void            deleteBaseKnot( ShapeId const );
+	void            deletePipeline( ShapeId const );
+	void            insertNewBaseKnot( ShapeId const, BaseKnot * const );
+	void            checkConsistency( );
+	ShapeId const   addShape( Shape * );
+	bool            areConnected( ShapeId const, ShapeId const );
+	MicroMeterPoint orthoVector( ShapeId const ) const;
 };

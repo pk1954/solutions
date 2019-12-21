@@ -65,7 +65,6 @@ public:
 
 	ShapeId const GetAxon( ) const
 	{
-		assert( HasAxon( ) );
 		assert( m_outgoing.size() == 1 );
 		return m_outgoing.front();
 	}

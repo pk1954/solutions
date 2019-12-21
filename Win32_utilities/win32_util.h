@@ -214,10 +214,17 @@ namespace Util
 
     inline PixelPoint GetRelativeCrsrPosition( HWND const hwnd )   // Delivers cursor position relative to client area 
     {
-		POINT pnt;
-		(void)GetCursorPos( &pnt );
-		ScreenToClient( hwnd, &pnt );
-		return POINT2PixelPoint( pnt );
+        POINT pnt;
+        (void)GetCursorPos( &pnt );
+        ScreenToClient( hwnd, &pnt );
+        return POINT2PixelPoint( pnt );
+    }
+
+    inline void SetRelativeCrsrPosition( HWND const hwnd, PixelPoint const & pixPoint )  
+    {
+        POINT pnt { PixelPoint2POINT( pixPoint ) };
+        ClientToScreen( hwnd, &pnt );
+        SetCursorPos( pnt.x, pnt.y );
     }
 
     inline PixelRectSize GetWindowSize( HWND const hwnd )

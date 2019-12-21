@@ -273,7 +273,7 @@ tShapeType const NNetModel::GetShapeType( ShapeId const id ) const
 bool const NNetModel::HasAxon( ShapeId const id ) const 
 { 
 	return IsDefined( id )
-		? GetConstShape( id )->HasAxon( )
+		? GetConstTypedShape<Neuron>( id )->HasAxon( )
 		: false;
 }
 
@@ -284,7 +284,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 	BaseKnot * pDst        = GetTypedShape<BaseKnot>( idDst );
 	if ( pSrc && pDst )
 	{
-		assert( NeuronType::TypeFits( pDst->GetShapeType() ) );
+		assert( EndKnotType::TypeFits( pDst->GetShapeType() ) );
 		pSrc->Apply2AllIncomingPipelines
 		( 
 			[&]( ShapeId const & idPipeline ) 
@@ -342,7 +342,6 @@ void NNetModel::insertNewBaseKnot( ShapeId const id, BaseKnot * const pNewBaseKn
 		GetTypedShape<BaseKnot>( idStartKnot )->RemoveOutgoing( id );
 		GetTypedShape<BaseKnot>( idNewShape  )->AddOutgoing   ( id );
 		pPipeline->SetStartKnot( idNewShape );
-//		HighlightShape( idNewShape );
 		CHECK_CONSISTENCY;
 	}
 }
@@ -372,67 +371,71 @@ void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 	}
 }
 
-void NNetModel::SplitPipeline( ShapeId const id, MicroMeterPoint const & splitPoint )
+ShapeId const NNetModel::SplitPipeline( ShapeId const id, MicroMeterPoint const & splitPoint )
 {
-	insertNewBaseKnot( id, new Knot( this, splitPoint ) );
+	Knot * pKnotNew { new Knot( this, splitPoint ) };
+	insertNewBaseKnot( id, pKnotNew );
+	return pKnotNew->GetId( );
 }
 
-void NNetModel::InsertNeuron( ShapeId const id, MicroMeterPoint const & splitPoint )
+ShapeId const NNetModel::InsertNeuron( ShapeId const id, MicroMeterPoint const & splitPoint )
 {
-	insertNewBaseKnot( id, new Neuron( this, splitPoint ) );
+	Neuron * pNeuronNew { new Neuron( this, splitPoint ) };
+	insertNewBaseKnot( id, pNeuronNew );
+	return pNeuronNew->GetId( );
+}
+
+MicroMeterPoint NNetModel::orthoVector( ShapeId const idPipeline ) const
+{
+	Pipeline const * pPipeline { GetConstTypedShape<Pipeline>( idPipeline ) };
+	return OrthoVector( pPipeline->GetVector(), NEURON_RADIUS );
 }
 
 void NNetModel::AddOutgoing( ShapeId const id, MicroMeterPoint const & pos )
 {
-	ShapeId idStartKnot { id };
+	MicroMeterPoint otherPoint  { pos };
+	ShapeId         idStartKnot { id };
 	switch ( GetShapeType( id ) )
 	{
 	case tShapeType::pipeline:
-		{
-			Knot * pKnotNew { new Knot( this, pos ) };
-			insertNewBaseKnot( id, pKnotNew );
-			idStartKnot = pKnotNew->GetId( );
-		}
+		idStartKnot = SplitPipeline( id, pos );
+		otherPoint  = pos + orthoVector( id );
 		[[fallthrough]]; 
 
 	case tShapeType::inputNeuron:
 	case tShapeType::neuron:
 	case tShapeType::knot:
-		NewPipeline( idStartKnot, NewShape<Knot>( pos ) );
+		NewPipeline( idStartKnot, NewShape<Knot>( otherPoint ) );
 		break;
 
 	default:
 		assert( false );
 	}
 
-//	HighlightShape( idNewKnot );
 	CHECK_CONSISTENCY;
 }
 
 void NNetModel::AddIncoming( ShapeId const id, MicroMeterPoint const & pos )
 {
-	ShapeId idEndKnot { id };
+	MicroMeterPoint otherPoint { pos };
+	ShapeId         idEndKnot  { id };
 	switch ( GetShapeType( id ) )
 	{
 	case tShapeType::pipeline:
-		{
-			Knot * pKnotNew { new Knot( this, pos ) };
-			insertNewBaseKnot( id, pKnotNew );
-			idEndKnot = pKnotNew->GetId( );
-		}
+		idEndKnot  = SplitPipeline( id, pos );
+		otherPoint = pos + orthoVector( id );
 		[[fallthrough]]; 
 
 	case tShapeType::inputNeuron:
 	case tShapeType::neuron:
 	case tShapeType::knot:
-		NewPipeline( NewShape<Knot>( pos ), idEndKnot );
+		NewPipeline( NewShape<Knot>( otherPoint ), idEndKnot );
 		break;
 
 	default:
 		assert( false );
 	}
 
-	//HighlightShape( idNewKnot );
 	CHECK_CONSISTENCY;
 }
 
@@ -459,7 +462,6 @@ void NNetModel::AddNeuron( ShapeId const id, MicroMeterPoint const & pos )
 			assert( false );
 	}
 
-	//HighlightShape( idNeuron );
 	CHECK_CONSISTENCY;
 }
 
@@ -476,7 +478,6 @@ void NNetModel::AddInputNeuron( ShapeId const id, MicroMeterPoint const & pos )
 	case tShapeType::neuron:
 		idInputNeuron = NewShape<InputNeuron>( GetShapePos( id ) - STD_OFFSET );
 		NewPipeline( idInputNeuron, id );
-		//HighlightShape( idInputNeuron );
 		break;
 
 	case tShapeType::undefined:
@@ -484,7 +485,6 @@ void NNetModel::AddInputNeuron( ShapeId const id, MicroMeterPoint const & pos )
 		ShapeId const idEndKnot { NewShape<Knot>( pos ) };
 		idInputNeuron = NewShape<InputNeuron>( pos - STD_OFFSET );
 		NewPipeline( idInputNeuron, idEndKnot );
-		//HighlightShape( idEndKnot );
 	}
 	break;
 
@@ -584,7 +584,7 @@ void NNetModel::ResetAll( )
 	m_Shapes.clear();
 }
 
-Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt, function<bool(Shape const &)> const & crit ) const
+Shape const * NNetModel::FindShapeAt( MicroMeterPoint const pnt, function<bool(Shape const &)> const & crit ) const
 {
 	for ( size_t i = m_Shapes.size(); i --> 0; )	
 	{
@@ -596,28 +596,21 @@ Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt, functio
 	return nullptr;
 }
 
-Shape const * NNetModel::FindShapeUnderPoint( MicroMeterPoint const pnt ) const
+Shape const * NNetModel::FindShapeAt( MicroMeterPoint const pnt ) const
 {
-	Shape const * pShapeResult = FindShapeUnderPoint  // first test all knot shapes
-	    ( 
-			pnt, 
-			[&]( Shape const & shape ) 
-			{ 
-				return ::IsBaseKnotType( shape.GetShapeType() ); 
-			} 
-	    ); 	
+	
+	Shape const * pRes { nullptr };
 
-	if ( ! pShapeResult ) 
-		pShapeResult = FindShapeUnderPoint   // if nothing found, try pipelines
-		( 
-			pnt, 
-			[&]( Shape const & shape ) 
-			{ 
-				return ! ::IsBaseKnotType( shape.GetShapeType() ); 
-			} 
-	    );
+	if ( ! pRes )   // first test all knot shapes
+		pRes = FindShapeAt( pnt, [&]( Shape const & s ) { return ::IsKnotType( s.GetShapeType() ); } ); 	
 
-	return pShapeResult;
+	if ( ! pRes )  // if nothing found, test neurons and input neurons
+		pRes = FindShapeAt( pnt, [&]( Shape const & s ) { return ::IsNeuronType( s.GetShapeType() ); } );
+
+	if ( ! pRes ) // if nothing found, try pipelines
+		pRes = FindShapeAt( pnt, [&]( Shape const & s ) { return ::IsPipelineType( s.GetShapeType() ); } );
+
+	return pRes;
 }
 
 COLORREF const NNetModel::GetFrameColor( tHighlightType const type ) const 

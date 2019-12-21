@@ -171,6 +171,11 @@ public:
 		return ::PostMessage( m_hwndApp, WM_COMMAND, wParam, lParam );
 	}
 
+	LRESULT SendCommand2Application( WPARAM const wParam, LPARAM const lParam )
+	{
+		return ::SendMessage( m_hwndApp, WM_COMMAND, wParam, lParam );
+	}
+
 	PixelPoint const GetCrsrPosFromLparam( LPARAM const lParam ) const
 	{
 		return PixelPoint{ PIXEL(GET_X_LPARAM( lParam )), PIXEL(GET_Y_LPARAM( lParam )) };

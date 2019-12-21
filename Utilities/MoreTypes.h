@@ -99,11 +99,11 @@ inline static MicroMeter Distance( MicroMeterPoint const & npA, MicroMeterPoint 
 	return Hypot( npA - npB );
 }
 
-inline static MicroMeterPoint OrthoVector( MicroMeterPoint const & vect, MicroMeter const width )
+inline static MicroMeterPoint OrthoVector( MicroMeterPoint const & vect, MicroMeter const length )
 {
 	MicroMeter umHypot = Hypot( vect );
 	assert( ! IsCloseToZero( umHypot.GetValue() ) );
-	return MicroMeterPoint( vect.GetY(), - vect.GetX() ) * (width / umHypot);
+	return MicroMeterPoint( vect.GetY(), - vect.GetX() ) * (length / umHypot);
 }
 
 inline bool IsCloseToZero( MicroMeterPoint const pnt )
