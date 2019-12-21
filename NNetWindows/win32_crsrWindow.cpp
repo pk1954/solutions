@@ -83,41 +83,41 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 	printMicroMeter( textBuf, umPoint.GetX() );
 	printMicroMeter( textBuf, umPoint.GetY() );
 
-	NNetModel const * pModel  { m_pReadBuffer->GetModel() };
-	ShapeId   const   shapeId { pModel->GetHighlightedShapeId() };
-	Shape     const * pShape  { pModel->GetConstShape( shapeId ) };
-	if ( pShape )
-	{
-		switch ( pShape->GetShapeType() )
-		{
-		case tShapeType::inputNeuron:
-			break;
+	//NNetModel const * pModel  { m_pReadBuffer->GetModel() };
+	//ShapeId   const   shapeId { pModel->GetHighlightedShapeId() };
+	//Shape     const * pShape  { pModel->GetConstShape( shapeId ) };
+	//if ( pShape )
+	//{
+	//	switch ( pShape->GetShapeType() )
+	//	{
+	//	case tShapeType::inputNeuron:
+	//		break;
 
-		case tShapeType::knot:
-			break;
+	//	case tShapeType::knot:
+	//		break;
 
-		case tShapeType::neuron:
-			break;
+	//	case tShapeType::neuron:
+	//		break;
 
-		case tShapeType::pipeline:
-		{
-			Pipeline const * pPipeline = static_cast<Pipeline const *>( pShape );
-			textBuf.nextLine( L"Pipeline" );
-			textBuf.nextLine( L"Segments: " );
-			textBuf.printNumber( pPipeline->GetNrOfSegments( ) );
-			textBuf.nextLine   ( pModel->GetParameterName ( tParameter::pulseSpeed ) );
-			textBuf.printFloat ( pModel->GetParameterValue( tParameter::pulseSpeed ) );
-			textBuf.printString( pModel->GetParameterUnit ( tParameter::pulseSpeed ) );
-		}
-		break;
+	//	case tShapeType::pipeline:
+	//	{
+	//		Pipeline const * pPipeline = static_cast<Pipeline const *>( pShape );
+	//		textBuf.nextLine( L"Pipeline" );
+	//		textBuf.nextLine( L"Segments: " );
+	//		textBuf.printNumber( pPipeline->GetNrOfSegments( ) );
+	//		textBuf.nextLine   ( pModel->GetParameterName ( tParameter::pulseSpeed ) );
+	//		textBuf.printFloat ( pModel->GetParameterValue( tParameter::pulseSpeed ) );
+	//		textBuf.printString( pModel->GetParameterUnit ( tParameter::pulseSpeed ) );
+	//	}
+	//	break;
 
-		case tShapeType::undefined:
-			assert( false );
-			break;
+	//	case tShapeType::undefined:
+	//		assert( false );
+	//		break;
 
-		default:
-			assert( false );
-		}
+	//	default:
+	//		assert( false );
+	//	}
 
-	}
+	//}
 }

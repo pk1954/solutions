@@ -7,6 +7,7 @@
 #include "assert.h"
 #include "Geometry.h"
 #include "PixelCoordsFp.h"
+#include "tHighlightType.h"
 #include "Direct2D.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
@@ -123,7 +124,7 @@ MicroMeterPoint Pipeline::GetVector( ) const
 	return umvector;
 }
 
-void Pipeline::DrawExterior( PixelCoordsFp & coord ) const
+void Pipeline::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
@@ -132,7 +133,7 @@ void Pipeline::DrawExterior( PixelCoordsFp & coord ) const
 		fPIXEL      const fPixWidth  { coord.convert2fPixel( m_width ) };
 		fPixelPoint const fStartPoint{ coord.convert2fPixelPos( umStartPoint ) };
 		fPixelPoint const fEndPoint  { coord.convert2fPixelPos( umEndPoint   ) };
-		COLORREF    const color      { m_pNNetModel->GetFrameColor( * this ) };
+		COLORREF    const color      { m_pNNetModel->GetFrameColor( type ) };
 
 		m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth, color );
 

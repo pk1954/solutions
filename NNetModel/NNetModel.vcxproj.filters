@@ -51,6 +51,12 @@
     <ClInclude Include="NNetModelStorage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tShapeType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tHighlightType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NNetModel.cpp">

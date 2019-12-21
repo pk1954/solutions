@@ -9,6 +9,7 @@
 #include "Direct2D.h"
 #include "PixelCoordsFp.h"
 #include "NNetReadBuffer.h"  // do not remove! class definition not sufficient.
+#include "tHighlightType.h"
 #include "win32_modelWindow.h"
 
 using std::wstring;
@@ -41,6 +42,11 @@ public:
 
 	~NNetWindow( );
 
+	ShapeId        const GetHighlightedShapeId( )          const { return m_shapeHighlighted; }
+	ShapeId        const GetSuperHighlightedShapeId( )     const { return m_shapeSuperHighlighted; }
+	tHighlightType const GetHighlightType( ShapeId const ) const;
+
+	void       ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
 	void       Zoom( bool const );
 	void       SetPixelSize( MicroMeter const );
 	MicroMeter GetPixelSize( ) const;
@@ -64,6 +70,9 @@ private:
 	Scale       * m_pScale;
 
 	PixelPoint m_ptLast;	 	   // Last cursor position during selection 
+
+	ShapeId m_shapeHighlighted;
+	ShapeId m_shapeSuperHighlighted;
 
 	virtual void AddContextMenuEntries( HMENU const, PixelPoint const );
 

@@ -113,7 +113,7 @@ public:
 		tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
 		script.ScrReadSpecial( L'=' );
 		float const fValue { CastToFloat( script.ScrReadFloat() ) };
-		m_pModel->SetParameter( m_pModel->GetHighlightedShapeId( ), param, fValue );
+		m_pModel->SetParameter( param, fValue );
 	}
 
 private:
@@ -149,9 +149,10 @@ public:
 		script.ScrReadString( L"InputNeuron" );
 		ShapeId const id ( script.ScrReadUint() );
 		tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
+		assert( param == tParameter::pulseRate );
 		script.ScrReadSpecial( L'=' );
 		float const fValue { CastToFloat( script.ScrReadFloat() ) };
-		m_pModel->SetParameter( id, param, fValue );
+		m_pModel->SetPulseRate( id, fValue );
 	}
 
 private:
@@ -241,7 +242,7 @@ void NNetModelStorage::Write( wostream & out )
 		[&]( tParameter const & param ) 
 		{
 			out << L"GlobalParameter " << m_pModel->GetParameterName( param ) << L" = "
-			<< m_pModel->GetParameterValue( param, nullptr ) 
+			<< m_pModel->GetParameterValue( param ) 
 			<< endl; 
 		}
 	);
@@ -270,7 +271,7 @@ void NNetModelStorage::Write( wostream & out )
 		{ 
 			out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
 				<< m_pModel->GetParameterName( tParameter::pulseRate ) 
-				<< L" = " << m_pModel->GetParameterValue( tParameter::pulseRate, & inpNeuron )
+				<< L" = " << m_pModel->GetPulseRate( & inpNeuron )
      			<< endl; 
 		}
 	);

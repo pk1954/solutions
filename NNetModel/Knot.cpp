@@ -6,6 +6,7 @@
 #include "assert.h"
 #include "NNetModel.h"
 #include "PixelCoordsFp.h"
+#include "tHighlightType.h"
 #include "Direct2D.h"
 #include "Knot.h"
 
@@ -23,10 +24,10 @@ mV Knot::GetNextOutput( ) const
 	return m_mVinputBuffer;
 }
 
-void Knot::DrawExterior( PixelCoordsFp & coord ) const
+void Knot::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
 {
-	COLORREF color = m_pNNetModel->GetFrameColor( * this );
-	drawCircle( coord, color, m_pNNetModel->IsHighlighted( * this ) ? 30.0_MicroMeter : GetExtension( ) );
+	COLORREF color = m_pNNetModel->GetFrameColor( type );
+	drawCircle( coord, color, (type == tHighlightType::normal) ? GetExtension( ) : 30.0_MicroMeter );
 }
 
 void Knot::DrawInterior( PixelCoordsFp & coord ) const

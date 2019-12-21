@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "Direct2D.h"
 #include "PixelCoordsFp.h"
+#include "tHighlightType.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
 #include "InputNeuron.h"
@@ -70,9 +71,9 @@ void InputNeuron::drawInputNeuron
 	m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth * 2, color );
 }
 
-void InputNeuron::DrawExterior( PixelCoordsFp & coord ) const
+void InputNeuron::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
 {
-	drawInputNeuron( coord, m_pNNetModel->GetFrameColor( * this ), 1.0f );
+	drawInputNeuron( coord, m_pNNetModel->GetFrameColor( type ), 1.0f );
 }
 
 void InputNeuron::DrawInterior( PixelCoordsFp & coord ) const

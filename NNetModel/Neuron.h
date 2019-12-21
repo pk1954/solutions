@@ -7,6 +7,7 @@
 #include <chrono>
 #include "MoreTypes.h"
 #include "NNetParameters.h"
+#include "tHighlightType.h"
 #include "Shape.h"
 #include "BaseKnot.h"
 
@@ -25,7 +26,7 @@ public:
 	virtual void Step( );
 	virtual mV   GetNextOutput( ) const;
 
-	virtual void DrawExterior( PixelCoordsFp & ) const;
+	virtual void DrawExterior( PixelCoordsFp &, tHighlightType const ) const;
 	virtual void DrawInterior( PixelCoordsFp & ) const;
 
 protected:
@@ -33,7 +34,7 @@ protected:
 
 	mV waveFunction( MicroSecs const ) const;
 
-	void drawExterior( PixelCoordsFp & ) const;
+	void drawExterior( PixelCoordsFp &, tHighlightType const ) const;
 	void drawInterior( PixelCoordsFp & ) const;
 
 private:

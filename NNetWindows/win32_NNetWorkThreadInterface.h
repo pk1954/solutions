@@ -34,19 +34,14 @@ public:
 	);
 	void Stop(); 
 
+	void PostSetPulseRate     ( ShapeId    const, float const );
 	void PostSetParameter     ( tParameter const, float const );
 	void PostResetTimer       ( );
-	void PostConnect          ( );
-	void PostRemoveShape      ( );
+	void PostConnect          ( ShapeId const, ShapeId const );
+	void PostRemoveShape      ( ShapeId const );
 	void PostSlowMotionChanged( );
-	void PostHighlight        ( ShapeId const, bool const );
 	void PostMoveShape        ( ShapeId const, MicroMeterPoint const & );
-	void PostSplitPipeline    ( MicroMeterPoint const & );
-	void PostInsertNeuron     ( MicroMeterPoint const & );
-	void PostAddNeuron        ( MicroMeterPoint const & );
-	void PostAddInputNeuron   ( MicroMeterPoint const & );
-	void PostAddOutgoing      ( MicroMeterPoint const & );
-	void PostAddIncoming      ( MicroMeterPoint const & );
+	void PostActionCommand    ( int const , ShapeId const, LPARAM const );
 
 private:
 	NNetWorkThread  * m_pNNetWorkThread;

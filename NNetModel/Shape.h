@@ -6,6 +6,8 @@
 
 #include "MoreTypes.h"
 #include "NNetParameters.h"
+#include "tHighlightType.h"
+#include "tShapeType.h"
 
 using ShapeId = NamedType< long, struct ShapeIdParam >;
 
@@ -15,22 +17,6 @@ class NNetModel;
 
 ShapeId const NO_SHAPE( -1 );
 
-enum class tShapeType
-{
-	inputNeuron,
-	neuron,
-	pipeline,
-	knot,
-	shapeTypeLast = knot,
-	undefined,
-};
-
-static void Apply2AllShapeTypes( function<void(tShapeType const &)> const & func )
-{
-	for ( int i = 0; i <= static_cast<int>(tShapeType::shapeTypeLast); ++i )
-		func( static_cast<tShapeType>( i ) );
-}
-
 static bool IsDefined( ShapeId const id ) { return id != NO_SHAPE; }
 
 bool IsPipelineType( tShapeType const );
@@ -39,46 +25,6 @@ bool IsBaseKnotType( tShapeType const );
 bool HasAxon       ( tShapeType const );
 
 wchar_t const * GetName( tShapeType const );
-
-class StartKnotType
-{
-public:
-	static bool TypeFits( tShapeType const type ) 
-	{
-		return 
-			(type == tShapeType::knot)        || 
-			(type == tShapeType::neuron)      || 
-			(type == tShapeType::inputNeuron);
-	}
-};
-
-class NeuronType
-{
-public:
-	static bool TypeFits( tShapeType const type ) 
-	{
-		return (type == tShapeType::neuron) || (type == tShapeType::inputNeuron);
-	}
-};
-
-class EndKnotType
-{
-public:
-	static bool TypeFits( tShapeType const type ) 
-	{
-		return (type == tShapeType::knot) || (type == tShapeType::neuron);
-	}
-};
-
-class TerminalType
-{
-public:
-	static bool TypeFits( tShapeType const type ) 
-	{
-		return  
-			(type == tShapeType::inputNeuron);
-	}
-};
 
 class Shape
 {
@@ -94,12 +40,12 @@ public:
 
 	static bool TypeFits( tShapeType const type ) {	return true; }  // every shape type is a Shape
 
-	virtual mV   GetNextOutput ( )                         const = 0;
-	virtual void DrawExterior  ( PixelCoordsFp & )         const = 0;
-	virtual void DrawInterior  ( PixelCoordsFp & )         const = 0;
-	virtual bool IsPointInShape( MicroMeterPoint const & ) const = 0;
-	virtual void Prepare       ( )                               = 0;
-	virtual void Step          ( )                               = 0;
+	virtual mV   GetNextOutput ( )                                       const = 0;
+	virtual void DrawExterior  ( PixelCoordsFp &, tHighlightType const ) const = 0;
+	virtual void DrawInterior  ( PixelCoordsFp & )                       const = 0;
+	virtual bool IsPointInShape( MicroMeterPoint const & )               const = 0;
+	virtual void Prepare       ( )                                             = 0;
+	virtual void Step          ( )                                             = 0;
 
 	bool            IsDefined   ( ) const { return ::IsDefined( m_identifier ); }
 	bool            HasAxon     ( ) const { return ::HasAxon( GetShapeType( ) ); }

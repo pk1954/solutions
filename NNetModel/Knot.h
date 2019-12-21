@@ -7,6 +7,7 @@
 #include <vector>
 #include "Geometry.h"
 #include "MoreTypes.h"
+#include "tHighlightType.h"
 #include "BaseKnot.h"
 #include "Pipeline.h"
 
@@ -33,7 +34,7 @@ public:
 	virtual void Prepare      ( );
 	virtual void Step         ( ) { }
 	virtual mV   GetNextOutput( ) const;
-	virtual void DrawExterior ( PixelCoordsFp & ) const;
+	virtual void DrawExterior ( PixelCoordsFp &, tHighlightType const ) const;
 	virtual void DrawInterior ( PixelCoordsFp & ) const;
 
 	virtual void DrawNeuronText( PixelCoordsFp & ) const {};

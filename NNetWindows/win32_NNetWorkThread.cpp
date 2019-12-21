@@ -58,7 +58,6 @@ static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
 {
 	static unordered_map < NNetWorkThreadMessage::Id, tParameter const > mapParam =
 	{
-		{ NNetWorkThreadMessage::Id::PULSE_RATE,        tParameter::pulseRate        },
 		{ NNetWorkThreadMessage::Id::PULSE_SPEED,       tParameter::pulseSpeed       },
 		{ NNetWorkThreadMessage::Id::PULSE_WIDTH,       tParameter::pulseWidth       },
 		{ NNetWorkThreadMessage::Id::DAMPING_FACTOR,    tParameter::signalLoss       },
@@ -80,28 +79,24 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::CONNECT:
-		m_pNNetModel->Connect( );
+		m_pNNetModel->Connect( ShapeId( CastToLong(msg.wParam) ), ShapeId( CastToLong(msg.lParam) ) );
 		break;
 
 	case NNetWorkThreadMessage::Id::REMOVE_SHAPE:
-		m_pNNetModel->RemoveShape( );
-		break;
-
-	case NNetWorkThreadMessage::Id::HIGHLIGHT:
-		if ( static_cast<bool>( msg.lParam ) )
-			m_pNNetModel->SuperHighlightShape( ShapeId( CastToLong(msg.wParam) ) );
-		else
-			m_pNNetModel->HighlightShape( ShapeId( CastToLong(msg.wParam) ) );
+		m_pNNetModel->RemoveShape( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
 	case NNetWorkThreadMessage::Id::PULSE_RATE:
+		m_pNNetModel->SetPulseRate( ShapeId( CastToLong(msg.wParam) ), (float &)msg.lParam );
+		break;
+
 	case NNetWorkThreadMessage::Id::DAMPING_FACTOR:
 	case NNetWorkThreadMessage::Id::THRESHOLD:
 	case NNetWorkThreadMessage::Id::PEAK_VOLTAGE:
 	case NNetWorkThreadMessage::Id::PULSE_WIDTH:       
 	case NNetWorkThreadMessage::Id::REFRACTORY_PERIOD:
 	case NNetWorkThreadMessage::Id::PULSE_SPEED:
-		m_pNNetModel->SetParameter( m_pNNetModel->GetHighlightedShapeId( ), GetParameterType( id ), (float &)msg.lParam	);
+		m_pNNetModel->SetParameter( GetParameterType( id ), (float &)msg.lParam	);
 		break;
 
 	case NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED:
@@ -110,31 +105,31 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE:
-		m_pNNetModel->MoveShape( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		m_pNNetModel->MoveShape( ShapeId( CastToLong(msg.wParam) ), Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	case NNetWorkThreadMessage::Id::INSERT_NEURON:
-		m_pNNetModel->InsertNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		m_pNNetModel->InsertNeuron( ShapeId( CastToLong(msg.wParam) ), Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	case NNetWorkThreadMessage::Id::ADD_OUTGOING:
-		m_pNNetModel->AddOutgoing( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		m_pNNetModel->AddOutgoing( ShapeId( CastToLong(msg.wParam) ), Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	case NNetWorkThreadMessage::Id::ADD_INCOMING:
-		m_pNNetModel->AddIncoming( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		m_pNNetModel->AddIncoming( ShapeId( CastToLong(msg.wParam) ), Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	case NNetWorkThreadMessage::Id::SPLIT_PIPELINE:
-		m_pNNetModel->SplitPipeline( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		m_pNNetModel->SplitPipeline( ShapeId( CastToLong(msg.wParam) ), Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	case NNetWorkThreadMessage::Id::ADD_NEURON:
-		m_pNNetModel->AddNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		m_pNNetModel->AddNeuron( ShapeId( CastToLong(msg.wParam) ), Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	case NNetWorkThreadMessage::Id::ADD_INPUT_NEURON:
-		m_pNNetModel->AddInputNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		m_pNNetModel->AddInputNeuron( ShapeId( CastToLong(msg.wParam) ), Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	default:

@@ -7,6 +7,7 @@
 #include <vector>
 #include "MoreTypes.h"
 #include "NNetParameters.h"
+#include "tHighlightType.h"
 #include "Shape.h"
 #include "Segment.h"
 
@@ -45,7 +46,7 @@ public:
 	virtual void Step          ( );
 	virtual void Prepare       ( );
 	virtual mV   GetNextOutput ( ) const;
-	virtual void DrawExterior  ( PixelCoordsFp  & ) const;
+	virtual void DrawExterior  ( PixelCoordsFp  &, tHighlightType const ) const;
 	virtual void DrawInterior  ( PixelCoordsFp  & ) const;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 

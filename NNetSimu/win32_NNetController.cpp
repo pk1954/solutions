@@ -3,7 +3,6 @@
 // NNetSimu
 
 #include "stdafx.h"
-#include <unordered_map>
 #include <chrono>
 #include "Windowsx.h"
 #include "Windows.h"
@@ -19,8 +18,6 @@
 #include "win32_winManager.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetController.h"
-
-using std::unordered_map;
 
 NNetController::NNetController
 (
@@ -111,11 +108,12 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		return true;
 
 	case IDD_CONNECT:
-		m_pNNetWorkThreadInterface->PostConnect( );
+		m_pNNetWorkThreadInterface->PostConnect( static_cast<ShapeId>( Util::UnpackLongA( lParam ) ), static_cast<ShapeId>( Util::UnpackLongB( lParam ) ) );
 		break;
 
 	case IDD_REMOVE_SHAPE:
-		m_pNNetWorkThreadInterface->PostRemoveShape( );
+		m_pNNetWorkThreadInterface->PostRemoveShape( m_pNNetWindow->GetHighlightedShapeId( ) );
+		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
 	case IDM_SLOWER:
@@ -132,28 +130,13 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 			MessageBeep( MB_ICONWARNING );
 		break;
 
-	case IDD_SPLIT_PIPELINE:
-		m_pNNetWorkThreadInterface->PostSplitPipeline( Util::Unpack2MicroMeterPoint( lParam ) );
-		break;
-
 	case IDD_INSERT_NEURON:
-		m_pNNetWorkThreadInterface->PostInsertNeuron( Util::Unpack2MicroMeterPoint( lParam ) );
-		break;
-
 	case IDD_ADD_NEURON:
-		m_pNNetWorkThreadInterface->PostAddNeuron( Util::Unpack2MicroMeterPoint( lParam ) );
-		break;
-
 	case IDD_ADD_INPUT_NEURON:
-		m_pNNetWorkThreadInterface->PostAddInputNeuron( Util::Unpack2MicroMeterPoint( lParam ) );
-		break;
-
 	case IDD_ADD_OUTGOING:
-		m_pNNetWorkThreadInterface->PostAddOutgoing( Util::Unpack2MicroMeterPoint( lParam ) );
-		break;
-
 	case IDD_ADD_INCOMING:
-		m_pNNetWorkThreadInterface->PostAddIncoming( Util::Unpack2MicroMeterPoint( lParam ) );
+	case IDD_SPLIT_PIPELINE:
+		m_pNNetWorkThreadInterface->PostActionCommand( wmId, m_pNNetWindow->GetHighlightedShapeId( ), lParam );
 		break;
 
 	default:

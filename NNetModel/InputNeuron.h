@@ -27,7 +27,7 @@ public:
 	virtual void Prepare( );
 	virtual void Step   ( );
 
-	virtual void DrawExterior  ( PixelCoordsFp & ) const;
+	virtual void DrawExterior  ( PixelCoordsFp &, tHighlightType const ) const;
 	virtual void DrawInterior  ( PixelCoordsFp & ) const;
 	virtual void DrawNeuronText( PixelCoordsFp & ) const;
 

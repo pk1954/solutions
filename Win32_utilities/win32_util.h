@@ -19,47 +19,59 @@ namespace Util
 
     RECT ScrReadRECT( Script & );
 
-	inline UINT64 Pack2UINT64( UINT32 const hi, UINT32 const lo )
-	{
-		return unsigned __int64( static_cast<UINT64>(hi) << 32 | lo );
-	}
-
-	inline UINT32 HiPart( UINT64 const lParam )
-	{
-		return lParam >> 32;
-	}
-
-	inline UINT32 LoPart( UINT64 const lParam )
-	{
-		return lParam & 0xffffffff;
-	}
-
 	union U64Bit
 	{
-		struct twoFloats
-		{
-			float floatA;
-			float floatB;
-		} f2;
-		UINT64 ui64;
+        struct twoFloats
+        {
+            float floatA;
+            float floatB;
+        } f2;
+        struct twoLongs
+        {
+            long longA;
+            long longB;
+        } l2;
+        UINT64 ui64;
 	};
 
-	inline UINT64 Pack2UINT64( MicroMeterPoint const pnt )
-	{
-		U64Bit u;
-		u.f2.floatA = pnt.GetXvalue();
-		u.f2.floatB = pnt.GetYvalue();
-		return u.ui64;
-	}
+    inline UINT64 Pack2UINT64( MicroMeterPoint const pnt )
+    {
+        U64Bit u;
+        u.f2.floatA = pnt.GetXvalue();
+        u.f2.floatB = pnt.GetYvalue();
+        return u.ui64;
+    }
 
-	inline MicroMeterPoint Unpack2MicroMeterPoint( UINT64 ui64 )
+    inline MicroMeterPoint Unpack2MicroMeterPoint( UINT64 ui64 )
 	{
 		U64Bit u;
 		u.ui64 = ui64;
 		return MicroMeterPoint( MicroMeter(u.f2.floatA), MicroMeter(u.f2.floatB) );
 	}
 
-	inline bool operator== ( RECT const & a, RECT const & b ) 
+    inline UINT64 Pack2UINT64( long const lA, long const lB )
+    {
+        U64Bit u;
+        u.l2.longA = lA;
+        u.l2.longB = lB;
+        return u.ui64;
+    }
+
+    inline long UnpackLongA( UINT64 ui64 )
+    {
+        U64Bit u;
+        u.ui64 = ui64;
+        return u.l2.longA;
+    }
+
+    inline long UnpackLongB( UINT64 ui64 )
+    {
+        U64Bit u;
+        u.ui64 = ui64;
+        return u.l2.longB;
+    }
+
+    inline bool operator== ( RECT const & a, RECT const & b ) 
 	{ 
 		return ( a.left == b.left ) && ( a.top == b.top ) && ( a.right == b.right ) && ( a.bottom == b.bottom ); 
 	};
