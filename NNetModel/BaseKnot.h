@@ -60,6 +60,9 @@ public:
 	bool   IsOrphan( )                   const { return m_incoming.empty() && m_outgoing.empty(); }
 	bool   IsOrphanedKnot( )             const { return (GetShapeType() == tShapeType::knot) && IsOrphan(); }
 
+	void ClearIncoming( ) { m_incoming.clear(); }
+	void ClearOutgoing( ) { m_outgoing.clear(); }
+
 	ShapeId GetPrecursor( ) const;
 	ShapeId GetSuccessor( ) const;
 

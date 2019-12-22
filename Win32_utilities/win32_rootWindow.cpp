@@ -35,7 +35,8 @@ RootWindow::RootWindow( ) :
 	m_hwndApp( nullptr ),
 	m_pRefreshRate( nullptr ),
 	m_visibilityMode( tOnOffAuto::on ),
-	m_visibilityCriterion( nullptr )
+	m_visibilityCriterion( nullptr ),
+	m_bShowRefreshRateDlg( true )
 {
 	m_pRefreshRate = new WindowRefreshRate( this );
 }
@@ -87,7 +88,7 @@ void RootWindow::contextMenu( PixelPoint const & pntPos )
 		adjustWinMenu( hPopupMenu );
 	}
 
-	if ( GetRefreshRate( ) > 0ms )
+	if ( m_bShowRefreshRateDlg && (GetRefreshRate( ) > 0ms) )
 	{
 		(void)AppendMenu( hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate" );
 	}

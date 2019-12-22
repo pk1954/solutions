@@ -150,19 +150,31 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	case tShapeType::knot:  
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING,     L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING,     L"Add incoming dendrite" );
+		if ( 
+			   (! pModel->HasOutgoing( m_shapeHighlighted )) || 
+			   (
+				  ! pModel->HasIncoming( m_shapeHighlighted ) && 
+				  ( pModel->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )  
+			   ) 
+		   )
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_APPEND_NEURON,       L"Add neuron" );
+		if ( 
+			  ( pModel->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 ) && 
+			  (! pModel->HasIncoming( m_shapeHighlighted )) 
+		   )
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_APPEND_INPUT_NEURON, L"Add input neuron" );
 		break;
 
 	case tShapeType::pipeline:
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING,     L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING,     L"Add incoming dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_INSERT_NEURON,    L"Insert neuron" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_SPLIT_PIPELINE,   L"Split" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,     L"Remove" );
 		break;
 
 	case tShapeType::undefined: // noshape selected
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_NEURON,       L"Add neuron" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INPUT_NEURON, L"Add input neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_NEURON,       L"New neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_INPUT_NEURON, L"New input neuron" );
 		break;
 
 	default:

@@ -42,6 +42,7 @@ IDC_NNET_SIMU_MAIN MENU
 			MENUITEM "Show &cursor window", IDM_CRSR_WINDOW
 			MENUITEM "Show &parameter window", IDM_PARAM_WINDOW
 		}
+        MENUITEM "Window &refresh rate", IDD_REFRESH_RATE_DIALOG
     }
     POPUP "&Help"
     {

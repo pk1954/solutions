@@ -118,6 +118,8 @@ void NNetAppWindow::Start( )
 		nullptr  // no visibility criterion. Allways visible
 	);
 
+	m_pMainNNetWindow->ShowRefreshRateDlg( false );
+
 	m_NNetWorkThreadInterface.Start
 	( 
 		m_hwndApp, 

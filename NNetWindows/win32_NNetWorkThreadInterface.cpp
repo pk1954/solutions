@@ -138,12 +138,13 @@ void NNetWorkThreadInterface::PostActionCommand
 {
 	static unordered_map < int, NNetWorkThreadMessage::Id const > mapMsg =
 	{
-		{ IDD_INSERT_NEURON,    NNetWorkThreadMessage::Id::INSERT_NEURON    },
-		{ IDD_ADD_NEURON,       NNetWorkThreadMessage::Id::ADD_NEURON       },
-		{ IDD_ADD_INPUT_NEURON, NNetWorkThreadMessage::Id::ADD_INPUT_NEURON },
-		{ IDD_ADD_OUTGOING,     NNetWorkThreadMessage::Id::ADD_OUTGOING     },
-		{ IDD_ADD_INCOMING,     NNetWorkThreadMessage::Id::ADD_INCOMING     },
-		{ IDD_SPLIT_PIPELINE,   NNetWorkThreadMessage::Id::SPLIT_PIPELINE   },
+		{ IDD_INSERT_NEURON,       NNetWorkThreadMessage::Id::INSERT_NEURON       },
+		{ IDD_NEW_NEURON,          NNetWorkThreadMessage::Id::NEW_NEURON          },
+		{ IDD_NEW_INPUT_NEURON,    NNetWorkThreadMessage::Id::NEW_INPUT_NEURON    },
+		{ IDD_APPEND_NEURON,       NNetWorkThreadMessage::Id::APPEND_NEURON       },
+		{ IDD_APPEND_INPUT_NEURON, NNetWorkThreadMessage::Id::APPEND_INPUT_NEURON },
+		{ IDD_ADD_OUTGOING,        NNetWorkThreadMessage::Id::ADD_OUTGOING        },
+		{ IDD_ADD_INCOMING,        NNetWorkThreadMessage::Id::ADD_INCOMING        }
 	};				  
 
 	WorkMessage

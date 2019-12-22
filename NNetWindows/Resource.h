@@ -9,34 +9,35 @@
 
 // identifiers for application start at 100
 
-#define IDC_NNET_SIMU_MAIN  	     102
-#define IDD_APPLY_PARAMETERS         105
-#define IDD_RESET_PARAMETERS         106
-#define IDI_NNETSIMU			     120
-#define IDI_SMALL				     121
-#define IDC_NNETSIMU			     122
-								     
-#define IDM_SLOWER                   130
-#define IDM_FASTER                   131
-								     
-#define IDM_ESCAPE                   140
-#define IDM_RESET                    141
+#define IDC_NNET_SIMU_MAIN  	102
+#define IDD_APPLY_PARAMETERS    105
+#define IDD_RESET_PARAMETERS    106
+#define IDI_NNETSIMU			120
+#define IDI_SMALL				121
+#define IDC_NNETSIMU			122
+								
+#define IDM_SLOWER              130
+#define IDM_FASTER              131
+								
+#define IDM_ESCAPE              140
+#define IDM_RESET               141
 
-#define IDM_SAVE_MODEL               150
-#define IDM_SAVE_MODEL_AS            151
-#define IDM_OPEN_MODEL               152
-#define IDM_NEW_MODEL                153
+#define IDM_SAVE_MODEL          150
+#define IDM_SAVE_MODEL_AS       151
+#define IDM_OPEN_MODEL          152
+#define IDM_NEW_MODEL           153
 
-#define IDD_PULSE_RATE               160
+#define IDD_PULSE_RATE          160
 
-#define IDD_CONNECT                  560
-#define IDD_INSERT_NEURON            561
-#define IDD_ADD_NEURON               562
-#define IDD_ADD_INPUT_NEURON         563
-#define IDD_SPLIT_PIPELINE           564
-#define IDD_REMOVE_SHAPE             566
-#define IDD_ADD_INCOMING             567
-#define IDD_ADD_OUTGOING             568
+#define IDD_CONNECT             560
+#define IDD_INSERT_NEURON       561
+#define IDD_NEW_NEURON          562
+#define IDD_NEW_INPUT_NEURON    563
+#define IDD_APPEND_NEURON       564
+#define IDD_APPEND_INPUT_NEURON 565
+#define IDD_REMOVE_SHAPE        566
+#define IDD_ADD_INCOMING        567
+#define IDD_ADD_OUTGOING        568
 
-#define IDM_CRSR_WINDOW              580
-#define IDM_PARAM_WINDOW  	         581
+#define IDM_CRSR_WINDOW         580
+#define IDM_PARAM_WINDOW  	    581

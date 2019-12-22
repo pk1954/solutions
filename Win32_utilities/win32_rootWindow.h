@@ -184,10 +184,9 @@ public:
 	virtual void AddContextMenuEntries( HMENU const, PixelPoint const ) {}
 	virtual void Notify( bool const );
 
-	virtual void Trigger( )
-	{
-		Invalidate( FALSE );
-	}
+	virtual void Trigger( )	{ Invalidate( FALSE ); }
+
+	void ShowRefreshRateDlg( bool const bShow ) { m_bShowRefreshRateDlg = bShow; }
 
 protected:
 
@@ -204,6 +203,7 @@ private:
 	WindowRefreshRate * m_pRefreshRate;
 	tOnOffAuto          m_visibilityMode;
 	function<bool()>    m_visibilityCriterion;
+	bool                m_bShowRefreshRateDlg;
 
 	void addWinMenu( HMENU const, std::wstring const ) const;
 	void adjustWinMenu( HMENU const ) const;

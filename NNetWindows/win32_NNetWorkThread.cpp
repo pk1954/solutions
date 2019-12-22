@@ -120,16 +120,20 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		m_pNNetModel->AddIncoming( ShapeId( CastToLong(msg.wParam) ), Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
-	case NNetWorkThreadMessage::Id::SPLIT_PIPELINE:
-		m_pNNetModel->SplitPipeline( ShapeId( CastToLong(msg.wParam) ), Util::Unpack2MicroMeterPoint(msg.lParam) );
+	case NNetWorkThreadMessage::Id::NEW_NEURON:
+		m_pNNetModel->NewShape<Neuron>( Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
-	case NNetWorkThreadMessage::Id::ADD_NEURON:
-		m_pNNetModel->AddNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
+	case NNetWorkThreadMessage::Id::NEW_INPUT_NEURON:
+		m_pNNetModel->NewShape<InputNeuron>( Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
-	case NNetWorkThreadMessage::Id::ADD_INPUT_NEURON:
-		m_pNNetModel->AddInputNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
+	case NNetWorkThreadMessage::Id::APPEND_NEURON:
+		m_pNNetModel->AppendShape<Neuron>( ShapeId( CastToLong(msg.wParam) ) );
+		break;
+
+	case NNetWorkThreadMessage::Id::APPEND_INPUT_NEURON:
+		m_pNNetModel->AppendShape<InputNeuron>( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
 	default:

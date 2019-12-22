@@ -78,6 +78,7 @@ public:
 	MicroMeterPoint const GetShapePos       ( ShapeId const   id     ) const;
 	tShapeType      const GetShapeType      ( ShapeId const   id     ) const;
 	bool            const HasOutgoing       ( ShapeId const   id     ) const;
+	bool            const HasIncoming       ( ShapeId const   id     ) const;
 	bool            const IsValidShapeId    ( ShapeId const   id     ) const { return id.GetValue() < m_Shapes.size(); }
 	ShapeId         const GetId             ( Shape   const * pShape ) const { return pShape ? pShape->GetId( ) : NO_SHAPE; }
 	MicroSecs       const GetSimulationTime( )                         const { return m_timeStamp; }
@@ -86,6 +87,9 @@ public:
 	COLORREF        const GetFrameColor( tHighlightType const )        const;
 	wchar_t const * const GetParameterName( tParameter const )         const;
 	wchar_t const * const GetParameterUnit( tParameter const )         const;
+
+	size_t const GetNrOfOutgoingConnections( ShapeId const ) const;
+	size_t const GetNrOfIncomingConnections( ShapeId const ) const; 
 
 	Shape const * FindShapeAt( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
 	Shape const * FindShapeAt( MicroMeterPoint const ) const;
@@ -101,7 +105,20 @@ public:
 
 	void ResetSimulationTime( )	{ m_timeStamp = 0._MicroSecs; }
 
-	template <typename T> ShapeId NewShape( MicroMeterPoint const & pos ) { return addShape( new T( this, pos ) ); }
+	template <typename T> 
+	ShapeId NewShape( MicroMeterPoint const & pos ) 
+	{ 
+		return addShape( new T( this, pos ) ); 
+	}
+
+	template <typename T>
+	void AppendShape( ShapeId const id )
+	{
+		if ( GetShapeType( id ) == tShapeType::knot )
+		{
+			Connect( id, NewShape<T>( GetShapePos( id ) ) );
+		}
+	}
 
 	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
 
@@ -109,11 +126,7 @@ public:
 
 	void ConnectPipeline( Pipeline *, ShapeId const, ShapeId const, ShapeId const );
 
-	ShapeId const SplitPipeline( ShapeId const, MicroMeterPoint const & );
 	ShapeId const InsertNeuron ( ShapeId const, MicroMeterPoint const & );
-
-	void AddNeuron     ( MicroMeterPoint const & );
-	void AddInputNeuron( MicroMeterPoint const & );
 
 	void AddOutgoing( ShapeId const, MicroMeterPoint const & );
 	void AddIncoming( ShapeId const, MicroMeterPoint const & );
@@ -169,4 +182,5 @@ private:
 	ShapeId const   addShape( Shape * );
 	bool            areConnected( ShapeId const, ShapeId const );
 	MicroMeterPoint orthoVector( ShapeId const ) const;
+	ShapeId const   splitPipeline( ShapeId const, MicroMeterPoint const & );
 };

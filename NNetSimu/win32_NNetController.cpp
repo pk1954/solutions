@@ -135,11 +135,12 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDD_INSERT_NEURON:
-	case IDD_ADD_NEURON:
-	case IDD_ADD_INPUT_NEURON:
+	case IDD_APPEND_NEURON:
+	case IDD_APPEND_INPUT_NEURON:
+	case IDD_NEW_NEURON:
+	case IDD_NEW_INPUT_NEURON:
 	case IDD_ADD_OUTGOING:
 	case IDD_ADD_INCOMING:
-	case IDD_SPLIT_PIPELINE:
 		m_pNNetWorkThreadInterface->PostActionCommand( wmId, m_pNNetWindow->GetHighlightedShapeId( ), lParam );
 		break;
 
