@@ -100,7 +100,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDD_PULSE_RATE:
-		m_pNNetWindow->ParameterDlg( tParameter::pulseRate );
+		m_pNNetWindow->PulseRateDlg( m_pNNetWindow->GetHighlightedShapeId( ) );
 		break;
 
 	case IDM_RUN:
@@ -108,7 +108,11 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		return true;
 
 	case IDD_CONNECT:
-		m_pNNetWorkThreadInterface->PostConnect( static_cast<ShapeId>( Util::UnpackLongA( lParam ) ), static_cast<ShapeId>( Util::UnpackLongB( lParam ) ) );
+		m_pNNetWorkThreadInterface->PostConnect
+		( 
+			static_cast<ShapeId>( Util::UnpackLongA( lParam ) ), 
+			static_cast<ShapeId>( Util::UnpackLongB( lParam ) ) 
+		);
 		break;
 
 	case IDD_REMOVE_SHAPE:

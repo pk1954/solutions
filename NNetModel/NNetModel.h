@@ -77,7 +77,7 @@ public:
 
 	MicroMeterPoint const GetShapePos       ( ShapeId const   id     ) const;
 	tShapeType      const GetShapeType      ( ShapeId const   id     ) const;
-	bool            const HasAxon           ( ShapeId const   id     ) const;
+	bool            const HasOutgoing       ( ShapeId const   id     ) const;
 	bool            const IsValidShapeId    ( ShapeId const   id     ) const { return id.GetValue() < m_Shapes.size(); }
 	ShapeId         const GetId             ( Shape   const * pShape ) const { return pShape ? pShape->GetId( ) : NO_SHAPE; }
 	MicroSecs       const GetSimulationTime( )                         const { return m_timeStamp; }
@@ -92,6 +92,8 @@ public:
 
 	float const GetPulseRate     ( Shape const * )    const;
 	float const GetParameterValue( tParameter const ) const;
+
+	bool const ConnectsTo( ShapeId const, ShapeId const ) const;
 
 	void CheckConsistency( Shape const * ) const;
 
@@ -110,11 +112,13 @@ public:
 	ShapeId const SplitPipeline( ShapeId const, MicroMeterPoint const & );
 	ShapeId const InsertNeuron ( ShapeId const, MicroMeterPoint const & );
 
-	void AddNeuron      ( ShapeId const, MicroMeterPoint const & );
-	void AddInputNeuron ( ShapeId const, MicroMeterPoint const & );
-	void AddOutgoing    ( ShapeId const, MicroMeterPoint const & );
-	void AddIncoming    ( ShapeId const, MicroMeterPoint const & );
-	void MoveShape      ( ShapeId const, MicroMeterPoint const & );
+	void AddNeuron     ( MicroMeterPoint const & );
+	void AddInputNeuron( MicroMeterPoint const & );
+
+	void AddOutgoing( ShapeId const, MicroMeterPoint const & );
+	void AddIncoming( ShapeId const, MicroMeterPoint const & );
+	void MoveShape  ( ShapeId const, MicroMeterPoint const & );
+
 	void Connect( ShapeId const, ShapeId const );
 
 	void RemoveShape( ShapeId const );

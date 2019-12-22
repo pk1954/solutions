@@ -54,7 +54,7 @@ public:
 
 	void SetId( ShapeId const id ) { m_identifier = id;	}
 
-	static tShapeType const GetShapeType( wchar_t const * const );
+	static tShapeType const GetShapeTypeFromName( wchar_t const * const );
 	static void SetGraphics( D2D_driver * const pGraphics ) { m_pGraphics = pGraphics; }
 
 protected:

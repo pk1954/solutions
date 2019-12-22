@@ -43,7 +43,7 @@ wchar_t const * GetName( tShapeType const type )
 	return mapShape.at( type );
 }
 
-tShapeType const Shape::GetShapeType( wchar_t const * const name )
+tShapeType const Shape::GetShapeTypeFromName( wchar_t const * const name )
 {
 	static unordered_map < wchar_t const *, tShapeType > mapShape =
 	{

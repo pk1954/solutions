@@ -53,7 +53,7 @@ public:
 
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
 
-	void ParameterDlg( tParameter param );
+	void PulseRateDlg( ShapeId const );
 
 private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 

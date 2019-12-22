@@ -125,11 +125,11 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::ADD_NEURON:
-		m_pNNetModel->AddNeuron( ShapeId( CastToLong(msg.wParam) ), Util::Unpack2MicroMeterPoint(msg.lParam) );
+		m_pNNetModel->AddNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	case NNetWorkThreadMessage::Id::ADD_INPUT_NEURON:
-		m_pNNetModel->AddInputNeuron( ShapeId( CastToLong(msg.wParam) ), Util::Unpack2MicroMeterPoint(msg.lParam) );
+		m_pNNetModel->AddInputNeuron( Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	default:
