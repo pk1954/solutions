@@ -86,6 +86,10 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		m_pNNetModel->RemoveShape( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
+	case NNetWorkThreadMessage::Id::RESET_MODEL:
+		m_pNNetModel->ResetModel( );
+		break;
+
 	case NNetWorkThreadMessage::Id::PULSE_RATE:
 		m_pNNetModel->SetPulseRate( ShapeId( CastToLong(msg.wParam) ), (float &)msg.lParam );
 		break;

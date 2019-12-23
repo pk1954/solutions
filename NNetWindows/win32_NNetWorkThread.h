@@ -23,6 +23,7 @@ public:
 	{
 		NNET_FIRST = WorkThreadMessage::FIRST_APP_MESSAGE,
 		RESET_TIMER,
+		RESET_MODEL,
 		TRIGGER,
 		CONNECT,
 		REMOVE_SHAPE,

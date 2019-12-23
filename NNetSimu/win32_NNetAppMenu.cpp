@@ -6,8 +6,11 @@
 #include "Resource.h"
 #include "Pipeline.h"
 #include "win32_util.h"
+#include "NNetModelStorage.h"
 #include "win32_winManager.h"
 #include "win32_NNetAppMenu.h"
+
+HWND NNetAppMenu::m_hwndApp { nullptr };
 
 void NNetAppMenu::Initialize
 ( 
@@ -18,17 +21,23 @@ void NNetAppMenu::Initialize
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
 
+	m_hwndApp     = hwndApp;
 	m_pWinManager = pWinManager;
 
-    SendMessage( hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_NNETSIMU ) ) );
-    SendMessage( hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL    ) ) );
+    SendMessage( m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_NNETSIMU ) ) );
+    SendMessage( m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL    ) ) );
 
-	Util::SetApplicationTitle( hwndApp, IDS_APP_TITLE );
+	SetAppTitle( );
 
-	BOOL bRes = SetMenu( hwndApp, LoadMenu( GetModuleHandle( nullptr ), MAKEINTRESOURCE( IDC_NNET_SIMU_MAIN ) ) );
+	BOOL bRes = SetMenu( m_hwndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_NNET_SIMU_MAIN ) ) );
 	assert( bRes );
 
 	m_hMenu = GetMenu( hwndApp );
+}
+
+void NNetAppMenu::SetAppTitle( wstring const wstrAdd )
+{
+	Util::SetApplicationTitle( m_hwndApp, IDS_APP_TITLE, wstrAdd );
 }
 
 void NNetAppMenu::enableMenues( UINT const state )

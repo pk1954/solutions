@@ -10,6 +10,9 @@
 #include "win32_util.h"
 
 using std::wostream;
+using std::wstring_convert;
+using std::stringbuf;
+using std::ostream;
 
 RECT Util::ScrReadRECT( Script & script )
 {
@@ -39,7 +42,7 @@ PixelRect Util::CalcWindowRect( PixelRect pixRect, DWORD const dwStyle )
 
 void Util::AdjustRight( HWND const hwnd, PIXEL const pixYpos )
 {
-    HWND    const hwndParent     = GetParent( hwnd );
+    HWND  const hwndParent     = GetParent( hwnd );
     PIXEL const pixWidthParent = GetClientWindowWidth( hwndParent );
     PIXEL const pixWidth       = GetWindowWidth( hwnd );
     PIXEL const pixHeight      = GetWindowHeight( hwnd );
@@ -114,13 +117,13 @@ ULONGLONG Util::GetPhysicalMemory( )  // in bytes
 
 wstring Util::GetCurrentDateAndTime( )
 {
-	std::wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
+	wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
     struct tm newtime;  
     __time64_t long_time;  
     _time64( & long_time );                                  // Get time as 64-bit integer.  
     errno_t err = _localtime64_s( & newtime, & long_time );  // Convert to local time.  
-	std::stringbuf buf;
-	std::ostream os ( & buf );
+	stringbuf buf;
+	ostream os ( & buf );
 	os << std::put_time( & newtime, "%c" );
 	wstring wstrTime = converter.from_bytes( buf.str( ) );
 	return wstrTime;
@@ -128,12 +131,16 @@ wstring Util::GetCurrentDateAndTime( )
 
 void Util::SetApplicationTitle
 ( 
-	HWND const hwndApp, 
-	int  const iResource
+	HWND    const hwndApp, 
+	int     const iResource,
+    wstring const wstrAdd
 )
 {
     static int const MAX_LOADSTRING = 100;
     static TCHAR szTitle[ MAX_LOADSTRING ];			// Titelleistentext
     (void)LoadString( GetModuleHandle( nullptr ), iResource, szTitle, MAX_LOADSTRING );
-    SetWindowText( hwndApp, szTitle );
+    wstring newTitle { szTitle };
+    if ( wstrAdd != L"" )
+        newTitle += L" -" + wstrAdd;
+    SetWindowText( hwndApp, newTitle.c_str() );
 }

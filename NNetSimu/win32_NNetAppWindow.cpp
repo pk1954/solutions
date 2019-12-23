@@ -89,15 +89,15 @@ NNetAppWindow::~NNetAppWindow( )
 void NNetAppWindow::Start( )
 {
 	BaseAppWindow::Start( m_pMainNNetWindow );
+	m_pModelDataWork    = new NNetModel( );
+	m_pNNetModelStorage = new NNetModelStorage( m_pModelDataWork );
+
 	m_pAppMenu->Initialize
 	( 
 		m_hwndApp, 
 		& m_NNetWorkThreadInterface, 
 		& m_WinManager 
 	);
-
-	m_pModelDataWork    = new NNetModel( );
-	m_pNNetModelStorage = new NNetModelStorage( m_pModelDataWork );
 
 	m_pNNetController = new NNetController
 	( 

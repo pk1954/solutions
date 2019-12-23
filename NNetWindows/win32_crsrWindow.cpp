@@ -47,7 +47,7 @@ void CrsrWindow::Start
 		nullptr
 	);
 	m_pReadBuffer->RegisterObserver( this );
-	::CreateWindowToolTip( GetWindowHandle(), L"Cursor window" );
+//	::CreateWindowToolTip( GetWindowHandle(), L"Cursor window" );
 }
 
 void CrsrWindow::Stop( )
@@ -75,49 +75,18 @@ void CrsrWindow::printMicroMeter
 
 void CrsrWindow::DoPaint( TextBuffer & textBuf )
 {
-	textBuf.printString( L"Position:" );
-
-	PixelPoint      const pixPoint{ Util::GetRelativeCrsrPosition( m_pNNetWindow->GetWindowHandle() ) };
-	MicroMeterPoint const umPoint { m_pNNetWindow->PixelPoint2MicroMeterPoint( pixPoint ) };
-
-	printMicroMeter( textBuf, umPoint.GetX() );
-	printMicroMeter( textBuf, umPoint.GetY() );
-
-	//NNetModel const * pModel  { m_pReadBuffer->GetModel() };
-	//ShapeId   const   shapeId { pModel->GetHighlightedShapeId() };
-	//Shape     const * pShape  { pModel->GetConstShape( shapeId ) };
-	//if ( pShape )
-	//{
-	//	switch ( pShape->GetShapeType() )
-	//	{
-	//	case tShapeType::inputNeuron:
-	//		break;
-
-	//	case tShapeType::knot:
-	//		break;
-
-	//	case tShapeType::neuron:
-	//		break;
-
-	//	case tShapeType::pipeline:
-	//	{
-	//		Pipeline const * pPipeline = static_cast<Pipeline const *>( pShape );
-	//		textBuf.nextLine( L"Pipeline" );
-	//		textBuf.nextLine( L"Segments: " );
-	//		textBuf.printNumber( pPipeline->GetNrOfSegments( ) );
-	//		textBuf.nextLine   ( pModel->GetParameterName ( tParameter::pulseSpeed ) );
-	//		textBuf.printFloat ( pModel->GetParameterValue( tParameter::pulseSpeed ) );
-	//		textBuf.printString( pModel->GetParameterUnit ( tParameter::pulseSpeed ) );
-	//	}
-	//	break;
-
-	//	case tShapeType::undefined:
-	//		assert( false );
-	//		break;
-
-	//	default:
-	//		assert( false );
-	//	}
-
-	//}
+	HWND       const hwnd    { m_pNNetWindow->GetWindowHandle() };
+	PixelPoint const pixPoint{ Util::GetRelativeCrsrPosition( hwnd ) };
+	if ( Util::IsInClientRect( hwnd, pixPoint ) )
+	{
+		MicroMeterPoint const umPoint { m_pNNetWindow->PixelPoint2MicroMeterPoint( pixPoint ) };
+		textBuf.printString( L"Position:" );
+		printMicroMeter( textBuf, umPoint.GetX() );
+		printMicroMeter( textBuf, umPoint.GetY() );
+	}
+	else
+	{
+		textBuf.AlignLeft();
+		textBuf.printString( L"Cursor not in model window" );
+	}
 }

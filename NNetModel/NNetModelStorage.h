@@ -26,9 +26,13 @@ public:
 
 	NNetModel * GetModel( ) { return m_pModel; }
 
-	void OpenModel( );
-	void SaveModel( );
-	void SaveModelAs( );
+	wstring const GetModelPath  ( ) { return m_wstrPathOfOpenModel; };
+	void          ResetModelPath( ) { m_wstrPathOfOpenModel = L""; }
+
+	void AskSave( );
+	bool OpenModel( );
+	bool SaveModel( );
+	bool SaveModelAs( );
 
 private:
 	NNetModel     * m_pModel;

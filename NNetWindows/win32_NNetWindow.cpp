@@ -186,7 +186,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 }
 
-void NNetWindow::PulseRateDlg( ShapeId const id )
+bool NNetWindow::PulseRateDlg( ShapeId const id )
 {
 	NNetModel   const & model       { * m_pReadBuffer->GetModel( ) };
 	InputNeuron const & inputNeuron { * model.GetConstTypedShape<InputNeuron>(id) };
@@ -194,7 +194,10 @@ void NNetWindow::PulseRateDlg( ShapeId const id )
 	wstring     const   header      { model.GetParameterName ( tParameter::pulseRate ) }; 
 	wstring     const   unit        { model.GetParameterUnit ( tParameter::pulseRate ) }; 
 	float       const   fNewValue   { StdDialogBox::Show( GetWindowHandle(), fOldValue, header, unit ) };
-	m_pNNetWorkThreadInterface->PostSetPulseRate( id, fNewValue );
+	bool        const   bRes        { fNewValue != fOldValue };
+	if ( bRes )
+		m_pNNetWorkThreadInterface->PostSetPulseRate( id, fNewValue );
+	return bRes;
 }
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )

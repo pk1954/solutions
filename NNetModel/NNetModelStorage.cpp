@@ -20,7 +20,7 @@ using std::wcout;
 using std::endl;
 using std::put_time;
 
-static float const PROTOCOL_VERSION { 1.3f };
+static float const PROTOCOL_VERSION { 1.4f };
 
 ////////////////////////// Read /////////////////////////////////////////////
 
@@ -167,13 +167,10 @@ bool NNetModelStorage::Read( wstring const & wstrPath )
 	if ( scriptModel.ScrProcess( wstrPath ) )
 	{
 		wcout << L" sucessfully processed" << endl;
+		m_pModel->ModelSaved( );
 		return true;
 	}
-	else
-	{
-		wcout << L" missing or bad" << endl;
-		return false;
-	}
+	return false;
 }
 
 ////////////////////////// constructor /////////////////////////////////////////////
@@ -275,6 +272,8 @@ void NNetModelStorage::Write( wostream & out )
      			<< endl; 
 		}
 	);
+
+	m_pModel->ModelSaved( );
 }
 
 void NNetModelStorage::WritePipeline( wostream & out, Shape const & shape )
@@ -317,11 +316,23 @@ void NNetModelStorage::WriteShape( wostream & out, Shape & shape )
 
 /////////////////////////////////////////////
 
-void NNetModelStorage::OpenModel( )
+void NNetModelStorage::AskSave( )
+{
+	if ( m_pModel->HasModelChanged() )
+	{
+		int iRes = MessageBox( nullptr, L"Save now?", L"Unsaved changes", MB_OKCANCEL | MB_SYSTEMMODAL );
+		if ( iRes == IDOK )
+			SaveModel( );
+	}
+}
+
+bool NNetModelStorage::OpenModel( )
 {
 	m_wstrPathOfOpenModel = AskForFileName( GetPathOfExecutable( ), L"*.mod", L"Model files", tFileMode::read );
 	if ( m_wstrPathOfOpenModel != L"" )
-		Read( m_wstrPathOfOpenModel );
+		return Read( m_wstrPathOfOpenModel );
+	else
+		return false;
 }
 
 void NNetModelStorage::writeModel( )
@@ -331,24 +342,28 @@ void NNetModelStorage::writeModel( )
 	modelFile.close( );
 }
 
-void NNetModelStorage::SaveModelAs( )
+bool NNetModelStorage::SaveModelAs( )
 {
 	if ( m_wstrPathOfOpenModel == L"" )
 		m_wstrPathOfOpenModel = GetPathOfExecutable( );
 
 	m_wstrPathOfOpenModel = AskForFileName( m_wstrPathOfOpenModel, L"*.mod", L"Model files", tFileMode::write );
 
-	writeModel( );
+	bool const bRes = m_wstrPathOfOpenModel != L"";
+	if ( bRes )
+		writeModel( );
+	return bRes;
 }
 
-void NNetModelStorage::SaveModel( )
+bool NNetModelStorage::SaveModel( )
 {
 	if ( m_wstrPathOfOpenModel == L"" )
 	{
-		SaveModelAs( );
+		return SaveModelAs( );
 	}
 	else
 	{
 		writeModel( );
+		return true;
 	}
 }

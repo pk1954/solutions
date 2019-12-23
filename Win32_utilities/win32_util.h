@@ -11,11 +11,16 @@
 #include <string>
 #include <iostream>
 
+using std::wstring;
+using std::wostream;
+using std::wcout;
+using std::endl;
+
 class Script;
 
 namespace Util
 {
-    std::wostream & operator << ( std::wostream &, RECT const & );
+    wostream & operator << ( wostream &, RECT const & );
 
     RECT ScrReadRECT( Script & );
 
@@ -321,7 +326,7 @@ namespace Util
 		FILE * fp;
 		BOOL    bRes = AllocConsole( );
 		errno_t res  = _wfreopen_s( &fp, L"CONOUT$", L"w", stdout );
-		std::wcout << L"Console started" << std::endl;
+		wcout << L"Console started" << endl;
 	}
 
 	void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );
@@ -334,8 +339,8 @@ namespace Util
     BOOL MoveWindowAbsolute( HWND const, PixelRect  const &, BOOL const );
     BOOL MoveWindowAbsolute( HWND const, PixelPoint const &, BOOL const );
 	
-    DWORD        GetNrOfCPUs( );
-    ULONGLONG    GetPhysicalMemory( );
-	std::wstring GetCurrentDateAndTime( );
-	void         SetApplicationTitle( HWND const, int const );
+    DWORD     GetNrOfCPUs( );
+    ULONGLONG GetPhysicalMemory( );
+	wstring   GetCurrentDateAndTime( );
+	void      SetApplicationTitle( HWND const, int const, wstring const = L"" );
 };

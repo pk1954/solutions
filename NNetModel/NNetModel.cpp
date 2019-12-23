@@ -22,56 +22,44 @@
 using namespace std::chrono;
 using std::unordered_map;
 
-wchar_t const * const NNetModel::GetParameterName( tParameter const p ) const
-{
-	static unordered_map < tParameter, wchar_t const * const > mapParam =
-	{
-		{ tParameter::pulseRate,        L"PulseRate"        },
-		{ tParameter::pulseSpeed,       L"PulseSpeed"       },
-		{ tParameter::pulseWidth,       L"PulseWidth"       },
-		{ tParameter::signalLoss,       L"SignalLoss"       },
-		{ tParameter::threshold,        L"Threshold"        },
-		{ tParameter::peakVoltage,      L"PeakVoltage"      },
-		{ tParameter::refractoryPeriod, L"RefractoryPeriod" }
-	};				  
-
-	return mapParam.at( p );
-}
-
-wchar_t const * const NNetModel::GetParameterUnit( tParameter const p ) const
-{
-	static unordered_map < tParameter, wchar_t const * const > mapParam =
-	{
-		{ tParameter::pulseRate,        L"Hz"    },
-		{ tParameter::pulseSpeed,       L"m/sec" },
-		{ tParameter::pulseWidth,       L"µs"    },
-		{ tParameter::signalLoss,       L"1/µm"  },
-		{ tParameter::threshold,        L"mV"    },
-		{ tParameter::peakVoltage,      L"mV"    },
-		{ tParameter::refractoryPeriod, L"µs"    }
-	};				  
-
-	return mapParam.at( p );
-}
+CRITICAL_SECTION NNetModel::m_criticalSection;
+bool             NNetModel::m_bCritSectReady = false;
 
 NNetModel::NNetModel( )
   : m_Shapes( ),
-	m_timeStamp            ( 0._MicroSecs ),
-	m_signalLoss           ( 0.0005f ), 
-	m_threshold            ( 20._mV ),
-	m_peakVoltage          ( 10._mV ),
-	m_pulseWidth           ( 2000._MicroSecs ),
-	m_refractoryPeriod     ( 500._MicroSecs ),
-	m_pulseSpeed           ( 0.1_meterPerSec )
+	m_timeStamp       ( 0._MicroSecs ),
+	m_signalLoss      ( 0.0005f ), 
+	m_threshold       ( 20._mV ),
+	m_peakVoltage     ( 10._mV ),
+	m_pulseWidth      ( 2000._MicroSecs ),
+	m_refractoryPeriod( 500._MicroSecs ),
+	m_pulseSpeed      ( 0.1_meterPerSec ),
+	m_bUnsavedChanges ( false )
 {					
-	// initial shapes 
+	if ( ! m_bCritSectReady )
+	{
+		(void)InitializeCriticalSectionAndSpinCount( & m_criticalSection, 0x00000400 );
+		m_bCritSectReady = true;
+	}
+
+	createInitialShapes( );
+}
+
+NNetModel::~NNetModel( )
+{
+	if ( m_bCritSectReady )
+	{
+		DeleteCriticalSection( & m_criticalSection );
+		m_bCritSectReady = false;
+	}
+}
+
+void NNetModel::createInitialShapes( )
+{
 	ShapeId m_idInputNeuron = NewShape<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
 	ShapeId m_idNeuron      = NewShape<Neuron>      ( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) );
 	ShapeId m_idPipeline    = NewPipeline( m_idInputNeuron, m_idNeuron );
 }
-
-NNetModel::~NNetModel( )
-{}
 
 void NNetModel::RecalcPipelines( ) 
 { 
@@ -143,6 +131,7 @@ bool const NNetModel::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) con
 
 void NNetModel::RemoveShape( ShapeId const idShapeToBeDeleted )
 {
+	m_bUnsavedChanges = true;
 	switch ( GetShapeType( idShapeToBeDeleted ) )
 	{
 	case tShapeType::pipeline:
@@ -258,6 +247,7 @@ float const NNetModel::GetParameterValue( tParameter const param ) const
 
 void NNetModel::SetPulseRate( ShapeId const id, float const fNewValue )
 {
+	m_bUnsavedChanges = true;
 	InputNeuron * const pInputNeuron { GetTypedShape<InputNeuron>( id ) };
 	if ( pInputNeuron )
 		pInputNeuron->SetPulseFrequency( static_cast< fHertz >( fNewValue ) );
@@ -269,6 +259,7 @@ void NNetModel::SetParameter
 	float      const fNewValue 
 )
 {
+	m_bUnsavedChanges = true;
 	switch ( param )
 	{
 	case tParameter::pulseSpeed:
@@ -346,6 +337,7 @@ size_t const NNetModel::GetNrOfIncomingConnections( ShapeId const id ) const
 
 void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge src shape into dst shape
 {
+	m_bUnsavedChanges = true;
 	BaseKnot * pSrc = GetTypedShape<BaseKnot>( idSrc );
 	BaseKnot * pDst = GetTypedShape<BaseKnot>( idDst );
 	if ( pSrc && pDst )
@@ -388,6 +380,7 @@ void NNetModel::ConnectPipeline
 	ShapeId const idEnd 
 )
 {
+	m_bUnsavedChanges = true;
 	pPipeline->SetStartKnot( idStart );
 	pPipeline->SetEndKnot  ( idEnd );
 	GetTypedShape<BaseKnot>( idStart )->AddOutgoing ( idPipeline );
@@ -396,6 +389,7 @@ void NNetModel::ConnectPipeline
 
 ShapeId NNetModel::NewPipeline( ShapeId const idStart, ShapeId const idEnd )
 {
+	m_bUnsavedChanges = true;
 	Pipeline * pPipelineNew { new Pipeline( this ) };
 	ShapeId const id { addShape( pPipelineNew ) };
 	ConnectPipeline( pPipelineNew, id, idStart, idEnd );
@@ -419,6 +413,7 @@ void NNetModel::insertNewBaseKnot( ShapeId const id, BaseKnot * const pNewBaseKn
 
 void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
+	m_bUnsavedChanges = true;
 	switch ( GetShapeType( id ) )
 	{
 	case tShapeType::pipeline:
@@ -449,6 +444,7 @@ ShapeId const NNetModel::splitPipeline( ShapeId const id, MicroMeterPoint const 
 
 ShapeId const NNetModel::InsertNeuron( ShapeId const id, MicroMeterPoint const & splitPoint )
 {
+	m_bUnsavedChanges = true;
 	Neuron * pNeuronNew { new Neuron( this, splitPoint ) };
 	insertNewBaseKnot( id, pNeuronNew );
 	return pNeuronNew->GetId( );
@@ -462,6 +458,7 @@ MicroMeterPoint NNetModel::orthoVector( ShapeId const idPipeline ) const
 
 void NNetModel::AddOutgoing( ShapeId const id, MicroMeterPoint const & pos )
 {
+	m_bUnsavedChanges = true;
 	switch ( GetShapeType( id ) )
 	{
 	case tShapeType::pipeline:
@@ -482,6 +479,7 @@ void NNetModel::AddOutgoing( ShapeId const id, MicroMeterPoint const & pos )
 
 void NNetModel::AddIncoming( ShapeId const id, MicroMeterPoint const & pos )
 {
+	m_bUnsavedChanges = true;
 	switch ( GetShapeType( id ) )
 	{
 	case tShapeType::pipeline:
@@ -580,6 +578,12 @@ void NNetModel::ResetAll( )
 	m_Shapes.clear();
 }
 
+void NNetModel::ResetModel( )
+{
+	ResetAll( );
+	createInitialShapes( );
+}
+
 Shape const * NNetModel::FindShapeAt( MicroMeterPoint const pnt, function<bool(Shape const &)> const & crit ) const
 {
 	for ( size_t i = m_Shapes.size(); i --> 0; )	
@@ -617,3 +621,35 @@ COLORREF const NNetModel::GetFrameColor( tHighlightType const type ) const
 			  ? EXT_COLOR_HIGHLIGHT 
 			  : EXT_COLOR_NORMAL;
 };
+
+wchar_t const * const NNetModel::GetParameterName( tParameter const p ) const
+{
+	static unordered_map < tParameter, wchar_t const * const > mapParam =
+	{
+		{ tParameter::pulseRate,        L"PulseRate"        },
+		{ tParameter::pulseSpeed,       L"PulseSpeed"       },
+		{ tParameter::pulseWidth,       L"PulseWidth"       },
+		{ tParameter::signalLoss,       L"SignalLoss"       },
+		{ tParameter::threshold,        L"Threshold"        },
+		{ tParameter::peakVoltage,      L"PeakVoltage"      },
+		{ tParameter::refractoryPeriod, L"RefractoryPeriod" }
+	};				  
+
+	return mapParam.at( p );
+}
+
+wchar_t const * const NNetModel::GetParameterUnit( tParameter const p ) const
+{
+	static unordered_map < tParameter, wchar_t const * const > mapParam =
+	{
+		{ tParameter::pulseRate,        L"Hz"    },
+		{ tParameter::pulseSpeed,       L"m/sec" },
+		{ tParameter::pulseWidth,       L"µs"    },
+		{ tParameter::signalLoss,       L"1/µm"  },
+		{ tParameter::threshold,        L"mV"    },
+		{ tParameter::peakVoltage,      L"mV"    },
+		{ tParameter::refractoryPeriod, L"µs"    }
+	};				  
+
+	return mapParam.at( p );
+}

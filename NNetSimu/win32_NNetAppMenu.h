@@ -4,7 +4,12 @@
 
 #pragma once
 
+#include <string>
 #include "win32_appMenu.h"
+
+using std::wstring;
+
+class NNetModelStorage;
 
 class NNetAppMenu : public AppMenu
 {
@@ -17,13 +22,22 @@ public:
 
 	virtual ~NNetAppMenu() {}
 
-	virtual void Initialize( HWND const, WorkThreadInterface const * const, WinManager const * const );
+	virtual void Initialize
+	( 
+		HWND                        const, 
+		WorkThreadInterface const * const, 
+		WinManager          const * const
+	);
 	virtual void AdjustVisibility( );
 	virtual void Start( );
 	virtual void Stop( );
 
+	static void SetAppTitle( wstring const = L"" );
+
 private:
 	void enableMenues( UINT const );
+
+	static HWND m_hwndApp;
 
 	HMENU                       m_hMenu;
 	WorkThreadInterface const * m_pWorkThreadInterface;

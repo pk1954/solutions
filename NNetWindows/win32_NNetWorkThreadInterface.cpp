@@ -95,6 +95,15 @@ static WorkThreadMessage::Id const GetWorkThreadMessage( tParameter const p )
 	return static_cast< WorkThreadMessage::Id >( mapParam.at( p ) );
 }
 
+void NNetWorkThreadInterface::PostResetModel( )
+{
+	if ( IsTraceOn( ) )
+	{
+		TraceStream( ) << __func__ << endl;
+	}
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::RESET_MODEL), 0, 0 );
+}
+
 void NNetWorkThreadInterface::PostSetPulseRate( ShapeId const id, float const fNewValue )
 {
 	if ( IsTraceOn( ) )

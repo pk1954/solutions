@@ -40,6 +40,7 @@ public:
 	void PostConnect          ( ShapeId const, ShapeId const );
 	void PostRemoveShape      ( ShapeId const );
 	void PostSlowMotionChanged( );
+	void PostResetModel       ( );
 	void PostMoveShape        ( ShapeId const, MicroMeterPoint const & );
 	void PostActionCommand    ( int const , ShapeId const, LPARAM const );
 

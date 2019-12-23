@@ -16,6 +16,7 @@
 #include "win32_aboutBox.h"
 #include "win32_NNetWindow.h"
 #include "win32_winManager.h"
+#include "win32_NNetAppMenu.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetController.h"
 
@@ -34,7 +35,8 @@ NNetController::NNetController
 	m_pStatusBar              ( pStatusBar ),
 	m_pNNetWorkThreadInterface( pNNetWorkThreadInterface ),
 	m_pSlowMotionRatio        ( pSlowMotionRatio ),
-	m_hCrsrWait               ( LoadCursor( NULL, IDC_WAIT ) )
+	m_hCrsrWait               ( LoadCursor( NULL, IDC_WAIT ) ),
+	m_bUnsavedChanges         ( false )
 {
 }
 
@@ -93,22 +95,31 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	switch ( wmId )
 	{
 	case IDM_SAVE_MODEL:
-		m_pStorage->SaveModel( );
+		if ( m_pStorage->SaveModel( ) )
+			NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
 		break;
 
 	case IDM_SAVE_MODEL_AS:
-		m_pStorage->SaveModelAs( );
+		if ( m_pStorage->SaveModelAs( ) )
+			NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
 		break;
 
 	case IDM_OPEN_MODEL:
-		m_pStorage->OpenModel( );
+		m_pStorage->AskSave( );
+		if ( m_pStorage->OpenModel( ) )
+			NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
 		break;
 
 	case IDM_NEW_MODEL:
+		m_pStorage->AskSave( );
+		m_pNNetWorkThreadInterface->PostResetModel( );
+		m_pStorage->ResetModelPath( );
+		NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
 		break;
 
 	case IDD_PULSE_RATE:
-		m_pNNetWindow->PulseRateDlg( m_pNNetWindow->GetHighlightedShapeId( ) );
+		if ( m_pNNetWindow->PulseRateDlg( m_pNNetWindow->GetHighlightedShapeId( ) ) )
+			m_bUnsavedChanges = true;
 		break;
 
 	case IDM_RUN:
@@ -126,6 +137,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	case IDD_REMOVE_SHAPE:
 		m_pNNetWorkThreadInterface->PostRemoveShape( m_pNNetWindow->GetHighlightedShapeId( ) );
 		m_pNNetWindow->ResetHighlightedShape();
+		m_bUnsavedChanges = true;
 		break;
 
 	case IDM_SLOWER:

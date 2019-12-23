@@ -39,4 +39,5 @@ private:
 	NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 	SlowMotionRatio         * m_pSlowMotionRatio;
 	HCURSOR                   m_hCrsrWait;
+	bool                      m_bUnsavedChanges;
 };				          

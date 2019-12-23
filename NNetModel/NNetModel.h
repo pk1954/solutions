@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <functional>
+#include "synchapi.h"
 #include "util.h"
 #include "MoreTypes.h"
 #include "Segment.h"
@@ -87,6 +88,7 @@ public:
 	COLORREF        const GetFrameColor( tHighlightType const )        const;
 	wchar_t const * const GetParameterName( tParameter const )         const;
 	wchar_t const * const GetParameterUnit( tParameter const )         const;
+	bool            const HasModelChanged( )                           const { return m_bUnsavedChanges; }
 
 	size_t const GetNrOfOutgoingConnections( ShapeId const ) const;
 	size_t const GetNrOfIncomingConnections( ShapeId const ) const; 
@@ -139,11 +141,13 @@ public:
 	template <typename T>
 	void Apply2All( function<void(T &)> const & func ) const
 	{
+		EnterCriticalSection( & m_criticalSection );
 		for ( auto pShape : m_Shapes )
 		{
 			if ( pShape && T::TypeFits( pShape->GetShapeType() ) )
 				func( static_cast<T &>( * pShape ) );
 		}
+		LeaveCriticalSection( & m_criticalSection );
 	}
 
 	void Apply2GlobalParameters( function<void(tParameter const &)> const & ) const;
@@ -155,6 +159,9 @@ public:
 	virtual void Compute( );
 	virtual void ResetAll( );
 
+	void ResetModel( );
+	void ModelSaved( ) { m_bUnsavedChanges = false; }
+
 	void SetPulseRate( ShapeId    const, float const );
 	void SetParameter( tParameter const, float const );
 
@@ -162,25 +169,31 @@ public:
 
 private:
 
-	// model data
 	vector<Shape *> m_Shapes;
 	MicroSecs       m_timeStamp;
+	bool            m_bUnsavedChanges;
+
+	static CRITICAL_SECTION m_criticalSection;
+	static bool             m_bCritSectReady;
 
 	// parameters
-	float        m_signalLoss;     // signal loss per um  
-    mV           m_threshold;
-    mV           m_peakVoltage;   
-	MicroSecs    m_pulseWidth;   
-	MicroSecs    m_refractoryPeriod;
-	meterPerSec  m_pulseSpeed;
+	float       m_signalLoss;     // signal loss per um  
+    mV          m_threshold;
+    mV          m_peakVoltage;   
+	MicroSecs   m_pulseWidth;   
+	MicroSecs   m_refractoryPeriod;
+	meterPerSec m_pulseSpeed;
 
 	// local functions
 	void deleteShape( ShapeId const id )
 	{
+		EnterCriticalSection( & m_criticalSection );
 		delete m_Shapes[ id.GetValue() ];
 		m_Shapes[ id.GetValue() ] = nullptr;
+		LeaveCriticalSection( & m_criticalSection );
 	}
 
+	void            createInitialShapes();
 	void            deleteBaseKnot( ShapeId const );
 	void            deletePipeline( ShapeId const );
 	void            insertNewBaseKnot( ShapeId const, BaseKnot * const );
