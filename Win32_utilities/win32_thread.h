@@ -1,6 +1,6 @@
 // win32_thread.h : 
 //
-// Tooolbox/Win32_utilities
+// Win32_utilities
 
 #pragma once
 

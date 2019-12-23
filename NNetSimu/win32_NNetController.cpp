@@ -69,6 +69,14 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		m_pNNetWindow->SetPixelSize( MicroMeter((float &)lParam) );
 		break;
 
+	case IDD_ARROWS_ON:
+		m_pNNetWindow->ShowDirectionArrows( true );
+		break;
+
+	case IDD_ARROWS_OFF:
+		m_pNNetWindow->ShowDirectionArrows( false );
+		break;
+
 	case IDM_REFRESH:
 		m_pNNetWindow->Notify( lParam != 0 );
 		break;

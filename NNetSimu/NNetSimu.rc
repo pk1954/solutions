@@ -39,9 +39,11 @@ IDC_NNET_SIMU_MAIN MENU
         }
         POPUP "&Windows"
         {
-			MENUITEM "Show &cursor window", IDM_CRSR_WINDOW
-			MENUITEM "Show &parameter window", IDM_PARAM_WINDOW
-		}
+            MENUITEM "Show &cursor window", IDM_CRSR_WINDOW
+                MENUITEM "Show &parameter window", IDM_PARAM_WINDOW
+        }
+        MENUITEM "Arrows on",            IDD_ARROWS_ON
+        MENUITEM "Arrows off",           IDD_ARROWS_OFF
         MENUITEM "Window &refresh rate", IDD_REFRESH_RATE_DIALOG
     }
     POPUP "&Help"

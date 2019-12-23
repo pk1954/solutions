@@ -17,6 +17,7 @@ using std::function;
 
 class Scale;
 class ActionTimer;
+class AnimationThread;
 class NNetWorkThreadInterface;
 
 class NNetWindow : public ModelWindow
@@ -54,6 +55,7 @@ public:
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
 
 	void PulseRateDlg( ShapeId const );
+	void ShowDirectionArrows( bool const );
 
 private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
@@ -65,9 +67,10 @@ private:
 	HMENU m_hPopupMenu;
 	BOOL  m_bMoveAllowed;    // TRUE: move with mouse is possible
 
-	D2D_driver    m_D2d_driver;
-	PixelCoordsFp m_coord;
-	Scale       * m_pScale;
+	D2D_driver        m_D2d_driver;
+	PixelCoordsFp     m_coord;
+	Scale           * m_pScale;
+	AnimationThread * m_pAnimationThread;
 
 	PixelPoint m_ptLast;	 	   // Last cursor position during selection 
 	PixelPoint m_ptCommandPosition;

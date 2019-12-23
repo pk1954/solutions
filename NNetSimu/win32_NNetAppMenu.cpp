@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "Resource.h"
+#include "Pipeline.h"
 #include "win32_util.h"
 #include "win32_winManager.h"
 #include "win32_NNetAppMenu.h"
@@ -50,4 +51,6 @@ void NNetAppMenu::AdjustVisibility( )
 {
 	EnableMenuItem( m_hMenu, IDM_CRSR_WINDOW,  m_pWinManager->IsVisible( IDM_CRSR_WINDOW )  ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_PARAM_WINDOW, m_pWinManager->IsVisible( IDM_PARAM_WINDOW ) ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDD_ARROWS_OFF, (Pipeline::GetArrowSize() != Pipeline::STD_ARROW_SIZE) ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDD_ARROWS_ON,  (Pipeline::GetArrowSize() == Pipeline::STD_ARROW_SIZE) ? MF_GRAYED : MF_ENABLED );
 }

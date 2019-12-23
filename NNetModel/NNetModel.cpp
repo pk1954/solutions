@@ -168,7 +168,6 @@ void NNetModel::deleteBaseKnot( ShapeId const id )
 	{
 		MicroMeterPoint umPos { pToBeDeleted->GetPosition() };
 		assert( ::IsBaseKnotType( pToBeDeleted->GetShapeType( ) ) );
-		m_Shapes[ id.GetValue() ] = nullptr;
 		pToBeDeleted->Apply2AllIncomingPipelines
 		( 
 			[&]( ShapeId const idPipeline ) // every incoming pipeline needs a new end knot
@@ -189,7 +188,8 @@ void NNetModel::deleteBaseKnot( ShapeId const id )
 				pKnotNew->AddOutgoing( idPipeline );
 			} 
 		);
-		delete pToBeDeleted;
+
+		deleteShape( id );
 	}
 }
 
@@ -199,7 +199,6 @@ void NNetModel::deletePipeline( ShapeId const id )
 	if ( pPipelineToBeDeleted )
 	{
 		assert( ::IsPipelineType( pPipelineToBeDeleted->GetShapeType( ) ) );
-		m_Shapes[ id.GetValue() ] = nullptr;
 
 		ShapeId    idStartKnot { pPipelineToBeDeleted->GetStartKnot() };
 		BaseKnot * pStartKnot  { GetTypedShape<BaseKnot>( idStartKnot ) };
@@ -219,7 +218,7 @@ void NNetModel::deletePipeline( ShapeId const id )
 				deleteBaseKnot( idEndKnot );
 		}
 
-		delete pPipelineToBeDeleted;
+		deleteShape( id );
 	}
 }
 
@@ -368,8 +367,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 				GetTypedShape<Pipeline>(idPipeline)->SetStartKnot( idDst );
 			}
 		);
-		m_Shapes[ idSrc.GetValue() ] = nullptr;
-		delete pSrc;
+		deleteShape( idSrc );
 	}
 	CHECK_CONSISTENCY;
 }

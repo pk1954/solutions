@@ -175,6 +175,12 @@ private:
 	meterPerSec  m_pulseSpeed;
 
 	// local functions
+	void deleteShape( ShapeId const id )
+	{
+		delete m_Shapes[ id.GetValue() ];
+		m_Shapes[ id.GetValue() ] = nullptr;
+	}
+
 	void            deleteBaseKnot( ShapeId const );
 	void            deletePipeline( ShapeId const );
 	void            insertNewBaseKnot( ShapeId const, BaseKnot * const );

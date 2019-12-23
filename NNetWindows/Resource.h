@@ -29,6 +29,9 @@
 
 #define IDD_PULSE_RATE          160
 
+#define IDD_ARROWS_ON           161
+#define IDD_ARROWS_OFF          162
+
 #define IDD_CONNECT             560
 #define IDD_INSERT_NEURON       561
 #define IDD_NEW_NEURON          562

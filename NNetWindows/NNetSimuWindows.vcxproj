@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationThread.h" />
     <ClInclude Include="win32_crsrWindow.h" />
     <ClInclude Include="win32_NNetReadBuffer.h" />
     <ClInclude Include="Resource.h" />

@@ -50,7 +50,15 @@ public:
 	virtual void DrawInterior  ( PixelCoordsFp  & ) const;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 
+	static void       SetArrowSize( MicroMeter const size ) { m_arrowSize = size; }
+	static MicroMeter GetArrowSize( ) { return m_arrowSize; }
+
+	static MicroMeter const STD_ARROW_SIZE;
+
 private:
+	
+	static MicroMeter m_arrowSize;
+
 	ShapeId    m_idKnotStart;
 	ShapeId    m_idKnotEnd;
 	MicroMeter m_width;

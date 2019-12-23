@@ -10,6 +10,7 @@
 #include "Pipeline.h"
 #include "InputNeuron.h"
 #include "PixelTypes.h"
+#include "AnimationThread.h"
 #include "tHighlightType.h"
 #include "PixelCoordsFp.h"
 #include "Direct2D.h"
@@ -50,7 +51,8 @@ NNetWindow::NNetWindow( ) :
 	m_ptLast( PP_NULL ),
 	m_ptCommandPosition( PP_NULL ),
 	m_shapeHighlighted     ( NO_SHAPE ),
-	m_shapeSuperHighlighted( NO_SHAPE )
+	m_shapeSuperHighlighted( NO_SHAPE ),
+	m_pAnimationThread( nullptr )
 { }
 
 void NNetWindow::Start
@@ -74,6 +76,7 @@ void NNetWindow::Start
 	Shape::SetGraphics( & m_D2d_driver );
 	m_pReadBuffer->RegisterObserver( this );
 	m_pScale = new Scale( & m_D2d_driver, & m_coord );
+	m_pAnimationThread = new AnimationThread( );
 }
 
 void NNetWindow::Stop( )
@@ -393,4 +396,9 @@ BOOL NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 BOOL NNetWindow::inObservedClientRect( LPARAM const lParam )
 {
 	return TRUE;  // Is cursor position in observed client rect?
+}
+
+void NNetWindow::ShowDirectionArrows( bool const bShow )
+{
+	m_pAnimationThread->SetTarget( bShow ? Pipeline::STD_ARROW_SIZE : 0.0_MicroMeter );
 }

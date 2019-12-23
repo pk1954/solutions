@@ -13,6 +13,10 @@
 #include "NNetModel.h"
 #include "Pipeline.h"
 
+MicroMeter const Pipeline::STD_ARROW_SIZE { 30.0_MicroMeter };
+
+MicroMeter Pipeline::m_arrowSize { STD_ARROW_SIZE };
+
 Pipeline::Pipeline( NNetModel * pModel )
   :	Shape( pModel, tShapeType::pipeline ),
 	m_idKnotStart   ( NO_SHAPE ),
@@ -137,14 +141,15 @@ void Pipeline::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) 
 
 		m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth, color );
 
-		m_pGraphics->DrawArrow
-		(
-			coord.convert2fPixelPos( (umEndPoint * 2.f + umStartPoint) / 3.f ), 
-			coord.convert2fPixelSize( umEndPoint - umStartPoint ), 
-			color, 
-			coord.convert2fPixel( 30.0_MicroMeter ),
-			fPixWidth / 2 
-		);
+		if ( m_arrowSize > 0.0_MicroMeter )
+			m_pGraphics->DrawArrow
+			(
+				coord.convert2fPixelPos( (umEndPoint * 2.f + umStartPoint) / 3.f ), 
+				coord.convert2fPixelSize( umEndPoint - umStartPoint ), 
+				color, 
+				coord.convert2fPixel( m_arrowSize ),
+				fPixWidth / 2 
+			);
 	}
 }
 
