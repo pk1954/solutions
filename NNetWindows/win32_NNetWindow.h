@@ -16,6 +16,7 @@ using std::wstring;
 using std::function;
 
 class Scale;
+class Observable;
 class ActionTimer;
 class AnimationThread;
 class NNetWorkThreadInterface;
@@ -36,7 +37,8 @@ public:
 	( 
 		HWND             const, 
 		DWORD            const,
-		function<bool()> const
+		function<bool()> const,
+		Observable *     const
 	);
 
 	void Stop( );
@@ -71,6 +73,7 @@ private:
 	PixelCoordsFp     m_coord;
 	Scale           * m_pScale;
 	AnimationThread * m_pAnimationThread;
+	Observable      * m_pCursorPosObservable;
 
 	PixelPoint m_ptLast;	 	   // Last cursor position during selection 
 	PixelPoint m_ptCommandPosition;

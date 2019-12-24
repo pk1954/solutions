@@ -59,7 +59,8 @@ void NNetWindow::Start
 ( 
 	HWND             const hwndApp, 
 	DWORD            const dwStyle,
-	function<bool()> const visibilityCriterion
+	function<bool()> const visibilityCriterion,
+	Observable *     const pCursorObservable
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -77,6 +78,7 @@ void NNetWindow::Start
 	m_pReadBuffer->RegisterObserver( this );
 	m_pScale = new Scale( & m_D2d_driver, & m_coord );
 	m_pAnimationThread = new AnimationThread( );
+	m_pCursorPosObservable = pCursorObservable;
 }
 
 void NNetWindow::Stop( )
@@ -204,6 +206,8 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
 	PixelPoint const   ptCrsr { GetCrsrPosFromLparam( lParam ) };  // relative to client area
 	NNetModel  const * pModel { m_pReadBuffer->GetModel() };
+
+	m_pCursorPosObservable->NotifyAll( false );
 
 	if ( wParam & MK_RBUTTON )          // Right mouse button: selection
 	{

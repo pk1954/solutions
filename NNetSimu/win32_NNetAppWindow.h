@@ -24,6 +24,7 @@
 #include "win32_NNetReadBuffer.h"
 #include "win32_NNetController.h"
 
+class Observable;
 class NNetModel;
 class CrsrWindow;
 class TimeDisplay;
@@ -65,4 +66,5 @@ private:
 	CrsrWindow        * m_pCrsrWindow;
 	NNetModelStorage  * m_pNNetModelStorage;
 	ParameterDialog   * m_pParameterDlg;
+	Observable        * m_pCursorPos;
 };

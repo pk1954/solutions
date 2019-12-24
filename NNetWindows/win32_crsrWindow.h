@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "NNetReadBuffer.h" 
+#include "Observable.h" 
 #include "win32_textWindow.h"
 
 class NNetWindow;
@@ -18,7 +18,7 @@ public:
 	void Start
 	( 
 		HWND               const, 
-		NNetReadBuffer   * const,
+		Observable       * const,
 		NNetWindow const * const 
 	);
 
@@ -27,7 +27,6 @@ public:
 	virtual void DoPaint( TextBuffer & );
 
 private:
-	NNetReadBuffer   * m_pReadBuffer;
 	NNetWindow const * m_pNNetWindow;
 
 	void printMicroMeter( TextBuffer &,	MicroMeter const );

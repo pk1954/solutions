@@ -18,24 +18,21 @@ using std::endl;
 
 CrsrWindow::CrsrWindow( ) :
 	TextWindow( ),
-	m_pReadBuffer( nullptr ),
 	m_pNNetWindow( nullptr )
 {}
 
 CrsrWindow::~CrsrWindow( )
 {
-	m_pReadBuffer = nullptr;
 	m_pNNetWindow = nullptr;
 }
 
 void CrsrWindow::Start
 (
 	HWND               const hwndParent,
-	NNetReadBuffer   * const pReadBuffer,
+	Observable       * const pObservable,
 	NNetWindow const * const pNNetWindow
 ) 
 {
-	m_pReadBuffer = pReadBuffer;
 	m_pNNetWindow = pNNetWindow;
 	StartTextWindow
 	(
@@ -46,7 +43,7 @@ void CrsrWindow::Start
 		TRUE,
 		nullptr
 	);
-	m_pReadBuffer->RegisterObserver( this );
+	pObservable->RegisterObserver( this );
 //	::CreateWindowToolTip( GetWindowHandle(), L"Cursor window" );
 }
 

@@ -69,6 +69,7 @@ NNetAppWindow::NNetAppWindow( ) :
 		& m_atDisplay 
 	);
 
+	m_pCursorPos      = new Observable();
 	m_pAppMenu        = new NNetAppMenu( );
 	m_pMainNNetWindow = new NNetWindow( );
 	m_pCrsrWindow     = new CrsrWindow( );
@@ -115,7 +116,8 @@ void NNetAppWindow::Start( )
 	( 
 		m_hwndApp, 
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
-		nullptr  // no visibility criterion. Allways visible
+		nullptr,  // no visibility criterion. Allways visible,
+		m_pCursorPos
 	);
 
 	m_pMainNNetWindow->ShowRefreshRateDlg( false );
@@ -131,7 +133,7 @@ void NNetAppWindow::Start( )
 		TRUE    // async thread?
 	);
 
-	m_pCrsrWindow->Start( m_hwndApp, m_pNNetReadBuffer, m_pMainNNetWindow );
+	m_pCrsrWindow->Start( m_hwndApp, m_pCursorPos, m_pMainNNetWindow );
 	m_pParameterDlg->Start( m_hwndApp, m_pModelDataWork );
 
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,     TRUE, FALSE );

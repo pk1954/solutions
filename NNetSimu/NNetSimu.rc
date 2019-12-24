@@ -28,7 +28,6 @@ IDC_NNET_SIMU_MAIN MENU
         MENUITEM "&Proceed single step", IDM_FORWARD
         MENUITEM "&Run", IDM_RUN
         MENUITEM "&Stop", IDM_STOP
-//        MENUITEM "Reset", IDM_RESET
 	}
     POPUP "&View"
     {
