@@ -52,7 +52,8 @@ NNetWindow::NNetWindow( ) :
 	m_ptCommandPosition( PP_NULL ),
 	m_shapeHighlighted     ( NO_SHAPE ),
 	m_shapeSuperHighlighted( NO_SHAPE ),
-	m_pAnimationThread( nullptr )
+	m_pAnimationThread( nullptr ),
+	m_pCursorPosObservable( nullptr )
 { }
 
 void NNetWindow::Start
@@ -171,10 +172,15 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		break;
 
 	case tShapeType::pipeline:
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING,     L"Add outgoing dendrite" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING,     L"Add incoming dendrite" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_INSERT_NEURON,    L"Insert neuron" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,     L"Remove" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING,  L"Add outgoing dendrite" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING,  L"Add incoming dendrite" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_INSERT_NEURON, L"Insert neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,  L"Remove" );
+		if ( Pipeline::GetArrowSize( ) > 0.0_MicroMeter )
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ARROWS_OFF, L"Arrows off" );
+		else
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ARROWS_ON,  L"Arrows on" );
+
 		break;
 
 	case tShapeType::undefined: // noshape selected
