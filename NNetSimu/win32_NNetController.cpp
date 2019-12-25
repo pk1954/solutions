@@ -140,6 +140,12 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_bUnsavedChanges = true;
 		break;
 
+	case IDD_DISCONNECT:
+		m_pNNetWorkThreadInterface->PostDisconnect( m_pNNetWindow->GetHighlightedShapeId( ) );
+		m_pNNetWindow->ResetHighlightedShape();
+		m_bUnsavedChanges = true;
+		break;
+
 	case IDM_SLOWER:
 		if ( m_pSlowMotionRatio->IncRatio( ) )
 			m_pNNetWorkThreadInterface->PostSlowMotionChanged( );

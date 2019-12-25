@@ -169,6 +169,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 			  (! pModel->HasIncoming( m_shapeHighlighted )) 
 		   )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_APPEND_INPUT_NEURON, L"Add input neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT, L"Disconnect" );
 		break;
 
 	case tShapeType::pipeline:

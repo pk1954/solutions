@@ -80,6 +80,13 @@ void NNetWorkThreadInterface::PostRemoveShape( ShapeId const id )
 	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::REMOVE_SHAPE), id.GetValue(), 0 );
 }
 
+void NNetWorkThreadInterface::PostDisconnect( ShapeId const id )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::DISCONNECT), id.GetValue(), 0 );
+}
+
 static WorkThreadMessage::Id const GetWorkThreadMessage( tParameter const p )
 {
 	static unordered_map < tParameter, NNetWorkThreadMessage::Id const > mapParam =

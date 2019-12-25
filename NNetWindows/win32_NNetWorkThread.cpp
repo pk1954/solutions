@@ -86,6 +86,10 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		m_pNNetModel->RemoveShape( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
+	case NNetWorkThreadMessage::Id::DISCONNECT:
+		m_pNNetModel->Disconnect( ShapeId( CastToLong(msg.wParam) ) );
+		break;
+
 	case NNetWorkThreadMessage::Id::RESET_MODEL:
 		m_pNNetModel->ResetModel( );
 		break;

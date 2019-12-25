@@ -39,6 +39,7 @@ public:
 	void PostResetTimer       ( );
 	void PostConnect          ( ShapeId const, ShapeId const );
 	void PostRemoveShape      ( ShapeId const );
+	void PostDisconnect       ( ShapeId const );
 	void PostSlowMotionChanged( );
 	void PostResetModel       ( );
 	void PostMoveShape        ( ShapeId const, MicroMeterPoint const & );

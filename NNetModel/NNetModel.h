@@ -151,6 +151,8 @@ public:
 
 	void Connect( ShapeId const, ShapeId const );
 
+	void Disconnect( ShapeId const );
+
 	void RemoveShape( ShapeId const );
 
 	template <typename T>
@@ -209,7 +211,7 @@ private:
 	}
 
 	void            createInitialShapes();
-	void            deleteBaseKnot( ShapeId const );
+	void            disconnectBaseKnot( BaseKnot * const );
 	void            deletePipeline( ShapeId const );
 	void            insertNewBaseKnot( ShapeId const, BaseKnot * const );
 	void            checkConsistency( );
