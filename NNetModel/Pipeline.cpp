@@ -100,7 +100,7 @@ void Pipeline::Step( )
 mV Pipeline::GetNextOutput( ) const
 {
 	assert( m_potential.size() > 0 );
-	assert( m_potential.back() <= mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) * 2 ) );
+//	assert( m_potential.back() <= mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) * 2 ) );
 	return m_potential.back();
 }
 

@@ -282,8 +282,11 @@ void NNetWindow::doPaint( )
 
 	pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { shape.DrawInterior( m_coord ); } );
 	pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawInterior( m_coord ); } );
+	
 	drawHighlightedShape( * pModel, m_coord );
+
 	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
+
 	if ( m_coord.GetPixelSize() <= 2.5_MicroMeter )
 		pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawNeuronText( m_coord ); } );
 }

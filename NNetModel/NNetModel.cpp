@@ -109,11 +109,11 @@ bool const NNetModel::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) con
 	if ( idSrc == idDst )
 		return false;
 
-	if ( ! IsBaseKnotType( typeSrc ) )
-		return false;
+	if ( ! IsBaseKnotType( typeSrc ) )           // only BaseKnots can be connected
+		return false;                            // to other shapes
 
-	if ( ! IsBaseKnotType( typeDst ) )
-		return false;
+	if ( IsPipelineType( typeDst ) )             // if already connected 
+		return ! IsConnectedTo( idSrc, idDst );  // we cannot connect again
 
 	BaseKnot const & baseKnotSrc { * GetConstTypedShape<BaseKnot>( idSrc ) };
 	BaseKnot const & baseKnotDst { * GetConstTypedShape<BaseKnot>( idDst ) };
@@ -337,9 +337,12 @@ size_t const NNetModel::GetNrOfIncomingConnections( ShapeId const id ) const
 
 void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge src shape into dst shape
 {
-	m_bUnsavedChanges = true;
+	ShapeId idDestination { idDst };
+	if ( IsPipelineType( GetShapeType( idDst ) ) )
+		idDestination = splitPipeline( idDst, GetShapePos( idSrc ) );
+
 	BaseKnot * pSrc = GetTypedShape<BaseKnot>( idSrc );
-	BaseKnot * pDst = GetTypedShape<BaseKnot>( idDst );
+	BaseKnot * pDst = GetTypedShape<BaseKnot>( idDestination );
 	if ( pSrc && pDst )
 	{
 		pSrc->Apply2AllIncomingPipelines
@@ -347,7 +350,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 			[&]( ShapeId const & idPipeline ) 
 			{ 
 				pDst->AddIncomming( idPipeline );
-				GetTypedShape<Pipeline>(idPipeline)->SetEndKnot( idDst );
+				GetTypedShape<Pipeline>(idPipeline)->SetEndKnot( idDestination );
 			}
 		);
 
@@ -356,11 +359,13 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 			[&]( ShapeId const & idPipeline ) 
 			{ 
 				pDst->AddOutgoing( idPipeline );
-				GetTypedShape<Pipeline>(idPipeline)->SetStartKnot( idDst );
+				GetTypedShape<Pipeline>(idPipeline)->SetStartKnot( idDestination );
 			}
 		);
 		deleteShape( idSrc );
 	}
+
+	m_bUnsavedChanges = true;
 	CHECK_CONSISTENCY;
 }
 

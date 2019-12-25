@@ -105,10 +105,11 @@ void BaseKnot::DrawNeuronText( PixelCoordsFp & coord ) const
 	m_wBuffer.precision(2);
 
 	float fFillLevel { GetFillLevel() };
+//	m_wBuffer << std::endl;
 	if ( fFillLevel >= 1.0f )
 		m_wBuffer << L"TRIGGER";
 	else
-		m_wBuffer << setw(2) << GetFillLevel() * 100 << L"%";
+		m_wBuffer << setw(5) << GetFillLevel() * 100 << L"%";
 
 	PixelRect const pixRect { GetPixRect4Text( coord ) };
 

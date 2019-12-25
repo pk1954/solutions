@@ -26,7 +26,7 @@ float Shape::GetFillLevel( mV const voltageInput ) const
 
 void Shape::CheckInputBuffer( ) const
 {
-	assert( m_mVinputBuffer <= mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) * 2 ) );
+//	assert( m_mVinputBuffer <= mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) * 2 ) );
 }
 
 wchar_t const * GetName( tShapeType const type )

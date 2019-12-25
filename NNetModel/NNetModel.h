@@ -101,6 +101,21 @@ public:
 
 	bool const ConnectsTo( ShapeId const, ShapeId const ) const;
 
+	bool const IsConnectedTo( ShapeId const id, Pipeline const * const pPipeline ) const
+	{
+		return (id == pPipeline->GetStartKnot()) || (id == pPipeline->GetEndKnot());
+	}
+
+	bool const IsConnectedTo( ShapeId id1, ShapeId id2 ) const
+	{
+		if ( IsType<Pipeline>( id1 ) )
+			return IsConnectedTo( id2, GetConstTypedShape<Pipeline>( id1 ) );
+		if ( IsType<Pipeline>( id2 ) )
+			return IsConnectedTo( id1, GetConstTypedShape<Pipeline>( id2 ) );
+		else
+			return false;
+	}
+
 	void CheckConsistency( Shape const * ) const;
 
 	// manipulating functions
