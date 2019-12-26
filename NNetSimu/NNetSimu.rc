@@ -9,6 +9,11 @@
 #include "version.h"
 #include "win32_utilities.rc"
 
+DISAPPEAR_SOUND WAVE "F:\SW-projects\Evolution\NNetSimu\disappear-sound-effect.wav"
+SNAP_IN_SOUND WAVE "locking-a-door.wav"
+UNLOCK_SOUND WAVE "door-unlocking.wav"
+SELECTION_SOUND WAVE "tap.wav"
+
 //
 // Menu resources
 //

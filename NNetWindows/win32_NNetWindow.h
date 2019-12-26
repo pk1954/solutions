@@ -87,17 +87,17 @@ private:
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
 	virtual void OnMouseMove         ( WPARAM const, LPARAM const );
 	virtual BOOL OnCommand           ( WPARAM const, LPARAM const );
-	virtual void OnLButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const );
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
 	virtual void OnSize              ( WPARAM const, LPARAM const );
+	virtual void OnLButtonDown       ( WPARAM const, LPARAM const ) {};
 	virtual void OnPaint( );
 
-	void          setStdFontSize( );
-	LPARAM        crsPos2LPARAM( ) const;
-	LPARAM        pixelPoint2LPARAM( PixelPoint const ) const;
-	BOOL          inObservedClientRect( LPARAM const );
-	ShapeId const getShapeUnderPoint( PixelPoint const );
-	void          drawHighlightedShape( NNetModel const &, PixelCoordsFp & );
-	void          doPaint( );
+	void   setStdFontSize( );
+	LPARAM crsPos2LPARAM( ) const;
+	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
+	BOOL   inObservedClientRect( LPARAM const );
+	void   setHighlightShape( PixelPoint const );
+	void   drawHighlightedShape( NNetModel const &, PixelCoordsFp & );
+	void   doPaint( );
 };

@@ -58,6 +58,14 @@ void Pipeline::SetEndKnot( ShapeId const id )
 	Recalc( );
 }
 
+void Pipeline::dislocate( ShapeId const idBaseKnot, MicroMeter const dislocation )
+{ 
+	BaseKnot      * const pBaseKnot { m_pNNetModel->GetTypedShape<BaseKnot>( idBaseKnot ) };
+	MicroMeterPoint const umVector  { GetVector( ) };
+	MicroMeterPoint const umNewPnt  { OrthoVector( umVector, dislocation ) };
+	pBaseKnot->MoveShape( umNewPnt );
+}
+
 MicroMeterPoint Pipeline::GetStartPoint( ) const 
 { 
 	BaseKnot const * const pKnotStart { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotStart ) };

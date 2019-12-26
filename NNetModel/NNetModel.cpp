@@ -177,18 +177,34 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot )
 
 void NNetModel::Disconnect( ShapeId const id )
 {
-	BaseKnot * pToBeDeleted { GetTypedShape<BaseKnot>( id ) };
-	if ( pToBeDeleted )
+	if ( BaseKnot * pBaseKnot { GetTypedShape<BaseKnot>( id ) } )
 	{
-		disconnectBaseKnot( pToBeDeleted );
-		deleteShape( id );
+		disconnectBaseKnot( pBaseKnot );
+		
+		pBaseKnot->Apply2AllIncomingPipelines
+		( 
+			[&]( ShapeId const idPipeline ) 
+			{ 
+				GetTypedShape<Pipeline>( idPipeline )->DislocateEndPoint( );
+			} 
+		);
+		
+		pBaseKnot->Apply2AllOutgoingPipelines
+		( 
+			[&]( ShapeId const idPipeline ) 
+			{ 
+				GetTypedShape<Pipeline>( idPipeline )->DislocateStartPoint( );
+			} 
+		);
+
+		if ( pBaseKnot->GetShapeType( ) == tShapeType::knot )
+			deleteShape( id );
 	}
 }
 
 void NNetModel::deletePipeline( ShapeId const id )
 {
-	Pipeline * pPipelineToBeDeleted { GetTypedShape<Pipeline>( id ) };
-	if ( pPipelineToBeDeleted )
+	if ( Pipeline * pPipelineToBeDeleted { GetTypedShape<Pipeline>( id ) } )
 	{
 		assert( ::IsPipelineType( pPipelineToBeDeleted->GetShapeType( ) ) );
 
@@ -439,7 +455,8 @@ void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 		break;
 
 	default:
-		assert( false );
+//		assert( false );
+		break;
 	}
 }
 

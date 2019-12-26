@@ -170,6 +170,7 @@
     <ClInclude Include="win32_NNetWorkThreadInterface.h" />
     <ClInclude Include="win32_parameterDlg.h" />
     <ClInclude Include="win32_scale.h" />
+    <ClInclude Include="win32_sound.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_crsrWindow.cpp" />

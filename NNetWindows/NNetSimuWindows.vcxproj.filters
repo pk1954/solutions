@@ -48,6 +48,9 @@
     <ClInclude Include="AnimationThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="win32_sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_NNetWorkThread.cpp">

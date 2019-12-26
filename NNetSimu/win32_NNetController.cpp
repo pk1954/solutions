@@ -11,6 +11,7 @@
 #include "SlowMotionRatio.h"
 #include "NNetModelStorage.h"
 #include "win32_util.h"
+#include "win32_sound.h"
 #include "win32_simulationControl.h"
 #include "win32_zoomControl.h"
 #include "win32_aboutBox.h"
@@ -127,6 +128,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		return true;
 
 	case IDD_CONNECT:
+		PlaySound( TEXT("SNAP_IN_SOUND"), GetModuleHandle(NULL) , SND_RESOURCE|SND_ASYNC ); 
 		m_pNNetWorkThreadInterface->PostConnect
 		( 
 			static_cast<ShapeId>( Util::UnpackLongA( lParam ) ), 
@@ -135,12 +137,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDD_REMOVE_SHAPE:
+//		PlaySound( TEXT("DISAPPEAR_SOUND"), GetModuleHandle(NULL) , SND_RESOURCE|SND_ASYNC ); 
 		m_pNNetWorkThreadInterface->PostRemoveShape( m_pNNetWindow->GetHighlightedShapeId( ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		m_bUnsavedChanges = true;
 		break;
 
 	case IDD_DISCONNECT:
+		PlaySound( TEXT("UNLOCK_SOUND") ); 
 		m_pNNetWorkThreadInterface->PostDisconnect( m_pNNetWindow->GetHighlightedShapeId( ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		m_bUnsavedChanges = true;

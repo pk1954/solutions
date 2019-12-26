@@ -14,6 +14,7 @@
 #include "tHighlightType.h"
 #include "PixelCoordsFp.h"
 #include "Direct2D.h"
+#include "win32_sound.h"
 #include "win32_tooltip.h"
 #include "win32_stdDialogBox.h"
 #include "win32_scale.h"
@@ -122,12 +123,18 @@ MicroMeter NNetWindow::GetPixelSize( ) const
 	return m_coord.GetPixelSize( );
 }
 
-ShapeId const NNetWindow::getShapeUnderPoint( PixelPoint const pnt )
+void NNetWindow::setHighlightShape( PixelPoint const pnt )
 {
-	MicroMeterPoint const   umCrsrPos { m_coord.convert2MicroMeterPoint( pnt ) };
 	NNetModel       const * pModel    { m_pReadBuffer->GetModel( ) };
+	MicroMeterPoint const   umCrsrPos { m_coord.convert2MicroMeterPoint( pnt ) };
 	Shape           const * pShape    { pModel->FindShapeAt( umCrsrPos ) };
-	return pModel->GetId( pShape );
+	ShapeId         const   id        { pModel->GetId( pShape ) };
+	if ( id != m_shapeHighlighted )
+	{
+		if ( IsDefined( id ) )
+			PlaySound( TEXT("SELECTION_SOUND") ); 
+		m_shapeHighlighted = id;
+	}
 }
 
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )
@@ -144,6 +151,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE,       L"Pulse rate" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,     L"Remove" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT,       L"Disconnect" );
 		break;
 
 	case tShapeType::neuron:
@@ -151,11 +159,12 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING,     L"Add incoming dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,     L"Remove" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT,       L"Disconnect" );
 		break;
 
 	case tShapeType::knot:  
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING,     L"Add outgoing dendrite" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING,     L"Add incoming dendrite" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING, L"Add outgoing dendrite" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING, L"Add incoming dendrite" );
 		if ( 
 			   (! pModel->HasOutgoing( m_shapeHighlighted )) || 
 			   (
@@ -250,7 +259,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	}
 	else  // no mouse button pressed
 	{                         
-		m_shapeHighlighted = getShapeUnderPoint( ptCrsr );
+		setHighlightShape( ptCrsr );
 		m_ptLast = PP_NULL;   // make m_ptLast invalid
 		 // no refresh! It would cause repaint for every mouse move 
 	}
@@ -316,22 +325,6 @@ void NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 
 void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )
 {
-//	PixelPoint const   ptCrsr = GetCrsrPosFromLparam( lParam );  // relative to client area
-//	Shape      const * pShape = getShapeUnderPoint( ptCrsr );
-//
-//	if ( pShape )
-//	{
-//		switch ( pShape->GetShapeType() )
-//		{
-//		case tShapeType::pipeline:
-////			m_pNNetWorkThreadInterface->PostHighlight( pShape->GetId( ) );
-////			PostCommand2Application( IDD_INSERT_NEURON, pixelPoint2LPARAM( ptCrsr ) );
-//			break;
-//
-//		default:
-//			break;
-//		}
-//	}
 }
 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
@@ -348,18 +341,6 @@ void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 	}
 
 	PostCommand2Application( IDM_SET_ZOOM, (LPARAM &)newSize.GetValue() ); 
-}
-
-void NNetWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )
-{
-	if ( inObservedClientRect( lParam ) || m_bMoveAllowed )
-	{
-		//PixelPoint const   ptCrsr { GetCrsrPosFromLparam( lParam ) };  // relative to client area
-		//Shape      const * pShape { getShapeUnderPoint( ptCrsr ) };
-		//NNetModel  const * pModel { m_pReadBuffer->GetModel( ) };
-		//m_pNNetWorkThreadInterface->PostHighlight( pModel->GetId( pShape ) );
-		//OnMouseMove( wParam, lParam );
-	}
 }
 
 void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )

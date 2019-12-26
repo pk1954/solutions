@@ -50,6 +50,9 @@ public:
 	virtual void DrawInterior  ( PixelCoordsFp  & ) const;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 
+	void DislocateEndPoint  ( ) { dislocate( GetEndKnot(),    PIPELINE_WIDTH ); }
+	void DislocateStartPoint( )	{ dislocate( GetStartKnot(), -PIPELINE_WIDTH );	}
+
 	static void       SetArrowSize( MicroMeter const size ) { m_arrowSize = size; }
 	static MicroMeter GetArrowSize( ) { return m_arrowSize; }
 
@@ -64,6 +67,8 @@ private:
 	MicroMeter m_width;
 	float      m_fDampingFactor;
 	vector<mV> m_potential;
+
+	void dislocate( ShapeId const, MicroMeter const );
 };
 
 Pipeline const * Cast2Pipeline( Shape const * );
