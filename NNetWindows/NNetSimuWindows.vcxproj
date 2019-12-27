@@ -179,6 +179,7 @@
     <ClCompile Include="win32_NNetWorkThreadInterface.cpp" />
     <ClCompile Include="win32_parameterDlg.cpp" />
     <ClCompile Include="win32_scale.cpp" />
+    <ClCompile Include="win32_sound.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

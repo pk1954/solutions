@@ -32,6 +32,9 @@
 #define IDD_ARROWS_ON           161
 #define IDD_ARROWS_OFF          162
 
+#define IDD_SOUND_ON            171
+#define IDD_SOUND_OFF           172
+
 #define IDD_CONNECT             560
 #define IDD_INSERT_NEURON       561
 #define IDD_NEW_NEURON          562
@@ -40,8 +43,10 @@
 #define IDD_APPEND_INPUT_NEURON 565
 #define IDD_REMOVE_SHAPE        566
 #define IDD_DISCONNECT          567
-#define IDD_ADD_INCOMING        568
-#define IDD_ADD_OUTGOING        569
+#define IDD_ADD_INCOMING2KNOT   568
+#define IDD_ADD_INCOMING2PIPE   569
+#define IDD_ADD_OUTGOING2KNOT   570
+#define IDD_ADD_OUTGOING2PIPE   571
 
 #define IDM_CRSR_WINDOW         580
 #define IDM_PARAM_WINDOW  	    581

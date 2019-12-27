@@ -9,10 +9,11 @@
 #include "version.h"
 #include "win32_utilities.rc"
 
-DISAPPEAR_SOUND WAVE "F:\SW-projects\Evolution\NNetSimu\disappear-sound-effect.wav"
+DISAPPEAR_SOUND WAVE "pop.wav"
 SNAP_IN_SOUND WAVE "locking-a-door.wav"
 UNLOCK_SOUND WAVE "door-unlocking.wav"
 SELECTION_SOUND WAVE "tap.wav"
+NOT_POSSIBLE_SOUND WAVE "no.wav"
 
 //
 // Menu resources
@@ -49,6 +50,11 @@ IDC_NNET_SIMU_MAIN MENU
         MENUITEM "Arrows on",            IDD_ARROWS_ON
         MENUITEM "Arrows off",           IDD_ARROWS_OFF
         MENUITEM "Window &refresh rate", IDD_REFRESH_RATE_DIALOG
+    }
+    POPUP "&Options"
+    {
+        MENUITEM "&Sound on", IDD_SOUND_ON
+        MENUITEM "&Sound off", IDD_SOUND_OFF
     }
     POPUP "&Help"
     {

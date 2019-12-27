@@ -45,7 +45,7 @@ void Neuron::Step( )
 {
 	if ( 
 		  (m_mVinputBuffer >= mV( m_pNNetModel->GetParameterValue( tParameter::threshold ) )) &&
-		  (m_timeSinceLastPulse >= MicroSecs( m_pNNetModel->GetParameterValue( tParameter::pulseWidth ) + m_pNNetModel->GetParameterValue( tParameter::refractoryPeriod )) )
+		  (m_timeSinceLastPulse >= MicroSecs( m_pNNetModel->GetParameterValue( tParameter::pulseWidth ) + m_pNNetModel->GetParameterValue( tParameter::refractPeriod )) )
 	   )  
 	{
 		m_timeSinceLastPulse = 0._MicroSecs;   

@@ -19,11 +19,6 @@ ShapeId const NO_SHAPE( -1 );
 
 static bool IsDefined( ShapeId const id ) { return id != NO_SHAPE; }
 
-bool IsPipelineType( tShapeType const );
-bool IsNeuronType  ( tShapeType const );
-bool IsKnotType    ( tShapeType const );
-bool IsBaseKnotType( tShapeType const );
-
 wchar_t const * GetName( tShapeType const );
 
 class Shape
@@ -54,7 +49,6 @@ public:
 
 	void SetId( ShapeId const id ) { m_identifier = id;	}
 
-	static tShapeType const GetShapeTypeFromName( wchar_t const * const );
 	static void SetGraphics( D2D_driver * const pGraphics ) { m_pGraphics = pGraphics; }
 
 protected:

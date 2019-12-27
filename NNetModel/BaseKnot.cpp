@@ -17,18 +17,36 @@ using std::end;
 using std::wstring;
 using std::wostringstream;
 
-ShapeId BaseKnot::GetPrecursor( ) const
+bool BaseKnot::IsPrecursorOf( ShapeId const id )
 {
-	assert( m_incoming.size() == 1 );
-	Pipeline const * const pIncoming { m_pNNetModel->GetTypedShape<Pipeline>( m_incoming[0] ) };
-	return pIncoming->GetStartKnot( );
+	bool bConnectionFound { false };
+
+	Apply2AllOutgoingPipelines
+	( 
+		[&]( ShapeId & idPipeline ) 
+		{
+			if ( m_pNNetModel->GetEndKnot( idPipeline ) == id ) 
+				bConnectionFound = true; 
+		} 
+	);
+
+	return bConnectionFound;
 }
 
-ShapeId BaseKnot::GetSuccessor( ) const
+bool BaseKnot::IsSuccessorOf( ShapeId const id )
 {
-	assert( m_outgoing.size() == 1 );
-	Pipeline const * const pOutgoing { m_pNNetModel->GetTypedShape<Pipeline>( m_outgoing[0] ) };
-	return pOutgoing->GetEndKnot( );
+	bool bConnectionFound { false };
+
+	Apply2AllIncomingPipelines
+	( 
+		[&]( ShapeId & idPipeline ) 
+		{
+			if ( m_pNNetModel->GetStartKnot( idPipeline ) == id ) 
+				bConnectionFound = true; 
+		} 
+	);
+
+	return bConnectionFound;
 }
 
 void BaseKnot::AddIncomming( ShapeId const idPipeline )

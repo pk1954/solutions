@@ -57,6 +57,9 @@
     <ClInclude Include="tHighlightType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tParameter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NNetModel.cpp">
@@ -81,6 +84,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetModelStorage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tShapeType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tParameter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

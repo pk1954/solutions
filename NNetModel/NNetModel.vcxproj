@@ -173,6 +173,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="tHighlightType.h" />
+    <ClInclude Include="tParameter.h" />
     <ClInclude Include="tShapeType.h" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +185,8 @@
     <ClCompile Include="NNetModelStorage.cpp" />
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="tParameter.cpp" />
+    <ClCompile Include="tShapeType.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

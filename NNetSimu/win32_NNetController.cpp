@@ -80,6 +80,14 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		m_pNNetWindow->ShowDirectionArrows( false );
 		break;
 
+	case IDD_SOUND_ON:
+		Sound::On();
+		break;
+
+	case IDD_SOUND_OFF:
+		Sound::Off();
+		break;
+
 	case IDM_REFRESH:
 		m_pNNetWindow->Notify( lParam != 0 );
 		break;
@@ -106,16 +114,17 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_OPEN_MODEL:
-		m_pStorage->AskSave( );
-		if ( m_pStorage->OpenModel( ) )
+		if ( m_pStorage->AskSave( ) && m_pStorage->OpenModel( ) )
 			NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
 		break;
 
 	case IDM_NEW_MODEL:
-		m_pStorage->AskSave( );
-		m_pNNetWorkThreadInterface->PostResetModel( );
-		m_pStorage->ResetModelPath( );
-		NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
+		if ( m_pStorage->AskSave( ) )
+		{
+			m_pNNetWorkThreadInterface->PostResetModel( );
+			m_pStorage->ResetModelPath( );
+			NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
+		}
 		break;
 
 	case IDD_PULSE_RATE:
@@ -128,7 +137,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		return true;
 
 	case IDD_CONNECT:
-		PlaySound( TEXT("SNAP_IN_SOUND"), GetModuleHandle(NULL) , SND_RESOURCE|SND_ASYNC ); 
+		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
 		m_pNNetWorkThreadInterface->PostConnect
 		( 
 			static_cast<ShapeId>( Util::UnpackLongA( lParam ) ), 
@@ -137,14 +146,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDD_REMOVE_SHAPE:
-//		PlaySound( TEXT("DISAPPEAR_SOUND"), GetModuleHandle(NULL) , SND_RESOURCE|SND_ASYNC ); 
+		Sound::Play( TEXT("DISAPPEAR_SOUND") ); 
 		m_pNNetWorkThreadInterface->PostRemoveShape( m_pNNetWindow->GetHighlightedShapeId( ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		m_bUnsavedChanges = true;
 		break;
 
 	case IDD_DISCONNECT:
-		PlaySound( TEXT("UNLOCK_SOUND") ); 
+		Sound::Play( TEXT("UNLOCK_SOUND") ); 
 		m_pNNetWorkThreadInterface->PostDisconnect( m_pNNetWindow->GetHighlightedShapeId( ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		m_bUnsavedChanges = true;
@@ -169,8 +178,10 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	case IDD_APPEND_INPUT_NEURON:
 	case IDD_NEW_NEURON:
 	case IDD_NEW_INPUT_NEURON:
-	case IDD_ADD_OUTGOING:
-	case IDD_ADD_INCOMING:
+	case IDD_ADD_OUTGOING2KNOT:
+	case IDD_ADD_INCOMING2KNOT:
+	case IDD_ADD_OUTGOING2PIPE:
+	case IDD_ADD_INCOMING2PIPE:
 		m_pNNetWorkThreadInterface->PostActionCommand( wmId, m_pNNetWindow->GetHighlightedShapeId( ), lParam );
 		break;
 

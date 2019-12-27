@@ -10,6 +10,7 @@
 #include "util.h"
 #include "MoreTypes.h"
 #include "Segment.h"
+#include "tParameter.h"
 #include "tHighlightType.h"
 #include "InputNeuron.h"
 #include "Neuron.h"
@@ -19,19 +20,6 @@
 
 class ObserverInterface;
 class EventInterface;
-
-enum class tParameter
-{
-	pulseSpeed,
-	pulseWidth,
-	signalLoss,
-	threshold,
-	peakVoltage,
-	refractoryPeriod,
-	tParameterLastGlobal = refractoryPeriod,
-	pulseRate,
-	tParameterLast = pulseRate
-};
 
 class NNetModel : public ModelInterface
 {
@@ -86,9 +74,17 @@ public:
 	long            const GetSizeOfShapeList( )                        const { return CastToLong( m_Shapes.size() ); }
 	long            const GetNrOfShapes( )                             const;
 	COLORREF        const GetFrameColor( tHighlightType const )        const;
-	wchar_t const * const GetParameterName( tParameter const )         const;
-	wchar_t const * const GetParameterUnit( tParameter const )         const;
 	bool            const HasModelChanged( )                           const { return m_bUnsavedChanges; }
+	
+	ShapeId const GetStartKnot( ShapeId const idPipeline ) const 
+	{ 
+		return GetConstTypedShape<Pipeline>( idPipeline )->GetStartKnot(); 
+	}
+
+	ShapeId const GetEndKnot( ShapeId const idPipeline ) const 
+	{ 
+		return GetConstTypedShape<Pipeline>( idPipeline )->GetEndKnot(); 
+	}
 
 	size_t const GetNrOfOutgoingConnections( ShapeId const ) const;
 	size_t const GetNrOfIncomingConnections( ShapeId const ) const; 
@@ -101,22 +97,15 @@ public:
 
 	bool const ConnectsTo( ShapeId const, ShapeId const ) const;
 
-	bool const IsConnectedTo( ShapeId const id, Pipeline const * const pPipeline ) const
-	{
-		return (id == pPipeline->GetStartKnot()) || (id == pPipeline->GetEndKnot());
-	}
-
 	bool const IsConnectedTo( ShapeId id1, ShapeId id2 ) const
 	{
 		if ( IsType<Pipeline>( id1 ) )
-			return IsConnectedTo( id2, GetConstTypedShape<Pipeline>( id1 ) );
+			return isConnectedToPipeline( id2, GetConstTypedShape<Pipeline>( id1 ) );
 		if ( IsType<Pipeline>( id2 ) )
-			return IsConnectedTo( id1, GetConstTypedShape<Pipeline>( id2 ) );
+			return isConnectedToPipeline( id1, GetConstTypedShape<Pipeline>( id2 ) );
 		else
 			return false;
 	}
-
-	void CheckConsistency( Shape const * ) const;
 
 	// manipulating functions
 
@@ -137,24 +126,6 @@ public:
 		}
 	}
 
-	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
-
-	ShapeId NewPipeline( ShapeId const, ShapeId const );
-
-	void ConnectPipeline( Pipeline *, ShapeId const, ShapeId const, ShapeId const );
-
-	ShapeId const InsertNeuron ( ShapeId const, MicroMeterPoint const & );
-
-	void AddOutgoing( ShapeId const, MicroMeterPoint const & );
-	void AddIncoming( ShapeId const, MicroMeterPoint const & );
-	void MoveShape  ( ShapeId const, MicroMeterPoint const & );
-
-	void Connect( ShapeId const, ShapeId const );
-
-	void Disconnect( ShapeId const );
-
-	void RemoveShape( ShapeId const );
-
 	template <typename T>
 	void Apply2All( function<void(T &)> const & func ) const
 	{
@@ -167,14 +138,28 @@ public:
 		LeaveCriticalSection( & m_criticalSection );
 	}
 
-	void Apply2GlobalParameters( function<void(tParameter const &)> const & ) const;
-	void Apply2AllParameters   ( function<void(tParameter const &)> const & ) const;
+	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
+
+	ShapeId NewPipeline( ShapeId const, ShapeId const );
+
+	void ConnectPipeline( Pipeline *, ShapeId const, ShapeId const, ShapeId const );
+
+	ShapeId const InsertKnot  ( ShapeId const, MicroMeterPoint const & );
+	ShapeId const InsertNeuron( ShapeId const, MicroMeterPoint const & );
+	void          MoveShape   ( ShapeId const, MicroMeterPoint const & );
+
+	void AddOutgoing2Knot( ShapeId const, MicroMeterPoint const & );
+	void AddIncoming2Knot( ShapeId const, MicroMeterPoint const & );
+	void AddOutgoing2Pipe( ShapeId const, MicroMeterPoint const & );
+	void AddIncoming2Pipe( ShapeId const, MicroMeterPoint const & );
+
+	void Connect( ShapeId const, ShapeId const );
+
+	void Disconnect( ShapeId const );
+
+	void RemoveShape( ShapeId const );
 
 	void RecalcPipelines( );
-
-	virtual void CopyModelData( ModelInterface const * const );
-	virtual void Compute( );
-	virtual void ResetAll( );
 
 	void ResetModel( );
 	void ModelSaved( ) { m_bUnsavedChanges = false; }
@@ -183,6 +168,10 @@ public:
 	void SetParameter( tParameter const, float const );
 
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
+
+	virtual void CopyModelData( ModelInterface const * const );
+	virtual void Compute( );
+	virtual void ResetAll( );
 
 private:
 
@@ -198,7 +187,7 @@ private:
     mV          m_threshold;
     mV          m_peakVoltage;   
 	MicroSecs   m_pulseWidth;   
-	MicroSecs   m_refractoryPeriod;
+	MicroSecs   m_refractPeriod;
 	meterPerSec m_pulseSpeed;
 
 	// local functions
@@ -210,13 +199,17 @@ private:
 		LeaveCriticalSection( & m_criticalSection );
 	}
 
+	void            checkConsistency( Shape const * ) const;
+	MicroMeterPoint orthoVector( ShapeId const ) const;
 	void            createInitialShapes();
 	void            disconnectBaseKnot( BaseKnot * const );
 	void            deletePipeline( ShapeId const );
-	void            insertNewBaseKnot( ShapeId const, BaseKnot * const );
-	void            checkConsistency( );
+	void            insertBaseKnot( ShapeId const, ShapeId const );
 	ShapeId const   addShape( Shape * );
-	bool            areConnected( ShapeId const, ShapeId const );
-	MicroMeterPoint orthoVector( ShapeId const ) const;
-	ShapeId const   splitPipeline( ShapeId const, MicroMeterPoint const & );
+
+	bool const isConnectedToPipeline( ShapeId const id, Pipeline const * const pPipeline ) const
+	{
+		return (id == pPipeline->GetStartKnot()) || (id == pPipeline->GetEndKnot());
+	}
+
 };

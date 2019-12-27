@@ -41,8 +41,10 @@ public:
 		NEW_INPUT_NEURON,
 		APPEND_NEURON,
 		APPEND_INPUT_NEURON,
-		ADD_OUTGOING,
-		ADD_INCOMING,
+		ADD_OUTGOING2KNOT,
+		ADD_INCOMING2KNOT,
+		ADD_OUTGOING2PIPE,
+		ADD_INCOMING2PIPE,
 		INSERT_NEURON,
 		NNET_LAST,
 		FIRST = NNET_FIRST,
@@ -77,6 +79,8 @@ private:
 	{
 		m_hrTimer.Restart();
 	}
+
+	bool actionCommand( NNetWorkThreadMessage::Id const, ShapeId const, MicroMeterPoint const & );
 
 	virtual void SetRunModeHook( BOOL const bState ) 
 	{

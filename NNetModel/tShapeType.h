@@ -6,6 +6,8 @@
 
 #include <functional>
 
+using std::function;
+
 enum class tShapeType
 {
 	inputNeuron,
@@ -16,49 +18,39 @@ enum class tShapeType
 	undefined
 };
 
-static void Apply2AllShapeTypes( function<void(tShapeType const &)> const & func )
+extern void               Apply2AllShapeTypes( function< void( tShapeType const & ) > const & );
+extern tShapeType const   GetShapeTypeFromName( wchar_t const * const );
+extern wchar_t    const * GetName( tShapeType const );
+
+inline bool IsPipelineType( tShapeType const type )
 {
-	for ( int i = 0; i <= static_cast<int>(tShapeType::shapeTypeLast); ++i )
-		func( static_cast<tShapeType>( i ) );
+	return type == tShapeType::pipeline;
 }
 
-class StartKnotType
+inline bool IsKnotType( tShapeType const type )
 {
-public:
-	static bool TypeFits( tShapeType const type ) 
-	{
-		return 
-			(type == tShapeType::knot)        || 
-			(type == tShapeType::neuron)      || 
-			(type == tShapeType::inputNeuron);
-	}
-};
+	return type == tShapeType::knot;
+}
 
-class NeuronType
+inline bool IsNeuronType( tShapeType const type )
 {
-public:
-	static bool TypeFits( tShapeType const type ) 
-	{
-		return (type == tShapeType::neuron) || (type == tShapeType::inputNeuron);
-	}
-};
+	return type == tShapeType::neuron;
+}
 
-class EndKnotType
+inline bool IsInputNeuronType( tShapeType const type )
 {
-public:
-	static bool TypeFits( tShapeType const type ) 
-	{
-		return (type == tShapeType::knot) || (type == tShapeType::neuron);
-	}
-};
+	return type == tShapeType::inputNeuron;
+}
 
-class TerminalType
+inline bool IsAnyNeuronType( tShapeType const type )
 {
-public:
-	static bool TypeFits( tShapeType const type ) 
-	{
-		return  
-			(type == tShapeType::inputNeuron);
-	}
-};
+	return (type == tShapeType::neuron)      || 
+		   (type == tShapeType::inputNeuron);
+}
 
+inline bool IsBaseKnotType( tShapeType const type )
+{
+	return (type == tShapeType::knot)        || 
+		   (type == tShapeType::neuron)      || 
+		   (type == tShapeType::inputNeuron);
+}

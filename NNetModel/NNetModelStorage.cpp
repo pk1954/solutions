@@ -195,11 +195,11 @@ NNetModelStorage::NNetModelStorage(  NNetModel * const pModel )
 		}
 	);
 
-	m_pModel->Apply2AllParameters
+	Apply2AllParameters
 	( 
 		[&]( tParameter const & param ) 
 		{
-			SymbolTable::ScrDefConst( pModel->GetParameterName( param ), static_cast<unsigned long>( param ) );
+			SymbolTable::ScrDefConst( GetParameterName( param ), static_cast<unsigned long>( param ) );
 		}
 	);
 
@@ -234,11 +234,11 @@ void NNetModelStorage::Write( wostream & out )
 	out << L"Protocol version " << PROTOCOL_VERSION << endl;
 	out << endl;
 
-	m_pModel->Apply2GlobalParameters
+	Apply2GlobalParameters
 	( 
 		[&]( tParameter const & param ) 
 		{
-			out << L"GlobalParameter " << m_pModel->GetParameterName( param ) << L" = "
+			out << L"GlobalParameter " << GetParameterName( param ) << L" = "
 			<< m_pModel->GetParameterValue( param ) 
 			<< endl; 
 		}
@@ -267,7 +267,7 @@ void NNetModelStorage::Write( wostream & out )
 		[&]( InputNeuron & inpNeuron )
 		{ 
 			out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
-				<< m_pModel->GetParameterName( tParameter::pulseRate ) 
+				<< GetParameterName( tParameter::pulseRate ) 
 				<< L" = " << m_pModel->GetPulseRate( & inpNeuron )
      			<< endl; 
 		}
@@ -316,14 +316,19 @@ void NNetModelStorage::WriteShape( wostream & out, Shape & shape )
 
 /////////////////////////////////////////////
 
-void NNetModelStorage::AskSave( )
+bool NNetModelStorage::AskSave( )
 {
 	if ( m_pModel->HasModelChanged() )
 	{
-		int iRes = MessageBox( nullptr, L"Save now?", L"Unsaved changes", MB_OKCANCEL | MB_SYSTEMMODAL );
-		if ( iRes == IDOK )
+		int iRes = MessageBox( nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL );
+		if ( iRes == IDYES )
 			SaveModel( );
+		else if ( iRes == IDNO )
+			return true;
+		else if ( iRes == IDCANCEL )
+			return false;
 	}
+	return false;
 }
 
 bool NNetModelStorage::OpenModel( )

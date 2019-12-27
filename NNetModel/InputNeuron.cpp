@@ -90,7 +90,7 @@ void InputNeuron::DrawNeuronText( PixelCoordsFp & coord ) const
 
 	m_wBuffer.clear( );
 	m_wBuffer.str( std::wstring() );
-	m_wBuffer << GetPulseFrequency().GetValue() << L" " << m_pNNetModel->GetParameterUnit( tParameter::pulseRate );
+	m_wBuffer << GetPulseFrequency().GetValue() << L" " << GetParameterUnit( tParameter::pulseRate );
 
 	DisplayText( pixRect, m_wBuffer.str( ) );
 }

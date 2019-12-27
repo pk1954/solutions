@@ -91,12 +91,12 @@ static WorkThreadMessage::Id const GetWorkThreadMessage( tParameter const p )
 {
 	static unordered_map < tParameter, NNetWorkThreadMessage::Id const > mapParam =
 	{
-		{ tParameter::pulseSpeed,       NNetWorkThreadMessage::Id::PULSE_SPEED       },
-		{ tParameter::pulseWidth,       NNetWorkThreadMessage::Id::PULSE_WIDTH       },
-		{ tParameter::signalLoss,       NNetWorkThreadMessage::Id::DAMPING_FACTOR    },
-		{ tParameter::threshold,        NNetWorkThreadMessage::Id::THRESHOLD         },
-		{ tParameter::peakVoltage,      NNetWorkThreadMessage::Id::PEAK_VOLTAGE      },
-		{ tParameter::refractoryPeriod, NNetWorkThreadMessage::Id::REFRACTORY_PERIOD }
+		{ tParameter::pulseSpeed,    NNetWorkThreadMessage::Id::PULSE_SPEED       },
+		{ tParameter::pulseWidth,    NNetWorkThreadMessage::Id::PULSE_WIDTH       },
+		{ tParameter::signalLoss,    NNetWorkThreadMessage::Id::DAMPING_FACTOR    },
+		{ tParameter::threshold,     NNetWorkThreadMessage::Id::THRESHOLD         },
+		{ tParameter::peakVoltage,   NNetWorkThreadMessage::Id::PEAK_VOLTAGE      },
+		{ tParameter::refractPeriod, NNetWorkThreadMessage::Id::REFRACTORY_PERIOD }
 	};				  
 
 	return static_cast< WorkThreadMessage::Id >( mapParam.at( p ) );
@@ -117,14 +117,14 @@ void NNetWorkThreadInterface::PostSetPulseRate( ShapeId const id, float const fN
 	{
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << fNewValue << endl;
 	}
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_RATE), 0, (LPARAM &)fNewValue );
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_RATE), id.GetValue(), (LPARAM &)fNewValue );
 }
 
 void NNetWorkThreadInterface::PostSetParameter( tParameter const param, float const fNewValue )
 {
 	if ( IsTraceOn( ) )
 	{
-		TraceStream( ) << __func__ << L" " << m_pModel->GetParameterName( param ) << L" " << fNewValue << endl;
+		TraceStream( ) << __func__ << L" " << GetParameterName( param ) << L" " << fNewValue << endl;
 	}
 	WorkMessage( TRUE, GetWorkThreadMessage( param ), 0, (LPARAM &)fNewValue );
 }
@@ -159,8 +159,10 @@ void NNetWorkThreadInterface::PostActionCommand
 		{ IDD_NEW_INPUT_NEURON,    NNetWorkThreadMessage::Id::NEW_INPUT_NEURON    },
 		{ IDD_APPEND_NEURON,       NNetWorkThreadMessage::Id::APPEND_NEURON       },
 		{ IDD_APPEND_INPUT_NEURON, NNetWorkThreadMessage::Id::APPEND_INPUT_NEURON },
-		{ IDD_ADD_OUTGOING,        NNetWorkThreadMessage::Id::ADD_OUTGOING        },
-		{ IDD_ADD_INCOMING,        NNetWorkThreadMessage::Id::ADD_INCOMING        }
+		{ IDD_ADD_OUTGOING2KNOT,   NNetWorkThreadMessage::Id::ADD_OUTGOING2KNOT   },
+		{ IDD_ADD_INCOMING2KNOT,   NNetWorkThreadMessage::Id::ADD_INCOMING2KNOT   },
+		{ IDD_ADD_OUTGOING2PIPE,   NNetWorkThreadMessage::Id::ADD_OUTGOING2PIPE   },
+		{ IDD_ADD_INCOMING2PIPE,   NNetWorkThreadMessage::Id::ADD_INCOMING2PIPE   }
 	};				  
 
 	WorkMessage

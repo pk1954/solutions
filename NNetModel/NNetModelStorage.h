@@ -29,7 +29,7 @@ public:
 	wstring const GetModelPath  ( ) { return m_wstrPathOfOpenModel; };
 	void          ResetModelPath( ) { m_wstrPathOfOpenModel = L""; }
 
-	void AskSave( );
+	bool AskSave( );
 	bool OpenModel( );
 	bool SaveModel( );
 	bool SaveModelAs( );

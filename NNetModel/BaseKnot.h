@@ -63,8 +63,8 @@ public:
 	void ClearIncoming( ) { m_incoming.clear(); }
 	void ClearOutgoing( ) { m_outgoing.clear(); }
 
-	ShapeId GetPrecursor( ) const;
-	ShapeId GetSuccessor( ) const;
+	bool IsPrecursorOf( ShapeId const );
+	bool IsSuccessorOf( ShapeId const );
 
 	ShapeId const GetAxon( ) const
 	{
