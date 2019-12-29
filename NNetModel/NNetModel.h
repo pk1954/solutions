@@ -142,11 +142,11 @@ public:
 
 	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
 
-	ShapeId NewPipeline( ShapeId const, ShapeId const );
+	void NewPipeline( BaseKnot * const, BaseKnot * const );
 
-	ShapeId const InsertKnot  ( ShapeId const, MicroMeterPoint const & );
-	ShapeId const InsertNeuron( ShapeId const, MicroMeterPoint const & );
-	void          MoveShape   ( ShapeId const, MicroMeterPoint const & );
+	Knot   * const InsertKnot  ( ShapeId const, MicroMeterPoint const & );
+	Neuron * const InsertNeuron( ShapeId const, MicroMeterPoint const & );
+	void           MoveShape   ( ShapeId const, MicroMeterPoint const & );
 
 	void AddOutgoing2Knot( ShapeId const, MicroMeterPoint const & );
 	void AddIncoming2Knot( ShapeId const, MicroMeterPoint const & );
@@ -234,7 +234,7 @@ private:
 	void            createInitialShapes();
 	void            disconnectBaseKnot( BaseKnot * const );
 	void            deletePipeline( ShapeId const );
-	void            insertBaseKnot( ShapeId const, ShapeId const );
+	void            insertBaseKnot( Pipeline * const, BaseKnot * const );
 
 	bool const isConnectedToPipeline( ShapeId const id, Pipeline const * const pPipeline ) const
 	{
