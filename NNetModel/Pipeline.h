@@ -20,7 +20,7 @@ class BaseKnot;
 class Pipeline : public Shape
 {
 public:
-	Pipeline( NNetModel * );
+	Pipeline( NNetModel *, MicroMeterPoint const = NP_NULL );
 	virtual ~Pipeline() {}
 
 	static bool TypeFits( tShapeType const type )

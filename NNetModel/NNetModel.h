@@ -111,9 +111,12 @@ public:
 	void ResetSimulationTime( )	{ m_timeStamp = 0._MicroSecs; }
 
 	template <typename T> 
-	ShapeId NewShape( MicroMeterPoint const & pos ) 
+	T * const NewShape( MicroMeterPoint const & pos ) 
 	{ 
-		return addShape( new T( this, pos ) ); 
+		auto pT { new T( this, pos ) };
+		pT->SetId( ShapeId { CastToLong( m_Shapes.size() ) } );
+		m_Shapes.push_back( pT );
+		return pT;
 	}
 
 	template <typename T>
@@ -121,7 +124,7 @@ public:
 	{
 		if ( GetShapeType( id ) == tShapeType::knot )
 		{
-			Connect( id, NewShape<T>( GetShapePos( id ) ) );
+			Connect( id, NewShape<T>( GetShapePos( id ) )->GetId() );
 		}
 	}
 
@@ -232,7 +235,6 @@ private:
 	void            disconnectBaseKnot( BaseKnot * const );
 	void            deletePipeline( ShapeId const );
 	void            insertBaseKnot( ShapeId const, ShapeId const );
-	ShapeId const   addShape( Shape * );
 
 	bool const isConnectedToPipeline( ShapeId const id, Pipeline const * const pPipeline ) const
 	{

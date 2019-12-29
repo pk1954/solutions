@@ -137,8 +137,8 @@ void NNetModel::Disconnect( ShapeId const id )
 			[&]( ShapeId const idPipeline ) 
 			{ 
 				Pipeline * pPipeline { GetTypedShape<Pipeline>( idPipeline ) }; 
-				Knot     * pKnotNew  { new Knot( this, umPos ) };
-				ShapeId    idKnotNew { addShape( pKnotNew ) };
+				Knot     * pKnotNew  { NewShape<Knot>( umPos ) };
+				ShapeId    idKnotNew { pKnotNew->GetId() };
 				pBaseKnot->RemoveIncoming( idPipeline );
 				ConnectIncoming( idPipeline, pPipeline, idKnotNew, pKnotNew );
 				pPipeline->DislocateEndPoint( );
@@ -150,8 +150,8 @@ void NNetModel::Disconnect( ShapeId const id )
 			[&]( ShapeId const idPipeline ) 
 			{ 
 				Pipeline * pPipeline { GetTypedShape<Pipeline>( idPipeline ) }; 
-				Knot     * pKnotNew  { new Knot( this, umPos ) };
-				ShapeId    idKnotNew { addShape( pKnotNew ) };
+				Knot     * pKnotNew  { NewShape<Knot>( umPos ) };
+				ShapeId    idKnotNew { pKnotNew->GetId() };
 				pBaseKnot->RemoveOutgoing( idPipeline );
 				ConnectOutgoing( idPipeline, pPipeline, idKnotNew, pKnotNew );
 				pPipeline->DislocateStartPoint( );
@@ -296,14 +296,14 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 ShapeId NNetModel::NewPipeline( ShapeId const idStart, ShapeId const idEnd )
 {
 	m_bUnsavedChanges = true;
-	Pipeline * pPipelineNew { new Pipeline( this ) };
-	ShapeId    const id     { addShape( pPipelineNew ) };
-	BaseKnot * const pStart { GetTypedShape<BaseKnot>( idStart ) };
-	BaseKnot * const pEnd   { GetTypedShape<BaseKnot>( idEnd   ) };
-	ConnectOutgoing( id, pPipelineNew, idStart, pStart );
-	ConnectIncoming( id, pPipelineNew, idEnd,   pEnd );
+	Pipeline * const pPipeline { NewShape<Pipeline>( NP_NULL ) };
+	ShapeId    const idPipeline{ pPipeline->GetId() };
+	BaseKnot * const pStart    { GetTypedShape<BaseKnot>( idStart ) };
+	BaseKnot * const pEnd      { GetTypedShape<BaseKnot>( idEnd   ) };
+	ConnectOutgoing( idPipeline, pPipeline, idStart, pStart );
+	ConnectIncoming( idPipeline, pPipeline, idEnd,   pEnd );
 	CHECK_CONSISTENCY;
-	return id;
+	return idPipeline;
 }
 
 void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
@@ -334,39 +334,39 @@ void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 ShapeId const NNetModel::InsertNeuron( ShapeId const idPipeline, MicroMeterPoint const & splitPoint )
 {
 	m_bUnsavedChanges = true;
-	ShapeId const idNewNeuron { NewShape<Neuron>( splitPoint ) };
-	insertBaseKnot( idPipeline, idNewNeuron );
+	ShapeId const idNewShape { NewShape<Neuron>( splitPoint )->GetId() };
+	insertBaseKnot( idPipeline, idNewShape );
 	CHECK_CONSISTENCY;
-	return idNewNeuron;
+	return idNewShape;
 }
 
 ShapeId const NNetModel::InsertKnot( ShapeId const idPipeline, MicroMeterPoint const & splitPoint )
 {
 	m_bUnsavedChanges = true;
-	ShapeId const idNewKnot { NewShape<Knot>( splitPoint ) };
-	insertBaseKnot( idPipeline, idNewKnot );
+	ShapeId const idNewShape { NewShape<Knot>( splitPoint )->GetId() };
+	insertBaseKnot( idPipeline, idNewShape );
 	CHECK_CONSISTENCY;
-	return idNewKnot;
+	return idNewShape;
 }
 
 void NNetModel::AddOutgoing2Pipe( ShapeId const id, MicroMeterPoint const & pos )
 {
-	NewPipeline( InsertKnot( id, pos ), NewShape<Knot>( pos + orthoVector( id ) ) );
+	NewPipeline( InsertKnot( id, pos ), NewShape<Knot>( pos + orthoVector( id ) )->GetId() );
 }
 
 void NNetModel::AddIncoming2Pipe( ShapeId const id, MicroMeterPoint const & pos )
 {
-	NewPipeline( NewShape<Knot>( pos - orthoVector( id ) ), InsertKnot( id, pos ) );
+	NewPipeline( NewShape<Knot>( pos - orthoVector( id ) )->GetId(), InsertKnot( id, pos ) );
 }
 
 void NNetModel::AddOutgoing2Knot( ShapeId const id, MicroMeterPoint const & pos )
 {
-	NewPipeline( id, NewShape<Knot>( pos + STD_OFFSET) );
+	NewPipeline( id, NewShape<Knot>( pos + STD_OFFSET)->GetId() );
 }
 
 void NNetModel::AddIncoming2Knot( ShapeId const id, MicroMeterPoint const & pos )
 {
-	NewPipeline( NewShape<Knot>( pos - STD_OFFSET ), id );
+	NewPipeline( NewShape<Knot>( pos - STD_OFFSET )->GetId(), id );
 }
 
 void NNetModel::CopyModelData( ModelInterface const * const src )
@@ -470,9 +470,9 @@ void NNetModel::checkConsistency( Shape const * pShape ) const
 
 void NNetModel::createInitialShapes( )
 {
-	ShapeId m_idInputNeuron = NewShape<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) );
-	ShapeId m_idNeuron      = NewShape<Neuron>      ( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) );
-	ShapeId m_idPipeline    = NewPipeline( m_idInputNeuron, m_idNeuron );
+	ShapeId m_idInputNeuron { NewShape<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) )->GetId() };
+	ShapeId m_idNeuron      { NewShape<Neuron>      ( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) )->GetId() };
+	ShapeId m_idPipeline    { NewPipeline( m_idInputNeuron, m_idNeuron ) };
 }
 
 void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot )
@@ -483,8 +483,8 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot )
 		[&]( ShapeId const idPipeline ) // every incoming pipeline needs a new end knot
 		{ 
 			Pipeline * pPipeline { GetTypedShape<Pipeline>( idPipeline ) }; 
-			Knot     * pKnotNew  { new Knot( this, umPos ) };
-			ShapeId    idKnotNew { addShape( pKnotNew ) };
+			Knot     * pKnotNew  { NewShape<Knot>( umPos ) };
+			ShapeId    idKnotNew { pKnotNew->GetId() };
 			ConnectIncoming( idPipeline, pPipeline, idKnotNew, pKnotNew );
 			pBaseKnot->RemoveIncoming( idPipeline );
 		} 
@@ -494,8 +494,8 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot )
 		[&]( ShapeId const idPipeline ) // every outgoing pipeline needs a new start knot
 		{ 
 			Pipeline * pPipeline { GetTypedShape<Pipeline>( idPipeline ) }; 
-			Knot     * pKnotNew  { new Knot( this, umPos ) };
-			ShapeId    idKnotNew { addShape( pKnotNew ) };
+			Knot     * pKnotNew  { NewShape<Knot>( umPos ) };
+			ShapeId    idKnotNew { pKnotNew->GetId() };
 			ConnectOutgoing( idPipeline, pPipeline, idKnotNew, pKnotNew );
 			pBaseKnot->RemoveOutgoing( idPipeline );
 		} 
@@ -528,14 +528,6 @@ void NNetModel::deletePipeline( ShapeId const id )
 
 		deleteShape( id );
 	}
-}
-
-ShapeId const NNetModel::addShape( Shape * pShape )
-{
-	ShapeId id( CastToLong( m_Shapes.size() ) );  
-	m_Shapes.push_back( pShape );                 
-	pShape->SetId( id );
-	return id;
 }
 
 void NNetModel::insertBaseKnot( ShapeId const idPipeline, ShapeId const idBaseKnot )

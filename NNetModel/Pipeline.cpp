@@ -17,7 +17,7 @@ MicroMeter const Pipeline::STD_ARROW_SIZE { 30.0_MicroMeter };
 
 MicroMeter Pipeline::m_arrowSize { STD_ARROW_SIZE };
 
-Pipeline::Pipeline( NNetModel * pModel )
+Pipeline::Pipeline( NNetModel * pModel, MicroMeterPoint const umUnused )
   :	Shape( pModel, tShapeType::pipeline ),
 	m_idKnotStart   ( NO_SHAPE ),
 	m_idKnotEnd     ( NO_SHAPE ),
