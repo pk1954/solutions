@@ -60,9 +60,12 @@ public:
 			ShapeId const idStart { script.ScrReadLong() };
 			script.ScrReadSpecial( L'-' );
 			script.ScrReadSpecial( L'>' );
-			ShapeId const idEnd { script.ScrReadLong() };
-			Pipeline * pPipeline = new Pipeline( m_pModel );
-			m_pModel->ConnectPipeline( pPipeline, idFromScript, idStart, idEnd );
+			ShapeId    const idEnd     { script.ScrReadLong() };
+			Pipeline * const pPipeline { new Pipeline( m_pModel ) };
+			BaseKnot * const pStart    { m_pModel->GetTypedShape<BaseKnot>( idStart ) };
+			BaseKnot * const pEnd      { m_pModel->GetTypedShape<BaseKnot>( idEnd   ) };
+			m_pModel->ConnectOutgoing( idFromScript, pPipeline, idStart, pStart );
+			m_pModel->ConnectIncoming( idFromScript, pPipeline, idEnd,   pEnd   );
 			pShape = pPipeline;
 		}
 		else 
@@ -94,6 +97,9 @@ public:
 
 		m_pModel->SetShape( pShape, idFromScript );
 		pShape->SetId( idFromScript );
+		#ifndef NDEBUG
+			m_pModel->CheckConsistency();
+		#endif
 	}
 
 private:
@@ -164,7 +170,10 @@ bool NNetModelStorage::Read( wstring const & wstrPath )
 	Script scriptModel;
 	m_pModel->ResetAll();
 	wcout << L"NNet model file " << wstrPath;
-	if ( scriptModel.ScrProcess( wstrPath ) )
+	m_pModel->EnterCritSect();
+	bool bResult = scriptModel.ScrProcess( wstrPath ); 
+	m_pModel->LeaveCritSect();
+	if ( bResult )
 	{
 		wcout << L" sucessfully processed" << endl;
 		m_pModel->ModelSaved( );
@@ -328,7 +337,7 @@ bool NNetModelStorage::AskSave( )
 		else if ( iRes == IDCANCEL )
 			return false;
 	}
-	return false;
+	return true;
 }
 
 bool NNetModelStorage::OpenModel( )

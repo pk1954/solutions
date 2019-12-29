@@ -49,7 +49,7 @@ bool BaseKnot::IsSuccessorOf( ShapeId const id )
 	return bConnectionFound;
 }
 
-void BaseKnot::AddIncomming( ShapeId const idPipeline )
+void BaseKnot::AddIncoming( ShapeId const idPipeline )
 {
 	assert( find( begin(m_incoming), end(m_incoming), idPipeline ) == end(m_incoming) );
 	m_incoming.push_back( idPipeline );

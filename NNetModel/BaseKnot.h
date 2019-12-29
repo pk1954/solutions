@@ -45,7 +45,7 @@ public:
 
 	bool IsPointInShape( MicroMeterPoint const & ) const;
 
-	void AddIncomming   ( ShapeId const );
+	void AddIncoming    ( ShapeId const );
 	void AddOutgoing    ( ShapeId const );
 	void RemoveIncoming ( ShapeId const );
 	void RemoveOutgoing ( ShapeId const );

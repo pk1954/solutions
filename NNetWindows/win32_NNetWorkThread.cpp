@@ -71,6 +71,10 @@ static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
 
 BOOL NNetWorkThread::Dispatch( MSG const msg  )
 {
+	BOOL bResult { TRUE };
+
+	m_pNNetModel->EnterCritSect();
+
 	NNetWorkThreadMessage::Id const id { static_cast<NNetWorkThreadMessage::Id>(msg.message) };
 	switch ( id )
 	{
@@ -138,10 +142,11 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	default:
-		return FALSE;
+		bResult = FALSE;
 	} 
 
-	return TRUE;
+	m_pNNetModel->LeaveCritSect();
+	return bResult;
 }
 
 bool NNetWorkThread::actionCommand

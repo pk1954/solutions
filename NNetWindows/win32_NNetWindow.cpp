@@ -127,14 +127,10 @@ void NNetWindow::setHighlightShape( PixelPoint const pnt )
 {
 	NNetModel       const * pModel    { m_pReadBuffer->GetModel( ) };
 	MicroMeterPoint const   umCrsrPos { m_coord.convert2MicroMeterPoint( pnt ) };
-	Shape           const * pShape    { pModel->FindShapeAt( umCrsrPos ) };
+	Shape           const * pShape    { pModel->FindShapeAt( umCrsrPos, [&]( Shape const & s) { return true; } ) };
 	ShapeId         const   id        { pModel->GetId( pShape ) };
 	if ( id != m_shapeHighlighted )
-	{
-		//if ( IsDefined( id ) )
-		//	PlaySound( TEXT("SELECTION_SOUND") ); 
 		m_shapeHighlighted = id;
-	}
 }
 
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )
@@ -233,7 +229,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
 			Shape const * pShapeSuper { nullptr };
-			if ( IsDefined( m_shapeHighlighted ) )
+			if ( pModel->IsType<BaseKnot>( m_shapeHighlighted ) )
 			{
 				MicroMeterPoint const umOldPos { m_coord.convert2MicroMeterPoint( m_ptLast ) };
 				MicroMeterPoint const umNewPos { m_coord.convert2MicroMeterPoint( ptCrsr   ) };
@@ -246,8 +242,6 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 						return pModel->ConnectsTo( m_shapeHighlighted, shape.GetId() );
 					} 
 				);
-				//if ( ! pShapeSuper )
-				//	PlaySound( TEXT("NOT_POSSIBLE_SOUND") ); 
 			}
 			else if ( m_bMoveAllowed )
 			{

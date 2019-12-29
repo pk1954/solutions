@@ -90,7 +90,6 @@ public:
 	size_t const GetNrOfIncomingConnections( ShapeId const ) const; 
 
 	Shape const * FindShapeAt( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
-	Shape const * FindShapeAt( MicroMeterPoint const ) const;
 
 	float const GetPulseRate     ( Shape const * )    const;
 	float const GetParameterValue( tParameter const ) const;
@@ -142,8 +141,6 @@ public:
 
 	ShapeId NewPipeline( ShapeId const, ShapeId const );
 
-	void ConnectPipeline( Pipeline *, ShapeId const, ShapeId const, ShapeId const );
-
 	ShapeId const InsertKnot  ( ShapeId const, MicroMeterPoint const & );
 	ShapeId const InsertNeuron( ShapeId const, MicroMeterPoint const & );
 	void          MoveShape   ( ShapeId const, MicroMeterPoint const & );
@@ -154,6 +151,30 @@ public:
 	void AddIncoming2Pipe( ShapeId const, MicroMeterPoint const & );
 
 	void Connect( ShapeId const, ShapeId const );
+
+	void ConnectIncoming
+	( 
+		ShapeId    const idPipeline,
+		Pipeline * const pPipeline, 
+		ShapeId    const idEndPoint,
+		BaseKnot * const pEndPoint
+	)
+	{
+		pEndPoint->AddIncoming( idPipeline );
+		pPipeline->SetEndKnot( idEndPoint );
+	}
+
+	void ConnectOutgoing
+	( 
+		ShapeId    const idPipeline,
+		Pipeline * const pPipeline, 
+		ShapeId    const idStartPoint,
+		BaseKnot * const pStartPoint
+	)
+	{
+		pStartPoint->AddOutgoing( idPipeline );
+		pPipeline->SetStartKnot( idStartPoint );
+	}
 
 	void Disconnect( ShapeId const );
 
@@ -168,6 +189,11 @@ public:
 	void SetParameter( tParameter const, float const );
 
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
+
+	void EnterCritSect() { EnterCriticalSection( & m_criticalSection ); }
+	void LeaveCritSect() { LeaveCriticalSection( & m_criticalSection ); }
+
+	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); } ); };
 
 	virtual void CopyModelData( ModelInterface const * const );
 	virtual void Compute( );
@@ -199,6 +225,7 @@ private:
 		LeaveCriticalSection( & m_criticalSection );
 	}
 
+	Shape const   * findShapeAt( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
 	void            checkConsistency( Shape const * ) const;
 	MicroMeterPoint orthoVector( ShapeId const ) const;
 	void            createInitialShapes();

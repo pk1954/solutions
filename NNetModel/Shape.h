@@ -47,6 +47,13 @@ public:
 	tShapeType      GetShapeType( ) const { return m_type; }
 	ShapeId         GetId       ( ) const { return m_identifier; }
 
+	bool IsPipeline   () const { return ::IsPipelineType   ( m_type ); }
+	bool IsKnot       () const { return ::IsKnotType       ( m_type ); }
+	bool IsNeuron     () const { return ::IsNeuronType     ( m_type ); }
+	bool IsInputNeuron() const { return ::IsInputNeuronType( m_type ); }
+	bool IsAnyNeuron  () const { return ::IsAnyNeuronType  ( m_type ); }
+	bool IsBaseKnot   () const { return ::IsBaseKnotType   ( m_type ); }
+
 	void SetId( ShapeId const id ) { m_identifier = id;	}
 
 	static void SetGraphics( D2D_driver * const pGraphics ) { m_pGraphics = pGraphics; }
