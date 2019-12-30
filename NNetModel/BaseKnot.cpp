@@ -61,15 +61,15 @@ void BaseKnot::AddOutgoing( ShapeId const idPipeline )
 	m_outgoing.push_back( idPipeline );
 }
 
-void BaseKnot::RemoveIncoming( ShapeId const idPipeline )
+void BaseKnot::RemoveIncoming( Pipeline * const pPipeline )
 {
-	auto res = find( begin(m_incoming), end(m_incoming), idPipeline );
+	auto res = find( begin(m_incoming), end(m_incoming), pPipeline->GetId() );
 	m_incoming.erase( res );
 }
 
-void BaseKnot::RemoveOutgoing( ShapeId const idPipeline )
+void BaseKnot::RemoveOutgoing( Pipeline * const pPipeline )
 {
-	auto res = find( begin(m_outgoing), end(m_outgoing), idPipeline );
+	auto res = find( begin(m_outgoing), end(m_outgoing), pPipeline->GetId() );
 	m_outgoing.erase( res );
 }
 

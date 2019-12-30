@@ -17,6 +17,7 @@ using std::wstring;
 class GraphicsInterface;
 class PixelCoordsFp;
 class NNetModel;
+class Pipeline;
 
 struct IDWriteTextFormat;
 
@@ -47,8 +48,8 @@ public:
 
 	void AddIncoming    ( ShapeId const );
 	void AddOutgoing    ( ShapeId const );
-	void RemoveIncoming ( ShapeId const );
-	void RemoveOutgoing ( ShapeId const );
+	void RemoveIncoming ( Pipeline * const );
+	void RemoveOutgoing ( Pipeline * const );
 	void ReplaceIncoming( ShapeId const, ShapeId const );
 	void ReplaceOutgoing( ShapeId const, ShapeId const );
 

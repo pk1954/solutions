@@ -157,26 +157,22 @@ public:
 
 	void ConnectIncoming
 	( 
-		ShapeId    const idPipeline,
 		Pipeline * const pPipeline, 
-		ShapeId    const idEndPoint,
 		BaseKnot * const pEndPoint
 	)
 	{
-		pEndPoint->AddIncoming( idPipeline );
-		pPipeline->SetEndKnot( idEndPoint );
+		pEndPoint->AddIncoming( pPipeline->GetId() );
+		pPipeline->SetEndKnot( pEndPoint->GetId() );
 	}
 
 	void ConnectOutgoing
 	( 
-		ShapeId    const idPipeline,
 		Pipeline * const pPipeline, 
-		ShapeId    const idStartPoint,
 		BaseKnot * const pStartPoint
 	)
 	{
-		pStartPoint->AddOutgoing( idPipeline );
-		pPipeline->SetStartKnot( idStartPoint );
+		pStartPoint->AddOutgoing( pPipeline->GetId() );
+		pPipeline->SetStartKnot( pStartPoint->GetId() );
 	}
 
 	void Disconnect( ShapeId const );

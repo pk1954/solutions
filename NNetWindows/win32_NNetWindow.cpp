@@ -229,19 +229,19 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
 			Shape const * pShapeSuper { nullptr };
-			if ( pModel->IsType<BaseKnot>( m_shapeHighlighted ) )
+			if ( IsDefined( m_shapeHighlighted ) )
 			{
 				MicroMeterPoint const umOldPos { m_coord.convert2MicroMeterPoint( m_ptLast ) };
 				MicroMeterPoint const umNewPos { m_coord.convert2MicroMeterPoint( ptCrsr   ) };
 				m_pNNetWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umNewPos - umOldPos );
-				pShapeSuper = pModel->FindShapeAt
-				( 
-					umNewPos, 
-					[&]( Shape const & shape ) 
-					{ 
-						return pModel->ConnectsTo( m_shapeHighlighted, shape.GetId() );
-					} 
-				);
+				if ( pModel->IsType<BaseKnot>( m_shapeHighlighted ) )
+				{
+					pShapeSuper = pModel->FindShapeAt
+					( 
+						umNewPos, 
+						[&]( Shape const & shape ) { return pModel->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
+					);
+				}
 			}
 			else if ( m_bMoveAllowed )
 			{

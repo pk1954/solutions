@@ -64,8 +64,13 @@ public:
 			Pipeline * const pPipeline { new Pipeline( m_pModel ) };
 			BaseKnot * const pStart    { m_pModel->GetTypedShape<BaseKnot>( idStart ) };
 			BaseKnot * const pEnd      { m_pModel->GetTypedShape<BaseKnot>( idEnd   ) };
-			m_pModel->ConnectOutgoing( idFromScript, pPipeline, idStart, pStart );
-			m_pModel->ConnectIncoming( idFromScript, pPipeline, idEnd,   pEnd   );
+
+			pStart->AddOutgoing( idFromScript );
+			pPipeline->SetStartKnot( idStart );
+
+			pEnd->AddIncoming( idFromScript );
+			pPipeline->SetEndKnot( idEnd );
+
 			pShape = pPipeline;
 		}
 		else 

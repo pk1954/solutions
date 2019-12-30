@@ -115,7 +115,7 @@ void NNetModel::RemoveShape( ShapeId const idShapeToBeDeleted )
 
 	case tShapeType::inputNeuron:
 	case tShapeType::neuron:
-		Disconnect( idShapeToBeDeleted );
+		disconnectBaseKnot( GetTypedShape<BaseKnot>( idShapeToBeDeleted ) );
 		deleteShape( idShapeToBeDeleted );
 		break;
 
@@ -130,36 +130,8 @@ void NNetModel::Disconnect( ShapeId const id )
 {
 	if ( BaseKnot * pBaseKnot { GetTypedShape<BaseKnot>( id ) } )
 	{
-		MicroMeterPoint umPos { pBaseKnot->GetPosition() };
-		
-		pBaseKnot->Apply2AllIncomingPipelines
-		( 
-			[&]( ShapeId const idPipeline ) 
-			{ 
-				Pipeline * pPipeline { GetTypedShape<Pipeline>( idPipeline ) }; 
-				Knot     * pKnotNew  { NewShape<Knot>( umPos ) };
-				ShapeId    idKnotNew { pKnotNew->GetId() };
-				pBaseKnot->RemoveIncoming( idPipeline );
-				ConnectIncoming( idPipeline, pPipeline, idKnotNew, pKnotNew );
-				pPipeline->DislocateEndPoint( );
-			} 
-		);
-		
-		pBaseKnot->Apply2AllOutgoingPipelines
-		( 
-			[&]( ShapeId const idPipeline ) 
-			{ 
-				Pipeline * pPipeline { GetTypedShape<Pipeline>( idPipeline ) }; 
-				Knot     * pKnotNew  { NewShape<Knot>( umPos ) };
-				ShapeId    idKnotNew { pKnotNew->GetId() };
-				pBaseKnot->RemoveOutgoing( idPipeline );
-				ConnectOutgoing( idPipeline, pPipeline, idKnotNew, pKnotNew );
-				pPipeline->DislocateStartPoint( );
-			} 
-		);
-
+		disconnectBaseKnot( pBaseKnot );
 		assert( pBaseKnot->IsOrphan( ) );
-
 		if ( pBaseKnot->GetShapeType( ) == tShapeType::knot )
 			deleteShape( id );
 	}
@@ -273,7 +245,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 			( 
 				[&]( ShapeId const & idPipeline ) 
 				{ 
-					ConnectIncoming( idPipeline, GetTypedShape<Pipeline>(idPipeline), idDst, pDst );
+					ConnectIncoming( GetTypedShape<Pipeline>(idPipeline), pDst );
 				}
 			);
 
@@ -281,7 +253,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 			( 
 				[&]( ShapeId const & idPipeline ) 
 				{ 
-					ConnectOutgoing( idPipeline, GetTypedShape<Pipeline>(idPipeline), idDst, pDst );
+					ConnectOutgoing( GetTypedShape<Pipeline>(idPipeline), pDst );
 				}
 			);
 
@@ -297,8 +269,8 @@ void NNetModel::NewPipeline( BaseKnot * const pStart, BaseKnot * const pEnd )
 {
 	m_bUnsavedChanges = true;
 	Pipeline * const pPipeline { NewShape<Pipeline>( NP_NULL ) };
-	ConnectOutgoing( pPipeline->GetId(), pPipeline, pStart->GetId(), pStart );
-	ConnectIncoming( pPipeline->GetId(), pPipeline, pEnd  ->GetId(), pEnd );
+	ConnectOutgoing( pPipeline, pStart );
+	ConnectIncoming( pPipeline, pEnd );
 	CHECK_CONSISTENCY;
 }
 
@@ -471,7 +443,7 @@ void NNetModel::createInitialShapes( )
 	NewPipeline( pInputNeuron, pNeuron );
 }
 
-void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot )
+void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects only, shape remains
 {
 	MicroMeterPoint umPos { pBaseKnot->GetPosition() };
 	pBaseKnot->Apply2AllIncomingPipelines
@@ -479,62 +451,49 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot )
 		[&]( ShapeId const idPipeline ) // every incoming pipeline needs a new end knot
 		{ 
 			Pipeline * pPipeline { GetTypedShape<Pipeline>( idPipeline ) }; 
-			Knot     * pKnotNew  { NewShape<Knot>( umPos ) };
-			ShapeId    idKnotNew { pKnotNew->GetId() };
-			ConnectIncoming( idPipeline, pPipeline, idKnotNew, pKnotNew );
-			pBaseKnot->RemoveIncoming( idPipeline );
+			ConnectIncoming( pPipeline, NewShape<Knot>( umPos ) );
+			pPipeline->DislocateEndPoint( );
 		} 
 	);
+	pBaseKnot->ClearIncoming();
 	pBaseKnot->Apply2AllOutgoingPipelines
 	( 
 		[&]( ShapeId const idPipeline ) // every outgoing pipeline needs a new start knot
 		{ 
 			Pipeline * pPipeline { GetTypedShape<Pipeline>( idPipeline ) }; 
-			Knot     * pKnotNew  { NewShape<Knot>( umPos ) };
-			ShapeId    idKnotNew { pKnotNew->GetId() };
-			ConnectOutgoing( idPipeline, pPipeline, idKnotNew, pKnotNew );
-			pBaseKnot->RemoveOutgoing( idPipeline );
+			ConnectOutgoing( pPipeline, NewShape<Knot>( umPos ) );
+			pPipeline->DislocateStartPoint( );
 		} 
 	);
+	pBaseKnot->ClearOutgoing();
 }
 
 void NNetModel::deletePipeline( ShapeId const id )
 {
-	if ( Pipeline * pPipelineToBeDeleted { GetTypedShape<Pipeline>( id ) } )
-	{
-		assert( ::IsPipelineType( pPipelineToBeDeleted->GetShapeType( ) ) );
+	Pipeline * pPipelineToBeDeleted { GetTypedShape<Pipeline>( id ) };
 
-		ShapeId    idStartKnot { pPipelineToBeDeleted->GetStartKnot() };
-		BaseKnot * pStartKnot  { GetTypedShape<BaseKnot>( idStartKnot ) };
-		if ( pStartKnot )
-		{
-			pStartKnot->RemoveOutgoing( id );
-			if ( pStartKnot->IsOrphanedKnot( ) )
-				Disconnect( idStartKnot );
-		}
+	ShapeId    idStartKnot { pPipelineToBeDeleted->GetStartKnot() };
+	BaseKnot * pStartKnot  { GetTypedShape<BaseKnot>( idStartKnot ) };
+	pStartKnot->RemoveOutgoing( pPipelineToBeDeleted );
+	if ( pStartKnot->IsOrphanedKnot( ) && ( pStartKnot->GetShapeType( ) == tShapeType::knot ) )
+		deleteShape( idStartKnot );
 
-		ShapeId    idEndKnot { pPipelineToBeDeleted->GetEndKnot() };
-		BaseKnot * pEndKnot  { GetTypedShape<BaseKnot>( idEndKnot ) };
-		if ( pEndKnot )
-		{
-			pEndKnot->RemoveIncoming( id );
-			if ( pEndKnot->IsOrphanedKnot( ) )
-				Disconnect( idEndKnot );
-		}
+	ShapeId    idEndKnot { pPipelineToBeDeleted->GetEndKnot() };
+	BaseKnot * pEndKnot  { GetTypedShape<BaseKnot>( idEndKnot ) };
+	pEndKnot->RemoveIncoming( pPipelineToBeDeleted );
+	if ( pEndKnot->IsOrphanedKnot( ) && ( pEndKnot->GetShapeType( ) == tShapeType::knot ) )
+		deleteShape( idEndKnot );
 
-		deleteShape( id );
-	}
+	deleteShape( id );
 }
 
 void NNetModel::insertBaseKnot( Pipeline * const pPipeline, BaseKnot * const pBaseKnot)
 {
-	ShapeId    const idPipeline  { pPipeline->GetId( ) };
 	ShapeId    const idStartKnot { pPipeline->GetStartKnot() };
 	BaseKnot * const pStartKnot  { GetTypedShape<BaseKnot>( idStartKnot ) };
-	ShapeId    const idBaseKnot  { pBaseKnot->GetId( ) };
 	NewPipeline( pStartKnot, pBaseKnot );
-	pStartKnot->RemoveOutgoing( idPipeline );
-	ConnectOutgoing( idPipeline, pPipeline, idBaseKnot, pBaseKnot );
+	pStartKnot->RemoveOutgoing( pPipeline );
+	ConnectOutgoing( pPipeline, pBaseKnot );
 }
 
 MicroMeterPoint NNetModel::orthoVector( ShapeId const idPipeline ) const
