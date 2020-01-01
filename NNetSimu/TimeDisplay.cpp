@@ -24,19 +24,18 @@ class TimeDisplay::RefreshRate : public BaseRefreshRate
 public:
 	RefreshRate	
 	(
-		StatusBar      * pStatusBar,
-		NNetReadBuffer * pReadBuffer,
-		int              iPartInStatusBar
+		StatusBar       * pStatusBar,
+		NNetModel const * pModel,
+		int               iPartInStatusBar
 	)
 	:	m_pStatusBar      (pStatusBar),
-		m_pReadBuffer     (pReadBuffer),
+		m_pModel          (pModel),
 		m_iPartInStatusBar(iPartInStatusBar)
 	{}
 
 	virtual void Trigger( )
 	{
-		NNetModel const * pModel = m_pReadBuffer->GetModel( );
-		MicroSecs const   time   = pModel->GetSimulationTime( );
+		MicroSecs const   time   = m_pModel->GetSimulationTime( );
 		m_wstrBuffer.str( wstring() );
 		m_wstrBuffer.clear();
 		m_wstrBuffer << std::fixed << std::setprecision(2);
@@ -55,11 +54,11 @@ public:
 	}
 
 private:
-	wstring          m_wstring;
-	wostringstream   m_wstrBuffer;
-	StatusBar      * m_pStatusBar;
-	int              m_iPartInStatusBar;
-	NNetReadBuffer * m_pReadBuffer;
+	wstring           m_wstring;
+	wostringstream    m_wstrBuffer;
+	StatusBar       * m_pStatusBar;
+	NNetModel const * m_pModel;
+	int               m_iPartInStatusBar;
 };
 
 /////// functions of class TimeDisplay ///////
@@ -68,21 +67,21 @@ using namespace std::chrono;
 
 TimeDisplay::TimeDisplay
 (
-	StatusBar      * pStatusBar,
-	NNetReadBuffer * pReadBuffer,
-	int              iPartInStatusBar
+	StatusBar       * pStatusBar,
+	NNetModel const * pModel,
+	int               iPartInStatusBar
 )
-  :	m_pRefreshRate( nullptr )
+  :	m_pRefreshRate( nullptr ),
+	m_pModel( pModel )
 {
 	static PIXEL const PIX_WIDTH = PIXEL( 9 ) * 8;   //TODO: avoid magic numbers
 	m_pRefreshRate = new RefreshRate
 	( 
 		pStatusBar,
-		pReadBuffer,
+		pModel,
 		iPartInStatusBar
 	);
 	m_pRefreshRate->SetRefreshRate( 300ms );
-	pReadBuffer->RegisterObserver( this );         // notify me, if model has changed
 	pStatusBar->AddCustomControl( PIX_WIDTH ); 
 }
 

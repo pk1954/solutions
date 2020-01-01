@@ -58,13 +58,12 @@ NNetAppWindow::NNetAppWindow( ) :
 {
 	Stopwatch stopwatch;
 
-	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface, FALSE ),
+	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface ),
 		
 	m_pNNetReadBuffer = new NNetReadBuffer( FALSE );  // no double buffering
 
 	NNetWindow::InitClass
 	( 
-		  m_pNNetReadBuffer,
 		& m_NNetWorkThreadInterface, 
 		& m_atDisplay 
 	);
@@ -117,8 +116,11 @@ void NNetAppWindow::Start( )
 		m_hwndApp, 
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		nullptr,  // no visibility criterion. Allways visible,
+		m_pModelDataWork,
 		m_pCursorPos
 	);
+
+	m_pNNetReadBuffer->RegisterObserver( m_pMainNNetWindow );
 
 	m_pMainNNetWindow->ShowRefreshRateDlg( false );
 
@@ -180,7 +182,8 @@ void NNetAppWindow::configureStatusBar( )
 {
 	int iPartScriptLine = 0;
 
-	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pNNetReadBuffer, iPartScriptLine );
+	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pModelDataWork, iPartScriptLine );
+	m_pNNetReadBuffer->RegisterObserver( m_pTimeDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	SimulationControl::Add( & m_StatusBar );

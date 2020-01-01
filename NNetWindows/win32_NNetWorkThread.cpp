@@ -41,7 +41,6 @@ NNetWorkThread::NNetWorkThread
 		pActionTimer, 
 		pEvent, 
 		pObserver,
-		nullptr,    // no history system
 		pNNetModel,
 		pWorkThreadInterface,
 		bAsync

@@ -26,7 +26,6 @@ class NNetWindow : public ModelWindow
 public:
 	static void InitClass
 	( 
-		NNetReadBuffer          * const,
 		NNetWorkThreadInterface * const,
 		ActionTimer             * const
 	);
@@ -38,7 +37,8 @@ public:
 		HWND             const, 
 		DWORD            const,
 		function<bool()> const,
-		Observable *     const
+		NNetModel      * const,
+		Observable     * const
 	);
 
 	void Stop( );
@@ -63,8 +63,8 @@ private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	static NNetReadBuffer          * m_pReadBuffer;
 	static NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
+	static NNetModel               * m_pModel;
 
 	HMENU m_hPopupMenu;
 	BOOL  m_bMoveAllowed;    // TRUE: move with mouse is possible

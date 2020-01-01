@@ -1,6 +1,6 @@
 // win32_zoomControl.h
 //
-// win32_appFramework
+// win32_utilities
 
 #pragma once
 

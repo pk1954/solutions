@@ -24,18 +24,16 @@
 
 using std::function;
 
-NNetReadBuffer          * NNetWindow::m_pReadBuffer              = nullptr;
+NNetModel               * NNetWindow::m_pModel                   = nullptr;
 NNetWorkThreadInterface * NNetWindow::m_pNNetWorkThreadInterface = nullptr;
 
 void NNetWindow::InitClass
 (        
-	NNetReadBuffer          * const pReadBuffer,
 	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
 	ActionTimer             * const pActionTimer
 )
 {
 	ModelWindow::InitClass( pActionTimer );
-	m_pReadBuffer              = pReadBuffer;
 	m_pNNetWorkThreadInterface = pNNetWorkThreadInterface;
 }
 
@@ -62,7 +60,8 @@ void NNetWindow::Start
 	HWND             const hwndApp, 
 	DWORD            const dwStyle,
 	function<bool()> const visibilityCriterion,
-	Observable *     const pCursorObservable
+	NNetModel      * const pModel,
+	Observable     * const pCursorObservable
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -77,7 +76,7 @@ void NNetWindow::Start
 	m_D2d_driver.Initialize( hwnd );
 	setStdFontSize( );
 	Shape::SetGraphics( & m_D2d_driver );
-	m_pReadBuffer->RegisterObserver( this );
+	m_pModel = pModel;
 	m_pScale = new Scale( & m_D2d_driver, & m_coord );
 	m_pAnimationThread = new AnimationThread( );
 	m_pCursorPosObservable = pCursorObservable;
@@ -125,25 +124,23 @@ MicroMeter NNetWindow::GetPixelSize( ) const
 
 void NNetWindow::setHighlightShape( PixelPoint const pnt )
 {
-	NNetModel       const * pModel    { m_pReadBuffer->GetModel( ) };
 	MicroMeterPoint const   umCrsrPos { m_coord.convert2MicroMeterPoint( pnt ) };
-	Shape           const * pShape    { pModel->FindShapeAt( umCrsrPos, [&]( Shape const & s) { return true; } ) };
-	ShapeId         const   id        { pModel->GetId( pShape ) };
+	Shape           const * pShape    { m_pModel->FindShapeAt( umCrsrPos, [&]( Shape const & s) { return true; } ) };
+	ShapeId         const   id        { m_pModel->GetId( pShape ) };
 	if ( id != m_shapeHighlighted )
 		m_shapeHighlighted = id;
 }
 
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )
 {
-	NNetModel const * pModel    { m_pReadBuffer->GetModel( ) };
-	UINT      const   STD_FLAGS { MF_BYPOSITION | MF_STRING };
+	UINT const STD_FLAGS { MF_BYPOSITION | MF_STRING };
 
 	m_ptCommandPosition = ptPos;
 
-	switch ( pModel->GetShapeType( m_shapeHighlighted ) )
+	switch ( m_pModel->GetShapeType( m_shapeHighlighted ) )
 	{
 	case tShapeType::inputNeuron:
-		if ( ! pModel->HasOutgoing( m_shapeHighlighted ) )
+		if ( ! m_pModel->HasOutgoing( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE,            L"Pulse rate" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,          L"Remove" );
@@ -151,7 +148,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		break;
 
 	case tShapeType::neuron:
-		if ( ! pModel->HasOutgoing( m_shapeHighlighted ) )
+		if ( ! m_pModel->HasOutgoing( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING2KNOT,     L"Add incoming dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,          L"Remove" );
@@ -162,16 +159,16 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING2KNOT, L"Add incoming dendrite" );
 		if ( 
-			   (! pModel->HasOutgoing( m_shapeHighlighted )) || 
+			   (! m_pModel->HasOutgoing( m_shapeHighlighted )) || 
 			   (
-				  ! pModel->HasIncoming( m_shapeHighlighted ) && 
-				  ( pModel->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )  
+				  ! m_pModel->HasIncoming( m_shapeHighlighted ) && 
+				  ( m_pModel->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )  
 			   ) 
 		   )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_APPEND_NEURON,       L"Add neuron" );
 		if ( 
-			  ( pModel->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 ) && 
-			  (! pModel->HasIncoming( m_shapeHighlighted )) 
+			  ( m_pModel->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 ) && 
+			  (! m_pModel->HasIncoming( m_shapeHighlighted )) 
 		   )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_APPEND_INPUT_NEURON, L"Add input neuron" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT, L"Disconnect" );
@@ -202,9 +199,8 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 bool NNetWindow::PulseRateDlg( ShapeId const id )
 {
-	NNetModel   const & model       { * m_pReadBuffer->GetModel( ) };
-	InputNeuron const & inputNeuron { * model.GetConstTypedShape<InputNeuron>(id) };
-	float       const   fOldValue   { model.GetPulseRate( & inputNeuron ) };
+	InputNeuron const & inputNeuron { * m_pModel->GetConstTypedShape<InputNeuron>(id) };
+	float       const   fOldValue   { m_pModel->GetPulseRate( & inputNeuron ) };
 	wstring     const   header      { GetParameterName ( tParameter::pulseRate ) }; 
 	wstring     const   unit        { GetParameterUnit ( tParameter::pulseRate ) }; 
 	float       const   fNewValue   { StdDialogBox::Show( GetWindowHandle(), fOldValue, header, unit ) };
@@ -216,8 +212,7 @@ bool NNetWindow::PulseRateDlg( ShapeId const id )
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
-	PixelPoint const   ptCrsr { GetCrsrPosFromLparam( lParam ) };  // relative to client area
-	NNetModel  const * pModel { m_pReadBuffer->GetModel() };
+	PixelPoint const ptCrsr { GetCrsrPosFromLparam( lParam ) };  // relative to client area
 
 	m_pCursorPosObservable->NotifyAll( false );
 
@@ -234,12 +229,12 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 				MicroMeterPoint const umOldPos { m_coord.convert2MicroMeterPoint( m_ptLast ) };
 				MicroMeterPoint const umNewPos { m_coord.convert2MicroMeterPoint( ptCrsr   ) };
 				m_pNNetWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umNewPos - umOldPos );
-				if ( pModel->IsType<BaseKnot>( m_shapeHighlighted ) )
+				if ( m_pModel->IsType<BaseKnot>( m_shapeHighlighted ) )
 				{
-					pShapeSuper = pModel->FindShapeAt
+					pShapeSuper = m_pModel->FindShapeAt
 					( 
 						umNewPos, 
-						[&]( Shape const & shape ) { return pModel->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
+						[&]( Shape const & shape ) { return m_pModel->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
 					);
 				}
 			}
@@ -282,19 +277,18 @@ tHighlightType const NNetWindow::GetHighlightType( ShapeId const id ) const
 
 void NNetWindow::doPaint( ) 
 {
-	NNetModel const * pModel = m_pReadBuffer->GetModel( );
 	if ( m_coord.GetPixelSize() <= 5._MicroMeter )
-		pModel->Apply2All<Shape>( [&]( Shape & shape ) { shape.DrawExterior( m_coord, GetHighlightType( shape.GetId() ) ); } );
+		m_pModel->Apply2All<Shape>( [&]( Shape & shape ) { shape.DrawExterior( m_coord, GetHighlightType( shape.GetId() ) ); } );
 
-	pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { shape.DrawInterior( m_coord ); } );
-	pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawInterior( m_coord ); } );
+	m_pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { shape.DrawInterior( m_coord ); } );
+	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawInterior( m_coord ); } );
 	
-	drawHighlightedShape( * pModel, m_coord );
+	drawHighlightedShape( * m_pModel, m_coord );
 
 	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
 
 	if ( m_coord.GetPixelSize() <= 2.5_MicroMeter )
-		pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawNeuronText( m_coord ); } );
+		m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawNeuronText( m_coord ); } );
 }
 
 void NNetWindow::OnPaint( )

@@ -1,6 +1,6 @@
 // win32_scriptHook.h
 //
-// win32_appFramework
+// NNetSimu
 
 #pragma once
 

@@ -8,11 +8,12 @@
 #include "ObserverInterface.h"
 
 class StatusBar;
+class NNetModel;
 
 class TimeDisplay : public ObserverInterface
 {
 public:
-	TimeDisplay( StatusBar *, NNetReadBuffer *, int );
+	TimeDisplay( StatusBar *, NNetModel const *, int );
 
 	~TimeDisplay();
 
@@ -22,6 +23,7 @@ private:
 
 	class RefreshRate;
 
-	RefreshRate * m_pRefreshRate;
+	RefreshRate     * m_pRefreshRate;
+	NNetModel const * m_pModel;
 };
 

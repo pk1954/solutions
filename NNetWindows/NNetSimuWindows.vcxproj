@@ -73,7 +73,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)Direct2D;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)Direct2D;$(SolutionDir)runtimeCPP;$(SolutionDir)Win32_utilities;$(SolutionDir)NNetModel;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -85,7 +85,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)Direct2D;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)Direct2D;$(SolutionDir)runtimeCPP;$(SolutionDir)Win32_utilities;$(SolutionDir)NNetModel;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -160,8 +160,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AnimationThread.h" />
+    <ClInclude Include="NNetReadBuffer.h" />
+    <ClInclude Include="win32_appMenu.h" />
+    <ClInclude Include="win32_appWindowInterface.h" />
+    <ClInclude Include="win32_baseAppWindow.h" />
     <ClInclude Include="win32_crsrWindow.h" />
-    <ClInclude Include="win32_NNetReadBuffer.h" />
+    <ClInclude Include="win32_messagePump.h" />
+    <ClInclude Include="win32_modelWindow.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -169,17 +174,28 @@
     <ClInclude Include="win32_NNetWorkThread.h" />
     <ClInclude Include="win32_NNetWorkThreadInterface.h" />
     <ClInclude Include="win32_parameterDlg.h" />
+    <ClInclude Include="win32_readBuffer.h" />
     <ClInclude Include="win32_scale.h" />
+    <ClInclude Include="win32_scriptHook.h" />
     <ClInclude Include="win32_sound.h" />
+    <ClInclude Include="win32_status.h" />
+    <ClInclude Include="win32_WorkThread.h" />
+    <ClInclude Include="win32_WorkThreadInterface.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="win32_baseAppWindow.cpp" />
     <ClCompile Include="win32_crsrWindow.cpp" />
+    <ClCompile Include="win32_messagePump.cpp" />
+    <ClCompile Include="win32_modelWindow.cpp" />
     <ClCompile Include="win32_NNetWindow.cpp" />
     <ClCompile Include="win32_NNetWorkThread.cpp" />
     <ClCompile Include="win32_NNetWorkThreadInterface.cpp" />
     <ClCompile Include="win32_parameterDlg.cpp" />
     <ClCompile Include="win32_scale.cpp" />
     <ClCompile Include="win32_sound.cpp" />
+    <ClCompile Include="win32_status.cpp" />
+    <ClCompile Include="win32_WorkThread.cpp" />
+    <ClCompile Include="win32_WorkThreadInterface.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

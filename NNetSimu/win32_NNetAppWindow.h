@@ -11,6 +11,7 @@
 
 // infrastructure
 
+#include "NNetReadBuffer.h"
 #include "win32_appWindowInterface.h"
 #include "win32_winManager.h"
 #include "win32_scriptHook.h"
@@ -21,7 +22,6 @@
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWindow.h"
 #include "win32_NNetAppMenu.h"
-#include "win32_NNetReadBuffer.h"
 #include "win32_NNetController.h"
 
 class Observable;

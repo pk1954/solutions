@@ -98,7 +98,8 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions> </AdditionalOptions>
+      <AdditionalOptions>
+      </AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -169,7 +170,6 @@
     <ClInclude Include="win32_status.h" />
     <ClInclude Include="win32_WorkThread.h" />
     <ClInclude Include="win32_WorkThreadInterface.h" />
-    <ClInclude Include="win32_zoomControl.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico" />
