@@ -25,9 +25,9 @@ public:
 
 	virtual void Initialize
 	( 
-		HWND                        const, 
+		HWND                            const, 
 		NNetWorkThreadInterface const * const, 
-		WinManager          const * const
+		WinManager              const * const
 	);
 	virtual void AdjustVisibility( );
 	virtual void Start( );
@@ -40,7 +40,7 @@ private:
 
 	static HWND m_hwndApp;
 
-	HMENU                       m_hMenu;
+	HMENU                           m_hMenu;
 	NNetWorkThreadInterface const * m_pWorkThreadInterface;
-	WinManager          const * m_pWinManager;
+	WinManager              const * m_pWinManager;
 };

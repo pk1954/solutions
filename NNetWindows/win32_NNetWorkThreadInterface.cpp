@@ -72,31 +72,31 @@ void NNetWorkThreadInterface::PostResetTimer( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::RESET_TIMER), 0, 0 );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::RESET_TIMER ), 0, 0 );
 }
 
 void NNetWorkThreadInterface::PostConnect( ShapeId const idSrc, ShapeId const idDst )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::CONNECT), idSrc.GetValue(), idDst.GetValue() );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::CONNECT ), idSrc.GetValue(), idDst.GetValue() );
 }
 
 void NNetWorkThreadInterface::PostRemoveShape( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::REMOVE_SHAPE), id.GetValue(), 0 );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::REMOVE_SHAPE ), id.GetValue(), 0 );
 }
 
 void NNetWorkThreadInterface::PostDisconnect( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::DISCONNECT), id.GetValue(), 0 );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::DISCONNECT ), id.GetValue(), 0 );
 }
 
-static WorkThreadMessage::Id const GetWorkThreadMessage( tParameter const p )
+static NNetWorkThreadMessage::Id const GetWorkThreadMessage( tParameter const p )
 {
 	static unordered_map < tParameter, NNetWorkThreadMessage::Id const > mapParam =
 	{
@@ -108,58 +108,52 @@ static WorkThreadMessage::Id const GetWorkThreadMessage( tParameter const p )
 		{ tParameter::refractPeriod, NNetWorkThreadMessage::Id::REFRACTORY_PERIOD }
 	};				  
 
-	return static_cast< WorkThreadMessage::Id >( mapParam.at( p ) );
+	return mapParam.at( p );
 }
 
 void NNetWorkThreadInterface::PostResetModel( )
 {
 	if ( IsTraceOn( ) )
-	{
 		TraceStream( ) << __func__ << endl;
-	}
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::RESET_MODEL), 0, 0 );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::RESET_MODEL ), 0, 0 );
 }
 
 void NNetWorkThreadInterface::PostSetPulseRate( ShapeId const id, float const fNewValue )
 {
 	if ( IsTraceOn( ) )
-	{
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << fNewValue << endl;
-	}
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::PULSE_RATE), id.GetValue(), (LPARAM &)fNewValue );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::PULSE_RATE ), id.GetValue(), (LPARAM &)fNewValue );
 }
 
 void NNetWorkThreadInterface::PostSetParameter( tParameter const param, float const fNewValue )
 {
 	if ( IsTraceOn( ) )
-	{
 		TraceStream( ) << __func__ << L" " << GetParameterName( param ) << L" " << fNewValue << endl;
-	}
-	WorkMessage( TRUE, GetWorkThreadMessage( param ), 0, (LPARAM &)fNewValue );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( GetWorkThreadMessage( param ) ), 0, (LPARAM &)fNewValue );
 }
 
 void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << delta << endl;
-
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::MOVE_SHAPE), id.GetValue(), Util::Pack2UINT64(delta) );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::MOVE_SHAPE ), id.GetValue(), Util::Pack2UINT64(delta) );
 }
 
 void NNetWorkThreadInterface::PostSlowMotionChanged( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED), 0, 0 );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED ), 0, 0 );
 }
 
-void NNetWorkThreadInterface::PostActionCommand
-(
-	int     const idMsg,
-	ShapeId const idShape,
-	LPARAM  const lParam
-)
+void NNetWorkThreadInterface::PostReset( BOOL bResetHistSys )
+{
+	if ( IsTraceOn( ) )
+		* m_pTraceStream << __func__ << (bResetHistSys ? 1 : 0) << endl;
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::RESET_MODEL ), bResetHistSys, 0 );
+}
+
+void NNetWorkThreadInterface::PostActionCommand( int const idMsg, ShapeId const idShape, LPARAM const lParam )
 {
 	static unordered_map < int, NNetWorkThreadMessage::Id const > mapMsg =
 	{
@@ -174,47 +168,26 @@ void NNetWorkThreadInterface::PostActionCommand
 		{ IDD_ADD_INCOMING2PIPE,   NNetWorkThreadMessage::Id::ADD_INCOMING2PIPE   }
 	};				  
 
-	WorkMessage
-	( 
-		TRUE, 
-		static_cast< WorkThreadMessage::Id >( mapMsg.at( idMsg ) ), 
-		idShape.GetValue( ), 
-		lParam 
-	);
-}
-
-void NNetWorkThreadInterface::PostReset( BOOL bResetHistSys )
-{
-	if ( IsTraceOn( ) )
-		* m_pTraceStream << __func__ << (bResetHistSys ? 1 : 0) << endl;
-	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(WorkThreadMessage::Id::RESET_MODEL), bResetHistSys, 0 );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( mapMsg.at( idMsg ) ), idShape.GetValue( ), lParam );
 }
 
 void NNetWorkThreadInterface::PostGenerationStep( )
 {
-	if ( m_bTrace )
-		* m_pTraceStream << __func__ << endl;
-
-	Continue( );     // trigger worker thread if waiting on POI event
-
-	WorkMessage( FALSE, WorkThreadMessage::Id::NEXT_GENERATION, 0, 0 );
+	m_pNNetWorkThread->Continue( );     // trigger worker thread if waiting on POI event
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::NEXT_GENERATION ), 0, 0 );
 }
 
 void NNetWorkThreadInterface::PostRunGenerations( BOOL const bFirst )
 {
-	//if ( m_bTrace )
-	//    * m_pTraceStream << L"PostGenerationStep" << endl;
-	WorkMessage( FALSE, WorkThreadMessage::Id::GENERATION_RUN, 0, bFirst );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::GENERATION_RUN ), 0, bFirst );
 }
 
 void NNetWorkThreadInterface::PostRepeatGenerationStep( )
 {
-	//if ( m_bTrace )
-	//    * m_pTraceStream << L"PostGenerationStep" << endl;
-	WorkMessage( FALSE, WorkThreadMessage::Id::REPEAT_NEXT_GENERATION, 0, 0 );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::REPEAT_NEXT_GENERATION ), 0, 0 );
 }
 
 void NNetWorkThreadInterface::PostStopComputation( )
 {
-	WorkMessage( FALSE, WorkThreadMessage::Id::STOP, 0, 0 );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::STOP ), 0, 0 );
 }

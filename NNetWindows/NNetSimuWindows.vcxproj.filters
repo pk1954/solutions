@@ -75,9 +75,6 @@
     <ClInclude Include="NNetReadBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_WorkThread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_NNetWorkThread.cpp">
@@ -99,9 +96,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_sound.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_WorkThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_messagePump.cpp">

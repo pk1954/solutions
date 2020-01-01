@@ -6,6 +6,7 @@
 #include <sstream> 
 #include <unordered_map>
 #include "SCRIPT.H"
+#include "Resource.h"
 #include "PixelTypes.h"
 #include "SlowMotionRatio.h"
 #include "EventInterface.h"
@@ -17,7 +18,6 @@
 #include "win32_thread.h"
 #include "win32_event.h"
 #include "win32_actionTimer.h"
-#include "win32_util_resource.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWorkThread.h"
 
@@ -34,23 +34,25 @@ NNetWorkThread::NNetWorkThread
 	NNetModel               * const pNNetModel,
 	BOOL                      const bAsync
 ):
-	m_pNNetModel( pNNetModel ),
-	WorkThread
-	( 
-		hwndApplication, 
-		pActionTimer, 
-		pEvent, 
-		pObserver,
-		pNNetModel,
-		pWorkThreadInterface,
-		bAsync
-	),
-	m_pSlowMotionRatio( pSlowMotionRatio )
+	m_pNNetModel          ( pNNetModel ),
+	m_pComputeTimer       ( pActionTimer ),
+	m_pEventPOI           ( pEvent ),   
+	m_pObserver           ( pObserver ),   
+	m_pWorkThreadInterface( pWorkThreadInterface ),
+	m_hwndApplication     ( hwndApplication ),
+	m_bContinue           ( FALSE ),
+	m_pSlowMotionRatio    ( pSlowMotionRatio )
 {
+	StartThread( L"WorkerThread", bAsync ); 
 }
 
 NNetWorkThread::~NNetWorkThread( )
 {
+	m_hwndApplication      = nullptr;
+	m_pWorkThreadInterface = nullptr;
+	m_pComputeTimer        = nullptr;
+	m_pEventPOI            = nullptr;
+	m_pObserver            = nullptr;
 }
 
 static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
@@ -68,7 +70,25 @@ static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
 	return mapParam.at( m );
 }
 
-BOOL NNetWorkThread::Dispatch( MSG const msg  )
+void NNetWorkThread::ThreadStartupFunc( ) 
+{ 
+	SetThreadAffinityMask( 0x0002 );
+}
+
+void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )
+{
+	if ( dispatch( msg ) )
+	{
+		if (m_pObserver != nullptr)              // ... notify main thread, that model has changed.
+			m_pObserver->Notify( m_bContinue );  // Continue immediately, if in run mode
+	}
+	else  // Nobody could handle message
+	{
+		// Sometimes strange messages arrive. e.g. uiMsg 1847
+	}   // I cannot find a reason, so I ignore them
+}
+
+BOOL NNetWorkThread::dispatch( MSG const msg  )
 {
 	BOOL bResult { TRUE };
 
@@ -77,6 +97,22 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 	NNetWorkThreadMessage::Id const id { static_cast<NNetWorkThreadMessage::Id>(msg.message) };
 	switch ( id )
 	{
+	case NNetWorkThreadMessage::Id::GENERATION_RUN:
+		generationRun( static_cast<bool>(msg.lParam) );
+		break;
+
+	case NNetWorkThreadMessage::Id::STOP:
+		generationStop( );
+		bResult = FALSE;
+		break;
+
+	case NNetWorkThreadMessage::Id::NEXT_GENERATION:
+		compute( );  // compute next generation
+		break;
+
+	case NNetWorkThreadMessage::Id::REFRESH:
+		break;
+
 	case NNetWorkThreadMessage::Id::RESET_TIMER:
 		m_pNNetModel->ResetSimulationTime( );
 		break;
@@ -111,7 +147,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED:
-		ResetTimer();
+		m_hrTimer.Restart();
 		m_pNNetModel->ResetSimulationTime();
 		break;
 
@@ -142,6 +178,7 @@ BOOL NNetWorkThread::Dispatch( MSG const msg  )
 
 	default:
 		bResult = FALSE;
+		break;
 	} 
 
 	m_pNNetModel->LeaveCritSect();
@@ -188,12 +225,29 @@ bool NNetWorkThread::actionCommand
 	return TRUE;
 }
 
-void NNetWorkThread::WaitTilNextActivation( )
+void NNetWorkThread::generationRun( bool const bFirst )
 {
-//	Sleep( 10 );
-} 
+	if ( bFirst )               // if first RUN message ...
+	{
+		m_bContinue = TRUE;
+		m_hrTimer.Start();
+	}
 
-void NNetWorkThread::Compute() 
+	if ( m_bContinue )
+	{
+		compute( );  // compute next generation
+		m_pWorkThreadInterface->PostRunGenerations( false );
+	}
+}
+
+void NNetWorkThread::generationStop( )
+{
+	m_bContinue = FALSE;
+	m_hrTimer.Stop();
+	Script::StopProcessing( );
+}
+
+void NNetWorkThread::compute() 
 {
 	Ticks     const ticksTilStart      = m_hrTimer.GetTicksTilStart( );                   
 	MicroSecs const usTilStartRealTime = m_hrTimer.TicksToMicroSecs( ticksTilStart ); 

@@ -6,7 +6,7 @@
 #include <chrono>
 #include "trace.h"
 #include "win32_util.h"
-#include "win32_util_resource.h"
+#include "Resource.h"
 #include "UtilityWrappers.h"
 #include "win32_aboutBox.h"
 #include "win32_modelWindow.h"

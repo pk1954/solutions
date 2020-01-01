@@ -5,7 +5,41 @@
 #pragma once
 
 // identifiers below 100 are reserved for win32_utilities
-#include "win32_util_resource.h"
+#define IDS_APP_TITLE                   1
+#define IDD_ABOUTBOX                    2
+#define IDD_TIMESTAMP                   3
+
+#define IDM_ABOUT                       4
+#define IDM_EXIT                        5
+
+#define IDM_REFRESH                     6
+#define IDD_REFRESH_RATE_DIALOG         9
+
+#define IDM_WINDOW_ON                  20
+#define IDM_WINDOW_OFF                 21
+#define IDM_WINDOW_AUTO                22
+
+#define IDM_APPL_WINDOW                30
+#define IDM_MAIN_WINDOW                31
+#define IDM_STATUS_BAR                 32
+#define IDM_CONS_WINDOW                35
+
+#define IDM_HIDE_WINDOW                50
+
+#define IDM_ZOOM_MODE                  70      
+#define IDM_SET_ZOOM                   72    
+#define IDM_ZOOM_IN                    73    
+#define IDM_ZOOM_OUT                   74    
+#define IDM_ZOOM_TRACKBAR              75    
+
+#define IDM_SIMU_MODE                  80
+#define IDM_FORWARD                    81
+#define IDM_RUN                        83
+#define IDM_STOP                       84
+#define IDM_MAX_SPEED                  87
+#define IDM_SIMULATION_SPEED           88
+
+#define IDM_MOVE                       90
 
 // identifiers for application start at 100
 

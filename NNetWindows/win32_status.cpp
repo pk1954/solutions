@@ -3,9 +3,8 @@
 // NNetWindows
 
 #include "stdafx.h"
+#include "Resource.h"
 #include "win32_tooltip.h"
-#include "win32_util_resource.h"
-//#include "win32_WorkThreadInterface.h"
 #include "win32_status.h"
 
 static PIXEL const STATUS_BAR_HEIGHT = 22_PIXEL;
@@ -18,10 +17,6 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
 
 	case WM_COMMAND:
 		pStatusBar->PostCommand2Application( LOWORD(wParam), 0 );
-		return FALSE;
-
-	case WM_HSCROLL:
-		pStatusBar->PostCommand2Application( IDM_TRACKBAR, GetDlgCtrlID( (HWND)lParam ) );
 		return FALSE;
 
 	default: 

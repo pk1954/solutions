@@ -179,7 +179,6 @@
     <ClInclude Include="win32_scriptHook.h" />
     <ClInclude Include="win32_sound.h" />
     <ClInclude Include="win32_status.h" />
-    <ClInclude Include="win32_WorkThread.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_baseAppWindow.cpp" />
@@ -193,7 +192,6 @@
     <ClCompile Include="win32_scale.cpp" />
     <ClCompile Include="win32_sound.cpp" />
     <ClCompile Include="win32_status.cpp" />
-    <ClCompile Include="win32_WorkThread.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

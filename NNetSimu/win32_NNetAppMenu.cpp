@@ -9,21 +9,23 @@
 #include "NNetModelStorage.h"
 #include "win32_sound.h"
 #include "win32_winManager.h"
+#include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetAppMenu.h"
 
 HWND NNetAppMenu::m_hwndApp { nullptr };
 
 void NNetAppMenu::Initialize
 ( 
-	HWND                        const hwndApp, 
+	HWND                            const hwndApp, 
 	NNetWorkThreadInterface const * const pWorkThreadInterface,
-	WinManager          const * const pWinManager
+	WinManager              const * const pWinManager
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
 
-	m_hwndApp     = hwndApp;
-	m_pWinManager = pWinManager;
+	m_hwndApp              = hwndApp;
+	m_pWorkThreadInterface = pWorkThreadInterface;
+	m_pWinManager          = pWinManager;
 
     SendMessage( m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_NNETSIMU ) ) );
     SendMessage( m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL    ) ) );
@@ -59,10 +61,19 @@ void NNetAppMenu::Stop( )
 
 void NNetAppMenu::AdjustVisibility( )
 {
+	BOOL const bRunning = m_pWorkThreadInterface->IsRunning();
+
+	EnableMenuItem( m_hMenu, IDM_FORWARD, bRunning ? MF_GRAYED  : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_RESET,   bRunning ? MF_GRAYED  : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_RUN,     bRunning ? MF_GRAYED  : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDM_STOP,    bRunning ? MF_ENABLED : MF_GRAYED );
+
 	EnableMenuItem( m_hMenu, IDM_CRSR_WINDOW,  m_pWinManager->IsVisible( IDM_CRSR_WINDOW )  ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_PARAM_WINDOW, m_pWinManager->IsVisible( IDM_PARAM_WINDOW ) ? MF_GRAYED : MF_ENABLED );
+
 	EnableMenuItem( m_hMenu, IDD_ARROWS_OFF, (Pipeline::GetArrowSize() != Pipeline::STD_ARROW_SIZE) ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDD_ARROWS_ON,  (Pipeline::GetArrowSize() == Pipeline::STD_ARROW_SIZE) ? MF_GRAYED : MF_ENABLED );
+
 	EnableMenuItem( m_hMenu, IDD_SOUND_ON,    Sound::IsOn() ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDD_SOUND_OFF, ! Sound::IsOn() ? MF_GRAYED : MF_ENABLED );
 }

@@ -18,7 +18,6 @@
 #include "win32_tooltip.h"
 #include "win32_stdDialogBox.h"
 #include "win32_scale.h"
-#include "win32_util_resource.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWindow.h"
 

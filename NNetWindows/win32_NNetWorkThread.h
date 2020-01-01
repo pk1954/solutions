@@ -6,7 +6,7 @@
 
 #include "win32_hiResTimer.h"
 #include "NNetModel.h"
-#include "win32_WorkThread.h"
+#include "win32_thread.h"
 
 class ActionTimer;
 class RootWindow;
@@ -21,9 +21,13 @@ class NNetWorkThreadMessage
 public:
 	enum class Id : UINT
 	{
-		NNET_FIRST = WorkThreadMessage::FIRST_APP_MESSAGE,
-		RESET_TIMER,
+		REFRESH = WM_APP,
+		STOP,
+		REPEAT_NEXT_GENERATION,  // only used internally, not part of procedural interface
+		GENERATION_RUN,
+		NEXT_GENERATION,
 		RESET_MODEL,
+		RESET_TIMER,
 		TRIGGER,
 		CONNECT,
 		REMOVE_SHAPE,
@@ -47,7 +51,7 @@ public:
 		ADD_INCOMING2PIPE,
 		INSERT_NEURON,
 		NNET_LAST,
-		FIRST = NNET_FIRST,
+		FIRST = REFRESH,
 		LAST = NNET_LAST
 	};
 
@@ -57,7 +61,7 @@ public:
 	}
 };
 
-class NNetWorkThread: public WorkThread
+class NNetWorkThread: public Util::Thread
 {
 public:
 	NNetWorkThread
@@ -73,30 +77,33 @@ public:
 	);
 	~NNetWorkThread( );
 
+	virtual void ThreadStartupFunc( );
+	virtual void ThreadMsgDispatcher( MSG const );
+
+
+	BOOL IsRunning() const { return m_bContinue; }
+
+	void Continue( )
+	{
+		if ( m_pEventPOI != nullptr )
+			m_pEventPOI->Continue( );     // trigger worker thread if waiting on POI event
+	}
+
 private:
 
-	void ResetTimer()
-	{
-		m_hrTimer.Restart();
-	}
-
+	void compute();
+	BOOL dispatch( MSG const );
+	void generationRun( bool const );
+	void generationStop( );
 	bool actionCommand( NNetWorkThreadMessage::Id const, ShapeId const, MicroMeterPoint const & );
 
-	virtual void SetRunModeHook( BOOL const bState ) 
-	{
-		if ( bState )
-			m_hrTimer.Start();
-		else
-			m_hrTimer.Stop();
-	}
-
-	virtual BOOL Dispatch( MSG const );
-
-	virtual void WaitTilNextActivation( );
-
-	virtual void Compute();
-
-	NNetModel       * m_pNNetModel;
-	SlowMotionRatio * m_pSlowMotionRatio;
-	HiResTimer        m_hrTimer;
+	ActionTimer             * m_pComputeTimer;
+	EventInterface          * m_pEventPOI;
+	ObserverInterface       * m_pObserver;
+	NNetWorkThreadInterface * m_pWorkThreadInterface;
+	BOOL                      m_bContinue;
+	HWND                      m_hwndApplication;
+	NNetModel               * m_pNNetModel;
+	SlowMotionRatio         * m_pSlowMotionRatio;
+	HiResTimer                m_hrTimer;
 };
