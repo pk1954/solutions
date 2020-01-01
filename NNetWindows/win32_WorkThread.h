@@ -14,7 +14,7 @@ class RootWindow;
 class WinManager;
 class EventInterface;
 class ObserverInterface;
-class WorkThreadInterface;
+class NNetWorkThreadInterface;
 
 class WorkThreadMessage
 {
@@ -44,7 +44,7 @@ public:
 		EventInterface      * const,
 		ObserverInterface   * const,
 		ModelInterface      * const,
-		WorkThreadInterface * const,
+		NNetWorkThreadInterface * const,
 		BOOL                  const
 	);
 	~WorkThread( );
@@ -91,7 +91,7 @@ private:
     EventInterface      * m_pEventPOI;
 	ObserverInterface   * m_pObserver;
 	ModelInterface      * m_pModel;
-	WorkThreadInterface * m_pWorkThreadInterface;
+	NNetWorkThreadInterface * m_pWorkThreadInterface;
     BOOL                  m_bContinue;
 	HWND                  m_hwndApplication;
 };

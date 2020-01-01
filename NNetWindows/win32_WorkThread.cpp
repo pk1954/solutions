@@ -11,7 +11,7 @@
 #include "win32_stopwatch.h"
 #include "win32_actionTimer.h"
 #include "win32_util_resource.h"
-#include "win32_WorkThreadInterface.h"
+#include "win32_NNetWorkThreadInterface.h"
 #include "win32_WorkThread.h"
 
 WorkThread::WorkThread
@@ -21,7 +21,7 @@ WorkThread::WorkThread
 	EventInterface      * const pEvent,
 	ObserverInterface   * const pObserver,
 	ModelInterface      * const pModel,
-	WorkThreadInterface * const pWorkThreadInterface,
+	NNetWorkThreadInterface * const pWorkThreadInterface,
 	BOOL                  const bAsync
 ) :
 	m_pComputeTimer       ( pActionTimer ),

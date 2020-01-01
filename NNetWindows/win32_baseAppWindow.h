@@ -10,7 +10,7 @@
 #include "win32_winManager.h"
 #include "win32_status.h"
 
-class WorkThreadInterface;
+class NNetWorkThreadInterface;
 class ModelWindow;
 class AppMenu;
 
@@ -20,7 +20,7 @@ public:
 	BaseAppWindow( );
 	virtual ~BaseAppWindow(); 
 
-	void Initialize( WorkThreadInterface * const );
+	void Initialize( NNetWorkThreadInterface * const );
 
 	void Start( ModelWindow * const );
 
@@ -42,8 +42,8 @@ private:
 	HWND m_hwndConsole;
 	BOOL m_bStarted;          // if true, model is visible, all functions available
 
-	ModelWindow         * m_pModelWindow;
-	WorkThreadInterface * m_pWorkThreadInterface;
+	ModelWindow             * m_pModelWindow;
+	NNetWorkThreadInterface * m_pWorkThreadInterface;
 
 	std::wofstream m_traceStream;
 

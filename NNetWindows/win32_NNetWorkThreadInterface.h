@@ -8,19 +8,20 @@
 #include "boolOp.h"
 #include "Shape.h"
 #include "NNetModel.h"
-#include "win32_WorkThreadInterface.h"
+#include "win32_NNetWorkThread.h"
 
 class ActionTimer;
 class ObserverInterface;
 class EventInterface;
-class NNetWorkThread;
 class SlowMotionRatio;
 
-class NNetWorkThreadInterface: public WorkThreadInterface
+class NNetWorkThreadInterface
 {
 public:
 	NNetWorkThreadInterface( );
     ~NNetWorkThreadInterface( );
+
+	void Initialize( std::wostream * );
 
 	void Start
     ( 
@@ -45,7 +46,37 @@ public:
 	void PostMoveShape        ( ShapeId const, MicroMeterPoint const & );
 	void PostActionCommand    ( int const , ShapeId const, LPARAM const );
 
+	void PostReset( BOOL );
+	void PostRunGenerations( BOOL const );
+	void PostStopComputation();
+	void PostGenerationStep();
+	void PostRepeatGenerationStep();       // Do not call! Used by WorkThread only;
+
+
+	BOOL IsRunning    ( ) const	{ return m_pNNetWorkThread->IsRunning    ( ); }
+	BOOL IsAsyncThread( ) const	{ return m_pNNetWorkThread->IsAsyncThread( ); }
+
+protected:
+
+	BOOL            IsTraceOn  ( ) const { return   m_bTrace; }
+	std::wostream & TraceStream( )       { return * m_pTraceStream; }
+
+	void WorkMessage
+	( 
+		BOOL                  const isEditOperation,
+		WorkThreadMessage::Id const msg,
+		WPARAM                const wparam, 
+		LPARAM                const lparam
+	)
+	{
+		m_pNNetWorkThread->WorkMessage( isEditOperation, msg, wparam, lparam );
+	}
+
+	void Continue( ) { m_pNNetWorkThread->Continue(); }
+
 private:
+	std::wostream   * m_pTraceStream;
+	BOOL              m_bTrace;
 	NNetWorkThread  * m_pNNetWorkThread;
 	NNetModel const * m_pModel;
 }; 

@@ -13,10 +13,14 @@
 #include "win32_NNetWorkThread.h"
 #include "win32_NNetWorkThreadInterface.h"
 
+using std::wostream;
+using std::wcout;
 using std::endl;
 using std::unordered_map;
 
 NNetWorkThreadInterface::NNetWorkThreadInterface( ) :
+	m_pTraceStream( nullptr ),
+	m_bTrace      ( TRUE ),
 	m_pNNetWorkThread( nullptr ),
 	m_pModel( nullptr )
 { }
@@ -24,6 +28,12 @@ NNetWorkThreadInterface::NNetWorkThreadInterface( ) :
 NNetWorkThreadInterface::~NNetWorkThreadInterface( )
 {
 	m_pNNetWorkThread = nullptr;
+	m_pTraceStream = nullptr;
+}
+
+void NNetWorkThreadInterface::Initialize( wostream * pTraceStream ) 
+{ 
+	m_pTraceStream = pTraceStream;
 }
 
 void NNetWorkThreadInterface::Start
@@ -49,14 +59,13 @@ void NNetWorkThreadInterface::Start
 		pModel,
 		bAsync
 	);
-
-	WorkThreadInterface::Start( m_pNNetWorkThread );
 }
 
 void NNetWorkThreadInterface::Stop( )
 {
-	WorkThreadInterface::Stop();
+	m_pNNetWorkThread->Terminate( );
 	delete m_pNNetWorkThread;
+	m_pNNetWorkThread = nullptr;
 }
 
 void NNetWorkThreadInterface::PostResetTimer( )
@@ -172,4 +181,40 @@ void NNetWorkThreadInterface::PostActionCommand
 		idShape.GetValue( ), 
 		lParam 
 	);
+}
+
+void NNetWorkThreadInterface::PostReset( BOOL bResetHistSys )
+{
+	if ( IsTraceOn( ) )
+		* m_pTraceStream << __func__ << (bResetHistSys ? 1 : 0) << endl;
+	WorkMessage( TRUE, static_cast<WorkThreadMessage::Id>(WorkThreadMessage::Id::RESET_MODEL), bResetHistSys, 0 );
+}
+
+void NNetWorkThreadInterface::PostGenerationStep( )
+{
+	if ( m_bTrace )
+		* m_pTraceStream << __func__ << endl;
+
+	Continue( );     // trigger worker thread if waiting on POI event
+
+	WorkMessage( FALSE, WorkThreadMessage::Id::NEXT_GENERATION, 0, 0 );
+}
+
+void NNetWorkThreadInterface::PostRunGenerations( BOOL const bFirst )
+{
+	//if ( m_bTrace )
+	//    * m_pTraceStream << L"PostGenerationStep" << endl;
+	WorkMessage( FALSE, WorkThreadMessage::Id::GENERATION_RUN, 0, bFirst );
+}
+
+void NNetWorkThreadInterface::PostRepeatGenerationStep( )
+{
+	//if ( m_bTrace )
+	//    * m_pTraceStream << L"PostGenerationStep" << endl;
+	WorkMessage( FALSE, WorkThreadMessage::Id::REPEAT_NEXT_GENERATION, 0, 0 );
+}
+
+void NNetWorkThreadInterface::PostStopComputation( )
+{
+	WorkMessage( FALSE, WorkThreadMessage::Id::STOP, 0, 0 );
 }

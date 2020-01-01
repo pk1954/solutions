@@ -9,7 +9,7 @@
 #include "PixelTypes.h"
 #include "win32_rootWindow.h"
 
-class WorkThreadInterface;
+class NNetWorkThreadInterface;
 
 using std::wstring;
 
@@ -20,8 +20,8 @@ public:
 
 	void Start
 	( 
-		HWND                        const, 
-		WorkThreadInterface const * const
+		HWND                            const, 
+		NNetWorkThreadInterface const * const
 	);
 	void  Stop( );
 
@@ -50,7 +50,7 @@ private:
     PIXEL m_pixBorderY;
     PIXEL m_pixPosX;
 
-	WorkThreadInterface const * m_pWorkThreadInterface;
+	NNetWorkThreadInterface const * m_pWorkThreadInterface;
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 

@@ -6,12 +6,14 @@
 
 #include "win32_status.h"
 
+class NNetWorkThreadInterface;
+
 class SimulationControl
 {
 public:
 
 	static void Add( StatusBar * const );
-	static void Adjust( BOOL const,	WorkThreadInterface * const );
+	static void Adjust( BOOL const,	NNetWorkThreadInterface * const );
 
 private:
 	static StatusBar * m_pStatusBar;

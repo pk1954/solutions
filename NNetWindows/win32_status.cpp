@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "win32_tooltip.h"
 #include "win32_util_resource.h"
-#include "win32_WorkThreadInterface.h"
+//#include "win32_WorkThreadInterface.h"
 #include "win32_status.h"
 
 static PIXEL const STATUS_BAR_HEIGHT = 22_PIXEL;
@@ -37,8 +37,8 @@ StatusBar::StatusBar() :
 
 void StatusBar::Start
 ( 
-	HWND                        const hwndParent,
-	WorkThreadInterface const * const pWorkThreadInterface
+	HWND                            const hwndParent,
+	NNetWorkThreadInterface const * const pWorkThreadInterface
 )
 {
 	m_pWorkThreadInterface = pWorkThreadInterface;

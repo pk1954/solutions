@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "Resource.h"
-#include "win32_WorkThreadInterface.h"
 #include "win32_simulationControl.h"
 
 StatusBar * SimulationControl::m_pStatusBar = nullptr;
@@ -21,7 +20,7 @@ void SimulationControl::Add( StatusBar * const pStatusBar )
 void SimulationControl::Adjust
 (
 	BOOL                  const bIsRunning,
-	WorkThreadInterface * const pWorkThreadInterface
+	NNetWorkThreadInterface * const pWorkThreadInterface
 )
 {
 	EnableWindow( m_pStatusBar->GetDlgItem( IDM_RUN  ),    ! bIsRunning );

@@ -16,7 +16,7 @@ HWND NNetAppMenu::m_hwndApp { nullptr };
 void NNetAppMenu::Initialize
 ( 
 	HWND                        const hwndApp, 
-	WorkThreadInterface const * const pWorkThreadInterface,
+	NNetWorkThreadInterface const * const pWorkThreadInterface,
 	WinManager          const * const pWinManager
 ) 
 {
