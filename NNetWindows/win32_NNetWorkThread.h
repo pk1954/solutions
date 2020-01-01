@@ -5,6 +5,7 @@
 #pragma once
 
 #include "win32_hiResTimer.h"
+#include "NNetModel.h"
 #include "win32_WorkThread.h"
 
 class ActionTimer;
@@ -12,7 +13,6 @@ class RootWindow;
 class WinManager;
 class EventInterface;
 class SlowMotionRatio;
-class NNetModel;
 class NNetHistorySysGlue;
 class NNetWorkThreadInterface;
 

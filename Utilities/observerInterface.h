@@ -4,7 +4,7 @@
 
 #pragma once
 
-// Observers need a way to be notified, if the object they obseve has changed
+// Observers need a way to be notified, if the object they observe has changed
 // They have to implement the pure virtual function "Notify" for this purpose
 
 // The bool Parameter of Notify: 

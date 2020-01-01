@@ -60,7 +60,7 @@ NNetAppWindow::NNetAppWindow( ) :
 
 	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface ),
 		
-	m_pNNetReadBuffer = new NNetReadBuffer( FALSE );  // no double buffering
+	m_pNNetReadBuffer = new NNetReadBuffer( );
 
 	NNetWindow::InitClass
 	( 
@@ -108,8 +108,6 @@ void NNetAppWindow::Start( )
 		& m_NNetWorkThreadInterface,
 		& m_SlowMotionRatio
 	);
-
-	m_pNNetReadBuffer->Initialize( m_pModelDataWork, m_pModelDataWork );
 
 	m_pMainNNetWindow->Start
 	( 

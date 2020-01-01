@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "NNetReadBuffer.h"
 #include "ObserverInterface.h"
 
 class StatusBar;
@@ -23,7 +22,6 @@ private:
 
 	class RefreshRate;
 
-	RefreshRate     * m_pRefreshRate;
-	NNetModel const * m_pModel;
+	RefreshRate * m_pRefreshRate;
 };
 

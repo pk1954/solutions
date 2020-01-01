@@ -35,7 +35,7 @@ public:
 
 	virtual void Trigger( )
 	{
-		MicroSecs const   time   = m_pModel->GetSimulationTime( );
+		MicroSecs const time = m_pModel->GetSimulationTime( );
 		m_wstrBuffer.str( wstring() );
 		m_wstrBuffer.clear();
 		m_wstrBuffer << std::fixed << std::setprecision(2);
@@ -71,8 +71,7 @@ TimeDisplay::TimeDisplay
 	NNetModel const * pModel,
 	int               iPartInStatusBar
 )
-  :	m_pRefreshRate( nullptr ),
-	m_pModel( pModel )
+  :	m_pRefreshRate( nullptr )
 {
 	static PIXEL const PIX_WIDTH = PIXEL( 9 ) * 8;   //TODO: avoid magic numbers
 	m_pRefreshRate = new RefreshRate
