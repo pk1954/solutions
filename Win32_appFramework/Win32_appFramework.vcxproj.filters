@@ -21,9 +21,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_modelWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_WorkThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -58,9 +55,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="win32_modelWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win32_WorkThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

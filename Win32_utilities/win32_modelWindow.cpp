@@ -1,6 +1,6 @@
 // win32_modelWindow.cpp : 
 //
-// NNetWindows
+// Win32_utilities
 
 #include "stdafx.h"
 #include "win32_util_resource.h"

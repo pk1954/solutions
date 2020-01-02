@@ -1,6 +1,6 @@
 // win32_modelWindow.h : 
 //
-// Win32_appFramework
+// Win32_utilities
 
 #pragma once
 

@@ -164,7 +164,6 @@
     <ClInclude Include="win32_appWindowInterface.h" />
     <ClInclude Include="win32_baseAppWindow.h" />
     <ClInclude Include="win32_messagePump.h" />
-    <ClInclude Include="win32_modelWindow.h" />
     <ClInclude Include="win32_readBuffer.h" />
     <ClInclude Include="win32_scriptHook.h" />
     <ClInclude Include="win32_status.h" />
@@ -177,7 +176,6 @@
   <ItemGroup>
     <ClCompile Include="win32_baseAppWindow.cpp" />
     <ClCompile Include="win32_messagePump.cpp" />
-    <ClCompile Include="win32_modelWindow.cpp" />
     <ClCompile Include="win32_status.cpp" />
     <ClCompile Include="win32_WorkThread.cpp" />
     <ClCompile Include="win32_WorkThreadInterface.cpp" />
