@@ -131,13 +131,13 @@ public:
 	template <typename T>
 	void Apply2All( function<void(T &)> const & func ) const
 	{
-		EnterCriticalSection( & m_criticalSection );
+		EnterCritSect( );
 		for ( auto pShape : m_Shapes )
 		{
 			if ( pShape && T::TypeFits( pShape->GetShapeType() ) )
 				func( static_cast<T &>( * pShape ) );
 		}
-		LeaveCriticalSection( & m_criticalSection );
+		LeaveCritSect( );
 	}
 
 	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
@@ -189,8 +189,8 @@ public:
 
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
-	void EnterCritSect() { EnterCriticalSection( & m_criticalSection ); }
-	void LeaveCritSect() { LeaveCriticalSection( & m_criticalSection ); }
+	void EnterCritSect() const { EnterCriticalSection( & m_criticalSection ); }
+	void LeaveCritSect() const { LeaveCriticalSection( & m_criticalSection ); }
 
 	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); } ); };
 
@@ -218,10 +218,10 @@ private:
 	// local functions
 	void deleteShape( ShapeId const id )
 	{
-		EnterCriticalSection( & m_criticalSection );
+		EnterCritSect( );
 		delete m_Shapes[ id.GetValue() ];
 		m_Shapes[ id.GetValue() ] = nullptr;
-		LeaveCriticalSection( & m_criticalSection );
+		LeaveCritSect( );
 	}
 
 	Shape const   * findShapeAt( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;

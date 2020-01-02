@@ -32,8 +32,8 @@ HiResTimer::HiResTimer( ) :
 
 void HiResTimer::Start( )
 {
-	assert( ! m_bStarted );
-	m_ticksOnStart = ReadHiResTimer( );
+	if ( ! m_bStarted )
+		m_ticksOnStart = ReadHiResTimer( );
 	m_bStarted = true;
 }
 
@@ -44,9 +44,8 @@ Ticks HiResTimer::GetTicksTilStart( )
 
 void HiResTimer::Stop( )
 {
-	Ticks const ticksDiff = GetTicksTilStart( );
-	assert( m_bStarted );
-	m_ticksAccumulated += ticksDiff;
+	if ( m_bStarted )
+		m_ticksAccumulated += GetTicksTilStart( );
 	m_bStarted = false;
 }
 

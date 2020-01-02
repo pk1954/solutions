@@ -47,6 +47,7 @@
 using namespace std::literals::chrono_literals;
 
 NNetAppWindow::NNetAppWindow( ) :
+	m_pSimulationControl( nullptr ),
 	m_pMainNNetWindow( nullptr ),
 	m_pModelDataWork( nullptr ),
 	m_pSlowMotionDisplay( nullptr ),
@@ -184,7 +185,7 @@ void NNetAppWindow::configureStatusBar( )
 	m_pNNetReadBuffer->RegisterObserver( m_pTimeDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
-	SimulationControl::Add( & m_StatusBar );
+	m_pSimulationControl = new SimulationControl( & m_StatusBar, & m_NNetWorkThreadInterface );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	m_pSlowMotionDisplay = new SlowMotionDisplay( & m_StatusBar, & m_SlowMotionRatio, iPartScriptLine );

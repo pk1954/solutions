@@ -56,6 +56,11 @@ public:
 	BOOL IsRunning    ( ) const	{ return m_pNNetWorkThread->IsRunning    ( ); }
 	BOOL IsAsyncThread( ) const	{ return m_pNNetWorkThread->IsAsyncThread( ); }
 
+	void AddRunObserver( ObserverInterface * pObserver )
+	{
+		m_pNNetWorkThread->AddRunObserver( pObserver );
+	}
+
 private:
 
 	BOOL       IsTraceOn  ( ) const { return   m_bTrace; }

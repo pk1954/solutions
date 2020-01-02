@@ -5,6 +5,7 @@
 #pragma once
 
 #include "win32_hiResTimer.h"
+#include "Observable.h"
 #include "NNetModel.h"
 #include "win32_thread.h"
 
@@ -89,6 +90,11 @@ public:
 			m_pEventPOI->Continue( );     // trigger worker thread if waiting on POI event
 	}
 
+	void AddRunObserver( ObserverInterface * pObserver )
+	{
+		m_runObservable.RegisterObserver( pObserver );
+	}
+
 private:
 
 	void compute();
@@ -106,4 +112,5 @@ private:
 	NNetModel               * m_pNNetModel;
 	SlowMotionRatio         * m_pSlowMotionRatio;
 	HiResTimer                m_hrTimer;
+	Observable                m_runObservable;
 };

@@ -92,7 +92,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 {
 	BOOL bResult { TRUE };
 
-	m_pNNetModel->EnterCritSect();
+//	m_pNNetModel->EnterCritSect();
 
 	NNetWorkThreadMessage::Id const id { static_cast<NNetWorkThreadMessage::Id>(msg.message) };
 	switch ( id )
@@ -181,7 +181,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		break;
 	} 
 
-	m_pNNetModel->LeaveCritSect();
+//	m_pNNetModel->LeaveCritSect();
 	return bResult;
 }
 
@@ -230,6 +230,7 @@ void NNetWorkThread::generationRun( bool const bFirst )
 	if ( bFirst )               // if first RUN message ...
 	{
 		m_bContinue = TRUE;
+		m_runObservable.NotifyAll( TRUE);
 		m_hrTimer.Start();
 	}
 
@@ -243,6 +244,7 @@ void NNetWorkThread::generationRun( bool const bFirst )
 void NNetWorkThread::generationStop( )
 {
 	m_bContinue = FALSE;
+	m_runObservable.NotifyAll( TRUE );
 	m_hrTimer.Stop();
 	Script::StopProcessing( );
 }

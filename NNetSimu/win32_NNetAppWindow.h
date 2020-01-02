@@ -29,6 +29,7 @@ class NNetModel;
 class CrsrWindow;
 class TimeDisplay;
 class SlowMotionDisplay;
+class SimulationControl;
 class NNetModelStorage;
 class ParameterDialog;
 
@@ -57,6 +58,7 @@ private:
 	ScriptHook              m_ScriptHook;
 	SlowMotionRatio         m_SlowMotionRatio;
 
+	SimulationControl * m_pSimulationControl;
 	NNetReadBuffer    * m_pNNetReadBuffer;
 	NNetController    * m_pNNetController;
 	NNetModel         * m_pModelDataWork;

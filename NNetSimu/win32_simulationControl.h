@@ -4,17 +4,22 @@
 
 #pragma once
 
+#include "observerInterface.h"
 #include "win32_status.h"
 
 class NNetWorkThreadInterface;
 
-class SimulationControl
+class SimulationControl: public ObserverInterface
 {
 public:
 
-	static void Add( StatusBar * const );
-	static void Adjust( BOOL const,	NNetWorkThreadInterface * const );
+	SimulationControl( StatusBar * const, NNetWorkThreadInterface * const );
+
+	virtual ~SimulationControl() {};
+
+	virtual void Notify( bool const );
 
 private:
-	static StatusBar * m_pStatusBar;
+	NNetWorkThreadInterface * m_pWorkThreadInterface;
+	StatusBar               * m_pStatusBar;
 };
