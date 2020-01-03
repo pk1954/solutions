@@ -12,6 +12,7 @@
 #include "NNetModelStorage.h"
 #include "win32_util.h"
 #include "win32_sound.h"
+#include "win32_script.h"
 #include "win32_simulationControl.h"
 #include "win32_zoomControl.h"
 #include "win32_aboutBox.h"
@@ -161,14 +162,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDM_SLOWER:
 		if ( m_pSlowMotionRatio->IncRatio( ) )
-			m_pNNetWorkThreadInterface->PostSlowMotionChanged( );
+			m_pNNetWorkThreadInterface->PostSlowMotionChanged( m_pSlowMotionRatio->GetRatio() );
 		else
 			MessageBeep( MB_ICONWARNING );
 		break;
 
 	case IDM_FASTER:
 		if ( m_pSlowMotionRatio->DecRatio( ) )
-			m_pNNetWorkThreadInterface->PostSlowMotionChanged( );
+			m_pNNetWorkThreadInterface->PostSlowMotionChanged( m_pSlowMotionRatio->GetRatio() );
 		else
 			MessageBeep( MB_ICONWARNING );
 		break;
@@ -182,7 +183,11 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	case IDD_ADD_INCOMING2KNOT:
 	case IDD_ADD_OUTGOING2PIPE:
 	case IDD_ADD_INCOMING2PIPE:
-		m_pNNetWorkThreadInterface->PostActionCommand( wmId, m_pNNetWindow->GetHighlightedShapeId( ), lParam );
+		m_pNNetWorkThreadInterface->PostActionCommand( wmId, m_pNNetWindow->GetHighlightedShapeId( ), Util::Unpack2MicroMeterPoint(lParam) );
+		break;
+
+	case IDM_SCRIPT_DIALOG:
+		ScriptDialog( );
 		break;
 
 	default:

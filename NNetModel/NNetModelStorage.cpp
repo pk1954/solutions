@@ -173,7 +173,7 @@ private:
 bool NNetModelStorage::Read( wstring const & wstrPath )
 {
 	Script scriptModel;
-	m_pModel->ResetAll();
+	m_pModel->ResetModel();
 	wcout << L"NNet model file " << wstrPath;
 	m_pModel->EnterCritSect();
 	bool bResult = scriptModel.ScrProcess( wstrPath ); 

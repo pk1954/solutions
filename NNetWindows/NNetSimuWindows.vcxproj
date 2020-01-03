@@ -161,6 +161,8 @@
   <ItemGroup>
     <ClInclude Include="AnimationThread.h" />
     <ClInclude Include="NNetReadBuffer.h" />
+    <ClInclude Include="NNetWrapperHelpers.h" />
+    <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="win32_appMenu.h" />
     <ClInclude Include="win32_appWindowInterface.h" />
     <ClInclude Include="win32_baseAppWindow.h" />
@@ -179,6 +181,8 @@
     <ClInclude Include="win32_status.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="NNetWrapperHelpers.cpp" />
+    <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="win32_baseAppWindow.cpp" />
     <ClCompile Include="win32_crsrWindow.cpp" />
     <ClCompile Include="win32_messagePump.cpp" />

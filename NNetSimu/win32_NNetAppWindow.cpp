@@ -33,6 +33,7 @@
 
 #include "trace.h"
 #include "script.h"
+#include "NNetWrappers.h"
 #include "UtilityWrappers.h"
 #include "win32_stopwatch.h"
 
@@ -58,6 +59,8 @@ NNetAppWindow::NNetAppWindow( ) :
 	m_pParameterDlg( nullptr )
 {
 	Stopwatch stopwatch;
+
+	DefineNNetWrappers( & m_NNetWorkThreadInterface );
 
 	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface ),
 		

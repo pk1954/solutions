@@ -40,7 +40,6 @@ public:
 	bool ProcessModelCommand( int const, LPARAM const );
 
 private:
-	void scriptDialog( );
 	void setSizeTrackBar( PIXEL const );
 
 	EvoAppWindow           * m_pAppWindow;

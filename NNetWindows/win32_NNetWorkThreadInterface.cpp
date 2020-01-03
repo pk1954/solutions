@@ -78,37 +78,22 @@ void NNetWorkThreadInterface::PostResetTimer( )
 void NNetWorkThreadInterface::PostConnect( ShapeId const idSrc, ShapeId const idDst )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
+		TraceStream( ) << __func__ << L" " << idSrc.GetValue() << L" " << idDst.GetValue() << endl;
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::CONNECT ), idSrc.GetValue(), idDst.GetValue() );
 }
 
 void NNetWorkThreadInterface::PostRemoveShape( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
+		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::REMOVE_SHAPE ), id.GetValue(), 0 );
 }
 
 void NNetWorkThreadInterface::PostDisconnect( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
+		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::DISCONNECT ), id.GetValue(), 0 );
-}
-
-static NNetWorkThreadMessage::Id const GetWorkThreadMessage( tParameter const p )
-{
-	static unordered_map < tParameter, NNetWorkThreadMessage::Id const > mapParam =
-	{
-		{ tParameter::pulseSpeed,    NNetWorkThreadMessage::Id::PULSE_SPEED       },
-		{ tParameter::pulseWidth,    NNetWorkThreadMessage::Id::PULSE_WIDTH       },
-		{ tParameter::signalLoss,    NNetWorkThreadMessage::Id::DAMPING_FACTOR    },
-		{ tParameter::threshold,     NNetWorkThreadMessage::Id::THRESHOLD         },
-		{ tParameter::peakVoltage,   NNetWorkThreadMessage::Id::PEAK_VOLTAGE      },
-		{ tParameter::refractPeriod, NNetWorkThreadMessage::Id::REFRACTORY_PERIOD }
-	};				  
-
-	return mapParam.at( p );
 }
 
 void NNetWorkThreadInterface::PostResetModel( )
@@ -127,9 +112,19 @@ void NNetWorkThreadInterface::PostSetPulseRate( ShapeId const id, float const fN
 
 void NNetWorkThreadInterface::PostSetParameter( tParameter const param, float const fNewValue )
 {
+	static unordered_map < tParameter, NNetWorkThreadMessage::Id const > mapParam =
+	{
+		{ tParameter::pulseSpeed,    NNetWorkThreadMessage::Id::PULSE_SPEED       },
+		{ tParameter::pulseWidth,    NNetWorkThreadMessage::Id::PULSE_WIDTH       },
+		{ tParameter::signalLoss,    NNetWorkThreadMessage::Id::DAMPING_FACTOR    },
+		{ tParameter::threshold,     NNetWorkThreadMessage::Id::THRESHOLD         },
+		{ tParameter::peakVoltage,   NNetWorkThreadMessage::Id::PEAK_VOLTAGE      },
+		{ tParameter::refractPeriod, NNetWorkThreadMessage::Id::REFRACTORY_PERIOD }
+	};				  
+
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << GetParameterName( param ) << L" " << fNewValue << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( GetWorkThreadMessage( param ) ), 0, (LPARAM &)fNewValue );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( mapParam.at( param ) ), 0, (LPARAM &)fNewValue );
 }
 
 void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const & delta )
@@ -139,21 +134,50 @@ void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint c
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::MOVE_SHAPE ), id.GetValue(), Util::Pack2UINT64(delta) );
 }
 
-void NNetWorkThreadInterface::PostSlowMotionChanged( )
+void NNetWorkThreadInterface::PostSlowMotionChanged( unsigned int uiRatio )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED ), 0, 0 );
+		TraceStream( ) << __func__ << L" " << uiRatio << endl;
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED ), uiRatio, 0 );
 }
 
-void NNetWorkThreadInterface::PostReset( BOOL bResetHistSys )
+wchar_t const * NNetWorkThreadInterface::GetActionCommandName( int const iMsgId ) const 
 {
-	if ( IsTraceOn( ) )
-		* m_pTraceStream << __func__ << (bResetHistSys ? 1 : 0) << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::RESET_MODEL ), bResetHistSys, 0 );
+	static unordered_map < int, wchar_t const * > mapMsgName =
+	{
+		{ IDD_INSERT_NEURON,       L"INSERT_NEURON"       },
+		{ IDD_NEW_NEURON,          L"NEW_NEURON"          },
+		{ IDD_NEW_INPUT_NEURON,    L"NEW_INPUT_NEURON"    },
+		{ IDD_APPEND_NEURON,       L"APPEND_NEURON"       },
+		{ IDD_APPEND_INPUT_NEURON, L"APPEND_INPUT_NEURON" },
+		{ IDD_ADD_OUTGOING2KNOT,   L"ADD_OUTGOING2KNOT"   },
+		{ IDD_ADD_INCOMING2KNOT,   L"ADD_INCOMING2KNOT"   },
+		{ IDD_ADD_OUTGOING2PIPE,   L"ADD_OUTGOING2PIPE"   },
+		{ IDD_ADD_INCOMING2PIPE,   L"ADD_INCOMING2PIPE"   }
+	};
+
+	return mapMsgName.at( iMsgId );
 }
 
-void NNetWorkThreadInterface::PostActionCommand( int const idMsg, ShapeId const idShape, LPARAM const lParam )
+int const NNetWorkThreadInterface::GetActionCommandFromName( wchar_t const * const name ) const 
+{
+	static unordered_map < wchar_t const *, int > mapMsg =
+	{
+		{ L"INSERT_NEURON",       IDD_INSERT_NEURON       },
+		{ L"NEW_NEURON",          IDD_NEW_NEURON          },
+		{ L"NEW_INPUT_NEURON",    IDD_NEW_INPUT_NEURON    },
+		{ L"APPEND_NEURON",       IDD_APPEND_NEURON       },
+		{ L"APPEND_INPUT_NEURON", IDD_APPEND_INPUT_NEURON },
+		{ L"ADD_OUTGOING2KNOT",   IDD_ADD_OUTGOING2KNOT   },
+		{ L"ADD_INCOMING2KNOT",   IDD_ADD_INCOMING2KNOT   },
+		{ L"ADD_OUTGOING2PIPE",   IDD_ADD_OUTGOING2PIPE   },
+		{ L"ADD_INCOMING2PIPE",   IDD_ADD_INCOMING2PIPE   }
+	};
+
+	return mapMsg.at( name );
+}
+
+void NNetWorkThreadInterface::PostActionCommand( int const idMsg, ShapeId const idShape, MicroMeterPoint const & umPos )
 {
 	static unordered_map < int, NNetWorkThreadMessage::Id const > mapMsg =
 	{
@@ -168,7 +192,9 @@ void NNetWorkThreadInterface::PostActionCommand( int const idMsg, ShapeId const 
 		{ IDD_ADD_INCOMING2PIPE,   NNetWorkThreadMessage::Id::ADD_INCOMING2PIPE   }
 	};				  
 
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( mapMsg.at( idMsg ) ), idShape.GetValue( ), lParam );
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << GetActionCommandName( idMsg ) << L" " << idShape.GetValue( ) << umPos << endl;
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( mapMsg.at( idMsg ) ), idShape.GetValue( ), Util::Pack2UINT64( umPos ) );
 }
 
 void NNetWorkThreadInterface::PostGenerationStep( )

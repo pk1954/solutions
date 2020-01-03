@@ -96,16 +96,6 @@ public:
 
 	bool const ConnectsTo( ShapeId const, ShapeId const ) const;
 
-	bool const IsConnectedTo( ShapeId id1, ShapeId id2 ) const
-	{
-		if ( IsType<Pipeline>( id1 ) )
-			return isConnectedToPipeline( id2, GetConstTypedShape<Pipeline>( id1 ) );
-		if ( IsType<Pipeline>( id2 ) )
-			return isConnectedToPipeline( id1, GetConstTypedShape<Pipeline>( id2 ) );
-		else
-			return false;
-	}
-
 	// manipulating functions
 
 	void ResetSimulationTime( )	{ m_timeStamp = 0._MicroSecs; }
@@ -154,39 +144,13 @@ public:
 	void AddIncoming2Pipe( ShapeId const, MicroMeterPoint const & );
 
 	void Connect( ShapeId const, ShapeId const );
-
-	void ConnectIncoming
-	( 
-		Pipeline * const pPipeline, 
-		BaseKnot * const pEndPoint
-	)
-	{
-		pEndPoint->AddIncoming( pPipeline->GetId() );
-		pPipeline->SetEndKnot( pEndPoint->GetId() );
-	}
-
-	void ConnectOutgoing
-	( 
-		Pipeline * const pPipeline, 
-		BaseKnot * const pStartPoint
-	)
-	{
-		pStartPoint->AddOutgoing( pPipeline->GetId() );
-		pPipeline->SetStartKnot( pStartPoint->GetId() );
-	}
-
 	void Disconnect( ShapeId const );
-
 	void RemoveShape( ShapeId const );
-
 	void RecalcPipelines( );
-
 	void ResetModel( );
 	void ModelSaved( ) { m_bUnsavedChanges = false; }
-
 	void SetPulseRate( ShapeId    const, float const );
 	void SetParameter( tParameter const, float const );
-
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
 	void EnterCritSect() const { EnterCriticalSection( & m_criticalSection ); }
@@ -196,16 +160,15 @@ public:
 
 	virtual void CopyModelData( ModelInterface const * const );
 	virtual void Compute( );
-	virtual void ResetAll( );
 
 private:
+
+	static CRITICAL_SECTION m_criticalSection;
+	static bool             m_bCritSectReady;
 
 	vector<Shape *> m_Shapes;
 	MicroSecs       m_timeStamp;
 	bool            m_bUnsavedChanges;
-
-	static CRITICAL_SECTION m_criticalSection;
-	static bool             m_bCritSectReady;
 
 	// parameters
 	float       m_signalLoss;     // signal loss per um  
@@ -216,13 +179,6 @@ private:
 	meterPerSec m_pulseSpeed;
 
 	// local functions
-	void deleteShape( ShapeId const id )
-	{
-		EnterCritSect( );
-		delete m_Shapes[ id.GetValue() ];
-		m_Shapes[ id.GetValue() ] = nullptr;
-		LeaveCritSect( );
-	}
 
 	Shape const   * findShapeAt( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
 	void            checkConsistency( Shape const * ) const;
@@ -231,10 +187,9 @@ private:
 	void            disconnectBaseKnot( BaseKnot * const );
 	void            deletePipeline( ShapeId const );
 	void            insertBaseKnot( Pipeline * const, BaseKnot * const );
-
-	bool const isConnectedToPipeline( ShapeId const id, Pipeline const * const pPipeline ) const
-	{
-		return (id == pPipeline->GetStartKnot()) || (id == pPipeline->GetEndKnot());
-	}
-
+	void            deleteShape( ShapeId const );
+	bool const      isConnectedTo( ShapeId, ShapeId ) const;
+	bool const      isConnectedToPipeline( ShapeId const, Pipeline const * const ) const;
+	void            connectIncoming( Pipeline * const, BaseKnot * const );
+	void            connectOutgoing( Pipeline * const, BaseKnot * const );
 };

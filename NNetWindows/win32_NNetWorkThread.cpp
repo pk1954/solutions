@@ -90,11 +90,29 @@ void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )
 
 BOOL NNetWorkThread::dispatch( MSG const msg  )
 {
+	NNetWorkThreadMessage::Id const id { static_cast<NNetWorkThreadMessage::Id>(msg.message) };
+	switch ( id )
+	{
+	case NNetWorkThreadMessage::Id::GENERATION_RUN:
+		generationRun( static_cast<bool>(msg.lParam) );
+		return TRUE;
+
+	case NNetWorkThreadMessage::Id::STOP:
+		generationStop( );
+		return FALSE;
+
+	case NNetWorkThreadMessage::Id::NEXT_GENERATION:
+		compute( );  // compute next generation
+		return TRUE;
+
+	default:
+		break;
+	} 
+
 	BOOL bResult { TRUE };
 
-//	m_pNNetModel->EnterCritSect();
+	m_pNNetModel->EnterCritSect();
 
-	NNetWorkThreadMessage::Id const id { static_cast<NNetWorkThreadMessage::Id>(msg.message) };
 	switch ( id )
 	{
 	case NNetWorkThreadMessage::Id::GENERATION_RUN:
@@ -181,7 +199,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		break;
 	} 
 
-//	m_pNNetModel->LeaveCritSect();
+	m_pNNetModel->LeaveCritSect();
 	return bResult;
 }
 

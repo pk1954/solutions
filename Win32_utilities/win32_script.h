@@ -17,5 +17,6 @@ enum class tFileMode
 	write
 };
 
+extern void    ScriptDialog( );
 extern wstring GetPathOfExecutable( );
 extern wstring AskForFileName( wstring, wstring const, wstring const, tFileMode const );

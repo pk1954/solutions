@@ -15,6 +15,8 @@
 #define IDM_REFRESH                     6
 #define IDD_REFRESH_RATE_DIALOG         9
 
+#define IDM_SCRIPT_DIALOG              10
+
 #define IDM_WINDOW_ON                  20
 #define IDM_WINDOW_OFF                 21
 #define IDM_WINDOW_AUTO                22

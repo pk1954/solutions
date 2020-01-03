@@ -13,7 +13,6 @@
 #include "win32_aboutBox.h"
 #include "win32_evoAppWindow.h"
 #include "win32_script.h"
-#include "win32_stopwatch.h"
 #include "win32_winManager.h"
 #include "win32_delay.h"
 #include "win32_speedControl.h"
@@ -75,24 +74,6 @@ void EvoController::Initialize
 	m_pEvoWorkThreadInterface = pEvoWorkThreadInterface;
 	m_pAppWindow              = pAppWindow;
 	m_hCrsrWait               = LoadCursor( NULL, IDC_WAIT );
-}
-
-void EvoController::scriptDialog( )
-{
-	// TODO: replace by general solution
-	wchar_t szBuffer[MAX_PATH];
-	DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer);
-	assert( dwRes > 0 );
-	wstring const wstrPath( szBuffer );
-	wstring wstrFile = AskForFileName( wstrPath, L"*.in", L"Script files", tFileMode::read );
-	if ( ! wstrFile.empty( ) )
-	{
-		Stopwatch stopwatch;
-		stopwatch.Start();
-		std::wcout << L"Processing script file " << wstrFile << L"...";
-		Script::ProcessScript( wstrFile );
-		stopwatch.Stop( L"" );
-	}
 }
 
 bool EvoController::ProcessUIcommand( int const wmId, LPARAM const lParam )
@@ -257,7 +238,7 @@ bool EvoController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_SCRIPT_DIALOG:
-		scriptDialog( );
+		ScriptDialog( );
 		break;
 
 	case IDM_ESCAPE:

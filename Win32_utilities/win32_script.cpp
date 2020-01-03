@@ -9,6 +9,7 @@
 #include <vector>
 #include "pathcch.h"
 #include "SCRIPT.H"
+#include "win32_stopwatch.h"
 #include "win32_script.h"
 
 using std::vector;
@@ -71,4 +72,21 @@ wstring AskForFileName
 
 	wstring wstrRes( path.c_str() );
 	return wstrRes;
+}
+
+void ScriptDialog( )
+{
+	wchar_t szBuffer[MAX_PATH];
+	DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer);
+	assert( dwRes > 0 );
+	wstring const wstrPath( szBuffer );
+	wstring wstrFile = AskForFileName( wstrPath, L"*.in", L"Script files", tFileMode::read );
+	if ( ! wstrFile.empty( ) )
+	{
+		Stopwatch stopwatch;
+		stopwatch.Start();
+		std::wcout << L"Processing script file " << wstrFile << L"...";
+		Script::ProcessScript( wstrFile );
+		stopwatch.Stop( L"" );
+	}
 }

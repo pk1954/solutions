@@ -43,11 +43,10 @@ public:
 	void PostConnect          ( ShapeId const, ShapeId const );
 	void PostRemoveShape      ( ShapeId const );
 	void PostDisconnect       ( ShapeId const );
-	void PostSlowMotionChanged( );
-	void PostResetModel       ( );
+	void PostSlowMotionChanged( unsigned int );
 	void PostMoveShape        ( ShapeId const, MicroMeterPoint const & );
-	void PostActionCommand    ( int const , ShapeId const, LPARAM const );
-	void PostReset            ( BOOL );
+	void PostActionCommand    ( int const, ShapeId const, MicroMeterPoint const & );
+	void PostResetModel       ( );
 	void PostRunGenerations   ( BOOL const );
 	void PostStopComputation  ( );
 	void PostGenerationStep   ( );
@@ -55,6 +54,9 @@ public:
 
 	BOOL IsRunning    ( ) const	{ return m_pNNetWorkThread->IsRunning    ( ); }
 	BOOL IsAsyncThread( ) const	{ return m_pNNetWorkThread->IsAsyncThread( ); }
+
+	wchar_t const * GetActionCommandName    ( int const ) const;
+	int     const   GetActionCommandFromName( wchar_t const * const ) const;
 
 	void AddRunObserver( ObserverInterface * pObserver )
 	{

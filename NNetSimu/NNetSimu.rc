@@ -26,8 +26,9 @@ IDC_NNET_SIMU_MAIN MENU
 		MENUITEM "&New model" ,    IDM_NEW_MODEL
 		MENUITEM "&Open model",    IDM_OPEN_MODEL
 		MENUITEM "&Save model",    IDM_SAVE_MODEL
-		MENUITEM "Save model &as", IDM_SAVE_MODEL_AS
-		MENUITEM "&Exit",          IDM_EXIT
+        MENUITEM "Save model &as", IDM_SAVE_MODEL_AS
+        MENUITEM "&Run script",    IDM_SCRIPT_DIALOG
+        MENUITEM "&Exit",          IDM_EXIT
 	}
     POPUP "&Action"
     {
