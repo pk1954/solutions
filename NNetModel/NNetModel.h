@@ -16,12 +16,11 @@
 #include "Neuron.h"
 #include "Knot.h"
 #include "Pipeline.h"
-#include "ModelInterface.h"
 
 class ObserverInterface;
 class EventInterface;
 
-class NNetModel : public ModelInterface
+class NNetModel
 {
 public:
 	NNetModel();
@@ -130,8 +129,8 @@ public:
 		LeaveCritSect( );
 	}
 
+	void CreateInitialShapes();
 	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
-
 	void NewPipeline( BaseKnot * const, BaseKnot * const );
 
 	Knot   * const InsertKnot  ( ShapeId const, MicroMeterPoint const & );
@@ -158,7 +157,6 @@ public:
 
 	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); } ); };
 
-	virtual void CopyModelData( ModelInterface const * const );
 	virtual void Compute( );
 
 private:
@@ -183,7 +181,6 @@ private:
 	Shape const   * findShapeAt( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
 	void            checkConsistency( Shape const * ) const;
 	MicroMeterPoint orthoVector( ShapeId const ) const;
-	void            createInitialShapes();
 	void            disconnectBaseKnot( BaseKnot * const );
 	void            deletePipeline( ShapeId const );
 	void            insertBaseKnot( Pipeline * const, BaseKnot * const );

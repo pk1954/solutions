@@ -149,6 +149,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 
 	case NNetWorkThreadMessage::Id::RESET_MODEL:
 		m_pNNetModel->ResetModel( );
+		m_pNNetModel->CreateInitialShapes();
 		break;
 
 	case NNetWorkThreadMessage::Id::PULSE_RATE:

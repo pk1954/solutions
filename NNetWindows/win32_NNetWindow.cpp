@@ -125,9 +125,7 @@ void NNetWindow::setHighlightShape( PixelPoint const pnt )
 {
 	MicroMeterPoint const   umCrsrPos { m_coord.convert2MicroMeterPoint( pnt ) };
 	Shape           const * pShape    { m_pModel->FindShapeAt( umCrsrPos, [&]( Shape const & s) { return true; } ) };
-	ShapeId         const   id        { m_pModel->GetId( pShape ) };
-	if ( id != m_shapeHighlighted )
-		m_shapeHighlighted = id;
+	m_shapeHighlighted = m_pModel->GetId( pShape );
 }
 
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )
@@ -181,7 +179,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		if ( Pipeline::GetArrowSize( ) > 0.0_MicroMeter )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ARROWS_OFF,    L"Arrows off" );
 		else
-			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ARROWS_ON,      L"Arrows on" );
+			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ARROWS_ON,     L"Arrows on" );
 
 		break;
 
