@@ -1,0 +1,13 @@
+// NNetWrapperHelpers.h : 
+//
+// NNetWindows
+
+#pragma once
+
+#include "script.h"
+#include "Shape.h"
+#include "moretypes.h"
+
+extern ShapeId         ScrReadShapeId( Script & );
+extern MicroMeter      ScrReadMicroMeter( Script & );
+extern MicroMeterPoint ScrReadMicroMeterPoint( Script & );
