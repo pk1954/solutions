@@ -73,6 +73,20 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		m_pNNetWindow->SetPixelSize( MicroMeter((float &)lParam) );
 		break;
 
+	case IDM_SLOWER:
+		if ( m_pSlowMotionRatio->IncRatio( ) )
+			m_pNNetWorkThreadInterface->PostSlowMotionChanged( );
+		else
+			MessageBeep( MB_ICONWARNING );
+		break;
+
+	case IDM_FASTER:
+		if ( m_pSlowMotionRatio->DecRatio( ) )
+			m_pNNetWorkThreadInterface->PostSlowMotionChanged( );
+		else
+			MessageBeep( MB_ICONWARNING );
+		break;
+
 	case IDD_ARROWS_ON:
 		m_pNNetWindow->ShowDirectionArrows( true );
 		break;
@@ -158,20 +172,6 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWorkThreadInterface->PostDisconnect( m_pNNetWindow->GetHighlightedShapeId( ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		m_bUnsavedChanges = true;
-		break;
-
-	case IDM_SLOWER:
-		if ( m_pSlowMotionRatio->IncRatio( ) )
-			m_pNNetWorkThreadInterface->PostSlowMotionChanged( m_pSlowMotionRatio->GetRatio() );
-		else
-			MessageBeep( MB_ICONWARNING );
-		break;
-
-	case IDM_FASTER:
-		if ( m_pSlowMotionRatio->DecRatio( ) )
-			m_pNNetWorkThreadInterface->PostSlowMotionChanged( m_pSlowMotionRatio->GetRatio() );
-		else
-			MessageBeep( MB_ICONWARNING );
 		break;
 
 	case IDD_INSERT_NEURON:

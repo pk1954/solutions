@@ -86,3 +86,4 @@
 
 #define IDM_CRSR_WINDOW         580
 #define IDM_PARAM_WINDOW  	    581
+#define IDM_PERF_WINDOW         582

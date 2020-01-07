@@ -30,9 +30,10 @@ public:
 	Ticks ReadHiResTimer( ) const;
 
 	microseconds GetDuration( );
-	microseconds TicksToMicroseconds( Ticks const );
-	MicroSecs    TicksToMicroSecs   ( Ticks const );
-	Ticks        MicroSecondsToTicks( microseconds const );
+	microseconds TicksToMicroseconds( Ticks        const ) const;
+	MicroSecs    TicksToMicroSecs   ( Ticks        const ) const;
+	Ticks        MicroSecondsToTicks( microseconds const ) const;
+	Ticks        MicroSecsToTicks   ( MicroSecs    const ) const;
 
 	void BusyWait( microseconds const, Ticks & );
 

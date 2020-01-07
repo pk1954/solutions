@@ -93,16 +93,6 @@ public:
     }
 };
 
-class WrapPostSlowMotionChanged: public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        unsigned int const uiRatio { script.ScrReadUint( ) };
-        m_pWorkThreadInterface->PostSlowMotionChanged( uiRatio );
-    }
-};
-
 class WrapPostActionCommand: public Script_Functor
 {
 public:
@@ -136,7 +126,6 @@ void DefineNNetWrappers( NNetWorkThreadInterface * const pWorkThreadInterface )
     DEF_FUNC( PostSetPulseRate );
     DEF_FUNC( PostSetParameter );
     DEF_FUNC( PostMoveShape );
-    DEF_FUNC( PostSlowMotionChanged );
     DEF_FUNC( PostActionCommand );
     DEF_FUNC( Break );
 

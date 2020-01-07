@@ -5,6 +5,7 @@
 #pragma once
 
 #include <array>
+#include "MoreTypes.h"
 #include "observable.h"
 
 class SlowMotionRatio : public Observable
@@ -16,7 +17,7 @@ public:
 	{
 	}
 
-	unsigned int GetRatio( )
+	float GetRatio( ) const
 	{
 		return m_ratios[ m_ratioIndex ];
 	}
@@ -41,13 +42,23 @@ public:
 		}
 		else 
 			return false;
-}
+	}
+
+	MicroSecs const RealTime2SimuTime( MicroSecs const realTime ) const
+	{
+		return realTime / GetRatio();
+	}
+
+	MicroSecs const SimuTime2RealTime( MicroSecs const simuTime ) const
+	{
+		return simuTime * GetRatio();
+	}
 
 private:
 	static unsigned int const DEFAULT_INDEX =  6;
 	static unsigned int const MAX_INDEX     = 18;
 
-	static std::array< unsigned int, MAX_INDEX + 1 > const m_ratios;
+	static std::array< float, MAX_INDEX + 1 > const m_ratios;
 
 	unsigned int m_ratioIndex;   // index to m_ratios
 

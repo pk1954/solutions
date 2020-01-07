@@ -175,6 +175,7 @@
     <ClInclude Include="win32_NNetWorkThread.h" />
     <ClInclude Include="win32_NNetWorkThreadInterface.h" />
     <ClInclude Include="win32_parameterDlg.h" />
+    <ClInclude Include="win32_performanceWindow.h" />
     <ClInclude Include="win32_scale.h" />
     <ClInclude Include="win32_scriptHook.h" />
     <ClInclude Include="win32_sound.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="win32_NNetWorkThread.cpp" />
     <ClCompile Include="win32_NNetWorkThreadInterface.cpp" />
     <ClCompile Include="win32_parameterDlg.cpp" />
+    <ClCompile Include="win32_performanceWindow.cpp" />
     <ClCompile Include="win32_scale.cpp" />
     <ClCompile Include="win32_sound.cpp" />
     <ClCompile Include="win32_status.cpp" />

@@ -5,25 +5,25 @@
 #include "stdafx.h"
 #include "SlowMotionRatio.h"
 
-std::array< unsigned int, SlowMotionRatio::MAX_INDEX + 1 > const SlowMotionRatio::m_ratios
+std::array< float, SlowMotionRatio::MAX_INDEX + 1 > const SlowMotionRatio::m_ratios
 {
-	1,       // 0
-	2,       // 1
-	5,       // 2
-	10,      // 3
-	20,      // 4
-	50,      // 5
-	100,     // 6
-	200,     // 7
-	500,     // 8
-	1000,    // 9
-	2000,    // 10
-	5000,    // 11
-	10000,   // 12
-	20000,   // 13
-	50000,   // 14
-	100000,  // 15
-	200000,  // 16
-	500000,  // 17
-	1000000  // 18
+	1.0f,       // 0
+	2.0f,       // 1
+	5.0f,       // 2
+	10.0f,      // 3
+	20.0f,      // 4
+	50.0f,      // 5
+	100.0f,     // 6
+	200.0f,     // 7
+	500.0f,     // 8
+	1000.0f,    // 9
+	2000.0f,    // 10
+	5000.0f,    // 11
+	10000.0f,   // 12
+	20000.0f,   // 13
+	50000.0f,   // 14
+	100000.0f,  // 15
+	200000.0f,  // 16
+	500000.0f,  // 17
+	1000000.0f  // 18
 };

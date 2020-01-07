@@ -49,14 +49,21 @@ void HiResTimer::Stop( )
 	m_bStarted = false;
 }
 
-Ticks HiResTimer::MicroSecondsToTicks( microseconds const time )
+Ticks HiResTimer::MicroSecondsToTicks( microseconds const time ) const
 {
 	assert( time.count() < LLONG_MAX / m_frequency.GetValue() );
 	ULONGLONG ullTime = static_cast<ULONGLONG>( time.count() );
 	return Ticks( (ullTime * m_frequency.GetValue()) / MICROSECONDS_TO_SECONDS ); 
 }
 
-microseconds HiResTimer::TicksToMicroseconds( Ticks const ticks )
+Ticks HiResTimer::MicroSecsToTicks( MicroSecs const us ) const
+{
+	assert( us.GetValue() < LLONG_MAX / m_frequency.GetValue() );
+	ULONGLONG ullTime = static_cast<ULONGLONG>( us.GetValue() );
+	return Ticks( (ullTime * m_frequency.GetValue()) / MICROSECONDS_TO_SECONDS ); 
+}
+
+microseconds HiResTimer::TicksToMicroseconds( Ticks const ticks ) const 
 {
 	assert( ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS );
 	ULONGLONG ullTicks = static_cast<ULONGLONG>( ticks.GetValue() );
@@ -69,7 +76,7 @@ microseconds HiResTimer::TicksToMicroseconds( Ticks const ticks )
 	return result;
 }
 
-MicroSecs HiResTimer::TicksToMicroSecs( Ticks const ticks )
+MicroSecs HiResTimer::TicksToMicroSecs( Ticks const ticks ) const
 {
 	assert( ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS );
 	ULONGLONG ullTicks = static_cast<ULONGLONG>( ticks.GetValue() );

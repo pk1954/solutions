@@ -134,11 +134,9 @@ void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint c
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::MOVE_SHAPE ), id.GetValue(), Util::Pack2UINT64(delta) );
 }
 
-void NNetWorkThreadInterface::PostSlowMotionChanged( unsigned int uiRatio )
+void NNetWorkThreadInterface::PostSlowMotionChanged( )
 {
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << uiRatio << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED ), uiRatio, 0 );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED ), 0, 0 );
 }
 
 wchar_t const * NNetWorkThreadInterface::GetActionCommandName( int const iMsgId ) const 

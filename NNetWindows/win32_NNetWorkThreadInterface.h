@@ -43,7 +43,7 @@ public:
 	void PostConnect          ( ShapeId const, ShapeId const );
 	void PostRemoveShape      ( ShapeId const );
 	void PostDisconnect       ( ShapeId const );
-	void PostSlowMotionChanged( unsigned int );
+	void PostSlowMotionChanged( );
 	void PostMoveShape        ( ShapeId const, MicroMeterPoint const & );
 	void PostActionCommand    ( int const, ShapeId const, MicroMeterPoint const & );
 	void PostResetModel       ( );
@@ -52,16 +52,15 @@ public:
 	void PostGenerationStep   ( );
 	void PostRepeatGenerationStep();       // Do not call! Used by WorkThread only;
 
-	BOOL IsRunning    ( ) const	{ return m_pNNetWorkThread->IsRunning    ( ); }
-	BOOL IsAsyncThread( ) const	{ return m_pNNetWorkThread->IsAsyncThread( ); }
+	BOOL   IsRunning    ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }
+	BOOL   IsAsyncThread( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }
+	double GetDutyCycle ( ) const { return m_pNNetWorkThread->GetDutyCycle ( ); }
 
 	wchar_t const * GetActionCommandName    ( int const ) const;
 	int     const   GetActionCommandFromName( wchar_t const * const ) const;
 
-	void AddRunObserver( ObserverInterface * pObserver )
-	{
-		m_pNNetWorkThread->AddRunObserver( pObserver );
-	}
+	void AddRunObserver        ( ObserverInterface * p ) { m_pNNetWorkThread->AddRunObserver        ( p ); }
+	void AddPerformanceObserver( ObserverInterface * p ) { m_pNNetWorkThread->AddPerformanceObserver( p ); }
 
 private:
 

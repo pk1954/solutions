@@ -82,7 +82,8 @@ public:
 	virtual void ThreadMsgDispatcher( MSG const );
 
 
-	BOOL IsRunning() const { return m_bContinue; }
+	BOOL   IsRunning()    const { return m_bContinue; }
+	double GetDutyCycle() const { return m_dDutyCycle; }
 
 	void Continue( )
 	{
@@ -95,6 +96,11 @@ public:
 		m_runObservable.RegisterObserver( pObserver );
 	}
 
+	void AddPerformanceObserver( ObserverInterface * pObserver )
+	{
+		m_performanceObservable.RegisterObserver( pObserver );
+	}
+
 private:
 
 	void compute();
@@ -103,7 +109,6 @@ private:
 	void generationStop( );
 	bool actionCommand( NNetWorkThreadMessage::Id const, ShapeId const, MicroMeterPoint const & );
 
-	ActionTimer             * m_pComputeTimer;
 	EventInterface          * m_pEventPOI;
 	ObserverInterface       * m_pObserver;
 	NNetWorkThreadInterface * m_pWorkThreadInterface;
@@ -112,5 +117,7 @@ private:
 	NNetModel               * m_pNNetModel;
 	SlowMotionRatio         * m_pSlowMotionRatio;
 	HiResTimer                m_hrTimer;
+	double                    m_dDutyCycle;
 	Observable                m_runObservable;
+	Observable                m_performanceObservable;
 };

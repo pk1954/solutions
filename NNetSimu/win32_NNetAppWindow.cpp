@@ -17,6 +17,7 @@
 #include "win32_NNetWindow.h"
 #include "win32_status.h"
 #include "win32_crsrWindow.h"
+#include "win32_performanceWindow.h"
 #include "win32_parameterDlg.h"
 #include "win32_simulationControl.h"
 #include "win32_slowMotionControl.h"
@@ -54,6 +55,7 @@ NNetAppWindow::NNetAppWindow( ) :
 	m_pSlowMotionDisplay( nullptr ),
 	m_pTimeDisplay( nullptr ),
 	m_pCrsrWindow( nullptr ),
+	m_pPerformanceWindow( nullptr ),
 	m_pNNetModelStorage( nullptr ),
 	m_pNNetController( nullptr ),
 	m_pParameterDlg( nullptr )
@@ -65,6 +67,7 @@ NNetAppWindow::NNetAppWindow( ) :
 	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface ),
 		
 	m_pNNetReadBuffer = new NNetReadBuffer( );
+	m_pPerformanceWindow = new PerformanceWindow( );
 
 	NNetWindow::InitClass
 	( 
@@ -78,8 +81,9 @@ NNetAppWindow::NNetAppWindow( ) :
 	m_pCrsrWindow     = new CrsrWindow( );
 	m_pParameterDlg   = new ParameterDialog( & m_NNetWorkThreadInterface );
 
-	m_pMainNNetWindow->SetRefreshRate( 100ms );
-	m_pCrsrWindow    ->SetRefreshRate( 100ms );
+	m_pMainNNetWindow   ->SetRefreshRate( 100ms );
+	m_pCrsrWindow       ->SetRefreshRate( 100ms );
+	m_pPerformanceWindow->SetRefreshRate( 300ms );
 };
 
 NNetAppWindow::~NNetAppWindow( )
@@ -88,6 +92,7 @@ NNetAppWindow::~NNetAppWindow( )
 	delete m_pAppMenu;
 	delete m_pCrsrWindow;
 	delete m_pParameterDlg;
+	delete m_pPerformanceWindow;
 }
 
 void NNetAppWindow::Start( )
@@ -139,11 +144,13 @@ void NNetAppWindow::Start( )
 
 	m_pCrsrWindow->Start( m_hwndApp, m_pCursorPos, m_pMainNNetWindow );
 	m_pParameterDlg->Start( m_hwndApp, m_pModelDataWork );
+	m_pPerformanceWindow->Start( m_hwndApp, & m_NNetWorkThreadInterface );
 
-	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,     TRUE, FALSE );
-	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  * m_pMainNNetWindow, TRUE, FALSE );
-	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW", IDM_PARAM_WINDOW, * m_pParameterDlg,   TRUE, FALSE );
-	
+	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,        TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  * m_pMainNNetWindow,    TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW", IDM_PARAM_WINDOW, * m_pParameterDlg,      TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",  IDM_PERF_WINDOW,  * m_pPerformanceWindow, TRUE, FALSE );
+
 	configureStatusBar( );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
@@ -153,8 +160,9 @@ void NNetAppWindow::Start( )
 		m_pMainNNetWindow->Show( TRUE );
 	}
 
-	m_pCrsrWindow  ->Show( TRUE );
-	m_pParameterDlg->Show( TRUE );
+	m_pCrsrWindow       ->Show( TRUE );
+	m_pParameterDlg     ->Show( TRUE );
+	m_pPerformanceWindow->Show( TRUE );
 
 	PostCommand2Application( IDM_RUN, true );
 
@@ -166,6 +174,7 @@ void NNetAppWindow::Stop()
 	m_pMainNNetWindow->Stop( );
 	m_pCrsrWindow    ->Stop( );
 	m_pParameterDlg  ->Stop( );
+	m_pPerformanceWindow->Stop( );
 
 	m_pNNetReadBuffer->UnregisterAllObservers( );
 	m_NNetWorkThreadInterface.Stop( );

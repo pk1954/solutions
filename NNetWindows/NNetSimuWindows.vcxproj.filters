@@ -75,6 +75,9 @@
     <ClInclude Include="NNetWrapperHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="win32_performanceWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_NNetWorkThread.cpp">
@@ -111,6 +114,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetWrapperHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_performanceWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

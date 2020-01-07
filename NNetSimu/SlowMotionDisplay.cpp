@@ -32,7 +32,7 @@ public:
 
 	virtual void Trigger( )
 	{
-		unsigned int const uiRatio = m_pSlowMotionRatio->GetRatio( );
+		unsigned int const uiRatio = CastToUnsignedInt( m_pSlowMotionRatio->GetRatio( ) );
 		if ( uiRatio == 1 )
 			m_wstrBuffer = L"real time";
 		else
