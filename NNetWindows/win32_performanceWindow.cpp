@@ -47,21 +47,16 @@ void PerformanceWindow::printLine
 	double          const dData
 )
 {
+	std::wostringstream wBuffer;
+	float fPrintValue { CastToFloat( dData * 100.0f ) };
+	wBuffer << std::fixed << std::setprecision(3) << fPrintValue << L'%';
 	textBuf.printString( pwch1 );
-	textBuf.printNumber( CastToFloat( dData * 100.0f ) );
+	textBuf.printString( L"" );
+	textBuf.printString( wBuffer.str() );
 	textBuf.nextLine   ( );
 }
 
 void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 {      
-//	microseconds const usModelTime   = m_pAtComputation->GetSingleActionTime( );
-//	Hertz        const HertzComputed = m_pAtComputation->CalcActionFrequency( usSum );
-//	Hertz        const HertzMeasured = m_pAtComputation->GetMeasuredPerformance( );
-
-//    printLine( textBuf, L"Model:  ", usModelTime );
-//    printLine( textBuf, L"Comp:   ", HertzComputed );
-//    printLine( textBuf, L"Meas:   ", HertzMeasured );
-
 	printLine( textBuf, L"Duty cycle: ", m_pNNetWorkThreadInterface->GetDutyCycle( ) );
-
 }

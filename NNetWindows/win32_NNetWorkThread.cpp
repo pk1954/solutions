@@ -40,13 +40,17 @@ NNetWorkThread::NNetWorkThread
 	m_pWorkThreadInterface( pWorkThreadInterface ),
 	m_hwndApplication     ( hwndApplication ),
 	m_bContinue           ( FALSE ),
-	m_pSlowMotionRatio    ( pSlowMotionRatio )
+	m_pSlowMotionRatio    ( pSlowMotionRatio ),
+	m_pDcBuffer           ( nullptr )
 {
+	m_pDcBuffer = new RingBuffer( 100 );
 	StartThread( L"WorkerThread", bAsync ); 
 }
 
 NNetWorkThread::~NNetWorkThread( )
 {
+	delete m_pDcBuffer;
+	m_pDcBuffer            = nullptr;
 	m_hwndApplication      = nullptr;
 	m_pWorkThreadInterface = nullptr;
 	m_pEventPOI            = nullptr;
@@ -268,24 +272,26 @@ void NNetWorkThread::generationStop( )
 
 void NNetWorkThread::compute() 
 {
+	Ticks           ticksPerCompute;
+	MicroSecs       usPerCompute;
 	Ticks     const ticksTilStart      { m_hrTimer.GetTicksTilStart( ) };
 	MicroSecs const usTilStartRealTime { m_hrTimer.TicksToMicroSecs( ticksTilStart ) };
 	MicroSecs const usTilStartSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( usTilStartRealTime ) };
-	MicroSecs const usActualSimuTime   { m_pNNetModel->GetSimulationTime( ) };                // get actual time stamp
-	MicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };             // compute missing simulation time
-	if ( usMissingSimuTime > 0._MicroSecs )
+	MicroSecs const usActualSimuTime   { m_pNNetModel->GetSimulationTime( ) };      // get actual time stamp
+	MicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };   // compute missing simulation time
+	long lCyclesTodo { CastToLong( usMissingSimuTime / TIME_RESOLUTION ) };         // compute # cycles to be computed
+	while ( lCyclesTodo-- > 0L )
 	{
-		unsigned long ulCyclesTodo { CastToUnsignedLong( usMissingSimuTime / TIME_RESOLUTION ) }; // compute # cycles to be computed
-		do
-			m_pNNetModel->Compute();
-		while ( ulCyclesTodo-- );
+		m_pNNetModel->Compute();
 	}
+
 	Ticks     const ticksSpentInCompute { m_hrTimer.GetTicksTilStart( ) - ticksTilStart };
 	MicroSecs const usSpentInCompute    { m_hrTimer.TicksToMicroSecs( ticksSpentInCompute ) };
 	MicroSecs const usRealTimePerCycle  { m_pSlowMotionRatio->SimuTime2RealTime( TIME_RESOLUTION ) };
+	Ticks     const ticksPerCycle       { m_hrTimer.MicroSecsToTicks( usRealTimePerCycle ) };
 	MicroSecs const usSleepTime         { usRealTimePerCycle - usSpentInCompute };
 	if ( usSleepTime > 10000.0_MicroSecs )
 		Sleep( 10 );
-	m_dDutyCycle = usSpentInCompute / usRealTimePerCycle;
+	m_pDcBuffer->Add( usSpentInCompute / usRealTimePerCycle );
 	m_performanceObservable.NotifyAll( FALSE);
 }

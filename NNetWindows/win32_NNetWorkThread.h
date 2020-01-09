@@ -5,6 +5,7 @@
 #pragma once
 
 #include "win32_hiResTimer.h"
+#include "RingBuffer.h"
 #include "Observable.h"
 #include "NNetModel.h"
 #include "win32_thread.h"
@@ -83,7 +84,7 @@ public:
 
 
 	BOOL   IsRunning()    const { return m_bContinue; }
-	double GetDutyCycle() const { return m_dDutyCycle; }
+	double GetDutyCycle() const { return m_pDcBuffer->GetAverage(); }
 
 	void Continue( )
 	{
@@ -117,7 +118,7 @@ private:
 	NNetModel               * m_pNNetModel;
 	SlowMotionRatio         * m_pSlowMotionRatio;
 	HiResTimer                m_hrTimer;
-	double                    m_dDutyCycle;
+	RingBuffer              * m_pDcBuffer;
 	Observable                m_runObservable;
 	Observable                m_performanceObservable;
 };

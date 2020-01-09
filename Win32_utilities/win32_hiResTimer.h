@@ -6,7 +6,7 @@
 
 #include <chrono>
 #include "NamedType.h"
-#include "MOreTypes.h"
+#include "MoreTypes.h"
 
 using std::chrono::microseconds;
 
@@ -38,9 +38,11 @@ public:
 	void BusyWait( microseconds const, Ticks & );
 
 private:
-	long long const MICROSECONDS_TO_SECONDS = microseconds::period::den;
+	long long const MICROSECONDS_TO_SECONDS { microseconds::period::den };
+	float     const fMICROSECONDS_TO_SECONDS{ static_cast<float>(MICROSECONDS_TO_SECONDS) };
 
-    static Hertz m_frequency;
+    static Hertz  m_frequency;
+	static fHertz m_fFrequency;
 
 	bool  m_bStarted;
 

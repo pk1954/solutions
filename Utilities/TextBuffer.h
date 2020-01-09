@@ -9,6 +9,8 @@
 #include <string> 
 #include "PixelTypes.h"
 
+using std::wstring;
+
 using TEXT_POSITION = NamedType< int, struct TEXT_POSITION_Parameter >;
 
 constexpr TEXT_POSITION operator"" _TEXT_POSITION( unsigned long long ull )
@@ -41,21 +43,21 @@ public:
         m_pixHorizontalPos = LEFT_MARGIN + m_pixHorRaster * pos.GetValue();
     }
 
-	void nextLine( std::wstring data, TEXT_POSITION iHorPos = 1_TEXT_POSITION )
+	void nextLine( wstring data, TEXT_POSITION iHorPos = 1_TEXT_POSITION )
 	{
 		nextLine( iHorPos );
 		AlignRight();
 		printString( data );
 	}
 
-	void header( std::wstring data )
+	void header( wstring data )
 	{
 		nextLine( );
 		AlignLeft();
 		printString( data );
 	}
 
-	void printString     ( std::wstring const );
+	void printString     ( wstring const );
     void printNumber     ( int const );
     void printNumber     ( unsigned int const );
     void printNumber     ( long long const );
@@ -76,8 +78,8 @@ private:
     std::wostringstream m_wBuffer;
 
 	PixelRect m_pixRect; // text buffer area 
-    PIXEL   m_pixHorizontalPos;  
-    PIXEL   m_pixVerticalPos;
-    PIXEL   m_pixHorRaster;
-    PIXEL   m_pixVertRaster;
+    PIXEL     m_pixHorizontalPos;  
+    PIXEL     m_pixVerticalPos;
+    PIXEL     m_pixHorRaster;
+    PIXEL     m_pixVertRaster;
 };

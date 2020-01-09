@@ -7,7 +7,8 @@
 #include "NamedType.h"
 #include "win32_HiResTimer.h"
 
-Hertz HiResTimer::m_frequency = 0_Hertz;
+Hertz  HiResTimer::m_frequency  = 0_Hertz;
+fHertz HiResTimer::m_fFrequency = 0.0_fHertz;
 
 // Gets the high-resolution timer's value
 inline Ticks HiResTimer::ReadHiResTimer( ) const
@@ -26,7 +27,8 @@ HiResTimer::HiResTimer( ) :
     {                                              // first time in application the constructor is called
         LARGE_INTEGER value;                       // frequency is acquired and stored for all HiResTimers
         (void)QueryPerformanceFrequency( &value );
-        m_frequency = Hertz( CastToUnsignedLong( value.QuadPart ) );
+        m_frequency  = Hertz( CastToUnsignedLong( value.QuadPart ) );
+		m_fFrequency = fHertz( static_cast<float>( m_frequency.GetValue() ) );
     }
 }
 
@@ -56,13 +58,6 @@ Ticks HiResTimer::MicroSecondsToTicks( microseconds const time ) const
 	return Ticks( (ullTime * m_frequency.GetValue()) / MICROSECONDS_TO_SECONDS ); 
 }
 
-Ticks HiResTimer::MicroSecsToTicks( MicroSecs const us ) const
-{
-	assert( us.GetValue() < LLONG_MAX / m_frequency.GetValue() );
-	ULONGLONG ullTime = static_cast<ULONGLONG>( us.GetValue() );
-	return Ticks( (ullTime * m_frequency.GetValue()) / MICROSECONDS_TO_SECONDS ); 
-}
-
 microseconds HiResTimer::TicksToMicroseconds( Ticks const ticks ) const 
 {
 	assert( ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS );
@@ -76,20 +71,14 @@ microseconds HiResTimer::TicksToMicroseconds( Ticks const ticks ) const
 	return result;
 }
 
+Ticks HiResTimer::MicroSecsToTicks( MicroSecs const us ) const
+{
+	return Ticks( static_cast<long long>( (us.GetValue() * m_fFrequency.GetValue()) / fMICROSECONDS_TO_SECONDS ) );
+}
+
 MicroSecs HiResTimer::TicksToMicroSecs( Ticks const ticks ) const
 {
-	assert( ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS );
-	ULONGLONG ullTicks = static_cast<ULONGLONG>( ticks.GetValue() );
-	MicroSecs result
-	( 
-		CastToFloat
-		(
-			( ullTicks * MICROSECONDS_TO_SECONDS ) // converts from seconds to microseconds.
-			/ m_frequency.GetValue()               // multiply *before* division, otherwise
-		)                                          // division would truncate too many significant digits
-	);                                         
-
-	return result;
+	return MicroSecs( ticks.GetValue() * fMICROSECONDS_TO_SECONDS / m_fFrequency.GetValue() );
 }
 
 microseconds HiResTimer::GetDuration( )
