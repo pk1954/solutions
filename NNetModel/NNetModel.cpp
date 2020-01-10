@@ -47,6 +47,8 @@ NNetModel::NNetModel( )
 
 NNetModel::~NNetModel( )
 {
+	m_parameterObservable.UnregisterAllObservers();
+
 	if ( m_bCritSectReady )
 	{
 		DeleteCriticalSection( & m_criticalSection );
@@ -192,6 +194,7 @@ void NNetModel::SetParameter
 		default: assert( false );
 	}
 	RecalcPipelines( );
+	m_parameterObservable.NotifyAll( FALSE );
 }
 
 MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const 

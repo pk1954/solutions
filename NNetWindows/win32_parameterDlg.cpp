@@ -23,7 +23,8 @@ ParameterDialog::ParameterDialog( NNetWorkThreadInterface * const pNNetWorkThrea
     m_hwndRefractoryPeriod( 0 ),
     m_hwndPulseSpeed      ( 0 ),
     m_hwndSignalLoss      ( 0 )
-{ }
+{ 
+}
 
 ParameterDialog::~ParameterDialog( )
 {
@@ -128,11 +129,7 @@ void ParameterDialog::Start( HWND const hwndParent,	NNetModel * const pModel )
 	createButton( hwndDlg, L"Apply", 140, iYpos, 50, 20, (HMENU)IDD_APPLY_PARAMETERS );
 	createButton( hwndDlg, L"Reset", 200, iYpos, 50, 20, (HMENU)IDD_RESET_PARAMETERS );
 
-//	::CreateWindowToolTip( GetWindowHandle(), L"Parameter window" );
-
-//	::CreateWindowToolTip( m_hwndPeakVoltage, L"Display options allow to show/hide individuals and to choose what is displayed as background." );
-//	CreateBalloonToolTip( IDM_INDIVIDUALS,     L"if deselected, individuals are hidden. Rarelay used." );
-
+	m_pNNetModel->AddParameterObserver( this );
 }
 
 void ParameterDialog::Stop( )
@@ -144,6 +141,10 @@ LRESULT ParameterDialog::UserProc( UINT const message, WPARAM const wParam, LPAR
 {
 	switch (message)
 	{
+	case WM_PAINT:
+		resetParameters( );
+		break;
+
 	case WM_COMMAND:
 	{
 		WORD const wId = LOWORD(wParam);

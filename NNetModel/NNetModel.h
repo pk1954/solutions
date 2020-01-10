@@ -9,6 +9,7 @@
 #include "synchapi.h"
 #include "util.h"
 #include "MoreTypes.h"
+#include "Observable.h"
 #include "Segment.h"
 #include "tParameter.h"
 #include "tHighlightType.h"
@@ -155,7 +156,9 @@ public:
 	void EnterCritSect() const { EnterCriticalSection( & m_criticalSection ); }
 	void LeaveCritSect() const { LeaveCriticalSection( & m_criticalSection ); }
 
-	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); } ); };
+	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); } ); }
+
+	void AddParameterObserver( ObserverInterface * pObs ) { m_parameterObservable.RegisterObserver( pObs ); }
 
 	virtual void Compute( );
 
@@ -175,6 +178,8 @@ private:
 	MicroSecs   m_pulseWidth;   
 	MicroSecs   m_refractPeriod;
 	meterPerSec m_pulseSpeed;
+
+	Observable  m_parameterObservable;
 
 	// local functions
 
