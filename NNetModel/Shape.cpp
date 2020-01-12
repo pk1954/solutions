@@ -20,8 +20,3 @@ float Shape::GetFillLevel( mV const voltageInput ) const
 {
 	return voltageInput.GetValue() / m_pNNetModel->GetParameterValue( tParameter::threshold );
 }
-
-void Shape::CheckInputBuffer( ) const
-{
-//	assert( m_mVinputBuffer <= mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) * 2 ) );
-}

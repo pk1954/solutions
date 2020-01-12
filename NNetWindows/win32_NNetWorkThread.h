@@ -36,7 +36,6 @@ public:
 		DISCONNECT,
 		PULSE_RATE,
 		PULSE_SPEED,
-		DAMPING_FACTOR,
 	    THRESHOLD,
 	    PEAK_VOLTAGE, 
 	    PULSE_WIDTH,         

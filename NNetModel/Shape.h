@@ -71,8 +71,6 @@ protected:
 	float GetFillLevel( mV const ) const;
 	float GetFillLevel( ) const { return GetFillLevel( m_mVinputBuffer ); };
 
-	void CheckInputBuffer( ) const;
-
 private:
 
 	ShapeId    m_identifier;

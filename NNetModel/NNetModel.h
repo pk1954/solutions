@@ -173,7 +173,6 @@ private:
 	bool            m_bUnsavedChanges;
 
 	// parameters
-	float       m_signalLoss;     // signal loss per um  
     mV          m_threshold;
     mV          m_peakVoltage;   
 	MicroSecs   m_pulseWidth;   

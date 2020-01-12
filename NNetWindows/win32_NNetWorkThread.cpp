@@ -66,7 +66,6 @@ static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
 	{
 		{ NNetWorkThreadMessage::Id::PULSE_SPEED,       tParameter::pulseSpeed     },
 		{ NNetWorkThreadMessage::Id::PULSE_WIDTH,       tParameter::pulseWidth     },
-		{ NNetWorkThreadMessage::Id::DAMPING_FACTOR,    tParameter::signalLoss     },
 		{ NNetWorkThreadMessage::Id::THRESHOLD,         tParameter::threshold      },
 		{ NNetWorkThreadMessage::Id::PEAK_VOLTAGE,      tParameter::peakVoltage    },
     	{ NNetWorkThreadMessage::Id::REFRACTORY_PERIOD, tParameter::refractPeriod  },
@@ -162,7 +161,6 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		m_pNNetModel->SetPulseRate( ShapeId( CastToLong(msg.wParam) ), (float &)msg.lParam );
 		break;
 
-	case NNetWorkThreadMessage::Id::DAMPING_FACTOR:
 	case NNetWorkThreadMessage::Id::THRESHOLD:
 	case NNetWorkThreadMessage::Id::PEAK_VOLTAGE:
 	case NNetWorkThreadMessage::Id::PULSE_WIDTH:       

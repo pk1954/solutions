@@ -28,7 +28,6 @@ bool             NNetModel::m_bCritSectReady = false;
 NNetModel::NNetModel( )
   : m_Shapes( ),
 	m_timeStamp       ( 0._MicroSecs ),
-	m_signalLoss      ( 0.0005f ), 
 	m_threshold       ( 20._mV ),
 	m_peakVoltage     ( 10._mV ),
 	m_pulseWidth      ( 2000._MicroSecs ),
@@ -160,7 +159,6 @@ float const NNetModel::GetParameterValue( tParameter const param ) const
 	{
 		case tParameter::pulseSpeed:	 return m_pulseSpeed.GetValue();
 		case tParameter::pulseWidth:	 return m_pulseWidth.GetValue();
-		case tParameter::signalLoss:	 return m_signalLoss;
 		case tParameter::threshold:  	 return m_threshold.GetValue();
 		case tParameter::peakVoltage:	 return m_peakVoltage.GetValue();
 		case tParameter::refractPeriod:  return m_refractPeriod.GetValue();
@@ -189,7 +187,6 @@ void NNetModel::SetParameter
 	{
 		case tParameter::pulseSpeed:	 m_pulseSpeed    = static_cast< meterPerSec >( fNewValue ); break;
 		case tParameter::pulseWidth:	 m_pulseWidth    = static_cast< MicroSecs >  ( fNewValue ); break;
-		case tParameter::signalLoss:	 m_signalLoss    =                           ( fNewValue ); break;
 		case tParameter::threshold:		 m_threshold     = static_cast< mV >         ( fNewValue ); break;
 		case tParameter::peakVoltage:	 m_peakVoltage   = static_cast< mV >         ( fNewValue ); break;
 		case tParameter::refractPeriod:	 m_refractPeriod = static_cast< MicroSecs >  ( fNewValue ); break;

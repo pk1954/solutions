@@ -6,6 +6,7 @@
 
 #include <vector>
 #include "MoreTypes.h"
+#include "PixelTypes.h"
 #include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "Shape.h"
@@ -62,13 +63,16 @@ private:
 	
 	static MicroMeter m_arrowSize;
 
-	ShapeId    m_idKnotStart;
-	ShapeId    m_idKnotEnd;
-	MicroMeter m_width;
-	float      m_fDampingFactor;
-	vector<mV> m_potential;
+	typedef vector<mV> tPotentialVector;
+
+	ShapeId                    m_idKnotStart;
+	ShapeId                    m_idKnotEnd;
+	MicroMeter                 m_width;
+	tPotentialVector           m_potential;
+	tPotentialVector::iterator m_potIter;
 
 	void dislocate( ShapeId const, MicroMeter const );
+	void drawSegment( fPixelPoint &, fPixelPoint const, fPIXEL const, mV const ) const;
 };
 
 Pipeline const * Cast2Pipeline( Shape const * );

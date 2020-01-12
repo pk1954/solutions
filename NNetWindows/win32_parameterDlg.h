@@ -33,7 +33,6 @@ private:
 	HWND m_hwndRefractoryPeriod;
 	HWND m_hwndTimeResolution;
 	HWND m_hwndPulseSpeed; 
-	HWND m_hwndSignalLoss;
 		
 	HWND createButton     ( HWND const, wchar_t const * const, int const, int const, int const, int const, HMENU const );
 	HWND createEditField  ( HWND const, tParameter      const, int &,     int const, int const );

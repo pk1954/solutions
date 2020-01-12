@@ -12,7 +12,7 @@ enum class tParameter
 {
 	pulseSpeed,
 	pulseWidth,
-	signalLoss,
+	signalLoss,  // not used, just for compatibility
 	threshold,
 	peakVoltage,
 	refractPeriod,

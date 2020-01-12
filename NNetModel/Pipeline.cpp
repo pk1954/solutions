@@ -22,8 +22,8 @@ Pipeline::Pipeline( NNetModel * pModel, MicroMeterPoint const umUnused )
 	m_idKnotStart   ( NO_SHAPE ),
 	m_idKnotEnd     ( NO_SHAPE ),
 	m_width         ( PIPELINE_WIDTH ),
-	m_fDampingFactor( 1.0f ),
-	m_potential     ( )
+	m_potential     ( ),
+	m_potIter       ( )
 {
 }
 
@@ -39,8 +39,7 @@ void Pipeline::Recalc( )
 		unsigned int     const iNrOfSegments  { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
 
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
-
-		m_fDampingFactor = pow( 1.0f - m_pNNetModel->GetParameterValue( tParameter::signalLoss ), segmentLength.GetValue() );
+		m_potIter = m_potential.begin();
 	}
 }
 
@@ -85,30 +84,21 @@ MicroMeter Pipeline::GetLength( ) const
 
 void Pipeline::Prepare( )
 {
-	BaseKnot const * const m_pKnotStart { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotStart ) };
-	if ( m_pKnotStart )
-	{
-		m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
-		CheckInputBuffer( );
-	}
+	if ( auto pKnotStart { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotStart ) } )
+		m_mVinputBuffer = pKnotStart->GetNextOutput( );
 }
 
 void Pipeline::Step( )
 {
-	CheckInputBuffer( );
-	mV mVcarry { m_mVinputBuffer };
-	for ( auto & iter : m_potential )
-	{
-		mVcarry *= m_fDampingFactor;  
-		std::swap( iter, mVcarry );
-		CheckInputBuffer( );
-	}
+	* m_potIter = m_mVinputBuffer;
+	if ( m_potIter == m_potential.begin() )
+		m_potIter = m_potential.end( );
+	-- m_potIter;
 }
 
 mV Pipeline::GetNextOutput( ) const
 {
 	assert( m_potential.size() > 0 );
-//	assert( m_potential.back() <= mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) * 2 ) );
 	return m_potential.back();
 }
 
@@ -161,6 +151,17 @@ void Pipeline::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) 
 	}
 }
 
+void Pipeline::drawSegment( fPixelPoint & fPoint1, fPixelPoint const fPixSegVec, fPIXEL const fWidth, mV const voltage ) const
+{
+	fPixelPoint fPoint2 = fPoint1 + fPixSegVec;
+	m_pGraphics->DrawLine
+	( 
+		fPoint1, fPoint2, fWidth,
+		GetInteriorColor( voltage ) 
+	);
+	fPoint1 = fPoint2;
+}
+
 void Pipeline::DrawInterior( PixelCoordsFp & coord ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
@@ -168,22 +169,16 @@ void Pipeline::DrawInterior( PixelCoordsFp & coord ) const
 	MicroMeterPoint const umVector     { umEndPoint - umStartPoint };
 	if ( ! IsCloseToZero( umVector ) )
 	{
-		MicroMeterPoint const segmentVector{ umVector / CastToFloat(m_potential.size()) };
-		fPIXEL          const fWidth       { coord.convert2fPixel( m_width * PIPELINE_INTERIOR ) };
-		MicroMeterPoint       umPoint      { umStartPoint };
-		fPixelPoint           fPoint1      { coord.convert2fPixelPos( umPoint ) };
+		fPIXEL      const fWidth     { coord.convert2fPixel( m_width * PIPELINE_INTERIOR ) };
+		fPixelPoint const fPixVector { coord.convert2fPixelSize( umVector ) };
+		fPixelPoint const fPixSegVec { fPixVector / CastToFloat(m_potential.size()) };
+		fPixelPoint       fPoint1    { coord.convert2fPixelPos( umStartPoint ) };
 
-		for ( auto & iter : m_potential )
-		{
-			umPoint += segmentVector; 
-			fPixelPoint fPoint2 { coord.convert2fPixelPos( umPoint ) };
-			m_pGraphics->DrawLine
-			( 
-				fPoint1, fPoint2, fWidth,
-				GetInteriorColor( iter ) 
-			);
-			fPoint1 = fPoint2;
-		}
+		for( auto iter = m_potIter; iter != m_potential.end(); ++ iter )
+			drawSegment( fPoint1, fPixSegVec, fWidth, * iter );
+
+		for( auto iter = m_potential.begin(); iter != m_potIter; ++ iter )
+			drawSegment( fPoint1, fPixSegVec, fWidth, * iter );
 	}
 }
 
