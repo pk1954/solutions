@@ -56,10 +56,8 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 	switch (wmId)
 	{
 
+	case IDM_PERF_WINDOW:
 	case IDM_CRSR_WINDOW:
-		SendMessage( m_pWinManager->GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
-		break;
-
 	case IDM_PARAM_WINDOW:
 		SendMessage( m_pWinManager->GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
 		break;

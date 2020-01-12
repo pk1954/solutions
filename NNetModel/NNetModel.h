@@ -75,6 +75,7 @@ public:
 	long            const GetNrOfShapes( )                             const;
 	COLORREF        const GetFrameColor( tHighlightType const )        const;
 	bool            const HasModelChanged( )                           const { return m_bUnsavedChanges; }
+	MicroSecs       const GetTimeResolution( )                         const { return m_usResolution; }
 	
 	ShapeId const GetStartKnot( ShapeId const idPipeline ) const 
 	{ 
@@ -178,6 +179,7 @@ private:
 	MicroSecs   m_pulseWidth;   
 	MicroSecs   m_refractPeriod;
 	meterPerSec m_pulseSpeed;
+	MicroSecs   m_usResolution; 
 
 	Observable  m_parameterObservable;
 

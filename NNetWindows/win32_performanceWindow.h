@@ -12,7 +12,7 @@ class PerformanceWindow: public TextWindow
 {
 public:
     PerformanceWindow( );
-    ~PerformanceWindow( ) {}; 
+    ~PerformanceWindow( ); 
 
     void Start( HWND const, NNetWorkThreadInterface * const );
 
@@ -23,5 +23,6 @@ public:
 private:
     NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 
-	void printLine( TextBuffer &, wchar_t const * const, double const );
+    void printMicroSecLine( TextBuffer &, wchar_t const * const, MicroSecs const );
+    void printFloatLine ( TextBuffer &, wchar_t const * const, float const, wchar_t const * const );
 };

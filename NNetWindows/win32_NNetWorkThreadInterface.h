@@ -52,9 +52,14 @@ public:
 	void PostGenerationStep   ( );
 	void PostRepeatGenerationStep();       // Do not call! Used by WorkThread only;
 
-	BOOL   IsRunning    ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }
-	BOOL   IsAsyncThread( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }
-	double GetDutyCycle ( ) const { return m_pNNetWorkThread->GetDutyCycle ( ); }
+	BOOL      IsRunning            ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }
+	BOOL      IsAsyncThread        ( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }
+	MicroSecs GetTimeSpentPerCycle ( ) const { return m_pNNetWorkThread->GetTimeSpentPerCycle( ); }
+	MicroSecs GetTimeAvailPerCycle ( ) const { return m_pNNetWorkThread->GetTimeAvailPerCycle( ); }
+	MicroSecs GetSimuTimeResolution( ) const { return m_pNNetWorkThread->GetSimuTimeResolution( ); }
+	MicroSecs GetSimulationTime    ( ) const { return m_pNNetWorkThread->GetSimulationTime( ); }
+	MicroSecs GetRealTimeTilStart  ( ) const { return m_pNNetWorkThread->GetRealTimeTilStart( ); }
+	float     GetSlowMotionRatio   ( ) const { return m_pNNetWorkThread->GetSlowMotionRatio( ); }
 
 	wchar_t const * GetActionCommandName    ( int const ) const;
 	int     const   GetActionCommandFromName( wchar_t const * const ) const;

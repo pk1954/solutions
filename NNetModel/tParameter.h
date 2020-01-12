@@ -16,7 +16,8 @@ enum class tParameter
 	threshold,
 	peakVoltage,
 	refractPeriod,
-	tParameterLastGlobal = refractPeriod,
+	timeResolution,
+	tParameterLastGlobal = timeResolution,
 	pulseRate,
 	tParameterLast = pulseRate
 };

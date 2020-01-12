@@ -42,7 +42,7 @@ void InputNeuron::Step( )
 	}
 	else
 	{
-		m_timeSinceLastPulse += TIME_RESOLUTION;
+		m_timeSinceLastPulse += m_pNNetModel->GetTimeResolution( );
 	}
 }
 

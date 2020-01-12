@@ -39,9 +39,14 @@ void HiResTimer::Start( )
 	m_bStarted = true;
 }
 
-Ticks HiResTimer::GetTicksTilStart( )
+Ticks HiResTimer::GetTicksTilStart( ) const
 {
 	return ReadHiResTimer( ) - m_ticksOnStart;
+}
+
+MicroSecs HiResTimer::GetMicroSecsTilStart( ) const
+{
+	return TicksToMicroSecs( GetTicksTilStart() );
 }
 
 void HiResTimer::Stop( )

@@ -18,18 +18,19 @@ public:
     HiResTimer( );
     ~HiResTimer( ) {};
 
-	void  Start( );
-	Ticks GetTicksTilStart( );
-	void  Stop( );
-	void  Restart( )
+	void      Start( );
+	Ticks     GetTicksTilStart( )     const;
+	MicroSecs GetMicroSecsTilStart( ) const;
+	void      Stop( );
+	void      Restart( )
 	{
 		Stop();
 		Start();
 	}
+	microseconds GetDuration( );
 
 	Ticks ReadHiResTimer( ) const;
 
-	microseconds GetDuration( );
 	microseconds TicksToMicroseconds( Ticks        const ) const;
 	MicroSecs    TicksToMicroSecs   ( Ticks        const ) const;
 	Ticks        MicroSecondsToTicks( microseconds const ) const;

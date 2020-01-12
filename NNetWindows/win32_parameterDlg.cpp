@@ -20,8 +20,9 @@ ParameterDialog::ParameterDialog( NNetWorkThreadInterface * const pNNetWorkThrea
 	m_hwndPeakVoltage     ( 0 ),
     m_hwndThreshold       ( 0 ),      
     m_hwndPulseWidth      ( 0 ),      
-    m_hwndRefractoryPeriod( 0 ),
-    m_hwndPulseSpeed      ( 0 ),
+	m_hwndRefractoryPeriod( 0 ),
+	m_hwndTimeResolution  ( 0 ),
+	m_hwndPulseSpeed      ( 0 ),
     m_hwndSignalLoss      ( 0 )
 { 
 }
@@ -87,22 +88,24 @@ HWND ParameterDialog::addParameter
 
 void ParameterDialog::resetParameters( )
 {
-	resetParameter( m_hwndPeakVoltage,      tParameter::peakVoltage   );
-	resetParameter( m_hwndThreshold,        tParameter::threshold     );
-	resetParameter( m_hwndPulseWidth,       tParameter::pulseWidth    );
-	resetParameter( m_hwndRefractoryPeriod, tParameter::refractPeriod );
-	resetParameter( m_hwndPulseSpeed,       tParameter::pulseSpeed    );
-	resetParameter( m_hwndSignalLoss,       tParameter::signalLoss    );
+	resetParameter( m_hwndPeakVoltage,      tParameter::peakVoltage    );
+	resetParameter( m_hwndThreshold,        tParameter::threshold      );
+	resetParameter( m_hwndPulseWidth,       tParameter::pulseWidth     );
+	resetParameter( m_hwndRefractoryPeriod, tParameter::refractPeriod  );
+	resetParameter( m_hwndTimeResolution,   tParameter::timeResolution );
+	resetParameter( m_hwndPulseSpeed,       tParameter::pulseSpeed     );
+	resetParameter( m_hwndSignalLoss,       tParameter::signalLoss     );
 }
 
 void ParameterDialog::applyParameters( )
 {
-	applyParameter( m_hwndPeakVoltage,      tParameter::peakVoltage   );
-	applyParameter( m_hwndThreshold,        tParameter::threshold     );
-	applyParameter( m_hwndPulseWidth,       tParameter::pulseWidth    );
-	applyParameter( m_hwndRefractoryPeriod, tParameter::refractPeriod );
-	applyParameter( m_hwndPulseSpeed,       tParameter::pulseSpeed    );
-	applyParameter( m_hwndSignalLoss,       tParameter::signalLoss    );
+	applyParameter( m_hwndPeakVoltage,      tParameter::peakVoltage    );
+	applyParameter( m_hwndThreshold,        tParameter::threshold      );
+	applyParameter( m_hwndPulseWidth,       tParameter::pulseWidth     );
+	applyParameter( m_hwndRefractoryPeriod, tParameter::refractPeriod  );
+	applyParameter( m_hwndTimeResolution,   tParameter::timeResolution );
+	applyParameter( m_hwndPulseSpeed,       tParameter::pulseSpeed     );
+	applyParameter( m_hwndSignalLoss,       tParameter::signalLoss     );
 }
 
 HWND ParameterDialog::createButton( HWND const hwndParent, wchar_t const * const text, int const x, int const y, int const w, int const h, HMENU const id )
@@ -119,12 +122,13 @@ void ParameterDialog::Start( HWND const hwndParent,	NNetModel * const pModel )
 	m_pNNetModel = pModel;
 
 	int iYpos { 10 };
-	m_hwndPeakVoltage      = addParameter( hwndDlg, tParameter::peakVoltage,   iYpos ); 
-	m_hwndThreshold        = addParameter( hwndDlg, tParameter::threshold,     iYpos ); 
-	m_hwndPulseWidth       = addParameter( hwndDlg, tParameter::pulseWidth,    iYpos ); 
-	m_hwndRefractoryPeriod = addParameter( hwndDlg, tParameter::refractPeriod, iYpos ); 
-	m_hwndPulseSpeed       = addParameter( hwndDlg, tParameter::pulseSpeed,    iYpos ); 
-	m_hwndSignalLoss       = addParameter( hwndDlg, tParameter::signalLoss,    iYpos ); 
+	m_hwndPeakVoltage      = addParameter( hwndDlg, tParameter::peakVoltage,    iYpos ); 
+	m_hwndThreshold        = addParameter( hwndDlg, tParameter::threshold,      iYpos ); 
+	m_hwndPulseWidth       = addParameter( hwndDlg, tParameter::pulseWidth,     iYpos ); 
+	m_hwndRefractoryPeriod = addParameter( hwndDlg, tParameter::refractPeriod,  iYpos ); 
+	m_hwndTimeResolution   = addParameter( hwndDlg, tParameter::timeResolution, iYpos ); 
+	m_hwndPulseSpeed       = addParameter( hwndDlg, tParameter::pulseSpeed,     iYpos ); 
+	m_hwndSignalLoss       = addParameter( hwndDlg, tParameter::signalLoss,     iYpos ); 
 
 	createButton( hwndDlg, L"Apply", 140, iYpos, 50, 20, (HMENU)IDD_APPLY_PARAMETERS );
 	createButton( hwndDlg, L"Reset", 200, iYpos, 50, 20, (HMENU)IDD_RESET_PARAMETERS );

@@ -60,10 +60,11 @@ void CrsrWindow::printMicroMeter
 )
 {
 	wostringstream wBuffer;
-	wBuffer << setprecision(3);
-	if ( um < 1000.0_MicroMeter )
+	MicroMeter     umAbs { abs( um.GetValue() ) };
+	wBuffer << std::fixed << setprecision(0);
+	if ( umAbs < 1000.0_MicroMeter )
 		wBuffer << um.GetValue() << L" um";
-	else if ( um < 1000000.0_MicroMeter )
+	else if ( umAbs < 1000000.0_MicroMeter )
 		wBuffer << um.GetValue() / 1000.0f << L" mm";
 	else
 		wBuffer << um.GetValue() / 1000000.0f << L" m";

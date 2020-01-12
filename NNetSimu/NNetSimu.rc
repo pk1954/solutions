@@ -33,20 +33,21 @@ IDC_NNET_SIMU_MAIN MENU
     POPUP "&Action"
     {
         MENUITEM "&Proceed single step", IDM_FORWARD
-        MENUITEM "&Run", IDM_RUN
-        MENUITEM "&Stop", IDM_STOP
+        MENUITEM "&Run",                 IDM_RUN
+        MENUITEM "&Stop",                IDM_STOP
 	}
     POPUP "&View"
     {
         POPUP "&Zoom"
         {
-            MENUITEM "Zoom &In", IDM_ZOOM_IN
+            MENUITEM "Zoom &In",  IDM_ZOOM_IN
             MENUITEM "Zoom &Out", IDM_ZOOM_OUT
         }
         POPUP "&Windows"
         {
-            MENUITEM "Show &cursor window", IDM_CRSR_WINDOW
-                MENUITEM "Show &parameter window", IDM_PARAM_WINDOW
+            MENUITEM "Show &cursor window",      IDM_CRSR_WINDOW
+            MENUITEM "Show &parameter window",   IDM_PARAM_WINDOW
+            MENUITEM "Show &performance window", IDM_PERF_WINDOW
         }
         MENUITEM "Arrows on",            IDD_ARROWS_ON
         MENUITEM "Arrows off",           IDD_ARROWS_OFF

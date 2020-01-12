@@ -83,7 +83,7 @@ NNetAppWindow::NNetAppWindow( ) :
 
 	m_pMainNNetWindow   ->SetRefreshRate( 100ms );
 	m_pCrsrWindow       ->SetRefreshRate( 100ms );
-	m_pPerformanceWindow->SetRefreshRate( 300ms );
+	m_pPerformanceWindow->SetRefreshRate( 500ms );
 };
 
 NNetAppWindow::~NNetAppWindow( )

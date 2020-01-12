@@ -114,12 +114,13 @@ void NNetWorkThreadInterface::PostSetParameter( tParameter const param, float co
 {
 	static unordered_map < tParameter, NNetWorkThreadMessage::Id const > mapParam =
 	{
-		{ tParameter::pulseSpeed,    NNetWorkThreadMessage::Id::PULSE_SPEED       },
-		{ tParameter::pulseWidth,    NNetWorkThreadMessage::Id::PULSE_WIDTH       },
-		{ tParameter::signalLoss,    NNetWorkThreadMessage::Id::DAMPING_FACTOR    },
-		{ tParameter::threshold,     NNetWorkThreadMessage::Id::THRESHOLD         },
-		{ tParameter::peakVoltage,   NNetWorkThreadMessage::Id::PEAK_VOLTAGE      },
-		{ tParameter::refractPeriod, NNetWorkThreadMessage::Id::REFRACTORY_PERIOD }
+		{ tParameter::pulseSpeed,     NNetWorkThreadMessage::Id::PULSE_SPEED       },
+		{ tParameter::pulseWidth,     NNetWorkThreadMessage::Id::PULSE_WIDTH       },
+		{ tParameter::signalLoss,     NNetWorkThreadMessage::Id::DAMPING_FACTOR    },
+		{ tParameter::threshold,      NNetWorkThreadMessage::Id::THRESHOLD         },
+		{ tParameter::peakVoltage,    NNetWorkThreadMessage::Id::PEAK_VOLTAGE      },
+    	{ tParameter::refractPeriod,  NNetWorkThreadMessage::Id::REFRACTORY_PERIOD },
+	    { tParameter::timeResolution, NNetWorkThreadMessage::Id::TIME_RESOLUTION   }
 	};				  
 
 	if ( IsTraceOn( ) )

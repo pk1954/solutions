@@ -24,13 +24,14 @@ wchar_t const * const GetParameterName( tParameter const p )
 {
 	static unordered_map < tParameter, wchar_t const * const > mapParam =
 	{
-		{ tParameter::pulseRate,     L"PulseRate"        },
-		{ tParameter::pulseSpeed,    L"PulseSpeed"       },
-		{ tParameter::pulseWidth,    L"PulseWidth"       },
-		{ tParameter::signalLoss,    L"SignalLoss"       },
-		{ tParameter::threshold,     L"Threshold"        },
-		{ tParameter::peakVoltage,   L"PeakVoltage"      },
-		{ tParameter::refractPeriod, L"RefractoryPeriod" }
+		{ tParameter::pulseRate,      L"PulseRate"        },
+		{ tParameter::pulseSpeed,     L"PulseSpeed"       },
+		{ tParameter::pulseWidth,     L"PulseWidth"       },
+		{ tParameter::signalLoss,     L"SignalLoss"       },
+		{ tParameter::threshold,      L"Threshold"        },
+		{ tParameter::peakVoltage,    L"PeakVoltage"      },
+    	{ tParameter::refractPeriod,  L"RefractoryPeriod" },
+	    { tParameter::timeResolution, L"TimeResolution"   }
 	};				  
 
 	return mapParam.at( p );
@@ -40,13 +41,14 @@ wchar_t const * const GetParameterUnit( tParameter const p )
 {
 	static unordered_map < tParameter, wchar_t const * const > mapParam =
 	{
-		{ tParameter::pulseRate,     L"Hz"    },
-		{ tParameter::pulseSpeed,    L"m/sec" },
-		{ tParameter::pulseWidth,    L"µs"    },
-		{ tParameter::signalLoss,    L"1/µm"  },
-		{ tParameter::threshold,     L"mV"    },
-		{ tParameter::peakVoltage,   L"mV"    },
-		{ tParameter::refractPeriod, L"µs"    }
+		{ tParameter::pulseRate,      L"Hz"    },
+		{ tParameter::pulseSpeed,     L"m/sec" },
+		{ tParameter::pulseWidth,     L"µs"    },
+		{ tParameter::signalLoss,     L"1/µm"  },
+		{ tParameter::threshold,      L"mV"    },
+		{ tParameter::peakVoltage,    L"mV"    },
+    	{ tParameter::refractPeriod,  L"µs"    },
+	    { tParameter::timeResolution, L"µs"    }
 	};				  
 
 	return mapParam.at( p );

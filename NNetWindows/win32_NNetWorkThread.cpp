@@ -8,7 +8,6 @@
 #include "SCRIPT.H"
 #include "Resource.h"
 #include "PixelTypes.h"
-#include "SlowMotionRatio.h"
 #include "EventInterface.h"
 #include "NNetParameters.h"
 #include "NNetReadBuffer.h"
@@ -34,39 +33,44 @@ NNetWorkThread::NNetWorkThread
 	NNetModel               * const pNNetModel,
 	BOOL                      const bAsync
 ):
-	m_pNNetModel          ( pNNetModel ),
-	m_pEventPOI           ( pEvent ),   
-	m_pObserver           ( pObserver ),   
-	m_pWorkThreadInterface( pWorkThreadInterface ),
-	m_hwndApplication     ( hwndApplication ),
-	m_bContinue           ( FALSE ),
-	m_pSlowMotionRatio    ( pSlowMotionRatio ),
-	m_pDcBuffer           ( nullptr )
+	m_pNNetModel             ( pNNetModel ),
+	m_pEventPOI              ( pEvent ),   
+	m_pModelObserver         ( pObserver ),   
+	m_pWorkThreadInterface   ( pWorkThreadInterface ),
+	m_hwndApplication        ( hwndApplication ),
+	m_bContinue              ( FALSE ),
+	m_pSlowMotionRatio       ( pSlowMotionRatio ),
+	m_pTimeResObserver       ( nullptr ),
+	m_usRealTimeSpentPerCycle( 0.0_MicroSecs )
 {
-	m_pDcBuffer = new RingBuffer( 100 );
+	m_pTimeResObserver = new TimeResObserver( this );
+	m_pNNetModel->AddParameterObserver( m_pTimeResObserver );   // notify me if parameters change
+	m_pSlowMotionRatio->RegisterObserver( m_pTimeResObserver ); // notify ne if slomo ratio changes
+	m_pTimeResObserver->Notify( TRUE );
 	StartThread( L"WorkerThread", bAsync ); 
 }
 
 NNetWorkThread::~NNetWorkThread( )
 {
-	delete m_pDcBuffer;
-	m_pDcBuffer            = nullptr;
+	delete m_pTimeResObserver;
+	m_pTimeResObserver     = nullptr;
 	m_hwndApplication      = nullptr;
 	m_pWorkThreadInterface = nullptr;
 	m_pEventPOI            = nullptr;
-	m_pObserver            = nullptr;
+	m_pModelObserver       = nullptr;
 }
 
 static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
 {
 	static unordered_map < NNetWorkThreadMessage::Id, tParameter const > mapParam =
 	{
-		{ NNetWorkThreadMessage::Id::PULSE_SPEED,       tParameter::pulseSpeed    },
-		{ NNetWorkThreadMessage::Id::PULSE_WIDTH,       tParameter::pulseWidth    },
-		{ NNetWorkThreadMessage::Id::DAMPING_FACTOR,    tParameter::signalLoss    },
-		{ NNetWorkThreadMessage::Id::THRESHOLD,         tParameter::threshold     },
-		{ NNetWorkThreadMessage::Id::PEAK_VOLTAGE,      tParameter::peakVoltage   },
-		{ NNetWorkThreadMessage::Id::REFRACTORY_PERIOD, tParameter::refractPeriod }
+		{ NNetWorkThreadMessage::Id::PULSE_SPEED,       tParameter::pulseSpeed     },
+		{ NNetWorkThreadMessage::Id::PULSE_WIDTH,       tParameter::pulseWidth     },
+		{ NNetWorkThreadMessage::Id::DAMPING_FACTOR,    tParameter::signalLoss     },
+		{ NNetWorkThreadMessage::Id::THRESHOLD,         tParameter::threshold      },
+		{ NNetWorkThreadMessage::Id::PEAK_VOLTAGE,      tParameter::peakVoltage    },
+    	{ NNetWorkThreadMessage::Id::REFRACTORY_PERIOD, tParameter::refractPeriod  },
+	    { NNetWorkThreadMessage::Id::TIME_RESOLUTION,   tParameter::timeResolution }
 	};				  
 
 	return mapParam.at( m );
@@ -81,8 +85,8 @@ void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )
 {
 	if ( dispatch( msg ) )
 	{
-		if (m_pObserver != nullptr)              // ... notify main thread, that model has changed.
-			m_pObserver->Notify( m_bContinue );  // Continue immediately, if in run mode
+		if (m_pModelObserver != nullptr)              // ... notify main thread, that model has changed.
+			m_pModelObserver->Notify( m_bContinue );  // Continue immediately, if in run mode
 	}
 	else  // Nobody could handle message
 	{
@@ -163,6 +167,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 	case NNetWorkThreadMessage::Id::PEAK_VOLTAGE:
 	case NNetWorkThreadMessage::Id::PULSE_WIDTH:       
 	case NNetWorkThreadMessage::Id::REFRACTORY_PERIOD:
+	case NNetWorkThreadMessage::Id::TIME_RESOLUTION:
 	case NNetWorkThreadMessage::Id::PULSE_SPEED:
 		m_pNNetModel->SetParameter( GetParameterType( id ), (float &)msg.lParam	);
 		break;
@@ -270,28 +275,33 @@ void NNetWorkThread::generationStop( )
 	Script::StopProcessing( );
 }
 
+void NNetWorkThread::TimeResObserver::Notify( bool const bImmediate )
+{
+	m_pNNetWorkThread->m_usRealTimeAvailPerCycle = 
+		m_pNNetWorkThread->m_pSlowMotionRatio->SimuTime2RealTime
+		( 
+			m_pNNetWorkThread->m_pNNetModel->GetTimeResolution() 
+		);
+}
+
 void NNetWorkThread::compute() 
 {
-	Ticks           ticksPerCompute;
-	MicroSecs       usPerCompute;
-	Ticks     const ticksTilStart      { m_hrTimer.GetTicksTilStart( ) };
-	MicroSecs const usTilStartRealTime { m_hrTimer.TicksToMicroSecs( ticksTilStart ) };
+	MicroSecs const usTilStartRealTime { m_hrTimer.GetMicroSecsTilStart( ) };
 	MicroSecs const usTilStartSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( usTilStartRealTime ) };
-	MicroSecs const usActualSimuTime   { m_pNNetModel->GetSimulationTime( ) };      // get actual time stamp
-	MicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };   // compute missing simulation time
-	long lCyclesTodo { CastToLong( usMissingSimuTime / TIME_RESOLUTION ) };         // compute # cycles to be computed
-	while ( lCyclesTodo-- > 0L )
+	MicroSecs const usActualSimuTime   { m_pNNetModel->GetSimulationTime( ) };                                 // get actual time stamp
+	MicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };                              // compute missing simulation time
+	MicroSecs const usSimuTimeTodo     { min( usMissingSimuTime, m_pNNetModel->GetTimeResolution() ) };        // respect time slot (resolution)
+	long      const lCyclesTodo        { CastToLong( usSimuTimeTodo / m_pNNetModel->GetTimeResolution( ) ) };  // compute # cycles to be computed
+	for ( long lRun = 0; lRun < lCyclesTodo; ++lRun )
 	{
 		m_pNNetModel->Compute();
 	}
 
-	Ticks     const ticksSpentInCompute { m_hrTimer.GetTicksTilStart( ) - ticksTilStart };
-	MicroSecs const usSpentInCompute    { m_hrTimer.TicksToMicroSecs( ticksSpentInCompute ) };
-	MicroSecs const usRealTimePerCycle  { m_pSlowMotionRatio->SimuTime2RealTime( TIME_RESOLUTION ) };
-	Ticks     const ticksPerCycle       { m_hrTimer.MicroSecsToTicks( usRealTimePerCycle ) };
-	MicroSecs const usSleepTime         { usRealTimePerCycle - usSpentInCompute };
+	MicroSecs const usSpentInCompute { m_hrTimer.GetMicroSecsTilStart( ) - usTilStartRealTime };
+	MicroSecs const usSleepTime      { m_usRealTimeAvailPerCycle - usSpentInCompute };
 	if ( usSleepTime > 10000.0_MicroSecs )
 		Sleep( 10 );
-	m_pDcBuffer->Add( usSpentInCompute / usRealTimePerCycle );
+	if ( lCyclesTodo > 0 )
+		m_usRealTimeSpentPerCycle = usSpentInCompute / CastToFloat(lCyclesTodo);
 	m_performanceObservable.NotifyAll( FALSE);
 }

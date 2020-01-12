@@ -36,6 +36,7 @@ void Add( double const dValue )
 
 double GetAverage( )
 {
+	assert( m_ringbuf->size() > 0 );
 	return m_ringbufSum / m_ringbuf->size();
 }
 

@@ -15,6 +15,10 @@ PerformanceWindow::PerformanceWindow( ) :
 { 
 }
 
+PerformanceWindow::~PerformanceWindow( )
+{
+}
+
 void PerformanceWindow::Start
 ( 
 	HWND                      const hwndParent,
@@ -24,7 +28,7 @@ void PerformanceWindow::Start
 	StartTextWindow
 	( 
 		hwndParent, 
-		PixelRect { 0_PIXEL, 0_PIXEL, 300_PIXEL, 130_PIXEL }, 
+		PixelRect { 0_PIXEL, 0_PIXEL, 300_PIXEL, 150_PIXEL }, 
 		L"PerformanceWindow", 
 		100,  // alpha
 		TRUE,
@@ -40,17 +44,33 @@ void PerformanceWindow::Stop( )
 	Show( FALSE );
 }
 
-void PerformanceWindow::printLine
+void PerformanceWindow::printMicroSecLine
 (
 	TextBuffer          & textBuf,
 	wchar_t const * const pwch1, 
-	double          const dData
+	MicroSecs       const usDuration
 )
 {
 	std::wostringstream wBuffer;
-	float fPrintValue { CastToFloat( dData * 100.0f ) };
-	wBuffer << std::fixed << std::setprecision(3) << fPrintValue << L'%';
+	float fPrintValue { usDuration.GetValue() };
+	wBuffer << std::fixed << std::setprecision(1) << fPrintValue << L" µs";
 	textBuf.printString( pwch1 );
+	textBuf.printString( L"" );
+	textBuf.printString( wBuffer.str() );
+	textBuf.nextLine   ( );
+}
+
+void PerformanceWindow::printFloatLine
+(
+	TextBuffer          & textBuf,
+	wchar_t const * const pwchBefore, 
+	float           const fPrintValue,
+	wchar_t const * const pwchAfter
+	)
+{
+	std::wostringstream wBuffer;
+	wBuffer << std::fixed << std::setprecision(1) << fPrintValue << pwchAfter;
+	textBuf.printString( pwchBefore );
 	textBuf.printString( L"" );
 	textBuf.printString( wBuffer.str() );
 	textBuf.nextLine   ( );
@@ -58,5 +78,15 @@ void PerformanceWindow::printLine
 
 void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 {      
-	printLine( textBuf, L"Duty cycle: ", m_pNNetWorkThreadInterface->GetDutyCycle( ) );
+	MicroSecs simuTime { m_pNNetWorkThreadInterface->GetSimulationTime( ) };
+	MicroSecs realTime { m_pNNetWorkThreadInterface->GetRealTimeTilStart( ) };
+	MicroSecs avail    { m_pNNetWorkThreadInterface->GetTimeAvailPerCycle( ) };
+	MicroSecs spent    { m_pNNetWorkThreadInterface->GetTimeSpentPerCycle( ) };
+	printMicroSecLine( textBuf, L"simu time res:", m_pNNetWorkThreadInterface->GetSimuTimeResolution( ) );
+	printFloatLine   ( textBuf, L"targ slowmo:", m_pNNetWorkThreadInterface->GetSlowMotionRatio( ), L"" );
+	printMicroSecLine( textBuf, L"avail time:", avail );
+	printMicroSecLine( textBuf, L"spent time:", spent );
+	printFloatLine   ( textBuf, L"workload:",  CastToFloat( (spent / avail) * 100.0f ), L"%" );
+	if ( simuTime > 0.0_MicroSecs )
+		printFloatLine   ( textBuf, L"effect slomo:",  CastToFloat( realTime / simuTime ), L"" );
 }

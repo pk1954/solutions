@@ -31,6 +31,7 @@ private:
 	HWND m_hwndThreshold;       
 	HWND m_hwndPulseWidth;      
 	HWND m_hwndRefractoryPeriod;
+	HWND m_hwndTimeResolution;
 	HWND m_hwndPulseSpeed; 
 	HWND m_hwndSignalLoss;
 		

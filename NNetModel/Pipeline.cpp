@@ -34,7 +34,7 @@ void Pipeline::Recalc( )
 		BaseKnot const * const pKnotStart     { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotStart ) };   
 		BaseKnot const * const pKnotEnd       { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotEnd   ) };   
 		meterPerSec      const pulseSpeed     { meterPerSec( m_pNNetModel->GetParameterValue( tParameter::pulseSpeed ) ) };
-		MicroMeter       const segmentLength  { CoveredDistance( pulseSpeed, TIME_RESOLUTION ) };
+		MicroMeter       const segmentLength  { CoveredDistance( pulseSpeed, m_pNNetModel->GetTimeResolution( ) ) };
 		MicroMeter       const pipelineLength { Distance( pKnotStart->GetPosition(), pKnotEnd->GetPosition() ) };
 		unsigned int     const iNrOfSegments  { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
 

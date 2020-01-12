@@ -8,13 +8,13 @@
 #include "RingBuffer.h"
 #include "Observable.h"
 #include "NNetModel.h"
+#include "SlowMotionRatio.h"
 #include "win32_thread.h"
 
 class ActionTimer;
 class RootWindow;
 class WinManager;
 class EventInterface;
-class SlowMotionRatio;
 class NNetHistorySysGlue;
 class NNetWorkThreadInterface;
 
@@ -40,7 +40,8 @@ public:
 	    THRESHOLD,
 	    PEAK_VOLTAGE, 
 	    PULSE_WIDTH,         
-        REFRACTORY_PERIOD,
+		REFRACTORY_PERIOD,
+		TIME_RESOLUTION,
 		MOVE_SHAPE,
 		SLOW_MOTION_CHANGED,
 		NEW_NEURON,
@@ -82,9 +83,14 @@ public:
 	virtual void ThreadStartupFunc( );
 	virtual void ThreadMsgDispatcher( MSG const );
 
+	BOOL      IsRunning()              const { return m_bContinue; }
 
-	BOOL   IsRunning()    const { return m_bContinue; }
-	double GetDutyCycle() const { return m_pDcBuffer->GetAverage(); }
+	MicroSecs GetTimeSpentPerCycle ( ) const { return m_usRealTimeSpentPerCycle; }
+	MicroSecs GetTimeAvailPerCycle ( ) const { return m_usRealTimeAvailPerCycle; }
+	MicroSecs GetSimuTimeResolution( ) const { return m_pNNetModel->GetTimeResolution( ); }
+	MicroSecs GetSimulationTime    ( ) const { return m_pNNetModel->GetSimulationTime( ); }
+	MicroSecs GetRealTimeTilStart  ( ) const { return m_hrTimer.GetMicroSecsTilStart( ); }
+	float     GetSlowMotionRatio   ( ) const { return m_pSlowMotionRatio->GetRatio( ); }
 
 	void Continue( )
 	{
@@ -102,6 +108,19 @@ public:
 		m_performanceObservable.RegisterObserver( pObserver );
 	}
 
+	class TimeResObserver : public ObserverInterface
+	{
+	public:
+		TimeResObserver( NNetWorkThread * const pNNetWorkThread )
+			: m_pNNetWorkThread( pNNetWorkThread )
+		{}
+
+		virtual void Notify( bool const );
+
+	private:
+		NNetWorkThread * const m_pNNetWorkThread;
+	};
+
 private:
 
 	void compute();
@@ -111,14 +130,16 @@ private:
 	bool actionCommand( NNetWorkThreadMessage::Id const, ShapeId const, MicroMeterPoint const & );
 
 	EventInterface          * m_pEventPOI;
-	ObserverInterface       * m_pObserver;
 	NNetWorkThreadInterface * m_pWorkThreadInterface;
 	BOOL                      m_bContinue;
 	HWND                      m_hwndApplication;
 	NNetModel               * m_pNNetModel;
 	SlowMotionRatio         * m_pSlowMotionRatio;
 	HiResTimer                m_hrTimer;
-	RingBuffer              * m_pDcBuffer;
 	Observable                m_runObservable;
 	Observable                m_performanceObservable;
+	TimeResObserver         * m_pTimeResObserver;
+	ObserverInterface       * m_pModelObserver;
+	MicroSecs                 m_usRealTimeAvailPerCycle;
+	MicroSecs                 m_usRealTimeSpentPerCycle;
 };
