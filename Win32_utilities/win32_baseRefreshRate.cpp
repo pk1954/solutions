@@ -24,6 +24,7 @@ BaseRefreshRate::~BaseRefreshRate( )
 void BaseRefreshRate::SetRefreshRate( milliseconds const msRate ) 
 { 
 	m_msRefreshRate = msRate; 
+	deleteTimer( );
 }
 
 milliseconds BaseRefreshRate::GetRefreshRate( )
@@ -56,6 +57,8 @@ void BaseRefreshRate::RefreshRateDialog( HWND const hwnd )
 		L"Refresh Rate",
 		L"milliseconds"
 	);
+	if ( dNewValue < 100.0 )
+		dNewValue = 100.0;
 	SetRefreshRate( static_cast<milliseconds>(static_cast<long long>(dNewValue)) );
 }
 
@@ -80,20 +83,16 @@ void BaseRefreshRate::deleteTimer( )
 	{
 		HANDLE handle = m_hTimer;
 		m_hTimer = nullptr;
-		(void)DeleteTimerQueueTimer( nullptr, handle, 0 );
+		(void)DeleteTimerQueueTimer( nullptr, handle, INVALID_HANDLE_VALUE );
 	}
+	m_bTimerActive = FALSE;
 }
 
 void CALLBACK BaseRefreshRate::TimerProc( void * const lpParam, BOOL const TimerOrWaitFired )
 {
 	BaseRefreshRate * const pRefreshRate = reinterpret_cast<BaseRefreshRate *>( lpParam );
 	if ( pRefreshRate->m_bDirty )
-	{
 		pRefreshRate->trigger( );
-	}
 	else
-	{
 		pRefreshRate->deleteTimer( );
-		pRefreshRate->m_bTimerActive = FALSE;
-	}
 }

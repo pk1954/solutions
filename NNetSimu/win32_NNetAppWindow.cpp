@@ -129,7 +129,7 @@ void NNetAppWindow::Start( )
 
 	m_pNNetReadBuffer->RegisterObserver( m_pMainNNetWindow );
 
-	m_pMainNNetWindow->ShowRefreshRateDlg( false );
+//	m_pMainNNetWindow->ShowRefreshRateDlg( false );
 
 	m_NNetWorkThreadInterface.Start
 	( 

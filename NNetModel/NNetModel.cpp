@@ -163,6 +163,7 @@ float const NNetModel::GetParameterValue( tParameter const param ) const
 		case tParameter::peakVoltage:	 return m_peakVoltage.GetValue();
 		case tParameter::refractPeriod:  return m_refractPeriod.GetValue();
 		case tParameter::timeResolution: return m_usResolution.GetValue();
+		case tParameter::signalLoss:     return 0.0f;  // not used, only for compaitibility reasons
 		default: assert( false );
 	}
 	return 0.f;
@@ -191,6 +192,7 @@ void NNetModel::SetParameter
 		case tParameter::peakVoltage:	 m_peakVoltage   = static_cast< mV >         ( fNewValue ); break;
 		case tParameter::refractPeriod:	 m_refractPeriod = static_cast< MicroSecs >  ( fNewValue ); break;
 		case tParameter::timeResolution: m_usResolution  = static_cast< MicroSecs >  ( fNewValue ); break;
+		case tParameter::signalLoss: /* not used, only for compaitibility reasons */               break;
 		default: assert( false );
 	}
 	RecalcPipelines( );

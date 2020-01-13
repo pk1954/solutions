@@ -98,8 +98,7 @@ void Pipeline::Step( )
 
 mV Pipeline::GetNextOutput( ) const
 {
-	assert( m_potential.size() > 0 );
-	return m_potential.back();
+	return * m_potIter;
 }
 
 bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const
