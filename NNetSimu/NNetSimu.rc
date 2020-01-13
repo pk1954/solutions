@@ -49,14 +49,19 @@ IDC_NNET_SIMU_MAIN MENU
             MENUITEM "Show &parameter window",   IDM_PARAM_WINDOW
             MENUITEM "Show &performance window", IDM_PERF_WINDOW
         }
-        MENUITEM "Arrows on",            IDD_ARROWS_ON
-        MENUITEM "Arrows off",           IDD_ARROWS_OFF
-        MENUITEM "Window &refresh rate", IDD_REFRESH_RATE_DIALOG
     }
     POPUP "&Options"
     {
-        MENUITEM "&Sound on", IDD_SOUND_ON
-        MENUITEM "&Sound off", IDD_SOUND_OFF
+         POPUP "&Arrows"
+        {
+            MENUITEM "o&n",  IDD_ARROWS_ON
+            MENUITEM "o&ff", IDD_ARROWS_OFF
+        }
+        POPUP "&Sound"
+        {
+            MENUITEM "o&n",  IDD_SOUND_ON
+            MENUITEM "o&ff", IDD_SOUND_OFF
+        }
     }
     POPUP "&Help"
     {
