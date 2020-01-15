@@ -79,12 +79,22 @@ public:
 	
 	ShapeId const GetStartKnot( ShapeId const idPipeline ) const 
 	{ 
-		return GetConstTypedShape<Pipeline>( idPipeline )->GetStartKnot(); 
+		return GetStartKnotPtr( idPipeline )->GetId(); 
 	}
 
 	ShapeId const GetEndKnot( ShapeId const idPipeline ) const 
 	{ 
-		return GetConstTypedShape<Pipeline>( idPipeline )->GetEndKnot(); 
+		return GetEndKnotPtr( idPipeline )->GetId(); 
+	}
+
+	BaseKnot * const GetStartKnotPtr( ShapeId const idPipeline ) const 
+	{ 
+		return GetConstTypedShape<Pipeline>( idPipeline )->GetStartKnotPtr(); 
+	}
+
+	BaseKnot * const GetEndKnotPtr( ShapeId const idPipeline ) const 
+	{ 
+		return GetConstTypedShape<Pipeline>( idPipeline )->GetEndKnotPtr(); 
 	}
 
 	size_t const GetNrOfOutgoingConnections( ShapeId const ) const;

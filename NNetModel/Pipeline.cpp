@@ -19,24 +19,22 @@ MicroMeter Pipeline::m_arrowSize { STD_ARROW_SIZE };
 
 Pipeline::Pipeline( NNetModel * pModel, MicroMeterPoint const umUnused )
   :	Shape( pModel, tShapeType::pipeline ),
-	m_idKnotStart   ( NO_SHAPE ),
-	m_idKnotEnd     ( NO_SHAPE ),
-	m_width         ( PIPELINE_WIDTH ),
-	m_potential     ( ),
-	m_potIter       ( )
+	m_pKnotStart ( nullptr ),
+	m_pKnotEnd   ( nullptr ),
+	m_width      ( PIPELINE_WIDTH ),
+	m_potential  ( ),
+	m_potIter    ( )
 {
 }
 
 void Pipeline::Recalc( )
 {
-	if ( ::IsDefined(m_idKnotStart) && ::IsDefined(m_idKnotEnd) )
+	if ( m_pKnotStart && m_pKnotEnd )
 	{
-		BaseKnot const * const pKnotStart     { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotStart ) };   
-		BaseKnot const * const pKnotEnd       { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotEnd   ) };   
-		meterPerSec      const pulseSpeed     { meterPerSec( m_pNNetModel->GetParameterValue( tParameter::pulseSpeed ) ) };
-		MicroMeter       const segmentLength  { CoveredDistance( pulseSpeed, m_pNNetModel->GetTimeResolution( ) ) };
-		MicroMeter       const pipelineLength { Distance( pKnotStart->GetPosition(), pKnotEnd->GetPosition() ) };
-		unsigned int     const iNrOfSegments  { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
+		meterPerSec  const pulseSpeed    { meterPerSec( m_pNNetModel->GetParameterValue( tParameter::pulseSpeed ) ) };
+		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pNNetModel->GetTimeResolution( ) ) };
+		MicroMeter   const pipelineLength{ Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
+		unsigned int const iNrOfSegments { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
 
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_potIter = m_potential.begin();
@@ -46,14 +44,14 @@ void Pipeline::Recalc( )
 void Pipeline::SetStartKnot( ShapeId const id )
 {
 	assert( m_pNNetModel->IsType<BaseKnot>( id ) );
-	m_idKnotStart = id;
+	m_pKnotStart = m_pNNetModel->GetTypedShape<BaseKnot>( id );
 	Recalc( );
 }
 
 void Pipeline::SetEndKnot( ShapeId const id )
 {
 	assert( m_pNNetModel->IsType<BaseKnot>( id ) );
-	m_idKnotEnd = id;
+	m_pKnotEnd = m_pNNetModel->GetTypedShape<BaseKnot>( id );
 	Recalc( );
 }
 
@@ -67,38 +65,17 @@ void Pipeline::dislocate( ShapeId const idBaseKnot, MicroMeter const dislocation
 
 MicroMeterPoint Pipeline::GetStartPoint( ) const 
 { 
-	BaseKnot const * const pKnotStart { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotStart ) };
-	return pKnotStart ? pKnotStart->GetPosition() : MicroMeterPoint::NULL_VAL(); 
+	return m_pKnotStart ? m_pKnotStart->GetPosition() : MicroMeterPoint::NULL_VAL(); 
 }
 
 MicroMeterPoint Pipeline::GetEndPoint( ) const 
 { 
-	BaseKnot const * const pKnotEnd { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotEnd ) };   
-	return pKnotEnd ? pKnotEnd->GetPosition() : MicroMeterPoint::NULL_VAL();
+	return m_pKnotEnd ? m_pKnotEnd->GetPosition() : MicroMeterPoint::NULL_VAL();
 }
 
 MicroMeter Pipeline::GetLength( ) const
 {
 	return Distance( GetStartPoint( ), GetEndPoint( ) );
-}
-
-void Pipeline::Prepare( )
-{
-	if ( auto pKnotStart { m_pNNetModel->GetConstTypedShape<BaseKnot>( m_idKnotStart ) } )
-		m_mVinputBuffer = pKnotStart->GetNextOutput( );
-}
-
-void Pipeline::Step( )
-{
-	* m_potIter = m_mVinputBuffer;
-	if ( m_potIter == m_potential.begin() )
-		m_potIter = m_potential.end( );
-	-- m_potIter;
-}
-
-mV Pipeline::GetNextOutput( ) const
-{
-	return * m_potIter;
 }
 
 bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const

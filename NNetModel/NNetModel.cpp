@@ -296,8 +296,8 @@ void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 	{
 	case tShapeType::pipeline:
 	{
-		GetTypedShape<BaseKnot>( GetStartKnot( id ) )->MoveShape( delta );
-		GetTypedShape<BaseKnot>( GetEndKnot  ( id ) )->MoveShape( delta );
+		GetStartKnotPtr( id )->MoveShape( delta );
+		GetEndKnotPtr  ( id )->MoveShape( delta );
 		break;
 	}
 
@@ -439,11 +439,9 @@ void NNetModel::checkConsistency( Shape const * pShape ) const
 		{
 			Pipeline const * pPipeline { static_cast<Pipeline const *>( pShape ) };
 			assert( pPipeline );
-			Shape const * const pStart { GetConstShape( pPipeline->GetStartKnot() ) };
-			Shape const * const pEnd   { GetConstShape( pPipeline->GetEndKnot() ) };
-			if ( pStart )
+			if ( Shape const * const pStart { pPipeline->GetStartKnotPtr() } )
 				assert( IsBaseKnotType( pStart->GetShapeType() ) );
-			if ( pEnd )
+			if ( Shape const * const pEnd   { pPipeline->GetEndKnotPtr() } )
 				assert( IsBaseKnotType( pEnd->GetShapeType() ) );
 			break;
 		}
@@ -542,17 +540,16 @@ void NNetModel::deletePipeline( ShapeId const id )
 	if ( IsDefined( id ) )
 	{
 		Pipeline * pPipelineToBeDeleted { GetTypedShape<Pipeline>( id ) };
-		ShapeId    idStartKnot { pPipelineToBeDeleted->GetStartKnot() };
-		BaseKnot * pStartKnot  { GetTypedShape<BaseKnot>( idStartKnot ) };
+
+		BaseKnot * pStartKnot  { pPipelineToBeDeleted->GetStartKnotPtr() };
 		pStartKnot->RemoveOutgoing( pPipelineToBeDeleted );
 		if ( pStartKnot->IsOrphanedKnot( ) && ( pStartKnot->GetShapeType( ) == tShapeType::knot ) )
-			deleteShape( idStartKnot );
+			deleteShape( pStartKnot->GetId() );
 
-		ShapeId    idEndKnot { pPipelineToBeDeleted->GetEndKnot() };
-		BaseKnot * pEndKnot  { GetTypedShape<BaseKnot>( idEndKnot ) };
+		BaseKnot * pEndKnot   { pPipelineToBeDeleted->GetEndKnotPtr() };
 		pEndKnot->RemoveIncoming( pPipelineToBeDeleted );
 		if ( pEndKnot->IsOrphanedKnot( ) && ( pEndKnot->GetShapeType( ) == tShapeType::knot ) )
-			deleteShape( idEndKnot );
+			deleteShape( pEndKnot->GetId() );
 
 		deleteShape( id );
 	}
@@ -562,8 +559,7 @@ void NNetModel::insertBaseKnot( Pipeline * const pPipeline, BaseKnot * const pBa
 {
 	if ( pPipeline && pBaseKnot )
 	{
-		ShapeId    const idStartKnot { pPipeline->GetStartKnot() };
-		BaseKnot * const pStartKnot  { GetTypedShape<BaseKnot>( idStartKnot ) };
+		BaseKnot * const pStartKnot { pPipeline->GetStartKnotPtr( ) };
 		NewPipeline( pStartKnot, pBaseKnot );
 		pStartKnot->RemoveOutgoing( pPipeline );
 		connectOutgoing( pPipeline, pBaseKnot );

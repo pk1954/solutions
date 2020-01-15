@@ -10,13 +10,13 @@
 #include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "Shape.h"
+#include "BaseKnot.h"
 #include "Segment.h"
 
 using std::vector;
 
 class GraphicsInterface;
 class PixelCoordsFp;
-class BaseKnot;
 
 class Pipeline : public Shape
 {
@@ -34,8 +34,11 @@ public:
 
 	void Recalc( );
 
-	ShapeId    GetStartKnot   ( ) const { return m_idKnotStart;  }
-	ShapeId    GetEndKnot     ( ) const { return m_idKnotEnd;    }
+	BaseKnot * const GetStartKnotPtr( ) const { return m_pKnotStart; }
+	BaseKnot * const GetEndKnotPtr  ( ) const { return m_pKnotEnd;   }
+
+	ShapeId    GetStartKnot   ( ) const { return m_pKnotStart->GetId();  }
+	ShapeId    GetEndKnot     ( ) const { return m_pKnotEnd->GetId();    }
 	size_t     GetNrOfSegments( ) const { return m_potential.size(); }
 	MicroMeter GetWidth       ( ) const { return m_width; }
 
@@ -44,9 +47,21 @@ public:
 	MicroMeter      GetLength    ( ) const;
 	MicroMeterPoint GetVector    ( ) const; 
 
-	virtual void Step          ( );
-	virtual void Prepare       ( );
-	virtual mV   GetNextOutput ( ) const;
+	virtual void Prepare( )
+	{
+		m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
+	}
+
+	virtual void Step( )
+	{
+		* m_potIter = m_mVinputBuffer;
+		if ( m_potIter == m_potential.begin() )
+			m_potIter = m_potential.end( );
+		-- m_potIter;
+	}
+
+	virtual mV GetNextOutput( ) const {	return * m_potIter; }
+
 	virtual void DrawExterior  ( PixelCoordsFp  &, tHighlightType const ) const;
 	virtual void DrawInterior  ( PixelCoordsFp  & ) const;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
@@ -65,8 +80,8 @@ private:
 
 	typedef vector<mV> tPotentialVector;
 
-	ShapeId                    m_idKnotStart;
-	ShapeId                    m_idKnotEnd;
+	BaseKnot                 * m_pKnotStart;
+	BaseKnot                 * m_pKnotEnd;
 	MicroMeter                 m_width;
 	tPotentialVector           m_potential;
 	tPotentialVector::iterator m_potIter;
