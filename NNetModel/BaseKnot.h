@@ -46,12 +46,12 @@ public:
 
 	bool IsPointInShape( MicroMeterPoint const & ) const;
 
-	void AddIncoming    ( ShapeId const );
-	void AddOutgoing    ( ShapeId const );
+	void AddIncoming    ( Pipeline * const );
+	void AddOutgoing    ( Pipeline * const );
 	void RemoveIncoming ( Pipeline * const );
 	void RemoveOutgoing ( Pipeline * const );
-	void ReplaceIncoming( ShapeId const, ShapeId const );
-	void ReplaceOutgoing( ShapeId const, ShapeId const );
+	void ReplaceIncoming( Pipeline * const, Pipeline * const );
+	void ReplaceOutgoing( Pipeline * const, Pipeline * const );
 
 	bool   HasIncoming( )                const { return ! m_incoming.empty(); }
 	bool   HasOutgoing( )                const { return ! m_outgoing.empty(); }
@@ -67,58 +67,58 @@ public:
 	bool IsPrecursorOf( ShapeId const );
 	bool IsSuccessorOf( ShapeId const );
 
-	ShapeId const GetAxon( ) const
+	Pipeline * const GetAxon( ) const
 	{
 		assert( m_outgoing.size() == 1 );
 		return m_outgoing.front();
 	}
 
-	void Apply2AllIncomingPipelines( function<void(ShapeId &)> const & func )
+	void Apply2AllIncomingPipelines( function<void(Pipeline * const)> const & func )
 	{
-		for ( auto & id : m_incoming )
+		for ( auto & pipe : m_incoming )
 		{
-			if ( ::IsDefined( id ) )
-				func( id );
+			if ( pipe )
+				func( pipe );
 		}
 	}
 
-	void Apply2AllOutgoingPipelines( function<void(ShapeId &)> const & func )
+	void Apply2AllOutgoingPipelines( function<void(Pipeline * const)> const & func )
 	{
-		for ( auto & id : m_outgoing )
+		for ( auto & pipe : m_outgoing )
 		{
-			if ( ::IsDefined( id ) )
-				func( id );
+			if ( pipe )
+				func( pipe );
 		}
 	}
 
-	void Apply2AllIncomingPipelinesConst( function<void(ShapeId const)> const & func ) const
+	void Apply2AllIncomingPipelinesConst( function<void(Pipeline const * const)> const & func ) const
 	{
-		for ( auto id : m_incoming )
+		for ( auto pipe : m_incoming )
 		{
-			if ( ::IsDefined( id ) )
-				func( id );
+			if ( pipe )
+				func( pipe );
 		}
 	}
 
-	void Apply2AllOutgoingPipelinesConst( function<void(ShapeId const)> const & func ) const
+	void Apply2AllOutgoingPipelinesConst( function<void(Pipeline const * const)> const & func ) const
 	{
-		for ( auto id : m_outgoing )
+		for ( auto pipe : m_outgoing )
 		{
-			if ( ::IsDefined( id ) )
-				func( id );
+			if ( pipe )
+				func( pipe );
 		}
 	}
 
-	void Apply2AllConnectedPipelines( function<void(ShapeId &)> const & func )
+	void Apply2AllConnectedPipelines( function<void(Pipeline const *)> const & func )
 	{
-		Apply2AllIncomingPipelines( [&]( ShapeId & idPipeline ) { func( idPipeline ); } );
-		Apply2AllOutgoingPipelines( [&]( ShapeId & idPipeline ) { func( idPipeline ); } );
+		Apply2AllIncomingPipelines( [&]( Pipeline const * pipe ) { func( pipe ); } );
+		Apply2AllOutgoingPipelines( [&]( Pipeline const * pipe ) { func( pipe ); } );
 	}
 
-	void Apply2AllConnectedPipelinesConst( function<void(ShapeId const)> const & func ) const
+	void Apply2AllConnectedPipelinesConst( function<void(Pipeline const * const)> const & func ) const
 	{
-		Apply2AllIncomingPipelinesConst( [&]( ShapeId idPipeline ) { func( idPipeline ); } );
-		Apply2AllOutgoingPipelinesConst( [&]( ShapeId idPipeline ) { func( idPipeline ); } );
+		Apply2AllIncomingPipelinesConst( [&]( Pipeline const * const pipe ) { func( pipe ); } );
+		Apply2AllOutgoingPipelinesConst( [&]( Pipeline const * const pipe ) { func( pipe ); } );
 	}
 
 	virtual void MoveShape( MicroMeterPoint const & );
@@ -127,8 +127,8 @@ public:
 
 protected:
 
-	vector<ShapeId> m_incoming;
-	vector<ShapeId> m_outgoing;
+	vector<Pipeline *> m_incoming;
+	vector<Pipeline *> m_outgoing;
 
 	void drawCircle( PixelCoordsFp const &, COLORREF const, MicroMeterPoint const, MicroMeter const ) const;
 	void drawCircle( PixelCoordsFp const &, COLORREF const, MicroMeter const ) const;

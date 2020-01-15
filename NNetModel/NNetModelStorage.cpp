@@ -65,11 +65,13 @@ public:
 			BaseKnot * const pStart    { m_pModel->GetTypedShape<BaseKnot>( idStart ) };
 			BaseKnot * const pEnd      { m_pModel->GetTypedShape<BaseKnot>( idEnd   ) };
 
-			pStart->AddOutgoing( idFromScript );
-			pPipeline->SetStartKnot( idStart );
+			pPipeline->SetId( idFromScript );
 
-			pEnd->AddIncoming( idFromScript );
-			pPipeline->SetEndKnot( idEnd );
+			pStart->AddOutgoing( pPipeline );
+			pPipeline->SetStartKnot( pStart );
+
+			pEnd->AddIncoming( pPipeline );
+			pPipeline->SetEndKnot( pEnd );
 
 			pShape = pPipeline;
 		}
@@ -293,7 +295,7 @@ void NNetModelStorage::Write( wostream & out )
 void NNetModelStorage::WritePipeline( wostream & out, Shape const & shape )
 {
 	Pipeline const & pipe { static_cast<Pipeline const &>( shape ) };
-	out << getCompactIdVal( pipe.GetStartKnot() ) << L"->" << getCompactIdVal( pipe.GetEndKnot() ) ;
+	out << getCompactIdVal( pipe.GetStartKnotId() ) << L"->" << getCompactIdVal( pipe.GetEndKnotId() ) ;
 }
 
 void NNetModelStorage::WriteMicroMeterPoint( wostream & out, MicroMeterPoint const & pnt )

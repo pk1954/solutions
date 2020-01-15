@@ -77,12 +77,12 @@ public:
 	bool            const HasModelChanged( )                           const { return m_bUnsavedChanges; }
 	MicroSecs       const GetTimeResolution( )                         const { return m_usResolution; }
 	
-	ShapeId const GetStartKnot( ShapeId const idPipeline ) const 
+	ShapeId const GetStartKnotId( ShapeId const idPipeline ) const 
 	{ 
 		return GetStartKnotPtr( idPipeline )->GetId(); 
 	}
 
-	ShapeId const GetEndKnot( ShapeId const idPipeline ) const 
+	ShapeId const GetEndKnotId( ShapeId const idPipeline ) const 
 	{ 
 		return GetEndKnotPtr( idPipeline )->GetId(); 
 	}

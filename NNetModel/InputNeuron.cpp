@@ -57,7 +57,7 @@ void InputNeuron::drawInputNeuron
 	{
 		m_outgoing.empty( )
 		? MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
-	    : m_pNNetModel->GetConstTypedShape<Pipeline>( * m_outgoing.begin() )->GetVector( )
+	    : (* m_outgoing.begin())->GetVector( )
 	};
 	MicroMeter      const umHypot    { Hypot( axonVector ) };
 	MicroMeterPoint const umExtVector{ axonVector * (GetExtension() / umHypot) };

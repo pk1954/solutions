@@ -41,17 +41,15 @@ void Pipeline::Recalc( )
 	}
 }
 
-void Pipeline::SetStartKnot( ShapeId const id )
+void Pipeline::SetStartKnot( BaseKnot * const pBaseKnot )
 {
-	assert( m_pNNetModel->IsType<BaseKnot>( id ) );
-	m_pKnotStart = m_pNNetModel->GetTypedShape<BaseKnot>( id );
+	m_pKnotStart = pBaseKnot;
 	Recalc( );
 }
 
-void Pipeline::SetEndKnot( ShapeId const id )
+void Pipeline::SetEndKnot( BaseKnot * const pBaseKnot )
 {
-	assert( m_pNNetModel->IsType<BaseKnot>( id ) );
-	m_pKnotEnd = m_pNNetModel->GetTypedShape<BaseKnot>( id );
+	m_pKnotEnd = pBaseKnot;
 	Recalc( );
 }
 

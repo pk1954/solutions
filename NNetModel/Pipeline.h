@@ -29,16 +29,17 @@ public:
 		return type == tShapeType::pipeline;
 	}
 
-	void SetStartKnot( ShapeId const );
-	void SetEndKnot  ( ShapeId const );
+	void SetStartKnot( BaseKnot * const );
+	void SetEndKnot  ( BaseKnot * const );
 
 	void Recalc( );
 
 	BaseKnot * const GetStartKnotPtr( ) const { return m_pKnotStart; }
 	BaseKnot * const GetEndKnotPtr  ( ) const { return m_pKnotEnd;   }
 
-	ShapeId    GetStartKnot   ( ) const { return m_pKnotStart->GetId();  }
-	ShapeId    GetEndKnot     ( ) const { return m_pKnotEnd->GetId();    }
+	ShapeId    GetStartKnotId ( ) const { return m_pKnotStart->GetId(); }
+	ShapeId    GetEndKnotId   ( ) const { return m_pKnotEnd  ->GetId(); }
+
 	size_t     GetNrOfSegments( ) const { return m_potential.size(); }
 	MicroMeter GetWidth       ( ) const { return m_width; }
 
@@ -66,8 +67,8 @@ public:
 	virtual void DrawInterior  ( PixelCoordsFp  & ) const;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 
-	void DislocateEndPoint  ( ) { dislocate( GetEndKnot(),    PIPELINE_WIDTH ); }
-	void DislocateStartPoint( )	{ dislocate( GetStartKnot(), -PIPELINE_WIDTH );	}
+	void DislocateEndPoint  ( ) { dislocate( GetEndKnotId(),    PIPELINE_WIDTH ); }
+	void DislocateStartPoint( )	{ dislocate( GetStartKnotId(), -PIPELINE_WIDTH );	}
 
 	static void       SetArrowSize( MicroMeter const size ) { m_arrowSize = size; }
 	static MicroMeter GetArrowSize( ) { return m_arrowSize; }

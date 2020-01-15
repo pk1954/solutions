@@ -13,8 +13,8 @@
 void Knot::Prepare( )
 {
 	m_mVinputBuffer = 0._mV;
-	for ( auto idPipeline : m_incoming )
-		m_mVinputBuffer += m_pNNetModel->GetConstTypedShape<Pipeline>( idPipeline )->GetNextOutput( );
+	for ( auto pipe : m_incoming )
+		m_mVinputBuffer += pipe->GetNextOutput( );
 }
 
 mV Knot::GetNextOutput( ) const

@@ -23,9 +23,9 @@ bool BaseKnot::IsPrecursorOf( ShapeId const id )
 
 	Apply2AllOutgoingPipelines
 	( 
-		[&]( ShapeId & idPipeline ) 
+		[&]( Pipeline const * const pipe ) 
 		{
-			if ( m_pNNetModel->GetEndKnot( idPipeline ) == id ) 
+			if ( pipe->GetEndKnotId( ) == id ) 
 				bConnectionFound = true; 
 		} 
 	);
@@ -39,9 +39,9 @@ bool BaseKnot::IsSuccessorOf( ShapeId const id )
 
 	Apply2AllIncomingPipelines
 	( 
-		[&]( ShapeId & idPipeline ) 
+		[&]( Pipeline const * const pipe ) 
 		{
-			if ( m_pNNetModel->GetStartKnot( idPipeline ) == id ) 
+			if ( pipe->GetStartKnotId( ) == id ) 
 				bConnectionFound = true; 
 		} 
 	);
@@ -49,40 +49,40 @@ bool BaseKnot::IsSuccessorOf( ShapeId const id )
 	return bConnectionFound;
 }
 
-void BaseKnot::AddIncoming( ShapeId const idPipeline )
+void BaseKnot::AddIncoming( Pipeline * const pPipeline )
 {
-	assert( find( begin(m_incoming), end(m_incoming), idPipeline ) == end(m_incoming) );
-	m_incoming.push_back( idPipeline );
+	assert( find( begin(m_incoming), end(m_incoming), pPipeline ) == end(m_incoming) );
+	m_incoming.push_back( pPipeline );
 }
 
-void BaseKnot::AddOutgoing( ShapeId const idPipeline )
+void BaseKnot::AddOutgoing( Pipeline * const pPipeline )
 {
-	assert( find( begin(m_outgoing), end(m_outgoing), idPipeline ) == end(m_outgoing) );
-	m_outgoing.push_back( idPipeline );
+	assert( find( begin(m_outgoing), end(m_outgoing), pPipeline ) == end(m_outgoing) );
+	m_outgoing.push_back( pPipeline );
 }
 
 void BaseKnot::RemoveIncoming( Pipeline * const pPipeline )
 {
-	auto res = find( begin(m_incoming), end(m_incoming), pPipeline->GetId() );
+	auto res = find( begin(m_incoming), end(m_incoming), pPipeline );
 	m_incoming.erase( res );
 }
 
 void BaseKnot::RemoveOutgoing( Pipeline * const pPipeline )
 {
-	auto res = find( begin(m_outgoing), end(m_outgoing), pPipeline->GetId() );
+	auto res = find( begin(m_outgoing), end(m_outgoing), pPipeline );
 	m_outgoing.erase( res );
 }
 
-void BaseKnot::ReplaceIncoming( ShapeId const idPipelineOld, ShapeId const idPipelineNew )
+void BaseKnot::ReplaceIncoming( Pipeline * const pPipelineOld, Pipeline * const pPipelineNew )
 {
-	assert( find( begin(m_incoming), end(m_incoming), idPipelineNew ) == end(m_incoming) );
-	* find( begin(m_incoming), end(m_incoming), idPipelineOld ) = idPipelineNew;
+	assert( find( begin(m_incoming), end(m_incoming), pPipelineNew ) == end(m_incoming) );
+	* find( begin(m_incoming), end(m_incoming), pPipelineOld ) = pPipelineNew;
 }
 
-void BaseKnot::ReplaceOutgoing( ShapeId const idPipelineOld, ShapeId const idPipelineNew )
+void BaseKnot::ReplaceOutgoing( Pipeline * const pPipelineOld, Pipeline * const pPipelineNew )
 {
-	assert( find( begin(m_outgoing), end(m_outgoing), idPipelineNew ) == end(m_outgoing) );
-	* find( begin(m_outgoing), end(m_outgoing), idPipelineOld ) = idPipelineNew;
+	assert( find( begin(m_outgoing), end(m_outgoing), pPipelineNew ) == end(m_outgoing) );
+	* find( begin(m_outgoing), end(m_outgoing), pPipelineOld ) = pPipelineNew;
 }
 
 bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
@@ -137,11 +137,11 @@ void BaseKnot::DrawNeuronText( PixelCoordsFp & coord ) const
 void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 {
 	m_center += delta;
-	for ( auto const idPipeline : m_incoming )
-		m_pNNetModel->GetTypedShape<Pipeline>( idPipeline )->Recalc( );
+	for ( auto const pipe : m_incoming )
+		pipe->Recalc( );
 
-	for ( auto const idPipeline : m_outgoing )
-		m_pNNetModel->GetTypedShape<Pipeline>( idPipeline )->Recalc( );
+	for ( auto const pipe : m_outgoing )
+		pipe->Recalc( );
 }
 
 void BaseKnot::drawCircle

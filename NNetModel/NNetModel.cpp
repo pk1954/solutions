@@ -255,17 +255,17 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 		{
 			pSrc->Apply2AllIncomingPipelines
 			( 
-				[&]( ShapeId const & idPipeline ) 
+				[&]( Pipeline * const pipe ) 
 				{ 
-					connectIncoming( GetTypedShape<Pipeline>(idPipeline), pDst );
+					connectIncoming( pipe, pDst );
 				}
 			);
 
 			pSrc->Apply2AllOutgoingPipelines
 			( 
-				[&]( ShapeId const & idPipeline ) 
+				[&]( Pipeline * const pipe ) 
 				{ 
-					connectOutgoing( GetTypedShape<Pipeline>(idPipeline), pDst );
+					connectOutgoing( pipe, pDst );
 				}
 			);
 
@@ -417,9 +417,9 @@ void NNetModel::checkConsistency( Shape const * pShape ) const
 	if ( ::IsBaseKnotType( type ) )
 		static_cast<BaseKnot const &>( * pShape ).Apply2AllConnectedPipelinesConst
 		( 
-			[&]( ShapeId const id ) 
+			[&]( Pipeline const * const pipe ) 
 			{ 
-				assert( IsType<Pipeline>( id ) ); 
+				assert( pipe->IsPipeline() ); 
 			} 
 	    );
 
@@ -457,7 +457,7 @@ void NNetModel::checkConsistency( Shape const * pShape ) const
 
 bool const NNetModel::isConnectedToPipeline( ShapeId const id, Pipeline const * const pPipeline ) const
 {
-	return (id == pPipeline->GetStartKnot()) || (id == pPipeline->GetEndKnot());
+	return (id == pPipeline->GetStartKnotId()) || (id == pPipeline->GetEndKnotId());
 }
 
 bool const NNetModel::isConnectedTo( ShapeId id1, ShapeId id2 ) const
@@ -489,8 +489,8 @@ void NNetModel::connectIncoming
 {
 	if ( pPipeline && pEndPoint )
 	{
-		pEndPoint->AddIncoming( pPipeline->GetId() );
-		pPipeline->SetEndKnot( pEndPoint->GetId() );
+		pEndPoint->AddIncoming( pPipeline );
+		pPipeline->SetEndKnot ( pEndPoint );
 	}
 }
 
@@ -502,8 +502,8 @@ void NNetModel::connectOutgoing
 {
 	if ( pPipeline && pStartPoint )
 	{
-		pStartPoint->AddOutgoing( pPipeline->GetId() );
-		pPipeline->SetStartKnot( pStartPoint->GetId() );
+		pStartPoint->AddOutgoing( pPipeline );
+		pPipeline->SetStartKnot ( pStartPoint );
 	}
 }
 
@@ -514,21 +514,19 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects 
 		MicroMeterPoint umPos { pBaseKnot->GetPosition() };
 		pBaseKnot->Apply2AllIncomingPipelines
 		( 
-			[&]( ShapeId const idPipeline ) // every incoming pipeline needs a new end knot
+			[&]( Pipeline * const pipe ) // every incoming pipeline needs a new end knot
 			{ 
-				Pipeline * pPipeline { GetTypedShape<Pipeline>( idPipeline ) }; 
-				connectIncoming( pPipeline, NewShape<Knot>( umPos ) );
-				pPipeline->DislocateEndPoint( );
+				connectIncoming( pipe, NewShape<Knot>( umPos ) );
+				pipe->DislocateEndPoint( );
 			} 
 		);
 		pBaseKnot->ClearIncoming();
 		pBaseKnot->Apply2AllOutgoingPipelines
 		( 
-			[&]( ShapeId const idPipeline ) // every outgoing pipeline needs a new start knot
+			[&]( Pipeline * const pipe ) // every outgoing pipeline needs a new start knot
 			{ 
-				Pipeline * pPipeline { GetTypedShape<Pipeline>( idPipeline ) }; 
-				connectOutgoing( pPipeline, NewShape<Knot>( umPos ) );
-				pPipeline->DislocateStartPoint( );
+				connectOutgoing( pipe, NewShape<Knot>( umPos ) );
+				pipe->DislocateStartPoint( );
 			} 
 		);
 		pBaseKnot->ClearOutgoing();

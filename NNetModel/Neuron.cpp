@@ -37,8 +37,8 @@ mV Neuron::waveFunction( MicroSecs const time ) const
 void Neuron::Prepare( )
 {
 	m_mVinputBuffer = 0._mV;
-	for ( auto idPipeline : m_incoming )
-		m_mVinputBuffer += m_pNNetModel->GetConstTypedShape<Pipeline>( idPipeline )->GetNextOutput( );
+	for ( auto pipe : m_incoming )
+		m_mVinputBuffer += pipe->GetNextOutput( );
 }
 
 void Neuron::Step( )
@@ -68,8 +68,7 @@ MicroMeterPoint Neuron::getAxonHillockPos( PixelCoordsFp & coord ) const
 	MicroMeterPoint axonHillockPos { NP_NULL };
 	if ( m_outgoing.size() > 0 )
 	{
-		ShapeId          const idAxon       { * m_outgoing.begin() };
-		Pipeline const * const pAxon        { m_pNNetModel->GetConstTypedShape<Pipeline>( idAxon ) };
+		Pipeline const * const pAxon        { * m_outgoing.begin() };
 		MicroMeterPoint  const vectorScaled { pAxon->GetVector( ) * ( GetExtension() / pAxon->GetLength( ) ) };
 		axonHillockPos = GetPosition( ) + vectorScaled * NEURON_INTERIOR;
 	}
