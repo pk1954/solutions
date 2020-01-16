@@ -149,8 +149,6 @@
       <SDLCheck>true</SDLCheck>
       <StructMemberAlignment>Default</StructMemberAlignment>
       <EnablePREfast>false</EnablePREfast>
-      <AdditionalOptions>
-      </AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

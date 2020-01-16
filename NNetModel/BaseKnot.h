@@ -39,6 +39,8 @@ public:
 
 	virtual ~BaseKnot() {}
 
+	virtual mV GetNextOutput( ) const = 0;
+
 	static bool TypeFits( tShapeType const type ) { return IsBaseKnotType( type ); }
 
 	MicroMeterPoint GetPosition( )  const { return m_center;	}

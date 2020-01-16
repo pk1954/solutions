@@ -13,7 +13,6 @@
 #include "Segment.h"
 #include "tParameter.h"
 #include "tHighlightType.h"
-#include "InputNeuron.h"
 #include "Neuron.h"
 #include "Knot.h"
 #include "Pipeline.h"
@@ -77,16 +76,6 @@ public:
 	bool            const HasModelChanged( )                           const { return m_bUnsavedChanges; }
 	MicroSecs       const GetTimeResolution( )                         const { return m_usResolution; }
 	
-	ShapeId const GetStartKnotId( ShapeId const idPipeline ) const 
-	{ 
-		return GetStartKnotPtr( idPipeline )->GetId(); 
-	}
-
-	ShapeId const GetEndKnotId( ShapeId const idPipeline ) const 
-	{ 
-		return GetEndKnotPtr( idPipeline )->GetId(); 
-	}
-
 	BaseKnot * const GetStartKnotPtr( ShapeId const idPipeline ) const 
 	{ 
 		return GetConstTypedShape<Pipeline>( idPipeline )->GetStartKnotPtr(); 
@@ -157,7 +146,7 @@ public:
 	void Connect( ShapeId const, ShapeId const );
 	void Disconnect( ShapeId const );
 	void RemoveShape( ShapeId const );
-	void RecalcPipelines( );
+	void RecalcAllShapes( );
 	void ResetModel( );
 	void ModelSaved( ) { m_bUnsavedChanges = false; }
 	void SetPulseRate( ShapeId    const, float const );

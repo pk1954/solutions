@@ -9,10 +9,11 @@
 #include "Resource.h"
 #include "PixelTypes.h"
 #include "EventInterface.h"
+#include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "NNetReadBuffer.h"
 #include "NNetModel.h"
-#include "MoreTypes.h"
+#include "InputNeuron.h"
 #include "win32_util.h"
 #include "win32_thread.h"
 #include "win32_event.h"
@@ -77,7 +78,7 @@ static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
 
 void NNetWorkThread::ThreadStartupFunc( ) 
 { 
-	SetThreadAffinityMask( 0x0002 );
+//	SetThreadAffinityMask( 0x0002 );
 }
 
 void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )

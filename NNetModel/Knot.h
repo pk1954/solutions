@@ -36,6 +36,7 @@ public:
 	virtual mV   GetNextOutput( ) const;
 	virtual void DrawExterior ( PixelCoordsFp &, tHighlightType const ) const;
 	virtual void DrawInterior ( PixelCoordsFp & ) const;
+	virtual void Recalc( ) {};
 
 	virtual void DrawNeuronText( PixelCoordsFp & ) const {};
 };

@@ -15,6 +15,7 @@ using std::wostringstream;
 
 InputNeuron::InputNeuron( NNetModel * pModel, MicroMeterPoint const upCenter )
   : Neuron( pModel, upCenter, tShapeType::inputNeuron ),
+	m_mvFactor( 0.0_mV ),
 	m_pulseFrequency( STD_PULSE_FREQ ),
 	m_pulseDuration( PulseDuration( STD_PULSE_FREQ ) )
 { }
@@ -22,28 +23,16 @@ InputNeuron::InputNeuron( NNetModel * pModel, MicroMeterPoint const upCenter )
 InputNeuron::~InputNeuron( )
 { }
 
+void InputNeuron::Recalc( )
+{
+	m_mvFactor = mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) / m_pulseDuration.GetValue() );
+}
+
 void InputNeuron::SetPulseFrequency( fHertz const freq )
 {
 	m_pulseFrequency = freq;
 	m_pulseDuration  = PulseDuration( m_pulseFrequency );
-}
-
-void InputNeuron::Prepare( )
-{
-	float fillLevel { m_timeSinceLastPulse.GetValue() / m_pulseDuration.GetValue() };
-	m_mVinputBuffer = mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) * fillLevel );
-}
-
-void InputNeuron::Step( )
-{
-	if ( m_timeSinceLastPulse >= m_pulseDuration )  
-	{
-		m_timeSinceLastPulse = 0._MicroSecs;   
-	}
-	else
-	{
-		m_timeSinceLastPulse += m_pNNetModel->GetTimeResolution( );
-	}
+	Recalc( );
 }
 
 void InputNeuron::drawInputNeuron
@@ -53,11 +42,12 @@ void InputNeuron::drawInputNeuron
 	float         const   fReductionFactor
 ) const
 {
+	Pipeline const * const pAxon { m_outgoing[0] };
 	MicroMeterPoint const axonVector
 	{
 		m_outgoing.empty( )
 		? MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
-	    : (* m_outgoing.begin())->GetVector( )
+	    : pAxon->GetVector( )
 	};
 	MicroMeter      const umHypot    { Hypot( axonVector ) };
 	MicroMeterPoint const umExtVector{ axonVector * (GetExtension() / umHypot) };

@@ -4,11 +4,12 @@
 
 #include "stdafx.h"
 #include "assert.h"
+#include <sstream> 
 #include <iomanip>
 #include "Geometry.h"
-#include "NNetModel.h"
 #include "PixelCoordsFp.h"
 #include "Direct2D.h"
+#include "Pipeline.h"
 #include "BaseKnot.h"
 
 using std::find;

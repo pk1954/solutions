@@ -15,23 +15,19 @@ using std::wostringstream;
 Neuron::Neuron( NNetModel * pModel, MicroMeterPoint const upCenter, tShapeType const type )
   : BaseKnot( pModel, upCenter, type, NEURON_RADIUS ),
 	m_timeSinceLastPulse( 0._MicroSecs )
-{ 
+{
+	Recalc();
 }
+
+void Neuron::Recalc( ) 
+{
+	m_factorW = 1.0f / m_pNNetModel->GetParameterValue( tParameter::pulseWidth );
+	m_factorU = 4.0f * m_factorW * m_pNNetModel->GetParameterValue( tParameter::peakVoltage );
+};
 
 mV Neuron::waveFunction( MicroSecs const time ) const
 {
-	assert( time >= 0._MicroSecs );
-	if ( time <= MicroSecs( m_pNNetModel->GetParameterValue( tParameter::pulseWidth ) ) )
-	{
-		float x { time.GetValue() };
-		float w { m_pNNetModel->GetParameterValue( tParameter::pulseWidth ) };
-		float p { m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) };
-		float u { 4.0f * p / w };
-		float y { u * x * ( 1.0f - x / w ) };
-		return mV( y );
-	}
-	else 
-		return BASE_POTENTIAL;
+	return mV( m_factorU * time.GetValue() * ( 1.0f - time.GetValue() * m_factorW ) );
 }
 
 void Neuron::Prepare( )
@@ -68,7 +64,7 @@ MicroMeterPoint Neuron::getAxonHillockPos( PixelCoordsFp & coord ) const
 	MicroMeterPoint axonHillockPos { NP_NULL };
 	if ( m_outgoing.size() > 0 )
 	{
-		Pipeline const * const pAxon        { * m_outgoing.begin() };
+		Pipeline const * const pAxon        { m_outgoing[0] };
 		MicroMeterPoint  const vectorScaled { pAxon->GetVector( ) * ( GetExtension() / pAxon->GetLength( ) ) };
 		axonHillockPos = GetPosition( ) + vectorScaled * NEURON_INTERIOR;
 	}

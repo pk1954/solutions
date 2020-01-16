@@ -13,6 +13,7 @@
 #include "errhndl.h"
 #include "MoreTypes.h"
 #include "NNetModel.h"
+#include "InputNeuron.h"
 #include "win32_script.h"
 #include "NNetModelStorage.h"
 

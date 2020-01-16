@@ -35,12 +35,12 @@ public:
 
 	static bool TypeFits( tShapeType const type ) {	return true; }  // every shape type is a Shape
 
-	virtual mV   GetNextOutput ( )                                       const = 0;
 	virtual void DrawExterior  ( PixelCoordsFp &, tHighlightType const ) const = 0;
 	virtual void DrawInterior  ( PixelCoordsFp & )                       const = 0;
 	virtual bool IsPointInShape( MicroMeterPoint const & )               const = 0;
 	virtual void Prepare       ( )                                             = 0;
 	virtual void Step          ( )                                             = 0;
+	virtual void Recalc        ( )                                             = 0;
 
 	bool            IsDefined   ( ) const { return ::IsDefined( m_identifier ); }
 	wchar_t const * GetName     ( ) const { return ::GetName( m_type ); }

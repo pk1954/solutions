@@ -28,6 +28,7 @@ public:
 
 	virtual void DrawExterior( PixelCoordsFp &, tHighlightType const ) const;
 	virtual void DrawInterior( PixelCoordsFp & ) const;
+	virtual void Recalc( );
 
 protected:
 	MicroSecs m_timeSinceLastPulse;
@@ -38,6 +39,8 @@ protected:
 	void drawInterior( PixelCoordsFp & ) const;
 
 private:
+	float m_factorW;
+	float m_factorU;
 
 	MicroMeterPoint getAxonHillockPos( PixelCoordsFp & ) const;
 };

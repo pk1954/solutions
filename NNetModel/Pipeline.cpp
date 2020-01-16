@@ -35,7 +35,6 @@ void Pipeline::Recalc( )
 		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pNNetModel->GetTimeResolution( ) ) };
 		MicroMeter   const pipelineLength{ Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
 		unsigned int const iNrOfSegments { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
-
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_potIter = m_potential.begin();
 	}
@@ -53,9 +52,8 @@ void Pipeline::SetEndKnot( BaseKnot * const pBaseKnot )
 	Recalc( );
 }
 
-void Pipeline::dislocate( ShapeId const idBaseKnot, MicroMeter const dislocation )
+void Pipeline::dislocate( BaseKnot * const pBaseKnot, MicroMeter const dislocation )
 { 
-	BaseKnot      * const pBaseKnot { m_pNNetModel->GetTypedShape<BaseKnot>( idBaseKnot ) };
 	MicroMeterPoint const umVector  { GetVector( ) };
 	MicroMeterPoint const umNewPnt  { OrthoVector( umVector, dislocation ) };
 	pBaseKnot->MoveShape( umNewPnt );

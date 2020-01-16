@@ -32,8 +32,6 @@ public:
 	void SetStartKnot( BaseKnot * const );
 	void SetEndKnot  ( BaseKnot * const );
 
-	void Recalc( );
-
 	BaseKnot * const GetStartKnotPtr( ) const { return m_pKnotStart; }
 	BaseKnot * const GetEndKnotPtr  ( ) const { return m_pKnotEnd;   }
 
@@ -61,14 +59,15 @@ public:
 		-- m_potIter;
 	}
 
-	virtual mV GetNextOutput( ) const {	return * m_potIter; }
+	mV GetNextOutput( ) const {	return * m_potIter; }
 
 	virtual void DrawExterior  ( PixelCoordsFp  &, tHighlightType const ) const;
 	virtual void DrawInterior  ( PixelCoordsFp  & ) const;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
+	virtual void Recalc( );
 
-	void DislocateEndPoint  ( ) { dislocate( GetEndKnotId(),    PIPELINE_WIDTH ); }
-	void DislocateStartPoint( )	{ dislocate( GetStartKnotId(), -PIPELINE_WIDTH );	}
+	void DislocateEndPoint  ( ) { dislocate( GetEndKnotPtr(),    PIPELINE_WIDTH ); }
+	void DislocateStartPoint( )	{ dislocate( GetStartKnotPtr(), -PIPELINE_WIDTH );	}
 
 	static void       SetArrowSize( MicroMeter const size ) { m_arrowSize = size; }
 	static MicroMeter GetArrowSize( ) { return m_arrowSize; }
@@ -87,7 +86,7 @@ private:
 	tPotentialVector           m_potential;
 	tPotentialVector::iterator m_potIter;
 
-	void dislocate( ShapeId const, MicroMeter const );
+	void dislocate( BaseKnot * const, MicroMeter const );
 	void drawSegment( fPixelPoint &, fPixelPoint const, fPIXEL const, mV const ) const;
 };
 

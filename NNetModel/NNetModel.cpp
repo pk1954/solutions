@@ -27,14 +27,14 @@ bool             NNetModel::m_bCritSectReady = false;
 
 NNetModel::NNetModel( )
   : m_Shapes( ),
-	m_timeStamp       ( 0._MicroSecs ),
-	m_threshold       ( 20._mV ),
-	m_peakVoltage     ( 10._mV ),
-	m_pulseWidth      ( 2000._MicroSecs ),
-	m_refractPeriod   ( 500._MicroSecs ),
-	m_pulseSpeed      ( 0.1_meterPerSec ),
-	m_usResolution    ( 100._MicroSecs ),
-	m_bUnsavedChanges ( false )
+	m_timeStamp      ( 0._MicroSecs ),
+	m_threshold      ( 20._mV ),
+	m_peakVoltage    ( 10._mV ),
+	m_pulseWidth     ( 2000._MicroSecs ),
+	m_refractPeriod  ( 500._MicroSecs ),
+	m_pulseSpeed     ( 0.1_meterPerSec ),
+	m_usResolution   ( 100._MicroSecs ),
+	m_bUnsavedChanges( false )
 {					
 	if ( ! m_bCritSectReady )
 	{
@@ -63,9 +63,9 @@ void NNetModel::CreateInitialShapes( )
 	NewPipeline( pInputNeuron, pNeuron );
 }
 
-void NNetModel::RecalcPipelines( ) 
+void NNetModel::RecalcAllShapes( ) 
 { 
-	Apply2All<Pipeline>( [&]( Pipeline & pipe ) { pipe.Recalc( ); } );
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); } );
 } 
 
 long const NNetModel::GetNrOfShapes( ) const
@@ -192,10 +192,10 @@ void NNetModel::SetParameter
 		case tParameter::peakVoltage:	 m_peakVoltage   = static_cast< mV >         ( fNewValue ); break;
 		case tParameter::refractPeriod:	 m_refractPeriod = static_cast< MicroSecs >  ( fNewValue ); break;
 		case tParameter::timeResolution: m_usResolution  = static_cast< MicroSecs >  ( fNewValue ); break;
-		case tParameter::signalLoss: /* not used, only for compaitibility reasons */               break;
+		case tParameter::signalLoss: /* not used, only for compaitibility reasons */                break;
 		default: assert( false );
 	}
-	RecalcPipelines( );
+	RecalcAllShapes( );
 	m_parameterObservable.NotifyAll( FALSE );
 }
 
