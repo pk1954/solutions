@@ -176,7 +176,6 @@
     <ClInclude Include="win32_performanceWindow.h" />
     <ClInclude Include="win32_scale.h" />
     <ClInclude Include="win32_scriptHook.h" />
-    <ClInclude Include="win32_sound.h" />
     <ClInclude Include="win32_status.h" />
   </ItemGroup>
   <ItemGroup>
@@ -191,7 +190,6 @@
     <ClCompile Include="win32_parameterDlg.cpp" />
     <ClCompile Include="win32_performanceWindow.cpp" />
     <ClCompile Include="win32_scale.cpp" />
-    <ClCompile Include="win32_sound.cpp" />
     <ClCompile Include="win32_status.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

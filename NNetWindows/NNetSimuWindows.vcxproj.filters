@@ -45,9 +45,6 @@
     <ClInclude Include="AnimationThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_sound.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_messagePump.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -96,9 +93,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_scale.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_messagePump.cpp">

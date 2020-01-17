@@ -21,9 +21,6 @@
     <ClInclude Include="win32_baseWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_clut.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_hiResTimer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -66,9 +63,6 @@
     <ClInclude Include="win32_util_resource.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="win32_graphicsInterface.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_tooltip.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -96,12 +90,15 @@
     <ClInclude Include="win32_modelWindow.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="win32_sound.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_clut.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_baseWindow.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_clut.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_hiResTimer.cpp">
@@ -147,6 +144,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="win32_modelWindow.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_sound.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_clut.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

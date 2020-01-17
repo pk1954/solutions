@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <IncludePath>$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)runtimeCPP;$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -181,7 +181,6 @@
     <ClInclude Include="util.h" />
     <ClInclude Include="UtilityWrappers.h" />
     <ClInclude Include="ViewCollection.h" />
-    <ClInclude Include="XArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoolOp.cpp" />

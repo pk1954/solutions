@@ -14,7 +14,7 @@ public:
 static void Play( LPCWSTR const pszSound )
 {
 	if ( m_bActive )
-		::PlaySound( pszSound, GetModuleHandle(NULL) , SND_RESOURCE|SND_ASYNC ); 
+		::PlaySound( pszSound, GetModuleHandle(NULL), SND_RESOURCE|SND_ASYNC ); 
 }
 
 static void On ( ) { m_bActive = true; }
