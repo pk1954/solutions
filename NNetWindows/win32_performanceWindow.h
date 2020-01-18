@@ -7,6 +7,7 @@
 #include "win32_textWindow.h"
 
 class NNetWorkThreadInterface;
+class ActionTimer;
 
 class PerformanceWindow: public TextWindow
 {
@@ -14,7 +15,7 @@ public:
     PerformanceWindow( );
     ~PerformanceWindow( ); 
 
-    void Start( HWND const, NNetWorkThreadInterface * const );
+    void Start( HWND const, NNetWorkThreadInterface * const, ActionTimer * const );
 
 	void Stop( );
 
@@ -22,6 +23,7 @@ public:
 
 private:
     NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
+    ActionTimer             * m_pAtDisplay;
 
     void printMicroSecLine( TextBuffer &, wchar_t const * const, MicroSecs const );
     void printFloatLine ( TextBuffer &, wchar_t const * const, float const, wchar_t const * const );

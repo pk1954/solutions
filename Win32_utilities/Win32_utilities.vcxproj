@@ -157,6 +157,7 @@
     <ClInclude Include="win32_baseWindow.h" />
     <ClInclude Include="win32_clut.h" />
     <ClInclude Include="win32_delay.h" />
+    <ClInclude Include="win32_messagePump.h" />
     <ClInclude Include="win32_modelWindow.h" />
     <ClInclude Include="win32_sound.h" />
     <ClInclude Include="win32_stdDialogBox.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="win32_baseRefreshRate.cpp" />
     <ClCompile Include="win32_baseWindow.cpp" />
     <ClCompile Include="win32_clut.cpp" />
+    <ClCompile Include="win32_messagePump.cpp" />
     <ClCompile Include="win32_modelWindow.cpp" />
     <ClCompile Include="win32_sound.cpp" />
     <ClCompile Include="win32_textBuffer.cpp" />

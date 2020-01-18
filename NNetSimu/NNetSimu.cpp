@@ -4,6 +4,9 @@
 
 #include "stdafx.h"
 #include "Resource.h"
+#include "commctrl.h"
+#include "win32_util.h"
+#include "win32_stopwatch.h"
 #include "win32_messagePump.h"
 #include "win32_NNetAppWindow.h"
 
@@ -23,5 +26,21 @@ int APIENTRY wWinMain
 
 	NNetAppWindow App;
 
-	return MessagePump( hInstance, App, IDC_NNET_SIMU_MAIN );
+	//	SetThreadAffinityMask( GetCurrentThread( ), 0x0001 );
+
+	INITCOMMONCONTROLSEX icex // load common control's DLL 
+	{
+		sizeof( INITCOMMONCONTROLSEX ),
+		ICC_STANDARD_CLASSES | 
+		ICC_BAR_CLASSES | 
+		ICC_TAB_CLASSES | 
+		ICC_TREEVIEW_CLASSES  // for tooltips
+	};
+
+	Stopwatch stopwatch;
+	stopwatch.Start();
+	App.Start( );
+	stopwatch.Stop( L"App.Start" );
+
+	return MessagePump( hInstance, App.GetWindowHandle(), IDC_NNET_SIMU_MAIN );
 }

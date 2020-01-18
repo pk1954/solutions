@@ -45,9 +45,6 @@
     <ClInclude Include="AnimationThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_messagePump.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_status.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -55,9 +52,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_appMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_appWindowInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_scriptHook.h">
@@ -93,9 +87,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_scale.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win32_messagePump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win32_status.cpp">

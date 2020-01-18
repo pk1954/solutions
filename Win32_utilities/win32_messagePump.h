@@ -1,6 +1,6 @@
 // win32_messagePump.h
 //
-// NNetWindows
+// win32_utilities
 
 #pragma once
 
@@ -11,6 +11,6 @@ class AppWindowInterface;
 int MessagePump
 ( 
 	HINSTANCE const,
-	AppWindowInterface &,
-	int const
+	HWND      const,
+	int       const
 );

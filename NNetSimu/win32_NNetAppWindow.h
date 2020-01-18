@@ -11,8 +11,8 @@
 
 // infrastructure
 
+#include "win32_baseAppWindow.h"
 #include "NNetReadBuffer.h"
-#include "win32_appWindowInterface.h"
 #include "win32_winManager.h"
 #include "win32_scriptHook.h"
 #include "SlowMotionRatio.h"
@@ -34,7 +34,7 @@ class NNetModelStorage;
 class ParameterDialog;
 class PerformanceWindow;
 
-class NNetAppWindow : public AppWindowInterface
+class NNetAppWindow : public BaseAppWindow
 {
 public:
 	NNetAppWindow( );

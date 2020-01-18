@@ -30,8 +30,7 @@ protected:
 	HWND       m_hwndApp;
 	WinManager m_WinManager;
 	StatusBar  m_StatusBar;
-
-	AppMenu * m_pAppMenu;        // allocated by application
+	AppMenu  * m_pAppMenu;        // allocated by application
 
 	virtual void Stop( );
 

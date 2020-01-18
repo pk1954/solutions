@@ -6,12 +6,14 @@
 #include "Strsafe.h"
 #include <chrono>
 #include "util.h"
+#include "win32_actionTimer.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_performanceWindow.h"
 
 PerformanceWindow::PerformanceWindow( ) : 
     TextWindow( ),
-	m_pNNetWorkThreadInterface( nullptr )
+	m_pNNetWorkThreadInterface( nullptr ),
+	m_pAtDisplay( nullptr )
 { 
 }
 
@@ -22,19 +24,21 @@ PerformanceWindow::~PerformanceWindow( )
 void PerformanceWindow::Start
 ( 
 	HWND                      const hwndParent,
-	NNetWorkThreadInterface * const pNNetWorkThreadInterface
+	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
+	ActionTimer             * const pDisplayTimer
 )
 {
 	StartTextWindow
 	( 
 		hwndParent, 
-		PixelRect { 0_PIXEL, 0_PIXEL, 300_PIXEL, 150_PIXEL }, 
+		PixelRect { 0_PIXEL, 0_PIXEL, 300_PIXEL, 160_PIXEL }, 
 		L"PerformanceWindow", 
 		100,  // alpha
 		TRUE,
 		nullptr
 	);
 	m_pNNetWorkThreadInterface = pNNetWorkThreadInterface;
+	m_pAtDisplay               = pDisplayTimer;
 	m_pNNetWorkThreadInterface->AddPerformanceObserver( this ); // notify me on computation performance changes 
 }
 
@@ -78,6 +82,12 @@ void PerformanceWindow::printFloatLine
 
 void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 {      
+	microseconds const usDisplayTime = m_pAtDisplay->GetSingleActionTime( );
+	textBuf.printString( L"Display:" );
+	textBuf.printString( L"" );
+	textBuf.printAsMillisecs( usDisplayTime );
+	textBuf.nextLine( );
+
 	MicroSecs simuTime { m_pNNetWorkThreadInterface->GetSimulationTime( ) };
 	MicroSecs realTime { m_pNNetWorkThreadInterface->GetRealTimeTilStart( ) };
 	MicroSecs avail    { m_pNNetWorkThreadInterface->GetTimeAvailPerCycle( ) };
