@@ -17,9 +17,8 @@ public:
 
 	// called by producer thread
 
-	virtual void Notify( bool const bRunMode )  // In run mode, performance of producer thread has top priority
-	{                                           // immediate refresh of UI is secondary 
-		bool bImmediate = ! bRunMode;         
-		NotifyAll( bImmediate );                // Notify Observers  
+	virtual void Notify( bool const bImmediate )  
+	{                                          
+		NotifyAll( bImmediate );     
 	}
 };

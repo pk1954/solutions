@@ -12,7 +12,6 @@ using std::to_wstring;
 
 BaseRefreshRate::BaseRefreshRate( )
  :	m_hTimer( nullptr ),
-	m_bTimerActive( FALSE ),
 	m_bDirty( TRUE ),
 	m_msRefreshRate( 0ms )
 {}
@@ -27,27 +26,12 @@ void BaseRefreshRate::SetRefreshRate( milliseconds const msRate )
 { 
 	m_msRefreshRate = msRate; 
 	deleteTimer( );
+	startTimer( msRate );
 }
 
 milliseconds BaseRefreshRate::GetRefreshRate( )
 { 
 	return m_msRefreshRate; 
-}
-
-void BaseRefreshRate::Notify( bool const bImmediately )
-{
-	if ( bImmediately || (m_msRefreshRate == 0ms) )
-		trigger( );
-	else
-	{
-		m_bDirty = TRUE;
-		if ( !m_bTimerActive )
-		{
-			m_bTimerActive = TRUE;
-			trigger( );
-			startTimer( m_msRefreshRate );
-		}
-	}
 }
 
 void BaseRefreshRate::RefreshRateDialog( HWND const hwnd )
@@ -83,17 +67,16 @@ void BaseRefreshRate::startTimer( milliseconds const msTimer )
 		dwTime,                         // timer is signaled periodically every dwTime msecs
 		0                               // no flags
 	);
+	assert( m_hTimer != nullptr );
 }
 
 void BaseRefreshRate::deleteTimer( )
 {
 	if ( m_hTimer != nullptr )
 	{
-		HANDLE handle = m_hTimer;
+		(void)DeleteTimerQueueTimer( nullptr, m_hTimer, INVALID_HANDLE_VALUE );
 		m_hTimer = nullptr;
-		(void)DeleteTimerQueueTimer( nullptr, handle, INVALID_HANDLE_VALUE );
 	}
-	m_bTimerActive = FALSE;
 }
 
 void CALLBACK BaseRefreshRate::TimerProc( void * const lpParam, BOOL const TimerOrWaitFired )
@@ -101,6 +84,4 @@ void CALLBACK BaseRefreshRate::TimerProc( void * const lpParam, BOOL const Timer
 	BaseRefreshRate * const pRefreshRate = reinterpret_cast<BaseRefreshRate *>( lpParam );
 	if ( pRefreshRate->m_bDirty )
 		pRefreshRate->trigger( );
-	else
-		pRefreshRate->deleteTimer( );
 }

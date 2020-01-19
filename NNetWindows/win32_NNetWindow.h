@@ -8,7 +8,6 @@
 #include "Shape.h"
 #include "Direct2D.h"
 #include "PixelCoordsFp.h"
-#include "NNetReadBuffer.h"  // do not remove! class definition not sufficient.
 #include "tHighlightType.h"
 #include "win32_modelWindow.h"
 

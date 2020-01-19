@@ -5,9 +5,6 @@
 #pragma once
 
 #include "ObserverInterface.h"
-#include "NNetReadBuffer.h"
-
-using std::to_wstring;
 
 class StatusBar;
 class SlowMotionRatio;

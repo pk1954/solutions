@@ -8,6 +8,7 @@
 #include "win32_util.h"
 
 using std::chrono::milliseconds;
+using namespace std::chrono_literals;
 
 class BaseRefreshRate
 {
@@ -21,14 +22,18 @@ public:
 	void SetRefreshRate( milliseconds const );
 	milliseconds GetRefreshRate( );
 
-	void Notify( bool const );
+	void Notify( bool const bImmediately )
+	{
+		m_bDirty = TRUE;
+		if ( bImmediately || (m_msRefreshRate == 0ms) )
+			trigger( );
+	}
 
 	void RefreshRateDialog( HWND const );
 
 private:
 	HANDLE       m_hTimer;
 	milliseconds m_msRefreshRate;
-	BOOL         m_bTimerActive;
 	BOOL         m_bDirty;
 
 	void startTimer( milliseconds const );

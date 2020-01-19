@@ -11,7 +11,6 @@
 #include "EventInterface.h"
 #include "MoreTypes.h"
 #include "NNetParameters.h"
-#include "NNetReadBuffer.h"
 #include "NNetModel.h"
 #include "InputNeuron.h"
 #include "win32_util.h"
@@ -96,8 +95,8 @@ void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )
 
 	if ( bRes )
 	{
-		if (m_pModelObserver != nullptr)              // ... notify main thread, that model has changed.
-			m_pModelObserver->Notify( m_bContinue );  // Continue immediately, if in run mode
+		if (m_pModelObserver != nullptr)                // ... notify main thread, that model has changed.
+			m_pModelObserver->Notify( ! m_bContinue );  // Continue immediately, if in run mode
 	}
 	else  // Nobody could handle message
 	{
@@ -132,19 +131,6 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 
 	switch ( id )
 	{
-	case NNetWorkThreadMessage::Id::GENERATION_RUN:
-		generationRun( static_cast<bool>(msg.lParam) );
-		break;
-
-	case NNetWorkThreadMessage::Id::STOP:
-		generationStop( );
-		bResult = FALSE;
-		break;
-
-	case NNetWorkThreadMessage::Id::NEXT_GENERATION:
-		compute( );  // compute next generation
-		break;
-
 	case NNetWorkThreadMessage::Id::REFRESH:
 		break;
 
