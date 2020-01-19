@@ -9,6 +9,7 @@
 #include "util.h"
 #include "NamedType.h"
 #include "PointType.h"
+#include "RectType.h"
 
 using std::chrono::microseconds;
 
@@ -113,6 +114,10 @@ inline bool IsCloseToZero( MicroMeterPoint const pnt )
 
 using NNetPointFunc     = function<void (MicroMeterPoint const)>;
 using NNetPointBoolFunc = function<bool (MicroMeterPoint const)>;
+
+////////////// MicroMeterRect /////////////////////////////////////
+
+using MicroMeterRect = RectType< MicroMeter >;
 
 ////////////// meterPerSec /////////////////////////////////////
 

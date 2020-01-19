@@ -10,6 +10,8 @@
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_performanceWindow.h"
 
+using std::wostringstream;
+
 PerformanceWindow::PerformanceWindow( ) : 
     TextWindow( ),
 	m_pNNetWorkThreadInterface( nullptr ),
@@ -55,7 +57,7 @@ void PerformanceWindow::printMicroSecLine
 	MicroSecs       const usDuration
 )
 {
-	std::wostringstream wBuffer;
+	wostringstream wBuffer;
 	float fPrintValue { usDuration.GetValue() };
 	wBuffer << std::fixed << std::setprecision(1) << fPrintValue << L" µs";
 	textBuf.printString( pwch1 );
@@ -72,7 +74,7 @@ void PerformanceWindow::printFloatLine
 	wchar_t const * const pwchAfter
 	)
 {
-	std::wostringstream wBuffer;
+	wostringstream wBuffer;
 	wBuffer << std::fixed << std::setprecision(1) << fPrintValue << pwchAfter;
 	textBuf.printString( pwchBefore );
 	textBuf.printString( L"" );

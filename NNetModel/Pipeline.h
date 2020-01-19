@@ -46,6 +46,11 @@ public:
 	MicroMeter      GetLength    ( ) const;
 	MicroMeterPoint GetVector    ( ) const; 
 
+	virtual bool IsInRect( MicroMeterRect const & umRect ) const 
+	{ 
+		return m_pKnotStart->IsInRect( umRect ) || m_pKnotEnd->IsInRect( umRect );
+	}
+
 	virtual void Prepare( )
 	{
 		m_mVinputBuffer = m_pKnotStart->GetNextOutput( );

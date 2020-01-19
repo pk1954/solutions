@@ -25,14 +25,13 @@ public:
 	void Start( ModelWindow * const );
 
 	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 ) = 0;
+	virtual void Stop( );
 
 protected:
 	HWND       m_hwndApp;
 	WinManager m_WinManager;
 	StatusBar  m_StatusBar;
 	AppMenu  * m_pAppMenu;        // allocated by application
-
-	virtual void Stop( );
 
     bool ProcessFrameworkCommand( WPARAM const, LPARAM const = 0 );
 

@@ -7,6 +7,8 @@
 #include "win32_baseRefreshRate.h"
 
 using namespace std::chrono;
+using std::wstring;
+using std::to_wstring;
 
 BaseRefreshRate::BaseRefreshRate( )
  :	m_hTimer( nullptr ),
@@ -50,6 +52,8 @@ void BaseRefreshRate::Notify( bool const bImmediately )
 
 void BaseRefreshRate::RefreshRateDialog( HWND const hwnd )
 {
+	static double MIN_REFRESH_RATE { 20.0 };
+
 	double dNewValue = StdDialogBox::Show
 	( 
 		hwnd,
@@ -57,8 +61,12 @@ void BaseRefreshRate::RefreshRateDialog( HWND const hwnd )
 		L"Refresh Rate",
 		L"milliseconds"
 	);
-	if ( dNewValue < 100.0 )
-		dNewValue = 100.0;
+	if ( dNewValue < MIN_REFRESH_RATE )
+	{
+		wstring text { L"Minimum refresh rate is " + to_wstring(MIN_REFRESH_RATE) + L" ms" };
+		MessageBox( nullptr, text.c_str(), NULL, MB_OK );
+		dNewValue = MIN_REFRESH_RATE;
+	}
 	SetRefreshRate( static_cast<milliseconds>(static_cast<long long>(dNewValue)) );
 }
 

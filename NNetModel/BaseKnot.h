@@ -48,6 +48,11 @@ public:
 
 	bool IsPointInShape( MicroMeterPoint const & ) const;
 
+	virtual bool IsInRect( MicroMeterRect const & umRect ) const 
+	{ 
+		return umRect.Includes( m_center );
+	}
+
 	void AddIncoming    ( Pipeline * const );
 	void AddOutgoing    ( Pipeline * const );
 	void RemoveIncoming ( Pipeline * const );
@@ -77,38 +82,22 @@ public:
 
 	void Apply2AllIncomingPipelines( function<void(Pipeline * const)> const & func )
 	{
-		for ( auto & pipe : m_incoming )
-		{
-			if ( pipe )
-				func( pipe );
-		}
+		for ( auto & pipe : m_incoming ) { if ( pipe ) func( pipe ); }
 	}
 
 	void Apply2AllOutgoingPipelines( function<void(Pipeline * const)> const & func )
 	{
-		for ( auto & pipe : m_outgoing )
-		{
-			if ( pipe )
-				func( pipe );
-		}
+		for ( auto & pipe : m_outgoing ) { if ( pipe ) func( pipe ); }
 	}
 
 	void Apply2AllIncomingPipelinesConst( function<void(Pipeline const * const)> const & func ) const
 	{
-		for ( auto pipe : m_incoming )
-		{
-			if ( pipe )
-				func( pipe );
-		}
+		for ( auto pipe : m_incoming ) { if ( pipe ) func( pipe ); }
 	}
 
 	void Apply2AllOutgoingPipelinesConst( function<void(Pipeline const * const)> const & func ) const
 	{
-		for ( auto pipe : m_outgoing )
-		{
-			if ( pipe )
-				func( pipe );
-		}
+		for ( auto pipe : m_outgoing ) { if ( pipe ) func( pipe ); }
 	}
 
 	void Apply2AllConnectedPipelines( function<void(Pipeline const *)> const & func )

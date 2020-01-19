@@ -14,6 +14,7 @@
 #include "tHighlightType.h"
 #include "PixelCoordsFp.h"
 #include "Direct2D.h"
+#include "win32_fatalError.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
 #include "win32_stdDialogBox.h"
@@ -243,7 +244,8 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			m_shapeSuperHighlighted = pShapeSuper ? pShapeSuper->GetId( ) : NO_SHAPE;
 		}
 		m_ptLast = ptCrsr;
-		PostCommand2Application( IDM_REFRESH, 0 );
+		Notify( TRUE );     // cause immediate repaint
+//		PostCommand2Application( IDM_REFRESH, 0 );
 	}
 	else  // no mouse button pressed
 	{                         
@@ -274,18 +276,21 @@ tHighlightType const NNetWindow::GetHighlightType( ShapeId const id ) const
 
 void NNetWindow::doPaint( ) 
 {
-	if ( m_coord.GetPixelSize() <= 5._MicroMeter )
-		m_pModel->Apply2All<Shape>( [&]( Shape & shape ) { shape.DrawExterior( m_coord, GetHighlightType( shape.GetId() ) ); } );
+	PixelRect      const pixRect { GetClPixelRect( ) };
+	MicroMeterRect const umRect  { m_coord.convert2MicroMeterRect( pixRect ) };
 
-	m_pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { shape.DrawInterior( m_coord ); } );
-	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawInterior( m_coord ); } );
+	if ( m_coord.GetPixelSize() <= 5._MicroMeter )
+		m_pModel->Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.IsInRect( umRect ) ) shape.DrawExterior( m_coord, GetHighlightType( shape.GetId() ) ); } );
+
+	m_pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawInterior( m_coord ); } );
+	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawInterior( m_coord ); } );
 	
 	drawHighlightedShape( * m_pModel, m_coord );
 
 	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
 
 	if ( m_coord.GetPixelSize() <= 2.5_MicroMeter )
-		m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { shape.DrawNeuronText( m_coord ); } );
+		m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawNeuronText( m_coord ); } );
 }
 
 void NNetWindow::OnPaint( )

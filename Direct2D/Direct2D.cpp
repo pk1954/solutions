@@ -43,7 +43,7 @@ void D2D_driver::createResources( )
 	);
 	assert( SUCCEEDED( m_hr ) );
 
-	RECT rc = Util::GetClRect( m_hwnd );
+	RECT rc { Util::GetClRect( m_hwnd ) };
 
 	m_hr = m_pD2DFactory->CreateHwndRenderTarget
 	(

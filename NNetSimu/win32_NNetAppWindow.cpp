@@ -37,6 +37,7 @@
 #include "NNetWrappers.h"
 #include "UtilityWrappers.h"
 #include "win32_stopwatch.h"
+#include "win32_fatalError.h"
 
 // system and resources
 
@@ -47,6 +48,7 @@
 #include "win32_NNetAppWindow.h"
 
 using namespace std::literals::chrono_literals;
+using std::wostringstream;
 
 NNetAppWindow::NNetAppWindow( ) :
 	m_pSimulationControl( nullptr ),
@@ -219,10 +221,31 @@ void NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam 
 {
 	int const wmId = LOWORD( wParam );
 
-	if ( m_pNNetController->ProcessUIcommand( wmId, lParam ) )     // handle all commands that affect the UI
-		return;                                                    // but do not concern the model
+	if ( wmId == IDM_FATAL_ERROR )
+	{
+		Stop();
+		FatalError::Happened( static_cast<long>(lParam), L"unknown" );
+	}
 
-	if ( m_pNNetController->ProcessModelCommand( wmId, lParam ) )
-		ProcessFrameworkCommand( wmId, lParam );                   // Some commands are handled by the framework controller
+	try
+	{
+		if ( m_pNNetController->ProcessUIcommand( wmId, lParam ) )     // handle all commands that affect the UI
+			return;                                                    // but do not concern the model
+	}
+	catch ( ... )
+	{
+		Stop();
+		FatalError::Happened( 2, L"ProcessUIcommand" );
+	}
+
+	try
+	{
+		if ( m_pNNetController->ProcessModelCommand( wmId, lParam ) )
+			ProcessFrameworkCommand( wmId, lParam );                   // Some commands are handled by the framework controller
+	}
+	catch ( ... )
+	{
+		Stop();
+		FatalError::Happened( 3, L"ProcessModelCommand" );
+	}
 }
-

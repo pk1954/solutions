@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "win32_fatalError.h"
 #include "win32_graphicsInterface.h"
 #include "PixelCoordsFp.h"
 #include "NNetParameters.h"

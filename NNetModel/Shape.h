@@ -35,6 +35,7 @@ public:
 
 	static bool TypeFits( tShapeType const type ) {	return true; }  // every shape type is a Shape
 
+	virtual bool IsInRect      ( MicroMeterRect const & )                const = 0;
 	virtual void DrawExterior  ( PixelCoordsFp &, tHighlightType const ) const = 0;
 	virtual void DrawInterior  ( PixelCoordsFp & )                       const = 0;
 	virtual bool IsPointInShape( MicroMeterPoint const & )               const = 0;

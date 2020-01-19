@@ -99,10 +99,26 @@ public:
 		return fPixelPoint( convert2fPIXEL(pnt.GetX()), convert2fPIXEL(pnt.GetY()) );
 	}
 
+	fPixelRect convert2fPixelRect( PixelRect const rect ) const
+	{
+		return fPixelRect( convert2fPixelPoint(rect.GetStartPoint()), convert2fPixelPoint(rect.GetEndPoint()) );
+	}
+
 	MicroMeterPoint convert2MicroMeterPoint( PixelPoint const pnt ) const
 	{ 
 		fPixelPoint const fPnt = convert2fPixelPoint( pnt );
 		return convert2MicroMeterPoint( fPnt );
+	}
+
+	MicroMeterRect convert2MicroMeterRect( fPixelRect const fPixRect ) const
+	{ 
+		return MicroMeterRect( convert2MicroMeterPoint( fPixRect.GetStartPoint() ), convert2MicroMeterPoint( fPixRect.GetEndPoint() ) );
+	}
+
+	MicroMeterRect convert2MicroMeterRect( PixelRect const rect ) const
+	{ 
+		fPixelRect const fPixRect = convert2fPixelRect( rect );
+		return convert2MicroMeterRect( fPixRect );
 	}
 
 	fPixelPoint calcCenterOffset            // calculate new pixel offset,

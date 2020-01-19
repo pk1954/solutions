@@ -6,6 +6,7 @@
 #include "Resource.h"
 #include "commctrl.h"
 #include "win32_util.h"
+#include "win32_fatalError.h"
 #include "win32_stopwatch.h"
 #include "win32_messagePump.h"
 #include "win32_NNetAppWindow.h"
@@ -42,5 +43,17 @@ int APIENTRY wWinMain
 	App.Start( );
 	stopwatch.Stop( L"App.Start" );
 
-	return MessagePump( hInstance, App.GetWindowHandle(), IDC_NNET_SIMU_MAIN );
+	int iRetVal;
+	
+	try
+	{
+		iRetVal = MessagePump( hInstance, App.GetWindowHandle(), IDC_NNET_SIMU_MAIN );
+	}
+	catch ( ... )
+	{
+		App.Stop();
+		FatalError::Happened( 1, L"main thread" );
+	}
+
+	return iRetVal;
 }

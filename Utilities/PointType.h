@@ -1,5 +1,6 @@
 // PointType.h
 //
+// Utilities
 
 #pragma once
 

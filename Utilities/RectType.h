@@ -1,5 +1,6 @@
 // RectType.h
 //
+// Utilities
 
 #pragma once
 

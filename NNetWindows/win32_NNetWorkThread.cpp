@@ -17,6 +17,7 @@
 #include "win32_util.h"
 #include "win32_thread.h"
 #include "win32_event.h"
+#include "win32_fatalError.h"
 #include "win32_actionTimer.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWorkThread.h"
@@ -83,7 +84,17 @@ void NNetWorkThread::ThreadStartupFunc( )
 
 void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )
 {
-	if ( dispatch( msg ) )
+	BOOL bRes;
+	try
+	{
+		bRes = dispatch( msg );
+	}
+	catch ( ... )
+	{
+		FatalError::Happened( 1000, L"NNetWorkThread" );
+	}
+
+	if ( bRes )
 	{
 		if (m_pModelObserver != nullptr)              // ... notify main thread, that model has changed.
 			m_pModelObserver->Notify( m_bContinue );  // Continue immediately, if in run mode
@@ -301,6 +312,8 @@ void NNetWorkThread::compute()
 	if ( usSleepTime > 10000.0_MicroSecs )
 		Sleep( 10 );
 	if ( lCyclesTodo > 0 )
+	{
 		m_usRealTimeSpentPerCycle = usSpentInCompute / CastToFloat(lCyclesTodo);
-	m_performanceObservable.NotifyAll( FALSE);
+		m_performanceObservable.NotifyAll( FALSE);
+	}
 }

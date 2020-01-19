@@ -45,6 +45,8 @@
 
 // identifiers for application start at 100
 
+#define IDM_FATAL_ERROR     	100
+
 #define IDC_NNET_SIMU_MAIN  	102
 #define IDD_APPLY_PARAMETERS    105
 #define IDD_RESET_PARAMETERS    106

@@ -10,7 +10,7 @@
 #include "win32_util.h"
 
 using std::wostream;
-using std::wstring_convert;
+//using std::wstring_convert;
 using std::stringbuf;
 using std::ostream;
 
@@ -117,7 +117,6 @@ ULONGLONG Util::GetPhysicalMemory( )  // in bytes
 
 wstring Util::GetCurrentDateAndTime( )
 {
-	wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
     struct tm newtime;  
     __time64_t long_time;  
     _time64( & long_time );                                  // Get time as 64-bit integer.  
@@ -125,8 +124,10 @@ wstring Util::GetCurrentDateAndTime( )
 	stringbuf buf;
 	ostream os ( & buf );
 	os << std::put_time( & newtime, "%c" );
-	wstring wstrTime = converter.from_bytes( buf.str( ) );
-	return wstrTime;
+	//wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
+	//wstring wstrTime = converter.from_bytes( buf.str( ) );
+	//return wstrTime;
+    return L"+++ not implemnted +++";
 }
 
 void Util::SetApplicationTitle
