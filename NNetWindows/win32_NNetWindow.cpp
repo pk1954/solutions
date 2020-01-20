@@ -245,7 +245,6 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		}
 		m_ptLast = ptCrsr;
 		Notify( TRUE );     // cause immediate repaint
-//		PostCommand2Application( IDM_REFRESH, 0 );
 	}
 	else  // no mouse button pressed
 	{                         

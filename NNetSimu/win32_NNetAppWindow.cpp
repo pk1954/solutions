@@ -184,7 +184,7 @@ void NNetAppWindow::Stop()
 	BaseAppWindow::Stop();
 
 	delete m_pModelDataWork;
-//	delete m_pTimeDisplay;
+	delete m_pTimeDisplay;
 	delete m_pSlowMotionDisplay;
 	delete m_pNNetController;
 
@@ -195,8 +195,8 @@ void NNetAppWindow::configureStatusBar( )
 {
 	int iPartScriptLine = 0;
 
-	//m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pModelDataWork, iPartScriptLine );
-	//m_pNNetReadBuffer->RegisterObserver( m_pTimeDisplay );
+	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pModelDataWork, iPartScriptLine );
+	m_pNNetReadBuffer->RegisterObserver( m_pTimeDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	m_pSimulationControl = new SimulationControl( & m_StatusBar, & m_NNetWorkThreadInterface );
@@ -213,7 +213,7 @@ void NNetAppWindow::configureStatusBar( )
 	Script::ScrSetWrapHook( & m_ScriptHook );
 
 	m_StatusBar.LastPart( );
-//	m_pTimeDisplay->Notify( true );
+	m_pTimeDisplay->Notify( true );
 	m_pSlowMotionDisplay->Notify( true );
 }
 
