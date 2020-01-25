@@ -18,6 +18,51 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BoolOp.h" />
+    <ClInclude Include="debug.h" />
+    <ClInclude Include="EnumArray.h" />
+    <ClInclude Include="EventInterface.h" />
+    <ClInclude Include="generationNr.h" />
+    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="Int24.h" />
+    <ClInclude Include="LogarithmicTrackbar.h" />
+    <ClInclude Include="ModelInterface.h" />
+    <ClInclude Include="MoreTypes.h" />
+    <ClInclude Include="NamedType.h" />
+    <ClInclude Include="observable.h" />
+    <ClInclude Include="observerInterface.h" />
+    <ClInclude Include="PixelCoordsFp.h" />
+    <ClInclude Include="PixelTypes.h" />
+    <ClInclude Include="PointType.h" />
+    <ClInclude Include="random.h" />
+    <ClInclude Include="RectType.h" />
+    <ClInclude Include="RingBuffer.h" />
+    <ClInclude Include="SlowMotionRatio.h" />
+    <ClInclude Include="SmoothMove.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TextBuffer.h" />
+    <ClInclude Include="trace.h" />
+    <ClInclude Include="util.h" />
+    <ClInclude Include="UtilityWrappers.h" />
+    <ClInclude Include="ViewCollection.h" />
+    <ClInclude Include="XArray.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BoolOp.cpp" />
+    <ClCompile Include="LogarithmicTrackbar.cpp" />
+    <ClCompile Include="SlowMotionRatio.cpp" />
+    <ClCompile Include="SmoothMove.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TextBuffer.cpp" />
+    <ClCompile Include="trace.cpp" />
+    <ClCompile Include="util.cpp" />
+    <ClCompile Include="UtilityWrappers.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D6E82F0A-C93F-4FA0-AACF-910EF2F59FDC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -71,7 +116,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <IncludePath>$(SolutionDir)runtimeCPP;$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\ToolBox\runtimeCPP;$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -79,7 +124,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <IncludePath>$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\ToolBox\runtimeCPP;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -152,54 +197,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BoolOp.h" />
-    <ClInclude Include="debug.h" />
-    <ClInclude Include="EnumArray.h" />
-    <ClInclude Include="EventInterface.h" />
-    <ClInclude Include="Geometry.h" />
-    <ClInclude Include="Int24.h" />
-    <ClInclude Include="LogarithmicTrackbar.h" />
-    <ClInclude Include="ModelInterface.h" />
-    <ClInclude Include="MoreTypes.h" />
-    <ClInclude Include="NamedType.h" />
-    <ClInclude Include="observable.h" />
-    <ClInclude Include="observerInterface.h" />
-    <ClInclude Include="PixelCoordsFp.h" />
-    <ClInclude Include="PixelTypes.h" />
-    <ClInclude Include="PointType.h" />
-    <ClInclude Include="random.h" />
-    <ClInclude Include="RectType.h" />
-    <ClInclude Include="RingBuffer.h" />
-    <ClInclude Include="SlowMotionRatio.h" />
-    <ClInclude Include="SmoothMove.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="TextBuffer.h" />
-    <ClInclude Include="trace.h" />
-    <ClInclude Include="util.h" />
-    <ClInclude Include="UtilityWrappers.h" />
-    <ClInclude Include="ViewCollection.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="BoolOp.cpp" />
-    <ClCompile Include="LogarithmicTrackbar.cpp" />
-    <ClCompile Include="SlowMotionRatio.cpp" />
-    <ClCompile Include="SmoothMove.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="TextBuffer.cpp" />
-    <ClCompile Include="trace.cpp" />
-    <ClCompile Include="util.cpp" />
-    <ClCompile Include="UtilityWrappers.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

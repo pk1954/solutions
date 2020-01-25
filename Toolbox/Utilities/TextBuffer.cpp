@@ -1,5 +1,6 @@
 // win32_textBuffer.cpp :
 //
+// Utilities
 
 #include "stdafx.h"
 #include <locale>

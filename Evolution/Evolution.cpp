@@ -23,5 +23,5 @@ int APIENTRY wWinMain
 
 	EvoAppWindow App;
 
-	return MessagePump( hInstance, App, IDC_EVOLUTION_MAIN );
+	return MessagePump( hInstance, App.GetWindowHandle(), IDC_EVOLUTION_MAIN );
 }

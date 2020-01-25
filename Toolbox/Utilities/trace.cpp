@@ -1,5 +1,6 @@
 // trace.cpp
 //
+// Utilities
 
 #include "stdafx.h"
 #include "assert.h"

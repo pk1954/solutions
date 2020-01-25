@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)runtimeCPP;$(SolutionDir)Utilities;$(SolutionDir)Win32_utilities;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)\ToolBox\runtimeCPP;$(SolutionDir)\Toolbox\Utilities;$(SolutionDir)\Toolbox\Win32_utilities;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Release;$(SolutionDir)x64\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)runtimeCPP;$(SolutionDir)Utilities;$(SolutionDir)Win32_utilities;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)\ToolBox\runtimeCPP;$(SolutionDir)\Toolbox\Utilities;$(SolutionDir)\Toolbox\Win32_utilities;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\x64\Debug;$(SolutionDir)x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

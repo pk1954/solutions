@@ -2,6 +2,8 @@
 //
 // GenerationCmd stores all necessary information to transform a model from generation n to generation n+1
 // The size of GenerationCmd is 32 bit
+//
+// HistoryInterface
 
 #pragma once
 

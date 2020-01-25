@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)Win32_utilities;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Toolbox\Utilities;$(SolutionDir)\Toolbox\Win32_utilities;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)Win32_utilities;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Toolbox\Utilities;$(SolutionDir)\Toolbox\Win32_utilities;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

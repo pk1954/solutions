@@ -77,10 +77,10 @@
     <IncludePath>$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)win32_utilities;$(SolutionDir)Win32_history;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)win32_utilities;$(SolutionDir)Win32_history;$(SolutionDir)Win32_appFramework;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)\Toolbox\Utilities;$(SolutionDir)\ToolBox\runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)\Toolbox\Win32_utilities;$(SolutionDir)Win32_appFramework;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)win32_utilities;$(SolutionDir)Win32_history;$(SolutionDir)Win32_appFramework;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)\Toolbox\Utilities;$(SolutionDir)\ToolBox\runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)\Toolbox\Win32_utilities;$(SolutionDir)Win32_appFramework;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
