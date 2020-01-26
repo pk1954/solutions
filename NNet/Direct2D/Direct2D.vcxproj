@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{5939CF29-87A7-4783-9B8F-BFFE3F7E7BC6}</ProjectGuid>
+    <ProjectGuid>{A67A2A59-19DF-4287-97D1-15B86564A39C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>NNetSimu</RootNamespace>
+    <RootNamespace>Direct2D</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -72,27 +72,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Toolbox\Utilities;$(SolutionDir)Direct2D;$(SolutionDir)\ToolBox\runtimeCPP;$(SolutionDir)\Toolbox\Win32_utilities;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\x64\Debug;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\Toolbox\Win32_utilities;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)D3D;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Utilities;$(SolutionDir)D3D;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_utilities;$(SolutionDir)Win32_appFramework;$(SolutionDir)NNetHistGlue;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Toolbox\Utilities;$(SolutionDir)Direct2D;$(SolutionDir)\ToolBox\runtimeCPP;$(SolutionDir)\Toolbox\Win32_utilities;$(SolutionDir)NNetModel;$(SolutionDir)NNetWindows;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\x64\Release;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\Toolbox\Win32_utilities;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
@@ -102,7 +98,6 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Winmm.lib;Pathcch.lib;d2d1.lib;Dwrite.lib;Direct2D.lib;ComCtl32.lib;msimg32.lib;runtimeCPP.lib;Utilities.lib;Win32_utilities.lib;NNetModel.lib;NNetWindows.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -110,7 +105,6 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
@@ -118,7 +112,6 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;GDI.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;NNetModel.lib;NNetHistGlue.lib;NNetWindows.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -126,7 +119,6 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -138,14 +130,13 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ComCtl32.lib;msimg32.lib;d3d9.lib;d3dx9.lib;GDI.lib;runtimeCPP.lib;History.lib;Utilities.lib;Win32_utilities.lib;Win32_history.lib;NNetModel.lib;NNetHistGlue.lib;NNetWindows.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -160,40 +151,14 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Winmm.lib;Pathcch.lib;d2d1.lib;Dwrite.lib;Direct2D.lib;ComCtl32.lib;msimg32.lib;runtimeCPP.lib;Utilities.lib;Win32_utilities.lib;NNetModel.lib;NNetWindows.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="SlowMotionDisplay.h" />
-    <ClInclude Include="win32_slowMotionControl.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Direct2D.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TimeDisplay.h" />
-    <ClInclude Include="Version.h" />
-    <ClInclude Include="win32_NNetAppMenu.h" />
-    <ClInclude Include="win32_NNetAppWindow.h" />
-    <ClInclude Include="win32_NNetController.h" />
-    <ClInclude Include="win32_simulationControl.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NNetSimu.cpp" />
-    <ClCompile Include="SlowMotionDisplay.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="TimeDisplay.cpp" />
-    <ClCompile Include="win32_NNetAppMenu.cpp" />
-    <ClCompile Include="win32_NNetAppWindow.cpp" />
-    <ClCompile Include="win32_NNetController.cpp" />
-    <ClCompile Include="win32_simulationControl.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="NNetSimu.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="NNetSimu.ico" />
-    <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="disappear-sound-effect.wav" />
+    <ClCompile Include="Direct2D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
