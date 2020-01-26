@@ -20,33 +20,33 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{79BD8F32-9DC5-4E90-822D-CDF3CA47107D}</ProjectGuid>
+    <ProjectGuid>{8830DA2B-C953-4702-A9E7-3BCE05366F1B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Compare</RootNamespace>
+    <RootNamespace>EvoWindows</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -70,40 +70,34 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\Toolbox\Win32_utilities;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\x64\Debug;$(SolutionDir)..\Toolbox\x64\Debug;$(LibraryPath)</LibraryPath>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)runtimeCPP;$(SolutionDir)Win32_utilities;$(SolutionDir)Utilities;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Debug;$(LibraryPath)</LibraryPath>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)win32_utilities;$(SolutionDir)Win32_history;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)runtimeCPP;$(SolutionDir)Win32_utilities;$(SolutionDir)Utilities;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Release;$(LibraryPath)</LibraryPath>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)win32_utilities;$(SolutionDir)Win32_history;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_appFramework;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\ToolBox\runtimeCPP;$(SolutionDir)\Toolbox\Win32_utilities;$(SolutionDir)\Toolbox\Utilities;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\x64\Release;$(SolutionDir)..\Toolbox\x64\Release;$(LibraryPath)</LibraryPath>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_appFramework;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>runtimeCPP.lib;Utilities.lib;win32_utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -111,11 +105,21 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>runtimeCPP.lib;Utilities.lib;win32_utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -125,54 +129,61 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>runtimeCPP.lib;Utilities.lib;win32_utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>runtimeCPP.lib;Utilities.lib;win32_utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="negList.h" />
-    <ClInclude Include="output.h" />
-    <ClInclude Include="RTF_output.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="text_output.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Compare.cpp" />
-    <ClCompile Include="negList.cpp" />
-    <ClCompile Include="RTF_output.cpp" />
+    <ClCompile Include="win32_colorManager.cpp" />
     <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="text_output.cpp" />
+    <ClCompile Include="win32_crsrWindow.cpp" />
+    <ClCompile Include="win32_displayOptions.cpp" />
+    <ClCompile Include="win32_draw.cpp" />
+    <ClCompile Include="win32_EvoEditor.cpp" />
+    <ClCompile Include="win32_EvoEditorWrappers.cpp" />
+    <ClCompile Include="win32_gridWindow.cpp" />
+    <ClCompile Include="win32_histWrappers.cpp" />
+    <ClCompile Include="win32_performanceWindow.cpp" />
+    <ClCompile Include="win32_protocolServer.cpp" />
+    <ClCompile Include="win32_statistics.cpp" />
+    <ClCompile Include="win32_EvoWorkThread.cpp" />
+    <ClCompile Include="win32_EvoWorkThreadInterface.cpp" />
+    <ClCompile Include="win32_wrappers.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EvoReadBuffer.h" />
+    <ClInclude Include="win32_colorManager.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="win32_crsrWindow.h" />
+    <ClInclude Include="win32_displayOptions.h" />
+    <ClInclude Include="win32_draw.h" />
+    <ClInclude Include="win32_EvoEditor.h" />
+    <ClInclude Include="win32_EvoEditorWrappers.h" />
+    <ClInclude Include="win32_focusPoint.h" />
+    <ClInclude Include="win32_gridWindow.h" />
+    <ClInclude Include="win32_histWrappers.h" />
+    <ClInclude Include="win32_packGridPoint.h" />
+    <ClInclude Include="win32_performanceWindow.h" />
+    <ClInclude Include="win32_protocolServer.h" />
+    <ClInclude Include="win32_statistics.h" />
+    <ClInclude Include="win32_textDisplay.h" />
+    <ClInclude Include="win32_EvoWorkThread.h" />
+    <ClInclude Include="win32_EvoWorkThreadInterface.h" />
+    <ClInclude Include="win32_wrappers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
