@@ -65,13 +65,13 @@ void NNetModel::CreateInitialShapes( )
 
 void NNetModel::RecalcAllShapes( ) 
 { 
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); } );
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); return false; } );
 } 
 
 long const NNetModel::GetNrOfShapes( ) const
 {
 	long lCounter = 0;
-	Apply2All<Shape>( [&]( Shape & shape ) { ++ lCounter; } );
+	Apply2All<Shape>( [&]( Shape & shape ) { ++ lCounter; return false; } );
 	return lCounter;
 }
 
@@ -147,10 +147,10 @@ void NNetModel::Disconnect( ShapeId const id )
 	CHECK_CONSISTENCY;
 }
 
-float const NNetModel::GetPulseRate( Shape const * pShape ) const
+float const NNetModel::GetPulseRate( InputNeuron const * pInputNeuron ) const
 {
-	assert( pShape );
-	return Cast2InputNeuron( pShape )->GetPulseFrequency().GetValue();
+	assert( pInputNeuron );
+	return pInputNeuron->GetPulseFrequency().GetValue();
 }
 
 float const NNetModel::GetParameterValue( tParameter const param ) const
@@ -257,7 +257,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 			( 
 				[&]( Pipeline * const pipe ) 
 				{ 
-					connectIncoming( pipe, pDst );
+					return connectIncoming( pipe, pDst );
 				}
 			);
 
@@ -265,7 +265,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 			( 
 				[&]( Pipeline * const pipe ) 
 				{ 
-					connectOutgoing( pipe, pDst );
+					return connectOutgoing( pipe, pDst );
 				}
 			);
 
@@ -365,8 +365,8 @@ void NNetModel::AddIncoming2Knot( ShapeId const id, MicroMeterPoint const & pos 
 
 void NNetModel::Compute( )
 {
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Prepare( ); } );
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Step   ( ); } );
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Prepare( ); return false; } );
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Step   ( ); return false; } );
 
 	m_timeStamp += GetTimeResolution( );
 }
@@ -374,7 +374,7 @@ void NNetModel::Compute( )
 void NNetModel::ResetModel( )
 {
 	EnterCritSect( );
-	Apply2All<Shape>( [&]( Shape & shape ) { delete & shape; } );
+	Apply2All<Shape>( [&]( Shape & shape ) { delete & shape; return false; } );
 	m_Shapes.clear();
 	LeaveCritSect( );
 }
@@ -420,6 +420,7 @@ void NNetModel::checkConsistency( Shape const * pShape ) const
 			[&]( Pipeline const * const pipe ) 
 			{ 
 				assert( pipe->IsPipeline() ); 
+				return false; 
 			} 
 	    );
 
@@ -481,7 +482,7 @@ void NNetModel::deleteShape( ShapeId const id )
 	}
 }
 
-void NNetModel::connectIncoming
+bool NNetModel::connectIncoming
 ( 
 	Pipeline * const pPipeline, 
 	BaseKnot * const pEndPoint
@@ -492,9 +493,10 @@ void NNetModel::connectIncoming
 		pEndPoint->AddIncoming( pPipeline );
 		pPipeline->SetEndKnot ( pEndPoint );
 	}
+	return false;
 }
 
-void NNetModel::connectOutgoing
+bool NNetModel::connectOutgoing
 ( 
 	Pipeline * const pPipeline, 
 	BaseKnot * const pStartPoint
@@ -505,6 +507,7 @@ void NNetModel::connectOutgoing
 		pStartPoint->AddOutgoing( pPipeline );
 		pPipeline->SetStartKnot ( pStartPoint );
 	}
+	return false;
 }
 
 void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects only, shape remains
@@ -518,6 +521,7 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects 
 			{ 
 				connectIncoming( pipe, NewShape<Knot>( umPos ) );
 				pipe->DislocateEndPoint( );
+				return false;
 			} 
 		);
 		pBaseKnot->ClearIncoming();
@@ -527,6 +531,7 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects 
 			{ 
 				connectOutgoing( pipe, NewShape<Knot>( umPos ) );
 				pipe->DislocateStartPoint( );
+				return false;
 			} 
 		);
 		pBaseKnot->ClearOutgoing();

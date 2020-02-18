@@ -192,17 +192,18 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	default:
 		assert( false );
 	}
-
 }
 
 bool NNetWindow::PulseRateDlg( ShapeId const id )
 {
-	InputNeuron const & inputNeuron { * m_pModel->GetConstTypedShape<InputNeuron>(id) };
-	float       const   fOldValue   { m_pModel->GetPulseRate( & inputNeuron ) };
-	wstring     const   header      { GetParameterName ( tParameter::pulseRate ) }; 
-	wstring     const   unit        { GetParameterUnit ( tParameter::pulseRate ) }; 
-	float       const   fNewValue   { StdDialogBox::Show( GetWindowHandle(), fOldValue, header, unit ) };
-	bool        const   bRes        { fNewValue != fOldValue };
+    InputNeuron const * pInputNeuron { m_pModel->GetConstTypedShape<InputNeuron>(id) };
+	if ( pInputNeuron == nullptr )
+		return false;
+	float   const fOldValue { m_pModel->GetPulseRate( pInputNeuron ) };
+	wstring const header    { GetParameterName ( tParameter::pulseRate ) }; 
+	wstring const unit      { GetParameterUnit ( tParameter::pulseRate ) }; 
+	float   const fNewValue { StdDialogBox::Show( GetWindowHandle(), fOldValue, header, unit ) };
+	bool    const bRes      { fNewValue != fOldValue };
 	if ( bRes )
 		m_pNNetWorkThreadInterface->PostSetPulseRate( id, fNewValue );
 	return bRes;
@@ -279,17 +280,17 @@ void NNetWindow::doPaint( )
 	MicroMeterRect const umRect  { m_coord.convert2MicroMeterRect( pixRect ) };
 
 	if ( m_coord.GetPixelSize() <= 5._MicroMeter )
-		m_pModel->Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.IsInRect( umRect ) ) shape.DrawExterior( m_coord, GetHighlightType( shape.GetId() ) ); } );
+		m_pModel->Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.IsInRect( umRect ) ) shape.DrawExterior( m_coord, GetHighlightType( shape.GetId() ) ); return false; } );
 
-	m_pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawInterior( m_coord ); } );
-	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawInterior( m_coord ); } );
+	m_pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawInterior( m_coord ); return false; } );
+	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawInterior( m_coord ); return false; } );
 	
 	drawHighlightedShape( * m_pModel, m_coord );
 
 	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
 
 	if ( m_coord.GetPixelSize() <= 2.5_MicroMeter )
-		m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawNeuronText( m_coord ); } );
+		m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawNeuronText( m_coord ); return false; } );
 }
 
 void NNetWindow::OnPaint( )

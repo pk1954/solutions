@@ -12,6 +12,7 @@
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
+#include "Analyzer.h"
 #include "InputNeuron.h"
 #include "win32_util.h"
 #include "win32_thread.h"
@@ -115,6 +116,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 
 	case NNetWorkThreadMessage::Id::STOP:
 		generationStop( );
+		ModelAnalyzer::Stop();
 		return FALSE;
 
 	case NNetWorkThreadMessage::Id::NEXT_GENERATION:
@@ -171,6 +173,10 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 	case NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED:
 		m_hrTimer.Restart();
 		m_pNNetModel->ResetSimulationTime();
+		break;
+
+	case NNetWorkThreadMessage::Id::ANALYZE:
+		ModelAnalyzer::FindLoop( * m_pNNetModel );
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE:

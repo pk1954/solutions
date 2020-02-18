@@ -150,7 +150,6 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>Default</LanguageStandard>
-      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
@@ -161,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Analyzer.h" />
     <ClInclude Include="BaseKnot.h" />
     <ClInclude Include="InputNeuron.h" />
     <ClInclude Include="Knot.h" />
@@ -178,6 +178,7 @@
     <ClInclude Include="tShapeType.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Analyzer.cpp" />
     <ClCompile Include="BaseKnot.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
     <ClCompile Include="Knot.cpp" />

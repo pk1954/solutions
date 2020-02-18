@@ -58,3 +58,32 @@ MonitorConfiguration  "WindowConfiguration4.cnf"
 0    # secondary monitor
 0   # end of MonitorConfiguration
 
+MonitorConfiguration  "WindowConfiguration5.cnf"
+1   # monitor number
+0 0 2560 1080   # monitor rectangle
+0 0 2560 1040   # work area rectangle
+1    # primary monitor
+2   # monitor number
+-3840 -1080 -1280 360   # monitor rectangle
+-3840 -1080 -1280 320   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration6.cnf"
+1   # monitor number
+0 0 1920 1080   # monitor rectangle
+0 0 1920 1040   # work area rectangle
+1    # primary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration7.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 1080 6400 2160   # monitor rectangle
+3840 1080 6400 2120   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+

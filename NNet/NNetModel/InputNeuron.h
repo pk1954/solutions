@@ -10,9 +10,6 @@
 #include "NNetModel.h"
 #include "Neuron.h"
 
-class Pipeline;
-class NNetModel;
-
 class InputNeuron : public Neuron
 {
 public:

@@ -41,6 +41,8 @@
 #define IDM_MAX_SPEED                  87
 #define IDM_SIMULATION_SPEED           88
 
+#define IDM_ANALYZE                    89
+
 #define IDM_MOVE                       90
 
 // identifiers for application start at 100

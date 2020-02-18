@@ -80,36 +80,76 @@ public:
 		return m_outgoing.front();
 	}
 
-	void Apply2AllIncomingPipelines( function<void(Pipeline * const)> const & func )
+	bool Apply2AllIncomingPipelines( function<bool(Pipeline * const)> const & func )
 	{
-		for ( auto & pipe : m_incoming ) { if ( pipe ) func( pipe ); }
+		bool bResult { false };
+		for ( auto pipe : m_incoming ) 
+		{ 
+			if ( pipe ) 
+			{
+				bResult = func( pipe );
+				if ( bResult )
+					break;
+			}
+		}
+		return bResult;
 	}
 
-	void Apply2AllOutgoingPipelines( function<void(Pipeline * const)> const & func )
+	bool Apply2AllOutgoingPipelines( function<bool(Pipeline * const)> const & func )
 	{
-		for ( auto & pipe : m_outgoing ) { if ( pipe ) func( pipe ); }
+		bool bResult { false };
+		for ( auto pipe : m_outgoing ) 
+		{ 
+			if ( pipe ) 
+			{
+				bResult = func( pipe );
+				if ( bResult )
+					break;
+			}
+		}
+		return bResult;
 	}
 
-	void Apply2AllIncomingPipelinesConst( function<void(Pipeline const * const)> const & func ) const
+	bool Apply2AllIncomingPipelinesConst( function<bool(Pipeline const * const)> const & func ) const
 	{
-		for ( auto pipe : m_incoming ) { if ( pipe ) func( pipe ); }
+		bool bResult { false };
+		for ( auto pipe : m_incoming ) 
+		{ 
+			if ( pipe ) 
+			{
+				bResult = func( pipe );
+				if ( bResult )
+					break;
+			}
+		}
+		return bResult;
 	}
 
-	void Apply2AllOutgoingPipelinesConst( function<void(Pipeline const * const)> const & func ) const
+	bool Apply2AllOutgoingPipelinesConst( function<bool(Pipeline const * const)> const & func ) const
 	{
-		for ( auto pipe : m_outgoing ) { if ( pipe ) func( pipe ); }
+		bool bResult { false };
+		for ( auto pipe : m_outgoing ) 
+		{ 
+			if ( pipe ) 
+			{
+				bResult = func( pipe );
+				if ( bResult )
+					break;
+			}
+		}
+		return bResult;
 	}
 
-	void Apply2AllConnectedPipelines( function<void(Pipeline const *)> const & func )
+	void Apply2AllConnectedPipelines( function<bool(Pipeline const *)> const & func )
 	{
-		Apply2AllIncomingPipelines( [&]( Pipeline const * pipe ) { func( pipe ); } );
-		Apply2AllOutgoingPipelines( [&]( Pipeline const * pipe ) { func( pipe ); } );
+		Apply2AllIncomingPipelines( [&]( Pipeline const * pipe ) { return func( pipe ); } );
+		Apply2AllOutgoingPipelines( [&]( Pipeline const * pipe ) { return func( pipe ); } );
 	}
 
-	void Apply2AllConnectedPipelinesConst( function<void(Pipeline const * const)> const & func ) const
+	void Apply2AllConnectedPipelinesConst( function<bool(Pipeline const * const)> const & func ) const
 	{
-		Apply2AllIncomingPipelinesConst( [&]( Pipeline const * const pipe ) { func( pipe ); } );
-		Apply2AllOutgoingPipelinesConst( [&]( Pipeline const * const pipe ) { func( pipe ); } );
+		Apply2AllIncomingPipelinesConst( [&]( Pipeline const * const pipe ) { return func( pipe ); } );
+		Apply2AllOutgoingPipelinesConst( [&]( Pipeline const * const pipe ) { return func( pipe ); } );
 	}
 
 	virtual void MoveShape( MicroMeterPoint const & );
@@ -133,3 +173,6 @@ private:
 	MicroMeter          m_extension;
 	IDWriteTextFormat * m_pTextFormat;
 };
+
+BaseKnot const * Cast2BaseKnot( Shape const * );
+BaseKnot       * Cast2BaseKnot( Shape       * );

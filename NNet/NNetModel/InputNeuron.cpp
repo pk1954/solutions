@@ -85,14 +85,16 @@ void InputNeuron::DrawNeuronText( PixelCoordsFp & coord ) const
 	DisplayText( pixRect, m_wBuffer.str( ) );
 }
 
-InputNeuron const * Cast2InputNeuron( Shape const * shape )
+InputNeuron const * Cast2InputNeuron( Shape const * pShape )
 {
-	assert( shape->GetShapeType() == tShapeType::inputNeuron );
-	return static_cast<InputNeuron const *>(shape);
+	assert( pShape != nullptr );
+	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
+	return static_cast<InputNeuron const *>(pShape);
 }
 
-InputNeuron * Cast2InputNeuron( Shape * shape )
+InputNeuron * Cast2InputNeuron( Shape * pShape )
 {
-	assert( shape->GetShapeType() == tShapeType::inputNeuron );
-	return static_cast<InputNeuron *>(shape);
+	assert( pShape != nullptr );
+	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
+	return static_cast<InputNeuron *>(pShape);
 }

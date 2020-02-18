@@ -142,6 +142,7 @@ wchar_t const * NNetWorkThreadInterface::GetActionCommandName( int const iMsgId 
 {
 	static unordered_map < int, wchar_t const * > mapMsgName =
 	{
+		{ IDM_ANALYZE,             L"ANALYZE"             },
 		{ IDD_INSERT_NEURON,       L"INSERT_NEURON"       },
 		{ IDD_NEW_NEURON,          L"NEW_NEURON"          },
 		{ IDD_NEW_INPUT_NEURON,    L"NEW_INPUT_NEURON"    },
@@ -160,6 +161,7 @@ int const NNetWorkThreadInterface::GetActionCommandFromName( wchar_t const * con
 {
 	static unordered_map < wchar_t const *, int > mapMsg =
 	{
+		{ L"ANALYZE",             IDM_ANALYZE             },
 		{ L"INSERT_NEURON",       IDD_INSERT_NEURON       },
 		{ L"NEW_NEURON",          IDD_NEW_NEURON          },
 		{ L"NEW_INPUT_NEURON",    IDD_NEW_INPUT_NEURON    },
@@ -178,6 +180,7 @@ void NNetWorkThreadInterface::PostActionCommand( int const idMsg, ShapeId const 
 {
 	static unordered_map < int, NNetWorkThreadMessage::Id const > mapMsg =
 	{
+		{ IDM_ANALYZE,             NNetWorkThreadMessage::Id::ANALYZE             },
 		{ IDD_INSERT_NEURON,       NNetWorkThreadMessage::Id::INSERT_NEURON       },
 		{ IDD_NEW_NEURON,          NNetWorkThreadMessage::Id::NEW_NEURON          },
 		{ IDD_NEW_INPUT_NEURON,    NNetWorkThreadMessage::Id::NEW_INPUT_NEURON    },

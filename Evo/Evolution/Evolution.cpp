@@ -22,6 +22,7 @@ int APIENTRY wWinMain
 	Util::StdOutConsole( );
 
 	EvoAppWindow App;
+	App.Start();
 
 	return MessagePump( hInstance, App.GetWindowHandle(), IDC_EVOLUTION_MAIN );
 }

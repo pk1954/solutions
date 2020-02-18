@@ -19,6 +19,7 @@
 
 class ObserverInterface;
 class EventInterface;
+class InputNeuron;
 
 class NNetModel
 {
@@ -91,8 +92,8 @@ public:
 
 	Shape const * FindShapeAt( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
 
-	float const GetPulseRate     ( Shape const * )    const;
-	float const GetParameterValue( tParameter const ) const;
+	float const GetPulseRate     ( InputNeuron const * ) const;
+	float const GetParameterValue( tParameter  const   ) const;
 
 	bool const ConnectsTo( ShapeId const, ShapeId const ) const;
 
@@ -118,16 +119,34 @@ public:
 		}
 	}
 
+	//template <typename T>
+	//void Apply2All( function<void(T &)> const & func ) const
+	//{
+	//	EnterCritSect( );
+	//	for ( auto pShape : m_Shapes )
+	//	{
+	//		if ( pShape && T::TypeFits( pShape->GetShapeType() ) )
+	//			func( static_cast<T &>( * pShape ) );
+	//	}
+	//	LeaveCritSect( );
+	//}
+
 	template <typename T>
-	void Apply2All( function<void(T &)> const & func ) const
+	bool Apply2All( function<bool(T &)> const & func ) const
 	{
+		bool bResult { false };
 		EnterCritSect( );
 		for ( auto pShape : m_Shapes )
 		{
 			if ( pShape && T::TypeFits( pShape->GetShapeType() ) )
-				func( static_cast<T &>( * pShape ) );
+			{
+				bResult = func( static_cast<T &>( * pShape ) );
+				if ( bResult )
+					break;
+			}
 		}
 		LeaveCritSect( );
+		return bResult;
 	}
 
 	void CreateInitialShapes();
@@ -156,7 +175,7 @@ public:
 	void EnterCritSect() const { EnterCriticalSection( & m_criticalSection ); }
 	void LeaveCritSect() const { LeaveCriticalSection( & m_criticalSection ); }
 
-	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); } ); }
+	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); return false; } ); }
 
 	void AddParameterObserver( ObserverInterface * pObs ) { m_parameterObservable.RegisterObserver( pObs ); }
 
@@ -192,6 +211,6 @@ private:
 	void            deleteShape( ShapeId const );
 	bool const      isConnectedTo( ShapeId, ShapeId ) const;
 	bool const      isConnectedToPipeline( ShapeId const, Pipeline const * const ) const;
-	void            connectIncoming( Pipeline * const, BaseKnot * const );
-	void            connectOutgoing( Pipeline * const, BaseKnot * const );
+	bool            connectIncoming( Pipeline * const, BaseKnot * const );
+	bool            connectOutgoing( Pipeline * const, BaseKnot * const );
 };

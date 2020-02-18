@@ -274,8 +274,8 @@ void NNetModelStorage::Write( wostream & out )
 	out << L"NrOfShapes = " << m_CompactIds.size() << endl;
 	out << endl;
 
-	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); } );
-	m_pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { WriteShape( out, shape ); } );
+	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); return false; } );
+	m_pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { WriteShape( out, shape ); return false; } );
 
 	out << endl;
 
@@ -287,6 +287,7 @@ void NNetModelStorage::Write( wostream & out )
 				<< GetParameterName( tParameter::pulseRate ) 
 				<< L" = " << m_pModel->GetPulseRate( & inpNeuron )
      			<< endl; 
+			return false; 
 		}
 	);
 

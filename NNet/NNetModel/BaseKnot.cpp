@@ -20,34 +20,12 @@ using std::wostringstream;
 
 bool BaseKnot::IsPrecursorOf( ShapeId const id )
 {
-	bool bConnectionFound { false };
-
-	Apply2AllOutgoingPipelines
-	( 
-		[&]( Pipeline const * const pipe ) 
-		{
-			if ( pipe->GetEndKnotId( ) == id ) 
-				bConnectionFound = true; 
-		} 
-	);
-
-	return bConnectionFound;
+	return Apply2AllOutgoingPipelines( [&]( auto pipe ) { return pipe->GetEndKnotId( ) == id; } ); 
 }
 
 bool BaseKnot::IsSuccessorOf( ShapeId const id )
 {
-	bool bConnectionFound { false };
-
-	Apply2AllIncomingPipelines
-	( 
-		[&]( Pipeline const * const pipe ) 
-		{
-			if ( pipe->GetStartKnotId( ) == id ) 
-				bConnectionFound = true; 
-		} 
-	);
-
-	return bConnectionFound;
+	return Apply2AllIncomingPipelines( [&]( auto pipe ) { return pipe->GetStartKnotId( ) == id;	} );
 }
 
 void BaseKnot::AddIncoming( Pipeline * const pPipeline )
@@ -174,4 +152,18 @@ void BaseKnot::drawCircle
 		color, 
 		coord.convert2fPixel( umWidth )
 	);
+}
+
+BaseKnot const * Cast2BaseKnot( Shape const * shape )
+{
+	assert( shape->GetShapeType() != tShapeType::pipeline );
+	assert( shape->GetShapeType() != tShapeType::undefined );
+	return static_cast<BaseKnot const *>(shape);
+}
+
+BaseKnot * Cast2BaseKnot( Shape * shape )
+{
+	assert( shape->GetShapeType() != tShapeType::pipeline );
+	assert( shape->GetShapeType() != tShapeType::undefined );
+	return static_cast<BaseKnot *>(shape);
 }

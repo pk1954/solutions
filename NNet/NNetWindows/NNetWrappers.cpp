@@ -137,6 +137,7 @@ void DefineNNetWrappers( NNetWorkThreadInterface * const pWorkThreadInterface )
         }
     );
 
+    SymbolTable::ScrDefConst( L"ANALYZE",             static_cast<long>(IDM_ANALYZE            ) );
     SymbolTable::ScrDefConst( L"INSERT_NEURON",       static_cast<long>(IDD_INSERT_NEURON      ) );
     SymbolTable::ScrDefConst( L"NEW_NEURON",          static_cast<long>(IDD_NEW_NEURON         ) );
     SymbolTable::ScrDefConst( L"NEW_INPUT_NEURON",    static_cast<long>(IDD_NEW_INPUT_NEURON   ) );
@@ -146,6 +147,4 @@ void DefineNNetWrappers( NNetWorkThreadInterface * const pWorkThreadInterface )
     SymbolTable::ScrDefConst( L"ADD_INCOMING2KNOT",   static_cast<long>(IDD_ADD_INCOMING2KNOT  ) );
     SymbolTable::ScrDefConst( L"ADD_OUTGOING2PIPE",   static_cast<long>(IDD_ADD_OUTGOING2PIPE  ) );
     SymbolTable::ScrDefConst( L"ADD_INCOMING2PIPE",   static_cast<long>(IDD_ADD_INCOMING2PIPE  ) );
-
-//    DEF_ULONG_CONST( EvoGenerationCmd::Id::editSetBrushMode );
 }
