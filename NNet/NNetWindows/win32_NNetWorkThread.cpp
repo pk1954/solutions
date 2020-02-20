@@ -10,6 +10,7 @@
 #include "PixelTypes.h"
 #include "EventInterface.h"
 #include "MoreTypes.h"
+#include "SlowMotionRatio.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
 #include "Analyzer.h"
@@ -321,4 +322,9 @@ MicroSecs NNetWorkThread::GetSimuTimeResolution( ) const
 MicroSecs NNetWorkThread::GetSimulationTime( ) const 
 { 
 	return m_pNNetModel->GetSimulationTime( ); 
+}
+
+float NNetWorkThread::GetSlowMotionRatio( ) const 
+{ 
+	return m_pSlowMotionRatio->GetRatio( ); 
 }

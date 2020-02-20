@@ -5,16 +5,14 @@
 #pragma once
 
 #include "win32_hiResTimer.h"
-#include "RingBuffer.h"
 #include "Observable.h"
 #include "ShapeId.h"
-#include "SlowMotionRatio.h"
 #include "win32_thread.h"
 
 class NNetModel;
 class ActionTimer;
-class RootWindow;
 class WinManager;
+class SlowMotionRatio;
 class EventInterface;
 class NNetHistorySysGlue;
 class NNetWorkThreadInterface;
@@ -86,12 +84,12 @@ public:
 
 	BOOL      IsRunning()              const { return m_bContinue; }
 
-	float     GetSlowMotionRatio   ( ) const { return m_pSlowMotionRatio->GetRatio( ); }
 	MicroSecs GetTimeSpentPerCycle ( ) const { return m_usRealTimeSpentPerCycle; }
 	MicroSecs GetTimeAvailPerCycle ( ) const { return m_usRealTimeAvailPerCycle; }
 	MicroSecs GetRealTimeTilStart  ( ) const { return m_hrTimer.GetMicroSecsTilStart( ); }
 	MicroSecs GetSimuTimeResolution( ) const;
 	MicroSecs GetSimulationTime    ( ) const;
+	float     GetSlowMotionRatio   ( ) const;
 
 	void Continue( )
 	{

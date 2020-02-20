@@ -4,11 +4,8 @@
 
 #pragma once
 
-#include "synchapi.h"
 #include "d2d1helper.h"
 #include "MoreTypes.h"
-#include "NNetParameters.h"
-#include "tHighlightType.h"
 #include "tShapeType.h"
 #include "ShapeId.h"
 
@@ -16,24 +13,11 @@ class D2D_driver;
 class PixelCoordsFp;
 class NNetModel;
 
-wchar_t const * GetName( tShapeType const );
-
 class Shape
 {
 public:
-	Shape( tShapeType const type )
-	  :	m_mVinputBuffer( 0._mV ),
-		m_bEmphasized( false ),
-		m_identifier( NO_SHAPE ),
-		m_type( type )
-	{ 
-		(void)InitializeCriticalSectionAndSpinCount( & m_criticalSection, 0x00000400 );
-	}
-
-	virtual ~Shape() 
-	{
-		DeleteCriticalSection( & m_criticalSection );
-	}
+	Shape( tShapeType const );
+	virtual ~Shape(); 
 
 	static bool TypeFits( tShapeType const type ) {	return true; }  // every shape type is a Shape
 
