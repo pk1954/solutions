@@ -73,9 +73,9 @@ void NNetModel::RecalcAllShapes( )
 
 void NNetModel::SetEmphasizeMode( bool const bMode ) 
 { 
-	m_bEmphasizeMode = bMode;
-	if ( bMode == false )
+	if ( m_bEmphasizeMode && (bMode == false) )
 		Apply2All<Shape>( [&]( Shape & shape ) { shape.Emphasize( false ); return false; } );
+	m_bEmphasizeMode = bMode;
 } 
 
 long const NNetModel::GetNrOfShapes( ) const
@@ -415,20 +415,6 @@ Shape const * NNetModel::FindShapeAt( MicroMeterPoint const pnt, function<bool(S
 
 	return pRes;
 }
-
-D2D1::ColorF const NNetModel::GetFrameColor( tHighlightType const type ) const 
-{ 
-	static unordered_map < tHighlightType, D2D1::ColorF > map =
-	{
-		{ tHighlightType::normal,           EXT_COLOR_NORMAL          },
-		{ tHighlightType::highlighted,      EXT_COLOR_HIGHLIGHT       },
-		{ tHighlightType::superHighlighted, EXT_COLOR_SUPER_HIGHLIGHT }
-	};				  
-
-	D2D1::ColorF colF = map.at( type );
-	colF.a = GetOpacity();
-	return colF;
-};
 
 /////////////////// local functions ///////////////////////////////////////////////
 

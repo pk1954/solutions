@@ -64,20 +64,19 @@ public:
 
 	template <typename T> bool IsType( ShapeId const id ) const { return T::TypeFits( GetShapeType( id ) ); }
 
-	MicroMeterPoint const GetShapePos       ( ShapeId const   id     ) const;
-	tShapeType      const GetShapeType      ( ShapeId const   id     ) const;
-	bool            const HasOutgoing       ( ShapeId const   id     ) const;
-	bool            const HasIncoming       ( ShapeId const   id     ) const;
-	bool            const IsValidShapeId    ( ShapeId const   id     ) const { return id.GetValue() < m_Shapes.size(); }
-	ShapeId         const GetId             ( Shape   const * pShape ) const { return pShape ? pShape->GetId( ) : NO_SHAPE; }
-	MicroSecs       const GetSimulationTime( )                         const { return m_timeStamp; }
-	long            const GetSizeOfShapeList( )                        const { return CastToLong( m_Shapes.size() ); }
-	long            const GetNrOfShapes( )                             const;
-	D2D1::ColorF    const GetFrameColor( tHighlightType const )        const;
-	bool            const HasModelChanged( )                           const { return m_bUnsavedChanges; }
-	bool            const IsEmphasizeMode( )                           const { return m_bEmphasizeMode; }
-	MicroSecs       const GetTimeResolution( )                         const { return m_usResolution; }
-	float           const GetOpacity( )                                const { return IsEmphasizeMode() ? 0.5f : 1.0f; }
+	MicroMeterPoint const GetShapePos   ( ShapeId const id  ) const;
+	tShapeType      const GetShapeType  ( ShapeId const id  ) const;
+	bool            const HasOutgoing   ( ShapeId const id  ) const;
+	bool            const HasIncoming   ( ShapeId const id  ) const;
+	bool            const IsValidShapeId( ShapeId const id  ) const { return id.GetValue() < m_Shapes.size(); }
+	ShapeId         const GetId         ( Shape   const * p ) const { return p ? p->GetId( ) : NO_SHAPE; }
+	MicroSecs       const GetSimulationTime( )                const { return m_timeStamp; }
+	long            const GetSizeOfShapeList( )               const { return CastToLong( m_Shapes.size() ); }
+	bool            const HasModelChanged( )                  const { return m_bUnsavedChanges; }
+	bool            const IsEmphasizeMode( )                  const { return m_bEmphasizeMode; }
+	MicroSecs       const GetTimeResolution( )                const { return m_usResolution; }
+	float           const GetOpacity( )                       const { return IsEmphasizeMode() ? 0.5f : 1.0f; }
+	long            const GetNrOfShapes( )                    const;
 
 	BaseKnot * const GetStartKnotPtr( ShapeId const idPipeline ) const 
 	{ 

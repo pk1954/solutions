@@ -13,15 +13,33 @@ D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {
 	if ( m_bEmphasized )
 	{
-		return EXT_COLOR_SUPER_HIGHLIGHT;
+		return INT_COLOR_EMPHASIZED;
 	}
+	else if ( m_pNNetModel->IsEmphasizeMode( ) )
+		return INT_COLOR_LOW_KEY;
 	else
 	{
-		mV    const peakVoltage { mV(m_pNNetModel->GetParameterValue( tParameter::peakVoltage )) };
-		float const colElem     { min( voltageInput / peakVoltage, 1.0f )};
-		return D2D1::ColorF( colElem, 0.0f, 0.0f, m_pNNetModel->GetOpacity() );
+		mV    const peakVoltage  { mV(m_pNNetModel->GetParameterValue( tParameter::peakVoltage )) };
+		float const redComponent { min( voltageInput / peakVoltage, 1.0f )};
+		return D2D1::ColorF( redComponent, 0.0f, 0.0f, 1.0f );
 	}
 }
+
+D2D1::ColorF Shape::GetFrameColor( tHighlightType const type ) const 
+{ 
+	if (type == tHighlightType::normal)
+	{
+		if ( ! m_pNNetModel->IsEmphasizeMode( ) || m_bEmphasized )
+			return EXT_COLOR_NORMAL;
+		else
+			return EXT_COLOR_LOW_KEY;
+	}
+
+	if (type == tHighlightType::highlighted)
+		return EXT_COLOR_HIGHLIGHT;
+	else 
+		return EXT_COLOR_SUPER_HIGHLIGHT;
+};
 
 float Shape::GetFillLevel( mV const voltageInput ) const
 {

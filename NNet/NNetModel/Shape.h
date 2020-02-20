@@ -75,6 +75,7 @@ protected:
 	static D2D_driver const * m_pGraphics;
 	static NNetModel  const * m_pNNetModel;
 
+	D2D1::ColorF GetFrameColor( tHighlightType const ) const;
 	D2D1::ColorF GetInteriorColor( mV const ) const;
 	D2D1::ColorF GetInteriorColor( ) const { return GetInteriorColor( m_mVinputBuffer ); }
 

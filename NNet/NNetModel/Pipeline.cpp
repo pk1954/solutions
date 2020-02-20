@@ -115,7 +115,7 @@ void Pipeline::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) 
 		fPIXEL       const fPixWidth  { coord.convert2fPixel( m_width ) };
 		fPixelPoint  const fStartPoint{ coord.convert2fPixelPos( umStartPoint ) };
 		fPixelPoint  const fEndPoint  { coord.convert2fPixelPos( umEndPoint   ) };
-		D2D1::ColorF const colF       { m_pNNetModel->GetFrameColor( type ) };
+		D2D1::ColorF const colF       { GetFrameColor( type ) };
 
 		m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth, colF );
 

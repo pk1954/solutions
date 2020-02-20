@@ -22,6 +22,9 @@
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWorkThread.h"
 
+#include "win32_hiResTimer.h"
+
+
 using std::unordered_map;
 
 NNetWorkThread::NNetWorkThread
@@ -116,7 +119,6 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 
 	case NNetWorkThreadMessage::Id::STOP:
 		generationStop( );
-		ModelAnalyzer::Stop();
 		return FALSE;
 
 	case NNetWorkThreadMessage::Id::NEXT_GENERATION:
@@ -128,6 +130,26 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 	} 
 
 	BOOL bResult { TRUE };
+
+	HiResTimer timer;
+
+	timer.Start();
+	for ( int i = 0; i < 1000; ++i )
+	{
+	}
+	timer.Stop();
+	microseconds msTara { timer.GetDuration() };
+
+	timer.Start();
+	for ( int i = 0; i < 1000; ++i )
+	{
+		m_pNNetModel->EnterCritSect();
+		m_pNNetModel->LeaveCritSect();
+	}
+	timer.Stop();
+	microseconds msBrutto { timer.GetDuration() };
+
+	microseconds msNetto { msBrutto - msTara };
 
 	m_pNNetModel->EnterCritSect();
 
@@ -261,6 +283,7 @@ void NNetWorkThread::generationRun( bool const bFirst )
 	if ( bFirst )               // if first RUN message ...
 	{
 		m_bContinue = TRUE;
+		m_pNNetModel->SetEmphasizeMode( false );
 		m_runObservable.NotifyAll( TRUE);
 		m_hrTimer.Start();
 	}

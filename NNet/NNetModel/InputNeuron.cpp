@@ -62,7 +62,7 @@ void InputNeuron::drawInputNeuron
 
 void InputNeuron::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
 {
-	drawInputNeuron( coord, m_pNNetModel->GetFrameColor( type ), 1.0f );
+	drawInputNeuron( coord, GetFrameColor( type ), 1.0f );
 }
 
 void InputNeuron::DrawInterior( PixelCoordsFp & coord ) const

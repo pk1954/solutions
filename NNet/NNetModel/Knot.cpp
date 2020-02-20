@@ -27,7 +27,7 @@ void Knot::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) cons
 	drawCircle
 	( 
 		coord, 
-		m_pNNetModel->GetFrameColor( type ), 
+		GetFrameColor( type ), 
 		(type == tHighlightType::normal) ? GetExtension( ) : 30.0_MicroMeter 
 	);
 }

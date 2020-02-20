@@ -9,6 +9,7 @@
 #include <vector>
 
 class NNetModel;
+class Shape;
 
 using std::vector;
 

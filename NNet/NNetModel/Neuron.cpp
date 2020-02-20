@@ -77,7 +77,7 @@ void Neuron::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) co
 	MicroMeterPoint axonHillockPos { getAxonHillockPos( coord ) };
 	drawExterior( coord, type );
 	if ( axonHillockPos != NP_NULL )
-		drawCircle( coord, m_pNNetModel->GetFrameColor( type ), axonHillockPos, GetExtension() * 0.5f );
+		drawCircle( coord, GetFrameColor( type ), axonHillockPos, GetExtension() * 0.5f );
 }
 
 void Neuron::DrawInterior( PixelCoordsFp & coord ) const
@@ -90,7 +90,7 @@ void Neuron::DrawInterior( PixelCoordsFp & coord ) const
 
 void Neuron::drawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
 {
-	drawCircle( coord, m_pNNetModel->GetFrameColor( type ), GetExtension() );
+	drawCircle( coord, GetFrameColor( type ), GetExtension() );
 }
 
 void Neuron::drawInterior( PixelCoordsFp & coord ) const
