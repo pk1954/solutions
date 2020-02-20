@@ -18,6 +18,37 @@ using std::end;
 using std::wstring;
 using std::wostringstream;
 
+bool BaseKnot::apply2All
+( 
+	vector<Pipeline *>               const & pipeList,
+	function<bool(Pipeline * const)> const & func 
+)
+{
+	bool bResult { false };
+	EnterCritSect();
+	for ( auto pipe : pipeList ) 
+	{ 
+		if ( pipe ) 
+		{
+			bResult = func( pipe );
+			if ( bResult )
+				break;
+		}
+		else
+		{
+			int shitHappens = 9;
+		}
+	}
+	LeaveCritSect();
+	return bResult;
+}
+
+void BaseKnot::Prepare( )
+{
+	m_mVinputBuffer = 0._mV;
+	Apply2AllIncomingPipelines( [&]( auto pipe ) { m_mVinputBuffer += pipe->GetNextOutput( ); return false;	} );
+}
+
 bool BaseKnot::IsPrecursorOf( ShapeId const id )
 {
 	return Apply2AllOutgoingPipelines( [&]( auto pipe ) { return pipe->GetEndKnotId( ) == id; } ); 

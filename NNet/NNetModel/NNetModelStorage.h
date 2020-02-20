@@ -6,8 +6,8 @@
 
 #include <vector>
 #include <fstream>
-#include "Shape.h"
 #include "MoreTypes.h"
+#include "ShapeId.h"
 
 using std::wostream;
 using std::wstring;

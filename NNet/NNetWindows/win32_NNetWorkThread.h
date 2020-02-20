@@ -7,10 +7,11 @@
 #include "win32_hiResTimer.h"
 #include "RingBuffer.h"
 #include "Observable.h"
-#include "NNetModel.h"
+#include "ShapeId.h"
 #include "SlowMotionRatio.h"
 #include "win32_thread.h"
 
+class NNetModel;
 class ActionTimer;
 class RootWindow;
 class WinManager;
@@ -85,12 +86,12 @@ public:
 
 	BOOL      IsRunning()              const { return m_bContinue; }
 
+	float     GetSlowMotionRatio   ( ) const { return m_pSlowMotionRatio->GetRatio( ); }
 	MicroSecs GetTimeSpentPerCycle ( ) const { return m_usRealTimeSpentPerCycle; }
 	MicroSecs GetTimeAvailPerCycle ( ) const { return m_usRealTimeAvailPerCycle; }
-	MicroSecs GetSimuTimeResolution( ) const { return m_pNNetModel->GetTimeResolution( ); }
-	MicroSecs GetSimulationTime    ( ) const { return m_pNNetModel->GetSimulationTime( ); }
 	MicroSecs GetRealTimeTilStart  ( ) const { return m_hrTimer.GetMicroSecsTilStart( ); }
-	float     GetSlowMotionRatio   ( ) const { return m_pSlowMotionRatio->GetRatio( ); }
+	MicroSecs GetSimuTimeResolution( ) const;
+	MicroSecs GetSimulationTime    ( ) const;
 
 	void Continue( )
 	{

@@ -32,19 +32,23 @@ Pipeline::Pipeline( MicroMeterPoint const umUnused )
 void Pipeline::Clear( )
 {
 	Shape::Clear( );
+	EnterCritSect();
 	fill( m_potential.begin(), m_potential.end(), 0.0_mV );
+	LeaveCritSect();
 }
 
 void Pipeline::Recalc( )
 {
 	if ( m_pKnotStart && m_pKnotEnd )
 	{
+		EnterCritSect();
 		meterPerSec  const pulseSpeed    { meterPerSec( m_pNNetModel->GetParameterValue( tParameter::pulseSpeed ) ) };
 		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pNNetModel->GetTimeResolution( ) ) };
 		MicroMeter   const pipelineLength{ Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
 		unsigned int const iNrOfSegments { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_potIter = m_potential.begin();
+		LeaveCritSect();
 	}
 }
 
@@ -139,13 +143,14 @@ void Pipeline::drawSegment( fPixelPoint & fP1, fPixelPoint const fPixSegVec, fPI
 	fP1 = fP2;
 }
 
-void Pipeline::DrawInterior( PixelCoordsFp & coord ) const
+void Pipeline::DrawInterior( PixelCoordsFp & coord )
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
 	MicroMeterPoint const umVector     { umEndPoint - umStartPoint };
 	if ( ! IsCloseToZero( umVector ) )
 	{
+		EnterCritSect();
 		fPIXEL      const fWidth     { coord.convert2fPixel( m_width * PIPELINE_INTERIOR ) };
 		fPixelPoint const fPixVector { coord.convert2fPixelSize( umVector ) };
 		fPixelPoint const fPixSegVec { fPixVector / CastToFloat(m_potential.size()) };
@@ -155,7 +160,11 @@ void Pipeline::DrawInterior( PixelCoordsFp & coord ) const
 			drawSegment( fPoint1, fPixSegVec, fWidth, * iter );
 
 		for( auto iter = m_potential.begin(); iter != m_potIter; ++ iter )
-			drawSegment( fPoint1, fPixSegVec, fWidth, * iter );
+		{
+			mV potential { * iter };
+			drawSegment( fPoint1, fPixSegVec, fWidth, potential );
+		}
+		LeaveCritSect();
 	}
 }
 

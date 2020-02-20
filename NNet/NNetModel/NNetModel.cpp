@@ -22,9 +22,6 @@
 using namespace std::chrono;
 using std::unordered_map;
 
-CRITICAL_SECTION NNetModel::m_criticalSection;
-bool             NNetModel::m_bCritSectReady = false;
-
 NNetModel::NNetModel( )
   : m_Shapes( ),
 	m_timeStamp        ( 0._MicroSecs ),
@@ -37,26 +34,13 @@ NNetModel::NNetModel( )
 	m_bUnsavedChanges  ( false ),
 	m_bEmphasizeMode   ( false )
 {					
-	if ( ! m_bCritSectReady )
-	{
-		(void)InitializeCriticalSectionAndSpinCount( & m_criticalSection, 0x00000400 );
-		m_bCritSectReady = true;
-	}
-
 	Shape::SetModel( this );
-
-	CreateInitialShapes( );
+    CreateInitialShapes( );
 }
 
 NNetModel::~NNetModel( )
 {
 	m_parameterObservable.UnregisterAllObservers();
-
-	if ( m_bCritSectReady )
-	{
-		DeleteCriticalSection( & m_criticalSection );
-		m_bCritSectReady = false;
-	}
 }
 
 void NNetModel::CreateInitialShapes( )
@@ -383,24 +367,18 @@ void NNetModel::Compute( )
 
 void NNetModel::ResetModel( )
 {
-	EnterCritSect( );
 	Apply2All<Shape>( [&]( Shape & shape ) { delete & shape; return false; } );
 	m_Shapes.clear();
-	LeaveCritSect( );
 }
 
 void NNetModel::ClearModel( )
 {
-	EnterCritSect( );
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Clear( ); return false; } );
-	LeaveCritSect( );
 }
 
 Shape const * NNetModel::FindShapeAt( MicroMeterPoint const pnt, function<bool(Shape const &)> const & crit ) const
 {	
 	Shape const * pRes { nullptr };
-
-	EnterCritSect( );
 
 	if ( ! pRes )  // first test all neurons and input neurons
 		pRes = findShapeAt( pnt, [&]( Shape const & s ) { return s.IsAnyNeuron( ) && crit( s ); } );
@@ -411,19 +389,17 @@ Shape const * NNetModel::FindShapeAt( MicroMeterPoint const pnt, function<bool(S
 	if ( ! pRes ) // if nothing found, try pipelines
 		pRes = findShapeAt( pnt, [&]( Shape const & s ) { return s.IsPipeline ( ) && crit( s ); } );
 
-	LeaveCritSect( );
-
 	return pRes;
 }
 
 /////////////////// local functions ///////////////////////////////////////////////
 
-void NNetModel::checkConsistency( Shape const * pShape ) const
+void NNetModel::checkConsistency( Shape * pShape )
 {
 	tShapeType type = pShape->GetShapeType();
 
 	if ( ::IsBaseKnotType( type ) )
-		static_cast<BaseKnot const &>( * pShape ).Apply2AllConnectedPipelinesConst
+		static_cast<BaseKnot &>( * pShape ).Apply2AllConnectedPipelines
 		( 
 			[&]( Pipeline const * const pipe ) 
 			{ 
@@ -483,10 +459,8 @@ void NNetModel::deleteShape( ShapeId const id )
 {
 	if ( IsDefined( id ) )
 	{
-		EnterCritSect( );
 		delete m_Shapes[ id.GetValue() ];
 		m_Shapes[ id.GetValue() ] = nullptr;
-		LeaveCritSect( );
 	}
 }
 

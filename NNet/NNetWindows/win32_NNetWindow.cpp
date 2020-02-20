@@ -260,9 +260,9 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	}
 }
 
-void NNetWindow::drawHighlightedShape( NNetModel const & model, PixelCoordsFp & coord )
+void NNetWindow::drawHighlightedShape( NNetModel & model, PixelCoordsFp & coord )
 {
-	Shape const * const pShapeHighlighted { model.GetConstShape( m_shapeHighlighted ) };
+	Shape * const pShapeHighlighted { model.GetShape( m_shapeHighlighted ) };
 	if ( pShapeHighlighted && IsAnyNeuronType(pShapeHighlighted->GetShapeType()) )
 	{
 		pShapeHighlighted->DrawExterior( coord, tHighlightType::highlighted );

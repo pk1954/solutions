@@ -58,16 +58,18 @@ public:
 
 	virtual void Step( )
 	{
+		EnterCritSect();
 		* m_potIter = m_mVinputBuffer;
 		if ( m_potIter == m_potential.begin() )
 			m_potIter = m_potential.end( );
 		-- m_potIter;
+		LeaveCritSect();
 	}
 
 	mV GetNextOutput( ) const {	return * m_potIter; }
 
 	virtual void DrawExterior  ( PixelCoordsFp  &, tHighlightType const ) const;
-	virtual void DrawInterior  ( PixelCoordsFp  & ) const;
+	virtual void DrawInterior  ( PixelCoordsFp  & );
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 	virtual void Recalc( );
 	virtual void Clear( );

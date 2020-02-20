@@ -5,7 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "Shape.h"
+#include "ShapeId.h"
 #include "Direct2D.h"
 #include "PixelCoordsFp.h"
 #include "tHighlightType.h"
@@ -97,6 +97,6 @@ private:
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL   inObservedClientRect( LPARAM const );
 	void   setHighlightShape( PixelPoint const );
-	void   drawHighlightedShape( NNetModel const &, PixelCoordsFp & );
+	void   drawHighlightedShape( NNetModel &, PixelCoordsFp & );
 	void   doPaint( );
 };

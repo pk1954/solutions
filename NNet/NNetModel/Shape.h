@@ -4,23 +4,17 @@
 
 #pragma once
 
-#include <vector>
+#include "synchapi.h"
 #include "d2d1helper.h"
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "tShapeType.h"
+#include "ShapeId.h"
 
-class Shape;
 class D2D_driver;
 class PixelCoordsFp;
 class NNetModel;
-
-using ShapeId = NamedType< long, struct ShapeIdParam >;
-
-ShapeId const NO_SHAPE( -1 );
-
-static bool IsDefined( ShapeId const id ) { return id != NO_SHAPE; }
 
 wchar_t const * GetName( tShapeType const );
 
@@ -32,9 +26,14 @@ public:
 		m_bEmphasized( false ),
 		m_identifier( NO_SHAPE ),
 		m_type( type )
-	{ }
+	{ 
+		(void)InitializeCriticalSectionAndSpinCount( & m_criticalSection, 0x00000400 );
+	}
 
-	virtual ~Shape() {}
+	virtual ~Shape() 
+	{
+		DeleteCriticalSection( & m_criticalSection );
+	}
 
 	static bool TypeFits( tShapeType const type ) {	return true; }  // every shape type is a Shape
 
@@ -43,7 +42,7 @@ public:
 
 	virtual bool IsInRect      ( MicroMeterRect const & )                const = 0;
 	virtual void DrawExterior  ( PixelCoordsFp &, tHighlightType const ) const = 0;
-	virtual void DrawInterior  ( PixelCoordsFp & )                       const = 0;
+	virtual void DrawInterior  ( PixelCoordsFp & )                             = 0;
 	virtual bool IsPointInShape( MicroMeterPoint const & )               const = 0;
 	virtual void Prepare       ( )                                             = 0;
 	virtual void Step          ( )                                             = 0;
@@ -68,6 +67,9 @@ public:
 	static void SetGraphics( D2D_driver const * const pGraphics ) { m_pGraphics  = pGraphics; }
 	static void SetModel   ( NNetModel  const * const pModel    ) { m_pNNetModel = pModel; }
 
+	void EnterCritSect() { EnterCriticalSection( & m_criticalSection ); }
+	void LeaveCritSect() { LeaveCriticalSection( & m_criticalSection ); }
+
 protected:
 
 	mV m_mVinputBuffer;
@@ -84,7 +86,8 @@ protected:
 
 private:
 
-	bool       m_bEmphasized;
-	ShapeId    m_identifier;
-	tShapeType m_type;
+	CRITICAL_SECTION m_criticalSection; 
+	bool             m_bEmphasized;
+	ShapeId          m_identifier;
+	tShapeType       m_type;
 };

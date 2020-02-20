@@ -65,7 +65,7 @@ void InputNeuron::DrawExterior( PixelCoordsFp & coord, tHighlightType const type
 	drawInputNeuron( coord, GetFrameColor( type ), 1.0f );
 }
 
-void InputNeuron::DrawInterior( PixelCoordsFp & coord ) const
+void InputNeuron::DrawInterior( PixelCoordsFp & coord )
 { 
 	drawInputNeuron( coord, GetInteriorColor( ), NEURON_INTERIOR );
 }

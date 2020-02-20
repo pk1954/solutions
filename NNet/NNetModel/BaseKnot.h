@@ -38,7 +38,8 @@ public:
 
 	virtual ~BaseKnot() {}
 
-	virtual mV GetNextOutput( ) const = 0;
+	virtual void Prepare      ( );
+	virtual mV   GetNextOutput( ) const = 0;
 
 	static bool TypeFits( tShapeType const type ) { return IsBaseKnotType( type ); }
 
@@ -67,8 +68,19 @@ public:
 	bool   IsOrphan( )                   const { return m_incoming.empty() && m_outgoing.empty(); }
 	bool   IsOrphanedKnot( )             const { return (GetShapeType() == tShapeType::knot) && IsOrphan(); }
 
-	void ClearIncoming( ) { m_incoming.clear(); }
-	void ClearOutgoing( ) { m_outgoing.clear(); }
+	void ClearIncoming( ) 
+	{
+		EnterCritSect();
+		m_incoming.clear(); 
+		LeaveCritSect();
+	}
+
+	void ClearOutgoing( ) 
+	{ 
+		EnterCritSect();
+		m_outgoing.clear(); 
+		LeaveCritSect();
+	}
 
 	bool IsPrecursorOf( ShapeId const );
 	bool IsSuccessorOf( ShapeId const );
@@ -81,74 +93,18 @@ public:
 
 	bool Apply2AllIncomingPipelines( function<bool(Pipeline * const)> const & func )
 	{
-		bool bResult { false };
-		for ( auto pipe : m_incoming ) 
-		{ 
-			if ( pipe ) 
-			{
-				bResult = func( pipe );
-				if ( bResult )
-					break;
-			}
-		}
-		return bResult;
+		return apply2All( m_incoming, func );
 	}
 
 	bool Apply2AllOutgoingPipelines( function<bool(Pipeline * const)> const & func )
 	{
-		bool bResult { false };
-		for ( auto pipe : m_outgoing ) 
-		{ 
-			if ( pipe ) 
-			{
-				bResult = func( pipe );
-				if ( bResult )
-					break;
-			}
-		}
-		return bResult;
-	}
-
-	bool Apply2AllIncomingPipelinesConst( function<bool(Pipeline const * const)> const & func ) const
-	{
-		bool bResult { false };
-		for ( auto pipe : m_incoming ) 
-		{ 
-			if ( pipe ) 
-			{
-				bResult = func( pipe );
-				if ( bResult )
-					break;
-			}
-		}
-		return bResult;
-	}
-
-	bool Apply2AllOutgoingPipelinesConst( function<bool(Pipeline const * const)> const & func ) const
-	{
-		bool bResult { false };
-		for ( auto pipe : m_outgoing ) 
-		{ 
-			if ( pipe ) 
-			{
-				bResult = func( pipe );
-				if ( bResult )
-					break;
-			}
-		}
-		return bResult;
+		return apply2All( m_outgoing, func );
 	}
 
 	void Apply2AllConnectedPipelines( function<bool(Pipeline const *)> const & func )
 	{
 		Apply2AllIncomingPipelines( [&]( Pipeline const * pipe ) { return func( pipe ); } );
 		Apply2AllOutgoingPipelines( [&]( Pipeline const * pipe ) { return func( pipe ); } );
-	}
-
-	void Apply2AllConnectedPipelinesConst( function<bool(Pipeline const * const)> const & func ) const
-	{
-		Apply2AllIncomingPipelinesConst( [&]( Pipeline const * const pipe ) { return func( pipe ); } );
-		Apply2AllOutgoingPipelinesConst( [&]( Pipeline const * const pipe ) { return func( pipe ); } );
 	}
 
 	virtual void MoveShape( MicroMeterPoint const & );
@@ -167,6 +123,7 @@ protected:
 	void      const DisplayText( PixelRect const, wstring const ) const;
 
 private:
+	bool apply2All(	vector<Pipeline *> const &, function<bool(Pipeline * const)> const & );
 
 	MicroMeterPoint     m_center;
 	MicroMeter          m_extension;

@@ -31,11 +31,10 @@ public:
 		return type == tShapeType::knot;
 	}
 
-	virtual void Prepare      ( );
 	virtual void Step         ( ) { }
 	virtual mV   GetNextOutput( ) const;
 	virtual void DrawExterior ( PixelCoordsFp &, tHighlightType const ) const;
-	virtual void DrawInterior ( PixelCoordsFp & ) const;
+	virtual void DrawInterior ( PixelCoordsFp & );
 	virtual void Recalc( ) {};
 
 	virtual void DrawNeuronText( PixelCoordsFp & ) const {};

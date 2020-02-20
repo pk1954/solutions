@@ -5,7 +5,7 @@
 #pragma once
 
 #include "script.h"
-#include "Shape.h"
+#include "ShapeId.h"
 #include "moretypes.h"
 
 extern ShapeId         ScrReadShapeId( Script & );

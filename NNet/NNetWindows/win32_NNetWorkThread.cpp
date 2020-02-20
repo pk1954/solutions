@@ -22,9 +22,6 @@
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWorkThread.h"
 
-#include "win32_hiResTimer.h"
-
-
 using std::unordered_map;
 
 NNetWorkThread::NNetWorkThread
@@ -131,28 +128,6 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 
 	BOOL bResult { TRUE };
 
-	HiResTimer timer;
-
-	timer.Start();
-	for ( int i = 0; i < 1000; ++i )
-	{
-	}
-	timer.Stop();
-	microseconds msTara { timer.GetDuration() };
-
-	timer.Start();
-	for ( int i = 0; i < 1000; ++i )
-	{
-		m_pNNetModel->EnterCritSect();
-		m_pNNetModel->LeaveCritSect();
-	}
-	timer.Stop();
-	microseconds msBrutto { timer.GetDuration() };
-
-	microseconds msNetto { msBrutto - msTara };
-
-	m_pNNetModel->EnterCritSect();
-
 	switch ( id )
 	{
 	case NNetWorkThreadMessage::Id::REFRESH:
@@ -201,7 +176,10 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		generationStop( );
 		m_pNNetModel->ClearModel( );
 		if ( ModelAnalyzer::FindLoop( * m_pNNetModel ) )
+		{
 			ModelAnalyzer::EmphasizeLoopShapes( * m_pNNetModel );
+			MicroMeterRect rect = ModelAnalyzer::GetEnclosingRect();
+		}
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE:
@@ -234,7 +212,6 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		break;
 	} 
 
-	m_pNNetModel->LeaveCritSect();
 	return bResult;
 }
 
@@ -334,4 +311,14 @@ void NNetWorkThread::compute()
 		m_usRealTimeSpentPerCycle = usSpentInCompute / CastToFloat(lCyclesTodo);
 		m_performanceObservable.NotifyAll( FALSE);
 	}
+}
+
+MicroSecs NNetWorkThread::GetSimuTimeResolution( ) const 
+{ 
+	return m_pNNetModel->GetTimeResolution( ); 
+}
+
+MicroSecs NNetWorkThread::GetSimulationTime( ) const 
+{ 
+	return m_pNNetModel->GetSimulationTime( ); 
 }

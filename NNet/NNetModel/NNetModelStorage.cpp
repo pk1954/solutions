@@ -178,9 +178,7 @@ bool NNetModelStorage::Read( wstring const & wstrPath )
 	Script scriptModel;
 	m_pModel->ResetModel();
 	wcout << L"NNet model file " << wstrPath;
-	m_pModel->EnterCritSect();
 	bool bResult = scriptModel.ScrProcess( wstrPath ); 
-	m_pModel->LeaveCritSect();
 	if ( bResult )
 	{
 		wcout << L" sucessfully processed" << endl;

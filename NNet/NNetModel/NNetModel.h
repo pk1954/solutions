@@ -124,7 +124,6 @@ public:
 	bool Apply2All( function<bool(T &)> const & func ) const
 	{
 		bool bResult { false };
-		EnterCritSect( );
 		for ( auto pShape : m_Shapes )
 		{
 			if ( pShape && T::TypeFits( pShape->GetShapeType() ) )
@@ -134,7 +133,6 @@ public:
 					break;
 			}
 		}
-		LeaveCritSect( );
 		return bResult;
 	}
 
@@ -163,9 +161,6 @@ public:
 	void SetParameter( tParameter const, float const );
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
-	void EnterCritSect() const { EnterCriticalSection( & m_criticalSection ); }
-	void LeaveCritSect() const { LeaveCriticalSection( & m_criticalSection ); }
-
 	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); return false; } ); }
 
 	void AddParameterObserver( ObserverInterface * pObs ) { m_parameterObservable.RegisterObserver( pObs ); }
@@ -173,9 +168,6 @@ public:
 	virtual void Compute( );
 
 private:
-
-	static CRITICAL_SECTION m_criticalSection;
-	static bool             m_bCritSectReady;
 
 	vector<Shape *> m_Shapes;
 	MicroSecs       m_timeStamp;
@@ -195,7 +187,7 @@ private:
 	// local functions
 
 	Shape const   * findShapeAt( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
-	void            checkConsistency( Shape const * ) const;
+	void            checkConsistency( Shape * );
 	MicroMeterPoint orthoVector( ShapeId const ) const;
 	void            disconnectBaseKnot( BaseKnot * const );
 	void            deletePipeline( ShapeId const );

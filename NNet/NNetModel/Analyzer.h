@@ -25,9 +25,10 @@ public:
 		m_bStop = true;
 	}
 
-	static void GetEnclosingRect( MicroMeterRect & );
+	static MicroMeterRect GetEnclosingRect( );
 
 private:
+
 	static bool            m_bStop;
 	static int             m_iRecDepth;
 	static vector<Shape *> m_shapeStack;

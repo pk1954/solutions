@@ -40,7 +40,7 @@ public:
 	}
 
 	virtual void DrawExterior  ( PixelCoordsFp &, tHighlightType const ) const;
-	virtual void DrawInterior  ( PixelCoordsFp & ) const;
+	virtual void DrawInterior  ( PixelCoordsFp & );
 	virtual void DrawNeuronText( PixelCoordsFp & ) const;
 	virtual void Recalc( );   // Recalculate precalculated values
 

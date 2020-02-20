@@ -144,14 +144,14 @@ public:
 			   ( a.m_Right != m_Right ) || ( a.m_Bottom != m_Bottom ); 
 	};
 
-	RectType const Scale( BASE_TYPE const pix )  // positive values of pix enlarge rectangle
+	RectType const Scale( BASE_TYPE const val )  // positive values of val enlarge rectangle
 	{                                            // negative values reduce its size
 		return RectType
 		{
-			m_Left   - pix,
-			m_Top    - pix,
-			m_Right  + pix,
-			m_Bottom + pix
+			m_Left   - val,
+			m_Top    - val,
+			m_Right  + val,
+			m_Bottom + val
 		};
 	}
 

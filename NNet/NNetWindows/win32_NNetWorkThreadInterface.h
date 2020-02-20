@@ -6,7 +6,7 @@
 
 #include <fstream>
 #include "boolOp.h"
-#include "Shape.h"
+#include "ShapeId.h"
 #include "NNetModel.h"
 #include "win32_NNetWorkThread.h"
 

@@ -25,23 +25,6 @@ void ModelAnalyzer::printShapeStack( )
 	wcout << endl;
 }
 
-void ModelAnalyzer::GetEnclosingRect( MicroMeterRect & rect )
-{
-	rect = MicroMeterRect::ZERO_VAL();
-	for ( const auto & pShape : m_shapeStack )
-	{
-		if ( pShape->IsPipeline() )
-		{
-			rect.Expand( Cast2Pipeline( pShape )->GetStartPoint( ) );
-			rect.Expand( Cast2Pipeline( pShape )->GetEndPoint( ) );
-		}
-		else 
-		{
-			rect.Expand( Cast2BaseKnot( pShape )->GetPosition() );
-		}
-	}
-}
-
 bool ModelAnalyzer::FindLoop( NNetModel const & model )
 {
 	int iNrOfShapes { model.GetNrOfShapes() };
@@ -59,57 +42,93 @@ bool ModelAnalyzer::FindLoop( NNetModel const & model )
 			  	[ & ] ( BaseKnot & baseKnot )
 			    {
 				 	wcout << iCounter-- << L"\r";
-				 	return findLoop( & baseKnot );
+					if ( m_bStop )
+						return true;
+					else 
+				 		return findLoop( & baseKnot );
 				}
               )
 		   )
 		{
-			wcout << L"loop found" << endl;
-			printShapeStack( );
-			return true;
+			if ( m_bStop )
+			{
+				wcout << L"analysis aborted by user" << endl;
+				return false;
+			}
+			else
+			{
+				wcout << L"loop found" << endl;
+				printShapeStack( );
+				return true;
+			}
 		}
 	}
 
+	wcout << L"no loop found" << endl;
 	return false;
 }
+
+// findLoop - try to find a loop in model
+//
+// returns true, if loop found or aborted by user
+//         false, if analysis completed and no loop found
 
 bool ModelAnalyzer::findLoop( Shape * const pShape )
 {
 	if ( m_bStop )
-		return false;
+		return true;
 
 	if ( m_shapeStack.size() == m_iRecDepth )
-		return false;
+		return false;  // maximum search depth reached
 
 	m_shapeStack.push_back( pShape );
 
+	bool bResult { false };
+
 	if ( 
-		  ( m_shapeStack.size() > 1 ) &&                 // we are beyond the initial shape
+		  ( m_shapeStack.size() > 1 ) &&                        // we are beyond the initial shape
 	      ( pShape->GetId() == m_shapeStack.front()->GetId() )  // and found the same shape again
 	   )
 	{
-		return true;  // Do not pop_back stack!
+		bResult = true;  // loop found. Do not pop_back stack!
 	}
-
-	bool bLoopFound { false };
-
-	if ( pShape->IsPipeline() )
+	else if ( pShape->IsPipeline() )
 	{
-		bLoopFound = findLoop( Cast2Pipeline( pShape )->GetEndKnotPtr( ) );
+		Pipeline * pPipe { Cast2Pipeline( pShape ) };
+		bResult = findLoop( pPipe->GetEndKnotPtr( ) );
 	}
 	else if ( pShape->IsBaseKnot() )
 	{
-		bLoopFound = Cast2BaseKnot( pShape )->Apply2AllOutgoingPipelines( [&]( auto pipe ) { return findLoop( pipe ); } );
+		BaseKnot * pBaseKnot { Cast2BaseKnot( pShape ) };
+		bResult = pBaseKnot->Apply2AllOutgoingPipelines( [&]( auto pipe ) { return findLoop( pipe ); } );
 	}
 	else
 	{
 		assert( false );  // shape is neither pipeline nor baseknot
 	}
 
-	if ( ! bLoopFound )
+	if ( ! bResult )
 		m_shapeStack.pop_back( ); // no loop in this branch
 
-	return bLoopFound;
+	return bResult;
+}
+
+MicroMeterRect ModelAnalyzer::GetEnclosingRect( )
+{
+	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
+	for ( const auto & pShape : m_shapeStack )
+	{
+		if ( pShape->IsPipeline() )
+		{
+			rect.Expand( Cast2Pipeline( pShape )->GetStartPoint( ) );
+			rect.Expand( Cast2Pipeline( pShape )->GetEndPoint( ) );
+		}
+		else 
+		{
+			rect.Expand( Cast2BaseKnot( pShape )->GetPosition() );
+		}
+	}
+	return rect;
 }
 
 void ModelAnalyzer::EmphasizeLoopShapes( NNetModel & model )

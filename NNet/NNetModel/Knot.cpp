@@ -10,13 +10,6 @@
 #include "Direct2D.h"
 #include "Knot.h"
 
-void Knot::Prepare( )
-{
-	m_mVinputBuffer = 0._mV;
-	for ( auto pipe : m_incoming )
-		m_mVinputBuffer += pipe->GetNextOutput( );
-}
-
 mV Knot::GetNextOutput( ) const
 {
 	return m_mVinputBuffer;
@@ -32,7 +25,7 @@ void Knot::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) cons
 	);
 }
 
-void Knot::DrawInterior( PixelCoordsFp & coord ) const
+void Knot::DrawInterior( PixelCoordsFp & coord )
 {
 	drawCircle( coord, GetInteriorColor( ), GetExtension( ) * PIPELINE_INTERIOR );
 }

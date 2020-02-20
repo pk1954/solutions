@@ -8,7 +8,6 @@
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "tHighlightType.h"
-#include "Shape.h"
 #include "BaseKnot.h"
 
 class Neuron : public BaseKnot
@@ -22,12 +21,11 @@ public:
 		return type == tShapeType::neuron;
 	}
 
-	virtual void Prepare( );
 	virtual void Step( );
 	virtual mV   GetNextOutput( ) const;
 
 	virtual void DrawExterior( PixelCoordsFp &, tHighlightType const ) const;
-	virtual void DrawInterior( PixelCoordsFp & ) const;
+	virtual void DrawInterior( PixelCoordsFp & );
 	virtual void Recalc( );
 
 protected:

@@ -31,13 +31,6 @@ mV Neuron::waveFunction( MicroSecs const time ) const
 	return mV( m_factorU * time.GetValue() * ( 1.0f - time.GetValue() * m_factorW ) );
 }
 
-void Neuron::Prepare( )
-{
-	m_mVinputBuffer = 0._mV;
-	for ( auto pipe : m_incoming )
-		m_mVinputBuffer += pipe->GetNextOutput( );
-}
-
 void Neuron::Step( )
 {
 	if ( 
@@ -80,7 +73,7 @@ void Neuron::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) co
 		drawCircle( coord, GetFrameColor( type ), axonHillockPos, GetExtension() * 0.5f );
 }
 
-void Neuron::DrawInterior( PixelCoordsFp & coord ) const
+void Neuron::DrawInterior( PixelCoordsFp & coord )
 { 
 	MicroMeterPoint axonHillockPos { getAxonHillockPos( coord ) };
 	drawInterior( coord );
