@@ -26,4 +26,3 @@ static MicroMeterPoint const STD_OFFSET        { MicroMeterPoint( 0._MicroMeter,
 static D2D1::ColorF const EXT_COLOR_NORMAL         { 0.0f, 0.5f, 1.0f, 1.0f };
 static D2D1::ColorF const EXT_COLOR_HIGHLIGHT      { 0.0f, 0.8f, 0.8f, 1.0f };
 static D2D1::ColorF const EXT_COLOR_SUPER_HIGHLIGHT{ 1.0f, 0.0f, 0.0f, 1.0f };
-static D2D1::ColorF const EXT_COLOR_EMPHASIZED     { 1.0f, 0.5f, 0.0f, 1.0f };

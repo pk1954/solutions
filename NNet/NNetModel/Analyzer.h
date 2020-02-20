@@ -17,7 +17,7 @@ class ModelAnalyzer
 public:
 	static bool FindLoop( NNetModel const & );
 
-	static void EmphasizeLoopShapes( NNetModel &, bool const );
+	static void EmphasizeLoopShapes( NNetModel & );
 
 	static void Stop( )
 	{

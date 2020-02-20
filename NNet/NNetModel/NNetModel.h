@@ -75,8 +75,10 @@ public:
 	long            const GetNrOfShapes( )                             const;
 	D2D1::ColorF    const GetFrameColor( tHighlightType const )        const;
 	bool            const HasModelChanged( )                           const { return m_bUnsavedChanges; }
+	bool            const IsEmphasizeMode( )                           const { return m_bEmphasizeMode; }
 	MicroSecs       const GetTimeResolution( )                         const { return m_usResolution; }
-	
+	float           const GetOpacity( )                                const { return IsEmphasizeMode() ? 0.5f : 1.0f; }
+
 	BaseKnot * const GetStartKnotPtr( ShapeId const idPipeline ) const 
 	{ 
 		return GetConstTypedShape<Pipeline>( idPipeline )->GetStartKnotPtr(); 
@@ -154,6 +156,7 @@ public:
 	void Disconnect( ShapeId const );
 	void RemoveShape( ShapeId const );
 	void RecalcAllShapes( );
+	void SetEmphasizeMode( bool const );
 	void ResetModel( );
 	void ClearModel( );
 	void ModelSaved( ) { m_bUnsavedChanges = false; }
@@ -170,9 +173,6 @@ public:
 
 	virtual void Compute( );
 
-	float GetOpacity( ) const { return m_fOpacity; };
-	void  SetOpaqueMode( bool fMode ) { m_fOpacity = fMode ? 0.5f : 1.0f; };
-
 private:
 
 	static CRITICAL_SECTION m_criticalSection;
@@ -181,6 +181,7 @@ private:
 	vector<Shape *> m_Shapes;
 	MicroSecs       m_timeStamp;
 	bool            m_bUnsavedChanges;
+	bool            m_bEmphasizeMode;
 
 	// parameters
     mV          m_threshold;
@@ -189,7 +190,6 @@ private:
 	MicroSecs   m_refractPeriod;
 	meterPerSec m_pulseSpeed;
 	MicroSecs   m_usResolution;
-	float       m_fOpacity;
 
 	Observable  m_parameterObservable;
 

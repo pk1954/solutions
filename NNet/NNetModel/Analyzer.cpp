@@ -112,8 +112,9 @@ bool ModelAnalyzer::findLoop( Shape * const pShape )
 	return bLoopFound;
 }
 
-void ModelAnalyzer::EmphasizeLoopShapes( NNetModel & model, bool const bMode )
+void ModelAnalyzer::EmphasizeLoopShapes( NNetModel & model )
 {
 	for ( const auto & pShape : m_shapeStack )
-		pShape->Emphasize( bMode );
+		pShape->Emphasize( true );
+	model.SetEmphasizeMode( true );
 }

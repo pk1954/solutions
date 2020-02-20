@@ -268,10 +268,10 @@ void NNetWindow::drawHighlightedShape( NNetModel const & model, PixelCoordsFp & 
 tHighlightType const NNetWindow::GetHighlightType( ShapeId const id ) const
 {
 	return ( id == m_shapeSuperHighlighted )
-		? tHighlightType::superHighlighted
-		: ( id == m_shapeHighlighted )
-		? tHighlightType::highlighted
-		: tHighlightType::normal;
+		   ? tHighlightType::superHighlighted
+		   : ( id == m_shapeHighlighted )
+			 ? tHighlightType::highlighted
+			 : tHighlightType::normal;
 }
 
 void NNetWindow::doPaint( ) 
@@ -301,10 +301,7 @@ void NNetWindow::OnPaint( )
 		HDC const hDC = BeginPaint( &ps );
 		if ( m_D2d_driver.StartFrame( GetWindowHandle(), hDC ) )
 		{
-			m_pModel->SetOpaqueMode( true );
 			doPaint( );
-			m_pModel->SetOpaqueMode( false );
-
 			m_D2d_driver.EndFrame( GetWindowHandle() );
 		}
 		EndPaint( &ps );

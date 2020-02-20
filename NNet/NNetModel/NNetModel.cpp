@@ -35,7 +35,7 @@ NNetModel::NNetModel( )
 	m_pulseSpeed       ( 0.1_meterPerSec ),
 	m_usResolution     ( 100._MicroSecs ),
 	m_bUnsavedChanges  ( false ),
-	m_fOpacity         ( 1.0f )
+	m_bEmphasizeMode   ( false )
 {					
 	if ( ! m_bCritSectReady )
 	{
@@ -69,6 +69,13 @@ void NNetModel::CreateInitialShapes( )
 void NNetModel::RecalcAllShapes( ) 
 { 
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); return false; } );
+} 
+
+void NNetModel::SetEmphasizeMode( bool const bMode ) 
+{ 
+	m_bEmphasizeMode = bMode;
+	if ( bMode == false )
+		Apply2All<Shape>( [&]( Shape & shape ) { shape.Emphasize( false ); return false; } );
 } 
 
 long const NNetModel::GetNrOfShapes( ) const
@@ -415,12 +422,11 @@ D2D1::ColorF const NNetModel::GetFrameColor( tHighlightType const type ) const
 	{
 		{ tHighlightType::normal,           EXT_COLOR_NORMAL          },
 		{ tHighlightType::highlighted,      EXT_COLOR_HIGHLIGHT       },
-		{ tHighlightType::superHighlighted, EXT_COLOR_SUPER_HIGHLIGHT },
-		{ tHighlightType::emphasized,       EXT_COLOR_EMPHASIZED      }
+		{ tHighlightType::superHighlighted, EXT_COLOR_SUPER_HIGHLIGHT }
 	};				  
 
 	D2D1::ColorF colF = map.at( type );
-	colF.a = GetOpacity( );
+	colF.a = GetOpacity();
 	return colF;
 };
 
