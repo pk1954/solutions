@@ -176,7 +176,13 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::ANALYZE:
-		ModelAnalyzer::FindLoop( * m_pNNetModel );
+		generationStop( );
+		m_pNNetModel->ClearModel( );
+		m_pNNetModel->SetOpaqueMode( true );
+		if ( ModelAnalyzer::FindLoop( * m_pNNetModel ) )
+		{
+			ModelAnalyzer::EmphasizeLoopShapes( * m_pNNetModel, true );
+		}
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE:

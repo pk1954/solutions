@@ -13,8 +13,8 @@
 using std::chrono::microseconds;
 using std::wostringstream;
 
-Neuron::Neuron( NNetModel * pModel, MicroMeterPoint const upCenter, tShapeType const type )
-  : BaseKnot( pModel, upCenter, type, NEURON_RADIUS ),
+Neuron::Neuron( MicroMeterPoint const upCenter, tShapeType const type )
+  : BaseKnot( upCenter, type, NEURON_RADIUS ),
 	m_timeSinceLastPulse( 0._MicroSecs )
 {
 	Recalc();

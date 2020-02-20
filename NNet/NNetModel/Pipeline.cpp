@@ -13,18 +13,26 @@
 #include "NNetModel.h"
 #include "Pipeline.h"
 
+using std::fill;
+
 MicroMeter const Pipeline::STD_ARROW_SIZE { 30.0_MicroMeter };
 
 MicroMeter Pipeline::m_arrowSize { STD_ARROW_SIZE };
 
-Pipeline::Pipeline( NNetModel * pModel, MicroMeterPoint const umUnused )
-  :	Shape( pModel, tShapeType::pipeline ),
+Pipeline::Pipeline( MicroMeterPoint const umUnused )
+  :	Shape( tShapeType::pipeline ),
 	m_pKnotStart ( nullptr ),
 	m_pKnotEnd   ( nullptr ),
 	m_width      ( PIPELINE_WIDTH ),
 	m_potential  ( ),
 	m_potIter    ( )
 {
+}
+
+void Pipeline::Clear( )
+{
+	Shape::Clear( );
+	fill( m_potential.begin(), m_potential.end(), 0.0_mV );
 }
 
 void Pipeline::Recalc( )
@@ -104,34 +112,31 @@ void Pipeline::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) 
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
 	if ( umStartPoint != umEndPoint )
 	{
-		fPIXEL      const fPixWidth  { coord.convert2fPixel( m_width ) };
-		fPixelPoint const fStartPoint{ coord.convert2fPixelPos( umStartPoint ) };
-		fPixelPoint const fEndPoint  { coord.convert2fPixelPos( umEndPoint   ) };
-		COLORREF    const color      { m_pNNetModel->GetFrameColor( type ) };
+		fPIXEL       const fPixWidth  { coord.convert2fPixel( m_width ) };
+		fPixelPoint  const fStartPoint{ coord.convert2fPixelPos( umStartPoint ) };
+		fPixelPoint  const fEndPoint  { coord.convert2fPixelPos( umEndPoint   ) };
+		D2D1::ColorF const colF       { m_pNNetModel->GetFrameColor( type ) };
 
-		m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth, color );
+		m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth, colF );
 
 		if ( m_arrowSize > 0.0_MicroMeter )
 			m_pGraphics->DrawArrow
 			(
 				coord.convert2fPixelPos( (umEndPoint * 2.f + umStartPoint) / 3.f ), 
 				coord.convert2fPixelSize( umEndPoint - umStartPoint ), 
-				color, 
+				colF, 
 				coord.convert2fPixel( m_arrowSize ),
 				fPixWidth / 2 
 			);
 	}
 }
 
-void Pipeline::drawSegment( fPixelPoint & fPoint1, fPixelPoint const fPixSegVec, fPIXEL const fWidth, mV const voltage ) const
+void Pipeline::drawSegment( fPixelPoint & fP1, fPixelPoint const fPixSegVec, fPIXEL const fWidth, mV const voltage ) const
 {
-	fPixelPoint fPoint2 = fPoint1 + fPixSegVec;
-	m_pGraphics->DrawLine
-	( 
-		fPoint1, fPoint2, fWidth,
-		GetInteriorColor( voltage ) 
-	);
-	fPoint1 = fPoint2;
+	fPixelPoint  const fP2  { fP1 + fPixSegVec };
+	D2D1::ColorF const colF { GetInteriorColor( voltage ) };
+	m_pGraphics->DrawLine( fP1, fP2, fWidth, colF );
+	fP1 = fP2;
 }
 
 void Pipeline::DrawInterior( PixelCoordsFp & coord ) const

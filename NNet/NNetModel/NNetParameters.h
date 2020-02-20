@@ -5,6 +5,7 @@
 #pragma once
 
 #include <chrono>
+#include "d2d1helper.h"
 #include "MoreTypes.h"
 
 using namespace std::chrono;
@@ -21,6 +22,8 @@ static MicroMeter      const PIPELINE_WIDTH    { 20.0_MicroMeter };
 static MicroMeterPoint const STD_OFFSET        { MicroMeterPoint( 0._MicroMeter, NEURON_RADIUS * 2.0 ) };
 
 // colors
-static COLORREF const EXT_COLOR_NORMAL         { RGB(   0, 127, 255 ) };
-static COLORREF const EXT_COLOR_HIGHLIGHT      { RGB(   0, 200, 200 ) };
-static COLORREF const EXT_COLOR_SUPER_HIGHLIGHT{ RGB( 255,   0,   0 ) };
+
+static D2D1::ColorF const EXT_COLOR_NORMAL         { 0.0f, 0.5f, 1.0f, 1.0f };
+static D2D1::ColorF const EXT_COLOR_HIGHLIGHT      { 0.0f, 0.8f, 0.8f, 1.0f };
+static D2D1::ColorF const EXT_COLOR_SUPER_HIGHLIGHT{ 1.0f, 0.0f, 0.0f, 1.0f };
+static D2D1::ColorF const EXT_COLOR_EMPHASIZED     { 1.0f, 0.5f, 0.0f, 1.0f };

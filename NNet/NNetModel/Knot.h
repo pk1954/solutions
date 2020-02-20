@@ -20,8 +20,8 @@ class NNetModel;
 class Knot : public BaseKnot
 {
 public:
-	Knot( NNetModel * pModel, MicroMeterPoint const center )
-	  : BaseKnot( pModel, center, tShapeType::knot, PIPELINE_WIDTH / 2 )
+	Knot( MicroMeterPoint const center )
+	  : BaseKnot( center, tShapeType::knot, PIPELINE_WIDTH / 2 )
 	{}
 
 	virtual ~Knot() {}

@@ -104,10 +104,10 @@ void NNetWindow::SetPixelSize( MicroMeter const newSize )
 {
 	PixelPoint      const pixPointCenter  { GetRelativeCrsrPosition() };
 	fPixelPoint     const fPixPointCenter { convert2fPixelPoint( pixPointCenter ) };
-	MicroMeterPoint const umPointcenter   { m_coord.convert2MicroMeterPoint( fPixPointCenter ) };
-	if ( m_coord.ZoomNNet( newSize ) ) 
+	MicroMeterPoint const umPointcenter   { m_coord.convert2MicroMeterPointPos( fPixPointCenter ) };
+	if ( m_coord.Zoom( newSize ) ) 
 	{
-		m_coord.CenterSimulationArea( umPointcenter, fPixPointCenter ); 
+		m_coord.Center( umPointcenter, fPixPointCenter ); 
 		Notify( TRUE );     // cause immediate repaint
 		setStdFontSize( );
 	}
@@ -124,7 +124,7 @@ MicroMeter NNetWindow::GetPixelSize( ) const
 
 void NNetWindow::setHighlightShape( PixelPoint const pnt )
 {
-	MicroMeterPoint const   umCrsrPos { m_coord.convert2MicroMeterPoint( pnt ) };
+	MicroMeterPoint const   umCrsrPos { m_coord.convert2MicroMeterPointPos( pnt ) };
 	Shape           const * pShape    { m_pModel->FindShapeAt( umCrsrPos, [&]( Shape const & s) { return true; } ) };
 	m_shapeHighlighted = m_pModel->GetId( pShape );
 }
@@ -225,8 +225,8 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			Shape const * pShapeSuper { nullptr };
 			if ( IsDefined( m_shapeHighlighted ) )
 			{
-				MicroMeterPoint const umOldPos { m_coord.convert2MicroMeterPoint( m_ptLast ) };
-				MicroMeterPoint const umNewPos { m_coord.convert2MicroMeterPoint( ptCrsr   ) };
+				MicroMeterPoint const umOldPos { m_coord.convert2MicroMeterPointPos( m_ptLast ) };
+				MicroMeterPoint const umNewPos { m_coord.convert2MicroMeterPointPos( ptCrsr   ) };
 				m_pNNetWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umNewPos - umOldPos );
 				if ( m_pModel->IsType<BaseKnot>( m_shapeHighlighted ) )
 				{
@@ -239,7 +239,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			}
 			else if ( m_bMoveAllowed )
 			{
-				m_coord.MoveNNet( ptCrsr - m_ptLast );
+				m_coord.Move( ptCrsr - m_ptLast );
 			}
 
 			m_shapeSuperHighlighted = pShapeSuper ? pShapeSuper->GetId( ) : NO_SHAPE;
@@ -282,8 +282,8 @@ void NNetWindow::doPaint( )
 	if ( m_coord.GetPixelSize() <= 5._MicroMeter )
 		m_pModel->Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.IsInRect( umRect ) ) shape.DrawExterior( m_coord, GetHighlightType( shape.GetId() ) ); return false; } );
 
-	m_pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawInterior( m_coord ); return false; } );
-	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawInterior( m_coord ); return false; } );
+	m_pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { if ( shape.IsInRect( umRect ) ) shape.DrawInterior( m_coord ); return false; } );
+	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { if ( shape.IsInRect( umRect ) ) shape.DrawInterior( m_coord ); return false; } );
 	
 	drawHighlightedShape( * m_pModel, m_coord );
 
@@ -301,7 +301,10 @@ void NNetWindow::OnPaint( )
 		HDC const hDC = BeginPaint( &ps );
 		if ( m_D2d_driver.StartFrame( GetWindowHandle(), hDC ) )
 		{
+			m_pModel->SetOpaqueMode( true );
 			doPaint( );
+			m_pModel->SetOpaqueMode( false );
+
 			m_D2d_driver.EndFrame( GetWindowHandle() );
 		}
 		EndPaint( &ps );
@@ -367,7 +370,7 @@ void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 MicroMeterPoint NNetWindow::PixelPoint2MicroMeterPoint( PixelPoint const pixPoint ) const
 {
 	fPixelPoint     const fPixPoint { convert2fPixelPoint( pixPoint ) };
-	MicroMeterPoint const umPoint   { m_coord.convert2MicroMeterPoint( fPixPoint ) };
+	MicroMeterPoint const umPoint   { m_coord.convert2MicroMeterPointPos( fPixPoint ) };
 	return umPoint;
 }
 

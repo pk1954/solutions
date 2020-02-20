@@ -34,23 +34,23 @@ public:
     { 
         if ( pt1.GetX() < pt2.GetX() )
         {
-            m_Left = pt1.GetX();
+            m_Left  = pt1.GetX();
             m_Right = pt2.GetX();
         }
         else
         {
-            m_Left = pt2.GetX();
+            m_Left  = pt2.GetX();
             m_Right = pt1.GetX();
         }
         if ( pt1.GetY() > pt2.GetY() )
         {
             m_Bottom = pt1.GetY();
-            m_Top = pt2.GetY();
+            m_Top    = pt2.GetY();
         }
         else
         {
             m_Bottom = pt2.GetY();
-            m_Top = pt1.GetY();
+            m_Top    = pt1.GetY();
         }
 		assert( m_Bottom >= m_Top );
     };
@@ -115,6 +115,21 @@ public:
 	{
 		return (m_Left <= rect.GetLeft()) && (rect.GetRight () < m_Right ) && 
 			   (m_Top  <= rect.GetTop ()) && (rect.GetBottom() < m_Bottom);
+	}
+
+	void Expand( POS_TYPE const & pnt )
+	{
+		if ( * this == ZERO_VAL( ) )
+		{
+			* this = RectType( pnt, pnt );
+		}
+		else
+		{
+			if      ( pnt.GetX() < m_Left   ) m_Left   = pnt.GetX( );
+			else if ( pnt.GetX() > m_Right  ) m_Right  = pnt.GetX( );
+			if      ( pnt.GetY() < m_Top    ) m_Top    = pnt.GetY( );
+			else if ( pnt.GetY() > m_Bottom ) m_Bottom = pnt.GetY( );
+		}
 	}
 
 	bool const operator== ( RectType const & a ) const 

@@ -91,9 +91,9 @@ PixelRect const BaseKnot::GetPixRect4Text( PixelCoordsFp const & coord ) const
 
 void const BaseKnot::DisplayText( PixelRect const pixRect, wstring const text ) const
 {
-	static COLORREF const color { RGB( 0, 255, 0 ) };
+	static D2D1::ColorF const colF { 0.0f, 255.0f, 0.0f, 1.0f };
 
-	m_pGraphics->DisplayText( pixRect, text, color );
+	m_pGraphics->DisplayText( pixRect, text, colF );
 }
 
 void BaseKnot::DrawNeuronText( PixelCoordsFp & coord ) const
@@ -126,7 +126,7 @@ void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 void BaseKnot::drawCircle
 (
 	PixelCoordsFp   const & coord,
-	COLORREF        const   color, 
+	D2D1::ColorF    const   colF, 
 	MicroMeterPoint const   umCenter,
 	MicroMeter      const   umWidth
 ) const
@@ -134,7 +134,7 @@ void BaseKnot::drawCircle
 	m_pGraphics->DrawCircle
 	( 
 		coord.convert2fPixelPos( umCenter ), 
-		color, 
+		colF, 
 		coord.convert2fPixel( umWidth )
 	);
 }
@@ -142,14 +142,14 @@ void BaseKnot::drawCircle
 void BaseKnot::drawCircle
 (
 	PixelCoordsFp const & coord,
-	COLORREF      const   color, 
+	D2D1::ColorF  const   colF, 
 	MicroMeter    const   umWidth
 ) const
 {
 	m_pGraphics->DrawCircle
 	( 
 		coord.convert2fPixelPos( GetPosition() ), 
-		color, 
+		colF, 
 		coord.convert2fPixel( umWidth )
 	);
 }

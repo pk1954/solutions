@@ -5,17 +5,12 @@
 #pragma once
 
 #include <string.h>
+#include "d2d1helper.h"
 #include "PixelTypes.h"
 
 using std::wstring;
 
-struct ID2D1Factory;
-struct ID2D1HwndRenderTarget;
-struct ID2D1SolidColorBrush;
-struct ID2D1PathGeometry;
-struct ID2D1GeometrySink;
 struct IDWriteFactory;
-struct IDWriteTextFormat;
 
 template<class Interface>
 inline void SafeRelease( Interface **ppInterfaceToRelease )
@@ -37,12 +32,12 @@ public:
     void Initialize( HWND const );
     bool StartFrame( HWND const, HDC const );
     void SetStdFontSize( float const );
-    void DisplayText( PixelRect const &, std::wstring const &, COLORREF const, IDWriteTextFormat * = nullptr );
+    void DisplayText( PixelRect const &, std::wstring const &, D2D1::ColorF const, IDWriteTextFormat * = nullptr ) const;
     void EndFrame( HWND const );
     void ShutDown( );
-    void DrawLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, COLORREF const );
-    void DrawCircle( fPixelPoint const, COLORREF const, fPIXEL const );
-    void DrawArrow( fPixelPoint const, fPixelPoint const, COLORREF const, fPIXEL const, fPIXEL const );
+    void DrawLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, D2D1::ColorF const ) const;
+    void DrawCircle( fPixelPoint const, D2D1::ColorF const, fPIXEL const ) const;
+    void DrawArrow( fPixelPoint const, fPixelPoint const, D2D1::ColorF const, fPIXEL const, fPIXEL const ) const;
     void Resize( int const, int const );
 
     IDWriteTextFormat * NewTextFormat( float const );
@@ -57,7 +52,7 @@ private:
     IDWriteFactory        * m_pDWriteFactory;
     IDWriteTextFormat     * m_pStdTextFormat;
 
-    ID2D1SolidColorBrush * createBrush( COLORREF const );
+    ID2D1SolidColorBrush * createBrush( D2D1::ColorF const ) const;
     void createResources( );
     void discardResources( );
 };

@@ -62,7 +62,7 @@ public:
 			script.ScrReadSpecial( L'-' );
 			script.ScrReadSpecial( L'>' );
 			ShapeId    const idEnd     { script.ScrReadLong() };
-			Pipeline * const pPipeline { new Pipeline( m_pModel ) };
+			Pipeline * const pPipeline { new Pipeline( ) };
 			BaseKnot * const pStart    { m_pModel->GetTypedShape<BaseKnot>( idStart ) };
 			BaseKnot * const pEnd      { m_pModel->GetTypedShape<BaseKnot>( idEnd   ) };
 
@@ -85,15 +85,15 @@ public:
 			switch ( shapeType )
 			{
 			case tShapeType::inputNeuron:
-				pShape = new InputNeuron( m_pModel, umPosition );
+				pShape = new InputNeuron( umPosition );
 				break;
 
 			case tShapeType::neuron:
-				pShape = new Neuron( m_pModel, umPosition );
+				pShape = new Neuron( umPosition );
 				break;
 
 			case tShapeType::knot:
-				pShape = new Knot( m_pModel, umPosition );
+				pShape = new Knot( umPosition );
 				break;
 
 			default:

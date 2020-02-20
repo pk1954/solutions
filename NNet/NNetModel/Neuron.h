@@ -14,7 +14,7 @@
 class Neuron : public BaseKnot
 {
 public:
-	Neuron( NNetModel *, MicroMeterPoint const, tShapeType const = tShapeType::neuron );
+	Neuron( MicroMeterPoint const, tShapeType const = tShapeType::neuron );
 	virtual ~Neuron() {}
 
 	static bool TypeFits( tShapeType const type )

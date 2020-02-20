@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include <string.h>
 #include "d2d1.h"
-#include "d2d1helper.h"
 #include "dwrite.h"
 #include "util.h"
 #include "win32_util.h"
@@ -129,12 +128,12 @@ void D2D_driver::DisplayText
 ( 
 	PixelRect           const & pixRect, 
 	std::wstring        const & wstr,
-	COLORREF            const   color,
+	D2D1::ColorF        const   colF,
 	IDWriteTextFormat * const   pTextFormat
-)
+) const
 {
 	IDWriteTextFormat    * pTF { pTextFormat ? pTextFormat : m_pStdTextFormat };
-	ID2D1SolidColorBrush * pBrush { createBrush( color ) };
+	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
 	D2D1_RECT_F            d2Rect 
 	{ 
 		static_cast<float>(pixRect.GetLeft  ().GetValue()),
@@ -160,13 +159,13 @@ void D2D_driver::EndFrame( HWND const hwnd )
 
 void D2D_driver::DrawLine
 ( 
-	fPixelPoint const & fpp1, 
-	fPixelPoint const & fpp2, 
-	fPIXEL      const   fpixWidth, 
-	COLORREF    const   color
-)
+	fPixelPoint  const & fpp1, 
+	fPixelPoint  const & fpp2, 
+	fPIXEL       const   fpixWidth, 
+	D2D1::ColorF const   colF
+) const
 {
-	ID2D1SolidColorBrush * pBrush { createBrush( color ) };
+	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
 
 	m_pRenderTarget->DrawLine
 	( 
@@ -181,12 +180,12 @@ void D2D_driver::DrawLine
 
 void D2D_driver::DrawCircle
 (
-	fPixelPoint const ptPos,
-	COLORREF    const color, 
-	fPIXEL      const fPixRadius 
-)
+	fPixelPoint  const ptPos,
+	D2D1::ColorF const colF, 
+	fPIXEL       const fPixRadius 
+) const
 {
-	ID2D1SolidColorBrush * pBrush { createBrush( color ) };
+	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
 	D2D1_ELLIPSE ellipse { D2D1_POINT_2F{ ptPos.GetXvalue(), ptPos.GetYvalue() }, fPixRadius.GetValue(), fPixRadius.GetValue() }; 
 	m_pRenderTarget->FillEllipse( & ellipse, pBrush	);
 	SafeRelease( & pBrush );
@@ -194,39 +193,27 @@ void D2D_driver::DrawCircle
 
 void D2D_driver::DrawArrow
 (
-	fPixelPoint const ptPos,
-	fPixelPoint const ptVector,
-	COLORREF    const color, 
-	fPIXEL      const fPixSize,  
-	fPIXEL      const fPixWidth 
-)
+	fPixelPoint  const ptPos,
+	fPixelPoint  const ptVector,
+	D2D1::ColorF const colF, 
+	fPIXEL       const fPixSize,  
+	fPIXEL       const fPixWidth 
+) const
 {
 	if ( ! IsCloseToZero( ptVector ) )
 	{
-		ID2D1SolidColorBrush * pBrush { createBrush( color ) };
-
 		fPixelPoint const ptVectorScaled { ptVector * ( fPixSize / Hypot( ptVector ) )  };
 		fPixelPoint const ptOrtho        { OrthoVector( ptVectorScaled, fPixSize ) };
 		fPixelPoint const ptEndPoint1    { ptPos - ptVectorScaled + ptOrtho };
 		fPixelPoint const ptEndPoint2    { ptPos - ptVectorScaled - ptOrtho };
 
-		DrawLine( ptPos, ptEndPoint1, fPixWidth, color );
-		DrawLine( ptPos, ptEndPoint2, fPixWidth, color );
-
-		SafeRelease( & pBrush );
+		DrawLine( ptPos, ptEndPoint1, fPixWidth, colF );
+		DrawLine( ptPos, ptEndPoint2, fPixWidth, colF );
 	}
 }
 
-ID2D1SolidColorBrush * D2D_driver::createBrush( COLORREF const color )
+ID2D1SolidColorBrush * D2D_driver::createBrush( D2D1::ColorF const d2dCol ) const
 {
-	D2D1::ColorF d2dCol
-	{
-		static_cast<float>(GetRValue(color) / 255.0), 
-		static_cast<float>(GetGValue(color) / 255.0), 
-		static_cast<float>(GetBValue(color) / 255.0), 
-		1.0f 
-	};
-
 	ID2D1SolidColorBrush * pBrush;
 	m_pRenderTarget->CreateSolidColorBrush( d2dCol, & pBrush ); 
 	return pBrush;

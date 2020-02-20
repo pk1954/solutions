@@ -27,20 +27,23 @@ bool             NNetModel::m_bCritSectReady = false;
 
 NNetModel::NNetModel( )
   : m_Shapes( ),
-	m_timeStamp      ( 0._MicroSecs ),
-	m_threshold      ( 20._mV ),
-	m_peakVoltage    ( 10._mV ),
-	m_pulseWidth     ( 2000._MicroSecs ),
-	m_refractPeriod  ( 500._MicroSecs ),
-	m_pulseSpeed     ( 0.1_meterPerSec ),
-	m_usResolution   ( 100._MicroSecs ),
-	m_bUnsavedChanges( false )
+	m_timeStamp        ( 0._MicroSecs ),
+	m_threshold        ( 20._mV ),
+	m_peakVoltage      ( 10._mV ),
+	m_pulseWidth       ( 2000._MicroSecs ),
+	m_refractPeriod    ( 500._MicroSecs ),
+	m_pulseSpeed       ( 0.1_meterPerSec ),
+	m_usResolution     ( 100._MicroSecs ),
+	m_bUnsavedChanges  ( false ),
+	m_fOpacity         ( 1.0f )
 {					
 	if ( ! m_bCritSectReady )
 	{
 		(void)InitializeCriticalSectionAndSpinCount( & m_criticalSection, 0x00000400 );
 		m_bCritSectReady = true;
 	}
+
+	Shape::SetModel( this );
 
 	CreateInitialShapes( );
 }
@@ -379,6 +382,13 @@ void NNetModel::ResetModel( )
 	LeaveCritSect( );
 }
 
+void NNetModel::ClearModel( )
+{
+	EnterCritSect( );
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Clear( ); return false; } );
+	LeaveCritSect( );
+}
+
 Shape const * NNetModel::FindShapeAt( MicroMeterPoint const pnt, function<bool(Shape const &)> const & crit ) const
 {	
 	Shape const * pRes { nullptr };
@@ -399,13 +409,19 @@ Shape const * NNetModel::FindShapeAt( MicroMeterPoint const pnt, function<bool(S
 	return pRes;
 }
 
-COLORREF const NNetModel::GetFrameColor( tHighlightType const type ) const 
+D2D1::ColorF const NNetModel::GetFrameColor( tHighlightType const type ) const 
 { 
-	return ( type == tHighlightType::superHighlighted )
-		? EXT_COLOR_SUPER_HIGHLIGHT 
-		: ( type == tHighlightType::highlighted )
-		? EXT_COLOR_HIGHLIGHT 
-		: EXT_COLOR_NORMAL;
+	static unordered_map < tHighlightType, D2D1::ColorF > map =
+	{
+		{ tHighlightType::normal,           EXT_COLOR_NORMAL          },
+		{ tHighlightType::highlighted,      EXT_COLOR_HIGHLIGHT       },
+		{ tHighlightType::superHighlighted, EXT_COLOR_SUPER_HIGHLIGHT },
+		{ tHighlightType::emphasized,       EXT_COLOR_EMPHASIZED      }
+	};				  
+
+	D2D1::ColorF colF = map.at( type );
+	colF.a = GetOpacity( );
+	return colF;
 };
 
 /////////////////// local functions ///////////////////////////////////////////////

@@ -4,16 +4,19 @@
 
 #pragma once
 
+#include <vector>
+#include "d2d1helper.h"
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "tShapeType.h"
 
-using ShapeId = NamedType< long, struct ShapeIdParam >;
-
+class Shape;
 class D2D_driver;
 class PixelCoordsFp;
 class NNetModel;
+
+using ShapeId = NamedType< long, struct ShapeIdParam >;
 
 ShapeId const NO_SHAPE( -1 );
 
@@ -24,9 +27,9 @@ wchar_t const * GetName( tShapeType const );
 class Shape
 {
 public:
-	Shape( NNetModel * pModel, tShapeType const type )
-	  :	m_pNNetModel( pModel ),
-		m_mVinputBuffer( 0._mV ),
+	Shape( tShapeType const type )
+	  :	m_mVinputBuffer( 0._mV ),
+		m_bEmphasized( false ),
 		m_identifier( NO_SHAPE ),
 		m_type( type )
 	{ }
@@ -35,6 +38,9 @@ public:
 
 	static bool TypeFits( tShapeType const type ) {	return true; }  // every shape type is a Shape
 
+	void Emphasize( bool const bState ) { m_bEmphasized = bState; }
+	bool IsEmphasized( ) { return m_bEmphasized; }
+
 	virtual bool IsInRect      ( MicroMeterRect const & )                const = 0;
 	virtual void DrawExterior  ( PixelCoordsFp &, tHighlightType const ) const = 0;
 	virtual void DrawInterior  ( PixelCoordsFp & )                       const = 0;
@@ -42,6 +48,8 @@ public:
 	virtual void Prepare       ( )                                             = 0;
 	virtual void Step          ( )                                             = 0;
 	virtual void Recalc        ( )                                             = 0;
+
+	virtual void Clear( ) { m_mVinputBuffer = 0.0_mV; };
 
 	bool            IsDefined   ( ) const { return ::IsDefined( m_identifier ); }
 	wchar_t const * GetName     ( ) const { return ::GetName( m_type ); }
@@ -57,23 +65,25 @@ public:
 
 	void SetId( ShapeId const id ) { m_identifier = id;	}
 
-	static void SetGraphics( D2D_driver * const pGraphics ) { m_pGraphics = pGraphics; }
+	static void SetGraphics( D2D_driver const * const pGraphics ) { m_pGraphics  = pGraphics; }
+	static void SetModel   ( NNetModel  const * const pModel    ) { m_pNNetModel = pModel; }
 
 protected:
 
-	NNetModel * m_pNNetModel;
-	mV          m_mVinputBuffer;
+	mV m_mVinputBuffer;
 
-	static D2D_driver * m_pGraphics;
+	static D2D_driver const * m_pGraphics;
+	static NNetModel  const * m_pNNetModel;
 
-	COLORREF GetInteriorColor( mV const ) const;
-	COLORREF GetInteriorColor( ) const { return GetInteriorColor( m_mVinputBuffer ); }
+	D2D1::ColorF GetInteriorColor( mV const ) const;
+	D2D1::ColorF GetInteriorColor( ) const { return GetInteriorColor( m_mVinputBuffer ); }
 
 	float GetFillLevel( mV const ) const;
 	float GetFillLevel( ) const { return GetFillLevel( m_mVinputBuffer ); };
 
 private:
 
+	bool       m_bEmphasized;
 	ShapeId    m_identifier;
 	tShapeType m_type;
 };

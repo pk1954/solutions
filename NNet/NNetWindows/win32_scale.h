@@ -22,7 +22,7 @@ public:
 	void ShowScale( fPIXEL const );
 
 private:
-	static COLORREF const SCALE_COLOR = RGB( 0, 0, 0 );  // CLR_BLACK
+	static COLORREF const SCALE_COLOR { RGB( 0, 0, 0 ) };  // CLR_BLACK
 
 	std::wostringstream m_wBuffer;
 

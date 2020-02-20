@@ -14,7 +14,7 @@ class InputNeuron : public Neuron
 {
 public:
 
-	InputNeuron( NNetModel *, MicroMeterPoint const );
+	InputNeuron( MicroMeterPoint const );
 	virtual ~InputNeuron( );
 
 	static bool TypeFits( tShapeType const type )
@@ -49,7 +49,7 @@ public:
 	void SetPulseFrequency( fHertz const );
 
 private:
-	void drawInputNeuron( PixelCoordsFp const &, COLORREF const, float const ) const;
+	void drawInputNeuron( PixelCoordsFp const &, D2D1::ColorF const, float const ) const;
 
 	mV        m_mvFactor;       // precomputed value for optimization
 	fHertz    m_pulseFrequency; // pulse frequency and pulse duration depend on each other

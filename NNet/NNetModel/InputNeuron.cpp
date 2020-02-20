@@ -13,8 +13,8 @@
 using std::chrono::microseconds;
 using std::wostringstream;
 
-InputNeuron::InputNeuron( NNetModel * pModel, MicroMeterPoint const upCenter )
-  : Neuron( pModel, upCenter, tShapeType::inputNeuron ),
+InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
+  : Neuron( upCenter, tShapeType::inputNeuron ),
 	m_mvFactor( 0.0_mV ),
 	m_pulseFrequency( STD_PULSE_FREQ ),
 	m_pulseDuration( PulseDuration( STD_PULSE_FREQ ) )
@@ -38,16 +38,15 @@ void InputNeuron::SetPulseFrequency( fHertz const freq )
 void InputNeuron::drawInputNeuron
 ( 
 	PixelCoordsFp const & coord,
-	COLORREF      const   color,
+	D2D1::ColorF  const   colF,
 	float         const   fReductionFactor
 ) const
 {
-	Pipeline const * const pAxon { m_outgoing[0] };
 	MicroMeterPoint const axonVector
 	{
 		m_outgoing.empty( )
 		? MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
-	    : pAxon->GetVector( )
+	    : m_outgoing[0]->GetVector( )
 	};
 	MicroMeter      const umHypot    { Hypot( axonVector ) };
 	MicroMeterPoint const umExtVector{ axonVector * (GetExtension() / umHypot) };
@@ -58,7 +57,7 @@ void InputNeuron::drawInputNeuron
 	fPixelPoint     const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
 	fPIXEL          const fPixWidth  { coord.convert2fPixel( GetExtension() * fReductionFactor ) };
 
-	m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth * 2, color );
+	m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth * 2, colF );
 }
 
 void InputNeuron::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) const

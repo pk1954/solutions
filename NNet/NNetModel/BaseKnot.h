@@ -26,12 +26,11 @@ class BaseKnot : public Shape
 public:
 	BaseKnot
 	( 
-		NNetModel     * const pModel,
 		MicroMeterPoint const center,
 		tShapeType      const type,
 		MicroMeter      const extension
  	)
-	  : Shape( pModel, type ),
+	  : Shape( type ),
 		m_center( center ),
 		m_extension( extension ),
 		m_pTextFormat( nullptr )
@@ -161,8 +160,8 @@ protected:
 	vector<Pipeline *> m_incoming;
 	vector<Pipeline *> m_outgoing;
 
-	void drawCircle( PixelCoordsFp const &, COLORREF const, MicroMeterPoint const, MicroMeter const ) const;
-	void drawCircle( PixelCoordsFp const &, COLORREF const, MicroMeter const ) const;
+	void drawCircle( PixelCoordsFp const &, D2D1::ColorF const, MicroMeterPoint const, MicroMeter const ) const;
+	void drawCircle( PixelCoordsFp const &, D2D1::ColorF const, MicroMeter const ) const;
 
 	PixelRect const GetPixRect4Text( PixelCoordsFp const & ) const;
 	void      const DisplayText( PixelRect const, wstring const ) const;

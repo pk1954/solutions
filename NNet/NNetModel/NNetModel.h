@@ -73,7 +73,7 @@ public:
 	MicroSecs       const GetSimulationTime( )                         const { return m_timeStamp; }
 	long            const GetSizeOfShapeList( )                        const { return CastToLong( m_Shapes.size() ); }
 	long            const GetNrOfShapes( )                             const;
-	COLORREF        const GetFrameColor( tHighlightType const )        const;
+	D2D1::ColorF    const GetFrameColor( tHighlightType const )        const;
 	bool            const HasModelChanged( )                           const { return m_bUnsavedChanges; }
 	MicroSecs       const GetTimeResolution( )                         const { return m_usResolution; }
 	
@@ -104,7 +104,7 @@ public:
 	template <typename T> 
 	T * const NewShape( MicroMeterPoint const & pos ) 
 	{ 
-		auto pT { new T( this, pos ) };
+		auto pT { new T( pos ) };
 		pT->SetId( ShapeId { CastToLong( m_Shapes.size() ) } );
 		m_Shapes.push_back( pT );
 		return pT;
@@ -118,18 +118,6 @@ public:
 			Connect( id, NewShape<T>( GetShapePos( id ) )->GetId() );
 		}
 	}
-
-	//template <typename T>
-	//void Apply2All( function<void(T &)> const & func ) const
-	//{
-	//	EnterCritSect( );
-	//	for ( auto pShape : m_Shapes )
-	//	{
-	//		if ( pShape && T::TypeFits( pShape->GetShapeType() ) )
-	//			func( static_cast<T &>( * pShape ) );
-	//	}
-	//	LeaveCritSect( );
-	//}
 
 	template <typename T>
 	bool Apply2All( function<bool(T &)> const & func ) const
@@ -167,6 +155,7 @@ public:
 	void RemoveShape( ShapeId const );
 	void RecalcAllShapes( );
 	void ResetModel( );
+	void ClearModel( );
 	void ModelSaved( ) { m_bUnsavedChanges = false; }
 	void SetPulseRate( ShapeId    const, float const );
 	void SetParameter( tParameter const, float const );
@@ -180,6 +169,9 @@ public:
 	void AddParameterObserver( ObserverInterface * pObs ) { m_parameterObservable.RegisterObserver( pObs ); }
 
 	virtual void Compute( );
+
+	float GetOpacity( ) const { return m_fOpacity; };
+	void  SetOpaqueMode( bool fMode ) { m_fOpacity = fMode ? 0.5f : 1.0f; };
 
 private:
 
@@ -196,7 +188,8 @@ private:
 	MicroSecs   m_pulseWidth;   
 	MicroSecs   m_refractPeriod;
 	meterPerSec m_pulseSpeed;
-	MicroSecs   m_usResolution; 
+	MicroSecs   m_usResolution;
+	float       m_fOpacity;
 
 	Observable  m_parameterObservable;
 

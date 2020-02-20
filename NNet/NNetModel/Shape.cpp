@@ -6,14 +6,18 @@
 #include "NNetModel.h"
 #include "shape.h"
 
-D2D_driver * Shape::m_pGraphics { nullptr };
+D2D_driver const * Shape::m_pGraphics  { nullptr };
+NNetModel  const * Shape::m_pNNetModel { nullptr };
 
-COLORREF Shape::GetInteriorColor( mV const voltageInput ) const
+D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {
-	mV       const voltage { min( voltageInput, mV(m_pNNetModel->GetParameterValue( tParameter::peakVoltage )) ) };
-	int      const colElem { CastToInt( voltage  * 255.0f / mV(m_pNNetModel->GetParameterValue( tParameter::peakVoltage )) ) };
-	COLORREF const color   { RGB( colElem, 0, 0 ) };
-	return color;
+	if ( m_bEmphasized )
+		return EXT_COLOR_SUPER_HIGHLIGHT;
+
+	mV    const peakVoltage { mV(m_pNNetModel->GetParameterValue( tParameter::peakVoltage )) };
+	float const colElem     { min( voltageInput / peakVoltage, 1.0f )};
+	float const fOpacity    { m_pNNetModel->GetOpacity() };
+	return D2D1::ColorF( colElem, 0.0f, 0.0f, fOpacity );
 }
 
 float Shape::GetFillLevel( mV const voltageInput ) const

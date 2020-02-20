@@ -4,15 +4,17 @@
 
 #include "stdafx.h"
 #include <fstream>
+#include "MoreTypes.h"
+#include "RectType.h"
 #include "NNetModel.h"
 #include "Analyzer.h"
 
 using std::wcout;
 using std::endl;
 
-bool                  ModelAnalyzer::m_bStop;
-int                   ModelAnalyzer::m_iRecDepth;
-vector<Shape const *> ModelAnalyzer::m_shapeStack;
+bool            ModelAnalyzer::m_bStop;
+int             ModelAnalyzer::m_iRecDepth;
+vector<Shape *> ModelAnalyzer::m_shapeStack;
 
 void ModelAnalyzer::printShapeStack( )
 {
@@ -23,22 +25,38 @@ void ModelAnalyzer::printShapeStack( )
 	wcout << endl;
 }
 
-void ModelAnalyzer::FindLoop( NNetModel const & model )
+void ModelAnalyzer::GetEnclosingRect( MicroMeterRect & rect )
 {
-	int iNrOfBaseKnots { 0 };
-	model.Apply2All<BaseKnot>( [&]( BaseKnot & baseKnot ) { ++iNrOfBaseKnots; return false; } );
-	wcout << iNrOfBaseKnots << L" base knots found" << endl;
-
-	for ( int i = 5; i <= 2 * iNrOfBaseKnots + 1; ++i )
+	rect = MicroMeterRect::ZERO_VAL();
+	for ( const auto & pShape : m_shapeStack )
 	{
-		int iCounter { iNrOfBaseKnots };
-		m_iRecDepth = i;
+		if ( pShape->IsPipeline() )
+		{
+			rect.Expand( Cast2Pipeline( pShape )->GetStartPoint( ) );
+			rect.Expand( Cast2Pipeline( pShape )->GetEndPoint( ) );
+		}
+		else 
+		{
+			rect.Expand( Cast2BaseKnot( pShape )->GetPosition() );
+		}
+	}
+}
+
+bool ModelAnalyzer::FindLoop( NNetModel const & model )
+{
+	int iNrOfShapes { model.GetNrOfShapes() };
+	wcout << iNrOfShapes << L" objects found" << endl;
+
+	for ( int iMaxLoopSize = 5; iMaxLoopSize <= iNrOfShapes + 1; iMaxLoopSize += 2 )
+	{
+		int iCounter { iMaxLoopSize };
+		m_iRecDepth = iMaxLoopSize;
 		m_bStop     = false;
-		wcout << L"looking for loops of size " << i << endl;
+		wcout << L"looking for loops of size " << iMaxLoopSize << endl;
 		m_shapeStack.clear();
 		if ( model.Apply2All<BaseKnot>
 			  (
-			  	[ & ] ( BaseKnot& baseKnot )
+			  	[ & ] ( BaseKnot & baseKnot )
 			    {
 				 	wcout << iCounter-- << L"\r";
 				 	return findLoop( & baseKnot );
@@ -48,12 +66,14 @@ void ModelAnalyzer::FindLoop( NNetModel const & model )
 		{
 			wcout << L"loop found" << endl;
 			printShapeStack( );
-			break;
+			return true;
 		}
 	}
+
+	return false;
 }
 
-bool ModelAnalyzer::findLoop( Shape const * const pShape )
+bool ModelAnalyzer::findLoop( Shape * const pShape )
 {
 	if ( m_bStop )
 		return false;
@@ -79,7 +99,7 @@ bool ModelAnalyzer::findLoop( Shape const * const pShape )
 	}
 	else if ( pShape->IsBaseKnot() )
 	{
-		bLoopFound = Cast2BaseKnot( pShape )->Apply2AllOutgoingPipelinesConst( [&]( auto pipe ) { return findLoop( pipe ); } );
+		bLoopFound = Cast2BaseKnot( pShape )->Apply2AllOutgoingPipelines( [&]( auto pipe ) { return findLoop( pipe ); } );
 	}
 	else
 	{
@@ -90,4 +110,10 @@ bool ModelAnalyzer::findLoop( Shape const * const pShape )
 		m_shapeStack.pop_back( ); // no loop in this branch
 
 	return bLoopFound;
+}
+
+void ModelAnalyzer::EmphasizeLoopShapes( NNetModel & model, bool const bMode )
+{
+	for ( const auto & pShape : m_shapeStack )
+		pShape->Emphasize( bMode );
 }

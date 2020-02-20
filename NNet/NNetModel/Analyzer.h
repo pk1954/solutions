@@ -8,26 +8,29 @@
 
 #include <vector>
 
-using std::vector;
-
 class NNetModel;
-class Shape;
+
+using std::vector;
 
 class ModelAnalyzer
 {
 public:
-	static void FindLoop( NNetModel const & );
+	static bool FindLoop( NNetModel const & );
+
+	static void EmphasizeLoopShapes( NNetModel &, bool const );
 
 	static void Stop( )
 	{
 		m_bStop = true;
 	}
 
-private:
-	static bool                  m_bStop;
-	static int                   m_iRecDepth;
-	static vector<Shape const *> m_shapeStack;
+	static void GetEnclosingRect( MicroMeterRect & );
 
-	static bool findLoop( Shape const * const );
+private:
+	static bool            m_bStop;
+	static int             m_iRecDepth;
+	static vector<Shape *> m_shapeStack;
+
+	static bool findLoop( Shape * const );
 	static void printShapeStack( );
 };

@@ -24,8 +24,12 @@ mV Knot::GetNextOutput( ) const
 
 void Knot::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
 {
-	COLORREF color = m_pNNetModel->GetFrameColor( type );
-	drawCircle( coord, color, (type == tHighlightType::normal) ? GetExtension( ) : 30.0_MicroMeter );
+	drawCircle
+	( 
+		coord, 
+		m_pNNetModel->GetFrameColor( type ), 
+		(type == tHighlightType::normal) ? GetExtension( ) : 30.0_MicroMeter 
+	);
 }
 
 void Knot::DrawInterior( PixelCoordsFp & coord ) const

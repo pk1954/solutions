@@ -21,7 +21,7 @@ class PixelCoordsFp;
 class Pipeline : public Shape
 {
 public:
-	Pipeline( NNetModel *, MicroMeterPoint const = NP_NULL );
+	Pipeline( MicroMeterPoint const = NP_NULL );
 	virtual ~Pipeline() {}
 
 	static bool TypeFits( tShapeType const type )
@@ -70,6 +70,7 @@ public:
 	virtual void DrawInterior  ( PixelCoordsFp  & ) const;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 	virtual void Recalc( );
+	virtual void Clear( );
 
 	void DislocateEndPoint  ( ) { dislocate( GetEndKnotPtr(),    PIPELINE_WIDTH ); }
 	void DislocateStartPoint( )	{ dislocate( GetStartKnotPtr(), -PIPELINE_WIDTH );	}
