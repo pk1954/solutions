@@ -8,6 +8,7 @@
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "tHighlightType.h"
+#include "ShapeType.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
@@ -77,27 +78,27 @@ bool const NNetModel::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) con
 	if ( isConnectedTo( idSrc, idDst ) )  // if already connected we cannot connect again
 		return false;
 
-	tShapeType const typeSrc { GetShapeType( idSrc ) };
+	ShapeType const typeSrc { GetShapeType( idSrc ) };
 
-	if ( IsPipelineType( typeSrc ) )          // only BaseKnots can be connected
+	if ( typeSrc.IsPipelineType() )           // only BaseKnots can be connected
 		return false;                         // to other shapes
 
-	if ( typeSrc == tShapeType::inputNeuron ) // input neuron cannot connect to anything
+	if ( typeSrc.IsInputNeuronType() )        // input neuron cannot connect to anything
 		return false;                         // try the other way round
 
-	tShapeType const typeDst { GetShapeType( idDst ) };
+	ShapeType const typeDst { GetShapeType( idDst ) };
 
-	if ( IsPipelineType( typeDst ) )
+	if ( typeDst.IsPipelineType( ) )
 	{
-		if ( typeSrc == tShapeType::inputNeuron )   // cannot insert input neuron
+		if ( typeSrc.IsInputNeuronType() )   // cannot insert input neuron
 			return false;                           // into pipeline
 	}
-	else if ( IsAnyNeuronType( typeDst ) )
+	else if ( typeDst.IsAnyNeuronType() )
 	{
-		if ( IsAnyNeuronType( typeSrc ) )  // neurons cannot connect directly 
+		if ( typeSrc.IsAnyNeuronType() )  // neurons cannot connect directly 
 			return false;                  // to other neurons
 
-		if ( (typeDst == tShapeType::inputNeuron) && HasIncoming( idSrc ) )  // cannot connect incoming dendrite
+		if ( typeDst.IsInputNeuronType() && HasIncoming( idSrc ) )  // cannot connect incoming dendrite
 			return false;                                                    // to input neuron
 
 		if ( GetNrOfOutgoingConnections( idSrc ) + GetNrOfOutgoingConnections( idDst ) > 1 ) // neurons can not not have 
@@ -110,19 +111,19 @@ bool const NNetModel::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) con
 void NNetModel::RemoveShape( ShapeId const idShapeToBeDeleted )
 {
 	m_bUnsavedChanges = true;
-	switch ( GetShapeType( idShapeToBeDeleted ) )
+	switch ( GetShapeType( idShapeToBeDeleted ).GetValue() )
 	{
-	case tShapeType::pipeline:
+	case ShapeType::Value::pipeline:
 		deletePipeline( idShapeToBeDeleted );
 		break;
 
-	case tShapeType::inputNeuron:
-	case tShapeType::neuron:
+	case ShapeType::Value::inputNeuron:
+	case ShapeType::Value::neuron:
 		disconnectBaseKnot( GetTypedShape<BaseKnot>( idShapeToBeDeleted ) );
 		deleteShape( idShapeToBeDeleted );
 		break;
 
-	case tShapeType::knot:
+	case ShapeType::Value::knot:
 	default:
 		break;
 	}
@@ -135,7 +136,7 @@ void NNetModel::Disconnect( ShapeId const id )
 	{
 		disconnectBaseKnot( pBaseKnot );
 		assert( pBaseKnot->IsOrphan( ) );
-		if ( pBaseKnot->GetShapeType( ) == tShapeType::knot )
+		if ( pBaseKnot->GetShapeType( ).IsKnotType() )
 			deleteShape( id );
 	}
 	CHECK_CONSISTENCY;
@@ -200,11 +201,11 @@ MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
 	return NP_NULL;
 }
 
-tShapeType const NNetModel::GetShapeType( ShapeId const id ) const 
+ShapeType const NNetModel::GetShapeType( ShapeId const id ) const 
 {
 	if ( Shape const * pShape = GetConstShape( id ) )
 		return pShape->GetShapeType();
-	return tShapeType::undefined;
+	return ShapeType::Value::undefined;
 }
 
 bool const NNetModel::HasOutgoing( ShapeId const id ) const 
@@ -238,7 +239,7 @@ size_t const NNetModel::GetNrOfIncomingConnections( ShapeId const id ) const
 void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge src shape into dst shape
 {
 	BaseKnot * pSrc = GetTypedShape<BaseKnot>( idSrc );
-	if ( IsPipelineType( GetShapeType( idDst ) ) )   // connect baseknot to pipeline
+	if ( GetShapeType( idDst ).IsPipelineType() )   // connect baseknot to pipeline
 	{
 		insertBaseKnot( GetTypedShape<Pipeline>( idDst ), pSrc );
 	}
@@ -263,7 +264,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 				}
 			);
 
-			if ( pSrc->GetShapeType() == tShapeType::knot )
+			if ( pSrc->IsKnot() )
 				deleteShape( idSrc );
 		}
 	}
@@ -286,18 +287,18 @@ void NNetModel::NewPipeline( BaseKnot * const pStart, BaseKnot * const pEnd )
 void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
 	m_bUnsavedChanges = true;
-	switch ( GetShapeType( id ) )
+	switch ( GetShapeType( id ).GetValue() )
 	{
-	case tShapeType::pipeline:
+	case ShapeType::Value::pipeline:
 	{
 		GetStartKnotPtr( id )->MoveShape( delta );
 		GetEndKnotPtr  ( id )->MoveShape( delta );
 		break;
 	}
 
-	case tShapeType::inputNeuron:
-	case tShapeType::neuron:
-	case tShapeType::knot:
+	case ShapeType::Value::inputNeuron:
+	case ShapeType::Value::neuron:
+	case ShapeType::Value::knot:
 		GetTypedShape<BaseKnot>( id )->MoveShape( delta );
 		break;
 
@@ -396,9 +397,9 @@ Shape const * NNetModel::FindShapeAt( MicroMeterPoint const pnt, function<bool(S
 
 void NNetModel::checkConsistency( Shape * pShape )
 {
-	tShapeType type = pShape->GetShapeType();
+	ShapeType type = pShape->GetShapeType();
 
-	if ( ::IsBaseKnotType( type ) )
+	if ( type.IsBaseKnotType() )
 		static_cast<BaseKnot &>( * pShape ).Apply2AllConnectedPipelines
 		( 
 			[&]( Pipeline const * const pipe ) 
@@ -408,30 +409,30 @@ void NNetModel::checkConsistency( Shape * pShape )
 			} 
 	    );
 
-	switch ( type )
+	switch ( type.GetValue() )
 	{
-	case tShapeType::inputNeuron:
+	case ShapeType::Value::inputNeuron:
 		assert( ! static_cast<InputNeuron const *>( pShape )->HasIncoming() );
 		break;
 
-	case tShapeType::knot:
+	case ShapeType::Value::knot:
 		break;
 
-	case tShapeType::neuron:
+	case ShapeType::Value::neuron:
 		break;
 
-	case tShapeType::pipeline:
+	case ShapeType::Value::pipeline:
 		{
 			Pipeline const * pPipeline { static_cast<Pipeline const *>( pShape ) };
 			assert( pPipeline );
 			if ( Shape const * const pStart { pPipeline->GetStartKnotPtr() } )
-				assert( IsBaseKnotType( pStart->GetShapeType() ) );
+				assert( pStart->IsBaseKnot() );
 			if ( Shape const * const pEnd   { pPipeline->GetEndKnotPtr() } )
-				assert( IsBaseKnotType( pEnd->GetShapeType() ) );
+				assert( pEnd->IsBaseKnot() );
 			break;
 		}
 
-	case tShapeType::undefined:
+	case ShapeType::Value::undefined:
 		assert( false );
 		break;
 
@@ -526,14 +527,14 @@ void NNetModel::deletePipeline( ShapeId const id )
 	{
 		Pipeline * pPipelineToBeDeleted { GetTypedShape<Pipeline>( id ) };
 
-		BaseKnot * pStartKnot  { pPipelineToBeDeleted->GetStartKnotPtr() };
+		BaseKnot * pStartKnot { pPipelineToBeDeleted->GetStartKnotPtr() };
 		pStartKnot->RemoveOutgoing( pPipelineToBeDeleted );
-		if ( pStartKnot->IsOrphanedKnot( ) && ( pStartKnot->GetShapeType( ) == tShapeType::knot ) )
+		if ( pStartKnot->IsOrphanedKnot( ) && ( pStartKnot->IsKnot() ) )
 			deleteShape( pStartKnot->GetId() );
 
-		BaseKnot * pEndKnot   { pPipelineToBeDeleted->GetEndKnotPtr() };
+		BaseKnot * pEndKnot { pPipelineToBeDeleted->GetEndKnotPtr() };
 		pEndKnot->RemoveIncoming( pPipelineToBeDeleted );
-		if ( pEndKnot->IsOrphanedKnot( ) && ( pEndKnot->GetShapeType( ) == tShapeType::knot ) )
+		if ( pEndKnot->IsOrphanedKnot( ) && ( pEndKnot->IsKnot() ) )
 			deleteShape( pEndKnot->GetId() );
 
 		deleteShape( id );

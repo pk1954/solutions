@@ -10,7 +10,7 @@
 // The bool Parameter of Notify: 
 //
 // In some cases, the observed object distinguishes between changes, 
-// which should be processed immediately ( Parameter = true )and other changes (false).
+// which should be processed immediately (Parameter = true) and other changes (false).
 // E.g. changes happening with high frequence should be notified with "false"
 // so that the observer has a change to process the changes in longer intervalls
 

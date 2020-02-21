@@ -24,9 +24,9 @@ public:
 	Pipeline( MicroMeterPoint const = NP_NULL );
 	virtual ~Pipeline() {}
 
-	static bool TypeFits( tShapeType const type )
+	static bool TypeFits( ShapeType const type )
 	{
-		return type == tShapeType::pipeline;
+		return type.IsPipelineType( );
 	}
 
 	void SetStartKnot( BaseKnot * const );

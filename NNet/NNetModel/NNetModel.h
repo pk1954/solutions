@@ -65,7 +65,7 @@ public:
 	template <typename T> bool IsType( ShapeId const id ) const { return T::TypeFits( GetShapeType( id ) ); }
 
 	MicroMeterPoint const GetShapePos   ( ShapeId const id  ) const;
-	tShapeType      const GetShapeType  ( ShapeId const id  ) const;
+	ShapeType       const GetShapeType  ( ShapeId const id  ) const;
 	bool            const HasOutgoing   ( ShapeId const id  ) const;
 	bool            const HasIncoming   ( ShapeId const id  ) const;
 	bool            const IsValidShapeId( ShapeId const id  ) const { return id.GetValue() < m_Shapes.size(); }
@@ -114,7 +114,7 @@ public:
 	template <typename T>
 	void AppendShape( ShapeId const id )
 	{
-		if ( GetShapeType( id ) == tShapeType::knot )
+		if ( GetShapeType( id ).IsKnotType() )
 		{
 			Connect( id, NewShape<T>( GetShapePos( id ) )->GetId() );
 		}

@@ -13,12 +13,12 @@
 class Neuron : public BaseKnot
 {
 public:
-	Neuron( MicroMeterPoint const, tShapeType const = tShapeType::neuron );
+	Neuron( MicroMeterPoint const, ShapeType const = ShapeType::Value::neuron );
 	virtual ~Neuron() {}
 
-	static bool TypeFits( tShapeType const type )
+	static bool TypeFits( ShapeType const type )
 	{
-		return type == tShapeType::neuron;
+		return type.IsNeuronType( );
 	}
 
 	virtual void Step( );

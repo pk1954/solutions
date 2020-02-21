@@ -140,9 +140,9 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 	m_ptCommandPosition = ptPos;
 
-	switch ( m_pModel->GetShapeType( m_shapeHighlighted ) )
+	switch ( m_pModel->GetShapeType( m_shapeHighlighted ).GetValue() )
 	{
-	case tShapeType::inputNeuron:
+	case ShapeType::Value::inputNeuron:
 		if ( ! m_pModel->HasOutgoing( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE,            L"Pulse rate" );
@@ -150,7 +150,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT,            L"Disconnect" );
 		break;
 
-	case tShapeType::neuron:
+	case ShapeType::Value::neuron:
 		if ( ! m_pModel->HasOutgoing( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING2KNOT,     L"Add incoming dendrite" );
@@ -158,7 +158,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT,            L"Disconnect" );
 		break;
 
-	case tShapeType::knot:  
+	case ShapeType::Value::knot:  
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING2KNOT, L"Add incoming dendrite" );
 		if ( 
@@ -177,7 +177,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT, L"Disconnect" );
 		break;
 
-	case tShapeType::pipeline:
+	case ShapeType::Value::pipeline:
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2PIPE, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING2PIPE, L"Add incoming dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_INSERT_NEURON,     L"Insert neuron" );
@@ -189,7 +189,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 		break;
 
-	case tShapeType::undefined: // noshape selected
+	case ShapeType::Value::undefined: // noshape selected
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_NEURON,       L"New neuron" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_INPUT_NEURON, L"New input neuron" );
 		break;
@@ -263,7 +263,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 void NNetWindow::drawHighlightedShape( NNetModel & model, PixelCoordsFp & coord )
 {
 	Shape * const pShapeHighlighted { model.GetShape( m_shapeHighlighted ) };
-	if ( pShapeHighlighted && IsAnyNeuronType(pShapeHighlighted->GetShapeType()) )
+	if ( pShapeHighlighted && pShapeHighlighted->IsAnyNeuron() )
 	{
 		pShapeHighlighted->DrawExterior( coord, tHighlightType::highlighted );
 		pShapeHighlighted->DrawInterior( coord );

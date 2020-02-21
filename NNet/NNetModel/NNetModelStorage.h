@@ -22,7 +22,7 @@ public:
 	NNetModelStorage( NNetModel * const );
 
 	void Write( wostream & );
-	bool Read ( wstring const & wstrPath );
+	bool Read( );
 
 	NNetModel * GetModel( ) { return m_pModel; }
 
@@ -30,7 +30,7 @@ public:
 	void          ResetModelPath( ) { m_wstrPathOfOpenModel = L""; }
 
 	bool AskSave( );
-	bool OpenModel( );
+	bool AskModelFile( );
 	bool SaveModel( );
 	bool SaveModelAs( );
 

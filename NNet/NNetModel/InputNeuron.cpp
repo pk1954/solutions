@@ -6,6 +6,7 @@
 #include "Direct2D.h"
 #include "PixelCoordsFp.h"
 #include "tHighlightType.h"
+#include "ShapeType.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
 #include "InputNeuron.h"
@@ -14,7 +15,7 @@ using std::chrono::microseconds;
 using std::wostringstream;
 
 InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
-  : Neuron( upCenter, tShapeType::inputNeuron ),
+  : Neuron( upCenter, ShapeType::Value::inputNeuron ),
 	m_mvFactor( 0.0_mV ),
 	m_pulseFrequency( STD_PULSE_FREQ ),
 	m_pulseDuration( PulseDuration( STD_PULSE_FREQ ) )
@@ -87,13 +88,13 @@ void InputNeuron::DrawNeuronText( PixelCoordsFp & coord ) const
 InputNeuron const * Cast2InputNeuron( Shape const * pShape )
 {
 	assert( pShape != nullptr );
-	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
+	assert( pShape->IsInputNeuron() );
 	return static_cast<InputNeuron const *>(pShape);
 }
 
 InputNeuron * Cast2InputNeuron( Shape * pShape )
 {
 	assert( pShape != nullptr );
-	assert( pShape->GetShapeType() == tShapeType::inputNeuron );
+	assert( pShape->IsInputNeuron() );
 	return static_cast<InputNeuron *>(pShape);
 }

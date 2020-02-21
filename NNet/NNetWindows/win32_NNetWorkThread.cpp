@@ -10,6 +10,7 @@
 #include "PixelTypes.h"
 #include "EventInterface.h"
 #include "MoreTypes.h"
+#include "NNetModelStorage.h"
 #include "SlowMotionRatio.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
@@ -34,8 +35,10 @@ NNetWorkThread::NNetWorkThread
 	SlowMotionRatio         * const pSlowMotionRatio,
 	NNetWorkThreadInterface * const pWorkThreadInterface,
 	NNetModel               * const pNNetModel,
+	NNetModelStorage        * const pStorage,
 	BOOL                      const bAsync
-):
+)
+:	m_pStorage               ( pStorage ),
 	m_pNNetModel             ( pNNetModel ),
 	m_pEventPOI              ( pEvent ),   
 	m_pModelObserver         ( pObserver ),   
@@ -61,6 +64,7 @@ NNetWorkThread::~NNetWorkThread( )
 	m_pWorkThreadInterface = nullptr;
 	m_pEventPOI            = nullptr;
 	m_pModelObserver       = nullptr;
+	m_pStorage             = nullptr;
 }
 
 static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
@@ -151,6 +155,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::RESET_MODEL:
+		generationStop( );
 		m_pNNetModel->ResetModel( );
 		m_pNNetModel->CreateInitialShapes();
 		break;

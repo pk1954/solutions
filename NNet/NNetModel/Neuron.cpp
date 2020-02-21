@@ -13,7 +13,7 @@
 using std::chrono::microseconds;
 using std::wostringstream;
 
-Neuron::Neuron( MicroMeterPoint const upCenter, tShapeType const type )
+Neuron::Neuron( MicroMeterPoint const upCenter, ShapeType const type )
   : BaseKnot( upCenter, type, NEURON_RADIUS ),
 	m_timeSinceLastPulse( 0._MicroSecs )
 {
@@ -91,14 +91,14 @@ void Neuron::drawInterior( PixelCoordsFp & coord ) const
 	drawCircle( coord, GetInteriorColor( ), GetExtension() * NEURON_INTERIOR);
 }
 
-Neuron const * Cast2Neuron( Shape const * shape )
+Neuron const * Cast2Neuron( Shape const * pShape )
 {
-	assert( shape->GetShapeType() == tShapeType::neuron );
-	return static_cast<Neuron const *>(shape);
+	assert( pShape->IsNeuron() );
+	return static_cast<Neuron const *>(pShape);
 }
 
-Neuron * Cast2Neuron( Shape * shape )
+Neuron * Cast2Neuron( Shape * pShape )
 {
-	assert( shape->GetShapeType() == tShapeType::neuron );
-	return static_cast<Neuron *>(shape);
+	assert( pShape->IsNeuron() );
+	return static_cast<Neuron *>(pShape);
 }

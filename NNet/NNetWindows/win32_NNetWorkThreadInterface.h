@@ -16,6 +16,7 @@ class ActionTimer;
 class ObserverInterface;
 class EventInterface;
 class SlowMotionRatio;
+class NNetModelStorage;
 
 class NNetWorkThreadInterface
 {
@@ -33,6 +34,7 @@ public:
 		ObserverInterface * const,
 		SlowMotionRatio   * const,
 		NNetModel         * const,
+		NNetModelStorage  * const,
 		BOOL                const
 	);
 	void Stop(); 

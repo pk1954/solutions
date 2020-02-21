@@ -6,7 +6,7 @@
 
 #include "d2d1helper.h"
 #include "MoreTypes.h"
-#include "tShapeType.h"
+#include "ShapeType.h"
 #include "ShapeId.h"
 
 class D2D_driver;
@@ -16,10 +16,10 @@ class NNetModel;
 class Shape
 {
 public:
-	Shape( tShapeType const );
+	Shape( ShapeType const );
 	virtual ~Shape(); 
 
-	static bool TypeFits( tShapeType const type ) {	return true; }  // every shape type is a Shape
+	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 
 	void Emphasize( bool const bState ) { m_bEmphasized = bState; }
 	bool IsEmphasized( ) { return m_bEmphasized; }
@@ -35,16 +35,17 @@ public:
 	virtual void Clear( ) { m_mVinputBuffer = 0.0_mV; };
 
 	bool            IsDefined   ( ) const { return ::IsDefined( m_identifier ); }
-	wchar_t const * GetName     ( ) const { return ::GetName( m_type ); }
-	tShapeType      GetShapeType( ) const { return m_type; }
+	wchar_t const * GetName     ( ) const { return ShapeType::GetName( m_type.GetValue() ); }
+	ShapeType       GetShapeType( ) const { return m_type; }
 	ShapeId         GetId       ( ) const { return m_identifier; }
 
-	bool IsPipeline   () const { return ::IsPipelineType   ( m_type ); }
-	bool IsKnot       () const { return ::IsKnotType       ( m_type ); }
-	bool IsNeuron     () const { return ::IsNeuronType     ( m_type ); }
-	bool IsInputNeuron() const { return ::IsInputNeuronType( m_type ); }
-	bool IsAnyNeuron  () const { return ::IsAnyNeuronType  ( m_type ); }
-	bool IsBaseKnot   () const { return ::IsBaseKnotType   ( m_type ); }
+	bool IsPipeline   () const { return m_type.IsPipelineType   ( ); }
+	bool IsKnot       () const { return m_type.IsKnotType       ( ); }
+	bool IsNeuron     () const { return m_type.IsNeuronType     ( ); }
+	bool IsInputNeuron() const { return m_type.IsInputNeuronType( ); }
+	bool IsAnyNeuron  () const { return m_type.IsAnyNeuronType  ( ); }
+	bool IsBaseKnot   () const { return m_type.IsBaseKnotType   ( ); }
+	bool IsUndefined  () const { return m_type.IsUndefinedType  ( ); }
 
 	void SetId( ShapeId const id ) { m_identifier = id;	}
 
@@ -73,5 +74,5 @@ private:
 	CRITICAL_SECTION m_criticalSection; 
 	bool             m_bEmphasized;
 	ShapeId          m_identifier;
-	tShapeType       m_type;
+	ShapeType        m_type;
 };

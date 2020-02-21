@@ -17,9 +17,9 @@ public:
 	InputNeuron( MicroMeterPoint const );
 	virtual ~InputNeuron( );
 
-	static bool TypeFits( tShapeType const type )
+	static bool TypeFits( ShapeType const type )
 	{
-		return type == tShapeType::inputNeuron;
+		return type.IsInputNeuronType( );
 	}
 
 	virtual void Prepare( )

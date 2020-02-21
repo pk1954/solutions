@@ -21,14 +21,14 @@ class Knot : public BaseKnot
 {
 public:
 	Knot( MicroMeterPoint const center )
-	  : BaseKnot( center, tShapeType::knot, PIPELINE_WIDTH / 2 )
+	  : BaseKnot( center, ShapeType::Value::knot, PIPELINE_WIDTH / 2 )
 	{}
 
 	virtual ~Knot() {}
 
-	static bool TypeFits( tShapeType const type )
+	static bool TypeFits( ShapeType const type )
 	{
-		return type == tShapeType::knot;
+		return type.IsKnotType( );
 	}
 
 	virtual void Step         ( ) { }

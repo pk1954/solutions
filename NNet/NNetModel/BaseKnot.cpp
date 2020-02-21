@@ -187,14 +187,14 @@ void BaseKnot::drawCircle
 
 BaseKnot const * Cast2BaseKnot( Shape const * shape )
 {
-	assert( shape->GetShapeType() != tShapeType::pipeline );
-	assert( shape->GetShapeType() != tShapeType::undefined );
+	assert( ! shape->IsPipeline() );
+	assert( ! shape->IsUndefined() );
 	return static_cast<BaseKnot const *>(shape);
 }
 
 BaseKnot * Cast2BaseKnot( Shape * shape )
 {
-	assert( shape->GetShapeType() != tShapeType::pipeline );
-	assert( shape->GetShapeType() != tShapeType::undefined );
+	assert( ! shape->IsPipeline() );
+	assert( ! shape->IsUndefined() );
 	return static_cast<BaseKnot *>(shape);
 }

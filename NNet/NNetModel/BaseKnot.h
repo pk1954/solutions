@@ -27,7 +27,7 @@ public:
 	BaseKnot
 	( 
 		MicroMeterPoint const center,
-		tShapeType      const type,
+		ShapeType       const type,
 		MicroMeter      const extension
  	)
 	  : Shape( type ),
@@ -41,7 +41,7 @@ public:
 	virtual void Prepare      ( );
 	virtual mV   GetNextOutput( ) const = 0;
 
-	static bool TypeFits( tShapeType const type ) { return IsBaseKnotType( type ); }
+	static bool TypeFits( ShapeType const type ) { return type.IsBaseKnotType( ); }
 
 	MicroMeterPoint GetPosition( )  const { return m_center;	}
 	MicroMeter      GetExtension( ) const { return m_extension;	}
@@ -66,7 +66,7 @@ public:
 	size_t GetNrOfOutgoingConnections( ) const { return m_outgoing.size(); }
 	size_t GetNrOfConnections( )         const { return m_incoming.size() + m_outgoing.size(); }
 	bool   IsOrphan( )                   const { return m_incoming.empty() && m_outgoing.empty(); }
-	bool   IsOrphanedKnot( )             const { return (GetShapeType() == tShapeType::knot) && IsOrphan(); }
+	bool   IsOrphanedKnot( )             const { return (GetShapeType().IsKnotType()) && IsOrphan(); }
 
 	void ClearIncoming( ) 
 	{

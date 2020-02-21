@@ -127,8 +127,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_OPEN_MODEL:
-		if ( m_pStorage->AskSave( ) && m_pStorage->OpenModel( ) )
+		if ( m_pStorage->AskSave( ) && m_pStorage->AskModelFile( ) )
+		{
+			m_pNNetWorkThreadInterface->PostStopComputation();
+			m_pStorage->Read( );
 			NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
+			m_pNNetWorkThreadInterface->PostResetTimer( );
+			m_pNNetWorkThreadInterface->PostRunGenerations( true );
+		}
 		break;
 
 	case IDM_NEW_MODEL:

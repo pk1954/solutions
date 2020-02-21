@@ -10,8 +10,8 @@
 D2D_driver const * Shape::m_pGraphics  { nullptr };
 NNetModel  const * Shape::m_pNNetModel { nullptr };
 
-Shape::Shape( tShapeType const type )
-	:	m_mVinputBuffer( 0._mV ),
+Shape::Shape( ShapeType const type )
+  : m_mVinputBuffer( 0._mV ),
 	m_bEmphasized( false ),
 	m_identifier( NO_SHAPE ),
 	m_type( type )

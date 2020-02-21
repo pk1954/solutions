@@ -68,7 +68,7 @@ NNetAppWindow::NNetAppWindow( ) :
 
 	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface ),
 		
-	m_pNNetReadBuffer = new NNetReadBuffer( );
+	m_pNNetReadBuffer    = new NNetReadBuffer( );
 	m_pPerformanceWindow = new PerformanceWindow( );
 
 	NNetWindow::InitClass
@@ -141,6 +141,7 @@ void NNetAppWindow::Start( )
 		  m_pNNetReadBuffer,
 		& m_SlowMotionRatio,
 		m_pModelDataWork,
+		m_pNNetModelStorage,
 		TRUE    // async thread?
 	);
 

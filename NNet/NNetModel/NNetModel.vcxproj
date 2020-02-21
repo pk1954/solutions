@@ -176,7 +176,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="tHighlightType.h" />
     <ClInclude Include="tParameter.h" />
-    <ClInclude Include="tShapeType.h" />
+    <ClInclude Include="ShapeType.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Analyzer.cpp" />
@@ -189,7 +189,7 @@
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="tParameter.cpp" />
-    <ClCompile Include="tShapeType.cpp" />
+    <ClCompile Include="ShapeType.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

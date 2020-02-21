@@ -14,6 +14,7 @@ class ActionTimer;
 class WinManager;
 class SlowMotionRatio;
 class EventInterface;
+class NNetModelStorage;
 class NNetHistorySysGlue;
 class NNetWorkThreadInterface;
 
@@ -28,6 +29,7 @@ public:
 		GENERATION_RUN,
 		NEXT_GENERATION,
 		RESET_MODEL,
+		READ_MODEL,
 		RESET_TIMER,
 		TRIGGER,
 		CONNECT,
@@ -75,6 +77,7 @@ public:
 		SlowMotionRatio         * const,
 		NNetWorkThreadInterface * const,
 		NNetModel               * const,
+		NNetModelStorage        * const,
 		BOOL                      const
 	);
 	~NNetWorkThread( );
@@ -128,6 +131,7 @@ private:
 	void generationStop( );
 	bool actionCommand( NNetWorkThreadMessage::Id const, ShapeId const, MicroMeterPoint const & );
 
+	NNetModelStorage        * m_pStorage;
 	EventInterface          * m_pEventPOI;
 	NNetWorkThreadInterface * m_pWorkThreadInterface;
 	BOOL                      m_bContinue;

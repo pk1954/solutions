@@ -20,7 +20,7 @@ MicroMeter const Pipeline::STD_ARROW_SIZE { 30.0_MicroMeter };
 MicroMeter Pipeline::m_arrowSize { STD_ARROW_SIZE };
 
 Pipeline::Pipeline( MicroMeterPoint const umUnused )
-  :	Shape( tShapeType::pipeline ),
+  :	Shape( ShapeType::Value::pipeline ),
 	m_pKnotStart ( nullptr ),
 	m_pKnotEnd   ( nullptr ),
 	m_width      ( PIPELINE_WIDTH ),
@@ -168,14 +168,14 @@ void Pipeline::DrawInterior( PixelCoordsFp & coord )
 	}
 }
 
-Pipeline const * Cast2Pipeline( Shape const * shape )
+Pipeline const * Cast2Pipeline( Shape const * pShape )
 {
-	assert( shape->GetShapeType() == tShapeType::pipeline );
-	return static_cast<Pipeline const *>(shape);
+	assert( pShape->IsPipeline() );
+	return static_cast<Pipeline const *>(pShape);
 }
 
-Pipeline * Cast2Pipeline( Shape * shape )
+Pipeline * Cast2Pipeline( Shape * pShape )
 {
-	assert( shape->GetShapeType() == tShapeType::pipeline );
-	return static_cast<Pipeline *>(shape);
+	assert( pShape->IsPipeline() );
+	return static_cast<Pipeline *>(pShape);
 }
