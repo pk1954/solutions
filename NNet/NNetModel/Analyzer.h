@@ -20,12 +20,12 @@ public:
 
 	static void EmphasizeLoopShapes( NNetModel & );
 
+	static MicroMeterRect GetEnclosingRect( );
+
 	static void Stop( )
 	{
 		m_bStop = true;
 	}
-
-	static MicroMeterRect GetEnclosingRect( );
 
 private:
 

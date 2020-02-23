@@ -202,7 +202,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_ANALYZE_FINISHED:
-		m_pNNetWindow->Zoom2Selection();
+		m_pNNetWindow->EmphasizeAnalyzeResult( );
 		break;
 
 	case IDM_SCRIPT_DIALOG:

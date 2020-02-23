@@ -161,6 +161,8 @@ public:
 	void SetParameter( tParameter const, float const );
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
+	MicroMeterRect GetEnclosingRect( );
+
 	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); return false; } ); }
 
 	void AddParameterObserver( ObserverInterface * pObs ) { m_parameterObservable.RegisterObserver( pObs ); }
@@ -197,3 +199,5 @@ private:
 	bool            connectIncoming( Pipeline * const, BaseKnot * const );
 	bool            connectOutgoing( Pipeline * const, BaseKnot * const );
 };
+
+MicroMeterRect GetEnclosingRect( vector<Shape*> const & );

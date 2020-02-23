@@ -50,7 +50,7 @@ public:
 
 	void       ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
 	void       Zoom( bool const );
-	void       Zoom2Selection( );
+	void       EmphasizeAnalyzeResult( );
 	void       SetPixelSize( MicroMeter const );
 	MicroMeter GetPixelSize( ) const;
 
@@ -98,6 +98,7 @@ private:
 
 	void   setStdFontSize( );
 	LPARAM crsPos2LPARAM( ) const;
+	void   emphasizeSelection( MicroMeterRect const );
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL   inObservedClientRect( LPARAM const );
 	void   setHighlightShape( PixelPoint const );

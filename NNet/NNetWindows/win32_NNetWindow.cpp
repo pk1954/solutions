@@ -103,9 +103,13 @@ void NNetWindow::Zoom( bool const bZoomIn  )
 	SetPixelSize( m_coord.ComputeNewPixelSize( bZoomIn ) );
 }
 
-void NNetWindow::Zoom2Selection( )
+void NNetWindow::EmphasizeAnalyzeResult( )
 {
-	MicroMeterRect const rect { ModelAnalyzer::GetEnclosingRect() };
+	emphasizeSelection( m_pModel->GetEnclosingRect( ) );
+}
+
+void NNetWindow::emphasizeSelection( MicroMeterRect const rect )
+{
 	m_umCenterDesired = (rect.GetStartPoint() + rect.GetEndPoint()) * 0.5f;
 
 	float const fHorizontalRatio { rect.GetHeight() / m_coord.convert2MicroMeter( GetClientWindowHeight() ) };
@@ -337,9 +341,8 @@ void NNetWindow::OnPaint( )
 	else if ( m_umPixelSizeDesired != MicroMeter_NULL )
 	{
 		if ( m_coord.ZoomPoi( m_umPixelSizeDesired, fpCenter ) )
-			m_umPixelSizeDesired = MicroMeter_NULL;
-		else
-			Invalidate( FALSE );
+			emphasizeSelection( ModelAnalyzer::GetEnclosingRect() );
+		Invalidate( FALSE );
 	}
 }
 

@@ -115,20 +115,7 @@ bool ModelAnalyzer::findLoop( Shape * const pShape )
 
 MicroMeterRect ModelAnalyzer::GetEnclosingRect( )
 {
-	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
-	for ( const auto & pShape : m_shapeStack )
-	{
-		if ( pShape->IsPipeline() )
-		{
-			rect.Expand( Cast2Pipeline( pShape )->GetStartPoint( ) );
-			rect.Expand( Cast2Pipeline( pShape )->GetEndPoint( ) );
-		}
-		else 
-		{
-			rect.Expand( Cast2BaseKnot( pShape )->GetPosition() );
-		}
-	}
-	return rect;
+	return ::GetEnclosingRect( m_shapeStack );
 }
 
 void ModelAnalyzer::EmphasizeLoopShapes( NNetModel & model )

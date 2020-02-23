@@ -568,3 +568,23 @@ Shape const * NNetModel::findShapeAt( MicroMeterPoint const pnt, function<bool(S
 	};
 	return nullptr;
 }
+
+MicroMeterRect NNetModel::GetEnclosingRect( )
+{
+	return ::GetEnclosingRect( m_Shapes );
+}
+
+/////////////////// nonmember functions ///////////////////////////////////////////////
+
+MicroMeterRect GetEnclosingRect( vector<Shape*> const & shapeVector )
+{
+	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
+	for ( const auto & pShape : shapeVector )
+	{
+		if ( pShape && pShape->IsBaseKnot() )
+		{
+			rect.Expand( Cast2BaseKnot( pShape )->GetPosition() );
+		}
+	}
+	return rect;
+}
