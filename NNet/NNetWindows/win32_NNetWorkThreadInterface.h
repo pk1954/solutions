@@ -39,6 +39,7 @@ public:
 	);
 	void Stop(); 
 
+	void PostSendBack         ( int const );
 	void PostSetPulseRate     ( ShapeId    const, float const );
 	void PostSetParameter     ( tParameter const, float const );
 	void PostResetTimer       ( );

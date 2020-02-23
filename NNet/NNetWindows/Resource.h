@@ -41,8 +41,6 @@
 #define IDM_MAX_SPEED                  87
 #define IDM_SIMULATION_SPEED           88
 
-#define IDM_ANALYZE                    89
-
 #define IDM_MOVE                       90
 
 // identifiers for application start at 100
@@ -65,7 +63,8 @@
 #define IDM_SAVE_MODEL          150
 #define IDM_SAVE_MODEL_AS       151
 #define IDM_OPEN_MODEL          152
-#define IDM_NEW_MODEL           153
+#define IDM_READ_MODEL          153
+#define IDM_NEW_MODEL           154
 
 #define IDD_PULSE_RATE          160
 
@@ -91,3 +90,7 @@
 #define IDM_CRSR_WINDOW         580
 #define IDM_PARAM_WINDOW  	    581
 #define IDM_PERF_WINDOW         582
+
+#define IDM_ANALYZE             600
+#define IDM_ANALYZE_FINISHED    601
+

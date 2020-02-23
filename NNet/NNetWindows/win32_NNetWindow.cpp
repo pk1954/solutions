@@ -10,6 +10,7 @@
 #include "Pipeline.h"
 #include "InputNeuron.h"
 #include "PixelTypes.h"
+#include "Analyzer.h"
 #include "AnimationThread.h"
 #include "tHighlightType.h"
 #include "PixelCoordsFp.h"
@@ -52,7 +53,9 @@ NNetWindow::NNetWindow( ) :
 	m_shapeHighlighted     ( NO_SHAPE ),
 	m_shapeSuperHighlighted( NO_SHAPE ),
 	m_pAnimationThread( nullptr ),
-	m_pCursorPosObservable( nullptr )
+	m_pCursorPosObservable( nullptr ),
+	m_umCenterDesired( NP_NULL ),
+	m_umPixelSizeDesired( MicroMeter_NULL )
 { }
 
 void NNetWindow::Start
@@ -98,6 +101,18 @@ NNetWindow::~NNetWindow( )
 void NNetWindow::Zoom( bool const bZoomIn  )
 {
 	SetPixelSize( m_coord.ComputeNewPixelSize( bZoomIn ) );
+}
+
+void NNetWindow::Zoom2Selection( )
+{
+	MicroMeterRect const rect { ModelAnalyzer::GetEnclosingRect() };
+	m_umCenterDesired = (rect.GetStartPoint() + rect.GetEndPoint()) * 0.5f;
+
+	float const fHorizontalRatio { rect.GetHeight() / m_coord.convert2MicroMeter( GetClientWindowHeight() ) };
+	float const fVerticalRatio   { rect.GetWidth () / m_coord.convert2MicroMeter( GetClientWindowWidth() ) };
+	float const fMaxRatio        { max( fVerticalRatio, fHorizontalRatio ) };
+	float const fDesiredRatio    { fMaxRatio * 3.0f };
+	m_umPixelSizeDesired = m_coord.LimitPixelSize( m_coord.GetPixelSize() * fDesiredRatio );
 }
 
 void NNetWindow::SetPixelSize( MicroMeter const newSize )
@@ -310,6 +325,21 @@ void NNetWindow::OnPaint( )
 			m_D2d_driver.EndFrame( GetWindowHandle() );
 		}
 		EndPaint( &ps );
+	}
+	fPixelPoint const fpCenter { m_coord.convert2fPixelPoint( GetClRectCenter( ) ) };
+	if ( m_umCenterDesired.IsNotNull() )
+	{
+		fPixelPoint const fPixOffsetDesired { m_coord.CalcCenterOffset( m_umCenterDesired, fpCenter ) };
+		if ( m_coord.CenterPoi( fPixOffsetDesired )  )
+			m_umCenterDesired.Set2Null();
+		Invalidate( FALSE );
+	}
+	else if ( m_umPixelSizeDesired != MicroMeter_NULL )
+	{
+		if ( m_coord.ZoomPoi( m_umPixelSizeDesired, fpCenter ) )
+			m_umPixelSizeDesired = MicroMeter_NULL;
+		else
+			Invalidate( FALSE );
 	}
 }
 

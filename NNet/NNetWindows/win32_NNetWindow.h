@@ -50,6 +50,7 @@ public:
 
 	void       ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
 	void       Zoom( bool const );
+	void       Zoom2Selection( );
 	void       SetPixelSize( MicroMeter const );
 	MicroMeter GetPixelSize( ) const;
 
@@ -76,6 +77,9 @@ private:
 
 	PixelPoint m_ptLast;	 	   // Last cursor position during selection 
 	PixelPoint m_ptCommandPosition;
+
+	MicroMeterPoint m_umCenterDesired;
+	MicroMeter      m_umPixelSizeDesired;
 
 	ShapeId m_shapeHighlighted;
 	ShapeId m_shapeSuperHighlighted;

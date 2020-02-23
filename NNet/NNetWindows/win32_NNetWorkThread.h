@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <functional>
 #include "win32_hiResTimer.h"
 #include "Observable.h"
 #include "ShapeId.h"
@@ -18,6 +19,8 @@ class NNetModelStorage;
 class NNetHistorySysGlue;
 class NNetWorkThreadInterface;
 
+using tAppCallBack = function<void (int const)>;
+
 class NNetWorkThreadMessage
 {
 public:
@@ -25,6 +28,7 @@ public:
 	{
 		REFRESH = WM_APP,
 		STOP,
+		SEND_BACK,
 		REPEAT_NEXT_GENERATION,  // only used internally, not part of procedural interface
 		GENERATION_RUN,
 		NEXT_GENERATION,
@@ -68,6 +72,8 @@ public:
 class NNetWorkThread: public Util::Thread
 {
 public:
+	static void InitClass( tAppCallBack );
+
 	NNetWorkThread
 	( 
 		HWND                      const,
@@ -86,7 +92,6 @@ public:
 	virtual void ThreadMsgDispatcher( MSG const );
 
 	BOOL      IsRunning()              const { return m_bContinue; }
-
 	MicroSecs GetTimeSpentPerCycle ( ) const { return m_usRealTimeSpentPerCycle; }
 	MicroSecs GetTimeAvailPerCycle ( ) const { return m_usRealTimeAvailPerCycle; }
 	MicroSecs GetRealTimeTilStart  ( ) const { return m_hrTimer.GetMicroSecsTilStart( ); }
@@ -130,6 +135,8 @@ private:
 	void generationRun( bool const );
 	void generationStop( );
 	bool actionCommand( NNetWorkThreadMessage::Id const, ShapeId const, MicroMeterPoint const & );
+
+	static tAppCallBack m_appCallback;
 
 	NNetModelStorage        * m_pStorage;
 	EventInterface          * m_pEventPOI;

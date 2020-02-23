@@ -33,6 +33,13 @@ constexpr const MicroMeter operator"" _MicroMeter( const long double d )
 
 MicroMeter const MAX_MICRO_METER{ 1e7_MicroMeter };  // 10 meter
 
+static MicroMeter const MicroMeter_NULL( std::numeric_limits<float>::infinity() );
+																	   																	   
+inline bool IsCloseToZero( MicroMeter const um )
+{
+	return IsCloseToZero( um.GetValue() );
+}
+
 ////////////// mV /////////////////////////////////////
 
 using mV = NamedType<float, struct mV_Parameter >;
@@ -103,13 +110,13 @@ inline static MicroMeter Distance( MicroMeterPoint const & npA, MicroMeterPoint 
 inline static MicroMeterPoint OrthoVector( MicroMeterPoint const & vect, MicroMeter const length )
 {
 	MicroMeter umHypot = Hypot( vect );
-	assert( ! IsCloseToZero( umHypot.GetValue() ) );
+	assert( ! IsCloseToZero( umHypot ) );
 	return MicroMeterPoint( vect.GetY(), - vect.GetX() ) * (length / umHypot);
 }
 
 inline bool IsCloseToZero( MicroMeterPoint const pnt )
 {
-	return IsCloseToZero( pnt.GetXvalue() ) && IsCloseToZero( pnt.GetYvalue() );
+	return IsCloseToZero( pnt.GetX() ) && IsCloseToZero( pnt.GetY() );
 }
 
 using NNetPointFunc     = function<void (MicroMeterPoint const)>;

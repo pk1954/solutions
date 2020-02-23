@@ -130,6 +130,12 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		if ( m_pStorage->AskSave( ) && m_pStorage->AskModelFile( ) )
 		{
 			m_pNNetWorkThreadInterface->PostStopComputation();
+			m_pNNetWorkThreadInterface->PostSendBack( IDM_READ_MODEL );
+		}
+		break;
+
+	case IDM_READ_MODEL:
+		{
 			m_pStorage->Read( );
 			NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
 			m_pNNetWorkThreadInterface->PostResetTimer( );
@@ -192,6 +198,11 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDM_ANALYZE:
 		m_pNNetWorkThreadInterface->PostActionCommand( wmId, NO_SHAPE, NP_NULL );
+		m_pNNetWorkThreadInterface->PostSendBack( IDM_ANALYZE_FINISHED );
+		break;
+
+	case IDM_ANALYZE_FINISHED:
+		m_pNNetWindow->Zoom2Selection();
 		break;
 
 	case IDM_SCRIPT_DIALOG:

@@ -96,6 +96,11 @@ public:
 
 	//////// transformations MicroMeter <---> PIXEL  ////////
 
+	MicroMeter convert2MicroMeter( PIXEL const pix ) const
+	{ 
+		return convert2MicroMeter( convert2fPIXEL( pix ) );
+	}
+
 	MicroMeterPoint convert2MicroMeterPointPos( PixelPoint const pnt ) const
 	{ 
 		return convert2MicroMeterPointPos( convert2fPixelPoint( pnt ) );
@@ -121,7 +126,7 @@ public:
 		return isValidPixelSize( newSize ) ? newSize : m_pixelSize;
 	}
 
-	fPixelPoint calcCenterOffset            // calculate new pixel offset,
+	fPixelPoint CalcCenterOffset            // calculate new pixel offset,
 	(                                       // which keeps umPntCenter at fPixCenter
 		MicroMeterPoint const umPntCenter,  // do not yet set m_fPixOffset to this value!
 		fPixelPoint     const fPixCenter 
@@ -153,7 +158,46 @@ public:
 		fPixelPoint     const fPntPix  
 	)
 	{
-		m_fPixOffset = calcCenterOffset( umPntCenter, fPntPix );
+		m_fPixOffset = CalcCenterOffset( umPntCenter, fPntPix );
+	}
+
+	bool CenterPoi   // returns TRUE, if POI was already centered, or if no POI defined
+	( 
+		fPixelPoint fPixOffsetDesired 
+	)
+	{
+		PixelPoint ppActual  { convert2PixelPoint( m_fPixOffset ) };
+		PixelPoint ppDesired { convert2PixelPoint( fPixOffsetDesired ) };
+
+		bool bCentered { ppActual == ppDesired };
+
+		if ( ! bCentered )
+		{
+			m_fPixOffset = convert2fPixelPoint( m_smoothMove.Step( ppActual, ppDesired ) );
+		}
+
+		return bCentered;
+	}
+
+	bool ZoomPoi   // returns TRUE, if POI was already zoomed as desired
+	( 
+		MicroMeter  const umPixelSizeDesired, 
+		fPixelPoint const fPixPointCenter
+	)
+	{
+		MicroMeterPoint const umPointcenter { convert2MicroMeterPointPos( fPixPointCenter ) };
+
+		if ( IsCloseToZero(m_pixelSize - umPixelSizeDesired) )
+			return true;
+ 
+		m_pixelSize = m_smoothMove.Step( m_pixelSize, umPixelSizeDesired );
+		Center( umPointcenter, fPixPointCenter ); 
+		return false;
+	}
+
+	MicroMeter LimitPixelSize( MicroMeter const sizeDesired ) const
+	{
+		return ClipToMinMax<MicroMeter>( sizeDesired, MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE );
 	}
 
 private:
@@ -165,4 +209,5 @@ private:
 
 	fPixelPoint m_fPixOffset;
 	MicroMeter  m_pixelSize;
+	SmoothMove  m_smoothMove;
 };

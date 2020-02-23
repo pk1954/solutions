@@ -66,8 +66,19 @@ NNetAppWindow::NNetAppWindow( ) :
 
 	DefineNNetWrappers( & m_NNetWorkThreadInterface );
 
-	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface ),
-		
+	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface );
+	
+	NNetWorkThread::InitClass
+	( 
+		(tAppCallBack)
+		( 
+			[&]( int const id ) 
+			{ 
+				PostMessage( WM_COMMAND, id, 0 ); 
+			} 
+		)
+	);
+
 	m_pNNetReadBuffer    = new NNetReadBuffer( );
 	m_pPerformanceWindow = new PerformanceWindow( );
 
@@ -130,8 +141,6 @@ void NNetAppWindow::Start( )
 	);
 
 	m_pNNetReadBuffer->RegisterObserver( m_pMainNNetWindow );
-
-//	m_pMainNNetWindow->ShowRefreshRateDlg( false );
 
 	m_NNetWorkThreadInterface.Start
 	( 

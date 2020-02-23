@@ -219,3 +219,8 @@ void NNetWorkThreadInterface::PostStopComputation( )
 {
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::STOP ), 0, 0 );
 }
+
+void NNetWorkThreadInterface::PostSendBack( int const iMsg )
+{
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SEND_BACK ), iMsg, 0 );
+}

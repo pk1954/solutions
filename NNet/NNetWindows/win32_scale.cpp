@@ -19,7 +19,7 @@ Scale::~Scale( )
 	m_pGraphics->DeleteTextFormat( & m_pTextFormat );
 }
 
-void Scale::ShowScale (fPIXEL const height )
+void Scale::ShowScale( fPIXEL const height )
 {
 	if ( ! m_pTextFormat )
 		m_pTextFormat = m_pGraphics->NewTextFormat( 12.f );

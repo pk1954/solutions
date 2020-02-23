@@ -26,6 +26,13 @@
 
 using std::unordered_map;
 
+tAppCallBack NNetWorkThread::m_appCallback { nullptr };
+
+void NNetWorkThread::InitClass( tAppCallBack AppCallBack )
+{
+	m_appCallback = AppCallBack;
+}
+
 NNetWorkThread::NNetWorkThread
 ( 
 	HWND                      const hwndApplication,
@@ -135,6 +142,11 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 
 	switch ( id )
 	{
+
+	case NNetWorkThreadMessage::Id::SEND_BACK:
+		(m_appCallback)( CastToInt(msg.wParam) );
+		break;
+
 	case NNetWorkThreadMessage::Id::REFRESH:
 		break;
 
@@ -182,10 +194,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		generationStop( );
 		m_pNNetModel->ClearModel( );
 		if ( ModelAnalyzer::FindLoop( * m_pNNetModel ) )
-		{
 			ModelAnalyzer::EmphasizeLoopShapes( * m_pNNetModel );
-			MicroMeterRect rect = ModelAnalyzer::GetEnclosingRect();
-		}
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE:

@@ -5,7 +5,6 @@
 #pragma once
 
 #include <vector>
-#include <functional>
 #include "synchapi.h"
 #include "util.h"
 #include "MoreTypes.h"
@@ -24,6 +23,7 @@ class InputNeuron;
 class NNetModel
 {
 public:
+
 	NNetModel();
 
 	virtual ~NNetModel( );
@@ -168,7 +168,6 @@ public:
 	virtual void Compute( );
 
 private:
-
 	vector<Shape *> m_Shapes;
 	MicroSecs       m_timeStamp;
 	bool            m_bUnsavedChanges;
