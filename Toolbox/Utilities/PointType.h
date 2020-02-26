@@ -156,7 +156,7 @@ public:
 
 	friend std::wostream & operator<< ( std::wostream & out, PointType const & param )
 	{
-		out << L"(" << param.GetXvalue() << L"/" << param.GetYvalue() << L")";
+		out << L"(" << param.GetX() << L"/" << param.GetY() << L")";
 		return out;
 	}
 

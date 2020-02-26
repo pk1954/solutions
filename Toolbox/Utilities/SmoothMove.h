@@ -11,9 +11,7 @@ public:
     SmoothMove( );
 
     PixelPoint Step( PixelPoint, PixelPoint );
-    MicroMeter Step( MicroMeter, MicroMeter );
     
 private:
-    PIXEL      m_pixVelocity; // set in every step
-    MicroMeter m_umVelocity;  //
+    PIXEL m_pixVelocity; // set in every step
 };

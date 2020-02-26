@@ -54,8 +54,12 @@ NNetWindow::NNetWindow( ) :
 	m_shapeSuperHighlighted( NO_SHAPE ),
 	m_pAnimationThread( nullptr ),
 	m_pCursorPosObservable( nullptr ),
-	m_umCenterDesired( NP_NULL ),
-	m_umPixelSizeDesired( MicroMeter_NULL )
+	m_focusMode( FOCUS_MODE::NO_FOCUS ),
+	m_umPntCenterStart( MicroMeterPoint::NULL_VAL() ),
+	m_umPixelSizeStart( MicroMeter::NULL_VAL() ),
+	m_umPntCenterDelta( MicroMeterPoint::NULL_VAL() ),
+	m_umPixelSizeDelta( MicroMeter::NULL_VAL() ),
+	m_smoothMove()
 { }
 
 void NNetWindow::Start
@@ -101,22 +105,6 @@ NNetWindow::~NNetWindow( )
 void NNetWindow::Zoom( bool const bZoomIn  )
 {
 	SetPixelSize( m_coord.ComputeNewPixelSize( bZoomIn ) );
-}
-
-void NNetWindow::EmphasizeAnalyzeResult( )
-{
-	emphasizeSelection( m_pModel->GetEnclosingRect( ) );
-}
-
-void NNetWindow::emphasizeSelection( MicroMeterRect const rect )
-{
-	m_umCenterDesired = (rect.GetStartPoint() + rect.GetEndPoint()) * 0.5f;
-
-	float const fHorizontalRatio { rect.GetHeight() / m_coord.convert2MicroMeter( GetClientWindowHeight() ) };
-	float const fVerticalRatio   { rect.GetWidth () / m_coord.convert2MicroMeter( GetClientWindowWidth() ) };
-	float const fMaxRatio        { max( fVerticalRatio, fHorizontalRatio ) };
-	float const fDesiredRatio    { fMaxRatio * 3.0f };
-	m_umPixelSizeDesired = m_coord.LimitPixelSize( m_coord.GetPixelSize() * fDesiredRatio );
 }
 
 void NNetWindow::SetPixelSize( MicroMeter const newSize )
@@ -317,6 +305,43 @@ void NNetWindow::doPaint( )
 		m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawNeuronText( m_coord ); return false; } );
 }
 
+void NNetWindow::EmphasizeAnalyzeResult( )
+{
+	m_focusMode = FOCUS_MODE::ZOOM_OUT;
+	emphasizeSelection( m_pModel->GetEnclosingRect( ), 1.2f );
+}
+
+static int iStep = 0;
+
+void NNetWindow::emphasizeSelection( MicroMeterRect const rect, float const fRatioFactor )
+{
+	float           const fHorizontalRatio  { rect.GetHeight() / m_coord.convert2MicroMeter( GetClientWindowHeight() ) };
+	float           const fVerticalRatio    { rect.GetWidth () / m_coord.convert2MicroMeter( GetClientWindowWidth() ) };
+	float           const fMaxRatio         { max( fVerticalRatio, fHorizontalRatio ) };
+	float           const fDesiredRatio     { fMaxRatio * fRatioFactor };
+	fPixelPoint     const fpCenter          { m_coord.convert2fPixelPoint( GetClRectCenter( ) ) };
+	MicroMeter      const umPixelSizeTarget { m_coord.LimitPixelSize( m_coord.GetPixelSize() * fDesiredRatio ) };
+	MicroMeterPoint const umPntCenterTarget { rect.GetCenter() };
+	m_umPixelSizeStart = m_coord.GetPixelSize();                                     // actual pixel size 
+	m_umPntCenterStart = m_coord.convert2MicroMeterPointPos( GetClRectCenter( ) );   // actual center 
+	m_umPixelSizeDelta = umPixelSizeTarget - m_umPixelSizeStart;
+	m_umPntCenterDelta = umPntCenterTarget - m_umPntCenterStart;
+	m_smoothMove.Reset();
+}
+
+bool NNetWindow::smoothStep( )  // returns true, if all targets reached
+{
+	float fPos { m_smoothMove.Step() };
+	fPixelPoint const fpCenter { m_coord.convert2fPixelPoint( GetClRectCenter( ) ) };
+
+	m_coord.Zoom  ( m_umPixelSizeStart + m_umPixelSizeDelta * fPos );
+	m_coord.Center( m_umPntCenterStart + m_umPntCenterDelta * fPos, fpCenter );
+
+	Invalidate( FALSE );
+
+	return fPos >= 1.0f;
+}
+
 void NNetWindow::OnPaint( )
 {
 	if ( IsWindowVisible() )
@@ -330,19 +355,23 @@ void NNetWindow::OnPaint( )
 		}
 		EndPaint( &ps );
 	}
-	fPixelPoint const fpCenter { m_coord.convert2fPixelPoint( GetClRectCenter( ) ) };
-	if ( m_umCenterDesired.IsNotNull() )
+
+	if ( (m_focusMode != FOCUS_MODE::NO_FOCUS) && smoothStep() )
 	{
-		fPixelPoint const fPixOffsetDesired { m_coord.CalcCenterOffset( m_umCenterDesired, fpCenter ) };
-		if ( m_coord.CenterPoi( fPixOffsetDesired )  )
-			m_umCenterDesired.Set2Null();
-		Invalidate( FALSE );
-	}
-	else if ( m_umPixelSizeDesired != MicroMeter_NULL )
-	{
-		if ( m_coord.ZoomPoi( m_umPixelSizeDesired, fpCenter ) )
-			emphasizeSelection( ModelAnalyzer::GetEnclosingRect() );
-		Invalidate( FALSE );
+		switch ( m_focusMode )
+		{
+		case FOCUS_MODE::ZOOM_OUT:
+			m_focusMode = FOCUS_MODE::ZOOM_IN;
+			emphasizeSelection( ModelAnalyzer::GetEnclosingRect(), 3.0f );
+			break;
+
+		case FOCUS_MODE::ZOOM_IN:
+			m_focusMode = FOCUS_MODE::NO_FOCUS;
+			break;
+
+		default:
+			assert( false );
+		}
 	}
 }
 

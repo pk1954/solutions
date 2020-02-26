@@ -84,21 +84,27 @@ void PerformanceWindow::printFloatLine
 
 void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 {      
-	microseconds const usDisplayTime = m_pAtDisplay->GetSingleActionTime( );
-	textBuf.printString( L"Display:" );
-	textBuf.printString( L"" );
-	textBuf.printAsMillisecs( usDisplayTime );
-	textBuf.nextLine( );
+	if ( m_pAtDisplay )
+	{
+		microseconds const usDisplayTime = m_pAtDisplay->GetSingleActionTime( );
+		textBuf.printString( L"Display:" );
+		textBuf.printString( L"" );
+		textBuf.printAsMillisecs( usDisplayTime );
+		textBuf.nextLine( );
+	}
 
-	MicroSecs simuTime { m_pNNetWorkThreadInterface->GetSimulationTime( ) };
-	MicroSecs realTime { m_pNNetWorkThreadInterface->GetRealTimeTilStart( ) };
-	MicroSecs avail    { m_pNNetWorkThreadInterface->GetTimeAvailPerCycle( ) };
-	MicroSecs spent    { m_pNNetWorkThreadInterface->GetTimeSpentPerCycle( ) };
-	printMicroSecLine( textBuf, L"simu time res:", m_pNNetWorkThreadInterface->GetSimuTimeResolution( ) );
-	printFloatLine   ( textBuf, L"targ slowmo:", m_pNNetWorkThreadInterface->GetSlowMotionRatio( ), L"" );
-	printMicroSecLine( textBuf, L"avail time:", avail );
-	printMicroSecLine( textBuf, L"spent time:", spent );
-	printFloatLine   ( textBuf, L"workload:",  CastToFloat( (spent / avail) * 100.0f ), L"%" );
-	if ( simuTime > 0.0_MicroSecs )
-		printFloatLine   ( textBuf, L"effect slomo:",  CastToFloat( realTime / simuTime ), L"" );
+	if ( m_pNNetWorkThreadInterface )
+	{
+		MicroSecs simuTime { m_pNNetWorkThreadInterface->GetSimulationTime( ) };
+		MicroSecs realTime { m_pNNetWorkThreadInterface->GetRealTimeTilStart( ) };
+		MicroSecs avail    { m_pNNetWorkThreadInterface->GetTimeAvailPerCycle( ) };
+		MicroSecs spent    { m_pNNetWorkThreadInterface->GetTimeSpentPerCycle( ) };
+		printMicroSecLine( textBuf, L"simu time res:", m_pNNetWorkThreadInterface->GetSimuTimeResolution( ) );
+		printFloatLine   ( textBuf, L"targ slowmo:", m_pNNetWorkThreadInterface->GetSlowMotionRatio( ), L"" );
+		printMicroSecLine( textBuf, L"avail time:", avail );
+		printMicroSecLine( textBuf, L"spent time:", spent );
+		printFloatLine   ( textBuf, L"workload:",  CastToFloat( (spent / avail) * 100.0f ), L"%" );
+		if ( simuTime > 0.0_MicroSecs )
+			printFloatLine   ( textBuf, L"effect slomo:",  CastToFloat( realTime / simuTime ), L"" );
+	}
 }

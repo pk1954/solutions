@@ -7,7 +7,6 @@
 #include "util.h"
 #include "MoreTypes.h"
 #include "PixelTypes.h"
-#include "SmoothMove.h"
 
 MicroMeter const MINIMUM_PIXEL_SIZE =    0.1_MicroMeter;
 MicroMeter const DEFAULT_PIXEL_SIZE =    1.0_MicroMeter;  
@@ -126,17 +125,6 @@ public:
 		return isValidPixelSize( newSize ) ? newSize : m_pixelSize;
 	}
 
-	fPixelPoint CalcCenterOffset            // calculate new pixel offset,
-	(                                       // which keeps umPntCenter at fPixCenter
-		MicroMeterPoint const umPntCenter,  // do not yet set m_fPixOffset to this value!
-		fPixelPoint     const fPixCenter 
-	)  
-	{
-		fPixelPoint const fPixPnt( convert2fPixelSize( umPntCenter ) );
-		fPixelPoint const fPixOffset( fPixPnt - fPixCenter );
-		return fPixOffset;
-	}
-	
 	//////// manipulation functions ////////
 
 	bool Zoom( MicroMeter const pixelSize )
@@ -158,41 +146,7 @@ public:
 		fPixelPoint     const fPntPix  
 	)
 	{
-		m_fPixOffset = CalcCenterOffset( umPntCenter, fPntPix );
-	}
-
-	bool CenterPoi   // returns TRUE, if POI was already centered, or if no POI defined
-	( 
-		fPixelPoint fPixOffsetDesired 
-	)
-	{
-		PixelPoint ppActual  { convert2PixelPoint( m_fPixOffset ) };
-		PixelPoint ppDesired { convert2PixelPoint( fPixOffsetDesired ) };
-
-		bool bCentered { ppActual == ppDesired };
-
-		if ( ! bCentered )
-		{
-			m_fPixOffset = convert2fPixelPoint( m_smoothMove.Step( ppActual, ppDesired ) );
-		}
-
-		return bCentered;
-	}
-
-	bool ZoomPoi   // returns TRUE, if POI was already zoomed as desired
-	( 
-		MicroMeter  const umPixelSizeDesired, 
-		fPixelPoint const fPixPointCenter
-	)
-	{
-		MicroMeterPoint const umPointcenter { convert2MicroMeterPointPos( fPixPointCenter ) };
-
-		if ( IsCloseToZero(m_pixelSize - umPixelSizeDesired) )
-			return true;
- 
-		m_pixelSize = m_smoothMove.Step( m_pixelSize, umPixelSizeDesired );
-		Center( umPointcenter, fPixPointCenter ); 
-		return false;
+		m_fPixOffset = convert2fPixelSize( umPntCenter ) - fPntPix;
 	}
 
 	MicroMeter LimitPixelSize( MicroMeter const sizeDesired ) const
@@ -209,5 +163,4 @@ private:
 
 	fPixelPoint m_fPixOffset;
 	MicroMeter  m_pixelSize;
-	SmoothMove  m_smoothMove;
 };

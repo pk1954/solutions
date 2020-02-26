@@ -9,6 +9,7 @@
 #include "Direct2D.h"
 #include "PixelCoordsFp.h"
 #include "tHighlightType.h"
+#include "SmoothMoveFp.h"
 #include "win32_modelWindow.h"
 
 using std::wstring;
@@ -78,8 +79,17 @@ private:
 	PixelPoint m_ptLast;	 	   // Last cursor position during selection 
 	PixelPoint m_ptCommandPosition;
 
-	MicroMeterPoint m_umCenterDesired;
-	MicroMeter      m_umPixelSizeDesired;
+	enum class FOCUS_MODE 
+	{ 
+		NO_FOCUS, 
+		ZOOM_OUT,
+		ZOOM_IN 
+	}            m_focusMode;
+	MicroMeterPoint m_umPntCenterStart;
+	MicroMeterPoint m_umPntCenterDelta;
+	MicroMeter      m_umPixelSizeStart;
+	MicroMeter      m_umPixelSizeDelta;
+	SmoothMoveFp    m_smoothMove;
 
 	ShapeId m_shapeHighlighted;
 	ShapeId m_shapeSuperHighlighted;
@@ -96,9 +106,10 @@ private:
 	virtual void OnLButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
+	bool   smoothStep( );
 	void   setStdFontSize( );
 	LPARAM crsPos2LPARAM( ) const;
-	void   emphasizeSelection( MicroMeterRect const );
+	void   emphasizeSelection( MicroMeterRect const, float const );
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL   inObservedClientRect( LPARAM const );
 	void   setHighlightShape( PixelPoint const );

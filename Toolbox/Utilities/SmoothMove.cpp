@@ -8,36 +8,8 @@
 #include "SmoothMove.h"
 
 SmoothMove::SmoothMove( ) :
-    m_pixVelocity( 0 ),
-    m_umVelocity( 0.0_MicroMeter )
+    m_pixVelocity( 0 )
 {}
-
-MicroMeter SmoothMove::Step( MicroMeter umActual, MicroMeter umDesired )
-{
-    static MicroMeter const UNIT { 0.001_MicroMeter };
-
-    MicroMeter const umDelta       { umDesired - umActual };
-    MicroMeter const umDistance    { abs( umDelta.GetValue() ) };
-    MicroMeter const umAbsVelocity { abs( m_umVelocity.GetValue() ) };
-    float      const fSteps2Stop   { umAbsVelocity / UNIT };
-    MicroMeter const umBreakDist   { umAbsVelocity * fSteps2Stop * fSteps2Stop * 0.5f };
-    MicroMeter const umAbsVelocityNew 
-    {
-        ( umDistance > umBreakDist )
-        ? umAbsVelocity + UNIT  // distance is big enough to accelerate 
-        : umAbsVelocity - UNIT  // we have to reduce velocity
-    };
-    if ( umAbsVelocityNew < UNIT )
-    {
-        m_umVelocity = 0.0_MicroMeter;
-        return umDesired;
-    }
-    else
-    {
-        m_umVelocity = ( umDelta > 0.0_MicroMeter ) ? umAbsVelocityNew : - umAbsVelocityNew;
-        return umActual + m_umVelocity;
-    }
-}
 
 PixelPoint SmoothMove::Step( PixelPoint pixActual, PixelPoint pixDesired )  // returns new pixOffset, which is closer to pixTarget
 {

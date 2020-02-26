@@ -33,7 +33,7 @@ constexpr const MicroMeter operator"" _MicroMeter( const long double d )
 
 MicroMeter const MAX_MICRO_METER{ 1e7_MicroMeter };  // 10 meter
 
-static MicroMeter const MicroMeter_NULL( std::numeric_limits<float>::infinity() );
+// static MicroMeter const MicroMeter_NULL( std::numeric_limits<float>::infinity() );
 																	   																	   
 inline bool IsCloseToZero( MicroMeter const um )
 {
@@ -125,6 +125,8 @@ using NNetPointBoolFunc = function<bool (MicroMeterPoint const)>;
 ////////////// MicroMeterRect /////////////////////////////////////
 
 using MicroMeterRect = RectType< MicroMeter >;
+
+MicroMeterPoint const MicroMeterRect::GetCenter( ) const { return ( GetStartPoint() + GetEndPoint() ) * 0.5f; }
 
 ////////////// meterPerSec /////////////////////////////////////
 

@@ -19,7 +19,9 @@ public:
 
 	constexpr BASE_TYPE const & GetValue() const { return m_value; }
 
-    bool const operator== (NamedType const other) const { return m_value == other.GetValue(); }
+	constexpr BASE_TYPE const GetAbsValue() const { return BASE_TYPE( abs(m_value) ); }
+
+	bool const operator== (NamedType const other) const { return m_value == other.GetValue(); }
     bool const operator!= (NamedType const other) const { return m_value != other.GetValue(); }
     bool const operator<= (NamedType const other) const { return m_value <= other.GetValue(); }
     bool const operator<  (NamedType const other) const { return m_value <  other.GetValue(); }
@@ -89,11 +91,11 @@ public:
 		return BASE_TYPE( a.GetValue() / b.GetValue() );
 	}
 
-	//friend std::wostream & operator<< ( std::wostream & out, NamedType const & param )
-	//{
-	//	out << param.GetValue();
-	//	return out;
-	//}
+	friend std::wostream & operator<< ( std::wostream & out, NamedType const & param )
+	{
+		out << param.GetValue();
+		return out;
+	}
 
 	static NamedType const NULL_VAL()
 	{
