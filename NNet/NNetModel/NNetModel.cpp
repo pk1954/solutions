@@ -36,7 +36,6 @@ NNetModel::NNetModel( )
 	m_bEmphasizeMode   ( false )
 {					
 	Shape::SetModel( this );
-    CreateInitialShapes( );
 }
 
 NNetModel::~NNetModel( )
@@ -182,11 +181,11 @@ void NNetModel::SetParameter
 	switch ( param )
 	{
 		case tParameter::pulseSpeed:	 m_pulseSpeed    = static_cast< meterPerSec >( fNewValue ); break;
-		case tParameter::pulseWidth:	 m_pulseWidth    = static_cast< MicroSecs >  ( fNewValue ); break;
+		case tParameter::pulseWidth:	 m_pulseWidth    = static_cast< fMicroSecs  >( fNewValue ); break;
 		case tParameter::threshold:		 m_threshold     = static_cast< mV >         ( fNewValue ); break;
 		case tParameter::peakVoltage:	 m_peakVoltage   = static_cast< mV >         ( fNewValue ); break;
-		case tParameter::refractPeriod:	 m_refractPeriod = static_cast< MicroSecs >  ( fNewValue ); break;
-		case tParameter::timeResolution: m_usResolution  = static_cast< MicroSecs >  ( fNewValue ); break;
+		case tParameter::refractPeriod:	 m_refractPeriod = static_cast< fMicroSecs  >( fNewValue ); break;
+		case tParameter::timeResolution: m_usResolution  = static_cast< fMicroSecs  >( fNewValue ); break;
 		case tParameter::signalLoss: /* not used, only for compaitibility reasons */                break;
 		default: assert( false );
 	}

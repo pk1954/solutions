@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "win32_sound.h"
 #include "win32_fatalError.h"
 #include "win32_graphicsInterface.h"
 #include "PixelCoordsFp.h"
@@ -15,30 +16,52 @@ using std::wostringstream;
 
 Neuron::Neuron( MicroMeterPoint const upCenter, ShapeType const type )
   : BaseKnot( upCenter, type, NEURON_RADIUS ),
-	m_timeSinceLastPulse( 0._MicroSecs )
+	m_timeSinceLastPulse( 0._MicroSecs ),
+	m_triggerSoundFrequency( 0_Hertz ),
+    m_triggerSoundDuration( 0_MilliSecs ),
+	m_bTriggerSoundOn( false )
 {
 	Recalc();
 }
 
+fMicroSecs Neuron::PulseWidth() const 
+{ 
+	return fMicroSecs( m_pNNetModel->GetParameterValue( tParameter::pulseWidth ) ); 
+}
+
+fMicroSecs Neuron::RefractPeriod() const 
+{ 
+	return fMicroSecs( m_pNNetModel->GetParameterValue( tParameter::refractPeriod ) ); 
+}
+
+mV Neuron::Threshold() const 
+{ 
+	return mV( m_pNNetModel->GetParameterValue( tParameter::threshold ) ); 
+}
+
+mV Neuron::PeakVoltage() const 
+{ 
+	return mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) ); 
+}
+
 void Neuron::Recalc( ) 
 {
-	m_factorW = 1.0f / m_pNNetModel->GetParameterValue( tParameter::pulseWidth );
-	m_factorU = 4.0f * m_factorW * m_pNNetModel->GetParameterValue( tParameter::peakVoltage );
+	m_factorW = 1.0f / PulseWidth().GetValue();
+	m_factorU = 4.0f * m_factorW * PeakVoltage().GetValue();
 };
 
-mV Neuron::waveFunction( MicroSecs const time ) const
+mV Neuron::waveFunction( fMicroSecs const time ) const
 {
 	return mV( m_factorU * time.GetValue() * ( 1.0f - time.GetValue() * m_factorW ) );
 }
 
 void Neuron::Step( )
 {
-	if ( 
-		  (m_mVinputBuffer >= mV( m_pNNetModel->GetParameterValue( tParameter::threshold ) )) &&
-		  (m_timeSinceLastPulse >= MicroSecs( m_pNNetModel->GetParameterValue( tParameter::pulseWidth ) + m_pNNetModel->GetParameterValue( tParameter::refractPeriod )) )
-	   )  
+	if ( (m_mVinputBuffer >= Threshold( )) && (m_timeSinceLastPulse >= PulseWidth() + RefractPeriod()) )  
 	{
-		m_timeSinceLastPulse = 0._MicroSecs;   
+		m_timeSinceLastPulse = 0._MicroSecs;
+		if ( m_triggerSoundDuration > 0_MilliSecs )
+			Sound::Beep( m_triggerSoundFrequency, m_triggerSoundDuration );
 	}
 	else
 	{
@@ -48,7 +71,7 @@ void Neuron::Step( )
 
 mV Neuron::GetNextOutput( ) const
 {
-	return ( m_timeSinceLastPulse <= MicroSecs( m_pNNetModel->GetParameterValue( tParameter::pulseWidth ) ) )
+	return ( m_timeSinceLastPulse <= PulseWidth() )
 		   ? waveFunction( m_timeSinceLastPulse )
 		   : BASE_POTENTIAL;
 }
@@ -56,7 +79,7 @@ mV Neuron::GetNextOutput( ) const
 MicroMeterPoint Neuron::getAxonHillockPos( PixelCoordsFp & coord ) const
 {
 	MicroMeterPoint axonHillockPos { NP_NULL };
-	if ( m_outgoing.size() > 0 )
+	if ( HasAxon() )
 	{
 		Pipeline const * const pAxon        { m_outgoing[0] };
 		MicroMeterPoint  const vectorScaled { pAxon->GetVector( ) * ( GetExtension() / pAxon->GetLength( ) ) };

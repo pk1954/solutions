@@ -8,8 +8,10 @@
 #include "Windows.h"
 #include "Resource.h"
 #include "BoolOp.h"
+#include "Preferences.h"
 #include "SlowMotionRatio.h"
 #include "NNetModelStorage.h"
+#include "AutoOpen.h"
 #include "win32_util.h"
 #include "win32_sound.h"
 #include "win32_script.h"
@@ -101,6 +103,14 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		Sound::Off();
 		break;
 
+	case IDD_AUTO_OPEN_ON:
+		AutoOpen::On();
+		break;
+
+	case IDD_AUTO_OPEN_OFF:
+		AutoOpen::Off();
+		break;
+
 	case IDM_REFRESH:
 		m_pNNetWindow->Notify( lParam != 0 );
 		break;
@@ -137,6 +147,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	case IDM_READ_MODEL:
 		{
 			m_pStorage->Read( );
+			Preferences::WritePreferences( m_pStorage->GetModelPath()  );
 			NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
 			m_pNNetWorkThreadInterface->PostResetTimer( );
 			m_pNNetWorkThreadInterface->PostRunGenerations( true );
@@ -154,6 +165,11 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDD_PULSE_RATE:
 		if ( m_pNNetWindow->PulseRateDlg( m_pNNetWindow->GetHighlightedShapeId( ) ) )
+			m_bUnsavedChanges = true;
+		break;
+
+	case IDD_TRIGGER_SOUND_DLG:
+		if ( m_pNNetWindow->TriggerSoundDlg( m_pNNetWindow->GetHighlightedShapeId( ) ) )
 			m_bUnsavedChanges = true;
 		break;
 

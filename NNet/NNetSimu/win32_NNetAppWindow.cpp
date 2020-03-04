@@ -34,6 +34,7 @@
 
 #include "trace.h"
 #include "script.h"
+#include "Preferences.h"
 #include "NNetWrappers.h"
 #include "UtilityWrappers.h"
 #include "win32_stopwatch.h"
@@ -64,10 +65,10 @@ NNetAppWindow::NNetAppWindow( ) :
 {
 	Stopwatch stopwatch;
 
+	Preferences::Initialize();
 	DefineNNetWrappers( & m_NNetWorkThreadInterface );
-
 	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface );
-	
+
 	NNetWorkThread::InitClass
 	( 
 		(tAppCallBack)
@@ -110,10 +111,10 @@ NNetAppWindow::~NNetAppWindow( )
 
 void NNetAppWindow::Start( )
 {
-	BaseAppWindow::Start( m_pMainNNetWindow );
 	m_pModelDataWork    = new NNetModel( );
 	m_pNNetModelStorage = new NNetModelStorage( m_pModelDataWork );
 
+	BaseAppWindow::Start( m_pMainNNetWindow );
 	m_pAppMenu->Initialize
 	( 
 		m_hwndApp, 
@@ -178,6 +179,8 @@ void NNetAppWindow::Start( )
 
 	PostCommand2Application( IDM_RUN, true );
 
+	if ( ! Preferences::ReadPreferences( m_pNNetModelStorage ) )
+		m_pModelDataWork->CreateInitialShapes();
 	m_pNNetModelStorage->Write( std::wcout );
 }
 

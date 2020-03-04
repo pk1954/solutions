@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 
-#include <sstream> 
+#include <sstream>
 #include "Resource.h"
 #include "NNetModel.h"
 #include "win32_stdDialogBox.h"
@@ -18,8 +18,8 @@ ParameterDialog::ParameterDialog( NNetWorkThreadInterface * const pNNetWorkThrea
 	m_pNNetModel( nullptr ),
 	m_pNNetWorkThreadInterface( pNNetWorkThreadInterface ),
 	m_hwndPeakVoltage     ( 0 ),
-    m_hwndThreshold       ( 0 ),      
-    m_hwndPulseWidth      ( 0 ),      
+    m_hwndThreshold       ( 0 ),
+    m_hwndPulseWidth      ( 0 ),
 	m_hwndRefractoryPeriod( 0 ),
 	m_hwndTimeResolution  ( 0 ),
 	m_hwndPulseSpeed      ( 0 )

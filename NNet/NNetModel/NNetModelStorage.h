@@ -22,7 +22,7 @@ public:
 	NNetModelStorage( NNetModel * const );
 
 	void Write( wostream & );
-	bool Read( );
+	bool Read( wstring const = L"" );
 
 	NNetModel * GetModel( ) { return m_pModel; }
 

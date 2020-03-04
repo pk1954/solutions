@@ -31,11 +31,19 @@ public:
 	:	m_pStatusBar      (pStatusBar),
 		m_pModel          (pModel),
 		m_iPartInStatusBar(iPartInStatusBar)
-	{}
+	{ 
+		(void)InitializeCriticalSectionAndSpinCount( & m_criticalSection, 0x00000400 );
+	}
+
+	~RefreshRate() 
+	{
+		DeleteCriticalSection( & m_criticalSection );
+	}
 
 	virtual void Trigger( )
 	{
-		MicroSecs const time = m_pModel->GetSimulationTime( );
+		EnterCriticalSection( & m_criticalSection );
+		fMicroSecs const time = m_pModel->GetSimulationTime( );
 		m_wstrBuffer.str( wstring() );
 		m_wstrBuffer.clear();
 		m_wstrBuffer << std::fixed << std::setprecision(2);
@@ -51,9 +59,11 @@ public:
 		}
 		m_wstring = m_wstrBuffer.str();
 		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstring );
+		LeaveCriticalSection( & m_criticalSection );
 	}
 
 private:
+	CRITICAL_SECTION  m_criticalSection; 
 	wstring           m_wstring;
 	wostringstream    m_wstrBuffer;
 	StatusBar       * m_pStatusBar;

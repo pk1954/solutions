@@ -18,11 +18,11 @@ public:
     HiResTimer( );
     ~HiResTimer( ) {};
 
-	void      Start( );
-	Ticks     GetTicksTilStart( )     const;
-	MicroSecs GetMicroSecsTilStart( ) const;
-	void      Stop( );
-	void      Restart( )
+	void       Start( );
+	Ticks      GetTicksTilStart( )     const;
+	fMicroSecs GetMicroSecsTilStart( ) const;
+	void       Stop( );
+	void       Restart( )
 	{
 		Stop();
 		Start();
@@ -32,15 +32,15 @@ public:
 	Ticks ReadHiResTimer( ) const;
 
 	microseconds TicksToMicroseconds( Ticks        const ) const;
-	MicroSecs    TicksToMicroSecs   ( Ticks        const ) const;
+	fMicroSecs   TicksToMicroSecs   ( Ticks        const ) const;
 	Ticks        MicroSecondsToTicks( microseconds const ) const;
-	Ticks        MicroSecsToTicks   ( MicroSecs    const ) const;
+	Ticks        MicroSecsToTicks   ( fMicroSecs    const ) const;
 
 	void BusyWait( microseconds const, Ticks & );
 
 private:
 	long long const MICROSECONDS_TO_SECONDS { microseconds::period::den };
-	float     const fMICROSECONDS_TO_SECONDS{ static_cast<float>(MICROSECONDS_TO_SECONDS) };
+	float     const fMICROSECS_TO_SECONDS{ static_cast<float>(MICROSECONDS_TO_SECONDS) };
 
     static Hertz  m_frequency;
 	static fHertz m_fFrequency;

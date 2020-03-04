@@ -73,7 +73,6 @@ void InputNeuron::DrawInterior( PixelCoordsFp & coord )
 
 void InputNeuron::DrawNeuronText( PixelCoordsFp & coord ) const
 { 
-
 	PixelRect const pixRect { GetPixRect4Text( coord ) };
 
 	wostringstream m_wBuffer;

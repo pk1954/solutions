@@ -44,7 +44,7 @@ Ticks HiResTimer::GetTicksTilStart( ) const
 	return ReadHiResTimer( ) - m_ticksOnStart;
 }
 
-MicroSecs HiResTimer::GetMicroSecsTilStart( ) const
+fMicroSecs HiResTimer::GetMicroSecsTilStart( ) const
 {
 	return TicksToMicroSecs( GetTicksTilStart() );
 }
@@ -76,14 +76,14 @@ microseconds HiResTimer::TicksToMicroseconds( Ticks const ticks ) const
 	return result;
 }
 
-Ticks HiResTimer::MicroSecsToTicks( MicroSecs const us ) const
+Ticks HiResTimer::MicroSecsToTicks( fMicroSecs const us ) const
 {
-	return Ticks( static_cast<long long>( (us.GetValue() * m_fFrequency.GetValue()) / fMICROSECONDS_TO_SECONDS ) );
+	return Ticks( static_cast<long long>( (us.GetValue() * m_fFrequency.GetValue()) / fMICROSECS_TO_SECONDS ) );
 }
 
-MicroSecs HiResTimer::TicksToMicroSecs( Ticks const ticks ) const
+fMicroSecs HiResTimer::TicksToMicroSecs( Ticks const ticks ) const
 {
-	return MicroSecs( ticks.GetValue() * fMICROSECONDS_TO_SECONDS / m_fFrequency.GetValue() );
+	return fMicroSecs( ticks.GetValue() * fMICROSECS_TO_SECONDS / m_fFrequency.GetValue() );
 }
 
 microseconds HiResTimer::GetDuration( )

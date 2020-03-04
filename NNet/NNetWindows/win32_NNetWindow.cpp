@@ -18,8 +18,9 @@
 #include "win32_fatalError.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
-#include "win32_stdDialogBox.h"
 #include "win32_scale.h"
+#include "win32_triggerSoundDlg.h"
+#include "win32_stdDialogBox.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWindow.h"
 
@@ -155,6 +156,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE,            L"Pulse rate" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,          L"Remove" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT,            L"Disconnect" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
 		break;
 
 	case ShapeType::Value::neuron:
@@ -163,6 +165,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING2KNOT,     L"Add incoming dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,          L"Remove" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT,            L"Disconnect" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
 		break;
 
 	case ShapeType::Value::knot:  
@@ -208,7 +211,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 bool NNetWindow::PulseRateDlg( ShapeId const id )
 {
-    InputNeuron const * pInputNeuron { m_pModel->GetConstTypedShape<InputNeuron>(id) };
+	InputNeuron const * pInputNeuron { m_pModel->GetConstTypedShape<InputNeuron>(id) };
 	if ( pInputNeuron == nullptr )
 		return false;
 	float   const fOldValue { m_pModel->GetPulseRate( pInputNeuron ) };
@@ -219,6 +222,23 @@ bool NNetWindow::PulseRateDlg( ShapeId const id )
 	if ( bRes )
 		m_pNNetWorkThreadInterface->PostSetPulseRate( id, fNewValue );
 	return bRes;
+}
+
+bool NNetWindow::TriggerSoundDlg( ShapeId const id )
+{
+	Neuron * pNeuron { m_pModel->GetTypedShape<Neuron>(id) };
+	if ( pNeuron == nullptr )
+		return false;
+
+	TriggerSoundDialog dialog( pNeuron->TriggerSoundOn(), pNeuron->TriggerSoundFrequency(), pNeuron->TriggerSoundDuration() );
+
+	dialog.Show( GetWindowHandle() );
+
+	pNeuron->TriggerSoundOn()        = dialog.IsTriggerSoundActive();
+	pNeuron->TriggerSoundFrequency() = dialog.GetFrequency();
+	pNeuron->TriggerSoundDuration()  = dialog.GetDuration ();
+
+	return true;
 }
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
@@ -311,8 +331,6 @@ void NNetWindow::EmphasizeAnalyzeResult( )
 	emphasizeSelection( m_pModel->GetEnclosingRect( ), 1.2f );
 }
 
-static int iStep = 0;
-
 void NNetWindow::emphasizeSelection( MicroMeterRect const rect, float const fRatioFactor )
 {
 	float           const fHorizontalRatio  { rect.GetHeight() / m_coord.convert2MicroMeter( GetClientWindowHeight() ) };
@@ -337,7 +355,7 @@ bool NNetWindow::smoothStep( )  // returns true, if all targets reached
 	m_coord.Zoom  ( m_umPixelSizeStart + m_umPixelSizeDelta * fPos );
 	m_coord.Center( m_umPntCenterStart + m_umPntCenterDelta * fPos, fpCenter );
 
-	Invalidate( FALSE );
+	Notify( TRUE );     // cause immediate repaint
 
 	return fPos >= 1.0f;
 }

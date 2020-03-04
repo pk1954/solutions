@@ -85,12 +85,6 @@ public:
 	bool IsPrecursorOf( ShapeId const );
 	bool IsSuccessorOf( ShapeId const );
 
-	Pipeline * const GetAxon( ) const
-	{
-		assert( m_outgoing.size() == 1 );
-		return m_outgoing.front();
-	}
-
 	bool Apply2AllIncomingPipelines( function<bool(Pipeline * const)> const & func )
 	{
 		return apply2All( m_incoming, func );

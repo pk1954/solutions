@@ -58,6 +58,7 @@ public:
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
 
 	bool PulseRateDlg( ShapeId const );
+	bool TriggerSoundDlg( ShapeId const );
 	void ShowDirectionArrows( bool const );
 
 private:

@@ -47,7 +47,7 @@ static INT_PTR CALLBACK BaseDialogProc
 		break;
 	}
 	{
-		BaseDialog * pBaseDialog = (BaseDialog *)GetWindowLongPtr( hwnd, GWLP_USERDATA );
+		BaseDialog * pBaseDialog = reinterpret_cast<BaseDialog *>(GetUserDataPtr( hwnd ));
 
 		if ( ! RootWinIsReady( pBaseDialog ) )
 			return FALSE;

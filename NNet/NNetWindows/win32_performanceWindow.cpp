@@ -54,7 +54,7 @@ void PerformanceWindow::printMicroSecLine
 (
 	TextBuffer          & textBuf,
 	wchar_t const * const pwch1, 
-	MicroSecs       const usDuration
+	fMicroSecs       const usDuration
 )
 {
 	wostringstream wBuffer;
@@ -95,10 +95,10 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 
 	if ( m_pNNetWorkThreadInterface )
 	{
-		MicroSecs simuTime { m_pNNetWorkThreadInterface->GetSimulationTime( ) };
-		MicroSecs realTime { m_pNNetWorkThreadInterface->GetRealTimeTilStart( ) };
-		MicroSecs avail    { m_pNNetWorkThreadInterface->GetTimeAvailPerCycle( ) };
-		MicroSecs spent    { m_pNNetWorkThreadInterface->GetTimeSpentPerCycle( ) };
+		fMicroSecs simuTime { m_pNNetWorkThreadInterface->GetSimulationTime( ) };
+		fMicroSecs realTime { m_pNNetWorkThreadInterface->GetRealTimeTilStart( ) };
+		fMicroSecs avail    { m_pNNetWorkThreadInterface->GetTimeAvailPerCycle( ) };
+		fMicroSecs spent    { m_pNNetWorkThreadInterface->GetTimeSpentPerCycle( ) };
 		printMicroSecLine( textBuf, L"simu time res:", m_pNNetWorkThreadInterface->GetSimuTimeResolution( ) );
 		printFloatLine   ( textBuf, L"targ slowmo:", m_pNNetWorkThreadInterface->GetSlowMotionRatio( ), L"" );
 		printMicroSecLine( textBuf, L"avail time:", avail );

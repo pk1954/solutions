@@ -21,6 +21,31 @@ public:
 		return type.IsNeuronType( );
 	}
 
+	bool const HasAxon( ) const
+	{
+		return m_outgoing.size() > 1;
+	}
+
+	bool& TriggerSoundOn( )
+	{
+		return m_bTriggerSoundOn;
+	}
+
+	Hertz& TriggerSoundFrequency( )
+	{
+		return m_triggerSoundFrequency;
+	}
+
+	MilliSecs& TriggerSoundDuration( )
+	{
+		return m_triggerSoundDuration;
+	}
+
+	fMicroSecs PulseWidth   ( ) const;
+	fMicroSecs RefractPeriod( ) const;
+	mV         Threshold    ( ) const;
+	mV         PeakVoltage  ( ) const;
+
 	virtual void Step( );
 	virtual mV   GetNextOutput( ) const;
 
@@ -29,16 +54,20 @@ public:
 	virtual void Recalc( );
 
 protected:
-	MicroSecs m_timeSinceLastPulse;
+	fMicroSecs m_timeSinceLastPulse;
 
-	mV waveFunction( MicroSecs const ) const;
+	mV waveFunction( fMicroSecs const ) const;
 
 	void drawExterior( PixelCoordsFp &, tHighlightType const ) const;
 	void drawInterior( PixelCoordsFp & ) const;
 
 private:
-	float m_factorW;
-	float m_factorU;
+	float m_factorW; // Parameter of wave function
+	float m_factorU; // Parameter of wave function
+
+	bool      m_bTriggerSoundOn;
+	Hertz     m_triggerSoundFrequency;   
+	MilliSecs m_triggerSoundDuration;
 
 	MicroMeterPoint getAxonHillockPos( PixelCoordsFp & ) const;
 };

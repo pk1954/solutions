@@ -70,11 +70,11 @@ public:
 	bool            const HasIncoming   ( ShapeId const id  ) const;
 	bool            const IsValidShapeId( ShapeId const id  ) const { return id.GetValue() < m_Shapes.size(); }
 	ShapeId         const GetId         ( Shape   const * p ) const { return p ? p->GetId( ) : NO_SHAPE; }
-	MicroSecs       const GetSimulationTime( )                const { return m_timeStamp; }
+	fMicroSecs      const GetSimulationTime( )                const { return m_timeStamp; }
 	long            const GetSizeOfShapeList( )               const { return CastToLong( m_Shapes.size() ); }
 	bool            const HasModelChanged( )                  const { return m_bUnsavedChanges; }
 	bool            const IsEmphasizeMode( )                  const { return m_bEmphasizeMode; }
-	MicroSecs       const GetTimeResolution( )                const { return m_usResolution; }
+	fMicroSecs      const GetTimeResolution( )                const { return m_usResolution; }
 	float           const GetOpacity( )                       const { return IsEmphasizeMode() ? 0.5f : 1.0f; }
 	long            const GetNrOfShapes( )                    const;
 
@@ -171,17 +171,17 @@ public:
 
 private:
 	vector<Shape *> m_Shapes;
-	MicroSecs       m_timeStamp;
+	fMicroSecs       m_timeStamp;
 	bool            m_bUnsavedChanges;
 	bool            m_bEmphasizeMode;
 
 	// parameters
     mV          m_threshold;
     mV          m_peakVoltage;   
-	MicroSecs   m_pulseWidth;   
-	MicroSecs   m_refractPeriod;
+	fMicroSecs   m_pulseWidth;   
+	fMicroSecs   m_refractPeriod;
 	meterPerSec m_pulseSpeed;
-	MicroSecs   m_usResolution;
+	fMicroSecs   m_usResolution;
 
 	Observable  m_parameterObservable;
 

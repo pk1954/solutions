@@ -173,16 +173,18 @@ private:
 	NNetModel * m_pModel;
 };
 
-bool NNetModelStorage::Read( )
+bool NNetModelStorage::Read( wstring const wstrPath )
 {
 	Script scriptModel;
+	wstring const wstrModelFilePath { ( wstrPath == L"" ) ? m_wstrPathOfOpenModel : wstrPath };
 	m_pModel->ResetModel();
-	wcout << L"NNet model file " << m_wstrPathOfOpenModel;
-	bool bResult = scriptModel.ScrProcess( m_wstrPathOfOpenModel ); 
+	wcout << L"** NNet model file " << wstrModelFilePath;
+	bool bResult = scriptModel.ScrProcess( wstrModelFilePath ); 
 	if ( bResult )
 	{
-		wcout << L" sucessfully processed" << endl;
+		wcout << L" successfully processed" << endl;
 		m_pModel->ModelSaved( );
+		m_wstrPathOfOpenModel = wstrModelFilePath;
 		return true;
 	}
 	return false;

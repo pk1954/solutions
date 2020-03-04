@@ -44,12 +44,12 @@ public:
 			return false;
 	}
 
-	MicroSecs const RealTime2SimuTime( MicroSecs const realTime ) const
+	fMicroSecs const RealTime2SimuTime( fMicroSecs const realTime ) const
 	{
 		return realTime / GetRatio();
 	}
 
-	MicroSecs const SimuTime2RealTime( MicroSecs const simuTime ) const
+	fMicroSecs const SimuTime2RealTime( fMicroSecs const simuTime ) const
 	{
 		return simuTime * GetRatio();
 	}

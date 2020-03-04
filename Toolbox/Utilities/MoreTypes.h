@@ -13,13 +13,22 @@
 
 using std::chrono::microseconds;
 
-////////////// MicroSecs /////////////////////////////////////
+////////////// fMicroSecs /////////////////////////////////////
 
-using MicroSecs = NamedType< float, struct MicroSecs_Parameter >;
+using fMicroSecs = NamedType< float, struct MicroSecs_Parameter >;
 
-constexpr const MicroSecs operator"" _MicroSecs( const long double d )
+constexpr const fMicroSecs operator"" _MicroSecs( const long double d )
 {
-	return MicroSecs( CastToFloat( d ) );
+	return fMicroSecs( CastToFloat( d ) );
+}
+
+////////////// MilliSecs /////////////////////////////////////
+
+using MilliSecs = NamedType< unsigned long, struct MilliSecs_Parameter >;
+
+constexpr const MilliSecs operator"" _MilliSecs( const unsigned long long d )
+{
+	return MilliSecs( CastToUnsignedLong( d ) );
 }
 
 ////////////// MicroMeter /////////////////////////////////////
@@ -83,11 +92,11 @@ fHertz constexpr operator"" _fHertz( long double dl )
 	return fHertz( CastToFloat( dl ) );
 }
 
-static MicroSecs const PulseDuration( fHertz const freq )
+static fMicroSecs const PulseDuration( fHertz const freq )
 {
 	return (freq.GetValue() == 0) 
-		? MicroSecs( (std::numeric_limits<float>::max)() )
-		: MicroSecs( 1e6f / freq.GetValue() );
+		? fMicroSecs( (std::numeric_limits<float>::max)() )
+		: fMicroSecs( 1e6f / freq.GetValue() );
 }
 
 ////////////// MicroMeterPoint /////////////////////////////////////
@@ -137,7 +146,7 @@ constexpr const meterPerSec operator"" _meterPerSec( const long double d )
 	return meterPerSec( CastToFloat( d ) );
 }
 
-static MicroMeter CoveredDistance( meterPerSec const speed, MicroSecs const time )
+static MicroMeter CoveredDistance( meterPerSec const speed, fMicroSecs const time )
 {
 	return MicroMeter( speed.GetValue() * time.GetValue() );
 }

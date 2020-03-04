@@ -92,11 +92,11 @@ public:
 	virtual void ThreadMsgDispatcher( MSG const );
 
 	BOOL      IsRunning()              const { return m_bContinue; }
-	MicroSecs GetTimeSpentPerCycle ( ) const { return m_usRealTimeSpentPerCycle; }
-	MicroSecs GetTimeAvailPerCycle ( ) const { return m_usRealTimeAvailPerCycle; }
-	MicroSecs GetRealTimeTilStart  ( ) const { return m_hrTimer.GetMicroSecsTilStart( ); }
-	MicroSecs GetSimuTimeResolution( ) const;
-	MicroSecs GetSimulationTime    ( ) const;
+	fMicroSecs GetTimeSpentPerCycle ( ) const { return m_usRealTimeSpentPerCycle; }
+	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_usRealTimeAvailPerCycle; }
+	fMicroSecs GetRealTimeTilStart  ( ) const { return m_hrTimer.GetMicroSecsTilStart( ); }
+	fMicroSecs GetSimuTimeResolution( ) const;
+	fMicroSecs GetSimulationTime    ( ) const;
 	float     GetSlowMotionRatio   ( ) const;
 
 	void Continue( )
@@ -150,6 +150,6 @@ private:
 	Observable                m_performanceObservable;
 	TimeResObserver         * m_pTimeResObserver;
 	ObserverInterface       * m_pModelObserver;
-	MicroSecs                 m_usRealTimeAvailPerCycle;
-	MicroSecs                 m_usRealTimeSpentPerCycle;
+	fMicroSecs                 m_usRealTimeAvailPerCycle;
+	fMicroSecs                 m_usRealTimeSpentPerCycle;
 };

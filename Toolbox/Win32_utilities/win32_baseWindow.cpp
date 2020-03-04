@@ -85,7 +85,7 @@ static LRESULT CALLBACK BaseWndProc
  			break;
 	}
 	{
-		BaseWindow * pBaseWin = reinterpret_cast<BaseWindow *>(GetWindowLongPtr( hwnd, GWLP_USERDATA ));
+		BaseWindow * pBaseWin = reinterpret_cast<BaseWindow *>(GetUserDataPtr( hwnd ));
 
 		if ( ! RootWinIsReady( pBaseWin ) )
 			return DefWindowProc( hwnd, message, wParam, lParam );

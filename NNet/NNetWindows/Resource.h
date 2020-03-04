@@ -74,6 +74,9 @@
 #define IDD_SOUND_ON            171
 #define IDD_SOUND_OFF           172
 
+#define IDD_AUTO_OPEN_ON        181
+#define IDD_AUTO_OPEN_OFF       182
+
 #define IDD_CONNECT             560
 #define IDD_INSERT_NEURON       561
 #define IDD_NEW_NEURON          562
@@ -86,6 +89,11 @@
 #define IDD_ADD_INCOMING2PIPE   569
 #define IDD_ADD_OUTGOING2KNOT   570
 #define IDD_ADD_OUTGOING2PIPE   571
+#define IDD_TRIGGER_SOUND_DLG   572
+#define IDC_TRIGGER_SOUND_ON    573
+#define IDC_TRIGGER_SOUND_FREQ  574
+#define IDC_TRIGGER_SOUND_MSEC  575
+#define IDC_TRIGGER_SOUND_TEST  576
 
 #define IDM_CRSR_WINDOW         580
 #define IDM_PARAM_WINDOW  	    581

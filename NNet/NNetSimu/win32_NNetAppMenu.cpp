@@ -7,6 +7,7 @@
 #include "Pipeline.h"
 #include "win32_util.h"
 #include "NNetModelStorage.h"
+#include "AutoOpen.h"
 #include "win32_sound.h"
 #include "win32_winManager.h"
 #include "win32_NNetWorkThreadInterface.h"
@@ -77,4 +78,7 @@ void NNetAppMenu::AdjustVisibility( )
 
 	EnableMenuItem( m_hMenu, IDD_SOUND_ON,    Sound::IsOn() ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDD_SOUND_OFF, ! Sound::IsOn() ? MF_GRAYED : MF_ENABLED );
+
+	EnableMenuItem( m_hMenu, IDD_AUTO_OPEN_ON,    AutoOpen::IsOn() ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDD_AUTO_OPEN_OFF, ! AutoOpen::IsOn() ? MF_GRAYED : MF_ENABLED );
 }

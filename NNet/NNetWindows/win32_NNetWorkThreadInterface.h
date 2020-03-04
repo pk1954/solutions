@@ -57,11 +57,11 @@ public:
 
 	BOOL      IsRunning            ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }
 	BOOL      IsAsyncThread        ( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }
-	MicroSecs GetTimeSpentPerCycle ( ) const { return m_pNNetWorkThread->GetTimeSpentPerCycle( ); }
-	MicroSecs GetTimeAvailPerCycle ( ) const { return m_pNNetWorkThread->GetTimeAvailPerCycle( ); }
-	MicroSecs GetSimuTimeResolution( ) const { return m_pNNetWorkThread->GetSimuTimeResolution( ); }
-	MicroSecs GetSimulationTime    ( ) const { return m_pNNetWorkThread->GetSimulationTime( ); }
-	MicroSecs GetRealTimeTilStart  ( ) const { return m_pNNetWorkThread->GetRealTimeTilStart( ); }
+	fMicroSecs GetTimeSpentPerCycle ( ) const { return m_pNNetWorkThread->GetTimeSpentPerCycle( ); }
+	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_pNNetWorkThread->GetTimeAvailPerCycle( ); }
+	fMicroSecs GetSimuTimeResolution( ) const { return m_pNNetWorkThread->GetSimuTimeResolution( ); }
+	fMicroSecs GetSimulationTime    ( ) const { return m_pNNetWorkThread->GetSimulationTime( ); }
+	fMicroSecs GetRealTimeTilStart  ( ) const { return m_pNNetWorkThread->GetRealTimeTilStart( ); }
 	float     GetSlowMotionRatio   ( ) const { return m_pNNetWorkThread->GetSlowMotionRatio( ); }
 
 	wchar_t const * GetActionCommandName    ( int const ) const;

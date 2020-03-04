@@ -96,7 +96,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
@@ -152,7 +152,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
@@ -164,7 +164,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AutoOpen.h" />
+    <ClInclude Include="NNetWrappers.h" />
+    <ClInclude Include="Preferences.h" />
     <ClInclude Include="SlowMotionDisplay.h" />
+    <ClInclude Include="win32_baseAppWindow.h" />
     <ClInclude Include="win32_slowMotionControl.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -176,10 +180,14 @@
     <ClInclude Include="win32_simulationControl.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AutoOpen.cpp" />
     <ClCompile Include="NNetSimu.cpp" />
+    <ClCompile Include="NNetWrappers.cpp" />
+    <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TimeDisplay.cpp" />
+    <ClCompile Include="win32_baseAppWindow.cpp" />
     <ClCompile Include="win32_NNetAppMenu.cpp" />
     <ClCompile Include="win32_NNetAppWindow.cpp" />
     <ClCompile Include="win32_NNetController.cpp" />

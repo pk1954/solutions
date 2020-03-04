@@ -53,7 +53,7 @@ private:
 
 	mV        m_mvFactor;       // precomputed value for optimization
 	fHertz    m_pulseFrequency; // pulse frequency and pulse duration depend on each other
-	MicroSecs m_pulseDuration;  // in principle one variable would be enough, but to avoid 
+	fMicroSecs m_pulseDuration;  // in principle one variable would be enough, but to avoid 
 	                            // floating point rounding effects, both are stored
 };	
 

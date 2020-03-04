@@ -306,19 +306,19 @@ void NNetWorkThread::TimeResObserver::Notify( bool const bImmediate )
 
 void NNetWorkThread::compute() 
 {
-	MicroSecs const usTilStartRealTime { m_hrTimer.GetMicroSecsTilStart( ) };
-	MicroSecs const usTilStartSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( usTilStartRealTime ) };
-	MicroSecs const usActualSimuTime   { m_pNNetModel->GetSimulationTime( ) };                                 // get actual time stamp
-	MicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };                              // compute missing simulation time
-	MicroSecs const usSimuTimeTodo     { min( usMissingSimuTime, m_pNNetModel->GetTimeResolution() ) };        // respect time slot (resolution)
+	fMicroSecs const usTilStartRealTime { m_hrTimer.GetMicroSecsTilStart( ) };
+	fMicroSecs const usTilStartSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( usTilStartRealTime ) };
+	fMicroSecs const usActualSimuTime   { m_pNNetModel->GetSimulationTime( ) };                                 // get actual time stamp
+	fMicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };                              // compute missing simulation time
+	fMicroSecs const usSimuTimeTodo     { min( usMissingSimuTime, m_pNNetModel->GetTimeResolution() ) };        // respect time slot (resolution)
 	long      const lCyclesTodo        { CastToLong( usSimuTimeTodo / m_pNNetModel->GetTimeResolution( ) ) };  // compute # cycles to be computed
 	for ( long lRun = 0; lRun < lCyclesTodo; ++lRun )
 	{
 		m_pNNetModel->Compute();
 	}
 
-	MicroSecs const usSpentInCompute { m_hrTimer.GetMicroSecsTilStart( ) - usTilStartRealTime };
-	MicroSecs const usSleepTime      { m_usRealTimeAvailPerCycle - usSpentInCompute };
+	fMicroSecs const usSpentInCompute { m_hrTimer.GetMicroSecsTilStart( ) - usTilStartRealTime };
+	fMicroSecs const usSleepTime      { m_usRealTimeAvailPerCycle - usSpentInCompute };
 	if ( usSleepTime > 10000.0_MicroSecs )
 		Sleep( 10 );
 	if ( lCyclesTodo > 0 )
@@ -328,12 +328,12 @@ void NNetWorkThread::compute()
 	}
 }
 
-MicroSecs NNetWorkThread::GetSimuTimeResolution( ) const 
+fMicroSecs NNetWorkThread::GetSimuTimeResolution( ) const 
 { 
 	return m_pNNetModel->GetTimeResolution( ); 
 }
 
-MicroSecs NNetWorkThread::GetSimulationTime( ) const 
+fMicroSecs NNetWorkThread::GetSimulationTime( ) const 
 { 
 	return m_pNNetModel->GetSimulationTime( ); 
 }

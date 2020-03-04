@@ -103,6 +103,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -163,10 +164,7 @@
   <ItemGroup>
     <ClInclude Include="AnimationThread.h" />
     <ClInclude Include="NNetReadBuffer.h" />
-    <ClInclude Include="NNetWrapperHelpers.h" />
-    <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="win32_appMenu.h" />
-    <ClInclude Include="win32_baseAppWindow.h" />
     <ClInclude Include="win32_crsrWindow.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -179,11 +177,9 @@
     <ClInclude Include="win32_scale.h" />
     <ClInclude Include="win32_scriptHook.h" />
     <ClInclude Include="win32_status.h" />
+    <ClInclude Include="win32_triggerSoundDlg.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NNetWrapperHelpers.cpp" />
-    <ClCompile Include="NNetWrappers.cpp" />
-    <ClCompile Include="win32_baseAppWindow.cpp" />
     <ClCompile Include="win32_crsrWindow.cpp" />
     <ClCompile Include="win32_NNetWindow.cpp" />
     <ClCompile Include="win32_NNetWorkThread.cpp" />
@@ -192,6 +188,7 @@
     <ClCompile Include="win32_performanceWindow.cpp" />
     <ClCompile Include="win32_scale.cpp" />
     <ClCompile Include="win32_status.cpp" />
+    <ClCompile Include="win32_triggerSoundDlg.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

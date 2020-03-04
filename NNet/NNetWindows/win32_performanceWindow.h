@@ -25,6 +25,6 @@ private:
     NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
     ActionTimer             * m_pAtDisplay;
 
-    void printMicroSecLine( TextBuffer &, wchar_t const * const, MicroSecs const );
+    void printMicroSecLine( TextBuffer &, wchar_t const * const, fMicroSecs const );
     void printFloatLine ( TextBuffer &, wchar_t const * const, float const, wchar_t const * const );
 };
