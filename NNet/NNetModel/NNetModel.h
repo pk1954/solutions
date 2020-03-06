@@ -156,7 +156,7 @@ public:
 	void SetEmphasizeMode( bool const );
 	void ResetModel( );
 	void ClearModel( );
-	void ModelSaved( ) { m_bUnsavedChanges = false; }
+	void ModelSaved( ) const { m_bUnsavedChanges = false; }
 	void SetPulseRate( ShapeId    const, float const );
 	void SetParameter( tParameter const, float const );
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
@@ -171,9 +171,10 @@ public:
 
 private:
 	vector<Shape *> m_Shapes;
-	fMicroSecs       m_timeStamp;
-	bool            m_bUnsavedChanges;
+	fMicroSecs      m_timeStamp;
 	bool            m_bEmphasizeMode;
+
+	mutable bool    m_bUnsavedChanges;
 
 	// parameters
     mV          m_threshold;

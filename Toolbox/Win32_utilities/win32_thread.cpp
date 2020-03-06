@@ -5,6 +5,20 @@
 #include <process.h>
 #include "win32_thread.h"
 
+HANDLE Util::RunAsAsyncThread
+(
+	unsigned int __stdcall func( void * ),
+	void * arg,
+	UINT * pThreadId
+)
+{
+	UINT threadId;
+	HANDLE res = (HANDLE)_beginthreadex( 0, 0, func, arg, 0, & threadId );
+	if ( pThreadId )
+		* pThreadId = threadId;
+	return res;
+}
+
 void Util::Thread::StartThread
 (  
 	wstring const & strName, // for debugging only
@@ -15,7 +29,7 @@ void Util::Thread::StartThread
 	m_bAsync        = bAsync;
 	if ( m_bAsync )
 	{
-		m_handle = (HANDLE)_beginthreadex( 0, 0, Util::ThreadProc, this, 0, & m_threadId );
+		m_handle = RunAsAsyncThread( Util::ThreadProc, static_cast<void *>(this), & m_threadId );
 		assert( m_handle != nullptr );
 		m_eventThreadStarter.Wait();
 	}

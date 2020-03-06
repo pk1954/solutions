@@ -6,10 +6,13 @@
 #include "symtab.h"
 #include "Resource.h"
 #include "win32_util.h"
+#include "UtilityWrappers.h"
 #include "NNetWrapperHelpers.h"
+#include "win32_NNetWindow.h"
 #include "win32_NNetWorkThreadInterface.h"
 
 static NNetWorkThreadInterface * m_pWorkThreadInterface;
+static NNetWindow              * m_pNNetWindow;
 
 class WrapPostResetTimer: public Script_Functor
 {
@@ -105,6 +108,26 @@ public:
     }
 };
 
+class WrapSetPixelOffset: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        fPixelPoint const fPixelOffset { ScrReadfPixelPoint( script ) };
+        m_pNNetWindow->SetPixelOffset( fPixelOffset );
+    }
+};
+
+class WrapSetPixelSize: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        MicroMeter const umPixelSize { ScrReadMicroMeter( script ) };
+        m_pNNetWindow->SetPixelSize( umPixelSize );
+    }
+};
+
 class WrapBreak : public Script_Functor
 {
 public:
@@ -114,9 +137,14 @@ public:
     }
 };
 
-void DefineNNetWrappers( NNetWorkThreadInterface * const pWorkThreadInterface )
+void DefineNNetWrappers
+( 
+    NNetWorkThreadInterface * const pWorkThreadInterface,
+    NNetWindow              * const pNNetWindow
+)
 {
     m_pWorkThreadInterface = pWorkThreadInterface;
+    m_pNNetWindow = pNNetWindow;
 
     DEF_FUNC( PostResetTimer );
     DEF_FUNC( PostResetModel );
@@ -127,6 +155,8 @@ void DefineNNetWrappers( NNetWorkThreadInterface * const pWorkThreadInterface )
     DEF_FUNC( PostSetParameter );
     DEF_FUNC( PostMoveShape );
     DEF_FUNC( PostActionCommand );
+    DEF_FUNC( SetPixelOffset );
+    DEF_FUNC( SetPixelSize );
     DEF_FUNC( Break );
 
     Apply2GlobalParameters

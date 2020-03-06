@@ -1,6 +1,6 @@
 // NNetModelStorage.cpp
 //
-// NNetModel
+// NNetSimu
 
 #include "stdafx.h"
 #include <iostream>
@@ -13,8 +13,10 @@
 #include "errhndl.h"
 #include "MoreTypes.h"
 #include "NNetModel.h"
+#include "Preferences.h"
 #include "InputNeuron.h"
 #include "win32_script.h"
+#include "win32_NNetAppMenu.h"
 #include "NNetModelStorage.h"
 
 using std::wcout;
@@ -173,30 +175,9 @@ private:
 	NNetModel * m_pModel;
 };
 
-bool NNetModelStorage::Read( wstring const wstrPath )
+void NNetModelStorage::prepareForReading( NNetModel * const pModel )
 {
-	Script scriptModel;
-	wstring const wstrModelFilePath { ( wstrPath == L"" ) ? m_wstrPathOfOpenModel : wstrPath };
-	m_pModel->ResetModel();
-	wcout << L"** NNet model file " << wstrModelFilePath;
-	bool bResult = scriptModel.ScrProcess( wstrModelFilePath ); 
-	if ( bResult )
-	{
-		wcout << L" successfully processed" << endl;
-		m_pModel->ModelSaved( );
-		m_wstrPathOfOpenModel = wstrModelFilePath;
-		return true;
-	}
-	return false;
-}
-
-////////////////////////// constructor /////////////////////////////////////////////
-
-NNetModelStorage::NNetModelStorage(  NNetModel * const pModel )
-	: m_pModel( pModel ),
-	  m_wstrPathOfOpenModel( L"" )
-{
-#define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( m_pModel ) )
+#define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( pModel ) )
 	DEF_NNET_FUNC( Protocol );
 	DEF_NNET_FUNC( GlobalParameter );
 	DEF_NNET_FUNC( ShapeParameter );
@@ -229,11 +210,33 @@ NNetModelStorage::NNetModelStorage(  NNetModel * const pModel )
 	);
 
 #undef DEF_NNET_FUNC
+
+	m_bPreparedForReading = true;
+}
+
+bool NNetModelStorage::Read( NNetModel & model, wstring const wstrPath )
+{
+	Script scriptModel;
+	wstring const wstrModelFilePath { ( wstrPath == L"" ) ? m_wstrPathOfOpenModel : wstrPath };
+	model.ResetModel();
+	if ( ! m_bPreparedForReading )
+		prepareForReading( & model );
+	wcout << L"** NNet model file " << wstrModelFilePath;
+	bool bResult = scriptModel.ScrProcess( wstrModelFilePath ); 
+	if ( bResult )
+	{
+		wcout << L" successfully processed" << endl;
+		model.ModelSaved( );
+		m_wstrPathOfOpenModel = wstrModelFilePath;
+		NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );
+		return true;
+	}
+	return false;
 }
 
 ////////////////////////// Write /////////////////////////////////////////////
 
-void NNetModelStorage::Write( wostream & out )
+void NNetModelStorage::Write( NNetModel const & model, wostream & out )
 {
 	static int const BUF_SIZE { 128 };
 
@@ -264,16 +267,16 @@ void NNetModelStorage::Write( wostream & out )
 		[&]( tParameter const & param ) 
 		{
 			out << L"GlobalParameter " << GetParameterName( param ) << L" = "
-			<< m_pModel->GetParameterValue( param ) 
+			<< model.GetParameterValue( param ) 
 			<< endl; 
 		}
 	);
 
-	m_CompactIds.resize( m_pModel->GetSizeOfShapeList() );
+	m_CompactIds.resize( model.GetSizeOfShapeList() );
 	ShapeId idCompact( 0 );
 	for ( int i = 0; i < m_CompactIds.size( ); ++i )
 	{
-		m_CompactIds[ i ] = m_pModel->GetConstShape( ShapeId( i ) )
+		m_CompactIds[ i ] = model.GetConstShape( ShapeId( i ) )
 			              ? idCompact++
 			              : NO_SHAPE;
 	}
@@ -282,24 +285,24 @@ void NNetModelStorage::Write( wostream & out )
 	out << L"NrOfShapes = " << m_CompactIds.size() << endl;
 	out << endl;
 
-	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); return false; } );
-	m_pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { WriteShape( out, shape ); return false; } );
+	model.Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); return false; } );
+	model.Apply2All<Pipeline>( [&]( Pipeline & shape ) { WriteShape( out, shape ); return false; } );
 
 	out << endl;
 
-	m_pModel->Apply2All<InputNeuron>
+	model.Apply2All<InputNeuron>
 	(
 		[&]( InputNeuron & inpNeuron )
 		{ 
 			out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
 				<< GetParameterName( tParameter::pulseRate ) 
-				<< L" = " << m_pModel->GetPulseRate( & inpNeuron )
+				<< L" = " << model.GetPulseRate( & inpNeuron )
      			<< endl; 
 			return false; 
 		}
 	);
 
-	m_pModel->ModelSaved( );
+	model.ModelSaved( );
 }
 
 void NNetModelStorage::WritePipeline( wostream & out, Shape const & shape )
@@ -342,13 +345,18 @@ void NNetModelStorage::WriteShape( wostream & out, Shape & shape )
 
 /////////////////////////////////////////////
 
-bool NNetModelStorage::AskSave( )
+int NNetModelStorage::AskSave( )
 {
-	if ( m_pModel->HasModelChanged() )
+	return MessageBox( nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL );
+}
+
+bool NNetModelStorage::AskAndSave( NNetModel const & model )
+{
+	if ( model.HasModelChanged() )
 	{
-		int iRes = MessageBox( nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL );
+		int iRes = AskSave( );
 		if ( iRes == IDYES )
-			SaveModel( );
+			SaveModel( model );
 		else if ( iRes == IDNO )
 			return true;
 		else if ( iRes == IDCANCEL )
@@ -368,14 +376,15 @@ bool NNetModelStorage::AskModelFile( )
 	return false;
 }
 
-void NNetModelStorage::writeModel( )
+void NNetModelStorage::writeModel( NNetModel const & model )
 {
 	std::wofstream modelFile( m_wstrPathOfOpenModel );
-	Write( modelFile );
+	Write( model, modelFile );
 	modelFile.close( );
+	NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );
 }
 
-bool NNetModelStorage::SaveModelAs( )
+bool NNetModelStorage::SaveModelAs( NNetModel const & model )
 {
 	if ( m_wstrPathOfOpenModel == L"" )
 		m_wstrPathOfOpenModel = GetPathOfExecutable( );
@@ -384,19 +393,25 @@ bool NNetModelStorage::SaveModelAs( )
 
 	bool const bRes = m_wstrPathOfOpenModel != L"";
 	if ( bRes )
-		writeModel( );
+		writeModel( model );
 	return bRes;
 }
 
-bool NNetModelStorage::SaveModel( )
+bool NNetModelStorage::SaveModel( NNetModel const & model )
 {
 	if ( m_wstrPathOfOpenModel == L"" )
 	{
-		return SaveModelAs( );
+		return SaveModelAs( model );
 	}
 	else
 	{
-		writeModel( );
+		writeModel( model );
 		return true;
 	}
+}
+
+void NNetModelStorage::ResetModelPath( ) 
+{ 
+	m_wstrPathOfOpenModel = L""; 
+	NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );
 }

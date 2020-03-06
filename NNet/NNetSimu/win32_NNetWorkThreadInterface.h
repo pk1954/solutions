@@ -53,16 +53,21 @@ public:
 	void PostRunGenerations   ( BOOL const );
 	void PostStopComputation  ( );
 	void PostGenerationStep   ( );
+	void PostGenerationSaveModel   ( );
+	void PostGenerationSaveModelAs ( );
+	void PostGenerationOpenModel   ( );
+	void PostGenerationReadModel   ( );
+	void PostGenerationNewModel   ( );
 	void PostRepeatGenerationStep();       // Do not call! Used by WorkThread only;
 
-	BOOL      IsRunning            ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }
-	BOOL      IsAsyncThread        ( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }
+	BOOL       IsRunning            ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }
+	BOOL       IsAsyncThread        ( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }
 	fMicroSecs GetTimeSpentPerCycle ( ) const { return m_pNNetWorkThread->GetTimeSpentPerCycle( ); }
 	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_pNNetWorkThread->GetTimeAvailPerCycle( ); }
 	fMicroSecs GetSimuTimeResolution( ) const { return m_pNNetWorkThread->GetSimuTimeResolution( ); }
 	fMicroSecs GetSimulationTime    ( ) const { return m_pNNetWorkThread->GetSimulationTime( ); }
 	fMicroSecs GetRealTimeTilStart  ( ) const { return m_pNNetWorkThread->GetRealTimeTilStart( ); }
-	float     GetSlowMotionRatio   ( ) const { return m_pNNetWorkThread->GetSlowMotionRatio( ); }
+	float      GetSlowMotionRatio   ( ) const { return m_pNNetWorkThread->GetSlowMotionRatio( ); }
 
 	wchar_t const * GetActionCommandName    ( int const ) const;
 	int     const   GetActionCommandFromName( wchar_t const * const ) const;

@@ -12,6 +12,8 @@ using std::wstring;
 
 namespace Util
 {
+	HANDLE RunAsAsyncThread( unsigned int __stdcall ( void * ), void *, UINT * = nullptr );
+
 	class Thread
 	{
 	public:

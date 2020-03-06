@@ -165,27 +165,15 @@
     <ClInclude Include="AnimationThread.h" />
     <ClInclude Include="NNetReadBuffer.h" />
     <ClInclude Include="win32_appMenu.h" />
-    <ClInclude Include="win32_crsrWindow.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="win32_NNetWindow.h" />
-    <ClInclude Include="win32_NNetWorkThread.h" />
-    <ClInclude Include="win32_NNetWorkThreadInterface.h" />
-    <ClInclude Include="win32_parameterDlg.h" />
-    <ClInclude Include="win32_performanceWindow.h" />
     <ClInclude Include="win32_scale.h" />
     <ClInclude Include="win32_scriptHook.h" />
     <ClInclude Include="win32_status.h" />
     <ClInclude Include="win32_triggerSoundDlg.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="win32_crsrWindow.cpp" />
-    <ClCompile Include="win32_NNetWindow.cpp" />
-    <ClCompile Include="win32_NNetWorkThread.cpp" />
-    <ClCompile Include="win32_NNetWorkThreadInterface.cpp" />
-    <ClCompile Include="win32_parameterDlg.cpp" />
-    <ClCompile Include="win32_performanceWindow.cpp" />
     <ClCompile Include="win32_scale.cpp" />
     <ClCompile Include="win32_status.cpp" />
     <ClCompile Include="win32_triggerSoundDlg.cpp" />

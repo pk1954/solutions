@@ -82,7 +82,7 @@ static LRESULT CALLBACK BaseWndProc
 		return TRUE;			// Do not erase background
 
 	default:
- 			break;
+ 		break;
 	}
 	{
 		BaseWindow * pBaseWin = reinterpret_cast<BaseWindow *>(GetUserDataPtr( hwnd ));

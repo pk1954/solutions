@@ -10,6 +10,7 @@
 #include "BoolOp.h"
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
+#include "NNetModel.h"
 #include "NNetModelStorage.h"
 #include "AutoOpen.h"
 #include "win32_util.h"
@@ -26,6 +27,7 @@
 
 NNetController::NNetController
 (
+	NNetModel               * const pModel,
 	NNetModelStorage        * const pStorage,
 	NNetWindow              * const pNNetWindow,
 	WinManager              * const pWinManager,
@@ -33,7 +35,8 @@ NNetController::NNetController
 	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
 	SlowMotionRatio         * const pSlowMotionRatio
 ) 
-  :	m_pStorage                ( pStorage ),
+  :	m_pNNetModel              ( pModel ),
+	m_pStorage                ( pStorage ),
 	m_pNNetWindow             ( pNNetWindow ),
 	m_pWinManager             ( pWinManager ),
 	m_pStatusBar              ( pStatusBar ),
@@ -70,7 +73,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_SET_ZOOM:
-		m_pNNetWindow->SetPixelSize( MicroMeter((float &)lParam) );
+		m_pNNetWindow->ZoomKeepCrsrPos( MicroMeter((float &)lParam) );
 		break;
 
 	case IDM_SLOWER:
@@ -126,18 +129,21 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 {
 	switch ( wmId )
 	{
+	case IDM_ASK_AND_SAVE_MODEL:
+		return m_pStorage->AskAndSave( * m_pNNetModel );
+
 	case IDM_SAVE_MODEL:
-		if ( m_pStorage->SaveModel( ) )
-			NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
+		if ( m_pStorage->SaveModel( * m_pNNetModel ) )
+			Preferences::WritePreferences( m_pStorage->GetModelPath(), m_pNNetWindow  );
 		break;
 
 	case IDM_SAVE_MODEL_AS:
-		if ( m_pStorage->SaveModelAs( ) )
-			NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
+		if ( m_pStorage->SaveModelAs( * m_pNNetModel ) )
+			Preferences::WritePreferences( m_pStorage->GetModelPath(), m_pNNetWindow  );
 		break;
 
 	case IDM_OPEN_MODEL:
-		if ( m_pStorage->AskSave( ) && m_pStorage->AskModelFile( ) )
+		if ( m_pStorage->AskAndSave( * m_pNNetModel ) && m_pStorage->AskModelFile( ) )
 		{
 			m_pNNetWorkThreadInterface->PostStopComputation();
 			m_pNNetWorkThreadInterface->PostSendBack( IDM_READ_MODEL );
@@ -146,20 +152,17 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDM_READ_MODEL:
 		{
-			m_pStorage->Read( );
-			Preferences::WritePreferences( m_pStorage->GetModelPath()  );
-			NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
+			m_pStorage->Read( * m_pNNetModel );
 			m_pNNetWorkThreadInterface->PostResetTimer( );
 			m_pNNetWorkThreadInterface->PostRunGenerations( true );
 		}
 		break;
 
 	case IDM_NEW_MODEL:
-		if ( m_pStorage->AskSave( ) )
+		if ( m_pStorage->AskAndSave( * m_pNNetModel ) )
 		{
 			m_pNNetWorkThreadInterface->PostResetModel( );
 			m_pStorage->ResetModelPath( );
-			NNetAppMenu::SetAppTitle( m_pStorage->GetModelPath() );
 		}
 		break;
 

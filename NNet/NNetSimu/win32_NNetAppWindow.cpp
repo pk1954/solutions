@@ -46,6 +46,7 @@
 
 // application
 
+#include "AutoOpen.h"
 #include "win32_NNetAppWindow.h"
 
 using namespace std::literals::chrono_literals;
@@ -66,19 +67,9 @@ NNetAppWindow::NNetAppWindow( ) :
 	Stopwatch stopwatch;
 
 	Preferences::Initialize();
-	DefineNNetWrappers( & m_NNetWorkThreadInterface );
 	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface );
 
-	NNetWorkThread::InitClass
-	( 
-		(tAppCallBack)
-		( 
-			[&]( int const id ) 
-			{ 
-				PostMessage( WM_COMMAND, id, 0 ); 
-			} 
-		)
-	);
+	NNetWorkThread::InitClass( (tAppCallBack)( [&]( int const id ) { PostMessage( WM_COMMAND, id, 0 ); } ) );
 
 	m_pNNetReadBuffer    = new NNetReadBuffer( );
 	m_pPerformanceWindow = new PerformanceWindow( );
@@ -94,6 +85,8 @@ NNetAppWindow::NNetAppWindow( ) :
 	m_pMainNNetWindow = new NNetWindow( );
 	m_pCrsrWindow     = new CrsrWindow( );
 	m_pParameterDlg   = new ParameterDialog( & m_NNetWorkThreadInterface );
+
+	DefineNNetWrappers( & m_NNetWorkThreadInterface, m_pMainNNetWindow );
 
 	m_pMainNNetWindow   ->SetRefreshRate( 100ms );
 	m_pCrsrWindow       ->SetRefreshRate( 100ms );
@@ -112,7 +105,7 @@ NNetAppWindow::~NNetAppWindow( )
 void NNetAppWindow::Start( )
 {
 	m_pModelDataWork    = new NNetModel( );
-	m_pNNetModelStorage = new NNetModelStorage( m_pModelDataWork );
+	m_pNNetModelStorage = new NNetModelStorage( );
 
 	BaseAppWindow::Start( m_pMainNNetWindow );
 	m_pAppMenu->Initialize
@@ -124,6 +117,7 @@ void NNetAppWindow::Start( )
 
 	m_pNNetController = new NNetController
 	( 
+		m_pModelDataWork,
 		m_pNNetModelStorage,
 		m_pMainNNetWindow,
 		& m_WinManager,
@@ -179,13 +173,18 @@ void NNetAppWindow::Start( )
 
 	PostCommand2Application( IDM_RUN, true );
 
-	if ( ! Preferences::ReadPreferences( m_pNNetModelStorage ) )
+	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage, m_pModelDataWork ) )
 		m_pModelDataWork->CreateInitialShapes();
-	m_pNNetModelStorage->Write( std::wcout );
+
+	m_pNNetModelStorage->Write( * m_pModelDataWork, std::wcout );
+
+	m_bStarted = TRUE;
 }
 
 void NNetAppWindow::Stop()
 {
+	m_bStarted = FALSE;
+
 	m_pMainNNetWindow->Stop( );
 	m_pCrsrWindow    ->Stop( );
 	m_pParameterDlg  ->Stop( );
@@ -230,7 +229,19 @@ void NNetAppWindow::configureStatusBar( )
 	m_pSlowMotionDisplay->Notify( true );
 }
 
-void NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam )
+void NNetAppWindow::ProcessCloseMessage( )
+{
+	if ( m_bStarted )
+	{
+		if ( ! m_pNNetModelStorage->AskAndSave( * m_pModelDataWork ) )
+			return;
+		m_WinManager.StoreWindowConfiguration( );
+		Stop( );
+	}
+	DestroyWindow( );        
+}
+
+bool NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam )
 {
 	int const wmId = LOWORD( wParam );
 
@@ -242,8 +253,9 @@ void NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam 
 
 	try
 	{
-		if ( m_pNNetController->ProcessUIcommand( wmId, lParam ) )     // handle all commands that affect the UI
-			return;                                                    // but do not concern the model
+		bool bRes = m_pNNetController->ProcessUIcommand( wmId, lParam ); // handle all commands that affect the UI
+		if ( bRes )                                                      // but do not concern the model  
+			return true;                                                    
 	}
 	catch ( ... )
 	{
@@ -254,11 +266,13 @@ void NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam 
 	try
 	{
 		if ( m_pNNetController->ProcessModelCommand( wmId, lParam ) )
-			ProcessFrameworkCommand( wmId, lParam );                   // Some commands are handled by the framework controller
+			return ProcessFrameworkCommand( wmId, lParam );             // Some commands are handled by the framework controller
 	}
 	catch ( ... )
 	{
 		Stop();
 		FatalError::Happened( 3, L"ProcessModelCommand" );
 	}
+
+	return false;
 }

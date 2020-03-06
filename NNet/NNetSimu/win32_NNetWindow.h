@@ -49,11 +49,15 @@ public:
 	ShapeId        const GetSuperHighlightedShapeId( )     const { return m_shapeSuperHighlighted; }
 	tHighlightType const GetHighlightType( ShapeId const ) const;
 
-	void       ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
-	void       Zoom( bool const );
-	void       EmphasizeAnalyzeResult( );
-	void       SetPixelSize( MicroMeter const );
-	MicroMeter GetPixelSize( ) const;
+	void        ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
+	void        Zoom( bool const );
+	void        EmphasizeAnalyzeResult( );
+	void        ZoomKeepCrsrPos( MicroMeter const );
+
+	MicroMeter  GetPixelSize  ( ) const { return m_coord.GetPixelSize  (); }
+	fPixelPoint GetPixelOffset( ) const { return m_coord.GetPixelOffset(); }
+	void        SetPixelSize  ( MicroMeter  const s ) { m_coord.SetPixelSize  ( s ); }
+	void        SetPixelOffset( fPixelPoint const f ) { m_coord.SetPixelOffset( f ); }
 
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
 

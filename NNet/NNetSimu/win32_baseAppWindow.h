@@ -24,7 +24,8 @@ public:
 
 	void Start( ModelWindow * const );
 
-	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 ) = 0;
+	virtual bool ProcessAppCommand( WPARAM const, LPARAM const = 0 ) = 0;
+	virtual void ProcessCloseMessage( ) = 0;
 	virtual void Stop( );
 
 protected:
@@ -38,7 +39,6 @@ protected:
 private:
 
 	HWND m_hwndConsole;
-	BOOL m_bStarted;          // if true, model is visible, all functions available
 
 	ModelWindow             * m_pModelWindow;
 	NNetWorkThreadInterface * m_pWorkThreadInterface;

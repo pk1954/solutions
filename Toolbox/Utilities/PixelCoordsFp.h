@@ -112,9 +112,12 @@ public:
 
 	//////// queries ////////
 
-	MicroMeter  GetPixelSize( )    const { return m_pixelSize; };
+	MicroMeter  GetPixelSize( )   const { return m_pixelSize; };
 	
-	fPixelPoint GetfPixelOffset( ) const { return m_fPixOffset; }
+	fPixelPoint GetPixelOffset( ) const 
+	{ 
+		return m_fPixOffset; 
+	}
 
 	MicroMeter ComputeNewPixelSize( bool const bZoomIn ) const  // does not modify field size
 	{
@@ -131,13 +134,23 @@ public:
 	{
 		bool bValid = isValidPixelSize( pixelSize );
 		if ( bValid )
-			m_pixelSize = pixelSize;
+			SetPixelSize( pixelSize );
 		return bValid;
+	}
+
+	void SetPixelSize( MicroMeter const pixelSize )
+	{
+		m_pixelSize = pixelSize;
 	}
 
 	void Move( PixelPoint const pntDelta )
 	{
 		m_fPixOffset -= convert2fPixelPoint( pntDelta );
+	}
+
+	void SetPixelOffset( fPixelPoint const fPixOffset )
+	{
+		m_fPixOffset = fPixOffset;
 	}
 
 	void Center

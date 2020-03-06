@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "win32_sound.h"
+#include "win32_thread.h"
 #include "win32_fatalError.h"
 #include "win32_graphicsInterface.h"
 #include "PixelCoordsFp.h"
@@ -55,13 +56,20 @@ mV Neuron::waveFunction( fMicroSecs const time ) const
 	return mV( m_factorU * time.GetValue() * ( 1.0f - time.GetValue() * m_factorW ) );
 }
 
+static unsigned int __stdcall BeepFunc( void * arg )
+{
+	Neuron * pNeuron { static_cast<Neuron *>( arg ) };
+	Sound::Beep( pNeuron->TriggerSoundFrequency(), pNeuron->TriggerSoundDuration() );
+	return 0;
+}
+
 void Neuron::Step( )
 {
 	if ( (m_mVinputBuffer >= Threshold( )) && (m_timeSinceLastPulse >= PulseWidth() + RefractPeriod()) )  
 	{
 		m_timeSinceLastPulse = 0._MicroSecs;
-		if ( m_triggerSoundDuration > 0_MilliSecs )
-			Sound::Beep( m_triggerSoundFrequency, m_triggerSoundDuration );
+		if ( TriggerSoundOn() )
+			Util::RunAsAsyncThread( BeepFunc, this );
 	}
 	else
 	{

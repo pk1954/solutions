@@ -10,7 +10,9 @@
 #include "symtab.h"
 #include "AutoOpen.h"
 #include "NNetModelStorage.h"
+#include "win32_NNetAppMenu.h"
 #include "Win32_sound.h"
+#include "Win32_NNetWindow.h"
 #include "Preferences.h"
 
 using std::wstring;
@@ -51,11 +53,21 @@ public:
 class WrapReadModel: public Script_Functor
 {
 public:
+    static void SetModel( NNetModel* pModel )
+    {
+        m_pModel = pModel;
+    }
+
     virtual void operator() ( Script & script ) const
     {
+        assert( m_pModel != nullptr );
         wstring wstrPath { script.ScrReadString() };
-        m_pNNetModelStorage->Read( wstrPath );
+        bool fRes = m_pNNetModelStorage->Read( * m_pModel, wstrPath );
+        NNetAppMenu::SetAppTitle( wstrPath );
     }
+
+private:
+    inline static NNetModel * m_pModel { nullptr };
 };
 
 static wstring const PREF_ON  { L"ON"  };
@@ -80,13 +92,18 @@ void Preferences::Initialize( )
     SymbolTable::ScrDefConst( PREF_ON,  1L );
 }
 
-bool Preferences::ReadPreferences( NNetModelStorage * pStorage )
+bool Preferences::ReadPreferences
+( 
+    NNetModelStorage * pStorage,
+    NNetModel        * pModel
+)
 {
     m_pNNetModelStorage = pStorage;
     if ( exists( m_wstrPreferencesFile ) )
     {
         wcout << L"*** preferences file " << m_wstrPreferencesFile;
         wcout << L" opened" << endl;
+        WrapReadModel::SetModel( pModel );
         bool bRes { Script::ProcessScript( m_wstrPreferencesFile ) };
         if ( bRes )
             wcout << L"*** processed successfully " << endl;
@@ -100,12 +117,14 @@ bool Preferences::ReadPreferences( NNetModelStorage * pStorage )
     }
 }
 
-bool Preferences::WritePreferences( wstring const wstrModelPath )
+bool Preferences::WritePreferences( wstring const wstrModelPath, NNetWindow const * const pNNetWindow )
 {
     std::wofstream prefFile( m_wstrPreferencesFile );
     prefFile << L"SetSound "    << (Sound   ::IsOn() ? PREF_ON : PREF_OFF) << endl;
 	prefFile << L"SetAutoOpen " << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF) << endl;
-    prefFile << L"ReadModel \""   << wstrModelPath << L"\"" <<endl;
+    prefFile << L"ReadModel \""   << wstrModelPath << L"\"" << endl;
+    prefFile << L"SetPixelOffset " << pNNetWindow->GetPixelOffset() << endl;
+    prefFile << L"SetPixelSize "   << pNNetWindow->GetPixelSize() << endl;
     prefFile.close( );
     wcout << L"*** preferences file " << m_wstrPreferencesFile << L" written" << endl;
     return true;

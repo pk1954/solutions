@@ -47,9 +47,12 @@ private:
 	NNetAppWindow             ( NNetAppWindow const & );  // noncopyable class 
 	NNetAppWindow & operator= ( NNetAppWindow const & );  // noncopyable class 
 
-	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 );
+	virtual void ProcessCloseMessage( );
+	virtual bool ProcessAppCommand( WPARAM const, LPARAM const = 0 );
 
 	void configureStatusBar( );
+
+	bool m_bStarted { false };          // if true, model is visible, all functions available
 
 	Util::Event             m_eventPOI;
 

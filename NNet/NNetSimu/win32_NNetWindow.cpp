@@ -105,10 +105,10 @@ NNetWindow::~NNetWindow( )
 
 void NNetWindow::Zoom( bool const bZoomIn  )
 {
-	SetPixelSize( m_coord.ComputeNewPixelSize( bZoomIn ) );
+	ZoomKeepCrsrPos( m_coord.ComputeNewPixelSize( bZoomIn ) );
 }
 
-void NNetWindow::SetPixelSize( MicroMeter const newSize )
+void NNetWindow::ZoomKeepCrsrPos( MicroMeter const newSize )
 {
 	PixelPoint      const pixPointCenter  { GetRelativeCrsrPosition() };
 	fPixelPoint     const fPixPointCenter { convert2fPixelPoint( pixPointCenter ) };
@@ -123,11 +123,6 @@ void NNetWindow::SetPixelSize( MicroMeter const newSize )
 	{
 		MessageBeep( MB_ICONWARNING );
 	}
-}
-
-MicroMeter NNetWindow::GetPixelSize( ) const
-{
-	return m_coord.GetPixelSize( );
 }
 
 void NNetWindow::setHighlightShape( PixelPoint const pnt )

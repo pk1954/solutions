@@ -5,5 +5,6 @@
 #pragma once
 
 class NNetWorkThreadInterface;
+class NNetWindow;
 
-extern void DefineNNetWrappers( NNetWorkThreadInterface * const );
+extern void DefineNNetWrappers( NNetWorkThreadInterface * const, NNetWindow * const );

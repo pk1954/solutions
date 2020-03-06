@@ -8,7 +8,6 @@ class AutoOpen
 {
 public:
 
-
 	static void On ( ) { m_bActive = true; }
 	static void Off( ) { m_bActive = false; }
 

@@ -22,7 +22,6 @@ using namespace std::literals::chrono_literals;
 
 BaseAppWindow::BaseAppWindow( )
  : 	m_hwndApp( nullptr ),
-	m_bStarted( FALSE ),
 	m_hwndConsole( nullptr ),
 	m_pAppMenu( nullptr ),
 	m_pModelWindow( nullptr ),
@@ -78,14 +77,10 @@ void BaseAppWindow::Start( ModelWindow * const pModelWindow )
 	pModelWindow->Show( TRUE );
 
 	adjustChildWindows( );
-
-	m_bStarted = TRUE;
 }
 
 void BaseAppWindow::Stop( )
 {
-	m_bStarted = FALSE;
-
 	m_StatusBar.Stop( );
 	m_pAppMenu->Stop( );
 }
@@ -130,8 +125,7 @@ LRESULT BaseAppWindow::UserProc
 		break;
 
 	case WM_COMMAND:
-		ProcessAppCommand( wParam, lParam );
-		return FALSE;
+		return ProcessAppCommand( wParam, lParam );
 
 	case WM_PAINT:
 	{
@@ -140,7 +134,7 @@ LRESULT BaseAppWindow::UserProc
 		HDC           hDC = BeginPaint( &ps );
 		FillBackground( hDC, CLR_GREY );
 		(void)EndPaint( &ps );
-		return FALSE;
+		return false;
 	}
 
 	case WM_SIZE:
@@ -149,16 +143,11 @@ LRESULT BaseAppWindow::UserProc
 		break;
 
 	case WM_CLOSE:
-		if ( m_bStarted )
-		{
-			m_WinManager.StoreWindowConfiguration( );
-			Stop( );
-		}
-		DestroyWindow( );        
-		return TRUE;  
+		ProcessCloseMessage( );
+		return true;  
 
 	case WM_DESTROY:
-		PostQuitMessage( 0 );
+//		PostQuitMessage( 0 );
 		break;
 
 	default:

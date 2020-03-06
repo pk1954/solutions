@@ -1,6 +1,6 @@
 // NNetModelStorage.h 
 //
-// NNetModel
+// NNetSimu
 
 #pragma once
 
@@ -19,29 +19,27 @@ class Shape;
 class NNetModelStorage
 {
 public:
-	NNetModelStorage( NNetModel * const );
-
-	void Write( wostream & );
-	bool Read( wstring const = L"" );
-
-	NNetModel * GetModel( ) { return m_pModel; }
+	void Write( NNetModel const &, wostream & );
+	bool Read( NNetModel &, wstring const = L"" );
 
 	wstring const GetModelPath  ( ) { return m_wstrPathOfOpenModel; };
-	void          ResetModelPath( ) { m_wstrPathOfOpenModel = L""; }
+	void          ResetModelPath( );
 
-	bool AskSave( );
+	int  AskSave( );
+	bool AskAndSave( NNetModel const & model );
 	bool AskModelFile( );
-	bool SaveModel( );
-	bool SaveModelAs( );
+	bool SaveModel  ( NNetModel const & );
+	bool SaveModelAs( NNetModel const & );
 
 private:
-	NNetModel     * m_pModel;
-	wstring         m_wstrPathOfOpenModel;
+	bool            m_bPreparedForReading { false };
+	wstring         m_wstrPathOfOpenModel { L"" };
 	vector<ShapeId> m_CompactIds;
 
 	long getCompactIdVal( ShapeId const id ) { return m_CompactIds[ id.GetValue() ].GetValue();	}
 
-	void writeModel( );
+	void prepareForReading( NNetModel * const );
+	void writeModel( NNetModel const & );
 	void WriteShape(  wostream &, Shape & );
 	void WriteMicroMeterPoint( wostream &, MicroMeterPoint const & );
 	void WritePipeline( wostream &, Shape const & );

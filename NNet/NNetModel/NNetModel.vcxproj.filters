@@ -48,9 +48,6 @@
     <ClInclude Include="BaseKnot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NNetModelStorage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tHighlightType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -90,9 +87,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shape.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NNetModelStorage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tParameter.cpp">
