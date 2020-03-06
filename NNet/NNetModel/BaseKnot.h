@@ -32,8 +32,7 @@ public:
  	)
 	  : Shape( type ),
 		m_center( center ),
-		m_extension( extension ),
-		m_pTextFormat( nullptr )
+		m_extension( extension )
 	{ }
 
 	virtual ~BaseKnot() {}
@@ -121,7 +120,7 @@ private:
 
 	MicroMeterPoint     m_center;
 	MicroMeter          m_extension;
-	IDWriteTextFormat * m_pTextFormat;
+	IDWriteTextFormat * m_pTextFormat { nullptr };
 };
 
 BaseKnot const * Cast2BaseKnot( Shape const * );

@@ -20,16 +20,6 @@
 
 using namespace std::literals::chrono_literals;
 
-BaseAppWindow::BaseAppWindow( )
- : 	m_hwndApp( nullptr ),
-	m_hwndConsole( nullptr ),
-	m_pAppMenu( nullptr ),
-	m_pModelWindow( nullptr ),
-	m_pWorkThreadInterface( nullptr ),
-	m_traceStream( )
-{
-}
-
 void BaseAppWindow::Initialize( NNetWorkThreadInterface * const pWorkThreadInterface )
 {
 	//	_CrtSetAllocHook( MyAllocHook );
@@ -57,10 +47,6 @@ void BaseAppWindow::Initialize( NNetWorkThreadInterface * const pWorkThreadInter
 		nullptr
 	);
 }
-
-BaseAppWindow::~BaseAppWindow() 
-{
-};
 
 void BaseAppWindow::Start( ModelWindow * const pModelWindow )
 {
@@ -147,7 +133,7 @@ LRESULT BaseAppWindow::UserProc
 		return true;  
 
 	case WM_DESTROY:
-//		PostQuitMessage( 0 );
+		PostQuitMessage( 0 );
 		break;
 
 	default:

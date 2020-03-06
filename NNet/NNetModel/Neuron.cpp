@@ -16,11 +16,7 @@ using std::chrono::microseconds;
 using std::wostringstream;
 
 Neuron::Neuron( MicroMeterPoint const upCenter, ShapeType const type )
-  : BaseKnot( upCenter, type, NEURON_RADIUS ),
-	m_timeSinceLastPulse( 0._MicroSecs ),
-	m_triggerSoundFrequency( 0_Hertz ),
-    m_triggerSoundDuration( 0_MilliSecs ),
-	m_bTriggerSoundOn( false )
+  : BaseKnot( upCenter, type, NEURON_RADIUS )
 {
 	Recalc();
 }

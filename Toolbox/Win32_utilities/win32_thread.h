@@ -18,12 +18,6 @@ namespace Util
 	{
 	public:
 
-		Thread( ) :
-			m_handle( nullptr ),
-			m_threadId( 0 ),
-			m_bAsync( false )
-		{}
-
 		~Thread() {};
 
 		void StartThread( wstring const &, BOOL const );
@@ -57,11 +51,11 @@ namespace Util
 		virtual void ThreadShutDownFunc( ) {};
 
 	private:
-		Event   m_eventThreadStarter;
-		HANDLE  m_handle;
-		UINT    m_threadId;
-		wstring m_strThreadName;
-		BOOL    m_bAsync;
+		HANDLE  m_handle   { nullptr };
+		UINT    m_threadId { 0 };
+		BOOL    m_bAsync   { false };
+		Event   m_eventThreadStarter { };
+		wstring m_strThreadName { };
 
 		friend static unsigned int __stdcall ThreadProc( void * );
 	};

@@ -54,7 +54,7 @@ public:
 	virtual void Recalc( );
 
 protected:
-	fMicroSecs m_timeSinceLastPulse;
+	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };
 
 	mV waveFunction( fMicroSecs const ) const;
 
@@ -65,9 +65,9 @@ private:
 	float m_factorW; // Parameter of wave function
 	float m_factorU; // Parameter of wave function
 
-	bool      m_bTriggerSoundOn;
-	Hertz     m_triggerSoundFrequency;   
-	MilliSecs m_triggerSoundDuration;
+	bool      m_bTriggerSoundOn       { false };
+	Hertz     m_triggerSoundFrequency { 0_Hertz };   
+	MilliSecs m_triggerSoundDuration  { 0_MilliSecs };
 
 	MicroMeterPoint getAxonHillockPos( PixelCoordsFp & ) const;
 };

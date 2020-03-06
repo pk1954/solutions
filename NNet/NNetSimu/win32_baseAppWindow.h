@@ -17,8 +17,7 @@ class AppMenu;
 class BaseAppWindow : public BaseWindow
 {
 public:
-	BaseAppWindow( );
-	virtual ~BaseAppWindow(); 
+	virtual ~BaseAppWindow() {}; 
 
 	void Initialize( NNetWorkThreadInterface * const );
 
@@ -29,21 +28,21 @@ public:
 	virtual void Stop( );
 
 protected:
-	HWND       m_hwndApp;
-	WinManager m_WinManager;
-	StatusBar  m_StatusBar;
-	AppMenu  * m_pAppMenu;        // allocated by application
+	HWND       m_hwndApp  { nullptr };
+	AppMenu  * m_pAppMenu { nullptr };        // allocated by application
+	WinManager m_WinManager { };
+	StatusBar  m_StatusBar  { };
 
     bool ProcessFrameworkCommand( WPARAM const, LPARAM const = 0 );
 
 private:
 
-	HWND m_hwndConsole;
+	HWND m_hwndConsole { nullptr };
 
-	ModelWindow             * m_pModelWindow;
-	NNetWorkThreadInterface * m_pWorkThreadInterface;
+	ModelWindow             * m_pModelWindow  { nullptr };
+	NNetWorkThreadInterface * m_pWorkThreadInterface  { nullptr };
 
-	std::wofstream m_traceStream;
+	std::wofstream m_traceStream {};
 
 	void adjustChildWindows( );
 
