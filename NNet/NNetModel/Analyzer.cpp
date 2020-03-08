@@ -35,7 +35,7 @@ bool ModelAnalyzer::FindLoop( NNetModel const & model )
 		int iCounter { iMaxLoopSize };
 		m_iRecDepth = iMaxLoopSize;
 		m_bStop     = false;
-		wcout << L"looking for loops of size " << iMaxLoopSize << endl;
+		wcout << L"looking for loops of size " << iMaxLoopSize << L". Press ESC to stop." << endl;
 		m_shapeStack.clear();
 		if ( model.Apply2All<BaseKnot>
 			  (
