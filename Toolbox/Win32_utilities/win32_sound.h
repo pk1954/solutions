@@ -20,7 +20,8 @@ static void Play( LPCWSTR const pszSound )
 
 static void Beep( Hertz hertz, MilliSecs msecs )
 {
-	::Beep( static_cast<DWORD>(hertz.GetValue()), static_cast<DWORD>(msecs.GetValue()) );
+	if ( m_bActive )
+		::Beep( static_cast<DWORD>(hertz.GetValue()), static_cast<DWORD>(msecs.GetValue()) );
 }
 
 static void On ( ) { m_bActive = true; }

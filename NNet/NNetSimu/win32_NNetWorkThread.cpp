@@ -311,7 +311,7 @@ void NNetWorkThread::compute()
 	fMicroSecs const usActualSimuTime   { m_pNNetModel->GetSimulationTime( ) };                                 // get actual time stamp
 	fMicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };                              // compute missing simulation time
 	fMicroSecs const usSimuTimeTodo     { min( usMissingSimuTime, m_pNNetModel->GetTimeResolution() ) };        // respect time slot (resolution)
-	long      const lCyclesTodo        { CastToLong( usSimuTimeTodo / m_pNNetModel->GetTimeResolution( ) ) };  // compute # cycles to be computed
+	long       const lCyclesTodo        { CastToLong( usSimuTimeTodo / m_pNNetModel->GetTimeResolution( ) ) };  // compute # cycles to be computed
 	for ( long lRun = 0; lRun < lCyclesTodo; ++lRun )
 	{
 		m_pNNetModel->Compute();

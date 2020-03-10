@@ -42,8 +42,7 @@ NNetController::NNetController
 	m_pStatusBar              ( pStatusBar ),
 	m_pNNetWorkThreadInterface( pNNetWorkThreadInterface ),
 	m_pSlowMotionRatio        ( pSlowMotionRatio ),
-	m_hCrsrWait               ( LoadCursor( NULL, IDC_WAIT ) ),
-	m_bUnsavedChanges         ( false )
+	m_hCrsrWait               ( LoadCursor( NULL, IDC_WAIT ) )
 {
 }
 

@@ -15,12 +15,6 @@ class NNetWorkThreadInterface;
 class NNetAppMenu : public AppMenu
 {
 public:
-	NNetAppMenu() :
-		m_hMenu( nullptr ),
-		m_pWorkThreadInterface( nullptr ),
-		m_pWinManager( nullptr )
-	{}
-
 	virtual ~NNetAppMenu() {}
 
 	virtual void Initialize
@@ -40,7 +34,7 @@ private:
 
 	static HWND m_hwndApp;
 
-	HMENU                           m_hMenu;
-	NNetWorkThreadInterface const * m_pWorkThreadInterface;
-	WinManager              const * m_pWinManager;
+	HMENU                           m_hMenu                { nullptr };
+	NNetWorkThreadInterface const * m_pWorkThreadInterface { nullptr };
+	WinManager              const * m_pWinManager          { nullptr };
 };

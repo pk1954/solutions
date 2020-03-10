@@ -26,19 +26,34 @@ public:
 		return m_outgoing.size() > 1;
 	}
 
-	bool& TriggerSoundOn( )
+	bool HasTriggerSound( ) const
 	{
 		return m_bTriggerSoundOn;
 	}
 
-	Hertz& TriggerSoundFrequency( )
+	Hertz GetTriggerSoundFrequency( ) const
 	{
 		return m_triggerSoundFrequency;
 	}
 
-	MilliSecs& TriggerSoundDuration( )
+	MilliSecs GetTriggerSoundDuration( ) const 
 	{
 		return m_triggerSoundDuration;
+	}
+
+	void SetTriggerSoundOn( bool const bMode )
+	{
+		m_bTriggerSoundOn = bMode;
+	}
+
+	void SetTriggerSoundFrequency( Hertz const freq ) 
+	{
+		m_triggerSoundFrequency = freq;
+	}
+
+	void SetTriggerSoundDuration( MilliSecs const msec ) 
+	{
+		m_triggerSoundDuration = msec;
 	}
 
 	fMicroSecs PulseWidth   ( ) const;

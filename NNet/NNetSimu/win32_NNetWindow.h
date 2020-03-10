@@ -72,32 +72,33 @@ private:
 	static NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 	static NNetModel               * m_pModel;
 
-	HMENU m_hPopupMenu;
-	BOOL  m_bMoveAllowed;    // TRUE: move with mouse is possible
+	HMENU m_hPopupMenu { nullptr };
+	BOOL  m_bMoveAllowed { TRUE };    // TRUE: move with mouse is possible
 
-	D2D_driver        m_D2d_driver;
-	PixelCoordsFp     m_coord;
-	Scale           * m_pScale;
-	AnimationThread * m_pAnimationThread;
-	Observable      * m_pCursorPosObservable;
+	D2D_driver        m_D2d_driver {};
+	PixelCoordsFp     m_coord      {};
+	Scale           * m_pScale               { nullptr };
+	AnimationThread * m_pAnimationThread     { nullptr };
+	Observable      * m_pCursorPosObservable { nullptr };
 
-	PixelPoint m_ptLast;	 	   // Last cursor position during selection 
-	PixelPoint m_ptCommandPosition;
+	PixelPoint m_ptLast            { PP_NULL };	// Last cursor position during selection 
+	PixelPoint m_ptCommandPosition { PP_NULL };
 
 	enum class FOCUS_MODE 
 	{ 
 		NO_FOCUS, 
 		ZOOM_OUT,
 		ZOOM_IN 
-	}            m_focusMode;
-	MicroMeterPoint m_umPntCenterStart;
-	MicroMeterPoint m_umPntCenterDelta;
-	MicroMeter      m_umPixelSizeStart;
-	MicroMeter      m_umPixelSizeDelta;
-	SmoothMoveFp    m_smoothMove;
+	} m_focusMode { FOCUS_MODE::NO_FOCUS };
 
-	ShapeId m_shapeHighlighted;
-	ShapeId m_shapeSuperHighlighted;
+	MicroMeterPoint m_umPntCenterStart { MicroMeterPoint::NULL_VAL() };
+	MicroMeterPoint m_umPntCenterDelta { MicroMeterPoint::NULL_VAL() };
+	MicroMeter      m_umPixelSizeStart { MicroMeter::NULL_VAL() };
+	MicroMeter      m_umPixelSizeDelta { MicroMeter::NULL_VAL() };
+	SmoothMoveFp    m_smoothMove {};
+
+	ShapeId m_shapeHighlighted      { NO_SHAPE };
+	ShapeId m_shapeSuperHighlighted { NO_SHAPE };
 
 	virtual void AddContextMenuEntries( HMENU const, PixelPoint const );
 

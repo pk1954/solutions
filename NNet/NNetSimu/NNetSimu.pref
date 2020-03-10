@@ -1,5 +1,5 @@
 SetSound ON
-SetAutoOpen OFF
-ReadModel "D:\SW-projects\Delivery\2020-01-20\3In2Out40Hz.mod"
-SetPixelOffset (-1075.74/-350.496)
-SetPixelSize 4.82679
+SetAutoOpen ON
+ReadModel "D:\SW-projects\Solutions\NNet\3In2Out40Hz.mod"
+SetPixelOffset (-769.847/-268)
+SetPixelSize 1.68999

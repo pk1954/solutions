@@ -54,24 +54,24 @@ private:
 
 	bool m_bStarted { false };          // if true, model is visible, all functions available
 
-	Util::Event             m_eventPOI;
+	Util::Event             m_eventPOI { };
 
-	NNetWorkThreadInterface m_NNetWorkThreadInterface;
-	ActionTimer             m_atComputation;
-	ActionTimer             m_atDisplay;
-	ScriptHook              m_ScriptHook;
-	SlowMotionRatio         m_SlowMotionRatio;
+	NNetWorkThreadInterface m_NNetWorkThreadInterface { };
+	ActionTimer             m_atComputation           { };
+	ActionTimer             m_atDisplay               { };
+	ScriptHook              m_ScriptHook              { };
+	SlowMotionRatio         m_SlowMotionRatio         { };
 
-	SimulationControl * m_pSimulationControl;
-	NNetReadBuffer    * m_pNNetReadBuffer;
-	NNetController    * m_pNNetController;
-	NNetModel         * m_pModelDataWork;
-	NNetWindow        * m_pMainNNetWindow;
-	TimeDisplay       * m_pTimeDisplay;
-	SlowMotionDisplay * m_pSlowMotionDisplay;
-	CrsrWindow        * m_pCrsrWindow;
-	PerformanceWindow * m_pPerformanceWindow;
-	NNetModelStorage  * m_pNNetModelStorage;
-	ParameterDialog   * m_pParameterDlg;
-	Observable        * m_pCursorPos;
+	SimulationControl * m_pSimulationControl { nullptr };
+	NNetReadBuffer    * m_pNNetReadBuffer    { nullptr };
+	NNetController    * m_pNNetController    { nullptr };
+	NNetModel         * m_pModelDataWork     { nullptr };
+	NNetWindow        * m_pMainNNetWindow    { nullptr };
+	TimeDisplay       * m_pTimeDisplay       { nullptr };
+	SlowMotionDisplay * m_pSlowMotionDisplay { nullptr };
+	CrsrWindow        * m_pCrsrWindow        { nullptr };
+	PerformanceWindow * m_pPerformanceWindow { nullptr };
+	NNetModelStorage  * m_pNNetModelStorage  { nullptr };
+	ParameterDialog   * m_pParameterDlg      { nullptr };
+	Observable        * m_pCursorPos         { nullptr };
 };

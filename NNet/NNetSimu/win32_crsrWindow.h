@@ -27,7 +27,7 @@ public:
 	virtual void DoPaint( TextBuffer & );
 
 private:
-	NNetWindow const * m_pNNetWindow;
+	NNetWindow const * m_pNNetWindow { nullptr };
 
 	void printMicroMeter( TextBuffer &,	MicroMeter const );
 };

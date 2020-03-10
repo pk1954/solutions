@@ -45,22 +45,7 @@ void NNetWindow::setStdFontSize( )
 }
 
 NNetWindow::NNetWindow( ) :
-	ModelWindow( ),
-	m_hPopupMenu( nullptr ),
-	m_pScale( nullptr ),
-	m_bMoveAllowed( TRUE ),
-	m_ptLast( PP_NULL ),
-	m_ptCommandPosition( PP_NULL ),
-	m_shapeHighlighted     ( NO_SHAPE ),
-	m_shapeSuperHighlighted( NO_SHAPE ),
-	m_pAnimationThread( nullptr ),
-	m_pCursorPosObservable( nullptr ),
-	m_focusMode( FOCUS_MODE::NO_FOCUS ),
-	m_umPntCenterStart( MicroMeterPoint::NULL_VAL() ),
-	m_umPixelSizeStart( MicroMeter::NULL_VAL() ),
-	m_umPntCenterDelta( MicroMeterPoint::NULL_VAL() ),
-	m_umPixelSizeDelta( MicroMeter::NULL_VAL() ),
-	m_smoothMove()
+	ModelWindow( )
 { }
 
 void NNetWindow::Start
@@ -151,7 +136,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE,            L"Pulse rate" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,          L"Remove" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT,            L"Disconnect" );
-//		AppendMenu( hPopupMenu, STD_FLAGS, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
 		break;
 
 	case ShapeType::Value::neuron:
@@ -160,7 +145,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING2KNOT,     L"Add incoming dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,          L"Remove" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT,            L"Disconnect" );
-//		AppendMenu( hPopupMenu, STD_FLAGS, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
 		break;
 
 	case ShapeType::Value::knot:  
@@ -225,13 +210,13 @@ bool NNetWindow::TriggerSoundDlg( ShapeId const id )
 	if ( pNeuron == nullptr )
 		return false;
 
-	TriggerSoundDialog dialog( pNeuron->TriggerSoundOn(), pNeuron->TriggerSoundFrequency(), pNeuron->TriggerSoundDuration() );
+	TriggerSoundDialog dialog( pNeuron->HasTriggerSound(), pNeuron->GetTriggerSoundFrequency(), pNeuron->GetTriggerSoundDuration() );
 
 	dialog.Show( GetWindowHandle() );
 
-	pNeuron->TriggerSoundOn()        = dialog.IsTriggerSoundActive();
-	pNeuron->TriggerSoundFrequency() = dialog.GetFrequency();
-	pNeuron->TriggerSoundDuration()  = dialog.GetDuration ();
+	pNeuron->SetTriggerSoundOn       ( dialog.IsTriggerSoundActive() );
+	pNeuron->SetTriggerSoundFrequency( dialog.GetFrequency() );
+	pNeuron->SetTriggerSoundDuration ( dialog.GetDuration () );
 
 	return true;
 }

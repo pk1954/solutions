@@ -52,17 +52,7 @@
 using namespace std::literals::chrono_literals;
 using std::wostringstream;
 
-NNetAppWindow::NNetAppWindow( ) :
-	m_pSimulationControl( nullptr ),
-	m_pMainNNetWindow( nullptr ),
-	m_pModelDataWork( nullptr ),
-	m_pSlowMotionDisplay( nullptr ),
-	m_pTimeDisplay( nullptr ),
-	m_pCrsrWindow( nullptr ),
-	m_pPerformanceWindow( nullptr ),
-	m_pNNetModelStorage( nullptr ),
-	m_pNNetController( nullptr ),
-	m_pParameterDlg( nullptr )
+NNetAppWindow::NNetAppWindow( )
 {
 	Stopwatch stopwatch;
 

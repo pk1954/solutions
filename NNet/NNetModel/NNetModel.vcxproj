@@ -160,6 +160,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib />
+    <Lib />
+    <Lib />
+    <Lib />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Analyzer.h" />

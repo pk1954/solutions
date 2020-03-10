@@ -175,6 +175,30 @@ private:
 	NNetModel * m_pModel;
 };
 
+class WrapTriggerSound : public Script_Functor
+{
+public:
+	WrapTriggerSound( NNetModel * const pNNetModel ) :
+		m_pModel( pNNetModel )
+	{ };
+
+	virtual void operator() ( Script & script ) const 
+	{
+		ShapeId const id      { script.ScrReadLong () };
+		Neuron      * pNeuron { m_pModel->GetTypedShape<Neuron>( id ) };
+		Hertz   const freq    { script.ScrReadUlong() };
+		script.ScrReadString( L"Hertz" );
+		MilliSecs const msec { script.ScrReadUlong() };
+		script.ScrReadString( L"msec" );
+		pNeuron->SetTriggerSoundOn( true );
+		pNeuron->SetTriggerSoundFrequency( freq );
+		pNeuron->SetTriggerSoundDuration ( msec );
+	}
+
+private:
+	NNetModel * m_pModel;
+};
+
 void NNetModelStorage::prepareForReading( NNetModel * const pModel )
 {
 #define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( pModel ) )
@@ -183,6 +207,7 @@ void NNetModelStorage::prepareForReading( NNetModel * const pModel )
 	DEF_NNET_FUNC( ShapeParameter );
 	DEF_NNET_FUNC( NrOfShapes );
 	DEF_NNET_FUNC( CreateShape );
+	DEF_NNET_FUNC( TriggerSound );
 #undef DEF_NET_FUNC
 
 	ShapeType::Apply2All
@@ -300,6 +325,23 @@ void NNetModelStorage::Write( NNetModel const & model, wostream & out )
      			<< endl; 
 			return false; 
 		}
+	);
+
+	out << endl;
+
+	model.Apply2All<Neuron>
+	( 
+		[&]( Neuron & neuron ) 
+		{ 
+			if ( neuron.HasTriggerSound( ) )
+			{
+				out << L"TriggerSound " << getCompactIdVal( neuron.GetId() ) << L" "
+					<< neuron.GetTriggerSoundFrequency() << L" Hertz "
+					<< neuron.GetTriggerSoundDuration()  << L" msec "
+					<< endl; 
+			}
+			return false; 
+		} 
 	);
 
 	model.ModelSaved( );

@@ -55,7 +55,7 @@ mV Neuron::waveFunction( fMicroSecs const time ) const
 static unsigned int __stdcall BeepFunc( void * arg )
 {
 	Neuron * pNeuron { static_cast<Neuron *>( arg ) };
-	Sound::Beep( pNeuron->TriggerSoundFrequency(), pNeuron->TriggerSoundDuration() );
+	Sound::Beep( pNeuron->GetTriggerSoundFrequency(), pNeuron->GetTriggerSoundDuration() );
 	return 0;
 }
 
@@ -64,7 +64,7 @@ void Neuron::Step( )
 	if ( (m_mVinputBuffer >= Threshold( )) && (m_timeSinceLastPulse >= PulseWidth() + RefractPeriod()) )  
 	{
 		m_timeSinceLastPulse = 0._MicroSecs;
-		if ( TriggerSoundOn() )
+		if ( HasTriggerSound() )
 			Util::RunAsAsyncThread( BeepFunc, this );
 	}
 	else
@@ -120,12 +120,12 @@ void Neuron::drawInterior( PixelCoordsFp & coord ) const
 
 Neuron const * Cast2Neuron( Shape const * pShape )
 {
-	assert( pShape->IsNeuron() );
+	assert( pShape->IsAnyNeuron() );
 	return static_cast<Neuron const *>(pShape);
 }
 
 Neuron * Cast2Neuron( Shape * pShape )
 {
-	assert( pShape->IsNeuron() );
+	assert( pShape->IsAnyNeuron() );
 	return static_cast<Neuron *>(pShape);
 }

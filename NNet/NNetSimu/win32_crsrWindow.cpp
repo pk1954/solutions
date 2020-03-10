@@ -17,8 +17,7 @@ using std::setprecision;
 using std::endl;
 
 CrsrWindow::CrsrWindow( ) :
-	TextWindow( ),
-	m_pNNetWindow( nullptr )
+	TextWindow( )
 {}
 
 CrsrWindow::~CrsrWindow( )
