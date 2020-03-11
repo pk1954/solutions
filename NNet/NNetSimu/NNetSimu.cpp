@@ -38,21 +38,25 @@ int APIENTRY wWinMain
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
 
-	Stopwatch stopwatch;
-	stopwatch.Start();
-	App.Start( );
-	stopwatch.Stop( L"App.Start" );
-
 	int iRetVal;
-	
+
 	try
 	{
+		Stopwatch stopwatch;
+		stopwatch.Start();
+		App.Start( );
+		stopwatch.Stop( L"App.Start" );
+
 		iRetVal = MessagePump( hInstance, App.GetWindowHandle(), IDC_NNET_SIMU_MAIN );
+	}
+	catch ( std::logic_error & err )
+	{
+		FatalError::Happened( 999, err.what() );
 	}
 	catch ( ... )
 	{
 		App.Stop();
-		FatalError::Happened( 1, L"main thread" );
+		FatalError::Happened( 1, "main thread" );
 	}
 
 	return iRetVal;

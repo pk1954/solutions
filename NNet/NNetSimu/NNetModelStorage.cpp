@@ -310,8 +310,8 @@ void NNetModelStorage::Write( NNetModel const & model, wostream & out )
 	out << L"NrOfShapes = " << m_CompactIds.size() << endl;
 	out << endl;
 
-	model.Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); return false; } );
-	model.Apply2All<Pipeline>( [&]( Pipeline & shape ) { WriteShape( out, shape ); return false; } );
+	model.Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); } );
+	model.Apply2All<Pipeline>( [&]( Pipeline & shape ) { WriteShape( out, shape ); } );
 
 	out << endl;
 
@@ -323,7 +323,6 @@ void NNetModelStorage::Write( NNetModel const & model, wostream & out )
 				<< GetParameterName( tParameter::pulseRate ) 
 				<< L" = " << model.GetPulseRate( & inpNeuron )
      			<< endl; 
-			return false; 
 		}
 	);
 
@@ -340,7 +339,6 @@ void NNetModelStorage::Write( NNetModel const & model, wostream & out )
 					<< neuron.GetTriggerSoundDuration()  << L" msec "
 					<< endl; 
 			}
-			return false; 
 		} 
 	);
 

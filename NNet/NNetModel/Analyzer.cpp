@@ -37,7 +37,7 @@ bool ModelAnalyzer::FindLoop( NNetModel const & model )
 		m_bStop     = false;
 		wcout << L"looking for loops of size " << iMaxLoopSize << L". Press ESC to stop." << endl;
 		m_shapeStack.clear();
-		if ( model.Apply2All<BaseKnot>
+		if ( model.Apply2AllB<BaseKnot>
 			  (
 			  	[ & ] ( BaseKnot & baseKnot )
 			    {

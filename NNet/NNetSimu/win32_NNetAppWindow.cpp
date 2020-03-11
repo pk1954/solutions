@@ -238,7 +238,7 @@ bool NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam 
 	if ( wmId == IDM_FATAL_ERROR )
 	{
 		Stop();
-		FatalError::Happened( static_cast<long>(lParam), L"unknown" );
+		FatalError::Happened( static_cast<long>(lParam), "unknown" );
 	}
 
 	try
@@ -250,7 +250,7 @@ bool NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam 
 	catch ( ... )
 	{
 		Stop();
-		FatalError::Happened( 2, L"ProcessUIcommand" );
+		FatalError::Happened( 2, "ProcessUIcommand" );
 	}
 
 	try
@@ -261,7 +261,7 @@ bool NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam 
 	catch ( ... )
 	{
 		Stop();
-		FatalError::Happened( 3, L"ProcessModelCommand" );
+		FatalError::Happened( 3, "ProcessModelCommand" );
 	}
 
 	return false;

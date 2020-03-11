@@ -103,7 +103,7 @@ void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )
 	}
 	catch ( ... )
 	{
-		FatalError::Happened( 1000, L"NNetWorkThread" );
+		FatalError::Happened( 1000, "NNetWorkThread" );
 	}
 
 	if ( bRes )

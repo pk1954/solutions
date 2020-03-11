@@ -52,20 +52,20 @@ void NNetModel::CreateInitialShapes( )
 
 void NNetModel::RecalcAllShapes( ) 
 { 
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); return false; } );
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); } );
 } 
 
 void NNetModel::SetEmphasizeMode( bool const bMode ) 
 { 
 	if ( m_bEmphasizeMode && (bMode == false) )
-		Apply2All<Shape>( [&]( Shape & shape ) { shape.Emphasize( false ); return false; } );
+		Apply2All<Shape>( [&]( Shape & shape ) { shape.Emphasize( false ); } );
 	m_bEmphasizeMode = bMode;
 } 
 
 long const NNetModel::GetNrOfShapes( ) const
 {
 	long lCounter = 0;
-	Apply2All<Shape>( [&]( Shape & shape ) { ++ lCounter; return false; } );
+	Apply2All<Shape>( [&]( Shape & shape ) { ++ lCounter; } );
 	return lCounter;
 }
 
@@ -359,8 +359,8 @@ void NNetModel::AddIncoming2Knot( ShapeId const id, MicroMeterPoint const & pos 
 
 void NNetModel::Compute( )
 {
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Prepare( ); return false; } );
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Step   ( ); return false; } );
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Prepare( ); } );
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Step   ( ); } );
 
 	m_timeStamp += GetTimeResolution( );
 }

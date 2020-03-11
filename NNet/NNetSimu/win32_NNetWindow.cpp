@@ -292,17 +292,17 @@ void NNetWindow::doPaint( )
 	MicroMeterRect const umRect  { m_coord.convert2MicroMeterRect( pixRect ) };
 
 	if ( m_coord.GetPixelSize() <= 5._MicroMeter )
-		m_pModel->Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.IsInRect( umRect ) ) shape.DrawExterior( m_coord, GetHighlightType( shape.GetId() ) ); return false; } );
+		m_pModel->Apply2AllInRect<Shape>( umRect, [&]( Shape & shape ) { shape.DrawExterior( m_coord, GetHighlightType( shape.GetId() ) ); } );
 
-	m_pModel->Apply2All<Pipeline>( [&]( Pipeline & shape ) { if ( shape.IsInRect( umRect ) ) shape.DrawInterior( m_coord ); return false; } );
-	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { if ( shape.IsInRect( umRect ) ) shape.DrawInterior( m_coord ); return false; } );
+	m_pModel->Apply2AllInRect<Pipeline>( umRect, [&]( Pipeline & shape ) { shape.DrawInterior( m_coord ); } );
+	m_pModel->Apply2AllInRect<BaseKnot>( umRect, [&]( BaseKnot & shape ) { shape.DrawInterior( m_coord ); } );
 	
 	drawHighlightedShape( * m_pModel, m_coord );
 
 	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
 
 	if ( m_coord.GetPixelSize() <= 2.5_MicroMeter )
-		m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { if ( shape.IsInRect( umRect ) )shape.DrawNeuronText( m_coord ); return false; } );
+		m_pModel->Apply2AllInRect<BaseKnot>( umRect, [&]( BaseKnot & shape ) { shape.DrawNeuronText( m_coord ); } );
 }
 
 void NNetWindow::EmphasizeAnalyzeResult( )

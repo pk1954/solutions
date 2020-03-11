@@ -28,16 +28,12 @@ bool BaseKnot::apply2All
 	EnterCritSect();
 	for ( auto pipe : pipeList ) 
 	{ 
-		if ( pipe ) 
-		{
-			bResult = func( pipe );
-			if ( bResult )
-				break;
-		}
-		else
-		{
-			int shitHappens = 9;
-		}
+		if ( pipe == nullptr )
+			throw std::logic_error( "nullptr in pipe list"  );
+
+		bResult = func( pipe );
+		if ( bResult )
+			break;
 	}
 	LeaveCritSect();
 	return bResult;

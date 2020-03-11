@@ -121,7 +121,7 @@ public:
 	}
 
 	template <typename T>
-	bool Apply2All( function<bool(T &)> const & func ) const
+	bool Apply2AllB( function<bool(T &)> const & func ) const
 	{
 		bool bResult { false };
 		for ( auto pShape : m_Shapes )
@@ -134,6 +134,32 @@ public:
 			}
 		}
 		return bResult;
+	}
+
+	template <typename T>
+	void Apply2All( function<void(T &)> const & func ) const
+	{
+		for ( auto pShape : m_Shapes )
+		{
+			if ( pShape && T::TypeFits( pShape->GetShapeType() ) )
+				func( static_cast<T &>( * pShape ) );
+		}
+	}
+
+	template <typename T>
+	void Apply2AllInRect( MicroMeterRect const & rect, function<void(T &)> const & func ) const
+	{
+		for ( auto pShape : m_Shapes )
+		{
+			if ( 
+				  pShape && 
+				  T::TypeFits( pShape->GetShapeType() ) &&
+				  pShape->IsInRect( rect )
+			   )
+			{
+				func( static_cast<T &>( * pShape ) );
+			}
+		}
 	}
 
 	void CreateInitialShapes();
@@ -163,7 +189,7 @@ public:
 
 	MicroMeterRect GetEnclosingRect( );
 
-	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); return false; } ); }
+	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); } ); }
 
 	void AddParameterObserver( ObserverInterface * pObs ) { m_parameterObservable.RegisterObserver( pObs ); }
 
