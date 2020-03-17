@@ -6,25 +6,26 @@
 
 #include "windows.h"
 #include <string>
+#include <codecvt>
 #include <sstream>
 #include <iostream>
 
-using std::wstring;
-using std::wostringstream;
-using std::wcout;
+using std::string;
+using std::ostringstream;
+using std::cout;
 using std::endl;
 
 class FatalError
 {
 public:
-	static void Happened( long const errnr, wstring const errText )
+	static void Happened( long const errnr, string const errText )
 	{
-		wostringstream wBuffer;
-		wBuffer << L"+++ fatal error ++++++++++++"   << endl;
-		wBuffer << L"+++ error number:  " << errnr   << endl;
-		wBuffer << L"+++ error message; " << errText << endl;
-		wcout << wBuffer.str();
-		MessageBox( nullptr, wBuffer.str().c_str(), NULL, MB_OK );
+		ostringstream wBuffer;
+		wBuffer << "+++ fatal error"   << endl;
+		wBuffer << "+++ error number:  " << errnr   << endl;
+		wBuffer << "+++ error message: " << errText << endl;
+		cout << wBuffer.str();
+		MessageBoxA( nullptr, wBuffer.str().c_str(), NULL, MB_OK );
 		terminate();
 	}
 

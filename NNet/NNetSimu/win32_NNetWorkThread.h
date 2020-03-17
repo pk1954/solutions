@@ -91,13 +91,13 @@ public:
 	virtual void ThreadStartupFunc( );
 	virtual void ThreadMsgDispatcher( MSG const );
 
-	BOOL      IsRunning()              const { return m_bContinue; }
+	BOOL       IsRunning()              const { return m_bContinue; }
 	fMicroSecs GetTimeSpentPerCycle ( ) const { return m_usRealTimeSpentPerCycle; }
 	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_usRealTimeAvailPerCycle; }
 	fMicroSecs GetRealTimeTilStart  ( ) const { return m_hrTimer.GetMicroSecsTilStart( ); }
 	fMicroSecs GetSimuTimeResolution( ) const;
 	fMicroSecs GetSimulationTime    ( ) const;
-	float     GetSlowMotionRatio   ( ) const;
+	float      GetSlowMotionRatio   ( ) const;
 
 	void Continue( )
 	{
@@ -138,18 +138,18 @@ private:
 
 	static tAppCallBack m_appCallback;
 
-	NNetModelStorage        * m_pStorage;
-	EventInterface          * m_pEventPOI;
-	NNetWorkThreadInterface * m_pWorkThreadInterface;
-	BOOL                      m_bContinue;
-	HWND                      m_hwndApplication;
-	NNetModel               * m_pNNetModel;
-	SlowMotionRatio         * m_pSlowMotionRatio;
-	HiResTimer                m_hrTimer;
-	Observable                m_runObservable;
-	Observable                m_performanceObservable;
-	TimeResObserver         * m_pTimeResObserver;
-	ObserverInterface       * m_pModelObserver;
-	fMicroSecs                 m_usRealTimeAvailPerCycle;
-	fMicroSecs                 m_usRealTimeSpentPerCycle;
+	HiResTimer                m_hrTimer                 { };
+	BOOL                      m_bContinue               { FALSE };
+	TimeResObserver         * m_pTimeResObserver        { nullptr };
+	fMicroSecs                m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
+	fMicroSecs                m_usRealTimeAvailPerCycle { 0.0_MicroSecs };
+	NNetModelStorage        * m_pStorage                { nullptr };
+	EventInterface          * m_pEventPOI               { nullptr };
+	NNetWorkThreadInterface * m_pWorkThreadInterface    { nullptr };
+	NNetModel               * m_pNNetModel              { nullptr };
+	SlowMotionRatio         * m_pSlowMotionRatio        { nullptr };
+	ObserverInterface       * m_pModelObserver          { nullptr };
+	HWND                      m_hwndApplication         { (HWND)0 };
+	Observable                m_runObservable           { };
+	Observable                m_performanceObservable   { };
 };

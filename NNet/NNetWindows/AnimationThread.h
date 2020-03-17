@@ -13,7 +13,6 @@ class AnimationThread : public Util::Thread
 {
 public:
 	AnimationThread()
-		: m_umTarget( 0.0_MicroMeter )
 	{
 		StartThread( L"Animation", true );
 	}
@@ -27,8 +26,8 @@ public:
 
 private:
 
-	MicroMeter m_umTarget;
-	MicroMeter m_umIncrement;
+	MicroMeter m_umTarget    { 0.0_MicroMeter };
+	MicroMeter m_umIncrement { 0.0_MicroMeter };
 
 	void ThreadMsgDispatcher( MSG msg )
 	{

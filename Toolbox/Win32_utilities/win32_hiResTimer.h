@@ -34,19 +34,19 @@ public:
 	microseconds TicksToMicroseconds( Ticks        const ) const;
 	fMicroSecs   TicksToMicroSecs   ( Ticks        const ) const;
 	Ticks        MicroSecondsToTicks( microseconds const ) const;
-	Ticks        MicroSecsToTicks   ( fMicroSecs    const ) const;
+	Ticks        MicroSecsToTicks   ( fMicroSecs   const ) const;
 
 	void BusyWait( microseconds const, Ticks & );
 
 private:
 	long long const MICROSECONDS_TO_SECONDS { microseconds::period::den };
-	float     const fMICROSECS_TO_SECONDS{ static_cast<float>(MICROSECONDS_TO_SECONDS) };
+	float     const fMICROSECS_TO_SECONDS   { static_cast<float>(MICROSECONDS_TO_SECONDS) };
+
+ 	bool  m_bStarted         { false };
+	Ticks m_ticksOnStart     { Ticks( 0 ) };
+	Ticks m_ticksAccumulated { Ticks( 0 ) };
 
     static Hertz  m_frequency;
 	static fHertz m_fFrequency;
 
-	bool  m_bStarted;
-
-	Ticks m_ticksOnStart;
-	Ticks m_ticksAccumulated;
 };

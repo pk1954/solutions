@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include <iomanip>
 #include <time.h>
-#include <codecvt>
+//#include <codecvt>
 #include <sstream>
 #include "script.h"
 #include "win32_util.h"
@@ -100,7 +100,6 @@ void Util::MakeLayered( HWND const hwnd, BOOL const bMode, COLORREF const crKey,
     assert( bRes );
 }
 
-//lint -esym( 714, Util::GetNrOfCPUs(void) )      not referenced
 DWORD Util::GetNrOfCPUs( void )
 {
     SYSTEM_INFO siSysInfo;
@@ -127,7 +126,7 @@ wstring Util::GetCurrentDateAndTime( )
 	//wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
 	//wstring wstrTime = converter.from_bytes( buf.str( ) );
 	//return wstrTime;
-    return L"+++ not implemnted +++";
+    return L"+++ not implemented +++";
 }
 
 void Util::SetApplicationTitle

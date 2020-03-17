@@ -39,8 +39,8 @@ public:
 
     struct ScriptErrorInfo: public std::exception
     {
-        short   m_sErrNr;         // error number               
-        wstring m_wstrMessage;    // error message              
+        short   m_sErrNr       { 0 };               // error number               
+        wstring m_wstrMessage  { L"undefined" };    // error message              
     };
 
     static void handleScriptError( ScriptErrorInfo const &, Scanner const & );

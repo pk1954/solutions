@@ -18,10 +18,7 @@ inline Ticks HiResTimer::ReadHiResTimer( ) const
     return Ticks( value.QuadPart );
 }
 
-HiResTimer::HiResTimer( ) :
-    m_ticksAccumulated(Ticks( 0 )),
-    m_ticksOnStart    (Ticks( 0 )),
-	m_bStarted( false )
+HiResTimer::HiResTimer( )
 {
     if ( m_frequency == 0_Hertz )                  // frequency is constant for given CPU
     {                                              // first time in application the constructor is called

@@ -414,7 +414,7 @@ wstring const Script::ScrReadString( void )
          break;
    }
 
-   return nullptr;
+   return wstring( L"" );
 }
             
 //  ScrProcess: Process a test script

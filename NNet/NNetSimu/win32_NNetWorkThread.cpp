@@ -45,16 +45,13 @@ NNetWorkThread::NNetWorkThread
 	NNetModelStorage        * const pStorage,
 	BOOL                      const bAsync
 )
-:	m_pStorage               ( pStorage ),
-	m_pNNetModel             ( pNNetModel ),
-	m_pEventPOI              ( pEvent ),   
-	m_pModelObserver         ( pObserver ),   
-	m_pWorkThreadInterface   ( pWorkThreadInterface ),
-	m_hwndApplication        ( hwndApplication ),
-	m_bContinue              ( FALSE ),
-	m_pSlowMotionRatio       ( pSlowMotionRatio ),
-	m_pTimeResObserver       ( nullptr ),
-	m_usRealTimeSpentPerCycle( 0.0_MicroSecs )
+:	m_pStorage            ( pStorage ),
+	m_pNNetModel          ( pNNetModel ),
+	m_pEventPOI           ( pEvent ),   
+	m_pModelObserver      ( pObserver ),   
+	m_pWorkThreadInterface( pWorkThreadInterface ),
+	m_hwndApplication     ( hwndApplication ),
+	m_pSlowMotionRatio    ( pSlowMotionRatio )
 {
 	m_pTimeResObserver = new TimeResObserver( this );
 	m_pNNetModel->AddParameterObserver( m_pTimeResObserver );   // notify me if parameters change
@@ -91,7 +88,7 @@ static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
 
 void NNetWorkThread::ThreadStartupFunc( ) 
 { 
-//	SetThreadAffinityMask( 0x0002 );
+	SetThreadAffinityMask( 0x0002 );
 }
 
 void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )

@@ -106,7 +106,7 @@ public:
 	T * const NewShape( MicroMeterPoint const & pos ) 
 	{ 
 		auto pT { new T( pos ) };
-		pT->SetId( ShapeId { CastToLong( m_Shapes.size() ) } );
+		pT->SetId( ShapeId { GetSizeOfShapeList() } );
 		m_Shapes.push_back( pT );
 		return pT;
 	}
@@ -145,6 +145,46 @@ public:
 				func( static_cast<T &>( * pShape ) );
 		}
 	}
+
+	void Apply2AllWithSteps( int const iStart, int const iStep, function<void(Shape &)> const & func ) const
+	{
+		if ( m_Shapes.empty() )
+			return;
+
+		for (   
+				vector<Shape *>::const_iterator ppShape = m_Shapes.begin() + iStart; 
+				ppShape < m_Shapes.end(); 
+				ppShape += iStep
+			)
+		{
+			if ( * ppShape != nullptr  )
+				func( ** ppShape );
+		}
+	}
+
+	void Prepare( )
+	{
+		Apply2AllWithSteps( 0, 3, [&]( Shape & shape ) { shape.Prepare( ); } );
+	}
+
+	//template <typename T>
+	//void Apply2All( function<void(T &)> const & func, int step = 1 ) const
+	//{
+	//	if ( m_Shapes.empty() )
+	//		return;
+
+	//	int start = step - 1;
+	//	for (   
+	//		vector<Shape *>::const_iterator ppShape = m_Shapes.begin() + start; 
+	//		ppShape < m_Shapes.end(); 
+	//		ppShape += step
+	//		)
+	//	{
+	//		Shape * pShape = * ppShape;
+	//		if ( (pShape != nullptr) && T::TypeFits( pShape->GetShapeType() ) )
+	//			func( static_cast<T &>( * pShape ) );
+	//	}
+	//}
 
 	template <typename T>
 	void Apply2AllInRect( MicroMeterRect const & rect, function<void(T &)> const & func ) const
