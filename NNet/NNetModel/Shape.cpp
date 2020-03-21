@@ -30,7 +30,7 @@ D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 	{
 		return INT_COLOR_EMPHASIZED;
 	}
-	else if ( m_pNNetModel->IsEmphasizeMode( ) )
+	else if ( m_pNNetModel->IsInEmphasizeMode( ) )
 		return INT_COLOR_LOW_KEY;
 	else
 	{
@@ -44,7 +44,7 @@ D2D1::ColorF Shape::GetFrameColor( tHighlightType const type ) const
 { 
 	if (type == tHighlightType::normal)
 	{
-		if ( ! m_pNNetModel->IsEmphasizeMode( ) || m_bEmphasized )
+		if ( ! m_pNNetModel->IsInEmphasizeMode( ) || m_bEmphasized )
 			return EXT_COLOR_NORMAL;
 		else
 			return EXT_COLOR_LOW_KEY;

@@ -10,6 +10,7 @@
 #include "BoolOp.h"
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
+#include "DisplayFunctor.h"
 #include "NNetModel.h"
 #include "NNetModelStorage.h"
 #include "AutoOpen.h"
@@ -31,7 +32,6 @@ NNetController::NNetController
 	NNetModelStorage        * const pStorage,
 	NNetWindow              * const pNNetWindow,
 	WinManager              * const pWinManager,
-	StatusBar               * const pStatusBar,
 	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
 	SlowMotionRatio         * const pSlowMotionRatio
 ) 
@@ -39,7 +39,6 @@ NNetController::NNetController
 	m_pStorage                ( pStorage ),
 	m_pNNetWindow             ( pNNetWindow ),
 	m_pWinManager             ( pWinManager ),
-	m_pStatusBar              ( pStatusBar ),
 	m_pNNetWorkThreadInterface( pNNetWorkThreadInterface ),
 	m_pSlowMotionRatio        ( pSlowMotionRatio ),
 	m_hCrsrWait               ( LoadCursor( NULL, IDC_WAIT ) )
@@ -52,7 +51,6 @@ NNetController::~NNetController( )
 	m_pStorage                 = nullptr;
 	m_pWinManager              = nullptr;
 	m_pSlowMotionRatio         = nullptr;
-    m_pStatusBar               = nullptr;
 }
 
 bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
@@ -63,6 +61,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 	case IDM_PERF_WINDOW:
 	case IDM_CRSR_WINDOW:
 	case IDM_PARAM_WINDOW:
+	//case IDM_CONS_WINDOW:
 		SendMessage( m_pWinManager->GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
 		break;
 
@@ -73,6 +72,10 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 
 	case IDM_SET_ZOOM:
 		m_pNNetWindow->ZoomKeepCrsrPos( MicroMeter((float &)lParam) );
+		break;
+
+	case IDM_CENTER_MODEL:
+		m_pNNetWindow->CenterModel( );
 		break;
 
 	case IDM_SLOWER:
@@ -165,6 +168,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		}
 		break;
 
+	case IDM_PLUS:
+		m_pNNetWindow->ChangePulseRate( m_pNNetWindow->GetHighlightedShapeId( ), true );
+		break;
+
+	case IDM_MINUS:
+		m_pNNetWindow->ChangePulseRate( m_pNNetWindow->GetHighlightedShapeId( ), false );
+		break;
+
 	case IDD_PULSE_RATE:
 		if ( m_pNNetWindow->PulseRateDlg( m_pNNetWindow->GetHighlightedShapeId( ) ) )
 			m_bUnsavedChanges = true;
@@ -177,6 +188,8 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDM_RUN:
 		m_pNNetWorkThreadInterface->PostResetTimer( );
+		if ( m_pDisplayFunctor )
+			(* m_pDisplayFunctor)( wstring( L"" ) );
 		return true;
 
 	case IDD_CONNECT:
@@ -215,12 +228,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_ANALYZE:
+		//m_pWinManager->BringToTop( IDM_CONS_WINDOW );
+		//SetFocus( m_pWinManager->GetHWND( IDM_APPL_WINDOW ) );
 		m_pNNetWorkThreadInterface->PostActionCommand( wmId, NO_SHAPE, NP_NULL );
 		m_pNNetWorkThreadInterface->PostSendBack( IDM_ANALYZE_FINISHED );
 		break;
 
 	case IDM_ANALYZE_FINISHED:
-		m_pNNetWindow->EmphasizeAnalyzeResult( );
+		m_pNNetWindow->AnalysisFinished( );
 		break;
 
 	case IDM_SCRIPT_DIALOG:

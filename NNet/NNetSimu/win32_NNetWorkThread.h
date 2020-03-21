@@ -12,7 +12,6 @@
 
 class NNetModel;
 class ActionTimer;
-class WinManager;
 class SlowMotionRatio;
 class EventInterface;
 class NNetModelStorage;
@@ -130,6 +129,7 @@ public:
 
 private:
 
+	void analyze();
 	void compute();
 	BOOL dispatch( MSG const );
 	void generationRun( bool const );

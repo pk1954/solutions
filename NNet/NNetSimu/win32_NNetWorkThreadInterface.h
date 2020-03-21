@@ -53,11 +53,6 @@ public:
 	void PostRunGenerations   ( BOOL const );
 	void PostStopComputation  ( );
 	void PostGenerationStep   ( );
-	void PostGenerationSaveModel   ( );
-	void PostGenerationSaveModelAs ( );
-	void PostGenerationOpenModel   ( );
-	void PostGenerationReadModel   ( );
-	void PostGenerationNewModel   ( );
 	void PostRepeatGenerationStep();       // Do not call! Used by WorkThread only;
 
 	BOOL       IsRunning            ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }

@@ -4,13 +4,11 @@
 #include "stdafx.h"
 #include <iomanip>
 #include <time.h>
-//#include <codecvt>
 #include <sstream>
 #include "script.h"
 #include "win32_util.h"
 
 using std::wostream;
-//using std::wstring_convert;
 using std::stringbuf;
 using std::ostream;
 
@@ -144,3 +142,19 @@ void Util::SetApplicationTitle
         newTitle += L" -" + wstrAdd;
     SetWindowText( hwndApp, newTitle.c_str() );
 }
+
+void Util::StdOutConsole( )
+{
+    FILE  * fp;
+    BOOL    bRes = AllocConsole( );
+    errno_t res  = _wfreopen_s( &fp, L"CONOUT$", L"w", stdout );
+    wcout << L"Console started" << endl;
+    HWND hwnd = ::GetConsoleWindow();
+    if (hwnd != NULL)
+    {
+        LONG style = GetWindowLong( hwnd , GWL_STYLE );
+        style = style & ~(WS_SYSMENU);
+        SetWindowLong( hwnd, GWL_STYLE, style );
+    }	
+}
+

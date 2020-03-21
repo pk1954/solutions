@@ -83,7 +83,6 @@ TimeDisplay::TimeDisplay
 )
   :	m_pRefreshRate( nullptr )
 {
-	static PIXEL const PIX_WIDTH = PIXEL( 9 ) * 8;   //TODO: avoid magic numbers
 	m_pRefreshRate = new RefreshRate
 	( 
 		pStatusBar,
@@ -91,7 +90,7 @@ TimeDisplay::TimeDisplay
 		iPartInStatusBar
 	);
 	m_pRefreshRate->SetRefreshRate( 300ms );
-	pStatusBar->AddCustomControl( PIX_WIDTH ); 
+	pStatusBar->AddCustomControl( 8 );        // nr of characters 
 }
 
 TimeDisplay::~TimeDisplay( )

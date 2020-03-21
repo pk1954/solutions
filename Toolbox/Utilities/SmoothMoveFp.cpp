@@ -7,6 +7,13 @@
 #include <algorithm>
 #include "SmoothMoveFp.h"
 
+float const SmoothMoveFp::START_POINT  { 0.0f };
+float const SmoothMoveFp::END_POINT    { 1.0f };
+float const SmoothMoveFp::DISTANCE     { END_POINT - START_POINT };
+float const SmoothMoveFp::BREAK_POINT  { START_POINT + DISTANCE / 2.0f };
+float const SmoothMoveFp::NR_OF_STEPS  { 20.0f };
+float const SmoothMoveFp::ACCELERATION { ( 4.0f * DISTANCE )/ (NR_OF_STEPS * NR_OF_STEPS) };
+    
 SmoothMoveFp::SmoothMoveFp( )
 {
     Reset();
@@ -26,37 +33,3 @@ float SmoothMoveFp::Step( )
         m_fVelocity -= ACCELERATION;
     return m_fPos + m_fVelocity;
 }
-
-//MicroMeter SmoothMoveFp::Step( MicroMeter umActual, MicroMeter umDesired )
-//{
-//    MicroMeter const umDelta { umDesired - umActual };
-//
-//    if ( m_umAccStep.IsNull( ) )
-//    {
-//        //float const fFactor { 2.0f / (NR_OF_STEPS * (NR_OF_STEPS + 1)) };
-//        float const fFactor { 1000.0f };
-//        m_umAccStep = MicroMeter( umDelta.GetAbsValue() / fFactor ); // Always positive!
-//    }
-//
-//    MicroMeter const umAbsDelta    { umDelta.GetAbsValue() };
-//    MicroMeter const umAbsVelocity { m_umVelocity.GetAbsValue() };
-//    float      const fSteps2Break  { umAbsVelocity / m_umAccStep };
-//    MicroMeter const umBreakDist   { umAbsVelocity * fSteps2Break * 0.5f };
-//    MicroMeter       umAbsVelocityNew;
-//    if ( umAbsDelta > umBreakDist ) // distance is big enough to accelerate 
-//    {
-//        umAbsVelocityNew = umAbsVelocity + m_umAccStep;
-//    }
-//    else  // we have to reduce velocity
-//    {
-//        umAbsVelocityNew = umAbsVelocity - m_umAccStep;
-//        if ( umAbsDelta < umAbsVelocityNew  )
-//        {
-//            Reset();
-//            return umDesired;
-//        }
-//    }
-//
-//    m_umVelocity = ( umDelta > 0.0_MicroMeter ) ? umAbsVelocityNew : - umAbsVelocityNew;
-//    return umActual + m_umVelocity;
-//}

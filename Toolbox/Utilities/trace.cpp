@@ -9,9 +9,9 @@
 #include <iostream>
 #include "trace.h"
 
-std::wofstream OpenTraceFile( std::wstring const wszTraceFileName )
+wofstream OpenTraceFile( std::wstring const wszTraceFileName )
 {
-    std::wofstream traceStream;
+    wofstream traceStream;
     traceStream.open( wszTraceFileName, std::ios::out );
     if ( traceStream.bad() )
     {

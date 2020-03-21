@@ -51,8 +51,9 @@ public:
 
 	void        ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
 	void        Zoom( bool const );
-	void        EmphasizeAnalyzeResult( );
+	void        AnalysisFinished( );
 	void        ZoomKeepCrsrPos( MicroMeter const );
+	void        CenterModel( );
 
 	MicroMeter  GetPixelSize  ( ) const { return m_coord.GetPixelSize  (); }
 	fPixelPoint GetPixelOffset( ) const { return m_coord.GetPixelOffset(); }
@@ -62,6 +63,7 @@ public:
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
 
 	bool PulseRateDlg( ShapeId const );
+	bool ChangePulseRate( ShapeId const, bool const );
 	bool TriggerSoundDlg( ShapeId const );
 	void ShowDirectionArrows( bool const );
 

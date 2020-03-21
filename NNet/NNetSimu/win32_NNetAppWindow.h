@@ -33,6 +33,7 @@ class SimulationControl;
 class NNetModelStorage;
 class ParameterDialog;
 class PerformanceWindow;
+class StatusBarDisplayFunctor;
 
 class NNetAppWindow : public BaseAppWindow
 {
@@ -62,16 +63,17 @@ private:
 	ScriptHook              m_ScriptHook              { };
 	SlowMotionRatio         m_SlowMotionRatio         { };
 
-	SimulationControl * m_pSimulationControl { nullptr };
-	NNetReadBuffer    * m_pNNetReadBuffer    { nullptr };
-	NNetController    * m_pNNetController    { nullptr };
-	NNetModel         * m_pModelDataWork     { nullptr };
-	NNetWindow        * m_pMainNNetWindow    { nullptr };
-	TimeDisplay       * m_pTimeDisplay       { nullptr };
-	SlowMotionDisplay * m_pSlowMotionDisplay { nullptr };
-	CrsrWindow        * m_pCrsrWindow        { nullptr };
-	PerformanceWindow * m_pPerformanceWindow { nullptr };
-	NNetModelStorage  * m_pNNetModelStorage  { nullptr };
-	ParameterDialog   * m_pParameterDlg      { nullptr };
-	Observable        * m_pCursorPos         { nullptr };
+	SimulationControl       * m_pSimulationControl       { nullptr };
+	NNetReadBuffer          * m_pNNetReadBuffer          { nullptr };
+	NNetController          * m_pNNetController          { nullptr };
+	NNetModel               * m_pModelDataWork           { nullptr };
+	NNetWindow              * m_pMainNNetWindow          { nullptr };
+	TimeDisplay             * m_pTimeDisplay             { nullptr };
+	SlowMotionDisplay       * m_pSlowMotionDisplay       { nullptr };
+	CrsrWindow              * m_pCrsrWindow              { nullptr };
+	PerformanceWindow       * m_pPerformanceWindow       { nullptr };
+	NNetModelStorage        * m_pNNetModelStorage        { nullptr };
+	ParameterDialog         * m_pParameterDlg            { nullptr };
+	Observable              * m_pCursorPos               { nullptr };
+	StatusBarDisplayFunctor * m_pStatusBarDisplayFunctor { nullptr };
 };

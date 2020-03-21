@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include <iomanip>
 #include "Direct2D.h"
 #include "PixelCoordsFp.h"
 #include "tHighlightType.h"
@@ -13,6 +14,8 @@
 
 using std::chrono::microseconds;
 using std::wostringstream;
+using std::setprecision;
+using std::fixed;
 
 InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
   : Neuron( upCenter, ShapeType::Value::inputNeuron ),
@@ -79,7 +82,10 @@ void InputNeuron::DrawNeuronText( PixelCoordsFp & coord ) const
 
 	m_wBuffer.clear( );
 	m_wBuffer.str( std::wstring() );
-	m_wBuffer << GetPulseFrequency().GetValue() << L" " << GetParameterUnit( tParameter::pulseRate );
+	m_wBuffer << fixed << setprecision(2) 
+		      << GetPulseFrequency().GetValue() 
+		      << L" " 
+		      << GetParameterUnit( tParameter::pulseRate );
 
 	DisplayText( pixRect, m_wBuffer.str( ) );
 }

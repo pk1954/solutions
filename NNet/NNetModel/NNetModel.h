@@ -73,9 +73,9 @@ public:
 	fMicroSecs      const GetSimulationTime( )                const { return m_timeStamp; }
 	long            const GetSizeOfShapeList( )               const { return CastToLong( m_Shapes.size() ); }
 	bool            const HasModelChanged( )                  const { return m_bUnsavedChanges; }
-	bool            const IsEmphasizeMode( )                  const { return m_bEmphasizeMode; }
+	bool            const IsInEmphasizeMode( )                const { return m_bEmphasizeMode; }
 	fMicroSecs      const GetTimeResolution( )                const { return m_usResolution; }
-	float           const GetOpacity( )                       const { return IsEmphasizeMode() ? 0.5f : 1.0f; }
+	float           const GetOpacity( )                       const { return IsInEmphasizeMode() ? 0.5f : 1.0f; }
 	long            const GetNrOfShapes( )                    const;
 
 	BaseKnot * const GetStartKnotPtr( ShapeId const idPipeline ) const 
@@ -160,11 +160,6 @@ public:
 			if ( * ppShape != nullptr  )
 				func( ** ppShape );
 		}
-	}
-
-	void Prepare( )
-	{
-		Apply2AllWithSteps( 0, 3, [&]( Shape & shape ) { shape.Prepare( ); } );
 	}
 
 	//template <typename T>

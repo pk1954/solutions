@@ -321,14 +321,6 @@ namespace Util
         return monInfo;
     }
 
-	inline void StdOutConsole( )
-	{
-		FILE * fp;
-		BOOL    bRes = AllocConsole( );
-		errno_t res  = _wfreopen_s( &fp, L"CONOUT$", L"w", stdout );
-		wcout << L"Console started" << endl;
-	}
-
 	void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );
 
     void AdjustRight( HWND const, PIXEL const );
@@ -343,4 +335,5 @@ namespace Util
     ULONGLONG GetPhysicalMemory( );
 	wstring   GetCurrentDateAndTime( );
 	void      SetApplicationTitle( HWND const, int const, wstring const = L"" );
+    void      StdOutConsole( );
 };

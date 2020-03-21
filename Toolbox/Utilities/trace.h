@@ -6,4 +6,7 @@
 #include <fstream>
 #include <iostream>
 
-std::wofstream OpenTraceFile( std::wstring const );
+using std::wofstream;
+using std::wstring;
+
+wofstream OpenTraceFile( wstring const );

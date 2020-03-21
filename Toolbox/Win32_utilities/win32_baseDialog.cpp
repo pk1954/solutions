@@ -22,7 +22,7 @@ HWND BaseDialog::StartBaseDialog
         ( LPARAM )this
     );
 
-    SetWindowHandle( hwnd );
+	SetWindowHandle( hwnd );
 
 	StartRootWindow( visibilityCriterion );
 

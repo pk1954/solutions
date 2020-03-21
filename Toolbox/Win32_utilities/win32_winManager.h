@@ -17,7 +17,7 @@ public:
     WinManager( );
     virtual ~WinManager( ) { };
 
-	void AddWindow( std::wstring const, UINT const, HWND, BOOL const, BOOL const );
+	void AddWindow( std::wstring const, UINT const, HWND,               BOOL const, BOOL const );
 	void AddWindow( std::wstring const, UINT const, BaseWindow const &, BOOL const, BOOL const );
 	void AddWindow( std::wstring const, UINT const, BaseDialog const &, BOOL const, BOOL const );
 
@@ -31,17 +31,34 @@ public:
 		m_map.clear ();
 	}
 
-	std::wstring const GetWindowName( UINT const id )  const // can throw out_of_range exception
+	std::wstring const GetWindowName( UINT const id ) const // can throw out_of_range exception
     {
         return m_map.at( id ).m_wstr;
     }
 
-	HWND const GetHWND( UINT const id )  const // can throw out_of_range exception
+	HWND const GetHWND( UINT const id ) const // can throw out_of_range exception
 	{
 		return m_map.at( id ).m_hwnd;
 	}
 
-	BaseWindow const * const GetBaseWindow( UINT const id )  const // can throw out_of_range exception
+	void BringToTop( UINT const id ) const
+	{
+		HWND hwnd { GetHWND( id ) };
+		BringWindowToTop( hwnd );
+		ShowWindow( hwnd, SW_SHOWNORMAL );
+	}
+
+	void AdjustRight( UINT const id, PIXEL const pixYpos = 0_PIXEL ) const
+	{
+		Util::AdjustRight( GetHWND( id ), pixYpos );
+	}
+
+	void AdjustLeft( UINT const id, PIXEL const pixYpos = 0_PIXEL ) const
+	{
+		Util::AdjustLeft( GetHWND( id ), pixYpos );
+	}
+
+	BaseWindow const * const GetBaseWindow( UINT const id ) const // can throw out_of_range exception
 	{
 		return m_map.at( id ).m_pBaseWindow;
 	}
@@ -55,17 +72,17 @@ public:
 		return -1;
 	}
 
-    BOOL const IsMoveable( UINT const id )  const // can throw out_of_range exception
+    BOOL const IsMoveable( UINT const id ) const // can throw out_of_range exception
     {
         return m_map.at( id ).m_bTrackPosition;
     }
 
-	BOOL const IsSizeable( UINT const id )  const // can throw out_of_range exception
+	BOOL const IsSizeable( UINT const id ) const // can throw out_of_range exception
 	{
 		return m_map.at( id ).m_bTrackSize;
 	}
 
-	BOOL const IsVisible( UINT const id )  const // can throw out_of_range exception
+	BOOL const IsVisible( UINT const id ) const // can throw out_of_range exception
 	{
 		return IsWindowVisible( GetHWND( id ) );
 	}
@@ -108,4 +125,14 @@ private:
 
     void dumpMonitorConfiguration( ) const;
     void dumpWindowCoordinates( ) const;
+
+	void addWindow
+	( 
+		std::wstring const,
+		UINT         const,
+		HWND         const,
+		BaseWindow   const * const,
+		BOOL         const,
+		BOOL         const
+	);
 };

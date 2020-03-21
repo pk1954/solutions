@@ -189,6 +189,18 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	}
 }
 
+bool NNetWindow::ChangePulseRate( ShapeId const id, bool const bDirection )
+{
+	static fHertz const INCREMENT { 0.01_fHertz };
+	InputNeuron const * pInputNeuron { m_pModel->GetConstTypedShape<InputNeuron>(id) };
+	if ( pInputNeuron == nullptr )
+		return false;
+	fHertz const fOldValue { pInputNeuron->GetPulseFrequency( ) };
+	fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
+	m_pNNetWorkThreadInterface->PostSetPulseRate( id, fNewValue.GetValue() );
+	return true;
+}
+
 bool NNetWindow::PulseRateDlg( ShapeId const id )
 {
 	InputNeuron const * pInputNeuron { m_pModel->GetConstTypedShape<InputNeuron>(id) };
@@ -305,10 +317,23 @@ void NNetWindow::doPaint( )
 		m_pModel->Apply2AllInRect<BaseKnot>( umRect, [&]( BaseKnot & shape ) { shape.DrawNeuronText( m_coord ); } );
 }
 
-void NNetWindow::EmphasizeAnalyzeResult( )
+void NNetWindow::CenterModel( )
 {
-	m_focusMode = FOCUS_MODE::ZOOM_OUT;
+	m_focusMode = FOCUS_MODE::ZOOM_IN;
 	emphasizeSelection( m_pModel->GetEnclosingRect( ), 1.2f );
+}
+
+void NNetWindow::AnalysisFinished( )
+{
+	if ( m_pModel->IsInEmphasizeMode() )
+	{
+		m_focusMode = FOCUS_MODE::ZOOM_OUT;
+		emphasizeSelection( m_pModel->GetEnclosingRect( ), 1.2f );
+	}
+	else
+	{
+		m_focusMode = FOCUS_MODE::NO_FOCUS;
+	}
 }
 
 void NNetWindow::emphasizeSelection( MicroMeterRect const rect, float const fRatioFactor )
@@ -329,15 +354,18 @@ void NNetWindow::emphasizeSelection( MicroMeterRect const rect, float const fRat
 
 bool NNetWindow::smoothStep( )  // returns true, if all targets reached
 {
-	float fPos { m_smoothMove.Step() };
-	fPixelPoint const fpCenter { m_coord.convert2fPixelPoint( GetClRectCenter( ) ) };
+	float fPos            { m_smoothMove.Step() };
+	bool  fTargetsReached { fPos >= SmoothMoveFp::END_POINT };
 
-	m_coord.Zoom  ( m_umPixelSizeStart + m_umPixelSizeDelta * fPos );
-	m_coord.Center( m_umPntCenterStart + m_umPntCenterDelta * fPos, fpCenter );
+	if ( ! fTargetsReached )
+	{
+		fPixelPoint const fpCenter { m_coord.convert2fPixelPoint( GetClRectCenter( ) ) };
+		m_coord.Zoom  ( m_umPixelSizeStart + m_umPixelSizeDelta * fPos );
+		m_coord.Center( m_umPntCenterStart + m_umPntCenterDelta * fPos, fpCenter );
+		Notify( TRUE );     // cause immediate repaint
+	}
 
-	Notify( TRUE );     // cause immediate repaint
-
-	return fPos >= 1.0f;
+	return fTargetsReached;
 }
 
 void NNetWindow::OnPaint( )
@@ -431,15 +459,12 @@ void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 
 MicroMeterPoint NNetWindow::PixelPoint2MicroMeterPoint( PixelPoint const pixPoint ) const
 {
-	fPixelPoint     const fPixPoint { convert2fPixelPoint( pixPoint ) };
-	MicroMeterPoint const umPoint   { m_coord.convert2MicroMeterPointPos( fPixPoint ) };
-	return umPoint;
+	return m_coord.convert2MicroMeterPointPos( pixPoint );
 }
 
 LPARAM NNetWindow::pixelPoint2LPARAM( PixelPoint const pixPoint ) const
 {
-	MicroMeterPoint const umPoint { PixelPoint2MicroMeterPoint( pixPoint ) };
-	return Util::Pack2UINT64(umPoint);
+	return Util::Pack2UINT64( m_coord.convert2MicroMeterPointPos( pixPoint ) );
 }
 
 LPARAM NNetWindow::crsPos2LPARAM( ) const 

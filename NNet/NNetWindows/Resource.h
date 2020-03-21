@@ -32,7 +32,6 @@
 #define IDM_SET_ZOOM                   72    
 #define IDM_ZOOM_IN                    73    
 #define IDM_ZOOM_OUT                   74    
-#define IDM_ZOOM_TRACKBAR              75    
 
 #define IDM_SIMU_MODE                  80
 #define IDM_FORWARD                    81
@@ -78,6 +77,9 @@
 #define IDD_AUTO_OPEN_ON        181
 #define IDD_AUTO_OPEN_OFF       182
 
+#define IDM_PLUS                191
+#define IDM_MINUS               192
+
 #define IDD_CONNECT             560
 #define IDD_INSERT_NEURON       561
 #define IDD_NEW_NEURON          562
@@ -102,4 +104,4 @@
 
 #define IDM_ANALYZE             600
 #define IDM_ANALYZE_FINISHED    601
-
+#define IDM_CENTER_MODEL        602

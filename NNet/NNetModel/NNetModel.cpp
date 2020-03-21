@@ -3,8 +3,6 @@
 // NNetModel
 
 #include "stdafx.h"
-#include <thread>
-#include <future>
 #include <vector>
 #include <unordered_map>
 #include "MoreTypes.h"
@@ -24,7 +22,6 @@
 
 using namespace std::chrono;
 using std::unordered_map;
-using std::thread;
 
 NNetModel::NNetModel( )
   : m_Shapes( ),
@@ -362,9 +359,7 @@ void NNetModel::AddIncoming2Knot( ShapeId const id, MicroMeterPoint const & pos 
 
 void NNetModel::Compute( )
 {
-	int iNrOfThreads = 5;
-	vector<thread * > threads;
-	threads.resize( iNrOfThreads );
+	int iNrOfThreads = 1;
 
 	for ( int i = 0; i < iNrOfThreads; i++ )
 		Apply2AllWithSteps( i, iNrOfThreads, [&]( Shape & shape ) { shape.Prepare( ); } );
@@ -438,6 +433,7 @@ void NNetModel::checkConsistency( Shape * pShape )
 				assert( pStart->IsBaseKnot() );
 			if ( Shape const * const pEnd   { pPipeline->GetEndKnotPtr() } )
 				assert( pEnd->IsBaseKnot() );
+			assert( pPipeline->GetStartKnotId() != pPipeline->GetEndKnotId() );
 			break;
 		}
 

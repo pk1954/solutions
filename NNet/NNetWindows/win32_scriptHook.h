@@ -19,6 +19,7 @@ public:
 	{
 		m_pStatusBar = pStatusBar;
 		m_iStatusBarPart = iPart;
+		m_pStatusBar->AddCustomControl( 80 );  // nr of characters
 	}
 
     virtual void operator( ) ( Script & script ) const

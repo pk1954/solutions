@@ -32,12 +32,12 @@ public:
     HWND WINAPI AddButton       ( LPCTSTR const, HMENU const, DWORD const  );
     HWND WINAPI AddTrackBar     ( HMENU );
 
-	void AddCustomControl( PIXEL const );
+	void AddCustomControl( int const );
 
 	int  NewPart( );
 	void LastPart( );
 
-	void DisplayInPart( int const, std::wstring const & );
+	void DisplayInPart( int const, wstring const & );
 
 private:
 
@@ -45,14 +45,14 @@ private:
 
 	std::vector< PIXEL > m_statWidths;
 
-	PIXEL m_pixClientHeight;
-    PIXEL m_pixBorderX;
-    PIXEL m_pixBorderY;
-    PIXEL m_pixPosX;
+	PIXEL m_pixClientHeight { 0_PIXEL };
+    PIXEL m_pixBorderX      { 0_PIXEL };
+    PIXEL m_pixBorderY      { 0_PIXEL };
+    PIXEL m_pixPosX         { 0_PIXEL };
 
-	NNetWorkThreadInterface const * m_pWorkThreadInterface;
+	NNetWorkThreadInterface const * m_pWorkThreadInterface { nullptr };
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 
-friend static LRESULT CALLBACK OwnerDrawStatusBar( HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR );
+	friend static LRESULT CALLBACK OwnerDrawStatusBar( HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR );
 };

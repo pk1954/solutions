@@ -28,6 +28,7 @@
 // infrastructure
 
 #include "util.h"
+#include "DisplayFunctor.h"
 #include "ObserverInterface.h"
 
 // scripting and tracing
@@ -46,11 +47,14 @@
 
 // application
 
+#include "Analyzer.h"
 #include "AutoOpen.h"
 #include "win32_NNetAppWindow.h"
 
 using namespace std::literals::chrono_literals;
 using std::wostringstream;
+using std::wstring;
+using std::wcout;
 
 NNetAppWindow::NNetAppWindow( )
 {
@@ -90,6 +94,7 @@ NNetAppWindow::~NNetAppWindow( )
 	delete m_pCrsrWindow;
 	delete m_pParameterDlg;
 	delete m_pPerformanceWindow;
+	delete m_pStatusBarDisplayFunctor;
 }
 
 void NNetAppWindow::Start( )
@@ -111,7 +116,6 @@ void NNetAppWindow::Start( )
 		m_pNNetModelStorage,
 		m_pMainNNetWindow,
 		& m_WinManager,
-		& m_StatusBar, 
 		& m_NNetWorkThreadInterface,
 		& m_SlowMotionRatio
 	);
@@ -150,9 +154,11 @@ void NNetAppWindow::Start( )
 
 	configureStatusBar( );
 
+	m_pNNetController->SetDisplayFunctor( m_pStatusBarDisplayFunctor );
+
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
-		std::wcout << L"Using default window positions" << std::endl;
+		wcout << L"Using default window positions" << std::endl;
 		Show( TRUE );
 		m_pMainNNetWindow->Show( TRUE );
 	}
@@ -166,7 +172,7 @@ void NNetAppWindow::Start( )
 	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage, m_pModelDataWork ) )
 		m_pModelDataWork->CreateInitialShapes();
 
-	m_pNNetModelStorage->Write( * m_pModelDataWork, std::wcout );
+	m_pNNetModelStorage->Write( * m_pModelDataWork, wcout );
 
 	m_bStarted = TRUE;
 }
@@ -213,6 +219,8 @@ void NNetAppWindow::configureStatusBar( )
 	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine );
 	m_StatusBar.DisplayInPart( iPartScriptLine, L"" );
 	Script::ScrSetWrapHook( & m_ScriptHook );
+	m_pStatusBarDisplayFunctor = new StatusBarDisplayFunctor( & m_StatusBar, iPartScriptLine );
+	ModelAnalyzer::SetDisplayFunctor( m_pStatusBarDisplayFunctor );
 
 	m_StatusBar.LastPart( );
 	m_pTimeDisplay->Notify( true );

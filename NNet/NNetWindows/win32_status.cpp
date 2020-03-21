@@ -57,16 +57,15 @@ void StatusBar::Start
 	m_pixBorderX      = PIXEL(PIXEL(GetSystemMetrics( SM_CXSIZEFRAME ))) + 10_PIXEL;
 	m_pixBorderY      = PIXEL(PIXEL(GetSystemMetrics( SM_CYSIZEFRAME )));
 	m_pixClientHeight = GetHeight( ) - m_pixBorderY;
-
-	m_pixPosX = 0_PIXEL;
 }
 
 void StatusBar::AddCustomControl
 ( 
-	PIXEL const  pixWidth
+	int const width  // in number of characters
 )
 {
-	m_pixPosX += pixWidth;
+	static PIXEL const FONT_WIDTH = PIXEL( 9 );
+	m_pixPosX += FONT_WIDTH * width;
 }
 
 int StatusBar::NewPart( )
@@ -155,7 +154,7 @@ void StatusBar::Resize( ) const
     (void)SendNotifyMessage( WM_SIZE, 0, 0 );
 }
 
-void StatusBar::DisplayInPart( int const iPart, std::wstring const & wstrLine )
+void StatusBar::DisplayInPart( int const iPart, wstring const & wstrLine )
 {
     (void)SendNotifyMessage( SB_SETTEXT, iPart, (LPARAM)( wstrLine.c_str( ) ) );
 }

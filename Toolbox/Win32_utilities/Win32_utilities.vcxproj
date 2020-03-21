@@ -194,6 +194,7 @@
     <ClCompile Include="win32_messagePump.cpp" />
     <ClCompile Include="win32_modelWindow.cpp" />
     <ClCompile Include="win32_sound.cpp" />
+    <ClCompile Include="win32_stdDialogBox.cpp" />
     <ClCompile Include="win32_textBuffer.cpp" />
     <ClCompile Include="win32_hiResTimer.cpp" />
     <ClCompile Include="win32_rootWindow.cpp" />

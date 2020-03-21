@@ -15,14 +15,15 @@ public:
     void  Reset( );
     float Step( );
 
-    float m_fPos;
+    static float const START_POINT;
+    static float const END_POINT;
+
+    float m_fPos;       // runs from START_POINT to END_POINT
     float m_fVelocity;
 
 private:
-    float const START_POINT  { 0.0f };
-    float const END_POINT    { 1.0f };
-    float const DISTANCE     { END_POINT - START_POINT };
-    float const BREAK_POINT  { START_POINT + DISTANCE / 2.0f };
-    float const NR_OF_STEPS  { 20.0f };
-    float const ACCELERATION { ( 4.0f * DISTANCE )/ (NR_OF_STEPS * NR_OF_STEPS) };
+    static float const DISTANCE;    
+    static float const BREAK_POINT; 
+    static float const NR_OF_STEPS; 
+    static float const ACCELERATION;
 };

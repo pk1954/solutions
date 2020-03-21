@@ -27,7 +27,7 @@ void BaseAppWindow::Initialize( NNetWorkThreadInterface * const pWorkThreadInter
 	m_pWorkThreadInterface = pWorkThreadInterface;
 
 	m_hwndConsole = GetConsoleWindow( );
-	SetWindowPos( m_hwndConsole, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE );
+	BringWindowToTop( m_hwndConsole );
 
 	DefineUtilityWrapperFunctions( );
 

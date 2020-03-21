@@ -22,6 +22,7 @@
 using std::wcout;
 using std::endl;
 using std::put_time;
+using std::wofstream;
 
 static float const PROTOCOL_VERSION { 1.4f };
 
@@ -63,20 +64,29 @@ public:
 			ShapeId const idStart { script.ScrReadLong() };
 			script.ScrReadSpecial( L'-' );
 			script.ScrReadSpecial( L'>' );
-			ShapeId    const idEnd     { script.ScrReadLong() };
-			Pipeline * const pPipeline { new Pipeline( ) };
-			BaseKnot * const pStart    { m_pModel->GetTypedShape<BaseKnot>( idStart ) };
-			BaseKnot * const pEnd      { m_pModel->GetTypedShape<BaseKnot>( idEnd   ) };
+			ShapeId const idEnd { script.ScrReadLong() };
+			if ( idStart == idEnd )
+			{
+				wcout << "+++ pipeline has identical start and end point" << endl;
+				wcout << "+++ " << idFromScript << L": " << idStart << L" -> " << idEnd << endl;
+				wcout << "+++ pipeline ignored" << endl;
+			}
+			else
+			{ 
+				Pipeline * const pPipeline { new Pipeline( ) };
+				BaseKnot * const pStart    { m_pModel->GetTypedShape<BaseKnot>( idStart ) };
+				BaseKnot * const pEnd      { m_pModel->GetTypedShape<BaseKnot>( idEnd   ) };
 
-			pPipeline->SetId( idFromScript );
+				pPipeline->SetId( idFromScript );
 
-			pStart->AddOutgoing( pPipeline );
-			pPipeline->SetStartKnot( pStart );
+				pStart->AddOutgoing( pPipeline );
+				pPipeline->SetStartKnot( pStart );
 
-			pEnd->AddIncoming( pPipeline );
-			pPipeline->SetEndKnot( pEnd );
+				pEnd->AddIncoming( pPipeline );
+				pPipeline->SetEndKnot( pEnd );
 
-			pShape = pPipeline;
+				pShape = pPipeline;
+			}
 		}
 		else 
 		{
@@ -105,8 +115,11 @@ public:
 		}
 		script.ScrReadSpecial( L')' );
 
-		m_pModel->SetShape( pShape, idFromScript );
-		pShape->SetId( idFromScript );
+		if ( pShape )
+		{
+			m_pModel->SetShape( pShape, idFromScript );
+			pShape->SetId( idFromScript );
+		}
 		#ifndef NDEBUG
 			m_pModel->CheckConsistency();
 		#endif
@@ -246,11 +259,10 @@ bool NNetModelStorage::Read( NNetModel & model, wstring const wstrPath )
 	model.ResetModel();
 	if ( ! m_bPreparedForReading )
 		prepareForReading( & model );
-	wcout << L"** NNet model file " << wstrModelFilePath;
+	wcout << L"** NNet model file " << wstrModelFilePath << endl;
 	bool bResult = scriptModel.ScrProcess( wstrModelFilePath ); 
 	if ( bResult )
 	{
-		wcout << L" successfully processed" << endl;
 		model.ModelSaved( );
 		m_wstrPathOfOpenModel = wstrModelFilePath;
 		NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );
@@ -418,7 +430,7 @@ bool NNetModelStorage::AskModelFile( )
 
 void NNetModelStorage::writeModel( NNetModel const & model )
 {
-	std::wofstream modelFile( m_wstrPathOfOpenModel );
+	wofstream modelFile( m_wstrPathOfOpenModel );
 	Write( model, modelFile );
 	modelFile.close( );
 	NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );

@@ -188,10 +188,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::ANALYZE:
-		generationStop( );
-		m_pNNetModel->ClearModel( );
-		if ( ModelAnalyzer::FindLoop( * m_pNNetModel ) )
-			ModelAnalyzer::EmphasizeLoopShapes( * m_pNNetModel );
+		analyze( );
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE:
@@ -265,6 +262,16 @@ bool NNetWorkThread::actionCommand
 	} 
 
 	return TRUE;
+}
+
+void NNetWorkThread::analyze( )
+{
+	generationStop( );
+	m_pNNetModel->ClearModel( );
+	bool bLoopFound { ModelAnalyzer::FindLoop( * m_pNNetModel ) };
+	if ( bLoopFound )
+		ModelAnalyzer::EmphasizeLoopShapes( * m_pNNetModel );
+	m_pNNetModel->SetEmphasizeMode( bLoopFound );
 }
 
 void NNetWorkThread::generationRun( bool const bFirst )

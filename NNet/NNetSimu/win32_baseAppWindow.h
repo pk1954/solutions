@@ -6,6 +6,7 @@
 
 #include <fstream>
 #include <iostream>
+#include "DisplayFunctor.h"
 #include "win32_baseWindow.h"
 #include "win32_winManager.h"
 #include "win32_status.h"
@@ -13,6 +14,8 @@
 class NNetWorkThreadInterface;
 class ModelWindow;
 class AppMenu;
+
+using std::wofstream;
 
 class BaseAppWindow : public BaseWindow
 {
@@ -39,12 +42,33 @@ private:
 
 	HWND m_hwndConsole { nullptr };
 
-	ModelWindow             * m_pModelWindow  { nullptr };
-	NNetWorkThreadInterface * m_pWorkThreadInterface  { nullptr };
+	ModelWindow             * m_pModelWindow         { nullptr };
+	NNetWorkThreadInterface * m_pWorkThreadInterface { nullptr };
 
-	std::wofstream m_traceStream {};
+	wofstream m_traceStream {};
 
 	void adjustChildWindows( );
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+};	
+
+class StatusBarDisplayFunctor : public DisplayFunctor
+{
+public:
+	StatusBarDisplayFunctor( StatusBar * const pStatusBar, int const iPart )
+	  : m_wstrBuffer( ),
+		m_pStatusBar(pStatusBar),
+		m_iPart( iPart)
+	{ }
+
+	virtual void operator() ( wstring const & line )
+	{
+		m_wstrBuffer = line;
+		m_pStatusBar->DisplayInPart( m_iPart, m_wstrBuffer );
+	}
+
+private:
+	wstring     m_wstrBuffer;
+	StatusBar * m_pStatusBar;
+	int         m_iPart;
 };

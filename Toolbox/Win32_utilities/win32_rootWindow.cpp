@@ -114,6 +114,7 @@ void RootWindow::contextMenu( PixelPoint const & pntPos )
 
 void RootWindow::SetWindowHandle( HWND const hwnd ) 
 { 
+	assert( hwnd );
 	m_hwnd    = hwnd;  
 	m_hwndApp = GetAncestor( m_hwnd, GA_ROOTOWNER );
 };

@@ -315,6 +315,23 @@ WinManager::WinManager( ) :
     #undef DEF_WINMAN_FUNC
 }
 
+void WinManager::addWindow
+( 
+    std::wstring const         wstrName, 
+    UINT         const         id, 
+    HWND         const         hwnd, 
+    BaseWindow   const * const pBaseWindow,
+    BOOL         const         bTrackPosition,
+    BOOL         const         bTrackSize
+)
+{
+    if ( id != 0 )
+    {
+        m_map.insert( std::pair< UINT, MAP_ELEMENT >( id, { wstrName, pBaseWindow, hwnd, bTrackPosition, bTrackSize } ) );
+        SymbolTable::ScrDefConst( wstrName, static_cast<ULONG>(id) );
+    }
+}
+
 void WinManager::AddWindow
 ( 
     wstring const wstrName, 
@@ -325,11 +342,7 @@ void WinManager::AddWindow
 )
 {
 	assert( hwnd != nullptr );
-    if ( id != 0 )
-    {
-        m_map.insert( std::pair< UINT, MAP_ELEMENT >( id, { wstrName, nullptr, hwnd, bTrackPosition, bTrackSize } ) );
-        SymbolTable::ScrDefConst( wstrName, static_cast<ULONG>(id) );
-    }
+    addWindow( wstrName, id, hwnd, nullptr, bTrackPosition, bTrackSize );
 }
 
 void WinManager::AddWindow
@@ -341,12 +354,7 @@ void WinManager::AddWindow
 	BOOL         const   bTrackSize
 )
 {
-	if ( id != 0 )
-	{
-		HWND hwnd = baseWindow.GetWindowHandle();
-		m_map.insert( std::pair< UINT, MAP_ELEMENT >( id, { wstrName, & baseWindow, hwnd, bTrackPosition, bTrackSize } ) );
-		SymbolTable::ScrDefConst( wstrName, static_cast<ULONG>(id) );
-	}
+    addWindow( wstrName, id, baseWindow.GetWindowHandle(), & baseWindow, bTrackPosition, bTrackSize );
 }
 
 void WinManager::AddWindow
@@ -358,9 +366,5 @@ void WinManager::AddWindow
 	BOOL         const   bTrackSize
 )
 {
-	if ( id != 0 )
-	{
-		AddWindow( wstrName, id, baseDialog.GetWindowHandle(), bTrackPosition, bTrackSize );
-	}
+    addWindow( wstrName, id, baseDialog.GetWindowHandle(), nullptr, bTrackPosition, bTrackSize );
 }
-

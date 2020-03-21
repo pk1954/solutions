@@ -51,10 +51,10 @@ public:
 private:
 	void drawInputNeuron( PixelCoordsFp const &, D2D1::ColorF const, float const ) const;
 
-	mV        m_mvFactor;       // precomputed value for optimization
-	fHertz    m_pulseFrequency; // pulse frequency and pulse duration depend on each other
+	mV         m_mvFactor;       // precomputed value for optimization
+	fHertz     m_pulseFrequency; // pulse frequency and pulse duration depend on each other
 	fMicroSecs m_pulseDuration;  // in principle one variable would be enough, but to avoid 
-	                            // floating point rounding effects, both are stored
+	                             // floating point rounding effects, both are stored
 };	
 
 InputNeuron const * Cast2InputNeuron( Shape const * );

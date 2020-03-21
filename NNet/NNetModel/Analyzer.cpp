@@ -3,45 +3,35 @@
 // NNetModel
 
 #include "stdafx.h"
-#include <fstream>
 #include "MoreTypes.h"
 #include "RectType.h"
 #include "NNetModel.h"
 #include "Analyzer.h"
 
-using std::wcout;
 using std::endl;
+using std::to_wstring;
 
-bool            ModelAnalyzer::m_bStop;
-int             ModelAnalyzer::m_iRecDepth;
-vector<Shape *> ModelAnalyzer::m_shapeStack;
-
-void ModelAnalyzer::printShapeStack( )
-{
-	for ( const auto & shape : m_shapeStack )
-	{
-		wcout << shape->GetId( ).GetValue() << L" - ";
-	}
-	wcout << endl;
-}
+DisplayFunctor * ModelAnalyzer::m_pDisplayFunctor { nullptr };
+bool             ModelAnalyzer::m_bStop           { false };
+int              ModelAnalyzer::m_iRecDepth       { 0 };
+vector<Shape *>  ModelAnalyzer::m_shapeStack      { };
 
 bool ModelAnalyzer::FindLoop( NNetModel const & model )
 {
 	int iNrOfShapes { model.GetNrOfShapes() };
-	wcout << iNrOfShapes << L" objects found" << endl;
+	(* m_pDisplayFunctor)( to_wstring( iNrOfShapes ) + L" objects found" );
 
 	for ( int iMaxLoopSize = 5; iMaxLoopSize <= iNrOfShapes + 1; iMaxLoopSize += 2 )
 	{
 		int iCounter { iMaxLoopSize };
 		m_iRecDepth = iMaxLoopSize;
 		m_bStop     = false;
-		wcout << L"looking for loops of size " << iMaxLoopSize << L". Press ESC to stop." << endl;
+		(* m_pDisplayFunctor)( wstring( L"Looking for loop of size " ) + to_wstring( iMaxLoopSize ) + L". Press ESC to stop." );
 		m_shapeStack.clear();
 		if ( model.Apply2AllB<BaseKnot>
 			  (
 			  	[ & ] ( BaseKnot & baseKnot )
 			    {
-				 	wcout << iCounter-- << L"\r";
 					if ( m_bStop )
 						return true;
 					else 
@@ -52,19 +42,18 @@ bool ModelAnalyzer::FindLoop( NNetModel const & model )
 		{
 			if ( m_bStop )
 			{
-				wcout << L"analysis aborted by user" << endl;
+				(* m_pDisplayFunctor)( wstring( L"analysis aborted by user" ) );
 				return false;
 			}
 			else
 			{
-				wcout << L"loop found" << endl;
-				printShapeStack( );
+				(* m_pDisplayFunctor)( wstring( L"loop found" ) );
 				return true;
 			}
 		}
 	}
 
-	wcout << L"no loop found" << endl;
+	(* m_pDisplayFunctor)( wstring( L"no loop found" ) );
 	return false;
 }
 
@@ -122,5 +111,4 @@ void ModelAnalyzer::EmphasizeLoopShapes( NNetModel & model )
 {
 	for ( const auto & pShape : m_shapeStack )
 		pShape->Emphasize( true );
-	model.SetEmphasizeMode( true );
 }

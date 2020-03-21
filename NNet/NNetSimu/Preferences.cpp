@@ -15,6 +15,7 @@
 #include "Win32_NNetWindow.h"
 #include "Preferences.h"
 
+using std::wofstream;
 using std::wstring;
 using std::string;
 using std::wcout;
@@ -73,7 +74,7 @@ private:
 static wstring const PREF_ON  { L"ON"  };
 static wstring const PREF_OFF { L"OFF" };
 
-wstring const PREFERENCES_FILE_NAME { L"NNetSimu.pref" };
+wstring const PREFERENCES_FILE_NAME { L"NNetSimu_UserPreferences.txt" };
 
 void Preferences::Initialize( )
 {
@@ -119,7 +120,7 @@ bool Preferences::ReadPreferences
 
 bool Preferences::WritePreferences( wstring const wstrModelPath, NNetWindow const * const pNNetWindow )
 {
-    std::wofstream prefFile( m_wstrPreferencesFile );
+    wofstream prefFile( m_wstrPreferencesFile );
     prefFile << L"SetSound "    << (Sound   ::IsOn() ? PREF_ON : PREF_OFF) << endl;
 	prefFile << L"SetAutoOpen " << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF) << endl;
     prefFile << L"ReadModel \""   << wstrModelPath << L"\"" << endl;

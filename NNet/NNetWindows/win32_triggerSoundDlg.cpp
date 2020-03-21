@@ -10,7 +10,6 @@
 #include "Resource.h"
 #include "win32_util.h"
 #include "win32_sound.h"
-#include "win32_util_resource.h"
 #include "win32_triggerSoundDlg.h"
 
 using std::wostringstream;

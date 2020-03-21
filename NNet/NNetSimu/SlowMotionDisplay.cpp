@@ -57,7 +57,6 @@ SlowMotionDisplay::SlowMotionDisplay
 ) 
   :	m_pRefreshRate( nullptr )
 {
-	static PIXEL const PIX_WIDTH = PIXEL( 9 ) * 11;  // TODO: avoid magic numbers
 	m_pRefreshRate = new RefreshRate
 	( 
 		pStatusBar,
@@ -66,7 +65,7 @@ SlowMotionDisplay::SlowMotionDisplay
 	);
 	m_pRefreshRate->SetRefreshRate( 300ms );
 	pSlowMotionRatio->RegisterObserver( this );    // notify me, if model has changed
-	pStatusBar->AddCustomControl( PIX_WIDTH ); 
+	pStatusBar->AddCustomControl( 11 );            // nr of characters 
 }
 
 SlowMotionDisplay::~SlowMotionDisplay( )

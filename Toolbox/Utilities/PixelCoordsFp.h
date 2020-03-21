@@ -48,6 +48,11 @@ public:
 		return convert2MicroMeterPointSize( pp + m_fPixOffset );
 	}
 
+	MicroMeterPoint convert2MicroMeterPointPos( PixelPoint const pixPoint ) const
+	{ 
+		return convert2MicroMeterPointSize( convert2fPixelPoint( pixPoint ) + m_fPixOffset );
+	}
+
 	fPixelPoint convert2fPixelPos( MicroMeterPoint const np ) const
 	{ 
 		return convert2fPixelSize( np ) - m_fPixOffset;
@@ -98,11 +103,6 @@ public:
 	MicroMeter convert2MicroMeter( PIXEL const pix ) const
 	{ 
 		return convert2MicroMeter( convert2fPIXEL( pix ) );
-	}
-
-	MicroMeterPoint convert2MicroMeterPointPos( PixelPoint const pnt ) const
-	{ 
-		return convert2MicroMeterPointPos( convert2fPixelPoint( pnt ) );
 	}
 
 	MicroMeterRect convert2MicroMeterRect( PixelRect const rect ) const
