@@ -464,7 +464,7 @@ MicroMeterPoint NNetWindow::PixelPoint2MicroMeterPoint( PixelPoint const pixPoin
 
 LPARAM NNetWindow::pixelPoint2LPARAM( PixelPoint const pixPoint ) const
 {
-	return Util::Pack2UINT64( m_coord.convert2MicroMeterPointPos( pixPoint ) );
+	return Util::Pack2UINT64( PixelPoint2MicroMeterPoint( pixPoint ) );
 }
 
 LPARAM NNetWindow::crsPos2LPARAM( ) const 

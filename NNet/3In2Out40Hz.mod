@@ -1,16 +1,16 @@
 # NNetModel
-# Created 20-03-2020 22-47-32
+# Created 21-03-2020 23-31-52
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
 
 Protocol version 1.4
 
-GlobalParameter PulseSpeed = 0.1
+GlobalParameter PulseSpeed = 0.2
 GlobalParameter PulseWidth = 2000
 GlobalParameter SignalLoss = 0
 GlobalParameter Threshold = 14
 GlobalParameter PeakVoltage = 10
-GlobalParameter RefractoryPeriod = 500
+GlobalParameter RefractoryPeriod = 550
 GlobalParameter TimeResolution = 100
 
 NrOfShapes = 640
@@ -49,7 +49,7 @@ CreateShape 60 knot (382.004|-68.4804)
 CreateShape 62 neuron (320.483|109.104)
 CreateShape 65 knot (505.444|-170.479)
 CreateShape 69 neuron (872.975|276.219)
-CreateShape 72 neuron (-685.89|136.471)
+CreateShape 72 neuron (-875.249|210.73)
 CreateShape 73 knot (-215.312|25.8674)
 CreateShape 76 neuron (76.7463|206.617)
 CreateShape 78 knot (18.3547|-15.7942)
@@ -171,8 +171,8 @@ CreateShape 354 knot (354.618|1829.48)
 CreateShape 356 knot (-213.295|435.036)
 CreateShape 360 knot (-493.192|869.2)
 CreateShape 362 knot (-425.404|687.952)
-CreateShape 365 knot (-744.529|372.239)
-CreateShape 367 knot (-848.38|-42.6829)
+CreateShape 365 knot (-1216.07|613.579)
+CreateShape 367 knot (-1319.92|198.658)
 CreateShape 370 knot (243.681|1303.33)
 CreateShape 372 knot (192.733|1102.01)
 CreateShape 375 knot (-527.466|1657.48)
@@ -454,6 +454,6 @@ CreateShape 431 pipeline (308->434)
 
 ShapeParameter InputNeuron 0 PulseRate = 50
 ShapeParameter InputNeuron 2 PulseRate = 50
-ShapeParameter InputNeuron 5 PulseRate = 50
+ShapeParameter InputNeuron 5 PulseRate = 50.08
 ShapeParameter InputNeuron 428 PulseRate = 50
 

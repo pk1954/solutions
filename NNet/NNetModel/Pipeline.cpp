@@ -32,23 +32,23 @@ Pipeline::Pipeline( MicroMeterPoint const umUnused )
 void Pipeline::Clear( )
 {
 	Shape::Clear( );
-	EnterCritSect();
+	LockShape();
 	fill( m_potential.begin(), m_potential.end(), 0.0_mV );
-	LeaveCritSect();
+	UnlockShape();
 }
 
 void Pipeline::Recalc( )
 {
 	if ( m_pKnotStart && m_pKnotEnd )
 	{
-		EnterCritSect();
+		LockShape();
 		meterPerSec  const pulseSpeed    { meterPerSec( m_pNNetModel->GetParameterValue( tParameter::pulseSpeed ) ) };
 		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pNNetModel->GetTimeResolution( ) ) };
 		MicroMeter   const pipelineLength{ Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
 		unsigned int const iNrOfSegments { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_potIter = m_potential.begin();
-		LeaveCritSect();
+		UnlockShape();
 	}
 }
 
@@ -91,14 +91,11 @@ bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const
 	MicroMeterPoint const fDelta{ GetEndPoint( ) - GetStartPoint( ) };
 	if ( IsCloseToZero( fDelta ) )
 		return false;
-	else
-	{
-		MicroMeterPoint const fOrthoScaled{ OrthoVector( fDelta, m_width ) };
-		MicroMeterPoint const corner1     { GetStartPoint( ) + fOrthoScaled };
-		MicroMeterPoint const corner2     { GetStartPoint( ) - fOrthoScaled };
-		MicroMeterPoint const corner3     { GetEndPoint  ( ) + fOrthoScaled };
-		return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
-	}
+	MicroMeterPoint const fOrthoScaled{ OrthoVector( fDelta, m_width ) };
+	MicroMeterPoint const corner1     { GetStartPoint( ) + fOrthoScaled };
+	MicroMeterPoint const corner2     { GetStartPoint( ) - fOrthoScaled };
+	MicroMeterPoint const corner3     { GetEndPoint  ( ) + fOrthoScaled };
+	return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
 }
 
 MicroMeterPoint Pipeline::GetVector( ) const
@@ -150,21 +147,17 @@ void Pipeline::DrawInterior( PixelCoordsFp & coord )
 	MicroMeterPoint const umVector     { umEndPoint - umStartPoint };
 	if ( ! IsCloseToZero( umVector ) )
 	{
-		EnterCritSect();
 		fPIXEL      const fWidth     { coord.convert2fPixel( m_width * PIPELINE_INTERIOR ) };
 		fPixelPoint const fPixVector { coord.convert2fPixelSize( umVector ) };
 		fPixelPoint const fPixSegVec { fPixVector / CastToFloat(m_potential.size()) };
 		fPixelPoint       fPoint1    { coord.convert2fPixelPos( umStartPoint ) };
 
+		LockShape();
 		for( auto iter = m_potIter; iter != m_potential.end(); ++ iter )
 			drawSegment( fPoint1, fPixSegVec, fWidth, * iter );
-
 		for( auto iter = m_potential.begin(); iter != m_potIter; ++ iter )
-		{
-			mV potential { * iter };
-			drawSegment( fPoint1, fPixSegVec, fWidth, potential );
-		}
-		LeaveCritSect();
+			drawSegment( fPoint1, fPixSegVec, fWidth, * iter );
+		UnlockShape();
 	}
 }
 

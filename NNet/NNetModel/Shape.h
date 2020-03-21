@@ -17,7 +17,7 @@ class Shape
 {
 public:
 	Shape( ShapeType const );
-	virtual ~Shape(); 
+	virtual ~Shape() {}; 
 
 	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 
@@ -52,12 +52,19 @@ public:
 	static void SetGraphics( D2D_driver const * const pGraphics ) { m_pGraphics  = pGraphics; }
 	static void SetModel   ( NNetModel  const * const pModel    ) { m_pNNetModel = pModel; }
 
-	void EnterCritSect() { EnterCriticalSection( & m_criticalSection ); }
-	void LeaveCritSect() { LeaveCriticalSection( & m_criticalSection ); }
+	void LockShape() 
+	{ 
+		AcquireSRWLockExclusive( & m_SRWLock );
+	}
+
+	void UnlockShape() 
+	{ 
+		ReleaseSRWLockExclusive( & m_SRWLock ); 
+	}
 
 protected:
 
-	mV m_mVinputBuffer;
+	mV m_mVinputBuffer { 0._mV };
 
 	static D2D_driver const * m_pGraphics;
 	static NNetModel  const * m_pNNetModel;
@@ -71,8 +78,8 @@ protected:
 
 private:
 
-	CRITICAL_SECTION m_criticalSection; 
-	bool             m_bEmphasized;
-	ShapeId          m_identifier;
-	ShapeType        m_type;
+	SRWLOCK   m_SRWLock     { SRWLOCK_INIT };
+	ShapeId   m_identifier  { NO_SHAPE };
+	bool      m_bEmphasized { false };
+	ShapeType m_type;
 };

@@ -25,7 +25,7 @@ bool BaseKnot::apply2All
 )
 {
 	bool bResult { false };
-	EnterCritSect();
+	LockShape();
 	for ( auto pipe : pipeList ) 
 	{ 
 		if ( pipe == nullptr )
@@ -35,7 +35,7 @@ bool BaseKnot::apply2All
 		if ( bResult )
 			break;
 	}
-	LeaveCritSect();
+	UnlockShape();
 	return bResult;
 }
 

@@ -69,16 +69,16 @@ public:
 
 	void ClearIncoming( ) 
 	{
-		EnterCritSect();
+		LockShape();
 		m_incoming.clear(); 
-		LeaveCritSect();
+		UnlockShape();
 	}
 
 	void ClearOutgoing( ) 
 	{ 
-		EnterCritSect();
+		LockShape();
 		m_outgoing.clear(); 
-		LeaveCritSect();
+		UnlockShape();
 	}
 
 	bool IsPrecursorOf( ShapeId const );

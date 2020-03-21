@@ -162,25 +162,6 @@ public:
 		}
 	}
 
-	//template <typename T>
-	//void Apply2All( function<void(T &)> const & func, int step = 1 ) const
-	//{
-	//	if ( m_Shapes.empty() )
-	//		return;
-
-	//	int start = step - 1;
-	//	for (   
-	//		vector<Shape *>::const_iterator ppShape = m_Shapes.begin() + start; 
-	//		ppShape < m_Shapes.end(); 
-	//		ppShape += step
-	//		)
-	//	{
-	//		Shape * pShape = * ppShape;
-	//		if ( (pShape != nullptr) && T::TypeFits( pShape->GetShapeType() ) )
-	//			func( static_cast<T &>( * pShape ) );
-	//	}
-	//}
-
 	template <typename T>
 	void Apply2AllInRect( MicroMeterRect const & rect, function<void(T &)> const & func ) const
 	{

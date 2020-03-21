@@ -30,19 +30,15 @@ public:
 	)
 	:	m_pStatusBar      (pStatusBar),
 		m_pModel          (pModel),
-		m_iPartInStatusBar(iPartInStatusBar)
+		m_iPartInStatusBar(iPartInStatusBar),
+		m_SRWLock         ( )
 	{ 
-		(void)InitializeCriticalSectionAndSpinCount( & m_criticalSection, 0x00000400 );
-	}
-
-	~RefreshRate() 
-	{
-		DeleteCriticalSection( & m_criticalSection );
+		InitializeSRWLock( & m_SRWLock );
 	}
 
 	virtual void Trigger( )
 	{
-		EnterCriticalSection( & m_criticalSection );
+		AcquireSRWLockExclusive( & m_SRWLock );
 		fMicroSecs const time = m_pModel->GetSimulationTime( );
 		m_wstrBuffer.str( wstring() );
 		m_wstrBuffer.clear();
@@ -59,11 +55,11 @@ public:
 		}
 		m_wstring = m_wstrBuffer.str();
 		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstring );
-		LeaveCriticalSection( & m_criticalSection );
+		ReleaseSRWLockExclusive( & m_SRWLock ); 
 	}
 
 private:
-	CRITICAL_SECTION  m_criticalSection; 
+	SRWLOCK           m_SRWLock;
 	wstring           m_wstring;
 	wostringstream    m_wstrBuffer;
 	StatusBar       * m_pStatusBar;

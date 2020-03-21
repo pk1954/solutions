@@ -58,12 +58,12 @@ public:
 
 	virtual void Step( )
 	{
-		EnterCritSect();
+		LockShape();
 		* m_potIter = m_mVinputBuffer;
 		if ( m_potIter == m_potential.begin() )
 			m_potIter = m_potential.end( );
 		-- m_potIter;
-		LeaveCritSect();
+		UnlockShape();
 	}
 
 	mV GetNextOutput( ) const {	return * m_potIter; }

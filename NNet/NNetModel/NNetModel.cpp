@@ -98,7 +98,7 @@ bool const NNetModel::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) con
 			return false;                  // to other neurons
 
 		if ( typeDst.IsInputNeuronType() && HasIncoming( idSrc ) )  // cannot connect incoming dendrite
-			return false;                                                    // to input neuron
+			return false;                                           // to input neuron
 
 		if ( GetNrOfOutgoingConnections( idSrc ) + GetNrOfOutgoingConnections( idDst ) > 1 ) // neurons can not not have 
 			return false;                                                                    // more than one axon
