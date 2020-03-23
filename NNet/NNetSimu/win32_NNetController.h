@@ -46,5 +46,4 @@ private:
 	NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 	SlowMotionRatio         * m_pSlowMotionRatio;
 	DisplayFunctor          * m_pDisplayFunctor { nullptr };
-	bool                      m_bUnsavedChanges { false };
 };				          

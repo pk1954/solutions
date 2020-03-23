@@ -201,26 +201,24 @@ bool NNetWindow::ChangePulseRate( ShapeId const id, bool const bDirection )
 	return true;
 }
 
-bool NNetWindow::PulseRateDlg( ShapeId const id )
+void NNetWindow::PulseRateDlg( ShapeId const id )
 {
 	InputNeuron const * pInputNeuron { m_pModel->GetConstTypedShape<InputNeuron>(id) };
 	if ( pInputNeuron == nullptr )
-		return false;
+		return;
 	float   const fOldValue { m_pModel->GetPulseRate( pInputNeuron ) };
 	wstring const header    { GetParameterName ( tParameter::pulseRate ) }; 
 	wstring const unit      { GetParameterUnit ( tParameter::pulseRate ) }; 
 	float   const fNewValue { StdDialogBox::Show( GetWindowHandle(), fOldValue, header, unit ) };
-	bool    const bRes      { fNewValue != fOldValue };
-	if ( bRes )
+	if ( fNewValue != fOldValue )
 		m_pNNetWorkThreadInterface->PostSetPulseRate( id, fNewValue );
-	return bRes;
 }
 
-bool NNetWindow::TriggerSoundDlg( ShapeId const id )
+void NNetWindow::TriggerSoundDlg( ShapeId const id )
 {
 	Neuron * pNeuron { m_pModel->GetTypedShape<Neuron>(id) };
 	if ( pNeuron == nullptr )
-		return false;
+		return;
 
 	TriggerSoundDialog dialog( pNeuron->HasTriggerSound(), pNeuron->GetTriggerSoundFrequency(), pNeuron->GetTriggerSoundDuration() );
 
@@ -229,8 +227,6 @@ bool NNetWindow::TriggerSoundDlg( ShapeId const id )
 	pNeuron->SetTriggerSoundOn       ( dialog.IsTriggerSoundActive() );
 	pNeuron->SetTriggerSoundFrequency( dialog.GetFrequency() );
 	pNeuron->SetTriggerSoundDuration ( dialog.GetDuration () );
-
-	return true;
 }
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )

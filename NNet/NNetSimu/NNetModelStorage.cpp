@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <ctime>
 #include <sstream>
+#include <filesystem>
 #include "assert.h"
 #include "SCRIPT.H"
 #include "symtab.h"
@@ -23,6 +24,7 @@ using std::wcout;
 using std::endl;
 using std::put_time;
 using std::wofstream;
+using std::filesystem::exists;
 
 static float const PROTOCOL_VERSION { 1.4f };
 
@@ -254,21 +256,30 @@ void NNetModelStorage::prepareForReading( NNetModel * const pModel )
 
 bool NNetModelStorage::Read( NNetModel & model, wstring const wstrPath )
 {
-	Script scriptModel;
-	wstring const wstrModelFilePath { ( wstrPath == L"" ) ? m_wstrPathOfOpenModel : wstrPath };
-	model.ResetModel();
 	if ( ! m_bPreparedForReading )
 		prepareForReading( & model );
-	wcout << L"** NNet model file " << wstrModelFilePath << endl;
-	bool bResult = scriptModel.ScrProcess( wstrModelFilePath ); 
-	if ( bResult )
+
+	wstring const wstrModelFilePath { ( wstrPath == L"" ) ? m_wstrPathOfOpenModel : wstrPath };
+	if ( ! exists( wstrModelFilePath ) )
 	{
-		model.ModelSaved( );
-		m_wstrPathOfOpenModel = wstrModelFilePath;
-		NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );
-		return true;
+		MessageBox( nullptr, wstrModelFilePath.c_str(), L"Could not find model file", MB_OK );
+		return false;
 	}
-	return false;
+
+	model.ResetModel();
+
+	wcout << L"** NNet model file " << wstrModelFilePath << endl;
+
+	if ( ! Script::ProcessScript( wstrModelFilePath ) )
+	{
+		MessageBox( nullptr, wstrModelFilePath.c_str(), L"Error in model file. Using default model.", MB_OK );
+		return false;
+	}
+
+	model.ModelSaved( );
+	m_wstrPathOfOpenModel = wstrModelFilePath;
+	NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );
+	return true;
 }
 
 ////////////////////////// Write /////////////////////////////////////////////

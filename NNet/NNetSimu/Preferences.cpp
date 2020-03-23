@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include "Script.h"
+#include "errhndl.h"
 #include "symtab.h"
 #include "AutoOpen.h"
 #include "NNetModelStorage.h"
@@ -62,9 +63,8 @@ public:
     virtual void operator() ( Script & script ) const
     {
         assert( m_pModel != nullptr );
-        wstring wstrPath { script.ScrReadString() };
-        bool fRes = m_pNNetModelStorage->Read( * m_pModel, wstrPath );
-        NNetAppMenu::SetAppTitle( wstrPath );
+        if ( ! m_pNNetModelStorage->Read( * m_pModel, script.ScrReadString() ) )
+            ScriptErrorHandler::semanticError( L"Error in model file." );
     }
 
 private:
@@ -121,9 +121,9 @@ bool Preferences::ReadPreferences
 bool Preferences::WritePreferences( wstring const wstrModelPath, NNetWindow const * const pNNetWindow )
 {
     wofstream prefFile( m_wstrPreferencesFile );
-    prefFile << L"SetSound "    << (Sound   ::IsOn() ? PREF_ON : PREF_OFF) << endl;
-	prefFile << L"SetAutoOpen " << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF) << endl;
-    prefFile << L"ReadModel \""   << wstrModelPath << L"\"" << endl;
+    prefFile << L"SetSound "       << (Sound   ::IsOn() ? PREF_ON : PREF_OFF) << endl;
+	prefFile << L"SetAutoOpen "    << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF) << endl;
+    prefFile << L"ReadModel \""    << wstrModelPath << L"\"" << endl;
     prefFile << L"SetPixelOffset " << pNNetWindow->GetPixelOffset() << endl;
     prefFile << L"SetPixelSize "   << pNNetWindow->GetPixelSize() << endl;
     prefFile.close( );

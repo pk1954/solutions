@@ -198,7 +198,8 @@ public:
 	void SetEmphasizeMode( bool const );
 	void ResetModel( );
 	void ClearModel( );
-	void ModelSaved( ) const { m_bUnsavedChanges = false; }
+	void ModelSaved  ( ) const;
+	void ModelChanged( ) const;
 	void SetPulseRate( ShapeId    const, float const );
 	void SetParameter( tParameter const, float const );
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
@@ -216,15 +217,15 @@ private:
 	fMicroSecs      m_timeStamp;
 	bool            m_bEmphasizeMode;
 
-	mutable bool    m_bUnsavedChanges;
+	mutable bool    m_bUnsavedChanges;  // can be changed in const functions
 
 	// parameters
     mV          m_threshold;
     mV          m_peakVoltage;   
-	fMicroSecs   m_pulseWidth;   
-	fMicroSecs   m_refractPeriod;
+	fMicroSecs  m_pulseWidth;   
+	fMicroSecs  m_refractPeriod;
 	meterPerSec m_pulseSpeed;
-	fMicroSecs   m_usResolution;
+	fMicroSecs  m_usResolution;
 
 	Observable  m_parameterObservable;
 

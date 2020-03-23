@@ -171,6 +171,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 
 	case NNetWorkThreadMessage::Id::PULSE_RATE:
 		m_pNNetModel->SetPulseRate( ShapeId( CastToLong(msg.wParam) ), (float &)msg.lParam );
+		m_pNNetModel->ClearModel( );
 		break;
 
 	case NNetWorkThreadMessage::Id::THRESHOLD:

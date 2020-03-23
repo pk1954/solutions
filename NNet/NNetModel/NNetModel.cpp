@@ -50,6 +50,16 @@ void NNetModel::CreateInitialShapes( )
 	NewPipeline( pInputNeuron, pNeuron );
 }
 
+void NNetModel::ModelSaved  ( ) const 
+{ 
+	m_bUnsavedChanges = false; 
+}
+
+void NNetModel::ModelChanged( ) const 
+{ 
+	m_bUnsavedChanges = true;  
+}
+
 void NNetModel::RecalcAllShapes( ) 
 { 
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); } );
@@ -109,7 +119,7 @@ bool const NNetModel::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) con
 
 void NNetModel::RemoveShape( ShapeId const idShapeToBeDeleted )
 {
-	m_bUnsavedChanges = true;
+	ModelChanged( );
 	switch ( GetShapeType( idShapeToBeDeleted ).GetValue() )
 	{
 	case ShapeType::Value::pipeline:
@@ -165,7 +175,7 @@ float const NNetModel::GetParameterValue( tParameter const param ) const
 
 void NNetModel::SetPulseRate( ShapeId const id, float const fNewValue )
 {
-	m_bUnsavedChanges = true;
+	ModelChanged( );
 	InputNeuron * const pInputNeuron { GetTypedShape<InputNeuron>( id ) };
 	if ( pInputNeuron )
 		pInputNeuron->SetPulseFrequency( static_cast< fHertz >( fNewValue ) );
@@ -177,7 +187,7 @@ void NNetModel::SetParameter
 	float      const fNewValue 
 )
 {
-	m_bUnsavedChanges = true;
+	ModelChanged( );
 	switch ( param )
 	{
 		case tParameter::pulseSpeed:	 m_pulseSpeed    = static_cast< meterPerSec >( fNewValue ); break;
@@ -267,7 +277,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 				deleteShape( idSrc );
 		}
 	}
-	m_bUnsavedChanges = true;
+	ModelChanged( );
 	CHECK_CONSISTENCY;
 }
 
@@ -275,7 +285,7 @@ void NNetModel::NewPipeline( BaseKnot * const pStart, BaseKnot * const pEnd )
 {
 	if ( pStart && pEnd )
 	{
-		m_bUnsavedChanges = true;
+		ModelChanged( );
 		Pipeline * const pPipeline { NewShape<Pipeline>( NP_NULL ) };
 		connectOutgoing( pPipeline, pStart );
 		connectIncoming( pPipeline, pEnd );
@@ -285,7 +295,7 @@ void NNetModel::NewPipeline( BaseKnot * const pStart, BaseKnot * const pEnd )
 
 void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
-	m_bUnsavedChanges = true;
+	ModelChanged( );
 	switch ( GetShapeType( id ).GetValue() )
 	{
 	case ShapeType::Value::pipeline:
@@ -312,7 +322,7 @@ Neuron * const NNetModel::InsertNeuron( ShapeId const idPipeline, MicroMeterPoin
 	Neuron * pNeuron { nullptr };
 	if ( IsDefined( idPipeline ) )
 	{
-		m_bUnsavedChanges = true;
+		ModelChanged( );
 		pNeuron = NewShape<Neuron>( splitPoint );
 		insertBaseKnot( GetTypedShape<Pipeline>(idPipeline), pNeuron );
 		CHECK_CONSISTENCY;
@@ -325,7 +335,7 @@ Knot * const NNetModel::InsertKnot( ShapeId const idPipeline, MicroMeterPoint co
 	Knot * pKnot { nullptr };
 	if ( IsDefined( idPipeline ) )
 	{
-		m_bUnsavedChanges = true;
+		ModelChanged( );
 		pKnot = NewShape<Knot>( splitPoint );
 		insertBaseKnot( GetTypedShape<Pipeline>(idPipeline), pKnot );
 		CHECK_CONSISTENCY;
@@ -374,6 +384,7 @@ void NNetModel::ResetModel( )
 {
 	Apply2All<Shape>( [&]( Shape & shape ) { delete & shape; return false; } );
 	m_Shapes.clear();
+	ModelChanged( );
 }
 
 void NNetModel::ClearModel( )

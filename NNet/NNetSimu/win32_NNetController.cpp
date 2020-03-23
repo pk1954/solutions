@@ -177,13 +177,11 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDD_PULSE_RATE:
-		if ( m_pNNetWindow->PulseRateDlg( m_pNNetWindow->GetHighlightedShapeId( ) ) )
-			m_bUnsavedChanges = true;
+		m_pNNetWindow->PulseRateDlg( m_pNNetWindow->GetHighlightedShapeId( ) );
 		break;
 
 	case IDD_TRIGGER_SOUND_DLG:
-		if ( m_pNNetWindow->TriggerSoundDlg( m_pNNetWindow->GetHighlightedShapeId( ) ) )
-			m_bUnsavedChanges = true;
+		m_pNNetWindow->TriggerSoundDlg( m_pNNetWindow->GetHighlightedShapeId( ) );
 		break;
 
 	case IDM_RUN:
@@ -205,14 +203,12 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		Sound::Play( TEXT("DISAPPEAR_SOUND") ); 
 		m_pNNetWorkThreadInterface->PostRemoveShape( m_pNNetWindow->GetHighlightedShapeId( ) );
 		m_pNNetWindow->ResetHighlightedShape();
-		m_bUnsavedChanges = true;
 		break;
 
 	case IDD_DISCONNECT:
 		Sound::Play( TEXT("UNLOCK_SOUND") ); 
 		m_pNNetWorkThreadInterface->PostDisconnect( m_pNNetWindow->GetHighlightedShapeId( ) );
 		m_pNNetWindow->ResetHighlightedShape();
-		m_bUnsavedChanges = true;
 		break;
 
 	case IDD_INSERT_NEURON:
@@ -228,8 +224,6 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_ANALYZE:
-		//m_pWinManager->BringToTop( IDM_CONS_WINDOW );
-		//SetFocus( m_pWinManager->GetHWND( IDM_APPL_WINDOW ) );
 		m_pNNetWorkThreadInterface->PostActionCommand( wmId, NO_SHAPE, NP_NULL );
 		m_pNNetWorkThreadInterface->PostSendBack( IDM_ANALYZE_FINISHED );
 		break;

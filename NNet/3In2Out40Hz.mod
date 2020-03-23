@@ -1,5 +1,5 @@
 # NNetModel
-# Created 21-03-2020 23-31-52
+# Created 23-03-2020 13-41-43
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
 
@@ -453,7 +453,7 @@ CreateShape 430 pipeline (428->429)
 CreateShape 431 pipeline (308->434)
 
 ShapeParameter InputNeuron 0 PulseRate = 50
-ShapeParameter InputNeuron 2 PulseRate = 50
+ShapeParameter InputNeuron 2 PulseRate = 50.01
 ShapeParameter InputNeuron 5 PulseRate = 50.08
 ShapeParameter InputNeuron 428 PulseRate = 50
 
