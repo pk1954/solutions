@@ -5,7 +5,6 @@
 #pragma once
 
 #include <vector>
-#include "synchapi.h"
 #include "util.h"
 #include "MoreTypes.h"
 #include "Observable.h"
@@ -18,6 +17,7 @@
 
 class ObserverInterface;
 class EventInterface;
+class ComputeThread;
 class InputNeuron;
 
 class NNetModel
@@ -69,14 +69,15 @@ public:
 	bool            const HasOutgoing   ( ShapeId const id  ) const;
 	bool            const HasIncoming   ( ShapeId const id  ) const;
 	bool            const IsValidShapeId( ShapeId const id  ) const { return id.GetValue() < m_Shapes.size(); }
-	ShapeId         const GetId         ( Shape   const * p ) const { return p ? p->GetId( ) : NO_SHAPE; }
-	fMicroSecs      const GetSimulationTime( )                const { return m_timeStamp; }
-	long            const GetSizeOfShapeList( )               const { return CastToLong( m_Shapes.size() ); }
-	bool            const HasModelChanged( )                  const { return m_bUnsavedChanges; }
-	bool            const IsInEmphasizeMode( )                const { return m_bEmphasizeMode; }
-	fMicroSecs      const GetTimeResolution( )                const { return m_usResolution; }
-	float           const GetOpacity( )                       const { return IsInEmphasizeMode() ? 0.5f : 1.0f; }
-	long            const GetNrOfShapes( )                    const;
+
+	fMicroSecs      const GetSimulationTime ( ) const { return m_timeStamp; }
+	long            const GetSizeOfShapeList( ) const { return CastToLong( m_Shapes.size() ); }
+	bool            const HasModelChanged   ( ) const { return m_bUnsavedChanges; }
+	bool            const IsInEmphasizeMode ( ) const { return m_bEmphasizeMode; }
+	fMicroSecs      const GetTimeResolution ( ) const { return m_usResolution; }
+	float           const GetOpacity        ( ) const { return IsInEmphasizeMode() ? 0.5f : 1.0f; }
+	int             const GetNrOfThreads    ( ) const { return m_iNrOfComputeThreads; }
+	long            const GetNrOfShapes     ( ) const;
 
 	BaseKnot * const GetStartKnotPtr( ShapeId const idPipeline ) const 
 	{ 
@@ -148,17 +149,10 @@ public:
 
 	void Apply2AllWithSteps( int const iStart, int const iStep, function<void(Shape &)> const & func ) const
 	{
-		if ( m_Shapes.empty() )
-			return;
-
-		for (   
-				vector<Shape *>::const_iterator ppShape = m_Shapes.begin() + iStart; 
-				ppShape < m_Shapes.end(); 
-				ppShape += iStep
-			)
+		for ( int i = iStart; i < m_Shapes.size(); i += iStep )
 		{
-			if ( * ppShape != nullptr  )
-				func( ** ppShape );
+			if ( m_Shapes[i] != nullptr  )
+				func( * m_Shapes[i] );
 		}
 	}
 
@@ -208,26 +202,32 @@ public:
 
 	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); } ); }
 
-	void AddParameterObserver( ObserverInterface * pObs ) { m_parameterObservable.RegisterObserver( pObs ); }
+	void AddParameterObserver( ObserverInterface * pObs ) { m_paramObservable.RegisterObserver( pObs ); }
 
 	virtual void Compute( );
 
-private:
-	vector<Shape *> m_Shapes;
-	fMicroSecs      m_timeStamp;
-	bool            m_bEmphasizeMode;
+	//CONDITION_VARIABLE m_CondVarPrepareDone;
+	//CONDITION_VARIABLE m_CondVarStepDone;
 
-	mutable bool    m_bUnsavedChanges;  // can be changed in const functions
+private:
+	int                m_iNrOfComputeThreads { 0 };
+	//SRWLOCK            m_SRWLock { SRWLOCK_INIT };
+
+	//vector< ComputeThread * > m_pComputeThreads;
+
+	Observable      m_paramObservable { };
+	vector<Shape *> m_Shapes          { };
+	fMicroSecs      m_timeStamp       { 0._MicroSecs };
+	bool            m_bEmphasizeMode  { false };
+	mutable bool    m_bUnsavedChanges { false };  // can be changed in const functions
 
 	// parameters
-    mV          m_threshold;
-    mV          m_peakVoltage;   
-	fMicroSecs  m_pulseWidth;   
-	fMicroSecs  m_refractPeriod;
-	meterPerSec m_pulseSpeed;
-	fMicroSecs  m_usResolution;
-
-	Observable  m_parameterObservable;
+    mV          m_threshold    { 20._mV          };
+	mV          m_peakVoltage  { 10._mV          };   
+	fMicroSecs  m_pulseWidth   { 2000._MicroSecs };   
+	fMicroSecs  m_refractPeriod{ 500._MicroSecs  };
+	meterPerSec m_pulseSpeed   { 0.1_meterPerSec };
+	fMicroSecs  m_usResolution { 100._MicroSecs  };
 
 	// local functions
 
@@ -242,6 +242,17 @@ private:
 	bool const      isConnectedToPipeline( ShapeId const, Pipeline const * const ) const;
 	bool            connectIncoming( Pipeline * const, BaseKnot * const );
 	bool            connectOutgoing( Pipeline * const, BaseKnot * const );
+
+	//struct ComputeThreadStruct
+	//{
+	//	NNetModel * pModel;
+	//	int         iThreadNr;
+	//	SRWLOCK   * pSRWLock;
+	//};
+
+	//vector<ComputeThreadStruct> m_ComputeThreadStructs;
+
+	//static unsigned int __stdcall PrepareFunc( void * );
 };
 
 MicroMeterRect GetEnclosingRect( vector<Shape*> const & );

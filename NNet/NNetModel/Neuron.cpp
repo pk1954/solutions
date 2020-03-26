@@ -3,10 +3,10 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "win32_sound.h"
 #include "win32_thread.h"
 #include "win32_fatalError.h"
 #include "win32_graphicsInterface.h"
+#include "win32_beeperThread.h"
 #include "PixelCoordsFp.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
@@ -15,10 +15,14 @@
 using std::chrono::microseconds;
 using std::wostringstream;
 
+BeeperThread * Neuron::m_pBeeperThread { nullptr };
+
 Neuron::Neuron( MicroMeterPoint const upCenter, ShapeType const type )
   : BaseKnot( upCenter, type, NEURON_RADIUS )
 {
 	Recalc();
+	if ( ! m_pBeeperThread )
+		m_pBeeperThread = new BeeperThread;
 }
 
 fMicroSecs Neuron::PulseWidth() const 
@@ -52,12 +56,6 @@ mV Neuron::waveFunction( fMicroSecs const time ) const
 	return mV( m_factorU * time.GetValue() * ( 1.0f - time.GetValue() * m_factorW ) );
 }
 
-static unsigned int __stdcall BeepFunc( void * arg )
-{
-	Neuron * pNeuron { static_cast<Neuron *>( arg ) };
-	Sound::Beep( pNeuron->GetTriggerSoundFrequency(), pNeuron->GetTriggerSoundDuration() );
-	return 0;
-}
 
 void Neuron::Step( )
 {
@@ -65,7 +63,7 @@ void Neuron::Step( )
 	{
 		m_timeSinceLastPulse = 0._MicroSecs;
 		if ( HasTriggerSound() )
-			Util::RunAsAsyncThread( BeepFunc, this );
+			m_pBeeperThread->Beep( GetTriggerSoundFrequency(), GetTriggerSoundDuration() );
 	}
 	else
 	{

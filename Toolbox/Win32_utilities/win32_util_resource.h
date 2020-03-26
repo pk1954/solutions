@@ -35,6 +35,8 @@
 #define IDM_CONS_WINDOW                35
 #define IDD_EDITOR                     36
 
+#define IDM_BEEP                       40
+
 #define IDM_HIDE_WINDOW                50
 
 #define IDM_HIST_BUFFER_FULL           60

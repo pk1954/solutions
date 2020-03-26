@@ -114,7 +114,7 @@ void NNetWindow::setHighlightShape( PixelPoint const pnt )
 {
 	MicroMeterPoint const   umCrsrPos     { m_coord.convert2MicroMeterPointPos( pnt ) };
 	Shape           const * pShape        { m_pModel->FindShapeAt( umCrsrPos, [&]( Shape const & s) { return true; } ) };
-	ShapeId         const   idHighlighted { m_pModel->GetId( pShape ) };
+	ShapeId         const   idHighlighted { pShape ? pShape->GetId( ) : NO_SHAPE };
 	if ( idHighlighted != m_shapeHighlighted )
 	{
 		m_shapeHighlighted = idHighlighted; 

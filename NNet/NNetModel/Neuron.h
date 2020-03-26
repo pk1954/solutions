@@ -10,6 +10,8 @@
 #include "tHighlightType.h"
 #include "BaseKnot.h"
 
+class BeeperThread;
+
 class Neuron : public BaseKnot
 {
 public:
@@ -85,6 +87,8 @@ private:
 	MilliSecs m_triggerSoundDuration  { 0_MilliSecs };
 
 	MicroMeterPoint getAxonHillockPos( PixelCoordsFp & ) const;
+
+	static BeeperThread * m_pBeeperThread;
 };
 
 Neuron const * Cast2Neuron( Shape const * );

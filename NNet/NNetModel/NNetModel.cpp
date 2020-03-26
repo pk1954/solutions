@@ -12,6 +12,7 @@
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
+#include "ComputeThread.h"
 #include "NNetModel.h"
 
 #ifndef NDEBUG
@@ -24,23 +25,25 @@ using namespace std::chrono;
 using std::unordered_map;
 
 NNetModel::NNetModel( )
-  : m_Shapes( ),
-	m_timeStamp        ( 0._MicroSecs ),
-	m_threshold        ( 20._mV ),
-	m_peakVoltage      ( 10._mV ),
-	m_pulseWidth       ( 2000._MicroSecs ),
-	m_refractPeriod    ( 500._MicroSecs ),
-	m_pulseSpeed       ( 0.1_meterPerSec ),
-	m_usResolution     ( 100._MicroSecs ),
-	m_bUnsavedChanges  ( false ),
-	m_bEmphasizeMode   ( false )
 {					
+	m_iNrOfComputeThreads = 4;
 	Shape::SetModel( this );
+	//InitializeConditionVariable( & m_CondVarPrepareDone );
+	//InitializeConditionVariable( & m_CondVarStepDone );
+	//m_ComputeThreadStructs.resize( m_iNrOfComputeThreads );
+	//for ( int i = 0; i < m_iNrOfComputeThreads; i++ )
+	//	m_ComputeThreadStructs[i] = { this, i, & m_SRWLock };
+	//AcquireSRWLockExclusive( & m_SRWLock );
+	//m_pComputeThreads.resize( m_iNrOfComputeThreads, nullptr );
+	//for ( int i = 0; i < m_iNrOfComputeThreads; i++ )
+	//	m_pComputeThreads[i] = new ComputeThread( this, i, m_iNrOfComputeThreads, & m_conditionVar, & m_SRWLock );
 }
 
 NNetModel::~NNetModel( )
 {
-	m_parameterObservable.UnregisterAllObservers();
+	//for ( int i = 0; i < m_iNrOfComputeThreads; i++ )
+	//	delete m_pComputeThreads[i];
+	m_paramObservable.UnregisterAllObservers();
 }
 
 void NNetModel::CreateInitialShapes( )
@@ -50,13 +53,18 @@ void NNetModel::CreateInitialShapes( )
 	NewPipeline( pInputNeuron, pNeuron );
 }
 
-void NNetModel::ModelSaved  ( ) const 
+void NNetModel::ModelSaved( ) const 
 { 
+	// reset flag in app title
 	m_bUnsavedChanges = false; 
 }
 
 void NNetModel::ModelChanged( ) const 
 { 
+	if ( ! m_bUnsavedChanges )
+	{
+		// set flag in app title
+	}
 	m_bUnsavedChanges = true;  
 }
 
@@ -200,7 +208,7 @@ void NNetModel::SetParameter
 		default: assert( false );
 	}
 	RecalcAllShapes( );
-	m_parameterObservable.NotifyAll( FALSE );
+	m_paramObservable.NotifyAll( FALSE );
 }
 
 MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const 
@@ -369,27 +377,48 @@ void NNetModel::AddIncoming2Knot( ShapeId const id, MicroMeterPoint const & pos 
 
 void NNetModel::Compute( )
 {
-	int iNrOfThreads = 1;
+	//for ( auto & cts : m_ComputeThreadStructs )
+	//{
+	//	Util::RunAsAsyncThread( PrepareFunc, & cts );
+	//}
 
-	for ( int i = 0; i < iNrOfThreads; i++ )
-		Apply2AllWithSteps( i, iNrOfThreads, [&]( Shape & shape ) { shape.Prepare( ); } );
+	//SleepConditionVariableSRW( & m_CondVarPrepareDone, & m_SRWLock, INFINITE, 0 ); // sleep and release SRWlock
+	//AcquireSRWLockExclusive( & m_SRWLock );  // waits until all compute threads have finished
 
-	for ( int i = 0; i < iNrOfThreads; i++ )
-		Apply2AllWithSteps( i, iNrOfThreads, [&]( Shape & shape ) { shape.Step( ); } );
+	for ( int i = 0; i < m_iNrOfComputeThreads; i++ )
+		Apply2AllWithSteps( i, m_iNrOfComputeThreads, [&]( Shape & shape ) { shape.Prepare( ); } );
+
+	for ( int i = 0; i < m_iNrOfComputeThreads; i++ )
+		Apply2AllWithSteps( i, m_iNrOfComputeThreads, [&]( Shape & shape ) { shape.Step( ); } );
 
 	m_timeStamp += GetTimeResolution( );
 }
 
+//unsigned int __stdcall NNetModel::PrepareFunc( void * arg )
+//{
+//	ComputeThreadStruct * const pStruct { reinterpret_cast<ComputeThreadStruct *>( arg ) };
+//	NNetModel           * const pModel  { pStruct->pModel };
+//
+//	SetThreadDescription( GetCurrentThread(), L"ComputeThread" );
+//// loop
+//	AcquireSRWLockShared( pStruct->pSRWLock );  
+//	pModel->Apply2AllWithSteps( pStruct->iThreadNr, pModel->GetNrOfThreads(), [&]( Shape & shape ) { shape.Prepare( ); } );
+//	ReleaseSRWLockShared( pStruct->pSRWLock );
+//	WakeConditionVariable( & pStruct->pModel->m_CondVarPrepareDone );
+//// end loop
+//	return 0;
+//}
+
 void NNetModel::ResetModel( )
 {
-	Apply2All<Shape>( [&]( Shape & shape ) { delete & shape; return false; } );
+	Apply2All<Shape>( [&]( Shape & shape ) { delete & shape; } );
 	m_Shapes.clear();
 	ModelChanged( );
 }
 
 void NNetModel::ClearModel( )
 {
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Clear( ); return false; } );
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Clear( ); } );
 }
 
 Shape const * NNetModel::FindShapeAt( MicroMeterPoint const pnt, function<bool(Shape const &)> const & crit ) const

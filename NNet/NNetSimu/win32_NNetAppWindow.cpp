@@ -68,11 +68,7 @@ NNetAppWindow::NNetAppWindow( )
 	m_pNNetReadBuffer    = new NNetReadBuffer( );
 	m_pPerformanceWindow = new PerformanceWindow( );
 
-	NNetWindow::InitClass
-	( 
-		& m_NNetWorkThreadInterface, 
-		& m_atDisplay 
-	);
+	NNetWindow::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
 
 	m_pCursorPos      = new Observable();
 	m_pAppMenu        = new NNetAppMenu( );
