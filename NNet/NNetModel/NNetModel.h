@@ -76,7 +76,7 @@ public:
 	bool            const IsInEmphasizeMode ( ) const { return m_bEmphasizeMode; }
 	fMicroSecs      const GetTimeResolution ( ) const { return m_usResolution; }
 	float           const GetOpacity        ( ) const { return IsInEmphasizeMode() ? 0.5f : 1.0f; }
-	int             const GetNrOfThreads    ( ) const { return m_iNrOfComputeThreads; }
+//	int             const GetNrOfThreads    ( ) const { return m_iNrOfComputeThreads; }
 	long            const GetNrOfShapes     ( ) const;
 
 	BaseKnot * const GetStartKnotPtr( ShapeId const idPipeline ) const 
@@ -147,14 +147,34 @@ public:
 		}
 	}
 
-	void Apply2AllWithSteps( int const iStart, int const iStep, function<void(Shape &)> const & func ) const
-	{
-		for ( int i = iStart; i < m_Shapes.size(); i += iStep )
-		{
-			if ( m_Shapes[i] != nullptr  )
-				func( * m_Shapes[i] );
-		}
-	}
+	//void Apply2AllWithSteps( int const iStart, int const iStep, function<void(Shape &)> const & func ) const
+	//{
+	//	for ( int i = iStart; i < m_Shapes.size(); i += iStep )
+	//	{
+	//		if ( m_Shapes[i] != nullptr  )
+	//			func( * m_Shapes[i] );
+	//	}
+	//}
+
+	//void DoPrepare( unsigned int const uiStart )
+	//{
+	//	unsigned int uiStop { min( uiStart + CHUNK_SIZE, CastToUnsignedInt(m_Shapes.size()) ) };
+	//	for ( unsigned int ui = uiStart; ui < uiStop; ++ui )
+	//	{
+	//		if ( m_Shapes[ui] != nullptr )
+	//			m_Shapes[ui]->Prepare();
+	//	}
+	//}
+
+	//void DoStep( unsigned int const uiStart )
+	//{
+	//	unsigned int uiStop { min( uiStart + CHUNK_SIZE, CastToUnsignedInt(m_Shapes.size()) ) };
+	//	for ( unsigned int ui = uiStart; ui < uiStop; ++ui )
+	//	{
+	//		if ( m_Shapes[ui] != nullptr )
+	//			m_Shapes[ui]->Step();
+	//	}
+	//}
 
 	template <typename T>
 	void Apply2AllInRect( MicroMeterRect const & rect, function<void(T &)> const & func ) const
@@ -206,14 +226,45 @@ public:
 
 	virtual void Compute( );
 
-	//CONDITION_VARIABLE m_CondVarPrepareDone;
-	//CONDITION_VARIABLE m_CondVarStepDone;
+	//static int const CHUNK_SIZE { 100 };
+
+	//void StartWork( )
+	//{
+	//	WaitForSingleObject( m_mutex, INFINITE );
+	//	m_uiChunksDone = 0;
+	//	ReleaseMutex( m_mutex );
+	//}
+
+	//void ChunkDone( )
+	//{
+	//	WaitForSingleObject( m_mutex, INFINITE );
+	//	++m_uiChunksDone;
+	//	ReleaseMutex( m_mutex );
+	//}
+
+	//bool GetNextChunk( unsigned int & uiNextIndex )
+	//{
+	//	bool bRes;
+	//	WaitForSingleObject( m_mutex, INFINITE );
+	//	uiNextIndex = m_uiChunksDone * CHUNK_SIZE;
+	//	bRes = m_uiChunksDone < m_uiNrOfChunks;
+	//	ReleaseMutex( m_mutex );
+	//	return bRes;
+	//}
 
 private:
-	int                m_iNrOfComputeThreads { 0 };
-	//SRWLOCK            m_SRWLock { SRWLOCK_INIT };
+	//unsigned int m_uiNrOfComputeThreads { 0 };
 
-	//vector< ComputeThread * > m_pComputeThreads;
+	//SRWLOCK m_SRWLockStartWorking { SRWLOCK_INIT };
+	//SRWLOCK m_SRWLockStarted      { SRWLOCK_INIT };
+	//SRWLOCK m_SRWLockFinished     { SRWLOCK_INIT };
+
+	//vector< ComputeThread * > m_ComputeThreads;
+
+	//unsigned int    m_uiNrOfChunks   { 0 };
+	//unsigned int    m_uiChunksDone   { 0 };
+	//unsigned int    m_uiNextFreeChunk{ 0 };
+	//HANDLE m_mutex;
 
 	Observable      m_paramObservable { };
 	vector<Shape *> m_Shapes          { };
@@ -243,16 +294,6 @@ private:
 	bool            connectIncoming( Pipeline * const, BaseKnot * const );
 	bool            connectOutgoing( Pipeline * const, BaseKnot * const );
 
-	//struct ComputeThreadStruct
-	//{
-	//	NNetModel * pModel;
-	//	int         iThreadNr;
-	//	SRWLOCK   * pSRWLock;
-	//};
-
-	//vector<ComputeThreadStruct> m_ComputeThreadStructs;
-
-	//static unsigned int __stdcall PrepareFunc( void * );
 };
 
 MicroMeterRect GetEnclosingRect( vector<Shape*> const & );

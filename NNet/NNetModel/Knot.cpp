@@ -10,11 +10,6 @@
 #include "Direct2D.h"
 #include "Knot.h"
 
-mV Knot::GetNextOutput( ) const
-{
-	return m_mVinputBuffer;
-}
-
 void Knot::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
 {
 	drawCircle

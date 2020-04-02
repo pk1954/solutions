@@ -26,23 +26,30 @@ using std::unordered_map;
 
 NNetModel::NNetModel( )
 {					
-	m_iNrOfComputeThreads = 4;
+	//m_uiNrOfComputeThreads = 4;
+	//m_uiNrOfChunks = (CastToInt(m_Shapes.size()) - 1) / CHUNK_SIZE + 1;
+	//m_mutex = CreateMutex( NULL, FALSE, NULL );
+	//assert( m_mutex != NULL );
+	//AcquireSRWLockExclusive( & m_SRWLockStartWorking );
+	//m_ComputeThreads.resize( m_uiNrOfComputeThreads, nullptr );
+	//for ( unsigned int ui = 0; ui < m_uiNrOfComputeThreads; ui++ )
+	//	m_ComputeThreads[ui] = new ComputeThread
+	//	                           ( 
+	//								   this, 
+	//								   ui, 
+	//								   & m_mutex, 
+	//								   & m_SRWLockStartWorking, 
+	//								   & m_SRWLockStarted,
+	//								   & m_SRWLockFinished 
+	//							   );
 	Shape::SetModel( this );
-	//InitializeConditionVariable( & m_CondVarPrepareDone );
-	//InitializeConditionVariable( & m_CondVarStepDone );
-	//m_ComputeThreadStructs.resize( m_iNrOfComputeThreads );
-	//for ( int i = 0; i < m_iNrOfComputeThreads; i++ )
-	//	m_ComputeThreadStructs[i] = { this, i, & m_SRWLock };
-	//AcquireSRWLockExclusive( & m_SRWLock );
-	//m_pComputeThreads.resize( m_iNrOfComputeThreads, nullptr );
-	//for ( int i = 0; i < m_iNrOfComputeThreads; i++ )
-	//	m_pComputeThreads[i] = new ComputeThread( this, i, m_iNrOfComputeThreads, & m_conditionVar, & m_SRWLock );
 }
 
 NNetModel::~NNetModel( )
 {
-	//for ( int i = 0; i < m_iNrOfComputeThreads; i++ )
-	//	delete m_pComputeThreads[i];
+	//for ( unsigned int ui = 0; ui < m_uiNrOfComputeThreads; ui++ )
+	//	delete m_ComputeThreads[ui];
+	//m_ComputeThreads.clear();
 	m_paramObservable.UnregisterAllObservers();
 }
 
@@ -377,37 +384,23 @@ void NNetModel::AddIncoming2Knot( ShapeId const id, MicroMeterPoint const & pos 
 
 void NNetModel::Compute( )
 {
-	//for ( auto & cts : m_ComputeThreadStructs )
-	//{
-	//	Util::RunAsAsyncThread( PrepareFunc, & cts );
-	//}
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Prepare( ); } );
+	Apply2All<Shape>( [&]( Shape & shape ) { shape.Step( ); } );
 
-	//SleepConditionVariableSRW( & m_CondVarPrepareDone, & m_SRWLock, INFINITE, 0 ); // sleep and release SRWlock
-	//AcquireSRWLockExclusive( & m_SRWLock );  // waits until all compute threads have finished
+	//m_uiChunksDone = 0;
 
-	for ( int i = 0; i < m_iNrOfComputeThreads; i++ )
-		Apply2AllWithSteps( i, m_iNrOfComputeThreads, [&]( Shape & shape ) { shape.Prepare( ); } );
+	//ReleaseSRWLockExclusive( & m_SRWLockStartWorking );  // let compute threads run
+	//AcquireSRWLockExclusive( & m_SRWLockStarted );       // wait for first thread started
+	//AcquireSRWLockExclusive( & m_SRWLockStartWorking );
+	//AcquireSRWLockExclusive( & m_SRWLockFinished );      // wait for last thread finished
 
-	for ( int i = 0; i < m_iNrOfComputeThreads; i++ )
-		Apply2AllWithSteps( i, m_iNrOfComputeThreads, [&]( Shape & shape ) { shape.Step( ); } );
+	//ReleaseSRWLockExclusive( & m_SRWLockStartWorking );  // let compute threads run
+	//AcquireSRWLockExclusive( & m_SRWLockStarted );       // wait for first thread started
+	//AcquireSRWLockExclusive( & m_SRWLockStartWorking );
+	//AcquireSRWLockExclusive( & m_SRWLockFinished );      // wait for last thread finished
 
 	m_timeStamp += GetTimeResolution( );
 }
-
-//unsigned int __stdcall NNetModel::PrepareFunc( void * arg )
-//{
-//	ComputeThreadStruct * const pStruct { reinterpret_cast<ComputeThreadStruct *>( arg ) };
-//	NNetModel           * const pModel  { pStruct->pModel };
-//
-//	SetThreadDescription( GetCurrentThread(), L"ComputeThread" );
-//// loop
-//	AcquireSRWLockShared( pStruct->pSRWLock );  
-//	pModel->Apply2AllWithSteps( pStruct->iThreadNr, pModel->GetNrOfThreads(), [&]( Shape & shape ) { shape.Prepare( ); } );
-//	ReleaseSRWLockShared( pStruct->pSRWLock );
-//	WakeConditionVariable( & pStruct->pModel->m_CondVarPrepareDone );
-//// end loop
-//	return 0;
-//}
 
 void NNetModel::ResetModel( )
 {

@@ -10,18 +10,30 @@ void ComputeThread::ThreadStartupFunc( )
 {
 	while ( true  )
 	{
-		// SRWLock is locked. Condition variable is locked
-		AcquireSRWLockShared( m_pSRWLock );  // wait until SRWLock is unlocked
-		m_pModel->Apply2AllWithSteps( m_iStart, m_iStep, [&]( Shape & shape ) { shape.Prepare( ); } );
-		// Unlock SRWLock, wait on condition variable
-		SleepConditionVariableSRW( m_pConditionVar, m_pSRWLock, INFINITE, CONDITION_VARIABLE_LOCKMODE_SHARED );
-		// condition variable is unlocked
+		//unsigned int uiNextIndex;
 
-		// SRWLock is locked. Condition variable is locked
-		AcquireSRWLockShared( m_pSRWLock );  // wait until SRWLock is unlocked
-		m_pModel->Apply2AllWithSteps( m_iStart, m_iStep, [&]( Shape & shape ) { shape.Step( ); } );
-		// Unlock SRWLock, wait on condition variable
-		SleepConditionVariableSRW( m_pConditionVar, m_pSRWLock, INFINITE, CONDITION_VARIABLE_LOCKMODE_SHARED );
-		// condition variable is unlocked
+		//AcquireSRWLockShared( m_pSRWLockStarted );
+		//AcquireSRWLockShared( m_pSRWLockStartWorking );
+		//ReleaseSRWLockShared( m_pSRWLockStarted );
+		//AcquireSRWLockShared( m_pSRWLockFinished );
+		//m_pModel->StartWork( );
+		//while (	m_pModel->GetNextChunk( uiNextIndex ) )
+		//{
+		//	//m_pModel->DoPrepare( uiNextIndex );
+		//	//m_pModel->ChunkDone( );
+		//}
+		//ReleaseSRWLockShared( m_pSRWLockFinished );
+
+		//AcquireSRWLockShared( m_pSRWLockStartWorking );
+		//ReleaseSRWLockShared( m_pSRWLockStarted );
+		//AcquireSRWLockShared( m_pSRWLockFinished );
+		//m_pModel->StartWork( );
+		//while (	m_pModel->GetNextChunk( uiNextIndex ) )
+		//{
+		//	//m_pModel->DoStep( uiNextIndex );
+		//	//m_pModel->ChunkDone( );
+		//}
+		//ReleaseSRWLockShared( m_pSRWLockFinished );
+
 	}
 }

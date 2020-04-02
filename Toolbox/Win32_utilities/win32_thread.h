@@ -33,7 +33,7 @@ namespace Util
 			{
 				assert( m_threadId != 0 );
 				BOOL const bRes = ::PostThreadMessage( m_threadId, uiMsg, wParam, lParam );
-				DWORD err = GetLastError( );
+//				DWORD err = GetLastError( );
 				assert( bRes );
 			}
 			else

@@ -4,7 +4,8 @@
 
 #pragma once
 
-#include "synchapi.h"
+//#include "synchapi.h"
+#include <string>
 #include "win32_thread.h"
 
 class NNetModel;
@@ -14,27 +15,30 @@ class ComputeThread : public Util::Thread
 public:
 	ComputeThread
 	( 
-		NNetModel          * pModel, 
-		int                  iStart, 
-		int                  iStep,
-		CONDITION_VARIABLE * pConditionVar,
-		SRWLOCK            * pSRWLock
+		NNetModel    * pModel, 
+		unsigned int   uiThreadNumber, 
+		HANDLE       * pMutex,
+		SRWLOCK      * pSRWLockStartWorking,
+		SRWLOCK      * pSRWLockStarted,
+		SRWLOCK      * pSRWLockFinished
 	) :
 		m_pModel( pModel ),
-		m_iStart( iStart ),
-		m_iStep ( iStep ),
-		m_pConditionVar( pConditionVar ),
-		m_pSRWLock( pSRWLock )
+		m_pMutex( pMutex ),
+		m_pSRWLockStartWorking( pSRWLockStartWorking ),
+		m_pSRWLockStarted     ( pSRWLockStarted ),
+		m_pSRWLockFinished    ( pSRWLockFinished )
 	{
-		StartThread( L"Compute", true );
+		wstring threadName { L"Compute" };
+		threadName += std::to_wstring( uiThreadNumber );
+		StartThread( threadName, true );
 	}
 
 private:
-	NNetModel          * m_pModel;
-	int                  m_iStart;
-	int                  m_iStep;
-	CONDITION_VARIABLE * m_pConditionVar;
-	SRWLOCK            * m_pSRWLock;
+	NNetModel * m_pModel;
+	HANDLE    * m_pMutex;
+	SRWLOCK   * m_pSRWLockStartWorking;
+	SRWLOCK   * m_pSRWLockStarted;
+	SRWLOCK   * m_pSRWLockFinished;
 
 	virtual void ThreadMsgDispatcher( MSG const ) {};
 	virtual void ThreadStartupFunc( );

@@ -31,8 +31,12 @@ public:
 		return type.IsKnotType( );
 	}
 
+	virtual mV GetNextOutput( ) const 
+	{ 
+		return m_mVinputBuffer; 
+	}
+
 	virtual void Step         ( ) { }
-	virtual mV   GetNextOutput( ) const;
 	virtual void DrawExterior ( PixelCoordsFp &, tHighlightType const ) const;
 	virtual void DrawInterior ( PixelCoordsFp & );
 	virtual void Recalc( ) {};

@@ -56,6 +56,12 @@ mV Neuron::waveFunction( fMicroSecs const time ) const
 	return mV( m_factorU * time.GetValue() * ( 1.0f - time.GetValue() * m_factorW ) );
 }
 
+static unsigned int __stdcall BeepFunc( void * arg )
+{
+	Neuron * pNeuron { static_cast<Neuron *>( arg ) };
+	Sound::Beep( pNeuron->GetTriggerSoundFrequency(), pNeuron->GetTriggerSoundDuration() );
+	return 0;
+}
 
 void Neuron::Step( )
 {
@@ -63,7 +69,8 @@ void Neuron::Step( )
 	{
 		m_timeSinceLastPulse = 0._MicroSecs;
 		if ( HasTriggerSound() )
-			m_pBeeperThread->Beep( GetTriggerSoundFrequency(), GetTriggerSoundDuration() );
+		Util::RunAsAsyncThread( BeepFunc, this );
+//		m_pBeeperThread->Beep( GetTriggerSoundFrequency(), GetTriggerSoundDuration() );
 	}
 	else
 	{
