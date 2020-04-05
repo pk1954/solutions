@@ -77,8 +77,8 @@ public:
 			else
 			{ 
 				Pipe     * const pPipe  { new Pipe( ) };
-				BaseKnot * const pStart { m_pModel->GetTypedShape<BaseKnot>( idStart ) };
-				BaseKnot * const pEnd   { m_pModel->GetTypedShape<BaseKnot>( idEnd   ) };
+				BaseKnot * const pStart { m_pModel->GetShapePtr<BaseKnot *>( idStart ) };
+				BaseKnot * const pEnd   { m_pModel->GetShapePtr<BaseKnot *>( idEnd   ) };
 
 				pPipe->SetId( idFromScript );
 
@@ -201,7 +201,7 @@ public:
 	virtual void operator() ( Script & script ) const 
 	{
 		ShapeId const id      { script.ScrReadLong () };
-		Neuron      * pNeuron { m_pModel->GetTypedShape<Neuron>( id ) };
+		Neuron      * pNeuron { m_pModel->GetShapePtr<Neuron *>( id ) };
 		Hertz   const freq    { script.ScrReadUlong() };
 		script.ScrReadString( L"Hertz" );
 		MilliSecs const msec { script.ScrReadUlong() };

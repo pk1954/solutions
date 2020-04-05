@@ -124,7 +124,7 @@ void NNetModel::RemoveShape( ShapeId const idShapeToBeDeleted )
 
 	case ShapeType::Value::inputNeuron:
 	case ShapeType::Value::neuron:
-		disconnectBaseKnot( GetTypedShape<BaseKnot>( idShapeToBeDeleted ) );
+		disconnectBaseKnot( GetShapePtr<BaseKnot *>( idShapeToBeDeleted ) );
 		deleteShape( idShapeToBeDeleted );
 		break;
 
@@ -137,7 +137,7 @@ void NNetModel::RemoveShape( ShapeId const idShapeToBeDeleted )
 
 void NNetModel::Disconnect( ShapeId const id )
 {
-	if ( BaseKnot * pBaseKnot { GetTypedShape<BaseKnot>( id ) } )
+	if ( BaseKnot * pBaseKnot { GetShapePtr<BaseKnot *>( id ) } )
 	{
 		disconnectBaseKnot( pBaseKnot );
 		assert( pBaseKnot->IsOrphan( ) );
@@ -172,7 +172,7 @@ float const NNetModel::GetParameterValue( tParameter const param ) const
 void NNetModel::SetPulseRate( ShapeId const id, float const fNewValue )
 {
 	ModelChanged( );
-	InputNeuron * const pInputNeuron { GetTypedShape<InputNeuron>( id ) };
+	InputNeuron * const pInputNeuron { GetShapePtr<InputNeuron *>( id ) };
 	if ( pInputNeuron )
 		pInputNeuron->SetPulseFrequency( static_cast< fHertz >( fNewValue ) );
 }
@@ -203,7 +203,7 @@ void NNetModel::SetParameter
 
 MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const 
 {
-	if ( BaseKnot const * pBaseKnot = GetConstTypedShape<BaseKnot>( id ) )
+	if ( BaseKnot const * pBaseKnot = GetShapeConstPtr<BaseKnot const *>( id ) )
 		return pBaseKnot->GetPosition();
 	return NP_NULL;
 }
@@ -217,42 +217,42 @@ ShapeType const NNetModel::GetShapeType( ShapeId const id ) const
 
 bool const NNetModel::HasOutgoing( ShapeId const id ) const 
 { 
-	if ( BaseKnot const * pBaseKnot = GetConstTypedShape<BaseKnot>( id ) )
+	if ( BaseKnot const * pBaseKnot = GetShapeConstPtr<BaseKnot const *>( id ) )
 		return pBaseKnot->HasOutgoing( );
 	return false;
 }
 
 bool const NNetModel::HasIncoming( ShapeId const id ) const 
 { 
-	if ( BaseKnot const * pBaseKnot = GetConstTypedShape<BaseKnot>( id ) )
+	if ( BaseKnot const * pBaseKnot = GetShapeConstPtr<BaseKnot const *>( id ) )
 		return pBaseKnot->HasIncoming( );
 	return false;
 }
 
 size_t const NNetModel::GetNrOfOutgoingConnections( ShapeId const id ) const 
 { 
-	if ( BaseKnot const * pBaseKnot = GetConstTypedShape<BaseKnot>( id ) )
+	if ( BaseKnot const * pBaseKnot = GetShapeConstPtr<BaseKnot const *>( id ) )
 		return pBaseKnot->GetNrOfOutgoingConnections( );
 	return false;
 }
 
 size_t const NNetModel::GetNrOfIncomingConnections( ShapeId const id ) const 
 { 
-	if ( BaseKnot const * pBaseKnot = GetConstTypedShape<BaseKnot>( id ) )
+	if ( BaseKnot const * pBaseKnot = GetShapeConstPtr<BaseKnot const *>( id ) )
 		return pBaseKnot->GetNrOfIncomingConnections( );
 	return false;
 }
 
 void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge src shape into dst shape
 {
-	BaseKnot * pSrc = GetTypedShape<BaseKnot>( idSrc );
+	BaseKnot * pSrc = GetShapePtr<BaseKnot *>( idSrc );
 	if ( GetShapeType( idDst ).IsPipeType() )   // connect baseknot to Pipe
 	{
-		insertBaseKnot( GetTypedShape<Pipe>( idDst ), pSrc );
+		insertBaseKnot( GetShapePtr<Pipe *>( idDst ), pSrc );
 	}
 	else  // connect baseknot to baseknot
 	{
-		BaseKnot * pDst = GetTypedShape<BaseKnot>( idDst );
+		BaseKnot * pDst = GetShapePtr<BaseKnot *>( idDst );
 		if ( pSrc && pDst )
 		{
 			pSrc->Apply2AllConnectedPipes( [&]( Pipe * const p ) { return connectIncoming( p, pDst ); } );
@@ -291,7 +291,7 @@ void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 	case ShapeType::Value::inputNeuron:
 	case ShapeType::Value::neuron:
 	case ShapeType::Value::knot:
-		GetTypedShape<BaseKnot>( id )->MoveShape( delta );
+		GetShapePtr<BaseKnot *>( id )->MoveShape( delta );
 		break;
 
 	default:
@@ -307,7 +307,7 @@ Neuron * const NNetModel::InsertNeuron( ShapeId const idPipe, MicroMeterPoint co
 	{
 		ModelChanged( );
 		pNeuron = NewShape<Neuron>( splitPoint );
-		insertBaseKnot( GetTypedShape<Pipe>(idPipe), pNeuron );
+		insertBaseKnot( GetShapePtr<Pipe *>(idPipe), pNeuron );
 		CHECK_CONSISTENCY;
 	}
 	return pNeuron;
@@ -320,7 +320,7 @@ Knot * const NNetModel::InsertKnot( ShapeId const idPipe, MicroMeterPoint const 
 	{
 		ModelChanged( );
 		pKnot = NewShape<Knot>( splitPoint );
-		insertBaseKnot( GetTypedShape<Pipe>(idPipe), pKnot );
+		insertBaseKnot( GetShapePtr<Pipe *>(idPipe), pKnot );
 		CHECK_CONSISTENCY;
 	}
 	return pKnot;
@@ -341,13 +341,13 @@ void NNetModel::AddIncoming2Pipe( ShapeId const id, MicroMeterPoint const & pos 
 void NNetModel::AddOutgoing2Knot( ShapeId const id, MicroMeterPoint const & pos )
 {
 	if ( IsDefined( id ) )
-		NewPipe( GetTypedShape<BaseKnot>(id), NewShape<Knot>( pos + STD_OFFSET) );
+		NewPipe( GetShapePtr<BaseKnot *>(id), NewShape<Knot>( pos + STD_OFFSET) );
 }
 
 void NNetModel::AddIncoming2Knot( ShapeId const id, MicroMeterPoint const & pos )
 {
 	if ( IsDefined( id ) )
-		NewPipe( NewShape<Knot>( pos - STD_OFFSET ), GetTypedShape<BaseKnot>( id ) );
+		NewPipe( NewShape<Knot>( pos - STD_OFFSET ), GetShapePtr<BaseKnot *>( id ) );
 }
 
 void NNetModel::Compute( )
@@ -446,10 +446,10 @@ bool const NNetModel::isConnectedToPipe( ShapeId const id, Pipe const * const pP
 
 bool const NNetModel::isConnectedTo( ShapeId id1, ShapeId id2 ) const
 {
-	if ( IsType<Pipe>( id1 ) )
-		return isConnectedToPipe( id2, GetConstTypedShape<Pipe>( id1 ) );
-	if ( IsType<Pipe>( id2 ) )
-		return isConnectedToPipe( id1, GetConstTypedShape<Pipe>( id2 ) );
+	if ( IsOfType<Pipe>( id1 ) )
+		return isConnectedToPipe( id2, GetShapeConstPtr<Pipe const *>( id1 ) );
+	if ( IsOfType<Pipe>( id2 ) )
+		return isConnectedToPipe( id1, GetShapeConstPtr<Pipe const *>( id2 ) );
 	else
 		return false;
 }
@@ -523,7 +523,7 @@ void NNetModel::deletePipe( ShapeId const id )
 {
 	if ( IsDefined( id ) )
 	{
-		Pipe * pPipeToBeDeleted { GetTypedShape<Pipe>( id ) };
+		Pipe * pPipeToBeDeleted { GetShapePtr<Pipe *>( id ) };
 
 		BaseKnot * pStartKnot { pPipeToBeDeleted->GetStartKnotPtr() };
 		pStartKnot->RemoveOutgoing( pPipeToBeDeleted );
@@ -552,8 +552,7 @@ void NNetModel::insertBaseKnot( Pipe * const pPipe, BaseKnot * const pBaseKnot)
 
 MicroMeterPoint NNetModel::orthoVector( ShapeId const idPipe ) const
 {
-	Pipe const * pPipe { GetConstTypedShape<Pipe>( idPipe ) };
-	return OrthoVector( pPipe->GetVector(), NEURON_RADIUS * 2.f );
+	return OrthoVector( GetShapeConstPtr<Pipe const *>( idPipe )->GetVector(), NEURON_RADIUS * 2.f );
 }
 
 Shape const * NNetModel::findShapeAt

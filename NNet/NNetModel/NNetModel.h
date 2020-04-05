@@ -30,39 +30,44 @@ public:
 
 	// readOnly functions
 
+	bool IsShapeIdOk( ShapeId const id ) const
+	{
+		return IsDefined( id ) && IsValidShapeId( id );
+	}
+
 	Shape * GetShape( ShapeId const id )
 	{
-		return ( IsDefined( id ) && IsValidShapeId( id ) )
-			   ? m_Shapes[ id.GetValue() ]
-			   : nullptr;
+		return IsShapeIdOk( id ) ? m_Shapes[id.GetValue()] : nullptr;
 	}
 
 	Shape const * GetConstShape( ShapeId const id ) const
 	{
-		return ( IsDefined( id ) && IsValidShapeId( id ) )
-			   ? m_Shapes[ id.GetValue() ]
-			   : nullptr;
+		return IsShapeIdOk( id ) ? m_Shapes[id.GetValue()] : nullptr;
+	}
+
+	template <typename T> bool IsOfType( ShapeId const id ) const 
+	{ 
+		return T::TypeFits( GetShapeType( id ) ); 
+	}
+
+	template <typename T> bool HasType( Shape const * const pShape ) const 
+	{ 
+		return pShape && std::remove_pointer<T>::type::TypeFits( pShape->GetShapeType() ); 
 	}
 
 	template <typename T>
-	T * GetTypedShape( ShapeId const id ) 
+	T GetShapePtr( ShapeId const id ) 
 	{
-		Shape * pShape = GetShape( id );
-		return ( pShape && T::TypeFits( pShape->GetShapeType() ) ) 
-			? static_cast<T *>( pShape )
-			: nullptr;
+		Shape * const pShape { GetShape( id ) };
+		return HasType<T>( pShape )	? static_cast<T>( pShape ) : nullptr;
 	}
 
 	template <typename T>
-	T const * GetConstTypedShape( ShapeId const id ) const
+	T GetShapeConstPtr( ShapeId const id ) const
 	{
-		Shape const * pShape = GetConstShape( id );
-		return ( pShape && T::TypeFits( pShape->GetShapeType() ) ) 
-			? static_cast<T const *>( pShape )
-			: nullptr;
+		Shape const * const pShape { GetConstShape( id ) };
+		return HasType<T>( pShape ) ? static_cast<T>( pShape ) : nullptr;
 	}
-
-	template <typename T> bool IsType( ShapeId const id ) const { return T::TypeFits( GetShapeType( id ) ); }
 
 	MicroMeterPoint const GetShapePos   ( ShapeId const id  ) const;
 	ShapeType       const GetShapeType  ( ShapeId const id  ) const;
@@ -80,12 +85,12 @@ public:
 
 	BaseKnot * const GetStartKnotPtr( ShapeId const idPipe ) const 
 	{ 
-		return GetConstTypedShape<Pipe>( idPipe )->GetStartKnotPtr(); 
+		return GetShapeConstPtr<Pipe const *>( idPipe )->GetStartKnotPtr(); 
 	}
 
 	BaseKnot * const GetEndKnotPtr( ShapeId const idPipe ) const 
 	{ 
-		return GetConstTypedShape<Pipe>( idPipe )->GetEndKnotPtr(); 
+		return GetShapeConstPtr<Pipe const *>( idPipe )->GetEndKnotPtr(); 
 	}
 
 	size_t const GetNrOfOutgoingConnections( ShapeId const ) const;
@@ -114,7 +119,7 @@ public:
 	template <typename T>
 	void AppendShape( ShapeId const id )
 	{
-		if ( GetShapeType( id ).IsKnotType() )
+		if ( IsOfType<Knot>( id ) )
 		{
 			Connect( id, NewShape<T>( GetShapePos( id ) )->GetId() );
 		}
@@ -126,7 +131,7 @@ public:
 		bool bResult { false };
 		for ( auto pShape : m_Shapes )
 		{
-			if ( pShape && T::TypeFits( pShape->GetShapeType() ) )
+			if ( HasType<T>( pShape ) )
 			{
 				bResult = func( static_cast<T &>( * pShape ) );
 				if ( bResult )
@@ -139,27 +144,13 @@ public:
 	template <typename T>
 	void Apply2All( function<void(T &)> const & func ) const
 	{
-		for ( auto pShape : m_Shapes )
-		{
-			if ( pShape && T::TypeFits( pShape->GetShapeType() ) )
-				func( static_cast<T &>( * pShape ) );
-		}
+		for (auto p : m_Shapes) { if ( HasType<T>(p) ) func( static_cast<T &>(*p) ); }
 	}
 
 	template <typename T>
-	void Apply2AllInRect( MicroMeterRect const & rect, function<void(T &)> const & func ) const
+	void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func ) const
 	{
-		for ( auto pShape : m_Shapes )
-		{
-			if ( 
-				  pShape && 
-				  T::TypeFits( pShape->GetShapeType() ) &&
-				  pShape->IsInRect( rect )
-			   )
-			{
-				func( static_cast<T &>( * pShape ) );
-			}
-		}
+		Apply2All<T>( {	[&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } } );
 	}
 
 	void CreateInitialShapes();

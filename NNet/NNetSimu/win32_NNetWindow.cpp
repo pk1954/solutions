@@ -181,7 +181,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 bool NNetWindow::ChangePulseRate( ShapeId const id, bool const bDirection )
 {
 	static fHertz const INCREMENT { 0.01_fHertz };
-	InputNeuron const * pInputNeuron { m_pModel->GetConstTypedShape<InputNeuron>(id) };
+	InputNeuron const * pInputNeuron { m_pModel->GetShapeConstPtr<InputNeuron const *>(id) };
 	if ( pInputNeuron == nullptr )
 		return false;
 	fHertz const fOldValue { pInputNeuron->GetPulseFrequency( ) };
@@ -192,7 +192,7 @@ bool NNetWindow::ChangePulseRate( ShapeId const id, bool const bDirection )
 
 void NNetWindow::PulseRateDlg( ShapeId const id )
 {
-	InputNeuron const * pInputNeuron { m_pModel->GetConstTypedShape<InputNeuron>(id) };
+	InputNeuron const * pInputNeuron { m_pModel->GetShapeConstPtr<InputNeuron const *>(id) };
 	if ( pInputNeuron == nullptr )
 		return;
 	float   const fOldValue { m_pModel->GetPulseRate( pInputNeuron ) };
@@ -205,7 +205,7 @@ void NNetWindow::PulseRateDlg( ShapeId const id )
 
 void NNetWindow::TriggerSoundDlg( ShapeId const id )
 {
-	Neuron * pNeuron { m_pModel->GetTypedShape<Neuron>(id) };
+	Neuron * pNeuron { m_pModel->GetShapePtr<Neuron *>(id) };
 	if ( pNeuron == nullptr )
 		return;
 
@@ -246,7 +246,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			if ( IsDefined( m_shapeHighlighted ) )
 			{
 				m_pNNetWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umCrsrPos - umOldPos );
-				if ( m_pModel->IsType<BaseKnot>( m_shapeHighlighted ) )
+				if ( m_pModel->IsOfType<BaseKnot>( m_shapeHighlighted ) )
 				{
 					pShapeSuper = m_pModel->FindShapeAt
 					( 
@@ -468,7 +468,7 @@ bool NNetWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 
 bool NNetWindow::OnRButtonDown( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( ! (wParam & MK_CONTROL) )
+	if ( (wParam & MK_CONTROL) == 0 )
 		m_pModel->UnselectAll( );
 	return false;
 }
