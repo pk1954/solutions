@@ -22,5 +22,5 @@ void Knot::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) cons
 
 void Knot::DrawInterior( PixelCoordsFp & coord )
 {
-	drawCircle( coord, GetInteriorColor( ), GetExtension( ) * PIPELINE_INTERIOR );
+	drawCircle( coord, GetInteriorColor( ), GetExtension( ) * PIPE_INTERIOR );
 }

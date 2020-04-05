@@ -1,7 +1,7 @@
 # NNetModel
-# Created 25-03-2020 12-46-35
-# Computer name: DESKTOP-D6AR9AH
-# User name: Peter
+# Created 24-03-2020 17-47-12
+# Computer name: DESKTOP-GG1L4IV
+# User name: pschm  2854
 
 Protocol version 1.4
 
@@ -458,10 +458,10 @@ CreateShape 438 pipeline (144->436)
 CreateShape 440 pipeline (439->34)
 CreateShape 441 pipeline (24->439)
 
-ShapeParameter InputNeuron 0 PulseRate = 50.06
+ShapeParameter InputNeuron 0 PulseRate = 50
 ShapeParameter InputNeuron 2 PulseRate = 50
 ShapeParameter InputNeuron 4 PulseRate = 50
 
-TriggerSound 89 660 Hertz 100 msec 
-TriggerSound 307 880 Hertz 100 msec 
-TriggerSound 315 1720 Hertz 100 msec 
+TriggerSound 89 660 Hertz 100 msec
+TriggerSound 307 880 Hertz 100 msec
+TriggerSound 315 1720 Hertz 100 msec

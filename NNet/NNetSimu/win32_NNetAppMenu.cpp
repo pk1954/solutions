@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "Resource.h"
-#include "Pipeline.h"
+#include "Pipe.h"
 #include "win32_util.h"
 #include "NNetModelStorage.h"
 #include "AutoOpen.h"
@@ -74,8 +74,8 @@ void NNetAppMenu::AdjustVisibility( )
 	EnableMenuItem( m_hMenu, IDM_PERF_WINDOW,  m_pWinManager->IsVisible( IDM_PERF_WINDOW  ) ? MF_GRAYED : MF_ENABLED );
 	//EnableMenuItem( m_hMenu, IDM_CONS_WINDOW,  m_pWinManager->IsVisible( IDM_CONS_WINDOW  ) ? MF_GRAYED : MF_ENABLED );
 
-	EnableMenuItem( m_hMenu, IDD_ARROWS_OFF, (Pipeline::GetArrowSize() != Pipeline::STD_ARROW_SIZE) ? MF_GRAYED : MF_ENABLED );
-	EnableMenuItem( m_hMenu, IDD_ARROWS_ON,  (Pipeline::GetArrowSize() == Pipeline::STD_ARROW_SIZE) ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDD_ARROWS_OFF, (Pipe::GetArrowSize() != Pipe::STD_ARROW_SIZE) ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDD_ARROWS_ON,  (Pipe::GetArrowSize() == Pipe::STD_ARROW_SIZE) ? MF_GRAYED : MF_ENABLED );
 
 	EnableMenuItem( m_hMenu, IDD_SOUND_ON,    Sound::IsOn() ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDD_SOUND_OFF, ! Sound::IsOn() ? MF_GRAYED : MF_ENABLED );

@@ -47,13 +47,15 @@ public:
 
 	ShapeId        const GetHighlightedShapeId( )          const { return m_shapeHighlighted; }
 	ShapeId        const GetSuperHighlightedShapeId( )     const { return m_shapeSuperHighlighted; }
-	tHighlightType const GetHighlightType( ShapeId const ) const;
+	tHighlightType const GetHighlightType( Shape const & ) const;
 
 	void        ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
 	void        Zoom( bool const );
 	void        AnalysisFinished( );
 	void        ZoomKeepCrsrPos( MicroMeter const );
 	void        CenterModel( );
+	void        Escape( );    
+	void        SelectAll( );
 
 	MicroMeter  GetPixelSize  ( ) const { return m_coord.GetPixelSize  (); }
 	fPixelPoint GetPixelOffset( ) const { return m_coord.GetPixelOffset(); }
@@ -97,7 +99,9 @@ private:
 	MicroMeterPoint m_umPntCenterDelta { MicroMeterPoint::NULL_VAL() };
 	MicroMeter      m_umPixelSizeStart { MicroMeter::NULL_VAL() };
 	MicroMeter      m_umPixelSizeDelta { MicroMeter::NULL_VAL() };
-	SmoothMoveFp    m_smoothMove {};
+	SmoothMoveFp    m_smoothMove { };
+
+	MicroMeterRect m_umRectSelection { };
 
 	ShapeId m_shapeHighlighted      { NO_SHAPE };
 	ShapeId m_shapeSuperHighlighted { NO_SHAPE };
@@ -109,18 +113,19 @@ private:
 	virtual void OnMouseMove         ( WPARAM const, LPARAM const );
 	virtual BOOL OnCommand           ( WPARAM const, LPARAM const );
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const );
+	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const );
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
 	virtual void OnSize              ( WPARAM const, LPARAM const );
 	virtual void OnLButtonDown       ( WPARAM const, LPARAM const );
+	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
 	bool   smoothStep( );
 	void   setStdFontSize( );
 	LPARAM crsPos2LPARAM( ) const;
-	void   emphasizeSelection( MicroMeterRect const, float const );
+	void   centerAndZoomRect( MicroMeterRect const, float const );
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL   inObservedClientRect( LPARAM const );
-	void   setHighlightShape( PixelPoint const );
-	void   drawHighlightedShape( NNetModel &, PixelCoordsFp & );
+	void   drawHighlightedShape( );
 	void   doPaint( );
 };

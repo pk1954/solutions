@@ -81,19 +81,19 @@ bool ModelAnalyzer::findLoop( Shape * const pShape )
 	{
 		bResult = true;  // loop found. Do not pop_back stack!
 	}
-	else if ( pShape->IsPipeline() )
+	else if ( pShape->IsPipe() )
 	{
-		Pipeline * pPipe { Cast2Pipeline( pShape ) };
+		Pipe * pPipe { Cast2Pipe( pShape ) };
 		bResult = findLoop( pPipe->GetEndKnotPtr( ) );
 	}
 	else if ( pShape->IsBaseKnot() )
 	{
 		BaseKnot * pBaseKnot { Cast2BaseKnot( pShape ) };
-		bResult = pBaseKnot->Apply2AllOutgoingPipelines( [&]( auto pipe ) { return findLoop( pipe ); } );
+		bResult = pBaseKnot->Apply2AllOutPipes( [&]( auto pipe ) { return findLoop( pipe ); } );
 	}
 	else
 	{
-		assert( false );  // shape is neither pipeline nor baseknot
+		assert( false );  // shape is neither Pipe nor baseknot
 	}
 
 	if ( ! bResult )

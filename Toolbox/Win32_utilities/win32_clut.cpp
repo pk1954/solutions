@@ -7,7 +7,7 @@
 
 void CLUT::Allocate( CLUT_INDEX const uiMaxIndex )
 {
-    m_data = new std::vector<COLORREF>( uiMaxIndex.GetValue() + 1 );
+    m_data = new std::vector<COLORREF>( static_cast<size_t>(uiMaxIndex.GetValue()) + 1 );
     setTableValues( );
 }
 

@@ -41,6 +41,12 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 		OnLButtonUp( wParam, lParam );
 		return FALSE;
 
+	case WM_RBUTTONUP:
+		return OnRButtonUp( wParam, lParam );
+
+	case WM_RBUTTONDOWN:
+		return OnRButtonDown( wParam, lParam );
+
 	case WM_SETCURSOR:
 		OnSetCursor( wParam, lParam );
 		return FALSE;

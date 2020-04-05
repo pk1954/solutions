@@ -30,7 +30,9 @@ protected:
 	virtual void OnMouseMove         ( WPARAM const, LPARAM const ) = 0;
 	virtual BOOL OnCommand           ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnLButtonDown       ( WPARAM const, LPARAM const ) = 0;
+	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const ) = 0;
+	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnSize              ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnPaint             ( )                            = 0;

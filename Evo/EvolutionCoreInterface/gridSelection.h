@@ -12,7 +12,7 @@ class GridSelection
 public:
 	static void ResetSelection()
 	{ 
-		m_gridRectSelection = GridRect::ZERO_VAL(); 
+		m_gridRectSelection.SetZero(); 
 	};
 
 	static void SetSelection( GridRect const & rect ) 

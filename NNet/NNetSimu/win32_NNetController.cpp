@@ -232,6 +232,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWindow->AnalysisFinished( );
 		break;
 
+	case IDM_ESCAPE:
+		m_pNNetWindow->Escape( );
+		break;
+
+	case IDM_SELECT_ALL:
+		m_pNNetWindow->SelectAll( );
+		break;
+
 	case IDM_SCRIPT_DIALOG:
 		ScriptDialog( );
 		break;

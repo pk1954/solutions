@@ -9,7 +9,7 @@
 #include "MoreTypes.h"
 #include "tHighlightType.h"
 #include "BaseKnot.h"
-#include "Pipeline.h"
+#include "Pipe.h"
 
 using std::vector;
 
@@ -21,7 +21,7 @@ class Knot : public BaseKnot
 {
 public:
 	Knot( MicroMeterPoint const center )
-	  : BaseKnot( center, ShapeType::Value::knot, PIPELINE_WIDTH / 2 )
+	  : BaseKnot( center, ShapeType::Value::knot, PIPE_WIDTH / 2 )
 	{}
 
 	virtual ~Knot() {}

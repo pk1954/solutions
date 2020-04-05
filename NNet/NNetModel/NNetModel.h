@@ -13,7 +13,7 @@
 #include "tHighlightType.h"
 #include "Neuron.h"
 #include "Knot.h"
-#include "Pipeline.h"
+#include "Pipe.h"
 
 class ObserverInterface;
 class EventInterface;
@@ -76,17 +76,16 @@ public:
 	bool            const IsInEmphasizeMode ( ) const { return m_bEmphasizeMode; }
 	fMicroSecs      const GetTimeResolution ( ) const { return m_usResolution; }
 	float           const GetOpacity        ( ) const { return IsInEmphasizeMode() ? 0.5f : 1.0f; }
-//	int             const GetNrOfThreads    ( ) const { return m_iNrOfComputeThreads; }
 	long            const GetNrOfShapes     ( ) const;
 
-	BaseKnot * const GetStartKnotPtr( ShapeId const idPipeline ) const 
+	BaseKnot * const GetStartKnotPtr( ShapeId const idPipe ) const 
 	{ 
-		return GetConstTypedShape<Pipeline>( idPipeline )->GetStartKnotPtr(); 
+		return GetConstTypedShape<Pipe>( idPipe )->GetStartKnotPtr(); 
 	}
 
-	BaseKnot * const GetEndKnotPtr( ShapeId const idPipeline ) const 
+	BaseKnot * const GetEndKnotPtr( ShapeId const idPipe ) const 
 	{ 
-		return GetConstTypedShape<Pipeline>( idPipeline )->GetEndKnotPtr(); 
+		return GetConstTypedShape<Pipe>( idPipe )->GetEndKnotPtr(); 
 	}
 
 	size_t const GetNrOfOutgoingConnections( ShapeId const ) const;
@@ -147,35 +146,6 @@ public:
 		}
 	}
 
-	//void Apply2AllWithSteps( int const iStart, int const iStep, function<void(Shape &)> const & func ) const
-	//{
-	//	for ( int i = iStart; i < m_Shapes.size(); i += iStep )
-	//	{
-	//		if ( m_Shapes[i] != nullptr  )
-	//			func( * m_Shapes[i] );
-	//	}
-	//}
-
-	//void DoPrepare( unsigned int const uiStart )
-	//{
-	//	unsigned int uiStop { min( uiStart + CHUNK_SIZE, CastToUnsignedInt(m_Shapes.size()) ) };
-	//	for ( unsigned int ui = uiStart; ui < uiStop; ++ui )
-	//	{
-	//		if ( m_Shapes[ui] != nullptr )
-	//			m_Shapes[ui]->Prepare();
-	//	}
-	//}
-
-	//void DoStep( unsigned int const uiStart )
-	//{
-	//	unsigned int uiStop { min( uiStart + CHUNK_SIZE, CastToUnsignedInt(m_Shapes.size()) ) };
-	//	for ( unsigned int ui = uiStart; ui < uiStop; ++ui )
-	//	{
-	//		if ( m_Shapes[ui] != nullptr )
-	//			m_Shapes[ui]->Step();
-	//	}
-	//}
-
 	template <typename T>
 	void Apply2AllInRect( MicroMeterRect const & rect, function<void(T &)> const & func ) const
 	{
@@ -194,7 +164,7 @@ public:
 
 	void CreateInitialShapes();
 	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
-	void NewPipeline( BaseKnot * const, BaseKnot * const );
+	void NewPipe( BaseKnot * const, BaseKnot * const );
 
 	Knot   * const InsertKnot  ( ShapeId const, MicroMeterPoint const & );
 	Neuron * const InsertNeuron( ShapeId const, MicroMeterPoint const & );
@@ -226,45 +196,17 @@ public:
 
 	virtual void Compute( );
 
-	//static int const CHUNK_SIZE { 100 };
+	void UnselectAll( )
+	{
+		Apply2All<Shape>( [&]( Shape & shape ) { shape.Unselect(); } );
+	}
 
-	//void StartWork( )
-	//{
-	//	WaitForSingleObject( m_mutex, INFINITE );
-	//	m_uiChunksDone = 0;
-	//	ReleaseMutex( m_mutex );
-	//}
-
-	//void ChunkDone( )
-	//{
-	//	WaitForSingleObject( m_mutex, INFINITE );
-	//	++m_uiChunksDone;
-	//	ReleaseMutex( m_mutex );
-	//}
-
-	//bool GetNextChunk( unsigned int & uiNextIndex )
-	//{
-	//	bool bRes;
-	//	WaitForSingleObject( m_mutex, INFINITE );
-	//	uiNextIndex = m_uiChunksDone * CHUNK_SIZE;
-	//	bRes = m_uiChunksDone < m_uiNrOfChunks;
-	//	ReleaseMutex( m_mutex );
-	//	return bRes;
-	//}
+	void SelectAll( )
+	{
+		Apply2All<Shape>( [&]( Shape & shape ) { shape.Select(); } );
+	}
 
 private:
-	//unsigned int m_uiNrOfComputeThreads { 0 };
-
-	//SRWLOCK m_SRWLockStartWorking { SRWLOCK_INIT };
-	//SRWLOCK m_SRWLockStarted      { SRWLOCK_INIT };
-	//SRWLOCK m_SRWLockFinished     { SRWLOCK_INIT };
-
-	//vector< ComputeThread * > m_ComputeThreads;
-
-	//unsigned int    m_uiNrOfChunks   { 0 };
-	//unsigned int    m_uiChunksDone   { 0 };
-	//unsigned int    m_uiNextFreeChunk{ 0 };
-	//HANDLE m_mutex;
 
 	Observable      m_paramObservable { };
 	vector<Shape *> m_Shapes          { };
@@ -286,13 +228,13 @@ private:
 	void            checkConsistency( Shape * );
 	MicroMeterPoint orthoVector( ShapeId const ) const;
 	void            disconnectBaseKnot( BaseKnot * const );
-	void            deletePipeline( ShapeId const );
-	void            insertBaseKnot( Pipeline * const, BaseKnot * const );
+	void            deletePipe( ShapeId const );
+	void            insertBaseKnot( Pipe * const, BaseKnot * const );
 	void            deleteShape( ShapeId const );
 	bool const      isConnectedTo( ShapeId, ShapeId ) const;
-	bool const      isConnectedToPipeline( ShapeId const, Pipeline const * const ) const;
-	bool            connectIncoming( Pipeline * const, BaseKnot * const );
-	bool            connectOutgoing( Pipeline * const, BaseKnot * const );
+	bool const      isConnectedToPipe( ShapeId const, Pipe const * const ) const;
+	bool            connectIncoming( Pipe * const, BaseKnot * const );
+	bool            connectOutgoing( Pipe * const, BaseKnot * const );
 
 };
 

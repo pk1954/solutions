@@ -15,7 +15,7 @@ wchar_t const * ShapeType::GetName( ShapeType::Value const val )
 		{ ShapeType::Value::undefined,   L"undefined"   },
 		{ ShapeType::Value::inputNeuron, L"inputNeuron" },
 		{ ShapeType::Value::neuron,      L"neuron"      },
-		{ ShapeType::Value::pipeline,    L"pipeline"    },
+		{ ShapeType::Value::pipe,        L"pipe"    },
 		{ ShapeType::Value::knot,        L"knot"        }
 	};				  
 
@@ -29,8 +29,8 @@ ShapeType::Value const ShapeType::GetTypeFromName( wchar_t const * const name )
 		{ L"undefined",   ShapeType::Value::undefined   },
 		{ L"inputNeuron", ShapeType::Value::inputNeuron },
 		{ L"neuron",      ShapeType::Value::neuron	    },
-		{ L"pipeline",    ShapeType::Value::pipeline	},
-		{ L"knot",        ShapeType::Value::knot        }
+	    { L"pipe",        ShapeType::Value::pipe	    },
+	    { L"knot",        ShapeType::Value::knot        }
 	};				  
 
 	return mapShape.at( name );

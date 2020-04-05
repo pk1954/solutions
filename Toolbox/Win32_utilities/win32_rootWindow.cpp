@@ -176,13 +176,14 @@ LRESULT RootWindow::RootWindowProc
 	{
 
 	case WM_RBUTTONDOWN:
-		pRootWin->SetCapture( );
-		pRootWin->SetFocus( );
+		if ( ! pRootWin->UserProc( message, wParam, lParam ) )
+			pRootWin->SetFocus( );
 		return FALSE;
 
 	case WM_RBUTTONUP:
 		(void)ReleaseCapture( );
-		pRootWin->contextMenu( GetCrsrPosFromLparam( lParam ) );
+		if ( ! pRootWin->UserProc( message, wParam, lParam ) )
+			pRootWin->contextMenu( GetCrsrPosFromLparam( lParam ) );
 		return FALSE;
 
 	case WM_COMMAND:

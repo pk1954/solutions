@@ -17,7 +17,7 @@ using std::wstring;
 class GraphicsInterface;
 class PixelCoordsFp;
 class NNetModel;
-class Pipeline;
+class Pipe;
 
 struct IDWriteTextFormat;
 
@@ -52,12 +52,12 @@ public:
 		return umRect.Includes( m_center );
 	}
 
-	void AddIncoming    ( Pipeline * const );
-	void AddOutgoing    ( Pipeline * const );
-	void RemoveIncoming ( Pipeline * const );
-	void RemoveOutgoing ( Pipeline * const );
-	void ReplaceIncoming( Pipeline * const, Pipeline * const );
-	void ReplaceOutgoing( Pipeline * const, Pipeline * const );
+	void AddIncoming    ( Pipe * const );
+	void AddOutgoing    ( Pipe * const );
+	void RemoveIncoming ( Pipe * const );
+	void RemoveOutgoing ( Pipe * const );
+	void ReplaceIncoming( Pipe * const, Pipe * const );
+	void ReplaceOutgoing( Pipe * const, Pipe * const );
 
 	bool   HasIncoming( )                const { return ! m_incoming.empty(); }
 	bool   HasOutgoing( )                const { return ! m_outgoing.empty(); }
@@ -84,20 +84,20 @@ public:
 	bool IsPrecursorOf( ShapeId const );
 	bool IsSuccessorOf( ShapeId const );
 
-	bool Apply2AllIncomingPipelines( function<bool(Pipeline * const)> const & func )
+	bool Apply2AllInPipes( function<bool(Pipe * const)> const & func )
 	{
 		return apply2All( m_incoming, func );
 	}
 
-	bool Apply2AllOutgoingPipelines( function<bool(Pipeline * const)> const & func )
+	bool Apply2AllOutPipes( function<bool(Pipe * const)> const & func )
 	{
 		return apply2All( m_outgoing, func );
 	}
 
-	void Apply2AllConnectedPipelines( function<bool(Pipeline const *)> const & func )
+	void Apply2AllConnectedPipes( function<bool(Pipe * const)> const & func )
 	{
-		Apply2AllIncomingPipelines( [&]( Pipeline const * pipe ) { return func( pipe ); } );
-		Apply2AllOutgoingPipelines( [&]( Pipeline const * pipe ) { return func( pipe ); } );
+		Apply2AllInPipes ( [&]( Pipe * const pipe ) { return func( pipe ); } );
+		Apply2AllOutPipes( [&]( Pipe * const pipe ) { return func( pipe ); } );
 	}
 
 	virtual void MoveShape( MicroMeterPoint const & );
@@ -106,8 +106,8 @@ public:
 
 protected:
 
-	vector<Pipeline *> m_incoming;
-	vector<Pipeline *> m_outgoing;
+	vector<Pipe *> m_incoming;
+	vector<Pipe *> m_outgoing;
 
 	void drawCircle( PixelCoordsFp const &, D2D1::ColorF const, MicroMeterPoint const, MicroMeter const ) const;
 	void drawCircle( PixelCoordsFp const &, D2D1::ColorF const, MicroMeter const ) const;
@@ -116,7 +116,7 @@ protected:
 	void      const DisplayText( PixelRect const, wstring const ) const;
 
 private:
-	bool apply2All(	vector<Pipeline *> const &, function<bool(Pipeline * const)> const & );
+	bool apply2All(	vector<Pipe *> const &, function<bool(Pipe * const)> const & );
 
 	MicroMeterPoint     m_center;
 	MicroMeter          m_extension;

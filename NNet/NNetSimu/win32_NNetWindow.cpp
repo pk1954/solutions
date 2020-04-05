@@ -7,7 +7,7 @@
 #include "Resource.h"
 #include "MoreTypes.h"
 #include "Segment.h"
-#include "Pipeline.h"
+#include "Pipe.h"
 #include "InputNeuron.h"
 #include "PixelTypes.h"
 #include "Analyzer.h"
@@ -15,6 +15,7 @@
 #include "tHighlightType.h"
 #include "PixelCoordsFp.h"
 #include "Direct2D.h"
+#include "NNetParameters.h"
 #include "win32_fatalError.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
@@ -110,18 +111,6 @@ void NNetWindow::ZoomKeepCrsrPos( MicroMeter const newSize )
 	}
 }
 
-void NNetWindow::setHighlightShape( PixelPoint const pnt )
-{
-	MicroMeterPoint const   umCrsrPos     { m_coord.convert2MicroMeterPointPos( pnt ) };
-	Shape           const * pShape        { m_pModel->FindShapeAt( umCrsrPos, [&]( Shape const & s) { return true; } ) };
-	ShapeId         const   idHighlighted { pShape ? pShape->GetId( ) : NO_SHAPE };
-	if ( idHighlighted != m_shapeHighlighted )
-	{
-		m_shapeHighlighted = idHighlighted; 
-		Notify( TRUE );     // cause immediate repaint
-	}
-}
-
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )
 {
 	UINT const STD_FLAGS { MF_BYPOSITION | MF_STRING };
@@ -167,12 +156,12 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT, L"Disconnect" );
 		break;
 
-	case ShapeType::Value::pipeline:
+	case ShapeType::Value::pipe:
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2PIPE, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING2PIPE, L"Add incoming dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_INSERT_NEURON,     L"Insert neuron" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,      L"Remove" );
-		if ( Pipeline::GetArrowSize( ) > 0.0_MicroMeter )
+		if ( Pipe::GetArrowSize( ) > 0.0_MicroMeter )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ARROWS_OFF,    L"Arrows off" );
 		else
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ARROWS_ON,     L"Arrows on" );
@@ -231,12 +220,23 @@ void NNetWindow::TriggerSoundDlg( ShapeId const id )
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
-	PixelPoint const ptCrsr { GetCrsrPosFromLparam( lParam ) };  // relative to client area
+	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // relative to client area
+	MicroMeterPoint const umCrsrPos { m_coord.convert2MicroMeterPointPos( ptCrsr ) };
+	MicroMeterPoint const umOldPos  { m_coord.convert2MicroMeterPointPos( m_ptLast ) };
 
 	m_pCursorPosObservable->NotifyAll( false );
 
-	if ( wParam & MK_RBUTTON )          // Right mouse button: selection
+	if ( wParam & MK_RBUTTON )         // Right mouse button: selection
 	{
+		if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
+		{
+			m_umRectSelection = MicroMeterRect( umCrsrPos, umOldPos );
+			m_pModel->Apply2AllInRect<Shape>( m_umRectSelection, [&]( Shape & shape ) { shape.Select(); } );
+		}
+		else                           // first time here after RBUTTON pressed
+		{
+			m_ptLast = ptCrsr;         // store current cursor pos
+		}
 	}
 	else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
 	{
@@ -245,14 +245,12 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			Shape const * pShapeSuper { nullptr };
 			if ( IsDefined( m_shapeHighlighted ) )
 			{
-				MicroMeterPoint const umOldPos { m_coord.convert2MicroMeterPointPos( m_ptLast ) };
-				MicroMeterPoint const umNewPos { m_coord.convert2MicroMeterPointPos( ptCrsr   ) };
-				m_pNNetWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umNewPos - umOldPos );
+				m_pNNetWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umCrsrPos - umOldPos );
 				if ( m_pModel->IsType<BaseKnot>( m_shapeHighlighted ) )
 				{
 					pShapeSuper = m_pModel->FindShapeAt
 					( 
-						umNewPos, 
+						umCrsrPos, 
 						[&]( Shape const & shape ) { return m_pModel->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
 					);
 				}
@@ -269,27 +267,43 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	}
 	else  // no mouse button pressed
 	{                         
-		setHighlightShape( ptCrsr );
+		Shape   const * pShapeHighlight { m_pModel->FindShapeAt( umCrsrPos, [&]( Shape const & s) { return true; } ) };
+		ShapeId const   idHighlight     { pShapeHighlight ? pShapeHighlight->GetId( ) : NO_SHAPE };
+		if ( idHighlight != m_shapeHighlighted )
+		{
+			m_shapeHighlighted = idHighlight; 
+			Notify( TRUE );     // cause immediate repaint
+		}
 		m_ptLast = PP_NULL;   // make m_ptLast invalid
 		 // no refresh! It would cause repaint for every mouse move 
 	}
 }
 
-void NNetWindow::drawHighlightedShape( NNetModel & model, PixelCoordsFp & coord )
+void NNetWindow::Escape( )
 {
-	Shape * const pShapeHighlighted { model.GetShape( m_shapeHighlighted ) };
+	m_pModel->UnselectAll( );
+}
+
+void NNetWindow::SelectAll( )
+{
+	m_pModel->SelectAll( );
+}
+
+void NNetWindow::drawHighlightedShape( )
+{
+	Shape * const pShapeHighlighted { m_pModel->GetShape( m_shapeHighlighted ) };
 	if ( pShapeHighlighted && pShapeHighlighted->IsAnyNeuron() )
 	{
-		pShapeHighlighted->DrawExterior( coord, tHighlightType::highlighted );
-		pShapeHighlighted->DrawInterior( coord );
+		pShapeHighlighted->DrawExterior( m_coord, tHighlightType::highlighted );
+		pShapeHighlighted->DrawInterior( m_coord );
 	}
 }
 
-tHighlightType const NNetWindow::GetHighlightType( ShapeId const id ) const
+tHighlightType const NNetWindow::GetHighlightType( Shape const & shape ) const
 {
-	return ( id == m_shapeSuperHighlighted )
+	return ( (shape.GetId() == m_shapeSuperHighlighted) || shape.IsSelected() )
 		   ? tHighlightType::superHighlighted
-		   : ( id == m_shapeHighlighted )
+		   : ( shape.GetId() == m_shapeHighlighted )
 			 ? tHighlightType::highlighted
 			 : tHighlightType::normal;
 }
@@ -299,13 +313,18 @@ void NNetWindow::doPaint( )
 	PixelRect      const pixRect { GetClPixelRect( ) };
 	MicroMeterRect const umRect  { m_coord.convert2MicroMeterRect( pixRect ) };
 
-	if ( m_coord.GetPixelSize() <= 5._MicroMeter )
-		m_pModel->Apply2AllInRect<Shape>( umRect, [&]( Shape & shape ) { shape.DrawExterior( m_coord, GetHighlightType( shape.GetId() ) ); } );
+	if ( m_umRectSelection.IsNotEmpty( ) )
+	{
+		m_D2d_driver.DrawTranspRect( m_coord.convert2fPixelRect( m_umRectSelection ), COLOR_SELECTION );
+	}
 
-	m_pModel->Apply2AllInRect<Pipeline>( umRect, [&]( Pipeline & shape ) { shape.DrawInterior( m_coord ); } );
+	if ( m_coord.GetPixelSize() <= 5._MicroMeter )
+		m_pModel->Apply2AllInRect<Shape>( umRect, [&]( Shape & shape ) { shape.DrawExterior( m_coord, GetHighlightType( shape ) ); } );
+
+	m_pModel->Apply2AllInRect<Pipe>( umRect, [&]( Pipe & shape ) { shape.DrawInterior( m_coord ); } );
 	m_pModel->Apply2AllInRect<BaseKnot>( umRect, [&]( BaseKnot & shape ) { shape.DrawInterior( m_coord ); } );
 	
-	drawHighlightedShape( * m_pModel, m_coord );
+	drawHighlightedShape( );
 
 	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
 
@@ -316,7 +335,7 @@ void NNetWindow::doPaint( )
 void NNetWindow::CenterModel( )
 {
 	m_focusMode = FOCUS_MODE::ZOOM_IN;
-	emphasizeSelection( m_pModel->GetEnclosingRect( ), 1.2f );
+	centerAndZoomRect( m_pModel->GetEnclosingRect( ), 1.2f );
 }
 
 void NNetWindow::AnalysisFinished( )
@@ -324,7 +343,7 @@ void NNetWindow::AnalysisFinished( )
 	if ( m_pModel->IsInEmphasizeMode() )
 	{
 		m_focusMode = FOCUS_MODE::ZOOM_OUT;
-		emphasizeSelection( m_pModel->GetEnclosingRect( ), 1.2f );
+		centerAndZoomRect( m_pModel->GetEnclosingRect( ), 1.2f );
 	}
 	else
 	{
@@ -332,7 +351,7 @@ void NNetWindow::AnalysisFinished( )
 	}
 }
 
-void NNetWindow::emphasizeSelection( MicroMeterRect const rect, float const fRatioFactor )
+void NNetWindow::centerAndZoomRect( MicroMeterRect const rect, float const fRatioFactor )
 {
 	float           const fHorizontalRatio  { rect.GetHeight() / m_coord.convert2MicroMeter( GetClientWindowHeight() ) };
 	float           const fVerticalRatio    { rect.GetWidth () / m_coord.convert2MicroMeter( GetClientWindowWidth() ) };
@@ -384,7 +403,7 @@ void NNetWindow::OnPaint( )
 		{
 		case FOCUS_MODE::ZOOM_OUT:
 			m_focusMode = FOCUS_MODE::ZOOM_IN;
-			emphasizeSelection( ModelAnalyzer::GetEnclosingRect(), 3.0f );
+			centerAndZoomRect( ModelAnalyzer::GetEnclosingRect(), 3.0f );
 			break;
 
 		case FOCUS_MODE::ZOOM_IN:
@@ -406,6 +425,7 @@ void NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 
 void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )
 {
+	m_umRectSelection.SetZero( );
 }
 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
@@ -438,9 +458,23 @@ void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 	//	ReleaseCapture( );
 }
 
+bool NNetWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
+{
+	bool bSelection { m_umRectSelection.IsNotEmpty() };
+	if ( bSelection )
+		m_umRectSelection.SetZero();
+	return bSelection;
+}
+
+bool NNetWindow::OnRButtonDown( WPARAM const wParam, LPARAM const lParam )
+{
+	if ( ! (wParam & MK_CONTROL) )
+		m_pModel->UnselectAll( );
+	return false;
+}
+
 void NNetWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )
 {
-	setHighlightShape( GetCrsrPosFromLparam( lParam ) );
 }
 
 void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
@@ -481,5 +515,5 @@ BOOL NNetWindow::inObservedClientRect( LPARAM const lParam )
 
 void NNetWindow::ShowDirectionArrows( bool const bShow )
 {
-	m_pAnimationThread->SetTarget( bShow ? Pipeline::STD_ARROW_SIZE : 0.0_MicroMeter );
+	m_pAnimationThread->SetTarget( bShow ? Pipe::STD_ARROW_SIZE : 0.0_MicroMeter );
 }

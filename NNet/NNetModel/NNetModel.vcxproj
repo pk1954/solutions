@@ -184,7 +184,7 @@
     <ClInclude Include="NNetModel.h" />
     <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="NNetWrapperHelpers.h" />
-    <ClInclude Include="Pipeline.h" />
+    <ClInclude Include="Pipe.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="ShapeId.h" />
@@ -208,7 +208,7 @@
       </AdditionalOptions>
     </ClCompile>
     <ClCompile Include="NNetWrapperHelpers.cpp" />
-    <ClCompile Include="Pipeline.cpp" />
+    <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="tParameter.cpp" />
     <ClCompile Include="ShapeType.cpp" />

@@ -90,7 +90,7 @@ MicroMeterPoint Neuron::getAxonHillockPos( PixelCoordsFp & coord ) const
 	MicroMeterPoint axonHillockPos { NP_NULL };
 	if ( HasAxon() )
 	{
-		Pipeline const * const pAxon        { m_outgoing[0] };
+		Pipe const * const pAxon        { m_outgoing[0] };
 		MicroMeterPoint  const vectorScaled { pAxon->GetVector( ) * ( GetExtension() / pAxon->GetLength( ) ) };
 		axonHillockPos = GetPosition( ) + vectorScaled * NEURON_INTERIOR;
 	}

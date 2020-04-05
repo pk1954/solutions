@@ -1,4 +1,4 @@
-// Pipeline.h
+// Pipe.h
 //
 // NNetModel
 
@@ -18,15 +18,15 @@ using std::vector;
 class GraphicsInterface;
 class PixelCoordsFp;
 
-class Pipeline : public Shape
+class Pipe : public Shape
 {
 public:
-	Pipeline( MicroMeterPoint const = NP_NULL );
-	virtual ~Pipeline() {}
+	Pipe( MicroMeterPoint const = NP_NULL );
+	virtual ~Pipe() {}
 
 	static bool TypeFits( ShapeType const type )
 	{
-		return type.IsPipelineType( );
+		return type.IsPipeType( );
 	}
 
 	void SetStartKnot( BaseKnot * const );
@@ -74,8 +74,8 @@ public:
 	virtual void Recalc( );
 	virtual void Clear( );
 
-	void DislocateEndPoint  ( ) { dislocate( GetEndKnotPtr(),    PIPELINE_WIDTH ); }
-	void DislocateStartPoint( )	{ dislocate( GetStartKnotPtr(), -PIPELINE_WIDTH );	}
+	void DislocateEndPoint  ( ) { dislocate( GetEndKnotPtr(),    PIPE_WIDTH ); }
+	void DislocateStartPoint( )	{ dislocate( GetStartKnotPtr(), -PIPE_WIDTH );	}
 
 	static void       SetArrowSize( MicroMeter const size ) { m_arrowSize = size; }
 	static MicroMeter GetArrowSize( ) { return m_arrowSize; }
@@ -98,5 +98,5 @@ private:
 	void drawSegment( fPixelPoint &, fPixelPoint const, fPIXEL const, mV const ) const;
 };
 
-Pipeline const * Cast2Pipeline( Shape const * );
-Pipeline       * Cast2Pipeline( Shape       * );
+Pipe const * Cast2Pipe( Shape const * );
+Pipe       * Cast2Pipe( Shape       * );

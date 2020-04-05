@@ -58,6 +58,7 @@
 								
 #define IDM_ESCAPE              140
 #define IDM_RESET               141
+#define IDM_SELECT_ALL          142
 
 #define IDM_SAVE_MODEL          150
 #define IDM_ASK_AND_SAVE_MODEL  151

@@ -1,4 +1,4 @@
-// Pipeline.cpp 
+// Pipe.cpp 
 //
 // NNetModel
 
@@ -11,25 +11,25 @@
 #include "Direct2D.h"
 #include "NNetParameters.h"
 #include "NNetModel.h"
-#include "Pipeline.h"
+#include "Pipe.h"
 
 using std::fill;
 
-MicroMeter const Pipeline::STD_ARROW_SIZE { 30.0_MicroMeter };
+MicroMeter const Pipe::STD_ARROW_SIZE { 30.0_MicroMeter };
 
-MicroMeter Pipeline::m_arrowSize { STD_ARROW_SIZE };
+MicroMeter Pipe::m_arrowSize { STD_ARROW_SIZE };
 
-Pipeline::Pipeline( MicroMeterPoint const umUnused )
-  :	Shape( ShapeType::Value::pipeline ),
+Pipe::Pipe( MicroMeterPoint const umUnused )
+  :	Shape( ShapeType::Value::pipe ),
 	m_pKnotStart ( nullptr ),
 	m_pKnotEnd   ( nullptr ),
-	m_width      ( PIPELINE_WIDTH ),
+	m_width      ( PIPE_WIDTH ),
 	m_potential  ( ),
 	m_potIter    ( )
 {
 }
 
-void Pipeline::Clear( )
+void Pipe::Clear( )
 {
 	Shape::Clear( );
 	LockShape();
@@ -37,56 +37,56 @@ void Pipeline::Clear( )
 	UnlockShape();
 }
 
-void Pipeline::Recalc( )
+void Pipe::Recalc( )
 {
 	if ( m_pKnotStart && m_pKnotEnd )
 	{
 		LockShape();
 		meterPerSec  const pulseSpeed    { meterPerSec( m_pNNetModel->GetParameterValue( tParameter::pulseSpeed ) ) };
 		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pNNetModel->GetTimeResolution( ) ) };
-		MicroMeter   const pipelineLength{ Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
-		unsigned int const iNrOfSegments { max( 1, CastToUnsignedInt(round(pipelineLength / segmentLength)) ) };
+		MicroMeter   const pipeLength    { Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
+		unsigned int const iNrOfSegments { max( 1, CastToUnsignedInt(round(pipeLength / segmentLength)) ) };
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_potIter = m_potential.begin();
 		UnlockShape();
 	}
 }
 
-void Pipeline::SetStartKnot( BaseKnot * const pBaseKnot )
+void Pipe::SetStartKnot( BaseKnot * const pBaseKnot )
 {
 	m_pKnotStart = pBaseKnot;
 	Recalc( );
 }
 
-void Pipeline::SetEndKnot( BaseKnot * const pBaseKnot )
+void Pipe::SetEndKnot( BaseKnot * const pBaseKnot )
 {
 	m_pKnotEnd = pBaseKnot;
 	Recalc( );
 }
 
-void Pipeline::dislocate( BaseKnot * const pBaseKnot, MicroMeter const dislocation )
+void Pipe::dislocate( BaseKnot * const pBaseKnot, MicroMeter const dislocation )
 { 
 	MicroMeterPoint const umVector  { GetVector( ) };
 	MicroMeterPoint const umNewPnt  { OrthoVector( umVector, dislocation ) };
 	pBaseKnot->MoveShape( umNewPnt );
 }
 
-MicroMeterPoint Pipeline::GetStartPoint( ) const 
+MicroMeterPoint Pipe::GetStartPoint( ) const 
 { 
 	return m_pKnotStart ? m_pKnotStart->GetPosition() : MicroMeterPoint::NULL_VAL(); 
 }
 
-MicroMeterPoint Pipeline::GetEndPoint( ) const 
+MicroMeterPoint Pipe::GetEndPoint( ) const 
 { 
 	return m_pKnotEnd ? m_pKnotEnd->GetPosition() : MicroMeterPoint::NULL_VAL();
 }
 
-MicroMeter Pipeline::GetLength( ) const
+MicroMeter Pipe::GetLength( ) const
 {
 	return Distance( GetStartPoint( ), GetEndPoint( ) );
 }
 
-bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const
+bool Pipe::IsPointInShape( MicroMeterPoint const & point ) const
 {
 	MicroMeterPoint const fDelta{ GetEndPoint( ) - GetStartPoint( ) };
 	if ( IsCloseToZero( fDelta ) )
@@ -98,7 +98,7 @@ bool Pipeline::IsPointInShape( MicroMeterPoint const & point ) const
 	return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
 }
 
-MicroMeterPoint Pipeline::GetVector( ) const
+MicroMeterPoint Pipe::GetVector( ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
@@ -107,7 +107,7 @@ MicroMeterPoint Pipeline::GetVector( ) const
 	return umvector;
 }
 
-void Pipeline::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
+void Pipe::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
@@ -132,7 +132,7 @@ void Pipeline::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) 
 	}
 }
 
-void Pipeline::drawSegment( fPixelPoint & fP1, fPixelPoint const fPixSegVec, fPIXEL const fWidth, mV const voltage ) const
+void Pipe::drawSegment( fPixelPoint & fP1, fPixelPoint const fPixSegVec, fPIXEL const fWidth, mV const voltage ) const
 {
 	fPixelPoint  const fP2  { fP1 + fPixSegVec };
 	D2D1::ColorF const colF { GetInteriorColor( voltage ) };
@@ -140,14 +140,14 @@ void Pipeline::drawSegment( fPixelPoint & fP1, fPixelPoint const fPixSegVec, fPI
 	fP1 = fP2;
 }
 
-void Pipeline::DrawInterior( PixelCoordsFp & coord )
+void Pipe::DrawInterior( PixelCoordsFp & coord )
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
 	MicroMeterPoint const umVector     { umEndPoint - umStartPoint };
 	if ( ! IsCloseToZero( umVector ) )
 	{
-		fPIXEL      const fWidth     { coord.convert2fPixel( m_width * PIPELINE_INTERIOR ) };
+		fPIXEL      const fWidth     { coord.convert2fPixel( m_width * PIPE_INTERIOR ) };
 		fPixelPoint const fPixVector { coord.convert2fPixelSize( umVector ) };
 		fPixelPoint const fPixSegVec { fPixVector / CastToFloat(m_potential.size()) };
 		fPixelPoint       fPoint1    { coord.convert2fPixelPos( umStartPoint ) };
@@ -161,14 +161,14 @@ void Pipeline::DrawInterior( PixelCoordsFp & coord )
 	}
 }
 
-Pipeline const * Cast2Pipeline( Shape const * pShape )
+Pipe const * Cast2Pipe( Shape const * pShape )
 {
-	assert( pShape->IsPipeline() );
-	return static_cast<Pipeline const *>(pShape);
+	assert( pShape->IsPipe() );
+	return static_cast<Pipe const *>(pShape);
 }
 
-Pipeline * Cast2Pipeline( Shape * pShape )
+Pipe * Cast2Pipe( Shape * pShape )
 {
-	assert( pShape->IsPipeline() );
-	return static_cast<Pipeline *>(pShape);
+	assert( pShape->IsPipe() );
+	return static_cast<Pipe *>(pShape);
 }

@@ -22,7 +22,11 @@ public:
 	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 
 	void Emphasize( bool const bState ) { m_bEmphasized = bState; }
-	bool IsEmphasized( ) { return m_bEmphasized; }
+	bool IsEmphasized( ) const          { return m_bEmphasized; }
+
+	void Select    ( )       { m_bSelected = true;  }
+	void Unselect  ( )       { m_bSelected = false; }
+	bool IsSelected( ) const { return m_bSelected; }
 
 	virtual bool IsInRect      ( MicroMeterRect const & )                const = 0;
 	virtual void DrawExterior  ( PixelCoordsFp &, tHighlightType const ) const = 0;
@@ -39,7 +43,7 @@ public:
 	ShapeType       GetShapeType( ) const { return m_type; }
 	ShapeId         GetId       ( ) const { return m_identifier; }
 
-	bool IsPipeline   () const { return m_type.IsPipelineType   ( ); }
+	bool IsPipe       () const { return m_type.IsPipeType   ( ); }
 	bool IsKnot       () const { return m_type.IsKnotType       ( ); }
 	bool IsNeuron     () const { return m_type.IsNeuronType     ( ); }
 	bool IsInputNeuron() const { return m_type.IsInputNeuronType( ); }
@@ -81,5 +85,6 @@ private:
 	SRWLOCK   m_SRWLock     { SRWLOCK_INIT };
 	ShapeId   m_identifier  { NO_SHAPE };
 	bool      m_bEmphasized { false };
+	bool      m_bSelected   { false };
 	ShapeType m_type;
 };

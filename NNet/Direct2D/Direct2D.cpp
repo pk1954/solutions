@@ -157,6 +157,26 @@ void D2D_driver::EndFrame( HWND const hwnd )
 	}
 }
 
+void D2D_driver::DrawTranspRect( fPixelRect const & rect, D2D1::ColorF const colF )
+{
+	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
+	pBrush->SetOpacity( 0.5f );
+
+	m_pRenderTarget->FillRectangle
+	( 
+		D2D1_RECT_F
+		{ 
+			rect.GetLeft  ().GetValue(), 
+			rect.GetTop   ().GetValue(), 
+			rect.GetRight ().GetValue(), 
+			rect.GetBottom().GetValue() 
+		},
+		pBrush 
+	);
+
+	SafeRelease( & pBrush );
+}
+
 void D2D_driver::DrawLine
 ( 
 	fPixelPoint  const & fpp1, 

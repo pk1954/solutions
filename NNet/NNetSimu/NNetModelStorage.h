@@ -42,5 +42,5 @@ private:
 	void writeModel( NNetModel const & );
 	void WriteShape(  wostream &, Shape & );
 	void WriteMicroMeterPoint( wostream &, MicroMeterPoint const & );
-	void WritePipeline( wostream &, Shape const & );
+	void WritePipe( wostream &, Shape const & );
 };

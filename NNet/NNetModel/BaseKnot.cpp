@@ -9,7 +9,7 @@
 #include "Geometry.h"
 #include "PixelCoordsFp.h"
 #include "Direct2D.h"
-#include "Pipeline.h"
+#include "Pipe.h"
 #include "BaseKnot.h"
 
 using std::find;
@@ -20,8 +20,8 @@ using std::wostringstream;
 
 bool BaseKnot::apply2All
 ( 
-	vector<Pipeline *>               const & pipeList,
-	function<bool(Pipeline * const)> const & func 
+	vector<Pipe *>               const & pipeList,
+	function<bool(Pipe * const)> const & func 
 )
 {
 	bool bResult { false };
@@ -42,53 +42,53 @@ bool BaseKnot::apply2All
 void BaseKnot::Prepare( )
 {
 	m_mVinputBuffer = 0._mV;
-	Apply2AllIncomingPipelines( [&]( auto pipe ) { m_mVinputBuffer += pipe->GetNextOutput( ); return false;	} );
+	Apply2AllInPipes( [&]( auto pipe ) { m_mVinputBuffer += pipe->GetNextOutput( ); return false;	} );
 }
 
 bool BaseKnot::IsPrecursorOf( ShapeId const id )
 {
-	return Apply2AllOutgoingPipelines( [&]( auto pipe ) { return pipe->GetEndKnotId( ) == id; } ); 
+	return Apply2AllOutPipes( [&]( auto pipe ) { return pipe->GetEndKnotId( ) == id; } ); 
 }
 
 bool BaseKnot::IsSuccessorOf( ShapeId const id )
 {
-	return Apply2AllIncomingPipelines( [&]( auto pipe ) { return pipe->GetStartKnotId( ) == id;	} );
+	return Apply2AllInPipes( [&]( auto pipe ) { return pipe->GetStartKnotId( ) == id;	} );
 }
 
-void BaseKnot::AddIncoming( Pipeline * const pPipeline )
+void BaseKnot::AddIncoming( Pipe * const pPipe )
 {
-	assert( find( begin(m_incoming), end(m_incoming), pPipeline ) == end(m_incoming) );
-	m_incoming.push_back( pPipeline );
+	assert( find( begin(m_incoming), end(m_incoming), pPipe ) == end(m_incoming) );
+	m_incoming.push_back( pPipe );
 }
 
-void BaseKnot::AddOutgoing( Pipeline * const pPipeline )
+void BaseKnot::AddOutgoing( Pipe * const pPipe )
 {
-	assert( find( begin(m_outgoing), end(m_outgoing), pPipeline ) == end(m_outgoing) );
-	m_outgoing.push_back( pPipeline );
+	assert( find( begin(m_outgoing), end(m_outgoing), pPipe ) == end(m_outgoing) );
+	m_outgoing.push_back( pPipe );
 }
 
-void BaseKnot::RemoveIncoming( Pipeline * const pPipeline )
+void BaseKnot::RemoveIncoming( Pipe * const pPipe )
 {
-	auto res = find( begin(m_incoming), end(m_incoming), pPipeline );
+	auto res = find( begin(m_incoming), end(m_incoming), pPipe );
 	m_incoming.erase( res );
 }
 
-void BaseKnot::RemoveOutgoing( Pipeline * const pPipeline )
+void BaseKnot::RemoveOutgoing( Pipe * const pPipe )
 {
-	auto res = find( begin(m_outgoing), end(m_outgoing), pPipeline );
+	auto res = find( begin(m_outgoing), end(m_outgoing), pPipe );
 	m_outgoing.erase( res );
 }
 
-void BaseKnot::ReplaceIncoming( Pipeline * const pPipelineOld, Pipeline * const pPipelineNew )
+void BaseKnot::ReplaceIncoming( Pipe * const pPipeOld, Pipe * const pPipeNew )
 {
-	assert( find( begin(m_incoming), end(m_incoming), pPipelineNew ) == end(m_incoming) );
-	* find( begin(m_incoming), end(m_incoming), pPipelineOld ) = pPipelineNew;
+	assert( find( begin(m_incoming), end(m_incoming), pPipeNew ) == end(m_incoming) );
+	* find( begin(m_incoming), end(m_incoming), pPipeOld ) = pPipeNew;
 }
 
-void BaseKnot::ReplaceOutgoing( Pipeline * const pPipelineOld, Pipeline * const pPipelineNew )
+void BaseKnot::ReplaceOutgoing( Pipe * const pPipeOld, Pipe * const pPipeNew )
 {
-	assert( find( begin(m_outgoing), end(m_outgoing), pPipelineNew ) == end(m_outgoing) );
-	* find( begin(m_outgoing), end(m_outgoing), pPipelineOld ) = pPipelineNew;
+	assert( find( begin(m_outgoing), end(m_outgoing), pPipeNew ) == end(m_outgoing) );
+	* find( begin(m_outgoing), end(m_outgoing), pPipeOld ) = pPipeNew;
 }
 
 bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
@@ -182,14 +182,14 @@ void BaseKnot::drawCircle
 
 BaseKnot const * Cast2BaseKnot( Shape const * shape )
 {
-	assert( ! shape->IsPipeline() );
+	assert( ! shape->IsPipe() );
 	assert( ! shape->IsUndefined() );
 	return static_cast<BaseKnot const *>(shape);
 }
 
 BaseKnot * Cast2BaseKnot( Shape * shape )
 {
-	assert( ! shape->IsPipeline() );
+	assert( ! shape->IsPipe() );
 	assert( ! shape->IsUndefined() );
 	return static_cast<BaseKnot *>(shape);
 }

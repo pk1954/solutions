@@ -15,7 +15,7 @@ public:
 	{
 		inputNeuron,
 		neuron,
-		pipeline,
+		pipe,
 		knot,
 		shapeTypeLast = knot,
 		undefined
@@ -34,7 +34,7 @@ public:
 	static wchar_t          const * GetName( ShapeType::Value const );
 	static ShapeType::Value const   GetTypeFromName( wchar_t const * const );
 
-	bool IsPipelineType   ( ) const { return m_value == Value::pipeline;    }
+	bool IsPipeType   ( ) const { return m_value == Value::pipe;    }
 	bool IsUndefinedType  ( ) const { return m_value == Value::undefined;   }
 	bool IsKnotType       ( ) const { return m_value == Value::knot;        }
 	bool IsNeuronType     ( ) const { return m_value == Value::neuron;      }

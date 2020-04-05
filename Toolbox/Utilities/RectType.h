@@ -173,6 +173,11 @@ public:
 		return * this;
 	}
 
+	void SetZero( )
+	{
+		* this = ZERO_VAL();
+	}
+
 	friend RectType const operator+ (RectType const a, POS_TYPE const b	) 
 	{ 
 		RectType res { a }; 

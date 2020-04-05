@@ -26,7 +26,8 @@ using std::put_time;
 using std::wofstream;
 using std::filesystem::exists;
 
-static float const PROTOCOL_VERSION { 1.4f };
+//static float const PROTOCOL_VERSION { 1.4f };
+static float const PROTOCOL_VERSION { 1.5f };   // pipeline renamed to pipe
 
 ////////////////////////// Read /////////////////////////////////////////////
 
@@ -61,7 +62,7 @@ public:
 		Shape         * pShape      { nullptr };
 
 		script.ScrReadSpecial( L'(' );
-		if ( shapeType.IsPipelineType() )
+		if ( shapeType.IsPipeType() )
 		{
 			ShapeId const idStart { script.ScrReadLong() };
 			script.ScrReadSpecial( L'-' );
@@ -69,25 +70,25 @@ public:
 			ShapeId const idEnd { script.ScrReadLong() };
 			if ( idStart == idEnd )
 			{
-				wcout << "+++ pipeline has identical start and end point" << endl;
+				wcout << "+++ Pipe has identical start and end point" << endl;
 				wcout << "+++ " << idFromScript << L": " << idStart << L" -> " << idEnd << endl;
-				wcout << "+++ pipeline ignored" << endl;
+				wcout << "+++ Pipe ignored" << endl;
 			}
 			else
 			{ 
-				Pipeline * const pPipeline { new Pipeline( ) };
-				BaseKnot * const pStart    { m_pModel->GetTypedShape<BaseKnot>( idStart ) };
-				BaseKnot * const pEnd      { m_pModel->GetTypedShape<BaseKnot>( idEnd   ) };
+				Pipe     * const pPipe  { new Pipe( ) };
+				BaseKnot * const pStart { m_pModel->GetTypedShape<BaseKnot>( idStart ) };
+				BaseKnot * const pEnd   { m_pModel->GetTypedShape<BaseKnot>( idEnd   ) };
 
-				pPipeline->SetId( idFromScript );
+				pPipe->SetId( idFromScript );
 
-				pStart->AddOutgoing( pPipeline );
-				pPipeline->SetStartKnot( pStart );
+				pStart->AddOutgoing( pPipe );
+				pPipe->SetStartKnot( pStart );
 
-				pEnd->AddIncoming( pPipeline );
-				pPipeline->SetEndKnot( pEnd );
+				pEnd->AddIncoming( pPipe );
+				pPipe->SetEndKnot( pEnd );
 
-				pShape = pPipeline;
+				pShape = pPipe;
 			}
 		}
 		else 
@@ -237,6 +238,10 @@ void NNetModelStorage::prepareForReading( NNetModel * const pModel )
 		}
 	);
 
+	///// Legacy /////
+	SymbolTable::ScrDefConst( L"pipeline", static_cast<unsigned long>(ShapeType::Value::pipe) );  // support older protocol version
+    ///// end Legacy /////
+
 	Apply2AllParameters
 	( 
 		[&]( tParameter const & param ) 
@@ -334,7 +339,7 @@ void NNetModelStorage::Write( NNetModel const & model, wostream & out )
 	out << endl;
 
 	model.Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); } );
-	model.Apply2All<Pipeline>( [&]( Pipeline & shape ) { WriteShape( out, shape ); } );
+	model.Apply2All<Pipe>( [&]( Pipe & shape ) { WriteShape( out, shape ); } );
 
 	out << endl;
 
@@ -368,9 +373,9 @@ void NNetModelStorage::Write( NNetModel const & model, wostream & out )
 	model.ModelSaved( );
 }
 
-void NNetModelStorage::WritePipeline( wostream & out, Shape const & shape )
+void NNetModelStorage::WritePipe( wostream & out, Shape const & shape )
 {
-	Pipeline const & pipe { static_cast<Pipeline const &>( shape ) };
+	Pipe const & pipe { static_cast<Pipe const &>( shape ) };
 	out << getCompactIdVal( pipe.GetStartKnotId() ) << L"->" << getCompactIdVal( pipe.GetEndKnotId() ) ;
 }
 
@@ -393,8 +398,8 @@ void NNetModelStorage::WriteShape( wostream & out, Shape & shape )
 				WriteMicroMeterPoint( out, static_cast<BaseKnot &>( shape ).GetPosition() );
 				break;
 
-			case ShapeType::Value::pipeline:
-				WritePipeline( out, shape );
+			case ShapeType::Value::pipe:
+				WritePipe( out, shape );
 				break;
 
 			default:
