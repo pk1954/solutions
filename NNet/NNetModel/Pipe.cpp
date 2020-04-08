@@ -31,8 +31,8 @@ Pipe::Pipe( MicroMeterPoint const umUnused )
 
 void Pipe::Clear( )
 {
-	Shape::Clear( );
 	LockShape();
+	Shape::Clear( );
 	fill( m_potential.begin(), m_potential.end(), 0.0_mV );
 	UnlockShape();
 }

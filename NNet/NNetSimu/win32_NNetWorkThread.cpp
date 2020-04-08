@@ -188,6 +188,14 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		m_pNNetModel->ResetSimulationTime();
 		break;
 
+	case NNetWorkThreadMessage::Id::DELETE_SELECTION:
+		m_pNNetModel->DeleteSelection();
+		break;
+
+	case NNetWorkThreadMessage::Id::COPY_SELECTION:
+		m_pNNetModel->CopySelection();
+		break;
+
 	case NNetWorkThreadMessage::Id::ANALYZE:
 		analyze( );
 		break;

@@ -15,14 +15,33 @@
 using std::chrono::microseconds;
 using std::wostringstream;
 
-BeeperThread * Neuron::m_pBeeperThread { nullptr };
+static void CALLBACK BeepFunc
+(
+	PTP_CALLBACK_INSTANCE instance,
+	PVOID                 arg,
+	PTP_WORK              pWork
+)
+{
+	Neuron * pNeuron { static_cast<Neuron *>( arg ) };
+	Sound::Beep( pNeuron->GetTriggerSoundFrequency(), pNeuron->GetTriggerSoundDuration() );
+}
 
 Neuron::Neuron( MicroMeterPoint const upCenter, ShapeType const type )
   : BaseKnot( upCenter, type, NEURON_RADIUS )
 {
 	Recalc();
-	if ( ! m_pBeeperThread )
-		m_pBeeperThread = new BeeperThread;
+}
+
+void Neuron::SetTriggerSoundOn( bool const bMode )
+{
+	if ( m_bTriggerSoundOn != bMode )
+	{
+		if ( bMode  )
+			m_pTpWork = CreateThreadpoolWork( BeepFunc, this, nullptr );
+		else 
+			CloseThreadpoolWork( m_pTpWork );
+		m_bTriggerSoundOn = bMode;
+	}
 }
 
 fMicroSecs Neuron::PulseWidth() const 
@@ -56,11 +75,10 @@ mV Neuron::waveFunction( fMicroSecs const time ) const
 	return mV( m_factorU * time.GetValue() * ( 1.0f - time.GetValue() * m_factorW ) );
 }
 
-static unsigned int __stdcall BeepFunc( void * arg )
+void Neuron::Clear( )
 {
-	Neuron * pNeuron { static_cast<Neuron *>( arg ) };
-	Sound::Beep( pNeuron->GetTriggerSoundFrequency(), pNeuron->GetTriggerSoundDuration() );
-	return 0;
+	m_timeSinceLastPulse = 0._MicroSecs;   
+	Shape::Clear( );
 }
 
 void Neuron::Step( )
@@ -69,8 +87,7 @@ void Neuron::Step( )
 	{
 		m_timeSinceLastPulse = 0._MicroSecs;
 		if ( HasTriggerSound() )
-		Util::RunAsAsyncThread( BeepFunc, this );
-//		m_pBeeperThread->Beep( GetTriggerSoundFrequency(), GetTriggerSoundDuration() );
+			SubmitThreadpoolWork( m_pTpWork );
 	}
 	else
 	{
@@ -90,7 +107,7 @@ MicroMeterPoint Neuron::getAxonHillockPos( PixelCoordsFp & coord ) const
 	MicroMeterPoint axonHillockPos { NP_NULL };
 	if ( HasAxon() )
 	{
-		Pipe const * const pAxon        { m_outgoing[0] };
+		Pipe     const * const pAxon        { m_outgoing[0] };
 		MicroMeterPoint  const vectorScaled { pAxon->GetVector( ) * ( GetExtension() / pAxon->GetLength( ) ) };
 		axonHillockPos = GetPosition( ) + vectorScaled * NEURON_INTERIOR;
 	}

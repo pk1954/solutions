@@ -106,3 +106,6 @@
 #define IDM_ANALYZE             600
 #define IDM_ANALYZE_FINISHED    601
 #define IDM_CENTER_MODEL        602
+
+#define IDM_COPY_SELECTION      650
+#define IDM_DELETE_SELECTION    651

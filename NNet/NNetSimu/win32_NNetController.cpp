@@ -176,6 +176,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWindow->ChangePulseRate( m_pNNetWindow->GetHighlightedShapeId( ), false );
 		break;
 
+	case IDM_COPY_SELECTION:
+		m_pNNetWorkThreadInterface->PostCopySelection( );
+		break;
+
+	case IDM_DELETE_SELECTION:
+		m_pNNetWorkThreadInterface->PostDeleteSelection( );
+		break;
+
 	case IDD_PULSE_RATE:
 		m_pNNetWindow->PulseRateDlg( m_pNNetWindow->GetHighlightedShapeId( ) );
 		break;

@@ -197,6 +197,20 @@ public:
 		Apply2All<Shape>( [&]( Shape & shape ) { shape.Select(); } );
 	}
 
+	void CopySelection( )
+	{
+	}
+
+	void DeleteSelection( )
+	{
+		Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.IsSelected() ) removeShape( shape ); } );
+	}
+
+	bool AnyShapesSelected( )
+	{
+		return Apply2AllB<Shape>( [&]( Shape & shape ) { return shape.IsSelected(); } );
+	}
+
 private:
 
 	Observable      m_paramObservable { };
@@ -206,12 +220,12 @@ private:
 	mutable bool    m_bUnsavedChanges { false };  // can be changed in const functions
 
 	// parameters
-    mV          m_threshold    { 20._mV          };
-	mV          m_peakVoltage  { 10._mV          };   
-	fMicroSecs  m_pulseWidth   { 2000._MicroSecs };   
-	fMicroSecs  m_refractPeriod{ 500._MicroSecs  };
-	meterPerSec m_pulseSpeed   { 0.1_meterPerSec };
-	fMicroSecs  m_usResolution { 100._MicroSecs  };
+    mV          m_threshold    { 20._mV            };
+	mV          m_peakVoltage  { 10._mV            };   
+	fMicroSecs  m_pulseWidth   { 2000._MicroSecs   };   
+	fMicroSecs  m_refractPeriod{ 500._MicroSecs    };
+	meterPerSec m_pulseSpeed   { 120.0_meterPerSec };
+	fMicroSecs  m_usResolution { 100._MicroSecs    };
 
 	// local functions
 
@@ -222,6 +236,7 @@ private:
 	void            deletePipe( ShapeId const );
 	void            insertBaseKnot( Pipe * const, BaseKnot * const );
 	void            deleteShape( ShapeId const );
+	void            removeShape( Shape const & );
 	bool const      isConnectedTo( ShapeId, ShapeId ) const;
 	bool const      isConnectedToPipe( ShapeId const, Pipe const * const ) const;
 	bool            connectIncoming( Pipe * const, BaseKnot * const );

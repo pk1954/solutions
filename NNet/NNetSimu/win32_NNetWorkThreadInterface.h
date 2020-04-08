@@ -53,6 +53,8 @@ public:
 	void PostRunGenerations   ( BOOL const );
 	void PostStopComputation  ( );
 	void PostGenerationStep   ( );
+	void PostCopySelection    ( );
+	void PostDeleteSelection  ( );
 	void PostRepeatGenerationStep();       // Do not call! Used by WorkThread only;
 
 	BOOL       IsRunning            ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }

@@ -113,19 +113,19 @@ bool const NNetModel::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) con
 	return true;
 }
 
-void NNetModel::RemoveShape( ShapeId const idShapeToBeDeleted )
+void NNetModel::removeShape( Shape const & shape )
 {
 	ModelChanged( );
-	switch ( GetShapeType( idShapeToBeDeleted ).GetValue() )
+	switch ( shape.GetShapeType( ).GetValue() )
 	{
 	case ShapeType::Value::pipe:
-		deletePipe( idShapeToBeDeleted );
+		deletePipe( shape.GetId( ) );
 		break;
 
 	case ShapeType::Value::inputNeuron:
 	case ShapeType::Value::neuron:
-		disconnectBaseKnot( GetShapePtr<BaseKnot *>( idShapeToBeDeleted ) );
-		deleteShape( idShapeToBeDeleted );
+		disconnectBaseKnot( GetShapePtr<BaseKnot *>( shape.GetId( ) ) );
+		deleteShape( shape.GetId( ) );
 		break;
 
 	case ShapeType::Value::knot:
@@ -133,6 +133,11 @@ void NNetModel::RemoveShape( ShapeId const idShapeToBeDeleted )
 		break;
 	}
 	CHECK_CONSISTENCY;
+}
+
+void NNetModel::RemoveShape( ShapeId const idShapeToBeDeleted )
+{
+	removeShape( * GetShape( idShapeToBeDeleted ) );
 }
 
 void NNetModel::Disconnect( ShapeId const id )

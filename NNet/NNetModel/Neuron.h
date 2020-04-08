@@ -43,10 +43,7 @@ public:
 		return m_triggerSoundDuration;
 	}
 
-	void SetTriggerSoundOn( bool const bMode )
-	{
-		m_bTriggerSoundOn = bMode;
-	}
+	void SetTriggerSoundOn( bool const );
 
 	void SetTriggerSoundFrequency( Hertz const freq ) 
 	{
@@ -70,6 +67,8 @@ public:
 	virtual void DrawInterior( PixelCoordsFp & );
 	virtual void Recalc( );
 
+	virtual void Clear( );
+
 protected:
 	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };
 
@@ -86,9 +85,9 @@ private:
 	Hertz     m_triggerSoundFrequency { 0_Hertz };   
 	MilliSecs m_triggerSoundDuration  { 0_MilliSecs };
 
-	MicroMeterPoint getAxonHillockPos( PixelCoordsFp & ) const;
+	PTP_WORK  m_pTpWork { nullptr };
 
-	static BeeperThread * m_pBeeperThread;
+	MicroMeterPoint getAxonHillockPos( PixelCoordsFp & ) const;
 };
 
 Neuron const * Cast2Neuron( Shape const * );

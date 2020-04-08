@@ -117,7 +117,12 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 	m_ptCommandPosition = ptPos;
 
-	switch ( m_pModel->GetShapeType( m_shapeHighlighted ).GetValue() )
+	if( m_pModel->AnyShapesSelected() )
+	{
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_COPY_SELECTION,   L"Copy" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_DELETE_SELECTION, L"Delete" );
+	}
+	else switch ( m_pModel->GetShapeType( m_shapeHighlighted ).GetValue() )
 	{
 	case ShapeType::Value::inputNeuron:
 		if ( ! m_pModel->HasOutgoing( m_shapeHighlighted ) )
@@ -460,10 +465,8 @@ void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 
 bool NNetWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
-	bool bSelection { m_umRectSelection.IsNotEmpty() };
-	if ( bSelection )
-		m_umRectSelection.SetZero();
-	return bSelection;
+	m_umRectSelection.SetZero();
+	return false;
 }
 
 bool NNetWindow::OnRButtonDown( WPARAM const wParam, LPARAM const lParam )

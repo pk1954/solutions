@@ -145,6 +145,8 @@ wchar_t const * NNetWorkThreadInterface::GetActionCommandName( int const iMsgId 
 	static unordered_map < int, wchar_t const * > mapMsgName =
 	{
 		{ IDM_ANALYZE,             L"ANALYZE"             },
+		{ IDM_DELETE_SELECTION,    L"DELETE_SELECTION"    },
+		{ IDM_COPY_SELECTION,      L"COPY_SELECTION"      },
 		{ IDD_INSERT_NEURON,       L"INSERT_NEURON"       },
 		{ IDD_NEW_NEURON,          L"NEW_NEURON"          },
 		{ IDD_NEW_INPUT_NEURON,    L"NEW_INPUT_NEURON"    },
@@ -164,6 +166,8 @@ int const NNetWorkThreadInterface::GetActionCommandFromName( wchar_t const * con
 	static unordered_map < wchar_t const *, int > mapMsg =
 	{
 		{ L"ANALYZE",             IDM_ANALYZE             },
+		{ L"DELETE_SELECTION",    IDM_DELETE_SELECTION    },
+		{ L"COPY_SELECTION",      IDM_COPY_SELECTION      },
 		{ L"INSERT_NEURON",       IDD_INSERT_NEURON       },
 		{ L"NEW_NEURON",          IDD_NEW_NEURON          },
 		{ L"NEW_INPUT_NEURON",    IDD_NEW_INPUT_NEURON    },
@@ -183,6 +187,8 @@ void NNetWorkThreadInterface::PostActionCommand( int const idMsg, ShapeId const 
 	static unordered_map < int, NNetWorkThreadMessage::Id const > mapMsg =
 	{
 		{ IDM_ANALYZE,             NNetWorkThreadMessage::Id::ANALYZE             },
+		{ IDM_DELETE_SELECTION,    NNetWorkThreadMessage::Id::DELETE_SELECTION    },
+		{ IDM_COPY_SELECTION,      NNetWorkThreadMessage::Id::COPY_SELECTION      },
 		{ IDD_INSERT_NEURON,       NNetWorkThreadMessage::Id::INSERT_NEURON       },
 		{ IDD_NEW_NEURON,          NNetWorkThreadMessage::Id::NEW_NEURON          },
 		{ IDD_NEW_INPUT_NEURON,    NNetWorkThreadMessage::Id::NEW_INPUT_NEURON    },
@@ -223,4 +229,14 @@ void NNetWorkThreadInterface::PostStopComputation( )
 void NNetWorkThreadInterface::PostSendBack( int const iMsg )
 {
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SEND_BACK ), iMsg, 0 );
+}
+
+void NNetWorkThreadInterface::PostDeleteSelection()
+{
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::DELETE_SELECTION), 0, 0 );
+}
+
+void NNetWorkThreadInterface::PostCopySelection()
+{
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::COPY_SELECTION), 0, 0 );
 }
