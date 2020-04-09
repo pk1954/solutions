@@ -260,7 +260,8 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 		BaseKnot * pDst = GetShapePtr<BaseKnot *>( idDst );
 		if ( pSrc && pDst )
 		{
-			pSrc->Apply2AllConnectedPipes( [&]( Pipe * const p ) { return connectIncoming( p, pDst ); } );
+			pSrc->Apply2AllInPipes ( [&]( Pipe * const pipe ) { return connectIncoming( pipe, pDst ); } );
+			pSrc->Apply2AllOutPipes( [&]( Pipe * const pipe ) { return connectOutgoing( pipe, pDst ); }	);
 			if ( pSrc->IsKnot() )
 				deleteShape( idSrc );
 		}
