@@ -204,8 +204,12 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		m_pNNetModel->CopySelection();
 		break;
 
-	case NNetWorkThreadMessage::Id::ANALYZE:
-		analyze( );
+	case NNetWorkThreadMessage::Id::ANALYZE_LOOPS:
+		analyzeLoops( );
+		break;
+
+	case NNetWorkThreadMessage::Id::ANALYZE_ANOMALIES:
+		analyzeAnomalies( );
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE:
@@ -281,7 +285,7 @@ bool NNetWorkThread::actionCommand
 	return TRUE;
 }
 
-void NNetWorkThread::analyze( )
+void NNetWorkThread::analyzeLoops( )
 {
 	generationStop( );
 	m_pNNetModel->ClearModel( );
@@ -289,6 +293,16 @@ void NNetWorkThread::analyze( )
 	if ( bLoopFound )
 		ModelAnalyzer::EmphasizeLoopShapes( * m_pNNetModel );
 	m_pNNetModel->SetEmphasizeMode( bLoopFound );
+}
+
+void NNetWorkThread::analyzeAnomalies( )
+{
+	generationStop( );
+	m_pNNetModel->ClearModel( );
+	bool bFound { ModelAnalyzer::FindAnomaly( * m_pNNetModel ) };
+	if ( bFound )
+		ModelAnalyzer::EmphasizeLoopShapes( * m_pNNetModel );
+	m_pNNetModel->SetEmphasizeMode( bFound );
 }
 
 void NNetWorkThread::generationRun( bool const bFirst )

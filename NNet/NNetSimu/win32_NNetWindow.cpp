@@ -384,9 +384,9 @@ bool NNetWindow::smoothStep( )  // returns true, if all targets reached
 		fPixelPoint const fpCenter { m_coord.convert2fPixelPoint( GetClRectCenter( ) ) };
 		m_coord.Zoom  ( m_umPixelSizeStart + m_umPixelSizeDelta * fPos );
 		m_coord.Center( m_umPntCenterStart + m_umPntCenterDelta * fPos, fpCenter );
-		Notify( TRUE );     // cause immediate repaint
 	}
 
+	Notify( TRUE );     // cause immediate repaint
 	return fTargetsReached;
 }
 

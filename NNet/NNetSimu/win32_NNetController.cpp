@@ -243,7 +243,8 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWorkThreadInterface->PostActionCommand( wmId, m_pNNetWindow->GetHighlightedShapeId( ), Util::Unpack2MicroMeterPoint(lParam) );
 		break;
 
-	case IDM_ANALYZE:
+	case IDM_ANALYZE_LOOPS:
+	case IDM_ANALYZE_ANOMALIES:
 		m_pNNetWorkThreadInterface->PostActionCommand( wmId, NO_SHAPE, NP_NULL );
 		m_pNNetWorkThreadInterface->PostSendBack( IDM_ANALYZE_FINISHED );
 		break;

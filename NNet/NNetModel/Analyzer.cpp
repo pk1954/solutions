@@ -28,28 +28,10 @@ bool ModelAnalyzer::FindLoop( NNetModel const & model )
 		m_bStop     = false;
 		(* m_pDisplayFunctor)( wstring( L"Looking for loop of size " ) + to_wstring( iMaxLoopSize ) + L". Press ESC to stop." );
 		m_shapeStack.clear();
-		if ( model.Apply2AllB<BaseKnot>
-			  (
-			  	[ & ] ( BaseKnot & baseKnot )
-			    {
-					if ( m_bStop )
-						return true;
-					else 
-				 		return findLoop( & baseKnot );
-				}
-              )
-		   )
+		if ( model.Apply2AllB<BaseKnot>([&]( BaseKnot & baseKnot ) { return findLoop( & baseKnot ); } ) )
 		{
-			if ( m_bStop )
-			{
-				(* m_pDisplayFunctor)( wstring( L"analysis aborted by user" ) );
-				return false;
-			}
-			else
-			{
-				(* m_pDisplayFunctor)( wstring( L"loop found" ) );
-				return true;
-			}
+			(* m_pDisplayFunctor)( wstring( m_bStop ? L"analysis aborted by user" : L"loop found" ) );
+			return ! m_bStop;
 		}
 	}
 
@@ -84,12 +66,12 @@ bool ModelAnalyzer::findLoop( Shape * const pShape )
 	else if ( pShape->IsPipe() )
 	{
 		Pipe * pPipe { Cast2Pipe( pShape ) };
-		bResult = findLoop( pPipe->GetEndKnotPtr( ) );
+		bResult = findLoop( pPipe->GetEndKnotPtr( ) );  // recursion
 	}
 	else if ( pShape->IsBaseKnot() )
 	{
 		BaseKnot * pBaseKnot { Cast2BaseKnot( pShape ) };
-		bResult = pBaseKnot->Apply2AllOutPipes( [&]( auto pipe ) { return findLoop( pipe ); } );
+		bResult = pBaseKnot->Apply2AllOutPipesB( [&]( auto pipe ) { return findLoop( pipe ); } );
 	}
 	else
 	{
@@ -111,4 +93,31 @@ void ModelAnalyzer::EmphasizeLoopShapes( NNetModel & model )
 {
 	for ( const auto & pShape : m_shapeStack )
 		pShape->Emphasize( true );
+}
+
+bool ModelAnalyzer::hasAnomaly( Knot & knot )
+{
+	bool bFoundAnomaly { false };
+
+	if ( ! knot.HasIncoming( ) )
+	{
+		knot.Apply2AllOutPipes( [&]( auto pipe ) { m_shapeStack.push_back( pipe ); } );
+		bFoundAnomaly = true;
+	}
+	else if ( ! knot.HasOutgoing( ) )
+	{
+		knot.Apply2AllInPipes( [&]( auto pipe ) { m_shapeStack.push_back( pipe ); } );
+		bFoundAnomaly = true;
+	}
+
+	if ( bFoundAnomaly )
+		m_shapeStack.push_back( & knot );
+
+	return bFoundAnomaly; 
+}
+
+bool ModelAnalyzer::FindAnomaly( NNetModel const & model )
+{
+	m_shapeStack.clear();
+	return model.Apply2AllB<Knot>( [&]( Knot & knot ) { return hasAnomaly( knot ); } );
 }

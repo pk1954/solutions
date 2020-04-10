@@ -215,7 +215,7 @@ public:
 
 	void DeleteSelection( )
 	{
-		Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.IsSelected() ) removeShape( shape ); } );
+		Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.IsSelected() ) removeShape( & shape ); } );
 	}
 
 	bool AnyShapesSelected( )
@@ -248,11 +248,11 @@ private:
 	void            deletePipe( ShapeId const );
 	void            insertBaseKnot( Pipe * const, BaseKnot * const );
 	void            deleteShape( ShapeId const );
-	void            removeShape( Shape const & );
+	void            removeShape( Shape const * );
 	bool const      isConnectedTo( ShapeId, ShapeId ) const;
 	bool const      isConnectedToPipe( ShapeId const, Pipe const * const ) const;
-	bool            connectIncoming( Pipe * const, BaseKnot * const );
-	bool            connectOutgoing( Pipe * const, BaseKnot * const );
+	void            connectIncoming( Pipe * const, BaseKnot * const );
+	void            connectOutgoing( Pipe * const, BaseKnot * const );
 
 };
 

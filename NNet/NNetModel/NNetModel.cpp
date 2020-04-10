@@ -113,31 +113,35 @@ bool const NNetModel::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) con
 	return true;
 }
 
-void NNetModel::removeShape( Shape const & shape )
+void NNetModel::removeShape( Shape const * pShape )
 {
-	ModelChanged( );
-	switch ( shape.GetShapeType( ).GetValue() )
+	if ( pShape )
 	{
-	case ShapeType::Value::pipe:
-		deletePipe( shape.GetId( ) );
-		break;
+		ShapeId id { pShape->GetId( ) };
+		switch ( pShape->GetShapeType( ).GetValue() )
+		{
+		case ShapeType::Value::pipe:
+			deletePipe( id );
+			break;
 
-	case ShapeType::Value::inputNeuron:
-	case ShapeType::Value::neuron:
-		disconnectBaseKnot( GetShapePtr<BaseKnot *>( shape.GetId( ) ) );
-		deleteShape( shape.GetId( ) );
-		break;
+		case ShapeType::Value::inputNeuron:
+		case ShapeType::Value::neuron:
+			disconnectBaseKnot( GetShapePtr<BaseKnot *>( id ) );
+			deleteShape( id );
+			break;
 
-	case ShapeType::Value::knot:
-	default:
-		break;
+		case ShapeType::Value::knot:
+		default:
+			break;
+		}
+		ModelChanged( );
+		CHECK_CONSISTENCY;
 	}
-	CHECK_CONSISTENCY;
 }
 
 void NNetModel::RemoveShape( ShapeId const idShapeToBeDeleted )
 {
-	removeShape( * GetShape( idShapeToBeDeleted ) );
+	removeShape( GetShape( idShapeToBeDeleted ) );
 }
 
 void NNetModel::Disconnect( ShapeId const id )
@@ -287,8 +291,8 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 		BaseKnot * pDst = GetShapePtr<BaseKnot *>( idDst );
 		if ( pSrc && pDst )
 		{
-			pSrc->Apply2AllInPipes ( [&]( Pipe * const pipe ) { return connectIncoming( pipe, pDst ); } );
-			pSrc->Apply2AllOutPipes( [&]( Pipe * const pipe ) { return connectOutgoing( pipe, pDst ); }	);
+			pSrc->Apply2AllInPipes ( [&]( Pipe * const pipe ) { connectIncoming( pipe, pDst ); } );
+			pSrc->Apply2AllOutPipes( [&]( Pipe * const pipe ) { connectOutgoing( pipe, pDst ); } );
 			if ( pSrc->IsKnot() )
 				deleteShape( idSrc );
 		}
@@ -496,9 +500,9 @@ void NNetModel::deleteShape( ShapeId const id )
 	}
 }
 
-bool NNetModel::connectIncoming
+void NNetModel::connectIncoming
 ( 
-	Pipe * const pPipe, 
+	Pipe     * const pPipe, 
 	BaseKnot * const pEndPoint
 )
 {
@@ -507,10 +511,9 @@ bool NNetModel::connectIncoming
 		pEndPoint->AddIncoming( pPipe );
 		pPipe->SetEndKnot ( pEndPoint );
 	}
-	return false;
 }
 
-bool NNetModel::connectOutgoing
+void NNetModel::connectOutgoing
 ( 
 	Pipe     * const pPipe, 
 	BaseKnot * const pStartPoint
@@ -521,7 +524,6 @@ bool NNetModel::connectOutgoing
 		pStartPoint->AddOutgoing( pPipe );
 		pPipe->SetStartKnot ( pStartPoint );
 	}
-	return false;
 }
 
 void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects only, shape remains
@@ -535,7 +537,6 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects 
 			{ 
 				connectIncoming( pipe, NewShape<Knot>( umPos ) );
 				pipe->DislocateEndPoint( );
-				return false;
 			} 
 		);
 		pBaseKnot->ClearIncoming();
@@ -545,7 +546,6 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects 
 			{ 
 				connectOutgoing( pipe, NewShape<Knot>( umPos ) );
 				pipe->DislocateStartPoint( );
-				return false;
 			} 
 		);
 		pBaseKnot->ClearOutgoing();
@@ -615,9 +615,21 @@ MicroMeterRect GetEnclosingRect( vector<Shape*> const & shapeVector )
 	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
 	for ( const auto & pShape : shapeVector )
 	{
-		if ( pShape && pShape->IsBaseKnot() )
+		if ( pShape )
 		{
-			rect.Expand( Cast2BaseKnot( pShape )->GetPosition() );
+			if ( pShape->IsBaseKnot() )
+			{
+				rect.Expand( Cast2BaseKnot( pShape )->GetPosition() );
+			}
+			else if ( pShape->IsPipe() )
+			{
+				rect.Expand( Cast2Pipe( pShape )->GetStartPoint() );
+				rect.Expand( Cast2Pipe( pShape )->GetEndPoint() );
+			}
+			else
+			{
+				assert( false );
+			}
 		}
 	}
 	return rect;

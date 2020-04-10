@@ -106,8 +106,10 @@
 #define IDM_PERF_WINDOW          582
 							    
 #define IDM_ANALYZE              600
-#define IDM_ANALYZE_FINISHED     601
-#define IDM_CENTER_MODEL         602
+#define IDM_ANALYZE_LOOPS        601
+#define IDM_ANALYZE_ANOMALIES    602
+#define IDM_ANALYZE_FINISHED     610
+#define IDM_CENTER_MODEL         611
 							    
 #define IDM_COPY_SELECTION       650
 #define IDM_DELETE_SELECTION     651

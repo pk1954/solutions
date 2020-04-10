@@ -60,7 +60,8 @@ public:
 		INSERT_NEURON,
 		DELETE_SELECTION,
 		COPY_SELECTION,
-		ANALYZE,
+		ANALYZE_LOOPS,
+		ANALYZE_ANOMALIES,
 		NNET_LAST,
 		FIRST = REFRESH,
 		LAST = NNET_LAST
@@ -133,7 +134,8 @@ public:
 
 private:
 
-	void analyze();
+	void analyzeLoops();
+	void analyzeAnomalies();
 	void compute();
 	BOOL dispatch( MSG const );
 	void generationRun( bool const );

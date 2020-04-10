@@ -18,7 +18,23 @@ using std::end;
 using std::wstring;
 using std::wostringstream;
 
-bool BaseKnot::apply2All
+void BaseKnot::apply2All
+( 
+	vector<Pipe *>               const & pipeList,
+	function<void(Pipe * const)> const & func 
+)
+{
+	LockShape();
+	for ( auto pipe : pipeList ) 
+	{ 
+		if ( pipe == nullptr )
+			throw std::logic_error( "nullptr in pipe list"  );
+		func( pipe );
+	}
+	UnlockShape();
+}
+
+bool BaseKnot::apply2AllB
 ( 
 	vector<Pipe *>               const & pipeList,
 	function<bool(Pipe * const)> const & func 
@@ -42,17 +58,17 @@ bool BaseKnot::apply2All
 void BaseKnot::Prepare( )
 {
 	m_mVinputBuffer = 0._mV;
-	Apply2AllInPipes( [&]( auto pipe ) { m_mVinputBuffer += pipe->GetNextOutput( ); return false;	} );
+	Apply2AllInPipes( [&]( auto pipe ) { m_mVinputBuffer += pipe->GetNextOutput( ); } );
 }
 
 bool BaseKnot::IsPrecursorOf( ShapeId const id )
 {
-	return Apply2AllOutPipes( [&]( auto pipe ) { return pipe->GetEndKnotId( ) == id; } ); 
+	return Apply2AllOutPipesB( [&]( auto pipe ) { return pipe->GetEndKnotId( ) == id; } ); 
 }
 
 bool BaseKnot::IsSuccessorOf( ShapeId const id )
 {
-	return Apply2AllInPipes( [&]( auto pipe ) { return pipe->GetStartKnotId( ) == id;	} );
+	return Apply2AllInPipesB( [&]( auto pipe ) { return pipe->GetStartKnotId( ) == id;	} );
 }
 
 void BaseKnot::AddIncoming( Pipe * const pPipe )

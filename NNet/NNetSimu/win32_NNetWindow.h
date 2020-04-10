@@ -91,8 +91,8 @@ private:
 	enum class FOCUS_MODE 
 	{ 
 		NO_FOCUS, 
-		ZOOM_OUT,
-		ZOOM_IN 
+		ZOOM_OUT,  // zoom out to see complete model
+		ZOOM_IN    // zoom in to focus on emphasized shapes 
 	} m_focusMode { FOCUS_MODE::NO_FOCUS };
 
 	MicroMeterPoint m_umPntCenterStart { MicroMeterPoint::NULL_VAL() };

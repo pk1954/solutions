@@ -84,20 +84,36 @@ public:
 	bool IsPrecursorOf( ShapeId const );
 	bool IsSuccessorOf( ShapeId const );
 
-	bool Apply2AllInPipes( function<bool(Pipe * const)> const & func )
+	void Apply2AllInPipes( function<void(Pipe * const)> const & func )
 	{
-		return apply2All( m_incoming, func );
+		apply2All( m_incoming, func );
 	}
 
-	bool Apply2AllOutPipes( function<bool(Pipe * const)> const & func )
+	void Apply2AllOutPipes( function<void(Pipe * const)> const & func )
 	{
-		return apply2All( m_outgoing, func );
+		apply2All( m_outgoing, func );
 	}
 
-	void Apply2AllConnectedPipes( function<bool(Pipe * const)> const & func )
+	bool Apply2AllInPipesB( function<bool(Pipe * const)> const & func )
 	{
-		Apply2AllInPipes ( [&]( Pipe * const pipe ) { return func( pipe ); } );
-		Apply2AllOutPipes( [&]( Pipe * const pipe ) { return func( pipe ); } );
+		return apply2AllB( m_incoming, func );
+	}
+
+	bool Apply2AllOutPipesB( function<bool(Pipe * const)> const & func )
+	{
+		return apply2AllB( m_outgoing, func );
+	}
+
+	void Apply2AllConnectedPipes( function<void(Pipe * const)> const & func )
+	{
+		Apply2AllInPipes ( [&]( Pipe * const pipe ) { func( pipe ); } );
+		Apply2AllOutPipes( [&]( Pipe * const pipe ) { func( pipe ); } );
+	}
+
+	void Apply2AllConnectedPipesB( function<bool(Pipe * const)> const & func )
+	{
+		Apply2AllInPipesB ( [&]( Pipe * const pipe ) { return func( pipe ); } );
+		Apply2AllOutPipesB( [&]( Pipe * const pipe ) { return func( pipe ); } );
 	}
 
 	virtual void MoveShape( MicroMeterPoint const & );
@@ -116,7 +132,8 @@ protected:
 	void      const DisplayText( PixelRect const, wstring const ) const;
 
 private:
-	bool apply2All(	vector<Pipe *> const &, function<bool(Pipe * const)> const & );
+	void apply2All ( vector<Pipe *> const &, function<void(Pipe * const)> const & );
+	bool apply2AllB( vector<Pipe *> const &, function<bool(Pipe * const)> const & );
 
 	MicroMeterPoint     m_center;
 	MicroMeter          m_extension;

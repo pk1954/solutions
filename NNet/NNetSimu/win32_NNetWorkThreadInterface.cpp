@@ -158,7 +158,8 @@ wchar_t const * NNetWorkThreadInterface::GetActionCommandName( int const iMsgId 
 {
 	static unordered_map < int, wchar_t const * > mapMsgName =
 	{
-		{ IDM_ANALYZE,             L"ANALYZE"             },
+		{ IDM_ANALYZE_LOOPS,       L"ANALYZE_LOOPS"       },
+		{ IDM_ANALYZE_ANOMALIES,   L"ANALYZE_ANOMALIES"   },
 		{ IDM_DELETE_SELECTION,    L"DELETE_SELECTION"    },
 		{ IDM_COPY_SELECTION,      L"COPY_SELECTION"      },
 		{ IDD_INSERT_NEURON,       L"INSERT_NEURON"       },
@@ -179,7 +180,8 @@ int const NNetWorkThreadInterface::GetActionCommandFromName( wchar_t const * con
 {
 	static unordered_map < wchar_t const *, int > mapMsg =
 	{
-		{ L"ANALYZE",             IDM_ANALYZE             },
+		{ L"ANALYZE_LOOPS",       IDM_ANALYZE_LOOPS       },
+		{ L"ANALYZE_ANOMALIES",   IDM_ANALYZE_ANOMALIES   },
 		{ L"DELETE_SELECTION",    IDM_DELETE_SELECTION    },
 		{ L"COPY_SELECTION",      IDM_COPY_SELECTION      },
 		{ L"INSERT_NEURON",       IDD_INSERT_NEURON       },
@@ -200,7 +202,8 @@ void NNetWorkThreadInterface::PostActionCommand( int const idMsg, ShapeId const 
 {
 	static unordered_map < int, NNetWorkThreadMessage::Id const > mapMsg =
 	{
-		{ IDM_ANALYZE,             NNetWorkThreadMessage::Id::ANALYZE             },
+		{ IDM_ANALYZE_LOOPS,       NNetWorkThreadMessage::Id::ANALYZE_LOOPS       },
+		{ IDM_ANALYZE_ANOMALIES,   NNetWorkThreadMessage::Id::ANALYZE_ANOMALIES   },
 		{ IDM_DELETE_SELECTION,    NNetWorkThreadMessage::Id::DELETE_SELECTION    },
 		{ IDM_COPY_SELECTION,      NNetWorkThreadMessage::Id::COPY_SELECTION      },
 		{ IDD_INSERT_NEURON,       NNetWorkThreadMessage::Id::INSERT_NEURON       },

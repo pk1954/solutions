@@ -11,6 +11,7 @@
 #include "DisplayFunctor.h"
 
 class NNetModel;
+class Knot;
 class Shape;
 
 using std::vector;
@@ -25,16 +26,11 @@ public:
 		m_pDisplayFunctor = func;
 	}
 
-	static bool FindLoop( NNetModel const & );
-
-	static void EmphasizeLoopShapes( NNetModel & );
-
+	static bool           FindLoop( NNetModel const & );
+	static void           EmphasizeLoopShapes( NNetModel & );
 	static MicroMeterRect GetEnclosingRect( );
-
-	static void Stop( )
-	{
-		m_bStop = true;
-	}
+	static bool           FindAnomaly( NNetModel const & );
+	static void           Stop( )	{ m_bStop = true; }
 
 private:
 
@@ -44,5 +40,5 @@ private:
 	static vector<Shape *>  m_shapeStack;
 
 	static bool findLoop( Shape * const );
-	//static void printShapeStack( );
+	static bool hasAnomaly( Knot & );
 };

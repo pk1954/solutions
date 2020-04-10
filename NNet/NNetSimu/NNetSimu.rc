@@ -35,7 +35,11 @@ IDC_NNET_SIMU_MAIN MENU
         MENUITEM "&Proceed single step", IDM_FORWARD
         MENUITEM "&Run",                 IDM_RUN
         MENUITEM "&Stop",                IDM_STOP
-        MENUITEM "&Analyze",             IDM_ANALYZE
+        POPUP    "&Analyze"
+        {
+            MENUITEM "Find &loops",      IDM_ANALYZE_LOOPS
+            MENUITEM "Find &anomalies",  IDM_ANALYZE_ANOMALIES
+        }
         MENUITEM "&Center model",        IDM_CENTER_MODEL
     }
     POPUP "&View"
