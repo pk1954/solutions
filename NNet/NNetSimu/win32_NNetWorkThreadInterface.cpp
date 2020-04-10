@@ -104,6 +104,13 @@ void NNetWorkThreadInterface::PostConvert2Neuron( ShapeId const id )
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::CONVERT2NEURON ), id.GetValue(), 0 );
 }
 
+void NNetWorkThreadInterface::PostConvert2InputNeuron( ShapeId const id )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::CONVERT2INPUT_NEURON ), id.GetValue(), 0 );
+}
+
 void NNetWorkThreadInterface::PostResetModel( )
 {
 	if ( IsTraceOn( ) )

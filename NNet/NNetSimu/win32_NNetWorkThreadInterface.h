@@ -39,24 +39,25 @@ public:
 	);
 	void Stop(); 
 
-	void PostSendBack         ( int const );
-	void PostSetPulseRate     ( ShapeId    const, float const );
-	void PostSetParameter     ( tParameter const, float const );
-	void PostResetTimer       ( );
-	void PostConnect          ( ShapeId const, ShapeId const );
-	void PostRemoveShape      ( ShapeId const );
-	void PostDisconnect       ( ShapeId const );
-	void PostConvert2Neuron   ( ShapeId const );
-	void PostSlowMotionChanged( );
-	void PostMoveShape        ( ShapeId const, MicroMeterPoint const & );
-	void PostActionCommand    ( int const, ShapeId const, MicroMeterPoint const & );
-	void PostResetModel       ( );
-	void PostRunGenerations   ( BOOL const );
-	void PostStopComputation  ( );
-	void PostGenerationStep   ( );
-	void PostCopySelection    ( );
-	void PostDeleteSelection  ( );
-	void PostRepeatGenerationStep();       // Do not call! Used by WorkThread only;
+	void PostSendBack            ( int const );
+	void PostSetPulseRate        ( ShapeId    const, float const );
+	void PostSetParameter        ( tParameter const, float const );
+	void PostResetTimer          ( );
+	void PostConnect             ( ShapeId const, ShapeId const );
+	void PostRemoveShape         ( ShapeId const );
+	void PostDisconnect          ( ShapeId const );
+	void PostConvert2Neuron      ( ShapeId const );
+	void PostConvert2InputNeuron ( ShapeId const );
+	void PostSlowMotionChanged   ( );
+	void PostMoveShape           ( ShapeId const, MicroMeterPoint const & );
+	void PostActionCommand       ( int const, ShapeId const, MicroMeterPoint const & );
+	void PostResetModel          ( );
+	void PostRunGenerations      ( BOOL const );
+	void PostStopComputation     ( );
+	void PostGenerationStep      ( );
+	void PostCopySelection       ( );
+	void PostDeleteSelection     ( );
+	void PostRepeatGenerationStep( );       // Do not call! Used by WorkThread only;
 
 	BOOL       IsRunning            ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }
 	BOOL       IsAsyncThread        ( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }

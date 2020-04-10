@@ -44,69 +44,70 @@
 
 // identifiers for application start at 100
 
-#define IDM_FATAL_ERROR     	100
+#define IDM_FATAL_ERROR     	 100
+								 
+#define IDC_NNET_SIMU_MAIN  	 102
+#define IDD_APPLY_PARAMETERS     105
+#define IDD_RESET_PARAMETERS     106
+#define IDI_NNETSIMU			 120
+#define IDI_SMALL				 121
+#define IDC_NNETSIMU			 122
+								 
+#define IDM_SLOWER               130
+#define IDM_FASTER               131
+								 
+#define IDM_ESCAPE               140
+#define IDM_RESET                141
+#define IDM_SELECT_ALL           142
+								 
+#define IDM_SAVE_MODEL           150
+#define IDM_ASK_AND_SAVE_MODEL   151
+#define IDM_SAVE_MODEL_AS        152
+#define IDM_OPEN_MODEL           153
+#define IDM_READ_MODEL           154
+#define IDM_NEW_MODEL            155
 
-#define IDC_NNET_SIMU_MAIN  	102
-#define IDD_APPLY_PARAMETERS    105
-#define IDD_RESET_PARAMETERS    106
-#define IDI_NNETSIMU			120
-#define IDI_SMALL				121
-#define IDC_NNETSIMU			122
-								
-#define IDM_SLOWER              130
-#define IDM_FASTER              131
-								
-#define IDM_ESCAPE              140
-#define IDM_RESET               141
-#define IDM_SELECT_ALL          142
+#define IDD_PULSE_RATE           160
 
-#define IDM_SAVE_MODEL          150
-#define IDM_ASK_AND_SAVE_MODEL  151
-#define IDM_SAVE_MODEL_AS       152
-#define IDM_OPEN_MODEL          153
-#define IDM_READ_MODEL          154
-#define IDM_NEW_MODEL           155
+#define IDD_ARROWS_ON            161
+#define IDD_ARROWS_OFF           162
 
-#define IDD_PULSE_RATE          160
+#define IDD_SOUND_ON             171
+#define IDD_SOUND_OFF            172
 
-#define IDD_ARROWS_ON           161
-#define IDD_ARROWS_OFF          162
+#define IDD_AUTO_OPEN_ON         181
+#define IDD_AUTO_OPEN_OFF        182
 
-#define IDD_SOUND_ON            171
-#define IDD_SOUND_OFF           172
+#define IDM_PLUS                 191
+#define IDM_MINUS                192
 
-#define IDD_AUTO_OPEN_ON        181
-#define IDD_AUTO_OPEN_OFF       182
+#define IDD_CONNECT              560
+#define IDD_INSERT_NEURON        561
+#define IDD_NEW_NEURON           562
+#define IDD_NEW_INPUT_NEURON     563
+#define IDD_APPEND_NEURON        564
+#define IDD_APPEND_INPUT_NEURON  565
+#define IDD_REMOVE_SHAPE         566
+#define IDD_DISCONNECT           567
+#define IDD_ADD_INCOMING2KNOT    568
+#define IDD_ADD_INCOMING2PIPE    569
+#define IDD_ADD_OUTGOING2KNOT    570
+#define IDD_ADD_OUTGOING2PIPE    571
+#define IDD_TRIGGER_SOUND_DLG    572
+#define IDC_TRIGGER_SOUND_ON     573
+#define IDC_TRIGGER_SOUND_FREQ   574
+#define IDC_TRIGGER_SOUND_MSEC   575
+#define IDC_TRIGGER_SOUND_TEST   576
+#define IDD_CONVERT2NEURON       577
+#define IDD_CONVERT2INPUT_NEURON 578
 
-#define IDM_PLUS                191
-#define IDM_MINUS               192
-
-#define IDD_CONNECT             560
-#define IDD_INSERT_NEURON       561
-#define IDD_NEW_NEURON          562
-#define IDD_NEW_INPUT_NEURON    563
-#define IDD_APPEND_NEURON       564
-#define IDD_APPEND_INPUT_NEURON 565
-#define IDD_REMOVE_SHAPE        566
-#define IDD_DISCONNECT          567
-#define IDD_ADD_INCOMING2KNOT   568
-#define IDD_ADD_INCOMING2PIPE   569
-#define IDD_ADD_OUTGOING2KNOT   570
-#define IDD_ADD_OUTGOING2PIPE   571
-#define IDD_TRIGGER_SOUND_DLG   572
-#define IDC_TRIGGER_SOUND_ON    573
-#define IDC_TRIGGER_SOUND_FREQ  574
-#define IDC_TRIGGER_SOUND_MSEC  575
-#define IDC_TRIGGER_SOUND_TEST  576
-#define IDD_CONVERT2NEURON      577
-
-#define IDM_CRSR_WINDOW         580
-#define IDM_PARAM_WINDOW  	    581
-#define IDM_PERF_WINDOW         582
-
-#define IDM_ANALYZE             600
-#define IDM_ANALYZE_FINISHED    601
-#define IDM_CENTER_MODEL        602
-
-#define IDM_COPY_SELECTION      650
-#define IDM_DELETE_SELECTION    651
+#define IDM_CRSR_WINDOW          580
+#define IDM_PARAM_WINDOW  	     581
+#define IDM_PERF_WINDOW          582
+							    
+#define IDM_ANALYZE              600
+#define IDM_ANALYZE_FINISHED     601
+#define IDM_CENTER_MODEL         602
+							    
+#define IDM_COPY_SELECTION       650
+#define IDM_DELETE_SELECTION     651

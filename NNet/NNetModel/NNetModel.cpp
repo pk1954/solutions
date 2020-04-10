@@ -166,6 +166,20 @@ void NNetModel::Convert2Neuron( ShapeId const idInputNeuron )
 	CHECK_CONSISTENCY;
 }
 
+void NNetModel::Convert2InputNeuron( ShapeId const idNeuron )
+{
+	if ( Neuron * pNeuron { GetShapePtr<Neuron *>( idNeuron ) } )
+	{
+		ShapeId         const idAxon  { pNeuron->GetAxonId( ) };
+		MicroMeterPoint const pos     { pNeuron->GetPosition( ) };
+		InputNeuron   * const pInputNeuron { NewShape<InputNeuron>( pos ) };
+		RemoveShape( idNeuron );
+		if ( idAxon != NO_SHAPE )
+			Connect( GetStartKnotId( idAxon ), pInputNeuron->GetId()  );
+	}
+	CHECK_CONSISTENCY;
+}
+
 float const NNetModel::GetPulseRate( InputNeuron const * pInputNeuron ) const
 {
 	return pInputNeuron ? pInputNeuron->GetPulseFrequency().GetValue() : 0.0f;

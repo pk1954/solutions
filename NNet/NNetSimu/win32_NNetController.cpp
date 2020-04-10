@@ -225,6 +225,12 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
+	case IDD_CONVERT2INPUT_NEURON:
+		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
+		m_pNNetWorkThreadInterface->PostConvert2InputNeuron( m_pNNetWindow->GetHighlightedShapeId( ) );
+		m_pNNetWindow->ResetHighlightedShape();
+		break;
+
 	case IDD_INSERT_NEURON:
 	case IDD_APPEND_NEURON:
 	case IDD_APPEND_INPUT_NEURON:

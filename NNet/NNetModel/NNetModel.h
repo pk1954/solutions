@@ -178,6 +178,7 @@ public:
 
 	void Connect( ShapeId const, ShapeId const );
 	void Convert2Neuron( ShapeId const );
+	void Convert2InputNeuron( ShapeId const );
 	void Disconnect( ShapeId const );
 	void RemoveShape( ShapeId const );
 	void RecalcAllShapes( );
