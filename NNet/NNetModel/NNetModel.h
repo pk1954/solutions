@@ -93,6 +93,16 @@ public:
 		return GetShapeConstPtr<Pipe const *>( idPipe )->GetEndKnotPtr(); 
 	}
 
+	ShapeId const GetStartKnotId( ShapeId const idPipe ) const 
+	{ 
+		return GetStartKnotPtr( idPipe )->GetId(); 
+	}
+
+	ShapeId const GetEndKnotId( ShapeId const idPipe ) const 
+	{ 
+		return GetEndKnotPtr( idPipe )->GetId(); 
+	}
+
 	size_t const GetNrOfOutgoingConnections( ShapeId const ) const;
 	size_t const GetNrOfIncomingConnections( ShapeId const ) const; 
 
@@ -167,6 +177,7 @@ public:
 	void AddIncoming2Pipe( ShapeId const, MicroMeterPoint const & );
 
 	void Connect( ShapeId const, ShapeId const );
+	void Convert2Neuron( ShapeId const );
 	void Disconnect( ShapeId const );
 	void RemoveShape( ShapeId const );
 	void RecalcAllShapes( );

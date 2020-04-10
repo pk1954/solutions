@@ -152,10 +152,23 @@ void NNetModel::Disconnect( ShapeId const id )
 	CHECK_CONSISTENCY;
 }
 
+void NNetModel::Convert2Neuron( ShapeId const idInputNeuron )
+{
+	if ( InputNeuron * pInputNeuron { GetShapePtr<InputNeuron *>( idInputNeuron ) } )
+	{
+		ShapeId         const idAxon  { pInputNeuron->GetAxonId( ) };
+		MicroMeterPoint const pos     { pInputNeuron->GetPosition( ) };
+		Neuron        * const pNeuron { NewShape<Neuron>( pos ) };
+		RemoveShape( idInputNeuron );
+		if ( idAxon != NO_SHAPE )
+			Connect( GetStartKnotId( idAxon ), pNeuron->GetId()  );
+	}
+	CHECK_CONSISTENCY;
+}
+
 float const NNetModel::GetPulseRate( InputNeuron const * pInputNeuron ) const
 {
-	assert( pInputNeuron );
-	return pInputNeuron->GetPulseFrequency().GetValue();
+	return pInputNeuron ? pInputNeuron->GetPulseFrequency().GetValue() : 0.0f;
 }
 
 float const NNetModel::GetParameterValue( tParameter const param ) const
@@ -251,7 +264,7 @@ size_t const NNetModel::GetNrOfIncomingConnections( ShapeId const id ) const
 void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge src shape into dst shape
 {
 	BaseKnot * pSrc = GetShapePtr<BaseKnot *>( idSrc );
-	if ( GetShapeType( idDst ).IsPipeType() )   // connect baseknot to Pipe
+	if ( GetShapeType( idDst ).IsPipeType() )   // connect baseknot to pipe
 	{
 		insertBaseKnot( GetShapePtr<Pipe *>( idDst ), pSrc );
 	}
@@ -485,7 +498,7 @@ bool NNetModel::connectIncoming
 
 bool NNetModel::connectOutgoing
 ( 
-	Pipe * const pPipe, 
+	Pipe     * const pPipe, 
 	BaseKnot * const pStartPoint
 )
 {

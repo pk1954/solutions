@@ -163,6 +163,10 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		m_pNNetModel->Disconnect( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
+	case NNetWorkThreadMessage::Id::CONVERT2NEURON:
+		m_pNNetModel->Convert2Neuron( ShapeId( CastToLong(msg.wParam) ) );
+		break;
+
 	case NNetWorkThreadMessage::Id::RESET_MODEL:
 		generationStop( );
 		m_pNNetModel->ResetModel( );

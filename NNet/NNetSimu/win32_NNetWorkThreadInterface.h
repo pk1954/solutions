@@ -46,6 +46,7 @@ public:
 	void PostConnect          ( ShapeId const, ShapeId const );
 	void PostRemoveShape      ( ShapeId const );
 	void PostDisconnect       ( ShapeId const );
+	void PostConvert2Neuron   ( ShapeId const );
 	void PostSlowMotionChanged( );
 	void PostMoveShape        ( ShapeId const, MicroMeterPoint const & );
 	void PostActionCommand    ( int const, ShapeId const, MicroMeterPoint const & );
