@@ -49,13 +49,15 @@ public:
 	ShapeId        const GetSuperHighlightedShapeId( )     const { return m_shapeSuperHighlighted; }
 	tHighlightType const GetHighlightType( Shape const & ) const;
 
-	void        ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
-	void        Zoom( bool const );
-	void        AnalysisFinished( );
-	void        ZoomKeepCrsrPos( MicroMeter const );
-	void        CenterModel( );
-	void        Escape( );    
-	void        SelectAll( );
+	void ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
+	void Zoom( bool const );
+	void AnalysisFinished( );
+	void ZoomKeepCrsrPos( MicroMeter const );
+	void CenterModel( );
+
+	void SelectShape  ( tBoolOp const );
+	void SelectAll    ( tBoolOp const );
+	void SelectSubtree( tBoolOp const );
 
 	MicroMeter  GetPixelSize  ( ) const { return m_coord.GetPixelSize  (); }
 	fPixelPoint GetPixelOffset( ) const { return m_coord.GetPixelOffset(); }
@@ -126,6 +128,5 @@ private:
 	void   centerAndZoomRect( MicroMeterRect const, float const );
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL   inObservedClientRect( LPARAM const );
-	void   drawHighlightedShape( );
 	void   doPaint( );
 };

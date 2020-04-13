@@ -23,6 +23,7 @@
 #include "win32_NNetWindow.h"
 #include "win32_NNetAppMenu.h"
 #include "win32_NNetController.h"
+#include "NNetColors.h"
 
 class Observable;
 class NNetModel;
@@ -64,6 +65,7 @@ private:
 	SlowMotionRatio         m_SlowMotionRatio         { };
 
 	SimulationControl       * m_pSimulationControl       { nullptr };
+	NNetColors              * m_pNNetColors              { nullptr };
 	NNetReadBuffer          * m_pNNetReadBuffer          { nullptr };
 	NNetController          * m_pNNetController          { nullptr };
 	NNetModel               * m_pModelDataWork           { nullptr };

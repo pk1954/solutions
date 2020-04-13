@@ -59,7 +59,12 @@
 #define IDM_ESCAPE               140
 #define IDM_RESET                141
 #define IDM_SELECT_ALL           142
-								 
+#define IDM_SELECT_SUBTREE       143
+#define IDM_SELECT_SHAPE         144
+#define IDM_DESELECT_ALL         145
+#define IDM_DESELECT_SUBTREE     146
+#define IDM_DESELECT_SHAPE       147
+
 #define IDM_SAVE_MODEL           150
 #define IDM_ASK_AND_SAVE_MODEL   151
 #define IDM_SAVE_MODEL_AS        152

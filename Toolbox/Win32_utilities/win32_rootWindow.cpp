@@ -55,8 +55,8 @@ void RootWindow::StartRootWindow( function<bool()> const visibilityCriterion )
 	m_visibilityMode = m_visibilityCriterion 
 		? tOnOffAuto::automatic 
 		: IsWindowVisible( ) 
-		? tOnOffAuto::on 
-		: tOnOffAuto::off;
+          ? tOnOffAuto::on 
+		  : tOnOffAuto::off;
 }
 
 void RootWindow::addWinMenu( HMENU const hMenuParent, std::wstring const strTitle ) const

@@ -27,7 +27,7 @@ public:
 	}
 
 	static bool           FindLoop( NNetModel const & );
-	static void           EmphasizeLoopShapes( NNetModel & );
+	static void           SelectLoopShapes( NNetModel & );
 	static MicroMeterRect GetEnclosingRect( );
 	static bool           FindAnomaly( NNetModel const & );
 	static void           Stop( )	{ m_bStop = true; }

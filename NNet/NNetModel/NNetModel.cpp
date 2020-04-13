@@ -61,13 +61,6 @@ void NNetModel::RecalcAllShapes( )
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); } );
 } 
 
-void NNetModel::SetEmphasizeMode( bool const bMode ) 
-{ 
-	if ( m_bEmphasizeMode && (bMode == false) )
-		Apply2All<Shape>( [&]( Shape & shape ) { shape.Emphasize( false ); } );
-	m_bEmphasizeMode = bMode;
-} 
-
 long const NNetModel::GetNrOfShapes( ) const
 {
 	long lCounter = 0;
@@ -150,7 +143,7 @@ void NNetModel::Disconnect( ShapeId const id )
 	{
 		disconnectBaseKnot( pBaseKnot );
 		assert( pBaseKnot->IsOrphan( ) );
-		if ( pBaseKnot->GetShapeType( ).IsKnotType() )
+		if ( pBaseKnot->IsKnot() )
 			deleteShape( id );
 	}
 	CHECK_CONSISTENCY;
@@ -428,6 +421,24 @@ Shape const * NNetModel::FindShapeAt
 }
 
 /////////////////// local functions ///////////////////////////////////////////////
+
+void NNetModel::selectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )
+{
+	if ( pBaseKnot )
+	{
+		pBaseKnot->Select( op );
+		pBaseKnot->Apply2AllOutPipes
+		( 
+			[&]( Pipe * const pipe ) 
+			{ 
+				pipe->Select( op ); 
+				BaseKnot * const pEndKnot { pipe->GetEndKnotPtr() };
+				if ( pEndKnot->IsKnot() )
+					selectSubtree( pipe->GetEndKnotPtr(), op ); 
+			} 
+		);
+	}
+}
 
 void NNetModel::checkConsistency( Shape * pShape )
 {

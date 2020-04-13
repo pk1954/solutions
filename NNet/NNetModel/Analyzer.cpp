@@ -89,10 +89,10 @@ MicroMeterRect ModelAnalyzer::GetEnclosingRect( )
 	return ::GetEnclosingRect( m_shapeStack );
 }
 
-void ModelAnalyzer::EmphasizeLoopShapes( NNetModel & model )
+void ModelAnalyzer::SelectLoopShapes( NNetModel & model )
 {
 	for ( const auto & pShape : m_shapeStack )
-		pShape->Emphasize( true );
+		pShape->Select( tBoolOp::opTrue );
 }
 
 bool ModelAnalyzer::hasAnomaly( Knot & knot )

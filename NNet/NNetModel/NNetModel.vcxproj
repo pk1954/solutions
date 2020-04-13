@@ -154,7 +154,6 @@
       <ExceptionHandling>Async</ExceptionHandling>
       <EnableParallelCodeGeneration>
       </EnableParallelCodeGeneration>
-      <AdditionalOptions> /GH /Gh %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -170,9 +169,8 @@
     <Lib />
     <Lib />
     <Lib />
-    <Lib>
-      <AdditionalDependencies>$(MICROPROFILERDIR)/micro-profiler_$(PlatformName).lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Lib>
+    <Lib />
+    <Lib />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Analyzer.h" />
@@ -181,6 +179,7 @@
     <ClInclude Include="InputNeuron.h" />
     <ClInclude Include="Knot.h" />
     <ClInclude Include="Neuron.h" />
+    <ClInclude Include="NNetColors.h" />
     <ClInclude Include="NNetModel.h" />
     <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="NNetWrapperHelpers.h" />
@@ -201,6 +200,7 @@
     <ClCompile Include="InputNeuron.cpp" />
     <ClCompile Include="Knot.cpp" />
     <ClCompile Include="Neuron.cpp" />
+    <ClCompile Include="NNetColors.cpp" />
     <ClCompile Include="NNetModel.cpp">
       <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </EnableParallelCodeGeneration>

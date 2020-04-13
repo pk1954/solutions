@@ -65,7 +65,7 @@ public:
 	size_t GetNrOfOutgoingConnections( ) const { return m_outgoing.size(); }
 	size_t GetNrOfConnections( )         const { return m_incoming.size() + m_outgoing.size(); }
 	bool   IsOrphan( )                   const { return m_incoming.empty() && m_outgoing.empty(); }
-	bool   IsOrphanedKnot( )             const { return (GetShapeType().IsKnotType()) && IsOrphan(); }
+	bool   IsOrphanedKnot( )             const { return IsKnot() && IsOrphan(); }
 
 	void ClearIncoming( ) 
 	{

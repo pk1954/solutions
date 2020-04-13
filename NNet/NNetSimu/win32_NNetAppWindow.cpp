@@ -70,7 +70,8 @@ NNetAppWindow::NNetAppWindow( )
 
 	NNetWindow::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
 
-	m_pCursorPos      = new Observable();
+	m_pNNetColors     = new NNetColors( m_pNNetReadBuffer );
+	m_pCursorPos      = new Observable( );
 	m_pAppMenu        = new NNetAppMenu( );
 	m_pMainNNetWindow = new NNetWindow( );
 	m_pCrsrWindow     = new CrsrWindow( );
@@ -85,6 +86,7 @@ NNetAppWindow::NNetAppWindow( )
 
 NNetAppWindow::~NNetAppWindow( )
 {
+	delete m_pNNetColors;
 	delete m_pMainNNetWindow;
 	delete m_pAppMenu;
 	delete m_pCrsrWindow;

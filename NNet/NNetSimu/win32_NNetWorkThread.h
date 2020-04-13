@@ -134,8 +134,6 @@ public:
 
 private:
 
-	void analyzeLoops();
-	void analyzeAnomalies();
 	void compute();
 	BOOL dispatch( MSG const );
 	void generationRun( bool const );

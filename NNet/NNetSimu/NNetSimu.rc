@@ -30,6 +30,11 @@ IDC_NNET_SIMU_MAIN MENU
         MENUITEM "&Run script",    IDM_SCRIPT_DIALOG
         MENUITEM "&Exit",          IDM_EXIT
 	}
+    POPUP "&Edit"
+    {
+        MENUITEM "&Select all",   IDM_SELECT_ALL
+        MENUITEM "&Deselect all", IDM_DESELECT_ALL
+    }
     POPUP "&Action"
     {
         MENUITEM "&Proceed single step", IDM_FORWARD

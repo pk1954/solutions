@@ -6,6 +6,7 @@
 
 #include <vector>
 #include "util.h"
+#include "BoolOp.h"
 #include "MoreTypes.h"
 #include "Observable.h"
 #include "Segment.h"
@@ -182,7 +183,6 @@ public:
 	void Disconnect( ShapeId const );
 	void RemoveShape( ShapeId const );
 	void RecalcAllShapes( );
-	void SetEmphasizeMode( bool const );
 	void ResetModel( );
 	void ClearModel( );
 	void ModelSaved  ( ) const;
@@ -190,6 +190,7 @@ public:
 	void SetPulseRate( ShapeId    const, float const );
 	void SetParameter( tParameter const, float const );
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
+	void SetEmphasizeMode( bool const bMode ) { m_bEmphasizeMode = bMode; } 
 
 	MicroMeterRect GetEnclosingRect( );
 
@@ -199,14 +200,20 @@ public:
 
 	virtual void Compute( );
 
-	void UnselectAll( )
+	void SelectAll( tBoolOp const op )
 	{
-		Apply2All<Shape>( [&]( Shape & shape ) { shape.Unselect(); } );
+		Apply2All<Shape>( [&]( Shape & shape ) { shape.Select( op ); } );
 	}
 
-	void SelectAll( )
+	void SelectSubtree( ShapeId const idBaseKnot, tBoolOp const op )
 	{
-		Apply2All<Shape>( [&]( Shape & shape ) { shape.Select(); } );
+		selectSubtree( GetShapePtr<BaseKnot *>( idBaseKnot ), op );
+	}
+
+	void SelectShape( ShapeId const idShape, tBoolOp const op )
+	{
+		if ( Shape * const pShape { GetShapePtr<Shape *>( idShape ) } )
+			pShape->Select( op );
 	}
 
 	void CopySelection( )
@@ -221,6 +228,14 @@ public:
 	bool AnyShapesSelected( )
 	{
 		return Apply2AllB<Shape>( [&]( Shape & shape ) { return shape.IsSelected(); } );
+	}
+
+	bool IsSelected( ShapeId const idShape )
+	{
+		if ( Shape const * pShape { GetShapePtr<Shape *>( idShape ) } )
+			return pShape->IsSelected();
+		else 
+			return false;
 	}
 
 private:
@@ -253,6 +268,7 @@ private:
 	bool const      isConnectedToPipe( ShapeId const, Pipe const * const ) const;
 	void            connectIncoming( Pipe * const, BaseKnot * const );
 	void            connectOutgoing( Pipe * const, BaseKnot * const );
+	void            selectSubtree( BaseKnot * const, tBoolOp const op );
 
 };
 

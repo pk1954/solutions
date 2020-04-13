@@ -85,6 +85,8 @@ private:
 	virtual void AddContextMenuEntries( HMENU const, PixelPoint const );
 
 	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const ) {};
+	virtual bool OnRButtonDown( WPARAM const, LPARAM const ) { return false; };
+	virtual bool OnRButtonUp  ( WPARAM const, LPARAM const ) { return false; };
 	virtual void OnMouseWheel ( WPARAM const, LPARAM const );
 	virtual void OnMouseMove  ( WPARAM const, LPARAM const );
 	virtual BOOL OnCommand    ( WPARAM const, LPARAM const );

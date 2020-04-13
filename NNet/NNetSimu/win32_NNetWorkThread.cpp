@@ -205,11 +205,17 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::ANALYZE_LOOPS:
-		analyzeLoops( );
-		break;
-
 	case NNetWorkThreadMessage::Id::ANALYZE_ANOMALIES:
-		analyzeAnomalies( );
+		{
+			generationStop( );
+			m_pNNetModel->ClearModel( );
+			m_pNNetModel->SelectAll( tBoolOp::opFalse );
+			auto func { (id == NNetWorkThreadMessage::Id::ANALYZE_LOOPS) ? ModelAnalyzer::FindLoop : ModelAnalyzer::FindAnomaly };
+			bool bFound { func( * m_pNNetModel ) };
+			if ( bFound )
+				ModelAnalyzer::SelectLoopShapes( * m_pNNetModel );
+			m_pNNetModel->SetEmphasizeMode( bFound );
+		}
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE:
@@ -283,26 +289,6 @@ bool NNetWorkThread::actionCommand
 	} 
 
 	return TRUE;
-}
-
-void NNetWorkThread::analyzeLoops( )
-{
-	generationStop( );
-	m_pNNetModel->ClearModel( );
-	bool bLoopFound { ModelAnalyzer::FindLoop( * m_pNNetModel ) };
-	if ( bLoopFound )
-		ModelAnalyzer::EmphasizeLoopShapes( * m_pNNetModel );
-	m_pNNetModel->SetEmphasizeMode( bLoopFound );
-}
-
-void NNetWorkThread::analyzeAnomalies( )
-{
-	generationStop( );
-	m_pNNetModel->ClearModel( );
-	bool bFound { ModelAnalyzer::FindAnomaly( * m_pNNetModel ) };
-	if ( bFound )
-		ModelAnalyzer::EmphasizeLoopShapes( * m_pNNetModel );
-	m_pNNetModel->SetEmphasizeMode( bFound );
 }
 
 void NNetWorkThread::generationRun( bool const bFirst )

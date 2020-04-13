@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "synchapi.h"
 #include "NNetModel.h"
+#include "NNetColors.h"
 #include "shape.h"
 
 D2D_driver const * Shape::m_pGraphics  { nullptr };
@@ -16,13 +17,15 @@ Shape::Shape( ShapeType const type )
 
 D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {
-	if ( m_bEmphasized )
+	if ( m_pNNetModel->IsInEmphasizeMode( ) && ! m_bSelected )
 	{
-		return INT_COLOR_EMPHASIZED;
+		return NNetColors::INT_LOW_KEY;
 	}
-	else if ( m_pNNetModel->IsInEmphasizeMode( ) )
-		return INT_COLOR_LOW_KEY;
-	else
+	else if ( m_bSelected )
+	{
+		return NNetColors::m_colSelected;
+	}
+	else  // normal mode
 	{
 		mV    const peakVoltage  { mV(m_pNNetModel->GetParameterValue( tParameter::peakVoltage )) };
 		float const redComponent { min( voltageInput / peakVoltage, 1.0f )};
@@ -34,16 +37,19 @@ D2D1::ColorF Shape::GetFrameColor( tHighlightType const type ) const
 { 
 	if (type == tHighlightType::normal)
 	{
-		if ( ! m_pNNetModel->IsInEmphasizeMode( ) || m_bEmphasized )
-			return EXT_COLOR_NORMAL;
+		if ( m_pNNetModel->IsInEmphasizeMode( ) && ! m_bSelected )
+			return NNetColors::EXT_LOW_KEY;
 		else
-			return EXT_COLOR_LOW_KEY;
+			return NNetColors::EXT_NORMAL;
 	}
-
-	if (type == tHighlightType::highlighted)
-		return EXT_COLOR_HIGHLIGHT;
+	else if (type == tHighlightType::highlighted)
+	{
+		return NNetColors::EXT_HIGHLIGHT;
+	}
 	else 
-		return EXT_COLOR_SUPER_HIGHLIGHT;
+	{
+		return NNetColors::EXT_SUPER_HIGHLIGHT;
+	}
 };
 
 float Shape::GetFillLevel( mV const voltageInput ) const

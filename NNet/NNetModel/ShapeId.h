@@ -19,3 +19,8 @@ static bool IsDefined( ShapeId const id )
 { 
 	return id != NO_SHAPE; 
 }
+
+static bool IsUndefined( ShapeId const id ) 
+{ 
+	return id == NO_SHAPE; 
+}

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "d2d1helper.h"
+#include "BoolOp.h"
 #include "MoreTypes.h"
 #include "ShapeType.h"
 #include "ShapeId.h"
@@ -21,11 +22,7 @@ public:
 
 	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 
-	void Emphasize( bool const bState ) { m_bEmphasized = bState; }
-	bool IsEmphasized( ) const          { return m_bEmphasized; }
-
-	void Select    ( )       { m_bSelected = true;  }
-	void Unselect  ( )       { m_bSelected = false; }
+	void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op );  }
 	bool IsSelected( ) const { return m_bSelected; }
 
 	virtual bool IsInRect      ( MicroMeterRect const & )                const = 0;
@@ -82,9 +79,8 @@ protected:
 
 private:
 
-	SRWLOCK   m_SRWLock     { SRWLOCK_INIT };
-	ShapeId   m_identifier  { NO_SHAPE };
-	bool      m_bEmphasized { false };
-	bool      m_bSelected   { false };
+	SRWLOCK   m_SRWLock    { SRWLOCK_INIT };
+	ShapeId   m_identifier { NO_SHAPE };
+	bool      m_bSelected  { false };
 	ShapeType m_type;
 };

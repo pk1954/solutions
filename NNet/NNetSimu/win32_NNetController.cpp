@@ -253,12 +253,25 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWindow->AnalysisFinished( );
 		break;
 
+	case IDM_DESELECT_ALL:
 	case IDM_ESCAPE:
-		m_pNNetWindow->Escape( );
+		m_pNNetWindow->SelectAll( tBoolOp::opFalse );
+		break;
+
+	case IDM_SELECT_SHAPE:
+		m_pNNetWindow->SelectShape( tBoolOp::opTrue );
+		break;
+
+	case IDM_DESELECT_SHAPE:
+		m_pNNetWindow->SelectShape( tBoolOp::opFalse );
 		break;
 
 	case IDM_SELECT_ALL:
-		m_pNNetWindow->SelectAll( );
+		m_pNNetWindow->SelectAll( tBoolOp::opTrue );
+		break;
+
+	case IDM_SELECT_SUBTREE:
+		m_pNNetWindow->SelectSubtree( tBoolOp::opTrue );
 		break;
 
 	case IDM_SCRIPT_DIALOG:

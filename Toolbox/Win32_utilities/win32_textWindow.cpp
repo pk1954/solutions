@@ -61,7 +61,8 @@ void TextWindow::StartTextWindow
 
 void TextWindow::StopTextWindow( )
 {
-	m_pTextWindowThread->Terminate( );
+    if ( m_pTextWindowThread )
+	    m_pTextWindowThread->Terminate( );
 	delete m_pTextWindowThread;
 	m_pTextWindowThread = nullptr;
 
