@@ -207,6 +207,7 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </AdditionalOptions>
     </ClCompile>
+    <ClCompile Include="NNetParameters.cpp" />
     <ClCompile Include="NNetWrapperHelpers.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Shape.cpp" />

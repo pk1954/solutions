@@ -15,7 +15,7 @@ using std::wstring;
 
 ParameterDialog::ParameterDialog( NNetWorkThreadInterface * const pNNetWorkThreadInterface ) 
   : BaseDialog( ),
-	m_pNNetModel( nullptr ),
+	m_pParams( nullptr ),
 	m_pNNetWorkThreadInterface( pNNetWorkThreadInterface ),
 	m_hwndPeakVoltage     ( 0 ),
     m_hwndThreshold       ( 0 ),
@@ -29,7 +29,7 @@ ParameterDialog::ParameterDialog( NNetWorkThreadInterface * const pNNetWorkThrea
 ParameterDialog::~ParameterDialog( )
 {
 	m_pNNetWorkThreadInterface = nullptr;
-	m_pNNetModel = nullptr;
+	m_pParams = nullptr;
 }
 
 void ParameterDialog::resetParameter
@@ -38,7 +38,7 @@ void ParameterDialog::resetParameter
 	tParameter const parameter
 )
 {
-	StdDialogBox::SetParameterValue( hwndEditField, m_pNNetModel->GetParameterValue( parameter ) );
+	StdDialogBox::SetParameterValue( hwndEditField, m_pParams->GetParameterValue( parameter ) );
 }
 
 void ParameterDialog::applyParameter
@@ -47,7 +47,7 @@ void ParameterDialog::applyParameter
 	tParameter const parameter
 )
 {
-	float fValue { m_pNNetModel->GetParameterValue( parameter ) }; 
+	float fValue { m_pParams->GetParameterValue( parameter ) }; 
 	if ( StdDialogBox::Evaluate( hwndEditField, fValue ) )
 		m_pNNetWorkThreadInterface->PostSetParameter( parameter, fValue );
 }
@@ -111,12 +111,12 @@ HWND ParameterDialog::createButton( HWND const hwndParent, wchar_t const * const
 	return hwnd;
 }
 
-void ParameterDialog::Start( HWND const hwndParent,	NNetModel * const pModel )
+void ParameterDialog::Start( HWND const hwndParent,	Param * const pParams )
 {
 	HINSTANCE const hInstance { GetModuleHandle( nullptr ) };
 	HWND      const hwndDlg   { StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDM_PARAM_WINDOW ), nullptr ) };
 
-	m_pNNetModel = pModel;
+	m_pParams = pParams;
 
 	int iYpos { 10 };
 	m_hwndPeakVoltage      = addParameter( hwndDlg, tParameter::peakVoltage,    iYpos ); 
@@ -129,7 +129,7 @@ void ParameterDialog::Start( HWND const hwndParent,	NNetModel * const pModel )
 	createButton( hwndDlg, L"Apply", 140, iYpos, 50, 20, (HMENU)IDD_APPLY_PARAMETERS );
 	createButton( hwndDlg, L"Reset", 200, iYpos, 50, 20, (HMENU)IDD_RESET_PARAMETERS );
 
-	m_pNNetModel->AddParameterObserver( this );
+	pParams->AddParameterObserver( this );
 }
 
 void ParameterDialog::Stop( )

@@ -10,6 +10,7 @@
 
 D2D_driver const * Shape::m_pGraphics  { nullptr };
 NNetModel  const * Shape::m_pNNetModel { nullptr };
+Param      const * Shape::m_pParameters{ nullptr };
 
 Shape::Shape( ShapeType const type )
   : m_type( type )
@@ -27,7 +28,7 @@ D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 	}
 	else  // normal mode
 	{
-		mV    const peakVoltage  { mV(m_pNNetModel->GetParameterValue( tParameter::peakVoltage )) };
+		mV    const peakVoltage  { mV(m_pParameters->GetParameterValue( tParameter::peakVoltage )) };
 		float const redComponent { min( voltageInput / peakVoltage, 1.0f )};
 		return D2D1::ColorF( redComponent, 0.0f, 0.0f, 1.0f );
 	}
@@ -54,5 +55,5 @@ D2D1::ColorF Shape::GetFrameColor( tHighlightType const type ) const
 
 float Shape::GetFillLevel( mV const voltageInput ) const
 {
-	return voltageInput.GetValue() / m_pNNetModel->GetParameterValue( tParameter::threshold );
+	return voltageInput.GetValue() / m_pParameters->GetParameterValue( tParameter::threshold );
 }

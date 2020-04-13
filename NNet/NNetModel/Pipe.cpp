@@ -42,8 +42,8 @@ void Pipe::Recalc( )
 	if ( m_pKnotStart && m_pKnotEnd )
 	{
 		LockShape();
-		meterPerSec  const pulseSpeed    { meterPerSec( m_pNNetModel->GetParameterValue( tParameter::pulseSpeed ) ) };
-		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pNNetModel->GetTimeResolution( ) ) };
+		meterPerSec  const pulseSpeed    { meterPerSec( m_pParameters->GetParameterValue( tParameter::pulseSpeed ) ) };
+		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pParameters->GetTimeResolution( ) ) };
 		MicroMeter   const pipeLength    { Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
 		unsigned int const iNrOfSegments { max( 1, CastToUnsignedInt(round(pipeLength / segmentLength)) ) };
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );

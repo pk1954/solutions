@@ -42,11 +42,13 @@ NNetWorkThread::NNetWorkThread
 	SlowMotionRatio         * const pSlowMotionRatio,
 	NNetWorkThreadInterface * const pWorkThreadInterface,
 	NNetModel               * const pNNetModel,
+	Param                   * const pParam,
 	NNetModelStorage        * const pStorage,
 	BOOL                      const bAsync
 )
 :	m_pStorage            ( pStorage ),
 	m_pNNetModel          ( pNNetModel ),
+	m_pParam              ( pParam ),
 	m_pEventPOI           ( pEvent ),   
 	m_pModelObserver      ( pObserver ),   
 	m_pWorkThreadInterface( pWorkThreadInterface ),
@@ -54,7 +56,7 @@ NNetWorkThread::NNetWorkThread
 	m_pSlowMotionRatio    ( pSlowMotionRatio )
 {
 	m_pTimeResObserver = new TimeResObserver( this );
-	m_pNNetModel->AddParameterObserver( m_pTimeResObserver );   // notify me if parameters change
+	m_pParam->AddParameterObserver( m_pTimeResObserver );       // notify me if parameters change
 	m_pSlowMotionRatio->RegisterObserver( m_pTimeResObserver ); // notify ne if slomo ratio changes
 	m_pTimeResObserver->Notify( TRUE );
 	StartThread( L"WorkerThread", bAsync ); 
@@ -318,21 +320,17 @@ void NNetWorkThread::generationStop( )
 
 void NNetWorkThread::TimeResObserver::Notify( bool const bImmediate )
 {
-	m_pNNetWorkThread->m_usRealTimeAvailPerCycle = 
-		m_pNNetWorkThread->m_pSlowMotionRatio->SimuTime2RealTime
-		( 
-			m_pNNetWorkThread->m_pNNetModel->GetTimeResolution() 
-		);
+	m_pThread->m_usRealTimeAvailPerCycle = m_pThread->m_pSlowMotionRatio->SimuTime2RealTime( m_pThread->GetSimuTimeResolution() );
 }
 
 void NNetWorkThread::compute() 
 {
 	fMicroSecs const usTilStartRealTime { m_hrTimer.GetMicroSecsTilStart( ) };
 	fMicroSecs const usTilStartSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( usTilStartRealTime ) };
-	fMicroSecs const usActualSimuTime   { m_pNNetModel->GetSimulationTime( ) };                                 // get actual time stamp
-	fMicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };                              // compute missing simulation time
-	fMicroSecs const usSimuTimeTodo     { min( usMissingSimuTime, m_pNNetModel->GetTimeResolution() ) };        // respect time slot (resolution)
-	long       const lCyclesTodo        { CastToLong( usSimuTimeTodo / m_pNNetModel->GetTimeResolution( ) ) };  // compute # cycles to be computed
+	fMicroSecs const usActualSimuTime   { m_pNNetModel->GetSimulationTime( ) };                             // get actual time stamp
+	fMicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };                          // compute missing simulation time
+	fMicroSecs const usSimuTimeTodo     { min( usMissingSimuTime, m_pParam->GetTimeResolution() ) };        // respect time slot (resolution)
+	long       const lCyclesTodo        { CastToLong( usSimuTimeTodo / m_pParam->GetTimeResolution( ) ) };  // compute # cycles to be computed
 	for ( long lRun = 0; lRun < lCyclesTodo; ++lRun )
 	{
 		m_pNNetModel->Compute();
@@ -351,7 +349,7 @@ void NNetWorkThread::compute()
 
 fMicroSecs NNetWorkThread::GetSimuTimeResolution( ) const 
 { 
-	return m_pNNetModel->GetTimeResolution( ); 
+	return m_pParam->GetTimeResolution( ); 
 }
 
 fMicroSecs NNetWorkThread::GetSimulationTime( ) const 

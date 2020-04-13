@@ -20,12 +20,13 @@ class ObserverInterface;
 class EventInterface;
 class ComputeThread;
 class InputNeuron;
+class Param;
 
 class NNetModel
 {
 public:
 
-	NNetModel();
+	NNetModel( Param * const );
 
 	virtual ~NNetModel( );
 
@@ -80,7 +81,6 @@ public:
 	long            const GetSizeOfShapeList( ) const { return CastToLong( m_Shapes.size() ); }
 	bool            const HasModelChanged   ( ) const { return m_bUnsavedChanges; }
 	bool            const IsInEmphasizeMode ( ) const { return m_bEmphasizeMode; }
-	fMicroSecs      const GetTimeResolution ( ) const { return m_usResolution; }
 	float           const GetOpacity        ( ) const { return IsInEmphasizeMode() ? 0.5f : 1.0f; }
 	long            const GetNrOfShapes     ( ) const;
 
@@ -109,8 +109,7 @@ public:
 
 	Shape const * FindShapeAt( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
 
-	float const GetPulseRate     ( InputNeuron const * ) const;
-	float const GetParameterValue( tParameter  const   ) const;
+	float const GetPulseRate( InputNeuron const * ) const;
 
 	bool const ConnectsTo( ShapeId const, ShapeId const ) const;
 
@@ -196,8 +195,6 @@ public:
 
 	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); } ); }
 
-	void AddParameterObserver( ObserverInterface * pObs ) { m_paramObservable.RegisterObserver( pObs ); }
-
 	virtual void Compute( );
 
 	void SelectAll( tBoolOp const op )
@@ -240,19 +237,11 @@ public:
 
 private:
 
-	Observable      m_paramObservable { };
+	Param         * m_pParam          { nullptr };
 	vector<Shape *> m_Shapes          { };
 	fMicroSecs      m_timeStamp       { 0._MicroSecs };
 	bool            m_bEmphasizeMode  { false };
 	mutable bool    m_bUnsavedChanges { false };  // can be changed in const functions
-
-	// parameters
-    mV          m_threshold    { 20._mV            };
-	mV          m_peakVoltage  { 10._mV            };   
-	fMicroSecs  m_pulseWidth   { 2000._MicroSecs   };   
-	fMicroSecs  m_refractPeriod{ 500._MicroSecs    };
-	meterPerSec m_pulseSpeed   { 120.0_meterPerSec };
-	fMicroSecs  m_usResolution { 100._MicroSecs    };
 
 	// local functions
 

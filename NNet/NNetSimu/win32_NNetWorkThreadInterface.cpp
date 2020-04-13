@@ -43,6 +43,7 @@ void NNetWorkThreadInterface::Start
 	ObserverInterface  * const pObserver,
 	SlowMotionRatio    * const pSlowMotionRatio,
 	NNetModel          * const pModel,
+	Param              * const pParam,
 	NNetModelStorage   * const pStorage,
 	BOOL                 const bAsync
 )
@@ -57,6 +58,7 @@ void NNetWorkThreadInterface::Start
 		pSlowMotionRatio,
 		this,
 		pModel,
+		pParam,
 		pStorage,
 		bAsync
 	);

@@ -97,7 +97,8 @@ NNetAppWindow::~NNetAppWindow( )
 
 void NNetAppWindow::Start( )
 {
-	m_pModelDataWork    = new NNetModel( );
+	m_pParameters       = new Param( );
+	m_pModelDataWork    = new NNetModel( m_pParameters );
 	m_pNNetModelStorage = new NNetModelStorage( );
 
 	BaseAppWindow::Start( m_pMainNNetWindow );
@@ -111,6 +112,7 @@ void NNetAppWindow::Start( )
 	m_pNNetController = new NNetController
 	( 
 		m_pModelDataWork,
+		m_pParameters,
 		m_pNNetModelStorage,
 		m_pMainNNetWindow,
 		& m_WinManager,
@@ -137,12 +139,13 @@ void NNetAppWindow::Start( )
 		  m_pNNetReadBuffer,
 		& m_SlowMotionRatio,
 		m_pModelDataWork,
+		m_pParameters,
 		m_pNNetModelStorage,
 		TRUE    // async thread?
 	);
 
 	m_pCrsrWindow->Start( m_hwndApp, m_pCursorPos, m_pMainNNetWindow );
-	m_pParameterDlg->Start( m_hwndApp, m_pModelDataWork );
+	m_pParameterDlg->Start( m_hwndApp, m_pParameters );
 	m_pPerformanceWindow->Start( m_hwndApp, & m_NNetWorkThreadInterface, & m_atDisplay );
 
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,        TRUE, FALSE );
@@ -167,10 +170,10 @@ void NNetAppWindow::Start( )
 
 	PostCommand2Application( IDM_RUN, true );
 
-	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage, m_pModelDataWork ) )
+	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage, m_pModelDataWork, m_pParameters ) )
 		m_pModelDataWork->CreateInitialShapes();
 
-	m_pNNetModelStorage->Write( * m_pModelDataWork, wcout );
+	m_pNNetModelStorage->Write( * m_pModelDataWork, * m_pParameters, wcout );
 
 	m_bStarted = TRUE;
 }
@@ -229,7 +232,7 @@ void NNetAppWindow::ProcessCloseMessage( )
 {
 	if ( m_bStarted )
 	{
-		if ( ! m_pNNetModelStorage->AskAndSave( * m_pModelDataWork ) )
+		if ( ! m_pNNetModelStorage->AskAndSave( * m_pModelDataWork, * m_pParameters ) )
 			return;
 		m_WinManager.StoreWindowConfiguration( );
 		Stop( );

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "NNetParameters.h"
 #include "NNetReadBuffer.h"
 #include "win32_baseDialog.h"
 
@@ -15,7 +16,7 @@ public:
 	ParameterDialog( NNetWorkThreadInterface * const );
 	~ParameterDialog( );
 
-	void Start( HWND const, NNetModel * const );
+	void Start( HWND const, Param * const );
 	void Stop( );
 
 private:
@@ -24,7 +25,7 @@ private:
 	static int   const VERT_SPACE { 16 };
 	static int   const HEIGHT     { 16 };
 
-	NNetModel               * m_pNNetModel;
+	Param                   * m_pParams;
 	NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
 
 	HWND m_hwndPeakVoltage;

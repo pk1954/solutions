@@ -11,6 +11,7 @@
 #include "symtab.h"
 #include "AutoOpen.h"
 #include "NNetModelStorage.h"
+#include "NNetParameters.h"
 #include "win32_NNetAppMenu.h"
 #include "Win32_sound.h"
 #include "Win32_NNetWindow.h"
@@ -55,20 +56,22 @@ public:
 class WrapReadModel: public Script_Functor
 {
 public:
-    static void SetModel( NNetModel* pModel )
+    static void Initialize( NNetModel * pModel, Param * pParam )
     {
         m_pModel = pModel;
+        m_pParam = pParam;
     }
 
     virtual void operator() ( Script & script ) const
     {
         assert( m_pModel != nullptr );
-        if ( ! m_pNNetModelStorage->Read( * m_pModel, script.ScrReadString() ) )
+        if ( ! m_pNNetModelStorage->Read( * m_pModel, * m_pParam, script.ScrReadString() ) )
             ScriptErrorHandler::semanticError( L"Error in model file." );
     }
 
 private:
     inline static NNetModel * m_pModel { nullptr };
+    inline static Param     * m_pParam { nullptr };
 };
 
 static wstring const PREF_ON  { L"ON"  };
@@ -96,7 +99,8 @@ void Preferences::Initialize( )
 bool Preferences::ReadPreferences
 ( 
     NNetModelStorage * pStorage,
-    NNetModel        * pModel
+    NNetModel        * pModel,
+    Param            * pParam
 )
 {
     m_pNNetModelStorage = pStorage;
@@ -104,7 +108,7 @@ bool Preferences::ReadPreferences
     {
         wcout << L"*** preferences file " << m_wstrPreferencesFile;
         wcout << L" opened" << endl;
-        WrapReadModel::SetModel( pModel );
+        WrapReadModel::Initialize( pModel, pParam );
         bool bRes { Script::ProcessScript( m_wstrPreferencesFile ) };
         if ( bRes )
             wcout << L"*** processed successfully " << endl;

@@ -10,6 +10,7 @@
 #include "ShapeId.h"
 #include "win32_thread.h"
 
+class Param;
 class NNetModel;
 class ActionTimer;
 class SlowMotionRatio;
@@ -87,6 +88,7 @@ public:
 		SlowMotionRatio         * const,
 		NNetWorkThreadInterface * const,
 		NNetModel               * const,
+		Param                   * const,
 		NNetModelStorage        * const,
 		BOOL                      const
 	);
@@ -123,13 +125,13 @@ public:
 	{
 	public:
 		TimeResObserver( NNetWorkThread * const pNNetWorkThread )
-			: m_pNNetWorkThread( pNNetWorkThread )
+			: m_pThread( pNNetWorkThread )
 		{}
 
 		virtual void Notify( bool const );
 
 	private:
-		NNetWorkThread * const m_pNNetWorkThread;
+		NNetWorkThread * const m_pThread;
 	};
 
 private:
@@ -151,6 +153,7 @@ private:
 	EventInterface          * m_pEventPOI               { nullptr };
 	NNetWorkThreadInterface * m_pWorkThreadInterface    { nullptr };
 	NNetModel               * m_pNNetModel              { nullptr };
+	Param                   * m_pParam                  { nullptr };
 	SlowMotionRatio         * m_pSlowMotionRatio        { nullptr };
 	ObserverInterface       * m_pModelObserver          { nullptr };
 	HWND                      m_hwndApplication         { (HWND)0 };

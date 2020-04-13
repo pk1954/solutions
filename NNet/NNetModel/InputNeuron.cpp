@@ -29,7 +29,7 @@ InputNeuron::~InputNeuron( )
 
 void InputNeuron::Recalc( )
 {
-	m_mvFactor = mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) / m_pulseDuration.GetValue() );
+	m_mvFactor = mV( m_pParameters->GetParameterValue( tParameter::peakVoltage ) / m_pulseDuration.GetValue() );
 }
 
 void InputNeuron::SetPulseFrequency( fHertz const freq )

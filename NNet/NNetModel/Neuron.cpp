@@ -46,22 +46,22 @@ void Neuron::SetTriggerSoundOn( bool const bMode )
 
 fMicroSecs Neuron::PulseWidth() const 
 { 
-	return fMicroSecs( m_pNNetModel->GetParameterValue( tParameter::pulseWidth ) ); 
+	return fMicroSecs( m_pParameters->GetParameterValue( tParameter::pulseWidth ) ); 
 }
 
 fMicroSecs Neuron::RefractPeriod() const 
 { 
-	return fMicroSecs( m_pNNetModel->GetParameterValue( tParameter::refractPeriod ) ); 
+	return fMicroSecs( m_pParameters->GetParameterValue( tParameter::refractPeriod ) ); 
 }
 
 mV Neuron::Threshold() const 
 { 
-	return mV( m_pNNetModel->GetParameterValue( tParameter::threshold ) ); 
+	return mV( m_pParameters->GetParameterValue( tParameter::threshold ) ); 
 }
 
 mV Neuron::PeakVoltage() const 
 { 
-	return mV( m_pNNetModel->GetParameterValue( tParameter::peakVoltage ) ); 
+	return mV( m_pParameters->GetParameterValue( tParameter::peakVoltage ) ); 
 }
 
 void Neuron::Recalc( ) 
@@ -91,7 +91,7 @@ void Neuron::Step( )
 	}
 	else
 	{
-		m_timeSinceLastPulse += m_pNNetModel->GetTimeResolution( );
+		m_timeSinceLastPulse += m_pParameters->GetTimeResolution( );
 	}
 }
 

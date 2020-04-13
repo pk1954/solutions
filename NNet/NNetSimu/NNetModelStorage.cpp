@@ -14,6 +14,7 @@
 #include "errhndl.h"
 #include "MoreTypes.h"
 #include "NNetModel.h"
+#include "NNetParameters.h"
 #include "Preferences.h"
 #include "InputNeuron.h"
 #include "win32_script.h"
@@ -259,7 +260,7 @@ void NNetModelStorage::prepareForReading( NNetModel * const pModel )
 	m_bPreparedForReading = true;
 }
 
-bool NNetModelStorage::Read( NNetModel & model, wstring const wstrPath )
+bool NNetModelStorage::Read( NNetModel & model, Param & param, wstring const wstrPath )
 {
 	if ( ! m_bPreparedForReading )
 		prepareForReading( & model );
@@ -289,7 +290,7 @@ bool NNetModelStorage::Read( NNetModel & model, wstring const wstrPath )
 
 ////////////////////////// Write /////////////////////////////////////////////
 
-void NNetModelStorage::Write( NNetModel const & model, wostream & out )
+void NNetModelStorage::Write( NNetModel const & model, Param const & parameters, wostream & out )
 {
 	static int const BUF_SIZE { 128 };
 
@@ -317,10 +318,10 @@ void NNetModelStorage::Write( NNetModel const & model, wostream & out )
 
 	Apply2GlobalParameters
 	( 
-		[&]( tParameter const & param ) 
+		[&]( tParameter const & par ) 
 		{
-			out << L"GlobalParameter " << GetParameterName( param ) << L" = "
-			<< model.GetParameterValue( param ) 
+			out << L"GlobalParameter " << GetParameterName( par ) << L" = "
+			<< parameters.GetParameterValue( par ) 
 			<< endl; 
 		}
 	);
@@ -418,13 +419,13 @@ int NNetModelStorage::AskSave( )
 	return MessageBox( nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL );
 }
 
-bool NNetModelStorage::AskAndSave( NNetModel const & model )
+bool NNetModelStorage::AskAndSave( NNetModel const & model, Param const & param )
 {
 	if ( model.HasModelChanged() )
 	{
 		int iRes = AskSave( );
 		if ( iRes == IDYES )
-			SaveModel( model );
+			SaveModel( model, param );
 		else if ( iRes == IDNO )
 			return true;
 		else if ( iRes == IDCANCEL )
@@ -444,15 +445,15 @@ bool NNetModelStorage::AskModelFile( )
 	return false;
 }
 
-void NNetModelStorage::writeModel( NNetModel const & model )
+void NNetModelStorage::writeModel( NNetModel const & model, Param const & param )
 {
 	wofstream modelFile( m_wstrPathOfOpenModel );
-	Write( model, modelFile );
+	Write( model, param, modelFile );
 	modelFile.close( );
 	NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );
 }
 
-bool NNetModelStorage::SaveModelAs( NNetModel const & model )
+bool NNetModelStorage::SaveModelAs( NNetModel const & model, Param const & param )
 {
 	if ( m_wstrPathOfOpenModel == L"" )
 		m_wstrPathOfOpenModel = GetPathOfExecutable( );
@@ -461,19 +462,19 @@ bool NNetModelStorage::SaveModelAs( NNetModel const & model )
 
 	bool const bRes = m_wstrPathOfOpenModel != L"";
 	if ( bRes )
-		writeModel( model );
+		writeModel( model, param );
 	return bRes;
 }
 
-bool NNetModelStorage::SaveModel( NNetModel const & model )
+bool NNetModelStorage::SaveModel( NNetModel const & model, Param const & param )
 {
 	if ( m_wstrPathOfOpenModel == L"" )
 	{
-		return SaveModelAs( model );
+		return SaveModelAs( model, param );
 	}
 	else
 	{
-		writeModel( model );
+		writeModel( model, param );
 		return true;
 	}
 }

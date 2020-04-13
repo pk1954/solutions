@@ -12,6 +12,7 @@ class NNetAppMenu;
 class NNetModel;
 class NNetWindow;
 class WinManager;
+class Param;
 
 class NNetController
 {
@@ -19,6 +20,7 @@ public:
 	NNetController
 	( 
 		NNetModel               * const,
+		Param                   * const,
 		NNetModelStorage        * const,
 		NNetWindow              * const,
 		WinManager              * const,
@@ -40,6 +42,7 @@ private:
 
 	HCURSOR                   m_hCrsrWait;
 	NNetModel               * m_pNNetModel;
+	Param                   * m_pParameters;
 	NNetModelStorage        * m_pStorage;
 	NNetWindow              * m_pNNetWindow;
 	WinManager              * m_pWinManager;

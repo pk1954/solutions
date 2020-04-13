@@ -7,6 +7,7 @@
 #include "d2d1helper.h"
 #include "BoolOp.h"
 #include "MoreTypes.h"
+#include "NNetParameters.h"
 #include "ShapeType.h"
 #include "ShapeId.h"
 
@@ -50,8 +51,9 @@ public:
 
 	void SetId( ShapeId const id ) { m_identifier = id;	}
 
-	static void SetGraphics( D2D_driver const * const pGraphics ) { m_pGraphics  = pGraphics; }
-	static void SetModel   ( NNetModel  const * const pModel    ) { m_pNNetModel = pModel; }
+	static void SetGraphics( D2D_driver const * const pGraphics ) { m_pGraphics   = pGraphics; }
+	static void SetModel   ( NNetModel  const * const pModel    ) { m_pNNetModel  = pModel;    }
+	static void SetParam   ( Param      const * const pParam    ) { m_pParameters = pParam;    }
 
 	void LockShape() 
 	{ 
@@ -69,6 +71,7 @@ protected:
 
 	static D2D_driver const * m_pGraphics;
 	static NNetModel  const * m_pNNetModel;
+	static Param      const * m_pParameters;
 
 	D2D1::ColorF GetFrameColor( tHighlightType const ) const;
 	D2D1::ColorF GetInteriorColor( mV const ) const;

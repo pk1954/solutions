@@ -24,15 +24,14 @@
 using namespace std::chrono;
 using std::unordered_map;
 
-NNetModel::NNetModel( )
+NNetModel::NNetModel( Param * const pParam )
+	: m_pParam( pParam )
 {					
 	Shape::SetModel( this );
+	Shape::SetParam( pParam );
 }
 
-NNetModel::~NNetModel( )
-{
-	m_paramObservable.UnregisterAllObservers();
-}
+NNetModel::~NNetModel( ) { }
 
 void NNetModel::CreateInitialShapes( )
 {
@@ -182,22 +181,6 @@ float const NNetModel::GetPulseRate( InputNeuron const * pInputNeuron ) const
 	return pInputNeuron ? pInputNeuron->GetPulseFrequency().GetValue() : 0.0f;
 }
 
-float const NNetModel::GetParameterValue( tParameter const param ) const
-{
-	switch ( param )
-	{
-		case tParameter::pulseSpeed:	 return m_pulseSpeed.GetValue();
-		case tParameter::pulseWidth:	 return m_pulseWidth.GetValue();
-		case tParameter::threshold:  	 return m_threshold.GetValue();
-		case tParameter::peakVoltage:	 return m_peakVoltage.GetValue();
-		case tParameter::refractPeriod:  return m_refractPeriod.GetValue();
-		case tParameter::timeResolution: return m_usResolution.GetValue();
-		case tParameter::signalLoss:     return 0.0f;  // not used, only for compaitibility reasons
-		default: assert( false );
-	}
-	return 0.f;
-}
-
 void NNetModel::SetPulseRate( ShapeId const id, float const fNewValue )
 {
 	ModelChanged( );
@@ -213,21 +196,8 @@ void NNetModel::SetParameter
 )
 {
 	ModelChanged( );
-	switch ( param )
-	{
-		case tParameter::pulseSpeed:	 m_pulseSpeed    = static_cast< meterPerSec >( fNewValue ); break;
-		case tParameter::pulseWidth:	 m_pulseWidth    = static_cast< fMicroSecs  >( fNewValue ); break;
-		case tParameter::threshold:		 m_threshold     = static_cast< mV >         ( fNewValue ); break;
-		case tParameter::peakVoltage:	 m_peakVoltage   = static_cast< mV >         ( fNewValue ); break;
-		case tParameter::refractPeriod:	 m_refractPeriod = static_cast< fMicroSecs  >( fNewValue ); break;
-		case tParameter::timeResolution: 
-			m_usResolution  = static_cast< fMicroSecs  >( fNewValue ); 
-			break;
-		case tParameter::signalLoss: /* not used, only for compaitibility reasons */                break;
-		default: assert( false );
-	}
+	m_pParam->SetParameterValue( param, fNewValue );
 	RecalcAllShapes( );
-	m_paramObservable.NotifyAll( FALSE );
 }
 
 MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const 
@@ -385,7 +355,7 @@ void NNetModel::Compute( )
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Prepare( ); } );
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Step( ); } );
 
-	m_timeStamp += GetTimeResolution( );
+	m_timeStamp += m_pParam->GetTimeResolution( );
 }
 
 void NNetModel::ResetModel( )

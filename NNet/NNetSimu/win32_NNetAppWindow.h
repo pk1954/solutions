@@ -25,6 +25,7 @@
 #include "win32_NNetController.h"
 #include "NNetColors.h"
 
+class Param;
 class Observable;
 class NNetModel;
 class CrsrWindow;
@@ -64,6 +65,7 @@ private:
 	ScriptHook              m_ScriptHook              { };
 	SlowMotionRatio         m_SlowMotionRatio         { };
 
+	Param                   * m_pParameters              { nullptr };
 	SimulationControl       * m_pSimulationControl       { nullptr };
 	NNetColors              * m_pNNetColors              { nullptr };
 	NNetReadBuffer          * m_pNNetReadBuffer          { nullptr };

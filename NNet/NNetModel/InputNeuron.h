@@ -35,7 +35,7 @@ public:
 		}
 		else
 		{
-			m_timeSinceLastPulse += m_pNNetModel->GetTimeResolution( );
+			m_timeSinceLastPulse += m_pParameters->GetTimeResolution( );
 		}
 	}
 

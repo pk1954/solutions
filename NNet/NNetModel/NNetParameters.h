@@ -5,10 +5,41 @@
 #pragma once
 
 #include <chrono>
+#include "Observable.h"
 #include "d2d1helper.h"
 #include "MoreTypes.h"
+#include "tParameter.h"
 
 using namespace std::chrono;
+
+class Param
+{
+public:
+	~Param();
+
+	fMicroSecs  const GetTimeResolution ( ) const 
+	{ 
+		return m_usResolution; 
+	}
+
+	void AddParameterObserver( ObserverInterface * pObs ) 
+	{ 
+		m_observable.RegisterObserver( pObs ); 
+	}
+
+	float const GetParameterValue( tParameter const ) const;
+	void        SetParameterValue( tParameter const, float const );
+
+private:
+	Observable m_observable { };
+
+	mV          m_threshold    { 20._mV            };
+	mV          m_peakVoltage  { 10._mV            };   
+	fMicroSecs  m_pulseWidth   { 2000._MicroSecs   };   
+	fMicroSecs  m_refractPeriod{ 500._MicroSecs    };
+	meterPerSec m_pulseSpeed   { 120.0_meterPerSec };
+	fMicroSecs  m_usResolution { 100._MicroSecs    };
+};
 
 // dynamic model 
 static fHertz          const STD_PULSE_FREQ  { 50.0_fHertz };         // Input neurons
