@@ -198,6 +198,10 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		m_pNNetModel->ResetSimulationTime();
 		break;
 
+	case NNetWorkThreadMessage::Id::MARK_SELECTION:
+		m_pNNetModel->MarkSelection( tBoolOp::opTrue );
+		break;
+
 	case NNetWorkThreadMessage::Id::DELETE_SELECTION:
 		m_pNNetModel->DeleteSelection();
 		break;
@@ -209,8 +213,6 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 	case NNetWorkThreadMessage::Id::ANALYZE_LOOPS:
 	case NNetWorkThreadMessage::Id::ANALYZE_ANOMALIES:
 		{
-			generationStop( );
-			m_pNNetModel->ClearModel( );
 			m_pNNetModel->SelectAll( tBoolOp::opFalse );
 			auto func { (id == NNetWorkThreadMessage::Id::ANALYZE_LOOPS) ? ModelAnalyzer::FindLoop : ModelAnalyzer::FindAnomaly };
 			bool bFound { func( * m_pNNetModel ) };

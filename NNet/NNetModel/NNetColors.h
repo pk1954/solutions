@@ -5,40 +5,35 @@
 #pragma once
 
 #include "d2d1helper.h"
-#include "ObserverInterface.h"
-
-class NNetColors
-{
-public:
-	NNetColors( ObserverInterface * const );
-
-	// normal color of neuron/pipe boundary
-	static D2D1::ColorF const EXT_NORMAL;
-
-	// color of highlighted ans super highlighted boundary
-	static D2D1::ColorF const EXT_HIGHLIGHT;
-	static D2D1::ColorF const EXT_SUPER_HIGHLIGHT;
-
-	// low key colors are used to damp down objects so that emphasized objects have better contrast
-	static D2D1::ColorF const EXT_LOW_KEY;
-	static D2D1::ColorF const INT_LOW_KEY;
-
-	// COLOR_SELECTION_RECT is used to select rectangular area, transparent
-	static D2D1::ColorF const SELECTION_RECT;
-
-	// color of selected shapes
-	static D2D1::ColorF m_colSelected;
-
+#include "ObserverInterface.h"                   
+												  
+class NNetColors								  
+{												 
 private:
 
-	void SetColSelectedAndSleep( D2D1::ColorF const color )
-	{
-		m_colSelected = color;
-		m_pObserver->Notify( true );
-		Sleep( 500 );
-	}
+	// internal alternative colors of objects when blinking
+	inline static D2D1::ColorF const INT_BLINK_KEY_1 { 0.9f, 0.9f, 0.9f, 1.0f };
+	inline static D2D1::ColorF const INT_BLINK_KEY_2 { 1.0f, 0.6f, 0.1f, 1.0f };
+
+	void SetColSelectedAndSleep( D2D1::ColorF const );
 
 	ObserverInterface * m_pObserver { nullptr };
 
 	friend unsigned int __stdcall BlinkFunc( void * );
+
+public:											 
+
+	NNetColors( ObserverInterface * const );
+
+	// colors for neuron/pipe boundary
+	inline static D2D1::ColorF const EXT_NORMAL          { 0.0f, 0.5f, 1.0f, 1.0f };
+	inline static D2D1::ColorF const EXT_MARKED          { 0.0f, 1.0f, 0.5f, 1.0f };
+	inline static D2D1::ColorF const EXT_HIGHLIGHT       { 0.0f, 0.8f, 0.8f, 1.0f };
+	inline static D2D1::ColorF const EXT_SUPER_HIGHLIGHT { 1.0f, 0.0f, 0.0f, 1.0f };
+
+	// SELECTION_RECT is used to select rectangular area, transparent
+	inline static D2D1::ColorF const SELECTION_RECT      { 1.0f, 0.0f, 0.0f, 0.5f };
+
+	// color of selected shapes
+	inline static D2D1::ColorF m_colSelected { INT_BLINK_KEY_1 };
 };

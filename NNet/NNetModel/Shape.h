@@ -23,8 +23,11 @@ public:
 
 	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 
-	void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op );  }
+	void Mark  ( tBoolOp const op ) { ApplyOp( m_bMarked, op ); }
+	void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op ); }
+
 	bool IsSelected( ) const { return m_bSelected; }
+	bool IsMarked  ( ) const { return m_bMarked; }
 
 	virtual bool IsInRect      ( MicroMeterRect const & )                const = 0;
 	virtual void DrawExterior  ( PixelCoordsFp &, tHighlightType const ) const = 0;
@@ -80,8 +83,9 @@ protected:
 
 private:
 
-	SRWLOCK   m_SRWLock    { SRWLOCK_INIT };
+	ShapeType m_type;
 	ShapeId   m_identifier { NO_SHAPE };
 	bool      m_bSelected  { false };
-	ShapeType m_type;
+	bool      m_bMarked    { false };
+	SRWLOCK   m_SRWLock    { SRWLOCK_INIT };
 };

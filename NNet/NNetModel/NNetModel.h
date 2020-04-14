@@ -210,6 +210,11 @@ public:
 			pShape->Select( op );
 	}
 
+	void MarkSelection( tBoolOp const op )
+	{
+		Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.IsSelected() ) shape.Mark( op ); } );
+	}
+
 	void CopySelection( )
 	{
 	}

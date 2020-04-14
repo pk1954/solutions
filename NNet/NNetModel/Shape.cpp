@@ -17,11 +17,7 @@ Shape::Shape( ShapeType const type )
 
 D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {
-	if ( m_pParameters->IsInEmphasizeMode( ) && ! m_bSelected )
-	{
-		return NNetColors::INT_LOW_KEY;
-	}
-	else if ( m_bSelected )
+	if ( m_bSelected )
 	{
 		return NNetColors::m_colSelected;
 	}
@@ -37,10 +33,7 @@ D2D1::ColorF Shape::GetFrameColor( tHighlightType const type ) const
 { 
 	if (type == tHighlightType::normal)
 	{
-		if ( m_pParameters->IsInEmphasizeMode( ) && ! m_bSelected )
-			return NNetColors::EXT_LOW_KEY;
-		else
-			return NNetColors::EXT_NORMAL;
+		return m_bMarked ? NNetColors::EXT_MARKED : NNetColors::EXT_NORMAL;
 	}
 	else if (type == tHighlightType::highlighted)
 	{

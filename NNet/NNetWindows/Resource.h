@@ -118,3 +118,4 @@
 							    
 #define IDM_COPY_SELECTION       650
 #define IDM_DELETE_SELECTION     651
+#define IDM_MARK_SELECTION       652

@@ -90,12 +90,7 @@ private:
 	PixelPoint m_ptLast            { PP_NULL };	// Last cursor position during selection 
 	PixelPoint m_ptCommandPosition { PP_NULL };
 
-	enum class FOCUS_MODE 
-	{ 
-		NO_FOCUS, 
-		ZOOM_OUT,  // zoom out to see complete model
-		ZOOM_IN    // zoom in to focus on emphasized shapes 
-	} m_focusMode { FOCUS_MODE::NO_FOCUS };
+	bool m_bFocusMode { false };
 
 	MicroMeterPoint m_umPntCenterStart { MicroMeterPoint::NULL_VAL() };
 	MicroMeterPoint m_umPntCenterDelta { MicroMeterPoint::NULL_VAL() };
@@ -122,7 +117,7 @@ private:
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
-	bool   smoothStep( );
+	void   smoothStep( );
 	void   setStdFontSize( );
 	LPARAM crsPos2LPARAM( ) const;
 	void   centerAndZoomRect( MicroMeterRect const, float const );

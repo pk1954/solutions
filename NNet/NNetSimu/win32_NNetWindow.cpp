@@ -187,9 +187,13 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 		break;
 
-	case ShapeType::Value::undefined: // noshape selected
+	case ShapeType::Value::undefined: // no shape selected, cursor on background
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_NEURON,       L"New neuron" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_INPUT_NEURON, L"New input neuron" );
+		if ( m_pModel->AnyShapesSelected( ) )
+		{
+			AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION, L"Mark selection" );
+		}
 		break;
 
 	default:
@@ -344,14 +348,12 @@ void NNetWindow::doPaint( )
 
 void NNetWindow::CenterModel( )
 {
-	m_focusMode = FOCUS_MODE::ZOOM_IN;
 	centerAndZoomRect( m_pModel->GetEnclosingRect( ), 1.2f );
 }
 
 void NNetWindow::AnalysisFinished( )
 {
-	m_focusMode = FOCUS_MODE::ZOOM_OUT;
-	centerAndZoomRect( m_pModel->GetEnclosingRect( ), 1.2f );
+	centerAndZoomRect( ModelAnalyzer::GetEnclosingRect(), 2.0f );
 }
 
 void NNetWindow::centerAndZoomRect( MicroMeterRect const rect, float const fRatioFactor )
@@ -368,14 +370,19 @@ void NNetWindow::centerAndZoomRect( MicroMeterRect const rect, float const fRati
 	m_umPixelSizeDelta = umPixelSizeTarget - m_umPixelSizeStart;
 	m_umPntCenterDelta = umPntCenterTarget - m_umPntCenterStart;
 	m_smoothMove.Reset();
+	m_bFocusMode = true;
 }
 
-bool NNetWindow::smoothStep( )  // returns true, if all targets reached
+void NNetWindow::smoothStep( ) 
 {
 	float fPos            { m_smoothMove.Step() };
 	bool  fTargetsReached { fPos >= SmoothMoveFp::END_POINT };
 
-	if ( ! fTargetsReached )
+	if ( fTargetsReached )
+	{
+		m_bFocusMode = false;
+	}
+	else
 	{
 		fPixelPoint const fpCenter { m_coord.convert2fPixelPoint( GetClRectCenter( ) ) };
 		m_coord.Zoom  ( m_umPixelSizeStart + m_umPixelSizeDelta * fPos );
@@ -383,7 +390,6 @@ bool NNetWindow::smoothStep( )  // returns true, if all targets reached
 	}
 
 	Notify( TRUE );     // cause immediate repaint
-	return fTargetsReached;
 }
 
 void NNetWindow::OnPaint( )
@@ -400,23 +406,8 @@ void NNetWindow::OnPaint( )
 		EndPaint( &ps );
 	}
 
-	if ( (m_focusMode != FOCUS_MODE::NO_FOCUS) && smoothStep() )
-	{
-		switch ( m_focusMode )
-		{
-		case FOCUS_MODE::ZOOM_OUT:
-			m_focusMode = FOCUS_MODE::ZOOM_IN;
-			centerAndZoomRect( ModelAnalyzer::GetEnclosingRect(), 3.0f );
-			break;
-
-		case FOCUS_MODE::ZOOM_IN:
-			m_focusMode = FOCUS_MODE::NO_FOCUS;
-			break;
-
-		default:
-			assert( false );
-		}
-	}
+	if ( m_bFocusMode )
+		smoothStep( );
 }
 
 void NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
