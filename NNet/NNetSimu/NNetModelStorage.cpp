@@ -30,6 +30,11 @@ using std::filesystem::exists;
 //static float const PROTOCOL_VERSION { 1.4f };
 static float const PROTOCOL_VERSION { 1.5f };   // pipeline renamed to pipe
 
+NNetModelStorage::NNetModelStorage( NNetModel * const pModel, Param * const pParam )
+	: m_pModel( pModel ),
+	  m_pParam( pParam )
+{}
+
 ////////////////////////// Read /////////////////////////////////////////////
 
 class WrapProtocol : public Script_Functor
@@ -216,9 +221,9 @@ private:
 	NNetModel * m_pModel;
 };
 
-void NNetModelStorage::prepareForReading( NNetModel * const pModel )
+void NNetModelStorage::prepareForReading( )
 {
-#define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( pModel ) )
+#define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( m_pModel ) )
 	DEF_NNET_FUNC( Protocol );
 	DEF_NNET_FUNC( GlobalParameter );
 	DEF_NNET_FUNC( ShapeParameter );
@@ -260,10 +265,10 @@ void NNetModelStorage::prepareForReading( NNetModel * const pModel )
 	m_bPreparedForReading = true;
 }
 
-bool NNetModelStorage::Read( NNetModel & model, Param & param, wstring const wstrPath )
+bool NNetModelStorage::Read( wstring const wstrPath )
 {
 	if ( ! m_bPreparedForReading )
-		prepareForReading( & model );
+		prepareForReading( );
 
 	wstring const wstrModelFilePath { ( wstrPath == L"" ) ? m_wstrPathOfOpenModel : wstrPath };
 	if ( ! exists( wstrModelFilePath ) )
@@ -272,17 +277,17 @@ bool NNetModelStorage::Read( NNetModel & model, Param & param, wstring const wst
 		return false;
 	}
 
-	model.ResetModel();
+	m_pModel->ResetModel();
 
 	wcout << L"** NNet model file " << wstrModelFilePath << endl;
 
 	if ( ! Script::ProcessScript( wstrModelFilePath ) )
 	{
-		MessageBox( nullptr, wstrModelFilePath.c_str(), L"Error in model file. Using default model.", MB_OK );
+		MessageBox( nullptr, wstrModelFilePath.c_str(), L"Error in model file. Using default m_pModel->", MB_OK );
 		return false;
 	}
 
-	model.ModelSaved( );
+	m_pModel->ModelSaved( );
 	m_wstrPathOfOpenModel = wstrModelFilePath;
 	NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );
 	return true;
@@ -290,7 +295,7 @@ bool NNetModelStorage::Read( NNetModel & model, Param & param, wstring const wst
 
 ////////////////////////// Write /////////////////////////////////////////////
 
-void NNetModelStorage::Write( NNetModel const & model, Param const & parameters, wostream & out )
+void NNetModelStorage::Write( wostream & out )
 {
 	static int const BUF_SIZE { 128 };
 
@@ -321,16 +326,16 @@ void NNetModelStorage::Write( NNetModel const & model, Param const & parameters,
 		[&]( tParameter const & par ) 
 		{
 			out << L"GlobalParameter " << GetParameterName( par ) << L" = "
-			<< parameters.GetParameterValue( par ) 
+			<< m_pParam->GetParameterValue( par ) 
 			<< endl; 
 		}
 	);
 
-	m_CompactIds.resize( model.GetSizeOfShapeList() );
+	m_CompactIds.resize( m_pModel->GetSizeOfShapeList() );
 	ShapeId idCompact( 0 );
 	for ( int i = 0; i < m_CompactIds.size( ); ++i )
 	{
-		m_CompactIds[ i ] = model.GetConstShape( ShapeId( i ) )
+		m_CompactIds[ i ] = m_pModel->GetConstShape( ShapeId( i ) )
 			              ? idCompact++
 			              : NO_SHAPE;
 	}
@@ -339,25 +344,25 @@ void NNetModelStorage::Write( NNetModel const & model, Param const & parameters,
 	out << L"NrOfShapes = " << m_CompactIds.size() << endl;
 	out << endl;
 
-	model.Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); } );
-	model.Apply2All<Pipe>( [&]( Pipe & shape ) { WriteShape( out, shape ); } );
+	m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); } );
+	m_pModel->Apply2All<Pipe    >( [&]( Pipe     & shape ) { WriteShape( out, shape ); } );
 
 	out << endl;
 
-	model.Apply2All<InputNeuron>
+	m_pModel->Apply2All<InputNeuron>
 	(
 		[&]( InputNeuron & inpNeuron )
 		{ 
 			out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
 				<< GetParameterName( tParameter::pulseRate ) 
-				<< L" = " << model.GetPulseRate( & inpNeuron )
+				<< L" = " << m_pModel->GetPulseRate( & inpNeuron )
      			<< endl; 
 		}
 	);
 
 	out << endl;
 
-	model.Apply2All<Neuron>
+	m_pModel->Apply2All<Neuron>
 	( 
 		[&]( Neuron & neuron ) 
 		{ 
@@ -371,7 +376,7 @@ void NNetModelStorage::Write( NNetModel const & model, Param const & parameters,
 		} 
 	);
 
-	model.ModelSaved( );
+	m_pModel->ModelSaved( );
 }
 
 void NNetModelStorage::WritePipe( wostream & out, Shape const & shape )
@@ -419,13 +424,13 @@ int NNetModelStorage::AskSave( )
 	return MessageBox( nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL );
 }
 
-bool NNetModelStorage::AskAndSave( NNetModel const & model, Param const & param )
+bool NNetModelStorage::AskAndSave( )
 {
-	if ( model.HasModelChanged() )
+	if ( m_pModel->HasModelChanged() )
 	{
 		int iRes = AskSave( );
 		if ( iRes == IDYES )
-			SaveModel( model, param );
+			SaveModel( );
 		else if ( iRes == IDNO )
 			return true;
 		else if ( iRes == IDCANCEL )
@@ -445,15 +450,15 @@ bool NNetModelStorage::AskModelFile( )
 	return false;
 }
 
-void NNetModelStorage::writeModel( NNetModel const & model, Param const & param )
+void NNetModelStorage::writeModel( )
 {
 	wofstream modelFile( m_wstrPathOfOpenModel );
-	Write( model, param, modelFile );
+	Write( modelFile );
 	modelFile.close( );
 	NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );
 }
 
-bool NNetModelStorage::SaveModelAs( NNetModel const & model, Param const & param )
+bool NNetModelStorage::SaveModelAs( )
 {
 	if ( m_wstrPathOfOpenModel == L"" )
 		m_wstrPathOfOpenModel = GetPathOfExecutable( );
@@ -462,19 +467,19 @@ bool NNetModelStorage::SaveModelAs( NNetModel const & model, Param const & param
 
 	bool const bRes = m_wstrPathOfOpenModel != L"";
 	if ( bRes )
-		writeModel( model, param );
+		writeModel( );
 	return bRes;
 }
 
-bool NNetModelStorage::SaveModel( NNetModel const & model, Param const & param )
+bool NNetModelStorage::SaveModel( )
 {
 	if ( m_wstrPathOfOpenModel == L"" )
 	{
-		return SaveModelAs( model, param );
+		return SaveModelAs( );
 	}
 	else
 	{
-		writeModel( model, param );
+		writeModel( );
 		return true;
 	}
 }

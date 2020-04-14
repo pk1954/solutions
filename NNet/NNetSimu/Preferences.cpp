@@ -65,7 +65,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         assert( m_pModel != nullptr );
-        if ( ! m_pNNetModelStorage->Read( * m_pModel, * m_pParam, script.ScrReadString() ) )
+        if ( ! m_pNNetModelStorage->Read( script.ScrReadString() ) )
             ScriptErrorHandler::semanticError( L"Error in model file." );
     }
 

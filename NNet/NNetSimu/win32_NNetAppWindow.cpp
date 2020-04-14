@@ -99,7 +99,7 @@ void NNetAppWindow::Start( )
 {
 	m_pParameters       = new Param( );
 	m_pModelDataWork    = new NNetModel( m_pParameters );
-	m_pNNetModelStorage = new NNetModelStorage( );
+	m_pNNetModelStorage = new NNetModelStorage( m_pModelDataWork, m_pParameters );
 
 	BaseAppWindow::Start( m_pMainNNetWindow );
 	m_pAppMenu->Initialize
@@ -173,7 +173,7 @@ void NNetAppWindow::Start( )
 	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage, m_pModelDataWork, m_pParameters ) )
 		m_pModelDataWork->CreateInitialShapes();
 
-	m_pNNetModelStorage->Write( * m_pModelDataWork, * m_pParameters, wcout );
+	m_pNNetModelStorage->Write( wcout );
 
 	m_bStarted = TRUE;
 }
@@ -232,7 +232,7 @@ void NNetAppWindow::ProcessCloseMessage( )
 {
 	if ( m_bStarted )
 	{
-		if ( ! m_pNNetModelStorage->AskAndSave( * m_pModelDataWork, * m_pParameters ) )
+		if ( ! m_pNNetModelStorage->AskAndSave( ) )
 			return;
 		m_WinManager.StoreWindowConfiguration( );
 		Stop( );

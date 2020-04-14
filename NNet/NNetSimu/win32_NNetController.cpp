@@ -135,20 +135,20 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	switch ( wmId )
 	{
 	case IDM_ASK_AND_SAVE_MODEL:
-		return m_pStorage->AskAndSave( * m_pNNetModel, * m_pParameters );
+		return m_pStorage->AskAndSave( );
 
 	case IDM_SAVE_MODEL:
-		if ( m_pStorage->SaveModel( * m_pNNetModel, * m_pParameters ) )
+		if ( m_pStorage->SaveModel( ) )
 			Preferences::WritePreferences( m_pStorage->GetModelPath(), m_pNNetWindow  );
 		break;
 
 	case IDM_SAVE_MODEL_AS:
-		if ( m_pStorage->SaveModelAs( * m_pNNetModel, * m_pParameters ) )
+		if ( m_pStorage->SaveModelAs( ) )
 			Preferences::WritePreferences( m_pStorage->GetModelPath(), m_pNNetWindow  );
 		break;
 
 	case IDM_OPEN_MODEL:
-		if ( m_pStorage->AskAndSave( * m_pNNetModel, * m_pParameters ) && m_pStorage->AskModelFile( ) )
+		if ( m_pStorage->AskAndSave( ) && m_pStorage->AskModelFile( ) )
 		{
 			m_pNNetWorkThreadInterface->PostStopComputation();
 			m_pNNetWorkThreadInterface->PostSendBack( IDM_READ_MODEL );
@@ -157,14 +157,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDM_READ_MODEL:
 		{
-			m_pStorage->Read( * m_pNNetModel, * m_pParameters );
+			m_pStorage->Read( );
 			m_pNNetWorkThreadInterface->PostResetTimer( );
 			m_pNNetWorkThreadInterface->PostRunGenerations( true );
 		}
 		break;
 
 	case IDM_NEW_MODEL:
-		if ( m_pStorage->AskAndSave( * m_pNNetModel, * m_pParameters ) )
+		if ( m_pStorage->AskAndSave( ) )
 		{
 			m_pNNetWorkThreadInterface->PostResetModel( );
 			m_pStorage->ResetModelPath( );

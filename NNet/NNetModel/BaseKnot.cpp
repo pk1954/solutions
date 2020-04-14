@@ -15,6 +15,7 @@
 using std::find;
 using std::begin;
 using std::end;
+using std::fixed;
 using std::wstring;
 using std::wostringstream;
 
@@ -148,7 +149,7 @@ void BaseKnot::DrawNeuronText( PixelCoordsFp & coord ) const
 	if ( fFillLevel >= 1.0f )
 		m_wBuffer << L"TRIGGER";
 	else
-		m_wBuffer << setw(5) << GetFillLevel() * 100 << L"%";
+		m_wBuffer << fixed << setw(6) << fFillLevel * 100.0f << L"%";
 
 	PixelRect const pixRect { GetPixRect4Text( coord ) };
 

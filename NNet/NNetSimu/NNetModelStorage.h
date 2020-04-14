@@ -20,28 +20,32 @@ class Shape;
 class NNetModelStorage
 {
 public:
-	void Write( NNetModel const &, Param const &, wostream & );
-	bool Read( NNetModel &, Param &, wstring const = L"" );
+	NNetModelStorage( NNetModel * const, Param * const );
+
+	void Write( wostream & );
+	bool Read( wstring const = L"" );
 
 	wstring const GetModelPath  ( ) { return m_wstrPathOfOpenModel; };
 	void          ResetModelPath( );
 
 	int  AskSave( );
-	bool AskAndSave( NNetModel const &, Param const & );
+	bool AskAndSave( );
 	bool AskModelFile( );
-	bool SaveModel  ( NNetModel const &, Param const & );
-	bool SaveModelAs( NNetModel const &, Param const & );
+	bool SaveModel  ( );
+	bool SaveModelAs( );
 
 private:
+	NNetModel     * m_pModel { nullptr };
+	Param         * m_pParam { nullptr };
 	bool            m_bPreparedForReading { false };
 	wstring         m_wstrPathOfOpenModel { L"" };
 	vector<ShapeId> m_CompactIds;
 
 	long getCompactIdVal( ShapeId const id ) { return m_CompactIds[ id.GetValue() ].GetValue();	}
 
-	void prepareForReading( NNetModel * const );
-	void writeModel( NNetModel const &, Param const & );
-	void WriteShape(  wostream &, Shape & );
+	void prepareForReading( );
+	void writeModel( );
+	void WriteShape( wostream &, Shape & );
 	void WriteMicroMeterPoint( wostream &, MicroMeterPoint const & );
 	void WritePipe( wostream &, Shape const & );
 };
