@@ -170,7 +170,7 @@ void NNetAppWindow::Start( )
 
 	PostCommand2Application( IDM_RUN, true );
 
-	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage, m_pModelDataWork, m_pParameters ) )
+	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage ) )
 		m_pModelDataWork->CreateInitialShapes();
 
 	m_pNNetModelStorage->Write( wcout );

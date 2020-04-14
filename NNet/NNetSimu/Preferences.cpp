@@ -56,22 +56,11 @@ public:
 class WrapReadModel: public Script_Functor
 {
 public:
-    static void Initialize( NNetModel * pModel, Param * pParam )
-    {
-        m_pModel = pModel;
-        m_pParam = pParam;
-    }
-
     virtual void operator() ( Script & script ) const
     {
-        assert( m_pModel != nullptr );
         if ( ! m_pNNetModelStorage->Read( script.ScrReadString() ) )
             ScriptErrorHandler::semanticError( L"Error in model file." );
     }
-
-private:
-    inline static NNetModel * m_pModel { nullptr };
-    inline static Param     * m_pParam { nullptr };
 };
 
 static wstring const PREF_ON  { L"ON"  };
@@ -82,7 +71,7 @@ wstring const PREFERENCES_FILE_NAME { L"NNetSimu_UserPreferences.txt" };
 void Preferences::Initialize( )
 {
     wchar_t szBuffer[MAX_PATH];
-    DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer);
+    DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer );
     assert( dwRes > 0 );
 
     m_wstrPreferencesFile = szBuffer;
@@ -96,19 +85,13 @@ void Preferences::Initialize( )
     SymbolTable::ScrDefConst( PREF_ON,  1L );
 }
 
-bool Preferences::ReadPreferences
-( 
-    NNetModelStorage * pStorage,
-    NNetModel        * pModel,
-    Param            * pParam
-)
+bool Preferences::ReadPreferences( NNetModelStorage * pStorage )
 {
     m_pNNetModelStorage = pStorage;
     if ( exists( m_wstrPreferencesFile ) )
     {
         wcout << L"*** preferences file " << m_wstrPreferencesFile;
         wcout << L" opened" << endl;
-        WrapReadModel::Initialize( pModel, pParam );
         bool bRes { Script::ProcessScript( m_wstrPreferencesFile ) };
         if ( bRes )
             wcout << L"*** processed successfully " << endl;
