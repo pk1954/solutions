@@ -80,8 +80,6 @@ public:
 	fMicroSecs      const GetSimulationTime ( ) const { return m_timeStamp; }
 	long            const GetSizeOfShapeList( ) const { return CastToLong( m_Shapes.size() ); }
 	bool            const HasModelChanged   ( ) const { return m_bUnsavedChanges; }
-	bool            const IsInEmphasizeMode ( ) const { return m_bEmphasizeMode; }
-	float           const GetOpacity        ( ) const { return IsInEmphasizeMode() ? 0.5f : 1.0f; }
 	long            const GetNrOfShapes     ( ) const;
 
 	BaseKnot * const GetStartKnotPtr( ShapeId const idPipe ) const 
@@ -189,7 +187,6 @@ public:
 	void SetPulseRate( ShapeId    const, float const );
 	void SetParameter( tParameter const, float const );
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
-	void SetEmphasizeMode( bool const bMode ) { m_bEmphasizeMode = bMode; } 
 
 	MicroMeterRect GetEnclosingRect( );
 
@@ -240,7 +237,6 @@ private:
 	Param         * m_pParam          { nullptr };
 	vector<Shape *> m_Shapes          { };
 	fMicroSecs      m_timeStamp       { 0._MicroSecs };
-	bool            m_bEmphasizeMode  { false };
 	mutable bool    m_bUnsavedChanges { false };  // can be changed in const functions
 
 	// local functions

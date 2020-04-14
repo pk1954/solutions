@@ -51,7 +51,7 @@ public:
 
 	void ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
 	void Zoom( bool const );
-	void AnalysisFinished( );
+	void AnalysisFinished( bool const );
 	void ZoomKeepCrsrPos( MicroMeter const );
 	void CenterModel( );
 

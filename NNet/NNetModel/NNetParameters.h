@@ -30,8 +30,13 @@ public:
 	float const GetParameterValue( tParameter const ) const;
 	void        SetParameterValue( tParameter const, float const );
 
+	bool const IsInEmphasizeMode( ) const           { return m_bEmphasizeMode; }
+	void       SetEmphasizeMode( bool const bMode ) { m_bEmphasizeMode = bMode; } 
+
 private:
 	Observable m_observable { };
+
+	bool        m_bEmphasizeMode  { false };
 
 	mV          m_threshold    { 20._mV            };
 	mV          m_peakVoltage  { 10._mV            };   

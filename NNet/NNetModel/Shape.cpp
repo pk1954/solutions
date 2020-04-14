@@ -9,7 +9,6 @@
 #include "shape.h"
 
 D2D_driver const * Shape::m_pGraphics  { nullptr };
-NNetModel  const * Shape::m_pNNetModel { nullptr };
 Param      const * Shape::m_pParameters{ nullptr };
 
 Shape::Shape( ShapeType const type )
@@ -18,7 +17,7 @@ Shape::Shape( ShapeType const type )
 
 D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {
-	if ( m_pNNetModel->IsInEmphasizeMode( ) && ! m_bSelected )
+	if ( m_pParameters->IsInEmphasizeMode( ) && ! m_bSelected )
 	{
 		return NNetColors::INT_LOW_KEY;
 	}
@@ -38,7 +37,7 @@ D2D1::ColorF Shape::GetFrameColor( tHighlightType const type ) const
 { 
 	if (type == tHighlightType::normal)
 	{
-		if ( m_pNNetModel->IsInEmphasizeMode( ) && ! m_bSelected )
+		if ( m_pParameters->IsInEmphasizeMode( ) && ! m_bSelected )
 			return NNetColors::EXT_LOW_KEY;
 		else
 			return NNetColors::EXT_NORMAL;

@@ -348,9 +348,9 @@ void NNetWindow::CenterModel( )
 	centerAndZoomRect( m_pModel->GetEnclosingRect( ), 1.2f );
 }
 
-void NNetWindow::AnalysisFinished( )
+void NNetWindow::AnalysisFinished( bool const bEmphasizeMode )
 {
-	if ( m_pModel->IsInEmphasizeMode() )
+	if ( bEmphasizeMode )
 	{
 		m_focusMode = FOCUS_MODE::ZOOM_OUT;
 		centerAndZoomRect( m_pModel->GetEnclosingRect( ), 1.2f );

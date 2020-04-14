@@ -216,7 +216,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 			bool bFound { func( * m_pNNetModel ) };
 			if ( bFound )
 				ModelAnalyzer::SelectLoopShapes( * m_pNNetModel );
-			m_pNNetModel->SetEmphasizeMode( bFound );
+			m_pParam->SetEmphasizeMode( bFound );
 		}
 		break;
 
@@ -298,7 +298,7 @@ void NNetWorkThread::generationRun( bool const bFirst )
 	if ( bFirst )               // if first RUN message ...
 	{
 		m_bContinue = TRUE;
-		m_pNNetModel->SetEmphasizeMode( false );
+		m_pParam->SetEmphasizeMode( false );
 		m_runObservable.NotifyAll( TRUE);
 		m_hrTimer.Start();
 	}

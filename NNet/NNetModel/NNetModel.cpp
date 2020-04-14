@@ -27,7 +27,6 @@ using std::unordered_map;
 NNetModel::NNetModel( Param * const pParam )
 	: m_pParam( pParam )
 {					
-	Shape::SetModel( this );
 	Shape::SetParam( pParam );
 }
 

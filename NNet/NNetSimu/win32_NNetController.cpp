@@ -253,7 +253,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_ANALYZE_FINISHED:
-		m_pNNetWindow->AnalysisFinished( );
+		m_pNNetWindow->AnalysisFinished( m_pParameters->IsInEmphasizeMode() );
 		break;
 
 	case IDM_DESELECT_ALL:
