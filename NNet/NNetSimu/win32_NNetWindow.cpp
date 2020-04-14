@@ -348,17 +348,10 @@ void NNetWindow::CenterModel( )
 	centerAndZoomRect( m_pModel->GetEnclosingRect( ), 1.2f );
 }
 
-void NNetWindow::AnalysisFinished( bool const bEmphasizeMode )
+void NNetWindow::AnalysisFinished( )
 {
-	if ( bEmphasizeMode )
-	{
-		m_focusMode = FOCUS_MODE::ZOOM_OUT;
-		centerAndZoomRect( m_pModel->GetEnclosingRect( ), 1.2f );
-	}
-	else
-	{
-		m_focusMode = FOCUS_MODE::NO_FOCUS;
-	}
+	m_focusMode = FOCUS_MODE::ZOOM_OUT;
+	centerAndZoomRect( m_pModel->GetEnclosingRect( ), 1.2f );
 }
 
 void NNetWindow::centerAndZoomRect( MicroMeterRect const rect, float const fRatioFactor )

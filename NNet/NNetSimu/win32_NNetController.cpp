@@ -29,7 +29,6 @@
 NNetController::NNetController
 (
 	NNetModel               * const pModel,
-	Param                   * const pParam,
 	NNetModelStorage        * const pStorage,
 	NNetWindow              * const pNNetWindow,
 	WinManager              * const pWinManager,
@@ -37,7 +36,6 @@ NNetController::NNetController
 	SlowMotionRatio         * const pSlowMotionRatio
 ) 
   :	m_pNNetModel              ( pModel ),
-	m_pParameters             ( pParam ),
 	m_pStorage                ( pStorage ),
 	m_pNNetWindow             ( pNNetWindow ),
 	m_pWinManager             ( pWinManager ),
@@ -53,7 +51,6 @@ NNetController::~NNetController( )
 	m_pStorage                 = nullptr;
 	m_pWinManager              = nullptr;
 	m_pSlowMotionRatio         = nullptr;
-	m_pParameters              = nullptr;
 }
 
 bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
@@ -253,7 +250,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_ANALYZE_FINISHED:
-		m_pNNetWindow->AnalysisFinished( m_pParameters->IsInEmphasizeMode() );
+		m_pNNetWindow->AnalysisFinished( );
 		break;
 
 	case IDM_DESELECT_ALL:
