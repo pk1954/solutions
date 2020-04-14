@@ -11,7 +11,6 @@
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
 #include "DisplayFunctor.h"
-#include "NNetModel.h"
 #include "NNetModelStorage.h"
 #include "AutoOpen.h"
 #include "win32_util.h"
@@ -28,15 +27,13 @@
 
 NNetController::NNetController
 (
-	NNetModel               * const pModel,
 	NNetModelStorage        * const pStorage,
 	NNetWindow              * const pNNetWindow,
 	WinManager              * const pWinManager,
 	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
 	SlowMotionRatio         * const pSlowMotionRatio
 ) 
-  :	m_pNNetModel              ( pModel ),
-	m_pStorage                ( pStorage ),
+  :	m_pStorage                ( pStorage ),
 	m_pNNetWindow             ( pNNetWindow ),
 	m_pWinManager             ( pWinManager ),
 	m_pNNetWorkThreadInterface( pNNetWorkThreadInterface ),

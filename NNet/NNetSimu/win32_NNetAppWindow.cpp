@@ -111,7 +111,6 @@ void NNetAppWindow::Start( )
 
 	m_pNNetController = new NNetController
 	( 
-		m_pModelDataWork,
 		m_pNNetModelStorage,
 		m_pMainNNetWindow,
 		& m_WinManager,

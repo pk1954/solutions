@@ -19,7 +19,6 @@ class NNetController
 public:
 	NNetController
 	( 
-		NNetModel               * const,
 		NNetModelStorage        * const,
 		NNetWindow              * const,
 		WinManager              * const,
@@ -40,7 +39,6 @@ public:
 private:
 
 	HCURSOR                   m_hCrsrWait;
-	NNetModel               * m_pNNetModel;
 	NNetModelStorage        * m_pStorage;
 	NNetWindow              * m_pNNetWindow;
 	WinManager              * m_pWinManager;
