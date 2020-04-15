@@ -53,6 +53,24 @@ private:
 	NNetModel * m_pModel;
 };
 
+class WrapMarkShape : public Script_Functor
+{
+public:
+	WrapMarkShape( NNetModel * const pNNetModel ) :
+		m_pModel( pNNetModel )
+	{ };
+
+	virtual void operator() ( Script & script ) const
+	{   
+		ShapeId const idFromScript{ script.ScrReadLong() };
+		m_pModel->MarkShape( idFromScript, tBoolOp::opTrue );
+	}
+
+private:
+
+	NNetModel * m_pModel;
+};
+
 class WrapCreateShape : public Script_Functor
 {
 public:
@@ -228,6 +246,7 @@ void NNetModelStorage::prepareForReading( )
 	DEF_NNET_FUNC( ShapeParameter );
 	DEF_NNET_FUNC( NrOfShapes );
 	DEF_NNET_FUNC( CreateShape );
+	DEF_NNET_FUNC( MarkShape );
 	DEF_NNET_FUNC( TriggerSound );
 #undef DEF_NET_FUNC
 
@@ -413,6 +432,10 @@ void NNetModelStorage::WriteShape( wostream & out, Shape & shape )
 		}
 		out << L")";
 		out << endl;
+	}
+	if ( shape.IsMarked( ) )
+	{
+		out << L"MarkShape " << getCompactIdVal( shape.GetId() ) << endl;
 	}
 }
 

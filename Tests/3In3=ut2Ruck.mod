@@ -1,5 +1,5 @@
 # NNetModel
-# Created 14-04-2020 22-26-34
+# Created 15-04-2020 13-55-09
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
 
@@ -141,7 +141,9 @@ CreateShape 286 neuron (195.082|1110.03)
 CreateShape 287 knot (-443.658|849.941)
 CreateShape 291 neuron (-138.275|1275.1)
 CreateShape 293 knot (-621.615|1161.91)
+MarkShape 293
 CreateShape 296 neuron (-447.566|1342.45)
+MarkShape 296
 CreateShape 297 knot (-362.369|926.836)
 CreateShape 301 knot (28.6967|1183.88)
 CreateShape 304 neuron (357.528|3119.82)
@@ -150,6 +152,7 @@ CreateShape 309 knot (51.558|1940.15)
 CreateShape 311 neuron (1083.56|3115.29)
 CreateShape 312 knot (938.406|432.009)
 CreateShape 314 knot (-652.213|1682.77)
+MarkShape 314
 CreateShape 316 neuron (-234.431|1662.94)
 CreateShape 319 knot (942.676|2093.1)
 CreateShape 320 knot (-158.058|1797.94)
@@ -162,13 +165,16 @@ CreateShape 334 knot (480.92|1062.46)
 CreateShape 338 knot (-46.3573|1214.81)
 CreateShape 339 knot (-188.55|1159.85)
 CreateShape 342 knot (-707.217|1482.02)
+MarkShape 342
 CreateShape 344 knot (-245.502|1069.05)
 CreateShape 346 knot (-707.217|1567.67)
+MarkShape 346
 CreateShape 349 knot (-185.034|1493.51)
 CreateShape 350 knot (72.498|1262.96)
 CreateShape 354 knot (158.944|1400.07)
 CreateShape 355 knot (769.189|1639.66)
 CreateShape 357 knot (-649.915|1720.26)
+MarkShape 357
 CreateShape 360 knot (580.433|153.216)
 CreateShape 362 knot (343.633|1829.48)
 CreateShape 364 knot (-213.295|435.036)
@@ -179,15 +185,19 @@ CreateShape 375 knot (-963.35|-56.4551)
 CreateShape 378 knot (243.681|1303.33)
 CreateShape 380 knot (192.733|1102.01)
 CreateShape 383 knot (-527.466|1657.48)
+MarkShape 383
 CreateShape 384 knot (-151.438|1283.85)
 CreateShape 387 knot (-540.77|1740.59)
+MarkShape 387
 CreateShape 389 knot (-387.91|761.482)
 CreateShape 395 knot (-216.151|-41.8959)
 CreateShape 399 knot (-356.1|1477.55)
+MarkShape 399
 CreateShape 401 knot (-245.723|1074.42)
 CreateShape 408 neuron (460.448|658.651)
 CreateShape 409 knot (548.848|990.686)
 CreateShape 415 knot (-353.858|1467.17)
+MarkShape 415
 CreateShape 418 knot (1054.42|1686.88)
 CreateShape 421 neuron (1197.83|-63.327)
 CreateShape 424 knot (647.037|-713.307)
@@ -368,18 +378,24 @@ CreateShape 289 pipe (119->285)
 CreateShape 290 pipe (339->291)
 CreateShape 292 pipe (323->291)
 CreateShape 294 pipe (108->293)
+MarkShape 294
 CreateShape 295 pipe (293->296)
+MarkShape 295
 CreateShape 298 pipe (287->297)
 CreateShape 299 pipe (297->296)
+MarkShape 299
 CreateShape 300 pipe (384->296)
+MarkShape 300
 CreateShape 302 pipe (286->301)
 CreateShape 303 pipe (309->304)
 CreateShape 305 pipe (387->306)
+MarkShape 305
 CreateShape 307 pipe (306->88)
 CreateShape 308 pipe (312->127)
 CreateShape 310 pipe (354->309)
 CreateShape 313 pipe (235->312)
 CreateShape 315 pipe (296->314)
+MarkShape 315
 CreateShape 317 pipe (319->311)
 CreateShape 318 pipe (320->304)
 CreateShape 321 pipe (316->320)
@@ -387,6 +403,7 @@ CreateShape 322 pipe (333->319)
 CreateShape 324 pipe (349->316)
 CreateShape 325 pipe (338->323)
 CreateShape 327 pipe (346->326)
+MarkShape 327
 CreateShape 329 pipe (350->328)
 CreateShape 331 pipe (354->328)
 CreateShape 332 pipe (127->330)
@@ -396,14 +413,18 @@ CreateShape 337 pipe (427->333)
 CreateShape 340 pipe (283->339)
 CreateShape 341 pipe (301->338)
 CreateShape 343 pipe (293->342)
+MarkShape 343
 CreateShape 345 pipe (401->344)
 CreateShape 347 pipe (357->306)
+MarkShape 347
 CreateShape 348 pipe (342->346)
+MarkShape 348
 CreateShape 351 pipe (301->350)
 CreateShape 352 pipe (350->349)
 CreateShape 353 pipe (323->349)
 CreateShape 356 pipe (418->355)
 CreateShape 358 pipe (314->357)
+MarkShape 358
 CreateShape 359 pipe (283->119)
 CreateShape 361 pipe (241->360)
 CreateShape 363 pipe (320->362)
@@ -420,8 +441,10 @@ CreateShape 379 pipe (334->378)
 CreateShape 381 pipe (380->378)
 CreateShape 382 pipe (281->380)
 CreateShape 385 pipe (399->383)
+MarkShape 385
 CreateShape 386 pipe (291->384)
 CreateShape 388 pipe (383->387)
+MarkShape 388
 CreateShape 390 pipe (188->389)
 CreateShape 391 pipe (227->389)
 CreateShape 392 pipe (344->339)
@@ -430,8 +453,11 @@ CreateShape 394 pipe (272->84)
 CreateShape 396 pipe (49->395)
 CreateShape 397 pipe (395->195)
 CreateShape 398 pipe (346->314)
+MarkShape 398
 CreateShape 400 pipe (384->399)
+MarkShape 400
 CreateShape 402 pipe (415->399)
+MarkShape 402
 CreateShape 403 pipe (285->401)
 CreateShape 404 pipe (226->188)
 CreateShape 405 pipe (212->199)
@@ -443,7 +469,9 @@ CreateShape 412 pipe (408->237)
 CreateShape 413 pipe (297->119)
 CreateShape 414 pipe (258->120)
 CreateShape 416 pipe (401->415)
+MarkShape 416
 CreateShape 417 pipe (415->316)
+MarkShape 417
 CreateShape 419 pipe (334->418)
 CreateShape 420 pipe (418->421)
 CreateShape 422 pipe (421->41)
