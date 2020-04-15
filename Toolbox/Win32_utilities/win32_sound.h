@@ -30,5 +30,6 @@ public:
 	static bool IsOn( ) { return m_bActive; }
 
 private:
-	static bool m_bActive;
+
+	inline static bool m_bActive { true };
 };

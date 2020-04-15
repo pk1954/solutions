@@ -143,7 +143,7 @@ private:
 	void generationStop( );
 	bool actionCommand( NNetWorkThreadMessage::Id const, ShapeId const, MicroMeterPoint const & );
 
-	static tAppCallBack m_appCallback;
+	inline static tAppCallBack m_appCallback { nullptr };
 
 	HiResTimer                m_hrTimer                 { };
 	BOOL                      m_bContinue               { FALSE };

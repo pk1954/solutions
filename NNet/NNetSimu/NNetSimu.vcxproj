@@ -188,7 +188,6 @@
     <ClInclude Include="win32_simulationControl.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AutoOpen.cpp" />
     <ClCompile Include="NNetModelStorage.cpp" />
     <ClCompile Include="NNetSimu.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />

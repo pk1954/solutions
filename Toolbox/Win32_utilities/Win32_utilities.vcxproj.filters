@@ -155,9 +155,6 @@
     <ClCompile Include="win32_modelWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_sound.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="win32_clut.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>

@@ -13,8 +13,6 @@
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetAppMenu.h"
 
-HWND NNetAppMenu::m_hwndApp { nullptr };
-
 void NNetAppMenu::Initialize
 ( 
 	HWND                            const hwndApp, 

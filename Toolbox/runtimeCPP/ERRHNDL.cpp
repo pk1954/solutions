@@ -18,8 +18,6 @@ using std::wstring;
 using std::wostream;
 using std::endl;
 
-wostream * ScriptErrorHandler::m_pScriptTrace = & std::wcout;
-
 // throwError: General Error handler for input script errors
 
 void ScriptErrorHandler::throwError

@@ -12,6 +12,7 @@
 #include <exception>
 #include "scanner.h"
 
+using std::wcout;
 using std::wostream;
 
 class Scanner;
@@ -49,5 +50,5 @@ public:
 
 private:
 
-    static wostream * m_pScriptTrace;
+    inline static wostream * m_pScriptTrace { & wcout };
 };

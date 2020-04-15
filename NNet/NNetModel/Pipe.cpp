@@ -15,10 +15,6 @@
 
 using std::fill;
 
-MicroMeter const Pipe::STD_ARROW_SIZE { 30.0_MicroMeter };
-
-MicroMeter Pipe::m_arrowSize { STD_ARROW_SIZE };
-
 Pipe::Pipe( MicroMeterPoint const umUnused )
   :	Shape( ShapeType::Value::pipe ),
 	m_pKnotStart ( nullptr ),

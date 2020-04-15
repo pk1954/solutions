@@ -11,11 +11,6 @@
 using std::endl;
 using std::to_wstring;
 
-DisplayFunctor * ModelAnalyzer::m_pDisplayFunctor { nullptr };
-bool             ModelAnalyzer::m_bStop           { false };
-int              ModelAnalyzer::m_iRecDepth       { 0 };
-vector<Shape *>  ModelAnalyzer::m_shapeStack      { };
-
 bool ModelAnalyzer::FindLoop( NNetModel const & model )
 {
 	int iNrOfShapes { model.GetNrOfShapes() };

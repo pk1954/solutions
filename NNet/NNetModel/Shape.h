@@ -71,8 +71,8 @@ protected:
 
 	mV m_mVinputBuffer { 0._mV };
 
-	static D2D_driver const * m_pGraphics;
-	static Param      const * m_pParameters;
+	inline static D2D_driver const * m_pGraphics  { nullptr };
+	inline static Param      const * m_pParameters{ nullptr };
 
 	D2D1::ColorF GetFrameColor( tHighlightType const ) const;
 	D2D1::ColorF GetInteriorColor( mV const ) const;

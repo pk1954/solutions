@@ -13,8 +13,6 @@
 #include "windows.h"
 #include "win32_stopwatch.h"
 
-int Stopwatch::m_iLevel = 0;
-
 void Stopwatch::Start( )
 {
 	++m_iLevel; 

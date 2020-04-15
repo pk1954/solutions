@@ -7,8 +7,6 @@
 #include "win32_tooltip.h"
 #include "win32_status.h"
 
-static PIXEL const STATUS_BAR_HEIGHT = 22_PIXEL;
-
 static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData )
 {
 	StatusBar * const pStatusBar = (StatusBar *)dwRefData;

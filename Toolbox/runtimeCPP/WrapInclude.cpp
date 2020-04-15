@@ -1,6 +1,6 @@
 
 //                                                                          
-// Datei:    WrapInclude.c                                                 
+// Datei:    WrapInclude.cpp                                                 
 //                                                                          
 //   Standard wrapper function implementing an "include" mechanism in test 
 //   scripts similar to the preprocessor instruction "#include" in C.
@@ -12,10 +12,9 @@
 //   example or relative.
 
 
-   #include "stdafx.h"
-   #include <string>
-   #include "script.h"
-
+#include "stdafx.h"
+#include <string>
+#include "script.h"
 
 void WrapInclude::operator() ( Script & script ) const
 {

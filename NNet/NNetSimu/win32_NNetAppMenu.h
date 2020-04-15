@@ -32,7 +32,7 @@ public:
 private:
 	void enableMenues( UINT const );
 
-	static HWND m_hwndApp;
+	inline static HWND m_hwndApp { nullptr };
 
 	HMENU                           m_hMenu                { nullptr };
 	NNetWorkThreadInterface const * m_pWorkThreadInterface { nullptr };

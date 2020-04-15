@@ -80,11 +80,11 @@ public:
 	static void       SetArrowSize( MicroMeter const size ) { m_arrowSize = size; }
 	static MicroMeter GetArrowSize( ) { return m_arrowSize; }
 
-	static MicroMeter const STD_ARROW_SIZE;
+	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
 
 private:
 	
-	static MicroMeter m_arrowSize;
+	inline static MicroMeter m_arrowSize { STD_ARROW_SIZE };
 
 	typedef vector<mV> tPotentialVector;
 

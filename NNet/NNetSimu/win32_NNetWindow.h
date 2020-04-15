@@ -75,8 +75,8 @@ private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	static NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
-	static NNetModel               * m_pModel;
+	inline static NNetWorkThreadInterface * m_pNNetWorkThreadInterface { nullptr };
+	inline static NNetModel               * m_pModel                   { nullptr };
 
 	HMENU m_hPopupMenu { nullptr };
 	BOOL  m_bMoveAllowed { TRUE };    // TRUE: move with mouse is possible

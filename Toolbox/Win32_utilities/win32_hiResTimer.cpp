@@ -7,9 +7,6 @@
 #include "NamedType.h"
 #include "win32_HiResTimer.h"
 
-Hertz  HiResTimer::m_frequency  = 0_Hertz;
-fHertz HiResTimer::m_fFrequency = 0.0_fHertz;
-
 // Gets the high-resolution timer's value
 inline Ticks HiResTimer::ReadHiResTimer( ) const
 {

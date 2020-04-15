@@ -1,9 +1,7 @@
 //                                                                        
 //  File:     INPUT.CPP                                                   
 //                                                                        
-//
 // input.c - low level input from script 
-//
 //
 
 #include "stdafx.h"

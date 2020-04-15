@@ -8,9 +8,6 @@
 #include "NNetColors.h"
 #include "shape.h"
 
-D2D_driver const * Shape::m_pGraphics  { nullptr };
-Param      const * Shape::m_pParameters{ nullptr };
-
 Shape::Shape( ShapeType const type )
   : m_type( type )
 { }			

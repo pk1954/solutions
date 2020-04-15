@@ -39,6 +39,7 @@ public:
 	void BusyWait( microseconds const, Ticks & );
 
 private:
+
 	long long const MICROSECONDS_TO_SECONDS { microseconds::period::den };
 	float     const fMICROSECS_TO_SECONDS   { static_cast<float>(MICROSECONDS_TO_SECONDS) };
 
@@ -46,7 +47,6 @@ private:
 	Ticks m_ticksOnStart     { Ticks( 0 ) };
 	Ticks m_ticksAccumulated { Ticks( 0 ) };
 
-    static Hertz  m_frequency;
-	static fHertz m_fFrequency;
-
+	inline static Hertz  m_frequency  { 0_Hertz };
+	inline static fHertz m_fFrequency { 0.0_fHertz};
 };

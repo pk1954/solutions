@@ -41,6 +41,8 @@ public:
 
 private:
 
+	inline static PIXEL const STATUS_BAR_HEIGHT { 22_PIXEL };
+
 	HWND WINAPI addControl( LPCTSTR, LPCTSTR, DWORD, HMENU );
 
 	std::vector< PIXEL > m_statWidths;

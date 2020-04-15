@@ -73,8 +73,8 @@ private:
 
     Scanner * m_pScanAct;   // Pointer to active stack element
 	
-	static bool                   m_bStop;
-	static Script_Functor const * m_pWrapHook;
+	inline static bool                   m_bStop     { false };
+	inline static Script_Functor const * m_pWrapHook { nullptr };
 };
 
 class WrapInclude : public Script_Functor

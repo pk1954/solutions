@@ -26,8 +26,6 @@
 
 using std::unordered_map;
 
-tAppCallBack NNetWorkThread::m_appCallback { nullptr };
-
 void NNetWorkThread::InitClass( tAppCallBack AppCallBack )
 {
 	m_appCallback = AppCallBack;

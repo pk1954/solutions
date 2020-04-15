@@ -28,9 +28,6 @@
 
 using std::function;
 
-NNetModel               * NNetWindow::m_pModel                   = nullptr;
-NNetWorkThreadInterface * NNetWindow::m_pNNetWorkThreadInterface = nullptr;
-
 void NNetWindow::InitClass
 (        
 	NNetWorkThreadInterface * const pNNetWorkThreadInterface,

@@ -25,5 +25,5 @@ public:
 
 private:
 
-	static bool m_bActive;
+	inline static bool m_bActive { true };
 };

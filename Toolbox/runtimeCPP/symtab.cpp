@@ -8,9 +8,6 @@
 #include "errhndl.h"
 #include "symtab.h"
 
-std::map < wstring, Symbol  > SymbolTable::m_SymbolTab;
-std::map < Symbol,  wstring > SymbolTable::m_ReverseTab;
-
 Symbol::Symbol( ) :
     m_type(tSTYPE::UnknownSTYPE  ),
     m_pFunc( nullptr ),

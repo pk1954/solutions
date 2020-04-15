@@ -11,7 +11,7 @@
 class LogarithmicTrackbar
 {
 public:
-	static double const TRACKBAR_SCALING_FACTOR;
+	inline static double const TRACKBAR_SCALING_FACTOR { 1000.0 };
 
 	static double TrackBar2ValueD( double dX ) // f(x) = 2 power (x/1000)
 	{

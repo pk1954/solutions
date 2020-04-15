@@ -37,9 +37,9 @@ protected:
 	virtual void OnSize              ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnPaint             ( )                            = 0;
 
-	static ActionTimer * m_pDisplayTimer;
-	static HCURSOR       m_hCrsrMove;
-	static HCURSOR       m_hCrsrArrow;
+	inline static ActionTimer * m_pDisplayTimer { nullptr };
+	inline static HCURSOR       m_hCrsrMove     { nullptr };
+	inline static HCURSOR       m_hCrsrArrow    { nullptr };
 
 private:
 

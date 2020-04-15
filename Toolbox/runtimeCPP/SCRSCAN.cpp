@@ -17,7 +17,6 @@
 #define IS_ONE_OF(S,C)  (((C)!=L'\0')&&(wcschr((S),static_cast<int>(C))!=nullptr))
 #define HEX2DIGIT(C)    ((C)-(isdigit(C)?'0':(((C)>='a')?'a':'A')))
                                     
-
 Scanner::Scanner( )
 : m_wstrPath( L"" ),
   m_wstrToken( ),

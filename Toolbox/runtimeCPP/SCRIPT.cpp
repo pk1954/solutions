@@ -16,9 +16,6 @@
 #include "script.h"
 #include "symtab.h"
 
-bool                   Script::m_bStop     = false;
-Script_Functor const * Script::m_pWrapHook = nullptr;
-
 //   ScrSetWrapHook: Set hook function, which will be called in processScript
    
 void Script::ScrSetWrapHook( Script_Functor const * const pHook )

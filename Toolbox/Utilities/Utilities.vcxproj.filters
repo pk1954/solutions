@@ -107,9 +107,6 @@
     <ClCompile Include="BoolOp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LogarithmicTrackbar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SlowMotionRatio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -129,9 +126,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UtilityWrappers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SmoothMoveFp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

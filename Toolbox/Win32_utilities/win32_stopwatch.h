@@ -27,5 +27,5 @@ void Clock
 private:
 	HiResTimer m_hrtimer;
 
-    static int m_iLevel;
+	inline static int m_iLevel { 0 };
 };

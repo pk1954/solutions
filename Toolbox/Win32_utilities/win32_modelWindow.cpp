@@ -6,10 +6,6 @@
 #include "win32_util_resource.h"
 #include "win32_modelWindow.h"
 
-ActionTimer * ModelWindow::m_pDisplayTimer = nullptr;
-HCURSOR       ModelWindow::m_hCrsrArrow    = nullptr;
-HCURSOR       ModelWindow::m_hCrsrMove     = nullptr;
-
 LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
 	switch (message)

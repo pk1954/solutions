@@ -10,6 +10,8 @@
 #include "assert.h"
 #include "script.h"
 
+using std::map;
+
 enum class tSTYPE   // Type of symbolic value 
 { 
     UnknownSTYPE,        // symbol is not defined  
@@ -68,6 +70,6 @@ public:
 private:
     static void addSymbol( wstring const &, Symbol const & );
 
-    static std::map < wstring, Symbol  > m_SymbolTab;
-    static std::map < Symbol,  wstring > m_ReverseTab;
+    inline static map < wstring, Symbol  > m_SymbolTab  {};
+    inline static map < Symbol,  wstring > m_ReverseTab {};
 };

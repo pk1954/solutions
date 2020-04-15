@@ -27,7 +27,6 @@ using std::put_time;
 using std::wofstream;
 using std::filesystem::exists;
 
-//static float const PROTOCOL_VERSION { 1.4f };
 static float const PROTOCOL_VERSION { 1.5f };   // pipeline renamed to pipe
 
 NNetModelStorage::NNetModelStorage( NNetModel * const pModel, Param * const pParam )
