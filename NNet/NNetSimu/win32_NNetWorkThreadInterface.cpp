@@ -233,7 +233,7 @@ void NNetWorkThreadInterface::PostGenerationStep( )
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::NEXT_GENERATION ), 0, 0 );
 }
 
-void NNetWorkThreadInterface::PostRunGenerations( BOOL const bFirst )
+void NNetWorkThreadInterface::PostRunGenerations( bool const bFirst )
 {
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::GENERATION_RUN ), 0, bFirst );
 }
@@ -258,9 +258,9 @@ void NNetWorkThreadInterface::PostDeleteSelection()
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::DELETE_SELECTION), 0, 0 );
 }
 
-void NNetWorkThreadInterface::PostMarkSelection()
+void NNetWorkThreadInterface::PostMarkSelection( tBoolOp const op )
 {
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::MARK_SELECTION), 0, 0 );
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::MARK_SELECTION), 0, static_cast<LPARAM>(op) );
 }
 
 void NNetWorkThreadInterface::PostCopySelection()

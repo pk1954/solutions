@@ -189,7 +189,8 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_INPUT_NEURON, L"New input neuron" );
 		if ( m_pModel->AnyShapesSelected( ) )
 		{
-			AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION, L"Mark selection" );
+			AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION,   L"Mark selection" );
+			AppendMenu( hPopupMenu, STD_FLAGS, IDM_UNMARK_SELECTION, L"Unmark selection" );
 		}
 		break;
 

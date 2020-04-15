@@ -182,7 +182,8 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_MARK_SELECTION:
-		m_pNNetWorkThreadInterface->PostMarkSelection( );
+	case IDM_UNMARK_SELECTION:
+		m_pNNetWorkThreadInterface->PostMarkSelection( BoolOp(wmId == IDM_MARK_SELECTION) );
 		break;
 
 	case IDD_PULSE_RATE:

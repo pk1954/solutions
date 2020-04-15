@@ -178,7 +178,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::PULSE_RATE:
-		m_pNNetModel->SetPulseRate( ShapeId( CastToLong(msg.wParam) ), (float &)msg.lParam );
+		m_pNNetModel->SetPulseRate( ShapeId( CastToLong(msg.wParam) ), (float &)msg.lParam ); //TODO: change to modern cast
 		m_pNNetModel->ClearModel( );
 		break;
 
@@ -188,7 +188,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 	case NNetWorkThreadMessage::Id::REFRACTORY_PERIOD:
 	case NNetWorkThreadMessage::Id::TIME_RESOLUTION:
 	case NNetWorkThreadMessage::Id::PULSE_SPEED:
-		m_pNNetModel->SetParameter( GetParameterType( id ), (float &)msg.lParam	);
+		m_pNNetModel->SetParameter( GetParameterType( id ), (float &)msg.lParam	); //TODO: change to modern cast
 		break;
 
 	case NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED:
@@ -197,7 +197,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::MARK_SELECTION:
-		m_pNNetModel->MarkSelection( tBoolOp::opTrue );
+		m_pNNetModel->MarkSelection( static_cast<tBoolOp>(msg.lParam) );
 		break;
 
 	case NNetWorkThreadMessage::Id::DELETE_SELECTION:

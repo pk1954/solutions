@@ -54,12 +54,12 @@ public:
 	void PostMoveShape           ( ShapeId const, MicroMeterPoint const & );
 	void PostActionCommand       ( int const, ShapeId const, MicroMeterPoint const & );
 	void PostResetModel          ( );
-	void PostRunGenerations      ( BOOL const );
+	void PostRunGenerations      ( bool const );
 	void PostStopComputation     ( );
 	void PostGenerationStep      ( );
 	void PostCopySelection       ( );
 	void PostDeleteSelection     ( );
-	void PostMarkSelection       ( );
+	void PostMarkSelection       ( tBoolOp const );
 	void PostRepeatGenerationStep( );       // Do not call! Used by WorkThread only;
 
 	BOOL       IsRunning            ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }
