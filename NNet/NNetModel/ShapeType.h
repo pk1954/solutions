@@ -34,7 +34,8 @@ public:
 	static wchar_t          const * GetName( ShapeType::Value const );
 	static ShapeType::Value const   GetTypeFromName( wchar_t const * const );
 
-	bool IsPipeType   ( ) const { return m_value == Value::pipe;    }
+	bool IsPipeType       ( ) const { return m_value == Value::pipe;    }
+	bool IsDefinedType    ( ) const { return m_value != Value::undefined;   }
 	bool IsUndefinedType  ( ) const { return m_value == Value::undefined;   }
 	bool IsKnotType       ( ) const { return m_value == Value::knot;        }
 	bool IsNeuronType     ( ) const { return m_value == Value::neuron;      }

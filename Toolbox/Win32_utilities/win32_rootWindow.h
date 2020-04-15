@@ -71,7 +71,7 @@ public:
 	}
 
 	HWND CreateBalloonToolTip( int const id, LPWSTR const t ) 
-	{ 
+	{
 		return ::CreateBalloonToolTip( m_hwnd, id, t );	
 	}
 

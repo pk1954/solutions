@@ -72,6 +72,7 @@ void NNetWindow::Start
 	m_pScale = new Scale( & m_D2d_driver, & m_coord );
 	m_pAnimationThread = new AnimationThread( );
 	m_pCursorPosObservable = pCursorObservable;
+	ShowRefreshRateDlg( false );
 }
 
 void NNetWindow::Stop( )
@@ -126,11 +127,19 @@ void NNetWindow::ZoomKeepCrsrPos( MicroMeter const newSize )
 
 void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )
 {
-	UINT const STD_FLAGS { MF_BYPOSITION | MF_STRING };
+	UINT static const STD_FLAGS { MF_BYPOSITION | MF_STRING };
 
 	m_ptCommandPosition = ptPos;
 
-	switch ( m_pModel->GetShapeType( m_shapeHighlighted ).GetValue() )
+	ShapeType type { m_pModel->GetShapeType( m_shapeHighlighted ) };
+
+	if ( m_pModel->AnyShapesSelected( ) )
+	{
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_DESELECT_ALL,     L"Deselect all" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION,   L"Mark selection" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_UNMARK_SELECTION, L"Unmark selection" );
+	}
+	else switch ( type.GetValue() )
 	{
 	case ShapeType::Value::inputNeuron:
 		if ( ! m_pModel->HasOutgoing( m_shapeHighlighted ) )
@@ -181,17 +190,11 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ARROWS_OFF,    L"Arrows off" );
 		else
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ARROWS_ON,     L"Arrows on" );
-
 		break;
 
 	case ShapeType::Value::undefined: // no shape selected, cursor on background
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_NEURON,       L"New neuron" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_INPUT_NEURON, L"New input neuron" );
-		if ( m_pModel->AnyShapesSelected( ) )
-		{
-			AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION,   L"Mark selection" );
-			AppendMenu( hPopupMenu, STD_FLAGS, IDM_UNMARK_SELECTION, L"Unmark selection" );
-		}
 		break;
 
 	default:

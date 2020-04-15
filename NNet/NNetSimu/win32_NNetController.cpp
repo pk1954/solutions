@@ -194,6 +194,10 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWindow->TriggerSoundDlg( m_pNNetWindow->GetHighlightedShapeId( ) );
 		break;
 
+	case IDM_NNET_REFRESH_RATE:
+		m_pNNetWindow->PostMessage( WM_COMMAND, IDD_REFRESH_RATE_DIALOG, 0 );
+		break;
+
 	case IDM_RUN:
 		m_pNNetWorkThreadInterface->PostResetTimer( );
 		if ( m_pDisplayFunctor )

@@ -9,8 +9,7 @@
 void NNetColors::SetColSelectedAndSleep( D2D1::ColorF const color )
 {
 	m_colSelected = color;
-	m_pObserver->Notify( true );
-	Sleep( 500 );
+	Sleep( BLINK_TIME.GetValue() );
 }
 
 unsigned int __stdcall BlinkFunc( void * pData )

@@ -23,7 +23,7 @@ D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 		mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( tParameter::peakVoltage )) };
 		float const colorComponent { min( voltageInput / peakVoltage, 1.0f )};
 		return m_bMarked 
-			? D2D1::ColorF( 0.8f, colorComponent, 0.8f, 1.0f )
+			? D2D1::ColorF( colorComponent, 0.6f, 0.6f, 1.0f )
 		    : D2D1::ColorF( colorComponent, 0.0f, 0.0f, 1.0f );
 	}
 }

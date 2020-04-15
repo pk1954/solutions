@@ -79,6 +79,7 @@ IDC_NNET_SIMU_MAIN MENU
              MENUITEM "o&n",  IDD_AUTO_OPEN_ON
              MENUITEM "o&ff", IDD_AUTO_OPEN_OFF
          }
+         MENUITEM "&Refresh rate" IDM_NNET_REFRESH_RATE
     }
     POPUP "&Help"
     {

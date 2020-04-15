@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "MoreTypes.h"
 #include "d2d1helper.h"
 #include "ObserverInterface.h"                   
 												  
@@ -36,4 +37,6 @@ public:
 
 	// color of selected shapes
 	inline static D2D1::ColorF m_colSelected { INT_BLINK_KEY_1 };
+
+	inline static MilliSecs BLINK_TIME { 200_MilliSecs };
 };

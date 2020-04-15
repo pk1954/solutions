@@ -64,6 +64,7 @@
 #define IDM_DESELECT_ALL         145
 #define IDM_DESELECT_SUBTREE     146
 #define IDM_DESELECT_SHAPE       147
+#define IDM_SELECTION            148
 
 #define IDM_SAVE_MODEL           150
 #define IDM_ASK_AND_SAVE_MODEL   151
@@ -109,7 +110,8 @@
 #define IDM_CRSR_WINDOW          580
 #define IDM_PARAM_WINDOW  	     581
 #define IDM_PERF_WINDOW          582
-							    
+#define IDM_NNET_REFRESH_RATE    583
+
 #define IDM_ANALYZE              600
 #define IDM_ANALYZE_LOOPS        601
 #define IDM_ANALYZE_ANOMALIES    602
