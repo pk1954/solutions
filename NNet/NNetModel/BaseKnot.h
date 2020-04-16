@@ -47,17 +47,13 @@ public:
 
 	bool IsPointInShape( MicroMeterPoint const & ) const;
 
-	virtual bool IsInRect( MicroMeterRect const & umRect ) const 
-	{ 
-		return umRect.Includes( m_center );
-	}
+	virtual bool IsInRect( MicroMeterRect const & umRect ) const { return umRect.Includes( m_center ); }
 
-	void AddIncoming    ( Pipe * const );
-	void AddOutgoing    ( Pipe * const );
-	void RemoveIncoming ( Pipe * const );
-	void RemoveOutgoing ( Pipe * const );
-	void ReplaceIncoming( Pipe * const, Pipe * const );
-	void ReplaceOutgoing( Pipe * const, Pipe * const );
+	void AddIncoming( Pipe * const p ) { addPipe( m_incoming, p ); }
+	void AddOutgoing( Pipe * const p ) { addPipe( m_outgoing, p ); }
+
+	void RemoveIncoming( Pipe * const p ) { removePipe( m_incoming, p ); }
+	void RemoveOutgoing( Pipe * const p ) { removePipe( m_outgoing, p ); }
 
 	bool   HasIncoming( )                const { return ! m_incoming.empty(); }
 	bool   HasOutgoing( )                const { return ! m_outgoing.empty(); }
@@ -67,42 +63,17 @@ public:
 	bool   IsOrphan( )                   const { return m_incoming.empty() && m_outgoing.empty(); }
 	bool   IsOrphanedKnot( )             const { return IsKnot() && IsOrphan(); }
 
-	void ClearIncoming( ) 
-	{
-		LockShape();
-		m_incoming.clear(); 
-		UnlockShape();
-	}
-
-	void ClearOutgoing( ) 
-	{ 
-		LockShape();
-		m_outgoing.clear(); 
-		UnlockShape();
-	}
+	void ClearIncoming( ) { clearPipeList( m_incoming ); }
+	void ClearOutgoing( ) { clearPipeList( m_outgoing ); }
 
 	bool IsPrecursorOf( ShapeId const );
 	bool IsSuccessorOf( ShapeId const );
 
-	void Apply2AllInPipes( function<void(Pipe * const)> const & func )
-	{
-		apply2All( m_incoming, func );
-	}
+	void Apply2AllInPipes ( function<void(Pipe * const)> const & func ) { apply2All( m_incoming, func ); }
+	void Apply2AllOutPipes( function<void(Pipe * const)> const & func )	{ apply2All( m_outgoing, func ); }
 
-	void Apply2AllOutPipes( function<void(Pipe * const)> const & func )
-	{
-		apply2All( m_outgoing, func );
-	}
-
-	bool Apply2AllInPipesB( function<bool(Pipe * const)> const & func )
-	{
-		return apply2AllB( m_incoming, func );
-	}
-
-	bool Apply2AllOutPipesB( function<bool(Pipe * const)> const & func )
-	{
-		return apply2AllB( m_outgoing, func );
-	}
+	bool Apply2AllInPipesB ( function<bool(Pipe * const)> const & func ) { return apply2AllB( m_incoming, func ); }
+	bool Apply2AllOutPipesB( function<bool(Pipe * const)> const & func ) { return apply2AllB( m_outgoing, func ); }
 
 	void Apply2AllConnectedPipes( function<void(Pipe * const)> const & func )
 	{
@@ -122,8 +93,10 @@ public:
 
 protected:
 
-	vector<Pipe *> m_incoming;
-	vector<Pipe *> m_outgoing;
+	using PipeList = vector<Pipe *>;
+
+	PipeList m_incoming;
+	PipeList m_outgoing;
 
 	void drawCircle( PixelCoordsFp const &, D2D1::ColorF const, MicroMeterPoint const, MicroMeter const ) const;
 	void drawCircle( PixelCoordsFp const &, D2D1::ColorF const, MicroMeter const ) const;
@@ -132,8 +105,13 @@ protected:
 	void      const DisplayText( PixelRect const, wstring const ) const;
 
 private:
-	void apply2All ( vector<Pipe *> const &, function<void(Pipe * const)> const & );
-	bool apply2AllB( vector<Pipe *> const &, function<bool(Pipe * const)> const & );
+
+	void addPipe      ( PipeList &, Pipe * const );
+	void removePipe   ( PipeList &, Pipe * const );
+	void clearPipeList( PipeList & );
+
+	void apply2All ( PipeList const &, function<void(Pipe * const)> const & );
+	bool apply2AllB( PipeList const &, function<bool(Pipe * const)> const & );
 
 	MicroMeterPoint     m_center;
 	MicroMeter          m_extension;

@@ -21,7 +21,7 @@ using std::wostringstream;
 
 void BaseKnot::apply2All
 ( 
-	vector<Pipe *>               const & pipeList,
+	PipeList               const & pipeList,
 	function<void(Pipe * const)> const & func 
 )
 {
@@ -37,7 +37,7 @@ void BaseKnot::apply2All
 
 bool BaseKnot::apply2AllB
 ( 
-	vector<Pipe *>               const & pipeList,
+	PipeList               const & pipeList,
 	function<bool(Pipe * const)> const & func 
 )
 {
@@ -69,43 +69,26 @@ bool BaseKnot::IsPrecursorOf( ShapeId const id )
 
 bool BaseKnot::IsSuccessorOf( ShapeId const id )
 {
-	return Apply2AllInPipesB( [&]( auto pipe ) { return pipe->GetStartKnotId( ) == id;	} );
+	return Apply2AllInPipesB( [&]( auto pipe ) { return pipe->GetStartKnotId( ) == id; } );
 }
 
-void BaseKnot::AddIncoming( Pipe * const pPipe )
+void BaseKnot::clearPipeList( PipeList & list ) 
 {
-	assert( find( begin(m_incoming), end(m_incoming), pPipe ) == end(m_incoming) );
-	m_incoming.push_back( pPipe );
+	LockShape();
+	list.clear(); 
+	UnlockShape();
 }
 
-void BaseKnot::AddOutgoing( Pipe * const pPipe )
+void BaseKnot::addPipe( PipeList & list, Pipe * const pPipe )
 {
-	assert( find( begin(m_outgoing), end(m_outgoing), pPipe ) == end(m_outgoing) );
-	m_outgoing.push_back( pPipe );
+	assert( find( begin(list), end(list), pPipe ) == end(list) );
+	list.push_back( pPipe );
 }
 
-void BaseKnot::RemoveIncoming( Pipe * const pPipe )
+void BaseKnot::removePipe( PipeList & list, Pipe * const pPipe )
 {
-	auto res = find( begin(m_incoming), end(m_incoming), pPipe );
-	m_incoming.erase( res );
-}
-
-void BaseKnot::RemoveOutgoing( Pipe * const pPipe )
-{
-	auto res = find( begin(m_outgoing), end(m_outgoing), pPipe );
-	m_outgoing.erase( res );
-}
-
-void BaseKnot::ReplaceIncoming( Pipe * const pPipeOld, Pipe * const pPipeNew )
-{
-	assert( find( begin(m_incoming), end(m_incoming), pPipeNew ) == end(m_incoming) );
-	* find( begin(m_incoming), end(m_incoming), pPipeOld ) = pPipeNew;
-}
-
-void BaseKnot::ReplaceOutgoing( Pipe * const pPipeOld, Pipe * const pPipeNew )
-{
-	assert( find( begin(m_outgoing), end(m_outgoing), pPipeNew ) == end(m_outgoing) );
-	* find( begin(m_outgoing), end(m_outgoing), pPipeOld ) = pPipeNew;
+	auto res = find( begin(list), end(list), pPipe );
+	list.erase( res );
 }
 
 bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
@@ -159,11 +142,7 @@ void BaseKnot::DrawNeuronText( PixelCoordsFp & coord ) const
 void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 {
 	m_center += delta;
-	for ( auto const pipe : m_incoming )
-		pipe->Recalc( );
-
-	for ( auto const pipe : m_outgoing )
-		pipe->Recalc( );
+	Apply2AllConnectedPipes( [&](auto pipe) { pipe->Recalc(); } );
 }
 
 void BaseKnot::drawCircle
