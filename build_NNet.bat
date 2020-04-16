@@ -29,7 +29,7 @@ exit /b
 
 :BUILD_CONFIGURATION
 echo *** Building %1 version
-devenv NNetSimu.sln /build %1
+devenv NNet\NNetSimu.sln /build %1
 if ERRORLEVEL 1 (
 	echo +++ BUILDALL: error building %1
 	goto ERROR_EXIT
