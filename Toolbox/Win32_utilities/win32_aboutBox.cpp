@@ -7,7 +7,7 @@
 
 static LPCWSTR COMPILE_TIMESTAMP = _T(__DATE__) L" " _T(__TIME__);
 
-static INT_PTR CALLBACK About
+static INT_PTR CALLBACK About 
 ( 
     HWND   const hDlg,
     UINT   const message,
