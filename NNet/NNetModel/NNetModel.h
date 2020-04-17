@@ -22,6 +22,9 @@ class ComputeThread;
 class InputNeuron;
 class Param;
 
+// non member function used in class definition 
+MicroMeterRect GetEnclosingRect( vector<Shape*> const & );
+
 class NNetModel
 {
 public:
@@ -82,25 +85,11 @@ public:
 	bool            const HasModelChanged   ( ) const { return m_bUnsavedChanges; }
 	long            const GetNrOfShapes     ( ) const;
 
-	BaseKnot * const GetStartKnotPtr( ShapeId const idPipe ) const 
-	{ 
-		return GetShapeConstPtr<Pipe const *>( idPipe )->GetStartKnotPtr(); 
-	}
+	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
+	BaseKnot * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
 
-	BaseKnot * const GetEndKnotPtr( ShapeId const idPipe ) const 
-	{ 
-		return GetShapeConstPtr<Pipe const *>( idPipe )->GetEndKnotPtr(); 
-	}
-
-	ShapeId const GetStartKnotId( ShapeId const idPipe ) const 
-	{ 
-		return GetStartKnotPtr( idPipe )->GetId(); 
-	}
-
-	ShapeId const GetEndKnotId( ShapeId const idPipe ) const 
-	{ 
-		return GetEndKnotPtr( idPipe )->GetId(); 
-	}
+	ShapeId const GetStartKnotId (ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
+	ShapeId const GetEndKnotId   (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
 
 	size_t const GetNrOfOutgoingConnections( ShapeId const ) const;
 	size_t const GetNrOfIncomingConnections( ShapeId const ) const; 
@@ -161,6 +150,14 @@ public:
 		Apply2All<T>( {	[&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } } );
 	}
 
+	template <typename T>
+	void Apply2AllSelectedShapes( function<void(T &)> const & func ) const
+	{
+		Apply2All<T>( {	[&](T & s) { if ( s.IsSelected() ) { func( s ); } } } );
+	}
+
+	virtual void Compute( );
+
 	void CreateInitialShapes();
 	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
 	void NewPipe( BaseKnot * const, BaseKnot * const );
@@ -178,26 +175,21 @@ public:
 	void Convert2Neuron( ShapeId const );
 	void Convert2InputNeuron( ShapeId const );
 	void Disconnect( ShapeId const );
-	void RemoveShape( ShapeId const );
 	void RecalcAllShapes( );
 	void ResetModel( );
-	void ClearModel( );
 	void ModelSaved  ( ) const;
 	void ModelChanged( ) const;
 	void SetPulseRate( ShapeId    const, float const );
 	void SetParameter( tParameter const, float const );
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
-	MicroMeterRect GetEnclosingRect( );
+	void RemoveShape( ShapeId const id ) { removeShape( GetShape( id ) ); }
 
-	void CheckConsistency() { Apply2All<Shape>( [&]( Shape & shape ) { checkConsistency( & shape ); } ); }
+	MicroMeterRect GetEnclosingRect() {	return ::GetEnclosingRect( m_Shapes ); }
 
-	virtual void Compute( );
-
-	void SelectAll( tBoolOp const op )
-	{
-		Apply2All<Shape>( [&]( Shape & shape ) { shape.Select( op ); } );
-	}
+	void ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
+	void CheckConsistency()          { Apply2All<Shape>( [&](Shape &s) { checkConsistency(&s); } ); }
+	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
 
 	void SelectSubtree( ShapeId const idBaseKnot, tBoolOp const op )
 	{
@@ -216,18 +208,21 @@ public:
 			pShape->Mark( op );
 	}
 
+	void CopySelection( );
+
 	void MarkSelection( tBoolOp const op )
 	{
-		Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.IsSelected() ) shape.Mark( op ); } );
-	}
-
-	void CopySelection( )
-	{
+		Apply2AllSelectedShapes<Shape>( [&]( Shape & shape ) { shape.Mark( op ); } );
 	}
 
 	void DeleteSelection( )
 	{
-		Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.IsSelected() ) removeShape( & shape ); } );
+		Apply2AllSelectedShapes<Shape>( [&]( Shape & shape ) { removeShape( & shape ); } );
+	}
+
+	void MoveSelection( MicroMeterPoint const & delta )
+	{
+		Apply2AllSelectedShapes<BaseKnot>( [&]( BaseKnot & knot ) { knot.MoveShape( delta ); } );
 	}
 
 	bool AnyShapesSelected( )
@@ -252,20 +247,18 @@ private:
 
 	// local functions
 
-	Shape const   * findShapeAt( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
-	void            checkConsistency( Shape * );
-	MicroMeterPoint orthoVector( ShapeId const ) const;
-	void            disconnectBaseKnot( BaseKnot * const );
-	void            deletePipe( ShapeId const );
-	void            insertBaseKnot( Pipe * const, BaseKnot * const );
-	void            deleteShape( ShapeId const );
-	void            removeShape( Shape const * );
-	bool const      isConnectedTo( ShapeId, ShapeId ) const;
-	bool const      isConnectedToPipe( ShapeId const, Pipe const * const ) const;
-	void            connectIncoming( Pipe * const, BaseKnot * const );
-	void            connectOutgoing( Pipe * const, BaseKnot * const );
-	void            selectSubtree( BaseKnot * const, tBoolOp const op );
-
+	MicroMeterPoint orthoVector        ( ShapeId const ) const;
+	void            deletePipeEndPoints( ShapeId const );
+	void            deleteShape        ( ShapeId const );
+	bool const      isConnectedTo      ( ShapeId const, ShapeId const ) const;
+	bool const      isConnectedToPipe  ( ShapeId const, Pipe const * const ) const;
+	void            checkConsistency   ( Shape * const );
+	Shape *         shallowCopy        ( Shape const & );
+	void            removeShape        ( Shape * const );
+	void            disconnectBaseKnot ( BaseKnot * const );
+	void            selectSubtree      ( BaseKnot * const, tBoolOp    const );
+	void            insertBaseKnot     ( Pipe     * const, BaseKnot * const );
+	void            connectIncoming    ( Pipe     * const, BaseKnot * const );
+	void            connectOutgoing    ( Pipe     * const, BaseKnot * const );
+	Shape const   * findShapeAt        ( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
 };
-
-MicroMeterRect GetEnclosingRect( vector<Shape*> const & );

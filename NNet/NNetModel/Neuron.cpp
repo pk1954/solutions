@@ -9,6 +9,7 @@
 #include "win32_beeperThread.h"
 #include "PixelCoordsFp.h"
 #include "NNetParameters.h"
+#include "NNetColors.h"
 #include "NNetModel.h"
 #include "Neuron.h"
 
@@ -86,6 +87,7 @@ void Neuron::Step( )
 	if ( (m_mVinputBuffer >= Threshold( )) && (m_timeSinceLastPulse >= PulseWidth() + RefractPeriod()) )  
 	{
 		m_timeSinceLastPulse = 0._MicroSecs;
+		m_bTriggered = true;
 		if ( HasTriggerSound() )
 			SubmitThreadpoolWork( m_pTpWork );
 	}
@@ -124,20 +126,17 @@ void Neuron::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) co
 
 void Neuron::DrawInterior( PixelCoordsFp & coord )
 { 
+	D2D1::ColorF    color          { m_bTriggered ? NNetColors::INT_TRIGGER : GetInteriorColor( ) };
 	MicroMeterPoint axonHillockPos { getAxonHillockPos( coord ) };
-	drawInterior( coord );
+	drawCircle( coord, color, GetExtension() * NEURON_INTERIOR);
 	if ( axonHillockPos != NP_NULL )
-		drawCircle( coord, GetInteriorColor( ), axonHillockPos, GetExtension() * (NEURON_INTERIOR - 0.5f) );
+		drawCircle( coord, color, axonHillockPos, GetExtension() * (NEURON_INTERIOR - 0.5f) );
+	m_bTriggered = false;
 }
 
 void Neuron::drawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
 {
 	drawCircle( coord, GetFrameColor( type ), GetExtension() );
-}
-
-void Neuron::drawInterior( PixelCoordsFp & coord ) const
-{ 
-	drawCircle( coord, GetInteriorColor( ), GetExtension() * NEURON_INTERIOR);
 }
 
 Neuron const * Cast2Neuron( Shape const * pShape )

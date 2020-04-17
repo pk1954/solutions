@@ -24,6 +24,10 @@ struct IDWriteTextFormat;
 class BaseKnot : public Shape
 {
 public:
+
+	using PipeFunc  = function<void(Pipe * const)>;
+	using PipeFuncB = function<bool(Pipe * const)>;
+
 	BaseKnot
 	( 
 		MicroMeterPoint const center,
@@ -69,19 +73,19 @@ public:
 	bool IsPrecursorOf( ShapeId const );
 	bool IsSuccessorOf( ShapeId const );
 
-	void Apply2AllInPipes ( function<void(Pipe * const)> const & func ) { apply2All( m_incoming, func ); }
-	void Apply2AllOutPipes( function<void(Pipe * const)> const & func )	{ apply2All( m_outgoing, func ); }
+	void Apply2AllInPipes ( PipeFunc const & func ) { apply2All( m_incoming, func ); }
+	void Apply2AllOutPipes( PipeFunc const & func )	{ apply2All( m_outgoing, func ); }
 
-	bool Apply2AllInPipesB ( function<bool(Pipe * const)> const & func ) { return apply2AllB( m_incoming, func ); }
-	bool Apply2AllOutPipesB( function<bool(Pipe * const)> const & func ) { return apply2AllB( m_outgoing, func ); }
+	bool Apply2AllInPipesB ( PipeFuncB const & func ) { return apply2AllB( m_incoming, func ); }
+	bool Apply2AllOutPipesB( PipeFuncB const & func ) { return apply2AllB( m_outgoing, func ); }
 
-	void Apply2AllConnectedPipes( function<void(Pipe * const)> const & func )
+	void Apply2AllConnectedPipes( PipeFunc const & func )
 	{
 		Apply2AllInPipes ( [&]( Pipe * const pipe ) { func( pipe ); } );
 		Apply2AllOutPipes( [&]( Pipe * const pipe ) { func( pipe ); } );
 	}
 
-	void Apply2AllConnectedPipesB( function<bool(Pipe * const)> const & func )
+	void Apply2AllConnectedPipesB( PipeFuncB const & func )
 	{
 		Apply2AllInPipesB ( [&]( Pipe * const pipe ) { return func( pipe ); } );
 		Apply2AllOutPipesB( [&]( Pipe * const pipe ) { return func( pipe ); } );
@@ -110,8 +114,8 @@ private:
 	void removePipe   ( PipeList &, Pipe * const );
 	void clearPipeList( PipeList & );
 
-	void apply2All ( PipeList const &, function<void(Pipe * const)> const & );
-	bool apply2AllB( PipeList const &, function<bool(Pipe * const)> const & );
+	void apply2All ( PipeList const &, PipeFunc  const & );
+	bool apply2AllB( PipeList const &, PipeFuncB const & );
 
 	MicroMeterPoint     m_center;
 	MicroMeter          m_extension;

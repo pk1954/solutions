@@ -136,8 +136,10 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	if ( m_pModel->AnyShapesSelected( ) )
 	{
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_DESELECT_ALL,     L"Deselect all" );
+		//AppendMenu( hPopupMenu, STD_FLAGS, IDM_COPY_SELECTION,   L"Copy selection" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION,   L"Mark selection" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_UNMARK_SELECTION, L"Unmark selection" );
+		//AppendMenu( hPopupMenu, STD_FLAGS, IDM_DELETE_SELECTION, L"Remove selected objects" );
 	}
 	else switch ( type.GetValue() )
 	{
@@ -254,7 +256,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
 	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // relative to client area
 	MicroMeterPoint const umCrsrPos { m_coord.convert2MicroMeterPointPos( ptCrsr ) };
-	MicroMeterPoint const umOldPos  { m_coord.convert2MicroMeterPointPos( m_ptLast ) };
+	MicroMeterPoint const umLastPos { m_coord.convert2MicroMeterPointPos( m_ptLast ) };
 
 	m_pCursorPosObservable->NotifyAll( false );
 
@@ -262,7 +264,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	{
 		if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
 		{
-			m_umRectSelection = MicroMeterRect( umCrsrPos, umOldPos );
+			m_umRectSelection = MicroMeterRect( umCrsrPos, umLastPos );
 			m_pModel->Apply2AllInRect<Shape>( m_umRectSelection, [&]( Shape & shape ) { shape.Select( tBoolOp::opTrue ); } );
 		}
 		else                           // first time here after RBUTTON pressed
@@ -274,10 +276,11 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	{
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
-			Shape const * pShapeSuper { nullptr };
+			MicroMeterPoint const   umDelta     { umCrsrPos - umLastPos };
+			Shape           const * pShapeSuper { nullptr };
 			if ( IsDefined( m_shapeHighlighted ) )
 			{
-				m_pNNetWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umCrsrPos - umOldPos );
+				m_pNNetWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umDelta );
 				if ( m_pModel->IsOfType<BaseKnot>( m_shapeHighlighted ) )
 				{
 					pShapeSuper = m_pModel->FindShapeAt
@@ -286,6 +289,10 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 						[&]( Shape const & shape ) { return m_pModel->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
 					);
 				}
+			}
+			else if ( m_pModel->AnyShapesSelected( ) )
+			{
+				m_pModel->MoveSelection( umDelta );
 			}
 			else if ( m_bMoveAllowed )
 			{

@@ -104,15 +104,17 @@ bool const NNetModel::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) con
 	return true;
 }
 
-void NNetModel::removeShape( Shape const * pShape )
+void NNetModel::removeShape( Shape * const pShape )
 {
 	if ( pShape )
 	{
+		pShape->LockShape( );
 		ShapeId id { pShape->GetId( ) };
 		switch ( pShape->GetShapeType( ).GetValue() )
 		{
 		case ShapeType::Value::pipe:
-			deletePipe( id );
+			deletePipeEndPoints( id );
+			deleteShape( id );
 			break;
 
 		case ShapeType::Value::inputNeuron:
@@ -127,12 +129,8 @@ void NNetModel::removeShape( Shape const * pShape )
 		}
 		ModelChanged( );
 		CHECK_CONSISTENCY;
+		pShape->UnlockShape( );
 	}
-}
-
-void NNetModel::RemoveShape( ShapeId const idShapeToBeDeleted )
-{
-	removeShape( GetShape( idShapeToBeDeleted ) );
 }
 
 void NNetModel::Disconnect( ShapeId const id )
@@ -353,7 +351,6 @@ void NNetModel::Compute( )
 {
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Prepare( ); } );
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Step( ); } );
-
 	m_timeStamp += m_pParam->GetTimeResolution( );
 }
 
@@ -364,9 +361,83 @@ void NNetModel::ResetModel( )
 	ModelChanged( );
 }
 
-void NNetModel::ClearModel( )
+Shape * NNetModel::shallowCopy( Shape const & shape )
 {
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Clear( ); } );
+	switch ( shape.GetShapeType().GetValue() )
+	{
+	case ShapeType::Value::inputNeuron:
+		return new InputNeuron( static_cast<InputNeuron const &>( shape ) );
+
+	case ShapeType::Value::knot:
+		return new Knot( static_cast<Knot const &>( shape ) );
+
+	case ShapeType::Value::neuron:
+		return new Neuron( static_cast<Neuron const &>( shape ) );
+
+	case ShapeType::Value::pipe:
+		return new Pipe( static_cast<Pipe const &>( shape ) );
+
+	default:
+		assert( false );
+		return nullptr;
+	}
+}
+
+void NNetModel::CopySelection( )
+{
+	//vector<Shape *> newShapes( GetNrOfShapes(), nullptr );
+
+	//Apply2AllSelectedShapes<Shape>(	[&]( Shape & s ) { newShapes.at(s.GetId().GetValue()) = shallowCopy( s ); }	);
+
+	//Apply2AllSelectedShapes<Shape>
+	//(
+	//	[&]( Shape & shape ) 
+	//	{ 
+	//		ShapeId const id { shape.GetId() };
+	//		switch ( shape.GetShapeType().GetValue() )
+	//		{
+	//		case ShapeType::Value::inputNeuron:
+	//		{
+	//			InputNeuron * pInputNeuronNew { static_cast<InputNeuron *>( newShapes.at(id.GetValue()) ) };
+	//			pInputNeuronNew->Apply2AllInPipes
+	//			( 
+	//				[&]( Pipe * const pipe )
+	//				{ 
+	//					
+	//				} 
+	//			);
+	//		}
+	//		break;
+
+	//		case ShapeType::Value::knot:
+	//		{
+	//			Knot * pKnotNew { static_cast<Knot *>( newShapes.at(id.GetValue()) ) };
+	//		}
+	//		break;
+
+	//		case ShapeType::Value::neuron:
+	//		{
+	//			Neuron * pNeuronNew { static_cast<Neuron *>( newShapes.at(id.GetValue()) ) };
+	//		}
+	//		break;
+
+	//		case ShapeType::Value::pipe:
+	//		{
+	//			Pipe * pPipeNew { static_cast<Pipe *>( newShapes.at(id.GetValue()) ) };
+	//			pPipeNew->SetStartKnot( static_cast<BaseKnot *>( newShapes.at( pPipeNew->GetStartKnotId().GetValue() )) );
+	//			pPipeNew->SetEndKnot  ( static_cast<BaseKnot *>( newShapes.at( pPipeNew->GetEndKnotId  ().GetValue() )) );
+	//		}
+	//		break;
+
+	//		case ShapeType::Value::undefined:
+	//			assert( false );
+	//			break;
+
+	//		default:
+	//			assert( false );
+	//		}
+	//	}
+	//);
 }
 
 Shape const * NNetModel::FindShapeAt
@@ -409,7 +480,7 @@ void NNetModel::selectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )
 	}
 }
 
-void NNetModel::checkConsistency( Shape * pShape )
+void NNetModel::checkConsistency( Shape * const pShape )
 {
 	ShapeType type = pShape->GetShapeType();
 
@@ -461,7 +532,7 @@ bool const NNetModel::isConnectedToPipe( ShapeId const id, Pipe const * const pP
 	return (id == pPipe->GetStartKnotId()) || (id == pPipe->GetEndKnotId());
 }
 
-bool const NNetModel::isConnectedTo( ShapeId id1, ShapeId id2 ) const
+bool const NNetModel::isConnectedTo( ShapeId const id1, ShapeId const id2 ) const
 {
 	if ( IsOfType<Pipe>( id1 ) )
 		return isConnectedToPipe( id2, GetShapeConstPtr<Pipe const *>( id1 ) );
@@ -532,7 +603,7 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects 
 	}
 }
 
-void NNetModel::deletePipe( ShapeId const id )
+void NNetModel::deletePipeEndPoints( ShapeId const id )
 {
 	if ( IsDefined( id ) )
 	{
@@ -547,8 +618,6 @@ void NNetModel::deletePipe( ShapeId const id )
 		pEndKnot->RemoveIncoming( pPipeToBeDeleted );
 		if ( pEndKnot->IsOrphanedKnot( ) && ( pEndKnot->IsKnot() ) )
 			deleteShape( pEndKnot->GetId() );
-
-		deleteShape( id );
 	}
 }
 
@@ -581,11 +650,6 @@ Shape const * NNetModel::findShapeAt
 			return pShape;
 	};
 	return nullptr;
-}
-
-MicroMeterRect NNetModel::GetEnclosingRect( )
-{
-	return ::GetEnclosingRect( m_Shapes );
 }
 
 /////////////////// nonmember functions ///////////////////////////////////////////////

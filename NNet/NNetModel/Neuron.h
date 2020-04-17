@@ -48,9 +48,10 @@ protected:
 	mV waveFunction( fMicroSecs const ) const;
 
 	void drawExterior( PixelCoordsFp &, tHighlightType const ) const;
-	void drawInterior( PixelCoordsFp & ) const;
 
 private:
+	bool m_bTriggered { false };
+
 	float m_factorW; // Parameter of wave function
 	float m_factorU; // Parameter of wave function
 

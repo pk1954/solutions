@@ -6,25 +6,24 @@
 #include "win32_thread.h"
 #include "NNetColors.h"
 
-void NNetColors::SetColSelectedAndSleep( D2D1::ColorF const color )
+VOID CALLBACK TimerProc( HWND hwnd, UINT message, UINT_PTR iTimerID, DWORD dwTime )
 {
-	m_colSelected = color;
-	Sleep( BLINK_TIME.GetValue() );
-}
-
-unsigned int __stdcall BlinkFunc( void * pData )
-{
-	NNetColors * pNNetColors { static_cast<NNetColors *>( pData ) };
-
-	for (;;)
-	{
-		pNNetColors->SetColSelectedAndSleep( NNetColors::INT_BLINK_KEY_1 );
-		pNNetColors->SetColSelectedAndSleep( NNetColors::INT_BLINK_KEY_2 );
-	}
+	NNetColors::m_colSelected = NNetColors::m_bSwitch 
+		                        ? NNetColors::INT_BLINK_KEY_2 
+		                        : NNetColors::INT_BLINK_KEY_1;
+	NNetColors::m_bSwitch = ! NNetColors::m_bSwitch;
+	if ( NNetColors::m_pObserver )
+		NNetColors::m_pObserver->Notify( false );
 }
 
 NNetColors::NNetColors( ObserverInterface * const pObserver )
-	: m_pObserver( pObserver )
 {
-	Util::RunAsAsyncThread( BlinkFunc, this );
+	m_pObserver = pObserver;
+	m_TimerId = SetTimer( NULL, 1, BLINK_TIME.GetValue(), TimerProc );
+}
+
+NNetColors::~NNetColors( )
+{
+	m_pObserver = nullptr;
+	KillTimer( NULL, m_TimerId );
 }

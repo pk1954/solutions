@@ -3,8 +3,8 @@
 // NNetSimu
 
 #include "stdafx.h"
+#include "Windows.h"
 #include <chrono>
-#include "WinUser.h"
 
 // Model interfaces
 

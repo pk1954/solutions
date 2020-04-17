@@ -30,7 +30,7 @@ private:
 	PixelCoordsFp     * m_pfPixelCoords;
 	IDWriteTextFormat * m_pTextFormat;
 
-	void displayTicks( fPixelPoint const, fPixelPoint const, float const, int const );
+	void displayTicks      ( fPixelPoint const, fPixelPoint const, float const, int const );
 	void displayScaleNumber( fPixelPoint const, float const, int const );
-	void displayScaleText( fPixelPoint const, float const );
+	void displayScaleText  ( fPixelPoint const, float const );
 };

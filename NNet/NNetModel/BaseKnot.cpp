@@ -21,8 +21,8 @@ using std::wostringstream;
 
 void BaseKnot::apply2All
 ( 
-	PipeList               const & pipeList,
-	function<void(Pipe * const)> const & func 
+	PipeList const & pipeList,
+	PipeFunc const & func 
 )
 {
 	LockShape();
@@ -37,8 +37,8 @@ void BaseKnot::apply2All
 
 bool BaseKnot::apply2AllB
 ( 
-	PipeList               const & pipeList,
-	function<bool(Pipe * const)> const & func 
+	PipeList  const & pipeList,
+	PipeFuncB const & func 
 )
 {
 	bool bResult { false };
@@ -127,16 +127,8 @@ void BaseKnot::DrawNeuronText( PixelCoordsFp & coord ) const
 { 
 	wostringstream m_wBuffer;
 	m_wBuffer.precision(2);
-
-	float fFillLevel { GetFillLevel() };
-	if ( fFillLevel >= 1.0f )
-		m_wBuffer << L"TRIGGER";
-	else
-		m_wBuffer << fixed << setw(6) << fFillLevel * 100.0f << L"%";
-
-	PixelRect const pixRect { GetPixRect4Text( coord ) };
-
-	DisplayText( pixRect, m_wBuffer.str( ) );
+	m_wBuffer << fixed << setw(6) << GetFillLevel() * 100.0f << L"%";
+	DisplayText( GetPixRect4Text( coord ), m_wBuffer.str( ) );
 }
 
 void BaseKnot::MoveShape( MicroMeterPoint const & delta )
