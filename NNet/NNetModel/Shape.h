@@ -7,6 +7,7 @@
 #include "d2d1helper.h"
 #include "BoolOp.h"
 #include "MoreTypes.h"
+#include "tHighlightType.h"
 #include "NNetParameters.h"
 #include "ShapeType.h"
 #include "ShapeId.h"

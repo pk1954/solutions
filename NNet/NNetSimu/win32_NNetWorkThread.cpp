@@ -200,7 +200,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		m_pNNetModel->MarkSelection( static_cast<tBoolOp>(msg.lParam) );
 		break;
 
-	case NNetWorkThreadMessage::Id::DELETE_SELECTION:
+	case NNetWorkThreadMessage::Id::REMOVE_SELECTION:
 		m_pNNetModel->DeleteSelection();
 		break;
 

@@ -10,7 +10,6 @@
 #include "tHighlightType.h"
 #include "Direct2D.h"
 #include "NNetParameters.h"
-#include "NNetModel.h"
 #include "Pipe.h"
 
 using std::fill;

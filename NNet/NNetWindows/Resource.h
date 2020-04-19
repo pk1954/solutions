@@ -119,6 +119,6 @@
 #define IDM_CENTER_MODEL         611
 							    
 #define IDM_COPY_SELECTION       650
-#define IDM_DELETE_SELECTION     651
+#define IDM_REMOVE_SELECTION     651
 #define IDM_MARK_SELECTION       652
 #define IDM_UNMARK_SELECTION     653

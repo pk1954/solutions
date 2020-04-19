@@ -7,7 +7,6 @@
 #include <chrono>
 #include <sstream> 
 #include "MoreTypes.h"
-#include "NNetModel.h"
 #include "Neuron.h"
 
 class InputNeuron : public Neuron

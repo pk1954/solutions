@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "assert.h"
-#include "NNetModel.h"
 #include "PixelCoordsFp.h"
 #include "tHighlightType.h"
 #include "Direct2D.h"

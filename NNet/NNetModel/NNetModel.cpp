@@ -71,27 +71,30 @@ bool const NNetModel::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) con
 	if ( idSrc == idDst )
 		return false;
 
-	if ( isConnectedTo( idSrc, idDst ) )  // if already connected we cannot connect again
+	Shape const * const pShapeSrc { GetConstShape( idSrc ) };
+	Shape const * const pShapeDst { GetConstShape( idDst ) };
+
+	if ( isConnectedTo( * pShapeSrc, * pShapeDst ) )  // if already connected we cannot connect again
 		return false;
 
-	ShapeType const typeSrc { GetShapeType( idSrc ) };
+	ShapeType const typeSrc { pShapeSrc->GetShapeType() };
 
-	if ( typeSrc.IsPipeType() )           // only BaseKnots can be connected
+	if ( typeSrc.IsPipeType() )               // only BaseKnots can be connected
 		return false;                         // to other shapes
 
 	if ( typeSrc.IsInputNeuronType() )        // input neuron cannot connect to anything
 		return false;                         // try the other way round
 
-	ShapeType const typeDst { GetShapeType( idDst ) };
+	ShapeType const typeDst { pShapeDst->GetShapeType() };
 
 	if ( typeDst.IsPipeType( ) )
 	{
-		if ( typeSrc.IsInputNeuronType() )   // cannot insert input neuron
+		if ( typeSrc.IsInputNeuronType() )          // cannot insert input neuron
 			return false;                           // into Pipe
 	}
 	else if ( typeDst.IsAnyNeuronType() )
 	{
-		if ( typeSrc.IsAnyNeuronType() )  // neurons cannot connect directly 
+		if ( typeSrc.IsAnyNeuronType() )   // neurons cannot connect directly 
 			return false;                  // to other neurons
 
 		if ( typeDst.IsInputNeuronType() && HasIncoming( idSrc ) )  // cannot connect incoming dendrite
@@ -108,28 +111,13 @@ void NNetModel::removeShape( Shape * const pShape )
 {
 	if ( pShape )
 	{
-		pShape->LockShape( );
-		ShapeId id { pShape->GetId( ) };
-		switch ( pShape->GetShapeType( ).GetValue() )
-		{
-		case ShapeType::Value::pipe:
-			deletePipeEndPoints( id );
-			deleteShape( id );
-			break;
-
-		case ShapeType::Value::inputNeuron:
-		case ShapeType::Value::neuron:
-			disconnectBaseKnot( GetShapePtr<BaseKnot *>( id ) );
-			deleteShape( id );
-			break;
-
-		case ShapeType::Value::knot:
-		default:
-			break;
-		}
+		if ( pShape->IsPipe() )
+			deletePipeEndPoints( Cast2Pipe( pShape ) );
+		else 
+			disconnectBaseKnot( Cast2BaseKnot( pShape ) );
+		deleteShape( pShape );
 		ModelChanged( );
 		CHECK_CONSISTENCY;
-		pShape->UnlockShape( );
 	}
 }
 
@@ -138,9 +126,8 @@ void NNetModel::Disconnect( ShapeId const id )
 	if ( BaseKnot * pBaseKnot { GetShapePtr<BaseKnot *>( id ) } )
 	{
 		disconnectBaseKnot( pBaseKnot );
-		assert( pBaseKnot->IsOrphan( ) );
 		if ( pBaseKnot->IsKnot() )
-			deleteShape( id );
+			deleteShape( pBaseKnot );
 	}
 	CHECK_CONSISTENCY;
 }
@@ -254,7 +241,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 			pSrc->Apply2AllInPipes ( [&]( Pipe * const pipe ) { connectIncoming( pipe, pDst ); } );
 			pSrc->Apply2AllOutPipes( [&]( Pipe * const pipe ) { connectOutgoing( pipe, pDst ); } );
 			if ( pSrc->IsKnot() )
-				deleteShape( idSrc );
+				deleteShape( pSrc );
 		}
 	}
 	ModelChanged( );
@@ -527,28 +514,27 @@ void NNetModel::checkConsistency( Shape * const pShape )
 	}
 }
 
-bool const NNetModel::isConnectedToPipe( ShapeId const id, Pipe const * const pPipe ) const
+bool const NNetModel::isConnectedToPipe( Shape const & shape, Pipe const & pipe ) const
 {
-	return (id == pPipe->GetStartKnotId()) || (id == pPipe->GetEndKnotId());
+	return (shape.GetId() == pipe.GetStartKnotId()) || (shape.GetId() == pipe.GetEndKnotId());
 }
 
-bool const NNetModel::isConnectedTo( ShapeId const id1, ShapeId const id2 ) const
+bool const NNetModel::isConnectedTo( Shape const & shape1, Shape const & shape2 ) const
 {
-	if ( IsOfType<Pipe>( id1 ) )
-		return isConnectedToPipe( id2, GetShapeConstPtr<Pipe const *>( id1 ) );
-	if ( IsOfType<Pipe>( id2 ) )
-		return isConnectedToPipe( id1, GetShapeConstPtr<Pipe const *>( id2 ) );
+	if ( shape1.IsPipe() )
+		return isConnectedToPipe( shape2, static_cast<Pipe const &>( shape1 ) );
+	if ( shape2.IsPipe() )
+		return isConnectedToPipe( shape1, static_cast<Pipe const &>( shape2 ) );
 	else
 		return false;
 }
 
-void NNetModel::deleteShape( ShapeId const id )
+void NNetModel::deleteShape( Shape * const pShape )
 {
-	if ( IsDefined( id ) )
-	{
-		delete m_Shapes[ id.GetValue() ];
-		m_Shapes[ id.GetValue() ] = nullptr;
-	}
+	ShapeId id { pShape->GetId() };
+	assert( m_Shapes[ id.GetValue() ] == pShape );
+	m_Shapes[ id.GetValue() ] = nullptr;  // first remove anchor
+	delete pShape;                        // then delete Shape
 }
 
 void NNetModel::connectIncoming
@@ -600,25 +586,21 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects 
 			} 
 		);
 		pBaseKnot->ClearOutgoing();
+		assert( pBaseKnot->IsOrphan( ) );
 	}
 }
 
-void NNetModel::deletePipeEndPoints( ShapeId const id )
+void NNetModel::deletePipeEndPoints( Pipe * const pPipe )
 {
-	if ( IsDefined( id ) )
-	{
-		Pipe * pPipeToBeDeleted { GetShapePtr<Pipe *>( id ) };
+	BaseKnot * pStartKnot { pPipe->GetStartKnotPtr() };
+	pStartKnot->RemoveOutgoing( pPipe );
+	if ( pStartKnot->IsOrphanedKnot( ) && ( pStartKnot->IsKnot() ) )
+		deleteShape( pStartKnot );
 
-		BaseKnot * pStartKnot { pPipeToBeDeleted->GetStartKnotPtr() };
-		pStartKnot->RemoveOutgoing( pPipeToBeDeleted );
-		if ( pStartKnot->IsOrphanedKnot( ) && ( pStartKnot->IsKnot() ) )
-			deleteShape( pStartKnot->GetId() );
-
-		BaseKnot * pEndKnot { pPipeToBeDeleted->GetEndKnotPtr() };
-		pEndKnot->RemoveIncoming( pPipeToBeDeleted );
-		if ( pEndKnot->IsOrphanedKnot( ) && ( pEndKnot->IsKnot() ) )
-			deleteShape( pEndKnot->GetId() );
-	}
+	BaseKnot * pEndKnot { pPipe->GetEndKnotPtr() };
+	pEndKnot->RemoveIncoming( pPipe );
+	if ( pEndKnot->IsOrphanedKnot( ) && ( pEndKnot->IsKnot() ) )
+		deleteShape( pEndKnot );
 }
 
 void NNetModel::insertBaseKnot( Pipe * const pPipe, BaseKnot * const pBaseKnot)

@@ -142,7 +142,7 @@ public:
 	void Apply2All( function<void(T &)> const & func ) const
 	{
 		for (auto p : m_Shapes) { if ( HasType<T>(p) ) func( static_cast<T &>(*p) ); }
-	}
+	}                               // HasType checks for nullptr
 
 	template <typename T>
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func ) const
@@ -217,7 +217,12 @@ public:
 
 	void DeleteSelection( )
 	{
-		Apply2AllSelectedShapes<Shape>( [&]( Shape & shape ) { removeShape( & shape ); } );
+		for ( int i = 0; i < m_Shapes.size(); ++i )  // Caution!
+		{	                                         // Range based loop does not work here
+			Shape * p = m_Shapes.at(i);              // removeShape changes the range 
+			if ( p &&  p->IsSelected() )             // by creating new shapes!!
+				removeShape( p ); 
+		}
 	}
 
 	void MoveSelection( MicroMeterPoint const & delta )
@@ -248,13 +253,13 @@ private:
 	// local functions
 
 	MicroMeterPoint orthoVector        ( ShapeId const ) const;
-	void            deletePipeEndPoints( ShapeId const );
-	void            deleteShape        ( ShapeId const );
-	bool const      isConnectedTo      ( ShapeId const, ShapeId const ) const;
-	bool const      isConnectedToPipe  ( ShapeId const, Pipe const * const ) const;
+	bool const      isConnectedTo      ( Shape const &, Shape const & ) const;
+	bool const      isConnectedToPipe  ( Shape const &, Pipe  const & ) const;
+	void            deletePipeEndPoints( Pipe  * const );
+	void            deleteShape        ( Shape * const );
 	void            checkConsistency   ( Shape * const );
-	Shape *         shallowCopy        ( Shape const & );
 	void            removeShape        ( Shape * const );
+	Shape *         shallowCopy        ( Shape   const & );
 	void            disconnectBaseKnot ( BaseKnot * const );
 	void            selectSubtree      ( BaseKnot * const, tBoolOp    const );
 	void            insertBaseKnot     ( Pipe     * const, BaseKnot * const );

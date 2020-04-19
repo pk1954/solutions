@@ -3,7 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "NNetModel.h"
+//#include "NNetModel.h"
 #include "ComputeThread.h"
 
 void ComputeThread::ThreadStartupFunc( )

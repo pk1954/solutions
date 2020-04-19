@@ -9,7 +9,6 @@
 #include "tHighlightType.h"
 #include "ShapeType.h"
 #include "NNetParameters.h"
-#include "NNetModel.h"
 #include "InputNeuron.h"
 
 using std::chrono::microseconds;

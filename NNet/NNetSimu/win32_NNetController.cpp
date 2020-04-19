@@ -177,7 +177,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWorkThreadInterface->PostCopySelection( );
 		break;
 
-	case IDM_DELETE_SELECTION:
+	case IDM_REMOVE_SELECTION:
 		m_pNNetWorkThreadInterface->PostDeleteSelection( );
 		break;
 

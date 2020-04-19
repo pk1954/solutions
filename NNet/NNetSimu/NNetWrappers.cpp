@@ -169,7 +169,7 @@ void DefineNNetWrappers
 
     SymbolTable::ScrDefConst( L"ANALYZE_LOOPS",       static_cast<long>(IDM_ANALYZE_LOOPS      ) );
     SymbolTable::ScrDefConst( L"ANALYZE_ANOMALIES",   static_cast<long>(IDM_ANALYZE_ANOMALIES  ) );
-    SymbolTable::ScrDefConst( L"DELETE_SELECTION",    static_cast<long>(IDM_DELETE_SELECTION   ) );
+    SymbolTable::ScrDefConst( L"REMOVE_SELECTION",    static_cast<long>(IDM_REMOVE_SELECTION   ) );
     SymbolTable::ScrDefConst( L"MARK_SELECTION",      static_cast<long>(IDM_MARK_SELECTION     ) );
     SymbolTable::ScrDefConst( L"UNMARK_SELECTION",    static_cast<long>(IDM_UNMARK_SELECTION   ) );
     SymbolTable::ScrDefConst( L"COPY_SELECTION",      static_cast<long>(IDM_COPY_SELECTION     ) );

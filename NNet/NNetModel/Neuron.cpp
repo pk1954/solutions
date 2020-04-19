@@ -10,7 +10,6 @@
 #include "PixelCoordsFp.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"
-#include "NNetModel.h"
 #include "Neuron.h"
 
 using std::chrono::microseconds;
