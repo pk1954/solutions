@@ -29,7 +29,7 @@ void NNetAppMenu::Initialize
     SendMessage( m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_NNETSIMU ) ) );
     SendMessage( m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL    ) ) );
 
-	SetAppTitle( );
+	SetAppTitle( L"", false );
 
 	BOOL bRes = SetMenu( m_hwndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_NNET_SIMU_MAIN ) ) );
 	assert( bRes );
@@ -37,9 +37,9 @@ void NNetAppMenu::Initialize
 	m_hMenu = GetMenu( hwndApp );
 }
 
-void NNetAppMenu::SetAppTitle( wstring const wstrAdd )
+void NNetAppMenu::SetAppTitle( wstring const wstrAdd, bool const bUnsavedChanges )
 {
-	Util::SetApplicationTitle( m_hwndApp, IDS_APP_TITLE, wstrAdd );
+	Util::SetApplicationTitle( m_hwndApp, IDS_APP_TITLE, wstrAdd + (bUnsavedChanges ? L" * " : L"") );
 }
 
 void NNetAppMenu::enableMenues( UINT const state )

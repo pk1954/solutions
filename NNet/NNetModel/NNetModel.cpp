@@ -24,8 +24,13 @@
 using namespace std::chrono;
 using std::unordered_map;
 
-NNetModel::NNetModel( Param * const pParam )
-	: m_pParam( pParam )
+NNetModel::NNetModel
+(
+	Param             * const pParam, 
+	ObserverInterface * const pObserver 
+)
+  : m_pParam( pParam ),
+	m_pChangeObserver( pObserver )
 {					
 	Shape::SetParam( pParam );
 }
@@ -39,19 +44,9 @@ void NNetModel::CreateInitialShapes( )
 	NewPipe( pInputNeuron, pNeuron );
 }
 
-void NNetModel::ModelSaved( ) const 
+void NNetModel::modelHasChanged( ) const 
 { 
-	// reset flag in app title
-	m_bUnsavedChanges = false; 
-}
-
-void NNetModel::ModelChanged( ) const 
-{ 
-	if ( ! m_bUnsavedChanges )
-	{
-		// set flag in app title
-	}
-	m_bUnsavedChanges = true;  
+	m_pChangeObserver->Notify( true );
 }
 
 void NNetModel::RecalcAllShapes( ) 
@@ -116,7 +111,6 @@ void NNetModel::removeShape( Shape * const pShape )
 		else 
 			disconnectBaseKnot( Cast2BaseKnot( pShape ) );
 		deleteShape( pShape );
-		ModelChanged( );
 		CHECK_CONSISTENCY;
 	}
 }
@@ -127,7 +121,10 @@ void NNetModel::Disconnect( ShapeId const id )
 	{
 		disconnectBaseKnot( pBaseKnot );
 		if ( pBaseKnot->IsKnot() )
+		{
 			deleteShape( pBaseKnot );
+			modelHasChanged( );
+		}
 	}
 	CHECK_CONSISTENCY;
 }
@@ -142,6 +139,7 @@ void NNetModel::Convert2Neuron( ShapeId const idInputNeuron )
 		RemoveShape( idInputNeuron );
 		if ( idAxon != NO_SHAPE )
 			Connect( GetStartKnotId( idAxon ), pNeuron->GetId()  );
+		modelHasChanged( );
 	}
 	CHECK_CONSISTENCY;
 }
@@ -156,6 +154,7 @@ void NNetModel::Convert2InputNeuron( ShapeId const idNeuron )
 		RemoveShape( idNeuron );
 		if ( idAxon != NO_SHAPE )
 			Connect( GetStartKnotId( idAxon ), pInputNeuron->GetId()  );
+		modelHasChanged( );
 	}
 	CHECK_CONSISTENCY;
 }
@@ -167,10 +166,24 @@ float const NNetModel::GetPulseRate( InputNeuron const * pInputNeuron ) const
 
 void NNetModel::SetPulseRate( ShapeId const id, float const fNewValue )
 {
-	ModelChanged( );
 	InputNeuron * const pInputNeuron { GetShapePtr<InputNeuron *>( id ) };
 	if ( pInputNeuron )
+	{
 		pInputNeuron->SetPulseFrequency( static_cast< fHertz >( fNewValue ) );
+		modelHasChanged( );
+	}
+}
+
+void NNetModel::SetTriggerSound( ShapeId const id, Hertz const freq, MilliSecs const msec )
+{
+	Neuron * const pNeuron { GetShapePtr<Neuron *>( id ) };
+	if ( pNeuron )
+	{
+		pNeuron->SetTriggerSoundFrequency( freq );
+		pNeuron->SetTriggerSoundDuration ( msec );
+		pNeuron->SetTriggerSoundOn( freq != 0_Hertz );
+		modelHasChanged( );
+	}
 }
 
 void NNetModel::SetParameter
@@ -179,9 +192,9 @@ void NNetModel::SetParameter
 	float      const fNewValue 
 )
 {
-	ModelChanged( );
 	m_pParam->SetParameterValue( param, fNewValue );
 	RecalcAllShapes( );
+	modelHasChanged( );
 }
 
 MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const 
@@ -244,7 +257,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 				deleteShape( pSrc );
 		}
 	}
-	ModelChanged( );
+	modelHasChanged( );
 	CHECK_CONSISTENCY;
 }
 
@@ -252,36 +265,26 @@ void NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
 {
 	if ( pStart && pEnd )
 	{
-		ModelChanged( );
 		Pipe * const pPipe { NewShape<Pipe>( NP_NULL ) };
 		connectOutgoing( pPipe, pStart );
 		connectIncoming( pPipe, pEnd );
+		modelHasChanged( );
 		CHECK_CONSISTENCY;
 	}
 }
 
 void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
-	ModelChanged( );
-	switch ( GetShapeType( id ).GetValue() )
-	{
-	case ShapeType::Value::pipe:
+	if ( IsOfType<Pipe>( id ) )
 	{
 		GetStartKnotPtr( id )->MoveShape( delta );
 		GetEndKnotPtr  ( id )->MoveShape( delta );
-		break;
 	}
-
-	case ShapeType::Value::inputNeuron:
-	case ShapeType::Value::neuron:
-	case ShapeType::Value::knot:
+	else 
+	{
 		GetShapePtr<BaseKnot *>( id )->MoveShape( delta );
-		break;
-
-	default:
-		break;
 	}
-	CHECK_CONSISTENCY;
+	modelHasChanged( );
 }
 
 Neuron * const NNetModel::InsertNeuron( ShapeId const idPipe, MicroMeterPoint const & splitPoint )
@@ -289,9 +292,9 @@ Neuron * const NNetModel::InsertNeuron( ShapeId const idPipe, MicroMeterPoint co
 	Neuron * pNeuron { nullptr };
 	if ( IsDefined( idPipe ) )
 	{
-		ModelChanged( );
 		pNeuron = NewShape<Neuron>( splitPoint );
 		insertBaseKnot( GetShapePtr<Pipe *>(idPipe), pNeuron );
+		modelHasChanged( );
 		CHECK_CONSISTENCY;
 	}
 	return pNeuron;
@@ -302,9 +305,9 @@ Knot * const NNetModel::InsertKnot( ShapeId const idPipe, MicroMeterPoint const 
 	Knot * pKnot { nullptr };
 	if ( IsDefined( idPipe ) )
 	{
-		ModelChanged( );
 		pKnot = NewShape<Knot>( splitPoint );
 		insertBaseKnot( GetShapePtr<Pipe *>(idPipe), pKnot );
+		modelHasChanged( );
 		CHECK_CONSISTENCY;
 	}
 	return pKnot;
@@ -345,7 +348,29 @@ void NNetModel::ResetModel( )
 {
 	Apply2All<Shape>( [&]( Shape & shape ) { delete & shape; } );
 	m_Shapes.clear();
-	ModelChanged( );
+	modelHasChanged( );
+}
+
+void NNetModel::DeleteSelection( )
+{
+	for ( int i = 0; i < m_Shapes.size(); ++i )  // Caution!
+	{	                                         // Range based loop does not work here
+		Shape * p = m_Shapes.at(i);              // removeShape changes the range 
+		if ( p &&  p->IsSelected() )             // by creating new shapes!!
+			removeShape( p ); 
+	}
+	modelHasChanged( );
+}
+
+void NNetModel::MarkSelection( tBoolOp const op )
+{
+	Apply2AllSelectedShapes<Shape>( [&]( Shape & shape ) { shape.Mark( op ); } );
+}
+
+void NNetModel::MoveSelection( MicroMeterPoint const & delta )
+{
+	Apply2AllSelectedShapes<BaseKnot>( [&]( BaseKnot & knot ) { knot.MoveShape( delta ); } );
+	modelHasChanged( );
 }
 
 Shape * NNetModel::shallowCopy( Shape const & shape )
@@ -370,61 +395,46 @@ Shape * NNetModel::shallowCopy( Shape const & shape )
 	}
 }
 
+void NNetModel::connectToNewShapes( Shape & shapeSrc, ShapeList & newShapes )
+{ 
+	Shape & shapeDst { * newShapes.at(shapeSrc.GetId().GetValue()) };
+	if ( shapeSrc.IsPipe( ) )
+	{
+		Pipe & pipeSrc { static_cast<Pipe &>( shapeSrc ) };
+		Pipe & pipeDst { static_cast<Pipe &>( shapeDst ) };
+		pipeDst.SetStartKnot( static_cast<BaseKnot *>( newShapes.at( pipeSrc.GetStartKnotId().GetValue() )) );
+		pipeDst.SetEndKnot  ( static_cast<BaseKnot *>( newShapes.at( pipeSrc.GetEndKnotId  ().GetValue() )) );
+	}
+	else
+	{
+		BaseKnot & baseKnotSrc { static_cast<BaseKnot &>( shapeSrc ) };
+		BaseKnot & baseKnotDst { static_cast<BaseKnot &>( shapeDst ) };
+		baseKnotDst.ClearOutgoing();
+		baseKnotDst.ClearIncoming();
+		auto dstFromSrc = [&](Pipe * pPipeSrc){ return static_cast<Pipe *>(newShapes.at(pPipeSrc->GetId().GetValue())); };
+		baseKnotSrc.Apply2AllOutPipes( [&]( Pipe * const pPipeSrc ) { baseKnotDst.AddOutgoing( dstFromSrc(pPipeSrc) ); } );
+		baseKnotSrc.Apply2AllInPipes ( [&]( Pipe * const pPipeSrc ) { baseKnotDst.AddIncoming( dstFromSrc(pPipeSrc) ); } );
+	}
+}
+
 void NNetModel::CopySelection( )
 {
-	//vector<Shape *> newShapes( GetNrOfShapes(), nullptr );
+	// vector like m_Shapes with ptr to copy of shape or nullptr (if original shape is not in selection)
+	ShapeList newShapes( m_Shapes.size(), nullptr ); 
 
-	//Apply2AllSelectedShapes<Shape>(	[&]( Shape & s ) { newShapes.at(s.GetId().GetValue()) = shallowCopy( s ); }	);
+	// make shallow copy of all selected shapes
+	Apply2AllSelectedShapes<Shape>(	[&]( Shape & shape ) { newShapes.at(shape.GetId().GetValue()) = shallowCopy( shape ); }	);
 
-	//Apply2AllSelectedShapes<Shape>
-	//(
-	//	[&]( Shape & shape ) 
-	//	{ 
-	//		ShapeId const id { shape.GetId() };
-	//		switch ( shape.GetShapeType().GetValue() )
-	//		{
-	//		case ShapeType::Value::inputNeuron:
-	//		{
-	//			InputNeuron * pInputNeuronNew { static_cast<InputNeuron *>( newShapes.at(id.GetValue()) ) };
-	//			pInputNeuronNew->Apply2AllInPipes
-	//			( 
-	//				[&]( Pipe * const pipe )
-	//				{ 
-	//					
-	//				} 
-	//			);
-	//		}
-	//		break;
+	// interconnect new shapes in same way as originals 
+	Apply2AllSelectedShapes<Shape>(	[&]( Shape & shape ) { connectToNewShapes( shape, newShapes ); } );
 
-	//		case ShapeType::Value::knot:
-	//		{
-	//			Knot * pKnotNew { static_cast<Knot *>( newShapes.at(id.GetValue()) ) };
-	//		}
-	//		break;
+	// Deselect original shapes, copies inherited selection at shallow copy
+	SelectAll( tBoolOp::opFalse );
 
-	//		case ShapeType::Value::neuron:
-	//		{
-	//			Neuron * pNeuronNew { static_cast<Neuron *>( newShapes.at(id.GetValue()) ) };
-	//		}
-	//		break;
+	// Now add copies to m_Shapes
+	for ( auto pShape : newShapes )	{ if ( pShape ) add2ShapeList( pShape ); }
 
-	//		case ShapeType::Value::pipe:
-	//		{
-	//			Pipe * pPipeNew { static_cast<Pipe *>( newShapes.at(id.GetValue()) ) };
-	//			pPipeNew->SetStartKnot( static_cast<BaseKnot *>( newShapes.at( pPipeNew->GetStartKnotId().GetValue() )) );
-	//			pPipeNew->SetEndKnot  ( static_cast<BaseKnot *>( newShapes.at( pPipeNew->GetEndKnotId  ().GetValue() )) );
-	//		}
-	//		break;
-
-	//		case ShapeType::Value::undefined:
-	//			assert( false );
-	//			break;
-
-	//		default:
-	//			assert( false );
-	//		}
-	//	}
-	//);
+	modelHasChanged( );
 }
 
 Shape const * NNetModel::FindShapeAt
@@ -497,11 +507,14 @@ void NNetModel::checkConsistency( Shape * const pShape )
 		{
 			Pipe const * pPipe { static_cast<Pipe const *>( pShape ) };
 			assert( pPipe );
-			if ( Shape const * const pStart { pPipe->GetStartKnotPtr() } )
-				assert( pStart->IsBaseKnot() );
-			if ( Shape const * const pEnd   { pPipe->GetEndKnotPtr() } )
-				assert( pEnd->IsBaseKnot() );
-			assert( pPipe->GetStartKnotId() != pPipe->GetEndKnotId() );
+			if ( pPipe )
+			{
+				if ( Shape const * const pStart { pPipe->GetStartKnotPtr() } )
+					assert( pStart->IsBaseKnot() );
+				if ( Shape const * const pEnd   { pPipe->GetEndKnotPtr() } )
+					assert( pEnd->IsBaseKnot() );
+				assert( pPipe->GetStartKnotId() != pPipe->GetEndKnotId() );
+			}
 			break;
 		}
 
@@ -636,7 +649,7 @@ Shape const * NNetModel::findShapeAt
 
 /////////////////// nonmember functions ///////////////////////////////////////////////
 
-MicroMeterRect GetEnclosingRect( vector<Shape*> const & shapeVector )
+MicroMeterRect GetEnclosingRect( ShapeList const & shapeVector )
 {
 	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
 	for ( const auto & pShape : shapeVector )

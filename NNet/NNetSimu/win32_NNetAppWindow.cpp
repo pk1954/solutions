@@ -65,12 +65,13 @@ NNetAppWindow::NNetAppWindow( )
 
 	NNetWorkThread::InitClass( (tAppCallBack)( [&]( int const id ) { PostMessage( WM_COMMAND, id, 0 ); } ) );
 
-	m_pNNetReadBuffer    = new NNetReadBuffer( );
+	m_pModelRedrawProxy  = new ObserverProxy( );
+	m_pModelChangedProxy = new ObserverProxy( );
 	m_pPerformanceWindow = new PerformanceWindow( );
 
 	NNetWindow::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
 
-	m_pNNetColors     = new NNetColors( m_pNNetReadBuffer );
+	m_pNNetColors     = new NNetColors( m_pModelRedrawProxy );
 	m_pCursorPos      = new Observable( );
 	m_pAppMenu        = new NNetAppMenu( );
 	m_pMainNNetWindow = new NNetWindow( );
@@ -93,19 +94,22 @@ NNetAppWindow::~NNetAppWindow( )
 	delete m_pParameterDlg;
 	delete m_pPerformanceWindow;
 	delete m_pStatusBarDisplayFunctor;
+	delete m_pModelRedrawProxy;
+	delete m_pModelChangedProxy;
 }
 
 void NNetAppWindow::Start( )
 {
 	m_pParameters       = new Param( );
-	m_pModelDataWork    = new NNetModel( m_pParameters );
+	m_pModelDataWork    = new NNetModel( m_pParameters, m_pModelChangedProxy );
 	m_pNNetModelStorage = new NNetModelStorage( m_pModelDataWork, m_pParameters );
+	m_pModelChangedProxy->RegisterObserver( m_pNNetModelStorage );
 
 	BaseAppWindow::Start( m_pMainNNetWindow );
 	m_pAppMenu->Initialize
 	( 
 		m_hwndApp, 
-		& m_NNetWorkThreadInterface, 
+		& m_NNetWorkThreadInterface,
 		& m_WinManager 
 	);
 
@@ -127,14 +131,15 @@ void NNetAppWindow::Start( )
 		m_pCursorPos
 	);
 
-	m_pNNetReadBuffer->RegisterObserver( m_pMainNNetWindow );
+	m_pModelRedrawProxy->RegisterObserver( m_pMainNNetWindow );
 
 	m_NNetWorkThreadInterface.Start
 	( 
 		m_hwndApp, 
 		& m_atComputation,
 		& m_eventPOI, 
-		  m_pNNetReadBuffer,
+		  m_pModelRedrawProxy,
+		  m_pNNetModelStorage,
 		& m_SlowMotionRatio,
 		m_pModelDataWork,
 		m_pParameters,
@@ -185,7 +190,7 @@ void NNetAppWindow::Stop()
 	m_pParameterDlg  ->Stop( );
 	m_pPerformanceWindow->Stop( );
 
-	m_pNNetReadBuffer->UnregisterAllObservers( );
+	m_pModelRedrawProxy->UnregisterAllObservers( );
 	m_NNetWorkThreadInterface.Stop( );
 
 	BaseAppWindow::Stop();
@@ -203,7 +208,7 @@ void NNetAppWindow::configureStatusBar( )
 	int iPartScriptLine = 0;
 
 	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pModelDataWork, iPartScriptLine );
-	m_pNNetReadBuffer->RegisterObserver( m_pTimeDisplay );
+	m_pModelRedrawProxy->RegisterObserver( m_pTimeDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	m_pSimulationControl = new SimulationControl( & m_StatusBar, & m_NNetWorkThreadInterface );

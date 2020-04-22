@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <fstream>
+#include "ObserverInterface.h"
 #include "MoreTypes.h"
 #include "ShapeId.h"
 
@@ -17,10 +18,12 @@ class Param;
 class NNetModel;
 class Shape;
 
-class NNetModelStorage
+class NNetModelStorage : public ObserverInterface
 {
 public:
 	NNetModelStorage( NNetModel * const, Param * const );
+
+	virtual void Notify( bool const bImmediate ) { setUnsavedChanges( true ); }
 
 	void Write( wostream & );
 	bool Read( wstring const = L"" );
@@ -28,13 +31,15 @@ public:
 	wstring const GetModelPath  ( ) { return m_wstrPathOfOpenModel; };
 	void          ResetModelPath( );
 
-	int  AskSave( );
-	bool AskAndSave( );
+	int  AskSave     ( );
+	bool AskAndSave  ( );
 	bool AskModelFile( );
-	bool SaveModel  ( );
-	bool SaveModelAs( );
+	bool SaveModel   ( );
+	bool SaveModelAs ( );
 
 private:
+	mutable bool m_bUnsavedChanges { false };  // can be changed in const functions
+
 	NNetModel     * m_pModel { nullptr };
 	Param         * m_pParam { nullptr };
 	bool            m_bPreparedForReading { false };
@@ -48,4 +53,5 @@ private:
 	void WriteShape( wostream &, Shape & );
 	void WriteMicroMeterPoint( wostream &, MicroMeterPoint const & );
 	void WritePipe( wostream &, Shape const & );
+	void setUnsavedChanges( bool const );
 };

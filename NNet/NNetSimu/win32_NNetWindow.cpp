@@ -136,7 +136,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	if ( m_pModel->AnyShapesSelected( ) )
 	{
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_DESELECT_ALL,     L"Deselect all" );
-		//AppendMenu( hPopupMenu, STD_FLAGS, IDM_COPY_SELECTION,   L"Copy selection" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_COPY_SELECTION,   L"Copy selection" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION,   L"Mark selection" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_UNMARK_SELECTION, L"Unmark selection" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_SELECTION, L"Remove selected objects" );
@@ -247,9 +247,13 @@ void NNetWindow::TriggerSoundDlg( ShapeId const id )
 
 	dialog.Show( GetWindowHandle() );
 
-	pNeuron->SetTriggerSoundOn       ( dialog.IsTriggerSoundActive() );
-	pNeuron->SetTriggerSoundFrequency( dialog.GetFrequency() );
-	pNeuron->SetTriggerSoundDuration ( dialog.GetDuration () );
+	m_pNNetWorkThreadInterface->PostSetTriggerSound
+	( 
+		id,
+	    dialog.IsTriggerSoundActive(),
+	    dialog.GetFrequency(),
+	    dialog.GetDuration ()
+	);
 }
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )

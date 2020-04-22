@@ -25,7 +25,6 @@ public:
 	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 
 	void Mark  ( tBoolOp const op ) { ApplyOp( m_bMarked, op ); }
-	void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op ); }
 
 	bool IsSelected( ) const { return m_bSelected; }
 	bool IsMarked  ( ) const { return m_bMarked; }
@@ -38,7 +37,8 @@ public:
 	virtual void Step          ( )                                             = 0;
 	virtual void Recalc        ( )                                             = 0;
 
-	virtual void Clear( ) { m_mVinputBuffer = 0.0_mV; };
+	virtual void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op ); }
+	virtual void Clear ( )                  { m_mVinputBuffer = 0.0_mV; };
 
 	bool            IsDefined   ( ) const { return ::IsDefined( m_identifier ); }
 	wchar_t const * GetName     ( ) const { return ShapeType::GetName( m_type.GetValue() ); }

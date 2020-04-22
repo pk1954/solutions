@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "NNetReadBuffer.h"
+#include "ObserverProxy.h"
 #include "win32_baseDialog.h"
 
 class TriggerSoundDialog

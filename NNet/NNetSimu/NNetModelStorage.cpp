@@ -34,6 +34,15 @@ NNetModelStorage::NNetModelStorage( NNetModel * const pModel, Param * const pPar
 	  m_pParam( pParam )
 {}
 
+void NNetModelStorage::setUnsavedChanges( bool const bState )
+{
+	if ( bState != m_bUnsavedChanges )
+	{
+		NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel, bState );
+		m_bUnsavedChanges = bState;
+	}
+}
+
 ////////////////////////// Read /////////////////////////////////////////////
 
 class WrapProtocol : public Script_Functor
@@ -305,9 +314,8 @@ bool NNetModelStorage::Read( wstring const wstrPath )
 		return false;
 	}
 
-	m_pModel->ModelSaved( );
 	m_wstrPathOfOpenModel = wstrModelFilePath;
-	NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );
+	setUnsavedChanges( false );
 	return true;
 }
 
@@ -394,7 +402,7 @@ void NNetModelStorage::Write( wostream & out )
 		} 
 	);
 
-	m_pModel->ModelSaved( );
+	setUnsavedChanges( false );  // no unsaved changes
 }
 
 void NNetModelStorage::WritePipe( wostream & out, Shape const & shape )
@@ -448,7 +456,7 @@ int NNetModelStorage::AskSave( )
 
 bool NNetModelStorage::AskAndSave( )
 {
-	if ( m_pModel->HasModelChanged() )
+	if ( m_bUnsavedChanges )
 	{
 		int iRes = AskSave( );
 		if ( iRes == IDYES )
@@ -477,7 +485,7 @@ void NNetModelStorage::writeModel( )
 	wofstream modelFile( m_wstrPathOfOpenModel );
 	Write( modelFile );
 	modelFile.close( );
-	NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );
+	setUnsavedChanges( false );
 }
 
 bool NNetModelStorage::SaveModelAs( )
@@ -509,5 +517,5 @@ bool NNetModelStorage::SaveModel( )
 void NNetModelStorage::ResetModelPath( ) 
 { 
 	m_wstrPathOfOpenModel = L""; 
-	NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel );
+	setUnsavedChanges( true );
 }

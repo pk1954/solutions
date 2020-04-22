@@ -27,7 +27,7 @@ public:
 	virtual void Start( );
 	virtual void Stop( );
 
-	static void SetAppTitle( wstring const = L"" );
+	static void SetAppTitle( wstring const, bool const );
 
 private:
 	void enableMenues( UINT const );

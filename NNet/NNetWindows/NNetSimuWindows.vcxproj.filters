@@ -39,10 +39,10 @@
     <ClInclude Include="win32_scriptHook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NNetReadBuffer.h">
+    <ClInclude Include="win32_triggerSoundDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_triggerSoundDlg.h">
+    <ClInclude Include="ObserverProxy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -33,6 +33,7 @@ public:
 		ActionTimer       * const,
 		EventInterface    * const,
 		ObserverInterface * const,
+		ObserverInterface * const,
 		SlowMotionRatio   * const,
 		NNetModel         * const,
 		Param             * const,
@@ -53,6 +54,7 @@ public:
 	void PostSlowMotionChanged   ( );
 	void PostMoveShape           ( ShapeId const, MicroMeterPoint const & );
 	void PostActionCommand       ( int const, ShapeId const, MicroMeterPoint const & );
+	void PostSetTriggerSound     ( ShapeId const, bool const, Hertz const, MilliSecs const );
 	void PostResetModel          ( );
 	void PostRunGenerations      ( bool const );
 	void PostStopComputation     ( );

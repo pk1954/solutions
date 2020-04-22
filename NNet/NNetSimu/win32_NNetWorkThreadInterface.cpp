@@ -40,7 +40,8 @@ void NNetWorkThreadInterface::Start
 	HWND                 const hwndApplication,
 	ActionTimer        * const pActionTimer,
     EventInterface     * const pEvent,
-	ObserverInterface  * const pObserver,
+	ObserverInterface  * const pRedrawObserver,
+	ObserverInterface  * const pChangeObserver,
 	SlowMotionRatio    * const pSlowMotionRatio,
 	NNetModel          * const pModel,
 	Param              * const pParam,
@@ -54,7 +55,8 @@ void NNetWorkThreadInterface::Start
 		hwndApplication, 
 		pActionTimer,
 		pEvent, 
-		pObserver,
+		pRedrawObserver,
+		pChangeObserver,
 		pSlowMotionRatio,
 		this,
 		pModel,
@@ -125,6 +127,13 @@ void NNetWorkThreadInterface::PostSetPulseRate( ShapeId const id, float const fN
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << fNewValue << endl;
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::PULSE_RATE ), id.GetValue(), (LPARAM &)fNewValue );
+}
+
+void NNetWorkThreadInterface::PostSetTriggerSound( ShapeId const id, bool const bActive, Hertz const freq, MilliSecs const ms )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << bActive << L" " << freq << L" " << ms << endl;
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::TRIGGER_SOUND ), id.GetValue(), Util::Pack2UINT64( freq.GetValue(), ms.GetValue() ) );
 }
 
 void NNetWorkThreadInterface::PostSetParameter( tParameter const param, float const fNewValue )

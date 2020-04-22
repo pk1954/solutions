@@ -5,7 +5,7 @@
 #pragma once
 
 #include "NNetParameters.h"
-#include "NNetReadBuffer.h"
+#include "ObserverProxy.h"
 #include "win32_baseDialog.h"
 
 class NNetWorkThreadInterface;

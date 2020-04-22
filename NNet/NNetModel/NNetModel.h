@@ -8,7 +8,7 @@
 #include "util.h"
 #include "BoolOp.h"
 #include "MoreTypes.h"
-#include "Observable.h"
+#include "ObserverInterface.h"
 #include "Segment.h"
 #include "tParameter.h"
 #include "tHighlightType.h"
@@ -22,14 +22,16 @@ class ComputeThread;
 class InputNeuron;
 class Param;
 
+using ShapeList = vector<Shape *>;
+
 // non member function used in class definition 
-MicroMeterRect GetEnclosingRect( vector<Shape*> const & );
+MicroMeterRect GetEnclosingRect( ShapeList const & );
 
 class NNetModel
 {
 public:
 
-	NNetModel( Param * const );
+	NNetModel( Param * const, ObserverInterface * const );
 
 	virtual ~NNetModel( );
 
@@ -82,7 +84,6 @@ public:
 
 	fMicroSecs      const GetSimulationTime ( ) const { return m_timeStamp; }
 	long            const GetSizeOfShapeList( ) const { return CastToLong( m_Shapes.size() ); }
-	bool            const HasModelChanged   ( ) const { return m_bUnsavedChanges; }
 	long            const GetNrOfShapes     ( ) const;
 
 	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
@@ -108,8 +109,8 @@ public:
 	T * const NewShape( MicroMeterPoint const & pos ) 
 	{ 
 		auto pT { new T( pos ) };
-		pT->SetId( ShapeId { GetSizeOfShapeList() } );
-		m_Shapes.push_back( pT );
+		add2ShapeList( pT );
+		modelHasChanged( );
 		return pT;
 	}
 
@@ -119,6 +120,7 @@ public:
 		if ( IsOfType<Knot>( id ) )
 		{
 			Connect( id, NewShape<T>( GetShapePos( id ) )->GetId() );
+			modelHasChanged( );
 		}
 	}
 
@@ -177,19 +179,27 @@ public:
 	void Disconnect( ShapeId const );
 	void RecalcAllShapes( );
 	void ResetModel( );
-	void ModelSaved  ( ) const;
-	void ModelChanged( ) const;
-	void SetPulseRate( ShapeId    const, float const );
+	void SetPulseRate   ( ShapeId const, float const );
+	void SetTriggerSound( ShapeId const, Hertz const, MilliSecs const );
 	void SetParameter( tParameter const, float const );
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
-	void RemoveShape( ShapeId const id ) { removeShape( GetShape( id ) ); }
+	void RemoveShape( ShapeId const id ) 
+	{ 
+		removeShape( GetShape( id ) ); 
+		modelHasChanged( );
+	}
 
 	MicroMeterRect GetEnclosingRect() {	return ::GetEnclosingRect( m_Shapes ); }
 
 	void ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
 	void CheckConsistency()          { Apply2All<Shape>( [&](Shape &s) { checkConsistency(&s); } ); }
 	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
+
+	void CopySelection( );
+	void MarkSelection( tBoolOp const );
+	void DeleteSelection( );
+	void MoveSelection( MicroMeterPoint const & );
 
 	void SelectSubtree( ShapeId const idBaseKnot, tBoolOp const op )
 	{
@@ -208,28 +218,6 @@ public:
 			pShape->Mark( op );
 	}
 
-	void CopySelection( );
-
-	void MarkSelection( tBoolOp const op )
-	{
-		Apply2AllSelectedShapes<Shape>( [&]( Shape & shape ) { shape.Mark( op ); } );
-	}
-
-	void DeleteSelection( )
-	{
-		for ( int i = 0; i < m_Shapes.size(); ++i )  // Caution!
-		{	                                         // Range based loop does not work here
-			Shape * p = m_Shapes.at(i);              // removeShape changes the range 
-			if ( p &&  p->IsSelected() )             // by creating new shapes!!
-				removeShape( p ); 
-		}
-	}
-
-	void MoveSelection( MicroMeterPoint const & delta )
-	{
-		Apply2AllSelectedShapes<BaseKnot>( [&]( BaseKnot & knot ) { knot.MoveShape( delta ); } );
-	}
-
 	bool AnyShapesSelected( )
 	{
 		return Apply2AllB<Shape>( [&]( Shape & shape ) { return shape.IsSelected(); } );
@@ -245,12 +233,18 @@ public:
 
 private:
 
-	Param         * m_pParam          { nullptr };
-	vector<Shape *> m_Shapes          { };
-	fMicroSecs      m_timeStamp       { 0._MicroSecs };
-	mutable bool    m_bUnsavedChanges { false };  // can be changed in const functions
+	ShapeList           m_Shapes          { };
+	fMicroSecs          m_timeStamp       { 0._MicroSecs };
+	Param             * m_pParam          { nullptr };
+	ObserverInterface * m_pChangeObserver { nullptr };
 
 	// local functions
+
+	void add2ShapeList( Shape * const pNewShape )
+	{
+		pNewShape->SetId( ShapeId { GetSizeOfShapeList() } );
+		m_Shapes.push_back( pNewShape );
+	}
 
 	MicroMeterPoint orthoVector        ( ShapeId const ) const;
 	bool const      isConnectedTo      ( Shape const &, Shape const & ) const;
@@ -266,4 +260,6 @@ private:
 	void            connectIncoming    ( Pipe     * const, BaseKnot * const );
 	void            connectOutgoing    ( Pipe     * const, BaseKnot * const );
 	Shape const   * findShapeAt        ( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
+	void            connectToNewShapes ( Shape &, ShapeList & );
+	void            modelHasChanged    ( ) const;
 };

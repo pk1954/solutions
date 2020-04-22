@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "MoreTypes.h"
 #include "RectType.h"
-#include "NNetModel.h"
 #include "Analyzer.h"
 
 using std::endl;

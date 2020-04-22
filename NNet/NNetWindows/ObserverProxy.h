@@ -1,4 +1,4 @@
-// NNetReadBuffer.h 
+// ObserverProxy.h 
 //
 // NNetWindows
 
@@ -7,15 +7,13 @@
 #include "observable.h"
 #include "observerInterface.h"
 
-class NNetReadBuffer : public ObserverInterface,  // Observes producer thread
+class ObserverProxy : public ObserverInterface,  // Observes producer thread
 	                   public Observable          // Can be observed by consumer threads
 {
 public:
-	NNetReadBuffer( ) {	}
+	ObserverProxy( ) {	}
 
-	~NNetReadBuffer( ) { }
-
-	// called by producer thread
+	~ObserverProxy( ) { }
 
 	virtual void Notify( bool const bImmediate )  
 	{                                          

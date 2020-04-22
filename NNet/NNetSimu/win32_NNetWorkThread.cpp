@@ -36,7 +36,8 @@ NNetWorkThread::NNetWorkThread
 	HWND                      const hwndApplication,
 	ActionTimer             * const pActionTimer,
 	EventInterface          * const pEvent,
-	ObserverInterface       * const pObserver, 
+	ObserverInterface       * const pRedrawObserver, 
+	ObserverInterface       * const pChangeObserver, 
 	SlowMotionRatio         * const pSlowMotionRatio,
 	NNetWorkThreadInterface * const pWorkThreadInterface,
 	NNetModel               * const pNNetModel,
@@ -48,7 +49,8 @@ NNetWorkThread::NNetWorkThread
 	m_pNNetModel          ( pNNetModel ),
 	m_pParam              ( pParam ),
 	m_pEventPOI           ( pEvent ),   
-	m_pModelObserver      ( pObserver ),   
+	m_pModelRedrawObserver( pRedrawObserver ),   
+	m_pModelChangeObserver( pRedrawObserver ),   
 	m_pWorkThreadInterface( pWorkThreadInterface ),
 	m_hwndApplication     ( hwndApplication ),
 	m_pSlowMotionRatio    ( pSlowMotionRatio )
@@ -67,7 +69,8 @@ NNetWorkThread::~NNetWorkThread( )
 	m_hwndApplication      = nullptr;
 	m_pWorkThreadInterface = nullptr;
 	m_pEventPOI            = nullptr;
-	m_pModelObserver       = nullptr;
+	m_pModelRedrawObserver = nullptr;
+	m_pModelChangeObserver = nullptr;
 	m_pStorage             = nullptr;
 }
 
@@ -105,8 +108,8 @@ void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )
 
 	if ( bRes )
 	{
-		if (m_pModelObserver != nullptr)                // ... notify main thread, that model has changed.
-			m_pModelObserver->Notify( ! m_bContinue );  // Continue immediately, if in run mode
+		if (m_pModelRedrawObserver != nullptr)                // ... notify main thread, that model has changed.
+			m_pModelRedrawObserver->Notify( ! m_bContinue );  // Continue immediately, if in run mode
 	}
 	else  // Nobody could handle message
 	{
@@ -179,6 +182,11 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 
 	case NNetWorkThreadMessage::Id::PULSE_RATE:
 		m_pNNetModel->SetPulseRate( ShapeId( CastToLong(msg.wParam) ), (float &)msg.lParam ); //TODO: change to modern cast
+		m_pNNetModel->ClearModel( );
+		break;
+
+	case NNetWorkThreadMessage::Id::TRIGGER_SOUND:
+		m_pNNetModel->SetTriggerSound( ShapeId( CastToLong(msg.wParam) ), static_cast<Hertz>(Util::UnpackUlongA(msg.lParam)), static_cast<MilliSecs>(Util::UnpackUlongB(msg.lParam)) );
 		m_pNNetModel->ClearModel( );
 		break;
 

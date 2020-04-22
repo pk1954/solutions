@@ -1,5 +1,5 @@
 SetSound ON
 SetAutoOpen ON
-ReadModel "D:\SW-projects\Solutions\Tests\3In3=ut2Ruck.mod"
-SetPixelOffset (-1006.62/-226.112)
-SetPixelSize 4.95418
+ReadModel "D:\SW-projects\Solutions\NNet\Models\3In3=ut2Ruck.mod"
+SetPixelOffset (-722.293/-592.719)
+SetPixelSize 8.37258

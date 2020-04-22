@@ -26,11 +26,11 @@ void BaseKnot::apply2All
 )
 {
 	LockShape();
-	for ( auto pipe : pipeList ) 
+	for ( Pipe * pPipe : pipeList ) 
 	{ 
-		if ( pipe == nullptr )
+		if ( pPipe == nullptr )
 			throw std::logic_error( "nullptr in pipe list"  );
-		func( pipe );
+		func( pPipe );
 	}
 	UnlockShape();
 }
@@ -81,8 +81,11 @@ void BaseKnot::clearPipeList( PipeList & list )
 
 void BaseKnot::addPipe( PipeList & list, Pipe * const pPipe )
 {
-	assert( find( begin(list), end(list), pPipe ) == end(list) );
-	list.push_back( pPipe );
+	if ( pPipe != nullptr )
+	{
+		assert( find( begin(list), end(list), pPipe ) == end(list) );
+		list.push_back( pPipe );
+	}
 }
 
 void BaseKnot::removePipe( PipeList & list, Pipe * const pPipe )

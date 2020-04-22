@@ -56,6 +56,7 @@
 #define IDM_SLOWER               130
 #define IDM_FASTER               131
 								 
+#define IDM_DELETE               139
 #define IDM_ESCAPE               140
 #define IDM_RESET                141
 #define IDM_SELECT_ALL           142

@@ -12,7 +12,7 @@
 // infrastructure
 
 #include "win32_baseAppWindow.h"
-#include "NNetReadBuffer.h"
+#include "ObserverProxy.h"
 #include "win32_winManager.h"
 #include "win32_scriptHook.h"
 #include "SlowMotionRatio.h"
@@ -68,7 +68,8 @@ private:
 	Param                   * m_pParameters              { nullptr };
 	SimulationControl       * m_pSimulationControl       { nullptr };
 	NNetColors              * m_pNNetColors              { nullptr };
-	NNetReadBuffer          * m_pNNetReadBuffer          { nullptr };
+	ObserverProxy           * m_pModelRedrawProxy          { nullptr };
+	ObserverProxy           * m_pModelChangedProxy       { nullptr };
 	NNetController          * m_pNNetController          { nullptr };
 	NNetModel               * m_pModelDataWork           { nullptr };
 	NNetWindow              * m_pMainNNetWindow          { nullptr };

@@ -40,6 +40,7 @@ public:
 		REMOVE_SHAPE,
 		DISCONNECT,
 		PULSE_RATE,
+		TRIGGER_SOUND,
 		PULSE_SPEED,
 	    THRESHOLD,
 	    PEAK_VOLTAGE, 
@@ -85,6 +86,7 @@ public:
 		HWND                      const,
 		ActionTimer             * const,
 		EventInterface          * const,
+		ObserverInterface       * const,
 		ObserverInterface       * const,
 		SlowMotionRatio         * const,
 		NNetWorkThreadInterface * const,
@@ -145,19 +147,20 @@ private:
 
 	inline static tAppCallBack m_appCallback { nullptr };
 
-	HiResTimer                m_hrTimer                 { };
 	BOOL                      m_bContinue               { FALSE };
-	TimeResObserver         * m_pTimeResObserver        { nullptr };
 	fMicroSecs                m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
 	fMicroSecs                m_usRealTimeAvailPerCycle { 0.0_MicroSecs };
+	TimeResObserver         * m_pTimeResObserver        { nullptr };
 	NNetModelStorage        * m_pStorage                { nullptr };
 	EventInterface          * m_pEventPOI               { nullptr };
 	NNetWorkThreadInterface * m_pWorkThreadInterface    { nullptr };
 	NNetModel               * m_pNNetModel              { nullptr };
 	Param                   * m_pParam                  { nullptr };
 	SlowMotionRatio         * m_pSlowMotionRatio        { nullptr };
-	ObserverInterface       * m_pModelObserver          { nullptr };
+	ObserverInterface       * m_pModelRedrawObserver    { nullptr };
+	ObserverInterface       * m_pModelChangeObserver    { nullptr };
 	HWND                      m_hwndApplication         { (HWND)0 };
 	Observable                m_runObservable           { };
 	Observable                m_performanceObservable   { };
+	HiResTimer                m_hrTimer                 { };
 };

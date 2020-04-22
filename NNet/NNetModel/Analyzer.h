@@ -8,9 +8,9 @@
 
 #include <string>
 #include <vector>
+#include "NNetModel.h"
 #include "DisplayFunctor.h"
 
-class NNetModel;
 class Knot;
 class Shape;
 
@@ -37,7 +37,7 @@ private:
 	inline static DisplayFunctor * m_pDisplayFunctor { nullptr };
 	inline static bool             m_bStop		     { false };
 	inline static int              m_iRecDepth	     { 0 };
-	inline static vector<Shape *>  m_shapeStack 	 { };
+	inline static ShapeList        m_shapeStack 	 { };
 
 	static bool findLoop( Shape * const );
 	static bool hasAnomaly( Knot & );

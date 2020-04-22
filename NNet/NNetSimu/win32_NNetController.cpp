@@ -213,6 +213,12 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		);
 		break;
 
+	case IDM_DELETE:
+		if ( m_pNNetWindow->GetHighlightedShapeId() == NO_SHAPE )
+			break;
+		else 
+			; // fall through
+
 	case IDD_REMOVE_SHAPE:
 		Sound::Play( TEXT("DISAPPEAR_SOUND") ); 
 		m_pNNetWorkThreadInterface->PostRemoveShape( m_pNNetWindow->GetHighlightedShapeId( ) );

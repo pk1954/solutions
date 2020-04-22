@@ -87,8 +87,8 @@ static INT_PTR CALLBACK dialogProc
 			{
 			case IDOK:
 				pDlg->m_bSoundActive = IsDlgButtonChecked( hDlg, IDC_TRIGGER_SOUND_ON ) == BST_CHECKED;
-				pDlg->m_frequency = Hertz    ( pDlg->evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ ) );
-				pDlg->m_duration  = MilliSecs( pDlg->evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC ) );
+				pDlg->m_frequency = pDlg->m_bSoundActive ? Hertz    ( pDlg->evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ )) : 0_Hertz;
+				pDlg->m_duration  = pDlg->m_bSoundActive ? MilliSecs( pDlg->evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC )) : 0_MilliSecs;
 				EndDialog( hDlg, true );
 				return TRUE;
 

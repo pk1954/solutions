@@ -66,6 +66,13 @@ public:
 		UnlockShape();
 	}
 
+	virtual void Select( tBoolOp const op ) 
+	{ 
+		Shape::Select( op );
+		m_pKnotStart->Select( op );
+		m_pKnotEnd  ->Select( op );
+	}
+
 	mV GetNextOutput( ) const {	return * m_potIter; }
 
 	virtual void DrawExterior  ( PixelCoordsFp  &, tHighlightType const ) const;
