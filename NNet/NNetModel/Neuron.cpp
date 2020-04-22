@@ -38,8 +38,11 @@ void Neuron::SetTriggerSoundOn( bool const bMode )
 	{
 		if ( bMode  )
 			m_pTpWork = CreateThreadpoolWork( BeepFunc, this, nullptr );
-		else 
+		else
+		{
 			CloseThreadpoolWork( m_pTpWork );
+			m_pTpWork = nullptr;
+		}
 		m_bTriggerSoundOn = bMode;
 	}
 }
@@ -87,7 +90,7 @@ void Neuron::Step( )
 	{
 		m_timeSinceLastPulse = 0._MicroSecs;
 		m_bTriggered = true;
-		if ( HasTriggerSound() )
+		if ( HasTriggerSound() && m_pTpWork )
 			SubmitThreadpoolWork( m_pTpWork );
 	}
 	else

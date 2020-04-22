@@ -20,7 +20,7 @@ public:
 
 	static void Beep( Hertz hertz, MilliSecs msecs )
 	{
-		if ( m_bActive )
+		if ( m_bActive && (hertz >= 37_Hertz) && (msecs > 0_MilliSecs) )  // winapi limit 37 Hertz
 			::Beep( static_cast<DWORD>(hertz.GetValue()), static_cast<DWORD>(msecs.GetValue()) );
 	}
 

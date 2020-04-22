@@ -36,6 +36,11 @@ namespace Util
             long longA;
             long longB;
         } l2;
+        struct twoULongs
+        {
+            unsigned long ulA;
+            unsigned long ulB;
+        } ul2;
         UINT64 ui64;
 	};
 
@@ -74,6 +79,28 @@ namespace Util
         U64Bit u;
         u.ui64 = ui64;
         return u.l2.longB;
+    }
+
+    inline UINT64 Pack2UINT64( unsigned long const ulA, unsigned long const ulB )
+    {
+        U64Bit u;
+        u.ul2.ulA = ulA;
+        u.ul2.ulB = ulB;
+        return u.ui64;
+    }
+
+    inline unsigned long UnpackUlongA( UINT64 ui64 )
+    {
+        U64Bit u;
+        u.ui64 = ui64;
+        return u.ul2.ulA;
+    }
+
+    inline unsigned long UnpackUlongB( UINT64 ui64 )
+    {
+        U64Bit u;
+        u.ui64 = ui64;
+        return u.ul2.ulB;
     }
 
     inline bool operator== ( RECT const & a, RECT const & b ) 
