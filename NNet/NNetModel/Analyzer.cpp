@@ -12,7 +12,7 @@ using std::to_wstring;
 
 bool ModelAnalyzer::FindLoop( NNetModel const & model )
 {
-	int iNrOfShapes { model.GetNrOfShapes() };
+	int iNrOfShapes { model.GetNrOf<Shape>() };
 	(* m_pDisplayFunctor)( to_wstring( iNrOfShapes ) + L" objects found" );
 
 	for ( int iMaxLoopSize = 5; iMaxLoopSize <= iNrOfShapes + 1; iMaxLoopSize += 2 )

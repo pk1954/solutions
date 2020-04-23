@@ -61,6 +61,8 @@ public:
 	void PostGenerationStep      ( );
 	void PostCopySelection       ( );
 	void PostDeleteSelection     ( );
+	void PostRemoveBeepers       ( );
+	void PostSelectAllBeepers    ( );
 	void PostMarkSelection       ( tBoolOp const );
 	void PostRepeatGenerationStep( );       // Do not call! Used by WorkThread only;
 

@@ -181,6 +181,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWorkThreadInterface->PostDeleteSelection( );
 		break;
 
+	case IDM_REMOVE_BEEPERS:
+		m_pNNetWorkThreadInterface->PostRemoveBeepers( );
+		break;
+
+	case IDM_SELECT_ALL_BEEPERS:
+		m_pNNetWorkThreadInterface->PostSelectAllBeepers( );
+		break;
+
 	case IDM_MARK_SELECTION:
 	case IDM_UNMARK_SELECTION:
 		m_pNNetWorkThreadInterface->PostMarkSelection( BoolOp(wmId == IDM_MARK_SELECTION) );

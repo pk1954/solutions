@@ -32,8 +32,10 @@ IDC_NNET_SIMU_MAIN MENU
 	}
     POPUP "&Edit"
     {
-        MENUITEM "&Select all",   IDM_SELECT_ALL
-        MENUITEM "&Deselect all", IDM_DESELECT_ALL
+        MENUITEM "&Select all",                             IDM_SELECT_ALL
+        MENUITEM "&Deselect all",                           IDM_DESELECT_ALL
+        MENUITEM "&Remove trigger sounds",                  IDM_REMOVE_BEEPERS
+        MENUITEM "Select all neurons with &trigger sounds", IDM_SELECT_ALL_BEEPERS
     }
     POPUP "&Action"
     {

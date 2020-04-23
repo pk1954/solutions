@@ -149,7 +149,7 @@ void NNetAppWindow::Start( )
 
 	m_pCrsrWindow->Start( m_hwndApp, m_pCursorPos, m_pMainNNetWindow );
 	m_pParameterDlg->Start( m_hwndApp, m_pParameters );
-	m_pPerformanceWindow->Start( m_hwndApp, & m_NNetWorkThreadInterface, & m_atDisplay );
+	m_pPerformanceWindow->Start( m_hwndApp, m_pModelDataWork, & m_NNetWorkThreadInterface, & m_atDisplay );
 
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,        TRUE, FALSE );
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  * m_pMainNNetWindow,    TRUE, FALSE );
@@ -176,7 +176,7 @@ void NNetAppWindow::Start( )
 	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage ) )
 		m_pModelDataWork->CreateInitialShapes();
 
-	m_pNNetModelStorage->Write( wcout );
+//	m_pNNetModelStorage->Write( wcout );
 
 	m_bStarted = TRUE;
 }

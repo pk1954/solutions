@@ -212,6 +212,14 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		m_pNNetModel->DeleteSelection();
 		break;
 
+	case NNetWorkThreadMessage::Id::SELECT_ALL_BEEPERS:
+		m_pNNetModel->SelectBeepers();
+		break;
+
+	case NNetWorkThreadMessage::Id::REMOVE_BEEPERS:
+		m_pNNetModel->RemoveBeepers();
+		break;
+
 	case NNetWorkThreadMessage::Id::COPY_SELECTION:
 		m_pNNetModel->CopySelection();
 		break;

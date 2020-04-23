@@ -114,8 +114,33 @@ private:
 	void removePipe   ( PipeList &, Pipe * const );
 	void clearPipeList( PipeList & );
 
-	void apply2All ( PipeList const &, PipeFunc  const & );
-	bool apply2AllB( PipeList const &, PipeFuncB const & );
+	void apply2All( PipeList const & pipeList, PipeFunc const & func )
+	{
+		LockShape();
+		for ( Pipe * pPipe : pipeList ) 
+		{ 
+			if ( pPipe != nullptr )
+				func( pPipe );
+		}
+		UnlockShape();
+	}
+
+	bool apply2AllB( PipeList  const & pipeList, PipeFuncB const & func )
+	{
+		bool bResult { false };
+		LockShape();
+		for ( auto pipe : pipeList ) 
+		{ 
+			if ( pipe != nullptr )
+			{
+				bResult = func( pipe );
+				if ( bResult )
+					break;
+			}
+		}
+		UnlockShape();
+		return bResult;
+	}
 
 	MicroMeterPoint     m_center;
 	MicroMeter          m_extension;

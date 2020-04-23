@@ -19,47 +19,18 @@ using std::fixed;
 using std::wstring;
 using std::wostringstream;
 
-void BaseKnot::apply2All
-( 
-	PipeList const & pipeList,
-	PipeFunc const & func 
-)
-{
-	LockShape();
-	for ( Pipe * pPipe : pipeList ) 
-	{ 
-		if ( pPipe == nullptr )
-			throw std::logic_error( "nullptr in pipe list"  );
-		func( pPipe );
-	}
-	UnlockShape();
-}
-
-bool BaseKnot::apply2AllB
-( 
-	PipeList  const & pipeList,
-	PipeFuncB const & func 
-)
-{
-	bool bResult { false };
-	LockShape();
-	for ( auto pipe : pipeList ) 
-	{ 
-		if ( pipe == nullptr )
-			throw std::logic_error( "nullptr in pipe list"  );
-
-		bResult = func( pipe );
-		if ( bResult )
-			break;
-	}
-	UnlockShape();
-	return bResult;
-}
-
 void BaseKnot::Prepare( )
 {
 	m_mVinputBuffer = 0._mV;
-	Apply2AllInPipes( [&]( auto pipe ) { m_mVinputBuffer += pipe->GetNextOutput( ); } );
+	LockShape();
+	for ( Pipe * pPipe : m_incoming ) 
+	{ 
+		if ( pPipe != nullptr )
+			m_mVinputBuffer += pPipe->GetNextOutput( );
+	}
+	UnlockShape();
+
+	//Apply2AllInPipes( [&]( auto pPipe ) { m_mVinputBuffer += pPipe->GetNextOutput( ); } ); // too slow
 }
 
 bool BaseKnot::IsPrecursorOf( ShapeId const id )

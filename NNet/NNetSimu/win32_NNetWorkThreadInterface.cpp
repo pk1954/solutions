@@ -172,6 +172,8 @@ wchar_t const * NNetWorkThreadInterface::GetActionCommandName( int const iMsgId 
 		{ IDM_ANALYZE_LOOPS,       L"ANALYZE_LOOPS"       },
 		{ IDM_ANALYZE_ANOMALIES,   L"ANALYZE_ANOMALIES"   },
 		{ IDM_REMOVE_SELECTION,    L"REMOVE_SELECTION"    },
+		{ IDM_REMOVE_BEEPERS,      L"REMOVE_BEEPERS"      },
+		{ IDM_SELECT_ALL_BEEPERS,  L"SELECT_ALL_BEEPERS"  },
 		{ IDM_MARK_SELECTION,      L"MARK_SELECTION"      },
 		{ IDM_COPY_SELECTION,      L"COPY_SELECTION"      },
 		{ IDD_INSERT_NEURON,       L"INSERT_NEURON"       },
@@ -195,6 +197,8 @@ int const NNetWorkThreadInterface::GetActionCommandFromName( wchar_t const * con
 		{ L"ANALYZE_LOOPS",       IDM_ANALYZE_LOOPS       },
 		{ L"ANALYZE_ANOMALIES",   IDM_ANALYZE_ANOMALIES   },
 		{ L"REMOVE_SELECTION",    IDM_REMOVE_SELECTION    },
+		{ L"REMOVE_BEEPERS",      IDM_REMOVE_BEEPERS      },
+		{ L"SELECT_ALL_BEEPERS",  IDM_SELECT_ALL_BEEPERS  },
 		{ L"MARK_SELECTION",      IDM_MARK_SELECTION      },
 		{ L"COPY_SELECTION",      IDM_COPY_SELECTION      },
 		{ L"INSERT_NEURON",       IDD_INSERT_NEURON       },
@@ -218,6 +222,8 @@ void NNetWorkThreadInterface::PostActionCommand( int const idMsg, ShapeId const 
 		{ IDM_ANALYZE_LOOPS,       NNetWorkThreadMessage::Id::ANALYZE_LOOPS       },
 		{ IDM_ANALYZE_ANOMALIES,   NNetWorkThreadMessage::Id::ANALYZE_ANOMALIES   },
 		{ IDM_REMOVE_SELECTION,    NNetWorkThreadMessage::Id::REMOVE_SELECTION    },
+		{ IDM_REMOVE_BEEPERS,      NNetWorkThreadMessage::Id::REMOVE_BEEPERS      },
+		{ IDM_SELECT_ALL_BEEPERS,  NNetWorkThreadMessage::Id::SELECT_ALL_BEEPERS  },
 		{ IDM_MARK_SELECTION,      NNetWorkThreadMessage::Id::MARK_SELECTION      },
 		{ IDM_COPY_SELECTION,      NNetWorkThreadMessage::Id::COPY_SELECTION      },
 		{ IDD_INSERT_NEURON,       NNetWorkThreadMessage::Id::INSERT_NEURON       },
@@ -265,6 +271,16 @@ void NNetWorkThreadInterface::PostSendBack( int const iMsg )
 void NNetWorkThreadInterface::PostDeleteSelection()
 {
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::REMOVE_SELECTION), 0, 0 );
+}
+
+void NNetWorkThreadInterface::PostSelectAllBeepers()
+{
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SELECT_ALL_BEEPERS), 0, 0 );
+}
+
+void NNetWorkThreadInterface::PostRemoveBeepers()
+{
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::REMOVE_BEEPERS), 0, 0 );
 }
 
 void NNetWorkThreadInterface::PostMarkSelection( tBoolOp const op )

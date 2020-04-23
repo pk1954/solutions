@@ -154,6 +154,7 @@
       <ExceptionHandling>Async</ExceptionHandling>
       <EnableParallelCodeGeneration>
       </EnableParallelCodeGeneration>
+      <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -171,6 +172,12 @@
     <Lib />
     <Lib />
     <Lib />
+    <Lib />
+    <Lib />
+    <Lib />
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Analyzer.h" />

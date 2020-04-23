@@ -135,11 +135,12 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 	if ( m_pModel->AnyShapesSelected( ) )
 	{
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_DESELECT_ALL,     L"Deselect all" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_COPY_SELECTION,   L"Copy selection" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION,   L"Mark selection" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_UNMARK_SELECTION, L"Unmark selection" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_SELECTION, L"Remove selected objects" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_DESELECT_ALL,       L"Deselect all" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_COPY_SELECTION,     L"Copy selection" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION,     L"Mark selection" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_UNMARK_SELECTION,   L"Unmark selection" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_SELECTION,   L"Remove selected objects" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_BEEPERS,     L"Remove selected trigger sounds" );
 	}
 	else switch ( type.GetValue() )
 	{
@@ -195,8 +196,10 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		break;
 
 	case ShapeType::Value::undefined: // no shape selected, cursor on background
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_NEURON,       L"New neuron" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_INPUT_NEURON, L"New input neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_NEURON,         L"New neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_INPUT_NEURON,   L"New input neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_SELECT_ALL_BEEPERS, L"Select all neurons with trigger sound" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_BEEPERS,     L"Remove all trigger sounds" );
 		break;
 
 	default:

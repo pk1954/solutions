@@ -54,13 +54,6 @@ void NNetModel::RecalcAllShapes( )
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); } );
 } 
 
-long const NNetModel::GetNrOfShapes( ) const
-{
-	long lCounter = 0;
-	Apply2All<Shape>( [&]( Shape & shape ) { ++ lCounter; } );
-	return lCounter;
-}
-
 bool const NNetModel::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) const
 {
 	if ( idSrc == idDst )
@@ -174,9 +167,8 @@ void NNetModel::SetPulseRate( ShapeId const id, float const fNewValue )
 	}
 }
 
-void NNetModel::SetTriggerSound( ShapeId const id, Hertz const freq, MilliSecs const msec )
+void NNetModel::setTriggerSound( Neuron * const pNeuron, Hertz const freq, MilliSecs const msec )
 {
-	Neuron * const pNeuron { GetShapePtr<Neuron *>( id ) };
 	if ( pNeuron )
 	{
 		pNeuron->SetTriggerSoundFrequency( freq );
@@ -184,6 +176,16 @@ void NNetModel::SetTriggerSound( ShapeId const id, Hertz const freq, MilliSecs c
 		pNeuron->SetTriggerSoundOn( freq != 0_Hertz );
 		modelHasChanged( );
 	}
+}
+
+void NNetModel::removeTriggerSound( Neuron * const pNeuron )
+{
+	setTriggerSound( pNeuron, 0_Hertz, 0_MilliSecs );
+}
+
+void NNetModel::SetTriggerSound( ShapeId const id, Hertz const freq, MilliSecs const msec )
+{
+	setTriggerSound( GetShapePtr<Neuron *>( id ), freq, msec );
 }
 
 void NNetModel::SetParameter
@@ -364,12 +366,12 @@ void NNetModel::DeleteSelection( )
 
 void NNetModel::MarkSelection( tBoolOp const op )
 {
-	Apply2AllSelectedShapes<Shape>( [&]( Shape & shape ) { shape.Mark( op ); } );
+	Apply2AllSelected<Shape>( [&]( Shape & shape ) { shape.Mark( op ); } );
 }
 
 void NNetModel::MoveSelection( MicroMeterPoint const & delta )
 {
-	Apply2AllSelectedShapes<BaseKnot>( [&]( BaseKnot & knot ) { knot.MoveShape( delta ); } );
+	Apply2AllSelected<BaseKnot>( [&]( BaseKnot & knot ) { knot.MoveShape( delta ); } );
 	modelHasChanged( );
 }
 
@@ -423,10 +425,10 @@ void NNetModel::CopySelection( )
 	ShapeList newShapes( m_Shapes.size(), nullptr ); 
 
 	// make shallow copy of all selected shapes
-	Apply2AllSelectedShapes<Shape>(	[&]( Shape & shape ) { newShapes.at(shape.GetId().GetValue()) = shallowCopy( shape ); }	);
+	Apply2AllSelected<Shape>(	[&]( Shape & shape ) { newShapes.at(shape.GetId().GetValue()) = shallowCopy( shape ); }	);
 
 	// interconnect new shapes in same way as originals 
-	Apply2AllSelectedShapes<Shape>(	[&]( Shape & shape ) { connectToNewShapes( shape, newShapes ); } );
+	Apply2AllSelected<Shape>(	[&]( Shape & shape ) { connectToNewShapes( shape, newShapes ); } );
 
 	// Deselect original shapes, copies inherited selection at shallow copy
 	SelectAll( tBoolOp::opFalse );
