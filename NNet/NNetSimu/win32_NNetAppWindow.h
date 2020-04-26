@@ -68,10 +68,10 @@ private:
 	Param                   * m_pParameters              { nullptr };
 	SimulationControl       * m_pSimulationControl       { nullptr };
 	NNetColors              * m_pNNetColors              { nullptr };
-	ObserverProxy           * m_pModelRedrawProxy          { nullptr };
+	ObserverProxy           * m_pModelRedrawProxy        { nullptr };
 	ObserverProxy           * m_pModelChangedProxy       { nullptr };
 	NNetController          * m_pNNetController          { nullptr };
-	NNetModel               * m_pModelDataWork           { nullptr };
+	NNetModel               * m_pModel                   { nullptr };
 	NNetWindow              * m_pMainNNetWindow          { nullptr };
 	TimeDisplay             * m_pTimeDisplay             { nullptr };
 	SlowMotionDisplay       * m_pSlowMotionDisplay       { nullptr };

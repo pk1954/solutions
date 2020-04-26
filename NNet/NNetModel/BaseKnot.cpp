@@ -30,7 +30,7 @@ void BaseKnot::Prepare( )
 	}
 	UnlockShape();
 
-	//Apply2AllInPipes( [&]( auto pPipe ) { m_mVinputBuffer += pPipe->GetNextOutput( ); } ); // too slow
+	//Apply2AllInPipes( [&]( auto pPipe ) { m_mVinputBuffer += pPipe->GetNextOutput( ); } ); // slow
 }
 
 bool BaseKnot::IsPrecursorOf( ShapeId const id )

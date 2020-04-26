@@ -1,5 +1,7 @@
 // NamedType.h
 //
+// Inspired by Jonathan Boccara
+// https://www.fluentcpp.com/
 
 #pragma once
 

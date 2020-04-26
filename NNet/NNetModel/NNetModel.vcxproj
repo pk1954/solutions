@@ -154,7 +154,7 @@
       <ExceptionHandling>Async</ExceptionHandling>
       <EnableParallelCodeGeneration>
       </EnableParallelCodeGeneration>
-      <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/GH /Gh %(AdditionalOptions) %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,7 +176,7 @@
     <Lib />
     <Lib />
     <Lib>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(MICROPROFILERDIR)/micro-profiler_$(PlatformName).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

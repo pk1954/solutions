@@ -93,6 +93,31 @@ bool Pipe::IsPointInShape( MicroMeterPoint const & point ) const
 	return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
 }
 
+mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
+{
+	mV mVresult { 0._mV };
+	LockShape();
+	MicroMeterPoint const umVector { GetStartPoint( ) - GetEndPoint( ) };
+	if ( ! IsCloseToZero( umVector ) )
+	{
+		MicroMeterPoint const umSegVec     { umVector / CastToFloat(m_potential.size()) };
+		MicroMeterPoint const umOrthoScaled{ OrthoVector( umVector, m_width ) };
+		MicroMeterPoint       umPoint1     { GetStartPoint( ) };
+		for ( auto iter = m_potIter; iter != m_potential.end( ); ++ iter )
+		{
+			MicroMeterPoint const umPoint2  { umPoint1 + umSegVec };
+			MicroMeterPoint const umCorner1 { umPoint1 + umOrthoScaled };
+			MicroMeterPoint const umCorner2 { umPoint1 - umOrthoScaled };
+			MicroMeterPoint const umCorner3 { umPoint2 + umOrthoScaled };
+			if ( IsPointInRect< MicroMeterPoint >( point, umCorner1, umCorner2, umCorner3 ) )
+				mVresult = * m_potIter;
+			umPoint1 = umPoint2;
+		};
+	}
+	UnlockShape();
+	return mVresult;
+}
+
 MicroMeterPoint Pipe::GetVector( ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
@@ -145,13 +170,13 @@ void Pipe::DrawInterior( PixelCoordsFp & coord )
 		fPIXEL      const fWidth     { coord.convert2fPixel( m_width * PIPE_INTERIOR ) };
 		fPixelPoint const fPixVector { coord.convert2fPixelSize( umVector ) };
 		fPixelPoint const fPixSegVec { fPixVector / CastToFloat(m_potential.size()) };
-		fPixelPoint       fPoint1    { coord.convert2fPixelPos( umStartPoint ) };
+		fPixelPoint       fPoint     { coord.convert2fPixelPos( umStartPoint ) };
 
 		LockShape();
-		for( auto iter = m_potIter; iter != m_potential.end(); ++ iter )
-			drawSegment( fPoint1, fPixSegVec, fWidth, * iter );
-		for( auto iter = m_potential.begin(); iter != m_potIter; ++ iter )
-			drawSegment( fPoint1, fPixSegVec, fWidth, * iter );
+		for( auto iter = m_potIter; iter != m_potential.end(); ++iter )
+			drawSegment( fPoint, fPixSegVec, fWidth, * iter );             // fPoint altered!   
+		for( auto iter = m_potential.begin(); iter != m_potIter; ++iter )
+			drawSegment( fPoint, fPixSegVec, fWidth, * iter );             // fPoint altered!
 		UnlockShape();
 	}
 }

@@ -24,7 +24,7 @@ public:
 
 	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 
-	void Mark  ( tBoolOp const op ) { ApplyOp( m_bMarked, op ); }
+	void Mark( tBoolOp const op ) { ApplyOp( m_bMarked, op ); }
 
 	bool IsSelected( ) const { return m_bSelected; }
 	bool IsMarked  ( ) const { return m_bMarked; }
@@ -58,12 +58,12 @@ public:
 	static void SetGraphics( D2D_driver const * const pGraphics ) { m_pGraphics   = pGraphics; }
 	static void SetParam   ( Param      const * const pParam    ) { m_pParameters = pParam;    }
 
-	void LockShape() 
+	void LockShape() const
 	{ 
 		AcquireSRWLockExclusive( & m_SRWLock );
 	}
 
-	void UnlockShape() 
+	void UnlockShape() const
 	{ 
 		ReleaseSRWLockExclusive( & m_SRWLock ); 
 	}
@@ -88,5 +88,6 @@ private:
 	ShapeId   m_identifier { NO_SHAPE };
 	bool      m_bSelected  { false };
 	bool      m_bMarked    { false };
-	SRWLOCK   m_SRWLock    { SRWLOCK_INIT };
+	
+	mutable SRWLOCK m_SRWLock { SRWLOCK_INIT };
 };

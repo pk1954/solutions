@@ -51,6 +51,8 @@ public:
 		return m_pKnotStart->IsInRect( umRect ) || m_pKnotEnd->IsInRect( umRect );
 	}
 
+	virtual mV GetNextOutput( ) const {return * m_potIter; }
+
 	virtual void Prepare( )
 	{
 		m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
@@ -73,7 +75,7 @@ public:
 		m_pKnotEnd  ->Select( op );
 	}
 
-	mV GetNextOutput( ) const {	return * m_potIter; }
+	mV GetVoltage( MicroMeterPoint const & ) const;
 
 	virtual void DrawExterior  ( PixelCoordsFp  &, tHighlightType const ) const;
 	virtual void DrawInterior  ( PixelCoordsFp  & );

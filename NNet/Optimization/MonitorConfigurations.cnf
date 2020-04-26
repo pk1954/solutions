@@ -1,0 +1,15 @@
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 1080 6400 2160   # monitor rectangle
+3840 1080 6400 2120   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1280 1114 0 2138   # monitor rectangle
+-1280 1114 0 2098   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+

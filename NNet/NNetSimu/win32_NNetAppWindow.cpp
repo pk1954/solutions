@@ -101,8 +101,8 @@ NNetAppWindow::~NNetAppWindow( )
 void NNetAppWindow::Start( )
 {
 	m_pParameters       = new Param( );
-	m_pModelDataWork    = new NNetModel( m_pParameters, m_pModelChangedProxy );
-	m_pNNetModelStorage = new NNetModelStorage( m_pModelDataWork, m_pParameters );
+	m_pModel            = new NNetModel( m_pParameters, m_pModelChangedProxy );
+	m_pNNetModelStorage = new NNetModelStorage( m_pModel, m_pParameters );
 	m_pModelChangedProxy->RegisterObserver( m_pNNetModelStorage );
 
 	BaseAppWindow::Start( m_pMainNNetWindow );
@@ -127,7 +127,7 @@ void NNetAppWindow::Start( )
 		m_hwndApp, 
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		nullptr,  // no visibility criterion. Allways visible,
-		m_pModelDataWork,
+		m_pModel,
 		m_pCursorPos
 	);
 
@@ -141,15 +141,15 @@ void NNetAppWindow::Start( )
 		  m_pModelRedrawProxy,
 		  m_pNNetModelStorage,
 		& m_SlowMotionRatio,
-		m_pModelDataWork,
+		m_pModel,
 		m_pParameters,
 		m_pNNetModelStorage,
 		TRUE    // async thread?
 	);
 
-	m_pCrsrWindow->Start( m_hwndApp, m_pCursorPos, m_pMainNNetWindow );
+	m_pCrsrWindow->Start( m_hwndApp, m_pCursorPos, m_pMainNNetWindow, m_pModel );
 	m_pParameterDlg->Start( m_hwndApp, m_pParameters );
-	m_pPerformanceWindow->Start( m_hwndApp, m_pModelDataWork, & m_NNetWorkThreadInterface, & m_atDisplay );
+	m_pPerformanceWindow->Start( m_hwndApp, m_pModel, & m_NNetWorkThreadInterface, & m_atDisplay );
 
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,        TRUE, FALSE );
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  * m_pMainNNetWindow,    TRUE, FALSE );
@@ -174,7 +174,7 @@ void NNetAppWindow::Start( )
 	PostCommand2Application( IDM_RUN, true );
 
 	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage ) )
-		m_pModelDataWork->CreateInitialShapes();
+		m_pModel->CreateInitialShapes();
 
 //	m_pNNetModelStorage->Write( wcout );
 
@@ -195,7 +195,7 @@ void NNetAppWindow::Stop()
 
 	BaseAppWindow::Stop();
 
-	delete m_pModelDataWork;
+	delete m_pModel;
 	delete m_pTimeDisplay;
 	delete m_pSlowMotionDisplay;
 	delete m_pNNetController;
@@ -207,7 +207,7 @@ void NNetAppWindow::configureStatusBar( )
 {
 	int iPartScriptLine = 0;
 
-	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pModelDataWork, iPartScriptLine );
+	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pModel, iPartScriptLine );
 	m_pModelRedrawProxy->RegisterObserver( m_pTimeDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );

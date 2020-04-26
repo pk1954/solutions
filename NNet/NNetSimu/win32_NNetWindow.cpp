@@ -348,7 +348,7 @@ void NNetWindow::doPaint( )
 	m_pModel->Apply2AllInRect<Pipe    >( umRect, [&]( Pipe     & shape ) { shape.DrawInterior( m_coord ); } );
 	m_pModel->Apply2AllInRect<BaseKnot>( umRect, [&]( BaseKnot & shape ) { shape.DrawInterior( m_coord ); } );
 	
-    // draw selected shape again to be sure that it is in foreground
+    // draw highlighted shape again to be sure that it is in foreground
 	if ( Shape * const pShapeHighlighted { m_pModel->GetShape( m_shapeHighlighted ) } )
 	{
 		pShapeHighlighted->DrawExterior( m_coord, tHighlightType::highlighted );

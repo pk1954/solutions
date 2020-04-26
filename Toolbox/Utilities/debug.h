@@ -15,6 +15,9 @@ constexpr void AssertLimits( SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_
 	assert( (v) >= (min) );         
 }
 
+//TODO: try to replace with one generalized template Assert<DST_TYPE>(SRC_TYPE const) ...
+//      use std::conditional ??
+
 template<typename SOURCE_TYPE>
 constexpr void AssertFloat( SOURCE_TYPE const value ) 
 {
