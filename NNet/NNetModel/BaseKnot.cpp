@@ -67,11 +67,7 @@ void BaseKnot::removePipe( PipeList & list, Pipe * const pPipe )
 
 bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
 {
-	MicroMeterPoint const corner1 = m_center + MicroMeterPoint( + m_extension, + m_extension );
-	MicroMeterPoint const corner2 = m_center + MicroMeterPoint( + m_extension, - m_extension );
-	MicroMeterPoint const corner3 = m_center + MicroMeterPoint( - m_extension, + m_extension );
-
-	return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
+	return Distance( point, m_center ) <= m_extension;
 }
 
 PixelRect const BaseKnot::GetPixRect4Text( PixelCoordsFp const & coord ) const

@@ -1,5 +1,5 @@
 SetSound ON
 SetAutoOpen ON
 ReadModel "D:\SW-projects\Solutions\NNet\Models\loop1.mod"
-SetPixelOffset (-353.517/26.1833)
+SetPixelOffset (-329.517/27.1833)
 SetPixelSize 0.964293

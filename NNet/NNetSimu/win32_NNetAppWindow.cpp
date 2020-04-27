@@ -147,7 +147,8 @@ void NNetAppWindow::Start( )
 		TRUE    // async thread?
 	);
 
-	m_pCrsrWindow->Start( m_hwndApp, m_pCursorPos, m_pMainNNetWindow, m_pModel );
+	m_pCrsrWindow->Start( m_hwndApp, m_pMainNNetWindow, m_pModel );
+	m_pCursorPos->RegisterObserver( m_pCrsrWindow );
 	m_pParameterDlg->Start( m_hwndApp, m_pParameters );
 	m_pPerformanceWindow->Start( m_hwndApp, m_pModel, & m_NNetWorkThreadInterface, & m_atDisplay );
 

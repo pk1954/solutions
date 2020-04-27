@@ -5,7 +5,6 @@
 #pragma once
 
 #include <iostream>
-#include "Observable.h" 
 #include "win32_textWindow.h"
 
 using std::wostringstream;
@@ -22,7 +21,6 @@ public:
 	void Start
 	( 
 		HWND               const, 
-		Observable       * const,
 		NNetWindow const * const,
 		NNetModel  const * const
 	);

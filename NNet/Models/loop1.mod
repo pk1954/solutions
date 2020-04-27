@@ -1,5 +1,5 @@
 # NNetModel
-# Created 25-04-2020 23-50-42
+# Created 27-04-2020 21-57-32
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
 
@@ -17,8 +17,8 @@ NrOfShapes = 14
 
 CreateShape 0 inputNeuron (561.303|216.951)
 CreateShape 1 neuron (497|808)
-CreateShape 2 neuron (734|482)
-CreateShape 5 knot (548.128|393.827)
+CreateShape 2 neuron (800|400)
+CreateShape 5 knot (500|400)
 CreateShape 6 knot (496|538)
 CreateShape 3 pipe (5->2)
 CreateShape 4 pipe (6->1)

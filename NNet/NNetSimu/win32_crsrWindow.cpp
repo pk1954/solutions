@@ -31,7 +31,6 @@ CrsrWindow::~CrsrWindow( )
 void CrsrWindow::Start
 (
 	HWND               const hwndParent,
-	Observable       * const pObservable,
 	NNetWindow const * const pNNetWindow,
 	NNetModel  const * const pModel
 ) 
@@ -47,7 +46,6 @@ void CrsrWindow::Start
 		TRUE,
 		nullptr
 	);
-	pObservable->RegisterObserver( this );
 //	::CreateWindowToolTip( GetWindowHandle(), L"Cursor window" );
 }
 
@@ -94,7 +92,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 		return;
 	}
 
-	MicroMeterPoint const umPoint  { m_pNNetWindow->PixelPoint2MicroMeterPoint( pixPoint ) };
+	MicroMeterPoint const umPoint { m_pNNetWindow->PixelPoint2MicroMeterPoint( pixPoint ) };
 
 	textBuf.printString( L"Position:" );
 	printMicroMeter( textBuf, umPoint.GetX() );

@@ -83,21 +83,20 @@ MicroMeter Pipe::GetLength( ) const
 
 bool Pipe::IsPointInShape( MicroMeterPoint const & point ) const
 {
-	MicroMeterPoint const fDelta{ GetEndPoint( ) - GetStartPoint( ) };
-	if ( IsCloseToZero( fDelta ) )
+	MicroMeterPoint const umVector{ GetEndPoint( ) - GetStartPoint( ) };
+	if ( IsCloseToZero( umVector ) )
 		return false;
-	MicroMeterPoint const fOrthoScaled{ OrthoVector( fDelta, m_width ) };
-	MicroMeterPoint const corner1     { GetStartPoint( ) + fOrthoScaled };
-	MicroMeterPoint const corner2     { GetStartPoint( ) - fOrthoScaled };
-	MicroMeterPoint const corner3     { GetEndPoint  ( ) + fOrthoScaled };
-	return IsPointInRect< MicroMeterPoint >( point, corner1, corner2, corner3 );
+	MicroMeterPoint const umOrthoScaled{ OrthoVector( umVector, m_width ) };
+	MicroMeterPoint       umPoint1     { GetStartPoint( ) };
+	MicroMeterPoint const umPoint2     { umPoint1 + umVector };
+	return IsPointInRect2<MicroMeterPoint>( point, umPoint1, umPoint2, umOrthoScaled );
 }
 
 mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
 {
 	mV mVresult { 0._mV };
 	LockShape();
-	MicroMeterPoint const umVector { GetStartPoint( ) - GetEndPoint( ) };
+	MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
 	if ( ! IsCloseToZero( umVector ) )
 	{
 		MicroMeterPoint const umSegVec     { umVector / CastToFloat(m_potential.size()) };
@@ -105,15 +104,26 @@ mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
 		MicroMeterPoint       umPoint1     { GetStartPoint( ) };
 		for ( auto iter = m_potIter; iter != m_potential.end( ); ++ iter )
 		{
-			MicroMeterPoint const umPoint2  { umPoint1 + umSegVec };
-			MicroMeterPoint const umCorner1 { umPoint1 + umOrthoScaled };
-			MicroMeterPoint const umCorner2 { umPoint1 - umOrthoScaled };
-			MicroMeterPoint const umCorner3 { umPoint2 + umOrthoScaled };
-			if ( IsPointInRect< MicroMeterPoint >( point, umCorner1, umCorner2, umCorner3 ) )
-				mVresult = * m_potIter;
+			MicroMeterPoint const umPoint2 { umPoint1 + umSegVec };
+			if ( IsPointInRect2< MicroMeterPoint >( point, umPoint1, umPoint2, umOrthoScaled ) )
+			{
+				mVresult = * iter;
+				goto EXIT;
+			}
+			umPoint1 = umPoint2;
+		};
+		for ( auto iter = m_potential.begin(); iter != m_potIter; ++iter )
+		{
+			MicroMeterPoint const umPoint2 { umPoint1 + umSegVec };
+			if ( IsPointInRect2< MicroMeterPoint >( point, umPoint1, umPoint2, umOrthoScaled ) )
+			{
+				mVresult = * iter;
+				goto EXIT;
+			}
 			umPoint1 = umPoint2;
 		};
 	}
+EXIT:
 	UnlockShape();
 	return mVresult;
 }
