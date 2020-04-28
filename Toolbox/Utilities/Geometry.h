@@ -23,3 +23,19 @@ bool IsPointInRect  // check if point is in given rectangle
 
 	return true;
 }
+
+template <typename T>
+bool IsPointInRect2  // check if point is in given rectangle
+(
+	T const point,  // The point in question
+	T const start,  // The center of one side of the reactangle
+	T const end,    // The center of the opposite side of the reactangle
+	T const ext     // The vector from start(end) to a corner of that side
+)
+{
+	T const corner1 { start + ext };
+	T const corner2 { start - ext };
+	T const corner3 { end   + ext };
+
+	return IsPointInRect< T >( point, corner1, corner2, corner3 );
+}

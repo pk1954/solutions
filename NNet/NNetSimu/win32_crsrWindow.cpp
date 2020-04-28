@@ -106,7 +106,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
 	ShapeType const type { m_pModel->GetShapeType( id ) };
 
-	textBuf.printString(  L"Shape #" );
+	textBuf.printString( L"Shape #" );
 	textBuf.printNumber( id.GetValue() );
 	textBuf.nextLine( );
 	textBuf.printString( L"Shape type:" ); 
