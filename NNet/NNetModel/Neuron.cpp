@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "win32_thread.h"
-#include "win32_fatalError.h"
 #include "win32_graphicsInterface.h"
 #include "win32_beeperThread.h"
 #include "PixelCoordsFp.h"

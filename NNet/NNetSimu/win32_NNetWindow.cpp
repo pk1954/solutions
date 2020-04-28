@@ -17,7 +17,6 @@
 #include "Direct2D.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"
-#include "win32_fatalError.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
 #include "win32_scale.h"
@@ -135,12 +134,12 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 	if ( m_pModel->AnyShapesSelected( ) )
 	{
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_DESELECT_ALL,       L"Deselect all" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_COPY_SELECTION,     L"Copy selection" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION,     L"Mark selection" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_UNMARK_SELECTION,   L"Unmark selection" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_SELECTION,   L"Remove selected objects" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_BEEPERS,     L"Remove selected trigger sounds" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_DESELECT_ALL,     L"Deselect all" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_COPY_SELECTION,   L"Copy selection" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION,   L"Mark selection" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_UNMARK_SELECTION, L"Unmark selection" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_SELECTION, L"Remove selected objects" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_BEEPERS,   L"Remove selected trigger sounds" );
 	}
 	else switch ( type.GetValue() )
 	{
@@ -509,7 +508,7 @@ LPARAM NNetWindow::crsPos2LPARAM( ) const
 
 BOOL NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 {
-	PostCommand2Application( wParam, pixelPoint2LPARAM( m_ptCommandPosition ) );
+	SendCommand2Application( wParam, pixelPoint2LPARAM( m_ptCommandPosition ) );
 	return FALSE;
 }
 
