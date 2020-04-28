@@ -1,5 +1,5 @@
 # NNetModel
-# Created 27-04-2020 21-57-32
+# Created 28-04-2020 17-09-06
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
 
@@ -15,7 +15,7 @@ GlobalParameter TimeResolution = 100
 
 NrOfShapes = 14
 
-CreateShape 0 inputNeuron (561.303|216.951)
+CreateShape 0 inputNeuron (502.489|174.376)
 CreateShape 1 neuron (497|808)
 CreateShape 2 neuron (800|400)
 CreateShape 5 knot (500|400)
