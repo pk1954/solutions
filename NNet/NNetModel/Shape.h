@@ -29,13 +29,13 @@ public:
 	bool IsSelected( ) const { return m_bSelected; }
 	bool IsMarked  ( ) const { return m_bMarked; }
 
-	virtual bool IsInRect      ( MicroMeterRect const & )                const = 0;
-	virtual void DrawExterior  ( PixelCoordsFp &, tHighlightType const ) const = 0;
-	virtual void DrawInterior  ( PixelCoordsFp & )                             = 0;
-	virtual bool IsPointInShape( MicroMeterPoint const & )               const = 0;
-	virtual void Prepare       ( )                                             = 0;
-	virtual void Step          ( )                                             = 0;
-	virtual void Recalc        ( )                                             = 0;
+	virtual bool IsInRect      ( MicroMeterRect const & )                                    const = 0;
+	virtual void DrawExterior  ( D2D_driver const *, PixelCoordsFp &, tHighlightType const ) const = 0;
+	virtual void DrawInterior  ( D2D_driver const *, PixelCoordsFp & )                             = 0;
+	virtual bool IsPointInShape( MicroMeterPoint const & )                                   const = 0;
+	virtual void Prepare       ( )                                                                 = 0;
+	virtual void Step          ( )                                                                 = 0;
+	virtual void Recalc        ( )                                                                 = 0;
 
 	virtual void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op ); }
 	virtual void Clear ( )                  { m_mVinputBuffer = 0.0_mV; };
@@ -55,8 +55,7 @@ public:
 
 	void SetId( ShapeId const id ) { m_identifier = id;	}
 
-	static void SetGraphics( D2D_driver const * const pGraphics ) { m_pGraphics   = pGraphics; }
-	static void SetParam   ( Param      const * const pParam    ) { m_pParameters = pParam;    }
+	static void SetParam( Param const * const pParam ) { m_pParameters = pParam; }
 
 	void LockShape() const
 	{ 
@@ -72,8 +71,7 @@ protected:
 
 	mV m_mVinputBuffer { 0._mV };
 
-	inline static D2D_driver const * m_pGraphics  { nullptr };
-	inline static Param      const * m_pParameters{ nullptr };
+	inline static Param const * m_pParameters{ nullptr };
 
 	D2D1::ColorF GetFrameColor( tHighlightType const ) const;
 	D2D1::ColorF GetInteriorColor( mV const ) const;

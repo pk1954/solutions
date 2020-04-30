@@ -17,7 +17,7 @@ public:
 	Neuron( MicroMeterPoint const, ShapeType const = ShapeType::Value::neuron );
 	virtual ~Neuron() {}
 
-	static bool TypeFits( ShapeType const type ) { return type.IsNeuronType( );	}
+	static bool TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( );	}
 
 	bool      const HasAxon                 ( ) const { return m_outgoing.size() > 0;	}
 	ShapeId   const GetAxonId               ( ) const { return HasAxon() ? m_outgoing[0]->GetId() : NO_SHAPE; }
@@ -35,19 +35,23 @@ public:
 	mV         Threshold    ( ) const;
 	mV         PeakVoltage  ( ) const;
 
-	virtual void DrawExterior( PixelCoordsFp &, tHighlightType const ) const;
-	virtual void DrawInterior( PixelCoordsFp & );
+	virtual void DrawExterior( D2D_driver const *, PixelCoordsFp &, tHighlightType const ) const;
+	virtual void DrawInterior( D2D_driver const *, PixelCoordsFp & );
 	virtual void Recalc( );
 	virtual void Clear( );
 	virtual void Step( );
 	virtual mV   GetNextOutput( ) const;
+
+	virtual void DrawNeuronText( D2D_driver const *, PixelCoordsFp & ) const;
 
 protected:
 	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };
 
 	mV waveFunction( fMicroSecs const ) const;
 
-	void drawExterior( PixelCoordsFp &, tHighlightType const ) const;
+	void drawExterior( D2D_driver const *, PixelCoordsFp &, tHighlightType const ) const;
+
+	void const DisplayText( D2D_driver const *, PixelRect const, wstring const ) const;
 
 private:
 	bool m_bTriggered { false };

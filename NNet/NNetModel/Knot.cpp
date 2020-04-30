@@ -9,17 +9,18 @@
 #include "Direct2D.h"
 #include "Knot.h"
 
-void Knot::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
+void Knot::DrawExterior( D2D_driver const * pGraphics, PixelCoordsFp & coord, tHighlightType const type ) const
 {
 	drawCircle
 	( 
+		pGraphics, 
 		coord, 
 		GetFrameColor( type ), 
 		(type == tHighlightType::normal) ? GetExtension( ) : 30.0_MicroMeter 
 	);
 }
 
-void Knot::DrawInterior( PixelCoordsFp & coord )
+void Knot::DrawInterior( D2D_driver const * pGraphics, PixelCoordsFp & coord )
 {
-	drawCircle( coord, GetInteriorColor( ), GetExtension( ) * PIPE_INTERIOR );
+	drawCircle( pGraphics, coord, GetInteriorColor( ), GetExtension( ) * PIPE_INTERIOR );
 }

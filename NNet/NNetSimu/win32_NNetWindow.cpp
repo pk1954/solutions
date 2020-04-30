@@ -66,7 +66,6 @@ void NNetWindow::Start
 	);
 	m_D2d_driver.Initialize( hwnd );
 	setStdFontSize( );
-	Shape::SetGraphics( & m_D2d_driver );
 	m_pModel = pModel;
 	m_pScale = new Scale( & m_D2d_driver, & m_coord );
 	m_pAnimationThread = new AnimationThread( );
@@ -342,22 +341,22 @@ void NNetWindow::doPaint( )
 		m_D2d_driver.DrawTranspRect( m_coord.convert2fPixelRect( m_umRectSelection ), NNetColors::SELECTION_RECT );
 
 	if ( m_coord.GetPixelSize() <= 5._MicroMeter )
-		m_pModel->Apply2AllInRect<Shape>( umRect, [&]( Shape & shape ) { shape.DrawExterior( m_coord, GetHighlightType( shape ) ); } );
+		m_pModel->Apply2AllInRect<Shape>( umRect, [&]( Shape & shape ) { shape.DrawExterior( & m_D2d_driver, m_coord, GetHighlightType( shape ) ); } );
 
-	m_pModel->Apply2AllInRect<Pipe    >( umRect, [&]( Pipe     & shape ) { shape.DrawInterior( m_coord ); } );
-	m_pModel->Apply2AllInRect<BaseKnot>( umRect, [&]( BaseKnot & shape ) { shape.DrawInterior( m_coord ); } );
-	
-    // draw highlighted shape again to be sure that it is in foreground
+	m_pModel->Apply2AllInRect<Pipe    >( umRect, [&]( Pipe     & shape ) { shape.DrawInterior( & m_D2d_driver, m_coord ); } );
+	m_pModel->Apply2AllInRect<BaseKnot>( umRect, [&]( BaseKnot & shape ) { shape.DrawInterior( & m_D2d_driver, m_coord ); } );
+
+	// draw highlighted shape again to be sure that it is in foreground
 	if ( Shape * const pShapeHighlighted { m_pModel->GetShape( m_shapeHighlighted ) } )
 	{
-		pShapeHighlighted->DrawExterior( m_coord, tHighlightType::highlighted );
-		pShapeHighlighted->DrawInterior( m_coord );
+		pShapeHighlighted->DrawExterior( & m_D2d_driver, m_coord, tHighlightType::highlighted );
+		pShapeHighlighted->DrawInterior( & m_D2d_driver, m_coord );
 	}
 
-	m_pScale->ShowScale( convert2fPIXEL( GetClientWindowHeight() ) );
+	m_pScale->ShowScale( & m_D2d_driver, convert2fPIXEL( GetClientWindowHeight() ) );
 
 	if ( m_coord.GetPixelSize() <= 2.5_MicroMeter )
-		m_pModel->Apply2AllInRect<BaseKnot>( umRect, [&]( BaseKnot & shape ) { shape.DrawNeuronText( m_coord ); } );
+		m_pModel->Apply2AllInRect<Neuron>( umRect, [&]( Neuron & neuron ) { neuron.DrawNeuronText( & m_D2d_driver, m_coord ); } );
 }
 
 void NNetWindow::CenterModel( )

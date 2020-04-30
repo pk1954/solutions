@@ -41,17 +41,17 @@ public:
     void DrawArrow( fPixelPoint const, fPixelPoint const, D2D1::ColorF const, fPIXEL const, fPIXEL const ) const;
     void Resize( int const, int const );
 
-    IDWriteTextFormat * NewTextFormat( float const );
-    void DeleteTextFormat( IDWriteTextFormat ** );
+    IDWriteTextFormat * NewTextFormat( float const ) const;
 
 private:
     HWND    m_hwnd;
-    HRESULT m_hr;
+
+    mutable HRESULT m_hr;
 
     ID2D1Factory          * m_pD2DFactory;
     ID2D1HwndRenderTarget * m_pRenderTarget;
     IDWriteFactory        * m_pDWriteFactory;
-    IDWriteTextFormat     * m_pStdTextFormat;
+    IDWriteTextFormat     * m_pTextFormat;
 
     ID2D1SolidColorBrush * createBrush( D2D1::ColorF const ) const;
     void createResources( );

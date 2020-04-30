@@ -75,6 +75,7 @@ NNetAppWindow::NNetAppWindow( )
 	m_pCursorPos      = new Observable( );
 	m_pAppMenu        = new NNetAppMenu( );
 	m_pMainNNetWindow = new NNetWindow( );
+	m_pMainNNetWindow2 = new NNetWindow( );
 	m_pCrsrWindow     = new CrsrWindow( );
 	m_pParameterDlg   = new ParameterDialog( & m_NNetWorkThreadInterface );
 
@@ -131,7 +132,17 @@ void NNetAppWindow::Start( )
 		m_pCursorPos
 	);
 
+	m_pMainNNetWindow2->Start
+	( 
+		m_hwndApp, 
+		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_VISIBLE, 
+		nullptr,  // no visibility criterion. Allways visible,
+		m_pModel,
+		m_pCursorPos
+	);
+
 	m_pModelRedrawProxy->RegisterObserver( m_pMainNNetWindow );
+	//m_pModelRedrawProxy->RegisterObserver( m_pMainNNetWindow2 );
 
 	m_NNetWorkThreadInterface.Start
 	( 
@@ -155,10 +166,13 @@ void NNetAppWindow::Start( )
 
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,        TRUE, FALSE );
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  * m_pMainNNetWindow,    TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW_2",  IDM_MAIN_WINDOW_2,  * m_pMainNNetWindow2,    TRUE, FALSE );
 	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW", IDM_PARAM_WINDOW, * m_pParameterDlg,      TRUE, FALSE );
 	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",  IDM_PERF_WINDOW,  * m_pPerformanceWindow, TRUE, FALSE );
 
 	configureStatusBar( );
+
+	m_pMainNNetWindow2->Move( PixelRect{ 0_PIXEL, 0_PIXEL, 200_PIXEL, 200_PIXEL }, true );
 
 	m_pNNetController->SetDisplayFunctor( m_pStatusBarDisplayFunctor );
 
@@ -167,6 +181,7 @@ void NNetAppWindow::Start( )
 		wcout << L"Using default window positions" << std::endl;
 		Show( TRUE );
 		m_pMainNNetWindow->Show( TRUE );
+		m_pMainNNetWindow2->Show( TRUE );
 	}
 
 	m_pCrsrWindow       ->Show( TRUE );
@@ -188,6 +203,7 @@ void NNetAppWindow::Stop()
 	m_bStarted = FALSE;
 
 	m_pMainNNetWindow->Stop( );
+	m_pMainNNetWindow2->Stop( );
 	m_pCrsrWindow    ->Stop( );
 	m_pParameterDlg  ->Stop( );
 	m_pPerformanceWindow->Stop( );

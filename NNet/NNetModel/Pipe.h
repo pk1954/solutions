@@ -77,8 +77,8 @@ public:
 
 	mV GetVoltage( MicroMeterPoint const & ) const;
 
-	virtual void DrawExterior  ( PixelCoordsFp  &, tHighlightType const ) const;
-	virtual void DrawInterior  ( PixelCoordsFp  & );
+	virtual void DrawExterior  ( D2D_driver const *, PixelCoordsFp  &, tHighlightType const ) const;
+	virtual void DrawInterior  ( D2D_driver const *, PixelCoordsFp  & );
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 	virtual void Recalc( );
 	virtual void Clear( );
@@ -104,7 +104,7 @@ private:
 	tPotentialVector::iterator m_potIter;
 
 	void dislocate( BaseKnot * const, MicroMeter const );
-	void drawSegment( fPixelPoint &, fPixelPoint const, fPIXEL const, mV const ) const;
+	void drawSegment( D2D_driver const *, fPixelPoint &, fPixelPoint const, fPIXEL const, mV const ) const;
 };
 
 Pipe const * Cast2Pipe( Shape const * );

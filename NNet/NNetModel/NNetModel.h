@@ -16,6 +16,9 @@
 #include "Knot.h"
 #include "Pipe.h"
 
+
+#include "PixelCoordsFp.h"
+
 class ObserverInterface;
 class EventInterface;
 class ComputeThread;
@@ -237,9 +240,11 @@ public:
 			return false;
 	}
 
+	ShapeList           m_Shapes          { }; //// xxxxxxxxxxxxxxxxxxxxx
+
 private:
 
-	ShapeList           m_Shapes          { };
+//	ShapeList           m_Shapes          { };
 	fMicroSecs          m_timeStamp       { 0._MicroSecs };
 	Param             * m_pParam          { nullptr };
 	ObserverInterface * m_pChangeObserver { nullptr };

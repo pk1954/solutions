@@ -40,6 +40,7 @@ void InputNeuron::SetPulseFrequency( fHertz const freq )
 
 void InputNeuron::drawInputNeuron
 ( 
+	D2D_driver    const * pGraphics, 
 	PixelCoordsFp const & coord,
 	D2D1::ColorF  const   colF,
 	float         const   fReductionFactor
@@ -60,20 +61,20 @@ void InputNeuron::drawInputNeuron
 	fPixelPoint     const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
 	fPIXEL          const fPixWidth  { coord.convert2fPixel( GetExtension() * fReductionFactor ) };
 
-	m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth * 2, colF );
+	pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth * 2, colF );
 }
 
-void InputNeuron::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
+void InputNeuron::DrawExterior( D2D_driver const * pGraphics, PixelCoordsFp & coord, tHighlightType const type ) const
 {
-	drawInputNeuron( coord, GetFrameColor( type ), 1.0f );
+	drawInputNeuron( pGraphics, coord, GetFrameColor( type ), 1.0f );
 }
 
-void InputNeuron::DrawInterior( PixelCoordsFp & coord )
+void InputNeuron::DrawInterior( D2D_driver const * pGraphics, PixelCoordsFp & coord )
 { 
-	drawInputNeuron( coord, GetInteriorColor( ), NEURON_INTERIOR );
+	drawInputNeuron( pGraphics, coord, GetInteriorColor( ), NEURON_INTERIOR );
 }
 
-void InputNeuron::DrawNeuronText( PixelCoordsFp & coord ) const
+void InputNeuron::DrawNeuronText(D2D_driver const * pGraphics, PixelCoordsFp & coord ) const
 { 
 	PixelRect const pixRect { GetPixRect4Text( coord ) };
 
@@ -86,7 +87,7 @@ void InputNeuron::DrawNeuronText( PixelCoordsFp & coord ) const
 		      << L" " 
 		      << GetParameterUnit( tParameter::pulseRate );
 
-	DisplayText( pixRect, m_wBuffer.str( ) );
+	DisplayText( pGraphics, pixRect, m_wBuffer.str( ) );
 }
 
 InputNeuron const * Cast2InputNeuron( Shape const * pShape )

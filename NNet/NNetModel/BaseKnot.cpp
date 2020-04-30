@@ -4,8 +4,6 @@
 
 #include "stdafx.h"
 #include "assert.h"
-#include <sstream> 
-#include <iomanip>
 #include "Geometry.h"
 #include "PixelCoordsFp.h"
 #include "Direct2D.h"
@@ -15,9 +13,6 @@
 using std::find;
 using std::begin;
 using std::end;
-using std::fixed;
-using std::wstring;
-using std::wostringstream;
 
 void BaseKnot::Prepare( )
 {
@@ -86,21 +81,6 @@ PixelRect const BaseKnot::GetPixRect4Text( PixelCoordsFp const & coord ) const
 	return pixRect;
 }
 
-void const BaseKnot::DisplayText( PixelRect const pixRect, wstring const text ) const
-{
-	static D2D1::ColorF const colF { 0.0f, 255.0f, 0.0f, 1.0f };
-
-	m_pGraphics->DisplayText( pixRect, text, colF );
-}
-
-void BaseKnot::DrawNeuronText( PixelCoordsFp & coord ) const
-{ 
-	wostringstream m_wBuffer;
-	m_wBuffer.precision(2);
-	m_wBuffer << fixed << setw(6) << GetFillLevel() * 100.0f << L"%";
-	DisplayText( GetPixRect4Text( coord ), m_wBuffer.str( ) );
-}
-
 void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 {
 	m_center += delta;
@@ -109,13 +89,14 @@ void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 
 void BaseKnot::drawCircle
 (
+	D2D_driver      const * pGraphics, 
 	PixelCoordsFp   const & coord,
 	D2D1::ColorF    const   colF, 
 	MicroMeterPoint const   umCenter,
 	MicroMeter      const   umWidth
 ) const
 {
-	m_pGraphics->DrawCircle
+	pGraphics->DrawCircle
 	( 
 		coord.convert2fPixelPos( umCenter ), 
 		colF, 
@@ -125,12 +106,13 @@ void BaseKnot::drawCircle
 
 void BaseKnot::drawCircle
 (
+	D2D_driver    const * pGraphics, 
 	PixelCoordsFp const & coord,
 	D2D1::ColorF  const   colF, 
 	MicroMeter    const   umWidth
 ) const
 {
-	m_pGraphics->DrawCircle
+	pGraphics->DrawCircle
 	( 
 		coord.convert2fPixelPos( GetPosition() ), 
 		colF, 

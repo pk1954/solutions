@@ -38,9 +38,9 @@ public:
 		}
 	}
 
-	virtual void DrawExterior  ( PixelCoordsFp &, tHighlightType const ) const;
-	virtual void DrawInterior  ( PixelCoordsFp & );
-	virtual void DrawNeuronText( PixelCoordsFp & ) const;
+	virtual void DrawExterior  ( D2D_driver const *, PixelCoordsFp &, tHighlightType const ) const;
+	virtual void DrawInterior  ( D2D_driver const *, PixelCoordsFp & );
+	virtual void DrawNeuronText( D2D_driver const *, PixelCoordsFp & ) const;
 	virtual void Recalc( );   // Recalculate precalculated values
 
 	fHertz GetPulseFrequency( ) const {	return m_pulseFrequency; }
@@ -48,7 +48,7 @@ public:
 	void SetPulseFrequency( fHertz const );
 
 private:
-	void drawInputNeuron( PixelCoordsFp const &, D2D1::ColorF const, float const ) const;
+	void drawInputNeuron( D2D_driver const *, PixelCoordsFp const &, D2D1::ColorF const, float const ) const;
 
 	mV         m_mvFactor;       // precomputed value for optimization
 	fHertz     m_pulseFrequency; // pulse frequency and pulse duration depend on each other

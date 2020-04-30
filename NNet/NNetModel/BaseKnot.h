@@ -94,8 +94,6 @@ public:
 
 	virtual void MoveShape( MicroMeterPoint const & );
 
-	virtual void DrawNeuronText( PixelCoordsFp & ) const;
-
 protected:
 
 	using PipeList = vector<Pipe *>;
@@ -103,11 +101,10 @@ protected:
 	PipeList m_incoming;
 	PipeList m_outgoing;
 
-	void drawCircle( PixelCoordsFp const &, D2D1::ColorF const, MicroMeterPoint const, MicroMeter const ) const;
-	void drawCircle( PixelCoordsFp const &, D2D1::ColorF const, MicroMeter const ) const;
+	void drawCircle( D2D_driver const *, PixelCoordsFp const &, D2D1::ColorF const, MicroMeterPoint const, MicroMeter const ) const;
+	void drawCircle( D2D_driver const *, PixelCoordsFp const &, D2D1::ColorF const, MicroMeter const ) const;
 
 	PixelRect const GetPixRect4Text( PixelCoordsFp const & ) const;
-	void      const DisplayText( PixelRect const, wstring const ) const;
 
 private:
 

@@ -137,7 +137,7 @@ MicroMeterPoint Pipe::GetVector( ) const
 	return umvector;
 }
 
-void Pipe::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) const
+void Pipe::DrawExterior( D2D_driver const * pGraphics, PixelCoordsFp & coord, tHighlightType const type ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
@@ -148,10 +148,10 @@ void Pipe::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) cons
 		fPixelPoint  const fEndPoint  { coord.convert2fPixelPos( umEndPoint   ) };
 		D2D1::ColorF const colF       { GetFrameColor( type ) };
 
-		m_pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth, colF );
+		pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth, colF );
 
 		if ( m_arrowSize > 0.0_MicroMeter )
-			m_pGraphics->DrawArrow
+			pGraphics->DrawArrow
 			(
 				coord.convert2fPixelPos( (umEndPoint * 2.f + umStartPoint) / 3.f ), 
 				coord.convert2fPixelSize( umEndPoint - umStartPoint ), 
@@ -162,15 +162,15 @@ void Pipe::DrawExterior( PixelCoordsFp & coord, tHighlightType const type ) cons
 	}
 }
 
-void Pipe::drawSegment( fPixelPoint & fP1, fPixelPoint const fPixSegVec, fPIXEL const fWidth, mV const voltage ) const
+void Pipe::drawSegment( D2D_driver const * pGraphics, fPixelPoint & fP1, fPixelPoint const fPixSegVec, fPIXEL const fWidth, mV const voltage ) const
 {
 	fPixelPoint  const fP2  { fP1 + fPixSegVec };
 	D2D1::ColorF const colF { GetInteriorColor( voltage ) };
-	m_pGraphics->DrawLine( fP1, fP2, fWidth, colF );
+	pGraphics->DrawLine( fP1, fP2, fWidth, colF );
 	fP1 = fP2;
 }
 
-void Pipe::DrawInterior( PixelCoordsFp & coord )
+void Pipe::DrawInterior( D2D_driver const * pGraphics, PixelCoordsFp & coord )
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
@@ -184,9 +184,9 @@ void Pipe::DrawInterior( PixelCoordsFp & coord )
 
 		LockShape();
 		for( auto iter = m_potIter; iter != m_potential.end(); ++iter )
-			drawSegment( fPoint, fPixSegVec, fWidth, * iter );             // fPoint altered!   
+			drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, * iter );             // fPoint altered!   
 		for( auto iter = m_potential.begin(); iter != m_potIter; ++iter )
-			drawSegment( fPoint, fPixSegVec, fWidth, * iter );             // fPoint altered!
+			drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, * iter );             // fPoint altered!
 		UnlockShape();
 	}
 }

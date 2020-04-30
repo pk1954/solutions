@@ -14,7 +14,7 @@ D2D_driver::D2D_driver( ):
 	m_pD2DFactory( nullptr ),
 	m_pRenderTarget( nullptr ),
 	m_pDWriteFactory( nullptr ),
-	m_pStdTextFormat( nullptr ),
+	m_pTextFormat( nullptr ),
 	m_hwnd( nullptr ),
 	m_hr( 0 )
 {
@@ -52,6 +52,8 @@ void D2D_driver::createResources( )
 	);
 	assert( SUCCEEDED( m_hr ) );
 
+	m_pTextFormat = NewTextFormat( 12.0f );
+
 	//	m_pRenderTarget->SetTransform( D2D1::Matrix3x2F::Identity() );
 }
 
@@ -60,6 +62,7 @@ void D2D_driver::discardResources( )
 	SafeRelease( & m_pD2DFactory );
 	SafeRelease( & m_pDWriteFactory );
 	SafeRelease( & m_pRenderTarget );
+	SafeRelease( & m_pTextFormat );
 }
 
 void D2D_driver::Initialize( HWND const hwndApp ) 
@@ -81,14 +84,10 @@ void D2D_driver::ShutDown( )
 	discardResources( );
 }
 
-void D2D_driver::DeleteTextFormat( IDWriteTextFormat ** ppFormat )
-{
-	SafeRelease( ppFormat );
-}
-
-IDWriteTextFormat * D2D_driver::NewTextFormat( float const fSize )
+IDWriteTextFormat * D2D_driver::NewTextFormat( float const fSize ) const
 {
 	IDWriteTextFormat * pTextFormat;
+
 	m_hr = m_pDWriteFactory->CreateTextFormat
 	(
 		L"",
@@ -109,8 +108,8 @@ IDWriteTextFormat * D2D_driver::NewTextFormat( float const fSize )
 
 void D2D_driver::SetStdFontSize( float const fSize )
 {
-	SafeRelease( & m_pStdTextFormat );
-	m_pStdTextFormat = NewTextFormat( fSize );
+	SafeRelease( & m_pTextFormat );
+	m_pTextFormat = NewTextFormat( fSize );
 }
 
 // functions called per frame
@@ -132,7 +131,7 @@ void D2D_driver::DisplayText
 	IDWriteTextFormat * const   pTextFormat
 ) const
 {
-	IDWriteTextFormat    * pTF { pTextFormat ? pTextFormat : m_pStdTextFormat };
+	IDWriteTextFormat    * pTF { pTextFormat ? pTextFormat : m_pTextFormat };
 	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
 	D2D1_RECT_F            d2Rect 
 	{ 
@@ -235,6 +234,7 @@ void D2D_driver::DrawArrow
 ID2D1SolidColorBrush * D2D_driver::createBrush( D2D1::ColorF const d2dCol ) const
 {
 	ID2D1SolidColorBrush * pBrush;
-	m_pRenderTarget->CreateSolidColorBrush( d2dCol, & pBrush ); 
+	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush( d2dCol, & pBrush ); 
+	assert( hres == S_OK );
 	return pBrush;
 }

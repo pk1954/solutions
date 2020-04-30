@@ -1,6 +1,6 @@
 // win32_scale.h
 //
-// Utilities
+// NNetWindows
 
 #pragma once
 
@@ -15,22 +15,22 @@ struct IDWriteTextFormat;
 class Scale
 {
 public:
-	Scale( D2D_driver * const,  PixelCoordsFp * const );
+	Scale( D2D_driver *, PixelCoordsFp * const );
 
 	~Scale( );
 
-	void ShowScale( fPIXEL const );
+	void ShowScale( D2D_driver const *, fPIXEL const );
 
 private:
 	static COLORREF const SCALE_COLOR { RGB( 0, 0, 0 ) };  // CLR_BLACK
 
 	std::wostringstream m_wBuffer;
 
-	D2D_driver        * m_pGraphics;
-	PixelCoordsFp     * m_pfPixelCoords;
-	IDWriteTextFormat * m_pTextFormat;
+	PixelCoordsFp * m_pfPixelCoords { nullptr };
 
-	void displayTicks      ( fPixelPoint const, fPixelPoint const, float const, int const );
-	void displayScaleNumber( fPixelPoint const, float const, int const );
-	void displayScaleText  ( fPixelPoint const, float const );
+	static IDWriteTextFormat * m_pTextFormat;
+
+	void displayTicks      ( D2D_driver const *, fPixelPoint const, fPixelPoint const, float const, int const );
+	void displayScaleNumber( D2D_driver const *, fPixelPoint const, float const, int const );
+	void displayScaleText  ( D2D_driver const *, fPixelPoint const, float const );
 };

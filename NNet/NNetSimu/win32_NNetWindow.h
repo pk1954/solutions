@@ -92,11 +92,11 @@ private:
 
 	bool m_bFocusMode { false };
 
-	MicroMeterPoint m_umPntCenterStart { MicroMeterPoint::NULL_VAL() };
-	MicroMeterPoint m_umPntCenterDelta { MicroMeterPoint::NULL_VAL() };
-	MicroMeter      m_umPixelSizeStart { MicroMeter::NULL_VAL() };
-	MicroMeter      m_umPixelSizeDelta { MicroMeter::NULL_VAL() };
-	SmoothMoveFp    m_smoothMove { };
+	MicroMeterPoint m_umPntCenterStart { MicroMeterPoint::NULL_VAL() }; // SmoothMove TODO: move these variables to SmootMoveFp
+	MicroMeterPoint m_umPntCenterDelta { MicroMeterPoint::NULL_VAL() }; // SmoothMove 
+	MicroMeter      m_umPixelSizeStart { MicroMeter::NULL_VAL() };      // SmoothMove 
+	MicroMeter      m_umPixelSizeDelta { MicroMeter::NULL_VAL() };      // SmoothMove 
+	SmoothMoveFp    m_smoothMove { };                                   // SmoothMove   
 
 	MicroMeterRect m_umRectSelection { };
 

@@ -34,6 +34,7 @@
 #define IDM_HIST_INFO                  34
 #define IDM_CONS_WINDOW                35
 #define IDD_EDITOR                     36
+#define IDM_MAIN_WINDOW_2                39
 
 #define IDM_BEEP                       40
 
