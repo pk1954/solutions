@@ -104,6 +104,11 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 	if ( IsUndefined( id ) )
 		return;
 
+	Shape const * const pShape { m_pModel->GetShapeConstPtr<Shape const *>( id ) };
+
+	if ( pShape == nullptr )
+		return;
+
 	ShapeType const type { m_pModel->GetShapeType( id ) };
 
 	textBuf.printString( L"Shape #" );
@@ -112,8 +117,6 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 	textBuf.printString( L"Shape type:" ); 
 	textBuf.printString( ShapeType::GetName( type.GetValue() ) ); 
 	textBuf.nextLine( );
-
-	Shape const * const pShape { m_pModel->GetShapeConstPtr<Shape const *>( id ) };
 
 	mV potential { 0.0_mV };
 	if ( type.IsPipeType( ) )

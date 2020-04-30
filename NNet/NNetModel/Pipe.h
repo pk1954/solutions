@@ -104,7 +104,7 @@ private:
 	tPotentialVector::iterator m_potIter;
 
 	void dislocate( BaseKnot * const, MicroMeter const );
-	void drawSegment( D2D_driver const *, fPixelPoint &, fPixelPoint const, fPIXEL const, mV const ) const;
+	fPixelPoint drawSegment( D2D_driver const *, fPixelPoint const &, fPixelPoint const, fPIXEL const, mV const ) const;
 };
 
 Pipe const * Cast2Pipe( Shape const * );

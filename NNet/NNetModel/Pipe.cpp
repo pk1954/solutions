@@ -162,12 +162,12 @@ void Pipe::DrawExterior( D2D_driver const * pGraphics, PixelCoordsFp & coord, tH
 	}
 }
 
-void Pipe::drawSegment( D2D_driver const * pGraphics, fPixelPoint & fP1, fPixelPoint const fPixSegVec, fPIXEL const fWidth, mV const voltage ) const
+fPixelPoint Pipe::drawSegment( D2D_driver const * pGraphics, fPixelPoint const & fP1, fPixelPoint const fPixSegVec, fPIXEL const fWidth, mV const voltage ) const
 {
 	fPixelPoint  const fP2  { fP1 + fPixSegVec };
 	D2D1::ColorF const colF { GetInteriorColor( voltage ) };
 	pGraphics->DrawLine( fP1, fP2, fWidth, colF );
-	fP1 = fP2;
+	return fP2;
 }
 
 void Pipe::DrawInterior( D2D_driver const * pGraphics, PixelCoordsFp & coord )
@@ -184,13 +184,9 @@ void Pipe::DrawInterior( D2D_driver const * pGraphics, PixelCoordsFp & coord )
 
 		LockShape();
 		for( auto iter = m_potIter + 1; iter != m_potential.end(); ++iter )
-			drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, * iter );             // fPoint altered!   
+			fPoint = drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, * iter );
 		for( auto iter = m_potential.begin(); iter <= m_potIter; ++iter )
-			drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, * iter );             // fPoint altered!
-		//for( int i = m_potIter - m_potential.begin() + 1; i != m_potential.size(); ++i )
-		//	drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, m_potential[i] );             // fPoint altered!   
-		//for( int i = 0; i <= m_potIter - m_potential.begin(); ++i )
-		//	drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, m_potential[i] );             // fPoint altered!
+			fPoint = drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, * iter );
 		UnlockShape();
 	}
 }
