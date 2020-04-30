@@ -183,10 +183,14 @@ void Pipe::DrawInterior( D2D_driver const * pGraphics, PixelCoordsFp & coord )
 		fPixelPoint       fPoint     { coord.convert2fPixelPos( umStartPoint ) };
 
 		LockShape();
-		for( auto iter = m_potIter; iter != m_potential.end(); ++iter )
+		for( auto iter = m_potIter + 1; iter != m_potential.end(); ++iter )
 			drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, * iter );             // fPoint altered!   
-		for( auto iter = m_potential.begin(); iter != m_potIter; ++iter )
+		for( auto iter = m_potential.begin(); iter <= m_potIter; ++iter )
 			drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, * iter );             // fPoint altered!
+		//for( int i = m_potIter - m_potential.begin() + 1; i != m_potential.size(); ++i )
+		//	drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, m_potential[i] );             // fPoint altered!   
+		//for( int i = 0; i <= m_potIter - m_potential.begin(); ++i )
+		//	drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, m_potential[i] );             // fPoint altered!
 		UnlockShape();
 	}
 }
