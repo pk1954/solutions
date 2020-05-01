@@ -52,9 +52,11 @@ void NNetWindow::Start
 	DWORD            const dwStyle,
 	function<bool()> const visibilityCriterion,
 	NNetModel      * const pModel,
-	Observable     * const pCursorObservable
+	Observable     * const pCursorObservable,
+	bool             const bFixed
 )
 {
+	m_bFixed = bFixed;
 	HWND hwnd = StartBaseWindow
 	( 
 		hwndApp,
@@ -259,6 +261,9 @@ void NNetWindow::TriggerSoundDlg( ShapeId const id )
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
+	if ( m_bFixed )
+		return;
+
 	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // relative to client area
 	MicroMeterPoint const umCrsrPos { m_coord.convert2MicroMeterPointPos( ptCrsr ) };
 	MicroMeterPoint const umLastPos { m_coord.convert2MicroMeterPointPos( m_ptLast ) };
@@ -359,31 +364,39 @@ void NNetWindow::doPaint( )
 		m_pModel->Apply2AllInRect<Neuron>( umRect, [&]( Neuron & neuron ) { neuron.DrawNeuronText( & m_D2d_driver, m_coord ); } );
 }
 
-void NNetWindow::CenterModel( )
+void NNetWindow::CenterModel( bool const bSmooth )
 {
-	centerAndZoomRect( m_pModel->GetEnclosingRect( ), 1.2f );
+	centerAndZoomRect( m_pModel->GetEnclosingRect( ), 1.2f, bSmooth );
 }
 
 void NNetWindow::AnalysisFinished( )
 {
-	centerAndZoomRect( ModelAnalyzer::GetEnclosingRect(), 2.0f );
+	centerAndZoomRect( ModelAnalyzer::GetEnclosingRect(), 2.0f, true );
 }
 
-void NNetWindow::centerAndZoomRect( MicroMeterRect const rect, float const fRatioFactor )
+void NNetWindow::centerAndZoomRect( MicroMeterRect const rect, float const fRatioFactor, bool const bSmooth )
 {
-	float           const fHorizontalRatio  { rect.GetHeight() / m_coord.convert2MicroMeter( GetClientWindowHeight() ) };
-	float           const fVerticalRatio    { rect.GetWidth () / m_coord.convert2MicroMeter( GetClientWindowWidth() ) };
+	float           const fVerticalRatio    { rect.GetHeight() / m_coord.convert2MicroMeter( GetClientWindowHeight() ) };
+	float           const fHorizontalRatio  { rect.GetWidth () / m_coord.convert2MicroMeter( GetClientWindowWidth() ) };
 	float           const fMaxRatio         { max( fVerticalRatio, fHorizontalRatio ) };
 	float           const fDesiredRatio     { fMaxRatio * fRatioFactor };
 	fPixelPoint     const fpCenter          { m_coord.convert2fPixelPoint( GetClRectCenter( ) ) };
 	MicroMeter      const umPixelSizeTarget { m_coord.LimitPixelSize( m_coord.GetPixelSize() * fDesiredRatio ) };
 	MicroMeterPoint const umPntCenterTarget { rect.GetCenter() };
-	m_umPixelSizeStart = m_coord.GetPixelSize();                                     // actual pixel size 
-	m_umPntCenterStart = m_coord.convert2MicroMeterPointPos( GetClRectCenter( ) );   // actual center 
-	m_umPixelSizeDelta = umPixelSizeTarget - m_umPixelSizeStart;
-	m_umPntCenterDelta = umPntCenterTarget - m_umPntCenterStart;
-	m_smoothMove.Reset();
-	m_bFocusMode = true;
+	if ( bSmooth )
+	{
+		m_umPixelSizeStart = m_coord.GetPixelSize();                                     // actual pixel size 
+		m_umPntCenterStart = m_coord.convert2MicroMeterPointPos( GetClRectCenter( ) );   // actual center 
+		m_umPixelSizeDelta = umPixelSizeTarget - m_umPixelSizeStart;
+		m_umPntCenterDelta = umPntCenterTarget - m_umPntCenterStart;
+		m_smoothMove.Reset();
+		m_bFocusMode = true;
+	}
+	else
+	{
+		m_coord.Zoom  ( umPixelSizeTarget );
+		m_coord.Center( umPntCenterTarget, fpCenter );
+	}
 }
 
 void NNetWindow::smoothStep( ) 
@@ -438,6 +451,9 @@ void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam 
 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 {
+	if ( m_bFixed )
+		return;
+
 	int        iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;
 	BOOL const bDirection = ( iDelta > 0 );
 	MicroMeter newSize;

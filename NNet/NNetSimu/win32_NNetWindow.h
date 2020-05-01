@@ -38,7 +38,8 @@ public:
 		DWORD            const,
 		function<bool()> const,
 		NNetModel      * const,
-		Observable     * const
+		Observable     * const,
+		bool             const
 	);
 
 	void Stop( );
@@ -53,7 +54,7 @@ public:
 	void Zoom( bool const );
 	void AnalysisFinished( );
 	void ZoomKeepCrsrPos( MicroMeter const );
-	void CenterModel( );
+	void CenterModel( bool const );
 
 	void SelectShape  ( tBoolOp const );
 	void SelectAll    ( tBoolOp const );
@@ -91,6 +92,7 @@ private:
 	PixelPoint m_ptCommandPosition { PP_NULL };
 
 	bool m_bFocusMode { false };
+	bool m_bFixed     { false };  // Fixed windows cannot be moved or resized. Client area cannot be zoomed or moved
 
 	MicroMeterPoint m_umPntCenterStart { MicroMeterPoint::NULL_VAL() }; // SmoothMove TODO: move these variables to SmootMoveFp
 	MicroMeterPoint m_umPntCenterDelta { MicroMeterPoint::NULL_VAL() }; // SmoothMove 
@@ -120,7 +122,7 @@ private:
 	void   smoothStep( );
 	void   setStdFontSize( );
 	LPARAM crsPos2LPARAM( ) const;
-	void   centerAndZoomRect( MicroMeterRect const, float const );
+	void   centerAndZoomRect( MicroMeterRect const, float const, bool const );
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL   inObservedClientRect( LPARAM const );
 	void   doPaint( );

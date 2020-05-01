@@ -47,21 +47,21 @@ public:
 
 	template <typename T> bool HasType( Shape const * const pShape ) const 
 	{ 
-		return pShape && std::remove_pointer<T>::type::TypeFits( pShape->GetShapeType() ); 
+		return std::remove_pointer<T>::type::TypeFits( pShape->GetShapeType() ); 
 	}
 
 	template <typename T>
 	T GetShapePtr( ShapeId const id ) 
 	{
 		Shape * const pShape { GetShape( id ) };
-		return HasType<T>( pShape )	? static_cast<T>( pShape ) : nullptr;
+		return (pShape && HasType<T>(pShape)) ? static_cast<T>( pShape ) : nullptr;
 	}
 
 	template <typename T>
 	T GetShapeConstPtr( ShapeId const id ) const
 	{
 		Shape const * const pShape { GetConstShape( id ) };
-		return HasType<T>( pShape ) ? static_cast<T>( pShape ) : nullptr;
+		return (pShape && HasType<T>(pShape)) ? static_cast<T>( pShape ) : nullptr;
 	}
 
 	bool          IsShapeIdOk  ( ShapeId const id ) const { return IsDefined( id ) && IsValidShapeId( id ); }
@@ -129,9 +129,11 @@ public:
 		bool bResult { false };
 		for ( auto pShape : m_Shapes )
 		{
-			if ( HasType<T>( pShape ) )
+			if ( pShape )
 			{
-				bResult = func( static_cast<T &>( * pShape ) );
+				pShape->LockShape();
+				if ( HasType<T>( pShape ) )	bResult = func( static_cast<T &>( * pShape ) );
+				pShape->UnlockShape();
 				if ( bResult )
 					break;
 			}
@@ -142,8 +144,16 @@ public:
 	template <typename T>
 	void Apply2All( function<void(T &)> const & func ) const
 	{
-		for (auto p : m_Shapes) { if ( HasType<T>(p) ) func( static_cast<T &>(*p) ); }
-	}                               // HasType checks for nullptr
+		for (auto pShape : m_Shapes) 
+		{ 
+			if ( pShape )
+			{
+				pShape->LockShape();
+				if ( HasType<T>(pShape) ) func( static_cast<T &>(*pShape) ); 
+				pShape->UnlockShape();
+			}
+		}
+	}                        
 
 	template <typename T>
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func ) const

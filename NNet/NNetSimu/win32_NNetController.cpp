@@ -72,7 +72,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_CENTER_MODEL:
-		m_pNNetWindow->CenterModel( );
+		m_pNNetWindow->CenterModel( true );
 		break;
 
 	case IDM_SLOWER:

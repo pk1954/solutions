@@ -73,7 +73,7 @@ private:
 	NNetController          * m_pNNetController          { nullptr };
 	NNetModel               * m_pModel                   { nullptr };
 	NNetWindow              * m_pMainNNetWindow          { nullptr };
-	NNetWindow              * m_pMainNNetWindow2          { nullptr };
+	//NNetWindow              * m_pMainNNetWindow2          { nullptr };
 	TimeDisplay             * m_pTimeDisplay             { nullptr };
 	SlowMotionDisplay       * m_pSlowMotionDisplay       { nullptr };
 	CrsrWindow              * m_pCrsrWindow              { nullptr };
