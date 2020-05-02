@@ -59,13 +59,11 @@ bool ModelAnalyzer::findLoop( Shape * const pShape )
 	}
 	else if ( pShape->IsPipe() )
 	{
-		Pipe * pPipe { Cast2Pipe( pShape ) };
-		bResult = findLoop( pPipe->GetEndKnotPtr( ) );  // recursion
+		bResult = findLoop( static_cast<Pipe *>(pShape)->GetEndKnotPtr( ) );  // recursion
 	}
 	else if ( pShape->IsBaseKnot() )
 	{
-		BaseKnot * pBaseKnot { Cast2BaseKnot( pShape ) };
-		bResult = pBaseKnot->Apply2AllOutPipesB( [&]( auto pipe ) { return findLoop( pipe ); } );
+		bResult = static_cast<BaseKnot *>(pShape)->Apply2AllOutPipesB_NoLock( [&]( auto pipe ) { return findLoop( pipe ); } );
 	}
 	else
 	{

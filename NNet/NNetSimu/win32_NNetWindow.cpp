@@ -354,8 +354,10 @@ void NNetWindow::doPaint( )
 	// draw highlighted shape again to be sure that it is in foreground
 	if ( Shape * const pShapeHighlighted { m_pModel->GetShape( m_shapeHighlighted ) } )
 	{
+		pShapeHighlighted->LockShapeShared();
 		pShapeHighlighted->DrawExterior( & m_D2d_driver, m_coord, tHighlightType::highlighted );
 		pShapeHighlighted->DrawInterior( & m_D2d_driver, m_coord );
+		pShapeHighlighted->UnlockShapeShared();
 	}
 
 	m_pScale->ShowScale( & m_D2d_driver, convert2fPIXEL( GetClientWindowHeight() ) );
@@ -401,7 +403,7 @@ void NNetWindow::centerAndZoomRect( MicroMeterRect const rect, float const fRati
 
 void NNetWindow::smoothStep( ) 
 {
-	float fPos            { m_smoothMove.Step() };
+	float fPos            { m_smoothMove.Next() };
 	bool  fTargetsReached { fPos >= SmoothMoveFp::END_POINT };
 
 	if ( fTargetsReached )

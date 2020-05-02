@@ -74,11 +74,13 @@ public:
 	bool IsPrecursorOf( ShapeId const );
 	bool IsSuccessorOf( ShapeId const );
 
-	void Apply2AllInPipes ( PipeFunc const & func ) { apply2All( m_incoming, func ); }
-	void Apply2AllOutPipes( PipeFunc const & func )	{ apply2All( m_outgoing, func ); }
+	void Apply2AllInPipes ( PipeFunc const & func ) { apply2AllPipesInList( m_incoming, func ); }
+	void Apply2AllOutPipes( PipeFunc const & func )	{ apply2AllPipesInList( m_outgoing, func ); }
 
-	bool Apply2AllInPipesB ( PipeFuncB const & func ) { return apply2AllB( m_incoming, func ); }
-	bool Apply2AllOutPipesB( PipeFuncB const & func ) { return apply2AllB( m_outgoing, func ); }
+	bool Apply2AllInPipesB ( PipeFuncB const & func ) { return apply2AllPipesInListB( m_incoming, func ); }
+	bool Apply2AllOutPipesB( PipeFuncB const & func ) { return apply2AllPipesInListB( m_outgoing, func ); }
+
+	bool Apply2AllOutPipesB_NoLock( PipeFuncB const & func ) { return apply2AllPipesInListB_NoLock( m_outgoing, func ); }
 
 	void Apply2AllConnectedPipes( PipeFunc const & func )
 	{
@@ -112,21 +114,39 @@ private:
 	void removePipe   ( PipeList &, Pipe * const );
 	void clearPipeList( PipeList & );
 
-	void apply2All( PipeList const & pipeList, PipeFunc const & func )
+	void apply2AllPipesInList( PipeList const & pipeList, PipeFunc const & func )
 	{
-		LockShape();
 		for ( Pipe * pPipe : pipeList ) 
 		{ 
 			if ( pPipe != nullptr )
+			{
+				LockShapeExclusive();
 				func( pPipe );
+				UnlockShapeExclusive();
+			}
 		}
-		UnlockShape();
 	}
 
-	bool apply2AllB( PipeList  const & pipeList, PipeFuncB const & func )
+	bool apply2AllPipesInListB( PipeList const & pipeList, PipeFuncB const & func )
 	{
 		bool bResult { false };
-		LockShape();
+		for ( auto pipe : pipeList ) 
+		{ 
+			if ( pipe != nullptr )
+			{
+				LockShapeExclusive();
+				bResult = func( pipe );
+				UnlockShapeExclusive();
+				if ( bResult )
+					break;
+			}
+		}
+		return bResult;
+	}
+
+	bool apply2AllPipesInListB_NoLock( PipeList  const & pipeList, PipeFuncB const & func )
+	{
+		bool bResult { false };
 		for ( auto pipe : pipeList ) 
 		{ 
 			if ( pipe != nullptr )
@@ -136,7 +156,6 @@ private:
 					break;
 			}
 		}
-		UnlockShape();
 		return bResult;
 	}
 

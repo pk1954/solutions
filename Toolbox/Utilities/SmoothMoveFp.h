@@ -21,7 +21,7 @@ public:
         m_fVelocity = 0.0f;
     }
 
-    float Step( )
+    float Next( )
     {
         if ( m_fPos < BREAK_POINT )
             m_fVelocity += ACCELERATION;

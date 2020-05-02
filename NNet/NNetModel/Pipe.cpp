@@ -26,37 +26,39 @@ Pipe::Pipe( MicroMeterPoint const umUnused )
 
 void Pipe::Clear( )
 {
-	LockShape();
+	LockShapeExclusive();
 	Shape::Clear( );
 	fill( m_potential.begin(), m_potential.end(), 0.0_mV );
-	UnlockShape();
+	UnlockShapeExclusive();
 }
 
 void Pipe::Recalc( )
 {
 	if ( m_pKnotStart && m_pKnotEnd )
 	{
-		LockShape();
 		meterPerSec  const pulseSpeed    { meterPerSec( m_pParameters->GetParameterValue( tParameter::pulseSpeed ) ) };
 		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pParameters->GetTimeResolution( ) ) };
 		MicroMeter   const pipeLength    { Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
 		unsigned int const iNrOfSegments { max( 1, CastToUnsignedInt(round(pipeLength / segmentLength)) ) };
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_potIter = m_potential.begin();
-		UnlockShape();
 	}
 }
 
-void Pipe::SetStartKnot( BaseKnot * const pBaseKnot )
+void Pipe::SetStartKnot_Lock( BaseKnot * const pBaseKnot )
 {
+	LockShapeExclusive();
 	m_pKnotStart = pBaseKnot;
-	Recalc( );
+	Recalc();
+	UnlockShapeExclusive();
 }
 
-void Pipe::SetEndKnot( BaseKnot * const pBaseKnot )
+void Pipe::SetEndKnot_Lock( BaseKnot * const pBaseKnot )
 {
+	LockShapeExclusive();
 	m_pKnotEnd = pBaseKnot;
-	Recalc( );
+	Recalc();
+	UnlockShapeExclusive();
 }
 
 void Pipe::dislocate( BaseKnot * const pBaseKnot, MicroMeter const dislocation )
@@ -95,7 +97,7 @@ bool Pipe::IsPointInShape( MicroMeterPoint const & point ) const
 mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
 {
 	mV mVresult { 0._mV };
-	LockShape();
+	LockShapeShared();
 	MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
 	if ( ! IsCloseToZero( umVector ) )
 	{
@@ -124,7 +126,7 @@ mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
 		};
 	}
 EXIT:
-	UnlockShape();
+	UnlockShapeShared();
 	return mVresult;
 }
 
@@ -182,12 +184,10 @@ void Pipe::DrawInterior( D2D_driver const * pGraphics, PixelCoordsFp & coord )
 		fPixelPoint const fPixSegVec { fPixVector / CastToFloat(m_potential.size()) };
 		fPixelPoint       fPoint     { coord.convert2fPixelPos( umStartPoint ) };
 
-		LockShape();
 		for( auto iter = m_potIter + 1; iter != m_potential.end(); ++iter )
 			fPoint = drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, * iter );
 		for( auto iter = m_potential.begin(); iter <= m_potIter; ++iter )
 			fPoint = drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, * iter );
-		UnlockShape();
 	}
 }
 

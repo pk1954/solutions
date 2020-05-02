@@ -115,10 +115,10 @@ public:
 				pPipe->SetId( idFromScript );
 
 				pStart->AddOutgoing( pPipe );
-				pPipe->SetStartKnot( pStart );
+				pPipe->SetStartKnot_Lock( pStart );
 
 				pEnd->AddIncoming( pPipe );
-				pPipe->SetEndKnot( pEnd );
+				pPipe->SetEndKnot_Lock( pEnd );
 
 				pShape = pPipe;
 			}
@@ -216,7 +216,7 @@ public:
 		assert( param == tParameter::pulseRate );
 		script.ScrReadSpecial( L'=' );
 		float const fValue { CastToFloat( script.ScrReadFloat() ) };
-		m_pModel->SetPulseRate( id, fValue );
+		m_pModel->SetPulseRate_Lock( id, fValue );
 	}
 
 private:

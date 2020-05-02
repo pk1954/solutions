@@ -29,8 +29,8 @@ public:
 		return type.IsPipeType( );
 	}
 
-	void SetStartKnot( BaseKnot * const );
-	void SetEndKnot  ( BaseKnot * const );
+	void SetStartKnot_Lock( BaseKnot * const );
+	void SetEndKnot_Lock  ( BaseKnot * const );
 
 	BaseKnot * const GetStartKnotPtr( ) const { return m_pKnotStart; }
 	BaseKnot * const GetEndKnotPtr  ( ) const { return m_pKnotEnd;   }
@@ -60,12 +60,10 @@ public:
 
 	virtual void Step( )
 	{
-		LockShape();
 		* m_potIter = m_mVinputBuffer;
 		if ( m_potIter == m_potential.begin() )
 			m_potIter = m_potential.end( );
 		-- m_potIter;
-		UnlockShape();
 	}
 
 	virtual void Select( tBoolOp const op ) 

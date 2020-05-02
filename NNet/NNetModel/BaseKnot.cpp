@@ -17,13 +17,11 @@ using std::end;
 void BaseKnot::Prepare( )
 {
 	m_mVinputBuffer = 0._mV;
-	LockShape();
 	for ( Pipe * pPipe : m_incoming ) 
 	{ 
 		if ( pPipe != nullptr )
 			m_mVinputBuffer += pPipe->GetNextOutput( );
 	}
-	UnlockShape();
 
 	//Apply2AllInPipes( [&]( auto pPipe ) { m_mVinputBuffer += pPipe->GetNextOutput( ); } ); // slow
 }
@@ -40,9 +38,9 @@ bool BaseKnot::IsSuccessorOf( ShapeId const id )
 
 void BaseKnot::clearPipeList( PipeList & list ) 
 {
-	LockShape();
+	LockShapeExclusive();
 	list.clear(); 
-	UnlockShape();
+	UnlockShapeExclusive();
 }
 
 void BaseKnot::addPipe( PipeList & list, Pipe * const pPipe )

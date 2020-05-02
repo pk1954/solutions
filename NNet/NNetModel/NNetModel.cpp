@@ -33,7 +33,8 @@ NNetModel::NNetModel
 	m_pChangeObserver( pObserver )
 {					
 	Shape::SetParam( pParam );
-}
+	m_Shapes.reserve( 100000 ); // Dirty trick to avoid reallocation (invalidates iterators)
+}                               // TODO: find better solution
 
 NNetModel::~NNetModel( ) { }
 
@@ -157,12 +158,12 @@ float const NNetModel::GetPulseRate( InputNeuron const * pInputNeuron ) const
 	return pInputNeuron ? pInputNeuron->GetPulseFrequency().GetValue() : 0.0f;
 }
 
-void NNetModel::SetPulseRate( ShapeId const id, float const fNewValue )
+void NNetModel::SetPulseRate_Lock( ShapeId const id, float const fNewValue )
 {
 	InputNeuron * const pInputNeuron { GetShapePtr<InputNeuron *>( id ) };
 	if ( pInputNeuron )
 	{
-		pInputNeuron->SetPulseFrequency( static_cast< fHertz >( fNewValue ) );
+		pInputNeuron->SetPulseFrequency_Lock( static_cast< fHertz >( fNewValue ) );
 		modelHasChanged( );
 	}
 }
@@ -253,8 +254,8 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 		BaseKnot * pDst = GetShapePtr<BaseKnot *>( idDst );
 		if ( pSrc && pDst )
 		{
-			pSrc->Apply2AllInPipes ( [&]( Pipe * const pipe ) { connectIncoming( pipe, pDst ); } );
-			pSrc->Apply2AllOutPipes( [&]( Pipe * const pipe ) { connectOutgoing( pipe, pDst ); } );
+			pSrc->Apply2AllInPipes ( [&]( Pipe * const pipe ) { connectIncoming_Lock( pipe, pDst ); } );
+			pSrc->Apply2AllOutPipes( [&]( Pipe * const pipe ) { connectOutgoing_Lock( pipe, pDst ); } );
 			if ( pSrc->IsKnot() )
 				deleteShape( pSrc );
 		}
@@ -268,8 +269,8 @@ void NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
 	if ( pStart && pEnd )
 	{
 		Pipe * const pPipe { NewShape<Pipe>( NP_NULL ) };
-		connectOutgoing( pPipe, pStart );
-		connectIncoming( pPipe, pEnd );
+		connectOutgoing_Lock( pPipe, pStart );
+		connectIncoming_Lock( pPipe, pEnd );
 		modelHasChanged( );
 		CHECK_CONSISTENCY;
 	}
@@ -277,16 +278,21 @@ void NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
 
 void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
-	if ( IsOfType<Pipe>( id ) )
+	Shape * pShape { GetShapePtr<Shape *>( id  ) };
+	if ( pShape )
 	{
-		GetStartKnotPtr( id )->MoveShape( delta );
-		GetEndKnotPtr  ( id )->MoveShape( delta );
+		if ( HasType<Pipe>( pShape ) )
+		{
+			Pipe * pPipe { static_cast<Pipe *>( pShape) };
+			MoveShape( pPipe->GetStartKnotId(), delta );
+			MoveShape( pPipe->GetEndKnotId  (), delta );
+		}
+		else 
+		{
+			static_cast<BaseKnot *>( pShape )->MoveShape( delta );
+		}
+		modelHasChanged( );
 	}
-	else 
-	{
-		GetShapePtr<BaseKnot *>( id )->MoveShape( delta );
-	}
-	modelHasChanged( );
 }
 
 Neuron * const NNetModel::InsertNeuron( ShapeId const idPipe, MicroMeterPoint const & splitPoint )
@@ -348,7 +354,8 @@ void NNetModel::Compute( )
 
 void NNetModel::ResetModel( )
 {
-	Apply2All<Shape>( [&]( Shape & shape ) { delete & shape; } );
+	for (auto pShape : m_Shapes)  // Do not use Apply2All! Locking.
+		delete pShape;
 	m_Shapes.clear();
 	modelHasChanged( );
 }
@@ -375,7 +382,7 @@ void NNetModel::MoveSelection( MicroMeterPoint const & delta )
 	modelHasChanged( );
 }
 
-Shape * NNetModel::shallowCopy( Shape const & shape )
+Shape * NNetModel::shallowCopy( Shape const & shape ) // No locks
 {
 	switch ( shape.GetShapeType().GetValue() )
 	{
@@ -397,6 +404,9 @@ Shape * NNetModel::shallowCopy( Shape const & shape )
 	}
 }
 
+// connectToNewShapes calls locking functions, but only destination shapes are locked
+// therefore it's safe to call from Apply2All ...
+
 void NNetModel::connectToNewShapes( Shape & shapeSrc, ShapeList & newShapes )
 { 
 	Shape & shapeDst { * newShapes.at(shapeSrc.GetId().GetValue()) };
@@ -404,8 +414,8 @@ void NNetModel::connectToNewShapes( Shape & shapeSrc, ShapeList & newShapes )
 	{
 		Pipe & pipeSrc { static_cast<Pipe &>( shapeSrc ) };
 		Pipe & pipeDst { static_cast<Pipe &>( shapeDst ) };
-		pipeDst.SetStartKnot( static_cast<BaseKnot *>( newShapes.at( pipeSrc.GetStartKnotId().GetValue() )) );
-		pipeDst.SetEndKnot  ( static_cast<BaseKnot *>( newShapes.at( pipeSrc.GetEndKnotId  ().GetValue() )) );
+		pipeDst.SetStartKnot_Lock( static_cast<BaseKnot *>( newShapes.at( pipeSrc.GetStartKnotId().GetValue() )) );
+		pipeDst.SetEndKnot_Lock  ( static_cast<BaseKnot *>( newShapes.at( pipeSrc.GetEndKnotId  ().GetValue() )) );
 	}
 	else
 	{
@@ -424,11 +434,11 @@ void NNetModel::CopySelection( )
 	// vector like m_Shapes with ptr to copy of shape or nullptr (if original shape is not in selection)
 	ShapeList newShapes( m_Shapes.size(), nullptr ); 
 
-	// make shallow copy of all selected shapes
-	Apply2AllSelected<Shape>(	[&]( Shape & shape ) { newShapes.at(shape.GetId().GetValue()) = shallowCopy( shape ); }	);
+	// make shallow copy of all selected shapes. Safe, no locks.
+	Apply2AllSelected<Shape>( [&]( Shape & shape ) { newShapes.at(shape.GetId().GetValue()) = shallowCopy( shape ); } );
 
-	// interconnect new shapes in same way as originals 
-	Apply2AllSelected<Shape>(	[&]( Shape & shape ) { connectToNewShapes( shape, newShapes ); } );
+	// interconnect new shapes in same way as originals. Safe, no locks. 
+	Apply2AllSelected<Shape>( [&]( Shape & shape ) { connectToNewShapes( shape, newShapes ); } ); // safe
 
 	// Deselect original shapes, copies inherited selection at shallow copy
 	SelectAll( tBoolOp::opFalse );
@@ -552,7 +562,7 @@ void NNetModel::deleteShape( Shape * const pShape )
 	delete pShape;                        // then delete Shape
 }
 
-void NNetModel::connectIncoming
+void NNetModel::connectIncoming_Lock
 ( 
 	Pipe     * const pPipe, 
 	BaseKnot * const pEndPoint
@@ -561,11 +571,11 @@ void NNetModel::connectIncoming
 	if ( pPipe && pEndPoint )
 	{
 		pEndPoint->AddIncoming( pPipe );
-		pPipe->SetEndKnot ( pEndPoint );
+		pPipe->SetEndKnot_Lock ( pEndPoint );
 	}
 }
 
-void NNetModel::connectOutgoing
+void NNetModel::connectOutgoing_Lock
 ( 
 	Pipe     * const pPipe, 
 	BaseKnot * const pStartPoint
@@ -574,7 +584,7 @@ void NNetModel::connectOutgoing
 	if ( pPipe && pStartPoint )
 	{
 		pStartPoint->AddOutgoing( pPipe );
-		pPipe->SetStartKnot ( pStartPoint );
+		pPipe->SetStartKnot_Lock ( pStartPoint );
 	}
 }
 
@@ -587,7 +597,7 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects 
 		( 
 			[&]( Pipe * const pipe ) // every incoming Pipe needs a new end knot
 			{ 
-				connectIncoming( pipe, NewShape<Knot>( umPos ) );
+				connectIncoming_Lock( pipe, NewShape<Knot>( umPos ) );
 				pipe->DislocateEndPoint( );
 			} 
 		);
@@ -596,7 +606,7 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects 
 		( 
 			[&]( Pipe * const pipe ) // every outgoing Pipe needs a new start knot
 			{ 
-				connectOutgoing( pipe, NewShape<Knot>( umPos ) );
+				connectOutgoing_Lock( pipe, NewShape<Knot>( umPos ) );
 				pipe->DislocateStartPoint( );
 			} 
 		);
@@ -625,7 +635,7 @@ void NNetModel::insertBaseKnot( Pipe * const pPipe, BaseKnot * const pBaseKnot)
 		BaseKnot * const pStartKnot { pPipe->GetStartKnotPtr( ) };
 		NewPipe( pStartKnot, pBaseKnot );
 		pStartKnot->RemoveOutgoing( pPipe );
-		connectOutgoing( pPipe, pBaseKnot );
+		connectOutgoing_Lock( pPipe, pBaseKnot );
 	}
 }
 

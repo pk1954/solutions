@@ -181,7 +181,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::PULSE_RATE:
-		m_pNNetModel->SetPulseRate( ShapeId( CastToLong(msg.wParam) ), (float &)msg.lParam ); //TODO: change to modern cast
+		m_pNNetModel->SetPulseRate_Lock( ShapeId( CastToLong(msg.wParam) ), (float &)msg.lParam ); //TODO: change to modern cast
 		m_pNNetModel->ClearModel( );
 		break;
 

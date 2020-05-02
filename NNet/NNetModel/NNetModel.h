@@ -131,9 +131,9 @@ public:
 		{
 			if ( pShape )
 			{
-				pShape->LockShape();
+				pShape->LockShapeExclusive();
 				if ( HasType<T>( pShape ) )	bResult = func( static_cast<T &>( * pShape ) );
-				pShape->UnlockShape();
+				pShape->UnlockShapeExclusive();
 				if ( bResult )
 					break;
 			}
@@ -144,13 +144,13 @@ public:
 	template <typename T>
 	void Apply2All( function<void(T &)> const & func ) const
 	{
-		for (auto pShape : m_Shapes) 
+		for (auto & pShape : m_Shapes)    
 		{ 
 			if ( pShape )
 			{
-				pShape->LockShape();
+				pShape->LockShapeExclusive();
 				if ( HasType<T>(pShape) ) func( static_cast<T &>(*pShape) ); 
-				pShape->UnlockShape();
+				pShape->UnlockShapeExclusive();
 			}
 		}
 	}                        
@@ -188,7 +188,7 @@ public:
 	void Disconnect( ShapeId const );
 	void RecalcAllShapes( );
 	void ResetModel( );
-	void SetPulseRate   ( ShapeId const, float const );
+	void SetPulseRate_Lock   ( ShapeId const, float const );
 	void SetParameter( tParameter const, float const );
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 	void SetTriggerSound( ShapeId const, Hertz const, MilliSecs const );
@@ -203,7 +203,7 @@ public:
 	MicroMeterRect GetEnclosingRect() {	return ::GetEnclosingRect( m_Shapes ); }
 
 	void ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
-	void CheckConsistency()          { Apply2All<Shape>( [&](Shape &s) { checkConsistency(&s); } ); }
+	void CheckConsistency()          { } // Apply2All<Shape>( [&](Shape &s) { checkConsistency(&s); } ); }
 	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
 
 	void CopySelection( );
@@ -250,11 +250,9 @@ public:
 			return false;
 	}
 
-	ShapeList           m_Shapes          { }; //// xxxxxxxxxxxxxxxxxxxxx
-
 private:
 
-//	ShapeList           m_Shapes          { };
+	ShapeList           m_Shapes          { };
 	fMicroSecs          m_timeStamp       { 0._MicroSecs };
 	Param             * m_pParam          { nullptr };
 	ObserverInterface * m_pChangeObserver { nullptr };
@@ -278,8 +276,8 @@ private:
 	void            disconnectBaseKnot ( BaseKnot * const );
 	void            selectSubtree      ( BaseKnot * const, tBoolOp    const );
 	void            insertBaseKnot     ( Pipe     * const, BaseKnot * const );
-	void            connectIncoming    ( Pipe     * const, BaseKnot * const );
-	void            connectOutgoing    ( Pipe     * const, BaseKnot * const );
+	void            connectIncoming_Lock    ( Pipe     * const, BaseKnot * const );
+	void            connectOutgoing_Lock    ( Pipe     * const, BaseKnot * const );
 	Shape const   * findShapeAt        ( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
 	void            connectToNewShapes ( Shape &, ShapeList & );
 	void            modelHasChanged    ( ) const;

@@ -57,14 +57,24 @@ public:
 
 	static void SetParam( Param const * const pParam ) { m_pParameters = pParam; }
 
-	void LockShape() const
+	void LockShapeExclusive() const
 	{ 
 		AcquireSRWLockExclusive( & m_SRWLock );
 	}
 
-	void UnlockShape() const
+	void UnlockShapeExclusive() const
 	{ 
-		ReleaseSRWLockExclusive( & m_SRWLock ); 
+		ReleaseSRWLockExclusive( & m_SRWLock );
+	}
+
+	void LockShapeShared() const
+	{ 
+		AcquireSRWLockShared( & m_SRWLock );
+	}
+
+	void UnlockShapeShared() const
+	{ 
+		ReleaseSRWLockShared( & m_SRWLock );
 	}
 
 protected:
