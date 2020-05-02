@@ -155,9 +155,6 @@ public:
 			m_pModel->SetShape( pShape, idFromScript );
 			pShape->SetId( idFromScript );
 		}
-		#ifndef NDEBUG
-			m_pModel->CheckConsistency();
-		#endif
 	}
 
 private:

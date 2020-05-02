@@ -15,12 +15,6 @@
 #include "ComputeThread.h"
 #include "NNetModel.h"
 
-#ifndef NDEBUG
-	#define CHECK_CONSISTENCY CheckConsistency()
-#else
-	#define CHECK_CONSISTENCY
-#endif
-
 using namespace std::chrono;
 using std::unordered_map;
 
@@ -105,7 +99,6 @@ void NNetModel::removeShape( Shape * const pShape )
 		else 
 			disconnectBaseKnot( Cast2BaseKnot( pShape ) );
 		deleteShape( pShape );
-		CHECK_CONSISTENCY;
 	}
 }
 
@@ -120,7 +113,6 @@ void NNetModel::Disconnect( ShapeId const id )
 			modelHasChanged( );
 		}
 	}
-	CHECK_CONSISTENCY;
 }
 
 void NNetModel::Convert2Neuron( ShapeId const idInputNeuron )
@@ -135,7 +127,6 @@ void NNetModel::Convert2Neuron( ShapeId const idInputNeuron )
 			Connect( GetStartKnotId( idAxon ), pNeuron->GetId()  );
 		modelHasChanged( );
 	}
-	CHECK_CONSISTENCY;
 }
 
 void NNetModel::Convert2InputNeuron( ShapeId const idNeuron )
@@ -150,7 +141,6 @@ void NNetModel::Convert2InputNeuron( ShapeId const idNeuron )
 			Connect( GetStartKnotId( idAxon ), pInputNeuron->GetId()  );
 		modelHasChanged( );
 	}
-	CHECK_CONSISTENCY;
 }
 
 float const NNetModel::GetPulseRate( InputNeuron const * pInputNeuron ) const
@@ -261,7 +251,6 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 		}
 	}
 	modelHasChanged( );
-	CHECK_CONSISTENCY;
 }
 
 void NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
@@ -272,7 +261,6 @@ void NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
 		connectOutgoing_Lock( pPipe, pStart );
 		connectIncoming_Lock( pPipe, pEnd );
 		modelHasChanged( );
-		CHECK_CONSISTENCY;
 	}
 }
 
@@ -303,7 +291,6 @@ Neuron * const NNetModel::InsertNeuron( ShapeId const idPipe, MicroMeterPoint co
 		pNeuron = NewShape<Neuron>( splitPoint );
 		insertBaseKnot( GetShapePtr<Pipe *>(idPipe), pNeuron );
 		modelHasChanged( );
-		CHECK_CONSISTENCY;
 	}
 	return pNeuron;
 }
@@ -316,7 +303,6 @@ Knot * const NNetModel::InsertKnot( ShapeId const idPipe, MicroMeterPoint const 
 		pKnot = NewShape<Knot>( splitPoint );
 		insertBaseKnot( GetShapePtr<Pipe *>(idPipe), pKnot );
 		modelHasChanged( );
-		CHECK_CONSISTENCY;
 	}
 	return pKnot;
 }
@@ -486,56 +472,6 @@ void NNetModel::selectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )
 					selectSubtree( pipe->GetEndKnotPtr(), op ); 
 			} 
 		);
-	}
-}
-
-void NNetModel::checkConsistency( Shape * const pShape )
-{
-	ShapeType type = pShape->GetShapeType();
-
-	if ( type.IsBaseKnotType() )
-		static_cast<BaseKnot &>( * pShape ).Apply2AllConnectedPipes
-		( 
-			[&]( Pipe const * const pipe ) 
-			{ 
-				assert( pipe->IsPipe() ); 
-				return false; 
-			} 
-	    );
-
-	switch ( type.GetValue() )
-	{
-	case ShapeType::Value::inputNeuron:
-		assert( ! static_cast<InputNeuron const *>( pShape )->HasIncoming() );
-		break;
-
-	case ShapeType::Value::knot:
-		break;
-
-	case ShapeType::Value::neuron:
-		break;
-
-	case ShapeType::Value::pipe:
-		{
-			Pipe const * pPipe { static_cast<Pipe const *>( pShape ) };
-			assert( pPipe );
-			if ( pPipe )
-			{
-				if ( Shape const * const pStart { pPipe->GetStartKnotPtr() } )
-					assert( pStart->IsBaseKnot() );
-				if ( Shape const * const pEnd   { pPipe->GetEndKnotPtr() } )
-					assert( pEnd->IsBaseKnot() );
-				assert( pPipe->GetStartKnotId() != pPipe->GetEndKnotId() );
-			}
-			break;
-		}
-
-	case ShapeType::Value::undefined:
-		assert( false );
-		break;
-
-	default:
-		assert( false );
 	}
 }
 

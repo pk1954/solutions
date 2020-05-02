@@ -203,7 +203,6 @@ public:
 	MicroMeterRect GetEnclosingRect() {	return ::GetEnclosingRect( m_Shapes ); }
 
 	void ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
-	void CheckConsistency()          { } // Apply2All<Shape>( [&](Shape &s) { checkConsistency(&s); } ); }
 	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
 
 	void CopySelection( );
@@ -270,7 +269,6 @@ private:
 	bool const      isConnectedToPipe  ( Shape const &, Pipe  const & ) const;
 	void            deletePipeEndPoints( Pipe  * const );
 	void            deleteShape        ( Shape * const );
-	void            checkConsistency   ( Shape * const );
 	void            removeShape        ( Shape * const );
 	Shape *         shallowCopy        ( Shape   const & );
 	void            disconnectBaseKnot ( BaseKnot * const );
