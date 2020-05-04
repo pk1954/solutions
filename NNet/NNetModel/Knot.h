@@ -22,19 +22,20 @@ class Knot : public BaseKnot
 public:
 	Knot( MicroMeterPoint const center )
 	  : BaseKnot( center, ShapeType::Value::knot, PIPE_WIDTH / 2 )
-	{}
-
-	virtual ~Knot() {}
-
-	static bool TypeFits( ShapeType const type )
 	{
-		return type.IsKnotType( );
+		++ m_counter;
 	}
 
-	virtual mV GetNextOutput( ) const 
-	{ 
-		return m_mVinputBuffer; 
+	virtual ~Knot() 
+	{
+		-- m_counter;
 	}
+
+	static unsigned long GetCounter( ) { return m_counter; }
+
+	static bool TypeFits( ShapeType const type ) { return type.IsKnotType( ); }
+
+	virtual mV GetNextOutput( ) const { return m_mVinputBuffer; }
 
 	virtual void Step         ( ) { }
 	virtual void DrawExterior ( D2D_driver const &, PixelCoordsFp const &, tHighlightType const = tHighlightType::normal ) const;
@@ -42,4 +43,7 @@ public:
 	virtual void Recalc( ) {};
 
 	virtual void DrawNeuronText( PixelCoordsFp const & ) const {};
+
+private: 
+	inline static unsigned long m_counter { 0L };
 };

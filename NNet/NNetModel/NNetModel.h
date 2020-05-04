@@ -285,6 +285,12 @@ private:
 	Param             * m_pParam          { nullptr };
 	ObserverInterface * m_pChangeObserver { nullptr };
 
+	unsigned long m_nrOfShapes       { 0L };
+	unsigned long m_nrOfPipes        { 0L };
+	unsigned long m_nrOfKnots        { 0L };
+	unsigned long m_nrOfNeurons      { 0L };
+	unsigned long m_nrOfINputNeurons { 0L };
+
 	// local functions
 
 	void add2ShapeList( Shape * const pNewShape )

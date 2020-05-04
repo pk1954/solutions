@@ -9,7 +9,14 @@
 
 Shape::Shape( ShapeType const type )
   : m_type( type )
-{ }			
+{ 
+	++ m_counter;
+}			
+
+Shape::~Shape( )
+{
+	-- m_counter;
+}
 
 D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {

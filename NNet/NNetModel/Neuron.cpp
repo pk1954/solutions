@@ -35,6 +35,12 @@ Neuron::Neuron( MicroMeterPoint const upCenter, ShapeType const type )
   : BaseKnot( upCenter, type, NEURON_RADIUS )
 {
 	Recalc();
+	++ m_counter;
+}
+
+Neuron::~Neuron( )
+{
+	-- m_counter;
 }
 
 void Neuron::SetTriggerSoundOn( bool const bMode )

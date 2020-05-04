@@ -22,6 +22,12 @@ Pipe::Pipe( MicroMeterPoint const umUnused )
 	m_potential  ( ),
 	m_potIter    ( )
 {
+	++ m_counter;
+}
+
+Pipe::~Pipe( )
+{
+	-- m_counter;
 }
 
 void Pipe::Clear( )

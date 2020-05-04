@@ -47,7 +47,11 @@ public:
 
 	fMicroSecs GetSimulationTime( ) const;
 
-//	long const GetNrOf( ShapeType const ) const;
+	unsigned long const GetNrOfShapes      ( ) const;
+	unsigned long const GetNrOfInputNeurons( ) const;
+	unsigned long const GetNrOfNeurons     ( ) const;
+	unsigned long const GetNrOfKnots       ( ) const;
+	unsigned long const GetNrOfPipes       ( ) const;
 
 	void DrawExterior( ShapeId const, D2D_driver const &, PixelCoordsFp const &, tHighlightType const ) const;
 	void DrawInterior( ShapeId const, D2D_driver const &, PixelCoordsFp const & ) const;

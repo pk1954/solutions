@@ -123,11 +123,10 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 		printFloatLine   ( textBuf, L"workload:",  CastToFloat( (spent / avail) * 100.0f ), L"%" );
 		if ( simuTime > 0.0_MicroSecs )
 			printFloatLine   ( textBuf, L"effect slomo:",  CastToFloat( realTime / simuTime ), L"" );
-		// XXXXX
-		//printIntLine( textBuf, L"# Shapes : ", m_pModelInterface->GetNrOf<Shape>() );
-		//printIntLine( textBuf, L"# Input  : ", m_pModelInterface->GetNrOf<InputNeuron>() );
-		//printIntLine( textBuf, L"# Neurons: ", m_pModelInterface->GetNrOf<Neuron>() );
-		//printIntLine( textBuf, L"# Knots  : ", m_pModelInterface->GetNrOf<Knot>() );
-		//printIntLine( textBuf, L"# Pipes  : ", m_pModelInterface->GetNrOf<Pipe>() );
+		printIntLine( textBuf, L"# Shapes : ", m_pModelInterface->GetNrOfShapes() );
+		printIntLine( textBuf, L"# Input  : ", m_pModelInterface->GetNrOfInputNeurons() );
+		printIntLine( textBuf, L"# Neurons: ", m_pModelInterface->GetNrOfNeurons() );
+		printIntLine( textBuf, L"# Knots  : ", m_pModelInterface->GetNrOfKnots() );
+		printIntLine( textBuf, L"# Pipes  : ", m_pModelInterface->GetNrOfPipes() );
 	}
 }

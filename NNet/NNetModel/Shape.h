@@ -24,7 +24,9 @@ class Shape
 {
 public:
 	Shape( ShapeType const );
-	virtual ~Shape() {}; 
+	virtual ~Shape(); 
+
+	static unsigned long GetCounter( ) { return m_counter; }
 
 	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 
@@ -102,4 +104,6 @@ private:
 	bool      m_bMarked    { false };
 	
 	mutable SRWLOCK m_SRWLock { SRWLOCK_INIT };
+
+	inline static unsigned long m_counter { 0L };
 };

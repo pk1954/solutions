@@ -16,10 +16,9 @@ public:
 	InputNeuron( MicroMeterPoint const );
 	virtual ~InputNeuron( );
 
-	static bool TypeFits( ShapeType const type )
-	{
-		return type.IsInputNeuronType( );
-	}
+	static unsigned long GetCounter( ) { return m_counter; }
+
+	static bool TypeFits( ShapeType const type ) { return type.IsInputNeuronType( ); }
 
 	virtual void Prepare( )
 	{
@@ -54,6 +53,8 @@ private:
 	fHertz     m_pulseFrequency; // pulse frequency and pulse duration depend on each other
 	fMicroSecs m_pulseDuration;  // in principle one variable would be enough, but to avoid 
 	                             // floating point rounding effects, both are stored
+
+	inline static unsigned long m_counter { 0L };
 };	
 
 InputNeuron const * Cast2InputNeuron( Shape const * );

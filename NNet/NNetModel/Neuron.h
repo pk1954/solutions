@@ -15,9 +15,11 @@ class Neuron : public BaseKnot
 {
 public:
 	Neuron( MicroMeterPoint const, ShapeType const = ShapeType::Value::neuron );
-	virtual ~Neuron() {}
+	virtual ~Neuron();
 
-	static bool TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( );	}
+	static unsigned long GetCounter( ) { return m_counter; }
+
+	static bool TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( ); }
 
 	bool      const HasAxon                 ( ) const { return m_outgoing.size() > 0;	}
 	ShapeId   const GetAxonId               ( ) const { return HasAxon() ? m_outgoing[0]->GetId() : NO_SHAPE; }
@@ -66,6 +68,8 @@ private:
 	PTP_WORK  m_pTpWork { nullptr };
 
 	MicroMeterPoint getAxonHillockPos( PixelCoordsFp const & ) const;
+
+	inline static unsigned long m_counter { 0L };
 };
 
 Neuron const * Cast2Neuron( Shape const * );

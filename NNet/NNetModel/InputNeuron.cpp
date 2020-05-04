@@ -21,10 +21,14 @@ InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
 	m_mvFactor( 0.0_mV ),
 	m_pulseFrequency( STD_PULSE_FREQ ),
 	m_pulseDuration( PulseDuration( STD_PULSE_FREQ ) )
-{ }
+{ 
+	++ m_counter;
+}
 
 InputNeuron::~InputNeuron( )
-{ }
+{ 
+	-- m_counter;
+}
 
 void InputNeuron::Recalc( )
 {

@@ -58,9 +58,6 @@ using std::wcout;
 
 NNetAppWindow::NNetAppWindow( )
 {
-	int i = sizeof(Shape);
-
-
 	Stopwatch stopwatch;
 
 	Preferences::Initialize();

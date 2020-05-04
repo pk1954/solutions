@@ -22,12 +22,11 @@ class Pipe : public Shape
 {
 public:
 	Pipe( MicroMeterPoint const = NP_NULL );
-	virtual ~Pipe() {}
+	virtual ~Pipe();
 
-	static bool TypeFits( ShapeType const type )
-	{
-		return type.IsPipeType( );
-	}
+	static unsigned long GetCounter( ) { return m_counter; }
+
+	static bool TypeFits( ShapeType const type ) { return type.IsPipeType( ); }
 
 	void SetStartKnot_Lock( BaseKnot * const );
 	void SetEndKnot_Lock  ( BaseKnot * const );
@@ -91,7 +90,8 @@ public:
 
 private:
 	
-	inline static MicroMeter m_arrowSize { STD_ARROW_SIZE };
+	inline static MicroMeter    m_arrowSize { STD_ARROW_SIZE };
+	inline static unsigned long m_counter   { 0L };
 
 	typedef vector<mV> tPotentialVector;
 

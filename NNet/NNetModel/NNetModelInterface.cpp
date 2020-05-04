@@ -156,13 +156,11 @@ bool const NNetModelInterface::isConnectedToPipe( ShapeId const idShape, ShapeId
 	return (idShape == m_pModel->GetStartKnotId(idPipe)) || (idShape == m_pModel->GetEndKnotId(idPipe));
 }
 
-//long const NNetModelInterface::GetNrOf( ShapeType const shapeType ) const
-//{
-//	switch ( shapeType )
-//	{
-//
-//	}
-//}
+unsigned long const NNetModelInterface::GetNrOfPipes       ( ) const { return Pipe       ::GetCounter(); }
+unsigned long const NNetModelInterface::GetNrOfShapes      ( ) const { return Shape      ::GetCounter(); }
+unsigned long const NNetModelInterface::GetNrOfKnots       ( ) const { return Knot       ::GetCounter(); }
+unsigned long const NNetModelInterface::GetNrOfInputNeurons( ) const { return InputNeuron::GetCounter(); }
+unsigned long const NNetModelInterface::GetNrOfNeurons     ( ) const { return Neuron     ::GetCounter() - GetNrOfInputNeurons(); }
 
 void NNetModelInterface::DrawExterior
 ( 
