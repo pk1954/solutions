@@ -10,7 +10,7 @@
 using std::wostringstream;
 
 class NNetWindow;
-class NNetModel;
+class NNetModelInterface;
 
 class CrsrWindow: public TextWindow
 {
@@ -20,9 +20,9 @@ public:
 
 	void Start
 	( 
-		HWND               const, 
-		NNetWindow const * const,
-		NNetModel  const * const
+		HWND                       const, 
+		NNetWindow         const * const,
+		NNetModelInterface const * const
 	);
 
 	void Stop( );
@@ -30,8 +30,8 @@ public:
 	virtual void DoPaint( TextBuffer & );
 
 private:
-	NNetWindow const * m_pNNetWindow { nullptr };
-	NNetModel  const * m_pModel      { nullptr };
+	NNetWindow         const * m_pNNetWindow     { nullptr };
+	NNetModelInterface const * m_pModelInterface { nullptr };
 
 	void printMicroMeter( TextBuffer &,	MicroMeter const );
 	void printMilliSecs ( TextBuffer &, MilliSecs  const );

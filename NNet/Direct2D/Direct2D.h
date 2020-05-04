@@ -44,7 +44,7 @@ public:
     IDWriteTextFormat * NewTextFormat( float const ) const;
 
 private:
-    HWND    m_hwnd;
+    HWND m_hwnd;
 
     mutable HRESULT m_hr;
 

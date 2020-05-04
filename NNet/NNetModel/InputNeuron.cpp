@@ -42,7 +42,7 @@ void InputNeuron::SetPulseFrequency_Lock( fHertz const freq )
 
 void InputNeuron::drawInputNeuron
 ( 
-	D2D_driver    const * pGraphics, 
+	D2D_driver    const & graphics, 
 	PixelCoordsFp const & coord,
 	D2D1::ColorF  const   colF,
 	float         const   fReductionFactor
@@ -63,20 +63,20 @@ void InputNeuron::drawInputNeuron
 	fPixelPoint     const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
 	fPIXEL          const fPixWidth  { coord.convert2fPixel( GetExtension() * fReductionFactor ) };
 
-	pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth * 2, colF );
+	graphics.DrawLine( fStartPoint, fEndPoint, fPixWidth * 2, colF );
 }
 
-void InputNeuron::DrawExterior( D2D_driver const * pGraphics, PixelCoordsFp & coord, tHighlightType const type ) const
+void InputNeuron::DrawExterior( D2D_driver const & graphics, PixelCoordsFp const & coord, tHighlightType const type ) const
 {
-	drawInputNeuron( pGraphics, coord, GetFrameColor( type ), 1.0f );
+	drawInputNeuron( graphics, coord, GetFrameColor( type ), 1.0f );
 }
 
-void InputNeuron::DrawInterior( D2D_driver const * pGraphics, PixelCoordsFp & coord )
+void InputNeuron::DrawInterior( D2D_driver const & graphics, PixelCoordsFp const & coord ) const
 { 
-	drawInputNeuron( pGraphics, coord, GetInteriorColor( ), NEURON_INTERIOR );
+	drawInputNeuron( graphics, coord, GetInteriorColor( ), NEURON_INTERIOR );
 }
 
-void InputNeuron::DrawNeuronText(D2D_driver const * pGraphics, PixelCoordsFp & coord ) const
+void InputNeuron::DrawNeuronText(D2D_driver const & graphics, PixelCoordsFp const & coord ) const
 { 
 	PixelRect const pixRect { GetPixRect4Text( coord ) };
 
@@ -85,11 +85,11 @@ void InputNeuron::DrawNeuronText(D2D_driver const * pGraphics, PixelCoordsFp & c
 	m_wBuffer.clear( );
 	m_wBuffer.str( std::wstring() );
 	m_wBuffer << fixed << setprecision(2) 
-		      << GetPulseFrequency().GetValue() 
+		      << GetPulseFreq().GetValue() 
 		      << L" " 
 		      << GetParameterUnit( tParameter::pulseRate );
 
-	DisplayText( pGraphics, pixRect, m_wBuffer.str( ) );
+	DisplayText( graphics, pixRect, m_wBuffer.str( ) );
 }
 
 InputNeuron const * Cast2InputNeuron( Shape const * pShape )

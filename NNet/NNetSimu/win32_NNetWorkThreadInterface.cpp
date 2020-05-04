@@ -20,8 +20,7 @@ using std::unordered_map;
 NNetWorkThreadInterface::NNetWorkThreadInterface( ) :
 	m_pTraceStream( nullptr ),
 	m_bTrace      ( TRUE ),
-	m_pNNetWorkThread( nullptr ),
-	m_pModel( nullptr )
+	m_pNNetWorkThread( nullptr )
 { }
 
 NNetWorkThreadInterface::~NNetWorkThreadInterface( )
@@ -49,7 +48,6 @@ void NNetWorkThreadInterface::Start
 	BOOL                 const bAsync
 )
 {
-	m_pModel = pModel;
 	m_pNNetWorkThread = new NNetWorkThread
 	( 
 		hwndApplication, 
@@ -115,6 +113,27 @@ void NNetWorkThreadInterface::PostConvert2InputNeuron( ShapeId const id )
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::CONVERT2INPUT_NEURON ), id.GetValue(), 0 );
 }
 
+void NNetWorkThreadInterface::PostSelectShape( ShapeId const id, tBoolOp const op )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << id.GetValue() << GetBoolOpName( op )  << endl;
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SELECT_SHAPE ), id.GetValue(), static_cast<LPARAM>(op) );
+}
+
+void NNetWorkThreadInterface::PostSelectAll( tBoolOp const op )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << GetBoolOpName( op ) << endl;
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SELECT_ALL ), 0, static_cast<LPARAM>(op) );
+}
+
+void NNetWorkThreadInterface::PostSelectSubtree( ShapeId const id, tBoolOp const op )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << GetBoolOpName( op ) << endl;
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SELECT_SUBTREE ), id.GetValue(), static_cast<LPARAM>(op) );
+}
+
 void NNetWorkThreadInterface::PostResetModel( )
 {
 	if ( IsTraceOn( ) )
@@ -122,7 +141,7 @@ void NNetWorkThreadInterface::PostResetModel( )
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::RESET_MODEL ), 0, 0 );
 }
 
-void NNetWorkThreadInterface::PostSetPulseRate( ShapeId const id, float const fNewValue )
+void NNetWorkThreadInterface::PostSetPulseRate( ShapeId const id, fHertz const fNewValue )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << fNewValue << endl;
@@ -158,6 +177,20 @@ void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint c
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << delta << endl;
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::MOVE_SHAPE ), id.GetValue(), Util::Pack2UINT64(delta) );
+}
+
+void NNetWorkThreadInterface::PostMoveSelection( MicroMeterPoint const & delta )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << L" " << delta << endl;
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::MOVE_SELECTION ), 0, Util::Pack2UINT64(delta) );
+}
+
+void NNetWorkThreadInterface::PostSelectShapesInRect( MicroMeterRect const & rect )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << L" " << rect << endl;
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SELECT_SHAPES_IN_RECT ), Util::Pack2UINT64(rect.GetStartPoint()), Util::Pack2UINT64(rect.GetEndPoint()) );
 }
 
 void NNetWorkThreadInterface::PostSlowMotionChanged( )
@@ -278,7 +311,7 @@ void NNetWorkThreadInterface::PostSelectAllBeepers()
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SELECT_ALL_BEEPERS), 0, 0 );
 }
 
-void NNetWorkThreadInterface::PostRemoveBeepers()
+void NNetWorkThreadInterface::PostRemoveBeepers( )
 {
 	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::REMOVE_BEEPERS), 0, 0 );
 }

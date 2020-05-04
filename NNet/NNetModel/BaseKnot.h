@@ -103,8 +103,8 @@ protected:
 	PipeList m_incoming;
 	PipeList m_outgoing;
 
-	void drawCircle( D2D_driver const *, PixelCoordsFp const &, D2D1::ColorF const, MicroMeterPoint const, MicroMeter const ) const;
-	void drawCircle( D2D_driver const *, PixelCoordsFp const &, D2D1::ColorF const, MicroMeter const ) const;
+	void drawCircle( D2D_driver const &, PixelCoordsFp const &, D2D1::ColorF const, MicroMeterPoint const, MicroMeter const ) const;
+	void drawCircle( D2D_driver const &, PixelCoordsFp const &, D2D1::ColorF const, MicroMeter const ) const;
 
 	PixelRect const GetPixRect4Text( PixelCoordsFp const & ) const;
 

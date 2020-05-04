@@ -27,9 +27,10 @@
 
 class Param;
 class Observable;
-class NNetModel;
 class CrsrWindow;
 class TimeDisplay;
+class NNetModel;
+class NNetModelInterface;
 class SlowMotionDisplay;
 class SimulationControl;
 class NNetModelStorage;
@@ -71,6 +72,7 @@ private:
 	ObserverProxy           * m_pModelRedrawProxy        { nullptr };
 	ObserverProxy           * m_pModelChangedProxy       { nullptr };
 	NNetController          * m_pNNetController          { nullptr };
+	NNetModelInterface      * m_pModelInterface          { nullptr };
 	NNetModel               * m_pModel                   { nullptr };
 	NNetWindow              * m_pMainNNetWindow          { nullptr };
 	//NNetWindow              * m_pMainNNetWindow2          { nullptr };

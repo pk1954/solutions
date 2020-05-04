@@ -7,7 +7,7 @@
 #include <sstream> 
 #include <string> 
 #include <iomanip>
-#include "NNetModel.h"
+#include "NNetModelInterface.h"
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
@@ -30,13 +30,13 @@ CrsrWindow::~CrsrWindow( )
 
 void CrsrWindow::Start
 (
-	HWND               const hwndParent,
-	NNetWindow const * const pNNetWindow,
-	NNetModel  const * const pModel
+	HWND               const         hwndParent,
+	NNetWindow         const * const pNNetWindow,
+	NNetModelInterface const * const pModelInterface
 ) 
 {
-	m_pNNetWindow = pNNetWindow;
-	m_pModel      = pModel;
+	m_pNNetWindow     = pNNetWindow;
+	m_pModelInterface = pModelInterface;
 	StartTextWindow
 	(
 		hwndParent, 
@@ -104,12 +104,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 	if ( IsUndefined( id ) )
 		return;
 
-	Shape const * const pShape { m_pModel->GetShapeConstPtr<Shape const *>( id ) };
-
-	if ( pShape == nullptr )
-		return;
-
-	ShapeType const type { m_pModel->GetShapeType( id ) };
+	ShapeType const type { m_pModelInterface->GetShapeType( id ) };
 
 	textBuf.printString( L"Shape #" );
 	textBuf.printNumber( id.GetValue() );
@@ -121,15 +116,13 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 	mV potential { 0.0_mV };
 	if ( type.IsPipeType( ) )
 	{
-		Pipe const * const pPipe { static_cast<Pipe const *>(pShape) };
 		textBuf.printString( L"# segments:" );
-		textBuf.printNumber( pPipe->GetNrOfSegments() );
-		potential = pPipe->GetVoltage( umPoint );
+		textBuf.printNumber( m_pModelInterface->GetNrOfSegments( id ) );
+		potential = m_pModelInterface->GetVoltage( id, umPoint );
 	}
 	else 
 	{
-		BaseKnot const * pBaseKnot { static_cast< BaseKnot const *>(pShape) };
-		potential = pBaseKnot->GetVoltage( );
+		potential = m_pModelInterface->GetVoltage( id );
 	}
 
 	textBuf.nextLine( L"potential " );
@@ -139,20 +132,18 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
 	if ( type.IsAnyNeuronType( ) )
 	{
-		Neuron const * pNeuron { static_cast< Neuron const *>(pShape) };
-		if ( pNeuron->HasTriggerSound() )
+		if ( m_pModelInterface->HasTriggerSound( id ) )
 		{
 			textBuf.nextLine( L"trigger sound:" );
-			printFrequency( textBuf, pNeuron->GetTriggerSoundFrequency() );
-			printMilliSecs( textBuf, pNeuron->GetTriggerSoundDuration() );
+			printFrequency( textBuf, m_pModelInterface->GetTriggerSoundFrequency( id ) );
+			printMilliSecs( textBuf, m_pModelInterface->GetTriggerSoundDuration ( id ) );
 			textBuf.printString( L" msec" );
 			textBuf.nextLine( );
 		}
 		if ( type.IsInputNeuronType( ) )
 		{
-			InputNeuron const * pInputNeuron { static_cast< InputNeuron const *>(pShape) };
 			textBuf.printString( L"pulse freq: " );
-			printFrequency( textBuf, pInputNeuron->GetPulseFrequency() );
+			printFrequency( textBuf, m_pModelInterface->GetPulseFreq( id ) );
 			textBuf.nextLine();
 		}
 	}

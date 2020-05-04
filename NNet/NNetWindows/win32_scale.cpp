@@ -10,7 +10,7 @@
 
 IDWriteTextFormat * Scale::m_pTextFormat;
 
-Scale::Scale( D2D_driver * pGraphics, PixelCoordsFp * const pCoords )
+Scale::Scale( PixelCoordsFp const * const pCoords )
  : m_pfPixelCoords( pCoords )
 { 
 }
@@ -19,10 +19,10 @@ Scale::~Scale( )
 {
 }
 
-void Scale::ShowScale( D2D_driver const * pGraphics, fPIXEL const height )
+void Scale::ShowScale( D2D_driver const & graphics, fPIXEL const height )
 {
 	if ( ! m_pTextFormat )
-		m_pTextFormat = pGraphics->NewTextFormat( 12.f );
+		m_pTextFormat = graphics.NewTextFormat( 12.f );
 
 	fPIXEL const vertPos    = height - 20._fPIXEL;
 	fPIXEL const horzPos    = 100._fPIXEL;
@@ -45,12 +45,12 @@ void Scale::ShowScale( D2D_driver const * pGraphics, fPIXEL const height )
 	fPixelPoint const fPixPoint1( horzPos, vertPos );
 	fPixelPoint const fPixPoint2( horzPos + fPixLength, vertPos );
 
-	pGraphics->DrawLine( fPixPoint1, fPixPoint2, 1._fPIXEL, SCALE_COLOR );
-	displayTicks( pGraphics, fPixPoint1, fPixPoint2, fIntegerPart, iFirstDigit );
-	displayScaleText( pGraphics, fPixPoint2, fIntegerPart );
+	graphics.DrawLine( fPixPoint1, fPixPoint2, 1._fPIXEL, SCALE_COLOR );
+	displayTicks( graphics, fPixPoint1, fPixPoint2, fIntegerPart, iFirstDigit );
+	displayScaleText( graphics, fPixPoint2, fIntegerPart );
 }
 
-void Scale::displayTicks( D2D_driver const * pGraphics, fPixelPoint const fPixPoint1, fPixelPoint const fPixPoint2, float const fLog10, int const iFirstDigit )
+void Scale::displayTicks( D2D_driver const & graphics, fPixelPoint const fPixPoint1, fPixelPoint const fPixPoint2, float const fLog10, int const iFirstDigit )
 {
 	fPixelPoint fLongTick  (  0._fPIXEL, 10._fPIXEL );
 	fPixelPoint fMiddleTick(  0._fPIXEL,  7._fPIXEL );
@@ -59,26 +59,26 @@ void Scale::displayTicks( D2D_driver const * pGraphics, fPixelPoint const fPixPo
 	fPixelPoint fTickPos( fPixPoint1 );
 	fPixelPoint fTickDist( (fPixPoint2.GetX() - fPixPoint1.GetX()) / 10, 0._fPIXEL );
 
-	pGraphics->DrawLine( fPixPoint1 - fLongTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+	graphics.DrawLine( fPixPoint1 - fLongTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 
-	displayScaleNumber( pGraphics, fTickPos, fLog10, 0 );
+	displayScaleNumber( graphics, fTickPos, fLog10, 0 );
 
 	if ( iFirstDigit == 1 )
 	{
 		for ( int i = 1; i <= 4; ++i )
 		{
 			fTickPos += fTickDist;
-			pGraphics->DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+			graphics.DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 		}
 
 		fTickPos += fTickDist;
-		pGraphics->DrawLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
-		displayScaleNumber( pGraphics, fTickPos, fLog10 - 1.0f, 5 );
+		graphics.DrawLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+		displayScaleNumber( graphics, fTickPos, fLog10 - 1.0f, 5 );
 
 		for ( int i = 6; i <= 9; ++i )
 		{
 			fTickPos += fTickDist;
-			pGraphics->DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+			graphics.DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 		}
 	}
 	else if ( iFirstDigit == 2 )
@@ -86,17 +86,17 @@ void Scale::displayTicks( D2D_driver const * pGraphics, fPixelPoint const fPixPo
 		for ( int i = 1; i <= 4; ++i )
 		{
 			fTickPos += fTickDist;
-			pGraphics->DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+			graphics.DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 		}
 
 		fTickPos += fTickDist;
-		pGraphics->DrawLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
-		displayScaleNumber( pGraphics, fTickPos, fLog10, 1 );
+		graphics.DrawLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+		displayScaleNumber( graphics, fTickPos, fLog10, 1 );
 
 		for ( int i = 6; i <= 9; ++i )
 		{
 			fTickPos += fTickDist;
-			pGraphics->DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+			graphics.DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 		}
 	}
 	else if ( iFirstDigit == 5 )
@@ -104,24 +104,24 @@ void Scale::displayTicks( D2D_driver const * pGraphics, fPixelPoint const fPixPo
 		for ( int i = 0;; )
 		{
 			fTickPos += fTickDist;
-			pGraphics->DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+			graphics.DrawLine( fTickPos - fSmallTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
 
 			if ( ++i > 4 )
 				break;
 
 			fTickPos += fTickDist;
-			pGraphics->DrawLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
-			displayScaleNumber( pGraphics, fTickPos, fLog10, i );
+			graphics.DrawLine( fTickPos - fMiddleTick, fTickPos, 1._fPIXEL, SCALE_COLOR );
+			displayScaleNumber( graphics, fTickPos, fLog10, i );
 		}
 	}
 	else 
 		assert( false );
 
-	displayScaleNumber( pGraphics, fPixPoint2, fLog10, iFirstDigit );
-	pGraphics->DrawLine( fPixPoint2 - fLongTick, fPixPoint2, 1._fPIXEL, SCALE_COLOR );
+	displayScaleNumber( graphics, fPixPoint2, fLog10, iFirstDigit );
+	graphics.DrawLine( fPixPoint2 - fLongTick, fPixPoint2, 1._fPIXEL, SCALE_COLOR );
 }
 
-void Scale::displayScaleNumber( D2D_driver const * pGraphics, fPixelPoint const fPos, float const fLog10, int const iFirstDigit )
+void Scale::displayScaleNumber( D2D_driver const & graphics, fPixelPoint const fPos, float const fLog10, int const iFirstDigit )
 {
 	static PIXEL const textWidth  { 40_PIXEL };
 	static PIXEL const textHeight { 20_PIXEL };
@@ -151,10 +151,10 @@ void Scale::displayScaleNumber( D2D_driver const * pGraphics, fPixelPoint const 
 			m_wBuffer << L"0";
 	}
 
-	pGraphics->DisplayText( pixRect, m_wBuffer.str( ), SCALE_COLOR, m_pTextFormat );
+	graphics.DisplayText( pixRect, m_wBuffer.str( ), SCALE_COLOR, m_pTextFormat );
 }
 
-void Scale::displayScaleText( D2D_driver const * pGraphics, fPixelPoint const fPos, float const fLog10 )
+void Scale::displayScaleText( D2D_driver const & graphics, fPixelPoint const fPos, float const fLog10 )
 {
 	static PIXEL const textWidth  = 40_PIXEL;
 	static PIXEL const textHeight = 20_PIXEL;
@@ -182,5 +182,5 @@ void Scale::displayScaleText( D2D_driver const * pGraphics, fPixelPoint const fP
 	else
 		m_wBuffer << L"m";
 
-	pGraphics->DisplayText( pixRect, m_wBuffer.str( ), SCALE_COLOR, m_pTextFormat );
+	graphics.DisplayText( pixRect, m_wBuffer.str( ), SCALE_COLOR, m_pTextFormat );
 }

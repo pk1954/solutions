@@ -16,6 +16,10 @@ class D2D_driver;
 class PixelCoordsFp;
 class NNetModel;
 
+using ShapeCrit = function<bool(Shape const &)>;
+
+static ShapeCrit const ShapeCritAlwaysTrue { [&]( Shape const & s) { return true; } };
+
 class Shape
 {
 public:
@@ -29,13 +33,13 @@ public:
 	bool IsSelected( ) const { return m_bSelected; }
 	bool IsMarked  ( ) const { return m_bMarked; }
 
-	virtual bool IsInRect      ( MicroMeterRect const & )                                    const = 0;
-	virtual void DrawExterior  ( D2D_driver const *, PixelCoordsFp &, tHighlightType const ) const = 0;
-	virtual void DrawInterior  ( D2D_driver const *, PixelCoordsFp & )                             = 0;
-	virtual bool IsPointInShape( MicroMeterPoint const & )                                   const = 0;
-	virtual void Prepare       ( )                                                                 = 0;
-	virtual void Step          ( )                                                                 = 0;
-	virtual void Recalc        ( )                                                                 = 0;
+	virtual void DrawExterior  ( D2D_driver const &, PixelCoordsFp const &, tHighlightType const = tHighlightType::normal  ) const = 0;
+	virtual void DrawInterior  ( D2D_driver const &, PixelCoordsFp const & ) const = 0;
+	virtual void Prepare       ( )                                                 = 0;
+	virtual void Step          ( )                                                 = 0;
+	virtual void Recalc        ( )                                                 = 0;
+	virtual bool IsInRect      ( MicroMeterRect  const & )                   const = 0;
+	virtual bool IsPointInShape( MicroMeterPoint const & )                   const = 0;
 
 	virtual void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op ); }
 	virtual void Clear ( )                  { m_mVinputBuffer = 0.0_mV; };

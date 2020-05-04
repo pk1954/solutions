@@ -4,23 +4,22 @@
 
 #include "stdafx.h"
 #include "assert.h"
-#include "PixelCoordsFp.h"
 #include "tHighlightType.h"
 #include "Direct2D.h"
 #include "Knot.h"
 
-void Knot::DrawExterior( D2D_driver const * pGraphics, PixelCoordsFp & coord, tHighlightType const type ) const
+void Knot::DrawExterior( D2D_driver const & graphics, PixelCoordsFp const & coord, tHighlightType const type ) const
 {
 	drawCircle
 	( 
-		pGraphics, 
+		graphics, 
 		coord, 
 		GetFrameColor( type ), 
 		(type == tHighlightType::normal) ? GetExtension( ) : 30.0_MicroMeter 
 	);
 }
 
-void Knot::DrawInterior( D2D_driver const * pGraphics, PixelCoordsFp & coord )
+void Knot::DrawInterior( D2D_driver const & graphics, PixelCoordsFp const & coord ) const
 {
-	drawCircle( pGraphics, coord, GetInteriorColor( ), GetExtension( ) * PIPE_INTERIOR );
+	drawCircle( graphics, coord, GetInteriorColor( ), GetExtension( ) * PIPE_INTERIOR );
 }

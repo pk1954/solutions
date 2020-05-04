@@ -70,7 +70,7 @@ public:
     {
         ShapeId const id     { ScrReadShapeId( script ) };
         float   const fValue { CastToFloat( script.ScrReadFloat( ) ) };
-        m_pWorkThreadInterface->PostSetPulseRate( id, fValue );
+        m_pWorkThreadInterface->PostSetPulseRate( id, fHertz{ fValue } );
     }
 };
 

@@ -12,7 +12,7 @@ class TriggerSoundDialog
 public:
 	TriggerSoundDialog
 	( 
-		bool      bSoundActive ,
+		bool      bSoundActive,
 		Hertz     frequency,
 		MilliSecs duration
 	) :

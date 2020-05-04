@@ -188,6 +188,7 @@
     <ClInclude Include="Neuron.h" />
     <ClInclude Include="NNetColors.h" />
     <ClInclude Include="NNetModel.h" />
+    <ClInclude Include="NNetModelInterface.h" />
     <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="NNetWrapperHelpers.h" />
     <ClInclude Include="Pipe.h" />
@@ -214,6 +215,7 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </AdditionalOptions>
     </ClCompile>
+    <ClCompile Include="NNetModelInterface.cpp" />
     <ClCompile Include="NNetParameters.cpp" />
     <ClCompile Include="NNetWrapperHelpers.cpp" />
     <ClCompile Include="Pipe.cpp" />

@@ -12,10 +12,8 @@
 #include "PixelTypes.h"
 #include "Analyzer.h"
 #include "AnimationThread.h"
-#include "tHighlightType.h"
-#include "PixelCoordsFp.h"
-#include "Direct2D.h"
 #include "NNetParameters.h"
+#include "NNetModelInterface.h"
 #include "NNetColors.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
@@ -48,12 +46,12 @@ NNetWindow::NNetWindow( ) :
 
 void NNetWindow::Start
 ( 
-	HWND             const hwndApp, 
-	DWORD            const dwStyle,
-	function<bool()> const visibilityCriterion,
-	NNetModel      * const pModel,
-	Observable     * const pCursorObservable,
-	bool             const bFixed
+	HWND                 const hwndApp, 
+	DWORD                const dwStyle,
+	function<bool()>     const visibilityCriterion,
+	NNetModelInterface * const pModelInterface,
+	Observable         * const pCursorObservable,
+	bool                 const bFixed
 )
 {
 	m_bFixed = bFixed;
@@ -68,8 +66,8 @@ void NNetWindow::Start
 	);
 	m_D2d_driver.Initialize( hwnd );
 	setStdFontSize( );
-	m_pModel = pModel;
-	m_pScale = new Scale( & m_D2d_driver, & m_coord );
+	m_pModelInterface = pModelInterface;
+	m_pScale = new Scale( & m_coord );
 	m_pAnimationThread = new AnimationThread( );
 	m_pCursorPosObservable = pCursorObservable;
 	ShowRefreshRateDlg( false );
@@ -86,21 +84,6 @@ void NNetWindow::Stop( )
 NNetWindow::~NNetWindow( )
 {
 	m_pNNetWorkThreadInterface = nullptr;
-}
-
-void NNetWindow::SelectShape  ( tBoolOp const op ) 
-{ 
-	m_pModel->SelectShape( m_shapeHighlighted, op );	
-}
-
-void NNetWindow::SelectAll( tBoolOp const op ) 
-{ 
-	m_pModel->SelectAll( op );	
-}
-
-void NNetWindow::SelectSubtree( tBoolOp const op ) 
-{ 
-	m_pModel->SelectSubtree( m_shapeHighlighted, op );	
 }
 
 void NNetWindow::Zoom( bool const bZoomIn  )
@@ -131,9 +114,9 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 	m_ptCommandPosition = ptPos;
 
-	ShapeType type { m_pModel->GetShapeType( m_shapeHighlighted ) };
+	ShapeType type { m_pModelInterface->GetShapeType( m_shapeHighlighted ) };
 
-	if ( m_pModel->AnyShapesSelected( ) )
+	if ( m_pModelInterface->AnyShapesSelected( ) )
 	{
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_DESELECT_ALL,     L"Deselect all" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_COPY_SELECTION,   L"Copy selection" );
@@ -145,7 +128,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	else switch ( type.GetValue() )
 	{
 	case ShapeType::Value::inputNeuron:
-		if ( ! m_pModel->HasOutgoing( m_shapeHighlighted ) )
+		if ( ! m_pModelInterface->HasOutgoing( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE,            L"Pulse rate" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,          L"Remove" );
@@ -154,12 +137,12 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		break;
 
 	case ShapeType::Value::neuron:
-		if ( ! m_pModel->HasOutgoing( m_shapeHighlighted ) )
+		if ( ! m_pModelInterface->HasOutgoing( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING2KNOT,     L"Add incoming dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,          L"Remove" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT,            L"Disconnect" );
-		if ( ! m_pModel->HasIncoming( m_shapeHighlighted ) )
+		if ( ! m_pModelInterface->HasIncoming( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_CONVERT2INPUT_NEURON, L"Convert into input neuron" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_SELECT_SUBTREE,        L"Select subtree" );
@@ -169,16 +152,16 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING2KNOT, L"Add incoming dendrite" );
 		if ( 
-				(! m_pModel->HasOutgoing( m_shapeHighlighted )) || 
+				(! m_pModelInterface->HasOutgoing( m_shapeHighlighted )) || 
 				(
-					! m_pModel->HasIncoming( m_shapeHighlighted ) && 
-					( m_pModel->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )  
+					! m_pModelInterface->HasIncoming( m_shapeHighlighted ) && 
+					( m_pModelInterface->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 )  
 				) 
 			)
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_APPEND_NEURON, L"Add neuron" );
 		if ( 
-				( m_pModel->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 ) && 
-				(! m_pModel->HasIncoming( m_shapeHighlighted )) 
+				( m_pModelInterface->GetNrOfOutgoingConnections( m_shapeHighlighted ) <= 1 ) && 
+				(! m_pModelInterface->HasIncoming( m_shapeHighlighted )) 
 			)
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_APPEND_INPUT_NEURON, L"Add input neuron" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT, L"Disconnect" );
@@ -208,7 +191,7 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 
 	if ( IsDefined( m_shapeHighlighted ) )
 	{
-		if ( m_pModel->IsSelected( m_shapeHighlighted ) )
+		if ( m_pModelInterface->IsSelected( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDM_DESELECT_SHAPE, L"Deselect" );
 		else
 			AppendMenu( hPopupMenu, STD_FLAGS, IDM_SELECT_SHAPE, L"Select" );
@@ -218,35 +201,38 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 bool NNetWindow::ChangePulseRate( ShapeId const id, bool const bDirection )
 {
 	static fHertz const INCREMENT { 0.01_fHertz };
-	InputNeuron const * pInputNeuron { m_pModel->GetShapeConstPtr<InputNeuron const *>(id) };
-	if ( pInputNeuron == nullptr )
+	fHertz const fOldValue { m_pModelInterface->GetPulseFreq( id ) };
+	if ( fOldValue.IsNull() )
 		return false;
-	fHertz const fOldValue { pInputNeuron->GetPulseFrequency( ) };
 	fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
-	m_pNNetWorkThreadInterface->PostSetPulseRate( id, fNewValue.GetValue() );
+	m_pNNetWorkThreadInterface->PostSetPulseRate( id, fNewValue );
 	return true;
 }
 
 void NNetWindow::PulseRateDlg( ShapeId const id )
 {
-	InputNeuron const * pInputNeuron { m_pModel->GetShapeConstPtr<InputNeuron const *>(id) };
-	if ( pInputNeuron == nullptr )
+	fHertz  const fOldValue { m_pModelInterface->GetPulseFreq( id ) };
+	if ( fOldValue.IsNull() )
 		return;
-	float   const fOldValue { m_pModel->GetPulseRate( pInputNeuron ) };
 	wstring const header    { GetParameterName ( tParameter::pulseRate ) }; 
 	wstring const unit      { GetParameterUnit ( tParameter::pulseRate ) }; 
-	float   const fNewValue { StdDialogBox::Show( GetWindowHandle(), fOldValue, header, unit ) };
+	fHertz  const fNewValue { StdDialogBox::Show( GetWindowHandle(), fOldValue.GetValue(), header, unit ) };
 	if ( fNewValue != fOldValue )
 		m_pNNetWorkThreadInterface->PostSetPulseRate( id, fNewValue );
 }
 
 void NNetWindow::TriggerSoundDlg( ShapeId const id )
 {
-	Neuron * pNeuron { m_pModel->GetShapePtr<Neuron *>(id) };
-	if ( pNeuron == nullptr )
+	ShapeType const type { m_pModelInterface->GetShapeType(id) };
+	if ( ! type.IsAnyNeuronType() )
 		return;
 
-	TriggerSoundDialog dialog( pNeuron->HasTriggerSound(), pNeuron->GetTriggerSoundFrequency(), pNeuron->GetTriggerSoundDuration() );
+	TriggerSoundDialog dialog
+	( 
+		m_pModelInterface->HasTriggerSound( id ), 
+		m_pModelInterface->GetTriggerSoundFrequency( id ), 
+		m_pModelInterface->GetTriggerSoundDuration( id ) 
+	);
 
 	dialog.Show( GetWindowHandle() );
 
@@ -275,7 +261,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
 		{
 			m_umRectSelection = MicroMeterRect( umCrsrPos, umLastPos );
-			m_pModel->Apply2AllInRect<Shape>( m_umRectSelection, [&]( Shape & shape ) { shape.Select( tBoolOp::opTrue ); } );
+				m_pNNetWorkThreadInterface->PostSelectShapesInRect( m_umRectSelection );
 		}
 		else                           // first time here after RBUTTON pressed
 		{
@@ -286,38 +272,35 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	{
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
-			MicroMeterPoint const   umDelta     { umCrsrPos - umLastPos };
-			Shape           const * pShapeSuper { nullptr };
+			MicroMeterPoint const umDelta { umCrsrPos - umLastPos };
+			m_shapeSuperHighlighted = NO_SHAPE;
 			if ( IsDefined( m_shapeHighlighted ) )
 			{
 				m_pNNetWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umDelta );
-				if ( m_pModel->IsOfType<BaseKnot>( m_shapeHighlighted ) )
+				if ( m_pModelInterface->IsOfType<BaseKnot>( m_shapeHighlighted ) )
 				{
-					pShapeSuper = m_pModel->FindShapeAt
+					m_shapeSuperHighlighted = m_pModelInterface->FindShapeAt
 					( 
 						umCrsrPos, 
-						[&]( Shape const & shape ) { return m_pModel->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
+						[&]( Shape const & shape ) { return m_pModelInterface->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
 					);
 				}
 			}
-			else if ( m_pModel->AnyShapesSelected( ) )
+			else if ( m_pModelInterface->AnyShapesSelected( ) )
 			{
-				m_pModel->MoveSelection( umDelta );
+				m_pNNetWorkThreadInterface->PostMoveSelection( umDelta );
 			}
 			else if ( m_bMoveAllowed )
 			{
 				m_coord.Move( ptCrsr - m_ptLast );
 			}
-
-			m_shapeSuperHighlighted = pShapeSuper ? pShapeSuper->GetId( ) : NO_SHAPE;
 		}
 		m_ptLast = ptCrsr;
 		Notify( TRUE );     // cause immediate repaint
 	}
 	else  // no mouse button pressed
 	{                         
-		Shape   const * pShapeHighlight { m_pModel->FindShapeAt( umCrsrPos, [&]( Shape const & s) { return true; } ) };
-		ShapeId const   idHighlight     { pShapeHighlight ? pShapeHighlight->GetId( ) : NO_SHAPE };
+		ShapeId const idHighlight { m_pModelInterface->FindShapeAt( umCrsrPos ) };
 		if ( idHighlight != m_shapeHighlighted )
 		{
 			m_shapeHighlighted = idHighlight; 
@@ -346,29 +329,24 @@ void NNetWindow::doPaint( )
 		m_D2d_driver.DrawTranspRect( m_coord.convert2fPixelRect( m_umRectSelection ), NNetColors::SELECTION_RECT );
 
 	if ( m_coord.GetPixelSize() <= 5._MicroMeter )
-		m_pModel->Apply2AllInRect<Shape>( umRect, [&]( Shape & shape ) { shape.DrawExterior( & m_D2d_driver, m_coord, GetHighlightType( shape ) ); } );
+		m_pModelInterface->DrawExterior( umRect, m_D2d_driver, m_coord );
 
-	m_pModel->Apply2AllInRect<Pipe    >( umRect, [&]( Pipe     & shape ) { shape.DrawInterior( & m_D2d_driver, m_coord ); } );
-	m_pModel->Apply2AllInRect<BaseKnot>( umRect, [&]( BaseKnot & shape ) { shape.DrawInterior( & m_D2d_driver, m_coord ); } );
+	m_pModelInterface->DrawInterior( umRect, m_D2d_driver, m_coord, [&](Shape const & s){ return s.IsPipe    (); } );
+	m_pModelInterface->DrawInterior( umRect, m_D2d_driver, m_coord, [&](Shape const & s){ return s.IsBaseKnot(); } );
 
 	// draw highlighted shape again to be sure that it is in foreground
-	if ( Shape * const pShapeHighlighted { m_pModel->GetShape( m_shapeHighlighted ) } )
-	{
-		pShapeHighlighted->LockShapeShared();
-		pShapeHighlighted->DrawExterior( & m_D2d_driver, m_coord, tHighlightType::highlighted );
-		pShapeHighlighted->DrawInterior( & m_D2d_driver, m_coord );
-		pShapeHighlighted->UnlockShapeShared();
-	}
+	m_pModelInterface->DrawExterior( m_shapeHighlighted, m_D2d_driver, m_coord, tHighlightType::highlighted );
+	m_pModelInterface->DrawInterior( m_shapeHighlighted, m_D2d_driver, m_coord );
 
-	m_pScale->ShowScale( & m_D2d_driver, convert2fPIXEL( GetClientWindowHeight() ) );
+	m_pScale->ShowScale( m_D2d_driver, convert2fPIXEL( GetClientWindowHeight() ) );
 
 	if ( m_coord.GetPixelSize() <= 2.5_MicroMeter )
-		m_pModel->Apply2AllInRect<Neuron>( umRect, [&]( Neuron & neuron ) { neuron.DrawNeuronText( & m_D2d_driver, m_coord ); } );
+		m_pModelInterface->DrawNeuronText( umRect, m_D2d_driver, m_coord );
 }
 
 void NNetWindow::CenterModel( bool const bSmooth )
 {
-	centerAndZoomRect( m_pModel->GetEnclosingRect( ), 1.2f, bSmooth );
+	centerAndZoomRect( m_pModelInterface->GetEnclosingRect( ), 1.2f, bSmooth );
 }
 
 void NNetWindow::AnalysisFinished( )
@@ -448,7 +426,7 @@ void NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )
 {
 	if ( IsDefined( m_shapeHighlighted ) )
-		m_pModel->SelectShape( m_shapeHighlighted, tBoolOp::opToggle );
+		m_pNNetWorkThreadInterface->PostSelectShape( m_shapeHighlighted, tBoolOp::opToggle );
 }
 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )

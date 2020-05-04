@@ -174,6 +174,18 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		m_pNNetModel->Convert2InputNeuron( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
+	case NNetWorkThreadMessage::Id::SELECT_SHAPE:
+		m_pNNetModel->SelectShape( ShapeId( CastToLong(msg.wParam) ), static_cast<tBoolOp>(msg.lParam) );
+		break;
+
+	case NNetWorkThreadMessage::Id::SELECT_SUBTREE:
+		m_pNNetModel->SelectSubtree( ShapeId( CastToLong(msg.wParam) ), static_cast<tBoolOp>(msg.lParam) );
+		break;
+
+	case NNetWorkThreadMessage::Id::SELECT_ALL:
+		m_pNNetModel->SelectAll( static_cast<tBoolOp>(msg.lParam) );
+		break;
+
 	case NNetWorkThreadMessage::Id::RESET_MODEL:
 		generationStop( );
 		m_pNNetModel->ResetModel( );
@@ -217,7 +229,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::REMOVE_BEEPERS:
-		m_pNNetModel->RemoveBeepers();
+		m_pNNetModel->RemoveBeepers( );
 		break;
 
 	case NNetWorkThreadMessage::Id::COPY_SELECTION:
@@ -234,6 +246,14 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 				ModelAnalyzer::SelectLoopShapes( * m_pNNetModel );
 			m_pParam->SetEmphasizeMode( bFound );
 		}
+		break;
+
+	case NNetWorkThreadMessage::Id::MOVE_SELECTION:
+		m_pNNetModel->MoveSelection( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		break;
+
+	case NNetWorkThreadMessage::Id::SELECT_SHAPES_IN_RECT:
+		m_pNNetModel->MoveSelection( Util::Unpack2MicroMeterPoint(msg.lParam) );
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE:

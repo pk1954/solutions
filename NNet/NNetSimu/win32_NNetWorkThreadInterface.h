@@ -42,29 +42,34 @@ public:
 	);
 	void Stop(); 
 
-	void PostSendBack            ( int const );
-	void PostSetPulseRate        ( ShapeId    const, float const );
-	void PostSetParameter        ( tParameter const, float const );
-	void PostResetTimer          ( );
-	void PostConnect             ( ShapeId const, ShapeId const );
-	void PostRemoveShape         ( ShapeId const );
-	void PostDisconnect          ( ShapeId const );
-	void PostConvert2Neuron      ( ShapeId const );
-	void PostConvert2InputNeuron ( ShapeId const );
-	void PostSlowMotionChanged   ( );
-	void PostMoveShape           ( ShapeId const, MicroMeterPoint const & );
 	void PostActionCommand       ( int const, ShapeId const, MicroMeterPoint const & );
-	void PostSetTriggerSound     ( ShapeId const, bool const, Hertz const, MilliSecs const );
-	void PostResetModel          ( );
-	void PostRunGenerations      ( bool const );
-	void PostStopComputation     ( );
-	void PostGenerationStep      ( );
+	void PostConnect             ( ShapeId const, ShapeId const );
+	void PostConvert2InputNeuron ( ShapeId const );
+	void PostConvert2Neuron      ( ShapeId const );
 	void PostCopySelection       ( );
 	void PostDeleteSelection     ( );
-	void PostRemoveBeepers       ( );
-	void PostSelectAllBeepers    ( );
+	void PostDisconnect          ( ShapeId const );
+	void PostGenerationStep      ( );
 	void PostMarkSelection       ( tBoolOp const );
+	void PostMoveSelection       ( MicroMeterPoint const & );
+	void PostMoveShape           ( ShapeId const, MicroMeterPoint const & );
+	void PostRemoveBeepers       ( );
+	void PostRemoveShape         ( ShapeId const );
 	void PostRepeatGenerationStep( );       // Do not call! Used by WorkThread only;
+	void PostResetModel          ( );
+	void PostResetTimer          ( );
+	void PostRunGenerations      ( bool const );
+	void PostSelectAll           ( tBoolOp const );
+	void PostSelectAllBeepers    ( );
+	void PostSelectShape         ( ShapeId const, tBoolOp const );
+	void PostSelectShapesInRect  ( MicroMeterRect const & );
+	void PostSelectSubtree       ( ShapeId const, tBoolOp const );
+	void PostSendBack            ( int const );
+	void PostSetParameter        ( tParameter const, float const );
+	void PostSetPulseRate        ( ShapeId    const, fHertz const );
+	void PostSetTriggerSound     ( ShapeId const, bool const, Hertz const, MilliSecs const );
+	void PostSlowMotionChanged   ( );
+	void PostStopComputation     ( );
 
 	BOOL       IsRunning            ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }
 	BOOL       IsAsyncThread        ( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }
@@ -89,5 +94,4 @@ private:
 	wostream        * m_pTraceStream;
 	BOOL              m_bTrace;
 	NNetWorkThread  * m_pNNetWorkThread;
-	NNetModel const * m_pModel;
 }; 

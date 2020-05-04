@@ -139,7 +139,7 @@ MicroMeterPoint Pipe::GetVector( ) const
 	return umvector;
 }
 
-void Pipe::DrawExterior( D2D_driver const * pGraphics, PixelCoordsFp & coord, tHighlightType const type ) const
+void Pipe::DrawExterior( D2D_driver const & graphics, PixelCoordsFp const & coord, tHighlightType const type ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
@@ -150,10 +150,10 @@ void Pipe::DrawExterior( D2D_driver const * pGraphics, PixelCoordsFp & coord, tH
 		fPixelPoint  const fEndPoint  { coord.convert2fPixelPos( umEndPoint   ) };
 		D2D1::ColorF const colF       { GetFrameColor( type ) };
 
-		pGraphics->DrawLine( fStartPoint, fEndPoint, fPixWidth, colF );
+		graphics.DrawLine( fStartPoint, fEndPoint, fPixWidth, colF );
 
 		if ( m_arrowSize > 0.0_MicroMeter )
-			pGraphics->DrawArrow
+			graphics.DrawArrow
 			(
 				coord.convert2fPixelPos( (umEndPoint * 2.f + umStartPoint) / 3.f ), 
 				coord.convert2fPixelSize( umEndPoint - umStartPoint ), 
@@ -164,15 +164,15 @@ void Pipe::DrawExterior( D2D_driver const * pGraphics, PixelCoordsFp & coord, tH
 	}
 }
 
-fPixelPoint Pipe::drawSegment( D2D_driver const * pGraphics, fPixelPoint const & fP1, fPixelPoint const fPixSegVec, fPIXEL const fWidth, mV const voltage ) const
+fPixelPoint Pipe::drawSegment( D2D_driver const & graphics, fPixelPoint const & fP1, fPixelPoint const fPixSegVec, fPIXEL const fWidth, mV const voltage ) const
 {
 	fPixelPoint  const fP2  { fP1 + fPixSegVec };
 	D2D1::ColorF const colF { GetInteriorColor( voltage ) };
-	pGraphics->DrawLine( fP1, fP2, fWidth, colF );
+	graphics.DrawLine( fP1, fP2, fWidth, colF );
 	return fP2;
 }
 
-void Pipe::DrawInterior( D2D_driver const * pGraphics, PixelCoordsFp & coord )
+void Pipe::DrawInterior( D2D_driver const & graphics, PixelCoordsFp const & coord ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
@@ -185,9 +185,9 @@ void Pipe::DrawInterior( D2D_driver const * pGraphics, PixelCoordsFp & coord )
 		fPixelPoint       fPoint     { coord.convert2fPixelPos( umStartPoint ) };
 
 		for( auto iter = m_potIter + 1; iter != m_potential.end(); ++iter )
-			fPoint = drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, * iter );
+			fPoint = drawSegment( graphics, fPoint, fPixSegVec, fWidth, * iter );
 		for( auto iter = m_potential.begin(); iter <= m_potIter; ++iter )
-			fPoint = drawSegment( pGraphics, fPoint, fPixSegVec, fWidth, * iter );
+			fPoint = drawSegment( graphics, fPoint, fPixSegVec, fWidth, * iter );
 	}
 }
 

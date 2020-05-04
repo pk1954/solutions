@@ -12,17 +12,14 @@
 #include "Segment.h"
 #include "tParameter.h"
 #include "tHighlightType.h"
+#include "InputNeuron.h"
 #include "Neuron.h"
 #include "Knot.h"
 #include "Pipe.h"
 
-
-#include "PixelCoordsFp.h"
-
 class ObserverInterface;
 class EventInterface;
 class ComputeThread;
-class InputNeuron;
 class Param;
 
 using ShapeList = vector<Shape *>;
@@ -39,11 +36,6 @@ public:
 	virtual ~NNetModel( );
 
 	// readOnly functions
-
-	template <typename T> bool IsOfType( ShapeId const id ) const 
-	{ 
-		return T::TypeFits( GetShapeType( id ) ); 
-	}
 
 	template <typename T> bool HasType( Shape const * const pShape ) const 
 	{ 
@@ -64,41 +56,30 @@ public:
 		return (pShape && HasType<T>(pShape)) ? static_cast<T>( pShape ) : nullptr;
 	}
 
+	template <typename T>
+	long const GetNrOf( ) const
+	{
+		long lCounter = 0;
+		Apply2All<T>( [&]( T const & s ) { ++ lCounter; } );
+		return lCounter;
+	}
+
 	bool          IsShapeIdOk  ( ShapeId const id ) const { return IsDefined( id ) && IsValidShapeId( id ); }
 	Shape       * GetShape     ( ShapeId const id )       { return IsShapeIdOk( id ) ? m_Shapes[id.GetValue()] : nullptr; }
 	Shape const * GetConstShape( ShapeId const id ) const {	return IsShapeIdOk( id ) ? m_Shapes[id.GetValue()] : nullptr; }
 	
 	MicroMeterPoint const GetShapePos   ( ShapeId const id  ) const;
-	ShapeType       const GetShapeType  ( ShapeId const id  ) const;
-	bool            const HasOutgoing   ( ShapeId const id  ) const;
-	bool            const HasIncoming   ( ShapeId const id  ) const;
 	bool            const IsValidShapeId( ShapeId const id  ) const { return id.GetValue() < m_Shapes.size(); }
 
 	fMicroSecs      const GetSimulationTime ( ) const { return m_timeStamp; }
 	long            const GetSizeOfShapeList( ) const { return CastToLong( m_Shapes.size() ); }
 	
-	template <typename T>
-	long const GetNrOf( ) const
-	{
-		long lCounter = 0;
-		Apply2All<T>( [&]( T & s ) { ++ lCounter; } );
-		return lCounter;
-	}
 
 	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
 	BaseKnot * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
 
 	ShapeId const GetStartKnotId (ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
 	ShapeId const GetEndKnotId   (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
-
-	size_t const GetNrOfOutgoingConnections( ShapeId const ) const;
-	size_t const GetNrOfIncomingConnections( ShapeId const ) const; 
-
-	Shape const * FindShapeAt( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
-
-	float const GetPulseRate( InputNeuron const * ) const;
-
-	bool const ConnectsTo( ShapeId const, ShapeId const ) const;
 
 	// manipulating functions
 
@@ -116,7 +97,8 @@ public:
 	template <typename T>
 	void AppendShape( ShapeId const id )
 	{
-		if ( IsOfType<Knot>( id ) )
+		Shape * pShape { GetShapePtr<Shape *>( id ) };
+		if ( pShape && pShape->TypeFits( ShapeType::Value::knot ) )
 		{
 			Connect( id, NewShape<T>( GetShapePos( id ) )->GetId() );
 			modelHasChanged( );
@@ -142,6 +124,25 @@ public:
 	}
 
 	template <typename T>
+	bool Apply2AllB( function<bool(T const &)> const & func ) const
+	{
+		bool bResult { false };
+		for ( auto pShape : m_Shapes )
+		{
+			if ( pShape )
+			{
+				pShape->LockShapeShared();
+				if ( HasType<T>( pShape ) )	
+					bResult = func( static_cast<T &>( * pShape ) );
+				pShape->UnlockShapeShared();
+				if ( bResult )
+					break;
+			}
+		}
+		return bResult;
+	}
+
+	template <typename T>
 	void Apply2All( function<void(T &)> const & func ) const
 	{
 		for (auto & pShape : m_Shapes)    
@@ -156,9 +157,30 @@ public:
 	}                        
 
 	template <typename T>
-	void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func ) const
+	void Apply2All( function<void(T const &)> const & func ) const
 	{
-		Apply2All<T>( {	[&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } } );
+		for (auto & pShape : m_Shapes)    
+		{ 
+			if ( pShape )
+			{
+				pShape->LockShapeShared();
+				if ( HasType<T>(pShape) ) 
+					func( static_cast<T &>(*pShape) ); 
+				pShape->UnlockShapeShared();
+			}
+		}
+	}                        
+
+	template <typename T>
+	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func ) const
+	{
+		Apply2All<T>( [&](T const & s) { if ( s.IsInRect(r) ) { func( s ); } } );
+	}
+
+	template <typename T>
+	void Apply2AllInRect( MicroMeterRect const & r, function<void(T       &)> const & func )
+	{
+		Apply2All<T> ( [&](T      & s) { if ( s.IsInRect(r) ) { func( s ); } } );
 	}
 
 	template <typename T>
@@ -176,6 +198,8 @@ public:
 	Knot   * const InsertKnot  ( ShapeId const, MicroMeterPoint const & );
 	Neuron * const InsertNeuron( ShapeId const, MicroMeterPoint const & );
 	void           MoveShape   ( ShapeId const, MicroMeterPoint const & );
+
+	ShapeId const FindShapeAt( MicroMeterPoint const, ShapeCrit const & ) const;
 
 	void AddOutgoing2Knot( ShapeId const, MicroMeterPoint const & );
 	void AddIncoming2Knot( ShapeId const, MicroMeterPoint const & );
@@ -200,7 +224,7 @@ public:
 		modelHasChanged( );
 	}
 
-	MicroMeterRect GetEnclosingRect() {	return ::GetEnclosingRect( m_Shapes ); }
+	MicroMeterRect GetEnclosingRect() const {	return ::GetEnclosingRect( m_Shapes ); }
 
 	void ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
 	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
@@ -210,6 +234,11 @@ public:
 	void DeleteSelection( );
 	void MoveSelection( MicroMeterPoint const & );
 	void SelectBeepers( ) {	Apply2All<Neuron>( [&](Neuron & n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
+
+	bool const AnyShapesSelected( ) const
+	{
+		return Apply2AllB<Shape>( [&]( Shape const & shape ) { return shape.IsSelected(); } );
+	}
 
 	void RemoveBeepers( ) 
 	{	
@@ -230,15 +259,15 @@ public:
 			pShape->Select( op );
 	}
 
+	void SelectShapesInRect( MicroMeterRect const & umRect )
+	{
+		Apply2AllInRect<Shape>( umRect, [&]( Shape & shape ) { shape.Select( tBoolOp::opTrue ); } );
+	}
+
 	void MarkShape( ShapeId const idShape, tBoolOp const op )
 	{
 		if ( Shape * const pShape { GetShapePtr<Shape *>( idShape ) } )
 			pShape->Mark( op );
-	}
-
-	bool AnyShapesSelected( )
-	{
-		return Apply2AllB<Shape>( [&]( Shape & shape ) { return shape.IsSelected(); } );
 	}
 
 	bool IsSelected( ShapeId const idShape )
@@ -265,8 +294,6 @@ private:
 	}
 
 	MicroMeterPoint orthoVector        ( ShapeId const ) const;
-	bool const      isConnectedTo      ( Shape const &, Shape const & ) const;
-	bool const      isConnectedToPipe  ( Shape const &, Pipe  const & ) const;
 	void            deletePipeEndPoints( Pipe  * const );
 	void            deleteShape        ( Shape * const );
 	void            removeShape        ( Shape * const );
@@ -276,7 +303,6 @@ private:
 	void            insertBaseKnot     ( Pipe     * const, BaseKnot * const );
 	void            connectIncoming_Lock    ( Pipe     * const, BaseKnot * const );
 	void            connectOutgoing_Lock    ( Pipe     * const, BaseKnot * const );
-	Shape const   * findShapeAt        ( MicroMeterPoint const, function<bool(Shape const &)> const & ) const;
 	void            connectToNewShapes ( Shape &, ShapeList & );
 	void            modelHasChanged    ( ) const;
 	void            setTriggerSound    ( Neuron * const, Hertz const, MilliSecs const );

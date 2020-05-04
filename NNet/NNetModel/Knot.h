@@ -37,9 +37,9 @@ public:
 	}
 
 	virtual void Step         ( ) { }
-	virtual void DrawExterior ( D2D_driver const *, PixelCoordsFp &, tHighlightType const ) const;
-	virtual void DrawInterior ( D2D_driver const *, PixelCoordsFp & );
+	virtual void DrawExterior ( D2D_driver const &, PixelCoordsFp const &, tHighlightType const = tHighlightType::normal ) const;
+	virtual void DrawInterior ( D2D_driver const &, PixelCoordsFp const & ) const;
 	virtual void Recalc( ) {};
 
-	virtual void DrawNeuronText( PixelCoordsFp & ) const {};
+	virtual void DrawNeuronText( PixelCoordsFp const & ) const {};
 };

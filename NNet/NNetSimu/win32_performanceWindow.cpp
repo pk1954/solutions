@@ -6,8 +6,8 @@
 #include "Strsafe.h"
 #include <chrono>
 #include "util.h"
-#include "NNetModel.h"
 #include "InputNeuron.h"
+#include "NNetModelInterface.h"
 #include "win32_actionTimer.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_performanceWindow.h"
@@ -25,10 +25,10 @@ using std::wostringstream;
 
 void PerformanceWindow::Start
 ( 
-	HWND                      const hwndParent,
-	NNetModel         const * const pModel,
-	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
-	ActionTimer             * const pDisplayTimer
+	HWND                       const hwndParent,
+	NNetModelInterface const * const pModelInterface,
+	NNetWorkThreadInterface  * const pNNetWorkThreadInterface,
+	ActionTimer              * const pDisplayTimer
 )
 {
 	StartTextWindow
@@ -40,7 +40,7 @@ void PerformanceWindow::Start
 		TRUE,
 		nullptr
 	);
-	m_pModel                   = pModel;
+	m_pModelInterface          = pModelInterface;
 	m_pNNetWorkThreadInterface = pNNetWorkThreadInterface;
 	m_pAtDisplay               = pDisplayTimer;
 	m_pNNetWorkThreadInterface->AddPerformanceObserver( this ); // notify me on computation performance changes 
@@ -123,10 +123,11 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 		printFloatLine   ( textBuf, L"workload:",  CastToFloat( (spent / avail) * 100.0f ), L"%" );
 		if ( simuTime > 0.0_MicroSecs )
 			printFloatLine   ( textBuf, L"effect slomo:",  CastToFloat( realTime / simuTime ), L"" );
-		printIntLine( textBuf, L"# Shapes : ", m_pModel->GetNrOf<Shape>() );
-		printIntLine( textBuf, L"# Input  : ", m_pModel->GetNrOf<InputNeuron>() );
-		printIntLine( textBuf, L"# Neurons: ", m_pModel->GetNrOf<Neuron>() );
-		printIntLine( textBuf, L"# Knots  : ", m_pModel->GetNrOf<Knot>() );
-		printIntLine( textBuf, L"# Pipes  : ", m_pModel->GetNrOf<Pipe>() );
+		// XXXXX
+		//printIntLine( textBuf, L"# Shapes : ", m_pModelInterface->GetNrOf<Shape>() );
+		//printIntLine( textBuf, L"# Input  : ", m_pModelInterface->GetNrOf<InputNeuron>() );
+		//printIntLine( textBuf, L"# Neurons: ", m_pModelInterface->GetNrOf<Neuron>() );
+		//printIntLine( textBuf, L"# Knots  : ", m_pModelInterface->GetNrOf<Knot>() );
+		//printIntLine( textBuf, L"# Pipes  : ", m_pModelInterface->GetNrOf<Pipe>() );
 	}
 }

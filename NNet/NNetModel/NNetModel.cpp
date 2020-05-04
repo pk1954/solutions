@@ -28,7 +28,7 @@ NNetModel::NNetModel
 {					
 	Shape::SetParam( pParam );
 	m_Shapes.reserve( 100000 ); // Dirty trick to avoid reallocation (invalidates iterators)
-}                               // TODO: find better solution
+}                               // TODO: find better solution  XXXXX
 
 NNetModel::~NNetModel( ) { }
 
@@ -48,47 +48,6 @@ void NNetModel::RecalcAllShapes( )
 { 
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); } );
 } 
-
-bool const NNetModel::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) const
-{
-	if ( idSrc == idDst )
-		return false;
-
-	Shape const * const pShapeSrc { GetConstShape( idSrc ) };
-	Shape const * const pShapeDst { GetConstShape( idDst ) };
-
-	if ( isConnectedTo( * pShapeSrc, * pShapeDst ) )  // if already connected we cannot connect again
-		return false;
-
-	ShapeType const typeSrc { pShapeSrc->GetShapeType() };
-
-	if ( typeSrc.IsPipeType() )               // only BaseKnots can be connected
-		return false;                         // to other shapes
-
-	if ( typeSrc.IsInputNeuronType() )        // input neuron cannot connect to anything
-		return false;                         // try the other way round
-
-	ShapeType const typeDst { pShapeDst->GetShapeType() };
-
-	if ( typeDst.IsPipeType( ) )
-	{
-		if ( typeSrc.IsInputNeuronType() )          // cannot insert input neuron
-			return false;                           // into Pipe
-	}
-	else if ( typeDst.IsAnyNeuronType() )
-	{
-		if ( typeSrc.IsAnyNeuronType() )   // neurons cannot connect directly 
-			return false;                  // to other neurons
-
-		if ( typeDst.IsInputNeuronType() && HasIncoming( idSrc ) )  // cannot connect incoming dendrite
-			return false;                                           // to input neuron
-
-		if ( GetNrOfOutgoingConnections( idSrc ) + GetNrOfOutgoingConnections( idDst ) > 1 ) // neurons can not not have 
-			return false;                                                                    // more than one axon
-	}
-
-	return true;
-}
 
 void NNetModel::removeShape( Shape * const pShape )
 {
@@ -143,11 +102,6 @@ void NNetModel::Convert2InputNeuron( ShapeId const idNeuron )
 	}
 }
 
-float const NNetModel::GetPulseRate( InputNeuron const * pInputNeuron ) const
-{
-	return pInputNeuron ? pInputNeuron->GetPulseFrequency().GetValue() : 0.0f;
-}
-
 void NNetModel::SetPulseRate_Lock( ShapeId const id, float const fNewValue )
 {
 	InputNeuron * const pInputNeuron { GetShapePtr<InputNeuron *>( id ) };
@@ -197,55 +151,21 @@ MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
 	return NP_NULL;
 }
 
-ShapeType const NNetModel::GetShapeType( ShapeId const id ) const 
-{
-	if ( Shape const * pShape = GetConstShape( id ) )
-		return pShape->GetShapeType();
-	return ShapeType::Value::undefined;
-}
-
-bool const NNetModel::HasOutgoing( ShapeId const id ) const 
-{ 
-	if ( BaseKnot const * pBaseKnot = GetShapeConstPtr<BaseKnot const *>( id ) )
-		return pBaseKnot->HasOutgoing( );
-	return false;
-}
-
-bool const NNetModel::HasIncoming( ShapeId const id ) const 
-{ 
-	if ( BaseKnot const * pBaseKnot = GetShapeConstPtr<BaseKnot const *>( id ) )
-		return pBaseKnot->HasIncoming( );
-	return false;
-}
-
-size_t const NNetModel::GetNrOfOutgoingConnections( ShapeId const id ) const 
-{ 
-	if ( BaseKnot const * pBaseKnot = GetShapeConstPtr<BaseKnot const *>( id ) )
-		return pBaseKnot->GetNrOfOutgoingConnections( );
-	return false;
-}
-
-size_t const NNetModel::GetNrOfIncomingConnections( ShapeId const id ) const 
-{ 
-	if ( BaseKnot const * pBaseKnot = GetShapeConstPtr<BaseKnot const *>( id ) )
-		return pBaseKnot->GetNrOfIncomingConnections( );
-	return false;
-}
-
 void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge src shape into dst shape
 {
-	BaseKnot * pSrc = GetShapePtr<BaseKnot *>( idSrc );
-	if ( GetShapeType( idDst ).IsPipeType() )   // connect baseknot to pipe
+	BaseKnot * pSrc { GetShapePtr<BaseKnot *>( idSrc ) };
+	Shape    * pDst { GetShapePtr<Shape    *>( idDst ) };
+	if ( pDst->TypeFits( ShapeType::Value::pipe ) )  // connect baseknot to pipe
 	{
 		insertBaseKnot( GetShapePtr<Pipe *>( idDst ), pSrc );
 	}
 	else  // connect baseknot to baseknot
 	{
-		BaseKnot * pDst = GetShapePtr<BaseKnot *>( idDst );
-		if ( pSrc && pDst )
+		BaseKnot * pDstBaseKnot { static_cast<BaseKnot *>( pDst ) };
+		if ( pSrc && pDstBaseKnot )
 		{
-			pSrc->Apply2AllInPipes ( [&]( Pipe * const pipe ) { connectIncoming_Lock( pipe, pDst ); } );
-			pSrc->Apply2AllOutPipes( [&]( Pipe * const pipe ) { connectOutgoing_Lock( pipe, pDst ); } );
+			pSrc->Apply2AllInPipes ( [&]( Pipe * const pipe ) { connectIncoming_Lock( pipe, pDstBaseKnot ); } );
+			pSrc->Apply2AllOutPipes( [&]( Pipe * const pipe ) { connectOutgoing_Lock( pipe, pDstBaseKnot ); } );
 			if ( pSrc->IsKnot() )
 				deleteShape( pSrc );
 		}
@@ -435,26 +355,6 @@ void NNetModel::CopySelection( )
 	modelHasChanged( );
 }
 
-Shape const * NNetModel::FindShapeAt
-( 
-	MicroMeterPoint               const   pnt, 
-	function<bool(Shape const &)> const & crit 
-) const
-{	
-	Shape const * pRes { nullptr };
-
-	if ( ! pRes )  // first test all neurons and input neurons
-		pRes = findShapeAt( pnt, [&]( Shape const & s ) { return s.IsAnyNeuron( ) && crit( s ); } );
-
-	if ( ! pRes )   // if nothing found, test knot shapes
-		pRes = findShapeAt( pnt, [&]( Shape const & s ) { return s.IsKnot     ( ) && crit( s ); } ); 	
-
-	if ( ! pRes ) // if nothing found, try pipes
-		pRes = findShapeAt( pnt, [&]( Shape const & s ) { return s.IsPipe     ( ) && crit( s ); } );
-
-	return pRes;
-}
-
 /////////////////// local functions ///////////////////////////////////////////////
 
 void NNetModel::selectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )
@@ -473,21 +373,6 @@ void NNetModel::selectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )
 			} 
 		);
 	}
-}
-
-bool const NNetModel::isConnectedToPipe( Shape const & shape, Pipe const & pipe ) const
-{
-	return (shape.GetId() == pipe.GetStartKnotId()) || (shape.GetId() == pipe.GetEndKnotId());
-}
-
-bool const NNetModel::isConnectedTo( Shape const & shape1, Shape const & shape2 ) const
-{
-	if ( shape1.IsPipe() )
-		return isConnectedToPipe( shape2, static_cast<Pipe const &>( shape1 ) );
-	if ( shape2.IsPipe() )
-		return isConnectedToPipe( shape1, static_cast<Pipe const &>( shape2 ) );
-	else
-		return false;
 }
 
 void NNetModel::deleteShape( Shape * const pShape )
@@ -580,19 +465,19 @@ MicroMeterPoint NNetModel::orthoVector( ShapeId const idPipe ) const
 	return OrthoVector( GetShapeConstPtr<Pipe const *>( idPipe )->GetVector(), NEURON_RADIUS * 2.f );
 }
 
-Shape const * NNetModel::findShapeAt
+ShapeId const NNetModel::FindShapeAt
 ( 
-	MicroMeterPoint               const   pnt, 
-	function<bool(Shape const &)> const & crit 
+	MicroMeterPoint const   pnt, 
+	ShapeCrit       const & crit 
 ) const
 {
 	for ( size_t i = m_Shapes.size(); i --> 0; )	
 	{
 		Shape * pShape = m_Shapes[i];
 		if ( pShape && crit( * pShape ) && pShape->IsPointInShape( pnt ) ) 
-			return pShape;
+			return pShape->GetId();
 	};
-	return nullptr;
+	return NO_SHAPE;
 }
 
 /////////////////// nonmember functions ///////////////////////////////////////////////

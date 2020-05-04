@@ -65,9 +65,9 @@ void D2D_driver::discardResources( )
 	SafeRelease( & m_pTextFormat );
 }
 
-void D2D_driver::Initialize( HWND const hwndApp ) 
+void D2D_driver::Initialize( HWND const hwnd ) 
 {
-	m_hwnd = hwndApp;
+	m_hwnd = hwnd;
 	createResources( );
 }
 

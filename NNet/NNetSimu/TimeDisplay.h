@@ -7,12 +7,12 @@
 #include "ObserverInterface.h"
 
 class StatusBar;
-class NNetModel;
+class NNetModelInterface;
 
 class TimeDisplay : public ObserverInterface
 {
 public:
-	TimeDisplay( StatusBar *, NNetModel const *, int );
+	TimeDisplay( StatusBar *, NNetModelInterface const *, int );
 
 	~TimeDisplay();
 

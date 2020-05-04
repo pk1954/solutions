@@ -19,6 +19,7 @@ class Scale;
 class Observable;
 class ActionTimer;
 class AnimationThread;
+class NNetModelInterface;
 class NNetWorkThreadInterface;
 
 class NNetWindow : public ModelWindow
@@ -34,12 +35,12 @@ public:
 
 	void Start
 	( 
-		HWND             const, 
-		DWORD            const,
-		function<bool()> const,
-		NNetModel      * const,
-		Observable     * const,
-		bool             const
+		HWND                 const, 
+		DWORD                const,
+		function<bool()>     const,
+		NNetModelInterface * const,
+		Observable         * const,
+		bool                 const
 	);
 
 	void Stop( );
@@ -55,10 +56,6 @@ public:
 	void AnalysisFinished( );
 	void ZoomKeepCrsrPos( MicroMeter const );
 	void CenterModel( bool const );
-
-	void SelectShape  ( tBoolOp const );
-	void SelectAll    ( tBoolOp const );
-	void SelectSubtree( tBoolOp const );
 
 	MicroMeter  GetPixelSize  ( ) const { return m_coord.GetPixelSize  (); }
 	fPixelPoint GetPixelOffset( ) const { return m_coord.GetPixelOffset(); }
@@ -77,7 +74,7 @@ private:
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
 	inline static NNetWorkThreadInterface * m_pNNetWorkThreadInterface { nullptr };
-	inline static NNetModel               * m_pModel                   { nullptr };
+	inline static NNetModelInterface      * m_pModelInterface          { nullptr };
 
 	HMENU m_hPopupMenu { nullptr };
 	BOOL  m_bMoveAllowed { TRUE };    // TRUE: move with mouse is possible

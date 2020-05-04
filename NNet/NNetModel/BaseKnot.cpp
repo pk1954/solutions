@@ -87,14 +87,14 @@ void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 
 void BaseKnot::drawCircle
 (
-	D2D_driver      const * pGraphics, 
+	D2D_driver      const & graphics, 
 	PixelCoordsFp   const & coord,
 	D2D1::ColorF    const   colF, 
 	MicroMeterPoint const   umCenter,
 	MicroMeter      const   umWidth
 ) const
 {
-	pGraphics->DrawCircle
+	graphics.DrawCircle
 	( 
 		coord.convert2fPixelPos( umCenter ), 
 		colF, 
@@ -104,13 +104,13 @@ void BaseKnot::drawCircle
 
 void BaseKnot::drawCircle
 (
-	D2D_driver    const * pGraphics, 
+	D2D_driver    const & graphics, 
 	PixelCoordsFp const & coord,
 	D2D1::ColorF  const   colF, 
 	MicroMeter    const   umWidth
 ) const
 {
-	pGraphics->DrawCircle
+	graphics.DrawCircle
 	( 
 		coord.convert2fPixelPos( GetPosition() ), 
 		colF, 

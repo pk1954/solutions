@@ -35,26 +35,26 @@ public:
 	mV         Threshold    ( ) const;
 	mV         PeakVoltage  ( ) const;
 
-	virtual void DrawExterior( D2D_driver const *, PixelCoordsFp &, tHighlightType const ) const;
-	virtual void DrawInterior( D2D_driver const *, PixelCoordsFp & );
+	virtual void DrawExterior( D2D_driver const &, PixelCoordsFp const &, tHighlightType const  = tHighlightType::normal ) const;
+	virtual void DrawInterior( D2D_driver const &, PixelCoordsFp const & ) const;
 	virtual void Recalc( );
 	virtual void Clear( );
 	virtual void Step( );
 	virtual mV   GetNextOutput( ) const;
 
-	virtual void DrawNeuronText( D2D_driver const *, PixelCoordsFp & ) const;
+	virtual void DrawNeuronText( D2D_driver const &, PixelCoordsFp const & ) const;
 
 protected:
 	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };
 
 	mV waveFunction( fMicroSecs const ) const;
 
-	void drawExterior( D2D_driver const *, PixelCoordsFp &, tHighlightType const ) const;
+	void drawExterior( D2D_driver const &, PixelCoordsFp const &, tHighlightType const ) const;
 
-	void const DisplayText( D2D_driver const *, PixelRect const, wstring const ) const;
+	void const DisplayText( D2D_driver const &, PixelRect const &, wstring const ) const;
 
 private:
-	bool m_bTriggered { false };
+	mutable bool m_bTriggered { false };
 
 	float m_factorW; // Parameter of wave function
 	float m_factorU; // Parameter of wave function
@@ -65,7 +65,7 @@ private:
 
 	PTP_WORK  m_pTpWork { nullptr };
 
-	MicroMeterPoint getAxonHillockPos( PixelCoordsFp & ) const;
+	MicroMeterPoint getAxonHillockPos( PixelCoordsFp const & ) const;
 };
 
 Neuron const * Cast2Neuron( Shape const * );
