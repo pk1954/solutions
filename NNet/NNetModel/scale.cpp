@@ -1,12 +1,12 @@
-// win32_scale.cpp
+// scale.cpp
 //
-// Utilities
+// NNetModel
 
 #include "stdafx.h"
 #include "MoreTypes.h"
 #include "PixelCoordsFp.h"
 #include "Direct2D.h"
-#include "win32_scale.h"
+#include "scale.h"
 
 IDWriteTextFormat * Scale::m_pTextFormat;
 
@@ -52,9 +52,9 @@ void Scale::ShowScale( D2D_driver const & graphics, fPIXEL const height )
 
 void Scale::displayTicks( D2D_driver const & graphics, fPixelPoint const fPixPoint1, fPixelPoint const fPixPoint2, float const fLog10, int const iFirstDigit )
 {
-	fPixelPoint fLongTick  (  0._fPIXEL, 10._fPIXEL );
-	fPixelPoint fMiddleTick(  0._fPIXEL,  7._fPIXEL );
-	fPixelPoint fSmallTick (  0._fPIXEL,  5._fPIXEL );
+	fPixelPoint fLongTick  ( 0._fPIXEL, 10._fPIXEL );
+	fPixelPoint fMiddleTick( 0._fPIXEL,  7._fPIXEL );
+	fPixelPoint fSmallTick ( 0._fPIXEL,  5._fPIXEL );
 
 	fPixelPoint fTickPos( fPixPoint1 );
 	fPixelPoint fTickDist( (fPixPoint2.GetX() - fPixPoint1.GetX()) / 10, 0._fPIXEL );

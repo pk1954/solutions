@@ -1,6 +1,6 @@
-// win32_scale.h
+// scale.h
 //
-// NNetWindows
+// NNetModel
 
 #pragma once
 
