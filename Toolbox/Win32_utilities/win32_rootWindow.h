@@ -183,7 +183,7 @@ public:
 		return PixelPoint{ PIXEL(GET_X_LPARAM( lParam )), PIXEL(GET_Y_LPARAM( lParam )) };
 	}
 
-	virtual void AddContextMenuEntries( HMENU const, PixelPoint const ) {}
+	virtual long AddContextMenuEntries( HMENU const, PixelPoint const ) { return 0L; }
 	virtual void Notify( bool const );
 
 	virtual void Trigger( )	{ Invalidate( FALSE ); }

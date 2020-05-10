@@ -111,8 +111,8 @@ bool Preferences::WritePreferences( wstring const wstrModelPath, NNetWindow cons
     prefFile << L"SetSound "       << (Sound   ::IsOn() ? PREF_ON : PREF_OFF) << endl;
 	prefFile << L"SetAutoOpen "    << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF) << endl;
     prefFile << L"ReadModel \""    << wstrModelPath << L"\"" << endl;
-    prefFile << L"SetPixelOffset " << pNNetWindow->GetPixelOffset() << endl;
-    prefFile << L"SetPixelSize "   << pNNetWindow->GetPixelSize() << endl;
+    //prefFile << L"SetPixelOffset " << pNNetWindow->GetPixelOffset() << endl; //TODO
+    //prefFile << L"SetPixelSize "   << pNNetWindow->GetPixelSize() << endl;
     prefFile.close( );
     wcout << L"*** preferences file " << m_wstrPreferencesFile << L" written" << endl;
     return true;

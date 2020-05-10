@@ -13,8 +13,7 @@
 
 using std::vector;
 
-class GraphicsInterface;
-class PixelCoordsFp;
+class DrawContext;
 class NNetModel;
 
 class Knot : public BaseKnot
@@ -37,10 +36,10 @@ public:
 
 	virtual mV GetNextOutput( ) const { return m_mVinputBuffer; }
 
-	virtual void Step         ( ) { }
-	virtual void DrawExterior ( D2D_driver const &, PixelCoordsFp const &, tHighlightType const = tHighlightType::normal ) const;
-	virtual void DrawInterior ( D2D_driver const &, PixelCoordsFp const & ) const;
-	virtual void Recalc( ) {};
+	virtual void Step        ( ) { }
+	virtual void DrawExterior( DrawContext const &, tHighlightType const = tHighlightType::normal ) const;
+	virtual void DrawInterior( DrawContext const & ) const;
+	virtual void Recalc      ( ) { };
 
 	virtual void DrawNeuronText( PixelCoordsFp const & ) const {};
 

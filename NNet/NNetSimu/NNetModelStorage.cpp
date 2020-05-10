@@ -114,11 +114,21 @@ public:
 
 				pPipe->SetId( idFromScript );
 
-				pStart->AddOutgoing( pPipe );
-				pPipe->SetStartKnot_Lock( pStart );
+				pPipe->LockShapeExclusive();
 
+				pStart->LockShapeExclusive();
+				pStart->AddOutgoing( pPipe );
+				pPipe->SetStartKnot( pStart );
+				pPipe->Recalc();
+				pStart->UnlockShapeExclusive();
+
+				pEnd->LockShapeExclusive();
 				pEnd->AddIncoming( pPipe );
-				pPipe->SetEndKnot_Lock( pEnd );
+				pPipe->SetEndKnot( pEnd );
+				pPipe->Recalc();
+				pEnd->UnlockShapeExclusive();
+
+				pPipe->UnlockShapeExclusive();
 
 				pShape = pPipe;
 			}

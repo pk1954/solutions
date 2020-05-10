@@ -5,8 +5,7 @@
 #include "stdafx.h"
 #include "assert.h"
 #include "Geometry.h"
-#include "PixelCoordsFp.h"
-#include "Direct2D.h"
+#include "DrawContext.h"
 #include "Pipe.h"
 #include "BaseKnot.h"
 
@@ -63,59 +62,97 @@ bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
 	return Distance( point, m_center ) <= m_extension;
 }
 
-PixelRect const BaseKnot::GetPixRect4Text( PixelCoordsFp const & coord ) const
+MicroMeterRect const BaseKnot::GetRect4Text( ) const
 {
-	fPixelPoint const fPos   { coord.convert2fPixelPos( GetPosition() ) }; 
-	fPIXEL      const fExt   { coord.convert2fPixel( GetExtension() ) };
-	PixelPoint  const pixPos { convert2PixelPoint( fPos ) };
-	PIXEL       const pixExt { PIXEL(static_cast<long>(fExt.GetValue())) };
-	PixelRect   const pixRect
+	return MicroMeterRect
 	{
-		pixPos.GetX() - pixExt,      // left
-		pixPos.GetY() - pixExt / 2,  // top
-		pixPos.GetX() + pixExt,      // right
-		pixPos.GetY() + pixExt       // bottom
+		GetPosition().GetX() - GetExtension(),      // left
+		GetPosition().GetY() - GetExtension() / 2,  // top
+		GetPosition().GetX() + GetExtension(),      // right
+		GetPosition().GetY() + GetExtension()       // bottom
 	};
-	return pixRect;
 }
 
 void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 {
 	m_center += delta;
-	Apply2AllConnectedPipes( [&](auto pipe) { pipe->Recalc(); } );
+}
+
+void BaseKnot::apply2AllPipesInList( PipeList const & pipeList, PipeFunc const & func )
+{
+	for ( auto pPipe : pipeList ) 
+	{ 
+		if ( pPipe != nullptr )
+		{
+			pPipe->LockShapeExclusive();
+			func( pPipe );
+			pPipe->UnlockShapeExclusive();
+		}
+	}
+}
+
+void BaseKnot::apply2AllPipesInList_NoLock( PipeList const & pipeList, PipeFunc const & func )
+{
+	for ( auto pPipe : pipeList ) 
+	{ 
+		if ( pPipe != nullptr )
+		{
+			func( pPipe );
+		}
+	}
+}
+
+bool BaseKnot::apply2AllPipesInListB( PipeList const & pipeList, PipeFuncB const & func )
+{
+	bool bResult { false };
+	for ( auto pPipe : pipeList ) 
+	{ 
+		if ( pPipe != nullptr )
+		{
+			pPipe->LockShapeExclusive();
+			bResult = func( pPipe );
+			pPipe->UnlockShapeExclusive();
+			if ( bResult )
+				break;
+		}
+	}
+	return bResult;
+}
+
+bool BaseKnot::apply2AllPipesInListB_NoLock( PipeList const & pipeList, PipeFuncB const & func )
+{
+	bool bResult { false };
+	for ( auto pipe : pipeList ) 
+	{ 
+		if ( pipe != nullptr )
+		{
+			bResult = func( pipe );
+			if ( bResult )
+				break;
+		}
+	}
+	return bResult;
 }
 
 void BaseKnot::drawCircle
 (
-	D2D_driver      const & graphics, 
-	PixelCoordsFp   const & coord,
+	DrawContext     const & context, 
 	D2D1::ColorF    const   colF, 
 	MicroMeterPoint const   umCenter,
 	MicroMeter      const   umWidth
 ) const
 {
-	graphics.DrawCircle
-	( 
-		coord.convert2fPixelPos( umCenter ), 
-		colF, 
-		coord.convert2fPixel( umWidth )
-	);
+	context.DrawCircle( umCenter, umWidth, colF );
 }
 
 void BaseKnot::drawCircle
 (
-	D2D_driver    const & graphics, 
-	PixelCoordsFp const & coord,
-	D2D1::ColorF  const   colF, 
-	MicroMeter    const   umWidth
+	DrawContext  const & context, 
+	D2D1::ColorF const   colF, 
+	MicroMeter   const   umWidth
 ) const
 {
-	graphics.DrawCircle
-	( 
-		coord.convert2fPixelPos( GetPosition() ), 
-		colF, 
-		coord.convert2fPixel( umWidth )
-	);
+	context.DrawCircle( GetPosition(), umWidth,	colF );
 }
 
 BaseKnot const * Cast2BaseKnot( Shape const * shape )

@@ -6,9 +6,8 @@
 #include <cmath>
 #include "assert.h"
 #include "Geometry.h"
-#include "PixelCoordsFp.h"
+#include "DrawContext.h"
 #include "tHighlightType.h"
-#include "Direct2D.h"
 #include "NNetParameters.h"
 #include "Pipe.h"
 
@@ -51,26 +50,20 @@ void Pipe::Recalc( )
 	}
 }
 
-void Pipe::SetStartKnot_Lock( BaseKnot * const pBaseKnot )
+void Pipe::SetStartKnot( BaseKnot * const pBaseKnot )
 {
-	LockShapeExclusive();
 	m_pKnotStart = pBaseKnot;
-	Recalc();
-	UnlockShapeExclusive();
 }
 
-void Pipe::SetEndKnot_Lock( BaseKnot * const pBaseKnot )
+void Pipe::SetEndKnot( BaseKnot * const pBaseKnot )
 {
-	LockShapeExclusive();
 	m_pKnotEnd = pBaseKnot;
-	Recalc();
-	UnlockShapeExclusive();
 }
 
 void Pipe::dislocate( BaseKnot * const pBaseKnot, MicroMeter const dislocation )
 { 
-	MicroMeterPoint const umVector  { GetVector( ) };
-	MicroMeterPoint const umNewPnt  { OrthoVector( umVector, dislocation ) };
+	MicroMeterPoint const umVector { GetVector( ) };
+	MicroMeterPoint const umNewPnt { OrthoVector( umVector, dislocation ) };
 	pBaseKnot->MoveShape( umNewPnt );
 }
 
@@ -145,55 +138,51 @@ MicroMeterPoint Pipe::GetVector( ) const
 	return umvector;
 }
 
-void Pipe::DrawExterior( D2D_driver const & graphics, PixelCoordsFp const & coord, tHighlightType const type ) const
+void Pipe::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
 	if ( umStartPoint != umEndPoint )
 	{
-		fPIXEL       const fPixWidth  { coord.convert2fPixel( m_width ) };
-		fPixelPoint  const fStartPoint{ coord.convert2fPixelPos( umStartPoint ) };
-		fPixelPoint  const fEndPoint  { coord.convert2fPixelPos( umEndPoint   ) };
-		D2D1::ColorF const colF       { GetFrameColor( type ) };
+		D2D1::ColorF const colF { GetFrameColor( type ) };
 
-		graphics.DrawLine( fStartPoint, fEndPoint, fPixWidth, colF );
+		context.DrawLine( umStartPoint, umEndPoint, m_width, colF );
 
 		if ( m_arrowSize > 0.0_MicroMeter )
-			graphics.DrawArrow
+			context.DrawArrow
 			(
-				coord.convert2fPixelPos( (umEndPoint * 2.f + umStartPoint) / 3.f ), 
-				coord.convert2fPixelSize( umEndPoint - umStartPoint ), 
-				colF, 
-				coord.convert2fPixel( m_arrowSize ),
-				fPixWidth / 2 
+				(umEndPoint * 2.f + umStartPoint) / 3.f , 
+				umEndPoint - umStartPoint, 
+				m_arrowSize,
+				m_width / 2, 
+				colF
 			);
 	}
 }
 
-fPixelPoint Pipe::drawSegment( D2D_driver const & graphics, fPixelPoint const & fP1, fPixelPoint const fPixSegVec, fPIXEL const fWidth, mV const voltage ) const
+MicroMeterPoint Pipe::drawSegment( DrawContext const & context, MicroMeterPoint const & umP1, MicroMeterPoint const & umPixSegVec, MicroMeter const umWidth, mV const voltage ) const
 {
-	fPixelPoint  const fP2  { fP1 + fPixSegVec };
+	MicroMeterPoint  const umP2  { umP1 + umPixSegVec };
 	D2D1::ColorF const colF { GetInteriorColor( voltage ) };
-	graphics.DrawLine( fP1, fP2, fWidth, colF );
-	return fP2;
+	context.DrawLine( umP1, umP2, umWidth, colF );
+	return umP2;
 }
 
-void Pipe::DrawInterior( D2D_driver const & graphics, PixelCoordsFp const & coord ) const
+void Pipe::DrawInterior( DrawContext const & context ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
 	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
 	MicroMeterPoint const umVector     { umEndPoint - umStartPoint };
 	if ( ! IsCloseToZero( umVector ) )
 	{
-		fPIXEL      const fWidth     { coord.convert2fPixel( m_width * PIPE_INTERIOR ) };
-		fPixelPoint const fPixVector { coord.convert2fPixelSize( umVector ) };
-		fPixelPoint const fPixSegVec { fPixVector / CastToFloat(m_potential.size()) };
-		fPixelPoint       fPoint     { coord.convert2fPixelPos( umStartPoint ) };
+		MicroMeter      const umWidth     { m_width * PIPE_INTERIOR };
+		MicroMeterPoint const umPixSegVec { umVector / static_cast<float>(m_potential.size()) };
+		MicroMeterPoint       umPoint     { umStartPoint };
 
 		for( auto iter = m_potIter + 1; iter != m_potential.end(); ++iter )
-			fPoint = drawSegment( graphics, fPoint, fPixSegVec, fWidth, * iter );
+			umPoint = drawSegment( context, umPoint, umPixSegVec, umWidth, * iter );
 		for( auto iter = m_potential.begin(); iter <= m_potIter; ++iter )
-			fPoint = drawSegment( graphics, fPoint, fPixSegVec, fWidth, * iter );
+			umPoint = drawSegment( context, umPoint, umPixSegVec, umWidth, * iter );
 	}
 }
 

@@ -30,15 +30,15 @@ public:
     ~D2D_driver();
 
     void Initialize( HWND const );
-    bool StartFrame( HWND const, HDC const );
+    bool StartFrame( HDC const );
     void SetStdFontSize( float const );
     void DisplayText( PixelRect const &, std::wstring const &, D2D1::ColorF const, IDWriteTextFormat * = nullptr ) const;
-    void EndFrame( HWND const );
+    void EndFrame( );
     void ShutDown( );
-    void DrawTranspRect( fPixelRect const &, D2D1::ColorF const );
+    void DrawTranspRect( fPixelRect const &, D2D1::ColorF const ) const;
     void DrawLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, D2D1::ColorF const ) const;
-    void DrawCircle( fPixelPoint const, D2D1::ColorF const, fPIXEL const ) const;
-    void DrawArrow( fPixelPoint const, fPixelPoint const, D2D1::ColorF const, fPIXEL const, fPIXEL const ) const;
+    void DrawCircle( fPixelPoint const, fPIXEL const, D2D1::ColorF const ) const;
+    void DrawArrow( fPixelPoint const, fPixelPoint const, fPIXEL const, fPIXEL const, D2D1::ColorF const ) const;
     void Resize( int const, int const );
 
     IDWriteTextFormat * NewTextFormat( float const ) const;

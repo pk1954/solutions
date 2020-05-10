@@ -49,6 +49,7 @@
 
 #include "Analyzer.h"
 #include "AutoOpen.h"
+#include "DrawModel.h"
 #include "win32_NNetAppWindow.h"
 
 using namespace std::literals::chrono_literals;
@@ -105,6 +106,7 @@ void NNetAppWindow::Start( )
 	m_pModel            = new NNetModel( m_pParameters, m_pModelChangedProxy );
 	m_pModelInterface   = new NNetModelInterface( m_pModel );
 	m_pNNetModelStorage = new NNetModelStorage( m_pModel, m_pParameters );
+	m_pDrawModel        = new DrawModel( m_pModel );
 	m_pModelChangedProxy->RegisterObserver( m_pNNetModelStorage );
 
 	BaseAppWindow::Start( m_pMainNNetWindow );
@@ -130,6 +132,7 @@ void NNetAppWindow::Start( )
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		nullptr,  // no visibility criterion. Allways visible,
 		m_pModelInterface,
+		m_pDrawModel,
 		m_pCursorPos,
 		false
 	);
@@ -217,6 +220,7 @@ void NNetAppWindow::Stop()
 	BaseAppWindow::Stop();
 
 	delete m_pModelInterface;
+	delete m_pDrawModel;
 	delete m_pModel;
 	delete m_pTimeDisplay;
 	delete m_pSlowMotionDisplay;

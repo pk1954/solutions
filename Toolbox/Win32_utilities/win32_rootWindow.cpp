@@ -80,7 +80,7 @@ void RootWindow::contextMenu( PixelPoint const & pntPos )
 {
 	HMENU const hPopupMenu { CreatePopupMenu() };
 
-	AddContextMenuEntries( hPopupMenu, pntPos );
+	long lParam = AddContextMenuEntries( hPopupMenu, pntPos );
 
 	if ( m_visibilityCriterion )
 	{
@@ -107,7 +107,7 @@ void RootWindow::contextMenu( PixelPoint const & pntPos )
 	);         	// Result is send as WM_COMMAND to this window
 
 	if ( uiID != 0 )
-		SendMessage( WM_COMMAND, uiID, 0 );
+		SendMessage( WM_COMMAND, uiID, lParam );
 
 	(void)DestroyMenu( hPopupMenu );
 }

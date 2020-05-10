@@ -197,7 +197,9 @@ void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 		}
 		else 
 		{
-			static_cast<BaseKnot *>( pShape )->MoveShape( delta );
+			BaseKnot * pBaseKnot { static_cast<BaseKnot *>( pShape ) };
+			pBaseKnot->MoveShape( delta );
+			pBaseKnot->Apply2AllConnectedPipes( [&](auto pipe) { pipe->Recalc(); } );
 		}
 		modelHasChanged( );
 	}
@@ -284,7 +286,14 @@ void NNetModel::MarkSelection( tBoolOp const op )
 
 void NNetModel::MoveSelection( MicroMeterPoint const & delta )
 {
-	Apply2AllSelected<BaseKnot>( [&]( BaseKnot & knot ) { knot.MoveShape( delta ); } );
+	Apply2AllSelected<BaseKnot>
+	( 
+		[&]( BaseKnot & knot ) 
+		{ 
+			knot.MoveShape( delta ); 
+			knot.Apply2AllConnectedPipes( [&](auto pipe) { pipe->Recalc(); } );
+		} 
+	);
 	modelHasChanged( );
 }
 
@@ -320,8 +329,11 @@ void NNetModel::connectToNewShapes( Shape & shapeSrc, ShapeList & newShapes )
 	{
 		Pipe & pipeSrc { static_cast<Pipe &>( shapeSrc ) };
 		Pipe & pipeDst { static_cast<Pipe &>( shapeDst ) };
-		pipeDst.SetStartKnot_Lock( static_cast<BaseKnot *>( newShapes.at( pipeSrc.GetStartKnotId().GetValue() )) );
-		pipeDst.SetEndKnot_Lock  ( static_cast<BaseKnot *>( newShapes.at( pipeSrc.GetEndKnotId  ().GetValue() )) );
+		pipeDst.LockShapeExclusive();
+		pipeDst.SetStartKnot( static_cast<BaseKnot *>( newShapes.at( pipeSrc.GetStartKnotId().GetValue() )) );
+		pipeDst.SetEndKnot  ( static_cast<BaseKnot *>( newShapes.at( pipeSrc.GetEndKnotId  ().GetValue() )) );
+		pipeDst.Recalc();
+		pipeDst.UnlockShapeExclusive();
 	}
 	else
 	{
@@ -391,8 +403,13 @@ void NNetModel::connectIncoming_Lock
 {
 	if ( pPipe && pEndPoint )
 	{
+		pPipe->LockShapeExclusive();
+		pEndPoint->LockShapeExclusive();
 		pEndPoint->AddIncoming( pPipe );
-		pPipe->SetEndKnot_Lock ( pEndPoint );
+		pPipe->SetEndKnot( pEndPoint );
+		pPipe->Recalc();
+		pEndPoint->UnlockShapeExclusive();
+		pPipe->UnlockShapeExclusive();
 	}
 }
 
@@ -404,8 +421,13 @@ void NNetModel::connectOutgoing_Lock
 {
 	if ( pPipe && pStartPoint )
 	{
+		pPipe->LockShapeExclusive();
+		pStartPoint->LockShapeExclusive();
 		pStartPoint->AddOutgoing( pPipe );
-		pPipe->SetStartKnot_Lock ( pStartPoint );
+		pPipe->SetStartKnot( pStartPoint );
+		pPipe->Recalc();
+		pStartPoint->UnlockShapeExclusive();
+		pPipe->UnlockShapeExclusive();
 	}
 }
 
@@ -416,19 +438,33 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects 
 		MicroMeterPoint umPos { pBaseKnot->GetPosition() };
 		pBaseKnot->Apply2AllInPipes
 		( 
-			[&]( Pipe * const pipe ) // every incoming Pipe needs a new end knot
+			[&]( Pipe * const pPipe ) // every incoming Pipe needs a new end knot
 			{ 
-				connectIncoming_Lock( pipe, NewShape<Knot>( umPos ) );
-				pipe->DislocateEndPoint( );
+				Knot * pKnotNew { NewShape<Knot>( umPos ) };
+
+				pKnotNew->LockShapeExclusive();
+				pKnotNew->AddIncoming( pPipe );
+				pPipe->SetEndKnot( pKnotNew );
+				pKnotNew->UnlockShapeExclusive();
+
+				pPipe->DislocateEndPoint( );
+				pPipe->Recalc();
 			} 
 		);
 		pBaseKnot->ClearIncoming();
 		pBaseKnot->Apply2AllOutPipes
 		( 
-			[&]( Pipe * const pipe ) // every outgoing Pipe needs a new start knot
+			[&]( Pipe * const pPipe ) // every outgoing Pipe needs a new start knot
 			{ 
-				connectOutgoing_Lock( pipe, NewShape<Knot>( umPos ) );
-				pipe->DislocateStartPoint( );
+				Knot * pKnotNew { NewShape<Knot>( umPos ) };
+
+				pKnotNew->LockShapeExclusive();
+				pKnotNew->AddOutgoing( pPipe );
+				pPipe->SetStartKnot( pKnotNew );
+				pKnotNew->UnlockShapeExclusive();
+
+				pPipe->DislocateStartPoint( );
+				pPipe->Recalc();
 			} 
 		);
 		pBaseKnot->ClearOutgoing();

@@ -11,6 +11,8 @@
 #include "Pipe.h"
 #include "BaseKnot.h"
 
+class DrawContext;
+
 class Neuron : public BaseKnot
 {
 public:
@@ -37,23 +39,21 @@ public:
 	mV         Threshold    ( ) const;
 	mV         PeakVoltage  ( ) const;
 
-	virtual void DrawExterior( D2D_driver const &, PixelCoordsFp const &, tHighlightType const  = tHighlightType::normal ) const;
-	virtual void DrawInterior( D2D_driver const &, PixelCoordsFp const & ) const;
+	virtual void DrawExterior( DrawContext const &, tHighlightType const  = tHighlightType::normal ) const;
+	virtual void DrawInterior( DrawContext const & ) const;
 	virtual void Recalc( );
 	virtual void Clear( );
 	virtual void Step( );
 	virtual mV   GetNextOutput( ) const;
 
-	virtual void DrawNeuronText( D2D_driver const &, PixelCoordsFp const & ) const;
+	virtual void DrawNeuronText( DrawContext const & ) const;
 
 protected:
 	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };
 
 	mV waveFunction( fMicroSecs const ) const;
 
-	void drawExterior( D2D_driver const &, PixelCoordsFp const &, tHighlightType const ) const;
-
-	void const DisplayText( D2D_driver const &, PixelRect const &, wstring const ) const;
+	void const DisplayText( DrawContext const &, MicroMeterRect const &, wstring const ) const;
 
 private:
 	mutable bool m_bTriggered { false };
@@ -67,7 +67,7 @@ private:
 
 	PTP_WORK  m_pTpWork { nullptr };
 
-	MicroMeterPoint getAxonHillockPos( PixelCoordsFp const & ) const;
+	MicroMeterPoint getAxonHillockPos( ) const;
 
 	inline static unsigned long m_counter { 0L };
 };

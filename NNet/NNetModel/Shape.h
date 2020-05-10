@@ -12,8 +12,7 @@
 #include "ShapeType.h"
 #include "ShapeId.h"
 
-class D2D_driver;
-class PixelCoordsFp;
+class DrawContext;
 class NNetModel;
 
 using ShapeCrit = function<bool(Shape const &)>;
@@ -35,8 +34,8 @@ public:
 	bool IsSelected( ) const { return m_bSelected; }
 	bool IsMarked  ( ) const { return m_bMarked; }
 
-	virtual void DrawExterior  ( D2D_driver const &, PixelCoordsFp const &, tHighlightType const = tHighlightType::normal  ) const = 0;
-	virtual void DrawInterior  ( D2D_driver const &, PixelCoordsFp const & ) const = 0;
+	virtual void DrawExterior  ( DrawContext const &, tHighlightType const = tHighlightType::normal  ) const = 0;
+	virtual void DrawInterior  ( DrawContext const & ) const = 0;
 	virtual void Prepare       ( )                                                 = 0;
 	virtual void Step          ( )                                                 = 0;
 	virtual void Recalc        ( )                                                 = 0;
@@ -65,7 +64,9 @@ public:
 
 	void LockShapeExclusive() const
 	{ 
+		DWORD threadId { GetCurrentThreadId() };
 		AcquireSRWLockExclusive( & m_SRWLock );
+		m_dwLockedBy = threadId;
 	}
 
 	void UnlockShapeExclusive() const
@@ -75,7 +76,9 @@ public:
 
 	void LockShapeShared() const
 	{ 
+		DWORD threadId { GetCurrentThreadId() };
 		AcquireSRWLockShared( & m_SRWLock );
+		m_dwLockedBy = threadId;
 	}
 
 	void UnlockShapeShared() const
@@ -102,6 +105,8 @@ private:
 	ShapeId   m_identifier { NO_SHAPE };
 	bool      m_bSelected  { false };
 	bool      m_bMarked    { false };
+
+	mutable DWORD   m_dwLockedBy { 0 };
 	
 	mutable SRWLOCK m_SRWLock { SRWLOCK_INIT };
 

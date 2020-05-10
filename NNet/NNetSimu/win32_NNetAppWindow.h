@@ -30,6 +30,7 @@ class Observable;
 class CrsrWindow;
 class TimeDisplay;
 class NNetModel;
+class DrawModel;
 class NNetModelInterface;
 class SlowMotionDisplay;
 class SimulationControl;
@@ -76,6 +77,7 @@ private:
 	NNetModel               * m_pModel                   { nullptr };
 	NNetWindow              * m_pMainNNetWindow          { nullptr };
 	//NNetWindow              * m_pMainNNetWindow2          { nullptr };
+	DrawModel               * m_pDrawModel               { nullptr };
 	TimeDisplay             * m_pTimeDisplay             { nullptr };
 	SlowMotionDisplay       * m_pSlowMotionDisplay       { nullptr };
 	CrsrWindow              * m_pCrsrWindow              { nullptr };

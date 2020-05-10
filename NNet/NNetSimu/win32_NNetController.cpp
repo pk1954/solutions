@@ -166,11 +166,11 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_PLUS:
-		m_pNNetWindow->ChangePulseRate( m_pNNetWindow->GetHighlightedShapeId( ), true );
+		m_pNNetWindow->ChangePulseRate( true );
 		break;
 
 	case IDM_MINUS:
-		m_pNNetWindow->ChangePulseRate( m_pNNetWindow->GetHighlightedShapeId( ), false );
+		m_pNNetWindow->ChangePulseRate( false );
 		break;
 
 	case IDM_COPY_SELECTION:
@@ -195,11 +195,11 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDD_PULSE_RATE:
-		m_pNNetWindow->PulseRateDlg( m_pNNetWindow->GetHighlightedShapeId( ) );
+		m_pNNetWindow->PulseRateDlg( ShapeId( CastToLong(lParam) ) );
 		break;
 
 	case IDD_TRIGGER_SOUND_DLG:
-		m_pNNetWindow->TriggerSoundDlg( m_pNNetWindow->GetHighlightedShapeId( ) );
+		m_pNNetWindow->TriggerSoundDlg( ShapeId( CastToLong(lParam) ) );
 		break;
 
 	case IDM_NNET_REFRESH_RATE:
@@ -229,25 +229,25 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDD_REMOVE_SHAPE:
 		Sound::Play( TEXT("DISAPPEAR_SOUND") ); 
-		m_pNNetWorkThreadInterface->PostRemoveShape( m_pNNetWindow->GetHighlightedShapeId( ) );
+		m_pNNetWorkThreadInterface->PostRemoveShape( ShapeId( CastToLong(lParam) ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
 	case IDD_DISCONNECT:
 		Sound::Play( TEXT("UNLOCK_SOUND") ); 
-		m_pNNetWorkThreadInterface->PostDisconnect( m_pNNetWindow->GetHighlightedShapeId( ) );
+		m_pNNetWorkThreadInterface->PostDisconnect( ShapeId( CastToLong(lParam) ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
 	case IDD_CONVERT2NEURON:
 		Sound::Play( TEXT("UNLOCK_SOUND") ); 
-		m_pNNetWorkThreadInterface->PostConvert2Neuron( m_pNNetWindow->GetHighlightedShapeId( ) );
+		m_pNNetWorkThreadInterface->PostConvert2Neuron( ShapeId( CastToLong(lParam) ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
 	case IDD_CONVERT2INPUT_NEURON:
 		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
-		m_pNNetWorkThreadInterface->PostConvert2InputNeuron( m_pNNetWindow->GetHighlightedShapeId( ) );
+		m_pNNetWorkThreadInterface->PostConvert2InputNeuron( ShapeId( CastToLong(lParam) ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
@@ -260,7 +260,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	case IDD_ADD_INCOMING2KNOT:
 	case IDD_ADD_OUTGOING2PIPE:
 	case IDD_ADD_INCOMING2PIPE:
-		m_pNNetWorkThreadInterface->PostActionCommand( wmId, m_pNNetWindow->GetHighlightedShapeId( ), Util::Unpack2MicroMeterPoint(lParam) );
+		m_pNNetWorkThreadInterface->PostActionCommand( wmId, ShapeId( CastToLong(lParam) ), Util::Unpack2MicroMeterPoint(lParam) );
 		break;
 
 	case IDM_ANALYZE_LOOPS:
@@ -279,11 +279,11 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_SELECT_SHAPE:
-		m_pNNetWorkThreadInterface->PostSelectShape( m_pNNetWindow->GetHighlightedShapeId( ), tBoolOp::opTrue );
+		m_pNNetWorkThreadInterface->PostSelectShape( ShapeId( CastToLong(lParam) ), tBoolOp::opTrue );
 		break;
 
 	case IDM_DESELECT_SHAPE:
-		m_pNNetWorkThreadInterface->PostSelectShape( m_pNNetWindow->GetHighlightedShapeId( ), tBoolOp::opFalse );
+		m_pNNetWorkThreadInterface->PostSelectShape( ShapeId( CastToLong(lParam) ), tBoolOp::opFalse );
 		break;
 
 	case IDM_SELECT_ALL:
@@ -291,7 +291,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_SELECT_SUBTREE:
-		m_pNNetWorkThreadInterface->PostSelectSubtree( m_pNNetWindow->GetHighlightedShapeId( ), tBoolOp::opTrue );
+		m_pNNetWorkThreadInterface->PostSelectSubtree( ShapeId( CastToLong(lParam) ), tBoolOp::opTrue );
 		break;
 
 	case IDM_SCRIPT_DIALOG:

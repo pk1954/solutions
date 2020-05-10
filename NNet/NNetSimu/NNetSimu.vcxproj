@@ -167,6 +167,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AutoOpen.h" />
+    <ClInclude Include="DrawModel.h" />
     <ClInclude Include="NNetModelStorage.h" />
     <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="Preferences.h" />
@@ -189,6 +190,7 @@
     <ClInclude Include="win32_simulationControl.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DrawModel.cpp" />
     <ClCompile Include="NNetModelStorage.cpp" />
     <ClCompile Include="NNetSimu.cpp" />
     <ClCompile Include="NNetWrappers.cpp" />

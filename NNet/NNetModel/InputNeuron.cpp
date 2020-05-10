@@ -4,8 +4,7 @@
 
 #include "stdafx.h"
 #include <iomanip>
-#include "Direct2D.h"
-#include "PixelCoordsFp.h"
+#include "DrawContext.h"
 #include "tHighlightType.h"
 #include "ShapeType.h"
 #include "NNetParameters.h"
@@ -46,8 +45,7 @@ void InputNeuron::SetPulseFrequency_Lock( fHertz const freq )
 
 void InputNeuron::drawInputNeuron
 ( 
-	D2D_driver    const & graphics, 
-	PixelCoordsFp const & coord,
+	DrawContext   const & context,  
 	D2D1::ColorF  const   colF,
 	float         const   fReductionFactor
 ) const
@@ -63,27 +61,22 @@ void InputNeuron::drawInputNeuron
 	MicroMeterPoint const umCenter   { GetPosition() };
 	MicroMeterPoint const umStartPnt { umCenter + umExtVector * fReductionFactor };
 	MicroMeterPoint const umEndPnt   { umCenter - umExtVector };
-	fPixelPoint     const fStartPoint{ coord.convert2fPixelPos( umStartPnt ) };
-	fPixelPoint     const fEndPoint  { coord.convert2fPixelPos( umEndPnt   ) };
-	fPIXEL          const fPixWidth  { coord.convert2fPixel( GetExtension() * fReductionFactor ) };
 
-	graphics.DrawLine( fStartPoint, fEndPoint, fPixWidth * 2, colF );
+	context.DrawLine( umStartPnt, umEndPnt, GetExtension() * fReductionFactor * 2, colF );
 }
 
-void InputNeuron::DrawExterior( D2D_driver const & graphics, PixelCoordsFp const & coord, tHighlightType const type ) const
+void InputNeuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 {
-	drawInputNeuron( graphics, coord, GetFrameColor( type ), 1.0f );
+	drawInputNeuron( context, GetFrameColor( type ), 1.0f );
 }
 
-void InputNeuron::DrawInterior( D2D_driver const & graphics, PixelCoordsFp const & coord ) const
+void InputNeuron::DrawInterior( DrawContext const & context ) const
 { 
-	drawInputNeuron( graphics, coord, GetInteriorColor( ), NEURON_INTERIOR );
+	drawInputNeuron( context, GetInteriorColor( ), NEURON_INTERIOR );
 }
 
-void InputNeuron::DrawNeuronText(D2D_driver const & graphics, PixelCoordsFp const & coord ) const
+void InputNeuron::DrawNeuronText( DrawContext const & context ) const
 { 
-	PixelRect const pixRect { GetPixRect4Text( coord ) };
-
 	wostringstream m_wBuffer;
 
 	m_wBuffer.clear( );
@@ -93,7 +86,7 @@ void InputNeuron::DrawNeuronText(D2D_driver const & graphics, PixelCoordsFp cons
 		      << L" " 
 		      << GetParameterUnit( tParameter::pulseRate );
 
-	DisplayText( graphics, pixRect, m_wBuffer.str( ) );
+	DisplayText( context, GetRect4Text(), m_wBuffer.str( ) );
 }
 
 InputNeuron const * Cast2InputNeuron( Shape const * pShape )

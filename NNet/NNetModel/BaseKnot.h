@@ -14,8 +14,7 @@
 using std::vector;
 using std::wstring;
 
-class GraphicsInterface;
-class PixelCoordsFp;
+class DrawContext;
 class NNetModel;
 class Pipe;
 
@@ -77,9 +76,13 @@ public:
 	void Apply2AllInPipes ( PipeFunc const & func ) { apply2AllPipesInList( m_incoming, func ); }
 	void Apply2AllOutPipes( PipeFunc const & func )	{ apply2AllPipesInList( m_outgoing, func ); }
 
+	void Apply2AllInPipes_NoLock ( PipeFunc const & func ) { apply2AllPipesInList_NoLock( m_incoming, func ); }
+	void Apply2AllOutPipes_NoLock( PipeFunc const & func ) { apply2AllPipesInList_NoLock( m_outgoing, func ); }
+
 	bool Apply2AllInPipesB ( PipeFuncB const & func ) { return apply2AllPipesInListB( m_incoming, func ); }
 	bool Apply2AllOutPipesB( PipeFuncB const & func ) { return apply2AllPipesInListB( m_outgoing, func ); }
 
+	bool Apply2AllInPipesB_NoLock ( PipeFuncB const & func ) { return apply2AllPipesInListB_NoLock( m_incoming, func ); }
 	bool Apply2AllOutPipesB_NoLock( PipeFuncB const & func ) { return apply2AllPipesInListB_NoLock( m_outgoing, func ); }
 
 	void Apply2AllConnectedPipes( PipeFunc const & func )
@@ -103,10 +106,10 @@ protected:
 	PipeList m_incoming;
 	PipeList m_outgoing;
 
-	void drawCircle( D2D_driver const &, PixelCoordsFp const &, D2D1::ColorF const, MicroMeterPoint const, MicroMeter const ) const;
-	void drawCircle( D2D_driver const &, PixelCoordsFp const &, D2D1::ColorF const, MicroMeter const ) const;
+	void drawCircle( DrawContext const &, D2D1::ColorF const, MicroMeterPoint const, MicroMeter const ) const;
+	void drawCircle( DrawContext const &, D2D1::ColorF const, MicroMeter const ) const;
 
-	PixelRect const GetPixRect4Text( PixelCoordsFp const & ) const;
+	MicroMeterRect const GetRect4Text   ( ) const;
 
 private:
 
@@ -114,50 +117,11 @@ private:
 	void removePipe   ( PipeList &, Pipe * const );
 	void clearPipeList( PipeList & );
 
-	void apply2AllPipesInList( PipeList const & pipeList, PipeFunc const & func )
-	{
-		for ( Pipe * pPipe : pipeList ) 
-		{ 
-			if ( pPipe != nullptr )
-			{
-				LockShapeExclusive();
-				func( pPipe );
-				UnlockShapeExclusive();
-			}
-		}
-	}
+	void apply2AllPipesInList ( PipeList const &, PipeFunc  const & );
+	bool apply2AllPipesInListB( PipeList const &, PipeFuncB const & );
 
-	bool apply2AllPipesInListB( PipeList const & pipeList, PipeFuncB const & func )
-	{
-		bool bResult { false };
-		for ( auto pipe : pipeList ) 
-		{ 
-			if ( pipe != nullptr )
-			{
-				LockShapeExclusive();
-				bResult = func( pipe );
-				UnlockShapeExclusive();
-				if ( bResult )
-					break;
-			}
-		}
-		return bResult;
-	}
-
-	bool apply2AllPipesInListB_NoLock( PipeList  const & pipeList, PipeFuncB const & func )
-	{
-		bool bResult { false };
-		for ( auto pipe : pipeList ) 
-		{ 
-			if ( pipe != nullptr )
-			{
-				bResult = func( pipe );
-				if ( bResult )
-					break;
-			}
-		}
-		return bResult;
-	}
+	void apply2AllPipesInList_NoLock ( PipeList const &, PipeFunc  const & );
+	bool apply2AllPipesInListB_NoLock( PipeList const &, PipeFuncB const & );
 
 	MicroMeterPoint     m_center;
 	MicroMeter          m_extension;

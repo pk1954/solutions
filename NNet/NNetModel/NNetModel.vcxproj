@@ -183,6 +183,7 @@
     <ClInclude Include="Analyzer.h" />
     <ClInclude Include="BaseKnot.h" />
     <ClInclude Include="ComputeThread.h" />
+    <ClInclude Include="DrawContext.h" />
     <ClInclude Include="InputNeuron.h" />
     <ClInclude Include="Knot.h" />
     <ClInclude Include="Neuron.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="NNetWrapperHelpers.h" />
     <ClInclude Include="Pipe.h" />
+    <ClInclude Include="scale.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="ShapeId.h" />
@@ -219,6 +221,7 @@
     <ClCompile Include="NNetParameters.cpp" />
     <ClCompile Include="NNetWrapperHelpers.cpp" />
     <ClCompile Include="Pipe.cpp" />
+    <ClCompile Include="scale.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="tParameter.cpp" />
     <ClCompile Include="ShapeType.cpp" />

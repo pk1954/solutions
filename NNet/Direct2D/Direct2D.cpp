@@ -114,7 +114,7 @@ void D2D_driver::SetStdFontSize( float const fSize )
 
 // functions called per frame
 
-bool D2D_driver::StartFrame( HWND const hwnd, HDC const hdc )
+bool D2D_driver::StartFrame( HDC const hdc )
 {
 	if ( ! m_pRenderTarget )
 		createResources( );
@@ -146,7 +146,7 @@ void D2D_driver::DisplayText
 
 // Finish rendering; page flip.
 
-void D2D_driver::EndFrame( HWND const hwnd )
+void D2D_driver::EndFrame( )
 {
 	m_hr = m_pRenderTarget->EndDraw();
 	if (m_hr == D2DERR_RECREATE_TARGET)
@@ -156,7 +156,7 @@ void D2D_driver::EndFrame( HWND const hwnd )
 	}
 }
 
-void D2D_driver::DrawTranspRect( fPixelRect const & rect, D2D1::ColorF const colF )
+void D2D_driver::DrawTranspRect( fPixelRect const & rect, D2D1::ColorF const colF ) const
 {
 	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
 	pBrush->SetOpacity( 0.5f );
@@ -200,8 +200,8 @@ void D2D_driver::DrawLine
 void D2D_driver::DrawCircle
 (
 	fPixelPoint  const ptPos,
-	D2D1::ColorF const colF, 
-	fPIXEL       const fPixRadius 
+	fPIXEL       const fPixRadius,
+	D2D1::ColorF const colF
 ) const
 {
 	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
@@ -214,10 +214,10 @@ void D2D_driver::DrawArrow
 (
 	fPixelPoint  const ptPos,
 	fPixelPoint  const ptVector,
-	D2D1::ColorF const colF, 
 	fPIXEL       const fPixSize,  
-	fPIXEL       const fPixWidth 
-) const
+	fPIXEL       const fPixWidth, 
+	D2D1::ColorF const colF
+	) const
 {
 	if ( ! IsCloseToZero( ptVector ) )
 	{

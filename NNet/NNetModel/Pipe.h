@@ -15,8 +15,7 @@
 
 using std::vector;
 
-class GraphicsInterface;
-class PixelCoordsFp;
+class DrawContext;
 
 class Pipe : public Shape
 {
@@ -28,8 +27,8 @@ public:
 
 	static bool TypeFits( ShapeType const type ) { return type.IsPipeType( ); }
 
-	void SetStartKnot_Lock( BaseKnot * const );
-	void SetEndKnot_Lock  ( BaseKnot * const );
+	void SetStartKnot( BaseKnot * const );
+	void SetEndKnot  ( BaseKnot * const );
 
 	BaseKnot * const GetStartKnotPtr( ) const { return m_pKnotStart; }
 	BaseKnot * const GetEndKnotPtr  ( ) const { return m_pKnotEnd;   }
@@ -74,14 +73,14 @@ public:
 
 	mV GetVoltage( MicroMeterPoint const & ) const;
 
-	virtual void DrawExterior  ( D2D_driver const &, PixelCoordsFp const &, tHighlightType const  = tHighlightType::normal ) const;
-	virtual void DrawInterior  ( D2D_driver const &, PixelCoordsFp const & ) const;
+	virtual void DrawExterior  ( DrawContext const &, tHighlightType const  = tHighlightType::normal ) const;
+	virtual void DrawInterior  ( DrawContext const & ) const;
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 	virtual void Recalc( );
 	virtual void Clear( );
 
 	void DislocateEndPoint  ( ) { dislocate( GetEndKnotPtr(),    PIPE_WIDTH ); }
-	void DislocateStartPoint( )	{ dislocate( GetStartKnotPtr(), -PIPE_WIDTH );	}
+	void DislocateStartPoint( )	{ dislocate( GetStartKnotPtr(), -PIPE_WIDTH );}
 
 	static void       SetArrowSize( MicroMeter const size ) { m_arrowSize = size; }
 	static MicroMeter GetArrowSize( ) { return m_arrowSize; }
@@ -102,7 +101,7 @@ private:
 	tPotentialVector::iterator m_potIter;
 
 	void dislocate( BaseKnot * const, MicroMeter const );
-	fPixelPoint drawSegment( D2D_driver const &, fPixelPoint const &, fPixelPoint const, fPIXEL const, mV const ) const;
+	MicroMeterPoint drawSegment( DrawContext const &, MicroMeterPoint const &, MicroMeterPoint const &, MicroMeter const, mV const ) const;
 };
 
 Pipe const * Cast2Pipe( Shape const * );

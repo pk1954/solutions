@@ -73,11 +73,13 @@ void TextWindow::StopTextWindow( )
 	m_hDC_Memory = 0;
 }
 
-void TextWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const pntPos )
+long TextWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const pntPos )
 {
     UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 
     (void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_HIDE_WINDOW, L"Hide window" );
+
+    return 0L;
 }
 
 void TextWindow::Trigger( )

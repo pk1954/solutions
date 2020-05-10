@@ -12,8 +12,7 @@
 #include "Shape.h"
 #include "tHighlightType.h"
 
-class PixelCoordsFp;
-class D2D_driver;
+class DrawContext;
 class ObserverInterface;
 class NNetModel;
 class Param;
@@ -53,15 +52,8 @@ public:
 	unsigned long const GetNrOfKnots       ( ) const;
 	unsigned long const GetNrOfPipes       ( ) const;
 
-	void DrawExterior( ShapeId const, D2D_driver const &, PixelCoordsFp const &, tHighlightType const ) const;
-	void DrawInterior( ShapeId const, D2D_driver const &, PixelCoordsFp const & ) const;
-
-	void DrawExterior( MicroMeterRect const &, D2D_driver const &, PixelCoordsFp const & ) const;
-	void DrawInterior( MicroMeterRect const &, D2D_driver const &, PixelCoordsFp const &, ShapeCrit const & = ShapeCritAlwaysTrue ) const;
-
-	void DrawNeuronText( MicroMeterRect const &, D2D_driver const &, PixelCoordsFp const & ) const;
-
-	ShapeId const FindShapeAt( MicroMeterPoint const, ShapeCrit const & = ShapeCritAlwaysTrue ) const;
+	void DrawExterior( ShapeId const, DrawContext const &, tHighlightType const ) const;
+	void DrawInterior( ShapeId const, DrawContext const & ) const;
 
 	template <typename T> bool IsOfType( ShapeId const id ) const 
 	{ 

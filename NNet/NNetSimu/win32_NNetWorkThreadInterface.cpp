@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include "Resource.h"
 #include "PixelTypes.h"
+#include "PixelCoordsFp.h"
 #include "win32_util.h"
 #include "win32_script.h"
 #include "win32_NNetWorkThread.h"
@@ -71,88 +72,93 @@ void NNetWorkThreadInterface::Stop( )
 	m_pNNetWorkThread = nullptr;
 }
 
+void NNetWorkThreadInterface::postMsg( NNetWorkThreadMessage::Id msg, WPARAM const wParam, LPARAM const lParam )
+{
+	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( msg ), wParam, lParam );
+}
+
 void NNetWorkThreadInterface::PostResetTimer( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::RESET_TIMER ), 0, 0 );
+	postMsg( NNetWorkThreadMessage::Id::RESET_TIMER );
 }
 
 void NNetWorkThreadInterface::PostConnect( ShapeId const idSrc, ShapeId const idDst )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << idSrc.GetValue() << L" " << idDst.GetValue() << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::CONNECT ), idSrc.GetValue(), idDst.GetValue() );
+	postMsg( NNetWorkThreadMessage::Id::CONNECT, idSrc.GetValue(), idDst.GetValue() );
 }
 
 void NNetWorkThreadInterface::PostRemoveShape( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::REMOVE_SHAPE ), id.GetValue(), 0 );
+	postMsg( NNetWorkThreadMessage::Id::REMOVE_SHAPE, id.GetValue() );
 }
 
 void NNetWorkThreadInterface::PostDisconnect( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::DISCONNECT ), id.GetValue(), 0 );
+	postMsg( NNetWorkThreadMessage::Id::DISCONNECT, id.GetValue() );
 }
 
 void NNetWorkThreadInterface::PostConvert2Neuron( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::CONVERT2NEURON ), id.GetValue(), 0 );
+	postMsg( NNetWorkThreadMessage::Id::CONVERT2NEURON, id.GetValue() );
 }
 
 void NNetWorkThreadInterface::PostConvert2InputNeuron( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::CONVERT2INPUT_NEURON ), id.GetValue(), 0 );
+	postMsg( NNetWorkThreadMessage::Id::CONVERT2INPUT_NEURON, id.GetValue() );
 }
 
 void NNetWorkThreadInterface::PostSelectShape( ShapeId const id, tBoolOp const op )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << GetBoolOpName( op )  << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SELECT_SHAPE ), id.GetValue(), static_cast<LPARAM>(op) );
+	postMsg( NNetWorkThreadMessage::Id::SELECT_SHAPE, id.GetValue(), static_cast<LPARAM>(op) );
 }
 
 void NNetWorkThreadInterface::PostSelectAll( tBoolOp const op )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << GetBoolOpName( op ) << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SELECT_ALL ), 0, static_cast<LPARAM>(op) );
+	postMsg( NNetWorkThreadMessage::Id::SELECT_ALL, 0, static_cast<LPARAM>(op) );
 }
 
 void NNetWorkThreadInterface::PostSelectSubtree( ShapeId const id, tBoolOp const op )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << GetBoolOpName( op ) << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SELECT_SUBTREE ), id.GetValue(), static_cast<LPARAM>(op) );
+	postMsg( NNetWorkThreadMessage::Id::SELECT_SUBTREE, id.GetValue(), static_cast<LPARAM>(op) );
 }
 
 void NNetWorkThreadInterface::PostResetModel( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::RESET_MODEL ), 0, 0 );
+	postMsg( NNetWorkThreadMessage::Id::RESET_MODEL );
 }
 
 void NNetWorkThreadInterface::PostSetPulseRate( ShapeId const id, fHertz const fNewValue )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << fNewValue << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::PULSE_RATE ), id.GetValue(), (LPARAM &)fNewValue );
+	postMsg( NNetWorkThreadMessage::Id::PULSE_RATE, id.GetValue(), (LPARAM &)fNewValue );
 }
 
 void NNetWorkThreadInterface::PostSetTriggerSound( ShapeId const id, bool const bActive, Hertz const freq, MilliSecs const ms )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << bActive << L" " << freq << L" " << ms << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::TRIGGER_SOUND ), id.GetValue(), Util::Pack2UINT64( freq.GetValue(), ms.GetValue() ) );
+	postMsg( NNetWorkThreadMessage::Id::TRIGGER_SOUND, id.GetValue(), Util::Pack2UINT64( freq.GetValue(), ms.GetValue() ) );
 }
 
 void NNetWorkThreadInterface::PostSetParameter( tParameter const param, float const fNewValue )
@@ -169,33 +175,38 @@ void NNetWorkThreadInterface::PostSetParameter( tParameter const param, float co
 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << GetParameterName( param ) << L" " << fNewValue << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( mapParam.at( param ) ), 0, (LPARAM &)fNewValue );
+	postMsg( mapParam.at( param ), 0, (LPARAM &)fNewValue );
 }
 
 void NNetWorkThreadInterface::PostMoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << delta << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::MOVE_SHAPE ), id.GetValue(), Util::Pack2UINT64(delta) );
+	postMsg( NNetWorkThreadMessage::Id::MOVE_SHAPE, id.GetValue(), Util::Pack2UINT64(delta) );
 }
 
 void NNetWorkThreadInterface::PostMoveSelection( MicroMeterPoint const & delta )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << L" " << delta << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::MOVE_SELECTION ), 0, Util::Pack2UINT64(delta) );
+	postMsg( NNetWorkThreadMessage::Id::MOVE_SELECTION, 0, Util::Pack2UINT64(delta) );
 }
 
 void NNetWorkThreadInterface::PostSelectShapesInRect( MicroMeterRect const & rect )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << L" " << rect << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SELECT_SHAPES_IN_RECT ), Util::Pack2UINT64(rect.GetStartPoint()), Util::Pack2UINT64(rect.GetEndPoint()) );
+	m_pNNetWorkThread->PostThreadMsg
+	( 
+		static_cast<UINT>( NNetWorkThreadMessage::Id::SELECT_SHAPES_IN_RECT ), 
+		Util::Pack2UINT64( rect.GetStartPoint() ), 
+		Util::Pack2UINT64( rect.GetEndPoint() ) 
+	);
 }
 
 void NNetWorkThreadInterface::PostSlowMotionChanged( )
 {
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED ), 0, 0 );
+	postMsg( NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED );
 }
 
 wchar_t const * NNetWorkThreadInterface::GetActionCommandName( int const iMsgId ) const 
@@ -272,56 +283,56 @@ void NNetWorkThreadInterface::PostActionCommand( int const idMsg, ShapeId const 
 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << GetActionCommandName( idMsg ) << L" " << idShape.GetValue( ) << umPos << endl;
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( mapMsg.at( idMsg ) ), idShape.GetValue( ), Util::Pack2UINT64( umPos ) );
+	postMsg( mapMsg.at( idMsg ), idShape.GetValue( ), Util::Pack2UINT64( umPos ) );
 }
 
 void NNetWorkThreadInterface::PostGenerationStep( )
 {
 	m_pNNetWorkThread->Continue( );     // trigger worker thread if waiting on POI event
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::NEXT_GENERATION ), 0, 0 );
+	postMsg( NNetWorkThreadMessage::Id::NEXT_GENERATION );
 }
 
 void NNetWorkThreadInterface::PostRunGenerations( bool const bFirst )
 {
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::GENERATION_RUN ), 0, bFirst );
+	postMsg( NNetWorkThreadMessage::Id::GENERATION_RUN, 0, bFirst );
 }
 
 void NNetWorkThreadInterface::PostRepeatGenerationStep( )
 {
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::REPEAT_NEXT_GENERATION ), 0, 0 );
+	postMsg( NNetWorkThreadMessage::Id::REPEAT_NEXT_GENERATION );
 }
 
 void NNetWorkThreadInterface::PostStopComputation( )
 {
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::STOP ), 0, 0 );
+	postMsg( NNetWorkThreadMessage::Id::STOP );
 }
 
 void NNetWorkThreadInterface::PostSendBack( int const iMsg )
 {
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SEND_BACK ), iMsg, 0 );
+	postMsg( NNetWorkThreadMessage::Id::SEND_BACK, iMsg );
 }
 
 void NNetWorkThreadInterface::PostDeleteSelection()
 {
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::REMOVE_SELECTION), 0, 0 );
+	postMsg( NNetWorkThreadMessage::Id::REMOVE_SELECTION );
 }
 
-void NNetWorkThreadInterface::PostSelectAllBeepers()
+void NNetWorkThreadInterface::PostSelectAllBeepers( )
 {
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::SELECT_ALL_BEEPERS), 0, 0 );
+	postMsg( NNetWorkThreadMessage::Id::SELECT_ALL_BEEPERS );
 }
 
 void NNetWorkThreadInterface::PostRemoveBeepers( )
 {
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::REMOVE_BEEPERS), 0, 0 );
+	postMsg( NNetWorkThreadMessage::Id::REMOVE_BEEPERS );
 }
 
 void NNetWorkThreadInterface::PostMarkSelection( tBoolOp const op )
 {
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::MARK_SELECTION), 0, static_cast<LPARAM>(op) );
+	postMsg( NNetWorkThreadMessage::Id::MARK_SELECTION, 0, static_cast<LPARAM>(op) );
 }
 
-void NNetWorkThreadInterface::PostCopySelection()
+void NNetWorkThreadInterface::PostCopySelection( )
 {
-	m_pNNetWorkThread->PostThreadMsg( static_cast<UINT>( NNetWorkThreadMessage::Id::COPY_SELECTION), 0, 0 );
+	postMsg( NNetWorkThreadMessage::Id::COPY_SELECTION );
 }

@@ -6,8 +6,7 @@
 
 #include "MoreTypes.h"
 #include "ShapeId.h"
-#include "Direct2D.h"
-#include "PixelCoordsFp.h"
+#include "DrawContext.h"
 #include "tHighlightType.h"
 #include "SmoothMoveFp.h"
 #include "win32_modelWindow.h"
@@ -16,6 +15,7 @@ using std::wstring;
 using std::function;
 
 class Scale;
+class DrawModel;
 class Observable;
 class ActionTimer;
 class AnimationThread;
@@ -39,6 +39,7 @@ public:
 		DWORD                const,
 		function<bool()>     const,
 		NNetModelInterface * const,
+		DrawModel          * const,
 		Observable         * const,
 		bool                 const
 	);
@@ -57,19 +58,17 @@ public:
 	void ZoomKeepCrsrPos( MicroMeter const );
 	void CenterModel( bool const );
 
-	MicroMeter  GetPixelSize  ( ) const { return m_coord.GetPixelSize  (); }
-	fPixelPoint GetPixelOffset( ) const { return m_coord.GetPixelOffset(); }
-	void        SetPixelSize  ( MicroMeter  const s ) { m_coord.SetPixelSize  ( s ); }
-	void        SetPixelOffset( fPixelPoint const f ) { m_coord.SetPixelOffset( f ); }
-
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
 
 	void PulseRateDlg   ( ShapeId const );
 	void TriggerSoundDlg( ShapeId const );
-	bool ChangePulseRate( ShapeId const, bool const );
+	bool ChangePulseRate( bool const );
 	void ShowDirectionArrows( bool const );
 
+	DrawContext & GetDrawContext() { return m_context; }
+
 private:
+
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
@@ -79,9 +78,8 @@ private:
 	HMENU m_hPopupMenu { nullptr };
 	BOOL  m_bMoveAllowed { TRUE };    // TRUE: move with mouse is possible
 
-	D2D_driver        m_D2d_driver {};
-	PixelCoordsFp     m_coord      {};
-	Scale           * m_pScale               { nullptr };
+	DrawContext       m_context              { };
+	DrawModel       * m_pDrawModel           { nullptr };
 	AnimationThread * m_pAnimationThread     { nullptr };
 	Observable      * m_pCursorPosObservable { nullptr };
 
@@ -97,12 +95,12 @@ private:
 	MicroMeter      m_umPixelSizeDelta { MicroMeter::NULL_VAL() };      // SmoothMove 
 	SmoothMoveFp    m_smoothMove { };                                   // SmoothMove   
 
-	MicroMeterRect m_umRectSelection { };
+	PixelRect m_rectSelection { };
 
 	ShapeId m_shapeHighlighted      { NO_SHAPE };
 	ShapeId m_shapeSuperHighlighted { NO_SHAPE };
 
-	virtual void AddContextMenuEntries( HMENU const, PixelPoint const );
+	virtual long AddContextMenuEntries( HMENU const, PixelPoint const );
 
 	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
@@ -117,7 +115,6 @@ private:
 	virtual void OnPaint( );
 
 	void   smoothStep( );
-	void   setStdFontSize( );
 	LPARAM crsPos2LPARAM( ) const;
 	void   centerAndZoomRect( MicroMeterRect const, float const, bool const );
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;

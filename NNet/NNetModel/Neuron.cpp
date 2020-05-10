@@ -8,12 +8,11 @@
 #include "win32_thread.h"
 #include "win32_graphicsInterface.h"
 #include "win32_beeperThread.h"
-#include "PixelCoordsFp.h"
+#include "DrawContext.h"
 #include "NNetParameters.h"
 #include "NNetColors.h"
 #include "Neuron.h"
 
-#include "Direct2D.h"
 
 using std::chrono::microseconds;
 using std::fixed;
@@ -117,54 +116,42 @@ mV Neuron::GetNextOutput( ) const
 		   : BASE_POTENTIAL;
 }
 
-void const Neuron::DisplayText( D2D_driver const & graphics, PixelRect const & pixRect, wstring const text ) const
+void const Neuron::DisplayText( DrawContext const & context, MicroMeterRect const & umRect, wstring const text ) const
 {
 	static D2D1::ColorF const colF { 0.0f, 255.0f, 0.0f, 1.0f };
 
-	graphics.DisplayText( pixRect, text, colF );
+	context.DisplayText( umRect, text, colF );
 }
 
-void Neuron::DrawNeuronText( D2D_driver const & graphics, PixelCoordsFp const & coord ) const
+void Neuron::DrawNeuronText( DrawContext const & context ) const
 { 
 	wostringstream m_wBuffer;
 	m_wBuffer.precision(2);
 	m_wBuffer << fixed << setw(6) << GetFillLevel() * 100.0f << L"%";
-	DisplayText( graphics, GetPixRect4Text( coord ), m_wBuffer.str( ) );
+	DisplayText( context, GetRect4Text( ), m_wBuffer.str( ) );
 }
 
-MicroMeterPoint Neuron::getAxonHillockPos( PixelCoordsFp const & coord ) const
+MicroMeterPoint Neuron::getAxonHillockPos( ) const
 {
-	MicroMeterPoint axonHillockPos { NP_NULL };
+	Pipe     const * const pAxon        { m_outgoing[0] };
+	MicroMeterPoint  const vectorScaled { pAxon->GetVector( ) * ( GetExtension() / pAxon->GetLength( ) ) };
+	return GetPosition( ) + vectorScaled * NEURON_INTERIOR;
+}
+
+void Neuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
+{
+	context.DrawCircle( GetPosition(), GetExtension(), GetFrameColor( type ) );
 	if ( HasAxon() )
-	{
-		Pipe     const * const pAxon        { m_outgoing[0] };
-		MicroMeterPoint  const vectorScaled { pAxon->GetVector( ) * ( GetExtension() / pAxon->GetLength( ) ) };
-		axonHillockPos = GetPosition( ) + vectorScaled * NEURON_INTERIOR;
-	}
-	return axonHillockPos;
+		context.DrawCircle( getAxonHillockPos( ), GetExtension() * 0.5f, GetFrameColor( type ) );
 }
 
-void Neuron::DrawExterior( D2D_driver const & graphics, PixelCoordsFp const & coord, tHighlightType const type ) const
-{
-	MicroMeterPoint axonHillockPos { getAxonHillockPos( coord ) };
-	drawExterior( graphics, coord, type );
-	if ( axonHillockPos != NP_NULL )
-		drawCircle( graphics, coord, GetFrameColor( type ), axonHillockPos, GetExtension() * 0.5f );
-}
-
-void Neuron::DrawInterior( D2D_driver const & graphics, PixelCoordsFp const & coord ) const
+void Neuron::DrawInterior( DrawContext const & context ) const
 { 
-	D2D1::ColorF    color          { m_bTriggered ? NNetColors::INT_TRIGGER : GetInteriorColor( ) };
-	MicroMeterPoint axonHillockPos { getAxonHillockPos( coord ) };
-	drawCircle( graphics, coord, color, GetExtension() * NEURON_INTERIOR);
-	if ( axonHillockPos != NP_NULL )
-		drawCircle( graphics, coord, color, axonHillockPos, GetExtension() * (NEURON_INTERIOR - 0.5f) );
+	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : GetInteriorColor( ) };
+	context.DrawCircle( GetPosition(), GetExtension() * NEURON_INTERIOR, color );
+	if ( HasAxon() )
+		context.DrawCircle( getAxonHillockPos( ), GetExtension() * (NEURON_INTERIOR - 0.5f), color );
 	m_bTriggered = false;
-}
-
-void Neuron::drawExterior( D2D_driver const & graphics, PixelCoordsFp const & coord, tHighlightType const type ) const
-{
-	drawCircle( graphics, coord, GetFrameColor( type ), GetExtension() );
 }
 
 Neuron const * Cast2Neuron( Shape const * pShape )

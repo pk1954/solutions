@@ -253,7 +253,7 @@ BOOL NNetWorkThread::dispatch( MSG const msg  )
 		break;
 
 	case NNetWorkThreadMessage::Id::SELECT_SHAPES_IN_RECT:
-		m_pNNetModel->MoveSelection( Util::Unpack2MicroMeterPoint(msg.lParam) );
+		m_pNNetModel->SelectShapesInRect( MicroMeterRect( Util::Unpack2MicroMeterPoint(msg.wParam), Util::Unpack2MicroMeterPoint(msg.lParam) ) );
 		break;
 
 	case NNetWorkThreadMessage::Id::MOVE_SHAPE:

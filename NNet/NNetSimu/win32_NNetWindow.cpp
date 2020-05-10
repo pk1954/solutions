@@ -7,6 +7,7 @@
 #include "Resource.h"
 #include "MoreTypes.h"
 #include "Segment.h"
+#include "scale.h"
 #include "Pipe.h"
 #include "InputNeuron.h"
 #include "PixelTypes.h"
@@ -15,15 +16,17 @@
 #include "NNetParameters.h"
 #include "NNetModelInterface.h"
 #include "NNetColors.h"
+#include "DrawModel.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
-#include "win32_scale.h"
 #include "win32_triggerSoundDlg.h"
 #include "win32_stdDialogBox.h"
 #include "win32_NNetWorkThreadInterface.h"
 #include "win32_NNetWindow.h"
 
 using std::function;
+
+static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
 
 void NNetWindow::InitClass
 (        
@@ -33,11 +36,6 @@ void NNetWindow::InitClass
 {
 	ModelWindow::InitClass( pActionTimer );
 	m_pNNetWorkThreadInterface = pNNetWorkThreadInterface;
-}
-
-void NNetWindow::setStdFontSize( )
-{
-	m_D2d_driver.SetStdFontSize( m_coord.convert2fPixel( 20._MicroMeter ).GetValue() );
 }
 
 NNetWindow::NNetWindow( ) :
@@ -50,10 +48,12 @@ void NNetWindow::Start
 	DWORD                const dwStyle,
 	function<bool()>     const visibilityCriterion,
 	NNetModelInterface * const pModelInterface,
+	DrawModel          * const pDrawModel,
 	Observable         * const pCursorObservable,
 	bool                 const bFixed
 )
 {
+	m_pDrawModel = pDrawModel;
 	m_bFixed = bFixed;
 	HWND hwnd = StartBaseWindow
 	( 
@@ -64,10 +64,9 @@ void NNetWindow::Start
 		nullptr,
 		visibilityCriterion
 	);
-	m_D2d_driver.Initialize( hwnd );
-	setStdFontSize( );
+	m_context.Start( hwnd );
+	m_context.SetStdFontSize( STD_FONT_SIZE );
 	m_pModelInterface = pModelInterface;
-	m_pScale = new Scale( & m_coord );
 	m_pAnimationThread = new AnimationThread( );
 	m_pCursorPosObservable = pCursorObservable;
 	ShowRefreshRateDlg( false );
@@ -75,32 +74,29 @@ void NNetWindow::Start
 
 void NNetWindow::Stop( )
 {
-	m_D2d_driver.ShutDown();
-	delete m_pScale;
-	m_pScale = nullptr;
+	m_context.Stop();
 	DestroyWindow( );
 }
 
 NNetWindow::~NNetWindow( )
 {
-	m_pNNetWorkThreadInterface = nullptr;
 }
 
 void NNetWindow::Zoom( bool const bZoomIn  )
 {
-	ZoomKeepCrsrPos( m_coord.ComputeNewPixelSize( bZoomIn ) );
+	ZoomKeepCrsrPos( m_context.GetCoordC().ComputeNewPixelSize( bZoomIn ) );
 }
 
 void NNetWindow::ZoomKeepCrsrPos( MicroMeter const newSize )
 {
 	PixelPoint      const pixPointCenter  { GetRelativeCrsrPosition() };
 	fPixelPoint     const fPixPointCenter { convert2fPixelPoint( pixPointCenter ) };
-	MicroMeterPoint const umPointcenter   { m_coord.convert2MicroMeterPointPos( fPixPointCenter ) };
-	if ( m_coord.Zoom( newSize ) ) 
+	MicroMeterPoint const umPointcenter   { m_context.GetCoordC().convert2MicroMeterPointPos( fPixPointCenter ) };
+	if ( m_context.GetCoord().Zoom( newSize ) ) 
 	{
-		m_coord.Center( umPointcenter, fPixPointCenter ); 
+		m_context.GetCoord().Center( umPointcenter, fPixPointCenter ); 
 		Notify( TRUE );     // cause immediate repaint
-		setStdFontSize( );
+		m_context.SetStdFontSize( STD_FONT_SIZE );
 	}
 	else
 	{
@@ -108,7 +104,7 @@ void NNetWindow::ZoomKeepCrsrPos( MicroMeter const newSize )
 	}
 }
 
-void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )
+long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )
 {
 	UINT static const STD_FLAGS { MF_BYPOSITION | MF_STRING };
 
@@ -196,16 +192,18 @@ void NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 		else
 			AppendMenu( hPopupMenu, STD_FLAGS, IDM_SELECT_SHAPE, L"Select" );
 	}
+
+	return m_shapeHighlighted.GetValue();
 }
 
-bool NNetWindow::ChangePulseRate( ShapeId const id, bool const bDirection )
+bool NNetWindow::ChangePulseRate( bool const bDirection )
 {
 	static fHertz const INCREMENT { 0.01_fHertz };
-	fHertz const fOldValue { m_pModelInterface->GetPulseFreq( id ) };
+	fHertz const fOldValue { m_pModelInterface->GetPulseFreq( m_shapeHighlighted ) };
 	if ( fOldValue.IsNull() )
 		return false;
 	fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
-	m_pNNetWorkThreadInterface->PostSetPulseRate( id, fNewValue );
+	m_pNNetWorkThreadInterface->PostSetPulseRate( m_shapeHighlighted, fNewValue );
 	return true;
 }
 
@@ -250,9 +248,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	if ( m_bFixed )
 		return;
 
-	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // relative to client area
-	MicroMeterPoint const umCrsrPos { m_coord.convert2MicroMeterPointPos( ptCrsr ) };
-	MicroMeterPoint const umLastPos { m_coord.convert2MicroMeterPointPos( m_ptLast ) };
+	PixelPoint const ptCrsr { GetCrsrPosFromLparam( lParam ) };  // relative to client area
 
 	m_pCursorPosObservable->NotifyAll( false );
 
@@ -260,8 +256,9 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	{
 		if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
 		{
-			m_umRectSelection = MicroMeterRect( umCrsrPos, umLastPos );
-				m_pNNetWorkThreadInterface->PostSelectShapesInRect( m_umRectSelection );
+			m_rectSelection = PixelRect( ptCrsr, m_ptLast );
+			MicroMeterRect umRect { m_context.GetCoordC().convert2MicroMeterRect( m_rectSelection ) };
+			m_pNNetWorkThreadInterface->PostSelectShapesInRect( umRect );
 		}
 		else                           // first time here after RBUTTON pressed
 		{
@@ -270,29 +267,32 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	}
 	else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
 	{
+		PixelPoint const delta { ptCrsr - m_ptLast };
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
-			MicroMeterPoint const umDelta { umCrsrPos - umLastPos };
 			m_shapeSuperHighlighted = NO_SHAPE;
 			if ( IsDefined( m_shapeHighlighted ) )
 			{
+				MicroMeterPoint umDelta { m_context.GetCoordC().convert2MicroMeterPointSize( delta ) };
 				m_pNNetWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umDelta );
 				if ( m_pModelInterface->IsOfType<BaseKnot>( m_shapeHighlighted ) )
 				{
-					m_shapeSuperHighlighted = m_pModelInterface->FindShapeAt
+					m_shapeSuperHighlighted = m_pDrawModel->FindShapeAt
 					( 
-						umCrsrPos, 
+						ptCrsr,
+						m_context,
 						[&]( Shape const & shape ) { return m_pModelInterface->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
 					);
 				}
 			}
-			else if ( m_pModelInterface->AnyShapesSelected( ) )
+			else if ( m_pModelInterface->AnyShapesSelected( ) )   // move selected shapes 
 			{
+				MicroMeterPoint umDelta { m_context.GetCoord().convert2MicroMeterPointSize( delta ) };
 				m_pNNetWorkThreadInterface->PostMoveSelection( umDelta );
 			}
-			else if ( m_bMoveAllowed )
+			else if ( m_bMoveAllowed ) // move view by manipulating coordinate system 
 			{
-				m_coord.Move( ptCrsr - m_ptLast );
+				m_context.GetCoord().Move( delta );
 			}
 		}
 		m_ptLast = ptCrsr;
@@ -300,7 +300,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	}
 	else  // no mouse button pressed
 	{                         
-		ShapeId const idHighlight { m_pModelInterface->FindShapeAt( umCrsrPos ) };
+		ShapeId const idHighlight { m_pDrawModel->FindShapeAt( ptCrsr, m_context, ShapeCritAlwaysTrue ) };
 		if ( idHighlight != m_shapeHighlighted )
 		{
 			m_shapeHighlighted = idHighlight; 
@@ -322,26 +322,25 @@ tHighlightType const NNetWindow::GetHighlightType( Shape const & shape ) const
 
 void NNetWindow::doPaint( ) 
 {
-	PixelRect      const pixRect { GetClPixelRect( ) };
-	MicroMeterRect const umRect  { m_coord.convert2MicroMeterRect( pixRect ) };
+	PixelRect const pixRect { GetClPixelRect( ) };
 
-	if ( m_umRectSelection.IsNotEmpty( ) )
-		m_D2d_driver.DrawTranspRect( m_coord.convert2fPixelRect( m_umRectSelection ), NNetColors::SELECTION_RECT );
+	if ( m_rectSelection.IsNotEmpty( ) )
+		m_context.DrawTranspRect( m_rectSelection, NNetColors::SELECTION_RECT );
 
-	if ( m_coord.GetPixelSize() <= 5._MicroMeter )
-		m_pModelInterface->DrawExterior( umRect, m_D2d_driver, m_coord );
+	if ( m_context.GetPixelSize() <= 5._MicroMeter )
+		m_pDrawModel->DrawExteriorInRect( pixRect, m_context );
 
-	m_pModelInterface->DrawInterior( umRect, m_D2d_driver, m_coord, [&](Shape const & s){ return s.IsPipe    (); } );
-	m_pModelInterface->DrawInterior( umRect, m_D2d_driver, m_coord, [&](Shape const & s){ return s.IsBaseKnot(); } );
+	m_pDrawModel->DrawInteriorInRect( pixRect, m_context, [&](Shape const & s){ return s.IsPipe    (); } );
+	m_pDrawModel->DrawInteriorInRect( pixRect, m_context, [&](Shape const & s){ return s.IsBaseKnot(); } );
 
 	// draw highlighted shape again to be sure that it is in foreground
-	m_pModelInterface->DrawExterior( m_shapeHighlighted, m_D2d_driver, m_coord, tHighlightType::highlighted );
-	m_pModelInterface->DrawInterior( m_shapeHighlighted, m_D2d_driver, m_coord );
+	m_pModelInterface->DrawExterior( m_shapeHighlighted, m_context, tHighlightType::highlighted );
+	m_pModelInterface->DrawInterior( m_shapeHighlighted, m_context );
 
-	m_pScale->ShowScale( m_D2d_driver, convert2fPIXEL( GetClientWindowHeight() ) );
+	m_context.ShowScale( GetClientWindowHeight() );
 
-	if ( m_coord.GetPixelSize() <= 2.5_MicroMeter )
-		m_pModelInterface->DrawNeuronText( umRect, m_D2d_driver, m_coord );
+	if ( m_context.GetPixelSize() <= 2.5_MicroMeter )
+		m_pDrawModel->DrawNeuronTextInRect( pixRect, m_context );
 }
 
 void NNetWindow::CenterModel( bool const bSmooth )
@@ -356,17 +355,18 @@ void NNetWindow::AnalysisFinished( )
 
 void NNetWindow::centerAndZoomRect( MicroMeterRect const rect, float const fRatioFactor, bool const bSmooth )
 {
-	float           const fVerticalRatio    { rect.GetHeight() / m_coord.convert2MicroMeter( GetClientWindowHeight() ) };
-	float           const fHorizontalRatio  { rect.GetWidth () / m_coord.convert2MicroMeter( GetClientWindowWidth() ) };
+	PixelPoint      const pixPointCenter    { GetClRectCenter( ) };
+	float           const fVerticalRatio    { rect.GetHeight() / m_context.GetCoordC().convert2MicroMeter( GetClientWindowHeight() ) };
+	float           const fHorizontalRatio  { rect.GetWidth () / m_context.GetCoordC().convert2MicroMeter( GetClientWindowWidth() ) };
 	float           const fMaxRatio         { max( fVerticalRatio, fHorizontalRatio ) };
 	float           const fDesiredRatio     { fMaxRatio * fRatioFactor };
-	fPixelPoint     const fpCenter          { m_coord.convert2fPixelPoint( GetClRectCenter( ) ) };
-	MicroMeter      const umPixelSizeTarget { m_coord.LimitPixelSize( m_coord.GetPixelSize() * fDesiredRatio ) };
+	fPixelPoint     const fpCenter          { m_context.GetCoordC().convert2fPixelPoint( GetClRectCenter( ) ) };
+	MicroMeter      const umPixelSizeTarget { m_context.GetCoordC().LimitPixelSize( m_context.GetCoordC().GetPixelSize() * fDesiredRatio ) };
 	MicroMeterPoint const umPntCenterTarget { rect.GetCenter() };
 	if ( bSmooth )
 	{
-		m_umPixelSizeStart = m_coord.GetPixelSize();                                     // actual pixel size 
-		m_umPntCenterStart = m_coord.convert2MicroMeterPointPos( GetClRectCenter( ) );   // actual center 
+		m_umPixelSizeStart = m_context.GetCoordC().GetPixelSize();                                // actual pixel size 
+		m_umPntCenterStart = m_context.GetCoordC().convert2MicroMeterPointPos( pixPointCenter );  // actual center 
 		m_umPixelSizeDelta = umPixelSizeTarget - m_umPixelSizeStart;
 		m_umPntCenterDelta = umPntCenterTarget - m_umPntCenterStart;
 		m_smoothMove.Reset();
@@ -374,8 +374,8 @@ void NNetWindow::centerAndZoomRect( MicroMeterRect const rect, float const fRati
 	}
 	else
 	{
-		m_coord.Zoom  ( umPixelSizeTarget );
-		m_coord.Center( umPntCenterTarget, fpCenter );
+		m_context.GetCoord().Zoom( umPixelSizeTarget );
+		m_context.Center( pixPointCenter );
 	}
 }
 
@@ -390,9 +390,9 @@ void NNetWindow::smoothStep( )
 	}
 	else
 	{
-		fPixelPoint const fpCenter { m_coord.convert2fPixelPoint( GetClRectCenter( ) ) };
-		m_coord.Zoom  ( m_umPixelSizeStart + m_umPixelSizeDelta * fPos );
-		m_coord.Center( m_umPntCenterStart + m_umPntCenterDelta * fPos, fpCenter );
+		fPixelPoint const fpCenter { m_context.GetCoordC().convert2fPixelPoint( GetClRectCenter( ) ) };
+		m_context.GetCoord().Zoom  ( m_umPixelSizeStart + m_umPixelSizeDelta * fPos );
+		m_context.GetCoord().Center( m_umPntCenterStart + m_umPntCenterDelta * fPos, fpCenter );
 	}
 
 	Notify( TRUE );     // cause immediate repaint
@@ -404,10 +404,10 @@ void NNetWindow::OnPaint( )
 	{
 		PAINTSTRUCT ps;
 		HDC const hDC = BeginPaint( &ps );
-		if ( m_D2d_driver.StartFrame( GetWindowHandle(), hDC ) )
+		if ( m_context.StartFrame( hDC ) )
 		{
 			doPaint( );
-			m_D2d_driver.EndFrame( GetWindowHandle() );
+			m_context.EndFrame( );
 		}
 		EndPaint( &ps );
 	}
@@ -420,7 +420,7 @@ void NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 {
 	UINT width  = LOWORD(lParam);
 	UINT height = HIWORD(lParam);
-	m_D2d_driver.Resize( width, height );
+	m_context.Resize( width, height );
 }
 
 void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )
@@ -442,7 +442,7 @@ void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 
 	while ( --iDelta >= 0 )
 	{
-		newSize = m_coord.ComputeNewPixelSize( bDirection );
+		newSize = m_context.GetCoordC().ComputeNewPixelSize( bDirection );
 	}
 
 	PostCommand2Application( IDM_SET_ZOOM, (LPARAM &)newSize.GetValue() ); 
@@ -464,9 +464,9 @@ void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 
 bool NNetWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
-	bool bMadeSelection { m_umRectSelection.IsNotEmpty() };
+	bool bMadeSelection { m_rectSelection.IsNotEmpty() };
 	if ( bMadeSelection )
-		m_umRectSelection.SetZero();
+		m_rectSelection.SetZero();
 	return bMadeSelection;
 }
 
@@ -488,12 +488,12 @@ void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 
 MicroMeterPoint NNetWindow::PixelPoint2MicroMeterPoint( PixelPoint const pixPoint ) const
 {
-	return m_coord.convert2MicroMeterPointPos( pixPoint );  // PixelPoint2MicroMeterPoint belongs to NNetWindow
+	return m_context.GetCoordC().convert2MicroMeterPointPos( pixPoint );  // PixelPoint2MicroMeterPoint belongs to NNetWindow
 }                                                           // because every NNetWindow needs its own coordinate system
 
 LPARAM NNetWindow::pixelPoint2LPARAM( PixelPoint const pixPoint ) const
 {
-	return Util::Pack2UINT64( PixelPoint2MicroMeterPoint( pixPoint ) );
+	return Util::Pack2UINT64( m_context.GetCoordC().convert2MicroMeterPointPos( pixPoint ) );
 }
 
 LPARAM NNetWindow::crsPos2LPARAM( ) const 

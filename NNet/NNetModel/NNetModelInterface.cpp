@@ -164,76 +164,22 @@ unsigned long const NNetModelInterface::GetNrOfNeurons     ( ) const { return Ne
 
 void NNetModelInterface::DrawExterior
 ( 
-	ShapeId        const   id, 
-	D2D_driver     const & graphics, 
-	PixelCoordsFp  const & coord,
+	ShapeId        const   id,
+	DrawContext    const & context,
 	tHighlightType const   highlightType
 ) const
 {
 	if ( Shape const * const p { m_pModel->GetShapeConstPtr<Shape const *>(id) } )
-		p->DrawExterior( graphics, coord, highlightType );
-}
-
-void NNetModelInterface::DrawExterior
-( 
-	MicroMeterRect const & rect, 
-	D2D_driver     const & graphics, 
-	PixelCoordsFp  const & coord
-) const
-{
-	m_pModel->Apply2AllInRect<Shape>( rect, [&]( Shape const & s ) { s.DrawExterior( graphics, coord ); } );
+		p->DrawExterior( context, highlightType );
 }
 
 void NNetModelInterface::DrawInterior
 ( 
-	ShapeId       const   id, 
-	D2D_driver    const & graphics, 
-	PixelCoordsFp const & coord
+	ShapeId     const   id, 
+	DrawContext const & context
 ) 
 	const
 {
 	if ( auto p { m_pModel->GetShapeConstPtr<Shape const *>(id) } )
-		p->DrawInterior( graphics, coord );
-}
-
-
-void NNetModelInterface::DrawInterior
-(
-	MicroMeterRect const & rect,
-	D2D_driver     const & graphics,
-	PixelCoordsFp  const & coord, 
-	ShapeCrit      const & crit 
-) const
-{
-	m_pModel->Apply2AllInRect<Shape>( rect, [&](Shape const & s) { if (crit(s)) s.DrawInterior( graphics, coord ); } );
-}
-
-void NNetModelInterface::DrawNeuronText
-(
-	MicroMeterRect const & rect,
-	D2D_driver     const & graphics,
-	PixelCoordsFp  const & coord
-) const
-{
-	m_pModel->Apply2AllInRect<Neuron>( rect, [&]( Neuron const & n ) { n.DrawNeuronText( graphics, coord ); } );
-}
-
-ShapeId const NNetModelInterface::FindShapeAt
-( 
-	MicroMeterPoint const   pnt, 
-	ShapeCrit       const & crit 
-) const
-{	
-	ShapeId idRes { NO_SHAPE };
-
-	if ( idRes == NO_SHAPE )   // first test all neurons and input neurons
-		idRes = m_pModel->FindShapeAt( pnt, [&]( Shape const & s ) { return s.IsAnyNeuron( ) && crit( s ); } );
-
-	if ( idRes == NO_SHAPE )   // if nothing found, test knot shapes
-		idRes = m_pModel->FindShapeAt( pnt, [&]( Shape const & s ) { return s.IsKnot     ( ) && crit( s ); } ); 	
-
-	if ( idRes == NO_SHAPE )   // if nothing found, try pipes
-		idRes = m_pModel->FindShapeAt( pnt, [&]( Shape const & s ) { return s.IsPipe     ( ) && crit( s ); } );
-
-	return idRes;
+		p->DrawInterior( context );
 }

@@ -8,6 +8,7 @@
 #include "win32_util.h"
 #include "UtilityWrappers.h"
 #include "NNetWrapperHelpers.h"
+#include "DrawContext.h"
 #include "win32_NNetWindow.h"
 #include "win32_NNetWorkThreadInterface.h"
 
@@ -114,7 +115,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         fPixelPoint const fPixelOffset { ScrReadfPixelPoint( script ) };
-        m_pNNetWindow->SetPixelOffset( fPixelOffset );
+        m_pNNetWindow->GetDrawContext().SetPixelOffset( fPixelOffset );
     }
 };
 
@@ -124,7 +125,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         MicroMeter const umPixelSize { ScrReadMicroMeter( script ) };
-        m_pNNetWindow->SetPixelSize( umPixelSize );
+        m_pNNetWindow->GetDrawContext().SetPixelSize( umPixelSize );
     }
 };
 

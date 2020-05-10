@@ -172,15 +172,9 @@ public:
 	}                        
 
 	template <typename T>
-	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func ) const
-	{
-		Apply2All<T>( [&](T const & s) { if ( s.IsInRect(r) ) { func( s ); } } );
-	}
-
-	template <typename T>
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T       &)> const & func )
 	{
-		Apply2All<T> ( [&](T      & s) { if ( s.IsInRect(r) ) { func( s ); } } );
+		Apply2All<T> ( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
 	}
 
 	template <typename T>
@@ -307,8 +301,8 @@ private:
 	void            disconnectBaseKnot ( BaseKnot * const );
 	void            selectSubtree      ( BaseKnot * const, tBoolOp    const );
 	void            insertBaseKnot     ( Pipe     * const, BaseKnot * const );
-	void            connectIncoming_Lock    ( Pipe     * const, BaseKnot * const );
-	void            connectOutgoing_Lock    ( Pipe     * const, BaseKnot * const );
+	void            connectIncoming_Lock( Pipe     * const, BaseKnot * const );
+	void            connectOutgoing_Lock( Pipe     * const, BaseKnot * const );
 	void            connectToNewShapes ( Shape &, ShapeList & );
 	void            modelHasChanged    ( ) const;
 	void            setTriggerSound    ( Neuron * const, Hertz const, MilliSecs const );

@@ -18,6 +18,7 @@ class ObserverInterface;
 class EventInterface;
 class SlowMotionRatio;
 class NNetModelStorage;
+class PixelCoordsFp;
 
 class NNetWorkThreadInterface
 {
@@ -91,7 +92,9 @@ private:
 	BOOL       IsTraceOn  ( ) const { return   m_bTrace; }
 	wostream & TraceStream( )       { return * m_pTraceStream; }
 
-	wostream        * m_pTraceStream;
 	BOOL              m_bTrace;
-	NNetWorkThread  * m_pNNetWorkThread;
+	wostream        * m_pTraceStream    { nullptr };
+	NNetWorkThread  * m_pNNetWorkThread { nullptr };
+
+	void postMsg( NNetWorkThreadMessage::Id msg, WPARAM const = 0, LPARAM const = 0 );
 }; 
