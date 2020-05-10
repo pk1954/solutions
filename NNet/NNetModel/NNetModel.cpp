@@ -164,8 +164,8 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 		BaseKnot * pDstBaseKnot { static_cast<BaseKnot *>( pDst ) };
 		if ( pSrc && pDstBaseKnot )
 		{
-			pSrc->Apply2AllInPipes ( [&]( Pipe * const pipe ) { connectIncoming_Lock( pipe, pDstBaseKnot ); } );
-			pSrc->Apply2AllOutPipes( [&]( Pipe * const pipe ) { connectOutgoing_Lock( pipe, pDstBaseKnot ); } );
+			pSrc->Apply2AllInPipes ( [&]( Pipe * const pPipe ) { ConnectIncoming( pPipe, pDstBaseKnot ); pPipe->Recalc(); } );
+			pSrc->Apply2AllOutPipes( [&]( Pipe * const pPipe ) { ConnectOutgoing( pPipe, pDstBaseKnot ); pPipe->Recalc(); } );
 			if ( pSrc->IsKnot() )
 				deleteShape( pSrc );
 		}
@@ -178,8 +178,11 @@ void NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
 	if ( pStart && pEnd )
 	{
 		Pipe * const pPipe { NewShape<Pipe>( NP_NULL ) };
-		connectOutgoing_Lock( pPipe, pStart );
-		connectIncoming_Lock( pPipe, pEnd );
+		pPipe->LockShapeExclusive();
+		ConnectOutgoing( pPipe, pStart );
+		ConnectIncoming( pPipe, pEnd );
+		pPipe->Recalc();
+		pPipe->UnlockShapeExclusive();
 		modelHasChanged( );
 	}
 }
@@ -395,7 +398,7 @@ void NNetModel::deleteShape( Shape * const pShape )
 	delete pShape;                        // then delete Shape
 }
 
-void NNetModel::connectIncoming_Lock
+void NNetModel::ConnectIncoming
 ( 
 	Pipe     * const pPipe, 
 	BaseKnot * const pEndPoint
@@ -403,17 +406,14 @@ void NNetModel::connectIncoming_Lock
 {
 	if ( pPipe && pEndPoint )
 	{
-		pPipe->LockShapeExclusive();
 		pEndPoint->LockShapeExclusive();
 		pEndPoint->AddIncoming( pPipe );
 		pPipe->SetEndKnot( pEndPoint );
-		pPipe->Recalc();
 		pEndPoint->UnlockShapeExclusive();
-		pPipe->UnlockShapeExclusive();
 	}
 }
 
-void NNetModel::connectOutgoing_Lock
+void NNetModel::ConnectOutgoing
 ( 
 	Pipe     * const pPipe, 
 	BaseKnot * const pStartPoint
@@ -421,13 +421,10 @@ void NNetModel::connectOutgoing_Lock
 {
 	if ( pPipe && pStartPoint )
 	{
-		pPipe->LockShapeExclusive();
 		pStartPoint->LockShapeExclusive();
 		pStartPoint->AddOutgoing( pPipe );
 		pPipe->SetStartKnot( pStartPoint );
-		pPipe->Recalc();
 		pStartPoint->UnlockShapeExclusive();
-		pPipe->UnlockShapeExclusive();
 	}
 }
 
@@ -489,10 +486,13 @@ void NNetModel::insertBaseKnot( Pipe * const pPipe, BaseKnot * const pBaseKnot)
 {
 	if ( pPipe && pBaseKnot )
 	{
+		pPipe->LockShapeExclusive();
 		BaseKnot * const pStartKnot { pPipe->GetStartKnotPtr( ) };
 		NewPipe( pStartKnot, pBaseKnot );
 		pStartKnot->RemoveOutgoing( pPipe );
-		connectOutgoing_Lock( pPipe, pBaseKnot );
+		ConnectOutgoing( pPipe, pBaseKnot );
+		pPipe->Recalc();
+		pPipe->UnlockShapeExclusive();
 	}
 }
 

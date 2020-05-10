@@ -108,28 +108,13 @@ public:
 			}
 			else
 			{ 
-				Pipe     * const pPipe  { new Pipe( ) };
-				BaseKnot * const pStart { m_pModel->GetShapePtr<BaseKnot *>( idStart ) };
-				BaseKnot * const pEnd   { m_pModel->GetShapePtr<BaseKnot *>( idEnd   ) };
-
-				pPipe->SetId( idFromScript );
-
+				Pipe * const pPipe { new Pipe( ) };
 				pPipe->LockShapeExclusive();
-
-				pStart->LockShapeExclusive();
-				pStart->AddOutgoing( pPipe );
-				pPipe->SetStartKnot( pStart );
+				pPipe->SetId( idFromScript );
+				m_pModel->ConnectOutgoing( pPipe, m_pModel->GetShapePtr<BaseKnot *>( idStart ) );
+				m_pModel->ConnectIncoming( pPipe, m_pModel->GetShapePtr<BaseKnot *>( idEnd   ) );
 				pPipe->Recalc();
-				pStart->UnlockShapeExclusive();
-
-				pEnd->LockShapeExclusive();
-				pEnd->AddIncoming( pPipe );
-				pPipe->SetEndKnot( pEnd );
-				pPipe->Recalc();
-				pEnd->UnlockShapeExclusive();
-
 				pPipe->UnlockShapeExclusive();
-
 				pShape = pPipe;
 			}
 		}

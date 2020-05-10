@@ -223,6 +223,8 @@ public:
 	void ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
 	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
 
+	void ConnectIncoming( Pipe * const, BaseKnot * const );
+	void ConnectOutgoing( Pipe * const, BaseKnot * const );
 	void CopySelection( );
 	void MarkSelection( tBoolOp const );
 	void DeleteSelection( );
@@ -301,8 +303,6 @@ private:
 	void            disconnectBaseKnot ( BaseKnot * const );
 	void            selectSubtree      ( BaseKnot * const, tBoolOp    const );
 	void            insertBaseKnot     ( Pipe     * const, BaseKnot * const );
-	void            connectIncoming_Lock( Pipe     * const, BaseKnot * const );
-	void            connectOutgoing_Lock( Pipe     * const, BaseKnot * const );
 	void            connectToNewShapes ( Shape &, ShapeList & );
 	void            modelHasChanged    ( ) const;
 	void            setTriggerSound    ( Neuron * const, Hertz const, MilliSecs const );
