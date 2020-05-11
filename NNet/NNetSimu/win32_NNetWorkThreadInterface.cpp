@@ -19,8 +19,8 @@ using std::endl;
 using std::unordered_map;
 
 NNetWorkThreadInterface::NNetWorkThreadInterface( ) :
-	m_pTraceStream( nullptr ),
-	m_bTrace      ( TRUE ),
+	m_pTraceStream   ( nullptr ),
+	m_bTrace         ( TRUE ),
 	m_pNNetWorkThread( nullptr )
 { }
 

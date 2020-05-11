@@ -68,7 +68,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_SET_ZOOM:
-		m_pNNetWindow->ZoomKeepCrsrPos( MicroMeter((float &)lParam) );
+		m_pNNetWindow->Zoom( MicroMeter((float &)lParam) );
 		break;
 
 	case IDM_CENTER_MODEL:

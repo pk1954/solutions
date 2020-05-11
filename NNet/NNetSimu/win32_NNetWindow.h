@@ -54,8 +54,8 @@ public:
 
 	void ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
 	void Zoom( bool const );
+	void Zoom( MicroMeter const );
 	void AnalysisFinished( );
-	void ZoomKeepCrsrPos( MicroMeter const );
 	void CenterModel( bool const );
 
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;

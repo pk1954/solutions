@@ -73,8 +73,8 @@ public:
 	bool IsPrecursorOf( ShapeId const );
 	bool IsSuccessorOf( ShapeId const );
 
-	void Apply2AllInPipes ( PipeFunc const & func ) { apply2AllPipesInList( m_incoming, func ); }
-	void Apply2AllOutPipes( PipeFunc const & func )	{ apply2AllPipesInList( m_outgoing, func ); }
+	void Apply2AllInPipes_Lock ( PipeFunc const & func ) { apply2AllPipesInList( m_incoming, func ); }
+	void Apply2AllOutPipes_Lock( PipeFunc const & func ) { apply2AllPipesInList( m_outgoing, func ); }
 
 	void Apply2AllInPipes_NoLock ( PipeFunc const & func ) { apply2AllPipesInList_NoLock( m_incoming, func ); }
 	void Apply2AllOutPipes_NoLock( PipeFunc const & func ) { apply2AllPipesInList_NoLock( m_outgoing, func ); }
@@ -87,8 +87,8 @@ public:
 
 	void Apply2AllConnectedPipes( PipeFunc const & func )
 	{
-		Apply2AllInPipes ( [&]( Pipe * const pipe ) { func( pipe ); } );
-		Apply2AllOutPipes( [&]( Pipe * const pipe ) { func( pipe ); } );
+		Apply2AllInPipes_Lock ( [&]( Pipe * const pipe ) { func( pipe ); } );
+		Apply2AllOutPipes_Lock( [&]( Pipe * const pipe ) { func( pipe ); } );
 	}
 
 	void Apply2AllConnectedPipesB( PipeFuncB const & func )

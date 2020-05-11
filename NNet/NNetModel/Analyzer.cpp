@@ -93,12 +93,12 @@ bool ModelAnalyzer::hasAnomaly( Knot & knot )
 
 	if ( ! knot.HasIncoming( ) )
 	{
-		knot.Apply2AllOutPipes( [&]( auto pipe ) { m_shapeStack.push_back( pipe ); } );
+		knot.Apply2AllOutPipes_Lock( [&]( auto pipe ) { m_shapeStack.push_back( pipe ); } );
 		bFoundAnomaly = true;
 	}
 	else if ( ! knot.HasOutgoing( ) )
 	{
-		knot.Apply2AllInPipes( [&]( auto pipe ) { m_shapeStack.push_back( pipe ); } );
+		knot.Apply2AllInPipes_Lock( [&]( auto pipe ) { m_shapeStack.push_back( pipe ); } );
 		bFoundAnomaly = true;
 	}
 

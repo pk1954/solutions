@@ -4,10 +4,13 @@
 
 #pragma once
 
+#include "win32_util.h"
 #include "PixelCoordsFp.h"
 #include "Direct2D.h"
 #include "ShapeId.h"
 #include "scale.h"
+
+static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
 
 class DrawContext
 {
@@ -18,6 +21,7 @@ public:
 	{
 		m_graphics.Initialize( hwnd );
 		m_pScale = new Scale( & m_coord );
+		SetStdFontSize( STD_FONT_SIZE );
 	}
 
 	void Stop( )
@@ -52,6 +56,23 @@ public:
 		fPixelPoint     const fPixPointCenter { convert2fPixelPoint( pixPnt ) };
 		MicroMeterPoint const umPointcenter   { m_coord.convert2MicroMeterPointPos( fPixPointCenter ) };
 		m_coord.Center( umPointcenter, fPixPointCenter );
+	}
+
+	bool ZoomKeepCrsrPos( PixelPoint const & pixPntCenter, MicroMeter const newSize )
+	{
+		fPixelPoint     const fPixPointCenter { convert2fPixelPoint( pixPntCenter ) };
+		MicroMeterPoint const umPointcenter   { m_coord.convert2MicroMeterPointPos( fPixPointCenter ) };
+		bool bRes { m_coord.Zoom( newSize ) };
+		if ( bRes )
+		{
+			m_coord.Center( umPointcenter, fPixPointCenter ); 
+			SetStdFontSize( STD_FONT_SIZE );
+		}
+		else
+		{
+			MessageBeep( MB_ICONWARNING );
+		}
+		return bRes;
 	}
 
 	void SetStdFontSize( MicroMeter const & size )

@@ -164,8 +164,8 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 		BaseKnot * pDstBaseKnot { static_cast<BaseKnot *>( pDst ) };
 		if ( pSrc && pDstBaseKnot )
 		{
-			pSrc->Apply2AllInPipes ( [&]( Pipe * const pPipe ) { ConnectIncoming( pPipe, pDstBaseKnot ); pPipe->Recalc(); } );
-			pSrc->Apply2AllOutPipes( [&]( Pipe * const pPipe ) { ConnectOutgoing( pPipe, pDstBaseKnot ); pPipe->Recalc(); } );
+			pSrc->Apply2AllInPipes_Lock ( [&]( Pipe * const pPipe ) { ConnectIncoming( pPipe, pDstBaseKnot ); pPipe->Recalc(); } );
+			pSrc->Apply2AllOutPipes_Lock( [&]( Pipe * const pPipe ) { ConnectOutgoing( pPipe, pDstBaseKnot ); pPipe->Recalc(); } );
 			if ( pSrc->IsKnot() )
 				deleteShape( pSrc );
 		}
@@ -345,8 +345,8 @@ void NNetModel::connectToNewShapes( Shape & shapeSrc, ShapeList & newShapes )
 		baseKnotDst.ClearOutgoing();
 		baseKnotDst.ClearIncoming();
 		auto dstFromSrc = [&](Pipe * pPipeSrc){ return static_cast<Pipe *>(newShapes.at(pPipeSrc->GetId().GetValue())); };
-		baseKnotSrc.Apply2AllOutPipes( [&]( Pipe * const pPipeSrc ) { baseKnotDst.AddOutgoing( dstFromSrc(pPipeSrc) ); } );
-		baseKnotSrc.Apply2AllInPipes ( [&]( Pipe * const pPipeSrc ) { baseKnotDst.AddIncoming( dstFromSrc(pPipeSrc) ); } );
+		baseKnotSrc.Apply2AllOutPipes_Lock( [&]( Pipe * const pPipeSrc ) { baseKnotDst.AddOutgoing( dstFromSrc(pPipeSrc) ); } );
+		baseKnotSrc.Apply2AllInPipes_Lock ( [&]( Pipe * const pPipeSrc ) { baseKnotDst.AddIncoming( dstFromSrc(pPipeSrc) ); } );
 	}
 }
 
@@ -377,7 +377,7 @@ void NNetModel::selectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )
 	if ( pBaseKnot )
 	{
 		pBaseKnot->Select( op );
-		pBaseKnot->Apply2AllOutPipes
+		pBaseKnot->Apply2AllOutPipes_Lock
 		( 
 			[&]( Pipe * const pipe ) 
 			{ 
@@ -433,7 +433,7 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects 
 	if ( pBaseKnot )
 	{
 		MicroMeterPoint umPos { pBaseKnot->GetPosition() };
-		pBaseKnot->Apply2AllInPipes
+		pBaseKnot->Apply2AllInPipes_Lock
 		( 
 			[&]( Pipe * const pPipe ) // every incoming Pipe needs a new end knot
 			{ 
@@ -449,7 +449,7 @@ void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects 
 			} 
 		);
 		pBaseKnot->ClearIncoming();
-		pBaseKnot->Apply2AllOutPipes
+		pBaseKnot->Apply2AllOutPipes_Lock
 		( 
 			[&]( Pipe * const pPipe ) // every outgoing Pipe needs a new start knot
 			{ 

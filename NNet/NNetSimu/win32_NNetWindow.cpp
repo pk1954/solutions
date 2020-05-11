@@ -26,8 +26,6 @@
 
 using std::function;
 
-static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
-
 void NNetWindow::InitClass
 (        
 	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
@@ -65,7 +63,6 @@ void NNetWindow::Start
 		visibilityCriterion
 	);
 	m_context.Start( hwnd );
-	m_context.SetStdFontSize( STD_FONT_SIZE );
 	m_pModelInterface = pModelInterface;
 	m_pAnimationThread = new AnimationThread( );
 	m_pCursorPosObservable = pCursorObservable;
@@ -82,26 +79,15 @@ NNetWindow::~NNetWindow( )
 {
 }
 
-void NNetWindow::Zoom( bool const bZoomIn  )
+void NNetWindow::Zoom( MicroMeter const newSize )
 {
-	ZoomKeepCrsrPos( m_context.GetCoordC().ComputeNewPixelSize( bZoomIn ) );
+	if ( m_context.ZoomKeepCrsrPos( GetRelativeCrsrPosition(), newSize ) )
+		Notify( TRUE );     // cause immediate repaint
 }
 
-void NNetWindow::ZoomKeepCrsrPos( MicroMeter const newSize )
+void NNetWindow::Zoom( bool const bZoomIn  )
 {
-	PixelPoint      const pixPointCenter  { GetRelativeCrsrPosition() };
-	fPixelPoint     const fPixPointCenter { convert2fPixelPoint( pixPointCenter ) };
-	MicroMeterPoint const umPointcenter   { m_context.GetCoordC().convert2MicroMeterPointPos( fPixPointCenter ) };
-	if ( m_context.GetCoord().Zoom( newSize ) ) 
-	{
-		m_context.GetCoord().Center( umPointcenter, fPixPointCenter ); 
-		Notify( TRUE );     // cause immediate repaint
-		m_context.SetStdFontSize( STD_FONT_SIZE );
-	}
-	else
-	{
-		MessageBeep( MB_ICONWARNING );
-	}
+	Zoom( m_context.GetCoordC().ComputeNewPixelSize( bZoomIn ) );
 }
 
 long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )

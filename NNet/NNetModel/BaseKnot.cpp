@@ -22,7 +22,7 @@ void BaseKnot::Prepare( )
 			m_mVinputBuffer += pPipe->GetNextOutput( );
 	}
 
-	//Apply2AllInPipes( [&]( auto pPipe ) { m_mVinputBuffer += pPipe->GetNextOutput( ); } ); // slow
+	//Apply2AllInPipes_Lock( [&]( auto pPipe ) { m_mVinputBuffer += pPipe->GetNextOutput( ); } ); // slow
 }
 
 bool BaseKnot::IsPrecursorOf( ShapeId const id )

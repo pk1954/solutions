@@ -1,5 +1,3 @@
 SetSound ON
 SetAutoOpen ON
 ReadModel "D:\SW-projects\Delivery\2020-04-28\Copy31.mod"
-SetPixelOffset (-884.103/105.534)
-SetPixelSize 13.7592
