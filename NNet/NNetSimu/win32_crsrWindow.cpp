@@ -63,13 +63,13 @@ void CrsrWindow::printMicroMeter
 {
 	wostringstream wBuffer;
 	MicroMeter     umAbs { abs( um.GetValue() ) };
-	wBuffer << std::fixed << setprecision(0);
+	wBuffer << std::fixed << setprecision(1);
 	if ( umAbs < 1000.0_MicroMeter )
-		wBuffer << um.GetValue() << L" um";
+		wBuffer << um.GetValue() << L" um ";
 	else if ( umAbs < 1000000.0_MicroMeter )
-		wBuffer << um.GetValue() / 1000.0f << L" mm";
+		wBuffer << um.GetValue() / 1000.0f << L" mm ";
 	else
-		wBuffer << um.GetValue() / 1000000.0f << L" m";
+		wBuffer << um.GetValue() / 1000000.0f << L" m ";
 	textBuf.printString( wBuffer.str() );
 }
 
@@ -94,7 +94,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
 	MicroMeterPoint const umPoint { m_pNNetWindow->PixelPoint2MicroMeterPoint( pixPoint ) };
 
-	textBuf.printString( L"Position:" );
+	textBuf.printString( L"Position: " );
 	printMicroMeter( textBuf, umPoint.GetX() );
 	printMicroMeter( textBuf, umPoint.GetY() );
 	textBuf.nextLine();

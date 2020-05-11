@@ -85,7 +85,7 @@ void NNetWindow::Zoom( MicroMeter const newSize )
 		Notify( TRUE );     // cause immediate repaint
 }
 
-void NNetWindow::Zoom( bool const bZoomIn  )
+void NNetWindow::ZoomStep( bool const bZoomIn )
 {
 	Zoom( m_context.GetCoordC().ComputeNewPixelSize( bZoomIn ) );
 }

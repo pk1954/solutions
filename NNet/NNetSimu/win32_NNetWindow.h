@@ -53,7 +53,7 @@ public:
 	tHighlightType const GetHighlightType( Shape const & ) const;
 
 	void ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
-	void Zoom( bool const );
+	void ZoomStep( bool const );
 	void Zoom( MicroMeter const );
 	void AnalysisFinished( );
 	void CenterModel( bool const );
@@ -65,7 +65,8 @@ public:
 	bool ChangePulseRate( bool const );
 	void ShowDirectionArrows( bool const );
 
-	DrawContext & GetDrawContext() { return m_context; }
+	DrawContext       & GetDrawContext ()       { return m_context; }
+	DrawContext const & GetDrawContextC() const { return m_context; }
 
 private:
 

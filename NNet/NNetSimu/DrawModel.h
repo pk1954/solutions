@@ -21,7 +21,6 @@ void          DrawInteriorInRect  ( PixelRect  const &, DrawContext const &, Sha
 void          DrawExteriorInRect  ( PixelRect  const &, DrawContext const &                    ) const;
 void          DrawNeuronTextInRect( PixelRect  const &, DrawContext const &                    ) const;
 
-
 private:
 	NNetModel const * m_pModel;
 };

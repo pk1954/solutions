@@ -108,11 +108,12 @@ bool Preferences::ReadPreferences( NNetModelStorage * pStorage )
 bool Preferences::WritePreferences( wstring const wstrModelPath, NNetWindow const * const pNNetWindow )
 {
     wofstream prefFile( m_wstrPreferencesFile );
+    PixelCoordsFp const & coord { pNNetWindow->GetDrawContextC().GetCoordC() };
     prefFile << L"SetSound "       << (Sound   ::IsOn() ? PREF_ON : PREF_OFF) << endl;
 	prefFile << L"SetAutoOpen "    << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF) << endl;
     prefFile << L"ReadModel \""    << wstrModelPath << L"\"" << endl;
-    //prefFile << L"SetPixelOffset " << pNNetWindow->GetPixelOffset() << endl; //TODO
-    //prefFile << L"SetPixelSize "   << pNNetWindow->GetPixelSize() << endl;
+    prefFile << L"SetPixelOffset " << coord.GetPixelOffset() << endl;
+    prefFile << L"SetPixelSize "   << coord.GetPixelSize()   << endl;
     prefFile.close( );
     wcout << L"*** preferences file " << m_wstrPreferencesFile << L" written" << endl;
     return true;

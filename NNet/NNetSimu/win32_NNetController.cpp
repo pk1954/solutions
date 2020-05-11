@@ -64,7 +64,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 
 	case IDM_ZOOM_OUT:
 	case IDM_ZOOM_IN:
-		m_pNNetWindow->Zoom( wmId == IDM_ZOOM_IN );
+		m_pNNetWindow->ZoomStep( wmId == IDM_ZOOM_IN );
 		break;
 
 	case IDM_SET_ZOOM:
