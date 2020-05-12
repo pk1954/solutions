@@ -21,145 +21,144 @@ public:
 		m_pixelSize ( DEFAULT_PIXEL_SIZE )
 	{}
 
+	void Reset( )
+	{
+		m_fPixOffset = 0.0_fPIXEL;
+		m_pixelSize  = DEFAULT_PIXEL_SIZE;
+	}
+
 	//////// transformations MicroMeter <---> fPixel ////////
 
-	fPIXEL const convert2fPixel( MicroMeter const param ) const
+	fPIXEL const Convert2fPixel( MicroMeter const param ) const
 	{ 
 		return fPIXEL( param / m_pixelSize );
 	}
 
-	MicroMeter const convert2MicroMeter( fPIXEL const fPixel ) const
+	MicroMeter const Convert2MicroMeter( fPIXEL const fPixel ) const
 	{ 
 		return m_pixelSize * fPixel.GetValue();
 	}
 
-	fPixelPoint const convert2fPixelSize( MicroMeterPoint const np ) const
+	fPixelPoint const Convert2fPixelSize( MicroMeterPoint const np ) const
 	{ 
-		return fPixelPoint( convert2fPixel( np.GetX() ), convert2fPixel( np.GetY() ) );
+		return fPixelPoint( Convert2fPixel( np.GetX() ), Convert2fPixel( np.GetY() ) );
 	}
 
-	MicroMeterPoint const convert2MicroMeterPointSize( fPixelPoint const pp ) const
+	MicroMeterPoint const Convert2MicroMeterPointSize( fPixelPoint const pp ) const
 	{ 
-		return MicroMeterPoint( convert2MicroMeter( pp.GetX() ), convert2MicroMeter( pp.GetY() ) ); 
+		return MicroMeterPoint( Convert2MicroMeter( pp.GetX() ), Convert2MicroMeter( pp.GetY() ) ); 
 	}
 
-	MicroMeterPoint const convert2MicroMeterPointPos( fPixelPoint const pp ) const
+	MicroMeterPoint const Convert2MicroMeterPointPos( fPixelPoint const pp ) const
 	{ 
-		return convert2MicroMeterPointSize( pp + m_fPixOffset );
+		return Convert2MicroMeterPointSize( pp + m_fPixOffset );
 	}
 
-	MicroMeterPoint const convert2MicroMeterPointPos( PixelPoint const pixPoint ) const
+	MicroMeterPoint const Convert2MicroMeterPointPos( PixelPoint const pixPoint ) const
 	{ 
-		return convert2MicroMeterPointSize( convert2fPixelPoint( pixPoint ) + m_fPixOffset );
+		return Convert2MicroMeterPointSize( Convert2fPixelPoint( pixPoint ) + m_fPixOffset );
 	}
 
-	fPixelPoint const convert2fPixelPos( MicroMeterPoint const np ) const
+	fPixelPoint const Convert2fPixelPos( MicroMeterPoint const np ) const
 	{ 
-		return convert2fPixelSize( np ) - m_fPixOffset;
+		return Convert2fPixelSize( np ) - m_fPixOffset;
 	}
 
-	MicroMeterRect const convert2MicroMeterRect( fPixelRect const & fPixRect ) const
+	MicroMeterRect const Convert2MicroMeterRect( fPixelRect const & fPixRect ) const
 	{ 
 		return MicroMeterRect
 		( 
-			convert2MicroMeterPointPos( fPixRect.GetStartPoint() ), 
-			convert2MicroMeterPointPos( fPixRect.GetEndPoint  () ) 
+			Convert2MicroMeterPointPos( fPixRect.GetStartPoint() ), 
+			Convert2MicroMeterPointPos( fPixRect.GetEndPoint  () ) 
 		);
 	}
 
-	fPixelRect const convert2fPixelRect( MicroMeterRect const & umRect ) const
+	fPixelRect const Convert2fPixelRect( MicroMeterRect const & umRect ) const
 	{
 		return fPixelRect
 		( 
-			convert2fPixelPos( umRect.GetStartPoint() ), 
-			convert2fPixelPos( umRect.GetEndPoint  () ) 
+			Convert2fPixelPos( umRect.GetStartPoint() ), 
+			Convert2fPixelPos( umRect.GetEndPoint  () ) 
 		);
 	}
 
 	//////// transformations PIXEL <---> fPixel ////////
 
-	PIXEL const convert2PIXEL( fPIXEL const fP ) const
+	PIXEL const Convert2PIXEL( fPIXEL const fP ) const
 	{
 		return PIXEL( CastToLong( fP.GetValue() ) );
 	}
 
-	fPIXEL const convert2fPIXEL( PIXEL const p ) const
+	fPIXEL const Convert2fPIXEL( PIXEL const p ) const
 	{
 		return fPIXEL( static_cast<float>( p.GetValue() ) );
 	}
 
-	PixelPoint const convert2PixelPoint( fPixelPoint const fPnt ) const
+	PixelPoint const Convert2PixelPoint( fPixelPoint const fPnt ) const
 	{
-		return PixelPoint( convert2PIXEL(fPnt.GetX()), convert2PIXEL(fPnt.GetY()) );
+		return PixelPoint( Convert2PIXEL(fPnt.GetX()), Convert2PIXEL(fPnt.GetY()) );
 	}
 
-	fPixelPoint const convert2fPixelPoint( PixelPoint const pnt ) const
+	fPixelPoint const Convert2fPixelPoint( PixelPoint const pnt ) const
 	{
-		return fPixelPoint( convert2fPIXEL(pnt.GetX()), convert2fPIXEL(pnt.GetY()) );
+		return fPixelPoint( Convert2fPIXEL(pnt.GetX()), Convert2fPIXEL(pnt.GetY()) );
 	}
 
-	PixelRect const convert2PixelRect( fPixelRect const & fPixRect ) const
+	PixelRect const Convert2PixelRect( fPixelRect const & fPixRect ) const
 	{
 		return PixelRect
 		       (
-				   convert2PixelPoint( fPixRect.GetStartPoint() ),
-				   convert2PixelPoint( fPixRect.GetEndPoint  () )
+				   Convert2PixelPoint( fPixRect.GetStartPoint() ),
+				   Convert2PixelPoint( fPixRect.GetEndPoint  () )
 			   );
 	}
 
-	fPixelRect const convert2fPixelRect( PixelRect const & rect ) const
+	fPixelRect const Convert2fPixelRect( PixelRect const & rect ) const
 	{
 		return fPixelRect
 		       ( 
-				   convert2fPixelPoint( rect.GetStartPoint() ), 
-				   convert2fPixelPoint( rect.GetEndPoint  () ) 
+				   Convert2fPixelPoint( rect.GetStartPoint() ), 
+				   Convert2fPixelPoint( rect.GetEndPoint  () ) 
 			   );
 	}
 
 	//////// transformations MicroMeter <---> PIXEL  ////////
 
-	MicroMeter convert2MicroMeter( PIXEL const pix ) const
+	MicroMeter Convert2MicroMeter( PIXEL const pix ) const
 	{ 
-		return convert2MicroMeter( convert2fPIXEL( pix ) );
+		return Convert2MicroMeter( Convert2fPIXEL( pix ) );
 	}
 
-	MicroMeterPoint convert2MicroMeterPointSize( PixelPoint const & pnt ) const
+	MicroMeterPoint Convert2MicroMeterPointSize( PixelPoint const & pnt ) const
 	{ 
-		return convert2MicroMeterPointSize( convert2fPixelPoint( pnt ) );
+		return Convert2MicroMeterPointSize( Convert2fPixelPoint( pnt ) );
 	}
 
-	MicroMeterRect convert2MicroMeterRect( PixelRect const & rect ) const
+	MicroMeterRect Convert2MicroMeterRect( PixelRect const & rect ) const
 	{ 
-		return convert2MicroMeterRect( convert2fPixelRect( rect ) );
+		return Convert2MicroMeterRect( Convert2fPixelRect( rect ) );
 	}
 
-	PIXEL convert2PIXEL( MicroMeter const um ) const
+	PIXEL Convert2PIXEL( MicroMeter const um ) const
 	{
-		return PIXEL( CastToLong( um.GetValue() ) );
+		return Convert2PIXEL(Convert2fPixel( um ) );
 	}
 
-	PixelPoint convert2PixelPoint( MicroMeterPoint const & umPnt ) const
+	PixelPoint Convert2PixelPos( MicroMeterPoint const & umPnt ) const
 	{
-		return PixelPoint( convert2PIXEL(umPnt.GetX()), convert2PIXEL(umPnt.GetY()) );
+		return Convert2PixelPoint( Convert2fPixelPos( umPnt ) );
 	}
 
-	PixelRect convert2PixelRect( MicroMeterRect const & umRect ) const
+	PixelRect Convert2PixelRect( MicroMeterRect const & umRect ) const
 	{
-		return PixelRect
-		(
-			convert2PixelPoint( umRect.GetStartPoint() ),
-			convert2PixelPoint( umRect.GetEndPoint  () )
-		);
+		return Convert2PixelRect( Convert2fPixelRect( umRect ) );
 	}
 
 	//////// queries ////////
 
 	MicroMeter  GetPixelSize( )   const { return m_pixelSize; };
 	
-	fPixelPoint GetPixelOffset( ) const 
-	{ 
-		return m_fPixOffset; 
-	}
+	fPixelPoint GetPixelOffset( ) const { return m_fPixOffset; }
 
 	MicroMeter ComputeNewPixelSize( bool const bZoomIn ) const  // does not modify field size
 	{
@@ -187,7 +186,7 @@ public:
 
 	void Move( PixelPoint const pntDelta )
 	{
-		m_fPixOffset -= convert2fPixelPoint( pntDelta );
+		m_fPixOffset -= Convert2fPixelPoint( pntDelta );
 	}
 
 	void SetPixelOffset( fPixelPoint const fPixOffset )
@@ -201,7 +200,7 @@ public:
 		fPixelPoint     const fPntPix  
 	)
 	{
-		m_fPixOffset = convert2fPixelSize( umPntCenter ) - fPntPix;
+		m_fPixOffset = Convert2fPixelSize( umPntCenter ) - fPntPix;
 	}
 
 	MicroMeter LimitPixelSize( MicroMeter const sizeDesired ) const

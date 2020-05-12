@@ -59,32 +59,32 @@ inline bool IsCloseToZero( fPixelPoint const vect )
 
 /////////////////// conversions ///////////////////////////////////
 
-static PIXEL convert2PIXEL( fPIXEL const fPixel )
+static PIXEL Convert2PIXEL( fPIXEL const fPixel )
 {
 	return PIXEL( CastToLong( fPixel.GetValue() ) );
 }
 
-static PixelPoint convert2PixelPoint( fPixelPoint const fPixPoint )
+static PixelPoint Convert2PixelPoint( fPixelPoint const fPixPoint )
 {
-	return PixelPoint( convert2PIXEL( fPixPoint.GetX() ), convert2PIXEL( fPixPoint.GetY() ) );
+	return PixelPoint( Convert2PIXEL( fPixPoint.GetX() ), Convert2PIXEL( fPixPoint.GetY() ) );
 }
 
-static PixelRectSize convert2PixelRectSize( fPixelRectSize const fRectSize )
+static PixelRectSize Convert2PixelRectSize( fPixelRectSize const fRectSize )
 {
-	return PixelRectSize( convert2PIXEL( fRectSize.GetX() ), convert2PIXEL( fRectSize.GetY() ) );
+	return PixelRectSize( Convert2PIXEL( fRectSize.GetX() ), Convert2PIXEL( fRectSize.GetY() ) );
 }
 
-static fPIXEL convert2fPIXEL( PIXEL const pixel )
+static fPIXEL Convert2fPIXEL( PIXEL const pixel )
 {
 	return fPIXEL( CastToFloat( pixel.GetValue() ) );
 }
 
-static fPixelPoint convert2fPixelPoint( PixelPoint const pixPoint )
+static fPixelPoint Convert2fPixelPoint( PixelPoint const pixPoint )
 {
-	return fPixelPoint( convert2fPIXEL( pixPoint.GetX() ), convert2fPIXEL( pixPoint.GetY() ) );
+	return fPixelPoint( Convert2fPIXEL( pixPoint.GetX() ), Convert2fPIXEL( pixPoint.GetY() ) );
 }
 
-static fPixelRectSize convert2fPixelRectSize( PixelRectSize const rectSize )
+static fPixelRectSize Convert2fPixelRectSize( PixelRectSize const rectSize )
 {
-	return fPixelRectSize( convert2fPIXEL( rectSize.GetX() ), convert2fPIXEL( rectSize.GetY() ) );
+	return fPixelRectSize( Convert2fPIXEL( rectSize.GetX() ), Convert2fPIXEL( rectSize.GetY() ) );
 }
