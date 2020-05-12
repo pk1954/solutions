@@ -111,5 +111,8 @@ bool ModelAnalyzer::hasAnomaly( Knot & knot )
 bool ModelAnalyzer::FindAnomaly( NNetModel const & model )
 {
 	m_shapeStack.clear();
-	return model.Apply2AllB<Knot>( [&]( Knot & knot ) { return hasAnomaly( knot ); } );
+	bool const bFound { model.Apply2AllB<Knot>( [&]( Knot & knot ) { return hasAnomaly( knot ); } ) };
+	if ( ! bFound )
+		(* m_pDisplayFunctor)( wstring( L"no anomalies found" ) );
+	return bFound;
 }

@@ -20,6 +20,7 @@ public:
 	void Start( HWND const hwnd )
 	{
 		m_graphics.Initialize( hwnd );
+		m_coord.Reset();
 		m_pScale = new Scale( & m_coord );
 		SetStdFontSize( STD_FONT_SIZE );
 	}
@@ -53,15 +54,15 @@ public:
 
 	void Center( PixelPoint const & pixPnt )
 	{
-		fPixelPoint     const fPixPointCenter { convert2fPixelPoint( pixPnt ) };
-		MicroMeterPoint const umPointcenter   { m_coord.convert2MicroMeterPointPos( fPixPointCenter ) };
+		fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPnt ) };
+		MicroMeterPoint const umPointcenter   { m_coord.Convert2MicroMeterPointPos( fPixPointCenter ) };
 		m_coord.Center( umPointcenter, fPixPointCenter );
 	}
 
 	bool ZoomKeepCrsrPos( PixelPoint const & pixPntCenter, MicroMeter const newSize )
 	{
-		fPixelPoint     const fPixPointCenter { convert2fPixelPoint( pixPntCenter ) };
-		MicroMeterPoint const umPointcenter   { m_coord.convert2MicroMeterPointPos( fPixPointCenter ) };
+		fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPntCenter ) };
+		MicroMeterPoint const umPointcenter   { m_coord.Convert2MicroMeterPointPos( fPixPointCenter ) };
 		bool bRes { m_coord.Zoom( newSize ) };
 		if ( bRes )
 		{
@@ -77,7 +78,7 @@ public:
 
 	void SetStdFontSize( MicroMeter const & size )
 	{
-		m_graphics.SetStdFontSize( m_coord.convert2fPixel( size ).GetValue() );
+		m_graphics.SetStdFontSize( m_coord.Convert2fPixel( size ).GetValue() );
 	}
 
 	void DrawLine
@@ -88,9 +89,9 @@ public:
 		D2D1::ColorF    const   col
 	) const
 	{
-		fPIXEL      const fPixWidth  { m_coord.convert2fPixel( umWidth ) };
-		fPixelPoint const fStartPoint{ m_coord.convert2fPixelPos( umStartPoint ) };
-		fPixelPoint const fEndPoint  { m_coord.convert2fPixelPos( umEndPoint   ) };
+		fPIXEL      const fPixWidth  { m_coord.Convert2fPixel( umWidth ) };
+		fPixelPoint const fStartPoint{ m_coord.Convert2fPixelPos( umStartPoint ) };
+		fPixelPoint const fEndPoint  { m_coord.Convert2fPixelPos( umEndPoint   ) };
 		m_graphics.DrawLine( fStartPoint, fEndPoint, fPixWidth, col );
 	}
 
@@ -101,8 +102,8 @@ public:
 		D2D1::ColorF    const   col  
 	) const
 	{
-		fPixelPoint const fPixCenter { m_coord.convert2fPixelPos( umCenterPoint ) };
-		fPIXEL      const fPixRadius { m_coord.convert2fPixel   ( umRadius ) };
+		fPixelPoint const fPixCenter { m_coord.Convert2fPixelPos( umCenterPoint ) };
+		fPIXEL      const fPixRadius { m_coord.Convert2fPixel   ( umRadius ) };
 		m_graphics.DrawCircle( fPixCenter, fPixRadius, col );
 	}
 
@@ -115,21 +116,21 @@ public:
 		D2D1::ColorF    const   col
 	) const
 	{
-		fPixelPoint const fPixPos   { m_coord.convert2fPixelPos( umPos ) };
-		fPixelPoint const fPixVector{ m_coord.convert2fPixelSize( umVector ) };
-		fPIXEL      const fPixSize  { m_coord.convert2fPixel( umSize ) };
-		fPIXEL      const fPixWidth { m_coord.convert2fPixel( umWidth ) };
+		fPixelPoint const fPixPos   { m_coord.Convert2fPixelPos( umPos ) };
+		fPixelPoint const fPixVector{ m_coord.Convert2fPixelSize( umVector ) };
+		fPIXEL      const fPixSize  { m_coord.Convert2fPixel( umSize ) };
+		fPIXEL      const fPixWidth { m_coord.Convert2fPixel( umWidth ) };
 		m_graphics.DrawArrow( fPixPos, fPixVector, fPixSize, fPixWidth, col );
 	}
 
 	void DrawTranspRect( PixelRect umRect, D2D1::ColorF col ) const 
 	{
-		m_graphics.DrawTranspRect( m_coord.convert2fPixelRect( umRect ), col );
+		m_graphics.DrawTranspRect( m_coord.Convert2fPixelRect( umRect ), col );
 	}
 
 	void ShowScale( PIXEL pixHeight ) const 
 	{
-		m_pScale->ShowScale( m_graphics, convert2fPIXEL( pixHeight ) );
+		m_pScale->ShowScale( m_graphics, Convert2fPIXEL( pixHeight ) );
 	}
 
 	void DisplayText
@@ -140,7 +141,7 @@ public:
 		IDWriteTextFormat * const   pTextFormat = nullptr
 	) const
 	{
-		m_graphics.DisplayText( m_coord.convert2PixelRect( umRect ), wstr, colF, pTextFormat );
+		m_graphics.DisplayText( m_coord.Convert2PixelRect( umRect ), wstr, colF, pTextFormat );
 	}
 
 	PixelCoordsFp const & GetCoordC( ) const { return m_coord; }

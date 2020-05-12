@@ -8,7 +8,6 @@
 #include "win32_util.h"
 #include "Resource.h"
 #include "UtilityWrappers.h"
-#include "Analyzer.h"
 #include "win32_aboutBox.h"
 #include "win32_modelWindow.h"
 #include "win32_appMenu.h"
@@ -171,10 +170,6 @@ bool BaseAppWindow::ProcessFrameworkCommand( WPARAM const wParam, LPARAM const l
 
 	case IDM_STOP:
 		m_pWorkThreadInterface->PostStopComputation( );
-		break;
-
-	case IDM_ESCAPE:
-		ModelAnalyzer::Stop();
 		break;
 
 	default:

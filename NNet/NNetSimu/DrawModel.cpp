@@ -13,7 +13,7 @@ void DrawModel::DrawInteriorInRect
 	ShapeCrit   const & crit 
 ) const
 {
-	MicroMeterRect umRect { context.GetCoordC().convert2MicroMeterRect( rect ) }; 
+	MicroMeterRect umRect { context.GetCoordC().Convert2MicroMeterRect( rect ) }; 
 	m_pModel->Apply2All<Shape>
 	( 
 		[&](Shape const & s) { if (crit(s) && s.IsInRect(umRect)) s.DrawInterior( context ); } 
@@ -26,7 +26,7 @@ void DrawModel::DrawExteriorInRect
 	DrawContext const & context 
 ) const
 {
-	MicroMeterRect umRect { context.GetCoordC().convert2MicroMeterRect( rect ) }; 
+	MicroMeterRect umRect { context.GetCoordC().Convert2MicroMeterRect( rect ) }; 
 	m_pModel->Apply2All<Shape>
 	( 
 		[&](Shape const & s) { if (s.IsInRect(umRect)) s.DrawExterior( context ); } 
@@ -39,7 +39,7 @@ void DrawModel::DrawNeuronTextInRect
 	DrawContext const & context 
 ) const
 {
-	MicroMeterRect umRect { context.GetCoordC().convert2MicroMeterRect( rect ) }; 
+	MicroMeterRect umRect { context.GetCoordC().Convert2MicroMeterRect( rect ) }; 
 	m_pModel->Apply2All<Neuron>
 	( 
 		[&](Neuron const & n) { if (n.IsInRect(umRect)) n.DrawNeuronText( context ); } 
@@ -53,7 +53,7 @@ ShapeId const DrawModel::FindShapeAt
 	ShapeCrit   const & crit 
 ) const
 {	
-	MicroMeterPoint umPoint { context.GetCoordC().convert2MicroMeterPointPos( pixPoint ) };
+	MicroMeterPoint umPoint { context.GetCoordC().Convert2MicroMeterPointPos( pixPoint ) };
 	ShapeId idRes { NO_SHAPE };
 
 	if ( idRes == NO_SHAPE )   // first test all neurons and input neurons

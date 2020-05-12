@@ -243,7 +243,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
 		{
 			m_rectSelection = PixelRect( ptCrsr, m_ptLast );
-			MicroMeterRect umRect { m_context.GetCoordC().convert2MicroMeterRect( m_rectSelection ) };
+			MicroMeterRect umRect { m_context.GetCoordC().Convert2MicroMeterRect( m_rectSelection ) };
 			m_pNNetWorkThreadInterface->PostSelectShapesInRect( umRect );
 		}
 		else                           // first time here after RBUTTON pressed
@@ -259,7 +259,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			m_shapeSuperHighlighted = NO_SHAPE;
 			if ( IsDefined( m_shapeHighlighted ) )
 			{
-				MicroMeterPoint umDelta { m_context.GetCoordC().convert2MicroMeterPointSize( delta ) };
+				MicroMeterPoint umDelta { m_context.GetCoordC().Convert2MicroMeterPointSize( delta ) };
 				m_pNNetWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umDelta );
 				if ( m_pModelInterface->IsOfType<BaseKnot>( m_shapeHighlighted ) )
 				{
@@ -273,7 +273,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			}
 			else if ( m_pModelInterface->AnyShapesSelected( ) )   // move selected shapes 
 			{
-				MicroMeterPoint umDelta { m_context.GetCoord().convert2MicroMeterPointSize( delta ) };
+				MicroMeterPoint umDelta { m_context.GetCoord().Convert2MicroMeterPointSize( delta ) };
 				m_pNNetWorkThreadInterface->PostMoveSelection( umDelta );
 			}
 			else if ( m_bMoveAllowed ) // move view by manipulating coordinate system 
@@ -340,23 +340,25 @@ void NNetWindow::CenterModel( bool const bSmooth )
 
 void NNetWindow::AnalysisFinished( )
 {
-	centerAndZoomRect( ModelAnalyzer::GetEnclosingRect(), 2.0f, true );
+	MicroMeterRect rect { ModelAnalyzer::GetEnclosingRect() };
+	if ( rect.IsNotEmpty() )
+		centerAndZoomRect( rect, 2.0f, true );
 }
 
 void NNetWindow::centerAndZoomRect( MicroMeterRect const rect, float const fRatioFactor, bool const bSmooth )
 {
 	PixelPoint      const pixPointCenter    { GetClRectCenter( ) };
-	float           const fVerticalRatio    { rect.GetHeight() / m_context.GetCoordC().convert2MicroMeter( GetClientWindowHeight() ) };
-	float           const fHorizontalRatio  { rect.GetWidth () / m_context.GetCoordC().convert2MicroMeter( GetClientWindowWidth() ) };
+	float           const fVerticalRatio    { rect.GetHeight() / m_context.GetCoordC().Convert2MicroMeter( GetClientWindowHeight() ) };
+	float           const fHorizontalRatio  { rect.GetWidth () / m_context.GetCoordC().Convert2MicroMeter( GetClientWindowWidth() ) };
 	float           const fMaxRatio         { max( fVerticalRatio, fHorizontalRatio ) };
 	float           const fDesiredRatio     { fMaxRatio * fRatioFactor };
-	fPixelPoint     const fpCenter          { m_context.GetCoordC().convert2fPixelPoint( GetClRectCenter( ) ) };
+	fPixelPoint     const fpCenter          { m_context.GetCoordC().Convert2fPixelPoint( GetClRectCenter( ) ) };
 	MicroMeter      const umPixelSizeTarget { m_context.GetCoordC().LimitPixelSize( m_context.GetCoordC().GetPixelSize() * fDesiredRatio ) };
 	MicroMeterPoint const umPntCenterTarget { rect.GetCenter() };
 	if ( bSmooth )
 	{
 		m_umPixelSizeStart = m_context.GetCoordC().GetPixelSize();                                // actual pixel size 
-		m_umPntCenterStart = m_context.GetCoordC().convert2MicroMeterPointPos( pixPointCenter );  // actual center 
+		m_umPntCenterStart = m_context.GetCoordC().Convert2MicroMeterPointPos( pixPointCenter );  // actual center 
 		m_umPixelSizeDelta = umPixelSizeTarget - m_umPixelSizeStart;
 		m_umPntCenterDelta = umPntCenterTarget - m_umPntCenterStart;
 		m_smoothMove.Reset();
@@ -380,7 +382,7 @@ void NNetWindow::smoothStep( )
 	}
 	else
 	{
-		fPixelPoint const fpCenter { m_context.GetCoordC().convert2fPixelPoint( GetClRectCenter( ) ) };
+		fPixelPoint const fpCenter { m_context.GetCoordC().Convert2fPixelPoint( GetClRectCenter( ) ) };
 		m_context.GetCoord().Zoom  ( m_umPixelSizeStart + m_umPixelSizeDelta * fPos );
 		m_context.GetCoord().Center( m_umPntCenterStart + m_umPntCenterDelta * fPos, fpCenter );
 	}
@@ -478,12 +480,12 @@ void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 
 MicroMeterPoint NNetWindow::PixelPoint2MicroMeterPoint( PixelPoint const pixPoint ) const
 {
-	return m_context.GetCoordC().convert2MicroMeterPointPos( pixPoint );  // PixelPoint2MicroMeterPoint belongs to NNetWindow
+	return m_context.GetCoordC().Convert2MicroMeterPointPos( pixPoint );  // PixelPoint2MicroMeterPoint belongs to NNetWindow
 }                                                           // because every NNetWindow needs its own coordinate system
 
 LPARAM NNetWindow::pixelPoint2LPARAM( PixelPoint const pixPoint ) const
 {
-	return Util::Pack2UINT64( m_context.GetCoordC().convert2MicroMeterPointPos( pixPoint ) );
+	return Util::Pack2UINT64( m_context.GetCoordC().Convert2MicroMeterPointPos( pixPoint ) );
 }
 
 LPARAM NNetWindow::crsPos2LPARAM( ) const 

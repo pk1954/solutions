@@ -29,7 +29,7 @@ void Scale::ShowScale( D2D_driver const & graphics, fPIXEL const height )
 	fPIXEL const lengthMax  = 500._fPIXEL;
 
 	float            fIntegerPart;
-	MicroMeter const umLengthExact = m_pfPixelCoords->convert2MicroMeter( lengthMax );
+	MicroMeter const umLengthExact = m_pfPixelCoords->Convert2MicroMeter( lengthMax );
 	float      const logValue      = log10f( umLengthExact.GetValue() );
 	float      const fractPart     = modff( logValue, & fIntegerPart );
 	float      const nextPowerOf10 = powf( 10.0, fIntegerPart );
@@ -41,7 +41,7 @@ void Scale::ShowScale( D2D_driver const & graphics, fPIXEL const height )
 	    	? 2
 		    : 1;
 
-	fPIXEL      const fPixLength = m_pfPixelCoords->convert2fPixel( umLength * static_cast<float>(iFirstDigit) );
+	fPIXEL      const fPixLength = m_pfPixelCoords->Convert2fPixel( umLength * static_cast<float>(iFirstDigit) );
 	fPixelPoint const fPixPoint1( horzPos, vertPos );
 	fPixelPoint const fPixPoint2( horzPos + fPixLength, vertPos );
 
@@ -128,7 +128,7 @@ void Scale::displayScaleNumber( D2D_driver const & graphics, fPixelPoint const f
 	static PIXEL const horzDist   {  2_PIXEL };
 	static PIXEL const vertDist   { 12_PIXEL };
 
-	PixelPoint const pixPos { convert2PixelPoint( fPos ) };
+	PixelPoint const pixPos { Convert2PixelPoint( fPos ) };
 	PixelRect  const pixRect
 	{ 
 		pixPos.GetX() + horzDist - textWidth,  // left

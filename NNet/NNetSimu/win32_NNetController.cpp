@@ -8,6 +8,7 @@
 #include "Windows.h"
 #include "Resource.h"
 #include "BoolOp.h"
+#include "Analyzer.h"
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
 #include "DisplayFunctor.h"
@@ -161,6 +162,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		if ( m_pStorage->AskAndSave( ) )
 		{
 			m_pNNetWorkThreadInterface->PostResetModel( );
+			m_pNNetWorkThreadInterface->PostSendBack( IDM_CENTER_MODEL );
 			m_pStorage->ResetModelPath( );
 		}
 		break;
@@ -276,6 +278,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	case IDM_DESELECT_ALL:
 	case IDM_ESCAPE:
 		m_pNNetWorkThreadInterface->PostSelectAll( tBoolOp::opFalse );
+		ModelAnalyzer::Stop();
 		break;
 
 	case IDM_SELECT_SHAPE:
