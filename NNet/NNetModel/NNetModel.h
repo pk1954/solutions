@@ -274,7 +274,19 @@ public:
 			return false;
 	}
 
+	void LockModelShared() const
+	{ 
+		AcquireSRWLockShared( & m_SRWLockModel );
+	}
+
+	void UnlockModelShared() const
+	{ 
+		ReleaseSRWLockShared( & m_SRWLockModel );
+	}
+
 private:
+
+	mutable SRWLOCK     m_SRWLockModel    { SRWLOCK_INIT }; // locks model during deletion or reconstruction  
 
 	ShapeList           m_Shapes          { };
 	fMicroSecs          m_timeStamp       { 0._MicroSecs };

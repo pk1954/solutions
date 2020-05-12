@@ -309,6 +309,8 @@ tHighlightType const NNetWindow::GetHighlightType( Shape const & shape ) const
 void NNetWindow::doPaint( ) 
 {
 	PixelRect const pixRect { GetClPixelRect( ) };
+	
+	m_pModelInterface->LockModelShared();
 
 	if ( m_rectSelection.IsNotEmpty( ) )
 		m_context.DrawTranspRect( m_rectSelection, NNetColors::SELECTION_RECT );
@@ -327,6 +329,8 @@ void NNetWindow::doPaint( )
 
 	if ( m_context.GetPixelSize() <= 2.5_MicroMeter )
 		m_pDrawModel->DrawNeuronTextInRect( pixRect, m_context );
+
+	m_pModelInterface->UnlockModelShared();
 }
 
 void NNetWindow::CenterModel( bool const bSmooth )

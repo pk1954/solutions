@@ -265,9 +265,11 @@ void NNetModel::Compute( )
 
 void NNetModel::ResetModel( )
 {
+	AcquireSRWLockExclusive( & m_SRWLockModel );
 	for (auto pShape : m_Shapes)  // Do not use Apply2All! Locking.
 		delete pShape;
 	m_Shapes.clear();
+	ReleaseSRWLockExclusive( & m_SRWLockModel );
 	modelHasChanged( );
 }
 

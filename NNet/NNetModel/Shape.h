@@ -64,9 +64,9 @@ public:
 
 	void LockShapeExclusive() const
 	{ 
-		DWORD threadId { GetCurrentThreadId() };
+		DWORD threadId { GetCurrentThreadId() };  // debugging
 		AcquireSRWLockExclusive( & m_SRWLock );
-		m_dwLockedBy = threadId;
+		m_dwLockedBy = threadId;                  // debugging
 	}
 
 	void UnlockShapeExclusive() const
@@ -106,7 +106,7 @@ private:
 	bool      m_bSelected  { false };
 	bool      m_bMarked    { false };
 
-	mutable DWORD   m_dwLockedBy { 0 };
+	mutable DWORD   m_dwLockedBy { 0 };     // debugging
 	
 	mutable SRWLOCK m_SRWLock { SRWLOCK_INIT };
 

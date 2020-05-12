@@ -183,3 +183,13 @@ void NNetModelInterface::DrawInterior
 	if ( auto p { m_pModel->GetShapeConstPtr<Shape const *>(id) } )
 		p->DrawInterior( context );
 }
+
+void NNetModelInterface::LockModelShared() const
+{ 
+	m_pModel->LockModelShared();
+}
+
+void NNetModelInterface::UnlockModelShared() const
+{ 
+	m_pModel->UnlockModelShared();
+}

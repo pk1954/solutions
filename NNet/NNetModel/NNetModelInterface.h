@@ -60,6 +60,9 @@ public:
 		return T::TypeFits( GetShapeType( id ) ); 
 	}
 
+	void LockModelShared() const;
+	void UnlockModelShared() const;
+
 private:
 	NNetModel const * const m_pModel;
 
