@@ -4,13 +4,13 @@
 
 #include "stdafx.h"
 #include "Resource.h"
-#include "win32_NNetWorkThreadInterface.h"
+#include "win32_WorkThreadInterface.h"
 #include "win32_simulationControl.h"
 
 SimulationControl::SimulationControl
 (
-	StatusBar               * const pStatusBar,
-	NNetWorkThreadInterface * const pWorkThreadInterface
+	StatusBar           * const pStatusBar,
+	WorkThreadInterface * const pWorkThreadInterface
 ) 
   : m_pStatusBar          ( pStatusBar ),
 	m_pWorkThreadInterface( pWorkThreadInterface )

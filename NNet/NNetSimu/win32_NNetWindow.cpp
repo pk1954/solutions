@@ -21,19 +21,19 @@
 #include "win32_tooltip.h"
 #include "win32_triggerSoundDlg.h"
 #include "win32_stdDialogBox.h"
-#include "win32_NNetWorkThreadInterface.h"
+#include "win32_WorkThreadInterface.h"
 #include "win32_NNetWindow.h"
 
 using std::function;
 
 void NNetWindow::InitClass
 (        
-	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
-	ActionTimer             * const pActionTimer
+	WorkThreadInterface * const pWorkThreadInterface,
+	ActionTimer         * const pActionTimer
 )
 {
 	ModelWindow::InitClass( pActionTimer );
-	m_pNNetWorkThreadInterface = pNNetWorkThreadInterface;
+	m_pWorkThreadInterface = pWorkThreadInterface;
 }
 
 NNetWindow::NNetWindow( ) :
@@ -47,12 +47,10 @@ void NNetWindow::Start
 	function<bool()>     const visibilityCriterion,
 	NNetModelInterface * const pModelInterface,
 	DrawModel          * const pDrawModel,
-	Observable         * const pCursorObservable,
-	bool                 const bFixed
+	Observable         * const pCursorObservable
 )
 {
 	m_pDrawModel = pDrawModel;
-	m_bFixed = bFixed;
 	HWND hwnd = StartBaseWindow
 	( 
 		hwndApp,
@@ -77,6 +75,10 @@ void NNetWindow::Stop( )
 
 NNetWindow::~NNetWindow( )
 {
+	m_pDrawModel           = nullptr;
+	m_pAnimationThread     = nullptr;
+	m_pCursorPosObservable = nullptr;
+	m_pNNetWindowObserved  = nullptr;
 }
 
 void NNetWindow::Zoom( MicroMeter const newSize )
@@ -88,6 +90,17 @@ void NNetWindow::Zoom( MicroMeter const newSize )
 void NNetWindow::ZoomStep( bool const bZoomIn )
 {
 	Zoom( m_context.GetCoordC().ComputeNewPixelSize( bZoomIn ) );
+}
+
+void NNetWindow::NNetMove( PixelPoint const & pixDelta ) 
+{ 
+	m_context.GetCoord().Move( pixDelta ); 
+	Notify( TRUE );     // cause immediate repaint
+}
+
+void NNetWindow::NNetMove( MicroMeterPoint const & umDelta )	
+{ 
+	NNetMove( m_context.GetCoord().Convert2PixelSize( umDelta ) ); 
 }
 
 long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )
@@ -189,7 +202,7 @@ bool NNetWindow::ChangePulseRate( bool const bDirection )
 	if ( fOldValue.IsNull() )
 		return false;
 	fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
-	m_pNNetWorkThreadInterface->PostSetPulseRate( m_shapeHighlighted, fNewValue );
+	m_pWorkThreadInterface->PostSetPulseRate( m_shapeHighlighted, fNewValue );
 	return true;
 }
 
@@ -202,7 +215,7 @@ void NNetWindow::PulseRateDlg( ShapeId const id )
 	wstring const unit      { GetParameterUnit ( tParameter::pulseRate ) }; 
 	fHertz  const fNewValue { StdDialogBox::Show( GetWindowHandle(), fOldValue.GetValue(), header, unit ) };
 	if ( fNewValue != fOldValue )
-		m_pNNetWorkThreadInterface->PostSetPulseRate( id, fNewValue );
+		m_pWorkThreadInterface->PostSetPulseRate( id, fNewValue );
 }
 
 void NNetWindow::TriggerSoundDlg( ShapeId const id )
@@ -220,7 +233,7 @@ void NNetWindow::TriggerSoundDlg( ShapeId const id )
 
 	dialog.Show( GetWindowHandle() );
 
-	m_pNNetWorkThreadInterface->PostSetTriggerSound
+	m_pWorkThreadInterface->PostSetTriggerSound
 	( 
 		id,
 	    dialog.IsTriggerSoundActive(),
@@ -231,69 +244,83 @@ void NNetWindow::TriggerSoundDlg( ShapeId const id )
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( m_bFixed )
-		return;
-
 	PixelPoint const ptCrsr { GetCrsrPosFromLparam( lParam ) };  // relative to client area
 
 	m_pCursorPosObservable->NotifyAll( false );
 
 	if ( wParam & MK_RBUTTON )         // Right mouse button: selection
 	{
-		if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
+		if ( ! m_pNNetWindowObserved )
 		{
-			m_rectSelection = PixelRect( ptCrsr, m_ptLast );
-			MicroMeterRect umRect { m_context.GetCoordC().Convert2MicroMeterRect( m_rectSelection ) };
-			m_pNNetWorkThreadInterface->PostSelectShapesInRect( umRect );
-		}
-		else                           // first time here after RBUTTON pressed
-		{
-			m_ptLast = ptCrsr;         // store current cursor pos
+			if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
+			{
+				m_rectSelection = PixelRect( ptCrsr, m_ptLast );
+				MicroMeterRect umRect { m_context.GetCoordC().Convert2MicroMeterRect( m_rectSelection ) };
+				m_pWorkThreadInterface->PostSelectShapesInRect( umRect );
+			}
+			else                           // first time here after RBUTTON pressed
+			{
+				m_ptLast = ptCrsr;         // store current cursor pos
+			}
 		}
 	}
 	else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
 	{
-		PixelPoint const delta { ptCrsr - m_ptLast };
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
-			m_shapeSuperHighlighted = NO_SHAPE;
-			if ( IsDefined( m_shapeHighlighted ) )
+			PixelPoint      const pixDelta { ptCrsr - m_ptLast };
+			MicroMeterPoint const umDelta  { m_context.GetCoord().Convert2MicroMeterPointSize( pixDelta ) };
+			if ( m_pNNetWindowObserved )                       // I observe someone
 			{
-				MicroMeterPoint umDelta { m_context.GetCoordC().Convert2MicroMeterPointSize( delta ) };
-				m_pNNetWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umDelta );
-				if ( m_pModelInterface->IsOfType<BaseKnot>( m_shapeHighlighted ) )
+				m_pNNetWindowObserved->NNetMove( - umDelta );  // move the observed in opposite direction 
+			}
+			else
+			{
+				m_shapeSuperHighlighted = NO_SHAPE;
+				if ( IsDefined( m_shapeHighlighted ) )
 				{
-					m_shapeSuperHighlighted = m_pDrawModel->FindShapeAt
-					( 
-						ptCrsr,
-						m_context,
-						[&]( Shape const & shape ) { return m_pModelInterface->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
-					);
+					setSuperHighlighted( ptCrsr );
+					m_pWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umDelta );
 				}
-			}
-			else if ( m_pModelInterface->AnyShapesSelected( ) )   // move selected shapes 
-			{
-				MicroMeterPoint umDelta { m_context.GetCoord().Convert2MicroMeterPointSize( delta ) };
-				m_pNNetWorkThreadInterface->PostMoveSelection( umDelta );
-			}
-			else if ( m_bMoveAllowed ) // move view by manipulating coordinate system 
-			{
-				m_context.GetCoord().Move( delta );
+				else if ( m_pModelInterface->AnyShapesSelected( ) )   // move selected shapes 
+				{
+					m_pWorkThreadInterface->PostMoveSelection( umDelta );
+					Notify( TRUE );     // cause immediate repaint
+				}
+				else  // move view by manipulating coordinate system 
+				{
+					NNetMove( pixDelta );
+				}
 			}
 		}
 		m_ptLast = ptCrsr;
-		Notify( TRUE );     // cause immediate repaint
 	}
 	else  // no mouse button pressed
 	{                         
-		ShapeId const idHighlight { m_pDrawModel->FindShapeAt( ptCrsr, m_context, ShapeCritAlwaysTrue ) };
-		if ( idHighlight != m_shapeHighlighted )
+		if ( ! m_pNNetWindowObserved )
 		{
-			m_shapeHighlighted = idHighlight; 
-			Notify( TRUE );     // cause immediate repaint
+			ShapeId const idHighlight { m_pDrawModel->FindShapeAt( ptCrsr, m_context, ShapeCritAlwaysTrue ) };
+			if ( idHighlight != m_shapeHighlighted )
+			{
+				m_shapeHighlighted = idHighlight; 
+				Notify( TRUE );     // cause immediate repaint
+			}
+			m_ptLast = PP_NULL;   // make m_ptLast invalid
+			 // no refresh! It would cause repaint for every mouse move 
 		}
-		m_ptLast = PP_NULL;   // make m_ptLast invalid
-		 // no refresh! It would cause repaint for every mouse move 
+	}
+}
+
+void NNetWindow::setSuperHighlighted( PixelPoint const ptCrsr )
+{
+	if ( m_pModelInterface->IsOfType<BaseKnot>( m_shapeHighlighted ) )
+	{
+		m_shapeSuperHighlighted = m_pDrawModel->FindShapeAt
+		( 
+			ptCrsr,
+			m_context,
+			[&]( Shape const & shape ) { return m_pModelInterface->ConnectsTo( m_shapeHighlighted, shape.GetId() ); } 
+		);
 	}
 }
 
@@ -325,10 +352,20 @@ void NNetWindow::doPaint( )
 	m_pModelInterface->DrawExterior( m_shapeHighlighted, m_context, tHighlightType::highlighted );
 	m_pModelInterface->DrawInterior( m_shapeHighlighted, m_context );
 
-	m_context.ShowScale( GetClientWindowHeight() );
+	if ( ! m_pNNetWindowObserved )
+		m_context.ShowScale( GetClientWindowHeight() );
 
 	if ( m_context.GetPixelSize() <= 2.5_MicroMeter )
 		m_pDrawModel->DrawNeuronTextInRect( pixRect, m_context );
+
+	if ( m_pNNetWindowObserved /* && CrsrInClientRect() */ )   // if I observe someone and cursor is in client area, show its position
+	{
+		PixelRect      const   pixRectObserved = Util::GetClPixelRect( m_pNNetWindowObserved->GetWindowHandle( ) );
+		PixelCoordsFp  const & coordObserved   = m_pNNetWindowObserved->GetDrawContextC().GetCoordC();
+		MicroMeterRect const & umRect          = coordObserved.Convert2MicroMeterRect( pixRectObserved );
+		PixelRect      const   pixRectTarget   = m_context.GetCoordC().Convert2PixelRect( umRect );
+		m_context.DrawTranspRect( pixRectTarget, NNetColors::SELECTION_RECT );
+	}
 
 	m_pModelInterface->UnlockModelShared();
 }
@@ -418,12 +455,12 @@ void NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )
 {
 	if ( IsDefined( m_shapeHighlighted ) )
-		m_pNNetWorkThreadInterface->PostSelectShape( m_shapeHighlighted, tBoolOp::opToggle );
+		m_pWorkThreadInterface->PostSelectShape( m_shapeHighlighted, tBoolOp::opToggle );
 }
 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( m_bFixed )
+	if ( m_pNNetWindowObserved )
 		return;
 
 	int        iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;

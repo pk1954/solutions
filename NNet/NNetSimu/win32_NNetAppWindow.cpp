@@ -11,6 +11,7 @@
 #include "MoreTypes.h"
 #include "NNetModelInterface.h"
 #include "NNetModelStorage.h"
+#include "DrawModel.h"
 
 // interfaces of various windows
 
@@ -49,7 +50,6 @@
 
 #include "Analyzer.h"
 #include "AutoOpen.h"
-#include "DrawModel.h"
 #include "win32_NNetAppWindow.h"
 
 using namespace std::literals::chrono_literals;
@@ -76,9 +76,11 @@ NNetAppWindow::NNetAppWindow( )
 	m_pCursorPos      = new Observable( );
 	m_pAppMenu        = new NNetAppMenu( );
 	m_pMainNNetWindow = new NNetWindow( );
-	//m_pMainNNetWindow2 = new NNetWindow( );
+	m_pMiniNNetWindow = new NNetWindow( );
 	m_pCrsrWindow     = new CrsrWindow( );
 	m_pParameterDlg   = new ParameterDialog( & m_NNetWorkThreadInterface );
+
+	m_pMiniNNetWindow->Observe( m_pMainNNetWindow );  // mini window observes main grid window
 
 	DefineNNetWrappers( & m_NNetWorkThreadInterface, m_pMainNNetWindow );
 
@@ -133,24 +135,23 @@ void NNetAppWindow::Start( )
 		nullptr,  // no visibility criterion. Allways visible,
 		m_pModelInterface,
 		m_pDrawModel,
-		m_pCursorPos,
-		false
+		m_pCursorPos
 	);
 
-	//m_pMainNNetWindow2->Start
-	//( 
-	//	m_hwndApp, 
-	//	WS_OVERLAPPEDWINDOW| WS_CLIPSIBLINGS | WS_VISIBLE, 
-	//	nullptr,  // no visibility criterion. Allways visible,
-	//	m_pModelInterface,
-	//	m_pCursorPos,
-	//	true
-	//);
+	m_pMiniNNetWindow->Start
+	( 
+		m_hwndApp, 
+		WS_OVERLAPPEDWINDOW| WS_CLIPSIBLINGS | WS_VISIBLE, 
+		nullptr,  // no visibility criterion. Allways visible,
+		m_pModelInterface,
+		m_pDrawModel,
+		m_pCursorPos
+	);
 
-	//m_pMainNNetWindow2->Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
+	m_pMiniNNetWindow->Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
 
 	m_pModelRedrawProxy->RegisterObserver( m_pMainNNetWindow );
-	//m_pModelRedrawProxy->RegisterObserver( m_pMainNNetWindow2 );
+	m_pModelRedrawProxy->RegisterObserver( m_pMiniNNetWindow );
 
 	m_NNetWorkThreadInterface.Start
 	( 
@@ -174,7 +175,7 @@ void NNetAppWindow::Start( )
 
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,        TRUE, FALSE );
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  * m_pMainNNetWindow,    TRUE, FALSE );
-//	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW_2",  IDM_MAIN_WINDOW_2,  * m_pMainNNetWindow2,    TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",  IDM_MINI_WINDOW,  * m_pMiniNNetWindow,    TRUE, FALSE );
 	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW", IDM_PARAM_WINDOW, * m_pParameterDlg,      TRUE, FALSE );
 	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",  IDM_PERF_WINDOW,  * m_pPerformanceWindow, TRUE, FALSE );
 
@@ -187,7 +188,7 @@ void NNetAppWindow::Start( )
 		wcout << L"Using default window positions" << std::endl;
 		Show( TRUE );
 		m_pMainNNetWindow->Show( TRUE );
-		//m_pMainNNetWindow2->Show( TRUE );
+		m_pMiniNNetWindow->Show( TRUE );
 	}
 	m_pCrsrWindow       ->Show( TRUE );
 	m_pParameterDlg     ->Show( TRUE );
@@ -200,7 +201,7 @@ void NNetAppWindow::Start( )
 
 //	m_pNNetModelStorage->Write( wcout );
 
-	//m_pMainNNetWindow2->CenterModel( false );
+	m_pMiniNNetWindow->CenterModel( false );
 	m_bStarted = TRUE;
 }
 
@@ -209,7 +210,7 @@ void NNetAppWindow::Stop()
 	m_bStarted = FALSE;
 
 	m_pMainNNetWindow->Stop( );
-	//m_pMainNNetWindow2->Stop( );
+	m_pMiniNNetWindow->Stop( );
 	m_pCrsrWindow    ->Stop( );
 	m_pParameterDlg  ->Stop( );
 	m_pPerformanceWindow->Stop( );

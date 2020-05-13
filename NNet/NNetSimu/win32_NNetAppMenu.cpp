@@ -10,13 +10,13 @@
 #include "AutoOpen.h"
 #include "win32_sound.h"
 #include "win32_winManager.h"
-#include "win32_NNetWorkThreadInterface.h"
+#include "win32_WorkThreadInterface.h"
 #include "win32_NNetAppMenu.h"
 
 void NNetAppMenu::Initialize
 ( 
 	HWND                            const hwndApp, 
-	NNetWorkThreadInterface const * const pWorkThreadInterface,
+	WorkThreadInterface const * const pWorkThreadInterface,
 	WinManager              const * const pWinManager
 ) 
 {

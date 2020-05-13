@@ -10,10 +10,10 @@
 #include "NNetWrapperHelpers.h"
 #include "DrawContext.h"
 #include "win32_NNetWindow.h"
-#include "win32_NNetWorkThreadInterface.h"
+#include "win32_WorkThreadInterface.h"
 
-static NNetWorkThreadInterface * m_pWorkThreadInterface;
-static NNetWindow              * m_pNNetWindow;
+static WorkThreadInterface * m_pWorkThreadInterface;
+static NNetWindow          * m_pNNetWindow;
 
 class WrapPostResetTimer: public Script_Functor
 {
@@ -140,7 +140,7 @@ public:
 
 void DefineNNetWrappers
 ( 
-    NNetWorkThreadInterface * const pWorkThreadInterface,
+    WorkThreadInterface * const pWorkThreadInterface,
     NNetWindow              * const pNNetWindow
 )
 {

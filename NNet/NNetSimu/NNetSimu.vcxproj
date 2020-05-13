@@ -175,8 +175,8 @@
     <ClInclude Include="win32_baseAppWindow.h" />
     <ClInclude Include="win32_crsrWindow.h" />
     <ClInclude Include="win32_NNetWindow.h" />
-    <ClInclude Include="win32_NNetWorkThread.h" />
-    <ClInclude Include="win32_NNetWorkThreadInterface.h" />
+    <ClInclude Include="win32_WorkThread.h" />
+    <ClInclude Include="win32_WorkThreadInterface.h" />
     <ClInclude Include="win32_parameterDlg.h" />
     <ClInclude Include="win32_performanceWindow.h" />
     <ClInclude Include="win32_slowMotionControl.h" />
@@ -204,8 +204,8 @@
     <ClCompile Include="win32_NNetAppWindow.cpp" />
     <ClCompile Include="win32_NNetController.cpp" />
     <ClCompile Include="win32_NNetWindow.cpp" />
-    <ClCompile Include="win32_NNetWorkThread.cpp" />
-    <ClCompile Include="win32_NNetWorkThreadInterface.cpp" />
+    <ClCompile Include="win32_WorkThread.cpp" />
+    <ClCompile Include="win32_WorkThreadInterface.cpp" />
     <ClCompile Include="win32_parameterDlg.cpp" />
     <ClCompile Include="win32_performanceWindow.cpp" />
     <ClCompile Include="win32_simulationControl.cpp" />

@@ -19,7 +19,7 @@
 
 // application
 
-#include "win32_NNetWorkThreadInterface.h"
+#include "win32_WorkThreadInterface.h"
 #include "win32_NNetWindow.h"
 #include "win32_NNetAppMenu.h"
 #include "win32_NNetController.h"
@@ -61,7 +61,7 @@ private:
 
 	Util::Event             m_eventPOI { };
 
-	NNetWorkThreadInterface m_NNetWorkThreadInterface { };
+	WorkThreadInterface m_NNetWorkThreadInterface { };
 	ActionTimer             m_atComputation           { };
 	ActionTimer             m_atDisplay               { };
 	ScriptHook              m_ScriptHook              { };
@@ -76,7 +76,7 @@ private:
 	NNetModelInterface      * m_pModelInterface          { nullptr };
 	NNetModel               * m_pModel                   { nullptr };
 	NNetWindow              * m_pMainNNetWindow          { nullptr };
-	//NNetWindow              * m_pMainNNetWindow2          { nullptr };
+	NNetWindow              * m_pMiniNNetWindow          { nullptr };
 	DrawModel               * m_pDrawModel               { nullptr };
 	TimeDisplay             * m_pTimeDisplay             { nullptr };
 	SlowMotionDisplay       * m_pSlowMotionDisplay       { nullptr };

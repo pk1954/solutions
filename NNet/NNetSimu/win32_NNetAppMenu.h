@@ -10,7 +10,7 @@
 using std::wstring;
 
 class NNetModelStorage;
-class NNetWorkThreadInterface;
+class WorkThreadInterface;
 
 class NNetAppMenu : public AppMenu
 {
@@ -20,7 +20,7 @@ public:
 	virtual void Initialize
 	( 
 		HWND                            const, 
-		NNetWorkThreadInterface const * const, 
+		WorkThreadInterface const * const, 
 		WinManager              const * const
 	);
 	virtual void AdjustVisibility( );
@@ -34,7 +34,7 @@ private:
 
 	inline static HWND m_hwndApp { nullptr };
 
-	HMENU                           m_hMenu                { nullptr };
-	NNetWorkThreadInterface const * m_pWorkThreadInterface { nullptr };
-	WinManager              const * m_pWinManager          { nullptr };
+	HMENU                       m_hMenu                { nullptr };
+	WorkThreadInterface const * m_pWorkThreadInterface { nullptr };
+	WinManager          const * m_pWinManager          { nullptr };
 };

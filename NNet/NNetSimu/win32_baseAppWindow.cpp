@@ -14,12 +14,12 @@
 #include "win32_baseWindow.h"
 #include "win32_winManager.h"
 #include "win32_status.h"
-#include "win32_NNetWorkThreadInterface.h"
+#include "win32_WorkThreadInterface.h"
 #include "win32_baseAppWindow.h"
 
 using namespace std::literals::chrono_literals;
 
-void BaseAppWindow::Initialize( NNetWorkThreadInterface * const pWorkThreadInterface )
+void BaseAppWindow::Initialize( WorkThreadInterface * const pWorkThreadInterface )
 {
 	//	_CrtSetAllocHook( MyAllocHook );
 

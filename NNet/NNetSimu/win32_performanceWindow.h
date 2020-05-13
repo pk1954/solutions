@@ -7,7 +7,7 @@
 #include "win32_textWindow.h"
 
 class NNetModelInterface;
-class NNetWorkThreadInterface;
+class WorkThreadInterface;
 class ActionTimer;
 
 class PerformanceWindow: public TextWindow
@@ -16,14 +16,14 @@ public:
     //PerformanceWindow( );
     //~PerformanceWindow( ); 
 
-    void Start( HWND const, NNetModelInterface const * const, NNetWorkThreadInterface * const, ActionTimer * const );
+    void Start( HWND const, NNetModelInterface const * const, WorkThreadInterface * const, ActionTimer * const );
 
 	void Stop( );
 
     virtual void DoPaint( TextBuffer & );
 
 private:
-    NNetWorkThreadInterface  * m_pNNetWorkThreadInterface { nullptr };
+    WorkThreadInterface      * m_pWorkThreadInterface { nullptr };
     ActionTimer              * m_pAtDisplay               { nullptr };
     NNetModelInterface const * m_pModelInterface          { nullptr };
 

@@ -7,15 +7,15 @@
 #include <sstream>
 #include "Resource.h"
 #include "win32_stdDialogBox.h"
-#include "win32_NNetWorkThreadInterface.h"
+#include "win32_WorkThreadInterface.h"
 #include "win32_parameterDlg.h"
 
 using std::wstring;
 
-ParameterDialog::ParameterDialog( NNetWorkThreadInterface * const pNNetWorkThreadInterface ) 
+ParameterDialog::ParameterDialog( WorkThreadInterface * const pWorkThreadInterface ) 
   : BaseDialog( ),
 	m_pParams( nullptr ),
-	m_pNNetWorkThreadInterface( pNNetWorkThreadInterface ),
+	m_pWorkThreadInterface( pWorkThreadInterface ),
 	m_hwndPeakVoltage     ( 0 ),
     m_hwndThreshold       ( 0 ),
     m_hwndPulseWidth      ( 0 ),
@@ -27,7 +27,7 @@ ParameterDialog::ParameterDialog( NNetWorkThreadInterface * const pNNetWorkThrea
 
 ParameterDialog::~ParameterDialog( )
 {
-	m_pNNetWorkThreadInterface = nullptr;
+	m_pWorkThreadInterface = nullptr;
 	m_pParams = nullptr;
 }
 
@@ -48,7 +48,7 @@ void ParameterDialog::applyParameter
 {
 	float fValue { m_pParams->GetParameterValue( parameter ) }; 
 	if ( StdDialogBox::Evaluate( hwndEditField, fValue ) )
-		m_pNNetWorkThreadInterface->PostSetParameter( parameter, fValue );
+		m_pWorkThreadInterface->PostSetParameter( parameter, fValue );
 }
 
 HWND ParameterDialog::createStaticField( HWND const hwndParent, wchar_t const * const text, int & iXpos, int const iYpos, int const iWidth )

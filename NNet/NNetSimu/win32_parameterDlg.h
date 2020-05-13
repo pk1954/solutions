@@ -8,12 +8,12 @@
 #include "ObserverProxy.h"
 #include "win32_baseDialog.h"
 
-class NNetWorkThreadInterface;
+class WorkThreadInterface;
 
 class ParameterDialog : public BaseDialog
 {
 public:
-	ParameterDialog( NNetWorkThreadInterface * const );
+	ParameterDialog( WorkThreadInterface * const );
 	~ParameterDialog( );
 
 	void Start( HWND const, Param * const );
@@ -25,8 +25,8 @@ private:
 	static int   const VERT_SPACE { 16 };
 	static int   const HEIGHT     { 16 };
 
-	Param                   * m_pParams;
-	NNetWorkThreadInterface * m_pNNetWorkThreadInterface;
+	Param               * m_pParams;
+	WorkThreadInterface * m_pWorkThreadInterface;
 
 	HWND m_hwndPeakVoltage;
 	HWND m_hwndThreshold;       

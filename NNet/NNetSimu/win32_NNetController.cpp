@@ -23,32 +23,32 @@
 #include "win32_NNetWindow.h"
 #include "win32_winManager.h"
 #include "win32_NNetAppMenu.h"
-#include "win32_NNetWorkThreadInterface.h"
+#include "win32_WorkThreadInterface.h"
 #include "win32_NNetController.h"
 
 NNetController::NNetController
 (
-	NNetModelStorage        * const pStorage,
-	NNetWindow              * const pNNetWindow,
-	WinManager              * const pWinManager,
-	NNetWorkThreadInterface * const pNNetWorkThreadInterface,
-	SlowMotionRatio         * const pSlowMotionRatio
+	NNetModelStorage    * const pStorage,
+	NNetWindow          * const pNNetWindow,
+	WinManager          * const pWinManager,
+	WorkThreadInterface * const pWorkThreadInterface,
+	SlowMotionRatio     * const pSlowMotionRatio
 ) 
-  :	m_pStorage                ( pStorage ),
-	m_pNNetWindow             ( pNNetWindow ),
-	m_pWinManager             ( pWinManager ),
-	m_pNNetWorkThreadInterface( pNNetWorkThreadInterface ),
-	m_pSlowMotionRatio        ( pSlowMotionRatio ),
-	m_hCrsrWait               ( LoadCursor( NULL, IDC_WAIT ) )
+  :	m_pStorage            ( pStorage ),
+	m_pNNetWindow         ( pNNetWindow ),
+	m_pWinManager         ( pWinManager ),
+	m_pWorkThreadInterface( pWorkThreadInterface ),
+	m_pSlowMotionRatio    ( pSlowMotionRatio ),
+	m_hCrsrWait           ( LoadCursor( NULL, IDC_WAIT ) )
 {
 }
 
 NNetController::~NNetController( )
 {
-	m_pNNetWorkThreadInterface = nullptr;
-	m_pStorage                 = nullptr;
-	m_pWinManager              = nullptr;
-	m_pSlowMotionRatio         = nullptr;
+	m_pWorkThreadInterface = nullptr;
+	m_pStorage             = nullptr;
+	m_pWinManager          = nullptr;
+	m_pSlowMotionRatio     = nullptr;
 }
 
 bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
@@ -78,14 +78,14 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 
 	case IDM_SLOWER:
 		if ( m_pSlowMotionRatio->IncRatio( ) )
-			m_pNNetWorkThreadInterface->PostSlowMotionChanged( );
+			m_pWorkThreadInterface->PostSlowMotionChanged( );
 		else
 			MessageBeep( MB_ICONWARNING );
 		break;
 
 	case IDM_FASTER:
 		if ( m_pSlowMotionRatio->DecRatio( ) )
-			m_pNNetWorkThreadInterface->PostSlowMotionChanged( );
+			m_pWorkThreadInterface->PostSlowMotionChanged( );
 		else
 			MessageBeep( MB_ICONWARNING );
 		break;
@@ -145,24 +145,24 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	case IDM_OPEN_MODEL:
 		if ( m_pStorage->AskAndSave( ) && m_pStorage->AskModelFile( ) )
 		{
-			m_pNNetWorkThreadInterface->PostStopComputation();
-			m_pNNetWorkThreadInterface->PostSendBack( IDM_READ_MODEL );
+			m_pWorkThreadInterface->PostStopComputation();
+			m_pWorkThreadInterface->PostSendBack( IDM_READ_MODEL );
 		}
 		break;
 
 	case IDM_READ_MODEL:
 		{
 			m_pStorage->Read( );
-			m_pNNetWorkThreadInterface->PostResetTimer( );
-			m_pNNetWorkThreadInterface->PostRunGenerations( true );
+			m_pWorkThreadInterface->PostResetTimer( );
+			m_pWorkThreadInterface->PostRunGenerations( true );
 		}
 		break;
 
 	case IDM_NEW_MODEL:
 		if ( m_pStorage->AskAndSave( ) )
 		{
-			m_pNNetWorkThreadInterface->PostResetModel( );
-			m_pNNetWorkThreadInterface->PostSendBack( IDM_CENTER_MODEL );
+			m_pWorkThreadInterface->PostResetModel( );
+			m_pWorkThreadInterface->PostSendBack( IDM_CENTER_MODEL );
 			m_pStorage->ResetModelPath( );
 		}
 		break;
@@ -176,24 +176,24 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_COPY_SELECTION:
-		m_pNNetWorkThreadInterface->PostCopySelection( );
+		m_pWorkThreadInterface->PostCopySelection( );
 		break;
 
 	case IDM_REMOVE_SELECTION:
-		m_pNNetWorkThreadInterface->PostDeleteSelection( );
+		m_pWorkThreadInterface->PostDeleteSelection( );
 		break;
 
 	case IDM_REMOVE_BEEPERS:
-		m_pNNetWorkThreadInterface->PostRemoveBeepers( );
+		m_pWorkThreadInterface->PostRemoveBeepers( );
 		break;
 
 	case IDM_SELECT_ALL_BEEPERS:
-		m_pNNetWorkThreadInterface->PostSelectAllBeepers( );
+		m_pWorkThreadInterface->PostSelectAllBeepers( );
 		break;
 
 	case IDM_MARK_SELECTION:
 	case IDM_UNMARK_SELECTION:
-		m_pNNetWorkThreadInterface->PostMarkSelection( BoolOp(wmId == IDM_MARK_SELECTION) );
+		m_pWorkThreadInterface->PostMarkSelection( BoolOp(wmId == IDM_MARK_SELECTION) );
 		break;
 
 	case IDD_PULSE_RATE:
@@ -209,14 +209,14 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_RUN:
-		m_pNNetWorkThreadInterface->PostResetTimer( );
+		m_pWorkThreadInterface->PostResetTimer( );
 		if ( m_pDisplayFunctor )
 			(* m_pDisplayFunctor)( wstring( L"" ) );
 		return true;
 
 	case IDD_CONNECT:
 		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
-		m_pNNetWorkThreadInterface->PostConnect
+		m_pWorkThreadInterface->PostConnect
 		( 
 			static_cast<ShapeId>( Util::UnpackLongA( lParam ) ), 
 			static_cast<ShapeId>( Util::UnpackLongB( lParam ) ) 
@@ -231,25 +231,25 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDD_REMOVE_SHAPE:
 		Sound::Play( TEXT("DISAPPEAR_SOUND") ); 
-		m_pNNetWorkThreadInterface->PostRemoveShape( ShapeId( CastToLong(lParam) ) );
+		m_pWorkThreadInterface->PostRemoveShape( ShapeId( CastToLong(lParam) ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
 	case IDD_DISCONNECT:
 		Sound::Play( TEXT("UNLOCK_SOUND") ); 
-		m_pNNetWorkThreadInterface->PostDisconnect( ShapeId( CastToLong(lParam) ) );
+		m_pWorkThreadInterface->PostDisconnect( ShapeId( CastToLong(lParam) ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
 	case IDD_CONVERT2NEURON:
 		Sound::Play( TEXT("UNLOCK_SOUND") ); 
-		m_pNNetWorkThreadInterface->PostConvert2Neuron( ShapeId( CastToLong(lParam) ) );
+		m_pWorkThreadInterface->PostConvert2Neuron( ShapeId( CastToLong(lParam) ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
 	case IDD_CONVERT2INPUT_NEURON:
 		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
-		m_pNNetWorkThreadInterface->PostConvert2InputNeuron( ShapeId( CastToLong(lParam) ) );
+		m_pWorkThreadInterface->PostConvert2InputNeuron( ShapeId( CastToLong(lParam) ) );
 		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
@@ -262,13 +262,13 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	case IDD_ADD_INCOMING2KNOT:
 	case IDD_ADD_OUTGOING2PIPE:
 	case IDD_ADD_INCOMING2PIPE:
-		m_pNNetWorkThreadInterface->PostActionCommand( wmId, ShapeId( CastToLong(lParam) ), Util::Unpack2MicroMeterPoint(lParam) );
+		m_pWorkThreadInterface->PostActionCommand( wmId, ShapeId( CastToLong(lParam) ), Util::Unpack2MicroMeterPoint(lParam) );
 		break;
 
 	case IDM_ANALYZE_LOOPS:
 	case IDM_ANALYZE_ANOMALIES:
-		m_pNNetWorkThreadInterface->PostActionCommand( wmId, NO_SHAPE, NP_NULL );
-		m_pNNetWorkThreadInterface->PostSendBack( IDM_ANALYZE_FINISHED );
+		m_pWorkThreadInterface->PostActionCommand( wmId, NO_SHAPE, NP_NULL );
+		m_pWorkThreadInterface->PostSendBack( IDM_ANALYZE_FINISHED );
 		break;
 
 	case IDM_ANALYZE_FINISHED:
@@ -277,24 +277,24 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDM_DESELECT_ALL:
 	case IDM_ESCAPE:
-		m_pNNetWorkThreadInterface->PostSelectAll( tBoolOp::opFalse );
+		m_pWorkThreadInterface->PostSelectAll( tBoolOp::opFalse );
 		ModelAnalyzer::Stop();
 		break;
 
 	case IDM_SELECT_SHAPE:
-		m_pNNetWorkThreadInterface->PostSelectShape( ShapeId( CastToLong(lParam) ), tBoolOp::opTrue );
+		m_pWorkThreadInterface->PostSelectShape( ShapeId( CastToLong(lParam) ), tBoolOp::opTrue );
 		break;
 
 	case IDM_DESELECT_SHAPE:
-		m_pNNetWorkThreadInterface->PostSelectShape( ShapeId( CastToLong(lParam) ), tBoolOp::opFalse );
+		m_pWorkThreadInterface->PostSelectShape( ShapeId( CastToLong(lParam) ), tBoolOp::opFalse );
 		break;
 
 	case IDM_SELECT_ALL:
-		m_pNNetWorkThreadInterface->PostSelectAll( tBoolOp::opTrue );
+		m_pWorkThreadInterface->PostSelectAll( tBoolOp::opTrue );
 		break;
 
 	case IDM_SELECT_SUBTREE:
-		m_pNNetWorkThreadInterface->PostSelectSubtree( ShapeId( CastToLong(lParam) ), tBoolOp::opTrue );
+		m_pWorkThreadInterface->PostSelectSubtree( ShapeId( CastToLong(lParam) ), tBoolOp::opTrue );
 		break;
 
 	case IDM_SCRIPT_DIALOG:

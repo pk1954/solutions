@@ -11,7 +11,7 @@
 #include "win32_winManager.h"
 #include "win32_status.h"
 
-class NNetWorkThreadInterface;
+class WorkThreadInterface;
 class ModelWindow;
 class AppMenu;
 
@@ -22,7 +22,7 @@ class BaseAppWindow : public BaseWindow
 public:
 	virtual ~BaseAppWindow() {}; 
 
-	void Initialize( NNetWorkThreadInterface * const );
+	void Initialize( WorkThreadInterface * const );
 
 	void Start( ModelWindow * const );
 
@@ -43,7 +43,7 @@ private:
 	HWND m_hwndConsole { nullptr };
 
 	ModelWindow             * m_pModelWindow         { nullptr };
-	NNetWorkThreadInterface * m_pWorkThreadInterface { nullptr };
+	WorkThreadInterface * m_pWorkThreadInterface { nullptr };
 
 	wofstream m_traceStream {};
 

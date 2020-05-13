@@ -7,19 +7,19 @@
 #include "observerInterface.h"
 #include "win32_status.h"
 
-class NNetWorkThreadInterface;
+class WorkThreadInterface;
 
 class SimulationControl: public ObserverInterface
 {
 public:
 
-	SimulationControl( StatusBar * const, NNetWorkThreadInterface * const );
+	SimulationControl( StatusBar * const, WorkThreadInterface * const );
 
 	virtual ~SimulationControl() {};
 
 	virtual void Notify( bool const );
 
 private:
-	NNetWorkThreadInterface * m_pWorkThreadInterface;
-	StatusBar               * m_pStatusBar;
+	WorkThreadInterface * m_pWorkThreadInterface;
+	StatusBar           * m_pStatusBar;
 };

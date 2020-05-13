@@ -20,14 +20,14 @@ class Observable;
 class ActionTimer;
 class AnimationThread;
 class NNetModelInterface;
-class NNetWorkThreadInterface;
+class WorkThreadInterface;
 
 class NNetWindow : public ModelWindow
 {
 public:
 	static void InitClass
 	( 
-		NNetWorkThreadInterface * const,
+		WorkThreadInterface * const,
 		ActionTimer             * const
 	);
 
@@ -40,8 +40,7 @@ public:
 		function<bool()>     const,
 		NNetModelInterface * const,
 		DrawModel          * const,
-		Observable         * const,
-		bool                 const
+		Observable         * const
 	);
 
 	void Stop( );
@@ -57,6 +56,8 @@ public:
 	void Zoom( MicroMeter const );
 	void AnalysisFinished( );
 	void CenterModel( bool const );
+	void NNetMove( PixelPoint const & );
+	void NNetMove( MicroMeterPoint const & );	
 
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
 
@@ -68,27 +69,27 @@ public:
 	DrawContext       & GetDrawContext ()       { return m_context; }
 	DrawContext const & GetDrawContextC() const { return m_context; }
 
+	void Observe( NNetWindow * const pNNetWin )	{ m_pNNetWindowObserved = pNNetWin; }
+
 private:
 
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	inline static NNetWorkThreadInterface * m_pNNetWorkThreadInterface { nullptr };
-	inline static NNetModelInterface      * m_pModelInterface          { nullptr };
-
-	HMENU m_hPopupMenu { nullptr };
-	BOOL  m_bMoveAllowed { TRUE };    // TRUE: move with mouse is possible
+	inline static WorkThreadInterface * m_pWorkThreadInterface { nullptr };
+	inline static NNetModelInterface  * m_pModelInterface      { nullptr };
 
 	DrawContext       m_context              { };
 	DrawModel       * m_pDrawModel           { nullptr };
 	AnimationThread * m_pAnimationThread     { nullptr };
 	Observable      * m_pCursorPosObservable { nullptr };
+	NNetWindow      * m_pNNetWindowObserved  { nullptr }; // Observed NNetWindow (or nullptr)
+	HMENU             m_hPopupMenu           { nullptr };
 
 	PixelPoint m_ptLast            { PP_NULL };	// Last cursor position during selection 
 	PixelPoint m_ptCommandPosition { PP_NULL };
 
 	bool m_bFocusMode { false };
-	bool m_bFixed     { false };  // Fixed windows cannot be moved or resized. Client area cannot be zoomed or moved
 
 	MicroMeterPoint m_umPntCenterStart { MicroMeterPoint::NULL_VAL() }; // SmoothMove TODO: move these variables to SmootMoveFp
 	MicroMeterPoint m_umPntCenterDelta { MicroMeterPoint::NULL_VAL() }; // SmoothMove 
@@ -120,5 +121,6 @@ private:
 	void   centerAndZoomRect( MicroMeterRect const, float const, bool const );
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL   inObservedClientRect( LPARAM const );
+	void   setSuperHighlighted( PixelPoint const );
 	void   doPaint( );
 };

@@ -30,8 +30,8 @@ StatusBar::StatusBar() :
 
 void StatusBar::Start
 ( 
-	HWND                            const hwndParent,
-	NNetWorkThreadInterface const * const pWorkThreadInterface
+	HWND                        const hwndParent,
+	WorkThreadInterface const * const pWorkThreadInterface
 )
 {
 	m_pWorkThreadInterface = pWorkThreadInterface;

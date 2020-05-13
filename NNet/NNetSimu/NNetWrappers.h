@@ -4,7 +4,7 @@
 
 #pragma once
 
-class NNetWorkThreadInterface;
+class WorkThreadInterface;
 class NNetWindow;
 
-extern void DefineNNetWrappers( NNetWorkThreadInterface * const, NNetWindow * const );
+extern void DefineNNetWrappers( WorkThreadInterface * const, NNetWindow * const );
