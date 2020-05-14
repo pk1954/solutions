@@ -80,7 +80,7 @@ void RootWindow::contextMenu( PixelPoint const & pntPos )
 {
 	HMENU const hPopupMenu { CreatePopupMenu() };
 
-	long lParam = AddContextMenuEntries( hPopupMenu, pntPos );
+	long lParam = AddContextMenuEntries( hPopupMenu, pntPos ); // arbitrary parameter, forwarded as lParam  
 
 	if ( m_visibilityCriterion )
 	{

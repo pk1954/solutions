@@ -14,7 +14,7 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 	case WM_COMMAND:
 		if ( OnCommand( wParam, lParam ) )
 			PostCommand2Application( wParam, lParam ); // not handled here, delegate to application
-		PostCommand2Application( IDM_REFRESH, 0 );
+//		PostCommand2Application( IDM_REFRESH, 0 );
 		return FALSE;
 
 	case WM_MOUSEMOVE:

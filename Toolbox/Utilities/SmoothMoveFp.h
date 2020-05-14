@@ -21,6 +21,12 @@ public:
         m_fVelocity = 0.0f;
     }
 
+    void Set2Target( )
+    {
+        m_fPos = END_POINT;
+        m_fVelocity = 0.0f;
+    }
+
     float Next( )
     {
         if ( m_fPos < BREAK_POINT )

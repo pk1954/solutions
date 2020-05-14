@@ -32,9 +32,9 @@ public:
 	void RefreshRateDialog( HWND const );
 
 private:
-	HANDLE       m_hTimer;
-	milliseconds m_msRefreshRate;
-	BOOL         m_bDirty;
+	HANDLE       m_hTimer        { nullptr };
+	milliseconds m_msRefreshRate { 0ms };
+	BOOL         m_bDirty        { TRUE };
 
 	void startTimer( milliseconds const );
 	void deleteTimer( );

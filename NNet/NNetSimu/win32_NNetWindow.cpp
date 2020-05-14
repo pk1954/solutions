@@ -106,7 +106,7 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 {
 	UINT static const STD_FLAGS { MF_BYPOSITION | MF_STRING };
 
-	m_ptCommandPosition = ptPos;
+//	m_ptCommandPosition = ptPos;
 
 	ShapeType type { m_pModelInterface->GetShapeType( m_shapeHighlighted ) };
 
@@ -350,7 +350,7 @@ void NNetWindow::doPaint( bool const bShowScale )
 
 void NNetWindow::CenterModel( bool const bSmooth )
 {
-	centerAndZoomRect( m_pModelInterface->GetEnclosingRect( ), 1.2f, bSmooth );
+	centerAndZoomRect( m_pModelInterface->GetEnclosingRect( ), 1.2f, bSmooth ); // give 20% more space (looks better)
 }
 
 void NNetWindow::AnalysisFinished( )
@@ -360,16 +360,17 @@ void NNetWindow::AnalysisFinished( )
 		centerAndZoomRect( rect, 2.0f, true );
 }
 
-void NNetWindow::centerAndZoomRect( MicroMeterRect const rect, float const fRatioFactor, bool const bSmooth )
+void NNetWindow::centerAndZoomRect( MicroMeterRect const & umRect, float const fRatioFactor, bool const bSmooth )
 {
-	PixelPoint      const pixPointCenter    { GetClRectCenter( ) };
-	float           const fVerticalRatio    { rect.GetHeight() / m_context.GetCoordC().Convert2MicroMeter( GetClientWindowHeight() ) };
-	float           const fHorizontalRatio  { rect.GetWidth () / m_context.GetCoordC().Convert2MicroMeter( GetClientWindowWidth() ) };
+	MicroMeterRect  const umRectScaled      { umRect.Scale( NEURON_RADIUS ) }; // give some more space to include complete shapes 
+	float           const fVerticalRatio    { umRectScaled.GetHeight() / m_context.GetCoordC().Convert2MicroMeter( GetClientWindowHeight() ) };
+	float           const fHorizontalRatio  { umRectScaled.GetWidth () / m_context.GetCoordC().Convert2MicroMeter( GetClientWindowWidth() ) };
 	float           const fMaxRatio         { max( fVerticalRatio, fHorizontalRatio ) };
 	float           const fDesiredRatio     { fMaxRatio * fRatioFactor };
+	PixelPoint      const pixPointCenter    { GetClRectCenter( ) };
 	fPixelPoint     const fpCenter          { m_context.GetCoordC().Convert2fPixelPoint( GetClRectCenter( ) ) };
 	MicroMeter      const umPixelSizeTarget { m_context.GetCoordC().LimitPixelSize( m_context.GetCoordC().GetPixelSize() * fDesiredRatio ) };
-	MicroMeterPoint const umPntCenterTarget { rect.GetCenter() };
+	MicroMeterPoint const umPntCenterTarget { umRectScaled.GetCenter() };
 	if ( bSmooth )
 	{
 		m_umPixelSizeStart = m_context.GetCoordC().GetPixelSize();                                // actual pixel size 
@@ -382,7 +383,7 @@ void NNetWindow::centerAndZoomRect( MicroMeterRect const rect, float const fRati
 	else
 	{
 		m_context.GetCoord().Zoom( umPixelSizeTarget );
-		m_context.Center( pixPointCenter );
+		m_context.GetCoord().Center( umPntCenterTarget, fpCenter );
 	}
 }
 
@@ -507,7 +508,8 @@ LPARAM NNetWindow::crsPos2LPARAM( ) const
 
 BOOL NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 {
-	SendCommand2Application( wParam, pixelPoint2LPARAM( m_ptCommandPosition ) );
+	ShapeId const shapeId( CastToLong( lParam ) );
+	SendCommand2Application( wParam, lParam );
 	return FALSE;
 }
 

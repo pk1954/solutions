@@ -53,7 +53,7 @@ NNetController::~NNetController( )
 
 bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 {
-	switch (wmId)
+	switch ( wmId )
 	{
 
 	case IDM_PERF_WINDOW:

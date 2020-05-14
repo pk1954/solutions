@@ -296,6 +296,16 @@ public:
 		ReleaseSRWLockShared( & m_SRWLockModel );
 	}
 
+	void LockModelExclusive() const
+	{ 
+		AcquireSRWLockExclusive( & m_SRWLockModel );
+	}
+
+	void UnlockModelExclusive() const
+	{ 
+		ReleaseSRWLockExclusive( & m_SRWLockModel );
+	}
+
 private:
 
 	mutable SRWLOCK     m_SRWLockModel    { SRWLOCK_INIT }; // locks model during deletion or reconstruction  

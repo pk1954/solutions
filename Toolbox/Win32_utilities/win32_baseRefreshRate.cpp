@@ -11,9 +11,6 @@ using std::wstring;
 using std::to_wstring;
 
 BaseRefreshRate::BaseRefreshRate( )
- :	m_hTimer( nullptr ),
-	m_bDirty( TRUE ),
-	m_msRefreshRate( 0ms )
 {}
 
 BaseRefreshRate::~BaseRefreshRate( )

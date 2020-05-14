@@ -52,13 +52,6 @@ public:
 	void        SetPixelSize  ( MicroMeter  const s ) { m_coord.SetPixelSize  ( s ); }
 	void        SetPixelOffset( fPixelPoint const f ) { m_coord.SetPixelOffset( f ); }
 
-	void Center( PixelPoint const & pixPnt )
-	{
-		fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPnt ) };
-		MicroMeterPoint const umPointcenter   { m_coord.Convert2MicroMeterPointPos( fPixPointCenter ) };
-		m_coord.Center( umPointcenter, fPixPointCenter );
-	}
-
 	bool ZoomKeepCrsrPos( PixelPoint const & pixPntCenter, MicroMeter const newSize )
 	{
 		fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPntCenter ) };
@@ -123,7 +116,7 @@ public:
 		m_graphics.DrawArrow( fPixPos, fPixVector, fPixSize, fPixWidth, col );
 	}
 
-	void DrawTranspRect( MicroMeterRect umRect, D2D1::ColorF col ) const 
+	void DrawTranspRect( MicroMeterRect const & umRect, D2D1::ColorF col ) const 
 	{
 		m_graphics.DrawTranspRect( m_coord.Convert2fPixelRect( umRect ), col );
 	}

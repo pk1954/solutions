@@ -265,22 +265,24 @@ void NNetModel::Compute( )
 
 void NNetModel::ResetModel( )
 {
-	AcquireSRWLockExclusive( & m_SRWLockModel );
+	LockModelExclusive( );
 	for (auto pShape : m_Shapes)  // Do not use Apply2All! Locking.
 		delete pShape;
 	m_Shapes.clear();
-	ReleaseSRWLockExclusive( & m_SRWLockModel );
+	UnlockModelExclusive( );
 	modelHasChanged( );
 }
 
 void NNetModel::DeleteSelection( )
 {
+	LockModelExclusive( );
 	for ( int i = 0; i < m_Shapes.size(); ++i )  // Caution!
 	{	                                         // Range based loop does not work here
 		Shape * p = m_Shapes.at(i);              // removeShape changes the range 
 		if ( p &&  p->IsSelected() )             // by creating new shapes!!
 			removeShape( p ); 
 	}
+	UnlockModelExclusive( );
 	modelHasChanged( );
 }
 
@@ -513,6 +515,7 @@ ShapeId const NNetModel::FindShapeAt
 {	
 	ShapeId idRes { NO_SHAPE };
 
+	LockModelShared();
 	if ( idRes == NO_SHAPE )   // first test all neurons and input neurons
 		idRes = findShapeAt( umPoint, [&]( Shape const & s ) { return s.IsAnyNeuron( ) && crit( s ); } );
 
@@ -521,6 +524,7 @@ ShapeId const NNetModel::FindShapeAt
 
 	if ( idRes == NO_SHAPE )   // if nothing found, try pipes
 		idRes = findShapeAt( umPoint, [&]( Shape const & s ) { return s.IsPipe     ( ) && crit( s ); } );
+	UnlockModelShared();
 
 	return idRes;
 }

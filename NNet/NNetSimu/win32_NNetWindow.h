@@ -103,8 +103,6 @@ private:
 	Observable      * m_pCursorPosObservable { nullptr };
 	HMENU             m_hPopupMenu           { nullptr };
 
-	PixelPoint m_ptCommandPosition { PP_NULL };
-
 	bool m_bFocusMode { false };
 
 	MicroMeterPoint m_umPntCenterStart { MicroMeterPoint::NULL_VAL() }; // SmoothMove TODO: move these variables to SmootMoveFp
@@ -120,7 +118,7 @@ private:
 
 	void   smoothStep( );
 	LPARAM crsPos2LPARAM( ) const;
-	void   centerAndZoomRect( MicroMeterRect const, float const, bool const );
+	void   centerAndZoomRect( MicroMeterRect const &, float const, bool const );
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL   inObservedClientRect( LPARAM const );
 	void   setSuperHighlightedShape( MicroMeterPoint const & );
