@@ -58,6 +58,7 @@ IDC_NNET_SIMU_MAIN MENU
         }
         POPUP "&Windows"
         {
+            MENUITEM "Show &mini window",        IDM_MINI_WINDOW
             MENUITEM "Show &cursor window",      IDM_CRSR_WINDOW
             MENUITEM "Show &parameter window",   IDM_PARAM_WINDOW
             MENUITEM "Show &performance window", IDM_PERF_WINDOW
@@ -158,8 +159,9 @@ IDC_NNET_SIMU_MAIN ACCELERATORS
     "a",            IDM_SELECT_ALL,   VIRTKEY, CONTROL
     "s",            IDM_SAVE_MODEL,   VIRTKEY, CONTROL
     "c",            IDM_CRSR_WINDOW,  ASCII,   ALT
-	"p",            IDM_PARAM_WINDOW, ASCII,   ALT
-	"?",            IDM_ABOUT,        ASCII,   ALT
+    "p",            IDM_PARAM_WINDOW, ASCII,   ALT
+    "m",            IDM_MINI_WINDOW,  ASCII,   ALT
+    "?",            IDM_ABOUT,        ASCII,   ALT
 	VK_DELETE,      IDM_DELETE,       VIRTKEY
 	VK_ESCAPE,      IDM_ESCAPE,       VIRTKEY
 }

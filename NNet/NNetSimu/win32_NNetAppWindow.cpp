@@ -140,12 +140,14 @@ void NNetAppWindow::Start( )
 	m_pMiniNNetWindow->Start
 	( 
 		m_hwndApp, 
-		WS_OVERLAPPEDWINDOW| WS_CLIPSIBLINGS | WS_VISIBLE, 
+		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
 		nullptr,  // no visibility criterion. Allways visible,
 		m_pModelInterface,
 		m_pDrawModel,
 		m_pCursorPos
 	);
+
+	SetWindowText( m_pMiniNNetWindow->GetWindowHandle(), L"Mini window" );
 
 	m_pMiniNNetWindow->Observe( m_pMainNNetWindow );  // mini window observes main grid window
 

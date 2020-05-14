@@ -285,7 +285,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	else  // no mouse button pressed
 	{                         
 		setHighlightedShape( umCrsrPos );
-		m_ptLast = PP_NULL;   // make m_ptLast invalid
+		m_ptLast.Set2Null();   // make m_ptLast invalid
 	}
 }
 
@@ -368,7 +368,7 @@ void NNetWindow::centerAndZoomRect( MicroMeterRect const & umRect, float const f
 	float           const fMaxRatio         { max( fVerticalRatio, fHorizontalRatio ) };
 	float           const fDesiredRatio     { fMaxRatio * fRatioFactor };
 	PixelPoint      const pixPointCenter    { GetClRectCenter( ) };
-	fPixelPoint     const fpCenter          { m_context.GetCoordC().Convert2fPixelPoint( GetClRectCenter( ) ) };
+	fPixelPoint     const fpCenter          { m_context.GetCoordC().Convert2fPixelPoint( pixPointCenter ) };
 	MicroMeter      const umPixelSizeTarget { m_context.GetCoordC().LimitPixelSize( m_context.GetCoordC().GetPixelSize() * fDesiredRatio ) };
 	MicroMeterPoint const umPntCenterTarget { umRectScaled.GetCenter() };
 	if ( bSmooth )
@@ -489,6 +489,12 @@ void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 	BOOL    const keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
 	HCURSOR const hCrsr   = keyDown ? m_hCrsrMove : m_hCrsrArrow;
 	SetCursor( hCrsr );
+}
+
+MicroMeterRect const NNetWindow::GetViewRect( )
+{
+	PixelRect const pixRectView = GetClPixelRect( );
+	return m_context.GetCoordC().Convert2MicroMeterRect( pixRectView );
 }
 
 MicroMeterPoint NNetWindow::PixelPoint2MicroMeterPoint( PixelPoint const pixPoint ) const

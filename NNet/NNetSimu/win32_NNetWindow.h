@@ -59,6 +59,8 @@ public:
 	void NNetMove( PixelPoint const & );
 	void NNetMove( MicroMeterPoint const & );	
 
+	MicroMeterRect const GetViewRect();
+
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
 
 	void PulseRateDlg   ( ShapeId const );
@@ -87,8 +89,11 @@ protected:
 
 	virtual void doPaint( bool const );
 
-	DrawContext m_context { };
-	PixelPoint  m_ptLast  { PP_NULL };	// Last cursor position during selection 
+	DrawContext   m_context    { };
+	DrawModel   * m_pDrawModel { nullptr };
+	PixelPoint    m_ptLast     { PP_NULL };	// Last cursor position during selection 
+
+	inline static NNetModelInterface  * m_pModelInterface      { nullptr };
 
 private:
 
@@ -96,9 +101,7 @@ private:
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
 	inline static WorkThreadInterface * m_pWorkThreadInterface { nullptr };
-	inline static NNetModelInterface  * m_pModelInterface      { nullptr };
 
-	DrawModel       * m_pDrawModel           { nullptr };
 	AnimationThread * m_pAnimationThread     { nullptr };
 	Observable      * m_pCursorPosObservable { nullptr };
 	HMENU             m_hPopupMenu           { nullptr };

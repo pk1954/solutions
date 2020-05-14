@@ -4,9 +4,11 @@
 
 #pragma once
 
+#include "Shape.h"
 #include "DrawContext.h"
 
 class NNetModel;
+class PixelTypes;
 
 class DrawModel
 {
