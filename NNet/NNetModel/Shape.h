@@ -22,8 +22,27 @@ static ShapeCrit const ShapeCritAlwaysTrue { [&]( Shape const & s) { return true
 class Shape
 {
 public:
-	Shape( ShapeType const );
-	virtual ~Shape(); 
+	Shape( ShapeType const type )
+		: m_type( type )
+	{ 
+		++ m_counter;
+	}	
+
+	Shape( Shape const & src )   // copy constructor
+	  :	m_type     (src.m_type),
+		m_bSelected(src.m_bSelected),
+		m_bMarked  (src.m_bMarked)
+		// do not copy lock state new shape is **not** locked
+	{
+		++ m_counter;
+	}
+
+	Shape & operator= ( Shape const & src ) = delete;
+
+	virtual ~Shape()
+	{
+		-- m_counter;
+	}
 
 	static unsigned long GetCounter( ) { return m_counter; }
 
@@ -71,7 +90,9 @@ public:
 
 	void UnlockShapeExclusive() const
 	{ 
+		DWORD threadId { GetCurrentThreadId() };
 		ReleaseSRWLockExclusive( & m_SRWLock );
+		m_dwLockedBy = 0;                        // debugging
 	}
 
 	void LockShapeShared() const
@@ -83,7 +104,9 @@ public:
 
 	void UnlockShapeShared() const
 	{ 
+		DWORD threadId { GetCurrentThreadId() };
 		ReleaseSRWLockShared( & m_SRWLock );
+		m_dwLockedBy = 0;                        // debugging
 	}
 
 protected:

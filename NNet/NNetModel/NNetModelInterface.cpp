@@ -156,6 +156,11 @@ bool const NNetModelInterface::isConnectedToPipe( ShapeId const idShape, ShapeId
 	return (idShape == m_pModel->GetStartKnotId(idPipe)) || (idShape == m_pModel->GetEndKnotId(idPipe));
 }
 
+ShapeId const NNetModelInterface::FindShapeAt( MicroMeterPoint const & umPnt, ShapeCrit const & crit ) const
+{
+	return m_pModel->FindShapeAt( umPnt, crit );
+}
+
 unsigned long const NNetModelInterface::GetNrOfPipes       ( ) const { return Pipe       ::GetCounter(); }
 unsigned long const NNetModelInterface::GetNrOfShapes      ( ) const { return Shape      ::GetCounter(); }
 unsigned long const NNetModelInterface::GetNrOfKnots       ( ) const { return Knot       ::GetCounter(); }

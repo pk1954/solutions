@@ -21,8 +21,12 @@ public:
 		undefined
 	};
 
+	ShapeType( )
+		:	m_value( Value::undefined )
+	{}
+
 	ShapeType( Value val )
-	  :	m_value( val )
+		:	m_value( val )
 	{}
 
 	static void Apply2All( function<void(Value const &)> const & func )

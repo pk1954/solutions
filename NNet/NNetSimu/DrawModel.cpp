@@ -53,17 +53,9 @@ ShapeId const DrawModel::FindShapeAt
 	ShapeCrit   const & crit 
 ) const
 {	
-	MicroMeterPoint umPoint { context.GetCoordC().Convert2MicroMeterPointPos( pixPoint ) };
-	ShapeId idRes { NO_SHAPE };
-
-	if ( idRes == NO_SHAPE )   // first test all neurons and input neurons
-		idRes = m_pModel->FindShapeAt( umPoint, [&]( Shape const & s ) { return s.IsAnyNeuron( ) && crit( s ); } );
-
-	if ( idRes == NO_SHAPE )   // if nothing found, test knot shapes
-		idRes = m_pModel->FindShapeAt( umPoint, [&]( Shape const & s ) { return s.IsKnot     ( ) && crit( s ); } ); 	
-
-	if ( idRes == NO_SHAPE )   // if nothing found, try pipes
-		idRes = m_pModel->FindShapeAt( umPoint, [&]( Shape const & s ) { return s.IsPipe     ( ) && crit( s ); } );
-
-	return idRes;
+	return m_pModel->FindShapeAt
+	( 
+		context.GetCoordC().Convert2MicroMeterPointPos( pixPoint ), 
+		[&]( Shape const & s ) { return crit( s ); } 
+	);
 }

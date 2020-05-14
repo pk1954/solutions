@@ -21,6 +21,7 @@
 
 #include "win32_WorkThreadInterface.h"
 #include "win32_NNetWindow.h"
+#include "win32_MiniWindow.h"
 #include "win32_NNetAppMenu.h"
 #include "win32_NNetController.h"
 #include "NNetColors.h"
@@ -76,7 +77,7 @@ private:
 	NNetModelInterface      * m_pModelInterface          { nullptr };
 	NNetModel               * m_pModel                   { nullptr };
 	NNetWindow              * m_pMainNNetWindow          { nullptr };
-	NNetWindow              * m_pMiniNNetWindow          { nullptr };
+	MiniWindow              * m_pMiniNNetWindow          { nullptr };
 	DrawModel               * m_pDrawModel               { nullptr };
 	TimeDisplay             * m_pTimeDisplay             { nullptr };
 	SlowMotionDisplay       * m_pSlowMotionDisplay       { nullptr };

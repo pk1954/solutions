@@ -15,9 +15,9 @@
 
 void NNetAppMenu::Initialize
 ( 
-	HWND                            const hwndApp, 
+	HWND                        const hwndApp, 
 	WorkThreadInterface const * const pWorkThreadInterface,
-	WinManager              const * const pWinManager
+	WinManager          const * const pWinManager
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );

@@ -123,7 +123,7 @@ public:
 		m_graphics.DrawArrow( fPixPos, fPixVector, fPixSize, fPixWidth, col );
 	}
 
-	void DrawTranspRect( PixelRect umRect, D2D1::ColorF col ) const 
+	void DrawTranspRect( MicroMeterRect umRect, D2D1::ColorF col ) const 
 	{
 		m_graphics.DrawTranspRect( m_coord.Convert2fPixelRect( umRect ), col );
 	}

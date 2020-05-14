@@ -28,7 +28,7 @@ public:
 	static void InitClass
 	( 
 		WorkThreadInterface * const,
-		ActionTimer             * const
+		ActionTimer         * const
 	);
 
 	NNetWindow( );
@@ -45,7 +45,7 @@ public:
 
 	void Stop( );
 
-	~NNetWindow( );
+	virtual ~NNetWindow( );
 
 	ShapeId        const GetHighlightedShapeId( )          const { return m_shapeHighlighted; }
 	ShapeId        const GetSuperHighlightedShapeId( )     const { return m_shapeSuperHighlighted; }
@@ -69,38 +69,7 @@ public:
 	DrawContext       & GetDrawContext ()       { return m_context; }
 	DrawContext const & GetDrawContextC() const { return m_context; }
 
-	void Observe( NNetWindow * const pNNetWin )	{ m_pNNetWindowObserved = pNNetWin; }
-
-private:
-
-	NNetWindow             ( NNetWindow const & );  // noncopyable class 
-	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
-
-	inline static WorkThreadInterface * m_pWorkThreadInterface { nullptr };
-	inline static NNetModelInterface  * m_pModelInterface      { nullptr };
-
-	DrawContext       m_context              { };
-	DrawModel       * m_pDrawModel           { nullptr };
-	AnimationThread * m_pAnimationThread     { nullptr };
-	Observable      * m_pCursorPosObservable { nullptr };
-	NNetWindow      * m_pNNetWindowObserved  { nullptr }; // Observed NNetWindow (or nullptr)
-	HMENU             m_hPopupMenu           { nullptr };
-
-	PixelPoint m_ptLast            { PP_NULL };	// Last cursor position during selection 
-	PixelPoint m_ptCommandPosition { PP_NULL };
-
-	bool m_bFocusMode { false };
-
-	MicroMeterPoint m_umPntCenterStart { MicroMeterPoint::NULL_VAL() }; // SmoothMove TODO: move these variables to SmootMoveFp
-	MicroMeterPoint m_umPntCenterDelta { MicroMeterPoint::NULL_VAL() }; // SmoothMove 
-	MicroMeter      m_umPixelSizeStart { MicroMeter::NULL_VAL() };      // SmoothMove 
-	MicroMeter      m_umPixelSizeDelta { MicroMeter::NULL_VAL() };      // SmoothMove 
-	SmoothMoveFp    m_smoothMove { };                                   // SmoothMove   
-
-	PixelRect m_rectSelection { };
-
-	ShapeId m_shapeHighlighted      { NO_SHAPE };
-	ShapeId m_shapeSuperHighlighted { NO_SHAPE };
+protected:
 
 	virtual long AddContextMenuEntries( HMENU const, PixelPoint const );
 
@@ -116,11 +85,44 @@ private:
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
+	virtual void doPaint( bool const );
+
+	DrawContext m_context { };
+	PixelPoint  m_ptLast  { PP_NULL };	// Last cursor position during selection 
+
+private:
+
+	NNetWindow             ( NNetWindow const & );  // noncopyable class 
+	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
+
+	inline static WorkThreadInterface * m_pWorkThreadInterface { nullptr };
+	inline static NNetModelInterface  * m_pModelInterface      { nullptr };
+
+	DrawModel       * m_pDrawModel           { nullptr };
+	AnimationThread * m_pAnimationThread     { nullptr };
+	Observable      * m_pCursorPosObservable { nullptr };
+	HMENU             m_hPopupMenu           { nullptr };
+
+	PixelPoint m_ptCommandPosition { PP_NULL };
+
+	bool m_bFocusMode { false };
+
+	MicroMeterPoint m_umPntCenterStart { MicroMeterPoint::NULL_VAL() }; // SmoothMove TODO: move these variables to SmootMoveFp
+	MicroMeterPoint m_umPntCenterDelta { MicroMeterPoint::NULL_VAL() }; // SmoothMove 
+	MicroMeter      m_umPixelSizeStart { MicroMeter::NULL_VAL() };      // SmoothMove 
+	MicroMeter      m_umPixelSizeDelta { MicroMeter::NULL_VAL() };      // SmoothMove 
+	SmoothMoveFp    m_smoothMove { };                                   // SmoothMove   
+
+	MicroMeterRect m_rectSelection { };
+
+	ShapeId m_shapeHighlighted      { NO_SHAPE };
+	ShapeId m_shapeSuperHighlighted { NO_SHAPE };
+
 	void   smoothStep( );
 	LPARAM crsPos2LPARAM( ) const;
 	void   centerAndZoomRect( MicroMeterRect const, float const, bool const );
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL   inObservedClientRect( LPARAM const );
-	void   setSuperHighlighted( PixelPoint const );
-	void   doPaint( );
+	void   setSuperHighlightedShape( MicroMeterPoint const & );
+	void   setHighlightedShape     ( MicroMeterPoint const & );
 };

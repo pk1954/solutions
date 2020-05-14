@@ -55,6 +55,8 @@ public:
 	void DrawExterior( ShapeId const, DrawContext const &, tHighlightType const ) const;
 	void DrawInterior( ShapeId const, DrawContext const & ) const;
 
+	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
+
 	template <typename T> bool IsOfType( ShapeId const id ) const 
 	{ 
 		return T::TypeFits( GetShapeType( id ) ); 

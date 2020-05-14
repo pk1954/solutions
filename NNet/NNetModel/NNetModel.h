@@ -123,7 +123,7 @@ public:
 		return bResult;
 	}
 
-	template <typename T>
+	template <typename T>   // const version
 	bool Apply2AllB( function<bool(T const &)> const & func ) const
 	{
 		bool bResult { false };
@@ -133,7 +133,7 @@ public:
 			{
 				pShape->LockShapeShared();
 				if ( HasType<T>( pShape ) )	
-					bResult = func( static_cast<T &>( * pShape ) );
+					bResult = func( static_cast<T const &>( * pShape ) );
 				pShape->UnlockShapeShared();
 				if ( bResult )
 					break;
@@ -150,13 +150,13 @@ public:
 			if ( pShape )
 			{
 				pShape->LockShapeExclusive();
-				if ( HasType<T>(pShape) ) func( static_cast<T &>(*pShape) ); 
+				if ( HasType<T>(pShape) ) func( static_cast<T &>( * pShape) ); 
 				pShape->UnlockShapeExclusive();
 			}
 		}
 	}                        
 
-	template <typename T>
+	template <typename T>    // const version
 	void Apply2All( function<void(T const &)> const & func ) const
 	{
 		for (auto & pShape : m_Shapes)    
@@ -165,7 +165,7 @@ public:
 			{
 				pShape->LockShapeShared();
 				if ( HasType<T>(pShape) ) 
-					func( static_cast<T &>(*pShape) ); 
+					func( static_cast<T const &>( * pShape) ); 
 				pShape->UnlockShapeShared();
 			}
 		}
@@ -174,13 +174,25 @@ public:
 	template <typename T>
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T       &)> const & func )
 	{
-		Apply2All<T> ( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
+		Apply2All<T>( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
+	}
+
+	template <typename T>   // const version
+	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func )
+	{
+		Apply2All<T>( [&](T & const s) { if ( s.IsInRect(r) ) { func( s ); } } );
 	}
 
 	template <typename T>
 	void Apply2AllSelected( function<void(T &)> const & func ) const
 	{
 		Apply2All<T>( {	[&](T & s) { if ( s.IsSelected() ) { func( s ); } } } );
+	}
+
+	template <typename T>  // const version
+	void Apply2AllSelected( function<void(T const &)> const & func ) const
+	{
+		Apply2All<T>( {	[&](T const & s) { if ( s.IsSelected() ) { func( s ); } } } );
 	}
 
 	virtual void Compute( );
@@ -193,7 +205,7 @@ public:
 	Neuron * const InsertNeuron( ShapeId const, MicroMeterPoint const & );
 	void           MoveShape   ( ShapeId const, MicroMeterPoint const & );
 
-	ShapeId const FindShapeAt( MicroMeterPoint const, ShapeCrit const & ) const;
+	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
 	void AddOutgoing2Knot( ShapeId const, MicroMeterPoint const & );
 	void AddIncoming2Knot( ShapeId const, MicroMeterPoint const & );
@@ -218,7 +230,7 @@ public:
 		modelHasChanged( );
 	}
 
-	MicroMeterRect GetEnclosingRect() const {	return ::GetEnclosingRect( m_Shapes ); }
+	MicroMeterRect GetEnclosingRect() const { return ::GetEnclosingRect( m_Shapes ); }
 
 	void ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
 	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
@@ -315,8 +327,9 @@ private:
 	void            disconnectBaseKnot ( BaseKnot * const );
 	void            selectSubtree      ( BaseKnot * const, tBoolOp    const );
 	void            insertBaseKnot     ( Pipe     * const, BaseKnot * const );
-	void            connectToNewShapes ( Shape &, ShapeList & );
+	void            connectToNewShapes ( Shape const &, ShapeList & );
 	void            modelHasChanged    ( ) const;
 	void            setTriggerSound    ( Neuron * const, Hertz const, MilliSecs const );
 	void            removeTriggerSound ( Neuron * const );
+	ShapeId const   findShapeAt        ( MicroMeterPoint const, ShapeCrit const & ) const;
 };

@@ -19,9 +19,9 @@ public:
 
 	virtual void Initialize
 	( 
-		HWND                            const, 
+		HWND                        const, 
 		WorkThreadInterface const * const, 
-		WinManager              const * const
+		WinManager          const * const
 	);
 	virtual void AdjustVisibility( );
 	virtual void Start( );

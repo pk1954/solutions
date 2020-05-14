@@ -24,8 +24,8 @@ class BaseKnot : public Shape
 {
 public:
 
-	using PipeFunc  = function<void(Pipe * const)>;
-	using PipeFuncB = function<bool(Pipe * const)>;
+	using PipeFunc  = function<void(Pipe &)>;
+	using PipeFuncB = function<bool(Pipe &)>;
 
 	BaseKnot
 	( 
@@ -76,8 +76,8 @@ public:
 	void Apply2AllInPipes_Lock ( PipeFunc const & func ) { apply2AllPipesInList( m_incoming, func ); }
 	void Apply2AllOutPipes_Lock( PipeFunc const & func ) { apply2AllPipesInList( m_outgoing, func ); }
 
-	void Apply2AllInPipes_NoLock ( PipeFunc const & func ) { apply2AllPipesInList_NoLock( m_incoming, func ); }
-	void Apply2AllOutPipes_NoLock( PipeFunc const & func ) { apply2AllPipesInList_NoLock( m_outgoing, func ); }
+	void Apply2AllInPipes_NoLock ( PipeFunc const & func ) const { apply2AllPipesInList_NoLock( m_incoming, func ); }
+	void Apply2AllOutPipes_NoLock( PipeFunc const & func ) const { apply2AllPipesInList_NoLock( m_outgoing, func ); }
 
 	bool Apply2AllInPipesB ( PipeFuncB const & func ) { return apply2AllPipesInListB( m_incoming, func ); }
 	bool Apply2AllOutPipesB( PipeFuncB const & func ) { return apply2AllPipesInListB( m_outgoing, func ); }
@@ -87,14 +87,14 @@ public:
 
 	void Apply2AllConnectedPipes( PipeFunc const & func )
 	{
-		Apply2AllInPipes_Lock ( [&]( Pipe * const pipe ) { func( pipe ); } );
-		Apply2AllOutPipes_Lock( [&]( Pipe * const pipe ) { func( pipe ); } );
+		Apply2AllInPipes_Lock ( [&]( Pipe & pipe ) { func( pipe ); } );
+		Apply2AllOutPipes_Lock( [&]( Pipe & pipe ) { func( pipe ); } );
 	}
 
 	void Apply2AllConnectedPipesB( PipeFuncB const & func )
 	{
-		Apply2AllInPipesB ( [&]( Pipe * const pipe ) { return func( pipe ); } );
-		Apply2AllOutPipesB( [&]( Pipe * const pipe ) { return func( pipe ); } );
+		Apply2AllInPipesB ( [&]( Pipe & pipe ) { return func( pipe ); } );
+		Apply2AllOutPipesB( [&]( Pipe & pipe ) { return func( pipe ); } );
 	}
 
 	virtual void MoveShape( MicroMeterPoint const & );
@@ -120,8 +120,8 @@ private:
 	void apply2AllPipesInList ( PipeList const &, PipeFunc  const & );
 	bool apply2AllPipesInListB( PipeList const &, PipeFuncB const & );
 
-	void apply2AllPipesInList_NoLock ( PipeList const &, PipeFunc  const & );
-	bool apply2AllPipesInListB_NoLock( PipeList const &, PipeFuncB const & );
+	void apply2AllPipesInList_NoLock ( PipeList const &, PipeFunc  const & ) const;
+	bool apply2AllPipesInListB_NoLock( PipeList const &, PipeFuncB const & ) const;
 
 	MicroMeterPoint     m_center;
 	MicroMeter          m_extension;

@@ -76,15 +76,14 @@ NNetAppWindow::NNetAppWindow( )
 	m_pCursorPos      = new Observable( );
 	m_pAppMenu        = new NNetAppMenu( );
 	m_pMainNNetWindow = new NNetWindow( );
-	m_pMiniNNetWindow = new NNetWindow( );
+	m_pMiniNNetWindow = new MiniWindow( );
 	m_pCrsrWindow     = new CrsrWindow( );
 	m_pParameterDlg   = new ParameterDialog( & m_NNetWorkThreadInterface );
-
-	m_pMiniNNetWindow->Observe( m_pMainNNetWindow );  // mini window observes main grid window
 
 	DefineNNetWrappers( & m_NNetWorkThreadInterface, m_pMainNNetWindow );
 
 	m_pMainNNetWindow   ->SetRefreshRate( 100ms );
+	m_pMiniNNetWindow   ->SetRefreshRate( 200ms );
 	m_pCrsrWindow       ->SetRefreshRate( 100ms );
 	m_pPerformanceWindow->SetRefreshRate( 500ms );
 };
@@ -147,6 +146,8 @@ void NNetAppWindow::Start( )
 		m_pDrawModel,
 		m_pCursorPos
 	);
+
+	m_pMiniNNetWindow->Observe( m_pMainNNetWindow );  // mini window observes main grid window
 
 	m_pMiniNNetWindow->Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
 
