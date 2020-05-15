@@ -17,8 +17,8 @@ namespace Util
 				CreateEvent
 				( 
 					nullptr, // no security attributes
-					TRUE,    // manual reset event 
-					FALSE,   // intial state nonsignaled
+					true,    // manual reset event 
+					false,   // intial state nonsignaled
 					nullptr  // no name for event
 				) 
 			)

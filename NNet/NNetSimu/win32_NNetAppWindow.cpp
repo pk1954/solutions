@@ -167,7 +167,7 @@ void NNetAppWindow::Start( )
 		m_pModel,
 		m_pParameters,
 		m_pNNetModelStorage,
-		TRUE    // async thread?
+		true    // async thread?
 	);
 
 	m_pCrsrWindow->Start( m_hwndApp, m_pMainNNetWindow, m_pModelInterface );
@@ -176,11 +176,11 @@ void NNetAppWindow::Start( )
 	m_pParameterDlg->Start( m_hwndApp, m_pParameters );
 	m_pPerformanceWindow->Start( m_hwndApp, m_pModelInterface, & m_NNetWorkThreadInterface, & m_atDisplay );
 
-	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,        TRUE, FALSE );
-	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  * m_pMainNNetWindow,    TRUE, FALSE );
-	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",  IDM_MINI_WINDOW,  * m_pMiniNNetWindow,    TRUE, FALSE );
-	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW", IDM_PARAM_WINDOW, * m_pParameterDlg,      TRUE, FALSE );
-	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",  IDM_PERF_WINDOW,  * m_pPerformanceWindow, TRUE, FALSE );
+	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,        true, false );
+	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  * m_pMainNNetWindow,    true, false );
+	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",  IDM_MINI_WINDOW,  * m_pMiniNNetWindow,    true, false );
+	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW", IDM_PARAM_WINDOW, * m_pParameterDlg,      true, false );
+	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",  IDM_PERF_WINDOW,  * m_pPerformanceWindow, true, false );
 
 	configureStatusBar( );
 
@@ -189,13 +189,13 @@ void NNetAppWindow::Start( )
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
 		wcout << L"Using default window positions" << std::endl;
-		Show( TRUE );
-		m_pMainNNetWindow->Show( TRUE );
-		m_pMiniNNetWindow->Show( TRUE );
+		Show( true );
+		m_pMainNNetWindow->Show( true );
+		m_pMiniNNetWindow->Show( true );
 	}
-	m_pCrsrWindow       ->Show( TRUE );
-	m_pParameterDlg     ->Show( TRUE );
-	m_pPerformanceWindow->Show( TRUE );
+	m_pCrsrWindow       ->Show( true );
+	m_pParameterDlg     ->Show( true );
+	m_pPerformanceWindow->Show( true );
 
 	PostCommand2Application( IDM_RUN, true );
 
@@ -204,12 +204,12 @@ void NNetAppWindow::Start( )
 
 //	m_pNNetModelStorage->Write( wcout );
 
-	m_bStarted = TRUE;
+	m_bStarted = true;
 }
 
 void NNetAppWindow::Stop()
 {
-	m_bStarted = FALSE;
+	m_bStarted = false;
 
 	m_pMainNNetWindow->Stop( );
 	m_pMiniNNetWindow->Stop( );

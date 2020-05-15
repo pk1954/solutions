@@ -20,7 +20,7 @@ namespace Util
 
 		~Thread() {};
 
-		void StartThread( wstring const &, BOOL const );
+		void StartThread( wstring const &, bool const );
 
 		void SetThreadAffinityMask( DWORD_PTR mask )
 		{
@@ -32,7 +32,7 @@ namespace Util
 			if ( m_bAsync )
 			{
 				assert( m_threadId != 0 );
-				BOOL const bRes = ::PostThreadMessage( m_threadId, uiMsg, wParam, lParam );
+				bool const bRes = ::PostThreadMessage( m_threadId, uiMsg, wParam, lParam );
 //				DWORD err = GetLastError( );
 				assert( bRes );
 			}
@@ -44,7 +44,7 @@ namespace Util
 
 		void Terminate( ); // Waits until thread has stopped
 
-		BOOL IsAsyncThread( ) { return m_bAsync; }
+		bool IsAsyncThread( ) { return m_bAsync; }
 
 		virtual void ThreadStartupFunc( ) {};
 		virtual void ThreadMsgDispatcher( MSG const ) = 0;
@@ -53,7 +53,7 @@ namespace Util
 	private:
 		HANDLE  m_handle   { nullptr };
 		UINT    m_threadId { 0 };
-		BOOL    m_bAsync   { false };
+		bool    m_bAsync   { false };
 		Event   m_eventThreadStarter { };
 		wstring m_strThreadName { };
 

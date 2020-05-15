@@ -25,9 +25,10 @@ public:
 		m_mVinputBuffer = m_mvFactor * m_timeSinceLastPulse.GetValue();
 	}
 
-	virtual void Step( )
+	virtual bool CompStep( )
 	{
-		if ( m_timeSinceLastPulse >= m_pulseDuration )  
+		bool bTrigger { m_timeSinceLastPulse >= m_pulseDuration };
+		if ( bTrigger )
 		{
 			m_timeSinceLastPulse = 0._MicroSecs;   
 		}
@@ -35,6 +36,7 @@ public:
 		{
 			m_timeSinceLastPulse += m_pParameters->GetTimeResolution( );
 		}
+		return m_bStopOnTrigger && bTrigger;
 	}
 
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const = tHighlightType::normal ) const;

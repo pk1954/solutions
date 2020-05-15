@@ -36,30 +36,30 @@ public:
     PixelRect     const GetClPixelRect( )          const { return Util::GetClPixelRect         ( m_hwnd ); }
     PIXEL         const GetClientWindowHeight( )   const { return Util::GetClientWindowHeight  ( m_hwnd ); }
     PIXEL         const GetClientWindowWidth( )    const { return Util::GetClientWindowWidth   ( m_hwnd ); }
-    BOOL          const CrsrInClientRect( )        const { return Util::CrsrInClientRect       ( m_hwnd ); }
+    bool          const CrsrInClientRect( )        const { return Util::CrsrInClientRect       ( m_hwnd ); }
     PixelPoint    const GetRelativeCrsrPosition( ) const { return Util::GetRelativeCrsrPosition( m_hwnd ); }
     PixelPoint    const GetClRectCenter( )         const { return Util::GetClRectCenter        ( m_hwnd ); }
 
 	PixelPoint    const Client2Screen( PixelPoint  const & p ) const { return Util::Client2Screen ( m_hwnd, p ); }
 	PixelPoint    const Screen2Client( PixelPoint  const & p ) const { return Util::Screen2Client ( m_hwnd, p ); }
 
-	BOOL          const IsInClientRect( PixelPoint const & p ) const { return Util::IsInClientRect( m_hwnd, p ); }
-	BOOL          const IsInClientRect( PixelRect  const & r ) const { return Util::IsInClientRect( m_hwnd, r ); }
+	bool          const IsInClientRect( PixelPoint const & p ) const { return Util::IsInClientRect( m_hwnd, p ); }
+	bool          const IsInClientRect( PixelRect  const & r ) const { return Util::IsInClientRect( m_hwnd, r ); }
 
-	BOOL          const IsWindowVisible( )            const { return ::IsWindowVisible( m_hwnd ); }
+	bool          const IsWindowVisible( )            const { return ::IsWindowVisible( m_hwnd ); }
 	HWND          const SetCapture( )                 const { return ::SetCapture     ( m_hwnd ); }
     HWND          const SetFocus( )                   const { return ::SetFocus       ( m_hwnd ); }
     HWND          const GetDlgItem( int const iItem ) const { return ::GetDlgItem     ( m_hwnd, iItem ); }
-    BOOL          const IsCaptured( )                 const { return ::GetCapture( ) == m_hwnd; }
+    bool          const IsCaptured( )                 const { return ::GetCapture( ) == m_hwnd; }
 
 	void         SetRefreshRate( milliseconds const );
 	milliseconds GetRefreshRate( );         
 	
     void Show( tBoolOp const op ) const { Util::Show( m_hwnd, op ); }
-    void Show( BOOL    const b  ) const { Util::Show( m_hwnd, b  ); }
+    void Show( bool    const b  ) const { Util::Show( m_hwnd, b  ); }
 
     HDC  BeginPaint( LPPAINTSTRUCT lpPaint ) const { return ::BeginPaint( m_hwnd, lpPaint ); }
-    BOOL EndPaint  ( LPPAINTSTRUCT lpPaint ) const { return ::EndPaint  ( m_hwnd, lpPaint ); }
+    bool EndPaint  ( LPPAINTSTRUCT lpPaint ) const { return ::EndPaint  ( m_hwnd, lpPaint ); }
 
 	void SetTrackBarPos( INT const, LONG const ) const;
 	void SetTrackBarRange( INT const, LONG const, LONG const ) const;
@@ -136,22 +136,22 @@ public:
 		return ::IsDlgButtonChecked( m_hwnd, iIdButton );
 	}
 
-	void Move( PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, BOOL const bRedraw )
+	void Move( PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, bool const bRedraw )
     {
         (void)::MoveWindow( m_hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw );
     }
 
-    void Move( PixelPoint const pos, PixelRectSize const size, BOOL const bRedraw )
+    void Move( PixelPoint const pos, PixelRectSize const size, bool const bRedraw )
     {
         Move( pos.GetX(), pos.GetY(), size.GetX(), size.GetY(), bRedraw );
     }
 
-    void Move( PixelRect const rect, BOOL const bRedraw )
+    void Move( PixelRect const rect, bool const bRedraw )
     {
         Move( rect.GetStartPoint(), rect.GetSize(), bRedraw );
     }
 
-    void Invalidate( BOOL const bRedraw ) 
+    void Invalidate( bool const bRedraw ) 
     {
 		if ( m_hwnd != nullptr )
 			(void)::InvalidateRect( m_hwnd, nullptr, bRedraw );
@@ -186,7 +186,7 @@ public:
 	virtual long AddContextMenuEntries( HMENU const, PixelPoint const ) { return 0L; }
 	virtual void Notify( bool const );
 
-	virtual void Trigger( )	{ Invalidate( FALSE ); }
+	virtual void Trigger( )	{ Invalidate( false ); }
 
 	void ShowRefreshRateDlg( bool const bShow ) { m_bShowRefreshRateDlg = bShow; }
 
@@ -220,4 +220,4 @@ private:
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) = 0;
 };
 
-BOOL RootWinIsReady( RootWindow const * );
+bool RootWinIsReady( RootWindow const * );

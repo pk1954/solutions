@@ -78,7 +78,7 @@ protected:
 	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
 	virtual void OnMouseMove         ( WPARAM const, LPARAM const );
-	virtual BOOL OnCommand           ( WPARAM const, LPARAM const );
+	virtual bool OnCommand           ( WPARAM const, LPARAM const );
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const );
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
@@ -122,7 +122,7 @@ private:
 	void   smoothStep( );
 	LPARAM crsPos2LPARAM( ) const;
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
-	BOOL   inObservedClientRect( LPARAM const );
+	bool   inObservedClientRect( LPARAM const );
 	void   setSuperHighlightedShape( MicroMeterPoint const & );
 	void   setHighlightedShape     ( MicroMeterPoint const & );
 };

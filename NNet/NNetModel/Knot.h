@@ -36,7 +36,7 @@ public:
 
 	virtual mV GetNextOutput( ) const { return m_mVinputBuffer; }
 
-	virtual void Step        ( ) { }
+	virtual bool CompStep    ( ) { return false; }
 	virtual void DrawExterior( DrawContext const &, tHighlightType const = tHighlightType::normal ) const;
 	virtual void DrawInterior( DrawContext const & ) const;
 	virtual void Recalc      ( ) { };

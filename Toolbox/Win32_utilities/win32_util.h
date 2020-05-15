@@ -154,7 +154,7 @@ namespace Util
 		};
     }
 
-	inline BOOL MoveWindow( HWND const hwnd, PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, BOOL const bRedraw )
+	inline bool MoveWindow( HWND const hwnd, PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, bool const bRedraw )
 	{
 		return ::MoveWindow( hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw );
 	}
@@ -164,20 +164,20 @@ namespace Util
 		(void)::SendMessage( hwnd, WM_SETTEXT,	0, (LPARAM)( wstrText )	);
 	}
 
-    inline void Show( HWND const hwnd, BOOL const bStateOld, BOOL const bStateNew )
+    inline void Show( HWND const hwnd, bool const bStateOld, bool const bStateNew )
     {
         if ( bStateNew != bStateOld )
             ShowWindow( hwnd, bStateNew ? SW_SHOW : SW_HIDE );
     }
 
-    inline void Show( HWND const hwnd, BOOL const bStateNew )
+    inline void Show( HWND const hwnd, bool const bStateNew )
     {
         Util::Show( hwnd, IsWindowVisible( hwnd ), bStateNew );
     }
 
-    inline BOOL Show( HWND const hwnd, tBoolOp const op )
+    inline bool Show( HWND const hwnd, tBoolOp const op )
     {
-        BOOL const bStateOld = IsWindowVisible( hwnd );
+        bool const bStateOld = IsWindowVisible( hwnd );
         Util::Show( hwnd, ApplyOp2( bStateOld, op ) );
 		return bStateOld;
     }
@@ -217,13 +217,13 @@ namespace Util
 		return PixelPoint( pixSize.GetX(), pixSize.GetY() );
     }
 
-    inline BOOL IsInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?
+    inline bool IsInClientRect( HWND const hwnd, PixelPoint const pp )  // Is point in client rect?
     {
         RECT const rect = GetClRect( hwnd );  
 		return PtInRect( &rect, PixelPoint2POINT( pp ) );
     } 
 
-    inline BOOL IsInClientRect( HWND const hwnd, PixelRect const & pixRect )  // Is rect in client rect?
+    inline bool IsInClientRect( HWND const hwnd, PixelRect const & pixRect )  // Is rect in client rect?
     {
         RECT const rect = GetClRect( hwnd );  
 		return PtInRect( &rect, PixelPoint2POINT( pixRect.GetStartPoint() ) ) && 
@@ -262,7 +262,7 @@ namespace Util
     inline PixelRectSize GetWindowSize( HWND const hwnd )
     {
         RECT rect;
-        BOOL bRes = GetWindowRect( hwnd, &rect );
+        bool bRes = GetWindowRect( hwnd, &rect );
 		assert( bRes );
         return PixelRectSizeFromRECT( rect );
     }
@@ -305,7 +305,7 @@ namespace Util
 		return PIXEL(PIXEL(rect.right));
     }
 
-    inline BOOL CrsrInClientRect( HWND const hwnd )  // Is cursor position in client rect?
+    inline bool CrsrInClientRect( HWND const hwnd )  // Is cursor position in client rect?
     {
 		return IsInClientRect( hwnd, GetRelativeCrsrPosition( hwnd )  );
     } 
@@ -348,15 +348,15 @@ namespace Util
         return monInfo;
     }
 
-	void MakeLayered( HWND const , BOOL const, COLORREF const, UINT const );
+	void MakeLayered( HWND const , bool const, COLORREF const, UINT const );
 
     void AdjustRight( HWND const, PIXEL const );
     void AdjustLeft ( HWND const, PIXEL const );
 
     PixelRect CalcWindowRect( PixelRect const, DWORD const );
 
-    BOOL MoveWindowAbsolute( HWND const, PixelRect  const &, BOOL const );
-    BOOL MoveWindowAbsolute( HWND const, PixelPoint const &, BOOL const );
+    bool MoveWindowAbsolute( HWND const, PixelRect  const &, bool const );
+    bool MoveWindowAbsolute( HWND const, PixelPoint const &, bool const );
 	
     DWORD     GetNrOfCPUs( );
     ULONGLONG GetPhysicalMemory( );

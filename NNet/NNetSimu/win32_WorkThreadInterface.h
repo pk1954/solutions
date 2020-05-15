@@ -39,7 +39,7 @@ public:
 		NNetModel         * const,
 		Param             * const,
 		NNetModelStorage  * const,
-		BOOL                const
+		bool                const
 	);
 	void Stop(); 
 
@@ -72,8 +72,8 @@ public:
 	void PostSlowMotionChanged   ( );
 	void PostStopComputation     ( );
 
-	BOOL       IsRunning            ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }
-	BOOL       IsAsyncThread        ( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }
+	bool       IsRunning            ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }
+	bool       IsAsyncThread        ( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }
 	fMicroSecs GetTimeSpentPerCycle ( ) const { return m_pNNetWorkThread->GetTimeSpentPerCycle( ); }
 	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_pNNetWorkThread->GetTimeAvailPerCycle( ); }
 	fMicroSecs GetSimuTimeResolution( ) const { return m_pNNetWorkThread->GetSimuTimeResolution( ); }
@@ -89,10 +89,10 @@ public:
 
 private:
 
-	BOOL       IsTraceOn  ( ) const { return   m_bTrace; }
+	bool       IsTraceOn  ( ) const { return   m_bTrace; }
 	wostream & TraceStream( )       { return * m_pTraceStream; }
 
-	BOOL              m_bTrace;
+	bool              m_bTrace;
 	wostream        * m_pTraceStream    { nullptr };
 	NNetWorkThread  * m_pNNetWorkThread { nullptr };
 

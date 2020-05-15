@@ -17,7 +17,7 @@ public:
 		PixelRectSize & pixSize,
 		TextWindow    * pTextWindow,
 		wstring const & strName,
-		BOOL            bAsync
+		bool            bAsync
 	) :
 		m_pTextWindow( pTextWindow ),
 		m_hDC( hDC_Memory )
@@ -46,7 +46,7 @@ public:
 	{
         m_pTextBuffer->StartPainting( );
 		m_pTextWindow->DoPaint( * m_pTextBuffer );
-		m_pTextWindow->Invalidate( FALSE );
+		m_pTextWindow->Invalidate( false );
 	}
 
 private:

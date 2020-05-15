@@ -22,13 +22,13 @@ static INT_PTR CALLBACK About
 
 	case WM_INITDIALOG:
 		SetDlgItemText( hDlg, IDD_TIMESTAMP, COMPILE_TIMESTAMP );
-		return TRUE;
+		return true;
 
 	case WM_COMMAND:
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
         {
             (void)EndDialog(hDlg, LOWORD(wParam));
-            return TRUE;
+            return true;
         }
         break;
 
@@ -36,7 +36,7 @@ static INT_PTR CALLBACK About
         break;
     }
 
-    return FALSE;
+    return false;
 }
 
 void ShowAboutBox( HWND const hwndParent ) 

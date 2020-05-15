@@ -178,19 +178,30 @@ public:
 		* this = ZERO_VAL();
 	}
 
-	friend RectType const operator+ (RectType const a, POS_TYPE const b	) 
+	friend RectType const operator+ ( RectType const a, POS_TYPE const b	) 
 	{ 
 		RectType res { a }; 
 		res += b; 
 		return res; 
-	};
+	}
 
-	friend RectType const operator- (RectType const a, POS_TYPE const b	) 
+	friend RectType const operator- ( RectType const a, POS_TYPE const b	) 
 	{ 
 		RectType res { a }; 
 		res -= b;
 		return res; 
-	};
+	}
+
+	friend RectType const Union( RectType const a, RectType const b	) 
+	{ 
+		return RectType
+		{
+			min( a.m_Left,   b.m_Left   ), 
+			min( a.m_Top,    b.m_Top    ), 
+			max( a.m_Right,  b.m_Right  ), 
+			max( a.m_Bottom, b.m_Bottom )
+		};
+	}
 
 	friend std::wostream & operator << ( std::wostream & out, RectType const & rect )
 	{

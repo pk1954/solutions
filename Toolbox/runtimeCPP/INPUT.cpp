@@ -80,12 +80,12 @@ wchar_t InputBuffer::ReadNextChar( )
 
 // IsFloat - Look ahead in input buffer, to check if actual token is a float
 //           number or not. The function does not check exact syntax, it just
-//           gives a hint. If IsFloat returns FALSE, the actual token is
-//           definitly not a correct float. If it returns TRUE it might be a
+//           gives a hint. If IsFloat returns false, the actual token is
+//           definitly not a correct float. If it returns true it might be a
 //           valid integer or a syntax error.
 //
-//   Return code: TRUE  if actual token in input buffer looks like a float
-//                FALSE otherwise 
+//   Return code: true  if actual token in input buffer looks like a float
+//                false otherwise 
 //                    
 //   Writes to:   ---
 //                 
@@ -145,7 +145,7 @@ void InputBuffer::SetStartMarker( )
    m_pwchStart = m_pwchRead-1;
 }                                          
 
-// SetReadAheadFlag: If parameter is TRUE, 
+// SetReadAheadFlag: If parameter is true, 
 //                   character after actual token has been read
 
 void InputBuffer::SetReadAheadFlag( bool const fValue )

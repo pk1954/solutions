@@ -195,7 +195,7 @@ public:
 		Apply2All<T>( {	[&](T const & s) { if ( s.IsSelected() ) { func( s ); } } } );
 	}
 
-	virtual void Compute( );
+	virtual bool Compute( );
 
 	void CreateInitialShapes();
 	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }

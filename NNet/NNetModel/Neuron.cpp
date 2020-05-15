@@ -94,9 +94,11 @@ void Neuron::Clear( )
 	Shape::Clear( );
 }
 
-void Neuron::Step( )
+bool Neuron::CompStep( )
 {
-	if ( (m_mVinputBuffer >= Threshold( )) && (m_timeSinceLastPulse >= PulseWidth() + RefractPeriod()) )  
+	bool bTrigger { (m_mVinputBuffer >= Threshold( )) && (m_timeSinceLastPulse >= PulseWidth() + RefractPeriod()) };
+
+	if ( bTrigger )
 	{
 		m_timeSinceLastPulse = 0._MicroSecs;
 		m_bTriggered = true;
@@ -107,6 +109,8 @@ void Neuron::Step( )
 	{
 		m_timeSinceLastPulse += m_pParameters->GetTimeResolution( );
 	}
+
+	return m_bStopOnTrigger && bTrigger;
 }
 
 mV Neuron::GetNextOutput( ) const

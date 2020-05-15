@@ -41,7 +41,7 @@ static INT_PTR CALLBACK BaseDialogProc
 	{
 	case WM_INITDIALOG:
 		(void)SetWindowLongPtr( hwnd, GWLP_USERDATA, (LONG_PTR)lParam );
-		return TRUE;
+		return true;
 
 	default:
 		break;
@@ -50,7 +50,7 @@ static INT_PTR CALLBACK BaseDialogProc
 		BaseDialog * pBaseDialog = reinterpret_cast<BaseDialog *>(GetUserDataPtr( hwnd ));
 
 		if ( ! RootWinIsReady( pBaseDialog ) )
-			return FALSE;
+			return false;
 
 		return pBaseDialog->RootWindowProc( hwnd, message, wParam, lParam );         // normal case
 	}

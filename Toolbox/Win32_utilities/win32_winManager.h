@@ -17,9 +17,9 @@ public:
     WinManager( );
     virtual ~WinManager( ) { };
 
-	void AddWindow( std::wstring const, UINT const, HWND,               BOOL const, BOOL const );
-	void AddWindow( std::wstring const, UINT const, BaseWindow const &, BOOL const, BOOL const );
-	void AddWindow( std::wstring const, UINT const, BaseDialog const &, BOOL const, BOOL const );
+	void AddWindow( std::wstring const, UINT const, HWND,               bool const, bool const );
+	void AddWindow( std::wstring const, UINT const, BaseWindow const &, bool const, bool const );
+	void AddWindow( std::wstring const, UINT const, BaseDialog const &, bool const, bool const );
 
 	void RemoveWindow( UINT const id )
 	{
@@ -72,17 +72,17 @@ public:
 		return -1;
 	}
 
-    BOOL const IsMoveable( UINT const id ) const // can throw out_of_range exception
+    bool const IsMoveable( UINT const id ) const // can throw out_of_range exception
     {
         return m_map.at( id ).m_bTrackPosition;
     }
 
-	BOOL const IsSizeable( UINT const id ) const // can throw out_of_range exception
+	bool const IsSizeable( UINT const id ) const // can throw out_of_range exception
 	{
 		return m_map.at( id ).m_bTrackSize;
 	}
 
-	BOOL const IsVisible( UINT const id ) const // can throw out_of_range exception
+	bool const IsVisible( UINT const id ) const // can throw out_of_range exception
 	{
 		return IsWindowVisible( GetHWND( id ) );
 	}
@@ -102,7 +102,7 @@ public:
         ++m_iNrOfMonitorConfigurations; 
     };
 
-    BOOL GetWindowConfiguration( );
+    bool GetWindowConfiguration( );
     void StoreWindowConfiguration( );
 
 private:
@@ -114,8 +114,8 @@ private:
         std::wstring const   m_wstr;
 		BaseWindow   const * m_pBaseWindow;    // Normally WinManager handles BaseWindows
 		HWND         const   m_hwnd;           // but in some cases also naked HWNDs are used
-		BOOL         const   m_bTrackPosition; // if TRUE, winManager sets window position from config file
-		BOOL         const   m_bTrackSize;     // if TRUE, winManager sets window size from config file
+		bool         const   m_bTrackPosition; // if true, winManager sets window position from config file
+		bool         const   m_bTrackSize;     // if true, winManager sets window size from config file
     };
 
     std::unordered_map< UINT, MAP_ELEMENT > m_map;
@@ -132,7 +132,7 @@ private:
 		UINT         const,
 		HWND         const,
 		BaseWindow   const * const,
-		BOOL         const,
-		BOOL         const
+		bool         const,
+		bool         const
 	);
 };

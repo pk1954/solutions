@@ -120,10 +120,10 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	default:
-		return FALSE; // command has not been processed
+		return false; // command has not been processed
 	}
 
-	return TRUE;  // command has been processed
+	return true;  // command has been processed
 }
 
 bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )

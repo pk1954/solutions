@@ -37,7 +37,7 @@ void PerformanceWindow::Start
 		PixelRect { 0_PIXEL, 0_PIXEL, 300_PIXEL, 250_PIXEL }, 
 		L"PerformanceWindow", 
 		100,  // alpha
-		TRUE,
+		true,
 		nullptr
 	);
 	m_pModelInterface      = pModelInterface;
@@ -49,7 +49,7 @@ void PerformanceWindow::Start
 void PerformanceWindow::Stop( )
 {
 	TextWindow::StopTextWindow( );
-	Show( FALSE );
+	Show( false );
 }
 
 void PerformanceWindow::printMicroSecLine

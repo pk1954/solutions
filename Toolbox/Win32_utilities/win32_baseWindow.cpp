@@ -76,10 +76,10 @@ static LRESULT CALLBACK BaseWndProc
     {
 	case WM_NCCREATE:    // retrieve Window instance from window creation data and associate    
         (void)SetWindowLongPtr( hwnd, GWLP_USERDATA, (LONG_PTR)( (LPCREATESTRUCT)lParam )->lpCreateParams );
-        return TRUE;
+        return true;
 
 	case WM_ERASEBKGND:
-		return TRUE;			// Do not erase background
+		return true;			// Do not erase background
 
 	default:
  		break;

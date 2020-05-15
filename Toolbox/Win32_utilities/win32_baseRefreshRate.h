@@ -24,7 +24,7 @@ public:
 
 	void Notify( bool const bImmediately )
 	{
-		m_bDirty = TRUE;
+		m_bDirty = true;
 		if ( bImmediately || (m_msRefreshRate == 0ms) )
 			trigger( );
 	}
@@ -34,15 +34,15 @@ public:
 private:
 	HANDLE       m_hTimer        { nullptr };
 	milliseconds m_msRefreshRate { 0ms };
-	BOOL         m_bDirty        { TRUE };
+	bool         m_bDirty        { true };
 
 	void startTimer( milliseconds const );
 	void deleteTimer( );
 	void trigger( )
 	{
 		Trigger( );
-		m_bDirty = FALSE;
+		m_bDirty = false;
 	}
 
-	static void CALLBACK TimerProc( void * const, BOOL const );
+	static void CALLBACK TimerProc( void * const, bool const );
 };

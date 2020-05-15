@@ -56,12 +56,13 @@ public:
 		m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
 	}
 
-	virtual void Step( )
+	virtual bool CompStep( )
 	{
 		* m_potIter = m_mVinputBuffer;
 		if ( m_potIter == m_potential.begin() )
 			m_potIter = m_potential.end( );
 		-- m_potIter;
+		return false;
 	}
 
 	virtual void Select( tBoolOp const op ) 

@@ -43,5 +43,5 @@ void Param::SetParameterValue
 		case tParameter::signalLoss: /* not used, only for compaitibility reasons */                break;
 		default: assert( false );
 	}
-	m_observable.NotifyAll( FALSE );
+	m_observable.NotifyAll( false );
 }

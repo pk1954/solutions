@@ -77,7 +77,7 @@ public:
 		LAST = NNET_LAST
 	};
 
-	static BOOL IsValid( NNetWorkThreadMessage::Id msg )
+	static bool IsValid( NNetWorkThreadMessage::Id msg )
 	{
 		return (NNetWorkThreadMessage::Id::FIRST <= msg) && (msg <= NNetWorkThreadMessage::Id::LAST);
 	}
@@ -100,14 +100,14 @@ public:
 		NNetModel               * const,
 		Param                   * const,
 		NNetModelStorage        * const,
-		BOOL                      const
+		bool                      const
 	);
 	~NNetWorkThread( );
 
 	virtual void ThreadStartupFunc( );
 	virtual void ThreadMsgDispatcher( MSG const );
 
-	BOOL       IsRunning()              const { return m_bContinue; }
+	bool       IsRunning()              const { return m_bContinue; }
 	fMicroSecs GetTimeSpentPerCycle ( ) const { return m_usRealTimeSpentPerCycle; }
 	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_usRealTimeAvailPerCycle; }
 	fMicroSecs GetRealTimeTilStart  ( ) const { return m_hrTimer.GetMicroSecsTilStart( ); }
@@ -146,15 +146,15 @@ public:
 
 private:
 
-	void compute();
-	BOOL dispatch( MSG const );
+	bool compute();
+	bool dispatch( MSG const );
 	void generationRun( bool const );
 	void generationStop( );
 	bool actionCommand( NNetWorkThreadMessage::Id const, ShapeId const, MicroMeterPoint const & );
 
 	inline static tAppCallBack m_appCallback { nullptr };
 
-	BOOL                  m_bContinue               { FALSE };
+	bool                  m_bContinue               { false };
 	fMicroSecs            m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
 	fMicroSecs            m_usRealTimeAvailPerCycle { 0.0_MicroSecs };
 	TimeResObserver     * m_pTimeResObserver        { nullptr };

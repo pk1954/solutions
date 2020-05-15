@@ -43,7 +43,7 @@ void CrsrWindow::Start
 		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 500_PIXEL }, 
 		L"CrsrWindow", 
 		100, 
-		TRUE,
+		true,
 		nullptr
 	);
 //	::CreateWindowToolTip( GetWindowHandle(), L"Cursor window" );
@@ -52,7 +52,7 @@ void CrsrWindow::Start
 void CrsrWindow::Stop( )
 {
 	TextWindow::StopTextWindow( );
-	Show( FALSE );
+	Show( false );
 }
 
 void CrsrWindow::printMicroMeter

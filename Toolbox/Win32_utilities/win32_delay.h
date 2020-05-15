@@ -26,7 +26,7 @@ public:
 		return m_msGenerationDelay;
 	};
 
-	BOOL IsMaxSpeed( ) const
+	bool IsMaxSpeed( ) const
 	{
 		return m_msGenerationDelay == milliseconds::zero();
 	};

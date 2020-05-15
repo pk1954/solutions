@@ -152,15 +152,15 @@ LRESULT ParameterDialog::UserProc( UINT const message, WPARAM const wParam, LPAR
 
 		case IDD_APPLY_PARAMETERS:
 			applyParameters( );
-			return TRUE;
+			return true;
 
 		case IDD_RESET_PARAMETERS:
 			resetParameters( );
-			return TRUE;
+			return true;
 
 		case IDCANCEL:
-			Show( FALSE );
-			return TRUE;
+			Show( false );
+			return true;
 
 		default:
 			break;
@@ -173,5 +173,5 @@ LRESULT ParameterDialog::UserProc( UINT const message, WPARAM const wParam, LPAR
 		break;
 	}
 
-	return FALSE;
+	return false;
 }

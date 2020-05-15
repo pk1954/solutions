@@ -15,27 +15,27 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 		if ( OnCommand( wParam, lParam ) )
 			PostCommand2Application( wParam, lParam ); // not handled here, delegate to application
 //		PostCommand2Application( IDM_REFRESH, 0 );
-		return FALSE;
+		return false;
 
 	case WM_MOUSEMOVE:
 		OnMouseMove( wParam, lParam );
-		return FALSE;
+		return false;
 
 	case WM_LBUTTONDBLCLK:
 		OnLeftButtonDblClick( wParam, lParam );
-		return FALSE;
+		return false;
 
 	case WM_MOUSEWHEEL:
 		OnMouseWheel( wParam, lParam );
-		return FALSE;
+		return false;
 
 	case WM_LBUTTONDOWN:
 		OnLButtonDown( wParam, lParam );
-		return TRUE;
+		return true;
 
 	case WM_LBUTTONUP:
 		OnLButtonUp( wParam, lParam );
-		return FALSE;
+		return false;
 
 	case WM_RBUTTONUP:
 		return OnRButtonUp( wParam, lParam );
@@ -45,17 +45,17 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 
 	case WM_SETCURSOR:
 		OnSetCursor( wParam, lParam );
-		return FALSE;
+		return false;
 
 	case WM_PAINT:
 		m_pDisplayTimer->TimerStart( );
 		OnPaint( );
 		m_pDisplayTimer->TimerStop( );
-		return FALSE;
+		return false;
 
 	case WM_SIZE:
 		OnSize( wParam, lParam );
-		return FALSE;
+		return false;
 
 	default:
 		break;

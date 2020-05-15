@@ -24,7 +24,7 @@ SimulationControl::SimulationControl
 
 void SimulationControl::Notify( bool const bImmediate )
 {
-	BOOL const bIsRunning = m_pWorkThreadInterface->IsRunning();
+	bool const bIsRunning = m_pWorkThreadInterface->IsRunning();
 
 	EnableWindow( m_pStatusBar->GetDlgItem( IDM_RUN  ),    ! bIsRunning );
 	EnableWindow( m_pStatusBar->GetDlgItem( IDM_STOP ),      bIsRunning );

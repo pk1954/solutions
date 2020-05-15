@@ -19,7 +19,7 @@ using std::unordered_map;
 
 WorkThreadInterface::WorkThreadInterface( ) :
 	m_pTraceStream   ( nullptr ),
-	m_bTrace         ( TRUE ),
+	m_bTrace         ( true ),
 	m_pNNetWorkThread( nullptr )
 { }
 
@@ -45,7 +45,7 @@ void WorkThreadInterface::Start
 	NNetModel          * const pModel,
 	Param              * const pParam,
 	NNetModelStorage   * const pStorage,
-	BOOL                 const bAsync
+	bool                 const bAsync
 )
 {
 	m_pNNetWorkThread = new NNetWorkThread

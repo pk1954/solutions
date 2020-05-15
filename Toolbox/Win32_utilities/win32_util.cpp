@@ -33,7 +33,7 @@ wostream & Util::operator << ( wostream & out, RECT const & rect )
 PixelRect Util::CalcWindowRect( PixelRect pixRect, DWORD const dwStyle )
 {
 	RECT rect = Util::PixelRect2RECT( pixRect );
-	(void)AdjustWindowRect( &rect, dwStyle, FALSE );	
+	(void)AdjustWindowRect( &rect, dwStyle, false );	
 	pixRect = Util::RECT2PixelRect( rect );
 	return pixRect;
 }
@@ -44,27 +44,27 @@ void Util::AdjustRight( HWND const hwnd, PIXEL const pixYpos )
     PIXEL const pixWidthParent = GetClientWindowWidth( hwndParent );
     PIXEL const pixWidth       = GetWindowWidth( hwnd );
     PIXEL const pixHeight      = GetWindowHeight( hwnd );
-    MoveWindow( hwnd, (pixWidthParent - pixWidth), pixYpos, pixWidth, pixHeight, TRUE );
+    MoveWindow( hwnd, (pixWidthParent - pixWidth), pixYpos, pixWidth, pixHeight, true );
     (void)BringWindowToTop( hwnd );
 }
 
 void Util::AdjustLeft( HWND const hwnd, PIXEL const pixYpos )
 {
 	PixelRectSize pnt = GetWindowSize( hwnd );
-    MoveWindow( hwnd, 0_PIXEL, pixYpos, pnt.GetX(), pnt.GetY(), TRUE );
+    MoveWindow( hwnd, 0_PIXEL, pixYpos, pnt.GetX(), pnt.GetY(), true );
     (void)BringWindowToTop( hwnd );
 }
 
-BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and set size
+bool Util::MoveWindowAbsolute  // move window to given screen coordinates and set size
 (
 	HWND      const   hwnd,
 	PixelRect const & pixRect,
-	BOOL      const   bRepaint
+	bool      const   bRepaint
 )
 {
 	HWND const hwndParent { GetAncestor( hwnd, GA_PARENT ) };
 	PixelPoint pixPoint{ pixRect.GetStartPoint() };
-	BOOL       bRes;
+	bool       bRes;
 
 	if ( hwndParent )
 		pixPoint = Screen2Client( hwndParent, pixPoint );
@@ -77,24 +77,24 @@ BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 	return bRes;
 }
 
-BOOL Util::MoveWindowAbsolute  // move window to given screen coordinates 
+bool Util::MoveWindowAbsolute  // move window to given screen coordinates 
 (
 	HWND       const   hwnd,
 	PixelPoint const & pixPos,
-	BOOL       const   bRepaint
+	bool       const   bRepaint
 )
 {
 	return MoveWindowAbsolute( hwnd, PixelRect{ pixPos, GetWindowSize( hwnd ) }, bRepaint );
 }
 
-void Util::MakeLayered( HWND const hwnd, BOOL const bMode, COLORREF const crKey, UINT const uiAlpha )
+void Util::MakeLayered( HWND const hwnd, bool const bMode, COLORREF const crKey, UINT const uiAlpha )
 {
     if ( bMode )
         AddWindowStyle( hwnd, WS_EX_LAYERED );
     else
         DeleteWindowStyle( hwnd, WS_EX_LAYERED );
 
-    BOOL const bRes = SetLayeredWindowAttributes( hwnd, crKey, ( 255 * uiAlpha ) / 100, (crKey == 0) ? LWA_ALPHA : LWA_COLORKEY );
+    bool const bRes = SetLayeredWindowAttributes( hwnd, crKey, ( 255 * uiAlpha ) / 100, (crKey == 0) ? LWA_ALPHA : LWA_COLORKEY );
     assert( bRes );
 }
 
@@ -146,7 +146,7 @@ void Util::SetApplicationTitle
 void Util::StdOutConsole( )
 {
     FILE  * fp;
-    BOOL    bRes = AllocConsole( );
+    bool    bRes = AllocConsole( );
     errno_t res  = _wfreopen_s( &fp, L"CONOUT$", L"w", stdout );
     wcout << L"Console started" << endl;
     HWND hwnd = ::GetConsoleWindow();

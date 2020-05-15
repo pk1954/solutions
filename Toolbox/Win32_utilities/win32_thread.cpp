@@ -23,7 +23,7 @@ HANDLE Util::RunAsAsyncThread
 void Util::Thread::StartThread
 (  
 	wstring const & strName, // for debugging only
-	BOOL    const   bAsync
+	bool    const   bAsync
 )
 {
 	m_strThreadName = strName;

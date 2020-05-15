@@ -15,7 +15,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
 
 	case WM_COMMAND:
 		pStatusBar->PostCommand2Application( LOWORD(wParam), 0 );
-		return FALSE;
+		return false;
 
 	default: 
 		break;
@@ -83,7 +83,7 @@ void StatusBar::LastPart( )
 
 void StatusBar::Stop( )
 {
-	Show( FALSE );
+	Show( false );
 	DestroyWindow( );
 }
 

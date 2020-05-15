@@ -37,12 +37,12 @@ public:
 				HWND const hwnd = m_pWinManager->GetHWND( uiResId );
 				if ( m_pWinManager->IsSizeable( uiResId ) )
 				{
-					BOOL bRes = Util::MoveWindowAbsolute( hwnd, pixRect, TRUE ); 
+					bool bRes = Util::MoveWindowAbsolute( hwnd, pixRect, true ); 
 					assert( bRes );
 				}
 				else
 				{
-     				BOOL bRes = Util::MoveWindowAbsolute( hwnd, pixRect.GetStartPoint(), TRUE ); 
+     				bool bRes = Util::MoveWindowAbsolute( hwnd, pixRect.GetStartPoint(), true ); 
 					DWORD dwErr = GetLastError();
 					assert( bRes );
 				}
@@ -85,7 +85,7 @@ struct CHECK_MON_STRUCT  // communication between WrapMonitorInfos and CheckMoni
     int      m_iMonCounter;
     int      m_iMonFromScript;
     Script & m_script;
-    BOOL     m_bCheckResult;
+    bool     m_bCheckResult;
 };
 
 static MONITORINFO ScrReadMonitorInfo( Script & script )
@@ -100,7 +100,7 @@ static MONITORINFO ScrReadMonitorInfo( Script & script )
     return monInfo;
 }
 
-static BOOL operator != ( MONITORINFO const & a, MONITORINFO const b ) 
+static bool operator != ( MONITORINFO const & a, MONITORINFO const b ) 
 { 
     return ( a.rcMonitor != b.rcMonitor) || ( a.rcWork != b.rcWork ) || ( a.dwFlags != b.dwFlags );
 };
@@ -114,8 +114,8 @@ static BOOL CALLBACK CheckMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT
 
     if ( pMonStruct->m_iMonFromScript == 0 )
     {                                        // m_script describes less monitors than current configuration  
-        pMonStruct->m_bCheckResult = FALSE;  // this is not the right configuration
-        return FALSE;                        // stop monitor enumeration
+        pMonStruct->m_bCheckResult = false;  // this is not the right configuration
+        return false;                        // stop monitor enumeration
     }
 
     ++( pMonStruct->m_iMonCounter );
@@ -127,11 +127,11 @@ static BOOL CALLBACK CheckMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT
           ( pMonStruct->m_iMonFromScript != pMonStruct->m_iMonCounter )
        )
     {                                        // some monitor infos don't fit
-        pMonStruct->m_bCheckResult = FALSE;  // this is not the right configuration
-        return FALSE;                        // stop monitor enumeration
+        pMonStruct->m_bCheckResult = false;  // this is not the right configuration
+        return false;                        // stop monitor enumeration
     }
 
-    return TRUE;                      // everything ok so far, continue with monitor enumeration
+    return true;                      // everything ok so far, continue with monitor enumeration
 }
 
 // Syntax of monitor configuration file
@@ -151,7 +151,7 @@ public:
     
     virtual void operator() ( Script & script ) const     // process one monitor configuration
     {
-        CHECK_MON_STRUCT monStruct = { 0, 0, script, TRUE };
+        CHECK_MON_STRUCT monStruct = { 0, 0, script, true };
 
         wstring wstrFileName = script.ScrReadString( );             // read window configuration file name
 
@@ -167,7 +167,7 @@ public:
                 {
                     (void)ScrReadMonitorInfo( script );
                 } while ( script.ScrReadInt( ) != 0 );
-                monStruct.m_bCheckResult = FALSE;                   // this is not the right configuration
+                monStruct.m_bCheckResult = false;                   // this is not the right configuration
             }
         }
 
@@ -181,20 +181,20 @@ private:
     WinManager * m_pWinManager;
 };
 
-BOOL WinManager::GetWindowConfiguration( )
+bool WinManager::GetWindowConfiguration( )
 {
     Script scriptWindowConfig;
 	
 	if (! scriptWindowConfig.ScrProcess(MONITOR_CONFIG_FILE))
 	{
 		wcout << L"Could not find " << MONITOR_CONFIG_FILE << endl;
-		return FALSE;
+		return false;
 	} 
 	
 	if ( m_strWindowConfigurationFile.empty() )
 	{
 		wcout << L"Monitor configuration unknown" << endl;
-		return FALSE;
+		return false;
 	}
 
 	wcout << L"Window configuration file " << m_strWindowConfigurationFile;
@@ -205,10 +205,10 @@ BOOL WinManager::GetWindowConfiguration( )
 	else
 	{
 		wcout << L" missing or bad" << endl;
-		return FALSE;
+		return false;
 	}
 
-    return TRUE;
+    return true;
 }
 
 //
@@ -238,7 +238,7 @@ static BOOL CALLBACK DumpMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT 
                 : L"1    # primary monitor"
              ) << endl;
 
-    return TRUE;
+    return true;
 }
 
 void WinManager::dumpMonitorConfiguration( ) const
@@ -321,8 +321,8 @@ void WinManager::addWindow
     UINT         const         id, 
     HWND         const         hwnd, 
     BaseWindow   const * const pBaseWindow,
-    BOOL         const         bTrackPosition,
-    BOOL         const         bTrackSize
+    bool         const         bTrackPosition,
+    bool         const         bTrackSize
 )
 {
     if ( id != 0 )
@@ -337,8 +337,8 @@ void WinManager::AddWindow
     wstring const wstrName, 
     UINT    const id, 
     HWND    const hwnd, 
-	BOOL    const bTrackPosition,
-	BOOL    const bTrackSize
+	bool    const bTrackPosition,
+	bool    const bTrackSize
 )
 {
 	assert( hwnd != nullptr );
@@ -350,8 +350,8 @@ void WinManager::AddWindow
 	std::wstring const   wstrName, 
 	UINT         const   id, 
 	BaseWindow   const & baseWindow,
-	BOOL         const   bTrackPosition,
-	BOOL         const   bTrackSize
+	bool         const   bTrackPosition,
+	bool         const   bTrackSize
 )
 {
     addWindow( wstrName, id, baseWindow.GetWindowHandle(), & baseWindow, bTrackPosition, bTrackSize );
@@ -362,8 +362,8 @@ void WinManager::AddWindow
 	std::wstring const   wstrName, 
 	UINT         const   id, 
 	BaseDialog   const & baseDialog,
-	BOOL         const   bTrackPosition,
-	BOOL         const   bTrackSize
+	bool         const   bTrackPosition,
+	bool         const   bTrackSize
 )
 {
     addWindow( wstrName, id, baseDialog.GetWindowHandle(), nullptr, bTrackPosition, bTrackSize );

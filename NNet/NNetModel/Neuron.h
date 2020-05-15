@@ -43,13 +43,14 @@ public:
 	virtual void DrawInterior( DrawContext const & ) const;
 	virtual void Recalc( );
 	virtual void Clear( );
-	virtual void Step( );
+	virtual bool CompStep( );
 	virtual mV   GetNextOutput( ) const;
 
 	virtual void DrawNeuronText( DrawContext const & ) const;
 
 protected:
 	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };
+	bool       m_bStopOnTrigger     { false };
 
 	mV waveFunction( fMicroSecs const ) const;
 
@@ -58,8 +59,8 @@ protected:
 private:
 	mutable bool m_bTriggered { false };
 
-	float m_factorW; // Parameter of wave function
-	float m_factorU; // Parameter of wave function
+	float     m_factorW; // Parameter of wave function
+	float     m_factorU; // Parameter of wave function
 
 	bool      m_bTriggerSoundOn       { false };
 	Hertz     m_triggerSoundFrequency { 0_Hertz };   

@@ -81,7 +81,7 @@ NNetWindow::~NNetWindow( )
 void NNetWindow::Zoom( MicroMeter const newSize )
 {
 	if ( m_context.ZoomKeepCrsrPos( GetRelativeCrsrPosition(), newSize ) )
-		Notify( TRUE );     // cause immediate repaint
+		Notify( true );     // cause immediate repaint
 }
 
 void NNetWindow::ZoomStep( bool const bZoomIn )
@@ -92,7 +92,7 @@ void NNetWindow::ZoomStep( bool const bZoomIn )
 void NNetWindow::NNetMove( PixelPoint const & pixDelta ) 
 { 
 	m_context.GetCoord().Move( pixDelta ); 
-	Notify( TRUE );     // cause immediate repaint
+	Notify( true );     // cause immediate repaint
 }
 
 void NNetWindow::NNetMove( MicroMeterPoint const & umDelta )	
@@ -291,7 +291,7 @@ void NNetWindow::setHighlightedShape( MicroMeterPoint const & umCrsrPos )
 	if ( idHighlight != m_shapeHighlighted )
 	{
 		m_shapeHighlighted = idHighlight; 
-		Notify( TRUE );     // cause immediate repaint
+		Notify( true );     // cause immediate repaint
 	}
 }
 
@@ -394,7 +394,7 @@ void NNetWindow::smoothStep( )
 		m_context.GetCoord().Center( m_umPntCenterStart + m_umPntCenterDelta * fPos, fpCenter );
 	}
 
-	Notify( TRUE );     // cause immediate repaint
+	Notify( true );     // cause immediate repaint
 }
 
 void NNetWindow::OnPaint( )
@@ -433,7 +433,7 @@ void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 {
 	int        iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;
-	BOOL const bDirection = ( iDelta > 0 );
+	bool const bDirection = ( iDelta > 0 );
 	MicroMeter newSize;
 
 	iDelta = abs( iDelta );
@@ -479,7 +479,7 @@ void NNetWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )
 
 void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 {
-	BOOL    const keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
+	bool    const keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
 	HCURSOR const hCrsr   = keyDown ? m_hCrsrMove : m_hCrsrArrow;
 	SetCursor( hCrsr );
 }
@@ -505,16 +505,16 @@ LPARAM NNetWindow::crsPos2LPARAM( ) const
 	return pixelPoint2LPARAM( GetRelativeCrsrPosition() );
 }
 
-BOOL NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
+bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 {
 	ShapeId const shapeId( CastToLong( lParam ) );
 	SendCommand2Application( wParam, lParam );
-	return FALSE;
+	return false;
 }
 
-BOOL NNetWindow::inObservedClientRect( LPARAM const lParam )
+bool NNetWindow::inObservedClientRect( LPARAM const lParam )
 {
-	return TRUE;  // Is cursor position in observed client rect?
+	return true;  // Is cursor position in observed client rect?
 }
 
 void NNetWindow::ShowDirectionArrows( bool const bShow )

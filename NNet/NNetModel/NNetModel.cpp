@@ -256,11 +256,13 @@ void NNetModel::AddIncoming2Knot( ShapeId const id, MicroMeterPoint const & pos 
 		NewPipe( NewShape<Knot>( pos - STD_OFFSET ), GetShapePtr<BaseKnot *>( id ) );
 }
 
-void NNetModel::Compute( )
+bool NNetModel::Compute( )
 {
+	bool bStop {false };
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Prepare( ); } );
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Step( ); } );
+	Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.CompStep( ) ) bStop = true; } );
 	m_timeStamp += m_pParam->GetTimeResolution( );
+	return bStop;
 }
 
 void NNetModel::ResetModel( )

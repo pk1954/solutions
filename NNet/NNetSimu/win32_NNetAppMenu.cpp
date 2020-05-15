@@ -31,7 +31,7 @@ void NNetAppMenu::Initialize
 
 	SetAppTitle( L"", false );
 
-	BOOL bRes = SetMenu( m_hwndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_NNET_SIMU_MAIN ) ) );
+	bool bRes = SetMenu( m_hwndApp, LoadMenu( hInstance, MAKEINTRESOURCE( IDC_NNET_SIMU_MAIN ) ) );
 	assert( bRes );
 
 	m_hMenu = GetMenu( hwndApp );
@@ -60,7 +60,7 @@ void NNetAppMenu::Stop( )
 
 void NNetAppMenu::AdjustVisibility( )
 {
-	BOOL const bRunning = m_pWorkThreadInterface->IsRunning();
+	bool const bRunning = m_pWorkThreadInterface->IsRunning();
 
 	EnableMenuItem( m_hMenu, IDM_FORWARD, bRunning ? MF_GRAYED  : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_RESET,   bRunning ? MF_GRAYED  : MF_ENABLED );

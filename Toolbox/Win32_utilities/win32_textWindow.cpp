@@ -27,7 +27,7 @@ void TextWindow::StartTextWindow
 	PixelRect        const & rect,
 	LPCTSTR          const   szClass,
     UINT             const   uiAlpha,
-	BOOL             const   bAsync,
+	bool             const   bAsync,
 	function<bool()> const   visibilityCriterion
 )
 {
@@ -41,12 +41,13 @@ void TextWindow::StartTextWindow
 		visibilityCriterion
     );
 
-	HDC const hDC = GetDC( hwnd );   assert( hDC != nullptr );
+    HDC const hDC { GetDC( hwnd ) };
+    assert( hDC != nullptr );
 	m_hDC_Memory = CreateCompatibleDC( hDC );
 	m_hBitmap    = CreateCompatibleBitmap( hDC );
 	SelectObject( m_hDC_Memory, m_hBitmap );
 	ReleaseDC( hwnd, hDC );
-	Util::MakeLayered( hwnd, TRUE, 0, uiAlpha );
+	Util::MakeLayered( hwnd, true, 0, uiAlpha );
     SetWindowText( hwnd, szClass );
 
 	m_pTextWindowThread = new TextWindowThread
@@ -95,32 +96,32 @@ LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
     case WM_COMMAND:
     {
-        int const wmId = LOWORD(wParam);
-        switch (wmId)
+        int const wmId { LOWORD(wParam) };
+        switch ( wmId )
         {
         case IDM_HIDE_WINDOW:
-	        Show( FALSE );
+	        Show( false );
             break;
 
         default:
             break;
         }
     }
-    return FALSE;
+    return false;
 
     case WM_PAINT:
     {
         PAINTSTRUCT   ps;
-        HDC           hDC      = BeginPaint( &ps );
-		PixelRectSize rectSize = GetClRectSize( );
+        HDC           hDC      { BeginPaint( &ps ) };
+        PixelRectSize rectSize { GetClRectSize( ) };
 		BitBlt( hDC, 0, 0, rectSize.GetXvalue(), rectSize.GetYvalue(), m_hDC_Memory, 0, 0, SRCCOPY );
         (void)EndPaint( &ps );
-        return FALSE;
+        return false;
     }
 
     case WM_CLOSE:    // Do not destroy, just hide  
-        Show( FALSE );
-        return TRUE;
+        Show( false );
+        return true;
 
     default:
         break;

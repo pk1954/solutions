@@ -17,7 +17,7 @@ HWND CreateRectToolTip
 	LPCTSTR     const szText
 )
 {
-	return CreateToolTipEx( hwndParent, idTool, TRUE, pRect, szText );
+	return CreateToolTipEx( hwndParent, idTool, true, pRect, szText );
 }
 
 HWND CreateWindowToolTip
@@ -26,7 +26,7 @@ HWND CreateWindowToolTip
 	LPCTSTR const szText
 )
 {
-	return CreateToolTipEx( hwndParent, 0, FALSE, nullptr, szText );
+	return CreateToolTipEx( hwndParent, 0, false, nullptr, szText );
 }
 
 HWND CreateStdToolTip
@@ -36,7 +36,7 @@ HWND CreateStdToolTip
 	LPCTSTR const szText
 )
 {
-	return CreateToolTipEx( hwndParent, idTool, FALSE, nullptr, szText );
+	return CreateToolTipEx( hwndParent, idTool, false, nullptr, szText );
 }
 
 HWND CreateBalloonToolTip
@@ -46,14 +46,14 @@ HWND CreateBalloonToolTip
 	LPCTSTR const szText
 )
 {
-	return CreateToolTipEx( hwndParent, idTool, TRUE, nullptr, szText );
+	return CreateToolTipEx( hwndParent, idTool, true, nullptr, szText );
 }
 
 HWND CreateToolTipEx
 ( 
 	HWND        const hwndParent,
 	int         const idTool,
-	BOOL        const bBalloon,
+	bool        const bBalloon,
 	PixelRect * const pRect,
 	LPCTSTR     const szText
 )

@@ -54,12 +54,12 @@ void BaseAppWindow::Start( ModelWindow * const pModelWindow )
 	m_pAppMenu->Start( );
 	m_StatusBar.Start( m_hwndApp, m_pWorkThreadInterface );
 
-	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                 TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                     TRUE,  TRUE  );
-	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_StatusBar.GetWindowHandle(), FALSE, FALSE );
+	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                 true,  true  );
+	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                     true,  true  );
+	m_WinManager.AddWindow( L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_StatusBar.GetWindowHandle(), false, false );
 
-	m_StatusBar.Show( TRUE );
-	pModelWindow->Show( TRUE );
+	m_StatusBar.Show( true );
+	pModelWindow->Show( true );
 
 	adjustChildWindows( );
 }
@@ -89,7 +89,7 @@ void BaseAppWindow::adjustChildWindows( )
 			0_PIXEL, 
 			pixAppClientWinWidth, 
 			pixAppClientWinHeight, 
-			TRUE 
+			true 
 		);
 	}
 }
@@ -105,7 +105,7 @@ LRESULT BaseAppWindow::UserProc
 	{
 
 	case WM_ENTERMENULOOP:
-		if ( wParam == FALSE )
+		if ( wParam == false )
 			m_pAppMenu->AdjustVisibility( );
 		break;
 
@@ -173,8 +173,8 @@ bool BaseAppWindow::ProcessFrameworkCommand( WPARAM const wParam, LPARAM const l
 		break;
 
 	default:
-		return FALSE; // command has not been processed
+		return false; // command has not been processed
 	}
 
-	return TRUE;  // command has been processed
+	return true;  // command has been processed
 }

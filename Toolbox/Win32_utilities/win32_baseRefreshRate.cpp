@@ -76,7 +76,7 @@ void BaseRefreshRate::deleteTimer( )
 	}
 }
 
-void CALLBACK BaseRefreshRate::TimerProc( void * const lpParam, BOOL const TimerOrWaitFired )
+void CALLBACK BaseRefreshRate::TimerProc( void * const lpParam, bool const TimerOrWaitFired )
 {
 	BaseRefreshRate * const pRefreshRate = reinterpret_cast<BaseRefreshRate *>( lpParam );
 	if ( pRefreshRate->m_bDirty )

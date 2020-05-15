@@ -78,7 +78,7 @@ static INT_PTR CALLBACK dialogProc
 		CheckDlgButton     ( hDlg, IDC_TRIGGER_SOUND_ON,   pDlg->m_bSoundActive ? BST_CHECKED : BST_UNCHECKED );
 		pDlg->handleOnOff( hDlg );
 		::SetWindowLongPtr( hDlg, DWLP_USER, reinterpret_cast<LONG_PTR>(pDlg) );
-		return TRUE;
+		return true;
 
 	case WM_COMMAND:
 		{
@@ -90,11 +90,11 @@ static INT_PTR CALLBACK dialogProc
 				pDlg->m_frequency = pDlg->m_bSoundActive ? Hertz    ( pDlg->evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ )) : 0_Hertz;
 				pDlg->m_duration  = pDlg->m_bSoundActive ? MilliSecs( pDlg->evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC )) : 0_MilliSecs;
 				EndDialog( hDlg, true );
-				return TRUE;
+				return true;
 
 			case IDCANCEL:
 				EndDialog( hDlg, false );
-				return TRUE;
+				return true;
 
 			case IDC_TRIGGER_SOUND_ON:
 				pDlg->handleOnOff( hDlg );
@@ -118,7 +118,7 @@ static INT_PTR CALLBACK dialogProc
 		break;
 	}
 
-	return FALSE;
+	return false;
 }
 
 void TriggerSoundDialog::Show( HWND const hwndParent )

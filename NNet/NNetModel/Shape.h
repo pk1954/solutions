@@ -56,7 +56,7 @@ public:
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const = tHighlightType::normal  ) const = 0;
 	virtual void DrawInterior  ( DrawContext const & ) const = 0;
 	virtual void Prepare       ( )                                                 = 0;
-	virtual void Step          ( )                                                 = 0;
+	virtual bool CompStep      ( )                                                 = 0;
 	virtual void Recalc        ( )                                                 = 0;
 	virtual bool IsInRect      ( MicroMeterRect  const & )                   const = 0;
 	virtual bool IsPointInShape( MicroMeterPoint const & )                   const = 0;

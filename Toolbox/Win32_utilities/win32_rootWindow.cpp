@@ -9,7 +9,7 @@
 
 using namespace std::chrono;
 
-BOOL RootWinIsReady( RootWindow const * pRootWin )
+bool RootWinIsReady( RootWindow const * pRootWin )
 {
     return ( ( pRootWin != nullptr ) && ( pRootWin->GetWindowHandle( ) != nullptr ) );
 }
@@ -139,7 +139,7 @@ void RootWindow::SetTrackBarPos( INT const idTrackbar, LONG const lPos ) const
 	(void)SendDlgItemMessage
 	(   
 		idTrackbar, TBM_SETPOS, 
-		static_cast<WPARAM>( TRUE ),                   // redraw flag 
+		static_cast<WPARAM>( true ),                   // redraw flag 
 		static_cast<LPARAM>( lPos )
 	); 
 }
@@ -150,14 +150,14 @@ void RootWindow::SetTrackBarRange( INT const idTrackbar, LONG const lMin, LONG c
 	( 
 		idTrackbar, 
 		TBM_SETRANGEMIN, 
-		static_cast<WPARAM>( FALSE ),                   // redraw flag 
+		static_cast<WPARAM>( false ),                   // redraw flag 
 		static_cast<LPARAM>( lMin ) 
 	);
 	(void)SendDlgItemMessage
 	( 
 		idTrackbar, 
 		TBM_SETRANGEMAX, 
-		static_cast<WPARAM>( TRUE ),                   // redraw flag 
+		static_cast<WPARAM>( true ),                   // redraw flag 
 		static_cast<LPARAM>( lMax ) 
 	);
 }
@@ -178,13 +178,13 @@ LRESULT RootWindow::RootWindowProc
 	case WM_RBUTTONDOWN:
 		if ( ! pRootWin->UserProc( message, wParam, lParam ) )
 			pRootWin->SetFocus( );
-		return FALSE;
+		return false;
 
 	case WM_RBUTTONUP:
 		(void)ReleaseCapture( );
 		if ( ! pRootWin->UserProc( message, wParam, lParam ) )
 			pRootWin->contextMenu( GetCrsrPosFromLparam( lParam ) );
-		return FALSE;
+		return false;
 
 	case WM_COMMAND:
 	{
@@ -195,22 +195,22 @@ LRESULT RootWindow::RootWindowProc
 
 		case IDM_WINDOW_ON:
 			pRootWin->m_visibilityMode = tOnOffAuto::on;
-			pRootWin->Show( TRUE );
-			return FALSE;
+			pRootWin->Show( true );
+			return false;
 
 		case IDM_WINDOW_OFF:
 			pRootWin->m_visibilityMode = tOnOffAuto::off;
-			pRootWin->Show( FALSE );
-			return FALSE;
+			pRootWin->Show( false );
+			return false;
 
 		case IDM_WINDOW_AUTO:
 			pRootWin->m_visibilityMode = tOnOffAuto::automatic;
 			pRootWin->Show( ApplyAutoCriterion( tOnOffAuto::automatic, pRootWin->m_visibilityCriterion ) );
-			return FALSE;
+			return false;
 
 		case IDD_REFRESH_RATE_DIALOG:
 			pRootWin->m_pRefreshRate->RefreshRateDialog( hwnd );
-			return FALSE;
+			return false;
 
 		default:
 			break;

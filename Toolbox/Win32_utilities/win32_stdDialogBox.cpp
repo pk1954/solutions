@@ -86,7 +86,7 @@ INT_PTR CALLBACK dialogProc
 		SetWindowText( GetDlgItem( hDlg, IDC_STATIC ), m_wstrUnit.c_str() );
 		SendMessage( hDlg, DM_SETDEFID, IDOK, 0);
 		SendMessage( GetDlgItem( hDlg, IDCANCEL ), BM_SETSTYLE, BS_PUSHBUTTON, 0);
-		return TRUE;
+		return true;
 	}
 
 	case WM_COMMAND:
@@ -97,12 +97,12 @@ INT_PTR CALLBACK dialogProc
 				EndDialog( hDlg, LOWORD(wParam) );
 			else 
 				SetFocus( hwndEditCtl );
-			return TRUE;
+			return true;
 		}
 		else if ( LOWORD(wParam) == IDCANCEL )
 		{
 			EndDialog( hDlg, LOWORD(wParam) );
-			return TRUE;
+			return true;
 		}
 		break;
 
@@ -110,6 +110,6 @@ INT_PTR CALLBACK dialogProc
 		break;
 	}
 
-	return FALSE;
+	return false;
 }
 
