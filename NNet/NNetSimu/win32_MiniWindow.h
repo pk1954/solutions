@@ -14,19 +14,15 @@ public:
 
 	virtual void OnMouseWheel ( WPARAM const, LPARAM const ) { };  // mini window cannot be zoomed 
 	virtual void OnMouseMove  ( WPARAM const, LPARAM const );
-	virtual BOOL OnCommand    ( WPARAM const, LPARAM const );
-	virtual void OnLButtonDown( WPARAM const, LPARAM const );
 
-	virtual long AddContextMenuEntries( HMENU const, PixelPoint const );
-
-	virtual void doPaint( bool const );
-
+	virtual long AddContextMenuEntries( HMENU const, PixelPoint const ) { return 0; }
+		
 	void Observe( NNetWindow * const );
 
 private:
 
-	NNetWindow * m_pNNetWindowObserved { nullptr }; // Observed NNetWindow (or nullptr)
+	virtual void doPaint( );
 
-	inline static UINT_PTR m_TimerId { 0 }; 
+	NNetWindow * m_pNNetWindowObserved { nullptr }; // Observed NNetWindow (or nullptr)
 };
 

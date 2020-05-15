@@ -37,7 +37,6 @@ public:
 	( 
 		HWND                 const, 
 		DWORD                const,
-		function<bool()>     const,
 		NNetModelInterface * const,
 		DrawModel          * const,
 		Observable         * const
@@ -56,6 +55,7 @@ public:
 	void Zoom( MicroMeter const );
 	void AnalysisFinished( );
 	void CenterModel( bool const );
+	void CenterAndZoomRect( MicroMeterRect const &, float const, bool const );
 	void NNetMove( PixelPoint const & );
 	void NNetMove( MicroMeterPoint const & );	
 
@@ -87,7 +87,7 @@ protected:
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
-	virtual void doPaint( bool const );
+	virtual void doPaint( );
 
 	DrawContext   m_context    { };
 	DrawModel   * m_pDrawModel { nullptr };
@@ -121,7 +121,6 @@ private:
 
 	void   smoothStep( );
 	LPARAM crsPos2LPARAM( ) const;
-	void   centerAndZoomRect( MicroMeterRect const &, float const, bool const );
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
 	BOOL   inObservedClientRect( LPARAM const );
 	void   setSuperHighlightedShape( MicroMeterPoint const & );

@@ -131,17 +131,17 @@ void NNetAppWindow::Start( )
 	( 
 		m_hwndApp, 
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
-		nullptr,  // no visibility criterion. Allways visible,
 		m_pModelInterface,
 		m_pDrawModel,
 		m_pCursorPos
 	);
 
+	m_pMainNNetWindow->ShowRefreshRateDlg( false );
+
 	m_pMiniNNetWindow->Start
 	( 
 		m_hwndApp, 
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
-		nullptr,  // no visibility criterion. Allways visible,
 		m_pModelInterface,
 		m_pDrawModel,
 		m_pCursorPos
@@ -204,7 +204,6 @@ void NNetAppWindow::Start( )
 
 //	m_pNNetModelStorage->Write( wcout );
 
-	m_pMiniNNetWindow->CenterModel( false );
 	m_bStarted = TRUE;
 }
 

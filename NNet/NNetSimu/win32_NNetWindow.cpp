@@ -44,7 +44,6 @@ void NNetWindow::Start
 ( 
 	HWND                 const hwndApp, 
 	DWORD                const dwStyle,
-	function<bool()>     const visibilityCriterion,
 	NNetModelInterface * const pModelInterface,
 	DrawModel          * const pDrawModel,
 	Observable         * const pCursorObservable
@@ -58,13 +57,12 @@ void NNetWindow::Start
 		L"ClassNNetWindow",
 		dwStyle,
 		nullptr,
-		visibilityCriterion
+		nullptr
 	);
 	m_context.Start( hwnd );
 	m_pModelInterface = pModelInterface;
 	m_pAnimationThread = new AnimationThread( );
 	m_pCursorPosObservable = pCursorObservable;
-	ShowRefreshRateDlg( false );
 }
 
 void NNetWindow::Stop( )
@@ -105,8 +103,6 @@ void NNetWindow::NNetMove( MicroMeterPoint const & umDelta )
 long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )
 {
 	UINT static const STD_FLAGS { MF_BYPOSITION | MF_STRING };
-
-//	m_ptCommandPosition = ptPos;
 
 	ShapeType type { m_pModelInterface->GetShapeType( m_shapeHighlighted ) };
 
@@ -320,12 +316,10 @@ tHighlightType const NNetWindow::GetHighlightType( Shape const & shape ) const
 			 : tHighlightType::normal;
 }
 
-void NNetWindow::doPaint( bool const bShowScale ) 
+void NNetWindow::doPaint( ) 
 {
 	PixelRect const pixRect { GetClPixelRect( ) };
 	
-	m_pModelInterface->LockModelShared();
-
 	if ( m_rectSelection.IsNotEmpty( ) )
 		m_context.DrawTranspRect( m_rectSelection, NNetColors::SELECTION_RECT );
 
@@ -339,28 +333,25 @@ void NNetWindow::doPaint( bool const bShowScale )
 	m_pModelInterface->DrawExterior( m_shapeHighlighted, m_context, tHighlightType::highlighted );
 	m_pModelInterface->DrawInterior( m_shapeHighlighted, m_context );
 
-	if ( bShowScale )
-		m_context.ShowScale( GetClientWindowHeight() );
+	m_context.ShowScale( GetClientWindowHeight() );
 
 	if ( m_context.GetPixelSize() <= 2.5_MicroMeter )
 		m_pDrawModel->DrawNeuronTextInRect( pixRect, m_context );
-
-	m_pModelInterface->UnlockModelShared();
 }
 
 void NNetWindow::CenterModel( bool const bSmooth )
 {
-	centerAndZoomRect( m_pModelInterface->GetEnclosingRect( ), 1.2f, bSmooth ); // give 20% more space (looks better)
+	CenterAndZoomRect( m_pModelInterface->GetEnclosingRect( ), 1.2f, bSmooth ); // give 20% more space (looks better)
 }
 
 void NNetWindow::AnalysisFinished( )
 {
 	MicroMeterRect rect { ModelAnalyzer::GetEnclosingRect() };
 	if ( rect.IsNotEmpty() )
-		centerAndZoomRect( rect, 2.0f, true );
+		CenterAndZoomRect( rect, 2.0f, true );
 }
 
-void NNetWindow::centerAndZoomRect( MicroMeterRect const & umRect, float const fRatioFactor, bool const bSmooth )
+void NNetWindow::CenterAndZoomRect( MicroMeterRect const & umRect, float const fRatioFactor, bool const bSmooth )
 {
 	MicroMeterRect  const umRectScaled      { umRect.Scale( NEURON_RADIUS ) }; // give some more space to include complete shapes 
 	float           const fVerticalRatio    { umRectScaled.GetHeight() / m_context.GetCoordC().Convert2MicroMeter( GetClientWindowHeight() ) };
@@ -414,7 +405,9 @@ void NNetWindow::OnPaint( )
 		HDC const hDC = BeginPaint( &ps );
 		if ( m_context.StartFrame( hDC ) )
 		{
-			doPaint( true );
+			m_pModelInterface->LockModelShared();
+			doPaint( );
+			m_pModelInterface->UnlockModelShared();
 			m_context.EndFrame( );
 		}
 		EndPaint( &ps );
