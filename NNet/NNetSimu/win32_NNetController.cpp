@@ -248,6 +248,12 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
+	case IDD_STOP_ON_TRIGGER:
+		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
+		m_pWorkThreadInterface->PostToggleStopOnTrigger( ShapeId( CastToLong(lParam) ) );
+		m_pNNetWindow->ResetHighlightedShape();
+		break;
+
 	case IDD_CONVERT2INPUT_NEURON:
 		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
 		m_pWorkThreadInterface->PostConvert2InputNeuron( ShapeId( CastToLong(lParam) ) );

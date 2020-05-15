@@ -136,6 +136,7 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_CONVERT2INPUT_NEURON, L"Convert into input neuron" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_SELECT_SUBTREE,        L"Select subtree" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_STOP_ON_TRIGGER,       L"Stop on trigger on/off" );
 		break;
 
 	case ShapeType::Value::knot:  

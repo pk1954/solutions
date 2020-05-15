@@ -39,6 +39,8 @@ public:
 	mV         Threshold    ( ) const;
 	mV         PeakVoltage  ( ) const;
 
+	void       StopOnTrigger( tBoolOp const op ) { ApplyOp( m_bStopOnTrigger, op ); }
+
 	virtual void DrawExterior( DrawContext const &, tHighlightType const  = tHighlightType::normal ) const;
 	virtual void DrawInterior( DrawContext const & ) const;
 	virtual void Recalc( );

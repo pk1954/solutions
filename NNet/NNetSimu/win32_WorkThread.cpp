@@ -174,6 +174,10 @@ bool NNetWorkThread::dispatch( MSG const msg  )
 		m_pNNetModel->Convert2InputNeuron( ShapeId( CastToLong(msg.wParam) ) );
 		break;
 
+	case NNetWorkThreadMessage::Id::TOGGLE_STOP_ON_TRIGGER:
+		m_pNNetModel->ToggleStopOnTrigger( ShapeId( CastToLong(msg.wParam) ) );
+		break;
+
 	case NNetWorkThreadMessage::Id::SELECT_SHAPE:
 		m_pNNetModel->SelectShape( ShapeId( CastToLong(msg.wParam) ), static_cast<tBoolOp>(msg.lParam) );
 		break;

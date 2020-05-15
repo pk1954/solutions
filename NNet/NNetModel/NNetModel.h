@@ -212,23 +212,25 @@ public:
 	void AddOutgoing2Pipe( ShapeId const, MicroMeterPoint const & );
 	void AddIncoming2Pipe( ShapeId const, MicroMeterPoint const & );
 
-	void Connect( ShapeId const, ShapeId const );
-	void Convert2Neuron( ShapeId const );
+	void StopTriggerSound   ( ShapeId const id ) { SetTriggerSound( id, 0_Hertz, 0_MilliSecs ); }
+	void SetTriggerSound    ( ShapeId const, Hertz const, MilliSecs const );
+	void SetPulseRate_Lock  ( ShapeId const, float const );
+	void Connect            ( ShapeId const, ShapeId const );
+	void Convert2Neuron     ( ShapeId const );
 	void Convert2InputNeuron( ShapeId const );
-	void Disconnect( ShapeId const );
-	void RecalcAllShapes( );
-	void ResetModel( );
-	void SetPulseRate_Lock   ( ShapeId const, float const );
-	void SetParameter( tParameter const, float const );
-	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
-	void SetTriggerSound( ShapeId const, Hertz const, MilliSecs const );
-	void StopTriggerSound( ShapeId const id ) {	SetTriggerSound( id, 0_Hertz, 0_MilliSecs ); }
-
-	void RemoveShape( ShapeId const id ) 
+	void Disconnect         ( ShapeId const );
+	void ToggleStopOnTrigger( ShapeId const );
+	void RemoveShape        ( ShapeId const id ) 
 	{ 
 		removeShape( GetShape( id ) ); 
 		modelHasChanged( );
 	}
+
+	void RecalcAllShapes( );
+	void ResetModel( );
+
+	void SetParameter ( tParameter const, float const );
+	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
 	MicroMeterRect GetEnclosingRect() const { return ::GetEnclosingRect( m_Shapes ); }
 
@@ -288,26 +290,35 @@ public:
 
 	void LockModelShared() const
 	{ 
+		DWORD threadId { GetCurrentThreadId() };
 		AcquireSRWLockShared( & m_SRWLockModel );
+		m_dwLockedBy = 0;                        // debugging
 	}
 
 	void UnlockModelShared() const
 	{ 
+		DWORD threadId { GetCurrentThreadId() };
 		ReleaseSRWLockShared( & m_SRWLockModel );
+		m_dwLockedBy = 0;                        // debugging
 	}
 
 	void LockModelExclusive() const
 	{ 
+		DWORD threadId { GetCurrentThreadId() };
 		AcquireSRWLockExclusive( & m_SRWLockModel );
+		m_dwLockedBy = 0;                        // debugging
 	}
 
 	void UnlockModelExclusive() const
 	{ 
+		DWORD threadId { GetCurrentThreadId() };
 		ReleaseSRWLockExclusive( & m_SRWLockModel );
+		m_dwLockedBy = 0;                        // debugging
 	}
 
 private:
 
+	mutable DWORD       m_dwLockedBy      { 0 };            // debugging
 	mutable SRWLOCK     m_SRWLockModel    { SRWLOCK_INIT }; // locks model during deletion or reconstruction  
 
 	ShapeList           m_Shapes          { };

@@ -29,6 +29,8 @@ public:
 	NNetColors( ObserverInterface * const );
 	~NNetColors( );
 
+	inline static D2D1::ColorF const COL_BLACK           { 0.0f, 0.0f, 0.0f, 1.0f };
+
 	// colors for neuron/pipe boundary
 	inline static D2D1::ColorF const EXT_NORMAL          { 0.0f, 0.5f, 1.0f, 1.0f };
 	inline static D2D1::ColorF const EXT_MARKED          { 0.0f, 1.0f, 0.5f, 1.0f };

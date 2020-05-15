@@ -5,6 +5,7 @@
 #pragma once
 
 #include "win32_util.h"
+#include "NNetColors.h"
 #include "PixelCoordsFp.h"
 #include "Direct2D.h"
 #include "ShapeId.h"
@@ -85,7 +86,7 @@ public:
 		fPIXEL      const fPixWidth  { m_coord.Convert2fPixel( umWidth ) };
 		fPixelPoint const fStartPoint{ m_coord.Convert2fPixelPos( umStartPoint ) };
 		fPixelPoint const fEndPoint  { m_coord.Convert2fPixelPos( umEndPoint   ) };
-		m_graphics.DrawLine( fStartPoint, fEndPoint, fPixWidth, col );
+		m_graphics.DrawLine( fStartPoint, fEndPoint, fPixWidth, m_bNoColors ? NNetColors::COL_BLACK : col );
 	}
 
 	void DrawCircle
@@ -97,7 +98,7 @@ public:
 	{
 		fPixelPoint const fPixCenter { m_coord.Convert2fPixelPos( umCenterPoint ) };
 		fPIXEL      const fPixRadius { m_coord.Convert2fPixel   ( umRadius ) };
-		m_graphics.DrawCircle( fPixCenter, fPixRadius, col );
+		m_graphics.DrawCircle( fPixCenter, fPixRadius, m_bNoColors ? NNetColors::COL_BLACK : col );
 	}
 
 	void DrawArrow
@@ -113,7 +114,7 @@ public:
 		fPixelPoint const fPixVector{ m_coord.Convert2fPixelSize( umVector ) };
 		fPIXEL      const fPixSize  { m_coord.Convert2fPixel( umSize ) };
 		fPIXEL      const fPixWidth { m_coord.Convert2fPixel( umWidth ) };
-		m_graphics.DrawArrow( fPixPos, fPixVector, fPixSize, fPixWidth, col );
+		m_graphics.DrawArrow( fPixPos, fPixVector, fPixSize, fPixWidth, m_bNoColors ? NNetColors::COL_BLACK : col );
 	}
 
 	void DrawTranspRect( MicroMeterRect const & umRect, D2D1::ColorF col ) const 
@@ -140,7 +141,10 @@ public:
 	PixelCoordsFp const & GetCoordC( ) const { return m_coord; }
 	PixelCoordsFp       & GetCoord ( )       { return m_coord; }
 
+	void SetNoColors( bool const bMode ) { m_bNoColors = bMode; }
+
 private:
+	bool          m_bNoColors { false };
 	PixelCoordsFp m_coord;
 	D2D_driver    m_graphics;
 	Scale       * m_pScale { nullptr };

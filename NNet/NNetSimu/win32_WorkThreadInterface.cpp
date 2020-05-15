@@ -118,6 +118,13 @@ void WorkThreadInterface::PostConvert2InputNeuron( ShapeId const id )
 	postMsg( NNetWorkThreadMessage::Id::CONVERT2INPUT_NEURON, id.GetValue() );
 }
 
+void WorkThreadInterface::PostToggleStopOnTrigger( ShapeId const id )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
+	postMsg( NNetWorkThreadMessage::Id::TOGGLE_STOP_ON_TRIGGER, id.GetValue() );
+}
+
 void WorkThreadInterface::PostSelectShape( ShapeId const id, tBoolOp const op )
 {
 	if ( IsTraceOn( ) )

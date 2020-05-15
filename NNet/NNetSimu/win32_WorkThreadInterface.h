@@ -47,6 +47,7 @@ public:
 	void PostConnect             ( ShapeId const, ShapeId const );
 	void PostConvert2InputNeuron ( ShapeId const );
 	void PostConvert2Neuron      ( ShapeId const );
+	void PostToggleStopOnTrigger ( ShapeId const );
 	void PostCopySelection       ( );
 	void PostDeleteSelection     ( );
 	void PostDisconnect          ( ShapeId const );

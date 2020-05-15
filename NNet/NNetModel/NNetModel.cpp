@@ -61,6 +61,14 @@ void NNetModel::removeShape( Shape * const pShape )
 	}
 }
 
+void NNetModel::ToggleStopOnTrigger( ShapeId const id )
+{
+	if ( Neuron * pNeuron { GetShapePtr<Neuron *>( id ) } )
+	{
+		pNeuron->StopOnTrigger( tBoolOp::opToggle );
+	}
+}
+
 void NNetModel::Disconnect( ShapeId const id )
 {
 	if ( BaseKnot * pBaseKnot { GetShapePtr<BaseKnot *>( id ) } )

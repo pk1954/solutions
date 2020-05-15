@@ -18,7 +18,8 @@ MiniWindow::~MiniWindow( )
 
 void MiniWindow::Observe( NNetWindow * const pNNetWin )	
 { 
-	m_pNNetWindowObserved = pNNetWin; 
+	m_pNNetWindowObserved = pNNetWin;
+	m_context.SetNoColors( true );
 }
 
 void MiniWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )

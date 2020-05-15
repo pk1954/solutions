@@ -144,6 +144,11 @@ MicroMeterPoint Neuron::getAxonHillockPos( ) const
 
 void Neuron::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 {
+	if ( m_bStopOnTrigger )
+	{
+		context.DrawCircle( GetPosition(), GetExtension() * 1.4f, GetFrameColor( type ) );
+		context.DrawCircle( GetPosition(), GetExtension() * 1.2f, NNetColors::INT_TRIGGER );
+	}
 	context.DrawCircle( GetPosition(), GetExtension(), GetFrameColor( type ) );
 	if ( HasAxon() )
 		context.DrawCircle( getAxonHillockPos( ), GetExtension() * 0.5f, GetFrameColor( type ) );

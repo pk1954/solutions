@@ -130,7 +130,6 @@ private:
 	bool      m_bMarked    { false };
 
 	mutable DWORD   m_dwLockedBy { 0 };     // debugging
-	
 	mutable SRWLOCK m_SRWLock { SRWLOCK_INIT };
 
 	inline static unsigned long m_counter { 0L };
