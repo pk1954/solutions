@@ -23,6 +23,7 @@
 #include "win32_NNetWindow.h"
 #include "win32_winManager.h"
 #include "win32_NNetAppMenu.h"
+#include "win32_fatalError.h"
 #include "win32_WorkThreadInterface.h"
 #include "win32_NNetController.h"
 
@@ -51,7 +52,39 @@ NNetController::~NNetController( )
 	m_pSlowMotionRatio     = nullptr;
 }
 
-bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
+bool NNetController::HandleCommand( WPARAM const wParam, LPARAM const lParam, MicroMeterPoint const umPoint )
+{
+	int const wmId = LOWORD( wParam );
+
+	if ( wmId == IDM_FATAL_ERROR )
+	{
+		FatalError::Happened( static_cast<long>(lParam), "unknown" );
+	}
+
+	try
+	{
+		if ( processUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
+			return true;                        // but do not concern the model  
+	}
+	catch ( ... )
+	{
+		FatalError::Happened( 2, "processUIcommand" );
+	}
+
+	try
+	{
+		if ( processModelCommand( wmId, lParam, umPoint ) )
+			return true;
+	}
+	catch ( ... )
+	{
+		FatalError::Happened( 3, "processModelCommand" );
+	}
+
+	return false;
+}
+
+bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
 {
 	switch ( wmId )
 	{
@@ -61,7 +94,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 	case IDM_MINI_WINDOW:
 	case IDM_PARAM_WINDOW:
 	//case IDM_CONS_WINDOW:
-		SendMessage( m_pWinManager->GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
+		::SendMessage( m_pWinManager->GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
 		break;
 
 	case IDM_ZOOM_OUT:
@@ -126,7 +159,7 @@ bool NNetController::ProcessUIcommand( int const wmId, LPARAM const lParam )
 	return true;  // command has been processed
 }
 
-bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
+bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
 {
 	switch ( wmId )
 	{
@@ -193,8 +226,11 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_MARK_SELECTION:
+		m_pWorkThreadInterface->PostMarkSelection( tBoolOp::opTrue );
+		break;
+
 	case IDM_UNMARK_SELECTION:
-		m_pWorkThreadInterface->PostMarkSelection( BoolOp(wmId == IDM_MARK_SELECTION) );
+		m_pWorkThreadInterface->PostMarkSelection( tBoolOp::opFalse );
 		break;
 
 	case IDD_PULSE_RATE:
@@ -211,9 +247,9 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 
 	case IDM_RUN:
 		m_pWorkThreadInterface->PostResetTimer( );
-		if ( m_pDisplayFunctor )
-			(* m_pDisplayFunctor)( wstring( L"" ) );
-		return true;
+		if ( m_StatusBarDisplay )
+			(* m_StatusBarDisplay)( wstring( L"" ) );
+		return false;
 
 	case IDD_CONNECT:
 		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
@@ -269,7 +305,7 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 	case IDD_ADD_INCOMING2KNOT:
 	case IDD_ADD_OUTGOING2PIPE:
 	case IDD_ADD_INCOMING2PIPE:
-		m_pWorkThreadInterface->PostActionCommand( wmId, ShapeId( CastToLong(lParam) ), Util::Unpack2MicroMeterPoint(lParam) );
+		m_pWorkThreadInterface->PostActionCommand( wmId, ShapeId( CastToLong(lParam) ), umPoint );
 		break;
 
 	case IDM_ANALYZE_LOOPS:
@@ -309,8 +345,8 @@ bool NNetController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	default:
-		return true;
+		return false;
 	}
 
-	return false;
+	return true;
 }

@@ -28,15 +28,17 @@ public:
 
 	virtual ~NNetController( );
 
-	void SetDisplayFunctor( DisplayFunctor * const func )
+	void SetStatusBarDisplay( DisplayFunctor * const func )
 	{
-		m_pDisplayFunctor = func;
+		m_StatusBarDisplay = func;
 	}
 
-	bool ProcessUIcommand   ( int const, LPARAM const );
-	bool ProcessModelCommand( int const, LPARAM const );
+	bool HandleCommand( WPARAM const, LPARAM const, MicroMeterPoint const );
 
 private:
+
+	bool processUIcommand   ( int const, LPARAM const );
+	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
 
 	HCURSOR               m_hCrsrWait;
 	NNetModelStorage    * m_pStorage;
@@ -44,5 +46,5 @@ private:
 	WinManager          * m_pWinManager;
 	WorkThreadInterface * m_pWorkThreadInterface;
 	SlowMotionRatio     * m_pSlowMotionRatio;
-	DisplayFunctor      * m_pDisplayFunctor { nullptr };
+	DisplayFunctor      * m_StatusBarDisplay { nullptr };
 };				          

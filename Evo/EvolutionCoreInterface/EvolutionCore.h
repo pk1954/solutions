@@ -65,7 +65,7 @@ public:
 
 // manipulating functions
 
-    virtual void Compute            ( ) = 0;
+    virtual bool Compute            ( ) = 0;
     virtual void ResetAll           ( ) = 0;
     virtual void SetBrushManipulator( tManipulator const ) = 0;
     virtual void SetBrushShape      ( tShape       const ) = 0;

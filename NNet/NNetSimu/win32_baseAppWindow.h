@@ -26,8 +26,8 @@ public:
 
 	void Start( ModelWindow * const );
 
-	virtual bool ProcessAppCommand( WPARAM const, LPARAM const = 0 ) = 0;
-	virtual void ProcessCloseMessage( ) = 0;
+	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const );
+	virtual void OnClose( ) = 0;
 	virtual void Stop( );
 
 protected:
@@ -36,13 +36,11 @@ protected:
 	WinManager m_WinManager { };
 	StatusBar  m_StatusBar  { };
 
-    bool ProcessFrameworkCommand( WPARAM const, LPARAM const = 0 );
-
 private:
 
 	HWND m_hwndConsole { nullptr };
 
-	ModelWindow             * m_pModelWindow         { nullptr };
+	ModelWindow         * m_pModelWindow         { nullptr };
 	WorkThreadInterface * m_pWorkThreadInterface { nullptr };
 
 	wofstream m_traceStream {};

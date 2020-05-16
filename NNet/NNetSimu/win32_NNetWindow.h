@@ -9,6 +9,7 @@
 #include "DrawContext.h"
 #include "tHighlightType.h"
 #include "SmoothMoveFp.h"
+#include "win32_NNetController.h"
 #include "win32_modelWindow.h"
 
 using std::wstring;
@@ -19,6 +20,7 @@ class DrawModel;
 class Observable;
 class ActionTimer;
 class AnimationThread;
+class ControllerInterface;
 class NNetModelInterface;
 class WorkThreadInterface;
 
@@ -37,6 +39,7 @@ public:
 	( 
 		HWND                 const, 
 		DWORD                const,
+		NNetController     * const,
 		NNetModelInterface * const,
 		DrawModel          * const,
 		Observable         * const
@@ -63,10 +66,10 @@ public:
 
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
 
-	void PulseRateDlg   ( ShapeId const );
-	void TriggerSoundDlg( ShapeId const );
-	bool ChangePulseRate( bool const );
-	void ShowDirectionArrows( bool const );
+	void PulseRateDlg       ( ShapeId const );
+	void TriggerSoundDlg    ( ShapeId const );
+	bool ChangePulseRate    ( bool    const );
+	void ShowDirectionArrows( bool    const );
 
 	DrawContext       & GetDrawContext ()       { return m_context; }
 	DrawContext const & GetDrawContextC() const { return m_context; }
@@ -75,10 +78,10 @@ protected:
 
 	virtual long AddContextMenuEntries( HMENU const, PixelPoint const );
 
+	virtual bool OnCommand           ( WPARAM const, LPARAM const, PixelPoint const );
 	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
 	virtual void OnMouseMove         ( WPARAM const, LPARAM const );
-	virtual bool OnCommand           ( WPARAM const, LPARAM const );
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const );
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
@@ -102,6 +105,7 @@ private:
 
 	inline static WorkThreadInterface * m_pWorkThreadInterface { nullptr };
 
+	NNetController  * m_pController          { nullptr };
 	AnimationThread * m_pAnimationThread     { nullptr };
 	Observable      * m_pCursorPosObservable { nullptr };
 	HMENU             m_hPopupMenu           { nullptr };
@@ -118,6 +122,8 @@ private:
 
 	ShapeId m_shapeHighlighted      { NO_SHAPE };
 	ShapeId m_shapeSuperHighlighted { NO_SHAPE };
+
+	virtual void HandleContextMenuCommand( UINT const, long const, PixelPoint const & );
 
 	void   smoothStep( );
 	LPARAM crsPos2LPARAM( ) const;

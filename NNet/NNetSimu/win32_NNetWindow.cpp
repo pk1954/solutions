@@ -44,6 +44,7 @@ void NNetWindow::Start
 ( 
 	HWND                 const hwndApp, 
 	DWORD                const dwStyle,
+	NNetController     * const pController,
 	NNetModelInterface * const pModelInterface,
 	DrawModel          * const pDrawModel,
 	Observable         * const pCursorObservable
@@ -60,9 +61,10 @@ void NNetWindow::Start
 		nullptr
 	);
 	m_context.Start( hwnd );
-	m_pModelInterface = pModelInterface;
-	m_pAnimationThread = new AnimationThread( );
+	m_pController          = pController;
+	m_pModelInterface      = pModelInterface;
 	m_pCursorPosObservable = pCursorObservable;
+	m_pAnimationThread     = new AnimationThread( );
 }
 
 void NNetWindow::Stop( )
@@ -188,7 +190,17 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 			AppendMenu( hPopupMenu, STD_FLAGS, IDM_SELECT_SHAPE, L"Select" );
 	}
 
-	return m_shapeHighlighted.GetValue();
+	return m_shapeHighlighted.GetValue(); // will be forwarded to HandleContextMenuCommand
+}
+
+void NNetWindow::HandleContextMenuCommand
+( 
+	UINT       const   uiCmdId,  // command selected by user  
+	long       const   lParam,   // comes from AddContextMenuEntries
+	PixelPoint const & pixPoint  // cursor position when comtext menue was initiated
+)
+{
+	ShapeId shapeId( lParam );  
 }
 
 bool NNetWindow::ChangePulseRate( bool const bDirection )
@@ -506,11 +518,13 @@ LPARAM NNetWindow::crsPos2LPARAM( ) const
 	return pixelPoint2LPARAM( GetRelativeCrsrPosition() );
 }
 
-bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
+bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
-	ShapeId const shapeId( CastToLong( lParam ) );
-	SendCommand2Application( wParam, lParam );
-	return false;
+	MicroMeterPoint const umPoint { m_context.GetCoordC().Convert2MicroMeterPointPos( pixPoint ) };
+	if ( m_pController->HandleCommand( wParam, lParam, umPoint ) )
+		return true;
+	else 
+		return ModelWindow::OnCommand( wParam, lParam, pixPoint );
 }
 
 bool NNetWindow::inObservedClientRect( LPARAM const lParam )
@@ -522,3 +536,4 @@ void NNetWindow::ShowDirectionArrows( bool const bShow )
 {
 	m_pAnimationThread->SetTarget( bShow ? Pipe::STD_ARROW_SIZE : 0.0_MicroMeter );
 }
+

@@ -3,6 +3,7 @@
 // Toolbox Win32_utilities
 
 #include "stdafx.h"
+#include "PixelTypes.h"
 #include "win32_util_resource.h"
 #include "win32_baseRefreshRate.h"
 #include "win32_rootWindow.h"
@@ -30,13 +31,7 @@ private:
 	RootWindow * const m_pRootWin;
 };
 
-RootWindow::RootWindow( ) : 
-	m_hwnd( nullptr ),
-	m_hwndApp( nullptr ),
-	m_pRefreshRate( nullptr ),
-	m_visibilityMode( tOnOffAuto::on ),
-	m_visibilityCriterion( nullptr ),
-	m_bShowRefreshRateDlg( true )
+RootWindow::RootWindow( )
 {
 	m_pRefreshRate = new WindowRefreshRate( this );
 }
@@ -102,14 +97,14 @@ void RootWindow::contextMenu( PixelPoint const & pntPos )
 		TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, 
 		pntScreen.GetXvalue(), pntScreen.GetYvalue(), 
 		0, 
-		GetWindowHandle( ), 
+		GetWindowHandle( ),
 		nullptr 
-	);         	// Result is send as WM_COMMAND to this window
-
-	if ( uiID != 0 )
-		SendMessage( WM_COMMAND, uiID, lParam );
+	);        
 
 	(void)DestroyMenu( hPopupMenu );
+
+	if ( uiID != 0 )
+		OnCommand( uiID, lParam, pntPos );
 }
 
 void RootWindow::SetWindowHandle( HWND const hwnd ) 
@@ -162,6 +157,38 @@ void RootWindow::SetTrackBarRange( INT const idTrackbar, LONG const lMin, LONG c
 	);
 }
 
+bool RootWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
+{
+	UINT const uiCmdId  = LOWORD( wParam );
+
+	switch ( uiCmdId )
+	{
+	case IDM_WINDOW_ON:
+		m_visibilityMode = tOnOffAuto::on;
+		Show( true );
+		break;
+
+	case IDM_WINDOW_OFF:
+		m_visibilityMode = tOnOffAuto::off;
+		Show( false );
+		break;
+
+	case IDM_WINDOW_AUTO:
+		m_visibilityMode = tOnOffAuto::automatic;
+		Show( ApplyAutoCriterion( tOnOffAuto::automatic, m_visibilityCriterion ) );
+		break;
+
+	case IDD_REFRESH_RATE_DIALOG:
+		m_pRefreshRate->RefreshRateDialog( m_hwnd );
+		break;
+
+	default:
+		return false;
+	}
+
+	return true;
+}
+
 LRESULT RootWindow::RootWindowProc
 ( 
 	HWND   const hwnd,
@@ -187,36 +214,7 @@ LRESULT RootWindow::RootWindowProc
 		return false;
 
 	case WM_COMMAND:
-	{
-		UINT const uiCmdId  = LOWORD( wParam );
-
-		switch ( uiCmdId )
-		{
-
-		case IDM_WINDOW_ON:
-			pRootWin->m_visibilityMode = tOnOffAuto::on;
-			pRootWin->Show( true );
-			return false;
-
-		case IDM_WINDOW_OFF:
-			pRootWin->m_visibilityMode = tOnOffAuto::off;
-			pRootWin->Show( false );
-			return false;
-
-		case IDM_WINDOW_AUTO:
-			pRootWin->m_visibilityMode = tOnOffAuto::automatic;
-			pRootWin->Show( ApplyAutoCriterion( tOnOffAuto::automatic, pRootWin->m_visibilityCriterion ) );
-			return false;
-
-		case IDD_REFRESH_RATE_DIALOG:
-			pRootWin->m_pRefreshRate->RefreshRateDialog( hwnd );
-			return false;
-
-		default:
-			break;
-		}
-	}
-	break;
+		return pRootWin->OnCommand( wParam, lParam );
 
 	case WM_CLOSE:   
 		pRootWin->m_visibilityMode = tOnOffAuto::off;

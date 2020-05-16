@@ -53,8 +53,8 @@ private:
 	NNetAppWindow             ( NNetAppWindow const & );  // noncopyable class 
 	NNetAppWindow & operator= ( NNetAppWindow const & );  // noncopyable class 
 
-	virtual void ProcessCloseMessage( );
-	virtual bool ProcessAppCommand( WPARAM const, LPARAM const = 0 );
+	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const );
+	virtual void OnClose( );
 
 	void configureStatusBar( );
 
@@ -63,10 +63,10 @@ private:
 	Util::Event             m_eventPOI { };
 
 	WorkThreadInterface m_NNetWorkThreadInterface { };
-	ActionTimer             m_atComputation           { };
-	ActionTimer             m_atDisplay               { };
-	ScriptHook              m_ScriptHook              { };
-	SlowMotionRatio         m_SlowMotionRatio         { };
+	ActionTimer         m_atComputation           { };
+	ActionTimer         m_atDisplay               { };
+	ScriptHook          m_ScriptHook              { };
+	SlowMotionRatio     m_SlowMotionRatio         { };
 
 	Param                   * m_pParameters              { nullptr };
 	SimulationControl       * m_pSimulationControl       { nullptr };

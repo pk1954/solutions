@@ -60,6 +60,39 @@ void TriggerSoundDialog::handleOnOff( HWND const hDlg )
 	EnableWindow( GetDlgItem( hDlg, IDC_TRIGGER_SOUND_TEST ), bTriggerSoundOn );
 }
 
+bool TriggerSoundDialog::onCommand( HWND const hDlg, WPARAM const wParam, LPARAM const lParam )
+{
+	WORD id { LOWORD(wParam) };
+	switch ( id )
+	{
+	case IDOK:
+		m_bSoundActive = IsDlgButtonChecked( hDlg, IDC_TRIGGER_SOUND_ON ) == BST_CHECKED;
+		m_frequency = m_bSoundActive ? Hertz    ( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ )) : 0_Hertz;
+		m_duration  = m_bSoundActive ? MilliSecs( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC )) : 0_MilliSecs;
+		EndDialog( hDlg, true );
+		return true;
+
+	case IDCANCEL:
+		EndDialog( hDlg, false );
+		return true;
+
+	case IDC_TRIGGER_SOUND_ON:
+		handleOnOff( hDlg );
+		break;
+
+	case IDC_TRIGGER_SOUND_TEST:
+		Sound::Beep
+		( 
+			Hertz    ( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ ) ),
+			MilliSecs( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC ) )
+		);
+		break;
+
+	default:
+		break;
+	}
+}	
+
 static INT_PTR CALLBACK dialogProc
 ( 
 	HWND   const hDlg, 
@@ -81,37 +114,7 @@ static INT_PTR CALLBACK dialogProc
 		return true;
 
 	case WM_COMMAND:
-		{
-			WORD id { LOWORD(wParam) };
-			switch ( id )
-			{
-			case IDOK:
-				pDlg->m_bSoundActive = IsDlgButtonChecked( hDlg, IDC_TRIGGER_SOUND_ON ) == BST_CHECKED;
-				pDlg->m_frequency = pDlg->m_bSoundActive ? Hertz    ( pDlg->evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ )) : 0_Hertz;
-				pDlg->m_duration  = pDlg->m_bSoundActive ? MilliSecs( pDlg->evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC )) : 0_MilliSecs;
-				EndDialog( hDlg, true );
-				return true;
-
-			case IDCANCEL:
-				EndDialog( hDlg, false );
-				return true;
-
-			case IDC_TRIGGER_SOUND_ON:
-				pDlg->handleOnOff( hDlg );
-				break;
-
-			case IDC_TRIGGER_SOUND_TEST:
-				Sound::Beep
-				( 
-					Hertz    ( pDlg->evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ ) ),
-				    MilliSecs( pDlg->evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC ) )
-				);
-				break;
-
-			default:
-				break;
-			}
-		}
+		pDlg->onCommand( hDlg, wParam, lParam );
 		break;
 
 	default:

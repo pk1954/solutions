@@ -28,7 +28,6 @@ protected:
 	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const ) = 0;
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnMouseMove         ( WPARAM const, LPARAM const ) = 0;
-	virtual bool OnCommand           ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnLButtonDown       ( WPARAM const, LPARAM const ) = 0;
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const ) = 0;

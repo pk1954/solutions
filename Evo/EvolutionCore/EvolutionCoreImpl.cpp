@@ -31,7 +31,7 @@ void EvolutionCoreImpl::ResetAll( )
 //           let food grow 
 //           increment generation number
 
-void EvolutionCoreImpl::Compute( )
+bool EvolutionCoreImpl::Compute( )
 {
     GplIterator m_gplIterator( m_grid );
     GridPoint   gpRun = m_gplIterator.Begin( );
@@ -47,6 +47,8 @@ void EvolutionCoreImpl::Compute( )
 
     m_grid.FoodGrowth( );
     m_grid.IncGenNr( );
+
+    return false;
 }
 
 void EvolutionCoreImpl::DumpGridPointList( ) const

@@ -11,14 +11,11 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 	switch (message)
 	{
 
-	case WM_COMMAND:
-		if ( OnCommand( wParam, lParam ) )
-			PostCommand2Application( wParam, lParam ); // not handled here, delegate to application
-//		PostCommand2Application( IDM_REFRESH, 0 );
-		return false;
-
 	case WM_MOUSEMOVE:
 		OnMouseMove( wParam, lParam );
+		return false;
+
+	case WM_COMMAND:
 		return false;
 
 	case WM_LBUTTONDBLCLK:
@@ -55,6 +52,10 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 
 	case WM_SIZE:
 		OnSize( wParam, lParam );
+		return false;
+
+	case WM_CLOSE:    // Do not destroy, just hide  
+		Show( false );
 		return false;
 
 	default:

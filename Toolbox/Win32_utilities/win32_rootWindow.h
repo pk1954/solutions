@@ -26,6 +26,8 @@ public:
 
 	void StartRootWindow( function<bool()> const );
 
+	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
+
     HWND GetWindowHandle( ) const { return m_hwnd; };
 
     PIXEL         const GetWindowTop( )            const { return Util::GetWindowTop           ( m_hwnd ); }
@@ -200,12 +202,12 @@ private:
 
 	class WindowRefreshRate;
 
-	HWND                m_hwnd;
-	HWND                m_hwndApp;
-	WindowRefreshRate * m_pRefreshRate;
-	tOnOffAuto          m_visibilityMode;
-	function<bool()>    m_visibilityCriterion;
-	bool                m_bShowRefreshRateDlg;
+	HWND                  m_hwnd                 { nullptr };
+	HWND                  m_hwndApp              { nullptr };
+	WindowRefreshRate   * m_pRefreshRate         { nullptr };
+	tOnOffAuto            m_visibilityMode       { tOnOffAuto::on };
+	function<bool()>      m_visibilityCriterion  { nullptr };
+	bool                  m_bShowRefreshRateDlg  { true };
 
 	void addWinMenu( HMENU const, std::wstring const ) const;
 	void adjustWinMenu( HMENU const ) const;

@@ -51,11 +51,6 @@ IDC_NNET_SIMU_MAIN MENU
     }
     POPUP "&View"
     {
-        POPUP "&Zoom"
-        {
-            MENUITEM "Zoom &In",  IDM_ZOOM_IN
-            MENUITEM "Zoom &Out", IDM_ZOOM_OUT
-        }
         POPUP "&Windows"
         {
             MENUITEM "Show &mini window",        IDM_MINI_WINDOW
@@ -64,14 +59,14 @@ IDC_NNET_SIMU_MAIN MENU
             MENUITEM "Show &performance window", IDM_PERF_WINDOW
             //MENUITEM "Show &console window",     IDM_CONS_WINDOW
         }
-    }
-    POPUP "&Options"
-    {
-         POPUP "&Arrows"
+        POPUP "&Arrows"
         {
             MENUITEM "o&n",  IDD_ARROWS_ON
             MENUITEM "o&ff", IDD_ARROWS_OFF
         }
+    }
+    POPUP "&Options"
+    {
          POPUP "&Sound"
          {
              MENUITEM "o&n",  IDD_SOUND_ON

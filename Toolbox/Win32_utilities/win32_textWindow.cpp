@@ -104,10 +104,10 @@ LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
             break;
 
         default:
-            break;
+            return false;
         }
     }
-    return false;
+    return true;
 
     case WM_PAINT:
     {

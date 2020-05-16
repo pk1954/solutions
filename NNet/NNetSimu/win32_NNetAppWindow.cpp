@@ -131,6 +131,7 @@ void NNetAppWindow::Start( )
 	( 
 		m_hwndApp, 
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
+		m_pNNetController,
 		m_pModelInterface,
 		m_pDrawModel,
 		m_pCursorPos
@@ -142,6 +143,7 @@ void NNetAppWindow::Start( )
 	( 
 		m_hwndApp, 
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
+		m_pNNetController,
 		m_pModelInterface,
 		m_pDrawModel,
 		m_pCursorPos
@@ -184,7 +186,7 @@ void NNetAppWindow::Start( )
 
 	configureStatusBar( );
 
-	m_pNNetController->SetDisplayFunctor( m_pStatusBarDisplayFunctor );
+	m_pNNetController->SetStatusBarDisplay( m_pStatusBarDisplayFunctor );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
@@ -253,14 +255,14 @@ void NNetAppWindow::configureStatusBar( )
 	m_StatusBar.DisplayInPart( iPartScriptLine, L"" );
 	Script::ScrSetWrapHook( & m_ScriptHook );
 	m_pStatusBarDisplayFunctor = new StatusBarDisplayFunctor( & m_StatusBar, iPartScriptLine );
-	ModelAnalyzer::SetDisplayFunctor( m_pStatusBarDisplayFunctor );
+	ModelAnalyzer::SetStatusBarDisplay( m_pStatusBarDisplayFunctor );
 
 	m_StatusBar.LastPart( );
 	m_pTimeDisplay->Notify( true );
 	m_pSlowMotionDisplay->Notify( true );
 }
 
-void NNetAppWindow::ProcessCloseMessage( )
+void NNetAppWindow::OnClose( )
 {
 	if ( m_bStarted )
 	{
@@ -272,38 +274,10 @@ void NNetAppWindow::ProcessCloseMessage( )
 	DestroyWindow( );        
 }
 
-bool NNetAppWindow::ProcessAppCommand( WPARAM const wParam, LPARAM const lParam )
+bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
-	int const wmId = LOWORD( wParam );
-
-	if ( wmId == IDM_FATAL_ERROR )
-	{
-		Stop();
-		FatalError::Happened( static_cast<long>(lParam), "unknown" );
-	}
-
-	try
-	{
-		bool bRes = m_pNNetController->ProcessUIcommand( wmId, lParam ); // handle all commands that affect the UI
-		if ( bRes )                                                      // but do not concern the model  
-			return true;                                                    
-	}
-	catch ( ... )
-	{
-		Stop();
-		FatalError::Happened( 2, "ProcessUIcommand" );
-	}
-
-	try
-	{
-		if ( m_pNNetController->ProcessModelCommand( wmId, lParam ) )
-			return ProcessFrameworkCommand( wmId, lParam );             // Some commands are handled by the framework controller
-	}
-	catch ( ... )
-	{
-		Stop();
-		FatalError::Happened( 3, "ProcessModelCommand" );
-	}
-
-	return false;
+	if ( m_pNNetController->HandleCommand( wParam, lParam, NP_NULL ) )
+		return true;
+	else 
+		return BaseAppWindow::OnCommand( wParam, lParam, pixPoint );
 }

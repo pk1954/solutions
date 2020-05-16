@@ -29,7 +29,7 @@ public:
     void  Resize( ) const;
 
     HWND WINAPI AddStaticControl( LPCTSTR );
-    HWND WINAPI AddButton       ( LPCTSTR const, HMENU const, DWORD const  );
+    HWND WINAPI AddButton       ( LPCTSTR const, HMENU const, DWORD const );
     HWND WINAPI AddTrackBar     ( HMENU );
 
 	void AddCustomControl( int const );

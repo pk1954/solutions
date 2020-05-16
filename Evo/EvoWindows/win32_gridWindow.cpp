@@ -119,7 +119,7 @@ GridWindow::~GridWindow( )
 	m_pGridWindowObserved     = nullptr;
 }
 
-void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const pntPos )
+long GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const pntPos )
 {
 	UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 
@@ -166,6 +166,8 @@ void GridWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const
 	m_DrawFrame.AddContextMenuEntries( pCore, hPopupMenu, pntPos );
 
 	m_pReadBuffer->ReleaseReadBuffer( );
+
+	return 0L;
 }
 
 void GridWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
@@ -332,7 +334,7 @@ void GridWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 	SetCursor( hCrsr );
 }
 
-BOOL GridWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
+bool GridWindow::OnCommand( WPARAM const wParam, LPARAM const lParam )
 {
 	UINT uiCmdId = LOWORD( wParam );
 	switch ( uiCmdId )

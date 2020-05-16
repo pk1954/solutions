@@ -109,9 +109,6 @@ LRESULT BaseAppWindow::UserProc
 			m_pAppMenu->AdjustVisibility( );
 		break;
 
-	case WM_COMMAND:
-		return ProcessAppCommand( wParam, lParam );
-
 	case WM_PAINT:
 	{
 		static COLORREF const CLR_GREY = RGB( 128, 128, 128 );
@@ -128,7 +125,7 @@ LRESULT BaseAppWindow::UserProc
 		break;
 
 	case WM_CLOSE:
-		ProcessCloseMessage( );
+		OnClose( );
 		return true;  
 
 	case WM_DESTROY:
@@ -142,7 +139,7 @@ LRESULT BaseAppWindow::UserProc
 	return DefWindowProc( message, wParam, lParam );
 }
 
-bool BaseAppWindow::ProcessFrameworkCommand( WPARAM const wParam, LPARAM const lParam )
+bool BaseAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
 	int const wmId = LOWORD( wParam );
 
@@ -154,10 +151,6 @@ bool BaseAppWindow::ProcessFrameworkCommand( WPARAM const wParam, LPARAM const l
 
 	case IDM_EXIT:
 		PostMessage( WM_CLOSE, 0, 0 );
-		break;
-
-	case IDM_MAIN_WINDOW:
-		::SendMessage( m_WinManager.GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
 		break;
 
 	case IDM_FORWARD:
@@ -173,7 +166,7 @@ bool BaseAppWindow::ProcessFrameworkCommand( WPARAM const wParam, LPARAM const l
 		break;
 
 	default:
-		return false; // command has not been processed
+		return BaseWindow::OnCommand( wParam, lParam, pixPoint );
 	}
 
 	return true;  // command has been processed
