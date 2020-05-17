@@ -42,7 +42,8 @@ public:
 	size_t    const GetNrOfIncomingConnections( ShapeId const ) const;
 	bool      const ConnectsTo( ShapeId const, ShapeId const ) const;
 
-	MicroMeterRect const GetEnclosingRect( ) const;
+	MicroMeterPoint const GetShapePos      ( ShapeId const ) const;
+	MicroMeterRect  const GetEnclosingRect( ) const;
 
 	fMicroSecs GetSimulationTime( ) const;
 

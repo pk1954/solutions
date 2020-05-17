@@ -44,7 +44,7 @@ public:
 	virtual void DrawNeuronText( DrawContext const & ) const;
 	virtual void Recalc( );   // Recalculate precalculated values
 
-	fHertz GetPulseFreq( ) const {	return m_pulseFrequency; }
+	fHertz GetPulseFreq( ) const { return m_pulseFrequency; }
 
 	void SetPulseFrequency_Lock( fHertz const );
 

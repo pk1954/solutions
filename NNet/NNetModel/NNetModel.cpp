@@ -163,7 +163,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 {
 	BaseKnot * pSrc { GetShapePtr<BaseKnot *>( idSrc ) };
 	Shape    * pDst { GetShapePtr<Shape    *>( idDst ) };
-	if ( pDst->TypeFits( ShapeType::Value::pipe ) )  // connect baseknot to pipe
+	if ( pDst->GetShapeType( ).IsPipeType() )   // connect baseknot to pipe
 	{
 		insertBaseKnot( GetShapePtr<Pipe *>( idDst ), pSrc );
 	}

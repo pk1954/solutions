@@ -98,7 +98,7 @@ public:
 	void AppendShape( ShapeId const id )
 	{
 		Shape * pShape { GetShapePtr<Shape *>( id ) };
-		if ( pShape && pShape->TypeFits( ShapeType::Value::knot ) )
+		if ( pShape && pShape->IsKnot() )
 		{
 			Connect( id, NewShape<T>( GetShapePos( id ) )->GetId() );
 			modelHasChanged( );

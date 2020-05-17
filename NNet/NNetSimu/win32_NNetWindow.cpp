@@ -277,7 +277,8 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			m_shapeSuperHighlighted = NO_SHAPE;
 			if ( IsDefined( m_shapeHighlighted ) )
 			{
-				setSuperHighlightedShape( umCrsrPos );
+//				setSuperHighlightedShape( umCrsrPos );
+				setSuperHighlightedShape( m_pModelInterface->GetShapePos( m_shapeHighlighted ) );
 				m_pWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
 			}
 			else if ( m_pModelInterface->AnyShapesSelected( ) )   // move selected shapes 
@@ -339,12 +340,20 @@ void NNetWindow::doPaint( )
 	if ( m_context.GetPixelSize() <= 5._MicroMeter )
 		m_pDrawModel->DrawExteriorInRect( pixRect, m_context );
 
-	m_pDrawModel->DrawInteriorInRect( pixRect, m_context, [&](Shape const & s){ return s.IsPipe    (); } );
-	m_pDrawModel->DrawInteriorInRect( pixRect, m_context, [&](Shape const & s){ return s.IsBaseKnot(); } );
+	m_pDrawModel->DrawInteriorInRect( pixRect, m_context, [&](Shape const & s) { return s.IsPipe    (); } );
+	m_pDrawModel->DrawInteriorInRect( pixRect, m_context, [&](Shape const & s) { return s.IsBaseKnot(); } );
 
-	// draw highlighted shape again to be sure that it is in foreground
-	m_pModelInterface->DrawExterior( m_shapeHighlighted, m_context, tHighlightType::highlighted );
-	m_pModelInterface->DrawInterior( m_shapeHighlighted, m_context );
+	if ( m_shapeSuperHighlighted.IsNotNull() ) // draw super highlighted shape again to be sure that it is in foreground
+	{
+		m_pModelInterface->DrawExterior( m_shapeSuperHighlighted, m_context, tHighlightType::superHighlighted );
+		m_pModelInterface->DrawInterior( m_shapeSuperHighlighted, m_context );
+	}
+
+	if ( m_shapeHighlighted.IsNotNull() )  // draw highlighted shape again to be sure that it is in foreground
+	{
+		m_pModelInterface->DrawExterior( m_shapeHighlighted, m_context, tHighlightType::highlighted );
+		m_pModelInterface->DrawInterior( m_shapeHighlighted, m_context );
+	}
 
 	m_context.ShowScale( GetClientWindowHeight() );
 

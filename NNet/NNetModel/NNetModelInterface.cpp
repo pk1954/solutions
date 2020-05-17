@@ -18,6 +18,11 @@ bool const NNetModelInterface::IsSelected( ShapeId const id ) const
 	return p ? p->IsSelected( ) : false; 
 }
 
+MicroMeterPoint const NNetModelInterface::GetShapePos( ShapeId const id ) const
+{
+	return m_pModel->GetShapePos( id );
+}
+
 ShapeType const NNetModelInterface::GetShapeType( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<Shape const *>(id) };
