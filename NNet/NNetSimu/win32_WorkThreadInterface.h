@@ -14,7 +14,7 @@ using std::wostream;
 
 class Param;
 class ActionTimer;
-class ObserverInterface;
+class Observable;
 class EventInterface;
 class SlowMotionRatio;
 class NNetModelStorage;
@@ -30,16 +30,16 @@ public:
 
 	void Start
     ( 
-		HWND                const,
-		ActionTimer       * const,
-		EventInterface    * const,
-		ObserverInterface * const,
-		ObserverInterface * const,
-		SlowMotionRatio   * const,
-		NNetModel         * const,
-		Param             * const,
-		NNetModelStorage  * const,
-		bool                const
+		HWND               const,
+		ActionTimer      * const,
+		EventInterface   * const,
+		Observable       * const,
+		Observable       * const,
+		SlowMotionRatio  * const,
+		NNetModel        * const,
+		Param            * const,
+		NNetModelStorage * const,
+		bool               const
 	);
 	void Stop(); 
 

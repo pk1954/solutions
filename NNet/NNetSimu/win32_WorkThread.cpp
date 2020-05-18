@@ -36,8 +36,8 @@ NNetWorkThread::NNetWorkThread
 	HWND                  const hwndApplication,
 	ActionTimer         * const pActionTimer,
 	EventInterface      * const pEvent,
-	ObserverInterface   * const pRedrawObserver, 
-	ObserverInterface   * const pChangeObserver, 
+	Observable          * const pRedrawObservable, 
+	Observable          * const pChangeObservable, 
 	SlowMotionRatio     * const pSlowMotionRatio,
 	WorkThreadInterface * const pWorkThreadInterface,
 	NNetModel           * const pNNetModel,
@@ -45,15 +45,15 @@ NNetWorkThread::NNetWorkThread
 	NNetModelStorage    * const pStorage,
 	bool                  const bAsync
 )
-:	m_pStorage            ( pStorage ),
-	m_pNNetModel          ( pNNetModel ),
-	m_pParam              ( pParam ),
-	m_pEventPOI           ( pEvent ),   
-	m_pModelRedrawObserver( pRedrawObserver ),   
-	m_pModelChangeObserver( pRedrawObserver ),   
-	m_pWorkThreadInterface( pWorkThreadInterface ),
-	m_hwndApplication     ( hwndApplication ),
-	m_pSlowMotionRatio    ( pSlowMotionRatio )
+:	m_pStorage              ( pStorage ),
+	m_pNNetModel            ( pNNetModel ),
+	m_pParam                ( pParam ),
+	m_pEventPOI             ( pEvent ),   
+	m_pModelRedrawObservable( pRedrawObservable ),   
+	m_pModelChangeObservable( pRedrawObservable ),   
+	m_pWorkThreadInterface  ( pWorkThreadInterface ),
+	m_hwndApplication       ( hwndApplication ),
+	m_pSlowMotionRatio      ( pSlowMotionRatio )
 {
 	m_pTimeResObserver = new TimeResObserver( this );
 	m_pParam->AddParameterObserver( m_pTimeResObserver );       // notify me if parameters change
@@ -65,13 +65,13 @@ NNetWorkThread::NNetWorkThread
 NNetWorkThread::~NNetWorkThread( )
 {
 	delete m_pTimeResObserver;
-	m_pTimeResObserver     = nullptr;
-	m_hwndApplication      = nullptr;
-	m_pWorkThreadInterface = nullptr;
-	m_pEventPOI            = nullptr;
-	m_pModelRedrawObserver = nullptr;
-	m_pModelChangeObserver = nullptr;
-	m_pStorage             = nullptr;
+	m_pTimeResObserver       = nullptr;
+	m_hwndApplication        = nullptr;
+	m_pWorkThreadInterface   = nullptr;
+	m_pEventPOI              = nullptr;
+	m_pModelRedrawObservable = nullptr;
+	m_pModelChangeObservable = nullptr;
+	m_pStorage               = nullptr;
 }
 
 static tParameter const GetParameterType( NNetWorkThreadMessage::Id const m )
@@ -108,8 +108,8 @@ void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )
 
 	if ( bRes )
 	{
-		if (m_pModelRedrawObserver != nullptr)                // ... notify main thread, that model has changed.
-			m_pModelRedrawObserver->Notify( ! m_bContinue );  // Continue immediately, if in run mode
+		if ( m_pModelRedrawObservable )                // ... notify main thread, that model has changed.
+			m_pModelRedrawObservable->NotifyAll( ! m_bContinue );  // Continue immediately, if in run mode
 	}
 	else  // Nobody could handle message
 	{

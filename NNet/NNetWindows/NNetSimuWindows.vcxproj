@@ -167,7 +167,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AnimationThread.h" />
-    <ClInclude Include="ObserverProxy.h" />
     <ClInclude Include="win32_appMenu.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />

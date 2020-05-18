@@ -6,15 +6,15 @@
 
 #include "MoreTypes.h"
 #include "d2d1helper.h"
-#include "ObserverInterface.h"                   
+#include "Observable.h"                   
 												  
 class NNetColors								  
 {												 
 private:
 
-	inline static ObserverInterface * m_pObserver { nullptr };
-	inline static bool                m_bSwitch   { false };
-	inline static UINT_PTR            m_TimerId   { 0 }; 
+	inline static Observable * m_pObservable { nullptr };
+	inline static bool         m_bSwitch     { false };
+	inline static UINT_PTR     m_TimerId     { 0 }; 
 
 	friend VOID CALLBACK TimerProc( HWND, UINT, UINT_PTR, DWORD );
 
@@ -26,7 +26,7 @@ private:
 
 public:											 
 
-	NNetColors( ObserverInterface * const );
+	NNetColors( Observable * const );
 	~NNetColors( );
 
 	inline static D2D1::ColorF const COL_BLACK           { 0.0f, 0.0f, 0.0f, 1.0f };

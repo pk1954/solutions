@@ -12,18 +12,18 @@ VOID CALLBACK TimerProc( HWND hwnd, UINT message, UINT_PTR iTimerID, DWORD dwTim
 		                        ? NNetColors::INT_BLINK_KEY_2 
 		                        : NNetColors::INT_BLINK_KEY_1;
 	NNetColors::m_bSwitch = ! NNetColors::m_bSwitch;
-	if ( NNetColors::m_pObserver )
-		NNetColors::m_pObserver->Notify( false );
+	if ( NNetColors::m_pObservable )
+		NNetColors::m_pObservable->NotifyAll( false );
 }
 
-NNetColors::NNetColors( ObserverInterface * const pObserver )
+NNetColors::NNetColors( Observable * const pObservable )
 {
-	m_pObserver = pObserver;
+	m_pObservable = pObservable;
 	m_TimerId = SetTimer( NULL, 1, BLINK_TIME.GetValue(), TimerProc );
 }
 
 NNetColors::~NNetColors( )
 {
-	m_pObserver = nullptr;
+	m_pObservable = nullptr;
 	KillTimer( NULL, m_TimerId );
 }

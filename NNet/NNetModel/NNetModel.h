@@ -8,7 +8,7 @@
 #include "util.h"
 #include "BoolOp.h"
 #include "MoreTypes.h"
-#include "ObserverInterface.h"
+#include "Observable.h"
 #include "Segment.h"
 #include "tParameter.h"
 #include "tHighlightType.h"
@@ -17,7 +17,6 @@
 #include "Knot.h"
 #include "Pipe.h"
 
-class ObserverInterface;
 class EventInterface;
 class ComputeThread;
 class Param;
@@ -31,7 +30,7 @@ class NNetModel
 {
 public:
 
-	NNetModel( Param * const, ObserverInterface * const );
+	NNetModel( Param * const, Observable * const );
 
 	virtual ~NNetModel( );
 
@@ -321,10 +320,10 @@ private:
 	mutable DWORD       m_dwLockedBy      { 0 };            // debugging
 	mutable SRWLOCK     m_SRWLockModel    { SRWLOCK_INIT }; // locks model during deletion or reconstruction  
 
-	ShapeList           m_Shapes          { };
-	fMicroSecs          m_timeStamp       { 0._MicroSecs };
-	Param             * m_pParam          { nullptr };
-	ObserverInterface * m_pChangeObserver { nullptr };
+	ShapeList    m_Shapes            { };
+	fMicroSecs   m_timeStamp         { 0._MicroSecs };
+	Param      * m_pParam            { nullptr };
+	Observable * m_pChangeObservable { nullptr };
 
 	unsigned long m_nrOfShapes       { 0L };
 	unsigned long m_nrOfPipes        { 0L };

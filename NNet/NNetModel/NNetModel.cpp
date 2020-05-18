@@ -20,11 +20,11 @@ using std::unordered_map;
 
 NNetModel::NNetModel
 (
-	Param             * const pParam, 
-	ObserverInterface * const pObserver 
+	Param      * const pParam, 
+	Observable * const pObservable
 )
   : m_pParam( pParam ),
-	m_pChangeObserver( pObserver )
+	m_pChangeObservable( pObservable )
 {					
 	Shape::SetParam( pParam );
 	m_Shapes.reserve( 100000 ); // Dirty trick to avoid reallocation (invalidates iterators)
@@ -41,7 +41,7 @@ void NNetModel::CreateInitialShapes( )
 
 void NNetModel::modelHasChanged( ) const 
 { 
-	m_pChangeObserver->Notify( true );
+	m_pChangeObservable->NotifyAll( true );
 }
 
 void NNetModel::RecalcAllShapes( ) 

@@ -91,17 +91,17 @@ public:
 
 	NNetWorkThread
 	( 
-		HWND                      const,
-		ActionTimer             * const,
-		EventInterface          * const,
-		ObserverInterface       * const,
-		ObserverInterface       * const,
-		SlowMotionRatio         * const,
+		HWND                  const,
+		ActionTimer         * const,
+		EventInterface      * const,
+		Observable          * const,
+		Observable          * const,
+		SlowMotionRatio     * const,
 		WorkThreadInterface * const,
-		NNetModel               * const,
-		Param                   * const,
-		NNetModelStorage        * const,
-		bool                      const
+		NNetModel           * const,
+		Param               * const,
+		NNetModelStorage    * const,
+		bool                  const
 	);
 	~NNetWorkThread( );
 
@@ -165,8 +165,8 @@ private:
 	NNetModel           * m_pNNetModel              { nullptr };
 	Param               * m_pParam                  { nullptr };
 	SlowMotionRatio     * m_pSlowMotionRatio        { nullptr };
-	ObserverInterface   * m_pModelRedrawObserver    { nullptr };
-	ObserverInterface   * m_pModelChangeObserver    { nullptr };
+	Observable          * m_pModelRedrawObservable  { nullptr };
+	Observable          * m_pModelChangeObservable  { nullptr };
 	HWND                  m_hwndApplication         { (HWND)0 };
 	Observable            m_runObservable           { };
 	Observable            m_performanceObservable   { };

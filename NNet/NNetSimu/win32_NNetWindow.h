@@ -96,7 +96,7 @@ protected:
 	DrawModel   * m_pDrawModel { nullptr };
 	PixelPoint    m_ptLast     { PP_NULL };	// Last cursor position during selection 
 
-	inline static NNetModelInterface  * m_pModelInterface      { nullptr };
+	inline static NNetModelInterface * m_pModelInterface { nullptr };
 
 private:
 

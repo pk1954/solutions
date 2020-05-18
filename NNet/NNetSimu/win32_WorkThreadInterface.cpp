@@ -36,16 +36,16 @@ void WorkThreadInterface::Initialize( wostream * pTraceStream )
 
 void WorkThreadInterface::Start
 ( 
-	HWND                 const hwndApplication,
-	ActionTimer        * const pActionTimer,
-    EventInterface     * const pEvent,
-	ObserverInterface  * const pRedrawObserver,
-	ObserverInterface  * const pChangeObserver,
-	SlowMotionRatio    * const pSlowMotionRatio,
-	NNetModel          * const pModel,
-	Param              * const pParam,
-	NNetModelStorage   * const pStorage,
-	bool                 const bAsync
+	HWND                const hwndApplication,
+	ActionTimer       * const pActionTimer,
+    EventInterface    * const pEvent,
+	Observable        * const pRedrawObservable,
+	Observable        * const pChangeObservable,
+	SlowMotionRatio   * const pSlowMotionRatio,
+	NNetModel         * const pModel,
+	Param             * const pParam,
+	NNetModelStorage  * const pStorage,
+	bool                const bAsync
 )
 {
 	m_pNNetWorkThread = new NNetWorkThread
@@ -53,8 +53,8 @@ void WorkThreadInterface::Start
 		hwndApplication, 
 		pActionTimer,
 		pEvent, 
-		pRedrawObserver,
-		pChangeObserver,
+		pRedrawObservable,
+		pChangeObservable,
 		pSlowMotionRatio,
 		this,
 		pModel,
