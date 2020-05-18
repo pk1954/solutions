@@ -60,7 +60,7 @@ void TriggerSoundDialog::handleOnOff( HWND const hDlg )
 	EnableWindow( GetDlgItem( hDlg, IDC_TRIGGER_SOUND_TEST ), bTriggerSoundOn );
 }
 
-bool TriggerSoundDialog::onCommand( HWND const hDlg, WPARAM const wParam, LPARAM const lParam )
+void TriggerSoundDialog::onCommand( HWND const hDlg, WPARAM const wParam, LPARAM const lParam )
 {
 	WORD id { LOWORD(wParam) };
 	switch ( id )
@@ -70,11 +70,11 @@ bool TriggerSoundDialog::onCommand( HWND const hDlg, WPARAM const wParam, LPARAM
 		m_frequency = m_bSoundActive ? Hertz    ( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ )) : 0_Hertz;
 		m_duration  = m_bSoundActive ? MilliSecs( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC )) : 0_MilliSecs;
 		EndDialog( hDlg, true );
-		return true;
+		break;
 
 	case IDCANCEL:
 		EndDialog( hDlg, false );
-		return true;
+		break;
 
 	case IDC_TRIGGER_SOUND_ON:
 		handleOnOff( hDlg );

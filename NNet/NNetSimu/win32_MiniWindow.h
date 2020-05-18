@@ -10,10 +10,8 @@ class MiniWindow : public NNetWindow
 {
 public:
 
-	virtual ~MiniWindow();
-
-	virtual void OnMouseWheel ( WPARAM const, LPARAM const ) { };  // mini window cannot be zoomed 
-	virtual void OnMouseMove  ( WPARAM const, LPARAM const );
+	virtual void OnMouseWheel( WPARAM const, LPARAM const ) { };  // mini window cannot be zoomed 
+	virtual void OnMouseMove ( WPARAM const, LPARAM const );
 
 	virtual long AddContextMenuEntries( HMENU const, PixelPoint const ) { return 0; }
 		
@@ -22,6 +20,8 @@ public:
 private:
 
 	virtual void doPaint( );
+
+	void adjust( );
 
 	NNetWindow * m_pNNetWindowObserved { nullptr }; // Observed NNetWindow (or nullptr)
 };

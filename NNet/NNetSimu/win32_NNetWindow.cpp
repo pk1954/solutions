@@ -277,7 +277,6 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			m_shapeSuperHighlighted = NO_SHAPE;
 			if ( IsDefined( m_shapeHighlighted ) )
 			{
-//				setSuperHighlightedShape( umCrsrPos );
 				setSuperHighlightedShape( m_pModelInterface->GetShapePos( m_shapeHighlighted ) );
 				m_pWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
 			}

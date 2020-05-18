@@ -7,11 +7,11 @@
 #include "observable.h"
 #include "observerInterface.h"
 
-class ObserverProxy : public ObserverInterface,  // Observes producer thread
-	                   public Observable          // Can be observed by consumer threads
+class ObserverProxy : public ObserverInterface,   // Observes producer thread
+	                  public Observable           // Can be observed by consumer threads
 {
 public:
-	ObserverProxy( ) {	}
+	ObserverProxy( ) { }
 
 	~ObserverProxy( ) { }
 

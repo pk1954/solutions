@@ -158,28 +158,7 @@ public:
 	{
 		return Convert2PixelRect( Convert2fPixelRect( umRect ) );
 	}
-
-	/////////////////////////
-
-	//PixelPoint Pixel2PixelSize( PixelPoint const ptSizeIn, PixelCoordsFp const * pSrc, PixelCoordsFp const * pDst )
-	//{
-	//	return ( ptSizeIn * pDst->GetPixelSize().GetValue() ) / pSrc->GetPixelSize().GetValue();
-	//}
-
-	//PixelPoint Pixel2PixelPos( PixelPoint const ptPosIn, PixelCoordsFp const * pSrc, PixelCoordsFp const * pDst ) 
-	//{
-	//	return Pixel2PixelSize( ptPosIn + pSrc->GetPixelOffset(), pSrc, pDst ) - pDst->GetPixelOffset();
-	//}
-
-	//PixelRect Pixel2PixelRect(PixelRect const & rect, PixelCoordsFp const * pSrc, PixelCoordsFp const * pDst )
-	//{
-	//	return PixelRect
-	//	(
-	//		Pixel2PixelPos( rect.GetStartPoint(), pSrc, pDst ),
-	//		Pixel2PixelPos( rect.GetEndPoint(),   pSrc, pDst )
-	//	);
-	//}
-
+	
 	//////// queries ////////
 
 	MicroMeter  GetPixelSize( )   const { return m_pixelSize; };

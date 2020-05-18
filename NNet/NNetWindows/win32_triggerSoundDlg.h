@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "ObserverProxy.h"
 #include "win32_baseDialog.h"
 
 class TriggerSoundDialog
@@ -37,7 +36,7 @@ private:
 	TriggerSoundDialog             ( TriggerSoundDialog const & );  // noncopyable class 
 	TriggerSoundDialog & operator= ( TriggerSoundDialog const & );  // noncopyable class 
 
-	bool          onCommand( HWND const, WPARAM const, LPARAM const );
+	void          onCommand( HWND const, WPARAM const, LPARAM const );
 	void          handleOnOff( HWND const );
 	void          initEditField( HWND const, int const, unsigned long const );
 	unsigned long evaluateEditField( HWND const, int const );

@@ -99,7 +99,7 @@ void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )
 	bool bRes;
 	try
 	{
-		bRes = dispatch( msg );
+		bRes = dispatch( msg );  // returns true, if model has changed
 	}
 	catch ( ... )
 	{
@@ -117,7 +117,7 @@ void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )
 	}   // I cannot find a reason, so I ignore them
 }
 
-bool NNetWorkThread::dispatch( MSG const msg  )
+bool NNetWorkThread::dispatch( MSG const msg ) // return true, if model has changed
 {
 	NNetWorkThreadMessage::Id const id { static_cast<NNetWorkThreadMessage::Id>(msg.message) };
 	switch ( id )
