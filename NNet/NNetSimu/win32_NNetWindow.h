@@ -20,6 +20,7 @@ class DrawModel;
 class Observable;
 class ActionTimer;
 class AnimationThread;
+class ObserverInterface;
 class ControllerInterface;
 class NNetModelInterface;
 class WorkThreadInterface;
@@ -42,12 +43,15 @@ public:
 		NNetController     * const,
 		NNetModelInterface * const,
 		DrawModel          * const,
-		Observable         * const
+		Observable         * const 
 	);
 
 	void Stop( );
 
 	virtual ~NNetWindow( );
+
+	virtual void NNetMove( PixelPoint const & );
+	virtual bool Zoom( MicroMeter const );
 
 	ShapeId        const GetHighlightedShapeId( )          const { return m_shapeHighlighted; }
 	ShapeId        const GetSuperHighlightedShapeId( )     const { return m_shapeSuperHighlighted; }
@@ -55,14 +59,9 @@ public:
 
 	void ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
 	void ZoomStep( bool const );
-	void Zoom( MicroMeter const );
 	void AnalysisFinished( );
 	void CenterModel( bool const );
 	void CenterAndZoomRect( MicroMeterRect const &, float const, bool const );
-	void NNetMove( PixelPoint const & );
-	void NNetMove( MicroMeterPoint const & );	
-
-	MicroMeterRect const GetViewRect();
 
 	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
 

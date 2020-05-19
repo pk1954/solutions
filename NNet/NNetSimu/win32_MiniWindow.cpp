@@ -9,17 +9,18 @@
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelInterface.h"
+#include "win32_MainWindow.h"
 #include "win32_MiniWindow.h"
 
-void MiniWindow::Observe( NNetWindow * const pNNetWin )	
+void MiniWindow::ObservedNNetWindow( MainWindow * const pNNetWin )	
 { 
-	m_pNNetWindowObserved = pNNetWin;
+	m_pObservedNNetWindow = pNNetWin;
 	m_context.SetNoColors( true );
 }
 
 void MiniWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( ! m_pNNetWindowObserved )
+	if ( ! m_pObservedNNetWindow )
 		return; 
 
 	if ( wParam & MK_LBUTTON )       	// Left mouse button: move or edit action
@@ -30,7 +31,7 @@ void MiniWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		{
 			PixelPoint      const pixDelta { ptCrsr - m_ptLast };
 			MicroMeterPoint const umDelta  { m_context.GetCoordC().Convert2MicroMeterPointSize( pixDelta ) }; 
-			m_pNNetWindowObserved->NNetMove( - umDelta );               // move the observed window in opposite direction 
+			m_pObservedNNetWindow->NNetMove( - umDelta );               // move the observed window in opposite direction 
 		}
 
 		m_ptLast = ptCrsr;
@@ -43,8 +44,8 @@ void MiniWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 
 void MiniWindow::adjust( ) 
 {
-	float          const EXTRA_SPACE_FACTOR { 1.2f };   // give 20% more space (looks better)
-	MicroMeterRect const umRectMain  { m_pNNetWindowObserved->GetViewRect() };   // current position of main window view 
+	float          const EXTRA_SPACE_FACTOR { 1.2f };                            // give 20% more space (looks better)
+	MicroMeterRect const umRectMain  { m_pObservedNNetWindow->GetViewRect() };   // current position of main window view 
 	MicroMeterRect const umRectModel { m_pModelInterface->GetEnclosingRect() };  // current extension of model
 	MicroMeterRect const umRectShow  { Union( umRectMain, umRectModel ) };       // all this should be visible  
 	CenterAndZoomRect( umRectShow, EXTRA_SPACE_FACTOR, false );           
@@ -52,10 +53,10 @@ void MiniWindow::adjust( )
 
 void MiniWindow::doPaint( ) 
 {
-	if ( m_pNNetWindowObserved )
+	if ( m_pObservedNNetWindow )
 	{
 		adjust();
 		m_pDrawModel->DrawExteriorInRect( GetClPixelRect( ), m_context );
-		m_context.DrawTranspRect( m_pNNetWindowObserved->GetViewRect(), NNetColors::POSITION_RECT );
+		m_context.DrawTranspRect( m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT );
 	}
 }

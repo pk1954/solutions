@@ -14,7 +14,6 @@ using std::wostream;
 
 class Param;
 class ActionTimer;
-class Observable;
 class EventInterface;
 class SlowMotionRatio;
 class NNetModelStorage;
@@ -33,8 +32,6 @@ public:
 		HWND               const,
 		ActionTimer      * const,
 		EventInterface   * const,
-		Observable       * const,
-		Observable       * const,
 		SlowMotionRatio  * const,
 		NNetModel        * const,
 		Param            * const,

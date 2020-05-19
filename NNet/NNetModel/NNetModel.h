@@ -9,6 +9,7 @@
 #include "BoolOp.h"
 #include "MoreTypes.h"
 #include "Observable.h"
+#include "ObservableRect.h"
 #include "Segment.h"
 #include "tParameter.h"
 #include "tHighlightType.h"
@@ -30,7 +31,7 @@ class NNetModel
 {
 public:
 
-	NNetModel( Param * const, Observable * const );
+	NNetModel( Param * const, Observable * const, Observable * const, Observable * const );
 
 	virtual ~NNetModel( );
 
@@ -63,6 +64,19 @@ public:
 		return lCounter;
 	}
 
+	bool const AnyShapesSelected( ) const
+	{
+		return Apply2AllB<Shape>( [&]( Shape const & shape ) { return shape.IsSelected(); } );
+	}
+
+	bool IsSelected( ShapeId const idShape ) const
+	{
+		if ( Shape const * pShape { GetShapeConstPtr<Shape const *>( idShape ) } )
+			return pShape->IsSelected();
+		else 
+			return false;
+	}
+
 	bool          IsShapeIdOk  ( ShapeId const id ) const { return IsDefined( id ) && IsValidShapeId( id ); }
 	Shape       * GetShape     ( ShapeId const id )       { return IsShapeIdOk( id ) ? m_Shapes[id.GetValue()] : nullptr; }
 	Shape const * GetConstShape( ShapeId const id ) const {	return IsShapeIdOk( id ) ? m_Shapes[id.GetValue()] : nullptr; }
@@ -72,7 +86,6 @@ public:
 
 	fMicroSecs      const GetSimulationTime ( ) const { return m_timeStamp; }
 	long            const GetSizeOfShapeList( ) const { return CastToLong( m_Shapes.size() ); }
-	
 
 	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
 	BaseKnot * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
@@ -82,14 +95,18 @@ public:
 
 	// manipulating functions
 
-	void ResetSimulationTime( )	{ m_timeStamp = 0._MicroSecs; }
+	void ResetSimulationTime( )	
+	{ 
+		m_timeStamp = 0._MicroSecs; 
+		m_pModelTimeObservable->NotifyAll( false );
+	}
 
 	template <typename T> 
 	T * const NewShape( MicroMeterPoint const & pos ) 
 	{ 
 		auto pT { new T( pos ) };
 		add2ShapeList( pT );
-		modelHasChanged( );
+		staticModelChanged( );
 		return pT;
 	}
 
@@ -100,7 +117,7 @@ public:
 		if ( pShape && pShape->IsKnot() )
 		{
 			Connect( id, NewShape<T>( GetShapePos( id ) )->GetId() );
-			modelHasChanged( );
+			staticModelChanged( );
 		}
 	}
 
@@ -222,7 +239,7 @@ public:
 	void RemoveShape        ( ShapeId const id ) 
 	{ 
 		removeShape( GetShape( id ) ); 
-		modelHasChanged( );
+		staticModelChanged( );
 	}
 
 	void RecalcAllShapes( );
@@ -231,7 +248,7 @@ public:
 	void SetParameter ( tParameter const, float const );
 	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
-	MicroMeterRect GetEnclosingRect() const { return ::GetEnclosingRect( m_Shapes ); }
+	MicroMeterRect GetEnclosingRect() const { return m_enclosingRect; }
 
 	void ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
 	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
@@ -243,11 +260,6 @@ public:
 	void DeleteSelection( );
 	void MoveSelection( MicroMeterPoint const & );
 	void SelectBeepers( ) {	Apply2All<Neuron>( [&](Neuron & n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
-
-	bool const AnyShapesSelected( ) const
-	{
-		return Apply2AllB<Shape>( [&]( Shape const & shape ) { return shape.IsSelected(); } );
-	}
 
 	void RemoveBeepers( ) 
 	{	
@@ -277,14 +289,6 @@ public:
 	{
 		if ( Shape * const pShape { GetShapePtr<Shape *>( idShape ) } )
 			pShape->Mark( op );
-	}
-
-	bool IsSelected( ShapeId const idShape )
-	{
-		if ( Shape const * pShape { GetShapePtr<Shape *>( idShape ) } )
-			return pShape->IsSelected();
-		else 
-			return false;
 	}
 
 	void LockModelShared() const
@@ -317,13 +321,16 @@ public:
 
 private:
 
-	mutable DWORD       m_dwLockedBy      { 0 };            // debugging
-	mutable SRWLOCK     m_SRWLockModel    { SRWLOCK_INIT }; // locks model during deletion or reconstruction  
+	mutable DWORD   m_dwLockedBy   { 0 };            // debugging
+	mutable SRWLOCK m_SRWLockModel { SRWLOCK_INIT }; // locks model during deletion or reconstruction  
 
-	ShapeList    m_Shapes            { };
-	fMicroSecs   m_timeStamp         { 0._MicroSecs };
-	Param      * m_pParam            { nullptr };
-	Observable * m_pChangeObservable { nullptr };
+	ShapeList      m_Shapes                  { };
+	fMicroSecs     m_timeStamp               { 0._MicroSecs };
+	Param        * m_pParam                  { nullptr };
+	Observable   * m_pModelTimeObservable    { nullptr };
+	Observable   * m_pStaticModelObservable  { nullptr };
+	Observable   * m_pDynamicModelObservable { nullptr };
+	MicroMeterRect m_enclosingRect           { };
 
 	unsigned long m_nrOfShapes       { 0L };
 	unsigned long m_nrOfPipes        { 0L };
@@ -339,6 +346,23 @@ private:
 		m_Shapes.push_back( pNewShape );
 	}
 
+	void incTimeStamp( )
+	{
+		m_timeStamp += m_pParam->GetTimeResolution( );
+		m_pModelTimeObservable->NotifyAll( false );
+	}
+
+	void dynamicModelChanged( ) const 
+	{ 
+		m_pDynamicModelObservable->NotifyAll( false );
+	}
+
+	void staticModelChanged( )
+	{ 
+		m_pStaticModelObservable->NotifyAll( true );
+		m_enclosingRect = ::GetEnclosingRect( m_Shapes );
+	}
+
 	MicroMeterPoint orthoVector        ( ShapeId const ) const;
 	void            deletePipeEndPoints( Pipe  * const );
 	void            deleteShape        ( Shape * const );
@@ -348,7 +372,6 @@ private:
 	void            selectSubtree      ( BaseKnot * const, tBoolOp    const );
 	void            insertBaseKnot     ( Pipe     * const, BaseKnot * const );
 	void            connectToNewShapes ( Shape const &, ShapeList & );
-	void            modelHasChanged    ( ) const;
 	void            setTriggerSound    ( Neuron * const, Hertz const, MilliSecs const );
 	void            removeTriggerSound ( Neuron * const );
 	ShapeId const   findShapeAt        ( MicroMeterPoint const, ShapeCrit const & ) const;

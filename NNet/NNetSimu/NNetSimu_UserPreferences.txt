@@ -1,5 +1,5 @@
 SetSound ON
 SetAutoOpen ON
-ReadModel "D:\SW-projects\Solutions\NNet\x64\Release\std.mod"
-SetPixelOffset (-580.386/170.443)
-SetPixelSize 0.59518
+ReadModel "D:\SW-projects\Delivery\2020-04-28\Copy31.mod"
+SetPixelOffset (2732.42/4158.22)
+SetPixelSize 1.30761

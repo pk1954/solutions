@@ -52,6 +52,7 @@ public:
 	fPixelPoint GetPixelOffset( ) const { return m_coord.GetPixelOffset(); }
 	void        SetPixelSize  ( MicroMeter  const s ) { m_coord.SetPixelSize  ( s ); }
 	void        SetPixelOffset( fPixelPoint const f ) { m_coord.SetPixelOffset( f ); }
+	void        Move          ( PixelPoint  const d ) { m_coord.Move          ( d ); }
 
 	bool ZoomKeepCrsrPos( PixelPoint const & pixPntCenter, MicroMeter const newSize )
 	{

@@ -21,10 +21,14 @@ using std::unordered_map;
 NNetModel::NNetModel
 (
 	Param      * const pParam, 
-	Observable * const pObservable
+	Observable * const pStaticModelObservable,
+	Observable * const pDynamicModelObservable,
+	Observable * const pModelTimeObservable
 )
   : m_pParam( pParam ),
-	m_pChangeObservable( pObservable )
+	m_pStaticModelObservable ( pStaticModelObservable ),
+    m_pDynamicModelObservable( pDynamicModelObservable ),
+	m_pModelTimeObservable   ( pModelTimeObservable )
 {					
 	Shape::SetParam( pParam );
 	m_Shapes.reserve( 100000 ); // Dirty trick to avoid reallocation (invalidates iterators)
@@ -39,14 +43,10 @@ void NNetModel::CreateInitialShapes( )
 	NewPipe( pInputNeuron, pNeuron );
 }
 
-void NNetModel::modelHasChanged( ) const 
-{ 
-	m_pChangeObservable->NotifyAll( true );
-}
-
 void NNetModel::RecalcAllShapes( ) 
 { 
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); } );
+	dynamicModelChanged( );
 } 
 
 void NNetModel::removeShape( Shape * const pShape )
@@ -66,6 +66,7 @@ void NNetModel::ToggleStopOnTrigger( ShapeId const id )
 	if ( Neuron * pNeuron { GetShapePtr<Neuron *>( id ) } )
 	{
 		pNeuron->StopOnTrigger( tBoolOp::opToggle );
+		dynamicModelChanged( );
 	}
 }
 
@@ -75,10 +76,8 @@ void NNetModel::Disconnect( ShapeId const id )
 	{
 		disconnectBaseKnot( pBaseKnot );
 		if ( pBaseKnot->IsKnot() )
-		{
 			deleteShape( pBaseKnot );
-			modelHasChanged( );
-		}
+		staticModelChanged( );
 	}
 }
 
@@ -91,8 +90,8 @@ void NNetModel::Convert2Neuron( ShapeId const idInputNeuron )
 		Neuron        * const pNeuron { NewShape<Neuron>( pos ) };
 		RemoveShape( idInputNeuron );
 		if ( idAxon != NO_SHAPE )
-			Connect( GetStartKnotId( idAxon ), pNeuron->GetId()  );
-		modelHasChanged( );
+			Connect( GetStartKnotId( idAxon ), pNeuron->GetId() );
+		staticModelChanged( );
 	}
 }
 
@@ -106,7 +105,7 @@ void NNetModel::Convert2InputNeuron( ShapeId const idNeuron )
 		RemoveShape( idNeuron );
 		if ( idAxon != NO_SHAPE )
 			Connect( GetStartKnotId( idAxon ), pInputNeuron->GetId()  );
-		modelHasChanged( );
+		staticModelChanged( );
 	}
 }
 
@@ -116,7 +115,7 @@ void NNetModel::SetPulseRate_Lock( ShapeId const id, float const fNewValue )
 	if ( pInputNeuron )
 	{
 		pInputNeuron->SetPulseFrequency_Lock( static_cast< fHertz >( fNewValue ) );
-		modelHasChanged( );
+		staticModelChanged( );
 	}
 }
 
@@ -127,7 +126,7 @@ void NNetModel::setTriggerSound( Neuron * const pNeuron, Hertz const freq, Milli
 		pNeuron->SetTriggerSoundFrequency( freq );
 		pNeuron->SetTriggerSoundDuration ( msec );
 		pNeuron->SetTriggerSoundOn( freq != 0_Hertz );
-		modelHasChanged( );
+		staticModelChanged( );
 	}
 }
 
@@ -139,6 +138,7 @@ void NNetModel::removeTriggerSound( Neuron * const pNeuron )
 void NNetModel::SetTriggerSound( ShapeId const id, Hertz const freq, MilliSecs const msec )
 {
 	setTriggerSound( GetShapePtr<Neuron *>( id ), freq, msec );
+	staticModelChanged( );
 }
 
 void NNetModel::SetParameter
@@ -149,10 +149,9 @@ void NNetModel::SetParameter
 {
 	m_pParam->SetParameterValue( param, fNewValue );
 	RecalcAllShapes( );
-	modelHasChanged( );
 }
 
-MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const 
+MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const // TODO: Lock?
 {
 	if ( BaseKnot const * pBaseKnot = GetShapeConstPtr<BaseKnot const *>( id ) )
 		return pBaseKnot->GetPosition();
@@ -178,7 +177,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 				deleteShape( pSrc );
 		}
 	}
-	modelHasChanged( );
+	staticModelChanged( );
 }
 
 void NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
@@ -191,14 +190,13 @@ void NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
 		ConnectIncoming( pPipe, pEnd );
 		pPipe->Recalc();
 		pPipe->UnlockShapeExclusive();
-		modelHasChanged( );
+		staticModelChanged( );
 	}
 }
 
 void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
-	Shape * pShape { GetShapePtr<Shape *>( id  ) };
-	if ( pShape )
+	if ( Shape * pShape { GetShapePtr<Shape *>( id  ) } )
 	{
 		if ( HasType<Pipe>( pShape ) )
 		{
@@ -212,7 +210,7 @@ void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 			pBaseKnot->MoveShape( delta );
 			pBaseKnot->Apply2AllConnectedPipes( [&](Pipe & pipe) { pipe.Recalc(); } );
 		}
-		modelHasChanged( );
+		staticModelChanged( );
 	}
 }
 
@@ -223,7 +221,7 @@ Neuron * const NNetModel::InsertNeuron( ShapeId const idPipe, MicroMeterPoint co
 	{
 		pNeuron = NewShape<Neuron>( splitPoint );
 		insertBaseKnot( GetShapePtr<Pipe *>(idPipe), pNeuron );
-		modelHasChanged( );
+		staticModelChanged( );
 	}
 	return pNeuron;
 }
@@ -235,7 +233,7 @@ Knot * const NNetModel::InsertKnot( ShapeId const idPipe, MicroMeterPoint const 
 	{
 		pKnot = NewShape<Knot>( splitPoint );
 		insertBaseKnot( GetShapePtr<Pipe *>(idPipe), pKnot );
-		modelHasChanged( );
+		staticModelChanged( );
 	}
 	return pKnot;
 }
@@ -269,7 +267,8 @@ bool NNetModel::Compute( )
 	bool bStop {false };
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Prepare( ); } );
 	Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.CompStep( ) ) bStop = true; } );
-	m_timeStamp += m_pParam->GetTimeResolution( );
+	dynamicModelChanged();
+	incTimeStamp( );
 	return bStop;
 }
 
@@ -280,7 +279,7 @@ void NNetModel::ResetModel( )
 		delete pShape;
 	m_Shapes.clear();
 	UnlockModelExclusive( );
-	modelHasChanged( );
+	staticModelChanged( );
 }
 
 void NNetModel::DeleteSelection( )
@@ -293,12 +292,13 @@ void NNetModel::DeleteSelection( )
 			removeShape( p ); 
 	}
 	UnlockModelExclusive( );
-	modelHasChanged( );
+	staticModelChanged( );
 }
 
 void NNetModel::MarkSelection( tBoolOp const op )
 {
 	Apply2AllSelected<Shape>( [&]( Shape & shape ) { shape.Mark( op ); } );
+	dynamicModelChanged();
 }
 
 void NNetModel::MoveSelection( MicroMeterPoint const & delta )
@@ -311,7 +311,7 @@ void NNetModel::MoveSelection( MicroMeterPoint const & delta )
 			knot.Apply2AllConnectedPipes( [&](Pipe & pipe) { pipe.Recalc(); } );
 		} 
 	);
-	modelHasChanged( );
+	staticModelChanged( );
 }
 
 Shape * NNetModel::shallowCopy( Shape const & shape ) // No locks
@@ -379,7 +379,61 @@ void NNetModel::CopySelection( )
 	// Now add copies to m_Shapes
 	for ( auto pShape : newShapes )	{ if ( pShape ) add2ShapeList( pShape ); }
 
-	modelHasChanged( );
+	staticModelChanged( );
+}
+
+void NNetModel::ConnectIncoming
+( 
+	Pipe     * const pPipe, 
+	BaseKnot * const pEndPoint
+)
+{
+	if ( pPipe && pEndPoint )
+	{
+		pEndPoint->LockShapeExclusive();
+		pEndPoint->AddIncoming( pPipe );
+		pPipe->SetEndKnot( pEndPoint );
+		pEndPoint->UnlockShapeExclusive();
+		staticModelChanged( );
+	}
+}
+
+void NNetModel::ConnectOutgoing
+( 
+	Pipe     * const pPipe, 
+	BaseKnot * const pStartPoint
+)
+{
+	if ( pPipe && pStartPoint )
+	{
+		pStartPoint->LockShapeExclusive();
+		pStartPoint->AddOutgoing( pPipe );
+		pPipe->SetStartKnot( pStartPoint );
+		pStartPoint->UnlockShapeExclusive();
+		staticModelChanged( );
+	}
+}
+
+ShapeId const NNetModel::FindShapeAt
+( 
+	MicroMeterPoint const & umPoint, 
+	ShapeCrit       const & crit 
+) const
+{	
+	ShapeId idRes { NO_SHAPE };
+
+	LockModelShared();
+	if ( idRes == NO_SHAPE )   // first test all neurons and input neurons
+		idRes = findShapeAt( umPoint, [&]( Shape const & s ) { return s.IsAnyNeuron( ) && crit( s ); } );
+
+	if ( idRes == NO_SHAPE )   // if nothing found, test knot shapes
+		idRes = findShapeAt( umPoint, [&]( Shape const & s ) { return s.IsKnot     ( ) && crit( s ); } ); 	
+
+	if ( idRes == NO_SHAPE )   // if nothing found, try pipes
+		idRes = findShapeAt( umPoint, [&]( Shape const & s ) { return s.IsPipe     ( ) && crit( s ); } );
+	UnlockModelShared();
+
+	return idRes;
 }
 
 /////////////////// local functions ///////////////////////////////////////////////
@@ -408,36 +462,6 @@ void NNetModel::deleteShape( Shape * const pShape )
 	assert( m_Shapes[ id.GetValue() ] == pShape );
 	m_Shapes[ id.GetValue() ] = nullptr;  // first remove anchor
 	delete pShape;                        // then delete Shape
-}
-
-void NNetModel::ConnectIncoming
-( 
-	Pipe     * const pPipe, 
-	BaseKnot * const pEndPoint
-)
-{
-	if ( pPipe && pEndPoint )
-	{
-		pEndPoint->LockShapeExclusive();
-		pEndPoint->AddIncoming( pPipe );
-		pPipe->SetEndKnot( pEndPoint );
-		pEndPoint->UnlockShapeExclusive();
-	}
-}
-
-void NNetModel::ConnectOutgoing
-( 
-	Pipe     * const pPipe, 
-	BaseKnot * const pStartPoint
-)
-{
-	if ( pPipe && pStartPoint )
-	{
-		pStartPoint->LockShapeExclusive();
-		pStartPoint->AddOutgoing( pPipe );
-		pPipe->SetStartKnot( pStartPoint );
-		pStartPoint->UnlockShapeExclusive();
-	}
 }
 
 void NNetModel::disconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects only, shape remains
@@ -515,28 +539,6 @@ void NNetModel::insertBaseKnot( Pipe * const pPipe, BaseKnot * const pBaseKnot)
 MicroMeterPoint NNetModel::orthoVector( ShapeId const idPipe ) const
 {
 	return OrthoVector( GetShapeConstPtr<Pipe const *>( idPipe )->GetVector(), NEURON_RADIUS * 2.f );
-}
-
-ShapeId const NNetModel::FindShapeAt
-( 
-	MicroMeterPoint const & umPoint, 
-	ShapeCrit       const & crit 
-) const
-{	
-	ShapeId idRes { NO_SHAPE };
-
-	LockModelShared();
-	if ( idRes == NO_SHAPE )   // first test all neurons and input neurons
-		idRes = findShapeAt( umPoint, [&]( Shape const & s ) { return s.IsAnyNeuron( ) && crit( s ); } );
-
-	if ( idRes == NO_SHAPE )   // if nothing found, test knot shapes
-		idRes = findShapeAt( umPoint, [&]( Shape const & s ) { return s.IsKnot     ( ) && crit( s ); } ); 	
-
-	if ( idRes == NO_SHAPE )   // if nothing found, try pipes
-		idRes = findShapeAt( umPoint, [&]( Shape const & s ) { return s.IsPipe     ( ) && crit( s ); } );
-	UnlockModelShared();
-
-	return idRes;
 }
 
 ShapeId const NNetModel::findShapeAt

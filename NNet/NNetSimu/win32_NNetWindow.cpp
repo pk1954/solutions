@@ -80,10 +80,12 @@ NNetWindow::~NNetWindow( )
 	m_pCursorPosObservable = nullptr;
 }
 
-void NNetWindow::Zoom( MicroMeter const newSize )
+bool NNetWindow::Zoom( MicroMeter const newSize )
 {
-	if ( m_context.ZoomKeepCrsrPos( GetRelativeCrsrPosition(), newSize ) )
-		Notify( true );     // cause immediate repaint
+	bool bRes { m_context.ZoomKeepCrsrPos( GetRelativeCrsrPosition(), newSize ) };
+	if ( bRes ) 
+		Notify( false ); 
+	return bRes;
 }
 
 void NNetWindow::ZoomStep( bool const bZoomIn )
@@ -93,13 +95,8 @@ void NNetWindow::ZoomStep( bool const bZoomIn )
 
 void NNetWindow::NNetMove( PixelPoint const & pixDelta ) 
 { 
-	m_context.GetCoord().Move( pixDelta ); 
-	Notify( true );     // cause immediate repaint
-}
-
-void NNetWindow::NNetMove( MicroMeterPoint const & umDelta )	
-{ 
-	NNetMove( m_context.GetCoord().Convert2PixelSize( umDelta ) ); 
+	m_context.Move( pixDelta ); 
+	Notify( true );  
 }
 
 long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )
@@ -256,7 +253,8 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	MicroMeterPoint const umCrsrPos { m_context.GetCoord().Convert2MicroMeterPointPos( ptCrsr   ) };
 	MicroMeterPoint const umLastPos { m_context.GetCoord().Convert2MicroMeterPointPos( m_ptLast ) };
 
-	m_pCursorPosObservable->NotifyAll( false );
+	if ( m_pCursorPosObservable )
+		m_pCursorPosObservable->NotifyAll( false );
 
 	if ( wParam & MK_RBUTTON )         // Right mouse button: selection
 	{
@@ -503,12 +501,6 @@ void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 	bool    const keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
 	HCURSOR const hCrsr   = keyDown ? m_hCrsrMove : m_hCrsrArrow;
 	SetCursor( hCrsr );
-}
-
-MicroMeterRect const NNetWindow::GetViewRect( )
-{
-	PixelRect const pixRectView = GetClPixelRect( );
-	return m_context.GetCoordC().Convert2MicroMeterRect( pixRectView );
 }
 
 MicroMeterPoint NNetWindow::PixelPoint2MicroMeterPoint( PixelPoint const pixPoint ) const

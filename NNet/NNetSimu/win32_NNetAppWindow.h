@@ -19,8 +19,8 @@
 // application
 
 #include "win32_WorkThreadInterface.h"
-#include "win32_NNetWindow.h"
 #include "win32_MiniWindow.h"
+#include "win32_MainWindow.h"
 #include "win32_NNetAppMenu.h"
 #include "win32_NNetController.h"
 #include "NNetColors.h"
@@ -66,16 +66,19 @@ private:
 	ActionTimer         m_atDisplay               { };
 	ScriptHook          m_ScriptHook              { };
 	SlowMotionRatio     m_SlowMotionRatio         { };
+	Observable          m_cursorPosObservable     { };
+	Observable          m_blinkObservable         { };
+	Observable          m_modelTimeObservable     { };
+	Observable          m_staticModelObservable   { };
+	Observable          m_dynamicModelObservable  { };
 
 	Param                   * m_pParameters              { nullptr };
 	SimulationControl       * m_pSimulationControl       { nullptr };
 	NNetColors              * m_pNNetColors              { nullptr };
-	Observable              * m_pModelRedrawObservable   { nullptr };
-	Observable              * m_pModelChangedObservable  { nullptr };
 	NNetController          * m_pNNetController          { nullptr };
 	NNetModelInterface      * m_pModelInterface          { nullptr };
 	NNetModel               * m_pModel                   { nullptr };
-	NNetWindow              * m_pMainNNetWindow          { nullptr };
+	MainWindow              * m_pMainNNetWindow          { nullptr };
 	MiniWindow              * m_pMiniNNetWindow          { nullptr };
 	DrawModel               * m_pDrawModel               { nullptr };
 	TimeDisplay             * m_pTimeDisplay             { nullptr };
@@ -84,6 +87,5 @@ private:
 	PerformanceWindow       * m_pPerformanceWindow       { nullptr };
 	NNetModelStorage        * m_pNNetModelStorage        { nullptr };
 	ParameterDialog         * m_pParameterDlg            { nullptr };
-	Observable              * m_pCursorPos               { nullptr };
 	StatusBarDisplayFunctor * m_pStatusBarDisplayFunctor { nullptr };
 };

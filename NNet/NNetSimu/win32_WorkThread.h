@@ -94,8 +94,6 @@ public:
 		HWND                  const,
 		ActionTimer         * const,
 		EventInterface      * const,
-		Observable          * const,
-		Observable          * const,
 		SlowMotionRatio     * const,
 		WorkThreadInterface * const,
 		NNetModel           * const,
@@ -158,6 +156,7 @@ private:
 	bool                  m_bContinue               { false };
 	fMicroSecs            m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
 	fMicroSecs            m_usRealTimeAvailPerCycle { 0.0_MicroSecs };
+	HWND                  m_hwndApplication         { (HWND)0 };
 	TimeResObserver     * m_pTimeResObserver        { nullptr };
 	NNetModelStorage    * m_pStorage                { nullptr };
 	EventInterface      * m_pEventPOI               { nullptr };
@@ -165,9 +164,6 @@ private:
 	NNetModel           * m_pNNetModel              { nullptr };
 	Param               * m_pParam                  { nullptr };
 	SlowMotionRatio     * m_pSlowMotionRatio        { nullptr };
-	Observable          * m_pModelRedrawObservable  { nullptr };
-	Observable          * m_pModelChangeObservable  { nullptr };
-	HWND                  m_hwndApplication         { (HWND)0 };
 	Observable            m_runObservable           { };
 	Observable            m_performanceObservable   { };
 	HiResTimer            m_hrTimer                 { };

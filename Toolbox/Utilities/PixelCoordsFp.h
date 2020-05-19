@@ -174,7 +174,27 @@ public:
 		return isValidPixelSize( newSize ) ? newSize : m_pixelSize;
 	}
 
+	MicroMeter LimitPixelSize( MicroMeter const sizeDesired ) const
+	{
+		return ClipToMinMax<MicroMeter>( sizeDesired, MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE );
+	}
+
 	//////// manipulation functions ////////
+
+	void SetPixelSize( MicroMeter const pixelSize )
+	{
+		m_pixelSize = pixelSize;
+	}
+
+	void SetPixelOffset( fPixelPoint const fPixOffset )
+	{
+		m_fPixOffset = fPixOffset;
+	}
+
+	void Move( PixelPoint const pntDelta )
+	{
+		m_fPixOffset -= Convert2fPixelPoint( pntDelta );
+	}
 
 	bool Zoom( MicroMeter const pixelSize )
 	{
@@ -184,33 +204,13 @@ public:
 		return bValid;
 	}
 
-	void SetPixelSize( MicroMeter const pixelSize )
-	{
-		m_pixelSize = pixelSize;
-	}
-
-	void Move( PixelPoint const pntDelta )
-	{
-		m_fPixOffset -= Convert2fPixelPoint( pntDelta );
-	}
-
-	void SetPixelOffset( fPixelPoint const fPixOffset )
-	{
-		m_fPixOffset = fPixOffset;
-	}
-
 	void Center
 	( 
 		MicroMeterPoint const umPntCenter,   
 		fPixelPoint     const fPntPix  
 	)
 	{
-		m_fPixOffset = Convert2fPixelSize( umPntCenter ) - fPntPix;
-	}
-
-	MicroMeter LimitPixelSize( MicroMeter const sizeDesired ) const
-	{
-		return ClipToMinMax<MicroMeter>( sizeDesired, MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE );
+		SetPixelOffset( Convert2fPixelSize( umPntCenter ) - fPntPix );
 	}
 
 private:

@@ -4,7 +4,8 @@
 
 #pragma once
 
-#include "win32_NNetWindow.h"
+#include "ObserverInterface.h"
+#include "win32_MainWindow.h"
 
 class MiniWindow : public NNetWindow
 {
@@ -14,8 +15,8 @@ public:
 	virtual void OnMouseMove ( WPARAM const, LPARAM const );
 
 	virtual long AddContextMenuEntries( HMENU const, PixelPoint const ) { return 0; }
-		
-	void Observe( NNetWindow * const );
+	
+	void ObservedNNetWindow( MainWindow * const );
 
 private:
 
@@ -23,6 +24,6 @@ private:
 
 	void adjust( );
 
-	NNetWindow * m_pNNetWindowObserved { nullptr }; // Observed NNetWindow (or nullptr)
+	MainWindow * m_pObservedNNetWindow { nullptr }; // Observed NNetWindow (or nullptr)
 };
 

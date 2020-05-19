@@ -168,6 +168,7 @@
   <ItemGroup>
     <ClInclude Include="AutoOpen.h" />
     <ClInclude Include="DrawModel.h" />
+    <ClInclude Include="win32_MainWindow.h" />
     <ClInclude Include="NNetModelStorage.h" />
     <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="Preferences.h" />

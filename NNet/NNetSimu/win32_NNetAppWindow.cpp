@@ -61,24 +61,18 @@ NNetAppWindow::NNetAppWindow( )
 {
 	Stopwatch stopwatch;
 
-	Preferences::Initialize();
-	BaseAppWindow::Initialize( & m_NNetWorkThreadInterface );
-
+	Preferences   ::Initialize();
+	BaseAppWindow ::Initialize( & m_NNetWorkThreadInterface );
 	NNetWorkThread::InitClass( (tAppCallBack)( [&]( int const id ) { PostMessage( WM_COMMAND, id, 0 ); } ) );
+	NNetWindow    ::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
 
-	m_pModelRedrawObservable  = new Observable( );
-	m_pModelChangedObservable = new Observable( );
-	m_pPerformanceWindow      = new PerformanceWindow( );
-
-	NNetWindow::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
-
-	m_pNNetColors     = new NNetColors( m_pModelRedrawObservable );
-	m_pCursorPos      = new Observable( );
-	m_pAppMenu        = new NNetAppMenu( );
-	m_pMainNNetWindow = new NNetWindow( );
-	m_pMiniNNetWindow = new MiniWindow( );
-	m_pCrsrWindow     = new CrsrWindow( );
-	m_pParameterDlg   = new ParameterDialog( & m_NNetWorkThreadInterface );
+	m_pPerformanceWindow = new PerformanceWindow( );
+	m_pNNetColors        = new NNetColors( & m_blinkObservable );
+	m_pAppMenu           = new NNetAppMenu( );
+	m_pMainNNetWindow    = new MainWindow( );
+	m_pMiniNNetWindow    = new MiniWindow( );
+	m_pCrsrWindow        = new CrsrWindow( );
+	m_pParameterDlg      = new ParameterDialog( & m_NNetWorkThreadInterface );
 
 	DefineNNetWrappers( & m_NNetWorkThreadInterface, m_pMainNNetWindow );
 
@@ -97,18 +91,22 @@ NNetAppWindow::~NNetAppWindow( )
 	delete m_pParameterDlg;
 	delete m_pPerformanceWindow;
 	delete m_pStatusBarDisplayFunctor;
-	delete m_pModelRedrawObservable;
-	delete m_pModelChangedObservable;
 }
 
 void NNetAppWindow::Start( )
 {
 	m_pParameters       = new Param( );
-	m_pModel            = new NNetModel( m_pParameters, m_pModelChangedObservable );
+	m_pModel            = new NNetModel
+	( 
+		m_pParameters, 
+		& m_staticModelObservable, 
+		& m_dynamicModelObservable, 
+		& m_modelTimeObservable 
+	);
 	m_pModelInterface   = new NNetModelInterface( m_pModel );
 	m_pNNetModelStorage = new NNetModelStorage( m_pModel, m_pParameters );
 	m_pDrawModel        = new DrawModel( m_pModel );
-	m_pModelChangedObservable->RegisterObserver( m_pNNetModelStorage );
+	m_staticModelObservable.RegisterObserver( m_pNNetModelStorage );
 
 	BaseAppWindow::Start( m_pMainNNetWindow );
 	m_pAppMenu->Initialize
@@ -134,10 +132,14 @@ void NNetAppWindow::Start( )
 		m_pNNetController,
 		m_pModelInterface,
 		m_pDrawModel,
-		m_pCursorPos
+		& m_cursorPosObservable
 	);
 
+	m_blinkObservable       .RegisterObserver( m_pMainNNetWindow );
+	m_staticModelObservable .RegisterObserver( m_pMainNNetWindow );
+	m_dynamicModelObservable.RegisterObserver( m_pMainNNetWindow );
 	m_pMainNNetWindow->ShowRefreshRateDlg( false );
+	m_pMainNNetWindow->AddObserver( m_pMiniNNetWindow );
 
 	m_pMiniNNetWindow->Start
 	( 
@@ -146,25 +148,22 @@ void NNetAppWindow::Start( )
 		m_pNNetController,
 		m_pModelInterface,
 		m_pDrawModel,
-		m_pCursorPos
+		& m_cursorPosObservable
 	);
 
 	SetWindowText( m_pMiniNNetWindow->GetWindowHandle(), L"Mini window" );
 
-	m_pMiniNNetWindow->Observe( m_pMainNNetWindow );  // mini window observes main grid window
+	m_pMiniNNetWindow->ObservedNNetWindow( m_pMainNNetWindow );  // mini window observes main grid window
 
 	m_pMiniNNetWindow->Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
 
-	m_pModelRedrawObservable->RegisterObserver( m_pMainNNetWindow );
-	m_pModelRedrawObservable->RegisterObserver( m_pMiniNNetWindow );
+	m_staticModelObservable.RegisterObserver( m_pMiniNNetWindow );
 
 	m_NNetWorkThreadInterface.Start
 	( 
 		m_hwndApp, 
 		& m_atComputation,
 		& m_eventPOI, 
-		  m_pModelRedrawObservable,
-		  m_pModelChangedObservable,
 		& m_SlowMotionRatio,
 		m_pModel,
 		m_pParameters,
@@ -173,8 +172,8 @@ void NNetAppWindow::Start( )
 	);
 
 	m_pCrsrWindow->Start( m_hwndApp, m_pMainNNetWindow, m_pModelInterface );
-	m_pCursorPos            ->RegisterObserver( m_pCrsrWindow );
-	m_pModelRedrawObservable->RegisterObserver( m_pCrsrWindow );
+	m_cursorPosObservable   .RegisterObserver( m_pCrsrWindow );
+	m_dynamicModelObservable.RegisterObserver( m_pMainNNetWindow );
 	m_pParameterDlg->Start( m_hwndApp, m_pParameters );
 	m_pPerformanceWindow->Start( m_hwndApp, m_pModelInterface, & m_NNetWorkThreadInterface, & m_atDisplay );
 
@@ -213,13 +212,13 @@ void NNetAppWindow::Stop()
 {
 	m_bStarted = false;
 
-	m_pMainNNetWindow->Stop( );
-	m_pMiniNNetWindow->Stop( );
-	m_pCrsrWindow    ->Stop( );
-	m_pParameterDlg  ->Stop( );
+	m_pMainNNetWindow   ->Stop( );
+	m_pMiniNNetWindow   ->Stop( );
+	m_pCrsrWindow       ->Stop( );
+	m_pParameterDlg     ->Stop( );
 	m_pPerformanceWindow->Stop( );
 
-	m_pModelRedrawObservable->UnregisterAllObservers( );
+	m_staticModelObservable.UnregisterAllObservers( );
 	m_NNetWorkThreadInterface.Stop( );
 
 	BaseAppWindow::Stop();
@@ -239,7 +238,7 @@ void NNetAppWindow::configureStatusBar( )
 	int iPartScriptLine = 0;
 
 	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pModelInterface, iPartScriptLine );
-	m_pModelRedrawObservable->RegisterObserver( m_pTimeDisplay );
+	m_modelTimeObservable.RegisterObserver( m_pTimeDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	m_pSimulationControl = new SimulationControl( & m_StatusBar, & m_NNetWorkThreadInterface );
