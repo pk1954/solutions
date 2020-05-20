@@ -441,6 +441,7 @@ void NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 	UINT width  = LOWORD(lParam);
 	UINT height = HIWORD(lParam);
 	m_context.Resize( width, height );
+	Notify( false );
 }
 
 void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )

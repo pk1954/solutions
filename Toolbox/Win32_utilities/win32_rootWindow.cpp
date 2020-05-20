@@ -214,7 +214,8 @@ LRESULT RootWindow::RootWindowProc
 		return false;
 
 	case WM_COMMAND:
-		return pRootWin->OnCommand( wParam, lParam );
+		pRootWin->OnCommand( wParam, lParam );
+		break;
 
 	case WM_CLOSE:   
 		pRootWin->m_visibilityMode = tOnOffAuto::off;

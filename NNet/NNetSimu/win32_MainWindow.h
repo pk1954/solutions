@@ -34,6 +34,12 @@ public:
 		m_pObserver->Notify( false );
 	}
 
+	virtual void smoothStep( ) 
+	{ 
+		NNetWindow::smoothStep( );
+		m_pObserver->Notify( false );
+	}
+
 	virtual void NNetMove( MicroMeterPoint const & umDelta )	
 	{ 
 		NNetMove( m_context.GetCoord().Convert2PixelSize( umDelta ) ); 

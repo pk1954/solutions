@@ -90,6 +90,7 @@ protected:
 	virtual void OnPaint( );
 
 	virtual void doPaint( );
+	virtual void smoothStep( );
 
 	DrawContext   m_context    { };
 	DrawModel   * m_pDrawModel { nullptr };
@@ -124,7 +125,6 @@ private:
 
 	virtual void HandleContextMenuCommand( UINT const, long const, PixelPoint const & );
 
-	void   smoothStep( );
 	LPARAM crsPos2LPARAM( ) const;
 	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
 	bool   inObservedClientRect( LPARAM const );
