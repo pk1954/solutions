@@ -45,7 +45,10 @@ public:
 
 	static bool TypeFits( ShapeType const type ) { return type.IsBaseKnotType( ); }
 
-	MicroMeterPoint GetPosition( )  const { return m_center;	}
+	MicroMeterPoint GetPosition( )  const 
+	{ 
+		return m_center;	
+	}
 	MicroMeter      GetExtension( ) const { return m_extension;	}
 	mV              GetVoltage( )   const { return m_mVinputBuffer; }
 

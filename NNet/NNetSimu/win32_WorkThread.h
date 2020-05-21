@@ -143,11 +143,11 @@ public:
 		NNetWorkThread * const m_pThread;
 	};
 
+	void generationRun( bool const );
 private:
 
 	bool compute();
 	bool dispatch( MSG const );
-	void generationRun( bool const );
 	void generationStop( );
 	bool actionCommand( NNetWorkThreadMessage::Id const, ShapeId const, MicroMeterPoint const & );
 

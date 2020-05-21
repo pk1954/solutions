@@ -173,8 +173,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 		{
 			pSrc->Apply2AllInPipes_Lock ( [&]( Pipe & pipe ) { ConnectIncoming( & pipe, pDstBaseKnot ); pipe.Recalc(); } );
 			pSrc->Apply2AllOutPipes_Lock( [&]( Pipe & pipe ) { ConnectOutgoing( & pipe, pDstBaseKnot ); pipe.Recalc(); } );
-			if ( pSrc->IsKnot() )
-				deleteShape( pSrc );
+			deleteShape( pSrc );
 		}
 	}
 	staticModelChanged( );

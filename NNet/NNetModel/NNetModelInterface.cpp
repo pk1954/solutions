@@ -117,33 +117,60 @@ bool const NNetModelInterface::ConnectsTo( ShapeId const idSrc, ShapeId const id
 		return false;
 
 	ShapeType const typeSrc { GetShapeType( idSrc ) };
-
-	if ( typeSrc.IsPipeType() )               // only BaseKnots can be connected
-		return false;                         // to other shapes
-
-	if ( typeSrc.IsInputNeuronType() )        // input neuron cannot connect to anything
-		return false;                         // try the other way round
-
 	ShapeType const typeDst { GetShapeType( idDst ) };
 
-	if ( typeDst.IsPipeType( ) )
+	switch ( typeSrc.GetValue( ) )
 	{
-		if ( typeSrc.IsInputNeuronType() )    // cannot insert input neuron
-			return false;                     // into Pipe
+	case ShapeType::Value::pipe:
+		return false;
+
+	case ShapeType::Value::knot:
+		switch ( typeSrc.GetValue( ) )
+		{
+		case ShapeType::Value::pipe:
+		case ShapeType::Value::knot:
+			return true;
+
+		case ShapeType::Value::neuron:
+			return (GetNrOfOutgoingConnections( idSrc ) + GetNrOfOutgoingConnections( idDst ) <= 1);
+
+		case ShapeType::Value::inputNeuron:
+			return false;
+
+		default:
+			break;
+		}
+		break;
+
+	case ShapeType::Value::neuron:
+		switch ( typeSrc.GetValue( ) )
+		{
+		case ShapeType::Value::pipe:
+			return true;
+
+		case ShapeType::Value::neuron:
+			return (GetNrOfOutgoingConnections( idSrc ) + GetNrOfOutgoingConnections( idDst ) <= 1);
+
+		case ShapeType::Value::knot:
+		case ShapeType::Value::inputNeuron:
+			return false;
+
+		default:
+			break;
+		}
+		break;
+
+	case ShapeType::Value::inputNeuron:
+		return ( typeDst.IsAnyNeuronType() )
+	           ? (GetNrOfOutgoingConnections( idSrc ) + GetNrOfOutgoingConnections( idDst ) <= 1) && ! HasIncoming( idSrc )
+			   : false;
+		break;
+
+	default:
+		break;
 	}
-	else if ( typeDst.IsAnyNeuronType() )
-	{
-		if ( typeSrc.IsAnyNeuronType() )      // neurons cannot connect directly 
-			return false;                     // to other neurons
 
-		if ( typeDst.IsInputNeuronType() && HasIncoming( idSrc ) )  // cannot connect incoming dendrite
-			return false;                                           // to input neuron
-
-		if ( GetNrOfOutgoingConnections( idSrc ) + GetNrOfOutgoingConnections( idDst ) > 1 ) // neurons can not not have 
-			return false;                                                                    // more than one axon
-	}
-
-	return true;
+	return false;
 }
 
 bool const NNetModelInterface::isConnectedTo( ShapeId const idSrc, ShapeId const idDst ) const
