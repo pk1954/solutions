@@ -99,7 +99,7 @@ void NNetWindow::NNetMove( PixelPoint const & pixDelta )
 	Notify( true );  
 }
 
-long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu, PixelPoint const ptPos )
+long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 {
 	UINT static const STD_FLAGS { MF_BYPOSITION | MF_STRING };
 
@@ -477,7 +477,6 @@ void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 		);
 		m_shapeSuperHighlighted = NO_SHAPE;
 	}
-	//	ReleaseCapture( );
 }
 
 bool NNetWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
@@ -490,6 +489,7 @@ bool NNetWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 
 bool NNetWindow::OnRButtonDown( WPARAM const wParam, LPARAM const lParam )
 {
+	SetFocus( );
 	return false;
 }
 

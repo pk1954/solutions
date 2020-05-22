@@ -9,7 +9,6 @@
 #include "BoolOp.h"
 #include "MoreTypes.h"
 #include "Observable.h"
-#include "ObservableRect.h"
 #include "Segment.h"
 #include "tParameter.h"
 #include "tHighlightType.h"

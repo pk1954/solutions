@@ -75,7 +75,7 @@ public:
 
 protected:
 
-	virtual long AddContextMenuEntries( HMENU const, PixelPoint const );
+	virtual long AddContextMenuEntries( HMENU const );
 
 	virtual bool OnCommand           ( WPARAM const, LPARAM const, PixelPoint const );
 	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const );

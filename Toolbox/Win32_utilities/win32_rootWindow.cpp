@@ -71,11 +71,11 @@ void RootWindow::adjustWinMenu( HMENU const hMenu ) const
 	EnableMenuItem( hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off      ) ? MF_GRAYED : MF_ENABLED) );
 }
 
-void RootWindow::contextMenu( PixelPoint const & pntPos )
+void RootWindow::contextMenu( PixelPoint const & crsrPosScreen ) // crsr pos in screen coordinates
 {
 	HMENU const hPopupMenu { CreatePopupMenu() };
 
-	long lParam = AddContextMenuEntries( hPopupMenu, pntPos ); // arbitrary parameter, forwarded as lParam  
+	long lParam = AddContextMenuEntries( hPopupMenu ); // arbitrary parameter, forwarded as lParam  
 
 	if ( m_visibilityCriterion )
 	{
@@ -88,14 +88,13 @@ void RootWindow::contextMenu( PixelPoint const & pntPos )
 		(void)AppendMenu( hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate" );
 	}
 
-	PixelPoint pntScreen = Client2Screen( pntPos );
 	(void)SetForegroundWindow( GetWindowHandle( ) );
 
 	UINT const uiID = (UINT)TrackPopupMenu
 	( 
 		hPopupMenu, 
 		TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, 
-		pntScreen.GetXvalue(), pntScreen.GetYvalue(), 
+		crsrPosScreen.GetXvalue(), crsrPosScreen.GetYvalue(), 
 		0, 
 		GetWindowHandle( ),
 		nullptr 
@@ -104,7 +103,7 @@ void RootWindow::contextMenu( PixelPoint const & pntPos )
 	(void)DestroyMenu( hPopupMenu );
 
 	if ( uiID != 0 )
-		OnCommand( uiID, lParam, pntPos );
+		OnCommand( uiID, lParam, Screen2Client( crsrPosScreen ) );
 }
 
 void RootWindow::SetWindowHandle( HWND const hwnd ) 
@@ -202,15 +201,8 @@ LRESULT RootWindow::RootWindowProc
 	switch (message)
 	{
 
-	case WM_RBUTTONDOWN:
-		if ( ! pRootWin->UserProc( message, wParam, lParam ) )
-			pRootWin->SetFocus( );
-		return false;
-
-	case WM_RBUTTONUP:
-		(void)ReleaseCapture( );
-		if ( ! pRootWin->UserProc( message, wParam, lParam ) )
-			pRootWin->contextMenu( GetCrsrPosFromLparam( lParam ) );
+	case WM_CONTEXTMENU:
+		pRootWin->contextMenu( GetCrsrPosFromLparam( lParam ) );
 		return false;
 
 	case WM_COMMAND:

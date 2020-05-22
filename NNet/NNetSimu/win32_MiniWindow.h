@@ -14,7 +14,7 @@ public:
 	virtual void OnMouseWheel( WPARAM const, LPARAM const ) { };  // mini window cannot be zoomed 
 	virtual void OnMouseMove ( WPARAM const, LPARAM const );
 
-	virtual long AddContextMenuEntries( HMENU const, PixelPoint const ) { return 0; }
+	virtual long AddContextMenuEntries( HMENU const ) { return 0; }
 	
 	void ObservedNNetWindow( MainWindow * const );
 

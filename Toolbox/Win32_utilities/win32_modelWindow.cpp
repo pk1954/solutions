@@ -34,11 +34,14 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 		OnLButtonUp( wParam, lParam );
 		return false;
 
-	case WM_RBUTTONUP:
-		return OnRButtonUp( wParam, lParam );
-
 	case WM_RBUTTONDOWN:
-		return OnRButtonDown( wParam, lParam );
+		OnRButtonDown( wParam, lParam );
+		break;
+
+	case WM_RBUTTONUP:
+		if ( OnRButtonUp( wParam, lParam ) )
+			return false;   // message completely handled, do not pass over to default processing
+		break;
 
 	case WM_SETCURSOR:
 		OnSetCursor( wParam, lParam );
