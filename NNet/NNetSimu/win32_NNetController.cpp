@@ -162,6 +162,7 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
 	return true;  // command has been processed
 }
 
+
 bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
 {
 	switch ( wmId )
@@ -171,16 +172,16 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
 	case IDM_SAVE_MODEL:
 		if ( m_pStorage->SaveModel( ) )
-			Preferences::WritePreferences( m_pStorage->GetModelPath(), m_pNNetWindow  );
+			Preferences::WritePreferences( m_pStorage->GetModelPath() );
 		break;
 
 	case IDM_SAVE_MODEL_AS:
 		if ( m_pStorage->SaveModelAs( ) )
-			Preferences::WritePreferences( m_pStorage->GetModelPath(), m_pNNetWindow  );
+			Preferences::WritePreferences( m_pStorage->GetModelPath() );
 		break;
 
 	case IDM_OPEN_MODEL:
-		if ( m_pStorage->AskAndSave( ) && m_pStorage->AskModelFile( ) )
+		if ( m_pStorage->AskAndSave( ) && m_pStorage->AskModelFile() )
 		{
 			m_pComputeThread->StopComputation();
 			m_pWorkThreadInterface->PostSendBack( IDM_READ_MODEL );
@@ -269,31 +270,26 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 	case IDD_REMOVE_SHAPE:
 		Sound::Play( TEXT("DISAPPEAR_SOUND") ); 
 		m_pWorkThreadInterface->PostRemoveShape( ShapeId( CastToLong(lParam) ) );
-		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
 	case IDD_DISCONNECT:
 		Sound::Play( TEXT("UNLOCK_SOUND") ); 
 		m_pWorkThreadInterface->PostDisconnect( ShapeId( CastToLong(lParam) ) );
-		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
 	case IDD_CONVERT2NEURON:
 		Sound::Play( TEXT("UNLOCK_SOUND") ); 
 		m_pWorkThreadInterface->PostConvert2Neuron( ShapeId( CastToLong(lParam) ) );
-		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
 	case IDD_STOP_ON_TRIGGER:
 		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
 		m_pWorkThreadInterface->PostToggleStopOnTrigger( ShapeId( CastToLong(lParam) ) );
-		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
 	case IDD_CONVERT2INPUT_NEURON:
 		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
 		m_pWorkThreadInterface->PostConvert2InputNeuron( ShapeId( CastToLong(lParam) ) );
-		m_pNNetWindow->ResetHighlightedShape();
 		break;
 
 	case IDD_INSERT_NEURON:

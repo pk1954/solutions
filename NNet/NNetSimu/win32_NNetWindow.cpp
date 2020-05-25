@@ -17,6 +17,7 @@
 #include "NNetModelInterface.h"
 #include "NNetColors.h"
 #include "DrawModel.h"
+#include "ComputeThread.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
 #include "win32_triggerSoundDlg.h"
@@ -44,6 +45,7 @@ void NNetWindow::Start
 ( 
 	HWND                 const hwndApp, 
 	DWORD                const dwStyle,
+	ComputeThread      * const pComputeThread,
 	NNetController     * const pController,
 	NNetModelInterface * const pModelInterface,
 	DrawModel          * const pDrawModel,
@@ -62,6 +64,7 @@ void NNetWindow::Start
 	);
 	m_context.Start( hwnd );
 	m_pController          = pController;
+	m_pComputeThread       = pComputeThread;
 	m_pModelInterface      = pModelInterface;
 	m_pCursorPosObservable = pCursorObservable;
 	m_pAnimationThread     = new AnimationThread( );
@@ -102,6 +105,12 @@ void NNetWindow::NNetMove( PixelPoint const & pixDelta )
 long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 {
 	UINT static const STD_FLAGS { MF_BYPOSITION | MF_STRING };
+
+	if ( m_pComputeThread->IsRunning() )
+	{
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_STOP, L"Stop" );
+		return 0;
+	}
 
 	ShapeType type { m_pModelInterface->GetShapeType( m_shapeHighlighted ) };
 
@@ -256,43 +265,59 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	if ( m_pCursorPosObservable )
 		m_pCursorPosObservable->NotifyAll( false );
 
-	if ( wParam & MK_RBUTTON )         // Right mouse button: selection
+	if ( m_pComputeThread->IsRunning() )
 	{
-		if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
+		if ( wParam & MK_LBUTTON )  	// Left mouse button: move 
 		{
-			m_rectSelection = MicroMeterRect( umCrsrPos, umLastPos );
-			m_pWorkThreadInterface->PostSelectShapesInRect( m_rectSelection );
-		}
-		else                           // first time here after RBUTTON pressed
-		{
-			m_ptLast = ptCrsr;         // store current cursor pos
-		}
-	}
-	else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
-	{
-		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
-		{
-			m_shapeSuperHighlighted = NO_SHAPE;
-			if ( IsDefined( m_shapeHighlighted ) )
-			{
-				setSuperHighlightedShape( m_pModelInterface->GetShapePos( m_shapeHighlighted ) );
-				m_pWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
-			}
-			else if ( m_pModelInterface->AnyShapesSelected( ) )   // move selected shapes 
-			{
-				m_pWorkThreadInterface->PostMoveSelection( umCrsrPos - umLastPos );
-			}
-			else  // move view by manipulating coordinate system 
-			{
+			if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 				NNetMove( ptCrsr - m_ptLast );
-			}
+			m_ptLast = ptCrsr;
 		}
-		m_ptLast = ptCrsr;
+		else if ( ! (wParam & MK_RBUTTON) ) // no mouse button pressed
+		{                         
+			m_ptLast.Set2Null();   // make m_ptLast invalid
+		}
 	}
-	else  // no mouse button pressed
-	{                         
-		setHighlightedShape( umCrsrPos );
-		m_ptLast.Set2Null();   // make m_ptLast invalid
+	else
+	{
+		if ( wParam & MK_RBUTTON )         // Right mouse button: selection
+		{
+			if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
+			{
+				m_rectSelection = MicroMeterRect( umCrsrPos, umLastPos );
+				m_pWorkThreadInterface->PostSelectShapesInRect( m_rectSelection );
+			}
+			else                           // first time here after RBUTTON pressed
+			{
+				m_ptLast = ptCrsr;         // store current cursor pos
+			}
+	}
+		else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
+		{
+			if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
+			{
+				m_shapeSuperHighlighted = NO_SHAPE;
+				if ( IsDefined( m_shapeHighlighted ) )
+				{
+					setSuperHighlightedShape( m_pModelInterface->GetShapePos( m_shapeHighlighted ) );
+					m_pWorkThreadInterface->PostMoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
+				}
+				else if ( m_pModelInterface->AnyShapesSelected( ) )   // move selected shapes 
+				{
+					m_pWorkThreadInterface->PostMoveSelection( umCrsrPos - umLastPos );
+				}
+				else  // move view by manipulating coordinate system 
+				{
+					NNetMove( ptCrsr - m_ptLast );
+				}
+			}
+			m_ptLast = ptCrsr;
+		}
+		else  // no mouse button pressed
+		{                         
+			setHighlightedShape( umCrsrPos );
+			m_ptLast.Set2Null();   // make m_ptLast invalid
+		}
 	}
 }
 

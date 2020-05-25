@@ -19,6 +19,7 @@ class Scale;
 class DrawModel;
 class Observable;
 class ActionTimer;
+class ComputeThread;
 class AnimationThread;
 class ObserverInterface;
 class ControllerInterface;
@@ -40,6 +41,7 @@ public:
 	( 
 		HWND                 const, 
 		DWORD                const,
+		ComputeThread      * const,
 		NNetController     * const,
 		NNetModelInterface * const,
 		DrawModel          * const,
@@ -105,6 +107,7 @@ private:
 
 	inline static WorkThreadInterface * m_pWorkThreadInterface { nullptr };
 
+	ComputeThread   * m_pComputeThread       { nullptr };
 	NNetController  * m_pController          { nullptr };
 	AnimationThread * m_pAnimationThread     { nullptr };
 	Observable      * m_pCursorPosObservable { nullptr };

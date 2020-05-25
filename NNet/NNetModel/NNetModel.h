@@ -228,7 +228,8 @@ public:
 
 	void StopTriggerSound   ( ShapeId const id ) { SetTriggerSound( id, 0_Hertz, 0_MilliSecs ); }
 	void SetTriggerSound    ( ShapeId const, Hertz const, MilliSecs const );
-	void SetPulseRate_Lock  ( ShapeId const, float const );
+	void SetPulseRate_Lock  ( ShapeId const, fHertz const );
+	void SetPulseRate_Lock  ( ShapeId const, bool const );
 	void Connect            ( ShapeId const, ShapeId const );
 	void Convert2Neuron     ( ShapeId const );
 	void Convert2InputNeuron( ShapeId const );

@@ -108,7 +108,22 @@ void NNetModel::Convert2InputNeuron( ShapeId const idNeuron )
 	}
 }
 
-void NNetModel::SetPulseRate_Lock( ShapeId const id, float const fNewValue )
+void NNetModel::SetPulseRate_Lock( ShapeId const id, bool const bDirection )
+{
+	InputNeuron * const pInputNeuron { GetShapePtr<InputNeuron *>( id ) };
+	if ( pInputNeuron )
+	{
+		static fHertz const INCREMENT { 0.01_fHertz };
+		fHertz const fOldValue { pInputNeuron->GetPulseFreq( ) };
+		if ( fOldValue.IsNotNull() )
+		{
+			pInputNeuron->SetPulseFrequency_Lock( fOldValue + ( bDirection ? INCREMENT : -INCREMENT ) );
+			staticModelChanged( );
+		}
+	}
+}
+
+void NNetModel::SetPulseRate_Lock( ShapeId const id, fHertz const fNewValue )
 {
 	InputNeuron * const pInputNeuron { GetShapePtr<InputNeuron *>( id ) };
 	if ( pInputNeuron )

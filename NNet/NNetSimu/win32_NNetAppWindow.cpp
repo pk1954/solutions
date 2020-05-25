@@ -139,6 +139,7 @@ void NNetAppWindow::Start( )
 	( 
 		m_hwndApp, 
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
+		m_pComputeThread,
 		m_pNNetController,
 		m_pModelInterface,
 		m_pDrawModel,
@@ -155,6 +156,7 @@ void NNetAppWindow::Start( )
 	( 
 		m_hwndApp, 
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
+		m_pComputeThread,
 		m_pNNetController,
 		m_pModelInterface,
 		m_pDrawModel,
@@ -208,12 +210,12 @@ void NNetAppWindow::Start( )
 	m_pParameterDlg     ->Show( true );
 	m_pPerformanceWindow->Show( true );
 
-//	PostCommand2Application( IDM_RUN, true );
-
 	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage ) )
 		m_NNetWorkThreadInterface.PostResetModel( );
 
 //	m_pNNetModelStorage->Write( wcout );
+
+	PostCommand2Application( IDM_RUN, true );
 
 	m_bStarted = true;
 }

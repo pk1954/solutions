@@ -52,7 +52,6 @@ public:
 		m_performanceObservable.RegisterObserver( pObserver );
 	}
 
-
 private:
 
 	class TimeResObserver : public ObserverInterface
