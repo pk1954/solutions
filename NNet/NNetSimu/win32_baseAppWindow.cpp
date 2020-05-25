@@ -7,32 +7,26 @@
 #include "trace.h"
 #include "win32_util.h"
 #include "Resource.h"
+#include "ComputeThread.h"
 #include "UtilityWrappers.h"
 #include "win32_aboutBox.h"
 #include "win32_modelWindow.h"
-#include "win32_appMenu.h"
+#include "win32_NNetAppMenu.h"
 #include "win32_baseWindow.h"
 #include "win32_winManager.h"
 #include "win32_status.h"
-#include "win32_WorkThreadInterface.h"
 #include "win32_baseAppWindow.h"
 
 using namespace std::literals::chrono_literals;
 
-void BaseAppWindow::Initialize( WorkThreadInterface * const pWorkThreadInterface )
+void BaseAppWindow::Initialize( )
 {
 	//	_CrtSetAllocHook( MyAllocHook );
-
-	m_pWorkThreadInterface = pWorkThreadInterface;
 
 	m_hwndConsole = GetConsoleWindow( );
 	BringWindowToTop( m_hwndConsole );
 
 	DefineUtilityWrapperFunctions( );
-
-	m_traceStream = OpenTraceFile( L"main_trace.out" );
-
-	m_pWorkThreadInterface->Initialize( & m_traceStream );
 
 	m_StatusBar.SetRefreshRate( 300ms );
 
@@ -47,12 +41,16 @@ void BaseAppWindow::Initialize( WorkThreadInterface * const pWorkThreadInterface
 	);
 }
 
-void BaseAppWindow::Start( ModelWindow * const pModelWindow )
+void BaseAppWindow::Start
+( 
+	ModelWindow   * const pModelWindow, 
+	ComputeThread * const pComputeThread
+	)
 {
-	m_pModelWindow = pModelWindow;
+	m_pModelWindow   = pModelWindow;
+	m_pComputeThread = pComputeThread;
 
 	m_pAppMenu->Start( );
-	m_StatusBar.Start( m_hwndApp, m_pWorkThreadInterface );
 
 	m_WinManager.AddWindow( L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                 true,  true  );
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                     true,  true  );
@@ -154,15 +152,15 @@ bool BaseAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_FORWARD:
-		m_pWorkThreadInterface->PostGenerationStep( );
+		m_pComputeThread->SingleStep( );
 		break;
 
 	case IDM_RUN:
-		m_pWorkThreadInterface->PostRunGenerations( true );
+		m_pComputeThread->RunComputation( );
 		break;
 
 	case IDM_STOP:
-		m_pWorkThreadInterface->PostStopComputation( );
+		m_pComputeThread->StopComputation( );
 		break;
 
 	default:

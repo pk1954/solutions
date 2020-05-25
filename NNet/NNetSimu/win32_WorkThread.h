@@ -1,6 +1,6 @@
 // win32_WorkThread.h
 //
-// NNetWindows
+// NNetSimu
 
 #pragma once
 
@@ -29,9 +29,6 @@ public:
 		REFRESH = WM_APP,
 		STOP,
 		SEND_BACK,
-		REPEAT_NEXT_GENERATION,  // only used internally, not part of procedural interface
-		GENERATION_RUN,
-		NEXT_GENERATION,
 		RESET_MODEL,
 		READ_MODEL,
 		RESET_TIMER,
@@ -53,7 +50,6 @@ public:
 		SELECT_SHAPE,
 		SELECT_SUBTREE,
 		SELECT_ALL,
-		SLOW_MOTION_CHANGED,
 		NEW_NEURON,
 		NEW_INPUT_NEURON,
 		APPEND_NEURON,
@@ -106,65 +102,24 @@ public:
 	virtual void ThreadStartupFunc( );
 	virtual void ThreadMsgDispatcher( MSG const );
 
-	bool       IsRunning()              const { return m_bContinue; }
-	fMicroSecs GetTimeSpentPerCycle ( ) const { return m_usRealTimeSpentPerCycle; }
-	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_usRealTimeAvailPerCycle; }
-	fMicroSecs GetRealTimeTilStart  ( ) const { return m_hrTimer.GetMicroSecsTilStart( ); }
-	fMicroSecs GetSimuTimeResolution( ) const;
-	fMicroSecs GetSimulationTime    ( ) const;
-	float      GetSlowMotionRatio   ( ) const;
-
 	void Continue( )
 	{
 		if ( m_pEventPOI != nullptr )
 			m_pEventPOI->Continue( );     // trigger worker thread if waiting on POI event
 	}
 
-	void AddRunObserver( ObserverInterface * pObserver )
-	{
-		m_runObservable.RegisterObserver( pObserver );
-	}
-
-	void AddPerformanceObserver( ObserverInterface * pObserver )
-	{
-		m_performanceObservable.RegisterObserver( pObserver );
-	}
-
-	class TimeResObserver : public ObserverInterface
-	{
-	public:
-		TimeResObserver( NNetWorkThread * const pNNetWorkThread )
-			: m_pThread( pNNetWorkThread )
-		{}
-
-		virtual void Notify( bool const );
-
-	private:
-		NNetWorkThread * const m_pThread;
-	};
-
-	void generationRun( bool const );
 private:
 
-	bool compute();
 	bool dispatch( MSG const );
-	void generationStop( );
 	bool actionCommand( NNetWorkThreadMessage::Id const, ShapeId const, MicroMeterPoint const & );
 
 	inline static tAppCallBack m_appCallback { nullptr };
 
-	bool                  m_bContinue               { false };
-	fMicroSecs            m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
-	fMicroSecs            m_usRealTimeAvailPerCycle { 0.0_MicroSecs };
 	HWND                  m_hwndApplication         { (HWND)0 };
-	TimeResObserver     * m_pTimeResObserver        { nullptr };
 	NNetModelStorage    * m_pStorage                { nullptr };
 	EventInterface      * m_pEventPOI               { nullptr };
 	WorkThreadInterface * m_pWorkThreadInterface    { nullptr };
 	NNetModel           * m_pNNetModel              { nullptr };
 	Param               * m_pParam                  { nullptr };
 	SlowMotionRatio     * m_pSlowMotionRatio        { nullptr };
-	Observable            m_runObservable           { };
-	Observable            m_performanceObservable   { };
-	HiResTimer            m_hrTimer                 { };
 };

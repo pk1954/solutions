@@ -18,7 +18,6 @@
 #include "Pipe.h"
 
 class EventInterface;
-class ComputeThread;
 class Param;
 
 using ShapeList = vector<Shape *>;

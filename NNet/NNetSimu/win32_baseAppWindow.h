@@ -11,9 +11,9 @@
 #include "win32_winManager.h"
 #include "win32_status.h"
 
-class WorkThreadInterface;
+class ComputeThread;
 class ModelWindow;
-class AppMenu;
+class NNetAppMenu;
 
 using std::wofstream;
 
@@ -22,28 +22,30 @@ class BaseAppWindow : public BaseWindow
 public:
 	virtual ~BaseAppWindow() {}; 
 
-	void Initialize( WorkThreadInterface * const );
+	void Initialize( );
 
-	void Start( ModelWindow * const );
+	void Start
+	( 
+		ModelWindow   * const,
+		ComputeThread * const 
+	);
 
 	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const );
 	virtual void OnClose( ) = 0;
 	virtual void Stop( );
 
 protected:
-	HWND       m_hwndApp  { nullptr };
-	AppMenu  * m_pAppMenu { nullptr };        // allocated by application
-	WinManager m_WinManager { };
-	StatusBar  m_StatusBar  { };
+	HWND          m_hwndApp    { nullptr };
+	NNetAppMenu * m_pAppMenu   { nullptr };        // allocated by application
+	WinManager    m_WinManager { };
+	StatusBar     m_StatusBar  { };
 
 private:
 
 	HWND m_hwndConsole { nullptr };
 
-	ModelWindow         * m_pModelWindow         { nullptr };
-	WorkThreadInterface * m_pWorkThreadInterface { nullptr };
-
-	wofstream m_traceStream {};
+	ModelWindow   * m_pModelWindow   { nullptr };
+	ComputeThread * m_pComputeThread { nullptr };
 
 	void adjustChildWindows( );
 

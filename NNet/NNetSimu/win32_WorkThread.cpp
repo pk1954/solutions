@@ -1,6 +1,6 @@
 // win32_WorkThread.cpp
 //
-// NNetWindows
+// NNetSimu
 
 #include "stdafx.h"
 #include <sstream> 
@@ -51,17 +51,11 @@ NNetWorkThread::NNetWorkThread
 	m_hwndApplication      ( hwndApplication ),
 	m_pSlowMotionRatio     ( pSlowMotionRatio )
 {
-	m_pTimeResObserver = new TimeResObserver( this );
-	m_pParam->AddParameterObserver( m_pTimeResObserver );       // notify me if parameters change
-	m_pSlowMotionRatio->RegisterObserver( m_pTimeResObserver ); // notify ne if slomo ratio changes
-	m_pTimeResObserver->Notify( true );
 	StartThread( L"NNetWorkThread", bAsync ); 
 }
 
 NNetWorkThread::~NNetWorkThread( )
 {
-	delete m_pTimeResObserver;
-	m_pTimeResObserver     = nullptr;
 	m_hwndApplication      = nullptr;
 	m_pWorkThreadInterface = nullptr;
 	m_pEventPOI            = nullptr;
@@ -114,24 +108,6 @@ void NNetWorkThread::ThreadMsgDispatcher( MSG const msg  )
 bool NNetWorkThread::dispatch( MSG const msg ) // return true, if model has changed
 {
 	NNetWorkThreadMessage::Id const id { static_cast<NNetWorkThreadMessage::Id>(msg.message) };
-	switch ( id )
-	{
-	case NNetWorkThreadMessage::Id::GENERATION_RUN:
-		generationRun( static_cast<bool>(msg.lParam) );
-		return true;
-
-	case NNetWorkThreadMessage::Id::STOP:
-		generationStop( );
-		return false;
-
-	case NNetWorkThreadMessage::Id::NEXT_GENERATION:
-		compute( );  // compute next generation
-		return true;
-
-	default:
-		break;
-	} 
-
 	bool bResult { true };
 
 	switch ( id )
@@ -185,7 +161,6 @@ bool NNetWorkThread::dispatch( MSG const msg ) // return true, if model has chan
 		break;
 
 	case NNetWorkThreadMessage::Id::RESET_MODEL:
-		generationStop( );
 		m_pNNetModel->ResetModel( );
 		m_pNNetModel->CreateInitialShapes();
 		break;
@@ -207,11 +182,6 @@ bool NNetWorkThread::dispatch( MSG const msg ) // return true, if model has chan
 	case NNetWorkThreadMessage::Id::TIME_RESOLUTION:
 	case NNetWorkThreadMessage::Id::PULSE_SPEED:
 		m_pNNetModel->SetParameter( GetParameterType( id ), (float &)msg.lParam	); //TODO: change to modern cast
-		break;
-
-	case NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED:
-		m_hrTimer.Restart();
-		m_pNNetModel->ResetSimulationTime();
 		break;
 
 	case NNetWorkThreadMessage::Id::MARK_SELECTION:
@@ -325,81 +295,4 @@ bool NNetWorkThread::actionCommand
 	} 
 
 	return true;
-}
-
-void NNetWorkThread::generationRun( bool const bFirst )
-{
-	if ( bFirst )               // if first RUN message ...
-	{
-		m_bContinue = true;
-		m_pParam->SetEmphasizeMode( false );
-		m_runObservable.NotifyAll( false);
-		m_hrTimer.Start();
-	}
-
-	if ( m_bContinue )
-	{
-		if ( compute( ) )
-			generationStop();
-		else 
-			m_pWorkThreadInterface->PostRunGenerations( false );
-	}
-}
-
-void NNetWorkThread::generationStop( )
-{
-	m_bContinue = false;
-	m_runObservable.NotifyAll( false );
-	m_hrTimer.Stop();
-	Script::StopProcessing( );
-}
-
-void NNetWorkThread::TimeResObserver::Notify( bool const bImmediate )
-{
-	m_pThread->m_usRealTimeAvailPerCycle = m_pThread->m_pSlowMotionRatio->SimuTime2RealTime( m_pThread->GetSimuTimeResolution() );
-}
-
-bool NNetWorkThread::compute() 
-{
-	bool             bStop              { false };
-	fMicroSecs const usTilStartRealTime { m_hrTimer.GetMicroSecsTilStart( ) };
-	fMicroSecs const usTilStartSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( usTilStartRealTime ) };
-	fMicroSecs const usActualSimuTime   { m_pNNetModel->GetSimulationTime( ) };                             // get actual time stamp
-	fMicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };                          // compute missing simulation time
-	fMicroSecs const usSimuTimeTodo     { min( usMissingSimuTime, m_pParam->GetTimeResolution() ) };        // respect time slot (resolution)
-	long       const lCyclesTodo        { CastToLong( usSimuTimeTodo / m_pParam->GetTimeResolution( ) ) };  // compute # cycles to be computed
-	long             lCyclesDone        { 0 };
-	while ( (lCyclesDone < lCyclesTodo) && ! bStop )
-	{
-		if ( m_pNNetModel->Compute( ) )
-			bStop = true;
-		++lCyclesDone;
-	}
-
-	fMicroSecs const usSpentInCompute { m_hrTimer.GetMicroSecsTilStart( ) - usTilStartRealTime };
-	fMicroSecs const usSleepTime      { m_usRealTimeAvailPerCycle - usSpentInCompute };
-	if ( usSleepTime > 10000.0_MicroSecs )
-		Sleep( 10 );
-	if ( lCyclesDone > 0 )
-	{
-		m_usRealTimeSpentPerCycle = usSpentInCompute / CastToFloat(lCyclesTodo);
-		m_performanceObservable.NotifyAll( false);
-	}
-
-	return bStop;
-}
-
-fMicroSecs NNetWorkThread::GetSimuTimeResolution( ) const 
-{ 
-	return m_pParam->GetTimeResolution( ); 
-}
-
-fMicroSecs NNetWorkThread::GetSimulationTime( ) const 
-{ 
-	return m_pNNetModel->GetSimulationTime( ); 
-}
-
-float NNetWorkThread::GetSlowMotionRatio( ) const 
-{ 
-	return m_pSlowMotionRatio->GetRatio( ); 
 }

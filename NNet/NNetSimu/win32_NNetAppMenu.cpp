@@ -7,6 +7,7 @@
 #include "Pipe.h"
 #include "win32_util.h"
 #include "NNetModelStorage.h"
+#include "ComputeThread.h"
 #include "AutoOpen.h"
 #include "win32_sound.h"
 #include "win32_winManager.h"
@@ -15,7 +16,8 @@
 
 void NNetAppMenu::Initialize
 ( 
-	HWND                        const hwndApp, 
+	HWND                        const hwndApp,
+	ComputeThread       const * const pComputeThread,
 	WorkThreadInterface const * const pWorkThreadInterface,
 	WinManager          const * const pWinManager
 ) 
@@ -23,6 +25,7 @@ void NNetAppMenu::Initialize
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
 
 	m_hwndApp              = hwndApp;
+	m_pComputeThread       = pComputeThread;
 	m_pWorkThreadInterface = pWorkThreadInterface;
 	m_pWinManager          = pWinManager;
 
@@ -60,7 +63,7 @@ void NNetAppMenu::Stop( )
 
 void NNetAppMenu::AdjustVisibility( )
 {
-	bool const bRunning = m_pWorkThreadInterface->IsRunning();
+	bool const bRunning = m_pComputeThread->IsRunning();
 
 	EnableMenuItem( m_hMenu, IDM_FORWARD, bRunning ? MF_GRAYED  : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_RESET,   bRunning ? MF_GRAYED  : MF_ENABLED );

@@ -18,6 +18,7 @@
 #include "Preferences.h"
 #include "InputNeuron.h"
 #include "win32_script.h"
+#include "win32_HiResTimer.h"
 #include "win32_NNetAppMenu.h"
 #include "NNetModelStorage.h"
 
@@ -286,6 +287,8 @@ void NNetModelStorage::prepareForReading( )
 
 bool NNetModelStorage::Read( wstring const wstrPath )
 {
+	HiResTimer timer;
+
 	if ( ! m_bPreparedForReading )
 		prepareForReading( );
 
@@ -300,11 +303,14 @@ bool NNetModelStorage::Read( wstring const wstrPath )
 
 	wcout << L"** NNet model file " << wstrModelFilePath << endl;
 
+	timer.Start();
 	if ( ! Script::ProcessScript( wstrModelFilePath ) )
 	{
 		MessageBox( nullptr, wstrModelFilePath.c_str(), L"Error in model file. Using default m_pModel->", MB_OK );
 		return false;
 	}
+	timer.Stop();
+	fMicroSecs const usTilStart { timer.GetMicroSecsTilStart( ) }; //for tests only
 
 	m_wstrPathOfOpenModel = wstrModelFilePath;
 	setUnsavedChanges( false );
@@ -315,6 +321,9 @@ bool NNetModelStorage::Read( wstring const wstrPath )
 
 void NNetModelStorage::Write( wostream & out )
 {
+	HiResTimer timer;
+	timer.Start();
+
 	static int const BUF_SIZE { 128 };
 
 	struct tm tmDest;
@@ -393,6 +402,9 @@ void NNetModelStorage::Write( wostream & out )
 			}
 		} 
 	);
+
+	timer.Stop();
+	fMicroSecs const usTilStart { timer.GetMicroSecsTilStart( ) }; //for tests only
 
 	setUnsavedChanges( false );  // no unsaved changes
 }

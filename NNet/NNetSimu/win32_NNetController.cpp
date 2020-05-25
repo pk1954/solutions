@@ -13,6 +13,7 @@
 #include "SlowMotionRatio.h"
 #include "DisplayFunctor.h"
 #include "NNetModelStorage.h"
+#include "ComputeThread.h"
 #include "AutoOpen.h"
 #include "win32_util.h"
 #include "win32_sound.h"
@@ -33,6 +34,7 @@ NNetController::NNetController
 	NNetWindow          * const pNNetWindow,
 	WinManager          * const pWinManager,
 	WorkThreadInterface * const pWorkThreadInterface,
+	ComputeThread       * const pComputeThread,
 	SlowMotionRatio     * const pSlowMotionRatio
 ) 
   :	m_pStorage            ( pStorage ),
@@ -40,6 +42,7 @@ NNetController::NNetController
 	m_pWinManager         ( pWinManager ),
 	m_pWorkThreadInterface( pWorkThreadInterface ),
 	m_pSlowMotionRatio    ( pSlowMotionRatio ),
+	m_pComputeThread      ( pComputeThread ),
 	m_hCrsrWait           ( LoadCursor( NULL, IDC_WAIT ) )
 {
 }
@@ -112,14 +115,14 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
 
 	case IDM_SLOWER:
 		if ( m_pSlowMotionRatio->IncRatio( ) )
-			m_pWorkThreadInterface->PostSlowMotionChanged( );
+			m_pComputeThread->Reset( );
 		else
 			MessageBeep( MB_ICONWARNING );
 		break;
 
 	case IDM_FASTER:
 		if ( m_pSlowMotionRatio->DecRatio( ) )
-			m_pWorkThreadInterface->PostSlowMotionChanged( );
+			m_pComputeThread->Reset( );
 		else
 			MessageBeep( MB_ICONWARNING );
 		break;
@@ -179,17 +182,14 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 	case IDM_OPEN_MODEL:
 		if ( m_pStorage->AskAndSave( ) && m_pStorage->AskModelFile( ) )
 		{
-			m_pWorkThreadInterface->PostStopComputation();
+			m_pComputeThread->StopComputation();
 			m_pWorkThreadInterface->PostSendBack( IDM_READ_MODEL );
 		}
 		break;
 
 	case IDM_READ_MODEL:
-		{
-			m_pStorage->Read( );
-			m_pWorkThreadInterface->PostResetTimer( );
-			m_pWorkThreadInterface->PostRunGenerations( true );
-		}
+		m_pStorage->Read( );
+		m_pWorkThreadInterface->PostResetTimer( );
 		break;
 
 	case IDM_NEW_MODEL:

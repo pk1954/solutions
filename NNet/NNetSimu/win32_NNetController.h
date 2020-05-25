@@ -8,6 +8,7 @@ class WorkThreadInterface;
 class SlowMotionRatio;
 class NNetModelStorage;
 class DisplayFunctor;
+class ComputeThread;
 class NNetAppMenu;
 class NNetModel;
 class NNetWindow;
@@ -23,6 +24,7 @@ public:
 		NNetWindow          * const,
 		WinManager          * const,
 		WorkThreadInterface * const,
+		ComputeThread       * const,
 		SlowMotionRatio     * const
 	);
 
@@ -44,6 +46,7 @@ private:
 	NNetModelStorage    * m_pStorage;
 	NNetWindow          * m_pNNetWindow;
 	WinManager          * m_pWinManager;
+	ComputeThread       * m_pComputeThread;
 	WorkThreadInterface * m_pWorkThreadInterface;
 	SlowMotionRatio     * m_pSlowMotionRatio;
 	DisplayFunctor      * m_StatusBarDisplay { nullptr };

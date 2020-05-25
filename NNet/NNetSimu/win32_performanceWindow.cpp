@@ -7,9 +7,10 @@
 #include <chrono>
 #include "util.h"
 #include "InputNeuron.h"
+#include "ComputeThread.h"
+#include "SlowMotionRatio.h"
 #include "NNetModelInterface.h"
 #include "win32_actionTimer.h"
-#include "win32_WorkThreadInterface.h"
 #include "win32_performanceWindow.h"
 
 using std::wostringstream;
@@ -27,7 +28,8 @@ void PerformanceWindow::Start
 ( 
 	HWND                       const hwndParent,
 	NNetModelInterface const * const pModelInterface,
-	WorkThreadInterface      * const pWorkThreadInterface,
+	ComputeThread            * const pComputeThread,
+	SlowMotionRatio    const * const pSlowMotionRatio,
 	ActionTimer              * const pDisplayTimer
 )
 {
@@ -40,10 +42,10 @@ void PerformanceWindow::Start
 		true,
 		nullptr
 	);
-	m_pModelInterface      = pModelInterface;
-	m_pWorkThreadInterface = pWorkThreadInterface;
+	m_pSlowMotionRatio     = pSlowMotionRatio;
+	m_pComputeThread       = pComputeThread;
 	m_pAtDisplay           = pDisplayTimer;
-	m_pWorkThreadInterface->AddPerformanceObserver( this ); // notify me on computation performance changes 
+	m_pComputeThread->AddPerformanceObserver( this ); // notify me on computation performance changes 
 }
 
 void PerformanceWindow::Stop( )
@@ -56,7 +58,7 @@ void PerformanceWindow::printMicroSecLine
 (
 	TextBuffer          & textBuf,
 	wchar_t const * const pwch1, 
-	fMicroSecs       const usDuration
+	fMicroSecs      const usDuration
 )
 {
 	wostringstream wBuffer;
@@ -110,14 +112,14 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 		textBuf.nextLine( );
 	}
 
-	if ( m_pWorkThreadInterface )
+	if ( m_pComputeThread )
 	{
-		fMicroSecs simuTime { m_pWorkThreadInterface->GetSimulationTime( ) };
-		fMicroSecs realTime { m_pWorkThreadInterface->GetRealTimeTilStart( ) };
-		fMicroSecs avail    { m_pWorkThreadInterface->GetTimeAvailPerCycle( ) };
-		fMicroSecs spent    { m_pWorkThreadInterface->GetTimeSpentPerCycle( ) };
-		printMicroSecLine( textBuf, L"simu time res:", m_pWorkThreadInterface->GetSimuTimeResolution( ) );
-		printFloatLine   ( textBuf, L"targ slowmo:", m_pWorkThreadInterface->GetSlowMotionRatio( ), L"" );
+		fMicroSecs simuTime { m_pComputeThread->GetSimulationTime( ) };
+		fMicroSecs realTime { m_pComputeThread->GetRealTimeTilStart( ) };
+		fMicroSecs avail    { m_pComputeThread->GetTimeAvailPerCycle( ) };
+		fMicroSecs spent    { m_pComputeThread->GetTimeSpentPerCycle( ) };
+		printMicroSecLine( textBuf, L"simu time res:", m_pComputeThread->GetSimuTimeResolution( ) );
+		printFloatLine   ( textBuf, L"targ slowmo:", m_pSlowMotionRatio->GetRatio( ), L"" );
 		printMicroSecLine( textBuf, L"avail time:", avail );
 		printMicroSecLine( textBuf, L"spent time:", spent );
 		printFloatLine   ( textBuf, L"workload:",  CastToFloat( (spent / avail) * 100.0f ), L"%" );

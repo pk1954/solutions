@@ -48,16 +48,13 @@ public:
 	void PostCopySelection       ( );
 	void PostDeleteSelection     ( );
 	void PostDisconnect          ( ShapeId const );
-	void PostGenerationStep      ( );
 	void PostMarkSelection       ( tBoolOp const );
 	void PostMoveSelection       ( MicroMeterPoint const & );
 	void PostMoveShape           ( ShapeId const, MicroMeterPoint const & );
 	void PostRemoveBeepers       ( );
 	void PostRemoveShape         ( ShapeId const );
-	void PostRepeatGenerationStep( );       // Do not call! Used by WorkThread only;
 	void PostResetModel          ( );
 	void PostResetTimer          ( );
-	void PostRunGenerations      ( bool const );
 	void PostSelectAll           ( tBoolOp const );
 	void PostSelectAllBeepers    ( );
 	void PostSelectShape         ( ShapeId const, tBoolOp const );
@@ -67,23 +64,11 @@ public:
 	void PostSetParameter        ( tParameter const, float const );
 	void PostSetPulseRate        ( ShapeId    const, fHertz const );
 	void PostSetTriggerSound     ( ShapeId const, bool const, Hertz const, MilliSecs const );
-	void PostSlowMotionChanged   ( );
-	void PostStopComputation     ( );
 
-	bool       IsRunning            ( ) const { return m_pNNetWorkThread->IsRunning    ( ); }
-	bool       IsAsyncThread        ( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }
-	fMicroSecs GetTimeSpentPerCycle ( ) const { return m_pNNetWorkThread->GetTimeSpentPerCycle( ); }
-	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_pNNetWorkThread->GetTimeAvailPerCycle( ); }
-	fMicroSecs GetSimuTimeResolution( ) const { return m_pNNetWorkThread->GetSimuTimeResolution( ); }
-	fMicroSecs GetSimulationTime    ( ) const { return m_pNNetWorkThread->GetSimulationTime( ); }
-	fMicroSecs GetRealTimeTilStart  ( ) const { return m_pNNetWorkThread->GetRealTimeTilStart( ); }
-	float      GetSlowMotionRatio   ( ) const { return m_pNNetWorkThread->GetSlowMotionRatio( ); }
+	bool IsAsyncThread( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }
 
 	wchar_t const * GetActionCommandName    ( int const ) const;
 	int     const   GetActionCommandFromName( wchar_t const * const ) const;
-
-	void AddRunObserver        ( ObserverInterface * p ) { m_pNNetWorkThread->AddRunObserver        ( p ); }
-	void AddPerformanceObserver( ObserverInterface * p ) { m_pNNetWorkThread->AddPerformanceObserver( p ); }
 
 private:
 

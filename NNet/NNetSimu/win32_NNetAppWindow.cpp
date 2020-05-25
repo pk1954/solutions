@@ -38,6 +38,7 @@
 #include "script.h"
 #include "Preferences.h"
 #include "NNetWrappers.h"
+#include "ComputeThread.h"
 #include "UtilityWrappers.h"
 #include "win32_stopwatch.h"
 #include "win32_fatalError.h"
@@ -61,10 +62,14 @@ NNetAppWindow::NNetAppWindow( )
 {
 	Stopwatch stopwatch;
 
-	Preferences   ::Initialize();
-	BaseAppWindow ::Initialize( & m_NNetWorkThreadInterface );
+	Preferences   ::Initialize( );
+	BaseAppWindow ::Initialize( );
 	NNetWorkThread::InitClass( (tAppCallBack)( [&]( int const id ) { PostMessage( WM_COMMAND, id, 0 ); } ) );
 	NNetWindow    ::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
+
+	m_traceStream = OpenTraceFile( L"main_trace.out" );
+
+	m_NNetWorkThreadInterface.Initialize( & m_traceStream );
 
 	m_pPerformanceWindow = new PerformanceWindow( );
 	m_pNNetColors        = new NNetColors( & m_blinkObservable );
@@ -95,8 +100,8 @@ NNetAppWindow::~NNetAppWindow( )
 
 void NNetAppWindow::Start( )
 {
-	m_pParameters       = new Param( );
-	m_pModel            = new NNetModel
+	m_pParameters = new Param( );
+	m_pModel      = new NNetModel
 	( 
 		m_pParameters, 
 		& m_staticModelObservable, 
@@ -104,14 +109,18 @@ void NNetAppWindow::Start( )
 		& m_modelTimeObservable 
 	);
 	m_pModelInterface   = new NNetModelInterface( m_pModel );
-	m_pNNetModelStorage = new NNetModelStorage( m_pModel, m_pParameters );
-	m_pDrawModel        = new DrawModel( m_pModel );
+	m_pDrawModel        = new DrawModel         ( m_pModel );
+	m_pNNetModelStorage = new NNetModelStorage  ( m_pModel, m_pParameters );
+	m_pComputeThread    = new ComputeThread     ( m_pModel, m_pParameters, & m_SlowMotionRatio );
+
 	m_staticModelObservable.RegisterObserver( m_pNNetModelStorage );
 
-	BaseAppWindow::Start( m_pMainNNetWindow );
+	m_StatusBar.Start( m_hwndApp, & m_NNetWorkThreadInterface );
+	BaseAppWindow::Start( m_pMainNNetWindow, m_pComputeThread );
 	m_pAppMenu->Initialize
 	( 
-		m_hwndApp, 
+		m_hwndApp,
+		m_pComputeThread,
 		& m_NNetWorkThreadInterface,
 		& m_WinManager 
 	);
@@ -122,6 +131,7 @@ void NNetAppWindow::Start( )
 		m_pMainNNetWindow,
 		& m_WinManager,
 		& m_NNetWorkThreadInterface,
+		m_pComputeThread,
 		& m_SlowMotionRatio
 	);
 
@@ -175,7 +185,7 @@ void NNetAppWindow::Start( )
 	m_cursorPosObservable   .RegisterObserver( m_pCrsrWindow );
 	m_dynamicModelObservable.RegisterObserver( m_pMainNNetWindow );
 	m_pParameterDlg->Start( m_hwndApp, m_pParameters );
-	m_pPerformanceWindow->Start( m_hwndApp, m_pModelInterface, & m_NNetWorkThreadInterface, & m_atDisplay );
+	m_pPerformanceWindow->Start( m_hwndApp, m_pModelInterface, m_pComputeThread, & m_SlowMotionRatio, & m_atDisplay );
 
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,        true, false );
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  * m_pMainNNetWindow,    true, false );
@@ -198,7 +208,7 @@ void NNetAppWindow::Start( )
 	m_pParameterDlg     ->Show( true );
 	m_pPerformanceWindow->Show( true );
 
-	PostCommand2Application( IDM_RUN, true );
+//	PostCommand2Application( IDM_RUN, true );
 
 	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage ) )
 		m_NNetWorkThreadInterface.PostResetModel( );
@@ -241,7 +251,7 @@ void NNetAppWindow::configureStatusBar( )
 	m_modelTimeObservable.RegisterObserver( m_pTimeDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
-	m_pSimulationControl = new SimulationControl( & m_StatusBar, & m_NNetWorkThreadInterface );
+	m_pSimulationControl = new SimulationControl( & m_StatusBar, m_pComputeThread );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	m_pSlowMotionDisplay = new SlowMotionDisplay( & m_StatusBar, & m_SlowMotionRatio, iPartScriptLine );

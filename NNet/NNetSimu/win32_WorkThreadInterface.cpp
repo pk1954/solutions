@@ -206,11 +206,6 @@ void WorkThreadInterface::PostSelectShapesInRect( MicroMeterRect const & rect )
 	);
 }
 
-void WorkThreadInterface::PostSlowMotionChanged( )
-{
-	postMsg( NNetWorkThreadMessage::Id::SLOW_MOTION_CHANGED );
-}
-
 wchar_t const * WorkThreadInterface::GetActionCommandName( int const iMsgId ) const 
 {
 	static unordered_map < int, wchar_t const * > mapMsgName =
@@ -286,27 +281,6 @@ void WorkThreadInterface::PostActionCommand( int const idMsg, ShapeId const idSh
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << GetActionCommandName( idMsg ) << L" " << idShape.GetValue( ) << umPos << endl;
 	postMsg( mapMsg.at( idMsg ), idShape.GetValue( ), Util::Pack2UINT64( umPos ) );
-}
-
-void WorkThreadInterface::PostGenerationStep( )
-{
-	m_pNNetWorkThread->Continue( );     // trigger worker thread if waiting on POI event
-	postMsg( NNetWorkThreadMessage::Id::NEXT_GENERATION );
-}
-
-void WorkThreadInterface::PostRunGenerations( bool const bFirst )
-{
-	postMsg( NNetWorkThreadMessage::Id::GENERATION_RUN, 0, bFirst );
-}
-
-void WorkThreadInterface::PostRepeatGenerationStep( )
-{
-	postMsg( NNetWorkThreadMessage::Id::REPEAT_NEXT_GENERATION );
-}
-
-void WorkThreadInterface::PostStopComputation( )
-{
-	postMsg( NNetWorkThreadMessage::Id::STOP );
 }
 
 void WorkThreadInterface::PostSendBack( int const iMsg )

@@ -1,5 +1,5 @@
 # NNetModel
-# Created 21-04-2020 00-23-52
+# Created 22-05-2020 15-01-15
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
 
@@ -13,7 +13,7 @@ GlobalParameter PeakVoltage = 10
 GlobalParameter RefractoryPeriod = 500
 GlobalParameter TimeResolution = 100
 
-NrOfShapes = 7408
+NrOfShapes = 7409
 
 CreateShape 0 neuron (-6224.39|-518.105)
 CreateShape 3 neuron (-5403.3|-1309.01)
@@ -236,7 +236,7 @@ CreateShape 526 knot (-6170.55|-5064.18)
 CreateShape 527 knot (-5933.34|-5614.18)
 CreateShape 528 neuron (-6191.53|-5066.95)
 CreateShape 529 knot (-6402.88|-4697.34)
-CreateShape 531 neuron (-6078.27|-2193.97)
+CreateShape 531 neuron (-6090.79|-2181.45)
 CreateShape 532 knot (-6331.47|-5785.26)
 CreateShape 535 neuron (-6637.53|-5765.82)
 CreateShape 537 neuron (-5775.43|-5536.18)
@@ -325,7 +325,7 @@ CreateShape 744 knot (-5771.89|-4311.84)
 CreateShape 747 neuron (-5844.94|-2191.7)
 CreateShape 749 neuron (-6404.23|-3454.62)
 CreateShape 752 knot (-5749.03|-3555.57)
-CreateShape 754 neuron (-5487.3|-2221.35)
+CreateShape 754 neuron (-5399.64|-2171.26)
 CreateShape 755 knot (-4862.18|-5063.71)
 CreateShape 757 knot (-6452.8|-3812.95)
 CreateShape 759 neuron (-6035.02|-3832.78)
@@ -2951,7 +2951,7 @@ CreateShape 7191 neuron (7928.66|-16478.2)
 CreateShape 7192 knot (7780.74|-15925.5)
 CreateShape 1 pipe (12->215)
 CreateShape 2 pipe (35->3)
-CreateShape 5 pipe (892->4)
+CreateShape 5 pipe (531->4)
 CreateShape 6 pipe (157->7)
 CreateShape 9 pipe (134->8)
 CreateShape 10 pipe (197->11)
@@ -7211,6 +7211,7 @@ CreateShape 7187 pipe (7177->7189)
 CreateShape 7193 pipe (7181->7192)
 CreateShape 7194 pipe (7192->7191)
 CreateShape 7195 pipe (7191->7190)
+CreateShape 7196 pipe (892->531)
 
 ShapeParameter InputNeuron 3126 PulseRate = 50
 ShapeParameter InputNeuron 3128 PulseRate = 50

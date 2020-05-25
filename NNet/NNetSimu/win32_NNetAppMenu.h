@@ -5,27 +5,29 @@
 #pragma once
 
 #include <string>
-#include "win32_appMenu.h"
 
 using std::wstring;
 
+class WinManager;
+class ComputeThread;
 class NNetModelStorage;
 class WorkThreadInterface;
 
-class NNetAppMenu : public AppMenu
+class NNetAppMenu
 {
 public:
 	virtual ~NNetAppMenu() {}
 
-	virtual void Initialize
+	void Initialize
 	( 
 		HWND                        const, 
+		ComputeThread       const * const, 
 		WorkThreadInterface const * const, 
 		WinManager          const * const
 	);
-	virtual void AdjustVisibility( );
-	virtual void Start( );
-	virtual void Stop( );
+	void AdjustVisibility( );
+	void Start( );
+	void Stop( );
 
 	static void SetAppTitle( wstring const, bool const );
 
@@ -35,6 +37,7 @@ private:
 	inline static HWND m_hwndApp { nullptr };
 
 	HMENU                       m_hMenu                { nullptr };
+	ComputeThread       const * m_pComputeThread       { nullptr };
 	WorkThreadInterface const * m_pWorkThreadInterface { nullptr };
 	WinManager          const * m_pWinManager          { nullptr };
 };

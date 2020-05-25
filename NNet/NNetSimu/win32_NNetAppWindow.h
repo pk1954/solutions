@@ -31,6 +31,7 @@ class CrsrWindow;
 class TimeDisplay;
 class NNetModel;
 class DrawModel;
+class ComputeThread;
 class NNetModelInterface;
 class SlowMotionDisplay;
 class SimulationControl;
@@ -59,7 +60,9 @@ private:
 
 	bool m_bStarted { false };          // if true, model is visible, all functions available
 
-	Util::Event             m_eventPOI { };
+	Util::Event m_eventPOI { };
+
+	wofstream m_traceStream { };
 
 	WorkThreadInterface m_NNetWorkThreadInterface { };
 	ActionTimer         m_atComputation           { };
@@ -74,6 +77,7 @@ private:
 
 	Param                   * m_pParameters              { nullptr };
 	SimulationControl       * m_pSimulationControl       { nullptr };
+	ComputeThread           * m_pComputeThread           { nullptr };
 	NNetColors              * m_pNNetColors              { nullptr };
 	NNetController          * m_pNNetController          { nullptr };
 	NNetModelInterface      * m_pModelInterface          { nullptr };

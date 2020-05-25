@@ -12,7 +12,6 @@
 #include "Knot.h"
 #include "Neuron.h"
 #include "InputNeuron.h"
-#include "ComputeThread.h"
 #include "NNetModel.h"
 
 using namespace std::chrono;

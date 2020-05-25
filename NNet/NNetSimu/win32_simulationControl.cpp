@@ -4,27 +4,27 @@
 
 #include "stdafx.h"
 #include "Resource.h"
-#include "win32_WorkThreadInterface.h"
+#include "ComputeThread.h"
 #include "win32_simulationControl.h"
 
 SimulationControl::SimulationControl
 (
-	StatusBar           * const pStatusBar,
-	WorkThreadInterface * const pWorkThreadInterface
+	StatusBar     * const pStatusBar,
+	ComputeThread * const pComputeThread
 ) 
-  : m_pStatusBar          ( pStatusBar ),
-	m_pWorkThreadInterface( pWorkThreadInterface )
+  : m_pStatusBar    ( pStatusBar ),
+	m_pComputeThread( pComputeThread )
 {
 	m_pStatusBar->AddButton( L"SingleStep", (HMENU)IDM_FORWARD, BS_PUSHBUTTON ); 
 	m_pStatusBar->AddButton( L"   Run    ", (HMENU)IDM_RUN,     BS_PUSHBUTTON ); 
 	m_pStatusBar->AddButton( L"  Stop    ", (HMENU)IDM_STOP,    BS_PUSHBUTTON ); 
 
-	m_pWorkThreadInterface->AddRunObserver( this );
+	m_pComputeThread->AddRunObserver( this );
 }
 
 void SimulationControl::Notify( bool const bImmediate )
 {
-	bool const bIsRunning = m_pWorkThreadInterface->IsRunning();
+	bool const bIsRunning = m_pComputeThread->IsRunning();
 
 	EnableWindow( m_pStatusBar->GetDlgItem( IDM_RUN  ),    ! bIsRunning );
 	EnableWindow( m_pStatusBar->GetDlgItem( IDM_STOP ),      bIsRunning );
