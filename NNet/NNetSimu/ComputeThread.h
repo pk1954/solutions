@@ -76,9 +76,9 @@ private:
 	NNetModel       * m_pNNetModel              { nullptr };
 	Param           * m_pParam                  { nullptr };
 	bool              m_bContinue               { false };
+	bool              m_bWaiting                { false };
 	HiResTimer        m_hrTimer                 { };
 	Observable        m_runObservable           { };
 	Observable        m_performanceObservable   { };
 	Util::Event       m_runEvent                { };
-	Util::Event       m_stopEvent               { };
 };

@@ -14,12 +14,7 @@
 using std::fill;
 
 Pipe::Pipe( MicroMeterPoint const umUnused )
-  :	Shape( ShapeType::Value::pipe ),
-	m_pKnotStart ( nullptr ),
-	m_pKnotEnd   ( nullptr ),
-	m_width      ( PIPE_WIDTH ),
-	m_potential  ( ),
-	m_potIter    ( )
+  :	Shape( ShapeType::Value::pipe )
 {
 	++ m_counter;
 }
@@ -103,28 +98,19 @@ mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
 		MicroMeterPoint const umSegVec     { umVector / CastToFloat(m_potential.size()) };
 		MicroMeterPoint const umOrthoScaled{ OrthoVector( umVector, m_width ) };
 		MicroMeterPoint       umPoint1     { GetStartPoint( ) };
-		for ( auto iter = m_potIter; iter != m_potential.end( ); ++ iter )
+		for ( tPotentialVector::const_iterator iter = m_potIter; iter != m_potIter; ++iter )
 		{
+			if ( iter == m_potential.end() )
+				iter = m_potential.begin();
 			MicroMeterPoint const umPoint2 { umPoint1 + umSegVec };
 			if ( IsPointInRect2< MicroMeterPoint >( point, umPoint1, umPoint2, umOrthoScaled ) )
 			{
 				mVresult = * iter;
-				goto EXIT;
-			}
-			umPoint1 = umPoint2;
-		};
-		for ( auto iter = m_potential.begin(); iter != m_potIter; ++iter )
-		{
-			MicroMeterPoint const umPoint2 { umPoint1 + umSegVec };
-			if ( IsPointInRect2< MicroMeterPoint >( point, umPoint1, umPoint2, umOrthoScaled ) )
-			{
-				mVresult = * iter;
-				goto EXIT;
+				break;
 			}
 			umPoint1 = umPoint2;
 		};
 	}
-EXIT:
 	UnlockShapeShared();
 	return mVresult;
 }
@@ -178,11 +164,16 @@ void Pipe::DrawInterior( DrawContext const & context ) const
 		MicroMeter      const umWidth     { m_width * PIPE_INTERIOR };
 		MicroMeterPoint const umPixSegVec { umVector / static_cast<float>(m_potential.size()) };
 		MicroMeterPoint       umPoint     { umStartPoint };
+//		mV                  * pPotential  { m_pPotential };  // m_pPotential can be modified by other thread
+		tPotentialVector::iterator potIter { m_potIter };
 
-		for( auto iter = m_potIter + 1; iter != m_potential.end(); ++iter )
+		auto iter = potIter; 
+		do 
+		{
+			if (++iter == m_potential.end()) 
+				iter = potIter; 
 			umPoint = drawSegment( context, umPoint, umPixSegVec, umWidth, * iter );
-		for( auto iter = m_potential.begin(); iter <= m_potIter; ++iter )
-			umPoint = drawSegment( context, umPoint, umPixSegVec, umWidth, * iter );
+		} while (iter != potIter );
 	}
 }
 

@@ -8,11 +8,11 @@
 #include "boolOp.h"
 #include "ShapeId.h"
 #include "NNetModel.h"
-#include "win32_WorkThread.h"
 
 using std::wostream;
 
 class Param;
+class NNetModel;
 class ActionTimer;
 class EventInterface;
 class SlowMotionRatio;
@@ -35,8 +35,7 @@ public:
 		SlowMotionRatio  * const,
 		NNetModel        * const,
 		Param            * const,
-		NNetModelStorage * const,
-		bool               const
+		NNetModelStorage * const
 	);
 	void Stop(); 
 
@@ -60,12 +59,9 @@ public:
 	void PostSelectShape         ( ShapeId const, tBoolOp const );
 	void PostSelectShapesInRect  ( MicroMeterRect const & );
 	void PostSelectSubtree       ( ShapeId const, tBoolOp const );
-	void PostSendBack            ( int const );
 	void PostSetParameter        ( tParameter const, float const );
 	void PostSetPulseRate        ( ShapeId    const, fHertz const );
 	void PostSetTriggerSound     ( ShapeId const, bool const, Hertz const, MilliSecs const );
-
-	bool IsAsyncThread( ) const { return m_pNNetWorkThread->IsAsyncThread( ); }
 
 	wchar_t const * GetActionCommandName    ( int const ) const;
 	int     const   GetActionCommandFromName( wchar_t const * const ) const;
@@ -77,7 +73,6 @@ private:
 
 	bool              m_bTrace;
 	wostream        * m_pTraceStream    { nullptr };
-	NNetWorkThread  * m_pNNetWorkThread { nullptr };
-
-	void postMsg( NNetWorkThreadMessage::Id msg, WPARAM const = 0, LPARAM const = 0 );
+	NNetModel       * m_pNNetModel      { nullptr };
+	Param           * m_pParam          { nullptr };
 }; 

@@ -64,7 +64,6 @@ NNetAppWindow::NNetAppWindow( )
 
 	Preferences   ::Initialize( );
 	BaseAppWindow ::Initialize( );
-	NNetWorkThread::InitClass( (tAppCallBack)( [&]( int const id ) { PostMessage( WM_COMMAND, id, 0 ); } ) );
 	NNetWindow    ::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
 
 	m_traceStream = OpenTraceFile( L"main_trace.out" );
@@ -179,8 +178,7 @@ void NNetAppWindow::Start( )
 		& m_SlowMotionRatio,
 		m_pModel,
 		m_pParameters,
-		m_pNNetModelStorage,
-		false // true    // async thread?
+		m_pNNetModelStorage
 	);
 
 	m_pCrsrWindow->Start( m_hwndApp, m_pMainNNetWindow, m_pModelInterface );

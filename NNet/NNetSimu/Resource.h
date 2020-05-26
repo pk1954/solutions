@@ -72,7 +72,6 @@
 #define IDM_ASK_AND_SAVE_MODEL   151
 #define IDM_SAVE_MODEL_AS        152
 #define IDM_OPEN_MODEL           153
-#define IDM_READ_MODEL           154
 #define IDM_NEW_MODEL            155
 
 #define IDD_PULSE_RATE           160
@@ -118,7 +117,6 @@
 #define IDM_ANALYZE              600
 #define IDM_ANALYZE_LOOPS        601
 #define IDM_ANALYZE_ANOMALIES    602
-#define IDM_ANALYZE_FINISHED     610
 #define IDM_CENTER_MODEL         611
 							    
 #define IDM_COPY_SELECTION       650

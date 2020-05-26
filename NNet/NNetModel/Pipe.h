@@ -60,8 +60,8 @@ public:
 	{
 		* m_potIter = m_mVinputBuffer;
 		if ( m_potIter == m_potential.begin() )
-			m_potIter = m_potential.end( );
-		-- m_potIter;
+			m_potIter = m_potential.end();
+		--m_potIter;
 		return false;
 	}
 
@@ -95,11 +95,12 @@ private:
 
 	typedef vector<mV> tPotentialVector;
 
-	BaseKnot                 * m_pKnotStart;
-	BaseKnot                 * m_pKnotEnd;
-	MicroMeter                 m_width;
-	tPotentialVector           m_potential;
-	tPotentialVector::iterator m_potIter;
+	BaseKnot       * m_pKnotStart { nullptr };
+	BaseKnot       * m_pKnotEnd   { nullptr };
+	MicroMeter       m_width      { PIPE_WIDTH };
+	tPotentialVector m_potential  { };
+//	mV             * m_pPotential { nullptr };
+	tPotentialVector::iterator m_potIter { };
 
 	void dislocate( BaseKnot * const, MicroMeter const );
 	MicroMeterPoint drawSegment( DrawContext const &, MicroMeterPoint const &, MicroMeterPoint const &, MicroMeter const, mV const ) const;

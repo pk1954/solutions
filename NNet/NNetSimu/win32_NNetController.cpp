@@ -184,19 +184,17 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
 	case IDM_OPEN_MODEL:
 		if ( m_pStorage->AskAndSave( ) && m_pStorage->AskModelFile() )
-			m_pWorkThreadInterface->PostSendBack( IDM_READ_MODEL );
-		break;
-
-	case IDM_READ_MODEL:
-		m_pStorage->Read( );
-		m_pWorkThreadInterface->PostResetTimer( );
+		{
+			m_pStorage->Read( );
+			m_pWorkThreadInterface->PostResetTimer( );
+		}
 		break;
 
 	case IDM_NEW_MODEL:
 		if ( m_pStorage->AskAndSave( ) )
 		{
 			m_pWorkThreadInterface->PostResetModel( );
-			m_pWorkThreadInterface->PostSendBack( IDM_CENTER_MODEL );
+			m_pNNetWindow->CenterModel( true );
 			m_pStorage->ResetModelPath( );
 		}
 		break;
@@ -306,10 +304,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 	case IDM_ANALYZE_LOOPS:
 	case IDM_ANALYZE_ANOMALIES:
 		m_pWorkThreadInterface->PostActionCommand( wmId, NO_SHAPE, NP_NULL );
-		m_pWorkThreadInterface->PostSendBack( IDM_ANALYZE_FINISHED );
-		break;
-
-	case IDM_ANALYZE_FINISHED:
 		m_pNNetWindow->AnalysisFinished( );
 		break;
 

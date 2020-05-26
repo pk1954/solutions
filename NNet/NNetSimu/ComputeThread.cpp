@@ -33,17 +33,6 @@ ComputeThread::~ComputeThread( )
 	m_pTimeResObserver = nullptr;
 }
 
-void ComputeThread::ThreadStartupFunc( )  // everything happens in startup function
-{                                         // no thread messages used
-	for (;;)
-	{
-		m_stopEvent.Continue();  // signal waiting thread, that ComputeThread has finished pending activities
-		m_runEvent.Wait( );
-		while ( m_bContinue )
-			compute();
-	}
-}
-
 void ComputeThread::RunComputation( )
 {
 	if ( ! m_bContinue )
@@ -62,7 +51,19 @@ void ComputeThread::StopComputation( )
 		m_bContinue = false;
 		m_runObservable.NotifyAll( false );
 		m_hrTimer.Stop();
-		m_stopEvent.Wait();  // wait until ComputeThread has finished all pending activities
+		while ( ! m_bWaiting );  // busy wait until ComputeThread has finished activities
+	}
+}
+
+void ComputeThread::ThreadStartupFunc( )  // everything happens in startup function
+{                                         // no thread messages used
+	for (;;)
+	{
+		m_runEvent.Wait( );
+		m_bWaiting = false;
+		while ( m_bContinue )
+			compute();
+		m_bWaiting = true;
 	}
 }
 
