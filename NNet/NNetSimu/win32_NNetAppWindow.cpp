@@ -180,7 +180,7 @@ void NNetAppWindow::Start( )
 		m_pModel,
 		m_pParameters,
 		m_pNNetModelStorage,
-		true    // async thread?
+		false // true    // async thread?
 	);
 
 	m_pCrsrWindow->Start( m_hwndApp, m_pMainNNetWindow, m_pModelInterface );

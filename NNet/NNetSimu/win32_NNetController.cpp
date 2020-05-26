@@ -165,6 +165,8 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
 
 bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
 {
+	m_pComputeThread->StopComputation( );
+
 	switch ( wmId )
 	{
 	case IDM_ASK_AND_SAVE_MODEL:
@@ -182,10 +184,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
 	case IDM_OPEN_MODEL:
 		if ( m_pStorage->AskAndSave( ) && m_pStorage->AskModelFile() )
-		{
-			m_pComputeThread->StopComputation();
 			m_pWorkThreadInterface->PostSendBack( IDM_READ_MODEL );
-		}
 		break;
 
 	case IDM_READ_MODEL:
@@ -261,7 +260,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 		);
 		break;
 
-	case IDM_DELETE:
+	case IDM_DELETE:   // keyboard: delete key
 		if ( m_pNNetWindow->GetHighlightedShapeId() == NO_SHAPE )
 			break;
 		else 

@@ -35,34 +35,35 @@ ComputeThread::~ComputeThread( )
 
 void ComputeThread::ThreadStartupFunc( )  // everything happens in startup function
 {                                         // no thread messages used
-	try
+	for (;;)
 	{
-		m_event.Wait( );
-		for (;;)
-		{
-			if ( compute() )
-				m_event.Wait( );
-		}
-	}
-	catch ( ... )
-	{
-		FatalError::Happened( 1000, "ComputeThread" );
+		m_stopEvent.Continue();  // signal waiting thread, that ComputeThread has finished pending activities
+		m_runEvent.Wait( );
+		while ( m_bContinue )
+			compute();
 	}
 }
 
 void ComputeThread::RunComputation( )
 {
-	m_bContinue = true;
-	m_runObservable.NotifyAll( false);
-	m_hrTimer.Start();
-	m_event.Continue();
+	if ( ! m_bContinue )
+	{
+		m_bContinue = true;
+		m_runObservable.NotifyAll( false);
+		m_hrTimer.Start();
+		m_runEvent.Continue();
+	}
 }
 
 void ComputeThread::StopComputation( )
 {
-	m_bContinue = false;
-	m_runObservable.NotifyAll( false );
-	m_hrTimer.Stop();
+	if ( m_bContinue )
+	{
+		m_bContinue = false;
+		m_runObservable.NotifyAll( false );
+		m_hrTimer.Stop();
+		m_stopEvent.Wait();  // wait until ComputeThread has finished all pending activities
+	}
 }
 
 void ComputeThread::Reset( )
@@ -71,7 +72,7 @@ void ComputeThread::Reset( )
 	m_pNNetModel->ResetSimulationTime();
 }
 
-bool ComputeThread::compute() 
+void ComputeThread::compute() 
 {
 	bool             bStop              { false };
 	fMicroSecs const usTilStartRealTime { m_hrTimer.GetMicroSecsTilStart( ) };
@@ -81,10 +82,10 @@ bool ComputeThread::compute()
 	fMicroSecs const usSimuTimeTodo     { min( usMissingSimuTime, m_pParam->GetTimeResolution() ) };        // respect time slot (resolution)
 	long       const lCyclesTodo        { CastToLong( usSimuTimeTodo / m_pParam->GetTimeResolution( ) ) };  // compute # cycles to be computed
 	long             lCyclesDone        { 0 };
-	while ( (lCyclesDone < lCyclesTodo) && ! bStop )
+	while ( (lCyclesDone < lCyclesTodo) && m_bContinue )
 	{
 		if ( m_pNNetModel->Compute( ) ) // returns true, if stop on trigger fires
-			bStop = true;
+			m_bContinue = false;
 		++lCyclesDone;
 	}
 
@@ -97,8 +98,6 @@ bool ComputeThread::compute()
 		m_usRealTimeSpentPerCycle = usSpentInCompute / CastToFloat(lCyclesTodo);
 		m_performanceObservable.NotifyAll( false);
 	}
-
-	return bStop;
 }
 
 void ComputeThread::TimeResObserver::Notify( bool const bImmediate )

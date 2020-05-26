@@ -67,7 +67,7 @@ private:
 		ComputeThread * const m_pThread;
 	};
 
-	bool compute();
+	void compute();
 
 	TimeResObserver * m_pTimeResObserver        { nullptr };
 	fMicroSecs        m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
@@ -79,5 +79,6 @@ private:
 	HiResTimer        m_hrTimer                 { };
 	Observable        m_runObservable           { };
 	Observable        m_performanceObservable   { };
-	Util::Event       m_event                   { };
+	Util::Event       m_runEvent                { };
+	Util::Event       m_stopEvent               { };
 };

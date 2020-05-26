@@ -84,28 +84,28 @@ public:
 	void LockShapeExclusive() const
 	{ 
 		DWORD threadId { GetCurrentThreadId() };  // debugging
-		AcquireSRWLockExclusive( & m_SRWLock );
+		//AcquireSRWLockExclusive( & m_SRWLock );
 		m_dwLockedBy = threadId;                  // debugging
 	}
 
 	void UnlockShapeExclusive() const
 	{ 
 		DWORD threadId { GetCurrentThreadId() };
-		ReleaseSRWLockExclusive( & m_SRWLock );
+		//ReleaseSRWLockExclusive( & m_SRWLock );
 		m_dwLockedBy = 0;                        // debugging
 	}
 
 	void LockShapeShared() const
 	{ 
 		DWORD threadId { GetCurrentThreadId() };
-		AcquireSRWLockShared( & m_SRWLock );
+		//AcquireSRWLockShared( & m_SRWLock );
 		m_dwLockedBy = threadId;
 	}
 
 	void UnlockShapeShared() const
 	{ 
 		DWORD threadId { GetCurrentThreadId() };
-		ReleaseSRWLockShared( & m_SRWLock );
+		//ReleaseSRWLockShared( & m_SRWLock );
 		m_dwLockedBy = 0;                        // debugging
 	}
 

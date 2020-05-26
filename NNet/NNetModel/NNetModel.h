@@ -293,28 +293,28 @@ public:
 	void LockModelShared() const
 	{ 
 		DWORD threadId { GetCurrentThreadId() };
-		AcquireSRWLockShared( & m_SRWLockModel );
+//		AcquireSRWLockShared( & m_SRWLockModel );
 		m_dwLockedBy = 0;                        // debugging
 	}
 
 	void UnlockModelShared() const
 	{ 
 		DWORD threadId { GetCurrentThreadId() };
-		ReleaseSRWLockShared( & m_SRWLockModel );
+//		ReleaseSRWLockShared( & m_SRWLockModel );
 		m_dwLockedBy = 0;                        // debugging
 	}
 
 	void LockModelExclusive() const
 	{ 
 		DWORD threadId { GetCurrentThreadId() };
-		AcquireSRWLockExclusive( & m_SRWLockModel );
+//		AcquireSRWLockExclusive( & m_SRWLockModel );
 		m_dwLockedBy = 0;                        // debugging
 	}
 
 	void UnlockModelExclusive() const
 	{ 
 		DWORD threadId { GetCurrentThreadId() };
-		ReleaseSRWLockExclusive( & m_SRWLockModel );
+//		ReleaseSRWLockExclusive( & m_SRWLockModel );
 		m_dwLockedBy = 0;                        // debugging
 	}
 

@@ -291,7 +291,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			{
 				m_ptLast = ptCrsr;         // store current cursor pos
 			}
-	}
+		}
 		else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
 		{
 			if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
