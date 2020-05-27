@@ -25,16 +25,16 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
 }
 
 StatusBar::StatusBar() :
-	m_pWorkThreadInterface( nullptr )
+	m_pModel( nullptr )
 { }
 
 void StatusBar::Start
 ( 
-	HWND                        const hwndParent,
-	WorkThreadInterface const * const pWorkThreadInterface
+	HWND                             const hwndParent,
+	NNetModelWriterInterface const * const pModel
 )
 {
-	m_pWorkThreadInterface = pWorkThreadInterface;
+	m_pModel = pModel;
 
 	HWND hwndStatus = CreateWindow
 	(

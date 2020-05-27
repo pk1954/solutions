@@ -6,7 +6,7 @@
 
 #include "win32_textWindow.h"
 
-class NNetModelInterface;
+class NNetModelReaderInterface;
 class SlowMotionRatio;
 class ComputeThread;
 class ActionTimer;
@@ -20,10 +20,10 @@ public:
     void Start
     ( 
         HWND const, 
-        NNetModelInterface const * const, 
-        ComputeThread            * const, 
-        SlowMotionRatio    const * const, 
-        ActionTimer              * const 
+        NNetModelReaderInterface const * const, 
+        ComputeThread                  * const, 
+        SlowMotionRatio          const * const, 
+        ActionTimer                    * const 
     );
 
 	void Stop( );
@@ -31,10 +31,10 @@ public:
     virtual void DoPaint( TextBuffer & );
 
 private:
-    ComputeThread         * m_pComputeThread   { nullptr };
-    NNetModelInterface    * m_pModelInterface  { nullptr };
-    ActionTimer           * m_pAtDisplay       { nullptr };
-    SlowMotionRatio const * m_pSlowMotionRatio { nullptr };
+    ComputeThread            * m_pComputeThread        { nullptr };
+    NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
+    ActionTimer              * m_pAtDisplay            { nullptr };
+    SlowMotionRatio    const * m_pSlowMotionRatio      { nullptr };
 
     void printMicroSecLine( TextBuffer &, wchar_t const * const, fMicroSecs const );
     void printFloatLine   ( TextBuffer &, wchar_t const * const, float const, wchar_t const * const );

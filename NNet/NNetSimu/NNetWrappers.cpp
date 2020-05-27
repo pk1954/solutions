@@ -10,94 +10,94 @@
 #include "NNetWrapperHelpers.h"
 #include "DrawContext.h"
 #include "win32_NNetWindow.h"
-#include "win32_WorkThreadInterface.h"
+#include "NNetModelWriterInterface.h"
 
-static WorkThreadInterface * m_pWorkThreadInterface;
-static NNetWindow          * m_pNNetWindow;
+static NNetModelWriterInterface * m_pModel;
+static NNetWindow               * m_pNNetWindow;
 
-class WrapPostResetTimer: public Script_Functor
+class WrapResetTimer: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pWorkThreadInterface->PostResetTimer( );
+        m_pModel->ResetTimer( );
     }
 };
 
-class WrapPostResetModel: public Script_Functor
+class WrapResetModel: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pWorkThreadInterface->PostResetModel( );
+        m_pModel->ResetModel( );
     }
 };
 
-class WrapPostConnect: public Script_Functor
+class WrapConnect: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const idSrc { ScrReadShapeId( script ) };
         ShapeId const idDst { ScrReadShapeId( script ) };
-        m_pWorkThreadInterface->PostConnect( idSrc, idDst );
+        m_pModel->Connect( idSrc, idDst );
     }
 };
 
-class WrapPostRemoveShape: public Script_Functor
+class WrapRemoveShape: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id { ScrReadShapeId( script ) };
-        m_pWorkThreadInterface->PostRemoveShape( id );
+        m_pModel->RemoveShape( id );
     }
 };
 
-class WrapPostDisconnect: public Script_Functor
+class WrapDisconnect: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id { ScrReadShapeId( script ) };
-        m_pWorkThreadInterface->PostDisconnect( id );
+        m_pModel->Disconnect( id );
     }
 };
 
-class WrapPostSetPulseRate: public Script_Functor
+class WrapSetPulseRate: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id     { ScrReadShapeId( script ) };
         float   const fValue { CastToFloat( script.ScrReadFloat( ) ) };
-        m_pWorkThreadInterface->PostSetPulseRate( id, fHertz{ fValue } );
+        m_pModel->SetPulseRate( id, fHertz{ fValue } );
     }
 };
 
-class WrapPostSetParameter: public Script_Functor
+class WrapSetParameter: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         tParameter const param  { static_cast<tParameter>( script.ScrReadUlong( ) ) };
         float      const fValue { CastToFloat( script.ScrReadFloat( ) ) };
-        m_pWorkThreadInterface->PostSetParameter( param, fValue );
+        m_pModel->SetParameter( param, fValue );
     }
 };
 
-class WrapPostMoveShape: public Script_Functor
+class WrapMoveShape: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId         const id      { ScrReadShapeId( script ) };
         MicroMeterPoint const umDelta { ScrReadMicroMeterPoint( script ) };
-        m_pWorkThreadInterface->PostMoveShape( id, umDelta );
+        m_pModel->MoveShape( id, umDelta );
     }
 };
 
-class WrapPostActionCommand: public Script_Functor
+class WrapActionCommand: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
@@ -105,7 +105,7 @@ public:
         int             const idMsg   { script.ScrReadLong( ) };
         ShapeId         const idShape { ScrReadShapeId( script ) };
         MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
-        m_pWorkThreadInterface->PostActionCommand( idMsg, idShape, umPos );
+        m_pModel->ActionCommand( idMsg, idShape, umPos );
     }
 };
 
@@ -140,22 +140,22 @@ public:
 
 void DefineNNetWrappers
 ( 
-    WorkThreadInterface * const pWorkThreadInterface,
-    NNetWindow              * const pNNetWindow
+    NNetModelWriterInterface * const pModel,
+    NNetWindow               * const pNNetWindow
 )
 {
-    m_pWorkThreadInterface = pWorkThreadInterface;
+    m_pModel = pModel;
     m_pNNetWindow = pNNetWindow;
 
-    DEF_FUNC( PostResetTimer );
-    DEF_FUNC( PostResetModel );
-    DEF_FUNC( PostConnect );
-    DEF_FUNC( PostRemoveShape );
-    DEF_FUNC( PostDisconnect );
-    DEF_FUNC( PostSetPulseRate );
-    DEF_FUNC( PostSetParameter );
-    DEF_FUNC( PostMoveShape );
-    DEF_FUNC( PostActionCommand );
+    DEF_FUNC( ResetTimer );
+    DEF_FUNC( ResetModel );
+    DEF_FUNC( Connect );
+    DEF_FUNC( RemoveShape );
+    DEF_FUNC( Disconnect );
+    DEF_FUNC( SetPulseRate );
+    DEF_FUNC( SetParameter );
+    DEF_FUNC( MoveShape );
+    DEF_FUNC( ActionCommand );
     DEF_FUNC( SetPixelOffset );
     DEF_FUNC( SetPixelSize );
     DEF_FUNC( Break );
@@ -174,7 +174,6 @@ void DefineNNetWrappers
     SymbolTable::ScrDefConst( L"REMOVE_BEEPERS",      static_cast<long>(IDM_REMOVE_BEEPERS     ) );
     SymbolTable::ScrDefConst( L"SELECT_ALL_BEEPERS",  static_cast<long>(IDM_SELECT_ALL_BEEPERS ) );
     SymbolTable::ScrDefConst( L"MARK_SELECTION",      static_cast<long>(IDM_MARK_SELECTION     ) );
-    SymbolTable::ScrDefConst( L"UNMARK_SELECTION",    static_cast<long>(IDM_UNMARK_SELECTION   ) );
     SymbolTable::ScrDefConst( L"COPY_SELECTION",      static_cast<long>(IDM_COPY_SELECTION     ) );
     SymbolTable::ScrDefConst( L"INSERT_NEURON",       static_cast<long>(IDD_INSERT_NEURON      ) );
     SymbolTable::ScrDefConst( L"NEW_NEURON",          static_cast<long>(IDD_NEW_NEURON         ) );

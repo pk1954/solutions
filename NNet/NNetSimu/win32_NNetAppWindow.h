@@ -18,7 +18,7 @@
 
 // application
 
-#include "win32_WorkThreadInterface.h"
+#include "NNetModelWriterInterface.h"
 #include "win32_MiniWindow.h"
 #include "win32_MainWindow.h"
 #include "win32_NNetAppMenu.h"
@@ -32,7 +32,7 @@ class TimeDisplay;
 class NNetModel;
 class DrawModel;
 class ComputeThread;
-class NNetModelInterface;
+class NNetModelReaderInterface;
 class SlowMotionDisplay;
 class SimulationControl;
 class NNetModelStorage;
@@ -64,32 +64,32 @@ private:
 
 	wofstream m_traceStream { };
 
-	WorkThreadInterface m_NNetWorkThreadInterface { };
-	ActionTimer         m_atComputation           { };
-	ActionTimer         m_atDisplay               { };
-	ScriptHook          m_ScriptHook              { };
-	SlowMotionRatio     m_SlowMotionRatio         { };
-	Observable          m_cursorPosObservable     { };
-	Observable          m_blinkObservable         { };
-	Observable          m_modelTimeObservable     { };
-	Observable          m_staticModelObservable   { };
-	Observable          m_dynamicModelObservable  { };
+	NNetModelWriterInterface m_NNetWorkThreadInterface { };
+	ActionTimer              m_atComputation           { };
+	ActionTimer              m_atDisplay               { };
+	ScriptHook               m_ScriptHook              { };
+	SlowMotionRatio          m_SlowMotionRatio         { };
+	Observable               m_cursorPosObservable     { };
+	Observable               m_blinkObservable         { };
+	Observable               m_modelTimeObservable     { };
+	Observable               m_staticModelObservable   { };
+	Observable               m_dynamicModelObservable  { };
 
-	Param                   * m_pParameters              { nullptr };
-	SimulationControl       * m_pSimulationControl       { nullptr };
-	ComputeThread           * m_pComputeThread           { nullptr };
-	NNetColors              * m_pNNetColors              { nullptr };
-	NNetController          * m_pNNetController          { nullptr };
-	NNetModelInterface      * m_pModelInterface          { nullptr };
-	NNetModel               * m_pModel                   { nullptr };
-	MainWindow              * m_pMainNNetWindow          { nullptr };
-	MiniWindow              * m_pMiniNNetWindow          { nullptr };
-	DrawModel               * m_pDrawModel               { nullptr };
-	TimeDisplay             * m_pTimeDisplay             { nullptr };
-	SlowMotionDisplay       * m_pSlowMotionDisplay       { nullptr };
-	CrsrWindow              * m_pCrsrWindow              { nullptr };
-	PerformanceWindow       * m_pPerformanceWindow       { nullptr };
-	NNetModelStorage        * m_pNNetModelStorage        { nullptr };
-	ParameterDialog         * m_pParameterDlg            { nullptr };
-	StatusBarDisplayFunctor * m_pStatusBarDisplayFunctor { nullptr };
+	Param                    * m_pParameters              { nullptr };
+	SimulationControl        * m_pSimulationControl       { nullptr };
+	ComputeThread            * m_pComputeThread           { nullptr };
+	NNetColors               * m_pNNetColors              { nullptr };
+	NNetController           * m_pNNetController          { nullptr };
+	NNetModelReaderInterface * m_pModelReaderInterface    { nullptr };
+	NNetModel                * m_pModel                   { nullptr };
+	MainWindow               * m_pMainNNetWindow          { nullptr };
+	MiniWindow               * m_pMiniNNetWindow          { nullptr };
+	DrawModel                * m_pDrawModel               { nullptr };
+	TimeDisplay              * m_pTimeDisplay             { nullptr };
+	SlowMotionDisplay        * m_pSlowMotionDisplay       { nullptr };
+	CrsrWindow               * m_pCrsrWindow              { nullptr };
+	PerformanceWindow        * m_pPerformanceWindow       { nullptr };
+	NNetModelStorage         * m_pNNetModelStorage        { nullptr };
+	ParameterDialog          * m_pParameterDlg            { nullptr };
+	StatusBarDisplayFunctor  * m_pStatusBarDisplayFunctor { nullptr };
 };

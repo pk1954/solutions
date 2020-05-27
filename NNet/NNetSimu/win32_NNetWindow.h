@@ -23,29 +23,29 @@ class ComputeThread;
 class AnimationThread;
 class ObserverInterface;
 class ControllerInterface;
-class NNetModelInterface;
-class WorkThreadInterface;
+class NNetModelReaderInterface;
+class NNetModelWriterInterface;
 
 class NNetWindow : public ModelWindow
 {
 public:
 	static void InitClass
 	( 
-		WorkThreadInterface * const,
-		ActionTimer         * const
+		NNetModelWriterInterface * const,
+		ActionTimer              * const
 	);
 
 	NNetWindow( );
 
 	void Start
 	( 
-		HWND                 const, 
-		DWORD                const,
-		ComputeThread      * const,
-		NNetController     * const,
-		NNetModelInterface * const,
-		DrawModel          * const,
-		Observable         * const 
+		HWND                       const, 
+		DWORD                      const,
+		ComputeThread            * const,
+		NNetController           * const,
+		NNetModelReaderInterface * const,
+		DrawModel                * const,
+		Observable               * const 
 	);
 
 	void Stop( );
@@ -98,14 +98,14 @@ protected:
 	DrawModel   * m_pDrawModel { nullptr };
 	PixelPoint    m_ptLast     { PP_NULL };	// Last cursor position during selection 
 
-	inline static NNetModelInterface * m_pModelInterface { nullptr };
+	inline static NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
 
 private:
 
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	inline static WorkThreadInterface * m_pWorkThreadInterface { nullptr };
+	inline static NNetModelWriterInterface * m_pModel { nullptr };
 
 	ComputeThread   * m_pComputeThread       { nullptr };
 	NNetController  * m_pController          { nullptr };

@@ -9,7 +9,7 @@
 #include "InputNeuron.h"
 #include "ComputeThread.h"
 #include "SlowMotionRatio.h"
-#include "NNetModelInterface.h"
+#include "NNetModelReaderInterface.h"
 #include "win32_actionTimer.h"
 #include "win32_performanceWindow.h"
 
@@ -26,11 +26,11 @@ using std::wostringstream;
 
 void PerformanceWindow::Start
 ( 
-	HWND                       const hwndParent,
-	NNetModelInterface const * const pModelInterface,
-	ComputeThread            * const pComputeThread,
-	SlowMotionRatio    const * const pSlowMotionRatio,
-	ActionTimer              * const pDisplayTimer
+	HWND                             const hwndParent,
+	NNetModelReaderInterface const * const pModelInterface,
+	ComputeThread                  * const pComputeThread,
+	SlowMotionRatio          const * const pSlowMotionRatio,
+	ActionTimer                    * const pDisplayTimer
 )
 {
 	StartTextWindow
@@ -125,10 +125,10 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 		printFloatLine   ( textBuf, L"workload:",  CastToFloat( (spent / avail) * 100.0f ), L"%" );
 		if ( simuTime > 0.0_MicroSecs )
 			printFloatLine   ( textBuf, L"effect slomo:",  CastToFloat( realTime / simuTime ), L"" );
-		printIntLine( textBuf, L"# Shapes : ", m_pModelInterface->GetNrOfShapes() );
-		printIntLine( textBuf, L"# Input  : ", m_pModelInterface->GetNrOfInputNeurons() );
-		printIntLine( textBuf, L"# Neurons: ", m_pModelInterface->GetNrOfNeurons() );
-		printIntLine( textBuf, L"# Knots  : ", m_pModelInterface->GetNrOfKnots() );
-		printIntLine( textBuf, L"# Pipes  : ", m_pModelInterface->GetNrOfPipes() );
+		printIntLine( textBuf, L"# Shapes : ", m_pModelReaderInterface->GetNrOfShapes() );
+		printIntLine( textBuf, L"# Input  : ", m_pModelReaderInterface->GetNrOfInputNeurons() );
+		printIntLine( textBuf, L"# Neurons: ", m_pModelReaderInterface->GetNrOfNeurons() );
+		printIntLine( textBuf, L"# Knots  : ", m_pModelReaderInterface->GetNrOfKnots() );
+		printIntLine( textBuf, L"# Pipes  : ", m_pModelReaderInterface->GetNrOfPipes() );
 	}
 }

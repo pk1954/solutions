@@ -9,7 +9,7 @@
 #include "PixelTypes.h"
 #include "win32_rootWindow.h"
 
-class WorkThreadInterface;
+class NNetModelWriterInterface;
 
 using std::wstring;
 
@@ -20,8 +20,8 @@ public:
 
 	void Start
 	( 
-		HWND                        const, 
-		WorkThreadInterface const * const
+		HWND                             const, 
+		NNetModelWriterInterface const * const
 	);
 	void  Stop( );
 
@@ -52,7 +52,7 @@ private:
     PIXEL m_pixBorderY      { 0_PIXEL };
     PIXEL m_pixPosX         { 0_PIXEL };
 
-	WorkThreadInterface const * m_pWorkThreadInterface { nullptr };
+	NNetModelWriterInterface const * m_pModel { nullptr };
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 

@@ -4,7 +4,7 @@
 
 #pragma once
 
-class WorkThreadInterface;
+class NNetModelWriterInterface;
 class NNetWindow;
 
-extern void DefineNNetWrappers( WorkThreadInterface * const, NNetWindow * const );
+extern void DefineNNetWrappers( NNetModelWriterInterface * const, NNetWindow * const );

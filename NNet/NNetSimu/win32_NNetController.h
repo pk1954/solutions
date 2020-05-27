@@ -4,7 +4,7 @@
 
 #pragma once
 
-class WorkThreadInterface;
+class NNetModelWriterInterface;
 class SlowMotionRatio;
 class NNetModelStorage;
 class DisplayFunctor;
@@ -20,12 +20,12 @@ class NNetController
 public:
 	NNetController
 	( 
-		NNetModelStorage    * const,
-		NNetWindow          * const,
-		WinManager          * const,
-		WorkThreadInterface * const,
-		ComputeThread       * const,
-		SlowMotionRatio     * const
+		NNetModelStorage         * const,
+		NNetWindow               * const,
+		WinManager               * const,
+		NNetModelWriterInterface * const,
+		ComputeThread            * const,
+		SlowMotionRatio          * const
 	);
 
 	virtual ~NNetController( );
@@ -42,12 +42,12 @@ private:
 	bool processUIcommand   ( int const, LPARAM const );
 	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
 
-	HCURSOR               m_hCrsrWait;
-	NNetModelStorage    * m_pStorage;
-	NNetWindow          * m_pNNetWindow;
-	WinManager          * m_pWinManager;
-	ComputeThread       * m_pComputeThread;
-	WorkThreadInterface * m_pWorkThreadInterface;
-	SlowMotionRatio     * m_pSlowMotionRatio;
-	DisplayFunctor      * m_StatusBarDisplay { nullptr };
+	HCURSOR                    m_hCrsrWait;
+	NNetModelStorage         * m_pStorage;
+	NNetWindow               * m_pNNetWindow;
+	WinManager               * m_pWinManager;
+	ComputeThread            * m_pComputeThread;
+	NNetModelWriterInterface * m_pModel;
+	SlowMotionRatio          * m_pSlowMotionRatio;
+	DisplayFunctor           * m_StatusBarDisplay { nullptr };
 };				          

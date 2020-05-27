@@ -11,22 +11,22 @@
 #include "AutoOpen.h"
 #include "win32_sound.h"
 #include "win32_winManager.h"
-#include "win32_WorkThreadInterface.h"
+#include "NNetModelWriterInterface.h"
 #include "win32_NNetAppMenu.h"
 
 void NNetAppMenu::Initialize
 ( 
-	HWND                        const hwndApp,
-	ComputeThread       const * const pComputeThread,
-	WorkThreadInterface const * const pWorkThreadInterface,
-	WinManager          const * const pWinManager
+	HWND                             const hwndApp,
+	ComputeThread            const * const pComputeThread,
+	NNetModelWriterInterface const * const pModel,
+	WinManager               const * const pWinManager
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
 
 	m_hwndApp              = hwndApp;
 	m_pComputeThread       = pComputeThread;
-	m_pWorkThreadInterface = pWorkThreadInterface;
+	m_pModel = pModel;
 	m_pWinManager          = pWinManager;
 
     SendMessage( m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_NNETSIMU ) ) );

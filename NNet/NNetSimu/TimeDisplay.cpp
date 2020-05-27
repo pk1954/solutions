@@ -10,7 +10,7 @@
 #include <string> 
 #include "win32_baseRefreshRate.h"
 #include "win32_status.h"
-#include "NNetModelInterface.h"
+#include "NNetModelReaderInterface.h"
 #include "TimeDisplay.h"
 
 using std::to_wstring;
@@ -24,14 +24,14 @@ class TimeDisplay::RefreshRate : public BaseRefreshRate
 public:
 	RefreshRate	
 	(
-		StatusBar                * pStatusBar,
-		NNetModelInterface const * pModelInterface,
-		int                        iPartInStatusBar
+		StatusBar                      * pStatusBar,
+		NNetModelReaderInterface const * pModelInterface,
+		int                              iPartInStatusBar
 	)
-	:	m_pStatusBar      (pStatusBar),
-		m_pModelInterface (pModelInterface),
-		m_iPartInStatusBar(iPartInStatusBar),
-		m_SRWLock         ( )
+	:	m_pStatusBar           (pStatusBar),
+		m_pModelReaderInterface(pModelInterface),
+		m_iPartInStatusBar     (iPartInStatusBar),
+		m_SRWLock              ( )
 	{ 
 		InitializeSRWLock( & m_SRWLock );
 	}
@@ -39,7 +39,7 @@ public:
 	virtual void Trigger( )
 	{
 		AcquireSRWLockExclusive( & m_SRWLock );
-		fMicroSecs const time = m_pModelInterface->GetSimulationTime( );
+		fMicroSecs const time = m_pModelReaderInterface->GetSimulationTime( );
 		m_wstrBuffer.str( wstring() );
 		m_wstrBuffer.clear();
 		m_wstrBuffer << std::fixed << std::setprecision(2);
@@ -59,12 +59,12 @@ public:
 	}
 
 private:
-	SRWLOCK                    m_SRWLock;
-	wstring                    m_wstring;
-	wostringstream             m_wstrBuffer;
-	StatusBar                * m_pStatusBar;
-	NNetModelInterface const * m_pModelInterface;
-	int                        m_iPartInStatusBar;
+	SRWLOCK                          m_SRWLock;
+	wstring                          m_wstring;
+	wostringstream                   m_wstrBuffer;
+	StatusBar                      * m_pStatusBar;
+	NNetModelReaderInterface const * m_pModelReaderInterface;
+	int                              m_iPartInStatusBar;
 };
 
 /////// functions of class TimeDisplay ///////
@@ -73,9 +73,9 @@ using namespace std::chrono;
 
 TimeDisplay::TimeDisplay
 (
-	StatusBar                * pStatusBar,
-	NNetModelInterface const * pModelInterface,
-	int                        iPartInStatusBar
+	StatusBar                      * pStatusBar,
+	NNetModelReaderInterface const * pModelInterface,
+	int                              iPartInStatusBar
 )
   :	m_pRefreshRate( nullptr )
 {

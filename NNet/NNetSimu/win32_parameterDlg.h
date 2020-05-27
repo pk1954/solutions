@@ -7,12 +7,12 @@
 #include "NNetParameters.h"
 #include "win32_baseDialog.h"
 
-class WorkThreadInterface;
+class NNetModelWriterInterface;
 
 class ParameterDialog : public BaseDialog
 {
 public:
-	ParameterDialog( WorkThreadInterface * const );
+	ParameterDialog( NNetModelWriterInterface * const );
 	~ParameterDialog( );
 
 	void Start( HWND const, Param * const );
@@ -24,8 +24,8 @@ private:
 	static int   const VERT_SPACE { 16 };
 	static int   const HEIGHT     { 16 };
 
-	Param               * m_pParams;
-	WorkThreadInterface * m_pWorkThreadInterface;
+	Param                    * m_pParams;
+	NNetModelWriterInterface * m_pModel;
 
 	HWND m_hwndPeakVoltage;
 	HWND m_hwndThreshold;       

@@ -9,7 +9,7 @@
 // Model interfaces
 
 #include "MoreTypes.h"
-#include "NNetModelInterface.h"
+#include "NNetModelReaderInterface.h"
 #include "NNetModelStorage.h"
 #include "DrawModel.h"
 
@@ -107,10 +107,10 @@ void NNetAppWindow::Start( )
 		& m_dynamicModelObservable, 
 		& m_modelTimeObservable 
 	);
-	m_pModelInterface   = new NNetModelInterface( m_pModel );
-	m_pDrawModel        = new DrawModel         ( m_pModel );
-	m_pNNetModelStorage = new NNetModelStorage  ( m_pModel, m_pParameters );
-	m_pComputeThread    = new ComputeThread     ( m_pModel, m_pParameters, & m_SlowMotionRatio );
+	m_pModelReaderInterface = new NNetModelReaderInterface( m_pModel );
+	m_pDrawModel            = new DrawModel               ( m_pModel );
+	m_pNNetModelStorage     = new NNetModelStorage        ( m_pModel, m_pParameters );
+	m_pComputeThread        = new ComputeThread           ( m_pModel, m_pParameters, & m_SlowMotionRatio );
 
 	m_staticModelObservable.RegisterObserver( m_pNNetModelStorage );
 
@@ -140,7 +140,7 @@ void NNetAppWindow::Start( )
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		m_pComputeThread,
 		m_pNNetController,
-		m_pModelInterface,
+		m_pModelReaderInterface,
 		m_pDrawModel,
 		& m_cursorPosObservable
 	);
@@ -157,7 +157,7 @@ void NNetAppWindow::Start( )
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
 		m_pComputeThread,
 		m_pNNetController,
-		m_pModelInterface,
+		m_pModelReaderInterface,
 		m_pDrawModel,
 		& m_cursorPosObservable
 	);
@@ -170,22 +170,12 @@ void NNetAppWindow::Start( )
 
 	m_staticModelObservable.RegisterObserver( m_pMiniNNetWindow );
 
-	m_NNetWorkThreadInterface.Start
-	( 
-		m_hwndApp, 
-		& m_atComputation,
-		& m_eventPOI, 
-		& m_SlowMotionRatio,
-		m_pModel,
-		m_pParameters,
-		m_pNNetModelStorage
-	);
-
-	m_pCrsrWindow->Start( m_hwndApp, m_pMainNNetWindow, m_pModelInterface );
+	m_NNetWorkThreadInterface.Start( m_pModel, m_pParameters );
+	m_pCrsrWindow->Start( m_hwndApp, m_pMainNNetWindow, m_pModelReaderInterface );
 	m_cursorPosObservable   .RegisterObserver( m_pCrsrWindow );
 	m_dynamicModelObservable.RegisterObserver( m_pMainNNetWindow );
 	m_pParameterDlg->Start( m_hwndApp, m_pParameters );
-	m_pPerformanceWindow->Start( m_hwndApp, m_pModelInterface, m_pComputeThread, & m_SlowMotionRatio, & m_atDisplay );
+	m_pPerformanceWindow->Start( m_hwndApp, m_pModelReaderInterface, m_pComputeThread, & m_SlowMotionRatio, & m_atDisplay );
 
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,        true, false );
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  * m_pMainNNetWindow,    true, false );
@@ -209,7 +199,7 @@ void NNetAppWindow::Start( )
 	m_pPerformanceWindow->Show( true );
 
 	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage ) )
-		m_NNetWorkThreadInterface.PostResetModel( );
+		m_NNetWorkThreadInterface.ResetModel( );
 
 //	m_pNNetModelStorage->Write( wcout );
 
@@ -233,7 +223,7 @@ void NNetAppWindow::Stop()
 
 	BaseAppWindow::Stop();
 
-	delete m_pModelInterface;
+	delete m_pModelReaderInterface;
 	delete m_pDrawModel;
 	delete m_pModel;
 	delete m_pTimeDisplay;
@@ -247,7 +237,7 @@ void NNetAppWindow::configureStatusBar( )
 {
 	int iPartScriptLine = 0;
 
-	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pModelInterface, iPartScriptLine );
+	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pModelReaderInterface, iPartScriptLine );
 	m_modelTimeObservable.RegisterObserver( m_pTimeDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );

@@ -8,7 +8,7 @@
 #include "DrawModel.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
-#include "NNetModelInterface.h"
+#include "NNetModelReaderInterface.h"
 #include "win32_MainWindow.h"
 #include "win32_MiniWindow.h"
 
@@ -44,10 +44,10 @@ void MiniWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 
 void MiniWindow::adjust( ) 
 {
-	float          const EXTRA_SPACE_FACTOR { 1.2f };                            // give 20% more space (looks better)
-	MicroMeterRect const umRectMain  { m_pObservedNNetWindow->GetViewRect() };   // current position of main window view 
-	MicroMeterRect const umRectModel { m_pModelInterface->GetEnclosingRect() };  // current extension of model
-	MicroMeterRect const umRectShow  { Union( umRectMain, umRectModel ) };       // all this should be visible  
+	float          const EXTRA_SPACE_FACTOR { 1.2f };                                 // give 20% more space (looks better)
+	MicroMeterRect const umRectMain  { m_pObservedNNetWindow  ->GetViewRect() };      // current position of main window view 
+	MicroMeterRect const umRectModel { m_pModelReaderInterface->GetEnclosingRect() }; // current extension of model
+	MicroMeterRect const umRectShow  { Union( umRectMain, umRectModel ) };            // all this should be visible  
 	CenterAndZoomRect( umRectShow, EXTRA_SPACE_FACTOR, false );           
 }
 
