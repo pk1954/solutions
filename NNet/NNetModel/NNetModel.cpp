@@ -17,23 +17,21 @@
 using namespace std::chrono;
 using std::unordered_map;
 
-NNetModel::NNetModel
+void NNetModel::Initialize
 (
 	Param      * const pParam, 
 	Observable * const pStaticModelObservable,
 	Observable * const pDynamicModelObservable,
 	Observable * const pModelTimeObservable
 )
-  : m_pParam( pParam ),
-	m_pStaticModelObservable ( pStaticModelObservable ),
-    m_pDynamicModelObservable( pDynamicModelObservable ),
-	m_pModelTimeObservable   ( pModelTimeObservable )
 {					
+	m_pParam                  = pParam;
+	m_pStaticModelObservable  = pStaticModelObservable;
+    m_pDynamicModelObservable = pDynamicModelObservable;
+	m_pModelTimeObservable    = pModelTimeObservable;
 	Shape::SetParam( pParam );
 	m_Shapes.reserve( 100000 ); // Dirty trick to avoid reallocation (invalidates iterators)
 }                               // TODO: find better solution  XXXXX
-
-NNetModel::~NNetModel( ) { }
 
 void NNetModel::CreateInitialShapes( )
 {

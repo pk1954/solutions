@@ -20,7 +20,6 @@ class DrawModel;
 class Observable;
 class ActionTimer;
 class ComputeThread;
-class AnimationThread;
 class ObserverInterface;
 class ControllerInterface;
 class NNetModelReaderInterface;
@@ -29,11 +28,7 @@ class NNetModelWriterInterface;
 class NNetWindow : public ModelWindow
 {
 public:
-	static void InitClass
-	( 
-		NNetModelWriterInterface * const,
-		ActionTimer              * const
-	);
+	static void InitClass( ActionTimer * const );
 
 	NNetWindow( );
 
@@ -41,11 +36,13 @@ public:
 	( 
 		HWND                       const, 
 		DWORD                      const,
+		bool                       const,
 		ComputeThread            * const,
 		NNetController           * const,
 		NNetModelReaderInterface * const,
+		NNetModelWriterInterface * const,
 		DrawModel                * const,
-		Observable               * const 
+		Observable               * const
 	);
 
 	void Stop( );
@@ -61,16 +58,8 @@ public:
 
 	void ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
 	void ZoomStep( bool const );
-	void AnalysisFinished( );
 	void CenterModel( bool const );
 	void CenterAndZoomRect( MicroMeterRect const &, float const, bool const );
-
-	MicroMeterPoint PixelPoint2MicroMeterPoint( PixelPoint const ) const;
-
-	void PulseRateDlg       ( ShapeId const );
-	void TriggerSoundDlg    ( ShapeId const );
-	bool ChangePulseRate    ( bool    const );
-	void ShowDirectionArrows( bool    const );
 
 	DrawContext       & GetDrawContext ()       { return m_context; }
 	DrawContext const & GetDrawContextC() const { return m_context; }
@@ -87,7 +76,7 @@ protected:
 	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const );
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
 	virtual void OnSize              ( WPARAM const, LPARAM const );
-	virtual void OnLButtonDown       ( WPARAM const, LPARAM const );
+	virtual void OnLButtonDown       ( WPARAM const, LPARAM const ) {}
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnPaint( );
 
@@ -98,18 +87,17 @@ protected:
 	DrawModel   * m_pDrawModel { nullptr };
 	PixelPoint    m_ptLast     { PP_NULL };	// Last cursor position during selection 
 
-	inline static NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
+	NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
 
 private:
 
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	inline static NNetModelWriterInterface * m_pModel { nullptr };
+	NNetModelWriterInterface * m_pModelWriterInterface { nullptr };
 
 	ComputeThread   * m_pComputeThread       { nullptr };
 	NNetController  * m_pController          { nullptr };
-	AnimationThread * m_pAnimationThread     { nullptr };
 	Observable      * m_pCursorPosObservable { nullptr };
 	HMENU             m_hPopupMenu           { nullptr };
 
@@ -126,11 +114,6 @@ private:
 	ShapeId m_shapeHighlighted      { NO_SHAPE };
 	ShapeId m_shapeSuperHighlighted { NO_SHAPE };
 
-	virtual void HandleContextMenuCommand( UINT const, long const, PixelPoint const & );
-
-	LPARAM crsPos2LPARAM( ) const;
-	LPARAM pixelPoint2LPARAM( PixelPoint const ) const;
-	bool   inObservedClientRect( LPARAM const );
-	void   setSuperHighlightedShape( MicroMeterPoint const & );
-	void   setHighlightedShape     ( MicroMeterPoint const & );
+	void setSuperHighlightedShape( MicroMeterPoint const & );
+	void setHighlightedShape     ( MicroMeterPoint const & );
 };

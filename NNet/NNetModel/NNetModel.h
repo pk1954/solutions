@@ -29,9 +29,7 @@ class NNetModel
 {
 public:
 
-	NNetModel( Param * const, Observable * const, Observable * const, Observable * const );
-
-	virtual ~NNetModel( );
+	void Initialize( Param * const, Observable * const, Observable * const, Observable * const );
 
 	// readOnly functions
 

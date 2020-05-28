@@ -13,32 +13,32 @@ using std::to_wstring;
 bool ModelAnalyzer::FindLoop( NNetModel const & model )
 {
 	int iNrOfShapes { model.GetNrOf<Shape>() };
-	(* m_StatusBarDisplay)( to_wstring( iNrOfShapes ) + L" objects found" );
+	statusDisplay( to_wstring( iNrOfShapes ) + L" objects found" );
 
 	for ( int iMaxLoopSize = 5; iMaxLoopSize <= iNrOfShapes + 1; iMaxLoopSize += 2 )
 	{
 		int iCounter { iMaxLoopSize };
 		m_iRecDepth = iMaxLoopSize;
 		m_bStop     = false;
-		(* m_StatusBarDisplay)( wstring( L"Looking for loop of size " ) + to_wstring( iMaxLoopSize ) + L". Press ESC to stop." );
+		statusDisplay( wstring( L"Looking for loop of size " ) + to_wstring( iMaxLoopSize ) + L". Press ESC to stop." );
 		m_shapeStack.clear();
 		if ( model.Apply2AllB<BaseKnot>([&]( BaseKnot & baseKnot ) { return findLoop( & baseKnot ); } ) )
 		{
 			if ( m_bStop )  
 			{
 				m_shapeStack.clear();
-				(* m_StatusBarDisplay)( wstring( L"analysis aborted by user" ) );
+				statusDisplay( L"analysis aborted by user" );
 				return false;
 			}
 			else 
 			{
-				(* m_StatusBarDisplay)( wstring( L"loop found" ) );
+				statusDisplay( L"loop found" );
 				return true;
 			}
 		}
 	}
 
-	(* m_StatusBarDisplay)( wstring( L"no loop found" ) );
+	statusDisplay( L"no loop found" );
 	return false;
 }
 
@@ -122,6 +122,6 @@ bool ModelAnalyzer::FindAnomaly( NNetModel const & model )
 	m_shapeStack.clear();
 	bool const bFound { model.Apply2AllB<Knot>( [&]( Knot & knot ) { return hasAnomaly( knot ); } ) };
 	if ( ! bFound )
-		(* m_StatusBarDisplay)( wstring( L"no anomalies found" ) );
+		statusDisplay( L"no anomalies found" );
 	return bFound;
 }

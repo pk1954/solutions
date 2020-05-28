@@ -11,6 +11,7 @@
 #include "SlowMotionRatio.h"
 #include "NNetModelStorage.h"
 #include "ComputeThread.h"
+#include "AnimationThread.h"
 #include "AutoOpen.h"
 #include "win32_util.h"
 #include "win32_sound.h"
@@ -19,6 +20,9 @@
 #include "win32_NNetWindow.h"
 #include "win32_winManager.h"
 #include "win32_fatalError.h"
+#include "win32_triggerSoundDlg.h"
+#include "win32_stdDialogBox.h"
+#include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_NNetController.h"
 
@@ -27,26 +31,34 @@ NNetController::NNetController
 	NNetModelStorage         * const pStorage,
 	NNetWindow               * const pNNetWindow,
 	WinManager               * const pWinManager,
-	NNetModelWriterInterface * const pModel,
+	NNetModelReaderInterface * const pModelReaderInterface,
+	NNetModelWriterInterface * const pModelWriterInterface,
 	ComputeThread            * const pComputeThread,
-	SlowMotionRatio          * const pSlowMotionRatio
+	SlowMotionRatio          * const pSlowMotionRatio,
+	DisplayFunctor           * const func
 ) 
-  :	m_pStorage        ( pStorage ),
-	m_pNNetWindow     ( pNNetWindow ),
-	m_pWinManager     ( pWinManager ),
-	m_pModel          ( pModel ),
-	m_pSlowMotionRatio( pSlowMotionRatio ),
-	m_pComputeThread  ( pComputeThread ),
-	m_hCrsrWait       ( LoadCursor( NULL, IDC_WAIT ) )
+  :	m_pStorage             ( pStorage ),
+	m_pNNetWindow          ( pNNetWindow ),
+	m_pWinManager          ( pWinManager ),
+	m_pModelReaderInterface( pModelReaderInterface ),
+	m_pModelWriterInterface( pModelWriterInterface ),
+	m_pSlowMotionRatio     ( pSlowMotionRatio ),
+	m_pComputeThread       ( pComputeThread ),
+	m_pStatusBarDisplay    ( func ),
+	m_hCrsrWait            ( LoadCursor( NULL, IDC_WAIT ) )
 {
+	m_pAnimationThread = new AnimationThread( );
 }
 
 NNetController::~NNetController( )
 {
-	m_pModel           = nullptr;
-	m_pStorage         = nullptr;
-	m_pWinManager      = nullptr;
-	m_pSlowMotionRatio = nullptr;
+	delete 	m_pAnimationThread;
+
+	m_pAnimationThread      = nullptr;
+	m_pModelWriterInterface = nullptr;
+	m_pStorage              = nullptr;
+	m_pWinManager           = nullptr;
+	m_pSlowMotionRatio      = nullptr;
 }
 
 bool NNetController::HandleCommand( WPARAM const wParam, LPARAM const lParam, MicroMeterPoint const umPoint )
@@ -122,11 +134,11 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDD_ARROWS_ON:
-		m_pNNetWindow->ShowDirectionArrows( true );
+		m_pAnimationThread->SetTarget( Pipe::STD_ARROW_SIZE );
 		break;
 
 	case IDD_ARROWS_OFF:
-		m_pNNetWindow->ShowDirectionArrows( false );
+		m_pAnimationThread->SetTarget( 0.0_MicroMeter );
 		break;
 
 	case IDD_SOUND_ON:
@@ -156,6 +168,53 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
 	return true;  // command has been processed
 }
 
+bool NNetController::changePulseRate( ShapeId const id, bool const bDirection )
+{
+	static fHertz const INCREMENT { 0.01_fHertz };
+	fHertz const fOldValue { m_pModelReaderInterface->GetPulseFreq( id ) };
+	if ( fOldValue.IsNull() )
+		return false;
+	fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
+	m_pModelWriterInterface->SetPulseRate( id, fNewValue );
+	return true;
+}
+
+void NNetController::pulseRateDlg( ShapeId const id )
+{
+	fHertz  const fOldValue { m_pModelReaderInterface->GetPulseFreq( id ) };
+	if ( fOldValue.IsNull() )
+		return;
+	HWND    const hwndParent { m_pNNetWindow->GetWindowHandle() };
+	wstring const header     { GetParameterName ( tParameter::pulseRate ) }; 
+	wstring const unit       { GetParameterUnit ( tParameter::pulseRate ) };
+	fHertz  const fNewValue  { StdDialogBox::Show( hwndParent, fOldValue.GetValue(), header, unit ) };
+	if ( fNewValue != fOldValue )
+		m_pModelWriterInterface->SetPulseRate( id, fNewValue );
+}
+
+void NNetController::triggerSoundDlg( ShapeId const id )
+{
+	ShapeType const type { m_pModelReaderInterface->GetShapeType(id) };
+	if ( ! type.IsAnyNeuronType() )
+		return;
+
+	TriggerSoundDialog dialog
+	( 
+		m_pModelReaderInterface->HasTriggerSound( id ), 
+		m_pModelReaderInterface->GetTriggerSoundFrequency( id ), 
+		m_pModelReaderInterface->GetTriggerSoundDuration( id ) 
+	);
+
+	dialog.Show( m_pNNetWindow->GetWindowHandle() );
+
+	m_pModelWriterInterface->SetTriggerSound
+	( 
+		id,
+		dialog.IsTriggerSoundActive(),
+		dialog.GetFrequency(),
+		dialog.GetDuration ()
+	);
+}
 
 bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
 {
@@ -180,57 +239,59 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 		if ( m_pStorage->AskAndSave( ) && m_pStorage->AskModelFile() )
 		{
 			m_pStorage->Read( );
-			m_pModel->ResetTimer( );
+			m_pModelWriterInterface->ResetTimer( );
+			m_pNNetWindow->CenterModel( true );
 		}
 		break;
 
 	case IDM_NEW_MODEL:
 		if ( m_pStorage->AskAndSave( ) )
 		{
-			m_pModel->ResetModel( );
+			m_pModelWriterInterface->ResetModel( );
+			m_pModelWriterInterface->ResetTimer( );
 			m_pNNetWindow->CenterModel( true );
 			m_pStorage->ResetModelPath( );
 		}
 		break;
 
 	case IDM_PLUS:
-		m_pNNetWindow->ChangePulseRate( true );
+		changePulseRate( m_pNNetWindow->GetHighlightedShapeId(), true );
 		break;
 
 	case IDM_MINUS:
-		m_pNNetWindow->ChangePulseRate( false );
+		changePulseRate( m_pNNetWindow->GetHighlightedShapeId(), false );
 		break;
 
 	case IDM_COPY_SELECTION:
-		m_pModel->CopySelection( );
+		m_pModelWriterInterface->CopySelection( );
 		break;
 
 	case IDM_REMOVE_SELECTION:
-		m_pModel->DeleteSelection( );
+		m_pModelWriterInterface->DeleteSelection( );
 		break;
 
 	case IDM_REMOVE_BEEPERS:
-		m_pModel->RemoveBeepers( );
+		m_pModelWriterInterface->RemoveBeepers( );
 		break;
 
 	case IDM_SELECT_ALL_BEEPERS:
-		m_pModel->SelectAllBeepers( );
+		m_pModelWriterInterface->SelectAllBeepers( );
 		break;
 
 	case IDM_MARK_SELECTION:
-		m_pModel->MarkSelection( tBoolOp::opTrue );
+		m_pModelWriterInterface->MarkSelection( tBoolOp::opTrue );
 		break;
 
 	case IDM_UNMARK_SELECTION:
-		m_pModel->MarkSelection( tBoolOp::opFalse );
+		m_pModelWriterInterface->MarkSelection( tBoolOp::opFalse );
 		break;
 
 	case IDD_PULSE_RATE:
-		m_pNNetWindow->PulseRateDlg( ShapeId( CastToLong(lParam) ) );
+		pulseRateDlg( ShapeId( CastToLong(lParam) ) );
 		break;
 
 	case IDD_TRIGGER_SOUND_DLG:
-		m_pNNetWindow->TriggerSoundDlg( ShapeId( CastToLong(lParam) ) );
+		triggerSoundDlg( ShapeId( CastToLong(lParam) ) );
 		break;
 
 	case IDM_NNET_REFRESH_RATE:
@@ -238,14 +299,14 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 		break;
 
 	case IDM_RUN:
-		m_pModel->ResetTimer( );
-		if ( m_StatusBarDisplay )
-			(* m_StatusBarDisplay)( wstring( L"" ) );
+		m_pModelWriterInterface->ResetTimer( );
+		if ( m_pStatusBarDisplay )
+			(* m_pStatusBarDisplay)( wstring( L"" ) );
 		return false;
 
 	case IDD_CONNECT:
 		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
-		m_pModel->Connect
+		m_pModelWriterInterface->Connect
 		( 
 			static_cast<ShapeId>( Util::UnpackLongA( lParam ) ), 
 			static_cast<ShapeId>( Util::UnpackLongB( lParam ) ) 
@@ -260,27 +321,27 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
 	case IDD_REMOVE_SHAPE:
 		Sound::Play( TEXT("DISAPPEAR_SOUND") ); 
-		m_pModel->RemoveShape( ShapeId( CastToLong(lParam) ) );
+		m_pModelWriterInterface->RemoveShape( ShapeId( CastToLong(lParam) ) );
 		break;
 
 	case IDD_DISCONNECT:
 		Sound::Play( TEXT("UNLOCK_SOUND") ); 
-		m_pModel->Disconnect( ShapeId( CastToLong(lParam) ) );
+		m_pModelWriterInterface->Disconnect( ShapeId( CastToLong(lParam) ) );
 		break;
 
 	case IDD_CONVERT2NEURON:
 		Sound::Play( TEXT("UNLOCK_SOUND") ); 
-		m_pModel->Convert2Neuron( ShapeId( CastToLong(lParam) ) );
+		m_pModelWriterInterface->Convert2Neuron( ShapeId( CastToLong(lParam) ) );
 		break;
 
 	case IDD_STOP_ON_TRIGGER:
 		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
-		m_pModel->ToggleStopOnTrigger( ShapeId( CastToLong(lParam) ) );
+		m_pModelWriterInterface->ToggleStopOnTrigger( ShapeId( CastToLong(lParam) ) );
 		break;
 
 	case IDD_CONVERT2INPUT_NEURON:
 		Sound::Play( TEXT("SNAP_IN_SOUND") ); 
-		m_pModel->Convert2InputNeuron( ShapeId( CastToLong(lParam) ) );
+		m_pModelWriterInterface->Convert2InputNeuron( ShapeId( CastToLong(lParam) ) );
 		break;
 
 	case IDD_INSERT_NEURON:
@@ -292,35 +353,39 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 	case IDD_ADD_INCOMING2KNOT:
 	case IDD_ADD_OUTGOING2PIPE:
 	case IDD_ADD_INCOMING2PIPE:
-		m_pModel->ActionCommand( wmId, ShapeId( CastToLong(lParam) ), umPoint );
+		m_pModelWriterInterface->ActionCommand( wmId, ShapeId( CastToLong(lParam) ), umPoint );
 		break;
 
 	case IDM_ANALYZE_LOOPS:
 	case IDM_ANALYZE_ANOMALIES:
-		m_pModel->ActionCommand( wmId, NO_SHAPE, NP_NULL );
-		m_pNNetWindow->AnalysisFinished( );
+		{
+			m_pModelWriterInterface->ActionCommand( wmId, NO_SHAPE, NP_NULL );
+			MicroMeterRect rect { ModelAnalyzer::GetEnclosingRect() };
+			if ( rect.IsNotEmpty() )
+				m_pNNetWindow->CenterAndZoomRect( rect, 2.0f, true );
+		}
 		break;
 
 	case IDM_DESELECT_ALL:
 	case IDM_ESCAPE:
-		m_pModel->SelectAll( tBoolOp::opFalse );
+		m_pModelWriterInterface->SelectAll( tBoolOp::opFalse );
 		ModelAnalyzer::Stop();
 		break;
 
 	case IDM_SELECT_SHAPE:
-		m_pModel->SelectShape( ShapeId( CastToLong(lParam) ), tBoolOp::opTrue );
+		m_pModelWriterInterface->SelectShape( ShapeId( CastToLong(lParam) ), tBoolOp::opTrue );
 		break;
 
 	case IDM_DESELECT_SHAPE:
-		m_pModel->SelectShape( ShapeId( CastToLong(lParam) ), tBoolOp::opFalse );
+		m_pModelWriterInterface->SelectShape( ShapeId( CastToLong(lParam) ), tBoolOp::opFalse );
 		break;
 
 	case IDM_SELECT_ALL:
-		m_pModel->SelectAll( tBoolOp::opTrue );
+		m_pModelWriterInterface->SelectAll( tBoolOp::opTrue );
 		break;
 
 	case IDM_SELECT_SUBTREE:
-		m_pModel->SelectSubtree( ShapeId( CastToLong(lParam) ), tBoolOp::opTrue );
+		m_pModelWriterInterface->SelectSubtree( ShapeId( CastToLong(lParam) ), tBoolOp::opTrue );
 		break;
 
 	case IDM_SCRIPT_DIALOG:

@@ -30,10 +30,11 @@ using std::filesystem::exists;
 
 static float const PROTOCOL_VERSION { 1.5f };   // pipeline renamed to pipe
 
-NNetModelStorage::NNetModelStorage( NNetModel * const pModel, Param * const pParam )
-	: m_pModel( pModel ),
-	  m_pParam( pParam )
-{}
+void NNetModelStorage::Initialize( NNetModel * const pModel, Param * const pParam )
+{
+	m_pModel = pModel;
+	m_pParam = pParam;
+}
 
 void NNetModelStorage::setUnsavedChanges( bool const bState )
 {

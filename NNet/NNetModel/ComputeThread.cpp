@@ -16,22 +16,22 @@ void ComputeThread::ThreadStartupFunc( )
 		//AcquireSRWLockShared( m_pSRWLockStartWorking );
 		//ReleaseSRWLockShared( m_pSRWLockStarted );
 		//AcquireSRWLockShared( m_pSRWLockFinished );
-		//m_pModel->StartWork( );
-		//while (	m_pModel->GetNextChunk( uiNextIndex ) )
+		//m_pModelWriterInterface->StartWork( );
+		//while (	m_pModelWriterInterface->GetNextChunk( uiNextIndex ) )
 		//{
-		//	//m_pModel->DoPrepare( uiNextIndex );
-		//	//m_pModel->ChunkDone( );
+		//	//m_pModelWriterInterface->DoPrepare( uiNextIndex );
+		//	//m_pModelWriterInterface->ChunkDone( );
 		//}
 		//ReleaseSRWLockShared( m_pSRWLockFinished );
 
 		//AcquireSRWLockShared( m_pSRWLockStartWorking );
 		//ReleaseSRWLockShared( m_pSRWLockStarted );
 		//AcquireSRWLockShared( m_pSRWLockFinished );
-		//m_pModel->StartWork( );
-		//while (	m_pModel->GetNextChunk( uiNextIndex ) )
+		//m_pModelWriterInterface->StartWork( );
+		//while (	m_pModelWriterInterface->GetNextChunk( uiNextIndex ) )
 		//{
-		//	//m_pModel->DoStep( uiNextIndex );
-		//	//m_pModel->ChunkDone( );
+		//	//m_pModelWriterInterface->DoStep( uiNextIndex );
+		//	//m_pModelWriterInterface->ChunkDone( );
 		//}
 		//ReleaseSRWLockShared( m_pSRWLockFinished );
 

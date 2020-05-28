@@ -10,16 +10,11 @@
 
 #include "MoreTypes.h"
 #include "NNetModelReaderInterface.h"
-#include "NNetModelStorage.h"
-#include "DrawModel.h"
 
 // interfaces of various windows
 
 #include "win32_NNetWindow.h"
 #include "win32_status.h"
-#include "win32_crsrWindow.h"
-#include "win32_performanceWindow.h"
-#include "win32_parameterDlg.h"
 #include "win32_simulationControl.h"
 #include "win32_slowMotionControl.h"
 #include "win32_zoomControl.h"
@@ -29,7 +24,6 @@
 // infrastructure
 
 #include "util.h"
-#include "DisplayFunctor.h"
 #include "ObserverInterface.h"
 
 // scripting and tracing
@@ -38,7 +32,6 @@
 #include "script.h"
 #include "Preferences.h"
 #include "NNetWrappers.h"
-#include "ComputeThread.h"
 #include "UtilityWrappers.h"
 #include "win32_stopwatch.h"
 #include "win32_fatalError.h"
@@ -49,6 +42,8 @@
 
 // application
 
+#include "win32_baseWindow.h"
+#include "win32_aboutBox.h"
 #include "Analyzer.h"
 #include "AutoOpen.h"
 #include "win32_NNetAppWindow.h"
@@ -62,144 +57,138 @@ NNetAppWindow::NNetAppWindow( )
 {
 	Stopwatch stopwatch;
 
-	Preferences   ::Initialize( );
-	BaseAppWindow ::Initialize( );
-	NNetWindow    ::InitClass( & m_NNetWorkThreadInterface, & m_atDisplay );
+	m_hwndConsole = GetConsoleWindow( );
+	BringWindowToTop( m_hwndConsole );
 
 	m_traceStream = OpenTraceFile( L"main_trace.out" );
 
-	m_NNetWorkThreadInterface.Initialize( & m_traceStream );
+	Preferences::Initialize( );
+	NNetWindow ::InitClass( & m_atDisplay );
 
-	m_pPerformanceWindow = new PerformanceWindow( );
-	m_pNNetColors        = new NNetColors( & m_blinkObservable );
-	m_pAppMenu           = new NNetAppMenu( );
-	m_pMainNNetWindow    = new MainWindow( );
-	m_pMiniNNetWindow    = new MiniWindow( );
-	m_pCrsrWindow        = new CrsrWindow( );
-	m_pParameterDlg      = new ParameterDialog( & m_NNetWorkThreadInterface );
+	m_model               .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
+	m_modelStorage        .Initialize( & m_model, & m_parameters );
+	m_modelWriterInterface.Initialize( & m_traceStream );
+	m_drawModel           .Initialize( & m_model );
 
-	DefineNNetWrappers( & m_NNetWorkThreadInterface, m_pMainNNetWindow );
+	DefineUtilityWrapperFunctions( );
+	DefineNNetWrappers( & m_modelWriterInterface, & m_mainNNetWindow );
 
-	m_pMainNNetWindow   ->SetRefreshRate( 100ms );
-	m_pMiniNNetWindow   ->SetRefreshRate( 200ms );
-	m_pCrsrWindow       ->SetRefreshRate( 100ms );
-	m_pPerformanceWindow->SetRefreshRate( 500ms );
+	m_pNNetController = new NNetController
+	( 
+		& m_modelStorage,
+		& m_mainNNetWindow,
+		& m_WinManager,
+		& m_modelReaderInterface,
+		& m_modelWriterInterface,
+		& m_computeThread,
+		& m_SlowMotionRatio,
+		& m_statusBarDispFunctor
+	);
+
+	m_hwndApp = StartBaseWindow
+	( 
+		nullptr, 
+		CS_HREDRAW | CS_VREDRAW, 
+		L"ClassAppWindow", 
+		WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,
+		nullptr,
+		nullptr
+	);
+
+	m_pNNetColors = new NNetColors( & m_blinkObservable );
+
+	m_mainNNetWindow   .SetRefreshRate( 100ms );
+	m_miniNNetWindow   .SetRefreshRate( 200ms );
+	m_crsrWindow       .SetRefreshRate( 100ms );
+	m_performanceWindow.SetRefreshRate( 500ms );
+	m_StatusBar        .SetRefreshRate( 300ms );
 };
 
 NNetAppWindow::~NNetAppWindow( )
 {
 	delete m_pNNetColors;
-	delete m_pMainNNetWindow;
-	delete m_pAppMenu;
-	delete m_pCrsrWindow;
-	delete m_pParameterDlg;
-	delete m_pPerformanceWindow;
-	delete m_pStatusBarDisplayFunctor;
 }
 
 void NNetAppWindow::Start( )
 {
-	m_pParameters = new Param( );
-	m_pModel      = new NNetModel
-	( 
-		m_pParameters, 
-		& m_staticModelObservable, 
-		& m_dynamicModelObservable, 
-		& m_modelTimeObservable 
-	);
-	m_pModelReaderInterface = new NNetModelReaderInterface( m_pModel );
-	m_pDrawModel            = new DrawModel               ( m_pModel );
-	m_pNNetModelStorage     = new NNetModelStorage        ( m_pModel, m_pParameters );
-	m_pComputeThread        = new ComputeThread           ( m_pModel, m_pParameters, & m_SlowMotionRatio );
+	m_computeThread.Start( & m_model, & m_parameters, & m_SlowMotionRatio );
+	m_appMenu      .Start( m_hwndApp, & m_computeThread, & m_WinManager );
+	m_StatusBar    .Start( m_hwndApp );
 
-	m_staticModelObservable.RegisterObserver( m_pNNetModelStorage );
-
-	m_StatusBar.Start( m_hwndApp, & m_NNetWorkThreadInterface );
-	BaseAppWindow::Start( m_pMainNNetWindow, m_pComputeThread );
-	m_pAppMenu->Initialize
-	( 
-		m_hwndApp,
-		m_pComputeThread,
-		& m_NNetWorkThreadInterface,
-		& m_WinManager 
-	);
-
-	m_pNNetController = new NNetController
-	( 
-		m_pNNetModelStorage,
-		m_pMainNNetWindow,
-		& m_WinManager,
-		& m_NNetWorkThreadInterface,
-		m_pComputeThread,
-		& m_SlowMotionRatio
-	);
-
-	m_pMainNNetWindow->Start
+	m_mainNNetWindow.Start
 	( 
 		m_hwndApp, 
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
-		m_pComputeThread,
+		false,
+		& m_computeThread,
 		m_pNNetController,
-		m_pModelReaderInterface,
-		m_pDrawModel,
+		& m_modelReaderInterface,
+		& m_modelWriterInterface,
+		& m_drawModel,
 		& m_cursorPosObservable
 	);
 
-	m_blinkObservable       .RegisterObserver( m_pMainNNetWindow );
-	m_staticModelObservable .RegisterObserver( m_pMainNNetWindow );
-	m_dynamicModelObservable.RegisterObserver( m_pMainNNetWindow );
-	m_pMainNNetWindow->ShowRefreshRateDlg( false );
-	m_pMainNNetWindow->AddObserver( m_pMiniNNetWindow );
-
-	m_pMiniNNetWindow->Start
+	m_miniNNetWindow.Start
 	( 
 		m_hwndApp, 
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
-		m_pComputeThread,
+		true,
+		& m_computeThread,
 		m_pNNetController,
-		m_pModelReaderInterface,
-		m_pDrawModel,
+		& m_modelReaderInterface,
+		& m_modelWriterInterface,
+		& m_drawModel,
 		& m_cursorPosObservable
 	);
 
-	SetWindowText( m_pMiniNNetWindow->GetWindowHandle(), L"Mini window" );
+	m_mainNNetWindow.AddObserver( & m_miniNNetWindow );
+	m_miniNNetWindow.ObservedNNetWindow( & m_mainNNetWindow );  // mini window observes main grid window
 
-	m_pMiniNNetWindow->ObservedNNetWindow( m_pMainNNetWindow );  // mini window observes main grid window
+	SetWindowText( m_miniNNetWindow.GetWindowHandle(), L"Mini window" );
 
-	m_pMiniNNetWindow->Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
+	m_modelReaderInterface.Start( & m_model );
+	m_modelWriterInterface.Start( & m_model, & m_parameters );
+	m_crsrWindow          .Start( m_hwndApp, & m_mainNNetWindow, & m_modelReaderInterface );
+	m_parameterDlg        .Start( m_hwndApp, & m_modelWriterInterface, & m_parameters );
+	m_performanceWindow   .Start( m_hwndApp, & m_modelReaderInterface, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
 
-	m_staticModelObservable.RegisterObserver( m_pMiniNNetWindow );
+	m_WinManager.AddWindow( L"IDM_CONS_WINDOW",  IDM_CONS_WINDOW,  m_hwndConsole,                 true,  true  );
+	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",  IDM_APPL_WINDOW,  m_hwndApp,                     true,  true  );
+	m_WinManager.AddWindow( L"IDM_STATUS_BAR",   IDM_STATUS_BAR,   m_StatusBar.GetWindowHandle(), false, false );
+	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  m_crsrWindow,                  true,  false );
+	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  m_mainNNetWindow,              true,  false );
+	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",  IDM_MINI_WINDOW,  m_miniNNetWindow,              true,  false );
+	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW", IDM_PARAM_WINDOW, m_parameterDlg,                true,  false );
+	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",  IDM_PERF_WINDOW,  m_performanceWindow,           true,  false );
 
-	m_NNetWorkThreadInterface.Start( m_pModel, m_pParameters );
-	m_pCrsrWindow->Start( m_hwndApp, m_pMainNNetWindow, m_pModelReaderInterface );
-	m_cursorPosObservable   .RegisterObserver( m_pCrsrWindow );
-	m_dynamicModelObservable.RegisterObserver( m_pMainNNetWindow );
-	m_pParameterDlg->Start( m_hwndApp, m_pParameters );
-	m_pPerformanceWindow->Start( m_hwndApp, m_pModelReaderInterface, m_pComputeThread, & m_SlowMotionRatio, & m_atDisplay );
+	m_staticModelObservable .RegisterObserver( & m_modelStorage );
+	m_blinkObservable       .RegisterObserver( & m_mainNNetWindow );
+	m_dynamicModelObservable.RegisterObserver( & m_mainNNetWindow );
+	m_staticModelObservable .RegisterObserver( & m_mainNNetWindow );
+	m_staticModelObservable .RegisterObserver( & m_miniNNetWindow );
+	m_cursorPosObservable   .RegisterObserver( & m_crsrWindow );
 
-	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  * m_pCrsrWindow,        true, false );
-	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  * m_pMainNNetWindow,    true, false );
-	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",  IDM_MINI_WINDOW,  * m_pMiniNNetWindow,    true, false );
-	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW", IDM_PARAM_WINDOW, * m_pParameterDlg,      true, false );
-	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",  IDM_PERF_WINDOW,  * m_pPerformanceWindow, true, false );
-
-	configureStatusBar( );
-
-	m_pNNetController->SetStatusBarDisplay( m_pStatusBarDisplayFunctor );
+	m_miniNNetWindow.Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
 
 	if ( ! m_WinManager.GetWindowConfiguration( ) )
 	{
 		wcout << L"Using default window positions" << std::endl;
 		Show( true );
-		m_pMainNNetWindow->Show( true );
-		m_pMiniNNetWindow->Show( true );
+		m_mainNNetWindow.Show( true );
+		m_miniNNetWindow.Show( true );
 	}
-	m_pCrsrWindow       ->Show( true );
-	m_pParameterDlg     ->Show( true );
-	m_pPerformanceWindow->Show( true );
 
-	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( m_pNNetModelStorage ) )
-		m_NNetWorkThreadInterface.ResetModel( );
+	configureStatusBar( );
+	adjustChildWindows( );
+
+	m_StatusBar        .Show( true );
+	m_mainNNetWindow   .Show( true );
+	m_crsrWindow       .Show( true );
+	m_parameterDlg     .Show( true );
+	m_performanceWindow.Show( true );
+
+	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( & m_modelStorage ) )
+		m_modelWriterInterface.ResetModel( );
 
 //	m_pNNetModelStorage->Write( wcout );
 
@@ -212,20 +201,19 @@ void NNetAppWindow::Stop()
 {
 	m_bStarted = false;
 
-	m_pMainNNetWindow   ->Stop( );
-	m_pMiniNNetWindow   ->Stop( );
-	m_pCrsrWindow       ->Stop( );
-	m_pParameterDlg     ->Stop( );
-	m_pPerformanceWindow->Stop( );
+	m_mainNNetWindow   .Stop( );
+	m_miniNNetWindow   .Stop( );
+	m_crsrWindow       .Stop( );
+	m_performanceWindow.Stop( );
+	m_parameterDlg     .Stop( );
+	m_StatusBar        .Stop( );
+	m_appMenu          .Stop( );
 
 	m_staticModelObservable.UnregisterAllObservers( );
-	m_NNetWorkThreadInterface.Stop( );
+	m_computeThread.StopComputation();
+	m_modelReaderInterface.Stop( );
+	m_modelWriterInterface.Stop( );
 
-	BaseAppWindow::Stop();
-
-	delete m_pModelReaderInterface;
-	delete m_pDrawModel;
-	delete m_pModel;
 	delete m_pTimeDisplay;
 	delete m_pSlowMotionDisplay;
 	delete m_pNNetController;
@@ -233,15 +221,60 @@ void NNetAppWindow::Stop()
 	m_WinManager.RemoveAll( );
 }
 
+LRESULT NNetAppWindow::UserProc
+( 
+	UINT   const message, 
+	WPARAM const wParam, 
+	LPARAM const lParam 
+)
+{
+	switch ( message )
+	{
+
+	case WM_ENTERMENULOOP:
+		if ( wParam == false )
+			m_appMenu.AdjustVisibility( );
+		break;
+
+	case WM_PAINT:
+	{
+		static COLORREF const CLR_GREY = RGB( 128, 128, 128 );
+		PAINTSTRUCT   ps;
+		HDC           hDC = BeginPaint( &ps );
+		FillBackground( hDC, CLR_GREY );
+		(void)EndPaint( &ps );
+		return false;
+	}
+
+	case WM_SIZE:
+	case WM_MOVE:
+		adjustChildWindows( );
+		break;
+
+	case WM_CLOSE:
+		OnClose( );
+		return true;  
+
+	case WM_DESTROY:
+		PostQuitMessage( 0 );
+		break;
+
+	default:
+		break;
+	}
+
+	return DefWindowProc( message, wParam, lParam );
+}
+
 void NNetAppWindow::configureStatusBar( )
 {
 	int iPartScriptLine = 0;
 
-	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, m_pModelReaderInterface, iPartScriptLine );
+	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, & m_modelReaderInterface, iPartScriptLine );
 	m_modelTimeObservable.RegisterObserver( m_pTimeDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
-	m_pSimulationControl = new SimulationControl( & m_StatusBar, m_pComputeThread );
+	m_pSimulationControl = new SimulationControl( & m_StatusBar, & m_computeThread );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	m_pSlowMotionDisplay = new SlowMotionDisplay( & m_StatusBar, & m_SlowMotionRatio, iPartScriptLine );
@@ -253,19 +286,41 @@ void NNetAppWindow::configureStatusBar( )
 	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine );
 	m_StatusBar.DisplayInPart( iPartScriptLine, L"" );
 	Script::ScrSetWrapHook( & m_ScriptHook );
-	m_pStatusBarDisplayFunctor = new StatusBarDisplayFunctor( & m_StatusBar, iPartScriptLine );
-	ModelAnalyzer::SetStatusBarDisplay( m_pStatusBarDisplayFunctor );
+	m_statusBarDispFunctor.Initialize( & m_StatusBar, iPartScriptLine );
+	ModelAnalyzer::SetStatusBarDisplay( & m_statusBarDispFunctor );
 
 	m_StatusBar.LastPart( );
 	m_pTimeDisplay->Notify( true );
 	m_pSlowMotionDisplay->Notify( true );
 }
 
+void NNetAppWindow::adjustChildWindows( )
+{
+	PixelRectSize pntAppClientSize( Util::GetClRectSize( m_hwndApp ) );
+	PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
+	PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
+
+	if ( pntAppClientSize.IsNotZero( ) )
+	{
+		m_StatusBar.Resize( );
+		pixAppClientWinHeight -= m_StatusBar.GetHeight( );
+
+		m_mainNNetWindow.Move  // use all available space for model window
+		( 
+			0_PIXEL, 
+			0_PIXEL, 
+			pixAppClientWinWidth, 
+			pixAppClientWinHeight, 
+			true 
+		);
+	}
+}
+
 void NNetAppWindow::OnClose( )
 {
 	if ( m_bStarted )
 	{
-		if ( ! m_pNNetModelStorage->AskAndSave( ) )
+		if ( ! m_modelStorage.AskAndSave( ) )
 			return;
 		m_WinManager.StoreWindowConfiguration( );
 		Stop( );
@@ -278,5 +333,35 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 	if ( m_pNNetController->HandleCommand( wParam, lParam, NP_NULL ) )
 		return true;
 	else 
-		return BaseAppWindow::OnCommand( wParam, lParam, pixPoint );
+	{
+		int const wmId = LOWORD( wParam );
+
+		switch (wmId)
+		{
+		case IDM_ABOUT:
+			ShowAboutBox( GetWindowHandle( ) );
+			break;
+
+		case IDM_EXIT:
+			PostMessage( WM_CLOSE, 0, 0 );
+			break;
+
+		case IDM_FORWARD:
+			m_computeThread.SingleStep( );
+			break;
+
+		case IDM_RUN:
+			m_computeThread.RunComputation( );
+			break;
+
+		case IDM_STOP:
+			m_computeThread.StopComputation( );
+			break;
+
+		default:
+			return BaseWindow::OnCommand( wParam, lParam, pixPoint );
+		}
+
+		return true;  // command has been processed
+	}
 }

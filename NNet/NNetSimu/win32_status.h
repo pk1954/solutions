@@ -16,14 +16,9 @@ using std::wstring;
 class StatusBar : public RootWindow
 {
 public:
-	StatusBar();
 
-	void Start
-	( 
-		HWND                             const, 
-		NNetModelWriterInterface const * const
-	);
-	void  Stop( );
+	void Start( HWND const );
+	void Stop( );
 
 	PIXEL GetHeight( ) const;
     void  Resize( ) const;
@@ -51,8 +46,6 @@ private:
     PIXEL m_pixBorderX      { 0_PIXEL };
     PIXEL m_pixBorderY      { 0_PIXEL };
     PIXEL m_pixPosX         { 0_PIXEL };
-
-	NNetModelWriterInterface const * m_pModel { nullptr };
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 

@@ -11,8 +11,6 @@
 #include "Pipe.h"
 #include "InputNeuron.h"
 #include "PixelTypes.h"
-#include "Analyzer.h"
-#include "AnimationThread.h"
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetColors.h"
@@ -20,21 +18,14 @@
 #include "ComputeThread.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
-#include "win32_triggerSoundDlg.h"
-#include "win32_stdDialogBox.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_NNetWindow.h"
 
 using std::function;
 
-void NNetWindow::InitClass
-(        
-	NNetModelWriterInterface * const pModel,
-	ActionTimer              * const pActionTimer
-)
+void NNetWindow::InitClass( ActionTimer * const pActionTimer )
 {
 	ModelWindow::InitClass( pActionTimer );
-	m_pModel = pModel;
 }
 
 NNetWindow::NNetWindow( ) :
@@ -45,9 +36,11 @@ void NNetWindow::Start
 ( 
 	HWND                       const hwndApp, 
 	DWORD                      const dwStyle,
+	bool                       const bShowRefreshRateDialog,
 	ComputeThread            * const pComputeThread,
 	NNetController           * const pController,
-	NNetModelReaderInterface * const pModelInterface,
+	NNetModelReaderInterface * const pModelReaderInterface,
+	NNetModelWriterInterface * const pModelWriterInterface,
 	DrawModel                * const pDrawModel,
 	Observable               * const pCursorObservable
 )
@@ -65,9 +58,10 @@ void NNetWindow::Start
 	m_context.Start( hwnd );
 	m_pController           = pController;
 	m_pComputeThread        = pComputeThread;
-	m_pModelReaderInterface = pModelInterface;
+	m_pModelReaderInterface = pModelReaderInterface;
+	m_pModelWriterInterface = pModelWriterInterface;
 	m_pCursorPosObservable  = pCursorObservable;
-	m_pAnimationThread      = new AnimationThread( );
+	ShowRefreshRateDlg( bShowRefreshRateDialog );
 }
 
 void NNetWindow::Stop( )
@@ -80,7 +74,6 @@ NNetWindow::~NNetWindow( )
 {
 	m_pController           = nullptr;
 	m_pDrawModel            = nullptr;
-	m_pAnimationThread      = nullptr;
 	m_pCursorPosObservable  = nullptr;
 	m_pModelReaderInterface = nullptr;
 }
@@ -201,63 +194,6 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	return m_shapeHighlighted.GetValue(); // will be forwarded to HandleContextMenuCommand
 }
 
-void NNetWindow::HandleContextMenuCommand
-( 
-	UINT       const   uiCmdId,  // command selected by user  
-	long       const   lParam,   // comes from AddContextMenuEntries
-	PixelPoint const & pixPoint  // cursor position when comtext menue was initiated
-)
-{
-	ShapeId shapeId( lParam );  
-}
-
-bool NNetWindow::ChangePulseRate( bool const bDirection )
-{
-	static fHertz const INCREMENT { 0.01_fHertz };
-	fHertz const fOldValue { m_pModelReaderInterface->GetPulseFreq( m_shapeHighlighted ) };
-	if ( fOldValue.IsNull() )
-		return false;
-	fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
-	m_pModel->SetPulseRate( m_shapeHighlighted, fNewValue );
-	return true;
-}
-
-void NNetWindow::PulseRateDlg( ShapeId const id )
-{
-	fHertz  const fOldValue { m_pModelReaderInterface->GetPulseFreq( id ) };
-	if ( fOldValue.IsNull() )
-		return;
-	wstring const header    { GetParameterName ( tParameter::pulseRate ) }; 
-	wstring const unit      { GetParameterUnit ( tParameter::pulseRate ) }; 
-	fHertz  const fNewValue { StdDialogBox::Show( GetWindowHandle(), fOldValue.GetValue(), header, unit ) };
-	if ( fNewValue != fOldValue )
-		m_pModel->SetPulseRate( id, fNewValue );
-}
-
-void NNetWindow::TriggerSoundDlg( ShapeId const id )
-{
-	ShapeType const type { m_pModelReaderInterface->GetShapeType(id) };
-	if ( ! type.IsAnyNeuronType() )
-		return;
-
-	TriggerSoundDialog dialog
-	( 
-		m_pModelReaderInterface->HasTriggerSound( id ), 
-		m_pModelReaderInterface->GetTriggerSoundFrequency( id ), 
-		m_pModelReaderInterface->GetTriggerSoundDuration( id ) 
-	);
-
-	dialog.Show( GetWindowHandle() );
-
-	m_pModel->SetTriggerSound
-	( 
-		id,
-	    dialog.IsTriggerSoundActive(),
-	    dialog.GetFrequency(),
-	    dialog.GetDuration ()
-	);
-}
-
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
 	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // relative to client area
@@ -287,7 +223,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
 			{
 				m_rectSelection = MicroMeterRect( umCrsrPos, umLastPos );
-				m_pModel->SelectShapesInRect( m_rectSelection );
+				m_pModelWriterInterface->SelectShapesInRect( m_rectSelection );
 			}
 			else                           // first time here after RBUTTON pressed
 			{
@@ -302,11 +238,11 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 				if ( IsDefined( m_shapeHighlighted ) )
 				{
 					setSuperHighlightedShape( m_pModelReaderInterface->GetShapePos( m_shapeHighlighted ) );
-					m_pModel->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
+					m_pModelWriterInterface->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
 				}
 				else if ( m_pModelReaderInterface->AnyShapesSelected( ) )   // move selected shapes 
 				{
-					m_pModel->MoveSelection( umCrsrPos - umLastPos );
+					m_pModelWriterInterface->MoveSelection( umCrsrPos - umLastPos );
 				}
 				else  // move view by manipulating coordinate system 
 				{
@@ -390,13 +326,6 @@ void NNetWindow::CenterModel( bool const bSmooth )
 	CenterAndZoomRect( m_pModelReaderInterface->GetEnclosingRect( ), 1.2f, bSmooth ); // give 20% more space (looks better)
 }
 
-void NNetWindow::AnalysisFinished( )
-{
-	MicroMeterRect rect { ModelAnalyzer::GetEnclosingRect() };
-	if ( rect.IsNotEmpty() )
-		CenterAndZoomRect( rect, 2.0f, true );
-}
-
 void NNetWindow::CenterAndZoomRect( MicroMeterRect const & umRect, float const fRatioFactor, bool const bSmooth )
 {
 	MicroMeterRect  const umRectScaled      { umRect.Scale( NEURON_RADIUS ) }; // give some more space to include complete shapes 
@@ -474,7 +403,7 @@ void NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )
 {
 	if ( IsDefined( m_shapeHighlighted ) )
-		m_pModel->SelectShape( m_shapeHighlighted, tBoolOp::opToggle );
+		m_pModelWriterInterface->SelectShape( m_shapeHighlighted, tBoolOp::opToggle );
 }
 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
@@ -520,30 +449,11 @@ bool NNetWindow::OnRButtonDown( WPARAM const wParam, LPARAM const lParam )
 	return false;
 }
 
-void NNetWindow::OnLButtonDown( WPARAM const wParam, LPARAM const lParam )
-{
-}
-
 void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 {
 	bool    const keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
 	HCURSOR const hCrsr   = keyDown ? m_hCrsrMove : m_hCrsrArrow;
 	SetCursor( hCrsr );
-}
-
-MicroMeterPoint NNetWindow::PixelPoint2MicroMeterPoint( PixelPoint const pixPoint ) const
-{
-	return m_context.GetCoordC().Convert2MicroMeterPointPos( pixPoint );  // PixelPoint2MicroMeterPoint belongs to NNetWindow
-}                                                           // because every NNetWindow needs its own coordinate system
-
-LPARAM NNetWindow::pixelPoint2LPARAM( PixelPoint const pixPoint ) const
-{
-	return Util::Pack2UINT64( m_context.GetCoordC().Convert2MicroMeterPointPos( pixPoint ) );
-}
-
-LPARAM NNetWindow::crsPos2LPARAM( ) const 
-{
-	return pixelPoint2LPARAM( GetRelativeCrsrPosition() );
 }
 
 bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
@@ -554,14 +464,3 @@ bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	else 
 		return ModelWindow::OnCommand( wParam, lParam, pixPoint );
 }
-
-bool NNetWindow::inObservedClientRect( LPARAM const lParam )
-{
-	return true;  // Is cursor position in observed client rect?
-}
-
-void NNetWindow::ShowDirectionArrows( bool const bShow )
-{
-	m_pAnimationThread->SetTarget( bShow ? Pipe::STD_ARROW_SIZE : 0.0_MicroMeter );
-}
-

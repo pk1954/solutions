@@ -9,28 +9,31 @@
 #include "win32_fatalError.h"
 #include "ComputeThread.h"
 
-ComputeThread::ComputeThread
-(
-	NNetModel       * const pModel,
-	Param           * const pParam,
-	SlowMotionRatio * const pSlowMotionRatio
-
-) :
-	m_pNNetModel      ( pModel ),
-	m_pParam          ( pParam ),
-	m_pSlowMotionRatio( pSlowMotionRatio )
+ComputeThread::ComputeThread( )
 {
 	m_pTimeResObserver = new TimeResObserver( this );
-	m_pParam->AddParameterObserver( m_pTimeResObserver );   // notify me if parameters change
-	m_pSlowMotionRatio->RegisterObserver( m_pTimeResObserver ); // notify ne if slomo ratio changes
-	m_pTimeResObserver->Notify( true );
-	StartThread( L"ComputeThread", true ); 
 }
 
 ComputeThread::~ComputeThread( )
 {
 	delete m_pTimeResObserver;
 	m_pTimeResObserver = nullptr;
+}
+
+void ComputeThread::Start
+(
+	NNetModel       * const pModel,
+	Param           * const pParam,
+	SlowMotionRatio * const pSlowMotionRatio
+) 
+{
+	m_pModel           = pModel;
+	m_pParam           = pParam;
+	m_pSlowMotionRatio = pSlowMotionRatio;
+	m_pParam->AddParameterObserver( m_pTimeResObserver );       // notify me if parameters change
+	m_pSlowMotionRatio->RegisterObserver( m_pTimeResObserver ); // notify me if slomo ratio changes
+	m_pTimeResObserver->Notify( true );
+	StartThread( L"ComputeThread", true ); 
 }
 
 void ComputeThread::RunComputation( )
@@ -70,7 +73,7 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 void ComputeThread::Reset( )
 {
 	m_hrTimer.Restart();
-	m_pNNetModel->ResetSimulationTime();
+	m_pModel->ResetSimulationTime();
 }
 
 void ComputeThread::compute() 
@@ -78,14 +81,14 @@ void ComputeThread::compute()
 	bool             bStop              { false };
 	fMicroSecs const usTilStartRealTime { m_hrTimer.GetMicroSecsTilStart( ) };
 	fMicroSecs const usTilStartSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( usTilStartRealTime ) };
-	fMicroSecs const usActualSimuTime   { m_pNNetModel->GetSimulationTime( ) };                             // get actual time stamp
-	fMicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };                          // compute missing simulation time
-	fMicroSecs const usSimuTimeTodo     { min( usMissingSimuTime, m_pParam->GetTimeResolution() ) };        // respect time slot (resolution)
-	long       const lCyclesTodo        { CastToLong( usSimuTimeTodo / m_pParam->GetTimeResolution( ) ) };  // compute # cycles to be computed
+	fMicroSecs const usActualSimuTime   { m_pModel->GetSimulationTime( ) };                                // get actual time stamp
+	fMicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };                         // compute missing simulation time
+	fMicroSecs const usSimuTimeTodo     { min( usMissingSimuTime, m_pParam->GetTimeResolution() ) };       // respect time slot (resolution)
+	long       const lCyclesTodo        { CastToLong( usSimuTimeTodo / m_pParam->GetTimeResolution( ) ) }; // compute # cycles to be computed
 	long             lCyclesDone        { 0 };
 	while ( (lCyclesDone < lCyclesTodo) && m_bContinue )
 	{
-		if ( m_pNNetModel->Compute( ) ) // returns true, if stop on trigger fires
+		if ( m_pModel->Compute( ) ) // returns true, if stop on trigger fires
 			m_bContinue = false;
 		++lCyclesDone;
 	}
@@ -118,5 +121,5 @@ fMicroSecs ComputeThread::GetRealTimeTilStart( ) const
 
 fMicroSecs ComputeThread::GetSimulationTime( ) const 
 { 
-	return m_pNNetModel->GetSimulationTime( ); 
+	return m_pModel->GetSimulationTime( ); 
 }

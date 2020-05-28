@@ -4,7 +4,9 @@
 
 #pragma once
 
+class NNetModelReaderInterface;
 class NNetModelWriterInterface;
+class AnimationThread;
 class SlowMotionRatio;
 class NNetModelStorage;
 class DisplayFunctor;
@@ -15,6 +17,8 @@ class NNetWindow;
 class WinManager;
 class Param;
 
+using std::wstring;
+
 class NNetController
 {
 public:
@@ -23,31 +27,33 @@ public:
 		NNetModelStorage         * const,
 		NNetWindow               * const,
 		WinManager               * const,
+		NNetModelReaderInterface * const,
 		NNetModelWriterInterface * const,
 		ComputeThread            * const,
-		SlowMotionRatio          * const
+		SlowMotionRatio          * const,
+		DisplayFunctor           * const
 	);
 
 	virtual ~NNetController( );
-
-	void SetStatusBarDisplay( DisplayFunctor * const func )
-	{
-		m_StatusBarDisplay = func;
-	}
 
 	bool HandleCommand( WPARAM const, LPARAM const, MicroMeterPoint const );
 
 private:
 
+	void pulseRateDlg       ( ShapeId const );
+	void triggerSoundDlg    ( ShapeId const );
+	bool changePulseRate    ( ShapeId const, bool const );
 	bool processUIcommand   ( int const, LPARAM const );
 	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
 
 	HCURSOR                    m_hCrsrWait;
-	NNetModelStorage         * m_pStorage;
-	NNetWindow               * m_pNNetWindow;
-	WinManager               * m_pWinManager;
-	ComputeThread            * m_pComputeThread;
-	NNetModelWriterInterface * m_pModel;
-	SlowMotionRatio          * m_pSlowMotionRatio;
-	DisplayFunctor           * m_StatusBarDisplay { nullptr };
+	NNetModelStorage         * m_pStorage              { nullptr };
+	NNetWindow               * m_pNNetWindow           { nullptr };
+	WinManager               * m_pWinManager           { nullptr };
+	ComputeThread            * m_pComputeThread        { nullptr };
+	NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
+	NNetModelWriterInterface * m_pModelWriterInterface { nullptr };
+	SlowMotionRatio          * m_pSlowMotionRatio      { nullptr };
+	DisplayFunctor           * m_pStatusBarDisplay     { nullptr };
+	AnimationThread          * m_pAnimationThread      { nullptr };
 };				          

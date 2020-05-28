@@ -24,18 +24,8 @@ static LRESULT CALLBACK OwnerDrawStatusBar( HWND hwnd, UINT uMsg, WPARAM wParam,
 	return DefSubclassProc(hwnd, uMsg, wParam, lParam);
 }
 
-StatusBar::StatusBar() :
-	m_pModel( nullptr )
-{ }
-
-void StatusBar::Start
-( 
-	HWND                             const hwndParent,
-	NNetModelWriterInterface const * const pModel
-)
+void StatusBar::Start( HWND const hwndParent )
 {
-	m_pModel = pModel;
-
 	HWND hwndStatus = CreateWindow
 	(
 		STATUSCLASSNAME, 

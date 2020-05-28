@@ -21,7 +21,7 @@ class Shape;
 class NNetModelStorage : public ObserverInterface
 {
 public:
-	NNetModelStorage( NNetModel * const, Param * const );
+	void Initialize( NNetModel * const, Param * const );
 
 	virtual void Notify( bool const bImmediate ) { setUnsavedChanges( true ); }
 
@@ -40,8 +40,8 @@ public:
 private:
 	mutable bool m_bUnsavedChanges { false };  // can be changed in const functions
 
-	NNetModel     * m_pModel { nullptr };
-	Param         * m_pParam { nullptr };
+	NNetModel     * m_pModel              { nullptr };
+	Param         * m_pParam              { nullptr };
 	bool            m_bPreparedForReading { false };
 	wstring         m_wstrPathOfOpenModel { L"" };
 	vector<ShapeId> m_CompactIds;

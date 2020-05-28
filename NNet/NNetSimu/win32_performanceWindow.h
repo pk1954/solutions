@@ -14,8 +14,6 @@ class ActionTimer;
 class PerformanceWindow: public TextWindow
 {
 public:
-    //PerformanceWindow( );
-    //~PerformanceWindow( ); 
 
     void Start
     ( 
@@ -31,10 +29,10 @@ public:
     virtual void DoPaint( TextBuffer & );
 
 private:
-    ComputeThread            * m_pComputeThread        { nullptr };
-    NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
-    ActionTimer              * m_pAtDisplay            { nullptr };
-    SlowMotionRatio    const * m_pSlowMotionRatio      { nullptr };
+    ComputeThread                  * m_pComputeThread        { nullptr };
+    NNetModelReaderInterface const * m_pModelReaderInterface { nullptr };
+    ActionTimer                    * m_pDisplayTimer         { nullptr };
+    SlowMotionRatio          const * m_pSlowMotionRatio      { nullptr };
 
     void printMicroSecLine( TextBuffer &, wchar_t const * const, fMicroSecs const );
     void printFloatLine   ( TextBuffer &, wchar_t const * const, float const, wchar_t const * const );

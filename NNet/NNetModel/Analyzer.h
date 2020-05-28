@@ -23,7 +23,7 @@ class ModelAnalyzer
 public:
 	static void SetStatusBarDisplay( DisplayFunctor * const func )
 	{
-		m_StatusBarDisplay = func;
+		m_pStatusBarDisplay = func;
 	}
 
 	static bool           FindLoop( NNetModel const & );
@@ -34,11 +34,22 @@ public:
 
 private:
 
-	inline static DisplayFunctor * m_StatusBarDisplay { nullptr };
-	inline static bool             m_bStop		      { false };
-	inline static int              m_iRecDepth	      { 0 };
-	inline static ShapeList        m_shapeStack  	 { };
+	inline static DisplayFunctor * m_pStatusBarDisplay { nullptr };
+	inline static bool             m_bStop		       { false };
+	inline static int              m_iRecDepth	       { 0 };
+	inline static ShapeList        m_shapeStack        { };
 
 	static bool findLoop( Shape * const );
 	static bool hasAnomaly( Knot & );
+
+	static void statusDisplay( wstring const str ) 
+	{ 
+		if ( m_pStatusBarDisplay )
+			(* m_pStatusBarDisplay)( str );
+	}
+
+	static void statusDisplay( wchar_t const* pStr )
+	{
+		statusDisplay( wstring( pStr ) );
+	}
 };

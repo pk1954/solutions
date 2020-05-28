@@ -15,15 +15,6 @@
 
 using std::wostringstream;
 
-//PerformanceWindow::PerformanceWindow( ) : 
-//    TextWindow( )
-//{ 
-//}
-//
-//PerformanceWindow::~PerformanceWindow( )
-//{
-//}
-
 void PerformanceWindow::Start
 ( 
 	HWND                             const hwndParent,
@@ -42,9 +33,10 @@ void PerformanceWindow::Start
 		true,
 		nullptr
 	);
-	m_pSlowMotionRatio     = pSlowMotionRatio;
-	m_pComputeThread       = pComputeThread;
-	m_pAtDisplay           = pDisplayTimer;
+	m_pSlowMotionRatio      = pSlowMotionRatio;
+	m_pComputeThread        = pComputeThread;
+	m_pDisplayTimer         = pDisplayTimer;
+	m_pModelReaderInterface = pModelInterface;
 	m_pComputeThread->AddPerformanceObserver( this ); // notify me on computation performance changes 
 }
 
@@ -103,9 +95,9 @@ void PerformanceWindow::printFloatLine
 
 void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 {      
-	if ( m_pAtDisplay )
+	if ( m_pDisplayTimer )
 	{
-		microseconds const usDisplayTime = m_pAtDisplay->GetSingleActionTime( );
+		microseconds const usDisplayTime = m_pDisplayTimer->GetSingleActionTime( );
 		textBuf.printString( L"Display:" );
 		textBuf.printString( L"" );
 		textBuf.printAsMillisecs( usDisplayTime );

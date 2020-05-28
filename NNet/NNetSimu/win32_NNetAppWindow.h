@@ -6,41 +6,59 @@
 
 #include <fstream>
 #include <iostream>
+#include "SlowMotionRatio.h"
+#include "ComputeThread.h"
+#include "NNetModelStorage.h"
+#include "DrawModel.h"
+#include "DisplayFunctor.h"
 #include "win32_event.h"
 #include "win32_actionTimer.h"
-
-// infrastructure
-
-#include "win32_baseAppWindow.h"
 #include "win32_winManager.h"
 #include "win32_scriptHook.h"
-#include "SlowMotionRatio.h"
-
-// application
-
-#include "NNetModelWriterInterface.h"
 #include "win32_MiniWindow.h"
 #include "win32_MainWindow.h"
 #include "win32_NNetAppMenu.h"
 #include "win32_NNetController.h"
+#include "win32_parameterDlg.h"
+#include "win32_crsrWindow.h"
+#include "win32_performanceWindow.h"
+#include "NNetModelReaderInterface.h"
+#include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
 
-class Param;
 class Observable;
-class CrsrWindow;
 class TimeDisplay;
 class NNetModel;
-class DrawModel;
-class ComputeThread;
-class NNetModelReaderInterface;
 class SlowMotionDisplay;
 class SimulationControl;
-class NNetModelStorage;
-class ParameterDialog;
-class PerformanceWindow;
-class StatusBarDisplayFunctor;
 
-class NNetAppWindow : public BaseAppWindow
+using std::wofstream;
+
+class StatusBarDisplayFunctor : public DisplayFunctor
+{
+public:
+	void Initialize( StatusBar * const pStatusBar, int const iPart )
+	{
+		m_pStatusBar = pStatusBar;
+		m_iPart      = iPart;
+	}
+
+	virtual void operator() ( wstring const & line )
+	{
+		if ( m_pStatusBar )
+		{
+			m_wstrBuffer = line;
+			m_pStatusBar->DisplayInPart( m_iPart, m_wstrBuffer );
+		}
+	}
+
+private:
+	wstring     m_wstrBuffer { };
+	StatusBar * m_pStatusBar { nullptr };
+	int         m_iPart      { 0 };
+};
+
+class NNetAppWindow : public BaseWindow
 {
 public:
 	NNetAppWindow( );
@@ -57,6 +75,7 @@ private:
 	virtual void OnClose( );
 
 	void configureStatusBar( );
+	void adjustChildWindows( );
 
 	bool m_bStarted { false };          // if true, model is visible, all functions available
 
@@ -64,32 +83,40 @@ private:
 
 	wofstream m_traceStream { };
 
-	NNetModelWriterInterface m_NNetWorkThreadInterface { };
-	ActionTimer              m_atComputation           { };
-	ActionTimer              m_atDisplay               { };
-	ScriptHook               m_ScriptHook              { };
-	SlowMotionRatio          m_SlowMotionRatio         { };
-	Observable               m_cursorPosObservable     { };
-	Observable               m_blinkObservable         { };
-	Observable               m_modelTimeObservable     { };
-	Observable               m_staticModelObservable   { };
-	Observable               m_dynamicModelObservable  { };
+	HWND          m_hwndConsole { nullptr };
+	HWND          m_hwndApp     { nullptr };
+	WinManager    m_WinManager  { };
+	StatusBar     m_StatusBar   { };
 
-	Param                    * m_pParameters              { nullptr };
+	NNetAppMenu              m_appMenu                { };
+	ActionTimer              m_atComputation          { };
+	ActionTimer              m_atDisplay              { };
+	ScriptHook               m_ScriptHook             { };
+	SlowMotionRatio          m_SlowMotionRatio        { };
+	Observable               m_cursorPosObservable    { };
+	Observable               m_blinkObservable        { };
+	Observable               m_modelTimeObservable    { };
+	Observable               m_staticModelObservable  { };
+	Observable               m_dynamicModelObservable { };
+	NNetModelReaderInterface m_modelReaderInterface   { };
+	NNetModelWriterInterface m_modelWriterInterface   { };
+	ComputeThread            m_computeThread          { };
+	CrsrWindow               m_crsrWindow             { };
+	PerformanceWindow        m_performanceWindow      { };
+	MainWindow               m_mainNNetWindow         { };
+	MiniWindow               m_miniNNetWindow         { };
+	ParameterDialog          m_parameterDlg           { };
+	Param                    m_parameters             { };
+	NNetModelStorage         m_modelStorage           { };
+	StatusBarDisplayFunctor  m_statusBarDispFunctor   { };
+	NNetModel                m_model                  { };
+	DrawModel                m_drawModel              { };
+
 	SimulationControl        * m_pSimulationControl       { nullptr };
-	ComputeThread            * m_pComputeThread           { nullptr };
 	NNetColors               * m_pNNetColors              { nullptr };
 	NNetController           * m_pNNetController          { nullptr };
-	NNetModelReaderInterface * m_pModelReaderInterface    { nullptr };
-	NNetModel                * m_pModel                   { nullptr };
-	MainWindow               * m_pMainNNetWindow          { nullptr };
-	MiniWindow               * m_pMiniNNetWindow          { nullptr };
-	DrawModel                * m_pDrawModel               { nullptr };
 	TimeDisplay              * m_pTimeDisplay             { nullptr };
 	SlowMotionDisplay        * m_pSlowMotionDisplay       { nullptr };
-	CrsrWindow               * m_pCrsrWindow              { nullptr };
-	PerformanceWindow        * m_pPerformanceWindow       { nullptr };
-	NNetModelStorage         * m_pNNetModelStorage        { nullptr };
-	ParameterDialog          * m_pParameterDlg            { nullptr };
-	StatusBarDisplayFunctor  * m_pStatusBarDisplayFunctor { nullptr };
+
+	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 };

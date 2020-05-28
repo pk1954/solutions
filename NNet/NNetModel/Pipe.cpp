@@ -161,11 +161,10 @@ void Pipe::DrawInterior( DrawContext const & context ) const
 	MicroMeterPoint const umVector     { umEndPoint - umStartPoint };
 	if ( ! IsCloseToZero( umVector ) )
 	{
-		MicroMeter      const umWidth     { m_width * PIPE_INTERIOR };
-		MicroMeterPoint const umPixSegVec { umVector / static_cast<float>(m_potential.size()) };
-		MicroMeterPoint       umPoint     { umStartPoint };
-//		mV                  * pPotential  { m_pPotential };  // m_pPotential can be modified by other thread
-		tPotentialVector::iterator potIter { m_potIter };
+		MicroMeter           const umWidth     { m_width * PIPE_INTERIOR };
+		MicroMeterPoint      const umPixSegVec { umVector / static_cast<float>(m_potential.size()) };
+		MicroMeterPoint            umPoint     { umStartPoint };
+		tPotentialVector::iterator potIter     { m_potIter };
 
 		auto iter = potIter; 
 		do 

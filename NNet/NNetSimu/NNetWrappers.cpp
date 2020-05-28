@@ -12,7 +12,7 @@
 #include "win32_NNetWindow.h"
 #include "NNetModelWriterInterface.h"
 
-static NNetModelWriterInterface * m_pModel;
+static NNetModelWriterInterface * m_pModelWriterInterface;
 static NNetWindow               * m_pNNetWindow;
 
 class WrapResetTimer: public Script_Functor
@@ -20,7 +20,7 @@ class WrapResetTimer: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModel->ResetTimer( );
+        m_pModelWriterInterface->ResetTimer( );
     }
 };
 
@@ -29,7 +29,7 @@ class WrapResetModel: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModel->ResetModel( );
+        m_pModelWriterInterface->ResetModel( );
     }
 };
 
@@ -40,7 +40,7 @@ public:
     {
         ShapeId const idSrc { ScrReadShapeId( script ) };
         ShapeId const idDst { ScrReadShapeId( script ) };
-        m_pModel->Connect( idSrc, idDst );
+        m_pModelWriterInterface->Connect( idSrc, idDst );
     }
 };
 
@@ -50,7 +50,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id { ScrReadShapeId( script ) };
-        m_pModel->RemoveShape( id );
+        m_pModelWriterInterface->RemoveShape( id );
     }
 };
 
@@ -60,7 +60,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id { ScrReadShapeId( script ) };
-        m_pModel->Disconnect( id );
+        m_pModelWriterInterface->Disconnect( id );
     }
 };
 
@@ -71,7 +71,7 @@ public:
     {
         ShapeId const id     { ScrReadShapeId( script ) };
         float   const fValue { CastToFloat( script.ScrReadFloat( ) ) };
-        m_pModel->SetPulseRate( id, fHertz{ fValue } );
+        m_pModelWriterInterface->SetPulseRate( id, fHertz{ fValue } );
     }
 };
 
@@ -82,7 +82,7 @@ public:
     {
         tParameter const param  { static_cast<tParameter>( script.ScrReadUlong( ) ) };
         float      const fValue { CastToFloat( script.ScrReadFloat( ) ) };
-        m_pModel->SetParameter( param, fValue );
+        m_pModelWriterInterface->SetParameter( param, fValue );
     }
 };
 
@@ -93,7 +93,7 @@ public:
     {
         ShapeId         const id      { ScrReadShapeId( script ) };
         MicroMeterPoint const umDelta { ScrReadMicroMeterPoint( script ) };
-        m_pModel->MoveShape( id, umDelta );
+        m_pModelWriterInterface->MoveShape( id, umDelta );
     }
 };
 
@@ -105,7 +105,7 @@ public:
         int             const idMsg   { script.ScrReadLong( ) };
         ShapeId         const idShape { ScrReadShapeId( script ) };
         MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
-        m_pModel->ActionCommand( idMsg, idShape, umPos );
+        m_pModelWriterInterface->ActionCommand( idMsg, idShape, umPos );
     }
 };
 
@@ -144,7 +144,7 @@ void DefineNNetWrappers
     NNetWindow               * const pNNetWindow
 )
 {
-    m_pModel = pModel;
+    m_pModelWriterInterface = pModel;
     m_pNNetWindow = pNNetWindow;
 
     DEF_FUNC( ResetTimer );

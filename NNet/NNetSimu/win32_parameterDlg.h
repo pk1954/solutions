@@ -12,10 +12,10 @@ class NNetModelWriterInterface;
 class ParameterDialog : public BaseDialog
 {
 public:
-	ParameterDialog( NNetModelWriterInterface * const );
+	ParameterDialog( );
 	~ParameterDialog( );
 
-	void Start( HWND const, Param * const );
+	void Start( HWND const, NNetModelWriterInterface * const, Param * const );
 	void Stop( );
 
 private:
@@ -24,15 +24,15 @@ private:
 	static int   const VERT_SPACE { 16 };
 	static int   const HEIGHT     { 16 };
 
-	Param                    * m_pParams;
-	NNetModelWriterInterface * m_pModel;
+	Param                    * m_pParams               { nullptr };
+	NNetModelWriterInterface * m_pModelWriterInterface { nullptr };
 
-	HWND m_hwndPeakVoltage;
-	HWND m_hwndThreshold;       
-	HWND m_hwndPulseWidth;      
-	HWND m_hwndRefractoryPeriod;
-	HWND m_hwndTimeResolution;
-	HWND m_hwndPulseSpeed; 
+	HWND m_hwndPeakVoltage     { nullptr };
+	HWND m_hwndThreshold       { nullptr };     
+	HWND m_hwndPulseWidth      { nullptr };
+	HWND m_hwndRefractoryPeriod{ nullptr };
+	HWND m_hwndTimeResolution  { nullptr };
+	HWND m_hwndPulseSpeed      { nullptr };
 		
 	HWND createButton     ( HWND const, wchar_t const * const, int const, int const, int const, int const, HMENU const );
 	HWND createEditField  ( HWND const, tParameter      const, int &,     int const, int const );

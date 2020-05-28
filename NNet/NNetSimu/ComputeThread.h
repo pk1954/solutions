@@ -17,14 +17,15 @@ class ComputeThread: public Util::Thread
 {
 public:
 
-	ComputeThread
+	ComputeThread();
+	~ComputeThread();
+
+	void Start
 	(
 		NNetModel       * const,
 		Param           * const,
 		SlowMotionRatio * const
 	);
-
-	virtual ~ComputeThread( );
 
 	virtual void ThreadStartupFunc( );
 	virtual void ThreadMsgDispatcher( MSG const ) { };
@@ -70,11 +71,11 @@ private:
 	void compute();
 
 	TimeResObserver * m_pTimeResObserver        { nullptr };
+	NNetModel       * m_pModel                  { nullptr };
+	Param           * m_pParam                  { nullptr };
+	SlowMotionRatio * m_pSlowMotionRatio        { nullptr };
 	fMicroSecs        m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
 	fMicroSecs        m_usRealTimeAvailPerCycle { 0.0_MicroSecs };
-	SlowMotionRatio * m_pSlowMotionRatio        { nullptr };
-	NNetModel       * m_pNNetModel              { nullptr };
-	Param           * m_pParam                  { nullptr };
 	bool              m_bContinue               { false };
 	bool              m_bWaiting                { false };
 	HiResTimer        m_hrTimer                 { };

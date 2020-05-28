@@ -92,8 +92,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 		return;
 	}
 
-	MicroMeterPoint const umPoint { m_pNNetWindow->PixelPoint2MicroMeterPoint( pixPoint ) };
-
+	MicroMeterPoint const umPoint {	m_pNNetWindow->GetDrawContextC().GetCoordC().Convert2MicroMeterPointPos( pixPoint ) };
 	textBuf.printString( L"Position: " );
 	printMicroMeter( textBuf, umPoint.GetX() );
 	printMicroMeter( textBuf, umPoint.GetY() );

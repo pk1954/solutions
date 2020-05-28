@@ -12,24 +12,12 @@
 
 using std::wstring;
 
-ParameterDialog::ParameterDialog( NNetModelWriterInterface * const pModel ) 
-  : BaseDialog( ),
-	m_pParams             ( nullptr ),
-	m_pModel              ( pModel ),
-	m_hwndPeakVoltage     ( 0 ),
-    m_hwndThreshold       ( 0 ),
-    m_hwndPulseWidth      ( 0 ),
-	m_hwndRefractoryPeriod( 0 ),
-	m_hwndTimeResolution  ( 0 ),
-	m_hwndPulseSpeed      ( 0 )
-{ 
-}
+ParameterDialog::ParameterDialog( ) 
+  : BaseDialog( )
+{ }
 
 ParameterDialog::~ParameterDialog( )
-{
-	m_pModel = nullptr;
-	m_pParams = nullptr;
-}
+{ }
 
 void ParameterDialog::resetParameter
 (
@@ -48,7 +36,7 @@ void ParameterDialog::applyParameter
 {
 	float fValue { m_pParams->GetParameterValue( parameter ) }; 
 	if ( StdDialogBox::Evaluate( hwndEditField, fValue ) )
-		m_pModel->SetParameter( parameter, fValue );
+		m_pModelWriterInterface->SetParameter( parameter, fValue );
 }
 
 HWND ParameterDialog::createStaticField( HWND const hwndParent, wchar_t const * const text, int & iXpos, int const iYpos, int const iWidth )
@@ -110,11 +98,17 @@ HWND ParameterDialog::createButton( HWND const hwndParent, wchar_t const * const
 	return hwnd;
 }
 
-void ParameterDialog::Start( HWND const hwndParent,	Param * const pParams )
+void ParameterDialog::Start
+( 
+	HWND                       const hwndParent, 
+	NNetModelWriterInterface * const pModelWriterInterface,	
+	Param                    * const pParams 
+)
 {
 	HINSTANCE const hInstance { GetModuleHandle( nullptr ) };
 	HWND      const hwndDlg   { StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDM_PARAM_WINDOW ), nullptr ) };
 
+	m_pModelWriterInterface = pModelWriterInterface;
 	m_pParams = pParams;
 
 	int iYpos { 10 };
@@ -133,6 +127,8 @@ void ParameterDialog::Start( HWND const hwndParent,	Param * const pParams )
 
 void ParameterDialog::Stop( )
 {
+	m_pModelWriterInterface = nullptr;
+	m_pParams               = nullptr;
 	DestroyWindow( );
 }
 

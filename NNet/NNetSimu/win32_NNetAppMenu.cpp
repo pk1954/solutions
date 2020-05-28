@@ -11,23 +11,20 @@
 #include "AutoOpen.h"
 #include "win32_sound.h"
 #include "win32_winManager.h"
-#include "NNetModelWriterInterface.h"
 #include "win32_NNetAppMenu.h"
 
-void NNetAppMenu::Initialize
+void NNetAppMenu::Start
 ( 
-	HWND                             const hwndApp,
-	ComputeThread            const * const pComputeThread,
-	NNetModelWriterInterface const * const pModel,
-	WinManager               const * const pWinManager
+	HWND                  const hwndApp,
+	ComputeThread const * const pComputeThread,
+	WinManager    const * const pWinManager
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
 
-	m_hwndApp              = hwndApp;
-	m_pComputeThread       = pComputeThread;
-	m_pModel = pModel;
-	m_pWinManager          = pWinManager;
+	m_hwndApp        = hwndApp;
+	m_pComputeThread = pComputeThread;
+	m_pWinManager    = pWinManager;
 
     SendMessage( m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_NNETSIMU ) ) );
     SendMessage( m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL    ) ) );
@@ -38,6 +35,8 @@ void NNetAppMenu::Initialize
 	assert( bRes );
 
 	m_hMenu = GetMenu( hwndApp );
+
+	enableMenues( MF_ENABLED ); 
 }
 
 void NNetAppMenu::SetAppTitle( wstring const wstrAdd, bool const bUnsavedChanges )
@@ -49,11 +48,6 @@ void NNetAppMenu::enableMenues( UINT const state )
 {
 	EnableMenuItem( m_hMenu, 1, state|MF_BYPOSITION ); 
 	EnableMenuItem( m_hMenu, 2, state|MF_BYPOSITION ); 
-}
-
-void NNetAppMenu::Start( )
-{
-	enableMenues( MF_ENABLED ); 
 }
 
 void NNetAppMenu::Stop( )

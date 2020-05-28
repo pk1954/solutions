@@ -22,7 +22,7 @@ public:
 		SRWLOCK      * pSRWLockStarted,
 		SRWLOCK      * pSRWLockFinished
 	) :
-		m_pModel( pModel ),
+		m_pModelWriterInterface( pModel ),
 		m_pMutex( pMutex ),
 		m_pSRWLockStartWorking( pSRWLockStartWorking ),
 		m_pSRWLockStarted     ( pSRWLockStarted ),
@@ -34,7 +34,7 @@ public:
 	}
 
 private:
-	NNetModel * m_pModel;
+	NNetModel * m_pModelWriterInterface;
 	HANDLE    * m_pMutex;
 	SRWLOCK   * m_pSRWLockStartWorking;
 	SRWLOCK   * m_pSRWLockStarted;
