@@ -26,10 +26,8 @@ Pipe::~Pipe( )
 
 void Pipe::Clear( )
 {
-	LockShapeExclusive();
 	Shape::Clear( );
 	fill( m_potential.begin(), m_potential.end(), 0.0_mV );
-	UnlockShapeExclusive();
 }
 
 void Pipe::Recalc( )
@@ -91,7 +89,6 @@ bool Pipe::IsPointInShape( MicroMeterPoint const & point ) const
 mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
 {
 	mV mVresult { 0._mV };
-	LockShapeShared();
 	MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
 	if ( ! IsCloseToZero( umVector ) )
 	{
@@ -111,7 +108,6 @@ mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
 			umPoint1 = umPoint2;
 		};
 	}
-	UnlockShapeShared();
 	return mVresult;
 }
 

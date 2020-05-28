@@ -111,12 +111,10 @@ public:
 			else
 			{ 
 				Pipe * const pPipe { new Pipe( ) };
-				pPipe->LockShapeExclusive();
 				pPipe->SetId( idFromScript );
 				m_pModel->ConnectOutgoing( pPipe, m_pModel->GetShapePtr<BaseKnot *>( idStart ) );
 				m_pModel->ConnectIncoming( pPipe, m_pModel->GetShapePtr<BaseKnot *>( idEnd   ) );
 				pPipe->Recalc();
-				pPipe->UnlockShapeExclusive();
 				pShape = pPipe;
 			}
 		}
@@ -210,7 +208,7 @@ public:
 		assert( param == tParameter::pulseRate );
 		script.ScrReadSpecial( L'=' );
 		float const fValue { CastToFloat( script.ScrReadFloat() ) };
-		m_pModel->SetPulseRate_Lock( id, fValue );
+		m_pModel->SetPulseRate( id, fValue );
 	}
 
 private:

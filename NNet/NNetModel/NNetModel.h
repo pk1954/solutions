@@ -125,9 +125,8 @@ public:
 		{
 			if ( pShape )
 			{
-				pShape->LockShapeExclusive();
-				if ( HasType<T>( pShape ) )	bResult = func( static_cast<T &>( * pShape ) );
-				pShape->UnlockShapeExclusive();
+				if ( HasType<T>( pShape ) )	
+					bResult = func( static_cast<T &>( * pShape ) );
 				if ( bResult )
 					break;
 			}
@@ -143,10 +142,8 @@ public:
 		{
 			if ( pShape )
 			{
-				pShape->LockShapeShared();
 				if ( HasType<T>( pShape ) )	
 					bResult = func( static_cast<T const &>( * pShape ) );
-				pShape->UnlockShapeShared();
 				if ( bResult )
 					break;
 			}
@@ -161,9 +158,7 @@ public:
 		{ 
 			if ( pShape )
 			{
-				pShape->LockShapeExclusive();
 				if ( HasType<T>(pShape) ) func( static_cast<T &>( * pShape) ); 
-				pShape->UnlockShapeExclusive();
 			}
 		}
 	}                        
@@ -175,10 +170,8 @@ public:
 		{ 
 			if ( pShape )
 			{
-				pShape->LockShapeShared();
 				if ( HasType<T>(pShape) ) 
 					func( static_cast<T const &>( * pShape) ); 
-				pShape->UnlockShapeShared();
 			}
 		}
 	}                        
@@ -226,8 +219,8 @@ public:
 
 	void StopTriggerSound   ( ShapeId const id ) { SetTriggerSound( id, 0_Hertz, 0_MilliSecs ); }
 	void SetTriggerSound    ( ShapeId const, Hertz const, MilliSecs const );
-	void SetPulseRate_Lock  ( ShapeId const, fHertz const );
-	void SetPulseRate_Lock  ( ShapeId const, bool const );
+	void SetPulseRate       ( ShapeId const, fHertz const );
+	void SetPulseRate       ( ShapeId const, bool const );
 	void Connect            ( ShapeId const, ShapeId const );
 	void Convert2Neuron     ( ShapeId const );
 	void Convert2InputNeuron( ShapeId const );
@@ -288,38 +281,7 @@ public:
 			pShape->Mark( op );
 	}
 
-	void LockModelShared() const
-	{ 
-		DWORD threadId { GetCurrentThreadId() };
-//		AcquireSRWLockShared( & m_SRWLockModel );
-		m_dwLockedBy = 0;                        // debugging
-	}
-
-	void UnlockModelShared() const
-	{ 
-		DWORD threadId { GetCurrentThreadId() };
-//		ReleaseSRWLockShared( & m_SRWLockModel );
-		m_dwLockedBy = 0;                        // debugging
-	}
-
-	void LockModelExclusive() const
-	{ 
-		DWORD threadId { GetCurrentThreadId() };
-//		AcquireSRWLockExclusive( & m_SRWLockModel );
-		m_dwLockedBy = 0;                        // debugging
-	}
-
-	void UnlockModelExclusive() const
-	{ 
-		DWORD threadId { GetCurrentThreadId() };
-//		ReleaseSRWLockExclusive( & m_SRWLockModel );
-		m_dwLockedBy = 0;                        // debugging
-	}
-
 private:
-
-	mutable DWORD   m_dwLockedBy   { 0 };            // debugging
-	mutable SRWLOCK m_SRWLockModel { SRWLOCK_INIT }; // locks model during deletion or reconstruction  
 
 	ShapeList      m_Shapes                  { };
 	fMicroSecs     m_timeStamp               { 0._MicroSecs };

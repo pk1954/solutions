@@ -8,8 +8,8 @@
 #include <iostream>
 #include <sstream> 
 #include <string> 
-#include "win32_baseRefreshRate.h"
 #include "win32_status.h"
+#include "win32_baseRefreshRate.h"
 #include "NNetModelReaderInterface.h"
 #include "TimeDisplay.h"
 
@@ -30,15 +30,12 @@ public:
 	)
 	:	m_pStatusBar           (pStatusBar),
 		m_pModelReaderInterface(pModelInterface),
-		m_iPartInStatusBar     (iPartInStatusBar),
-		m_SRWLock              ( )
+		m_iPartInStatusBar     (iPartInStatusBar)
 	{ 
-		InitializeSRWLock( & m_SRWLock );
 	}
 
 	virtual void Trigger( )
 	{
-		AcquireSRWLockExclusive( & m_SRWLock );
 		fMicroSecs const time = m_pModelReaderInterface->GetSimulationTime( );
 		m_wstrBuffer.str( wstring() );
 		m_wstrBuffer.clear();
@@ -55,11 +52,9 @@ public:
 		}
 		m_wstring = m_wstrBuffer.str();
 		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstring );
-		ReleaseSRWLockExclusive( & m_SRWLock ); 
 	}
 
 private:
-	SRWLOCK                          m_SRWLock;
 	wstring                          m_wstring;
 	wostringstream                   m_wstrBuffer;
 	StatusBar                      * m_pStatusBar;

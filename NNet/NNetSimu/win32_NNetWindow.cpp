@@ -380,9 +380,7 @@ void NNetWindow::OnPaint( )
 		HDC const hDC = BeginPaint( &ps );
 		if ( m_context.StartFrame( hDC ) )
 		{
-			m_pModelReaderInterface->LockModelShared();
 			doPaint( );
-			m_pModelReaderInterface->UnlockModelShared();
 			m_context.EndFrame( );
 		}
 		EndPaint( &ps );

@@ -34,13 +34,11 @@ void InputNeuron::Recalc( )
 	m_mvFactor = mV( m_pParameters->GetParameterValue( tParameter::peakVoltage ) / m_pulseDuration.GetValue() );
 }
 
-void InputNeuron::SetPulseFrequency_Lock( fHertz const freq )
+void InputNeuron::SetPulseFrequency( fHertz const freq )
 {
-	LockShapeExclusive();
 	m_pulseFrequency = freq;
 	m_pulseDuration  = PulseDuration( m_pulseFrequency );
 	Recalc( );
-	UnlockShapeExclusive();
 }
 
 void InputNeuron::drawInputNeuron

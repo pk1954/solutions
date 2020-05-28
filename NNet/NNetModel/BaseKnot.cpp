@@ -22,7 +22,7 @@ void BaseKnot::Prepare( )
 			m_mVinputBuffer += pPipe->GetNextOutput( );
 	}
 
-	//Apply2AllInPipes_Lock( [&]( auto pPipe ) { m_mVinputBuffer += pPipe->GetNextOutput( ); } ); // slow
+	//Apply2AllInPipes( [&]( auto pPipe ) { m_mVinputBuffer += pPipe->GetNextOutput( ); } ); // slow
 }
 
 bool BaseKnot::IsPrecursorOf( ShapeId const id )
@@ -76,60 +76,27 @@ void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 	m_center += delta;
 }
 
-void BaseKnot::apply2AllPipesInList( PipeList const & pipeList, PipeFunc const & func )
+void BaseKnot::apply2AllPipesInList( PipeList const & pipeList, PipeFunc const & func ) const
 {
 	for ( auto pPipe : pipeList ) 
 	{ 
 		if ( pPipe != nullptr )
-		{
-			pPipe->LockShapeExclusive();
 			func( * pPipe );
-			pPipe->UnlockShapeExclusive();
-		}
 	}
 }
 
-void BaseKnot::apply2AllPipesInList_NoLock( PipeList const & pipeList, PipeFunc const & func ) const 
-{
-	for ( auto pPipe : pipeList ) 
-	{ 
-		if ( pPipe != nullptr )
-		{
-			func( * pPipe );
-		}
-	}
-}
-
-bool BaseKnot::apply2AllPipesInListB( PipeList const & pipeList, PipeFuncB const & func )
+bool BaseKnot::apply2AllPipesInListB( PipeList const & pipeList, PipeFuncB const & func ) const 
 {
 	bool bResult { false };
 	for ( auto pPipe : pipeList ) 
 	{ 
 		if ( pPipe != nullptr )
 		{
-			pPipe->LockShapeExclusive();
-			bResult = func( * pPipe );
-			pPipe->UnlockShapeExclusive();
-			if ( bResult )
-				break;
+			if ( func( * pPipe ) )
+				return true;
 		}
 	}
-	return bResult;
-}
-
-bool BaseKnot::apply2AllPipesInListB_NoLock( PipeList const & pipeList, PipeFuncB const & func ) const
-{
-	bool bResult { false };
-	for ( auto pipe : pipeList ) 
-	{ 
-		if ( pipe != nullptr )
-		{
-			bResult = func( * pipe );
-			if ( bResult )
-				break;
-		}
-	}
-	return bResult;
+	return false;
 }
 
 void BaseKnot::drawCircle

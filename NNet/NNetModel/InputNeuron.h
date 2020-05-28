@@ -46,7 +46,7 @@ public:
 
 	fHertz GetPulseFreq( ) const { return m_pulseFrequency; }
 
-	void SetPulseFrequency_Lock( fHertz const );
+	void SetPulseFrequency( fHertz const );
 
 private:
 	void drawInputNeuron( DrawContext const &, D2D1::ColorF const, float const ) const;
