@@ -13,7 +13,7 @@ class SimulationControl: public ObserverInterface
 {
 public:
 
-	SimulationControl( StatusBar * const, ComputeThread * const );
+	void Initialize( StatusBar * const, ComputeThread * const );
 
 	virtual ~SimulationControl() {};
 

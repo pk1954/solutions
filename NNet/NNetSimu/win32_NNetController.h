@@ -22,7 +22,9 @@ using std::wstring;
 class NNetController
 {
 public:
-	NNetController
+	NNetController() {}
+
+	void Initialize
 	( 
 		NNetModelStorage         * const,
 		NNetWindow               * const,

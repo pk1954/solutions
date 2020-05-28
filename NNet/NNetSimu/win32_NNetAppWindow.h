@@ -11,6 +11,8 @@
 #include "NNetModelStorage.h"
 #include "DrawModel.h"
 #include "DisplayFunctor.h"
+#include "TimeDisplay.h"
+#include "SlowMotionDisplay.h"
 #include "win32_event.h"
 #include "win32_actionTimer.h"
 #include "win32_winManager.h"
@@ -22,15 +24,14 @@
 #include "win32_parameterDlg.h"
 #include "win32_crsrWindow.h"
 #include "win32_performanceWindow.h"
+#include "win32_simulationControl.h"
+#include "win32_slowMotionControl.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
 
 class Observable;
-class TimeDisplay;
 class NNetModel;
-class SlowMotionDisplay;
-class SimulationControl;
 
 using std::wofstream;
 
@@ -83,10 +84,10 @@ private:
 
 	wofstream m_traceStream { };
 
-	HWND          m_hwndConsole { nullptr };
-	HWND          m_hwndApp     { nullptr };
-	WinManager    m_WinManager  { };
-	StatusBar     m_StatusBar   { };
+	HWND       m_hwndConsole { nullptr };
+	HWND       m_hwndApp     { nullptr };
+	WinManager m_WinManager  { };
+	StatusBar  m_StatusBar   { };
 
 	NNetAppMenu              m_appMenu                { };
 	ActionTimer              m_atComputation          { };
@@ -111,12 +112,11 @@ private:
 	StatusBarDisplayFunctor  m_statusBarDispFunctor   { };
 	NNetModel                m_model                  { };
 	DrawModel                m_drawModel              { };
-
-	SimulationControl        * m_pSimulationControl       { nullptr };
-	NNetColors               * m_pNNetColors              { nullptr };
-	NNetController           * m_pNNetController          { nullptr };
-	TimeDisplay              * m_pTimeDisplay             { nullptr };
-	SlowMotionDisplay        * m_pSlowMotionDisplay       { nullptr };
+	NNetColors               m_NNetColors             { };
+	NNetController           m_NNetController         { };
+	SimulationControl        m_simulationControl      { };
+	TimeDisplay              m_timeDisplay            { };
+	SlowMotionDisplay        m_slowMotionDisplay      { };
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 };

@@ -26,7 +26,7 @@
 #include "NNetModelWriterInterface.h"
 #include "win32_NNetController.h"
 
-NNetController::NNetController
+void NNetController::Initialize
 (
 	NNetModelStorage         * const pStorage,
 	NNetWindow               * const pNNetWindow,
@@ -37,28 +37,33 @@ NNetController::NNetController
 	SlowMotionRatio          * const pSlowMotionRatio,
 	DisplayFunctor           * const func
 ) 
-  :	m_pStorage             ( pStorage ),
-	m_pNNetWindow          ( pNNetWindow ),
-	m_pWinManager          ( pWinManager ),
-	m_pModelReaderInterface( pModelReaderInterface ),
-	m_pModelWriterInterface( pModelWriterInterface ),
-	m_pSlowMotionRatio     ( pSlowMotionRatio ),
-	m_pComputeThread       ( pComputeThread ),
-	m_pStatusBarDisplay    ( func ),
-	m_hCrsrWait            ( LoadCursor( NULL, IDC_WAIT ) )
 {
-	m_pAnimationThread = new AnimationThread( );
+  	m_pStorage              = pStorage;
+	m_pNNetWindow           = pNNetWindow;
+	m_pWinManager           = pWinManager;
+	m_pModelReaderInterface = pModelReaderInterface;
+	m_pModelWriterInterface = pModelWriterInterface;
+	m_pSlowMotionRatio      = pSlowMotionRatio;
+	m_pComputeThread        = pComputeThread;
+	m_pStatusBarDisplay     = func;
+	m_hCrsrWait             = LoadCursor( NULL, IDC_WAIT );
+	m_pAnimationThread      = new AnimationThread( );
 }
 
 NNetController::~NNetController( )
 {
-	delete 	m_pAnimationThread;
+	delete m_pAnimationThread;
 
-	m_pAnimationThread      = nullptr;
-	m_pModelWriterInterface = nullptr;
 	m_pStorage              = nullptr;
+	m_pNNetWindow           = nullptr;
 	m_pWinManager           = nullptr;
+	m_pModelReaderInterface = nullptr;
+	m_pModelWriterInterface = nullptr;
 	m_pSlowMotionRatio      = nullptr;
+	m_pComputeThread        = nullptr;
+	m_pStatusBarDisplay     = nullptr;
+	m_hCrsrWait             = nullptr;
+	m_pAnimationThread      = nullptr;
 }
 
 bool NNetController::HandleCommand( WPARAM const wParam, LPARAM const lParam, MicroMeterPoint const umPoint )

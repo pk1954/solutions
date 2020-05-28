@@ -15,11 +15,7 @@
 
 #include "win32_NNetWindow.h"
 #include "win32_status.h"
-#include "win32_simulationControl.h"
-#include "win32_slowMotionControl.h"
 #include "win32_zoomControl.h"
-#include "SlowMotionDisplay.h"
-#include "TimeDisplay.h"
 
 // infrastructure
 
@@ -65,15 +61,15 @@ NNetAppWindow::NNetAppWindow( )
 	Preferences::Initialize( );
 	NNetWindow ::InitClass( & m_atDisplay );
 
+	DefineUtilityWrapperFunctions( );
+	DefineNNetWrappers( & m_modelWriterInterface, & m_mainNNetWindow );
+
 	m_model               .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
 	m_modelStorage        .Initialize( & m_model, & m_parameters );
 	m_modelWriterInterface.Initialize( & m_traceStream );
 	m_drawModel           .Initialize( & m_model );
-
-	DefineUtilityWrapperFunctions( );
-	DefineNNetWrappers( & m_modelWriterInterface, & m_mainNNetWindow );
-
-	m_pNNetController = new NNetController
+	m_NNetColors          .Initialize( & m_blinkObservable );
+	m_NNetController      .Initialize
 	( 
 		& m_modelStorage,
 		& m_mainNNetWindow,
@@ -95,8 +91,6 @@ NNetAppWindow::NNetAppWindow( )
 		nullptr
 	);
 
-	m_pNNetColors = new NNetColors( & m_blinkObservable );
-
 	m_mainNNetWindow   .SetRefreshRate( 100ms );
 	m_miniNNetWindow   .SetRefreshRate( 200ms );
 	m_crsrWindow       .SetRefreshRate( 100ms );
@@ -106,7 +100,6 @@ NNetAppWindow::NNetAppWindow( )
 
 NNetAppWindow::~NNetAppWindow( )
 {
-	delete m_pNNetColors;
 }
 
 void NNetAppWindow::Start( )
@@ -121,7 +114,7 @@ void NNetAppWindow::Start( )
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		false,
 		& m_computeThread,
-		m_pNNetController,
+		& m_NNetController,
 		& m_modelReaderInterface,
 		& m_modelWriterInterface,
 		& m_drawModel,
@@ -134,7 +127,7 @@ void NNetAppWindow::Start( )
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
 		true,
 		& m_computeThread,
-		m_pNNetController,
+		& m_NNetController,
 		& m_modelReaderInterface,
 		& m_modelWriterInterface,
 		& m_drawModel,
@@ -214,10 +207,6 @@ void NNetAppWindow::Stop()
 	m_modelReaderInterface.Stop( );
 	m_modelWriterInterface.Stop( );
 
-	delete m_pTimeDisplay;
-	delete m_pSlowMotionDisplay;
-	delete m_pNNetController;
-
 	m_WinManager.RemoveAll( );
 }
 
@@ -269,15 +258,14 @@ LRESULT NNetAppWindow::UserProc
 void NNetAppWindow::configureStatusBar( )
 {
 	int iPartScriptLine = 0;
-
-	m_pTimeDisplay = new TimeDisplay( & m_StatusBar, & m_modelReaderInterface, iPartScriptLine );
-	m_modelTimeObservable.RegisterObserver( m_pTimeDisplay );
-
-	iPartScriptLine = m_StatusBar.NewPart( );
-	m_pSimulationControl = new SimulationControl( & m_StatusBar, & m_computeThread );
+	m_timeDisplay.Initialize( & m_StatusBar, & m_modelReaderInterface, iPartScriptLine );
+	m_modelTimeObservable.RegisterObserver( & m_timeDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
-	m_pSlowMotionDisplay = new SlowMotionDisplay( & m_StatusBar, & m_SlowMotionRatio, iPartScriptLine );
+	m_simulationControl.Initialize( & m_StatusBar, & m_computeThread );
+
+	iPartScriptLine = m_StatusBar.NewPart( );
+	m_slowMotionDisplay.Initialize( & m_StatusBar, & m_SlowMotionRatio, iPartScriptLine );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	SlowMotionControl::Add( & m_StatusBar );
@@ -290,8 +278,8 @@ void NNetAppWindow::configureStatusBar( )
 	ModelAnalyzer::SetStatusBarDisplay( & m_statusBarDispFunctor );
 
 	m_StatusBar.LastPart( );
-	m_pTimeDisplay->Notify( true );
-	m_pSlowMotionDisplay->Notify( true );
+	m_timeDisplay.Notify( true );
+	m_slowMotionDisplay.Notify( true );
 }
 
 void NNetAppWindow::adjustChildWindows( )
@@ -330,7 +318,7 @@ void NNetAppWindow::OnClose( )
 
 bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
-	if ( m_pNNetController->HandleCommand( wParam, lParam, NP_NULL ) )
+	if ( m_NNetController.HandleCommand( wParam, lParam, NP_NULL ) )
 		return true;
 	else 
 	{

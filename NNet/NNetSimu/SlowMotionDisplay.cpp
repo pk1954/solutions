@@ -49,13 +49,12 @@ private:
 
 /////// functions of class TimeDisplay ///////
 
-SlowMotionDisplay::SlowMotionDisplay
+void SlowMotionDisplay::Initialize
 (
 	StatusBar       * pStatusBar,
 	SlowMotionRatio * pSlowMotionRatio,
 	int               iPartInStatusBar
 ) 
-  :	m_pRefreshRate( nullptr )
 {
 	m_pRefreshRate = new RefreshRate
 	( 

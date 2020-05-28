@@ -26,8 +26,10 @@ private:
 
 public:											 
 
-	NNetColors( Observable * const );
+	NNetColors( );
 	~NNetColors( );
+
+	void Initialize( Observable * const );
 
 	inline static D2D1::ColorF const COL_BLACK           { 0.0f, 0.0f, 0.0f, 1.0f };
 

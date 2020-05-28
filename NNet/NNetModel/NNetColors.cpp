@@ -16,10 +16,14 @@ VOID CALLBACK TimerProc( HWND hwnd, UINT message, UINT_PTR iTimerID, DWORD dwTim
 		NNetColors::m_pObservable->NotifyAll( false );
 }
 
-NNetColors::NNetColors( Observable * const pObservable )
+NNetColors::NNetColors( )
+{
+	m_TimerId = SetTimer( NULL, 1, BLINK_TIME.GetValue(), TimerProc );
+}
+
+void NNetColors::Initialize( Observable * const pObservable )
 {
 	m_pObservable = pObservable;
-	m_TimerId = SetTimer( NULL, 1, BLINK_TIME.GetValue(), TimerProc );
 }
 
 NNetColors::~NNetColors( )

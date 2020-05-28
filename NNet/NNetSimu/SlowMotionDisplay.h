@@ -12,7 +12,7 @@ class SlowMotionRatio;
 class SlowMotionDisplay : public ObserverInterface
 {
 public:
-	SlowMotionDisplay( StatusBar *, SlowMotionRatio *, int );
+	void Initialize( StatusBar *, SlowMotionRatio *, int );
 
 	~SlowMotionDisplay();
 
@@ -24,4 +24,3 @@ private:
 
 	RefreshRate * m_pRefreshRate;
 };
-

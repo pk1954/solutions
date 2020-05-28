@@ -71,13 +71,12 @@ private:
 
 using namespace std::chrono;
 
-TimeDisplay::TimeDisplay
+void TimeDisplay::Initialize
 (
 	StatusBar                      * pStatusBar,
 	NNetModelReaderInterface const * pModelInterface,
 	int                              iPartInStatusBar
 )
-  :	m_pRefreshRate( nullptr )
 {
 	m_pRefreshRate = new RefreshRate
 	( 
@@ -97,5 +96,6 @@ TimeDisplay::~TimeDisplay( )
 
 void TimeDisplay::Notify( bool const bImmediately )
 {
-	m_pRefreshRate->Notify( bImmediately );
+	if ( m_pRefreshRate )
+		m_pRefreshRate->Notify( bImmediately );
 }
