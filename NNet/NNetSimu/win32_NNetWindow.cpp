@@ -213,6 +213,7 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		}
 		else if ( ! (wParam & MK_RBUTTON) ) // no mouse button pressed
 		{                         
+			setHighlightedShape( umCrsrPos );
 			m_ptLast.Set2Null();   // make m_ptLast invalid
 		}
 	}

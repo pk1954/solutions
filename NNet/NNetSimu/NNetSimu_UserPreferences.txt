@@ -1,5 +1,3 @@
 SetSound ON
 SetAutoOpen ON
 ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"
-SetPixelOffset (-806.111/-32.7468)
-SetPixelSize 1.1216
