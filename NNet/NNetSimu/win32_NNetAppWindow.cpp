@@ -203,7 +203,7 @@ void NNetAppWindow::Stop()
 	m_appMenu          .Stop( );
 
 	m_staticModelObservable.UnregisterAllObservers( );
-	m_computeThread.StopComputation();
+	m_computeThread.HaltComputation();
 	m_modelReaderInterface.Stop( );
 	m_modelWriterInterface.Stop( );
 
@@ -342,8 +342,8 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			m_computeThread.RunComputation( );
 			break;
 
-		case IDM_STOP:
-			m_computeThread.StopComputation( );
+		case IDM_HALT:
+			m_computeThread.HaltComputation( );
 			break;
 
 		default:

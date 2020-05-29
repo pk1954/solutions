@@ -41,16 +41,13 @@ public:
 	virtual ~BaseKnot() {}
 
 	virtual void Prepare      ( );
-	virtual mV   GetNextOutput( ) const = 0;
+ 	virtual mV   GetNextOutput( ) const = 0;
 
 	static bool TypeFits( ShapeType const type ) { return type.IsBaseKnotType( ); }
 
-	MicroMeterPoint GetPosition( )  const 
-	{ 
-		return m_center;	
-	}
+	MicroMeterPoint GetPosition ( ) const { return m_center; }
 	MicroMeter      GetExtension( ) const { return m_extension;	}
-	mV              GetVoltage( )   const { return m_mVinputBuffer; }
+	mV              GetVoltage  ( ) const { return m_mVinputBuffer; }
 
 	bool IsPointInShape( MicroMeterPoint const & ) const;
 

@@ -34,7 +34,7 @@ public:
 	void SingleStep( ) { compute(); }
 
 	void RunComputation( );
-	void StopComputation( );
+	void HaltComputation( );
 	bool IsRunning() const { return m_bContinue; }
 
 	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_usRealTimeAvailPerCycle; }
@@ -68,6 +68,7 @@ private:
 		ComputeThread * const m_pThread;
 	};
 
+	long computeCyclesTodo( fMicroSecs const );
 	void compute();
 
 	TimeResObserver * m_pTimeResObserver        { nullptr };

@@ -47,14 +47,15 @@ void ComputeThread::RunComputation( )
 	}
 }
 
-void ComputeThread::StopComputation( )
+void ComputeThread::HaltComputation( )
 {
 	if ( m_bContinue )
 	{
 		m_bContinue = false;
 		m_runObservable.NotifyAll( false );
 		m_hrTimer.Stop();
-		while ( ! m_bWaiting );  // busy wait until ComputeThread has finished activities
+		while ( ! m_bWaiting )  // wait until ComputeThread has finished activities
+			Sleep( 1 );
 	}
 }
 
@@ -76,15 +77,19 @@ void ComputeThread::Reset( )
 	m_pModel->ResetSimulationTime();
 }
 
-void ComputeThread::compute() 
+long ComputeThread::computeCyclesTodo( fMicroSecs const usTilStartRealTime )
 {
-	bool             bStop              { false };
-	fMicroSecs const usTilStartRealTime { m_hrTimer.GetMicroSecsTilStart( ) };
 	fMicroSecs const usTilStartSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( usTilStartRealTime ) };
 	fMicroSecs const usActualSimuTime   { m_pModel->GetSimulationTime( ) };                                // get actual time stamp
 	fMicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };                         // compute missing simulation time
-	fMicroSecs const usSimuTimeTodo     { min( usMissingSimuTime, m_pParam->GetTimeResolution() ) };       // respect time slot (resolution)
-	long       const lCyclesTodo        { CastToLong( usSimuTimeTodo / m_pParam->GetTimeResolution( ) ) }; // compute # cycles to be computed
+	long       const lCyclesTodo        { CastToLong(usMissingSimuTime/ m_pParam->GetTimeResolution( )) }; // compute # cycles to be computed
+	return min( lCyclesTodo, 1L );
+}
+
+void ComputeThread::compute() 
+{
+	fMicroSecs const usTilStartRealTime { m_hrTimer.GetMicroSecsTilStart( ) };
+	long       const lCyclesTodo        { computeCyclesTodo( usTilStartRealTime ) }; // compute # cycles to be computed
 	long             lCyclesDone        { 0 };
 	while ( (lCyclesDone < lCyclesTodo) && m_bContinue )
 	{

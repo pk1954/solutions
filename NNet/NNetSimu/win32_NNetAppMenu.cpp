@@ -62,7 +62,7 @@ void NNetAppMenu::AdjustVisibility( )
 	EnableMenuItem( m_hMenu, IDM_FORWARD, bRunning ? MF_GRAYED  : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_RESET,   bRunning ? MF_GRAYED  : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_RUN,     bRunning ? MF_GRAYED  : MF_ENABLED );
-	EnableMenuItem( m_hMenu, IDM_STOP,    bRunning ? MF_ENABLED : MF_GRAYED );
+	EnableMenuItem( m_hMenu, IDM_HALT,    bRunning ? MF_ENABLED : MF_GRAYED );
 
 	EnableMenuItem( m_hMenu, IDM_CRSR_WINDOW,  m_pWinManager->IsVisible( IDM_CRSR_WINDOW  ) ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_MINI_WINDOW,  m_pWinManager->IsVisible( IDM_MINI_WINDOW  ) ? MF_GRAYED : MF_ENABLED );

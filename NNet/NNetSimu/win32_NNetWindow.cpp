@@ -103,7 +103,7 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 
 	if ( m_pComputeThread->IsRunning() )
 	{
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_STOP, L"Stop" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_HALT, L"Stop" );
 		return 0;
 	}
 

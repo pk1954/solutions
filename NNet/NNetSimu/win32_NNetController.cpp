@@ -223,7 +223,7 @@ void NNetController::triggerSoundDlg( ShapeId const id )
 
 bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
 {
-	m_pComputeThread->StopComputation( );
+	m_pComputeThread->HaltComputation( );
 
 	switch ( wmId )
 	{

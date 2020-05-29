@@ -116,7 +116,7 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 		printMicroSecLine( textBuf, L"spent time:", spent );
 		printFloatLine   ( textBuf, L"workload:",  CastToFloat( (spent / avail) * 100.0f ), L"%" );
 		if ( simuTime > 0.0_MicroSecs )
-			printFloatLine   ( textBuf, L"effect slomo:",  CastToFloat( realTime / simuTime ), L"" );
+			printFloatLine   ( textBuf, L"effect slomo:", CastToFloat( realTime / simuTime ), L"" );
 		printIntLine( textBuf, L"# Shapes : ", m_pModelReaderInterface->GetNrOfShapes() );
 		printIntLine( textBuf, L"# Input  : ", m_pModelReaderInterface->GetNrOfInputNeurons() );
 		printIntLine( textBuf, L"# Neurons: ", m_pModelReaderInterface->GetNrOfNeurons() );

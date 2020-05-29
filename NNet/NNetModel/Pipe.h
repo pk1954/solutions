@@ -49,7 +49,7 @@ public:
 		return m_pKnotStart->IsInRect( umRect ) || m_pKnotEnd->IsInRect( umRect );
 	}
 
-	virtual mV GetNextOutput( ) const { return * m_potIter; }
+	mV GetNextOutput( ) const { return * m_potIter; }
 
 	virtual void Prepare( )
 	{

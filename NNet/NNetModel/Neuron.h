@@ -43,12 +43,11 @@ public:
 
 	virtual void DrawExterior( DrawContext const &, tHighlightType const  = tHighlightType::normal ) const;
 	virtual void DrawInterior( DrawContext const & ) const;
+	virtual void DrawNeuronText( DrawContext const & ) const;
 	virtual void Recalc( );
 	virtual void Clear( );
 	virtual bool CompStep( );
 	virtual mV   GetNextOutput( ) const;
-
-	virtual void DrawNeuronText( DrawContext const & ) const;
 
 protected:
 	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };

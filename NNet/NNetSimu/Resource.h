@@ -37,7 +37,7 @@
 #define IDM_SIMU_MODE                  80
 #define IDM_FORWARD                    81
 #define IDM_RUN                        83
-#define IDM_STOP                       84
+#define IDM_HALT                       84
 #define IDM_MAX_SPEED                  87
 #define IDM_SIMULATION_SPEED           88
 

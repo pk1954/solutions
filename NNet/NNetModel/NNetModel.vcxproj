@@ -214,8 +214,6 @@
     <ClCompile Include="NNetModel.cpp">
       <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </EnableParallelCodeGeneration>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </AdditionalOptions>
     </ClCompile>
     <ClCompile Include="NNetModelReaderInterface.cpp" />
     <ClCompile Include="NNetParameters.cpp" />
