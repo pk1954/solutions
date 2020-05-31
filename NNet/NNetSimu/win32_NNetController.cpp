@@ -66,9 +66,9 @@ NNetController::~NNetController( )
 	m_pAnimationThread      = nullptr;
 }
 
-bool NNetController::HandleCommand( WPARAM const wParam, LPARAM const lParam, MicroMeterPoint const umPoint )
+bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
 {
-	int const wmId = LOWORD( wParam );
+	bool bRes { false };
 
 	if ( wmId == IDM_FATAL_ERROR )
 	{
@@ -87,15 +87,16 @@ bool NNetController::HandleCommand( WPARAM const wParam, LPARAM const lParam, Mi
 
 	try
 	{
-		if ( processModelCommand( wmId, lParam, umPoint ) )
-			return true;
+		m_pComputeThread->HaltComputation( );
+		bRes = processModelCommand( wmId, lParam, umPoint );
+		m_pComputeThread->RunComputation( );
 	}
 	catch ( ... )
 	{
 		FatalError::Happened( 3, "processModelCommand" );
 	}
 
-	return false;
+	return bRes;
 }
 
 bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
@@ -223,8 +224,6 @@ void NNetController::triggerSoundDlg( ShapeId const id )
 
 bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
 {
-	m_pComputeThread->HaltComputation( );
-
 	switch ( wmId )
 	{
 	case IDM_ASK_AND_SAVE_MODEL:

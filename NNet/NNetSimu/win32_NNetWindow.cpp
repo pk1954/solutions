@@ -101,12 +101,6 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 {
 	UINT static const STD_FLAGS { MF_BYPOSITION | MF_STRING };
 
-	if ( m_pComputeThread->IsRunning() )
-	{
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_HALT, L"Stop" );
-		return 0;
-	}
-
 	ShapeType type { m_pModelReaderInterface->GetShapeType( m_shapeHighlighted ) };
 
 	if ( m_pModelReaderInterface->AnyShapesSelected( ) )
@@ -203,60 +197,43 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	if ( m_pCursorPosObservable )
 		m_pCursorPosObservable->NotifyAll( false );
 
-	if ( m_pComputeThread->IsRunning() )
+	if ( wParam & MK_RBUTTON )         // Right mouse button: selection
 	{
-		if ( wParam & MK_LBUTTON )  	// Left mouse button: move 
+		if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
 		{
-			if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
-				NNetMove( ptCrsr - m_ptLast );
-			m_ptLast = ptCrsr;
+			m_rectSelection = MicroMeterRect( umCrsrPos, umLastPos );
+			m_pModelWriterInterface->SelectShapesInRect( m_rectSelection );
 		}
-		else if ( ! (wParam & MK_RBUTTON) ) // no mouse button pressed
-		{                         
-			setHighlightedShape( umCrsrPos );
-			m_ptLast.Set2Null();   // make m_ptLast invalid
+		else                           // first time here after RBUTTON pressed
+		{
+			m_ptLast = ptCrsr;         // store current cursor pos
 		}
 	}
-	else
+	else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
 	{
-		if ( wParam & MK_RBUTTON )         // Right mouse button: selection
+		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
-			if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
+			m_shapeSuperHighlighted = NO_SHAPE;
+			if ( IsDefined( m_shapeHighlighted ) )
 			{
-				m_rectSelection = MicroMeterRect( umCrsrPos, umLastPos );
-				m_pModelWriterInterface->SelectShapesInRect( m_rectSelection );
+				setSuperHighlightedShape( m_pModelReaderInterface->GetShapePos( m_shapeHighlighted ) );
+				m_pModelWriterInterface->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
 			}
-			else                           // first time here after RBUTTON pressed
+			else if ( m_pModelReaderInterface->AnyShapesSelected( ) )   // move selected shapes 
 			{
-				m_ptLast = ptCrsr;         // store current cursor pos
+				m_pModelWriterInterface->MoveSelection( umCrsrPos - umLastPos );
+			}
+			else  // move view by manipulating coordinate system 
+			{
+				NNetMove( ptCrsr - m_ptLast );
 			}
 		}
-		else if ( wParam & MK_LBUTTON )  	// Left mouse button: move or edit action
-		{
-			if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
-			{
-				m_shapeSuperHighlighted = NO_SHAPE;
-				if ( IsDefined( m_shapeHighlighted ) )
-				{
-					setSuperHighlightedShape( m_pModelReaderInterface->GetShapePos( m_shapeHighlighted ) );
-					m_pModelWriterInterface->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
-				}
-				else if ( m_pModelReaderInterface->AnyShapesSelected( ) )   // move selected shapes 
-				{
-					m_pModelWriterInterface->MoveSelection( umCrsrPos - umLastPos );
-				}
-				else  // move view by manipulating coordinate system 
-				{
-					NNetMove( ptCrsr - m_ptLast );
-				}
-			}
-			m_ptLast = ptCrsr;
-		}
-		else  // no mouse button pressed
-		{                         
-			setHighlightedShape( umCrsrPos );
-			m_ptLast.Set2Null();   // make m_ptLast invalid
-		}
+		m_ptLast = ptCrsr;
+	}
+	else  // no mouse button pressed
+	{                         
+		setHighlightedShape( umCrsrPos );
+		m_ptLast.Set2Null();   // make m_ptLast invalid
 	}
 }
 
@@ -458,7 +435,7 @@ void NNetWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
 	MicroMeterPoint const umPoint { m_context.GetCoordC().Convert2MicroMeterPointPos( pixPoint ) };
-	if ( m_pController->HandleCommand( wParam, lParam, umPoint ) )
+	if ( m_pController->HandleCommand( LOWORD( wParam ), lParam, umPoint ) )
 		return true;
 	else 
 		return ModelWindow::OnCommand( wParam, lParam, pixPoint );

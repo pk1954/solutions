@@ -207,18 +207,7 @@ void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
 	if ( Shape * pShape { GetShapePtr<Shape *>( id  ) } )
 	{
-		if ( HasType<Pipe>( pShape ) )
-		{
-			Pipe * pPipe { static_cast<Pipe *>( pShape) };
-			MoveShape( pPipe->GetStartKnotId(), delta );
-			MoveShape( pPipe->GetEndKnotId  (), delta );
-		}
-		else 
-		{
-			BaseKnot * pBaseKnot { static_cast<BaseKnot *>( pShape ) };
-			pBaseKnot->MoveShape( delta );
-			pBaseKnot->Apply2AllConnectedPipes( [&](Pipe & pipe) { pipe.Recalc(); } );
-		}
+		pShape->MoveShape( delta );
 		staticModelChanged( );
 	}
 }

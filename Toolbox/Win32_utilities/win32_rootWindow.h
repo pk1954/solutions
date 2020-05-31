@@ -55,7 +55,7 @@ public:
     bool          const IsCaptured( )                 const { return ::GetCapture( ) == m_hwnd; }
 
 	void         SetRefreshRate( milliseconds const );
-	milliseconds GetRefreshRate( );         
+	//milliseconds GetRefreshRate( );         
 	
     void Show( tBoolOp const op ) const { Util::Show( m_hwnd, op ); }
     void Show( bool    const b  ) const { Util::Show( m_hwnd, b  ); }

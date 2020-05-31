@@ -91,7 +91,7 @@ NNetAppWindow::NNetAppWindow( )
 		nullptr
 	);
 
-	m_mainNNetWindow   .SetRefreshRate( 100ms );
+	m_mainNNetWindow   .SetRefreshRate( 0ms );
 	m_miniNNetWindow   .SetRefreshRate( 200ms );
 	m_crsrWindow       .SetRefreshRate( 100ms );
 	m_performanceWindow.SetRefreshRate( 500ms );
@@ -318,38 +318,36 @@ void NNetAppWindow::OnClose( )
 
 bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
-	if ( m_NNetController.HandleCommand( wParam, lParam, NP_NULL ) )
+	int const wmId = LOWORD( wParam );
+	
+	if ( m_NNetController.HandleCommand( wmId, lParam, NP_NULL ) )
 		return true;
-	else 
+
+	switch (wmId)
 	{
-		int const wmId = LOWORD( wParam );
+	case IDM_ABOUT:
+		ShowAboutBox( GetWindowHandle( ) );
+		break;
 
-		switch (wmId)
-		{
-		case IDM_ABOUT:
-			ShowAboutBox( GetWindowHandle( ) );
-			break;
+	case IDM_EXIT:
+		PostMessage( WM_CLOSE, 0, 0 );
+		break;
 
-		case IDM_EXIT:
-			PostMessage( WM_CLOSE, 0, 0 );
-			break;
+	case IDM_FORWARD:
+		m_computeThread.SingleStep( );
+		break;
 
-		case IDM_FORWARD:
-			m_computeThread.SingleStep( );
-			break;
+	case IDM_RUN:
+		m_computeThread.RunComputation( );
+		break;
 
-		case IDM_RUN:
-			m_computeThread.RunComputation( );
-			break;
+	case IDM_HALT:
+		m_computeThread.HaltComputation( );
+		break;
 
-		case IDM_HALT:
-			m_computeThread.HaltComputation( );
-			break;
-
-		default:
-			return BaseWindow::OnCommand( wParam, lParam, pixPoint );
-		}
-
-		return true;  // command has been processed
+	default:
+		return BaseWindow::OnCommand( wParam, lParam, pixPoint );
 	}
+
+	return true;  // command has been processed
 }

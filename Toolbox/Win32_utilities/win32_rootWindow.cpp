@@ -83,7 +83,7 @@ void RootWindow::contextMenu( PixelPoint const & crsrPosScreen ) // crsr pos in 
 		adjustWinMenu( hPopupMenu );
 	}
 
-	if ( m_bShowRefreshRateDlg && (GetRefreshRate( ) > 0ms) )
+	if ( m_bShowRefreshRateDlg && (m_pRefreshRate->GetRefreshRate( ) > 0ms) )
 	{
 		(void)AppendMenu( hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate" );
 	}
@@ -118,10 +118,10 @@ void RootWindow::SetRefreshRate( milliseconds const msRate )
 	m_pRefreshRate->SetRefreshRate( msRate ); 
 }
 
-milliseconds RootWindow::GetRefreshRate( )                           
-{ 
-	return m_pRefreshRate->GetRefreshRate( ); 
-}
+//milliseconds RootWindow::GetRefreshRate( )                           
+//{ 
+//	return m_pRefreshRate->GetRefreshRate( ); 
+//}
 
 void RootWindow::Notify( bool const bImmediately )
 {

@@ -1,8 +1,6 @@
 // BaseKnot.h
 //
 // NNetModel
-//
-// geometry aspects of all kinds of knots
 
 #pragma once
 
@@ -42,6 +40,11 @@ public:
 
 	virtual void Prepare      ( );
  	virtual mV   GetNextOutput( ) const = 0;
+	virtual void MoveShape    ( MicroMeterPoint const & );
+	virtual bool IsInRect     ( MicroMeterRect  const & umRect ) const 
+	{ 
+		return umRect.Includes( m_center ); 
+	}
 
 	static bool TypeFits( ShapeType const type ) { return type.IsBaseKnotType( ); }
 
@@ -50,8 +53,6 @@ public:
 	mV              GetVoltage  ( ) const { return m_mVinputBuffer; }
 
 	bool IsPointInShape( MicroMeterPoint const & ) const;
-
-	virtual bool IsInRect( MicroMeterRect const & umRect ) const { return umRect.Includes( m_center ); }
 
 	void AddIncoming( Pipe * const p ) { addPipe( m_incoming, p ); }
 	void AddOutgoing( Pipe * const p ) { addPipe( m_outgoing, p ); }
@@ -90,8 +91,6 @@ public:
 		Apply2AllInPipesB ( [&]( Pipe & pipe ) { return func( pipe ); } );
 		Apply2AllOutPipesB( [&]( Pipe & pipe ) { return func( pipe ); } );
 	}
-
-	virtual void MoveShape( MicroMeterPoint const & );
 
 protected:
 

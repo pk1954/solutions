@@ -31,9 +31,9 @@ wstring GetPathOfExecutable( )
 	return wstring( buffer.data() );
 }
 
-wstring AskForFileName
+wstring AskForFileName // TODO: cleanup
 ( 
-	wstring         path, 
+	wstring         pathSelected, // input: path to start 
 	wstring   const filter, 
 	wstring   const description,
 	tFileMode const mode
@@ -41,12 +41,12 @@ wstring AskForFileName
 {
 	static int const MAXPATH = 512;
 
-	wstring wBufferPath   { path };
+	wstring wBufferPath   { pathSelected };
 	wstring wBufferFilter { description + wstring(L"\0", 1) + filter + wstring(L"\0\0", 2) };
 	PCWSTR  strExtension  { nullptr };
 
-	path = L"\0";
-	path.resize( MAXPATH );
+	pathSelected = L"\0";
+	pathSelected.resize( MAXPATH );
 	wBufferPath += L'\0';
 
 	HRESULT res = PathCchFindExtension( wBufferPath.c_str(), wBufferPath.size(), & strExtension );
@@ -56,7 +56,7 @@ wstring AskForFileName
     OPENFILENAME ofn;                  // common dialog box structure    
 	ZeroMemory( &ofn, sizeof( ofn ) );
     ofn.lStructSize     = sizeof( OPENFILENAME );
-	ofn.lpstrFile       = &path[0];
+	ofn.lpstrFile       = &pathSelected[0];
 	ofn.lpstrDefExt     = strExtension;
 	ofn.lpstrInitialDir = wBufferPath.c_str();
     ofn.nMaxFile        = MAXPATH;
@@ -68,9 +68,9 @@ wstring AskForFileName
 		        : GetSaveFileName( &ofn );
 
 	if ( bRes == false )
-		path = L"";
+		pathSelected = L"";
 
-	wstring wstrRes( path.c_str() );
+	wstring wstrRes( pathSelected.c_str() );
 	return wstrRes;
 }
 

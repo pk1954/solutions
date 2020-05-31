@@ -38,7 +38,7 @@ public:
 
 	virtual ~NNetController( );
 
-	bool HandleCommand( WPARAM const, LPARAM const, MicroMeterPoint const );
+	bool HandleCommand( int const, LPARAM const, MicroMeterPoint const );
 
 private:
 

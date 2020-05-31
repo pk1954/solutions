@@ -1,6 +1,6 @@
 // win32_script.h : 
 //
-// WIn32_utilities
+// Win32_utilities
 
 #pragma once
 

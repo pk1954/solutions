@@ -36,22 +36,22 @@ public:
 
 	virtual void Trigger( )
 	{
-		fMicroSecs const time = m_pModelReaderInterface->GetSimulationTime( );
-		m_wstrBuffer.str( wstring() );
-		m_wstrBuffer.clear();
-		m_wstrBuffer << std::fixed << std::setprecision(2);
-		if ( time > 1.e6_MicroSecs )  // more than one second
-		{
-			float seconds = CastToFloat( time.GetValue() ) / 1000000.0f;
-			m_wstrBuffer << seconds << L" s";
-		}
-		else
-		{
-			float millisecs = CastToFloat( time.GetValue() ) / 1000.0f;
-			m_wstrBuffer << millisecs << L" ms";
-		}
-		m_wstring = m_wstrBuffer.str();
-		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstring );
+		//fMicroSecs const time = m_pModelReaderInterface->GetSimulationTime( );
+		//m_wstrBuffer.str( wstring() );
+		//m_wstrBuffer.clear();
+		//m_wstrBuffer << std::fixed << std::setprecision(2);
+		//if ( time > 1.e6_MicroSecs )  // more than one second
+		//{
+		//	float seconds = CastToFloat( time.GetValue() ) / 1000000.0f;
+		//	m_wstrBuffer << seconds << L" s";
+		//}
+		//else
+		//{
+		//	float millisecs = CastToFloat( time.GetValue() ) / 1000.0f;
+		//	m_wstrBuffer << millisecs << L" ms";
+		//}
+		//m_wstring = m_wstrBuffer.str();
+		//m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstring );
 	}
 
 private:

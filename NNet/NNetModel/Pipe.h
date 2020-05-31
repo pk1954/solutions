@@ -73,6 +73,12 @@ public:
 		m_pKnotEnd  ->Select( op );
 	}
 
+	virtual void MoveShape( MicroMeterPoint const & delta )
+	{
+		m_pKnotStart->MoveShape( delta );
+		m_pKnotEnd  ->MoveShape( delta );
+	}
+
 	mV GetVoltage( MicroMeterPoint const & ) const;
 
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const  = tHighlightType::normal ) const;

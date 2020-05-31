@@ -48,13 +48,13 @@ public:
 	{
 		if ( m_pStatusBar )
 		{
-			m_wstrBuffer = line;
-			m_pStatusBar->DisplayInPart( m_iPart, m_wstrBuffer );
+			m_wstring = line;
+			m_pStatusBar->DisplayInPart( m_iPart, m_wstring );
 		}
 	}
 
 private:
-	wstring     m_wstrBuffer { };
+	wstring     m_wstring     { };
 	StatusBar * m_pStatusBar { nullptr };
 	int         m_iPart      { 0 };
 };

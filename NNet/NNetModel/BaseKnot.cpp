@@ -13,6 +13,13 @@ using std::find;
 using std::begin;
 using std::end;
 
+
+void BaseKnot::MoveShape( MicroMeterPoint const & delta )
+{
+	m_center += delta;
+	Apply2AllConnectedPipes( [&](Pipe & pipe) { pipe.Recalc(); } );
+}
+
 void BaseKnot::Prepare( )
 {
 	m_mVinputBuffer = 0._mV;
@@ -69,11 +76,6 @@ MicroMeterRect const BaseKnot::GetRect4Text( ) const
 		GetPosition().GetX() + GetExtension(),      // right
 		GetPosition().GetY() + GetExtension()       // bottom
 	};
-}
-
-void BaseKnot::MoveShape( MicroMeterPoint const & delta )
-{
-	m_center += delta;
 }
 
 void BaseKnot::apply2AllPipesInList( PipeList const & pipeList, PipeFunc const & func ) const

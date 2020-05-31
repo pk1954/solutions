@@ -318,7 +318,7 @@ private:
 
 	void staticModelChanged( )
 	{ 
-		m_pStaticModelObservable->NotifyAll( true );
+		m_pStaticModelObservable->NotifyAll( false );
 		m_enclosingRect = ::GetEnclosingRect( m_Shapes );
 	}
 

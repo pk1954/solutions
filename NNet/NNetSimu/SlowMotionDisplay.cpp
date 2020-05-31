@@ -34,14 +34,14 @@ public:
 	{
 		unsigned int const uiRatio = CastToUnsignedInt( m_pSlowMotionRatio->GetRatio( ) );
 		if ( uiRatio == 1 )
-			m_wstrBuffer = L"real time";
+			m_wstring = L"real time";
 		else
-			m_wstrBuffer = L"slow motion " + to_wstring(uiRatio) + L" X ";
-		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstrBuffer );
+			m_wstring = L"slow motion " + to_wstring(uiRatio) + L" X ";
+		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstring );
 	}
 
 private:
-	wstring           m_wstrBuffer;
+	wstring           m_wstring;
 	StatusBar       * m_pStatusBar;
 	int               m_iPartInStatusBar;
 	SlowMotionRatio * m_pSlowMotionRatio;

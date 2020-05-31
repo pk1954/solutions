@@ -53,13 +53,14 @@ public:
 	bool IsSelected( ) const { return m_bSelected; }
 	bool IsMarked  ( ) const { return m_bMarked; }
 
-	virtual void DrawExterior  ( DrawContext const &, tHighlightType const = tHighlightType::normal  ) const = 0;
-	virtual void DrawInterior  ( DrawContext const & ) const = 0;
-	virtual void Prepare       ( )                                                 = 0;
-	virtual bool CompStep      ( )                                                 = 0;
-	virtual void Recalc        ( )                                                 = 0;
-	virtual bool IsInRect      ( MicroMeterRect  const & )                   const = 0;
-	virtual bool IsPointInShape( MicroMeterPoint const & )                   const = 0;
+	virtual void DrawExterior  ( DrawContext const &, tHighlightType const = tHighlightType::normal ) const = 0;
+	virtual void DrawInterior  ( DrawContext const & )     const = 0;
+	virtual void Prepare       ( )                               = 0;
+	virtual bool CompStep      ( )                               = 0;
+	virtual void Recalc        ( )                               = 0;
+	virtual void MoveShape     ( MicroMeterPoint const & )       = 0;
+	virtual bool IsInRect      ( MicroMeterRect  const & ) const = 0;
+	virtual bool IsPointInShape( MicroMeterPoint const & ) const = 0;
 
 	virtual void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op ); }
 	virtual void Clear ( )                  { m_mVinputBuffer = 0.0_mV; };
