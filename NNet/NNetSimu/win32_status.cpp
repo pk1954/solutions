@@ -89,46 +89,57 @@ LRESULT StatusBar::UserProc
 
 HWND WINAPI StatusBar::addControl
 (
-    LPCTSTR lpClassName,
-    LPCTSTR lpWindowName,
-    DWORD   dwStyle,
-    HMENU   hMenu
+    LPCTSTR const lpClassName,
+    LPCTSTR const lpWindowName,
+	int     const width,
+    DWORD   const dwStyle,
+    HMENU   const hMenu
 )
 {
-    PIXEL const pixWidth = PIXEL(static_cast<int>( wcslen( lpWindowName ) ) * 9);
-    HWND  const hwnd     = CreateWindow
-    (
-        lpClassName,                     // class name 
-        lpWindowName,                    // title (caption) 
-        WS_CHILD | WS_VISIBLE | dwStyle, // style 
-        m_pixPosX.GetValue(),            // x position
-		m_pixBorderY.GetValue(),         // y position 
-        pixWidth.GetValue(),             // width
-		m_pixClientHeight.GetValue(),    // height
-        GetWindowHandle( ),              // parent window 
-        hMenu,                           // control identifier 
-        GetModuleHandle( nullptr ),      // instance 
-        nullptr                          // no WM_CREATE parameter 
-    );
+	int   const iWidth   { width ? width : static_cast<int>( wcslen( lpWindowName ) ) };
+	PIXEL const pixWidth { PIXEL( iWidth * 9 ) };
+    HWND  const hwnd     
+	{ 
+		CreateWindow
+		(
+			lpClassName,                     // class name 
+			lpWindowName,                    // title (caption) 
+			WS_CHILD | WS_VISIBLE | dwStyle, // style 
+			m_pixPosX.GetValue(),            // x position
+			m_pixBorderY.GetValue(),         // y position 
+			pixWidth.GetValue(),             // width
+			m_pixClientHeight.GetValue(),    // height
+			GetWindowHandle( ),              // parent window 
+			hMenu,                           // control identifier 
+			GetModuleHandle( nullptr ),      // instance 
+			nullptr                          // no WM_CREATE parameter 
+		)
+	};
 	m_pixPosX += pixWidth;
 	return hwnd;
 }
 
-HWND WINAPI StatusBar::AddStaticControl( LPCTSTR lpWindowName )
+HWND WINAPI StatusBar::AddStaticControl( LPCTSTR const lpWindowName )
 {
-    HWND hwnd = addControl( WC_STATIC, lpWindowName, 0, nullptr );
+	HWND hwnd = addControl( WC_STATIC, lpWindowName, 0, 0, nullptr );
+	return hwnd;
+}
+
+HWND WINAPI StatusBar::AddStaticControl( int const width )
+{
+	HWND hwnd = addControl( WC_STATIC, L"", width, 0, nullptr );
 	return hwnd;
 }
 
 HWND WINAPI StatusBar::AddButton( LPCTSTR const lpWindowName, HMENU const hMenu, DWORD const dwStyle )
 { 
-	HWND hwnd = addControl( WC_BUTTON, lpWindowName, dwStyle, hMenu );
+	HWND hwnd = addControl( WC_BUTTON, lpWindowName, 0, dwStyle, hMenu );
 	return hwnd;
 }
 
 HWND WINAPI StatusBar::AddTrackBar( HMENU hMenu )
 { 
-	HWND hwnd = addControl( TRACKBAR_CLASS, L"   Trackbar Control   ", WS_TABSTOP | WS_BORDER | TBS_NOTICKS, hMenu );
+	HWND hwnd = addControl( TRACKBAR_CLASS, L"   Trackbar Control   ", 0, WS_TABSTOP | WS_BORDER | TBS_NOTICKS, hMenu );
 	return hwnd;
 };
 

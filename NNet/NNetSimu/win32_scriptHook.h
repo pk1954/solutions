@@ -10,42 +10,36 @@
 class ScriptHook : public Script_Functor
 {
 public:
-	ScriptHook()
-	:  m_pStatusBar( nullptr ),
-	   m_iStatusBarPart( 0 )
-	{}
+	ScriptHook() { }
 
-	void Initialize( StatusBar * const pStatusBar, int iPart )
+	void Initialize( StatusBar * const pStatusBar, int iPart, HWND const hwndApp )
 	{
-		m_pStatusBar = pStatusBar;
+		m_pStatusBar     = pStatusBar;
 		m_iStatusBarPart = iPart;
+		m_hwndApp        = hwndApp;
 		m_pStatusBar->AddCustomControl( 80 );  // nr of characters
 	}
 
-    virtual void operator( ) ( Script & script ) const
-    {
-        if ( m_pStatusBar != nullptr )
-        {
-			wstring m_wstrScriptLine;
+	virtual void operator( ) ( Script & script ) const
+	{
+		SendMessage( m_hwndApp, WM_COMMAND, IDM_SCRIPT_PROGRESS, reinterpret_cast<LPARAM>( & script ) );
+	}
 
-			if ( script.IsActive() )
-			{
-				wstring const & wszPath = script.GetActPath( );
-				wstring const & wszLine = script.GetActLine( );
-				int     const   iLineNr = script.GetActLineNr( );
-				m_wstrScriptLine = wszPath + L"(" + std::to_wstring( iLineNr ) + L"): " + wszLine;
-			}
-			else 
-			{
-				m_wstrScriptLine = L"";
-			}
-
-			m_pStatusBar->DisplayInPart( m_iStatusBarPart, m_wstrScriptLine );
+	void DisplayScriptProgress( Script & script )
+	{
+		if ( ( m_pStatusBar != nullptr ) && ( script.IsActive() ) )
+		{
+			wstring   const & wszPath      { script.GetActPath( ) };
+			long long const   llFilePos    { script.GetFilePos() };
+			uintmax_t const   fileSize     { script.GetFileSize() };
+			long      const   lPercentRead { CastToLong( llFilePos * 100 / fileSize ) };
+			m_pStatusBar->DisplayInPart( m_iStatusBarPart, L"Reading " + wszPath + L" ... " + std::to_wstring( lPercentRead ) + L"%"  );
 		}
-    }
+	}
 
 private:
 
-    StatusBar * m_pStatusBar;
-	int         m_iStatusBarPart;
+	HWND        m_hwndApp        { nullptr };
+    StatusBar * m_pStatusBar     { nullptr };
+	int         m_iStatusBarPart { 0 };
 };

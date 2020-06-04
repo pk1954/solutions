@@ -47,7 +47,7 @@ void ComputeThread::RunComputation( )
 	}
 }
 
-void ComputeThread::HaltComputation( )
+void ComputeThread::StopComputation( )
 {
 	if ( m_bContinue )
 	{

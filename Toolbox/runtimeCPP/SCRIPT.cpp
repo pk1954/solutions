@@ -8,6 +8,7 @@
 #include "stdafx.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <filesystem>
 #include <limits.h>  
 #include <string.h>
 #include <assert.h>
@@ -426,6 +427,7 @@ bool Script::ScrProcess
 	m_bStop = false;
     try 
     {  
+        m_fileSize =  std::filesystem::file_size( wstrPath );
         scan.OpenInputFile( wstrPath ); // open script file 
 
 		for (;;)
@@ -441,7 +443,7 @@ bool Script::ScrProcess
             {
                 wstring const & wstrName = m_pScanAct->GetString( );
 
-				if ( m_pWrapHook != nullptr )
+				if ( m_pWrapHook )
                     (* m_pWrapHook)( * this );                // call hook function 
             
                 Symbol const & symbol = SymbolTable::GetSymbolFromName( wstrName );       // find entry in symbol table 

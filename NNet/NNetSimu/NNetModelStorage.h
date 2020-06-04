@@ -21,12 +21,12 @@ class Shape;
 class NNetModelStorage : public ObserverInterface
 {
 public:
-	void Initialize( NNetModel * const, Param * const );
+	void Initialize( HWND const, NNetModel * const, Param * const );
 
 	virtual void Notify( bool const bImmediate ) { setUnsavedChanges( true ); }
 
 	void Write( wostream & );
-	bool Read( wstring const = L"" );
+	void Read( wstring const = L"" );
 
 	wstring const GetModelPath  ( ) { return m_wstrPathOfOpenModel; };
 	void          ResetModelPath( );
@@ -40,6 +40,7 @@ public:
 private:
 	mutable bool m_bUnsavedChanges { false };  // can be changed in const functions
 
+	HWND            m_hwndApp             { nullptr };
 	NNetModel     * m_pModel              { nullptr };
 	Param         * m_pParam              { nullptr };
 	bool            m_bPreparedForReading { false };

@@ -45,6 +45,7 @@
 #include "win32_NNetAppWindow.h"
 
 using namespace std::literals::chrono_literals;
+
 using std::wostringstream;
 using std::wstring;
 using std::wcout;
@@ -64,8 +65,18 @@ NNetAppWindow::NNetAppWindow( )
 	DefineUtilityWrapperFunctions( );
 	DefineNNetWrappers( & m_modelWriterInterface, & m_mainNNetWindow );
 
+	m_hwndApp = StartBaseWindow
+	( 
+		nullptr, 
+		CS_HREDRAW | CS_VREDRAW, 
+		L"ClassAppWindow", 
+		WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,
+		nullptr,
+		nullptr
+	);
+
 	m_model               .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
-	m_modelStorage        .Initialize( & m_model, & m_parameters );
+	m_modelStorage        .Initialize( m_hwndApp, & m_model, & m_parameters );
 	m_modelWriterInterface.Initialize( & m_traceStream );
 	m_drawModel           .Initialize( & m_model );
 	m_NNetColors          .Initialize( & m_blinkObservable );
@@ -79,16 +90,6 @@ NNetAppWindow::NNetAppWindow( )
 		& m_computeThread,
 		& m_SlowMotionRatio,
 		& m_statusBarDispFunctor
-	);
-
-	m_hwndApp = StartBaseWindow
-	( 
-		nullptr, 
-		CS_HREDRAW | CS_VREDRAW, 
-		L"ClassAppWindow", 
-		WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,
-		nullptr,
-		nullptr
 	);
 
 	m_mainNNetWindow   .SetRefreshRate( 0ms );
@@ -203,7 +204,7 @@ void NNetAppWindow::Stop()
 	m_appMenu          .Stop( );
 
 	m_staticModelObservable.UnregisterAllObservers( );
-	m_computeThread.HaltComputation();
+	m_computeThread.StopComputation();
 	m_modelReaderInterface.Stop( );
 	m_modelWriterInterface.Stop( );
 
@@ -271,7 +272,7 @@ void NNetAppWindow::configureStatusBar( )
 	SlowMotionControl::Add( & m_StatusBar );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
-	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine );
+	m_ScriptHook.Initialize( & m_StatusBar, iPartScriptLine, m_hwndApp );
 	m_StatusBar.DisplayInPart( iPartScriptLine, L"" );
 	Script::ScrSetWrapHook( & m_ScriptHook );
 	m_statusBarDispFunctor.Initialize( & m_StatusBar, iPartScriptLine );
@@ -341,8 +342,12 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		m_computeThread.RunComputation( );
 		break;
 
-	case IDM_HALT:
-		m_computeThread.HaltComputation( );
+	case IDM_STOP:
+		m_computeThread.StopComputation( );
+		break;
+
+	case IDM_SCRIPT_PROGRESS:
+		m_ScriptHook.DisplayScriptProgress( * reinterpret_cast< Script * >( lParam) );
 		break;
 
 	default:

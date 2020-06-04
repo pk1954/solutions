@@ -35,6 +35,9 @@ public:
     int             GetActStartPos  ( ) const;
     int             GetActEndPos    ( ) const;
 
+    std::streampos  GetFilePos      ( ) { return m_ifstream.tellg(); };
+
+
 private:
     wstring    m_wstrLine;       // buffer for script line
     int        m_iLineNr;        // actual line number  

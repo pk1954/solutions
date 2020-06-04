@@ -30,10 +30,11 @@ using std::filesystem::exists;
 
 static float const PROTOCOL_VERSION { 1.5f };   // pipeline renamed to pipe
 
-void NNetModelStorage::Initialize( NNetModel * const pModel, Param * const pParam )
+void NNetModelStorage::Initialize( HWND const hwndApp,  NNetModel * const pModel, Param * const pParam )
 {
-	m_pModel = pModel;
-	m_pParam = pParam;
+	m_hwndApp = hwndApp;
+	m_pModel  = pModel;
+	m_pParam  = pParam;
 }
 
 void NNetModelStorage::setUnsavedChanges( bool const bState )
@@ -284,10 +285,13 @@ void NNetModelStorage::prepareForReading( )
 	m_bPreparedForReading = true;
 }
 
-bool NNetModelStorage::Read( wstring const wstrPath )
+//VOID CALLBACK ScriptTimerProc( HWND hwnd, UINT message, UINT_PTR iTimerID, DWORD dwTime )
+//{
+//	m_ScriptHook.DisplayScriptProgress( * reinterpret_cast< Script * >( lParam) );
+//}
+//
+void NNetModelStorage::Read( wstring const wstrPath )
 {
-	HiResTimer timer;
-
 	if ( ! m_bPreparedForReading )
 		prepareForReading( );
 
@@ -295,25 +299,24 @@ bool NNetModelStorage::Read( wstring const wstrPath )
 	if ( ! exists( wstrModelFilePath ) )
 	{
 		MessageBox( nullptr, wstrModelFilePath.c_str(), L"Could not find model file", MB_OK );
-		return false;
+		return;
 	}
 
 	m_pModel->ResetModel();
 
 	wcout << L"** NNet model file " << wstrModelFilePath << endl;
 
-	timer.Start();
-	if ( ! Script::ProcessScript( wstrModelFilePath ) )
+	//UINT_PTR m_TimerId { SetTimer( NULL, 1, 300, ScriptTimerProc ) }; 
+	if ( Script::ProcessScript( wstrModelFilePath ) )
+	{
+		m_wstrPathOfOpenModel = wstrModelFilePath;
+		setUnsavedChanges( false );
+	}
+	else
 	{
 		MessageBox( nullptr, wstrModelFilePath.c_str(), L"Error in model file. Using default m_pModel->", MB_OK );
-		return false;
 	}
-	timer.Stop();
-	fMicroSecs const usTilStart { timer.GetMicroSecsTilStart( ) }; //for tests only
-
-	m_wstrPathOfOpenModel = wstrModelFilePath;
-	setUnsavedChanges( false );
-	return true;
+	//KillTimer( NULL, 1 );
 }
 
 ////////////////////////// Write /////////////////////////////////////////////

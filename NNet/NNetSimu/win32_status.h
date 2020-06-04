@@ -23,8 +23,9 @@ public:
 	PIXEL GetHeight( ) const;
     void  Resize( ) const;
 
-    HWND WINAPI AddStaticControl( LPCTSTR );
-    HWND WINAPI AddButton       ( LPCTSTR const, HMENU const, DWORD const );
+	HWND WINAPI AddStaticControl( int const );
+	HWND WINAPI AddStaticControl( LPCTSTR const );
+	HWND WINAPI AddButton       ( LPCTSTR const, HMENU const, DWORD const );
     HWND WINAPI AddTrackBar     ( HMENU );
 
 	void AddCustomControl( int const );
@@ -38,7 +39,7 @@ private:
 
 	inline static PIXEL const STATUS_BAR_HEIGHT { 22_PIXEL };
 
-	HWND WINAPI addControl( LPCTSTR, LPCTSTR, DWORD, HMENU );
+	HWND WINAPI addControl( LPCTSTR const, LPCTSTR const, int const, DWORD const, HMENU const );
 
 	std::vector< PIXEL > m_statWidths;
 

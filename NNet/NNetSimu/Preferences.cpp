@@ -57,8 +57,7 @@ class WrapReadModel: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        if ( ! m_pNNetModelStorage->Read( script.ScrReadString() ) )
-            ScriptErrorHandler::semanticError( L"Error in model file." );
+        m_pNNetModelStorage->Read( script.ScrReadString() );
     }
 };
 

@@ -16,7 +16,7 @@ private:
 	inline static bool         m_bSwitch     { false };
 	inline static UINT_PTR     m_TimerId     { 0 }; 
 
-	friend VOID CALLBACK TimerProc( HWND, UINT, UINT_PTR, DWORD );
+	friend VOID CALLBACK BlinkTimerProc( HWND, UINT, UINT_PTR, DWORD );
 
 	inline static MilliSecs BLINK_TIME { 200_MilliSecs };
 

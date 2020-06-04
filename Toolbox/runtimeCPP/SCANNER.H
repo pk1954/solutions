@@ -33,6 +33,8 @@ public:
     void CloseInputFile( );
     ~Scanner( );
 
+    std::streampos GetFilePos ( ) { return m_inbuf.GetFilePos( ); };
+
    // Get next token from input file 
 
     tTOKEN NextToken( bool );

@@ -18,7 +18,7 @@ namespace Util
 				( 
 					nullptr, // no security attributes
 					true,    // manual reset event 
-					false,   // intial state nonsignaled
+					false,   // initial state nonsignaled
 					nullptr  // no name for event
 				) 
 			)

@@ -53,6 +53,9 @@ public:
 
 // utility functions
 
+	long long GetFilePos ( ) { return m_pScanAct->GetFilePos( ); };
+	uintmax_t GetFileSize( ) { return m_fileSize; };
+
 	static bool ProcessScript( wstring const & );
     static void ScrSetWrapHook( Script_Functor const * const );
 	static void Clear( );
@@ -75,6 +78,8 @@ private:
 	
 	inline static bool                   m_bStop     { false };
 	inline static Script_Functor const * m_pWrapHook { nullptr };
+	
+	uintmax_t m_fileSize { 0 };
 };
 
 class WrapInclude : public Script_Functor

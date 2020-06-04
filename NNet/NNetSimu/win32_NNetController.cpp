@@ -87,7 +87,7 @@ bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMe
 
 	try
 	{
-		m_pComputeThread->HaltComputation( );
+		m_pComputeThread->StopComputation( );
 		bRes = processModelCommand( wmId, lParam, umPoint );
 		m_pComputeThread->RunComputation( );
 	}

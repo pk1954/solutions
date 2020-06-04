@@ -34,7 +34,7 @@ public:
 	void SingleStep( ) { compute(); }
 
 	void RunComputation( );
-	void HaltComputation( );
+	void StopComputation( );
 	bool IsRunning() const { return m_bContinue; }
 
 	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_usRealTimeAvailPerCycle; }
