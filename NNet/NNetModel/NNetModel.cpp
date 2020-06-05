@@ -532,7 +532,7 @@ ShapeId const NNetModel::findShapeAt
 
 /////////////////// nonmember functions ///////////////////////////////////////////////
 
-MicroMeterRect GetEnclosingRect( ShapeList const & shapeVector )
+MicroMeterRect ComputeEnclosingRect( ShapeList const & shapeVector )
 {
 	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
 	for ( const auto & pShape : shapeVector )

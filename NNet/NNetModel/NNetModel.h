@@ -23,7 +23,7 @@ class Param;
 using ShapeList = vector<Shape *>;
 
 // non member function used in class definition 
-MicroMeterRect GetEnclosingRect( ShapeList const & );
+MicroMeterRect ComputeEnclosingRect( ShapeList const & );
 
 class NNetModel
 {
@@ -319,7 +319,7 @@ private:
 	void staticModelChanged( )
 	{ 
 		m_pStaticModelObservable->NotifyAll( false );
-		m_enclosingRect = ::GetEnclosingRect( m_Shapes );
+		m_enclosingRect = ::ComputeEnclosingRect( m_Shapes );
 	}
 
 	MicroMeterPoint orthoVector        ( ShapeId const ) const;

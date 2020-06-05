@@ -76,7 +76,7 @@ NNetAppWindow::NNetAppWindow( )
 	);
 
 	m_model               .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
-	m_modelStorage        .Initialize( m_hwndApp, & m_model, & m_parameters );
+	m_modelStorage        .Initialize( m_hwndApp, & m_model, & m_parameters, & m_script );
 	m_modelWriterInterface.Initialize( & m_traceStream );
 	m_drawModel           .Initialize( & m_model );
 	m_NNetColors          .Initialize( & m_blinkObservable );
@@ -277,6 +277,7 @@ void NNetAppWindow::configureStatusBar( )
 	Script::ScrSetWrapHook( & m_ScriptHook );
 	m_statusBarDispFunctor.Initialize( & m_StatusBar, iPartScriptLine );
 	ModelAnalyzer::SetStatusBarDisplay( & m_statusBarDispFunctor );
+	m_statusMessagePart = iPartScriptLine;
 
 	m_StatusBar.LastPart( );
 	m_timeDisplay.Notify( true );
@@ -321,9 +322,6 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 {
 	int const wmId = LOWORD( wParam );
 	
-	if ( m_NNetController.HandleCommand( wmId, lParam, NP_NULL ) )
-		return true;
-
 	switch (wmId)
 	{
 	case IDM_ABOUT:
@@ -347,11 +345,39 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_SCRIPT_PROGRESS:
-		m_ScriptHook.DisplayScriptProgress( * reinterpret_cast< Script * >( lParam) );
+		m_ScriptHook.DisplayScriptProgress( m_script );
+		break;
+
+	case IDM_OPEN_MODEL:
+		if ( m_modelStorage.AskAndSave( ) && m_modelStorage.AskModelFile() )
+		{
+			m_computeThread.StopComputation( );
+			m_modelStorage.Read( );
+		}
+		break;
+
+	case IDM_READ_MODEL_FINISHED:
+		m_StatusBar.DisplayInPart( m_statusMessagePart, L"" );
+		m_modelWriterInterface.ResetTimer( );
+		m_computeThread.RunComputation( );
+		m_mainNNetWindow.CenterModel( true );
+		break;
+
+	case IDM_NEW_MODEL:
+		if ( m_modelStorage.AskAndSave( ) )
+		{
+			m_modelWriterInterface.ResetModel( );
+			m_modelWriterInterface.ResetTimer( );
+			m_mainNNetWindow.CenterModel( true );
+			m_modelStorage.ResetModelPath( );
+		}
 		break;
 
 	default:
-		return BaseWindow::OnCommand( wParam, lParam, pixPoint );
+		if ( m_NNetController.HandleCommand( wmId, lParam, NP_NULL ) )
+			return true;
+		else 
+			return BaseWindow::OnCommand( wParam, lParam, pixPoint );
 	}
 
 	return true;  // command has been processed

@@ -6,6 +6,7 @@
 
 #include <fstream>
 #include <iostream>
+#include "SCRIPT.H"
 #include "SlowMotionRatio.h"
 #include "ComputeThread.h"
 #include "NNetModelStorage.h"
@@ -78,17 +79,15 @@ private:
 	void configureStatusBar( );
 	void adjustChildWindows( );
 
-	bool m_bStarted { false };          // if true, model is visible, all functions available
+	bool m_bStarted { false }; // if true, model is visible, all functions available
 
-	Util::Event m_eventPOI { };
-
-	wofstream m_traceStream { };
-
-	HWND       m_hwndConsole { nullptr };
-	HWND       m_hwndApp     { nullptr };
-	WinManager m_WinManager  { };
-	StatusBar  m_StatusBar   { };
-
+	HWND                     m_hwndConsole            { nullptr };
+	HWND                     m_hwndApp                { nullptr };
+	int                      m_statusMessagePart      { };
+	wofstream                m_traceStream            { };
+	WinManager               m_WinManager             { };
+	StatusBar                m_StatusBar              { };
+	Script                   m_script                 { };
 	NNetAppMenu              m_appMenu                { };
 	ActionTimer              m_atComputation          { };
 	ActionTimer              m_atDisplay              { };

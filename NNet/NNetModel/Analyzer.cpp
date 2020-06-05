@@ -87,7 +87,7 @@ bool ModelAnalyzer::findLoop( Shape * const pShape )
 
 MicroMeterRect ModelAnalyzer::GetEnclosingRect( )
 {
-	return ::GetEnclosingRect( m_shapeStack );
+	return ::ComputeEnclosingRect( m_shapeStack );
 }
 
 void ModelAnalyzer::SelectLoopShapes( NNetModel & model )
