@@ -384,29 +384,20 @@ void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam 
 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 {
-	int        iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;
+	int  const iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;
 	bool const bDirection = ( iDelta > 0 );
-	MicroMeter newSize;
 
-	iDelta = abs( iDelta );
-
-	while ( --iDelta >= 0 )
+	for ( int iSteps = abs( iDelta ); iSteps > 0; --iSteps )
 	{
-		newSize = m_context.GetCoordC().ComputeNewPixelSize( bDirection );
+		ZoomStep( bDirection );
 	}
-
-	PostCommand2Application( IDM_SET_ZOOM, (LPARAM &)newSize.GetValue() ); 
 }
 
 void NNetWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
 	if ( IsDefined( m_shapeHighlighted ) && IsDefined( m_shapeSuperHighlighted ) )
 	{ 
-		PostCommand2Application
-		( 
-			IDD_CONNECT, 
-			Util::Pack2UINT64( m_shapeHighlighted.GetValue(), m_shapeSuperHighlighted.GetValue() )
-		);
+		SendCommand2Application( IDD_CONNECT, 0	);
 		m_shapeSuperHighlighted = NO_SHAPE;
 	}
 }

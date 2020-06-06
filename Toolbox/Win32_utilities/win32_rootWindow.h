@@ -54,8 +54,7 @@ public:
     HWND          const GetDlgItem( int const iItem ) const { return ::GetDlgItem     ( m_hwnd, iItem ); }
     bool          const IsCaptured( )                 const { return ::GetCapture( ) == m_hwnd; }
 
-	void         SetRefreshRate( milliseconds const );
-	//milliseconds GetRefreshRate( );         
+	void SetRefreshRate( milliseconds const );
 	
     void Show( tBoolOp const op ) const { Util::Show( m_hwnd, op ); }
     void Show( bool    const b  ) const { Util::Show( m_hwnd, b  ); }

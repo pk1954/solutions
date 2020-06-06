@@ -118,11 +118,6 @@ void RootWindow::SetRefreshRate( milliseconds const msRate )
 	m_pRefreshRate->SetRefreshRate( msRate ); 
 }
 
-//milliseconds RootWindow::GetRefreshRate( )                           
-//{ 
-//	return m_pRefreshRate->GetRefreshRate( ); 
-//}
-
 void RootWindow::Notify( bool const bImmediately )
 {
 	m_pRefreshRate->Notify( bImmediately );

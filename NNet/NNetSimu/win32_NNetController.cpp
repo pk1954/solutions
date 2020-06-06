@@ -117,10 +117,6 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         m_pNNetWindow->ZoomStep( wmId == IDM_ZOOM_IN );
         break;
 
-    case IDM_SET_ZOOM:
-        m_pNNetWindow->Zoom( MicroMeter((float &)lParam) );
-        break;
-
     case IDM_CENTER_MODEL:
         m_pNNetWindow->CenterModel( true );
         break;
@@ -272,11 +268,11 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDD_PULSE_RATE:
-        pulseRateDlg( ShapeId( CastToLong(lParam) ) );
+        pulseRateDlg( m_pNNetWindow->GetHighlightedShapeId() );
         break;
 
     case IDD_TRIGGER_SOUND_DLG:
-        triggerSoundDlg( ShapeId( CastToLong(lParam) ) );
+        triggerSoundDlg( m_pNNetWindow->GetHighlightedShapeId() );
         break;
 
     case IDM_NNET_REFRESH_RATE:
@@ -293,8 +289,8 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         Sound::Play( TEXT("SNAP_IN_SOUND") ); 
         m_pModelWriterInterface->Connect
         ( 
-            static_cast<ShapeId>( Util::UnpackLongA( lParam ) ), 
-            static_cast<ShapeId>( Util::UnpackLongB( lParam ) ) 
+            m_pNNetWindow->GetHighlightedShapeId(),
+            m_pNNetWindow->GetSuperHighlightedShapeId()
         );
         break;
 
@@ -311,22 +307,22 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDD_DISCONNECT:
         Sound::Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelWriterInterface->Disconnect( ShapeId( CastToLong(lParam) ) );
+        m_pModelWriterInterface->Disconnect( m_pNNetWindow->GetHighlightedShapeId() );
         break;
 
     case IDD_CONVERT2NEURON:
         Sound::Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelWriterInterface->Convert2Neuron( ShapeId( CastToLong(lParam) ) );
+        m_pModelWriterInterface->Convert2Neuron( m_pNNetWindow->GetHighlightedShapeId() );
         break;
 
     case IDD_STOP_ON_TRIGGER:
         Sound::Play( TEXT("SNAP_IN_SOUND") ); 
-        m_pModelWriterInterface->ToggleStopOnTrigger( ShapeId( CastToLong(lParam) ) );
+        m_pModelWriterInterface->ToggleStopOnTrigger( m_pNNetWindow->GetHighlightedShapeId() );
         break;
 
     case IDD_CONVERT2INPUT_NEURON:
         Sound::Play( TEXT("SNAP_IN_SOUND") ); 
-        m_pModelWriterInterface->Convert2InputNeuron( ShapeId( CastToLong(lParam) ) );
+        m_pModelWriterInterface->Convert2InputNeuron( m_pNNetWindow->GetHighlightedShapeId() );
         break;
 
     case IDD_INSERT_NEURON:
@@ -338,7 +334,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
     case IDD_ADD_INCOMING2KNOT:
     case IDD_ADD_OUTGOING2PIPE:
     case IDD_ADD_INCOMING2PIPE:
-        m_pModelWriterInterface->ActionCommand( wmId, ShapeId( CastToLong(lParam) ), umPoint );
+        m_pModelWriterInterface->ActionCommand( wmId, m_pNNetWindow->GetHighlightedShapeId(), umPoint );
         break;
 
     case IDM_ANALYZE_LOOPS:
@@ -359,11 +355,11 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_SELECT_SHAPE:
-        m_pModelWriterInterface->SelectShape( ShapeId( CastToLong(lParam) ), tBoolOp::opTrue );
+        m_pModelWriterInterface->SelectShape( m_pNNetWindow->GetHighlightedShapeId(), tBoolOp::opTrue );
         break;
 
     case IDM_DESELECT_SHAPE:
-        m_pModelWriterInterface->SelectShape( ShapeId( CastToLong(lParam) ), tBoolOp::opFalse );
+        m_pModelWriterInterface->SelectShape( m_pNNetWindow->GetHighlightedShapeId(), tBoolOp::opFalse );
         break;
 
     case IDM_SELECT_ALL:
@@ -371,7 +367,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_SELECT_SUBTREE:
-        m_pModelWriterInterface->SelectSubtree( ShapeId( CastToLong(lParam) ), tBoolOp::opTrue );
+        m_pModelWriterInterface->SelectSubtree( m_pNNetWindow->GetHighlightedShapeId(), tBoolOp::opTrue );
         break;
 
     case IDM_SCRIPT_DIALOG:

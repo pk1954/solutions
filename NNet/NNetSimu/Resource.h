@@ -30,7 +30,6 @@
 #define IDM_HIDE_WINDOW                50
 
 #define IDM_ZOOM_MODE                  70      
-#define IDM_SET_ZOOM                   72    
 #define IDM_ZOOM_IN                    73    
 #define IDM_ZOOM_OUT                   74    
 
