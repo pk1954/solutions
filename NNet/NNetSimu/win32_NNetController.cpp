@@ -306,7 +306,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDD_REMOVE_SHAPE:
         Sound::Play( TEXT("DISAPPEAR_SOUND") ); 
-        m_pModelWriterInterface->RemoveShape( ShapeId( CastToLong(lParam) ) );
+        m_pModelWriterInterface->RemoveShape( m_pNNetWindow->GetHighlightedShapeId() );
         break;
 
     case IDD_DISCONNECT:

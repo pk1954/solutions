@@ -386,7 +386,6 @@ void NNetModel::ConnectIncoming
 	{
 		pEndPoint->AddIncoming( pPipe );
 		pPipe->SetEndKnot( pEndPoint );
-		staticModelChanged( );
 	}
 }
 
@@ -400,7 +399,6 @@ void NNetModel::ConnectOutgoing
 	{
 		pStartPoint->AddOutgoing( pPipe );
 		pPipe->SetStartKnot( pStartPoint );
-		staticModelChanged( );
 	}
 }
 

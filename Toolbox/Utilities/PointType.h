@@ -8,6 +8,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <compare>
 #include "NamedType.h"
 
 using std::abs;
@@ -23,14 +24,8 @@ public:
 	PointType( BASE_TYPE const _b ) : m_x(_b), m_y(_b) {}
 	PointType( BASE_TYPE const _x, BASE_TYPE const _y ) : m_x(_x), m_y(_y) {}
 
-    bool      const operator== (PointType const a) const { return (m_x == a.m_x) && (m_y == a.m_y); }
-    bool      const operator!= (PointType const a) const { return (m_x != a.m_x) || (m_y != a.m_y); }
+	auto operator <=> (const PointType &) const = default;
 
-	bool      const operator<= (PointType const a) const { return (m_x <= a.m_x) && (m_y <= a.m_y); }
-	bool      const operator<  (PointType const a) const { return (m_x <  a.m_x) && (m_y <  a.m_y); }
-	bool      const operator>= (PointType const a) const { return (m_x >= a.m_x) && (m_y >= a.m_y); }
-	bool      const operator>  (PointType const a) const { return (m_x >  a.m_x) && (m_y >  a.m_y); }
-		      
     PointType const operator+= (PointType const a) { m_x += a.m_x; m_y += a.m_y; return * this; }
     PointType const operator-= (PointType const a) { m_x -= a.m_x; m_y -= a.m_y; return * this; }
     PointType const operator%= (PointType const a) { m_x %= a.m_x; m_y %= a.m_y; return * this; }
