@@ -158,20 +158,53 @@ void D2D_driver::EndFrame( )
 
 void D2D_driver::DrawTranspRect( fPixelRect const & rect, D2D1::ColorF const colF ) const
 {
+	fPIXEL const MIN_SIZE { 20._fPIXEL };
+
 	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
 	pBrush->SetOpacity( 0.5f );
 
-	m_pRenderTarget->FillRectangle
-	( 
-		D2D1_RECT_F
-		{ 
-			rect.GetLeft  ().GetValue(), 
-			rect.GetTop   ().GetValue(), 
-			rect.GetRight ().GetValue(), 
-			rect.GetBottom().GetValue() 
-		},
-		pBrush 
-	);
+	if ( (rect.GetHeight( ) > MIN_SIZE) && (rect.GetWidth( ) > MIN_SIZE) )
+	{
+		m_pRenderTarget->FillRectangle
+		( 
+			D2D1_RECT_F
+			{ 
+				rect.GetLeft  ().GetValue(), 
+				rect.GetTop   ().GetValue(), 
+				rect.GetRight ().GetValue(), 
+				rect.GetBottom().GetValue() 
+			},
+			pBrush 
+		);
+	}
+	else
+	{
+		fPixelRectSize fClientSize { Convert2fPixelRectSize( Util::GetClRectSize( m_hwnd ) ) };
+
+		m_pRenderTarget->FillRectangle
+		( 
+			D2D1_RECT_F
+			{ 
+				0, 
+				0, 
+				rect.GetRight ().GetValue(), 
+				rect.GetBottom().GetValue() 
+			},
+			pBrush 
+		);
+
+		m_pRenderTarget->FillRectangle
+		( 
+			D2D1_RECT_F
+			{ 
+				rect.GetLeft().GetValue(), 
+				rect.GetTop ().GetValue(), 
+				fClientSize.GetXvalue(), 
+				fClientSize.GetYvalue() 
+			},
+			pBrush 
+		);
+	}
 
 	SafeRelease( & pBrush );
 }

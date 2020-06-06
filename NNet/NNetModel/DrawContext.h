@@ -111,11 +111,14 @@ public:
 		D2D1::ColorF    const   col
 	) const
 	{
-		fPixelPoint const fPixPos   { m_coord.Convert2fPixelPos( umPos ) };
-		fPixelPoint const fPixVector{ m_coord.Convert2fPixelSize( umVector ) };
-		fPIXEL      const fPixSize  { m_coord.Convert2fPixel( umSize ) };
-		fPIXEL      const fPixWidth { m_coord.Convert2fPixel( umWidth ) };
-		m_graphics.DrawArrow( fPixPos, fPixVector, fPixSize, fPixWidth, m_bNoColors ? NNetColors::COL_BLACK : col );
+		m_graphics.DrawArrow
+		( 
+			m_coord.Convert2fPixelPos ( umPos ),
+			m_coord.Convert2fPixelSize( umVector ), 
+			m_coord.Convert2fPixel    ( umSize ),
+			m_coord.Convert2fPixel    ( umWidth ),
+			m_bNoColors ? NNetColors::COL_BLACK : col 
+		);
 	}
 
 	void DrawTranspRect( MicroMeterRect const & umRect, D2D1::ColorF col ) const 
