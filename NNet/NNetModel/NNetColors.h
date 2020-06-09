@@ -13,10 +13,10 @@ class NNetColors
 private:
 
 	inline static Observable * m_pObservable { nullptr };
+	inline static PTP_TIMER    m_pTimer      { nullptr };
 	inline static bool         m_bSwitch     { false };
-	inline static UINT_PTR     m_TimerId     { 0 }; 
 
-	friend VOID CALLBACK BlinkTimerProc( HWND, UINT, UINT_PTR, DWORD );
+	friend VOID CALLBACK BlinkTimerCallback( PTP_CALLBACK_INSTANCE,	PVOID, PTP_TIMER );
 
 	inline static MilliSecs BLINK_TIME { 200_MilliSecs };
 

@@ -6,7 +6,12 @@
 #include "win32_thread.h"
 #include "NNetColors.h"
 
-VOID CALLBACK BlinkTimerProc( HWND hwnd, UINT message, UINT_PTR iTimerID, DWORD dwTime )
+VOID CALLBACK BlinkTimerCallback
+( 
+	PTP_CALLBACK_INSTANCE pInstance,
+	PVOID pCOntext,
+	PTP_TIMER pTimer
+)
 {
 	NNetColors::m_colSelected = NNetColors::m_bSwitch 
 		                        ? NNetColors::INT_BLINK_KEY_2 
@@ -18,7 +23,9 @@ VOID CALLBACK BlinkTimerProc( HWND hwnd, UINT message, UINT_PTR iTimerID, DWORD 
 
 NNetColors::NNetColors( )
 {
-	m_TimerId = SetTimer( NULL, 1, BLINK_TIME.GetValue(), BlinkTimerProc );
+	m_pTimer = CreateThreadpoolTimer( BlinkTimerCallback, nullptr, nullptr );
+	__declspec(align(8)) FILETIME ft { 0, 0 };
+	SetThreadpoolTimer(	m_pTimer, &ft, BLINK_TIME.GetValue(), 100 );
 }
 
 void NNetColors::Initialize( Observable * const pObservable )
@@ -29,5 +36,5 @@ void NNetColors::Initialize( Observable * const pObservable )
 NNetColors::~NNetColors( )
 {
 	m_pObservable = nullptr;
-	KillTimer( NULL, m_TimerId );
+	CloseThreadpoolTimer( m_pTimer );
 }
