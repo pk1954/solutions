@@ -55,6 +55,7 @@ bool ModelAnalyzer::findLoop( Shape * const pShape )
 	if ( m_shapeStack.size() == m_iRecDepth )
 		return false;  // maximum search depth reached
 
+	assert( pShape->IsDefined() );
 	m_shapeStack.push_back( pShape );
 
 	bool bResult { false };
@@ -72,7 +73,7 @@ bool ModelAnalyzer::findLoop( Shape * const pShape )
 	}
 	else if ( pShape->IsBaseKnot() )
 	{
-		bResult = static_cast<BaseKnot *>(pShape)->Apply2AllOutPipesB( [&]( auto pipe ) { return findLoop( & pipe ); } );
+		bResult = static_cast<BaseKnot *>(pShape)->Apply2AllOutPipesB( [&]( Pipe & pipe ) { return findLoop( & pipe ); } );
 	}
 	else
 	{

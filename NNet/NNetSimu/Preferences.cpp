@@ -57,7 +57,20 @@ class WrapReadModel: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pNNetModelStorage->Read( script.ScrReadString() );
+        wstring wstrModelFile { script.ScrReadString() };
+        if ( std::filesystem::path( wstrModelFile).extension() != L".mod" )
+        {
+            int iRes = MessageBox
+            ( 
+                nullptr, 
+                L"Model file has non standard extension. Read anyway?", 
+                wstrModelFile.c_str(), 
+                MB_YESNO 
+            );
+            if ( iRes != IDOK )
+                return;
+        }
+        m_pNNetModelStorage->Read( wstrModelFile );
     }
 };
 

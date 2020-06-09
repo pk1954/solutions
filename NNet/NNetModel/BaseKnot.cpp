@@ -34,12 +34,12 @@ void BaseKnot::Prepare( )
 
 bool BaseKnot::IsPrecursorOf( ShapeId const id )
 {
-	return Apply2AllOutPipesB( [&]( auto pipe ) { return pipe.GetEndKnotId( ) == id; } ); 
+	return Apply2AllOutPipesB( [&]( Pipe & pipe ) { return pipe.GetEndKnotId( ) == id; } ); 
 }
 
 bool BaseKnot::IsSuccessorOf( ShapeId const id )
 {
-	return Apply2AllInPipesB( [&]( auto pipe ) { return pipe.GetStartKnotId( ) == id; } );
+	return Apply2AllInPipesB( [&]( Pipe & pipe ) { return pipe.GetStartKnotId( ) == id; } );
 }
 
 void BaseKnot::clearPipeList( PipeList & list ) 

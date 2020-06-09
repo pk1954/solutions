@@ -32,7 +32,6 @@ public:
 	  :	m_type     (src.m_type),
 		m_bSelected(src.m_bSelected),
 		m_bMarked  (src.m_bMarked)
-		// do not copy lock state new shape is **not** locked
 	{
 		++ m_counter;
 	}

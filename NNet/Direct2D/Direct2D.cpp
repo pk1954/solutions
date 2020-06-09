@@ -158,7 +158,7 @@ void D2D_driver::EndFrame( )
 
 void D2D_driver::DrawTranspRect( fPixelRect const & rect, D2D1::ColorF const colF ) const
 {
-	fPIXEL const MIN_SIZE { 20._fPIXEL };
+	fPIXEL const MIN_SIZE { 10._fPIXEL };
 
 	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
 	pBrush->SetOpacity( 0.5f );

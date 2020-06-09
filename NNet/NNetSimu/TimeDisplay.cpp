@@ -55,11 +55,11 @@ public:
 	}
 
 private:
-	wstring                          m_wstring;
-	wostringstream                   m_wstrBuffer;
-	StatusBar                      * m_pStatusBar;
-	NNetModelReaderInterface const * m_pModelReaderInterface;
-	int                              m_iPartInStatusBar;
+	wstring                          m_wstring               { };
+	wostringstream                   m_wstrBuffer            { };
+	StatusBar                      * m_pStatusBar            { nullptr };
+	NNetModelReaderInterface const * m_pModelReaderInterface { nullptr };
+	int                              m_iPartInStatusBar      { -1 };
 };
 
 /////// functions of class TimeDisplay ///////

@@ -22,6 +22,6 @@ private:
 
 	class RefreshRate;
 
-	RefreshRate * m_pRefreshRate;
+	RefreshRate * m_pRefreshRate { nullptr };
 };
 

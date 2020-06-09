@@ -358,7 +358,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDM_READ_MODEL_FINISHED:
 		m_StatusBar.DisplayInPart( m_statusMessagePart, L"" );
-		m_modelWriterInterface.ResetTimer( );
+		m_computeThread.Reset( );
 		m_computeThread.RunComputation( );
 		m_mainNNetWindow.CenterModel( true );
 		break;

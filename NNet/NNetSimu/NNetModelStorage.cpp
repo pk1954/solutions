@@ -389,7 +389,7 @@ void NNetModelStorage::Write( wostream & out )
     }
 
     out << endl;
-    out << L"NrOfShapes = " << m_CompactIds.size() << endl;
+    out << L"NrOfShapes = " << idCompact << endl;
     out << endl;
 
     m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); } );
@@ -516,14 +516,20 @@ void NNetModelStorage::writeModel( )
 bool NNetModelStorage::SaveModelAs( )
 {
     if ( m_wstrPathOfOpenModel == L"" )
-        m_wstrPathOfOpenModel = GetPathOfExecutable( );
-
-    m_wstrPathOfOpenModel = AskForFileName( m_wstrPathOfOpenModel, L"*.mod", L"Model files", tFileMode::write );
-
-    bool const bRes = m_wstrPathOfOpenModel != L"";
-    if ( bRes )
-        writeModel( );
-    return bRes;
+    {
+        m_wstrPathOfOpenModel = std::filesystem::path( GetPathOfExecutable( ) ).parent_path();
+        m_wstrPathOfOpenModel += L"\\std.mod";
+        writeModel();
+        return true;
+    }
+    else
+    {
+        m_wstrPathOfOpenModel = AskForFileName( m_wstrPathOfOpenModel, L"*.mod", L"Model files", tFileMode::write );
+        bool const bRes = m_wstrPathOfOpenModel != L"";
+        if ( bRes )
+            writeModel( );
+        return bRes;
+    }
 }
 
 bool NNetModelStorage::SaveModel( )
