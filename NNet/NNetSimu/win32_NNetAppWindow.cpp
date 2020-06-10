@@ -195,6 +195,7 @@ void NNetAppWindow::Stop()
 {
 	m_bStarted = false;
 
+	m_timeDisplay      .Stop( );
 	m_mainNNetWindow   .Stop( );
 	m_miniNNetWindow   .Stop( );
 	m_crsrWindow       .Stop( );
@@ -259,7 +260,7 @@ LRESULT NNetAppWindow::UserProc
 void NNetAppWindow::configureStatusBar( )
 {
 	int iPartScriptLine = 0;
-	m_timeDisplay.Initialize( & m_StatusBar, & m_modelReaderInterface, iPartScriptLine );
+	m_timeDisplay.Start( & m_StatusBar, & m_modelReaderInterface, iPartScriptLine );
 	m_modelTimeObservable.RegisterObserver( & m_timeDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
@@ -267,6 +268,7 @@ void NNetAppWindow::configureStatusBar( )
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	m_slowMotionDisplay.Initialize( & m_StatusBar, & m_SlowMotionRatio, iPartScriptLine );
+	m_SlowMotionRatio.RegisterObserver( & m_slowMotionDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	SlowMotionControl::Add( & m_StatusBar );
@@ -358,7 +360,6 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDM_READ_MODEL_FINISHED:
 		m_StatusBar.DisplayInPart( m_statusMessagePart, L"" );
-		m_computeThread.Reset( );
 		m_computeThread.RunComputation( );
 		m_mainNNetWindow.CenterModel( true );
 		break;

@@ -107,9 +107,6 @@
     <ClCompile Include="BoolOp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SlowMotionRatio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SmoothMove.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

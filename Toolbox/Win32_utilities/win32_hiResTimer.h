@@ -18,23 +18,53 @@ public:
     HiResTimer( );
     ~HiResTimer( ) {};
 
-	void       Start( );
-	Ticks      GetTicksTilStart( )     const;
-	fMicroSecs GetMicroSecsTilStart( ) const;
-	void       Stop( );
-	void       Restart( )
+	Ticks ReadHiResTimer( ) const
 	{
-		Stop();
-		Start();
+		LARGE_INTEGER value;
+		(void)QueryPerformanceCounter( & value );
+		return Ticks( value.QuadPart );
 	}
-	microseconds GetDuration( );
 
-	Ticks ReadHiResTimer( ) const;
+	void Start( )
+	{
+		if ( ! m_bStarted )
+			m_ticksOnStart = ReadHiResTimer( );
+		m_bStarted = true;
+	}
 
-	microseconds TicksToMicroseconds( Ticks        const ) const;
-	fMicroSecs   TicksToMicroSecs   ( Ticks        const ) const;
-	Ticks        MicroSecondsToTicks( microseconds const ) const;
-	Ticks        MicroSecsToTicks   ( fMicroSecs   const ) const;
+	void Stop( )
+	{
+		if ( m_bStarted )
+			m_ticksAccumulated += GetTicksTilStart( );
+		m_bStarted = false;
+	}
+
+	void Restart( )
+	{
+		m_ticksAccumulated = Ticks( 0 );
+		m_ticksOnStart = ReadHiResTimer( );
+		m_bStarted = true;
+	}
+
+	Ticks GetTicksTilStart( ) const
+	{
+		return ReadHiResTimer( ) - m_ticksOnStart;
+	}
+
+	fMicroSecs GetMicroSecsTilStart( ) const
+	{
+		return TicksToMicroSecs( GetTicksTilStart() );
+	}
+
+	microseconds GetDuration( )
+	{
+		assert( ! m_bStarted );
+
+		microseconds result = TicksToMicroseconds( m_ticksAccumulated );
+		m_ticksAccumulated = Ticks( 0 );
+
+		return result;
+	}
 
 	void BusyWait( microseconds const, Ticks & );
 
@@ -49,4 +79,17 @@ private:
 
 	inline static Hertz  m_frequency  { 0_Hertz };
 	inline static fHertz m_fFrequency { 0.0_fHertz};
+
+	fMicroSecs TicksToMicroSecs( Ticks const ticks ) const
+	{
+		return fMicroSecs( ticks.GetValue() * fMICROSECS_TO_SECONDS / m_fFrequency.GetValue() );
+	}
+
+	Ticks MicroSecsToTicks( fMicroSecs const us ) const
+	{
+		return Ticks( static_cast<long long>( (us.GetValue() * m_fFrequency.GetValue()) / fMICROSECS_TO_SECONDS ) );
+	}
+
+	microseconds TicksToMicroseconds( Ticks const ) const;
+	Ticks MicroSecondsToTicks( microseconds const ) const;
 };

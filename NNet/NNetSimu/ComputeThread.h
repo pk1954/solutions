@@ -8,8 +8,8 @@
 #include "win32_event.h"
 #include "win32_hiResTimer.h"
 #include "win32_thread.h"
+#include "NNetParameters.h"
 
-class Param;
 class NNetModel;
 class SlowMotionRatio;
 
@@ -39,9 +39,9 @@ public:
 
 	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_usRealTimeAvailPerCycle; }
 	fMicroSecs GetTimeSpentPerCycle ( ) const { return m_usRealTimeSpentPerCycle; }
+	fMicroSecs GetRealTimeTilStart  ( ) const { return m_hrTimer.GetMicroSecsTilStart(); }
+	fMicroSecs GetSimuTimeResolution( ) const { return m_pParam->GetTimeResolution(); }
 	fMicroSecs GetSimulationTime    ( ) const;
-	fMicroSecs GetRealTimeTilStart  ( ) const;
-	fMicroSecs GetSimuTimeResolution( ) const;
 
 	void AddRunObserver( ObserverInterface * pObserver )
 	{
@@ -55,18 +55,7 @@ public:
 
 private:
 
-	class TimeResObserver : public ObserverInterface
-	{
-	public:
-		TimeResObserver( ComputeThread * const pComputeThread )
-			: m_pThread( pComputeThread )
-		{}
-
-		virtual void Notify( bool const );
-
-	private:
-		ComputeThread * const m_pThread;
-	};
+	class TimeResObserver;
 
 	long computeCyclesTodo( fMicroSecs const );
 	void compute();

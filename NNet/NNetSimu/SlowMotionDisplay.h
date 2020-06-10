@@ -14,13 +14,14 @@ class SlowMotionDisplay : public ObserverInterface
 public:
 	void Initialize( StatusBar *, SlowMotionRatio *, int );
 
-	~SlowMotionDisplay();
-
 	virtual void Notify( bool const );
 
 private:
 
 	class RefreshRate;
 
-	RefreshRate * m_pRefreshRate;
+	wstring           m_wstring;
+	StatusBar       * m_pStatusBar;
+	int               m_iPartInStatusBar;
+	SlowMotionRatio * m_pSlowMotionRatio;
 };

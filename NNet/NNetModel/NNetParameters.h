@@ -6,7 +6,6 @@
 
 #include <chrono>
 #include "Observable.h"
-#include "d2d1helper.h"
 #include "MoreTypes.h"
 #include "tParameter.h"
 
@@ -17,7 +16,7 @@ class Param
 public:
 	~Param();
 
-	fMicroSecs  const GetTimeResolution ( ) const 
+	fMicroSecs  const GetTimeResolution( ) const 
 	{ 
 		return m_usResolution; 
 	}

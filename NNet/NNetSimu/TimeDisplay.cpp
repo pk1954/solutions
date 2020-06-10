@@ -66,7 +66,7 @@ private:
 
 using namespace std::chrono;
 
-void TimeDisplay::Initialize
+void TimeDisplay::Start
 (
 	StatusBar                      * pStatusBar,
 	NNetModelReaderInterface const * pModelInterface,
@@ -83,7 +83,7 @@ void TimeDisplay::Initialize
 	pStatusBar->AddCustomControl( 8 );        // nr of characters 
 }
 
-TimeDisplay::~TimeDisplay( )
+void TimeDisplay::Stop( )
 {
 	delete m_pRefreshRate;
 	m_pRefreshRate = nullptr;

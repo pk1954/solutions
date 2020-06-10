@@ -4,10 +4,26 @@
 
 #include "stdafx.h"
 #include "NNetModel.h"
-#include "NNetParameters.h"
 #include "SlowMotionRatio.h"
 #include "win32_fatalError.h"
 #include "ComputeThread.h"
+
+class ComputeThread::TimeResObserver : public ObserverInterface
+{
+public:
+	TimeResObserver( ComputeThread * const pComputeThread )
+		: m_pThread( pComputeThread )
+	{}
+
+	virtual void Notify( bool const bImmediate )
+	{
+		m_pThread->m_usRealTimeAvailPerCycle = m_pThread->m_pSlowMotionRatio->SimuTime2RealTime( m_pThread->GetSimuTimeResolution() );
+		m_pThread->Reset( );
+	}
+
+private:
+	ComputeThread * const m_pThread;
+};
 
 ComputeThread::ComputeThread( )
 {
@@ -42,7 +58,7 @@ void ComputeThread::RunComputation( )
 	{
 		m_bContinue = true;
 		m_runObservable.NotifyAll( false);
-		m_hrTimer.Start();
+		Reset( );
 		m_runEvent.Continue();
 	}
 }
@@ -79,11 +95,11 @@ void ComputeThread::Reset( )
 
 long ComputeThread::computeCyclesTodo( fMicroSecs const usTilStartRealTime )
 {
-	fMicroSecs const usTilStartSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( usTilStartRealTime ) };
-	fMicroSecs const usActualSimuTime   { m_pModel->GetSimulationTime( ) };                                // get actual time stamp
-	fMicroSecs const usMissingSimuTime  { usTilStartSimuTime - usActualSimuTime };                         // compute missing simulation time
-	long       const lCyclesTodo        { CastToLong(usMissingSimuTime/ m_pParam->GetTimeResolution( )) }; // compute # cycles to be computed
-	return min( lCyclesTodo, 1L );
+	fMicroSecs const usNominalSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( usTilStartRealTime ) };
+	fMicroSecs const usActualSimuTime  { m_pModel->GetSimulationTime( ) };                                // get actual time stamp
+	fMicroSecs const usMissingSimuTime { usNominalSimuTime - usActualSimuTime };                          // compute missing simulation time
+	long       const lCyclesTodo       { CastToLong(usMissingSimuTime / m_pParam->GetTimeResolution()) }; // compute # cycles to be computed
+	return max( 0, lCyclesTodo );
 }
 
 void ComputeThread::compute() 
@@ -107,21 +123,6 @@ void ComputeThread::compute()
 		m_usRealTimeSpentPerCycle = usSpentInCompute / CastToFloat(lCyclesTodo);
 		m_performanceObservable.NotifyAll( false);
 	}
-}
-
-void ComputeThread::TimeResObserver::Notify( bool const bImmediate )
-{
-	m_pThread->m_usRealTimeAvailPerCycle = m_pThread->m_pSlowMotionRatio->SimuTime2RealTime( m_pThread->GetSimuTimeResolution() );
-}
-
-fMicroSecs ComputeThread::GetSimuTimeResolution( ) const 
-{ 
-	return m_pParam->GetTimeResolution( ); 
-}
-
-fMicroSecs ComputeThread::GetRealTimeTilStart( ) const 
-{ 
-	return m_hrTimer.GetMicroSecsTilStart( ); 
 }
 
 fMicroSecs ComputeThread::GetSimulationTime( ) const 

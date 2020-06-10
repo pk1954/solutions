@@ -7,14 +7,6 @@
 #include "NamedType.h"
 #include "win32_HiResTimer.h"
 
-// Gets the high-resolution timer's value
-inline Ticks HiResTimer::ReadHiResTimer( ) const
-{
-    LARGE_INTEGER value;
-    (void)QueryPerformanceCounter( & value );
-    return Ticks( value.QuadPart );
-}
-
 HiResTimer::HiResTimer( )
 {
     if ( m_frequency == 0_Hertz )                  // frequency is constant for given CPU
@@ -24,30 +16,6 @@ HiResTimer::HiResTimer( )
         m_frequency  = Hertz( CastToUnsignedLong( value.QuadPart ) );
 		m_fFrequency = fHertz( static_cast<float>( m_frequency.GetValue() ) );
     }
-}
-
-void HiResTimer::Start( )
-{
-	if ( ! m_bStarted )
-		m_ticksOnStart = ReadHiResTimer( );
-	m_bStarted = true;
-}
-
-Ticks HiResTimer::GetTicksTilStart( ) const
-{
-	return ReadHiResTimer( ) - m_ticksOnStart;
-}
-
-fMicroSecs HiResTimer::GetMicroSecsTilStart( ) const
-{
-	return TicksToMicroSecs( GetTicksTilStart() );
-}
-
-void HiResTimer::Stop( )
-{
-	if ( m_bStarted )
-		m_ticksAccumulated += GetTicksTilStart( );
-	m_bStarted = false;
 }
 
 Ticks HiResTimer::MicroSecondsToTicks( microseconds const time ) const
@@ -66,26 +34,6 @@ microseconds HiResTimer::TicksToMicroseconds( Ticks const ticks ) const
 		( ullTicks * MICROSECONDS_TO_SECONDS ) // converts from seconds to microseconds.
 		/ m_frequency.GetValue()               // multiply *before* division, otherwise
 	);                                         // division would truncate too many significant digits
-
-	return result;
-}
-
-Ticks HiResTimer::MicroSecsToTicks( fMicroSecs const us ) const
-{
-	return Ticks( static_cast<long long>( (us.GetValue() * m_fFrequency.GetValue()) / fMICROSECS_TO_SECONDS ) );
-}
-
-fMicroSecs HiResTimer::TicksToMicroSecs( Ticks const ticks ) const
-{
-	return fMicroSecs( ticks.GetValue() * fMICROSECS_TO_SECONDS / m_fFrequency.GetValue() );
-}
-
-microseconds HiResTimer::GetDuration( )
-{
-	assert( ! m_bStarted );
-
-	microseconds result = TicksToMicroseconds( m_ticksAccumulated );
-	m_ticksAccumulated = Ticks( 0 );
 
 	return result;
 }

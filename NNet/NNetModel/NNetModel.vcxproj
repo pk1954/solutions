@@ -184,7 +184,6 @@
   <ItemGroup>
     <ClInclude Include="Analyzer.h" />
     <ClInclude Include="BaseKnot.h" />
-    <ClInclude Include="ComputeThread.h" />
     <ClInclude Include="DrawContext.h" />
     <ClInclude Include="InputNeuron.h" />
     <ClInclude Include="Knot.h" />
@@ -208,7 +207,6 @@
   <ItemGroup>
     <ClCompile Include="Analyzer.cpp" />
     <ClCompile Include="BaseKnot.cpp" />
-    <ClCompile Include="ComputeThread.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
     <ClCompile Include="Knot.cpp" />
     <ClCompile Include="Neuron.cpp" />

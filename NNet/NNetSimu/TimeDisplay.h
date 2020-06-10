@@ -12,9 +12,9 @@ class NNetModelReaderInterface;
 class TimeDisplay : public ObserverInterface
 {
 public:
-	void Initialize( StatusBar *, NNetModelReaderInterface const *, int );
+	void Start( StatusBar *, NNetModelReaderInterface const *, int );
 
-	~TimeDisplay();
+	void Stop();
 
 	virtual void Notify( bool const );
 
