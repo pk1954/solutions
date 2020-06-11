@@ -151,7 +151,7 @@ void NNetAppWindow::Start( )
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",   IDM_STATUS_BAR,   m_StatusBar.GetWindowHandle(), false, false );
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  m_crsrWindow,                  true,  false );
 	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  m_mainNNetWindow,              true,  false );
-	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",  IDM_MINI_WINDOW,  m_miniNNetWindow,              true,  false );
+	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",  IDM_MINI_WINDOW,  m_miniNNetWindow,              true,  true  );
 	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW", IDM_PARAM_WINDOW, m_parameterDlg,                true,  false );
 	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",  IDM_PERF_WINDOW,  m_performanceWindow,           true,  false );
 
@@ -187,6 +187,11 @@ void NNetAppWindow::Start( )
 //	m_pNNetModelStorage->Write( wcout );
 
 	PostCommand2Application( IDM_RUN, true );
+
+	RECT rectParam = Util::GetClRect( m_parameterDlg.GetWindowHandle() );
+	RECT rectCrsr  = Util::GetClRect( m_crsrWindow.GetWindowHandle() );
+	RECT rectPerf  = Util::GetClRect( m_performanceWindow.GetWindowHandle() );
+	RECT rectMini  = Util::GetClRect( m_miniNNetWindow.GetWindowHandle() );
 
 	m_bStarted = true;
 }

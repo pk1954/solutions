@@ -122,16 +122,12 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         break;
 
     case IDM_SLOWER:
-        if ( m_pSlowMotionRatio->IncRatio( ) )
-            ; //m_pComputeThread->Reset( );
-        else
+        if ( ! m_pSlowMotionRatio->IncRatio( ) )
             MessageBeep( MB_ICONWARNING );
         break;
 
     case IDM_FASTER:
-        if ( m_pSlowMotionRatio->DecRatio( ) )
-            ; // m_pComputeThread->Reset( );
-        else
+        if ( ! m_pSlowMotionRatio->DecRatio( ) )
             MessageBeep( MB_ICONWARNING );
         break;
 
