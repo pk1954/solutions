@@ -427,8 +427,8 @@ bool Script::ScrProcess
 	m_bStop = false;
     try 
     {  
-        m_fileSize =  std::filesystem::file_size( wstrPath );
         scan.OpenInputFile( wstrPath ); // open script file 
+        m_fileSize = std::filesystem::file_size( wstrPath );
 
 		for (;;)
         {
