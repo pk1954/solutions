@@ -92,7 +92,7 @@ NNetAppWindow::NNetAppWindow( )
 		& m_statusBarDispFunctor
 	);
 
-	m_mainNNetWindow   .SetRefreshRate( 0ms );
+	m_mainNNetWindow   .SetRefreshRate(   0ms );   // immediate refresh
 	m_miniNNetWindow   .SetRefreshRate( 200ms );
 	m_crsrWindow       .SetRefreshRate( 100ms );
 	m_performanceWindow.SetRefreshRate( 500ms );
@@ -105,7 +105,7 @@ NNetAppWindow::~NNetAppWindow( )
 
 void NNetAppWindow::Start( )
 {
-	m_computeThread.Start( & m_model, & m_parameters, & m_SlowMotionRatio );
+	m_computeThread.Start( & m_model, & m_parameters, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable	);
 	m_appMenu      .Start( m_hwndApp, & m_computeThread, & m_WinManager );
 	m_StatusBar    .Start( m_hwndApp );
 
@@ -161,6 +161,13 @@ void NNetAppWindow::Start( )
 	m_staticModelObservable .RegisterObserver( & m_mainNNetWindow );
 	m_staticModelObservable .RegisterObserver( & m_miniNNetWindow );
 	m_cursorPosObservable   .RegisterObserver( & m_crsrWindow );
+	m_performanceObservable .RegisterObserver( & m_performanceWindow );
+	m_modelTimeObservable   .RegisterObserver( & m_timeDisplay );
+	m_runObservable         .RegisterObserver( & m_simulationControl );
+	m_SlowMotionRatio       .RegisterObserver( & m_slowMotionDisplay );
+	m_SlowMotionRatio       .RegisterObserver( & m_computeThread );
+	m_parameters            .RegisterObserver( & m_computeThread );
+	m_parameters            .RegisterObserver( & m_parameterDlg );
 
 	m_miniNNetWindow.Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
 
@@ -266,14 +273,12 @@ void NNetAppWindow::configureStatusBar( )
 {
 	int iPartScriptLine = 0;
 	m_timeDisplay.Start( & m_StatusBar, & m_modelReaderInterface, iPartScriptLine );
-	m_modelTimeObservable.RegisterObserver( & m_timeDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	m_simulationControl.Initialize( & m_StatusBar, & m_computeThread );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	m_slowMotionDisplay.Initialize( & m_StatusBar, & m_SlowMotionRatio, iPartScriptLine );
-	m_SlowMotionRatio.RegisterObserver( & m_slowMotionDisplay );
 
 	iPartScriptLine = m_StatusBar.NewPart( );
 	SlowMotionControl::Add( & m_StatusBar );

@@ -11,19 +11,12 @@
 
 using namespace std::chrono;
 
-class Param
+class Param : public Observable
 {
 public:
-	~Param();
-
-	fMicroSecs  const GetTimeResolution( ) const 
+	fMicroSecs const GetTimeResolution( ) const 
 	{ 
 		return m_usResolution; 
-	}
-
-	void AddParameterObserver( ObserverInterface * pObs ) 
-	{ 
-		m_observable.RegisterObserver( pObs ); 
 	}
 
 	float const GetParameterValue( tParameter const ) const;
@@ -33,8 +26,6 @@ public:
 	void       SetEmphasizeMode( bool const bMode ) { m_bEmphasizeMode = bMode; } 
 
 private:
-	Observable m_observable { };
-
 	bool        m_bEmphasizeMode  { false };
 
 	mV          m_threshold    { 20._mV            };

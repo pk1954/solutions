@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Observable.h"
+#include "ObserverInterface.h"
 #include "win32_event.h"
 #include "win32_hiResTimer.h"
 #include "win32_thread.h"
@@ -13,25 +14,25 @@
 class NNetModel;
 class SlowMotionRatio;
 
-class ComputeThread: public Util::Thread
+class ComputeThread: public Util::Thread, public ObserverInterface
 {
 public:
-
-	ComputeThread();
-	~ComputeThread();
 
 	void Start
 	(
 		NNetModel       * const,
 		Param           * const,
-		SlowMotionRatio * const
+		SlowMotionRatio * const,
+		Observable      * const,
+		Observable      * const
 	);
 
 	virtual void ThreadStartupFunc( );
 	virtual void ThreadMsgDispatcher( MSG const ) { };
+	virtual void Notify( bool const bImmediate ) { Reset( ); }
 
 	void Reset( );
-	void SingleStep( ) { compute(); }
+	void SingleStep( );
 
 	void RunComputation( );
 	void StopComputation( );
@@ -43,33 +44,21 @@ public:
 	fMicroSecs GetSimuTimeResolution( ) const { return m_pParam->GetTimeResolution(); }
 	fMicroSecs GetSimulationTime    ( ) const;
 
-	void AddRunObserver( ObserverInterface * pObserver )
-	{
-		m_runObservable.RegisterObserver( pObserver );
-	}
-
-	void AddPerformanceObserver( ObserverInterface * pObserver )
-	{
-		m_performanceObservable.RegisterObserver( pObserver );
-	}
-
 private:
 
 	class TimeResObserver;
 
-	long computeCyclesTodo( fMicroSecs const );
 	void compute();
 
-	TimeResObserver * m_pTimeResObserver        { nullptr };
 	NNetModel       * m_pModel                  { nullptr };
 	Param           * m_pParam                  { nullptr };
 	SlowMotionRatio * m_pSlowMotionRatio        { nullptr };
+	Observable      * m_pRunObservable          { nullptr };
+	Observable      * m_pPerformanceObservable  { nullptr };
 	fMicroSecs        m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
 	fMicroSecs        m_usRealTimeAvailPerCycle { 0.0_MicroSecs };
 	bool              m_bContinue               { false };
 	bool              m_bWaiting                { false };
 	HiResTimer        m_hrTimer                 { };
-	Observable        m_runObservable           { };
-	Observable        m_performanceObservable   { };
 	Util::Event       m_runEvent                { };
 };

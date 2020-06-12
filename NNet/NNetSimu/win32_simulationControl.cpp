@@ -19,8 +19,6 @@ void SimulationControl::Initialize
 	m_pStatusBar->AddButton( L"SingleStep", (HMENU)IDM_FORWARD, BS_PUSHBUTTON ); 
 	m_pStatusBar->AddButton( L"   Run    ", (HMENU)IDM_RUN,     BS_PUSHBUTTON ); 
 	m_pStatusBar->AddButton( L"  Stop    ", (HMENU)IDM_STOP,    BS_PUSHBUTTON ); 
-
-	m_pComputeThread->AddRunObserver( this );
 }
 
 void SimulationControl::Notify( bool const bImmediate )

@@ -98,6 +98,8 @@ private:
 	Observable               m_modelTimeObservable    { };
 	Observable               m_staticModelObservable  { };
 	Observable               m_dynamicModelObservable { };
+	Observable               m_runObservable          { };
+	Observable               m_performanceObservable  { };
 	NNetModelReaderInterface m_modelReaderInterface   { };
 	NNetModelWriterInterface m_modelWriterInterface   { };
 	ComputeThread            m_computeThread          { };

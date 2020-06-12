@@ -121,8 +121,6 @@ void ParameterDialog::Start
 
 	createButton( hwndDlg, L"Apply", 140, iYpos, 50, 20, (HMENU)IDD_APPLY_PARAMETERS );
 	createButton( hwndDlg, L"Reset", 200, iYpos, 50, 20, (HMENU)IDD_RESET_PARAMETERS );
-
-	pParams->AddParameterObserver( this );
 }
 
 void ParameterDialog::Stop( )

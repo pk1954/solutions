@@ -5,11 +5,6 @@
 #include "stdafx.h"
 #include "NNetParameters.h"
 
-Param::~Param( )
-{
-	m_observable.UnregisterAllObservers();
-}
-
 float const Param::GetParameterValue( tParameter const param ) const
 {
 	switch ( param )
@@ -43,5 +38,6 @@ void Param::SetParameterValue
 		case tParameter::signalLoss: /* not used, only for compaitibility reasons */                break;
 		default: assert( false );
 	}
-	m_observable.NotifyAll( false );
+
+	NotifyAll( false );
 }

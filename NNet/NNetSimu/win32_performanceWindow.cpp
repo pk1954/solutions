@@ -37,7 +37,6 @@ void PerformanceWindow::Start
 	m_pComputeThread        = pComputeThread;
 	m_pDisplayTimer         = pDisplayTimer;
 	m_pModelReaderInterface = pModelInterface;
-	m_pComputeThread->AddPerformanceObserver( this ); // notify me on computation performance changes 
 }
 
 void PerformanceWindow::Stop( )
