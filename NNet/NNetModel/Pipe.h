@@ -100,16 +100,17 @@ private:
 	inline static MicroMeter    m_arrowSize { STD_ARROW_SIZE };
 	inline static unsigned long m_counter   { 0L };
 
-	typedef vector<mV> tPotentialVector;
+	typedef vector<mV>                       tPotentialVector;
+	typedef tPotentialVector::iterator       tPotIter;
+	typedef tPotentialVector::const_iterator tPotConstIter;
 
-	BaseKnot                 * m_pKnotStart { nullptr };
-	BaseKnot                 * m_pKnotEnd   { nullptr };
-	MicroMeter                 m_width      { PIPE_WIDTH };
-	tPotentialVector           m_potential  { };
-	tPotentialVector::iterator m_potIter    { };
+	BaseKnot       * m_pKnotStart { nullptr };
+	BaseKnot       * m_pKnotEnd   { nullptr };
+	MicroMeter       m_width      { PIPE_WIDTH };
+	tPotentialVector m_potential  { };
+	tPotIter         m_potIter    { };
 
 	void dislocate( BaseKnot * const, MicroMeter const );
-	MicroMeterPoint drawSegment( DrawContext const &, MicroMeterPoint const &, MicroMeterPoint const &, MicroMeter const, mV const ) const;
 };
 
 Pipe const * Cast2Pipe( Shape const * );

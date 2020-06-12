@@ -86,31 +86,6 @@ bool Pipe::IsPointInShape( MicroMeterPoint const & point ) const
 	return IsPointInRect2<MicroMeterPoint>( point, umPoint1, umPoint2, umOrthoScaled );
 }
 
-mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
-{
-	mV mVresult { 0._mV };
-	MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
-	if ( ! IsCloseToZero( umVector ) )
-	{
-		MicroMeterPoint const umSegVec     { umVector / CastToFloat(m_potential.size()) };
-		MicroMeterPoint const umOrthoScaled{ OrthoVector( umVector, m_width ) };
-		MicroMeterPoint       umPoint1     { GetStartPoint( ) };
-		for ( tPotentialVector::const_iterator iter = m_potIter; iter != m_potIter; ++iter )
-		{
-			if ( iter == m_potential.end() )
-				iter = m_potential.begin();
-			MicroMeterPoint const umPoint2 { umPoint1 + umSegVec };
-			if ( IsPointInRect2< MicroMeterPoint >( point, umPoint1, umPoint2, umOrthoScaled ) )
-			{
-				mVresult = * iter;
-				break;
-			}
-			umPoint1 = umPoint2;
-		};
-	}
-	return mVresult;
-}
-
 MicroMeterPoint Pipe::GetVector( ) const
 {
 	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
@@ -142,34 +117,57 @@ void Pipe::DrawExterior( DrawContext const & context, tHighlightType const type 
 	}
 }
 
-MicroMeterPoint Pipe::drawSegment( DrawContext const & context, MicroMeterPoint const & umP1, MicroMeterPoint const & umPixSegVec, MicroMeter const umWidth, mV const voltage ) const
-{
-	MicroMeterPoint  const umP2  { umP1 + umPixSegVec };
-	D2D1::ColorF const colF { GetInteriorColor( voltage ) };
-	context.DrawLine( umP1, umP2, umWidth, colF );
-	return umP2;
-}
-
 void Pipe::DrawInterior( DrawContext const & context ) const
 {
-	MicroMeterPoint const umStartPoint { GetStartPoint( ) };
-	MicroMeterPoint const umEndPoint   { GetEndPoint  ( ) };
-	MicroMeterPoint const umVector     { umEndPoint - umStartPoint };
+	MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
 	if ( ! IsCloseToZero( umVector ) )
 	{
-		MicroMeter           const umWidth     { m_width * PIPE_INTERIOR };
-		MicroMeterPoint      const umPixSegVec { umVector / static_cast<float>(m_potential.size()) };
-		MicroMeterPoint            umPoint     { umStartPoint };
-		tPotentialVector::iterator potIter     { m_potIter };
-
-		auto iter = potIter; 
+		MicroMeter      const umWidth  { m_width * PIPE_INTERIOR };
+		MicroMeterPoint const umSegVec { umVector / CastToFloat(m_potential.size()) };
+		MicroMeterPoint       umPoint  { GetStartPoint( ) };
+		tPotConstIter   const potIter  { m_potIter };
+		tPotConstIter         iter     { potIter }; 
 		do 
 		{
 			if (++iter == m_potential.end()) 
-				iter = potIter; 
-			umPoint = drawSegment( context, umPoint, umPixSegVec, umWidth, * iter );
+				iter = m_potential.begin(); 
+
+			MicroMeterPoint const umPointNext { umPoint + umSegVec };
+			context.DrawLine( umPoint, umPointNext, umWidth, GetInteriorColor( * iter ) );
+			umPoint = umPointNext;
+
 		} while (iter != potIter );
 	}
+}
+
+mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
+{
+	mV mVresult { 0._mV };
+	MicroMeterPoint const umVector { GetEndPoint( ) - GetStartPoint( ) };
+	if ( ! IsCloseToZero( umVector ) )
+	{
+		MicroMeterPoint const umOrthoScaled { OrthoVector( umVector, m_width ) };
+
+		MicroMeterPoint const umSegVec { umVector / CastToFloat(m_potential.size()) };
+		MicroMeterPoint       umPoint  { GetStartPoint( ) };
+		tPotConstIter   const potIter  { m_potIter };
+		tPotConstIter         iter     { potIter }; 
+		do 
+		{
+			if (++iter == m_potential.end()) 
+				iter = m_potential.begin();
+
+			MicroMeterPoint const umPoint2 { umPoint  + umSegVec };
+			if ( IsPointInRect2< MicroMeterPoint >( point, umPoint, umPoint2, umOrthoScaled ) )
+			{
+				mVresult = * iter;
+				break;
+			}
+			umPoint = umPoint2;
+
+		} while (iter != potIter );
+	}
+	return mVresult;
 }
 
 Pipe const * Cast2Pipe( Shape const * pShape )

@@ -23,7 +23,6 @@ HWND BaseDialog::StartBaseDialog
     );
 
 	SetWindowHandle( hwnd );
-
 	StartRootWindow( visibilityCriterion );
 
 	return hwnd;
