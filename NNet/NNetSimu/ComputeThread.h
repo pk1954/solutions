@@ -46,10 +46,6 @@ public:
 
 private:
 
-	class TimeResObserver;
-
-	void compute();
-
 	NNetModel       * m_pModel                  { nullptr };
 	Param           * m_pParam                  { nullptr };
 	SlowMotionRatio * m_pSlowMotionRatio        { nullptr };

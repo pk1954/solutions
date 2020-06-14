@@ -191,14 +191,10 @@ void NNetAppWindow::Start( )
 	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( & m_modelStorage ) )
 		m_modelWriterInterface.ResetModel( );
 
-//	m_pNNetModelStorage->Write( wcout );
-
-	PostCommand2Application( IDM_RUN, true );
-
-	RECT rectParam = Util::GetClRect( m_parameterDlg.GetWindowHandle() );
-	RECT rectCrsr  = Util::GetClRect( m_crsrWindow.GetWindowHandle() );
-	RECT rectPerf  = Util::GetClRect( m_performanceWindow.GetWindowHandle() );
-	RECT rectMini  = Util::GetClRect( m_miniNNetWindow.GetWindowHandle() );
+	//RECT rectParam = Util::GetClRect( m_parameterDlg.GetWindowHandle() );
+	//RECT rectCrsr  = Util::GetClRect( m_crsrWindow.GetWindowHandle() );
+	//RECT rectPerf  = Util::GetClRect( m_performanceWindow.GetWindowHandle() );
+	//RECT rectMini  = Util::GetClRect( m_miniNNetWindow.GetWindowHandle() );
 
 	m_bStarted = true;
 }
@@ -369,9 +365,13 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_READ_MODEL_FINISHED:
-		m_StatusBar.DisplayInPart( m_statusMessagePart, L"" );
-		m_computeThread.RunComputation( );
-		m_mainNNetWindow.CenterModel( true );
+		if ( bool bSuccess { static_cast<bool>(lParam) } )
+		{
+			m_StatusBar.DisplayInPart( m_statusMessagePart, L"" );
+			m_computeThread.RunComputation( );
+			m_mainNNetWindow.CenterModel( true );
+			Preferences::WritePreferences( m_modelStorage.GetModelPath() );
+		}
 		break;
 
 	case IDM_NEW_MODEL:

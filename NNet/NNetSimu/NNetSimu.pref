@@ -1,5 +1,0 @@
-SetSound ON
-SetAutoOpen ON
-ReadModel "D:\SW-projects\Solutions\NNet\3In2Out40Hz.mod"
-SetPixelOffset (-769.847/-268)
-SetPixelSize 1.68999

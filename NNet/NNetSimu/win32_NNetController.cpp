@@ -155,6 +155,11 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         AutoOpen::Off();
         break;
 
+    case IDD_STOP_ON_TRIGGER:                 // effects model, but seems to be secure  
+        Sound::Play( TEXT("SNAP_IN_SOUND") ); 
+        m_pModelWriterInterface->ToggleStopOnTrigger( m_pNNetWindow->GetHighlightedShapeId() );
+        break;
+
     case IDM_REFRESH:
         m_pNNetWindow->Notify( lParam != 0 );
         break;
@@ -309,11 +314,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
     case IDD_CONVERT2NEURON:
         Sound::Play( TEXT("UNLOCK_SOUND") ); 
         m_pModelWriterInterface->Convert2Neuron( m_pNNetWindow->GetHighlightedShapeId() );
-        break;
-
-    case IDD_STOP_ON_TRIGGER:
-        Sound::Play( TEXT("SNAP_IN_SOUND") ); 
-        m_pModelWriterInterface->ToggleStopOnTrigger( m_pNNetWindow->GetHighlightedShapeId() );
         break;
 
     case IDD_CONVERT2INPUT_NEURON:

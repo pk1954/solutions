@@ -472,6 +472,7 @@ bool Script::ScrProcess
     catch ( ScriptErrorHandler::ScriptErrorInfo const & errInfo )
     {
         ScriptErrorHandler::handleScriptError( errInfo, * m_pScanAct );
+        m_pScanAct = nullptr;
         return false;
     }
 

@@ -101,11 +101,10 @@ bool Preferences::ReadPreferences( NNetModelStorage * pStorage )
     m_pNNetModelStorage = pStorage;
     if ( exists( m_wstrPreferencesFile ) )
     {
-        wcout << L"*** preferences file " << m_wstrPreferencesFile;
-        wcout << L" opened" << endl;
+        wcout << L"*** read preferences file " << m_wstrPreferencesFile << endl;
         bool bRes { Script::ProcessScript( m_wstrPreferencesFile ) };
         if ( bRes )
-            wcout << L"*** processed successfully " << endl;
+            wcout << L"*** preferences file processed successfully " << endl;
         return bRes;
     }
     else 
