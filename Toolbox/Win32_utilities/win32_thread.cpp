@@ -20,18 +20,26 @@ HANDLE Util::RunAsAsyncThread
 	return res;
 }
 
+void Util::Thread::BeginThread
+(  
+	wstring const & strName // for debugging only
+)
+{
+	m_strThreadName = strName;
+	m_handle = RunAsAsyncThread( Util::ThreadProc, static_cast<void *>(this), & m_threadId );
+	assert( m_handle != nullptr );
+}
+
 void Util::Thread::StartThread
 (  
 	wstring const & strName, // for debugging only
 	bool    const   bAsync
 )
 {
-	m_strThreadName = strName;
-	m_bAsync        = bAsync;
+	m_bAsync = bAsync;
 	if ( m_bAsync )
 	{
-		m_handle = RunAsAsyncThread( Util::ThreadProc, static_cast<void *>(this), & m_threadId );
-		assert( m_handle != nullptr );
+		BeginThread( strName );
 		m_eventThreadStarter.Wait();
 	}
 }

@@ -36,27 +36,25 @@ public:
 
 	virtual void Trigger( )
 	{
+		static int const BUFSIZE { 100 };
+		wchar_t buffer[BUFSIZE];
 		fMicroSecs const time = m_pModelReaderInterface->GetSimulationTime( );
-		m_wstrBuffer.str( wstring() );
-		m_wstrBuffer.clear();
-		m_wstrBuffer << std::fixed << std::setprecision(2);
 		if ( time > 1.e6_MicroSecs )  // more than one second
 		{
-			float seconds = CastToFloat( time.GetValue() ) / 1000000.0f;
-			m_wstrBuffer << seconds << L" s";
+			float seconds = time.GetValue() / 1000000.0f;
+			swprintf( buffer, BUFSIZE, L"%.2f s", seconds );
 		}
 		else
 		{
-			float millisecs = CastToFloat( time.GetValue() ) / 1000.0f;
-			m_wstrBuffer << millisecs << L" ms";
+			float millisecs = time.GetValue() / 1000.0f;
+			swprintf( buffer, BUFSIZE, L"%.2f ms", millisecs );
 		}
-		m_wstring = m_wstrBuffer.str();
+		m_wstring.assign( buffer );
 		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstring );
 	}
 
 private:
 	wstring                          m_wstring               { };
-	wostringstream                   m_wstrBuffer            { };
 	StatusBar                      * m_pStatusBar            { nullptr };
 	NNetModelReaderInterface const * m_pModelReaderInterface { nullptr };
 	int                              m_iPartInStatusBar      { -1 };

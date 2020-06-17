@@ -20,6 +20,7 @@ namespace Util
 
 		~Thread() {};
 
+		void BeginThread( wstring const & );
 		void StartThread( wstring const &, bool const );
 
 		void SetThreadAffinityMask( DWORD_PTR mask )

@@ -226,12 +226,7 @@ public:
 	void Convert2InputNeuron( ShapeId const );
 	void Disconnect         ( ShapeId const );
 	void ToggleStopOnTrigger( ShapeId const );
-	void RemoveShape        ( ShapeId const id ) 
-	{ 
-		removeShape( GetShape( id ) ); 
-		staticModelChanged( );
-	}
-
+	void RemoveShape        ( ShapeId const ); 
 	void RecalcAllShapes( );
 	void ResetModel( );
 

@@ -191,6 +191,8 @@ void NNetAppWindow::Start( )
 	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( & m_modelStorage ) )
 		m_modelWriterInterface.ResetModel( );
 
+	m_computeThread.RunComputation();
+
 	//RECT rectParam = Util::GetClRect( m_parameterDlg.GetWindowHandle() );
 	//RECT rectCrsr  = Util::GetClRect( m_crsrWindow.GetWindowHandle() );
 	//RECT rectPerf  = Util::GetClRect( m_performanceWindow.GetWindowHandle() );
@@ -213,7 +215,7 @@ void NNetAppWindow::Stop()
 	m_appMenu          .Stop( );
 
 	m_staticModelObservable.UnregisterAllObservers( );
-	m_computeThread.StopComputation();
+	m_computeThread.LockComputation();
 	m_modelReaderInterface.Stop( );
 	m_modelWriterInterface.Stop( );
 
@@ -356,31 +358,33 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		m_ScriptHook.DisplayScriptProgress( m_script );
 		break;
 
-	case IDM_OPEN_MODEL:
-		if ( m_modelStorage.AskAndSave( ) && m_modelStorage.AskModelFile() )
-		{
-			m_computeThread.StopComputation( );
-			m_modelStorage.Read( );
-		}
-		break;
-
-	case IDM_READ_MODEL_FINISHED:
-		if ( bool bSuccess { static_cast<bool>(lParam) } )
-		{
-			m_StatusBar.DisplayInPart( m_statusMessagePart, L"" );
-			m_computeThread.RunComputation( );
-			m_mainNNetWindow.CenterModel( true );
-			Preferences::WritePreferences( m_modelStorage.GetModelPath() );
-		}
-		break;
-
 	case IDM_NEW_MODEL:
+		m_computeThread.LockComputation( );  // will be restarted when centering complete
 		if ( m_modelStorage.AskAndSave( ) )
 		{
 			m_modelWriterInterface.ResetModel( );
 			m_modelWriterInterface.ResetTimer( );
 			m_mainNNetWindow.CenterModel( true );
 			m_modelStorage.ResetModelPath( );
+		}
+		else
+			m_computeThread.ReleaseComputationLock( );
+		break;
+
+	case IDM_OPEN_MODEL:
+		m_computeThread.LockComputation( );  // will be restarted later
+		if ( m_modelStorage.AskAndSave( ) && m_modelStorage.AskModelFile() )
+			m_modelStorage.Read( );         // will post IDM_READ_MODEL_FINISHED when done
+		else
+			m_computeThread.ReleaseComputationLock( );
+		break;
+
+	case IDM_READ_MODEL_FINISHED:
+		if ( bool bSuccess { static_cast<bool>(lParam) } )
+		{
+			m_StatusBar.DisplayInPart( m_statusMessagePart, L"" );
+			Preferences::WritePreferences( m_modelStorage.GetModelPath() );
+			m_mainNNetWindow.CenterModel( true );  // computation will be started when done
 		}
 		break;
 

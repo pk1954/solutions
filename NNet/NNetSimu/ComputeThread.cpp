@@ -23,39 +23,71 @@ void ComputeThread::Start
 	m_pPerformanceObservable = pPerformanceObservable;
 	m_pSlowMotionRatio       = pSlowMotionRatio;
 	Reset( );
-	StartThread( L"ComputeThread", true ); 
+	AcquireSRWLockExclusive( & m_srwlStopped );
+	BeginThread( L"ComputeThread" ); 
+}
+
+void ComputeThread::ReleaseComputationLock( )
+{
+	if ( m_bComputationLocked )
+	{
+		m_bComputationLocked = false;
+		if ( ! m_bStopped )  // both locks are released. We can start to run
+			runComputation();
+	}
+}
+
+void ComputeThread::LockComputation( )
+{
+	if ( ! m_bComputationLocked )
+	{
+		m_bComputationLocked = true;
+		if ( ! m_bStopped )      // if not already stopped, stop now
+			stopComputation();
+	}
 }
 
 void ComputeThread::RunComputation( )
 {
-	if ( ! m_bContinue )
+	if ( m_bStopped )
 	{
-		m_bContinue = true;
-		m_pRunObservable->NotifyAll( false);
-		Reset( );
-		m_runEvent.Continue();
+		m_bStopped = false;
+		if ( ! m_bComputationLocked )  // both locks are released. We can start to run
+			runComputation();
 	}
 }
 
 void ComputeThread::StopComputation( )
 {
-	if ( m_bContinue )
+	if ( ! m_bStopped )
 	{
-		m_bContinue = false;
-		m_pRunObservable->NotifyAll( false );
-		m_hrTimer.Stop();
-		while ( ! m_bWaiting )  // wait until ComputeThread has finished activities
-			Sleep( 1 );
+		m_bStopped = true;
+		if ( ! m_bComputationLocked )  // if not already stopped, stop now
+			stopComputation();
 	}
+}
+
+void ComputeThread::runComputation( )
+{
+	m_pRunObservable->NotifyAll( false);
+	Reset( );
+	ReleaseSRWLockExclusive( & m_srwlStopped ); // allow ComputeThread to run
+}
+
+void ComputeThread::stopComputation( )
+{
+	AcquireSRWLockExclusive( & m_srwlStopped ); // wait until ComputeThread has finished activities
+	m_pRunObservable->NotifyAll( false );
+	m_hrTimer.Stop();
 }
 
 void ComputeThread::ThreadStartupFunc( )  // everything happens in startup function
 {                                         // no thread messages used
 	for (;;)
 	{
-		m_runEvent.Wait( );
-		m_bWaiting = false;
-		while ( m_bContinue )
+		AcquireSRWLockExclusive( & m_srwlStopped );
+
+		while ( ! (m_bStopped || m_bComputationLocked) )
 		{
 			fMicroSecs const usTilStartRealTime { m_hrTimer.GetMicroSecsTilStart( ) };
 			fMicroSecs const usNominalSimuTime  { m_pSlowMotionRatio->RealTime2SimuTime( usTilStartRealTime ) };
@@ -64,11 +96,11 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 			long       const lCycles            { CastToLong(usMissingSimuTime / m_pParam->GetTimeResolution()) }; // compute # cycles to be computed
 			long       const lCyclesTodo        { max( 0, lCycles ) };
 			long             lCyclesDone        { 0 };
-			while ( (lCyclesDone < lCyclesTodo) && m_bContinue )
+			while ( (lCyclesDone < lCyclesTodo) && ! m_bStopped )
 			{
 				if ( m_pModel->Compute( ) ) // returns true, if stop on trigger fires
 				{
-					m_bContinue = false;
+					m_bStopped = true;
 					m_pRunObservable->NotifyAll( false );
 				}
 				++lCyclesDone;
@@ -85,7 +117,7 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 			if ( usSleepTime > 10000.0_MicroSecs )
 				Sleep( 10 );
 		}
-		m_bWaiting = true;
+		ReleaseSRWLockExclusive( & m_srwlStopped );
 	}
 }
 

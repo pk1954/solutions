@@ -87,9 +87,9 @@ bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMe
 
     try
     {
-        m_pComputeThread->StopComputation( );
+        m_pComputeThread->LockComputation( );
         bRes = processModelCommand( wmId, lParam, umPoint );
-        m_pComputeThread->RunComputation( );
+        m_pComputeThread->ReleaseComputationLock( );
     }
     catch ( ... )
     {
@@ -118,6 +118,7 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         break;
 
     case IDM_CENTER_MODEL:
+        m_pComputeThread->LockComputation( );
         m_pNNetWindow->CenterModel( true );
         break;
 
@@ -223,9 +224,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 {
     switch ( wmId )
     {
-    case IDM_ASK_AND_SAVE_MODEL:
-        return m_pStorage->AskAndSave( );
-
     case IDM_SAVE_MODEL:
         if ( m_pStorage->SaveModel( ) )
             Preferences::WritePreferences( m_pStorage->GetModelPath() );

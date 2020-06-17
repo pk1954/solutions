@@ -278,6 +278,12 @@ void NNetModel::ResetModel( )
 	staticModelChanged( );
 }
 
+void NNetModel::RemoveShape( ShapeId const id ) 
+{ 
+	removeShape( GetShape( id ) ); 
+	staticModelChanged( );
+}
+
 void NNetModel::DeleteSelection( )
 {
 	for ( int i = 0; i < m_Shapes.size(); ++i )  // Caution!

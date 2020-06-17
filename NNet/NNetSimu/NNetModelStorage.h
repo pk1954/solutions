@@ -33,7 +33,6 @@ public:
 	wstring const GetModelPath  ( ) { return m_wstrPathOfOpenModel; };
 	void          ResetModelPath( );
 
-	int  AskSave     ( );
 	bool AskAndSave  ( );
 	bool AskModelFile( );
 	bool SaveModel   ( );

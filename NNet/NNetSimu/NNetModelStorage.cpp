@@ -310,18 +310,18 @@ void NNetModelStorage::Read( wstring const wstrPath )
         prepareForReading( );
 
     m_wstrPathOfNewModel = ( wstrPath == L"" ) ? m_wstrPathOfOpenModel : wstrPath;
-    if ( ! exists( m_wstrPathOfNewModel ) )
+    if ( exists( m_wstrPathOfNewModel ) )
+    {
+        m_pModel->ResetModel();
+        wcout << L"** NNet model file " << m_wstrPathOfNewModel << endl;
+        UINT threadId { 0 };
+        Util::RunAsAsyncThread( readModelThreadProc, static_cast<void *>(this), & threadId );
+    }
+    else
     {
         MessageBox( nullptr, m_wstrPathOfNewModel.c_str(), L"Could not find model file", MB_OK );
-        return;
+        PostMessage( m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0 );
     }
-
-    m_pModel->ResetModel();
-
-    wcout << L"** NNet model file " << m_wstrPathOfNewModel << endl;
-
-    UINT threadId { 0 };
-    Util::RunAsAsyncThread( readModelThreadProc, static_cast<void *>(this), & threadId );
 }
 
 void NNetModelStorage::ReadFinished( bool const bSuccess )
@@ -474,16 +474,11 @@ void NNetModelStorage::WriteShape( wostream & out, Shape & shape )
 
 /////////////////////////////////////////////
 
-int NNetModelStorage::AskSave( )
-{
-    return MessageBox( nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL );
-}
-
 bool NNetModelStorage::AskAndSave( )
 {
     if ( m_bUnsavedChanges )
     {
-        int iRes = AskSave( );
+        int iRes = MessageBox( nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL );
         if ( iRes == IDYES )
             SaveModel( );
         else if ( iRes == IDNO )

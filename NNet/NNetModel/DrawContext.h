@@ -54,15 +54,27 @@ public:
 	void        SetPixelOffset( fPixelPoint const f ) { m_coord.SetPixelOffset( f ); }
 	void        Move          ( PixelPoint  const d ) { m_coord.Move          ( d ); }
 
+	bool Zoom( MicroMeter const newSize )
+	{
+		bool bRes { m_coord.Zoom( newSize ) };
+		//if ( bRes )
+		//	SetStdFontSize( STD_FONT_SIZE );
+		return bRes;
+	}
+
+	void Center( MicroMeterPoint const umPnt, fPixelPoint const fPntPix )
+	{
+		m_coord.Center( umPnt, fPntPix );
+	}
+
 	bool ZoomKeepCrsrPos( PixelPoint const & pixPntCenter, MicroMeter const newSize )
 	{
-		fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPntCenter ) };
-		MicroMeterPoint const umPointcenter   { m_coord.Convert2MicroMeterPointPos( fPixPointCenter ) };
-		bool bRes { m_coord.Zoom( newSize ) };
+		bool bRes { Zoom( newSize ) };
 		if ( bRes )
 		{
+			fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPntCenter ) };
+			MicroMeterPoint const umPointcenter   { m_coord.Convert2MicroMeterPointPos( fPixPointCenter ) };
 			m_coord.Center( umPointcenter, fPixPointCenter ); 
-			SetStdFontSize( STD_FONT_SIZE );
 		}
 		else
 		{

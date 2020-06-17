@@ -326,8 +326,8 @@ void NNetWindow::CenterAndZoomRect( MicroMeterRect const & umRect, float const f
 	}
 	else
 	{
-		m_context.GetCoord().Zoom( umPixelSizeTarget );
-		m_context.GetCoord().Center( umPntCenterTarget, fpCenter );
+		m_context.Zoom( umPixelSizeTarget );
+		m_context.Center( umPntCenterTarget, fpCenter );
 	}
 }
 
@@ -339,12 +339,13 @@ void NNetWindow::smoothStep( )
 	if ( fTargetsReached )
 	{
 		m_bFocusMode = false;
+		m_pComputeThread->ReleaseComputationLock( );
 	}
 	else
 	{
 		fPixelPoint const fpCenter { m_context.GetCoordC().Convert2fPixelPoint( GetClRectCenter( ) ) };
-		m_context.GetCoord().Zoom  ( m_umPixelSizeStart + m_umPixelSizeDelta * fPos );
-		m_context.GetCoord().Center( m_umPntCenterStart + m_umPntCenterDelta * fPos, fpCenter );
+		m_context.Zoom  ( m_umPixelSizeStart + m_umPixelSizeDelta * fPos );
+		m_context.Center( m_umPntCenterStart + m_umPntCenterDelta * fPos, fpCenter );
 	}
 
 	Notify( true );     // cause immediate repaint
