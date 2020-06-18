@@ -278,12 +278,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pNNetWindow->PostMessage( WM_COMMAND, IDD_REFRESH_RATE_DIALOG, 0 );
         break;
 
-    case IDM_RUN:
-        m_pModelWriterInterface->ResetTimer( );
-        if ( m_pStatusBarDisplay )
-            (* m_pStatusBarDisplay)( wstring( L"" ) );
-        return false;
-
     case IDD_CONNECT:
         Sound::Play( TEXT("SNAP_IN_SOUND") ); 
         m_pModelWriterInterface->Connect

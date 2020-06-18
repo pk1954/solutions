@@ -48,11 +48,8 @@ void NNetModelStorage::Initialize
 
 void NNetModelStorage::setUnsavedChanges( bool const bState )
 {
-    if ( bState != m_bUnsavedChanges )
-    {
-        NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel, bState );
-        m_bUnsavedChanges = bState;
-    }
+    m_bUnsavedChanges = bState;
+    NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel, bState );
 }
 
 ////////////////////////// Read /////////////////////////////////////////////
