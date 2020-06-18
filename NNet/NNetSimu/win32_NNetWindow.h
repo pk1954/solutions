@@ -50,14 +50,14 @@ public:
 	virtual ~NNetWindow( );
 
 	virtual void NNetMove( PixelPoint const & );
-	virtual bool Zoom( MicroMeter const );
+	virtual bool Zoom( MicroMeter const, PixelPoint const * const );
 
 	ShapeId        const GetHighlightedShapeId( )          const { return m_shapeHighlighted; }
 	ShapeId        const GetSuperHighlightedShapeId( )     const { return m_shapeSuperHighlighted; }
 	tHighlightType const GetHighlightType( Shape const & ) const;
 
 	void ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
-	void ZoomStep( bool const );
+	void ZoomStep( bool const, PixelPoint const * const );
 	void CenterModel( bool const );
 	void CenterAndZoomRect( MicroMeterRect const &, float const, bool const );
 

@@ -78,17 +78,18 @@ NNetWindow::~NNetWindow( )
 	m_pModelReaderInterface = nullptr;
 }
 
-bool NNetWindow::Zoom( MicroMeter const newSize )
+bool NNetWindow::Zoom( MicroMeter const newSize, PixelPoint const * const pPixPntCenter )
 {
-	bool bRes { m_context.ZoomKeepCrsrPos( GetRelativeCrsrPosition(), newSize ) };
+	PixelPoint const pixPntCenter { pPixPntCenter ? * pPixPntCenter : GetRelativeCrsrPosition() };
+	bool bRes { m_context.ZoomKeepCrsrPos( pixPntCenter, newSize ) };
 	if ( bRes ) 
 		Notify( false ); 
 	return bRes;
 }
 
-void NNetWindow::ZoomStep( bool const bZoomIn )
+void NNetWindow::ZoomStep( bool const bZoomIn, PixelPoint const * const pPixPntCenter )
 {
-	Zoom( m_context.GetCoordC().ComputeNewPixelSize( bZoomIn ) );
+	Zoom( m_context.GetCoordC().ComputeNewPixelSize( bZoomIn ), pPixPntCenter );
 }
 
 void NNetWindow::NNetMove( PixelPoint const & pixDelta ) 
@@ -190,7 +191,7 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 
 void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
-	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // relative to client area
+	PixelPoint      const ptCrsr    { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
 	MicroMeterPoint const umCrsrPos { m_context.GetCoord().Convert2MicroMeterPointPos( ptCrsr   ) };
 	MicroMeterPoint const umLastPos { m_context.GetCoord().Convert2MicroMeterPointPos( m_ptLast ) };
 
@@ -384,13 +385,16 @@ void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam 
 }
 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
-{
-	int  const iDelta     = GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA;
-	bool const bDirection = ( iDelta > 0 );
+{  
+	PixelPoint const ptCrsr     { GetRelativeCrsrPosition() };  // screen coordinates
+	PixelPoint const ptCrsrScreen     { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
+	PixelPoint const ptCrsrCliebt { Util::Screen2Client( GetWindowHandle(), ptCrsrScreen ) };
+	int        const iDelta     { GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA };
+	bool       const bDirection { iDelta > 0 };
 
 	for ( int iSteps = abs( iDelta ); iSteps > 0; --iSteps )
 	{
-		ZoomStep( bDirection );
+		ZoomStep( bDirection, & ptCrsr );
 	}
 }
 

@@ -57,8 +57,6 @@ public:
 	bool Zoom( MicroMeter const newSize )
 	{
 		bool bRes { m_coord.Zoom( newSize ) };
-		//if ( bRes )
-		//	SetStdFontSize( STD_FONT_SIZE );
 		return bRes;
 	}
 
@@ -69,11 +67,11 @@ public:
 
 	bool ZoomKeepCrsrPos( PixelPoint const & pixPntCenter, MicroMeter const newSize )
 	{
+		fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPntCenter ) };                   // compute center
+		MicroMeterPoint const umPointcenter   { m_coord.Convert2MicroMeterPointPos( fPixPointCenter ) }; // ** BEFORE ** zooming!
 		bool bRes { Zoom( newSize ) };
 		if ( bRes )
 		{
-			fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPntCenter ) };
-			MicroMeterPoint const umPointcenter   { m_coord.Convert2MicroMeterPointPos( fPixPointCenter ) };
 			m_coord.Center( umPointcenter, fPixPointCenter ); 
 		}
 		else

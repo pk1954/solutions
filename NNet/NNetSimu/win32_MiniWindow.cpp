@@ -25,7 +25,7 @@ void MiniWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 
 	if ( wParam & MK_LBUTTON )       	// Left mouse button: move or edit action
 	{
-		PixelPoint const ptCrsr { GetCrsrPosFromLparam( lParam ) };  // relative to client area
+		PixelPoint const ptCrsr { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
 
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{

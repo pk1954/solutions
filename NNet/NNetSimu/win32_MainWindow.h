@@ -22,7 +22,7 @@ public:
 
 	virtual bool Zoom( MicroMeter const newSize )
 	{
-		bool bRes { NNetWindow::Zoom( newSize ) };
+		bool bRes { NNetWindow::Zoom( newSize, nullptr ) };
 		if ( bRes )
 			m_pObserver->Notify( false );
 		return bRes;
