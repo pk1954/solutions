@@ -96,7 +96,7 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 			long       const lCycles            { CastToLong(usMissingSimuTime / m_pParam->GetTimeResolution()) }; // compute # cycles to be computed
 			long       const lCyclesTodo        { max( 0, lCycles ) };
 			long             lCyclesDone        { 0 };
-			while ( (lCyclesDone < lCyclesTodo) && ! m_bStopped )
+			while ( (lCyclesDone < lCyclesTodo) && ! (m_bStopped || m_bComputationLocked) )
 			{
 				if ( m_pModel->Compute( ) ) // returns true, if stop on trigger fires
 				{

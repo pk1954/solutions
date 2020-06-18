@@ -33,7 +33,6 @@ public:
 
 	void Reset( );
 	void SingleStep( );
-
 	void ReleaseComputationLock( );
 	void LockComputation( );
 	void RunComputation( );
