@@ -80,7 +80,7 @@ NNetWindow::~NNetWindow( )
 
 bool NNetWindow::Zoom( MicroMeter const newSize, PixelPoint const * const pPixPntCenter )
 {
-	PixelPoint const pixPntCenter { pPixPntCenter ? * pPixPntCenter : GetRelativeCrsrPosition() };
+	PixelPoint const pixPntCenter { pPixPntCenter ? * pPixPntCenter : GetClRectCenter() };
 	bool bRes { m_context.ZoomKeepCrsrPos( pixPntCenter, newSize ) };
 	if ( bRes ) 
 		Notify( false ); 
@@ -387,8 +387,6 @@ void NNetWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam 
 void NNetWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 {  
 	PixelPoint const ptCrsr     { GetRelativeCrsrPosition() };  // screen coordinates
-	PixelPoint const ptCrsrScreen     { GetCrsrPosFromLparam( lParam ) };  // screen coordinates
-	PixelPoint const ptCrsrCliebt { Util::Screen2Client( GetWindowHandle(), ptCrsrScreen ) };
 	int        const iDelta     { GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA };
 	bool       const bDirection { iDelta > 0 };
 

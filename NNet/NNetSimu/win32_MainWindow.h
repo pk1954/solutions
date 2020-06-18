@@ -22,7 +22,8 @@ public:
 
 	virtual bool Zoom( MicroMeter const newSize )
 	{
-		bool bRes { NNetWindow::Zoom( newSize, nullptr ) };
+		PixelPoint const pixPntCenter { GetRelativeCrsrPosition() };
+		bool bRes { NNetWindow::Zoom( newSize, & pixPntCenter ) };
 		if ( bRes )
 			m_pObserver->Notify( false );
 		return bRes;
