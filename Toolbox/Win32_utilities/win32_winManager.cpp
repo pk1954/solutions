@@ -183,32 +183,36 @@ private:
 
 bool WinManager::GetWindowConfiguration( )
 {
+    bool bRes { false };
+
     Script scriptWindowConfig;
 	
 	if (! scriptWindowConfig.ScrProcess(MONITOR_CONFIG_FILE))
 	{
 		wcout << L"Could not find " << MONITOR_CONFIG_FILE << endl;
-		return false;
 	} 
-	
-	if ( m_strWindowConfigurationFile.empty() )
+	else if ( m_strWindowConfigurationFile.empty() )
 	{
 		wcout << L"Monitor configuration unknown" << endl;
-		return false;
 	}
+    else
+    {
+	    wcout << L"Window configuration file " << m_strWindowConfigurationFile;
+	    if ( ! scriptWindowConfig.ScrProcess( m_strWindowConfigurationFile ) )
+	    {
+            wcout << L" missing or bad" << endl;
+	    }
+	    else
+	    {
+            wcout << L" sucessfully processed" << endl;
+            bRes = true;
+	    }
+    }
 
-	wcout << L"Window configuration file " << m_strWindowConfigurationFile;
-	if ( scriptWindowConfig.ScrProcess( m_strWindowConfigurationFile ) )
-	{
-		wcout << L" sucessfully processed" << endl;
-	}
-	else
-	{
-		wcout << L" missing or bad" << endl;
-		return false;
-	}
+    if ( ! bRes )
+        wcout << L"Using default window positions" << std::endl;
 
-    return true;
+    return bRes;
 }
 
 //

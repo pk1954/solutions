@@ -96,7 +96,7 @@ void ScriptErrorHandler::symbolError( wstring const & wstrKey )
 
 void ScriptErrorHandler::semanticError( std::wstring const & wstrText )
 {  
-   throwError( 1000, L"semantic error: "  + wstrText );
+   throwError( 1000, L"semantic error: " + wstrText );
 }
 
 //   typeError: Unexpected type of symbolic const in script file

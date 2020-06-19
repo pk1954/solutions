@@ -170,23 +170,18 @@ void NNetAppWindow::Start( )
 	m_parameters            .RegisterObserver( & m_parameterDlg );
 
 	m_miniNNetWindow.Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
-
-	if ( ! m_WinManager.GetWindowConfiguration( ) )
-	{
-		wcout << L"Using default window positions" << std::endl;
-		Show( true );
-		m_mainNNetWindow.Show( true );
-		m_miniNNetWindow.Show( true );
-	}
-
-	configureStatusBar( );
-	adjustChildWindows( );
-
+	m_miniNNetWindow   .Show( true );
 	m_StatusBar        .Show( true );
 	m_mainNNetWindow   .Show( true );
 	m_crsrWindow       .Show( true );
 	m_parameterDlg     .Show( true );
 	m_performanceWindow.Show( true );
+	m_WinManager.GetWindowConfiguration( );
+
+	configureStatusBar( );
+	adjustChildWindows( );
+
+	Show( true );
 
 	if ( ! AutoOpen::IsOn( ) || ! Preferences::ReadPreferences( & m_modelStorage ) )
 		m_modelWriterInterface.ResetModel( );

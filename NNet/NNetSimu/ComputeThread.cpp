@@ -117,6 +117,7 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 			if ( usSleepTime > 10000.0_MicroSecs )
 				Sleep( 10 );
 		}
+
 		ReleaseSRWLockExclusive( & m_srwlStopped );
 	}
 }
