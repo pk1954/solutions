@@ -339,7 +339,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
     case IDM_ESCAPE:
         m_pModelWriterInterface->SelectAll( tBoolOp::opFalse );
         Script::StopProcessing();
-        ModelAnalyzer::Stop();
         break;
 
     case IDM_SELECT_SHAPE:

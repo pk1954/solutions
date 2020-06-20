@@ -363,4 +363,5 @@ namespace Util
 	wstring   GetCurrentDateAndTime( );
 	void      SetApplicationTitle( HWND const, int const, wstring const = L"" );
     void      StdOutConsole( );
+    bool      EscapeKeyPressed();
 };

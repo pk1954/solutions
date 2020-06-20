@@ -30,7 +30,6 @@ public:
 	static void           SelectLoopShapes( NNetModel & );
 	static MicroMeterRect GetEnclosingRect( );
 	static bool           FindAnomaly( NNetModel const & );
-	static void           Stop( )	{ m_bStop = true; }
 
 private:
 
@@ -48,7 +47,7 @@ private:
 			(* m_pStatusBarDisplay)( str );
 	}
 
-	static void statusDisplay( wchar_t const* pStr )
+	static void statusDisplay( wchar_t const * pStr )
 	{
 		statusDisplay( wstring( pStr ) );
 	}

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "MoreTypes.h"
 #include "RectType.h"
+#include "win32_util.h"
 #include "Analyzer.h"
 
 using std::endl;
@@ -44,11 +45,14 @@ bool ModelAnalyzer::FindLoop( NNetModel const & model )
 
 // findLoop - try to find a loop in model
 //
-// returns true, if loop found (m_bStop == false) or aborted by user (m_bSTop == true). 
+// returns true, if loop found (m_bStop == false) or aborted by user (m_bStop == true). 
 //         false, if analysis completed and no loop found
 
 bool ModelAnalyzer::findLoop( Shape * const pShape )
 {
+	if ( Util::EscapeKeyPressed( ) )
+		m_bStop = true;
+
 	if ( m_bStop )
 		return true;
 
