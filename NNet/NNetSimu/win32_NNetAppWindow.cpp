@@ -329,9 +329,9 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 	
 	switch (wmId)
 	{
-	case IDM_ABOUT:
-		ShowAboutBox( GetWindowHandle( ) );
-		break;
+	//case IDM_ABOUT:
+	//	ShowAboutBox( GetWindowHandle( ) );
+	//	break;
 
 	case IDM_EXIT:
 		PostMessage( WM_CLOSE, 0, 0 );

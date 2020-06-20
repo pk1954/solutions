@@ -224,6 +224,10 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 {
     switch ( wmId )
     {
+    case IDM_ABOUT:
+        ShowAboutBox( m_pNNetWindow->GetWindowHandle() );
+        break;
+
     case IDM_SAVE_MODEL:
         if ( m_pStorage->SaveModel( ) )
             Preferences::WritePreferences( m_pStorage->GetModelPath() );
