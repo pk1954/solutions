@@ -83,10 +83,11 @@ void RootWindow::contextMenu( PixelPoint const & crsrPosScreen ) // crsr pos in 
 		adjustWinMenu( hPopupMenu );
 	}
 
-	if ( m_bShowRefreshRateDlg && (m_pRefreshRate->GetRefreshRate( ) > 0ms) )
-	{
-		(void)AppendMenu( hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate" );
-	}
+	// TODO
+	//if ( m_bShowRefreshRateDlg && (m_pRefreshRate->GetRefreshRate( ) > 0ms) )
+	//{
+	//	(void)AppendMenu( hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate" );
+	//}
 
 	(void)SetForegroundWindow( GetWindowHandle( ) );
 
