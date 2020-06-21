@@ -5,6 +5,7 @@
 
 #include <string>
 #include <unordered_map>
+#include "errhndl.h"
 #include "win32_util.h"
 #include "win32_baseWindow.h"
 #include "win32_baseDialog.h"
@@ -122,6 +123,8 @@ private:
     
     std::wstring m_strWindowConfigurationFile;
     int          m_iNrOfMonitorConfigurations;
+
+	ScriptErrorHandler::ScriptErrorInfo m_errorInfo {};
 
     void dumpMonitorConfiguration( ) const;
     void dumpWindowCoordinates( ) const;

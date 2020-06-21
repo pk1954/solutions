@@ -5,7 +5,6 @@
 #include <fstream>
 #include "SCRIPT.H"
 #include "symtab.h"
-#include "errhndl.h"
 #include "UtilityWrappers.h"
 #include "win32_util.h"
 #include "win32_winManager.h"
@@ -82,10 +81,11 @@ private:
 
 struct CHECK_MON_STRUCT  // communication between WrapMonitorInfos and CheckMonitorInfo 
 {
-    int      m_iMonCounter;
-    int      m_iMonFromScript;
-    Script & m_script;
-    bool     m_bCheckResult;
+    int                                 m_iMonCounter    { 0 };
+    int                                 m_iMonFromScript { 0 };
+    Script                            * m_pScript        { nullptr } ;
+    bool                                m_bCheckResult   { true };
+    ScriptErrorHandler::ScriptErrorInfo m_errorInfo      { } ;
 };
 
 static MONITORINFO ScrReadMonitorInfo( Script & script )
@@ -108,30 +108,41 @@ static bool operator != ( MONITORINFO const & a, MONITORINFO const b )
 static BOOL CALLBACK CheckMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData )
 {
     CHECK_MON_STRUCT * const pMonStruct = (CHECK_MON_STRUCT *)dwData;
-    Script           &       script     = pMonStruct->m_script;
+    bool bRes = true;
+    try 
+    {  
+        Script * pScript = pMonStruct->m_pScript;
 
-    pMonStruct->m_iMonFromScript = script.ScrReadInt( );
+        pMonStruct->m_iMonFromScript = pScript->ScrReadInt( );
 
-    if ( pMonStruct->m_iMonFromScript == 0 )
-    {                                        // m_script describes less monitors than current configuration  
-        pMonStruct->m_bCheckResult = false;  // this is not the right configuration
-        return false;                        // stop monitor enumeration
-    }
-
-    ++( pMonStruct->m_iMonCounter );
+        if ( pMonStruct->m_iMonFromScript == 0 )
+        {                                        // m_script describes less monitors than current configuration  
+            pMonStruct->m_bCheckResult = false;  // this is not the right configuration
+            bRes = false;                        // stop monitor enumeration
+        }
+        else 
+        {
+            ++( pMonStruct->m_iMonCounter );
     
-	MONITORINFO monInfoScript = ScrReadMonitorInfo( script );
-	MONITORINFO monInfoSystem = Util::GetMonitorInfo( hMonitor );
-    if (
-          ( monInfoScript != monInfoSystem ) ||
-          ( pMonStruct->m_iMonFromScript != pMonStruct->m_iMonCounter )
-       )
-    {                                        // some monitor infos don't fit
-        pMonStruct->m_bCheckResult = false;  // this is not the right configuration
-        return false;                        // stop monitor enumeration
+            MONITORINFO monInfoScript = ScrReadMonitorInfo( * pScript );
+            MONITORINFO monInfoSystem = Util::GetMonitorInfo( hMonitor );
+            if (
+                  ( monInfoScript != monInfoSystem ) ||
+                  ( pMonStruct->m_iMonFromScript != pMonStruct->m_iMonCounter )
+               )
+            {                                        // some monitor infos don't fit
+                pMonStruct->m_bCheckResult = false;  // this is not the right configuration
+                bRes = false;                        // stop monitor enumeration
+            }
+        }
+    }
+    catch ( ScriptErrorHandler::ScriptErrorInfo const & errInfo ) // exception handling cannot pass through C function
+    {                                                 
+        pMonStruct->m_errorInfo = errInfo;                        // have to pass it manually
+        bRes = false;
     }
 
-    return true;                      // everything ok so far, continue with monitor enumeration
+    return bRes;  // true: everything ok so far, continue with monitor enumeration, false: stop monitor enumeration
 }
 
 // Syntax of monitor configuration file
@@ -151,11 +162,14 @@ public:
     
     virtual void operator() ( Script & script ) const     // process one monitor configuration
     {
-        CHECK_MON_STRUCT monStruct = { 0, 0, script, true };
+        CHECK_MON_STRUCT monStruct;
+        monStruct.m_pScript = & script;
 
         wstring wstrFileName = script.ScrReadString( );             // read window configuration file name
 
         EnumDisplayMonitors( nullptr, nullptr, CheckMonitorInfo, (LPARAM)&monStruct );
+        if ( monStruct.m_errorInfo.m_sErrNr != 0 )                  // exception handling not passed through C function
+            throw monStruct.m_errorInfo;                            // have to pass it manually
 
         if ( monStruct.m_iMonFromScript != 0 )                      // could be 0, if m_script describes less monitors than current configuration
         {
@@ -189,7 +203,7 @@ bool WinManager::GetWindowConfiguration( )
 	
 	if (! scriptWindowConfig.ScrProcess(MONITOR_CONFIG_FILE))
 	{
-		wcout << L"Could not find " << MONITOR_CONFIG_FILE << endl;
+		wcout << MONITOR_CONFIG_FILE << L" not found or bad" << endl;
 	} 
 	else if ( m_strWindowConfigurationFile.empty() )
 	{
