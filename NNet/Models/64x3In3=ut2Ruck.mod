@@ -1,5 +1,5 @@
 # NNetModel
-# Created 21-04-2020 00-26-06
+# Created 22-06-2020 21-30-28
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
 
@@ -13,7 +13,7 @@ GlobalParameter PeakVoltage = 10
 GlobalParameter RefractoryPeriod = 500
 GlobalParameter TimeResolution = 100
 
-NrOfShapes = 28996
+NrOfShapes = 28784
 
 CreateShape 0 neuron (-13175.4|-2175.03)
 CreateShape 3 neuron (-12354.3|-2965.93)
@@ -9515,8 +9515,8 @@ CreateShape 23281 knot (9641.59|4593.31)
 CreateShape 23284 knot (10871.9|3026.31)
 CreateShape 23286 knot (10635.1|4702.51)
 CreateShape 23288 knot (10078.2|3308.12)
-CreateShape 23292 knot (9798.31|3742.31)
-CreateShape 23294 knot (9866.1|3561.01)
+CreateShape 23292 knot (9832.63|3173.53)
+CreateShape 23294 knot (9900.42|2992.23)
 CreateShape 23297 knot (9546.98|3245.31)
 CreateShape 23299 knot (9328.16|2816.62)
 CreateShape 23302 knot (10535.2|4176.41)
@@ -28800,30 +28800,30 @@ CreateShape 28781 pipe (28769->28780)
 CreateShape 28782 pipe (28780->28779)
 CreateShape 28783 pipe (28779->28778)
 
-ShapeParameter InputNeuron 3126 PulseRate = 50
-ShapeParameter InputNeuron 3128 PulseRate = 50
-ShapeParameter InputNeuron 3130 PulseRate = 50
-ShapeParameter InputNeuron 6724 PulseRate = 50
-ShapeParameter InputNeuron 6726 PulseRate = 50
-ShapeParameter InputNeuron 6728 PulseRate = 50
-ShapeParameter InputNeuron 10322 PulseRate = 50
-ShapeParameter InputNeuron 10324 PulseRate = 50
-ShapeParameter InputNeuron 10326 PulseRate = 50
-ShapeParameter InputNeuron 13920 PulseRate = 50
-ShapeParameter InputNeuron 13922 PulseRate = 50
-ShapeParameter InputNeuron 13924 PulseRate = 50
-ShapeParameter InputNeuron 17518 PulseRate = 50
-ShapeParameter InputNeuron 17520 PulseRate = 50
-ShapeParameter InputNeuron 17522 PulseRate = 50
-ShapeParameter InputNeuron 21116 PulseRate = 50
-ShapeParameter InputNeuron 21118 PulseRate = 50
-ShapeParameter InputNeuron 21120 PulseRate = 50
-ShapeParameter InputNeuron 24714 PulseRate = 50
-ShapeParameter InputNeuron 24716 PulseRate = 50
-ShapeParameter InputNeuron 24718 PulseRate = 50
-ShapeParameter InputNeuron 28312 PulseRate = 50
-ShapeParameter InputNeuron 28314 PulseRate = 50
-ShapeParameter InputNeuron 28316 PulseRate = 50
+ShapeParameter InputNeuron 3126 PulseRate = 50.01
+ShapeParameter InputNeuron 3128 PulseRate = 50.01
+ShapeParameter InputNeuron 3130 PulseRate = 50.01
+ShapeParameter InputNeuron 6724 PulseRate = 50.01
+ShapeParameter InputNeuron 6726 PulseRate = 50.01
+ShapeParameter InputNeuron 6728 PulseRate = 50.01
+ShapeParameter InputNeuron 10322 PulseRate = 50.01
+ShapeParameter InputNeuron 10324 PulseRate = 50.01
+ShapeParameter InputNeuron 10326 PulseRate = 50.01
+ShapeParameter InputNeuron 13920 PulseRate = 50.01
+ShapeParameter InputNeuron 13922 PulseRate = 50.01
+ShapeParameter InputNeuron 13924 PulseRate = 50.01
+ShapeParameter InputNeuron 17518 PulseRate = 50.01
+ShapeParameter InputNeuron 17520 PulseRate = 50.01
+ShapeParameter InputNeuron 17522 PulseRate = 50.01
+ShapeParameter InputNeuron 21116 PulseRate = 50.01
+ShapeParameter InputNeuron 21118 PulseRate = 50.01
+ShapeParameter InputNeuron 21120 PulseRate = 50.01
+ShapeParameter InputNeuron 24714 PulseRate = 50.01
+ShapeParameter InputNeuron 24716 PulseRate = 50.01
+ShapeParameter InputNeuron 24718 PulseRate = 50.01
+ShapeParameter InputNeuron 28312 PulseRate = 50.01
+ShapeParameter InputNeuron 28314 PulseRate = 50.01
+ShapeParameter InputNeuron 28316 PulseRate = 50.01
 
 TriggerSound 85 660 Hertz 100 msec 
 TriggerSound 301 880 Hertz 100 msec 

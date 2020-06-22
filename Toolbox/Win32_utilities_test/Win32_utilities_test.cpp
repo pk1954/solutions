@@ -3,8 +3,8 @@
 
 #include "stdafx.h"
 #include <iostream>
-#include "script.h"
-#include "win32_winManager.h"
+//#include "SCRIPT.h"
+//#include "win32_winManager.h"
 
 void DoTest( )
 {

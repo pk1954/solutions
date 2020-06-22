@@ -102,6 +102,9 @@
     <ClInclude Include="DisplayFunctor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LineType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoolOp.cpp">

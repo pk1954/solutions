@@ -44,9 +44,25 @@ public:
 	MicroMeter      GetLength    ( ) const;
 	MicroMeterPoint GetVector    ( ) const; 
 
+	// IsInrect should be called IsPossiblyInRect
+	// It doesn't calculate exectly if the pipe intersects umRect, but eliminites a lot of cases with a simple and fast check
+	// The rest is left over for the clipping algorithm of the graphics subsystem
+
 	virtual bool IsInRect( MicroMeterRect const & umRect ) const 
 	{ 
-		return m_pKnotStart->IsInRect( umRect ) || m_pKnotEnd->IsInRect( umRect );
+		if ( (m_pKnotStart->GetPosition().GetX() < umRect.GetLeft()) && (m_pKnotEnd->GetPosition().GetX() < umRect.GetLeft()) )
+			return false;
+
+		if ( (m_pKnotStart->GetPosition().GetX() > umRect.GetRight()) && (m_pKnotEnd->GetPosition().GetX() > umRect.GetRight()) )
+			return false;
+
+		if ( (m_pKnotStart->GetPosition().GetY() > umRect.GetBottom()) && (m_pKnotEnd->GetPosition().GetY() > umRect.GetBottom()) )
+			return false;
+
+		if ( (m_pKnotStart->GetPosition().GetY() < umRect.GetTop()) && (m_pKnotEnd->GetPosition().GetY() < umRect.GetTop()) )
+			return false;
+
+		return true;
 	}
 
 	mV GetNextOutput( ) const { return * m_potIter; }
