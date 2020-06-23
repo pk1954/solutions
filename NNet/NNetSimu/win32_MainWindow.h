@@ -15,15 +15,9 @@ public:
 		m_pObserver = pObs;
 	}
 
-	MicroMeterRect const GetViewRect() 
-	{ 
-		return m_context.GetCoord().Convert2MicroMeterRect( GetClPixelRect() ); 
-	};
-
-	virtual bool Zoom( MicroMeter const newSize )
+	virtual bool Zoom( MicroMeter const newSize, PixelPoint const * const pPixPntCenter )
 	{
-		PixelPoint const pixPntCenter { GetRelativeCrsrPosition() };
-		bool bRes { NNetWindow::Zoom( newSize, & pixPntCenter ) };
+		bool bRes { NNetWindow::Zoom( newSize, pPixPntCenter ) };
 		if ( bRes )
 			m_pObserver->Notify( false );
 		return bRes;
@@ -39,11 +33,6 @@ public:
 	{ 
 		NNetWindow::smoothStep( );
 		m_pObserver->Notify( false );
-	}
-
-	virtual void NNetMove( MicroMeterPoint const & umDelta )	
-	{ 
-		NNetMove( m_context.GetCoord().Convert2PixelSize( umDelta ) ); 
 	}
 
 	void OnSize( WPARAM const wParam, LPARAM const lParam )

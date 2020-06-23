@@ -170,17 +170,18 @@ void NNetAppWindow::Start( )
 	m_parameters            .RegisterObserver( & m_computeThread );
 	m_parameters            .RegisterObserver( & m_parameterDlg );
 
+	configureStatusBar( );
+	adjustChildWindows( );
 	m_miniNNetWindow.Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
+
 	m_miniNNetWindow   .Show( true );
 	m_StatusBar        .Show( true );
 	m_mainNNetWindow   .Show( true );
 	m_crsrWindow       .Show( true );
 	m_parameterDlg     .Show( true );
 	m_performanceWindow.Show( true );
-	m_WinManager.GetWindowConfiguration( );
 
-	configureStatusBar( );
-	adjustChildWindows( );
+	m_WinManager.GetWindowConfiguration( );
 
 	Show( true );
 
@@ -297,11 +298,10 @@ void NNetAppWindow::configureStatusBar( )
 void NNetAppWindow::adjustChildWindows( )
 {
 	PixelRectSize pntAppClientSize( Util::GetClRectSize( m_hwndApp ) );
-	PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
-	PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
-
 	if ( pntAppClientSize.IsNotZero( ) )
 	{
+		PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
+		PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
 		m_StatusBar.Resize( );
 		pixAppClientWinHeight -= m_StatusBar.GetHeight( );
 

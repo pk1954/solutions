@@ -49,8 +49,13 @@ public:
 
 	virtual ~NNetWindow( );
 
-	virtual void NNetMove( PixelPoint const & );
 	virtual bool Zoom( MicroMeter const, PixelPoint const * const );
+	virtual void NNetMove( PixelPoint const & );
+
+	MicroMeterRect const GetViewRect() 
+	{ 
+		return m_context.GetCoord().Convert2MicroMeterRect( GetClPixelRect() ); 
+	};
 
 	ShapeId        const GetHighlightedShapeId( )          const { return m_shapeHighlighted; }
 	ShapeId        const GetSuperHighlightedShapeId( )     const { return m_shapeSuperHighlighted; }
@@ -86,9 +91,9 @@ protected:
 	virtual void doPaint( );
 	virtual void smoothStep( );
 
-	DrawContext m_context { };
 	PixelPoint  m_ptLast  { PP_NULL };	// Last cursor position during selection 
 
+	DrawContext m_context { };
 private:
 
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
