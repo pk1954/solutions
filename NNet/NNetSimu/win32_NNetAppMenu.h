@@ -33,7 +33,7 @@ private:
 
 	inline static HWND m_hwndApp { nullptr };
 
-	HMENU                            m_hMenu          { nullptr };
-	ComputeThread            const * m_pComputeThread { nullptr };
-	WinManager               const * m_pWinManager    { nullptr };
+	HMENU                 m_hMenu          { nullptr };
+	ComputeThread const * m_pComputeThread { nullptr };
+	WinManager    const * m_pWinManager    { nullptr };
 };

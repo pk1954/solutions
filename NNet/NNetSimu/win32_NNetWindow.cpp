@@ -72,10 +72,11 @@ void NNetWindow::Stop( )
 
 NNetWindow::~NNetWindow( )
 {
-	m_pController           = nullptr;
-	m_pDrawModel            = nullptr;
-	m_pCursorPosObservable  = nullptr;
 	m_pModelReaderInterface = nullptr;
+	m_pComputeThread        = nullptr;
+	m_pController           = nullptr;
+	m_pCursorPosObservable  = nullptr;
+	m_pDrawModel            = nullptr;
 }
 
 bool NNetWindow::Zoom( MicroMeter const newSize, PixelPoint const * const pPixPntCenter )

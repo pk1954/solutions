@@ -11,6 +11,7 @@
 #include "SmoothMoveFp.h"
 #include "win32_NNetController.h"
 #include "win32_modelWindow.h"
+#include "NNetModelReaderInterface.h"
 
 using std::wstring;
 using std::function;
@@ -22,7 +23,6 @@ class ActionTimer;
 class ComputeThread;
 class ObserverInterface;
 class ControllerInterface;
-class NNetModelReaderInterface;
 class NNetModelWriterInterface;
 
 class NNetWindow : public ModelWindow
@@ -61,10 +61,13 @@ public:
 	void CenterModel( bool const );
 	void CenterAndZoomRect( MicroMeterRect const &, float const, bool const );
 
-	DrawContext       & GetDrawContext ()       { return m_context; }
 	DrawContext const & GetDrawContextC() const { return m_context; }
+	DrawContext       & GetDrawContext ()       { return m_context; }
 
 protected:
+
+	DrawModel      const * GetDrawModel    () const { return m_pDrawModel; }
+	MicroMeterRect const   GetEnclosingRect() const { return m_pModelReaderInterface->GetEnclosingRect(); }
 
 	virtual long AddContextMenuEntries( HMENU const );
 
@@ -83,23 +86,21 @@ protected:
 	virtual void doPaint( );
 	virtual void smoothStep( );
 
-	DrawContext   m_context    { };
-	DrawModel   * m_pDrawModel { nullptr };
-	PixelPoint    m_ptLast     { PP_NULL };	// Last cursor position during selection 
-
-	NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
+	DrawContext m_context { };
+	PixelPoint  m_ptLast  { PP_NULL };	// Last cursor position during selection 
 
 private:
 
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
+	DrawModel                * m_pDrawModel            { nullptr };
 	NNetModelWriterInterface * m_pModelWriterInterface { nullptr };
-
-	ComputeThread   * m_pComputeThread       { nullptr };
-	NNetController  * m_pController          { nullptr };
-	Observable      * m_pCursorPosObservable { nullptr };
-	HMENU             m_hPopupMenu           { nullptr };
+	NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
+	ComputeThread            * m_pComputeThread        { nullptr };
+	NNetController           * m_pController           { nullptr };
+	Observable               * m_pCursorPosObservable  { nullptr };
+	HMENU                      m_hPopupMenu            { 0 };
 
 	bool m_bFocusMode { false };
 

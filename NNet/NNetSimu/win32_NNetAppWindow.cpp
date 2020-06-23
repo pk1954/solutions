@@ -64,7 +64,15 @@ NNetAppWindow::NNetAppWindow( )
 
 	DefineUtilityWrapperFunctions( );
 	DefineNNetWrappers( & m_modelWriterInterface, & m_mainNNetWindow );
+};
 
+NNetAppWindow::~NNetAppWindow( )
+{
+	m_traceStream.close();
+}
+
+void NNetAppWindow::Start( )
+{
 	m_hwndApp = StartBaseWindow
 	( 
 		nullptr, 
@@ -97,14 +105,7 @@ NNetAppWindow::NNetAppWindow( )
 	m_crsrWindow       .SetRefreshRate( 100ms );
 	m_performanceWindow.SetRefreshRate( 500ms );
 	m_StatusBar        .SetRefreshRate( 300ms );
-};
 
-NNetAppWindow::~NNetAppWindow( )
-{
-}
-
-void NNetAppWindow::Start( )
-{
 	m_computeThread.Start( & m_model, & m_parameters, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable	);
 	m_appMenu      .Start( m_hwndApp, & m_computeThread, & m_WinManager );
 	m_StatusBar    .Start( m_hwndApp );
@@ -195,19 +196,28 @@ void NNetAppWindow::Stop()
 {
 	m_bStarted = false;
 
-	m_timeDisplay      .Stop( );
-	m_mainNNetWindow   .Stop( );
-	m_miniNNetWindow   .Stop( );
-	m_crsrWindow       .Stop( );
-	m_performanceWindow.Stop( );
-	m_parameterDlg     .Stop( );
-	m_StatusBar        .Stop( );
-	m_appMenu          .Stop( );
-
-	m_staticModelObservable.UnregisterAllObservers( );
 	m_computeThread.LockComputation();
+
+	m_timeDisplay         .Stop( );
+	m_mainNNetWindow      .Stop( );
+	m_miniNNetWindow      .Stop( );
+	m_crsrWindow          .Stop( );
+	m_performanceWindow   .Stop( );
+	m_parameterDlg        .Stop( );
+	m_StatusBar           .Stop( );
+	m_appMenu             .Stop( );
 	m_modelReaderInterface.Stop( );
 	m_modelWriterInterface.Stop( );
+
+	m_staticModelObservable .UnregisterAllObservers( );
+	m_blinkObservable       .UnregisterAllObservers( );
+	m_dynamicModelObservable.UnregisterAllObservers( );
+	m_cursorPosObservable   .UnregisterAllObservers( );
+	m_performanceObservable .UnregisterAllObservers( );
+	m_modelTimeObservable   .UnregisterAllObservers( );
+	m_runObservable         .UnregisterAllObservers( );
+	m_SlowMotionRatio       .UnregisterAllObservers( );
+	m_parameters            .UnregisterAllObservers( );
 
 	m_WinManager.RemoveAll( );
 }
