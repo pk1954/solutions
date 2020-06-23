@@ -101,7 +101,7 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 				if ( m_pModel->Compute( ) ) // returns true, if stop on trigger fires
 				{
 					m_bStopped = true;
-					m_pRunObservable->NotifyAll( false );
+					m_pRunObservable->NotifyAll( false ); // notify observers, that computation stopped
 				}
 				++lCyclesDone;
 			}

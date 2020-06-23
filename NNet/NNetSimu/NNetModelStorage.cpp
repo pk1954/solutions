@@ -323,7 +323,6 @@ void NNetModelStorage::Read( wstring const wstrPath )
 
 void NNetModelStorage::ReadFinished( bool const bSuccess )
 {
-    setUnsavedChanges( false );
     if ( bSuccess )
     {
         m_wstrPathOfOpenModel = m_wstrPathOfNewModel;
@@ -333,6 +332,7 @@ void NNetModelStorage::ReadFinished( bool const bSuccess )
         MessageBox( nullptr, m_wstrPathOfNewModel.c_str(), L"Error in model file. Using default model.", MB_OK );
         PostMessage( m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0 );
     }
+    setUnsavedChanges( false );
 }
 
 ////////////////////////// Write /////////////////////////////////////////////

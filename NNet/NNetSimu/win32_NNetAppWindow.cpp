@@ -188,11 +188,6 @@ void NNetAppWindow::Start( )
 
 	m_computeThread.RunComputation();
 
-	//RECT rectParam = Util::GetClRect( m_parameterDlg.GetWindowHandle() );
-	//RECT rectCrsr  = Util::GetClRect( m_crsrWindow.GetWindowHandle() );
-	//RECT rectPerf  = Util::GetClRect( m_performanceWindow.GetWindowHandle() );
-	//RECT rectMini  = Util::GetClRect( m_miniNNetWindow.GetWindowHandle() );
-
 	m_bStarted = true;
 }
 
