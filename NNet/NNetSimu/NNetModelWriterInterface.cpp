@@ -10,6 +10,8 @@
 #include "Analyzer.h"
 #include "win32_util.h"
 #include "win32_script.h"
+#include "NNetModel.h"
+#include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
 
 using std::wostream;
@@ -22,10 +24,10 @@ void NNetModelWriterInterface::Initialize( wostream * pTraceStream )
 	m_pTraceStream = pTraceStream;
 }
 
-void NNetModelWriterInterface::Start( NNetModel * const pModel, Param * const pParam )
+void NNetModelWriterInterface::Start( NNetModel * const pModel )
 {
 	m_pModel = pModel;
-	m_pParam = pParam;
+	m_CmdStack.Inizialize( m_pModel );
 }
 
 void NNetModelWriterInterface::Stop( )
@@ -33,19 +35,135 @@ void NNetModelWriterInterface::Stop( )
 	m_pModel = nullptr;
 }
 
+void NNetModelWriterInterface::UndoCommand( )
+{
+	if ( ! m_CmdStack.UndoCommand() )
+		MessageBeep( MB_ICONWARNING );
+}
+
+void NNetModelWriterInterface::RedoCommand( )
+{
+	if ( ! m_CmdStack.RedoCommand() )
+		MessageBeep( MB_ICONWARNING );
+}
+
+class ResetTimerCommand : public Command
+{
+public:
+	virtual void Do  ( NNetModel * const pModel ) { m_simuTime = pModel->SetSimulationTime(); }
+	virtual void Undo( NNetModel * const pModel ) { pModel->SetSimulationTime( m_simuTime ); }
+
+private:
+	fMicroSecs m_simuTime {};
+};
+
 void NNetModelWriterInterface::ResetTimer( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pModel->ResetSimulationTime( );
+	m_CmdStack.NewCommand( new ResetTimerCommand() );
 }
+
+class Connect2PipeCommand : public Command
+{
+public:
+	Connect2PipeCommand( ShapeId idSrc, ShapeId idDst )
+	:	m_idBaseKnot( idSrc ),
+		m_idPipe    ( idDst )
+	{ }
+
+	virtual void Do( NNetModel * const pModel )
+	{
+		BaseKnot * const pBaseKnot2Insert { pModel->GetShapePtr<BaseKnot *>( m_idBaseKnot ) };
+		Pipe     * const pPipe2Split      { pModel->GetShapePtr<Pipe     *>( m_idPipe     ) };
+		BaseKnot * const pStartKnot { pPipe2Split->GetStartKnotPtr( ) };
+
+		m_idNewPipe = pModel->NewPipe( pStartKnot, pBaseKnot2Insert );
+		pStartKnot->RemoveOutgoing( pPipe2Split );
+		pModel->ConnectOutgoing( pPipe2Split, pBaseKnot2Insert );
+		pPipe2Split->Recalc();
+	}
+
+	virtual void Undo( NNetModel * const pModel )
+	{
+		BaseKnot      * const pBaseKnot2Disconnect { pModel->GetShapePtr<BaseKnot *>( m_idBaseKnot ) };
+		Pipe          * const pPipe2Remove         { pModel->GetShapePtr<Pipe     *>( m_idNewPipe  ) };
+		Pipe          * const pPipe2Survive        { pModel->GetShapePtr<Pipe     *>( m_idPipe  ) };
+		MicroMeterPoint const umStartPos           { pPipe2Remove->GetStartKnotPtr( )->GetPosition() };
+
+		pModel->RemoveShape( pBaseKnot2Disconnect );
+		pModel->RemoveShape( pPipe2Remove );
+		pPipe2Survive->GetStartKnotPtr()->SetPosition( umStartPos );
+	}
+
+private:
+	ShapeId m_idBaseKnot { NO_SHAPE };
+	ShapeId m_idPipe     { NO_SHAPE };
+	ShapeId m_idNewPipe  { NO_SHAPE };
+};
+
+class Connect2BaseKnotCommand : public Command
+{
+public:
+	Connect2BaseKnotCommand( BaseKnot * pSrc, BaseKnot * pDst )
+	  :	m_pBaseKnotSrc( pSrc ),
+		m_pBaseKnotDst( pDst )
+	{ }
+
+	virtual void Do( NNetModel * const pModel )
+	{
+		if ( m_pBaseKnotSrc && m_pBaseKnotDst )
+		{
+			m_pBaseKnotSrc->Apply2AllInPipes ( [&]( Pipe & pipe ) { pModel->ConnectIncoming( & pipe, m_pBaseKnotDst ); pipe.Recalc(); } );
+			m_pBaseKnotSrc->Apply2AllOutPipes( [&]( Pipe & pipe ) { pModel->ConnectOutgoing( & pipe, m_pBaseKnotDst ); pipe.Recalc(); } );
+			pModel->RemoveFromShapeList( m_pBaseKnotSrc );
+			delete m_pBaseKnotSrc;
+		}
+	}
+
+	virtual void Undo( NNetModel * const pModel )
+	{
+	}
+
+private:
+	BaseKnot * m_pBaseKnotSrc { nullptr };
+	BaseKnot * m_pBaseKnotDst { nullptr };
+};
 
 void NNetModelWriterInterface::Connect( ShapeId const idSrc, ShapeId const idDst )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << idSrc.GetValue() << L" " << idDst.GetValue() << endl;
-	m_pModel->Connect( idSrc, idDst );
+	BaseKnot * pSrc { m_pModel->GetShapePtr<BaseKnot *>( idSrc ) };
+	Shape    * pDst { m_pModel->GetShapePtr<Shape    *>( idDst ) };
+	Command  * pCommand;
+	if ( pDst->IsPipe() )   // connect baseknot to pipe
+		pCommand = new Connect2PipeCommand    ( idSrc, idDst );
+	else
+		pCommand = new Connect2BaseKnotCommand( pSrc, m_pModel->GetShapePtr<BaseKnot *>( idDst ) );
+	m_CmdStack.NewCommand( pCommand );
 }
+
+class RemoveShapeCommand : public Command
+{
+public:
+	RemoveShapeCommand( ShapeId const id )
+		:	m_id( id )
+	{ }
+
+	virtual void Do( NNetModel * const pModel )
+	{
+		pModel->RemoveShape( m_id );
+	}
+
+	virtual void Undo( NNetModel * const pModel )
+	{
+		// TODO  xxxxxxxxxx
+	}
+
+private:
+	ShapeId const m_id;
+};
 
 void NNetModelWriterInterface::RemoveShape( ShapeId const id )
 {
@@ -74,6 +192,27 @@ void NNetModelWriterInterface::Convert2InputNeuron( ShapeId const id )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
 	m_pModel->Convert2InputNeuron( id );
 }
+
+class ToggleStopOnTriggerCommand : public Command
+{
+public:
+	ToggleStopOnTriggerCommand( ShapeId const id )
+      :	m_id( id )
+	{ }
+
+	virtual void Do( NNetModel * const pModel )
+	{
+		pModel->ToggleStopOnTrigger( m_id );
+	}
+
+	virtual void Undo( NNetModel * const pModel )
+	{
+		pModel->ToggleStopOnTrigger( m_id );
+	}
+
+private:
+	ShapeId const m_id;
+};
 
 void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
 {
@@ -133,6 +272,29 @@ void NNetModelWriterInterface::SetParameter( tParameter const param, float const
 		TraceStream( ) << __func__ << L" " << GetParameterName( param ) << L" " << fNewValue << endl;
 	m_pModel->SetParameter( param, fNewValue );
 }
+
+class MoveShapeCommand : public Command
+{
+public:
+	MoveShapeCommand( ShapeId const id, MicroMeterPoint const & delta )
+		:	m_id( id ),
+		    m_delta( delta )
+	{ }
+
+	virtual void Do( NNetModel * const pModel )
+	{
+		pModel->MoveShape( m_id, m_delta );
+	}
+
+	virtual void Undo( NNetModel * const pModel )
+	{
+		pModel->MoveShape( m_id, - m_delta );
+	}
+
+private:
+	ShapeId         const m_id;
+	MicroMeterPoint const m_delta;
+};
 
 void NNetModelWriterInterface::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
@@ -205,63 +367,139 @@ int const NNetModelWriterInterface::GetActionCommandFromName( wchar_t const * co
 	return mapMsg.at( name );
 }
 
-void NNetModelWriterInterface::ActionCommand( int const idMsg, ShapeId const id, MicroMeterPoint const & pos )
+class ActionCommand : public Command
+{
+public:
+	ActionCommand( int const idMsg, ShapeId const id, MicroMeterPoint const & pos )
+	  : m_idMsg( idMsg ),
+		m_id   ( id ),
+		m_pos  ( pos )
+	{}
+
+	virtual void Do( NNetModel * const pModel )
+	{
+		switch ( m_idMsg )
+		{
+		case IDM_ANALYZE_LOOPS:
+		case IDM_ANALYZE_ANOMALIES:
+		{
+			pModel->SelectAll( tBoolOp::opFalse );
+			auto func { (m_idMsg == IDM_ANALYZE_LOOPS) ? ModelAnalyzer::FindLoop : ModelAnalyzer::FindAnomaly };
+			bool bFound { func( * pModel ) };
+			if ( bFound )
+				ModelAnalyzer::SelectLoopShapes( * pModel );
+		}
+		break;
+
+		case IDD_NEW_NEURON:
+			pModel->NewShape<Neuron>( m_pos );
+			break;
+
+		case IDD_NEW_INPUT_NEURON:
+			pModel->NewShape<InputNeuron>( m_pos );
+			break;
+
+		case IDD_APPEND_NEURON:
+			pModel->AppendShape<Neuron>( m_id );
+			break;
+
+		case IDD_APPEND_INPUT_NEURON:
+			pModel->AppendShape<InputNeuron>( m_id );
+			break;
+
+		case IDD_INSERT_NEURON:
+			pModel->InsertNeuron( m_id, m_pos );
+			break;
+
+		case IDD_ADD_OUTGOING2KNOT:
+			pModel->AddOutgoing2Knot( m_id, m_pos );
+			break;
+
+		case IDD_ADD_INCOMING2KNOT:
+			pModel->AddIncoming2Knot( m_id, m_pos );
+			break;
+
+		case IDD_ADD_OUTGOING2PIPE:
+			pModel->AddOutgoing2Pipe( m_id, m_pos );
+			break;
+
+		case IDD_ADD_INCOMING2PIPE:
+			pModel->AddIncoming2Pipe( m_id, m_pos );
+			break;
+
+		default:
+			break;
+		} 
+	}
+
+	virtual void Undo( NNetModel * const pModel )
+	{
+		switch ( m_idMsg )
+		{
+		case IDM_ANALYZE_LOOPS:
+		case IDM_ANALYZE_ANOMALIES:
+		{
+			//pModel->SelectAll( tBoolOp::opFalse );
+			//auto func { (m_idMsg == IDM_ANALYZE_LOOPS) ? ModelAnalyzer::FindLoop : ModelAnalyzer::FindAnomaly };
+			//bool bFound { func( * pModel ) };
+			//if ( bFound )
+			//	ModelAnalyzer::SelectLoopShapes( * pModel );
+		}
+		break;
+
+		case IDD_NEW_NEURON:
+		case IDD_NEW_INPUT_NEURON:
+			pModel->RemoveShape( m_id );
+			break;
+
+		case IDD_APPEND_NEURON:
+//			pModel->AppendShape<Neuron>( m_id );
+			break;
+
+		case IDD_APPEND_INPUT_NEURON:
+//			pModel->AppendShape<InputNeuron>( m_id );
+			break;
+
+		case IDD_INSERT_NEURON:
+//			pModel->InsertNeuron( m_id, m_pos );
+			break;
+
+		case IDD_ADD_OUTGOING2KNOT:
+//			pModel->AddOutgoing2Knot( m_id, m_pos );
+			break;
+
+		case IDD_ADD_INCOMING2KNOT:
+//			pModel->AddIncoming2Knot( m_id, m_pos );
+			break;
+
+		case IDD_ADD_OUTGOING2PIPE:
+//			pModel->AddOutgoing2Pipe( m_id, m_pos );
+			break;
+
+		case IDD_ADD_INCOMING2PIPE:
+//			pModel->AddIncoming2Pipe( m_id, m_pos );
+			break;
+
+		default:
+			break;
+		} 
+	}
+
+private:
+	int             const m_idMsg;
+	ShapeId         const m_id;
+	MicroMeterPoint const m_pos;
+	Shape               * m_pShape;
+};
+
+void NNetModelWriterInterface::Action( int const idMsg, ShapeId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << GetActionCommandName( idMsg ) << L" " << id.GetValue( ) << pos << endl;
-	switch ( idMsg )
-	{
-	case IDM_ANALYZE_LOOPS:
-	case IDM_ANALYZE_ANOMALIES:
-	{
-		m_pModel->SelectAll( tBoolOp::opFalse );
-		auto func { (idMsg == IDM_ANALYZE_LOOPS) ? ModelAnalyzer::FindLoop : ModelAnalyzer::FindAnomaly };
-		bool bFound { func( * m_pModel ) };
-		if ( bFound )
-			ModelAnalyzer::SelectLoopShapes( * m_pModel );
-		m_pParam->SetEmphasizeMode( bFound );
-	}
-	break;
 
-	case IDD_NEW_NEURON:
-		m_pModel->NewShape<Neuron>( pos );
-		break;
-
-	case IDD_NEW_INPUT_NEURON:
-		m_pModel->NewShape<InputNeuron>( pos );
-		break;
-
-	case IDD_APPEND_NEURON:
-		m_pModel->AppendShape<Neuron>( id );
-		break;
-
-	case IDD_APPEND_INPUT_NEURON:
-		m_pModel->AppendShape<InputNeuron>( id );
-		break;
-
-	case IDD_INSERT_NEURON:
-		m_pModel->InsertNeuron( id, pos );
-		break;
-
-	case IDD_ADD_OUTGOING2KNOT:
-		m_pModel->AddOutgoing2Knot( id, pos );
-		break;
-
-	case IDD_ADD_INCOMING2KNOT:
-		m_pModel->AddIncoming2Knot( id, pos );
-		break;
-
-	case IDD_ADD_OUTGOING2PIPE:
-		m_pModel->AddOutgoing2Pipe( id, pos );
-		break;
-
-	case IDD_ADD_INCOMING2PIPE:
-		m_pModel->AddIncoming2Pipe( id, pos );
-		break;
-
-	default:
-		break;
-	} 
+	Command * pCommand { new ActionCommand( idMsg, id, pos ) };
+	pCommand->Do( m_pModel );
+	delete pCommand;
 }
 
 void NNetModelWriterInterface::DeleteSelection()

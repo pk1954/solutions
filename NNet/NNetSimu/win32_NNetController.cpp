@@ -228,6 +228,14 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         ShowAboutBox( m_pNNetWindow->GetWindowHandle() );
         break;
 
+    case IDM_UNDO:
+        m_pModelWriterInterface->UndoCommand();
+        break;
+
+    case IDM_REDO:
+        m_pModelWriterInterface->RedoCommand();
+        break;
+
     case IDM_SAVE_MODEL:
         if ( m_pStorage->SaveModel( ) )
             Preferences::WritePreferences( m_pStorage->GetModelPath() );
@@ -283,13 +291,20 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDD_CONNECT:
+    {
         Sound::Play( TEXT("SNAP_IN_SOUND") ); 
+        NNetModel const * pModelSave = m_pModelReaderInterface->CopyModel();
         m_pModelWriterInterface->Connect
         ( 
             m_pNNetWindow->GetHighlightedShapeId(),
             m_pNNetWindow->GetSuperHighlightedShapeId()
         );
+        m_pModelWriterInterface->UndoCommand();
+        m_pModelWriterInterface->RedoCommand();
+        bool const bRes = m_pModelReaderInterface->IsEqual( * pModelSave );
+        assert( bRes );
         break;
+    }
 
     case IDM_DELETE:   // keyboard: delete key
         if ( m_pNNetWindow->GetHighlightedShapeId() == NO_SHAPE )
@@ -326,13 +341,13 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
     case IDD_ADD_INCOMING2KNOT:
     case IDD_ADD_OUTGOING2PIPE:
     case IDD_ADD_INCOMING2PIPE:
-        m_pModelWriterInterface->ActionCommand( wmId, m_pNNetWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelWriterInterface->Action( wmId, m_pNNetWindow->GetHighlightedShapeId(), umPoint );
         break;
 
     case IDM_ANALYZE_LOOPS:
     case IDM_ANALYZE_ANOMALIES:
         {
-            m_pModelWriterInterface->ActionCommand( wmId, NO_SHAPE, NP_NULL );
+            m_pModelWriterInterface->Action( wmId, NO_SHAPE, NP_NULL );
             MicroMeterRect rect { ModelAnalyzer::GetEnclosingRect() };
             if ( rect.IsNotEmpty() )
                 m_pNNetWindow->CenterAndZoomRect( rect, 2.0f, true );

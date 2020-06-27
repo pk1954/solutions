@@ -13,11 +13,15 @@ using std::find;
 using std::begin;
 using std::end;
 
+void BaseKnot::SetPosition( MicroMeterPoint const & newPos )
+{
+	m_center = newPos;
+	Apply2AllConnectedPipes( [&](Pipe & pipe) { pipe.Recalc(); } );
+}
 
 void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 {
-	m_center += delta;
-	Apply2AllConnectedPipes( [&](Pipe & pipe) { pipe.Recalc(); } );
+	SetPosition( m_center + delta );
 }
 
 void BaseKnot::Prepare( )

@@ -38,9 +38,21 @@ public:
 
 	virtual ~BaseKnot() {}
 
+	virtual bool IsEqual( BaseKnot const & other ) const
+	{
+		if ( ! Shape::IsEqual( other ) )
+			return false;
+		if ( m_center != other.m_center )
+			return false;
+		if ( m_extension != other.m_extension )
+			return false;
+		return true;
+	}
+
 	virtual void Prepare      ( );
  	virtual mV   GetNextOutput( ) const = 0;
 	virtual void MoveShape    ( MicroMeterPoint const & );
+	virtual void SetPosition  ( MicroMeterPoint const & );
 	virtual bool IsInRect     ( MicroMeterRect  const & umRect ) const 
 	{ 
 		return umRect.Includes( m_center ); 
@@ -113,9 +125,8 @@ private:
 	void apply2AllPipesInList ( PipeList const &, PipeFunc  const & ) const;
 	bool apply2AllPipesInListB( PipeList const &, PipeFuncB const & ) const;
 
-	MicroMeterPoint     m_center;
-	MicroMeter          m_extension;
-	IDWriteTextFormat * m_pTextFormat { nullptr };
+	MicroMeterPoint m_center;
+	MicroMeter      m_extension;
 };
 
 BaseKnot const * Cast2BaseKnot( Shape const * );

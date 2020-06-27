@@ -142,7 +142,7 @@ void NNetAppWindow::Start( )
 	SetWindowText( m_miniNNetWindow.GetWindowHandle(), L"Mini window" );
 
 	m_modelReaderInterface.Start( & m_model );
-	m_modelWriterInterface.Start( & m_model, & m_parameters );
+	m_modelWriterInterface.Start( & m_model );
 	m_crsrWindow          .Start( m_hwndApp, & m_mainNNetWindow, & m_modelReaderInterface );
 	m_parameterDlg        .Start( m_hwndApp, & m_modelWriterInterface, & m_parameters );
 	m_performanceWindow   .Start( m_hwndApp, & m_modelReaderInterface, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );

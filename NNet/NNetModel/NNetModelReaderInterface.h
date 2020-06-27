@@ -25,6 +25,9 @@ public:
 	void Start( NNetModel * const );
 	void Stop(); 
 
+	NNetModel const * const CopyModel() const;
+	bool              const IsEqual( NNetModel const & ) const;
+
 	bool      const AnyShapesSelected         ( )               const;	
 	bool      const IsSelected                ( ShapeId const ) const;
 	ShapeType const GetShapeType              ( ShapeId const ) const;

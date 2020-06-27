@@ -23,6 +23,23 @@ public:
 	Pipe( MicroMeterPoint const = NP_NULL );
 	virtual ~Pipe();
 
+	virtual bool IsEqual( Pipe const & other ) const 
+	{
+		if ( ! Shape::IsEqual( other ) )
+			return false;
+		if ( m_pKnotStart->GetId() != other.m_pKnotStart->GetId() )
+			return false;
+		if ( m_pKnotEnd->GetId() != other.m_pKnotEnd->GetId() )
+			return false;
+		if ( m_width != other.m_width )
+			return false;
+		//if ( m_potential != other.m_potential )
+		//	return false;
+		//if ( m_potIter != other.m_potIter )
+		//	return false;
+		return true;
+	}
+
 	static unsigned long GetCounter( ) { return m_counter; }
 
 	static bool TypeFits( ShapeType const type ) { return type.IsPipeType( ); }
@@ -102,6 +119,8 @@ public:
 	virtual bool IsPointInShape( MicroMeterPoint const & ) const;
 	virtual void Recalc( );
 	virtual void Clear( );
+
+	virtual Pipe * Clone( ) const { return new Pipe( * this ); };
 
 	void DislocateEndPoint  ( ) { dislocate( GetEndKnotPtr(),    PIPE_WIDTH ); }
 	void DislocateStartPoint( )	{ dislocate( GetStartKnotPtr(), -PIPE_WIDTH );}

@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include "SCRIPT.H"
+#include "NNetModel.h"
 #include "SlowMotionRatio.h"
 #include "ComputeThread.h"
 #include "NNetModelStorage.h"

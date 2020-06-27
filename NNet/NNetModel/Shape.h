@@ -29,14 +29,30 @@ public:
 	}	
 
 	Shape( Shape const & src )   // copy constructor
-	  :	m_type     (src.m_type),
-		m_bSelected(src.m_bSelected),
-		m_bMarked  (src.m_bMarked)
+	  :	m_type      (src.m_type),
+		m_identifier(src.m_identifier),
+		m_bSelected (src.m_bSelected),
+		m_bMarked   (src.m_bMarked)
 	{
 		++ m_counter;
 	}
 
-	Shape & operator= ( Shape const & src ) = delete;
+	Shape & operator= ( Shape const & ) = delete;
+
+	virtual bool IsEqual( Shape const & other ) const
+	{
+		if ( m_type.GetValue() != other.m_type.GetValue() )
+			return false;
+		if ( m_identifier.GetValue() != other.m_identifier.GetValue() )
+			return false;
+		if ( m_bSelected != other.m_bSelected )
+			return false;
+		if ( m_bMarked != other.m_bMarked )
+			return false;
+		if ( m_mVinputBuffer != other.m_mVinputBuffer )
+			return false;
+		return true;
+	}
 
 	virtual ~Shape()
 	{
@@ -51,6 +67,8 @@ public:
 
 	bool IsSelected( ) const { return m_bSelected; }
 	bool IsMarked  ( ) const { return m_bMarked; }
+
+	virtual Shape * Clone( ) const = 0;
 
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const = tHighlightType::normal ) const = 0;
 	virtual void DrawInterior  ( DrawContext const & )     const = 0;

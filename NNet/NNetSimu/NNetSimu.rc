@@ -151,6 +151,8 @@ IDC_NNET_SIMU_MAIN ACCELERATORS
     "s",            IDM_STOP,         ASCII
     "+",            IDM_PLUS,         ASCII
     "-",            IDM_MINUS,        ASCII
+    "z",            IDM_UNDO,         VIRTKEY, CONTROL
+    "y",            IDM_REDO,         VIRTKEY, CONTROL
     "a",            IDM_SELECT_ALL,   VIRTKEY, CONTROL
     "s",            IDM_SAVE_MODEL,   VIRTKEY, CONTROL
     "c",            IDM_CRSR_WINDOW,  ASCII,   ALT

@@ -31,6 +31,43 @@ public:
 
 	void Initialize( Param * const, Observable * const, Observable * const, Observable * const );
 
+	NNetModel()	{}
+
+	virtual ~NNetModel( )
+	{
+		for ( auto pShape : m_Shapes )
+			delete pShape;
+	}
+
+	NNetModel const * const GetCopy( ) const
+	{
+		NNetModel * const modelCopy = new NNetModel();
+		* modelCopy = * this;
+		for ( auto pShape : m_Shapes )
+		{
+			if ( pShape )
+				modelCopy->m_Shapes[ pShape->GetId().GetValue() ] = shallowCopy( * pShape );
+		}
+		return modelCopy;
+	}
+
+	bool IsEqual( NNetModel const & other ) const
+	{
+		if ( m_Shapes.size() != other.m_Shapes.size() )
+			return false;
+
+		for ( auto pShape : m_Shapes )
+		{
+			auto pShapeOther { other.m_Shapes[pShape->GetId().GetValue()] };
+			if ( (pShape == nullptr) != (pShapeOther == nullptr) )
+				return false;
+			if ( pShape && ( isEqual( * pShape, * pShapeOther ) ) )
+				return false;
+		}
+
+		return true;
+	}
+
 	// readOnly functions
 
 	template <typename T> bool HasType( Shape const * const pShape ) const 
@@ -91,10 +128,12 @@ public:
 
 	// manipulating functions
 
-	void ResetSimulationTime( )	
+	fMicroSecs SetSimulationTime( fMicroSecs const newVal = 0._MicroSecs )	
 	{ 
-		m_timeStamp = 0._MicroSecs; 
+		fMicroSecs currentValue;
+		m_timeStamp = newVal; 
 		m_pModelTimeObservable->NotifyAll( false );
+		return currentValue;
 	}
 
 	template <typename T> 
@@ -204,18 +243,18 @@ public:
 
 	void CreateInitialShapes();
 	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
-	void NewPipe( BaseKnot * const, BaseKnot * const );
 
-	Knot   * const InsertKnot  ( ShapeId const, MicroMeterPoint const & );
-	Neuron * const InsertNeuron( ShapeId const, MicroMeterPoint const & );
-	void           MoveShape   ( ShapeId const, MicroMeterPoint const & );
+	ShapeId  const NewPipe     ( BaseKnot * const, BaseKnot      * const   );
+	Knot   * const InsertKnot  ( ShapeId    const, MicroMeterPoint const & );
+	Neuron * const InsertNeuron( ShapeId    const, MicroMeterPoint const & );
+	void           MoveShape   ( ShapeId    const, MicroMeterPoint const & );
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
-	void AddOutgoing2Knot( ShapeId const, MicroMeterPoint const & );
-	void AddIncoming2Knot( ShapeId const, MicroMeterPoint const & );
-	void AddOutgoing2Pipe( ShapeId const, MicroMeterPoint const & );
-	void AddIncoming2Pipe( ShapeId const, MicroMeterPoint const & );
+	ShapeId const AddOutgoing2Knot( ShapeId const, MicroMeterPoint const & );
+	ShapeId const AddIncoming2Knot( ShapeId const, MicroMeterPoint const & );
+	ShapeId const AddOutgoing2Pipe( ShapeId const, MicroMeterPoint const & );
+	ShapeId const AddIncoming2Pipe( ShapeId const, MicroMeterPoint const & );
 
 	void StopTriggerSound   ( ShapeId const id ) { SetTriggerSound( id, 0_Hertz, 0_MilliSecs ); }
 	void SetTriggerSound    ( ShapeId const, Hertz const, MilliSecs const );
@@ -240,13 +279,19 @@ public:
 
 	void ConnectIncoming( Pipe * const, BaseKnot * const );
 	void ConnectOutgoing( Pipe * const, BaseKnot * const );
+	void InsertBaseKnot ( Pipe * const, BaseKnot * const );
 	void CopySelection( );
 	void MarkSelection( tBoolOp const );
 	void DeleteSelection( );
 	void MoveSelection( MicroMeterPoint const & );
-	void SelectBeepers( ) {	Apply2All<Neuron>( [&](Neuron & n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
 
-	void RemoveBeepers( ) 
+	void RemoveFromShapeList( Shape * const );
+	void DisconnectBaseKnot ( BaseKnot * const );
+	void RemoveShape( Shape * const );
+
+	void SelectBeepers() { Apply2All<Neuron>( [&](Neuron & n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
+
+	void RemoveBeepers() 
 	{	
 		if ( AnyShapesSelected() )
 			Apply2AllSelected<Neuron>( [&](Neuron & n) { removeTriggerSound( & n ); } );
@@ -319,12 +364,9 @@ private:
 
 	MicroMeterPoint orthoVector        ( ShapeId const ) const;
 	void            deletePipeEndPoints( Pipe  * const );
-	void            deleteShape        ( Shape * const );
-	void            removeShape        ( Shape * const );
-	Shape *         shallowCopy        ( Shape   const & );
-	void            disconnectBaseKnot ( BaseKnot * const );
-	void            selectSubtree      ( BaseKnot * const, tBoolOp    const );
-	void            insertBaseKnot     ( Pipe     * const, BaseKnot * const );
+	Shape *         shallowCopy        ( Shape   const & ) const;
+	void            selectSubtree      ( BaseKnot * const, tBoolOp const );
+	bool            isEqual            ( Shape const &, Shape const & ) const;
 	void            connectToNewShapes ( Shape const &, ShapeList & );
 	void            setTriggerSound    ( Neuron * const, Hertz const, MilliSecs const );
 	void            removeTriggerSound ( Neuron * const );

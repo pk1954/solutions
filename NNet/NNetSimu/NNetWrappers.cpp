@@ -105,7 +105,7 @@ public:
         int             const idMsg   { script.ScrReadLong( ) };
         ShapeId         const idShape { ScrReadShapeId( script ) };
         MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
-        m_pModelWriterInterface->ActionCommand( idMsg, idShape, umPos );
+        m_pModelWriterInterface->Action( idMsg, idShape, umPos );
     }
 };
 

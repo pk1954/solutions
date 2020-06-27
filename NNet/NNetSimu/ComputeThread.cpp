@@ -126,7 +126,7 @@ void ComputeThread::Reset( )
 {
 	m_usRealTimeAvailPerCycle = m_pSlowMotionRatio->SimuTime2RealTime( GetSimuTimeResolution() );
 	m_hrTimer.Restart();
-	m_pModel->ResetSimulationTime();
+	m_pModel->SetSimulationTime();
 }
 
 void ComputeThread::SingleStep( ) 

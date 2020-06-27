@@ -16,6 +16,19 @@ public:
 	InputNeuron( MicroMeterPoint const );
 	virtual ~InputNeuron( );
 
+	virtual bool IsEqual( InputNeuron const & other ) const
+	{
+		if ( ! Neuron::IsEqual( other ) )
+			return false;
+		if ( m_mvFactor != other.m_mvFactor )
+			return false;
+		if ( m_pulseFrequency != other.m_pulseFrequency )
+			return false;
+		if ( m_pulseDuration != other.m_pulseDuration )
+			return false;
+		return true;
+	}
+
 	static unsigned long GetCounter( ) { return m_counter; }
 
 	static bool TypeFits( ShapeType const type ) { return type.IsInputNeuronType( ); }
@@ -43,6 +56,8 @@ public:
 	virtual void DrawInterior  ( DrawContext const & ) const;
 	virtual void DrawNeuronText( DrawContext const & ) const;
 	virtual void Recalc( );   // Recalculate precalculated values
+
+	virtual InputNeuron * Clone( ) const { return new InputNeuron( * this ); };
 
 	fHertz GetPulseFreq( ) const { return m_pulseFrequency; }
 
