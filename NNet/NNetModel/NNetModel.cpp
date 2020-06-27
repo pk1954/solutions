@@ -74,7 +74,7 @@ void NNetModel::Disconnect( ShapeId const id )
 		disconnectBaseKnot( pBaseKnot );
 		if ( pBaseKnot->IsKnot() )
 			deleteShape( pBaseKnot );
-		staticModelChanged( );
+		StaticModelChanged( );
 	}
 }
 
@@ -88,7 +88,7 @@ void NNetModel::Convert2Neuron( ShapeId const idInputNeuron )
 		RemoveShape( idInputNeuron );
 		if ( idAxon != NO_SHAPE )
 			Connect( GetStartKnotId( idAxon ), pNeuron->GetId() );
-		staticModelChanged( );
+		StaticModelChanged( );
 	}
 }
 
@@ -102,7 +102,7 @@ void NNetModel::Convert2InputNeuron( ShapeId const idNeuron )
 		RemoveShape( idNeuron );
 		if ( idAxon != NO_SHAPE )
 			Connect( GetStartKnotId( idAxon ), pInputNeuron->GetId()  );
-		staticModelChanged( );
+		StaticModelChanged( );
 	}
 }
 
@@ -116,7 +116,7 @@ void NNetModel::SetPulseRate( ShapeId const id, bool const bDirection )
 		if ( fOldValue.IsNotNull() )
 		{
 			pInputNeuron->SetPulseFrequency( fOldValue + ( bDirection ? INCREMENT : -INCREMENT ) );
-			staticModelChanged( );
+			StaticModelChanged( );
 		}
 	}
 }
@@ -127,7 +127,7 @@ void NNetModel::SetPulseRate( ShapeId const id, fHertz const fNewValue )
 	if ( pInputNeuron )
 	{
 		pInputNeuron->SetPulseFrequency( static_cast< fHertz >( fNewValue ) );
-		staticModelChanged( );
+		StaticModelChanged( );
 	}
 }
 
@@ -138,7 +138,7 @@ void NNetModel::setTriggerSound( Neuron * const pNeuron, Hertz const freq, Milli
 		pNeuron->SetTriggerSoundFrequency( freq );
 		pNeuron->SetTriggerSoundDuration ( msec );
 		pNeuron->SetTriggerSoundOn( freq != 0_Hertz );
-		staticModelChanged( );
+		StaticModelChanged( );
 	}
 }
 
@@ -150,7 +150,7 @@ void NNetModel::removeTriggerSound( Neuron * const pNeuron )
 void NNetModel::SetTriggerSound( ShapeId const id, Hertz const freq, MilliSecs const msec )
 {
 	setTriggerSound( GetShapePtr<Neuron *>( id ), freq, msec );
-	staticModelChanged( );
+	StaticModelChanged( );
 }
 
 void NNetModel::SetParameter
@@ -188,7 +188,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 			deleteShape( pSrc );
 		}
 	}
-	staticModelChanged( );
+	StaticModelChanged( );
 }
 
 void NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
@@ -199,7 +199,7 @@ void NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
 		ConnectOutgoing( pPipe, pStart );
 		ConnectIncoming( pPipe, pEnd );
 		pPipe->Recalc();
-		staticModelChanged( );
+		StaticModelChanged( );
 	}
 }
 
@@ -208,7 +208,7 @@ void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 	if ( Shape * pShape { GetShapePtr<Shape *>( id  ) } )
 	{
 		pShape->MoveShape( delta );
-		staticModelChanged( );
+		StaticModelChanged( );
 	}
 }
 
@@ -219,7 +219,7 @@ Neuron * const NNetModel::InsertNeuron( ShapeId const idPipe, MicroMeterPoint co
 	{
 		pNeuron = NewShape<Neuron>( splitPoint );
 		insertBaseKnot( GetShapePtr<Pipe *>(idPipe), pNeuron );
-		staticModelChanged( );
+		StaticModelChanged( );
 	}
 	return pNeuron;
 }
@@ -231,7 +231,7 @@ Knot * const NNetModel::InsertKnot( ShapeId const idPipe, MicroMeterPoint const 
 	{
 		pKnot = NewShape<Knot>( splitPoint );
 		insertBaseKnot( GetShapePtr<Pipe *>(idPipe), pKnot );
-		staticModelChanged( );
+		StaticModelChanged( );
 	}
 	return pKnot;
 }
@@ -275,13 +275,13 @@ void NNetModel::ResetModel( )
 	for (auto pShape : m_Shapes)
 		delete pShape;
 	m_Shapes.clear();
-	staticModelChanged( );
+	StaticModelChanged( );
 }
 
 void NNetModel::RemoveShape( ShapeId const id ) 
 { 
 	removeShape( GetShape( id ) ); 
-	staticModelChanged( );
+	StaticModelChanged( );
 }
 
 void NNetModel::DeleteSelection( )
@@ -292,7 +292,7 @@ void NNetModel::DeleteSelection( )
 		if ( p &&  p->IsSelected() )             // by creating new shapes!!
 			removeShape( p ); 
 	}
-	staticModelChanged( );
+	StaticModelChanged( );
 }
 
 void NNetModel::MarkSelection( tBoolOp const op )
@@ -311,7 +311,7 @@ void NNetModel::MoveSelection( MicroMeterPoint const & delta )
 			knot.Apply2AllConnectedPipes( [&](Pipe & pipe) { pipe.Recalc(); } );
 		} 
 	);
-	staticModelChanged( );
+	StaticModelChanged( );
 }
 
 Shape * NNetModel::shallowCopy( Shape const & shape ) // No locks
@@ -379,7 +379,7 @@ void NNetModel::CopySelection( )
 	// Now add copies to m_Shapes
 	for ( auto pShape : newShapes )	{ if ( pShape ) add2ShapeList( pShape ); }
 
-	staticModelChanged( );
+	StaticModelChanged( );
 }
 
 void NNetModel::ConnectIncoming

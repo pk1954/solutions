@@ -102,7 +102,7 @@ public:
 	{ 
 		auto pT { new T( pos ) };
 		add2ShapeList( pT );
-		staticModelChanged( );
+		StaticModelChanged( );
 		return pT;
 	}
 
@@ -113,7 +113,7 @@ public:
 		if ( pShape && pShape->IsKnot() )
 		{
 			Connect( id, NewShape<T>( GetShapePos( id ) )->GetId() );
-			staticModelChanged( );
+			StaticModelChanged( );
 		}
 	}
 
@@ -276,6 +276,12 @@ public:
 			pShape->Mark( op );
 	}
 
+	void StaticModelChanged( )
+	{ 
+		m_pStaticModelObservable->NotifyAll( false );
+		m_enclosingRect = ::ComputeEnclosingRect( m_Shapes );
+	}
+
 private:
 
 	ShapeList      m_Shapes                  { };
@@ -309,12 +315,6 @@ private:
 	void dynamicModelChanged( ) const 
 	{ 
 		m_pDynamicModelObservable->NotifyAll( false );
-	}
-
-	void staticModelChanged( )
-	{ 
-		m_pStaticModelObservable->NotifyAll( false );
-		m_enclosingRect = ::ComputeEnclosingRect( m_Shapes );
 	}
 
 	MicroMeterPoint orthoVector        ( ShapeId const ) const;
