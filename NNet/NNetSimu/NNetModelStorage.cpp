@@ -291,17 +291,31 @@ void NNetModelStorage::prepareForReading( )
     m_bPreparedForReading = true;
 }
 
+void NNetModelStorage::readModel( ) 
+{
+    bool bSuccess { m_pScript->ScrProcess( m_wstrPathOfNewModel ) };
+    if ( bSuccess )
+    {
+        m_wstrPathOfOpenModel = m_wstrPathOfNewModel;
+        m_pModel->StaticModelChanged();
+        setUnsavedChanges( false );
+        SendMessage( m_hwndApp, WM_COMMAND, IDM_READ_MODEL_FINISHED, static_cast<LPARAM>( bSuccess ) );
+    }
+    else
+    {
+        MessageBox( nullptr, m_wstrPathOfNewModel.c_str(), L"Error in model file. Using default model.", MB_OK );
+        SendMessage( m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0 );
+    }
+}
+
 static unsigned int __stdcall readModelThreadProc( void * data ) 
 {
     SetThreadDescription( GetCurrentThread(), L"ReadModel" );
-    NNetModelStorage * const pStorage { reinterpret_cast<NNetModelStorage *>( data ) };
-    bool                     bSuccess { pStorage->m_pScript->ScrProcess( pStorage->m_wstrPathOfNewModel ) };
-    pStorage->ReadFinished( bSuccess );
-    PostMessage( pStorage->m_hwndApp, WM_COMMAND, IDM_READ_MODEL_FINISHED, static_cast<LPARAM>( bSuccess ) );
+    reinterpret_cast<NNetModelStorage *>( data )->readModel( );
     return 0;
 }
 
-void NNetModelStorage::Read( wstring const wstrPath )
+void NNetModelStorage::Read( bool bConcurrently, wstring const wstrPath )
 {
     if ( ! m_bPreparedForReading )
         prepareForReading( );
@@ -311,8 +325,15 @@ void NNetModelStorage::Read( wstring const wstrPath )
     {
         m_pModel->ResetModel();
         wcout << L"** NNet model file " << m_wstrPathOfNewModel << endl;
-        UINT threadId { 0 };
-        Util::RunAsAsyncThread( readModelThreadProc, static_cast<void *>(this), & threadId );
+        if ( bConcurrently )
+        {
+            UINT threadId { 0 };
+            Util::RunAsAsyncThread( readModelThreadProc, static_cast<void *>(this), & threadId );
+        }
+        else
+        {
+            readModel( );
+        }
     }
     else
     {
@@ -321,19 +342,9 @@ void NNetModelStorage::Read( wstring const wstrPath )
     }
 }
 
-void NNetModelStorage::ReadFinished( bool const bSuccess )
+void NNetModelStorage::ReadAsync( wstring const wstrPath )
 {
-    if ( bSuccess )
-    {
-        m_wstrPathOfOpenModel = m_wstrPathOfNewModel;
-    }
-    else
-    {
-        MessageBox( nullptr, m_wstrPathOfNewModel.c_str(), L"Error in model file. Using default model.", MB_OK );
-        PostMessage( m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0 );
-    }
-    m_pModel->StaticModelChanged();
-    setUnsavedChanges( false );
+    Read( true, wstrPath );
 }
 
 ////////////////////////// Write /////////////////////////////////////////////

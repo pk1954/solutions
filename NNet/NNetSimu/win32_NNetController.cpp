@@ -292,17 +292,24 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDD_CONNECT:
     {
+        NNetModel const * pModelSave = nullptr;
+
         Sound::Play( TEXT("SNAP_IN_SOUND") ); 
-        NNetModel const * pModelSave = m_pModelReaderInterface->CopyModel();
+ 
+        //bool bRes;
+        //pModelSave = m_pModelReaderInterface->CopyModel();
+
         m_pModelWriterInterface->Connect
         ( 
             m_pNNetWindow->GetHighlightedShapeId(),
             m_pNNetWindow->GetSuperHighlightedShapeId()
         );
-        m_pModelWriterInterface->UndoCommand();
-        m_pModelWriterInterface->RedoCommand();
-        bool const bRes = m_pModelReaderInterface->IsEqual( * pModelSave );
-        assert( bRes );
+        //m_pModelWriterInterface->UndoCommand();
+
+        //bRes = m_pModelReaderInterface->IsEqual( * pModelSave );
+        //assert( bRes );
+
+        //m_pModelWriterInterface->RedoCommand();
         break;
     }
 

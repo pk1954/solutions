@@ -17,6 +17,31 @@
 using namespace std::chrono;
 using std::unordered_map;
 
+NNetModel::NNetModel( NNetModel const & modelSrc )
+{
+	* this = modelSrc;
+	for ( auto pShapeSrc : modelSrc.m_Shapes )
+	{
+		if ( pShapeSrc )
+		{
+			m_Shapes.at( pShapeSrc->GetId().GetValue() ) = shallowCopy( * pShapeSrc );
+		}
+	}
+	for ( auto pShapeSrc : modelSrc.m_Shapes )
+	{
+		if ( pShapeSrc )
+		{
+			connectToNewShapes( * pShapeSrc, m_Shapes );
+		}
+	}
+}
+
+NNetModel::~NNetModel( )
+{
+	for ( auto pShape : m_Shapes )
+		delete pShape;
+}
+
 void NNetModel::Initialize
 (
 	Param      * const pParam, 
@@ -30,8 +55,15 @@ void NNetModel::Initialize
     m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pModelTimeObservable    = pModelTimeObservable;
 	Shape::SetParam( pParam );
-	m_Shapes.reserve( 100000 ); // Dirty trick to avoid reallocation (invalidates iterators)
-}                               // TODO: find better solution  XXXXX
+}                     
+
+NNetModel const & NNetModel::GetCopy( ) const
+{
+	NNetModel * const pModelCopy { new NNetModel( * this ) };
+	bool const bRes = IsEqual( * pModelCopy );
+	assert( bRes );
+	return * pModelCopy;
+}
 
 void NNetModel::CreateInitialShapes( )
 {
@@ -40,6 +72,25 @@ void NNetModel::CreateInitialShapes( )
 	ShapeId       const idNewPipe    { NewPipe( pInputNeuron, pNeuron  ) };
 }
 
+bool NNetModel::IsEqual( NNetModel const & other ) const
+{
+	if ( m_Shapes.size() != other.m_Shapes.size() )
+		return false;
+
+	for ( auto pShape : m_Shapes )
+	{
+		if ( pShape )
+		{
+			auto pShapeOther { other.m_Shapes[pShape->GetId().GetValue()] };
+			if ( (pShape == nullptr) != (pShapeOther == nullptr) )
+				return false;
+			if ( pShape && ( ! isEqual( * pShape, * pShapeOther ) ) )
+				return false;
+		}
+	}
+
+	return true;
+}
 void NNetModel::RecalcAllShapes( ) 
 { 
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); } );
@@ -333,22 +384,30 @@ bool NNetModel::isEqual( Shape const & shapeA, Shape const & shapeB ) const
 	switch ( shapeA.GetShapeType().GetValue() )
 	{
 	case ShapeType::Value::inputNeuron:
-		return static_cast<InputNeuron const &>( shapeA ).IsEqual( static_cast<InputNeuron const &>( shapeB ) );
+		if (! static_cast<InputNeuron const &>( shapeA ).IsEqual( static_cast<InputNeuron const &>( shapeB ) ) )
+			return false;
+		break;
 
 	case ShapeType::Value::knot:
-		return static_cast<Knot const &>( shapeA ).IsEqual( static_cast<Knot const &>( shapeB ) );
+		if ( ! static_cast<Knot const &>( shapeA ).IsEqual( static_cast<Knot const &>( shapeB ) ) )
+			return false;
+		break;
 
 	case ShapeType::Value::neuron:
-		return static_cast<Neuron const &>( shapeA ).IsEqual( static_cast<Neuron const &>( shapeB ) );
+		if ( ! static_cast<Neuron const &>( shapeA ).IsEqual( static_cast<Neuron const &>( shapeB ) ) )
+			return false;
+		break;
 
 	case ShapeType::Value::pipe:
-		return static_cast<Pipe const &>( shapeA ).IsEqual( static_cast<Pipe const &>( shapeB ) );
+		if ( ! static_cast<Pipe const &>( shapeA ).IsEqual( static_cast<Pipe const &>( shapeB ) ) )
+			return false;
+		break;
 
 	default:
 		assert( false );
 		return false;
 	}
-	return false;
+	return true;
 }
 
 Shape * NNetModel::shallowCopy( Shape const & shape ) const
@@ -373,7 +432,7 @@ Shape * NNetModel::shallowCopy( Shape const & shape ) const
 	}
 }
 
-void NNetModel::connectToNewShapes( Shape const & shapeSrc, ShapeList & newShapes )
+void NNetModel::connectToNewShapes( Shape const & shapeSrc, ShapeList const & newShapes ) const 
 { 
 	Shape & shapeDst { * newShapes.at(shapeSrc.GetId().GetValue()) };
 	if ( shapeSrc.IsPipe( ) )

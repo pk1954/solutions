@@ -7,7 +7,7 @@
 #include "NNetModel.h"
 #include "NNetModelReaderInterface.h"
 
-NNetModel const * const NNetModelReaderInterface::CopyModel( ) const
+NNetModel const & NNetModelReaderInterface::CopyModel( ) const
 {
 	return m_pModel->GetCopy();
 }

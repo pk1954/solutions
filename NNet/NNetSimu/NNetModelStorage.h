@@ -27,8 +27,8 @@ public:
 	virtual void Notify( bool const bImmediate ) { setUnsavedChanges( true ); }
 
 	void Write( wostream & );
-	void Read( wstring const = L"" );
-	void ReadFinished( bool const );
+	void Read( bool const, wstring const = L"" );
+	void ReadAsync( wstring const = L"" );
 
 	wstring const GetModelPath  ( ) { return m_wstrPathOfOpenModel; };
 	void          ResetModelPath( );
@@ -39,6 +39,7 @@ public:
 	bool SaveModelAs ( );
 
 private:
+
 	mutable bool m_bUnsavedChanges { false };  // can be changed in const functions
 
 	HWND            m_hwndApp             { nullptr };
@@ -53,6 +54,7 @@ private:
 	long getCompactIdVal( ShapeId const id ) { return m_CompactIds[ id.GetValue() ].GetValue();	}
 
 	void prepareForReading( );
+	void readModel( );
 	void writeModel( );
 	void WriteShape( wostream &, Shape & );
 	void WriteMicroMeterPoint( wostream &, MicroMeterPoint const & );

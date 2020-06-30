@@ -70,7 +70,7 @@ public:
             if ( iRes != IDOK )
                 return;
         }
-        m_pNNetModelStorage->Read( wstrModelFile );
+        m_pNNetModelStorage->ReadAsync( wstrModelFile );
     }
 };
 

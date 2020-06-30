@@ -33,40 +33,13 @@ public:
 
 	NNetModel()	{}
 
-	virtual ~NNetModel( )
-	{
-		for ( auto pShape : m_Shapes )
-			delete pShape;
-	}
+	NNetModel( NNetModel const & );
 
-	NNetModel const * const GetCopy( ) const
-	{
-		NNetModel * const modelCopy = new NNetModel();
-		* modelCopy = * this;
-		for ( auto pShape : m_Shapes )
-		{
-			if ( pShape )
-				modelCopy->m_Shapes[ pShape->GetId().GetValue() ] = shallowCopy( * pShape );
-		}
-		return modelCopy;
-	}
+	virtual ~NNetModel( );
 
-	bool IsEqual( NNetModel const & other ) const
-	{
-		if ( m_Shapes.size() != other.m_Shapes.size() )
-			return false;
+	bool IsEqual( NNetModel const & ) const;
 
-		for ( auto pShape : m_Shapes )
-		{
-			auto pShapeOther { other.m_Shapes[pShape->GetId().GetValue()] };
-			if ( (pShape == nullptr) != (pShapeOther == nullptr) )
-				return false;
-			if ( pShape && ( isEqual( * pShape, * pShapeOther ) ) )
-				return false;
-		}
-
-		return true;
-	}
+	NNetModel const &  GetCopy( ) const;
 
 	// readOnly functions
 
@@ -367,7 +340,7 @@ private:
 	Shape *         shallowCopy        ( Shape   const & ) const;
 	void            selectSubtree      ( BaseKnot * const, tBoolOp const );
 	bool            isEqual            ( Shape const &, Shape const & ) const;
-	void            connectToNewShapes ( Shape const &, ShapeList & );
+	void            connectToNewShapes ( Shape const &, ShapeList const & ) const;
 	void            setTriggerSound    ( Neuron * const, Hertz const, MilliSecs const );
 	void            removeTriggerSound ( Neuron * const );
 	ShapeId const   findShapeAt        ( MicroMeterPoint const, ShapeCrit const & ) const;

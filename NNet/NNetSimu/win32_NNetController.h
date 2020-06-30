@@ -48,7 +48,7 @@ private:
 	bool processUIcommand   ( int const, LPARAM const );
 	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
 
-	HCURSOR                    m_hCrsrWait;
+	HCURSOR                    m_hCrsrWait             { nullptr };
 	NNetModelStorage         * m_pStorage              { nullptr };
 	NNetWindow               * m_pNNetWindow           { nullptr };
 	WinManager               * m_pWinManager           { nullptr };

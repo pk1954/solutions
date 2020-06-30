@@ -374,18 +374,15 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 	case IDM_OPEN_MODEL:
 		m_computeThread.LockComputation( );  // will be restarted later
 		if ( m_modelStorage.AskAndSave( ) && m_modelStorage.AskModelFile() )
-			m_modelStorage.Read( );         // will post IDM_READ_MODEL_FINISHED when done
+			m_modelStorage.ReadAsync( );     // will trigger IDM_READ_MODEL_FINISHED when done
 		else
 			m_computeThread.ReleaseComputationLock( );
 		break;
 
 	case IDM_READ_MODEL_FINISHED:
-		if ( bool bSuccess { static_cast<bool>(lParam) } )
-		{
-			m_StatusBar.DisplayInPart( m_statusMessagePart, L"" );
-			Preferences::WritePreferences( m_modelStorage.GetModelPath() );
-			m_mainNNetWindow.CenterModel( true );  // computation will be started when done
-		}
+		m_StatusBar.DisplayInPart( m_statusMessagePart, L"" );
+		Preferences::WritePreferences( m_modelStorage.GetModelPath() );
+		m_mainNNetWindow.CenterModel( true );  // computation will be started when done
 		break;
 
 	default:

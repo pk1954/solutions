@@ -42,8 +42,8 @@ public:
 	{
 		if ( ! Shape::IsEqual( other ) )
 			return false;
-		if ( m_center != other.m_center )
-			return false;
+		//if ( m_center != other.m_center )
+		//	return false;
 		if ( m_extension != other.m_extension )
 			return false;
 		return true;
