@@ -411,7 +411,7 @@ void NNetModelStorage::Write( wostream & out )
         { 
             out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
                 << GetParameterName( tParameter::pulseRate ) 
-                << L" = " << inpNeuron.GetPulseFreq( )
+                << L" = " << inpNeuron.GetPulseFrequency( )
                 << endl; 
         }
     );

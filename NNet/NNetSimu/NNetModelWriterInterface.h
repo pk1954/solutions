@@ -28,7 +28,7 @@ public:
 	void Stop(); 
 
 /* !! */ void Action              ( int const, ShapeId const, MicroMeterPoint const & );
-/* !! */ void Connect             ( ShapeId const, ShapeId const );
+/* ok */ void Connect             ( ShapeId const, ShapeId const );
          void Convert2InputNeuron ( ShapeId const );
          void Convert2Neuron      ( ShapeId const );
          void CopySelection       ( );
@@ -47,7 +47,7 @@ public:
          void SelectShapesInRect  ( MicroMeterRect const & );
          void SelectSubtree       ( ShapeId const, tBoolOp const );
          void SetParameter        ( tParameter const, float const );
-         void SetPulseRate        ( ShapeId    const, fHertz const );
+/* ok */ void SetPulseRate        ( ShapeId    const, fHertz const );
          void SetTriggerSound     ( ShapeId const, bool const, Hertz const, MilliSecs const );
 /* ok */ void ToggleStopOnTrigger ( ShapeId const );
 

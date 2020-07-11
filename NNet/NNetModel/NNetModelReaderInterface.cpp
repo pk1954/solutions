@@ -49,10 +49,10 @@ ShapeType const NNetModelReaderInterface::GetShapeType( ShapeId const id ) const
 	return p ? p->GetShapeType( ) : ShapeType::Value::undefined; 
 }
 
-fHertz const NNetModelReaderInterface::GetPulseFreq( ShapeId const id ) const 
+fHertz const NNetModelReaderInterface::GetPulseFrequency( ShapeId const id ) const 
 { 
 	auto p { m_pModel->GetShapeConstPtr<InputNeuron const *>(id) };
-	return p ? p->GetPulseFreq( ) : fHertz::NULL_VAL(); 
+	return p ? p->GetPulseFrequency( ) : fHertz::NULL_VAL(); 
 }
 
 size_t const NNetModelReaderInterface::GetNrOfSegments( ShapeId const id ) const

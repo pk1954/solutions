@@ -175,7 +175,7 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
 bool NNetController::changePulseRate( ShapeId const id, bool const bDirection )
 {
     static fHertz const INCREMENT { 0.01_fHertz };
-    fHertz const fOldValue { m_pModelReaderInterface->GetPulseFreq( id ) };
+    fHertz const fOldValue { m_pModelReaderInterface->GetPulseFrequency( id ) };
     if ( fOldValue.IsNull() )
         return false;
     fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
@@ -185,7 +185,7 @@ bool NNetController::changePulseRate( ShapeId const id, bool const bDirection )
 
 void NNetController::pulseRateDlg( ShapeId const id )
 {
-    fHertz  const fOldValue { m_pModelReaderInterface->GetPulseFreq( id ) };
+    fHertz  const fOldValue { m_pModelReaderInterface->GetPulseFrequency( id ) };
     if ( fOldValue.IsNull() )
         return;
     HWND    const hwndParent { m_pNNetWindow->GetWindowHandle() };

@@ -31,7 +31,7 @@ public:
 	bool      const AnyShapesSelected         ( )               const;	
 	bool      const IsSelected                ( ShapeId const ) const;
 	ShapeType const GetShapeType              ( ShapeId const ) const;
-	fHertz    const GetPulseFreq              ( ShapeId const ) const;
+	fHertz    const GetPulseFrequency         ( ShapeId const ) const;
 	size_t    const GetNrOfSegments           ( ShapeId const ) const;
 	bool      const HasTriggerSound           ( ShapeId const ) const;
 	Hertz     const GetTriggerSoundFrequency  ( ShapeId const ) const;

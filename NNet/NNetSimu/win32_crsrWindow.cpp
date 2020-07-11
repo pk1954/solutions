@@ -142,7 +142,7 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 		if ( type.IsInputNeuronType( ) )
 		{
 			textBuf.printString( L"pulse freq: " );
-			printFrequency( textBuf, m_pModelReaderInterface->GetPulseFreq( id ) );
+			printFrequency( textBuf, m_pModelReaderInterface->GetPulseFrequency( id ) );
 			textBuf.nextLine();
 		}
 	}

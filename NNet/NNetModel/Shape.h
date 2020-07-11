@@ -49,8 +49,6 @@ public:
 			return false;
 		if ( m_bMarked != other.m_bMarked )
 			return false;
-		//if ( m_mVinputBuffer != other.m_mVinputBuffer )
-		//	return false;
 		return true;
 	}
 

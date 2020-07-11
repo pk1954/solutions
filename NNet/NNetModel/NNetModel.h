@@ -92,6 +92,8 @@ public:
 	Shape       * GetShape     ( ShapeId const id )       { return IsShapeIdOk( id ) ? m_Shapes[id.GetValue()] : nullptr; }
 	Shape const * GetConstShape( ShapeId const id ) const {	return IsShapeIdOk( id ) ? m_Shapes[id.GetValue()] : nullptr; }
 	
+	fHertz const GetPulseRate( ShapeId const ) const;
+
 	MicroMeterPoint const GetShapePos   ( ShapeId const id  ) const;
 	bool            const IsValidShapeId( ShapeId const id  ) const { return id.GetValue() < m_Shapes.size(); }
 
@@ -234,9 +236,10 @@ public:
 	ShapeId const AddOutgoing2Pipe( ShapeId const, MicroMeterPoint const & );
 	ShapeId const AddIncoming2Pipe( ShapeId const, MicroMeterPoint const & );
 
+	fHertz const  SetPulseRate    ( ShapeId const, fHertz const );
+
 	void StopTriggerSound   ( ShapeId const id ) { SetTriggerSound( id, 0_Hertz, 0_MilliSecs ); }
 	void SetTriggerSound    ( ShapeId const, Hertz const, MilliSecs const );
-	void SetPulseRate       ( ShapeId const, fHertz const );
 	void SetPulseRate       ( ShapeId const, bool const );
 	void Connect            ( ShapeId const, ShapeId const );
 	void Convert2Neuron     ( ShapeId const );

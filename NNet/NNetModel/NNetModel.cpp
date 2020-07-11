@@ -168,23 +168,35 @@ void NNetModel::SetPulseRate( ShapeId const id, bool const bDirection )
 	if ( pInputNeuron )
 	{
 		static fHertz const INCREMENT { 0.01_fHertz };
-		fHertz const fOldValue { pInputNeuron->GetPulseFreq( ) };
+		fHertz const fOldValue { pInputNeuron->GetPulseFrequency( ) };
 		if ( fOldValue.IsNotNull() )
 		{
 			pInputNeuron->SetPulseFrequency( fOldValue + ( bDirection ? INCREMENT : -INCREMENT ) );
+			ClearModel( );
 			StaticModelChanged( );
 		}
 	}
 }
 
-void NNetModel::SetPulseRate( ShapeId const id, fHertz const fNewValue )
+fHertz const NNetModel::SetPulseRate( ShapeId const id, fHertz const fNewValue )
 {
+	fHertz              fOldValue    { fHertz::NULL_VAL() };
 	InputNeuron * const pInputNeuron { GetShapePtr<InputNeuron *>( id ) };
 	if ( pInputNeuron )
 	{
-		pInputNeuron->SetPulseFrequency( static_cast< fHertz >( fNewValue ) );
+		fOldValue = pInputNeuron->SetPulseFrequency( fNewValue );
+		ClearModel( );
 		StaticModelChanged( );
 	}
+	return fOldValue;
+}
+
+fHertz const NNetModel::GetPulseRate( ShapeId const id ) const
+{
+	InputNeuron const * const pInputNeuron { GetShapeConstPtr<InputNeuron const *>( id ) };
+	return ( pInputNeuron )
+		   ? pInputNeuron->GetPulseFrequency( )
+	       : fHertz::NULL_VAL();
 }
 
 void NNetModel::setTriggerSound( Neuron * const pNeuron, Hertz const freq, MilliSecs const msec )
@@ -645,12 +657,9 @@ void ConnectIncoming
 	BaseKnot * const pEndPoint
 )
 {
-	if ( pPipe && pEndPoint )
-	{
-		pEndPoint->AddIncoming( pPipe );
-		pPipe->SetEndKnot( pEndPoint );
-		pPipe->Recalc( );
-	}
+	pEndPoint->AddIncoming( pPipe );
+	pPipe->SetEndKnot( pEndPoint );
+	pPipe->Recalc( );
 }
 
 void ConnectOutgoing
@@ -659,12 +668,9 @@ void ConnectOutgoing
 	BaseKnot * const pStartPoint
 )
 {
-	if ( pPipe && pStartPoint )
-	{
-		pStartPoint->AddOutgoing( pPipe );
-		pPipe->SetStartKnot( pStartPoint );
-		pPipe->Recalc( );
-	}
+	pStartPoint->AddOutgoing( pPipe );
+	pPipe->SetStartKnot( pStartPoint );
+	pPipe->Recalc( );
 }
 
 void ReplaceStartKnot

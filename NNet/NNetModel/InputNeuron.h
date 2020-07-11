@@ -59,9 +59,9 @@ public:
 
 	virtual InputNeuron * Clone( ) const { return new InputNeuron( * this ); };
 
-	fHertz GetPulseFreq( ) const { return m_pulseFrequency; }
+	fHertz const GetPulseFrequency( ) const { return m_pulseFrequency; }
 
-	void SetPulseFrequency( fHertz const );
+	fHertz const SetPulseFrequency( fHertz const );
 
 private:
 	void drawInputNeuron( DrawContext const &, D2D1::ColorF const, float const ) const;

@@ -109,6 +109,11 @@ public:
 		m_pBaseKnotDst( pDst )
 	{ }
 
+	~Connect2BaseKnotCommand( )
+	{
+		delete m_pBaseKnotSrc;
+	}
+
 	virtual void Do( NNetModel * const pModel )
 	{
 		if ( m_pBaseKnotSrc && m_pBaseKnotDst )
@@ -116,6 +121,7 @@ public:
 			m_pBaseKnotSrc->Apply2AllInPipes ( [&]( Pipe & pipe ) { ConnectIncoming( & pipe, m_pBaseKnotDst ); } );
 			m_pBaseKnotSrc->Apply2AllOutPipes( [&]( Pipe & pipe ) { ConnectOutgoing( & pipe, m_pBaseKnotDst ); } );
 			pModel->RemoveFromShapeList( m_pBaseKnotSrc );
+			// no delete m_pBaseKnotSrc, will be reused in Undo
 		}
 	}
 
@@ -222,6 +228,37 @@ void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
 	m_pModel->ToggleStopOnTrigger( id );
 }
 
+class SetPulseRateCommand : public Command
+{
+public:
+	SetPulseRateCommand( ShapeId const id, fHertz const fNewValue )
+	  :	m_id( id ),
+		m_fOtherValue( fNewValue )
+	{ }
+
+	virtual void Do( NNetModel * const pModel )
+	{
+		m_fOtherValue = pModel->SetPulseRate( m_id, m_fOtherValue );
+	}
+
+	virtual void Undo( NNetModel * const pModel )
+	{
+		Do( pModel );
+	}
+
+private:
+	ShapeId const m_id;
+	fHertz        m_fOtherValue;
+};
+
+void NNetModelWriterInterface::SetPulseRate( ShapeId const id, fHertz const fNewValue )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << fNewValue << endl;
+	Command * const pCommand = new SetPulseRateCommand( id, fNewValue );
+	m_CmdStack.NewCommand( pCommand );
+}
+
 void NNetModelWriterInterface::SelectShape( ShapeId const id, tBoolOp const op )
 {
 	if ( IsTraceOn( ) )
@@ -249,14 +286,6 @@ void NNetModelWriterInterface::ResetModel( )
 		TraceStream( ) << __func__ << endl;
 	m_pModel->ResetModel( );
 	m_pModel->CreateInitialShapes();
-}
-
-void NNetModelWriterInterface::SetPulseRate( ShapeId const id, fHertz const fNewValue )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << fNewValue << endl;
-	m_pModel->SetPulseRate( id, fNewValue ); 
-	m_pModel->ClearModel( );
 }
 
 void NNetModelWriterInterface::SetTriggerSound( ShapeId const id, bool const bActive, Hertz const freq, MilliSecs const ms )

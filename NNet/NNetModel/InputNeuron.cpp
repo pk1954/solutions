@@ -32,11 +32,13 @@ void InputNeuron::Recalc( )
 	m_mvFactor = mV( m_pParameters->GetParameterValue( tParameter::peakVoltage ) / m_pulseDuration.GetValue() );
 }
 
-void InputNeuron::SetPulseFrequency( fHertz const freq )
+fHertz const InputNeuron::SetPulseFrequency( fHertz const freq )
 {
+	fHertz const fOldValue { m_pulseFrequency };
 	m_pulseFrequency = freq;
 	m_pulseDuration  = PulseDuration( m_pulseFrequency );
 	Recalc( );
+	return fOldValue;
 }
 
 void InputNeuron::drawInputNeuron
@@ -78,7 +80,7 @@ void InputNeuron::DrawNeuronText( DrawContext const & context ) const
 	m_wBuffer.clear( );
 	m_wBuffer.str( std::wstring() );
 	m_wBuffer << fixed << setprecision(2) 
-		      << GetPulseFreq().GetValue() 
+		      << GetPulseFrequency().GetValue() 
 		      << L" " 
 		      << GetParameterUnit( tParameter::pulseRate );
 
