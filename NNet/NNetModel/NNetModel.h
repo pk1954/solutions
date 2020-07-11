@@ -25,6 +25,11 @@ using ShapeList = vector<Shape *>;
 // non member function used in class definition 
 MicroMeterRect ComputeEnclosingRect( ShapeList const & );
 
+void ConnectIncoming ( Pipe * const, BaseKnot * const );
+void ConnectOutgoing ( Pipe * const, BaseKnot * const );
+void ReplaceStartKnot( Pipe * const, BaseKnot * const );
+void ReplaceEndKnot  ( Pipe * const, BaseKnot * const );
+
 class NNetModel
 {
 public:
@@ -250,8 +255,6 @@ public:
 	void ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
 	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
 
-	void ConnectIncoming( Pipe * const, BaseKnot * const );
-	void ConnectOutgoing( Pipe * const, BaseKnot * const );
 	void InsertBaseKnot ( Pipe * const, BaseKnot * const );
 	void CopySelection( );
 	void MarkSelection( tBoolOp const );
@@ -259,6 +262,7 @@ public:
 	void MoveSelection( MicroMeterPoint const & );
 
 	void RemoveFromShapeList( Shape * const );
+	void RestoreToShapeList ( Shape * const );
 	void DisconnectBaseKnot ( BaseKnot * const );
 	void RemoveShape( Shape * const );
 

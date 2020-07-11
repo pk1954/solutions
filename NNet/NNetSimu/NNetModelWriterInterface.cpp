@@ -80,8 +80,7 @@ public:
 
 		m_idNewPipe = pModel->NewPipe( pStartKnot, pBaseKnot2Insert );
 		pStartKnot->RemoveOutgoing( pPipe2Split );
-		pModel->ConnectOutgoing( pPipe2Split, pBaseKnot2Insert );
-		pPipe2Split->Recalc();
+		ConnectOutgoing( pPipe2Split, pBaseKnot2Insert );
 	}
 
 	virtual void Undo( NNetModel * const pModel )
@@ -114,15 +113,17 @@ public:
 	{
 		if ( m_pBaseKnotSrc && m_pBaseKnotDst )
 		{
-			m_pBaseKnotSrc->Apply2AllInPipes ( [&]( Pipe & pipe ) { pModel->ConnectIncoming( & pipe, m_pBaseKnotDst ); pipe.Recalc(); } );
-			m_pBaseKnotSrc->Apply2AllOutPipes( [&]( Pipe & pipe ) { pModel->ConnectOutgoing( & pipe, m_pBaseKnotDst ); pipe.Recalc(); } );
+			m_pBaseKnotSrc->Apply2AllInPipes ( [&]( Pipe & pipe ) { ConnectIncoming( & pipe, m_pBaseKnotDst ); } );
+			m_pBaseKnotSrc->Apply2AllOutPipes( [&]( Pipe & pipe ) { ConnectOutgoing( & pipe, m_pBaseKnotDst ); } );
 			pModel->RemoveFromShapeList( m_pBaseKnotSrc );
-			delete m_pBaseKnotSrc;
 		}
 	}
 
 	virtual void Undo( NNetModel * const pModel )
 	{
+		pModel->RestoreToShapeList( m_pBaseKnotSrc );
+		m_pBaseKnotSrc->Apply2AllInPipes ( [&]( Pipe & pipe ) {	ReplaceEndKnot  ( & pipe, m_pBaseKnotSrc ); } );
+		m_pBaseKnotSrc->Apply2AllOutPipes( [&]( Pipe & pipe ) { ReplaceStartKnot( & pipe, m_pBaseKnotSrc ); } );
 	}
 
 private:
@@ -489,7 +490,7 @@ private:
 	int             const m_idMsg;
 	ShapeId         const m_id;
 	MicroMeterPoint const m_pos;
-	Shape               * m_pShape;
+	Shape               * m_pShape { nullptr };
 };
 
 void NNetModelWriterInterface::Action( int const idMsg, ShapeId const id, MicroMeterPoint const & pos )

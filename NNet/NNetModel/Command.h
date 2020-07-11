@@ -30,27 +30,29 @@ public:
 
     void NewCommand( Command * pCmd )
     {
-        for ( auto it = m_iter; it != m_CommandStack.end(); ++it )
-            delete * it;
-        m_CommandStack.erase( m_iter, m_CommandStack.end() );
+        for ( auto i = m_CommandStack.size(); i > m_iIndex; )
+        {
+            delete m_CommandStack[--i];
+            m_CommandStack.pop_back();
+        }
         m_CommandStack.push_back( pCmd );
         pCmd->Do( m_pModel );
-        m_iter = m_CommandStack.end();
+        m_iIndex = m_CommandStack.size();
     }
 
     bool UndoCommand( )
     {
-        if ( m_iter == m_CommandStack.begin() )
+        if ( m_iIndex == 0 ) // stack is empty, nothing do undo
             return false;
-        (*--m_iter)->Undo( m_pModel );
+        m_CommandStack[--m_iIndex]->Undo( m_pModel );
         return true;
     }
 
     bool RedoCommand( )
     {
-        if ( m_iter == m_CommandStack.end() )
+        if ( m_iIndex == m_CommandStack.size() )
             return false;
-        (*m_iter++)->Do( m_pModel );
+        m_CommandStack[m_iIndex++]->Do( m_pModel );
         return true;
     }
 
@@ -58,8 +60,8 @@ private:
 
     using CStack = vector<Command *>;
 
-    CStack            m_CommandStack { };
-    CStack::iterator  m_iter         { m_CommandStack.end() };
-    NNetModel       * m_pModel       { nullptr };
+    CStack      m_CommandStack { };
+    size_t      m_iIndex       { 0 }; // index after last valid m_CommandStack index. 0 means stack is empty.
+    NNetModel * m_pModel       { nullptr };
 };
 

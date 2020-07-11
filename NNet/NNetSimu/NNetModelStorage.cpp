@@ -119,9 +119,8 @@ public:
             { 
                 Pipe * const pPipe { new Pipe( ) };
                 pPipe->SetId( idFromScript );
-                m_pModel->ConnectOutgoing( pPipe, m_pModel->GetShapePtr<BaseKnot *>( idStart ) );
-                m_pModel->ConnectIncoming( pPipe, m_pModel->GetShapePtr<BaseKnot *>( idEnd   ) );
-                pPipe->Recalc();
+                ConnectOutgoing( pPipe, m_pModel->GetShapePtr<BaseKnot *>( idStart ) );
+                ConnectIncoming( pPipe, m_pModel->GetShapePtr<BaseKnot *>( idEnd   ) );
                 pShape = pPipe;
             }
         }
