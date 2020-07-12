@@ -141,7 +141,7 @@ void NNetModel::Convert2Neuron( ShapeId const idInputNeuron )
 		ShapeId         const idAxon  { pInputNeuron->GetAxonId( ) };
 		MicroMeterPoint const pos     { pInputNeuron->GetPosition( ) };
 		Neuron        * const pNeuron { NewShape<Neuron>( pos ) };
-		RemoveShape( idInputNeuron );
+		RemoveShape( pInputNeuron );
 		if ( idAxon != NO_SHAPE )
 			Connect( GetStartKnotId( idAxon ), pNeuron->GetId() );
 		StaticModelChanged( );
@@ -155,7 +155,7 @@ void NNetModel::Convert2InputNeuron( ShapeId const idNeuron )
 		ShapeId         const idAxon  { pNeuron->GetAxonId( ) };
 		MicroMeterPoint const pos     { pNeuron->GetPosition( ) };
 		InputNeuron   * const pInputNeuron { NewShape<InputNeuron>( pos ) };
-		RemoveShape( idNeuron );
+		RemoveShape( pNeuron );
 		if ( idAxon != NO_SHAPE )
 			Connect( GetStartKnotId( idAxon ), pInputNeuron->GetId()  );
 		StaticModelChanged( );
@@ -210,7 +210,7 @@ void NNetModel::setTriggerSound( Neuron * const pNeuron, Hertz const freq, Milli
 	}
 }
 
-void NNetModel::removeTriggerSound( Neuron * const pNeuron )
+void NNetModel::clearTriggerSound( Neuron * const pNeuron )
 {
 	setTriggerSound( pNeuron, 0_Hertz, 0_MilliSecs );
 }
@@ -349,12 +349,6 @@ void NNetModel::ResetModel( )
 	for (auto pShape : m_Shapes)
 		delete pShape;
 	m_Shapes.clear();
-	StaticModelChanged( );
-}
-
-void NNetModel::RemoveShape( ShapeId const id ) 
-{ 
-	RemoveShape( GetShape( id ) ); 
 	StaticModelChanged( );
 }
 

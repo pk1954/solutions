@@ -262,8 +262,8 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelWriterInterface->DeleteSelection( );
         break;
 
-    case IDM_REMOVE_BEEPERS:
-        m_pModelWriterInterface->RemoveBeepers( );
+    case IDM_CLEAR_BEEPERS:
+        m_pModelWriterInterface->ClearBeepers( );
         break;
 
     case IDM_SELECT_ALL_BEEPERS:

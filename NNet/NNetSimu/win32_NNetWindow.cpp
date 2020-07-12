@@ -112,7 +112,7 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION,   L"Mark selection" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_UNMARK_SELECTION, L"Unmark selection" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_SELECTION, L"Remove selected objects" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_BEEPERS,   L"Remove selected trigger sounds" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_CLEAR_BEEPERS,    L"Clear selected trigger sounds" );
 	}
 	else switch ( type.GetValue() )
 	{
@@ -172,7 +172,7 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_NEURON,         L"New neuron" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_INPUT_NEURON,   L"New input neuron" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_SELECT_ALL_BEEPERS, L"Select all neurons with trigger sound" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_BEEPERS,     L"Remove all trigger sounds" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_CLEAR_BEEPERS,      L"Clear all trigger sounds" );
 		break;
 
 	default:

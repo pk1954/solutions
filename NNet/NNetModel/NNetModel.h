@@ -246,7 +246,6 @@ public:
 	void Convert2InputNeuron( ShapeId const );
 	void Disconnect         ( ShapeId const );
 	void ToggleStopOnTrigger( ShapeId const );
-	void RemoveShape        ( ShapeId const ); 
 	void RecalcAllShapes( );
 	void ResetModel( );
 
@@ -271,12 +270,12 @@ public:
 
 	void SelectBeepers() { Apply2All<Neuron>( [&](Neuron & n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
 
-	void RemoveBeepers() 
+	void ClearBeepers() 
 	{	
 		if ( AnyShapesSelected() )
-			Apply2AllSelected<Neuron>( [&](Neuron & n) { removeTriggerSound( & n ); } );
+			Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 		else
-			Apply2All        <Neuron>( [&](Neuron & n) { removeTriggerSound( & n ); } );
+			Apply2All        <Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
 	void SelectSubtree( ShapeId const idBaseKnot, tBoolOp const op )
@@ -349,6 +348,6 @@ private:
 	bool            isEqual            ( Shape const &, Shape const & ) const;
 	void            connectToNewShapes ( Shape const &, ShapeList const & ) const;
 	void            setTriggerSound    ( Neuron * const, Hertz const, MilliSecs const );
-	void            removeTriggerSound ( Neuron * const );
+	void            clearTriggerSound  ( Neuron * const );
 	ShapeId const   findShapeAt        ( MicroMeterPoint const, ShapeCrit const & ) const;
 };

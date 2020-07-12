@@ -37,7 +37,7 @@ public:
          void MarkSelection       ( tBoolOp const );
          void MoveSelection       ( MicroMeterPoint const & );
 /* ok */ void MoveShape           ( ShapeId const, MicroMeterPoint const & );
-         void RemoveBeepers       ( );
+         void ClearBeepers        ( );
 /* !! */ void RemoveShape         ( ShapeId const );
          void ResetModel          ( );
 /* ok */ void ResetTimer          ( );

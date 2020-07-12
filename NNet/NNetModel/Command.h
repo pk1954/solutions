@@ -45,6 +45,7 @@ public:
         if ( m_iIndex == 0 ) // stack is empty, nothing do undo
             return false;
         m_CommandStack[--m_iIndex]->Undo( m_pModel );
+        m_pModel->StaticModelChanged( );
         return true;
     }
 
@@ -53,6 +54,7 @@ public:
         if ( m_iIndex == m_CommandStack.size() )
             return false;
         m_CommandStack[m_iIndex++]->Do( m_pModel );
+        m_pModel->StaticModelChanged( );
         return true;
     }
 
