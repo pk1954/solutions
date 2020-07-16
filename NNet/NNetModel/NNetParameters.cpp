@@ -35,7 +35,7 @@ void Param::SetParameterValue
 		case tParameter::peakVoltage:	 m_peakVoltage   = static_cast< mV >         ( fNewValue ); break;
 		case tParameter::refractPeriod:	 m_refractPeriod = static_cast< fMicroSecs  >( fNewValue ); break;
 		case tParameter::timeResolution: m_usResolution  = static_cast< fMicroSecs  >( fNewValue ); break;
-		case tParameter::signalLoss: /* not used, only for compaitibility reasons */                break;
+		case tParameter::signalLoss: break; // legacy
 		default: assert( false );
 	}
 

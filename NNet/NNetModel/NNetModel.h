@@ -248,8 +248,8 @@ public:
 	void RecalcAllShapes( );
 	void ResetModel( );
 
-	void SetParameter ( tParameter const, float const );
-	void SetNrOfShapes( long lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
+	float SetParameter ( tParameter const, float const );
+	void  SetNrOfShapes( long const lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
 	MicroMeterRect GetEnclosingRect() const { return m_enclosingRect; }
 

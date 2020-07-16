@@ -291,35 +291,9 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDD_CONNECT:
-    {
-        NNetModel const * pModelSave1 = nullptr;
-        NNetModel const * pModelSave2 = nullptr;
-        bool bRes;
-
         Sound::Play( TEXT("SNAP_IN_SOUND") ); 
- 
-        pModelSave1 = & m_pModelReaderInterface->CopyModel();
-
-        m_pModelWriterInterface->Connect
-        ( 
-            m_pNNetWindow->GetHighlightedShapeId(),
-            m_pNNetWindow->GetSuperHighlightedShapeId()
-        );
-
-        pModelSave2 = & m_pModelReaderInterface->CopyModel();
-
-        m_pModelWriterInterface->UndoCommand();
-
-        bRes = m_pModelReaderInterface->IsEqual( * pModelSave1 );
-        assert( bRes );
-
-        m_pModelWriterInterface->RedoCommand();
-
-        bRes = m_pModelReaderInterface->IsEqual( * pModelSave2 );
-        assert( bRes );
-
+        m_pModelWriterInterface->Connect( m_pNNetWindow->GetHighlightedShapeId(), m_pNNetWindow->GetSuperHighlightedShapeId() );
         break;
-    }
 
     case IDM_DELETE:   // keyboard: delete key
         if ( m_pNNetWindow->GetHighlightedShapeId() == NO_SHAPE )

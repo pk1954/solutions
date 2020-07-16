@@ -57,14 +57,19 @@ public:
 
 	void Restore( BaseKnot * const pBaseKnot )
 	{
-		Apply2AllInPipes ( [&]( Pipe & pipe ) { pipe.SetEndKnot  ( pBaseKnot ); } );
-		Apply2AllOutPipes( [&]( Pipe & pipe ) { pipe.SetStartKnot( pBaseKnot ); } );
+		Apply2AllInPipes ( [&]( Pipe & pipe ) { pipe.SetEndKnot  ( pBaseKnot ); pipe.Recalc(); } );
+		Apply2AllOutPipes( [&]( Pipe & pipe ) { pipe.SetStartKnot( pBaseKnot ); pipe.Recalc(); } );
 	}
 
 	void Add( Connections const & src )
 	{
 		src.Apply2AllInPipes ( [&]( Pipe & pipe ) { AddIncoming( & pipe ); } );
 		src.Apply2AllOutPipes( [&]( Pipe & pipe ) { AddOutgoing( & pipe ); } );
+	}
+
+	void Recalc( )
+	{
+		Apply2AllConnectedPipes( [&]( Pipe & pipe ) { pipe.Recalc( ); } );
 	}
 
 private:

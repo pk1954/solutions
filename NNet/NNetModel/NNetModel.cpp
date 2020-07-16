@@ -240,14 +240,16 @@ void NNetModel::SetTriggerSound( ShapeId const id, Hertz const freq, MilliSecs c
 	StaticModelChanged( );
 }
 
-void NNetModel::SetParameter
+float NNetModel::SetParameter
 ( 
 	tParameter const param, 
 	float      const fNewValue 
 )
 {
+	float fOldValue { m_pParam->GetParameterValue( param ) };
 	m_pParam->SetParameterValue( param, fNewValue );
 	RecalcAllShapes( );
+	return fOldValue;
 }
 
 MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
@@ -505,7 +507,6 @@ void NNetModel::RemoveFromShapeList( Shape * const pShape )
 void NNetModel::RestoreToShapeList( Shape * const pShape )
 {
 	long lIndex { pShape->GetId().GetValue() };
-	assert( m_Shapes[ lIndex ] == nullptr );
 	m_Shapes[ lIndex ] = pShape;
 }
 

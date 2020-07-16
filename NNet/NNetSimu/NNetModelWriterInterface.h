@@ -38,7 +38,7 @@ public:
 /* ok */ void MoveSelection       ( MicroMeterPoint const & );
 /* ok */ void MoveShape           ( ShapeId const, MicroMeterPoint const & );
          void ClearBeepers        ( );
-/* !! */ void RemoveShape         ( ShapeId const );
+/* ok */ void RemoveShape         ( ShapeId const );
          void ResetModel          ( );
 /* ok */ void ResetTimer          ( );
          void SelectAll           ( tBoolOp const );
@@ -46,7 +46,7 @@ public:
 /* ok */ void SelectShape         ( ShapeId const, tBoolOp const );
          void SelectShapesInRect  ( MicroMeterRect const & );
          void SelectSubtree       ( ShapeId const, tBoolOp const );
-         void SetParameter        ( tParameter const, float const );
+/* ok */ void SetParameter        ( tParameter const, float const );
 /* ok */ void SetPulseRate        ( ShapeId    const, fHertz const );
          void SetTriggerSound     ( ShapeId const, bool const, Hertz const, MilliSecs const );
 /* ok */ void ToggleStopOnTrigger ( ShapeId const );

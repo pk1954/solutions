@@ -16,11 +16,8 @@ class Command
 {
 public:
     virtual void Do  ( NNetModel * ) = 0;
-    virtual void Undo( NNetModel * ) = 0;
-    virtual void Redo( NNetModel * pModel ) 
-    { 
-        Do( pModel ); 
-    };
+    virtual void Undo( NNetModel * pModel ) { Do( pModel ); };
+    virtual void Redo( NNetModel * pModel ) { Do( pModel ); };
 };
 
 class CommandStack
@@ -34,15 +31,27 @@ public:
 
     void NewCommand( Command * pCmd )
     {
+#ifdef _DEBUG
+        m_pModelSave1 = & m_pModel->GetCopy();
+#endif
         for ( auto i = m_CommandStack.size(); i > m_iIndex; )
         {
             delete m_CommandStack[--i];
             m_CommandStack.pop_back();
         }
+
         m_CommandStack.push_back( pCmd );
         pCmd->Do( m_pModel );
         m_iIndex = m_CommandStack.size();
         m_pModel->StaticModelChanged( );
+
+#ifdef _DEBUG
+        m_pModelSave2 = & m_pModel->GetCopy();
+        UndoCommand();
+        assert( m_pModel->IsEqual( * m_pModelSave1 ) );
+        RedoCommand();
+        assert( m_pModel->IsEqual( * m_pModelSave2 ) );
+#endif
     }
 
     bool UndoCommand( )
@@ -70,5 +79,8 @@ private:
     CStack      m_CommandStack { };
     size_t      m_iIndex       { 0 }; // index after last valid m_CommandStack index. 0 means stack is empty.
     NNetModel * m_pModel       { nullptr };
+
+    NNetModel const * m_pModelSave1 { nullptr };
+    NNetModel const * m_pModelSave2 { nullptr };
 };
 
