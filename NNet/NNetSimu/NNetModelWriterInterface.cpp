@@ -52,11 +52,10 @@ void NNetModelWriterInterface::ResetTimer( )
 	class ResetTimerCommand : public Command
 	{
 	public:
-		virtual void Do  ( NNetModel * const pModel ) { m_simuTime = pModel->SetSimulationTime(); }
-		virtual void Undo( NNetModel * const pModel ) { pModel->SetSimulationTime( m_simuTime ); }
+		virtual void Do( NNetModel * const pModel ) { m_simuTime = pModel->SetSimulationTime( m_simuTime); }
 
 	private:
-		fMicroSecs m_simuTime {};
+		fMicroSecs m_simuTime { 0._MicroSecs };
 	};
 
 	if ( IsTraceOn( ) )
@@ -73,8 +72,9 @@ void NNetModelWriterInterface::Connect( ShapeId const idSrc, ShapeId const idDst
 		  :	m_pBaseKnot ( pSrc ),
 			m_pPipe     ( pDst ),
 			m_pNewPipe  ( nullptr ),
-			m_pStartKnot( nullptr )
-		{ }
+			m_pStartKnot( m_pPipe->GetStartKnotPtr( ) )
+		{ 
+		}
 
 		~Connect2PipeCommand( )
 		{ 
@@ -83,15 +83,12 @@ void NNetModelWriterInterface::Connect( ShapeId const idSrc, ShapeId const idDst
 
 		virtual void Do( NNetModel * const pModel )
 		{
-			m_pStartKnot = m_pPipe->GetStartKnotPtr( );
-
 			m_pNewPipe = new Pipe( m_pStartKnot, m_pBaseKnot );
-			m_pNewPipe->Recalc();
 			pModel->Add2ShapeList( m_pNewPipe );
 
-			m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe );
 			m_pBaseKnot->m_connections.AddOutgoing( m_pPipe );
 			
+			m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe );
 			m_pPipe->SetStartKnot( m_pBaseKnot );
 			m_pPipe->Recalc();
 		}
@@ -102,6 +99,7 @@ void NNetModelWriterInterface::Connect( ShapeId const idSrc, ShapeId const idDst
 			m_pStartKnot->m_connections.RemoveOutgoing( m_pNewPipe );
 			m_pStartKnot->m_connections.AddOutgoing( m_pPipe );
 			pModel->RemoveFromShapeList( m_pNewPipe );
+			m_pPipe->Recalc();
 		}
 
 		virtual void Redo( NNetModel * const pModel )
@@ -109,6 +107,7 @@ void NNetModelWriterInterface::Connect( ShapeId const idSrc, ShapeId const idDst
 			m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe );
 			m_pPipe->SetStartKnot( m_pBaseKnot );
 			pModel->RestoreToShapeList( m_pNewPipe );
+			m_pPipe->Recalc();
 		}
 
 	private:
@@ -124,8 +123,9 @@ void NNetModelWriterInterface::Connect( ShapeId const idSrc, ShapeId const idDst
 		Connect2BaseKnotCommand( BaseKnot * const pSrc, BaseKnot * const pDst )
 		  :	m_pBaseKnotSrc( pSrc ),
 			m_pBaseKnotDst( pDst ),
-			m_pDstConnections( nullptr )
-		{ }
+			m_pDstConnections( m_pBaseKnotDst->m_connections.Clone() )
+		{ 
+		}
 
 		~Connect2BaseKnotCommand( )
 		{
@@ -135,7 +135,6 @@ void NNetModelWriterInterface::Connect( ShapeId const idSrc, ShapeId const idDst
 
 		virtual void Do( NNetModel * const pModel )
 		{
-			m_pDstConnections = m_pBaseKnotDst->m_connections.Clone();
 			m_pBaseKnotDst->AddConnections( m_pBaseKnotSrc );
 			pModel->RemoveFromShapeList( m_pBaseKnotSrc ); // m_pBaseKnotSrc disconnected, but unchanged. Do not delete, will be reused in Undo
 		}
@@ -145,12 +144,6 @@ void NNetModelWriterInterface::Connect( ShapeId const idSrc, ShapeId const idDst
 			m_pBaseKnotDst->SetConnections( m_pDstConnections );  // restore dst connections
 			m_pBaseKnotSrc->RestoreConnections( );
 			pModel->RestoreToShapeList( m_pBaseKnotSrc );           // reconnect src  
-		}
-
-		virtual void Redo( NNetModel * const pModel )
-		{
-			m_pBaseKnotDst->AddConnections( m_pBaseKnotSrc );
-			pModel->RemoveFromShapeList( m_pBaseKnotSrc ); 
 		}
 
 	private:
@@ -330,15 +323,10 @@ void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
 	{
 	public:
 		ToggleStopOnTriggerCommand( ShapeId const id )
-			:	m_id( id )
+		  :	m_id( id )
 		{ }
 
 		virtual void Do( NNetModel * const pModel )
-		{
-			pModel->ToggleStopOnTrigger( m_id );
-		}
-
-		virtual void Undo( NNetModel * const pModel )
 		{
 			pModel->ToggleStopOnTrigger( m_id );
 		}
@@ -362,8 +350,10 @@ void NNetModelWriterInterface::SetPulseRate( ShapeId const id, fHertz const fNew
 			m_fHertz( fNewValue )
 		{ }
 
-		virtual void Do  ( NNetModel * const pModel ) { m_fHertz = pModel->SetPulseRate( m_id, m_fHertz ); }
-		virtual void Undo( NNetModel * const pModel ) {	Do( pModel ); }
+		virtual void Do( NNetModel * const pModel ) 
+		{ 
+			m_fHertz = pModel->SetPulseRate( m_id, m_fHertz ); 
+		}
 
 	private:
 		ShapeId const m_id;
@@ -382,15 +372,17 @@ void NNetModelWriterInterface::SelectShape( ShapeId const id, tBoolOp const op )
 	public:
 		SelectShapeCommand( ShapeId const id, tBoolOp const op )
 		  :	m_id( id ),
-			m_op( op )
+			m_op( Reverse( op ) )
 		{ }
 
-		virtual void Do  ( NNetModel * const pModel ) { pModel->SelectShape( m_id, m_op ); }
-		virtual void Undo( NNetModel * const pModel ) {	pModel->SelectShape( m_id, Reverse( m_op ) ); }
+		virtual void Do( NNetModel * const pModel ) 
+		{ 
+			pModel->SelectShape( m_id, m_op = Reverse( m_op ) ); 
+		}
 
 	private:
 		ShapeId const m_id;
-		tBoolOp const m_op;
+		tBoolOp       m_op;
 	};
 
 	if ( IsTraceOn( ) )
@@ -415,10 +407,37 @@ void NNetModelWriterInterface::SelectSubtree( ShapeId const id, tBoolOp const op
 
 void NNetModelWriterInterface::ResetModel( )
 {
+	class ResetModelCommand : public Command
+	{
+	public:
+		ResetModelCommand( NNetModel * const pModel )
+		{
+			m_pModel = new NNetModel( * pModel ); // deep copy
+		}
+
+		~ResetModelCommand( )
+		{
+			delete m_pModel;
+		}
+
+		virtual void Do( NNetModel * const pModel )
+		{ 
+			pModel->ResetModel( );
+			pModel->CreateInitialShapes();
+		}
+
+		virtual void Undo( NNetModel * const pModel ) 
+		{
+			* pModel = * m_pModel; // shallow assignment
+		}
+
+	private:
+		NNetModel const * m_pModel;
+	};
+
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pModel->ResetModel( );
-	m_pModel->CreateInitialShapes();
+	m_CmdStack.NewCommand( new ResetModelCommand( m_pModel ) );
 }
 
 void NNetModelWriterInterface::SetTriggerSound( ShapeId const id, bool const bActive, Hertz const freq, MilliSecs const ms )

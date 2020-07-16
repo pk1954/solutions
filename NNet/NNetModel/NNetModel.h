@@ -42,9 +42,16 @@ public:
 
 	virtual ~NNetModel( );
 
-	bool IsEqual( NNetModel const & ) const;
+	NNetModel & operator=( NNetModel const & other) // copy assignment
+	{
+		if (this != & other) 
+		{
+			* this = other;
+		}
+		return *this;
+	}
 
-	NNetModel const &  GetCopy( ) const;
+	bool IsEqual( NNetModel const & ) const;
 
 	// readOnly functions
 
@@ -195,7 +202,7 @@ public:
 	}                        
 
 	template <typename T>
-	void Apply2AllInRect( MicroMeterRect const & r, function<void(T       &)> const & func )
+	void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func )
 	{
 		Apply2All<T>( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
 	}

@@ -41,8 +41,6 @@ bool Pipe::IsEqual( Pipe const & other ) const
 		return false;
 	if ( m_width != other.m_width )
 		return false;
-	//if ( m_potIter != other.m_potIter )
-	//	return false;
 	return true;
 }
 

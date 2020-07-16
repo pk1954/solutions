@@ -58,15 +58,6 @@ void NNetModel::Initialize
 	Shape::SetParam( pParam );
 }                     
 
-NNetModel const & NNetModel::GetCopy( ) const
-{
-	NNetModel * const pModelCopy { new NNetModel( * this ) };
-#ifdef _DEBUG
-	assert( IsEqual( * pModelCopy ) );
-#endif
-	return * pModelCopy;
-}
-
 void NNetModel::CreateInitialShapes( )
 {
 	InputNeuron * const pInputNeuron { NewShape<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) };

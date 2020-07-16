@@ -15,16 +15,16 @@ using std::nullopt;
 class Command
 {
 public:
-    virtual void Do  ( NNetModel * ) = 0;
-    virtual void Undo( NNetModel * pModel ) { Do( pModel ); };
-    virtual void Redo( NNetModel * pModel ) { Do( pModel ); };
+    virtual void Do  ( NNetModel * const ) = 0;
+    virtual void Undo( NNetModel * const pModel ) { Do( pModel ); };
+    virtual void Redo( NNetModel * const pModel ) { Do( pModel ); };
 };
 
 class CommandStack
 {
 public:
 
-    void Inizialize( NNetModel* const pModel )
+    void Inizialize( NNetModel * const pModel )
     {
         m_pModel = pModel;
     }
@@ -32,7 +32,7 @@ public:
     void NewCommand( Command * pCmd )
     {
 #ifdef _DEBUG
-        m_pModelSave1 = & m_pModel->GetCopy();
+        m_pModelSave1 = new NNetModel( * m_pModel );
 #endif
         for ( auto i = m_CommandStack.size(); i > m_iIndex; )
         {
@@ -46,7 +46,7 @@ public:
         m_pModel->StaticModelChanged( );
 
 #ifdef _DEBUG
-        m_pModelSave2 = & m_pModel->GetCopy();
+        m_pModelSave2 = new NNetModel( * m_pModel );
         UndoCommand();
         assert( m_pModel->IsEqual( * m_pModelSave1 ) );
         RedoCommand();

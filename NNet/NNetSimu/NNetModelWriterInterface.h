@@ -39,7 +39,7 @@ public:
 /* ok */ void MoveShape           ( ShapeId const, MicroMeterPoint const & );
          void ClearBeepers        ( );
 /* ok */ void RemoveShape         ( ShapeId const );
-         void ResetModel          ( );
+/* ok */ void ResetModel          ( );
 /* ok */ void ResetTimer          ( );
          void SelectAll           ( tBoolOp const );
          void SelectAllBeepers    ( );

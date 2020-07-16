@@ -7,11 +7,6 @@
 #include "NNetModel.h"
 #include "NNetModelReaderInterface.h"
 
-NNetModel const & NNetModelReaderInterface::CopyModel( ) const
-{
-	return m_pModel->GetCopy();
-}
-
 bool const NNetModelReaderInterface::IsEqual( NNetModel const & pModel) const
 {
 	return m_pModel->IsEqual( pModel );
