@@ -92,9 +92,8 @@ public:
 	Shape       * GetShape     ( ShapeId const id )       { return IsShapeIdOk( id ) ? m_Shapes[id.GetValue()] : nullptr; }
 	Shape const * GetConstShape( ShapeId const id ) const {	return IsShapeIdOk( id ) ? m_Shapes[id.GetValue()] : nullptr; }
 	
-	fHertz const GetPulseRate( ShapeId const ) const;
-
-	MicroMeterPoint const GetShapePos   ( ShapeId const id  ) const;
+	fHertz          const GetPulseRate  ( ShapeId const ) const;
+	MicroMeterPoint const GetShapePos   ( ShapeId const ) const;
 	bool            const IsValidShapeId( ShapeId const id  ) const { return id.GetValue() < m_Shapes.size(); }
 
 	fMicroSecs      const GetSimulationTime ( ) const { return m_timeStamp; }
@@ -120,7 +119,7 @@ public:
 	T * const NewShape( MicroMeterPoint const & pos ) 
 	{ 
 		auto pT { new T( pos ) };
-		add2ShapeList( pT );
+		Add2ShapeList( pT );
 		StaticModelChanged( );
 		return pT;
 	}
@@ -224,17 +223,17 @@ public:
 	void CreateInitialShapes();
 	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
 
-	ShapeId  const NewPipe     ( BaseKnot * const, BaseKnot      * const   );
+	Pipe   * const NewPipe     ( BaseKnot * const, BaseKnot      * const   );
 	Knot   * const InsertKnot  ( ShapeId    const, MicroMeterPoint const & );
 	Neuron * const InsertNeuron( ShapeId    const, MicroMeterPoint const & );
 	void           MoveShape   ( ShapeId    const, MicroMeterPoint const & );
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
-	ShapeId const AddOutgoing2Knot( ShapeId const, MicroMeterPoint const & );
-	ShapeId const AddIncoming2Knot( ShapeId const, MicroMeterPoint const & );
-	ShapeId const AddOutgoing2Pipe( ShapeId const, MicroMeterPoint const & );
-	ShapeId const AddIncoming2Pipe( ShapeId const, MicroMeterPoint const & );
+	Shape * const AddOutgoing2Knot( ShapeId const, MicroMeterPoint const & );
+	Shape * const AddIncoming2Knot( ShapeId const, MicroMeterPoint const & );
+	Shape * const AddOutgoing2Pipe( ShapeId const, MicroMeterPoint const & );
+	Shape * const AddIncoming2Pipe( ShapeId const, MicroMeterPoint const & );
 
 	fHertz const  SetPulseRate    ( ShapeId const, fHertz const );
 
@@ -300,6 +299,12 @@ public:
 			pShape->Mark( op );
 	}
 
+	void Add2ShapeList( Shape * const pNewShape )
+	{
+		pNewShape->SetId( ShapeId { GetSizeOfShapeList() } );
+		m_Shapes.push_back( pNewShape );
+	}
+
 	void StaticModelChanged( )
 	{ 
 		m_pStaticModelObservable->NotifyAll( false );
@@ -324,12 +329,6 @@ private:
 
 	// local functions
 
-	void add2ShapeList( Shape * const pNewShape )
-	{
-		pNewShape->SetId( ShapeId { GetSizeOfShapeList() } );
-		m_Shapes.push_back( pNewShape );
-	}
-
 	void incTimeStamp( )
 	{
 		m_timeStamp += m_pParam->GetTimeResolution( );
@@ -342,7 +341,6 @@ private:
 	}
 
 	MicroMeterPoint orthoVector        ( ShapeId const ) const;
-	void            deletePipeEndPoints( Pipe  * const );
 	Shape *         shallowCopy        ( Shape   const & ) const;
 	void            selectSubtree      ( BaseKnot * const, tBoolOp const );
 	bool            isEqual            ( Shape const &, Shape const & ) const;

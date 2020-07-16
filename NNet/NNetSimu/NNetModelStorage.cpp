@@ -117,10 +117,10 @@ public:
             }
             else
             { 
-                Pipe * const pPipe { new Pipe( ) };
+                BaseKnot * const pKnotStart { m_pModel->GetShapePtr<BaseKnot *>( idStart ) };
+                BaseKnot * const pKnotEnd   { m_pModel->GetShapePtr<BaseKnot *>( idEnd   ) };
+                Pipe * const pPipe { new Pipe( pKnotStart, pKnotEnd ) };
                 pPipe->SetId( idFromScript );
-                ConnectOutgoing( pPipe, m_pModel->GetShapePtr<BaseKnot *>( idStart ) );
-                ConnectIncoming( pPipe, m_pModel->GetShapePtr<BaseKnot *>( idEnd   ) );
                 pShape = pPipe;
             }
         }

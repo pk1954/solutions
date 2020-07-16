@@ -185,6 +185,7 @@
     <ClInclude Include="Analyzer.h" />
     <ClInclude Include="BaseKnot.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="Connections.h" />
     <ClInclude Include="DrawContext.h" />
     <ClInclude Include="InputNeuron.h" />
     <ClInclude Include="Knot.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="NNetWrapperHelpers.h" />
     <ClInclude Include="Pipe.h" />
+    <ClInclude Include="PipeList.h" />
     <ClInclude Include="scale.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Shape.h" />

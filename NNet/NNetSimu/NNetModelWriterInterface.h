@@ -35,7 +35,7 @@ public:
          void DeleteSelection     ( );
          void Disconnect          ( ShapeId const );
          void MarkSelection       ( tBoolOp const );
-         void MoveSelection       ( MicroMeterPoint const & );
+/* ok */ void MoveSelection       ( MicroMeterPoint const & );
 /* ok */ void MoveShape           ( ShapeId const, MicroMeterPoint const & );
          void ClearBeepers        ( );
 /* !! */ void RemoveShape         ( ShapeId const );
@@ -43,7 +43,7 @@ public:
 /* ok */ void ResetTimer          ( );
          void SelectAll           ( tBoolOp const );
          void SelectAllBeepers    ( );
-         void SelectShape         ( ShapeId const, tBoolOp const );
+/* ok */ void SelectShape         ( ShapeId const, tBoolOp const );
          void SelectShapesInRect  ( MicroMeterRect const & );
          void SelectSubtree       ( ShapeId const, tBoolOp const );
          void SetParameter        ( tParameter const, float const );

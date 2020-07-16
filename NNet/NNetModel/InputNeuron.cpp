@@ -50,9 +50,9 @@ void InputNeuron::drawInputNeuron
 {
 	MicroMeterPoint const axonVector
 	{
-		m_outgoing.empty( )
-		? MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
-	    : m_outgoing[0]->GetVector( )
+		HasAxon()
+		? m_connections.GetFirstOutgoing().GetVector( )
+	    : MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
 	};
 	MicroMeter      const umHypot    { Hypot( axonVector ) };
 	MicroMeterPoint const umExtVector{ axonVector * (GetExtension() / umHypot) };

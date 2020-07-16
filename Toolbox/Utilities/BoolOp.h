@@ -9,7 +9,29 @@ enum class tBoolOp { opTrue, opFalse, opToggle, opNoChange };
 
 inline tBoolOp BoolOp( bool const b )
 {
-	return b ? tBoolOp::opTrue : tBoolOp::opFalse;
+    return b ? tBoolOp::opTrue : tBoolOp::opFalse;
+}
+
+inline tBoolOp Reverse( tBoolOp const op )
+{
+    switch ( op )
+    {
+    case tBoolOp::opTrue:
+        return tBoolOp::opFalse;
+
+    case tBoolOp::opFalse:
+        return tBoolOp::opTrue;
+
+    case tBoolOp::opToggle:
+        return tBoolOp::opToggle;
+
+    case tBoolOp::opNoChange: 
+        return tBoolOp::opNoChange;
+
+    default:
+        assert( false );
+        return tBoolOp::opNoChange;
+    }
 }
 
 inline bool ApplyOp2( bool const b, tBoolOp const op )

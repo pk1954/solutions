@@ -17,6 +17,10 @@ class Command
 public:
     virtual void Do  ( NNetModel * ) = 0;
     virtual void Undo( NNetModel * ) = 0;
+    virtual void Redo( NNetModel * pModel ) 
+    { 
+        Do( pModel ); 
+    };
 };
 
 class CommandStack
@@ -38,11 +42,12 @@ public:
         m_CommandStack.push_back( pCmd );
         pCmd->Do( m_pModel );
         m_iIndex = m_CommandStack.size();
+        m_pModel->StaticModelChanged( );
     }
 
     bool UndoCommand( )
     {
-        if ( m_iIndex == 0 ) // stack is empty, nothing do undo
+        if ( m_iIndex == 0 ) // stack is empty, nothing to undo
             return false;
         m_CommandStack[--m_iIndex]->Undo( m_pModel );
         m_pModel->StaticModelChanged( );
@@ -51,9 +56,9 @@ public:
 
     bool RedoCommand( )
     {
-        if ( m_iIndex == m_CommandStack.size() )
+        if ( m_iIndex == m_CommandStack.size() ) // top of stack, nothing do redo
             return false;
-        m_CommandStack[m_iIndex++]->Do( m_pModel );
+        m_CommandStack[m_iIndex++]->Redo( m_pModel );
         m_pModel->StaticModelChanged( );
         return true;
     }

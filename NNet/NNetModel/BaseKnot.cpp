@@ -16,7 +16,7 @@ using std::end;
 void BaseKnot::SetPosition( MicroMeterPoint const & newPos )
 {
 	m_center = newPos;
-	Apply2AllConnectedPipes( [&](Pipe & pipe) { pipe.Recalc(); } );
+	m_connections.Apply2AllConnectedPipes( [&](Pipe & pipe) { pipe.Recalc(); } );
 }
 
 void BaseKnot::MoveShape( MicroMeterPoint const & delta )
@@ -26,44 +26,24 @@ void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 
 void BaseKnot::Prepare( )
 {
-	m_mVinputBuffer = 0._mV;
-	for ( Pipe * pPipe : m_incoming ) 
-	{ 
-		if ( pPipe != nullptr )
-			m_mVinputBuffer += pPipe->GetNextOutput( );
-	}
+	//m_mVinputBuffer = 0._mV;
+	//for ( Pipe * pPipe : m_incoming ) 
+	//{ 
+	//	if ( pPipe != nullptr )
+	//		m_mVinputBuffer += pPipe->GetNextOutput( );
+	//}
 
-	//Apply2AllInPipes( [&]( auto pPipe ) { m_mVinputBuffer += pPipe->GetNextOutput( ); } ); // slow
+	m_connections.Apply2AllInPipes( [&]( auto pipe ) { m_mVinputBuffer += pipe.GetNextOutput( ); } ); // slow !!
 }
 
 bool BaseKnot::IsPrecursorOf( ShapeId const id )
 {
-	return Apply2AllOutPipesB( [&]( Pipe & pipe ) { return pipe.GetEndKnotId( ) == id; } ); 
+	return m_connections.Apply2AllOutPipesB( [&]( Pipe & pipe ) { return pipe.GetEndKnotId( ) == id; } ); 
 }
 
 bool BaseKnot::IsSuccessorOf( ShapeId const id )
 {
-	return Apply2AllInPipesB( [&]( Pipe & pipe ) { return pipe.GetStartKnotId( ) == id; } );
-}
-
-void BaseKnot::clearPipeList( PipeList & list ) 
-{
-	list.clear(); 
-}
-
-void BaseKnot::addPipe( PipeList & list, Pipe * const pPipe )
-{
-	if ( pPipe != nullptr )
-	{
-		assert( find( begin(list), end(list), pPipe ) == end(list) );
-		list.push_back( pPipe );
-	}
-}
-
-void BaseKnot::removePipe( PipeList & list, Pipe * const pPipe )
-{
-	auto res = find( begin(list), end(list), pPipe );
-	list.erase( res );
+	return m_connections.Apply2AllInPipesB( [&]( Pipe & pipe ) { return pipe.GetStartKnotId( ) == id; } );
 }
 
 bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
@@ -80,29 +60,6 @@ MicroMeterRect const BaseKnot::GetRect4Text( ) const
 		GetPosition().GetX() + GetExtension(),      // right
 		GetPosition().GetY() + GetExtension()       // bottom
 	};
-}
-
-void BaseKnot::apply2AllPipesInList( PipeList const & pipeList, PipeFunc const & func ) const
-{
-	for ( auto pPipe : pipeList ) 
-	{ 
-		if ( pPipe != nullptr )
-			func( * pPipe );
-	}
-}
-
-bool BaseKnot::apply2AllPipesInListB( PipeList const & pipeList, PipeFuncB const & func ) const 
-{
-	bool bResult { false };
-	for ( auto pPipe : pipeList ) 
-	{ 
-		if ( pPipe != nullptr )
-		{
-			if ( func( * pPipe ) )
-				return true;
-		}
-	}
-	return false;
 }
 
 void BaseKnot::drawCircle

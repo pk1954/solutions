@@ -10,35 +10,20 @@
 #include "NNetParameters.h"
 #include "tHighlightType.h"
 #include "Shape.h"
-#include "BaseKnot.h"
 #include "Segment.h"
 
 using std::vector;
 
 class DrawContext;
+class BaseKnot;
 
 class Pipe : public Shape
 {
 public:
-	Pipe( MicroMeterPoint const = NP_NULL );
+	Pipe( BaseKnot * const, BaseKnot * const );
 	virtual ~Pipe();
 
-	virtual bool IsEqual( Pipe const & other ) const 
-	{
-		if ( ! Shape::IsEqual( other ) )
-			return false;
-		if ( m_pKnotStart->GetId() != other.m_pKnotStart->GetId() )
-			return false;
-		if ( m_pKnotEnd->GetId() != other.m_pKnotEnd->GetId() )
-			return false;
-		if ( m_width != other.m_width )
-			return false;
-		//if ( m_potential != other.m_potential )
-		//	return false;
-		//if ( m_potIter != other.m_potIter )
-		//	return false;
-		return true;
-	}
+	virtual bool IsEqual( Pipe const & ) const;
 
 	static unsigned long GetCounter( ) { return m_counter; }
 
@@ -50,45 +35,21 @@ public:
 	BaseKnot * const GetStartKnotPtr( ) const { return m_pKnotStart; }
 	BaseKnot * const GetEndKnotPtr  ( ) const { return m_pKnotEnd;   }
 
-	ShapeId    GetStartKnotId ( ) const { return m_pKnotStart->GetId(); }
-	ShapeId    GetEndKnotId   ( ) const { return m_pKnotEnd  ->GetId(); }
+	ShapeId         GetStartKnotId( ) const;
+	ShapeId         GetEndKnotId  ( ) const;
+	MicroMeterPoint GetStartPoint ( ) const; 
+	MicroMeterPoint GetEndPoint   ( ) const; 
+	MicroMeter      GetLength     ( ) const;
+	MicroMeterPoint GetVector     ( ) const; 
 
 	size_t     GetNrOfSegments( ) const { return m_potential.size(); }
 	MicroMeter GetWidth       ( ) const { return m_width; }
 
-	MicroMeterPoint GetStartPoint( ) const; 
-	MicroMeterPoint GetEndPoint  ( ) const; 
-	MicroMeter      GetLength    ( ) const;
-	MicroMeterPoint GetVector    ( ) const; 
+	virtual bool IsInRect( MicroMeterRect const & ) const;
 
-	// IsInrect should be called IsPossiblyInRect
-	// It doesn't calculate exectly if the pipe intersects umRect, but eliminites a lot of cases with a simple and fast check
-	// The rest is left over for the clipping algorithm of the graphics subsystem
-
-	virtual bool IsInRect( MicroMeterRect const & umRect ) const 
-	{ 
-		if ( (m_pKnotStart->GetPosition().GetX() < umRect.GetLeft()) && (m_pKnotEnd->GetPosition().GetX() < umRect.GetLeft()) )
-			return false;
-
-		if ( (m_pKnotStart->GetPosition().GetX() > umRect.GetRight()) && (m_pKnotEnd->GetPosition().GetX() > umRect.GetRight()) )
-			return false;
-
-		if ( (m_pKnotStart->GetPosition().GetY() > umRect.GetBottom()) && (m_pKnotEnd->GetPosition().GetY() > umRect.GetBottom()) )
-			return false;
-
-		if ( (m_pKnotStart->GetPosition().GetY() < umRect.GetTop()) && (m_pKnotEnd->GetPosition().GetY() < umRect.GetTop()) )
-			return false;
-
-		return true;
-	}
-
-	mV GetNextOutput( ) const { return * m_potIter; }
-
-	virtual void Prepare( )
-	{
-		m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
-	}
-
+	virtual void Prepare();
+	virtual void Select( tBoolOp const );
+	virtual void MoveShape( MicroMeterPoint const & );
 	virtual bool CompStep( )
 	{
 		* m_potIter = m_mVinputBuffer;
@@ -99,18 +60,7 @@ public:
 		return false;
 	}
 
-	virtual void Select( tBoolOp const op ) 
-	{ 
-		Shape::Select( op );
-		m_pKnotStart->Select( op );
-		m_pKnotEnd  ->Select( op );
-	}
-
-	virtual void MoveShape( MicroMeterPoint const & delta )
-	{
-		m_pKnotStart->MoveShape( delta );
-		m_pKnotEnd  ->MoveShape( delta );
-	}
+	mV GetNextOutput( ) const { return * m_potIter; }
 
 	mV GetVoltage( MicroMeterPoint const & ) const;
 

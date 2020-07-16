@@ -9,19 +9,51 @@
 #include "DrawContext.h"
 #include "tHighlightType.h"
 #include "NNetParameters.h"
+#include "BaseKnot.h"
 #include "Pipe.h"
 
 using std::fill;
 
-Pipe::Pipe( MicroMeterPoint const umUnused )
-  :	Shape( ShapeType::Value::pipe )
+Pipe::Pipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
+  :	Shape( ShapeType::Value::pipe ),
+	m_pKnotStart( pKnotStart ),
+	m_pKnotEnd  ( pKnotEnd )
 {
+	assert( pKnotStart && pKnotEnd );
+	pKnotEnd  ->m_connections.AddIncoming( this );
+	pKnotStart->m_connections.AddOutgoing( this );
+	Recalc();
 	++ m_counter;
 }
 
 Pipe::~Pipe( )
 {
 	-- m_counter;
+}
+
+bool Pipe::IsEqual( Pipe const & other ) const 
+{
+	if ( ! Shape::IsEqual( other ) )
+		return false;
+	if ( m_pKnotStart->GetId() != other.m_pKnotStart->GetId() )
+		return false;
+	if ( m_pKnotEnd->GetId() != other.m_pKnotEnd->GetId() )
+		return false;
+	if ( m_width != other.m_width )
+		return false;
+	//if ( m_potIter != other.m_potIter )
+	//	return false;
+	return true;
+}
+
+ShapeId Pipe::GetStartKnotId() const 
+{ 
+	return m_pKnotStart->GetId(); 
+}
+
+ShapeId Pipe::GetEndKnotId() const 
+{ 
+	return m_pKnotEnd->GetId(); 
 }
 
 void Pipe::Clear( )
@@ -41,6 +73,45 @@ void Pipe::Recalc( )
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
 		m_potIter = m_potential.begin();
 	}
+}
+
+void Pipe::Prepare( )
+{
+	m_mVinputBuffer = m_pKnotStart->GetNextOutput( );
+}
+
+void Pipe::Select( tBoolOp const op ) 
+{ 
+	Shape::Select( op );
+	m_pKnotStart->Select( op );
+	m_pKnotEnd  ->Select( op );
+}
+
+void Pipe::MoveShape( MicroMeterPoint const & delta )
+{
+	m_pKnotStart->MoveShape( delta );
+	m_pKnotEnd  ->MoveShape( delta );
+}
+
+// IsInrect should be called IsPossiblyInRect
+// It doesn't calculate exectly if the pipe intersects umRect, but eliminites a lot of cases with a simple and fast check
+// The rest is left over for the clipping algorithm of the graphics subsystem
+
+bool Pipe::IsInRect( MicroMeterRect const & umRect ) const 
+{ 
+	if ( (m_pKnotStart->GetPosition().GetX() < umRect.GetLeft()) && (m_pKnotEnd->GetPosition().GetX() < umRect.GetLeft()) )
+		return false;
+
+	if ( (m_pKnotStart->GetPosition().GetX() > umRect.GetRight()) && (m_pKnotEnd->GetPosition().GetX() > umRect.GetRight()) )
+		return false;
+
+	if ( (m_pKnotStart->GetPosition().GetY() > umRect.GetBottom()) && (m_pKnotEnd->GetPosition().GetY() > umRect.GetBottom()) )
+		return false;
+
+	if ( (m_pKnotStart->GetPosition().GetY() < umRect.GetTop()) && (m_pKnotEnd->GetPosition().GetY() < umRect.GetTop()) )
+		return false;
+
+	return true;
 }
 
 void Pipe::SetStartKnot( BaseKnot * const pBaseKnot )

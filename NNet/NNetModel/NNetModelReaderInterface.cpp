@@ -94,25 +94,25 @@ mV const NNetModelReaderInterface::GetVoltage( ShapeId const id, MicroMeterPoint
 size_t const NNetModelReaderInterface::GetNrOfOutgoingConnections( ShapeId const id ) const 
 { 
 	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
-	return p ? p->GetNrOfOutgoingConnections( ) : -1;
+	return p ? p->m_connections.GetNrOfOutgoingConnections( ) : -1;
 }
 
 size_t const NNetModelReaderInterface::GetNrOfIncomingConnections( ShapeId const id ) const 
 { 
 	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
-	return p ? p->GetNrOfIncomingConnections( ) : -1;
+	return p ? p->m_connections.GetNrOfIncomingConnections( ) : -1;
 }
 
 bool const NNetModelReaderInterface::HasIncoming( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
-	return p ? p->HasIncoming( ) : false; 
+	return p ? p->m_connections.HasIncoming( ) : false; 
 }
 
 bool const NNetModelReaderInterface::HasOutgoing( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
-	return p ? p->HasOutgoing( ) : false; 
+	return p ? p->m_connections.HasOutgoing( ) : false; 
 }
 
 MicroMeterRect const NNetModelReaderInterface::GetEnclosingRect( ) const
