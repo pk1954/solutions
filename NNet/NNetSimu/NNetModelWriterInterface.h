@@ -34,10 +34,10 @@ public:
 		 void AppendNeuron        ( ShapeId const );
 		 void AppendInputNeuron   ( ShapeId const );
 		 void CopySelection       ( );
-         void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
-	     void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
-	 	 void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
-		 void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
+/* ok */ void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
+/* ok */ void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
+/* ok */ void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
+/* ok */ void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
 /* ok */ void Analyze             ( int const );
 		 void NewNeuron           ( MicroMeterPoint const & );
 		 void NewInputNeuron      ( MicroMeterPoint const & );

@@ -35,7 +35,7 @@ static float const PROTOCOL_VERSION { 1.5f };   // pipeline renamed to pipe
 void NNetModelStorage::Initialize
 ( 
     HWND        const hwndApp,  
-    NNetModel * const pModel, 
+    NNetModel * const pModel,
     Param     * const pParam,
     Script    * const pScript
 )
@@ -205,8 +205,8 @@ private:
 class WrapShapeParameter : public Script_Functor
 {
 public:
-    WrapShapeParameter( NNetModel * const pNNetModel ) :
-        m_pModel( pNNetModel )
+    WrapShapeParameter( NNetModel * const pModel ) :
+        m_pModel( pModel )
     { };
 
     virtual void operator() ( Script & script ) const 
@@ -217,7 +217,7 @@ public:
         assert( param == tParameter::pulseRate );
         script.ScrReadSpecial( L'=' );
         float const fValue { CastToFloat( script.ScrReadFloat() ) };
-        m_pModel->SetPulseRate( id, fValue );
+        m_pModel->GetShapePtr<InputNeuron *>( id )->SetPulseFrequency( fHertz( fValue ) );
     }
 
 private:
@@ -253,9 +253,9 @@ void NNetModelStorage::prepareForReading( )
 #define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( m_pModel ) )
     DEF_NNET_FUNC( Protocol );
     DEF_NNET_FUNC( GlobalParameter );
-    DEF_NNET_FUNC( ShapeParameter );
     DEF_NNET_FUNC( NrOfShapes );
     DEF_NNET_FUNC( CreateShape );
+    DEF_NNET_FUNC( ShapeParameter );
     DEF_NNET_FUNC( MarkShape );
     DEF_NNET_FUNC( TriggerSound );
 #undef DEF_NET_FUNC

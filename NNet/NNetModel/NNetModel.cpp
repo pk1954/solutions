@@ -34,6 +34,7 @@ NNetModel::NNetModel( NNetModel const & modelSrc )
 			connectToNewShapes( * pShapeSrc, m_Shapes );
 		}
 	}
+	assert( IsEqual( modelSrc ) );
 }
 
 NNetModel::~NNetModel( )
@@ -107,8 +108,8 @@ void NNetModel::GetSelectionList( ShapeList & list ) const
 void NNetModel::SetSelectionList( ShapeList const & list )
 {
 	SelectAll( tBoolOp::opFalse );
-	for ( Shape const * pShape : list )
-		SelectShape( pShape->GetId(), tBoolOp::opTrue );
+	for ( Shape * pShape : list )
+		pShape->Select( tBoolOp::opTrue );
 }
 
 void NNetModel::DeleteShape( Shape * const pShape )
@@ -192,63 +193,12 @@ void NNetModel::Convert2InputNeuron( ShapeId const idNeuron )
 	}
 }
 
-void NNetModel::SetPulseRate( ShapeId const id, bool const bDirection )
-{
-	InputNeuron * const pInputNeuron { GetShapePtr<InputNeuron *>( id ) };
-	if ( pInputNeuron )
-	{
-		static fHertz const INCREMENT { 0.01_fHertz };
-		fHertz const fOldValue { pInputNeuron->GetPulseFrequency( ) };
-		if ( fOldValue.IsNotNull() )
-		{
-			pInputNeuron->SetPulseFrequency( fOldValue + ( bDirection ? INCREMENT : -INCREMENT ) );
-			ClearModel( );
-			StaticModelChanged( );
-		}
-	}
-}
-
-fHertz const NNetModel::SetPulseRate( ShapeId const id, fHertz const fNewValue )
-{
-	fHertz              fOldValue    { fHertz::NULL_VAL() };
-	InputNeuron * const pInputNeuron { GetShapePtr<InputNeuron *>( id ) };
-	if ( pInputNeuron )
-	{
-		fOldValue = pInputNeuron->SetPulseFrequency( fNewValue );
-		ClearModel( );
-		StaticModelChanged( );
-	}
-	return fOldValue;
-}
-
 fHertz const NNetModel::GetPulseRate( ShapeId const id ) const
 {
 	InputNeuron const * const pInputNeuron { GetShapeConstPtr<InputNeuron const *>( id ) };
 	return ( pInputNeuron )
 		   ? pInputNeuron->GetPulseFrequency( )
 	       : fHertz::NULL_VAL();
-}
-
-void NNetModel::setTriggerSound( Neuron * const pNeuron, bool const bActive, Hertz const freq, MilliSecs const msec )
-{
-	if ( pNeuron )
-	{
-		pNeuron->SetTriggerSoundOn       ( bActive );
-		pNeuron->SetTriggerSoundFrequency( freq );
-		pNeuron->SetTriggerSoundDuration ( msec );
-		StaticModelChanged( );
-	}
-}
-
-void NNetModel::clearTriggerSound( Neuron * const pNeuron )
-{
-	setTriggerSound( pNeuron, false, 0_Hertz, 0_MilliSecs );
-}
-
-void NNetModel::SetTriggerSound( ShapeId const id, bool const bActive, Hertz const freq, MilliSecs const msec )
-{
-	setTriggerSound( GetShapePtr<Neuron *>( id ), bActive, freq, msec );
-	StaticModelChanged( );
 }
 
 float NNetModel::SetParameter
@@ -276,7 +226,7 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 	Shape    * pDst { GetShapePtr<Shape    *>( idDst ) };
 	if ( pDst->IsPipe() )   // connect baseknot to pipe
 	{
-		InsertBaseKnot( GetShapePtr<Pipe *>( idDst ), pSrc );
+		insertBaseKnot( GetShapePtr<Pipe *>( idDst ), pSrc );
 	}
 	else  // connect baseknot to baseknot
 	{
@@ -300,67 +250,6 @@ Pipe * const NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd 
 	Add2ShapeList( pPipe );
 	StaticModelChanged( );
 	return pPipe;
-}
-
-void NNetModel::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
-{
-	if ( Shape * pShape { GetShapePtr<Shape *>( id  ) } )
-	{
-		pShape->MoveShape( delta );
-		StaticModelChanged( );
-	}
-}
-
-Neuron * const NNetModel::InsertNeuron( ShapeId const idPipe, MicroMeterPoint const & splitPoint )
-{
-	Neuron * pNeuron { nullptr };
-	if ( IsDefined( idPipe ) )
-	{
-		pNeuron = NewShape<Neuron>( splitPoint );
-		InsertBaseKnot( GetShapePtr<Pipe *>(idPipe), pNeuron );
-		StaticModelChanged( );
-	}
-	return pNeuron;
-}
-
-Knot * const NNetModel::InsertKnot( ShapeId const idPipe, MicroMeterPoint const & splitPoint )
-{
-	Knot * pKnot { nullptr };
-	if ( IsDefined( idPipe ) )
-	{
-		pKnot = NewShape<Knot>( splitPoint );
-		InsertBaseKnot( GetShapePtr<Pipe *>(idPipe), pKnot );
-		StaticModelChanged( );
-	}
-	return pKnot;
-}
-
-Shape * const NNetModel::AddOutgoing2Pipe( ShapeId const id, MicroMeterPoint const & pos )
-{
-	return ( IsDefined( id ) )
-		   ? NewPipe( InsertKnot( id, pos ), NewShape<Knot>( pos + orthoVector( id ) ) )
-		   : nullptr;
-}
-
-Shape * const NNetModel::AddIncoming2Pipe( ShapeId const id, MicroMeterPoint const & pos )
-{
-	return ( IsDefined( id ) )
-		   ? NewPipe( NewShape<Knot>( pos - orthoVector( id ) ), InsertKnot( id, pos ) )
-	       : nullptr;
-}
-
-Shape * const NNetModel::AddOutgoing2Knot( ShapeId const id, MicroMeterPoint const & pos )
-{
-	return ( IsDefined( id ) )
-		   ? NewPipe( GetShapePtr<BaseKnot *>(id), NewShape<Knot>( pos + STD_OFFSET) )
-	       : nullptr;
-}
-
-Shape * const NNetModel::AddIncoming2Knot( ShapeId const id, MicroMeterPoint const & pos )
-{
-	return ( IsDefined( id ) )
-		   ? NewPipe( NewShape<Knot>( pos - STD_OFFSET ), GetShapePtr<BaseKnot *>( id ) )
-	       : nullptr;
 }
 
 bool NNetModel::Compute( )
@@ -396,19 +285,6 @@ void NNetModel::MarkSelection( tBoolOp const op )
 {
 	Apply2AllSelected<Shape>( [&]( Shape & shape ) { shape.Mark( op ); } );
 	dynamicModelChanged();
-}
-
-void NNetModel::MoveSelection( MicroMeterPoint const & delta )
-{
-	Apply2AllSelected<BaseKnot>
-	( 
-		[&]( BaseKnot & knot ) 
-		{ 
-			knot.MoveShape( delta ); 
-			knot.m_connections.Apply2AllConnectedPipes( [&](Pipe & pipe) { pipe.Recalc(); } );
-		} 
-	);
-	StaticModelChanged( );
 }
 
 bool NNetModel::isEqual( Shape const & shapeA, Shape const & shapeB ) const
@@ -510,17 +386,21 @@ void NNetModel::CopySelection( )
 	StaticModelChanged( );
 }
 
-void NNetModel::RemoveFromShapeList( Shape * const pShape )
+void NNetModel::SelectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )
 {
-	long lIndex { pShape->GetId().GetValue() };
-	assert( m_Shapes[ lIndex ] == pShape );
-	m_Shapes[ lIndex ] = nullptr;
-}
-
-void NNetModel::RestoreToShapeList( Shape * const pShape )
-{
-	long lIndex { pShape->GetId().GetValue() };
-	m_Shapes[ lIndex ] = pShape;
+	if ( pBaseKnot )
+	{
+		pBaseKnot->Select( op );
+		pBaseKnot->m_connections.Apply2AllOutPipes
+		( 
+			[&]( Pipe & pipe ) 
+			{ 
+				pipe.Select( op ); 
+				if ( pipe.GetEndKnotPtr()->IsKnot() )
+					SelectSubtree( pipe.GetEndKnotPtr(), op ); 
+			} 
+		);
+	}
 }
 
 void NNetModel::DisconnectBaseKnot( BaseKnot * const pBaseKnot ) // disconnects only, shape remains
@@ -578,25 +458,7 @@ ShapeId const NNetModel::FindShapeAt
 
 /////////////////// local functions ///////////////////////////////////////////////
 
-void NNetModel::selectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )
-{
-	if ( pBaseKnot )
-	{
-		pBaseKnot->Select( op );
-		pBaseKnot->m_connections.Apply2AllOutPipes
-		( 
-			[&]( Pipe & pipe ) 
-			{ 
-				pipe.Select( op ); 
-				BaseKnot * const pEndKnot { pipe.GetEndKnotPtr() };
-				if ( pEndKnot->IsKnot() )
-					selectSubtree( pipe.GetEndKnotPtr(), op ); 
-			} 
-		);
-	}
-}
-
-void NNetModel::InsertBaseKnot( Pipe * const pPipe, BaseKnot * const pBaseKnot)
+void NNetModel::insertBaseKnot( Pipe * const pPipe, BaseKnot * const pBaseKnot)
 {
 	BaseKnot * const pStartKnot { pPipe->GetStartKnotPtr( ) };
 	NewPipe( pStartKnot, pBaseKnot );
@@ -604,9 +466,20 @@ void NNetModel::InsertBaseKnot( Pipe * const pPipe, BaseKnot * const pBaseKnot)
 	ConnectOutgoing( pPipe, pBaseKnot );
 }
 
-MicroMeterPoint NNetModel::orthoVector( ShapeId const idPipe ) const
+void NNetModel::setTriggerSound( Neuron * const pNeuron, bool const bActive, Hertz const freq, MilliSecs const msec )
 {
-	return OrthoVector( GetShapeConstPtr<Pipe const *>( idPipe )->GetVector(), NEURON_RADIUS * 2.f );
+	if ( pNeuron )
+	{
+		pNeuron->SetTriggerSoundOn       ( bActive );
+		pNeuron->SetTriggerSoundFrequency( freq );
+		pNeuron->SetTriggerSoundDuration ( msec );
+		StaticModelChanged( );
+	}
+}
+
+void NNetModel::clearTriggerSound( Neuron * const pNeuron )
+{
+	setTriggerSound( pNeuron, false, 0_Hertz, 0_MilliSecs );
 }
 
 ShapeId const NNetModel::findShapeAt

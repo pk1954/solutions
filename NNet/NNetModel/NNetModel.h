@@ -221,23 +221,10 @@ public:
 	void CreateInitialShapes();
 	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
 
-	Pipe   * const NewPipe     ( BaseKnot * const, BaseKnot      * const   );
-	Knot   * const InsertKnot  ( ShapeId    const, MicroMeterPoint const & );
-	Neuron * const InsertNeuron( ShapeId    const, MicroMeterPoint const & );
-	void           MoveShape   ( ShapeId    const, MicroMeterPoint const & );
+	Pipe * const NewPipe( BaseKnot * const, BaseKnot      * const   );
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
-	Shape * const AddOutgoing2Knot( ShapeId const, MicroMeterPoint const & );
-	Shape * const AddIncoming2Knot( ShapeId const, MicroMeterPoint const & );
-	Shape * const AddOutgoing2Pipe( ShapeId const, MicroMeterPoint const & );
-	Shape * const AddIncoming2Pipe( ShapeId const, MicroMeterPoint const & );
-
-	fHertz const  SetPulseRate    ( ShapeId const, fHertz const );
-
-	void StopTriggerSound   ( ShapeId const id ) { SetTriggerSound( id, false, 0_Hertz, 0_MilliSecs ); }
-	void SetTriggerSound    ( ShapeId const, bool const, Hertz const, MilliSecs const );
-	void SetPulseRate       ( ShapeId const, bool const );
 	void Connect            ( ShapeId const, ShapeId const );
 	void Convert2Neuron     ( ShapeId const );
 	void Convert2InputNeuron( ShapeId const );
@@ -254,16 +241,12 @@ public:
 	void ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
 	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
 
-	void InsertBaseKnot ( Pipe * const, BaseKnot * const );
 	void CopySelection( );
 	void MarkSelection( tBoolOp const );
 	void DeleteSelection( );
-	void MoveSelection( MicroMeterPoint const & );
 	void GetSelectionList( ShapeList & ) const;
 	void SetSelectionList( ShapeList const & );
 
-	void RemoveFromShapeList( Shape * const );
-	void RestoreToShapeList ( Shape * const );
 	void DisconnectBaseKnot ( BaseKnot * const );
 	void DeleteShape( Shape * const );
 
@@ -277,21 +260,7 @@ public:
 			Apply2All        <Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
-	void SelectSubtree( ShapeId const idBaseKnot, tBoolOp const op )
-	{
-		selectSubtree( GetShapePtr<BaseKnot *>( idBaseKnot ), op );
-	}
-
-	void SelectShape( ShapeId const idShape, tBoolOp const op )
-	{
-		if ( Shape * const pShape { GetShapePtr<Shape *>( idShape ) } )
-			pShape->Select( op );
-	}
-
-	void SelectShapesInRect( MicroMeterRect const & umRect )
-	{
-		Apply2AllInRect<Shape>( umRect, [&]( Shape & shape ) { shape.Select( tBoolOp::opTrue ); } );
-	}
+	void SelectSubtree ( BaseKnot * const, tBoolOp const );
 
 	void MarkShape( ShapeId const idShape, tBoolOp const op )
 	{
@@ -305,10 +274,28 @@ public:
 		m_Shapes.push_back( pNewShape );
 	}
 
+	void RemoveFromShapeList( Shape * const pShape )
+	{
+		long lIndex { pShape->GetId().GetValue() };
+		assert( m_Shapes[ lIndex ] == pShape );
+		m_Shapes[ lIndex ] = nullptr;
+	}
+
+	void Restore2ShapeList( Shape * const pShape )
+	{
+		long lIndex { pShape->GetId().GetValue() };
+		m_Shapes[ lIndex ] = pShape;
+	}
+
 	void StaticModelChanged( )
 	{ 
 		m_pStaticModelObservable->NotifyAll( false );
 		m_enclosingRect = ::ComputeEnclosingRect( m_Shapes );
+	}
+
+	MicroMeterPoint OrthoVector( ShapeId const idPipe ) const
+	{
+		return ::OrthoVector( GetShapeConstPtr<Pipe const *>( idPipe )->GetVector(), NEURON_RADIUS * 2.f );
 	}
 
 private:
@@ -340,9 +327,8 @@ private:
 		m_pDynamicModelObservable->NotifyAll( false );
 	}
 
-	MicroMeterPoint orthoVector        ( ShapeId const ) const;
+	void            insertBaseKnot     ( Pipe * const, BaseKnot * const );
 	Shape *         shallowCopy        ( Shape   const & ) const;
-	void            selectSubtree      ( BaseKnot * const, tBoolOp const );
 	bool            isEqual            ( Shape const &, Shape const & ) const;
 	void            connectToNewShapes ( Shape const &, ShapeList const & ) const;
 	void            setTriggerSound    ( Neuron * const, bool const, Hertz const, MilliSecs const );

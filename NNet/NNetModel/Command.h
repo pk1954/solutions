@@ -31,9 +31,6 @@ public:
 
     void NewCommand( Command * pCmd )
     {
-#ifdef _DEBUG
-        m_pModelSave1 = new NNetModel( * m_pModel );
-#endif
         for ( auto i = m_CommandStack.size(); i > m_iIndex; )
         {
             delete m_CommandStack[--i];
@@ -41,6 +38,10 @@ public:
         }
 
         m_CommandStack.push_back( pCmd );
+
+#ifdef _DEBUG
+        m_pModelSave1 = new NNetModel( * m_pModel );
+#endif
         pCmd->Do( m_pModel );
         m_iIndex = m_CommandStack.size();
         m_pModel->StaticModelChanged( );
