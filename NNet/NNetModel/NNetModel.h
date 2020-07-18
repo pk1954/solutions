@@ -42,15 +42,6 @@ public:
 
 	virtual ~NNetModel( );
 
-	NNetModel & operator=( NNetModel const & other) // copy assignment
-	{
-		if (this != & other) 
-		{
-			* this = other;
-		}
-		return *this;
-	}
-
 	bool IsEqual( NNetModel const & ) const;
 
 	// readOnly functions
@@ -268,6 +259,8 @@ public:
 	void MarkSelection( tBoolOp const );
 	void DeleteSelection( );
 	void MoveSelection( MicroMeterPoint const & );
+	void GetSelectionList( ShapeList & ) const;
+	void SetSelectionList( ShapeList const & );
 
 	void RemoveFromShapeList( Shape * const );
 	void RestoreToShapeList ( Shape * const );

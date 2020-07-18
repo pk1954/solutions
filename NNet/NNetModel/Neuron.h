@@ -68,11 +68,6 @@ public:
 	virtual bool CompStep( );
 	virtual mV   GetNextOutput( ) const;
 
-	virtual Neuron * Clone( ) const 
-	{ 
-		return new Neuron( * this ); 
-	};
-
 protected:
 	fMicroSecs m_timeSinceLastPulse { 0._MicroSecs };
 	bool       m_bStopOnTrigger     { false };

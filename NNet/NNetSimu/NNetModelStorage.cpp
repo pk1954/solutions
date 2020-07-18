@@ -119,8 +119,11 @@ public:
             { 
                 BaseKnot * const pKnotStart { m_pModel->GetShapePtr<BaseKnot *>( idStart ) };
                 BaseKnot * const pKnotEnd   { m_pModel->GetShapePtr<BaseKnot *>( idEnd   ) };
-                Pipe * const pPipe { new Pipe( pKnotStart, pKnotEnd ) };
+                Pipe     * const pPipe      { new Pipe( pKnotStart, pKnotEnd ) };
+                pKnotStart->m_connections.AddOutgoing( pPipe );
+                pKnotEnd  ->m_connections.AddIncoming( pPipe );
                 pPipe->SetId( idFromScript );
+                pPipe->Recalc( );
                 pShape = pPipe;
             }
         }

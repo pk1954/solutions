@@ -57,8 +57,6 @@ public:
 	virtual void DrawNeuronText( DrawContext const & ) const;
 	virtual void Recalc( );   // Recalculate precalculated values
 
-	virtual InputNeuron * Clone( ) const { return new InputNeuron( * this ); };
-
 	fHertz const GetPulseFrequency( ) const { return m_pulseFrequency; }
 
 	fHertz const SetPulseFrequency( fHertz const );

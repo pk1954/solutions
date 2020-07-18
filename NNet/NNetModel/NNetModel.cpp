@@ -91,6 +91,26 @@ void NNetModel::RecalcAllShapes( )
 	dynamicModelChanged( );
 } 
 
+void NNetModel::GetSelectionList( ShapeList & list ) const
+{
+	list.clear();
+	Apply2All<Shape>
+	( 
+		[&]( Shape & shape ) 
+		{ 
+			if ( shape.IsSelected() )
+				list.push_back( & shape );
+		} 
+	);
+}
+
+void NNetModel::SetSelectionList( ShapeList const & list )
+{
+	SelectAll( tBoolOp::opFalse );
+	for ( Shape const * pShape : list )
+		SelectShape( pShape->GetId(), tBoolOp::opTrue );
+}
+
 void NNetModel::RemoveShape( Shape * const pShape )
 {
 	if ( pShape )
@@ -275,6 +295,8 @@ void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge sr
 Pipe * const NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
 {
 	Pipe * const pPipe = new Pipe( pStart, pEnd );
+	pStart->m_connections.AddOutgoing( pPipe );
+	pEnd  ->m_connections.AddIncoming( pPipe );
 	Add2ShapeList( pPipe );
 	StaticModelChanged( );
 	return pPipe;

@@ -322,9 +322,15 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDD_INSERT_NEURON:
+        m_pModelWriterInterface->InsertNeuron( m_pNNetWindow->GetHighlightedShapeId(), umPoint );
+        break;
+
+    case IDD_NEW_NEURON:
+        m_pModelWriterInterface->NewNeuron( umPoint );
+        break;
+
     case IDD_APPEND_NEURON:
     case IDD_APPEND_INPUT_NEURON:
-    case IDD_NEW_NEURON:
     case IDD_NEW_INPUT_NEURON:
     case IDD_ADD_OUTGOING2KNOT:
     case IDD_ADD_INCOMING2KNOT:

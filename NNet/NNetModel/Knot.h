@@ -30,8 +30,6 @@ public:
 		-- m_counter;
 	}
 
-	virtual Knot * Clone( ) const { return new Knot( * this ); };
-
 	static unsigned long GetCounter( ) { return m_counter; }
 
 	static bool TypeFits( ShapeType const type ) { return type.IsKnotType( ); }

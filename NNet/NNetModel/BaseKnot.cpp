@@ -26,7 +26,8 @@ void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 
 void BaseKnot::Prepare( )
 {
-	//m_mVinputBuffer = 0._mV;
+	m_mVinputBuffer = 0._mV;
+	
 	//for ( Pipe * pPipe : m_incoming ) 
 	//{ 
 	//	if ( pPipe != nullptr )

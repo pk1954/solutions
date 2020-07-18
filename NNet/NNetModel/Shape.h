@@ -66,8 +66,6 @@ public:
 	bool IsSelected( ) const { return m_bSelected; }
 	bool IsMarked  ( ) const { return m_bMarked; }
 
-	virtual Shape * Clone( ) const = 0;
-
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const = tHighlightType::normal ) const = 0;
 	virtual void DrawInterior  ( DrawContext const & )     const = 0;
 	virtual void Prepare       ( )                               = 0;

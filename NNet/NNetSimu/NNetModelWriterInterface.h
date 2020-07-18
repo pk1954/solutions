@@ -28,12 +28,15 @@ public:
 	void Stop(); 
 
 /* !! */ void Action              ( int const, ShapeId const, MicroMeterPoint const & );
+/* !! */ void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
 /* ok */ void Connect             ( ShapeId const, ShapeId const );
          void Convert2InputNeuron ( ShapeId const );
-         void Convert2Neuron      ( ShapeId const );
-         void CopySelection       ( );
-         void DeleteSelection     ( );
-         void Disconnect          ( ShapeId const );
+		 void Convert2Neuron      ( ShapeId const );
+		 void AppendNeuron        ( ShapeId const );
+		 void CopySelection       ( );
+		 void NewNeuron           ( MicroMeterPoint const & );
+		 void DeleteSelection     ( );
+		 void Disconnect          ( ShapeId const );
          void MarkSelection       ( tBoolOp const );
 /* ok */ void MoveSelection       ( MicroMeterPoint const & );
 /* ok */ void MoveShape           ( ShapeId const, MicroMeterPoint const & );
@@ -41,7 +44,7 @@ public:
 /* ok */ void RemoveShape         ( ShapeId const );
 /* ok */ void ResetModel          ( );
 /* ok */ void ResetTimer          ( );
-         void SelectAll           ( tBoolOp const );
+/* ok */ void SelectAll           ( tBoolOp const );
          void SelectAllBeepers    ( );
 /* ok */ void SelectShape         ( ShapeId const, tBoolOp const );
          void SelectShapesInRect  ( MicroMeterRect const & );

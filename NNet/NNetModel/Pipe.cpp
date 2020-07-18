@@ -20,9 +20,6 @@ Pipe::Pipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
 	m_pKnotEnd  ( pKnotEnd )
 {
 	assert( pKnotStart && pKnotEnd );
-	pKnotEnd  ->m_connections.AddIncoming( this );
-	pKnotStart->m_connections.AddOutgoing( this );
-	Recalc();
 	++ m_counter;
 }
 

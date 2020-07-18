@@ -60,7 +60,10 @@ public:
 		return false;
 	}
 
-	mV GetNextOutput( ) const { return * m_potIter; }
+	mV GetNextOutput( ) const 
+	{ 
+		return * m_potIter; 
+	}
 
 	mV GetVoltage( MicroMeterPoint const & ) const;
 
@@ -70,10 +73,8 @@ public:
 	virtual void Recalc( );
 	virtual void Clear( );
 
-	virtual Pipe * Clone( ) const { return new Pipe( * this ); };
-
 	void DislocateEndPoint  ( ) { dislocate( GetEndKnotPtr(),    PIPE_WIDTH ); }
-	void DislocateStartPoint( )	{ dislocate( GetStartKnotPtr(), -PIPE_WIDTH );}
+	void DislocateStartPoint( )	{ dislocate( GetStartKnotPtr(), -PIPE_WIDTH ); }
 
 	static void       SetArrowSize( MicroMeter const size ) { m_arrowSize = size; }
 	static MicroMeter GetArrowSize( ) { return m_arrowSize; }

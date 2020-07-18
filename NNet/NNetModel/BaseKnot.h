@@ -38,9 +38,12 @@ public:
 	{
 		if ( ! Shape::IsEqual( other ) )
 			return false;
-		if ( m_center != other.m_center )
+		if ( ! IsCloseToZero( m_center - other.m_center ) )
+		{
+			MicroMeterPoint diff = m_center - other.m_center;
 			return false;
-		if ( m_extension != other.m_extension )
+		}
+		if ( ! IsCloseToZero( m_extension - other.m_extension ) )
 			return false;
 		return true;
 	}

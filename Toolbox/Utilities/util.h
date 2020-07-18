@@ -34,7 +34,7 @@ using BYTES = NamedType< unsigned long long, struct BYTES_Parameter >;
 
 inline bool IsCloseToZero( float const f )
 {
-	return std::abs( f ) < 1.e-10f;
+	return std::abs( f ) < 1.e-5f;
 }
 
 template<typename SOURCE_TYPE>
