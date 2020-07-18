@@ -42,8 +42,23 @@ Neuron::~Neuron( )
 	-- m_counter;
 }
 
-void Neuron::SetTriggerSoundOn( bool const bMode )
+Hertz const Neuron::SetTriggerSoundFrequency( Hertz const freq ) 
 {
+	Hertz oldValue { m_triggerSoundFrequency };
+	m_triggerSoundFrequency = freq;	
+	return oldValue;
+}
+
+MilliSecs const Neuron::SetTriggerSoundDuration( MilliSecs const msec ) 
+{ 
+	MilliSecs oldValue { m_triggerSoundDuration };
+	m_triggerSoundDuration  = msec; 
+	return oldValue;
+}
+
+bool const Neuron::SetTriggerSoundOn( bool const bMode )
+{
+	bool oldValue { m_bTriggerSoundOn };
 	if ( m_bTriggerSoundOn != bMode )
 	{
 		if ( bMode  )
@@ -55,6 +70,7 @@ void Neuron::SetTriggerSoundOn( bool const bMode )
 		}
 		m_bTriggerSoundOn = bMode;
 	}
+	return oldValue;
 }
 
 fMicroSecs Neuron::PulseWidth() const 

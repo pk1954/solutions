@@ -229,25 +229,25 @@ fHertz const NNetModel::GetPulseRate( ShapeId const id ) const
 	       : fHertz::NULL_VAL();
 }
 
-void NNetModel::setTriggerSound( Neuron * const pNeuron, Hertz const freq, MilliSecs const msec )
+void NNetModel::setTriggerSound( Neuron * const pNeuron, bool const bActive, Hertz const freq, MilliSecs const msec )
 {
 	if ( pNeuron )
 	{
+		pNeuron->SetTriggerSoundOn       ( bActive );
 		pNeuron->SetTriggerSoundFrequency( freq );
 		pNeuron->SetTriggerSoundDuration ( msec );
-		pNeuron->SetTriggerSoundOn( freq != 0_Hertz );
 		StaticModelChanged( );
 	}
 }
 
 void NNetModel::clearTriggerSound( Neuron * const pNeuron )
 {
-	setTriggerSound( pNeuron, 0_Hertz, 0_MilliSecs );
+	setTriggerSound( pNeuron, false, 0_Hertz, 0_MilliSecs );
 }
 
-void NNetModel::SetTriggerSound( ShapeId const id, Hertz const freq, MilliSecs const msec )
+void NNetModel::SetTriggerSound( ShapeId const id, bool const bActive, Hertz const freq, MilliSecs const msec )
 {
-	setTriggerSound( GetShapePtr<Neuron *>( id ), freq, msec );
+	setTriggerSound( GetShapePtr<Neuron *>( id ), bActive, freq, msec );
 	StaticModelChanged( );
 }
 

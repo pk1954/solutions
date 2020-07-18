@@ -48,10 +48,9 @@ public:
 	Hertz     const GetTriggerSoundFrequency( ) const { return m_triggerSoundFrequency; }
 	MilliSecs const GetTriggerSoundDuration ( ) const {	return m_triggerSoundDuration; }
 
-	void SetTriggerSoundFrequency( Hertz     const freq ) {	m_triggerSoundFrequency = freq;	}
-	void SetTriggerSoundDuration ( MilliSecs const msec ) { m_triggerSoundDuration  = msec; }
-
-	void SetTriggerSoundOn( bool const );
+	Hertz     const SetTriggerSoundFrequency( Hertz     const );
+	MilliSecs const SetTriggerSoundDuration ( MilliSecs const ); 
+	bool      const SetTriggerSoundOn       ( bool      const );
 
 	fMicroSecs PulseWidth   ( ) const;
 	fMicroSecs RefractPeriod( ) const;

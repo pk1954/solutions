@@ -57,14 +57,11 @@ public:
 /* ok */ void SelectSubtree       ( ShapeId const, tBoolOp const );
 /* ok */ void SetParameter        ( tParameter const, float const );
 /* ok */ void SetPulseRate        ( ShapeId    const, fHertz const );
-         void SetTriggerSound     ( ShapeId const, bool const, Hertz const, MilliSecs const );
+/* ok */ void SetTriggerSound     ( ShapeId const, bool const, Hertz const, MilliSecs const );
 /* ok */ void ToggleStopOnTrigger ( ShapeId const );
 
 	void UndoCommand();
 	void RedoCommand();
-
-	wchar_t const * GetActionCommandName    ( int const ) const;
-	int     const   GetActionCommandFromName( wchar_t const * const ) const;
 
 private:
 

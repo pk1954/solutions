@@ -235,8 +235,8 @@ public:
 
 	fHertz const  SetPulseRate    ( ShapeId const, fHertz const );
 
-	void StopTriggerSound   ( ShapeId const id ) { SetTriggerSound( id, 0_Hertz, 0_MilliSecs ); }
-	void SetTriggerSound    ( ShapeId const, Hertz const, MilliSecs const );
+	void StopTriggerSound   ( ShapeId const id ) { SetTriggerSound( id, false, 0_Hertz, 0_MilliSecs ); }
+	void SetTriggerSound    ( ShapeId const, bool const, Hertz const, MilliSecs const );
 	void SetPulseRate       ( ShapeId const, bool const );
 	void Connect            ( ShapeId const, ShapeId const );
 	void Convert2Neuron     ( ShapeId const );
@@ -345,7 +345,7 @@ private:
 	void            selectSubtree      ( BaseKnot * const, tBoolOp const );
 	bool            isEqual            ( Shape const &, Shape const & ) const;
 	void            connectToNewShapes ( Shape const &, ShapeList const & ) const;
-	void            setTriggerSound    ( Neuron * const, Hertz const, MilliSecs const );
+	void            setTriggerSound    ( Neuron * const, bool const, Hertz const, MilliSecs const );
 	void            clearTriggerSound  ( Neuron * const );
 	ShapeId const   findShapeAt        ( MicroMeterPoint const, ShapeCrit const & ) const;
 };

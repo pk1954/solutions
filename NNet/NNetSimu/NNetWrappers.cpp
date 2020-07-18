@@ -166,7 +166,7 @@ class WrapBreak : public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        int x = 75;
+        int x = 42;
     }
 };
 
