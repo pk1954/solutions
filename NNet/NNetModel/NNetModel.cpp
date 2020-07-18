@@ -111,7 +111,7 @@ void NNetModel::SetSelectionList( ShapeList const & list )
 		SelectShape( pShape->GetId(), tBoolOp::opTrue );
 }
 
-void NNetModel::RemoveShape( Shape * const pShape )
+void NNetModel::DeleteShape( Shape * const pShape )
 {
 	if ( pShape )
 	{
@@ -171,7 +171,7 @@ void NNetModel::Convert2Neuron( ShapeId const idInputNeuron )
 		ShapeId         const idAxon  { pInputNeuron->GetAxonId( ) };
 		MicroMeterPoint const pos     { pInputNeuron->GetPosition( ) };
 		Neuron        * const pNeuron { NewShape<Neuron>( pos ) };
-		RemoveShape( pInputNeuron );
+		DeleteShape( pInputNeuron );
 		if ( idAxon != NO_SHAPE )
 			Connect( GetStartKnotId( idAxon ), pNeuron->GetId() );
 		StaticModelChanged( );
@@ -182,10 +182,10 @@ void NNetModel::Convert2InputNeuron( ShapeId const idNeuron )
 {
 	if ( Neuron * pNeuron { GetShapePtr<Neuron *>( idNeuron ) } )
 	{
-		ShapeId         const idAxon  { pNeuron->GetAxonId( ) };
-		MicroMeterPoint const pos     { pNeuron->GetPosition( ) };
+		ShapeId         const idAxon       { pNeuron->GetAxonId( ) };
+		MicroMeterPoint const pos          { pNeuron->GetPosition( ) };
 		InputNeuron   * const pInputNeuron { NewShape<InputNeuron>( pos ) };
-		RemoveShape( pNeuron );
+		DeleteShape( pNeuron );
 		if ( idAxon != NO_SHAPE )
 			Connect( GetStartKnotId( idAxon ), pInputNeuron->GetId()  );
 		StaticModelChanged( );
@@ -385,9 +385,9 @@ void NNetModel::DeleteSelection( )
 {
 	for ( int i = 0; i < m_Shapes.size(); ++i )  // Caution!
 	{	                                         // Range based loop does not work here
-		Shape * p = m_Shapes.at(i);              // RemoveShape changes the range 
+		Shape * p = m_Shapes.at(i);              // DeleteShape changes the range 
 		if ( p &&  p->IsSelected() )             // by creating new shapes!!
-			RemoveShape( p ); 
+			DeleteShape( p ); 
 	}
 	StaticModelChanged( );
 }

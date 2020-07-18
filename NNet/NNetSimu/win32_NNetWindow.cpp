@@ -111,7 +111,7 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_COPY_SELECTION,   L"Copy selection" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_MARK_SELECTION,   L"Mark selection" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_UNMARK_SELECTION, L"Unmark selection" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_REMOVE_SELECTION, L"Remove selected objects" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_DELETE_SELECTION, L"Delete selected objects" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_CLEAR_BEEPERS,    L"Clear selected trigger sounds" );
 	}
 	else switch ( type.GetValue() )
@@ -120,7 +120,7 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		if ( ! m_pModelReaderInterface->HasOutgoing( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_PULSE_RATE,            L"Pulse rate" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,          L"Remove" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DELETE_SHAPE,          L"Delete" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT,            L"Disconnect" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_CONVERT2NEURON,        L"Convert into normal neuron" );
 		break;
@@ -129,7 +129,7 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		if ( ! m_pModelReaderInterface->HasOutgoing( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2KNOT, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING2KNOT,     L"Add incoming dendrite" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,          L"Remove" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DELETE_SHAPE,          L"Delete" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DISCONNECT,            L"Disconnect" );
 		if ( ! m_pModelReaderInterface->HasIncoming( m_shapeHighlighted ) )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_CONVERT2INPUT_NEURON, L"Convert into input neuron" );
@@ -161,7 +161,7 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_OUTGOING2PIPE, L"Add outgoing dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_ADD_INCOMING2PIPE, L"Add incoming dendrite" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDD_INSERT_NEURON,     L"Insert neuron" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_REMOVE_SHAPE,      L"Remove" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_DELETE_SHAPE,      L"Delete" );
 		if ( Pipe::GetArrowSize( ) > 0.0_MicroMeter )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ARROWS_OFF,    L"Arrows off" );
 		else

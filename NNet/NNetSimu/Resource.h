@@ -98,7 +98,7 @@
 #define IDD_NEW_INPUT_NEURON     563
 #define IDD_APPEND_NEURON        564
 #define IDD_APPEND_INPUT_NEURON  565
-#define IDD_REMOVE_SHAPE         566
+#define IDD_DELETE_SHAPE         566
 #define IDD_DISCONNECT           567
 #define IDD_ADD_INCOMING2KNOT    568
 #define IDD_ADD_INCOMING2PIPE    569
@@ -124,7 +124,7 @@
 #define IDM_CENTER_MODEL         611
 							    
 #define IDM_COPY_SELECTION       650
-#define IDM_REMOVE_SELECTION     651
+#define IDM_DELETE_SELECTION     651
 #define IDM_MARK_SELECTION       652
 #define IDM_UNMARK_SELECTION     653
 #define IDM_CLEAR_BEEPERS        654

@@ -44,13 +44,13 @@ public:
     }
 };
 
-class WrapRemoveShape: public Script_Functor
+class WrapDeleteShape: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id { ScrReadShapeId( script ) };
-        m_pModelWriterInterface->RemoveShape( id );
+        m_pModelWriterInterface->DeleteShape( id );
     }
 };
 
@@ -97,15 +97,47 @@ public:
     }
 };
 
-class WrapActionCommand: public Script_Functor
+class WrapAddOutgoing2Knot: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
-        int             const idMsg   { script.ScrReadLong( ) };
         ShapeId         const idShape { ScrReadShapeId( script ) };
         MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
-        m_pModelWriterInterface->Action( idMsg, idShape, umPos );
+        m_pModelWriterInterface->AddOutgoing2Knot( idShape, umPos );
+    }
+};
+
+class WrapAddIncoming2Knot: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        ShapeId         const idShape { ScrReadShapeId( script ) };
+        MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
+        m_pModelWriterInterface->AddIncoming2Knot( idShape, umPos );
+    }
+};
+
+class WrapAddOutgoing2Pipe: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        ShapeId         const idShape { ScrReadShapeId( script ) };
+        MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
+        m_pModelWriterInterface->AddOutgoing2Pipe( idShape, umPos );
+    }
+};
+
+class WrapAddIncoming2Pipe: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        ShapeId         const idShape { ScrReadShapeId( script ) };
+        MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
+        m_pModelWriterInterface->AddIncoming2Pipe( idShape, umPos );
     }
 };
 
@@ -150,12 +182,15 @@ void DefineNNetWrappers
     DEF_FUNC( ResetTimer );
     DEF_FUNC( ResetModel );
     DEF_FUNC( Connect );
-    DEF_FUNC( RemoveShape );
+    DEF_FUNC( DeleteShape );
     DEF_FUNC( Disconnect );
     DEF_FUNC( SetPulseRate );
     DEF_FUNC( SetParameter );
     DEF_FUNC( MoveShape );
-    DEF_FUNC( ActionCommand );
+    DEF_FUNC( AddOutgoing2Knot );
+    DEF_FUNC( AddIncoming2Knot );
+    DEF_FUNC( AddOutgoing2Pipe );
+    DEF_FUNC( AddIncoming2Pipe );
     DEF_FUNC( SetPixelOffset );
     DEF_FUNC( SetPixelSize );
     DEF_FUNC( Break );
@@ -170,7 +205,7 @@ void DefineNNetWrappers
 
     SymbolTable::ScrDefConst( L"ANALYZE_LOOPS",       static_cast<long>(IDM_ANALYZE_LOOPS      ) );
     SymbolTable::ScrDefConst( L"ANALYZE_ANOMALIES",   static_cast<long>(IDM_ANALYZE_ANOMALIES  ) );
-    SymbolTable::ScrDefConst( L"REMOVE_SELECTION",    static_cast<long>(IDM_REMOVE_SELECTION   ) );
+    SymbolTable::ScrDefConst( L"DELETE_SELECTION",    static_cast<long>(IDM_DELETE_SELECTION   ) );
     SymbolTable::ScrDefConst( L"CLEAR_BEEPERS",       static_cast<long>(IDM_CLEAR_BEEPERS      ) );
     SymbolTable::ScrDefConst( L"SELECT_ALL_BEEPERS",  static_cast<long>(IDM_SELECT_ALL_BEEPERS ) );
     SymbolTable::ScrDefConst( L"MARK_SELECTION",      static_cast<long>(IDM_MARK_SELECTION     ) );

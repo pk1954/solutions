@@ -265,7 +265,7 @@ public:
 	void RemoveFromShapeList( Shape * const );
 	void RestoreToShapeList ( Shape * const );
 	void DisconnectBaseKnot ( BaseKnot * const );
-	void RemoveShape( Shape * const );
+	void DeleteShape( Shape * const );
 
 	void SelectBeepers() { Apply2All<Neuron>( [&](Neuron & n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
 

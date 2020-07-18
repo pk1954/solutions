@@ -258,7 +258,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelWriterInterface->CopySelection( );
         break;
 
-    case IDM_REMOVE_SELECTION:
+    case IDM_DELETE_SELECTION:
         m_pModelWriterInterface->DeleteSelection( );
         break;
 
@@ -301,9 +301,9 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         else 
             ; // fall through
 
-    case IDD_REMOVE_SHAPE:
+    case IDD_DELETE_SHAPE:
         Sound::Play( TEXT("DISAPPEAR_SOUND") ); 
-        m_pModelWriterInterface->RemoveShape( m_pNNetWindow->GetHighlightedShapeId() );
+        m_pModelWriterInterface->DeleteShape( m_pNNetWindow->GetHighlightedShapeId() );
         break;
 
     case IDD_DISCONNECT:
@@ -329,20 +329,38 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelWriterInterface->NewNeuron( umPoint );
         break;
 
-    case IDD_APPEND_NEURON:
-    case IDD_APPEND_INPUT_NEURON:
     case IDD_NEW_INPUT_NEURON:
+        m_pModelWriterInterface->NewInputNeuron( umPoint );
+        break;
+
+    case IDD_APPEND_INPUT_NEURON:
+        m_pModelWriterInterface->AppendInputNeuron(  m_pNNetWindow->GetHighlightedShapeId() );
+        break;
+
+    case IDD_APPEND_NEURON:
+        m_pModelWriterInterface->AppendNeuron(  m_pNNetWindow->GetHighlightedShapeId() );
+        break;
+
     case IDD_ADD_OUTGOING2KNOT:
+        m_pModelWriterInterface->AddOutgoing2Knot( m_pNNetWindow->GetHighlightedShapeId(), umPoint );
+        break;
+
     case IDD_ADD_INCOMING2KNOT:
+        m_pModelWriterInterface->AddIncoming2Knot( m_pNNetWindow->GetHighlightedShapeId(), umPoint );
+        break;
+
     case IDD_ADD_OUTGOING2PIPE:
+        m_pModelWriterInterface->AddOutgoing2Pipe( m_pNNetWindow->GetHighlightedShapeId(), umPoint );
+        break;
+
     case IDD_ADD_INCOMING2PIPE:
-        m_pModelWriterInterface->Action( wmId, m_pNNetWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelWriterInterface->AddIncoming2Pipe( m_pNNetWindow->GetHighlightedShapeId(), umPoint );
         break;
 
     case IDM_ANALYZE_LOOPS:
     case IDM_ANALYZE_ANOMALIES:
         {
-            m_pModelWriterInterface->Action( wmId, NO_SHAPE, NP_NULL );
+            m_pModelWriterInterface->Analyze( wmId );
             MicroMeterRect rect { ModelAnalyzer::GetEnclosingRect() };
             if ( rect.IsNotEmpty() )
                 m_pNNetWindow->CenterAndZoomRect( rect, 2.0f, true );
