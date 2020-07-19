@@ -165,34 +165,6 @@ void NNetModel::ToggleStopOnTrigger( ShapeId const id )
 	}
 }
 
-void NNetModel::Convert2Neuron( ShapeId const idInputNeuron )
-{
-	if ( InputNeuron * pInputNeuron { GetShapePtr<InputNeuron *>( idInputNeuron ) } )
-	{
-		ShapeId         const idAxon  { pInputNeuron->GetAxonId( ) };
-		MicroMeterPoint const pos     { pInputNeuron->GetPosition( ) };
-		Neuron        * const pNeuron { NewShape<Neuron>( pos ) };
-		DeleteShape( pInputNeuron );
-		if ( idAxon != NO_SHAPE )
-			Connect( GetStartKnotId( idAxon ), pNeuron->GetId() );
-		StaticModelChanged( );
-	}
-}
-
-void NNetModel::Convert2InputNeuron( ShapeId const idNeuron )
-{
-	if ( Neuron * pNeuron { GetShapePtr<Neuron *>( idNeuron ) } )
-	{
-		ShapeId         const idAxon       { pNeuron->GetAxonId( ) };
-		MicroMeterPoint const pos          { pNeuron->GetPosition( ) };
-		InputNeuron   * const pInputNeuron { NewShape<InputNeuron>( pos ) };
-		DeleteShape( pNeuron );
-		if ( idAxon != NO_SHAPE )
-			Connect( GetStartKnotId( idAxon ), pInputNeuron->GetId()  );
-		StaticModelChanged( );
-	}
-}
-
 fHertz const NNetModel::GetPulseRate( ShapeId const id ) const
 {
 	InputNeuron const * const pInputNeuron { GetShapeConstPtr<InputNeuron const *>( id ) };

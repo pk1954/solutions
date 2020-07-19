@@ -226,8 +226,6 @@ public:
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
 	void Connect            ( ShapeId const, ShapeId const );
-	void Convert2Neuron     ( ShapeId const );
-	void Convert2InputNeuron( ShapeId const );
 	void Disconnect         ( ShapeId const );
 	void ToggleStopOnTrigger( ShapeId const );
 	void RecalcAllShapes( );
@@ -274,6 +272,13 @@ public:
 		m_Shapes.push_back( pNewShape );
 	}
 
+	ShapeId ReserveInShapeList( )
+	{
+		ShapeId id { GetSizeOfShapeList() };
+		m_Shapes.push_back( nullptr );
+		return id;
+	}
+
 	void RemoveFromShapeList( Shape * const pShape )
 	{
 		long lIndex { pShape->GetId().GetValue() };
@@ -285,6 +290,12 @@ public:
 	{
 		long lIndex { pShape->GetId().GetValue() };
 		m_Shapes[ lIndex ] = pShape;
+	}
+
+	void ReplaceInShapeList( Shape * const pRemove, Shape * pReplace )
+	{
+		long lIndex { pRemove->GetId().GetValue() };
+		m_Shapes[ lIndex ] = pReplace;
 	}
 
 	void StaticModelChanged( )

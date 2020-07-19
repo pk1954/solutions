@@ -29,8 +29,8 @@ public:
 
 /* !! */ void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
 /* ok */ void Connect             ( ShapeId const, ShapeId const );
-         void Convert2InputNeuron ( ShapeId const );
-		 void Convert2Neuron      ( ShapeId const );
+/* ok */ void Convert2InputNeuron ( ShapeId const );
+/* ok */ void Convert2Neuron      ( ShapeId const );
 		 void AppendNeuron        ( ShapeId const );
 		 void AppendInputNeuron   ( ShapeId const );
 		 void CopySelection       ( );

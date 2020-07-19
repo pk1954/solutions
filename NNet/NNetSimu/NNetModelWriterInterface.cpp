@@ -327,22 +327,37 @@ void NNetModelWriterInterface::Convert2Neuron( ShapeId const id )
 	class Convert2NeuronCommand : public Command
 	{
 	public:
-		Convert2NeuronCommand( ShapeId const id )
-			:	m_id( id )
-		{ }
+		Convert2NeuronCommand(  NNetModel * pModel, ShapeId const idInputNeuron )
+			:	m_pInputNeuron( pModel->GetShapePtr<InputNeuron *>( idInputNeuron )  )
+		{ 
+			m_pNeuron = new Neuron( m_pInputNeuron->GetPosition( ) );
+			m_pNeuron->m_connections = m_pNeuron->m_connections;
+			m_pNeuron->SetId( m_pInputNeuron->GetId( ) );
+		}
+
+		~Convert2NeuronCommand( )
+		{
+			delete m_pNeuron;
+		}
 
 		virtual void Do( NNetModel * const pModel )
 		{
-			pModel->Convert2Neuron( m_id );
+			pModel->ReplaceInShapeList( m_pInputNeuron, m_pNeuron );
+		}
+
+		virtual void Undo( NNetModel * const pModel )
+		{
+			pModel->ReplaceInShapeList( m_pNeuron, m_pInputNeuron );
 		}
 
 	private:
-		ShapeId const m_id;
+		InputNeuron * m_pInputNeuron;
+		Neuron      * m_pNeuron;
 	};
 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_CmdStack.NewCommand( new Convert2NeuronCommand( id ) );
+	m_CmdStack.NewCommand( new Convert2NeuronCommand( m_pModel, id ) );
 }
 
 void NNetModelWriterInterface::Convert2InputNeuron( ShapeId const id )
@@ -350,22 +365,37 @@ void NNetModelWriterInterface::Convert2InputNeuron( ShapeId const id )
 	class Convert2InputNeuronCommand : public Command
 	{
 	public:
-		Convert2InputNeuronCommand( ShapeId const id )
-			:	m_id( id )
-		{ }
+		Convert2InputNeuronCommand( NNetModel * pModel, ShapeId const idNeuron )
+			:	m_pNeuron( pModel->GetShapePtr<Neuron *>( idNeuron )  )
+		{ 
+			m_pInputNeuron = new InputNeuron( m_pNeuron->GetPosition( ) );
+			m_pInputNeuron->m_connections = m_pNeuron->m_connections;
+			m_pInputNeuron->SetId( m_pNeuron->GetId( ) );
+		}
+
+		~Convert2InputNeuronCommand( )
+		{
+			delete m_pInputNeuron;
+		}
 
 		virtual void Do( NNetModel * const pModel )
 		{
-			pModel->Convert2InputNeuron( m_id );
+			pModel->ReplaceInShapeList( m_pNeuron, m_pInputNeuron );
+		}
+
+		virtual void Undo( NNetModel * const pModel )
+		{
+			pModel->ReplaceInShapeList( m_pInputNeuron, m_pNeuron );
 		}
 
 	private:
-		ShapeId const m_id;
+		Neuron      * m_pNeuron;
+		InputNeuron * m_pInputNeuron;
 	};
 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_CmdStack.NewCommand( new Convert2InputNeuronCommand( id ) );
+	m_CmdStack.NewCommand( new Convert2InputNeuronCommand( m_pModel, id ) );
 }
 
 void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
