@@ -10,6 +10,7 @@
 #include "Analyzer.h"
 #include "win32_util.h"
 #include "win32_script.h"
+#include "win32_sound.h"
 #include "NNetModel.h"
 #include "BaseKnot.h"
 #include "NNetModelWriterInterface.h"
@@ -518,33 +519,6 @@ void NNetModelWriterInterface::SetPulseRate( ShapeId const id, fHertz const fNew
 	m_CmdStack.NewCommand( new SetPulseRateCommand( m_pModel->GetShapePtr<InputNeuron *>( id ), fNewValue ) );
 }
 
-void NNetModelWriterInterface::DeleteSelection()
-{
-	class DeleteSelectionCommand : public Command
-	{
-	public:
-		DeleteSelectionCommand( NNetModel * const pModel )
-		{ 
-		}
-
-		virtual void Do( NNetModel * const pModel ) 
-		{ 
-			pModel->DeleteSelection();
-		}
-
-		virtual void Undo( NNetModel * const pModel ) 
-		{
-		}
-
-	private:
-	};
-
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
-
-	m_CmdStack.NewCommand( new DeleteSelectionCommand( m_pModel ) );
-}
-
 void NNetModelWriterInterface::ResetModel( )
 {
 	class ResetModelCommand : public Command
@@ -580,44 +554,36 @@ void NNetModelWriterInterface::ResetModel( )
 	m_CmdStack.NewCommand( new ResetModelCommand( m_pModel ) );
 }
 
-void NNetModelWriterInterface::SetTriggerSound( ShapeId const id, bool const bActive, Hertz const freq, MilliSecs const ms )
+void NNetModelWriterInterface::SetTriggerSound( ShapeId const id, SoundDescr const & sound )
 {
 	class SetTriggerSoundCommand : public Command
 	{
 	public:
 		SetTriggerSoundCommand
 		( 
-			NNetModel * const pModel, 
-			ShapeId     const id, 
-			bool        const bActive, 
-			Hertz       const freq, 
-			MilliSecs   const ms 
+			NNetModel * const   pModel, 
+			ShapeId     const   id, 
+			SoundDescr  const & sound
 		)
 		  : m_pNeuron( pModel->GetShapePtr<Neuron *>( id ) ),
-		    m_bActive( bActive ),
-		    m_freq   ( freq ),
-		    m_ms     ( ms )
+			m_sound( sound )
 		{ }
 
 		virtual void Do( NNetModel * const pModel ) 
 		{ 
-			m_bActive = m_pNeuron->SetTriggerSoundOn       ( m_bActive );
-			m_freq    = m_pNeuron->SetTriggerSoundFrequency( m_freq );
-			m_ms      = m_pNeuron->SetTriggerSoundDuration ( m_ms );
+			m_sound = m_pNeuron->SetTriggerSound( m_sound );
 			pModel->ClearModel( );
 		}
 
 	private:
 		Neuron * const m_pNeuron;
-		bool            m_bActive;
-		Hertz           m_freq;
-		MilliSecs       m_ms;
+		SoundDescr     m_sound;
 	};
 
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << bActive << L" " << freq << L" " << ms << endl;
+		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << sound.m_bOn << L" " << sound.m_frequency << L" " << sound.m_duration << endl;
 
-	m_CmdStack.NewCommand( new SetTriggerSoundCommand( m_pModel, id, bActive, freq, ms ) );
+	m_CmdStack.NewCommand( new SetTriggerSoundCommand( m_pModel, id, sound ) );
 }
 
 void NNetModelWriterInterface::SetParameter( tParameter const param, float const fNewValue )
@@ -1206,22 +1172,62 @@ void NNetModelWriterInterface::ClearBeepers( )
 	class ClearBeepersCommand : public Command
 	{
 	public:
-		ClearBeepersCommand( )
-		{ }
+		ClearBeepersCommand( NNetModel * pModel )
+		{
+			pModel->Apply2All<Neuron>
+			( 
+				[&]( Neuron & neuron ) 
+				{ 
+					if ( neuron.HasTriggerSound() )
+						m_beepers.push_back( Beeper{ & neuron, neuron.GetTriggerSound() } );
+				} 
+			);
+		}
+
+		void clearTriggerSound( Neuron * const pNeuron )
+		{
+			static const SoundDescr noSound { false, 0_Hertz, 0_MilliSecs };
+			pNeuron->SetTriggerSound( noSound );
+		}
+
+		void clearAll( NNetModel * const pModel )
+		{
+			pModel->Apply2All<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
+		}
+
+		void clearAllSelected( NNetModel * const pModel )
+		{
+			pModel->Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
+		}
 
 		virtual void Do( NNetModel * const pModel ) 
 		{ 
-			pModel->ClearBeepers( );
+			if ( pModel->AnyShapesSelected() )
+				clearAllSelected( pModel );
+			else
+				clearAll( pModel );
+		}
+
+		virtual void Undo( NNetModel * const pModel ) 
+		{ 
+			clearAll( pModel );
+			for ( Beeper const & beeper : m_beepers )
+				beeper.m_pNeuron->SetTriggerSound( beeper.m_sound );
 		}
 
 	private:
-		ShapeId const m_id;
+		struct Beeper
+		{
+			Neuron   * m_pNeuron;
+			SoundDescr m_sound;
+		};
+		vector<Beeper> m_beepers;
 	};
 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
 
-	m_CmdStack.NewCommand( new ClearBeepersCommand( ) );
+	m_CmdStack.NewCommand( new ClearBeepersCommand( m_pModel ) );
 }
 
 void NNetModelWriterInterface::MarkSelection( tBoolOp const op )
@@ -1259,6 +1265,33 @@ void NNetModelWriterInterface::MarkSelection( tBoolOp const op )
 	m_CmdStack.NewCommand( new MarkSelectionCommand( m_pModel, op ) );
 }
 
+void NNetModelWriterInterface::DeleteSelection()
+{
+	class DeleteSelectionCommand : public Command
+	{
+	public:
+		DeleteSelectionCommand( NNetModel * const pModel )
+		{ 
+		}
+
+		virtual void Do( NNetModel * const pModel ) 
+		{ 
+			pModel->DeleteSelection();
+		}
+
+		virtual void Undo( NNetModel * const pModel ) 
+		{
+		}
+
+	private:
+	};
+
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+
+	m_CmdStack.NewCommand( new DeleteSelectionCommand( m_pModel ) );
+}
+
 ///////////////////// selection commands /////////////////////////////
 
 class SelectionCommand : public Command
@@ -1283,20 +1316,63 @@ private:
 
 void NNetModelWriterInterface::CopySelection( )
 {
-	class CopySelectionCommand : public SelectionCommand // is it really a SelectionCommand??
+	class CopySelectionCommand : public SelectionCommand
 	{
 	public:
+
 		CopySelectionCommand( NNetModel * const pModel )
 			:	SelectionCommand( pModel)
-		{ }
+		{ 
+			// vector like m_Shapes with ptr to copy of shape or nullptr (if original shape is not in selection)
+			ShapeList newShapes( pModel->GetSizeOfShapeList(), nullptr ); 
+
+			pModel->Apply2AllSelected<Shape>  // make shallow copy of all selected shapes
+			( 
+				[&]( Shape const & shape ) 
+				{ 
+					newShapes.at(shape.GetId().GetValue()) = pModel->ShallowCopy( shape ); 
+				} 
+			);
+
+			pModel->Apply2AllSelected<Shape>          // interconnect new shapes in same way as originals
+			( 
+				[&]( Shape const & shape ) 
+				{ 
+					pModel->ConnectToNewShapes( shape, newShapes ); 
+				} 
+			);
+	
+			pModel->SelectAll( tBoolOp::opFalse );  // Deselect original shapes. The copies inherited selection state at shallow copy
+
+			for ( auto pShape : newShapes )         // Now add copies to m_Shapes and remember them in m_copies
+			{ 
+				if ( pShape )
+				{
+					pModel->Add2ShapeList( pShape );
+					m_copies.push_back( pShape );
+				}
+			}
+		}
 
 		virtual void Do( NNetModel * const pModel ) 
+		{ }
+
+		virtual void Undo( NNetModel * const pModel ) 
 		{ 
-			pModel->CopySelection( );
+			for ( Shape * pShape : m_copies )             // disconnect copies
+				pModel->RemoveFromShapeList( pShape );
+			SelectionCommand::Undo( pModel );             // restore original selection
+		}
+
+		virtual void Redo( NNetModel * const pModel ) 
+		{ 
+			pModel->SelectAll( tBoolOp::opFalse );        // deselect all
+			for ( Shape * pShape : m_copies )             // restore copies
+				pModel->Restore2ShapeList( pShape );
 		}
 
 	private:
-		ShapeId const m_id;
+		ShapeList m_copies;
 	};
 
 	if ( IsTraceOn( ) )

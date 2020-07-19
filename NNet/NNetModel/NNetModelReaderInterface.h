@@ -10,6 +10,7 @@
 #include "ShapeType.h"
 #include "ShapeId.h"
 #include "Shape.h"
+#include "win32_sound.h"
 #include "tHighlightType.h"
 
 class DrawContext;
@@ -27,21 +28,22 @@ public:
 
 	bool      const IsEqual( NNetModel const & ) const;
 
-	bool      const AnyShapesSelected         ( )               const;	
-	bool      const IsSelected                ( ShapeId const ) const;
-	ShapeType const GetShapeType              ( ShapeId const ) const;
-	fHertz    const GetPulseFrequency         ( ShapeId const ) const;
-	size_t    const GetNrOfSegments           ( ShapeId const ) const;
-	bool      const HasTriggerSound           ( ShapeId const ) const;
-	Hertz     const GetTriggerSoundFrequency  ( ShapeId const ) const;
-	MilliSecs const GetTriggerSoundDuration   ( ShapeId const ) const;
-	mV        const GetVoltage                ( ShapeId const ) const;
-	mV        const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
-	bool      const HasIncoming               ( ShapeId const ) const;
-	bool      const HasOutgoing               ( ShapeId const ) const;
-	size_t    const GetNrOfOutgoingConnections( ShapeId const ) const;
-	size_t    const GetNrOfIncomingConnections( ShapeId const ) const;
-	bool      const ConnectsTo( ShapeId const, ShapeId const ) const;
+	bool       const AnyShapesSelected         ( )               const;	
+	bool       const IsSelected                ( ShapeId const ) const;
+	ShapeType  const GetShapeType              ( ShapeId const ) const;
+	fHertz     const GetPulseFrequency         ( ShapeId const ) const;
+	size_t     const GetNrOfSegments           ( ShapeId const ) const;
+	//bool       const HasTriggerSound           ( ShapeId const ) const;
+	//Hertz      const GetTriggerSoundFrequency  ( ShapeId const ) const;
+	//MilliSecs  const GetTriggerSoundDuration   ( ShapeId const ) const;
+	SoundDescr const GetTriggerSound           ( ShapeId const ) const;
+	mV         const GetVoltage                ( ShapeId const ) const;
+	mV         const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
+	bool       const HasIncoming               ( ShapeId const ) const;
+	bool       const HasOutgoing               ( ShapeId const ) const;
+	size_t     const GetNrOfOutgoingConnections( ShapeId const ) const;
+	size_t     const GetNrOfIncomingConnections( ShapeId const ) const;
+	bool       const ConnectsTo( ShapeId const, ShapeId const ) const;
 
 	MicroMeterPoint const GetShapePos( ShapeId const ) const;
 	MicroMeterRect  const GetEnclosingRect( ) const;

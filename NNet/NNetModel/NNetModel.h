@@ -234,17 +234,10 @@ public:
 		Apply2All<Shape>( [&](Shape &s) { if ( selector(s) ) list.push_back(&s); } );
 	}
 
-	void SelectBeepers() { Apply2All<Neuron>( [&](Neuron & n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
-
-	void ClearBeepers() 
-	{	
-		if ( AnyShapesSelected() )
-			Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
-		else
-			Apply2All        <Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
-	}
-
-	void SelectSubtree ( BaseKnot * const, tBoolOp const );
+	void    SelectBeepers() { Apply2All<Neuron>( [&](Neuron & n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
+	void    SelectSubtree ( BaseKnot * const, tBoolOp const );
+	Shape * ShallowCopy( Shape const & ) const;
+	void    ConnectToNewShapes ( Shape const &, ShapeList const & ) const;
 
 	void MarkShape( ShapeId const idShape, tBoolOp const op )
 	{
@@ -324,10 +317,6 @@ private:
 		m_pDynamicModelObservable->NotifyAll( false );
 	}
 
-	Shape *       shallowCopy        ( Shape   const & ) const;
-	bool          isEqual            ( Shape const &, Shape const & ) const;
-	void          connectToNewShapes ( Shape const &, ShapeList const & ) const;
-	void          setTriggerSound    ( Neuron * const, bool const, Hertz const, MilliSecs const );
-	void          clearTriggerSound  ( Neuron * const );
-	ShapeId const findShapeAt        ( MicroMeterPoint const, ShapeCrit const & ) const;
+	bool          isEqual    ( Shape const &, Shape const & ) const;
+	ShapeId const findShapeAt( MicroMeterPoint const, ShapeCrit const & ) const;
 };

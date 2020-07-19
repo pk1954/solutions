@@ -18,6 +18,7 @@ class ActionTimer;
 class SlowMotionRatio;
 class NNetModelStorage;
 class PixelCoordsFp;
+struct SoundDescr;
 
 class NNetModelWriterInterface
 {
@@ -33,7 +34,7 @@ public:
 /* ok */ void Convert2Neuron      ( ShapeId const );
 /* ok */ void AppendNeuron        ( ShapeId const );
 /* ok */ void AppendInputNeuron   ( ShapeId const );
-		 void CopySelection       ( );
+/* !! */ void CopySelection       ( );
 /* ok */ void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
 /* ok */ void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
 /* ok */ void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
@@ -46,7 +47,7 @@ public:
 /* ok */ void MarkSelection       ( tBoolOp const );
 /* ok */ void MoveSelection       ( MicroMeterPoint const & );
 /* ok */ void MoveShape           ( ShapeId const, MicroMeterPoint const & );
-         void ClearBeepers        ( );
+/* ok */ void ClearBeepers        ( );
 /* ok */ void DeleteShape         ( ShapeId const );
 /* ok */ void ResetModel          ( );
 /* ok */ void ResetTimer          ( );
@@ -57,7 +58,7 @@ public:
 /* ok */ void SelectSubtree       ( ShapeId const, tBoolOp const );
 /* ok */ void SetParameter        ( tParameter const, float const );
 /* ok */ void SetPulseRate        ( ShapeId    const, fHertz const );
-/* ok */ void SetTriggerSound     ( ShapeId const, bool const, Hertz const, MilliSecs const );
+/* ok */ void SetTriggerSound     ( ShapeId const, SoundDescr const & );
 /* ok */ void ToggleStopOnTrigger ( ShapeId const );
 
 	void UndoCommand();

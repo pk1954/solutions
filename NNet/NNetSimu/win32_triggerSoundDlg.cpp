@@ -15,21 +15,6 @@
 using std::wostringstream;
 using std::wstring;
 
-bool TriggerSoundDialog::IsTriggerSoundActive( )
-{
-	return m_bSoundActive;
-}
-
-Hertz TriggerSoundDialog::GetFrequency()
-{
-	return m_frequency;
-}
-
-MilliSecs TriggerSoundDialog::GetDuration()
-{
-	return m_duration;
-}
-
 void TriggerSoundDialog::initEditField( HWND const hDlg, int const id, unsigned long const ulValue )
 {
 	wostringstream m_wstrBuffer;
@@ -60,15 +45,20 @@ void TriggerSoundDialog::handleOnOff( HWND const hDlg )
 	EnableWindow( GetDlgItem( hDlg, IDC_TRIGGER_SOUND_TEST ), bTriggerSoundOn );
 }
 
+void TriggerSoundDialog::evaluate( HWND const hDlg )
+{
+	m_sound.m_bOn       = IsDlgButtonChecked( hDlg, IDC_TRIGGER_SOUND_ON ) == BST_CHECKED;
+	m_sound.m_frequency = m_sound.m_bOn ? Hertz    ( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ )) : 0_Hertz;
+	m_sound.m_duration  = m_sound.m_bOn ? MilliSecs( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC )) : 0_MilliSecs;
+}
+
 void TriggerSoundDialog::onCommand( HWND const hDlg, WPARAM const wParam, LPARAM const lParam )
 {
 	WORD id { LOWORD(wParam) };
 	switch ( id )
 	{
 	case IDOK:
-		m_bSoundActive = IsDlgButtonChecked( hDlg, IDC_TRIGGER_SOUND_ON ) == BST_CHECKED;
-		m_frequency = m_bSoundActive ? Hertz    ( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ )) : 0_Hertz;
-		m_duration  = m_bSoundActive ? MilliSecs( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC )) : 0_MilliSecs;
+		evaluate( hDlg );
 		EndDialog( hDlg, true );
 		break;
 
@@ -81,11 +71,8 @@ void TriggerSoundDialog::onCommand( HWND const hDlg, WPARAM const wParam, LPARAM
 		break;
 
 	case IDC_TRIGGER_SOUND_TEST:
-		Sound::Beep
-		( 
-			Hertz    ( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ ) ),
-			MilliSecs( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC ) )
-		);
+		evaluate( hDlg );
+		Sound::Beep( m_sound );
 		break;
 
 	default:
@@ -106,9 +93,9 @@ static INT_PTR CALLBACK dialogProc
 	{
 	case WM_INITDIALOG:
 		pDlg = reinterpret_cast<TriggerSoundDialog *>(lParam);
-		pDlg->initEditField( hDlg, IDC_TRIGGER_SOUND_FREQ, pDlg->m_frequency.GetValue() );
-		pDlg->initEditField( hDlg, IDC_TRIGGER_SOUND_MSEC, pDlg->m_duration .GetValue() );
-		CheckDlgButton     ( hDlg, IDC_TRIGGER_SOUND_ON,   pDlg->m_bSoundActive ? BST_CHECKED : BST_UNCHECKED );
+		pDlg->initEditField( hDlg, IDC_TRIGGER_SOUND_FREQ, pDlg->m_sound.m_frequency.GetValue() );
+		pDlg->initEditField( hDlg, IDC_TRIGGER_SOUND_MSEC, pDlg->m_sound.m_duration .GetValue() );
+		CheckDlgButton     ( hDlg, IDC_TRIGGER_SOUND_ON,   pDlg->m_sound.m_bOn ? BST_CHECKED : BST_UNCHECKED );
 		pDlg->handleOnOff( hDlg );
 		::SetWindowLongPtr( hDlg, DWLP_USER, reinterpret_cast<LONG_PTR>(pDlg) );
 		return true;

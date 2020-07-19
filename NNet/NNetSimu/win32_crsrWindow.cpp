@@ -131,11 +131,12 @@ void CrsrWindow::DoPaint( TextBuffer & textBuf )
 
 	if ( type.IsAnyNeuronType( ) )
 	{
-		if ( m_pModelReaderInterface->HasTriggerSound( id ) )
+		SoundDescr sound { m_pModelReaderInterface->GetTriggerSound( id ) };
+		if ( sound.m_bOn )
 		{
 			textBuf.nextLine( L"trigger sound:" );
-			printFrequency( textBuf, m_pModelReaderInterface->GetTriggerSoundFrequency( id ) );
-			printMilliSecs( textBuf, m_pModelReaderInterface->GetTriggerSoundDuration ( id ) );
+			printFrequency( textBuf, sound.m_frequency );
+			printMilliSecs( textBuf, sound.m_duration );
 			textBuf.printString( L" msec" );
 			textBuf.nextLine( );
 		}

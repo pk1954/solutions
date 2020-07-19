@@ -24,14 +24,14 @@ NNetModel::NNetModel( NNetModel const & modelSrc )
 	{
 		if ( pShapeSrc )
 		{
-			m_Shapes.at( pShapeSrc->GetId().GetValue() ) = shallowCopy( * pShapeSrc );
+			m_Shapes.at( pShapeSrc->GetId().GetValue() ) = ShallowCopy( * pShapeSrc );
 		}
 	}
 	for ( auto pShapeSrc : modelSrc.m_Shapes )
 	{
 		if ( pShapeSrc )
 		{
-			connectToNewShapes( * pShapeSrc, m_Shapes );
+			ConnectToNewShapes( * pShapeSrc, m_Shapes );
 		}
 	}
 	assert( IsEqual( modelSrc ) );
@@ -224,7 +224,7 @@ bool NNetModel::isEqual( Shape const & shapeA, Shape const & shapeB ) const
 	return true;
 }
 
-Shape * NNetModel::shallowCopy( Shape const & shape ) const
+Shape * NNetModel::ShallowCopy( Shape const & shape ) const
 {
 	switch ( shape.GetShapeType().GetValue() )
 	{
@@ -246,7 +246,7 @@ Shape * NNetModel::shallowCopy( Shape const & shape ) const
 	}
 }
 
-void NNetModel::connectToNewShapes( Shape const & shapeSrc, ShapeList const & newShapes ) const 
+void NNetModel::ConnectToNewShapes( Shape const & shapeSrc, ShapeList const & newShapes ) const 
 { 
 	Shape & shapeDst { * newShapes.at(shapeSrc.GetId().GetValue()) };
 	if ( shapeSrc.IsPipe( ) )
@@ -267,26 +267,6 @@ void NNetModel::connectToNewShapes( Shape const & shapeSrc, ShapeList const & ne
 		srcConn.Apply2AllOutPipes( [&]( Pipe const & pipeSrc ) { dstConn.AddOutgoing( dstFromSrc( pipeSrc ) ); } );
 		srcConn.Apply2AllInPipes ( [&]( Pipe const & pipeSrc ) { dstConn.AddIncoming( dstFromSrc( pipeSrc ) ); } );
 	}
-}
-
-void NNetModel::CopySelection( )
-{
-	// vector like m_Shapes with ptr to copy of shape or nullptr (if original shape is not in selection)
-	ShapeList newShapes( m_Shapes.size(), nullptr ); 
-
-	// make shallow copy of all selected shapes
-	Apply2AllSelected<Shape>( [&]( Shape const & shape ) { newShapes.at(shape.GetId().GetValue()) = shallowCopy( shape ); } );
-
-	// interconnect new shapes in same way as originals
-	Apply2AllSelected<Shape>( [&]( Shape const & shape ) { connectToNewShapes( shape, newShapes ); } );
-
-	// Deselect original shapes, copies inherited selection at shallow copy
-	SelectAll( tBoolOp::opFalse );
-
-	// Now add copies to m_Shapes
-	for ( auto pShape : newShapes )	{ if ( pShape ) Add2ShapeList( pShape ); }
-
-	StaticModelChanged( );
 }
 
 void NNetModel::SelectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )
@@ -360,22 +340,6 @@ ShapeId const NNetModel::FindShapeAt
 }
 
 /////////////////// local functions ///////////////////////////////////////////////
-
-void NNetModel::setTriggerSound( Neuron * const pNeuron, bool const bActive, Hertz const freq, MilliSecs const msec )
-{
-	if ( pNeuron )
-	{
-		pNeuron->SetTriggerSoundOn       ( bActive );
-		pNeuron->SetTriggerSoundFrequency( freq );
-		pNeuron->SetTriggerSoundDuration ( msec );
-		StaticModelChanged( );
-	}
-}
-
-void NNetModel::clearTriggerSound( Neuron * const pNeuron )
-{
-	setTriggerSound( pNeuron, false, 0_Hertz, 0_MilliSecs );
-}
 
 ShapeId const NNetModel::findShapeAt
 ( 

@@ -202,22 +202,9 @@ void NNetController::triggerSoundDlg( ShapeId const id )
     if ( ! type.IsAnyNeuronType() )
         return;
 
-    TriggerSoundDialog dialog
-    ( 
-        m_pModelReaderInterface->HasTriggerSound( id ), 
-        m_pModelReaderInterface->GetTriggerSoundFrequency( id ), 
-        m_pModelReaderInterface->GetTriggerSoundDuration( id ) 
-    );
-
+    TriggerSoundDialog dialog( m_pModelReaderInterface->GetTriggerSound( id ) );
     dialog.Show( m_pNNetWindow->GetWindowHandle() );
-
-    m_pModelWriterInterface->SetTriggerSound
-    ( 
-        id,
-        dialog.IsTriggerSoundActive(),
-        dialog.GetFrequency(),
-        dialog.GetDuration ()
-    );
+    m_pModelWriterInterface->SetTriggerSound( id, dialog.GetSound() );
 }
 
 bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )

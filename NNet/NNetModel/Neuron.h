@@ -7,6 +7,7 @@
 #include <chrono>
 #include "MoreTypes.h"
 #include "NNetParameters.h"
+#include "win32_sound.h"
 #include "tHighlightType.h"
 #include "Pipe.h"
 #include "BaseKnot.h"
@@ -29,11 +30,11 @@ public:
 			return false;
 		if ( m_factorU != other.m_factorU )
 			return false;
-		if ( m_bTriggerSoundOn != other.m_bTriggerSoundOn )
+		if ( m_triggerSound.m_bOn != other.m_triggerSound.m_bOn )
 			return false;
-		if ( m_triggerSoundFrequency != other.m_triggerSoundFrequency )
+		if ( m_triggerSound.m_frequency != other.m_triggerSound.m_frequency )
 			return false;
-		if ( m_triggerSoundDuration != other.m_triggerSoundDuration )
+		if ( m_triggerSound.m_duration != other.m_triggerSound.m_duration )
 			return false;
 		return true;
 	}
@@ -42,14 +43,13 @@ public:
 
 	static bool TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( ); }
 
-	bool      const HasAxon                 ( ) const { return m_connections.HasOutgoing();	}
-	bool      const HasTriggerSound         ( ) const { return m_bTriggerSoundOn; }
-	Hertz     const GetTriggerSoundFrequency( ) const { return m_triggerSoundFrequency; }
-	MilliSecs const GetTriggerSoundDuration ( ) const {	return m_triggerSoundDuration; }
+	bool       const HasAxon                 ( ) const { return m_connections.HasOutgoing();	}
+	bool       const HasTriggerSound         ( ) const { return m_triggerSound.m_bOn; }
+	//Hertz      const GetTriggerSoundFrequency( ) const { return m_triggerSound.m_frequency; }
+	//MilliSecs  const GetTriggerSoundDuration ( ) const { return m_triggerSound.m_duration; }
+	SoundDescr const GetTriggerSound         ( ) const { return m_triggerSound; }
 
-	Hertz     const SetTriggerSoundFrequency( Hertz     const );
-	MilliSecs const SetTriggerSoundDuration ( MilliSecs const ); 
-	bool      const SetTriggerSoundOn       ( bool      const );
+	SoundDescr const SetTriggerSound( SoundDescr const & );
 
 	fMicroSecs PulseWidth   ( ) const;
 	fMicroSecs RefractPeriod( ) const;
@@ -80,9 +80,10 @@ private:
 	float     m_factorW; // Parameter of wave function
 	float     m_factorU; // Parameter of wave function
 
-	bool      m_bTriggerSoundOn       { false };
-	Hertz     m_triggerSoundFrequency { 0_Hertz };   
-	MilliSecs m_triggerSoundDuration  { 0_MilliSecs };
+	SoundDescr m_triggerSound;
+	//bool      m_bTriggerSoundOn       { false };
+	//Hertz     m_triggerSoundFrequency { 0_Hertz };   
+	//MilliSecs m_triggerSoundDuration  { 0_MilliSecs };
 
 	PTP_WORK  m_pTpWork { nullptr };
 

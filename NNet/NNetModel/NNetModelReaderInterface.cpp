@@ -56,24 +56,29 @@ size_t const NNetModelReaderInterface::GetNrOfSegments( ShapeId const id ) const
 	return p ? p->GetNrOfSegments( ) : 0; 
 }
 
-bool const NNetModelReaderInterface::HasTriggerSound( ShapeId const id ) const
+SoundDescr const NNetModelReaderInterface::GetTriggerSound( ShapeId const id ) const
 {
-	auto p { m_pModel->GetShapeConstPtr<Neuron const *>(id) };
-	return p ? p->HasTriggerSound( ) : false; 
+	return m_pModel->GetShapeConstPtr<Neuron const *>(id)->GetTriggerSound( ); 
 }
 
-Hertz const NNetModelReaderInterface::GetTriggerSoundFrequency( ShapeId const id ) const
-{
-	auto p { m_pModel->GetShapeConstPtr<Neuron const *>(id) };
-	return p ? p->GetTriggerSoundFrequency( ) : Hertz::NULL_VAL(); 
-}
-
-MilliSecs const NNetModelReaderInterface::GetTriggerSoundDuration ( ShapeId const id ) const
-{
-	auto p { m_pModel->GetShapeConstPtr<Neuron const *>(id) };
-	return p ? p->GetTriggerSoundDuration( ) : MilliSecs::NULL_VAL(); 
-}
-
+//bool const NNetModelReaderInterface::HasTriggerSound( ShapeId const id ) const
+//{
+//	auto p { m_pModel->GetShapeConstPtr<Neuron const *>(id) };
+//	return p ? p->HasTriggerSound( ) : false; 
+//}
+//
+//Hertz const NNetModelReaderInterface::GetTriggerSoundFrequency( ShapeId const id ) const
+//{
+//	auto p { m_pModel->GetShapeConstPtr<Neuron const *>(id) };
+//	return p ? p->GetTriggerSoundFrequency( ) : Hertz::NULL_VAL(); 
+//}
+//
+//MilliSecs const NNetModelReaderInterface::GetTriggerSoundDuration ( ShapeId const id ) const
+//{
+//	auto p { m_pModel->GetShapeConstPtr<Neuron const *>(id) };
+//	return p ? p->GetTriggerSoundDuration( ) : MilliSecs::NULL_VAL(); 
+//}
+//
 mV const NNetModelReaderInterface::GetVoltage( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };

@@ -239,9 +239,7 @@ public:
         script.ScrReadString( L"Hertz" );
         MilliSecs const msec { script.ScrReadUlong() };
         script.ScrReadString( L"msec" );
-        pNeuron->SetTriggerSoundOn( true );
-        pNeuron->SetTriggerSoundFrequency( freq );
-        pNeuron->SetTriggerSoundDuration ( msec );
+        pNeuron->SetTriggerSound( SoundDescr{ true, freq, msec } );
     }
 
 private:
@@ -427,9 +425,10 @@ void NNetModelStorage::Write( wostream & out )
         { 
             if ( neuron.HasTriggerSound( ) )
             {
+                SoundDescr sound { neuron.GetTriggerSound() };
                 out << L"TriggerSound " << getCompactIdVal( neuron.GetId() ) << L" "
-                    << neuron.GetTriggerSoundFrequency() << L" Hertz "
-                    << neuron.GetTriggerSoundDuration()  << L" msec "
+                    << sound.m_frequency << L" Hertz "
+                    << sound.m_duration  << L" msec "
                     << endl; 
             }
         } 

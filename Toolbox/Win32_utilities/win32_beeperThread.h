@@ -26,7 +26,13 @@ public:
 	virtual void ThreadMsgDispatcher( MSG const msg )
 	{
 		assert( msg.message == IDM_BEEP );
-		Sound::Beep( static_cast<Hertz>(CastToUnsignedLong(msg.wParam)), static_cast<MilliSecs>(CastToUnsignedLong(msg.lParam)) );
+		SoundDescr desc 
+		{ 
+			true, 
+			static_cast<Hertz>    (CastToUnsignedLong(msg.wParam)), 
+			static_cast<MilliSecs>(CastToUnsignedLong(msg.lParam)) 
+		};
+		Sound::Beep( desc );
 	}
 
 private:

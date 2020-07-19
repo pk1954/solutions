@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include <sstream> 
 #include <iomanip>
+#include "win32_sound.h"
 #include "win32_thread.h"
 #include "win32_graphicsInterface.h"
 #include "win32_beeperThread.h"
@@ -12,7 +13,6 @@
 #include "NNetParameters.h"
 #include "NNetColors.h"
 #include "Neuron.h"
-
 
 using std::chrono::microseconds;
 using std::fixed;
@@ -27,7 +27,7 @@ static void CALLBACK BeepFunc
 )
 {
 	Neuron * pNeuron { static_cast<Neuron *>( arg ) };
-	Sound::Beep( pNeuron->GetTriggerSoundFrequency(), pNeuron->GetTriggerSoundDuration() );
+	Sound::Beep( pNeuron->GetTriggerSound() );
 }
 
 Neuron::Neuron( MicroMeterPoint const upCenter, ShapeType const type )
@@ -42,34 +42,20 @@ Neuron::~Neuron( )
 	-- m_counter;
 }
 
-Hertz const Neuron::SetTriggerSoundFrequency( Hertz const freq ) 
+SoundDescr const Neuron::SetTriggerSound( SoundDescr const & sound ) 
 {
-	Hertz oldValue { m_triggerSoundFrequency };
-	m_triggerSoundFrequency = freq;	
-	return oldValue;
-}
-
-MilliSecs const Neuron::SetTriggerSoundDuration( MilliSecs const msec ) 
-{ 
-	MilliSecs oldValue { m_triggerSoundDuration };
-	m_triggerSoundDuration  = msec; 
-	return oldValue;
-}
-
-bool const Neuron::SetTriggerSoundOn( bool const bMode )
-{
-	bool oldValue { m_bTriggerSoundOn };
-	if ( m_bTriggerSoundOn != bMode )
+	SoundDescr oldValue { m_triggerSound };
+	if ( m_triggerSound.m_bOn != sound.m_bOn )
 	{
-		if ( bMode  )
+		if ( sound.m_bOn  )
 			m_pTpWork = CreateThreadpoolWork( BeepFunc, this, nullptr );
 		else
 		{
 			CloseThreadpoolWork( m_pTpWork );
 			m_pTpWork = nullptr;
 		}
-		m_bTriggerSoundOn = bMode;
 	}
+	m_triggerSound = sound;
 	return oldValue;
 }
 
