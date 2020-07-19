@@ -26,7 +26,6 @@ using ShapeList = vector<Shape *>;
 MicroMeterRect ComputeEnclosingRect( ShapeList const & );
 
 void ConnectIncoming ( Pipe * const, BaseKnot * const );
-void ConnectOutgoing ( Pipe * const, BaseKnot * const );
 void ReplaceStartKnot( Pipe * const, BaseKnot * const );
 void ReplaceEndKnot  ( Pipe * const, BaseKnot * const );
 
@@ -123,17 +122,6 @@ public:
 	}
 
 	template <typename T>
-	void AppendShape( ShapeId const id )
-	{
-		Shape * pShape { GetShapePtr<Shape *>( id ) };
-		if ( pShape && pShape->IsKnot() )
-		{
-			Connect( id, NewShape<T>( GetShapePos( id ) )->GetId() );
-			StaticModelChanged( );
-		}
-	}
-
-	template <typename T>
 	bool Apply2AllB( function<bool(T &)> const & func ) const
 	{
 		bool bResult { false };
@@ -225,7 +213,6 @@ public:
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
-	void Connect            ( ShapeId const, ShapeId const );
 	void Disconnect         ( ShapeId const );
 	void ToggleStopOnTrigger( ShapeId const );
 	void RecalcAllShapes( );
@@ -270,13 +257,6 @@ public:
 	{
 		pNewShape->SetId( ShapeId { GetSizeOfShapeList() } );
 		m_Shapes.push_back( pNewShape );
-	}
-
-	ShapeId ReserveInShapeList( )
-	{
-		ShapeId id { GetSizeOfShapeList() };
-		m_Shapes.push_back( nullptr );
-		return id;
 	}
 
 	void RemoveFromShapeList( Shape * const pShape )
@@ -338,11 +318,10 @@ private:
 		m_pDynamicModelObservable->NotifyAll( false );
 	}
 
-	void            insertBaseKnot     ( Pipe * const, BaseKnot * const );
-	Shape *         shallowCopy        ( Shape   const & ) const;
-	bool            isEqual            ( Shape const &, Shape const & ) const;
-	void            connectToNewShapes ( Shape const &, ShapeList const & ) const;
-	void            setTriggerSound    ( Neuron * const, bool const, Hertz const, MilliSecs const );
-	void            clearTriggerSound  ( Neuron * const );
-	ShapeId const   findShapeAt        ( MicroMeterPoint const, ShapeCrit const & ) const;
+	Shape *       shallowCopy        ( Shape   const & ) const;
+	bool          isEqual            ( Shape const &, Shape const & ) const;
+	void          connectToNewShapes ( Shape const &, ShapeList const & ) const;
+	void          setTriggerSound    ( Neuron * const, bool const, Hertz const, MilliSecs const );
+	void          clearTriggerSound  ( Neuron * const );
+	ShapeId const findShapeAt        ( MicroMeterPoint const, ShapeCrit const & ) const;
 };

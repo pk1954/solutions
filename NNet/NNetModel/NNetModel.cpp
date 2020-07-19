@@ -192,28 +192,6 @@ MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
 	return NP_NULL;
 }
 
-void NNetModel::Connect( ShapeId const idSrc, ShapeId const idDst )  // merge src shape into dst shape
-{
-	BaseKnot * pSrc { GetShapePtr<BaseKnot *>( idSrc ) };
-	Shape    * pDst { GetShapePtr<Shape    *>( idDst ) };
-	if ( pDst->IsPipe() )   // connect baseknot to pipe
-	{
-		insertBaseKnot( GetShapePtr<Pipe *>( idDst ), pSrc );
-	}
-	else  // connect baseknot to baseknot
-	{
-		BaseKnot * pDstBaseKnot { static_cast<BaseKnot *>( pDst ) };
-		if ( pSrc && pDstBaseKnot )
-		{
-			pSrc->m_connections.Apply2AllInPipes ( [&]( Pipe & pipe ) { ConnectIncoming( & pipe, pDstBaseKnot ); } );
-			pSrc->m_connections.Apply2AllOutPipes( [&]( Pipe & pipe ) { ConnectOutgoing( & pipe, pDstBaseKnot ); } );
-			RemoveFromShapeList( pSrc );
-			delete pSrc;
-		}
-	}
-	StaticModelChanged( );
-}
-
 Pipe * const NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
 {
 	Pipe * const pPipe = new Pipe( pStart, pEnd );
@@ -430,14 +408,6 @@ ShapeId const NNetModel::FindShapeAt
 
 /////////////////// local functions ///////////////////////////////////////////////
 
-void NNetModel::insertBaseKnot( Pipe * const pPipe, BaseKnot * const pBaseKnot)
-{
-	BaseKnot * const pStartKnot { pPipe->GetStartKnotPtr( ) };
-	NewPipe( pStartKnot, pBaseKnot );
-	pStartKnot->m_connections.RemoveOutgoing( pPipe );
-	ConnectOutgoing( pPipe, pBaseKnot );
-}
-
 void NNetModel::setTriggerSound( Neuron * const pNeuron, bool const bActive, Hertz const freq, MilliSecs const msec )
 {
 	if ( pNeuron )
@@ -504,17 +474,6 @@ void ConnectIncoming
 {
 	pEndPoint->m_connections.AddIncoming( pPipe );
 	pPipe->SetEndKnot( pEndPoint );
-	pPipe->Recalc( );
-}
-
-void ConnectOutgoing
-( 
-	Pipe     * const pPipe, 
-	BaseKnot * const pStartPoint
-)
-{
-	pStartPoint->m_connections.AddOutgoing( pPipe );
-	pPipe->SetStartKnot( pStartPoint );
 	pPipe->Recalc( );
 }
 

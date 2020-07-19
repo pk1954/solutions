@@ -31,8 +31,8 @@ public:
 /* ok */ void Connect             ( ShapeId const, ShapeId const );
 /* ok */ void Convert2InputNeuron ( ShapeId const );
 /* ok */ void Convert2Neuron      ( ShapeId const );
-		 void AppendNeuron        ( ShapeId const );
-		 void AppendInputNeuron   ( ShapeId const );
+/* ok */ void AppendNeuron        ( ShapeId const );
+/* ok */ void AppendInputNeuron   ( ShapeId const );
 		 void CopySelection       ( );
 /* ok */ void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
 /* ok */ void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );

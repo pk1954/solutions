@@ -921,6 +921,7 @@ void NNetModelWriterInterface::InsertNeuron( ShapeId const id, MicroMeterPoint c
 			m_pPipeNew    = new Pipe( m_pStartKnot, m_pNeuron );
 			m_pNeuron->m_connections.AddOutgoing( m_pPipe2Split );
 			m_pNeuron->m_connections.AddIncoming( m_pPipeNew );
+			m_pPipeNew->Recalc();
 		}
 
 		~InsertNeuronCommand( )
@@ -929,14 +930,18 @@ void NNetModelWriterInterface::InsertNeuron( ShapeId const id, MicroMeterPoint c
 			delete m_pPipeNew;
 		}
 
-		virtual void Do( NNetModel * const pModel ) 
+	    void swap( ) 
 		{ 
-			pModel->Add2ShapeList( m_pNeuron );
-			pModel->Add2ShapeList( m_pPipeNew );
 			m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe2Split );
 			m_pStartKnot->m_connections.AddOutgoing   ( m_pPipeNew );
 			m_pPipe2Split->SetStartKnot( m_pNeuron );
-			m_pPipeNew->Recalc();
+		}
+
+		virtual void Do( NNetModel * const pModel ) 
+		{ 
+			swap( );
+			pModel->Add2ShapeList( m_pNeuron );
+			pModel->Add2ShapeList( m_pPipeNew );
 		}
 
 		virtual void Undo( NNetModel * const pModel ) 
@@ -947,6 +952,13 @@ void NNetModelWriterInterface::InsertNeuron( ShapeId const id, MicroMeterPoint c
 			m_pStartKnot->m_connections.AddOutgoing   ( m_pPipe2Split );
 			m_pPipe2Split->SetStartKnot( m_pStartKnot );
 			m_pPipeNew->Recalc();
+		}
+
+		virtual void Redo( NNetModel * const pModel ) 
+		{ 
+			swap( );
+			pModel->Restore2ShapeList( m_pNeuron );
+			pModel->Restore2ShapeList( m_pPipeNew );
 		}
 
 	private:
@@ -1015,23 +1027,37 @@ void NNetModelWriterInterface::AppendNeuron( ShapeId const id )
 	class AppendNeuronCommand : public Command
 	{
 	public:
-		AppendNeuronCommand( ShapeId const id )
-			: m_id( id )
-		{ }
+		AppendNeuronCommand( NNetModel * pModel, ShapeId const id )
+		{ 
+			m_pKnot   = pModel->GetShapePtr<Knot *>( id );
+			m_pNeuron = new Neuron( m_pKnot->GetPosition( ) );
+			m_pNeuron->m_connections = m_pKnot->m_connections;
+		}
+
+		~AppendNeuronCommand( )
+		{
+			delete m_pNeuron;
+		}
 
 		virtual void Do( NNetModel * const pModel ) 
 		{ 
-			pModel->AppendShape<Neuron>( m_id );
+			pModel->ReplaceInShapeList( m_pKnot, m_pNeuron );
+		}
+
+		virtual void Undo( NNetModel * const pModel ) 
+		{ 
+			pModel->ReplaceInShapeList( m_pNeuron, m_pKnot );
 		}
 
 	private:
-		ShapeId const m_id;
+		Neuron * m_pNeuron;
+		Knot   * m_pKnot;
 	};
 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
 
-	m_CmdStack.NewCommand( new AppendNeuronCommand( id ) );
+	m_CmdStack.NewCommand( new AppendNeuronCommand( m_pModel, id ) );
 }
 
 void NNetModelWriterInterface::AppendInputNeuron( ShapeId const id )
@@ -1039,23 +1065,37 @@ void NNetModelWriterInterface::AppendInputNeuron( ShapeId const id )
 	class AppendInputNeuronCommand : public Command
 	{
 	public:
-		AppendInputNeuronCommand( ShapeId const id )
-			: m_id( id )
-		{ }
+		AppendInputNeuronCommand( NNetModel * pModel, ShapeId const id )
+		{ 
+			m_pKnot        = pModel->GetShapePtr<Knot *>( id );
+			m_pInputNeuron = new InputNeuron( m_pKnot->GetPosition( ) );
+			m_pInputNeuron->m_connections = m_pKnot->m_connections;
+		}
+
+		~AppendInputNeuronCommand( )
+		{
+			delete m_pInputNeuron;
+		}
 
 		virtual void Do( NNetModel * const pModel ) 
 		{ 
-			pModel->AppendShape<InputNeuron>( m_id );
+			pModel->ReplaceInShapeList( m_pKnot, m_pInputNeuron );
+		}
+
+		virtual void Undo( NNetModel * const pModel ) 
+		{ 
+			pModel->ReplaceInShapeList( m_pInputNeuron, m_pKnot );
 		}
 
 	private:
-		ShapeId const m_id;
+		InputNeuron * m_pInputNeuron;
+		Knot        * m_pKnot;
 	};
 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
 
-	m_CmdStack.NewCommand( new AppendInputNeuronCommand( id ) );
+	m_CmdStack.NewCommand( new AppendInputNeuronCommand( m_pModel, id ) );
 }
 
 void NNetModelWriterInterface::ClearBeepers( )
