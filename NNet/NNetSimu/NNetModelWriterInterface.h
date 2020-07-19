@@ -27,7 +27,7 @@ public:
 	void Start( NNetModel * const );
 	void Stop(); 
 
-/* !! */ void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
+/* ok */ void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
 /* ok */ void Connect             ( ShapeId const, ShapeId const );
 /* ok */ void Convert2InputNeuron ( ShapeId const );
 /* ok */ void Convert2Neuron      ( ShapeId const );

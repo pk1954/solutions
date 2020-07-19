@@ -228,7 +228,6 @@ void NNetModel::DeleteSelection( )
 		if ( p &&  p->IsSelected() )             // by creating new shapes!!
 			DeleteShape( p ); 
 	}
-	StaticModelChanged( );
 }
 
 void NNetModel::MarkSelection( tBoolOp const op )

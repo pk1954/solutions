@@ -980,16 +980,32 @@ void NNetModelWriterInterface::NewNeuron( MicroMeterPoint const & pos )
 	{
 	public:
 		NewNeuronCommand( MicroMeterPoint const & pos )
-			: m_pos( pos )
-		{ }
+		{ 
+			m_pNeuron = new Neuron( pos );
+		}
+
+		~NewNeuronCommand( )
+		{ 
+			delete m_pNeuron;
+		}
 
 		virtual void Do( NNetModel * const pModel ) 
 		{ 
-			pModel->NewShape<Neuron>( m_pos );
+			pModel->Add2ShapeList( m_pNeuron );
+		}
+
+		virtual void Undo( NNetModel * const pModel ) 
+		{ 
+			pModel->RemoveFromShapeList( m_pNeuron );
+		}
+
+		virtual void Redo( NNetModel * const pModel ) 
+		{ 
+			pModel->Restore2ShapeList( m_pNeuron );
 		}
 
 	private:
-		MicroMeterPoint const m_pos;
+		Neuron * m_pNeuron;
 	};
 
 	if ( IsTraceOn( ) )
@@ -1004,16 +1020,32 @@ void NNetModelWriterInterface::NewInputNeuron( MicroMeterPoint const & pos )
 	{
 	public:
 		NewInputNeuronCommand( MicroMeterPoint const & pos )
-			: m_pos( pos )
-		{ }
+		{ 
+			m_pInputNeuron = new InputNeuron( pos );
+		}
+
+		~NewInputNeuronCommand( )
+		{ 
+			delete m_pInputNeuron;
+		}
 
 		virtual void Do( NNetModel * const pModel ) 
 		{ 
-			pModel->NewShape<InputNeuron>( m_pos );
+			pModel->Add2ShapeList( m_pInputNeuron );
+		}
+
+		virtual void Undo( NNetModel * const pModel ) 
+		{ 
+			pModel->RemoveFromShapeList( m_pInputNeuron );
+		}
+
+		virtual void Redo( NNetModel * const pModel ) 
+		{ 
+			pModel->Restore2ShapeList( m_pInputNeuron );
 		}
 
 	private:
-		MicroMeterPoint const m_pos;
+		InputNeuron * m_pInputNeuron;
 	};
 
 	if ( IsTraceOn( ) )
@@ -1145,29 +1177,6 @@ void NNetModelWriterInterface::MarkSelection( tBoolOp const op )
 	m_CmdStack.NewCommand( new MarkSelectionCommand( op ) );
 }
 
-void NNetModelWriterInterface::CopySelection( )
-{
-	class CopySelectionCommand : public Command
-	{
-	public:
-		CopySelectionCommand( )
-		{ }
-
-		virtual void Do( NNetModel * const pModel ) 
-		{ 
-			pModel->CopySelection( );
-		}
-
-	private:
-		ShapeId const m_id;
-	};
-
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
-
-	m_CmdStack.NewCommand( new CopySelectionCommand( ) );
-}
-
 ///////////////////// selection commands /////////////////////////////
 
 class SelectionCommand : public Command
@@ -1186,6 +1195,30 @@ public:
 private:
 	ShapeList m_selectedShapes;
 };
+
+void NNetModelWriterInterface::CopySelection( )
+{
+	class CopySelectionCommand : public SelectionCommand // is it really a SelectionCommand??
+	{
+	public:
+		CopySelectionCommand( NNetModel * const pModel )
+			:	SelectionCommand( pModel)
+		{ }
+
+		virtual void Do( NNetModel * const pModel ) 
+		{ 
+			pModel->CopySelection( );
+		}
+
+	private:
+		ShapeId const m_id;
+	};
+
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+
+	m_CmdStack.NewCommand( new CopySelectionCommand( m_pModel ) );
+}
 
 void NNetModelWriterInterface::SelectAllBeepers( )
 {
