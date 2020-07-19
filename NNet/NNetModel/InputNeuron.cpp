@@ -51,7 +51,7 @@ void InputNeuron::drawInputNeuron
 	MicroMeterPoint const axonVector
 	{
 		HasAxon()
-		? m_connections.GetFirstOutgoing().GetVector( )
+		? m_connections.GetFirstOutgoingConst().GetVector( )
 	    : MicroMeterPoint { 0._MicroMeter, 1._MicroMeter } 
 	};
 	MicroMeter      const umHypot    { Hypot( axonVector ) };

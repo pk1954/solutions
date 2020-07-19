@@ -16,6 +16,12 @@ class DrawContext;
 class NNetModel;
 
 using ShapeCrit = function<bool(Shape const &)>;
+                  
+template <typename T>
+bool IS_EQUAL( Shape const & shapeA, Shape const & shapeB )
+{
+	return static_cast<T const &>( shapeA ).IsEqual( static_cast<T const &>( shapeB ) );
+}
 
 static ShapeCrit const ShapeCritAlwaysTrue { [&]( Shape const & s) { return true; } };
 

@@ -42,8 +42,7 @@ public:
 
 	static bool TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( ); }
 
-	bool      const HasAxon                 ( ) const { return ! m_connections.IsTerminal();	}
-	ShapeId   const GetAxonId               ( ) const { return HasAxon() ? m_connections.GetFirstOutgoing().GetId() : NO_SHAPE; }
+	bool      const HasAxon                 ( ) const { return m_connections.HasOutgoing();	}
 	bool      const HasTriggerSound         ( ) const { return m_bTriggerSoundOn; }
 	Hertz     const GetTriggerSoundFrequency( ) const { return m_triggerSoundFrequency; }
 	MilliSecs const GetTriggerSoundDuration ( ) const {	return m_triggerSoundDuration; }

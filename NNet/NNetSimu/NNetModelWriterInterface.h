@@ -39,11 +39,11 @@ public:
 /* ok */ void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
 /* ok */ void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
 /* ok */ void Analyze             ( int const );
-		 void NewNeuron           ( MicroMeterPoint const & );
-		 void NewInputNeuron      ( MicroMeterPoint const & );
+/* ok */ void NewNeuron           ( MicroMeterPoint const & );
+/* ok */ void NewInputNeuron      ( MicroMeterPoint const & );
 /* !! */ void DeleteSelection     ( );
-		 void Disconnect          ( ShapeId const );
-         void MarkSelection       ( tBoolOp const );
+/* !! */ void Disconnect          ( ShapeId const );
+/* ok */ void MarkSelection       ( tBoolOp const );
 /* ok */ void MoveSelection       ( MicroMeterPoint const & );
 /* ok */ void MoveShape           ( ShapeId const, MicroMeterPoint const & );
          void ClearBeepers        ( );

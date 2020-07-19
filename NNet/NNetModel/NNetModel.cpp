@@ -63,7 +63,11 @@ void NNetModel::CreateInitialShapes( )
 {
 	InputNeuron * const pInputNeuron { NewShape<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) };
 	Neuron      * const pNeuron      { NewShape<Neuron>      ( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) };
-	Pipe        * const pNewPipe     { NewPipe( pInputNeuron, pNeuron ) };
+	Pipe        * const pNewPipe     { new Pipe( pInputNeuron, pNeuron ) };
+	pInputNeuron->m_connections.AddOutgoing( pNewPipe );
+	pNeuron  ->m_connections.AddIncoming( pNewPipe );
+	Add2ShapeList( pNewPipe );
+	StaticModelChanged( );
 }
 
 bool NNetModel::IsEqual( NNetModel const & other ) const
@@ -92,26 +96,6 @@ void NNetModel::RecalcAllShapes( )
 	dynamicModelChanged( );
 } 
 
-void NNetModel::GetSelectionList( ShapeList & list ) const
-{
-	list.clear();
-	Apply2All<Shape>
-	( 
-		[&]( Shape & shape ) 
-		{ 
-			if ( shape.IsSelected() )
-				list.push_back( & shape );
-		} 
-	);
-}
-
-void NNetModel::SetSelectionList( ShapeList const & list )
-{
-	SelectAll( tBoolOp::opFalse );
-	for ( Shape * pShape : list )
-		pShape->Select( tBoolOp::opTrue );
-}
-
 void NNetModel::DeleteShape( Shape * const pShape )
 {
 	if ( pShape )
@@ -139,20 +123,6 @@ void NNetModel::DeleteShape( Shape * const pShape )
 			DisconnectBaseKnot( Cast2BaseKnot( pShape ) );
 		RemoveFromShapeList( pShape );
 		delete pShape;
-	}
-}
-
-void NNetModel::Disconnect( ShapeId const id )
-{
-	if ( BaseKnot * pBaseKnot { GetShapePtr<BaseKnot *>( id ) } )
-	{
-		DisconnectBaseKnot( pBaseKnot );
-		if ( pBaseKnot->IsKnot() )
-		{
-			RemoveFromShapeList( pBaseKnot );
-			delete pBaseKnot;
-		}
-		StaticModelChanged( );
 	}
 }
 
@@ -192,16 +162,6 @@ MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
 	return NP_NULL;
 }
 
-Pipe * const NNetModel::NewPipe( BaseKnot * const pStart, BaseKnot * const pEnd )
-{
-	Pipe * const pPipe = new Pipe( pStart, pEnd );
-	pStart->m_connections.AddOutgoing( pPipe );
-	pEnd  ->m_connections.AddIncoming( pPipe );
-	Add2ShapeList( pPipe );
-	StaticModelChanged( );
-	return pPipe;
-}
-
 bool NNetModel::Compute( )
 {
 	bool bStop {false };
@@ -230,12 +190,6 @@ void NNetModel::DeleteSelection( )
 	}
 }
 
-void NNetModel::MarkSelection( tBoolOp const op )
-{
-	Apply2AllSelected<Shape>( [&]( Shape & shape ) { shape.Mark( op ); } );
-	dynamicModelChanged();
-}
-
 bool NNetModel::isEqual( Shape const & shapeA, Shape const & shapeB ) const
 {
 	if ( shapeA.GetShapeType().GetValue() != shapeB.GetShapeType().GetValue() )
@@ -244,22 +198,22 @@ bool NNetModel::isEqual( Shape const & shapeA, Shape const & shapeB ) const
 	switch ( shapeA.GetShapeType().GetValue() )
 	{
 	case ShapeType::Value::inputNeuron:
-		if (! static_cast<InputNeuron const &>( shapeA ).IsEqual( static_cast<InputNeuron const &>( shapeB ) ) )
+		if (! IS_EQUAL<InputNeuron>( shapeA, shapeB ) ) 
 			return false;
 		break;
 
 	case ShapeType::Value::knot:
-		if ( ! static_cast<Knot const &>( shapeA ).IsEqual( static_cast<Knot const &>( shapeB ) ) )
+		if (! IS_EQUAL<Knot>( shapeA, shapeB ) ) 
 			return false;
 		break;
 
 	case ShapeType::Value::neuron:
-		if ( ! static_cast<Neuron const &>( shapeA ).IsEqual( static_cast<Neuron const &>( shapeB ) ) )
+		if (! IS_EQUAL<Neuron>( shapeA, shapeB ) ) 
 			return false;
 		break;
 
 	case ShapeType::Value::pipe:
-		if ( ! static_cast<Pipe const &>( shapeA ).IsEqual( static_cast<Pipe const &>( shapeB ) ) )
+		if (! IS_EQUAL<Pipe>( shapeA, shapeB ) ) 
 			return false;
 		break;
 

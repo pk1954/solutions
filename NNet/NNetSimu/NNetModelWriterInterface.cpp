@@ -19,6 +19,8 @@ using std::wcout;
 using std::endl;
 using std::unordered_map;
 
+using KnotList = vector<Knot *>;
+
 void NNetModelWriterInterface::Initialize( wostream * pTraceStream ) 
 { 
 	m_pTraceStream = pTraceStream;
@@ -304,22 +306,91 @@ void NNetModelWriterInterface::Disconnect( ShapeId const id )
 	class DisconnectCommand : public Command
 	{
 	public:
-		DisconnectCommand( ShapeId const id )
-			:	m_id( id )
-		{ }
+		DisconnectCommand( NNetModel * pModel, ShapeId const id )
+          :	m_pBaseKnot( pModel->GetShapePtr<BaseKnot *>( id ) )
+		{ 
+			MicroMeterPoint umPos { m_pBaseKnot->GetPosition() };
+			m_pBaseKnot->m_connections.Apply2AllInPipes
+			( 
+				[&]( Pipe & pipe ) // every incoming Pipe needs a new end knot
+				{ 
+					Knot * pKnotNew { new Knot( umPos ) };
+					pKnotNew->SetId( pModel->NewShapeListSlot() );
+					pKnotNew->m_connections.AddIncoming( & pipe );
+					m_endKnots.push_back( pKnotNew );
+				} 
+			);
+			m_pBaseKnot->m_connections.Apply2AllOutPipes
+			( 
+				[&]( Pipe & pipe ) // every outgoing Pipe needs a new start knot
+				{ 
+					Knot * pKnotNew { new Knot( umPos ) };
+					pKnotNew->SetId( pModel->NewShapeListSlot() );
+					pKnotNew->m_connections.AddOutgoing( & pipe );
+					m_startKnots.push_back( pKnotNew );
+				} 
+			);
+		}
+
+		~DisconnectCommand()
+		{
+			if ( m_pBaseKnot->IsKnot() )
+				delete m_pBaseKnot;
+		}
 
 		virtual void Do( NNetModel * const pModel )
 		{
-			pModel->Disconnect( m_id );
+			for ( Knot * pKnot : m_startKnots )
+			{
+				Pipe & pipeOut { pKnot->m_connections.GetFirstOutgoing() };
+				pipeOut.SetStartKnot( pKnot );
+				pipeOut.DislocateStartPoint( );
+				pipeOut.Recalc( );
+				pModel->Restore2ShapeList( pKnot );
+			}
+			m_pBaseKnot->m_connections.ClearIncoming();
+			for ( Knot * pKnot : m_endKnots )
+			{
+				Pipe & pipeIn { pKnot->m_connections.GetFirstIncoming() };
+				pipeIn.SetEndKnot( pKnot );
+				pipeIn.DislocateEndPoint( );
+				pipeIn.Recalc( );
+				pModel->Restore2ShapeList( pKnot );
+			}
+			m_pBaseKnot->m_connections.ClearOutgoing();
+			assert( m_pBaseKnot->m_connections.IsOrphan( ) );
+			if ( m_pBaseKnot->IsKnot() )
+				pModel->RemoveFromShapeList( m_pBaseKnot );
+		}
+
+		virtual void Undo( NNetModel * const pModel )
+		{
+			for ( Knot * pKnot : m_startKnots )
+			{
+				Pipe & pipeOut { pKnot->m_connections.GetFirstOutgoing() };
+				pipeOut.SetStartKnot( m_pBaseKnot );
+				pipeOut.Recalc( );
+				pModel->RemoveFromShapeList( pKnot );
+			}
+			for ( Knot * pKnot : m_endKnots )
+			{
+				Pipe & pipeIn { pKnot->m_connections.GetFirstIncoming() };
+				pipeIn.SetEndKnot( m_pBaseKnot );
+				pipeIn.Recalc( );
+				pModel->RemoveFromShapeList( pKnot );
+			}
+			pModel->Restore2ShapeList( m_pBaseKnot );
 		}
 
 	private:
-		ShapeId const m_id;
+		BaseKnot * m_pBaseKnot;
+		KnotList   m_startKnots;
+		KnotList   m_endKnots;
 	};
 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_CmdStack.NewCommand( new DisconnectCommand( id ) );
+	m_CmdStack.NewCommand( new DisconnectCommand( m_pModel, id ) );
 }
 
 void NNetModelWriterInterface::Convert2Neuron( ShapeId const id )
@@ -1158,23 +1229,34 @@ void NNetModelWriterInterface::MarkSelection( tBoolOp const op )
 	class MarkSelectionCommand : public Command
 	{
 	public:
-		MarkSelectionCommand( tBoolOp const op )
+		MarkSelectionCommand( NNetModel * pModel, tBoolOp const op )
 			: m_op( op )
-		{ }
+		{ 
+			m_markedShapes.clear();
+			pModel->Add2ShapeList( m_markedShapes, [&]( Shape const & s ){ return s.IsMarked(); } );
+		}
 
 		virtual void Do( NNetModel * const pModel ) 
 		{ 
-			pModel->MarkSelection( m_op );
+			pModel->Apply2AllSelected<Shape>( [&]( Shape & shape ) { shape.Mark( m_op ); } );
+		}
+
+		virtual void Undo( NNetModel * const pModel ) 
+		{ 
+			pModel->Apply2All<Shape>( [&]( Shape & shape ) { shape.Mark( tBoolOp::opFalse ); } );
+			for ( Shape * pShape : m_markedShapes )
+				pShape->Mark( tBoolOp::opTrue );
 		}
 
 	private:
+		ShapeList     m_markedShapes;
 		tBoolOp const m_op;
 	};
 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
 
-	m_CmdStack.NewCommand( new MarkSelectionCommand( op ) );
+	m_CmdStack.NewCommand( new MarkSelectionCommand( m_pModel, op ) );
 }
 
 ///////////////////// selection commands /////////////////////////////
@@ -1184,12 +1266,15 @@ class SelectionCommand : public Command
 public:
 	SelectionCommand( NNetModel * const pModel )
 	{ 
-		pModel->GetSelectionList( m_selectedShapes );
+		m_selectedShapes.clear();
+		pModel->Add2ShapeList( m_selectedShapes, [&]( Shape const & s ){ return s.IsSelected(); } );
 	}
 
 	virtual void Undo( NNetModel * const pModel ) 
 	{
-		pModel->SetSelectionList( m_selectedShapes );
+		pModel->SelectAll( tBoolOp::opFalse );
+		for ( Shape * pShape : m_selectedShapes )
+			pShape->Select( tBoolOp::opTrue );
 	}
 
 private:

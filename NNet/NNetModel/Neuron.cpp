@@ -153,7 +153,7 @@ void Neuron::DrawNeuronText( DrawContext const & context ) const
 
 MicroMeterPoint Neuron::getAxonHillockPos( ) const
 {
-	Pipe            const & axon         { m_connections.GetFirstOutgoing() };
+	Pipe            const & axon         { m_connections.GetFirstOutgoingConst() };
 	MicroMeterPoint const   vectorScaled { axon.GetVector() * ( GetExtension() / axon.GetLength() ) };
 	return GetPosition( ) + vectorScaled * NEURON_INTERIOR;
 }

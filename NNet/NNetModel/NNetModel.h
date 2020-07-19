@@ -209,11 +209,8 @@ public:
 	void CreateInitialShapes();
 	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
 
-	Pipe * const NewPipe( BaseKnot * const, BaseKnot      * const   );
-
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
-	void Disconnect         ( ShapeId const );
 	void ToggleStopOnTrigger( ShapeId const );
 	void RecalcAllShapes( );
 	void ResetModel( );
@@ -227,13 +224,15 @@ public:
 	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
 
 	void CopySelection( );
-	void MarkSelection( tBoolOp const );
 	void DeleteSelection( );
-	void GetSelectionList( ShapeList & ) const;
-	void SetSelectionList( ShapeList const & );
 
 	void DisconnectBaseKnot ( BaseKnot * const );
 	void DeleteShape( Shape * const );
+
+	void Add2ShapeList( ShapeList & list, ShapeCrit const& selector ) const
+	{
+		Apply2All<Shape>( [&](Shape &s) { if ( selector(s) ) list.push_back(&s); } );
+	}
 
 	void SelectBeepers() { Apply2All<Neuron>( [&](Neuron & n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
 
@@ -251,6 +250,13 @@ public:
 	{
 		if ( Shape * const pShape { GetShapePtr<Shape *>( idShape ) } )
 			pShape->Mark( op );
+	}
+
+	ShapeId const NewShapeListSlot( )
+	{
+		ShapeId idNewSlot { GetSizeOfShapeList() };
+		m_Shapes.push_back( nullptr );
+		return idNewSlot;
 	}
 
 	void Add2ShapeList( Shape * const pNewShape )
