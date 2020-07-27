@@ -4,24 +4,30 @@
 
 #pragma once
 
-#include "win32_sound.h"
+#include "SoundInterface.h"
 #include "win32_baseDialog.h"
 
 class TriggerSoundDialog
 {
 public:
-	TriggerSoundDialog( SoundDescr const & sound )
-	  : m_sound( sound )
+	TriggerSoundDialog
+	(
+		Sound      const * const pSound, 
+		SoundDescr const &       soundDesc 
+	)
+	  : m_pSound   ( pSound ),
+		m_soundDesc( soundDesc )
 	{};
 
 	~TriggerSoundDialog( ) {};
 
 	void Show( HWND const );
 
-	SoundDescr const GetSound() { return m_sound; }
+	SoundDescr const GetSound() { return m_soundDesc; }
 
 private:
-	SoundDescr m_sound;
+	Sound const * const m_pSound;
+	SoundDescr          m_soundDesc;
 
 	TriggerSoundDialog             ( TriggerSoundDialog const & );  // noncopyable class 
 	TriggerSoundDialog & operator= ( TriggerSoundDialog const & );  // noncopyable class 

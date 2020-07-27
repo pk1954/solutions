@@ -1,6 +1,6 @@
 // NNetModelStorage.h 
 //
-// NNetSimu
+// NNetModel
 
 #pragma once
 
@@ -18,11 +18,33 @@ class Param;
 class NNetModel;
 class Script;
 class Shape;
+class Observable;
+
+class ReadModelResult
+{
+public:
+	enum class tResult
+	{
+		ok,
+		fileNotFound,
+		errorInFile
+	};
+
+	virtual void Reaction( tResult const ) = 0;
+};
 
 class NNetModelStorage : public ObserverInterface
 {
 public:
-	void Initialize( HWND const, NNetModel * const, Param * const, Script * const );
+	void Initialize
+	( 
+		HWND              const, 
+		NNetModel       * const, 
+		Param           * const, 
+		Observable      * const,
+		Script          * const,
+		ReadModelResult * const
+	);
 
 	virtual void Notify( bool const bImmediate ) { setUnsavedChanges( true ); }
 
@@ -30,7 +52,8 @@ public:
 	void Read( bool const, wstring const = L"" );
 	void ReadAsync( wstring const = L"" );
 
-	wstring const GetModelPath  ( ) { return m_wstrPathOfOpenModel; };
+	bool    const UnsavedChanges( ) const { return m_bUnsavedChanges; };
+	wstring const GetModelPath  ( ) const { return m_wstrPathOfOpenModel; };
 	void          ResetModelPath( );
 
 	bool AskAndSave  ( );
@@ -42,10 +65,13 @@ private:
 
 	mutable bool m_bUnsavedChanges { false };  // can be changed in const functions
 
-	HWND            m_hwndApp             { nullptr };
-	NNetModel     * m_pModel              { nullptr };
-	Param         * m_pParam              { nullptr };
-	Script        * m_pScript             { nullptr };
+	HWND              m_hwndApp                  { nullptr };
+	NNetModel       * m_pModel                   { nullptr };
+	Param           * m_pParam                   { nullptr };
+	Observable      * m_unsavedChangesObservable { nullptr };
+	Script          * m_pScript                  { nullptr };
+	ReadModelResult * m_pResult                  { nullptr };
+
 	bool            m_bPreparedForReading { false };
 	wstring         m_wstrPathOfOpenModel { L"" };
 	wstring         m_wstrPathOfNewModel  { L"" };

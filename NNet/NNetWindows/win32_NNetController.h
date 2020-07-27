@@ -15,7 +15,9 @@ class NNetAppMenu;
 class NNetModel;
 class NNetWindow;
 class WinManager;
+class Preferences;
 class Param;
+class Sound;
 
 using std::wstring;
 
@@ -33,7 +35,9 @@ public:
 		NNetModelWriterInterface * const,
 		ComputeThread            * const,
 		SlowMotionRatio          * const,
-		DisplayFunctor           * const
+		DisplayFunctor           * const,
+		Sound                    * const,
+		Preferences              * const
 	);
 
 	virtual ~NNetController( );
@@ -49,6 +53,7 @@ private:
 	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
 
 	HCURSOR                    m_hCrsrWait             { nullptr };
+	Sound                    * m_pSound                { nullptr };
 	NNetModelStorage         * m_pStorage              { nullptr };
 	NNetWindow               * m_pNNetWindow           { nullptr };
 	WinManager               * m_pWinManager           { nullptr };
@@ -58,4 +63,5 @@ private:
 	SlowMotionRatio          * m_pSlowMotionRatio      { nullptr };
 	DisplayFunctor           * m_pStatusBarDisplay     { nullptr };
 	AnimationThread          * m_pAnimationThread      { nullptr };
+	Preferences              * m_pPreferences          { nullptr };
 };				          

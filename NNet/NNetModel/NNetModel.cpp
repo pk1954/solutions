@@ -96,6 +96,96 @@ void NNetModel::RecalcAllShapes( )
 	dynamicModelChanged( );
 } 
 
+void NNetModel::DoDeleteBaseKnot( BaseKnot * const pBaseKnot )
+{
+	MicroMeterPoint umPos { pBaseKnot->GetPosition() };
+	pBaseKnot->m_connections.Apply2AllInPipes
+	( 
+		[&]( Pipe & pipe ) // every incoming Pipe needs a new end knot
+		{ 
+			Knot * pKnotNew { NewShape<Knot>( umPos ) };
+			pKnotNew->m_connections.AddIncoming( & pipe );
+			pipe.SetEndKnot( pKnotNew );
+			pipe.DislocateEndPoint( );
+			pipe.Recalc();
+		} 
+	);
+	pBaseKnot->m_connections.ClearIncoming();
+	pBaseKnot->m_connections.Apply2AllOutPipes
+	( 
+		[&]( Pipe & pipe ) // every outgoing Pipe needs a new start knot
+		{ 
+			Knot * pKnotNew { NewShape<Knot>( umPos ) };
+			pKnotNew->m_connections.AddOutgoing( & pipe );
+			pipe.SetStartKnot( pKnotNew );
+			pipe.DislocateStartPoint( );
+			pipe.Recalc();
+		} 
+	);
+	pBaseKnot->m_connections.ClearOutgoing();
+	assert( pBaseKnot->m_connections.IsOrphan( ) );
+
+	RemoveFromShapeList( pBaseKnot );
+}
+
+void NNetModel::UndoDeleteBaseKnot( BaseKnot * const pBaseKnot )
+{
+	MicroMeterPoint umPos { pBaseKnot->GetPosition() };
+	pBaseKnot->m_connections.Apply2AllInPipes
+	( 
+		[&]( Pipe & pipe ) // reconnect to original end knot
+		{ 
+			BaseKnot * pEndPoint { pipe.GetEndKnotPtr() };
+			pipe.SetEndKnot( pBaseKnot );
+			pipe.Recalc();
+			delete pEndPoint;
+		} 
+	);
+	pBaseKnot->m_connections.Apply2AllOutPipes
+	( 
+		[&]( Pipe & pipe ) // reconnect to original start knot
+		{ 
+			BaseKnot * pStartPoint { pipe.GetStartKnotPtr() };
+			pipe.SetStartKnot( pBaseKnot );
+			pipe.Recalc();
+			delete pStartPoint;
+		} 
+	);
+	Restore2ShapeList( pBaseKnot );
+}
+
+void NNetModel::DoDeletePipe
+( 
+	Pipe * const pPipe
+)
+{
+	BaseKnot * const pStartKnot = pPipe->GetStartKnotPtr();
+	BaseKnot * const pEndKnot   = pPipe->GetEndKnotPtr();
+	pStartKnot->m_connections.RemoveOutgoing( pPipe );
+	if ( pStartKnot->IsOrphanedKnot( ) )
+		RemoveFromShapeList( pStartKnot );
+
+	pEndKnot->m_connections.RemoveIncoming( pPipe );
+	if ( pEndKnot->IsOrphanedKnot( ) )
+		RemoveFromShapeList( pEndKnot );
+
+	RemoveFromShapeList( pPipe );
+}
+
+void NNetModel::UndoDeletePipe
+( 
+	Pipe * const pPipe
+)
+{
+	BaseKnot * const pStartKnot = pPipe->GetStartKnotPtr();
+	BaseKnot * const pEndKnot   = pPipe->GetEndKnotPtr();
+	pStartKnot->m_connections.AddOutgoing( pPipe );
+	pEndKnot  ->m_connections.AddIncoming( pPipe );
+	Restore2ShapeList( pStartKnot );
+	Restore2ShapeList( pEndKnot );
+	Restore2ShapeList( pPipe );
+}
+
 void NNetModel::DeleteShape( Shape * const pShape )
 {
 	if ( pShape )
@@ -105,7 +195,7 @@ void NNetModel::DeleteShape( Shape * const pShape )
 			Pipe     * const pPipe      { Cast2Pipe( pShape ) };
 			BaseKnot * const pStartKnot { pPipe->GetStartKnotPtr() };
 			pStartKnot->m_connections.RemoveOutgoing( pPipe );
-			if ( pStartKnot->IsOrphanedKnot( ) && ( pStartKnot->IsKnot() ) )
+			if ( pStartKnot->IsOrphanedKnot( ) )
 			{
 				RemoveFromShapeList( pStartKnot );
 				delete pStartKnot;                       
@@ -113,7 +203,7 @@ void NNetModel::DeleteShape( Shape * const pShape )
 
 			BaseKnot * pEndKnot { pPipe->GetEndKnotPtr() };
 			pEndKnot->m_connections.RemoveIncoming( pPipe );
-			if ( pEndKnot->IsOrphanedKnot( ) && ( pEndKnot->IsKnot() ) )
+			if ( pEndKnot->IsOrphanedKnot( ) )
 			{
 				RemoveFromShapeList( pEndKnot );
 				delete( pEndKnot );

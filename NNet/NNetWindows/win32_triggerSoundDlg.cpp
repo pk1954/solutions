@@ -47,9 +47,9 @@ void TriggerSoundDialog::handleOnOff( HWND const hDlg )
 
 void TriggerSoundDialog::evaluate( HWND const hDlg )
 {
-	m_sound.m_bOn       = IsDlgButtonChecked( hDlg, IDC_TRIGGER_SOUND_ON ) == BST_CHECKED;
-	m_sound.m_frequency = m_sound.m_bOn ? Hertz    ( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ )) : 0_Hertz;
-	m_sound.m_duration  = m_sound.m_bOn ? MilliSecs( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC )) : 0_MilliSecs;
+	m_soundDesc.m_bOn       = IsDlgButtonChecked( hDlg, IDC_TRIGGER_SOUND_ON ) == BST_CHECKED;
+	m_soundDesc.m_frequency = m_soundDesc.m_bOn ? Hertz    ( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_FREQ )) : 0_Hertz;
+	m_soundDesc.m_duration  = m_soundDesc.m_bOn ? MilliSecs( evaluateEditField( hDlg, IDC_TRIGGER_SOUND_MSEC )) : 0_MilliSecs;
 }
 
 void TriggerSoundDialog::onCommand( HWND const hDlg, WPARAM const wParam, LPARAM const lParam )
@@ -72,7 +72,7 @@ void TriggerSoundDialog::onCommand( HWND const hDlg, WPARAM const wParam, LPARAM
 
 	case IDC_TRIGGER_SOUND_TEST:
 		evaluate( hDlg );
-		Sound::Beep( m_sound );
+		m_pSound->Beep( m_soundDesc );
 		break;
 
 	default:
@@ -93,9 +93,9 @@ static INT_PTR CALLBACK dialogProc
 	{
 	case WM_INITDIALOG:
 		pDlg = reinterpret_cast<TriggerSoundDialog *>(lParam);
-		pDlg->initEditField( hDlg, IDC_TRIGGER_SOUND_FREQ, pDlg->m_sound.m_frequency.GetValue() );
-		pDlg->initEditField( hDlg, IDC_TRIGGER_SOUND_MSEC, pDlg->m_sound.m_duration .GetValue() );
-		CheckDlgButton     ( hDlg, IDC_TRIGGER_SOUND_ON,   pDlg->m_sound.m_bOn ? BST_CHECKED : BST_UNCHECKED );
+		pDlg->initEditField( hDlg, IDC_TRIGGER_SOUND_FREQ, pDlg->m_soundDesc.m_frequency.GetValue() );
+		pDlg->initEditField( hDlg, IDC_TRIGGER_SOUND_MSEC, pDlg->m_soundDesc.m_duration .GetValue() );
+		CheckDlgButton     ( hDlg, IDC_TRIGGER_SOUND_ON,   pDlg->m_soundDesc.m_bOn ? BST_CHECKED : BST_UNCHECKED );
 		pDlg->handleOnOff( hDlg );
 		::SetWindowLongPtr( hDlg, DWLP_USER, reinterpret_cast<LONG_PTR>(pDlg) );
 		return true;

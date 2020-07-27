@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "assert.h"
 #include <unordered_map>
-#include "Resource.h"
 #include "PixelTypes.h"
 #include "Analyzer.h"
 #include "win32_util.h"
@@ -186,60 +185,12 @@ void NNetModelWriterInterface::DeleteShape( ShapeId const id )
 
 		virtual void Do( NNetModel * const pModel )
 		{
-			MicroMeterPoint umPos { m_pBaseKnot->GetPosition() };
-			m_pBaseKnot->m_connections.Apply2AllInPipes
-			( 
-				[&]( Pipe & pipe ) // every incoming Pipe needs a new end knot
-				{ 
-					Knot * pKnotNew { pModel->NewShape<Knot>( umPos ) };
-					pKnotNew->m_connections.AddIncoming( & pipe );
-					pipe.SetEndKnot( pKnotNew );
-					pipe.DislocateEndPoint( );
-					pipe.Recalc();
-				} 
-			);
-			m_pBaseKnot->m_connections.ClearIncoming();
-			m_pBaseKnot->m_connections.Apply2AllOutPipes
-			( 
-				[&]( Pipe & pipe ) // every outgoing Pipe needs a new start knot
-				{ 
-					Knot * pKnotNew { pModel->NewShape<Knot>( umPos ) };
-					pKnotNew->m_connections.AddOutgoing( & pipe );
-					pipe.SetStartKnot( pKnotNew );
-					pipe.DislocateStartPoint( );
-					pipe.Recalc();
-				} 
-			);
-			m_pBaseKnot->m_connections.ClearOutgoing();
-			assert( m_pBaseKnot->m_connections.IsOrphan( ) );
-
-			pModel->RemoveFromShapeList( m_pBaseKnot );
+			pModel->DoDeleteBaseKnot( m_pBaseKnot );
 		}
 
 		virtual void Undo( NNetModel * const pModel )
 		{
-			MicroMeterPoint umPos { m_pBaseKnot->GetPosition() };
-			m_pBaseKnot->m_connections.Apply2AllInPipes
-			( 
-				[&]( Pipe & pipe ) // reconnect to original end knot
-				{ 
-					BaseKnot * pEndPoint { pipe.GetEndKnotPtr() };
-					pipe.SetEndKnot( m_pBaseKnot );
-					pipe.Recalc();
-					delete pEndPoint;
-				} 
-			);
-			m_pBaseKnot->m_connections.Apply2AllOutPipes
-			( 
-				[&]( Pipe & pipe ) // reconnect to original start knot
-				{ 
-					BaseKnot * pStartPoint { pipe.GetStartKnotPtr() };
-					pipe.SetStartKnot( m_pBaseKnot );
-					pipe.Recalc();
-					delete pStartPoint;
-				} 
-			);
-			pModel->Restore2ShapeList( m_pBaseKnot );
+			pModel->UndoDeleteBaseKnot( m_pBaseKnot );
 		}
 
 	private:
@@ -264,24 +215,12 @@ void NNetModelWriterInterface::DeleteShape( ShapeId const id )
 
 		virtual void Do( NNetModel * const pModel )
 		{
-			m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe );
-			if ( m_pStartKnot->IsOrphanedKnot( ) && ( m_pStartKnot->IsKnot() ) )
-				pModel->RemoveFromShapeList( m_pStartKnot );
-
-			m_pEndKnot->m_connections.RemoveIncoming( m_pPipe );
-			if ( m_pEndKnot->IsOrphanedKnot( ) && ( m_pEndKnot->IsKnot() ) )
-				pModel->RemoveFromShapeList( m_pEndKnot );
-
-			pModel->RemoveFromShapeList( m_pPipe );
+			pModel->DoDeletePipe( m_pPipe );
 		}
 
 		virtual void Undo( NNetModel * const pModel )
 		{
-			m_pStartKnot->m_connections.AddOutgoing( m_pPipe );
-			m_pEndKnot  ->m_connections.AddIncoming( m_pPipe );
-			pModel->Restore2ShapeList( m_pStartKnot );
-			pModel->Restore2ShapeList( m_pEndKnot );
-			pModel->Restore2ShapeList( m_pPipe );
+			pModel->UndoDeletePipe( m_pPipe );
 		}
 
 	private:
@@ -1506,21 +1445,19 @@ void NNetModelWriterInterface::SelectShapesInRect( MicroMeterRect const & rect )
 	m_CmdStack.NewCommand( new SelectShapesInRectCommand( m_pModel, rect ) );
 }
 
-void NNetModelWriterInterface::Analyze( int const cmd )
+void NNetModelWriterInterface::AnalyzeLoops( )
 {
-	class AnalyzeCommand : public SelectionCommand
+	class AnalyzeLoopsCommand : public SelectionCommand
 	{
 	public:
-		AnalyzeCommand( NNetModel * const pModel, int const & cmd )
-			:	SelectionCommand( pModel),
-			    m_cmd( cmd )
+		AnalyzeLoopsCommand( NNetModel * const pModel )
+			:	SelectionCommand( pModel)
 		{ }
 
 		virtual void Do( NNetModel * const pModel ) 
 		{ 
 			pModel->SelectAll( tBoolOp::opFalse );
-			auto func { (m_cmd == IDM_ANALYZE_LOOPS) ? ModelAnalyzer::FindLoop : ModelAnalyzer::FindAnomaly };
-			bool bFound { func( * pModel ) };
+			bool bFound { ModelAnalyzer::FindLoop( * pModel ) };
 			if ( bFound )
 				ModelAnalyzer::SelectLoopShapes( * pModel );
 		}
@@ -1530,7 +1467,34 @@ void NNetModelWriterInterface::Analyze( int const cmd )
 	};
 
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << L" " << cmd << endl;
+		TraceStream( ) << __func__ << endl;
 
-	m_CmdStack.NewCommand( new AnalyzeCommand( m_pModel, cmd ) );
+	m_CmdStack.NewCommand( new AnalyzeLoopsCommand( m_pModel ) );
+}
+
+void NNetModelWriterInterface::AnalyzeAnomalies( )
+{
+	class AnalyzeAnomaliesCommand : public SelectionCommand
+	{
+	public:
+		AnalyzeAnomaliesCommand( NNetModel * const pModel )
+		  :	SelectionCommand( pModel)
+		{ }
+
+		virtual void Do( NNetModel * const pModel ) 
+		{ 
+			pModel->SelectAll( tBoolOp::opFalse );
+			bool bFound { ModelAnalyzer::FindAnomaly( * pModel ) };
+			if ( bFound )
+				ModelAnalyzer::SelectLoopShapes( * pModel );
+		}
+
+	private:
+		int m_cmd;
+	};
+
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+
+	m_CmdStack.NewCommand( new AnalyzeAnomaliesCommand( m_pModel ) );
 }

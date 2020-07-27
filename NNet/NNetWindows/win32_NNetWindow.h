@@ -6,7 +6,7 @@
 
 #include "MoreTypes.h"
 #include "ShapeId.h"
-#include "DrawContext.h"
+#include "D2D_DrawContext.h"
 #include "tHighlightType.h"
 #include "SmoothMoveFp.h"
 #include "win32_NNetController.h"
@@ -93,7 +93,7 @@ protected:
 
 	PixelPoint  m_ptLast  { PP_NULL };	// Last cursor position during selection 
 
-	DrawContext m_context { };
+	D2D_DrawContext m_context { };
 private:
 
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 

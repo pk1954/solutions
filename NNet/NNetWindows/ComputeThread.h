@@ -47,17 +47,17 @@ public:
 
 private:
 
-	NNetModel        * m_pModel                  { nullptr };
-	Param            * m_pParam                  { nullptr };
-	SlowMotionRatio  * m_pSlowMotionRatio        { nullptr };
-	Observable       * m_pRunObservable          { nullptr };
-	Observable       * m_pPerformanceObservable  { nullptr };
-	fMicroSecs         m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
-	fMicroSecs         m_usRealTimeAvailPerCycle { 0.0_MicroSecs };
-	bool               m_bStopped                { true }; // visible to UI
-	bool               m_bComputationLocked      { true }; // internal lock (short time)
-	HiResTimer         m_hrTimer                 { };
-	SRWLOCK            m_srwlStopped             { SRWLOCK_INIT };
+	NNetModel       * m_pModel                  { nullptr };
+	Param           * m_pParam                  { nullptr };
+	SlowMotionRatio * m_pSlowMotionRatio        { nullptr };
+	Observable      * m_pRunObservable          { nullptr };
+	Observable      * m_pPerformanceObservable  { nullptr };
+	fMicroSecs        m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
+	fMicroSecs        m_usRealTimeAvailPerCycle { 0.0_MicroSecs };
+	bool              m_bStopped                { true }; // visible to UI
+	bool              m_bComputationLocked      { true }; // internal lock (short time)
+	HiResTimer        m_hrTimer                 { };
+	SRWLOCK           m_srwlStopped             { SRWLOCK_INIT };
 
 	void runComputation( );
 	void stopComputation( );

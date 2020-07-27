@@ -27,7 +27,7 @@ static void CALLBACK BeepFunc
 )
 {
 	Neuron * pNeuron { static_cast<Neuron *>( arg ) };
-	Sound::Beep( pNeuron->GetTriggerSound() );
+	Neuron::m_pSound->Beep( pNeuron->GetTriggerSound() );
 }
 
 Neuron::Neuron( MicroMeterPoint const upCenter, ShapeType const type )

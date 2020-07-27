@@ -8,6 +8,7 @@
 #include <iostream>
 #include "SCRIPT.H"
 #include "NNetModel.h"
+#include "Preferences.h"
 #include "SlowMotionRatio.h"
 #include "ComputeThread.h"
 #include "NNetModelStorage.h"
@@ -16,6 +17,7 @@
 #include "TimeDisplay.h"
 #include "SlowMotionDisplay.h"
 #include "win32_event.h"
+#include "win32_sound.h"
 #include "win32_actionTimer.h"
 #include "win32_winManager.h"
 #include "win32_scriptHook.h"
@@ -32,6 +34,7 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
 
+class ReadModelResult;
 class Observable;
 class NNetModel;
 
@@ -82,43 +85,47 @@ private:
 
 	bool m_bStarted { false }; // if true, model is visible, all functions available
 
-	HWND                     m_hwndConsole            { nullptr };
-	HWND                     m_hwndApp                { nullptr };
-	int                      m_statusMessagePart      { };
-	wofstream                m_traceStream            { };
-	WinManager               m_WinManager             { };
-	StatusBar                m_StatusBar              { };
-	Script                   m_script                 { };
-	NNetAppMenu              m_appMenu                { };
-	ActionTimer              m_atComputation          { };
-	ActionTimer              m_atDisplay              { };
-	ScriptHook               m_ScriptHook             { };
-	SlowMotionRatio          m_SlowMotionRatio        { };
-	Observable               m_cursorPosObservable    { };
-	Observable               m_blinkObservable        { };
-	Observable               m_modelTimeObservable    { };
-	Observable               m_staticModelObservable  { };
-	Observable               m_dynamicModelObservable { };
-	Observable               m_runObservable          { };
-	Observable               m_performanceObservable  { };
-	NNetModelReaderInterface m_modelReaderInterface   { };
-	NNetModelWriterInterface m_modelWriterInterface   { };
-	ComputeThread            m_computeThread          { };
-	CrsrWindow               m_crsrWindow             { };
-	PerformanceWindow        m_performanceWindow      { };
-	MainWindow               m_mainNNetWindow         { };
-	MiniWindow               m_miniNNetWindow         { };
-	ParameterDialog          m_parameterDlg           { };
-	Param                    m_parameters             { };
-	NNetModelStorage         m_modelStorage           { };
-	StatusBarDisplayFunctor  m_statusBarDispFunctor   { };
-	NNetModel                m_model                  { };
-	DrawModel                m_drawModel              { };
-	NNetColors               m_NNetColors             { };
-	NNetController           m_NNetController         { };
-	SimulationControl        m_simulationControl      { };
-	TimeDisplay              m_timeDisplay            { };
-	SlowMotionDisplay        m_slowMotionDisplay      { };
+	HWND                      m_hwndConsole              { nullptr };
+	HWND                      m_hwndApp                  { nullptr };
+	ReadModelResult         * m_pReadModelResult         { nullptr };
+	WinSound                  m_sound                    { };
+	int                       m_statusMessagePart        { };
+	wofstream                 m_traceStream              { };
+	WinManager                m_WinManager               { };
+	StatusBar                 m_StatusBar                { };
+	Script                    m_script                   { };
+	NNetAppMenu               m_appMenu                  { };
+	ActionTimer               m_atComputation            { };
+	ActionTimer               m_atDisplay                { };
+	ScriptHook                m_ScriptHook               { };
+	SlowMotionRatio           m_SlowMotionRatio          { };
+	Observable                m_cursorPosObservable      { };
+	Observable                m_blinkObservable          { };
+	Observable                m_modelTimeObservable      { };
+	Observable                m_staticModelObservable    { };
+	Observable                m_dynamicModelObservable   { };
+	Observable                m_runObservable            { };
+	Observable                m_performanceObservable    { };
+	Observable                m_unsavedChangesObservable { };
+	NNetModelReaderInterface  m_modelReaderInterface     { };
+	NNetModelWriterInterface  m_modelWriterInterface     { };
+	ComputeThread             m_computeThread            { };
+	CrsrWindow                m_crsrWindow               { };
+	PerformanceWindow         m_performanceWindow        { };
+	MainWindow                m_mainNNetWindow           { };
+	MiniWindow                m_miniNNetWindow           { };
+	ParameterDialog           m_parameterDlg             { };
+	Param                     m_parameters               { };
+	NNetModelStorage          m_modelStorage             { };
+	StatusBarDisplayFunctor   m_statusBarDispFunctor     { };
+	NNetModel                 m_model                    { };
+	DrawModel                 m_drawModel                { };
+	NNetColors                m_NNetColors               { };
+	NNetController            m_NNetController           { };
+	SimulationControl         m_simulationControl        { };
+	TimeDisplay               m_timeDisplay              { };
+	SlowMotionDisplay         m_slowMotionDisplay        { };
+	Preferences               m_preferences              { };
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 };

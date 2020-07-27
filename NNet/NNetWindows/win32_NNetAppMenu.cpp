@@ -1,6 +1,6 @@
 // win32_NNetAppMenu.cpp
 //
-// NNetSimu
+// NNetWindows
 
 #include "stdafx.h"
 #include "Resource.h"
@@ -15,9 +15,10 @@
 
 void NNetAppMenu::Start
 ( 
-	HWND                  const hwndApp,
-	ComputeThread const * const pComputeThread,
-	WinManager    const * const pWinManager
+	HWND                     const hwndApp,
+	ComputeThread    const * const pComputeThread,
+	WinManager       const * const pWinManager,
+	NNetModelStorage const * const pStorage
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
@@ -25,6 +26,7 @@ void NNetAppMenu::Start
 	m_hwndApp        = hwndApp;
 	m_pComputeThread = pComputeThread;
 	m_pWinManager    = pWinManager;
+	m_pStorage       = pStorage;
 
     SendMessage( m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_NNETSIMU ) ) );
     SendMessage( m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL    ) ) );
@@ -37,6 +39,15 @@ void NNetAppMenu::Start
 	m_hMenu = GetMenu( hwndApp );
 
 	enableMenues( MF_ENABLED ); 
+}
+
+void NNetAppMenu::Notify( bool const bImmediately )
+{
+	SetAppTitle
+	( 
+		m_pStorage->GetModelPath(), 
+		m_pStorage->UnsavedChanges()
+	);
 }
 
 void NNetAppMenu::SetAppTitle( wstring const wstrAdd, bool const bUnsavedChanges )
@@ -55,10 +66,8 @@ void NNetAppMenu::Stop( )
 	enableMenues( MF_GRAYED ); 
 }
 
-void NNetAppMenu::AdjustVisibility( )
+void NNetAppMenu::AdjustVisibility( bool const bRunning, bool const bSoundOn  )
 {
-	bool const bRunning = m_pComputeThread->IsRunning();
-
 	EnableMenuItem( m_hMenu, IDM_FORWARD, bRunning ? MF_GRAYED  : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_RESET,   bRunning ? MF_GRAYED  : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_RUN,     bRunning ? MF_GRAYED  : MF_ENABLED );
@@ -73,8 +82,8 @@ void NNetAppMenu::AdjustVisibility( )
 	EnableMenuItem( m_hMenu, IDD_ARROWS_OFF, (Pipe::GetArrowSize() != Pipe::STD_ARROW_SIZE) ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDD_ARROWS_ON,  (Pipe::GetArrowSize() == Pipe::STD_ARROW_SIZE) ? MF_GRAYED : MF_ENABLED );
 
-	EnableMenuItem( m_hMenu, IDD_SOUND_ON,    Sound::IsOn() ? MF_GRAYED : MF_ENABLED );
-	EnableMenuItem( m_hMenu, IDD_SOUND_OFF, ! Sound::IsOn() ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDD_SOUND_ON,    bSoundOn ? MF_GRAYED : MF_ENABLED );
+	EnableMenuItem( m_hMenu, IDD_SOUND_OFF, ! bSoundOn ? MF_GRAYED : MF_ENABLED );
 
 	EnableMenuItem( m_hMenu, IDD_AUTO_OPEN_ON,    AutoOpen::IsOn() ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDD_AUTO_OPEN_OFF, ! AutoOpen::IsOn() ? MF_GRAYED : MF_ENABLED );

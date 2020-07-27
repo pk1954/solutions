@@ -7,7 +7,7 @@
 #include <chrono>
 #include "MoreTypes.h"
 #include "NNetParameters.h"
-#include "win32_sound.h"
+#include "SoundInterface.h"
 #include "tHighlightType.h"
 #include "Pipe.h"
 #include "BaseKnot.h"
@@ -19,6 +19,11 @@ class Neuron : public BaseKnot
 public:
 	Neuron( MicroMeterPoint const, ShapeType const = ShapeType::Value::neuron );
 	virtual ~Neuron();
+
+	static void SetSound( Sound * const pSound )
+	{
+		m_pSound = pSound;
+	}
 
 	virtual bool IsEqual( Neuron const & other ) const
 	{
@@ -43,11 +48,9 @@ public:
 
 	static bool TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( ); }
 
-	bool       const HasAxon                 ( ) const { return m_connections.HasOutgoing();	}
-	bool       const HasTriggerSound         ( ) const { return m_triggerSound.m_bOn; }
-	//Hertz      const GetTriggerSoundFrequency( ) const { return m_triggerSound.m_frequency; }
-	//MilliSecs  const GetTriggerSoundDuration ( ) const { return m_triggerSound.m_duration; }
-	SoundDescr const GetTriggerSound         ( ) const { return m_triggerSound; }
+	bool       const HasAxon         ( ) const { return m_connections.HasOutgoing();	}
+	bool       const HasTriggerSound ( ) const { return m_triggerSound.m_bOn; }
+	SoundDescr const GetTriggerSound ( ) const { return m_triggerSound; }
 
 	SoundDescr const SetTriggerSound( SoundDescr const & );
 
@@ -77,19 +80,19 @@ protected:
 private:
 	mutable bool m_bTriggered { false };
 
-	float     m_factorW; // Parameter of wave function
-	float     m_factorU; // Parameter of wave function
+	float m_factorW; // Parameter of wave function
+	float m_factorU; // Parameter of wave function
 
 	SoundDescr m_triggerSound;
-	//bool      m_bTriggerSoundOn       { false };
-	//Hertz     m_triggerSoundFrequency { 0_Hertz };   
-	//MilliSecs m_triggerSoundDuration  { 0_MilliSecs };
 
 	PTP_WORK  m_pTpWork { nullptr };
 
 	MicroMeterPoint getAxonHillockPos( ) const;
 
 	inline static unsigned long m_counter { 0L };
+	inline static Sound       * m_pSound  { nullptr };
+
+	friend static void CALLBACK BeepFunc( PTP_CALLBACK_INSTANCE, PVOID,	PTP_WORK );
 };
 
 Neuron const * Cast2Neuron( Shape const * );

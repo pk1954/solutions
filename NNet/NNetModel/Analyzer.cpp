@@ -50,7 +50,7 @@ bool ModelAnalyzer::FindLoop( NNetModel const & model )
 
 bool ModelAnalyzer::findLoop( Shape * const pShape )
 {
-	if ( Util::EscapeKeyPressed( ) )
+	if ( ( * m_pEscFunc )( ) )
 		m_bStop = true;
 
 	if ( m_bStop )

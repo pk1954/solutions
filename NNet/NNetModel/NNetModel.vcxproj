@@ -97,12 +97,16 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib />
+    <Lib>
+      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -193,8 +197,11 @@
     <ClInclude Include="NNetColors.h" />
     <ClInclude Include="NNetModel.h" />
     <ClInclude Include="NNetModelReaderInterface.h" />
+    <ClInclude Include="NNetModelStorage.h" />
+    <ClInclude Include="NNetModelWriterInterface.h" />
     <ClInclude Include="NNetParameters.h" />
     <ClInclude Include="NNetWrapperHelpers.h" />
+    <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PipeList.h" />
     <ClInclude Include="scale.h" />
@@ -219,8 +226,11 @@
       </EnableParallelCodeGeneration>
     </ClCompile>
     <ClCompile Include="NNetModelReaderInterface.cpp" />
+    <ClCompile Include="NNetModelStorage.cpp" />
+    <ClCompile Include="NNetModelWriterInterface.cpp" />
     <ClCompile Include="NNetParameters.cpp" />
     <ClCompile Include="NNetWrapperHelpers.cpp" />
+    <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="scale.cpp" />
     <ClCompile Include="Shape.cpp" />

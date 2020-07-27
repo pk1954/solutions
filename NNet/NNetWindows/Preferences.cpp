@@ -10,10 +10,10 @@
 #include "errhndl.h"
 #include "symtab.h"
 #include "AutoOpen.h"
+#include "SoundInterface.h"
 #include "NNetModelStorage.h"
 #include "NNetParameters.h"
 #include "win32_NNetAppMenu.h"
-#include "Win32_sound.h"
 #include "Preferences.h"
 
 using std::wofstream;
@@ -42,14 +42,22 @@ public:
 class WrapSetSound: public Script_Functor
 {
 public:
+    void SetSound( Sound * const pSound )
+    {
+        m_pSound = pSound;
+    }
+
     virtual void operator() ( Script & script ) const
     {
         bool bMode { static_cast<bool>(script.ScrReadUint()) };
         if ( bMode )
-            Sound::On();
+            m_pSound->On();
         else
-            Sound::Off();
+            m_pSound->Off();
     }
+
+private:
+    Sound * m_pSound { nullptr };
 };
 
 class WrapReadModel: public Script_Functor
@@ -79,8 +87,10 @@ static wstring const PREF_OFF { L"OFF" };
 
 wstring const PREFERENCES_FILE_NAME { L"NNetSimu_UserPreferences.txt" };
 
-void Preferences::Initialize( )
+void Preferences::Initialize( Sound * pSound )
 {
+    m_pSound = pSound;
+
     wchar_t szBuffer[MAX_PATH];
     DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer );
     assert( dwRes > 0 );
@@ -91,6 +101,8 @@ void Preferences::Initialize( )
     DEF_FUNC( SetAutoOpen );
     DEF_FUNC( SetSound );
     DEF_FUNC( ReadModel );
+
+    WrapSetSound( m_pSound );
 
     SymbolTable::ScrDefConst( PREF_OFF, 0L );
     SymbolTable::ScrDefConst( PREF_ON,  1L );
@@ -118,7 +130,7 @@ bool Preferences::ReadPreferences( NNetModelStorage * pStorage )
 bool Preferences::WritePreferences( wstring const wstrModelPath )
 {
     wofstream prefFile( m_wstrPreferencesFile );
-    prefFile << L"SetSound "    << (Sound   ::IsOn() ? PREF_ON : PREF_OFF) << endl;
+    prefFile << L"SetSound "    << (m_pSound->IsOn() ? PREF_ON : PREF_OFF) << endl;
 	prefFile << L"SetAutoOpen " << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF) << endl;
     prefFile << L"ReadModel \"" << wstrModelPath << L"\"" << endl;
     prefFile.close( );

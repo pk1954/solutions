@@ -21,10 +21,8 @@ using std::wstring;
 class ModelAnalyzer
 {
 public:
-	static void SetStatusBarDisplay( DisplayFunctor * const func )
-	{
-		m_pStatusBarDisplay = func;
-	}
+	static void SetStatusBarDisplay( DisplayFunctor * const func ) { m_pStatusBarDisplay = func; }
+	static void SetEscFunc ( bool (* func )( ) ) { m_pEscFunc = func; }
 
 	static bool           FindLoop( NNetModel const & );
 	static void           SelectLoopShapes( NNetModel & );
@@ -37,6 +35,8 @@ private:
 	inline static bool             m_bStop		       { false };
 	inline static int              m_iRecDepth	       { 0 };
 	inline static ShapeList        m_shapeStack        { };
+
+	inline static bool (* m_pEscFunc )( )            { nullptr };
 
 	static bool findLoop( Shape * const );
 	static bool hasAnomaly( Knot & );

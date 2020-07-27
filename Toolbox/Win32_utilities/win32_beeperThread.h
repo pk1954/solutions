@@ -4,14 +4,15 @@
 
 #pragma once
 
-#include "win32_sound.h"
+#include "SoundInterface.h"
 #include "win32_thread.h"
 #include "win32_util_resource.h"
 
 class BeeperThread: public Util::Thread
 {
 public:
-	BeeperThread()
+	BeeperThread( Sound * const pSound )
+		: m_pSound( pSound )
 	{ 
 		StartThread( L"BeeperThread", true );
 	}
@@ -32,8 +33,9 @@ public:
 			static_cast<Hertz>    (CastToUnsignedLong(msg.wParam)), 
 			static_cast<MilliSecs>(CastToUnsignedLong(msg.lParam)) 
 		};
-		Sound::Beep( desc );
+		m_pSound->Beep( desc );
 	}
 
 private:
+	Sound * m_pSound;
 };

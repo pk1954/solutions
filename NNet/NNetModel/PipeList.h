@@ -9,8 +9,8 @@
 
 using std::vector;
 
-using PipeFunc  = function<void(Pipe &)>;
-using PipeFuncB = function<bool(Pipe &)>;
+using PipeFunc = function<void(Pipe &)>;
+using PipeCrit = function<bool(Pipe &)>;
 
 class PipeList
 {
@@ -48,7 +48,7 @@ void Apply2AllPipesInList( PipeFunc const & func ) const
 	}
 }
 
-bool Apply2AllPipesInListB( PipeFuncB const & func ) const 
+bool Apply2AllPipesInListB( PipeCrit const & func ) const 
 {
 	bool bResult { false };
 	for ( auto pPipe : m_list ) 

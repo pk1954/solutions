@@ -43,8 +43,8 @@ public:
 	void Apply2AllInPipes ( PipeFunc const & func ) const { m_incoming.Apply2AllPipesInList( func ); }
 	void Apply2AllOutPipes( PipeFunc const & func ) const { m_outgoing.Apply2AllPipesInList( func ); }
 
-	bool Apply2AllInPipesB ( PipeFuncB const & func ) const { return m_incoming.Apply2AllPipesInListB( func ); }
-	bool Apply2AllOutPipesB( PipeFuncB const & func ) const { return m_outgoing.Apply2AllPipesInListB( func ); }
+	bool Apply2AllInPipesB ( PipeCrit const & func ) const { return m_incoming.Apply2AllPipesInListB( func ); }
+	bool Apply2AllOutPipesB( PipeCrit const & func ) const { return m_outgoing.Apply2AllPipesInListB( func ); }
 
 	void Apply2AllConnectedPipes( PipeFunc const & func )
 	{
@@ -52,7 +52,7 @@ public:
 		Apply2AllOutPipes( [&]( Pipe & pipe ) { func( pipe ); } );
 	}
 
-	void Apply2AllConnectedPipesB( PipeFuncB const & func )
+	void Apply2AllConnectedPipesB( PipeCrit const & func )
 	{
 		Apply2AllInPipesB ( [&]( Pipe & pipe ) { return func( pipe ); } );
 		Apply2AllOutPipesB( [&]( Pipe & pipe ) { return func( pipe ); } );

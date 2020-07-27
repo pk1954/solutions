@@ -9,14 +9,15 @@
 using std::wstring;
 
 class NNetModelStorage;
+class Sound;
 
 class Preferences
 {
 public:
-	static void Initialize( );
-
-	static bool ReadPreferences( NNetModelStorage * );
-	static bool WritePreferences( wstring const );
+	void Initialize( Sound * );
+	bool ReadPreferences( NNetModelStorage * );
+	bool WritePreferences( wstring const );
 
 private:
+	Sound * m_pSound;
 };

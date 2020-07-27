@@ -105,6 +105,9 @@
     <ClInclude Include="LineType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SoundInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoolOp.cpp">

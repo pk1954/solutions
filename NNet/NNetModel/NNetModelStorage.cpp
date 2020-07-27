@@ -1,6 +1,6 @@
 // NNetModelStorage.cpp
 //
-// NNetSimu
+// NNetModel
 
 #include "stdafx.h"
 #include <iostream>
@@ -12,16 +12,13 @@
 #include "SCRIPT.H"
 #include "symtab.h"
 #include "errhndl.h"
-#include "Resource.h"
 #include "MoreTypes.h"
 #include "NNetModel.h"
 #include "NNetParameters.h"
-#include "Preferences.h"
 #include "InputNeuron.h"
 #include "win32_script.h"
 #include "win32_thread.h"
 #include "win32_HiResTimer.h"
-#include "win32_NNetAppMenu.h"
 #include "NNetModelStorage.h"
 
 using std::wcout;
@@ -34,22 +31,26 @@ static float const PROTOCOL_VERSION { 1.5f };   // pipeline renamed to pipe
 
 void NNetModelStorage::Initialize
 ( 
-    HWND        const hwndApp,  
-    NNetModel * const pModel,
-    Param     * const pParam,
-    Script    * const pScript
+    HWND              const hwndApp,  
+    NNetModel       * const pModel,
+    Param           * const pParam,
+    Observable      * const unsavedChangesObservable,
+    Script          * const pScript,
+    ReadModelResult * const pResult
 )
 {
-    m_hwndApp = hwndApp;
-    m_pModel  = pModel;
-    m_pParam  = pParam;
-    m_pScript = pScript;
+    m_hwndApp                  = hwndApp;
+    m_pModel                   = pModel;
+    m_pParam                   = pParam;
+    m_unsavedChangesObservable = unsavedChangesObservable;
+    m_pScript                  = pScript;
+    m_pResult                  = pResult;
 }
 
 void NNetModelStorage::setUnsavedChanges( bool const bState )
 {
     m_bUnsavedChanges = bState;
-    NNetAppMenu::SetAppTitle( m_wstrPathOfOpenModel, bState );
+    m_unsavedChangesObservable->NotifyAll( false );
 }
 
 ////////////////////////// Read /////////////////////////////////////////////
@@ -299,13 +300,8 @@ void NNetModelStorage::readModel( )
         m_wstrPathOfOpenModel = m_wstrPathOfNewModel;
         m_pModel->StaticModelChanged();
         setUnsavedChanges( false );
-        SendMessage( m_hwndApp, WM_COMMAND, IDM_READ_MODEL_FINISHED, static_cast<LPARAM>( bSuccess ) );
     }
-    else
-    {
-        MessageBox( nullptr, m_wstrPathOfNewModel.c_str(), L"Error in model file. Using default model.", MB_OK );
-        SendMessage( m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0 );
-    }
+    m_pResult->Reaction( bSuccess ? ReadModelResult::tResult::ok : ReadModelResult::tResult::errorInFile );
 }
 
 static unsigned int __stdcall readModelThreadProc( void * data ) 
@@ -337,8 +333,7 @@ void NNetModelStorage::Read( bool bConcurrently, wstring const wstrPath )
     }
     else
     {
-        MessageBox( nullptr, m_wstrPathOfNewModel.c_str(), L"Could not find model file", MB_OK );
-        PostMessage( m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0 );
+        m_pResult->Reaction( ReadModelResult::tResult::fileNotFound );
     }
 }
 

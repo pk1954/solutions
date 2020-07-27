@@ -223,8 +223,11 @@ public:
 	void ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
 	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
 
-	void CopySelection( );
 	void DeleteSelection( );
+	void DoDeleteBaseKnot( BaseKnot * const );
+	void UndoDeleteBaseKnot( BaseKnot * const );
+	void DoDeletePipe( Pipe * const );
+	void UndoDeletePipe( Pipe * const );
 
 	void DisconnectBaseKnot ( BaseKnot * const );
 	void DeleteShape( Shape * const );
