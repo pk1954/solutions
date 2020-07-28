@@ -1,4 +1,3 @@
-
 //                                                                          
 // Datei:    WrapInclude.cpp                                                 
 //                                                                          

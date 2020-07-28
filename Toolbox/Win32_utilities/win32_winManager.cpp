@@ -64,11 +64,8 @@ public:
     {
 	    UINT const uiResId  = script.ScrReadUint( );
 		INT const  iCmdShow = script.ScrReadInt( );  // WM_HIDE, WM_SHOW, ...
-
 		if ( uiResId > 0 )
-		{
 			ShowWindow( m_pWinManager->GetHWND( uiResId ), iCmdShow );
-		}
     }
 
 private:
@@ -85,7 +82,7 @@ struct CHECK_MON_STRUCT  // communication between WrapMonitorInfos and CheckMoni
     int                                 m_iMonFromScript { 0 };
     Script                            * m_pScript        { nullptr } ;
     bool                                m_bCheckResult   { true };
-    ScriptErrorHandler::ScriptErrorInfo m_errorInfo      { } ;
+    ScriptErrorHandler::ScriptException m_errorInfo      { } ;
 };
 
 static MONITORINFO ScrReadMonitorInfo( Script & script )
@@ -136,7 +133,7 @@ static BOOL CALLBACK CheckMonitorInfo( HMONITOR hMonitor, HDC hdcMonitor, LPRECT
             }
         }
     }
-    catch ( ScriptErrorHandler::ScriptErrorInfo const & errInfo ) // exception handling cannot pass through C function
+    catch ( ScriptErrorHandler::ScriptException const & errInfo ) // exception handling cannot pass through C function
     {                                                 
         pMonStruct->m_errorInfo = errInfo;                        // have to pass it manually
         bRes = false;

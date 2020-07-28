@@ -123,7 +123,7 @@ void NNetAppWindow::Start( )
 
 	m_pReadModelResult = new NNetReadModelResult( m_hwndApp, & m_modelStorage );
 	m_model               .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
-	m_modelStorage        .Initialize( m_hwndApp, & m_model, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult );
+	m_modelStorage        .Initialize( & m_model, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult );
 	m_modelWriterInterface.Initialize( & m_traceStream );
 	m_drawModel           .Initialize( & m_model );
 	m_NNetColors          .Initialize( & m_blinkObservable );

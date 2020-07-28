@@ -5,6 +5,7 @@
 #pragma once
 
 #include <vector>
+#include <exception>
 #include "util.h"
 #include "BoolOp.h"
 #include "MoreTypes.h"
@@ -22,6 +23,12 @@ class Param;
 
 using ShapeList = vector<Shape *>;
 
+class ShapeErrorHandler
+{
+public:
+	virtual void operator()( ShapeId const ) = 0;
+};
+
 // non member function used in class definition 
 MicroMeterRect ComputeEnclosingRect( ShapeList const & );
 
@@ -32,7 +39,6 @@ void ReplaceEndKnot  ( Pipe * const, BaseKnot * const );
 class NNetModel
 {
 public:
-
 	void Initialize( Param * const, Observable * const, Observable * const, Observable * const );
 
 	NNetModel()	{}
@@ -85,13 +91,22 @@ public:
 			return false;
 	}
 
-	bool          IsShapeIdOk  ( ShapeId const id ) const { return IsDefined( id ) && IsValidShapeId( id ); }
-	Shape       * GetShape     ( ShapeId const id )       { return IsShapeIdOk( id ) ? m_Shapes[id.GetValue()] : nullptr; }
-	Shape const * GetConstShape( ShapeId const id ) const {	return IsShapeIdOk( id ) ? m_Shapes[id.GetValue()] : nullptr; }
+	void CheckShapeId( ShapeId const id ) const
+	{
+		if ( IsUndefined( id ) || IsInvalidShapeId( id ) )
+		{
+			assert( m_pShapeErrorHandler );
+			(* m_pShapeErrorHandler)( id );
+		}
+	}
+
+	Shape       * GetShape     ( ShapeId const id )       { CheckShapeId( id ); return m_Shapes[id.GetValue()]; }
+	Shape const * GetConstShape( ShapeId const id ) const {	CheckShapeId( id ); return m_Shapes[id.GetValue()]; }
 	
-	fHertz          const GetPulseRate  ( ShapeId const ) const;
-	MicroMeterPoint const GetShapePos   ( ShapeId const ) const;
-	bool            const IsValidShapeId( ShapeId const id  ) const { return id.GetValue() < m_Shapes.size(); }
+	fHertz          const GetPulseRate    ( ShapeId const ) const;
+	MicroMeterPoint const GetShapePos     ( ShapeId const ) const;
+	bool            const IsValidShapeId  ( ShapeId const id ) const { return id.GetValue() <  m_Shapes.size(); }
+	bool            const IsInvalidShapeId( ShapeId const id ) const { return id.GetValue() >= m_Shapes.size(); }
 
 	fMicroSecs      const GetSimulationTime ( ) const { return m_timeStamp; }
 	long            const GetSizeOfShapeList( ) const { return CastToLong( m_Shapes.size() ); }
@@ -207,7 +222,11 @@ public:
 	virtual bool Compute( );
 
 	void CreateInitialShapes();
-	void SetShape( Shape * const pShape, ShapeId const id )	{ m_Shapes[ id.GetValue() ] = pShape; }
+	void SetShape( Shape * const pShape, ShapeId const id )	
+	{
+		CheckShapeId( id );
+		m_Shapes[ id.GetValue() ] = pShape; 
+	}
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
@@ -244,8 +263,7 @@ public:
 
 	void MarkShape( ShapeId const idShape, tBoolOp const op )
 	{
-		if ( Shape * const pShape { GetShapePtr<Shape *>( idShape ) } )
-			pShape->Mark( op );
+		GetShapePtr<Shape *>( idShape )->Mark( op );
 	}
 
 	ShapeId const NewShapeListSlot( )
@@ -291,6 +309,11 @@ public:
 		return ::OrthoVector( GetShapeConstPtr<Pipe const *>( idPipe )->GetVector(), NEURON_RADIUS * 2.f );
 	}
 
+	void SetShapeErrorHandler( ShapeErrorHandler * const pHandler )
+	{	
+		m_pShapeErrorHandler = pHandler;
+	}
+
 private:
 
 	ShapeList      m_Shapes                  { };
@@ -306,6 +329,8 @@ private:
 	unsigned long m_nrOfKnots        { 0L };
 	unsigned long m_nrOfNeurons      { 0L };
 	unsigned long m_nrOfINputNeurons { 0L };
+
+	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
 
 	// local functions
 

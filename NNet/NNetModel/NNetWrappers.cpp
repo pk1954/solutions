@@ -30,6 +30,15 @@ public:
     }
 };
 
+class WrapReadModel: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+       // not yet implemented
+    }
+};
+
 class WrapConnect: public Script_Functor
 {
 public:
@@ -156,6 +165,7 @@ void DefineNNetWrappers
 
     DEF_FUNC( ResetTimer );
     DEF_FUNC( ResetModel );
+    DEF_FUNC( ReadModel );
     DEF_FUNC( Connect );
     DEF_FUNC( DeleteShape );
     DEF_FUNC( Disconnect );

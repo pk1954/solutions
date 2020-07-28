@@ -574,9 +574,18 @@
     <ClCompile Include="DrawModel.cpp" />
     <ClCompile Include="NNetWinWrappers.cpp" />
     <ClCompile Include="Preferences.cpp" />
+    <ClCompile Include="SlowMotionDisplay.cpp" />
+    <ClCompile Include="TimeDisplay.cpp" />
+    <ClCompile Include="win32_crsrWindow.cpp" />
+    <ClCompile Include="win32_MiniWindow.cpp" />
     <ClCompile Include="win32_NNetAppMenu.cpp" />
+    <ClCompile Include="win32_NNetAppWindow.cpp" />
     <ClCompile Include="win32_NNetController.cpp" />
     <ClCompile Include="win32_NNetWindow.cpp" />
+    <ClCompile Include="win32_parameterDlg.cpp" />
+    <ClCompile Include="win32_performanceWindow.cpp" />
+    <ClCompile Include="win32_simulationControl.cpp" />
+    <ClCompile Include="win32_status.cpp" />
     <ClCompile Include="win32_triggerSoundDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -588,11 +597,23 @@
     <ClInclude Include="NNetWinWrappers.h" />
     <ClInclude Include="Preferences.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SlowMotionDisplay.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TimeDisplay.h" />
+    <ClInclude Include="win32_crsrWindow.h" />
+    <ClInclude Include="win32_MainWindow.h" />
+    <ClInclude Include="win32_MiniWindow.h" />
     <ClInclude Include="win32_NNetAppMenu.h" />
+    <ClInclude Include="win32_NNetAppWindow.h" />
     <ClInclude Include="win32_NNetController.h" />
     <ClInclude Include="win32_NNetWindow.h" />
+    <ClInclude Include="win32_parameterDlg.h" />
+    <ClInclude Include="win32_performanceWindow.h" />
+    <ClInclude Include="win32_scriptHook.h" />
+    <ClInclude Include="win32_simulationControl.h" />
+    <ClInclude Include="win32_slowMotionControl.h" />
+    <ClInclude Include="win32_status.h" />
     <ClInclude Include="win32_triggerSoundDlg.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

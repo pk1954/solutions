@@ -16,10 +16,7 @@ wofstream OpenTraceFile( std::wstring const wszTraceFileName )
     if ( traceStream.bad() )
     {
         std::cout << "Could not open trace file " << std::endl;
-        assert( false );
     }
-
-//    traceStream << L"OpenTraceFile " << L" \"" << wszTraceFileName << L"\"" << endl;
 
     return traceStream;
 }

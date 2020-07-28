@@ -38,18 +38,17 @@ class NNetModelStorage : public ObserverInterface
 public:
 	void Initialize
 	( 
-		HWND              const, 
 		NNetModel       * const, 
 		Param           * const, 
 		Observable      * const,
-		Script          * const,
+		Script          * const,       
 		ReadModelResult * const
 	);
 
 	virtual void Notify( bool const bImmediate ) { setUnsavedChanges( true ); }
 
 	void Write( wostream & );
-	void Read( bool const, wstring const = L"" );
+	bool Read( bool const, wstring const = L"" );
 	void ReadAsync( wstring const = L"" );
 
 	bool    const UnsavedChanges( ) const { return m_bUnsavedChanges; };
@@ -80,7 +79,7 @@ private:
 	long getCompactIdVal( ShapeId const id ) { return m_CompactIds[ id.GetValue() ].GetValue();	}
 
 	void prepareForReading( );
-	void readModel( );
+	bool readModel( );
 	void writeModel( );
 	void WriteShape( wostream &, Shape & );
 	void WriteMicroMeterPoint( wostream &, MicroMeterPoint const & );

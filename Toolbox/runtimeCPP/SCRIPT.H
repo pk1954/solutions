@@ -53,6 +53,8 @@ public:
 
 // utility functions
 
+	Scanner & GetScanner( ) { return * m_pScanAct; }
+
 	long long GetFilePos ( ) { return m_pScanAct->GetFilePos( ); };
 	uintmax_t GetFileSize( ) { return m_fileSize; };
 
@@ -64,10 +66,7 @@ public:
 
     bool ScrProcess( wstring const & );
 
-	static void StopProcessing( ) 
-	{ 
-		m_bStop = true; 
-	}
+	static void StopProcessing( ) { m_bStop = true; }
 
 private:
 

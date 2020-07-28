@@ -31,12 +31,7 @@ public:
 
     void NewCommand( Command * pCmd )
     {
-        for ( auto i = m_CommandStack.size(); i > m_iIndex; )
-        {
-            delete m_CommandStack[--i];
-            m_CommandStack.pop_back();
-        }
-
+        clearRedoStack( );
         m_CommandStack.push_back( pCmd );
 
 #ifdef _DEBUG
@@ -66,7 +61,7 @@ public:
 
     bool RedoCommand( )
     {
-        if ( m_iIndex == m_CommandStack.size() ) // top of stack, nothing do redo
+        if ( m_iIndex == m_CommandStack.size() ) // top of stack, nothing to redo
             return false;
         m_CommandStack[m_iIndex++]->Redo( m_pModel );
         m_pModel->StaticModelChanged( );
@@ -83,5 +78,14 @@ private:
 
     NNetModel const * m_pModelSave1 { nullptr };
     NNetModel const * m_pModelSave2 { nullptr };
+
+    void clearRedoStack( )
+    {
+        for ( auto i = m_CommandStack.size(); i > m_iIndex; )
+        {
+            delete m_CommandStack[--i];
+            m_CommandStack.pop_back();
+        }
+    }
 };
 

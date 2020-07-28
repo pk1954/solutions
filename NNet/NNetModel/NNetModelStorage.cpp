@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include <iostream>
 #include <iomanip>
+#include <string>
 #include <ctime>
 #include <sstream>
 #include <filesystem>
@@ -25,21 +26,20 @@ using std::wcout;
 using std::endl;
 using std::put_time;
 using std::wofstream;
+using std::to_wstring;
 using std::filesystem::exists;
 
 static float const PROTOCOL_VERSION { 1.5f };   // pipeline renamed to pipe
 
 void NNetModelStorage::Initialize
 ( 
-    HWND              const hwndApp,  
     NNetModel       * const pModel,
     Param           * const pParam,
     Observable      * const unsavedChangesObservable,
-    Script          * const pScript,
+    Script          * const pScript, 
     ReadModelResult * const pResult
 )
 {
-    m_hwndApp                  = hwndApp;
     m_pModel                   = pModel;
     m_pParam                   = pParam;
     m_unsavedChangesObservable = unsavedChangesObservable;
@@ -82,7 +82,7 @@ public:
     virtual void operator() ( Script & script ) const
     {   
         ShapeId const idFromScript{ script.ScrReadLong() };
-        m_pModel->MarkShape( idFromScript, tBoolOp::opTrue );
+        return m_pModel->MarkShape( idFromScript, tBoolOp::opTrue );
     }
 
 private:
@@ -240,7 +240,7 @@ public:
         script.ScrReadString( L"Hertz" );
         MilliSecs const msec { script.ScrReadUlong() };
         script.ScrReadString( L"msec" );
-        pNeuron->SetTriggerSound( SoundDescr{ true, freq, msec } );
+        SoundDescr oldValue { pNeuron->SetTriggerSound( SoundDescr{ true, freq, msec } ) };
     }
 
 private:
@@ -292,9 +292,50 @@ void NNetModelStorage::prepareForReading( )
     m_bPreparedForReading = true;
 }
 
-void NNetModelStorage::readModel( ) 
+struct ShapeException: public exception
 {
-    bool bSuccess { m_pScript->ScrProcess( m_wstrPathOfNewModel ) };
+};
+
+class errorHandler : public ShapeErrorHandler
+{
+public:
+    errorHandler( Script * pScript, NNetModel * const pModel )
+      : m_pScript( pScript ),
+        m_pModel( pModel )
+    {}
+
+    virtual void operator()( ShapeId const id ) 
+    {
+        Scanner & scanner { m_pScript->GetScanner() };
+        scanner.SetExpectedToken( L"id < " + to_wstring( m_pModel->GetSizeOfShapeList() ) );
+
+        ScriptErrorHandler::HandleSemanticError
+        (
+            scanner,
+            wstring(L"Invalid shape id: ") + to_wstring( id.GetValue() )
+        );
+        throw ShapeException();
+    }
+private:
+    Script    *       m_pScript;
+    NNetModel * const m_pModel;
+};
+
+bool NNetModelStorage::readModel( ) 
+{
+    errorHandler errHndl( m_pScript, m_pModel );
+    bool         bSuccess { false };
+    m_pModel->SetShapeErrorHandler( & errHndl );
+    
+    try
+    {
+        bSuccess = m_pScript->ScrProcess( m_wstrPathOfNewModel );
+    }
+    catch ( ShapeException e ) 
+    { 
+    }
+
+    m_pModel->SetShapeErrorHandler( nullptr );
     if ( bSuccess )
     {
         m_wstrPathOfOpenModel = m_wstrPathOfNewModel;
@@ -302,6 +343,7 @@ void NNetModelStorage::readModel( )
         setUnsavedChanges( false );
     }
     m_pResult->Reaction( bSuccess ? ReadModelResult::tResult::ok : ReadModelResult::tResult::errorInFile );
+    return bSuccess;
 }
 
 static unsigned int __stdcall readModelThreadProc( void * data ) 
@@ -311,8 +353,9 @@ static unsigned int __stdcall readModelThreadProc( void * data )
     return 0;
 }
 
-void NNetModelStorage::Read( bool bConcurrently, wstring const wstrPath )
+bool NNetModelStorage::Read( bool bConcurrently, wstring const wstrPath )
 {
+    bool bRes { true };
     if ( ! m_bPreparedForReading )
         prepareForReading( );
 
@@ -320,7 +363,7 @@ void NNetModelStorage::Read( bool bConcurrently, wstring const wstrPath )
     if ( exists( m_wstrPathOfNewModel ) )
     {
         m_pModel->ResetModel();
-        wcout << L"** NNet model file " << m_wstrPathOfNewModel << endl;
+        wcout << L"*** Reading file " << m_wstrPathOfNewModel << endl;
         if ( bConcurrently )
         {
             UINT threadId { 0 };
@@ -328,13 +371,15 @@ void NNetModelStorage::Read( bool bConcurrently, wstring const wstrPath )
         }
         else
         {
-            readModel( );
+            bRes = readModel( );
         }
     }
     else
     {
         m_pResult->Reaction( ReadModelResult::tResult::fileNotFound );
+        bRes = false;
     }
+    return bRes;
 }
 
 void NNetModelStorage::ReadAsync( wstring const wstrPath )

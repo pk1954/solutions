@@ -124,7 +124,7 @@ private:
     std::wstring m_strWindowConfigurationFile;
     int          m_iNrOfMonitorConfigurations;
 
-	ScriptErrorHandler::ScriptErrorInfo m_errorInfo {};
+	ScriptErrorHandler::ScriptException m_errorInfo {};
 
     void dumpMonitorConfiguration( ) const;
     void dumpWindowCoordinates( ) const;

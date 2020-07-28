@@ -429,7 +429,7 @@ void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_pModel->ToggleStopOnTrigger( id );
+	m_CmdStack.NewCommand( new ToggleStopOnTriggerCommand( id ) );
 }
 
 void NNetModelWriterInterface::SetPulseRate( ShapeId const id, fHertz const fNewValue )

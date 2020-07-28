@@ -446,12 +446,13 @@ bool Script::ScrProcess
 				if ( m_pWrapHook )
                     (* m_pWrapHook)( * this );                // call hook function 
             
-                Symbol const & symbol = SymbolTable::GetSymbolFromName( wstrName );       // find entry in symbol table 
+                Symbol const & symbol = SymbolTable::GetSymbolFromName( wstrName ); // find entry in symbol table 
 
                 if ( symbol.GetSymbolType( ) != tSTYPE::Function )
                    ScriptErrorHandler::typeError( );          // wrong symbol type 
 
-                (symbol.GetFunction( ))( * this );             // call wrapper function 
+                symbol.GetFunction( )( * this );              // call wrapper function 
+
                 m_pScanAct = & scan;
             }   
             else if ( token == tTOKEN::End )
@@ -469,9 +470,9 @@ bool Script::ScrProcess
 		if ( m_pWrapHook != nullptr )
 			(* m_pWrapHook)( * this );                // call hook function 
     }
-    catch ( ScriptErrorHandler::ScriptErrorInfo const & errInfo )
+    catch ( ScriptErrorHandler::ScriptException const & errInfo )
     {
-        ScriptErrorHandler::handleScriptError( errInfo, * m_pScanAct );
+        ScriptErrorHandler::HandleScriptError( * m_pScanAct, errInfo );
         m_pScanAct = nullptr;
         return false;
     }

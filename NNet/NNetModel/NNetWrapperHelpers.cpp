@@ -19,7 +19,7 @@ MicroMeter ScrReadMicroMeter( Script & script )
 {
 	float const fValue = CastToFloat( script.ScrReadFloat( ) );
 	if ( fabs(fValue) > MAX_MICRO_METER.GetValue() )
-		ScriptErrorHandler::throwError( 777, L"MicroMeter value too big" );
+		throw ScriptErrorHandler::ScriptException( 777, L"MicroMeter value too big" );
 	return MicroMeter( fValue );
 }
 

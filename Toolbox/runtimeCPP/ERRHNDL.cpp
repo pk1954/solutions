@@ -18,113 +18,90 @@ using std::wstring;
 using std::wostream;
 using std::endl;
 
-// throwError: General Error handler for input script errors
-
-void ScriptErrorHandler::throwError
-(
-    short   const   sErrNr,      // error number            
-    wstring const & wstrMessage  // error message           
-)
-{
-    ScriptErrorInfo errInfo;             
-
-    errInfo.m_sErrNr      = sErrNr;                 
-    errInfo.m_wstrMessage = wstrMessage;                  
-
-    throw errInfo;
-}
-
 void ScriptErrorHandler::inputFileError( )
 {   
-    throwError( 102, L"error reading input file" );
+    throw ScriptException( 102, L"error reading input file" );
 }
     
 void ScriptErrorHandler::charConstError( )
 {   
-    throwError( 2021, L"character constant: closing ' expected" );
+    throw ScriptException( 2021, L"character constant: closing ' expected" );
 }
   
 void ScriptErrorHandler::stringConstError( )
 {   
-    throwError( 2010, L"newline or end of file in string constant" );
+    throw ScriptException( 2010, L"newline or end of file in string constant" );
 }
   
 void ScriptErrorHandler::hexCharError( )
 {   
-    throwError( 2020, L"bad char in hex notation for char const" );
+    throw ScriptException( 2020, L"bad char in hex notation for char const" );
 }
   
 void ScriptErrorHandler::numericValueError( )
 {   
-    throwError( 2000, L"illegal numeric value" );
+    throw ScriptException( 2000, L"illegal numeric value" );
 }
                
 //   eofError: Unexpected end of file in script file
 
 void ScriptErrorHandler::eofError( )
 {                    
-   throwError( 900, L"unexpected end of file" );
+   throw ScriptException( 900, L"unexpected end of file" );
 }                                   
              
 //   charError: Unknown character in script file
 
 void ScriptErrorHandler::charError( )
 {                    
-	throwError( 930, L"unknown character" );
+	throw ScriptException( 930, L"unknown character" );
 }
 
 void ScriptErrorHandler::stringError( )
 {                    
-	throwError( 940, L"unexpected string" );
+	throw ScriptException( 940, L"unexpected string" );
 }
 
 //   ScriptTokenError: Unexpected token in script file
 
 void ScriptErrorHandler::tokenError( )
 {  
-   throwError( 950, L"unexpected token" );
+   throw ScriptException( 950, L"unexpected token" );
 }
              
 //   ScriptSymbolError: Unknown symbolic const in script file
 
 void ScriptErrorHandler::symbolError( wstring const & wstrKey )
 {  
-   throwError( 970, L"unknown symbolic name: " + wstrKey );
-}
-
-//   semanticError
-
-void ScriptErrorHandler::semanticError( std::wstring const & wstrText )
-{  
-   throwError( 1000, L"semantic error: " + wstrText );
+   throw ScriptException( 970, L"unknown symbolic name: " + wstrKey );
 }
 
 //   typeError: Unexpected type of symbolic const in script file
 
 void ScriptErrorHandler::typeError( )
 {  
-   throwError( 960, L"bad type of symbolic const" );
+   throw ScriptException( 960, L"bad type of symbolic const" );
 }
             
 //   numericError: Bad numeric value in script file
 
 void ScriptErrorHandler::numericError( )
 {                    
-   throwError( 980, L"number too big" );
+   throw ScriptException( 980, L"number too big" );
 }
              
 //   negativeError: Unexpected negative value in script file
 
 void ScriptErrorHandler::negativeError( )
 {                    
-   throwError( 990, L"negative value found" );
+   throw ScriptException( 990, L"negative value found" );
 }
              
 //   funcNameError: Unknown function name in script file
 
 void ScriptErrorHandler::funcNameError( )
 {                    
-   throwError( 4000, L"unknown function name" );
+   throw ScriptException( 4000, L"unknown function name" );
 }
 
 void ScriptErrorHandler::ScrSetOutputStream( std::wostream * const out )
@@ -147,34 +124,51 @@ void ScriptErrorHandler::PrintMarkerLine( Scanner const & scanner )
     * m_pScriptTrace << L' ' << endl;
 }
 
-void ScriptErrorHandler::handleScriptError
+void ScriptErrorHandler::HandleSemanticError
+(
+    Scanner const & scanner,
+    wstring const   msg
+    )
+{
+    * m_pScriptTrace << endl << L"+++ semantic error";
+    printErrorMsg( scanner, msg );
+}
+
+void ScriptErrorHandler::HandleScriptError
 ( 
-    ScriptErrorInfo const & errInfo,
-    Scanner         const & scanner
+    Scanner         const & scanner,
+    ScriptException const & errInfo
 )
 {
-    * m_pScriptTrace << endl;
+    * m_pScriptTrace << endl << L"+++ error " << errInfo.m_sErrNr;
+    printErrorMsg( scanner, errInfo.m_wstrMessage );
+}
 
-	wstring actPath( scanner.GetActPath( ) );
-    * m_pScriptTrace << L"+++ error " << errInfo.m_sErrNr << L" in file " << actPath.c_str() << endl;
+void ScriptErrorHandler::printErrorMsg
+( 
+    Scanner const & scanner,
+    wstring const   m_wstrMessage 
+)
+{
+    * m_pScriptTrace << L" in file " << scanner.GetActPath( ).c_str() << endl;
 
     int const iLineNr = scanner.GetActLineNr( );
     if ( iLineNr > 0 )
         * m_pScriptTrace << L"+++ line " << iLineNr << endl;
 
-	wstring const wstrActLine = scanner.GetActLine( );
-	if ( ! wstrActLine.empty( ) )
-		* m_pScriptTrace << wstrActLine;
+    wstring const wstrActLine = scanner.GetActLine( );
+    if ( ! wstrActLine.empty( ) )
+        * m_pScriptTrace << wstrActLine;
 
-	PrintMarkerLine( scanner );
+    PrintMarkerLine( scanner );
 
-    if ( ! errInfo.m_wstrMessage.empty() )
-        * m_pScriptTrace << L"+++ " << errInfo.m_wstrMessage << endl;
+    if ( ! m_wstrMessage.empty() )
+        * m_pScriptTrace << L"+++ " << m_wstrMessage << endl;
 
     if ( !scanner.GetExpectedToken().empty() )
         * m_pScriptTrace << L"+++ expected \"" << scanner.GetExpectedToken().c_str() << L"\""<< endl;
 
-    * m_pScriptTrace << L"+++ error exit +++" << endl;
+    * m_pScriptTrace << L"+++ error exit" << endl;
 
     (void)m_pScriptTrace->flush( );
 }

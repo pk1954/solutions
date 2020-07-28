@@ -20,6 +20,9 @@
 #include "util.h"
 #include "win32_util.h"
 
+using std::wstring_convert;
+using std::codecvt_utf8_utf16;
+
 static wstring strVersion = L"COMPARE V1.2";
 
 class CompareError: public std::exception
@@ -138,7 +141,7 @@ public:
 	)
 	{                    
 		scanner.SetExpectedToken( strExpected );
-		ScriptErrorHandler::throwError( 125, strMessage );
+		throw ScriptErrorHandler::ScriptException( 125, strMessage );
 	}          
 
 	int DoCompare
@@ -200,9 +203,9 @@ public:
 
 			pOut->StartParagraph( 2 );
 		}
-		catch ( ScriptErrorHandler::ScriptErrorInfo const & errInfo )
+		catch ( ScriptErrorHandler::ScriptException const & errInfo )
 		{
-			ScriptErrorHandler::handleScriptError( errInfo, spec );
+			ScriptErrorHandler::HandleScriptError( spec, errInfo );
 			return errInfo.m_sErrNr;
 		}
 		catch ( CompareError err )
@@ -240,7 +243,7 @@ int main( int argc, char * argv[] )
 		return 1;
 	}
 
-	std::wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
+	wstring_convert< codecvt_utf8_utf16<wchar_t> > converter;
 
 	wstring strResFile  = converter.from_bytes( argv[1] );
 	wstring strSpecFile = converter.from_bytes( argv[2] );
