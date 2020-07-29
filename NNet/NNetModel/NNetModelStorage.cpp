@@ -11,10 +11,12 @@
 #include <filesystem>
 #include "assert.h"
 #include "SCRIPT.H"
+#include "SCRIPT.H"
 #include "symtab.h"
 #include "errhndl.h"
 #include "MoreTypes.h"
 #include "NNetModel.h"
+#include "NNetError.h"
 #include "NNetParameters.h"
 #include "InputNeuron.h"
 #include "win32_script.h"
@@ -26,7 +28,6 @@ using std::wcout;
 using std::endl;
 using std::put_time;
 using std::wofstream;
-using std::to_wstring;
 using std::filesystem::exists;
 
 static float const PROTOCOL_VERSION { 1.5f };   // pipeline renamed to pipe
@@ -292,58 +293,21 @@ void NNetModelStorage::prepareForReading( )
     m_bPreparedForReading = true;
 }
 
-struct ShapeException: public exception
-{
-};
-
-class errorHandler : public ShapeErrorHandler
-{
-public:
-    errorHandler( Script * pScript, NNetModel * const pModel )
-      : m_pScript( pScript ),
-        m_pModel( pModel )
-    {}
-
-    virtual void operator()( ShapeId const id ) 
-    {
-        Scanner & scanner { m_pScript->GetScanner() };
-        scanner.SetExpectedToken( L"id < " + to_wstring( m_pModel->GetSizeOfShapeList() ) );
-
-        ScriptErrorHandler::HandleSemanticError
-        (
-            scanner,
-            wstring(L"Invalid shape id: ") + to_wstring( id.GetValue() )
-        );
-        throw ShapeException();
-    }
-private:
-    Script    *       m_pScript;
-    NNetModel * const m_pModel;
-};
-
 bool NNetModelStorage::readModel( ) 
 {
-    errorHandler errHndl( m_pScript, m_pModel );
-    bool         bSuccess { false };
-    m_pModel->SetShapeErrorHandler( & errHndl );
-    
-    try
-    {
-        bSuccess = m_pScript->ScrProcess( m_wstrPathOfNewModel );
-    }
-    catch ( ShapeException e ) 
-    { 
-    }
-
-    m_pModel->SetShapeErrorHandler( nullptr );
-    if ( bSuccess )
+    if ( ProcessNNetScript( m_pScript, m_pModel, m_wstrPathOfNewModel ) )
     {
         m_wstrPathOfOpenModel = m_wstrPathOfNewModel;
         m_pModel->StaticModelChanged();
         setUnsavedChanges( false );
+        m_pResult->Reaction( ReadModelResult::tResult::ok );
+        return true;
     }
-    m_pResult->Reaction( bSuccess ? ReadModelResult::tResult::ok : ReadModelResult::tResult::errorInFile );
-    return bSuccess;
+    else
+    {
+        m_pResult->Reaction( ReadModelResult::tResult::errorInFile );
+        return false;
+    }
 }
 
 static unsigned int __stdcall readModelThreadProc( void * data ) 

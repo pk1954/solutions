@@ -3,6 +3,7 @@
 // NNetSimu
 
 #include "stdafx.h"
+#include <exception>
 #include "Windows.h"
 #include "Resource.h"
 #include "BoolOp.h"
@@ -388,10 +389,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDM_SELECT_SUBTREE:
         m_pModelWriterInterface->SelectSubtree( m_pNNetWindow->GetHighlightedShapeId(), tBoolOp::opTrue );
-        break;
-
-    case IDM_SCRIPT_DIALOG:
-        ScriptDialog( );
         break;
 
     default:

@@ -10,6 +10,7 @@
 #include "NNetModelWriterInterface.h"
 #include "NNetModelStorage.h"
 #include "NNetWrappers.h"
+#include "NNetError.h"
 
 using std::wcout;
 using std::endl;
@@ -68,7 +69,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	ReadModelResult        * m_pReadModelResult         { nullptr };
 
 	DefineUtilityWrapperFunctions( );
-    DefineNNetWrappers( & m_modelWriterInterface );
+	DefineNNetWrappers( & m_modelWriterInterface, & m_modelStorage );
 
 	m_pReadModelResult = new ConsReadModelResult( & m_modelStorage );
 	m_modelWriterInterface.Initialize( & m_traceStream );
@@ -89,7 +90,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	);
 	m_modelWriterInterface.Start( & m_model );
 
-	wstring wstrInputFile = L"test_1.in";
+	wstring wstrInputFile = L"D:\\SW-projects\\Solutions\\NNet\\Tests\\test_1.in";
 
 	for ( int iCount = 1; iCount < argc; iCount++ )
 	{
@@ -101,7 +102,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 		}
 	}
 
-	if ( m_modelStorage.Read( false, wstrInputFile ) )
+	if ( ProcessNNetScript( & m_script, & m_model, wstrInputFile ) )
 		wcout << L" ***** NNetSimuConsole terminated successfully";
 	else 
 		wcout << L"+++ NNetSimuConsole terminated with error";

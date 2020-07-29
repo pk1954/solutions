@@ -18,7 +18,7 @@ using std::wstring;
 using std::wostringstream;
 using std::endl;
 
-wstring GetPathOfExecutable( )
+wstring const GetPathOfExecutable( )
 {
 	int iBufSize { 256 };
 	vector<wchar_t> buffer;
@@ -32,7 +32,7 @@ wstring GetPathOfExecutable( )
 	return wstring( buffer.data() );
 }
 
-wstring AskForFileName // TODO: cleanup
+wstring const AskForFileName // TODO: cleanup
 ( 
 	wstring         pathSelected, // input: path to start 
 	wstring   const filter, 
@@ -75,19 +75,11 @@ wstring AskForFileName // TODO: cleanup
 	return wstrRes;
 }
 
-void ScriptDialog( )
+wstring const ScriptDialog( )
 {
 	wchar_t szBuffer[MAX_PATH];
 	DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer);
 	assert( dwRes > 0 );
 	wstring const wstrPath( szBuffer );
-	wstring wstrFile = AskForFileName( wstrPath, L"*.in", L"Script files", tFileMode::read );
-	if ( ! wstrFile.empty( ) )
-	{
-		Stopwatch stopwatch;
-		stopwatch.Start();
-		std::wcout << L"Processing script file " << wstrFile << L"...";
-		Script::ProcessScript( wstrFile );
-		stopwatch.Stop( L"" );
-	}
+	return AskForFileName( wstrPath, L"*.in", L"Script files", tFileMode::read );
 }

@@ -205,6 +205,7 @@
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PipeList.h" />
     <ClInclude Include="scale.h" />
+    <ClInclude Include="NNetError.h" />
     <ClInclude Include="Segment.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="ShapeId.h" />

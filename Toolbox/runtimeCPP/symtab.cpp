@@ -68,10 +68,6 @@ wstring const & SymbolTable::GetSymbolName( Symbol const & symbol )
 
 void SymbolTable::addSymbol( wstring const & wstrName, Symbol const & sym )
 {
- //   auto const iter = m_SymbolTab.find( wstrName );
-
-	//assert( iter == m_SymbolTab.end() );  // duplicate definition of symbolic constant
- //                                       
     m_SymbolTab[ wstrName ] = sym;
     m_ReverseTab[ sym ] = wstrName;
 }

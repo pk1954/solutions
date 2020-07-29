@@ -95,8 +95,14 @@ public:
 	{
 		if ( IsUndefined( id ) || IsInvalidShapeId( id ) )
 		{
-			assert( m_pShapeErrorHandler );
-			(* m_pShapeErrorHandler)( id );
+			if ( m_pShapeErrorHandler )
+			{
+				(* m_pShapeErrorHandler)( id );
+			}
+			else
+			{
+				assert( false );
+			}
 		}
 	}
 

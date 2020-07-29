@@ -21,6 +21,7 @@
 
 #include "util.h"
 #include "ObserverInterface.h"
+#include "NNetError.h"
 
 // scripting and tracing
 
@@ -30,6 +31,7 @@
 #include "NNetWrappers.h"
 #include "NNetWinWrappers.h"
 #include "UtilityWrappers.h"
+#include "win32_script.h"
 #include "win32_stopwatch.h"
 #include "win32_fatalError.h"
 
@@ -100,7 +102,7 @@ NNetAppWindow::NNetAppWindow( )
 	NNetWindow::InitClass( & m_atDisplay );
 
 	DefineUtilityWrapperFunctions( );
-	DefineNNetWrappers( & m_modelWriterInterface );
+	DefineNNetWrappers( & m_modelWriterInterface, & m_modelStorage );
 	DefineNNetWinWrappers( & m_mainNNetWindow );
 };
 
@@ -398,6 +400,10 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDM_STOP:
 		m_computeThread.StopComputation( );
+		break;
+
+	case IDM_SCRIPT_DIALOG:
+		ProcessNNetScript( & m_script, & m_model, ScriptDialog( ) );
 		break;
 
 	case IDM_SCRIPT_PROGRESS:

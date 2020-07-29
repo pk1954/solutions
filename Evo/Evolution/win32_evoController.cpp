@@ -238,7 +238,14 @@ bool EvoController::ProcessModelCommand( int const wmId, LPARAM const lParam )
 		break;
 
 	case IDM_SCRIPT_DIALOG:
-		ScriptDialog( );
+		{
+			wstring const wstrFile { ScriptDialog( ) };
+			if ( ! wstrFile.empty( ) )
+			{
+				std::wcout << L"Processing script file " << wstrFile << L"...";
+				Script::ProcessScript( wstrFile );
+			}
+		}
 		break;
 
 	case IDM_ESCAPE:

@@ -283,13 +283,13 @@ void NNetWindow::doPaint( )
 	m_pDrawModel->DrawInteriorInRect( pixRect, m_context, [&](Shape const & s) { return s.IsPipe    (); } );
 	m_pDrawModel->DrawInteriorInRect( pixRect, m_context, [&](Shape const & s) { return s.IsBaseKnot(); } );
 
-	if ( m_shapeSuperHighlighted.IsNotNull() ) // draw super highlighted shape again to be sure that it is in foreground
+	if ( IsDefined( m_shapeSuperHighlighted ) ) // draw super highlighted shape again to be sure that it is in foreground
 	{
 		m_pModelReaderInterface->DrawExterior( m_shapeSuperHighlighted, m_context, tHighlightType::superHighlighted );
 		m_pModelReaderInterface->DrawInterior( m_shapeSuperHighlighted, m_context );
 	}
 
-	if ( m_shapeHighlighted.IsNotNull() )  // draw highlighted shape again to be sure that it is in foreground
+	if ( IsDefined( m_shapeHighlighted ) )  // draw highlighted shape again to be sure that it is in foreground
 	{
 		m_pModelReaderInterface->DrawExterior( m_shapeHighlighted, m_context, tHighlightType::highlighted );
 		m_pModelReaderInterface->DrawInterior( m_shapeHighlighted, m_context );
