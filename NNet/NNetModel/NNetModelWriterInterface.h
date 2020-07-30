@@ -28,21 +28,21 @@ public:
 	void Start( NNetModel * const );
 	void Stop(); 
 
-/* ok */ void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
+/* ok */ void NewNeuron           ( MicroMeterPoint const & );
+/* ok */ void NewInputNeuron      ( MicroMeterPoint const & );
+/* ok */ void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
+/* ok */ void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
+/* ok */ void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
+/* ok */ void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
 /* ok */ void Connect             ( ShapeId const, ShapeId const );
+/* ok */ void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
 /* ok */ void Convert2InputNeuron ( ShapeId const );
 /* ok */ void Convert2Neuron      ( ShapeId const );
 /* ok */ void AppendNeuron        ( ShapeId const );
 /* ok */ void AppendInputNeuron   ( ShapeId const );
 /* ok */ void CopySelection       ( );
-/* ok */ void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
-/* ok */ void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
-/* ok */ void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
-/* ok */ void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
 /* ok */ void AnalyzeLoops        ( );
 /* ok */ void AnalyzeAnomalies    ( );
-/* ok */ void NewNeuron           ( MicroMeterPoint const & );
-/* ok */ void NewInputNeuron      ( MicroMeterPoint const & );
 /* !! */ void DeleteSelection     ( );
 /* er */ void Disconnect          ( ShapeId const );
 /* ok */ void MarkSelection       ( tBoolOp const );

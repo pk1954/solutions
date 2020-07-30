@@ -150,6 +150,26 @@ public:
     }
 };
 
+class WrapNewNeuron: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        MicroMeterPoint const umPos { ScrReadMicroMeterPoint( script ) };
+        m_pModelWriterInterface->NewNeuron( umPos );
+    }
+};
+
+class WrapNewInputNeuron: public Script_Functor
+{
+public:
+    virtual void operator() ( Script & script ) const
+    {
+        MicroMeterPoint const umPos { ScrReadMicroMeterPoint( script ) };
+        m_pModelWriterInterface->NewInputNeuron( umPos );
+    }
+};
+
 class WrapBreak : public Script_Functor
 {
 public:
@@ -181,6 +201,8 @@ void DefineNNetWrappers
     DEF_FUNC( AddIncoming2Knot );
     DEF_FUNC( AddOutgoing2Pipe );
     DEF_FUNC( AddIncoming2Pipe );
+    DEF_FUNC( NewNeuron );
+    DEF_FUNC( NewInputNeuron );
     DEF_FUNC( Break );
 
     Apply2GlobalParameters

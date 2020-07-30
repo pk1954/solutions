@@ -553,27 +553,69 @@ void NNetModelWriterInterface::SetParameter( tParameter const param, float const
 
 void NNetModelWriterInterface::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
-	class MoveShapeCommand : public Command
+	class MoveBaseKnotCommand : public Command
 	{
 	public:
-		MoveShapeCommand( Shape * const pShape, MicroMeterPoint const & delta )
-		  : m_pShape ( pShape ),
-			m_delta  ( -delta )
+		MoveBaseKnotCommand( BaseKnot * const pBaseKnot, MicroMeterPoint const & delta )
+		  : m_pBaseKnot     ( pBaseKnot ),
+			m_delta         ( delta ),
+			m_posBaseKnotOld( pBaseKnot->GetPosition() )
+		{}
+
+		virtual void Do( NNetModel * const pModel ) 
+		{ 
+			m_pBaseKnot->SetPosition( m_posBaseKnotOld + m_delta );
+		}
+
+		virtual void Undo( NNetModel * const pModel ) 
+		{ 
+			m_pBaseKnot->SetPosition( m_posBaseKnotOld );
+		}
+
+	private:
+		BaseKnot      * const m_pBaseKnot;
+		MicroMeterPoint const m_delta;
+		MicroMeterPoint const m_posBaseKnotOld;
+	};
+
+	class MovePipeCommand : public Command
+	{
+	public:
+		MovePipeCommand( Pipe * const pPipe, MicroMeterPoint const & delta )
+		  : m_pPipe ( pPipe ),
+			m_delta         ( delta ),
+			m_posStartKnotOld( pPipe->GetStartKnotPtr()->GetPosition() ),
+			m_posEndKnotOld  ( pPipe->GetEndKnotPtr  ()->GetPosition())
 		{ }
 
 		virtual void Do( NNetModel * const pModel ) 
 		{ 
-			m_pShape->MoveShape( m_delta = -m_delta); 
+			m_pPipe->GetStartKnotPtr()->SetPosition( m_posStartKnotOld + m_delta );
+			m_pPipe->GetEndKnotPtr  ()->SetPosition( m_posEndKnotOld   + m_delta  );
+		}
+
+		virtual void Undo( NNetModel * const pModel ) 
+		{ 
+			m_pPipe->GetStartKnotPtr()->SetPosition( m_posStartKnotOld );
+			m_pPipe->GetEndKnotPtr  ()->SetPosition( m_posEndKnotOld   );
 		}
 
 	private:
-		Shape   * const m_pShape;
-		MicroMeterPoint m_delta;
+		Pipe          * const m_pPipe;
+		MicroMeterPoint const m_delta;
+		MicroMeterPoint const m_posStartKnotOld;
+		MicroMeterPoint const m_posEndKnotOld;
 	};
 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << delta << endl;
-	m_CmdStack.NewCommand( new MoveShapeCommand( m_pModel->GetShapePtr<Shape *>( id ), delta ) );
+
+	Shape * const pShape { m_pModel->GetShape( id ) };
+
+	if ( pShape->IsPipe( ) )
+		m_CmdStack.NewCommand( new MovePipeCommand    ( static_cast<Pipe     *>( pShape ), delta ) );
+	else
+		m_CmdStack.NewCommand( new MoveBaseKnotCommand( static_cast<BaseKnot *>( pShape ), delta ) );
 }
 
 void NNetModelWriterInterface::MoveSelection( MicroMeterPoint const & delta )
@@ -657,7 +699,7 @@ void NNetModelWriterInterface::AddOutgoing2Knot( ShapeId const id, MicroMeterPoi
 	};
 
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id.GetValue() << pos << endl;
+		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << pos << endl;
 
 	m_CmdStack.NewCommand( new AddOutgoing2KnotCommand( m_pModel, id, pos ) );
 }
@@ -710,7 +752,7 @@ void NNetModelWriterInterface::AddIncoming2Knot( ShapeId const id, MicroMeterPoi
 	};
 
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id.GetValue() << pos << endl;
+		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << pos << endl;
 
 	m_CmdStack.NewCommand( new AddIncoming2KnotCommand( m_pModel, id, pos ) );
 }
@@ -792,7 +834,7 @@ void NNetModelWriterInterface::AddOutgoing2Pipe( ShapeId const id, MicroMeterPoi
 	};
 
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id.GetValue() << pos << endl;
+		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << pos << endl;
 
 	m_CmdStack.NewCommand( new AddOutgoing2PipeCommand( m_pModel, id, pos ) );
 }
@@ -874,7 +916,7 @@ void NNetModelWriterInterface::AddIncoming2Pipe( ShapeId const id, MicroMeterPoi
 	};
 
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id.GetValue() << pos << endl;
+		TraceStream( ) << __func__ << L" " << id.GetValue() << L" " << pos << endl;
 
 	m_CmdStack.NewCommand( new AddIncoming2PipeCommand( m_pModel, id, pos ) );
 }
@@ -945,7 +987,7 @@ void NNetModelWriterInterface::InsertNeuron( ShapeId const id, MicroMeterPoint c
 	};
 
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << L" " << id.GetValue( ) << pos << endl;
+		TraceStream( ) << __func__ << L" " << id.GetValue( ) << L" "<< pos << endl;
 
 	m_CmdStack.NewCommand( new InsertNeuronCommand( m_pModel, id, pos ) );
 }
@@ -1457,13 +1499,9 @@ void NNetModelWriterInterface::AnalyzeLoops( )
 		virtual void Do( NNetModel * const pModel ) 
 		{ 
 			pModel->SelectAll( tBoolOp::opFalse );
-			bool bFound { ModelAnalyzer::FindLoop( * pModel ) };
-			if ( bFound )
+			if ( ModelAnalyzer::FindLoop( * pModel ) )
 				ModelAnalyzer::SelectLoopShapes( * pModel );
 		}
-
-	private:
-		int m_cmd;
 	};
 
 	if ( IsTraceOn( ) )
@@ -1484,13 +1522,9 @@ void NNetModelWriterInterface::AnalyzeAnomalies( )
 		virtual void Do( NNetModel * const pModel ) 
 		{ 
 			pModel->SelectAll( tBoolOp::opFalse );
-			bool bFound { ModelAnalyzer::FindAnomaly( * pModel ) };
-			if ( bFound )
+			if ( ModelAnalyzer::FindAnomaly( * pModel ) )
 				ModelAnalyzer::SelectLoopShapes( * pModel );
 		}
-
-	private:
-		int m_cmd;
 	};
 
 	if ( IsTraceOn( ) )

@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "version.h"
 #include <iostream>
-#include "SCRIPT.H"
+#include "script.h"
 #include "trace.h"
 #include "UtilityWrappers.h"
 #include "NNetModelWriterInterface.h"
@@ -90,7 +90,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	);
 	m_modelWriterInterface.Start( & m_model );
 
-	wstring wstrInputFile = L"D:\\SW-projects\\Solutions\\NNet\\Tests\\test_1.in";
+	wstring wstrInputFile{} ; // = L"D:\\SW-projects\\Solutions\\NNet\\Tests\\test_1.in";
 
 	for ( int iCount = 1; iCount < argc; iCount++ )
 	{
@@ -101,6 +101,8 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 			wstrInputFile.assign( strCmd.begin(), strCmd.end() ); 
 		}
 	}
+
+	m_modelStorage.Read( false, L"std.mod" );
 
 	if ( ProcessNNetScript( & m_script, & m_model, wstrInputFile ) )
 		wcout << L" ***** NNetSimuConsole terminated successfully";

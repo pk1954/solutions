@@ -66,7 +66,7 @@ void Pipe::Recalc( )
 		MicroMeter   const pipeLength    { Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
 		unsigned int const iNrOfSegments { max( 1, CastToUnsignedInt(round(pipeLength / segmentLength)) ) };
 		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
-		m_potIter = m_potential.begin();
+		m_potIndex = 0;
 	}
 }
 
@@ -191,18 +191,18 @@ void Pipe::DrawInterior( DrawContext const & context ) const
 		MicroMeter      const umWidth  { m_width * PIPE_INTERIOR };
 		MicroMeterPoint const umSegVec { umVector / CastToFloat(m_potential.size()) };
 		MicroMeterPoint       umPoint  { GetStartPoint( ) };
-		tPotConstIter   const potIter  { m_potIter };
-		tPotConstIter         iter     { potIter }; 
+		size_t          const potIndex { m_potIndex };
+		size_t                index    { potIndex }; 
 		do 
 		{
-			if (++iter == m_potential.end()) 
-				iter = m_potential.begin(); 
+			if (++index == m_potential.size()) 
+				index = 0; 
 
 			MicroMeterPoint const umPointNext { umPoint + umSegVec };
-			context.DrawLine( umPoint, umPointNext, umWidth, GetInteriorColor( * iter ) );
+			context.DrawLine( umPoint, umPointNext, umWidth, GetInteriorColor( m_potential[index] ) );
 			umPoint = umPointNext;
 
-		} while (iter != potIter );
+		} while (index != potIndex );
 	}
 }
 
@@ -216,22 +216,22 @@ mV Pipe::GetVoltage( MicroMeterPoint const & point ) const
 
 		MicroMeterPoint const umSegVec { umVector / CastToFloat(m_potential.size()) };
 		MicroMeterPoint       umPoint  { GetStartPoint( ) };
-		tPotConstIter   const potIter  { m_potIter };
-		tPotConstIter         iter     { potIter }; 
+		size_t          const potIndex { m_potIndex };
+		size_t                index    { potIndex }; 
 		do 
 		{
-			if (++iter == m_potential.end()) 
-				iter = m_potential.begin();
+			if (++index == m_potential.size()) 
+				index = 0; 
 
 			MicroMeterPoint const umPoint2 { umPoint  + umSegVec };
 			if ( IsPointInRect2< MicroMeterPoint >( point, umPoint, umPoint2, umOrthoScaled ) )
 			{
-				mVresult = * iter;
+				mVresult = m_potential[index];
 				break;
 			}
 			umPoint = umPoint2;
 
-		} while (iter != potIter );
+		} while (index != potIndex );
 	}
 	return mVresult;
 }

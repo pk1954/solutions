@@ -52,17 +52,17 @@ public:
 	virtual void MoveShape( MicroMeterPoint const & );
 	virtual bool CompStep( )
 	{
-		* m_potIter = m_mVinputBuffer;
-		if ( m_potIter == m_potential.begin() )
-			m_potIter = m_potential.end() - 1;  // caution!
-		else                                    // modification if m_potIter
-		    --m_potIter;                        // must be atomic
+		m_potential[ m_potIndex ] = m_mVinputBuffer;
+		if ( m_potIndex == 0 )
+			m_potIndex = m_potential.size() - 1;  // caution!
+		else                                      // modification if m_potIndex
+		    --m_potIndex;                         // must be atomic
 		return false;
 	}
 
 	mV GetNextOutput( ) const 
 	{ 
-		return * m_potIter; 
+		return m_potential[ m_potIndex ]; 
 	}
 
 	mV GetVoltage( MicroMeterPoint const & ) const;
@@ -93,8 +93,8 @@ private:
 	BaseKnot       * m_pKnotStart { nullptr };
 	BaseKnot       * m_pKnotEnd   { nullptr };
 	MicroMeter       m_width      { PIPE_WIDTH };
+	size_t           m_potIndex   { 0 };
 	tPotentialVector m_potential  { };
-	tPotIter         m_potIter    { };
 
 	void dislocate( BaseKnot * const, MicroMeter const );
 };

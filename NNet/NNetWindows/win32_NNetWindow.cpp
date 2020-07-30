@@ -103,8 +103,6 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 {
 	UINT static const STD_FLAGS { MF_BYPOSITION | MF_STRING };
 
-	ShapeType type { m_pModelReaderInterface->GetShapeType( m_shapeHighlighted ) };
-
 	if ( m_pModelReaderInterface->AnyShapesSelected( ) )
 	{
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_DESELECT_ALL,     L"Deselect all" );
@@ -114,7 +112,14 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_DELETE_SELECTION, L"Delete selected objects" );
 		AppendMenu( hPopupMenu, STD_FLAGS, IDM_CLEAR_BEEPERS,    L"Clear selected trigger sounds" );
 	}
-	else switch ( type.GetValue() )
+	else if ( IsUndefined( m_shapeHighlighted ) )  // no shape highlighted, cursor on background
+	{
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_NEURON,         L"New neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_INPUT_NEURON,   L"New input neuron" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_SELECT_ALL_BEEPERS, L"Select all neurons with trigger sound" );
+		AppendMenu( hPopupMenu, STD_FLAGS, IDM_CLEAR_BEEPERS,      L"Clear all trigger sounds" );
+	}
+	else switch ( m_pModelReaderInterface->GetShapeType( m_shapeHighlighted ).GetValue() )
 	{
 	case ShapeType::Value::inputNeuron:
 		if ( ! m_pModelReaderInterface->HasOutgoing( m_shapeHighlighted ) )
@@ -168,13 +173,6 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDD_ARROWS_ON,     L"Arrows on" );
 		break;
 
-	case ShapeType::Value::undefined: // no shape selected, cursor on background
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_NEURON,         L"New neuron" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDD_NEW_INPUT_NEURON,   L"New input neuron" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_SELECT_ALL_BEEPERS, L"Select all neurons with trigger sound" );
-		AppendMenu( hPopupMenu, STD_FLAGS, IDM_CLEAR_BEEPERS,      L"Clear all trigger sounds" );
-		break;
-
 	default:
 		assert( false );
 	}
@@ -185,7 +183,7 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 			AppendMenu( hPopupMenu, STD_FLAGS, IDM_DESELECT_SHAPE, L"Deselect" );
 		else
 			AppendMenu( hPopupMenu, STD_FLAGS, IDM_SELECT_SHAPE, L"Select" );
-	}
+	}	
 
 	return m_shapeHighlighted.GetValue(); // will be forwarded to HandleContextMenuCommand
 }

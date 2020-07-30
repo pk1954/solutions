@@ -10,7 +10,6 @@
 class NNetModel;
 
 using std::vector;
-using std::nullopt;
 
 class Command
 {
