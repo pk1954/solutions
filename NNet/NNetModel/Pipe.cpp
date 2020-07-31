@@ -124,6 +124,7 @@ void Pipe::dislocate( BaseKnot * const pBaseKnot, MicroMeter const dislocation )
 	MicroMeterPoint const umVector { GetVector( ) };
 	MicroMeterPoint const umNewPnt { OrthoVector( umVector, dislocation ) };
 	pBaseKnot->MoveShape( umNewPnt );
+	Recalc( );
 }
 
 MicroMeterPoint Pipe::GetStartPoint( ) const 

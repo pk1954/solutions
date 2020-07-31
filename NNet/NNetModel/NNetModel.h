@@ -22,6 +22,7 @@ class EventInterface;
 class Param;
 
 using ShapeList = vector<Shape *>;
+using KnotList  = vector<Knot *>;
 
 class ShapeErrorHandler
 {
@@ -249,10 +250,10 @@ public:
 	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
 
 	void DeleteSelection( );
-	void DoDeleteBaseKnot( BaseKnot * const );
-	void UndoDeleteBaseKnot( BaseKnot * const );
-	void DoDeletePipe( Pipe * const );
-	void UndoDeletePipe( Pipe * const );
+	//void DoDeleteBaseKnot( BaseKnot * const );
+	//void UndoDeleteBaseKnot( BaseKnot * const );
+	//void DoDeletePipe( Pipe * const );
+	//void UndoDeletePipe( Pipe * const );
 
 	void DisconnectBaseKnot ( BaseKnot * const );
 	void DeleteShape( Shape * const );
@@ -285,23 +286,20 @@ public:
 		m_Shapes.push_back( pNewShape );
 	}
 
-	void RemoveFromShapeList( Shape * const pShape )
-	{
-		long lIndex { pShape->GetId().GetValue() };
-		assert( m_Shapes[ lIndex ] == pShape );
-		m_Shapes[ lIndex ] = nullptr;
-	}
-
-	void Restore2ShapeList( Shape * const pShape )
-	{
-		long lIndex { pShape->GetId().GetValue() };
-		m_Shapes[ lIndex ] = pShape;
-	}
-
 	void ReplaceInShapeList( Shape * const pRemove, Shape * pReplace )
 	{
 		long lIndex { pRemove->GetId().GetValue() };
 		m_Shapes[ lIndex ] = pReplace;
+	}
+
+	void Restore2ShapeList( Shape * const pShape )
+	{
+		ReplaceInShapeList( pShape, pShape );
+	}
+
+	void RemoveFromShapeList( Shape * const pShape )
+	{
+		ReplaceInShapeList( pShape, nullptr );
 	}
 
 	void StaticModelChanged( )

@@ -12,6 +12,7 @@
 #include "debug.h"
 
 using std::function;
+using std::abs;
 
 extern void UpperCase( std::wstring & );
 
@@ -34,7 +35,7 @@ using BYTES = NamedType< unsigned long long, struct BYTES_Parameter >;
 
 inline bool IsCloseToZero( float const f )
 {
-	return std::abs( f ) < 1.e-10f;
+	return abs( f ) < 1.e-10f;
 }
 
 template<typename SOURCE_TYPE>
