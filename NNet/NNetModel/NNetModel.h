@@ -21,8 +21,10 @@
 class EventInterface;
 class Param;
 
-using ShapeList = vector<Shape *>;
-using KnotList  = vector<Knot *>;
+// a NormalizedShapeList is a ShapeList with condition
+// NormalizedShapeList[i] == nullptr || NormalizedShapeList[i]->GetId() == i
+
+using NormalizedShapeList = vector<Shape *>;  
 
 class ShapeErrorHandler
 {
@@ -31,11 +33,7 @@ public:
 };
 
 // non member function used in class definition 
-MicroMeterRect ComputeEnclosingRect( ShapeList const & );
-
-void ConnectIncoming ( Pipe * const, BaseKnot * const );
-void ReplaceStartKnot( Pipe * const, BaseKnot * const );
-void ReplaceEndKnot  ( Pipe * const, BaseKnot * const );
+MicroMeterRect ComputeEnclosingRect( vector<Shape *> const & );
 
 class NNetModel
 {
@@ -48,6 +46,18 @@ public:
 
 	virtual ~NNetModel( );
 
+	void CallErrorHandler( ShapeId const id ) const
+	{
+		if ( m_pShapeErrorHandler )
+		{
+			(* m_pShapeErrorHandler)( id );
+		}
+		else
+		{
+			assert( false );
+		}
+	}
+
 	bool IsEqual( NNetModel const & ) const;
 
 	// readOnly functions
@@ -55,6 +65,36 @@ public:
 	template <typename T> bool HasType( Shape const * const pShape ) const 
 	{ 
 		return std::remove_pointer<T>::type::TypeFits( pShape->GetShapeType() ); 
+	}
+
+	void CheckShapeId( ShapeId const id ) const
+	{
+		if ( IsUndefined( id ) || IsInvalidShapeId( id ) )
+			CallErrorHandler( id );
+	}
+
+	bool IsShapeNullPtr( ShapeId const id ) const
+	{
+		return m_Shapes[id.GetValue()] == nullptr;
+	}
+
+	Shape const * GetConstShape( ShapeId const id ) const 
+	{	
+		CheckShapeId( id ); 
+		if ( Shape * pShape { m_Shapes[id.GetValue()] } )
+		{
+			return pShape;
+		}
+		else
+		{
+			CallErrorHandler( id );
+			return nullptr;
+		}
+	}
+
+	Shape * GetShape ( ShapeId const id )       
+	{ 
+		return const_cast<Shape *>(GetConstShape( id ) );
 	}
 
 	template <typename T>
@@ -91,24 +131,6 @@ public:
 		else 
 			return false;
 	}
-
-	void CheckShapeId( ShapeId const id ) const
-	{
-		if ( IsUndefined( id ) || IsInvalidShapeId( id ) )
-		{
-			if ( m_pShapeErrorHandler )
-			{
-				(* m_pShapeErrorHandler)( id );
-			}
-			else
-			{
-				assert( false );
-			}
-		}
-	}
-
-	Shape       * GetShape     ( ShapeId const id )       { CheckShapeId( id ); return m_Shapes[id.GetValue()]; }
-	Shape const * GetConstShape( ShapeId const id ) const {	CheckShapeId( id ); return m_Shapes[id.GetValue()]; }
 	
 	fHertz          const GetPulseRate    ( ShapeId const ) const;
 	MicroMeterPoint const GetShapePos     ( ShapeId const ) const;
@@ -134,12 +156,18 @@ public:
 		return currentValue;
 	}
 
+	Pipe * const NewPipe(  BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
+	{
+		Pipe * const pPipe { new Pipe( pKnotStart, pKnotEnd ) };
+		pPipe->SetId( NewShapeListSlot( ) );
+		return pPipe;
+	}
+
 	template <typename T> 
-	T * const NewShape( MicroMeterPoint const & pos ) 
+	T * const NewBaseKnot( MicroMeterPoint const & pos ) 
 	{ 
 		auto pT { new T( pos ) };
-		Add2ShapeList( pT );
-		StaticModelChanged( );
+		pT->SetId( NewShapeListSlot( ) );
 		return pT;
 	}
 
@@ -229,11 +257,6 @@ public:
 	virtual bool Compute( );
 
 	void CreateInitialShapes();
-	void SetShape( Shape * const pShape, ShapeId const id )	
-	{
-		CheckShapeId( id );
-		m_Shapes[ id.GetValue() ] = pShape; 
-	}
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
@@ -241,36 +264,25 @@ public:
 	void RecalcAllShapes( );
 	void ResetModel( );
 
+	NormalizedShapeList DuplicateShapes( vector<Shape *> const ) const;
+
 	float SetParameter ( tParameter const, float const );
 	void  SetNrOfShapes( long const lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
 	MicroMeterRect GetEnclosingRect() const { return m_enclosingRect; }
 
-	void ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
-	void SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
-
-	void DeleteSelection( );
-	//void DoDeleteBaseKnot( BaseKnot * const );
-	//void UndoDeleteBaseKnot( BaseKnot * const );
-	//void DoDeletePipe( Pipe * const );
-	//void UndoDeletePipe( Pipe * const );
-
-	void DisconnectBaseKnot ( BaseKnot * const );
-	void DeleteShape( Shape * const );
-
-	void Add2ShapeList( ShapeList & list, ShapeCrit const& selector ) const
-	{
-		Apply2All<Shape>( [&](Shape &s) { if ( selector(s) ) list.push_back(&s); } );
-	}
-
+	void    ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
+	void    SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
+	void    MarkShape( ShapeId const idShape, tBoolOp const op ) {	GetShapePtr<Shape *>( idShape )->Mark( op ); }
 	void    SelectBeepers() { Apply2All<Neuron>( [&](Neuron & n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
 	void    SelectSubtree ( BaseKnot * const, tBoolOp const );
 	Shape * ShallowCopy( Shape const & ) const;
-	void    ConnectToNewShapes ( Shape const &, ShapeList const & ) const;
 
-	void MarkShape( ShapeId const idShape, tBoolOp const op )
+	vector<Shape *> GetShapeList( ShapeCrit const& selector ) const
 	{
-		GetShapePtr<Shape *>( idShape )->Mark( op );
+		vector<Shape *> list;
+		Apply2All<Shape>( [&](Shape &s) { if ( selector(s) ) list.push_back(&s); } );
+		return list;
 	}
 
 	ShapeId const NewShapeListSlot( )
@@ -280,27 +292,15 @@ public:
 		return idNewSlot;
 	}
 
-	void Add2ShapeList( Shape * const pNewShape )
+	void SetShape( Shape * const pShape, ShapeId const id )	
 	{
-		pNewShape->SetId( ShapeId { GetSizeOfShapeList() } );
-		m_Shapes.push_back( pNewShape );
+		CheckShapeId( id );
+		m_Shapes[ id.GetValue() ] = pShape; 
 	}
 
-	void ReplaceInShapeList( Shape * const pRemove, Shape * pReplace )
-	{
-		long lIndex { pRemove->GetId().GetValue() };
-		m_Shapes[ lIndex ] = pReplace;
-	}
-
-	void Restore2ShapeList( Shape * const pShape )
-	{
-		ReplaceInShapeList( pShape, pShape );
-	}
-
-	void RemoveFromShapeList( Shape * const pShape )
-	{
-		ReplaceInShapeList( pShape, nullptr );
-	}
+	void ReplaceInModel ( Shape * const p2BeReplaced, Shape * pShape ) { SetShape( pShape,  p2BeReplaced->GetId() ); }
+	void Store2Model    ( Shape * const pShape )                       { SetShape( pShape,  pShape->GetId() ); }
+	void RemoveFromModel( Shape * const pShape )                       { SetShape( nullptr, pShape->GetId() ); }
 
 	void StaticModelChanged( )
 	{ 
@@ -320,13 +320,13 @@ public:
 
 private:
 
-	ShapeList      m_Shapes                  { };
-	fMicroSecs     m_timeStamp               { 0._MicroSecs };
-	Param        * m_pParam                  { nullptr };
-	Observable   * m_pModelTimeObservable    { nullptr };
-	Observable   * m_pStaticModelObservable  { nullptr };
-	Observable   * m_pDynamicModelObservable { nullptr };
-	MicroMeterRect m_enclosingRect           { };
+	NormalizedShapeList m_Shapes                  { };
+	fMicroSecs          m_timeStamp               { 0._MicroSecs };
+	Param             * m_pParam                  { nullptr };
+	Observable        * m_pModelTimeObservable    { nullptr };
+	Observable        * m_pStaticModelObservable  { nullptr };
+	Observable        * m_pDynamicModelObservable { nullptr };
+	MicroMeterRect      m_enclosingRect           { };
 
 	unsigned long m_nrOfShapes       { 0L };
 	unsigned long m_nrOfPipes        { 0L };

@@ -73,7 +73,7 @@ private:
     bool          readSign( void );
     unsigned long numeric( wstring const &, unsigned long, bool * );
 
-    Scanner * m_pScanAct;   // Pointer to active stack element
+	Scanner * m_pScanAct { nullptr };   // Pointer to active stack element
 	
 	inline static bool                   m_bStop     { false };
 	inline static Script_Functor const * m_pWrapHook { nullptr };

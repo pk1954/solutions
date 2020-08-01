@@ -126,10 +126,12 @@ void ScriptErrorHandler::PrintMarkerLine( Scanner const & scanner )
 
 void ScriptErrorHandler::HandleSemanticError
 (
-    Scanner const & scanner,
-    wstring const   msg
-    )
+    Scanner & scanner,
+    wstring const msg,
+    wstring const expected
+)
 {
+    scanner.SetExpectedToken( expected );
     * m_pScriptTrace << endl << L"+++ semantic error";
     printErrorMsg( scanner, msg );
 }

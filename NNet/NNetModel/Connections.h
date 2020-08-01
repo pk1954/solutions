@@ -30,6 +30,9 @@ public:
 	void RemoveIncoming( Pipe * const p ) { m_incoming.RemovePipe( p ); }
 	void RemoveOutgoing( Pipe * const p ) { m_outgoing.RemovePipe( p ); }
 
+	void ReplaceIncoming( Pipe * const pDel, Pipe * const pAdd ) { m_incoming.ReplacePipe( pDel, pAdd ); }
+	void ReplaceOutgoing( Pipe * const pDel, Pipe * const pAdd ) { m_outgoing.ReplacePipe( pDel, pAdd ); }
+
 	bool   HasIncoming( )                const { return ! m_incoming.IsEmpty(); }
 	bool   HasOutgoing( )                const { return ! m_outgoing.IsEmpty(); }
 	size_t GetNrOfIncomingConnections( ) const { return m_incoming.Size(); }
@@ -60,8 +63,8 @@ public:
 
 	void Restore( BaseKnot * const pBaseKnot )
 	{
-		Apply2AllInPipes ( [&]( Pipe & pipe ) { pipe.SetEndKnot  ( pBaseKnot ); pipe.Recalc(); } );
-		Apply2AllOutPipes( [&]( Pipe & pipe ) { pipe.SetStartKnot( pBaseKnot ); pipe.Recalc(); } );
+		Apply2AllInPipes ( [&]( Pipe & pipe ) { pipe.SetEndKnot  ( pBaseKnot ); } );
+		Apply2AllOutPipes( [&]( Pipe & pipe ) { pipe.SetStartKnot( pBaseKnot ); } );
 	}
 
 	void Add( Connections const & src )

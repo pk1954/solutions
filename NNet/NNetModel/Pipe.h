@@ -86,9 +86,7 @@ private:
 	inline static MicroMeter    m_arrowSize { STD_ARROW_SIZE };
 	inline static unsigned long m_counter   { 0L };
 
-	typedef vector<mV>                       tPotentialVector;
-	typedef tPotentialVector::iterator       tPotIter;
-	typedef tPotentialVector::const_iterator tPotConstIter;
+	typedef vector<mV> tPotentialVector;
 
 	BaseKnot       * m_pKnotStart { nullptr };
 	BaseKnot       * m_pKnotEnd   { nullptr };

@@ -80,6 +80,12 @@ public:
 		RestoreConnections( );
 	}
 
+	void ClearConnections( )
+	{
+		m_connections.ClearIncoming();
+		m_connections.ClearOutgoing();
+	}
+
 	Connections m_connections;
 
 protected:

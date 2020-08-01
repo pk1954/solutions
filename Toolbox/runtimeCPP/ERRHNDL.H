@@ -50,7 +50,7 @@ public:
     };
 
     static void HandleScriptError  ( Scanner const &, ScriptException const & );
-    static void HandleSemanticError( Scanner const &, wstring const );
+    static void HandleSemanticError( Scanner       &, wstring const, wstring const );
     static void PrintMarkerLine    ( Scanner const & );
     static void ScrSetOutputStream( wostream * const );
 

@@ -39,6 +39,11 @@ void RemovePipe( Pipe * const pPipe )
 	m_list.erase( res );
 }
 
+void ReplacePipe( Pipe * const pDel, Pipe * const pAdd )
+{
+	replace( begin(m_list), end(m_list), pDel, pAdd );
+}
+
 void Apply2AllPipesInList( PipeFunc const & func ) const
 {
 	for ( auto pPipe : m_list ) 

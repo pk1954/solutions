@@ -125,7 +125,6 @@ public:
                 pKnotStart->m_connections.AddOutgoing( pPipe );
                 pKnotEnd  ->m_connections.AddIncoming( pPipe );
                 pPipe->SetId( idFromScript );
-                pPipe->Recalc( );
                 pShape = pPipe;
             }
         }
