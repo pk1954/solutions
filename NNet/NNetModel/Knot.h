@@ -4,14 +4,11 @@
 
 #pragma once
 
-#include <vector>
 #include "Geometry.h"
 #include "MoreTypes.h"
 #include "tHighlightType.h"
 #include "BaseKnot.h"
 #include "Pipe.h"
-
-using std::vector;
 
 class DrawContext;
 class NNetModel;

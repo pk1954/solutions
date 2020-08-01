@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <vector>
 #include "PixelTypes.h"
 #include "MoreTypes.h"
 #include "Connections.h"

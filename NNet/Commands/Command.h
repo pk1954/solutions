@@ -67,11 +67,9 @@ public:
 
 private:
 
-    using CStack = vector<Command *>;
-
-    CStack      m_CommandStack { };
-    size_t      m_iIndex       { 0 }; // index after last valid m_CommandStack index. 0 means stack is empty.
-    NNetModel * m_pModel       { nullptr };
+    vector<Command *> m_CommandStack { };
+    size_t            m_iIndex       { 0 }; // index after last valid m_CommandStack index. 0 means stack is empty.
+    NNetModel       * m_pModel       { nullptr };
 
     void clearRedoStack( )
     {
