@@ -130,6 +130,7 @@ void NNetAppWindow::Start( )
 	m_drawModel           .Initialize( & m_model );
 	m_cmdStack            .Initialize( & m_model, & m_commandStackObservable );
 	m_NNetColors          .Initialize( & m_blinkObservable );
+	m_sound               .Initialize( & m_soundOnObservable );
 	m_NNetController      .Initialize
 	( 
 		& m_modelStorage,
