@@ -49,7 +49,7 @@ bool Symbol::operator< ( const Symbol & rhs ) const
 
 Symbol const & SymbolTable::GetSymbolFromName( wstring const & wstrKey )
 {
-    auto const iter = m_SymbolTab.find( wstrKey );
+    auto const iter = m_SymbolTab.find( & wstrKey );
 
     if ( iter == m_SymbolTab.end() )
         ScriptErrorHandler::symbolError( wstrKey );
@@ -63,13 +63,13 @@ wstring const & SymbolTable::GetSymbolName( Symbol const & symbol )
 
     assert( iter != m_ReverseTab.end( ) );
 
-    return iter->second;
+    return * iter->second;
 }
 
 void SymbolTable::addSymbol( wstring const & wstrName, Symbol const & sym )
 {
-    m_SymbolTab[ wstrName ] = sym;
-    m_ReverseTab[ sym ] = wstrName;
+    m_SymbolTab[ & wstrName ] = sym;
+    m_ReverseTab[ sym ] = & wstrName;
 }
 
 void SymbolTable::ScrDefConst( wstring const & wstrName, Script_Functor const * const pFunc )

@@ -10,6 +10,7 @@
 using std::wstring;
 
 class WinManager;
+class CommandStack;
 class ComputeThread;
 class NNetModelStorage;
 
@@ -23,20 +24,21 @@ public:
 		HWND                     const, 
 		ComputeThread    const * const, 
 		WinManager       const * const,
-		NNetModelStorage const * const 
+		NNetModelStorage const * const,
+		CommandStack     const * const,
+		Sound            const * const 
 	);
-	void AdjustVisibility( bool const, bool const );
 	void SetAppTitle( wstring const, bool const );
-	void Stop( );
 
 	virtual void Notify( bool const );
 
 private:
-	void enableMenues( UINT const );
 
 	HWND                     m_hwndApp        { nullptr };
 	HMENU                    m_hMenu          { nullptr };
 	ComputeThread    const * m_pComputeThread { nullptr };
 	WinManager       const * m_pWinManager    { nullptr };
 	NNetModelStorage const * m_pStorage       { nullptr };
+	CommandStack     const * m_pCommandStack  { nullptr };
+	Sound            const * m_pSound         { nullptr };
 };

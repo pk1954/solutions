@@ -5,14 +5,15 @@
 #pragma once
 
 #include "boolOp.h"
+#include "tParameter.h"
 #include "MoreTypes.h"
 #include "ShapeId.h"
-#include "Command.h"
 
 using std::wostream;
 
 class NNetModel;
 class ActionTimer;
+class CommandStack;
 class SlowMotionRatio;
 class NNetModelStorage;
 class PixelCoordsFp;
@@ -21,7 +22,7 @@ struct SoundDescr;
 class NNetModelWriterInterface
 {
 public:
-	void Initialize( wostream * );
+	void Initialize( wostream * const, CommandStack * const );
 
 	void Start( NNetModel * const );
 	void Stop(); 
@@ -68,9 +69,8 @@ private:
 	bool       IsTraceOn  ( ) const { return   m_bTrace; }
 	wostream & TraceStream( )       { return * m_pTraceStream; }
 
-	bool        m_bTrace       { true };
-	wostream  * m_pTraceStream { nullptr };
-	NNetModel * m_pModel       { nullptr };
-
-	CommandStack m_CmdStack {};
+	bool           m_bTrace       { true };
+	wostream     * m_pTraceStream { nullptr };
+	NNetModel    * m_pModel       { nullptr };
+	CommandStack * m_pCmdStack    { nullptr };
 }; 

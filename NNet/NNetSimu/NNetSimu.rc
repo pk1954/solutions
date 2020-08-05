@@ -9,6 +9,21 @@
 #include "version.h"
 #include "win32_utilities.rc"
 
+//
+// Icon resources
+//
+IDI_NNETSIMU ICON "NNetSimu.ico"
+IDI_SMALL    ICON "small.ico"
+
+//
+// Bitmap resources
+//
+UNDO_BITMAP BITMAP "icon-undo.ico"
+REDO_BITMAP BITMAP "icon-redo.ico"
+
+//
+// Sound resources
+//
 DISAPPEAR_SOUND    WAVE "pop.wav"
 SNAP_IN_SOUND      WAVE "locking-a-door.wav"
 UNLOCK_SOUND       WAVE "door-unlocking.wav"
@@ -16,78 +31,13 @@ SELECTION_SOUND    WAVE "tap.wav"
 NOT_POSSIBLE_SOUND WAVE "no.wav"
 
 //
-// Menu resources
+// String Table resources
 //
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
-IDC_NNET_SIMU_MAIN MENU
+STRINGTABLE
 {
-    POPUP "&File"
-    {
-		MENUITEM "&New model" ,    IDM_NEW_MODEL
-		MENUITEM "&Open model",    IDM_OPEN_MODEL
-		MENUITEM "&Save model",    IDM_SAVE_MODEL
-        MENUITEM "Save model &as", IDM_SAVE_MODEL_AS
-        MENUITEM "&Run script",    IDM_SCRIPT_DIALOG
-        MENUITEM "&Exit",          IDM_EXIT
-	}
-    POPUP "&Edit"
-    {
-        MENUITEM "&Undo", IDM_UNDO
-        MENUITEM "&Redo", IDM_REDO
-        POPUP "&Selection"
-        {
-            MENUITEM "&Select all",                             IDM_SELECT_ALL
-            MENUITEM "&Select all neurons with trigger sounds", IDM_SELECT_ALL_BEEPERS
-            MENUITEM "&Deselect all",                           IDM_DESELECT_ALL
-        }
-        MENUITEM "Clear all trigger sounds", IDM_CLEAR_BEEPERS
-    }
-    POPUP "&Action"
-    {
-        MENUITEM "&Proceed single step", IDM_FORWARD
-        MENUITEM "&Run",                 IDM_RUN
-        MENUITEM "&Stop",                IDM_STOP
-        POPUP    "&Analyze"
-        {
-            MENUITEM "Find &loops",      IDM_ANALYZE_LOOPS
-            MENUITEM "Find &anomalies",  IDM_ANALYZE_ANOMALIES
-        }
-        MENUITEM "&Center model",        IDM_CENTER_MODEL
-    }
-    POPUP "&View"
-    {
-        POPUP "&Windows"
-        {
-            MENUITEM "Show &mini window",        IDM_MINI_WINDOW
-            MENUITEM "Show &cursor window",      IDM_CRSR_WINDOW
-            MENUITEM "Show &parameter window",   IDM_PARAM_WINDOW
-            MENUITEM "Show &performance window", IDM_PERF_WINDOW
-            //MENUITEM "Show &console window",     IDM_CONS_WINDOW
-        }
-        POPUP "&Arrows"
-        {
-            MENUITEM "o&n",  IDD_ARROWS_ON
-            MENUITEM "o&ff", IDD_ARROWS_OFF
-        }
-    }
-    POPUP "&Options"
-    {
-         POPUP "&Sound"
-         {
-             MENUITEM "o&n",  IDD_SOUND_ON
-             MENUITEM "o&ff", IDD_SOUND_OFF
-         }
-         POPUP "Auto&Open"
-         {
-             MENUITEM "o&n",  IDD_AUTO_OPEN_ON
-             MENUITEM "o&ff", IDD_AUTO_OPEN_OFF
-         }
-//         MENUITEM "&Refresh rate" IDM_NNET_REFRESH_RATE
-    }
-    POPUP "&Help"
-    {
-        MENUITEM "&Info...", IDM_ABOUT
-    }
+    IDC_NNET_SIMU_MAIN "NNET_SIMU_MAIN"
+    IDS_APP_TITLE      "NNetSimu"
 }
 
 //
@@ -137,16 +87,6 @@ FONT 8, "Ms Shell Dlg"
 }
 
 //
-// String Table resources
-//
-LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
-STRINGTABLE
-{
-	IDC_NNET_SIMU_MAIN "NNET_SIMU_MAIN"
-    IDS_APP_TITLE      "NNetSimu"
-}
-
-//
 // Accelerator resources
 //
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
@@ -167,12 +107,3 @@ IDC_NNET_SIMU_MAIN ACCELERATORS
 	VK_DELETE,      IDM_DELETE,       VIRTKEY
 	VK_ESCAPE,      IDM_ESCAPE,       VIRTKEY
 }
-
-//
-// Icon resources
-//
-LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
-IDI_NNETSIMU      ICON           "NNetSimu.ico"
-
-LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
-IDI_SMALL          ICON           "small.ico"

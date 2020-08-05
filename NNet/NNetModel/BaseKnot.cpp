@@ -16,7 +16,7 @@ using std::end;
 void BaseKnot::SetPosition( MicroMeterPoint const & newPos )
 {
 	m_center = newPos;
-	m_connections.Apply2AllConnectedPipes( [&](Pipe & pipe) { pipe.Recalc(); } );
+	m_connections.Recalc();
 }
 
 void BaseKnot::MoveShape( MicroMeterPoint const & delta )

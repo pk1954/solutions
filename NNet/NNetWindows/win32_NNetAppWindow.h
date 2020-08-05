@@ -13,6 +13,7 @@
 #include "ComputeThread.h"
 #include "NNetModelStorage.h"
 #include "DrawModel.h"
+#include "CommandStack.h"
 #include "DisplayFunctor.h"
 #include "TimeDisplay.h"
 #include "SlowMotionDisplay.h"
@@ -99,6 +100,7 @@ private:
 	ActionTimer               m_atDisplay                { };
 	ScriptHook                m_ScriptHook               { };
 	SlowMotionRatio           m_SlowMotionRatio          { };
+	Observable                m_soundOnObservable        { };
 	Observable                m_cursorPosObservable      { };
 	Observable                m_blinkObservable          { };
 	Observable                m_modelTimeObservable      { };
@@ -107,6 +109,7 @@ private:
 	Observable                m_runObservable            { };
 	Observable                m_performanceObservable    { };
 	Observable                m_unsavedChangesObservable { };
+	Observable                m_commandStackObservable   { };
 	NNetModelReaderInterface  m_modelReaderInterface     { };
 	NNetModelWriterInterface  m_modelWriterInterface     { };
 	ComputeThread             m_computeThread            { };
@@ -126,6 +129,7 @@ private:
 	TimeDisplay               m_timeDisplay              { };
 	SlowMotionDisplay         m_slowMotionDisplay        { };
 	Preferences               m_preferences              { };
+	CommandStack              m_cmdStack                 { };
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 };

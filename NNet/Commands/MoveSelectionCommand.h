@@ -6,30 +6,31 @@
 
 #include "MoreTypes.h"
 #include "NNetModel.h"
-#include "Command.h"
+#include "MoveCommand.h"
 #include "BaseKnot.h"
 
-class MoveSelectionCommand : public Command
+class MoveSelectionCommand : public MoveCommand
 {
 public:
 	MoveSelectionCommand( MicroMeterPoint const & delta )
-		: m_delta( -delta )
+       : MoveCommand( -delta )
 	{ }
 
 	virtual void Do( NNetModel * const pModel ) 
 	{ 
 		MicroMeterPoint const delta = - m_delta;
 		pModel->Apply2AllSelected<BaseKnot>
-			( 
-				[&]( BaseKnot & knot ) 
-				{ 
-					knot.MoveShape( delta ); 
-					knot.m_connections.Apply2AllConnectedPipes( [&](Pipe & pipe) { pipe.Recalc(); } );
-				} 
+		( 
+			[&]( BaseKnot & knot ) 
+			{ 
+				knot.MoveShape( delta ); 
+			} 
 		);
 		m_delta = delta;
 	}
 
-private:
-	MicroMeterPoint m_delta;
+	virtual ShapeId const GetMovedShape( ) const
+	{
+		return NO_SHAPE;
+	}
 };

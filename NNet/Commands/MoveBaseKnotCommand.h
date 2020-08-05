@@ -6,15 +6,15 @@
 
 #include "MoreTypes.h"
 #include "NNetModel.h"
-#include "Command.h"
+#include "MoveCommand.h"
 #include "BaseKnot.h"
 
-class MoveBaseKnotCommand : public Command
+class MoveBaseKnotCommand : public MoveCommand
 {
 public:
 	MoveBaseKnotCommand( BaseKnot * const pBaseKnot, MicroMeterPoint const & delta )
-		: m_pBaseKnot     ( pBaseKnot ),
-		m_delta         ( delta ),
+	  : MoveCommand     ( delta ),
+		m_pBaseKnot     ( pBaseKnot ),
 		m_posBaseKnotOld( pBaseKnot->GetPosition() )
 	{}
 
@@ -28,8 +28,12 @@ public:
 		m_pBaseKnot->SetPosition( m_posBaseKnotOld );
 	}
 
+	virtual ShapeId const GetMovedShape( ) const
+	{
+		return m_pBaseKnot->GetId( );
+	}
+
 private:
 	BaseKnot      * const m_pBaseKnot;
-	MicroMeterPoint const m_delta;
 	MicroMeterPoint const m_posBaseKnotOld;
 };

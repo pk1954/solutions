@@ -70,6 +70,6 @@ public:
 private:
     static void addSymbol( wstring const &, Symbol const & );
 
-    inline static map < wstring, Symbol  > m_SymbolTab  {};
-    inline static map < Symbol,  wstring > m_ReverseTab {};
+    inline static map < wstring const *, Symbol > m_SymbolTab  {};
+    inline static map < Symbol, wstring const * > m_ReverseTab {};
 };

@@ -4,10 +4,13 @@
 
 #pragma once
 
+#include <string>
 #include "Windows.h"
 #include "MoreTypes.h"
 #include "Mmsystem.h"
 #include "SoundInterface.h"
+
+using std::wstring;
 
 class WinSound : public Sound
 {

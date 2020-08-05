@@ -14,8 +14,8 @@ class Connect2BaseKnotCommand : public Command
 public:
 	Connect2BaseKnotCommand( BaseKnot * const pSrc, BaseKnot * const pDst )
 		:	m_pBaseKnotSrc( pSrc ),
-		m_pBaseKnotDst( pDst ),
-		m_pDstConnections( m_pBaseKnotDst->m_connections.Clone() )
+			m_pBaseKnotDst( pDst ),
+			m_pDstConnections( m_pBaseKnotDst->m_connections.Clone() )
 	{ }
 
 	~Connect2BaseKnotCommand( )

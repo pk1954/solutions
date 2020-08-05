@@ -126,8 +126,9 @@ void NNetAppWindow::Start( )
 	m_pReadModelResult = new NNetReadModelResult( m_hwndApp, & m_modelStorage );
 	m_model               .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
 	m_modelStorage        .Initialize( & m_model, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult );
-	m_modelWriterInterface.Initialize( & m_traceStream );
+	m_modelWriterInterface.Initialize( & m_traceStream, & m_cmdStack );
 	m_drawModel           .Initialize( & m_model );
+	m_cmdStack            .Initialize( & m_model, & m_commandStackObservable );
 	m_NNetColors          .Initialize( & m_blinkObservable );
 	m_NNetController      .Initialize
 	( 
@@ -150,7 +151,7 @@ void NNetAppWindow::Start( )
 	m_StatusBar        .SetRefreshRate( 300ms );
 
 	m_computeThread.Start( & m_model, & m_parameters, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable	);
-	m_appMenu      .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_modelStorage );
+	m_appMenu      .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_modelStorage, & m_cmdStack, & m_sound );
 	m_StatusBar    .Start( m_hwndApp );
 
 	m_mainNNetWindow.Start
@@ -213,6 +214,8 @@ void NNetAppWindow::Start( )
 	m_parameters              .RegisterObserver( & m_computeThread );
 	m_parameters              .RegisterObserver( & m_parameterDlg );
 	m_unsavedChangesObservable.RegisterObserver( & m_appMenu );
+	m_soundOnObservable       .RegisterObserver( & m_appMenu );
+	m_commandStackObservable  .RegisterObserver( & m_appMenu );
 
 	configureStatusBar( );
 	adjustChildWindows( );
@@ -226,6 +229,8 @@ void NNetAppWindow::Start( )
 	m_performanceWindow.Show( true );
 
 	m_WinManager.GetWindowConfiguration( );
+
+	m_appMenu.Notify( true );
 
 	Show( true );
 
@@ -250,19 +255,21 @@ void NNetAppWindow::Stop()
 	m_performanceWindow   .Stop( );
 	m_parameterDlg        .Stop( );
 	m_StatusBar           .Stop( );
-	m_appMenu             .Stop( );
 	m_modelReaderInterface.Stop( );
 	m_modelWriterInterface.Stop( );
 
-	m_staticModelObservable .UnregisterAllObservers( );
-	m_blinkObservable       .UnregisterAllObservers( );
-	m_dynamicModelObservable.UnregisterAllObservers( );
-	m_cursorPosObservable   .UnregisterAllObservers( );
-	m_performanceObservable .UnregisterAllObservers( );
-	m_modelTimeObservable   .UnregisterAllObservers( );
-	m_runObservable         .UnregisterAllObservers( );
-	m_SlowMotionRatio       .UnregisterAllObservers( );
-	m_parameters            .UnregisterAllObservers( );
+	m_staticModelObservable   .UnregisterAllObservers( );
+	m_blinkObservable         .UnregisterAllObservers( );
+	m_dynamicModelObservable  .UnregisterAllObservers( );
+	m_cursorPosObservable     .UnregisterAllObservers( );
+	m_performanceObservable   .UnregisterAllObservers( );
+	m_modelTimeObservable     .UnregisterAllObservers( );
+	m_runObservable           .UnregisterAllObservers( );
+	m_SlowMotionRatio         .UnregisterAllObservers( );
+	m_parameters              .UnregisterAllObservers( );
+	m_unsavedChangesObservable.UnregisterAllObservers( );
+	m_soundOnObservable       .UnregisterAllObservers( );
+	m_commandStackObservable  .UnregisterAllObservers( );
 
 	m_WinManager.RemoveAll( );
 
@@ -282,7 +289,7 @@ LRESULT NNetAppWindow::UserProc
 
 	case WM_ENTERMENULOOP:
 		if ( wParam == false )
-			m_appMenu.AdjustVisibility( m_computeThread.IsRunning(), m_sound.IsOn() );
+			m_appMenu.Notify( true );
 		break;
 
 	case WM_PAINT:

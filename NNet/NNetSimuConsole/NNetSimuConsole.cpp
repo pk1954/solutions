@@ -7,6 +7,7 @@
 #include "script.h"
 #include "trace.h"
 #include "UtilityWrappers.h"
+#include "CommandStack.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelStorage.h"
 #include "NNetWrappers.h"
@@ -66,13 +67,14 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	Observable               m_dynamicModelObservable   { };
 	Observable               m_unsavedChangesObservable { };
 	Script                   m_script                   { };
+	CommandStack             m_cmdStack                 { };
 	ReadModelResult        * m_pReadModelResult         { nullptr };
 
 	DefineUtilityWrapperFunctions( );
 	DefineNNetWrappers( & m_modelWriterInterface, & m_modelStorage );
 
 	m_pReadModelResult = new ConsReadModelResult( & m_modelStorage );
-	m_modelWriterInterface.Initialize( & m_traceStream );
+	m_modelWriterInterface.Initialize( & m_traceStream, & m_cmdStack );
 	m_model.Initialize
 	( 
 		& m_parameters, 

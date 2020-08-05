@@ -42,3 +42,303 @@ MonitorConfiguration  "WindowConfiguration3.cnf"
 1    # primary monitor
 0   # end of MonitorConfiguration
 
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+
+MonitorConfiguration  "WindowConfiguration1.cnf"
+1   # monitor number
+0 0 2194 1234   # monitor rectangle
+0 0 2194 1194   # work area rectangle
+1    # primary monitor
+2   # monitor number
+3840 0 6034 1234   # monitor rectangle
+3840 0 6034 1194   # work area rectangle
+0    # secondary monitor
+3   # monitor number
+-1920 1078 0 2158   # monitor rectangle
+-1920 1078 0 2118   # work area rectangle
+0    # secondary monitor
+0   # end of MonitorConfiguration
+

@@ -15,9 +15,9 @@ class AddIncoming2KnotCommand : public Command
 public:
 	AddIncoming2KnotCommand( NNetModel * pModel, ShapeId const id, MicroMeterPoint const & pos )
 	{ 
-		m_pKnotNew = pModel->NewBaseKnot<Knot>( pos );
 		m_pEnd     = pModel->GetShapePtr<BaseKnot *>( id );
-		m_pPipe    = pModel->NewPipe( m_pEnd, m_pKnotNew );
+		m_pKnotNew = pModel->NewBaseKnot<Knot>( pos );
+		m_pPipe    = pModel->NewPipe( m_pKnotNew, m_pEnd );
 		m_pKnotNew->m_connections.AddOutgoing( m_pPipe );
 	}
 

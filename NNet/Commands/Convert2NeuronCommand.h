@@ -16,9 +16,8 @@ public:
 	Convert2NeuronCommand(  NNetModel * pModel, ShapeId const idInputNeuron )
 		:	m_pInputNeuron( pModel->GetShapePtr<InputNeuron *>( idInputNeuron )  )
 	{ 
-		m_pNeuron = new Neuron( m_pInputNeuron->GetPosition( ) );
-		m_pNeuron->m_connections = m_pNeuron->m_connections;
-		m_pNeuron->SetId( m_pInputNeuron->GetId( ) );
+		m_pNeuron = pModel->NewBaseKnot<Neuron>( m_pInputNeuron->GetPosition( ) );
+		m_pNeuron->m_connections = m_pInputNeuron->m_connections;
 	}
 
 	~Convert2NeuronCommand( )

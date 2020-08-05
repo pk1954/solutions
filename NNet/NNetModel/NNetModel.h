@@ -51,10 +51,6 @@ public:
 		{
 			(* m_pShapeErrorHandler)( id );
 		}
-		else
-		{
-			assert( false );
-		}
 	}
 
 	bool IsEqual( NNetModel const & ) const;
@@ -80,15 +76,10 @@ public:
 	Shape const * GetConstShape( ShapeId const id ) const 
 	{	
 		CheckShapeId( id ); 
-		if ( Shape * pShape { m_Shapes[id.GetValue()] } )
-		{
-			return pShape;
-		}
-		else
-		{
+		Shape * pShape { m_Shapes[id.GetValue()] };
+		if ( pShape == nullptr )
 			CallErrorHandler( id );
-			return nullptr;
-		}
+		return pShape;
 	}
 
 	Shape * GetShape ( ShapeId const id )       

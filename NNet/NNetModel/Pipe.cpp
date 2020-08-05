@@ -60,14 +60,15 @@ void Pipe::Clear( )
 
 void Pipe::Recalc( )
 {
-	assert( m_pKnotStart );
-	assert( m_pKnotEnd );
-	meterPerSec  const pulseSpeed    { meterPerSec( m_pParameters->GetParameterValue( tParameter::pulseSpeed ) ) };
-	MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pParameters->GetTimeResolution( ) ) };
-	MicroMeter   const pipeLength    { Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
-	unsigned int const iNrOfSegments { max( 1, CastToUnsignedInt(round(pipeLength / segmentLength)) ) };
-	m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
-	m_potIndex = 0;
+	if ( m_pKnotStart && m_pKnotEnd )
+	{
+		meterPerSec  const pulseSpeed    { meterPerSec( m_pParameters->GetParameterValue( tParameter::pulseSpeed ) ) };
+		MicroMeter   const segmentLength { CoveredDistance( pulseSpeed, m_pParameters->GetTimeResolution( ) ) };
+		MicroMeter   const pipeLength    { Distance( m_pKnotStart->GetPosition(), m_pKnotEnd->GetPosition() ) };
+		unsigned int const iNrOfSegments { max( 1, CastToUnsignedInt(round(pipeLength / segmentLength)) ) };
+		m_potential.resize( iNrOfSegments, BASE_POTENTIAL );
+		m_potIndex = 0;
+	}
 }
 
 void Pipe::Prepare( )
