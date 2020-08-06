@@ -15,8 +15,6 @@
 #include "ClearBeepersCommand.h"
 #include "Connect2BaseKnotCommand.h"
 #include "Connect2PipeCommand.h"
-#include "Convert2InputNeuronCommand.h"
-#include "Convert2NeuronCommand.h"
 #include "CopySelectionCommand.h"
 #include "DeletePipeCommand.h"
 #include "DisconnectBaseKnotCommand.h"
@@ -115,20 +113,6 @@ void NNetModelWriterInterface::Disconnect( ShapeId const id )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
 	m_pCmdStack->NewCommand( new DisconnectBaseKnotCommand( m_pModel, id, false ) );
-}
-
-void NNetModelWriterInterface::Convert2Neuron( ShapeId const id )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_pCmdStack->NewCommand( new Convert2NeuronCommand( m_pModel, id ) );
-}
-
-void NNetModelWriterInterface::Convert2InputNeuron( ShapeId const id )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_pCmdStack->NewCommand( new Convert2InputNeuronCommand( m_pModel, id ) );
 }
 
 void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
@@ -239,14 +223,18 @@ void NNetModelWriterInterface::AppendNeuron( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_pCmdStack->NewCommand( new AppendNeuronCommand( m_pModel, id ) );
+	auto * pCmdNewNeuron { new NewNeuronCommand( m_pModel, m_pModel->GetShapePos(id) ) };
+	m_pCmdStack->NewCommand( pCmdNewNeuron );
+	m_pCmdStack->NewCommand( new Connect2BaseKnotCommand( m_pModel->GetShapePtr<Knot *>(id), pCmdNewNeuron->GetNeuron() ) );
 }
 
 void NNetModelWriterInterface::AppendInputNeuron( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_pCmdStack->NewCommand( new AppendInputNeuronCommand( m_pModel, id ) );
+	auto * pCmdNewInputNeuron { new NewInputNeuronCommand( m_pModel, m_pModel->GetShapePos(id) ) };
+	m_pCmdStack->NewCommand( pCmdNewInputNeuron );
+	m_pCmdStack->NewCommand( new Connect2BaseKnotCommand( m_pModel->GetShapePtr<Knot *>(id), pCmdNewInputNeuron->GetInputNeuron() ) );
 }
 
 void NNetModelWriterInterface::ClearBeepers( )

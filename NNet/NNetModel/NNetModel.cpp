@@ -24,7 +24,10 @@ NNetModel::NNetModel( NNetModel const & modelSrc )
 	assert( IsEqual( modelSrc ) );
 }
 
-NormalizedShapeList NNetModel::DuplicateShapes( vector<Shape *> const list ) const
+NormalizedShapeList NNetModel::DuplicateShapes
+( 
+	vector<Shape *> const list // Not neccessarily a NormalizedShapeList!
+) const
 {
 	// vector like m_Shapes with ptr to copy of shape or nullptr (if original shape is not in selection)
 	NormalizedShapeList newShapes( GetSizeOfShapeList(), nullptr ); 
@@ -34,7 +37,9 @@ NormalizedShapeList NNetModel::DuplicateShapes( vector<Shape *> const list ) con
 		if ( pShape )
 		{
 			ShapeId id { pShape->GetId() };
-			newShapes.at(id.GetValue()) = ShallowCopy( * GetConstShape( id ) ); 
+			newShapes[id.GetValue()] = ShallowCopy( pShape ); 
+			//ShapeId id { pShape->GetId() };
+			//newShapes[id.GetValue()] = ShallowCopy( GetConstShape( id ) ); 
 		}
 	}
 
@@ -217,26 +222,29 @@ bool NNetModel::isEqual( Shape const & shapeA, Shape const & shapeB ) const
 	return true;
 }
 
-Shape * NNetModel::ShallowCopy( Shape const & shape ) const
+Shape * NNetModel::ShallowCopy( Shape const * const pShape ) const
 {
-	switch ( shape.GetShapeType().GetValue() )
+	if ( pShape )
 	{
-	case ShapeType::Value::inputNeuron:
-		return new InputNeuron( static_cast<InputNeuron const &>( shape ) );
+		switch ( pShape->GetShapeType().GetValue() )
+		{
+		case ShapeType::Value::inputNeuron:
+			return new InputNeuron( static_cast<InputNeuron const &>( * pShape ) );
 
-	case ShapeType::Value::knot:
-		return new Knot( static_cast<Knot const &>( shape ) );
+		case ShapeType::Value::knot:
+			return new Knot( static_cast<Knot const &>( * pShape ) );
 
-	case ShapeType::Value::neuron:
-		return new Neuron( static_cast<Neuron const &>( shape ) );
+		case ShapeType::Value::neuron:
+			return new Neuron( static_cast<Neuron const &>( * pShape ) );
 
-	case ShapeType::Value::pipe:
-		return new Pipe( static_cast<Pipe const &>( shape ) );
+		case ShapeType::Value::pipe:
+			return new Pipe( static_cast<Pipe const &>( * pShape ) );
 
-	default:
-		assert( false );
-		return nullptr;
+		default:
+			assert( false );
+		}
 	}
+	return nullptr;
 }
 
 void NNetModel::SelectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )

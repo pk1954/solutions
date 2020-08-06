@@ -266,7 +266,7 @@ public:
 	void    MarkShape( ShapeId const idShape, tBoolOp const op ) {	GetShapePtr<Shape *>( idShape )->Mark( op ); }
 	void    SelectBeepers() { Apply2All<Neuron>( [&](Neuron & n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
 	void    SelectSubtree ( BaseKnot * const, tBoolOp const );
-	Shape * ShallowCopy( Shape const & ) const;
+	Shape * ShallowCopy( Shape const * const ) const;
 
 	vector<Shape *> GetShapeList( ShapeCrit const& selector ) const
 	{

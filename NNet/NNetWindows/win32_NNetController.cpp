@@ -305,16 +305,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelWriterInterface->Disconnect( m_pNNetWindow->GetHighlightedShapeId() );
         break;
 
-    case IDD_CONVERT2NEURON:
-        m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelWriterInterface->Convert2Neuron( m_pNNetWindow->GetHighlightedShapeId() );
-        break;
-
-    case IDD_CONVERT2INPUT_NEURON:
-        m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
-        m_pModelWriterInterface->Convert2InputNeuron( m_pNNetWindow->GetHighlightedShapeId() );
-        break;
-
     case IDD_INSERT_NEURON:
         m_pModelWriterInterface->InsertNeuron( m_pNNetWindow->GetHighlightedShapeId(), umPoint );
         break;

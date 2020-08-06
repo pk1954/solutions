@@ -32,6 +32,11 @@ public:
 		pModel->RemoveFromModel( m_pNeuron );
 	}
 
+	Neuron * const GetNeuron( )
+	{
+		return m_pNeuron;
+	}
+
 private:
 	Neuron * m_pNeuron;
 };

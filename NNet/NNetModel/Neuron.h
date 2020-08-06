@@ -83,9 +83,9 @@ private:
 	float m_factorW; // Parameter of wave function
 	float m_factorU; // Parameter of wave function
 
-	SoundDescr m_triggerSound;
+	SoundDescr m_triggerSound {};
 
-	PTP_WORK  m_pTpWork { nullptr };
+	PTP_WORK  m_pTpWork { nullptr };  // Thread pool
 
 	MicroMeterPoint getAxonHillockPos( ) const;
 

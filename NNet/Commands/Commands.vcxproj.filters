@@ -99,9 +99,6 @@
     <ClInclude Include="MovePipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Convert2InputNeuronCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ResetTimerCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -109,9 +106,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SelectAllBeepersCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Convert2NeuronCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SetParameterCommand.h">

@@ -35,8 +35,6 @@ public:
     void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
     void Connect             ( ShapeId const, ShapeId const );
     void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
-    void Convert2InputNeuron ( ShapeId const );
-    void Convert2Neuron      ( ShapeId const );
     void AppendNeuron        ( ShapeId const );
     void AppendInputNeuron   ( ShapeId const );
     void CopySelection       ( );

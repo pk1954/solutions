@@ -125,7 +125,6 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_PULSE_RATE,            L"Pulse rate" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
-		AppendMenu( hPopupMenu, MF_STRING, IDD_CONVERT2NEURON,        L"Convert into normal neuron" );
 		break;
 
 	case ShapeType::Value::neuron:
@@ -134,8 +133,6 @@ long NNetWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_INCOMING2KNOT,     L"Add incoming dendrite" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
-		if ( ! m_pModelReaderInterface->HasIncoming( m_shapeHighlighted ) )
-			AppendMenu( hPopupMenu, MF_STRING, IDD_CONVERT2INPUT_NEURON, L"Convert into input neuron" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_SELECT_SUBTREE,        L"Select subtree" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_STOP_ON_TRIGGER,       L"Stop on trigger on/off" );

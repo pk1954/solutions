@@ -51,7 +51,7 @@ void ComputeThread::RunComputation( )
 {
 	if ( m_bStopped )
 	{
-		StopComputation( false );
+		m_bStopped = false;
 		if ( ! m_bComputationLocked )  // both locks are released. We can start to run
 			runComputation();
 	}
@@ -61,7 +61,7 @@ void ComputeThread::StopComputation( )
 {
 	if ( ! m_bStopped )
 	{
-		StopComputation( true );
+		m_bStopped = true;
 		if ( ! m_bComputationLocked )  // if not already stopped, stop now
 			stopComputation();
 	}
@@ -99,7 +99,10 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 			while ( (lCyclesDone < lCyclesTodo) && ! (m_bStopped || m_bComputationLocked) )
 			{
 				if ( m_pModel->Compute( ) ) // returns true, if stop on trigger fires
-					StopComputation( true );
+				{
+					m_bStopped = true;
+					m_pRunObservable->NotifyAll( false ); // notify observers, that computation stopped
+				}
 				++lCyclesDone;
 			}
 

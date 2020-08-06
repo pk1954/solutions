@@ -116,7 +116,7 @@ protected:
 
 private:
 
-	ShapeType m_type;
+	ShapeType m_type       { ShapeType::Value::undefined };
 	ShapeId   m_identifier { NO_SHAPE };
 	bool      m_bSelected  { false };
 	bool      m_bMarked    { false };
