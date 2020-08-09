@@ -29,6 +29,7 @@ public:
 		Sound            const * const 
 	);
 	void SetAppTitle( wstring const, bool const );
+	void AdjustUndoRedo( );
 
 	virtual void Notify( bool const );
 

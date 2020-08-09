@@ -146,5 +146,8 @@
     <ClInclude Include="win32_scriptHook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UndoRedoMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

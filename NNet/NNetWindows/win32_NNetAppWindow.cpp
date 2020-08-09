@@ -45,6 +45,7 @@
 #include "win32_aboutBox.h"
 #include "Analyzer.h"
 #include "AutoOpen.h"
+#include "UndoRedoMenu.h"
 #include "win32_NNetAppWindow.h"
 
 using namespace std::literals::chrono_literals;
@@ -154,6 +155,7 @@ void NNetAppWindow::Start( )
 	m_computeThread.Start( & m_model, & m_parameters, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable	);
 	m_appMenu      .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_modelStorage, & m_cmdStack, & m_sound );
 	m_StatusBar    .Start( m_hwndApp );
+	m_undoRedoMenu .Start( & m_appMenu );
 
 	m_mainNNetWindow.Start
 	( 
@@ -216,7 +218,7 @@ void NNetAppWindow::Start( )
 	m_parameters              .RegisterObserver( & m_parameterDlg );
 	m_unsavedChangesObservable.RegisterObserver( & m_appMenu );
 	m_soundOnObservable       .RegisterObserver( & m_appMenu );
-	m_commandStackObservable  .RegisterObserver( & m_appMenu );
+	m_commandStackObservable  .RegisterObserver( & m_undoRedoMenu );
 
 	configureStatusBar( );
 	adjustChildWindows( );

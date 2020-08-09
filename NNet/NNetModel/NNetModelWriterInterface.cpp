@@ -10,8 +10,6 @@
 #include "AddOutgoing2PipeCommand.h"
 #include "AnalyzeAnomaliesCommand.h"
 #include "AnalyzeLoopsCommand.h"
-#include "AppendInputNeuronCommand.h"
-#include "AppendNeuronCommand.h"
 #include "ClearBeepersCommand.h"
 #include "Connect2BaseKnotCommand.h"
 #include "Connect2PipeCommand.h"

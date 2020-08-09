@@ -57,10 +57,16 @@ void TextBuffer::printNumber( unsigned int const data )
     printBuffer();
 }
 
+void TextBuffer::printNumber( long const data )
+{
+	m_wBuffer << data;
+	printBuffer();
+}
+
 void TextBuffer::printNumber( unsigned long long const data )
 {
-    m_wBuffer << data;
-    printBuffer();
+	m_wBuffer << data;
+	printBuffer();
 }
 
 void TextBuffer::printNumber( float const data )

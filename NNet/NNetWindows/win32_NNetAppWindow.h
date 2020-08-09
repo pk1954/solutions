@@ -17,6 +17,7 @@
 #include "DisplayFunctor.h"
 #include "TimeDisplay.h"
 #include "SlowMotionDisplay.h"
+#include "UndoRedoMenu.h"
 #include "win32_event.h"
 #include "win32_sound.h"
 #include "win32_actionTimer.h"
@@ -130,6 +131,7 @@ private:
 	SlowMotionDisplay         m_slowMotionDisplay        { };
 	Preferences               m_preferences              { };
 	CommandStack              m_cmdStack                 { };
+	UndoRedoMenu              m_undoRedoMenu             { };
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 };

@@ -33,9 +33,6 @@
     <ClInclude Include="InsertNeuronCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AppendInputNeuronCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MoveSelectionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -93,9 +90,6 @@
     <ClInclude Include="SelectShapesInRectCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AppendNeuronCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MovePipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -123,5 +117,13 @@
     <ClInclude Include="CommandStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CommandStack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

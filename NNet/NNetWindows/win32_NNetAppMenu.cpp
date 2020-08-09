@@ -134,12 +134,16 @@ void NNetAppMenu::Notify( bool const bImmediately )
 	EnableMenuItem( m_hMenu, IDD_AUTO_OPEN_ON,    AutoOpen::IsOn() ? MF_GRAYED : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDD_AUTO_OPEN_OFF, ! AutoOpen::IsOn() ? MF_GRAYED : MF_ENABLED );
 
-	EnableMenuItem( m_hMenu, IDM_UNDO, m_pCommandStack->UndoStackEmpty() ? MF_GRAYED : MF_ENABLED );
-	EnableMenuItem( m_hMenu, IDM_REDO, m_pCommandStack->RedoStackEmpty() ? MF_GRAYED : MF_ENABLED );
 	DrawMenuBar( m_hwndApp );
+}
+
+void NNetAppMenu::AdjustUndoRedo( )
+{
+    EnableMenuItem( m_hMenu, IDM_UNDO, m_pCommandStack->UndoStackEmpty() ? MF_GRAYED : MF_ENABLED );
+    EnableMenuItem( m_hMenu, IDM_REDO, m_pCommandStack->RedoStackEmpty() ? MF_GRAYED : MF_ENABLED );
 }
 
 void NNetAppMenu::SetAppTitle( wstring const wstrAdd, bool const bUnsavedChanges )
 {
-	Util::SetApplicationTitle( m_hwndApp, IDS_APP_TITLE, wstrAdd + (bUnsavedChanges ? L" * " : L"") );
+    Util::SetApplicationTitle( m_hwndApp, IDS_APP_TITLE, wstrAdd + (bUnsavedChanges ? L" * " : L"") );
 }

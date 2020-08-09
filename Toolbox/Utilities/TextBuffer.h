@@ -60,8 +60,9 @@ public:
 	void printString     ( wstring const );
     void printNumber     ( int const );
     void printNumber     ( unsigned int const );
-    void printNumber     ( long long const );
-    void printNumber     ( unsigned long long const );
+	void printNumber     ( long const );
+	void printNumber     ( long long const );
+	void printNumber     ( unsigned long long const );
 	void printNumber     ( float const );
 	void printFloat      ( float const );
 	void printPercentage ( unsigned int const );

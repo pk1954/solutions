@@ -4,10 +4,7 @@
 
 #pragma once
 
-#include <string>
 #include "NNetModel.h"
-
-using std::wstring;
 
 class Command
 {

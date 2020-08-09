@@ -73,8 +73,6 @@
     <ClInclude Include="AddOutgoing2PipeCommand.h" />
     <ClInclude Include="AnalyzeAnomaliesCommand.h" />
     <ClInclude Include="AnalyzeLoopsCommand.h" />
-    <ClInclude Include="AppendInputNeuronCommand.h" />
-    <ClInclude Include="AppendNeuronCommand.h" />
     <ClInclude Include="ClearBeepersCommand.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="CommandStack.h" />
@@ -102,7 +100,14 @@
     <ClInclude Include="SetParameterCommand.h" />
     <ClInclude Include="SetPulseRateCommand.h" />
     <ClInclude Include="SetTriggerSoundCommand.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="ToggleStopOnTriggerCommand.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CommandStack.cpp">
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
+      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</WholeProgramOptimization>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -561,8 +566,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -598,7 +604,8 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
