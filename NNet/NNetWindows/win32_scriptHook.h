@@ -35,8 +35,15 @@ public:
 			wstring   const & wszPath      { script.GetActPath( ) };
 			long long const   llFilePos    { script.GetFilePos() };
 			uintmax_t const   fileSize     { script.GetFileSize() };
-			long      const   lPercentRead { CastToLong( llFilePos * 100 / fileSize ) };
-			m_pStatusBar->DisplayInPart( m_iStatusBarPart, L"Reading " + wszPath + L" ... " + std::to_wstring( lPercentRead ) + L"%"  );
+			if ( fileSize > 0 )
+			{
+				long const lPercentRead { CastToLong( llFilePos * 100 / fileSize ) };
+				m_pStatusBar->DisplayInPart
+				( 
+					m_iStatusBarPart, 
+					L"Reading " + wszPath + L" ... " + std::to_wstring( lPercentRead ) + L"%"  
+				);
+			}
 		}
 	}
 

@@ -602,6 +602,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeDisplay.h" />
     <ClInclude Include="UndoRedoMenu.h" />
+    <ClInclude Include="UnsavedChangesObserver.h" />
     <ClInclude Include="win32_crsrWindow.h" />
     <ClInclude Include="win32_MainWindow.h" />
     <ClInclude Include="win32_MiniWindow.h" />

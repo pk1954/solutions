@@ -6,7 +6,6 @@
 #include "Resource.h"
 #include "Pipe.h"
 #include "win32_util.h"
-#include "NNetModelStorage.h"
 #include "CommandStack.h"
 #include "ComputeThread.h"
 #include "AutoOpen.h"
@@ -26,7 +25,6 @@ void NNetAppMenu::Start
 	HWND                     const hwndApp,
 	ComputeThread    const * const pComputeThread,
 	WinManager       const * const pWinManager,
-	NNetModelStorage const * const pStorage,
 	CommandStack     const * const pCommandStack,
 	Sound            const * const pSound
 ) 
@@ -36,14 +34,11 @@ void NNetAppMenu::Start
 	m_hwndApp        = hwndApp;
 	m_pComputeThread = pComputeThread;
 	m_pWinManager    = pWinManager;
-	m_pStorage       = pStorage;
 	m_pCommandStack  = pCommandStack;
 	m_pSound         = pSound;
 
     SendMessage( m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_NNETSIMU ) ) );
     SendMessage( m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon( hInstance, MAKEINTRESOURCE( IDI_SMALL    ) ) );
-
-	SetAppTitle( L"", false );
 
     m_hMenu = CreateMenu( );
 
@@ -102,6 +97,23 @@ void NNetAppMenu::Start
             AppendMenu( hMenuArrows, MF_STRING, IDD_ARROWS_OFF, L"o&ff" );
         }
     }
+    HMENU hMenuOptions = PopupMenu( m_hMenu, L"&Options" );
+    {
+        HMENU hMenuSound = PopupMenu( hMenuOptions, L"&Sound" );
+        {
+            AppendMenu( hMenuSound, MF_STRING, IDD_SOUND_ON,  L"o&n" );
+            AppendMenu( hMenuSound, MF_STRING, IDD_SOUND_OFF, L"o&ff" );
+        }
+        HMENU hMenuAutoOpen = PopupMenu( hMenuOptions, L"Auto&Open" );
+        {
+            AppendMenu( hMenuAutoOpen, MF_STRING, IDD_AUTO_OPEN_ON,  L"o&n" );
+            AppendMenu( hMenuAutoOpen, MF_STRING, IDD_AUTO_OPEN_OFF, L"o&ff" );
+        }
+    }
+    HMENU hMenuHelp = PopupMenu( m_hMenu, L"&Help" );
+    {
+        AppendMenu( hMenuHelp, MF_STRING, IDM_ABOUT, L"&Info..." );
+    }
 
     bool bRes = SetMenu( m_hwndApp, m_hMenu );
     assert( bRes );
@@ -109,11 +121,6 @@ void NNetAppMenu::Start
 
 void NNetAppMenu::Notify( bool const bImmediately )
 {
-	SetAppTitle
-	( 
-		m_pStorage->GetModelPath(), 
-		m_pStorage->UnsavedChanges()
-	);
 	EnableMenuItem( m_hMenu, IDM_FORWARD, m_pComputeThread->IsRunning() ? MF_GRAYED  : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_RESET,   m_pComputeThread->IsRunning() ? MF_GRAYED  : MF_ENABLED );
 	EnableMenuItem( m_hMenu, IDM_RUN,     m_pComputeThread->IsRunning() ? MF_GRAYED  : MF_ENABLED );
@@ -141,9 +148,4 @@ void NNetAppMenu::AdjustUndoRedo( )
 {
     EnableMenuItem( m_hMenu, IDM_UNDO, m_pCommandStack->UndoStackEmpty() ? MF_GRAYED : MF_ENABLED );
     EnableMenuItem( m_hMenu, IDM_REDO, m_pCommandStack->RedoStackEmpty() ? MF_GRAYED : MF_ENABLED );
-}
-
-void NNetAppMenu::SetAppTitle( wstring const wstrAdd, bool const bUnsavedChanges )
-{
-    Util::SetApplicationTitle( m_hwndApp, IDS_APP_TITLE, wstrAdd + (bUnsavedChanges ? L" * " : L"") );
 }

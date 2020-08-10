@@ -149,5 +149,8 @@
     <ClInclude Include="UndoRedoMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UnsavedChangesObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

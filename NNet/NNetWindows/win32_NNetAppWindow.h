@@ -18,6 +18,7 @@
 #include "TimeDisplay.h"
 #include "SlowMotionDisplay.h"
 #include "UndoRedoMenu.h"
+#include "UnsavedChangesObserver.h"
 #include "win32_event.h"
 #include "win32_sound.h"
 #include "win32_actionTimer.h"
@@ -132,6 +133,7 @@ private:
 	Preferences               m_preferences              { };
 	CommandStack              m_cmdStack                 { };
 	UndoRedoMenu              m_undoRedoMenu             { };
+	UnsavedChangesObserver    m_unsavedChangesObserver   { };
 
 	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
 };
