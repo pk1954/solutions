@@ -16,6 +16,7 @@ class NNetModel;
 class NNetWindow;
 class WinManager;
 class Preferences;
+class CommandStack;
 class Param;
 class Sound;
 
@@ -37,7 +38,8 @@ public:
 		SlowMotionRatio          * const,
 		DisplayFunctor           * const,
 		Sound                    * const,
-		Preferences              * const
+		Preferences              * const,
+		CommandStack             * const
 	);
 
 	virtual ~NNetController( );
@@ -64,4 +66,5 @@ private:
 	DisplayFunctor           * m_pStatusBarDisplay     { nullptr };
 	AnimationThread          * m_pAnimationThread      { nullptr };
 	Preferences              * m_pPreferences          { nullptr };
+	CommandStack             * m_pCommandStack         { nullptr };
 };				          

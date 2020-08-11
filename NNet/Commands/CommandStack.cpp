@@ -5,37 +5,100 @@
 #include "stdafx.h"
 #include "CommandStack.h"
 
-class OpenBracket : public Command
-{
-public:
-    virtual void Do( NNetModel * const pModel ) { }
-};
+class OpenBracket  : public Command { public: virtual void Do( NNetModel * const pModel ) { } };
+class CloseBracket : public Command { public: virtual void Do( NNetModel * const pModel ) { } };
 
-bool isOpenBracketCmd( Command const * const pCmd )
+bool isOpenBracketCmd( Command const & cmd )
 {
-    return typeid(* pCmd) == typeid(OpenBracket);
+    return typeid(cmd) == typeid(OpenBracket);
 }
 
-class CloseBracket : public Command
+bool isCloseBracketCmd( Command const & cmd )
 {
-public:
-    virtual void Do( NNetModel * const pModel ) { }
-};
-
-bool isCloseBracketCmd( Command const * const pCmd )
-{
-    return typeid(* pCmd) == typeid(CloseBracket);
+    return typeid(cmd) == typeid(CloseBracket);
 }
 
-bool isBracketCmd( Command const * const pCmd )
+bool canBeCombined( Command * pA, Command * pB )
 {
-    return isOpenBracketCmd( pCmd ) || isCloseBracketCmd( pCmd );
+    return (typeid(* pA) == typeid(* pB)) &&
+           ( 
+               static_cast<MoveCommand *>(pA)->GetMovedShape() == 
+               static_cast<MoveCommand *>(pB)->GetMovedShape() 
+           );
 }
 
-bool canBeCombined( Command * pCmd1, Command * pCmd2 )
+void CommandStack::Initialize
+( 
+    NNetModel  * const pModel, 
+    Observable * const pObservable 
+)
 {
-    return (typeid(* pCmd1) == typeid(* pCmd2)) &&
-        ( static_cast<MoveCommand *>(pCmd1)->GetMovedShape() == static_cast<MoveCommand *>(pCmd2)->GetMovedShape() );
+    m_pModel = pModel;
+    m_pObservable = pObservable;
+}
+
+bool CommandStack::isBracketCmd( )
+{
+    Command const & cmd { getCurrentCmd() };
+    return isOpenBracketCmd( cmd ) || isCloseBracketCmd( cmd );
+}
+
+void CommandStack::clearRedoStack( )
+{
+    for ( auto i = m_CommandStack.size(); i > m_iIndex; )
+    {
+        delete m_CommandStack[--i];
+        m_CommandStack.pop_back();
+    }
+}
+
+void CommandStack::push( Command * const pCmd )
+{
+    m_CommandStack.push_back( pCmd );
+    ++m_iIndex;
+}
+
+Command & CommandStack::getCurrentCmd( )
+{
+    if ( (m_iIndex < 0) || ( m_iIndex >= m_CommandStack.size() ) )
+        throw CmdStackException();
+    return * m_CommandStack[ m_iIndex ];
+}
+
+void CommandStack::set2OlderCmd( )
+{
+    if ( UndoStackEmpty() ) 
+        throw CmdStackException();
+    --m_iIndex;
+}
+
+Command & CommandStack::getOlderCmd( )
+{
+    set2OlderCmd( );
+    return * m_CommandStack[m_iIndex];
+}
+
+void CommandStack::set2YoungerCmd( )
+{
+    if ( RedoStackEmpty() ) 
+        throw CmdStackException();
+    ++m_iIndex;
+}
+
+Command & CommandStack::getYoungerCmd( )
+{
+    set2YoungerCmd( );
+    return * m_CommandStack[m_iIndex];
+}
+
+void CommandStack::StartSeries( )
+{
+    push( new OpenBracket( ) ); 
+}
+
+void CommandStack::StopSeries( )
+{
+    push( new CloseBracket( ) ); 
 }
 
 void CommandStack::NewCommand( Command * pCmd )
@@ -47,19 +110,19 @@ void CommandStack::NewCommand( Command * pCmd )
     if ( pCmd->IsMoveCommand( ) )
     {
         if ( 
-            (m_iIndex > 2) && 
-            isCloseBracketCmd( m_CommandStack[m_iIndex-1] ) && 
-            canBeCombined( pCmd, m_CommandStack[m_iIndex-2] )
-            )
+              (m_iIndex > 2) && 
+              isCloseBracketCmd( * m_CommandStack[m_iIndex-1] ) && 
+              canBeCombined( pCmd, m_CommandStack[m_iIndex-2] )
+           )
         {
             push( m_CommandStack[m_iIndex-1] );    // copy close bracket to new slot
             m_CommandStack[m_iIndex-2] = pCmd;     // and place pCmd before close bracket
         }
         else 
         {
-            push( new OpenBracket( ) ); 
+            StartSeries( ); 
             push( pCmd );
-            push( new CloseBracket( ) ); 
+            StopSeries( ); 
         }
     }
     else
@@ -82,30 +145,27 @@ void CommandStack::NewCommand( Command * pCmd )
 
 bool CommandStack::UndoCommand( )
 {
-    if ( m_bCombineMoveCmds )
+    try
     {
-        if (m_iIndex == 0)
-            return false;
-        --m_iIndex;
-        if ( isCloseBracketCmd( m_CommandStack[m_iIndex] ) )
+        if ( m_bCombineCmds )
         {
-            do 
-                m_CommandStack[--m_iIndex]->Undo( m_pModel );
-            while ( ! isOpenBracketCmd( m_CommandStack[m_iIndex] ) );    
-        } 
+            if ( isCloseBracketCmd( getOlderCmd() ) )
+                while ( ! isOpenBracketCmd( getOlderCmd() ) )
+                    getCurrentCmd().Undo( m_pModel );
+            else
+                getCurrentCmd().Undo( m_pModel );
+        }
         else
         {
-            m_CommandStack[m_iIndex]->Undo( m_pModel );
+            do
+                set2OlderCmd( );
+            while ( isBracketCmd( ) ); // skip bracket commands
+            getCurrentCmd().Undo( m_pModel );
         }
     }
-    else
+    catch ( CmdStackException e )
     {
-        do
-        {
-            if (m_iIndex == 0)
-                return false; 
-        } while ( isBracketCmd( m_CommandStack[--m_iIndex] ) ); // skip bracket commands
-        m_CommandStack[m_iIndex]->Undo( m_pModel );
+        return false;
     }
     m_pModel->StaticModelChanged( );
     m_pObservable->NotifyAll( true );
@@ -114,35 +174,28 @@ bool CommandStack::UndoCommand( )
 
 bool CommandStack::RedoCommand( )
 {
-    if ( m_bCombineMoveCmds ) 
+    try
     {
-        if ( m_iIndex == m_CommandStack.size() ) // top of stack, nothing to redo
-            return false;
-        if ( isOpenBracketCmd( m_CommandStack[m_iIndex] ) )
+        if ( m_bCombineCmds ) 
         {
-            do
-                m_CommandStack[m_iIndex++]->Do( m_pModel );
-            while ( ! isCloseBracketCmd( m_CommandStack[m_iIndex] ) );
+            if ( isOpenBracketCmd( getCurrentCmd() ) )
+                while ( ! isCloseBracketCmd( getYoungerCmd() ) )
+                    getCurrentCmd().Do( m_pModel );
+            else
+                getCurrentCmd().Do( m_pModel );
         }
         else
         {
-            m_CommandStack[m_iIndex]->Do( m_pModel );
+            while ( isBracketCmd( ) ) // skip bracket commands
+                set2YoungerCmd();
+            getCurrentCmd().Do( m_pModel );
         }
     }
-    else
+    catch ( CmdStackException e )
     {
-        for (;;)
-        {
-            if ( m_iIndex == m_CommandStack.size() ) // top of stack, nothing to redo
-                return false;
-            if ( isBracketCmd( m_CommandStack[m_iIndex] ) ) // skip bracket commands
-                ++m_iIndex;
-            else
-                break;
-        }
-        m_CommandStack[m_iIndex]->Do( m_pModel );
+        return false;
     }
-    ++m_iIndex;
+    set2YoungerCmd();
     m_pModel->StaticModelChanged( );
     m_pObservable->NotifyAll( true );
     return true;

@@ -93,24 +93,28 @@ void NNetModelWriterInterface::Connect( ShapeId const idSrc, ShapeId const idDst
 	m_pCmdStack->NewCommand( pCommand );
 }
 
+void NNetModelWriterInterface::deleteShape( Shape* const pShape )
+{
+	Command * pCommand;
+	if ( pShape->IsPipe() ) 
+		pCommand = new DeletePipeCommand( static_cast<Pipe *>( pShape ) );
+	else 
+		pCommand = new DisconnectBaseKnotCommand( m_pModel, static_cast<BaseKnot *>( pShape ), true );
+	m_pCmdStack->NewCommand( pCommand );
+}
+
 void NNetModelWriterInterface::DeleteShape( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	Shape   * pShape { m_pModel->GetShapePtr<Shape *>( id ) };
-	Command * pCommand;
-	if ( pShape->IsPipe() )   // connect baseknot to pipe
-		pCommand = new DeletePipeCommand( m_pModel, id );
-	else 
-		pCommand = new DisconnectBaseKnotCommand( m_pModel, id, true );
-	m_pCmdStack->NewCommand( pCommand );
+	deleteShape( m_pModel->GetShapePtr<Shape *>( id ) );
 }
 
 void NNetModelWriterInterface::Disconnect( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << id.GetValue() << endl;
-	m_pCmdStack->NewCommand( new DisconnectBaseKnotCommand( m_pModel, id, false ) );
+	m_pCmdStack->NewCommand( new DisconnectBaseKnotCommand( m_pModel, m_pModel->GetShapePtr<BaseKnot *>(id), false ) );
 }
 
 void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
@@ -253,9 +257,10 @@ void NNetModelWriterInterface::DeleteSelection( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	vector<Shape *> m_selection { m_pModel->GetShapeList( [&]( Shape const & s ){ return s.IsSelected(); } ) };
-	for( Shape * const pShape : m_selection )
-		DeleteShape( pShape->GetId( ) );
+	m_pCmdStack->StartSeries();
+	for ( Shape * const pShape : m_pModel->GetShapeList( [&]( Shape const & s ){ return s.IsSelected(); } ) )
+		deleteShape( pShape );
+	m_pCmdStack->StopSeries();
 }
 
 ///////////////////// selection commands /////////////////////////////

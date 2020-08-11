@@ -143,7 +143,8 @@ void NNetAppWindow::Start( )
 		& m_SlowMotionRatio,
 		& m_statusBarDispFunctor,
 		& m_sound,
-		& m_preferences
+		& m_preferences,
+		& m_cmdStack
 	);
 
 	m_mainNNetWindow   .SetRefreshRate(   0ms );   // immediate refresh

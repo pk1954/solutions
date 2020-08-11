@@ -128,6 +128,12 @@ bool NNetModel::IsEqual( NNetModel const & other ) const
 	return true;
 }
 
+void NNetModel::StaticModelChanged( )
+{ 
+	m_pStaticModelObservable->NotifyAll( false );
+	m_enclosingRect = ::ComputeEnclosingRect( m_Shapes );
+}
+
 void NNetModel::RecalcAllShapes( ) 
 { 
 	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); } );

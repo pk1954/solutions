@@ -67,6 +67,8 @@ private:
 	bool       IsTraceOn  ( ) const { return   m_bTrace; }
 	wostream & TraceStream( )       { return * m_pTraceStream; }
 
+    void deleteShape( Shape * const );
+
 	bool           m_bTrace       { true };
 	wostream     * m_pTraceStream { nullptr };
 	NNetModel    * m_pModel       { nullptr };

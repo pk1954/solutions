@@ -12,19 +12,21 @@
 
 using std::vector;
 
+// DisconnectBaseKnot and DeleteBaseKnot are nearly identical
+// for Delete... functioniality create DisconnectBaseKnot 
+// with 3rd parameter set to true
+
 class DisconnectBaseKnotCommand : public Command
 {
 public:
     DisconnectBaseKnotCommand
     ( 
         NNetModel * const pModel, 
-        ShapeId     const id, 
+        BaseKnot  * const pBaseKnot, 
         bool        const bDelete 
     )
-      :	m_pBaseKnot( pModel->GetShapePtr<BaseKnot *>( id ) ),
-        m_bDelete( bDelete ),
-        m_startKnots( ),
-        m_endKnots( )
+      :	m_pBaseKnot( pBaseKnot ),
+        m_bDelete( bDelete )
     { 
         MicroMeterPoint umPos { m_pBaseKnot->GetPosition() };
         m_pBaseKnot->m_connections.Apply2AllInPipes
@@ -91,7 +93,7 @@ public:
 
 private:
     BaseKnot     * m_pBaseKnot;
-    vector<Knot *> m_startKnots;
-    vector<Knot *> m_endKnots;
+    vector<Knot *> m_startKnots { };
+    vector<Knot *> m_endKnots   { };
     bool           m_bDelete; // true: delete BaseKnot, false: disconnect only
 };

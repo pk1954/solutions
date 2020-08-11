@@ -197,7 +197,6 @@ void NNetWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )    // last cursor pos stored in m_ptLast
 		{
 			m_rectSelection = MicroMeterRect( umCrsrPos, umLastPos );
-			m_pModelWriterInterface->SelectShapesInRect( m_rectSelection );
 		}
 		else                           // first time here after RBUTTON pressed
 		{
@@ -403,7 +402,10 @@ bool NNetWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
 	bool bMadeSelection { m_rectSelection.IsNotEmpty() };
 	if ( bMadeSelection )
+	{
+		m_pModelWriterInterface->SelectShapesInRect( m_rectSelection );
 		m_rectSelection.SetZero();
+	}
 	return bMadeSelection;
 }
 

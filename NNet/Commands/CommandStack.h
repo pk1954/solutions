@@ -7,6 +7,7 @@
 #include <vector>
 #include <utility>
 #include <typeinfo>
+#include <exception>
 #include "BoolOp.h"
 #include "Observable.h"
 #include "Command.h"
@@ -20,55 +21,38 @@ class CommandStack
 {
 public:
 
-    void Initialize( NNetModel * const pModel, Observable * const pObservable )
-    {
-        m_pModel = pModel;
-        m_pObservable = pObservable;
-    }
+    void Initialize( NNetModel * const, Observable * const );
 
-    bool UndoStackEmpty() const 
-    { 
-        return m_iIndex == 0; 
-    }
+    bool UndoStackEmpty() const { return m_iIndex == 0; }
+    bool RedoStackEmpty() const { return m_iIndex == m_CommandStack.size(); }
 
-    bool RedoStackEmpty() const 
-    { 
-        return m_iIndex == m_CommandStack.size(); 
-    }
+    void SetCombineCmdsFlag( bool const op ) { m_bCombineCmds = op; }
+    bool GetCombineCmdsFlag( ) const { return m_bCombineCmds;  }
+
+    void StartSeries();
+    void StopSeries();
 
     void NewCommand( Command * );
     bool UndoCommand( );
     bool RedoCommand( );
 
-    bool SetCombineMoveCmdsFlag( tBoolOp const op )
-    {
-        bool bRet { m_bCombineMoveCmds };
-        ApplyOp( m_bCombineMoveCmds, op );
-        return bRet;
-    }
-
 private:
 
-    vector<Command *> m_CommandStack    { };
-    size_t            m_iIndex          { 0 }; // index after last valid m_CommandStack index. 0 means stack is empty.
-    NNetModel       * m_pModel          { nullptr };
-    Observable      * m_pObservable     { nullptr };
-    bool              m_bCombineMoveCmds{ true };
-    bool              m_bBracketIsOpen  { false };
+    vector<Command *> m_CommandStack   { };
+    size_t            m_iIndex         { 0 };
+    NNetModel       * m_pModel         { nullptr };
+    Observable      * m_pObservable    { nullptr };
+    bool              m_bCombineCmds   { true };
+    bool              m_bBracketIsOpen { false };
 
-    void clearRedoStack( )
-    {
-        for ( auto i = m_CommandStack.size(); i > m_iIndex; )
-        {
-            delete m_CommandStack[--i];
-            m_CommandStack.pop_back();
-        }
-    }
+    struct CmdStackException: public std::exception { };
 
-    void push( Command * const pCmd )
-    {
-        m_CommandStack.push_back( pCmd );
-        ++m_iIndex;
-    }
+    void      clearRedoStack( );
+    void      push( Command * const );
+    Command & getCurrentCmd( );
+    void      set2OlderCmd( );
+    Command & getOlderCmd( );
+    void      set2YoungerCmd( );
+    Command & getYoungerCmd( );
+    bool      isBracketCmd( );
 };
-

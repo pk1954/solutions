@@ -261,10 +261,10 @@ public:
 
 	MicroMeterRect GetEnclosingRect() const { return m_enclosingRect; }
 
-	void    ClearModel()                { Apply2All<Shape>( [&](Shape &s) { s.Clear( ); } ); }
-	void    SelectAll(tBoolOp const op) { Apply2All<Shape>( [&](Shape &s) { s.Select( op ); } ); }
-	void    MarkShape( ShapeId const idShape, tBoolOp const op ) {	GetShapePtr<Shape *>( idShape )->Mark( op ); }
-	void    SelectBeepers() { Apply2All<Neuron>( [&](Neuron & n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
+	void    ClearModel()                { Apply2All<Shape> ( [&](Shape  &s) { s.Clear( ); } ); }
+	void    SelectAll(tBoolOp const op) { Apply2All<Shape> ( [&](Shape  &s) { s.Select( op ); } ); }
+	void    SelectBeepers()             { Apply2All<Neuron>( [&](Neuron &n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
+	void    MarkShape( ShapeId const idShape, tBoolOp const op ) { GetShapePtr<Shape *>( idShape )->Mark( op ); }
 	void    SelectSubtree ( BaseKnot * const, tBoolOp const );
 	Shape * ShallowCopy( Shape const * const ) const;
 
@@ -292,11 +292,7 @@ public:
 	void Store2Model    ( Shape * const pShape )                       { SetShape( pShape,  pShape->GetId() ); }
 	void RemoveFromModel( Shape * const pShape )                       { SetShape( nullptr, pShape->GetId() ); }
 
-	void StaticModelChanged( )
-	{ 
-		m_pStaticModelObservable->NotifyAll( false );
-		m_enclosingRect = ::ComputeEnclosingRect( m_Shapes );
-	}
+	void StaticModelChanged( );
 
 	MicroMeterPoint OrthoVector( ShapeId const idPipe ) const
 	{

@@ -12,6 +12,7 @@
 #include "SlowMotionRatio.h"
 #include "NNetModelStorage.h"
 #include "ComputeThread.h"
+#include "CommandStack.h"
 #include "AnimationThread.h"
 #include "AutoOpen.h"
 #include "win32_util.h"
@@ -38,7 +39,8 @@ void NNetController::Initialize
     SlowMotionRatio          * const pSlowMotionRatio,
     DisplayFunctor           * const func,
     Sound                    * const pSound,
-    Preferences              * const pPreferences
+    Preferences              * const pPreferences,
+    CommandStack             * const pCommandStack
 ) 
 {
     m_pStorage              = pStorage;
@@ -51,6 +53,7 @@ void NNetController::Initialize
     m_pStatusBarDisplay     = func;
     m_pSound                = pSound;
     m_pPreferences          = pPreferences;
+    m_pCommandStack         = pCommandStack;
     m_hCrsrWait             = LoadCursor( NULL, IDC_WAIT );
     m_pAnimationThread      = new AnimationThread( );
 }
@@ -71,6 +74,7 @@ NNetController::~NNetController( )
     m_pAnimationThread      = nullptr;
     m_pSound                = nullptr;
     m_pPreferences          = nullptr;
+    m_pCommandStack         = nullptr;
 }
 
 bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
@@ -161,6 +165,14 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
 
     case IDD_AUTO_OPEN_OFF:
         AutoOpen::Off();
+        break;
+
+    case IDD_CMD_COMBINE_ON:
+        m_pCommandStack->SetCombineCmdsFlag( true );
+        break;
+
+    case IDD_CMD_COMBINE_OFF:
+        m_pCommandStack->SetCombineCmdsFlag( false );
         break;
 
     case IDD_STOP_ON_TRIGGER:                 // effects model, but seems to be secure  
@@ -292,8 +304,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
     case IDM_DELETE:   // keyboard: delete key
         if ( m_pNNetWindow->GetHighlightedShapeId() == NO_SHAPE )
             break;
-        else 
-            ; // fall through
+        [[fallthrough]];
 
     case IDD_DELETE_SHAPE:
         m_pSound->Play( TEXT("DISAPPEAR_SOUND") ); 

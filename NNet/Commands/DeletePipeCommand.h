@@ -13,8 +13,8 @@ class DeletePipeCommand : public Command
 {
 public:
 
-	DeletePipeCommand( NNetModel * pModel, ShapeId const id )
-		: m_pPipe( pModel->GetShapePtr<Pipe *>( id ) )
+	DeletePipeCommand( Pipe * pPipe )
+		: m_pPipe( pPipe )
 	{
 		m_pStartKnot = m_pPipe->GetStartKnotPtr();
 		m_pEndKnot   = m_pPipe->GetEndKnotPtr();

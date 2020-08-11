@@ -89,6 +89,9 @@
 #define IDD_AUTO_OPEN_ON         181
 #define IDD_AUTO_OPEN_OFF        182
 
+#define IDD_CMD_COMBINE_ON       185
+#define IDD_CMD_COMBINE_OFF      186
+
 #define IDM_PLUS                 191
 #define IDM_MINUS                192
 
