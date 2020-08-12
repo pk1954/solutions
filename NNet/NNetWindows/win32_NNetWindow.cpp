@@ -15,7 +15,6 @@
 #include "NNetModelReaderInterface.h"
 #include "NNetColors.h"
 #include "DrawModel.h"
-#include "ComputeThread.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
 #include "NNetModelWriterInterface.h"
@@ -37,7 +36,6 @@ void NNetWindow::Start
 	HWND                       const hwndApp, 
 	DWORD                      const dwStyle,
 	bool                       const bShowRefreshRateDialog,
-	ComputeThread            * const pComputeThread,
 	NNetController           * const pController,
 	NNetModelReaderInterface * const pModelReaderInterface,
 	NNetModelWriterInterface * const pModelWriterInterface,
@@ -57,15 +55,21 @@ void NNetWindow::Start
 	);
 	m_context.Start( hwnd );
 	m_pController           = pController;
-	m_pComputeThread        = pComputeThread;
 	m_pModelReaderInterface = pModelReaderInterface;
 	m_pModelWriterInterface = pModelWriterInterface;
 	m_pCursorPosObservable  = pCursorObservable;
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 }
 
+void NNetWindow::Reset( )
+{ 
+	m_shapeHighlighted      = NO_SHAPE; 
+	m_shapeSuperHighlighted = NO_SHAPE; 
+}
+
 void NNetWindow::Stop( )
 {
+	Reset( );
 	m_context.Stop();
 	DestroyWindow( );
 }
@@ -73,10 +77,10 @@ void NNetWindow::Stop( )
 NNetWindow::~NNetWindow( )
 {
 	m_pModelReaderInterface = nullptr;
-	m_pComputeThread        = nullptr;
-	m_pController           = nullptr;
+	m_pModelWriterInterface = nullptr;
 	m_pCursorPosObservable  = nullptr;
 	m_pDrawModel            = nullptr;
+	m_pController           = nullptr;
 }
 
 bool NNetWindow::Zoom( MicroMeter const newSize, PixelPoint const * const pPixPntCenter )
@@ -253,6 +257,11 @@ void NNetWindow::setSuperHighlightedShape( MicroMeterPoint const & umCrsrPos )
 	}
 }
 
+MicroMeterRect const NNetWindow::GetViewRect() const 
+{ 
+	return m_context.GetCoordC().Convert2MicroMeterRect( GetClPixelRect() ); 
+};
+
 tHighlightType const NNetWindow::GetHighlightType( Shape const & shape ) const
 {
 	return ( shape.GetId() == m_shapeSuperHighlighted )
@@ -333,7 +342,7 @@ void NNetWindow::smoothStep( )
 	if ( fTargetsReached )
 	{
 		m_bFocusMode = false;
-		m_pComputeThread->ReleaseComputationLock( );
+		SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
 	}
 	else
 	{

@@ -89,8 +89,6 @@
     <ClInclude Include="MoveSelectionCommand.h" />
     <ClInclude Include="NewInputNeuronCommand.h" />
     <ClInclude Include="NewNeuronCommand.h" />
-    <ClInclude Include="ResetModelCommand.h" />
-    <ClInclude Include="ResetTimerCommand.h" />
     <ClInclude Include="SelectAllBeepersCommand.h" />
     <ClInclude Include="SelectAllCommand.h" />
     <ClInclude Include="SelectionCommand.h" />

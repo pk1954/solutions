@@ -12,17 +12,19 @@
 using std::wostream;
 
 class NNetModel;
-class ActionTimer;
 class CommandStack;
-class SlowMotionRatio;
 class NNetModelStorage;
-class PixelCoordsFp;
 struct SoundDescr;
 
 class NNetModelWriterInterface
 {
 public:
-	void Initialize( wostream * const, CommandStack * const );
+	void Initialize
+    ( 
+        wostream         * const, 
+        CommandStack     * const,
+        NNetModelStorage * const
+    );
 
 	void Start( NNetModel * const );
 	void Stop(); 
@@ -47,8 +49,8 @@ public:
     void MoveShape           ( ShapeId const, MicroMeterPoint const & );
     void ClearBeepers        ( );
     void DeleteShape         ( ShapeId const );
+    void ReadModel           ( bool, wstring const );
     void ResetModel          ( );
-    void ResetTimer          ( );
     void SelectAll           ( tBoolOp const );
     void SelectAllBeepers    ( );
     void SelectShape         ( ShapeId const, tBoolOp const );
@@ -69,8 +71,9 @@ private:
 
     void deleteShape( Shape * const );
 
-	bool           m_bTrace       { true };
-	wostream     * m_pTraceStream { nullptr };
-	NNetModel    * m_pModel       { nullptr };
-	CommandStack * m_pCmdStack    { nullptr };
+	bool               m_bTrace       { true };
+	wostream         * m_pTraceStream { nullptr };
+	NNetModel        * m_pModel       { nullptr };
+    NNetModelStorage * m_pStorage     { nullptr };
+    CommandStack     * m_pCmdStack    { nullptr };
 }; 

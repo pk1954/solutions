@@ -25,7 +25,7 @@ public:
 		: m_pStorage( pStorage )
 	{ }
 
-	virtual void Reaction( tResult const res )
+	virtual void Reaction( tResult const res, wstring const name )
 	{
 		switch ( res )
 		{
@@ -34,7 +34,7 @@ public:
 			break;
 
 		case ReadModelResult::tResult::fileNotFound:
-			wcout << L"+++ could not find model file " << m_pStorage->GetModelPath().c_str() << endl;
+			wcout << L"+++ could not find model file " << name.c_str() << endl;
 			break;
 
 		case ReadModelResult::tResult::errorInFile:
@@ -71,10 +71,10 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	ReadModelResult        * m_pReadModelResult         { nullptr };
 
 	DefineUtilityWrapperFunctions( );
-	DefineNNetWrappers( & m_modelWriterInterface, & m_modelStorage );
+	DefineNNetWrappers( & m_modelWriterInterface );
 
 	m_pReadModelResult = new ConsReadModelResult( & m_modelStorage );
-	m_modelWriterInterface.Initialize( & m_traceStream, & m_cmdStack );
+	m_modelWriterInterface.Initialize( & m_traceStream, & m_cmdStack, & m_modelStorage );
 	m_model.Initialize
 	( 
 		& m_parameters, 

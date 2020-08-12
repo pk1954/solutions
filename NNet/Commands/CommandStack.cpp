@@ -43,6 +43,12 @@ bool CommandStack::isBracketCmd( )
     return isOpenBracketCmd( cmd ) || isCloseBracketCmd( cmd );
 }
 
+void CommandStack::Clear( )
+{
+    m_iIndex = 0;
+    clearRedoStack();
+}
+
 void CommandStack::clearRedoStack( )
 {
     for ( auto i = m_CommandStack.size(); i > m_iIndex; )

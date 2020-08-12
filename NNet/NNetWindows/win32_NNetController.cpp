@@ -301,7 +301,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelWriterInterface->Connect( m_pNNetWindow->GetHighlightedShapeId(), m_pNNetWindow->GetSuperHighlightedShapeId() );
         break;
 
-    case IDM_DELETE:   // keyboard: delete key
+    case IDM_DELETE:   // keyboard delete key
         if ( m_pNNetWindow->GetHighlightedShapeId() == NO_SHAPE )
             break;
         [[fallthrough]];

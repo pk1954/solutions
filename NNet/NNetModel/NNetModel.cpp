@@ -191,6 +191,7 @@ void NNetModel::ResetModel( )
 	for (auto pShape : m_Shapes)
 		delete pShape;
 	m_Shapes.clear();
+	SetSimulationTime();
 	StaticModelChanged( );
 }
 

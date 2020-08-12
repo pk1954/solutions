@@ -24,8 +24,7 @@
 #include "NewInputNeuronCommand.h"
 #include "NewNeuronCommand.h"
 #include "NNetModelWriterInterface.h"
-#include "ResetModelCommand.h"
-#include "ResetTimerCommand.h"
+#include "NNetModelStorage.h"
 #include "SelectAllBeepersCommand.h"
 #include "SelectAllCommand.h"
 #include "SelectionCommand.h"
@@ -42,12 +41,14 @@ using std::endl;
 
 void NNetModelWriterInterface::Initialize
 ( 
-	wostream     * const pTraceStream,
-	CommandStack * const pCmdStack
+	wostream         * const pTraceStream,
+	CommandStack     * const pCmdStack,
+	NNetModelStorage * const pStorage
 ) 
 { 
 	m_pTraceStream = pTraceStream;
 	m_pCmdStack    = pCmdStack;
+	m_pStorage     = pStorage;
 }
 
 void NNetModelWriterInterface::Start( NNetModel * const pModel )
@@ -70,13 +71,6 @@ void NNetModelWriterInterface::RedoCommand( )
 {
 	if ( ! m_pCmdStack->RedoCommand() )
 		MessageBeep( MB_ICONWARNING );
-}
-
-void NNetModelWriterInterface::ResetTimer( )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->NewCommand( new ResetTimerCommand() );
 }
 
 void NNetModelWriterInterface::Connect( ShapeId const idSrc, ShapeId const idDst )
@@ -135,9 +129,18 @@ void NNetModelWriterInterface::ResetModel( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	ResetModelCommand cmd( m_pModel );
-	cmd.Do( m_pModel );
-//	m_pCmdStack->NewCommand( new ResetModelCommand( m_pModel ) );
+	m_pModel->ResetModel( );
+	m_pCmdStack->Clear();
+	m_pStorage->ResetModelPath( );
+	m_pModel->CreateInitialShapes();
+}
+
+void NNetModelWriterInterface::ReadModel( bool bConcurrently, wstring const wstrPath )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << bConcurrently << L" " << wstrPath << endl;
+	m_pStorage->Read( bConcurrently, wstrPath );
+	m_pCmdStack->Clear();
 }
 
 void NNetModelWriterInterface::SetTriggerSound( ShapeId const id, SoundDescr const & sound )

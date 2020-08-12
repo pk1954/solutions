@@ -8,20 +8,9 @@
 #include "UtilityWrappers.h"
 #include "NNetWrapperHelpers.h"
 #include "DrawContext.h"
-#include "NNetModelStorage.h"
 #include "NNetModelWriterInterface.h"
 
 static NNetModelWriterInterface * m_pModelWriterInterface;
-static NNetModelStorage         * m_pStorage;
-
-class WrapResetTimer: public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        m_pModelWriterInterface->ResetTimer( );
-    }
-};
 
 class WrapResetModel: public Script_Functor
 {
@@ -38,7 +27,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         wstring const wstrModelPath { script.ScrReadString( ) };
-        m_pStorage->Read( false, wstrModelPath );
+        m_pModelWriterInterface->ReadModel( false, wstrModelPath );
     }
 };
 
@@ -179,16 +168,10 @@ public:
     }
 };
 
-void DefineNNetWrappers
-( 
-    NNetModelWriterInterface * const pModel,
-    NNetModelStorage         * const pStorage
-)
+void DefineNNetWrappers( NNetModelWriterInterface * const pModel )
 {
     m_pModelWriterInterface = pModel;
-    m_pStorage = pStorage;
 
-    DEF_FUNC( ResetTimer );
     DEF_FUNC( ResetModel );
     DEF_FUNC( ReadModel );
     DEF_FUNC( Connect );

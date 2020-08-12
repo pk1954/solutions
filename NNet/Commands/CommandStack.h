@@ -36,6 +36,8 @@ public:
     bool UndoCommand( );
     bool RedoCommand( );
 
+    void Clear( );
+
 private:
 
     vector<Command *> m_CommandStack   { };
@@ -43,7 +45,6 @@ private:
     NNetModel       * m_pModel         { nullptr };
     Observable      * m_pObservable    { nullptr };
     bool              m_bCombineCmds   { true };
-    bool              m_bBracketIsOpen { false };
 
     struct CmdStackException: public std::exception { };
 

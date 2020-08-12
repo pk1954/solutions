@@ -5,6 +5,5 @@
 #pragma once
 
 class NNetModelWriterInterface;
-class NNetModelStorage;
 
-extern void DefineNNetWrappers( NNetModelWriterInterface * const, NNetModelStorage * const );
+extern void DefineNNetWrappers( NNetModelWriterInterface * const );

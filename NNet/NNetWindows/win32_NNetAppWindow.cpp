@@ -57,12 +57,11 @@ using std::wcout;
 class NNetReadModelResult : public ReadModelResult
 {
 public:
-	NNetReadModelResult( HWND hwndApp, NNetModelStorage const * const pStorage )
-	  : m_hwndApp( hwndApp ),
-		m_pStorage( pStorage )
+	NNetReadModelResult( HWND hwndApp )
+	  : m_hwndApp( hwndApp )
 	{ }
 
-	virtual void Reaction( tResult const res )
+	virtual void Reaction( tResult const res, wstring const name )
 	{
 		switch ( res )
 		{
@@ -71,7 +70,7 @@ public:
 			break;
 
 		case ReadModelResult::tResult::fileNotFound:
-			MessageBox( nullptr, m_pStorage->GetModelPath().c_str(), L"Could not find model file", MB_OK );
+			MessageBox( nullptr, name.c_str(), L"Could not find model file", MB_OK );
 			PostMessage( m_hwndApp, WM_COMMAND, IDM_NEW_MODEL, 0 );
 			break;
 
@@ -85,8 +84,7 @@ public:
 	};
 
 private:
-	HWND                           m_hwndApp;
-	NNetModelStorage const * const m_pStorage;
+	HWND m_hwndApp;
 };
 
 NNetAppWindow::NNetAppWindow( )
@@ -103,7 +101,7 @@ NNetAppWindow::NNetAppWindow( )
 	NNetWindow::InitClass( & m_atDisplay );
 
 	DefineUtilityWrapperFunctions( );
-	DefineNNetWrappers( & m_modelWriterInterface, & m_modelStorage );
+	DefineNNetWrappers( & m_modelWriterInterface );
 	DefineNNetWinWrappers( & m_mainNNetWindow );
 };
 
@@ -124,10 +122,10 @@ void NNetAppWindow::Start( )
 		nullptr
 	);
 
-	m_pReadModelResult = new NNetReadModelResult( m_hwndApp, & m_modelStorage );
+	m_pReadModelResult = new NNetReadModelResult( m_hwndApp );
 	m_model               .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
 	m_modelStorage        .Initialize( & m_model, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult );
-	m_modelWriterInterface.Initialize( & m_traceStream, & m_cmdStack );
+	m_modelWriterInterface.Initialize( & m_traceStream, & m_cmdStack, & m_modelStorage );
 	m_drawModel           .Initialize( & m_model );
 	m_cmdStack            .Initialize( & m_model, & m_commandStackObservable );
 	m_NNetColors          .Initialize( & m_blinkObservable );
@@ -164,7 +162,6 @@ void NNetAppWindow::Start( )
 		m_hwndApp, 
 		WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		false,
-		& m_computeThread,
 		& m_NNetController,
 		& m_modelReaderInterface,
 		& m_modelWriterInterface,
@@ -177,7 +174,6 @@ void NNetAppWindow::Start( )
 		m_hwndApp, 
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
 		true,
-		& m_computeThread,
 		& m_NNetController,
 		& m_modelReaderInterface,
 		& m_modelWriterInterface,
@@ -380,7 +376,10 @@ void NNetAppWindow::OnClose( )
 {
 	if ( m_bStarted )
 	{
-		if ( ! m_modelStorage.AskAndSave( ) )
+		m_computeThread.LockComputation( );
+		bool bRes { m_modelStorage.AskAndSave( ) };
+		m_computeThread.ReleaseComputationLock( );
+		if ( bRes == false )
 			return;
 		m_WinManager.StoreWindowConfiguration( );
 		Stop( );
@@ -394,10 +393,6 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 	
 	switch (wmId)
 	{
-	//case IDM_ABOUT:
-	//	ShowAboutBox( GetWindowHandle( ) );
-	//	break;
-
 	case IDM_EXIT:
 		PostMessage( WM_CLOSE, 0, 0 );
 		break;
@@ -427,20 +422,24 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		if ( m_modelStorage.AskAndSave( ) )
 		{
 			m_modelWriterInterface.ResetModel( );
-			m_modelWriterInterface.ResetTimer( );
+			m_mainNNetWindow.Reset();
 			m_mainNNetWindow.CenterModel( true );
-			m_modelStorage.ResetModelPath( );
 		}
 		else
 			m_computeThread.ReleaseComputationLock( );
 		break;
 
 	case IDM_OPEN_MODEL:
-		m_computeThread.LockComputation( );  // will be restarted later
-		if ( m_modelStorage.AskAndSave( ) && m_modelStorage.AskModelFile() )
-			m_modelStorage.ReadAsync( );     // will trigger IDM_READ_MODEL_FINISHED when done
-		else
-			m_computeThread.ReleaseComputationLock( );
+	{
+		m_computeThread.LockComputation( );
+		bool bRes { m_modelStorage.AskAndSave( ) };
+		m_computeThread.ReleaseComputationLock( );
+		if ( bRes && m_modelStorage.AskModelFile() )
+		{
+			m_computeThread.LockComputation( );  // will be restarted later
+			m_modelStorage.ReadAsync( );         // will trigger IDM_READ_MODEL_FINISHED when done
+		}
+	}
 		break;
 
 	case IDM_READ_MODEL_FINISHED:
@@ -458,6 +457,10 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 				OnCommand( IDM_NEW_MODEL, 0, PP_NULL );
 			}
 		}
+		break;
+
+	case IDM_CENTERING_FINISHED:
+		m_computeThread.ReleaseComputationLock( );
 		break;
 
 	default:

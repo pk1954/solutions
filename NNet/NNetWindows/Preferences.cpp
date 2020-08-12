@@ -75,7 +75,7 @@ public:
                 wstrModelFile.c_str(), 
                 MB_YESNO 
             );
-            if ( iRes != IDOK )
+            if ( iRes != IDYES )
                 return;
         }
         m_pNNetModelStorage->ReadAsync( wstrModelFile );

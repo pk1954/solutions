@@ -30,7 +30,7 @@ public:
 		errorInFile
 	};
 
-	virtual void Reaction( tResult const ) = 0;
+	virtual void Reaction( tResult const, wstring const = wstring() ) = 0;
 };
 
 class NNetModelStorage : public ObserverInterface
@@ -52,7 +52,10 @@ public:
 	void ReadAsync( wstring const = L"" );
 
 	bool    const UnsavedChanges( ) const { return m_bUnsavedChanges; };
-	wstring const GetModelPath  ( ) const { return m_wstrPathOfOpenModel; };
+	wstring const GetModelPath  ( ) const 
+	{ 
+		return m_wstrPathOfOpenModel; 
+	};
 	void          ResetModelPath( );
 
 	bool AskAndSave  ( );

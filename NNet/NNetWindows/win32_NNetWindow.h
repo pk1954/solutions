@@ -20,7 +20,6 @@ class Scale;
 class DrawModel;
 class Observable;
 class ActionTimer;
-class ComputeThread;
 class ObserverInterface;
 class ControllerInterface;
 class NNetModelWriterInterface;
@@ -37,7 +36,6 @@ public:
 		HWND                       const, 
 		DWORD                      const,
 		bool                       const,
-		ComputeThread            * const,
 		NNetController           * const,
 		NNetModelReaderInterface * const,
 		NNetModelWriterInterface * const,
@@ -52,22 +50,19 @@ public:
 	virtual bool Zoom( MicroMeter const, PixelPoint const * const );
 	virtual void NNetMove( PixelPoint const & );
 
-	MicroMeterRect const GetViewRect() 
-	{ 
-		return m_context.GetCoord().Convert2MicroMeterRect( GetClPixelRect() ); 
-	};
-
-	ShapeId        const GetHighlightedShapeId( )          const { return m_shapeHighlighted; }
-	ShapeId        const GetSuperHighlightedShapeId( )     const { return m_shapeSuperHighlighted; }
+	MicroMeterRect const GetViewRect() const;
 	tHighlightType const GetHighlightType( Shape const & ) const;
 
-	void ResetHighlightedShape( ) { m_shapeHighlighted = NO_SHAPE; }
+	void Reset( );
 	void ZoomStep( bool const, PixelPoint const * const );
 	void CenterModel( bool const );
 	void CenterAndZoomRect( MicroMeterRect const &, float const, bool const );
 
 	DrawContext const & GetDrawContextC() const { return m_context; }
 	DrawContext       & GetDrawContext ()       { return m_context; }
+
+	ShapeId const GetHighlightedShapeId( )      const { return m_shapeHighlighted; }
+	ShapeId const GetSuperHighlightedShapeId( ) const { return m_shapeSuperHighlighted; }
 
 protected:
 
@@ -102,7 +97,6 @@ private:
 	DrawModel                * m_pDrawModel            { nullptr };
 	NNetModelWriterInterface * m_pModelWriterInterface { nullptr };
 	NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
-	ComputeThread            * m_pComputeThread        { nullptr };
 	NNetController           * m_pController           { nullptr };
 	Observable               * m_pCursorPosObservable  { nullptr };
 	HMENU                      m_hPopupMenu            { 0 };

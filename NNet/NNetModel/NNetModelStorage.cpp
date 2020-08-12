@@ -339,7 +339,7 @@ bool NNetModelStorage::Read( bool bConcurrently, wstring const wstrPath )
     }
     else
     {
-        m_pResult->Reaction( ReadModelResult::tResult::fileNotFound );
+        m_pResult->Reaction( ReadModelResult::tResult::fileNotFound, wstrPath );
         bRes = false;
     }
     return bRes;
@@ -491,7 +491,7 @@ bool NNetModelStorage::AskAndSave( )
 {
     if ( m_bUnsavedChanges )
     {
-        int iRes = MessageBox( nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL );
+        int iRes = MessageBox( m_hwndApp, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL );
         if ( iRes == IDYES )
             SaveModel( );
         else if ( iRes == IDNO )

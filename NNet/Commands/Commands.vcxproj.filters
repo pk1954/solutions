@@ -45,9 +45,6 @@
     <ClInclude Include="SelectionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResetModelCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AddOutgoing2PipeCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -91,9 +88,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MovePipeCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ResetTimerCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CopySelectionCommand.h">
