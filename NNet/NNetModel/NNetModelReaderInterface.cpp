@@ -195,12 +195,6 @@ ShapeId const NNetModelReaderInterface::FindShapeAt( MicroMeterPoint const & umP
 	return m_pModel->FindShapeAt( umPnt, crit );
 }
 
-unsigned long const NNetModelReaderInterface::GetNrOfPipes       ( ) const { return Pipe       ::GetCounter(); }
-unsigned long const NNetModelReaderInterface::GetNrOfShapes      ( ) const { return Shape      ::GetCounter(); }
-unsigned long const NNetModelReaderInterface::GetNrOfKnots       ( ) const { return Knot       ::GetCounter(); }
-unsigned long const NNetModelReaderInterface::GetNrOfInputNeurons( ) const { return InputNeuron::GetCounter(); }
-unsigned long const NNetModelReaderInterface::GetNrOfNeurons     ( ) const { return Neuron     ::GetCounter() - GetNrOfInputNeurons(); }
-
 void NNetModelReaderInterface::DrawExterior
 ( 
 	ShapeId        const   id,

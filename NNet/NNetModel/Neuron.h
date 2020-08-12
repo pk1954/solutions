@@ -45,6 +45,8 @@ public:
 	}
 
 	static unsigned long GetCounter( ) { return m_counter; }
+	virtual void         IncCounter( ) { ++ m_counter; }
+	virtual void         DecCounter( ) { -- m_counter; }
 
 	static bool TypeFits( ShapeType const type ) { return type.IsAnyNeuronType( ); }
 

@@ -19,13 +19,9 @@ InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
 	: Neuron( upCenter, ShapeType::Value::inputNeuron )
 { 
 	SetPulseFrequency( STD_PULSE_FREQ );
-	++ m_counter;
 }
 
-InputNeuron::~InputNeuron( )
-{ 
-	-- m_counter;
-}
+InputNeuron::~InputNeuron( ) { }
 
 void InputNeuron::Recalc( )
 {

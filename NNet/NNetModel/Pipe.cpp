@@ -21,13 +21,9 @@ Pipe::Pipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
 {
 	assert( pKnotStart && pKnotEnd );
 	Recalc();
-	++ m_counter;
 }
 
-Pipe::~Pipe( )
-{
-	-- m_counter;
-}
+Pipe::~Pipe( ) { }
 
 bool Pipe::IsEqual( Pipe const & other ) const 
 {

@@ -6,7 +6,11 @@
 #include "Strsafe.h"
 #include <chrono>
 #include "util.h"
+#include "Knot.h"
+#include "Neuron.h"
 #include "InputNeuron.h"
+#include "Pipe.h"
+#include "Shape.h"
 #include "ComputeThread.h"
 #include "SlowMotionRatio.h"
 #include "NNetModelReaderInterface.h"
@@ -116,10 +120,15 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 		printFloatLine   ( textBuf, L"workload:",  CastToFloat( (spent / avail) * 100.0f ), L"%" );
 		if ( simuTime > 0.0_MicroSecs )
 			printFloatLine   ( textBuf, L"effect slomo:", CastToFloat( realTime / simuTime ), L"" );
-		printIntLine( textBuf, L"# Shapes : ", m_pModelReaderInterface->GetNrOfShapes() );
-		printIntLine( textBuf, L"# Input  : ", m_pModelReaderInterface->GetNrOfInputNeurons() );
-		printIntLine( textBuf, L"# Neurons: ", m_pModelReaderInterface->GetNrOfNeurons() );
-		printIntLine( textBuf, L"# Knots  : ", m_pModelReaderInterface->GetNrOfKnots() );
-		printIntLine( textBuf, L"# Pipes  : ", m_pModelReaderInterface->GetNrOfPipes() );
+		printIntLine( textBuf, L"# Input  : ", m_pModelReaderInterface->GetNrOf<InputNeuron>() );
+		printIntLine( textBuf, L"# Neurons: ", m_pModelReaderInterface->GetNrOf<Neuron>() );
+		printIntLine( textBuf, L"# Knots  : ", m_pModelReaderInterface->GetNrOf<Knot>() );
+		printIntLine( textBuf, L"# Pipes  : ", m_pModelReaderInterface->GetNrOf<Pipe>() );
+		printIntLine( textBuf, L"# Shapes : ", 
+			m_pModelReaderInterface->GetNrOf<InputNeuron>() +
+		    m_pModelReaderInterface->GetNrOf<Neuron>() +
+		    m_pModelReaderInterface->GetNrOf<Knot>() +
+		    m_pModelReaderInterface->GetNrOf<Pipe>() 
+		);
 	}
 }

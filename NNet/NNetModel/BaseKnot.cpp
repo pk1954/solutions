@@ -34,7 +34,7 @@ void BaseKnot::Prepare( )
 	//		m_mVinputBuffer += pPipe->GetNextOutput( );
 	//}
 
-	m_connections.Apply2AllInPipes( [&]( auto pipe ) { m_mVinputBuffer += pipe.GetNextOutput( ); } ); // slow !!
+	m_connections.Apply2AllInPipes( [&]( Pipe & pipe ) { m_mVinputBuffer += pipe.GetNextOutput( ); } ); // slow !!
 }
 
 bool BaseKnot::IsPrecursorOf( ShapeId const id )

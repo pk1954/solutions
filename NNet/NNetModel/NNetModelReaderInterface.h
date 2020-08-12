@@ -26,16 +26,13 @@ public:
 	void Start( NNetModel * const );
 	void Stop(); 
 
-	bool      const IsEqual( NNetModel const & ) const;
+	bool       const IsEqual( NNetModel const & ) const;
 
 	bool       const AnyShapesSelected         ( )               const;	
 	bool       const IsSelected                ( ShapeId const ) const;
 	ShapeType  const GetShapeType              ( ShapeId const ) const;
 	fHertz     const GetPulseFrequency         ( ShapeId const ) const;
 	size_t     const GetNrOfSegments           ( ShapeId const ) const;
-	//bool       const HasTriggerSound           ( ShapeId const ) const;
-	//Hertz      const GetTriggerSoundFrequency  ( ShapeId const ) const;
-	//MilliSecs  const GetTriggerSoundDuration   ( ShapeId const ) const;
 	SoundDescr const GetTriggerSound           ( ShapeId const ) const;
 	mV         const GetVoltage                ( ShapeId const ) const;
 	mV         const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
@@ -50,18 +47,19 @@ public:
 
 	fMicroSecs GetSimulationTime( ) const;
 
-	unsigned long const GetNrOfShapes      ( ) const;
-	unsigned long const GetNrOfInputNeurons( ) const;
-	unsigned long const GetNrOfNeurons     ( ) const;
-	unsigned long const GetNrOfKnots       ( ) const;
-	unsigned long const GetNrOfPipes       ( ) const;
+	template <typename T>
+	unsigned long const GetNrOf( ) const
+	{
+		return T::GetCounter( );
+	}
 
 	void DrawExterior( ShapeId const, DrawContext const &, tHighlightType const ) const;
 	void DrawInterior( ShapeId const, DrawContext const & ) const;
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
-	template <typename T> bool IsOfType( ShapeId const id ) const 
+	template <typename T> 
+	bool IsOfType( ShapeId const id ) const 
 	{ 
 		return T::TypeFits( GetShapeType( id ) ); 
 	}

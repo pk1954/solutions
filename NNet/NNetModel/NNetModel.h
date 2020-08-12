@@ -285,7 +285,16 @@ public:
 	void SetShape( Shape * const pShape, ShapeId const id )	
 	{
 		CheckShapeId( id );
-		m_Shapes[ id.GetValue() ] = pShape; 
+		
+		if ( pShape )
+			pShape->IncCounter();
+		
+		Shape ** const ppShapeOld { & m_Shapes[ id.GetValue() ] };
+		
+		if ( * ppShapeOld )
+			(* ppShapeOld)->DecCounter();
+
+		* ppShapeOld = pShape; 
 	}
 
 	void ReplaceInModel ( Shape * const p2BeReplaced, Shape * pShape ) { SetShape( pShape,  p2BeReplaced->GetId() ); }
@@ -313,12 +322,6 @@ private:
 	Observable        * m_pStaticModelObservable  { nullptr };
 	Observable        * m_pDynamicModelObservable { nullptr };
 	MicroMeterRect      m_enclosingRect           { };
-
-	unsigned long m_nrOfShapes       { 0L };
-	unsigned long m_nrOfPipes        { 0L };
-	unsigned long m_nrOfKnots        { 0L };
-	unsigned long m_nrOfNeurons      { 0L };
-	unsigned long m_nrOfINputNeurons { 0L };
 
 	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
 

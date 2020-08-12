@@ -30,9 +30,7 @@ class Shape
 public:
 	Shape( ShapeType const type )
 		: m_type( type )
-	{ 
-		++ m_counter;
-	}	
+	{ }	
 
 	Shape( Shape const & src )   // copy constructor
 	  :	m_type      (src.m_type),
@@ -40,7 +38,6 @@ public:
 		m_bSelected (src.m_bSelected),
 		m_bMarked   (src.m_bMarked)
 	{
-		++ m_counter;
 	}
 
 	Shape & operator= ( Shape const & ) = delete;
@@ -58,12 +55,12 @@ public:
 		return true;
 	}
 
-	virtual ~Shape()
-	{
-		-- m_counter;
-	}
+	virtual ~Shape() { }
 
 	static unsigned long GetCounter( ) { return m_counter; }
+
+	virtual void IncCounter( ) = 0;
+	virtual void DecCounter( ) = 0;
 
 	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 

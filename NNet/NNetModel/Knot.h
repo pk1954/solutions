@@ -18,16 +18,13 @@ class Knot : public BaseKnot
 public:
 	Knot( MicroMeterPoint const center )
 	  : BaseKnot( center, ShapeType::Value::knot, PIPE_WIDTH / 2 )
-	{
-		++ m_counter;
-	}
+	{ }
 
-	virtual ~Knot() 
-	{
-		-- m_counter;
-	}
+	virtual ~Knot() {}
 
 	static unsigned long GetCounter( ) { return m_counter; }
+	virtual  void        IncCounter( ) { ++ m_counter; }
+	virtual  void        DecCounter( ) { -- m_counter; }
 
 	static bool TypeFits( ShapeType const type ) { return type.IsKnotType( ); }
 
