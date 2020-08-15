@@ -13,7 +13,7 @@ class DisplayFunctor;
 class ComputeThread;
 class NNetAppMenu;
 class NNetModel;
-class NNetWindow;
+class MainWindow;
 class WinManager;
 class Preferences;
 class CommandStack;
@@ -30,7 +30,7 @@ public:
 	void Initialize
 	( 
 		NNetModelStorage         * const,
-		NNetWindow               * const,
+		MainWindow               * const,
 		WinManager               * const,
 		NNetModelReaderInterface * const,
 		NNetModelWriterInterface * const,
@@ -57,7 +57,7 @@ private:
 	HCURSOR                    m_hCrsrWait             { nullptr };
 	Sound                    * m_pSound                { nullptr };
 	NNetModelStorage         * m_pStorage              { nullptr };
-	NNetWindow               * m_pNNetWindow           { nullptr };
+	MainWindow               * m_pMainWindow           { nullptr };
 	WinManager               * m_pWinManager           { nullptr };
 	ComputeThread            * m_pComputeThread        { nullptr };
 	NNetModelReaderInterface * m_pModelReaderInterface { nullptr };

@@ -133,7 +133,8 @@ using NNetPointBoolFunc = function<bool (MicroMeterPoint const)>;
 
 ////////////// MicroMeterRect /////////////////////////////////////
 
-using MicroMeterRect = RectType< MicroMeter >;
+using MicroMeterRect     = RectType< MicroMeter >;
+using MicroMeterRectSize = SizeType < MicroMeter >;
 
 MicroMeterPoint const MicroMeterRect::GetCenter( ) const { return ( GetStartPoint() + GetEndPoint() ) * 0.5f; }
 

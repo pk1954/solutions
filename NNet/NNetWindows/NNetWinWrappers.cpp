@@ -9,9 +9,9 @@
 #include "UtilityWrappers.h"
 #include "NNetWrapperHelpers.h"
 #include "DrawContext.h"
-#include "win32_NNetWindow.h"
+#include "win32_MainWindow.h"
 
-static NNetWindow * m_pNNetWindow;
+static MainWindow * m_pMainWindow;
 
 class WrapSetPixelOffset: public Script_Functor
 {
@@ -19,7 +19,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         fPixelPoint const fPixelOffset { ScrReadfPixelPoint( script ) };
-        m_pNNetWindow->GetDrawContext().SetPixelOffset( fPixelOffset );
+        m_pMainWindow->GetDrawContext().SetPixelOffset( fPixelOffset );
     }
 };
 
@@ -29,13 +29,13 @@ public:
     virtual void operator() ( Script & script ) const
     {
         MicroMeter const umPixelSize { ScrReadMicroMeter( script ) };
-        m_pNNetWindow->GetDrawContext().SetPixelSize( umPixelSize );
+        m_pMainWindow->GetDrawContext().SetPixelSize( umPixelSize );
     }
 };
 
-void DefineNNetWinWrappers( NNetWindow * const pNNetWindow )
+void DefineNNetWinWrappers( MainWindow * const pMainWindow )
 {
-    m_pNNetWindow = pNNetWindow;
+    m_pMainWindow = pMainWindow;
 
     DEF_FUNC( SetPixelOffset );
     DEF_FUNC( SetPixelSize );

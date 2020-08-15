@@ -4,6 +4,6 @@
 
 #pragma once
 
-class NNetWindow;
+class MainWindow;
 
-extern void DefineNNetWinWrappers( NNetWindow * const );
+extern void DefineNNetWinWrappers( MainWindow * const );

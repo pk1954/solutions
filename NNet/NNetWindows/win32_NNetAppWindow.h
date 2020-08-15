@@ -112,6 +112,7 @@ private:
 	Observable                m_performanceObservable    { };
 	Observable                m_unsavedChangesObservable { };
 	Observable                m_commandStackObservable   { };
+	Observable                m_coordObservable          { };
 	NNetModelReaderInterface  m_modelReaderInterface     { };
 	NNetModelWriterInterface  m_modelWriterInterface     { };
 	ComputeThread             m_computeThread            { };

@@ -6,7 +6,6 @@
 
 #include "NNetColors.h"
 #include "PixelCoordsFp.h"
-#include "ShapeId.h"
 #include "scale.h"
 
 class DrawContext
@@ -51,9 +50,10 @@ public:
 	MicroMeter  GetPixelSize  ( ) const { return m_coord.GetPixelSize  (); }
 	fPixelPoint GetPixelOffset( ) const { return m_coord.GetPixelOffset(); }
 
-	void SetPixelSize  ( MicroMeter  const s ) { m_coord.SetPixelSize  ( s ); }
-	void SetPixelOffset( fPixelPoint const f ) { m_coord.SetPixelOffset( f ); }
-	void Move          ( PixelPoint  const d ) { m_coord.Move          ( d ); }
+	void SetPixelSize  ( MicroMeter      const s ) { m_coord.SetPixelSize  ( s ); }
+	void SetPixelOffset( fPixelPoint     const f ) { m_coord.SetPixelOffset( f ); }
+	void Move          ( PixelPoint      const d ) { m_coord.Move          ( d ); }
+	void Move          ( MicroMeterPoint const p ) { m_coord.Move          ( p ); }
 
 protected:
 	PixelCoordsFp m_coord;

@@ -49,6 +49,11 @@ public:
 		return MicroMeterPoint( Convert2MicroMeter( pp.GetX() ), Convert2MicroMeter( pp.GetY() ) ); 
 	}
 
+	MicroMeterRectSize const Convert2MicroMeterRectSize( fPixelRectSize const pp ) const
+	{ 
+		return MicroMeterRectSize( Convert2MicroMeter( pp.GetX() ), Convert2MicroMeter( pp.GetY() ) ); 
+	}
+
 	MicroMeterPoint const Convert2MicroMeterPointPos( fPixelPoint const pp ) const
 	{ 
 		return Convert2MicroMeterPointSize( pp + m_fPixOffset );
@@ -134,6 +139,11 @@ public:
 		return Convert2MicroMeterPointSize( Convert2fPixelPoint( pnt ) );
 	}
 
+	MicroMeterRectSize Convert2MicroMeterRectSize( PixelRectSize const & siz ) const
+	{ 
+		return Convert2MicroMeterRectSize( Convert2fPixelRectSize( siz ) );
+	}
+
 	MicroMeterRect Convert2MicroMeterRect( PixelRect const & rect ) const
 	{ 
 		return Convert2MicroMeterRect( Convert2fPixelRect( rect ) );
@@ -174,11 +184,6 @@ public:
 		return isValidPixelSize( newSize ) ? newSize : m_pixelSize;
 	}
 
-	MicroMeter LimitPixelSize( MicroMeter const sizeDesired ) const
-	{
-		return ClipToMinMax<MicroMeter>( sizeDesired, MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE );
-	}
-
 	//////// manipulation functions ////////
 
 	void SetPixelSize( MicroMeter const pixelSize )
@@ -196,6 +201,11 @@ public:
 		m_fPixOffset -= Convert2fPixelPoint( pntDelta );
 	}
 
+	void Move( MicroMeterPoint const umDelta )
+	{
+		m_fPixOffset -= Convert2fPixelSize( umDelta );
+	}
+
 	bool Zoom( MicroMeter const pixelSize )
 	{
 		bool bValid = isValidPixelSize( pixelSize );
@@ -211,6 +221,25 @@ public:
 	)
 	{
 		SetPixelOffset( Convert2fPixelSize( umPntCenter ) - fPntPix );
+	}
+
+	void computeCenterAndZoom
+	(
+		MicroMeterRect const & umRect,             // input
+		float          const   fRatioFactor,       // input
+		PixelRectSize  const   pixRectSize,        // input
+		MicroMeter           & umPixelSizeTarget,  // output
+		MicroMeterPoint      & umPntCenterTarget   // output
+	) const
+	{
+		MicroMeterRectSize const umRectSize       { Convert2MicroMeterRectSize( pixRectSize ) };
+		float              const fVerticalRatio   { umRect.GetHeight() / umRectSize.GetY() };
+		float              const fHorizontalRatio { umRect.GetWidth () / umRectSize.GetX() };
+		float              const fMaxRatio        { max( fVerticalRatio, fHorizontalRatio ) };
+		float              const fDesiredRatio    { fMaxRatio * fRatioFactor };
+		MicroMeter         const sizeDesired      { GetPixelSize() * fDesiredRatio };
+		umPixelSizeTarget = ClipToMinMax<MicroMeter>( sizeDesired, MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE );
+		umPntCenterTarget = umRect.GetCenter();
 	}
 
 private:

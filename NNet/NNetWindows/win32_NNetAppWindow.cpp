@@ -176,12 +176,13 @@ void NNetAppWindow::Start( )
 		true,
 		& m_NNetController,
 		& m_modelReaderInterface,
-		& m_modelWriterInterface,
 		& m_drawModel,
 		& m_cursorPosObservable
 	);
 
-	m_mainNNetWindow.AddObserver( & m_miniNNetWindow );
+	m_mainNNetWindow.SetCoordObservable( & m_coordObservable );
+
+	//m_mainNNetWindow.AddObserver( & m_miniNNetWindow );
 	m_miniNNetWindow.ObservedNNetWindow( & m_mainNNetWindow );  // mini window observes main grid window
 
 	SetWindowText( m_miniNNetWindow.GetWindowHandle(), L"Mini window" );
@@ -217,6 +218,7 @@ void NNetAppWindow::Start( )
 	m_unsavedChangesObservable.RegisterObserver( & m_unsavedChangesObserver );
 	m_soundOnObservable       .RegisterObserver( & m_appMenu );
 	m_commandStackObservable  .RegisterObserver( & m_undoRedoMenu );
+	m_coordObservable         .RegisterObserver( & m_miniNNetWindow );
 
 	configureStatusBar( );
 	adjustChildWindows( );
@@ -423,7 +425,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		{
 			m_modelWriterInterface.ResetModel( );
 			m_mainNNetWindow.Reset();
-			m_mainNNetWindow.CenterModel( true );
+			m_mainNNetWindow.CenterModel( );
 		}
 		else
 			m_computeThread.ReleaseComputationLock( );
@@ -449,7 +451,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			{
 				m_StatusBar.DisplayInPart( m_statusMessagePart, L"" );
 				m_preferences.WritePreferences( m_modelStorage.GetModelPath() );
-				m_mainNNetWindow.CenterModel( true );  // computation will be started when done
+				m_mainNNetWindow.CenterModel( );  // computation will be started when done
 			}
 			else
 			{

@@ -14,7 +14,7 @@
 #include "Pipe.h"
 #include "win32_util.h"
 #include "win32_textBuffer.h"
-#include "win32_NNetWindow.h"
+#include "win32_MainWindow.h"
 #include "win32_crsrWindow.h"
 
 using std::setprecision;
@@ -25,17 +25,17 @@ CrsrWindow::CrsrWindow( ) :
 
 CrsrWindow::~CrsrWindow( )
 {
-	m_pNNetWindow = nullptr;
+	m_pMainWindow = nullptr;
 }
 
 void CrsrWindow::Start
 (
 	HWND                     const         hwndParent,
-	NNetWindow               const * const pNNetWindow,
+	MainWindow               const * const pNNetWindow,
 	NNetModelReaderInterface const * const pModelInterface
 ) 
 {
-	m_pNNetWindow     = pNNetWindow;
+	m_pMainWindow           = pNNetWindow;
 	m_pModelReaderInterface = pModelInterface;
 	StartTextWindow
 	(
@@ -82,23 +82,20 @@ void CrsrWindow::printMilliSecs( TextBuffer & textBuf, MilliSecs const msec )
 
 void CrsrWindow::DoPaint( TextBuffer & textBuf )
 {
-	HWND       const hwnd     { m_pNNetWindow->GetWindowHandle() };
-	PixelPoint const pixPoint { Util::GetRelativeCrsrPosition( hwnd ) };
-
-	if ( ! Util::IsInClientRect( hwnd, pixPoint ) )
+	MicroMeterPoint const umPoint { m_pMainWindow->GetCursorPos( ) };
+	if ( umPoint == NP_ZERO )
 	{
 		textBuf.AlignLeft();
 		textBuf.printString( L"Cursor not in model window" );
 		return;
 	}
 
-	MicroMeterPoint const umPoint {	m_pNNetWindow->GetDrawContextC().GetCoordC().Convert2MicroMeterPointPos( pixPoint ) };
 	textBuf.printString( L"Position: " );
 	printMicroMeter( textBuf, umPoint.GetX() );
 	printMicroMeter( textBuf, umPoint.GetY() );
 	textBuf.nextLine();
 
-	ShapeId const id { m_pNNetWindow->GetHighlightedShapeId() };
+	ShapeId const id { m_pMainWindow->GetHighlightedShapeId() };
 
 	if ( IsUndefined( id ) )
 		return;

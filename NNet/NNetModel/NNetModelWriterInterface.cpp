@@ -126,7 +126,7 @@ void NNetModelWriterInterface::SetPulseRate( ShapeId const id, fHertz const fNew
 }
 
 void NNetModelWriterInterface::ResetModel( )
-{
+{ 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
 	m_pModel->ResetModel( );
