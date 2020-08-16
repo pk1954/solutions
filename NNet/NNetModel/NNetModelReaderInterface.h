@@ -11,11 +11,11 @@
 #include "ShapeId.h"
 #include "Shape.h"
 #include "win32_sound.h"
+#include "NNetModel.h"
 #include "tHighlightType.h"
 
 class DrawContext;
 class ObserverInterface;
-class NNetModel;
 class Param;
 class Pipe;
 
@@ -63,6 +63,19 @@ public:
 	{ 
 		return T::TypeFits( GetShapeType( id ) ); 
 	}
+
+	template <typename T>    // const version
+	void Apply2All( function<void(T const &)> const & func ) const
+	{
+		for (auto & pShape : m_pModel->GetShapes() )    
+		{ 
+			if ( pShape )
+			{
+				if ( m_pModel->HasType<T>(pShape) ) 
+					func( static_cast<T const &>( * pShape) ); 
+			}
+		}
+	}                        
 
 private:
 	NNetModel const * m_pModel;

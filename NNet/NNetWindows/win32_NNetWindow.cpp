@@ -13,7 +13,7 @@
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetColors.h"
-#include "DrawModel.h"
+#include "NNetModel.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
 #include "NNetModelWriterInterface.h"
@@ -36,12 +36,9 @@ void NNetWindow::Start
 	DWORD                      const dwStyle,
 	bool                       const bShowRefreshRateDialog,
 	NNetController           * const pController,
-	NNetModelReaderInterface * const pModelReaderInterface,
-	DrawModel                * const pDrawModel,
-	Observable               * const pCursorObservable
+	NNetModelReaderInterface * const pModelReaderInterface
 )
 {
-	m_pDrawModel = pDrawModel;
 	HWND hwnd = StartBaseWindow
 	( 
 		hwndApp,
@@ -66,7 +63,6 @@ void NNetWindow::Stop( )
 NNetWindow::~NNetWindow( )
 {
 	m_pModelReaderInterface = nullptr;
-	m_pDrawModel            = nullptr;
 	m_pController           = nullptr;
 }
 
@@ -77,8 +73,52 @@ MicroMeterRect const NNetWindow::GetEnclosingRect() const
 
 MicroMeterRect const NNetWindow::GetViewRect() const 
 { 
-	return m_context.GetCoordC().Convert2MicroMeterRect( GetClPixelRect() ); 
+	return GetCoord().Convert2MicroMeterRect( GetClPixelRect() ); 
 };
+
+void NNetWindow::DrawInteriorInRect
+( 
+	PixelRect   const & rect, 
+	ShapeCrit   const & crit 
+) const
+{
+	MicroMeterRect umRect { GetCoord().Convert2MicroMeterRect( rect ) }; 
+	m_pModelReaderInterface->Apply2All<Shape>
+	( 
+		[&](Shape const & s) { if (crit(s) && s.IsInRect(umRect)) s.DrawInterior( m_context ); } 
+	);
+}
+
+void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
+{
+	MicroMeterRect umRect { GetCoord().Convert2MicroMeterRect( rect ) }; 
+	m_pModelReaderInterface->Apply2All<Shape>
+	( 
+		[&](Shape const & s) { if (s.IsInRect(umRect)) s.DrawExterior( m_context ); } 
+	);
+}
+
+void NNetWindow::DrawNeuronTextInRect( PixelRect const & rect ) const
+{
+	MicroMeterRect umRect { GetCoord().Convert2MicroMeterRect( rect ) }; 
+	m_pModelReaderInterface->Apply2All<Neuron>
+	( 
+		[&](Neuron const & n) { if (n.IsInRect(umRect)) n.DrawNeuronText( m_context ); } 
+	);
+}
+
+ShapeId const NNetWindow::FindShapeAt
+( 
+	PixelPoint const & pixPoint, 
+	ShapeCrit  const & crit 
+) const
+{	
+	return m_pModelReaderInterface->FindShapeAt
+	( 
+		GetCoord().Convert2MicroMeterPointPos( pixPoint ), 
+		[&]( Shape const & s ) { return crit( s ); } 
+	);
+}
 
 void NNetWindow::OnPaint( )
 {
@@ -105,7 +145,7 @@ void NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 
 bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
-	MicroMeterPoint const umPoint { m_context.GetCoordC().Convert2MicroMeterPointPos( pixPoint ) };
+	MicroMeterPoint const umPoint { GetCoord().Convert2MicroMeterPointPos( pixPoint ) };
 	if ( m_pController->HandleCommand( LOWORD( wParam ), lParam, umPoint ) )
 		return true;
 	else 

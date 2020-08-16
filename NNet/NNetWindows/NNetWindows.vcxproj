@@ -571,12 +571,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ComputeThread.cpp" />
-    <ClCompile Include="DrawModel.cpp" />
     <ClCompile Include="NNetWinWrappers.cpp" />
     <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
     <ClCompile Include="TimeDisplay.cpp" />
     <ClCompile Include="win32_crsrWindow.cpp" />
+    <ClCompile Include="win32_MainWindow.cpp" />
     <ClCompile Include="win32_MiniWindow.cpp" />
     <ClCompile Include="win32_NNetAppMenu.cpp" />
     <ClCompile Include="win32_NNetAppWindow.cpp" />
@@ -593,7 +593,6 @@
     <ClInclude Include="AutoOpen.h" />
     <ClInclude Include="ComputeThread.h" />
     <ClInclude Include="D2D_DrawContext.h" />
-    <ClInclude Include="DrawModel.h" />
     <ClInclude Include="NNetWinWrappers.h" />
     <ClInclude Include="Preferences.h" />
     <ClInclude Include="Resource.h" />

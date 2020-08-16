@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "MoreTypes.h"
 #include "Resource.h"
-#include "DrawModel.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "win32_MainWindow.h"
@@ -14,7 +13,7 @@
 void MiniWindow::ObservedNNetWindow( MainWindow * const pNNetWin )	
 { 
 	m_pObservedNNetWindow = pNNetWin;
-	m_context.SetNoColors( true );
+	GetDrawContext().SetNoColors( true );
 }
 
 void MiniWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
@@ -28,7 +27,7 @@ void MiniWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
 			PixelPoint      const pixDelta { ptCrsr - m_ptLast };
-			MicroMeterPoint const umDelta  { m_context.GetCoordC().Convert2MicroMeterPointSize( pixDelta ) }; 
+			MicroMeterPoint const umDelta  { GetCoord().Convert2MicroMeterPointSize( pixDelta ) }; 
 			m_pObservedNNetWindow->NNetMove( - umDelta );               // move the observed window in opposite direction
 		}
 		m_ptLast = ptCrsr;
@@ -47,10 +46,10 @@ void MiniWindow::Notify( bool const bImmediately )
 		MicroMeterRect const umRectMain  { m_pObservedNNetWindow->GetViewRect() }; // current position of main window view 
 		MicroMeterRect const umRectModel { GetEnclosingRect() };                   // current extension of model
 		MicroMeterRect const umRectShow  { Union( umRectMain, umRectModel ) };     // all this should be visible  
-		fPixelPoint    const fpCenter    { m_context.GetCoordC().Convert2fPixelPoint( GetClRectCenter() ) };
+		fPixelPoint    const fpCenter    { GetCoord().Convert2fPixelPoint( GetClRectCenter() ) };
 		MicroMeter      umPixelSizeTarget;
 		MicroMeterPoint umPntCenterTarget { NP_ZERO };
-		m_context.GetCoordC().computeCenterAndZoom
+		GetCoord().computeCenterAndZoom
 		( 
 			umRectShow.Scale( NEURON_RADIUS ), 
 			EXTRA_SPACE_FACTOR, 
@@ -58,8 +57,8 @@ void MiniWindow::Notify( bool const bImmediately )
 			umPixelSizeTarget, 
 			umPntCenterTarget 
 		);
-		m_context.Zoom( umPixelSizeTarget );
-		m_context.Center( umPntCenterTarget, fpCenter );
+		GetDrawContext().Zoom( umPixelSizeTarget );
+		GetDrawContext().Center( umPntCenterTarget, fpCenter );
 		NNetWindow::Notify( bImmediately );
 	}
 }
@@ -68,7 +67,7 @@ void MiniWindow::doPaint( )
 {
 	if ( m_pObservedNNetWindow )
 	{
-		GetDrawModel()->DrawExteriorInRect( GetClPixelRect( ), m_context );
-		m_context.DrawTranspRect( m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT );
+		DrawExteriorInRect( GetClPixelRect( ) );
+		GetDrawContext().DrawTranspRect( m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT );
 	}
 }

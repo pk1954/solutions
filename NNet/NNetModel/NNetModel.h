@@ -207,18 +207,18 @@ public:
 		}
 	}                        
 
-	template <typename T>    // const version
-	void Apply2All( function<void(T const &)> const & func ) const
-	{
-		for (auto & pShape : m_Shapes)    
-		{ 
-			if ( pShape )
-			{
-				if ( HasType<T>(pShape) ) 
-					func( static_cast<T const &>( * pShape) ); 
-			}
-		}
-	}                        
+	//template <typename T>    // const version
+	//void Apply2All( function<void(T const &)> const & func ) const
+	//{
+	//	for (auto & pShape : m_Shapes)    
+	//	{ 
+	//		if ( pShape )
+	//		{
+	//			if ( HasType<T>(pShape) ) 
+	//				func( static_cast<T const &>( * pShape) ); 
+	//		}
+	//	}
+	//}                        
 
 	template <typename T>
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func )
@@ -312,6 +312,8 @@ public:
 	{	
 		m_pShapeErrorHandler = pHandler;
 	}
+
+	NormalizedShapeList const & GetShapes( ) const { return m_Shapes; }
 
 private:
 

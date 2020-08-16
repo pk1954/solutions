@@ -16,12 +16,10 @@ using std::wstring;
 using std::function;
 
 class Scale;
-class DrawModel;
 class Observable;
 class ActionTimer;
 class ObserverInterface;
 class ControllerInterface;
-class NNetModelWriterInterface;
 class NNetModelReaderInterface;
 
 class NNetWindow : public ModelWindow
@@ -37,9 +35,7 @@ public:
 		DWORD                      const,
 		bool                       const,
 		NNetController           * const,
-		NNetModelReaderInterface * const,
-		DrawModel                * const,
-		Observable               * const
+		NNetModelReaderInterface * const
 	);
 
 	void Stop( );
@@ -48,29 +44,33 @@ public:
 
 	MicroMeterRect const GetViewRect() const;
 
-protected:
-
-	DrawModel      const * GetDrawModel    () const { return m_pDrawModel; }
-	PixelCoordsFp  const & GetCoord        () const { return m_context.GetCoordC(); }
+	DrawContext          & GetDrawContext  ()       { return   m_context; }
+	PixelCoordsFp  const & GetCoord        () const { return   m_context.GetCoordC(); }
 	MicroMeterRect const   GetEnclosingRect() const;
 
-	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const );
-	virtual void OnSize       ( WPARAM const, LPARAM const );
-	virtual void OnLButtonDown( WPARAM const, LPARAM const ) {}
+	ShapeId const FindShapeAt         ( PixelPoint const &, ShapeCrit const & ) const;
+	void          DrawInteriorInRect  ( PixelRect  const &, ShapeCrit const & ) const;
+	void          DrawExteriorInRect  ( PixelRect  const &                    ) const;
+	void          DrawNeuronTextInRect( PixelRect  const &                    ) const;
+
+protected:
+
 	virtual void OnPaint( );
+	virtual void OnSize( WPARAM const, LPARAM const );
 
 	virtual void doPaint( ) = 0;
 
 	PixelPoint m_ptLast { PP_NULL };	// Last cursor position during selection 
 
-	D2D_DrawContext            m_context               { };
 	NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
 
 private:
+	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const );
+	virtual void OnLButtonDown( WPARAM const, LPARAM const ) {}
 
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	DrawModel      * m_pDrawModel  { nullptr };
-	NNetController * m_pController { nullptr };
+	D2D_DrawContext   m_context     { };
+	NNetController  * m_pController { nullptr };
 };

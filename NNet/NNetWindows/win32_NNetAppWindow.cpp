@@ -126,7 +126,6 @@ void NNetAppWindow::Start( )
 	m_model               .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
 	m_modelStorage        .Initialize( & m_model, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult );
 	m_modelWriterInterface.Initialize( & m_traceStream, & m_cmdStack, & m_modelStorage );
-	m_drawModel           .Initialize( & m_model );
 	m_cmdStack            .Initialize( & m_model, & m_commandStackObservable );
 	m_NNetColors          .Initialize( & m_blinkObservable );
 	m_sound               .Initialize( & m_soundOnObservable );
@@ -165,8 +164,8 @@ void NNetAppWindow::Start( )
 		& m_NNetController,
 		& m_modelReaderInterface,
 		& m_modelWriterInterface,
-		& m_drawModel,
-		& m_cursorPosObservable
+		& m_cursorPosObservable,
+		& m_coordObservable
 	);
 
 	m_miniNNetWindow.Start
@@ -175,12 +174,8 @@ void NNetAppWindow::Start( )
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
 		true,
 		& m_NNetController,
-		& m_modelReaderInterface,
-		& m_drawModel,
-		& m_cursorPosObservable
+		& m_modelReaderInterface
 	);
-
-	m_mainNNetWindow.SetCoordObservable( & m_coordObservable );
 
 	//m_mainNNetWindow.AddObserver( & m_miniNNetWindow );
 	m_miniNNetWindow.ObservedNNetWindow( & m_mainNNetWindow );  // mini window observes main grid window

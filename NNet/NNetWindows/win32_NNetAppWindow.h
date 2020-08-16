@@ -12,7 +12,6 @@
 #include "SlowMotionRatio.h"
 #include "ComputeThread.h"
 #include "NNetModelStorage.h"
-#include "DrawModel.h"
 #include "CommandStack.h"
 #include "DisplayFunctor.h"
 #include "TimeDisplay.h"
@@ -125,7 +124,6 @@ private:
 	NNetModelStorage          m_modelStorage             { };
 	StatusBarDisplayFunctor   m_statusBarDispFunctor     { };
 	NNetModel                 m_model                    { };
-	DrawModel                 m_drawModel                { };
 	NNetColors                m_NNetColors               { };
 	NNetController            m_NNetController           { };
 	SimulationControl         m_simulationControl        { };

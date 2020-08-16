@@ -48,33 +48,6 @@ public:
 		m_graphics.Resize( width, height );
 	}
 
-	bool Zoom( MicroMeter const newSize )
-	{
-		bool bRes { m_coord.Zoom( newSize ) };
-		return bRes;
-	}
-
-	void Center( MicroMeterPoint const umPnt, fPixelPoint const fPntPix )
-	{
-		m_coord.Center( umPnt, fPntPix );
-	}
-
-	bool ZoomKeepCrsrPos( PixelPoint const & pixPntCenter, MicroMeter const newSize )
-	{
-		fPixelPoint     const fPixPointCenter { Convert2fPixelPoint( pixPntCenter ) };                   // compute center
-		MicroMeterPoint const umPointcenter   { m_coord.Convert2MicroMeterPointPos( fPixPointCenter ) }; // ** BEFORE ** zooming!
-		bool bRes { Zoom( newSize ) };
-		if ( bRes )
-		{
-			m_coord.Center( umPointcenter, fPixPointCenter ); 
-		}
-		else
-		{
-			MessageBeep( MB_ICONWARNING );
-		}
-		return bRes;
-	}
-
 	void SetStdFontSize( MicroMeter const & size )
 	{
 		m_graphics.SetStdFontSize( m_coord.Convert2fPixel( size ).GetValue() );
@@ -146,10 +119,7 @@ public:
 		m_graphics.DisplayText( m_coord.Convert2PixelRect( umRect ), wstr, colF, pTextFormat );
 	}
 
-	void SetNoColors( bool const bMode ) { m_bNoColors = bMode; }
-
 private:
-	bool       m_bNoColors { false };
 	D2D_driver m_graphics;
 	Scale    * m_pScale { nullptr };
 };
