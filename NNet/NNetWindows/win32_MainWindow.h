@@ -58,27 +58,17 @@ public:
 
 private:
 
-	MicroMeterRect m_rectSelection { };
-
-	ShapeId m_shapeSuperHighlighted { NO_SHAPE };
-	ShapeId m_shapeHighlighted      { NO_SHAPE };
-
+	SmoothMoveFp               m_smoothMove            { };       
+	MicroMeterRect             m_rectSelection         { };
+	ShapeId                    m_shapeSuperHighlighted { NO_SHAPE };
+	ShapeId                    m_shapeHighlighted      { NO_SHAPE };
 	Observable               * m_pCoordObservable      { nullptr };
 	Observable               * m_pCursorPosObservable  { nullptr };
 	NNetModelWriterInterface * m_pModelWriterInterface { nullptr };
-
-	MicroMeterPoint m_umPntCenterStart { MicroMeterPoint::NULL_VAL() }; // SmoothMove TODO: move these variables to SmootMoveFp
-	MicroMeterPoint m_umPntCenterDelta { MicroMeterPoint::NULL_VAL() }; // SmoothMove 
-	MicroMeter      m_umPixelSizeStart { MicroMeter::NULL_VAL() };      // SmoothMove 
-	MicroMeter      m_umPixelSizeDelta { MicroMeter::NULL_VAL() };      // SmoothMove 
-
-	SmoothMoveFp    m_smoothMove { };                                   // SmoothMove   
-
-	bool m_bFocusMode { false };
+	bool                       m_bFocusMode            { false };
 
 	void setSuperHighlightedShape( MicroMeterPoint const & );
 	void setHighlightedShape     ( MicroMeterPoint const & );
-	void smoothStep( );
 
 	virtual void doPaint( );
 };

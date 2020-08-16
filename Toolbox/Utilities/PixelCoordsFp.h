@@ -223,7 +223,7 @@ public:
 		SetPixelOffset( Convert2fPixelSize( umPntCenter ) - fPntPix );
 	}
 
-	void computeCenterAndZoom
+	void ComputeCenterAndZoom
 	(
 		MicroMeterRect const & umRect,             // input
 		float          const   fRatioFactor,       // input

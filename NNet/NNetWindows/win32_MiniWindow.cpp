@@ -49,7 +49,7 @@ void MiniWindow::Notify( bool const bImmediately )
 		fPixelPoint    const fpCenter    { GetCoord().Convert2fPixelPoint( GetClRectCenter() ) };
 		MicroMeter      umPixelSizeTarget;
 		MicroMeterPoint umPntCenterTarget { NP_ZERO };
-		GetCoord().computeCenterAndZoom
+		GetCoord().ComputeCenterAndZoom
 		( 
 			umRectShow.Scale( NEURON_RADIUS ), 
 			EXTRA_SPACE_FACTOR, 

@@ -180,26 +180,6 @@ void MainWindow::ZoomStep( bool const bZoomIn, PixelPoint const * const pPixPntC
 	Zoom( GetCoord().ComputeNewPixelSize( bZoomIn ), pPixPntCenter );
 }
 
-void MainWindow::CenterAndZoomRect( MicroMeterRect const & umRect, float const fRatioFactor )
-{
-	MicroMeter      umPixelSizeTarget;
-	MicroMeterPoint umPntCenterTarget { NP_ZERO };
-	GetCoord().computeCenterAndZoom
-	( 
-		umRect.Scale( NEURON_RADIUS ), 
-		fRatioFactor, 
-		GetClRectSize(),
-		umPixelSizeTarget, 
-		umPntCenterTarget 
-	);
-	m_umPixelSizeStart = GetCoord().GetPixelSize();                                   // actual pixel size 
-	m_umPntCenterStart = GetCoord().Convert2MicroMeterPointPos( GetClRectCenter() );  // actual center 
-	m_umPixelSizeDelta = umPixelSizeTarget - m_umPixelSizeStart;
-	m_umPntCenterDelta = umPntCenterTarget - m_umPntCenterStart;
-	m_smoothMove.Reset();
-	m_bFocusMode = true;
-}
-
 void MainWindow::CenterModel( )
 {
 	CenterAndZoomRect( m_pModelReaderInterface->GetEnclosingRect( ), 1.2f ); // give 20% more space (looks better)
@@ -310,11 +290,45 @@ void MainWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 	}
 }
 
+void MainWindow::CenterAndZoomRect( MicroMeterRect const & umRect, float const fRatioFactor )
+{
+	MicroMeter      umPixelSizeTarget;
+	MicroMeterPoint umPntCenterTarget { NP_ZERO };
+	GetCoord().ComputeCenterAndZoom
+	( 
+		umRect.Scale( NEURON_RADIUS ), 
+		fRatioFactor, 
+		GetClRectSize(),
+		umPixelSizeTarget, 
+		umPntCenterTarget 
+	);
+	m_smoothMove.SetUp
+	(
+		GetCoord().GetPixelSize(),                                   // actual pixel size 
+		GetCoord().Convert2MicroMeterPointPos( GetClRectCenter() ),  // actual center 
+		umPixelSizeTarget,
+		umPntCenterTarget
+	);
+	m_bFocusMode = true;
+}
+
 void MainWindow::OnPaint( )
 {
 	NNetWindow::OnPaint( );
 	if ( m_bFocusMode )
-		smoothStep( );
+	{
+		bool        const bTargetReached { m_smoothMove.Next() };
+		fPixelPoint const fpCenter       { GetCoord().Convert2fPixelPoint( GetClRectCenter( ) ) };
+		GetDrawContext().Zoom  ( m_smoothMove.GetNewSize() );
+		GetDrawContext().Center( m_smoothMove.GetNewCenter(), fpCenter );
+		Notify( true );                               // cause immediate repaint
+		m_pCoordObservable->NotifyAll( false );
+		if ( bTargetReached )
+		{
+			m_bFocusMode = false;
+			SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
+		}
+	}
 }
 
 /////////////////////// local functions ////////////////////////////////
@@ -349,27 +363,6 @@ void MainWindow::doPaint( )
 		m_pModelReaderInterface->DrawExterior( m_shapeHighlighted, context, tHighlightType::highlighted );
 		m_pModelReaderInterface->DrawInterior( m_shapeHighlighted, context );
 	}
-}
-
-void MainWindow::smoothStep( ) 
-{
-	float fPos            { m_smoothMove.Next() };
-	bool  fTargetsReached { fPos >= SmoothMoveFp::END_POINT };
-
-	if ( fTargetsReached )
-	{
-		m_bFocusMode = false;
-		SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
-	}
-	else
-	{
-		fPixelPoint const fpCenter { GetCoord().Convert2fPixelPoint( GetClRectCenter( ) ) };
-		GetDrawContext().Zoom  ( m_umPixelSizeStart + m_umPixelSizeDelta * fPos );
-		GetDrawContext().Center( m_umPntCenterStart + m_umPntCenterDelta * fPos, fpCenter );
-	}
-
-	Notify( true );     // cause immediate repaint
-	m_pCoordObservable->NotifyAll( false );
 }
 
 void MainWindow::setSuperHighlightedShape( MicroMeterPoint const & umCrsrPos )
