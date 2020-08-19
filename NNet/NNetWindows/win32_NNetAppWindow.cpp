@@ -209,6 +209,7 @@ void NNetAppWindow::Start( )
 	m_SlowMotionRatio         .RegisterObserver( & m_computeThread );
 	m_SlowMotionRatio         .RegisterObserver( & m_slowMotionDisplay );
 	m_parameters              .RegisterObserver( & m_parameterDlg );
+	m_parameters              .RegisterObserver( & m_computeThread );
 	m_unsavedChangesObservable.RegisterObserver( & m_unsavedChangesObserver );
 	m_soundOnObservable       .RegisterObserver( & m_appMenu );
 	m_commandStackObservable  .RegisterObserver( & m_undoRedoMenu );

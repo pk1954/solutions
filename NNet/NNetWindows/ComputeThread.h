@@ -37,37 +37,37 @@ public:
 	void StopComputation( );
 	bool IsRunning() const { return ! m_bStopped; }
 
-	float      GetEffectiveSlowmo    ( ) const { return m_fEffectiveSlowMo; };
-	fMicroSecs GetTimeSpentPerCycle  ( ) const { return m_usRealTimeSpentPerCycle; }
-	fMicroSecs GetSimuTimeResolution ( ) const;
-	fMicroSecs GetTimeAvailPerCycle  ( ) const;
+	fMicroSecs GetSimuTimeResolution( ) const { return m_usSimuTimeResolution; };
+	fMicroSecs GetTimeSpentPerCycle ( ) const { return m_usRealTimeSpentPerCycle; }
+	fMicroSecs GetTimeAvailPerCycle ( ) const { return m_usTimeAvailPerCycle; };
+	float      GetEffectiveSlowmo   ( ) const { return m_fEffectiveSlowMo; };
 
 private:
 
-	NNetModel       * m_pModel                  { nullptr };
-	Param           * m_pParam                  { nullptr };
-	SlowMotionRatio * m_pSlowMotionRatio        { nullptr };
-	Observable      * m_pRunObservable          { nullptr };
-	Observable      * m_pPerformanceObservable  { nullptr };
-	bool              m_bStopped                { true };          // visible to UI
-	bool              m_bComputationLocked      { true };          // internal lock (short time)
-	HiResTimer        m_hrTimer                 { };
-	SRWLOCK           m_srwlStopped             { SRWLOCK_INIT };
-
-	// gross - time including stops 
-	// net   - time excluding stops == effective computation time
-
-	// real times are counted starting with last reset
+	NNetModel       * m_pModel                 { nullptr };
+	Param           * m_pParam                 { nullptr };
+	SlowMotionRatio * m_pSlowMotionRatio       { nullptr };
+	Observable      * m_pRunObservable         { nullptr };
+	Observable      * m_pPerformanceObservable { nullptr };
+	bool              m_bStopped               { true };          // visible to UI
+	bool              m_bComputationLocked     { true };          // internal lock (short time)
+	HiResTimer        m_hrTimer                { };
+	SRWLOCK           m_srwlStopped            { SRWLOCK_INIT };
 
 	fMicroSecs        m_usSimuTimeAtLastReset   { 0.0_MicroSecs };
+	fMicroSecs        m_usSimuTimeResolution    { 0.0_MicroSecs };
 	fMicroSecs        m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
+	fMicroSecs        m_usTimeAvailPerCycle     { 0.0_MicroSecs };
 
 	Ticks             m_ticksNetRunning { 0 };
 	Ticks             m_ticksAtLastRun  { 0 };
 
-	float m_fEffectiveSlowMo { 0.0f };
+	float             m_fEffectiveSlowMo { 0.0f };
 
 	void runComputation( );
 	void stopComputation( );
 	void reset( );
+
+	fMicroSecs const simuTimeSinceLastReset();
+	fMicroSecs const netRealTimeSinceLastReset();
 };

@@ -33,6 +33,7 @@ void ComputeThread::Start
 void ComputeThread::Notify( bool const bImmediate ) // slowmo ratio or parameters have changed
 {
 	reset( );
+	m_pRunObservable->NotifyAll( false);
 }
 
 void ComputeThread::reset( )
@@ -41,6 +42,8 @@ void ComputeThread::reset( )
 	m_usSimuTimeAtLastReset = m_pModel->GetSimulationTime( );
 	m_ticksNetRunning       = Ticks( 0 );
 	m_ticksAtLastRun        = m_hrTimer.ReadHiResTimer();
+	m_usSimuTimeResolution  = m_pParam->GetTimeResolution(); 
+	m_usTimeAvailPerCycle   = m_pSlowMotionRatio->SimuTime2RealTime( m_usSimuTimeResolution ); 
 	ReleaseComputationLock( );
 }
 
@@ -103,24 +106,16 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 	for (;;)
 	{
 		AcquireSRWLockExclusive( & m_srwlStopped );
-		Ticks ticks { m_hrTimer.ReadHiResTimer() };
 
 		while ( ! (m_bStopped || m_bComputationLocked) )
 		{
-			Ticks      const ticksBeforeLoop          { m_hrTimer.ReadHiResTimer() };
-			Ticks            ticksNet                 { m_ticksNetRunning + ticksBeforeLoop - m_ticksAtLastRun };
-			fMicroSecs       usNetRealTime            { m_hrTimer.TicksToMicroSecs( ticksNet ) };
-			fMicroSecs const usNominalSimuTime        { m_pSlowMotionRatio->RealTime2SimuTime( usNetRealTime ) };
-			fMicroSecs const usSimuTimeSinceLastReset { m_pModel->GetSimulationTime( ) - m_usSimuTimeAtLastReset };
-			if ( usNominalSimuTime < usSimuTimeSinceLastReset )
-			{
-				int x = 42;
-			}
-			assert( usNominalSimuTime >= usSimuTimeSinceLastReset );                       
-			fMicroSecs const usMissingSimuTime { usNominalSimuTime - usSimuTimeSinceLastReset };                  // compute missing simulation time
-			long       const lCycles           { CastToLong(usMissingSimuTime / m_pParam->GetTimeResolution()) }; // compute # cycles to be computed
+			fMicroSecs const usNominalSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( netRealTimeSinceLastReset( ) ) };
+			fMicroSecs const usMissingSimuTime { usNominalSimuTime - simuTimeSinceLastReset() };           // compute missing simulation time
+			long       const lCycles           { CastToLong(usMissingSimuTime / m_usSimuTimeResolution) }; // compute # cycles to be computed
 			long       const lCyclesTodo       { max( 0, lCycles ) };
 			long             lCyclesDone       { 0 };
+
+			Ticks const ticksBeforeLoop { m_hrTimer.ReadHiResTimer() };
 			while ( (lCyclesDone < lCyclesTodo) && ! (m_bStopped || m_bComputationLocked) )
 			{
 				if ( m_pModel->Compute( ) ) // returns true, if stop on trigger fires
@@ -130,21 +125,17 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 				}
 				++lCyclesDone;
 			}
-	
-			Ticks      const ticksAfterLoop   { m_hrTimer.ReadHiResTimer() };
-			Ticks      const ticksInLoop      { ticksAfterLoop - ticksBeforeLoop };
-			fMicroSecs const usSpentInCompute { m_hrTimer.TicksToMicroSecs(ticksInLoop) };
-			ticksNet      = m_ticksNetRunning + ticksAfterLoop - m_ticksAtLastRun;
-			usNetRealTime = m_hrTimer.TicksToMicroSecs( ticksNet );
+			Ticks const ticksInLoop { m_hrTimer.ReadHiResTimer() - ticksBeforeLoop };
+
 			if ( lCyclesDone > 0 )
 			{
-				fMicroSecs usSimuTimeSinceLastReset { m_pModel->GetSimulationTime() - m_usSimuTimeAtLastReset };
-				m_fEffectiveSlowMo        = usNetRealTime / usSimuTimeSinceLastReset;
-				m_usRealTimeSpentPerCycle = usSpentInCompute / CastToFloat(lCyclesDone);
+				m_usRealTimeSpentPerCycle = m_hrTimer.TicksToMicroSecs( ticksInLoop / lCyclesDone );
+				m_fEffectiveSlowMo        = netRealTimeSinceLastReset( ) / simuTimeSinceLastReset();
 				m_pPerformanceObservable->NotifyAll( false);
 			}
 
-			fMicroSecs const usSleepTime { GetTimeAvailPerCycle() - usSpentInCompute };
+			fMicroSecs const usSpentInCompute { m_hrTimer.TicksToMicroSecs(ticksInLoop) };
+			fMicroSecs const usSleepTime { m_usTimeAvailPerCycle - usSpentInCompute };
 			if ( usSleepTime > 10000.0_MicroSecs )
 				Sleep( 10 );
 		}
@@ -158,12 +149,14 @@ void ComputeThread::SingleStep( )
 	m_pModel->Compute( );
 }
 
-fMicroSecs ComputeThread::GetTimeAvailPerCycle( ) const 
+fMicroSecs const ComputeThread::simuTimeSinceLastReset()
 { 
-	return m_pSlowMotionRatio->SimuTime2RealTime( GetSimuTimeResolution() ); 
+	return m_pModel->GetSimulationTime() - m_usSimuTimeAtLastReset; 
 };
 
-fMicroSecs ComputeThread::GetSimuTimeResolution( ) const 
-{ 
-	return m_pParam->GetTimeResolution(); 
+fMicroSecs const ComputeThread::netRealTimeSinceLastReset( )
+{
+	Ticks      ticksNet      { m_ticksNetRunning - m_ticksAtLastRun + m_hrTimer.ReadHiResTimer() };
+	fMicroSecs usNetRealTime { m_hrTimer.TicksToMicroSecs( ticksNet ) };
+	return usNetRealTime;
 }
