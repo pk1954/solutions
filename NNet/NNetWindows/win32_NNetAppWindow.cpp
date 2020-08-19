@@ -150,7 +150,7 @@ void NNetAppWindow::Start( )
 	m_performanceWindow.SetRefreshRate( 500ms );
 	m_StatusBar        .SetRefreshRate( 300ms );
 
-	m_computeThread         .Start( & m_model, & m_parameters, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable	);
+	m_computeThread         .Start( & m_model, & m_parameters, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable );
 	m_appMenu               .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_cmdStack, & m_sound );
 	m_StatusBar             .Start( m_hwndApp );
 	m_undoRedoMenu          .Start( & m_appMenu );
@@ -206,9 +206,8 @@ void NNetAppWindow::Start( )
 	m_performanceObservable   .RegisterObserver( & m_performanceWindow );
 	m_modelTimeObservable     .RegisterObserver( & m_timeDisplay );
 	m_runObservable           .RegisterObserver( & m_simulationControl );
-	m_SlowMotionRatio         .RegisterObserver( & m_slowMotionDisplay );
 	m_SlowMotionRatio         .RegisterObserver( & m_computeThread );
-	m_parameters              .RegisterObserver( & m_computeThread );
+	m_SlowMotionRatio         .RegisterObserver( & m_slowMotionDisplay );
 	m_parameters              .RegisterObserver( & m_parameterDlg );
 	m_unsavedChangesObservable.RegisterObserver( & m_unsavedChangesObserver );
 	m_soundOnObservable       .RegisterObserver( & m_appMenu );

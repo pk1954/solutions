@@ -60,7 +60,7 @@ public:
 		microseconds usOverallTime = m_hrtimerOverall.GetDuration( );
 		Hertz        result        = CalcActionFrequency( usOverallTime, m_dwCounter );
 		m_dwCounter = 0;
-		m_hrtimerOverall.Start( );
+		m_hrtimerOverall.Restart( );
 		return result;
 	}
 

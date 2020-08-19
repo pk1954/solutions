@@ -18,7 +18,7 @@ public:
     HiResTimer( );
     ~HiResTimer( ) {};
 
-	Ticks ReadHiResTimer( ) const
+	Ticks const ReadHiResTimer( ) const
 	{
 		LARGE_INTEGER value;
 		(void)QueryPerformanceCounter( & value );
@@ -46,17 +46,17 @@ public:
 		m_bStarted = true;
 	}
 
-	Ticks GetTicksTilStart( ) const
+	Ticks const GetTicksTilStart( ) const
 	{
 		return ReadHiResTimer( ) - m_ticksOnStart;
 	}
 
-	fMicroSecs GetMicroSecsTilStart( ) const
+	fMicroSecs const GetMicroSecsTilStart( ) const
 	{
 		return TicksToMicroSecs( GetTicksTilStart() );
 	}
 
-	microseconds GetDuration( )
+	microseconds const GetDuration( )
 	{
 		assert( ! m_bStarted );
 
@@ -67,6 +67,16 @@ public:
 	}
 
 	void BusyWait( microseconds const, Ticks & );
+
+	fMicroSecs const TicksToMicroSecs( Ticks const ticks ) const
+	{
+		return fMicroSecs( ticks.GetValue() * fMICROSECS_TO_SECONDS / m_fFrequency.GetValue() );
+	}
+
+	Ticks const MicroSecsToTicks( fMicroSecs const us ) const
+	{
+		return Ticks( static_cast<long long>( (us.GetValue() * m_fFrequency.GetValue()) / fMICROSECS_TO_SECONDS ) );
+	}
 
 private:
 
@@ -79,16 +89,6 @@ private:
 
 	inline static Hertz  m_frequency  { 0_Hertz };
 	inline static fHertz m_fFrequency { 0.0_fHertz};
-
-	fMicroSecs TicksToMicroSecs( Ticks const ticks ) const
-	{
-		return fMicroSecs( ticks.GetValue() * fMICROSECS_TO_SECONDS / m_fFrequency.GetValue() );
-	}
-
-	Ticks MicroSecsToTicks( fMicroSecs const us ) const
-	{
-		return Ticks( static_cast<long long>( (us.GetValue() * m_fFrequency.GetValue()) / fMICROSECS_TO_SECONDS ) );
-	}
 
 	microseconds TicksToMicroseconds( Ticks const ) const;
 	Ticks MicroSecondsToTicks( microseconds const ) const;

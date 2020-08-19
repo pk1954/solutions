@@ -109,22 +109,19 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 
 	if ( m_pComputeThread )
 	{
-		fMicroSecs simuTime { m_pComputeThread->GetSimulationTime( ) };
-		fMicroSecs realTime { m_pComputeThread->GetRealTimeTilStart( ) };
-		fMicroSecs avail    { m_pComputeThread->GetTimeAvailPerCycle( ) };
-		fMicroSecs spent    { m_pComputeThread->GetTimeSpentPerCycle( ) };
+		fMicroSecs avail { m_pComputeThread->GetTimeAvailPerCycle( ) };
+		fMicroSecs spent { m_pComputeThread->GetTimeSpentPerCycle( ) };
 		printMicroSecLine( textBuf, L"simu time res:", m_pComputeThread->GetSimuTimeResolution( ) );
-		printFloatLine   ( textBuf, L"targ slowmo:", m_pSlowMotionRatio->GetRatio( ), L"" );
-		printMicroSecLine( textBuf, L"avail time:", avail );
-		printMicroSecLine( textBuf, L"spent time:", spent );
-		printFloatLine   ( textBuf, L"workload:",  CastToFloat( (spent / avail) * 100.0f ), L"%" );
-		if ( simuTime > 0.0_MicroSecs )
-			printFloatLine   ( textBuf, L"effect slomo:", CastToFloat( realTime / simuTime ), L"" );
-		printIntLine( textBuf, L"# Input  : ", m_pModelReaderInterface->GetNrOf<InputNeuron>() );
-		printIntLine( textBuf, L"# Neurons: ", m_pModelReaderInterface->GetNrOf<Neuron>() );
-		printIntLine( textBuf, L"# Knots  : ", m_pModelReaderInterface->GetNrOf<Knot>() );
-		printIntLine( textBuf, L"# Pipes  : ", m_pModelReaderInterface->GetNrOf<Pipe>() );
-		printIntLine( textBuf, L"# Shapes : ", 
+		printFloatLine   ( textBuf, L"targ slowmo:",   m_pSlowMotionRatio->GetRatio( ), L"" );
+		printMicroSecLine( textBuf, L"avail time:",    avail );
+		printMicroSecLine( textBuf, L"spent time:",    spent );
+		printFloatLine   ( textBuf, L"workload:",      CastToFloat( (spent / avail) * 100.0f ), L"%" );
+		printFloatLine   ( textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo( ), L"" );
+		printIntLine     ( textBuf, L"# Input  : ",    m_pModelReaderInterface->GetNrOf<InputNeuron>() );
+		printIntLine     ( textBuf, L"# Neurons: ",    m_pModelReaderInterface->GetNrOf<Neuron>() );
+		printIntLine     ( textBuf, L"# Knots  : ",    m_pModelReaderInterface->GetNrOf<Knot>() );
+		printIntLine     ( textBuf, L"# Pipes  : ",    m_pModelReaderInterface->GetNrOf<Pipe>() );
+		printIntLine     ( textBuf, L"# Shapes : ", 
 			m_pModelReaderInterface->GetNrOf<InputNeuron>() +
 		    m_pModelReaderInterface->GetNrOf<Neuron>() +
 		    m_pModelReaderInterface->GetNrOf<Knot>() +
