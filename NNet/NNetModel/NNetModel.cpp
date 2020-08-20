@@ -20,16 +20,12 @@ using std::unordered_map;
 NNetModel::NNetModel( NNetModel const & modelSrc )
 {
 	* this = modelSrc;
-	DuplicateShapes( m_Shapes );
+	m_Shapes = DuplicateShapes( modelSrc.m_Shapes );
 	assert( IsEqual( modelSrc ) );
 }
 
-NormalizedShapeList NNetModel::DuplicateShapes
-( 
-	vector<Shape *> const list // Not neccessarily a NormalizedShapeList!
-) const
+NormalizedShapeList NNetModel::DuplicateShapes( vector<Shape *> const & list ) const // Not neccessarily a NormalizedShapeList!
 {
-	// vector like m_Shapes with ptr to copy of shape or nullptr (if original shape is not in selection)
 	NormalizedShapeList newShapes( GetSizeOfShapeList(), nullptr ); 
 
 	for ( Shape * const pShape : list )
@@ -38,8 +34,6 @@ NormalizedShapeList NNetModel::DuplicateShapes
 		{
 			ShapeId id { pShape->GetId() };
 			newShapes[id.GetValue()] = ShallowCopy( pShape ); 
-			//ShapeId id { pShape->GetId() };
-			//newShapes[id.GetValue()] = ShallowCopy( GetConstShape( id ) ); 
 		}
 	}
 

@@ -29,8 +29,6 @@ public:
 	{
 		if ( ! BaseKnot::IsEqual( other ) )
 			return false;
-		if ( m_bTriggered != other.m_bTriggered )
-			return false;
 		if ( m_factorW != other.m_factorW )
 			return false;
 		if ( m_factorU != other.m_factorU )

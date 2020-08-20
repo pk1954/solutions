@@ -13,16 +13,17 @@ class CopySelectionCommand : public SelectionCommand
 public:
 
 	CopySelectionCommand( NNetModel * const pModel )
-		:	SelectionCommand( pModel),
-		m_copies ( pModel->DuplicateShapes( m_selectedShapes ) )
-	{ }
+		:	SelectionCommand( pModel)
+	{ 
+		m_copies = pModel->DuplicateShapes( m_selectedShapes );
+	}
 
 	virtual void Do( NNetModel * const pModel ) 
 	{ 
 		pModel->SelectAll( tBoolOp::opFalse );        // deselect all
 		for ( Shape * pShape : m_copies )             // add copies
 			if ( pShape )
-				pModel->Store2Model( pShape );
+				pModel->Add2Model( pShape );
 	}
 
 	virtual void Undo( NNetModel * const pModel ) 

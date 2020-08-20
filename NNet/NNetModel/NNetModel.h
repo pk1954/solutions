@@ -17,6 +17,8 @@
 #include "Knot.h"
 #include "Pipe.h"
 
+using std::remove_pointer;
+
 class EventInterface;
 class Param;
 
@@ -59,7 +61,7 @@ public:
 
 	template <typename T> bool HasType( Shape const * const pShape ) const 
 	{ 
-		return std::remove_pointer<T>::type::TypeFits( pShape->GetShapeType() ); 
+		return remove_pointer<T>::type::TypeFits( pShape->GetShapeType() ); 
 	}
 
 	void CheckShapeId( ShapeId const id ) const
@@ -207,19 +209,6 @@ public:
 		}
 	}                        
 
-	//template <typename T>    // const version
-	//void Apply2All( function<void(T const &)> const & func ) const
-	//{
-	//	for (auto & pShape : m_Shapes)    
-	//	{ 
-	//		if ( pShape )
-	//		{
-	//			if ( HasType<T>(pShape) ) 
-	//				func( static_cast<T const &>( * pShape) ); 
-	//		}
-	//	}
-	//}                        
-
 	template <typename T>
 	void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func )
 	{
@@ -254,7 +243,7 @@ public:
 	void RecalcAllShapes( );
 	void ResetModel( );
 
-	NormalizedShapeList DuplicateShapes( vector<Shape *> const ) const;
+	NormalizedShapeList DuplicateShapes( vector<Shape *> const & ) const;
 
 	float SetParameter ( tParameter const, float const );
 	void  SetNrOfShapes( long const lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
@@ -300,6 +289,12 @@ public:
 	void ReplaceInModel ( Shape * const p2BeReplaced, Shape * pShape ) { SetShape( pShape,  p2BeReplaced->GetId() ); }
 	void Store2Model    ( Shape * const pShape )                       { SetShape( pShape,  pShape->GetId() ); }
 	void RemoveFromModel( Shape * const pShape )                       { SetShape( nullptr, pShape->GetId() ); }
+	void Add2Model      ( Shape * const pShape )                       
+	{ 
+		ShapeId const idNewSlot { NewShapeListSlot( ) };
+		pShape->SetId( idNewSlot );
+		SetShape( pShape, idNewSlot );
+	}
 
 	void StaticModelChanged( );
 
