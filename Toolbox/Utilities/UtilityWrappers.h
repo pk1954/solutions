@@ -5,9 +5,11 @@
 #pragma once
 
 #include "PixelTypes.h"
+#include "BoolOp.h"
 
 class Script;
 
+extern tBoolOp       ScrReadBoolOp       ( Script & );
 extern PIXEL         ScrReadPixel        ( Script & );
 extern PixelPoint    ScrReadPixelPoint   ( Script & );
 extern PixelRectSize ScrReadPixelRectSize( Script & );

@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include <iostream>
 #include <unordered_map>
 #include "tParameter.h"
 
@@ -52,4 +53,10 @@ wchar_t const * const GetParameterUnit( tParameter const p )
 	};				  
 
 	return mapParam.at( p );
+}
+
+wostream & operator << ( wostream & out, tParameter const param )
+{
+	out << L" " << GetParameterName( param );
+	return out;
 }

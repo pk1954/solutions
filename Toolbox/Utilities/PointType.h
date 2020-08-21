@@ -14,6 +14,7 @@
 using std::abs;
 using std::max;
 using std::setw;
+using std::wostream;
 
 template <typename BASE_TYPE, typename Parameter> 
 class PointType
@@ -149,9 +150,9 @@ public:
 		return max( xAbs, yAbs );
 	}
 
-	friend std::wostream & operator<< ( std::wostream & out, PointType const & param )
+	friend wostream & operator<< ( wostream & out, PointType const & param )
 	{
-		out << L"(" << param.GetX() << L"/" << param.GetY() << L")";
+		out << L" (" << param.GetX() << L"/" << param.GetY() << L")";
 		return out;
 	}
 

@@ -50,6 +50,12 @@ PixelRect ScrReadPixelRect( Script & script )
     return PixelRect( pixPos, pixSize );
 }
 
+tBoolOp ScrReadBoolOp( Script & script )
+{
+    unsigned long ulBoolOp( script.ScrReadUlong( ) );
+    return static_cast<tBoolOp>( ulBoolOp );
+}
+
 class WrapOpenTraceFile : public Script_Functor
 {
 public:

@@ -7,6 +7,7 @@
 #include <functional>
 
 using std::function;
+using std::wostream;
 
 enum class tParameter
 {
@@ -27,3 +28,5 @@ extern wchar_t const * const GetParameterUnit( tParameter const );
 
 extern void Apply2GlobalParameters( function<void(tParameter const &)> const & );
 extern void Apply2AllParameters   ( function<void(tParameter const &)> const & );
+
+extern wostream & operator << ( wostream &, tParameter const & );

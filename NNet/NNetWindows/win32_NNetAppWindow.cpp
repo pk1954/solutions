@@ -407,7 +407,9 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_SCRIPT_DIALOG:
+		m_computeThread.LockComputation( );
 		ProcessNNetScript( & m_script, & m_model, ScriptDialog( ) );
+		m_computeThread.ReleaseComputationLock( );
 		break;
 
 	case IDM_SCRIPT_PROGRESS:
@@ -427,16 +429,16 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_OPEN_MODEL:
-	{
-		m_computeThread.LockComputation( );
-		bool bRes { m_modelStorage.AskAndSave( ) };
-		m_computeThread.ReleaseComputationLock( );
-		if ( bRes && m_modelStorage.AskModelFile() )
 		{
-			m_computeThread.LockComputation( );  // will be restarted later
-			m_modelStorage.ReadAsync( );         // will trigger IDM_READ_MODEL_FINISHED when done
+			m_computeThread.LockComputation( );
+			bool bRes { m_modelStorage.AskAndSave( ) };
+			m_computeThread.ReleaseComputationLock( );
+			if ( bRes && m_modelStorage.AskModelFile() )
+			{
+				m_computeThread.LockComputation( );  // will be restarted later
+				m_modelStorage.ReadAsync( );         // will trigger IDM_READ_MODEL_FINISHED when done
+			}
 		}
-	}
 		break;
 
 	case IDM_READ_MODEL_FINISHED:

@@ -14,20 +14,12 @@ using namespace std::chrono;
 class Param : public Observable
 {
 public:
-	fMicroSecs const GetTimeResolution( ) const 
-	{ 
-		return m_usResolution; 
-	}
+	fMicroSecs const GetTimeResolution( ) const { return m_usResolution; }
 
 	float const GetParameterValue( tParameter const ) const;
 	void        SetParameterValue( tParameter const, float const );
 
-	//bool const IsInEmphasizeMode( ) const           { return m_bEmphasizeMode; }
-	//void       SetEmphasizeMode( bool const bMode ) { m_bEmphasizeMode = bMode; } 
-
 private:
-	//bool        m_bEmphasizeMode  { false };
-
 	mV          m_threshold    { 20._mV            };
 	mV          m_peakVoltage  { 10._mV            };   
 	fMicroSecs  m_pulseWidth   { 2000._MicroSecs   };   

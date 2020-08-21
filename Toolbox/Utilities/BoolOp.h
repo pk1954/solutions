@@ -2,8 +2,11 @@
 //
 
 #include "assert.h"
+#include <iostream>
 
 #pragma once
+
+using std::wostream;
 
 enum class tBoolOp { opTrue, opFalse, opToggle, opNoChange };
 
@@ -62,3 +65,5 @@ inline void ApplyOp( bool & b, tBoolOp const op )
 }
 
 wchar_t const * const GetBoolOpName( tBoolOp const );
+
+wostream & operator<< ( wostream &, tBoolOp const );

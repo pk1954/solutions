@@ -9,6 +9,8 @@
 #include <iomanip>
 #include <limits.h>
 
+using std::wostream;
+
 template <typename BASE_TYPE, typename Parameter>
 class NamedType
 {
@@ -93,9 +95,9 @@ public:
 		return BASE_TYPE( a.GetValue() / b.GetValue() );
 	}
 
-	friend std::wostream & operator<< ( std::wostream & out, NamedType const & param )
+	friend wostream & operator << ( std::wostream & out, NamedType const & param )
 	{
-		out << param.GetValue();
+		out << L" " << param.GetValue();
 		return out;
 	}
 

@@ -32,9 +32,9 @@ public:
 	{
 		if ( ( m_pStatusBar != nullptr ) && ( script.IsActive() ) )
 		{
-			wstring   const & wszPath      { script.GetActPath( ) };
-			long long const   llFilePos    { script.GetFilePos() };
-			uintmax_t const   fileSize     { script.GetFileSize() };
+			wstring   const & wszPath   { script.GetActPath () };
+			long long const   llFilePos { script.GetFilePos () };
+			uintmax_t const   fileSize  { script.GetFileSize() };
 			if ( fileSize > 0 )
 			{
 				long const lPercentRead { CastToLong( llFilePos * 100 / fileSize ) };

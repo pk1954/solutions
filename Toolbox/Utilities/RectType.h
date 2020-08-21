@@ -205,7 +205,7 @@ public:
 
 	friend std::wostream & operator << ( std::wostream & out, RectType const & rect )
 	{
-		out << rect.GetStartPoint() << L' ' << rect.GetEndPoint();
+		out << rect.GetStartPoint() << rect.GetEndPoint();
 		return out;
 	}
 

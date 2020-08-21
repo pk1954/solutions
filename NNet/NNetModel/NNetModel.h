@@ -70,7 +70,7 @@ public:
 			CallErrorHandler( id );
 	}
 
-	bool IsShapeNullPtr( ShapeId const id ) const
+	bool const IsShapeNullPtr( ShapeId const id ) const
 	{
 		return m_Shapes[id.GetValue()] == nullptr;
 	}

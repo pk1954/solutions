@@ -29,26 +29,26 @@ public:
 	void Start( NNetModel * const );
 	void Stop(); 
 
-    void NewNeuron           ( MicroMeterPoint const & );
-    void NewInputNeuron      ( MicroMeterPoint const & );
-    void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
-    void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
-    void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
-    void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
-    void Connect             ( ShapeId const, ShapeId const );
-    void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
-    void AppendNeuron        ( ShapeId const );
-    void AppendInputNeuron   ( ShapeId const );
-    void CopySelection       ( );
-    void AnalyzeLoops        ( );
     void AnalyzeAnomalies    ( );
+    void AnalyzeLoops        ( );
+    void AppendInputNeuron   ( ShapeId const );
+    void AppendNeuron        ( ShapeId const );
+    void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
+    void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
+    void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
+    void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
+    void ClearBeepers        ( );
+    void Connect             ( ShapeId const, ShapeId const );
+    void CopySelection       ( );
     void DeleteSelection     ( );
+    void DeleteShape         ( ShapeId const );
     void Disconnect          ( ShapeId const );
+    void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
     void MarkSelection       ( tBoolOp const );
     void MoveSelection       ( MicroMeterPoint const & );
     void MoveShape           ( ShapeId const, MicroMeterPoint const & );
-    void ClearBeepers        ( );
-    void DeleteShape         ( ShapeId const );
+    void NewInputNeuron      ( MicroMeterPoint const & );
+    void NewNeuron           ( MicroMeterPoint const & );
     void ReadModel           ( bool, wstring const );
     void ResetModel          ( );
     void SelectAll           ( tBoolOp const );
@@ -63,6 +63,8 @@ public:
 
 	void UndoCommand();
 	void RedoCommand();
+
+    NNetModel const & GetModel( ) { return * m_pModel; }
 
 private:
 

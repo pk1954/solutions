@@ -8,6 +8,7 @@
 #include "script.h"
 #include "errhndl.h"
 #include "NNetModel.h"
+#include "NNetModel.h"
 
 using std::to_wstring;
 using std::wcout;
@@ -21,13 +22,18 @@ class NNetErrorHandler : public ShapeErrorHandler
 {
 public:
     NNetErrorHandler( Script * pScript, NNetModel * const pModel )
-      : m_pScript( pScript ),
-        m_pModel( pModel )
+        : m_pScript( pScript ),
+          m_pModel( pModel )
     {}
 
-    virtual void operator()( ShapeId const id ) 
-    {
-        Scanner & scanner    { m_pScript->GetScanner() };
+    static void CheckShapeId
+    ( 
+        Script          & script, 
+        NNetModel const & model,
+        ShapeId   const   id 
+    )
+    {        
+        Scanner & scanner    { script.GetScanner() };
         wstring   strShapeId { to_wstring( id.GetValue() ) };
         if ( IsUndefined( id ) )
         {
@@ -38,16 +44,16 @@ public:
                 L"ShapeId != NO_SHAPE" 
             );
         }
-        else if ( m_pModel->IsInvalidShapeId( id ) )
+        else if ( model.IsInvalidShapeId( id ) )
         {
             ScriptErrorHandler::HandleSemanticError
             (
                 scanner,
                 wstring( L"Invalid shape id: " ) + strShapeId,
-                L"id < " + to_wstring( m_pModel->GetSizeOfShapeList() )
+                L"id < " + to_wstring( model.GetSizeOfShapeList() )
             );
         }
-        else if ( m_pModel->IsShapeNullPtr( id ) )
+        else if ( model.IsShapeNullPtr( id ) )
         {
             ScriptErrorHandler::HandleSemanticError
             (
@@ -56,10 +62,14 @@ public:
                 L"Defined ShapeId"
             );
         }
-        else
-            assert( false );
+    };
+
+    virtual void operator()( ShapeId const id ) 
+    {
+        CheckShapeId( * m_pScript, * m_pModel, id );
         throw ShapeException();
     }
+
 private:
     Script    *       m_pScript;
     NNetModel * const m_pModel;
@@ -75,7 +85,7 @@ inline bool ProcessNNetScript
     bool bSuccess { false };
     if ( ! wstrPath.empty( ) )
     {
-        NNetErrorHandler errHndl  { pScript, pModel };
+        NNetErrorHandler errHndl { pScript, pModel };
         pModel->SetShapeErrorHandler( & errHndl );
         try
         {

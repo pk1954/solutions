@@ -10,7 +10,7 @@
 #include "ShapeType.h"
 #include "ShapeId.h"
 #include "Shape.h"
-#include "win32_sound.h"
+//#include "win32_sound.h"
 #include "NNetModel.h"
 #include "tHighlightType.h"
 
@@ -41,6 +41,11 @@ public:
 	size_t     const GetNrOfOutgoingConnections( ShapeId const ) const;
 	size_t     const GetNrOfIncomingConnections( ShapeId const ) const;
 	bool       const ConnectsTo( ShapeId const, ShapeId const ) const;
+
+	bool       const IsValidShapeId  ( ShapeId const id ) const { return m_pModel->IsValidShapeId(id); }
+	bool       const IsInvalidShapeId( ShapeId const id ) const { return m_pModel->IsInvalidShapeId(id); }
+	bool       const IsShapeNullPtr  ( ShapeId const id ) const { return m_pModel->IsShapeNullPtr(id); }
+	long       const GetSizeOfShapeList( )                const { return m_pModel->GetSizeOfShapeList(); }
 
 	MicroMeterPoint const GetShapePos( ShapeId const ) const;
 	MicroMeterRect  const GetEnclosingRect( ) const;

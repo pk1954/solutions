@@ -3,6 +3,7 @@
 // Utilities
 
 #include "stdafx.h"
+#include <string>
 #include <unordered_map>
 #include "BoolOp.h"
 
@@ -17,4 +18,10 @@ wchar_t const * const GetBoolOpName( tBoolOp const op )
     };
 
     return mapNames.at( op );
+}
+
+wostream & operator << ( wostream & out, tBoolOp const op )
+{
+    out << L" " <<std::wstring( GetBoolOpName( op ) );
+    return out;
 }
