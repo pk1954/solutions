@@ -66,9 +66,9 @@ void NNetAppMenu::Start
     {
         HMENU hMenuSelection = popupMenu( hMenuEdit, L"&Selection" );
         {
-            AppendMenu( hMenuEdit, MF_STRING, IDM_SELECT_ALL,         L"&Select all" );
-            AppendMenu( hMenuEdit, MF_STRING, IDM_SELECT_ALL_BEEPERS, L"&Select all neurons with trigger sounds" );
-            AppendMenu( hMenuEdit, MF_STRING, IDM_DESELECT_ALL,       L"&Deselect all" );
+            AppendMenu( hMenuSelection, MF_STRING, IDM_SELECT_ALL,         L"&Select all" );
+            AppendMenu( hMenuSelection, MF_STRING, IDM_SELECT_ALL_BEEPERS, L"&Select all neurons with trigger sounds" );
+            AppendMenu( hMenuSelection, MF_STRING, IDM_DESELECT_ALL,       L"&Deselect all" );
         }
         AppendMenu( hMenuEdit, MF_STRING, IDM_CLEAR_BEEPERS, L"Clear all trigger sounds" );
     }
