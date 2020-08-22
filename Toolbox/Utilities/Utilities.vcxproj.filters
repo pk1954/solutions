@@ -116,9 +116,6 @@
     <ClCompile Include="SmoothMove.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TextBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
