@@ -578,6 +578,7 @@
     <ClCompile Include="win32_crsrWindow.cpp" />
     <ClCompile Include="win32_MainWindow.cpp" />
     <ClCompile Include="win32_MiniWindow.cpp" />
+    <ClCompile Include="win32_modelDescription.cpp" />
     <ClCompile Include="win32_NNetAppMenu.cpp" />
     <ClCompile Include="win32_NNetAppWindow.cpp" />
     <ClCompile Include="win32_NNetController.cpp" />
@@ -605,6 +606,7 @@
     <ClInclude Include="win32_crsrWindow.h" />
     <ClInclude Include="win32_MainWindow.h" />
     <ClInclude Include="win32_MiniWindow.h" />
+    <ClInclude Include="win32_modelDescription.h" />
     <ClInclude Include="win32_NNetAppMenu.h" />
     <ClInclude Include="win32_NNetAppWindow.h" />
     <ClInclude Include="win32_NNetController.h" />

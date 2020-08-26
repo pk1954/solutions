@@ -88,7 +88,8 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 		& m_parameters, 
 		& m_unsavedChangesObservable,
 		& m_script,
-		m_pReadModelResult 
+		m_pReadModelResult,
+		nullptr  // TODO
 	);
 	m_modelWriterInterface.Start( & m_model );
 

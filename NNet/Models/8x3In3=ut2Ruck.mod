@@ -1,5 +1,5 @@
 # NNetModel
-# Created 21-04-2020 00-19-30
+# Created 23-08-2020 13-02-16
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
 
@@ -13,7 +13,7 @@ GlobalParameter PeakVoltage = 10
 GlobalParameter RefractoryPeriod = 500
 GlobalParameter TimeResolution = 100
 
-NrOfShapes = 3810
+NrOfShapes =  3598
 
 CreateShape 0 neuron (-6224.39|-518.105)
 CreateShape 3 neuron (-5403.3|-1309.01)
@@ -3614,31 +3614,31 @@ CreateShape 3595 pipe (3583->3594)
 CreateShape 3596 pipe (3594->3593)
 CreateShape 3597 pipe (3593->3592)
 
-ShapeParameter InputNeuron 3126 PulseRate = 50
-ShapeParameter InputNeuron 3128 PulseRate = 50
-ShapeParameter InputNeuron 3130 PulseRate = 50
+ShapeParameter InputNeuron 3126 PulseRate =  50
+ShapeParameter InputNeuron 3128 PulseRate =  50
+ShapeParameter InputNeuron 3130 PulseRate =  50
 
-TriggerSound 85 660 Hertz 100 msec 
-TriggerSound 301 880 Hertz 100 msec 
-TriggerSound 308 1720 Hertz 100 msec 
-TriggerSound 531 660 Hertz 100 msec 
-TriggerSound 747 880 Hertz 100 msec 
-TriggerSound 754 1720 Hertz 100 msec 
-TriggerSound 978 660 Hertz 100 msec 
-TriggerSound 1194 880 Hertz 100 msec 
-TriggerSound 1201 1720 Hertz 100 msec 
-TriggerSound 1424 660 Hertz 100 msec 
-TriggerSound 1640 880 Hertz 100 msec 
-TriggerSound 1647 1720 Hertz 100 msec 
-TriggerSound 1872 660 Hertz 100 msec 
-TriggerSound 2088 880 Hertz 100 msec 
-TriggerSound 2095 1720 Hertz 100 msec 
-TriggerSound 2318 660 Hertz 100 msec 
-TriggerSound 2534 880 Hertz 100 msec 
-TriggerSound 2541 1720 Hertz 100 msec 
-TriggerSound 2765 660 Hertz 100 msec 
-TriggerSound 2981 880 Hertz 100 msec 
-TriggerSound 2988 1720 Hertz 100 msec 
-TriggerSound 3214 660 Hertz 100 msec 
-TriggerSound 3430 880 Hertz 100 msec 
-TriggerSound 3437 1720 Hertz 100 msec 
+TriggerSound 85  660 Hertz  100 msec 
+TriggerSound 301  880 Hertz  100 msec 
+TriggerSound 308  1720 Hertz  100 msec 
+TriggerSound 531  660 Hertz  100 msec 
+TriggerSound 747  880 Hertz  100 msec 
+TriggerSound 754  1720 Hertz  100 msec 
+TriggerSound 978  660 Hertz  100 msec 
+TriggerSound 1194  880 Hertz  100 msec 
+TriggerSound 1201  1720 Hertz  100 msec 
+TriggerSound 1424  660 Hertz  100 msec 
+TriggerSound 1640  880 Hertz  100 msec 
+TriggerSound 1647  1720 Hertz  100 msec 
+TriggerSound 1872  660 Hertz  100 msec 
+TriggerSound 2088  880 Hertz  100 msec 
+TriggerSound 2095  1720 Hertz  100 msec 
+TriggerSound 2318  660 Hertz  100 msec 
+TriggerSound 2534  880 Hertz  100 msec 
+TriggerSound 2541  1720 Hertz  100 msec 
+TriggerSound 2765  660 Hertz  100 msec 
+TriggerSound 2981  880 Hertz  100 msec 
+TriggerSound 2988  1720 Hertz  100 msec 
+TriggerSound 3214  660 Hertz  100 msec 
+TriggerSound 3430  880 Hertz  100 msec 
+TriggerSound 3437  1720 Hertz  100 msec 

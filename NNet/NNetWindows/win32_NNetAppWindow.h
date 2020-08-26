@@ -29,6 +29,7 @@
 #include "win32_NNetController.h"
 #include "win32_parameterDlg.h"
 #include "win32_crsrWindow.h"
+#include "win32_modelDescription.h"
 #include "win32_performanceWindow.h"
 #include "win32_simulationControl.h"
 #include "win32_slowMotionControl.h"
@@ -115,6 +116,7 @@ private:
 	NNetModelReaderInterface  m_modelReaderInterface     { };
 	NNetModelWriterInterface  m_modelWriterInterface     { };
 	ComputeThread             m_computeThread            { };
+	DescriptionWindow         m_descWindow               { };
 	CrsrWindow                m_crsrWindow               { };
 	PerformanceWindow         m_performanceWindow        { };
 	MainWindow                m_mainNNetWindow           { };

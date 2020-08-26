@@ -53,6 +53,7 @@ public:
     HWND          const SetFocus( )                   const { return ::SetFocus       ( m_hwnd ); }
     HWND          const GetDlgItem( int const iItem ) const { return ::GetDlgItem     ( m_hwnd, iItem ); }
     bool          const IsCaptured( )                 const { return ::GetCapture( ) == m_hwnd; }
+	int			  const GetWindowTextLength( )        const { return ::GetWindowTextLength( m_hwnd ); }        
 
 	void SetRefreshRate( milliseconds const );
 	

@@ -19,7 +19,6 @@ class NNetModel;
 class Script;
 class Shape;
 class Observable;
-class ModelDescription;
 
 class ReadModelResult
 {
@@ -39,12 +38,11 @@ class NNetModelStorage : public ObserverInterface
 public:
 	void Initialize
 	( 
-		NNetModel        * const, 
-		Param            * const, 
-		Observable       * const,
-		Script           * const,       
-		ReadModelResult  * const,
-		ModelDescription * const
+		NNetModel       * const, 
+		Param           * const, 
+		Observable      * const,
+		Script          * const,       
+		ReadModelResult * const
 	);
 
 	virtual void Notify( bool const bImmediate ) { setUnsavedChanges( true ); }
@@ -69,18 +67,16 @@ private:
 
 	mutable bool m_bUnsavedChanges { false };  // can be changed in const functions
 
-	HWND               m_hwndApp                  { nullptr };
-	NNetModel        * m_pModel                   { nullptr };
-	Param            * m_pParam                   { nullptr };
-	Observable       * m_unsavedChangesObservable { nullptr };
-	Script           * m_pScript                  { nullptr };
-	ReadModelResult  * m_pResult                  { nullptr };
-	ModelDescription * m_pDescription             { nullptr };
+	HWND              m_hwndApp                  { nullptr };
+	NNetModel       * m_pModel                   { nullptr };
+	Param           * m_pParam                   { nullptr };
+	Observable      * m_unsavedChangesObservable { nullptr };
+	Script          * m_pScript                  { nullptr };
+	ReadModelResult * m_pResult                  { nullptr };
 
 	bool            m_bPreparedForReading { false };
 	wstring         m_wstrPathOfOpenModel { L"" };
 	wstring         m_wstrPathOfNewModel  { L"" };
-	wstring         m_wstrDescription     { L"" };
 	vector<ShapeId> m_CompactIds;
 
 	long getCompactIdVal( ShapeId const id ) { return m_CompactIds[ id.GetValue() ].GetValue();	}
@@ -92,7 +88,6 @@ private:
 	void WriteMicroMeterPoint( wostream &, MicroMeterPoint const & );
 	void WritePipe( wostream &, Shape const & );
 	void setUnsavedChanges( bool const );
-	void writeDescription( wostream & );
 
 	friend static unsigned int __stdcall readModelThreadProc( void * );
 };

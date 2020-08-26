@@ -15,7 +15,6 @@
 #include "symtab.h"
 #include "errhndl.h"
 #include "MoreTypes.h"
-#include "ModelDescription.h"
 #include "NNetModel.h"
 #include "NNetError.h"
 #include "NNetParameters.h"
@@ -23,6 +22,7 @@
 #include "win32_script.h"
 #include "win32_thread.h"
 #include "win32_HiResTimer.h"
+#include "win32_modelDescription.h"
 #include "NNetModelStorage.h"
 
 using std::wcout;
@@ -35,12 +35,11 @@ static float const PROTOCOL_VERSION { 1.5f };   // pipeline renamed to pipe
 
 void NNetModelStorage::Initialize
 ( 
-    NNetModel        * const pModel,
-    Param            * const pParam,
-    Observable       * const unsavedChangesObservable,
-    Script           * const pScript, 
-    ReadModelResult  * const pResult,
-    ModelDescription * const pDescription
+    NNetModel       * const pModel,
+    Param           * const pParam,
+    Observable      * const unsavedChangesObservable,
+    Script          * const pScript, 
+    ReadModelResult * const pResult
 )
 {
     m_pModel                   = pModel;
@@ -48,7 +47,6 @@ void NNetModelStorage::Initialize
     m_unsavedChangesObservable = unsavedChangesObservable;
     m_pScript                  = pScript;
     m_pResult                  = pResult;
-    m_pDescription             = pDescription;
 }
 
 void NNetModelStorage::setUnsavedChanges( bool const bState )
@@ -74,23 +72,6 @@ public:
 
 private:
     NNetModel * m_pModel;
-};
-
-class WrapDescription : public Script_Functor
-{
-public:
-    WrapDescription( wstring * const pwstrDescription ) :
-        m_pwstrDescription( pwstrDescription )
-    { };
-
-    virtual void operator() ( Script & script ) const 
-    {
-        wstring const wstrDescription { script.ScrReadString( ) };
-        * m_pwstrDescription += wstrDescription + L"\r\n";
-    }
-
-private:
-    wstring * m_pwstrDescription { nullptr };
 };
 
 class WrapMarkShape : public Script_Functor
@@ -269,8 +250,6 @@ private:
 
 void NNetModelStorage::prepareForReading( )
 {
-    SymbolTable::ScrDefConst( L"Description", new WrapDescription( & m_wstrDescription ) );
-
 #define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( m_pModel ) )
     DEF_NNET_FUNC( Protocol );
     DEF_NNET_FUNC( GlobalParameter );
@@ -318,7 +297,6 @@ bool NNetModelStorage::readModel( )
 {
     if ( ProcessNNetScript( m_pScript, m_pModel, m_wstrPathOfNewModel ) )
     {
-        m_pDescription->SetDescription( m_wstrDescription );
         m_wstrPathOfOpenModel = m_wstrPathOfNewModel;
         m_pModel->StaticModelChanged();
         setUnsavedChanges( false );
@@ -349,7 +327,6 @@ bool NNetModelStorage::Read( bool bConcurrently, wstring const wstrPath )
     if ( exists( m_wstrPathOfNewModel ) )
     {
         m_pModel->ResetModel();
-        m_wstrDescription.clear();
         wcout << L"*** Reading file " << m_wstrPathOfNewModel << endl;
         if ( bConcurrently )
         {
@@ -404,8 +381,6 @@ void NNetModelStorage::Write( wostream & out )
 
     out << L"Protocol version " << PROTOCOL_VERSION << endl;
     out << endl;
-
-    writeDescription( out );
 
     Apply2GlobalParameters
     ( 
@@ -467,16 +442,6 @@ void NNetModelStorage::Write( wostream & out )
     fMicroSecs const usTilStart { timer.GetMicroSecsTilStart( ) }; //for tests only
 
     setUnsavedChanges( false );  // no unsaved changes
-}
-
-void NNetModelStorage::writeDescription( wostream & out )
-{
-    wstring buffer;
-    int iLineNr = 0;
-    while ( m_pDescription->GetDescriptionLine( iLineNr++, buffer ) )
-    {
-        out << L"Description \"" << buffer << "\"" << endl;
-    }
 }
 
 void NNetModelStorage::WritePipe( wostream & out, Shape const & shape )

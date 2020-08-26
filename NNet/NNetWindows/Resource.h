@@ -119,6 +119,7 @@
 #define IDM_PARAM_WINDOW  	     581
 #define IDM_PERF_WINDOW          582
 #define IDM_NNET_REFRESH_RATE    583
+#define IDM_DESC_WINDOW          584
 
 #define IDM_ANALYZE              600
 #define IDM_ANALYZE_LOOPS        601

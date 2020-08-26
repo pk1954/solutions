@@ -124,7 +124,7 @@ void NNetAppWindow::Start( )
 
 	m_pReadModelResult = new NNetReadModelResult( m_hwndApp );
 	m_model               .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
-	m_modelStorage        .Initialize( & m_model, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult );
+	m_modelStorage        .Initialize( & m_model, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult, & m_descWindow );
 	m_modelWriterInterface.Initialize( & m_traceStream, & m_cmdStack, & m_modelStorage );
 	m_cmdStack            .Initialize( & m_model, & m_commandStackObservable );
 	m_NNetColors          .Initialize( & m_blinkObservable );
@@ -153,6 +153,7 @@ void NNetAppWindow::Start( )
 	m_computeThread         .Start( & m_model, & m_parameters, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable );
 	m_appMenu               .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_cmdStack, & m_sound );
 	m_StatusBar             .Start( m_hwndApp );
+	m_descWindow            .Start( m_hwndApp );
 	m_undoRedoMenu          .Start( & m_appMenu );
 	m_unsavedChangesObserver.Start( m_hwndApp, & m_modelStorage );
 
@@ -177,7 +178,6 @@ void NNetAppWindow::Start( )
 		& m_modelReaderInterface
 	);
 
-	//m_mainNNetWindow.AddObserver( & m_miniNNetWindow );
 	m_miniNNetWindow.ObservedNNetWindow( & m_mainNNetWindow );  // mini window observes main grid window
 
 	SetWindowText( m_miniNNetWindow.GetWindowHandle(), L"Mini window" );
@@ -188,14 +188,15 @@ void NNetAppWindow::Start( )
 	m_parameterDlg        .Start( m_hwndApp, & m_modelWriterInterface, & m_parameters );
 	m_performanceWindow   .Start( m_hwndApp, & m_modelReaderInterface, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
 
-	m_WinManager.AddWindow( L"IDM_CONS_WINDOW",  IDM_CONS_WINDOW,  m_hwndConsole,                 true,  true  );
-	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",  IDM_APPL_WINDOW,  m_hwndApp,                     true,  true  );
-	m_WinManager.AddWindow( L"IDM_STATUS_BAR",   IDM_STATUS_BAR,   m_StatusBar.GetWindowHandle(), false, false );
-	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  m_crsrWindow,                  true,  false );
-	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  m_mainNNetWindow,              true,  false );
-	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",  IDM_MINI_WINDOW,  m_miniNNetWindow,              true,  true  );
-	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW", IDM_PARAM_WINDOW, m_parameterDlg,                true,  false );
-	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",  IDM_PERF_WINDOW,  m_performanceWindow,           true,  false );
+	m_WinManager.AddWindow( L"IDM_CONS_WINDOW",  IDM_CONS_WINDOW,  m_hwndConsole,                  true,  true  );
+	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",  IDM_APPL_WINDOW,  m_hwndApp,                      true,  true  );
+	m_WinManager.AddWindow( L"IDM_STATUS_BAR",   IDM_STATUS_BAR,   m_StatusBar.GetWindowHandle(),  false, false );
+	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  m_crsrWindow,                   true,  false );
+	m_WinManager.AddWindow( L"IDM_DESC_WINDOW",  IDM_DESC_WINDOW,  m_descWindow.GetWindowHandle(), true,  true  );
+	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  m_mainNNetWindow,               true,  false );
+	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",  IDM_MINI_WINDOW,  m_miniNNetWindow,               true,  true  );
+	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW", IDM_PARAM_WINDOW, m_parameterDlg,                 true,  false );
+	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",  IDM_PERF_WINDOW,  m_performanceWindow,            true,  false );
 
 	m_staticModelObservable   .RegisterObserver( & m_modelStorage );
 	m_blinkObservable         .RegisterObserver( & m_mainNNetWindow );
@@ -225,6 +226,7 @@ void NNetAppWindow::Start( )
 	m_crsrWindow       .Show( true );
 	m_parameterDlg     .Show( true );
 	m_performanceWindow.Show( true );
+	m_descWindow       .Show( true );
 
 	m_WinManager.GetWindowConfiguration( );
 
@@ -421,6 +423,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		if ( m_modelStorage.AskAndSave( ) )
 		{
 			m_modelWriterInterface.ResetModel( );
+			m_descWindow.ClearDescription( );
 			m_mainNNetWindow.Reset();
 			m_mainNNetWindow.CenterModel( );
 		}
