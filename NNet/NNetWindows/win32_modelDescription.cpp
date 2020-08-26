@@ -5,13 +5,15 @@
 #include "stdafx.h"
 #include "Richedit.h"
 #include "Resource.h"
+#include "win32_messagePump.h"
 #include "win32_modelDescription.h"
 
 static HMENU const ID_EDIT_CTRL { (HMENU)1 };
 
 void DescriptionWindow::Start
 ( 
-    HWND const hwndParent
+    HWND const hwndParent,
+    MessagePump & pump
 )
 {
     PixelRect rect( 100_PIXEL, 100_PIXEL, 200_PIXEL, 200_PIXEL );
@@ -40,6 +42,7 @@ void DescriptionWindow::Start
         NULL
     );          
 
+//    pump.InstallAccelTable( m_hwndEdit, nullptr );
 }
 
 void DescriptionWindow::Stop( )
@@ -57,14 +60,6 @@ void DescriptionWindow::SetDescription( wstring const wstrDesc )
     Edit_SetText( m_hwndEdit, wstrDesc.c_str() );
 }
 
-//void DescriptionWindow::AppendDescriptionLine( wstring const wstrDesc )
-//{
-//    wstring const wstrLine { wstrDesc + L"\n\r" };
-//    int iActLength = ::Edit_GetTextLength( m_hwndEdit );
-//    Edit_SetSel    ( m_hwndEdit, iActLength, iActLength );
-//    Edit_ReplaceSel( m_hwndEdit, reinterpret_cast<LPARAM>(wstrLine.c_str()) );
-//}
-//
 bool DescriptionWindow::GetDescriptionLine( int const iLineNr, wstring & wstrDst ) const
 {
     static const int BUFLEN { 1024 };
@@ -86,6 +81,10 @@ LRESULT DescriptionWindow::UserProc( UINT const uMsg, WPARAM const wParam, LPARA
     case WM_COMMAND: 
         switch (wParam) 
         { 
+        case IDM_SELECT_ALL:
+            ::SendMessage( m_hwndEdit, EM_SETSEL, 0, -1 ); 
+            break; 
+
         //case IDM_EDUNDO: 
 
         //     Send WM_UNDO only if there is something 
@@ -138,9 +137,9 @@ LRESULT DescriptionWindow::UserProc( UINT const uMsg, WPARAM const wParam, LPARA
         } 
         break; 
 
-    case WM_SETFOCUS: 
-        ::SetFocus( m_hwndEdit ); 
-        return 0; 
+    //case WM_SETFOCUS: 
+    //    ::SetFocus( m_hwndEdit ); 
+    //    return 0; 
 
     case WM_SIZE: 
         MoveWindow

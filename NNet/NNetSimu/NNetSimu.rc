@@ -86,17 +86,6 @@ FONT 8, "Ms Shell Dlg"
 {
 }
 
-// Do not remove definition of IDM_DESC_WINDOW DIALOG although it's empty
-// CreateDialogParam needs resource
-
-LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-IDM_DESC_WINDOW DIALOG 0, 0, 200, 150
-STYLE DS_3DLOOK | DS_CENTER | DS_MODALFRAME | DS_SHELLFONT | WS_CAPTION | WS_POPUP | WS_SYSMENU
-CAPTION "Model description"
-FONT 8, "Ms Shell Dlg"
-{
-}
-
 //
 // Accelerator resources
 //
@@ -105,8 +94,8 @@ IDC_NNET_SIMU_MAIN ACCELERATORS
 {
     //"r",            IDM_RUN,          ASCII
     //"s",            IDM_STOP,         ASCII
-    //"+",            IDM_PLUS,         ASCII
-    //"-",            IDM_MINUS,        ASCII
+    "+",            IDM_PLUS,         ASCII
+    "-",            IDM_MINUS,        ASCII
     "z",            IDM_UNDO,         VIRTKEY, CONTROL
     "y",            IDM_REDO,         VIRTKEY, CONTROL
     "a",            IDM_SELECT_ALL,   VIRTKEY, CONTROL

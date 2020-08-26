@@ -124,10 +124,10 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         ::SendMessage( m_pWinManager->GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
         break;
 
-    case IDM_PLUS:
-    case IDM_MINUS:
-        m_pMainWindow->ZoomStep( wmId == IDM_PLUS, nullptr );
-        break;
+    //case IDM_PLUS:
+    //case IDM_MINUS:
+    //    m_pMainWindow->ZoomStep( wmId == IDM_PLUS, nullptr );
+    //    break;
 
     case IDM_CENTER_MODEL:
         m_pComputeThread->LockComputation( );

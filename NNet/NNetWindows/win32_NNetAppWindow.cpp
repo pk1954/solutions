@@ -21,6 +21,7 @@
 
 #include "util.h"
 #include "ObserverInterface.h"
+#include "win32_messagePump.h"
 #include "NNetError.h"
 
 // scripting and tracing
@@ -110,7 +111,7 @@ NNetAppWindow::~NNetAppWindow( )
 	m_traceStream.close();
 }
 
-void NNetAppWindow::Start( )
+void NNetAppWindow::Start( MessagePump & pump )
 {
 	m_hwndApp = StartBaseWindow
 	( 
@@ -153,7 +154,7 @@ void NNetAppWindow::Start( )
 	m_computeThread         .Start( & m_model, & m_parameters, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable );
 	m_appMenu               .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_cmdStack, & m_sound );
 	m_StatusBar             .Start( m_hwndApp );
-	m_descWindow            .Start( m_hwndApp );
+	m_descWindow            .Start( m_hwndApp, pump );
 	m_undoRedoMenu          .Start( & m_appMenu );
 	m_unsavedChangesObserver.Start( m_hwndApp, & m_modelStorage );
 

@@ -64,10 +64,14 @@ public:
 		return remove_pointer<T>::type::TypeFits( pShape->GetShapeType() ); 
 	}
 
-	void CheckShapeId( ShapeId const id ) const
+	bool CheckShapeId( ShapeId const id ) const
 	{
 		if ( IsUndefined( id ) || IsInvalidShapeId( id ) )
-			CallErrorHandler( id );
+		{
+			CallErrorHandler( id );  
+			return false;
+		}
+		return true;
 	}
 
 	bool const IsShapeNullPtr( ShapeId const id ) const
@@ -77,8 +81,7 @@ public:
 
 	Shape const * GetConstShape( ShapeId const id ) const 
 	{	
-		CheckShapeId( id ); 
-		Shape * pShape { m_Shapes[id.GetValue()] };
+		Shape * pShape { CheckShapeId( id )	? m_Shapes[id.GetValue()] : nullptr	};
 		if ( pShape == nullptr )
 			CallErrorHandler( id );
 		return pShape;

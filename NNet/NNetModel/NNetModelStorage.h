@@ -1,6 +1,6 @@
 // NNetModelStorage.h 
 //
-// NNetWindows
+// NNetModel
 
 #pragma once
 

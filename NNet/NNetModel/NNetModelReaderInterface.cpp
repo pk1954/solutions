@@ -211,8 +211,19 @@ void NNetModelReaderInterface::DrawInterior
 	ShapeId     const   id, 
 	DrawContext const & context
 ) 
-	const
+const
 {
 	if ( auto p { m_pModel->GetShapeConstPtr<Shape const *>(id) } )
 		p->DrawInterior( context );
+}
+
+void NNetModelReaderInterface::DrawNeuronText
+( 
+	ShapeId     const   id, 
+	DrawContext const & context
+) 
+const
+{
+	if ( auto p { m_pModel->GetShapeConstPtr<Neuron const *>(id) } )
+		p->DrawNeuronText( context );
 }

@@ -1,6 +1,6 @@
 // NNetModelStorage.cpp
 //
-// NNetWindows
+// NNetModel
 
 #include "stdafx.h"
 #include <iostream>

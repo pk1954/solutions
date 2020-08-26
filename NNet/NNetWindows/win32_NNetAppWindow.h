@@ -38,6 +38,7 @@
 #include "NNetColors.h"
 
 class ReadModelResult;
+class MessagePump;
 class Observable;
 class NNetModel;
 
@@ -73,7 +74,7 @@ public:
 	NNetAppWindow( );
 	~NNetAppWindow( );
 
-	virtual void Start( );
+	virtual void Start( MessagePump & );
 	virtual void Stop( );
 
 private:

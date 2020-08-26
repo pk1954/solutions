@@ -42,12 +42,15 @@ int APIENTRY wWinMain
 
 	try
 	{
-		Stopwatch stopwatch;
+		Stopwatch   stopwatch;
+		MessagePump pump;
 		stopwatch.Start();
-		App.Start( );
+		HACCEL haccel { LoadAccelerators( hInstance, MAKEINTRESOURCE(IDC_NNET_SIMU_MAIN) ) };
+		pump.DefaultAccelTable( haccel );
+		App.Start( pump );
+		pump.InstallAccelTable( App.GetWindowHandle(), nullptr );
 		stopwatch.Stop( L"App.Start" );
-
-		iRetVal = MessagePump( hInstance, App.GetWindowHandle(), IDC_NNET_SIMU_MAIN );
+		iRetVal = pump.Run();
 	}
 	catch ( std::logic_error & err )
 	{

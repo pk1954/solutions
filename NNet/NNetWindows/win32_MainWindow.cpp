@@ -362,6 +362,8 @@ void MainWindow::doPaint( )
 	{
 		m_pModelReaderInterface->DrawExterior( m_shapeHighlighted, context, tHighlightType::highlighted );
 		m_pModelReaderInterface->DrawInterior( m_shapeHighlighted, context );
+		if ( m_pModelReaderInterface->IsOfType<Neuron>( m_shapeHighlighted ) )
+			m_pModelReaderInterface->DrawNeuronText( m_shapeHighlighted, context );
 	}
 }
 
