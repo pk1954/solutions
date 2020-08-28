@@ -5,22 +5,29 @@
 #include "stdafx.h"
 #include "win32_messagePump.h"
 
-void MessagePump::InstallAccelTable( HWND hwnd, HACCEL haccel )
+void MessagePump::SetAccelTable( HINSTANCE const hInstance, int const idResource )
 {
-	if ( haccel == nullptr )
-		haccel = m_defaultAccelTable;
-	m_accEntries.push_back( AccEntry{ hwnd, haccel } );
+	HACCEL haccel { LoadAccelerators( hInstance, MAKEINTRESOURCE(idResource) ) };
+	m_defaultAccelTable = haccel;
 }
 
-bool MessagePump::translateAcceleratorForWindow( AccEntry const & accEntry, MSG & msg )
+void MessagePump::RegisterWindow( HWND const hwnd, bool const bIsDialog )
 {
-	if ( accEntry.m_hwnd == msg.hwnd || IsChild( accEntry.m_hwnd, msg.hwnd ) ) 
+	m_accEntries.push_back( AccEntry{ hwnd, bIsDialog } );
+}
+
+bool MessagePump::accelerator(  MSG & msg )
+{
+	for ( auto entry : m_accEntries )
 	{
-		if ( TranslateAccelerator( accEntry.m_hwnd, accEntry.m_hAccelTable, & msg ) )
-			return true;
-		//if ( IsDialogMessage( accEntry.m_hwnd, & msg ) )
-		//	return true;
-	} 
+		if ( entry.m_hwnd == msg.hwnd || IsChild( entry.m_hwnd, msg.hwnd ) ) 
+		{
+			if ( TranslateAccelerator( entry.m_hwnd, m_defaultAccelTable, & msg ) )
+				return true;
+			if ( entry.m_bIsDialog && IsDialogMessage( entry.m_hwnd, & msg ) )
+				return true;
+		} 
+	}
 	return false;
 }
 
@@ -32,16 +39,7 @@ int MessagePump::Run( )
 	while ( bRet = GetMessage( &msg, nullptr, 0, 0 ) != 0 )    // Main message loop
 	{
 		assert( bRet != -1 );
-		bool bDone { false };
-		for ( auto entry : m_accEntries )
-		{
-			if ( translateAcceleratorForWindow( entry, msg ) )
-			{
-				bDone = true;
-				break;
-			}
-		}
-		if ( ! bDone )
+		if ( ! accelerator( msg ) )
 		{
 			(void)TranslateMessage( &msg );
 			(void)DispatchMessage( &msg );

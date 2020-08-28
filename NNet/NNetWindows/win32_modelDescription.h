@@ -22,6 +22,8 @@ public:
 	virtual void SetDescription( wstring const );
 	virtual bool GetDescriptionLine( int const, wstring & ) const;
 
+	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
+
 private:
 	HWND m_hwndEdit { nullptr };
 

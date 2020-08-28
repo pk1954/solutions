@@ -308,6 +308,10 @@ LRESULT NNetAppWindow::UserProc
 		adjustChildWindows( );
 		break;
 
+	case WM_CHAR:
+		m_mainNNetWindow.OnChar( wParam, lParam );
+		return true;  
+
 	case WM_CLOSE:
 		OnClose( );
 		return true;  

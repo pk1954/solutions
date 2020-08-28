@@ -54,6 +54,7 @@ public:
 	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const );
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const );
+	virtual void OnChar              ( WPARAM const, LPARAM const );
 	virtual void OnPaint             ( );
 
 private:
@@ -69,6 +70,7 @@ private:
 
 	void setSuperHighlightedShape( MicroMeterPoint const & );
 	void setHighlightedShape     ( MicroMeterPoint const & );
+	bool changePulseRate         ( ShapeId const, bool const );
 
 	virtual void doPaint( );
 };

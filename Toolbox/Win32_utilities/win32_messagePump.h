@@ -5,31 +5,27 @@
 #pragma once
 
 #include <vector>
-#include "minwindef.h"
 
 using std::vector;
 
 class MessagePump
 {
 public:
-	void DefaultAccelTable( HACCEL const haccel )
-	{
-		m_defaultAccelTable = haccel;
-	}
+	void SetAccelTable( HINSTANCE const, int const );
 
-	void InstallAccelTable( HWND const, HACCEL const );
+	void RegisterWindow( HWND const, bool const );
 	
-	int  Run( );
+	int Run( );
 
 private:
 	struct AccEntry
 	{
-		HWND   m_hwnd;
-		HACCEL m_hAccelTable;
+		HWND m_hwnd;
+		bool m_bIsDialog;
 	};
 
 	vector<AccEntry> m_accEntries;
 	HACCEL           m_defaultAccelTable { nullptr };
 
-	bool translateAcceleratorForWindow( AccEntry const &, MSG & );
+	bool accelerator( MSG & );
 };

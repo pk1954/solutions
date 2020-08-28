@@ -124,11 +124,6 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         ::SendMessage( m_pWinManager->GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );
         break;
 
-    //case IDM_PLUS:
-    //case IDM_MINUS:
-    //    m_pMainWindow->ZoomStep( wmId == IDM_PLUS, nullptr );
-    //    break;
-
     case IDM_CENTER_MODEL:
         m_pComputeThread->LockComputation( );
         m_pMainWindow->CenterModel( );
@@ -192,17 +187,17 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
     return true;  // command has been processed
 }
 
-bool NNetController::changePulseRate( ShapeId const id, bool const bDirection )
-{
-    static fHertz const INCREMENT { 0.01_fHertz };
-    fHertz const fOldValue { m_pModelReaderInterface->GetPulseFrequency( id ) };
-    if ( fOldValue.IsNull() )
-        return false;
-    fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
-    m_pModelWriterInterface->SetPulseRate( id, fNewValue );
-    return true;
-}
-
+//bool NNetController::changePulseRate( ShapeId const id, bool const bDirection )
+//{
+//    static fHertz const INCREMENT { 0.01_fHertz };
+//    fHertz const fOldValue { m_pModelReaderInterface->GetPulseFrequency( id ) };
+//    if ( fOldValue.IsNull() )
+//        return false;
+//    fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
+//    m_pModelWriterInterface->SetPulseRate( id, fNewValue );
+//    return true;
+//}
+//
 void NNetController::pulseRateDlg( ShapeId const id )
 {
     fHertz  const fOldValue { m_pModelReaderInterface->GetPulseFrequency( id ) };
@@ -253,13 +248,13 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
             m_pPreferences->WritePreferences( m_pStorage->GetModelPath() );
         break;
 
-    case IDM_PLUS:
-        changePulseRate( m_pMainWindow->GetHighlightedShapeId(), true );
-        break;
+    //case IDM_PLUS:
+    //    changePulseRate( m_pMainWindow->GetHighlightedShapeId(), true );
+    //    break;
 
-    case IDM_MINUS:
-        changePulseRate( m_pMainWindow->GetHighlightedShapeId(), false );
-        break;
+    //case IDM_MINUS:
+    //    changePulseRate( m_pMainWindow->GetHighlightedShapeId(), false );
+    //    break;
 
     case IDM_COPY_SELECTION:
         m_pModelWriterInterface->CopySelection( );

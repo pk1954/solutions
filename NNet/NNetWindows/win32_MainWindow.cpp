@@ -331,6 +331,25 @@ void MainWindow::OnPaint( )
 	}
 }
 
+bool MainWindow::changePulseRate( ShapeId const id, bool const bDirection )
+{
+	static fHertz const INCREMENT { 0.01_fHertz };
+	fHertz const fOldValue { m_pModelReaderInterface->GetPulseFrequency( id ) };
+	if ( fOldValue.IsNull() )
+		return false;
+	fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
+	m_pModelWriterInterface->SetPulseRate( id, fNewValue );
+	return true;
+}
+
+void MainWindow::OnChar( WPARAM const wParam, LPARAM const lParam )
+{
+	if ( wParam == '+' )
+		changePulseRate( m_shapeHighlighted, true );
+	else if ( wParam == '-' )
+		changePulseRate( m_shapeHighlighted, false );
+}
+
 /////////////////////// local functions ////////////////////////////////
 
 void MainWindow::doPaint( ) 

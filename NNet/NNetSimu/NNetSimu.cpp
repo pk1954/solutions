@@ -45,10 +45,9 @@ int APIENTRY wWinMain
 		Stopwatch   stopwatch;
 		MessagePump pump;
 		stopwatch.Start();
-		HACCEL haccel { LoadAccelerators( hInstance, MAKEINTRESOURCE(IDC_NNET_SIMU_MAIN) ) };
-		pump.DefaultAccelTable( haccel );
+		pump.SetAccelTable( hInstance, IDC_NNET_SIMU_MAIN );
 		App.Start( pump );
-		pump.InstallAccelTable( App.GetWindowHandle(), nullptr );
+		pump.RegisterWindow( App.GetWindowHandle(), false );
 		stopwatch.Stop( L"App.Start" );
 		iRetVal = pump.Run();
 	}

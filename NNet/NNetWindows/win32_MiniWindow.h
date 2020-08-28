@@ -17,6 +17,7 @@ public:
 	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const ) { };
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const ) { };
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const ) { };
+	virtual void OnChar              ( WPARAM const, LPARAM const ) { };
 
 	virtual void OnMouseMove         ( WPARAM const, LPARAM const );
 

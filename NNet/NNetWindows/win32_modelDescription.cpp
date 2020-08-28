@@ -42,7 +42,7 @@ void DescriptionWindow::Start
         NULL
     );          
 
-//    pump.InstallAccelTable( m_hwndEdit, nullptr );
+    pump.RegisterWindow( hwndDlg, true );
 }
 
 void DescriptionWindow::Stop( )
@@ -74,68 +74,83 @@ bool DescriptionWindow::GetDescriptionLine( int const iLineNr, wstring & wstrDst
     return true;
 }
 
+
+bool DescriptionWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
+{
+    int const wmId = LOWORD( wParam );
+
+    switch (wmId) 
+    { 
+    case IDM_SELECT_ALL:
+        Edit_SetSel( m_hwndEdit, 0, -1 ); 
+        break; 
+
+     case IDM_DELETE: 
+     {
+         DWORD dwSelStart { 0L };
+         DWORD dwSelEnd   { 0L };
+         ::SendMessage( m_hwndEdit, EM_GETSEL, (WPARAM)&dwSelStart, (LPARAM)&dwSelEnd );
+         if ( dwSelStart == dwSelEnd )
+         {
+             int iNrOfChars { ::Edit_GetTextLength( m_hwndEdit ) };  
+             if ( dwSelStart == iNrOfChars )                         // if cursor is at end
+                 break;                                              // nothing to delete
+             Edit_SetSel( m_hwndEdit, dwSelStart, dwSelStart + 1 ); 
+         }
+         ::SendMessage( m_hwndEdit, WM_CLEAR, 0, 0 ); 
+     }
+        break; 
+
+    default:
+        return false;
+    }
+
+    return true;
+}
+
 LRESULT DescriptionWindow::UserProc( UINT const uMsg, WPARAM const wParam, LPARAM const lParam )
 {
     switch ( uMsg )
     {
-    case WM_COMMAND: 
-        switch (wParam) 
-        { 
-        case IDM_SELECT_ALL:
-            ::SendMessage( m_hwndEdit, EM_SETSEL, 0, -1 ); 
-            break; 
+    //case WM_COMMAND:
+    //    int const wmId = LOWORD( wParam );
+    //    switch (wmId) 
+    //    { 
 
-        //case IDM_EDUNDO: 
+    //    //case IDM_EDUNDO: 
 
-        //     Send WM_UNDO only if there is something 
-        //     to be undone. 
+    //    //     Send WM_UNDO only if there is something 
+    //    //     to be undone. 
 
-        //    if (SendMessage(hwndEdit, EM_CANUNDO, 0, 0)) 
-        //        SendMessage(hwndEdit, WM_UNDO, 0, 0); 
-        //    else 
-        //    {
-        //        MessageBox(hwndEdit, 
-        //            "Nothing to undo.", 
-        //            "Undo notification", MB_OK); 
-        //    }
-        //    break; 
+    //    //    if (SendMessage(hwndEdit, EM_CANUNDO, 0, 0)) 
+    //    //        SendMessage(hwndEdit, WM_UNDO, 0, 0); 
+    //    //    else 
+    //    //    {
+    //    //        MessageBox(hwndEdit, 
+    //    //            "Nothing to undo.", 
+    //    //            "Undo notification", MB_OK); 
+    //    //    }
+    //    //    break; 
 
-        //case IDM_EDCUT: 
-        //    SendMessage(hwndEdit, WM_CUT, 0, 0); 
-        //    break; 
+    //    //case IDM_EDCUT: 
+    //    //    SendMessage(hwndEdit, WM_CUT, 0, 0); 
+    //    //    break; 
 
-        //case IDM_EDCOPY: 
-        //    SendMessage(hwndEdit, WM_COPY, 0, 0); 
-        //    break; 
+    //    //case IDM_EDCOPY: 
+    //    //    SendMessage(hwndEdit, WM_COPY, 0, 0); 
+    //    //    break; 
 
-        //case IDM_EDPASTE: 
-        //    SendMessage(hwndEdit, WM_PASTE, 0, 0); 
-        //    break; 
+    //    //case IDM_EDPASTE: 
+    //    //    SendMessage(hwndEdit, WM_PASTE, 0, 0); 
+    //    //    break; 
 
-        //case IDM_EDDEL: 
-        //    SendMessage(hwndEdit, WM_CLEAR, 0, 0); 
-        //    break; 
-
-        //case IDM_WRAP: 
-        //    SendMessage(hwndEdit, 
-        //        EM_SETWORDBREAKPROC, 
-        //        (WPARAM) 0, 
-        //        (LPARAM) (EDITWORDBREAKPROC) WordBreakProc); 
-        //    SendMessage(hwndEdit, 
-        //        EM_FMTLINES, 
-        //        (WPARAM) TRUE, 
-        //        (LPARAM) 0); 
-        //    SendMessage(hwndEdit, 
-        //        EM_SETSEL, 
-        //        0, -1); // select all text 
-        //    SendMessage(hwndEdit, WM_CUT, 0, 0); 
-        //    SendMessage(hwndEdit, WM_PASTE, 0, 0); 
-        //    break; 
-
-        default: 
-            break;
-        } 
-        break; 
+    //    //case IDM_EDDEL: 
+    //    //    SendMessage(hwndEdit, WM_CLEAR, 0, 0); 
+    //    //    break; 
+    //    default: 
+    //        break;
+    //    } 
+    //    break; 
 
     //case WM_SETFOCUS: 
     //    ::SetFocus( m_hwndEdit ); 
