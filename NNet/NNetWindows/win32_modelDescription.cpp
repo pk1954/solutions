@@ -82,29 +82,29 @@ bool DescriptionWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, Pix
     { 
     case IDM_SELECT_ALL:
         Edit_SetSel( m_hwndEdit, 0, -1 ); 
-        break; 
+        return true; 
 
      case IDM_DELETE: 
-     {
-         DWORD dwSelStart { 0L };
-         DWORD dwSelEnd   { 0L };
-         ::SendMessage( m_hwndEdit, EM_GETSEL, (WPARAM)&dwSelStart, (LPARAM)&dwSelEnd );
-         if ( dwSelStart == dwSelEnd )
          {
-             int iNrOfChars { ::Edit_GetTextLength( m_hwndEdit ) };  
-             if ( dwSelStart == iNrOfChars )                         // if cursor is at end
-                 break;                                              // nothing to delete
-             Edit_SetSel( m_hwndEdit, dwSelStart, dwSelStart + 1 ); 
+             DWORD dwSelStart { 0L };
+             DWORD dwSelEnd   { 0L };
+             ::SendMessage( m_hwndEdit, EM_GETSEL, (WPARAM)&dwSelStart, (LPARAM)&dwSelEnd );
+             if ( dwSelStart == dwSelEnd )
+             {
+                 int iNrOfChars { ::Edit_GetTextLength( m_hwndEdit ) };  
+                 if ( dwSelStart == iNrOfChars )                         // if cursor is at end
+                     break;                                              // nothing to delete
+                 Edit_SetSel( m_hwndEdit, dwSelStart, dwSelStart + 1 ); 
+             }
+             ::SendMessage( m_hwndEdit, WM_CLEAR, 0, 0 ); 
          }
-         ::SendMessage( m_hwndEdit, WM_CLEAR, 0, 0 ); 
-     }
-        break; 
+        return true; 
 
     default:
-        return false;
+        break;
     }
 
-    return true;
+    return BaseWindow::OnCommand( wParam, lParam, pixPoint );
 }
 
 LRESULT DescriptionWindow::UserProc( UINT const uMsg, WPARAM const wParam, LPARAM const lParam )

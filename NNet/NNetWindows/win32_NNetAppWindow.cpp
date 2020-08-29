@@ -475,9 +475,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 	default:
 		if ( m_NNetController.HandleCommand( wmId, lParam, NP_NULL ) )
 			return true;
-		else 
-			return BaseWindow::OnCommand( wParam, lParam, pixPoint );
 	}
 
-	return true;  // command has been processed
+	return BaseWindow::OnCommand( wParam, lParam, pixPoint );
 }

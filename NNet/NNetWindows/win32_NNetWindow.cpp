@@ -148,6 +148,6 @@ bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	MicroMeterPoint const umPoint { GetCoord().Convert2MicroMeterPointPos( pixPoint ) };
 	if ( m_pController->HandleCommand( LOWORD( wParam ), lParam, umPoint ) )
 		return true;
-	else 
-		return ModelWindow::OnCommand( wParam, lParam, pixPoint );
+
+	return ModelWindow::OnCommand( wParam, lParam, pixPoint );
 }
