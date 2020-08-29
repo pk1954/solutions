@@ -219,7 +219,9 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	configureStatusBar( );
 	adjustChildWindows( );
+
 	m_miniNNetWindow.Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
+	m_descWindow    .Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
 
 	m_miniNNetWindow   .Show( true );
 	m_StatusBar        .Show( true );

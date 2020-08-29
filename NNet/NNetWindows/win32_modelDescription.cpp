@@ -74,7 +74,6 @@ bool DescriptionWindow::GetDescriptionLine( int const iLineNr, wstring & wstrDst
     return true;
 }
 
-
 bool DescriptionWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
     int const wmId = LOWORD( wParam );
@@ -112,50 +111,6 @@ LRESULT DescriptionWindow::UserProc( UINT const uMsg, WPARAM const wParam, LPARA
 {
     switch ( uMsg )
     {
-    //case WM_COMMAND:
-    //    int const wmId = LOWORD( wParam );
-    //    switch (wmId) 
-    //    { 
-
-    //    //case IDM_EDUNDO: 
-
-    //    //     Send WM_UNDO only if there is something 
-    //    //     to be undone. 
-
-    //    //    if (SendMessage(hwndEdit, EM_CANUNDO, 0, 0)) 
-    //    //        SendMessage(hwndEdit, WM_UNDO, 0, 0); 
-    //    //    else 
-    //    //    {
-    //    //        MessageBox(hwndEdit, 
-    //    //            "Nothing to undo.", 
-    //    //            "Undo notification", MB_OK); 
-    //    //    }
-    //    //    break; 
-
-    //    //case IDM_EDCUT: 
-    //    //    SendMessage(hwndEdit, WM_CUT, 0, 0); 
-    //    //    break; 
-
-    //    //case IDM_EDCOPY: 
-    //    //    SendMessage(hwndEdit, WM_COPY, 0, 0); 
-    //    //    break; 
-
-    //    //case IDM_EDPASTE: 
-    //    //    SendMessage(hwndEdit, WM_PASTE, 0, 0); 
-    //    //    break; 
-
-    //    //case IDM_EDDEL: 
-    //    //    SendMessage(hwndEdit, WM_CLEAR, 0, 0); 
-    //    //    break; 
-    //    default: 
-    //        break;
-    //    } 
-    //    break; 
-
-    //case WM_SETFOCUS: 
-    //    ::SetFocus( m_hwndEdit ); 
-    //    return 0; 
-
     case WM_SIZE: 
         MoveWindow
         (
@@ -166,6 +121,10 @@ LRESULT DescriptionWindow::UserProc( UINT const uMsg, WPARAM const wParam, LPARA
             TRUE            // repaint window 
         );
         return 0; 
+
+    case WM_CLOSE:    // Do not destroy, just hide  
+        Show( false );
+        return true;
 
     default: 
         break; 
