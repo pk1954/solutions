@@ -63,7 +63,7 @@ public:
 	}
 
 private:
-	wstring     m_wstring     { };
+	wstring     m_wstring    { };
 	StatusBar * m_pStatusBar { nullptr };
 	int         m_iPart      { 0 };
 };
@@ -82,6 +82,7 @@ private:
 	NNetAppWindow & operator= ( NNetAppWindow const & );  // noncopyable class 
 
 	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const );
+	virtual bool OnSize   ( WPARAM const, LPARAM const );
 	virtual void OnClose( );
 
 	void configureStatusBar( );

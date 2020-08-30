@@ -280,6 +280,12 @@ void NNetAppWindow::Stop()
 	m_pReadModelResult = nullptr;
 }
 
+bool NNetAppWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
+{
+	adjustChildWindows( );
+	return true;
+}
+
 LRESULT NNetAppWindow::UserProc
 ( 
 	UINT   const message, 
@@ -305,7 +311,6 @@ LRESULT NNetAppWindow::UserProc
 		return false;
 	}
 
-	case WM_SIZE:
 	case WM_MOVE:
 		adjustChildWindows( );
 		break;

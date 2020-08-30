@@ -33,7 +33,7 @@ protected:
 	virtual void OnLButtonUp         ( WPARAM const, LPARAM const ) = 0;
 	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const ) = 0;
-	virtual void OnSize              ( WPARAM const, LPARAM const ) = 0;
+	virtual bool OnSize              ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnChar              ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnPaint             ( )                            = 0;
 

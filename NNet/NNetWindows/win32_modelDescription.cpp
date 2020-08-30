@@ -107,24 +107,16 @@ bool DescriptionWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, Pix
     return BaseWindow::OnCommand( wParam, lParam, pixPoint );
 }
 
-LRESULT DescriptionWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+bool DescriptionWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 {
-    switch ( message )
-    {
-    case WM_SIZE: 
-        MoveWindow
-        (
-            m_hwndEdit, 
-            0, 0,           // starting x- and y-coordinates 
-            LOWORD(lParam), // width of client area 
-            HIWORD(lParam), // height of client area 
-            TRUE            // repaint window 
-        );
-        return 0; 
+    MoveWindow
+    (
+        m_hwndEdit, 
+        0, 0,           // starting x- and y-coordinates 
+        LOWORD(lParam), // width of client area 
+        HIWORD(lParam), // height of client area 
+        TRUE            // repaint window 
+    );
 
-    default: 
-        break; 
-    } 
-
-    return BaseWindow::UserProc( message, wParam, lParam );
+    return true;
 }

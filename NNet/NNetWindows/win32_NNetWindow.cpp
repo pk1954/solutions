@@ -135,12 +135,13 @@ void NNetWindow::OnPaint( )
 	}
 }
 
-void NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
+bool NNetWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 {
 	UINT width  = LOWORD(lParam);
 	UINT height = HIWORD(lParam);
 	m_context.Resize( width, height );
 	Notify( false );
+	return true;    // job done
 }
 
 bool NNetWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )

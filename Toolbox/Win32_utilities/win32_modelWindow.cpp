@@ -53,10 +53,6 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 		m_pDisplayTimer->TimerStop( );
 		return false;
 
-	case WM_SIZE:
-		OnSize( wParam, lParam );
-		return false;
-
 	default:
 		break;
 	}

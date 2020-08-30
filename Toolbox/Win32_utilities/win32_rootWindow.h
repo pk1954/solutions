@@ -27,6 +27,7 @@ public:
 	void StartRootWindow( function<bool()> const );
 
 	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
+	virtual bool OnSize   ( WPARAM const, LPARAM const );
 	virtual void OnClose( );
 
     HWND GetWindowHandle( ) const { return m_hwnd; };
@@ -107,11 +108,6 @@ public:
     LRESULT const SendMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
     {
         return ::SendMessage( m_hwnd, msg, wParam, lParam );
-    }
-
-    LRESULT const SendNotifyMessage( UINT const msg, WPARAM const wParam, LPARAM const lParam ) const
-    {
-        return ::SendNotifyMessage( m_hwnd, msg, wParam, lParam );
     }
 
     LRESULT const SendDlgItemMessage( int const iItem, UINT msg, WPARAM wParam, LPARAM lParam ) const

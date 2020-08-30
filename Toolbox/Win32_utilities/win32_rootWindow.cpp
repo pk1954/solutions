@@ -189,6 +189,11 @@ void RootWindow::OnClose( )
 	SendMessage( WM_COMMAND, IDM_WINDOW_OFF, 0 );
 }
 
+bool RootWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
+{
+	return false;
+}
+
 LRESULT RootWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
 	switch (message)
@@ -196,7 +201,7 @@ LRESULT RootWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
 	case WM_CONTEXTMENU:
 		contextMenu( GetCrsrPosFromLparam( lParam ) );
-		return false;
+		return (LRESULT)0;
 
 	case WM_COMMAND:
 		OnCommand( wParam, lParam );
@@ -204,7 +209,12 @@ LRESULT RootWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 
 	case WM_CLOSE:
 		OnClose( );
-		return false;
+		return (LRESULT)0;
+
+	case WM_SIZE:
+		if ( OnSize( wParam, lParam ) )
+			return (LRESULT)0;
+		break;
 
 	default:
 		break;

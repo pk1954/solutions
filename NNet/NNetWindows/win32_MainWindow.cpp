@@ -192,10 +192,11 @@ void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 	SetCursor( hCrsr );
 }
 
-void MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
+bool MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 {
 	NNetWindow::OnSize( wParam, lParam );
 	m_pCoordObservable->NotifyAll( false );
+	return true;
 }
 
 void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )

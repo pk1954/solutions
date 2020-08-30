@@ -150,10 +150,10 @@ PIXEL StatusBar::GetHeight( ) const
     
 void StatusBar::Resize( ) const 
 {
-    (void)SendNotifyMessage( WM_SIZE, 0, 0 );
+    (void)SendMessage( WM_SIZE, 0, 0 );
 }
 
 void StatusBar::DisplayInPart( int const iPart, wstring const & wstrLine )
 {
-    (void)SendNotifyMessage( SB_SETTEXT, iPart, (LPARAM)( wstrLine.c_str( ) ) );
+    (void)SendMessage( SB_SETTEXT, iPart, (LPARAM)( wstrLine.c_str( ) ) );
 }

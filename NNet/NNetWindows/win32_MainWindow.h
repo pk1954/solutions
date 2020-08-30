@@ -47,7 +47,7 @@ public:
 	virtual void CenterAndZoomRect( MicroMeterRect const &, float const );
 
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
-	virtual void OnSize              ( WPARAM const, LPARAM const );
+	virtual bool OnSize              ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
 	virtual void OnMouseMove         ( WPARAM const, LPARAM const );

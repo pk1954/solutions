@@ -56,7 +56,7 @@ public:
 protected:
 
 	virtual void OnPaint( );
-	virtual void OnSize( WPARAM const, LPARAM const );
+	virtual bool OnSize( WPARAM const, LPARAM const );
 
 	virtual void doPaint( ) = 0;
 
