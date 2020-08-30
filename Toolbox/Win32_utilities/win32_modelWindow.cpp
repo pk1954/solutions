@@ -57,10 +57,6 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 		OnSize( wParam, lParam );
 		return false;
 
-	case WM_CLOSE:    // Do not destroy, just hide  
-		Show( false );
-		return false;
-
 	default:
 		break;
 	}

@@ -122,10 +122,6 @@ LRESULT DescriptionWindow::UserProc( UINT const message, WPARAM const wParam, LP
         );
         return 0; 
 
-    case WM_CLOSE:    // Do not destroy, just hide  
-        Show( false );
-        return true;
-
     default: 
         break; 
     } 

@@ -27,6 +27,7 @@ public:
 	void StartRootWindow( function<bool()> const );
 
 	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
+	virtual void OnClose( );
 
     HWND GetWindowHandle( ) const { return m_hwnd; };
 

@@ -119,10 +119,6 @@ LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         return false;
     }
 
-    case WM_CLOSE:    // Do not destroy, just hide  
-        Show( false );
-        return true;
-
     default:
         break;
     }

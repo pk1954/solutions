@@ -314,10 +314,6 @@ LRESULT NNetAppWindow::UserProc
 		m_mainNNetWindow.OnChar( wParam, lParam );
 		return true;  
 
-	case WM_CLOSE:
-		OnClose( );
-		return true;  
-
 	case WM_DESTROY:
 		PostQuitMessage( 0 );
 		break;
@@ -390,7 +386,7 @@ void NNetAppWindow::OnClose( )
 		m_WinManager.StoreWindowConfiguration( );
 		Stop( );
 	}
-	DestroyWindow( );        
+	DestroyWindow( );
 }
 
 bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )

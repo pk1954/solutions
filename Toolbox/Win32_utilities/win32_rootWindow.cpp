@@ -184,6 +184,11 @@ bool RootWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	return true;
 }
 
+void RootWindow::OnClose( )
+{
+	SendMessage( WM_COMMAND, IDM_WINDOW_OFF, 0 );
+}
+
 LRESULT RootWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
 	switch (message)
@@ -197,9 +202,9 @@ LRESULT RootWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 		OnCommand( wParam, lParam );
 		break;
 
-	case WM_CLOSE:   
-		m_visibilityMode = tOnOffAuto::off;
-		break;
+	case WM_CLOSE:
+		OnClose( );
+		return false;
 
 	default:
 		break;
