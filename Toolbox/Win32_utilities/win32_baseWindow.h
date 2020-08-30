@@ -21,6 +21,9 @@ public:
 		function<bool()> const
 	);
 
+protected:
+	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+
 private:
 	
 	friend static LRESULT CALLBACK BaseWndProc( HWND const, UINT const, WPARAM const, LPARAM const );

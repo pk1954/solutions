@@ -64,6 +64,21 @@ HWND BaseWindow::StartBaseWindow
 	return hwnd;
 }
 
+LRESULT BaseWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+{
+    switch (message)
+    {
+
+    case WM_ERASEBKGND:
+        return true;			// Do not erase background
+
+    default:
+        break;
+    }
+
+    return RootWindow::UserProc( message, wParam, lParam );
+}
+
 static LRESULT CALLBACK BaseWndProc
 ( 
     HWND   const hwnd,
@@ -72,24 +87,17 @@ static LRESULT CALLBACK BaseWndProc
     LPARAM const lParam 
 )
 {
-    switch (message)
+    if ( message == WM_NCCREATE )    // retrieve Window instance from window creation data and associate
     {
-	case WM_NCCREATE:    // retrieve Window instance from window creation data and associate    
-        (void)SetWindowLongPtr( hwnd, GWLP_USERDATA, (LONG_PTR)( (LPCREATESTRUCT)lParam )->lpCreateParams );
+        SetUserDataPtr( hwnd, (LONG_PTR)((LPCREATESTRUCT)lParam)->lpCreateParams );
         return true;
-
-	case WM_ERASEBKGND:
-		return true;			// Do not erase background
-
-	default:
- 		break;
 	}
+    else
 	{
 		BaseWindow * pBaseWin = reinterpret_cast<BaseWindow *>(GetUserDataPtr( hwnd ));
-
-		if ( ! RootWinIsReady( pBaseWin ) )
-			return DefWindowProc( hwnd, message, wParam, lParam );
-	
-		return pBaseWin->RootWindowProc( hwnd, message, wParam, lParam );         // normal case
+		if ( RootWinIsReady( pBaseWin ) )
+            return pBaseWin->RootWindowProc( hwnd, message, wParam, lParam );         // normal case
 	}
+
+    return DefWindowProc( hwnd, message, wParam, lParam );
 }

@@ -15,7 +15,8 @@
 using std::chrono::milliseconds;
 using std::function;
 
-inline LONG_PTR GetUserDataPtr( HWND hwnd ) { return GetWindowLongPtr( hwnd, GWLP_USERDATA ); };
+inline LONG_PTR GetUserDataPtr( HWND hwnd )               { return GetWindowLongPtr( hwnd, GWLP_USERDATA ); }
+inline void     SetUserDataPtr( HWND hwnd, LONG_PTR ptr ) { (void) SetWindowLongPtr( hwnd, GWLP_USERDATA, ptr ); }
 
 class RootWindow : public ObserverInterface
 {

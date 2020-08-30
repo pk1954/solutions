@@ -10,6 +10,9 @@
 
 using namespace std::chrono;
 
+
+
+
 bool RootWinIsReady( RootWindow const * pRootWin )
 {
     return ( ( pRootWin != nullptr ) && ( pRootWin->GetWindowHandle( ) != nullptr ) );

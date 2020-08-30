@@ -50,7 +50,6 @@ private:
 
 	void pulseRateDlg       ( ShapeId const );
 	void triggerSoundDlg    ( ShapeId const );
-//	bool changePulseRate    ( ShapeId const, bool const );
 	bool processUIcommand   ( int const, LPARAM const );
 	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
 
