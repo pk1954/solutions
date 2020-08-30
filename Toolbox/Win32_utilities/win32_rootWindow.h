@@ -198,6 +198,8 @@ protected:
 
 	LRESULT RootWindowProc( HWND const, UINT const, WPARAM const, LPARAM const );
 
+	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+
 private:
 
 	class WindowRefreshRate;
@@ -219,7 +221,6 @@ private:
 			Show( ApplyAutoCriterion( onOffAuto, m_visibilityCriterion ) );
 	}
 
-	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const ) = 0;
 };
 
 bool RootWinIsReady( RootWindow const * );

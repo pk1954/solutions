@@ -107,9 +107,9 @@ bool DescriptionWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, Pix
     return BaseWindow::OnCommand( wParam, lParam, pixPoint );
 }
 
-LRESULT DescriptionWindow::UserProc( UINT const uMsg, WPARAM const wParam, LPARAM const lParam )
+LRESULT DescriptionWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
-    switch ( uMsg )
+    switch ( message )
     {
     case WM_SIZE: 
         MoveWindow
@@ -130,5 +130,5 @@ LRESULT DescriptionWindow::UserProc( UINT const uMsg, WPARAM const wParam, LPARA
         break; 
     } 
 
-    return DefWindowProc( uMsg, wParam, lParam );
+    return BaseWindow::UserProc( message, wParam, lParam );
 }

@@ -127,5 +127,5 @@ LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         break;
     }
     
-    return DefWindowProc( message, wParam, lParam );
+    return BaseWindow::UserProc( message, wParam, lParam );
 }

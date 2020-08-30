@@ -326,7 +326,7 @@ LRESULT NNetAppWindow::UserProc
 		break;
 	}
 
-	return DefWindowProc( message, wParam, lParam );
+	return BaseWindow::UserProc( message, wParam, lParam );
 }
 
 void NNetAppWindow::configureStatusBar( )

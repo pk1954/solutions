@@ -184,6 +184,30 @@ bool RootWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint
 	return true;
 }
 
+LRESULT RootWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+{
+	switch (message)
+	{
+
+	case WM_CONTEXTMENU:
+		contextMenu( GetCrsrPosFromLparam( lParam ) );
+		return false;
+
+	case WM_COMMAND:
+		OnCommand( wParam, lParam );
+		break;
+
+	case WM_CLOSE:   
+		m_visibilityMode = tOnOffAuto::off;
+		break;
+
+	default:
+		break;
+	}
+
+	return DefWindowProc( message, wParam, lParam );
+}
+
 LRESULT RootWindow::RootWindowProc
 ( 
 	HWND   const hwnd,
@@ -193,25 +217,6 @@ LRESULT RootWindow::RootWindowProc
 )
 {
 	RootWindow * const pRootWin = reinterpret_cast<RootWindow *>(GetWindowLongPtr( hwnd, GWLP_USERDATA ));
-
-	switch (message)
-	{
-
-	case WM_CONTEXTMENU:
-		pRootWin->contextMenu( GetCrsrPosFromLparam( lParam ) );
-		return false;
-
-	case WM_COMMAND:
-		pRootWin->OnCommand( wParam, lParam );
-		break;
-
-	case WM_CLOSE:   
-		pRootWin->m_visibilityMode = tOnOffAuto::off;
-		break;
-
-	default:
-		break;
-	}
 
 	return pRootWin->UserProc( message, wParam, lParam );
 }

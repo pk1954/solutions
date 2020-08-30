@@ -65,5 +65,5 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 		break;
 	}
 
-	return DefWindowProc( message, wParam, lParam );
+	return BaseWindow::UserProc( message, wParam, lParam );
 }
