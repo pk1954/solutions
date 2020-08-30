@@ -286,7 +286,7 @@ bool NNetAppWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 	return true;
 }
 
-LRESULT NNetAppWindow::UserProc
+bool NNetAppWindow::UserProc
 ( 
 	UINT   const message, 
 	WPARAM const wParam, 
@@ -308,7 +308,7 @@ LRESULT NNetAppWindow::UserProc
 		HDC           hDC = BeginPaint( &ps );
 		FillBackground( hDC, CLR_GREY );
 		(void)EndPaint( &ps );
-		return false;
+		return true;
 	}
 
 	case WM_MOVE:

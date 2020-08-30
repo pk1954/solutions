@@ -38,8 +38,6 @@
 
 #define IDM_BEEP                       40
 
-#define IDM_HIDE_WINDOW                50
-
 #define IDM_HIST_BUFFER_FULL           60
 
 #define IDM_TRACKBAR                   65    

@@ -27,8 +27,6 @@
 #define IDM_CONS_WINDOW                35
 #define IDM_MINI_WINDOW                39
 
-#define IDM_HIDE_WINDOW                50
-
 #define IDM_UNDO                       60
 #define IDM_REDO                       61
 

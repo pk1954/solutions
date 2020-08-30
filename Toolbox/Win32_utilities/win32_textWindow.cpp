@@ -74,40 +74,16 @@ void TextWindow::StopTextWindow( )
 	m_hDC_Memory = 0;
 }
 
-long TextWindow::AddContextMenuEntries( HMENU const hPopupMenu )
-{
-    UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
-
-    (void)AppendMenu( hPopupMenu, STD_FLAGS, IDM_HIDE_WINDOW, L"Hide window" );
-
-    return 0L;
-}
-
 void TextWindow::Trigger( )
 {
 	if ( m_pTextWindowThread )
 		m_pTextWindowThread->Trigger( );
 }
 
-LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+bool TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
     switch (message)
     {
-
-    case WM_COMMAND:
-    {
-        int const wmId { LOWORD(wParam) };
-        switch ( wmId )
-        {
-        case IDM_HIDE_WINDOW:
-	        Show( false );
-            break;
-
-        default:
-            break;
-        }
-    }
-    break;
 
     case WM_PAINT:
     {
@@ -116,7 +92,7 @@ LRESULT TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         PixelRectSize rectSize { GetClRectSize( ) };
 		BitBlt( hDC, 0, 0, rectSize.GetXvalue(), rectSize.GetYvalue(), m_hDC_Memory, 0, 0, SRCCOPY );
         (void)EndPaint( &ps );
-        return false;
+        return true;
     }
 
     default:

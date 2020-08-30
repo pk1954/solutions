@@ -6,30 +6,30 @@
 #include "win32_util_resource.h"
 #include "win32_modelWindow.h"
 
-LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+bool ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
 	switch (message)
 	{
 
 	case WM_MOUSEMOVE:
 		OnMouseMove( wParam, lParam );
-		return false;
+		return true;
 
 	case WM_LBUTTONDBLCLK:
 		OnLeftButtonDblClick( wParam, lParam );
-		return false;
+		return true;
 
 	case WM_MOUSEWHEEL:
 		OnMouseWheel( wParam, lParam );
-		return false;
+		return true;
 
 	case WM_LBUTTONDOWN:
 		OnLButtonDown( wParam, lParam );
-		return true;
+		return false;
 
 	case WM_LBUTTONUP:
 		OnLButtonUp( wParam, lParam );
-		return false;
+		return true;
 
 	case WM_RBUTTONDOWN:
 		OnRButtonDown( wParam, lParam );
@@ -37,18 +37,18 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 
 	case WM_RBUTTONUP:
 		if ( OnRButtonUp( wParam, lParam ) )
-			return false;   // message completely handled, do not pass over to default processing
+			return true;   // message completely handled, do not pass over to default processing
 		break;
 
 	case WM_SETCURSOR:
 		OnSetCursor( wParam, lParam );
-		return false;
+		return true;
 
 	case WM_PAINT:
 		m_pDisplayTimer->TimerStart( );
 		OnPaint( );
 		m_pDisplayTimer->TimerStop( );
-		return false;
+		return true;
 
 	default:
 		break;

@@ -138,5 +138,5 @@ private:
 	UndoRedoMenu              m_undoRedoMenu             { };
 	UnsavedChangesObserver    m_unsavedChangesObserver   { };
 
-	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 };

@@ -64,7 +64,7 @@ HWND BaseWindow::StartBaseWindow
 	return hwnd;
 }
 
-LRESULT BaseWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+bool BaseWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
     switch (message)
     {
@@ -76,7 +76,7 @@ LRESULT BaseWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
         break;
     }
 
-    return RootWindow::UserProc( message, wParam, lParam );
+    return RootWindow::CommonMessageHandler( message, wParam, lParam );
 }
 
 static LRESULT CALLBACK BaseWndProc
@@ -94,10 +94,12 @@ static LRESULT CALLBACK BaseWndProc
 	}
     else
 	{
-		BaseWindow * pBaseWin = reinterpret_cast<BaseWindow *>(GetUserDataPtr( hwnd ));
-		if ( RootWinIsReady( pBaseWin ) )
-            return pBaseWin->RootWindowProc( hwnd, message, wParam, lParam );         // normal case
-	}
+		if ( BaseWindow * pBaseWin = reinterpret_cast<BaseWindow *>(GetRootWindow( hwnd )) )
+        {
+            if ( pBaseWin->UserProc( message, wParam, lParam ) )
+                return (LRESULT)0;
+        }
+    }
 
     return DefWindowProc( hwnd, message, wParam, lParam );
 }

@@ -27,10 +27,6 @@ public:
 
 	void StartRootWindow( function<bool()> const );
 
-	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
-	virtual bool OnSize   ( WPARAM const, LPARAM const );
-	virtual void OnClose( );
-
     HWND GetWindowHandle( ) const { return m_hwnd; };
 
     PIXEL         const GetWindowTop( )            const { return Util::GetWindowTop           ( m_hwnd ); }
@@ -194,9 +190,11 @@ protected:
 
 	void SetWindowHandle( HWND const );
 
-	LRESULT RootWindowProc( HWND const, UINT const, WPARAM const, LPARAM const );
+	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
+	virtual bool OnSize   ( WPARAM const, LPARAM const );
+	virtual void OnClose( );
 
-	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+	virtual bool CommonMessageHandler( UINT const, WPARAM const, LPARAM const );
 
 private:
 
@@ -221,4 +219,4 @@ private:
 
 };
 
-bool RootWinIsReady( RootWindow const * );
+RootWindow * GetRootWindow( HWND const );

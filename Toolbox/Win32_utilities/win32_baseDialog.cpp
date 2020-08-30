@@ -28,21 +28,9 @@ HWND BaseDialog::StartBaseDialog
 	return hwnd;
 }
 
-LRESULT BaseDialog::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+bool BaseDialog::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
-	switch (message)
-	{
-
-	case WM_COMMAND:
-		if ( OnCommand( wParam, lParam ) )
-			return (LRESULT)0;
-		break;
-
-	default:
-		break;
-	}
-
-	return false;
+	return RootWindow::CommonMessageHandler( message, wParam, lParam );
 }
 
 static INT_PTR CALLBACK BaseDialogProc
@@ -60,9 +48,8 @@ static INT_PTR CALLBACK BaseDialogProc
 	}
 	else 
 	{
-		BaseDialog * pBaseDialog = reinterpret_cast<BaseDialog *>(GetUserDataPtr( hwnd ));
-		if ( RootWinIsReady( pBaseDialog ) )
-			return pBaseDialog->RootWindowProc( hwnd, message, wParam, lParam );         // normal case
+		if ( BaseDialog * pBaseDialog = reinterpret_cast<BaseDialog *>(GetRootWindow( hwnd ) ) )
+			return pBaseDialog->UserProc( message, wParam, lParam );         // normal case
 	}
 
 	return false;

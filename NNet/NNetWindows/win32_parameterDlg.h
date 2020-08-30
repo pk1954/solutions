@@ -46,5 +46,5 @@ private:
 	ParameterDialog             ( ParameterDialog const & );  // noncopyable class 
 	ParameterDialog & operator= ( ParameterDialog const & );  // noncopyable class 
 
-	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
 };

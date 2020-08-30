@@ -10,12 +10,12 @@
 
 using namespace std::chrono;
 
-
-
-
-bool RootWinIsReady( RootWindow const * pRootWin )
+RootWindow * GetRootWindow( HWND const hwnd )
 {
-    return ( ( pRootWin != nullptr ) && ( pRootWin->GetWindowHandle( ) != nullptr ) );
+	RootWindow * pRootWin = reinterpret_cast<RootWindow *>(GetUserDataPtr( hwnd ));
+	return ( pRootWin && pRootWin->GetWindowHandle( ) )
+		   ? pRootWin
+		   : nullptr;
 }
 
 class RootWindow::WindowRefreshRate : public BaseRefreshRate
@@ -197,45 +197,35 @@ bool RootWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 	return false;
 }
 
-LRESULT RootWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+// CommonMessageHandler
+// used by dialogs and normal windows 
+
+bool RootWindow::CommonMessageHandler( UINT const message, WPARAM const wParam, LPARAM const lParam )
 {
 	switch (message)
 	{
 
 	case WM_CONTEXTMENU:
 		contextMenu( GetCrsrPosFromLparam( lParam ) );
-		return (LRESULT)0;
+		return true;
 
 	case WM_COMMAND:
 		if ( OnCommand( wParam, lParam ) )
-			return (LRESULT)0;
+			return true;
 		break;
 
 	case WM_CLOSE:
 		OnClose( );
-		return (LRESULT)0;
+		return true;
 
 	case WM_SIZE:
 		if ( OnSize( wParam, lParam ) )
-			return (LRESULT)0;
+			return true;
 		break;
 
 	default:
 		break;
 	}
 
-	return DefWindowProc( message, wParam, lParam );
-}
-
-LRESULT RootWindow::RootWindowProc
-( 
-	HWND   const hwnd,
-	UINT   const message, 
-	WPARAM const wParam, 
-	LPARAM const lParam 
-)
-{
-	RootWindow * const pRootWin = reinterpret_cast<RootWindow *>(GetWindowLongPtr( hwnd, GWLP_USERDATA ));
-
-	return pRootWin->UserProc( message, wParam, lParam );
+	return false;
 }

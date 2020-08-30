@@ -130,43 +130,21 @@ void ParameterDialog::Stop( )
 	DestroyWindow( );
 }
 
-LRESULT ParameterDialog::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+bool ParameterDialog::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
 {
-	switch (message)
+	WORD const wId = LOWORD(wParam);
+	switch ( wId )
 	{
-	case WM_PAINT:
+	case IDD_APPLY_PARAMETERS:
+		applyParameters( );
+		return true;
+
+	case IDD_RESET_PARAMETERS:
 		resetParameters( );
-		break;
-
-	case WM_COMMAND:
-	{
-		WORD const wId = LOWORD(wParam);
-		switch ( wId )
-		{
-
-		case IDD_APPLY_PARAMETERS:
-			applyParameters( );
-			return true;
-
-		case IDD_RESET_PARAMETERS:
-			resetParameters( );
-			return true;
-
-		case IDCANCEL:
-			Show( false );
-			return true;
-
-		default:
-			break;
-		}
-		PostCommand2Application( IDM_REFRESH, 0 );
-	}
-	break;
+		return true;
 
 	default:
 		break;
 	}
-
-	return BaseDialog::UserProc( message, wParam, lParam );
-//	return false;
+	return BaseDialog::OnCommand( wParam, lParam );
 }
