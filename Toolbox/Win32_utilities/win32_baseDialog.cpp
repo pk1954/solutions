@@ -28,6 +28,23 @@ HWND BaseDialog::StartBaseDialog
 	return hwnd;
 }
 
+LRESULT BaseDialog::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+{
+	switch (message)
+	{
+
+	case WM_COMMAND:
+		if ( OnCommand( wParam, lParam ) )
+			return (LRESULT)0;
+		break;
+
+	default:
+		break;
+	}
+
+	return false;
+}
+
 static INT_PTR CALLBACK BaseDialogProc
 ( 
     HWND   const hwnd,

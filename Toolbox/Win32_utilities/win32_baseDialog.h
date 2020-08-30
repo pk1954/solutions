@@ -17,6 +17,10 @@ public:
 		function<bool()> const 
 	);
 
+protected:
+
+	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+
 private:
 
 	friend static INT_PTR CALLBACK BaseDialogProc( HWND const, UINT const, WPARAM const, LPARAM const );

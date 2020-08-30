@@ -207,7 +207,8 @@ LRESULT RootWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM co
 		return (LRESULT)0;
 
 	case WM_COMMAND:
-		OnCommand( wParam, lParam );
+		if ( OnCommand( wParam, lParam ) )
+			return (LRESULT)0;
 		break;
 
 	case WM_CLOSE:

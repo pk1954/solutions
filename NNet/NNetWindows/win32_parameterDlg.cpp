@@ -167,5 +167,6 @@ LRESULT ParameterDialog::UserProc( UINT const message, WPARAM const wParam, LPAR
 		break;
 	}
 
-	return false;
+	return BaseDialog::UserProc( message, wParam, lParam );
+//	return false;
 }

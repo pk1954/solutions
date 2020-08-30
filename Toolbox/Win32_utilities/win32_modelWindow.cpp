@@ -15,9 +15,6 @@ LRESULT ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM c
 		OnMouseMove( wParam, lParam );
 		return false;
 
-	case WM_COMMAND:
-		return false;
-
 	case WM_LBUTTONDBLCLK:
 		OnLeftButtonDblClick( wParam, lParam );
 		return false;
