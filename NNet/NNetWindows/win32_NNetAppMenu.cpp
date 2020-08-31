@@ -93,11 +93,12 @@ void NNetAppMenu::Start
     {
         HMENU hMenuWindows = popupMenu( hMenuView, L"&Windows" );
         {
-            AppendMenu( hMenuWindows, MF_STRING, IDM_MINI_WINDOW,  L"Show &mini window" );
-            AppendMenu( hMenuWindows, MF_STRING, IDM_DESC_WINDOW,  L"Show &description window" );
-            AppendMenu( hMenuWindows, MF_STRING, IDM_CRSR_WINDOW,  L"Show &cursor window" );
-            AppendMenu( hMenuWindows, MF_STRING, IDM_PARAM_WINDOW, L"Show &parameter window" );
-            AppendMenu( hMenuWindows, MF_STRING, IDM_PERF_WINDOW,  L"Show &performance window" );
+            AppendMenu( hMenuWindows, MF_STRING, IDM_MINI_WINDOW,    L"Show &mini window" );
+            AppendMenu( hMenuWindows, MF_STRING, IDM_MONITOR_WINDOW, L"Show m&onitor window" );
+            AppendMenu( hMenuWindows, MF_STRING, IDM_DESC_WINDOW,    L"Show &description window" );
+            AppendMenu( hMenuWindows, MF_STRING, IDM_CRSR_WINDOW,    L"Show &cursor window" );
+            AppendMenu( hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window" );
+            AppendMenu( hMenuWindows, MF_STRING, IDM_PERF_WINDOW,    L"Show &performance window" );
         }
         m_pOnOffArrows->appendOnOffMenu( hMenuView, L"&Arrows" );
     }
@@ -128,11 +129,12 @@ void NNetAppMenu::Notify( bool const bImmediately )
     enable( IDM_RUN,     m_pComputeThread->IsRunning() );
     enable( IDM_STOP,  ! m_pComputeThread->IsRunning() );
 
-    enable( IDM_DESC_WINDOW,  m_pWinManager->IsVisible( IDM_DESC_WINDOW  ) );
-    enable( IDM_CRSR_WINDOW,  m_pWinManager->IsVisible( IDM_CRSR_WINDOW  ) );
-    enable( IDM_MINI_WINDOW,  m_pWinManager->IsVisible( IDM_MINI_WINDOW  ) );
-    enable( IDM_PARAM_WINDOW, m_pWinManager->IsVisible( IDM_PARAM_WINDOW ) );
-    enable( IDM_PERF_WINDOW,  m_pWinManager->IsVisible( IDM_PERF_WINDOW  ) );
+    enable( IDM_DESC_WINDOW,    m_pWinManager->IsVisible( IDM_DESC_WINDOW    ) );
+    enable( IDM_CRSR_WINDOW,    m_pWinManager->IsVisible( IDM_CRSR_WINDOW    ) );
+    enable( IDM_MINI_WINDOW,    m_pWinManager->IsVisible( IDM_MINI_WINDOW    ) );
+    enable( IDM_MONITOR_WINDOW, m_pWinManager->IsVisible( IDM_MONITOR_WINDOW ) );
+    enable( IDM_PARAM_WINDOW,   m_pWinManager->IsVisible( IDM_PARAM_WINDOW   ) );
+    enable( IDM_PERF_WINDOW,    m_pWinManager->IsVisible( IDM_PERF_WINDOW    ) );
 
     m_pOnOffArrows   ->enableOnOff( Pipe::GetArrowSize() == Pipe::STD_ARROW_SIZE );
     m_pOnOffSound    ->enableOnOff( m_pSound->IsOn() );

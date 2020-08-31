@@ -35,7 +35,7 @@ protected:
 	virtual void OnSetCursor         ( WPARAM const, LPARAM const ) = 0;
 	virtual bool OnSize              ( WPARAM const, LPARAM const ) = 0;
 	virtual void OnChar              ( WPARAM const, LPARAM const ) = 0;
-	virtual void OnPaint             ( )                            = 0;
+//	virtual void OnPaint             ( )                            = 0;
 
 	inline static ActionTimer * m_pDisplayTimer { nullptr };
 	inline static HCURSOR       m_hCrsrMove     { nullptr };

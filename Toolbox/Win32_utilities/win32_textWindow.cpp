@@ -80,24 +80,11 @@ void TextWindow::Trigger( )
 		m_pTextWindowThread->Trigger( );
 }
 
-bool TextWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+void TextWindow::OnPaint( )
 {
-    switch (message)
-    {
-
-    case WM_PAINT:
-    {
-        PAINTSTRUCT   ps;
-        HDC           hDC      { BeginPaint( &ps ) };
-        PixelRectSize rectSize { GetClRectSize( ) };
-		BitBlt( hDC, 0, 0, rectSize.GetXvalue(), rectSize.GetYvalue(), m_hDC_Memory, 0, 0, SRCCOPY );
-        (void)EndPaint( &ps );
-        return true;
-    }
-
-    default:
-        break;
-    }
-    
-    return BaseWindow::UserProc( message, wParam, lParam );
+	PAINTSTRUCT   ps;
+	HDC           hDC      { BeginPaint( &ps ) };
+	PixelRectSize rectSize { GetClRectSize( ) };
+	BitBlt( hDC, 0, 0, rectSize.GetXvalue(), rectSize.GetYvalue(), m_hDC_Memory, 0, 0, SRCCOPY );
+	(void)EndPaint( &ps );
 }

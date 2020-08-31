@@ -25,6 +25,7 @@
 #define IDM_MAIN_WINDOW                31
 #define IDM_STATUS_BAR                 32
 #define IDM_CONS_WINDOW                35
+#define IDM_MONITOR_WINDOW             38
 #define IDM_MINI_WINDOW                39
 
 #define IDM_UNDO                       60

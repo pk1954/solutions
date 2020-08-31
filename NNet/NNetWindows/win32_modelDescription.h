@@ -26,6 +26,7 @@ public:
 private:
 	HWND m_hwndEdit { nullptr };
 
+	virtual void OnPaint  ( ) { };
 	virtual bool OnSize   ( WPARAM const, LPARAM const );
 	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
 };

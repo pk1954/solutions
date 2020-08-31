@@ -119,6 +119,7 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
     case IDM_CRSR_WINDOW:
     case IDM_DESC_WINDOW:
     case IDM_MINI_WINDOW:
+    case IDM_MONITOR_WINDOW:
     case IDM_PARAM_WINDOW:
     //case IDM_CONS_WINDOW:
         ::SendMessage( m_pWinManager->GetHWND( wmId ), WM_COMMAND, IDM_WINDOW_ON, 0 );

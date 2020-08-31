@@ -25,6 +25,7 @@
 #include "win32_scriptHook.h"
 #include "win32_MiniWindow.h"
 #include "win32_MainWindow.h"
+#include "win32_MonitorWindow.h"
 #include "win32_NNetAppMenu.h"
 #include "win32_NNetController.h"
 #include "win32_parameterDlg.h"
@@ -84,6 +85,7 @@ private:
 	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const );
 	virtual bool OnSize   ( WPARAM const, LPARAM const );
 	virtual void OnClose( );
+	virtual void OnPaint( );
 
 	void configureStatusBar( );
 	void adjustChildWindows( );
@@ -123,6 +125,7 @@ private:
 	PerformanceWindow         m_performanceWindow        { };
 	MainWindow                m_mainNNetWindow           { };
 	MiniWindow                m_miniNNetWindow           { };
+	MonitorWindow             m_monitorWindow            { };
 	ParameterDialog           m_parameterDlg             { };
 	Param                     m_parameters               { };
 	NNetModelStorage          m_modelStorage             { };

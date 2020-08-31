@@ -118,7 +118,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 		nullptr, 
 		CS_HREDRAW | CS_VREDRAW, 
 		L"ClassAppWindow", 
-		WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,
+		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
 		nullptr,
 		nullptr
 	);
@@ -147,6 +147,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	m_mainNNetWindow   .SetRefreshRate(   0ms );   // immediate refresh
 	m_miniNNetWindow   .SetRefreshRate( 200ms );
+	m_monitorWindow    .SetRefreshRate( 500ms );
 	m_crsrWindow       .SetRefreshRate( 100ms );
 	m_performanceWindow.SetRefreshRate( 500ms );
 	m_StatusBar        .SetRefreshRate( 300ms );
@@ -188,16 +189,18 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_crsrWindow          .Start( m_hwndApp, & m_mainNNetWindow, & m_modelReaderInterface );
 	m_parameterDlg        .Start( m_hwndApp, & m_modelWriterInterface, & m_parameters );
 	m_performanceWindow   .Start( m_hwndApp, & m_modelReaderInterface, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
+	m_monitorWindow       .Start( m_hwndApp );
 
-	m_WinManager.AddWindow( L"IDM_CONS_WINDOW",  IDM_CONS_WINDOW,  m_hwndConsole,                  true,  true  );
-	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",  IDM_APPL_WINDOW,  m_hwndApp,                      true,  true  );
-	m_WinManager.AddWindow( L"IDM_STATUS_BAR",   IDM_STATUS_BAR,   m_StatusBar.GetWindowHandle(),  false, false );
-	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",  IDM_CRSR_WINDOW,  m_crsrWindow,                   true,  false );
-	m_WinManager.AddWindow( L"IDM_DESC_WINDOW",  IDM_DESC_WINDOW,  m_descWindow.GetWindowHandle(), true,  true  );
-	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",  IDM_MAIN_WINDOW,  m_mainNNetWindow,               true,  false );
-	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",  IDM_MINI_WINDOW,  m_miniNNetWindow,               true,  true  );
-	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW", IDM_PARAM_WINDOW, m_parameterDlg,                 true,  false );
-	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",  IDM_PERF_WINDOW,  m_performanceWindow,            true,  false );
+	m_WinManager.AddWindow( L"IDM_CONS_WINDOW",    IDM_CONS_WINDOW,  m_hwndConsole,                  true,  true  );
+	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,  m_hwndApp,                      true,  true  );
+	m_WinManager.AddWindow( L"IDM_STATUS_BAR",     IDM_STATUS_BAR,   m_StatusBar.GetWindowHandle(),  false, false );
+	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",    IDM_CRSR_WINDOW,  m_crsrWindow,                   true,  false );
+	m_WinManager.AddWindow( L"IDM_DESC_WINDOW",    IDM_DESC_WINDOW,  m_descWindow.GetWindowHandle(), true,  true  );
+	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",    IDM_MAIN_WINDOW,  m_mainNNetWindow,               true,  false );
+	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",    IDM_MINI_WINDOW,  m_miniNNetWindow,               true,  true  );
+	m_WinManager.AddWindow( L"IDM_MONITOR_WINDOW", IDM_MONITOR_WINDOW,  m_monitorWindow,               true,  true  );
+	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW",   IDM_PARAM_WINDOW, m_parameterDlg,                 true,  false );
+	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",    IDM_PERF_WINDOW,  m_performanceWindow,            true,  false );
 
 	m_staticModelObservable   .RegisterObserver( & m_modelStorage );
 	m_blinkObservable         .RegisterObserver( & m_mainNNetWindow );
@@ -220,9 +223,11 @@ void NNetAppWindow::Start( MessagePump & pump )
 	configureStatusBar( );
 	adjustChildWindows( );
 
-	m_miniNNetWindow.Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
-	m_descWindow    .Move( PixelRect{ 0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
+	m_monitorWindow .Move( PixelRect{ 200_PIXEL, 0_PIXEL, 300_PIXEL, 200_PIXEL }, true );
+	m_miniNNetWindow.Move( PixelRect{   0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
+	m_descWindow    .Move( PixelRect{   0_PIXEL, 0_PIXEL, 300_PIXEL, 300_PIXEL }, true );
 
+	m_monitorWindow    .Show( true );
 	m_miniNNetWindow   .Show( true );
 	m_StatusBar        .Show( true );
 	m_mainNNetWindow   .Show( true );
@@ -235,7 +240,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	m_appMenu.Notify( true );
 
-	Show( true );
+//	Show( true );
 
 	if ( ! AutoOpen::IsOn( ) || ! m_preferences.ReadPreferences( & m_modelStorage ) )
 		m_modelWriterInterface.ResetModel( );
@@ -254,6 +259,7 @@ void NNetAppWindow::Stop()
 	m_timeDisplay         .Stop( );
 	m_mainNNetWindow      .Stop( );
 	m_miniNNetWindow      .Stop( );
+	m_monitorWindow       .Stop( );
 	m_crsrWindow          .Stop( );
 	m_performanceWindow   .Stop( );
 	m_parameterDlg        .Stop( );
@@ -286,6 +292,15 @@ bool NNetAppWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 	return true;
 }
 
+void NNetAppWindow::OnPaint( )
+{
+	PAINTSTRUCT   ps;
+	HDC           hDC = BeginPaint( &ps );
+	static COLORREF const CLR_GREY = RGB( 128, 128, 128 );
+	FillBackground( hDC, CLR_GREY );
+	(void)EndPaint( &ps );
+}
+
 bool NNetAppWindow::UserProc
 ( 
 	UINT   const message, 
@@ -300,16 +315,6 @@ bool NNetAppWindow::UserProc
 		if ( wParam == false )
 			m_appMenu.Notify( true );
 		break;
-
-	case WM_PAINT:
-	{
-		static COLORREF const CLR_GREY = RGB( 128, 128, 128 );
-		PAINTSTRUCT   ps;
-		HDC           hDC = BeginPaint( &ps );
-		FillBackground( hDC, CLR_GREY );
-		(void)EndPaint( &ps );
-		return true;
-	}
 
 	case WM_MOVE:
 		adjustChildWindows( );

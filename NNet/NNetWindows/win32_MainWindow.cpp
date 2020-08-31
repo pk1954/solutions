@@ -315,6 +315,7 @@ void MainWindow::CenterAndZoomRect( MicroMeterRect const & umRect, float const f
 
 void MainWindow::OnPaint( )
 {
+	m_pDisplayTimer->TimerStart( );
 	NNetWindow::OnPaint( );
 	if ( m_bFocusMode )
 	{
@@ -330,6 +331,7 @@ void MainWindow::OnPaint( )
 			SendCommand2Application( IDM_CENTERING_FINISHED, 0	);
 		}
 	}
+	m_pDisplayTimer->TimerStop( );
 }
 
 bool MainWindow::changePulseRate( ShapeId const id, bool const bDirection )

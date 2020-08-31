@@ -22,7 +22,10 @@ public:
 	);
 
 protected:
+
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
+
+	virtual void OnPaint( ) = 0;
 
 private:
 	

@@ -45,9 +45,7 @@ bool ModelWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM cons
 		return true;
 
 	case WM_PAINT:
-		m_pDisplayTimer->TimerStart( );
 		OnPaint( );
-		m_pDisplayTimer->TimerStop( );
 		return true;
 
 	default:

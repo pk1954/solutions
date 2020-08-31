@@ -23,7 +23,7 @@ public:
 
 private:
 
-    virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
+	virtual void OnPaint ( );
 
 	RefreshTimer     * m_pRefreshTimer;
 	TextWindowThread * m_pTextWindowThread;
