@@ -69,6 +69,23 @@ public:
 		return T::TypeFits( GetShapeType( id ) ); 
 	}
 
+	template <typename T>   // const version
+	bool Apply2AllB( function<bool(T const &)> const & func ) const
+	{
+		bool bResult { false };
+		for ( auto pShape : m_pModel->GetShapes() )
+		{
+			if ( pShape )
+			{
+				if ( HasType<T>( pShape ) )	
+					bResult = func( static_cast<T const &>( * pShape ) );
+				if ( bResult )
+					break;
+			}
+		}
+		return bResult;
+	}
+
 	template <typename T>    // const version
 	void Apply2All( function<void(T const &)> const & func ) const
 	{
@@ -81,6 +98,18 @@ public:
 			}
 		}
 	}                        
+
+	template <typename T>   // const version
+	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func )
+	{
+		Apply2All<T>( [&](T const & s) { if ( s.IsInRect(r) ) { func( s ); } } );
+	}
+
+	template <typename T>  // const version
+	void Apply2AllSelected( function<void(T const &)> const & func ) const
+	{
+		Apply2All<T>( {	[&](T const & s) { if ( s.IsSelected() ) { func( s ); } } } );
+	}
 
 private:
 	NNetModel const * m_pModel;

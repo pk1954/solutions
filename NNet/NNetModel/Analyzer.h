@@ -24,10 +24,11 @@ public:
 	static void SetStatusBarDisplay( DisplayFunctor * const func ) { m_pStatusBarDisplay = func; }
 	static void SetEscFunc ( bool (* func )( ) ) { m_pEscFunc = func; }
 
-	static bool           FindLoop( NNetModel const & );
-	static void           SelectLoopShapes( NNetModel & );
+	static bool FindLoop        ( NNetModel const & );
+	static void SelectLoopShapes( NNetModel & );
+	static bool FindAnomaly     ( NNetModel const & );
+
 	static MicroMeterRect GetEnclosingRect( );
-	static bool           FindAnomaly( NNetModel const & );
 
 private:
 

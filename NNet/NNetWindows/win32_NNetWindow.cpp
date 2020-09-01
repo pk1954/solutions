@@ -83,27 +83,29 @@ void NNetWindow::DrawInteriorInRect
 ) const
 {
 	MicroMeterRect umRect { GetCoord().Convert2MicroMeterRect( rect ) }; 
-	m_pModelReaderInterface->Apply2All<Shape>
-	( 
-		[&](Shape const & s) { if (crit(s) && s.IsInRect(umRect)) s.DrawInterior( m_context ); } 
+	m_pModelReaderInterface->Apply2AllInRect<Shape>
+	(
+		GetCoord().Convert2MicroMeterRect( rect ),
+		[&](Shape const & s) { if (crit(s)) s.DrawInterior( m_context ); } 
 	);
 }
 
 void NNetWindow::DrawExteriorInRect( PixelRect const & rect ) const
 {
 	MicroMeterRect umRect { GetCoord().Convert2MicroMeterRect( rect ) }; 
-	m_pModelReaderInterface->Apply2All<Shape>
+	m_pModelReaderInterface->Apply2AllInRect<Shape>
 	( 
-		[&](Shape const & s) { if (s.IsInRect(umRect)) s.DrawExterior( m_context ); } 
+		GetCoord().Convert2MicroMeterRect( rect ),	
+		[&](Shape const & s) { s.DrawExterior( m_context ); } 
 	);
 }
 
 void NNetWindow::DrawNeuronTextInRect( PixelRect const & rect ) const
 {
-	MicroMeterRect umRect { GetCoord().Convert2MicroMeterRect( rect ) }; 
-	m_pModelReaderInterface->Apply2All<Neuron>
+	m_pModelReaderInterface->Apply2AllInRect<Neuron>
 	( 
-		[&](Neuron const & n) { if (n.IsInRect(umRect)) n.DrawNeuronText( m_context ); } 
+		GetCoord().Convert2MicroMeterRect( rect ),
+		[&](Neuron const & n) { n.DrawNeuronText( m_context ); } 
 	);
 }
 
