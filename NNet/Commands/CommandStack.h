@@ -12,16 +12,17 @@
 #include "Observable.h"
 #include "Command.h"
 #include "MoveCommand.h"
-#include "NNetModel.h"
 
 using std::swap;
 using std::vector;
+
+class NNetModelWriterInterface;
 
 class CommandStack
 {
 public:
 
-    void Initialize( NNetModel * const, Observable * const );
+    void Initialize( NNetModelWriterInterface * const, Observable * const );
 
     bool UndoStackEmpty() const { return m_iIndex == 0; }
     bool RedoStackEmpty() const { return m_iIndex == m_CommandStack.size(); }
@@ -40,11 +41,11 @@ public:
 
 private:
 
-    vector<Command *> m_CommandStack   { };
-    size_t            m_iIndex         { 0 };
-    NNetModel       * m_pModel         { nullptr };
-    Observable      * m_pObservable    { nullptr };
-    bool              m_bCombineCmds   { true };
+    vector<Command *>          m_CommandStack    { };
+    size_t                     m_iIndex          { 0 };
+    NNetModelWriterInterface * m_pModelInterFace { nullptr };
+    Observable               * m_pObservable     { nullptr };
+    bool                       m_bCombineCmds    { true };
 
     struct CmdStackException: public std::exception { };
 

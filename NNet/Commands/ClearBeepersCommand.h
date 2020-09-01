@@ -12,7 +12,7 @@
 class ClearBeepersCommand : public Command
 {
 public:
-	ClearBeepersCommand( NNetModel * pModel )
+	ClearBeepersCommand( NNetModelWriterInterface * pModel )
 	{
 		pModel->Apply2All<Neuron>
 			( 
@@ -30,25 +30,25 @@ public:
 		pNeuron->SetTriggerSound( noSound );
 	}
 
-	void clearAll( NNetModel * const pModel )
+	void clearAll( NNetModelWriterInterface * const pModel )
 	{
 		pModel->Apply2All<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
-	void clearAllSelected( NNetModel * const pModel )
+	void clearAllSelected( NNetModelWriterInterface * const pModel )
 	{
 		pModel->Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
-		if ( pModel->AnyShapesSelected() )
+		if ( pModel->GetModel().AnyShapesSelected() )
 			clearAllSelected( pModel );
 		else
 			clearAll( pModel );
 	}
 
-	virtual void Undo( NNetModel * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface * const pModel ) 
 	{ 
 		clearAll( pModel );
 		for ( Beeper const & beeper : m_beepers )

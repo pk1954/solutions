@@ -4,15 +4,15 @@
 
 #pragma once
 
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 
 class Command
 {
 public:
 
-    virtual void Do( NNetModel * const ) = 0;
+    virtual void Do( NNetModelWriterInterface * const) = 0;
     
-    virtual void Undo( NNetModel * const pModel ) 
+    virtual void Undo( NNetModelWriterInterface * const pModel ) 
     { 
         Do( pModel ); 
     };

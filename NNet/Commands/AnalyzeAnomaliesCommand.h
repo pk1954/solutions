@@ -11,14 +11,14 @@
 class AnalyzeAnomaliesCommand : public SelectionCommand
 {
 public:
-	AnalyzeAnomaliesCommand( NNetModel * const pModel )
+	AnalyzeAnomaliesCommand( NNetModelWriterInterface * const pModel )
 		:	SelectionCommand( pModel)
 	{ }
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
-		pModel->SelectAll( tBoolOp::opFalse );
-		if ( ModelAnalyzer::FindAnomaly( * pModel ) )
+		pModel->SelectAllShapes( tBoolOp::opFalse );
+		if ( ModelAnalyzer::FindAnomaly( pModel->GetModel() ) )
 			ModelAnalyzer::SelectLoopShapes( * pModel );
 	}
 };

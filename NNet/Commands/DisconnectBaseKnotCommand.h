@@ -21,9 +21,9 @@ class DisconnectBaseKnotCommand : public Command
 public:
     DisconnectBaseKnotCommand
     ( 
-        NNetModel * const pModel, 
-        BaseKnot  * const pBaseKnot, 
-        bool        const bDelete 
+        NNetModelWriterInterface * const pModel, 
+        BaseKnot                 * const pBaseKnot, 
+        bool                       const bDelete 
     )
       :	m_pBaseKnot( pBaseKnot ),
         m_bDelete( bDelete )
@@ -59,7 +59,7 @@ public:
             delete pKnot;
     }
 
-    virtual void Do( NNetModel * const pModel )
+    virtual void Do( NNetModelWriterInterface * const pModel )
     {
         for ( Knot * pKnot : m_startKnots )
         {
@@ -76,7 +76,7 @@ public:
             pModel->RemoveFromModel( m_pBaseKnot );
     }
 
-    virtual void Undo( NNetModel * const pModel )
+    virtual void Undo( NNetModelWriterInterface * const pModel )
     {
         for ( Knot * pKnot : m_startKnots )
         {

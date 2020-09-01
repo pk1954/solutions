@@ -15,7 +15,7 @@ public:
 		:	m_id( id )
 	{ }
 
-	virtual void Do( NNetModel * const pModel )
+	virtual void Do( NNetModelWriterInterface * const pModel )
 	{
 		pModel->ToggleStopOnTrigger( m_id );
 	}

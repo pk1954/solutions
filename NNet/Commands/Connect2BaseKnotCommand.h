@@ -24,13 +24,13 @@ public:
 		delete m_pDstConnections;
 	}
 
-	virtual void Do( NNetModel * const pModel )
+	virtual void Do( NNetModelWriterInterface * const pModel )
 	{
 		m_pBaseKnotDst->AddConnections( m_pBaseKnotSrc );
 		pModel->RemoveFromModel( m_pBaseKnotSrc ); // m_pBaseKnotSrc disconnected, but unchanged. Do not delete, will be reused in Undo
 	}
 
-	virtual void Undo( NNetModel * const pModel )
+	virtual void Undo( NNetModelWriterInterface * const pModel )
 	{
 		m_pBaseKnotDst->SetConnections( m_pDstConnections );  // restore dst connections
 		m_pBaseKnotSrc->RestoreConnections( );

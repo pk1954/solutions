@@ -89,19 +89,6 @@ void NNetModel::Initialize
 	Shape::SetParam( pParam );
 }                     
 
-void NNetModel::CreateInitialShapes( )
-{
-	InputNeuron * const pInputNeuron { NewBaseKnot<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) };
-	Neuron      * const pNeuron      { NewBaseKnot<Neuron>      ( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) };
-	Pipe        * const pNewPipe     { NewPipe( pInputNeuron, pNeuron ) };
-	pInputNeuron->m_connections.AddOutgoing( pNewPipe );
-	pNeuron     ->m_connections.AddIncoming( pNewPipe );
-	Store2Model( pInputNeuron );
-	Store2Model( pNeuron );
-	Store2Model( pNewPipe );
-	StaticModelChanged( );
-}
-
 bool NNetModel::IsEqual( NNetModel const & other ) const
 {
 	size_t iMax { max( m_Shapes.size(), other.m_Shapes.size() ) };
@@ -130,17 +117,14 @@ void NNetModel::StaticModelChanged( )
 
 void NNetModel::RecalcAllShapes( ) 
 { 
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Recalc( ); } );
+	Apply2AllShapes( [&]( Shape & shape ) { shape.Recalc( ); } );
 	dynamicModelChanged( );
 } 
 
-void NNetModel::ToggleStopOnTrigger( ShapeId const id )
+void NNetModel::ToggleStopOnTrigger( Neuron * pNeuron )
 {
-	if ( Neuron * pNeuron { GetShapePtr<Neuron *>( id ) } )
-	{
-		pNeuron->StopOnTrigger( tBoolOp::opToggle );
-		dynamicModelChanged( );
-	}
+	pNeuron->StopOnTrigger( tBoolOp::opToggle );
+	dynamicModelChanged( );
 }
 
 fHertz const NNetModel::GetPulseRate( ShapeId const id ) const
@@ -151,7 +135,7 @@ fHertz const NNetModel::GetPulseRate( ShapeId const id ) const
 	       : fHertz::NULL_VAL();
 }
 
-float NNetModel::SetParameter
+float NNetModel::SetParam
 ( 
 	tParameter const param, 
 	float      const fNewValue 
@@ -173,8 +157,8 @@ MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
 bool NNetModel::Compute( )
 {
 	bool bStop {false };
-	Apply2All<Shape>( [&]( Shape & shape ) { shape.Prepare( ); } );
-	Apply2All<Shape>( [&]( Shape & shape ) { if ( shape.CompStep( ) ) bStop = true; } );
+	Apply2AllShapes( [&]( Shape & shape ) { shape.Prepare( ); } );
+	Apply2AllShapes( [&]( Shape & shape ) { if ( shape.CompStep( ) ) bStop = true; } );
 	dynamicModelChanged();
 	incTimeStamp( );
 	return bStop;

@@ -102,7 +102,7 @@ NNetAppWindow::NNetAppWindow( )
 	NNetWindow::InitClass( & m_atDisplay );
 
 	DefineUtilityWrapperFunctions( );
-	DefineNNetWrappers( & m_modelWriterInterface );
+	DefineNNetWrappers( & m_modelCommands );
 	DefineNNetWinWrappers( & m_mainNNetWindow );
 };
 
@@ -124,19 +124,19 @@ void NNetAppWindow::Start( MessagePump & pump )
 	);
 
 	m_pReadModelResult = new NNetReadModelResult( m_hwndApp );
-	m_model               .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
-	m_modelStorage        .Initialize( & m_model, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult, & m_descWindow );
-	m_modelWriterInterface.Initialize( & m_traceStream, & m_cmdStack, & m_modelStorage );
-	m_cmdStack            .Initialize( & m_model, & m_commandStackObservable );
-	m_NNetColors          .Initialize( & m_blinkObservable );
-	m_sound               .Initialize( & m_soundOnObservable );
-	m_NNetController      .Initialize
+	m_model         .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
+	m_modelStorage  .Initialize( & m_modelWriterInterface, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult, & m_descWindow );
+	m_modelCommands .Initialize( & m_traceStream, & m_modelWriterInterface, & m_cmdStack, & m_modelStorage );
+	m_cmdStack      .Initialize( & m_modelWriterInterface, & m_commandStackObservable );
+	m_NNetColors    .Initialize( & m_blinkObservable );
+	m_sound         .Initialize( & m_soundOnObservable );
+	m_NNetController.Initialize
 	( 
 		& m_modelStorage,
 		& m_mainNNetWindow,
 		& m_WinManager,
 		& m_modelReaderInterface,
-		& m_modelWriterInterface,
+		& m_modelCommands,
 		& m_computeThread,
 		& m_SlowMotionRatio,
 		& m_statusBarDispFunctor,
@@ -166,7 +166,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 		false,
 		& m_NNetController,
 		& m_modelReaderInterface,
-		& m_modelWriterInterface,
+		& m_modelCommands,
 		& m_cursorPosObservable,
 		& m_coordObservable
 	);
@@ -423,7 +423,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 
 	case IDM_SCRIPT_DIALOG:
 		m_computeThread.LockComputation( );
-		ProcessNNetScript( & m_script, & m_model, ScriptDialog( ) );
+		ProcessNNetScript( & m_script, & m_modelWriterInterface, ScriptDialog( ) );
 		m_computeThread.ReleaseComputationLock( );
 		break;
 

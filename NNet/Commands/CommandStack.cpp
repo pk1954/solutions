@@ -3,10 +3,12 @@
 // Commands
 
 #include "stdafx.h"
+#include "NNetModelWriterInterface.h"
+#include "NNetModel.h"
 #include "CommandStack.h"
 
-class OpenBracket  : public Command { public: virtual void Do( NNetModel * const pModel ) { } };
-class CloseBracket : public Command { public: virtual void Do( NNetModel * const pModel ) { } };
+class OpenBracket  : public Command { public: virtual void Do( NNetModelWriterInterface * const pModel ) { } };
+class CloseBracket : public Command { public: virtual void Do( NNetModelWriterInterface * const pModel ) { } };
 
 bool isOpenBracketCmd( Command const & cmd )
 {
@@ -29,11 +31,11 @@ bool canBeCombined( Command * pA, Command * pB )
 
 void CommandStack::Initialize
 ( 
-    NNetModel  * const pModel, 
-    Observable * const pObservable 
+    NNetModelWriterInterface * const pModel, 
+    Observable               * const pObservable 
 )
 {
-    m_pModel = pModel;
+    m_pModelInterFace = pModel;
     m_pObservable = pObservable;
 }
 
@@ -110,7 +112,7 @@ void CommandStack::StopSeries( )
 void CommandStack::NewCommand( Command * pCmd )
 {
 #ifdef _DEBUG
-    NNetModel const * pModelSave1 { new NNetModel( * m_pModel ) };
+    NNetModel const * pModelSave1 { new NNetModel( m_pModelInterFace->GetModel( ) ) };
 #endif
     clearRedoStack( );
     if ( pCmd->IsMoveCommand( ) )
@@ -136,16 +138,16 @@ void CommandStack::NewCommand( Command * pCmd )
         push( pCmd );
     }
 
-    pCmd->Do( m_pModel );
-    m_pModel->StaticModelChanged( );
+    pCmd->Do( m_pModelInterFace );
+    m_pModelInterFace->StaticModelChanged( );
     m_pObservable->NotifyAll( true );
 
 #ifdef _DEBUG
-    NNetModel const * pModelSave2 { new NNetModel( * m_pModel ) };
+    NNetModel const * pModelSave2 { new NNetModel( m_pModelInterFace->GetModel( ) ) };
     UndoCommand();
-    assert( m_pModel->IsEqual( * pModelSave1 ) );
+    assert( m_pModelInterFace->IsEqual( * pModelSave1 ) );
     RedoCommand();
-    assert( m_pModel->IsEqual( * pModelSave2 ) );
+    assert( m_pModelInterFace->IsEqual( * pModelSave2 ) );
 #endif
 }
 
@@ -157,23 +159,23 @@ bool CommandStack::UndoCommand( )
         {
             if ( isCloseBracketCmd( getOlderCmd() ) )
                 while ( ! isOpenBracketCmd( getOlderCmd() ) )
-                    getCurrentCmd().Undo( m_pModel );
+                    getCurrentCmd().Undo( m_pModelInterFace );
             else
-                getCurrentCmd().Undo( m_pModel );
+                getCurrentCmd().Undo( m_pModelInterFace );
         }
         else
         {
             do
                 set2OlderCmd( );
             while ( isBracketCmd( ) ); // skip bracket commands
-            getCurrentCmd().Undo( m_pModel );
+            getCurrentCmd().Undo( m_pModelInterFace );
         }
     }
     catch ( CmdStackException e )
     {
         return false;
     }
-    m_pModel->StaticModelChanged( );
+    m_pModelInterFace->StaticModelChanged( );
     m_pObservable->NotifyAll( true );
     return true;
 }
@@ -186,15 +188,15 @@ bool CommandStack::RedoCommand( )
         {
             if ( isOpenBracketCmd( getCurrentCmd() ) )
                 while ( ! isCloseBracketCmd( getYoungerCmd() ) )
-                    getCurrentCmd().Do( m_pModel );
+                    getCurrentCmd().Do( m_pModelInterFace );
             else
-                getCurrentCmd().Do( m_pModel );
+                getCurrentCmd().Do( m_pModelInterFace );
         }
         else
         {
             while ( isBracketCmd( ) ) // skip bracket commands
                 set2YoungerCmd();
-            getCurrentCmd().Do( m_pModel );
+            getCurrentCmd().Do( m_pModelInterFace );
         }
     }
     catch ( CmdStackException e )
@@ -202,7 +204,7 @@ bool CommandStack::RedoCommand( )
         return false;
     }
     set2YoungerCmd();
-    m_pModel->StaticModelChanged( );
+    m_pModelInterFace->StaticModelChanged( );
     m_pObservable->NotifyAll( true );
     return true;
 }

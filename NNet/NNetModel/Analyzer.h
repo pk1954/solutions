@@ -13,6 +13,7 @@
 
 class Knot;
 class Shape;
+class NNetModelWriterInterface;
 
 using std::vector;
 using std::wostream;
@@ -25,8 +26,8 @@ public:
 	static void SetEscFunc ( bool (* func )( ) ) { m_pEscFunc = func; }
 
 	static bool FindLoop        ( NNetModel const & );
-	static void SelectLoopShapes( NNetModel & );
 	static bool FindAnomaly     ( NNetModel const & );
+	static void SelectLoopShapes( NNetModelWriterInterface & );
 
 	static MicroMeterRect GetEnclosingRect( );
 
@@ -37,7 +38,7 @@ private:
 	inline static int              m_iRecDepth	       { 0 };
 	inline static vector<Shape *>  m_shapeStack        { };
 
-	inline static bool (* m_pEscFunc )( )            { nullptr };
+	inline static bool (* m_pEscFunc )( ) { nullptr };
 
 	static bool findLoop( Shape * const );
 	static bool hasAnomaly( Knot & );

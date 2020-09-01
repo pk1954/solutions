@@ -7,8 +7,9 @@
 #include "Resource.h"
 #include "BaseKnot.h"
 #include "NNetModelReaderInterface.h"
-#include "NNetModelWriterInterface.h"
 #include "win32_NNetWindow.h"
+
+class NNetModelCommands;
 
 class MainWindow : public NNetWindow
 {
@@ -21,7 +22,7 @@ public:
 		bool                       const,
 		NNetController           * const,
 		NNetModelReaderInterface * const,
-		NNetModelWriterInterface * const,
+		NNetModelCommands        * const,
 		Observable               * const,
 		Observable               * const
 	);
@@ -59,14 +60,14 @@ public:
 
 private:
 
-	SmoothMoveFp               m_smoothMove            { };       
-	MicroMeterRect             m_rectSelection         { };
-	ShapeId                    m_shapeSuperHighlighted { NO_SHAPE };
-	ShapeId                    m_shapeHighlighted      { NO_SHAPE };
-	Observable               * m_pCoordObservable      { nullptr };
-	Observable               * m_pCursorPosObservable  { nullptr };
-	NNetModelWriterInterface * m_pModelWriterInterface { nullptr };
-	bool                       m_bFocusMode            { false };
+	SmoothMoveFp        m_smoothMove            { };       
+	MicroMeterRect      m_rectSelection         { };
+	ShapeId             m_shapeSuperHighlighted { NO_SHAPE };
+	ShapeId             m_shapeHighlighted      { NO_SHAPE };
+	Observable        * m_pCoordObservable      { nullptr };
+	Observable        * m_pCursorPosObservable  { nullptr };
+	NNetModelCommands * m_pNNetCommands         { nullptr };
+	bool                m_bFocusMode            { false };
 
 	void setSuperHighlightedShape( MicroMeterPoint const & );
 	void setHighlightedShape     ( MicroMeterPoint const & );

@@ -10,16 +10,16 @@
 #include "DrawContext.h"
 #include "NNetError.h"
 #include "NNetWrapperHelpers.h"
-#include "NNetModelWriterInterface.h"
+#include "NNetModelCommands.h"
 
-static NNetModelWriterInterface * m_pModelWriterInterface;
+static NNetModelCommands * m_pCommands;
 
 class WrapAnalyzeAnomalies: public Script_Functor
 {
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModelWriterInterface->AnalyzeAnomalies( );
+        m_pCommands->AnalyzeAnomalies( );
     }
 };
 
@@ -28,7 +28,7 @@ class WrapAnalyzeLoops: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModelWriterInterface->AnalyzeLoops( );
+        m_pCommands->AnalyzeLoops( );
     }
 };
 
@@ -37,7 +37,7 @@ class WrapResetModel: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModelWriterInterface->ResetModel( );
+        m_pCommands->ResetModel( );
     }
 };
 
@@ -47,7 +47,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         wstring const wstrModelPath { script.ScrReadString( ) };
-        m_pModelWriterInterface->ReadModel( false, wstrModelPath );
+        m_pCommands->ReadModel( false, wstrModelPath );
     }
 };
 
@@ -58,7 +58,7 @@ public:
     {
         ShapeId const idSrc { ScrReadShapeId( script ) };
         ShapeId const idDst { ScrReadShapeId( script ) };
-        m_pModelWriterInterface->Connect( idSrc, idDst );
+        m_pCommands->Connect( idSrc, idDst );
     }
 };
 
@@ -68,7 +68,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id { ScrReadShapeId( script ) };
-        m_pModelWriterInterface->AppendInputNeuron( id );
+        m_pCommands->AppendInputNeuron( id );
     }
 };
 
@@ -78,7 +78,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id { ScrReadShapeId( script ) };
-        m_pModelWriterInterface->AppendNeuron( id );
+        m_pCommands->AppendNeuron( id );
     }
 };
 
@@ -87,7 +87,7 @@ class WrapClearBeepers: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModelWriterInterface->ClearBeepers( );
+        m_pCommands->ClearBeepers( );
     }
 };
 
@@ -96,7 +96,7 @@ class WrapCopySelection: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModelWriterInterface->CopySelection( );
+        m_pCommands->CopySelection( );
     }
 };
 
@@ -106,7 +106,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         tBoolOp const op { ScrReadBoolOp( script ) };
-        m_pModelWriterInterface->SelectAll( op );
+        m_pCommands->SelectAll( op );
     }
 };
 
@@ -117,7 +117,7 @@ public:
     {
         ShapeId const id { ScrReadShapeId( script ) };
         tBoolOp const op { ScrReadBoolOp( script ) };
-        m_pModelWriterInterface->SelectSubtree( id, op );
+        m_pCommands->SelectSubtree( id, op );
     }
 };
 
@@ -128,7 +128,7 @@ public:
     {
         ShapeId const id { ScrReadShapeId( script ) };
         tBoolOp const op { ScrReadBoolOp( script ) };
-        m_pModelWriterInterface->SelectShape( id, op );
+        m_pCommands->SelectShape( id, op );
     }
 };
 
@@ -138,14 +138,13 @@ public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id { ScrReadShapeId( script ) };
-        NNetErrorHandler::CheckShapeId( script, m_pModelWriterInterface->GetModel(), id );
         SoundDescr desc 
         {
             script.ScrReadInt() != 0,
             Hertz(script.ScrReadUlong()),
             MilliSecs(script.ScrReadUlong())
         };
-        m_pModelWriterInterface->SetTriggerSound( id, desc );
+        m_pCommands->SetTriggerSound( id, desc );
     }
 };
 
@@ -155,7 +154,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id { ScrReadShapeId( script ) };
-        m_pModelWriterInterface->ToggleStopOnTrigger( id );
+        m_pCommands->ToggleStopOnTrigger( id );
     }
 };
 
@@ -164,7 +163,7 @@ class WrapSelectAllBeepers: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModelWriterInterface->SelectAllBeepers( );
+        m_pCommands->SelectAllBeepers( );
     }
 };
 
@@ -173,7 +172,7 @@ class WrapDeleteSelection: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModelWriterInterface->DeleteSelection( );
+        m_pCommands->DeleteSelection( );
     }
 };
 
@@ -183,7 +182,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id { ScrReadShapeId( script ) };
-        m_pModelWriterInterface->DeleteShape( id );
+        m_pCommands->DeleteShape( id );
     }
 };
 
@@ -193,7 +192,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id { ScrReadShapeId( script ) };
-        m_pModelWriterInterface->Disconnect( id );
+        m_pCommands->Disconnect( id );
     }
 };
 
@@ -204,7 +203,7 @@ public:
     {
         ShapeId const id     { ScrReadShapeId( script ) };
         float   const fValue { CastToFloat( script.ScrReadFloat( ) ) };
-        m_pModelWriterInterface->SetPulseRate( id, fHertz{ fValue } );
+        m_pCommands->SetPulseRate( id, fHertz{ fValue } );
     }
 };
 
@@ -215,7 +214,7 @@ public:
     {
         tParameter const param  { static_cast<tParameter>( script.ScrReadUlong( ) ) };
         float      const fValue { CastToFloat( script.ScrReadFloat( ) ) };
-        m_pModelWriterInterface->SetParameter( param, fValue );
+        m_pCommands->SetParameter( param, fValue );
     }
 };
 
@@ -226,7 +225,7 @@ public:
     {
         ShapeId         const id      { ScrReadShapeId( script ) };
         MicroMeterPoint const umDelta { ScrReadMicroMeterPoint( script ) };
-        m_pModelWriterInterface->MoveShape( id, umDelta );
+        m_pCommands->MoveShape( id, umDelta );
     }
 };
 
@@ -237,7 +236,7 @@ public:
     {
         MicroMeterPoint const umPntStart { ScrReadMicroMeterPoint( script ) };
         MicroMeterPoint const umPntEnd   { ScrReadMicroMeterPoint( script ) };
-        m_pModelWriterInterface->SelectShapesInRect( MicroMeterRect( umPntStart, umPntEnd ) );
+        m_pCommands->SelectShapesInRect( MicroMeterRect( umPntStart, umPntEnd ) );
     }
 };
 
@@ -247,7 +246,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         tBoolOp const op { ScrReadBoolOp( script ) };
-        m_pModelWriterInterface->MarkSelection( op );
+        m_pCommands->MarkSelection( op );
     }
 };
 
@@ -257,7 +256,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         MicroMeterPoint const umPos { ScrReadMicroMeterPoint( script ) };
-        m_pModelWriterInterface->MoveSelection( umPos );
+        m_pCommands->MoveSelection( umPos );
     }
 };
 
@@ -268,7 +267,7 @@ public:
     {
         ShapeId         const id    { ScrReadShapeId( script ) };
         MicroMeterPoint const umPos { ScrReadMicroMeterPoint( script ) };
-        m_pModelWriterInterface->InsertNeuron( id, umPos );
+        m_pCommands->InsertNeuron( id, umPos );
     }
 };
 
@@ -279,7 +278,7 @@ public:
     {
         ShapeId         const idShape { ScrReadShapeId( script ) };
         MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
-        m_pModelWriterInterface->AddOutgoing2Knot( idShape, umPos );
+        m_pCommands->AddOutgoing2Knot( idShape, umPos );
     }
 };
 
@@ -290,7 +289,7 @@ public:
     {
         ShapeId         const idShape { ScrReadShapeId( script ) };
         MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
-        m_pModelWriterInterface->AddIncoming2Knot( idShape, umPos );
+        m_pCommands->AddIncoming2Knot( idShape, umPos );
     }
 };
 
@@ -301,7 +300,7 @@ public:
     {
         ShapeId         const idShape { ScrReadShapeId( script ) };
         MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
-        m_pModelWriterInterface->AddOutgoing2Pipe( idShape, umPos );
+        m_pCommands->AddOutgoing2Pipe( idShape, umPos );
     }
 };
 
@@ -312,7 +311,7 @@ public:
     {
         ShapeId         const idShape { ScrReadShapeId( script ) };
         MicroMeterPoint const umPos   { ScrReadMicroMeterPoint( script ) };
-        m_pModelWriterInterface->AddIncoming2Pipe( idShape, umPos );
+        m_pCommands->AddIncoming2Pipe( idShape, umPos );
     }
 };
 
@@ -322,7 +321,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         MicroMeterPoint const umPos { ScrReadMicroMeterPoint( script ) };
-        m_pModelWriterInterface->NewNeuron( umPos );
+        m_pCommands->NewNeuron( umPos );
     }
 };
 
@@ -332,7 +331,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         MicroMeterPoint const umPos { ScrReadMicroMeterPoint( script ) };
-        m_pModelWriterInterface->NewInputNeuron( umPos );
+        m_pCommands->NewInputNeuron( umPos );
     }
 };
 
@@ -341,7 +340,7 @@ class WrapUndoCommand: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModelWriterInterface->UndoCommand( );
+        m_pCommands->UndoCommand( );
     }
 };
 
@@ -350,7 +349,7 @@ class WrapRedoCommand: public Script_Functor
 public:
     virtual void operator() ( Script & script ) const
     {
-        m_pModelWriterInterface->RedoCommand( );
+        m_pCommands->RedoCommand( );
     }
 };
 
@@ -363,9 +362,9 @@ public:
     }
 };
 
-void DefineNNetWrappers( NNetModelWriterInterface * const pModel )
+void DefineNNetWrappers( NNetModelCommands * const pCommands )
 {
-    m_pModelWriterInterface = pModel;
+    m_pCommands = pCommands;
 
     DEF_FUNC(AnalyzeAnomalies);   
     DEF_FUNC(AnalyzeLoops);       

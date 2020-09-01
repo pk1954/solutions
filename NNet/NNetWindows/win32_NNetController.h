@@ -5,7 +5,7 @@
 #pragma once
 
 class NNetModelReaderInterface;
-class NNetModelWriterInterface;
+class NNetModelCommands;
 class AnimationThread;
 class SlowMotionRatio;
 class NNetModelStorage;
@@ -33,7 +33,7 @@ public:
 		MainWindow               * const,
 		WinManager               * const,
 		NNetModelReaderInterface * const,
-		NNetModelWriterInterface * const,
+		NNetModelCommands        * const,
 		ComputeThread            * const,
 		SlowMotionRatio          * const,
 		DisplayFunctor           * const,
@@ -60,7 +60,7 @@ private:
 	WinManager               * m_pWinManager           { nullptr };
 	ComputeThread            * m_pComputeThread        { nullptr };
 	NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
-	NNetModelWriterInterface * m_pModelWriterInterface { nullptr };
+	NNetModelCommands        * m_pModelCommands        { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio      { nullptr };
 	DisplayFunctor           * m_pStatusBarDisplay     { nullptr };
 	AnimationThread          * m_pAnimationThread      { nullptr };

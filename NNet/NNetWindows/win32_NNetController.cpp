@@ -25,7 +25,7 @@
 #include "win32_triggerSoundDlg.h"
 #include "win32_stdDialogBox.h"
 #include "NNetModelReaderInterface.h"
-#include "NNetModelWriterInterface.h"
+#include "NNetModelCommands.h"
 #include "win32_NNetController.h"
 
 void NNetController::Initialize
@@ -34,7 +34,7 @@ void NNetController::Initialize
     MainWindow               * const pMainWindow,
     WinManager               * const pWinManager,
     NNetModelReaderInterface * const pModelReaderInterface,
-    NNetModelWriterInterface * const pModelWriterInterface,
+    NNetModelCommands        * const pModelCommands,
     ComputeThread            * const pComputeThread,
     SlowMotionRatio          * const pSlowMotionRatio,
     DisplayFunctor           * const func,
@@ -47,7 +47,7 @@ void NNetController::Initialize
     m_pMainWindow           = pMainWindow;
     m_pWinManager           = pWinManager;
     m_pModelReaderInterface = pModelReaderInterface;
-    m_pModelWriterInterface = pModelWriterInterface;
+    m_pModelCommands        = pModelCommands;
     m_pSlowMotionRatio      = pSlowMotionRatio;
     m_pComputeThread        = pComputeThread;
     m_pStatusBarDisplay     = func;
@@ -66,7 +66,7 @@ NNetController::~NNetController( )
     m_pMainWindow           = nullptr;
     m_pWinManager           = nullptr;
     m_pModelReaderInterface = nullptr;
-    m_pModelWriterInterface = nullptr;
+    m_pModelCommands        = nullptr;
     m_pSlowMotionRatio      = nullptr;
     m_pComputeThread        = nullptr;
     m_pStatusBarDisplay     = nullptr;
@@ -174,7 +174,7 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
 
     case IDD_STOP_ON_TRIGGER:                 // effects model, but seems to be secure  
         m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
-        m_pModelWriterInterface->ToggleStopOnTrigger( m_pMainWindow->GetHighlightedShapeId() );
+        m_pModelCommands->ToggleStopOnTrigger( m_pMainWindow->GetHighlightedShapeId() );
         break;
 
     case IDM_REFRESH:
@@ -198,7 +198,7 @@ void NNetController::pulseRateDlg( ShapeId const id )
     wstring const unit       { GetParameterUnit ( tParameter::pulseRate ) };
     fHertz  const fNewValue  { StdDialogBox::Show( hwndParent, fOldValue.GetValue(), header, unit ) };
     if ( fNewValue != fOldValue )
-        m_pModelWriterInterface->SetPulseRate( id, fNewValue );
+        m_pModelCommands->SetPulseRate( id, fNewValue );
 }
 
 void NNetController::triggerSoundDlg( ShapeId const id )
@@ -209,7 +209,7 @@ void NNetController::triggerSoundDlg( ShapeId const id )
 
     TriggerSoundDialog dialog( m_pSound, m_pModelReaderInterface->GetTriggerSound( id ) );
     dialog.Show( m_pMainWindow->GetWindowHandle() );
-    m_pModelWriterInterface->SetTriggerSound( id, dialog.GetSound() );
+    m_pModelCommands->SetTriggerSound( id, dialog.GetSound() );
 }
 
 bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
@@ -221,11 +221,11 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_UNDO:
-        m_pModelWriterInterface->UndoCommand();
+        m_pModelCommands->UndoCommand();
         break;
 
     case IDM_REDO:
-        m_pModelWriterInterface->RedoCommand();
+        m_pModelCommands->RedoCommand();
         break;
 
     case IDM_SAVE_MODEL:
@@ -239,27 +239,27 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_COPY_SELECTION:
-        m_pModelWriterInterface->CopySelection( );
+        m_pModelCommands->CopySelection( );
         break;
 
     case IDM_DELETE_SELECTION:
-        m_pModelWriterInterface->DeleteSelection( );
+        m_pModelCommands->DeleteSelection( );
         break;
 
     case IDM_CLEAR_BEEPERS:
-        m_pModelWriterInterface->ClearBeepers( );
+        m_pModelCommands->ClearBeepers( );
         break;
 
     case IDM_SELECT_ALL_BEEPERS:
-        m_pModelWriterInterface->SelectAllBeepers( );
+        m_pModelCommands->SelectAllBeepers( );
         break;
 
     case IDM_MARK_SELECTION:
-        m_pModelWriterInterface->MarkSelection( tBoolOp::opTrue );
+        m_pModelCommands->MarkSelection( tBoolOp::opTrue );
         break;
 
     case IDM_UNMARK_SELECTION:
-        m_pModelWriterInterface->MarkSelection( tBoolOp::opFalse );
+        m_pModelCommands->MarkSelection( tBoolOp::opFalse );
         break;
 
     case IDD_PULSE_RATE:
@@ -276,7 +276,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDD_CONNECT:
         m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
-        m_pModelWriterInterface->Connect( m_pMainWindow->GetHighlightedShapeId(), m_pMainWindow->GetSuperHighlightedShapeId() );
+        m_pModelCommands->Connect( m_pMainWindow->GetHighlightedShapeId(), m_pMainWindow->GetSuperHighlightedShapeId() );
         break;
 
     case IDM_DELETE:   // keyboard delete key
@@ -286,53 +286,53 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDD_DELETE_SHAPE:
         m_pSound->Play( TEXT("DISAPPEAR_SOUND") ); 
-        m_pModelWriterInterface->DeleteShape( m_pMainWindow->GetHighlightedShapeId() );
+        m_pModelCommands->DeleteShape( m_pMainWindow->GetHighlightedShapeId() );
         break;
 
     case IDD_DISCONNECT:
         m_pSound->Play( TEXT("UNLOCK_SOUND") ); 
-        m_pModelWriterInterface->Disconnect( m_pMainWindow->GetHighlightedShapeId() );
+        m_pModelCommands->Disconnect( m_pMainWindow->GetHighlightedShapeId() );
         break;
 
     case IDD_INSERT_NEURON:
-        m_pModelWriterInterface->InsertNeuron( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelCommands->InsertNeuron( m_pMainWindow->GetHighlightedShapeId(), umPoint );
         break;
 
     case IDD_NEW_NEURON:
-        m_pModelWriterInterface->NewNeuron( umPoint );
+        m_pModelCommands->NewNeuron( umPoint );
         break;
 
     case IDD_NEW_INPUT_NEURON:
-        m_pModelWriterInterface->NewInputNeuron( umPoint );
+        m_pModelCommands->NewInputNeuron( umPoint );
         break;
 
     case IDD_APPEND_INPUT_NEURON:
-        m_pModelWriterInterface->AppendInputNeuron( m_pMainWindow->GetHighlightedShapeId() );
+        m_pModelCommands->AppendInputNeuron( m_pMainWindow->GetHighlightedShapeId() );
         break;
 
     case IDD_APPEND_NEURON:
-        m_pModelWriterInterface->AppendNeuron( m_pMainWindow->GetHighlightedShapeId() );
+        m_pModelCommands->AppendNeuron( m_pMainWindow->GetHighlightedShapeId() );
         break;
 
     case IDD_ADD_OUTGOING2KNOT:
-        m_pModelWriterInterface->AddOutgoing2Knot( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelCommands->AddOutgoing2Knot( m_pMainWindow->GetHighlightedShapeId(), umPoint );
         break;
 
     case IDD_ADD_INCOMING2KNOT:
-        m_pModelWriterInterface->AddIncoming2Knot( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelCommands->AddIncoming2Knot( m_pMainWindow->GetHighlightedShapeId(), umPoint );
         break;
 
     case IDD_ADD_OUTGOING2PIPE:
-        m_pModelWriterInterface->AddOutgoing2Pipe( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelCommands->AddOutgoing2Pipe( m_pMainWindow->GetHighlightedShapeId(), umPoint );
         break;
 
     case IDD_ADD_INCOMING2PIPE:
-        m_pModelWriterInterface->AddIncoming2Pipe( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        m_pModelCommands->AddIncoming2Pipe( m_pMainWindow->GetHighlightedShapeId(), umPoint );
         break;
 
     case IDM_ANALYZE_LOOPS:
     {
-        m_pModelWriterInterface->AnalyzeLoops( );
+        m_pModelCommands->AnalyzeLoops( );
         MicroMeterRect rect { ModelAnalyzer::GetEnclosingRect() };
         if ( rect.IsNotEmpty() )
             m_pMainWindow->CenterAndZoomRect( rect, 2.0f );
@@ -341,7 +341,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDM_ANALYZE_ANOMALIES:
         {
-            m_pModelWriterInterface->AnalyzeAnomalies( );
+            m_pModelCommands->AnalyzeAnomalies( );
             MicroMeterRect rect { ModelAnalyzer::GetEnclosingRect() };
             if ( rect.IsNotEmpty() )
                 m_pMainWindow->CenterAndZoomRect( rect, 2.0f );
@@ -350,24 +350,24 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDM_DESELECT_ALL:
     case IDM_ESCAPE:
-        m_pModelWriterInterface->SelectAll( tBoolOp::opFalse );
+        m_pModelCommands->SelectAll( tBoolOp::opFalse );
         Script::StopProcessing();
         break;
 
     case IDM_SELECT_SHAPE:
-        m_pModelWriterInterface->SelectShape( m_pMainWindow->GetHighlightedShapeId(), tBoolOp::opTrue );
+        m_pModelCommands->SelectShape( m_pMainWindow->GetHighlightedShapeId(), tBoolOp::opTrue );
         break;
 
     case IDM_DESELECT_SHAPE:
-        m_pModelWriterInterface->SelectShape( m_pMainWindow->GetHighlightedShapeId(), tBoolOp::opFalse );
+        m_pModelCommands->SelectShape( m_pMainWindow->GetHighlightedShapeId(), tBoolOp::opFalse );
         break;
 
     case IDM_SELECT_ALL:
-        m_pModelWriterInterface->SelectAll( tBoolOp::opTrue );
+        m_pModelCommands->SelectAll( tBoolOp::opTrue );
         break;
 
     case IDM_SELECT_SUBTREE:
-        m_pModelWriterInterface->SelectSubtree( m_pMainWindow->GetHighlightedShapeId(), tBoolOp::opTrue );
+        m_pModelCommands->SelectSubtree( m_pMainWindow->GetHighlightedShapeId(), tBoolOp::opTrue );
         break;
 
     default:

@@ -4,21 +4,21 @@
 
 #pragma once
 
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "Analyzer.h"
 #include "SelectionCommand.h"
 
 class AnalyzeLoopsCommand : public SelectionCommand
 {
 public:
-	AnalyzeLoopsCommand( NNetModel * const pModel )
+	AnalyzeLoopsCommand( NNetModelWriterInterface * const pModel )
 		:	SelectionCommand( pModel)
 	{ }
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
-		pModel->SelectAll( tBoolOp::opFalse );
-		if ( ModelAnalyzer::FindLoop( * pModel ) )
+		pModel->SelectAllShapes( tBoolOp::opFalse );
+		if ( ModelAnalyzer::FindLoop( pModel->GetModel() ) )
 			ModelAnalyzer::SelectLoopShapes( * pModel );
 	}
 };

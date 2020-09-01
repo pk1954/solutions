@@ -11,14 +11,14 @@
 class SelectAllCommand : public SelectionCommand
 {
 public:
-	SelectAllCommand( NNetModel * const pModel, tBoolOp const op )
-		:	SelectionCommand( pModel),
+	SelectAllCommand( NNetModelWriterInterface * const pModel, tBoolOp const op )
+	  :	SelectionCommand( pModel),
 		m_op( op )
 	{ }
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
-		pModel->SelectAll( m_op ); 
+		pModel->SelectAllShapes( m_op ); 
 	}
 
 private:

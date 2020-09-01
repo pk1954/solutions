@@ -4,78 +4,105 @@
 
 #pragma once
 
+#include <string>
 #include "boolOp.h"
 #include "tParameter.h"
 #include "MoreTypes.h"
 #include "ShapeId.h"
+#include "Neuron.h"
+#include "NNetModel.h"
 
-using std::wostream;
-
-class NNetModel;
-class CommandStack;
+class Pipe;
+class BaseKnot;
 class NNetModelStorage;
-struct SoundDescr;
+class ShapeErrorHandler;
 
 class NNetModelWriterInterface
 {
 public:
-	void Initialize
-    ( 
-        wostream         * const, 
-        CommandStack     * const,
-        NNetModelStorage * const
-    );
 
 	void Start( NNetModel * const );
 	void Stop(); 
 
-    void AnalyzeAnomalies    ( );
-    void AnalyzeLoops        ( );
-    void AppendInputNeuron   ( ShapeId const );
-    void AppendNeuron        ( ShapeId const );
-    void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
-    void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
-    void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
-    void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
-    void ClearBeepers        ( );
-    void Connect             ( ShapeId const, ShapeId const );
-    void CopySelection       ( );
-    void DeleteSelection     ( );
-    void DeleteShape         ( ShapeId const );
-    void Disconnect          ( ShapeId const );
-    void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
-    void MarkSelection       ( tBoolOp const );
-    void MoveSelection       ( MicroMeterPoint const & );
-    void MoveShape           ( ShapeId const, MicroMeterPoint const & );
-    void NewInputNeuron      ( MicroMeterPoint const & );
-    void NewNeuron           ( MicroMeterPoint const & );
-    void ReadModel           ( bool, wstring const );
-    void ResetModel          ( );
-    void SelectAll           ( tBoolOp const );
-    void SelectAllBeepers    ( );
-    void SelectShape         ( ShapeId const, tBoolOp const );
-    void SelectShapesInRect  ( MicroMeterRect const & );
-    void SelectSubtree       ( ShapeId const, tBoolOp const );
-    void SetParameter        ( tParameter const, float const );
-    void SetPulseRate        ( ShapeId    const, fHertz const );
-    void SetTriggerSound     ( ShapeId const, SoundDescr const & );
-    void ToggleStopOnTrigger ( ShapeId const );
-
-	void UndoCommand();
-	void RedoCommand();
+    void CreateInitialShapes();
 
     NNetModel const & GetModel( ) { return * m_pModel; }
+    Pipe    * const   NewPipe( BaseKnot * const, BaseKnot * const );
+    void MarkShape( ShapeId const, tBoolOp const );
+    void SetShape ( Shape * const, ShapeId const );	
+    void SetNrOfShapes( long const );
+    void SetShapeErrorHandler( ShapeErrorHandler * const );
+
+    void StaticModelChanged( );
+
+    Shape * GetShape ( ShapeId const );
+
+    template <typename T>
+    T GetShapePtr( ShapeId const id ) 
+    {
+        Shape * const pShape { GetShape( id ) };
+        return (pShape && m_pModel->HasType<T>(pShape)) ? static_cast<T>( pShape ) : nullptr;
+    }
+
+    template <typename T> 
+    T * const NewBaseKnot( MicroMeterPoint const & pos ) 
+    { 
+        auto pT { new T( pos ) };
+        pT->SetId( newShapeListSlot( ) );
+        return pT;
+    }
+
+	template <typename T>
+	void Apply2All( function<void(T &)> const & func ) const
+	{
+        m_pModel->Apply2AllShapes
+        ( 
+            [&](Shape & s) 
+            {  
+                if ( m_pModel->HasType<T>(& s) ) func( static_cast<T &>(s) ); 
+            }
+        );
+	}                        
+
+    template <typename T>
+    void Apply2AllSelected( function<void(T &)> const & func ) const
+    {
+    	Apply2All<T>( {	[&](T & s) { if ( s.IsSelected() ) { func( s ); } } } );
+    }
+
+    template <typename T>
+    void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func )
+    {
+        Apply2All<T>( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
+    }
+
+    void ResetModel( )                     { m_pModel->ResetModel(); }
+    void ClearModel( )                     { m_pModel->Apply2AllShapes( [&](Shape  &s) { s.Clear( ); } ); }
+    void SelectAllShapes(tBoolOp const op) { m_pModel->Apply2AllShapes( [&](Shape  &s) { s.Select( op ); } ); }
+
+    void SelectBeepers() { Apply2All<Neuron>( [&](Neuron &n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
+
+    void ReplaceInModel ( Shape * const p2BeReplaced, Shape * pShape ) { SetShape( pShape,  p2BeReplaced->GetId() ); }
+    void Store2Model    ( Shape * const pShape )                       { SetShape( pShape,  pShape->GetId() ); }
+    void RemoveFromModel( Shape * const pShape )                       { SetShape( nullptr, pShape->GetId() ); }
+    void Add2Model      ( Shape * const pShape )                       
+    { 
+        ShapeId const idNewSlot { m_pModel->NewShapeListSlot( ) };
+        pShape->SetId( idNewSlot );
+        SetShape( pShape, idNewSlot );
+    }
+
+    vector<Shape *> GetShapeList( ShapeCrit const & ) const;
+
+    void SelectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op ) { m_pModel->SelectSubtree( pBaseKnot, op ); }
+
+    float SetParam( tParameter const param, float const fNewValue ) { return m_pModel->SetParam( param, fNewValue ); }
+
+    void ToggleStopOnTrigger( ShapeId const );
 
 private:
 
-	bool       IsTraceOn  ( ) const { return   m_bTrace; }
-	wostream & TraceStream( )       { return * m_pTraceStream; }
+    ShapeId const newShapeListSlot( );
 
-    void deleteShape( Shape * const );
-
-	bool               m_bTrace       { true };
-	wostream         * m_pTraceStream { nullptr };
-	NNetModel        * m_pModel       { nullptr };
-    NNetModelStorage * m_pStorage     { nullptr };
-    CommandStack     * m_pCmdStack    { nullptr };
+	NNetModel * m_pModel { nullptr };
 }; 

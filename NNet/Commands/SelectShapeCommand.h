@@ -13,13 +13,13 @@
 class SelectShapeCommand : public SelectionCommand
 {
 public:
-	SelectShapeCommand( NNetModel * const pModel, ShapeId const id, tBoolOp const op )
+	SelectShapeCommand( NNetModelWriterInterface * const pModel, ShapeId const id, tBoolOp const op )
 		:	SelectionCommand( pModel),
 		m_pShape( pModel->GetShapePtr<Shape *>( id ) ),
 		m_op( op )
 	{ }
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
 		m_pShape->Select( m_op ); 
 	}

@@ -36,7 +36,7 @@ void ParameterDialog::applyParameter
 {
 	float fValue { m_pParams->GetParameterValue( parameter ) }; 
 	if ( StdDialogBox::Evaluate( hwndEditField, fValue ) )
-		m_pModelWriterInterface->SetParameter( parameter, fValue );
+		m_pModelWriterInterface->SetParam( parameter, fValue );
 }
 
 HWND ParameterDialog::createStaticField( HWND const hwndParent, wchar_t const * const text, int & iXpos, int const iYpos, int const iWidth )

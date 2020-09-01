@@ -16,7 +16,7 @@
 #include "errhndl.h"
 #include "MoreTypes.h"
 #include "ModelDescription.h"
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "NNetError.h"
 #include "NNetParameters.h"
 #include "InputNeuron.h"
@@ -35,12 +35,12 @@ static float const PROTOCOL_VERSION { 1.5f };   // pipeline renamed to pipe
 
 void NNetModelStorage::Initialize
 ( 
-    NNetModel        * const pModel,
-    Param            * const pParam,
-    Observable       * const unsavedChangesObservable,
-    Script           * const pScript, 
-    ReadModelResult  * const pResult,
-    ModelDescription * const pDescription
+    NNetModelWriterInterface * const pModel,
+    Param                    * const pParam,
+    Observable               * const unsavedChangesObservable,
+    Script                   * const pScript, 
+    ReadModelResult          * const pResult,
+    ModelDescription         * const pDescription
 )
 {
     m_pModel                   = pModel;
@@ -62,18 +62,11 @@ void NNetModelStorage::setUnsavedChanges( bool const bState )
 class WrapProtocol : public Script_Functor
 {
 public:
-    WrapProtocol( NNetModel * const pNNetModel ) :
-        m_pModel( pNNetModel )
-    { };
-
     virtual void operator() ( Script & script ) const 
     {
         script.ScrReadString( L"version" );
         double dVersion = script.ScrReadFloat();
     }
-
-private:
-    NNetModel * m_pModel;
 };
 
 class WrapDescription : public Script_Functor
@@ -96,7 +89,7 @@ private:
 class WrapMarkShape : public Script_Functor
 {
 public:
-    WrapMarkShape( NNetModel * const pNNetModel ) :
+    WrapMarkShape( NNetModelWriterInterface * const pNNetModel ) :
         m_pModel( pNNetModel )
     { };
 
@@ -108,13 +101,13 @@ public:
 
 private:
 
-    NNetModel * m_pModel;
+    NNetModelWriterInterface * m_pModel;
 };
 
 class WrapCreateShape : public Script_Functor
 {
 public:
-    WrapCreateShape( NNetModel * const pNNetModel ) :
+    WrapCreateShape( NNetModelWriterInterface * const pNNetModel ) :
         m_pModel( pNNetModel )
     { };
 
@@ -184,13 +177,13 @@ public:
 
 private:
 
-    NNetModel * m_pModel;
+    NNetModelWriterInterface * m_pModel;
 };
 
 class WrapGlobalParameter : public Script_Functor
 {
 public:
-    WrapGlobalParameter( NNetModel * const pNNetModel ) :
+    WrapGlobalParameter( NNetModelWriterInterface * const pNNetModel ) :
         m_pModel( pNNetModel )
     { };
 
@@ -199,17 +192,17 @@ public:
         tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
         script.ScrReadSpecial( L'=' );
         float const fValue { CastToFloat( script.ScrReadFloat() ) };
-        m_pModel->SetParameter( param, fValue );
+        m_pModel->SetParam( param, fValue );
     }
 
 private:
-    NNetModel * m_pModel;
+    NNetModelWriterInterface * m_pModel;
 };
 
 class WrapNrOfShapes : public Script_Functor
 {
 public:
-    WrapNrOfShapes( NNetModel * const pNNetModel ) :
+    WrapNrOfShapes( NNetModelWriterInterface * const pNNetModel ) :
         m_pModel( pNNetModel )
     { };
 
@@ -220,13 +213,13 @@ public:
     }
 
 private:
-    NNetModel * m_pModel;
+    NNetModelWriterInterface * m_pModel;
 };
 
 class WrapShapeParameter : public Script_Functor
 {
 public:
-    WrapShapeParameter( NNetModel * const pModel ) :
+    WrapShapeParameter( NNetModelWriterInterface * const pModel ) :
         m_pModel( pModel )
     { };
 
@@ -242,13 +235,13 @@ public:
     }
 
 private:
-    NNetModel * m_pModel;
+    NNetModelWriterInterface * m_pModel;
 };
 
 class WrapTriggerSound : public Script_Functor
 {
 public:
-    WrapTriggerSound( NNetModel * const pNNetModel ) :
+    WrapTriggerSound( NNetModelWriterInterface * const pNNetModel ) :
         m_pModel( pNNetModel )
     { };
 
@@ -264,15 +257,15 @@ public:
     }
 
 private:
-    NNetModel * m_pModel;
+    NNetModelWriterInterface * m_pModel;
 };
 
 void NNetModelStorage::prepareForReading( )
 {
     SymbolTable::ScrDefConst( L"Description", new WrapDescription( & m_wstrDescription ) );
+    SymbolTable::ScrDefConst( L"Protocol"   , new WrapProtocol(  ) );
 
 #define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( m_pModel ) )
-    DEF_NNET_FUNC( Protocol );
     DEF_NNET_FUNC( GlobalParameter );
     DEF_NNET_FUNC( NrOfShapes );
     DEF_NNET_FUNC( CreateShape );
@@ -417,11 +410,11 @@ void NNetModelStorage::Write( wostream & out )
         }
     );
 
-    m_CompactIds.resize( m_pModel->GetSizeOfShapeList() );
+    m_CompactIds.resize( m_pModel->GetModel().GetSizeOfShapeList() );
     ShapeId idCompact( 0 );
     for ( int i = 0; i < m_CompactIds.size( ); ++i )
     {
-        m_CompactIds[ i ] = m_pModel->GetConstShape( ShapeId( i ) )
+        m_CompactIds[ i ] = m_pModel->GetModel().GetConstShape( ShapeId( i ) )
                           ? idCompact++
                           : NO_SHAPE;
     }

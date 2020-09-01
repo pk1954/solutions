@@ -16,9 +16,9 @@ public:
 		m_fValue( fNewValue )
 	{ }
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
-		m_fValue = pModel->SetParameter( m_param, m_fValue ); 
+		m_fValue = pModel->SetParam( m_param, m_fValue ); 
 	}
 
 private:

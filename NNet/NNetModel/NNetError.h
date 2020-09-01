@@ -7,7 +7,7 @@
 #include <exception>
 #include "script.h"
 #include "errhndl.h"
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "NNetModel.h"
 
 using std::to_wstring;
@@ -21,7 +21,7 @@ struct ShapeException: public exception
 class NNetErrorHandler : public ShapeErrorHandler
 {
 public:
-    NNetErrorHandler( Script * pScript, NNetModel * const pModel )
+    NNetErrorHandler( Script * const pScript, NNetModel const * const pModel )
         : m_pScript( pScript ),
           m_pModel( pModel )
     {}
@@ -71,22 +71,22 @@ public:
     }
 
 private:
-    Script    *       m_pScript;
-    NNetModel * const m_pModel;
+    Script          * const m_pScript;
+    NNetModel const * const m_pModel;
 };
 
 inline bool ProcessNNetScript
 ( 
-    Script        * pScript,
-    NNetModel     * pModel,
-    wstring const & wstrPath
+    Script                   * pScript,
+    NNetModelWriterInterface * pModelInterface,
+    wstring            const & wstrPath
 ) 
 {
     bool bSuccess { false };
     if ( ! wstrPath.empty( ) )
     {
-        NNetErrorHandler errHndl { pScript, pModel };
-        pModel->SetShapeErrorHandler( & errHndl );
+        NNetErrorHandler errHndl { pScript, & pModelInterface->GetModel() };
+        pModelInterface->SetShapeErrorHandler( & errHndl );
         try
         {
             wcout << L"Processing script file " << wstrPath << endl;
@@ -95,7 +95,7 @@ inline bool ProcessNNetScript
         catch ( ShapeException e ) 
         { 
         }
-        pModel->SetShapeErrorHandler( nullptr );
+        pModelInterface->SetShapeErrorHandler( nullptr );
     }
     return bSuccess;
 }

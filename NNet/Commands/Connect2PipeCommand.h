@@ -12,8 +12,13 @@
 class Connect2PipeCommand : public Command
 {
 public:
-	Connect2PipeCommand( NNetModel * const pModel, BaseKnot * const pSrc, Pipe * const pDst )
-		:	m_pBaseKnot ( pSrc ),
+	Connect2PipeCommand
+	( 
+		NNetModelWriterInterface * const pModel, 
+		BaseKnot                 * const pSrc, 
+		Pipe                     * const pDst 
+	)
+	  :	m_pBaseKnot ( pSrc ),
 		m_pPipe     ( pDst ),
 		m_pNewPipe  ( nullptr ),
 		m_pStartKnot( m_pPipe->GetStartKnotPtr( ) )
@@ -26,7 +31,7 @@ public:
 		delete m_pNewPipe;
 	}
 
-	virtual void Do( NNetModel * const pModel )
+	virtual void Do( NNetModelWriterInterface * const pModel )
 	{
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe, m_pNewPipe );
 		m_pBaseKnot ->m_connections.AddIncoming( m_pNewPipe );
@@ -35,7 +40,7 @@ public:
 		pModel->Store2Model( m_pNewPipe );
 	}
 
-	virtual void Undo( NNetModel * const pModel )
+	virtual void Undo( NNetModelWriterInterface * const pModel )
 	{
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_pNewPipe, m_pPipe );
 		m_pBaseKnot ->m_connections.RemoveIncoming( m_pNewPipe );

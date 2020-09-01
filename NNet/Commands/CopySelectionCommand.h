@@ -12,21 +12,21 @@ class CopySelectionCommand : public SelectionCommand
 {
 public:
 
-	CopySelectionCommand( NNetModel * const pModel )
+	CopySelectionCommand( NNetModelWriterInterface * const pModel )
 		:	SelectionCommand( pModel)
 	{ 
-		m_copies = pModel->DuplicateShapes( m_selectedShapes );
+		m_copies = pModel->GetModel().DuplicateShapes( m_selectedShapes );
 	}
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
-		pModel->SelectAll( tBoolOp::opFalse );        // deselect all
-		for ( Shape * pShape : m_copies )             // add copies
+		pModel->SelectAllShapes( tBoolOp::opFalse );  // deselect all
+		for ( Shape * pShape : m_copies )       // add copies
 			if ( pShape )
 				pModel->Add2Model( pShape );
 	}
 
-	virtual void Undo( NNetModel * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface * const pModel ) 
 	{ 
 		for ( Shape * pShape : m_copies )             // disconnect copies
 			if ( pShape )

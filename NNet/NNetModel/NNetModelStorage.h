@@ -15,11 +15,11 @@ using std::wstring;
 using std::vector;
 
 class Param;
-class NNetModel;
 class Script;
 class Shape;
 class Observable;
 class ModelDescription;
+class NNetModelWriterInterface;
 
 class ReadModelResult
 {
@@ -39,12 +39,12 @@ class NNetModelStorage : public ObserverInterface
 public:
 	void Initialize
 	( 
-		NNetModel        * const, 
-		Param            * const, 
-		Observable       * const,
-		Script           * const,       
-		ReadModelResult  * const,
-		ModelDescription * const
+		NNetModelWriterInterface * const, 
+		Param                    * const, 
+		Observable               * const,
+		Script                   * const,       
+		ReadModelResult          * const,
+		ModelDescription         * const
 	);
 
 	virtual void Notify( bool const bImmediate ) { setUnsavedChanges( true ); }
@@ -53,13 +53,10 @@ public:
 	bool Read( bool const, wstring const = L"" );
 	void ReadAsync( wstring const = L"" );
 
-	bool    const UnsavedChanges( ) const { return m_bUnsavedChanges; };
-	wstring const GetModelPath  ( ) const 
-	{ 
-		return m_wstrPathOfOpenModel; 
-	};
-	void          ResetModelPath( );
+	bool    const UnsavedChanges( ) const { return m_bUnsavedChanges; }
+	wstring const GetModelPath  ( ) const { return m_wstrPathOfOpenModel; }
 
+	void ResetModelPath( );
 	bool AskAndSave  ( );
 	bool AskModelFile( );
 	bool SaveModel   ( );
@@ -69,13 +66,13 @@ private:
 
 	mutable bool m_bUnsavedChanges { false };  // can be changed in const functions
 
-	HWND               m_hwndApp                  { nullptr };
-	NNetModel        * m_pModel                   { nullptr };
-	Param            * m_pParam                   { nullptr };
-	Observable       * m_unsavedChangesObservable { nullptr };
-	Script           * m_pScript                  { nullptr };
-	ReadModelResult  * m_pResult                  { nullptr };
-	ModelDescription * m_pDescription             { nullptr };
+	HWND                       m_hwndApp                  { nullptr };
+	NNetModelWriterInterface * m_pModel                   { nullptr };
+	Param                    * m_pParam                   { nullptr };
+	Observable               * m_unsavedChangesObservable { nullptr };
+	Script                   * m_pScript                  { nullptr };
+	ReadModelResult          * m_pResult                  { nullptr };
+	ModelDescription         * m_pDescription             { nullptr };
 
 	bool            m_bPreparedForReading { false };
 	wstring         m_wstrPathOfOpenModel { L"" };

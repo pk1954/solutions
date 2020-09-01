@@ -12,7 +12,7 @@
 class NewNeuronCommand : public Command
 {
 public:
-	NewNeuronCommand( NNetModel * const pModel, MicroMeterPoint const & pos )
+	NewNeuronCommand( NNetModelWriterInterface * const pModel, MicroMeterPoint const & pos )
 	{ 
 		m_pNeuron = pModel->NewBaseKnot<Neuron>( pos );
 	}
@@ -22,12 +22,12 @@ public:
 		delete m_pNeuron;
 	}
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
 		pModel->Store2Model( m_pNeuron );
 	}
 
-	virtual void Undo( NNetModel * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface * const pModel ) 
 	{ 
 		pModel->RemoveFromModel( m_pNeuron );
 	}

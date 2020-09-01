@@ -5,7 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "MoveCommand.h"
 #include "BaseKnot.h"
 
@@ -16,7 +16,7 @@ public:
        : MoveCommand( -delta )
 	{ }
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
 		MicroMeterPoint const delta = - m_delta;
 		pModel->Apply2AllSelected<BaseKnot>

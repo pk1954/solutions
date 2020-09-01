@@ -87,18 +87,6 @@ public:
 		return pShape;
 	}
 
-	Shape * GetShape ( ShapeId const id )       
-	{ 
-		return const_cast<Shape *>(GetConstShape( id ) );
-	}
-
-	template <typename T>
-	T GetShapePtr( ShapeId const id ) 
-	{
-		Shape * const pShape { GetShape( id ) };
-		return (pShape && HasType<T>(pShape)) ? static_cast<T>( pShape ) : nullptr;
-	}
-
 	template <typename T>
 	T GetShapeConstPtr( ShapeId const id ) const
 	{
@@ -151,21 +139,6 @@ public:
 		return currentValue;
 	}
 
-	Pipe * const NewPipe(  BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
-	{
-		Pipe * const pPipe { new Pipe( pKnotStart, pKnotEnd ) };
-		pPipe->SetId( NewShapeListSlot( ) );
-		return pPipe;
-	}
-
-	template <typename T> 
-	T * const NewBaseKnot( MicroMeterPoint const & pos ) 
-	{ 
-		auto pT { new T( pos ) };
-		pT->SetId( NewShapeListSlot( ) );
-		return pT;
-	}
-
 	template <typename T>
 	bool Apply2AllB( function<bool(T &)> const & func ) const
 	{
@@ -183,60 +156,34 @@ public:
 		return bResult;
 	}
 
-	template <typename T>
-	void Apply2All( function<void(T &)> const & func ) const
+	void Apply2AllShapes( function<void(Shape &)> const & func ) const
 	{
 		for (auto & pShape : m_Shapes)    
 		{ 
 			if ( pShape )
 			{
-				if ( HasType<T>(pShape) ) func( static_cast<T &>( * pShape) ); 
+				func( static_cast<Shape &>( * pShape) ); 
 			}
 		}
 	}                        
 
-	template <typename T>
-	void Apply2AllInRect( MicroMeterRect const & r, function<void(T &)> const & func )
-	{
-		Apply2All<T>( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
-	}
-
-	template <typename T>
-	void Apply2AllSelected( function<void(T &)> const & func ) const
-	{
-		Apply2All<T>( {	[&](T & s) { if ( s.IsSelected() ) { func( s ); } } } );
-	}
-
 	virtual bool Compute( );
-
-	void CreateInitialShapes();
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
 
-	void ToggleStopOnTrigger( ShapeId const );
+	void ToggleStopOnTrigger( Neuron * );
 	void RecalcAllShapes( );
 	void ResetModel( );
 
 	NormalizedShapeList DuplicateShapes( vector<Shape *> const & ) const;
 
-	float SetParameter ( tParameter const, float const );
+	float SetParam( tParameter const, float const );
 	void  SetNrOfShapes( long const lNrOfShapes ) { m_Shapes.resize( lNrOfShapes ); }
 
 	MicroMeterRect GetEnclosingRect() const { return m_enclosingRect; }
 
-	void    ClearModel()                { Apply2All<Shape> ( [&](Shape  &s) { s.Clear( ); } ); }
-	void    SelectAll(tBoolOp const op) { Apply2All<Shape> ( [&](Shape  &s) { s.Select( op ); } ); }
-	void    SelectBeepers()             { Apply2All<Neuron>( [&](Neuron &n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
-	void    MarkShape( ShapeId const idShape, tBoolOp const op ) { GetShapePtr<Shape *>( idShape )->Mark( op ); }
-	void    SelectSubtree ( BaseKnot * const, tBoolOp const );
+	void    SelectSubtree( BaseKnot * const, tBoolOp const );
 	Shape * ShallowCopy( Shape const * const ) const;
-
-	vector<Shape *> GetShapeList( ShapeCrit const& selector ) const
-	{
-		vector<Shape *> list;
-		Apply2All<Shape>( [&](Shape &s) { if ( selector(s) ) list.push_back(&s); } );
-		return list;
-	}
 
 	ShapeId const NewShapeListSlot( )
 	{
@@ -258,16 +205,6 @@ public:
 			(* ppShapeOld)->DecCounter();
 
 		* ppShapeOld = pShape; 
-	}
-
-	void ReplaceInModel ( Shape * const p2BeReplaced, Shape * pShape ) { SetShape( pShape,  p2BeReplaced->GetId() ); }
-	void Store2Model    ( Shape * const pShape )                       { SetShape( pShape,  pShape->GetId() ); }
-	void RemoveFromModel( Shape * const pShape )                       { SetShape( nullptr, pShape->GetId() ); }
-	void Add2Model      ( Shape * const pShape )                       
-	{ 
-		ShapeId const idNewSlot { NewShapeListSlot( ) };
-		pShape->SetId( idNewSlot );
-		SetShape( pShape, idNewSlot );
 	}
 
 	void StaticModelChanged( );
@@ -292,9 +229,8 @@ private:
 	Observable        * m_pModelTimeObservable    { nullptr };
 	Observable        * m_pStaticModelObservable  { nullptr };
 	Observable        * m_pDynamicModelObservable { nullptr };
+	ShapeErrorHandler * m_pShapeErrorHandler      { nullptr };
 	MicroMeterRect      m_enclosingRect           { };
-
-	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
 
 	// local functions
 

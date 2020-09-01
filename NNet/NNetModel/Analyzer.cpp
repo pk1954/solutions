@@ -6,6 +6,7 @@
 #include "MoreTypes.h"
 #include "RectType.h"
 #include "win32_util.h"
+#include "NNetModelWriterInterface.h"
 #include "Analyzer.h"
 
 using std::endl;
@@ -13,8 +14,7 @@ using std::to_wstring;
 
 bool ModelAnalyzer::FindLoop( NNetModel const & model )
 {
-	int iNrOfShapes { model.GetNrOf<Shape>() };
-	statusDisplay( to_wstring( iNrOfShapes ) + L" objects found" );
+	int iNrOfShapes { model.GetSizeOfShapeList() };
 
 	for ( int iMaxLoopSize = 5; iMaxLoopSize <= iNrOfShapes + 1; iMaxLoopSize += 2 )
 	{
@@ -95,7 +95,7 @@ MicroMeterRect ModelAnalyzer::GetEnclosingRect( )
 	return ::ComputeEnclosingRect( m_shapeStack );
 }
 
-void ModelAnalyzer::SelectLoopShapes( NNetModel & model )
+void ModelAnalyzer::SelectLoopShapes( NNetModelWriterInterface & model )
 {
 	for ( const auto & pShape : m_shapeStack )
 		pShape->Select( tBoolOp::opTrue );

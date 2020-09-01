@@ -4,6 +4,6 @@
 
 #pragma once
 
-class NNetModelWriterInterface;
+class NNetModelCommands;
 
-extern void DefineNNetWrappers( NNetModelWriterInterface * const );
+extern void DefineNNetWrappers( NNetModelCommands * const );

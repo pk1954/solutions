@@ -5,15 +5,16 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "ShapeId.h"
 #include "Command.h"
 #include "BaseKnot.h"
+#include "Knot.h"
 
 class AddIncoming2KnotCommand : public Command
 {
 public:
-	AddIncoming2KnotCommand( NNetModel * pModel, ShapeId const id, MicroMeterPoint const & pos )
+	AddIncoming2KnotCommand( NNetModelWriterInterface * const pModel, ShapeId const id, MicroMeterPoint const & pos )
 	{ 
 		m_pEnd     = pModel->GetShapePtr<BaseKnot *>( id );
 		m_pKnotNew = pModel->NewBaseKnot<Knot>( pos );
@@ -27,14 +28,14 @@ public:
 		delete m_pPipe;
 	}
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
 		m_pEnd->m_connections.AddIncoming( m_pPipe );
 		pModel->Store2Model( m_pKnotNew );
 		pModel->Store2Model( m_pPipe );
 	}
 
-	virtual void Undo( NNetModel * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface * const pModel ) 
 	{ 
 		m_pEnd->m_connections.RemoveIncoming( m_pPipe );
 		pModel->RemoveFromModel( m_pKnotNew );

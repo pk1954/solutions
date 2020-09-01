@@ -20,13 +20,13 @@ public:
 		m_posEndKnotOld  ( pPipe->GetEndKnotPtr  ()->GetPosition())
 	{ }
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
 		m_pPipe->GetStartKnotPtr()->SetPosition( m_posStartKnotOld + m_delta );
 		m_pPipe->GetEndKnotPtr  ()->SetPosition( m_posEndKnotOld   + m_delta );
 	}
 
-	virtual void Undo( NNetModel * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface * const pModel ) 
 	{ 
 		m_pPipe->GetStartKnotPtr()->SetPosition( m_posStartKnotOld );
 		m_pPipe->GetEndKnotPtr  ()->SetPosition( m_posEndKnotOld   );

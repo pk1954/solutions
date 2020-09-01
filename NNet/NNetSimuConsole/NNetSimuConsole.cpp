@@ -8,6 +8,7 @@
 #include "trace.h"
 #include "UtilityWrappers.h"
 #include "CommandStack.h"
+#include "NNetModelCommands.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelStorage.h"
 #include "NNetWrappers.h"
@@ -59,6 +60,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	wostream & m_traceStream { wcout };
 
 	NNetModelWriterInterface m_modelWriterInterface     { };
+	NNetModelCommands        m_modelCommands            { };
 	NNetModelStorage         m_modelStorage             { };
 	NNetModel                m_model                    { };
 	Param                    m_parameters               { };
@@ -71,10 +73,10 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	ReadModelResult        * m_pReadModelResult         { nullptr };
 
 	DefineUtilityWrapperFunctions( );
-	DefineNNetWrappers( & m_modelWriterInterface );
+	DefineNNetWrappers( & m_modelCommands );
 
 	m_pReadModelResult = new ConsReadModelResult( & m_modelStorage );
-	m_modelWriterInterface.Initialize( & m_traceStream, & m_cmdStack, & m_modelStorage );
+	m_modelCommands.Initialize( & m_traceStream, & m_modelWriterInterface, & m_cmdStack, & m_modelStorage );
 	m_model.Initialize
 	( 
 		& m_parameters, 
@@ -84,7 +86,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	);
 	m_modelStorage.Initialize
 	( 
-		& m_model, 
+		& m_modelWriterInterface, 
 		& m_parameters, 
 		& m_unsavedChangesObservable,
 		& m_script,
@@ -107,7 +109,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	m_modelStorage.Read( false, L"std.mod" );
 
-	if ( ProcessNNetScript( & m_script, & m_model, wstrInputFile ) )
+	if ( ProcessNNetScript( & m_script, & m_modelWriterInterface, wstrInputFile ) )
 		wcout << L" ***** NNetSimuConsole terminated successfully";
 	else 
 		wcout << L"+++ NNetSimuConsole terminated with error";

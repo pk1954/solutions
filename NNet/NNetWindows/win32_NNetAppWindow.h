@@ -36,6 +36,7 @@
 #include "win32_slowMotionControl.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
+#include "NNetModelCommands.h"
 #include "NNetColors.h"
 
 class ReadModelResult;
@@ -119,6 +120,7 @@ private:
 	Observable                m_coordObservable          { };
 	NNetModelReaderInterface  m_modelReaderInterface     { };
 	NNetModelWriterInterface  m_modelWriterInterface     { };
+	NNetModelCommands         m_modelCommands            { };
 	ComputeThread             m_computeThread            { };
 	DescriptionWindow         m_descWindow               { };
 	CrsrWindow                m_crsrWindow               { };

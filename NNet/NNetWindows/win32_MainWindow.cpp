@@ -7,6 +7,7 @@
 #include "Resource.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
+#include "NNetModelCommands.h"
 #include "win32_MainWindow.h"
 
 void MainWindow::Start
@@ -16,7 +17,7 @@ void MainWindow::Start
 	bool                       const bShowRefreshRateDialog,
 	NNetController           * const pController,
 	NNetModelReaderInterface * const pModelReaderInterface,
-	NNetModelWriterInterface * const pModelWriterInterface,
+	NNetModelCommands        * const pNNetCommands,
 	Observable               * const pCursorObservable,
 	Observable               * const pCoordObservable
 )
@@ -30,9 +31,9 @@ void MainWindow::Start
 		pModelReaderInterface
 	);
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
-	m_pModelWriterInterface = pModelWriterInterface;
-	m_pCursorPosObservable  = pCursorObservable;
-	m_pCoordObservable      = pCoordObservable;
+	m_pNNetCommands        = pNNetCommands;
+	m_pCursorPosObservable = pCursorObservable;
+	m_pCoordObservable     = pCoordObservable;
 }
 
 void MainWindow::Stop( )
@@ -227,11 +228,11 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			if ( IsDefined( m_shapeHighlighted ) )
 			{
 				setSuperHighlightedShape( m_pModelReaderInterface->GetShapePos( m_shapeHighlighted ) );
-				m_pModelWriterInterface->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
+				m_pNNetCommands->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );
 			}
 			else if ( m_pModelReaderInterface->AnyShapesSelected( ) )   // move selected shapes 
 			{
-				m_pModelWriterInterface->MoveSelection( umCrsrPos - umLastPos );
+				m_pNNetCommands->MoveSelection( umCrsrPos - umLastPos );
 			}
 			else  // move view by manipulating coordinate system 
 			{
@@ -250,7 +251,7 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 void MainWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam )
 {
 	if ( IsDefined( m_shapeHighlighted ) )
-		m_pModelWriterInterface->SelectShape( m_shapeHighlighted, tBoolOp::opToggle );
+		m_pNNetCommands->SelectShape( m_shapeHighlighted, tBoolOp::opToggle );
 }
 
 void MainWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
@@ -267,7 +268,7 @@ bool MainWindow::OnRButtonUp( WPARAM const wParam, LPARAM const lParam )
 	bool bMadeSelection { m_rectSelection.IsNotEmpty() };
 	if ( bMadeSelection )
 	{
-		m_pModelWriterInterface->SelectShapesInRect( m_rectSelection );
+		m_pNNetCommands->SelectShapesInRect( m_rectSelection );
 		m_rectSelection.SetZero();
 	}
 	return bMadeSelection;
@@ -341,7 +342,7 @@ bool MainWindow::changePulseRate( ShapeId const id, bool const bDirection )
 	if ( fOldValue.IsNull() )
 		return false;
 	fHertz const fNewValue = fOldValue + ( bDirection ? INCREMENT : -INCREMENT );
-	m_pModelWriterInterface->SetPulseRate( id, fNewValue );
+	m_pNNetCommands->SetPulseRate( id, fNewValue );
 	return true;
 }
 

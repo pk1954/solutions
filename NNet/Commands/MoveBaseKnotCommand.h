@@ -18,12 +18,12 @@ public:
 		m_posBaseKnotOld( pBaseKnot->GetPosition() )
 	{}
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
 		m_pBaseKnot->SetPosition( m_posBaseKnotOld + m_delta );
 	}
 
-	virtual void Undo( NNetModel * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface * const pModel ) 
 	{ 
 		m_pBaseKnot->SetPosition( m_posBaseKnotOld );
 	}

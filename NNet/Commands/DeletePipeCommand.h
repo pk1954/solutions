@@ -22,7 +22,7 @@ public:
 
 	~DeletePipeCommand( ){ }
 
-	virtual void Do( NNetModel * const pModel )
+	virtual void Do( NNetModelWriterInterface * const pModel )
 	{
 		m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe );
 		if ( m_pStartKnot->IsOrphanedKnot( ) )
@@ -35,7 +35,7 @@ public:
 		pModel->RemoveFromModel( m_pPipe );
 	}
 
-	virtual void Undo( NNetModel * const pModel )
+	virtual void Undo( NNetModelWriterInterface * const pModel )
 	{
 		m_pStartKnot->m_connections.AddOutgoing( m_pPipe );
 		m_pEndKnot  ->m_connections.AddIncoming( m_pPipe );

@@ -5,18 +5,18 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "SelectionCommand.h"
 
 class SelectShapesInRectCommand : public SelectionCommand
 {
 public:
-	SelectShapesInRectCommand( NNetModel * const pModel, MicroMeterRect const & rect )
+	SelectShapesInRectCommand( NNetModelWriterInterface * const pModel, MicroMeterRect const & rect )
 	  :	SelectionCommand( pModel),
 		m_rect( rect )
 	{ }
 
-	virtual void Do( NNetModel * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
 		pModel->Apply2AllInRect<Shape>( m_rect, [&]( Shape & shape ) { shape.Select( tBoolOp::opTrue ); } );
 	}
