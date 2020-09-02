@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "Neuron.h"
 #include "NNetModelWriterInterface.h"
 
 void NNetModelWriterInterface::Start( NNetModel * const pModel )
@@ -33,7 +34,7 @@ void NNetModelWriterInterface::StaticModelChanged( )
 	m_pModel->StaticModelChanged(); 
 }
 
-Shape * NNetModelWriterInterface::GetShape ( ShapeId const id )     
+Shape * const NNetModelWriterInterface::GetShape ( ShapeId const id )     
 { 
 	return const_cast<Shape *>(m_pModel->GetConstShape( id ) );
 }
@@ -85,3 +86,14 @@ vector<Shape *> NNetModelWriterInterface::GetShapeList( ShapeCrit const& selecto
 	return list;
 }
 
+void NNetModelWriterInterface::SelectBeepers() 
+{ 
+	Apply2All<Neuron>
+	( 
+		[&](Neuron &n) 
+		{ 
+			if (n.HasTriggerSound()) 
+				n.Select( tBoolOp::opTrue ); 
+		} 
+	); 
+}

@@ -5,7 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "Command.h"
 #include "InputNeuron.h"
 

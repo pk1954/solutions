@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "Command.h"
 #include "BaseKnot.h"
 #include "Pipe.h"

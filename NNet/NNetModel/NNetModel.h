@@ -74,6 +74,11 @@ public:
 		return true;
 	}
 
+	bool const IsPipe( ShapeId const id ) const
+	{
+		return GetConstShape( id )->GetShapeType().IsPipeType();
+	}
+
 	bool const IsShapeNullPtr( ShapeId const id ) const
 	{
 		return m_Shapes[id.GetValue()] == nullptr;

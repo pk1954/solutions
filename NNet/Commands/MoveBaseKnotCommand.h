@@ -5,7 +5,7 @@
 #pragma once
 
 #include "MoreTypes.h"
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "MoveCommand.h"
 #include "BaseKnot.h"
 

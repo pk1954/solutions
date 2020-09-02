@@ -5,7 +5,7 @@
 #pragma once
 
 #include "tParameter.h"
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "Command.h"
 
 class SetParameterCommand : public Command

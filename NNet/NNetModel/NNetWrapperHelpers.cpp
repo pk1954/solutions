@@ -3,10 +3,8 @@
 // NNetWindows
 
 #include "stdafx.h"
-#include "assert.h"
 #include "ERRHNDL.H"
 #include "SCRIPT.H"
-#include "NNetModel.h"
 #include "NNetWrapperHelpers.h"
 
 ShapeId ScrReadShapeId( Script & script )

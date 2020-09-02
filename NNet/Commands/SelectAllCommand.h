@@ -5,7 +5,7 @@
 #pragma once
 
 #include "BoolOp.h"
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "SelectionCommand.h"
 
 class SelectAllCommand : public SelectionCommand

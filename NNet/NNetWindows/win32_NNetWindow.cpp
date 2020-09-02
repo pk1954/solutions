@@ -12,11 +12,10 @@
 #include "PixelTypes.h"
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
+#include "NNetModelWriterInterface.h"
 #include "NNetColors.h"
-#include "NNetModel.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
-#include "NNetModelWriterInterface.h"
 #include "win32_NNetWindow.h"
 
 using std::function;

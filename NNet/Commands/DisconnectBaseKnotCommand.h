@@ -5,7 +5,7 @@
 #pragma once
 
 #include <vector>
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "Command.h"
 #include "BaseKnot.h"
 #include "Knot.h"

@@ -9,12 +9,10 @@
 #include "tParameter.h"
 #include "MoreTypes.h"
 #include "ShapeId.h"
-#include "Neuron.h"
 #include "NNetModel.h"
 
 class Pipe;
 class BaseKnot;
-class NNetModelStorage;
 class ShapeErrorHandler;
 
 class NNetModelWriterInterface
@@ -28,14 +26,15 @@ public:
 
     NNetModel const & GetModel( ) { return * m_pModel; }
     Pipe    * const   NewPipe( BaseKnot * const, BaseKnot * const );
+    Shape   * const   GetShape( ShapeId const );
+
+    void SelectBeepers();
     void MarkShape( ShapeId const, tBoolOp const );
     void SetShape ( Shape * const, ShapeId const );	
     void SetNrOfShapes( long const );
     void SetShapeErrorHandler( ShapeErrorHandler * const );
 
     void StaticModelChanged( );
-
-    Shape * GetShape ( ShapeId const );
 
     template <typename T>
     T GetShapePtr( ShapeId const id ) 
@@ -80,7 +79,6 @@ public:
     void ClearModel( )                     { m_pModel->Apply2AllShapes( [&](Shape  &s) { s.Clear( ); } ); }
     void SelectAllShapes(tBoolOp const op) { m_pModel->Apply2AllShapes( [&](Shape  &s) { s.Select( op ); } ); }
 
-    void SelectBeepers() { Apply2All<Neuron>( [&](Neuron &n) { if (n.HasTriggerSound()) n.Select( tBoolOp::opTrue ); } ); }
 
     void ReplaceInModel ( Shape * const p2BeReplaced, Shape * pShape ) { SetShape( pShape,  p2BeReplaced->GetId() ); }
     void Store2Model    ( Shape * const pShape )                       { SetShape( pShape,  pShape->GetId() ); }

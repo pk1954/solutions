@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "NNetModel.h"
+#include "NNetModelWriterInterface.h"
 #include "Shape.h"
 #include "SelectionCommand.h"
 
