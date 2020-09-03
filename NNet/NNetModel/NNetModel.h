@@ -214,11 +214,6 @@ public:
 
 	void StaticModelChanged( );
 
-	MicroMeterPoint OrthoVector( ShapeId const idPipe ) const
-	{
-		return ::OrthoVector( GetShapeConstPtr<Pipe const *>( idPipe )->GetVector(), NEURON_RADIUS * 2.f );
-	}
-
 	void SetShapeErrorHandler( ShapeErrorHandler * const pHandler )
 	{	
 		m_pShapeErrorHandler = pHandler;

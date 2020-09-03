@@ -87,6 +87,24 @@ public:
 		);
 	}
 
+	MicroMeterCircle const Convert2MicroMeterCircle( fPixelCircle const & fPixCircle ) const
+	{
+		return MicroMeterCircle
+		( 
+			Convert2MicroMeterPointPos( fPixCircle.GetPosition() ),
+			Convert2MicroMeter        ( fPixCircle.GetRadius  () )
+		);
+	}
+
+	fPixelCircle const Convert2fPixelCircle( MicroMeterCircle const & umCircle ) const
+	{
+		return fPixelCircle
+		( 
+			Convert2fPixelPos( umCircle.GetPosition() ),
+			Convert2fPixel   ( umCircle.GetRadius  () )
+		);
+	}
+
 	//////// transformations PIXEL <---> fPixel ////////
 
 	PIXEL const Convert2PIXEL( fPIXEL const fP ) const

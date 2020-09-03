@@ -232,13 +232,17 @@ void D2D_driver::DrawLine
 
 void D2D_driver::DrawCircle
 (
-	fPixelPoint  const ptPos,
-	fPIXEL       const fPixRadius,
-	D2D1::ColorF const colF
+	fPixelCircle const & circle,
+	D2D1::ColorF const   colF
 ) const
 {
 	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
-	D2D1_ELLIPSE ellipse { D2D1_POINT_2F{ ptPos.GetXvalue(), ptPos.GetYvalue() }, fPixRadius.GetValue(), fPixRadius.GetValue() }; 
+	D2D1_ELLIPSE ellipse 
+	{ 
+		D2D1_POINT_2F{ circle.GetPosition().GetXvalue(), circle.GetPosition().GetYvalue() }, 
+		circle.GetRadius().GetValue(), 
+		circle.GetRadius().GetValue() 
+	}; 
 	m_pRenderTarget->FillEllipse( & ellipse, pBrush	);
 	SafeRelease( & pBrush );
 }

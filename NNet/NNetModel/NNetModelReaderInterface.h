@@ -46,6 +46,7 @@ public:
 	bool       const IsShapeNullPtr  ( ShapeId const id ) const { return m_pModel->IsShapeNullPtr(id); }
 	long       const GetSizeOfShapeList( )                const { return m_pModel->GetSizeOfShapeList(); }
 
+	MicroMeterPoint const OrthoVector( ShapeId const ) const;
 	MicroMeterPoint const GetShapePos( ShapeId const ) const;
 	MicroMeterRect  const GetEnclosingRect( ) const;
 
@@ -77,7 +78,7 @@ public:
 		{
 			if ( pShape )
 			{
-				if ( HasType<T>( pShape ) )	
+				if ( m_pModel->HasType<T>( pShape ) )	
 					bResult = func( static_cast<T const &>( * pShape ) );
 				if ( bResult )
 					break;
@@ -100,7 +101,7 @@ public:
 	}                        
 
 	template <typename T>   // const version
-	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func )
+	void Apply2AllInRect( MicroMeterRect const & r, function<void(T const &)> const & func ) const
 	{
 		Apply2All<T>( [&](T const & s) { if ( s.IsInRect(r) ) { func( s ); } } );
 	}

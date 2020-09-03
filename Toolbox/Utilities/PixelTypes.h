@@ -9,13 +9,15 @@
 #include "MoreTypes.h"
 #include "PointType.h"
 #include "RectType.h"
+#include "CircleType.h"
 
 /////////////////// PIXEL ///////////////////////////////////
 
-using PIXEL         = NamedType< long, struct PIXEL_Parameter >;
-using PixelPoint    = PosType  < PIXEL >;
-using PixelRectSize = SizeType < PIXEL >;
-using PixelRect     = RectType < PIXEL >;
+using PIXEL         = NamedType  < long, struct PIXEL_Parameter >;
+using PixelPoint    = PosType    < PIXEL >;
+using PixelRectSize = SizeType   < PIXEL >;
+using PixelRect     = RectType   < PIXEL >;
+using PixelCircle   = CircleType < PIXEL >;
 
 static PixelPoint const PP_NULL( PixelPoint::NULL_VAL() );   // compiler generates call!
 static PixelPoint const PP_ZERO( PixelPoint::ZERO_VAL() );   // compiler generates call!
@@ -27,10 +29,11 @@ constexpr PIXEL operator"" _PIXEL( unsigned long long ull )
 
 /////////////////// fPIXEL ///////////////////////////////////
 
-using fPIXEL         = NamedType< float, struct fPIXEL_Parameter >;
-using fPixelPoint    = PosType  < fPIXEL >;
-using fPixelRectSize = SizeType < fPIXEL >;
-using fPixelRect     = RectType < fPIXEL >;
+using fPIXEL         = NamedType  < float, struct fPIXEL_Parameter >;
+using fPixelPoint    = PosType    < fPIXEL >;
+using fPixelRectSize = SizeType   < fPIXEL >;
+using fPixelRect     = RectType   < fPIXEL >;
+using fPixelCircle   = CircleType < fPIXEL >;
 
 static fPixelPoint const fPP_NULL( fPixelPoint::NULL_VAL() );   // compiler generates call!
 static fPixelPoint const fPP_ZERO( fPixelPoint::ZERO_VAL() );   // compiler generates call!

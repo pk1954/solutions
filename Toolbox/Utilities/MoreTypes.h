@@ -10,6 +10,7 @@
 #include "NamedType.h"
 #include "PointType.h"
 #include "RectType.h"
+#include "CircleType.h"
 
 using std::chrono::microseconds;
 
@@ -137,6 +138,10 @@ using MicroMeterRect     = RectType< MicroMeter >;
 using MicroMeterRectSize = SizeType < MicroMeter >;
 
 MicroMeterPoint const MicroMeterRect::GetCenter( ) const { return ( GetStartPoint() + GetEndPoint() ) * 0.5f; }
+
+////////////// MicroMeterCircle /////////////////////////////////////
+
+using MicroMeterCircle = CircleType< MicroMeter >;
 
 ////////////// meterPerSec /////////////////////////////////////
 

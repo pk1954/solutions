@@ -12,9 +12,9 @@
 using std::endl;
 using std::to_wstring;
 
-bool ModelAnalyzer::FindLoop( NNetModel const & model )
+bool ModelAnalyzer::FindLoop( NNetModelWriterInterface const & model )
 {
-	int iNrOfShapes { model.GetSizeOfShapeList() };
+	int const iNrOfShapes { model.GetModel().GetSizeOfShapeList() };
 
 	for ( int iMaxLoopSize = 5; iMaxLoopSize <= iNrOfShapes + 1; iMaxLoopSize += 2 )
 	{
@@ -23,7 +23,7 @@ bool ModelAnalyzer::FindLoop( NNetModel const & model )
 		m_bStop     = false;
 		statusDisplay( wstring( L"Looking for loop of size " ) + to_wstring( iMaxLoopSize ) + L". Press ESC to stop." );
 		m_shapeStack.clear();
-		if ( model.Apply2AllB<BaseKnot>([&]( BaseKnot & baseKnot ) { return findLoop( & baseKnot ); } ) )
+		if ( model.GetModel().Apply2AllB<BaseKnot>([&]( BaseKnot & baseKnot ) { return findLoop( & baseKnot ); } ) )
 		{
 			if ( m_bStop )  
 			{
@@ -48,7 +48,7 @@ bool ModelAnalyzer::FindLoop( NNetModel const & model )
 // returns true, if loop found (m_bStop == false) or aborted by user (m_bStop == true). 
 //         false, if analysis completed and no loop found
 
-bool ModelAnalyzer::findLoop( Shape * const pShape )
+bool ModelAnalyzer::findLoop( Shape const * const pShape )
 {
 	if ( ( * m_pEscFunc )( ) )
 		m_bStop = true;
@@ -73,11 +73,17 @@ bool ModelAnalyzer::findLoop( Shape * const pShape )
 	}
 	else if ( pShape->IsPipe() )
 	{
-		bResult = findLoop( static_cast<Pipe *>(pShape)->GetEndKnotPtr( ) );  // recursion
+		bResult = findLoop( static_cast<Pipe const *>(pShape)->GetEndKnotPtr( ) );  // recursion
 	}
 	else if ( pShape->IsBaseKnot() )
 	{
-		bResult = static_cast<BaseKnot *>(pShape)->m_connections.Apply2AllOutPipesB( [&]( Pipe & pipe ) { return findLoop( & pipe ); } );
+		bResult = static_cast<BaseKnot const *>(pShape)->m_connections.Apply2AllOutPipesB
+		( 
+			[&]( Pipe & pipe ) 
+			{ 
+				return findLoop( & pipe ); 
+			} 
+		);
 	}
 	else
 	{
@@ -92,16 +98,16 @@ bool ModelAnalyzer::findLoop( Shape * const pShape )
 
 MicroMeterRect ModelAnalyzer::GetEnclosingRect( )
 {
-	return ::ComputeEnclosingRect( m_shapeStack );
+	return ::ComputeEnclosingRect( reinterpret_cast<vector<Shape *> const &>(m_shapeStack) );
 }
 
 void ModelAnalyzer::SelectLoopShapes( NNetModelWriterInterface & model )
 {
-	for ( const auto & pShape : m_shapeStack )
-		pShape->Select( tBoolOp::opTrue );
+	for ( const auto & pShape : m_shapeStack )                  // TODO: find better solution 
+		model.SelectShape( pShape->GetId(), tBoolOp::opTrue );  //  const cast ??
 }
 
-bool ModelAnalyzer::hasAnomaly( Knot & knot )
+bool ModelAnalyzer::hasAnomaly( Knot const & knot )
 {
 	bool bFoundAnomaly { false };
 
@@ -122,10 +128,10 @@ bool ModelAnalyzer::hasAnomaly( Knot & knot )
 	return bFoundAnomaly; 
 }
 
-bool ModelAnalyzer::FindAnomaly( NNetModel const & model )
+bool ModelAnalyzer::FindAnomaly( NNetModelWriterInterface const & model )
 {
 	m_shapeStack.clear();
-	bool const bFound { model.Apply2AllB<Knot>( [&]( Knot & knot ) { return hasAnomaly( knot ); } ) };
+	bool const bFound { model.GetModel().Apply2AllB<Knot>( [&]( Knot const & knot ) { return hasAnomaly( knot ); } ) };
 	if ( ! bFound )
 		statusDisplay( L"no anomalies found" );
 	return bFound;

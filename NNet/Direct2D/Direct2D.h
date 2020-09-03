@@ -37,7 +37,7 @@ public:
     void ShutDown( );
     void DrawTranspRect( fPixelRect const &, D2D1::ColorF const ) const;
     void DrawLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, D2D1::ColorF const ) const;
-    void DrawCircle( fPixelPoint const, fPIXEL const, D2D1::ColorF const ) const;
+    void DrawCircle( fPixelCircle const &, D2D1::ColorF const ) const;
     void DrawArrow( fPixelPoint const, fPixelPoint const, fPIXEL const, fPIXEL const, D2D1::ColorF const ) const;
     void Resize( int const, int const );
 

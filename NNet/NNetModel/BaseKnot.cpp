@@ -15,13 +15,13 @@ using std::end;
 
 void BaseKnot::SetPosition( MicroMeterPoint const & newPos )
 {
-	m_center = newPos;
+	m_circle.SetPosition( newPos ); 
 	m_connections.Recalc();
 }
 
 void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 {
-	SetPosition( m_center + delta );
+	SetPosition( GetPosition() + delta );
 }
 
 void BaseKnot::Prepare( )
@@ -49,7 +49,7 @@ bool BaseKnot::IsSuccessorOf( ShapeId const id )
 
 bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const
 {
-	return Distance( point, m_center ) <= m_extension;
+	return Distance( point, GetPosition() ) <= m_circle.GetRadius();
 }
 
 MicroMeterRect const BaseKnot::GetRect4Text( ) const
@@ -65,13 +65,12 @@ MicroMeterRect const BaseKnot::GetRect4Text( ) const
 
 void BaseKnot::drawCircle
 (
-	DrawContext     const & context, 
-	D2D1::ColorF    const   colF, 
-	MicroMeterPoint const   umCenter,
-	MicroMeter      const   umWidth
+	DrawContext      const & context, 
+	D2D1::ColorF     const   colF, 
+	MicroMeterCircle const   umCircle
 ) const
 {
-	context.DrawCircle( umCenter, umWidth, colF );
+	context.DrawCircle( umCircle, colF );
 }
 
 void BaseKnot::drawCircle
@@ -81,7 +80,7 @@ void BaseKnot::drawCircle
 	MicroMeter   const   umWidth
 ) const
 {
-	context.DrawCircle( GetPosition(), umWidth,	colF );
+	context.DrawCircle( MicroMeterCircle( GetPosition(), umWidth ),	colF );
 }
 
 BaseKnot const * Cast2BaseKnot( Shape const * shape )

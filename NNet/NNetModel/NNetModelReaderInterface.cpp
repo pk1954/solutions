@@ -195,6 +195,11 @@ ShapeId const NNetModelReaderInterface::FindShapeAt( MicroMeterPoint const & umP
 	return m_pModel->FindShapeAt( umPnt, crit );
 }
 
+MicroMeterPoint const NNetModelReaderInterface::OrthoVector( ShapeId const idPipe ) const
+{
+	return ::OrthoVector( m_pModel->GetShapeConstPtr<Pipe const *>( idPipe )->GetVector(), NEURON_RADIUS * 2.f );
+}
+
 void NNetModelReaderInterface::DrawExterior
 ( 
 	ShapeId        const   id,

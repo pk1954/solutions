@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "NNetModelWriterInterface.h"
-#include "NNetModel.h"
 #include "CommandStack.h"
 
 class OpenBracket  : public Command { public: virtual void Do( NNetModelWriterInterface * const pModel ) { } };

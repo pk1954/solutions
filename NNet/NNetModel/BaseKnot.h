@@ -5,6 +5,7 @@
 #pragma once
 
 #include "PixelTypes.h"
+#include "CircleType.h"
 #include "MoreTypes.h"
 #include "Connections.h"
 #include "Shape.h"
@@ -27,8 +28,7 @@ public:
 		MicroMeter      const extension
 	)
 	  : Shape( type ),
-		m_center( center ),
-		m_extension( extension )
+		m_circle( center, extension )
 	{ }
 
 	virtual ~BaseKnot() {}
@@ -37,12 +37,12 @@ public:
 	{
 		if ( ! Shape::IsEqual( other ) )
 			return false;
-		if ( ! IsCloseToZero( m_center - other.m_center ) )
+		if ( ! IsCloseToZero( GetPosition() - other.GetPosition() ) )
 		{
-			MicroMeterPoint diff = m_center - other.m_center;
+			MicroMeterPoint diff = GetPosition() - other.GetPosition();
 			return false;
 		}
-		if ( ! IsCloseToZero( m_extension - other.m_extension ) )
+		if ( ! IsCloseToZero( GetExtension() - other.GetExtension() ) )
 			return false;
 		return true;
 	}
@@ -51,13 +51,14 @@ public:
  	virtual mV   GetNextOutput( ) const = 0;
 	virtual void MoveShape    ( MicroMeterPoint const & );
 	virtual void SetPosition  ( MicroMeterPoint const & );
-	virtual bool IsInRect     ( MicroMeterRect  const & umRect ) const { return umRect.Includes( m_center ); }
+	virtual bool IsInRect     ( MicroMeterRect  const & umRect ) const { return umRect.Includes( GetPosition() ); }
 
 	static bool TypeFits( ShapeType const type ) { return type.IsBaseKnotType( ); }
 
-	MicroMeterPoint GetPosition ( ) const { return m_center; }
-	MicroMeter      GetExtension( ) const { return m_extension;	}
-	mV              GetVoltage  ( ) const { return m_mVinputBuffer; }
+	MicroMeterCircle const GetCircle   ( ) const { return m_circle; }
+	MicroMeterPoint  const GetPosition ( ) const { return m_circle.GetPosition(); }
+	MicroMeter       const GetExtension( ) const { return m_circle.GetRadius(); }
+	mV               const GetVoltage  ( ) const { return m_mVinputBuffer; }
 
 	bool IsOrphanedKnot( ) const { return IsKnot() && m_connections.IsOrphan(); }
 
@@ -89,15 +90,14 @@ public:
 
 protected:
 
-	void drawCircle( DrawContext const &, D2D1::ColorF const, MicroMeterPoint const, MicroMeter const ) const;
-	void drawCircle( DrawContext const &, D2D1::ColorF const, MicroMeter const ) const;
+	void drawCircle( DrawContext const &, D2D1::ColorF const, MicroMeterCircle const ) const;
+	void drawCircle( DrawContext const &, D2D1::ColorF const, MicroMeter       const ) const;
 
 	MicroMeterRect const GetRect4Text( ) const;
 
 private:
 
-	MicroMeterPoint m_center;
-	MicroMeter      m_extension;
+	MicroMeterCircle m_circle;
 };
 
 BaseKnot const * Cast2BaseKnot( Shape const * );

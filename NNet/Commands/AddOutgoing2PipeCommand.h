@@ -23,7 +23,7 @@ public:
 		m_pPipeOld      = pModel->GetShapePtr<Pipe *>( idPipe );
 		m_pStartKnotOld = m_pPipeOld->GetStartKnotPtr( );
 		m_pKnotInsert   = pModel->NewBaseKnot<Knot>( pos );
-		m_pKnotOrtho    = pModel->NewBaseKnot<Knot>( pos + pModel->GetModel().OrthoVector( idPipe ) );
+		m_pKnotOrtho    = pModel->NewBaseKnot<Knot>( pos + pModel->OrthoVector( idPipe ) );
 		m_pPipeOrtho    = pModel->NewPipe( m_pKnotInsert, m_pKnotOrtho );		
 		m_pPipeExt      = pModel->NewPipe( m_pStartKnotOld, m_pKnotInsert );	
 

@@ -144,20 +144,20 @@ void Neuron::DrawExterior( DrawContext const & context, tHighlightType const typ
 {
 	if ( m_bStopOnTrigger )
 	{
-		context.DrawCircle( GetPosition(), GetExtension() * 1.4f, GetFrameColor( type ) );
-		context.DrawCircle( GetPosition(), GetExtension() * 1.2f, NNetColors::INT_TRIGGER );
+		context.DrawCircle( GetCircle() * 1.4f, GetFrameColor( type ) );
+		context.DrawCircle( GetCircle() * 1.2f, NNetColors::INT_TRIGGER );
 	}
-	context.DrawCircle( GetPosition(), GetExtension(), GetFrameColor( type ) );
+	context.DrawCircle( GetCircle(), GetFrameColor( type ) );
 	if ( HasAxon() )
-		context.DrawCircle( getAxonHillockPos( ), GetExtension() * 0.5f, GetFrameColor( type ) );
+		context.DrawCircle( MicroMeterCircle( getAxonHillockPos(), GetExtension() * 0.5f ), GetFrameColor( type ) );
 }
 
 void Neuron::DrawInterior( DrawContext const & context ) const
 { 
 	D2D1::ColorF const color { m_bTriggered ? NNetColors::INT_TRIGGER : GetInteriorColor( ) };
-	context.DrawCircle( GetPosition(), GetExtension() * NEURON_INTERIOR, color );
+	context.DrawCircle( GetCircle() * NEURON_INTERIOR, color );
 	if ( HasAxon() )
-		context.DrawCircle( getAxonHillockPos( ), GetExtension() * (NEURON_INTERIOR - 0.5f), color );
+		context.DrawCircle( MicroMeterCircle( getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f) ), color );
 	m_bTriggered = false;
 }
 

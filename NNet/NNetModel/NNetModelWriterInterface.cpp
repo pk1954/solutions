@@ -71,6 +71,11 @@ void NNetModelWriterInterface::MarkShape( ShapeId const idShape, tBoolOp const o
 	GetShapePtr<Shape *>( idShape )->Mark( op ); 
 }
 
+void NNetModelWriterInterface::SelectShape( ShapeId const idShape, tBoolOp const op ) 
+{ 
+	GetShapePtr<Shape *>( idShape )->Select( op ); 
+}
+
 void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
 {
 	if ( Neuron * pNeuron { GetShapePtr<Neuron *>( id ) } )

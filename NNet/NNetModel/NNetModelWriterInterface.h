@@ -24,13 +24,15 @@ public:
 
     void CreateInitialShapes();
 
-    NNetModel const & GetModel( ) { return * m_pModel; }
+    NNetModel const & GetModel( ) const { return * m_pModel; }  // TODO: find better solution
+
     Pipe    * const   NewPipe( BaseKnot * const, BaseKnot * const );
     Shape   * const   GetShape( ShapeId const );
 
     void SelectBeepers();
-    void MarkShape( ShapeId const, tBoolOp const );
-    void SetShape ( Shape * const, ShapeId const );	
+    void SelectShape( ShapeId const, tBoolOp const );
+    void MarkShape  ( ShapeId const, tBoolOp const );
+    void SetShape   ( Shape * const, ShapeId const );	
     void SetNrOfShapes( long const );
     void SetShapeErrorHandler( ShapeErrorHandler * const );
 
@@ -79,7 +81,6 @@ public:
     void ClearModel( )                     { m_pModel->Apply2AllShapes( [&](Shape  &s) { s.Clear( ); } ); }
     void SelectAllShapes(tBoolOp const op) { m_pModel->Apply2AllShapes( [&](Shape  &s) { s.Select( op ); } ); }
 
-
     void ReplaceInModel ( Shape * const p2BeReplaced, Shape * pShape ) { SetShape( pShape,  p2BeReplaced->GetId() ); }
     void Store2Model    ( Shape * const pShape )                       { SetShape( pShape,  pShape->GetId() ); }
     void RemoveFromModel( Shape * const pShape )                       { SetShape( nullptr, pShape->GetId() ); }
@@ -88,6 +89,11 @@ public:
         ShapeId const idNewSlot { m_pModel->NewShapeListSlot( ) };
         pShape->SetId( idNewSlot );
         SetShape( pShape, idNewSlot );
+    }
+
+    MicroMeterPoint const OrthoVector( ShapeId const idPipe ) const
+    {
+        return ::OrthoVector( m_pModel->GetShapeConstPtr<Pipe const *>( idPipe )->GetVector(), NEURON_RADIUS * 2.f );
     }
 
     vector<Shape *> GetShapeList( ShapeCrit const & ) const;
@@ -102,5 +108,5 @@ private:
 
     ShapeId const newShapeListSlot( );
 
-	NNetModel * m_pModel { nullptr };
+    NNetModel * m_pModel { nullptr };
 }; 

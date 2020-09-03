@@ -18,7 +18,7 @@ public:
 	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
 		pModel->SelectAllShapes( tBoolOp::opFalse );
-		if ( ModelAnalyzer::FindAnomaly( pModel->GetModel() ) )
+		if ( ModelAnalyzer::FindAnomaly( * pModel ) )
 			ModelAnalyzer::SelectLoopShapes( * pModel );
 	}
 };

@@ -33,8 +33,8 @@ public:
 		D2D1::ColorF    const
 	) const = 0;
 
-	virtual void DrawCircle( MicroMeterPoint const &, MicroMeter const,	D2D1::ColorF const ) const = 0;
-	virtual void DrawTranspRect( MicroMeterRect const &, D2D1::ColorF ) const = 0;
+	virtual void DrawCircle    ( MicroMeterCircle const &, D2D1::ColorF const ) const = 0;
+	virtual void DrawTranspRect( MicroMeterRect   const &, D2D1::ColorF const ) const = 0;
 	virtual void ShowScale( PIXEL ) const = 0;
 	virtual void DisplayText
 	(

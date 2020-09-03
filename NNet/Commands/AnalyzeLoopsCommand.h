@@ -18,7 +18,7 @@ public:
 	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
 		pModel->SelectAllShapes( tBoolOp::opFalse );
-		if ( ModelAnalyzer::FindLoop( pModel->GetModel() ) )
+		if ( ModelAnalyzer::FindLoop( * pModel ) )
 			ModelAnalyzer::SelectLoopShapes( * pModel );
 	}
 };
