@@ -107,25 +107,6 @@ public:
 
 	//////// transformations PIXEL <---> fPixel ////////
 
-	PIXEL const Convert2PIXEL( fPIXEL const fP ) const
-	{
-		return PIXEL( CastToLong( fP.GetValue() ) );
-	}
-
-	fPIXEL const Convert2fPIXEL( PIXEL const p ) const
-	{
-		return fPIXEL( static_cast<float>( p.GetValue() ) );
-	}
-
-	PixelPoint const Convert2PixelPoint( fPixelPoint const fPnt ) const
-	{
-		return PixelPoint( Convert2PIXEL(fPnt.GetX()), Convert2PIXEL(fPnt.GetY()) );
-	}
-
-	fPixelPoint const Convert2fPixelPoint( PixelPoint const pnt ) const
-	{
-		return fPixelPoint( Convert2fPIXEL(pnt.GetX()), Convert2fPIXEL(pnt.GetY()) );
-	}
 
 	PixelRect const Convert2PixelRect( fPixelRect const & fPixRect ) const
 	{
@@ -169,7 +150,7 @@ public:
 
 	PIXEL Convert2PIXEL( MicroMeter const um ) const
 	{
-		return Convert2PIXEL(Convert2fPixel( um ) );
+		return ::Convert2PIXEL(Convert2fPixel( um ) );
 	}
 
 	PixelPoint Convert2PixelSize( MicroMeterPoint const & umPnt ) const

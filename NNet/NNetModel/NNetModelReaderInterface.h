@@ -52,17 +52,24 @@ public:
 
 	fMicroSecs GetSimulationTime( ) const;
 
-	template <typename T>
-	unsigned long const GetNrOf( ) const
-	{
-		return T::GetCounter( );
-	}
-
 	void DrawExterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;
 	void DrawInterior  ( ShapeId const, DrawContext const & ) const;
 	void DrawNeuronText( ShapeId const, DrawContext const & ) const;
 
 	ShapeId const FindShapeAt( MicroMeterPoint const &, ShapeCrit const & ) const;
+
+	template <typename T>
+	T const GetConstShapePtr( ShapeId const id ) const
+	{
+		Shape const * const pShape { m_pModel->GetConstShape( id ) };
+		return (pShape && m_pModel->HasType<T>(pShape)) ? static_cast<T>( pShape ) : nullptr;
+	}
+
+	template <typename T>
+	unsigned long const GetNrOf( ) const
+	{
+		return T::GetCounter( );
+	}
 
 	template <typename T> 
 	bool IsOfType( ShapeId const id ) const 

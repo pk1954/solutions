@@ -7,6 +7,7 @@
 #include <sstream>
 #include "Resource.h"
 #include "win32_stdDialogBox.h"
+#include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_parameterDlg.h"
 

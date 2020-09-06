@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "NNetParameters.h"
 #include "win32_baseDialog.h"
 
+class Param;
 class NNetModelWriterInterface;
 
 class ParameterDialog : public BaseDialog

@@ -28,6 +28,10 @@
 #include "NNetModelCommands.h"
 #include "win32_NNetController.h"
 
+#include "Signal.h"
+#include "ProbeHead.h"
+#include "win32_monitorWindow.h"
+
 void NNetController::Initialize
 (
     NNetModelStorage         * const pStorage,
@@ -40,7 +44,8 @@ void NNetController::Initialize
     DisplayFunctor           * const func,
     Sound                    * const pSound,
     Preferences              * const pPreferences,
-    CommandStack             * const pCommandStack
+    CommandStack             * const pCommandStack,
+    ProbeHead                * const pProbeHead
 ) 
 {
     m_pStorage              = pStorage;
@@ -54,6 +59,7 @@ void NNetController::Initialize
     m_pSound                = pSound;
     m_pPreferences          = pPreferences;
     m_pCommandStack         = pCommandStack;
+    m_pProbeHead            = pProbeHead;
     m_hCrsrWait             = LoadCursor( NULL, IDC_WAIT );
     m_pAnimationThread      = new AnimationThread( );
 }
@@ -175,6 +181,17 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
     case IDD_STOP_ON_TRIGGER:                 // effects model, but seems to be secure  
         m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
         m_pModelCommands->ToggleStopOnTrigger( m_pMainWindow->GetHighlightedShapeId() );
+        break;
+
+    case IDD_ATTACH2MONITOR:
+        {
+            ShapeId id { m_pMainWindow->GetHighlightedShapeId() };
+            if ( m_pModelReaderInterface->IsOfType<Neuron>( id ) )
+            {
+                Neuron const * pNeuron { m_pModelReaderInterface->GetConstShapePtr<Neuron const *>( id ) };
+                m_pProbeHead->SetSignalSource( * pNeuron );
+            }
+        }
         break;
 
     case IDM_REFRESH:

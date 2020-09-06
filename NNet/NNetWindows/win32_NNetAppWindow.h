@@ -10,6 +10,8 @@
 #include "NNetModel.h"
 #include "Preferences.h"
 #include "SlowMotionRatio.h"
+#include "Signal.h"
+#include "ProbeHead.h"
 #include "ComputeThread.h"
 #include "NNetModelStorage.h"
 #include "CommandStack.h"
@@ -142,6 +144,8 @@ private:
 	CommandStack              m_cmdStack                 { };
 	UndoRedoMenu              m_undoRedoMenu             { };
 	UnsavedChangesObserver    m_unsavedChangesObserver   { };
+	Signal                    m_signal                   { };
+	ProbeHead                 m_probeHead                { };
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 };

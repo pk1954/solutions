@@ -34,7 +34,7 @@ void NNetModelWriterInterface::StaticModelChanged( )
 	m_pModel->StaticModelChanged(); 
 }
 
-Shape * const NNetModelWriterInterface::GetShape ( ShapeId const id )     
+Shape * const NNetModelWriterInterface::GetShape( ShapeId const id )     
 { 
 	return const_cast<Shape *>(m_pModel->GetConstShape( id ) );
 }

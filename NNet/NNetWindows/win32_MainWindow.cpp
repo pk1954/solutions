@@ -74,6 +74,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_PULSE_RATE,            L"Pulse rate" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SHAPE,          L"Delete" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DISCONNECT,            L"Disconnect" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_ATTACH2MONITOR,        L"Monitor" );
 		break;
 
 	case ShapeType::Value::neuron:
@@ -85,6 +86,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_TRIGGER_SOUND_DLG,     L"Trigger sound" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_SELECT_SUBTREE,        L"Select subtree" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_STOP_ON_TRIGGER,       L"Stop on trigger on/off" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_ATTACH2MONITOR,        L"Monitor" );
 		break;
 
 	case ShapeType::Value::knot:  
@@ -321,7 +323,7 @@ void MainWindow::OnPaint( )
 	if ( m_bFocusMode )
 	{
 		bool        const bTargetReached { m_smoothMove.Next() };
-		fPixelPoint const fpCenter       { GetCoord().Convert2fPixelPoint( GetClRectCenter( ) ) };
+		fPixelPoint const fpCenter       { Convert2fPixelPoint( GetClRectCenter( ) ) };
 		GetDrawContext().Zoom  ( m_smoothMove.GetNewSize() );
 		GetDrawContext().Center( m_smoothMove.GetNewCenter(), fpCenter );
 		Notify( true );                               // cause immediate repaint

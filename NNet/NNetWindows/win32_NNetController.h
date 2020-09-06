@@ -17,6 +17,7 @@ class MainWindow;
 class WinManager;
 class Preferences;
 class CommandStack;
+class ProbeHead;
 class Param;
 class Sound;
 
@@ -39,7 +40,8 @@ public:
 		DisplayFunctor           * const,
 		Sound                    * const,
 		Preferences              * const,
-		CommandStack             * const
+		CommandStack             * const,
+		ProbeHead                * const
 	);
 
 	virtual ~NNetController( );
@@ -66,4 +68,5 @@ private:
 	AnimationThread          * m_pAnimationThread      { nullptr };
 	Preferences              * m_pPreferences          { nullptr };
 	CommandStack             * m_pCommandStack         { nullptr };
+	ProbeHead                * m_pProbeHead            { nullptr };
 };				          

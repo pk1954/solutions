@@ -46,7 +46,7 @@ void MiniWindow::Notify( bool const bImmediately )
 		MicroMeterRect const umRectMain  { m_pObservedNNetWindow->GetViewRect() }; // current position of main window view 
 		MicroMeterRect const umRectModel { GetEnclosingRect() };                   // current extension of model
 		MicroMeterRect const umRectShow  { Union( umRectMain, umRectModel ) };     // all this should be visible  
-		fPixelPoint    const fpCenter    { GetCoord().Convert2fPixelPoint( GetClRectCenter() ) };
+		fPixelPoint    const fpCenter    { Convert2fPixelPoint( GetClRectCenter() ) };
 		MicroMeter      umPixelSizeTarget;
 		MicroMeterPoint umPntCenterTarget { NP_ZERO };
 		GetCoord().ComputeCenterAndZoom

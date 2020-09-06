@@ -130,6 +130,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_cmdStack      .Initialize( & m_modelWriterInterface, & m_commandStackObservable );
 	m_NNetColors    .Initialize( & m_blinkObservable );
 	m_sound         .Initialize( & m_soundOnObservable );
+	m_probeHead     .Initialize( m_modelReaderInterface );
+	m_signal        .Initialize( m_parameters );
 	m_NNetController.Initialize
 	( 
 		& m_modelStorage,
@@ -142,12 +144,13 @@ void NNetAppWindow::Start( MessagePump & pump )
 		& m_statusBarDispFunctor,
 		& m_sound,
 		& m_preferences,
-		& m_cmdStack
+		& m_cmdStack,
+		& m_probeHead
 	);
 
 	m_mainNNetWindow   .SetRefreshRate(   0ms );   // immediate refresh
 	m_miniNNetWindow   .SetRefreshRate( 200ms );
-	m_monitorWindow    .SetRefreshRate( 500ms );
+	m_monitorWindow    .SetRefreshRate(   0ms );
 	m_crsrWindow       .SetRefreshRate( 100ms );
 	m_performanceWindow.SetRefreshRate( 500ms );
 	m_StatusBar        .SetRefreshRate( 300ms );
@@ -189,22 +192,23 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_crsrWindow          .Start( m_hwndApp, & m_mainNNetWindow, & m_modelReaderInterface );
 	m_parameterDlg        .Start( m_hwndApp, & m_modelWriterInterface, & m_parameters );
 	m_performanceWindow   .Start( m_hwndApp, & m_modelReaderInterface, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
-	m_monitorWindow       .Start( m_hwndApp );
+	m_monitorWindow       .Start( m_hwndApp, m_modelReaderInterface, m_parameters );
 
-	m_WinManager.AddWindow( L"IDM_CONS_WINDOW",    IDM_CONS_WINDOW,  m_hwndConsole,                  true,  true  );
-	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,  m_hwndApp,                      true,  true  );
-	m_WinManager.AddWindow( L"IDM_STATUS_BAR",     IDM_STATUS_BAR,   m_StatusBar.GetWindowHandle(),  false, false );
-	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",    IDM_CRSR_WINDOW,  m_crsrWindow,                   true,  false );
-	m_WinManager.AddWindow( L"IDM_DESC_WINDOW",    IDM_DESC_WINDOW,  m_descWindow.GetWindowHandle(), true,  true  );
-	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",    IDM_MAIN_WINDOW,  m_mainNNetWindow,               true,  false );
-	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",    IDM_MINI_WINDOW,  m_miniNNetWindow,               true,  true  );
-	m_WinManager.AddWindow( L"IDM_MONITOR_WINDOW", IDM_MONITOR_WINDOW,  m_monitorWindow,               true,  true  );
-	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW",   IDM_PARAM_WINDOW, m_parameterDlg,                 true,  false );
-	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",    IDM_PERF_WINDOW,  m_performanceWindow,            true,  false );
+	m_WinManager.AddWindow( L"IDM_CONS_WINDOW",    IDM_CONS_WINDOW,    m_hwndConsole,                  true,  true  );
+	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true  );
+	m_WinManager.AddWindow( L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_StatusBar.GetWindowHandle(),  false, false );
+	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",    IDM_CRSR_WINDOW,    m_crsrWindow,                   true,  false );
+	m_WinManager.AddWindow( L"IDM_DESC_WINDOW",    IDM_DESC_WINDOW,    m_descWindow.GetWindowHandle(), true,  true  );
+	m_WinManager.AddWindow( L"IDM_MAIN_WINDOW",    IDM_MAIN_WINDOW,    m_mainNNetWindow,               true,  false );
+	m_WinManager.AddWindow( L"IDM_MINI_WINDOW",    IDM_MINI_WINDOW,    m_miniNNetWindow,               true,  true  );
+	m_WinManager.AddWindow( L"IDM_MONITOR_WINDOW", IDM_MONITOR_WINDOW, m_monitorWindow,                true,  true  );
+	m_WinManager.AddWindow( L"IDM_PARAM_WINDOW",   IDM_PARAM_WINDOW,   m_parameterDlg,                 true,  false );
+	m_WinManager.AddWindow( L"IDM_PERF_WINDOW",    IDM_PERF_WINDOW,    m_performanceWindow,            true,  false );
 
 	m_staticModelObservable   .RegisterObserver( & m_modelStorage );
 	m_blinkObservable         .RegisterObserver( & m_mainNNetWindow );
 	m_dynamicModelObservable  .RegisterObserver( & m_mainNNetWindow );
+	m_dynamicModelObservable  .RegisterObserver( & m_probeHead );
 	m_staticModelObservable   .RegisterObserver( & m_mainNNetWindow );
 	m_staticModelObservable   .RegisterObserver( & m_miniNNetWindow );
 	m_cursorPosObservable     .RegisterObserver( & m_crsrWindow );
@@ -219,6 +223,10 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_soundOnObservable       .RegisterObserver( & m_appMenu );
 	m_commandStackObservable  .RegisterObserver( & m_undoRedoMenu );
 	m_coordObservable         .RegisterObserver( & m_miniNNetWindow );
+	m_signal                  .RegisterObserver( & m_monitorWindow );
+
+	m_probeHead.AttachSignal( & m_signal );
+	m_monitorWindow.SetSignal( m_signal );
 
 	configureStatusBar( );
 	adjustChildWindows( );

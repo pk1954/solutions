@@ -203,6 +203,7 @@
     <ClInclude Include="NNetWrappers.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PipeList.h" />
+    <ClInclude Include="ProbeHead.h" />
     <ClInclude Include="scale.h" />
     <ClInclude Include="NNetError.h" />
     <ClInclude Include="Segment.h" />

@@ -44,8 +44,8 @@ public:
 
 	MicroMeterRect const GetViewRect() const;
 
-	DrawContext          & GetDrawContext  ()       { return   m_context; }
-	PixelCoordsFp  const & GetCoord        () const { return   m_context.GetCoordC(); }
+	DrawContext          & GetDrawContext  ()       { return m_context; }
+	PixelCoordsFp  const & GetCoord        () const { return m_context.GetCoordC(); }
 	MicroMeterRect const   GetEnclosingRect() const;
 
 	ShapeId const FindShapeAt         ( PixelPoint const &, ShapeCrit const & ) const;

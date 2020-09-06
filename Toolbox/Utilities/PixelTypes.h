@@ -67,24 +67,24 @@ static PIXEL Convert2PIXEL( fPIXEL const fPixel )
 	return PIXEL( CastToLong( fPixel.GetValue() ) );
 }
 
-static PixelPoint Convert2PixelPoint( fPixelPoint const fPixPoint )
-{
-	return PixelPoint( Convert2PIXEL( fPixPoint.GetX() ), Convert2PIXEL( fPixPoint.GetY() ) );
-}
-
-static PixelRectSize Convert2PixelRectSize( fPixelRectSize const fRectSize )
-{
-	return PixelRectSize( Convert2PIXEL( fRectSize.GetX() ), Convert2PIXEL( fRectSize.GetY() ) );
-}
-
 static fPIXEL Convert2fPIXEL( PIXEL const pixel )
 {
 	return fPIXEL( CastToFloat( pixel.GetValue() ) );
 }
 
+static PixelPoint Convert2PixelPoint( fPixelPoint const fPixPoint )
+{
+	return PixelPoint( Convert2PIXEL( fPixPoint.GetX() ), Convert2PIXEL( fPixPoint.GetY() ) );
+}
+
 static fPixelPoint Convert2fPixelPoint( PixelPoint const pixPoint )
 {
 	return fPixelPoint( Convert2fPIXEL( pixPoint.GetX() ), Convert2fPIXEL( pixPoint.GetY() ) );
+}
+
+static PixelRectSize Convert2PixelRectSize( fPixelRectSize const fRectSize )
+{
+	return PixelRectSize( Convert2PIXEL( fRectSize.GetX() ), Convert2PIXEL( fRectSize.GetY() ) );
 }
 
 static fPixelRectSize Convert2fPixelRectSize( PixelRectSize const rectSize )
