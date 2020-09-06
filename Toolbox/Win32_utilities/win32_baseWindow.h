@@ -25,6 +25,17 @@ protected:
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 
+	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const ) {};
+	virtual void OnMouseWheel        ( WPARAM const, LPARAM const ) {};
+	virtual void OnMouseMove         ( WPARAM const, LPARAM const ) {};
+	virtual void OnSetCursor         ( WPARAM const, LPARAM const ) {};
+	virtual void OnChar              ( WPARAM const, LPARAM const ) {};
+	virtual void OnLButtonUp         ( WPARAM const, LPARAM const ) {};
+	virtual void OnLButtonDown       ( WPARAM const, LPARAM const ) {};
+	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const ) { return false; };
+	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const ) { return false; };
+	virtual bool OnSize              ( WPARAM const, LPARAM const ) { return false; };
+
 	virtual void OnPaint( ) = 0;
 
 private:

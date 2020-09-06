@@ -19,7 +19,6 @@ public:
 
 	void SetSignal( Signal const & );
 
-
 	virtual long AddContextMenuEntries( HMENU const ) { return 0; }
 
 private:

@@ -23,15 +23,12 @@ public:
 	{
 		DrawContext::Initialize( );
 		m_graphics.Initialize( hwnd );
-		m_pScale = new Scale( & m_coord );
 		SetStdFontSize( STD_FONT_SIZE );
 	}
 
 	void Stop( )
 	{
 		m_graphics.ShutDown( );
-		delete m_pScale;
-		m_pScale = nullptr;
 	}
 
 	bool StartFrame( HDC const hDC )
@@ -108,9 +105,15 @@ public:
 		m_graphics.DrawTranspRect( m_coord.Convert2fPixelRect( umRect ), col );
 	}
 
-	virtual void ShowScale( PIXEL pixHeight ) const 
+	virtual void ShowScale( PixelRectSize const & pixRectSize ) const 
 	{
-		m_pScale->ShowScale( m_graphics, Convert2fPIXEL( pixHeight ) );
+		Scale::Display
+		( 
+			m_graphics, 
+			pixRectSize, 
+			m_coord.GetPixelSize().GetValue(), 
+			L"m" 
+		);
 	}
 
 	virtual void DisplayText
@@ -126,5 +129,4 @@ public:
 
 private:
 	D2D_driver m_graphics;
-	Scale    * m_pScale { nullptr };
 };

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include <math.h>    
 #include "Signal.h"
+#include "scale.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
@@ -47,27 +48,35 @@ void MonitorWindow::doPaint( )
 {
 	fPixelRectSize rectSize { Convert2fPixelRectSize( GetClRectSize( ) ) };
 
-	float      const fSizeX          { rectSize.GetX().GetValue() };
-	fPIXEL     const fPixYoffset     { rectSize.GetY() / 2.0f };
-	fMicroSecs const usResolution    { m_pParams->GetTimeResolution( ) };
-	fMicroSecs const usInWindow      { m_fMicroSecsPerPixel * fSizeX };
-	float      const fPointsInWindow { usInWindow / usResolution };
-	fMicroSecs const timeEnd         { m_pModel->GetSimulationTime( ) };
-	fMicroSecs const timeStart       { max( timeEnd - usInWindow, m_pSignal->GetStartTime() ) };
-	fMicroSecs const usIncrement     { (fPointsInWindow > fSizeX) ? m_fMicroSecsPerPixel : usResolution };
-	fPIXEL     const fPixYvalue      { getYvalue( timeEnd ) };
+	float      const fSizeX      { rectSize.GetX().GetValue() };
+	fPIXEL     const fPixYoffset { rectSize.GetY() * 0.75f };
+	fMicroSecs const usResolution{ m_pParams->GetTimeResolution( ) };
+	fMicroSecs const usInWindow  { m_fMicroSecsPerPixel * fSizeX };
+	float      const fPointsInWin{ usInWindow / usResolution };
+	fMicroSecs const timeEnd     { m_pModel->GetSimulationTime( ) };
+	fMicroSecs const timeStart   { max( timeEnd - usInWindow, m_pSignal->GetStartTime() ) };
+	fMicroSecs const usIncrement { (fPointsInWin > fSizeX) ? m_fMicroSecsPerPixel : usResolution };
+	fPIXEL     const fPixYvalue  { getYvalue( timeEnd ) };
 	if ( ! isnan(fPixYvalue.GetValue()) )
 	{
-		fPixelPoint previousPoint { rectSize.GetX(), fPixYvalue + fPixYoffset };
+		fPixelPoint prevPoint { rectSize.GetX(), fPixYvalue + fPixYoffset };
 		for ( fMicroSecs time = timeEnd - usIncrement; time >= timeStart; time -= usIncrement )
 		{
-			float       const fTicks      { (timeEnd - time) / m_fMicroSecsPerPixel };
-			fPIXEL      const fPixX       { rectSize.GetX() - fPIXEL(roundf(fTicks)) };
-			fPixelPoint const actualPoint { fPixX, fPixYoffset - getYvalue( time ) };
-			m_graphics.DrawLine( previousPoint, actualPoint, 1.0_fPIXEL, NNetColors::COL_BLACK );
-			previousPoint = actualPoint;
+			float       const fTicks   { (timeEnd - time) / m_fMicroSecsPerPixel };
+			fPIXEL      const fPixX    { rectSize.GetX() - fPIXEL(fTicks) };
+			fPixelPoint const actPoint { fPixX, fPixYoffset - getYvalue( time ) };
+			m_graphics.DrawLine( prevPoint, actPoint, 1.0_fPIXEL, NNetColors::COL_BLACK );
+			prevPoint = actPoint;
 		}
 	}
+
+	Scale::Display
+	( 
+		m_graphics, 
+		GetClRectSize(), 
+		m_fMicroSecsPerPixel.GetValue(), 
+		L"s" 
+	);
 }
 
 void MonitorWindow::OnPaint( )
@@ -98,11 +107,50 @@ void MonitorWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 	static float const ZOOM_FACTOR { 1.3f };
 
 	int  const iDelta     { GET_WHEEL_DELTA_WPARAM( wParam ) / WHEEL_DELTA };
+	bool const bShiftKey  { (wParam & MK_SHIFT) != 0 };
 	bool const bDirection { iDelta > 0 };
 
 	for ( int iSteps = abs( iDelta ); iSteps > 0; --iSteps )
 	{
-		float const fFactor { bDirection ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
-		m_fMicroSecsPerPixel *= fFactor;
+		if ( bShiftKey )
+		{
+			static const fMicroSecs LOWER_LIMIT {   1.0_MicroSecs };
+			static const fMicroSecs UPPER_LIMIT { 400.0_MicroSecs };
+			if ( bDirection )
+			{
+				if ( m_fMicroSecsPerPixel > LOWER_LIMIT )
+					m_fMicroSecsPerPixel /= ZOOM_FACTOR;
+				else 
+					MessageBeep( MB_ICONWARNING );
+			}
+			else
+			{
+				if ( m_fMicroSecsPerPixel < UPPER_LIMIT )
+					m_fMicroSecsPerPixel *= ZOOM_FACTOR;
+				else 
+					MessageBeep( MB_ICONWARNING );
+			}
+		}
+		else
+		{
+			static const float LOWER_LIMIT { 0.001f };
+			static const float UPPER_LIMIT { 100.0f };
+			if ( bDirection )
+			{
+				if ( m_fYvaluesPerPixel > LOWER_LIMIT )
+					m_fYvaluesPerPixel /= ZOOM_FACTOR;
+				else 
+					MessageBeep( MB_ICONWARNING );
+			}
+			else
+			{
+				if ( m_fYvaluesPerPixel < UPPER_LIMIT )
+					m_fYvaluesPerPixel *= ZOOM_FACTOR;
+				else 
+					MessageBeep( MB_ICONWARNING );
+			}
+		}
 	}
+
+	Trigger();  // cause repaint
 }

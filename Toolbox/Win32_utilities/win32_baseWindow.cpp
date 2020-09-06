@@ -76,6 +76,39 @@ bool BaseWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const
         OnPaint( );
         return false;
 
+    case WM_MOUSEMOVE:
+        OnMouseMove( wParam, lParam );
+        return true;
+
+    case WM_LBUTTONDBLCLK:
+        OnLeftButtonDblClick( wParam, lParam );
+        return true;
+
+    case WM_MOUSEWHEEL:
+        OnMouseWheel( wParam, lParam );
+        return true;
+
+    case WM_LBUTTONDOWN:
+        OnLButtonDown( wParam, lParam );
+        return false;
+
+    case WM_LBUTTONUP:
+        OnLButtonUp( wParam, lParam );
+        return true;
+
+    case WM_RBUTTONDOWN:
+        OnRButtonDown( wParam, lParam );
+        break;
+
+    case WM_RBUTTONUP:
+        if ( OnRButtonUp( wParam, lParam ) )
+            return true;   // message completely handled, do not pass over to default processing
+        break;
+
+    case WM_SETCURSOR:
+        OnSetCursor( wParam, lParam );
+        return true;
+
     default:
         break;
     }

@@ -4,33 +4,36 @@
 
 #pragma once
 
+#include <string> 
 #include <sstream> 
 #include "PixelTypes.h"
 
+using std::wstring;
+using std::wostringstream;
+
 class D2D_driver;
-class PixelCoordsFp;
 
 struct IDWriteTextFormat;
 
 class Scale
 {
 public:
-	Scale( PixelCoordsFp const * const );
-
-	~Scale( );
-
-	void ShowScale( D2D_driver const &, fPIXEL const );
+	static void Display
+	( 
+		D2D_driver    const &, 
+		PixelRectSize const &, 
+		float         const, 
+		wstring       const & 
+	);
 
 private:
 	static COLORREF const SCALE_COLOR { RGB( 0, 0, 0 ) };  // CLR_BLACK
 
-	std::wostringstream m_wBuffer;
-
-	PixelCoordsFp const * m_pfPixelCoords { nullptr };
+	static wostringstream m_wBuffer;
 
 	static IDWriteTextFormat * m_pTextFormat;
 
-	void displayTicks      ( D2D_driver const &, fPixelPoint const, fPixelPoint const, float const, int const );
-	void displayScaleNumber( D2D_driver const &, fPixelPoint const, float const, int const );
-	void displayScaleText  ( D2D_driver const &, fPixelPoint const, float const );
+	static void displayTicks      ( D2D_driver const &, fPixelPoint const, fPixelPoint const, float const, int const );
+	static void displayScaleNumber( D2D_driver const &, fPixelPoint const, float const, int const );
+	static void displayScaleText  ( D2D_driver const &, fPixelPoint const, float const, wstring const & );
 };

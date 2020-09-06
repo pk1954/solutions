@@ -378,7 +378,7 @@ void MainWindow::doPaint( )
 	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsPipe    (); } );
 	DrawInteriorInRect( pixRect, [&](Shape const & s) { return s.IsBaseKnot(); } );
 
-	context.ShowScale( GetClientWindowHeight() );
+	context.ShowScale( GetClRectSize() );
 
 	if ( context.GetPixelSize() <= 2.5_MicroMeter )
 		DrawNeuronTextInRect( pixRect );

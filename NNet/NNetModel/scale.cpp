@@ -4,36 +4,36 @@
 
 #include "stdafx.h"
 #include "MoreTypes.h"
-#include "PixelCoordsFp.h"
 #include "Direct2D.h"
 #include "scale.h"
 
+using LogUnits = float;
+
 IDWriteTextFormat * Scale::m_pTextFormat;
 
-Scale::Scale( PixelCoordsFp const * const pCoords )
- : m_pfPixelCoords( pCoords )
-{ 
-}
+wostringstream Scale::m_wBuffer;
 
-Scale::~Scale( )
+void Scale::Display
+( 
+	D2D_driver    const & graphics, 
+	PixelRectSize const & pixRectSize,
+	float         const   fHorzPixelSize,
+	wstring       const & wstrLogUnit 
+)
 {
-}
+	fPixelRectSize fPixSize { Convert2fPixelRectSize( pixRectSize ) };
 
-void Scale::ShowScale( D2D_driver const & graphics, fPIXEL const height )
-{
 	if ( ! m_pTextFormat )
 		m_pTextFormat = graphics.NewTextFormat( 12.f );
 
-	fPIXEL const vertPos    = height - 20._fPIXEL;
-	fPIXEL const horzPos    = 100._fPIXEL;
-	fPIXEL const lengthMax  = 500._fPIXEL;
+	fPixelPoint const fPixOffset { 100._fPIXEL, fPixSize.GetY() - 20._fPIXEL };
 
-	float            fIntegerPart;
-	MicroMeter const umLengthExact = m_pfPixelCoords->Convert2MicroMeter( lengthMax );
-	float      const logValue      = log10f( umLengthExact.GetValue() );
-	float      const fractPart     = modff( logValue, & fIntegerPart );
-	float      const nextPowerOf10 = powf( 10.0, fIntegerPart );
-	MicroMeter const umLength      = MicroMeter( CastToFloat(nextPowerOf10) );
+	fPixSize -= fPixelRectSize( fPixOffset.GetX(), 0._fPIXEL );
+
+	float          fIntegerPart;
+	LogUnits const umLengthMax = fPixSize.GetXvalue() * fHorzPixelSize;
+	float    const fractPart   = modff( log10f( umLengthMax ), & fIntegerPart );
+	LogUnits const logLength   = LogUnits( powf( 10.0, fIntegerPart ) );
 
 	int iFirstDigit = ( fractPart >= log10f( 5.0f ) ) 
 		? 5
@@ -41,13 +41,13 @@ void Scale::ShowScale( D2D_driver const & graphics, fPIXEL const height )
 	    	? 2
 		    : 1;
 
-	fPIXEL      const fPixLength = m_pfPixelCoords->Convert2fPixel( umLength * static_cast<float>(iFirstDigit) );
-	fPixelPoint const fPixPoint1( horzPos, vertPos );
-	fPixelPoint const fPixPoint2( horzPos + fPixLength, vertPos );
+	fPIXEL      const fPixScaleLength = fPIXEL(static_cast<float>(iFirstDigit) * logLength / fHorzPixelSize);
+	fPixelPoint const fPixPoint1( fPixOffset );
+	fPixelPoint const fPixPoint2( fPixOffset + fPixelPoint( fPixScaleLength, 0._fPIXEL ) );
 
 	graphics.DrawLine( fPixPoint1, fPixPoint2, 1._fPIXEL, SCALE_COLOR );
-	displayTicks( graphics, fPixPoint1, fPixPoint2, fIntegerPart, iFirstDigit );
-	displayScaleText( graphics, fPixPoint2, fIntegerPart );
+	displayTicks    ( graphics, fPixPoint1, fPixPoint2, fIntegerPart, iFirstDigit );
+	displayScaleText( graphics, fPixPoint2, fIntegerPart, wstrLogUnit );
 }
 
 void Scale::displayTicks( D2D_driver const & graphics, fPixelPoint const fPixPoint1, fPixelPoint const fPixPoint2, float const fLog10, int const iFirstDigit )
@@ -154,7 +154,13 @@ void Scale::displayScaleNumber( D2D_driver const & graphics, fPixelPoint const f
 	graphics.DisplayText( pixRect, m_wBuffer.str( ), SCALE_COLOR, m_pTextFormat );
 }
 
-void Scale::displayScaleText( D2D_driver const & graphics, fPixelPoint const fPos, float const fLog10 )
+void Scale::displayScaleText
+( 
+	D2D_driver  const & graphics, 
+	fPixelPoint const   fPos, 
+	float       const   fLog10, 
+	wstring     const & wstrLogUnit 
+)
 {
 	static PIXEL const textWidth  = 40_PIXEL;
 	static PIXEL const textHeight = 20_PIXEL;
@@ -176,11 +182,10 @@ void Scale::displayScaleText( D2D_driver const & graphics, fPixelPoint const fPo
 	m_wBuffer.clear();
 
 	if ( fLog10 < 3 )
-		m_wBuffer << L"\u03BCm";
+		m_wBuffer << L"\u03BC";
 	else if ( fLog10 < 6 )
-		m_wBuffer << L"mm";
-	else
 		m_wBuffer << L"m";
+	m_wBuffer << wstrLogUnit;
 
 	graphics.DisplayText( pixRect, m_wBuffer.str( ), SCALE_COLOR, m_pTextFormat );
 }
