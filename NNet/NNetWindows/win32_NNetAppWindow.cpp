@@ -251,7 +251,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 //	Show( true );
 
 	if ( ! AutoOpen::IsOn( ) || ! m_preferences.ReadPreferences( & m_modelStorage ) )
-		m_modelWriterInterface.ResetModel( );
+		m_modelCommands.ResetModel( );
 
 	m_computeThread.RunComputation();
 
@@ -443,7 +443,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		m_computeThread.LockComputation( );  // will be restarted when centering complete
 		if ( m_modelStorage.AskAndSave( ) )
 		{
-			m_modelWriterInterface.ResetModel( );
+			m_modelCommands.ResetModel( );
 			m_descWindow.ClearDescription( );
 			m_mainNNetWindow.Reset();
 			m_mainNNetWindow.CenterModel( );

@@ -71,9 +71,9 @@ private:
     bool       IsTraceOn  ( ) const { return   m_bTrace; }
     wostream & TraceStream( )       { return * m_pTraceStream; }
 
-    CommandStack             * m_pCmdStack    { nullptr };
-    bool                       m_bTrace       { true };
-    wostream                 * m_pTraceStream { nullptr };
-    NNetModelWriterInterface * m_pModel       { nullptr };
-    NNetModelStorage         * m_pStorage     { nullptr };
+    CommandStack             * m_pCmdStack             { nullptr };
+    bool                       m_bTrace                { true };
+    wostream                 * m_pTraceStream          { nullptr };
+    NNetModelWriterInterface * m_pModelWriterInterface { nullptr };
+    NNetModelStorage         * m_pStorage              { nullptr };
 };

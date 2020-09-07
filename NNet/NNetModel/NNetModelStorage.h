@@ -67,7 +67,7 @@ private:
 	mutable bool m_bUnsavedChanges { false };  // can be changed in const functions
 
 	HWND                       m_hwndApp                  { nullptr };
-	NNetModelWriterInterface * m_pModel                   { nullptr };
+	NNetModelWriterInterface * m_pModelWriterInterface    { nullptr };
 	Param                    * m_pParam                   { nullptr };
 	Observable               * m_unsavedChangesObservable { nullptr };
 	Script                   * m_pScript                  { nullptr };

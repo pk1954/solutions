@@ -25,9 +25,10 @@ public:
 
 	virtual bool IsEqual( Pipe const & ) const;
 
-	static  unsigned long GetCounter( ) { return m_counter; }
-	virtual void          IncCounter( ) { ++ m_counter; }
-	virtual void          DecCounter( ) { -- m_counter; }
+	static unsigned long GetCounter  ( ) { return m_counter; }
+	static   void        ResetCounter( ) { m_counter = 0L; }
+	virtual  void        IncCounter  ( ) { ++ m_counter; }
+	virtual  void        DecCounter  ( ) { -- m_counter; }
 
 	static bool TypeFits( ShapeType const type ) { return type.IsPipeType( ); }
 

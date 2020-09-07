@@ -43,7 +43,7 @@ void NNetModelStorage::Initialize
     ModelDescription         * const pDescription
 )
 {
-    m_pModel                   = pModel;
+    m_pModelWriterInterface    = pModel;
     m_pParam                   = pParam;
     m_unsavedChangesObservable = unsavedChangesObservable;
     m_pScript                  = pScript;
@@ -90,25 +90,25 @@ class WrapMarkShape : public Script_Functor
 {
 public:
     WrapMarkShape( NNetModelWriterInterface * const pNNetModel ) :
-        m_pModel( pNNetModel )
+        m_pModelWriterInterface( pNNetModel )
     { };
 
     virtual void operator() ( Script & script ) const
     {   
         ShapeId const idFromScript{ script.ScrReadLong() };
-        return m_pModel->MarkShape( idFromScript, tBoolOp::opTrue );
+        return m_pModelWriterInterface->MarkShape( idFromScript, tBoolOp::opTrue );
     }
 
 private:
 
-    NNetModelWriterInterface * m_pModel;
+    NNetModelWriterInterface * m_pModelWriterInterface;
 };
 
 class WrapCreateShape : public Script_Functor
 {
 public:
     WrapCreateShape( NNetModelWriterInterface * const pNNetModel ) :
-        m_pModel( pNNetModel )
+        m_pModelWriterInterface( pNNetModel )
     { };
 
     virtual void operator() ( Script & script ) const
@@ -132,8 +132,8 @@ public:
             }
             else
             { 
-                BaseKnot * const pKnotStart { m_pModel->GetShapePtr<BaseKnot *>( idStart ) };
-                BaseKnot * const pKnotEnd   { m_pModel->GetShapePtr<BaseKnot *>( idEnd   ) };
+                BaseKnot * const pKnotStart { m_pModelWriterInterface->GetShapePtr<BaseKnot *>( idStart ) };
+                BaseKnot * const pKnotEnd   { m_pModelWriterInterface->GetShapePtr<BaseKnot *>( idEnd   ) };
                 Pipe     * const pPipe      { new Pipe( pKnotStart, pKnotEnd ) };
                 pKnotStart->m_connections.AddOutgoing( pPipe );
                 pKnotEnd  ->m_connections.AddIncoming( pPipe );
@@ -170,21 +170,21 @@ public:
 
         if ( pShape )
         {
-            m_pModel->SetShape( pShape, idFromScript );
+            m_pModelWriterInterface->SetShape( pShape, idFromScript );
             pShape->SetId( idFromScript );
         }
     }
 
 private:
 
-    NNetModelWriterInterface * m_pModel;
+    NNetModelWriterInterface * m_pModelWriterInterface;
 };
 
 class WrapGlobalParameter : public Script_Functor
 {
 public:
     WrapGlobalParameter( NNetModelWriterInterface * const pNNetModel ) :
-        m_pModel( pNNetModel )
+        m_pModelWriterInterface( pNNetModel )
     { };
 
     virtual void operator() ( Script & script ) const 
@@ -192,35 +192,35 @@ public:
         tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
         script.ScrReadSpecial( L'=' );
         float const fValue { CastToFloat( script.ScrReadFloat() ) };
-        m_pModel->SetParam( param, fValue );
+        m_pModelWriterInterface->SetParam( param, fValue );
     }
 
 private:
-    NNetModelWriterInterface * m_pModel;
+    NNetModelWriterInterface * m_pModelWriterInterface;
 };
 
 class WrapNrOfShapes : public Script_Functor
 {
 public:
     WrapNrOfShapes( NNetModelWriterInterface * const pNNetModel ) :
-        m_pModel( pNNetModel )
+        m_pModelWriterInterface( pNNetModel )
     { };
 
     virtual void operator() ( Script & script ) const 
     {
         script.ScrReadSpecial( L'=' );
-        m_pModel->SetNrOfShapes( script.ScrReadLong() );
+        m_pModelWriterInterface->SetNrOfShapes( script.ScrReadLong() );
     }
 
 private:
-    NNetModelWriterInterface * m_pModel;
+    NNetModelWriterInterface * m_pModelWriterInterface;
 };
 
 class WrapShapeParameter : public Script_Functor
 {
 public:
     WrapShapeParameter( NNetModelWriterInterface * const pModel ) :
-        m_pModel( pModel )
+        m_pModelWriterInterface( pModel )
     { };
 
     virtual void operator() ( Script & script ) const 
@@ -231,24 +231,24 @@ public:
         assert( param == tParameter::pulseRate );
         script.ScrReadSpecial( L'=' );
         float const fValue { CastToFloat( script.ScrReadFloat() ) };
-        m_pModel->GetShapePtr<InputNeuron *>( id )->SetPulseFrequency( fHertz( fValue ) );
+        m_pModelWriterInterface->GetShapePtr<InputNeuron *>( id )->SetPulseFrequency( fHertz( fValue ) );
     }
 
 private:
-    NNetModelWriterInterface * m_pModel;
+    NNetModelWriterInterface * m_pModelWriterInterface;
 };
 
 class WrapTriggerSound : public Script_Functor
 {
 public:
     WrapTriggerSound( NNetModelWriterInterface * const pNNetModel ) :
-        m_pModel( pNNetModel )
+        m_pModelWriterInterface( pNNetModel )
     { };
 
     virtual void operator() ( Script & script ) const 
     {
         ShapeId const id      { script.ScrReadLong () };
-        Neuron      * pNeuron { m_pModel->GetShapePtr<Neuron *>( id ) };
+        Neuron      * pNeuron { m_pModelWriterInterface->GetShapePtr<Neuron *>( id ) };
         Hertz   const freq    { script.ScrReadUlong() };
         script.ScrReadString( L"Hertz" );
         MilliSecs const msec { script.ScrReadUlong() };
@@ -257,7 +257,7 @@ public:
     }
 
 private:
-    NNetModelWriterInterface * m_pModel;
+    NNetModelWriterInterface * m_pModelWriterInterface;
 };
 
 void NNetModelStorage::prepareForReading( )
@@ -265,7 +265,7 @@ void NNetModelStorage::prepareForReading( )
     SymbolTable::ScrDefConst( L"Description", new WrapDescription( & m_wstrDescription ) );
     SymbolTable::ScrDefConst( L"Protocol"   , new WrapProtocol(  ) );
 
-#define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( m_pModel ) )
+#define DEF_NNET_FUNC(name) SymbolTable::ScrDefConst( L#name, new Wrap##name##( m_pModelWriterInterface ) )
     DEF_NNET_FUNC( GlobalParameter );
     DEF_NNET_FUNC( NrOfShapes );
     DEF_NNET_FUNC( CreateShape );
@@ -309,11 +309,11 @@ void NNetModelStorage::prepareForReading( )
 
 bool NNetModelStorage::readModel( ) 
 {
-    if ( ProcessNNetScript( m_pScript, m_pModel, m_wstrPathOfNewModel ) )
+    if ( ProcessNNetScript( m_pScript, m_pModelWriterInterface, m_wstrPathOfNewModel ) )
     {
         m_pDescription->SetDescription( m_wstrDescription );
         m_wstrPathOfOpenModel = m_wstrPathOfNewModel;
-        m_pModel->StaticModelChanged();
+        m_pModelWriterInterface->StaticModelChanged();
         setUnsavedChanges( false );
         m_pResult->Reaction( ReadModelResult::tResult::ok );
         return true;
@@ -341,7 +341,7 @@ bool NNetModelStorage::Read( bool bConcurrently, wstring const wstrPath )
     m_wstrPathOfNewModel = ( wstrPath == L"" ) ? m_wstrPathOfOpenModel : wstrPath;
     if ( exists( m_wstrPathOfNewModel ) )
     {
-        m_pModel->ResetModel();
+        m_pModelWriterInterface->ResetModel();
         m_wstrDescription.clear();
         wcout << L"*** Reading file " << m_wstrPathOfNewModel << endl;
         if ( bConcurrently )
@@ -410,11 +410,11 @@ void NNetModelStorage::Write( wostream & out )
         }
     );
 
-    m_CompactIds.resize( m_pModel->GetModel().GetSizeOfShapeList() );
+    m_CompactIds.resize( m_pModelWriterInterface->GetModel().GetSizeOfShapeList() );
     ShapeId idCompact( 0 );
     for ( int i = 0; i < m_CompactIds.size( ); ++i )
     {
-        m_CompactIds[ i ] = m_pModel->GetModel().GetConstShape( ShapeId( i ) )
+        m_CompactIds[ i ] = m_pModelWriterInterface->GetModel().GetConstShape( ShapeId( i ) )
                           ? idCompact++
                           : NO_SHAPE;
     }
@@ -423,12 +423,12 @@ void NNetModelStorage::Write( wostream & out )
     out << L"NrOfShapes = " << idCompact << endl;
     out << endl;
 
-    m_pModel->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); } );
-    m_pModel->Apply2All<Pipe    >( [&]( Pipe     & shape ) { WriteShape( out, shape ); } );
+    m_pModelWriterInterface->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); } );
+    m_pModelWriterInterface->Apply2All<Pipe    >( [&]( Pipe     & shape ) { WriteShape( out, shape ); } );
 
     out << endl;
 
-    m_pModel->Apply2All<InputNeuron>
+    m_pModelWriterInterface->Apply2All<InputNeuron>
     (
         [&]( InputNeuron & inpNeuron )
         { 
@@ -441,7 +441,7 @@ void NNetModelStorage::Write( wostream & out )
 
     out << endl;
 
-    m_pModel->Apply2All<Neuron>
+    m_pModelWriterInterface->Apply2All<Neuron>
     ( 
         [&]( Neuron & neuron ) 
         { 

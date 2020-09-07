@@ -57,8 +57,6 @@ public:
 
 	virtual ~Shape() { }
 
-	static unsigned long GetCounter( ) { return m_counter; }
-
 	virtual void IncCounter( ) = 0;
 	virtual void DecCounter( ) = 0;
 
@@ -117,6 +115,4 @@ private:
 	ShapeId   m_identifier { NO_SHAPE };
 	bool      m_bSelected  { false };
 	bool      m_bMarked    { false };
-
-	inline static unsigned long m_counter { 0L };
 };

@@ -169,6 +169,10 @@ void NNetModel::ResetModel( )
 	for (auto pShape : m_Shapes)
 		delete pShape;
 	m_Shapes.clear();
+	Knot       ::ResetCounter();
+	Neuron     ::ResetCounter();
+	InputNeuron::ResetCounter();
+	Pipe       ::ResetCounter();
 	SetSimulationTime();
 	StaticModelChanged( );
 }
