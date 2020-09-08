@@ -5,7 +5,6 @@
 #pragma once
 
 #include "NNetColors.h"
-#include "PixelCoordsFp.h"
 #include "DrawContext.h"
 #include "Direct2D.h"
 #include "MoreTypes.h"

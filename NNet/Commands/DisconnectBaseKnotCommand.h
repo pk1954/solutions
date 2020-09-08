@@ -12,9 +12,9 @@
 
 using std::vector;
 
-// DisconnectBaseKnot and DeleteBaseKnot are nearly identical
-// for Delete... functioniality create DisconnectBaseKnot 
-// with 3rd parameter set to true
+// DisconnectBaseKnot and DeleteBaseKnot are nearly identical.
+// For Delete... functioniality create DisconnectBaseKnot 
+// with 3rd parameter set to true.
 
 class DisconnectBaseKnotCommand : public Command
 {

@@ -42,7 +42,7 @@ public:
     unsigned int GetPointIndex( fMicroSecs const time ) const
     {
         fMicroSecs const timeTilStart { time - m_timeStart };
-        float fNrOfPoints { timeTilStart / m_pParams->GetTimeResolution( ) };
+        float      const fNrOfPoints  { timeTilStart / m_pParams->GetTimeResolution( ) };
         return static_cast<unsigned int>( roundf( fNrOfPoints ) );
     }
 
@@ -51,7 +51,7 @@ public:
         if ( m_data.empty() )
             return NAN;
         if ( uiIndex >= m_data.size() )
-            uiIndex = CastToUnsignedInt(  m_data.size() - 1 );
+            uiIndex = CastToUnsignedInt( m_data.size() - 1 );
         return m_data[ uiIndex ];
     }
 

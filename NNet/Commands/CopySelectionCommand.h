@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "NNetModelWriterInterface.h"
 #include "Shape.h"
+#include "NNetParameters.h"
+#include "NNetModelWriterInterface.h"
 #include "SelectionCommand.h"
 
 class CopySelectionCommand : public SelectionCommand
@@ -16,12 +17,18 @@ public:
 		:	SelectionCommand( pModel)
 	{ 
 		m_copies = pModel->GetModel().DuplicateShapes( m_selectedShapes );
+//		MicroMeterPoint const delta = MicroMeterPoint( PIPE_WIDTH, PIPE_WIDTH );
+		for ( Shape * pShape : m_copies )
+		{
+			if ( pShape && pShape->GetShapeType().IsBaseKnotType( ) )
+				pShape->MoveShape( PIPE_WIDTH ); 
+		};
 	}
 
 	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
 		pModel->SelectAllShapes( tBoolOp::opFalse );  // deselect all
-		for ( Shape * pShape : m_copies )       // add copies
+		for ( Shape * pShape : m_copies )             // add copies
 			if ( pShape )
 				pModel->Add2Model( pShape );
 	}

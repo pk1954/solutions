@@ -32,6 +32,7 @@ public:
 			  (desc.m_duration > 0_MilliSecs) 
 		   ) 
 		{
+//			Play( TEXT("SNAP_IN_SOUND") );
 		   ::Beep( static_cast<DWORD>(desc.m_frequency.GetValue()), static_cast<DWORD>(desc.m_duration.GetValue()) );
 		}
 	}

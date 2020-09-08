@@ -78,7 +78,7 @@ bool BaseWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const
 
     case WM_MOUSEMOVE:
         OnMouseMove( wParam, lParam );
-        return true;
+        return false;
 
     case WM_LBUTTONDBLCLK:
         OnLeftButtonDblClick( wParam, lParam );

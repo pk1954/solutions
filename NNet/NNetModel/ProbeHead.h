@@ -13,9 +13,9 @@ class ProbeHead : public ObserverInterface
 {
 public:
 
-    void Initialize( NNetModelReaderInterface const & model )
+    void Initialize( NNetModelReaderInterface const & modelReaderInterface )
     {
-        m_pModel = & model;
+        m_pModelReaderInterface = & modelReaderInterface;
     }
 
     void AttachSignal( Signal * pSignal )
@@ -26,7 +26,7 @@ public:
     void SetSignalSource( Neuron const & neuron )
     {
         m_pSignalSource = & neuron;
-        m_pSignal->Reset( m_pModel->GetSimulationTime( ) );
+        m_pSignal->Reset( m_pModelReaderInterface->GetSimulationTime( ) );
     }
 
     virtual void Notify( bool const bImmediate )
@@ -39,7 +39,7 @@ public:
 
 private:
 
-    Neuron                   const * m_pSignalSource { nullptr };
-    NNetModelReaderInterface const * m_pModel        { nullptr };
-    Signal                         * m_pSignal       { nullptr };
+    Neuron                   const * m_pSignalSource         { nullptr };
+    NNetModelReaderInterface const * m_pModelReaderInterface { nullptr };
+    Signal                         * m_pSignal               { nullptr };
 };

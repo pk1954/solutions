@@ -33,7 +33,8 @@ public:
 			static_cast<Hertz>    (CastToUnsignedLong(msg.wParam)), 
 			static_cast<MilliSecs>(CastToUnsignedLong(msg.lParam)) 
 		};
-		m_pSound->Beep( desc );
+//		m_pSound->Beep( desc );
+		m_pSound->Play( TEXT("SNAP_IN_SOUND") );
 	}
 
 private:
