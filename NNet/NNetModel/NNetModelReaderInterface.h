@@ -9,14 +9,10 @@
 #include "MoreTypes.h"
 #include "ShapeType.h"
 #include "ShapeId.h"
-#include "Shape.h"
 #include "NNetModel.h"
 #include "tHighlightType.h"
 
-class DrawContext;
-class ObserverInterface;
-class Param;
-class Pipe;
+class Shape;
 
 class NNetModelReaderInterface
 {

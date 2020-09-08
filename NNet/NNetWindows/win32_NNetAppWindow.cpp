@@ -130,8 +130,6 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_cmdStack      .Initialize( & m_modelWriterInterface, & m_commandStackObservable );
 	m_NNetColors    .Initialize( & m_blinkObservable );
 	m_sound         .Initialize( & m_soundOnObservable );
-	m_probeHead     .Initialize( m_modelReaderInterface );
-	m_signal        .Initialize( m_parameters );
 	m_NNetController.Initialize
 	( 
 		& m_modelStorage,
@@ -145,7 +143,9 @@ void NNetAppWindow::Start( MessagePump & pump )
 		& m_sound,
 		& m_preferences,
 		& m_cmdStack,
-		& m_probeHead
+		& m_monitorWindow,
+		& m_parameters,
+		& m_dynamicModelObservable
 	);
 
 	m_mainNNetWindow   .SetRefreshRate(   0ms );   // immediate refresh
@@ -208,7 +208,6 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_staticModelObservable   .RegisterObserver( & m_modelStorage );
 	m_blinkObservable         .RegisterObserver( & m_mainNNetWindow );
 	m_dynamicModelObservable  .RegisterObserver( & m_mainNNetWindow );
-	m_dynamicModelObservable  .RegisterObserver( & m_probeHead );
 	m_staticModelObservable   .RegisterObserver( & m_mainNNetWindow );
 	m_staticModelObservable   .RegisterObserver( & m_miniNNetWindow );
 	m_cursorPosObservable     .RegisterObserver( & m_crsrWindow );
@@ -223,10 +222,6 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_soundOnObservable       .RegisterObserver( & m_appMenu );
 	m_commandStackObservable  .RegisterObserver( & m_undoRedoMenu );
 	m_coordObservable         .RegisterObserver( & m_miniNNetWindow );
-	m_signal                  .RegisterObserver( & m_monitorWindow );
-
-	m_probeHead.AttachSignal( & m_signal );
-	m_monitorWindow.SetSignal( m_signal );
 
 	configureStatusBar( );
 	adjustChildWindows( );

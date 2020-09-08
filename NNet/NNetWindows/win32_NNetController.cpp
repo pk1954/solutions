@@ -14,6 +14,7 @@
 #include "ComputeThread.h"
 #include "CommandStack.h"
 #include "AnimationThread.h"
+#include "Signal.h"
 #include "AutoOpen.h"
 #include "win32_util.h"
 #include "win32_sound.h"
@@ -24,13 +25,11 @@
 #include "win32_fatalError.h"
 #include "win32_triggerSoundDlg.h"
 #include "win32_stdDialogBox.h"
+#include "win32_monitorWindow.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelCommands.h"
-#include "win32_NNetController.h"
-
-#include "Signal.h"
-#include "ProbeHead.h"
 #include "win32_monitorWindow.h"
+#include "win32_NNetController.h"
 
 void NNetController::Initialize
 (
@@ -45,23 +44,27 @@ void NNetController::Initialize
     Sound                    * const pSound,
     Preferences              * const pPreferences,
     CommandStack             * const pCommandStack,
-    ProbeHead                * const pProbeHead
+    MonitorWindow            * const pMonitorWindow,
+    Param                    * const pParam,
+    Observable               * const pDynamicModelObservable
 ) 
 {
-    m_pStorage              = pStorage;
-    m_pMainWindow           = pMainWindow;
-    m_pWinManager           = pWinManager;
-    m_pModelReaderInterface = pModelReaderInterface;
-    m_pModelCommands        = pModelCommands;
-    m_pSlowMotionRatio      = pSlowMotionRatio;
-    m_pComputeThread        = pComputeThread;
-    m_pStatusBarDisplay     = func;
-    m_pSound                = pSound;
-    m_pPreferences          = pPreferences;
-    m_pCommandStack         = pCommandStack;
-    m_pProbeHead            = pProbeHead;
-    m_hCrsrWait             = LoadCursor( NULL, IDC_WAIT );
-    m_pAnimationThread      = new AnimationThread( );
+    m_pStorage                = pStorage;
+    m_pMainWindow             = pMainWindow;
+    m_pWinManager             = pWinManager;
+    m_pModelReaderInterface   = pModelReaderInterface;
+    m_pModelCommands          = pModelCommands;
+    m_pSlowMotionRatio        = pSlowMotionRatio;
+    m_pComputeThread          = pComputeThread;
+    m_pStatusBarDisplay       = func;
+    m_pSound                  = pSound;
+    m_pPreferences            = pPreferences;
+    m_pCommandStack           = pCommandStack;
+    m_pMonitorWindow          = pMonitorWindow;
+    m_pParam                  = pParam;
+    m_pDynamicModelObservable = pDynamicModelObservable;
+    m_hCrsrWait               = LoadCursor( NULL, IDC_WAIT );
+    m_pAnimationThread        = new AnimationThread( );
 }
 
 NNetController::~NNetController( )
@@ -81,6 +84,7 @@ NNetController::~NNetController( )
     m_pSound                = nullptr;
     m_pPreferences          = nullptr;
     m_pCommandStack         = nullptr;
+    m_pMonitorWindow        = nullptr;
 }
 
 bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMeterPoint const umPoint )
@@ -189,7 +193,9 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
             if ( m_pModelReaderInterface->IsOfType<Neuron>( id ) )
             {
                 Neuron const * pNeuron { m_pModelReaderInterface->GetConstShapePtr<Neuron const *>( id ) };
-                m_pProbeHead->SetSignalSource( * pNeuron );
+                Signal * pSignal = new Signal( * m_pModelReaderInterface, * m_pParam, * m_pDynamicModelObservable );
+                pSignal->SetSignalSource( * pNeuron );
+                m_pMonitorWindow->AddSignal( * pSignal );
             }
         }
         break;

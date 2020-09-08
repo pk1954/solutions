@@ -17,6 +17,11 @@ public:
 		m_observers.Register( pObserver );
 	}
 
+	void UnregisterObserver( ObserverInterface * const pObserver )
+	{
+		m_observers.Unregister( pObserver );
+	}
+
 	void UnregisterAllObservers( )
 	{
 		m_observers.Clear();

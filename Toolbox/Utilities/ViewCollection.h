@@ -8,6 +8,8 @@
 #include <vector>
 #include "ObserverInterface.h"
 
+using std::vector;
+
 class ViewCollection
 {
 public:
@@ -26,6 +28,18 @@ public:
 		m_aView.push_back( pObserver );
 	}
 
+	void Unregister( ObserverInterface * const pObserver )
+	{
+		assert( pObserver != nullptr );
+		for (auto it = m_aView.begin(); it != m_aView.end();)
+		{
+			if ( * it == pObserver ) 
+				it = m_aView.erase(it);
+			else 
+				++it;
+		}
+	}
+
 	void Clear( )
 	{
 		m_aView.clear();
@@ -33,5 +47,5 @@ public:
 
 private:
 
-	std::vector< ObserverInterface * > m_aView;
+	vector< ObserverInterface * > m_aView;
 };

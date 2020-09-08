@@ -8,6 +8,7 @@ class NNetModelReaderInterface;
 class NNetModelCommands;
 class AnimationThread;
 class SlowMotionRatio;
+class MonitorWindow;
 class NNetModelStorage;
 class DisplayFunctor;
 class ComputeThread;
@@ -17,7 +18,7 @@ class MainWindow;
 class WinManager;
 class Preferences;
 class CommandStack;
-class ProbeHead;
+class Signal;
 class Param;
 class Sound;
 
@@ -41,7 +42,9 @@ public:
 		Sound                    * const,
 		Preferences              * const,
 		CommandStack             * const,
-		ProbeHead                * const
+		MonitorWindow            * const,
+		Param                    * const,
+		Observable               * const
 	);
 
 	virtual ~NNetController( );
@@ -55,18 +58,20 @@ private:
 	bool processUIcommand   ( int const, LPARAM const );
 	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
 
-	HCURSOR                    m_hCrsrWait             { nullptr };
-	Sound                    * m_pSound                { nullptr };
-	NNetModelStorage         * m_pStorage              { nullptr };
-	MainWindow               * m_pMainWindow           { nullptr };
-	WinManager               * m_pWinManager           { nullptr };
-	ComputeThread            * m_pComputeThread        { nullptr };
-	NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
-	NNetModelCommands        * m_pModelCommands        { nullptr };
-	SlowMotionRatio          * m_pSlowMotionRatio      { nullptr };
-	DisplayFunctor           * m_pStatusBarDisplay     { nullptr };
-	AnimationThread          * m_pAnimationThread      { nullptr };
-	Preferences              * m_pPreferences          { nullptr };
-	CommandStack             * m_pCommandStack         { nullptr };
-	ProbeHead                * m_pProbeHead            { nullptr };
+	HCURSOR                    m_hCrsrWait               { nullptr };
+	Sound                    * m_pSound                  { nullptr };
+	NNetModelStorage         * m_pStorage                { nullptr };
+	MainWindow               * m_pMainWindow             { nullptr };
+	WinManager               * m_pWinManager             { nullptr };
+	ComputeThread            * m_pComputeThread          { nullptr };
+	NNetModelReaderInterface * m_pModelReaderInterface   { nullptr };
+	NNetModelCommands        * m_pModelCommands          { nullptr };
+	SlowMotionRatio          * m_pSlowMotionRatio        { nullptr };
+	DisplayFunctor           * m_pStatusBarDisplay       { nullptr };
+	AnimationThread          * m_pAnimationThread        { nullptr };
+	Preferences              * m_pPreferences            { nullptr };
+	CommandStack             * m_pCommandStack           { nullptr };
+	MonitorWindow            * m_pMonitorWindow          { nullptr };
+	Param                    * m_pParam                  { nullptr };
+	Observable               * m_pDynamicModelObservable { nullptr };
 };				          

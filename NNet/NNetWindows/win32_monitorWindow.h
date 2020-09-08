@@ -4,8 +4,11 @@
 
 #pragma once
 
+#include <vector>
 #include "D2D_DrawContext.h"
 #include "win32_baseWindow.h"
+
+using std::vector;
 
 class Param;
 class Signal;
@@ -17,7 +20,7 @@ public:
 	void Start( HWND const, NNetModelReaderInterface const &, Param const & );
 	void Stop( );
 
-	void SetSignal( Signal const & );
+	void AddSignal( Signal & );
 
 	virtual long AddContextMenuEntries( HMENU const ) { return 0; }
 
@@ -34,18 +37,14 @@ private:
 	virtual void OnMouseMove  ( WPARAM const, LPARAM const ) { };
 
 	void doPaint( );
+	void paintSignal( Signal const &, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const, fMicroSecs const );
 
-	fPIXEL const getYvalue( fMicroSecs const time )
-	{
-		float  const fDataPoint { m_pSignal->GetDataPoint( time ) };
-		fPIXEL const fPixYvalue { fDataPoint / m_fYvaluesPerPixel };
-		return fPixYvalue;
-	}
+	fPIXEL const getYvalue( Signal const &, fMicroSecs const );
 
 	D2D_driver                       m_graphics           { };
 	Param                    const * m_pParams            { nullptr };
 	NNetModelReaderInterface const * m_pModel             { nullptr };
-	Signal                   const * m_pSignal            { nullptr };
+	vector <Signal const *>          m_Signals            { };
 	fMicroSecs                       m_fMicroSecsPerPixel { 100.0_MicroSecs };
 	float                            m_fYvaluesPerPixel   {   0.2f };
 };

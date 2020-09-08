@@ -17,7 +17,6 @@ public:
 		:	SelectionCommand( pModel)
 	{ 
 		m_copies = pModel->GetModel().DuplicateShapes( m_selectedShapes );
-//		MicroMeterPoint const delta = MicroMeterPoint( PIPE_WIDTH, PIPE_WIDTH );
 		for ( Shape * pShape : m_copies )
 		{
 			if ( pShape && pShape->GetShapeType().IsBaseKnotType( ) )

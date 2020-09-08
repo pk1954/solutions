@@ -4,8 +4,9 @@
 
 #include "stdafx.h"
 #include <math.h>    
-#include "Signal.h"
+#include "util.h"
 #include "scale.h"
+#include "Signal.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
@@ -39,37 +40,77 @@ void MonitorWindow::Stop( )
 	DestroyWindow( );
 }
 
-void MonitorWindow::SetSignal( Signal const & signal ) 
-{ 
-	m_pSignal = & signal; 
+fPIXEL const MonitorWindow::getYvalue( Signal const & signal, fMicroSecs const time )
+{
+	float  const fDataPoint { signal.GetDataPoint( time ) };
+	fPIXEL const fPixYvalue { fDataPoint / m_fYvaluesPerPixel };
+	return fPixYvalue;
 }
 
-void MonitorWindow::doPaint( )
-{
-	fPixelRectSize rectSize { Convert2fPixelRectSize( GetClRectSize( ) ) };
+void MonitorWindow::AddSignal( Signal & signal ) 
+{ 
+	m_Signals.push_back( & signal );
+	signal.RegisterObserver( this );
+}
 
-	float      const fSizeX      { rectSize.GetX().GetValue() };
-	fPIXEL     const fPixYoffset { rectSize.GetY() * 0.75f };
-	fMicroSecs const usResolution{ m_pParams->GetTimeResolution( ) };
-	fMicroSecs const usInWindow  { m_fMicroSecsPerPixel * fSizeX };
-	float      const fPointsInWin{ usInWindow / usResolution };
-	fMicroSecs const timeEnd     { m_pModel->GetSimulationTime( ) };
-	fMicroSecs const timeStart   { max( timeEnd - usInWindow, m_pSignal->GetStartTime() ) };
-	fMicroSecs const usIncrement { (fPointsInWin > fSizeX) ? m_fMicroSecsPerPixel : usResolution };
-	fPIXEL     const fPixYvalue  { getYvalue( timeEnd ) };
+void MonitorWindow::paintSignal
+( 
+	Signal     const & signal, 
+	fPIXEL     const   fPixYoffset,
+	fPIXEL     const   fPixXend,
+	fMicroSecs const   usIncrement,
+	fMicroSecs const   timeEnd,
+	fMicroSecs const   usInWindow
+)
+{
+	fMicroSecs const timeStart   { max( timeEnd - usInWindow, signal.GetStartTime() ) };
+	fPIXEL     const fPixYvalue  { getYvalue( signal, timeEnd ) };
 	if ( ! isnan(fPixYvalue.GetValue()) )
 	{
-		fPixelPoint prevPoint { rectSize.GetX(), fPixYvalue + fPixYoffset };
+		fPixelPoint prevPoint { fPixXend, fPixYvalue + fPixYoffset };
 		for ( fMicroSecs time = timeEnd - usIncrement; time >= timeStart; time -= usIncrement )
 		{
 			float       const fTicks   { (timeEnd - time) / m_fMicroSecsPerPixel };
-			fPIXEL      const fPixX    { rectSize.GetX() - fPIXEL(fTicks) };
-			fPixelPoint const actPoint { fPixX, fPixYoffset - getYvalue( time ) };
+			fPIXEL      const fPixX    { fPixXend - fPIXEL(fTicks) };
+			fPixelPoint const actPoint { fPixX, fPixYoffset - getYvalue( signal, time ) };
 			m_graphics.DrawLine( prevPoint, actPoint, 1.0_fPIXEL, NNetColors::COL_BLACK );
 			prevPoint = actPoint;
 		}
 	}
+}
 
+void MonitorWindow::doPaint( )
+{
+	PixelRectSize  rectClient { GetClRectSize( ) };
+	fPixelRectSize rectSize   { Convert2fPixelRectSize( rectClient ) };
+
+	float      const fSizeX      { rectSize.GetX().GetValue() };
+	fMicroSecs const usResolution{ m_pParams->GetTimeResolution( ) };
+	fMicroSecs const usInWindow  { m_fMicroSecsPerPixel * fSizeX };
+	float      const fPointsInWin{ usInWindow / usResolution };
+	fMicroSecs const timeEnd     { m_pModel->GetSimulationTime( ) };
+	fMicroSecs const usIncrement { (fPointsInWin > fSizeX) ? m_fMicroSecsPerPixel : usResolution };
+
+	if ( m_Signals.empty() )
+		return;
+
+	PIXEL const HEIGHT4SCALE     { 60_PIXEL };
+	PIXEL const pixHeight4Signal { (rectClient.GetY() - HEIGHT4SCALE) / CastToLong(m_Signals.size()) };
+	
+	PIXEL pixYoffset { pixHeight4Signal };
+	for ( Signal const * pSignal : m_Signals )
+	{
+		paintSignal
+		( 
+			* pSignal, 
+			Convert2fPIXEL( pixYoffset ),
+			rectSize.GetX(), 
+			usIncrement, 
+			timeEnd, 
+			usInWindow 
+		);
+		pixYoffset += pixHeight4Signal;
+	}
 	Scale::Display
 	( 
 		m_graphics, 
