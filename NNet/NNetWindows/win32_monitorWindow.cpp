@@ -7,6 +7,7 @@
 #include "util.h"
 #include "scale.h"
 #include "Signal.h"
+#include "Resource.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
@@ -32,12 +33,33 @@ void MonitorWindow::Start
 	m_pModel  = & model;
 	m_graphics.Initialize( hwnd );
 	SetWindowText( hwnd, L"Monitor" );
+	m_trackStruct.hwndTrack = hwnd;
 }
 
 void MonitorWindow::Stop( )
 {
 	m_graphics.ShutDown( );
 	DestroyWindow( );
+}
+
+long MonitorWindow::AddContextMenuEntries( HMENU const hPopupMenu )
+{
+	if ( m_bRuler )
+		AppendMenu( hPopupMenu, MF_STRING, IDD_RULER_OFF, L"Ruler off" );
+	else 
+		AppendMenu( hPopupMenu, MF_STRING, IDD_RULER_ON,  L"Ruler on" );
+
+	if ( m_iSelectedSignal >= 0 )
+		AppendMenu( hPopupMenu, MF_STRING, IDD_REMOVE_SIGNAL, L"Remove signal" );
+
+	return 0L; // will be forwarded to HandleContextMenuCommand
+}
+
+PIXEL const MonitorWindow::getHeight4Signal( PIXEL pixCLientHeight )
+{
+	PIXEL const HEIGHT4SCALE  { 60_PIXEL };
+	PIXEL const pixFreeHeight { pixCLientHeight - (m_bRuler ? HEIGHT4SCALE : 10_PIXEL ) };
+	return pixFreeHeight /  CastToLong(m_Signals.size()); 
 }
 
 fPIXEL const MonitorWindow::getYvalue( Signal const & signal, fMicroSecs const time )
@@ -94,10 +116,8 @@ void MonitorWindow::doPaint( )
 	if ( m_Signals.empty() )
 		return;
 
-	PIXEL const HEIGHT4SCALE     { 60_PIXEL };
-	PIXEL const pixHeight4Signal { (rectClient.GetY() - HEIGHT4SCALE) / CastToLong(m_Signals.size()) };
-	
-	PIXEL pixYoffset { pixHeight4Signal };
+	PIXEL const pixHeight4Signal { getHeight4Signal( rectClient.GetY() ) };
+	PIXEL       pixYoffset       { pixHeight4Signal };
 	for ( Signal const * pSignal : m_Signals )
 	{
 		paintSignal
@@ -111,13 +131,29 @@ void MonitorWindow::doPaint( )
 		);
 		pixYoffset += pixHeight4Signal;
 	}
-	Scale::Display
-	( 
-		m_graphics, 
-		GetClRectSize(), 
-		m_fMicroSecsPerPixel.GetValue(), 
-		L"s" 
-	);
+
+	if ( m_bRuler )
+	{
+		Scale::Display
+		( 
+			m_graphics, 
+			GetClRectSize(), 
+			m_fMicroSecsPerPixel.GetValue(), 
+			L"s" 
+		);
+	}
+
+	if ( m_iSelectedSignal >= 0 )
+	{
+		fPixelRect const fPixRect
+		{
+			0._fPIXEL,                                                   // left
+			Convert2fPIXEL( pixHeight4Signal * m_iSelectedSignal ),      // top
+			rectSize.GetX(),                                             // right
+			Convert2fPIXEL( pixHeight4Signal * (m_iSelectedSignal + 1) ) // bottom
+		};
+		m_graphics.DrawTranspRect( fPixRect, NNetColors::SELECTION_RECT );
+	}
 }
 
 void MonitorWindow::OnPaint( )
@@ -135,12 +171,59 @@ void MonitorWindow::OnPaint( )
 	}
 }
 
+bool MonitorWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint )
+{
+	int const wmId = LOWORD( wParam );
+
+	switch (wmId)
+	{
+	case IDD_RULER_ON:
+		m_bRuler = true;
+		break;
+
+	case IDD_RULER_OFF:
+		m_bRuler = false;
+		break;
+
+	case IDD_REMOVE_SIGNAL:
+		{
+			Signal const * pSignal { m_Signals[m_iSelectedSignal] };
+			auto res = find( begin(m_Signals), end(m_Signals), pSignal );
+			m_Signals.erase( res );
+			delete pSignal;
+		}
+		break;
+
+	default:
+		return false;
+	}
+
+	return BaseWindow::OnCommand( wParam, lParam, pixPoint );
+}
+
+bool MonitorWindow::OnMouseLeave( WPARAM const wParam, LPARAM const lParam )
+{
+	m_iSelectedSignal = -1;
+	return false;
+}
+
 bool MonitorWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 {
 	UINT width  = LOWORD(lParam);
 	UINT height = HIWORD(lParam);
 	m_graphics.Resize( width, height );
 	return true;
+}
+
+void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
+{
+	if ( ! m_Signals.empty() )
+	{
+		PixelPoint const ptCrsr           { GetRelativeCrsrPosition( ) };
+		PIXEL      const pixHeight4Signal { getHeight4Signal( GetClientWindowHeight( ) ) };
+		m_iSelectedSignal = ptCrsr.GetY() / pixHeight4Signal;
+		(void)TrackMouseEvent( & m_trackStruct );
+	}
 }
 
 void MonitorWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )

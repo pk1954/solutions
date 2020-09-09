@@ -188,12 +188,12 @@ void MainWindow::CenterModel( )
 	CenterAndZoomRect( m_pModelReaderInterface->GetEnclosingRect( ), 1.2f ); // give 20% more space (looks better)
 }
 
-void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
-{
-	bool    const keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
-	HCURSOR const hCrsr   = keyDown ? m_hCrsrMove : m_hCrsrArrow;
-	SetCursor( hCrsr );
-}
+//void MainWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
+//{
+//	bool    const keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
+//	HCURSOR const hCrsr   = keyDown ? m_hCrsrMove : m_hCrsrArrow;
+//	SetCursor( hCrsr );
+//}
 
 bool MainWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 {

@@ -29,7 +29,8 @@ public:
 
 	void Stop( );
 	void Reset( );
-	long AddContextMenuEntries( HMENU const );
+
+	virtual long AddContextMenuEntries( HMENU const );
 
 	ShapeId const GetSuperHighlightedShapeId( ) const { return m_shapeSuperHighlighted; }
 	ShapeId const GetHighlightedShapeId( )      const { return m_shapeHighlighted; }
@@ -47,7 +48,6 @@ public:
 
 	virtual void CenterAndZoomRect( MicroMeterRect const &, float const );
 
-	virtual void OnSetCursor         ( WPARAM const, LPARAM const );
 	virtual bool OnSize              ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
