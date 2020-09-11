@@ -48,7 +48,7 @@ void Util::Thread::Terminate( )   // to be called from different thread
 {
 	if ( m_bAsync )
 	{
-		PostThreadMessage( m_threadId, WM_QUIT, 0, 0 ); // PostQuitMessage( 0 );  doesn't work
+		TerminateNoWait( );
 		WaitForSingleObject( m_handle, INFINITE );      // wait until thread has stopped
 		CloseHandle( m_handle );
 	}

@@ -4,9 +4,10 @@
 
 #pragma once
 
+#include "ArrowAnimation.h"
+
 class NNetModelReaderInterface;
 class NNetModelCommands;
-class AnimationThread;
 class SlowMotionRatio;
 class MonitorWindow;
 class NNetModelStorage;
@@ -58,6 +59,8 @@ private:
 	bool processUIcommand   ( int const, LPARAM const );
 	bool processModelCommand( int const, LPARAM const, MicroMeterPoint const );
 
+	ArrowAnimation m_arrowAnimation;
+
 	HCURSOR                    m_hCrsrWait               { nullptr };
 	Sound                    * m_pSound                  { nullptr };
 	NNetModelStorage         * m_pStorage                { nullptr };
@@ -68,7 +71,6 @@ private:
 	NNetModelCommands        * m_pModelCommands          { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio        { nullptr };
 	DisplayFunctor           * m_pStatusBarDisplay       { nullptr };
-	AnimationThread          * m_pAnimationThread        { nullptr };
 	Preferences              * m_pPreferences            { nullptr };
 	CommandStack             * m_pCommandStack           { nullptr };
 	MonitorWindow            * m_pMonitorWindow          { nullptr };

@@ -1,4 +1,4 @@
-// AnimationThread.h
+// ArrowAnimation.h
 //
 // NNetWindows
 
@@ -9,12 +9,12 @@
 #include "Pipe.h"
 #include "win32_thread.h"
 
-class AnimationThread : public Util::Thread
+class ArrowAnimation : public Util::Thread
 {
 public:
-	AnimationThread()
+	ArrowAnimation()
 	{
-		StartThread( L"Animation", true );
+		StartThread( L"ArrowAnimation", true );
 	}
 
 	void SetTarget( MicroMeter const umNewTarget )

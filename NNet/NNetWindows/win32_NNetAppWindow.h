@@ -17,6 +17,7 @@
 #include "TimeDisplay.h"
 #include "SlowMotionDisplay.h"
 #include "UndoRedoMenu.h"
+#include "BeaconAnimation.h"
 #include "UnsavedChangesObserver.h"
 #include "win32_event.h"
 #include "win32_sound.h"
@@ -142,6 +143,7 @@ private:
 	CommandStack              m_cmdStack                 { };
 	UndoRedoMenu              m_undoRedoMenu             { };
 	UnsavedChangesObserver    m_unsavedChangesObserver   { };
+	BeaconAnimation           m_beaconAnimation          { };
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 };

@@ -13,7 +13,6 @@
 #include "NNetModelStorage.h"
 #include "ComputeThread.h"
 #include "CommandStack.h"
-#include "AnimationThread.h"
 #include "Signal.h"
 #include "AutoOpen.h"
 #include "win32_util.h"
@@ -64,13 +63,10 @@ void NNetController::Initialize
     m_pParam                  = pParam;
     m_pDynamicModelObservable = pDynamicModelObservable;
     m_hCrsrWait               = LoadCursor( NULL, IDC_WAIT );
-    m_pAnimationThread        = new AnimationThread( );
 }
 
 NNetController::~NNetController( )
 {
-    delete m_pAnimationThread;
-
     m_pStorage              = nullptr;
     m_pMainWindow           = nullptr;
     m_pWinManager           = nullptr;
@@ -80,7 +76,6 @@ NNetController::~NNetController( )
     m_pComputeThread        = nullptr;
     m_pStatusBarDisplay     = nullptr;
     m_hCrsrWait             = nullptr;
-    m_pAnimationThread      = nullptr;
     m_pSound                = nullptr;
     m_pPreferences          = nullptr;
     m_pCommandStack         = nullptr;
@@ -151,11 +146,11 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         break;
 
     case IDD_ARROWS_ON:
-        m_pAnimationThread->SetTarget( Pipe::STD_ARROW_SIZE );
+        m_arrowAnimation.SetTarget( Pipe::STD_ARROW_SIZE );
         break;
 
     case IDD_ARROWS_OFF:
-        m_pAnimationThread->SetTarget( 0.0_MicroMeter );
+        m_arrowAnimation.SetTarget( 0.0_MicroMeter );
         break;
 
     case IDD_SOUND_ON:

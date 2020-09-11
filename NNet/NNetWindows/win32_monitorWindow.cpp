@@ -8,6 +8,8 @@
 #include "scale.h"
 #include "Signal.h"
 #include "Resource.h"
+#include "BaseKnot.h"
+#include "BeaconAnimation.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
@@ -17,7 +19,8 @@ void MonitorWindow::Start
 ( 
 	HWND                     const   hwndParent,
 	NNetModelReaderInterface const & model,
-	Param                    const & params 
+	Param                    const & params,
+	BeaconAnimation                & beaconAnimation
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -29,8 +32,9 @@ void MonitorWindow::Start
 		nullptr,
 		nullptr
 	);
-	m_pParams = & params;
-	m_pModel  = & model;
+	m_pBeaconAnimation           = & beaconAnimation;
+	m_pParams                    = & params;
+	m_pModel                     = & model;
 	m_graphics.Initialize( hwnd );
 	SetWindowText( hwnd, L"Monitor" );
 	m_trackStruct.hwndTrack = hwnd;
@@ -55,6 +59,36 @@ long MonitorWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }
 
+void MonitorWindow::selectSignal( int const iSignalNr )
+{
+	if ( iSignalNr != m_iSelectedSignal )  // animation is active
+	{
+		if ( (0 <= iSignalNr) && (iSignalNr < m_Signals.size( )) )
+		{
+			if ( m_iSelectedSignal < 0 )
+				m_pBeaconAnimation->Start( m_Signals[iSignalNr]->GetSignalSource() );
+			m_iSelectedSignal = iSignalNr;
+		}
+		else
+		{
+			if ( m_iSelectedSignal >= 0 )
+				m_pBeaconAnimation->Stop( );
+			m_iSelectedSignal = -1;
+		}
+	}
+}
+
+void MonitorWindow::removeSignal( int const iSignalNr )
+{
+	Signal const * pSignal { m_Signals[iSignalNr] };
+	auto res = find( begin(m_Signals), end(m_Signals), pSignal );
+	m_Signals.erase( res );
+	delete pSignal;
+	selectSignal( -1 );
+	if ( m_Signals.empty( ) )
+		SendMessage( WM_COMMAND, IDM_WINDOW_OFF, 0 );
+}
+
 PIXEL const MonitorWindow::getHeight4Signal( PIXEL pixCLientHeight )
 {
 	PIXEL const HEIGHT4SCALE  { 60_PIXEL };
@@ -73,6 +107,7 @@ void MonitorWindow::AddSignal( Signal & signal )
 { 
 	m_Signals.push_back( & signal );
 	signal.RegisterObserver( this );
+	Show( true );
 }
 
 void MonitorWindow::paintSignal
@@ -152,7 +187,7 @@ void MonitorWindow::doPaint( )
 			rectSize.GetX(),                                             // right
 			Convert2fPIXEL( pixHeight4Signal * (m_iSelectedSignal + 1) ) // bottom
 		};
-		m_graphics.DrawTranspRect( fPixRect, NNetColors::SELECTION_RECT );
+		m_graphics.DrawTranspRect( fPixRect, NNetColors::COL_BEACON );
 	}
 }
 
@@ -186,16 +221,11 @@ bool MonitorWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDD_REMOVE_SIGNAL:
-		{
-			Signal const * pSignal { m_Signals[m_iSelectedSignal] };
-			auto res = find( begin(m_Signals), end(m_Signals), pSignal );
-			m_Signals.erase( res );
-			delete pSignal;
-		}
+		removeSignal( m_iSelectedSignal );
 		break;
 
 	default:
-		return false;
+		break;
 	}
 
 	return BaseWindow::OnCommand( wParam, lParam, pixPoint );
@@ -203,7 +233,8 @@ bool MonitorWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 
 bool MonitorWindow::OnMouseLeave( WPARAM const wParam, LPARAM const lParam )
 {
-	m_iSelectedSignal = -1;
+	if ( ! CrsrInClientRect() )
+		selectSignal( -1 );
 	return false;
 }
 
@@ -221,7 +252,7 @@ void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	{
 		PixelPoint const ptCrsr           { GetRelativeCrsrPosition( ) };
 		PIXEL      const pixHeight4Signal { getHeight4Signal( GetClientWindowHeight( ) ) };
-		m_iSelectedSignal = ptCrsr.GetY() / pixHeight4Signal;
+		selectSignal( ptCrsr.GetY() / pixHeight4Signal );
 		(void)TrackMouseEvent( & m_trackStruct );
 	}
 }

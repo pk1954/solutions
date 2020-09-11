@@ -88,6 +88,11 @@ bool BaseWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const
         OnMouseWheel( wParam, lParam );
         return true;
 
+    case WM_MOUSELEAVE:
+        if ( OnMouseLeave( wParam, lParam ) )
+            return true;
+        break;
+
     case WM_LBUTTONDOWN:
         OnLButtonDown( wParam, lParam );
         return false;
@@ -105,9 +110,9 @@ bool BaseWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const
             return true;   // message completely handled, do not pass over to default processing
         break;
 
-    case WM_SETCURSOR:
-        OnSetCursor( wParam, lParam );
-        return true;
+    //case WM_SETCURSOR:
+    //    OnSetCursor( wParam, lParam );
+    //    return true;
 
     default:
         break;

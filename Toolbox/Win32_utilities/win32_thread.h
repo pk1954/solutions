@@ -44,6 +44,7 @@ namespace Util
 		}
 
 		void Terminate( ); // Waits until thread has stopped
+		void TerminateNoWait( ) { PostThreadMessage( m_threadId, WM_QUIT, 0, 0 ); }// PostQuitMessage( 0 );  doesn't work
 
 		bool IsAsyncThread( ) { return m_bAsync; }
 

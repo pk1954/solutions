@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include <sstream> 
+#include "util.h"
 #include "MoreTypes.h"
 #include "Segment.h"
 #include "scale.h"
@@ -13,6 +14,7 @@
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
+#include "BeaconAnimation.h"
 #include "NNetColors.h"
 #include "win32_sound.h"
 #include "win32_tooltip.h"
@@ -35,7 +37,8 @@ void NNetWindow::Start
 	DWORD                      const dwStyle,
 	bool                       const bShowRefreshRateDialog,
 	NNetController           * const pController,
-	NNetModelReaderInterface * const pModelReaderInterface
+	NNetModelReaderInterface * const pModelReaderInterface,
+	BeaconAnimation          * const pBeaconAnimation
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -50,6 +53,7 @@ void NNetWindow::Start
 	m_context.Start( hwnd );
 	m_pController           = pController;
 	m_pModelReaderInterface = pModelReaderInterface;
+	m_pBeaconAnimation      = pBeaconAnimation;
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 }
 
@@ -133,6 +137,25 @@ void NNetWindow::OnPaint( )
 			m_context.EndFrame( );
 		}
 		EndPaint( &ps );
+	}
+}
+
+void NNetWindow::AnimateBeacon( fPIXEL const fPixBeaconRadius )
+{
+	ShapeId idBeacon { m_pBeaconAnimation->GetBeaconShapeId() };
+	if ( IsDefined( idBeacon ) )
+	{
+		static MicroMeter const MIN_SIZE { NEURON_RADIUS };
+		static MicroMeter const MAX_SIZE { NEURON_RADIUS * 2 };
+
+		MicroMeter        const umMaxSize{ max( MAX_SIZE, GetCoord().Convert2MicroMeter( fPixBeaconRadius ) ) };
+		MicroMeter        const umSpan   { umMaxSize - MIN_SIZE };
+		float             const fRelSize { static_cast<float>(m_pBeaconAnimation->GetPercentage().GetValue()) / 100.0f };
+		MicroMeter        const umRadius { MIN_SIZE + (umSpan * fRelSize)  };
+		MicroMeterCircle  const umCircle { m_pModelReaderInterface->GetShapePos( idBeacon ), umRadius };
+		D2D1::ColorF col { NNetColors::COL_BEACON };
+		col.a = 1.0f - fRelSize;
+		m_context.DrawCircle( umCircle, col );
 	}
 }
 

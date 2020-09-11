@@ -47,6 +47,11 @@ public:
         NotifyAll( false  );
     }
 
+    ShapeId GetSignalSource( ) const
+    {
+        return m_pSignalSource->GetId();
+    }
+
     fMicroSecs const GetStartTime( ) const
     {
         return m_timeStart;
@@ -84,7 +89,7 @@ public:
 
 private:
     fMicroSecs                       m_timeStart             { 0._MicroSecs };
-    vector <float>                   m_data                  {};
+    vector <float>                   m_data                  { };
     Param                    const * m_pParams               { nullptr };
     Neuron                   const * m_pSignalSource         { nullptr };
     NNetModelReaderInterface const * m_pModelReaderInterface { nullptr };

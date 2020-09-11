@@ -7,6 +7,7 @@
 #include "DrawContext.h"
 #include "tHighlightType.h"
 #include "ShapeType.h"
+#include "NNetColors.h"
 #include "NNetParameters.h"
 #include "InputNeuron.h"
 

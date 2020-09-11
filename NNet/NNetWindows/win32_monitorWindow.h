@@ -12,12 +12,20 @@ using std::vector;
 
 class Param;
 class Signal;
+class BeaconAnimation;
 class NNetModelReaderInterface;
 
 class MonitorWindow : public BaseWindow
 {
 public:
-	void Start( HWND const, NNetModelReaderInterface const &, Param const & );
+	void Start
+	( 
+		HWND const, 
+		NNetModelReaderInterface const &, 
+		Param                    const &,
+		BeaconAnimation                &
+	);
+
 	void Stop( );
 
 	void AddSignal( Signal & );
@@ -38,18 +46,21 @@ private:
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
 
 	void doPaint( );
+	void removeSignal( int );
+	void selectSignal( int );
 	void paintSignal( Signal const &, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const, fMicroSecs const );
 
 	fPIXEL const getYvalue( Signal const &, fMicroSecs const );
 	PIXEL  const getHeight4Signal( PIXEL );
 
-	bool                             m_bRuler             { true };
-	D2D_driver                       m_graphics           { };
-	Param                    const * m_pParams            { nullptr };
-	NNetModelReaderInterface const * m_pModel             { nullptr };
-	vector <Signal const *>          m_Signals            { };
-	fMicroSecs                       m_fMicroSecsPerPixel { 100.0_MicroSecs };
-	float                            m_fYvaluesPerPixel   {   0.2f };
-	int                              m_iSelectedSignal    { -1 };
-	TRACKMOUSEEVENT                  m_trackStruct        { sizeof(TRACKMOUSEEVENT), TME_LEAVE, nullptr, 0L };
+	bool                             m_bRuler            { true };
+	D2D_driver                       m_graphics          { };
+	Param                    const * m_pParams           { nullptr };
+	NNetModelReaderInterface const * m_pModel            { nullptr };
+	BeaconAnimation                * m_pBeaconAnimation  { nullptr };
+	vector <Signal const *>          m_Signals           { };
+	fMicroSecs                       m_fMicroSecsPerPixel{ 100.0_MicroSecs };
+	float                            m_fYvaluesPerPixel  {   0.2f };
+	int                              m_iSelectedSignal   { -1 };
+	TRACKMOUSEEVENT                  m_trackStruct       { sizeof(TRACKMOUSEEVENT), TME_LEAVE, nullptr, 0L };
 };

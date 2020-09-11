@@ -101,9 +101,6 @@
     <ClInclude Include="win32_NNetAppMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationThread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_triggerSoundDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -159,6 +156,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_monitorWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BeaconAnimation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

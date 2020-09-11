@@ -18,6 +18,7 @@ using std::function;
 class Scale;
 class Observable;
 class ActionTimer;
+class BeaconAnimation;
 class ObserverInterface;
 class ControllerInterface;
 class NNetModelReaderInterface;
@@ -35,7 +36,8 @@ public:
 		DWORD                      const,
 		bool                       const,
 		NNetController           * const,
-		NNetModelReaderInterface * const
+		NNetModelReaderInterface * const,
+		BeaconAnimation          * const
 	);
 
 	void Stop( );
@@ -60,6 +62,8 @@ protected:
 
 	virtual void doPaint( ) = 0;
 
+	void AnimateBeacon( fPIXEL const );
+
 	PixelPoint m_ptLast { PP_NULL };	// Last cursor position during selection 
 
 	NNetModelReaderInterface * m_pModelReaderInterface { nullptr };
@@ -71,6 +75,7 @@ private:
 	NNetWindow             ( NNetWindow const & );  // noncopyable class 
 	NNetWindow & operator= ( NNetWindow const & );  // noncopyable class 
 
-	D2D_DrawContext   m_context     { };
-	NNetController  * m_pController { nullptr };
+	D2D_DrawContext   m_context          { };
+	NNetController  * m_pController      { nullptr };
+	BeaconAnimation * m_pBeaconAnimation { nullptr };
 };

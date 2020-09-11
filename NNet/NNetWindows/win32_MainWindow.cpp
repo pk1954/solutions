@@ -19,7 +19,8 @@ void MainWindow::Start
 	NNetModelReaderInterface * const pModelReaderInterface,
 	NNetModelCommands        * const pNNetCommands,
 	Observable               * const pCursorObservable,
-	Observable               * const pCoordObservable
+	Observable               * const pCoordObservable,
+	BeaconAnimation          * const pBeaconAnimation
 )
 {
 	NNetWindow::Start
@@ -28,7 +29,8 @@ void MainWindow::Start
 		dwStyle,
 		bShowRefreshRateDialog,
 		pController,
-		pModelReaderInterface
+		pModelReaderInterface,
+		pBeaconAnimation
 	);
 	ShowRefreshRateDlg( bShowRefreshRateDialog );
 	m_pNNetCommands        = pNNetCommands;
@@ -390,6 +392,8 @@ void MainWindow::doPaint( )
 		if ( m_pModelReaderInterface->IsOfType<Neuron>( m_shapeHighlighted ) )
 			m_pModelReaderInterface->DrawNeuronText( m_shapeHighlighted, context );
 	}
+
+	AnimateBeacon( 30._fPIXEL);
 }
 
 void MainWindow::setSuperHighlightedShape( MicroMeterPoint const & umCrsrPos )
