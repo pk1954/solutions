@@ -63,6 +63,7 @@ public:
 	bool SaveModelAs ( );
 
 private:
+	inline static float const PROTOCOL_VERSION { 1.5f };
 
 	mutable bool m_bUnsavedChanges { false };  // can be changed in const functions
 

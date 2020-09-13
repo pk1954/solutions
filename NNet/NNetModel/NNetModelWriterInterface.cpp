@@ -39,11 +39,6 @@ Shape * const NNetModelWriterInterface::GetShape( ShapeId const id )
 	return const_cast<Shape *>(m_pModel->GetConstShape( id ) );
 }
 
-void NNetModelWriterInterface::SetShape( Shape * const pShape, ShapeId const id )	
-{
-	m_pModel->SetShape( pShape, id );
-}
-
 void NNetModelWriterInterface::SetNrOfShapes( long const lNrOfShapes ) 
 { 
 	m_pModel->SetNrOfShapes( lNrOfShapes );

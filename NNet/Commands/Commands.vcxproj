@@ -69,6 +69,7 @@
   <ItemGroup>
     <ClInclude Include="AddIncoming2KnotCommand.h" />
     <ClInclude Include="AddIncoming2PipeCommand.h" />
+    <ClInclude Include="AddModel.h" />
     <ClInclude Include="AddOutgoing2KnotCommand.h" />
     <ClInclude Include="AddOutgoing2PipeCommand.h" />
     <ClInclude Include="AnalyzeAnomaliesCommand.h" />

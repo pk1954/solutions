@@ -184,6 +184,7 @@
     <ClInclude Include="win32_util_resource.h" />
     <ClInclude Include="win32_winManager.h" />
     <ClInclude Include="win32_zoomControl.h" />
+    <ClInclude Include="WindowLayout.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

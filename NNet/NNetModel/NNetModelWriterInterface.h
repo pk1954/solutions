@@ -32,7 +32,6 @@ public:
     void SelectBeepers();
     void SelectShape( ShapeId const, tBoolOp const );
     void MarkShape  ( ShapeId const, tBoolOp const );
-    void SetShape   ( Shape * const, ShapeId const );	
     void SetNrOfShapes( long const );
     void SetShapeErrorHandler( ShapeErrorHandler * const );
 
@@ -81,15 +80,16 @@ public:
     void ClearModel( )                     { m_pModel->Apply2AllShapes( [&](Shape  &s) { s.Clear( ); } ); }
     void SelectAllShapes(tBoolOp const op) { m_pModel->Apply2AllShapes( [&](Shape  &s) { s.Select( op ); } ); }
 
-    void ReplaceInModel ( Shape * const p2BeReplaced, Shape * pShape ) { SetShape( pShape,  p2BeReplaced->GetId() ); }
-    void Store2Model    ( Shape * const pShape )                       { SetShape( pShape,  pShape->GetId() ); }
-    void RemoveFromModel( Shape * const pShape )                       { SetShape( nullptr, pShape->GetId() ); }
-    void Add2Model      ( Shape * const pShape )                       
+    void ReplaceInModel   ( Shape * const p2BeReplaced, Shape * pShape ) { m_pModel->SetShape( pShape,  p2BeReplaced->GetId() ); }
+    void Store2Model      ( Shape * const pShape )                       { m_pModel->SetShape( pShape,  pShape->GetId() ); }
+    void RemoveFromModel  ( Shape * const pShape )                       { m_pModel->SetShape( nullptr, pShape->GetId() ); }
+    void InsertAtModelSlot( Shape * const pShape, ShapeId const id )                       
     { 
-        ShapeId const idNewSlot { m_pModel->NewShapeListSlot( ) };
-        pShape->SetId( idNewSlot );
-        SetShape( pShape, idNewSlot );
+        pShape->SetId( id );
+        m_pModel->SetShape( pShape, id );
     }
+
+    void Add2Model( Shape * const pShape ) { InsertAtModelSlot( pShape, m_pModel->NewShapeListSlot( ) ); }
 
     MicroMeterPoint const OrthoVector( ShapeId const idPipe ) const
     {

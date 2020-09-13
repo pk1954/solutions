@@ -1,5 +1,6 @@
-    // win32_winManager.cpp
+// win32_winManager.cpp
 //
+// Win32_utilities
 
 #include "stdafx.h"
 #include <fstream>

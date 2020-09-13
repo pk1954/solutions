@@ -229,6 +229,8 @@
     <ClCompile Include="NNetModelCommands.cpp" />
     <ClCompile Include="NNetModelReaderInterface.cpp" />
     <ClCompile Include="NNetModelStorage.cpp" />
+    <ClCompile Include="NNetModelStorageRead.cpp" />
+    <ClCompile Include="NNetModelStorageWrite.cpp" />
     <ClCompile Include="NNetModelWriterInterface.cpp" />
     <ClCompile Include="NNetParameters.cpp" />
     <ClCompile Include="NNetWrapperHelpers.cpp" />
