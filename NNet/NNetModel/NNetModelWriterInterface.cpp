@@ -39,9 +39,9 @@ Shape * const NNetModelWriterInterface::GetShape( ShapeId const id )
 	return const_cast<Shape *>(m_pModel->GetConstShape( id ) );
 }
 
-void NNetModelWriterInterface::SetNrOfShapes( long const lNrOfShapes ) 
+void NNetModelWriterInterface::IncShapeList( long const lNrOfShapes ) 
 { 
-	m_pModel->SetNrOfShapes( lNrOfShapes );
+	m_pModel->IncShapeList( lNrOfShapes );
 }
 
 void NNetModelWriterInterface::SetShapeErrorHandler( ShapeErrorHandler * const pHandler )
@@ -79,10 +79,10 @@ void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
 	}
 }
 
-vector<Shape *> NNetModelWriterInterface::GetShapeList( ShapeCrit const& selector ) const
+ShapeList NNetModelWriterInterface::GetShapeList( ShapeCrit const & selector ) const
 {
-	vector<Shape *> list;
-	Apply2All<Shape>( [&](Shape &s) { if ( selector(s) ) list.push_back(&s); } );
+	ShapeList list { };
+	Apply2All<Shape>( [&]( Shape & s ) { if ( selector(s) ) list.Add( & s ); } );
 	return list;
 }
 

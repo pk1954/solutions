@@ -20,58 +20,7 @@ using std::unordered_map;
 NNetModel::NNetModel( NNetModel const & modelSrc )
 {
 	* this = modelSrc;
-	m_Shapes = DuplicateShapes( modelSrc.m_Shapes );
-	assert( IsEqual( modelSrc ) );
-}
-
-NormalizedShapeList NNetModel::DuplicateShapes( vector<Shape *> const & list ) const // Not neccessarily a NormalizedShapeList!
-{
-	NormalizedShapeList newShapes( GetSizeOfShapeList(), nullptr ); 
-
-	for ( Shape * const pShape : list )
-	{
-		if ( pShape )
-		{
-			ShapeId id { pShape->GetId() };
-			newShapes[id.GetValue()] = ShallowCopy( pShape ); 
-		}
-	}
-
-	for ( Shape * const pShape : list )
-	{
-		if ( pShape )
-		{
-			ShapeId const   id       { pShape->GetId() };
-			Shape   const & shapeSrc { * pShape };
-			Shape         & shapeDst { * newShapes.at(id.GetValue()) };
-			if ( shapeSrc.IsPipe( ) )
-			{
-				Pipe const & pipeSrc { static_cast<Pipe const &>( shapeSrc ) };
-				Pipe       & pipeDst { static_cast<Pipe       &>( shapeDst ) };
-				pipeDst.SetStartKnot( static_cast<BaseKnot *>( newShapes.at( pipeSrc.GetStartKnotId().GetValue() )) );
-				pipeDst.SetEndKnot  ( static_cast<BaseKnot *>( newShapes.at( pipeSrc.GetEndKnotId  ().GetValue() )) );
-			}
-			else
-			{
-				Connections const & srcConn { static_cast<BaseKnot const &>( shapeSrc ).m_connections };
-				Connections       & dstConn { static_cast<BaseKnot       &>( shapeDst ).m_connections };
-				dstConn.ClearOutgoing();
-				dstConn.ClearIncoming();
-				auto dstFromSrc = [&](Pipe const & pipeSrc){ return static_cast<Pipe *>(newShapes.at(pipeSrc.GetId().GetValue())); };
-				srcConn.Apply2AllOutPipes( [&]( Pipe const & pipeSrc ) { dstConn.AddOutgoing( dstFromSrc( pipeSrc ) ); } );
-				srcConn.Apply2AllInPipes ( [&]( Pipe const & pipeSrc ) { dstConn.AddIncoming( dstFromSrc( pipeSrc ) ); } );
-			}
-		}
-	}
-
-	return newShapes;
-}
-
-NNetModel::~NNetModel( )
-{
-	for ( auto pShape : m_Shapes )
-		delete pShape;
-	m_Shapes.clear();
+	assert( m_Shapes.IsEqual( modelSrc.m_Shapes ) );
 }
 
 void NNetModel::Initialize
@@ -89,35 +38,15 @@ void NNetModel::Initialize
 	Shape::SetParam( pParam );
 }                     
 
-bool NNetModel::IsEqual( NNetModel const & other ) const
-{
-	size_t iMax { max( m_Shapes.size(), other.m_Shapes.size() ) };
-	for ( int i = 0; i < iMax; ++i )
-	{
-		Shape const * pShape      { (i >=       m_Shapes.size()) ? nullptr :       m_Shapes[i] };
-		Shape const * pShapeOther { (i >= other.m_Shapes.size()) ? nullptr : other.m_Shapes[i] };
-		if ( (pShape == nullptr) != (pShapeOther == nullptr) )
-		{
-			return false;
-		}
-		else if ( (pShape != nullptr) && (pShapeOther != nullptr) )
-		{
-			if ( ! isEqual( * pShape, * pShapeOther ) )
-				return false;
-		}
-	}
-	return true;
-}
-
 void NNetModel::StaticModelChanged( )
 { 
 	m_pStaticModelObservable->NotifyAll( false );
-	m_enclosingRect = ::ComputeEnclosingRect( m_Shapes );
+	m_enclosingRect = m_Shapes.ComputeEnclosingRect( );
 }
 
 void NNetModel::RecalcAllShapes( ) 
 { 
-	Apply2AllShapes( [&]( Shape & shape ) { shape.Recalc( ); } );
+	m_Shapes.Apply2AllShapes( [&]( Shape & shape ) { shape.Recalc( ); } );
 	dynamicModelChanged( );
 } 
 
@@ -157,8 +86,8 @@ MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
 bool NNetModel::Compute( )
 {
 	bool bStop {false };
-	Apply2AllShapes( [&]( Shape & shape ) { shape.Prepare( ); } );
-	Apply2AllShapes( [&]( Shape & shape ) { if ( shape.CompStep( ) ) bStop = true; } );
+	m_Shapes.Apply2AllShapes( [&]( Shape & shape ) { shape.Prepare( ); } );
+	m_Shapes.Apply2AllShapes( [&]( Shape & shape ) { if ( shape.CompStep( ) ) bStop = true; } );
 	dynamicModelChanged();
 	incTimeStamp( );
 	return bStop;
@@ -166,74 +95,13 @@ bool NNetModel::Compute( )
 
 void NNetModel::ResetModel( )
 {
-	for (auto pShape : m_Shapes)
-		delete pShape;
-	m_Shapes.clear();
+	m_Shapes.Reset();
 	Knot       ::ResetCounter();
 	Neuron     ::ResetCounter();
 	InputNeuron::ResetCounter();
 	Pipe       ::ResetCounter();
 	SetSimulationTime();
 	StaticModelChanged( );
-}
-
-bool NNetModel::isEqual( Shape const & shapeA, Shape const & shapeB ) const
-{
-	if ( shapeA.GetShapeType().GetValue() != shapeB.GetShapeType().GetValue() )
-		return false;
-
-	switch ( shapeA.GetShapeType().GetValue() )
-	{
-	case ShapeType::Value::inputNeuron:
-		if (! IS_EQUAL<InputNeuron>( shapeA, shapeB ) ) 
-			return false;
-		break;
-
-	case ShapeType::Value::knot:
-		if (! IS_EQUAL<Knot>( shapeA, shapeB ) ) 
-			return false;
-		break;
-
-	case ShapeType::Value::neuron:
-		if (! IS_EQUAL<Neuron>( shapeA, shapeB ) ) 
-			return false;
-		break;
-
-	case ShapeType::Value::pipe:
-		if (! IS_EQUAL<Pipe>( shapeA, shapeB ) ) 
-			return false;
-		break;
-
-	default:
-		assert( false );
-		return false;
-	}
-	return true;
-}
-
-Shape * NNetModel::ShallowCopy( Shape const * const pShape ) const
-{
-	if ( pShape )
-	{
-		switch ( pShape->GetShapeType().GetValue() )
-		{
-		case ShapeType::Value::inputNeuron:
-			return new InputNeuron( static_cast<InputNeuron const &>( * pShape ) );
-
-		case ShapeType::Value::knot:
-			return new Knot( static_cast<Knot const &>( * pShape ) );
-
-		case ShapeType::Value::neuron:
-			return new Neuron( static_cast<Neuron const &>( * pShape ) );
-
-		case ShapeType::Value::pipe:
-			return new Pipe( static_cast<Pipe const &>( * pShape ) );
-
-		default:
-			assert( false );
-		}
-	}
-	return nullptr;
 }
 
 void NNetModel::SelectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op )
@@ -262,57 +130,13 @@ ShapeId const NNetModel::FindShapeAt
 	ShapeId idRes { NO_SHAPE };
 
 	if ( idRes == NO_SHAPE )   // first test all neurons and input neurons
-		idRes = findShapeAt( umPoint, [&]( Shape const & s ) { return s.IsAnyNeuron( ) && crit( s ); } );
+		idRes = m_Shapes.FindShapeAt( umPoint, [&]( Shape const & s ) { return s.IsAnyNeuron( ) && crit( s ); } );
 
 	if ( idRes == NO_SHAPE )   // if nothing found, test knot shapes
-		idRes = findShapeAt( umPoint, [&]( Shape const & s ) { return s.IsKnot     ( ) && crit( s ); } ); 	
+		idRes = m_Shapes.FindShapeAt( umPoint, [&]( Shape const & s ) { return s.IsKnot     ( ) && crit( s ); } ); 	
 
 	if ( idRes == NO_SHAPE )   // if nothing found, try pipes
-		idRes = findShapeAt( umPoint, [&]( Shape const & s ) { return s.IsPipe     ( ) && crit( s ); } );
+		idRes = m_Shapes.FindShapeAt( umPoint, [&]( Shape const & s ) { return s.IsPipe     ( ) && crit( s ); } );
 
 	return idRes;
-}
-
-/////////////////// local functions ///////////////////////////////////////////////
-
-ShapeId const NNetModel::findShapeAt
-( 
-	MicroMeterPoint const   pnt, 
-	ShapeCrit       const & crit 
-) const
-{
-	for ( size_t i = m_Shapes.size(); i --> 0; )	
-	{
-		Shape * pShape = m_Shapes[i];
-		if ( pShape && crit( * pShape ) && pShape->IsPointInShape( pnt ) ) 
-			return pShape->GetId();
-	};
-	return NO_SHAPE;
-}
-
-/////////////////// nonmember functions ///////////////////////////////////////////////
-
-MicroMeterRect ComputeEnclosingRect( vector<Shape *> const & shapeVector )
-{
-	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
-	for ( const auto & pShape : shapeVector )
-	{
-		if ( pShape )
-		{
-			if ( pShape->IsBaseKnot() )
-			{
-				rect.Expand( Cast2BaseKnot( pShape )->GetPosition() );
-			}
-			else if ( pShape->IsPipe() )
-			{
-				rect.Expand( Cast2Pipe( pShape )->GetStartPoint() );
-				rect.Expand( Cast2Pipe( pShape )->GetEndPoint() );
-			}
-			else
-			{
-				assert( false );
-			}
-		}
-	}
-	return rect;
 }

@@ -21,8 +21,6 @@ public:
 	void Start( NNetModel * const );
 	void Stop(); 
 
-	bool       const IsEqual( NNetModel const & ) const;
-
 	bool       const AnyShapesSelected         ( )               const;	
 	bool       const IsSelected                ( ShapeId const ) const;
 	ShapeType  const GetShapeType              ( ShapeId const ) const;
@@ -35,10 +33,10 @@ public:
 	bool       const HasOutgoing               ( ShapeId const ) const;
 	size_t     const GetNrOfOutgoingConnections( ShapeId const ) const;
 	size_t     const GetNrOfIncomingConnections( ShapeId const ) const;
-	bool       const ConnectsTo( ShapeId const, ShapeId const ) const;
+	bool       const ConnectsTo ( ShapeId const, ShapeId const ) const;
 
-	bool       const IsValidShapeId  ( ShapeId const id ) const { return m_pModel->IsValidShapeId(id); }
-	bool       const IsInvalidShapeId( ShapeId const id ) const { return m_pModel->IsInvalidShapeId(id); }
+	bool       const IsValidShapeId  ( ShapeId const id ) const { return m_pModel->m_Shapes.IsValidShapeId(id); }
+	bool       const IsInvalidShapeId( ShapeId const id ) const { return m_pModel->m_Shapes.IsInvalidShapeId(id); }
 	bool       const IsShapeNullPtr  ( ShapeId const id ) const { return m_pModel->IsShapeNullPtr(id); }
 	long       const GetSizeOfShapeList( )                const { return m_pModel->GetSizeOfShapeList(); }
 
@@ -58,7 +56,7 @@ public:
 	T const GetConstShapePtr( ShapeId const id ) const
 	{
 		Shape const * const pShape { m_pModel->GetConstShape( id ) };
-		return (pShape && m_pModel->HasType<T>(pShape)) ? static_cast<T>( pShape ) : nullptr;
+		return (pShape && m_pModel->m_Shapes.HasType<T>(pShape)) ? static_cast<T>( pShape ) : nullptr;
 	}
 
 	template <typename T>
@@ -81,7 +79,7 @@ public:
 		{
 			if ( pShape )
 			{
-				if ( m_pModel->HasType<T>( pShape ) )	
+				if ( m_pModel->m_Shapes.HasType<T>( pShape ) )	
 					bResult = func( static_cast<T const &>( * pShape ) );
 				if ( bResult )
 					break;
@@ -93,14 +91,14 @@ public:
 	template <typename T>    // const version
 	void Apply2All( function<void(T const &)> const & func ) const
 	{
-		for (auto & pShape : m_pModel->GetShapes() )    
-		{ 
-			if ( pShape )
-			{
-				if ( m_pModel->HasType<T>(pShape) ) 
-					func( static_cast<T const &>( * pShape) ); 
+		m_pModel->m_Shapes.Apply2AllShapes
+		( 
+			[&](Shape & s) 
+			{  
+				if ( m_pModel->m_Shapes.HasType<T>(& s) ) 
+					func( static_cast<T const &>(s) ); 
 			}
-		}
+		);
 	}                        
 
 	template <typename T>   // const version

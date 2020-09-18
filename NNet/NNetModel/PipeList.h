@@ -36,6 +36,7 @@ void AddPipe( Pipe * const pPipe )
 void RemovePipe( Pipe * const pPipe )
 {
 	auto res = find( begin(m_list), end(m_list), pPipe );
+	assert( res != end(m_list) );
 	m_list.erase( res );
 }
 

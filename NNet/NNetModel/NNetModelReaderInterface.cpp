@@ -7,11 +7,6 @@
 #include "NNetModel.h"
 #include "NNetModelReaderInterface.h"
 
-bool const NNetModelReaderInterface::IsEqual( NNetModel const & pModel) const
-{
-	return m_pModel->IsEqual( pModel );
-}
-
 void NNetModelReaderInterface::Start( NNetModel * const pModel )
 {
 	m_pModel = pModel;
@@ -24,7 +19,7 @@ void NNetModelReaderInterface::Stop( )
 
 bool const NNetModelReaderInterface::AnyShapesSelected( ) const
 {
-	return m_pModel->AnyShapesSelected( );
+	return m_pModel->m_Shapes.AnyShapesSelected( );
 }
 
 bool const NNetModelReaderInterface::IsSelected( ShapeId const id ) const

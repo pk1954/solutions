@@ -36,12 +36,12 @@ private:
 	inline static DisplayFunctor * m_pStatusBarDisplay { nullptr };
 	inline static bool             m_bStop		       { false };
 	inline static int              m_iRecDepth	       { 0 };
-	inline static vector<Shape const *>  m_shapeStack        { };
+	inline static ShapeList        m_shapeStack        { };
 
 	inline static bool (* m_pEscFunc )( ) { nullptr };
 
-	static bool findLoop( Shape const * const );
-	static bool hasAnomaly( Knot const & );
+	static bool findLoop( Shape * const );
+	static bool hasAnomaly( Knot & );
 
 	static void statusDisplay( wstring const str ) 
 	{ 

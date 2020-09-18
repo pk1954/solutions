@@ -7,6 +7,7 @@
 #include <vector>
 #include "NNetModelWriterInterface.h"
 #include "Shape.h"
+#include "ShapeList.h"
 #include "Command.h"
 
 using std::vector;
@@ -21,11 +22,10 @@ public:
 	virtual void Undo( NNetModelWriterInterface * const pModel ) 
 	{
 		pModel->SelectAllShapes( tBoolOp::opFalse );
-		for ( Shape * pShape : m_selectedShapes )
-			pShape->Select( tBoolOp::opTrue );
+		m_selectedShapes.SelectAllShapes( tBoolOp::opTrue );
 	}
 
 protected:
-	vector<Shape *> m_selectedShapes;
+	ShapeList m_selectedShapes;
 };
 

@@ -44,7 +44,7 @@ public:
                 L"ShapeId != NO_SHAPE" 
             );
         }
-        else if ( model.IsInvalidShapeId( id ) )
+        else if ( model.m_Shapes.IsInvalidShapeId( id ) )
         {
             ScriptErrorHandler::HandleSemanticError
             (

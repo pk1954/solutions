@@ -28,13 +28,12 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface * const pModel ) 
 	{ 
-		pModel->Apply2All<Shape>( [&]( Shape & shape ) { shape.Mark( tBoolOp::opFalse ); } );
-		for ( Shape * pShape : m_markedShapes )
-			pShape->Mark( tBoolOp::opTrue );
+		pModel->Apply2All<Shape>      ( [&]( Shape & shape ) { shape.Mark( tBoolOp::opFalse ); } );
+		m_markedShapes.Apply2AllShapes( [&]( Shape & shape ) { shape.Mark( tBoolOp::opTrue  ); } );
 	}
 
 private:
-	vector<Shape *> m_markedShapes;
-	tBoolOp const   m_op;
+	ShapeList     m_markedShapes;
+	tBoolOp const m_op;
 };
 

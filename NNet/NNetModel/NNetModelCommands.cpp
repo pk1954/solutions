@@ -292,15 +292,14 @@ void NNetModelCommands::DeleteSelection( )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
 	m_pCmdStack->StartSeries();
-	NormalizedShapeList list 
+	ShapeList list 
 	{ 
 		m_pModelWriterInterface->GetShapeList
 		( 
 			[&]( Shape const & s ) { return s.IsSelected(); } 
 		) 
 	};
-	for ( Shape * const pShape : list )
-		deleteShape( pShape );
+	list.Apply2All( [&]( Shape * pShape ) {	deleteShape( pShape ); } );
 	m_pCmdStack->StopSeries();
 }
 

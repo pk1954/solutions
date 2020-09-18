@@ -71,57 +71,9 @@ public:
     {   
         ShapeId   const idFromScript{ script.ScrReadLong() };
         ShapeType const shapeType   { static_cast<ShapeType::Value>(script.ScrReadInt( )) };
-        Shape         * pShape      { nullptr };
 
         script.ScrReadSpecial( L'(' );
-        if ( shapeType.IsPipeType() )
-        {
-            ShapeId const idStart { script.ScrReadLong() };
-            script.ScrReadSpecial( L'-' );
-            script.ScrReadSpecial( L'>' );
-            ShapeId const idEnd { script.ScrReadLong() };
-            if ( idStart == idEnd )
-            {
-                wcout << "+++ Pipe has identical start and end point" << endl;
-                wcout << "+++ " << idFromScript << L": " << idStart << L" -> " << idEnd << endl;
-                wcout << "+++ Pipe ignored" << endl;
-            }
-            else
-            { 
-                BaseKnot * const pKnotStart { m_pModelWriterInterface->GetShapePtr<BaseKnot *>( idStart ) };
-                BaseKnot * const pKnotEnd   { m_pModelWriterInterface->GetShapePtr<BaseKnot *>( idEnd   ) };
-                Pipe     * const pPipe      { new Pipe( pKnotStart, pKnotEnd ) };
-                pKnotStart->m_connections.AddOutgoing( pPipe );
-                pKnotEnd  ->m_connections.AddIncoming( pPipe );
-                pPipe->SetId( idFromScript );
-                pShape = pPipe;
-            }
-        }
-        else 
-        {
-            MicroMeter      const xCoord { CastToFloat( script.ScrReadFloat() ) };
-            script.ScrReadSpecial( L'|' );
-            MicroMeter      const yCoord { CastToFloat( script.ScrReadFloat() ) };
-            MicroMeterPoint const umPosition( xCoord, yCoord );
-            switch ( shapeType.GetValue() )
-            {
-            case ShapeType::Value::inputNeuron:
-                pShape = new InputNeuron( umPosition );
-                break;
-
-            case ShapeType::Value::neuron:
-                pShape = new Neuron( umPosition );
-                break;
-
-            case ShapeType::Value::knot:
-                pShape = new Knot( umPosition );
-                break;
-
-            default:
-                assert( false );
-                break;
-            }
-        }
+        Shape * pShape { shapeType.IsPipeType() ? createPipe( script, idFromScript ) : createBaseKnot( script, shapeType ) };
         script.ScrReadSpecial( L')' );
 
         if ( pShape )
@@ -129,6 +81,53 @@ public:
     }
 
 private:
+
+    Shape * const createPipe( Script & script, ShapeId const id ) const
+    {
+        ShapeId const idStart { script.ScrReadLong() };
+        script.ScrReadSpecial( L'-' );
+        script.ScrReadSpecial( L'>' );
+        ShapeId const idEnd { script.ScrReadLong() };
+        if ( idStart == idEnd )
+        {
+            wcout << "+++ Pipe has identical start and end point" << endl;
+            wcout << "+++ " << id << L": " << idStart << L" -> " << idEnd << endl;
+            wcout << "+++ Pipe ignored" << endl;
+            return nullptr;
+        }
+        else
+        { 
+            BaseKnot * const pKnotStart { m_pModelWriterInterface->GetShapePtr<BaseKnot *>( idStart ) };
+            BaseKnot * const pKnotEnd   { m_pModelWriterInterface->GetShapePtr<BaseKnot *>( idEnd   ) };
+            Pipe     * const pPipe      { new Pipe( pKnotStart, pKnotEnd ) };
+            pKnotStart->m_connections.AddOutgoing( pPipe );
+            pKnotEnd  ->m_connections.AddIncoming( pPipe );
+            return pPipe;
+        }
+    }
+
+    Shape * const createBaseKnot( Script & script, ShapeType const shapeType ) const 
+    {
+        MicroMeter      const xCoord { CastToFloat( script.ScrReadFloat() ) };
+        script.ScrReadSpecial( L'|' );
+        MicroMeter      const yCoord { CastToFloat( script.ScrReadFloat() ) };
+        MicroMeterPoint const umPosition( xCoord, yCoord );
+        switch ( shapeType.GetValue() )
+        {
+        case ShapeType::Value::inputNeuron:
+            return new InputNeuron( umPosition );
+
+        case ShapeType::Value::neuron:
+            return new Neuron( umPosition );
+
+        case ShapeType::Value::knot:
+            return new Knot( umPosition );
+
+        default:
+            assert( false );
+            return nullptr;
+        }
+    }
 
     NNetModelWriterInterface * m_pModelWriterInterface;
 };
@@ -162,7 +161,7 @@ public:
     virtual void operator() ( Script & script ) const 
     {
         script.ScrReadSpecial( L'=' );
-        m_pModelWriterInterface->SetNrOfShapes( script.ScrReadLong() );
+        m_pModelWriterInterface->IncShapeList( script.ScrReadLong() );
     }
 
 private:

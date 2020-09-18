@@ -32,7 +32,7 @@ public:
     void SelectBeepers();
     void SelectShape( ShapeId const, tBoolOp const );
     void MarkShape  ( ShapeId const, tBoolOp const );
-    void SetNrOfShapes( long const );
+    void IncShapeList( long const );
     void SetShapeErrorHandler( ShapeErrorHandler * const );
 
     void StaticModelChanged( );
@@ -41,7 +41,7 @@ public:
     T GetShapePtr( ShapeId const id ) 
     {
         Shape * const pShape { GetShape( id ) };
-        return (pShape && m_pModel->HasType<T>(pShape)) ? static_cast<T>( pShape ) : nullptr;
+        return (pShape && m_pModel->m_Shapes.HasType<T>(pShape)) ? static_cast<T>( pShape ) : nullptr;
     }
 
     template <typename T> 
@@ -55,11 +55,12 @@ public:
 	template <typename T>
 	void Apply2All( function<void(T &)> const & func ) const
 	{
-        m_pModel->Apply2AllShapes
+        m_pModel->m_Shapes.Apply2AllShapes
         ( 
             [&](Shape & s) 
             {  
-                if ( m_pModel->HasType<T>(& s) ) func( static_cast<T &>(s) ); 
+                if ( m_pModel->m_Shapes.HasType<T>(& s) ) 
+                    func( static_cast<T &>(s) ); 
             }
         );
 	}                        
@@ -76,17 +77,18 @@ public:
         Apply2All<T>( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
     }
 
-    void ResetModel( )                     { m_pModel->ResetModel(); }
-    void ClearModel( )                     { m_pModel->Apply2AllShapes( [&](Shape  &s) { s.Clear( ); } ); }
-    void SelectAllShapes(tBoolOp const op) { m_pModel->Apply2AllShapes( [&](Shape  &s) { s.Select( op ); } ); }
+    void ResetModel( ) { m_pModel->ResetModel(); }
+    void ClearModel( ) { m_pModel->m_Shapes.Apply2AllShapes( [&](Shape  &s) { s.Clear( ); } ); }
 
-    void ReplaceInModel   ( Shape * const p2BeReplaced, Shape * pShape ) { m_pModel->SetShape( pShape,  p2BeReplaced->GetId() ); }
-    void Store2Model      ( Shape * const pShape )                       { m_pModel->SetShape( pShape,  pShape->GetId() ); }
-    void RemoveFromModel  ( Shape * const pShape )                       { m_pModel->SetShape( nullptr, pShape->GetId() ); }
+    void SelectAllShapes( tBoolOp const op ) { m_pModel->m_Shapes.SelectAllShapes( op ); }
+
+    void ReplaceInModel   ( Shape * const p2BeReplaced, Shape * pShape ) { m_pModel->m_Shapes.SetShape( pShape,  p2BeReplaced->GetId() ); }
+    void Store2Model      ( Shape * const pShape )                       { m_pModel->m_Shapes.SetShape( pShape,  pShape->GetId() ); }
+    void RemoveFromModel  ( Shape * const pShape )                       { m_pModel->m_Shapes.SetShape( nullptr, pShape->GetId() ); }
     void InsertAtModelSlot( Shape * const pShape, ShapeId const id )                       
     { 
         pShape->SetId( id );
-        m_pModel->SetShape( pShape, id );
+        m_pModel->m_Shapes.SetShape( pShape, id );
     }
 
     void Add2Model( Shape * const pShape ) { InsertAtModelSlot( pShape, m_pModel->NewShapeListSlot( ) ); }
@@ -96,7 +98,7 @@ public:
         return ::OrthoVector( m_pModel->GetShapeConstPtr<Pipe const *>( idPipe )->GetVector(), NEURON_RADIUS * 2.f );
     }
 
-    vector<Shape *> GetShapeList( ShapeCrit const & ) const;
+    ShapeList GetShapeList( ShapeCrit const & ) const;
 
     void SelectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op ) { m_pModel->SelectSubtree( pBaseKnot, op ); }
 
