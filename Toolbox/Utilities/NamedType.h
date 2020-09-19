@@ -23,6 +23,7 @@ public:
 
 	constexpr BASE_TYPE const & GetValue() const { return m_value; }
 
+	constexpr NamedType const GetAbs     () const { return NamedType( abs(m_value) ); }
 	constexpr BASE_TYPE const GetAbsValue() const { return BASE_TYPE( abs(m_value) ); }
 
 	bool const operator== (NamedType const other) const { return m_value == other.GetValue(); }

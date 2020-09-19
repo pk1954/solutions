@@ -46,21 +46,29 @@ private:
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
 
 	void doPaint( );
-	void removeSignal( int );
-	void selectSignal( int );
+	void removeSignal( );
+	void selectSignal( Signal * );
 	void paintSignal( Signal const &, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const, fMicroSecs const );
 
 	fPIXEL const getYvalue( Signal const &, fMicroSecs const );
-	PIXEL  const getHeight4Signal( PIXEL );
+	PIXEL  const getSlotHeight( PIXEL );
+
+	Signal * findSignal( );
+
+	struct Slot
+	{
+		vector <Signal *> signals;
+	};
 
 	bool                             m_bRuler            { true };
 	D2D_driver                       m_graphics          { };
 	Param                    const * m_pParams           { nullptr };
 	NNetModelReaderInterface const * m_pModel            { nullptr };
 	BeaconAnimation                * m_pBeaconAnimation  { nullptr };
-	vector <Signal const *>          m_Signals           { };
+	vector <Slot>                    m_Slots             { };
 	fMicroSecs                       m_fMicroSecsPerPixel{ 100.0_MicroSecs };
 	float                            m_fYvaluesPerPixel  {   0.2f };
-	int                              m_iSelectedSignal   { -1 };
+	Signal *                         m_pSelectedSignal   { nullptr };
+	int                              m_iSelectedSlot     { -1 };
 	TRACKMOUSEEVENT                  m_trackStruct       { sizeof(TRACKMOUSEEVENT), TME_LEAVE, nullptr, 0L };
 };
