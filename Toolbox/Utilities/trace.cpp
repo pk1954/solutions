@@ -3,7 +3,7 @@
 // Utilities
 
 #include "stdafx.h"
-#include "assert.h"
+#include <assert.h>
 #include <string>
 #include <fstream>
 #include <iostream>

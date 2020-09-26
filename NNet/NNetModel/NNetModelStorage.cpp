@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include <string>
 #include <filesystem>
-#include "assert.h"
+#include <assert.h>
 #include "NNetError.h"
 #include "win32_script.h"
 #include "NNetModelStorage.h"

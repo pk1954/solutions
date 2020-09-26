@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include <cmath>
-#include "assert.h"
+#include <assert.h>
 #include "Geometry.h"
 #include "DrawContext.h"
 #include "tHighlightType.h"

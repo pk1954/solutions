@@ -124,13 +124,14 @@ void NNetAppWindow::Start( MessagePump & pump )
 	);
 
 	m_pReadModelResult = new NNetReadModelResult( m_hwndApp );
-	m_model         .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
-	m_modelStorage  .Initialize( & m_modelWriterInterface, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult, & m_descWindow );
-	m_modelCommands .Initialize( & m_traceStream, & m_modelWriterInterface, & m_cmdStack, & m_modelStorage );
-	m_cmdStack      .Initialize( & m_modelWriterInterface, & m_commandStackObservable );
-	m_NNetColors    .Initialize( & m_blinkObservable );
-	m_sound         .Initialize( & m_soundOnObservable );
-	m_NNetController.Initialize
+	m_model          .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
+	m_modelStorage   .Initialize( & m_modelWriterInterface, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult, & m_descWindow );
+	m_modelCommands  .Initialize( & m_traceStream, & m_modelWriterInterface, & m_cmdStack, & m_modelStorage );
+	m_cmdStack       .Initialize( & m_modelWriterInterface, & m_commandStackObservable );
+	m_NNetColors     .Initialize( & m_blinkObservable );
+	m_sound          .Initialize( & m_soundOnObservable );
+	m_beaconAnimation.Initialize( & m_beaconObservable );
+	m_NNetController .Initialize
 	( 
 		& m_modelStorage,
 		& m_mainNNetWindow,
@@ -209,6 +210,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 
 	m_staticModelObservable    .RegisterObserver( & m_modelStorage );
 	m_blinkObservable          .RegisterObserver( & m_mainNNetWindow );
+	m_beaconObservable         .RegisterObserver( & m_mainNNetWindow );
 	m_dynamicModelObservable   .RegisterObserver( & m_mainNNetWindow );
 	m_dynamicModelObservable   .RegisterObserver( & m_miniNNetWindow );
 	m_staticModelObservable    .RegisterObserver( & m_mainNNetWindow );

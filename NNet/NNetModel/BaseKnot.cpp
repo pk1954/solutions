@@ -3,7 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "assert.h"
+#include <assert.h>
 #include "Geometry.h"
 #include "DrawContext.h"
 #include "Pipe.h"

@@ -7,30 +7,10 @@
 #include "NNetModel.h"
 #include "NNetModelReaderInterface.h"
 
-void NNetModelReaderInterface::Start( NNetModel * const pModel )
-{
-	m_pModel = pModel;
-}
-
-void NNetModelReaderInterface::Stop( )
-{
-	m_pModel = nullptr;
-}
-
-bool const NNetModelReaderInterface::AnyShapesSelected( ) const
-{
-	return m_pModel->m_Shapes.AnyShapesSelected( );
-}
-
 bool const NNetModelReaderInterface::IsSelected( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<Shape const *>(id) };
 	return p ? p->IsSelected( ) : false; 
-}
-
-MicroMeterPoint const NNetModelReaderInterface::GetShapePos( ShapeId const id ) const
-{
-	return m_pModel->GetShapePos( id );
 }
 
 ShapeType const NNetModelReaderInterface::GetShapeType( ShapeId const id ) const
@@ -90,16 +70,6 @@ bool const NNetModelReaderInterface::HasOutgoing( ShapeId const id ) const
 {
 	auto p { m_pModel->GetShapeConstPtr<BaseKnot const *>(id) };
 	return p ? p->m_connections.HasOutgoing( ) : false; 
-}
-
-MicroMeterRect const NNetModelReaderInterface::GetEnclosingRect( ) const
-{
-	return m_pModel->GetEnclosingRect( );
-}
-
-fMicroSecs NNetModelReaderInterface::GetSimulationTime( ) const 
-{ 
-	return m_pModel->GetSimulationTime( ); 
 }
 
 bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId const idDst ) const

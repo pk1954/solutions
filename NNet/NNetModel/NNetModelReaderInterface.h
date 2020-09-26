@@ -18,33 +18,32 @@ class NNetModelReaderInterface
 {
 public:
 
-	void Start( NNetModel * const );
-	void Stop(); 
+	void Start( NNetModel * const pModel ) { m_pModel = pModel;	 }
+	void Stop ( )                          { m_pModel = nullptr; }
 
-	bool       const AnyShapesSelected         ( )               const;	
-	bool       const IsSelected                ( ShapeId const ) const;
-	ShapeType  const GetShapeType              ( ShapeId const ) const;
-	fHertz     const GetPulseFrequency         ( ShapeId const ) const;
-	size_t     const GetNrOfSegments           ( ShapeId const ) const;
-	SoundDescr const GetTriggerSound           ( ShapeId const ) const;
-	mV         const GetVoltage                ( ShapeId const ) const;
-	mV         const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
-	bool       const HasIncoming               ( ShapeId const ) const;
-	bool       const HasOutgoing               ( ShapeId const ) const;
-	size_t     const GetNrOfOutgoingConnections( ShapeId const ) const;
-	size_t     const GetNrOfIncomingConnections( ShapeId const ) const;
-	bool       const ConnectsTo ( ShapeId const, ShapeId const ) const;
-
-	bool       const IsValidShapeId  ( ShapeId const id ) const { return m_pModel->m_Shapes.IsValidShapeId(id); }
-	bool       const IsInvalidShapeId( ShapeId const id ) const { return m_pModel->m_Shapes.IsInvalidShapeId(id); }
-	bool       const IsShapeNullPtr  ( ShapeId const id ) const { return m_pModel->IsShapeNullPtr(id); }
-	long       const GetSizeOfShapeList( )                const { return m_pModel->GetSizeOfShapeList(); }
+	bool            const IsSelected                ( ShapeId const ) const;
+	ShapeType       const GetShapeType              ( ShapeId const ) const;
+	fHertz          const GetPulseFrequency         ( ShapeId const ) const;
+	size_t          const GetNrOfSegments           ( ShapeId const ) const;
+	SoundDescr      const GetTriggerSound           ( ShapeId const ) const;
+	bool            const HasIncoming               ( ShapeId const ) const;
+	bool            const HasOutgoing               ( ShapeId const ) const;
+	size_t          const GetNrOfOutgoingConnections( ShapeId const ) const;
+	size_t          const GetNrOfIncomingConnections( ShapeId const ) const;
+	bool            const ConnectsTo ( ShapeId const, ShapeId const ) const;
+	mV              const GetVoltage                ( ShapeId const ) const;
+	mV              const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
+			        
+	bool            const AnyShapesSelected( )                 const { return m_pModel->m_Shapes.AnyShapesSelected( ); }
+	bool            const IsValidShapeId  ( ShapeId const id ) const { return m_pModel->m_Shapes.IsValidShapeId  (id); }
+	bool            const IsInvalidShapeId( ShapeId const id ) const { return m_pModel->m_Shapes.IsInvalidShapeId(id); }
+	bool            const IsShapeNullPtr  ( ShapeId const id ) const { return m_pModel->IsShapeNullPtr           (id); }
+	MicroMeterPoint const GetShapePos     ( ShapeId const id ) const { return m_pModel->GetShapePos              (id); }
+	long            const GetSizeOfShapeList( )                const { return m_pModel->GetSizeOfShapeList( ); }
+	fMicroSecs      const GetSimulationTime( )                 const { return m_pModel->GetSimulationTime ( ); }
+	MicroMeterRect  const GetEnclosingRect( )                  const { return m_pModel->GetEnclosingRect  ( ); }
 
 	MicroMeterPoint const OrthoVector( ShapeId const ) const;
-	MicroMeterPoint const GetShapePos( ShapeId const ) const;
-	MicroMeterRect  const GetEnclosingRect( ) const;
-
-	fMicroSecs GetSimulationTime( ) const;
 
 	void DrawExterior  ( ShapeId const, DrawContext const &, tHighlightType const ) const;
 	void DrawInterior  ( ShapeId const, DrawContext const & ) const;

@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include <filesystem>
-#include "assert.h"
+#include <assert.h>
 #include "ModelDescription.h"
 #include "NNetError.h"
 #include "NNetParameters.h"

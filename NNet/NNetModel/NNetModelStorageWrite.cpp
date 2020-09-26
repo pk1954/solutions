@@ -3,7 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "assert.h"
+#include <assert.h>
 #include "ModelDescription.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_HiResTimer.h"

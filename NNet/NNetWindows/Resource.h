@@ -84,7 +84,9 @@
 #define IDD_ARROWS_OFF           162
 #define IDD_RULER_ON             163
 #define IDD_RULER_OFF            164
-#define IDD_REMOVE_SIGNAL        165
+#define IDD_DELETE_SIGNAL        165
+#define IDD_ADD_TRACK            166
+#define IDD_DELETE_TRACK         167
 
 #define IDD_SOUND_ON             171
 #define IDD_SOUND_OFF            172

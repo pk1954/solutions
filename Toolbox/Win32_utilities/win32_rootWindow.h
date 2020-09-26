@@ -174,9 +174,19 @@ public:
 		return ::SendMessage( m_hwndApp, WM_COMMAND, wParam, lParam );
 	}
 
+	PIXEL const CrsrXpos( LPARAM const lParam ) const
+	{
+		return PIXEL(GET_X_LPARAM( lParam ) );
+	}
+
+	PIXEL const CrsrYpos( LPARAM const lParam ) const
+	{
+		return PIXEL(GET_Y_LPARAM( lParam ) );
+	}
+
 	PixelPoint const GetCrsrPosFromLparam( LPARAM const lParam ) const
 	{
-		return PixelPoint{ PIXEL(GET_X_LPARAM( lParam )), PIXEL(GET_Y_LPARAM( lParam )) };
+		return PixelPoint{ CrsrXpos(lParam), CrsrYpos(lParam) };
 	}
 
 	virtual long AddContextMenuEntries( HMENU const ) { return 0L; }

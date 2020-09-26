@@ -10,6 +10,7 @@
 #include <limits.h>
 
 using std::wostream;
+using std::numeric_limits;
 
 template <typename BASE_TYPE, typename Parameter>
 class NamedType
@@ -102,10 +103,17 @@ public:
 		return out;
 	}
 
+	static NamedType const MAX_VAL()
+	{
+		static_assert( std::numeric_limits<BASE_TYPE>::is_specialized, "type has no MAX_VAL"	);
+		static NamedType constexpr res { (numeric_limits<BASE_TYPE>::max)() };
+		return res;
+	}
+
 	static NamedType const NULL_VAL()
 	{
 		static_assert( std::numeric_limits<BASE_TYPE>::is_specialized, "type has no NULL_VAL"	);
-		static NamedType constexpr res { (std::numeric_limits<BASE_TYPE>::min)() };
+		static NamedType constexpr res { (numeric_limits<BASE_TYPE>::min)() };
 		return res;
 	}
 

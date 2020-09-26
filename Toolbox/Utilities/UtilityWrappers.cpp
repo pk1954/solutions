@@ -3,7 +3,7 @@
 // Utilities
 
 #include "stdafx.h"
-#include "assert.h"
+#include <assert.h>
 #include "script.h"
 #include "symtab.h"
 #include "trace.h"

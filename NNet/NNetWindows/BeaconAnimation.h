@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <cmath>
+#include "Observable.h"                   
 #include "MoreTypes.h"
 #include "ShapeId.h"
 #include "win32_thread.h"
@@ -12,18 +12,28 @@
 class BeaconAnimation : public Util::Thread
 {
 public:
+	void Initialize( Observable * const pObservable )
+	{
+		m_pObservable = pObservable;
+		StartThread( L"BeaconAnimation", true );
+	}
+
+	~BeaconAnimation( )
+	{
+		Stop();
+		m_pObservable = nullptr;
+		TerminateNoWait();
+	}
+
 	void Start( ShapeId const id )
 	{
 		reset();
-		m_idBeacon  = id;
-		m_increment =  1_PERCENT;
-		StartThread( L"BeaconAnimation", true );
+		m_idBeacon = id;
 		PostThreadMsg( 0, 0, 0 );
 	}
 
 	void Stop( )
 	{
-		TerminateNoWait();
 		m_idBeacon = NO_SHAPE;
 	}
 
@@ -38,9 +48,10 @@ public:
 	}
 
 private:
-	PERCENT m_percentage;
-	PERCENT m_increment;
-	ShapeId m_idBeacon { NO_SHAPE };
+	PERCENT      m_percentage  { };
+	PERCENT      m_increment   { 1_PERCENT };
+	ShapeId      m_idBeacon    { NO_SHAPE };
+	Observable * m_pObservable { nullptr };
 
 	void reset( )
 	{
@@ -54,6 +65,9 @@ private:
 		else
 			m_percentage += m_increment;
 		Sleep( 1 );
-		PostThreadMsg( msg.message, msg.wParam, msg.lParam ); // do it again
+		if ( m_pObservable )
+			m_pObservable->NotifyAll( false );
+		if ( IsDefined ( m_idBeacon ) )
+			PostThreadMsg( msg.message, msg.wParam, msg.lParam ); // do it again
 	}
 };

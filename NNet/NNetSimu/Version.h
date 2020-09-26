@@ -10,9 +10,9 @@
 #define VERSION_BUILD               0
 
 #ifdef _DEBUG
-	#define VER_DEBUG_RELEASE   "Release"
-#else
 	#define VER_DEBUG_RELEASE   "Debug"
+#else
+	#define VER_DEBUG_RELEASE   "Release"
 #endif
 
 #if _WIN64

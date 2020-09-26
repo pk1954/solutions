@@ -5,7 +5,7 @@
 #pragma once
 
 #include "string"
-#include "assert.h"
+#include <assert.h>
 #include "win32_event.h"
 
 using std::wstring;

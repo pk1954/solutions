@@ -3,7 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "assert.h"
+#include <assert.h>
 #include "tHighlightType.h"
 #include "DrawContext.h"
 #include "Knot.h"

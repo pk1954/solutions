@@ -8,7 +8,7 @@
 #include <sstream> 
 #include <iostream>
 #include <iomanip>
-#include "assert.h"
+#include <assert.h>
 #include "util.h"
 #include "windows.h"
 #include "win32_stopwatch.h"

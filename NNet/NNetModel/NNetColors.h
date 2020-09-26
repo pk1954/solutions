@@ -52,5 +52,5 @@ public:
 	inline static D2D1::ColorF m_colSelected { INT_BLINK_KEY_1 };
 
 	// color of beacon 
-	inline static D2D1::ColorF CONST COL_BEACON { 0.0f, 0.0f, 1.0f, 0.5f };
+	inline static D2D1::ColorF CONST COL_BEACON { 0.0f, 0.0f, 1.0f, 0.4f };
 };

@@ -111,6 +111,7 @@ private:
 	Observable                m_soundOnObservable        { };
 	Observable                m_cursorPosObservable      { };
 	Observable                m_blinkObservable          { };
+	Observable                m_beaconObservable         { };
 	Observable                m_modelTimeObservable      { };
 	Observable                m_staticModelObservable    { };
 	Observable                m_dynamicModelObservable   { };

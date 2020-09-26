@@ -7,7 +7,7 @@
 #pragma once
           
 #include <map>
-#include "assert.h"
+#include <assert.h>
 #include "script.h"
 
 using std::map;

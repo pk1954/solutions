@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include <math.h>    
+#include <assert.h>
 #include "util.h"
 #include "scale.h"
 #include "Signal.h"
@@ -14,6 +15,9 @@
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
 #include "win32_monitorWindow.h"
+
+using std::find;
+
 
 void MonitorWindow::Start
 ( 
@@ -32,9 +36,9 @@ void MonitorWindow::Start
 		nullptr,
 		nullptr
 	);
-	m_pBeaconAnimation           = & beaconAnimation;
-	m_pParams                    = & params;
-	m_pModel                     = & model;
+	m_pBeaconAnimation = & beaconAnimation;
+	m_pParams          = & params;
+	m_pModel           = & model;
 	m_graphics.Initialize( hwnd );
 	SetWindowText( hwnd, L"Monitor" );
 	m_trackStruct.hwndTrack = hwnd;
@@ -53,8 +57,11 @@ long MonitorWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	else 
 		AppendMenu( hPopupMenu, MF_STRING, IDD_RULER_ON,  L"Ruler on" );
 
+	AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_TRACK, L"Delete track" );
+	AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_TRACK,    L"Add track" );
+
 	if ( m_pSelectedSignal )
-		AppendMenu( hPopupMenu, MF_STRING, IDD_REMOVE_SIGNAL, L"Remove signal" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL, L"Delete signal" );
 
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }
@@ -67,40 +74,96 @@ void MonitorWindow::selectSignal( Signal * pSignal )
 			m_pBeaconAnimation->Stop( );
 		if ( pSignal )
 			m_pBeaconAnimation->Start( pSignal->GetSignalSource() );
+		else
+		{
+			m_selectedTrackNr   .Set2Null();
+			m_trackNrOfSelSignal.Set2Null();
+			m_pixLastY         .Set2Null();
+			m_pixMoveOffsetY = 0_PIXEL;
+		}
 		m_pSelectedSignal = pSignal;
 		Trigger( );   // cause repaint
 	}
 }
 
-void MonitorWindow::removeSignal( )
+void MonitorWindow::moveSignal( PIXEL const pixY )
 {
-	for ( auto itSlot = begin( m_Slots ); itSlot != end( m_Slots); ++itSlot )
+	if ( m_pixLastY.IsNotNull( ) && m_pSelectedSignal )
+		m_pixMoveOffsetY += pixY - m_pixLastY;
+	m_pixLastY = pixY;
+	Trigger( );   // cause repaint
+}
+
+void MonitorWindow::addSignalToTrack( Signal * pSignal, TrackNr const trackNr )
+{
+	if ( trackNr.IsNotNull() )
+		getTrack( trackNr ).push_back( pSignal );
+}
+
+void MonitorWindow::removeSignalFromTrack( Signal * pSignal, TrackNr const trackNr )
+{
+	if ( trackNr.IsNotNull() )
 	{
-		for ( auto itSignal = begin( itSlot->signals ); itSignal != end( itSlot->signals ); ++itSignal )
-		{
-			if ( * itSignal == m_pSelectedSignal )
-			{
-				itSlot->signals.erase( itSignal );
-				selectSignal( nullptr );
-				delete m_pSelectedSignal;
-				m_pSelectedSignal = nullptr;
-				if ( itSlot->signals.empty() )
-				{
-					m_Slots.erase( itSlot );
-					if ( m_Slots.empty( ) )
-						SendMessage( WM_COMMAND, IDM_WINDOW_OFF, 0 );
-				}
-				return;
-			}
-		}
+		Track & track    { getTrack( trackNr ) };
+		auto    itSignal { find( track.begin(), track.end(), pSignal ) };
+		assert( itSignal != track.end() );
+		track.erase( itSignal );
 	}
 }
 
-PIXEL const MonitorWindow::getSlotHeight( PIXEL pixCLientHeight )
+void MonitorWindow::deleteSignal( Signal * pSignal, TrackNr const trackNr )
 {
-	PIXEL const HEIGHT4SCALE  { 60_PIXEL };
-	PIXEL const pixFreeHeight { pixCLientHeight - (m_bRuler ? HEIGHT4SCALE : 10_PIXEL ) };
-	return pixFreeHeight /  CastToLong(m_Slots.size()); 
+	removeSignalFromTrack( pSignal, trackNr );
+	selectSignal( nullptr );
+	delete pSignal;
+}
+
+void MonitorWindow::deleteTrack( TrackNr const trackNr )
+{
+	if ( trackNr.IsNotNull() )
+	{
+		for ( auto pSignal : getTrack( trackNr ) )
+			deleteSignal( pSignal, trackNr );
+		m_Tracks.erase( m_Tracks.begin() + trackNr.GetValue() );
+		updateTrackHeight( );
+		if ( m_Tracks.empty( ) )
+			SendMessage( WM_COMMAND, IDM_WINDOW_OFF, 0 );
+	}
+}
+
+TrackNr const MonitorWindow::findPos4NewTrack( PIXEL const pixCrsrPosY )
+{
+	fPIXEL const fPixCrsrYpos     { Convert2fPIXEL( pixCrsrPosY ) };
+	int    const iTrackNr         { CastToInt( fPixCrsrYpos / m_fPixTrackHeight ) };
+	fPIXEL const fPixTrackCenterY { m_fPixTrackHeight * (CastToFloat(iTrackNr) + 0.5f) };
+	TrackNr      trackNr          { m_selectedTrackNr };
+	if ( fPixCrsrYpos > fPixTrackCenterY )
+		++trackNr;
+	return trackNr;
+}
+
+void MonitorWindow::addTrack( TrackNr const pos )
+{
+	m_Tracks.insert( m_Tracks.begin() + pos.GetValue(), Track() );
+	updateTrackHeight( );
+	Show( true );  // if window was not visible, show it now
+}
+
+void MonitorWindow::AddSignal( Signal & signal ) 
+{ 
+	TrackNr posOfNewTrack { CastToInt(m_Tracks.size()) };
+	addTrack( posOfNewTrack );
+	addSignalToTrack( & signal, posOfNewTrack );
+	signal.RegisterObserver( this );
+}
+
+void MonitorWindow::updateTrackHeight( )
+{
+	PIXEL const pixRectHeight  { GetClientWindowHeight( ) };
+	PIXEL const pixExtraSpace  { m_bRuler ? 60_PIXEL : 10_PIXEL };
+	PIXEL const pixFreeHeight  { pixRectHeight - pixExtraSpace };
+	PIXEL const pixTrackHeight { m_Tracks.empty() ? pixFreeHeight : pixFreeHeight / CastToLong(m_Tracks.size()) }; 
+	m_fPixTrackHeight = Convert2fPIXEL( pixTrackHeight );
 }
 
 fPIXEL const MonitorWindow::getYvalue( Signal const & signal, fMicroSecs const time )
@@ -110,141 +173,116 @@ fPIXEL const MonitorWindow::getYvalue( Signal const & signal, fMicroSecs const t
 	return fPixYvalue;
 }
 
-void MonitorWindow::AddSignal( Signal & signal ) 
-{ 
-	Slot slotNew { };
-	slotNew.signals.push_back( & signal );
-	m_Slots.push_back( slotNew );
-	signal.RegisterObserver( this );
-	Show( true );
-}
-
 void MonitorWindow::paintSignal
 ( 
-	Signal     const & signal, 
+	Signal     const * pSignal, 
 	fPIXEL     const   fPixYoffset,
 	fPIXEL     const   fPixXend,
 	fMicroSecs const   usIncrement,
-	fMicroSecs const   timeEnd,
+	fMicroSecs const   usEnd,
 	fMicroSecs const   usInWindow
 )
 {
-	fPIXEL const fPixYvalue { getYvalue( signal, timeEnd ) };
-	if ( ! isnan(fPixYvalue.GetValue()) )
+	if ( ! pSignal )
+		return;
+
+	fPIXEL const fPixYvalue { getYvalue( * pSignal, usEnd ) };
+	if ( isnan(fPixYvalue.GetValue()) )
+		return;
+
+	fPIXEL            fPixWidth { 1.0_fPIXEL };
+	fPIXEL            fPixYoff  { fPixYoffset };
+	fPixelPoint       prevPoint { fPixXend, fPixYvalue + fPixYoffset };
+	fMicroSecs  const timeStart { max( usEnd - usInWindow, pSignal->GetStartTime() ) };
+
+	if ( pSignal == m_pSelectedSignal )
 	{
-		fPIXEL      const fPixWidth { (& signal == m_pSelectedSignal) ? 3.0_fPIXEL : 1.0_fPIXEL };
-		fPixelPoint       prevPoint { fPixXend, fPixYvalue + fPixYoffset };
-		fMicroSecs  const timeStart { max( timeEnd - usInWindow, signal.GetStartTime() ) };
-		for ( fMicroSecs time = timeEnd - usIncrement; time >= timeStart; time -= usIncrement )
-		{
-			float       const fTicks   { (timeEnd - time) / m_fMicroSecsPerPixel };
-			fPIXEL      const fPixX    { fPixXend - fPIXEL(fTicks) };
-			fPixelPoint const actPoint { fPixX, fPixYoffset - getYvalue( signal, time ) };
-			m_graphics.DrawLine( prevPoint, actPoint, fPixWidth, NNetColors::COL_BLACK );
-			prevPoint = actPoint;
-		}
+		fPixYoff += Convert2fPIXEL( m_pixMoveOffsetY );
+		fPixWidth = 3.0_fPIXEL;
+	}
+
+	for ( fMicroSecs time = usEnd - usIncrement; time >= timeStart; time -= usIncrement )
+	{
+		float       const fTicks   { (usEnd - time) / m_fMicroSecsPerPixel };
+		fPIXEL      const fPixX    { fPixXend - fPIXEL(fTicks) };
+		fPixelPoint const actPoint { fPixX, fPixYoff - getYvalue( * pSignal, time ) };
+		m_graphics.DrawLine( prevPoint, actPoint, fPixWidth, NNetColors::COL_BLACK );
+		prevPoint = actPoint;
 	}
 }
 
 void MonitorWindow::doPaint( )
 {
-	PixelRectSize  rectClient { GetClRectSize( ) };
-	fPixelRectSize rectSize   { Convert2fPixelRectSize( rectClient ) };
-
-	float      const fSizeX      { rectSize.GetX().GetValue() };
-	fMicroSecs const usResolution{ m_pParams->GetTimeResolution( ) };
-	fMicroSecs const usInWindow  { m_fMicroSecsPerPixel * fSizeX };
-	float      const fPointsInWin{ usInWindow / usResolution };
-	fMicroSecs const timeEnd     { m_pModel->GetSimulationTime( ) };
-	fMicroSecs const usIncrement { (fPointsInWin > fSizeX) ? m_fMicroSecsPerPixel : usResolution };
-
-	if ( m_Slots.empty() )
+	if ( m_Tracks.empty() )
 		return;
 
-	PIXEL const pixSlotHeight { getSlotHeight( rectClient.GetY() ) };
-	PIXEL       pixYoffset    { pixSlotHeight };
-	for ( auto slot : m_Slots )
+	fPIXEL     const fPixWidth    { Convert2fPIXEL( GetClientWindowWidth( ) ) };
+	fMicroSecs const usInWindow   { m_fMicroSecsPerPixel * fPixWidth.GetValue() };
+	fMicroSecs const usEnd        { m_pModel->GetSimulationTime( ) };
+	fMicroSecs const usResolution { m_pParams->GetTimeResolution( ) };
+	float      const fPointsInWin { usInWindow / usResolution };
+	fMicroSecs const usIncrement  { (fPointsInWin > fPixWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
+	fPIXEL           fPixYoffset  { m_fPixTrackHeight };
+	for ( auto track : m_Tracks )
 	{
-		for ( auto pSignal : slot.signals )
-		{
-			paintSignal
-			( 
-				* pSignal, 
-				Convert2fPIXEL( pixYoffset ),
-				rectSize.GetX(),
-				usIncrement, 
-				timeEnd, 
-				usInWindow 
-			);
-		}
-		pixYoffset += pixSlotHeight;
+		for ( auto pSignal : track )
+			paintSignal( pSignal, fPixYoffset, fPixWidth, usIncrement, usEnd, usInWindow );
+		fPixYoffset += m_fPixTrackHeight;
 	}
 
 	if ( m_bRuler )
-	{
-		Scale::Display
-		( 
-			m_graphics, 
-			GetClRectSize(), 
-			m_fMicroSecsPerPixel.GetValue(), 
-			L"s" 
-		);
-	}
+		Scale::Display( m_graphics, GetClRectSize(), m_fMicroSecsPerPixel.GetValue(), L"s" );
 
-	if ( m_iSelectedSlot >= 0 )
+	if ( m_selectedTrackNr.IsNotNull() )
 	{
-		fPixelRect const fPixRect
-		{
-			0._fPIXEL,                                              // left
-			Convert2fPIXEL( pixSlotHeight * m_iSelectedSlot ),      // top
-			rectSize.GetX(),                                        // right
-			Convert2fPIXEL( pixSlotHeight * (m_iSelectedSlot + 1) ) // bottom
-		};
-		m_graphics.DrawTranspRect( fPixRect, NNetColors::COL_BEACON );
+		fPixelPoint    const pos  {	0._fPIXEL, m_fPixTrackHeight * CastToFloat(m_selectedTrackNr.GetValue()) };
+		fPixelRectSize const size {	fPixWidth, m_fPixTrackHeight };
+		m_graphics.DrawTranspRect( fPixelRect( pos, size ), NNetColors::COL_BEACON );
 	}
 }
 
-Signal * MonitorWindow::findSignal( )
+Signal * MonitorWindow::findSignal( TrackNr const trackNr )
 {
-	Signal * pSignalFound { nullptr };
-	m_iSelectedSlot = -1;
-	if ( ! m_Slots.empty() )
+	m_trackNrOfSelSignal.Set2Null();
+	if ( m_Tracks.empty() )
+		return nullptr;
+	if ( trackNr.IsNull() )
+		return nullptr;
+
+	fPIXEL      const fPixWidth     { Convert2fPIXEL( GetClientWindowWidth( ) ) };
+	fMicroSecs  const usInWindow    { m_fMicroSecsPerPixel * fPixWidth.GetValue() };
+	fMicroSecs  const usEnd         { m_pModel->GetSimulationTime( ) };
+	fMicroSecs  const timeStart     { usEnd - usInWindow };
+	PixelPoint  const ptCrsr        { GetRelativeCrsrPosition( ) };
+	fPixelPoint const fPixPtCrsr    { Convert2fPixelPoint( ptCrsr ) };
+	fMicroSecs  const umTime        { timeStart + m_fMicroSecsPerPixel * fPixPtCrsr.GetXvalue() };
+	fPIXEL            fPixYoffset   { m_fPixTrackHeight };
+	fPIXEL            fPixBestDelta { fPIXEL::MAX_VAL() };
+	Signal          * pSignalFound  { nullptr };
+	for ( Signal * pSignal : getTrack( trackNr ) )
 	{
-		PixelRectSize  const   rectClient     { GetClRectSize( ) };
-		fPixelRectSize const   rectSize       { Convert2fPixelRectSize( rectClient ) };
-		fMicroSecs     const   timeEnd        { m_pModel->GetSimulationTime( ) };
-		float          const   fSizeX         { rectSize.GetX().GetValue() };
-		fMicroSecs     const   usInWindow     { m_fMicroSecsPerPixel * fSizeX };
-		fMicroSecs     const   timeStart      { timeEnd - usInWindow };
-		PixelPoint     const   ptCrsr         { GetRelativeCrsrPosition( ) };
-		fPixelPoint    const   fPixPtCrsr     { Convert2fPixelPoint( ptCrsr ) };
-		fMicroSecs     const   umTime         { timeStart + m_fMicroSecsPerPixel * fPixPtCrsr.GetXvalue() };
-		fPIXEL                 fPixDeltaOpt   { rectSize.GetY() };
-		PIXEL          const   pixSlotHeight  { getSlotHeight( rectClient.GetY() ) };
-		fPIXEL                 fPixSlotHeight { Convert2fPIXEL( pixSlotHeight ) };
-		fPIXEL                 fPixYoffset    { fPixSlotHeight };
-		for ( int iSlot = 0; iSlot < m_Slots.size(); ++ iSlot )
+		if ( pSignal && (umTime >= pSignal->GetStartTime()) )
 		{
-			for ( auto pSignal : m_Slots[iSlot].signals )
+			fPIXEL const fPixYvalueAbs { getYvalue( * pSignal, umTime ) };
+			fPIXEL const fPixDelta     { fPixYvalueAbs + fPixYoffset - fPixPtCrsr.GetY()  };
+			fPIXEL const fPixDeltaAbs  { fPixDelta.GetAbs( ) };
+			if ( fPixDeltaAbs < fPixBestDelta )
 			{
-				if ( umTime >= pSignal->GetStartTime() )
-				{
-					fPIXEL const fPixYvalueAbs { getYvalue( * pSignal, umTime ) };
-					fPIXEL const fPixYvalue    { fPixYvalueAbs + fPixYoffset };
-					fPIXEL const fPixDelta     { fPixYvalue - fPixPtCrsr.GetY()  };
-					fPIXEL const fPixDeltaAbs  { fPixDelta.GetAbs( ) };
-					if ( fPixDeltaAbs < fPixDeltaOpt )
-					{
-						fPixDeltaOpt    = fPixDeltaAbs;
-						pSignalFound    = pSignal;
-						m_iSelectedSlot = iSlot;
-					}
-				}
+				fPixBestDelta        = fPixDeltaAbs;
+				pSignalFound         = pSignal;
+				m_trackNrOfSelSignal = trackNr;
 			}
-			fPixYoffset += fPixSlotHeight;
 		}
 	}
+	fPixYoffset += m_fPixTrackHeight;
 	return pSignalFound;
+}
+
+TrackNr const MonitorWindow::findTrack( PIXEL const pixPosY )
+{
+	fPIXEL     const fPixCrsrYpos { Convert2fPIXEL( pixPosY ) };
+	TrackNr    const trackNr      { CastToInt( fPixCrsrYpos / m_fPixTrackHeight ) };
+	return isValid( trackNr ) ? trackNr : TrackNr::NULL_VAL();
 }
 
 void MonitorWindow::OnPaint( )
@@ -276,8 +314,18 @@ bool MonitorWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		m_bRuler = false;
 		break;
 
-	case IDD_REMOVE_SIGNAL:
-		removeSignal( );
+	case IDD_DELETE_SIGNAL:
+		deleteSignal( m_pSelectedSignal, m_selectedTrackNr );
+		m_pSelectedSignal = nullptr;
+		break;
+
+	case IDD_ADD_TRACK:
+		addTrack( findPos4NewTrack( pixPoint.GetY() ) );
+		break;
+
+	case IDD_DELETE_TRACK:
+		deleteTrack( m_selectedTrackNr );
+		m_selectedTrackNr.Set2Null();
 		break;
 
 	default:
@@ -290,7 +338,9 @@ bool MonitorWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 bool MonitorWindow::OnMouseLeave( WPARAM const wParam, LPARAM const lParam )
 {
 	if ( ! CrsrInClientRect() )
+	{
 		selectSignal( nullptr );
+	}
 	return false;
 }
 
@@ -299,20 +349,35 @@ bool MonitorWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 	UINT width  = LOWORD(lParam);
 	UINT height = HIWORD(lParam);
 	m_graphics.Resize( width, height );
+	updateTrackHeight( );
 	return true;
 }
 
 void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( ! m_Slots.empty() )
-	{
-		PixelPoint const ptCrsr        { GetRelativeCrsrPosition( ) };
-		PIXEL      const pixSlotHeight { getSlotHeight( GetClientWindowHeight( ) ) };
-		Signal         * pSignal       { findSignal() };
-		selectSignal( pSignal );
-		(void)TrackMouseEvent( & m_trackStruct );
-	}
+	if ( m_Tracks.empty() )
+		return;
+
+	m_selectedTrackNr = findTrack( CrsrYpos( lParam ) );
+
+	if ( wParam & MK_LBUTTON )
+		moveSignal( CrsrYpos( lParam ) );
+	else
+		selectSignal( findSignal( m_selectedTrackNr ) );
+
+	(void)TrackMouseEvent( & m_trackStruct );
 }
+
+void MonitorWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam ) 
+{
+	if ( m_selectedTrackNr.IsNotNull() )
+	{
+		removeSignalFromTrack( m_pSelectedSignal, m_trackNrOfSelSignal );
+		addSignalToTrack     ( m_pSelectedSignal, m_selectedTrackNr );
+		m_pixMoveOffsetY = 0_PIXEL;
+		m_pixLastY = PIXEL::NULL_VAL();
+	}
+};
 
 void MonitorWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )
 {  
