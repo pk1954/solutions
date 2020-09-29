@@ -42,7 +42,7 @@ public:
 
 	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
-		if ( pModel->GetModel().m_Shapes.AnyShapesSelected() )
+		if ( pModel->GetModel().GetShapes().AnyShapesSelected() )
 			clearAllSelected( pModel );
 		else
 			clearAll( pModel );

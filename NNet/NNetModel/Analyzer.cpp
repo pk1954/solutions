@@ -23,7 +23,7 @@ bool ModelAnalyzer::FindLoop( NNetModelWriterInterface const & model )
 		m_bStop     = false;
 		statusDisplay( wstring( L"Looking for loop of size " ) + to_wstring( iMaxLoopSize ) + L". Press ESC to stop." );
 		m_shapeStack.Clear();
-		if ( model.GetModel().m_Shapes.Apply2AllB<BaseKnot>([&]( BaseKnot & baseKnot ) { return findLoop( & baseKnot ); } ) )
+		if ( model.GetModel().GetShapes().Apply2AllB<BaseKnot>([&]( BaseKnot & baseKnot ) { return findLoop( & baseKnot ); } ) )
 		{
 			if ( m_bStop )  
 			{
@@ -130,7 +130,7 @@ bool ModelAnalyzer::hasAnomaly( Knot & knot )
 bool ModelAnalyzer::FindAnomaly( NNetModelWriterInterface const & model )
 {
 	m_shapeStack.Clear();
-	bool const bFound { model.GetModel().m_Shapes.Apply2AllB<Knot>( [&]( Knot & knot ) { return hasAnomaly( knot ); } ) };
+	bool const bFound { model.GetModel().GetShapes().Apply2AllB<Knot>( [&]( Knot & knot ) { return hasAnomaly( knot ); } ) };
 	if ( ! bFound )
 		statusDisplay( L"no anomalies found" );
 	return bFound;

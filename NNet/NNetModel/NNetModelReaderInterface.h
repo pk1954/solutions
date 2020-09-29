@@ -34,11 +34,11 @@ public:
 	mV              const GetVoltage                ( ShapeId const ) const;
 	mV              const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
 			        
-	bool            const AnyShapesSelected( )                 const { return m_pModel->m_Shapes.AnyShapesSelected( ); }
-	bool            const IsValidShapeId  ( ShapeId const id ) const { return m_pModel->m_Shapes.IsValidShapeId  (id); }
-	bool            const IsInvalidShapeId( ShapeId const id ) const { return m_pModel->m_Shapes.IsInvalidShapeId(id); }
-	bool            const IsShapeNullPtr  ( ShapeId const id ) const { return m_pModel->IsShapeNullPtr           (id); }
-	MicroMeterPoint const GetShapePos     ( ShapeId const id ) const { return m_pModel->GetShapePos              (id); }
+	bool            const AnyShapesSelected( )                 const { return m_pModel->GetShapes().AnyShapesSelected( ); }
+	bool            const IsValidShapeId  ( ShapeId const id ) const { return m_pModel->GetShapes().IsValidShapeId  (id); }
+	bool            const IsInvalidShapeId( ShapeId const id ) const { return m_pModel->GetShapes().IsInvalidShapeId(id); }
+	bool            const IsShapeNullPtr  ( ShapeId const id ) const { return m_pModel->IsShapeNullPtr              (id); }
+	MicroMeterPoint const GetShapePos     ( ShapeId const id ) const { return m_pModel->GetShapePos                 (id); }
 	long            const GetSizeOfShapeList( )                const { return m_pModel->GetSizeOfShapeList( ); }
 	fMicroSecs      const GetSimulationTime( )                 const { return m_pModel->GetSimulationTime ( ); }
 	MicroMeterRect  const GetEnclosingRect( )                  const { return m_pModel->GetEnclosingRect  ( ); }
@@ -55,20 +55,11 @@ public:
 	T const GetConstShapePtr( ShapeId const id ) const
 	{
 		Shape const * const pShape { m_pModel->GetConstShape( id ) };
-		return (pShape && m_pModel->m_Shapes.HasType<T>(pShape)) ? static_cast<T>( pShape ) : nullptr;
+		return (pShape && m_pModel->HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
 	}
 
-	template <typename T>
-	unsigned long const GetNrOf( ) const
-	{
-		return T::GetCounter( );
-	}
-
-	template <typename T> 
-	bool IsOfType( ShapeId const id ) const 
-	{ 
-		return T::TypeFits( GetShapeType( id ) ); 
-	}
+	template <typename T> unsigned long const GetNrOf ( )                  const { return T::GetCounter( ); }
+	template <typename T> bool          const IsOfType( ShapeId const id ) const { return T::TypeFits( GetShapeType( id ) ); }
 
 	template <typename T>   // const version
 	bool Apply2AllB( function<bool(T const &)> const & func ) const
@@ -78,7 +69,7 @@ public:
 		{
 			if ( pShape )
 			{
-				if ( m_pModel->m_Shapes.HasType<T>( pShape ) )	
+				if ( m_pModel->HasType<T>( * pShape ) )	
 					bResult = func( static_cast<T const &>( * pShape ) );
 				if ( bResult )
 					break;
@@ -90,11 +81,11 @@ public:
 	template <typename T>    // const version
 	void Apply2All( function<void(T const &)> const & func ) const
 	{
-		m_pModel->m_Shapes.Apply2AllShapes
+		m_pModel->GetShapes().Apply2AllShapes
 		( 
 			[&](Shape & s) 
 			{  
-				if ( m_pModel->m_Shapes.HasType<T>(& s) ) 
+				if ( m_pModel->HasType<T>(s) ) 
 					func( static_cast<T const &>(s) ); 
 			}
 		);

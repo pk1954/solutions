@@ -129,9 +129,9 @@ public:
 		return Apply2AllB<Shape>( [&]( Shape const & shape ) { return shape.IsSelected(); } );
 	}
 
-	template <typename T> bool HasType( Shape const * const pShape ) const 
+	template <typename T> bool HasType( Shape const & shape ) const 
 	{ 
-		return remove_pointer<T>::type::TypeFits( pShape->GetShapeType() ); 
+		return remove_pointer<T>::type::TypeFits( shape.GetShapeType() ); 
 	}
 
 	void CallErrorHandler( ShapeId const id ) const
@@ -213,7 +213,7 @@ public:
 		{
 			if ( pShape )
 			{
-				if ( HasType<T>( pShape ) )	
+				if ( HasType<T>( * pShape ) )	
 					bResult = func( static_cast<T &>( * pShape ) );
 				if ( bResult )
 					break;
@@ -230,7 +230,7 @@ public:
 		{
 			if ( pShape )
 			{
-				if ( HasType<T>( pShape ) )	
+				if ( HasType<T>( * pShape ) )	
 					bResult = func( static_cast<T const &>( * pShape ) );
 				if ( bResult )
 					break;
@@ -246,7 +246,8 @@ public:
 		{ 
 			if ( pShape )
 			{
-				if ( HasType<T>(pShape) ) func( static_cast<T &>( * pShape) ); 
+				if ( HasType<T>( * pShape ) ) 
+					func( static_cast<T &>( * pShape) ); 
 			}
 		}
 	}                        
@@ -258,7 +259,7 @@ public:
 		{ 
 			if ( pShape )
 			{
-				if ( HasType<T>(pShape) ) 
+				if ( HasType<T>( * pShape ) ) 
 					func( static_cast<T const &>( * pShape) ); 
 			}
 		}

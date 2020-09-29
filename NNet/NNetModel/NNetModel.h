@@ -58,28 +58,18 @@ public:
 	}
 
 	template <typename T>
-	T GetShapeConstPtr( ShapeId const id ) const
+	bool HasType( Shape const & shape ) const
 	{
-		Shape const * const pShape { GetConstShape( id ) };
-		return (pShape && m_Shapes.HasType<T>(pShape)) ? static_cast<T>( pShape ) : nullptr;
+		return m_Shapes.HasType<T>(shape);
 	}
 
 	template <typename T>
-	long const GetNrOf( ) const
+	T GetShapeConstPtr( ShapeId const id ) const
 	{
-		long lCounter = 0;
-		Apply2All<T>( [&]( T const & s ) { ++ lCounter; } );
-		return lCounter;
+		Shape const * const pShape { GetConstShape( id ) };
+		return (pShape && m_Shapes.HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
 	}
 
-	//bool IsSelected( ShapeId const idShape ) const
-	//{
-	//	if ( Shape const * pShape { GetShapeConstPtr<Shape const *>( idShape ) } )
-	//		return pShape->IsSelected();
-	//	else 
-	//		return false;
-	//}
-	
 	fHertz          const GetPulseRate    ( ShapeId const ) const;
 	MicroMeterPoint const GetShapePos     ( ShapeId const ) const;
 
@@ -133,18 +123,28 @@ public:
 		m_Shapes.SetShapeErrorHandler( pHandler );
 	}
 
-	ShapeList const & GetShapes( ) const { return m_Shapes; }
+	void SelectAllShapes( tBoolOp const op )                           { m_Shapes.SelectAllShapes( op ); }
+	void ReplaceInModel ( Shape * const p2BeReplaced, Shape * pShape ) { m_Shapes.SetShape( pShape,  p2BeReplaced->GetId() ); }
+	void Store2Model    ( Shape * const pShape )                       { m_Shapes.SetShape( pShape,  pShape->GetId() ); }
+	void RemoveFromModel( Shape * const pShape )                       { m_Shapes.SetShape( nullptr, pShape->GetId() ); }
 
-	ShapeList m_Shapes;
+	void InsertAtModelSlot( Shape * const pShape, ShapeId const id )                       
+	{ 
+		pShape->SetId( id );
+		m_Shapes.SetShape( pShape, id );
+	}
+
+	ShapeList const & GetShapes( ) const { return m_Shapes; }
 
 private:
 
-	fMicroSecs          m_timeStamp               { 0._MicroSecs };
-	Param             * m_pParam                  { nullptr };
-	Observable        * m_pModelTimeObservable    { nullptr };
-	Observable        * m_pStaticModelObservable  { nullptr };
-	Observable        * m_pDynamicModelObservable { nullptr };
-	MicroMeterRect      m_enclosingRect           { };
+	ShapeList      m_Shapes                  { };
+	fMicroSecs     m_timeStamp               { 0._MicroSecs };
+	Param        * m_pParam                  { nullptr };
+	Observable   * m_pModelTimeObservable    { nullptr };
+	Observable   * m_pStaticModelObservable  { nullptr };
+	Observable   * m_pDynamicModelObservable { nullptr };
+	MicroMeterRect m_enclosingRect           { };
 
 	// local functions
 
@@ -158,6 +158,4 @@ private:
 	{ 
 		m_pDynamicModelObservable->NotifyAll( false );
 	}
-
-	ShapeId const findShapeAt( MicroMeterPoint const, ShapeCrit const & ) const;
 };
