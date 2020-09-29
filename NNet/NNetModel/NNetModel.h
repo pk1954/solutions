@@ -58,16 +58,10 @@ public:
 	}
 
 	template <typename T>
-	bool HasType( Shape const & shape ) const
-	{
-		return m_Shapes.HasType<T>(shape);
-	}
-
-	template <typename T>
 	T GetShapeConstPtr( ShapeId const id ) const
 	{
 		Shape const * const pShape { GetConstShape( id ) };
-		return (pShape && m_Shapes.HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
+		return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
 	}
 
 	fHertz          const GetPulseRate    ( ShapeId const ) const;

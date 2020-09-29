@@ -55,7 +55,7 @@ public:
 	T const GetConstShapePtr( ShapeId const id ) const
 	{
 		Shape const * const pShape { m_pModel->GetConstShape( id ) };
-		return (pShape && m_pModel->HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
+		return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
 	}
 
 	template <typename T> unsigned long const GetNrOf ( )                  const { return T::GetCounter( ); }
@@ -69,7 +69,7 @@ public:
 		{
 			if ( pShape )
 			{
-				if ( m_pModel->HasType<T>( * pShape ) )	
+				if ( HasType<T>( * pShape ) )	
 					bResult = func( static_cast<T const &>( * pShape ) );
 				if ( bResult )
 					break;
@@ -83,11 +83,7 @@ public:
 	{
 		m_pModel->GetShapes().Apply2AllShapes
 		( 
-			[&](Shape & s) 
-			{  
-				if ( m_pModel->HasType<T>(s) ) 
-					func( static_cast<T const &>(s) ); 
-			}
+			[&](Shape & s) { if ( HasType<T>(s) ) func( static_cast<T const &>(s) ); }
 		);
 	}                        
 

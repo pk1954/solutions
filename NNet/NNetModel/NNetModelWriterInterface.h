@@ -41,7 +41,7 @@ public:
     T GetShapePtr( ShapeId const id ) 
     {
         Shape * const pShape { GetShape( id ) };
-        return (pShape && m_pModel->HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
+        return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
     }
 
     template <typename T> 
@@ -59,7 +59,7 @@ public:
         ( 
             [&](Shape & s) 
             {  
-                if ( m_pModel->HasType<T>(s) ) 
+                if ( HasType<T>(s) ) 
                     func( static_cast<T &>(s) ); 
             }
         );

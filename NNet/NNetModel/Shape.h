@@ -17,12 +17,6 @@ class NNetModel;
 
 using ShapeCrit = function<bool(Shape const &)>;
                   
-template <typename T>
-bool IS_EQUAL( Shape const & shapeA, Shape const & shapeB )
-{
-	return static_cast<T const &>( shapeA ).IsEqual( static_cast<T const &>( shapeB ) );
-}
-
 static ShapeCrit const ShapeCritAlwaysTrue { [&]( Shape const & s) { return true; } };
 
 class Shape
@@ -116,3 +110,14 @@ private:
 	bool      m_bSelected  { false };
 	bool      m_bMarked    { false };
 };
+
+template <typename T>
+bool IS_EQUAL( Shape const & shapeA, Shape const & shapeB )
+{
+	return static_cast<T const &>( shapeA ).IsEqual( static_cast<T const &>( shapeB ) );
+}
+
+template <typename T> bool HasType( Shape const & shape ) 
+{ 
+	return remove_pointer<T>::type::TypeFits( shape.GetShapeType() ); 
+}

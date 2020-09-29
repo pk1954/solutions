@@ -129,11 +129,6 @@ public:
 		return Apply2AllB<Shape>( [&]( Shape const & shape ) { return shape.IsSelected(); } );
 	}
 
-	template <typename T> bool HasType( Shape const & shape ) const 
-	{ 
-		return remove_pointer<T>::type::TypeFits( shape.GetShapeType() ); 
-	}
-
 	void CallErrorHandler( ShapeId const id ) const
 	{
 		if ( m_pShapeErrorHandler )
