@@ -16,8 +16,9 @@ class SelectionCommand : public Command
 {
 public:
 	SelectionCommand( NNetModelWriterInterface * const pModel )
-		: m_selectedShapes { pModel->GetShapeList( [&]( Shape const & s ){ return s.IsSelected(); } ) }
-	{ }
+	{ 
+		pModel->GetShapeList( m_selectedShapes, [&]( Shape const & s ){ return s.IsSelected(); } );
+	}
 
 	virtual void Undo( NNetModelWriterInterface * const pModel ) 
 	{

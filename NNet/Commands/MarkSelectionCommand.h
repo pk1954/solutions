@@ -17,9 +17,10 @@ class MarkSelectionCommand : public Command
 {
 public:
 	MarkSelectionCommand( NNetModelWriterInterface * pModel, tBoolOp const op )
-	  : m_op( op ),
-		m_markedShapes( pModel->GetShapeList( [&]( Shape const & s ){ return s.IsMarked(); } ) )
-	{}
+	  : m_op( op )
+	{
+		pModel->GetShapeList( m_markedShapes, [&]( Shape const & s ){ return s.IsMarked(); } );
+	}
 
 	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 

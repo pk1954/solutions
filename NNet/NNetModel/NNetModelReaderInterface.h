@@ -99,6 +99,13 @@ public:
 		Apply2All<T>( {	[&](T const & s) { if ( s.IsSelected() ) { func( s ); } } } );
 	}
 
+	void CheckModel() 
+	{ 
+#ifdef _DEBUG
+		m_pModel->CheckModel(); 
+#endif
+	};
+
 private:
 	NNetModel const * m_pModel;
 

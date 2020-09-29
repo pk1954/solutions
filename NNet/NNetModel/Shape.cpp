@@ -3,9 +3,9 @@
 // NNetModel
 
 #include "stdafx.h"
-#include "synchapi.h"
 #include "NNetColors.h"
 #include "shape.h"
+#include "debug.h"
 
 D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {
@@ -42,4 +42,19 @@ D2D1::ColorF Shape::GetFrameColor( tHighlightType const type ) const
 float Shape::GetFillLevel( mV const voltageInput ) const
 {
 	return voltageInput.GetValue() / m_pParameters->GetParameterValue( tParameter::threshold );
+}
+
+void Shape::CheckShape( )
+{
+	m_type.Check();
+	//AssertLimits<int>( (int)m_bSelected, 0, 1 );
+	//AssertLimits<int>( (int)m_bMarked,   0, 1 );
+	if ( (int)m_bSelected < 0 )
+	{
+		int x = 42;
+	}
+	if ( 1 < (int)m_bSelected )
+	{
+		int x = 42;
+	}
 }

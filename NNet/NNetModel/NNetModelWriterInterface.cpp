@@ -79,11 +79,9 @@ void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
 	}
 }
 
-ShapeList NNetModelWriterInterface::GetShapeList( ShapeCrit const & selector ) const
+void NNetModelWriterInterface::GetShapeList( ShapeList & dst, ShapeCrit const & selector ) const
 {
-	ShapeList list { };
-	Apply2All<Shape>( [&]( Shape & s ) { if ( selector(s) ) list.Add( & s ); } );
-	return list;
+	Apply2All<Shape>( [&]( Shape & s ) { if ( selector(s) ) dst.Add( & s ); } );
 }
 
 void NNetModelWriterInterface::SelectBeepers() 

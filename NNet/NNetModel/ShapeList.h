@@ -29,9 +29,18 @@ public:
 		Reset( );
 	}
 
+	void CheckModel( ) const
+	{
+#ifdef _DEBUG
+		Apply2AllShapes(  [&]( Shape & shape ) { shape.CheckShape( ); } );
+#endif
+	}
+
 	ShapeList & operator= ( const ShapeList & src )
 	{
 		m_list.resize( CastToLong(src.m_list.size()) );
+
+		src.CheckModel();
 
 		for ( Shape * const pShape : src.m_list )
 		{

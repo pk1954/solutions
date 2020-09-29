@@ -34,6 +34,8 @@ public:
 	{
 	}
 
+	void CheckShape();
+
 	Shape & operator= ( Shape const & ) = delete;
 
 	virtual bool IsEqual( Shape const & other ) const

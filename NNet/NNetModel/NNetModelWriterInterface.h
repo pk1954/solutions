@@ -93,7 +93,7 @@ public:
         return ::OrthoVector( m_pModel->GetShapeConstPtr<Pipe const *>( idPipe )->GetVector(), NEURON_RADIUS * 2.f );
     }
 
-    ShapeList GetShapeList( ShapeCrit const & ) const;
+    void GetShapeList( ShapeList &, ShapeCrit const & ) const;
 
     void SelectSubtree( BaseKnot * const pBaseKnot, tBoolOp const op ) { m_pModel->SelectSubtree( pBaseKnot, op ); }
 

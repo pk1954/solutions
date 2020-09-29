@@ -37,6 +37,13 @@ public:
 
 	// readOnly functions
 
+	void CheckModel( ) const
+	{
+#ifdef _DEBUG
+		m_Shapes.CheckModel( );
+#endif
+	}
+
 	bool const IsPipe( ShapeId const id ) const
 	{
 		return GetConstShape( id )->GetShapeType().IsPipeType();
@@ -73,17 +80,15 @@ public:
 	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
 	BaseKnot * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
 
-	ShapeId const GetStartKnotId (ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
-	ShapeId const GetEndKnotId   (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
+	ShapeId const GetStartKnotId(ShapeId const idPipe) const { return GetStartKnotPtr(idPipe)->GetId(); }
+	ShapeId const GetEndKnotId  (ShapeId const idPipe) const { return GetEndKnotPtr  (idPipe)->GetId(); }
 
 	// manipulating functions
 
-	fMicroSecs SetSimulationTime( fMicroSecs const newVal = 0._MicroSecs )	
+	void SetSimulationTime( fMicroSecs const newVal = 0._MicroSecs )	
 	{ 
-		fMicroSecs currentValue;
 		m_timeStamp = newVal; 
 		m_pModelTimeObservable->NotifyAll( false );
-		return currentValue;
 	}
 
 	virtual bool Compute( );
