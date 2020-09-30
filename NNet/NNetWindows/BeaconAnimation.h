@@ -20,8 +20,8 @@ public:
 
 	~BeaconAnimation( )
 	{
-		Stop();
 		m_pObservable = nullptr;
+		Stop();
 		TerminateNoWait();
 	}
 
