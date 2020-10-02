@@ -5,18 +5,13 @@
 #pragma once
 
 #include <vector>
-#include "NamedType.h"
 #include "D2D_DrawContext.h"
+#include "Monitor.h"
 #include "win32_baseWindow.h"
 
-using std::vector;
-
 class Param;
-class Signal;
 class BeaconAnimation;
 class NNetModelReaderInterface;
-
-using TrackNr = NamedType< int, struct TrackNrParam >;
 
 class MonitorWindow : public BaseWindow
 {
@@ -37,8 +32,6 @@ public:
 
 private:
 
-	using Track   = vector <Signal *>;
-
 	virtual void OnPaint( );
 	virtual bool OnSize       ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel ( WPARAM const, LPARAM const );
@@ -52,39 +45,46 @@ private:
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
 
 	void doPaint( );
-	void moveSignal( PIXEL const );
-	void addSignalToTrack     ( Signal *, TrackNr const );
-	void removeSignalFromTrack( Signal *, TrackNr const );
-	void deleteSignal         ( Signal *, TrackNr const );
-	void deleteTrack( TrackNr const );
-	void addTrack   ( TrackNr const );
-	void selectSignal( Signal * );
-	void paintSignal ( Signal const *, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const, fMicroSecs const );
 	void updateTrackHeight( );
+	void moveSignal( PIXEL const );
+	void addTrack   ( TrackNr const );
+	void selectSignal( Signal * const );
+	void paintSignal ( Signal const &, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const, fMicroSecs const );
 
-	fPIXEL const getYvalue( Signal const &, fMicroSecs const );
-
-	Signal      * findSignal      ( TrackNr const );
+	fPIXEL  const getYvalue       ( Signal const &, fMicroSecs const );
 	TrackNr const findTrack       ( PIXEL const );
 	TrackNr const findPos4NewTrack( PIXEL const );
+	Signal      * findSignal      ( TrackNr const );
 
-	Track& getTrack( TrackNr const trackNr )
+	bool testSignal
+	( 
+		Signal     const & signal,
+		fMicroSecs const   umTime,
+		fPIXEL     const   fPixOffset,
+		fPIXEL           & fPixBestDelta
+	)
 	{
-		return m_Tracks[trackNr.GetValue()];
+		if ( umTime >= signal.GetStartTime() )
+		{
+			fPIXEL const fPixYvalueAbs { getYvalue( signal, umTime ) };
+			fPIXEL const fPixDelta     { fPixYvalueAbs + fPixOffset };
+			fPIXEL const fPixDeltaAbs  { fPixDelta.GetAbs( ) };
+			if ( fPixDeltaAbs < fPixBestDelta )
+			{
+				fPixBestDelta = fPixDeltaAbs;
+				return true;
+			}
+		}
+		return false;
 	}
 
-	bool isValid( TrackNr const trackNr )
-	{
-		return (trackNr.GetValue() >= 0) && (trackNr.GetValue() < m_Tracks.size());
-	}
-
+	Monitor                          m_monitor            { };
 	TRACKMOUSEEVENT                  m_trackStruct        { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
 	bool                             m_bRuler             { true };
 	D2D_driver                       m_graphics           { };
 	Param                    const * m_pParams            { nullptr };
 	NNetModelReaderInterface const * m_pModel             { nullptr };
 	BeaconAnimation                * m_pBeaconAnimation   { nullptr };
-	vector <Track>                   m_Tracks             { };
 	fMicroSecs                       m_fMicroSecsPerPixel { 100.0_MicroSecs };
 	float                            m_fYvaluesPerPixel   { 0.2f };
 	Signal *                         m_pSelectedSignal    { nullptr };
