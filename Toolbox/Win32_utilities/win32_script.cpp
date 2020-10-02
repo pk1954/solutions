@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "commdlg.h"
+#include <assert.h> 
 #include <iostream>
 #include <sstream> 
 #include <string> 
@@ -18,7 +19,10 @@ using std::wstring;
 using std::wostringstream;
 using std::endl;
 
-wstring const GetPathOfExecutable( )
+IFileDialog * ScriptFile::m_pFileDlgOpen { nullptr };
+IFileDialog * ScriptFile::m_pFileDlgSave { nullptr };
+
+wstring const ScriptFile::GetPathOfExecutable( )
 {
 	int iBufSize { 256 };
 	vector<wchar_t> buffer;
@@ -32,54 +36,78 @@ wstring const GetPathOfExecutable( )
 	return wstring( buffer.data() );
 }
 
-wstring const AskForFileName // TODO: cleanup
+ScriptFile::ScriptFile( )
+{
+    HRESULT hr = CoInitializeEx( NULL, COINIT_APARTMENTTHREADED|COINIT_DISABLE_OLE1DDE );
+    assert( SUCCEEDED(hr) );
+
+    hr = CoCreateInstance 
+    (
+        CLSID_FileOpenDialog, 
+        NULL, CLSCTX_ALL, 
+        IID_IFileOpenDialog, 
+        reinterpret_cast<void**>( & m_pFileDlgOpen )
+    );
+    assert( SUCCEEDED(hr) );
+
+    hr = CoCreateInstance
+    (
+        CLSID_FileSaveDialog, 
+        NULL, CLSCTX_ALL, 
+        IID_IFileSaveDialog, 
+        reinterpret_cast<void**>( & m_pFileDlgSave )
+    );
+    assert( SUCCEEDED(hr) );
+
+    hr = m_pFileDlgOpen->SetTitle( L"Open file" );
+    assert( SUCCEEDED(hr) );
+    hr = m_pFileDlgSave->SetTitle( L"Save file" );
+    assert( SUCCEEDED(hr) );
+}
+
+ScriptFile::~ScriptFile( )
+{
+    m_pFileDlgOpen->Release();
+    m_pFileDlgSave->Release();
+    CoUninitialize();
+}
+
+wstring ScriptFile::getResult( IFileDialog * const pFileDlg )
+{
+    HRESULT      hr;
+    wstring      wstrRes { };
+    IShellItem * pItem   { nullptr };
+    hr = pFileDlg->GetResult( & pItem );                        
+    if ( SUCCEEDED(hr) )
+    {
+        PWSTR pszPath { nullptr };
+        hr = pItem->GetDisplayName( SIGDN_FILESYSPATH, & pszPath ); 
+        if ( SUCCEEDED(hr) )
+        {
+            wstrRes = pszPath;
+            CoTaskMemFree( pszPath );
+        }
+        pItem->Release();
+    }
+    return wstrRes;
+}
+
+wstring const ScriptFile::AskForFileName
 ( 
-	wstring         pathSelected, // input: path to start 
-	wstring   const filter, 
+	wstring   const extension, 
 	wstring   const description,
 	tFileMode const mode
 )
 {
-	static int const MAXPATH = 512;
-
-	wstring wBufferPath   { pathSelected };
-	wstring wBufferFilter { description + wstring(L"\0", 1) + filter + wstring(L"\0\0", 2) };
-	PCWSTR  strExtension  { nullptr };
-
-	pathSelected = L"\0";
-	pathSelected.resize( MAXPATH );
-	wBufferPath += L'\0';
-
-	HRESULT res = PathCchFindExtension( wBufferPath.c_str(), wBufferPath.size(), & strExtension );
-	++strExtension;  // skip '.' befor extension
-	PathCchRemoveFileSpec( &wBufferPath[0], MAXPATH );
-
-    OPENFILENAME ofn;                  // common dialog box structure    
-	ZeroMemory( &ofn, sizeof( ofn ) );
-    ofn.lStructSize     = sizeof( OPENFILENAME );
-	ofn.lpstrFile       = &pathSelected[0];
-	ofn.lpstrDefExt     = strExtension;
-	ofn.lpstrInitialDir = wBufferPath.c_str();
-    ofn.nMaxFile        = MAXPATH;
-    ofn.lpstrFilter     = wBufferFilter.c_str();
-    ofn.nFilterIndex    = 1;
-
-	bool bRes = (mode == tFileMode::read)
-		        ? GetOpenFileName( &ofn )
-		        : GetSaveFileName( &ofn );
-
-	if ( bRes == false )
-		pathSelected = L"";
-
-	wstring wstrRes( pathSelected.c_str() );
-	return wstrRes;
-}
-
-wstring const ScriptDialog( )
-{
-	wchar_t szBuffer[MAX_PATH];
-	DWORD const dwRes = GetCurrentDirectory( MAX_PATH, szBuffer);
-	assert( dwRes > 0 );
-	wstring const wstrPath( szBuffer );
-	return AskForFileName( wstrPath, L"*.in", L"Script files", tFileMode::read );
+    wstring           filter   { L"*." + extension };
+    COMDLG_FILTERSPEC rgSpec   { description.c_str(), filter.c_str() };
+    IFileDialog     * pFileDlg { (mode == tFileMode::read) ? m_pFileDlgOpen : m_pFileDlgSave };
+    wstring           wstrRes  { };
+    HRESULT           hr;
+    hr = m_pFileDlgSave->SetDefaultExtension( extension.c_str() ); assert( SUCCEEDED(hr) );
+    hr = pFileDlg->SetFileTypes( 1, & rgSpec );                    assert( SUCCEEDED(hr) );
+    hr = pFileDlg->Show( NULL ); 
+    if ( SUCCEEDED(hr) )
+        wstrRes =  getResult( pFileDlg );
+    return wstrRes;
 }

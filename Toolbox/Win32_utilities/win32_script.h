@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <shobjidl.h> 
 #include "symtab.h"
 
 using std::wstring;
@@ -17,6 +18,19 @@ enum class tFileMode
 	write
 };
 
-extern wstring const ScriptDialog( );
-extern wstring const GetPathOfExecutable( );
-extern wstring const AskForFileName( wstring, wstring const, wstring const, tFileMode const );
+class ScriptFile
+{
+public:
+	ScriptFile();
+	~ScriptFile();
+
+	static wstring const GetPathOfExecutable( );
+	static wstring const AskForFileName( wstring const, wstring const, tFileMode const );
+
+private:
+	static bool          m_bInitialized;
+	static IFileDialog * m_pFileDlgOpen;
+	static IFileDialog * m_pFileDlgSave;
+
+	static wstring getResult( IFileDialog * const );
+};

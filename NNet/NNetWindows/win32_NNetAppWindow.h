@@ -35,6 +35,7 @@
 #include "win32_performanceWindow.h"
 #include "win32_simulationControl.h"
 #include "win32_slowMotionControl.h"
+#include "win32_script.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelCommands.h"
@@ -145,6 +146,7 @@ private:
 	UndoRedoMenu              m_undoRedoMenu             { };
 	UnsavedChangesObserver    m_unsavedChangesObserver   { };
 	BeaconAnimation           m_beaconAnimation          { };
+	ScriptFile                m_scriptFile               { };
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 };

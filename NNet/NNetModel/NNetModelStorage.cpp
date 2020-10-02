@@ -53,7 +53,7 @@ bool NNetModelStorage::AskAndSave( )
 
 bool NNetModelStorage::AskModelFile( )
 {
-    wstring wstrPath = AskForFileName( GetPathOfExecutable( ), L"*.mod", L"Model files", tFileMode::read );
+    wstring wstrPath = ScriptFile::AskForFileName( L"mod", L"Model files", tFileMode::read );
     if ( wstrPath != L"" )
     {
         m_wstrPathOfOpenModel = wstrPath;
@@ -66,14 +66,14 @@ bool NNetModelStorage::SaveModelAs( )
 {
     if ( m_wstrPathOfOpenModel == L"" )
     {
-        m_wstrPathOfOpenModel = path( GetPathOfExecutable( ) ).parent_path();
+        m_wstrPathOfOpenModel = path( ScriptFile::GetPathOfExecutable( ) ).parent_path();
         m_wstrPathOfOpenModel += L"\\std.mod";
         writeModel();
         return true;
     }
     else
     {
-        m_wstrPathOfOpenModel = AskForFileName( m_wstrPathOfOpenModel, L"*.mod", L"Model files", tFileMode::write );
+        m_wstrPathOfOpenModel = ScriptFile::AskForFileName( L"mod", L"Model files", tFileMode::write );
         bool const bRes = m_wstrPathOfOpenModel != L"";
         if ( bRes )
             writeModel( );
