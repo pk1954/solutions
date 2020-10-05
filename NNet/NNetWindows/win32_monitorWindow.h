@@ -49,34 +49,13 @@ private:
 	void moveSignal( PIXEL const );
 	void addTrack   ( TrackNr const );
 	void selectSignal( Signal * const );
-	void paintSignal ( Signal const &, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const, fMicroSecs const );
+	void paintSignal ( Signal const &, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const );
 
 	fPIXEL  const getYvalue       ( Signal const &, fMicroSecs const );
 	TrackNr const findTrack       ( PIXEL const );
 	TrackNr const findPos4NewTrack( PIXEL const );
 	Signal      * findSignal      ( TrackNr const );
-
-	bool testSignal
-	( 
-		Signal     const & signal,
-		fMicroSecs const   umTime,
-		fPIXEL     const   fPixOffset,
-		fPIXEL           & fPixBestDelta
-	)
-	{
-		if ( umTime >= signal.GetStartTime() )
-		{
-			fPIXEL const fPixYvalueAbs { getYvalue( signal, umTime ) };
-			fPIXEL const fPixDelta     { fPixYvalueAbs + fPixOffset };
-			fPIXEL const fPixDeltaAbs  { fPixDelta.GetAbs( ) };
-			if ( fPixDeltaAbs < fPixBestDelta )
-			{
-				fPixBestDelta = fPixDeltaAbs;
-				return true;
-			}
-		}
-		return false;
-	}
+	bool          testSignal      ( Signal const &, fMicroSecs const, fPIXEL const, fPIXEL & );
 
 	Monitor                          m_monitor            { };
 	TRACKMOUSEEVENT                  m_trackStruct        { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
@@ -90,7 +69,7 @@ private:
 	Signal *                         m_pSelectedSignal    { nullptr };
 	TrackNr                          m_selectedTrackNr    { TrackNr::NULL_VAL() };
 	TrackNr                          m_trackNrOfSelSignal { TrackNr::NULL_VAL() };
+	fPIXEL                           m_fPixTrackHeight    { fPIXEL::NULL_VAL() };
 	PIXEL                            m_pixLastY           { PIXEL::NULL_VAL() };	// Last cursor position during selection 
 	PIXEL                            m_pixMoveOffsetY     { 0_PIXEL };
-	fPIXEL                           m_fPixTrackHeight    { fPIXEL::NULL_VAL() };
 };

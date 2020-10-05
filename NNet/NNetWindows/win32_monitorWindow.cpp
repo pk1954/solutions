@@ -146,10 +146,11 @@ void MonitorWindow::paintSignal
 	fPIXEL     const   fPixYoffset,
 	fPIXEL     const   fPixXend,
 	fMicroSecs const   usIncrement,
-	fMicroSecs const   usEnd,
 	fMicroSecs const   usInWindow
 )
 {
+	fMicroSecs const usEnd { m_pModel->GetSimulationTime( ) };
+
 	fPIXEL const fPixYvalue { getYvalue( signal, usEnd ) };
 	if ( isnan(fPixYvalue.GetValue()) )
 		return;
@@ -182,7 +183,6 @@ void MonitorWindow::doPaint( )
 
 	fPIXEL     const fPixWidth    { Convert2fPIXEL( GetClientWindowWidth( ) ) };
 	fMicroSecs const usInWindow   { m_fMicroSecsPerPixel * fPixWidth.GetValue() };
-	fMicroSecs const usEnd        { m_pModel->GetSimulationTime( ) };
 	fMicroSecs const usResolution { m_pParams->GetTimeResolution( ) };
 	float      const fPointsInWin { usInWindow / usResolution };
 	fMicroSecs const usIncrement  { (fPointsInWin > fPixWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
@@ -191,7 +191,7 @@ void MonitorWindow::doPaint( )
 	( 
 		[&]( Track const & track )
 		{
-			track.Apply2AllSignals(	[&](Signal const & signal) { paintSignal( signal, fPixYoffset, fPixWidth, usIncrement, usEnd, usInWindow ); } );
+			track.Apply2AllSignals(	[&](Signal const & signal) { paintSignal( signal, fPixYoffset, fPixWidth, usIncrement, usInWindow ); } );
 			fPixYoffset += m_fPixTrackHeight;
 		}
 	);
@@ -205,6 +205,28 @@ void MonitorWindow::doPaint( )
 		fPixelRectSize const size {	fPixWidth, m_fPixTrackHeight };
 		m_graphics.DrawTranspRect( fPixelRect( pos, size ), NNetColors::COL_BEACON );
 	}
+}
+
+bool MonitorWindow::testSignal  // if signal is "better" than fPixBestDelta, update fPixBestDelta and return true, else false
+( 
+	Signal     const & signal,
+	fMicroSecs const   umTime,
+	fPIXEL     const   fPixOffset,
+	fPIXEL           & fPixBestDelta
+)
+{
+	if ( umTime >= signal.GetStartTime() )
+	{
+		fPIXEL const fPixYvalueAbs { getYvalue( signal, umTime ) };
+		fPIXEL const fPixDelta     { fPixYvalueAbs + fPixOffset };
+		fPIXEL const fPixDeltaAbs  { fPixDelta.GetAbs( ) };
+		if ( fPixDeltaAbs < fPixBestDelta )
+		{
+			fPixBestDelta = fPixDeltaAbs;
+			return true;
+		}
+	}
+	return false;
 }
 
 Signal * MonitorWindow::findSignal( TrackNr const trackNr )
