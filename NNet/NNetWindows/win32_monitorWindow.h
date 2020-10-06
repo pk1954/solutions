@@ -24,6 +24,7 @@ public:
 		BeaconAnimation                &
 	);
 
+	void Reset( );
 	void Stop( );
 
 	void AddSignal( Signal & );
@@ -58,7 +59,7 @@ private:
 	bool          testSignal      ( Signal const &, fMicroSecs const, fPIXEL const, fPIXEL & );
 
 	Monitor                          m_monitor            { };
-	TRACKMOUSEEVENT                  m_trackStruct        { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
+	TRACKMOUSEEVENT                  m_trackStruct        { sizeof(TRACKMOUSEEVENT), 0, HWND(0), 0L };
 	bool                             m_bRuler             { true };
 	D2D_driver                       m_graphics           { };
 	Param                    const * m_pParams            { nullptr };

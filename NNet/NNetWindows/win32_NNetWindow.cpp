@@ -145,6 +145,8 @@ void NNetWindow::AnimateBeacon( fPIXEL const fPixBeaconRadius )
 	ShapeId idBeacon { m_pBeaconAnimation->GetBeaconShapeId() };
 	if ( IsDefined( idBeacon ) )
 	{
+		assert( m_pModelReaderInterface->IsValidShapeId(idBeacon) );
+
 		static MicroMeter const MIN_SIZE { NEURON_RADIUS };
 		static MicroMeter const MAX_SIZE { NEURON_RADIUS * 2 };
 

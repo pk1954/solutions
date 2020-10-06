@@ -8,14 +8,12 @@
 #include "ModelDescription.h"
 #include "win32_baseWindow.h"
 
-class MessagePump;
-
 using std::wstring;
 
 class DescriptionWindow : public BaseWindow, public ModelDescription
 {
 public:
-	void Start( HWND const, MessagePump & );
+	void Start( HWND const );
 	void Stop( );
 
 	virtual void ClearDescription( );

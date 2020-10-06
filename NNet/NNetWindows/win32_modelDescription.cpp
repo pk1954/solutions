@@ -5,16 +5,11 @@
 #include "stdafx.h"
 #include "Richedit.h"
 #include "Resource.h"
-#include "win32_messagePump.h"
 #include "win32_modelDescription.h"
 
 static HMENU const ID_EDIT_CTRL { (HMENU)1 };
 
-void DescriptionWindow::Start
-( 
-    HWND const hwndParent,
-    MessagePump & pump
-)
+void DescriptionWindow::Start( HWND const hwndParent )
 {
     PixelRect rect( 100_PIXEL, 100_PIXEL, 200_PIXEL, 200_PIXEL );
     HWND const hwndDlg = StartBaseWindow
@@ -33,16 +28,13 @@ void DescriptionWindow::Start
     ( 
         L"EDIT",                 // predefined class 
         NULL,        
-        WS_CHILD | WS_VISIBLE | WS_BORDER | WS_VSCROLL | 
-        ES_MULTILINE |  ES_WANTRETURN | ES_AUTOHSCROLL | ES_AUTOVSCROLL, 
+        WS_CHILD|WS_VISIBLE|WS_BORDER|WS_VSCROLL|ES_MULTILINE|ES_WANTRETURN|ES_AUTOHSCROLL|ES_AUTOVSCROLL, 
         0, 0, 0, 0,              // set size in WM_SIZE message 
         hwndDlg,                 // parent window 
         ID_EDIT_CTRL,
         GetModuleHandle( nullptr ), 
         NULL
     );          
-
-    pump.RegisterWindow( hwndDlg, true );
 }
 
 void DescriptionWindow::Stop( )

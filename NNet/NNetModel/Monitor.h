@@ -15,6 +15,11 @@ class Signal;
 class Track
 {
 public:
+	void Clear( )
+	{
+		Apply2AllSignals( [&]( Signal & signal ) { delete & signal; } );
+	}
+
 	void AddSignal( Signal * const pSignal )
 	{
 		m_signals.push_back( pSignal );
@@ -50,6 +55,11 @@ using TrackNr = NamedType< int, struct TrackNrParam >;
 class Monitor
 {
 public:
+
+	void Reset( )
+	{
+		Apply2AllTracks( [&](Track const & track) { DeleteTrack( ); } );
+	}
 
 	int GetNrOfTracks( )
 	{
@@ -96,7 +106,7 @@ public:
 	{
 		if ( trackNr.IsNotNull() )
 		{
-			GetTrack( trackNr ).Apply2AllSignals( [&]( Signal & signal ) { delete & signal; } );
+			GetTrack( trackNr ).Clear();
 			m_Tracks.erase( m_Tracks.begin() + trackNr.GetValue() );
 		}
 	}

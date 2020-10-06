@@ -159,9 +159,10 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_computeThread         .Start( & m_model, & m_parameters, & m_SlowMotionRatio, & m_runObservable, & m_performanceObservable );
 	m_appMenu               .Start( m_hwndApp, & m_computeThread, & m_WinManager, & m_cmdStack, & m_sound );
 	m_StatusBar             .Start( m_hwndApp );
-	m_descWindow            .Start( m_hwndApp, pump );
+	m_descWindow            .Start( m_hwndApp );
 	m_undoRedoMenu          .Start( & m_appMenu );
 	m_unsavedChangesObserver.Start( m_hwndApp, & m_modelStorage );
+	pump.RegisterWindow( m_descWindow.GetWindowHandle(), true );
 
 	m_mainNNetWindow.Start
 	( 

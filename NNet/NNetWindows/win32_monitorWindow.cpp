@@ -18,7 +18,6 @@
 
 using std::find;
 
-
 void MonitorWindow::Start
 ( 
 	HWND                     const   hwndParent,
@@ -42,10 +41,23 @@ void MonitorWindow::Start
 	m_graphics.Initialize( hwnd );
 	SetWindowText( hwnd, L"Monitor" );
 	m_trackStruct.hwndTrack = hwnd;
+	m_trackStruct.dwFlags   = TME_LEAVE;
+}
+
+void MonitorWindow::Reset( )
+{
+	selectSignal( nullptr );
+	m_trackStruct.hwndTrack = HWND(0);
+	m_trackStruct.dwFlags   = TME_CANCEL;
+	(void)TrackMouseEvent( & m_trackStruct );
 }
 
 void MonitorWindow::Stop( )
 {
+	Reset( );
+	m_pBeaconAnimation = nullptr;
+	m_pParams          = nullptr;
+	m_pModel           = nullptr;
 	m_graphics.ShutDown( );
 	DestroyWindow( );
 }
@@ -78,7 +90,7 @@ void MonitorWindow::selectSignal( Signal * const pSignal )
 		{
 			m_selectedTrackNr   .Set2Null();
 			m_trackNrOfSelSignal.Set2Null();
-			m_pixLastY         .Set2Null();
+			m_pixLastY          .Set2Null();
 			m_pixMoveOffsetY = 0_PIXEL;
 		}
 		m_pSelectedSignal = pSignal;
