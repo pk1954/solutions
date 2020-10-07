@@ -6,7 +6,7 @@
 
 #include <vector>
 #include "D2D_DrawContext.h"
-#include "Monitor.h"
+#include "MonitorData.h"
 #include "win32_baseWindow.h"
 
 class Param;
@@ -21,7 +21,8 @@ public:
 		HWND const, 
 		NNetModelReaderInterface const &, 
 		Param                    const &,
-		BeaconAnimation                &
+		BeaconAnimation                &,
+		MonitorData                    *
 	);
 
 	void Reset( );
@@ -58,13 +59,13 @@ private:
 	Signal      * findSignal      ( TrackNr const );
 	bool          testSignal      ( Signal const &, fMicroSecs const, fPIXEL const, fPIXEL & );
 
-	Monitor                          m_monitor            { };
 	TRACKMOUSEEVENT                  m_trackStruct        { sizeof(TRACKMOUSEEVENT), 0, HWND(0), 0L };
 	bool                             m_bRuler             { true };
 	D2D_driver                       m_graphics           { };
 	Param                    const * m_pParams            { nullptr };
 	NNetModelReaderInterface const * m_pModel             { nullptr };
 	BeaconAnimation                * m_pBeaconAnimation   { nullptr };
+	MonitorData                    * m_pMonitorData       { nullptr };  
 	fMicroSecs                       m_fMicroSecsPerPixel { 100.0_MicroSecs };
 	float                            m_fYvaluesPerPixel   { 0.2f };
 	Signal *                         m_pSelectedSignal    { nullptr };

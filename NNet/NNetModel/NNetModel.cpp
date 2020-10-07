@@ -8,6 +8,7 @@
 #include "MoreTypes.h"
 #include "NNetParameters.h"
 #include "tHighlightType.h"
+#include "MonitorData.h"
 #include "ShapeType.h"
 #include "Knot.h"
 #include "Neuron.h"
@@ -35,6 +36,7 @@ void NNetModel::Initialize
 	m_pStaticModelObservable  = pStaticModelObservable;
     m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pModelTimeObservable    = pModelTimeObservable;
+	m_pMonitorData            = new MonitorData();
 	Shape::SetParam( pParam );
 }                     
 
@@ -96,6 +98,7 @@ bool NNetModel::Compute( )
 void NNetModel::ResetModel( )
 {
 	m_Shapes.Reset();
+	m_pMonitorData->Reset();
 	Knot       ::ResetCounter();
 	Neuron     ::ResetCounter();
 	InputNeuron::ResetCounter();

@@ -16,8 +16,10 @@ public:
 
 	virtual void NotifyAll( bool const bImmediately )
 	{
+		int i = 0;
 		for ( auto &v : m_aView )
 		{
+			++i;
 			v->Notify( bImmediately );
 		}
 	}

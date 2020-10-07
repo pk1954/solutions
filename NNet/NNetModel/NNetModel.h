@@ -22,12 +22,19 @@
 using std::remove_pointer;
 
 class EventInterface;
+class MonitorData;
 class Param;
 
 class NNetModel
 {
 public:
-	void Initialize( Param * const, Observable * const, Observable * const, Observable * const );
+	void Initialize
+	( 
+		Param      * const,
+		Observable * const, 
+		Observable * const, 
+		Observable * const 
+	);
 
 	NNetModel( ) {};
 
@@ -135,6 +142,8 @@ public:
 
 	ShapeList const & GetShapes( ) const { return m_Shapes; }
 
+    MonitorData * GetMonitorData( ) { return m_pMonitorData; }
+
 private:
 
 	ShapeList      m_Shapes                  { };
@@ -143,6 +152,7 @@ private:
 	Observable   * m_pModelTimeObservable    { nullptr };
 	Observable   * m_pStaticModelObservable  { nullptr };
 	Observable   * m_pDynamicModelObservable { nullptr };
+	MonitorData  * m_pMonitorData            { nullptr };
 	MicroMeterRect m_enclosingRect           { };
 
 	// local functions

@@ -191,7 +191,7 @@
     <ClInclude Include="InputNeuron.h" />
     <ClInclude Include="Knot.h" />
     <ClInclude Include="ModelDescription.h" />
-    <ClInclude Include="Monitor.h" />
+    <ClInclude Include="MonitorData.h" />
     <ClInclude Include="Neuron.h" />
     <ClInclude Include="NNetColors.h" />
     <ClInclude Include="NNetModel.h" />

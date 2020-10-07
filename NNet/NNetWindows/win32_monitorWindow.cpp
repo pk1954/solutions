@@ -11,6 +11,7 @@
 #include "Resource.h"
 #include "BaseKnot.h"
 #include "BeaconAnimation.h"
+#include "MonitorData.h"
 #include "NNetColors.h"
 #include "NNetParameters.h"
 #include "NNetModelReaderInterface.h"
@@ -23,7 +24,8 @@ void MonitorWindow::Start
 	HWND                     const   hwndParent,
 	NNetModelReaderInterface const & model,
 	Param                    const & params,
-	BeaconAnimation                & beaconAnimation
+	BeaconAnimation                & beaconAnimation,
+	MonitorData              * const pMonitorData  
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -38,6 +40,7 @@ void MonitorWindow::Start
 	m_pBeaconAnimation = & beaconAnimation;
 	m_pParams          = & params;
 	m_pModel           = & model;
+	m_pMonitorData     = pMonitorData;
 	m_graphics.Initialize( hwnd );
 	SetWindowText( hwnd, L"Monitor" );
 	m_trackStruct.hwndTrack = hwnd;
@@ -58,6 +61,7 @@ void MonitorWindow::Stop( )
 	m_pBeaconAnimation = nullptr;
 	m_pParams          = nullptr;
 	m_pModel           = nullptr;
+	m_pMonitorData     = nullptr;
 	m_graphics.ShutDown( );
 	DestroyWindow( );
 }
@@ -119,16 +123,16 @@ TrackNr const MonitorWindow::findPos4NewTrack( PIXEL const pixCrsrPosY )
 
 void MonitorWindow::addTrack( TrackNr const pos )
 {
-	m_monitor.InsertTrack( pos );
+	m_pMonitorData->InsertTrack( pos );
 	updateTrackHeight( );
 	Show( true );            // if window was not visible, show it now
 }
 
 void MonitorWindow::AddSignal( Signal & signal ) 
 { 
-	TrackNr posOfNewTrack { m_monitor.GetNrOfTracks() };
+	TrackNr posOfNewTrack { m_pMonitorData->GetNrOfTracks() };
 	addTrack( posOfNewTrack );
-	m_monitor.GetTrack( posOfNewTrack ).AddSignal( & signal );
+	m_pMonitorData->GetTrack( posOfNewTrack ).AddSignal( & signal );
 	signal.RegisterObserver( this );
 }
 
@@ -138,9 +142,9 @@ void MonitorWindow::updateTrackHeight( )
 	PIXEL const pixExtraSpace  { m_bRuler ? 60_PIXEL : 10_PIXEL };
 	PIXEL const pixFreeHeight  { pixRectHeight - pixExtraSpace };
 	PIXEL const pixTrackHeight { 
-		                          m_monitor.NoTracks() 
+		                          m_pMonitorData->NoTracks() 
 		                          ? pixFreeHeight 
-		                          : pixFreeHeight / CastToLong(m_monitor.GetNrOfTracks()) 
+		                          : pixFreeHeight / CastToLong(m_pMonitorData->GetNrOfTracks()) 
 	                           }; 
 	m_fPixTrackHeight = Convert2fPIXEL( pixTrackHeight );
 }
@@ -190,7 +194,7 @@ void MonitorWindow::paintSignal
 
 void MonitorWindow::doPaint( )
 {
-	if ( m_monitor.NoTracks() )
+	if ( m_pMonitorData->NoTracks() )
 		return;
 
 	fPIXEL     const fPixWidth    { Convert2fPIXEL( GetClientWindowWidth( ) ) };
@@ -199,7 +203,7 @@ void MonitorWindow::doPaint( )
 	float      const fPointsInWin { usInWindow / usResolution };
 	fMicroSecs const usIncrement  { (fPointsInWin > fPixWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
 	fPIXEL           fPixYoffset  { m_fPixTrackHeight };
-	m_monitor.Apply2AllTracks
+	m_pMonitorData->Apply2AllTracks
 	( 
 		[&]( Track const & track )
 		{
@@ -244,7 +248,7 @@ bool MonitorWindow::testSignal  // if signal is "better" than fPixBestDelta, upd
 Signal * MonitorWindow::findSignal( TrackNr const trackNr )
 {
 	m_trackNrOfSelSignal.Set2Null();
-	if ( m_monitor.NoTracks() )
+	if ( m_pMonitorData->NoTracks() )
 		return nullptr;
 	if ( trackNr.IsNull() )
 		return nullptr;
@@ -259,7 +263,7 @@ Signal * MonitorWindow::findSignal( TrackNr const trackNr )
 	fPIXEL            fPixYoffset   { m_fPixTrackHeight };
 	fPIXEL            fPixBestDelta { fPIXEL::MAX_VAL() };
 	Signal          * pSignalFound  { nullptr };
-	m_monitor.GetTrack( trackNr ).Apply2AllSignals
+	m_pMonitorData->GetTrack( trackNr ).Apply2AllSignals
 	(
 		[&]( Signal & signal )
 		{
@@ -278,7 +282,7 @@ TrackNr const MonitorWindow::findTrack( PIXEL const pixPosY )
 {
 	fPIXEL     const fPixCrsrYpos { Convert2fPIXEL( pixPosY ) };
 	TrackNr    const trackNr      { CastToInt( fPixCrsrYpos / m_fPixTrackHeight ) };
-	return m_monitor.IsValid( trackNr ) ? trackNr : TrackNr::NULL_VAL();
+	return m_pMonitorData->IsValid( trackNr ) ? trackNr : TrackNr::NULL_VAL();
 }
 
 void MonitorWindow::OnPaint( )
@@ -311,7 +315,7 @@ bool MonitorWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDD_DELETE_SIGNAL:		
-		m_monitor.DeleteSignal( m_pSelectedSignal, m_selectedTrackNr );
+		m_pMonitorData->DeleteSignal( m_pSelectedSignal, m_selectedTrackNr );
 		selectSignal( nullptr );
 		break;
 
@@ -320,11 +324,11 @@ bool MonitorWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDD_DELETE_TRACK:
-		m_monitor.DeleteTrack( m_selectedTrackNr );
+		m_pMonitorData->DeleteTrack( m_selectedTrackNr );
 		m_selectedTrackNr.Set2Null();
 		selectSignal( nullptr );
 		updateTrackHeight( );
-		if ( m_monitor.NoTracks() )
+		if ( m_pMonitorData->NoTracks() )
 			SendMessage( WM_COMMAND, IDM_WINDOW_OFF, 0 );
 		break;
 
@@ -355,7 +359,7 @@ bool MonitorWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 
 void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
-	if ( m_monitor.NoTracks() )
+	if ( m_pMonitorData->NoTracks() )
 		return;
 
 	m_selectedTrackNr = findTrack( CrsrYpos( lParam ) );
@@ -372,8 +376,8 @@ void MonitorWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam )
 {
 	if ( m_selectedTrackNr.IsNotNull() && (m_selectedTrackNr != m_trackNrOfSelSignal) )
 	{
-		m_monitor.RemoveSignalFromTrack( m_pSelectedSignal, m_trackNrOfSelSignal );
-		m_monitor.GetTrack( m_selectedTrackNr ).AddSignal( m_pSelectedSignal );
+		m_pMonitorData->RemoveSignalFromTrack( m_pSelectedSignal, m_trackNrOfSelSignal );
+		m_pMonitorData->GetTrack( m_selectedTrackNr ).AddSignal( m_pSelectedSignal );
 	}
 	m_pixMoveOffsetY = 0_PIXEL;
 	m_pixLastY = PIXEL::NULL_VAL();
