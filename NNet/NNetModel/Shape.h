@@ -34,7 +34,7 @@ public:
 	{
 	}
 
-	void CheckShape();
+	virtual void CheckShape() const;
 
 	Shape & operator= ( Shape const & ) = delete;
 

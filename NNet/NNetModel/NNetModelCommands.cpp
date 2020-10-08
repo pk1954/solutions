@@ -10,6 +10,7 @@
 #include "AddOutgoing2PipeCommand.h"
 #include "AnalyzeAnomaliesCommand.h"
 #include "AnalyzeLoopsCommand.h"
+#include "Attach2MonitorCommand.h"
 #include "ClearBeepersCommand.h"
 #include "Connect2BaseKnotCommand.h"
 #include "Connect2PipeCommand.h"
@@ -34,7 +35,9 @@
 #include "SetPulseRateCommand.h"
 #include "SetTriggerSoundCommand.h"
 #include "ToggleStopOnTriggerCommand.h"
+#include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
+#include "NNetParameters.h"
 #include "NNetModelCommands.h"
 
 using std::wcout;
@@ -43,15 +46,21 @@ using std::endl;
 void NNetModelCommands::Initialize
 ( 
 	wostream                 * const pTraceStream,
+	NNetModelReaderInterface * const pReaderInterface,
 	NNetModelWriterInterface * const pWriterInterface,
+	Param                    * const pParam,
 	CommandStack             * const pCmdStack,
-	NNetModelStorage         * const pStorage
+	NNetModelStorage         * const pStorage,
+	Observable               * const pDynamicModelObservable
 ) 
 { 
-	m_pTraceStream          = pTraceStream;
-	m_pModelWriterInterface = pWriterInterface;
-	m_pCmdStack             = pCmdStack;
-	m_pStorage              = pStorage;
+	m_pTraceStream            = pTraceStream;
+	m_pModelReaderInterface   = pReaderInterface;
+	m_pModelWriterInterface   = pWriterInterface;
+	m_pCmdStack               = pCmdStack;
+	m_pStorage                = pStorage;
+	m_pParam                  = pParam;
+	m_pDynamicModelObservable = pDynamicModelObservable;
 }
 
 void NNetModelCommands::UndoCommand( )
@@ -102,6 +111,26 @@ void NNetModelCommands::deleteSelection( )
 	( 
 		[&]( Shape * pShape ) {	deleteShape( pShape ); }  // and delete shapes in model
 	);                                                    // using pointers from list
+}
+
+void NNetModelCommands::Attach2Monitor( ShapeId const id )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << id << endl;
+	if ( m_pModelReaderInterface->IsOfType<Neuron>( id ) )
+	{
+		m_pCmdStack->NewCommand
+		( 
+			new Attach2MonitorCommand
+			( 
+				id,
+				m_pModelWriterInterface->GetMonitorData(), 
+				m_pModelReaderInterface, 
+				m_pParam,
+				m_pDynamicModelObservable
+			) 
+		);
+	}
 }
 
 void NNetModelCommands::DeleteShape( ShapeId const id )
@@ -248,7 +277,7 @@ void NNetModelCommands::AppendNeuron( ShapeId const id )
 		new NewNeuronCommand
 		( 
 			m_pModelWriterInterface, 
-			m_pModelWriterInterface->GetModel().GetShapePos(id) 
+			m_pModelReaderInterface->GetShapePos(id) 
 		) 
 	};
 	m_pCmdStack->NewCommand( pCmdNewNeuron );
@@ -272,7 +301,7 @@ void NNetModelCommands::AppendInputNeuron( ShapeId const id )
 		new NewInputNeuronCommand
 		( 
 			m_pModelWriterInterface, 
-			m_pModelWriterInterface->GetModel().GetShapePos(id) 
+			m_pModelReaderInterface->GetShapePos(id) 
 		) 
 	};
 	m_pCmdStack->NewCommand( pCmdNewInputNeuron );

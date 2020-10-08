@@ -16,6 +16,7 @@ public:
 	DeletePipeCommand( Pipe * pPipe )
 		: m_pPipe( pPipe )
 	{
+		m_pPipe->CheckShape();
 		m_pStartKnot = m_pPipe->GetStartKnotPtr();
 		m_pEndKnot   = m_pPipe->GetEndKnotPtr();
 	}
@@ -37,6 +38,7 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface * const pModel )
 	{
+		m_pPipe->CheckShape();
 		m_pStartKnot->m_connections.AddOutgoing( m_pPipe );
 		m_pEndKnot  ->m_connections.AddIncoming( m_pPipe );
 		pModel->Store2Model( m_pStartKnot );

@@ -112,6 +112,8 @@ void CommandStack::NewCommand( Command * pCmd )
 {
 #ifdef _DEBUG
     NNetModel const * pModelSave1 { new NNetModel( m_pModelInterFace->GetModel( ) ) };
+    m_pModelInterFace->CheckModel();
+    pModelSave1->CheckModel();
 #endif
     clearRedoStack( );
     if ( pCmd->IsMoveCommand( ) )
@@ -143,9 +145,14 @@ void CommandStack::NewCommand( Command * pCmd )
 
 #ifdef _DEBUG
     NNetModel const * pModelSave2 { new NNetModel( m_pModelInterFace->GetModel( ) ) };
+    pModelSave2->CheckModel();
+    m_pModelInterFace->CheckModel();
     UndoCommand();
+    m_pModelInterFace->CheckModel();
     assert( m_pModelInterFace->IsEqual( * pModelSave1 ) );
+    m_pModelInterFace->CheckModel();
     RedoCommand();
+    m_pModelInterFace->CheckModel();
     assert( m_pModelInterFace->IsEqual( * pModelSave2 ) );
 #endif
 }

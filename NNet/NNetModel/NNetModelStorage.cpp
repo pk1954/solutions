@@ -14,7 +14,8 @@ using std::filesystem::path;
 
 void NNetModelStorage::Initialize
 ( 
-    NNetModelWriterInterface * const pModel,
+    NNetModelReaderInterface * const pModelR,
+    NNetModelWriterInterface * const pModelW,
     Param                    * const pParam,
     Observable               * const unsavedChangesObservable,
     Script                   * const pScript, 
@@ -22,7 +23,8 @@ void NNetModelStorage::Initialize
     ModelDescription         * const pDescription
 )
 {
-    m_pModelWriterInterface    = pModel;
+    m_pModelReaderInterface    = pModelR;
+    m_pModelWriterInterface    = pModelW;
     m_pParam                   = pParam;
     m_unsavedChangesObservable = unsavedChangesObservable;
     m_pScript                  = pScript;

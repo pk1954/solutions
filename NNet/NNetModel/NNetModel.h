@@ -30,10 +30,11 @@ class NNetModel
 public:
 	void Initialize
 	( 
-		Param      * const,
-		Observable * const, 
-		Observable * const, 
-		Observable * const 
+		MonitorData * const,
+		Param       * const,
+		Observable  * const, 
+		Observable  * const, 
+		Observable  * const 
 	);
 
 	NNetModel( ) {};
@@ -47,7 +48,7 @@ public:
 	void CheckModel( ) const
 	{
 #ifdef _DEBUG
-		m_Shapes.CheckModel( );
+		m_Shapes.CheckShapeList( );
 #endif
 	}
 

@@ -67,6 +67,13 @@ void Pipe::Recalc( )
 	}
 }
 
+void Pipe::CheckShape( ) const
+{
+	Shape::CheckShape();
+	assert( m_pKnotStart->IsPrecursorOf( * this ) );
+	assert( m_pKnotEnd  ->IsSuccessorOf( * this ) );
+}
+
 void Pipe::Prepare( )
 {
 	m_mVinputBuffer = m_pKnotStart->GetNextOutput( );

@@ -29,10 +29,29 @@ public:
 		Reset( );
 	}
 
-	void CheckModel( ) const
+	void checkShape( Shape const & shape ) const
+	{
+		switch ( shape.GetShapeType().GetValue() )
+		{
+		case ShapeType::Value::inputNeuron:
+		case ShapeType::Value::neuron:
+		case ShapeType::Value::knot:
+			static_cast<BaseKnot const &>( shape ).CheckShape();
+			break;
+
+		case ShapeType::Value::pipe:
+			static_cast<Pipe const &>( shape ).CheckShape();
+			break;
+
+		default:
+			assert( false );
+		}
+	}
+
+	void CheckShapeList( ) const
 	{
 #ifdef _DEBUG
-		Apply2AllShapes(  [&]( Shape & shape ) { shape.CheckShape( ); } );
+		Apply2AllShapes( [&]( Shape & shape ) { checkShape( shape ); } );
 #endif
 	}
 
@@ -40,7 +59,7 @@ public:
 	{
 		m_list.resize( CastToLong(src.m_list.size()) );
 
-		src.CheckModel();
+		src.CheckShapeList();
 
 		for ( Shape * const pShape : src.m_list )
 		{

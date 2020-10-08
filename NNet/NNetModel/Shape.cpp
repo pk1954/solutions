@@ -44,17 +44,9 @@ float Shape::GetFillLevel( mV const voltageInput ) const
 	return voltageInput.GetValue() / m_pParameters->GetParameterValue( tParameter::threshold );
 }
 
-void Shape::CheckShape( )
+void Shape::CheckShape( ) const
 {
 	m_type.Check();
-	//AssertLimits<int>( (int)m_bSelected, 0, 1 );
-	//AssertLimits<int>( (int)m_bMarked,   0, 1 );
-	if ( (int)m_bSelected < 0 )
-	{
-		int x = 42;
-	}
-	if ( 1 < (int)m_bSelected )
-	{
-		int x = 42;
-	}
+	AssertLimits<int>( (int)m_bSelected, 0, 1 );
+	AssertLimits<int>( (int)m_bMarked,   0, 1 );
 }

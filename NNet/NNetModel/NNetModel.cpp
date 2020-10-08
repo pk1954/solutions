@@ -26,17 +26,18 @@ NNetModel::NNetModel( NNetModel const & modelSrc )
 
 void NNetModel::Initialize
 (
-	Param      * const pParam, 
-	Observable * const pStaticModelObservable,
-	Observable * const pDynamicModelObservable,
-	Observable * const pModelTimeObservable
+	MonitorData * const pMonitorData,
+	Param       * const pParam, 
+	Observable  * const pStaticModelObservable,
+	Observable  * const pDynamicModelObservable,
+	Observable  * const pModelTimeObservable
 )
-{					
+{				
+	m_pMonitorData            = pMonitorData;
 	m_pParam                  = pParam;
 	m_pStaticModelObservable  = pStaticModelObservable;
     m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pModelTimeObservable    = pModelTimeObservable;
-	m_pMonitorData            = new MonitorData();
 	Shape::SetParam( pParam );
 }                     
 

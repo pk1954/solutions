@@ -80,12 +80,16 @@ public:
     {
         for ( Knot * pKnot : m_startKnots )
         {
-            pKnot->m_connections.GetFirstOutgoing().SetStartKnot( m_pBaseKnot );
+            Pipe & pipeOut { pKnot->m_connections.GetFirstOutgoing() };
+            pipeOut.SetStartKnot( m_pBaseKnot );
+            m_pBaseKnot->m_connections.AddOutgoing( & pipeOut );
             pModel->RemoveFromModel( pKnot );
         }
         for ( Knot * pKnot : m_endKnots )
         {
-            pKnot->m_connections.GetFirstIncoming().SetEndKnot( m_pBaseKnot );
+            Pipe & pipeIn { pKnot->m_connections.GetFirstIncoming() };
+            pipeIn.SetEndKnot( m_pBaseKnot );
+            m_pBaseKnot->m_connections.AddIncoming( & pipeIn );
             pModel->RemoveFromModel( pKnot );
         }
         pModel->Store2Model( m_pBaseKnot );

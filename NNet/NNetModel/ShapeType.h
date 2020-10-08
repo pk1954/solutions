@@ -31,17 +31,9 @@ public:
 		:	m_value( val )
 	{}
 
-	void Check( )
+	void Check( ) const
 	{
-//		AssertLimits<int>( (int)m_value, (int)Value::inputNeuron, (int)Value::undefined );
-		if ( (int)m_value < (int)Value::inputNeuron )
-		{
-			int x = 42;
-		}
-		if ( (int)Value::undefined < (int)Value::inputNeuron )
-		{
-			int x = 42;
-		}
+		AssertLimits<int>( (int)m_value, (int)Value::inputNeuron, (int)Value::undefined );
 	}
 
 	static void Apply2All( function<void(Value const &)> const & func )

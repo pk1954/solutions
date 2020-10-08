@@ -15,9 +15,7 @@
 
 using std::vector;
 
-class Signal : 
-    public ObserverInterface,  // observes signal source 
-    public Observable          // is observed by monitor window
+class Signal : public ObserverInterface  // observes signal source 
 {
 public:
 
@@ -39,17 +37,16 @@ public:
         m_pObservable->UnregisterObserver( this );
     }
 
-    void SetSignalSource( Neuron const & neuron )
+    void SetSignalSource( ShapeId const id )
     {
+        m_SignalShapeId = id;
         m_data.clear();
-        m_pSignalSource = & neuron;
         m_timeStart = m_pModelReaderInterface->GetSimulationTime( );
-        NotifyAll( false  );
     }
 
     ShapeId GetSignalSource( ) const
     {
-        return m_pSignalSource->GetId();
+        return m_SignalShapeId;
     }
 
     fMicroSecs const GetStartTime( ) const
@@ -80,18 +77,16 @@ public:
 
     virtual void Notify( bool const bImmediate )
     {
-        if ( m_pSignalSource )
-        {
-            m_data.push_back( m_pSignalSource->GetVoltage().GetValue() );
-            NotifyAll( false  );
-        }
+        Neuron const * pNeuron { m_pModelReaderInterface->GetConstShapePtr<Neuron const *>( m_SignalShapeId ) };
+        mV     const   voltage { pNeuron ? pNeuron->GetVoltage() : 0.0_mV };
+        m_data.push_back( voltage.GetValue() );
     }
 
 private:
     fMicroSecs                       m_timeStart             { 0._MicroSecs };
     vector <float>                   m_data                  { };
+    ShapeId                          m_SignalShapeId         { NO_SHAPE };
     Param                    const * m_pParams               { nullptr };
-    Neuron                   const * m_pSignalSource         { nullptr };
     NNetModelReaderInterface const * m_pModelReaderInterface { nullptr };
     Observable                     * m_pObservable           { nullptr };
 };

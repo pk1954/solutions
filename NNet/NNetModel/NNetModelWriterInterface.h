@@ -77,6 +77,9 @@ public:
         Apply2All<T>( [&](T & s) { if ( s.IsInRect(r) ) { func( s ); } } );
     }
 
+    MonitorData * GetMonitorData( ) { return m_pModel->GetMonitorData(); }
+
+    void CheckModel( ) { m_pModel->CheckModel(); }
     void ResetModel( ) { m_pModel->ResetModel(); }
     void ClearModel( ) { m_pModel->GetShapes().Apply2AllShapes( [&](Shape  &s) { s.Clear( ); } ); }
 

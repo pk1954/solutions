@@ -4,7 +4,10 @@
 
 #include "stdafx.h"
 #include <assert.h>
+#include "Signal.h"
+#include "MonitorData.h"
 #include "ModelDescription.h"
+#include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "win32_HiResTimer.h"
 #include "NNetModelStorage.h"
@@ -55,11 +58,11 @@ void NNetModelStorage::Write( wostream & out )
         }
     );
 
-    m_CompactIds.resize( m_pModelWriterInterface->GetModel().GetSizeOfShapeList() );
+    m_CompactIds.resize( m_pModelReaderInterface->GetSizeOfShapeList() );
     ShapeId idCompact( 0 );
     for ( int i = 0; i < m_CompactIds.size( ); ++i )
     {
-        m_CompactIds[ i ] = m_pModelWriterInterface->GetModel().GetConstShape( ShapeId( i ) )
+        m_CompactIds[ i ] = m_pModelReaderInterface->GetConstShape( ShapeId( i ) )
             ? idCompact++
             : NO_SHAPE;
     }
@@ -74,14 +77,14 @@ void NNetModelStorage::Write( wostream & out )
     out << endl;
 
     m_pModelWriterInterface->Apply2All<InputNeuron>
-        (
-            [&]( InputNeuron & inpNeuron )
-            { 
-                out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
-                    << GetParameterName( tParameter::pulseRate ) 
-                    << L" = " << inpNeuron.GetPulseFrequency( )
-                    << endl; 
-            }
+    (
+        [&]( InputNeuron & inpNeuron )
+        { 
+            out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
+                << GetParameterName( tParameter::pulseRate ) 
+                << L" = " << inpNeuron.GetPulseFrequency( )
+                << endl; 
+        }
     );
 
     out << endl;
@@ -99,6 +102,22 @@ void NNetModelStorage::Write( wostream & out )
                         << endl; 
                 }
             } 
+    );
+
+    MonitorData const * const pMonitorData { m_pModelWriterInterface->GetMonitorData() };
+
+    pMonitorData->Apply2AllTracks
+    (
+        [&](Track const & track)
+        {
+            track.Apply2AllSignals
+            (
+                [ & ] ( Signal const& signal )
+                {
+                    ShapeId const id { signal.GetSignalSource() };
+                }
+            );
+        }
     );
 
     timer.Stop();

@@ -154,10 +154,14 @@ void NNetWindow::AnimateBeacon( fPIXEL const fPixBeaconRadius )
 		MicroMeter        const umSpan   { umMaxSize - MIN_SIZE };
 		float             const fRelSize { static_cast<float>(m_pBeaconAnimation->GetPercentage().GetValue()) / 100.0f };
 		MicroMeter        const umRadius { MIN_SIZE + (umSpan * fRelSize)  };
-		MicroMeterCircle  const umCircle { m_pModelReaderInterface->GetShapePos( idBeacon ), umRadius };
-		D2D1::ColorF col { NNetColors::COL_BEACON };
-		col.a = 1.0f - fRelSize;
-		m_context.DrawCircle( umCircle, col );
+		MicroMeterPoint   const umPos    { m_pModelReaderInterface->GetShapePos( idBeacon ) };
+		if ( umPos.IsNotNull() )
+		{
+			MicroMeterCircle  const umCircle { umPos, umRadius };
+			D2D1::ColorF col { NNetColors::COL_BEACON };
+			col.a = 1.0f - fRelSize;
+			m_context.DrawCircle( umCircle, col );
+		}
 	}
 }
 

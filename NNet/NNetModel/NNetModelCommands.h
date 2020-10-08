@@ -10,8 +10,11 @@
 #include "MoreTypes.h"
 #include "ShapeId.h"
 
+class Param;
+class Observable;
 class CommandStack;
 class NNetModelStorage;
+class NNetModelReaderInterface;
 class NNetModelWriterInterface;
 
 struct SoundDescr;
@@ -25,19 +28,23 @@ public:
     void Initialize
     ( 
         wostream                 * const,
+        NNetModelReaderInterface * const,
         NNetModelWriterInterface * const,
+        Param                    * const,
         CommandStack             * const,
-        NNetModelStorage         * const
+        NNetModelStorage         * const,
+        Observable               * const
     );
 
-    void AnalyzeAnomalies    ( );
-    void AnalyzeLoops        ( );
-    void AppendInputNeuron   ( ShapeId const );
-    void AppendNeuron        ( ShapeId const );
     void AddIncoming2Knot    ( ShapeId const, MicroMeterPoint const & );
     void AddIncoming2Pipe    ( ShapeId const, MicroMeterPoint const & );
     void AddOutgoing2Knot    ( ShapeId const, MicroMeterPoint const & );
     void AddOutgoing2Pipe    ( ShapeId const, MicroMeterPoint const & );
+    void AnalyzeAnomalies    ( );
+    void AnalyzeLoops        ( );
+    void AppendInputNeuron   ( ShapeId const );
+    void AppendNeuron        ( ShapeId const );
+    void Attach2Monitor      ( ShapeId const );
     void ClearBeepers        ( );
     void Connect             ( ShapeId const, ShapeId const );
     void CopySelection       ( );
@@ -72,9 +79,12 @@ private:
     bool       IsTraceOn  ( ) const { return   m_bTrace; }
     wostream & TraceStream( )       { return * m_pTraceStream; }
 
-    CommandStack             * m_pCmdStack             { nullptr };
-    bool                       m_bTrace                { true };
-    wostream                 * m_pTraceStream          { nullptr };
-    NNetModelWriterInterface * m_pModelWriterInterface { nullptr };
-    NNetModelStorage         * m_pStorage              { nullptr };
+    bool                       m_bTrace                  { true };
+    CommandStack             * m_pCmdStack               { nullptr };
+    wostream                 * m_pTraceStream            { nullptr };
+    NNetModelReaderInterface * m_pModelReaderInterface   { nullptr };
+    NNetModelWriterInterface * m_pModelWriterInterface   { nullptr };
+    NNetModelStorage         * m_pStorage                { nullptr };
+    Param                    * m_pParam                  { nullptr };
+    Observable               * m_pDynamicModelObservable { nullptr };
 };

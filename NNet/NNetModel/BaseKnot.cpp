@@ -24,10 +24,17 @@ void BaseKnot::MoveShape( MicroMeterPoint const & delta )
 	SetPosition( GetPosition() + delta );
 }
 
+void BaseKnot::CheckShape( ) const
+{
+	Shape::CheckShape();
+	m_connections.Apply2AllInPipes ( [&]( Pipe & pipe ) { assert( pipe.GetEndKnotId  () == GetId() ); } );
+	m_connections.Apply2AllOutPipes( [&]( Pipe & pipe ) { assert( pipe.GetStartKnotId() == GetId() ); } );
+}
+
 void BaseKnot::Prepare( )
 {
 	m_mVinputBuffer = 0._mV;
-	
+
 	//for ( Pipe * pPipe : m_incoming ) 
 	//{ 
 	//	if ( pPipe != nullptr )
@@ -37,14 +44,14 @@ void BaseKnot::Prepare( )
 	m_connections.Apply2AllInPipes( [&]( Pipe & pipe ) { m_mVinputBuffer += pipe.GetNextOutput( ); } ); // slow !!
 }
 
-bool BaseKnot::IsPrecursorOf( ShapeId const id )
+bool BaseKnot::IsPrecursorOf( Pipe const & pipeSucc ) const 
 {
-	return m_connections.Apply2AllOutPipesB( [&]( Pipe & pipe ) { return pipe.GetEndKnotId( ) == id; } ); 
+	return m_connections.Apply2AllOutPipesB( [&]( Pipe const & pipe ) { return & pipe == & pipeSucc; } ); 
 }
 
-bool BaseKnot::IsSuccessorOf( ShapeId const id )
+bool BaseKnot::IsSuccessorOf( Pipe const & pipePred ) const
 {
-	return m_connections.Apply2AllInPipesB( [&]( Pipe & pipe ) { return pipe.GetStartKnotId( ) == id; } );
+	return m_connections.Apply2AllInPipesB( [&]( Pipe const & pipe ) { return & pipe == & pipePred; } );
 }
 
 bool BaseKnot::IsPointInShape( MicroMeterPoint const & point ) const

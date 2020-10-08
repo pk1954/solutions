@@ -19,6 +19,7 @@
 #include "UndoRedoMenu.h"
 #include "BeaconAnimation.h"
 #include "UnsavedChangesObserver.h"
+#include "MonitorData.h"
 #include "win32_event.h"
 #include "win32_sound.h"
 #include "win32_actionTimer.h"
@@ -147,6 +148,7 @@ private:
 	UnsavedChangesObserver    m_unsavedChangesObserver   { };
 	BeaconAnimation           m_beaconAnimation          { };
 	ScriptFile                m_scriptFile               { };
+	MonitorData               m_monitorData              { };
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 };

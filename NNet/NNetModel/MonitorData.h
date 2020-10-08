@@ -5,6 +5,7 @@
 #pragma once
 
 #include <vector>
+#include "Observable.h"
 #include "NamedType.h"
 #include "Signal.h"
 
@@ -56,10 +57,16 @@ class MonitorData
 {
 public:
 
+	void Initialize( Observable* const pStaticModelObservable )
+	{
+		m_pStaticModelObservable = pStaticModelObservable;
+	}
+
 	void Reset( )
 	{
 		Apply2AllTracks( [&](Track & track) { track.Clear(); } );
 		m_Tracks.clear();
+		m_pStaticModelObservable->NotifyAll( true );
 	}
 
 	int GetNrOfTracks( )
@@ -83,15 +90,25 @@ public:
 		return (trackNr.GetValue() >= 0) && (trackNr.GetValue() < m_Tracks.size());
 	}
 
-	void InsertTrack( TrackNr const pos )
+	vector<Track>::iterator InsertTrack( TrackNr const pos )
 	{
-		m_Tracks.insert( m_Tracks.begin() + pos.GetValue(), Track() );
+		auto res { m_Tracks.insert( m_Tracks.begin() + pos.GetValue(), Track() ) };
+		m_pStaticModelObservable->NotifyAll( true );
+		return res;
+	}
+
+	vector<Track>::iterator AppendTrack( )
+	{
+		return InsertTrack(TrackNr(CastToInt(m_Tracks.size())) );
 	}
 
 	void RemoveSignalFromTrack( Signal * pSignal, TrackNr const trackNr )
 	{
 		if ( trackNr.IsNotNull() )
+		{
 			GetTrack( trackNr ).RemoveSignal( pSignal );
+			m_pStaticModelObservable->NotifyAll( true );
+		}
 	}
 
 	void DeleteSignal( Signal * pSignal, TrackNr const trackNr )
@@ -109,6 +126,16 @@ public:
 		{
 			GetTrack( trackNr ).Clear();
 			m_Tracks.erase( m_Tracks.begin() + trackNr.GetValue() );
+			m_pStaticModelObservable->NotifyAll( true );
+		}
+	}
+
+	void DeleteYoungestTrack( )
+	{
+		if ( ! m_Tracks.empty() )
+		{
+			m_Tracks.pop_back();
+			m_pStaticModelObservable->NotifyAll( true );
 		}
 	}
 
@@ -125,5 +152,6 @@ public:
 	}                        
 
 private:
-	vector <Track> m_Tracks { };
+	vector<Track> m_Tracks { };
+	Observable  * m_pStaticModelObservable { nullptr };
 };

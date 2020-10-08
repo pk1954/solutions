@@ -8,7 +8,9 @@
 #include "trace.h"
 #include "UtilityWrappers.h"
 #include "CommandStack.h"
+#include "MonitorData.h"
 #include "NNetModelCommands.h"
+#include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
 #include "NNetModelStorage.h"
 #include "NNetWrappers.h"
@@ -59,6 +61,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 
 	wostream & m_traceStream { wcout };
 
+	NNetModelReaderInterface m_modelReaderInterface     { };
 	NNetModelWriterInterface m_modelWriterInterface     { };
 	NNetModelCommands        m_modelCommands            { };
 	NNetModelStorage         m_modelStorage             { };
@@ -70,15 +73,26 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	Observable               m_unsavedChangesObservable { };
 	Script                   m_script                   { };
 	CommandStack             m_cmdStack                 { };
+	MonitorData              m_monitorData              { };
 	ReadModelResult        * m_pReadModelResult         { nullptr };
 
 	DefineUtilityWrapperFunctions( );
 	DefineNNetWrappers( & m_modelCommands );
 
 	m_pReadModelResult = new ConsReadModelResult( & m_modelStorage );
-	m_modelCommands.Initialize( & m_traceStream, & m_modelWriterInterface, & m_cmdStack, & m_modelStorage );
+	m_modelCommands.Initialize
+	( 
+		& m_traceStream, 
+		& m_modelReaderInterface, 
+		& m_modelWriterInterface, 
+		& m_parameters, 
+		& m_cmdStack, 
+		& m_modelStorage, 
+		& m_dynamicModelObservable 
+	);
 	m_model.Initialize
 	( 
+		& m_monitorData, 
 		& m_parameters, 
 		& m_staticModelObservable, 
 		& m_dynamicModelObservable, 
@@ -86,6 +100,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	);
 	m_modelStorage.Initialize
 	( 
+		& m_modelReaderInterface, 
 		& m_modelWriterInterface, 
 		& m_parameters, 
 		& m_unsavedChangesObservable,

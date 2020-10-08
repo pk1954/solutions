@@ -124,9 +124,10 @@ void NNetAppWindow::Start( MessagePump & pump )
 	);
 
 	m_pReadModelResult = new NNetReadModelResult( m_hwndApp );
-	m_model          .Initialize( & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
-	m_modelStorage   .Initialize( & m_modelWriterInterface, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult, & m_descWindow );
-	m_modelCommands  .Initialize( & m_traceStream, & m_modelWriterInterface, & m_cmdStack, & m_modelStorage );
+	m_monitorData    .Initialize( & m_staticModelObservable );
+	m_model          .Initialize( & m_monitorData, & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
+	m_modelStorage   .Initialize( & m_modelReaderInterface, & m_modelWriterInterface, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult, & m_descWindow );
+	m_modelCommands  .Initialize( & m_traceStream, & m_modelReaderInterface, & m_modelWriterInterface, & m_parameters, & m_cmdStack, & m_modelStorage, & m_dynamicModelObservable );
 	m_cmdStack       .Initialize( & m_modelWriterInterface, & m_commandStackObservable );
 	m_NNetColors     .Initialize( & m_blinkObservable );
 	m_sound          .Initialize( & m_soundOnObservable );
@@ -196,7 +197,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_crsrWindow          .Start( m_hwndApp, & m_mainNNetWindow, & m_modelReaderInterface );
 	m_parameterDlg        .Start( m_hwndApp, & m_modelWriterInterface, & m_parameters );
 	m_performanceWindow   .Start( m_hwndApp, & m_modelReaderInterface, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
-	m_monitorWindow       .Start( m_hwndApp, m_modelReaderInterface, m_parameters, m_beaconAnimation, m_model.GetMonitorData() );
+	m_monitorWindow       .Start( m_hwndApp, m_modelReaderInterface, m_parameters, m_beaconAnimation, m_monitorData );
 
 	m_WinManager.AddWindow( L"IDM_CONS_WINDOW",    IDM_CONS_WINDOW,    m_hwndConsole,                  true,  true  );
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true  );
@@ -214,8 +215,10 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_beaconObservable         .RegisterObserver( & m_mainNNetWindow );
 	m_dynamicModelObservable   .RegisterObserver( & m_mainNNetWindow );
 	m_dynamicModelObservable   .RegisterObserver( & m_miniNNetWindow );
+	m_dynamicModelObservable   .RegisterObserver( & m_monitorWindow );
 	m_staticModelObservable    .RegisterObserver( & m_mainNNetWindow );
 	m_staticModelObservable    .RegisterObserver( & m_miniNNetWindow );
+	m_staticModelObservable    .RegisterObserver( & m_monitorWindow );
 	m_cursorPosObservable      .RegisterObserver( & m_crsrWindow );
 	m_performanceObservable    .RegisterObserver( & m_performanceWindow );
 	m_modelTimeObservable      .RegisterObserver( & m_timeDisplay );

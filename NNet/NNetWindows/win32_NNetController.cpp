@@ -182,19 +182,6 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         m_pModelCommands->ToggleStopOnTrigger( m_pMainWindow->GetHighlightedShapeId() );
         break;
 
-    case IDD_ATTACH2MONITOR:
-        {
-            ShapeId id { m_pMainWindow->GetHighlightedShapeId() };
-            if ( m_pModelReaderInterface->IsOfType<Neuron>( id ) )
-            {
-                Neuron const * pNeuron { m_pModelReaderInterface->GetConstShapePtr<Neuron const *>( id ) };
-                Signal * pSignal = new Signal( * m_pModelReaderInterface, * m_pParam, * m_pDynamicModelObservable );
-                pSignal->SetSignalSource( * pNeuron );
-                m_pMonitorWindow->AddSignal( * pSignal );
-            }
-        }
-        break;
-
     case IDM_REFRESH:
         m_pMainWindow->Notify( lParam != 0 );
         break;
@@ -346,6 +333,10 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDD_ADD_INCOMING2PIPE:
         m_pModelCommands->AddIncoming2Pipe( m_pMainWindow->GetHighlightedShapeId(), umPoint );
+        break;
+
+    case IDD_ATTACH2MONITOR:
+        m_pModelCommands->Attach2Monitor( m_pMainWindow->GetHighlightedShapeId() );
         break;
 
     case IDM_ANALYZE_LOOPS:

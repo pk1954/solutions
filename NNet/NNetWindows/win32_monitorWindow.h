@@ -22,13 +22,11 @@ public:
 		NNetModelReaderInterface const &, 
 		Param                    const &,
 		BeaconAnimation                &,
-		MonitorData                    *
+		MonitorData                    &
 	);
 
 	void Reset( );
 	void Stop( );
-
-	void AddSignal( Signal & );
 
 	virtual long AddContextMenuEntries( HMENU const );
 
@@ -47,12 +45,12 @@ private:
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
 
 	void doPaint( );
-	void updateTrackHeight( );
 	void moveSignal( PIXEL const );
 	void addTrack   ( TrackNr const );
 	void selectSignal( Signal * const );
 	void paintSignal ( Signal const &, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const );
 
+	fPIXEL  const calcTrackHeight ( );
 	fPIXEL  const getYvalue       ( Signal const &, fMicroSecs const );
 	TrackNr const findTrack       ( PIXEL const );
 	TrackNr const findPos4NewTrack( PIXEL const );
@@ -68,10 +66,9 @@ private:
 	MonitorData                    * m_pMonitorData       { nullptr };  
 	fMicroSecs                       m_fMicroSecsPerPixel { 100.0_MicroSecs };
 	float                            m_fYvaluesPerPixel   { 0.2f };
-	Signal *                         m_pSelectedSignal    { nullptr };
+	Signal                         * m_pSelectedSignal    { nullptr };
 	TrackNr                          m_selectedTrackNr    { TrackNr::NULL_VAL() };
 	TrackNr                          m_trackNrOfSelSignal { TrackNr::NULL_VAL() };
-	fPIXEL                           m_fPixTrackHeight    { fPIXEL::NULL_VAL() };
 	PIXEL                            m_pixLastY           { PIXEL::NULL_VAL() };	// Last cursor position during selection 
 	PIXEL                            m_pixMoveOffsetY     { 0_PIXEL };
 };

@@ -50,7 +50,8 @@ public:
 
 	virtual bool IsInRect( MicroMeterRect const & ) const;
 
-	virtual void Prepare();
+	virtual void CheckShape( ) const;
+	virtual void Prepare( );
 	virtual void Select( tBoolOp const );
 	virtual void MoveShape( MicroMeterPoint const & );
 	virtual bool CompStep( )

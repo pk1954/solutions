@@ -14,6 +14,7 @@ using std::wstring;
 
 class DrawContext;
 class NNetModel;
+class Pipe;
 
 struct IDWriteTextFormat;
 
@@ -47,6 +48,7 @@ public:
 		return true;
 	}
 
+	virtual void CheckShape   ( ) const;
 	virtual void Prepare      ( );
  	virtual mV   GetNextOutput( ) const = 0;
 	virtual void MoveShape    ( MicroMeterPoint const & );
@@ -63,8 +65,8 @@ public:
 	bool IsOrphanedKnot( ) const { return IsKnot() && m_connections.IsOrphan(); }
 
 	bool IsPointInShape( MicroMeterPoint const & ) const;
-	bool IsPrecursorOf( ShapeId const );
-	bool IsSuccessorOf( ShapeId const );
+	bool IsPrecursorOf( Pipe const & ) const;
+	bool IsSuccessorOf( Pipe const & ) const ;
 
 	void RestoreConnections() { m_connections.Restore( this );	}
 	
