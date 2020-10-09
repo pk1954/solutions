@@ -9,6 +9,8 @@
 #include "MonitorData.h"
 #include "win32_baseWindow.h"
 
+using std::pair;
+
 class Param;
 class BeaconAnimation;
 class NNetModelReaderInterface;
@@ -32,6 +34,19 @@ public:
 
 private:
 
+	Signal * const findSignal      ( TrackNr const ) const;
+	fPIXEL   const calcTrackHeight ( ) const;
+	fPIXEL   const getYvalue       ( Signal const &, fMicroSecs const ) const;
+	TrackNr  const findTrack       ( PIXEL const ) const;
+	TrackNr  const findPos4NewTrack( PIXEL const ) const;
+	bool           testSignal      ( Signal const &, fMicroSecs const, fPIXEL const, fPIXEL & ) const;
+
+	void doPaint( ) const;
+	void moveSignal( PIXEL const );
+	void addTrack   ( TrackNr const );
+	void selectSignal( Signal * const );
+	void paintSignal ( Signal const &, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const ) const;
+
 	virtual void OnPaint( );
 	virtual bool OnSize       ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel ( WPARAM const, LPARAM const );
@@ -43,19 +58,6 @@ private:
 	virtual bool OnMouseLeave ( WPARAM const, LPARAM const );
 	virtual void OnLButtonUp  ( WPARAM const, LPARAM const );
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
-
-	void doPaint( );
-	void moveSignal( PIXEL const );
-	void addTrack   ( TrackNr const );
-	void selectSignal( Signal * const );
-	void paintSignal ( Signal const &, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const );
-
-	fPIXEL  const calcTrackHeight ( );
-	fPIXEL  const getYvalue       ( Signal const &, fMicroSecs const );
-	TrackNr const findTrack       ( PIXEL const );
-	TrackNr const findPos4NewTrack( PIXEL const );
-	Signal      * findSignal      ( TrackNr const );
-	bool          testSignal      ( Signal const &, fMicroSecs const, fPIXEL const, fPIXEL & );
 
 	TRACKMOUSEEVENT                  m_trackStruct        { sizeof(TRACKMOUSEEVENT), 0, HWND(0), 0L };
 	bool                             m_bRuler             { true };

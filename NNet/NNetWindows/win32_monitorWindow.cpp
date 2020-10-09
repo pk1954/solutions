@@ -110,7 +110,7 @@ void MonitorWindow::moveSignal( PIXEL const pixY )
 	Trigger( );   // cause repaint
 }
 
-TrackNr const MonitorWindow::findPos4NewTrack( PIXEL const pixCrsrPosY )
+TrackNr const MonitorWindow::findPos4NewTrack( PIXEL const pixCrsrPosY ) const
 {
 	fPIXEL const fPixTrackHeight  { calcTrackHeight() };
 	fPIXEL const fPixCrsrYpos     { Convert2fPIXEL( pixCrsrPosY ) };
@@ -128,7 +128,7 @@ void MonitorWindow::addTrack( TrackNr const pos )
 	Show( true );            // if window was not visible, show it now
 }
 
-fPIXEL const MonitorWindow::calcTrackHeight( )
+fPIXEL const MonitorWindow::calcTrackHeight( ) const
 {
 	PIXEL const pixRectHeight  { GetClientWindowHeight( ) };
 	PIXEL const pixExtraSpace  { m_bRuler ? 60_PIXEL : 10_PIXEL };
@@ -141,7 +141,7 @@ fPIXEL const MonitorWindow::calcTrackHeight( )
 	return Convert2fPIXEL( pixTrackHeight );
 }
 
-fPIXEL const MonitorWindow::getYvalue( Signal const & signal, fMicroSecs const time )
+fPIXEL const MonitorWindow::getYvalue( Signal const & signal, fMicroSecs const time ) const
 {
 	float  const fDataPoint { signal.GetDataPoint( time ) };
 	fPIXEL const fPixYvalue { fDataPoint / m_fYvaluesPerPixel };
@@ -155,7 +155,7 @@ void MonitorWindow::paintSignal
 	fPIXEL     const   fPixXend,
 	fMicroSecs const   usIncrement,
 	fMicroSecs const   usInWindow
-)
+) const
 {
 	fMicroSecs const usEnd { m_pModel->GetSimulationTime( ) };
 
@@ -184,7 +184,7 @@ void MonitorWindow::paintSignal
 	}
 }
 
-void MonitorWindow::doPaint( )
+void MonitorWindow::doPaint( ) const
 {
 	if ( m_pMonitorData->NoTracks() )
 		return;
@@ -196,11 +196,11 @@ void MonitorWindow::doPaint( )
 	fMicroSecs const usIncrement     { (fPointsInWin > fPixWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
 	fPIXEL     const fPixTrackHeight { calcTrackHeight() };
 	fPIXEL           fPixYoffset     { fPixTrackHeight };
-	m_pMonitorData->Apply2AllTracks
+	m_pMonitorData->Apply2AllTracksC
 	( 
 		[&]( Track const & track )
 		{
-			track.Apply2AllSignals(	[&](Signal const & signal) { paintSignal( signal, fPixYoffset, fPixWidth, usIncrement, usInWindow ); } );
+			track.Apply2AllSignalsC( [&](Signal const &signal) { paintSignal( signal, fPixYoffset, fPixWidth, usIncrement, usInWindow ); } );
 			fPixYoffset += fPixTrackHeight;
 		}
 	);
@@ -222,7 +222,7 @@ bool MonitorWindow::testSignal  // if signal is "better" than fPixBestDelta, upd
 	fMicroSecs const   umTime,
 	fPIXEL     const   fPixOffset,
 	fPIXEL           & fPixBestDelta
-)
+) const
 {
 	if ( umTime >= signal.GetStartTime() )
 	{
@@ -238,9 +238,8 @@ bool MonitorWindow::testSignal  // if signal is "better" than fPixBestDelta, upd
 	return false;
 }
 
-Signal * MonitorWindow::findSignal( TrackNr const trackNr )
+Signal * const MonitorWindow::findSignal( TrackNr const trackNr ) const
 {
-	m_trackNrOfSelSignal.Set2Null();
 	if ( m_pMonitorData->NoTracks() )
 		return nullptr;
 	if ( trackNr.IsNull() )
@@ -263,8 +262,7 @@ Signal * MonitorWindow::findSignal( TrackNr const trackNr )
 		{
 			if ( testSignal( signal, umTime, fPixYoffset - fPixPtCrsr.GetY(), fPixBestDelta ) )
 			{
-				m_trackNrOfSelSignal = trackNr;
-				pSignalFound         = & signal;
+				pSignalFound = & signal;
 			}
 		}
 	);
@@ -272,7 +270,7 @@ Signal * MonitorWindow::findSignal( TrackNr const trackNr )
 	return pSignalFound;
 }
 
-TrackNr const MonitorWindow::findTrack( PIXEL const pixPosY )
+TrackNr const MonitorWindow::findTrack( PIXEL const pixPosY ) const
 {
 	fPIXEL  const fPixTrackHeight { calcTrackHeight() };
 	fPIXEL  const fPixCrsrYpos    { Convert2fPIXEL( pixPosY ) };
@@ -360,7 +358,13 @@ void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	if ( wParam & MK_LBUTTON )
 		moveSignal( CrsrYpos( lParam ) );
 	else
-		selectSignal( findSignal( m_selectedTrackNr ) );
+	{
+		if ( Signal * pSignalFound { findSignal( m_selectedTrackNr ) } )
+		{
+			m_trackNrOfSelSignal = m_selectedTrackNr;
+			selectSignal( pSignalFound );
+		}
+	}
 
 	(void)TrackMouseEvent( & m_trackStruct );
 }

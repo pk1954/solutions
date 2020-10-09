@@ -120,6 +120,9 @@
     <ClInclude Include="AddModelCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InsertTrackCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

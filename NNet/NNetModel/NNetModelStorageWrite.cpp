@@ -106,15 +106,16 @@ void NNetModelStorage::Write( wostream & out )
 
     MonitorData const * const pMonitorData { m_pModelWriterInterface->GetMonitorData() };
 
-    pMonitorData->Apply2AllTracks
+    pMonitorData->Apply2AllTracksC
     (
         [&](Track const & track)
         {
-            track.Apply2AllSignals
+            track.Apply2AllSignalsC
             (
                 [ & ] ( Signal const& signal )
                 {
                     ShapeId const id { signal.GetSignalSource() };
+                    // TODO
                 }
             );
         }

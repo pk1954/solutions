@@ -33,14 +33,14 @@ public:
 		m_signals.erase( itSignal );
 	}
 
-	void Apply2AllSignals( function<void(Signal &)> const & func )
+	void Apply2AllSignalsC( function<void(Signal const &)> const & func ) const
 	{
 		for (auto pSignal : m_signals)
 			if ( pSignal  )
 				func( * pSignal ); 
 	}                        
 
-	void Apply2AllSignals( function<void(Signal const &)> const & func ) const
+	void Apply2AllSignals( function<void(Signal &)> const & func )
 	{
 		for (auto pSignal : m_signals)
 			if ( pSignal  )
@@ -69,12 +69,12 @@ public:
 		m_pStaticModelObservable->NotifyAll( true );
 	}
 
-	int GetNrOfTracks( )
+	int GetNrOfTracks( ) const
 	{
 		return CastToInt(m_Tracks.size());
 	}
 
-	bool NoTracks( )
+	bool NoTracks( ) const
 	{
 		return m_Tracks.size() == 0;
 	}
@@ -85,14 +85,14 @@ public:
 		return m_Tracks[trackNr.GetValue()];
 	}
 
-	bool IsValid( TrackNr const trackNr )
+	bool IsValid( TrackNr const trackNr ) const
 	{
 		return (trackNr.GetValue() >= 0) && (trackNr.GetValue() < m_Tracks.size());
 	}
 
-	vector<Track>::iterator InsertTrack( TrackNr const pos )
+	vector<Track>::iterator InsertTrack( TrackNr const trackNr )
 	{
-		auto res { m_Tracks.insert( m_Tracks.begin() + pos.GetValue(), Track() ) };
+		auto res { m_Tracks.insert( m_Tracks.begin() + trackNr.GetValue(), Track() ) };
 		m_pStaticModelObservable->NotifyAll( true );
 		return res;
 	}
@@ -139,11 +139,13 @@ public:
 		}
 	}
 
-	void Apply2AllTracks( function<void(Track const &)> const & func ) const
+	void Apply2AllTracksC( function<void(Track const &)> const & func ) const
 	{
 		for (auto track : m_Tracks)    
 			func( track ); 
 	}                        
+
+private:
 
 	void Apply2AllTracks( function<void(Track &)> const & func )
 	{
@@ -151,7 +153,6 @@ public:
 			func( track ); 
 	}                        
 
-private:
 	vector<Track> m_Tracks { };
 	Observable  * m_pStaticModelObservable { nullptr };
 };
