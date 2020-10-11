@@ -8,6 +8,7 @@
 #include "D2D_DrawContext.h"
 #include "MonitorData.h"
 #include "win32_baseWindow.h"
+#include "win32_NNetController.h"
 
 using std::pair;
 
@@ -20,7 +21,8 @@ class MonitorWindow : public BaseWindow
 public:
 	void Start
 	( 
-		HWND const, 
+		HWND                     const, 
+		NNetController         * const,
 		NNetModelReaderInterface const &, 
 		Param                    const &,
 		BeaconAnimation                &,
@@ -34,7 +36,7 @@ public:
 
 private:
 
-	Signal * const findSignal      ( TrackNr const ) const;
+	SignalNr const findSignal      ( TrackNr const, PixelPoint const & ) const;
 	fPIXEL   const calcTrackHeight ( ) const;
 	fPIXEL   const getYvalue       ( Signal const &, fMicroSecs const ) const;
 	TrackNr  const findTrack       ( PIXEL const ) const;
@@ -44,33 +46,37 @@ private:
 	void doPaint( ) const;
 	void moveSignal( PIXEL const );
 	void addTrack   ( TrackNr const );
-	void selectSignal( Signal * const );
-	void paintSignal ( Signal const &, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const ) const;
+	void selectSignal( SignalNr const );
+	void paintSignal ( Signal const &, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const, bool const ) const;
 
 	virtual void OnPaint( );
 	virtual bool OnSize       ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel ( WPARAM const, LPARAM const );
 	virtual bool OnRButtonUp  ( WPARAM const, LPARAM const ) { return false; }
 	virtual bool OnRButtonDown( WPARAM const, LPARAM const ) { return false; }
-	virtual void OnLButtonDown( WPARAM const, LPARAM const ) { };
-	virtual void OnChar       ( WPARAM const, LPARAM const ) { };
+	virtual void OnLButtonDown( WPARAM const, LPARAM const );
 	virtual void OnMouseMove  ( WPARAM const, LPARAM const );
 	virtual bool OnMouseLeave ( WPARAM const, LPARAM const );
 	virtual void OnLButtonUp  ( WPARAM const, LPARAM const );
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
+	virtual void OnChar       ( WPARAM const, LPARAM const ) { };
 
-	TRACKMOUSEEVENT                  m_trackStruct        { sizeof(TRACKMOUSEEVENT), 0, HWND(0), 0L };
-	bool                             m_bRuler             { true };
-	D2D_driver                       m_graphics           { };
-	Param                    const * m_pParams            { nullptr };
-	NNetModelReaderInterface const * m_pModel             { nullptr };
-	BeaconAnimation                * m_pBeaconAnimation   { nullptr };
-	MonitorData                    * m_pMonitorData       { nullptr };  
-	fMicroSecs                       m_fMicroSecsPerPixel { 100.0_MicroSecs };
-	float                            m_fYvaluesPerPixel   { 0.2f };
-	Signal                         * m_pSelectedSignal    { nullptr };
-	TrackNr                          m_selectedTrackNr    { TrackNr::NULL_VAL() };
-	TrackNr                          m_trackNrOfSelSignal { TrackNr::NULL_VAL() };
-	PIXEL                            m_pixLastY           { PIXEL::NULL_VAL() };	// Last cursor position during selection 
-	PIXEL                            m_pixMoveOffsetY     { 0_PIXEL };
+	NNetController                 * m_pController      { nullptr };
+	Param                    const * m_pParams          { nullptr };
+	NNetModelReaderInterface const * m_pModel           { nullptr };
+	BeaconAnimation                * m_pBeaconAnimation { nullptr };
+	MonitorData                    * m_pMonitorData     { nullptr };  
+
+	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), 0, HWND(0), 0L };
+
+	D2D_driver m_graphics           { };
+	bool       m_bRuler             { true };
+	fMicroSecs m_fMicroSecsPerPixel { 100.0_MicroSecs };
+	float      m_fYvaluesPerPixel   { 0.2f };
+
+	TrackNr  m_selectedTrackNr  { TrackNr ::NULL_VAL() }; // track, where cursor is located 
+	SignalNr m_selectedSignalNr { SignalNr::NULL_VAL() }; // highlighted signal 
+	TrackNr  m_originalNr       { TrackNr ::NULL_VAL() }; // original track of highlighted signal
+	PIXEL    m_pixLastY         { PIXEL   ::NULL_VAL() }; // last cursor position during selection 
+	PIXEL    m_pixMoveOffsetY   { 0_PIXEL };              // vertical offset when moving signal
 };

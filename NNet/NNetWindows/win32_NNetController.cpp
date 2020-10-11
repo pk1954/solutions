@@ -339,6 +339,10 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->Attach2Monitor( m_pMainWindow->GetHighlightedShapeId() );
         break;
 
+    case IDD_INSERT_TRACK:
+        m_pModelCommands->InsertTrack( static_cast<TrackNr>(Cast2Int(lParam)) );
+        break;
+
     case IDM_ANALYZE_LOOPS:
     {
         m_pModelCommands->AnalyzeLoops( );

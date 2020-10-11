@@ -46,7 +46,9 @@ float Shape::GetFillLevel( mV const voltageInput ) const
 
 void Shape::CheckShape( ) const
 {
+#ifdef _DEBUG
 	m_type.Check();
 	AssertLimits<int>( (int)m_bSelected, 0, 1 );
 	AssertLimits<int>( (int)m_bMarked,   0, 1 );
+#endif
 }

@@ -57,7 +57,7 @@ public:
 
 	ShapeList & operator= ( const ShapeList & src )
 	{
-		m_list.resize( CastToLong(src.m_list.size()) );
+		m_list.resize( Cast2Long(src.m_list.size()) );
 
 		src.CheckShapeList();
 
@@ -149,9 +149,11 @@ public:
 		return m_list[0];
 	}
 
-	bool const IsValidShapeId  ( ShapeId const id ) const { return id.GetValue() <  Size(); }
-	bool const IsInvalidShapeId( ShapeId const id ) const { return id.GetValue() >= Size(); }
-
+	bool const IsValidShapeId( ShapeId const id ) const 
+	{ 
+		return (0 <= id.GetValue()) && (id.GetValue() < Size()); 
+	}
+	
 	bool const AnyShapesSelected( ) const
 	{
 		return Apply2AllB<Shape>( [&]( Shape const & shape ) { return shape.IsSelected(); } );
@@ -167,7 +169,7 @@ public:
 
 	void SetShape( Shape * const pShape, ShapeId const id )	
 	{
-		if ( IsUndefined( id ) || IsInvalidShapeId( id ) )
+		if ( IsUndefined( id ) || ! IsValidShapeId( id ) )
 		{
 			CallErrorHandler( id );  
 			return;
@@ -186,7 +188,7 @@ public:
 
 	long const Size( ) const
 	{
-		return CastToLong( m_list.size() );
+		return Cast2Long( m_list.size() );
 	}
 
 	void Resize( long lNewSize )

@@ -37,7 +37,7 @@ public:
 			uintmax_t const   fileSize  { script.GetFileSize() };
 			if ( fileSize > 0 )
 			{
-				long const lPercentRead { CastToLong( llFilePos * 100 / fileSize ) };
+				long const lPercentRead { Cast2Long( llFilePos * 100 / fileSize ) };
 				m_pStatusBar->DisplayInPart
 				( 
 					m_iStatusBarPart, 

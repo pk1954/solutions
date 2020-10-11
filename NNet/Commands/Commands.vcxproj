@@ -83,6 +83,7 @@
     <ClInclude Include="CopySelectionCommand.h" />
     <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DisconnectBaseKnotCommand.h" />
+    <ClInclude Include="DeleteSignalCommand.h" />
     <ClInclude Include="InsertNeuronCommand.h" />
     <ClInclude Include="InsertTrackCommand.h" />
     <ClInclude Include="MarkSelectionCommand.h" />

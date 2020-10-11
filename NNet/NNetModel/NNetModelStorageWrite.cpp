@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include <assert.h>
 #include "Signal.h"
+#include "Track.h"
 #include "MonitorData.h"
 #include "ModelDescription.h"
 #include "NNetModelReaderInterface.h"
@@ -106,14 +107,16 @@ void NNetModelStorage::Write( wostream & out )
 
     MonitorData const * const pMonitorData { m_pModelWriterInterface->GetMonitorData() };
 
-    pMonitorData->Apply2AllTracksC
+    pMonitorData->Apply2AllTracks
     (
-        [&](Track const & track)
+        [&](TrackConstIter const itTrack)
         {
-            track.Apply2AllSignalsC
+            (* itTrack).Apply2AllSignalsC
             (
-                [ & ] ( Signal const& signal )
+                [ & ] ( SignalIter const & itSignal )
                 {
+                    Signal  const * pSignal = * itSignal;
+                    Signal  const & signal { * pSignal };
                     ShapeId const id { signal.GetSignalSource() };
                     // TODO
                 }

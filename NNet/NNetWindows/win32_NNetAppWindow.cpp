@@ -197,7 +197,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_crsrWindow          .Start( m_hwndApp, & m_mainNNetWindow, & m_modelReaderInterface );
 	m_parameterDlg        .Start( m_hwndApp, & m_modelWriterInterface, & m_parameters );
 	m_performanceWindow   .Start( m_hwndApp, & m_modelReaderInterface, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
-	m_monitorWindow       .Start( m_hwndApp, m_modelReaderInterface, m_parameters, m_beaconAnimation, m_monitorData );
+	m_monitorWindow       .Start( m_hwndApp, & m_NNetController, m_modelReaderInterface, m_parameters, m_beaconAnimation, m_monitorData );
 
 	m_WinManager.AddWindow( L"IDM_CONS_WINDOW",    IDM_CONS_WINDOW,    m_hwndConsole,                  true,  true  );
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true  );

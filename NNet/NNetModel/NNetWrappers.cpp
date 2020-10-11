@@ -202,7 +202,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         ShapeId const id     { ScrReadShapeId( script ) };
-        float   const fValue { CastToFloat( script.ScrReadFloat( ) ) };
+        float   const fValue { Cast2Float( script.ScrReadFloat( ) ) };
         m_pCommands->SetPulseRate( id, fHertz{ fValue } );
     }
 };
@@ -213,7 +213,7 @@ public:
     virtual void operator() ( Script & script ) const
     {
         tParameter const param  { static_cast<tParameter>( script.ScrReadUlong( ) ) };
-        float      const fValue { CastToFloat( script.ScrReadFloat( ) ) };
+        float      const fValue { Cast2Float( script.ScrReadFloat( ) ) };
         m_pCommands->SetParameter( param, fValue );
     }
 };

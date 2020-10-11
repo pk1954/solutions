@@ -44,7 +44,7 @@
 
 #define IDM_MOVE                       90
 
-// identifiers for application start at 100
+// application identifiers start at 100
 
 #define IDM_FATAL_ERROR     	 100
 								 
@@ -100,6 +100,9 @@
 #define IDM_PLUS                 191
 #define IDM_MINUS                192
 
+#define IDD_ATTACH2MONITOR       540
+#define IDD_INSERT_TRACK         541
+
 #define IDD_CONNECT              560
 #define IDD_INSERT_NEURON        561
 #define IDD_NEW_NEURON           562
@@ -117,7 +120,6 @@
 #define IDC_TRIGGER_SOUND_FREQ   574
 #define IDC_TRIGGER_SOUND_MSEC   575
 #define IDC_TRIGGER_SOUND_TEST   576
-#define IDD_ATTACH2MONITOR       578
 #define IDD_STOP_ON_TRIGGER      579
 
 #define IDM_CRSR_WINDOW          580

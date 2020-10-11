@@ -108,9 +108,9 @@ private:
 
     Shape * const createBaseKnot( Script & script, ShapeType const shapeType ) const 
     {
-        MicroMeter      const xCoord { CastToFloat( script.ScrReadFloat() ) };
+        MicroMeter      const xCoord { Cast2Float( script.ScrReadFloat() ) };
         script.ScrReadSpecial( L'|' );
-        MicroMeter      const yCoord { CastToFloat( script.ScrReadFloat() ) };
+        MicroMeter      const yCoord { Cast2Float( script.ScrReadFloat() ) };
         MicroMeterPoint const umPosition( xCoord, yCoord );
         switch ( shapeType.GetValue() )
         {
@@ -143,7 +143,7 @@ public:
     {
         tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
         script.ScrReadSpecial( L'=' );
-        float const fValue { CastToFloat( script.ScrReadFloat() ) };
+        float const fValue { Cast2Float( script.ScrReadFloat() ) };
         m_pModelWriterInterface->SetParam( param, fValue );
     }
 
@@ -182,7 +182,7 @@ public:
         tParameter const param( static_cast< tParameter >( script.ScrReadUint() ) );
         assert( param == tParameter::pulseRate );
         script.ScrReadSpecial( L'=' );
-        float const fValue { CastToFloat( script.ScrReadFloat() ) };
+        float const fValue { Cast2Float( script.ScrReadFloat() ) };
         m_pModelWriterInterface->GetShapePtr<InputNeuron *>( id )->SetPulseFrequency( fHertz( fValue ) );
     }
 

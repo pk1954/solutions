@@ -64,7 +64,7 @@ public:
 
 	Shape const * GetConstShape( ShapeId const id ) const 
 	{	
-		if ( IsUndefined( id ) || m_Shapes.IsInvalidShapeId( id ) )
+		if ( IsUndefined( id ) || ! m_Shapes.IsValidShapeId( id ) )
 		{
 			m_Shapes.CallErrorHandler( id );  
 			return nullptr;
@@ -79,11 +79,11 @@ public:
 		return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
 	}
 
-	fHertz          const GetPulseRate    ( ShapeId const ) const;
-	MicroMeterPoint const GetShapePos     ( ShapeId const ) const;
+	fHertz          const GetPulseRate( ShapeId const ) const;
+	MicroMeterPoint const GetShapePos ( ShapeId const ) const;
 
-	fMicroSecs      const GetSimulationTime ( ) const { return m_timeStamp; }
-	long            const GetSizeOfShapeList( ) const { return CastToLong( m_Shapes.Size() ); }
+	fMicroSecs const GetSimulationTime ( ) const { return m_timeStamp; }
+	long       const GetSizeOfShapeList( ) const { return Cast2Long( m_Shapes.Size() ); }
 
 	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
 	BaseKnot * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }

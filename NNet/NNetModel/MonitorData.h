@@ -8,151 +8,49 @@
 #include "Observable.h"
 #include "NamedType.h"
 #include "Signal.h"
+#include "Track.h"
 
 using std::vector;
 
-class Signal;
-
-class Track
-{
-public:
-	void Clear( )
-	{
-		Apply2AllSignals( [&]( Signal & signal ) { delete & signal; } );
-	}
-
-	void AddSignal( Signal * const pSignal )
-	{
-		m_signals.push_back( pSignal );
-	}
-
-	void RemoveSignal( Signal * const pSignal )
-	{
-		auto itSignal { find( m_signals.begin(), m_signals.end(), pSignal ) };
-		assert( itSignal != m_signals.end() );
-		m_signals.erase( itSignal );
-	}
-
-	void Apply2AllSignalsC( function<void(Signal const &)> const & func ) const
-	{
-		for (auto pSignal : m_signals)
-			if ( pSignal  )
-				func( * pSignal ); 
-	}                        
-
-	void Apply2AllSignals( function<void(Signal &)> const & func )
-	{
-		for (auto pSignal : m_signals)
-			if ( pSignal  )
-				func( * pSignal ); 
-	}                        
-
-private:
-	vector <Signal *> m_signals;
-};
-
-using TrackNr = NamedType< int, struct TrackNrParam >;
+using TrackNr        = NamedType< int, struct TrackNrParam >;
+using TrackIter      = vector<Track>::iterator;
+using TrackConstIter = vector<Track>::const_iterator;
+using TrackFunc      = function<void(TrackConstIter const )>;
 
 class MonitorData
 {
 public:
+	void CheckTracks( ) const;  // for debugging
 
-	void Initialize( Observable* const pStaticModelObservable )
-	{
-		m_pStaticModelObservable = pStaticModelObservable;
-	}
+	void Initialize( Observable * const );
+	void Reset( );
 
-	void Reset( )
-	{
-		Apply2AllTracks( [&](Track & track) { track.Clear(); } );
-		m_Tracks.clear();
-		m_pStaticModelObservable->NotifyAll( true );
-	}
+	int  GetNrOfTracks( ) const;
+	bool NoTracks     ( ) const;
 
-	int GetNrOfTracks( ) const
-	{
-		return CastToInt(m_Tracks.size());
-	}
+	bool const IsValid( TrackNr const trackNr ) const;
 
-	bool NoTracks( ) const
-	{
-		return m_Tracks.size() == 0;
-	}
+	SignalNr const GetSignalNr( TrackConstIter const, SignalIter const ) const;
+	SignalNr const GetSignalNr( TrackNr const, SignalIter const ) const;
 
-	Track & GetTrack( TrackNr const trackNr )
-	{
-		assert( IsValid( trackNr ) );
-		return m_Tracks[trackNr.GetValue()];
-	}
+	TrackNr  const GetTrackNr( TrackConstIter const ) const;
 
-	bool IsValid( TrackNr const trackNr ) const
-	{
-		return (trackNr.GetValue() >= 0) && (trackNr.GetValue() < m_Tracks.size());
-	}
+	TrackIter const InsertTrack( TrackNr const = TrackNr(0) );
+	void            DeleteTrack( TrackNr const = TrackNr(0) );
 
-	vector<Track>::iterator InsertTrack( TrackNr const trackNr )
-	{
-		auto res { m_Tracks.insert( m_Tracks.begin() + trackNr.GetValue(), Track() ) };
-		m_pStaticModelObservable->NotifyAll( true );
-		return res;
-	}
+	Signal const * const GetSignal   ( TrackNr const, SignalNr const ) const;
+	Signal       * const RemoveSignal( TrackNr const, SignalNr const );
+	SignalNr       const AddSignal   ( TrackNr const, Signal * const );
+	SignalNr       const MoveSignal  ( TrackNr const, SignalNr const, TrackNr const );
 
-	vector<Track>::iterator AppendTrack( )
-	{
-		return InsertTrack(TrackNr(CastToInt(m_Tracks.size())) );
-	}
-
-	void RemoveSignalFromTrack( Signal * pSignal, TrackNr const trackNr )
-	{
-		if ( trackNr.IsNotNull() )
-		{
-			GetTrack( trackNr ).RemoveSignal( pSignal );
-			m_pStaticModelObservable->NotifyAll( true );
-		}
-	}
-
-	void DeleteSignal( Signal * pSignal, TrackNr const trackNr )
-	{
-		if ( trackNr.IsNotNull() )
-		{
-			RemoveSignalFromTrack( pSignal, trackNr );
-			delete pSignal;
-		}
-	}
-
-	void DeleteTrack( TrackNr const trackNr )
-	{
-		if ( trackNr.IsNotNull() )
-		{
-			GetTrack( trackNr ).Clear();
-			m_Tracks.erase( m_Tracks.begin() + trackNr.GetValue() );
-			m_pStaticModelObservable->NotifyAll( true );
-		}
-	}
-
-	void DeleteYoungestTrack( )
-	{
-		if ( ! m_Tracks.empty() )
-		{
-			m_Tracks.pop_back();
-			m_pStaticModelObservable->NotifyAll( true );
-		}
-	}
-
-	void Apply2AllTracksC( function<void(Track const &)> const & func ) const
-	{
-		for (auto track : m_Tracks)    
-			func( track ); 
-	}                        
+	void Apply2AllTracks ( TrackFunc const & ) const;
+	void Apply2AllSignals( TrackNr const, SignalFunc const & ) const;
 
 private:
 
-	void Apply2AllTracks( function<void(Track &)> const & func )
-	{
-		for (auto track : m_Tracks)    
-			func( track ); 
-	}                        
+	TrackIter      getTrack ( TrackNr const );
+	TrackConstIter getTrackC( TrackNr const ) const;
 
-	vector<Track> m_Tracks { };
+	vector<Track> m_tracks { };
 	Observable  * m_pStaticModelObservable { nullptr };
 };

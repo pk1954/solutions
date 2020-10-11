@@ -115,7 +115,7 @@ void PerformanceWindow::DoPaint( TextBuffer & textBuf )
 		printFloatLine   ( textBuf, L"targ slowmo:",   m_pSlowMotionRatio->GetRatio( ), L"" );
 		printMicroSecLine( textBuf, L"avail time:",    avail );
 		printMicroSecLine( textBuf, L"spent time:",    spent );
-		printFloatLine   ( textBuf, L"workload:",      CastToFloat( (spent / avail) * 100.0f ), L"%" );
+		printFloatLine   ( textBuf, L"workload:",      Cast2Float( (spent / avail) * 100.0f ), L"%" );
 		printFloatLine   ( textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo( ), L"" );
 		printIntLine     ( textBuf, L"# Input  : ",    m_pModelReaderInterface->GetNrOf<InputNeuron>() );
 		printIntLine     ( textBuf, L"# Neurons: ",    m_pModelReaderInterface->GetNrOf<Neuron>() );

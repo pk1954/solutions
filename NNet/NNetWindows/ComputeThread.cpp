@@ -111,7 +111,7 @@ void ComputeThread::ThreadStartupFunc( )  // everything happens in startup funct
 		{
 			fMicroSecs const usNominalSimuTime { m_pSlowMotionRatio->RealTime2SimuTime( netRealTimeSinceLastReset( ) ) };
 			fMicroSecs const usMissingSimuTime { usNominalSimuTime - simuTimeSinceLastReset() };           // compute missing simulation time
-			long       const lCycles           { CastToLong(usMissingSimuTime / m_usSimuTimeResolution) }; // compute # cycles to be computed
+			long       const lCycles           { Cast2Long(usMissingSimuTime / m_usSimuTimeResolution) }; // compute # cycles to be computed
 			long       const lCyclesTodo       { max( 0, lCycles ) };
 			long             lCyclesDone       { 0 };
 

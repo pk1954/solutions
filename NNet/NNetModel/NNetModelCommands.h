@@ -8,6 +8,7 @@
 #include "boolOp.h"
 #include "tParameter.h"
 #include "MoreTypes.h"
+#include "MonitorData.h"
 #include "ShapeId.h"
 
 class Param;
@@ -50,8 +51,10 @@ public:
     void CopySelection       ( );
     void DeleteSelection     ( );
     void DeleteShape         ( ShapeId const );
+    void DeleteSignal        ( TrackNr const, SignalNr const );
     void Disconnect          ( ShapeId const );
     void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
+    void InsertTrack         ( TrackNr const );
     void MarkSelection       ( tBoolOp const );
     void MoveSelection       ( MicroMeterPoint const & );
     void MoveShape           ( ShapeId const, MicroMeterPoint const & );

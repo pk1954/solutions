@@ -29,7 +29,7 @@ void SlowMotionDisplay::Initialize
 
 void SlowMotionDisplay::Notify( bool const bImmediately )
 {
-	unsigned int const uiRatio = CastToUnsignedInt( m_pSlowMotionRatio->GetRatio( ) );
+	unsigned int const uiRatio = Cast2UnsignedInt( m_pSlowMotionRatio->GetRatio( ) );
 	if ( uiRatio == 1 )
 		m_wstring = L"real time";
 	else

@@ -9,6 +9,7 @@
 #include "MonitorData.h"
 #include "NNetModelReaderInterface.h"
 #include "Signal.h"
+#include "Track.h"
 #include "ShapeId.h"
 #include "Command.h"
 #include "Neuron.h"
@@ -39,12 +40,13 @@ public:
 
 	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
-		m_pMonitorData->AppendTrack( )->AddSignal( m_pSignal );
+		TrackIter const itTrack = m_pMonitorData->InsertTrack( );
+		itTrack->AddSignal( m_pSignal );
 	}
 
 	virtual void Undo( NNetModelWriterInterface * const pModel ) 
 	{
-		m_pMonitorData->DeleteYoungestTrack( );
+		m_pMonitorData->DeleteTrack( );
 	}
 
 private:

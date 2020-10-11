@@ -34,15 +34,14 @@ public:
 	mV              const GetVoltage                ( ShapeId const ) const;
 	mV              const GetVoltage                ( ShapeId const, MicroMeterPoint const & ) const;
 			        
-	bool            const   AnyShapesSelected( )                 const { return m_pModel->GetShapes().AnyShapesSelected( ); }
-	bool            const   IsValidShapeId  ( ShapeId const id ) const { return m_pModel->GetShapes().IsValidShapeId  (id); }
-	bool            const   IsInvalidShapeId( ShapeId const id ) const { return m_pModel->GetShapes().IsInvalidShapeId(id); }
-	bool            const   IsShapeNullPtr  ( ShapeId const id ) const { return m_pModel->IsShapeNullPtr              (id); }
-	MicroMeterPoint const   GetShapePos     ( ShapeId const id ) const { return m_pModel->GetShapePos                 (id); }
-	Shape           const * GetConstShape   ( ShapeId const id ) const { return m_pModel->GetConstShape  ( id ); }
-	long            const   GetSizeOfShapeList( )                const { return m_pModel->GetSizeOfShapeList( ); }
-	fMicroSecs      const   GetSimulationTime( )                 const { return m_pModel->GetSimulationTime ( ); }
-	MicroMeterRect  const   GetEnclosingRect( )                  const { return m_pModel->GetEnclosingRect  ( ); }
+	bool            const   AnyShapesSelected( )               const { return m_pModel->GetShapes().AnyShapesSelected( ); }
+	bool            const   IsValidShapeId( ShapeId const id ) const { return m_pModel->GetShapes().IsValidShapeId  (id); }
+	bool            const   IsShapeNullPtr( ShapeId const id ) const { return m_pModel->IsShapeNullPtr              (id); }
+	MicroMeterPoint const   GetShapePos   ( ShapeId const id ) const { return m_pModel->GetShapePos                 (id); }
+	Shape           const * GetConstShape ( ShapeId const id ) const { return m_pModel->GetConstShape  ( id ); }
+	long            const   GetSizeOfShapeList( )              const { return m_pModel->GetSizeOfShapeList( ); }
+	fMicroSecs      const   GetSimulationTime( )               const { return m_pModel->GetSimulationTime ( ); }
+	MicroMeterRect  const   GetEnclosingRect( )                const { return m_pModel->GetEnclosingRect  ( ); }
 
 	MicroMeterPoint const OrthoVector( ShapeId const ) const;
 

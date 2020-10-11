@@ -217,12 +217,14 @@
     <ClInclude Include="tHighlightType.h" />
     <ClInclude Include="tParameter.h" />
     <ClInclude Include="ShapeType.h" />
+    <ClInclude Include="Track.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Analyzer.cpp" />
     <ClCompile Include="BaseKnot.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
     <ClCompile Include="Knot.cpp" />
+    <ClCompile Include="MonitorData.cpp" />
     <ClCompile Include="Neuron.cpp" />
     <ClCompile Include="NNetColors.cpp" />
     <ClCompile Include="NNetModel.cpp">
@@ -241,8 +243,10 @@
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="scale.cpp" />
     <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="Signal.cpp" />
     <ClCompile Include="tParameter.cpp" />
     <ClCompile Include="ShapeType.cpp" />
+    <ClCompile Include="Track.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

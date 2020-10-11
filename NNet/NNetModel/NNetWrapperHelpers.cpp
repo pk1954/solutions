@@ -15,7 +15,7 @@ ShapeId ScrReadShapeId( Script & script )
 
 MicroMeter ScrReadMicroMeter( Script & script )
 {
-	float const fValue = CastToFloat( script.ScrReadFloat( ) );
+	float const fValue = Cast2Float( script.ScrReadFloat( ) );
 	if ( fabs(fValue) > MAX_MICRO_METER.GetValue() )
 		throw ScriptErrorHandler::ScriptException( 777, L"MicroMeter value too big" );
 	return MicroMeter( fValue );

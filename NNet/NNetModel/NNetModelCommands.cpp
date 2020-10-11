@@ -16,8 +16,10 @@
 #include "Connect2PipeCommand.h"
 #include "CopySelectionCommand.h"
 #include "DeletePipeCommand.h"
+#include "DeleteSignalCommand.h"
 #include "DisconnectBaseKnotCommand.h"
 #include "InsertNeuronCommand.h"
+#include "InsertTrackCommand.h"
 #include "MarkSelectionCommand.h"
 #include "MoveBaseKnotCommand.h"
 #include "MovePipeCommand.h"
@@ -133,11 +135,25 @@ void NNetModelCommands::Attach2Monitor( ShapeId const id )
 	}
 }
 
+void NNetModelCommands::InsertTrack( TrackNr const trackNr )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << trackNr << endl;
+	m_pCmdStack->NewCommand( new InsertTrackCommand( trackNr )	);
+}
+
 void NNetModelCommands::DeleteShape( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << endl;
 	deleteShape( m_pModelWriterInterface->GetShapePtr<Shape *>( id ) );
+}
+
+void NNetModelCommands::DeleteSignal( TrackNr const trackNr, SignalNr const signalNr )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << trackNr << L" " << signalNr << endl;
+	m_pCmdStack->NewCommand( new DeleteSignalCommand( trackNr, signalNr ) );
 }
 
 void NNetModelCommands::Disconnect( ShapeId const id )
