@@ -15,7 +15,7 @@ using TEXT_POSITION = NamedType< int, struct TEXT_POSITION_Parameter >;
 
 constexpr TEXT_POSITION operator"" _TEXT_POSITION( unsigned long long ull )
 {
-	return TEXT_POSITION( CastToInt( ull ) );
+	return TEXT_POSITION( Cast2Int( ull ) );
 }
 
 class TextBuffer

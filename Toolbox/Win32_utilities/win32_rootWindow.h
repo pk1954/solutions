@@ -161,7 +161,7 @@ public:
 
 	short GetTrackBarPos( INT const idTrackbar ) const
 	{
-		return CastToShort( SendDlgItemMessage( idTrackbar, TBM_GETPOS, 0, 0 ) ); 
+		return Cast2Short( SendDlgItemMessage( idTrackbar, TBM_GETPOS, 0, 0 ) ); 
 	}
 
 	LRESULT PostCommand2Application( WPARAM const wParam, LPARAM const lParam )

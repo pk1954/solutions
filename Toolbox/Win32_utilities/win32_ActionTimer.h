@@ -51,7 +51,7 @@ public:
 
 		assert( dwCount < ULLONG_MAX / MICROSECONDS_TO_HERTZ_FACTOR );    // avoid ull overflow
 		unsigned long long ullFrequency = ( dwCount * MICROSECONDS_TO_HERTZ_FACTOR ) / us.count();
-		return Hertz( CastToLong(ullFrequency) );
+		return Hertz( Cast2Long(ullFrequency) );
 	}
 
 	Hertz GetMeasuredPerformance( )

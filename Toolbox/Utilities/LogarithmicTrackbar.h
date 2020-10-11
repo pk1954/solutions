@@ -20,7 +20,7 @@ public:
 
 	static long TrackBar2ValueL( long lX )
 	{
-		return CastToLong( TrackBar2ValueD( static_cast<double>( lX ) ) );
+		return Cast2Long( TrackBar2ValueD( static_cast<double>( lX ) ) );
 	}
 
 	static double Value2TrackbarD( double dX )  // f(x) = 1000 * log2(x)
@@ -31,6 +31,6 @@ public:
 
 	static long Value2TrackbarL( long lX )
 	{
-		return CastToLong( Value2TrackbarD( static_cast<double>( lX ) ) );
+		return Cast2Long( Value2TrackbarD( static_cast<double>( lX ) ) );
 	}
 };

@@ -24,7 +24,7 @@ static PixelPoint const PP_ZERO( PixelPoint::ZERO_VAL() );   // compiler generat
 
 constexpr PIXEL operator"" _PIXEL( unsigned long long ull )
 {
-	return PIXEL( CastToShort( ull ) );
+	return PIXEL( Cast2Short( ull ) );
 }
 
 /////////////////// fPIXEL ///////////////////////////////////
@@ -40,7 +40,7 @@ static fPixelPoint const fPP_ZERO( fPixelPoint::ZERO_VAL() );   // compiler gene
 
 constexpr fPIXEL operator"" _fPIXEL( long double ld )
 {
-	return fPIXEL( CastToFloat( ld ) );
+	return fPIXEL( Cast2Float( ld ) );
 }
 
 inline static fPIXEL Hypot( fPixelPoint const pt ) 
@@ -64,12 +64,12 @@ inline bool IsCloseToZero( fPixelPoint const vect )
 
 static PIXEL Convert2PIXEL( fPIXEL const fPixel )
 {
-	return PIXEL( CastToLong( fPixel.GetValue() ) );
+	return PIXEL( Cast2Long( fPixel.GetValue() ) );
 }
 
 static fPIXEL Convert2fPIXEL( PIXEL const pixel )
 {
-	return fPIXEL( CastToFloat( pixel.GetValue() ) );
+	return fPIXEL( Cast2Float( pixel.GetValue() ) );
 }
 
 static PixelPoint Convert2PixelPoint( fPixelPoint const fPixPoint )

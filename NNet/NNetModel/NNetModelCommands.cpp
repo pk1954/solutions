@@ -149,11 +149,11 @@ void NNetModelCommands::DeleteShape( ShapeId const id )
 	deleteShape( m_pModelWriterInterface->GetShapePtr<Shape *>( id ) );
 }
 
-void NNetModelCommands::DeleteSignal( TrackNr const trackNr, SignalNr const signalNr )
+void NNetModelCommands::DeleteSignal( SignalId const & id )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << trackNr << L" " << signalNr << endl;
-	m_pCmdStack->NewCommand( new DeleteSignalCommand( trackNr, signalNr ) );
+		TraceStream( ) << __func__ << id.trackNr << L" " << id.signalNr << endl;
+	m_pCmdStack->NewCommand( new DeleteSignalCommand( id ) );
 }
 
 void NNetModelCommands::Disconnect( ShapeId const id )

@@ -40,7 +40,7 @@ public:
 	void SleepDelay( ) const
 	{
 		if ( m_msGenerationDelay > milliseconds::zero() )
-			Sleep( CastToUnsignedLong(m_msGenerationDelay.count()) );
+			Sleep( Cast2UnsignedLong(m_msGenerationDelay.count()) );
 	};
 
 private:

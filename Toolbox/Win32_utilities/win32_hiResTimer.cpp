@@ -13,7 +13,7 @@ HiResTimer::HiResTimer( )
     {                                              // first time in application the constructor is called
         LARGE_INTEGER value;                       // frequency is acquired and stored for all HiResTimers
         (void)QueryPerformanceFrequency( &value );
-        m_frequency  = Hertz( CastToUnsignedLong( value.QuadPart ) );
+        m_frequency  = Hertz( Cast2UnsignedLong( value.QuadPart ) );
 		m_fFrequency = fHertz( static_cast<float>( m_frequency.GetValue() ) );
     }
 }

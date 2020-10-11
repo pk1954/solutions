@@ -17,7 +17,7 @@ PIXEL ScrReadPixel( Script & script )
 
 fPIXEL ScrReadfPixel( Script & script )
 {
-    return fPIXEL( CastToFloat(script.ScrReadFloat()) );
+    return fPIXEL( Cast2Float(script.ScrReadFloat()) );
 }
 
 PixelPoint ScrReadPixelPoint( Script & script )

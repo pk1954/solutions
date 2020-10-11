@@ -20,7 +20,7 @@ using fMicroSecs = NamedType< float, struct MicroSecs_Parameter >;
 
 constexpr const fMicroSecs operator"" _MicroSecs( const long double d )
 {
-	return fMicroSecs( CastToFloat( d ) );
+	return fMicroSecs( Cast2Float( d ) );
 }
 
 ////////////// MilliSecs /////////////////////////////////////
@@ -29,7 +29,7 @@ using MilliSecs = NamedType< unsigned long, struct MilliSecs_Parameter >;
 
 constexpr const MilliSecs operator"" _MilliSecs( const unsigned long long d )
 {
-	return MilliSecs( CastToUnsignedLong( d ) );
+	return MilliSecs( Cast2UnsignedLong( d ) );
 }
 
 ////////////// MicroMeter /////////////////////////////////////
@@ -38,7 +38,7 @@ using MicroMeter = NamedType< float, struct MicroMeter_Parameter >;
 
 constexpr const MicroMeter operator"" _MicroMeter( const long double d )
 {
-	return MicroMeter( CastToFloat( d ) );
+	return MicroMeter( Cast2Float( d ) );
 }
 
 MicroMeter const MAX_MICRO_METER{ 1e7_MicroMeter };  // 10 meter
@@ -56,7 +56,7 @@ using mV = NamedType<float, struct mV_Parameter >;
 
 constexpr const mV operator"" _mV( const long double d )
 { 
-	return mV( CastToFloat( d ) );
+	return mV( Cast2Float( d ) );
 }
 
 ////////////// PERCENT /////////////////////////////////////
@@ -65,7 +65,7 @@ using PERCENT = NamedType< short, struct PERCENT_Parameter >;
 
 PERCENT constexpr operator"" _PERCENT( unsigned long long ull )
 {
-	return PERCENT( CastToShort( ull ) );
+	return PERCENT( Cast2Short( ull ) );
 }
 
 ////////////// Hertz //////////////////////////////////////////
@@ -74,7 +74,7 @@ using Hertz = NamedType< unsigned long, struct Hertz_Parameter >;
 
 Hertz constexpr operator"" _Hertz( unsigned long long ull )
 {
-	return Hertz( CastToUnsignedLong( ull ) );
+	return Hertz( Cast2UnsignedLong( ull ) );
 }
 
 static microseconds const PulseDuration( Hertz const freq )
@@ -90,7 +90,7 @@ using fHertz = NamedType< float, struct fHertz_Parameter >;
 
 fHertz constexpr operator"" _fHertz( long double dl )
 {
-	return fHertz( CastToFloat( dl ) );
+	return fHertz( Cast2Float( dl ) );
 }
 
 static fMicroSecs const PulseDuration( fHertz const freq )
@@ -149,7 +149,7 @@ using meterPerSec = NamedType<float, struct meterPerSec_Parameter >;
 
 constexpr const meterPerSec operator"" _meterPerSec( const long double d )
 { 
-	return meterPerSec( CastToFloat( d ) );
+	return meterPerSec( Cast2Float( d ) );
 }
 
 static MicroMeter CoveredDistance( meterPerSec const speed, fMicroSecs const time )

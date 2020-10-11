@@ -51,7 +51,7 @@ public:
     void CopySelection       ( );
     void DeleteSelection     ( );
     void DeleteShape         ( ShapeId const );
-    void DeleteSignal        ( TrackNr const, SignalNr const );
+    void DeleteSignal        ( SignalId const & );
     void Disconnect          ( ShapeId const );
     void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
     void InsertTrack         ( TrackNr const );

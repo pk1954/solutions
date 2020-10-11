@@ -28,11 +28,11 @@ public:
 		pStatusBar->AddButton       ( L" + ",     (HMENU)IDM_ZOOM_IN,  BS_PUSHBUTTON ); 
 		pStatusBar->AddButton       ( L"  Fit  ", (HMENU)IDM_FIT_ZOOM, BS_PUSHBUTTON ); 
 
-		long const lMinPos = CastToLong( dMin );
-		long const lMaxPos = CastToLong( dMax );
+		long const lMinPos = Cast2Long( dMin );
+		long const lMaxPos = Cast2Long( dMax );
 
 		pStatusBar->SetTrackBarRange( IDM_ZOOM_TRACKBAR, lMinPos, lMaxPos );  
-		pStatusBar->SetTrackBarPos  ( IDM_ZOOM_TRACKBAR, CastToLong( dDefault ) ); 
+		pStatusBar->SetTrackBarPos  ( IDM_ZOOM_TRACKBAR, Cast2Long( dDefault ) ); 
 
 		CreateBalloonToolTip( hwndStatusBar, IDM_ZOOM_OUT,      L"Zoom out one step" );
 		CreateBalloonToolTip( hwndStatusBar, IDM_ZOOM_TRACKBAR, L"Move slider to zoom in or out" );

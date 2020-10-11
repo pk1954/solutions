@@ -25,7 +25,7 @@ void Stopwatch::Stop( std::wstring const wstr )
 
 	m_hrtimer.Stop( );
 	microseconds microSecs = m_hrtimer.GetDuration( );
-	float        millisecs = CastToFloat( microSecs.count() ) / 1000.0f;
+	float        millisecs = Cast2Float( microSecs.count() ) / 1000.0f;
 	--m_iLevel;
 	for ( int i = 0; i < m_iLevel; ++i )
 		std::wcout << L"      ";

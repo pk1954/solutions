@@ -12,9 +12,8 @@
 class DeleteSignalCommand : public Command
 {
 public:
-	DeleteSignalCommand( TrackNr const trackNr, SignalNr const signalNr )
-	  : m_trackNr( trackNr ),
-		m_signalNr( signalNr ),
+	DeleteSignalCommand( SignalId const & id )
+	  : m_signalId( id ),
 		m_pSignal( nullptr )
 	{ }
 
@@ -22,17 +21,16 @@ public:
 
 	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{
-		m_pSignal = pModel->GetMonitorData()->RemoveSignal( m_trackNr, m_signalNr );
+		m_pSignal = pModel->GetMonitorData()->DeleteSignal( m_signalId );
 	}
 
 	virtual void Undo( NNetModelWriterInterface * const pModel ) 
 	{
-		m_signalNr = pModel->GetMonitorData()->AddSignal( m_trackNr, m_pSignal );
+		m_signalId.signalNr = pModel->GetMonitorData()->AddSignal( m_signalId.trackNr, m_pSignal );
 	}
 
 private:
-	TrackNr  m_trackNr;
-	SignalNr m_signalNr;
+	SignalId m_signalId;
 	Signal * m_pSignal;
 };
 

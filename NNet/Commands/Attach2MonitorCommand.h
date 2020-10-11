@@ -40,8 +40,8 @@ public:
 
 	virtual void Do( NNetModelWriterInterface * const pModel ) 
 	{ 
-		TrackIter const itTrack = m_pMonitorData->InsertTrack( );
-		itTrack->AddSignal( m_pSignal );
+		m_pMonitorData->InsertTrack( TrackNr(0) );
+		m_pMonitorData->AddSignal( TrackNr(0), m_pSignal );
 	}
 
 	virtual void Undo( NNetModelWriterInterface * const pModel ) 

@@ -30,8 +30,8 @@ public:
 		SoundDescr desc 
 		{ 
 			true, 
-			static_cast<Hertz>    (CastToUnsignedLong(msg.wParam)), 
-			static_cast<MilliSecs>(CastToUnsignedLong(msg.lParam)) 
+			static_cast<Hertz>    (Cast2UnsignedLong(msg.wParam)), 
+			static_cast<MilliSecs>(Cast2UnsignedLong(msg.lParam)) 
 		};
 //		m_pSound->Beep( desc );
 		m_pSound->Play( TEXT("SNAP_IN_SOUND") );
