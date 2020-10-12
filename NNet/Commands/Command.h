@@ -9,6 +9,10 @@ class NNetModelWriterInterface;
 class Command
 {
 public:
+    virtual ~Command( )
+    {
+        int x = 42;
+    }
 
     virtual void Do( NNetModelWriterInterface * const) = 0;
     
@@ -21,5 +25,4 @@ public:
     { 
         return false; 
     };
-
 };

@@ -9,46 +9,11 @@
 #include "NamedType.h"
 #include "Signal.h"
 #include "Track.h"
+#include "SignalId.h"
 
 using std::vector;
-using std::unique_ptr;
 
-using TrackNr   = NamedType< int, struct TrackNrParam >;
 using TrackFunc = function<void(TrackNr const)>;
-
-struct SignalId
-{
-	SignalId( )
-      : trackNr ( TrackNr ::NULL_VAL() ),
-		signalNr( SignalNr::NULL_VAL() )
-	{ }
-
-	SignalId( TrackNr const tNr, SignalNr const sNr )
-	  : trackNr( tNr),
-		signalNr( sNr)
-	{ }
-
-	void Set2Null() 
-	{ 
-		trackNr.Set2Null(); 
-		signalNr.Set2Null(); 
-	}
-
-	auto operator== (const SignalId & other) const
-	{
-		return (trackNr == other.trackNr) && (signalNr == other.signalNr);
-	}
-
-	auto operator!= (const SignalId & other) const
-	{
-		return ! (*this == other);
-	}
-
-	static const SignalId NULL_VAL;
-
-	TrackNr  trackNr;
-	SignalNr signalNr;
-};
 
 class MonitorData
 {
@@ -65,14 +30,13 @@ public:
 	bool const IsValid( TrackNr const trackNr ) const;
 	bool const IsValid( SignalId const & ) const;
 
-	void InsertTrack( TrackNr const = TrackNr(0) );
-	void DeleteTrack( TrackNr const = TrackNr(0) );
+	void InsertTrack( TrackNr const );
+	void DeleteTrack( TrackNr const );
 
-	Signal const & GetSignal   ( SignalId const & ) const;
-	void           DeleteSignal( SignalId const & );
-	 
-	SignalNr const AddSignal ( TrackNr const, unique_ptr<Signal> );
-	SignalId const MoveSignal( SignalId const &, TrackNr const );
+	void             AddSignal( unique_ptr<Signal>, TrackNr const );
+	void             DeleteSignal( SignalId const & );
+	SignalId const   MoveSignal  ( SignalId const &, TrackNr const );
+	Signal   const & GetSignal   ( SignalId const & ) const;
 
 	void Apply2AllTracks ( TrackFunc const & ) const;
 	void Apply2AllSignals( TrackNr const, SignalFunc const & ) const;

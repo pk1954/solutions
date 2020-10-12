@@ -5,14 +5,7 @@
 #include "stdafx.h"
 #include "Track.h"
 
-using std::unique_ptr;
-using std::make_unique;
 using std::move;
-
-void Track::Clear( )
-{
-	m_signals.clear();
-}
 
 SignalNr const Track::AddSignal( unique_ptr<Signal> pSignal )
 {
@@ -40,10 +33,6 @@ void Track::Apply2AllSignals( SignalFunc const & func ) const
 
 Signal const & Track::GetSignal( SignalNr const signalNr ) const
 {
-	if ( ! IsValid( signalNr ) )
-	{
-		int x = 42;
-	}
 	assert( IsValid( signalNr ) );
 	return * m_signals[signalNr.GetValue()].get();
 }
@@ -58,10 +47,6 @@ void Track::CheckSignals( ) const
 #ifdef _DEBUG
 	for (const auto & pSignal : m_signals )
 	{
-		if ( ! pSignal )
-		{
-			int x = 42;
-		}
 		assert( pSignal != nullptr );
 		pSignal->CheckSignal();
 	}

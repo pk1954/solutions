@@ -16,12 +16,11 @@ using std::unique_ptr;
 using SignalNr   = NamedType< int, struct SignalNrParam >;
 using SignalFunc = function<void(SignalNr const &)>;
 
-struct SignalId;
+class SignalId;
 
 class Track
 {
 public:
-	void Clear( );
 	void CheckSignals( ) const;
 
 	SignalNr     const AddSignal   ( unique_ptr<Signal> );

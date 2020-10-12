@@ -43,6 +43,7 @@
 using std::wcout;
 using std::endl;
 using std::move;
+using std::make_unique;
 using std::unique_ptr;
 
 void NNetModelCommands::Initialize
@@ -122,10 +123,10 @@ void NNetModelCommands::Attach2Monitor( ShapeId const id )
 	if ( m_pModelReaderInterface->IsOfType<Neuron>( id ) )
 	{
 		MonitorData * pMonitorData { m_pModelWriterInterface->GetMonitorData() }; 
-		unique_ptr<Signal> pSignal { new Signal( * m_pModelReaderInterface, * m_pParam, * m_pDynamicModelObservable ) };
+		unique_ptr<Signal> pSignal { make_unique<Signal>( * m_pModelReaderInterface, * m_pParam, * m_pDynamicModelObservable ) };
 		pSignal->SetSignalSource( id );
 		pMonitorData->InsertTrack( TrackNr(0) );
-		pMonitorData->AddSignal( TrackNr(0), move(pSignal) );
+		pMonitorData->AddSignal( move(pSignal), TrackNr(0) );
 	}
 }
 
@@ -146,7 +147,7 @@ void NNetModelCommands::DeleteShape( ShapeId const id )
 void NNetModelCommands::DeleteSignal( SignalId const & id )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << id.trackNr << L" " << id.signalNr << endl;
+		TraceStream( ) << __func__ << id << endl;
 	m_pModelWriterInterface->GetMonitorData()->DeleteSignal( id );
 }
 

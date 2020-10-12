@@ -77,7 +77,7 @@ long MonitorWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_TRACK, L"Delete track" );
 	AppendMenu( hPopupMenu, MF_STRING, IDD_ADD_TRACK,    L"Add track" );
 
-	if ( m_idSigSelected.signalNr.IsNotNull() )
+	if ( m_idSigSelected.GetSignalNr().IsNotNull() )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL, L"Delete signal" );
 
 	return 0L; // will be forwarded to HandleContextMenuCommand
@@ -116,7 +116,7 @@ TrackNr const MonitorWindow::findPos4NewTrack( PIXEL const pixCrsrPosY ) const
 	fPIXEL const fPixCrsrYpos     { Convert2fPIXEL( pixCrsrPosY ) };
 	int    const iTrackNr         { Cast2Int( fPixCrsrYpos / fPixTrackHeight ) };
 	fPIXEL const fPixTrackCenterY { fPixTrackHeight * (Cast2Float(iTrackNr) + 0.5f) };
-	TrackNr      trackNr          { m_idSigSelected.trackNr };
+	TrackNr      trackNr          { m_idSigSelected.GetTrackNr() };
 	if ( fPixCrsrYpos > fPixTrackCenterY )
 		++trackNr;
 	return trackNr;
@@ -203,7 +203,7 @@ void MonitorWindow::doPaint( ) const
 			paintSignal
 			( 
 				id,
-				fPixTrackHeight * Cast2Float(id.trackNr.GetValue()+1), 
+				fPixTrackHeight * Cast2Float(id.GetTrackNr().GetValue()+1), 
 				fPixWidth, 
 				usIncrement, 
 				usInWindow				 
@@ -332,8 +332,7 @@ bool MonitorWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDD_DELETE_TRACK:
-		m_pMonitorData->DeleteTrack( m_idSigSelected.trackNr );
-		m_idSigSelected.trackNr.Set2Null();
+		m_pMonitorData->DeleteTrack( m_trackNrHighlighted );
 		deselectSignal( );
 		if ( m_pMonitorData->NoTracks() )
 			SendMessage( WM_COMMAND, IDM_WINDOW_OFF, 0 );
@@ -371,7 +370,7 @@ void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 
 	if ( wParam & MK_LBUTTON )
 	{
-		if ( m_pixLastY.IsNotNull( ) && m_idSigSelected.signalNr.IsNotNull() )
+		if ( m_pixLastY.IsNotNull( ) && m_idSigSelected.GetSignalNr().IsNotNull() )
 			m_pixMoveOffsetY += pixCrsrPos.GetY() - m_pixLastY;
 		m_pixLastY = pixCrsrPos.GetY();
 		Trigger( );   // cause repaint
@@ -385,7 +384,7 @@ void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 
 void MonitorWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam ) 
 {
-	if ( m_idSigSelected.trackNr != m_trackNrHighlighted )
+	if ( m_idSigSelected.GetTrackNr() != m_trackNrHighlighted )
 	{
 		m_idSigSelected = m_pMonitorData->MoveSignal( m_idSigSelected, m_trackNrHighlighted );
 	}
