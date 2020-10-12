@@ -11,6 +11,7 @@
 #include "win32_NNetController.h"
 
 using std::pair;
+using std::unique_ptr;
 
 class Param;
 class BeaconAnimation;

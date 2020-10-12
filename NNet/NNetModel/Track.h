@@ -4,12 +4,14 @@
 
 #pragma once
 
+#include <memory>
 #include <vector>
 #include "Observable.h"
 #include "NamedType.h"
 #include "Signal.h"
 
 using std::vector;
+using std::unique_ptr;
 
 using SignalNr   = NamedType< int, struct SignalNrParam >;
 using SignalFunc = function<void(SignalNr const &)>;
@@ -22,15 +24,15 @@ public:
 	void Clear( );
 	void CheckSignals( ) const;
 
-	SignalNr const AddSignal   ( Signal * const );
-	Signal * const DeleteSignal( SignalNr const );
+	SignalNr     const AddSignal   ( unique_ptr<Signal> );
+	unique_ptr<Signal> DeleteSignal( SignalNr const );
 
-	Signal const * const GetSignal( SignalNr const ) const;
-	bool           const IsValid  ( SignalNr const ) const;
+	Signal const & GetSignal( SignalNr const ) const;
+	bool   const   IsValid  ( SignalNr const ) const;
 
 	void Apply2AllSignals( SignalFunc const & ) const;
 
 private:
 
-	vector<Signal *> m_signals;
+	vector<unique_ptr<Signal>> m_signals;
 };

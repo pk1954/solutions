@@ -11,6 +11,7 @@
 #include "Track.h"
 
 using std::vector;
+using std::unique_ptr;
 
 using TrackNr   = NamedType< int, struct TrackNrParam >;
 using TrackFunc = function<void(TrackNr const)>;
@@ -43,6 +44,8 @@ struct SignalId
 		return ! (*this == other);
 	}
 
+	static const SignalId NULL_VAL;
+
 	TrackNr  trackNr;
 	SignalNr signalNr;
 };
@@ -65,17 +68,18 @@ public:
 	void InsertTrack( TrackNr const = TrackNr(0) );
 	void DeleteTrack( TrackNr const = TrackNr(0) );
 
-	Signal const * const GetSignal   ( SignalId const & ) const;
-	Signal       * const DeleteSignal( SignalId const & );
-	SignalNr       const AddSignal   ( TrackNr const, Signal * const );
-	SignalId       const MoveSignal  ( SignalId const &, TrackNr const );
+	Signal const & GetSignal   ( SignalId const & ) const;
+	void           DeleteSignal( SignalId const & );
+	 
+	SignalNr const AddSignal ( TrackNr const, unique_ptr<Signal> );
+	SignalId const MoveSignal( SignalId const &, TrackNr const );
 
 	void Apply2AllTracks ( TrackFunc const & ) const;
 	void Apply2AllSignals( TrackNr const, SignalFunc const & ) const;
 	void Apply2AllSignals( function<void(SignalId const &)> const & ) const;
 
 private:
-	Track                       * const getTrack ( TrackNr const );
+	Track & getTrack ( TrackNr const );
 	vector<Track>::const_iterator const getTrackC( TrackNr const ) const;
 
 	vector<Track> m_tracks { };

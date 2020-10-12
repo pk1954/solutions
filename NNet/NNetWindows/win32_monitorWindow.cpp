@@ -88,10 +88,10 @@ void MonitorWindow::selectSignal( SignalId const & idNew )
 	if ( idNew != m_idSigSelected )
 	{
 		m_pBeaconAnimation->Stop( );
-
-		if ( Signal const * const pSignal { m_pMonitorData->GetSignal( idNew ) } )
+		 
+		if ( m_pMonitorData->IsValid( idNew ) )
 		{
-			m_pBeaconAnimation->Start( pSignal->GetSignalSource() );
+			m_pBeaconAnimation->Start( m_pMonitorData->GetSignal( idNew ).GetSignalSource() );
 			m_idSigSelected = idNew;
 		}
 		else
@@ -107,7 +107,7 @@ void MonitorWindow::selectSignal( SignalId const & idNew )
 
 void MonitorWindow::deselectSignal( )
 {
-	selectSignal( SignalId() ); // initialized to NULL_VALs
+	selectSignal( SignalId::NULL_VAL );
 }
 
 TrackNr const MonitorWindow::findPos4NewTrack( PIXEL const pixCrsrPosY ) const
@@ -157,7 +157,7 @@ void MonitorWindow::paintSignal
 	fMicroSecs const   usInWindow
 ) const
 {
-	Signal     const & signal { *m_pMonitorData->GetSignal( idSignal ) }; 
+	Signal     const & signal { m_pMonitorData->GetSignal( idSignal ) }; 
 	fMicroSecs const   usEnd  { m_pModel->GetSimulationTime( ) };
 
 	fPIXEL const fPixYvalue { getYvalue( signal, usEnd ) };
@@ -270,7 +270,7 @@ SignalNr const MonitorWindow::findSignal( TrackNr const trackNr, PixelPoint cons
 			if ( 
 				  testSignal
 				  ( 						
-					  * m_pMonitorData->GetSignal( SignalId(trackNr, signalNr) ),
+					  m_pMonitorData->GetSignal( SignalId(trackNr, signalNr) ),
 					  umTime, 
 					  fPixYoffset - fPixPtCrsr.GetY(), 
 					  fPixBestDelta 
@@ -323,11 +323,8 @@ bool MonitorWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDD_DELETE_SIGNAL:
-		{
-			Signal * const pSignal { m_pMonitorData->DeleteSignal( m_idSigSelected ) };
-			delete pSignal;
-			deselectSignal( );
-		}
+		m_pMonitorData->DeleteSignal( m_idSigSelected );
+		deselectSignal( );
 		break;
 
 	case IDD_ADD_TRACK:

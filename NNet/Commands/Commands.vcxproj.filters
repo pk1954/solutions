@@ -114,16 +114,10 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Attach2MonitorCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AddModelCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InsertTrackCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DeleteSignalCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

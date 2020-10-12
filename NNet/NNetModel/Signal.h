@@ -26,7 +26,7 @@ public:
         Observable                     & observable
     );
 
-    virtual ~Signal( );
+    virtual ~Signal();
 
     void SetSignalSource( ShapeId const );
 

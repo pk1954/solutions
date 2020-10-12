@@ -7,6 +7,9 @@
 #include "MonitorData.h"
 
 using std::distance;
+using std::move;
+
+SignalId const SignalId::NULL_VAL { TrackNr::NULL_VAL(), SignalNr::NULL_VAL() };
 
 void MonitorData::Initialize( Observable* const pStaticModelObservable )
 {
@@ -32,30 +35,29 @@ bool MonitorData::NoTracks( ) const
 
 void MonitorData::InsertTrack( TrackNr const trackNr )
 {
-	m_tracks.insert( m_tracks.begin() + trackNr.GetValue(), Track() );
+//	m_tracks.insert( m_tracks.begin() + trackNr.GetValue(), Track() );
+	m_tracks.insert( getTrackC(trackNr), Track() );
 	m_pStaticModelObservable->NotifyAll( true );
 }
 
-Signal * const MonitorData::DeleteSignal( SignalId const & id )
+void MonitorData::DeleteSignal( SignalId const & id )
 {
-	Signal * pSignal { nullptr };
 	if ( IsValid( id.trackNr ) )
 	{
-		pSignal = getTrack( id.trackNr )->DeleteSignal( id.signalNr );
+		getTrack( id.trackNr ).DeleteSignal( id.signalNr );
 		m_pStaticModelObservable->NotifyAll( true );
 	}
-	return pSignal;
 }
 
-SignalNr const MonitorData::AddSignal( TrackNr const trackNr, Signal * const pSignal )
+SignalNr const MonitorData::AddSignal( TrackNr const trackNr, unique_ptr<Signal> pSignal )
 {
-	SignalNr signalNr { SignalNr::NULL_VAL() };
 	if ( IsValid( trackNr ) )
 	{
-		signalNr = getTrack( trackNr )->AddSignal( pSignal );
+		SignalNr signalNr { getTrack( trackNr ).AddSignal( move(pSignal) ) };
 		m_pStaticModelObservable->NotifyAll( true );
+		return signalNr;
 	}
-	return signalNr;
+	return SignalNr::NULL_VAL();
 }
 
 SignalId const MonitorData::MoveSignal(	SignalId const & id, TrackNr const trackNrNew )
@@ -63,8 +65,8 @@ SignalId const MonitorData::MoveSignal(	SignalId const & id, TrackNr const track
 	SignalId idNew { id };
 	if ( IsValid( id ) && IsValid(trackNrNew) )
 	{
-		Signal * pSignal     { getTrack( id.trackNr )->DeleteSignal( id.signalNr ) };
-		SignalNr signalNrNew { getTrack( trackNrNew )->AddSignal( pSignal ) };
+		unique_ptr<Signal> pSignal     { getTrack( id.trackNr ).DeleteSignal( id.signalNr ) };
+		SignalNr           signalNrNew { getTrack( trackNrNew ).AddSignal( move(pSignal) ) };
 		idNew = SignalId( trackNrNew, signalNrNew );
 		m_pStaticModelObservable->NotifyAll( true );
 	}
@@ -75,7 +77,7 @@ void MonitorData::DeleteTrack( TrackNr const trackNr )
 {
 	if ( IsValid( trackNr ) )
 	{
-		getTrack( trackNr )->Clear();
+		getTrack( trackNr ).Clear();
 		m_tracks.erase( getTrackC( trackNr ) );
 		m_pStaticModelObservable->NotifyAll( true );
 	}
@@ -107,9 +109,14 @@ void MonitorData::Apply2AllSignals( function<void(SignalId const &)> const & fun
 	);
 }                        
 
-Signal const * const MonitorData::GetSignal( SignalId const & id ) const
+Signal const & MonitorData::GetSignal( SignalId const & id ) const
 {
-	return IsValid( id.trackNr ) ? getTrackC(id.trackNr)->GetSignal( id.signalNr ) : nullptr;
+	if ( ! IsValid( id.trackNr ) )
+	{
+		int x = 42;
+	}
+	assert( IsValid( id.trackNr ) );
+	return  getTrackC( id.trackNr )->GetSignal( id.signalNr );
 }
 
 bool const MonitorData::IsValid( TrackNr const trackNr ) const
@@ -130,14 +137,22 @@ void MonitorData::CheckTracks( ) const
 #endif
 }
 
-Track * const MonitorData::getTrack( TrackNr const trackNr )
+Track & MonitorData::getTrack( TrackNr const trackNr )
 {
+	if ( ! IsValid( trackNr ) )
+	{
+		int x = 42;
+	}
 	assert( IsValid( trackNr ) );
-	return & m_tracks[trackNr.GetValue()]; 
+	return m_tracks[trackNr.GetValue()]; 
 }
 
 vector<Track>::const_iterator const MonitorData::getTrackC( TrackNr const trackNr ) const 
 { 
+	if ( ! IsValid( trackNr ) )
+	{
+		int x = 42;
+	}
 	assert( IsValid( trackNr ) );
 	return m_tracks.begin() + trackNr.GetValue(); 
 }

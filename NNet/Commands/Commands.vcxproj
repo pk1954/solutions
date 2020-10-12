@@ -74,7 +74,6 @@
     <ClInclude Include="AddOutgoing2PipeCommand.h" />
     <ClInclude Include="AnalyzeAnomaliesCommand.h" />
     <ClInclude Include="AnalyzeLoopsCommand.h" />
-    <ClInclude Include="Attach2MonitorCommand.h" />
     <ClInclude Include="ClearBeepersCommand.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="CommandStack.h" />
@@ -83,7 +82,6 @@
     <ClInclude Include="CopySelectionCommand.h" />
     <ClInclude Include="DeletePipeCommand.h" />
     <ClInclude Include="DisconnectBaseKnotCommand.h" />
-    <ClInclude Include="DeleteSignalCommand.h" />
     <ClInclude Include="InsertNeuronCommand.h" />
     <ClInclude Include="InsertTrackCommand.h" />
     <ClInclude Include="MarkSelectionCommand.h" />

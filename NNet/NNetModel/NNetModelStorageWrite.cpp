@@ -111,9 +111,8 @@ void NNetModelStorage::Write( wostream & out )
     ( 
         [&]( SignalId const idSignal )
         {
-            Signal  const * pSignal = pMonitorData->GetSignal( idSignal );
-            Signal  const & signal { * pSignal };
-            ShapeId const idShape { signal.GetSignalSource() };
+            Signal  const & signal  { pMonitorData->GetSignal( idSignal ) };
+            ShapeId const   idShape { signal.GetSignalSource() };
             // TODO
         }
     );

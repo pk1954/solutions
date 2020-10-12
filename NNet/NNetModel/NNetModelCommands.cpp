@@ -10,13 +10,11 @@
 #include "AddOutgoing2PipeCommand.h"
 #include "AnalyzeAnomaliesCommand.h"
 #include "AnalyzeLoopsCommand.h"
-#include "Attach2MonitorCommand.h"
 #include "ClearBeepersCommand.h"
 #include "Connect2BaseKnotCommand.h"
 #include "Connect2PipeCommand.h"
 #include "CopySelectionCommand.h"
 #include "DeletePipeCommand.h"
-#include "DeleteSignalCommand.h"
 #include "DisconnectBaseKnotCommand.h"
 #include "InsertNeuronCommand.h"
 #include "InsertTrackCommand.h"
@@ -44,6 +42,8 @@
 
 using std::wcout;
 using std::endl;
+using std::move;
+using std::unique_ptr;
 
 void NNetModelCommands::Initialize
 ( 
@@ -121,17 +121,11 @@ void NNetModelCommands::Attach2Monitor( ShapeId const id )
 		TraceStream( ) << __func__ << id << endl;
 	if ( m_pModelReaderInterface->IsOfType<Neuron>( id ) )
 	{
-		m_pCmdStack->NewCommand
-		( 
-			new Attach2MonitorCommand
-			( 
-				id,
-				m_pModelWriterInterface->GetMonitorData(), 
-				m_pModelReaderInterface, 
-				m_pParam,
-				m_pDynamicModelObservable
-			) 
-		);
+		MonitorData * pMonitorData { m_pModelWriterInterface->GetMonitorData() }; 
+		unique_ptr<Signal> pSignal { new Signal( * m_pModelReaderInterface, * m_pParam, * m_pDynamicModelObservable ) };
+		pSignal->SetSignalSource( id );
+		pMonitorData->InsertTrack( TrackNr(0) );
+		pMonitorData->AddSignal( TrackNr(0), move(pSignal) );
 	}
 }
 
@@ -153,7 +147,7 @@ void NNetModelCommands::DeleteSignal( SignalId const & id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id.trackNr << L" " << id.signalNr << endl;
-	m_pCmdStack->NewCommand( new DeleteSignalCommand( id ) );
+	m_pModelWriterInterface->GetMonitorData()->DeleteSignal( id );
 }
 
 void NNetModelCommands::Disconnect( ShapeId const id )
