@@ -6,7 +6,6 @@
 #include "win32_stdDialogBox.h"
 #include "win32_baseRefreshRate.h"
 
-using namespace std::chrono;
 using std::wstring;
 using std::to_wstring;
 

@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "Track.h"
+#include "SignalFactory.h"
 #include "MonitorData.h"
 
 using std::distance;
@@ -11,9 +12,14 @@ using std::move;
 
 SignalId const SignalId::NULL_VAL { TrackNr::NULL_VAL(), SignalNr::NULL_VAL() };
 
-void MonitorData::Initialize( Observable* const pStaticModelObservable )
+void MonitorData::Initialize
+( 
+	Observable    * const pStaticModelObservable,
+	SignalFactory * const pSignalFactory
+)
 {
 	m_pStaticModelObservable = pStaticModelObservable;
+	m_pSignalFactory         = pSignalFactory;
 }
 
 void MonitorData::Reset( )
@@ -48,10 +54,12 @@ void MonitorData::DeleteSignal( SignalId const & id )
 	}
 }
 
-void MonitorData::AddSignal( unique_ptr<Signal> pSignal, TrackNr const trackNr )
+void MonitorData::AddSignal( ShapeId const idShape, TrackNr const trackNr )
 {
 	if ( IsValid( trackNr ) )
 	{
+		unique_ptr<Signal> pSignal { m_pSignalFactory->MakeSignal() };
+		pSignal->SetSignalSource( idShape );
 		SignalNr signalNr { getTrack( trackNr ).AddSignal( move(pSignal) ) };
 		m_pStaticModelObservable->NotifyAll( true );
 	}
@@ -85,7 +93,7 @@ void MonitorData::Apply2AllTracks( TrackFunc const & func ) const
 		func( TrackNr( i ) ); 
 }                        
 
-void MonitorData::Apply2AllSignals( TrackNr const trackNr, SignalFunc const & func ) const
+void MonitorData::Apply2AllSignalsInTrack( TrackNr const trackNr, SignalFunc const & func ) const
 {
 	if ( IsValid( trackNr ) )
 		getTrackC(trackNr)->Apply2AllSignals( func );

@@ -16,6 +16,7 @@ using std::vector;
 
 class Param;
 class Script;
+class Pipe;
 class Shape;
 class Observable;
 class ModelDescription;
@@ -65,7 +66,7 @@ public:
 	bool SaveModelAs ( );
 
 private:
-	inline static float const PROTOCOL_VERSION { 1.5f };
+	inline static float const PROTOCOL_VERSION { 1.6f };
 
 	mutable bool m_bUnsavedChanges { false };  // can be changed in const functions
 
@@ -89,11 +90,16 @@ private:
 	void prepareForReading( );
 	bool readModel( );
 	void writeModel( );
-	void WriteShape( wostream &, Shape & );
-	void WriteMicroMeterPoint( wostream &, MicroMeterPoint const & );
-	void WritePipe( wostream &, Shape const & );
+	void writeShape( wostream &, Shape & );
+	void writePipe( wostream &, Pipe const & );
 	void setUnsavedChanges( bool const );
 	void writeDescription( wostream & );
+	void writeMonitorData( wostream & );
+	void writeTriggerSounds( wostream & );
+	void writeShapeParameters( wostream & );
+	void writeGlobalParameters( wostream & );
+	void writeShapes( wostream & );
+	void writeHeader( wostream & );
 
 	friend static unsigned int __stdcall readModelThreadProc( void * );
 };

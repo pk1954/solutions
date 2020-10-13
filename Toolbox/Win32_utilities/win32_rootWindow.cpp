@@ -8,8 +8,6 @@
 #include "win32_baseRefreshRate.h"
 #include "win32_rootWindow.h"
 
-using namespace std::chrono;
-
 RootWindow * GetRootWindow( HWND const hwnd )
 {
 	RootWindow * pRootWin = reinterpret_cast<RootWindow *>(GetUserDataPtr( hwnd ));

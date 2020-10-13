@@ -89,7 +89,7 @@ inline bool ProcessNNetScript
         pModelInterface->SetShapeErrorHandler( & errHndl );
         try
         {
-            wcout << L"Processing script file " << wstrPath << endl;
+            wcout << L"*** Processing script file " << wstrPath << endl;
             bSuccess = pScript->ScrProcess( wstrPath );
         }
         catch ( ShapeException e ) 

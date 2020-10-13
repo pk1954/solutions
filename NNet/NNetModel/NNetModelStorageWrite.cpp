@@ -10,6 +10,7 @@
 #include "ModelDescription.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
+#include "win32_util.h"
 #include "win32_HiResTimer.h"
 #include "NNetModelStorage.h"
 
@@ -23,14 +24,33 @@ void NNetModelStorage::Write( wostream & out )
     HiResTimer timer;
     timer.Start();
 
+    writeHeader( out );
+    out << endl;
+    writeDescription( out );
+    out << endl;
+    writeGlobalParameters( out );
+    out << endl;
+    writeShapes( out );
+    out << endl;
+    writeShapeParameters( out );
+    out << endl;
+    writeTriggerSounds( out );
+    out << endl;
+    writeMonitorData( out );
+    out << endl;
+
+    timer.Stop();
+    fMicroSecs const usTilStart { timer.GetMicroSecsTilStart( ) }; //for tests only
+
+    setUnsavedChanges( false );  // no unsaved changes
+}
+
+void NNetModelStorage::writeHeader( wostream & out )
+{
     static int const BUF_SIZE { 128 };
 
-    struct tm tmDest;
-    time_t t = std::time( nullptr );
-    localtime_s( &tmDest, &t );
-
     out << L"# NNetModel" << endl;
-    out << L"# Created " << put_time( &tmDest, L"%d-%m-%Y %H-%M-%S" ) << endl;
+    out << L"# Created " << Util::GetCurrentDateAndTime() << endl;
 
     WCHAR  infoBuf[BUF_SIZE];
     DWORD  bufCharCount = BUF_SIZE;
@@ -41,14 +61,15 @@ void NNetModelStorage::Write( wostream & out )
 
     // Get and display the user name.
     GetUserName( infoBuf, &bufCharCount );
-    out << L"# User name: " << infoBuf << endl;
+    out << L"# User name: " << infoBuf << endl; 
     out << endl;
 
     out << L"Protocol version " << PROTOCOL_VERSION << endl;
     out << endl;
+}
 
-    writeDescription( out );
-
+void NNetModelStorage::writeGlobalParameters( wostream & out )
+{
     Apply2GlobalParameters
     ( 
         [&]( tParameter const & par ) 
@@ -58,7 +79,10 @@ void NNetModelStorage::Write( wostream & out )
                 << endl; 
         }
     );
+}
 
+void NNetModelStorage::writeShapes( wostream & out )
+{
     m_CompactIds.resize( m_pModelReaderInterface->GetSizeOfShapeList() );
     ShapeId idCompact( 0 );
     for ( int i = 0; i < m_CompactIds.size( ); ++i )
@@ -67,29 +91,28 @@ void NNetModelStorage::Write( wostream & out )
             ? idCompact++
             : NO_SHAPE;
     }
-
-    out << endl;
     out << L"NrOfShapes = " << idCompact << endl;
     out << endl;
+    m_pModelWriterInterface->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { writeShape( out, shape ); } );
+    m_pModelWriterInterface->Apply2All<Pipe    >( [&]( Pipe     & shape ) { writeShape( out, shape ); } );
+}
 
-    m_pModelWriterInterface->Apply2All<BaseKnot>( [&]( BaseKnot & shape ) { WriteShape( out, shape ); } );
-    m_pModelWriterInterface->Apply2All<Pipe    >( [&]( Pipe     & shape ) { WriteShape( out, shape ); } );
-
-    out << endl;
-
+void NNetModelStorage::writeShapeParameters( wostream & out )
+{
     m_pModelWriterInterface->Apply2All<InputNeuron>
-    (
-        [&]( InputNeuron & inpNeuron )
-        { 
-            out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
-                << GetParameterName( tParameter::pulseRate ) 
-                << L" = " << inpNeuron.GetPulseFrequency( )
-                << endl; 
-        }
+        (
+            [&]( InputNeuron & inpNeuron )
+            { 
+                out << L"ShapeParameter InputNeuron " << getCompactIdVal( inpNeuron.GetId() ) << L" "
+                    << GetParameterName( tParameter::pulseRate ) 
+                    << L" = " << inpNeuron.GetPulseFrequency( )
+                    << endl; 
+            }
     );
+}
 
-    out << endl;
-
+void NNetModelStorage::writeTriggerSounds( wostream & out )
+{
     m_pModelWriterInterface->Apply2All<Neuron>
         ( 
             [&]( Neuron & neuron ) 
@@ -104,8 +127,13 @@ void NNetModelStorage::Write( wostream & out )
                 }
             } 
     );
+}
 
+void NNetModelStorage::writeMonitorData( wostream & out )
+{
     MonitorData const * const pMonitorData { m_pModelWriterInterface->GetMonitorData() };
+
+    out << L"NrOfTracks " << pMonitorData->GetNrOfTracks() << endl;
 
     pMonitorData->Apply2AllSignals
     ( 
@@ -113,14 +141,9 @@ void NNetModelStorage::Write( wostream & out )
         {
             Signal  const & signal  { pMonitorData->GetSignal( idSignal ) };
             ShapeId const   idShape { signal.GetSignalSource() };
-            // TODO
+            out << L"Signal track " << idSignal.GetTrackNr() << L" source shape " << idShape << endl; 
         }
     );
-
-    timer.Stop();
-    fMicroSecs const usTilStart { timer.GetMicroSecsTilStart( ) }; //for tests only
-
-    setUnsavedChanges( false );  // no unsaved changes
 }
 
 void NNetModelStorage::writeDescription( wostream & out )
@@ -133,40 +156,36 @@ void NNetModelStorage::writeDescription( wostream & out )
     }
 }
 
-void NNetModelStorage::WritePipe( wostream & out, Shape const & shape )
+void NNetModelStorage::writePipe( wostream & out, Pipe const & pipe )
 {
-    Pipe const & pipe { static_cast<Pipe const &>( shape ) };
-    out << getCompactIdVal( pipe.GetStartKnotId() ) << L"->" << getCompactIdVal( pipe.GetEndKnotId() ) ;
+    out << L" (" 
+        << getCompactIdVal( pipe.GetStartKnotId() ) 
+        << L"->" 
+        << getCompactIdVal( pipe.GetEndKnotId() ) 
+        << L")";
 }
 
-void NNetModelStorage::WriteMicroMeterPoint( wostream & out, MicroMeterPoint const & pnt )
-{
-    out << pnt.GetXvalue() << L"|" << pnt.GetYvalue();
-}
-
-void NNetModelStorage::WriteShape( wostream & out, Shape & shape )
+void NNetModelStorage::writeShape( wostream & out, Shape & shape )
 {
     if ( shape.IsDefined() )
     {
         out << L"CreateShape " << getCompactIdVal( shape.GetId() ) << L" " << shape.GetName();
-        out << L" (";
         switch ( shape.GetShapeType( ).GetValue() )
         {
         case ShapeType::Value::inputNeuron:
         case ShapeType::Value::neuron:
         case ShapeType::Value::knot:
-            WriteMicroMeterPoint( out, static_cast<BaseKnot &>( shape ).GetPosition() );
+            out << static_cast<BaseKnot const &>( shape ).GetPosition();
             break;
 
         case ShapeType::Value::pipe:
-            WritePipe( out, shape );
+            writePipe( out, static_cast<Pipe const &>( shape ) );
             break;
 
         default:
             assert( false );
             break;
         }
-        out << L")";
         out << endl;
     }
     if ( shape.IsMarked( ) )

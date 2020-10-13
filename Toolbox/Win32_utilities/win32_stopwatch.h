@@ -8,15 +8,17 @@
 #include <functional>
 #include "win32_hiResTimer.h"
 
+using std::wstring;
+
 class Stopwatch
 {
 public:
 	void Start( );
-	void Stop( std::wstring const wstr );
+	void Stop( wstring const wstr );
 
 void Clock
 ( 
-	std::wstring const wstr, function<void( )> code
+	wstring const wstr, function<void( )> code
 )
 {
 	Start( );

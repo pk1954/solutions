@@ -360,8 +360,10 @@ namespace Util
 	
     DWORD     GetNrOfCPUs( );
     ULONGLONG GetPhysicalMemory( );
-	wstring   GetCurrentDateAndTime( );
-	void      SetApplicationTitle( HWND const, int const, wstring const = L"" );
+    wstring   GetCurrentDateAndTime( );
+    wstring   GetComputerName( );
+    wstring   GetUserName( );
+    void      SetApplicationTitle( HWND const, int const, wstring const = L"" );
     void      StdOutConsole( );
     bool      EscapeKeyPressed();
 };

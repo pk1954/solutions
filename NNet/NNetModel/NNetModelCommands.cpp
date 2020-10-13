@@ -48,7 +48,6 @@ using std::unique_ptr;
 
 void NNetModelCommands::Initialize
 ( 
-	wostream                 * const pTraceStream,
 	NNetModelReaderInterface * const pReaderInterface,
 	NNetModelWriterInterface * const pWriterInterface,
 	Param                    * const pParam,
@@ -57,7 +56,6 @@ void NNetModelCommands::Initialize
 	Observable               * const pDynamicModelObservable
 ) 
 { 
-	m_pTraceStream            = pTraceStream;
 	m_pModelReaderInterface   = pReaderInterface;
 	m_pModelWriterInterface   = pWriterInterface;
 	m_pCmdStack               = pCmdStack;
@@ -122,11 +120,9 @@ void NNetModelCommands::Attach2Monitor( ShapeId const id )
 		TraceStream( ) << __func__ << id << endl;
 	if ( m_pModelReaderInterface->IsOfType<Neuron>( id ) )
 	{
-		MonitorData * pMonitorData { m_pModelWriterInterface->GetMonitorData() }; 
-		unique_ptr<Signal> pSignal { make_unique<Signal>( * m_pModelReaderInterface, * m_pParam, * m_pDynamicModelObservable ) };
-		pSignal->SetSignalSource( id );
+		MonitorData * const pMonitorData { m_pModelWriterInterface->GetMonitorData() }; 
 		pMonitorData->InsertTrack( TrackNr(0) );
-		pMonitorData->AddSignal( move(pSignal), TrackNr(0) );
+		pMonitorData->AddSignal( id, TrackNr(0) );
 	}
 }
 

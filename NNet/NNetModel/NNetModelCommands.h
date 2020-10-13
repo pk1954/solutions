@@ -20,6 +20,7 @@ class NNetModelWriterInterface;
 
 struct SoundDescr;
 
+using std::wcout;
 using std::wstring;
 using std::wostream;
 
@@ -28,7 +29,6 @@ class NNetModelCommands
 public:
     void Initialize
     ( 
-        wostream                 * const,
         NNetModelReaderInterface * const,
         NNetModelWriterInterface * const,
         Param                    * const,
@@ -79,12 +79,11 @@ private:
     void deleteShape( Shape * const );
     void deleteSelection();
 
-    bool       IsTraceOn  ( ) const { return   m_bTrace; }
-    wostream & TraceStream( )       { return * m_pTraceStream; }
+    bool       IsTraceOn  ( ) const { return m_bTrace; }
+    wostream & TraceStream( )       { return wcout; }
 
     bool                       m_bTrace                  { true };
     CommandStack             * m_pCmdStack               { nullptr };
-    wostream                 * m_pTraceStream            { nullptr };
     NNetModelReaderInterface * m_pModelReaderInterface   { nullptr };
     NNetModelWriterInterface * m_pModelWriterInterface   { nullptr };
     NNetModelStorage         * m_pStorage                { nullptr };

@@ -74,7 +74,7 @@ private:
 	float      m_fYvaluesPerPixel   { 0.2f };
 
 	SignalId m_idSigSelected      { };
-	TrackNr  m_trackNrHighlighted { };
+	TrackNr  m_trackNrHighlighted { TrackNr::NULL_VAL() };
 	PIXEL    m_pixLastY           { PIXEL::NULL_VAL() }; // last cursor position during selection 
 	PIXEL    m_pixMoveOffsetY     { 0_PIXEL };           // vertical offset when moving signal
 };

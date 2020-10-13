@@ -11,7 +11,6 @@
 #include "SlowMotionDisplay.h"
 
 using std::to_wstring;
-using namespace std::chrono;
 
 void SlowMotionDisplay::Initialize
 (

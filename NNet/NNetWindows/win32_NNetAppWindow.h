@@ -20,6 +20,7 @@
 #include "BeaconAnimation.h"
 #include "UnsavedChangesObserver.h"
 #include "MonitorData.h"
+#include "SignalFactory.h"
 #include "win32_event.h"
 #include "win32_sound.h"
 #include "win32_actionTimer.h"
@@ -101,7 +102,7 @@ private:
 	ReadModelResult         * m_pReadModelResult         { nullptr };
 	WinSound                  m_sound                    { };
 	int                       m_statusMessagePart        { };
-	wofstream                 m_traceStream              { };
+//	wofstream                 m_traceStream              { };
 	WinManager                m_WinManager               { };
 	StatusBar                 m_StatusBar                { };
 	Script                    m_script                   { };
@@ -149,6 +150,7 @@ private:
 	BeaconAnimation           m_beaconAnimation          { };
 	ScriptFile                m_scriptFile               { };
 	MonitorData               m_monitorData              { };
+	SignalFactory             m_signalFactory            { };
 
 	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 };

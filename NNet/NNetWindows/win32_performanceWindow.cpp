@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "Strsafe.h"
-#include <chrono>
 #include "util.h"
 #include "Knot.h"
 #include "Neuron.h"

@@ -6,6 +6,8 @@
 #include <filesystem>
 #include <assert.h>
 #include "ModelDescription.h"
+#include "SignalFactory.h"
+#include "MonitorData.h"
 #include "NNetError.h"
 #include "NNetParameters.h"
 #include "InputNeuron.h"
@@ -212,6 +214,45 @@ private:
     NNetModelWriterInterface * m_pModelWriterInterface;
 };
 
+class WrapNrOfTracks : public Script_Functor
+{
+public:
+    WrapNrOfTracks( NNetModelWriterInterface * const pNNetModel ) :
+        m_pModelWriterInterface( pNNetModel )
+    { };
+
+    virtual void operator() ( Script & script ) const 
+    {
+        unsigned int  const uiNrOfTracks { script.ScrReadUint() };
+        MonitorData * const pMonitorData { m_pModelWriterInterface->GetMonitorData() };
+        for ( unsigned int ui = 0; ui < uiNrOfTracks; ++ui )
+            pMonitorData->InsertTrack( TrackNr(0) );
+    }
+private:
+    NNetModelWriterInterface * m_pModelWriterInterface;
+};
+
+class WrapSignal : public Script_Functor
+{
+public:
+    WrapSignal( NNetModelWriterInterface * const pNNetModel ) :
+        m_pModelWriterInterface( pNNetModel )
+    { };
+
+    virtual void operator() ( Script & script ) const 
+    {
+        script.ScrReadString( L"track" );
+        TrackNr const trackNr { script.ScrReadInt() };
+        script.ScrReadString( L"source" );
+        script.ScrReadString( L"shape" );
+        ShapeId const idShapeSignalSource { script.ScrReadLong () };
+        m_pModelWriterInterface->GetMonitorData()->AddSignal( idShapeSignalSource, trackNr );
+    }
+
+private:
+    NNetModelWriterInterface * m_pModelWriterInterface;
+};
+
 void NNetModelStorage::prepareForReading( )
 {
     SymbolTable::ScrDefConst( L"Description", new WrapDescription( & m_wstrDescription ) );
@@ -224,6 +265,8 @@ void NNetModelStorage::prepareForReading( )
     DEF_NNET_FUNC( ShapeParameter );
     DEF_NNET_FUNC( MarkShape );
     DEF_NNET_FUNC( TriggerSound );
+    DEF_NNET_FUNC( NrOfTracks );
+    DEF_NNET_FUNC( Signal );
 #undef DEF_NET_FUNC
 
     ShapeType::Apply2All

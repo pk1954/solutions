@@ -11,6 +11,9 @@
 #include "win32_baseWindow.h"
 #include "win32_baseDialog.h"
 
+using std::wstring;
+using std::unordered_map;
+
 class RootWindow;
 
 class WinManager
@@ -19,9 +22,9 @@ public:
     WinManager( );
     virtual ~WinManager( ) { };
 
-	void AddWindow( std::wstring const, UINT const, HWND,               bool const, bool const );
-	void AddWindow( std::wstring const, UINT const, BaseWindow const &, bool const, bool const );
-	void AddWindow( std::wstring const, UINT const, BaseDialog const &, bool const, bool const );
+	void AddWindow( wstring const, UINT const, HWND,               bool const, bool const );
+	void AddWindow( wstring const, UINT const, BaseWindow const &, bool const, bool const );
+	void AddWindow( wstring const, UINT const, BaseDialog const &, bool const, bool const );
 
 	void RemoveWindow( UINT const id )
 	{
@@ -108,22 +111,22 @@ public:
     void StoreWindowConfiguration( );
 
 private:
-    std::wstring const MONITOR_CONFIG_FILE     = L"MonitorConfigurations.cnf";
-    std::wstring const WINDOW_CONFIG_FILE_STUB = L"WindowConfiguration";
+    wstring const MONITOR_CONFIG_FILE     = L"MonitorConfigurations.cnf";
+    wstring const WINDOW_CONFIG_FILE_STUB = L"WindowConfiguration";
 
     struct MAP_ELEMENT
     {
-        std::wstring const   m_wstr;
-		BaseWindow   const * m_pBaseWindow;    // Normally WinManager handles BaseWindows
-		HWND         const   m_hwnd;           // but in some cases also naked HWNDs are used
-		bool         const   m_bTrackPosition; // if true, winManager sets window position from config file
-		bool         const   m_bTrackSize;     // if true, winManager sets window size from config file
+        wstring    const   m_wstr;
+		BaseWindow const * m_pBaseWindow;    // Normally WinManager handles BaseWindows
+		HWND       const   m_hwnd;           // but in some cases also naked HWNDs are used
+		bool       const   m_bTrackPosition; // if true, winManager sets window position from config file
+		bool       const   m_bTrackSize;     // if true, winManager sets window size from config file
     };
 
-    std::unordered_map< UINT, MAP_ELEMENT > m_map;
+    unordered_map< UINT, MAP_ELEMENT > m_map;
     
-    std::wstring m_strWindowConfigurationFile;
-    int          m_iNrOfMonitorConfigurations;
+    wstring m_strWindowConfigurationFile;
+    int     m_iNrOfMonitorConfigurations;
 
 	ScriptErrorHandler::ScriptException m_errorInfo {};
 
@@ -132,11 +135,11 @@ private:
 
 	void addWindow
 	( 
-		std::wstring const,
-		UINT         const,
-		HWND         const,
-		BaseWindow   const * const,
-		bool         const,
-		bool         const
+		wstring    const,
+		UINT       const,
+		HWND       const,
+		BaseWindow const * const,
+		bool       const,
+		bool       const
 	);
 };

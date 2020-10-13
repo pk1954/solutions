@@ -114,17 +114,31 @@ ULONGLONG Util::GetPhysicalMemory( )  // in bytes
 
 wstring Util::GetCurrentDateAndTime( )
 {
-    struct tm newtime;  
     __time64_t long_time;  
-    _time64( & long_time );                                  // Get time as 64-bit integer.  
-    errno_t err = _localtime64_s( & newtime, & long_time );  // Convert to local time.  
-	stringbuf buf;
-	ostream os ( & buf );
-	os << std::put_time( & newtime, "%c" );
-	//wstring_convert< std::codecvt_utf8_utf16<wchar_t> > converter;
-	//wstring wstrTime = converter.from_bytes( buf.str( ) );
-	//return wstrTime;
-    return L"+++ not implemented +++";
+    _time64( & long_time ); 
+    static int const SIZE { 128 };
+    wchar_t buffer[SIZE];
+    errno_t err = _wctime64_s( buffer, SIZE, & long_time );
+    assert( ! err );
+    return wstring( buffer );
+}
+
+wstring Util::GetComputerName( )
+{
+    static int const SIZE { 128 };
+    wchar_t buffer[SIZE];
+    DWORD   bufCharCount { SIZE };
+    ::GetComputerName( buffer, & bufCharCount );
+    return wstring( buffer );
+}
+
+wstring Util::GetUserName( )
+{
+    static int const SIZE { 128 };
+    wchar_t buffer[SIZE];
+    DWORD   bufCharCount { SIZE };
+    ::GetUserName( buffer, & bufCharCount );
+    return wstring( buffer );
 }
 
 void Util::SetApplicationTitle

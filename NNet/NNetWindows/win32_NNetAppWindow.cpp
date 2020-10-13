@@ -93,9 +93,13 @@ NNetAppWindow::NNetAppWindow( )
 	Stopwatch stopwatch;
 
 	m_hwndConsole = GetConsoleWindow( );
-	BringWindowToTop( m_hwndConsole );
+//	BringWindowToTop( m_hwndConsole );
+	SwitchWcoutTo( L"main_trace.out" );
 
-	m_traceStream = OpenTraceFile( L"main_trace.out" );
+	wcout << L"*** Application start at " << Util::GetCurrentDateAndTime() << endl;
+	wcout << L"*** Computer name: "       << Util::GetComputerName()       << endl;
+	wcout << L"*** User name:     "       << Util::GetUserName()           << endl;
+	wcout << endl;
 
 	m_preferences.Initialize( & m_sound );
 	Neuron::SetSound( & m_sound );
@@ -108,7 +112,7 @@ NNetAppWindow::NNetAppWindow( )
 
 NNetAppWindow::~NNetAppWindow( )
 {
-	m_traceStream.close();
+//	m_traceStream.close();
 }
 
 void NNetAppWindow::Start( MessagePump & pump )
@@ -124,14 +128,15 @@ void NNetAppWindow::Start( MessagePump & pump )
 	);
 
 	m_pReadModelResult = new NNetReadModelResult( m_hwndApp );
-	m_monitorData    .Initialize( & m_staticModelObservable );
-	m_model          .Initialize( & m_monitorData, & m_parameters, & m_staticModelObservable, & m_dynamicModelObservable, & m_modelTimeObservable );
-	m_modelStorage   .Initialize( & m_modelReaderInterface, & m_modelWriterInterface, & m_parameters, & m_unsavedChangesObservable, & m_script, m_pReadModelResult, & m_descWindow );
-	m_modelCommands  .Initialize( & m_traceStream, & m_modelReaderInterface, & m_modelWriterInterface, & m_parameters, & m_cmdStack, & m_modelStorage, & m_dynamicModelObservable );
-	m_cmdStack       .Initialize( & m_modelWriterInterface, & m_commandStackObservable );
-	m_NNetColors     .Initialize( & m_blinkObservable );
-	m_sound          .Initialize( & m_soundOnObservable );
-	m_beaconAnimation.Initialize( & m_beaconObservable );
+	m_signalFactory  .Initialize( m_modelReaderInterface, m_parameters, m_dynamicModelObservable );
+	m_monitorData    .Initialize( &m_staticModelObservable, &m_signalFactory );
+	m_model          .Initialize( &m_monitorData, &m_parameters, &m_staticModelObservable, &m_dynamicModelObservable, &m_modelTimeObservable );
+	m_modelStorage   .Initialize( &m_modelReaderInterface, &m_modelWriterInterface, &m_parameters, &m_unsavedChangesObservable, &m_script, m_pReadModelResult, &m_descWindow );
+	m_modelCommands  .Initialize( &m_modelReaderInterface, &m_modelWriterInterface, &m_parameters, &m_cmdStack, &m_modelStorage, &m_dynamicModelObservable );
+	m_cmdStack       .Initialize( &m_modelWriterInterface, &m_commandStackObservable );
+	m_NNetColors     .Initialize( &m_blinkObservable );
+	m_sound          .Initialize( &m_soundOnObservable );
+	m_beaconAnimation.Initialize( &m_beaconObservable );
 	m_NNetController .Initialize
 	( 
 		& m_modelStorage,
@@ -480,7 +485,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			if ( bSuccess )
 			{
 				m_StatusBar.DisplayInPart( m_statusMessagePart, L"" );
-				m_preferences.WritePreferences( m_modelStorage.GetModelPath() );
+//				m_preferences.WritePreferences( m_modelStorage.GetModelPath() );
 				m_mainNNetWindow.CenterModel( );  // computation will be started when done
 			}
 			else

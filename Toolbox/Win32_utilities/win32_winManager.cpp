@@ -11,8 +11,10 @@
 #include "win32_winManager.h"
 
 using std::endl;
+using std::pair;
 using std::wcout;
 using std::wofstream;
+using std::to_wstring;
 
 using Util::operator==;
 using Util::operator!=;
@@ -199,30 +201,33 @@ bool WinManager::GetWindowConfiguration( )
 
     Script scriptWindowConfig;
 	
-	if (! scriptWindowConfig.ScrProcess(MONITOR_CONFIG_FILE))
+	if ( ! scriptWindowConfig.ScrProcess( MONITOR_CONFIG_FILE ) )
 	{
-		wcout << MONITOR_CONFIG_FILE << L" not found or bad" << endl;
+		wcout << L"+++ Monitor configuration file " << MONITOR_CONFIG_FILE << L" not found or bad" << endl;
 	} 
 	else if ( m_strWindowConfigurationFile.empty() )
 	{
-		wcout << L"Monitor configuration unknown" << endl;
+		wcout << L"+++ Monitor configuration unknown" << endl;
 	}
     else
     {
-	    wcout << L"Window configuration file " << m_strWindowConfigurationFile;
 	    if ( ! scriptWindowConfig.ScrProcess( m_strWindowConfigurationFile ) )
 	    {
-            wcout << L" missing or bad" << endl;
+            wcout << L"+++ Window configuration file " 
+                  << m_strWindowConfigurationFile
+                  << L" missing or bad" << endl;
 	    }
 	    else
 	    {
-            wcout << L" sucessfully processed" << endl;
+            wcout << L"*** Window configuration file " 
+                  << m_strWindowConfigurationFile
+                  << L" sucessfully processed" << endl;
             bRes = true;
 	    }
     }
 
     if ( ! bRes )
-        wcout << L"Using default window positions" << std::endl;
+        wcout << L"*** Using default window positions" << endl;
 
     return bRes;
 }
@@ -304,7 +309,7 @@ void WinManager::StoreWindowConfiguration( )
 {
     if ( m_strWindowConfigurationFile.empty( ) )
     {
-        m_strWindowConfigurationFile = WINDOW_CONFIG_FILE_STUB + std::to_wstring( ++m_iNrOfMonitorConfigurations ) + L".cnf";
+        m_strWindowConfigurationFile = WINDOW_CONFIG_FILE_STUB + to_wstring( ++m_iNrOfMonitorConfigurations ) + L".cnf";
 
         dumpMonitorConfiguration( );
     }
@@ -333,17 +338,17 @@ WinManager::WinManager( ) :
 
 void WinManager::addWindow
 ( 
-    std::wstring const         wstrName, 
-    UINT         const         id, 
-    HWND         const         hwnd, 
-    BaseWindow   const * const pBaseWindow,
-    bool         const         bTrackPosition,
-    bool         const         bTrackSize
+    wstring    const         wstrName, 
+    UINT       const         id, 
+    HWND       const         hwnd, 
+    BaseWindow const * const pBaseWindow,
+    bool       const         bTrackPosition,
+    bool       const         bTrackSize
 )
 {
     if ( id != 0 )
     {
-        m_map.insert( std::pair< UINT, MAP_ELEMENT >( id, { wstrName, pBaseWindow, hwnd, bTrackPosition, bTrackSize } ) );
+        m_map.insert( pair< UINT, MAP_ELEMENT >( id, { wstrName, pBaseWindow, hwnd, bTrackPosition, bTrackSize } ) );
         SymbolTable::ScrDefConst( wstrName, static_cast<ULONG>(id) );
     }
 }
@@ -357,17 +362,17 @@ void WinManager::AddWindow
 	bool    const bTrackSize
 )
 {
-	assert( hwnd != nullptr );
-    addWindow( wstrName, id, hwnd, nullptr, bTrackPosition, bTrackSize );
+	if ( hwnd  )
+        addWindow( wstrName, id, hwnd, nullptr, bTrackPosition, bTrackSize );
 }
 
 void WinManager::AddWindow
 ( 
-	std::wstring const   wstrName, 
-	UINT         const   id, 
-	BaseWindow   const & baseWindow,
-	bool         const   bTrackPosition,
-	bool         const   bTrackSize
+	wstring    const   wstrName, 
+	UINT       const   id, 
+	BaseWindow const & baseWindow,
+	bool       const   bTrackPosition,
+	bool       const   bTrackSize
 )
 {
     addWindow( wstrName, id, baseWindow.GetWindowHandle(), & baseWindow, bTrackPosition, bTrackSize );
@@ -375,11 +380,11 @@ void WinManager::AddWindow
 
 void WinManager::AddWindow
 ( 
-	std::wstring const   wstrName, 
-	UINT         const   id, 
-	BaseDialog   const & baseDialog,
-	bool         const   bTrackPosition,
-	bool         const   bTrackSize
+	wstring    const   wstrName, 
+	UINT       const   id, 
+	BaseDialog const & baseDialog,
+	bool       const   bTrackPosition,
+	bool       const   bTrackSize
 )
 {
     addWindow( wstrName, id, baseDialog.GetWindowHandle(), nullptr, bTrackPosition, bTrackSize );

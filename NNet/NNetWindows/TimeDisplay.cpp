@@ -62,8 +62,6 @@ private:
 
 /////// functions of class TimeDisplay ///////
 
-using namespace std::chrono;
-
 void TimeDisplay::Start
 (
 	StatusBar                      * pStatusBar,

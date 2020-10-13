@@ -9,6 +9,7 @@
 #include "UtilityWrappers.h"
 #include "CommandStack.h"
 #include "MonitorData.h"
+#include "SignalFactory.h"
 #include "NNetModelCommands.h"
 #include "NNetModelReaderInterface.h"
 #include "NNetModelWriterInterface.h"
@@ -59,8 +60,6 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	wcout << VER_PRODUCTNAME_STR << L" " << VER_FILE_DESCRIPTION_STR << endl;
 	wcout << L"Build at " << __DATE__ << L" " << __TIME__ << endl;
 
-	wostream & m_traceStream { wcout };
-
 	NNetModelReaderInterface m_modelReaderInterface     { };
 	NNetModelWriterInterface m_modelWriterInterface     { };
 	NNetModelCommands        m_modelCommands            { };
@@ -74,21 +73,27 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	Script                   m_script                   { };
 	CommandStack             m_cmdStack                 { };
 	MonitorData              m_monitorData              { };
+	SignalFactory            m_signalFactory            { };
 	ReadModelResult        * m_pReadModelResult         { nullptr };
 
 	DefineUtilityWrapperFunctions( );
 	DefineNNetWrappers( & m_modelCommands );
 
 	m_pReadModelResult = new ConsReadModelResult( & m_modelStorage );
+	m_signalFactory.Initialize
+	( 
+		m_modelReaderInterface, 
+		m_parameters, 
+		m_dynamicModelObservable 
+	);
 	m_modelCommands.Initialize
 	( 
-		& m_traceStream, 
 		& m_modelReaderInterface, 
 		& m_modelWriterInterface, 
 		& m_parameters, 
 		& m_cmdStack, 
 		& m_modelStorage, 
-		& m_dynamicModelObservable 
+		& m_dynamicModelObservable
 	);
 	m_model.Initialize
 	( 
@@ -125,7 +130,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	m_modelStorage.Read( false, L"std.mod" );
 
 	if ( ProcessNNetScript( & m_script, & m_modelWriterInterface, wstrInputFile ) )
-		wcout << L" ***** NNetSimuConsole terminated successfully";
+		wcout << L" *** NNetSimuConsole terminated successfully";
 	else 
 		wcout << L"+++ NNetSimuConsole terminated with error";
 	wcout << endl;

@@ -262,7 +262,7 @@ SignalNr const MonitorWindow::findSignal( TrackNr const trackNr, PixelPoint cons
 	fPIXEL      const fPixTrackHeight { calcTrackHeight() };
 	fPIXEL            fPixYoffset     { fPixTrackHeight };
 	fPIXEL            fPixBestDelta   { fPIXEL::MAX_VAL() };
-	m_pMonitorData->Apply2AllSignals
+	m_pMonitorData->Apply2AllSignalsInTrack
 	(
 		trackNr,
 		[&](SignalNr const signalNr)
