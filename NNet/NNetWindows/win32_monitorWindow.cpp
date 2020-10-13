@@ -226,14 +226,14 @@ bool MonitorWindow::testSignal  // if signal is "better" than fPixBestDelta, upd
 ( 
 	Signal     const & signal,
 	fMicroSecs const   umTime,
-	fPIXEL     const   fPixOffset,
+	fPIXEL     const   fPixCrsrOffset,  // vertical distance from crsr pos to zero line of track
 	fPIXEL           & fPixBestDelta
 ) const
 {
 	if ( umTime >= signal.GetStartTime() )
 	{
-		fPIXEL const fPixYvalueAbs { getYvalue( signal, umTime ) };
-		fPIXEL const fPixDelta     { fPixYvalueAbs + fPixOffset };
+		fPIXEL const fPixAmplitude { getYvalue( signal, umTime ) };
+		fPIXEL const fPixDelta     { fPixAmplitude - fPixCrsrOffset };
 		fPIXEL const fPixDeltaAbs  { fPixDelta.GetAbs( ) };
 		if ( fPixDeltaAbs < fPixBestDelta )
 		{
