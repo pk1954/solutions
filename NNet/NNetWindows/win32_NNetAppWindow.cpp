@@ -253,7 +253,8 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_performanceWindow.Show( true );
 	m_descWindow       .Show( true );
 
-	m_WinManager.GetWindowConfiguration( );
+	if ( ! m_WinManager.GetWindowConfiguration( ) )
+		Util::Show( m_hwndApp, true );
 
 	m_appMenu.Notify( true );
 
