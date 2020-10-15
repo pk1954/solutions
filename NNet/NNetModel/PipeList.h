@@ -16,11 +16,11 @@ class PipeList
 {
 public:
 
-size_t  const   Size()     const { return   m_list.size(); }
-bool    const   IsEmpty()  const { return   m_list.empty(); }
+size_t const Size()    const { return m_list.size(); }
+bool   const IsEmpty() const { return m_list.empty(); }
 
-Pipe       & GetFirst     ()       { return * m_list.at( 0 ); }
-Pipe const & GetFirstConst() const { return * m_list.at( 0 ); }
+Pipe       & GetFirst()       { return * m_list.at( 0 ); }
+Pipe const & GetFirst() const { return * m_list.at( 0 ); }
 
 void ClearPipeList( ) {	m_list.clear(); }
 

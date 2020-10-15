@@ -337,7 +337,7 @@ public:
 
 	void SelectAllShapes( tBoolOp const op ) 
 	{ 
-		Apply2AllShapes( [&](Shape  &s) { s.Select( op ); } ); 
+		Apply2AllShapes( [&](Shape & s) { s.Select( op ); } ); 
 	}
 
 private:

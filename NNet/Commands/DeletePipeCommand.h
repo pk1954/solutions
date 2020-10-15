@@ -25,6 +25,7 @@ public:
 
 	virtual void Do( NNetModelWriterInterface * const pModel )
 	{
+		m_pPipe->CheckShape();
 		m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe );
 		if ( m_pStartKnot->IsOrphanedKnot( ) )
 			pModel->RemoveFromModel( m_pStartKnot );
@@ -38,12 +39,12 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface * const pModel )
 	{
-		m_pPipe->CheckShape();
 		m_pStartKnot->m_connections.AddOutgoing( m_pPipe );
 		m_pEndKnot  ->m_connections.AddIncoming( m_pPipe );
 		pModel->Store2Model( m_pStartKnot );
 		pModel->Store2Model( m_pEndKnot );
 		pModel->Store2Model( m_pPipe );
+		m_pPipe->CheckShape();
 	}
 
 private:

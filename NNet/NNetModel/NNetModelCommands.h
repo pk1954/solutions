@@ -77,7 +77,6 @@ public:
 
 private:
     void deleteShape( Shape * const );
-    void deleteSelection();
 
     bool       IsTraceOn  ( ) const { return m_bTrace; }
     wostream & TraceStream( )       { return wcout; }

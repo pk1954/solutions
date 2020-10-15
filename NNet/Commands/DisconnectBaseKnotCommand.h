@@ -31,24 +31,24 @@ public:
         MicroMeterPoint umPos { m_pBaseKnot->GetPosition() };
         m_pBaseKnot->m_connections.Apply2AllInPipes
         ( 
-            [&]( Pipe & pipe ) // every incoming Pipe needs a new end knot
+            [&]( Pipe & pipe ) // every incoming pipe needs a new end knot
             { 
                 Knot * pKnotNew { pModel->NewBaseKnot<Knot>( umPos ) };
-                pKnotNew->m_connections.AddIncoming( & pipe );
-                m_endKnots.push_back( pKnotNew );
-                pipe.DislocateEndPoint( );
-            } 
-        );
+                pKnotNew->m_connections.AddIncoming( & pipe );  // prepare new knot as far as possible
+                pipe.DislocateEndPoint( );                      // dislocate new knot 
+                m_endKnots.push_back( pKnotNew );               // store new knot for later
+            }                                                   // but do not touch m_pBaseKnot
+        );  // Knots in m_endKnots have their incoming pipe set
         m_pBaseKnot->m_connections.Apply2AllOutPipes
         ( 
-            [&]( Pipe & pipe ) // every incoming Pipe needs a new end knot
+            [&]( Pipe & pipe ) // every outgoing pipe needs a new start knot
             { 
                 Knot * pKnotNew { pModel->NewBaseKnot<Knot>( umPos ) };
-                pKnotNew->m_connections.AddOutgoing( & pipe );
-                m_startKnots.push_back( pKnotNew );
-                pipe.DislocateStartPoint( );
-            } 
-        );
+                pKnotNew->m_connections.AddOutgoing( & pipe );  // prepare new knot as far as possible
+                pipe.DislocateStartPoint( );                    // dislocate new knot 
+                m_startKnots.push_back( pKnotNew );             // store new knot for later
+            }                                                   // but do not touch m_pBaseKnot
+        );  // Knots in m_startKnots have their outgoing pipe set
     }
 
     ~DisconnectBaseKnotCommand( )
@@ -63,12 +63,14 @@ public:
     {
         for ( Knot * pKnot : m_startKnots )
         {
-            pKnot->m_connections.GetFirstOutgoing().SetStartKnot( pKnot );
+            Pipe & pipeOut { pKnot->m_connections.GetFirstOutgoing() };
+            pipeOut.SetStartKnot( pKnot );
             pModel->Store2Model( pKnot );
         }
         for ( Knot * pKnot : m_endKnots )
         {
-            pKnot->m_connections.GetFirstIncoming().SetEndKnot( pKnot );
+            Pipe & pipeIn { pKnot->m_connections.GetFirstIncoming() };
+            pipeIn.SetEndKnot( pKnot );
             pModel->Store2Model( pKnot );
         }
         m_pBaseKnot->ClearConnections();
@@ -92,7 +94,8 @@ public:
             m_pBaseKnot->m_connections.AddIncoming( & pipeIn );
             pModel->RemoveFromModel( pKnot );
         }
-        pModel->Store2Model( m_pBaseKnot );
+        if ( m_bDelete || m_pBaseKnot->IsKnot() )
+            pModel->Store2Model( m_pBaseKnot );
     }
 
 private:

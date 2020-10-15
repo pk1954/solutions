@@ -100,20 +100,6 @@ void NNetModelCommands::deleteShape( Shape* const pShape )
 	m_pCmdStack->NewCommand( pCommand );
 }
 
-void NNetModelCommands::deleteSelection( )
-{
-	ShapeList list;                                       // detour with secondary list is neccessary!
-	m_pModelWriterInterface->GetShapeList                 // cannot delete shapes directly in Apply2All
-	(                                                        
-		list, 
-		[&]( Shape const & s ) { return s.IsSelected(); } // first construct list
-	); 
-	list.Apply2All                                        // then run through list 
-	( 
-		[&]( Shape * pShape ) {	deleteShape( pShape ); }  // and delete shapes in model
-	);                                                    // using pointers from list
-}
-
 void NNetModelCommands::Attach2Monitor( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
@@ -342,7 +328,19 @@ void NNetModelCommands::DeleteSelection( )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
 	m_pCmdStack->StartSeries();
-	deleteSelection();
+	{
+		ShapeList list;                                       // detour with secondary list is neccessary!
+		m_pModelWriterInterface->GetShapeList                 // cannot delete shapes directly in Apply2All
+		(                                                        
+			list, 
+			[&]( Shape const & s ) { return s.IsSelected(); } // first construct list
+		); 
+		list.Apply2All                                        // then run through list 
+		( 
+			[&]( Shape * pShape ) {	deleteShape( pShape ); }  // and delete shapes in model
+		);                                                    // using pointers from list
+	}
+
 	m_pCmdStack->StopSeries();
 }
 

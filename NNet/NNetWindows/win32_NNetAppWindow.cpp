@@ -406,9 +406,10 @@ void NNetAppWindow::OnClose( )
 {
 	if ( m_bStarted )
 	{
-		m_computeThread.LockComputation( );
+		m_computeThread.StopComputation( );
+//		m_computeThread.LockComputation( );
 		bool bRes { m_modelStorage.AskAndSave( ) };
-		m_computeThread.ReleaseComputationLock( );
+//		m_computeThread.ReleaseComputationLock( );
 		if ( bRes == false )
 			return;
 		m_WinManager.StoreWindowConfiguration( );
@@ -440,14 +441,15 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_SCRIPT_DIALOG:
-		m_computeThread.LockComputation( );
+//		m_computeThread.LockComputation( );
+		m_computeThread.StopComputation( );
 		ProcessNNetScript
 		( 
 			& m_script, 
 			& m_modelWriterInterface, 
 			ScriptFile::AskForFileName( L"in", L"Script files", tFileMode::read )
 		);
-		m_computeThread.ReleaseComputationLock( );
+//		m_computeThread.ReleaseComputationLock( );
 		break;
 
 	case IDM_SCRIPT_PROGRESS:
@@ -455,7 +457,8 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_NEW_MODEL:
-		m_computeThread.LockComputation( );  // will be restarted when centering complete
+		m_computeThread.StopComputation( );
+//		m_computeThread.LockComputation( );  // will be restarted when centering complete
 		if ( m_modelStorage.AskAndSave( ) )
 		{
 			m_modelCommands.ResetModel( );
@@ -463,18 +466,19 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			m_mainNNetWindow.Reset();
 			m_mainNNetWindow.CenterModel( );
 		}
-		else
-			m_computeThread.ReleaseComputationLock( );
+//		else
+//			m_computeThread.ReleaseComputationLock( );
 		break;
 
 	case IDM_OPEN_MODEL:
 		{
-			m_computeThread.LockComputation( );
+			m_computeThread.StopComputation( );
+//			m_computeThread.LockComputation( );
 			bool bRes { m_modelStorage.AskAndSave( ) };
-			m_computeThread.ReleaseComputationLock( );
+//			m_computeThread.ReleaseComputationLock( );
 			if ( bRes && m_modelStorage.AskModelFile() )
 			{
-				m_computeThread.LockComputation( );  // will be restarted later
+//				m_computeThread.LockComputation( );  // will be restarted later
 				m_modelStorage.ReadAsync( );         // will trigger IDM_READ_MODEL_FINISHED when done
 			}
 		}

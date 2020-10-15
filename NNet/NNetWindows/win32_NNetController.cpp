@@ -239,6 +239,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         break;
 
     case IDM_SAVE_MODEL_AS:
+        m_pComputeThread->StopComputation( );
         if ( m_pStorage->SaveModelAs( ) )
             m_pPreferences->WritePreferences( m_pStorage->GetModelPath() );
         break;

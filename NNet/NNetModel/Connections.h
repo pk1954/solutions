@@ -20,8 +20,8 @@ public:
 	Pipe & GetFirstOutgoing() { return m_outgoing.GetFirst(); }
 	Pipe & GetFirstIncoming() { return m_incoming.GetFirst(); }
 
-	Pipe const & GetFirstOutgoingConst() const { return m_outgoing.GetFirstConst(); }
-	Pipe const & GetFirstIncomingConst() const { return m_incoming.GetFirstConst(); }
+	Pipe const & GetFirstOutgoing() const { return m_outgoing.GetFirst(); }
+	Pipe const & GetFirstIncoming() const { return m_incoming.GetFirst(); }
 
 	void AddIncoming( Pipe * const p ) { m_incoming.AddPipe( p ); }
 	void AddOutgoing( Pipe * const p ) { m_outgoing.AddPipe( p ); }
