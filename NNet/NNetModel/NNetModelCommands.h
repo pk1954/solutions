@@ -83,8 +83,8 @@ private:
 
     bool                       m_bTrace                  { true };
     CommandStack             * m_pCmdStack               { nullptr };
-    NNetModelReaderInterface * m_pModelReaderInterface   { nullptr };
-    NNetModelWriterInterface * m_pModelWriterInterface   { nullptr };
+    NNetModelReaderInterface * m_pMRI                    { nullptr };
+    NNetModelWriterInterface * m_pMWI                    { nullptr };
     NNetModelStorage         * m_pStorage                { nullptr };
     Param                    * m_pParam                  { nullptr };
     Observable               * m_pDynamicModelObservable { nullptr };

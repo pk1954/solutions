@@ -49,7 +49,7 @@ void NNetModel::StaticModelChanged( )
 
 void NNetModel::RecalcAllShapes( ) 
 { 
-	m_Shapes.Apply2AllShapes( [&]( Shape & shape ) { shape.Recalc( ); } );
+	m_Shapes.Apply2All( [&]( Shape & shape ) { shape.Recalc( ); } );
 	dynamicModelChanged( );
 } 
 
@@ -89,8 +89,8 @@ MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
 bool NNetModel::Compute( )
 {
 	bool bStop {false };
-	m_Shapes.Apply2AllShapes( [&]( Shape & shape ) { shape.Prepare( ); } );
-	m_Shapes.Apply2AllShapes( [&]( Shape & shape ) { if ( shape.CompStep( ) ) bStop = true; } );
+	m_Shapes.Apply2All( [&](Shape &s) { s.Prepare( ); } );
+	m_Shapes.Apply2All( [&](Shape &s) { if ( s.CompStep( ) ) bStop = true; } );
 	dynamicModelChanged();
 	incTimeStamp( );
 	return bStop;

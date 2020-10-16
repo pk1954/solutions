@@ -81,9 +81,9 @@ public:
 	template <typename T>    // const version
 	void Apply2All( function<void(T const &)> const & func ) const
 	{
-		m_pModel->GetShapes().Apply2AllShapes
+		m_pModel->GetShapes().Apply2All
 		( 
-			[&](Shape & s) { if ( HasType<T>(s) ) func( static_cast<T const &>(s) ); }
+			[&](Shape const & s) { if ( HasType<T>(s) ) func( static_cast<T const &>(s) ); }
 		);
 	}                        
 

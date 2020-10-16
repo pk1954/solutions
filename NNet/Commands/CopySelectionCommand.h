@@ -20,10 +20,10 @@ public:
 		m_copies = m_selectedShapes;
 		m_copies.Apply2All
 		(
-			[&]( Shape * pShape )
+			[&]( Shape & shape )
 			{
-				if ( pShape && pShape->GetShapeType().IsBaseKnotType( ) )
-					pShape->MoveShape( PIPE_WIDTH ); 
+				if ( shape.GetShapeType().IsBaseKnotType( ) )
+					shape.MoveShape( PIPE_WIDTH ); 
 			}
 		);
 	}
@@ -33,11 +33,7 @@ public:
 		pModel->SelectAllShapes( tBoolOp::opFalse );  // deselect all
 		m_copies.Apply2All                            // add copies
 		(
-			[&]( Shape * pShape )
-			{
-				if ( pShape )
-					pModel->Add2Model( pShape );
-			}
+			[&]( Shape & shape ) { pModel->Add2Model( shape ); }
 		);
 	}
 
@@ -45,11 +41,7 @@ public:
 	{ 
 		m_copies.Apply2All     // disconnect copies
 		(
-			[&]( Shape * pShape )
-			{
-				if ( pShape )
-					pModel->RemoveFromModel( pShape );
-			}
+			[&]( Shape & shape ) { pModel->RemoveFromModel( & shape ); }
 		);
 		SelectionCommand::Undo( pModel );             // restore original selection
 	}

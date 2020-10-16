@@ -15,6 +15,7 @@
 
 using std::swap;
 using std::vector;
+using std::unique_ptr;
 
 class NNetModelWriterInterface;
 
@@ -33,7 +34,7 @@ public:
     void StartSeries();
     void StopSeries();
 
-    void NewCommand( Command * );
+    void NewCommand( unique_ptr<Command> );
     bool UndoCommand( );
     bool RedoCommand( );
 
@@ -41,20 +42,26 @@ public:
 
 private:
 
-    vector<Command *>          m_CommandStack    { };
-    size_t                     m_iIndex          { 0 };
-    NNetModelWriterInterface * m_pModelInterFace { nullptr };
-    Observable               * m_pObservable     { nullptr };
-    bool                       m_bCombineCmds    { true };
+    vector<unique_ptr<Command>> m_CommandStack    { };
+    size_t                      m_iIndex          { 0 };     // index into m_Commandstack
+    bool                        m_bBracketOpen    { false }; // index in series?
+    bool                        m_bCombineCmds    { false };
+    NNetModelWriterInterface  * m_pModelInterFace { nullptr };
+    Observable                * m_pObservable     { nullptr };
 
     struct CmdStackException: public std::exception { };
 
-    void      clearRedoStack( );
-    void      push( Command * const );
     Command & getCurrentCmd( );
-    void      set2OlderCmd( );
     Command & getOlderCmd( );
-    void      set2YoungerCmd( );
     Command & getYoungerCmd( );
-    bool      isBracketCmd( );
+
+    void clearRedoStack( );
+    void push( unique_ptr<Command> );
+    void set2OlderCmd( );
+    void set2YoungerCmd( );
+    bool isBracketCmd( );
+    bool isOpenBracketCmd( );
+    bool isCloseBracketCmd( );
+    void undoAndSetToOlder();
+    void doAndSetToYounger();
 };

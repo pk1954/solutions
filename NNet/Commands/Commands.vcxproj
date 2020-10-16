@@ -81,6 +81,7 @@
     <ClInclude Include="Connect2PipeCommand.h" />
     <ClInclude Include="CopySelectionCommand.h" />
     <ClInclude Include="DeletePipeCommand.h" />
+    <ClInclude Include="DeleteShapeCommand.h" />
     <ClInclude Include="DisconnectBaseKnotCommand.h" />
     <ClInclude Include="InsertNeuronCommand.h" />
     <ClInclude Include="InsertTrackCommand.h" />

@@ -7,10 +7,13 @@
 #include <vector>
 #include "NNetModelWriterInterface.h"
 #include "Command.h"
+#include "ShapeId.h"
 #include "BaseKnot.h"
 #include "Knot.h"
 
 using std::vector;
+using std::wcout;
+using std::endl;
 
 // DisconnectBaseKnot and DeleteBaseKnot are nearly identical.
 // For Delete... functioniality create DisconnectBaseKnot 
@@ -28,6 +31,7 @@ public:
       :	m_pBaseKnot( pBaseKnot ),
         m_bDelete( bDelete )
     { 
+        wcout << L"DisconnectBaseKnotCommand " << L" shapeId = " << m_pBaseKnot->GetId( ) << endl;
         MicroMeterPoint umPos { m_pBaseKnot->GetPosition() };
         m_pBaseKnot->m_connections.Apply2AllInPipes
         ( 
@@ -61,6 +65,7 @@ public:
 
     virtual void Do( NNetModelWriterInterface * const pModel )
     {
+        wcout << L"DisconnectBaseKnotCommand " << L"Do " << L"shapeId = " << m_pBaseKnot->GetId( ) << endl;
         for ( Knot * pKnot : m_startKnots )
         {
             Pipe & pipeOut { pKnot->m_connections.GetFirstOutgoing() };
@@ -80,6 +85,7 @@ public:
 
     virtual void Undo( NNetModelWriterInterface * const pModel )
     {
+        wcout << L"DisconnectBaseKnotCommand " << L"Undo " << L"shapeId = " << m_pBaseKnot->GetId( ) << endl;
         for ( Knot * pKnot : m_startKnots )
         {
             Pipe & pipeOut { pKnot->m_connections.GetFirstOutgoing() };

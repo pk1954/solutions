@@ -15,16 +15,14 @@ public:
 	Connect2PipeCommand
 	( 
 		NNetModelWriterInterface * const pModel, 
-		BaseKnot                 * const pSrc, 
-		Pipe                     * const pDst 
+		ShapeId                    const idSrc,
+		ShapeId                    const idDst 
 	)
-	  :	m_pBaseKnot ( pSrc ),
-		m_pPipe     ( pDst ),
-		m_pNewPipe  ( nullptr ),
+	  :	m_pBaseKnot ( pModel->GetShapePtr<BaseKnot *>( idSrc ) ),
+		m_pPipe     ( pModel->GetShapePtr<Pipe     *>( idDst ) ),
+		m_pNewPipe  ( pModel->NewPipe( m_pStartKnot, m_pBaseKnot ) ),
 		m_pStartKnot( m_pPipe->GetStartKnotPtr( ) )
-	{ 
-		m_pNewPipe = pModel->NewPipe( m_pStartKnot, m_pBaseKnot );
-	}
+	{ }
 
 	~Connect2PipeCommand( )
 	{ 

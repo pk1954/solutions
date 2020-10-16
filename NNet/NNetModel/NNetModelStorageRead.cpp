@@ -79,7 +79,7 @@ public:
         script.ScrReadSpecial( L')' );
 
         if ( pShape )
-            m_pModelWriterInterface->InsertAtModelSlot( pShape, idFromScript );
+            m_pModelWriterInterface->InsertAtModelSlot( * pShape, idFromScript );
     }
 
 private:

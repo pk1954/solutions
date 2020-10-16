@@ -17,7 +17,7 @@ public:
 		m_fHertz( fNewValue )
 	{ }
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel )
 	{ 
 		m_fHertz = m_pInputNeuron->SetPulseFrequency( m_fHertz );
 		pModel->ClearModel( );

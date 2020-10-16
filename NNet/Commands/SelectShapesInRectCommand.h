@@ -16,7 +16,7 @@ public:
 		m_rect( rect )
 	{ }
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel )
 	{ 
 		pModel->Apply2AllInRect<Shape>( m_rect, [&]( Shape & shape ) { shape.Select( tBoolOp::opTrue ); } );
 	}

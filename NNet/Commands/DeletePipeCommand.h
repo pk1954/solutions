@@ -9,6 +9,9 @@
 #include "Command.h"
 #include "BaseKnot.h"
 
+using std::wcout;
+using std::endl;
+
 class DeletePipeCommand : public Command
 {
 public:
@@ -16,6 +19,7 @@ public:
 	DeletePipeCommand( Pipe * pPipe )
 		: m_pPipe( pPipe )
 	{
+		wcout << L"DeletePipeCommand " << L"shapeId = " << m_pPipe->GetId( ) << endl;
 		m_pPipe->CheckShape();
 		m_pStartKnot = m_pPipe->GetStartKnotPtr();
 		m_pEndKnot   = m_pPipe->GetEndKnotPtr();
@@ -25,6 +29,7 @@ public:
 
 	virtual void Do( NNetModelWriterInterface * const pModel )
 	{
+		wcout << L"DeletePipeCommand " << L"Do " << L"shapeId = " << m_pPipe->GetId( ) << endl;
 		m_pPipe->CheckShape();
 		m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe );
 		if ( m_pStartKnot->IsOrphanedKnot( ) )
@@ -39,6 +44,7 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface * const pModel )
 	{
+		wcout << L"DeletePipeCommand " << L"Undo " << L"shapeId = " << m_pPipe->GetId( ) << endl;
 		m_pStartKnot->m_connections.AddOutgoing( m_pPipe );
 		m_pEndKnot  ->m_connections.AddIncoming( m_pPipe );
 		pModel->Store2Model( m_pStartKnot );

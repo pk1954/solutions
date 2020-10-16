@@ -29,8 +29,8 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface * const pModel ) 
 	{ 
-		pModel->Apply2All<Shape>      ( [&]( Shape & shape ) { shape.Mark( tBoolOp::opFalse ); } );
-		m_markedShapes.Apply2AllShapes( [&]( Shape & shape ) { shape.Mark( tBoolOp::opTrue  ); } );
+		pModel->Apply2All<Shape>( [&]( Shape & shape ) { shape.Mark( tBoolOp::opFalse ); } );
+		m_markedShapes.Apply2All( [&]( Shape & shape ) { shape.Mark( tBoolOp::opTrue  ); } );
 	}
 
 private:

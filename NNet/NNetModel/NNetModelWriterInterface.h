@@ -26,8 +26,14 @@ public:
 
     NNetModel const & GetModel( ) const { return * m_pModel; }  // TODO: find better solution
 
-    Pipe    * const   NewPipe( BaseKnot * const, BaseKnot * const );
-    Shape   * const   GetShape( ShapeId const );
+    Pipe  * const NewPipe( BaseKnot * const, BaseKnot * const );
+    Shape * const GetShape( ShapeId const );
+
+    bool const IsPipe( ShapeId const id )
+    {
+        Shape * pShape { GetShapePtr<Shape *>( id ) };
+        return pShape && pShape->IsPipe( );
+    }
 
     void SelectBeepers();
     void SelectShape( ShapeId const, tBoolOp const );
@@ -55,7 +61,7 @@ public:
 	template <typename T>
 	void Apply2All( function<void(T &)> const & func ) const
 	{
-        m_pModel->GetShapes().Apply2AllShapes
+        m_pModel->GetShapes().Apply2All
         ( 
             [&](Shape & s) 
             {  
@@ -81,15 +87,18 @@ public:
 
     void CheckModel( ) { m_pModel->CheckModel(); }
     void ResetModel( ) { m_pModel->ResetModel(); }
-    void ClearModel( ) { m_pModel->GetShapes().Apply2AllShapes( [&](Shape  &s) { s.Clear( ); } ); }
+    void ClearModel( ) 
+    {
+        m_pModel->GetShapes().Apply2All( [&](Shape & s) { s.Clear( ); } ); 
+    }
 
     void SelectAllShapes( tBoolOp const op ) { m_pModel->SelectAllShapes( op ); }
 
-    void ReplaceInModel   ( Shape * const p2BeReplaced, Shape * pShape ) { m_pModel->ReplaceInModel ( p2BeReplaced, pShape ); }
-    void Store2Model      ( Shape * const pShape )                       { m_pModel->Store2Model    ( pShape ); }
-    void RemoveFromModel  ( Shape * const pShape )                       { m_pModel->RemoveFromModel( pShape ); }
-    void InsertAtModelSlot( Shape * const pShape, ShapeId const id )     { m_pModel->InsertAtModelSlot( pShape, id ); }
-    void Add2Model        ( Shape * const pShape )                       { InsertAtModelSlot( pShape, m_pModel->NewShapeListSlot( ) ); }
+    void ReplaceInModel   ( Shape & replaceMe, Shape & shape ) { m_pModel->ReplaceInModel ( replaceMe, shape ); }
+    void Store2Model      ( Shape * const pShape )             { m_pModel->Store2Model    ( * pShape ); }
+    void RemoveFromModel  ( Shape * const pShape )             { m_pModel->RemoveFromModel( * pShape ); }
+    void InsertAtModelSlot( Shape & shape, ShapeId const id )  { m_pModel->InsertAtModelSlot( shape, id ); }
+    void Add2Model        ( Shape & shape )                    { InsertAtModelSlot( shape, m_pModel->NewShapeListSlot( ) ); }
 
     MicroMeterPoint const OrthoVector( ShapeId const idPipe ) const
     {

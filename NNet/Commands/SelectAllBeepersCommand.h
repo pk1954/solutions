@@ -14,7 +14,7 @@ public:
 		:	SelectionCommand( pModel)
 	{ }
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel )
 	{ 
 		pModel->SelectBeepers();
 	}

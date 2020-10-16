@@ -24,18 +24,18 @@ public:
 		);
 	}
 
-	void clearTriggerSound( Neuron * const pNeuron )
+	void clearTriggerSound( Neuron * const pNeuron ) const
 	{
 		static const SoundDescr noSound { false, 0_Hertz, 0_MilliSecs };
 		pNeuron->SetTriggerSound( noSound );
 	}
 
-	void clearAll( NNetModelWriterInterface * const pModel )
+	void clearAll( NNetModelWriterInterface * const pModel ) const
 	{
 		pModel->Apply2All<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
-	void clearAllSelected( NNetModelWriterInterface * const pModel )
+	void clearAllSelected( NNetModelWriterInterface * const pModel ) const
 	{
 		pModel->Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}

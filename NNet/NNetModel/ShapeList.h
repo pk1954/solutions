@@ -51,7 +51,7 @@ public:
 	void CheckShapeList( ) const
 	{
 #ifdef _DEBUG
-		Apply2AllShapes( [&]( Shape & shape ) { checkShape( shape ); } );
+		Apply2All( [&]( Shape const & shape ) { checkShape( shape ); } );
 #endif
 	}
 
@@ -64,7 +64,7 @@ public:
 		for ( Shape * const pShape : src.m_list )
 		{
 			if ( pShape )
-				AddAt( ShallowCopy( pShape ), pShape->GetId() ); 
+				AddAt( shallowCopy( pShape ), pShape->GetId() ); 
 		}
 
 		for ( Shape * const pShape : src.m_list )
@@ -119,8 +119,6 @@ public:
 
 	void Reset( )
 	{
-		for (auto pShape : m_list)
-			delete pShape;
 		m_list.clear();
 	}
 
@@ -201,30 +199,29 @@ public:
 		m_list.clear( );
 	}
 
-	void Apply2All( function<void(Shape *)> const & func )
+	void Apply2All( function<void(Shape const &)> const & func ) const
 	{
-		for (Shape * pShape : m_list)    
-		{ 
-			func( pShape ); 
-		}
-	}                        
-
-	void Apply2AllShapes( function<void(Shape &)> const & func ) const
-	{
-		for (auto & pShape : m_list)    
+		for (Shape const * const pShape : m_list)
 		{ 
 			if ( pShape )
-			{
-				func( static_cast<Shape &>( * pShape) ); 
-			}
+				func( * pShape ); 
 		}
 	}                        
 
-	bool Apply2AllB( function<bool(Shape *)> const & func )
+	void Apply2All( function<void(Shape &)> const & func )
+	{
+		for (Shape * const pShape : m_list)    
+		{ 
+			if ( pShape )
+				func( * pShape ); 
+		}
+	}                        
+
+	bool Apply2AllB( function<bool(Shape const &)> const & func )
 	{
 		for (Shape * pShape : m_list)    
 		{ 
-			if ( func( pShape ) )
+			if ( pShape && func( * pShape ) )
 				return true;
 		}
 		return false;
@@ -337,14 +334,14 @@ public:
 
 	void SelectAllShapes( tBoolOp const op ) 
 	{ 
-		Apply2AllShapes( [&](Shape & s) { s.Select( op ); } ); 
+		Apply2All( [&](Shape & s) { s.Select( op ); } ); 
 	}
 
 private:
 	vector<Shape *>     m_list;
 	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
 
-	Shape * ShallowCopy( Shape const * const pShape ) const
+	Shape * shallowCopy( Shape const * const pShape ) const
 	{
 		if ( pShape )
 		{

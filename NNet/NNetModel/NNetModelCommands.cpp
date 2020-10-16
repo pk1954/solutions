@@ -56,8 +56,8 @@ void NNetModelCommands::Initialize
 	Observable               * const pDynamicModelObservable
 ) 
 { 
-	m_pModelReaderInterface   = pReaderInterface;
-	m_pModelWriterInterface   = pWriterInterface;
+	m_pMRI   = pReaderInterface;
+	m_pMWI   = pWriterInterface;
 	m_pCmdStack               = pCmdStack;
 	m_pStorage                = pStorage;
 	m_pParam                  = pParam;
@@ -80,33 +80,31 @@ void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << idSrc << idDst << endl;
-	BaseKnot * pSrc { m_pModelWriterInterface->GetShapePtr<BaseKnot *>( idSrc ) };
-	Shape    * pDst { m_pModelWriterInterface->GetShapePtr<Shape    *>( idDst ) };
-	Command  * pCommand;
-	if ( pDst->IsPipe() )   // connect baseknot to pipe
-		pCommand = new Connect2PipeCommand( m_pModelWriterInterface, pSrc, m_pModelWriterInterface->GetShapePtr<Pipe *>( idDst ) );
+	unique_ptr<Command> pCmd;
+	if ( m_pMWI->IsPipe( idDst ) ) 
+		pCmd = make_unique<Connect2PipeCommand>( m_pMWI, idSrc, idDst );
 	else
-		pCommand = new Connect2BaseKnotCommand( pSrc, m_pModelWriterInterface->GetShapePtr<BaseKnot *>( idDst ) );
-	m_pCmdStack->NewCommand( pCommand );
+		pCmd = make_unique<Connect2BaseKnotCommand>( m_pMWI, idSrc, idDst );
+	m_pCmdStack->NewCommand( move( pCmd ) );
 }
 
-void NNetModelCommands::deleteShape( Shape* const pShape )
+void NNetModelCommands::deleteShape( Shape * const pShape )
 {
-	Command * pCommand;
+	unique_ptr<Command> pCmd;
 	if ( pShape->IsPipe() ) 
-		pCommand = new DeletePipeCommand( static_cast<Pipe *>( pShape ) );
+		pCmd = make_unique<DeletePipeCommand>( static_cast<Pipe *>( pShape ) ) ;
 	else 
-		pCommand = new DisconnectBaseKnotCommand( m_pModelWriterInterface, static_cast<BaseKnot *>( pShape ), true );
-	m_pCmdStack->NewCommand( pCommand );
+		pCmd = make_unique<DisconnectBaseKnotCommand>( m_pMWI, static_cast<BaseKnot *>(pShape), true );
+	m_pCmdStack->NewCommand( move( pCmd ) );
 }
 
 void NNetModelCommands::Attach2Monitor( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << endl;
-	if ( m_pModelReaderInterface->IsOfType<Neuron>( id ) )
+	if ( m_pMRI->IsOfType<Neuron>( id ) )
 	{
-		MonitorData * const pMonitorData { m_pModelWriterInterface->GetMonitorData() }; 
+		MonitorData * const pMonitorData { m_pMWI->GetMonitorData() }; 
 		pMonitorData->InsertTrack( TrackNr(0) );
 		pMonitorData->AddSignal( id, TrackNr(0) );
 	}
@@ -116,60 +114,52 @@ void NNetModelCommands::InsertTrack( TrackNr const trackNr )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << trackNr << endl;
-	m_pCmdStack->NewCommand( new InsertTrackCommand( trackNr )	);
+	m_pCmdStack->NewCommand( make_unique<InsertTrackCommand>( trackNr ) );
 }
 
 void NNetModelCommands::DeleteShape( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << endl;
-	deleteShape( m_pModelWriterInterface->GetShapePtr<Shape *>( id ) );
+	deleteShape( m_pMWI->GetShapePtr<Shape *>( id ) );
 }
 
 void NNetModelCommands::DeleteSignal( SignalId const & id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << endl;
-	m_pModelWriterInterface->GetMonitorData()->DeleteSignal( id );
+	m_pMWI->GetMonitorData()->DeleteSignal( id );
 }
 
 void NNetModelCommands::Disconnect( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << endl;
-	m_pCmdStack->NewCommand
-	( 
-		new DisconnectBaseKnotCommand
-		( 
-			m_pModelWriterInterface, 
-			m_pModelWriterInterface->GetShapePtr<BaseKnot *>(id), 
-			false 
-		) 
-	);
+	m_pCmdStack->NewCommand( make_unique<DisconnectBaseKnotCommand>(m_pMWI, m_pMWI->GetShapePtr<BaseKnot *>(id), false) );
 }
 
 void NNetModelCommands::ToggleStopOnTrigger( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << endl;
-	m_pCmdStack->NewCommand( new ToggleStopOnTriggerCommand( id ) );
+	m_pCmdStack->NewCommand( make_unique<ToggleStopOnTriggerCommand>( id ) );
 }
 
 void NNetModelCommands::SetPulseRate( ShapeId const id, fHertz const fNewValue )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << fNewValue << endl;
-	m_pCmdStack->NewCommand( new SetPulseRateCommand( m_pModelWriterInterface->GetShapePtr<InputNeuron *>( id ), fNewValue ) );
+	m_pCmdStack->NewCommand( make_unique<SetPulseRateCommand>( m_pMWI->GetShapePtr<InputNeuron *>(id), fNewValue ) );
 }
 
 void NNetModelCommands::ResetModel( )
 { 
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pModelWriterInterface->ResetModel( );
+	m_pMWI->ResetModel( );
 	m_pCmdStack->Clear();
 	m_pStorage->ResetModelPath( );
-	m_pModelWriterInterface->CreateInitialShapes();
+	m_pMWI->CreateInitialShapes();
 }
 
 void NNetModelCommands::ReadModel( bool bConcurrently, wstring const wstrPath )
@@ -184,164 +174,142 @@ void NNetModelCommands::SetTriggerSound( ShapeId const id, SoundDescr const & so
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << L" " << sound.m_bOn << sound.m_frequency << L" " << sound.m_duration << endl;
-	m_pCmdStack->NewCommand( new SetTriggerSoundCommand( m_pModelWriterInterface, id, sound ) );
+	m_pCmdStack->NewCommand( make_unique<SetTriggerSoundCommand>( m_pMWI, id, sound ) );
 }
 
 void NNetModelCommands::SetParameter( tParameter const param, float const fNewValue )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << GetParameterName( param ) << L" " << fNewValue << endl;
-	m_pCmdStack->NewCommand( new SetParameterCommand( param, fNewValue ) );
+	m_pCmdStack->NewCommand( make_unique<SetParameterCommand>( SetParameterCommand( m_pParam, param, fNewValue ) ) );
 }
 
 void NNetModelCommands::MoveShape( ShapeId const id, MicroMeterPoint const & delta )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << delta << endl;
-	Shape * const pShape { m_pModelWriterInterface->GetShape( id ) };
+	Shape * const pShape { m_pMWI->GetShape( id ) };
 	if ( pShape->IsPipe( ) )
-		m_pCmdStack->NewCommand( new MovePipeCommand    ( static_cast<Pipe     *>( pShape ), delta ) );
-	else
-		m_pCmdStack->NewCommand( new MoveBaseKnotCommand( static_cast<BaseKnot *>( pShape ), delta ) );
+	{
+		auto pCmd = make_unique<MovePipeCommand>( static_cast<Pipe *>( pShape ), delta );
+		m_pCmdStack->NewCommand( move( pCmd ) );
+	}
+	else 
+	{
+		auto pCmd = make_unique<MoveBaseKnotCommand>( static_cast<BaseKnot *>( pShape ), delta );
+		m_pCmdStack->NewCommand( move( pCmd ) );
+	}
 }
 
 void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << delta << endl;
-	m_pCmdStack->NewCommand( new MoveSelectionCommand( delta ) );
+	m_pCmdStack->NewCommand( make_unique<MoveSelectionCommand>( delta ) );
 }
 
 void NNetModelCommands::AddOutgoing2Knot( ShapeId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << pos << endl;
-	m_pCmdStack->NewCommand( new AddOutgoing2KnotCommand( m_pModelWriterInterface, id, pos + STD_OFFSET) );
+	m_pCmdStack->NewCommand( make_unique<AddOutgoing2KnotCommand>(m_pMWI, id, pos + STD_OFFSET ) );
 }
 
 void NNetModelCommands::AddIncoming2Knot( ShapeId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << pos << endl;
-	m_pCmdStack->NewCommand( new AddIncoming2KnotCommand( m_pModelWriterInterface, id, pos - STD_OFFSET ) );
+	m_pCmdStack->NewCommand( make_unique<AddIncoming2KnotCommand>( m_pMWI, id, pos - STD_OFFSET ) );
 }
 
 void NNetModelCommands::AddOutgoing2Pipe( ShapeId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << pos << endl;
-	m_pCmdStack->NewCommand( new AddOutgoing2PipeCommand( m_pModelWriterInterface, id, pos ) );
+	m_pCmdStack->NewCommand( make_unique<AddOutgoing2PipeCommand>(  m_pMWI, id, pos ) );
 }
 
 void NNetModelCommands::AddIncoming2Pipe( ShapeId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << pos << endl;
-	m_pCmdStack->NewCommand( new AddIncoming2PipeCommand( m_pModelWriterInterface, id, pos ) );
+	m_pCmdStack->NewCommand( make_unique<AddIncoming2PipeCommand>( m_pMWI, id, pos ) );
 }
 
 void NNetModelCommands::InsertNeuron( ShapeId const id, MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << pos << endl;
-	m_pCmdStack->NewCommand( new InsertNeuronCommand( m_pModelWriterInterface, id, pos ) );
+	m_pCmdStack->NewCommand( make_unique<InsertNeuronCommand>( m_pMWI, id, pos ) );
 }
 
 void NNetModelCommands::NewNeuron( MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << pos << endl;
-	m_pCmdStack->NewCommand( new NewNeuronCommand( m_pModelWriterInterface, pos ) );
+	m_pCmdStack->NewCommand( make_unique<NewNeuronCommand>( m_pMWI, pos ) );
 }
 
 void NNetModelCommands::NewInputNeuron( MicroMeterPoint const & pos )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << pos << endl;
-	m_pCmdStack->NewCommand( new NewInputNeuronCommand( m_pModelWriterInterface, pos ) );
+	m_pCmdStack->NewCommand( make_unique<NewInputNeuronCommand>( m_pMWI, pos ) );
 }
 
 void NNetModelCommands::AppendNeuron( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << endl;
-	auto * pCmdNewNeuron 
-	{ 
-		new NewNeuronCommand
-		( 
-			m_pModelWriterInterface, 
-			m_pModelReaderInterface->GetShapePos(id) 
-		) 
-	};
-	m_pCmdStack->NewCommand( pCmdNewNeuron );
-	auto * pCmdNewBaseKnot
-	{
-		new Connect2BaseKnotCommand
-		( 
-			m_pModelWriterInterface->GetShapePtr<Knot *>(id), 
-			pCmdNewNeuron->GetNeuron() 
-		) 
-	};
-	m_pCmdStack->NewCommand( pCmdNewBaseKnot );
+	auto pCmdNewNeuron        { make_unique<NewNeuronCommand>       ( m_pMWI, m_pMRI->GetShapePos(id) ) };
+	auto pCmdConnect2BaseKnot { make_unique<Connect2BaseKnotCommand>( m_pMWI, id, pCmdNewNeuron->GetNeuron()->GetId() ) };
+	m_pCmdStack->NewCommand( move( pCmdNewNeuron ) );
+	m_pCmdStack->NewCommand( move( pCmdConnect2BaseKnot ) );
 }
 
 void NNetModelCommands::AppendInputNeuron( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << endl;
-	auto * pCmdNewInputNeuron 
-	{ 
-		new NewInputNeuronCommand
-		( 
-			m_pModelWriterInterface, 
-			m_pModelReaderInterface->GetShapePos(id) 
-		) 
-	};
-	m_pCmdStack->NewCommand( pCmdNewInputNeuron );
-	auto * pCmdNewBaseKnot 
-	{ 
-		new Connect2BaseKnotCommand
-		( 
-			m_pModelWriterInterface->GetShapePtr<Knot *>(id), 
-			pCmdNewInputNeuron->GetInputNeuron() 
-		) 
-	};
-	m_pCmdStack->NewCommand( pCmdNewBaseKnot );
+	auto pCmdNewInputNeuron{ make_unique<NewInputNeuronCommand>  ( m_pMWI, m_pMRI->GetShapePos(id) ) };
+	auto pCmdNewBaseKnot   { make_unique<Connect2BaseKnotCommand>( m_pMWI, id, pCmdNewInputNeuron->GetInputNeuron()->GetId() ) };
+	m_pCmdStack->NewCommand( move( pCmdNewInputNeuron ) );
+	m_pCmdStack->NewCommand( move( pCmdNewBaseKnot ) );
 }
 
 void NNetModelCommands::ClearBeepers( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->NewCommand( new ClearBeepersCommand( m_pModelWriterInterface ) );
+	m_pCmdStack->NewCommand( make_unique<ClearBeepersCommand>( m_pMWI ) );
 }
 
 void NNetModelCommands::MarkSelection( tBoolOp const op )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << op << endl;
-	m_pCmdStack->NewCommand( new MarkSelectionCommand( m_pModelWriterInterface, op ) );
+	m_pCmdStack->NewCommand( make_unique<MarkSelectionCommand>( m_pMWI, op ) );
 }
 
 void NNetModelCommands::DeleteSelection( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->StartSeries();
+//	m_pCmdStack->StartSeries();
 	{
 		ShapeList list;                                       // detour with secondary list is neccessary!
-		m_pModelWriterInterface->GetShapeList                 // cannot delete shapes directly in Apply2All
+		m_pMWI->GetShapeList                                  // cannot delete shapes directly in Apply2All
 		(                                                        
 			list, 
 			[&]( Shape const & s ) { return s.IsSelected(); } // first construct list
 		); 
 		list.Apply2All                                        // then run through list 
 		( 
-			[&]( Shape * pShape ) {	deleteShape( pShape ); }  // and delete shapes in model
+			[&]( Shape & shape ) { deleteShape( & shape ); }  // and delete shapes in model
 		);                                                    // using pointers from list
 	}
 
-	m_pCmdStack->StopSeries();
+//	m_pCmdStack->StopSeries();
 }
 
 ///////////////////// selection commands /////////////////////////////
@@ -350,54 +318,54 @@ void NNetModelCommands::CopySelection( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->NewCommand( new CopySelectionCommand( m_pModelWriterInterface ) );
+	m_pCmdStack->NewCommand( make_unique<CopySelectionCommand>( m_pMWI ) );
 }
 
 void NNetModelCommands::SelectAllBeepers( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->NewCommand( new SelectAllBeepersCommand( m_pModelWriterInterface ) );
+	m_pCmdStack->NewCommand( make_unique<SelectAllBeepersCommand>( m_pMWI ) );
 }
 
 void NNetModelCommands::SelectShape( ShapeId const id, tBoolOp const op )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id  << op << endl;
-	m_pCmdStack->NewCommand( new SelectShapeCommand( m_pModelWriterInterface, id, op ) );
+	m_pCmdStack->NewCommand( make_unique<SelectShapeCommand>( m_pMWI, id, op ) );
 }
 
 void NNetModelCommands::SelectAll( tBoolOp const op )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << op << endl;
-	m_pCmdStack->NewCommand( new SelectAllCommand( m_pModelWriterInterface, op ) );
+	m_pCmdStack->NewCommand( make_unique<SelectAllCommand>( m_pMWI, op  ) );
 }
 
 void NNetModelCommands::SelectSubtree( ShapeId const id, tBoolOp const op )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << op << endl;
-	m_pCmdStack->NewCommand( new SelectSubtreeCommand( m_pModelWriterInterface, id, op ) );
+	m_pCmdStack->NewCommand( make_unique<SelectSubtreeCommand>( m_pMWI, id, op ) );
 }
 
 void NNetModelCommands::SelectShapesInRect( MicroMeterRect const & rect )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << rect << endl;
-	m_pCmdStack->NewCommand( new SelectShapesInRectCommand( m_pModelWriterInterface, rect ) );
+	m_pCmdStack->NewCommand( make_unique<SelectShapesInRectCommand>( m_pMWI, rect ) );
 }
 
 void NNetModelCommands::AnalyzeLoops( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->NewCommand( new AnalyzeLoopsCommand( m_pModelWriterInterface ) );
+	m_pCmdStack->NewCommand( make_unique<AnalyzeLoopsCommand>( m_pMWI ) );
 }
 
 void NNetModelCommands::AnalyzeAnomalies( )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << endl;
-	m_pCmdStack->NewCommand( new AnalyzeAnomaliesCommand( m_pModelWriterInterface ) );
+	m_pCmdStack->NewCommand( make_unique<AnalyzeAnomaliesCommand>( m_pMWI ) );
 }

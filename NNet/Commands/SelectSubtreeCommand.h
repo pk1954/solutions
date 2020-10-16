@@ -24,7 +24,7 @@ public:
 		m_op( op )
 	{ }
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel )
 	{ 
 		pModel->SelectSubtree( m_pBaseKnot, m_op );
 	}

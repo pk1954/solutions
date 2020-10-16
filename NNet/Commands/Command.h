@@ -16,7 +16,7 @@ public:
 
     virtual void Do( NNetModelWriterInterface * const) = 0;
     
-    virtual void Undo( NNetModelWriterInterface * const pModel ) 
+    virtual void Undo( NNetModelWriterInterface * const pModel )
     { 
         Do( pModel ); 
     };

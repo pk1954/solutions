@@ -12,15 +12,19 @@
 class Connect2BaseKnotCommand : public Command
 {
 public:
-	Connect2BaseKnotCommand( BaseKnot * const pSrc, BaseKnot * const pDst )
-		:	m_pBaseKnotSrc( pSrc ),
-			m_pBaseKnotDst( pDst ),
-			m_pDstConnections( m_pBaseKnotDst->m_connections.Clone() )
+	Connect2BaseKnotCommand
+	( 
+		NNetModelWriterInterface * const pModel, 
+		ShapeId                    const idSrc,
+		ShapeId                    const idDst 
+	)
+	  :	m_pBaseKnotSrc( pModel->GetShapePtr<BaseKnot *>( idSrc ) ),
+		m_pBaseKnotDst( pModel->GetShapePtr<BaseKnot *>( idDst ) ),
+		m_pDstConnections( m_pBaseKnotDst->m_connections.Clone() )
 	{ }
 
 	~Connect2BaseKnotCommand( )
 	{
-		delete m_pBaseKnotSrc;
 		delete m_pDstConnections;
 	}
 
@@ -38,7 +42,7 @@ public:
 	}
 
 private:
-	BaseKnot    * m_pBaseKnotSrc;
-	BaseKnot    * m_pBaseKnotDst;
-	Connections * m_pDstConnections;
+	BaseKnot    * const m_pBaseKnotSrc;
+	BaseKnot    * const m_pBaseKnotDst;
+	Connections * const m_pDstConnections;
 };

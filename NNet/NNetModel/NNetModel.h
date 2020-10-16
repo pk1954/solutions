@@ -130,18 +130,19 @@ public:
 		m_Shapes.SetShapeErrorHandler( pHandler );
 	}
 
-	void SelectAllShapes( tBoolOp const op )                           { m_Shapes.SelectAllShapes( op ); }
-	void ReplaceInModel ( Shape * const p2BeReplaced, Shape * pShape ) { m_Shapes.SetShape( pShape,  p2BeReplaced->GetId() ); }
-	void Store2Model    ( Shape * const pShape )                       { m_Shapes.SetShape( pShape,  pShape->GetId() ); }
-	void RemoveFromModel( Shape * const pShape )                       { m_Shapes.SetShape( nullptr, pShape->GetId() ); }
+	void SelectAllShapes( tBoolOp const op )                 { m_Shapes.SelectAllShapes( op ); }
+	void ReplaceInModel ( Shape & replaceMe, Shape & shape ) { m_Shapes.SetShape( &shape,  replaceMe.GetId() ); }
+	void Store2Model    ( Shape & shape )                    { m_Shapes.SetShape( &shape,  shape.GetId() ); }
+	void RemoveFromModel( Shape & shape )                    { m_Shapes.SetShape( nullptr, shape.GetId() ); }
 
-	void InsertAtModelSlot( Shape * const pShape, ShapeId const id )                       
+	void InsertAtModelSlot( Shape & shape, ShapeId const id )                       
 	{ 
-		pShape->SetId( id );
-		m_Shapes.SetShape( pShape, id );
+		shape.SetId( id );
+		m_Shapes.SetShape( &shape, id );
 	}
 
 	ShapeList const & GetShapes( ) const { return m_Shapes; }
+	ShapeList       & GetShapes( )       { return m_Shapes; }
 
     MonitorData * GetMonitorData( ) { return m_pMonitorData; }
 

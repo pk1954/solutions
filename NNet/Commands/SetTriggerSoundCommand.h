@@ -23,7 +23,7 @@ public:
 		m_sound( sound )
 	{ }
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface * const pModel )
 	{ 
 		m_sound = m_pNeuron->SetTriggerSound( m_sound );
 		pModel->ClearModel( );
