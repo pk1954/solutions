@@ -17,14 +17,14 @@ class AddOutgoing2KnotCommand : public Command
 public:
 	AddOutgoing2KnotCommand
 	( 
-		NNetModelWriterInterface * pModel, 
+		NNetModelWriterInterface & model, 
 		ShapeId            const   id, 
 		MicroMeterPoint    const & pos 
 	)
 	{ 
-		m_pStart   = pModel->GetShapePtr<BaseKnot *>( id );
-		m_pKnotNew = pModel->NewBaseKnot<Knot>( pos );
-		m_pPipe    = pModel->NewPipe( m_pStart, m_pKnotNew );
+		m_pStart   = model.GetShapePtr<BaseKnot *>( id );
+		m_pKnotNew = model.NewBaseKnot<Knot>( pos );
+		m_pPipe    = model.NewPipe( m_pStart, m_pKnotNew );
 		m_pKnotNew->m_connections.AddIncoming( m_pPipe );
 	}
 
@@ -34,18 +34,18 @@ public:
 		delete m_pPipe;
 	}
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface & model ) 
 	{ 
 		m_pStart->m_connections.AddOutgoing( m_pPipe );
-		pModel->Store2Model( m_pKnotNew );
-		pModel->Store2Model( m_pPipe );
+		model.Store2Model( m_pKnotNew );
+		model.Store2Model( m_pPipe );
 	}
 
-	virtual void Undo( NNetModelWriterInterface * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface & model ) 
 	{ 
 		m_pStart->m_connections.RemoveOutgoing( m_pPipe );
-		pModel->RemoveFromModel( m_pKnotNew );
-		pModel->RemoveFromModel( m_pPipe );
+		model.RemoveFromModel( m_pKnotNew );
+		model.RemoveFromModel( m_pPipe );
 	}
 
 private:

@@ -17,14 +17,14 @@ public:
 
 	~InsertTrackCommand( ) { }
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface & model ) 
 	{
-		pModel->GetMonitorData()->InsertTrack( m_trackNr );
+		model.GetMonitorData()->InsertTrack( m_trackNr );
 	}
 
-	virtual void Undo( NNetModelWriterInterface * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface & model ) 
 	{
-		pModel->GetMonitorData()->DeleteTrack( m_trackNr );
+		model.GetMonitorData()->DeleteTrack( m_trackNr );
 	}
 
 private:

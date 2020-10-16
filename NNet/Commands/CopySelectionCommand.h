@@ -14,8 +14,8 @@ class CopySelectionCommand : public SelectionCommand
 {
 public:
 
-	CopySelectionCommand( NNetModelWriterInterface * const pModel )
-		:	SelectionCommand( pModel)
+	CopySelectionCommand( NNetModelWriterInterface & model )
+		:	SelectionCommand( model)
 	{ 
 		m_copies = m_selectedShapes;
 		m_copies.Apply2All
@@ -28,22 +28,22 @@ public:
 		);
 	}
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface & model ) 
 	{ 
-		pModel->SelectAllShapes( tBoolOp::opFalse );  // deselect all
+		model.SelectAllShapes( tBoolOp::opFalse );  // deselect all
 		m_copies.Apply2All                            // add copies
 		(
-			[&]( Shape & shape ) { pModel->Add2Model( shape ); }
+			[&]( Shape & shape ) { model.Add2Model( shape ); }
 		);
 	}
 
-	virtual void Undo( NNetModelWriterInterface * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface & model ) 
 	{ 
 		m_copies.Apply2All     // disconnect copies
 		(
-			[&]( Shape & shape ) { pModel->RemoveFromModel( & shape ); }
+			[&]( Shape & shape ) { model.RemoveFromModel( & shape ); }
 		);
-		SelectionCommand::Undo( pModel );             // restore original selection
+		SelectionCommand::Undo( model );             // restore original selection
 	}
 
 private:

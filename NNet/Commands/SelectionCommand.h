@@ -15,14 +15,14 @@ using std::vector;
 class SelectionCommand : public Command
 {
 public:
-	SelectionCommand( NNetModelWriterInterface * const pModel )
+	SelectionCommand( NNetModelWriterInterface & model )
 	{ 
-		pModel->GetShapeList( m_selectedShapes, [&]( Shape const & s ){ return s.IsSelected(); } );
+		model.GetShapeList( m_selectedShapes, [&]( Shape const & s ){ return s.IsSelected(); } );
 	}
 
-	virtual void Undo( NNetModelWriterInterface * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface & model ) 
 	{
-		pModel->SelectAllShapes( tBoolOp::opFalse );
+		model.SelectAllShapes( tBoolOp::opFalse );
 		m_selectedShapes.SelectAllShapes( tBoolOp::opTrue );
 	}
 

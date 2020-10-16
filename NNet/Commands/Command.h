@@ -14,11 +14,11 @@ public:
         int x = 42;
     }
 
-    virtual void Do( NNetModelWriterInterface * const) = 0;
+    virtual void Do( NNetModelWriterInterface & ) = 0;
     
-    virtual void Undo( NNetModelWriterInterface * const pModel )
+    virtual void Undo( NNetModelWriterInterface & model )
     { 
-        Do( pModel ); 
+        Do( model ); 
     };
 
     virtual bool IsMoveCommand( ) const

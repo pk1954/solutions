@@ -24,11 +24,11 @@ class DisconnectBaseKnotCommand : public Command
 public:
     DisconnectBaseKnotCommand
     ( 
-        NNetModelWriterInterface * const pModel, 
-        BaseKnot                 * const pBaseKnot, 
-        bool                       const bDelete 
+        NNetModelWriterInterface & model, 
+        ShapeId              const id, 
+        bool                 const bDelete 
     )
-      :	m_pBaseKnot( pBaseKnot ),
+      :	m_pBaseKnot( model.GetShapePtr<BaseKnot *>( id ) ),
         m_bDelete( bDelete )
     { 
         wcout << L"DisconnectBaseKnotCommand " << L" shapeId = " << m_pBaseKnot->GetId( ) << endl;
@@ -37,7 +37,7 @@ public:
         ( 
             [&]( Pipe & pipe ) // every incoming pipe needs a new end knot
             { 
-                Knot * pKnotNew { pModel->NewBaseKnot<Knot>( umPos ) };
+                Knot * pKnotNew { model.NewBaseKnot<Knot>( umPos ) };
                 pKnotNew->m_connections.AddIncoming( & pipe );  // prepare new knot as far as possible
                 pipe.DislocateEndPoint( );                      // dislocate new knot 
                 m_endKnots.push_back( pKnotNew );               // store new knot for later
@@ -47,7 +47,7 @@ public:
         ( 
             [&]( Pipe & pipe ) // every outgoing pipe needs a new start knot
             { 
-                Knot * pKnotNew { pModel->NewBaseKnot<Knot>( umPos ) };
+                Knot * pKnotNew { model.NewBaseKnot<Knot>( umPos ) };
                 pKnotNew->m_connections.AddOutgoing( & pipe );  // prepare new knot as far as possible
                 pipe.DislocateStartPoint( );                    // dislocate new knot 
                 m_startKnots.push_back( pKnotNew );             // store new knot for later
@@ -63,27 +63,27 @@ public:
             delete pKnot;
     }
 
-    virtual void Do( NNetModelWriterInterface * const pModel )
+    virtual void Do( NNetModelWriterInterface & model )
     {
         wcout << L"DisconnectBaseKnotCommand " << L"Do " << L"shapeId = " << m_pBaseKnot->GetId( ) << endl;
         for ( Knot * pKnot : m_startKnots )
         {
             Pipe & pipeOut { pKnot->m_connections.GetFirstOutgoing() };
             pipeOut.SetStartKnot( pKnot );
-            pModel->Store2Model( pKnot );
+            model.Store2Model( pKnot );
         }
         for ( Knot * pKnot : m_endKnots )
         {
             Pipe & pipeIn { pKnot->m_connections.GetFirstIncoming() };
             pipeIn.SetEndKnot( pKnot );
-            pModel->Store2Model( pKnot );
+            model.Store2Model( pKnot );
         }
         m_pBaseKnot->ClearConnections();
         if ( m_bDelete || m_pBaseKnot->IsKnot() )
-            pModel->RemoveFromModel( m_pBaseKnot );
+            model.RemoveFromModel( m_pBaseKnot );
     }
 
-    virtual void Undo( NNetModelWriterInterface * const pModel )
+    virtual void Undo( NNetModelWriterInterface & model )
     {
         wcout << L"DisconnectBaseKnotCommand " << L"Undo " << L"shapeId = " << m_pBaseKnot->GetId( ) << endl;
         for ( Knot * pKnot : m_startKnots )
@@ -91,17 +91,17 @@ public:
             Pipe & pipeOut { pKnot->m_connections.GetFirstOutgoing() };
             pipeOut.SetStartKnot( m_pBaseKnot );
             m_pBaseKnot->m_connections.AddOutgoing( & pipeOut );
-            pModel->RemoveFromModel( pKnot );
+            model.RemoveFromModel( pKnot );
         }
         for ( Knot * pKnot : m_endKnots )
         {
             Pipe & pipeIn { pKnot->m_connections.GetFirstIncoming() };
             pipeIn.SetEndKnot( m_pBaseKnot );
             m_pBaseKnot->m_connections.AddIncoming( & pipeIn );
-            pModel->RemoveFromModel( pKnot );
+            model.RemoveFromModel( pKnot );
         }
         if ( m_bDelete || m_pBaseKnot->IsKnot() )
-            pModel->Store2Model( m_pBaseKnot );
+            model.Store2Model( m_pBaseKnot );
     }
 
 private:

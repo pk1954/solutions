@@ -76,7 +76,7 @@ public:
     void RedoCommand();
 
 private:
-    void deleteShape( Shape * const );
+    void deleteShape( ShapeId const );
 
     bool       IsTraceOn  ( ) const { return m_bTrace; }
     wostream & TraceStream( )       { return wcout; }

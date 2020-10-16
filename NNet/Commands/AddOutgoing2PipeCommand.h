@@ -15,17 +15,17 @@ class AddOutgoing2PipeCommand : public Command
 public:
 	AddOutgoing2PipeCommand
 	( 
-		NNetModelWriterInterface * const   pModel, 
-		ShapeId                    const   idPipe, 
-		MicroMeterPoint            const & pos 
+		NNetModelWriterInterface & model, 
+		ShapeId            const   idPipe, 
+		MicroMeterPoint    const & pos 
 	)
 	{
-		m_pPipeOld      = pModel->GetShapePtr<Pipe *>( idPipe );
+		m_pPipeOld      = model.GetShapePtr<Pipe *>( idPipe );
 		m_pStartKnotOld = m_pPipeOld->GetStartKnotPtr( );
-		m_pKnotInsert   = pModel->NewBaseKnot<Knot>( pos );
-		m_pKnotOrtho    = pModel->NewBaseKnot<Knot>( pos + pModel->OrthoVector( idPipe ) );
-		m_pPipeOrtho    = pModel->NewPipe( m_pKnotInsert, m_pKnotOrtho );		
-		m_pPipeExt      = pModel->NewPipe( m_pStartKnotOld, m_pKnotInsert );	
+		m_pKnotInsert   = model.NewBaseKnot<Knot>( pos );
+		m_pKnotOrtho    = model.NewBaseKnot<Knot>( pos + model.OrthoVector( idPipe ) );
+		m_pPipeOrtho    = model.NewPipe( m_pKnotInsert, m_pKnotOrtho );		
+		m_pPipeExt      = model.NewPipe( m_pStartKnotOld, m_pKnotInsert );	
 
 		m_pKnotInsert->m_connections.AddOutgoing( m_pPipeOrtho );
 		m_pKnotOrtho ->m_connections.AddIncoming( m_pPipeOrtho );
@@ -41,26 +41,26 @@ public:
 		delete m_pPipeExt;
 	}
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface & model ) 
 	{ 
 		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_pPipeOld, m_pPipeExt );
 		m_pPipeOld->SetStartKnot( m_pKnotInsert );
-		pModel->Store2Model( m_pKnotOrtho );
-		pModel->Store2Model( m_pKnotInsert );
-		pModel->Store2Model( m_pPipeOrtho );
-		pModel->Store2Model( m_pPipeExt );
+		model.Store2Model( m_pKnotOrtho );
+		model.Store2Model( m_pKnotInsert );
+		model.Store2Model( m_pPipeOrtho );
+		model.Store2Model( m_pPipeExt );
 
 	}
 
-	virtual void Undo( NNetModelWriterInterface * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface & model ) 
 	{ 
 		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_pPipeExt, m_pPipeOld );
 		m_pPipeOld->SetStartKnot( m_pStartKnotOld );
 
-		pModel->RemoveFromModel( m_pKnotOrtho  );
-		pModel->RemoveFromModel( m_pKnotInsert );
-		pModel->RemoveFromModel( m_pPipeOrtho  );
-		pModel->RemoveFromModel( m_pPipeExt    );
+		model.RemoveFromModel( m_pKnotOrtho  );
+		model.RemoveFromModel( m_pKnotInsert );
+		model.RemoveFromModel( m_pPipeOrtho  );
+		model.RemoveFromModel( m_pPipeExt    );
 	}
 
 private:

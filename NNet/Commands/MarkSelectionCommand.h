@@ -16,20 +16,20 @@ using std::vector;
 class MarkSelectionCommand : public Command
 {
 public:
-	MarkSelectionCommand( NNetModelWriterInterface * pModel, tBoolOp const op )
+	MarkSelectionCommand( NNetModelWriterInterface & model, tBoolOp const op )
 	  : m_op( op )
 	{
-		pModel->GetShapeList( m_markedShapes, [&]( Shape const & s ){ return s.IsMarked(); } );
+		model.GetShapeList( m_markedShapes, [&]( Shape const & s ){ return s.IsMarked(); } );
 	}
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface & model ) 
 	{ 
-		pModel->Apply2AllSelected<Shape>( [&]( Shape & shape ) { shape.Mark( m_op ); } );
+		model.Apply2AllSelected<Shape>( [&]( Shape & shape ) { shape.Mark( m_op ); } );
 	}
 
-	virtual void Undo( NNetModelWriterInterface * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface & model ) 
 	{ 
-		pModel->Apply2All<Shape>( [&]( Shape & shape ) { shape.Mark( tBoolOp::opFalse ); } );
+		model.Apply2All<Shape>( [&]( Shape & shape ) { shape.Mark( tBoolOp::opFalse ); } );
 		m_markedShapes.Apply2All( [&]( Shape & shape ) { shape.Mark( tBoolOp::opTrue  ); } );
 	}
 

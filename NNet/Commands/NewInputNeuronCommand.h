@@ -14,11 +14,11 @@ class NewInputNeuronCommand : public Command
 public:
 	NewInputNeuronCommand
 	( 
-		NNetModelWriterInterface * const   pModel, 
-		MicroMeterPoint            const & pos 
+		NNetModelWriterInterface & model, 
+		MicroMeterPoint    const & pos 
 	)
 	{ 
-		m_pInputNeuron = pModel->NewBaseKnot<InputNeuron>( pos );
+		m_pInputNeuron = model.NewBaseKnot<InputNeuron>( pos );
 	}
 
 	~NewInputNeuronCommand( )
@@ -26,14 +26,14 @@ public:
 		delete m_pInputNeuron;
 	}
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface & model ) 
 	{ 
-		pModel->Store2Model( m_pInputNeuron );
+		model.Store2Model( m_pInputNeuron );
 	}
 
-	virtual void Undo( NNetModelWriterInterface * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface & model ) 
 	{ 
-		pModel->RemoveFromModel( m_pInputNeuron );
+		model.RemoveFromModel( m_pInputNeuron );
 	}
 
 	InputNeuron * const GetInputNeuron( )

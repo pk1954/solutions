@@ -12,9 +12,9 @@
 class ClearBeepersCommand : public Command
 {
 public:
-	ClearBeepersCommand( NNetModelWriterInterface * pModel )
+	ClearBeepersCommand( NNetModelWriterInterface & model )
 	{
-		pModel->Apply2All<Neuron>
+		model.Apply2All<Neuron>
 			( 
 				[&]( Neuron & neuron ) 
 				{ 
@@ -30,27 +30,27 @@ public:
 		pNeuron->SetTriggerSound( noSound );
 	}
 
-	void clearAll( NNetModelWriterInterface * const pModel ) const
+	void clearAll( NNetModelWriterInterface & model ) const
 	{
-		pModel->Apply2All<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
+		model.Apply2All<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
-	void clearAllSelected( NNetModelWriterInterface * const pModel ) const
+	void clearAllSelected( NNetModelWriterInterface & model ) const
 	{
-		pModel->Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
+		model.Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface & model ) 
 	{ 
-		if ( pModel->GetModel().GetShapes().AnyShapesSelected() )
-			clearAllSelected( pModel );
+		if ( model.GetModel().GetShapes().AnyShapesSelected() )
+			clearAllSelected( model );
 		else
-			clearAll( pModel );
+			clearAll( model );
 	}
 
-	virtual void Undo( NNetModelWriterInterface * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface & model ) 
 	{ 
-		clearAll( pModel );
+		clearAll( model );
 		for ( Beeper const & beeper : m_beepers )
 			beeper.m_pNeuron->SetTriggerSound( beeper.m_sound );
 	}

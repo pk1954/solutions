@@ -15,18 +15,18 @@ class SelectSubtreeCommand : public SelectionCommand
 public:
 	SelectSubtreeCommand
 	( 
-		NNetModelWriterInterface * const pModel, 
-		ShapeId                    const id, 
-		tBoolOp                    const op 
+		NNetModelWriterInterface & model, 
+		ShapeId              const id, 
+		tBoolOp              const op 
 	)
-	  :	SelectionCommand( pModel),
-		m_pBaseKnot( pModel->GetShapePtr<BaseKnot *>( id ) ),
+	  :	SelectionCommand( model),
+		m_pBaseKnot( model.GetShapePtr<BaseKnot *>( id ) ),
 		m_op( op )
 	{ }
 
-	virtual void Do( NNetModelWriterInterface * const pModel )
+	virtual void Do( NNetModelWriterInterface & model )
 	{ 
-		pModel->SelectSubtree( m_pBaseKnot, m_op );
+		model.SelectSubtree( m_pBaseKnot, m_op );
 	}
 
 private:

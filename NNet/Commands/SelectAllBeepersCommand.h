@@ -10,13 +10,13 @@
 class SelectAllBeepersCommand : public SelectionCommand
 {
 public:
-	SelectAllBeepersCommand( NNetModelWriterInterface * const pModel )
-		:	SelectionCommand( pModel)
+	SelectAllBeepersCommand( NNetModelWriterInterface & model )
+		:	SelectionCommand( model)
 	{ }
 
-	virtual void Do( NNetModelWriterInterface * const pModel )
+	virtual void Do( NNetModelWriterInterface & model )
 	{ 
-		pModel->SelectBeepers();
+		model.SelectBeepers();
 	}
 };
 

@@ -15,15 +15,15 @@ class InsertNeuronCommand : public Command
 public:
 	InsertNeuronCommand
 	( 
-		NNetModelWriterInterface * const   pModel,
-		ShapeId                    const   id, 
-		MicroMeterPoint            const & umSplitPoint 
+		NNetModelWriterInterface & model,
+		ShapeId            const   id, 
+		MicroMeterPoint    const & umSplitPoint 
 	)
 	{ 
-		m_pPipe2Split = pModel->GetShapePtr<Pipe *>( id );
+		m_pPipe2Split = model.GetShapePtr<Pipe *>( id );
 		m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr( );
-		m_pNeuron     = pModel->NewBaseKnot<Neuron>( umSplitPoint );
-		m_pPipeNew    = pModel->NewPipe( m_pStartKnot, m_pNeuron );
+		m_pNeuron     = model.NewBaseKnot<Neuron>( umSplitPoint );
+		m_pPipeNew    = model.NewPipe( m_pStartKnot, m_pNeuron );
 		m_pNeuron->m_connections.AddOutgoing( m_pPipe2Split );
 		m_pNeuron->m_connections.AddIncoming( m_pPipeNew );
 	}
@@ -34,18 +34,18 @@ public:
 		delete m_pPipeNew;
 	}
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface & model ) 
 	{ 
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe2Split, m_pPipeNew );
 		m_pPipe2Split->SetStartKnot( m_pNeuron );
-		pModel->Store2Model( m_pNeuron );
-		pModel->Store2Model( m_pPipeNew );
+		model.Store2Model( m_pNeuron );
+		model.Store2Model( m_pPipeNew );
 	}
 
-	virtual void Undo( NNetModelWriterInterface * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface & model ) 
 	{ 
-		pModel->RemoveFromModel( m_pNeuron );
-		pModel->RemoveFromModel( m_pPipeNew );
+		model.RemoveFromModel( m_pNeuron );
+		model.RemoveFromModel( m_pPipeNew );
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipeNew, m_pPipe2Split );
 		m_pPipe2Split->SetStartKnot( m_pStartKnot );
 	}

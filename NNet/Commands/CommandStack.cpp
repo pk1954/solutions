@@ -13,12 +13,12 @@ using std::make_unique;
 class OpenBracket  : public Command 
 { 
 public: 
-    virtual void Do( NNetModelWriterInterface * const pModel ) { } 
+    virtual void Do( NNetModelWriterInterface & ) { } 
 };
 class CloseBracket : public Command 
 { 
 public: 
-    virtual void Do( NNetModelWriterInterface * const pModel ) { } 
+    virtual void Do( NNetModelWriterInterface & ) { } 
 };
 
 bool CommandStack::isOpenBracketCmd( )
@@ -63,10 +63,11 @@ void CommandStack::Clear( )
 
 void CommandStack::clearRedoStack( )
 {
-    for ( auto i = m_CommandStack.size(); i > m_iIndex; )
-    {
-        m_CommandStack.pop_back();
-    }
+    m_CommandStack.erase( m_CommandStack.begin() + m_iIndex, m_CommandStack.end() );
+    //for ( auto i = m_CommandStack.size(); i > m_iIndex; -- i )
+    //{
+    //    m_CommandStack.pop_back();
+    //}
     assert( RedoStackEmpty() );
 }
 
@@ -126,25 +127,25 @@ void CommandStack::StopSeries( )
 void CommandStack::undoAndSetToOlder( )
 {
     wcout << L"CommandStack::undoAndSetToOlder " << L"index =" << m_iIndex << endl;
-    getCurrentCmd().Undo( m_pModelInterFace );
+    getCurrentCmd().Undo( * m_pModelInterFace );
     set2OlderCmd();
 }
 
 void CommandStack::doAndSetToYounger( )
 {
     wcout << L"CommandStack::doAndSetToYounger " << L"index =" << m_iIndex << endl;
-    getCurrentCmd().Do( m_pModelInterFace );
+    getCurrentCmd().Do( * m_pModelInterFace );
     set2YoungerCmd();
 }
 
 void CommandStack::NewCommand( unique_ptr<Command> pCmd )
 {
-//#ifdef _DEBUG
-//    NNetModel const * pModelSave1 { new NNetModel( m_pModelInterFace->GetModel( ) ) };
-//    m_pModelInterFace->CheckModel();
-//    pModelSave1->CheckModel();
-//#endif
-    pCmd->Do( m_pModelInterFace );
+#ifdef _DEBUG
+    NNetModel const * pModelSave1 { new NNetModel( m_pModelInterFace->GetModel( ) ) };
+    m_pModelInterFace->CheckModel();
+    pModelSave1->CheckModel();
+#endif
+    pCmd->Do( * m_pModelInterFace );
     clearRedoStack( );
     if ( m_bBracketOpen && ! canBeCombined( * pCmd, getOlderCmd() ) )
         StopSeries( ); 
@@ -154,18 +155,18 @@ void CommandStack::NewCommand( unique_ptr<Command> pCmd )
     m_pModelInterFace->StaticModelChanged( );
     m_pObservable->NotifyAll( true );
 
-//#ifdef _DEBUG
-//    NNetModel const * pModelSave2 { new NNetModel( m_pModelInterFace->GetModel( ) ) };
-//    pModelSave2->CheckModel();
-//    m_pModelInterFace->CheckModel();
-//    UndoCommand();
-//    m_pModelInterFace->CheckModel();
-//    assert( m_pModelInterFace->IsEqual( * pModelSave1 ) );
-//    m_pModelInterFace->CheckModel();
-//    RedoCommand();
-//    m_pModelInterFace->CheckModel();
-//    assert( m_pModelInterFace->IsEqual( * pModelSave2 ) );
-//#endif
+#ifdef _DEBUG
+    NNetModel const * pModelSave2 { new NNetModel( m_pModelInterFace->GetModel( ) ) };
+    pModelSave2->CheckModel();
+    m_pModelInterFace->CheckModel();
+    UndoCommand();
+    m_pModelInterFace->CheckModel();
+    assert( m_pModelInterFace->IsEqual( * pModelSave1 ) );
+    m_pModelInterFace->CheckModel();
+    RedoCommand();
+    m_pModelInterFace->CheckModel();
+    assert( m_pModelInterFace->IsEqual( * pModelSave2 ) );
+#endif
 }
 
 bool CommandStack::UndoCommand( )

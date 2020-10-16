@@ -11,14 +11,14 @@
 class AnalyzeLoopsCommand : public SelectionCommand
 {
 public:
-	AnalyzeLoopsCommand( NNetModelWriterInterface * const pModel )
-		:	SelectionCommand( pModel)
+	AnalyzeLoopsCommand( NNetModelWriterInterface & model )
+		:	SelectionCommand( model)
 	{ }
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface & model ) 
 	{ 
-		pModel->SelectAllShapes( tBoolOp::opFalse );
-		if ( ModelAnalyzer::FindLoop( * pModel ) )
-			ModelAnalyzer::SelectLoopShapes( * pModel );
+		model.SelectAllShapes( tBoolOp::opFalse );
+		if ( ModelAnalyzer::FindLoop( model ) )
+			ModelAnalyzer::SelectLoopShapes( model );
 	}
 };

@@ -13,43 +13,44 @@ class Connect2PipeCommand : public Command
 {
 public:
 	Connect2PipeCommand
-	( 
-		NNetModelWriterInterface * const pModel, 
-		ShapeId                    const idSrc,
-		ShapeId                    const idDst 
+	(
+		NNetModelWriterInterface & model, 
+		ShapeId              const idSrc,
+		ShapeId              const idDst 
 	)
-	  :	m_pBaseKnot ( pModel->GetShapePtr<BaseKnot *>( idSrc ) ),
-		m_pPipe     ( pModel->GetShapePtr<Pipe     *>( idDst ) ),
-		m_pNewPipe  ( pModel->NewPipe( m_pStartKnot, m_pBaseKnot ) ),
-		m_pStartKnot( m_pPipe->GetStartKnotPtr( ) )
-	{ }
+	  :	m_pBaseKnot ( model.GetShapePtr<BaseKnot *>( idSrc ) ),
+		m_pPipe     ( model.GetShapePtr<Pipe     *>( idDst ) )
+	{ 
+		m_pStartKnot = m_pPipe->GetStartKnotPtr( );
+		m_pNewPipe   = model.NewPipe( m_pStartKnot, m_pBaseKnot );
+	}
 
 	~Connect2PipeCommand( )
 	{ 
 		delete m_pNewPipe;
 	}
 
-	virtual void Do( NNetModelWriterInterface * const pModel )
+	virtual void Do( NNetModelWriterInterface & model )
 	{
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe, m_pNewPipe );
 		m_pBaseKnot ->m_connections.AddIncoming( m_pNewPipe );
 		m_pBaseKnot ->m_connections.AddOutgoing( m_pPipe );
 		m_pPipe->SetStartKnot( m_pBaseKnot );
-		pModel->Store2Model( m_pNewPipe );
+		model.Store2Model( m_pNewPipe );
 	}
 
-	virtual void Undo( NNetModelWriterInterface * const pModel )
+	virtual void Undo( NNetModelWriterInterface & model )
 	{
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_pNewPipe, m_pPipe );
 		m_pBaseKnot ->m_connections.RemoveIncoming( m_pNewPipe );
 		m_pBaseKnot ->m_connections.RemoveOutgoing( m_pPipe );
 		m_pPipe->SetStartKnot( m_pStartKnot );
-		pModel->RemoveFromModel( m_pNewPipe );
+		model.RemoveFromModel( m_pNewPipe );
 	}
 
 private:
-	BaseKnot * m_pBaseKnot;
-	Pipe     * m_pPipe;
-	Pipe     * m_pNewPipe;
-	BaseKnot * m_pStartKnot;
+	BaseKnot * const m_pBaseKnot;
+	Pipe     * const m_pPipe;
+	BaseKnot *       m_pStartKnot;
+	Pipe     *       m_pNewPipe;
 };

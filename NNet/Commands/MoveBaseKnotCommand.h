@@ -12,18 +12,24 @@
 class MoveBaseKnotCommand : public MoveCommand
 {
 public:
-	MoveBaseKnotCommand( BaseKnot * const pBaseKnot, MicroMeterPoint const & delta )
-	  : MoveCommand     ( delta ),
-		m_pBaseKnot     ( pBaseKnot ),
-		m_posBaseKnotOld( pBaseKnot->GetPosition() )
-	{}
+	MoveBaseKnotCommand
+	( 
+		NNetModelWriterInterface & model, 
+		ShapeId            const   id, 
+		MicroMeterPoint    const & delta 
+	)
+	  : MoveCommand( delta ),
+		m_pBaseKnot( model.GetShapePtr<BaseKnot *>( id ) )
+	{
+		m_posBaseKnotOld = m_pBaseKnot->GetPosition();
+	}
 
-	virtual void Do( NNetModelWriterInterface * const pModel ) 
+	virtual void Do( NNetModelWriterInterface & model ) 
 	{ 
 		m_pBaseKnot->SetPosition( m_posBaseKnotOld + m_delta );
 	}
 
-	virtual void Undo( NNetModelWriterInterface * const pModel ) 
+	virtual void Undo( NNetModelWriterInterface & model ) 
 	{ 
 		m_pBaseKnot->SetPosition( m_posBaseKnotOld );
 	}
@@ -34,6 +40,6 @@ public:
 	}
 
 private:
-	BaseKnot      * const m_pBaseKnot;
-	MicroMeterPoint const m_posBaseKnotOld;
+	BaseKnot * const m_pBaseKnot;
+	MicroMeterPoint  m_posBaseKnotOld { NP_NULL };
 };
