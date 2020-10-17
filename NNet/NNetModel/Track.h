@@ -24,7 +24,7 @@ public:
 	void CheckSignals( ) const;
 
 	SignalNr     const AddSignal   ( unique_ptr<Signal> );
-	unique_ptr<Signal> DeleteSignal( SignalNr const );
+	unique_ptr<Signal> RemoveSignal( SignalNr const );
 
 	Signal const & GetSignal( SignalNr const ) const;
 	bool   const   IsValid  ( SignalNr const ) const;

@@ -47,6 +47,8 @@ public:
 private:
 	Track & getTrack ( TrackNr const );
 	vector<Track>::const_iterator const getTrackC( TrackNr const ) const;
+	unique_ptr<Signal> removeSignal( SignalId const & );
+	SignalNr const addSignal( TrackNr const, unique_ptr<Signal> );
 
 	vector<Track> m_tracks { };
 	Observable    * m_pStaticModelObservable { nullptr };

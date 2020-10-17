@@ -14,12 +14,12 @@ using std::map;
 
 enum class tSTYPE   // Type of symbolic value 
 { 
-    UnknownSTYPE,        // symbol is not defined  
-    Function,            // name of a function     
-    ULongConst,          // unsigned long integer  
-    LongConst,           // long integer           
-    FloatConst,          // float value            
-    StringConst          // string value           
+    UnknownSTYPE,   // symbol is not defined  
+    Function,       // name of a function     
+    ULongConst,     // unsigned long integer  
+    LongConst,      // long integer           
+    FloatConst,     // float value            
+    StringConst     // string value           
 }; 
 
 class Symbol

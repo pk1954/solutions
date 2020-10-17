@@ -54,7 +54,7 @@ void TextWindow::StartTextWindow
 	( 
 		m_hDC_Memory, 
 		PixelRectSize{ rect.GetSize() }, 
-		this, 
+		* this, 
 		szClass, 
 		bAsync 
 	);

@@ -10,6 +10,7 @@
 #include "win32_textBuffer.h"
 
 using std::wstring;
+using std::wostringstream;
 using std::setprecision;
 using std::setw;
 
@@ -45,7 +46,7 @@ void Win32_TextBuffer::AlignRight( )
 
 void Win32_TextBuffer::PrintBuffer
 ( 
-	std::wostringstream * pwBuffer,
+	wostringstream * pwBuffer,
 	PIXEL const xPos,
 	PIXEL const yPos
 )

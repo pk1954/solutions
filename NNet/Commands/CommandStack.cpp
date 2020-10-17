@@ -138,7 +138,7 @@ void CommandStack::doAndSetToYounger( )
     set2YoungerCmd();
 }
 
-void CommandStack::NewCommand( unique_ptr<Command> pCmd )
+void CommandStack::PushCommand( unique_ptr<Command> pCmd )
 {
 #ifdef _DEBUG
     NNetModel const * pModelSave1 { new NNetModel( m_pModelInterFace->GetModel( ) ) };

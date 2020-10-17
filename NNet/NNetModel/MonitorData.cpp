@@ -45,11 +45,21 @@ void MonitorData::InsertTrack( TrackNr const trackNr )
 	m_pStaticModelObservable->NotifyAll( true );
 }
 
+unique_ptr<Signal> MonitorData::removeSignal( SignalId const & id )
+{ 
+	return getTrack( id.GetTrackNr() ).RemoveSignal( id.GetSignalNr() ); 
+};
+
+SignalNr const MonitorData::addSignal( TrackNr const trackNr, unique_ptr<Signal> pSignal )
+{
+	return getTrack( trackNr ).AddSignal( move(pSignal) );
+}
+
 void MonitorData::DeleteSignal( SignalId const & id )
 {
 	if ( IsValid( id.GetTrackNr() ) )
 	{
-		getTrack( id.GetTrackNr() ).DeleteSignal( id.GetSignalNr() );
+		removeSignal( id );
 		m_pStaticModelObservable->NotifyAll( true );
 	}
 }
@@ -60,7 +70,7 @@ void MonitorData::AddSignal( ShapeId const idShape, TrackNr const trackNr )
 	{
 		unique_ptr<Signal> pSignal { m_pSignalFactory->MakeSignal() };
 		pSignal->SetSignalSource( idShape );
-		SignalNr signalNr { getTrack( trackNr ).AddSignal( move(pSignal) ) };
+		SignalNr signalNr { addSignal( trackNr, move(pSignal) ) };
 		m_pStaticModelObservable->NotifyAll( true );
 	}
 }
@@ -68,10 +78,10 @@ void MonitorData::AddSignal( ShapeId const idShape, TrackNr const trackNr )
 SignalId const MonitorData::MoveSignal(	SignalId const & id, TrackNr const trackNrNew )
 {
 	SignalId idNew { id };
-	if ( IsValid( id ) && IsValid(trackNrNew) )
+	if ( IsValid(id) && IsValid(trackNrNew) )
 	{
-		unique_ptr<Signal> pSignal     { getTrack( id.GetTrackNr() ).DeleteSignal( id.GetSignalNr() ) };
-		SignalNr           signalNrNew { getTrack( trackNrNew ).AddSignal( move(pSignal) ) };
+		unique_ptr<Signal> pSignal     { removeSignal( id ) };
+		SignalNr           signalNrNew { addSignal( trackNrNew, move(pSignal) ) };
 		idNew = SignalId( trackNrNew, signalNrNew );
 		m_pStaticModelObservable->NotifyAll( true );
 	}

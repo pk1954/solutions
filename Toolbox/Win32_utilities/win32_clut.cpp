@@ -8,7 +8,7 @@
 
 void CLUT::Allocate( CLUT_INDEX const uiMaxIndex )
 {
-    m_data = new std::vector<COLORREF>( static_cast<size_t>(uiMaxIndex.GetValue()) + 1 );
+    m_data.resize( static_cast<size_t>(uiMaxIndex.GetValue()) + 1 );
     setTableValues( );
 }
 
@@ -26,8 +26,6 @@ void CLUT::SetColorHi( COLORREF const colorHi )
     
 void CLUT::setTableValues( )
 {
-    assert( m_data != nullptr );
-
 	UINT const uiMaxIndex = GetSize( ) - 1;
 
     UINT const uiRedHi = GetRValue ( m_colorHi ); 
@@ -48,11 +46,6 @@ void CLUT::setTableValues( )
         UINT const uiG = uiGreLo + (uiGreDif * uiIndex) / uiMaxIndex;
         UINT const uiB = uiBluLo + (uiBluDif * uiIndex) / uiMaxIndex;
 
-        (*m_data)[uiIndex] = D3DCOLOR_ARGB( 255, uiR, uiG, uiB );
+        m_data[uiIndex] = D3DCOLOR_ARGB( 255, uiR, uiG, uiB );
     }
-}
-
-CLUT::~CLUT( )
-{
-    delete m_data;
 }

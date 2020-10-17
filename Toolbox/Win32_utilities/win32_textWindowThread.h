@@ -8,6 +8,9 @@
 #include "win32_textBuffer.h"
 #include "win32_thread.h"
 
+using std::unique_ptr;
+using std::make_unique;
+
 class TextWindowThread: public Util::Thread
 {
 public:
@@ -15,25 +18,20 @@ public:
 	(
 		HDC             hDC_Memory,
 		PixelRectSize & pixSize,
-		TextWindow    * pTextWindow,
+		TextWindow    & textWindow,
 		wstring const & strName,
 		bool            bAsync
 	) :
-		m_pTextWindow( pTextWindow ),
+		m_textWindow( textWindow ),
 		m_hDC( hDC_Memory )
 	{ 
-	    m_pTextBuffer = new Win32_TextBuffer( hDC_Memory, pixSize );
+	    m_pTextBuffer = make_unique<Win32_TextBuffer>( hDC_Memory, pixSize );
 		if ( bAsync )
 			StartThread( strName, bAsync );
 		Trigger( );
 	}
 
-	~TextWindowThread()
-	{
-		delete m_pTextBuffer;
-		m_pTextWindow = nullptr;
-		m_pTextBuffer = nullptr;
-	}
+	virtual ~TextWindowThread()	{ }
 
 	virtual void Trigger( )
 	{
@@ -45,12 +43,12 @@ public:
 	virtual void ThreadMsgDispatcher( MSG const msg )
 	{
         m_pTextBuffer->StartPainting( );
-		m_pTextWindow->DoPaint( * m_pTextBuffer );
-		m_pTextWindow->Invalidate( false );
+		m_textWindow.DoPaint( * m_pTextBuffer );
+		m_textWindow.Invalidate( false );
 	}
 
 private:
-	TextWindow * m_pTextWindow;
-	TextBuffer * m_pTextBuffer;
-    HDC          m_hDC;
+	TextWindow           & m_textWindow;
+	unique_ptr<TextBuffer> m_pTextBuffer;
+    HDC                    m_hDC;
 };

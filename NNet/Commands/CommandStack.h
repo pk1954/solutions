@@ -34,7 +34,7 @@ public:
     void StartSeries();
     void StopSeries();
 
-    void NewCommand( unique_ptr<Command> );
+    void PushCommand( unique_ptr<Command> );
     bool UndoCommand( );
     bool RedoCommand( );
 

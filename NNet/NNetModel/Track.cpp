@@ -13,7 +13,7 @@ SignalNr const Track::AddSignal( unique_ptr<Signal> pSignal )
 	return SignalNr( Cast2Int(m_signals.size() - 1) );
 }
 
-unique_ptr<Signal> Track::DeleteSignal( SignalNr const signalNr )
+unique_ptr<Signal> Track::RemoveSignal( SignalNr const signalNr )
 {
 	if ( IsValid( signalNr ) )
 	{
