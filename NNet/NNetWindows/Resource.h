@@ -101,7 +101,6 @@
 #define IDM_MINUS                192
 
 #define IDD_ATTACH2MONITOR       540
-#define IDD_INSERT_TRACK         541
 
 #define IDD_CONNECT              560
 #define IDD_INSERT_NEURON        561

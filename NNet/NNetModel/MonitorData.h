@@ -50,7 +50,7 @@ private:
 	unique_ptr<Signal> removeSignal( SignalId const & );
 	SignalNr const addSignal( TrackNr const, unique_ptr<Signal> );
 
-	vector<Track> m_tracks { };
+	vector<Track>   m_tracks { };
 	Observable    * m_pStaticModelObservable { nullptr };
 	SignalFactory * m_pSignalFactory         { nullptr };
 };

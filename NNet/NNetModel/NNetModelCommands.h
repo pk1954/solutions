@@ -45,16 +45,13 @@ public:
     void AnalyzeLoops        ( );
     void AppendInputNeuron   ( ShapeId const );
     void AppendNeuron        ( ShapeId const );
-    void Attach2Monitor      ( ShapeId const );
     void ClearBeepers        ( );
     void Connect             ( ShapeId const, ShapeId const );
     void CopySelection       ( );
     void DeleteSelection     ( );
     void DeleteShape         ( ShapeId const );
-    void DeleteSignal        ( SignalId const & );
     void Disconnect          ( ShapeId const );
     void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
-    void InsertTrack         ( TrackNr const );
     void MarkSelection       ( tBoolOp const );
     void MoveSelection       ( MicroMeterPoint const & );
     void MoveShape           ( ShapeId const, MicroMeterPoint const & );

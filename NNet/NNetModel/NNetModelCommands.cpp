@@ -17,7 +17,6 @@
 #include "DeletePipeCommand.h"
 #include "DisconnectBaseKnotCommand.h"
 #include "InsertNeuronCommand.h"
-#include "InsertTrackCommand.h"
 #include "MarkSelectionCommand.h"
 #include "MoveBaseKnotCommand.h"
 #include "MovePipeCommand.h"
@@ -76,6 +75,55 @@ void NNetModelCommands::RedoCommand( )
 		MessageBeep( MB_ICONWARNING );
 }
 
+void NNetModelCommands::ResetModel( )
+{ 
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+	m_pMWI->ResetModel( );
+	m_pCmdStack->Clear();
+	m_pStorage->ResetModelPath( );
+	m_pMWI->CreateInitialShapes();
+}
+
+void NNetModelCommands::ReadModel( bool bConcurrently, wstring const wstrPath )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << bConcurrently << L" " << wstrPath << endl;
+	m_pStorage->Read( bConcurrently, wstrPath );
+	m_pCmdStack->Clear();
+}
+
+///////////////////// xxxxxx commands /////////////////////////////
+
+void NNetModelCommands::DeleteShape( ShapeId const id )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << id << endl;
+	deleteShape( id );
+}
+
+void NNetModelCommands::DeleteSelection( )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << endl;
+	m_pCmdStack->OpenSeries();
+	{
+		ShapeList list;                                       // detour with secondary list is neccessary!
+		m_pMWI->GetShapeList                                  // cannot delete shapes directly in Apply2All
+		(                                                        
+			list, 
+			[&]( Shape const & s ) { return s.IsSelected(); } // first construct list
+		); 
+		list.Apply2All                                        // then run through list 
+		( 
+			[&]( Shape & shape ) { deleteShape( shape.GetId() ); }  // and delete shapes in model
+		);                                                          // using pointers from list
+	}
+	m_pCmdStack->CloseSeries();
+}
+
+///////////////////// undoable commands /////////////////////////////
+
 void NNetModelCommands::Connect( ShapeId const idSrc, ShapeId const idDst )
 {
 	if ( IsTraceOn( ) )
@@ -96,39 +144,6 @@ void NNetModelCommands::deleteShape( ShapeId const id )
 	else 
 		pCmd = make_unique<DisconnectBaseKnotCommand>( * m_pMWI, id, true );
 	m_pCmdStack->PushCommand( move( pCmd ) );
-}
-
-void NNetModelCommands::Attach2Monitor( ShapeId const id )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << id << endl;
-	if ( m_pMRI->IsOfType<Neuron>( id ) )
-	{
-		MonitorData * const pMonitorData { m_pMWI->GetMonitorData() }; 
-		pMonitorData->InsertTrack( TrackNr(0) );
-		pMonitorData->AddSignal( id, TrackNr(0) );
-	}
-}
-
-void NNetModelCommands::InsertTrack( TrackNr const trackNr )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << trackNr << endl;
-	m_pCmdStack->PushCommand( make_unique<InsertTrackCommand>( trackNr ) );
-}
-
-void NNetModelCommands::DeleteShape( ShapeId const id )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << id << endl;
-	deleteShape( id );
-}
-
-void NNetModelCommands::DeleteSignal( SignalId const & id )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << id << endl;
-	m_pMWI->GetMonitorData()->DeleteSignal( id );
 }
 
 void NNetModelCommands::Disconnect( ShapeId const id )
@@ -152,24 +167,6 @@ void NNetModelCommands::SetPulseRate( ShapeId const id, fHertz const fNewValue )
 	m_pCmdStack->PushCommand( make_unique<SetPulseRateCommand>( * m_pMWI, id, fNewValue ) );
 }
 
-void NNetModelCommands::ResetModel( )
-{ 
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
-	m_pMWI->ResetModel( );
-	m_pCmdStack->Clear();
-	m_pStorage->ResetModelPath( );
-	m_pMWI->CreateInitialShapes();
-}
-
-void NNetModelCommands::ReadModel( bool bConcurrently, wstring const wstrPath )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << bConcurrently << L" " << wstrPath << endl;
-	m_pStorage->Read( bConcurrently, wstrPath );
-	m_pCmdStack->Clear();
-}
-
 void NNetModelCommands::SetTriggerSound( ShapeId const id, SoundDescr const & sound )
 {
 	if ( IsTraceOn( ) )
@@ -188,16 +185,12 @@ void NNetModelCommands::MoveShape( ShapeId const id, MicroMeterPoint const & del
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << delta << endl;
+	unique_ptr<Command> pCmd;
 	if ( m_pMWI->IsPipe( id ) ) 
-	{
-		auto pCmd = make_unique<MovePipeCommand>( * m_pMWI, id, delta );
-		m_pCmdStack->PushCommand( move( pCmd ) );
-	}
+		pCmd = make_unique<MovePipeCommand>( * m_pMWI, id, delta );
 	else 
-	{
-		auto pCmd = make_unique<MoveBaseKnotCommand>( * m_pMWI, id, delta );
-		m_pCmdStack->PushCommand( move( pCmd ) );
-	}
+		pCmd = make_unique<MoveBaseKnotCommand>( * m_pMWI, id, delta );
+	m_pCmdStack->PushCommand( move( pCmd ) );
 }
 
 void NNetModelCommands::MoveSelection( MicroMeterPoint const & delta )
@@ -288,27 +281,6 @@ void NNetModelCommands::MarkSelection( tBoolOp const op )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << op << endl;
 	m_pCmdStack->PushCommand( make_unique<MarkSelectionCommand>( * m_pMWI, op ) );
-}
-
-void NNetModelCommands::DeleteSelection( )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << endl;
-//	m_pCmdStack->StartSeries();
-	{
-		ShapeList list;                                       // detour with secondary list is neccessary!
-		m_pMWI->GetShapeList                                  // cannot delete shapes directly in Apply2All
-		(                                                        
-			list, 
-			[&]( Shape const & s ) { return s.IsSelected(); } // first construct list
-		); 
-		list.Apply2All                                        // then run through list 
-		( 
-			[&]( Shape & shape ) { deleteShape( shape.GetId() ); }  // and delete shapes in model
-		);                                                          // using pointers from list
-	}
-
-//	m_pCmdStack->StopSeries();
 }
 
 ///////////////////// selection commands /////////////////////////////

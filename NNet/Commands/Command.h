@@ -14,7 +14,9 @@ public:
         int x = 42;
     }
 
-    virtual void Do( NNetModelWriterInterface & ) = 0;
+    virtual void Do( NNetModelWriterInterface & ) 
+    { 
+    };
     
     virtual void Undo( NNetModelWriterInterface & model )
     { 

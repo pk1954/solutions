@@ -40,8 +40,8 @@ int APIENTRY wWinMain
 
 	int iRetVal;
 
-	try
-	{
+	//try
+	//{
 		Stopwatch   stopwatch;
 		MessagePump pump;
 		stopwatch.Start();
@@ -51,16 +51,16 @@ int APIENTRY wWinMain
 		stopwatch.Stop( L"*** App.Start" );
 		wcout << endl;
 		iRetVal = pump.Run();
-	}
-	catch ( std::logic_error & err )
-	{
-		FatalError::Happened( 999, err.what() );
-	}
-	catch ( ... )
-	{
-		App.Stop();
-		FatalError::Happened( 1, "main thread" );
-	}
+	//}
+	//catch ( std::logic_error & err )
+	//{
+	//	FatalError::Happened( 999, err.what() );
+	//}
+	//catch ( ... )
+	//{
+	//	App.Stop();
+	//	FatalError::Happened( 1, "main thread" );
+	//}
 
 	return iRetVal;
 }

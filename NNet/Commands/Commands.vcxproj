@@ -84,7 +84,6 @@
     <ClInclude Include="DeleteShapeCommand.h" />
     <ClInclude Include="DisconnectBaseKnotCommand.h" />
     <ClInclude Include="InsertNeuronCommand.h" />
-    <ClInclude Include="InsertTrackCommand.h" />
     <ClInclude Include="MarkSelectionCommand.h" />
     <ClInclude Include="MoveBaseKnotCommand.h" />
     <ClInclude Include="MoveCommand.h" />

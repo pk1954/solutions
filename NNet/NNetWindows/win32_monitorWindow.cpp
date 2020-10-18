@@ -42,7 +42,7 @@ void MonitorWindow::Start
 	m_pController      =   pController;
 	m_pBeaconAnimation = & beaconAnimation;
 	m_pParams          = & params;
-	m_pModel           = & model;
+	m_pMRI             = & model;
 	m_pMonitorData     = & monitorData;
 	m_graphics.Initialize( hwnd );
 	SetWindowText( hwnd, L"Monitor" );
@@ -61,7 +61,7 @@ void MonitorWindow::Stop( )
 	Reset( );
 	m_pBeaconAnimation = nullptr;
 	m_pParams          = nullptr;
-	m_pModel           = nullptr;
+	m_pMRI             = nullptr;
 	m_pMonitorData     = nullptr;
 	m_graphics.ShutDown( );
 	DestroyWindow( );
@@ -81,6 +81,20 @@ long MonitorWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 		AppendMenu( hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL, L"Delete signal" );
 
 	return 0L; // will be forwarded to HandleContextMenuCommand
+}
+
+void MonitorWindow::AddSignal( ShapeId const id )
+{
+	if ( m_pMRI->IsOfType<Neuron>( id ) )
+	{
+		m_pMonitorData->InsertTrack( TrackNr(0) );
+		m_pMonitorData->AddSignal( id, TrackNr(0) );
+	}
+}
+
+void MonitorWindow::InsertTrack( TrackNr const trackNr )
+{
+	m_pMonitorData->InsertTrack( trackNr );
 }
 
 void MonitorWindow::selectSignal( SignalId const & idNew )
@@ -122,12 +136,6 @@ TrackNr const MonitorWindow::findPos4NewTrack( PIXEL const pixCrsrPosY ) const
 	return trackNr;
 }
 
-void MonitorWindow::addTrack( TrackNr const trackNr )
-{
-	m_pController->HandleCommand( IDD_INSERT_TRACK, trackNr.GetValue() );
-	Show( true );            // if window was not visible, show it now
-}
-
 fPIXEL const MonitorWindow::calcTrackHeight( ) const
 {
 	PIXEL const pixRectHeight  { GetClientWindowHeight( ) };
@@ -158,7 +166,7 @@ void MonitorWindow::paintSignal
 ) const
 {
 	Signal     const & signal { m_pMonitorData->GetSignal( idSignal ) }; 
-	fMicroSecs const   usEnd  { m_pModel->GetSimulationTime( ) };
+	fMicroSecs const   usEnd  { m_pMRI->GetSimulationTime( ) };
 
 	fPIXEL const fPixYvalue { getYvalue( signal, usEnd ) };
 	if ( isnan(fPixYvalue.GetValue()) )
@@ -255,7 +263,7 @@ SignalNr const MonitorWindow::findSignal( TrackNr const trackNr, PixelPoint cons
 
 	fPIXEL      const fPixWidth       { Convert2fPIXEL( GetClientWindowWidth( ) ) };
 	fMicroSecs  const usInWindow      { m_fMicroSecsPerPixel * fPixWidth.GetValue() };
-	fMicroSecs  const usEnd           { m_pModel->GetSimulationTime( ) };
+	fMicroSecs  const usEnd           { m_pMRI->GetSimulationTime( ) };
 	fMicroSecs  const timeStart       { usEnd - usInWindow };
 	fPixelPoint const fPixPtCrsr      { Convert2fPixelPoint( ptCrsr ) };
 	fMicroSecs  const umTime          { timeStart + m_fMicroSecsPerPixel * fPixPtCrsr.GetXvalue() };
@@ -328,7 +336,8 @@ bool MonitorWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDD_ADD_TRACK:
-		addTrack( findPos4NewTrack( pixPoint.GetY() ) );
+		InsertTrack( findPos4NewTrack( pixPoint.GetY() ) );
+		Show( true );            // if window was not visible, show it now
 		break;
 
 	case IDD_DELETE_TRACK:

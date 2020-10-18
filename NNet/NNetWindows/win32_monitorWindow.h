@@ -32,6 +32,9 @@ public:
 
 	virtual long AddContextMenuEntries( HMENU const );
 
+	void AddSignal( ShapeId const );
+	void InsertTrack( TrackNr const );
+
 private:
 
 	SignalNr const findSignal      ( TrackNr const, PixelPoint const & ) const;
@@ -42,7 +45,6 @@ private:
 	bool           testSignal      ( Signal const &, fMicroSecs const, fPIXEL const, fPIXEL & ) const;
 
 	void doPaint( ) const;
-	void addTrack( TrackNr const );
 	void selectSignal( SignalId const & );
 	void deselectSignal( );
 	void paintSignal ( SignalId const &, fPIXEL const, fPIXEL const, fMicroSecs const, fMicroSecs const ) const;
@@ -61,7 +63,7 @@ private:
 
 	NNetController                 * m_pController      { nullptr };
 	Param                    const * m_pParams          { nullptr };
-	NNetModelReaderInterface const * m_pModel           { nullptr };
+	NNetModelReaderInterface const * m_pMRI             { nullptr };
 	BeaconAnimation                * m_pBeaconAnimation { nullptr };
 	MonitorData                    * m_pMonitorData     { nullptr };  
 
