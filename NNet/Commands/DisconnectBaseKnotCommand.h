@@ -31,6 +31,9 @@ public:
       :	m_pBaseKnot( model.GetShapePtr<BaseKnot *>( id ) ),
         m_bDelete( bDelete )
     { 
+        if ( ! m_pBaseKnot )   // might have been deleted earlier
+            return;
+     
         wcout << L"DisconnectBaseKnotCommand " << L" shapeId = " << m_pBaseKnot->GetId( ) << endl;
         MicroMeterPoint umPos { m_pBaseKnot->GetPosition() };
         m_pBaseKnot->m_connections.Apply2AllInPipes
@@ -65,6 +68,9 @@ public:
 
     virtual void Do( NNetModelWriterInterface & model )
     {
+        if ( ! m_pBaseKnot )   // might have been deleted earlier
+            return;
+
         wcout << L"DisconnectBaseKnotCommand " << L"Do " << L"shapeId = " << m_pBaseKnot->GetId( ) << endl;
         for ( Knot * pKnot : m_startKnots )
         {
@@ -85,6 +91,9 @@ public:
 
     virtual void Undo( NNetModelWriterInterface & model )
     {
+        if ( ! m_pBaseKnot )   // might have been deleted earlier
+            return;
+
         wcout << L"DisconnectBaseKnotCommand " << L"Undo " << L"shapeId = " << m_pBaseKnot->GetId( ) << endl;
         for ( Knot * pKnot : m_startKnots )
         {

@@ -117,9 +117,6 @@
     <ClInclude Include="AddModelCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DeleteShapeCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

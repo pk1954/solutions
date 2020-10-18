@@ -224,6 +224,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_staticModelObservable    .RegisterObserver( & m_mainNNetWindow );
 	m_staticModelObservable    .RegisterObserver( & m_miniNNetWindow );
 	m_staticModelObservable    .RegisterObserver( & m_monitorWindow );
+	m_staticModelObservable    .RegisterObserver( & m_performanceWindow );
 	m_cursorPosObservable      .RegisterObserver( & m_crsrWindow );
 	m_performanceObservable    .RegisterObserver( & m_performanceWindow );
 	m_modelTimeObservable      .RegisterObserver( & m_timeDisplay );
