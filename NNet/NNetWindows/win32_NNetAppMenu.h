@@ -80,5 +80,4 @@ private:
 	OnOffPair * m_pOnOffArrows;
 	OnOffPair * m_pOnOffSound;
 	OnOffPair * m_pOnOffAutoOpen;
-	OnOffPair * m_pOnOffCmdCmbine;
 };

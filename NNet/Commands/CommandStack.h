@@ -28,9 +28,6 @@ public:
     bool UndoStackEmpty() const { return m_iIndex == 0; }
     bool RedoStackEmpty() const { return m_iIndex == m_CommandStack.size(); }
 
-    void SetCombineCmdsFlag( bool const op ) { m_bCombineCmds = op; }
-    bool GetCombineCmdsFlag( ) const { return m_bCombineCmds;  }
-
     void OpenSeries( )
     {
         push( make_unique<OpenBracket>( OpenBracket( ) ) );
@@ -56,7 +53,6 @@ private:
     vector<unique_ptr<Command>> m_CommandStack    { };
     size_t                      m_iIndex          { 0 };     // index into m_Commandstack
     bool                        m_bIndexInSeries  { false }; // index in series?
-    bool                        m_bCombineCmds    { true };
     NNetModelWriterInterface  * m_pModelInterFace { nullptr };
     Observable                * m_pObservable     { nullptr };
 

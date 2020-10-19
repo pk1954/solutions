@@ -169,14 +169,6 @@ bool NNetController::processUIcommand( int const wmId, LPARAM const lParam )
         AutoOpen::Off();
         break;
 
-    case IDD_CMD_COMBINE_ON:
-        m_pCommandStack->SetCombineCmdsFlag( true );
-        break;
-
-    case IDD_CMD_COMBINE_OFF:
-        m_pCommandStack->SetCombineCmdsFlag( false );
-        break;
-
     case IDD_STOP_ON_TRIGGER:                 // effects model, but seems to be secure  
         m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
         m_pModelCommands->ToggleStopOnTrigger( m_pMainWindow->GetHighlightedShapeId() );

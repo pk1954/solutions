@@ -21,10 +21,9 @@ HMENU NNetAppMenu::popupMenu( HMENU const hMenuParent, LPCTSTR const text )
 }
 
 NNetAppMenu::NNetAppMenu( )
-  : m_pOnOffArrows   ( new OnOffPair( this, IDD_ARROWS_ON,      IDD_ARROWS_OFF     ) ),
-    m_pOnOffSound    ( new OnOffPair( this, IDD_SOUND_ON,       IDD_SOUND_OFF      ) ),
-    m_pOnOffAutoOpen ( new OnOffPair( this, IDD_AUTO_OPEN_ON,   IDD_AUTO_OPEN_OFF  ) ),
-    m_pOnOffCmdCmbine( new OnOffPair( this, IDD_CMD_COMBINE_ON, IDD_CMD_COMBINE_OFF) )
+  : m_pOnOffArrows  ( new OnOffPair( this, IDD_ARROWS_ON,    IDD_ARROWS_OFF    ) ),
+    m_pOnOffSound   ( new OnOffPair( this, IDD_SOUND_ON,     IDD_SOUND_OFF     ) ),
+    m_pOnOffAutoOpen( new OnOffPair( this, IDD_AUTO_OPEN_ON, IDD_AUTO_OPEN_OFF ) )
 { }
 
 void NNetAppMenu::Start
@@ -104,9 +103,8 @@ void NNetAppMenu::Start
     }
     HMENU hMenuOptions = popupMenu( m_hMenu, L"&Options" );
     {
-        m_pOnOffSound    ->appendOnOffMenu( hMenuOptions, L"&Sound" );
-        m_pOnOffAutoOpen ->appendOnOffMenu( hMenuOptions, L"Auto&Open" );
-        m_pOnOffCmdCmbine->appendOnOffMenu( hMenuOptions, L"&CombUndoRedo" );
+        m_pOnOffSound   ->appendOnOffMenu( hMenuOptions, L"&Sound" );
+        m_pOnOffAutoOpen->appendOnOffMenu( hMenuOptions, L"Auto&Open" );
     }
     HMENU hMenuHelp = popupMenu( m_hMenu, L"&Help" );
     {
@@ -139,7 +137,6 @@ void NNetAppMenu::Notify( bool const bImmediately )
     m_pOnOffArrows   ->enableOnOff( Pipe::GetArrowSize() == Pipe::STD_ARROW_SIZE );
     m_pOnOffSound    ->enableOnOff( m_pSound->IsOn() );
     m_pOnOffAutoOpen ->enableOnOff( AutoOpen::IsOn() );
-    m_pOnOffCmdCmbine->enableOnOff( m_pCommandStack->GetCombineCmdsFlag() );
 
     DrawMenuBar( m_hwndApp );
 }
