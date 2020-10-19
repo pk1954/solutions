@@ -24,11 +24,12 @@ public:
 		m_pKnotInsert   = model.NewBaseKnot<Knot>( pos );                                
 		m_pKnotOrtho    = model.NewBaseKnot<Knot>( pos - model.OrthoVector( idPipe ) );
 
-		m_pPipeOrtho    = model.NewPipe( m_pKnotOrtho, m_pKnotInsert );		
+		m_pPipeOrtho    = model.NewPipe( m_pKnotOrtho,    m_pKnotInsert );		
+		m_pPipeExt      = model.NewPipe( m_pStartKnotOld, m_pKnotInsert );   	
+
 		m_pKnotInsert->m_connections.AddIncoming( m_pPipeExt );
 		m_pKnotOrtho ->m_connections.AddOutgoing( m_pPipeOrtho );
 
-		m_pPipeExt      = model.NewPipe( m_pStartKnotOld, m_pKnotInsert );   	
 		m_pKnotInsert->m_connections.AddIncoming( m_pPipeOrtho );
 		m_pKnotInsert->m_connections.AddOutgoing( m_pPipeOld );
 	}

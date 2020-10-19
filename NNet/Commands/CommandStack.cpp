@@ -84,7 +84,7 @@ void CommandStack::PushCommand( unique_ptr<Command> pCmd )
 
 bool CommandStack::UndoCommand( )
 {
-    wcout << L"# CommandStack::UndoCommand " << L"index =" << m_iIndex << endl;
+//    wcout << L"# CommandStack::UndoCommand " << L"index =" << m_iIndex << endl;
     if ( UndoStackEmpty() )
        return false;
     set2OlderCmd();
@@ -113,7 +113,7 @@ bool CommandStack::UndoCommand( )
 
 bool CommandStack::RedoCommand( )
 {
-    wcout << L"# CommandStack::RedoCommand " << L"index =" << m_iIndex << endl;
+//    wcout << L"# CommandStack::RedoCommand " << L"index =" << m_iIndex << endl;
     if ( RedoStackEmpty() ) 
         return false;
     if ( isOpenBracketCmd() )

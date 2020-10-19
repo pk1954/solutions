@@ -1,3 +1,3 @@
 SetSound ON
 SetAutoOpen ON
-ReadModel "D:\SW-projects\Solutions\NNet\Models\3In3OutAkustic3.mod"
+ReadModel "D:\SW-projects\Solutions\NNet\Models\Pipe.mod"
