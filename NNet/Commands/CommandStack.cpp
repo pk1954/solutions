@@ -90,21 +90,21 @@ bool CommandStack::UndoCommand( )
     set2OlderCmd();
     if ( isCloseBracketCmd() )
     {
-        set2OlderCmd();
-        m_bIndexInSeries = true;
+        set2OlderCmd();                     // skip closing bracket
+        m_bIndexInSeries = true;            // we are in a series
     }
-    if ( m_bIndexInSeries ) // we are in a series, either because we just found 
-    {                       // closing bracket or we are at top of stack
-        do                                   
+    if ( m_bIndexInSeries )                 // we are in a series, either
+    {                                       // because we just found closing bracket 
+        do                                  // or we are at top of stack
         {
-            undoCmd( );                      // undo all commands in series
+            undoCmd( );                     // undo all commands in series
             set2OlderCmd();
-        } while ( ! isOpenBracketCmd() );    // until opening bracket is reached
-        m_bIndexInSeries = false;            // index is on open bracket
+        } while ( ! isOpenBracketCmd() );   // until opening bracket is reached
+        m_bIndexInSeries = false;           // index is on open bracket
     }
-    else
-    {
-        undoCmd( );
+    else                                    // we are not in a series
+    {                                       // normal processing
+        undoCmd( );                         // of one command
     }
     m_pModelInterFace->StaticModelChanged( );
     m_pObservable->NotifyAll( true );
@@ -118,27 +118,24 @@ bool CommandStack::RedoCommand( )
         return false;
     if ( isOpenBracketCmd() )
     {
-        set2YoungerCmd();
-        m_bIndexInSeries = true;
-    }
-    if ( m_bIndexInSeries )   
-    {                         
-        for (;;)
-        {
-            doAndSet2YoungerCmd();
-            if ( RedoStackEmpty() )
-                break;
-            if ( isCloseBracketCmd() )
+        set2YoungerCmd();                   // skip opening bracket
+        m_bIndexInSeries = true;            // we are in a series
+        for (;;)                            // process series in loop
+        {                                  
+            doAndSet2YoungerCmd();         
+            if ( RedoStackEmpty() )         // we reached top of stack 
+                break;                      // redo finished
+            if ( isCloseBracketCmd() )      // we found closing bracket
             {
-                set2YoungerCmd();
-                m_bIndexInSeries = false; 
-                break;
+                set2YoungerCmd();           // skip closing bracket
+                m_bIndexInSeries = false;   // we left the series
+                break;                      // redo finished
             }
         }
     }
-    else
-    {
-        doAndSet2YoungerCmd();
+    else                                    // no opening bracket
+    {                                       // normal processing
+        doAndSet2YoungerCmd();              // of one command
     }
 
     m_pModelInterFace->StaticModelChanged( );
