@@ -140,8 +140,7 @@ bool CommandStack::RedoCommand( )
         { 
             for (;;)
             {
-                doCmd();
-                set2YoungerCmd();
+                doAndSet2YoungerCmd();
                 if ( RedoStackEmpty() )
                     break;
                 if ( isCloseBracketCmd() )
@@ -154,8 +153,7 @@ bool CommandStack::RedoCommand( )
         }
         else
         {
-            doCmd();
-            set2YoungerCmd();
+            doAndSet2YoungerCmd();
         }
     }
     else
@@ -166,8 +164,7 @@ bool CommandStack::RedoCommand( )
             if ( RedoStackEmpty() ) 
                 return false;
         } 
-        doCmd();
-        set2YoungerCmd();
+        doAndSet2YoungerCmd();
     }
     m_pModelInterFace->StaticModelChanged( );
     m_pObservable->NotifyAll( true );
