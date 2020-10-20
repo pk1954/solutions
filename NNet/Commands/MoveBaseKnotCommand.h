@@ -21,8 +21,8 @@ public:
 	  : MoveCommand( delta ),
 		m_pBaseKnot( model.GetShapePtr<BaseKnot *>( id ) )
 	{
-//		m_posBaseKnotOld = m_pBaseKnot->GetPosition();
-		wcout << L"# MoveBaseKnotCommand: old pos = " << m_posBaseKnotOld << endl; 
+		m_posBaseKnotOld = m_pBaseKnot->GetPosition();
+//		wcout << L"# MoveBaseKnotCommand: old pos = " << m_posBaseKnotOld << endl; 
 	}
 
 	virtual void Do( NNetModelWriterInterface & model ) 

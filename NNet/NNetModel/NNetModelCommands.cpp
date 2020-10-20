@@ -253,20 +253,20 @@ void NNetModelCommands::AppendNeuron( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << endl;
-	auto pCmdNewNeuron        { make_unique<NewNeuronCommand>       ( * m_pMWI, m_pMRI->GetShapePos(id) ) };
-	auto pCmdConnect2BaseKnot { make_unique<Connect2BaseKnotCommand>( * m_pMWI, id, pCmdNewNeuron->GetNeuron()->GetId() ) };
+	auto pCmdNewNeuron        { make_unique<NewNeuronCommand>( * m_pMWI, m_pMRI->GetShapePos(id) ) };
+	Neuron const * pNewNeuron { pCmdNewNeuron->GetNeuron() };
 	m_pCmdStack->PushCommand( move( pCmdNewNeuron ) );
-	m_pCmdStack->PushCommand( move( pCmdConnect2BaseKnot ) );
+	m_pCmdStack->PushCommand( make_unique<Connect2BaseKnotCommand>( * m_pMWI, id, pNewNeuron->GetId() ) );
 }
 
 void NNetModelCommands::AppendInputNeuron( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << endl;
-	auto pCmdNewInputNeuron{ make_unique<NewInputNeuronCommand>  ( * m_pMWI, m_pMRI->GetShapePos(id) ) };
-	auto pCmdNewBaseKnot   { make_unique<Connect2BaseKnotCommand>( * m_pMWI, id, pCmdNewInputNeuron->GetInputNeuron()->GetId() ) };
+	auto pCmdNewInputNeuron{ make_unique<NewInputNeuronCommand>( * m_pMWI, m_pMRI->GetShapePos(id) ) };
+	InputNeuron const * pNewInputNeuron { pCmdNewInputNeuron->GetInputNeuron() };
 	m_pCmdStack->PushCommand( move( pCmdNewInputNeuron ) );
-	m_pCmdStack->PushCommand( move( pCmdNewBaseKnot ) );
+	m_pCmdStack->PushCommand( make_unique<Connect2BaseKnotCommand>( * m_pMWI, id, pNewInputNeuron->GetId() ) );
 }
 
 void NNetModelCommands::ClearBeepers( )
