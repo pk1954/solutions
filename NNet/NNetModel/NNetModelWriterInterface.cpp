@@ -79,11 +79,6 @@ void NNetModelWriterInterface::ToggleStopOnTrigger( ShapeId const id )
 	}
 }
 
-void NNetModelWriterInterface::GetShapeList( ShapeList & dst, ShapeCrit const & selector ) const
-{
-	Apply2All<Shape>( [&]( Shape & s ) { if ( selector(s) ) dst.Add( & s ); } );
-}
-
 void NNetModelWriterInterface::SelectBeepers() 
 { 
 	Apply2All<Neuron>

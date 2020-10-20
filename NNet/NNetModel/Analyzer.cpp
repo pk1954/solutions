@@ -132,10 +132,10 @@ bool ModelAnalyzer::hasAnomaly( Knot & knot )
 	return bFoundAnomaly; 
 }
 
-bool ModelAnalyzer::FindAnomaly( NNetModelWriterInterface const & model )
+bool ModelAnalyzer::FindAnomaly( NNetModelWriterInterface const & nmwi )
 {
 	m_shapeStack.clear();
-	bool const bFound { model.GetModel().GetShapes().Apply2AllB<Knot>( [&]( Knot & knot ) { return hasAnomaly( knot ); } ) };
+	bool const bFound { nmwi.GetModel().GetShapes().Apply2AllB<Knot>( [&]( Knot & knot ) { return hasAnomaly( knot ); } ) };
 	if ( ! bFound )
 		statusDisplay( L"no anomalies found" );
 	return bFound;

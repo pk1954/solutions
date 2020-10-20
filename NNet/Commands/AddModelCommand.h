@@ -4,14 +4,13 @@
 
 #pragma once
 
-#include "SelectionCommand.h"
+#include "NNetModelWriterInterface.h"
 
-class AddModelCommand : public SelectionCommand
+class AddModelCommand
 {
 public:
 
 	AddModelCommand( NNetModelWriterInterface * const pModel )
-		:	SelectionCommand( pModel)
 	{ 
 
 	}
@@ -22,6 +21,5 @@ public:
 	}
 
 private:
-	ShapeList m_copies;
 };
 

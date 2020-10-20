@@ -19,7 +19,14 @@ public:
 	MarkSelectionCommand( NNetModelWriterInterface & model, tBoolOp const op )
 	  : m_op( op )
 	{
-		model.GetShapeList( m_markedShapes, [&]( Shape const & s ){ return s.IsMarked(); } );
+		model.Apply2All<Shape>                    
+		(                                                        
+			[&]( Shape & s )                 
+			{
+				if ( s.IsSelected() )
+					m_markedShapes.push_back( & s );
+			} 
+		); 
 	}
 
 	virtual void Do( NNetModelWriterInterface & model ) 
@@ -30,11 +37,11 @@ public:
 	virtual void Undo( NNetModelWriterInterface & model ) 
 	{ 
 		model.Apply2All<Shape>( [&]( Shape & shape ) { shape.Mark( tBoolOp::opFalse ); } );
-		m_markedShapes.Apply2All( [&]( Shape & shape ) { shape.Mark( tBoolOp::opTrue  ); } );
+		for ( Shape * pShape : m_markedShapes ) { pShape->Mark( tBoolOp::opTrue  ); };
 	}
 
 private:
-	ShapeList     m_markedShapes;
-	tBoolOp const m_op;
+	vector<Shape *> m_markedShapes;
+	tBoolOp const   m_op;
 };
 

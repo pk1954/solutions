@@ -5,45 +5,55 @@
 #pragma once
 
 #include "Shape.h"
-#include "ShapeList.h"
 #include "NNetParameters.h"
 #include "NNetModelWriterInterface.h"
-#include "SelectionCommand.h"
+#include "Command.h"
 
-class CopySelectionCommand : public SelectionCommand
+class CopySelectionCommand : public Command
 {
 public:
 
 	CopySelectionCommand( NNetModelWriterInterface & model )
-		:	SelectionCommand( model)
 	{ 
-		m_selectedShapes.Apply2All
+		model.Apply2All<Shape>
 		(
-			[&]( Shape & shape )
+			[&]( Shape & s )
 			{
-				if ( shape.GetShapeType().IsBaseKnotType( ) )
-					shape.MoveShape( PIPE_WIDTH ); 
+				if ( s.IsSelected( ) )
+					m_selectedShapes.push_back( & s ); 
 			}
 		);
+		for ( Shape * pShape : m_selectedShapes )
+		{
+			if ( pShape->GetShapeType().IsBaseKnotType( ) )
+				pShape->MoveShape( PIPE_WIDTH ); 
+		}
 	}
 
 	virtual void Do( NNetModelWriterInterface & model ) 
 	{ 
 		model.SelectAllShapes( tBoolOp::opFalse );            // deselect all
-		m_selectedShapes.Apply2All                            // add copies
-		(
-			[&]( Shape & shape ) { model.Add2Model( shape ); }
-		);
+		for ( Shape * pShape : m_selectedShapes )             // add copies
+		{
+			model.Add2Model( * pShape );
+		}
 	}
 
 	virtual void Undo( NNetModelWriterInterface & model ) 
 	{ 
-		m_selectedShapes.Apply2All     // disconnect copies
-		(
-			[&]( Shape & shape ) { model.RemoveFromModel( & shape ); }
-		);
-		SelectionCommand::Undo( model );             // restore original selection
+		for ( Shape * pShape : m_selectedShapes )    	// disconnect copies
+		{
+			model.RemoveFromModel( pShape );
+		};
+		model.SelectAllShapes( tBoolOp::opFalse );
+		for (Shape * const pShape : m_selectedShapes)    
+		{ 
+			if ( pShape )
+				pShape->Select( tBoolOp::opTrue ); 
+		}
 	}
 
+private:
+	vector<Shape *> m_selectedShapes;
 };
 
