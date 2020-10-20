@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <type_traits>   
 #include "d2d1helper.h"
 #include "BoolOp.h"
 #include "MoreTypes.h"
@@ -14,6 +15,8 @@
 
 class DrawContext;
 class NNetModel;
+
+using std::remove_pointer;
 
 using ShapeCrit = function<bool(Shape const &)>;
                   
@@ -31,24 +34,28 @@ public:
 		m_identifier(src.m_identifier),
 		m_bSelected (src.m_bSelected),
 		m_bMarked   (src.m_bMarked)
-	{
-	}
+	{ }
 
 	virtual void CheckShape() const;
 
 	Shape & operator= ( Shape const & ) = delete;
 
-	virtual bool IsEqual( Shape const & other ) const
+	virtual bool operator==( Shape const & rhs ) const
 	{
-		if ( m_type.GetValue() != other.m_type.GetValue() )
+		if ( m_type != rhs.m_type )
 			return false;
-		if ( m_identifier.GetValue() != other.m_identifier.GetValue() )
+		if ( m_identifier != rhs.m_identifier )
 			return false;
-		if ( m_bSelected != other.m_bSelected )
+		if ( m_bSelected != rhs.m_bSelected )
 			return false;
-		if ( m_bMarked != other.m_bMarked )
+		if ( m_bMarked != rhs.m_bMarked )
 			return false;
 		return true;
+	}
+
+	virtual bool operator!=( Shape const & rhs ) const
+	{
+		return ! (*this == rhs);
 	}
 
 	virtual ~Shape() { }
@@ -112,12 +119,6 @@ private:
 	bool      m_bSelected  { false };
 	bool      m_bMarked    { false };
 };
-
-template <typename T>
-bool IS_EQUAL( Shape const & shapeA, Shape const & shapeB )
-{
-	return static_cast<T const &>( shapeA ).IsEqual( static_cast<T const &>( shapeB ) );
-}
 
 template <typename T> bool HasType( Shape const & shape ) 
 { 

@@ -31,6 +31,16 @@ public:
 		:	m_value( val )
 	{}
 
+	bool operator==( ShapeType const & rhs ) const
+	{
+		return m_value == rhs.m_value;
+	}
+
+	bool operator!=( ShapeType const & rhs ) const
+	{
+		return m_value != rhs.m_value;
+	}
+
 	void Check( ) const
 	{
 		AssertLimits<int>( (int)m_value, (int)Value::inputNeuron, (int)Value::undefined );

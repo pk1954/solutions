@@ -23,7 +23,7 @@ public:
 	Pipe( BaseKnot * const, BaseKnot * const );
 	virtual ~Pipe();
 
-	virtual bool IsEqual( Pipe const & ) const;
+	virtual bool operator==( Shape const & ) const override;
 
 	static unsigned long GetCounter  ( ) { return m_counter; }
 	static   void        ResetCounter( ) { m_counter = 0L; }

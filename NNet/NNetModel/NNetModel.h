@@ -19,8 +19,6 @@
 #include "Knot.h"
 #include "Pipe.h"
 
-using std::remove_pointer;
-
 class EventInterface;
 class MonitorData;
 class Param;
@@ -28,6 +26,8 @@ class Param;
 class NNetModel
 {
 public:
+	bool operator==( NNetModel const & ) const;
+
 	void Initialize
 	( 
 		MonitorData * const,
@@ -36,12 +36,6 @@ public:
 		Observable  * const, 
 		Observable  * const 
 	);
-
-	NNetModel( ) {};
-
-	NNetModel( NNetModel const & );
-
-	virtual ~NNetModel() {}
 
 	// readOnly functions
 

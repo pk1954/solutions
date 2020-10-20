@@ -25,15 +25,16 @@ Pipe::Pipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
 
 Pipe::~Pipe( ) { }
 
-bool Pipe::IsEqual( Pipe const & other ) const 
+bool Pipe::operator==( Shape const & rhs ) const 
 {
-	if ( ! Shape::IsEqual( other ) )
+	Pipe const & pipeRhs { static_cast<Pipe const &>(rhs) };
+	if ( this->Shape::operator!= (rhs) )
 		return false;
-	if ( m_pKnotStart->GetId() != other.m_pKnotStart->GetId() )
+	if ( m_pKnotStart->GetId() != pipeRhs.m_pKnotStart->GetId() )
 		return false;
-	if ( m_pKnotEnd->GetId() != other.m_pKnotEnd->GetId() )
+	if ( m_pKnotEnd->GetId() != pipeRhs.m_pKnotEnd->GetId() )
 		return false;
-	if ( m_width != other.m_width )
+	if ( m_width != pipeRhs.m_width )
 		return false;
 	return true;
 }

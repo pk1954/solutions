@@ -20,33 +20,15 @@ class ShapeList
 {
 public:
 
-	ShapeList(  )
-	{
-	}
+	ShapeList() { }
 
-	~ShapeList( )
-	{
-		Reset( );
-	}
+	~ShapeList();
 
-	void checkShape( Shape const & shape ) const
-	{
-		switch ( shape.GetShapeType().GetValue() )
-		{
-		case ShapeType::Value::inputNeuron:
-		case ShapeType::Value::neuron:
-		case ShapeType::Value::knot:
-			static_cast<BaseKnot const &>( shape ).CheckShape();
-			break;
+	ShapeList( const ShapeList & );
+	ShapeList & operator= ( ShapeList const & );
+	bool operator== ( ShapeList const & ) const;
 
-		case ShapeType::Value::pipe:
-			static_cast<Pipe const &>( shape ).CheckShape();
-			break;
-
-		default:
-			assert( false );
-		}
-	}
+	void checkShape( Shape const & ) const;
 
 	void CheckShapeList( ) const
 	{
@@ -55,67 +37,7 @@ public:
 #endif
 	}
 
-	ShapeList & operator= ( const ShapeList & src )
-	{
-		m_list.resize( Cast2Long(src.m_list.size()) );
-
-		src.CheckShapeList();
-
-		for ( Shape * const pShape : src.m_list )
-		{
-			if ( pShape )
-				AddAt( shallowCopy( pShape ), pShape->GetId() ); 
-		}
-
-		for ( Shape * const pShape : src.m_list )
-		{
-			if ( pShape )
-			{
-				ShapeId const   id       { pShape->GetId() };
-				Shape   const & shapeSrc { * pShape };
-				Shape         & shapeDst { * m_list.at(id.GetValue()) };
-				if ( shapeSrc.IsPipe( ) )
-				{
-					Pipe const & pipeSrc { static_cast<Pipe const &>( shapeSrc ) };
-					Pipe       & pipeDst { static_cast<Pipe       &>( shapeDst ) };
-					pipeDst.SetStartKnot( static_cast<BaseKnot *>( m_list.at( pipeSrc.GetStartKnotId().GetValue() )) );
-					pipeDst.SetEndKnot  ( static_cast<BaseKnot *>( m_list.at( pipeSrc.GetEndKnotId  ().GetValue() )) );
-				}
-				else
-				{
-					Connections const & srcConn { static_cast<BaseKnot const &>( shapeSrc ).m_connections };
-					Connections       & dstConn { static_cast<BaseKnot       &>( shapeDst ).m_connections };
-					dstConn.ClearOutgoing();
-					dstConn.ClearIncoming();
-					auto dstFromSrc = [&](Pipe const & pipeSrc){ return static_cast<Pipe *>(m_list.at(pipeSrc.GetId().GetValue())); };
-					srcConn.Apply2AllOutPipes( [&]( Pipe const & pipeSrc ) { dstConn.AddOutgoing( dstFromSrc( pipeSrc ) ); } );
-					srcConn.Apply2AllInPipes ( [&]( Pipe const & pipeSrc ) { dstConn.AddIncoming( dstFromSrc( pipeSrc ) ); } );
-				}
-			}
-		}
-		m_pShapeErrorHandler = src.m_pShapeErrorHandler;
-		return * this;
-	}
-
-	bool IsEqual( ShapeList const & other ) const
-	{
-		size_t iMax { max( m_list.size(), other.m_list.size() ) };
-		for ( int i = 0; i < iMax; ++i )
-		{
-			Shape const * pShape      { (i >=       m_list.size()) ? nullptr :       m_list[i] };
-			Shape const * pShapeOther { (i >= other.m_list.size()) ? nullptr : other.m_list[i] };
-			if ( (pShape == nullptr) != (pShapeOther == nullptr) )
-			{
-				return false;
-			}
-			else if ( (pShape != nullptr) && (pShapeOther != nullptr) )
-			{
-				if ( ! isEqual( * pShape, * pShapeOther ) )
-					return false;
-			}
-		}
-		return true;
-	}
+	void SetShape( Shape * const, ShapeId const );	
 
 	void Reset( )
 	{
@@ -130,11 +52,6 @@ public:
 	void RemoveLast( )
 	{
 		m_list.pop_back( );
-	}
-
-	void AddAt( Shape * const pShape, ShapeId const id )
-	{
-		m_list[ id.GetValue() ] = pShape;
 	}
 
 	Shape * const GetAt( ShapeId const id ) const 
@@ -163,25 +80,6 @@ public:
 		{
 			(* m_pShapeErrorHandler)( id );
 		}
-	}
-
-	void SetShape( Shape * const pShape, ShapeId const id )	
-	{
-		if ( IsUndefined( id ) || ! IsValidShapeId( id ) )
-		{
-			CallErrorHandler( id );  
-			return;
-		}
-
-		if ( pShape )
-			pShape->IncCounter();
-
-		Shape ** const ppShapeOld { & m_list[ id.GetValue() ] };
-
-		if ( * ppShapeOld )
-			(* ppShapeOld)->DecCounter();
-
-		* ppShapeOld = pShape; 
 	}
 
 	long const Size( ) const
@@ -287,45 +185,9 @@ public:
 		}
 	}                        
 
-	MicroMeterRect ComputeEnclosingRect( )
-	{
-		MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
-		for ( const auto & pShape : m_list )
-		{
-			if ( pShape )
-			{
-				if ( pShape->IsBaseKnot() )
-				{
-					rect.Expand( Cast2BaseKnot( pShape )->GetPosition() );
-				}
-				else if ( pShape->IsPipe() )
-				{
-					rect.Expand( Cast2Pipe( pShape )->GetStartPoint() );
-					rect.Expand( Cast2Pipe( pShape )->GetEndPoint() );
-				}
-				else
-				{
-					assert( false );
-				}
-			}
-		}
-		return rect;
-	}
+	MicroMeterRect ComputeEnclosingRect( );
 
-	ShapeId const FindShapeAt
-	( 
-		MicroMeterPoint const   pnt, 
-		ShapeCrit       const & crit 
-	) const
-	{
-		for ( size_t i = m_list.size(); i --> 0; )	
-		{
-			Shape * pShape = m_list[i];
-			if ( pShape && crit( * pShape ) && pShape->IsPointInShape( pnt ) ) 
-				return pShape->GetId();
-		};
-		return NO_SHAPE;
-	}
+	ShapeId const FindShapeAt( MicroMeterPoint const, ShapeCrit const & ) const;
 
 	void SetShapeErrorHandler( ShapeErrorHandler * const pHandler )
 	{	
@@ -341,63 +203,7 @@ private:
 	vector<Shape *>     m_list;
 	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
 
-	Shape * shallowCopy( Shape const * const pShape ) const
-	{
-		if ( pShape )
-		{
-			switch ( pShape->GetShapeType().GetValue() )
-			{
-			case ShapeType::Value::inputNeuron:
-				return new InputNeuron( static_cast<InputNeuron const &>( * pShape ) );
-
-			case ShapeType::Value::knot:
-				return new Knot( static_cast<Knot const &>( * pShape ) );
-
-			case ShapeType::Value::neuron:
-				return new Neuron( static_cast<Neuron const &>( * pShape ) );
-
-			case ShapeType::Value::pipe:
-				return new Pipe( static_cast<Pipe const &>( * pShape ) );
-
-			default:
-				assert( false );
-			}
-		}
-		return nullptr;
-	}
-
-	bool isEqual( Shape const & shapeA, Shape const & shapeB ) const
-	{
-		if ( shapeA.GetShapeType().GetValue() != shapeB.GetShapeType().GetValue() )
-			return false;
-
-		switch ( shapeA.GetShapeType().GetValue() )
-		{
-		case ShapeType::Value::inputNeuron:
-			if (! IS_EQUAL<InputNeuron>( shapeA, shapeB ) ) 
-				return false;
-			break;
-
-		case ShapeType::Value::knot:
-			if (! IS_EQUAL<Knot>( shapeA, shapeB ) ) 
-				return false;
-			break;
-
-		case ShapeType::Value::neuron:
-			if (! IS_EQUAL<Neuron>( shapeA, shapeB ) ) 
-				return false;
-			break;
-
-		case ShapeType::Value::pipe:
-			if (! IS_EQUAL<Pipe>( shapeA, shapeB ) ) 
-				return false;
-			break;
-
-		default:
-			assert( false );
-			return false;
-		}
-		return true;
-	}
-
+	void    init       ( ShapeList const & );
+	Shape * shallowCopy( Shape const & ) const;
+//	bool    isEqual    ( Shape const &, Shape const & ) const;
 };

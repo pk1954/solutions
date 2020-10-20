@@ -18,10 +18,17 @@
 using namespace std::chrono;
 using std::unordered_map;
 
-NNetModel::NNetModel( NNetModel const & modelSrc )
+bool NNetModel::operator==( NNetModel const & rhs ) const
 {
-	* this = modelSrc;
-	assert( m_Shapes.IsEqual( modelSrc.m_Shapes ) );
+	return
+	(m_Shapes                  == m_Shapes                  ) &&
+	(m_timeStamp               == m_timeStamp               ) &&
+	(m_pParam                  == m_pParam                  ) &&
+	(m_pModelTimeObservable    == m_pModelTimeObservable    ) &&
+	(m_pStaticModelObservable  == m_pStaticModelObservable  ) &&
+	(m_pDynamicModelObservable == m_pDynamicModelObservable ) &&
+	(m_pMonitorData            == m_pMonitorData            ) &&
+	(m_enclosingRect           == m_enclosingRect           );
 }
 
 void NNetModel::Initialize

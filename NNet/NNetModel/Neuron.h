@@ -25,19 +25,20 @@ public:
 		m_pSound = pSound;
 	}
 
-	virtual bool IsEqual( Neuron const & other ) const
+	virtual bool operator==( Shape const & rhs ) const override
 	{
-		if ( ! BaseKnot::IsEqual( other ) )
+		Neuron const & neuronRhs { static_cast<Neuron const &>(rhs) };
+		if ( this->BaseKnot::operator!= (neuronRhs) )
 			return false;
-		if ( m_factorW != other.m_factorW )
+		if ( m_factorW != neuronRhs.m_factorW )
 			return false;
-		if ( m_factorU != other.m_factorU )
+		if ( m_factorU != neuronRhs.m_factorU )
 			return false;
-		if ( m_triggerSound.m_bOn != other.m_triggerSound.m_bOn )
+		if ( m_triggerSound.m_bOn != neuronRhs.m_triggerSound.m_bOn )
 			return false;
-		if ( m_triggerSound.m_frequency != other.m_triggerSound.m_frequency )
+		if ( m_triggerSound.m_frequency != neuronRhs.m_triggerSound.m_frequency )
 			return false;
-		if ( m_triggerSound.m_duration != other.m_triggerSound.m_duration )
+		if ( m_triggerSound.m_duration != neuronRhs.m_triggerSound.m_duration )
 			return false;
 		return true;
 	}

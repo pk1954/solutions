@@ -16,15 +16,16 @@ public:
 	InputNeuron( MicroMeterPoint const );
 	virtual ~InputNeuron( );
 
-	virtual bool IsEqual( InputNeuron const & other ) const
+	virtual bool operator==( Shape const & rhs ) const override
 	{
-		if ( ! Neuron::IsEqual( other ) )
+		InputNeuron const & inputNeuronRhs { static_cast<InputNeuron const &>(rhs) };
+		if ( this->Neuron::operator!= (inputNeuronRhs) )
 			return false;
-		if ( m_mvFactor != other.m_mvFactor )
+		if ( m_mvFactor != inputNeuronRhs.m_mvFactor )
 			return false;
-		if ( m_pulseFrequency != other.m_pulseFrequency )
+		if ( m_pulseFrequency != inputNeuronRhs.m_pulseFrequency )
 			return false;
-		if ( m_pulseDuration != other.m_pulseDuration )
+		if ( m_pulseDuration != inputNeuronRhs.m_pulseDuration )
 			return false;
 		return true;
 	}

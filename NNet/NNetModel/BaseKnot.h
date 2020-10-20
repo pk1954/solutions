@@ -34,16 +34,17 @@ public:
 
 	virtual ~BaseKnot() {}
 
-	virtual bool IsEqual( BaseKnot const & other ) const
+	virtual bool operator==( Shape const & rhs ) const override
 	{
-		if ( ! Shape::IsEqual( other ) )
+		BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };
+		if ( this->Shape::operator!= (rhs) )
 			return false;
-		if ( ! IsCloseToZero( GetPosition() - other.GetPosition() ) )
+		if ( ! IsCloseToZero( GetPosition() - baseKnotRhs.GetPosition() ) )
 		{
-			MicroMeterPoint diff = GetPosition() - other.GetPosition();
+			MicroMeterPoint diff = GetPosition() - baseKnotRhs.GetPosition();
 			return false;
 		}
-		if ( ! IsCloseToZero( GetExtension() - other.GetExtension() ) )
+		if ( ! IsCloseToZero( GetExtension() - baseKnotRhs.GetExtension() ) )
 			return false;
 		return true;
 	}

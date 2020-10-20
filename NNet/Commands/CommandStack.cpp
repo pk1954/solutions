@@ -3,6 +3,7 @@
 // Commands
 
 #include "stdafx.h"
+#include "assert.h"
 #include "NNetModelWriterInterface.h"
 #include "CommandStack.h"
 
@@ -58,7 +59,8 @@ void CommandStack::pushNewCommand( unique_ptr<Command> pCmd )
 void CommandStack::PushCommand( unique_ptr<Command> pCmd )
 {
 #ifdef _DEBUG
-    NNetModel const * pModelSave1 { new NNetModel( m_pModelInterFace->GetModel( ) ) };
+    NNetModel const & model { m_pModelInterFace->GetModel( ) };
+    NNetModel const * pModelSave1 { new NNetModel( model ) };
     m_pModelInterFace->CheckModel();
     pModelSave1->CheckModel();
 #endif
@@ -69,16 +71,22 @@ void CommandStack::PushCommand( unique_ptr<Command> pCmd )
     m_pObservable->NotifyAll( true );
 
 #ifdef _DEBUG
-    NNetModel const * pModelSave2 { new NNetModel( m_pModelInterFace->GetModel( ) ) };
+    NNetModel const * pModelSave2 { new NNetModel( model ) };
     pModelSave2->CheckModel();
     m_pModelInterFace->CheckModel();
     UndoCommand();
     m_pModelInterFace->CheckModel();
-    assert( m_pModelInterFace->IsEqual( * pModelSave1 ) );
+    if ( !(model == * pModelSave1) )
+    {
+        int x = 42;
+    }
     m_pModelInterFace->CheckModel();
     RedoCommand();
     m_pModelInterFace->CheckModel();
-    assert( m_pModelInterFace->IsEqual( * pModelSave2 ) );
+    if ( !(model == * pModelSave2) )
+    {
+        int x = 42;
+    }
 #endif
 }
 

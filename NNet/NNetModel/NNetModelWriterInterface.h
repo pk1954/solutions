@@ -18,7 +18,6 @@ class ShapeErrorHandler;
 class NNetModelWriterInterface
 {
 public:
-
 	void Start( NNetModel * const );
 	void Stop(); 
 
