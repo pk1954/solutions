@@ -34,20 +34,7 @@ public:
 
 	virtual ~BaseKnot() {}
 
-	virtual bool operator==( Shape const & rhs ) const override
-	{
-		BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };
-		if ( this->Shape::operator!= (rhs) )
-			return false;
-		if ( ! IsCloseToZero( GetPosition() - baseKnotRhs.GetPosition() ) )
-		{
-			MicroMeterPoint diff = GetPosition() - baseKnotRhs.GetPosition();
-			return false;
-		}
-		if ( ! IsCloseToZero( GetExtension() - baseKnotRhs.GetExtension() ) )
-			return false;
-		return true;
-	}
+	virtual bool operator==( Shape const & ) const override;
 
 	virtual void CheckShape   ( ) const;
 	virtual void Prepare      ( );

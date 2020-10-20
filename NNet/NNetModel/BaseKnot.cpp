@@ -13,6 +13,15 @@ using std::find;
 using std::begin;
 using std::end;
 
+bool BaseKnot::operator==( Shape const & rhs ) const
+{
+	BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };
+	return 
+	( this->Shape::operator== (rhs) )                                &&
+	( IsCloseToZero( GetPosition () - baseKnotRhs.GetPosition () ) ) &&
+	( IsCloseToZero( GetExtension() - baseKnotRhs.GetExtension() ) );
+}
+
 void BaseKnot::SetPosition( MicroMeterPoint const & newPos )
 {
 	m_circle.SetPosition( newPos ); 

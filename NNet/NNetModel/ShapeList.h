@@ -15,6 +15,8 @@
 #include "ShapeErrorHandler.h"
 
 using std::vector;
+using std::unique_ptr;
+using std::make_unique;
 
 class ShapeList
 {
@@ -205,5 +207,4 @@ private:
 
 	void    init       ( ShapeList const & );
 	Shape * shallowCopy( Shape const & ) const;
-//	bool    isEqual    ( Shape const &, Shape const & ) const;
 };

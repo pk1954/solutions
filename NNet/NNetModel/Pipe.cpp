@@ -28,15 +28,11 @@ Pipe::~Pipe( ) { }
 bool Pipe::operator==( Shape const & rhs ) const 
 {
 	Pipe const & pipeRhs { static_cast<Pipe const &>(rhs) };
-	if ( this->Shape::operator!= (rhs) )
-		return false;
-	if ( m_pKnotStart->GetId() != pipeRhs.m_pKnotStart->GetId() )
-		return false;
-	if ( m_pKnotEnd->GetId() != pipeRhs.m_pKnotEnd->GetId() )
-		return false;
-	if ( m_width != pipeRhs.m_width )
-		return false;
-	return true;
+	return
+	( this->Shape::operator== (rhs) )                          && 
+	( m_pKnotStart->GetId() == pipeRhs.m_pKnotStart->GetId() ) &&
+	( m_pKnotEnd  ->GetId() == pipeRhs.m_pKnotEnd  ->GetId() ) &&
+	( m_width               == pipeRhs.m_width );
 }
 
 ShapeId Pipe::GetStartKnotId() const 

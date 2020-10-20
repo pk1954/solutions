@@ -38,6 +38,18 @@ Neuron::Neuron( MicroMeterPoint const upCenter, ShapeType const type )
 
 Neuron::~Neuron( ) { }
 
+bool Neuron::operator==( Shape const & rhs ) const
+{
+	Neuron const & neuronRhs { static_cast<Neuron const &>(rhs) };
+	return
+	( this->BaseKnot::operator== (neuronRhs) )                             &&
+	( m_factorW                  == neuronRhs.m_factorW )                  &&
+	( m_factorU                  == neuronRhs.m_factorU )                  &&
+	( m_triggerSound.m_bOn       == neuronRhs.m_triggerSound.m_bOn )       &&
+	( m_triggerSound.m_frequency == neuronRhs.m_triggerSound.m_frequency ) &&
+	( m_triggerSound.m_duration  == neuronRhs.m_triggerSound.m_duration );
+}
+
 SoundDescr const Neuron::SetTriggerSound( SoundDescr const & sound ) 
 {
 	SoundDescr oldValue { m_triggerSound };

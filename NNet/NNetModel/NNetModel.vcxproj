@@ -191,6 +191,7 @@
     <ClInclude Include="InputNeuron.h" />
     <ClInclude Include="Knot.h" />
     <ClInclude Include="ModelDescription.h" />
+    <ClInclude Include="ModelUtilities.h" />
     <ClInclude Include="MonitorData.h" />
     <ClInclude Include="Neuron.h" />
     <ClInclude Include="NNetColors.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="BaseKnot.cpp" />
     <ClCompile Include="InputNeuron.cpp" />
     <ClCompile Include="Knot.cpp" />
+    <ClCompile Include="ModelUtilities.cpp" />
     <ClCompile Include="MonitorData.cpp" />
     <ClCompile Include="Neuron.cpp" />
     <ClCompile Include="NNetColors.cpp" />

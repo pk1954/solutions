@@ -25,23 +25,7 @@ public:
 		m_pSound = pSound;
 	}
 
-	virtual bool operator==( Shape const & rhs ) const override
-	{
-		Neuron const & neuronRhs { static_cast<Neuron const &>(rhs) };
-		if ( this->BaseKnot::operator!= (neuronRhs) )
-			return false;
-		if ( m_factorW != neuronRhs.m_factorW )
-			return false;
-		if ( m_factorU != neuronRhs.m_factorU )
-			return false;
-		if ( m_triggerSound.m_bOn != neuronRhs.m_triggerSound.m_bOn )
-			return false;
-		if ( m_triggerSound.m_frequency != neuronRhs.m_triggerSound.m_frequency )
-			return false;
-		if ( m_triggerSound.m_duration != neuronRhs.m_triggerSound.m_duration )
-			return false;
-		return true;
-	}
+	virtual bool operator==( Shape const & ) const override;
 
 	static unsigned long GetCounter  ( ) { return m_counter; }
 	static   void        ResetCounter( ) { m_counter = 0L; }

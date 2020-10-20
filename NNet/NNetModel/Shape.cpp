@@ -7,6 +7,26 @@
 #include "shape.h"
 #include "debug.h"
 
+Shape::Shape( ShapeType const type )
+	: m_type( type )
+{ }	
+
+Shape::Shape( Shape const & src )   // copy constructor
+	:	m_type      (src.m_type),
+	m_identifier(src.m_identifier),
+	m_bSelected (src.m_bSelected),
+	m_bMarked   (src.m_bMarked)
+{ }
+
+bool Shape::operator==( Shape const & rhs ) const
+{
+	return
+	( m_type       == rhs.m_type       ) &&
+	( m_identifier == rhs.m_identifier ) &&
+	( m_bSelected  == rhs.m_bSelected  ) &&
+	( m_bMarked    == rhs.m_bMarked    );
+}
+
 D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 {
 	if ( m_bSelected )

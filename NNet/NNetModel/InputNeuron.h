@@ -16,19 +16,7 @@ public:
 	InputNeuron( MicroMeterPoint const );
 	virtual ~InputNeuron( );
 
-	virtual bool operator==( Shape const & rhs ) const override
-	{
-		InputNeuron const & inputNeuronRhs { static_cast<InputNeuron const &>(rhs) };
-		if ( this->Neuron::operator!= (inputNeuronRhs) )
-			return false;
-		if ( m_mvFactor != inputNeuronRhs.m_mvFactor )
-			return false;
-		if ( m_pulseFrequency != inputNeuronRhs.m_pulseFrequency )
-			return false;
-		if ( m_pulseDuration != inputNeuronRhs.m_pulseDuration )
-			return false;
-		return true;
-	}
+	virtual bool operator==( Shape const & ) const override;
 
 	static unsigned long GetCounter  ( ) { return m_counter; }
 	static   void        ResetCounter( ) { m_counter = 0L; }
@@ -62,7 +50,6 @@ public:
 	virtual void Recalc( );   // Recalculate precalculated values
 
 	fHertz const GetPulseFrequency( ) const { return m_pulseFrequency; }
-
 	fHertz const SetPulseFrequency( fHertz const );
 
 private:

@@ -24,6 +24,16 @@ InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
 
 InputNeuron::~InputNeuron( ) { }
 
+bool InputNeuron::operator==( Shape const & rhs ) const
+{
+	InputNeuron const & inputNeuronRhs { static_cast<InputNeuron const &>(rhs) };
+	return 
+	( this->Neuron::operator== (inputNeuronRhs) )           &&
+	( m_mvFactor       == inputNeuronRhs.m_mvFactor )       &&
+	( m_pulseFrequency == inputNeuronRhs.m_pulseFrequency ) &&
+	( m_pulseDuration  == inputNeuronRhs.m_pulseDuration );
+}
+
 void InputNeuron::Recalc( )
 {
 	m_mvFactor = mV( m_pParameters->GetParameterValue( tParameter::peakVoltage ) / m_pulseDuration.GetValue() );

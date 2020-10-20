@@ -6,6 +6,7 @@
 #include "MoreTypes.h"
 #include "RectType.h"
 #include "win32_util.h"
+#include "ModelUtilities.h"
 #include "NNetModelWriterInterface.h"
 #include "Analyzer.h"
 
@@ -22,12 +23,12 @@ bool ModelAnalyzer::FindLoop( NNetModelWriterInterface const & model )
 		m_iRecDepth = iMaxLoopSize;
 		m_bStop     = false;
 		statusDisplay( wstring( L"Looking for loop of size " ) + to_wstring( iMaxLoopSize ) + L". Press ESC to stop." );
-		m_shapeStack.Clear();
+		m_shapeStack.clear();
 		if ( model.GetModel().GetShapes().Apply2AllB<BaseKnot>([&]( BaseKnot & baseKnot ) { return findLoop( & baseKnot ); } ) )
 		{
 			if ( m_bStop )  
 			{
-				m_shapeStack.Clear();
+				m_shapeStack.clear();
 				statusDisplay( L"analysis aborted by user" );
 				return false;
 			}
@@ -56,17 +57,17 @@ bool ModelAnalyzer::findLoop( Shape * const pShape )
 	if ( m_bStop )
 		return true;
 
-	if ( m_shapeStack.Size() == m_iRecDepth )
+	if ( m_shapeStack.size() == m_iRecDepth )
 		return false;  // maximum search depth reached
 
 	assert( pShape->IsDefined() );
-	m_shapeStack.Add( pShape );
+	m_shapeStack.push_back( pShape );
 
 	bool bResult { false };
 
 	if ( 
-		  ( m_shapeStack.Size() > 1 ) &&                        // we are beyond the initial shape
-	      ( pShape->GetId() == m_shapeStack.Front()->GetId() )  // and found the same shape again
+		  ( m_shapeStack.size() > 1 ) &&                        // we are beyond the initial shape
+	      ( pShape->GetId() == m_shapeStack.front()->GetId() )  // and found the same shape again
 	   )
 	{
 		bResult = true;  // loop found. Do not pop_back stack!
@@ -91,19 +92,23 @@ bool ModelAnalyzer::findLoop( Shape * const pShape )
 	}
 
 	if ( ! bResult )
-		m_shapeStack.RemoveLast( ); // no loop in this branch
+		m_shapeStack.pop_back( ); // no loop in this branch
 
 	return bResult;
 }
 
 MicroMeterRect ModelAnalyzer::GetEnclosingRect( )
 {
-	return m_shapeStack.ComputeEnclosingRect();
+	MicroMeterRect rect { MicroMeterRect::ZERO_VAL() };
+	for ( auto const & pShape : m_shapeStack )
+		Expand( rect, pShape );
+	return rect;
 }
 
 void ModelAnalyzer::SelectLoopShapes( NNetModelWriterInterface & model )
 {
-	m_shapeStack.SelectAllShapes( tBoolOp::opTrue ); 
+	for ( auto it : m_shapeStack )
+		model.SelectShape( it->GetId(), tBoolOp::opTrue );
 }
 
 bool ModelAnalyzer::hasAnomaly( Knot & knot )
@@ -112,24 +117,24 @@ bool ModelAnalyzer::hasAnomaly( Knot & knot )
 
 	if ( ! knot.m_connections.HasIncoming( ) )
 	{
-		knot.m_connections.Apply2AllOutPipes( [&]( Pipe & pipe ) { m_shapeStack.Add( & pipe ); } );
+		knot.m_connections.Apply2AllOutPipes( [&]( Pipe & pipe ) { m_shapeStack.push_back( & pipe ); } );
 		bFoundAnomaly = true;
 	}
 	else if ( ! knot.m_connections.HasOutgoing( ) )
 	{
-		knot.m_connections.Apply2AllInPipes( [&]( Pipe & pipe ) { m_shapeStack.Add( & pipe ); } );
+		knot.m_connections.Apply2AllInPipes( [&]( Pipe & pipe ) { m_shapeStack.push_back( & pipe ); } );
 		bFoundAnomaly = true;
 	}
 
 	if ( bFoundAnomaly )
-		m_shapeStack.Add( & knot );
+		m_shapeStack.push_back( & knot );
 
 	return bFoundAnomaly; 
 }
 
 bool ModelAnalyzer::FindAnomaly( NNetModelWriterInterface const & model )
 {
-	m_shapeStack.Clear();
+	m_shapeStack.clear();
 	bool const bFound { model.GetModel().GetShapes().Apply2AllB<Knot>( [&]( Knot & knot ) { return hasAnomaly( knot ); } ) };
 	if ( ! bFound )
 		statusDisplay( L"no anomalies found" );

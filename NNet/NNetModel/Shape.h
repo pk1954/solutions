@@ -25,50 +25,19 @@ static ShapeCrit const ShapeCritAlwaysTrue { [&]( Shape const & s) { return true
 class Shape
 {
 public:
-	Shape( ShapeType const type )
-		: m_type( type )
-	{ }	
-
-	Shape( Shape const & src )   // copy constructor
-	  :	m_type      (src.m_type),
-		m_identifier(src.m_identifier),
-		m_bSelected (src.m_bSelected),
-		m_bMarked   (src.m_bMarked)
-	{ }
-
-	virtual void CheckShape() const;
+	Shape( ShapeType const );
+	Shape( Shape const & );   // copy constructor
 
 	Shape & operator= ( Shape const & ) = delete;
 
-	virtual bool operator==( Shape const & rhs ) const
-	{
-		if ( m_type != rhs.m_type )
-			return false;
-		if ( m_identifier != rhs.m_identifier )
-			return false;
-		if ( m_bSelected != rhs.m_bSelected )
-			return false;
-		if ( m_bMarked != rhs.m_bMarked )
-			return false;
-		return true;
-	}
-
-	virtual bool operator!=( Shape const & rhs ) const
-	{
-		return ! (*this == rhs);
-	}
-
 	virtual ~Shape() { }
 
+	virtual void CheckShape() const;
+
+	virtual bool operator==( Shape const & ) const;
+	
 	virtual void IncCounter( ) = 0;
 	virtual void DecCounter( ) = 0;
-
-	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
-
-	void Mark( tBoolOp const op ) { ApplyOp( m_bMarked, op ); }
-
-	bool IsSelected( ) const { return m_bSelected; }
-	bool IsMarked  ( ) const { return m_bMarked; }
 
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const = tHighlightType::normal ) const = 0;
 	virtual void DrawInterior  ( DrawContext const & )     const = 0;
@@ -81,6 +50,11 @@ public:
 
 	virtual void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op ); }
 	virtual void Clear ( )                  { m_mVinputBuffer = 0.0_mV; };
+
+	void Mark( tBoolOp const op ) { ApplyOp( m_bMarked, op ); }
+
+	bool IsSelected( ) const { return m_bSelected; }
+	bool IsMarked  ( ) const { return m_bMarked; }
 
 	bool            IsDefined   ( ) const { return ::IsDefined( m_identifier ); }
 	wchar_t const * GetName     ( ) const { return ShapeType::GetName( m_type.GetValue() ); }
@@ -98,6 +72,8 @@ public:
 	void SetId( ShapeId const id ) { m_identifier = id;	}
 
 	static void SetParam( Param const * const pParam ) { m_pParameters = pParam; }
+
+	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
 
 protected:
 
