@@ -36,7 +36,7 @@ public:
 			        
 	bool            const   AnyShapesSelected( )               const { return m_pModel->GetShapes().AnyShapesSelected( ); }
 	bool            const   IsValidShapeId( ShapeId const id ) const { return m_pModel->GetShapes().IsValidShapeId  (id); }
-	bool            const   IsShapeNullPtr( ShapeId const id ) const { return m_pModel->IsShapeNullPtr              (id); }
+//	bool            const   IsShapeDefined( ShapeId const id ) const { return m_pModel->IsShapeDefined              (id); }
 	MicroMeterPoint const   GetShapePos   ( ShapeId const id ) const { return m_pModel->GetShapePos                 (id); }
 	Shape           const * GetConstShape ( ShapeId const id ) const { return m_pModel->GetConstShape  ( id ); }
 	long            const   GetSizeOfShapeList( )              const { return m_pModel->GetSizeOfShapeList( ); }

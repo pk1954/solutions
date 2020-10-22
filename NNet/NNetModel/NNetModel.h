@@ -51,7 +51,7 @@ public:
 		return GetConstShape( id )->GetShapeType().IsPipeType();
 	}
 
-	bool const IsShapeNullPtr( ShapeId const id ) const
+	bool const IsShapeDefined( ShapeId const id ) const
 	{
 		return m_Shapes.GetAt( id ) == nullptr;
 	}
@@ -113,7 +113,7 @@ public:
 	ShapeId const NewShapeListSlot( )
 	{
 		ShapeId idNewSlot { GetSizeOfShapeList() };
-		m_Shapes.Add( nullptr );
+		m_Shapes.Add( );
 		return idNewSlot;
 	}
 

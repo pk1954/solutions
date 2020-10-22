@@ -46,9 +46,9 @@ public:
 		m_list.clear();
 	}
 
-	void Add( Shape * const pShape )
+	void Add( )
 	{
-		m_list.push_back( pShape );
+		m_list.push_back( nullptr );
 	}
 
 	void RemoveLast( )
@@ -58,12 +58,12 @@ public:
 
 	Shape * const GetAt( ShapeId const id ) const 
 	{
-		return m_list[ id.GetValue() ];
+		return m_list[ id.GetValue() ].get();
 	}
 
 	Shape * const Front( ) const 
 	{
-		return m_list[0];
+		return m_list[0].get();
 	}
 
 	bool const IsValidShapeId( ShapeId const id ) const 
@@ -91,7 +91,7 @@ public:
 
 	void Resize( long lNewSize )
 	{
-		m_list.resize( lNewSize, nullptr );
+		m_list.resize( lNewSize );
 	}
 
 	void Clear( )
@@ -101,27 +101,27 @@ public:
 
 	void Apply2All( function<void(Shape const &)> const & func ) const
 	{
-		for (Shape const * const pShape : m_list)
+		for ( auto const & it : m_list )
 		{ 
-			if ( pShape )
-				func( * pShape ); 
+			if ( it.get() )
+				func( * it.get() ); 
 		}
 	}                        
 
 	void Apply2All( function<void(Shape &)> const & func )
 	{
-		for (Shape * const pShape : m_list)    
+		for ( auto & it : m_list )
 		{ 
-			if ( pShape )
-				func( * pShape ); 
+			if ( it.get() )
+				func( * it.get() ); 
 		}
 	}                        
 
 	bool Apply2AllB( function<bool(Shape const &)> const & func )
 	{
-		for (Shape * pShape : m_list)    
+		for ( auto & it : m_list )
 		{ 
-			if ( pShape && func( * pShape ) )
+			if ( it.get() && func( * it.get() ) )
 				return true;
 		}
 		return false;
@@ -131,12 +131,12 @@ public:
 	bool Apply2AllB( function<bool(T &)> const & func ) const
 	{
 		bool bResult { false };
-		for ( auto pShape : m_list )
+		for ( auto & it : m_list )
 		{
-			if ( pShape )
+			if ( it.get() )
 			{
-				if ( HasType<T>( * pShape ) )	
-					bResult = func( static_cast<T &>( * pShape ) );
+				if ( HasType<T>( * it.get() ) )	
+					bResult = func( static_cast<T &>( * it.get() ) );
 				if ( bResult )
 					break;
 			}
@@ -148,12 +148,12 @@ public:
 	bool Apply2AllB( function<bool(T const &)> const & func ) const
 	{
 		bool bResult { false };
-		for ( auto pShape : m_list )
+		for ( auto & it : m_list )
 		{
-			if ( pShape )
+			if ( it.get() )
 			{
-				if ( HasType<T>( * pShape ) )	
-					bResult = func( static_cast<T const &>( * pShape ) );
+				if ( HasType<T>( * it.get() ) )	
+					bResult = func( static_cast<T const &>( * it.get() ) );
 				if ( bResult )
 					break;
 			}
@@ -164,26 +164,20 @@ public:
 	template <typename T>
 	void Apply2All( function<void(T &)> const & func ) const
 	{
-		for (auto & pShape : m_list)    
-		{ 
-			if ( pShape )
-			{
-				if ( HasType<T>( * pShape ) ) 
-					func( static_cast<T &>( * pShape) ); 
-			}
+		for ( auto & it : m_list )
+		{
+			if ( it.get() && ( HasType<T>( * it.get() ) ) )
+				func( static_cast<T &>( * it.get ) ); 
 		}
 	}                        
 
 	template <typename T>    // const version
 	void Apply2All( function<void(T const &)> const & func ) const
 	{
-		for (auto & pShape : m_list)    
-		{ 
-			if ( pShape )
-			{
-				if ( HasType<T>( * pShape ) ) 
-					func( static_cast<T const &>( * pShape) ); 
-			}
+		for ( auto & it : m_list )
+		{
+			if ( it.get() && ( HasType<T>( * it.get() ) ) )
+				func( static_cast<T const &>( * it.get ) ); 
 		}
 	}                        
 
@@ -202,7 +196,7 @@ public:
 	}
 
 private:
-	vector<Shape *>     m_list;
+	vector<unique_ptr<Shape>>     m_list;
 	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
 
 	void    init       ( ShapeList const & );

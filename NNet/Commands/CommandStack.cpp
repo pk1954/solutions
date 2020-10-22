@@ -62,7 +62,7 @@ void CommandStack::PushCommand( unique_ptr<Command> pCmd )
     NNetModel const & model { m_pModelInterFace->GetModel( ) };
     NNetModel const * pModelSave1 { new NNetModel( model ) };
     m_pModelInterFace->CheckModel();
-    pModelSave1->CheckModel();
+    //pModelSave1->CheckModel();
 #endif
     clearRedoStack( );
     pCmd->Do( * m_pModelInterFace );

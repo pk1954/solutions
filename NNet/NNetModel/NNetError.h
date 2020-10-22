@@ -53,7 +53,7 @@ public:
                 L"id < " + to_wstring( model.GetSizeOfShapeList() )
             );
         }
-        else if ( model.IsShapeNullPtr( id ) )
+        else if ( model.IsShapeDefined( id ) )
         {
             ScriptErrorHandler::HandleSemanticError
             (
