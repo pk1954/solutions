@@ -60,7 +60,7 @@ void CommandStack::PushCommand( unique_ptr<Command> pCmd )
 {
 #ifdef _DEBUG
     NNetModel const & model { m_pModelInterFace->GetModel( ) };
-    NNetModel const * pModelSave1 { new NNetModel( model ) };
+    unique_ptr<NNetModel const> pModelSave1 { make_unique<NNetModel>( model ) };
     m_pModelInterFace->CheckModel();
     //pModelSave1->CheckModel();
 #endif
@@ -71,7 +71,7 @@ void CommandStack::PushCommand( unique_ptr<Command> pCmd )
     m_pObservable->NotifyAll( true );
 
 #ifdef _DEBUG
-    NNetModel const * pModelSave2 { new NNetModel( model ) };
+    unique_ptr<NNetModel const> pModelSave2 { make_unique<NNetModel>( model ) };
     pModelSave2->CheckModel();
     m_pModelInterFace->CheckModel();
     UndoCommand();

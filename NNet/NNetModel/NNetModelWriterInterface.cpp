@@ -18,14 +18,14 @@ void NNetModelWriterInterface::Stop( )
 
 void NNetModelWriterInterface::CreateInitialShapes( )
 {
-	InputNeuron * const pInputNeuron { NewBaseKnot<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) };
-	Neuron      * const pNeuron      { NewBaseKnot<Neuron>      ( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) };
-	Pipe        * const pNewPipe     { NewPipe( pInputNeuron, pNeuron ) };
-	pInputNeuron->m_connections.AddOutgoing( pNewPipe );
-	pNeuron     ->m_connections.AddIncoming( pNewPipe );
-	Store2Model( pInputNeuron );
-	Store2Model( pNeuron );
-	Store2Model( pNewPipe );
+	unique_ptr<InputNeuron> upInputNeuron { NewBaseKnot<InputNeuron >( MicroMeterPoint( 400.0_MicroMeter, 200.0_MicroMeter ) ) };
+	unique_ptr<Neuron>      upNeuron      { NewBaseKnot<Neuron>      ( MicroMeterPoint( 400.0_MicroMeter, 800.0_MicroMeter ) ) };
+	unique_ptr<Pipe>        upNewPipe     { NewPipe( upInputNeuron.get(), upNeuron.get() ) };
+	upInputNeuron->m_connections.AddOutgoing( upNewPipe.get() );
+	upNeuron     ->m_connections.AddIncoming( upNewPipe.get() );
+	Add2Model( move(upInputNeuron) );
+	Add2Model( move(upNeuron) );       
+	Add2Model( move(upNewPipe) );      
 	StaticModelChanged( );
 }
 
@@ -54,11 +54,18 @@ ShapeId const NNetModelWriterInterface::newShapeListSlot( )
 	return m_pModel->NewShapeListSlot();
 }
 
-Pipe * const NNetModelWriterInterface::NewPipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
+unique_ptr<Pipe> NNetModelWriterInterface::NewPipe( Pipe const & pipeSrc )
 {
-	Pipe * const pPipe { new Pipe( pKnotStart, pKnotEnd ) };
-	pPipe->SetId( m_pModel->NewShapeListSlot( ) );
-	return pPipe;
+	unique_ptr<Pipe> upPipe { make_unique<Pipe>( pipeSrc ) };
+	upPipe->SetId( m_pModel->NewShapeListSlot( ) );
+	return move(upPipe);
+}
+
+unique_ptr<Pipe> NNetModelWriterInterface::NewPipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
+{
+	unique_ptr<Pipe> upPipe { make_unique<Pipe>( pKnotStart, pKnotEnd ) };
+	upPipe->SetId( m_pModel->NewShapeListSlot( ) );
+	return move(upPipe);
 }
 
 void NNetModelWriterInterface::MarkShape( ShapeId const idShape, tBoolOp const op ) 

@@ -15,44 +15,41 @@ class InsertNeuronCommand : public Command
 public:
 	InsertNeuronCommand
 	( 
-		NNetModelWriterInterface & model,
+		NNetModelWriterInterface & nmwi,
 		ShapeId            const   id, 
 		MicroMeterPoint    const & umSplitPoint 
 	)
 	{ 
-		m_pPipe2Split = model.GetShapePtr<Pipe *>( id );
+		m_pPipe2Split = nmwi.GetShapePtr<Pipe *>( id );
 		m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr( );
-		m_pNeuron     = model.NewBaseKnot<Neuron>( umSplitPoint );
-		m_pPipeNew    = model.NewPipe( m_pStartKnot, m_pNeuron );
-		m_pNeuron->m_connections.AddOutgoing( m_pPipe2Split );
-		m_pNeuron->m_connections.AddIncoming( m_pPipeNew );
+		m_upNeuron    = nmwi.NewBaseKnot<Neuron>( umSplitPoint );
+		m_upPipeNew   = nmwi.NewPipe( m_pStartKnot, m_upNeuron.get() );
+		m_upNeuron->m_connections.AddOutgoing( m_pPipe2Split );
+		m_upNeuron->m_connections.AddIncoming( m_upPipeNew.get() );
 	}
 
-	~InsertNeuronCommand( )
-	{
-		delete m_pNeuron;
-		delete m_pPipeNew;
-	}
+	~InsertNeuronCommand( ) {}
 
-	virtual void Do( NNetModelWriterInterface & model ) 
+	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe2Split, m_pPipeNew );
-		m_pPipe2Split->SetStartKnot( m_pNeuron );
-		model.Store2Model( m_pNeuron );
-		model.Store2Model( m_pPipeNew );
+		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe2Split, m_upPipeNew.get() );
+		m_pPipe2Split->SetStartKnot( m_upNeuron.get() );
+		nmwi.Store2Model<Neuron>( move(m_upNeuron) );
+		nmwi.Store2Model<Pipe>  ( move(m_upPipeNew) );
 	}
 
-	virtual void Undo( NNetModelWriterInterface & model ) 
+	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		model.RemoveFromModel( m_pNeuron );
-		model.RemoveFromModel( m_pPipeNew );
-		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipeNew, m_pPipe2Split );
+		m_upNeuron  = move( nmwi.RemoveFromModel<Neuron>( m_upNeuron ->GetId() ));
+		m_upPipeNew = move( nmwi.RemoveFromModel<Pipe>  ( m_upPipeNew->GetId() ));
+		m_pStartKnot->m_connections.ReplaceOutgoing( m_upPipeNew.get(), m_pPipe2Split );
 		m_pPipe2Split->SetStartKnot( m_pStartKnot );
 	}
 
 private:
 	Pipe     * m_pPipe2Split { nullptr };
-	Pipe     * m_pPipeNew    { nullptr };
-	Neuron   * m_pNeuron     { nullptr };
 	BaseKnot * m_pStartKnot  { nullptr };
+
+	unique_ptr<Pipe>   m_upPipeNew { nullptr };
+	unique_ptr<Neuron> m_upNeuron  { nullptr };
 };

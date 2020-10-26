@@ -15,7 +15,7 @@ using std::to_wstring;
 
 bool ModelAnalyzer::FindLoop( NNetModelWriterInterface const & model )
 {
-	int const iNrOfShapes { model.GetModel().GetSizeOfShapeList() };
+	int const iNrOfShapes { Cast2Int(model.GetModel().GetSizeOfShapeList()) };
 
 	for ( int iMaxLoopSize = 5; iMaxLoopSize <= iNrOfShapes + 1; iMaxLoopSize += 2 )
 	{

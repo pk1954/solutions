@@ -9,51 +9,74 @@
 #include "NNetModelWriterInterface.h"
 #include "Command.h"
 
+using std::unique_ptr;
+using std::make_unique;
+
 class CopySelectionCommand : public Command
 {
 public:
 
-	CopySelectionCommand( NNetModelWriterInterface & model )
+	CopySelectionCommand( NNetModelWriterInterface & nmwi )
 	{ 
-		model.Apply2All<Shape>
+		using SelShapesIndex = NamedType < int, struct SelShapesIndex_Parameter >;
+		using SSIndexVector  = vector<SelShapesIndex>;
+
+		static SelShapesIndex const SSI_NULL( SelShapesIndex::NULL_VAL() );
+
+		size_t        sizeOfModel { nmwi.GetSizeOfShapeList() };
+		SSIndexVector indexList   ( sizeOfModel, SSI_NULL );      // indexes into m_selectedShapes
+
+		auto dstFromSrc = [&](Shape const * pSrc )
+		{ 
+			SelShapesIndex & ssi { indexList[pSrc->GetId().GetValue()] };
+			return  m_selectedShapes[ssi.GetValue()].get();
+		};
+
+		ShapeId idShapeCopy { ShapeId( Cast2Long(sizeOfModel) ) };
+
+		nmwi.Apply2All<Shape>
 		(
 			[&]( Shape & s )
 			{
 				if ( s.IsSelected( ) )
-					m_selectedShapes.push_back( & s ); 
+				{
+					indexList[s.GetId().GetValue()] = SelShapesIndex(Cast2Int(m_selectedShapes.size()) );
+					m_selectedShapes.push_back( ShallowCopy( s ) );
+				}
 			}
 		);
-		for ( Shape * pShape : m_selectedShapes )
+		for ( UPShape & upShapeDst : m_selectedShapes )  // link shapes
 		{
-			if ( pShape->GetShapeType().IsBaseKnotType( ) )
-				pShape->MoveShape( PIPE_WIDTH ); 
+			Shape const & shapeSrc { * nmwi.GetShape( upShapeDst->GetId() ) };
+			nmwi.GetModel().GetShapes().LinkShape( shapeSrc, dstFromSrc );
+			upShapeDst->SetId( idShapeCopy++ );
 		}
 	}
 
-	virtual void Do( NNetModelWriterInterface & model ) 
+	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		model.SelectAllShapes( tBoolOp::opFalse );            // deselect all
-		for ( Shape * pShape : m_selectedShapes )             // add copies
+		nmwi.SelectAllShapes( tBoolOp::opFalse );  // deselect all
+		for ( auto & upShape : m_selectedShapes )  // add copies (which are selected)
 		{
-			model.Add2Model( * pShape );
+			nmwi.Add2Model( move(upShape) );
 		}
 	}
 
-	virtual void Undo( NNetModelWriterInterface & model ) 
+	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		for ( Shape * pShape : m_selectedShapes )    	// disconnect copies
+		for ( auto & upShape : m_selectedShapes )    	// disconnect copies
 		{
-			model.RemoveFromModel( pShape );
+			upShape = move(nmwi.RemoveFromModel<Shape>( upShape->GetId() ));
 		};
-		model.SelectAllShapes( tBoolOp::opFalse );
-		for (Shape * const pShape : m_selectedShapes)    
+		nmwi.SelectAllShapes( tBoolOp::opFalse );
+		for ( auto & upShape : m_selectedShapes )
 		{ 
-			if ( pShape )
-				pShape->Select( tBoolOp::opTrue ); 
+			if ( upShape )
+				upShape->Select( tBoolOp::opTrue ); 
 		}
 	}
 
 private:
-	vector<Shape *> m_selectedShapes;
+	vector<unique_ptr<Shape>> m_selectedShapes;
 };
 

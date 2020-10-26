@@ -32,6 +32,8 @@ public:
 		m_circle( center, extension )
 	{ }
 
+	BaseKnot( BaseKnot const & );   // copy constructor
+
 	virtual ~BaseKnot() {}
 
 	virtual bool operator==( Shape const & ) const override;

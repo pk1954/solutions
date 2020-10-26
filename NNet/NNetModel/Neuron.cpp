@@ -36,6 +36,17 @@ Neuron::Neuron( MicroMeterPoint const upCenter, ShapeType const type )
 	Recalc();
 }
 
+Neuron::Neuron( Neuron const & src ) :  // copy constructor
+	BaseKnot             ( src ),
+	m_bStopOnTrigger     ( src.m_bStopOnTrigger ),
+	m_timeSinceLastPulse ( src.m_timeSinceLastPulse ),
+    m_bTriggered         ( src.m_bTriggered ),
+	m_factorW            ( src.m_factorW ),
+	m_factorU            ( src.m_factorU ),
+	m_triggerSound       ( src.m_triggerSound ),
+	m_pTpWork            ( src.m_pTpWork )
+{ }
+
 Neuron::~Neuron( ) { }
 
 bool Neuron::operator==( Shape const & rhs ) const

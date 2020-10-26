@@ -21,6 +21,9 @@ class Pipe : public Shape
 {
 public:
 	Pipe( BaseKnot * const, BaseKnot * const );
+
+	Pipe( Pipe const & );   // copy constructor
+
 	virtual ~Pipe();
 
 	virtual bool operator==( Shape const & ) const override;

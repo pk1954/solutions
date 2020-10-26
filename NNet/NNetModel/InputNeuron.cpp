@@ -22,6 +22,13 @@ InputNeuron::InputNeuron( MicroMeterPoint const upCenter )
 	SetPulseFrequency( STD_PULSE_FREQ );
 }
 
+InputNeuron::InputNeuron( InputNeuron const & src ) :  // copy constructor
+	Neuron          ( src ),
+	m_mvFactor      ( src.m_mvFactor ),    
+	m_pulseFrequency( src.m_pulseFrequency ),
+	m_pulseDuration ( src.m_pulseDuration )
+{ }
+
 InputNeuron::~InputNeuron( ) { }
 
 bool InputNeuron::operator==( Shape const & rhs ) const

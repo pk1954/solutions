@@ -39,16 +39,38 @@ public:
 #endif
 	}
 
-	void SetShape( Shape * const, ShapeId const );	
+	ShapeId const AddShape( UPShape upT )	
+	{
+		ShapeId idNewSlot;
+		if( upT )
+		{
+			upT->IncCounter();
+			idNewSlot = ShapeId( Cast2Long(m_list.size()) );
+			upT->SetId( idNewSlot );
+			m_list.push_back( move(upT) );
+		}
+		return idNewSlot;
+	}
+
+	template <typename T>
+	unique_ptr<T> SetShape( unique_ptr<T> upT, ShapeId const id )	
+	{
+		assert( IsDefined( id ) );
+		assert( IsValidShapeId( id ) );
+
+		if ( upT )
+			upT->IncCounter();
+		if ( GetAt( id ) )
+			GetAt( id )->DecCounter();
+
+		unique_ptr<Shape> tmp = move(upT);
+		m_list[id.GetValue()].swap( tmp );
+		return unique_ptr<T>( static_cast<T*>(tmp.release()) );
+	}
 
 	void Reset( )
 	{
 		m_list.clear();
-	}
-
-	void Add( )
-	{
-		m_list.push_back( nullptr );
 	}
 
 	void RemoveLast( )
@@ -58,7 +80,12 @@ public:
 
 	Shape * const GetAt( ShapeId const id ) const 
 	{
-		return m_list[ id.GetValue() ].get();
+		return m_list[id.GetValue()].get();
+	}
+
+	Shape & GetRef( ShapeId const id ) 
+	{
+		return * m_list[id.GetValue()];
 	}
 
 	Shape * const Front( ) const 
@@ -195,10 +222,13 @@ public:
 		Apply2All( [&](Shape & s) { s.Select( op ); } ); 
 	}
 
+	void LinkShape( Shape const &, function< Shape * (Shape const *)> const & ) const;
+
 private:
-	vector<unique_ptr<Shape>>     m_list;
+	vector<UPShape>     m_list;
 	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
 
-	void    init       ( ShapeList const & );
-	Shape * shallowCopy( Shape const & ) const;
+	void init ( ShapeList const & );
 };
+
+UPShape ShallowCopy( Shape const & );

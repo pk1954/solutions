@@ -14,43 +14,40 @@ class Connect2PipeCommand : public Command
 public:
 	Connect2PipeCommand
 	(
-		NNetModelWriterInterface & model, 
+		NNetModelWriterInterface & nmwi, 
 		ShapeId              const idSrc,
 		ShapeId              const idDst 
 	)
-	  :	m_pBaseKnot ( model.GetShapePtr<BaseKnot *>( idSrc ) ),
-		m_pPipe     ( model.GetShapePtr<Pipe     *>( idDst ) )
+	  :	m_pBaseKnot ( nmwi.GetShapePtr<BaseKnot *>( idSrc ) ),
+		m_pPipe     ( nmwi.GetShapePtr<Pipe     *>( idDst ) )
 	{ 
 		m_pStartKnot = m_pPipe->GetStartKnotPtr( );
-		m_pNewPipe   = model.NewPipe( m_pStartKnot, m_pBaseKnot );
+		m_upNewPipe  = nmwi.NewPipe( m_pStartKnot, m_pBaseKnot );
 	}
 
-	~Connect2PipeCommand( )
-	{ 
-		delete m_pNewPipe;
-	}
+	~Connect2PipeCommand( )	{ }
 
-	virtual void Do( NNetModelWriterInterface & model )
+	virtual void Do( NNetModelWriterInterface & nmwi )
 	{
-		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe, m_pNewPipe );
-		m_pBaseKnot ->m_connections.AddIncoming( m_pNewPipe );
+		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe, m_upNewPipe.get() );
+		m_pBaseKnot ->m_connections.AddIncoming( m_upNewPipe.get() );
 		m_pBaseKnot ->m_connections.AddOutgoing( m_pPipe );
 		m_pPipe->SetStartKnot( m_pBaseKnot );
-		model.Store2Model( m_pNewPipe );
+		nmwi.Store2Model( move(m_upNewPipe) );
 	}
 
-	virtual void Undo( NNetModelWriterInterface & model )
+	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
-		m_pStartKnot->m_connections.ReplaceOutgoing( m_pNewPipe, m_pPipe );
-		m_pBaseKnot ->m_connections.RemoveIncoming( m_pNewPipe );
+		m_pStartKnot->m_connections.ReplaceOutgoing( m_upNewPipe.get(), m_pPipe );
+		m_pBaseKnot ->m_connections.RemoveIncoming( m_upNewPipe.get() );
 		m_pBaseKnot ->m_connections.RemoveOutgoing( m_pPipe );
 		m_pPipe->SetStartKnot( m_pStartKnot );
-		model.RemoveFromModel( m_pNewPipe );
+		m_upNewPipe = move(nmwi.RemoveFromModel<Pipe>( m_upNewPipe->GetId() ));
 	}
 
 private:
 	BaseKnot * const m_pBaseKnot;
 	Pipe     * const m_pPipe;
 	BaseKnot *       m_pStartKnot;
-	Pipe     *       m_pNewPipe;
+	unique_ptr<Pipe> m_upNewPipe;
 };

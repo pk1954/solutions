@@ -17,39 +17,35 @@ class AddOutgoing2KnotCommand : public Command
 public:
 	AddOutgoing2KnotCommand
 	( 
-		NNetModelWriterInterface & model, 
+		NNetModelWriterInterface & nmwi, 
 		ShapeId            const   id, 
 		MicroMeterPoint    const & pos 
 	)
 	{ 
-		m_pStart   = model.GetShapePtr<BaseKnot *>( id );
-		m_pKnotNew = model.NewBaseKnot<Knot>( pos );
-		m_pPipe    = model.NewPipe( m_pStart, m_pKnotNew );
-		m_pKnotNew->m_connections.AddIncoming( m_pPipe );
+		m_pStart    = nmwi.GetShapePtr<BaseKnot *>( id );
+		m_upKnotNew = nmwi.NewBaseKnot<Knot>( pos );
+		m_upPipe    = nmwi.NewPipe( m_pStart, m_upKnotNew.get() );
+		m_upKnotNew->m_connections.AddIncoming( m_upPipe.get() );
 	}
 
-	~AddOutgoing2KnotCommand( )
-	{
-		delete m_pKnotNew;
-		delete m_pPipe;
-	}
+	~AddOutgoing2KnotCommand( ) {}
 
-	virtual void Do( NNetModelWriterInterface & model ) 
+	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_pStart->m_connections.AddOutgoing( m_pPipe );
-		model.Store2Model( m_pKnotNew );
-		model.Store2Model( m_pPipe );
+		m_pStart->m_connections.AddOutgoing( m_upPipe.get() );
+		nmwi.Store2Model( move( m_upKnotNew ) );
+		nmwi.Store2Model( move( m_upPipe ) );
 	}
 
-	virtual void Undo( NNetModelWriterInterface & model ) 
+	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_pStart->m_connections.RemoveOutgoing( m_pPipe );
-		model.RemoveFromModel( m_pKnotNew );
-		model.RemoveFromModel( m_pPipe );
+		m_pStart->m_connections.RemoveOutgoing( m_upPipe.get() );
+		m_upKnotNew = move(nmwi.RemoveFromModel<Knot>( m_upKnotNew->GetId() ) );
+		m_upPipe    = move(nmwi.RemoveFromModel<Pipe>( m_upPipe->GetId() ) );
 	}
 
 private:
-	Knot     * m_pKnotNew;
 	BaseKnot * m_pStart;
-	Pipe     * m_pPipe;
+	unique_ptr<Knot> m_upKnotNew;
+	unique_ptr<Pipe> m_upPipe;
 };

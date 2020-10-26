@@ -23,6 +23,9 @@ class EventInterface;
 class MonitorData;
 class Param;
 
+using std::unique_ptr;
+using std::move;
+
 class NNetModel
 {
 public:
@@ -77,7 +80,7 @@ public:
 	MicroMeterPoint const GetShapePos ( ShapeId const ) const;
 
 	fMicroSecs const GetSimulationTime ( ) const { return m_timeStamp; }
-	long       const GetSizeOfShapeList( ) const { return Cast2Long( m_Shapes.Size() ); }
+	size_t     const GetSizeOfShapeList( ) const { return m_Shapes.Size(); }
 
 	BaseKnot * const GetStartKnotPtr(ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetStartKnotPtr(); }
 	BaseKnot * const GetEndKnotPtr  (ShapeId const id) const { return GetShapeConstPtr<Pipe const *>(id)->GetEndKnotPtr  (); }
@@ -112,8 +115,8 @@ public:
 
 	ShapeId const NewShapeListSlot( )
 	{
-		ShapeId idNewSlot { GetSizeOfShapeList() };
-		m_Shapes.Add( );
+		ShapeId idNewSlot { Cast2Long(GetSizeOfShapeList()) };
+		m_Shapes.AddShape( nullptr );
 		return idNewSlot;
 	}
 
@@ -124,15 +127,21 @@ public:
 		m_Shapes.SetShapeErrorHandler( pHandler );
 	}
 
-	void SelectAllShapes( tBoolOp const op )                 { m_Shapes.SelectAllShapes( op ); }
-	void ReplaceInModel ( Shape & replaceMe, Shape & shape ) { m_Shapes.SetShape( &shape,  replaceMe.GetId() ); }
-	void Store2Model    ( Shape & shape )                    { m_Shapes.SetShape( &shape,  shape.GetId() ); }
-	void RemoveFromModel( Shape & shape )                    { m_Shapes.SetShape( nullptr, shape.GetId() ); }
+	void SelectAllShapes( tBoolOp const op ) { m_Shapes.SelectAllShapes( op ); }
 
-	void InsertAtModelSlot( Shape & shape, ShapeId const id )                       
+	ShapeId Add2Model( UPShape up ) { return m_Shapes.AddShape( move(up) ); }
+
+	template <typename T>
+	unique_ptr<T> Store2Model( unique_ptr<T> up ) { return move(m_Shapes.SetShape( move(up), up.get()->GetId() )); }
+
+	template <typename T>
+	unique_ptr<T> RemoveFromModel( ShapeId const id ) { return m_Shapes.SetShape( unique_ptr<T>(), id ); }
+
+	template <typename T>
+	unique_ptr<T> InsertAtModelSlot( unique_ptr<T> up, ShapeId const id )                       
 	{ 
-		shape.SetId( id );
-		m_Shapes.SetShape( &shape, id );
+		up.get()->SetId( id );
+		return m_Shapes.SetShape( move(up), id );
 	}
 
 	ShapeList const & GetShapes( ) const { return m_Shapes; }

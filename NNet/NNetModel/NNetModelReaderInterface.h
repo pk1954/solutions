@@ -39,7 +39,7 @@ public:
 //	bool            const   IsShapeDefined( ShapeId const id ) const { return m_pModel->IsShapeDefined              (id); }
 	MicroMeterPoint const   GetShapePos   ( ShapeId const id ) const { return m_pModel->GetShapePos                 (id); }
 	Shape           const * GetConstShape ( ShapeId const id ) const { return m_pModel->GetConstShape  ( id ); }
-	long            const   GetSizeOfShapeList( )              const { return m_pModel->GetSizeOfShapeList( ); }
+	size_t          const   GetSizeOfShapeList( )              const { return m_pModel->GetSizeOfShapeList( ); }
 	fMicroSecs      const   GetSimulationTime( )               const { return m_pModel->GetSimulationTime ( ); }
 	MicroMeterRect  const   GetEnclosingRect( )                const { return m_pModel->GetEnclosingRect  ( ); }
 

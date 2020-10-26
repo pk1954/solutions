@@ -14,36 +14,40 @@ class Connect2BaseKnotCommand : public Command
 public:
 	Connect2BaseKnotCommand
 	( 
-		NNetModelWriterInterface & model, 
+		NNetModelWriterInterface & nmwi, 
 		ShapeId              const idSrc,
 		ShapeId              const idDst 
 	)
-	  :	m_pBaseKnotSrc( model.GetShapePtr<BaseKnot *>( idSrc ) ),
-		m_pBaseKnotDst( model.GetShapePtr<BaseKnot *>( idDst ) )
+	  :	m_idSrc( idSrc ),
+		m_idDst( idDst ),
+		m_pBaseKnotDst( nmwi.GetShapePtr<BaseKnot *>( idDst ) )
 	{
 		m_pDstConnections = m_pBaseKnotDst->m_connections.Clone();
 	}
 
 	~Connect2BaseKnotCommand( )
 	{
-		delete m_pDstConnections;
+		delete m_pDstConnections;  // make to unique_ptr ???
 	}
 
-	virtual void Do( NNetModelWriterInterface & model )
+	virtual void Do( NNetModelWriterInterface & nmwi )
 	{
-		m_pBaseKnotDst->AddConnections( m_pBaseKnotSrc );
-		model.RemoveFromModel( m_pBaseKnotSrc ); // m_pBaseKnotSrc disconnected, but unchanged. Do not delete, will be reused in Undo
+		m_pBaseKnotDst->AddConnections( m_upBaseKnotSrc.get() );
+		m_upBaseKnotSrc = move( nmwi.RemoveFromModel<BaseKnot>(m_idSrc) ); 
 	}
 
-	virtual void Undo( NNetModelWriterInterface & model )
+	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
 		m_pBaseKnotDst->SetConnections( m_pDstConnections );  // restore dst connections
-		m_pBaseKnotSrc->RestoreConnections( );
-		model.Store2Model( m_pBaseKnotSrc );           // reconnect src  
+		m_upBaseKnotSrc->RestoreConnections( );
+		m_upBaseKnotSrc = move(nmwi.Store2Model<BaseKnot>( move( m_upBaseKnotSrc ) )); // reconnect src  
 	}
 
 private:
-	BaseKnot    * const m_pBaseKnotSrc;
-	BaseKnot    * const m_pBaseKnotDst;
-	Connections *       m_pDstConnections;
+	ShapeId const m_idSrc;
+	ShapeId const m_idDst; 
+
+	unique_ptr<BaseKnot> m_upBaseKnotSrc;
+	BaseKnot    *        m_pBaseKnotDst;
+	Connections *        m_pDstConnections;
 };

@@ -7,16 +7,40 @@
 #include "shape.h"
 #include "debug.h"
 
+using std::move;
+
 Shape::Shape( ShapeType const type )
 	: m_type( type )
 { }	
 
-Shape::Shape( Shape const & src )   // copy constructor
-	:	m_type      (src.m_type),
+Shape::Shape( Shape const & src ) :  // copy constructor
+  	m_type      (src.m_type),
 	m_identifier(src.m_identifier),
 	m_bSelected (src.m_bSelected),
 	m_bMarked   (src.m_bMarked)
 { }
+
+Shape::Shape( Shape&& rhs ) noexcept
+{
+	*this = move( rhs );
+}
+
+Shape & Shape::operator= ( Shape&& rhs ) noexcept
+{
+	if (this != &rhs)
+	{
+		m_type       = rhs.m_type;
+		m_identifier = rhs.m_identifier;
+		m_bSelected  = rhs.m_bSelected;  
+		m_bMarked    = rhs.m_bMarked;
+
+		rhs.m_type       = ShapeType::Value::undefined;
+		rhs.m_identifier = NO_SHAPE;
+		rhs.m_bSelected  = false;
+		rhs.m_bMarked    = false;
+	}
+	return *this;
+}
 
 bool Shape::operator==( Shape const & rhs ) const
 {

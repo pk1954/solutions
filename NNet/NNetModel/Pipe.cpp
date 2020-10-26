@@ -23,6 +23,15 @@ Pipe::Pipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
 	Recalc();
 }
 
+Pipe::Pipe( Pipe const & src ) :  // copy constructor
+	Shape       ( src ),
+    m_pKnotStart( nullptr ),
+	m_pKnotEnd  ( nullptr ),
+	m_width     ( src.m_width      ),
+	m_potIndex  ( src.m_potIndex   ),
+	m_potential ( src.m_potential  )
+{ }
+
 Pipe::~Pipe( ) { }
 
 bool Pipe::operator==( Shape const & rhs ) const 

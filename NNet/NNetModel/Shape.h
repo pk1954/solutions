@@ -17,7 +17,9 @@ class DrawContext;
 class NNetModel;
 
 using std::remove_pointer;
+using std::unique_ptr;
 
+using UPShape   = unique_ptr<Shape>;
 using ShapeCrit = function<bool(Shape const &)>;
                   
 static ShapeCrit const ShapeCritAlwaysTrue { [&]( Shape const & s) { return true; } };
@@ -25,10 +27,11 @@ static ShapeCrit const ShapeCritAlwaysTrue { [&]( Shape const & s) { return true
 class Shape
 {
 public:
-	Shape( ShapeType const );
-	Shape( Shape const & );   // copy constructor
-
-	Shape & operator= ( Shape const & ) = delete;
+	Shape( ShapeType const );                    // constructor
+	Shape( Shape const & );                      // copy constructor
+	Shape( Shape&& )             noexcept;       // move constructor
+	Shape & operator= (Shape&& ) noexcept;       // move assignment
+	Shape & operator= (Shape const &) = delete;  // no assignment operator
 
 	virtual ~Shape() { }
 

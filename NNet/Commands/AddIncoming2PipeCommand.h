@@ -14,59 +14,53 @@ class AddIncoming2PipeCommand : public Command
 public:
 	AddIncoming2PipeCommand
 	( 
-		NNetModelWriterInterface & model, 
+		NNetModelWriterInterface & nmwi, 
 		ShapeId            const   idPipe, 
 		MicroMeterPoint    const & pos 
 	)
-	   : m_pPipeOld( model.GetShapePtr<Pipe *>( idPipe ) )
+	   : m_pPipeOld( nmwi.GetShapePtr<Pipe *>( idPipe ) )
 	{
 		m_pStartKnotOld = m_pPipeOld->GetStartKnotPtr( );
-		m_pKnotInsert   = model.NewBaseKnot<Knot>( pos );                                
-		m_pKnotOrtho    = model.NewBaseKnot<Knot>( pos - model.OrthoVector( idPipe ) );
+		m_upKnotInsert   = nmwi.NewBaseKnot<Knot>( pos );                                
+		m_upKnotOrtho    = nmwi.NewBaseKnot<Knot>( pos - nmwi.OrthoVector( idPipe ) );
 
-		m_pPipeOrtho    = model.NewPipe( m_pKnotOrtho,    m_pKnotInsert );		
-		m_pPipeExt      = model.NewPipe( m_pStartKnotOld, m_pKnotInsert );   	
+		m_upPipeOrtho    = nmwi.NewPipe( m_upKnotOrtho.get(), m_upKnotInsert.get() );		
+		m_upPipeExt      = nmwi.NewPipe( m_pStartKnotOld,     m_upKnotInsert.get() );   	
 
-		m_pKnotInsert->m_connections.AddIncoming( m_pPipeExt );
-		m_pKnotOrtho ->m_connections.AddOutgoing( m_pPipeOrtho );
+		m_upKnotInsert->m_connections.AddIncoming( m_upPipeExt.get() );
+		m_upKnotOrtho ->m_connections.AddOutgoing( m_upPipeOrtho.get() );
 
-		m_pKnotInsert->m_connections.AddIncoming( m_pPipeOrtho );
-		m_pKnotInsert->m_connections.AddOutgoing( m_pPipeOld );
+		m_upKnotInsert->m_connections.AddIncoming( m_upPipeOrtho.get() );
+		m_upKnotInsert->m_connections.AddOutgoing( m_pPipeOld );
 	}
 
-	~AddIncoming2PipeCommand( )
-	{
-		delete m_pKnotInsert;
-		delete m_pKnotOrtho;
-		delete m_pPipeOrtho;
-		delete m_pPipeExt;
-	}
+	~AddIncoming2PipeCommand( )	{ }
 
-	virtual void Do( NNetModelWriterInterface & model ) 
+	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_pPipeOld, m_pPipeExt );
-		m_pPipeOld->SetStartKnot( m_pKnotInsert );
-		model.Store2Model( m_pKnotOrtho );
-		model.Store2Model( m_pKnotInsert );
-		model.Store2Model( m_pPipeOrtho );
-		model.Store2Model( m_pPipeExt );
+		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_pPipeOld, m_upPipeExt.get() );
+		m_pPipeOld->SetStartKnot( m_upKnotInsert.get() );
+		nmwi.Store2Model( move(m_upKnotOrtho) );
+		nmwi.Store2Model( move(m_upKnotInsert) );
+		nmwi.Store2Model( move(m_upPipeOrtho) );
+		nmwi.Store2Model( move(m_upPipeExt) );
 	}
 
-	virtual void Undo( NNetModelWriterInterface & model ) 
+	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_pPipeExt, m_pPipeOld );
+		m_pStartKnotOld->m_connections.ReplaceOutgoing( m_upPipeExt.get(), m_pPipeOld );
 		m_pPipeOld->SetStartKnot( m_pStartKnotOld );
-		model.RemoveFromModel( m_pKnotOrtho  );
-		model.RemoveFromModel( m_pKnotInsert );
-		model.RemoveFromModel( m_pPipeOrtho  );
-		model.RemoveFromModel( m_pPipeExt    );
+		m_upKnotOrtho  = move( nmwi.RemoveFromModel<Knot>( m_upKnotOrtho ->GetId() ) );
+		m_upKnotInsert = move( nmwi.RemoveFromModel<Knot>( m_upKnotInsert->GetId() ) );
+		m_upPipeOrtho  = move( nmwi.RemoveFromModel<Pipe>( m_upPipeOrtho ->GetId() ) );
+		m_upPipeExt    = move( nmwi.RemoveFromModel<Pipe>( m_upPipeExt   ->GetId() ) );
 	}
 
 private:
-	Pipe     * const m_pPipeOld;
-	Pipe     *       m_pPipeExt      { nullptr };
-	Pipe     *       m_pPipeOrtho    { nullptr };
+	Pipe * const     m_pPipeOld;
+	unique_ptr<Pipe> m_upPipeExt     { nullptr };
+	unique_ptr<Pipe> m_upPipeOrtho   { nullptr };
 	BaseKnot *       m_pStartKnotOld { nullptr };
-	Knot     *       m_pKnotInsert   { nullptr };
-	Knot     *       m_pKnotOrtho    { nullptr };
+	unique_ptr<Knot> m_upKnotInsert  { nullptr };
+	unique_ptr<Knot> m_upKnotOrtho   { nullptr };
 };

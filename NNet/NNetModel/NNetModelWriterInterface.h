@@ -15,6 +15,9 @@ class Pipe;
 class BaseKnot;
 class ShapeErrorHandler;
 
+using std::unique_ptr;
+using std::move;
+
 class NNetModelWriterInterface
 {
 public:
@@ -24,8 +27,10 @@ public:
     void CreateInitialShapes();
 
     NNetModel const & GetModel( ) const { return * m_pModel; }  // TODO: find better solution
+    size_t    const   GetSizeOfShapeList( ) const { return m_pModel->GetSizeOfShapeList( ); }
 
-    Pipe  * const NewPipe( BaseKnot * const, BaseKnot * const );
+    unique_ptr<Pipe> NewPipe( Pipe const & );
+    unique_ptr<Pipe> NewPipe( BaseKnot * const, BaseKnot * const );
     Shape * const GetShape( ShapeId const );
 
     bool const IsPipe( ShapeId const id )
@@ -50,14 +55,22 @@ public:
     }
 
     template <typename T> 
-    T * const NewBaseKnot( MicroMeterPoint const & pos ) 
+    unique_ptr<T> NewBaseKnot( BaseKnot const & p ) 
     { 
-        auto pT { new T( pos ) };
-        pT->SetId( newShapeListSlot( ) );
-        return pT;
+        unique_ptr<T> upT { make_unique<T>( p.GetPosition() ) };
+        upT->SetId( newShapeListSlot( ) );
+        return move(upT);
     }
 
-	template <typename T>
+    template <typename T> 
+    unique_ptr<T> NewBaseKnot( MicroMeterPoint const & pos ) 
+    { 
+        unique_ptr<T> upT { make_unique<T>( pos ) };
+        upT->SetId( newShapeListSlot( ) );
+        return move(upT);
+    }
+
+    template <typename T>
 	void Apply2All( function<void(T &)> const & func ) const
 	{
         m_pModel->GetShapes().Apply2All
@@ -91,13 +104,33 @@ public:
         m_pModel->GetShapes().Apply2All( [&](Shape & s) { s.Clear( ); } ); 
     }
 
-    void SelectAllShapes( tBoolOp const op ) { m_pModel->SelectAllShapes( op ); }
+    void SelectAllShapes( tBoolOp const op ) 
+    { 
+        m_pModel->SelectAllShapes( op ); 
+    }
 
-    void ReplaceInModel   ( Shape & replaceMe, Shape & shape ) { m_pModel->ReplaceInModel ( replaceMe, shape ); }
-    void Store2Model      ( Shape * const pShape )             { m_pModel->Store2Model    ( * pShape ); }
-    void RemoveFromModel  ( Shape * const pShape )             { m_pModel->RemoveFromModel( * pShape ); }
-    void InsertAtModelSlot( Shape & shape, ShapeId const id )  { m_pModel->InsertAtModelSlot( shape, id ); }
-    void Add2Model        ( Shape & shape )                    { InsertAtModelSlot( shape, m_pModel->NewShapeListSlot( ) ); }
+    ShapeId const Add2Model( UPShape up ) 
+    { 
+        return m_pModel->Add2Model( move(up) ); 
+    }
+
+    template <typename T>
+    unique_ptr<T> Store2Model( unique_ptr<T> up ) 
+    { 
+        return m_pModel->Store2Model<T>( move(up) ); 
+    }
+
+    template <typename T>
+    unique_ptr<T> RemoveFromModel( ShapeId const id ) 
+    { 
+        return m_pModel->RemoveFromModel<T>( id ); 
+    }
+
+    template <typename T>
+    void InsertAtModelSlot( unique_ptr<T> up, ShapeId const id ) 
+    { 
+        m_pModel->InsertAtModelSlot<T>( move(up), id ); 
+    }
 
     MicroMeterPoint const OrthoVector( ShapeId const idPipe ) const
     {

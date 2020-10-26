@@ -75,16 +75,20 @@ public:
         ShapeType const shapeType   { static_cast<ShapeType::Value>(script.ScrReadInt( )) };
 
         script.ScrReadSpecial( L'(' );
-        Shape * pShape { shapeType.IsPipeType() ? createPipe( script, idFromScript ) : createBaseKnot( script, shapeType ) };
+        unique_ptr<Shape> upShape;
+        if ( shapeType.IsPipeType() )
+            upShape = createPipe( script, idFromScript );
+        else
+            upShape = createBaseKnot( script, shapeType );
         script.ScrReadSpecial( L')' );
 
-        if ( pShape )
-            m_pModelWriterInterface->InsertAtModelSlot( * pShape, idFromScript );
+        if ( upShape )
+            m_pModelWriterInterface->InsertAtModelSlot<Shape>( move(upShape), idFromScript );
     }
 
 private:
 
-    Shape * const createPipe( Script & script, ShapeId const id ) const
+    unique_ptr<Pipe> createPipe( Script & script, ShapeId const id ) const
     {
         ShapeId const idStart { script.ScrReadLong() };
         script.ScrReadSpecial( L'-' );
@@ -101,14 +105,14 @@ private:
         { 
             BaseKnot * const pKnotStart { m_pModelWriterInterface->GetShapePtr<BaseKnot *>( idStart ) };
             BaseKnot * const pKnotEnd   { m_pModelWriterInterface->GetShapePtr<BaseKnot *>( idEnd   ) };
-            Pipe     * const pPipe      { new Pipe( pKnotStart, pKnotEnd ) };
-            pKnotStart->m_connections.AddOutgoing( pPipe );
-            pKnotEnd  ->m_connections.AddIncoming( pPipe );
-            return pPipe;
+            unique_ptr<Pipe> upPipe     { m_pModelWriterInterface->NewPipe( pKnotStart, pKnotEnd ) };
+            pKnotStart->m_connections.AddOutgoing( upPipe.get() );
+            pKnotEnd  ->m_connections.AddIncoming( upPipe.get() );
+            return move(upPipe);
         }
     }
 
-    Shape * const createBaseKnot( Script & script, ShapeType const shapeType ) const 
+    unique_ptr<BaseKnot> createBaseKnot( Script & script, ShapeType const shapeType ) const 
     {
         MicroMeter      const xCoord { Cast2Float( script.ScrReadFloat() ) };
         script.ScrReadSpecial( L'|' );
@@ -117,13 +121,13 @@ private:
         switch ( shapeType.GetValue() )
         {
         case ShapeType::Value::inputNeuron:
-            return new InputNeuron( umPosition );
+            return make_unique<InputNeuron>( umPosition );
 
         case ShapeType::Value::neuron:
-            return new Neuron( umPosition );
+            return make_unique<Neuron>( umPosition );
 
         case ShapeType::Value::knot:
-            return new Knot( umPosition );
+            return make_unique<Knot>( umPosition );
 
         default:
             assert( false );

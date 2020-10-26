@@ -18,6 +18,9 @@ class Neuron : public BaseKnot
 {
 public:
 	Neuron( MicroMeterPoint const, ShapeType const = ShapeType::Value::neuron );
+
+	Neuron( Neuron const & );   // copy constructor
+
 	virtual ~Neuron();
 
 	static void SetSound( Sound * const pSound )
@@ -71,8 +74,7 @@ private:
 
 	SoundDescr m_triggerSound {};
 
-	PTP_WORK  m_pTpWork { nullptr };  // Thread pool
-
+	PTP_WORK  m_pTpWork { nullptr };  // Thread poolworker thread
 	MicroMeterPoint getAxonHillockPos( ) const;
 
 	inline static unsigned long m_counter { 0L };

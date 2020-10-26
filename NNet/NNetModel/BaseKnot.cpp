@@ -13,6 +13,14 @@ using std::find;
 using std::begin;
 using std::end;
 
+BaseKnot::BaseKnot( BaseKnot const & src ) :  // copy constructor
+	Shape        ( src ),
+	m_circle     ( src.m_circle ),
+	m_connections( )    // do not copy connections!
+{ 
+	MoveShape( PIPE_WIDTH ); 
+}
+
 bool BaseKnot::operator==( Shape const & rhs ) const
 {
 	BaseKnot const & baseKnotRhs { static_cast<BaseKnot const &>(rhs) };

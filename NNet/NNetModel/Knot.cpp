@@ -8,6 +8,10 @@
 #include "DrawContext.h"
 #include "Knot.h"
 
+Knot::Knot( Knot const & src ) :  // copy constructor
+	BaseKnot( src )
+{ }
+
 void Knot::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 {
 	MicroMeter const umRadius { (type == tHighlightType::normal) ? GetExtension( ) : 30.0_MicroMeter };
