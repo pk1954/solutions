@@ -26,7 +26,7 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upNeuron = move(nmwi.RemoveFromModel<Neuron>( m_upNeuron->GetId() ));
+		m_upNeuron = nmwi.RemoveFromModel<Neuron>( m_upNeuron->GetId() );
 	}
 
 	ShapeId const GetNeuronId( )

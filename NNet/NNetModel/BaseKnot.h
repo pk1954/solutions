@@ -58,18 +58,18 @@ public:
 	bool IsPrecursorOf( Pipe const & ) const;
 	bool IsSuccessorOf( Pipe const & ) const ;
 
-	void RestoreConnections() { m_connections.Restore( this );	}
+	void Reconnect() { m_connections.Reconnect( this );	}
 	
 	void AddConnections( BaseKnot * const pSrc ) 
 	{ 
 		m_connections.Add( pSrc->m_connections );
-		RestoreConnections( );
+		Reconnect( );
 	}
 
 	void SetConnections( Connections * const pSrc ) 
 	{ 
 		m_connections = * pSrc;
-		RestoreConnections( );
+		Reconnect( );
 	}
 
 	void ClearConnections( )

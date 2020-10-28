@@ -16,32 +16,25 @@ using std::vector;
 class MarkSelectionCommand : public Command
 {
 public:
-	MarkSelectionCommand( NNetModelWriterInterface & model, tBoolOp const op )
+	MarkSelectionCommand( NNetModelWriterInterface & nmwi, tBoolOp const op )
 	  : m_op( op )
 	{
-		model.Apply2All<Shape>                    
-		(                                                        
-			[&]( Shape & s )                 
-			{
-				if ( s.IsSelected() )
-					m_markedShapes.push_back( & s );
-			} 
-		); 
+		nmwi.Apply2AllSelected<Shape>( [&](Shape & s) { m_selectedShapeIds.push_back( s.GetId() ); } ); 
 	}
 
-	virtual void Do( NNetModelWriterInterface & model ) 
+	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		model.Apply2AllSelected<Shape>( [&]( Shape & shape ) { shape.Mark( m_op ); } );
+		nmwi.Apply2AllSelected<Shape>( [&](Shape & s) { s.Mark( m_op ); } );
 	}
 
-	virtual void Undo( NNetModelWriterInterface & model ) 
+	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		model.Apply2All<Shape>( [&]( Shape & shape ) { shape.Mark( tBoolOp::opFalse ); } );
-		for ( Shape * pShape : m_markedShapes ) { pShape->Mark( tBoolOp::opTrue  ); };
+		nmwi.Apply2All<Shape>( [&](Shape & s) { s.Mark( tBoolOp::opFalse ); } );
+		for ( auto & idShape : m_selectedShapeIds ) { nmwi.MarkShape( idShape, tBoolOp::opTrue ); };
 	}
 
 private:
-	vector<Shape *> m_markedShapes;
+	vector<ShapeId> m_selectedShapeIds;
 	tBoolOp const   m_op;
 };
 

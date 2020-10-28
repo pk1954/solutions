@@ -38,13 +38,13 @@ public:
 		m_pPipe->CheckShape();
 		m_pStartKnot->m_connections.RemoveOutgoing( m_pPipe );
 		if ( m_pStartKnot->IsOrphanedKnot( ) )
-			m_upStartKnot = move(nmwi.RemoveFromModel<Knot>( m_pStartKnot->GetId() ));
+			m_upStartKnot = nmwi.RemoveFromModel<Knot>( m_pStartKnot->GetId() );
 
 		m_pEndKnot->m_connections.RemoveIncoming( m_pPipe );
 		if ( m_pEndKnot->IsOrphanedKnot( ) )
-			m_upEndKnot = move(nmwi.RemoveFromModel<Knot>( m_pEndKnot->GetId() ));
+			m_upEndKnot = nmwi.RemoveFromModel<Knot>( m_pEndKnot->GetId() );
 
-		m_upPipe = move(nmwi.RemoveFromModel<Pipe>( m_pPipe->GetId() ));
+		m_upPipe = nmwi.RemoveFromModel<Pipe>( m_pPipe->GetId() );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi )

@@ -22,32 +22,29 @@ public:
 		m_idDst( idDst ),
 		m_pBaseKnotDst( nmwi.GetShapePtr<BaseKnot *>( idDst ) )
 	{
-		m_pDstConnections = m_pBaseKnotDst->m_connections.Clone();
+		m_upDstConnections = m_pBaseKnotDst->m_connections.Clone();
 	}
 
-	~Connect2BaseKnotCommand( )
-	{
-		delete m_pDstConnections;  // make to unique_ptr ???
-	}
+	~Connect2BaseKnotCommand( )	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{
+		m_upBaseKnotSrc = nmwi.RemoveFromModel<BaseKnot>(m_idSrc); 
 		m_pBaseKnotDst->AddConnections( m_upBaseKnotSrc.get() );
-		m_upBaseKnotSrc = move( nmwi.RemoveFromModel<BaseKnot>(m_idSrc) ); 
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
-		m_pBaseKnotDst->SetConnections( m_pDstConnections );  // restore dst connections
-		m_upBaseKnotSrc->RestoreConnections( );
-		m_upBaseKnotSrc = move(nmwi.Store2Model<BaseKnot>( move( m_upBaseKnotSrc ) )); // reconnect src  
+		m_pBaseKnotDst->SetConnections( m_upDstConnections.get() );  // restore dst connections
+		m_upBaseKnotSrc->Reconnect( );
+		m_upBaseKnotSrc = nmwi.Store2Model<BaseKnot>( move( m_upBaseKnotSrc ) ); // reconnect src  
 	}
 
 private:
 	ShapeId const m_idSrc;
 	ShapeId const m_idDst; 
 
-	unique_ptr<BaseKnot> m_upBaseKnotSrc;
-	BaseKnot    *        m_pBaseKnotDst;
-	Connections *        m_pDstConnections;
+	BaseKnot              * m_pBaseKnotDst;
+	unique_ptr<BaseKnot>    m_upBaseKnotSrc;
+	unique_ptr<Connections> m_upDstConnections;
 };

@@ -132,7 +132,11 @@ public:
 	ShapeId Add2Model( UPShape up ) { return m_Shapes.AddShape( move(up) ); }
 
 	template <typename T>
-	unique_ptr<T> Store2Model( unique_ptr<T> up ) { return move(m_Shapes.SetShape( move(up), up.get()->GetId() )); }
+	unique_ptr<T> Store2Model( unique_ptr<T> up ) 
+	{
+		ShapeId const id { up.get()->GetId() };
+		return move(m_Shapes.SetShape( move(up), id )); 
+	}
 
 	template <typename T>
 	unique_ptr<T> RemoveFromModel( ShapeId const id ) { return m_Shapes.SetShape( unique_ptr<T>(), id ); }

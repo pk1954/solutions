@@ -6,15 +6,18 @@
 
 #include "PipeList.h"
 
+using std::unique_ptr;
+using std::make_unique;
+
 class Connections
 {
 public:
-	Connections * const Clone( ) const 
+	unique_ptr<Connections> Clone( ) const 
 	{
-		Connections * pCopy { new Connections() };
-		pCopy->m_incoming = m_incoming;
-		pCopy->m_outgoing = m_outgoing;
-		return pCopy;
+		unique_ptr<Connections> upCopy { make_unique<Connections>() };
+		upCopy->m_incoming = m_incoming;
+		upCopy->m_outgoing = m_outgoing;
+		return move(upCopy);
 	}
 	
 	Pipe & GetFirstOutgoing() { return m_outgoing.GetFirst(); }
@@ -60,7 +63,7 @@ public:
 		Apply2AllOutPipesB( [&]( Pipe & pipe ) { return func( pipe ); } );
 	}
 
-	void Restore( BaseKnot * const pBaseKnot )
+	void Reconnect( BaseKnot * const pBaseKnot )
 	{
 		Apply2AllInPipes ( [&]( Pipe & pipe ) { pipe.SetEndKnot  ( pBaseKnot ); } );
 		Apply2AllOutPipes( [&]( Pipe & pipe ) { pipe.SetStartKnot( pBaseKnot ); } );

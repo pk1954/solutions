@@ -368,12 +368,6 @@ void MainWindow::doPaint( )
 	if ( m_rectSelection.IsNotEmpty( ) )
 		context.DrawTranspRect( m_rectSelection, NNetColors::SELECTION_RECT );
 
-	if ( IsDefined( m_shapeSuperHighlighted ) ) // draw super highlighted shape again to be sure that it is in foreground
-	{
-		m_pModelReaderInterface->DrawExterior( m_shapeSuperHighlighted, context, tHighlightType::superHighlighted );
-		m_pModelReaderInterface->DrawInterior( m_shapeSuperHighlighted, context );
-	}
-
 	if ( context.GetPixelSize() <= 5._MicroMeter )
 		DrawExteriorInRect( pixRect );
 
@@ -384,6 +378,12 @@ void MainWindow::doPaint( )
 
 	if ( context.GetPixelSize() <= 2.5_MicroMeter )
 		DrawNeuronTextInRect( pixRect );
+
+	if ( IsDefined( m_shapeSuperHighlighted ) ) // draw super highlighted shape again to be sure that it is visible
+	{
+		m_pModelReaderInterface->DrawExterior( m_shapeSuperHighlighted, context, tHighlightType::superHighlighted );
+		m_pModelReaderInterface->DrawInterior( m_shapeSuperHighlighted, context );
+	}
 
 	if ( IsDefined( m_shapeHighlighted ) )  // draw highlighted shape again to be sure that it is in foreground
 	{

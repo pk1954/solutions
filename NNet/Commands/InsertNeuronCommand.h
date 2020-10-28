@@ -40,8 +40,8 @@ public:
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upNeuron  = move( nmwi.RemoveFromModel<Neuron>( m_upNeuron ->GetId() ));
-		m_upPipeNew = move( nmwi.RemoveFromModel<Pipe>  ( m_upPipeNew->GetId() ));
+		m_upNeuron  = nmwi.RemoveFromModel<Neuron>( m_upNeuron ->GetId() );
+		m_upPipeNew = nmwi.RemoveFromModel<Pipe>  ( m_upPipeNew->GetId() );
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_upPipeNew.get(), m_pPipe2Split );
 		m_pPipe2Split->SetStartKnot( m_pStartKnot );
 	}

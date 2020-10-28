@@ -65,7 +65,7 @@ void DisconnectBaseKnotCommand::Do( NNetModelWriterInterface & nmwi )
     }
     m_pBaseKnot->ClearConnections();
     if ( m_bDelete || m_pBaseKnot->IsKnot() )
-        m_upBaseKnot = move(nmwi.RemoveFromModel<BaseKnot>( m_pBaseKnot->GetId() ));
+        m_upBaseKnot = nmwi.RemoveFromModel<BaseKnot>( m_pBaseKnot->GetId() );
 }
 
 void DisconnectBaseKnotCommand::Undo( NNetModelWriterInterface & nmwi )
@@ -79,7 +79,7 @@ void DisconnectBaseKnotCommand::Undo( NNetModelWriterInterface & nmwi )
         Pipe & pipeOut { upKnot->m_connections.GetFirstOutgoing() };
         pipeOut.SetStartKnot( m_pBaseKnot );
         m_pBaseKnot->m_connections.AddOutgoing( & pipeOut );
-        upKnot = move(nmwi.RemoveFromModel<Knot>( upKnot->GetId() ));
+        upKnot = nmwi.RemoveFromModel<Knot>( upKnot->GetId() );
     }
     for ( auto & upKnot : m_endKnots )
     {
@@ -89,5 +89,5 @@ void DisconnectBaseKnotCommand::Undo( NNetModelWriterInterface & nmwi )
         upKnot = nmwi.RemoveFromModel<Knot>( upKnot->GetId() );
     }
     if ( m_bDelete || m_pBaseKnot->IsKnot() ) 
-        m_upBaseKnot = move(nmwi.Store2Model<BaseKnot>( move( m_upBaseKnot ) ));
+        m_upBaseKnot = nmwi.Store2Model<BaseKnot>( move( m_upBaseKnot ) );
 }

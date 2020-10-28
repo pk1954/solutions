@@ -92,7 +92,7 @@ bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId co
 		return false;
 
 	case ShapeType::Value::knot:
-		switch ( typeSrc.GetValue( ) )
+		switch ( typeDst.GetValue( ) )
 		{
 		case ShapeType::Value::pipe:
 		case ShapeType::Value::knot:

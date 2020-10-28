@@ -71,22 +71,25 @@ bool ShapeList::operator==( ShapeList const & other ) const
 
 void ShapeList::LinkShape( Shape const & shapeSrc, function< Shape * (Shape const *)> const & dstFromSrc ) const
 {
-	Shape & shapeDst = * dstFromSrc( & shapeSrc );
-	if ( shapeSrc.IsPipe( ) )
+	if ( Shape * pShapeDst { dstFromSrc( & shapeSrc ) } )
 	{
-		Pipe const & pipeSrc { static_cast<Pipe const &>( shapeSrc ) };
-		Pipe       & pipeDst { static_cast<Pipe       &>( shapeDst ) };
-		pipeDst.SetStartKnot( static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetStartKnotPtr() ) ) );
-		pipeDst.SetEndKnot  ( static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetEndKnotPtr  () ) ) );
-	}
-	else
-	{
-		Connections const & srcConn { static_cast<BaseKnot const &>( shapeSrc ).m_connections };
-		Connections       & dstConn { static_cast<BaseKnot       &>( shapeDst ).m_connections };
-		dstConn.ClearOutgoing();
-		dstConn.ClearIncoming();
-		srcConn.Apply2AllOutPipes([&](Pipe const & pipeSrc) {dstConn.AddOutgoing( static_cast<Pipe *>(dstFromSrc( & pipeSrc )));});
-		srcConn.Apply2AllInPipes ([&](Pipe const & pipeSrc) {dstConn.AddIncoming( static_cast<Pipe *>(dstFromSrc( & pipeSrc )));});
+		Shape & shapeDst { * pShapeDst };
+		if ( shapeSrc.IsPipe( ) )
+		{
+			Pipe const & pipeSrc { static_cast<Pipe const &>( shapeSrc ) };
+			Pipe       & pipeDst { static_cast<Pipe       &>( shapeDst ) };
+			pipeDst.SetStartKnot( static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetStartKnotPtr() ) ) );
+			pipeDst.SetEndKnot  ( static_cast<BaseKnot *>( dstFromSrc( pipeSrc.GetEndKnotPtr  () ) ) );
+		}
+		else
+		{
+			Connections const & srcConn { static_cast<BaseKnot const &>( shapeSrc ).m_connections };
+			Connections       & dstConn { static_cast<BaseKnot       &>( shapeDst ).m_connections };
+			dstConn.ClearOutgoing();
+			dstConn.ClearIncoming();
+			srcConn.Apply2AllOutPipes([&](Pipe const & pipeSrc) {dstConn.AddOutgoing( static_cast<Pipe *>(dstFromSrc( & pipeSrc )));});
+			srcConn.Apply2AllInPipes ([&](Pipe const & pipeSrc) {dstConn.AddIncoming( static_cast<Pipe *>(dstFromSrc( & pipeSrc )));});
+		}
 	}
 }
 

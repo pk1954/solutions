@@ -121,12 +121,14 @@ bool Pipe::IsInRect( MicroMeterRect const & umRect ) const
 
 void Pipe::SetStartKnot( BaseKnot * const pBaseKnot )
 {
+	assert( pBaseKnot );
 	m_pKnotStart = pBaseKnot;
 	Recalc();
 }
 
 void Pipe::SetEndKnot( BaseKnot * const pBaseKnot )
 {
+	assert( pBaseKnot );
 	m_pKnotEnd = pBaseKnot;
 	Recalc();
 }

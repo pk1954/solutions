@@ -32,21 +32,22 @@ public:
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
 		m_pEnd->m_connections.AddIncoming( m_upPipe.get() );
-		nmwi.Store2Model<Knot>( move(m_upKnotNew) );
-		nmwi.Store2Model<Pipe>( move(m_upPipe) );
+		m_idKnotNew = nmwi.Add2Model( move(m_upKnotNew) );
+		m_idPipe    = nmwi.Add2Model( move(m_upPipe) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
+		m_upKnotNew = nmwi.RemoveFromModel<Knot>( m_idKnotNew );
+		m_upPipe    = nmwi.RemoveFromModel<Pipe>( m_idPipe );
 		m_pEnd->m_connections.RemoveIncoming( m_upPipe.get() );
-		
-		m_upKnotNew = move( nmwi.RemoveFromModel<Knot>( m_upKnotNew->GetId() ) );
-		m_upPipe    = move( nmwi.RemoveFromModel<Pipe>( m_upPipe->GetId() ) );
 	}
 
 private:
-	BaseKnot * const m_pEnd;
-	unique_ptr<Knot> m_upKnotNew;
-	unique_ptr<Pipe> m_upPipe;
+	BaseKnot * const m_pEnd      { nullptr };
+	unique_ptr<Knot> m_upKnotNew { nullptr };
+	unique_ptr<Pipe> m_upPipe    { nullptr };
+	ShapeId          m_idKnotNew { NO_SHAPE };
+	ShapeId          m_idPipe    { NO_SHAPE };
 };
 
