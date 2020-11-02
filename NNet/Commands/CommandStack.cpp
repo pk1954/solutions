@@ -58,36 +58,37 @@ void CommandStack::pushNewCommand( unique_ptr<Command> pCmd )
 
 void CommandStack::PushCommand( unique_ptr<Command> pCmd )
 {
-#ifdef _DEBUG
-    NNetModel const & model { m_pModelInterFace->GetModel( ) };
-    unique_ptr<NNetModel const> pModelSave1 { make_unique<NNetModel>( model ) };
-    m_pModelInterFace->CheckModel();
-    //pModelSave1->CheckModel();
-#endif
+//#ifdef _DEBUG
+//    NNetModel const & model { m_pModelInterFace->GetModel( ) };
+//    m_pModelInterFace->CheckModel();
+//    unique_ptr<NNetModel const> pModelSave1 { make_unique<NNetModel>( model ) };
+//    m_pModelInterFace->CheckModel();
+//#endif
     clearRedoStack( );
     pCmd->Do( * m_pModelInterFace );
+    m_pModelInterFace->CheckModel();
     pushNewCommand( move(pCmd) );
     m_pModelInterFace->StaticModelChanged( );
     m_pObservable->NotifyAll( true );
 
-#ifdef _DEBUG
-    unique_ptr<NNetModel const> pModelSave2 { make_unique<NNetModel>( model ) };
-    pModelSave2->CheckModel();
-    m_pModelInterFace->CheckModel();
-    UndoCommand();
-    m_pModelInterFace->CheckModel();
-    if ( !(model == * pModelSave1) )
-    {
-        int x = 42;
-    }
-    m_pModelInterFace->CheckModel();
-    RedoCommand();
-    m_pModelInterFace->CheckModel();
-    if ( !(model == * pModelSave2) )
-    {
-        int x = 42;
-    }
-#endif
+//#ifdef _DEBUG
+//    unique_ptr<NNetModel const> pModelSave2 { make_unique<NNetModel>( model ) };
+//    pModelSave2->CheckModel();
+//    m_pModelInterFace->CheckModel();
+//    UndoCommand();
+//    m_pModelInterFace->CheckModel();
+//    if ( !(model == * pModelSave1) )
+//    {
+//        int x = 42;
+//    }
+//    m_pModelInterFace->CheckModel();
+//    RedoCommand();
+//    m_pModelInterFace->CheckModel();
+//    if ( !(model == * pModelSave2) )
+//    {
+//        int x = 42;
+//    }
+//#endif
 }
 
 bool CommandStack::UndoCommand( )
@@ -106,6 +107,7 @@ bool CommandStack::UndoCommand( )
         do                                  // or we are at top of stack
         {
             undoCmd( );                     // undo all commands in series
+            m_pModelInterFace->CheckModel();
             set2OlderCmd();
         } while ( ! isOpenBracketCmd() );   // until opening bracket is reached
         m_bIndexInSeries = false;           // index is on open bracket
@@ -113,6 +115,7 @@ bool CommandStack::UndoCommand( )
     else                                    // we are not in a series
     {                                       // normal processing
         undoCmd( );                         // of one command
+        m_pModelInterFace->CheckModel();
     }
     m_pModelInterFace->StaticModelChanged( );
     m_pObservable->NotifyAll( true );

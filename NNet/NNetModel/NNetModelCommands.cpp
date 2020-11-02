@@ -10,6 +10,8 @@
 #include "AddOutgoing2PipeCommand.h"
 #include "AnalyzeAnomaliesCommand.h"
 #include "AnalyzeLoopsCommand.h"
+#include "AppendNeuronCommand.h"
+#include "AppendInputNeuronCommand.h"
 #include "ClearBeepersCommand.h"
 #include "Connect2BaseKnotCommand.h"
 #include "Connect2PipeCommand.h"
@@ -256,18 +258,14 @@ void NNetModelCommands::AppendNeuron( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << endl;
-	auto pCmdNewNeuron        { make_unique<NewNeuronCommand>( * m_pMWI, m_pMRI->GetShapePos(id) ) };
-	m_pCmdStack->PushCommand( move( pCmdNewNeuron ) );
-	m_pCmdStack->PushCommand( make_unique<Connect2BaseKnotCommand>( * m_pMWI, id, pCmdNewNeuron->GetNeuronId() ) );
+	m_pCmdStack->PushCommand( make_unique<AppendNeuronCommand>( * m_pMWI, id ) );
 }
 
 void NNetModelCommands::AppendInputNeuron( ShapeId const id )
 {
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << id << endl;
-	auto pCmdNewInputNeuron{ make_unique<NewInputNeuronCommand>( * m_pMWI, m_pMRI->GetShapePos(id) ) };
-	m_pCmdStack->PushCommand( move( pCmdNewInputNeuron ) );
-	m_pCmdStack->PushCommand( make_unique<Connect2BaseKnotCommand>( * m_pMWI, id, pCmdNewInputNeuron->GetInputNeuronId() ) );
+	m_pCmdStack->PushCommand( make_unique<AppendInputNeuronCommand>( * m_pMWI, id ) );
 }
 
 void NNetModelCommands::ClearBeepers( )

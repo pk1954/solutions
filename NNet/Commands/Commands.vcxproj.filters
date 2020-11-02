@@ -117,6 +117,12 @@
     <ClInclude Include="AddModelCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AppendInputNeuronCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AppendNeuronCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">

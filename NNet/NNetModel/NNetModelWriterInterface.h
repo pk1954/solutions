@@ -115,6 +115,12 @@ public:
     }
 
     template <typename T>
+    unique_ptr<T> ReplaceInModel( unique_ptr<Shape> up ) 
+    { 
+        return m_pModel->ReplaceInModel<T>( move(up) ); 
+    }
+
+    template <typename T>
     unique_ptr<T> Store2Model( unique_ptr<T> up ) 
     { 
         return m_pModel->Store2Model<T>( move(up) ); 

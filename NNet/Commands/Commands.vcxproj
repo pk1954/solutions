@@ -74,6 +74,8 @@
     <ClInclude Include="AddOutgoing2PipeCommand.h" />
     <ClInclude Include="AnalyzeAnomaliesCommand.h" />
     <ClInclude Include="AnalyzeLoopsCommand.h" />
+    <ClInclude Include="AppendInputNeuronCommand.h" />
+    <ClInclude Include="AppendNeuronCommand.h" />
     <ClInclude Include="ClearBeepersCommand.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="CommandStack.h" />

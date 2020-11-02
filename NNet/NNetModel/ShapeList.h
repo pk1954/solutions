@@ -53,6 +53,22 @@ public:
 	}
 
 	template <typename T>
+	unique_ptr<T> ReplaceShape( unique_ptr<Shape> upT, ShapeId const id )	
+	{
+		assert( IsDefined( id ) );
+		assert( IsValidShapeId( id ) );
+
+		if ( upT )
+			upT->IncCounter();
+		if ( GetAt( id ) )
+			GetAt( id )->DecCounter();
+
+		unique_ptr<Shape> tmp = move(upT);
+		m_list[id.GetValue()].swap( tmp );
+		return unique_ptr<T>( static_cast<T*>(tmp.release()) );
+	}
+
+	template <typename T>
 	unique_ptr<T> SetShape( unique_ptr<T> upT, ShapeId const id )	
 	{
 		assert( IsDefined( id ) );
@@ -228,7 +244,7 @@ private:
 	vector<UPShape>     m_list;
 	ShapeErrorHandler * m_pShapeErrorHandler { nullptr };
 
-	void init ( ShapeList const & );
+	void copy ( ShapeList const & );
 };
 
 UPShape ShallowCopy( Shape const & );

@@ -58,7 +58,11 @@ private:
 
     Command & getCurrentCmd( ) { return * m_CommandStack.at( m_iIndex ); }
 
-    void undoCmd() { getCurrentCmd().Undo( * m_pModelInterFace ); }
+    void undoCmd() 
+    { 
+        getCurrentCmd().Undo( * m_pModelInterFace ); 
+    }
+
     void doAndSet2YoungerCmd() 
     { 
         getCurrentCmd().Do( * m_pModelInterFace ); 

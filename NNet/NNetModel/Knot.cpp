@@ -22,3 +22,9 @@ void Knot::DrawInterior( DrawContext const & context ) const
 {
 	context.DrawCircle( GetCircle() * PIPE_INTERIOR, GetInteriorColor( ) );
 }
+
+void Knot::CheckShape( ) const
+{
+	BaseKnot::CheckShape();
+	assert( ! m_connections.IsOrphan() );
+}

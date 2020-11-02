@@ -24,6 +24,8 @@ public:
 
 	virtual ~Knot() {}
 
+	void CheckShape( ) const;
+
 	static unsigned long GetCounter  ( ) { return m_counter; }
 	static   void        ResetCounter( ) { m_counter = 0L; }
 	virtual  void        IncCounter  ( ) { ++ m_counter; }

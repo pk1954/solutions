@@ -93,7 +93,7 @@ void ShapeList::LinkShape( Shape const & shapeSrc, function< Shape * (Shape cons
 	}
 }
 
-void ShapeList::init( const ShapeList & rhs )
+void ShapeList::copy( const ShapeList & rhs )
 {
 	m_list.resize( Cast2Long(rhs.m_list.size()) );
 
@@ -121,13 +121,13 @@ ShapeList::~ShapeList()
 
 ShapeList::ShapeList( const ShapeList & rhs ) // copy constructor
 {
-	init( rhs );
+	copy( rhs );
 }
 
 ShapeList & ShapeList::operator= ( const ShapeList & rhs ) // copy assignment
 {
 	if (this != &rhs)
-		init( rhs );
+		copy( rhs );
 	return * this;
 }
 

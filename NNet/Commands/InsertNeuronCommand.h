@@ -34,14 +34,14 @@ public:
 	{ 
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe2Split, m_upPipeNew.get() );
 		m_pPipe2Split->SetStartKnot( m_upNeuron.get() );
-		nmwi.Store2Model<Neuron>( move(m_upNeuron) );
-		nmwi.Store2Model<Pipe>  ( move(m_upPipeNew) );
+		m_idNeuron  = nmwi.Add2Model( move(m_upNeuron) );
+		m_idPipeNew = nmwi.Add2Model( move(m_upPipeNew) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upNeuron  = nmwi.RemoveFromModel<Neuron>( m_upNeuron ->GetId() );
-		m_upPipeNew = nmwi.RemoveFromModel<Pipe>  ( m_upPipeNew->GetId() );
+		m_upNeuron  = nmwi.RemoveFromModel<Neuron>( m_idNeuron  );
+		m_upPipeNew = nmwi.RemoveFromModel<Pipe>  ( m_idPipeNew );
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_upPipeNew.get(), m_pPipe2Split );
 		m_pPipe2Split->SetStartKnot( m_pStartKnot );
 	}
@@ -52,4 +52,6 @@ private:
 
 	unique_ptr<Pipe>   m_upPipeNew { nullptr };
 	unique_ptr<Neuron> m_upNeuron  { nullptr };
+	ShapeId            m_idPipeNew { NO_SHAPE };
+	ShapeId            m_idNeuron  { NO_SHAPE };
 };

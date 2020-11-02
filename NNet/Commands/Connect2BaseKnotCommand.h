@@ -44,7 +44,7 @@ private:
 	ShapeId const m_idSrc;
 	ShapeId const m_idDst; 
 
-	BaseKnot              * m_pBaseKnotDst;
-	unique_ptr<BaseKnot>    m_upBaseKnotSrc;
-	unique_ptr<Connections> m_upDstConnections;
+	BaseKnot              * m_pBaseKnotDst     { nullptr };
+	unique_ptr<BaseKnot>    m_upBaseKnotSrc    { nullptr };
+	unique_ptr<Connections> m_upDstConnections { nullptr };
 };

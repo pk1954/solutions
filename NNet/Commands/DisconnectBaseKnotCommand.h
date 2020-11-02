@@ -32,7 +32,9 @@ public:
 private:
     BaseKnot               * m_pBaseKnot;
     unique_ptr<BaseKnot>     m_upBaseKnot;
-    vector<unique_ptr<Knot>> m_startKnots { };
-    vector<unique_ptr<Knot>> m_endKnots   { };
+    vector<unique_ptr<Knot>> m_startKnots  { };
+    vector<unique_ptr<Knot>> m_endKnots    { };
+    vector<ShapeId>          m_idStartKnots{ };
+    vector<ShapeId>          m_idEndKnots  { };
     bool                     m_bDelete; // true: delete BaseKnot, false: disconnect only
 };

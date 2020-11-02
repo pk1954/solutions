@@ -129,7 +129,17 @@ public:
 
 	void SelectAllShapes( tBoolOp const op ) { m_Shapes.SelectAllShapes( op ); }
 
-	ShapeId Add2Model( UPShape up ) { return m_Shapes.AddShape( move(up) ); }
+	ShapeId Add2Model( UPShape up ) 
+	{ 
+		return m_Shapes.AddShape( move(up) ); 
+	}
+
+	template <typename T>
+	unique_ptr<T> ReplaceInModel( unique_ptr<Shape> up ) 
+	{
+		ShapeId const id { up.get()->GetId() };
+		return move(m_Shapes.ReplaceShape( move(up), id )); 
+	}
 
 	template <typename T>
 	unique_ptr<T> Store2Model( unique_ptr<T> up ) 

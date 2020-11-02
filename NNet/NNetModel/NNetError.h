@@ -37,30 +37,18 @@ public:
         wstring   strShapeId { to_wstring( id.GetValue() ) };
         if ( IsUndefined( id ) )
         {
-            ScriptErrorHandler::HandleSemanticError
-            (
-                scanner,
-                wstring( L"Invalid shape id: " ) + strShapeId,
-                L"ShapeId != NO_SHAPE" 
-            );
+            scanner.SetExpectedToken( L"ShapeId != NO_SHAPE" );
+            throw ScriptErrorHandler::ScriptException( 999, wstring( L"Invalid shape id: " ) + strShapeId );
         }
         else if ( ! model.GetShapes().IsValidShapeId( id ) )
         {
-            ScriptErrorHandler::HandleSemanticError
-            (
-                scanner,
-                wstring( L"Invalid shape id: " ) + strShapeId,
-                L"id < " + to_wstring( model.GetSizeOfShapeList() )
-            );
+            scanner.SetExpectedToken( L"id < " + to_wstring( model.GetSizeOfShapeList() ) );
+            throw ScriptErrorHandler::ScriptException( 999, wstring( L"Invalid shape id: " ) + strShapeId );
         }
         else if ( model.IsShapeDefined( id ) )
         {
-            ScriptErrorHandler::HandleSemanticError
-            (
-                scanner,
-                wstring( L"Shape is not defined: " ) + strShapeId,
-                L"Defined ShapeId"
-            );
+            scanner.SetExpectedToken( L"Defined ShapeId" );
+            throw ScriptErrorHandler::ScriptException( 999, wstring( L"Shape is not defined: " ) + strShapeId );
         }
     };
 
@@ -94,6 +82,7 @@ inline bool ProcessNNetScript
         }
         catch ( ShapeException e ) 
         { 
+            return false;
         }
         pModelInterface->SetShapeErrorHandler( nullptr );
     }

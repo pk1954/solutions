@@ -32,7 +32,7 @@ public:
 	{
 		if ( ( m_pStatusBar != nullptr ) && ( script.IsActive() ) )
 		{
-			wstring   const & wszPath   { script.GetActPath () };
+			wstring   const & wstrPath  { script.GetActPath () };
 			long long const   llFilePos { script.GetFilePos () };
 			uintmax_t const   fileSize  { script.GetFileSize() };
 			if ( fileSize > 0 )
@@ -41,7 +41,7 @@ public:
 				m_pStatusBar->DisplayInPart
 				( 
 					m_iStatusBarPart, 
-					L"Reading " + wszPath + L" ... " + std::to_wstring( lPercentRead ) + L"%"  
+					L"Reading " + wstrPath + L" ... " + std::to_wstring( lPercentRead ) + L"%"  
 				);
 			}
 		}
