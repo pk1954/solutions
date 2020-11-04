@@ -68,6 +68,19 @@ bool Apply2AllPipesInListB( PipeCrit const & func ) const
 	return false;
 }
 
+friend wostream & operator<< ( wostream & out, PipeList const & list )
+{
+	out << L"(";
+	if ( ! list.IsEmpty( ) )
+	{
+		out << list.m_list[0]->GetId();
+		for ( int i = 1; i < list.m_list.size(); ++i )
+			out << L',' << list.m_list[i]->GetId();
+	}
+	out << L")";
+	return out;
+}
+
 private:
 	vector<Pipe *> m_list;
 };

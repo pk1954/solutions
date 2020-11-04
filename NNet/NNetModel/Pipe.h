@@ -28,8 +28,11 @@ public:
 
 	virtual bool operator==( Shape const & ) const override;
 
+	virtual void Dump() const;
+
 	static unsigned long GetCounter  ( ) { return m_counter; }
 	static   void        ResetCounter( ) { m_counter = 0L; }
+
 	virtual  void        IncCounter  ( ) { ++ m_counter; }
 	virtual  void        DecCounter  ( ) { -- m_counter; }
 
@@ -87,6 +90,9 @@ public:
 	static MicroMeter GetArrowSize( ) { return m_arrowSize; }
 
 	inline static MicroMeter const STD_ARROW_SIZE { 30.0_MicroMeter };
+	inline static wstring    const SEPARATOR     { L"->" };
+
+	friend wostream & operator<< ( wostream &, Pipe const & );
 
 private:
 	

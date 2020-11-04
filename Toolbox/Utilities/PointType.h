@@ -152,9 +152,16 @@ public:
 
 	friend wostream & operator<< ( wostream & out, PointType const & param )
 	{
-		out << L" (" << param.GetX() << L"|" << param.GetY() << L")";
+		out << L" " 
+			<< OPEN_BRACKET 
+			<< param.GetX() << SEPARATOR << param.GetY() 
+			<< CLOSE_BRACKET;
 		return out;
 	}
+
+	inline static wchar_t const SEPARATOR     { L'|' };
+	inline static wchar_t const OPEN_BRACKET  { L'(' };
+	inline static wchar_t const CLOSE_BRACKET { L')' };
 
 private:
     BASE_TYPE m_x;

@@ -13,6 +13,8 @@
 #include "Pipe.h"
 
 using std::fill;
+using std::wcout;
+using std::endl;
 
 Pipe::Pipe( BaseKnot * const pKnotStart, BaseKnot * const pKnotEnd )
   :	Shape( ShapeType::Value::pipe ),
@@ -33,6 +35,12 @@ Pipe::Pipe( Pipe const & src ) :  // copy constructor
 { }
 
 Pipe::~Pipe( ) { }
+
+void Pipe::Dump( ) const
+{
+	Shape::Dump();
+	wcout << L' ' << * this << endl;
+}
 
 bool Pipe::operator==( Shape const & rhs ) const 
 {
@@ -262,4 +270,14 @@ Pipe * Cast2Pipe( Shape * pShape )
 {
 	assert( pShape->IsPipe() );
 	return static_cast<Pipe *>(pShape);
+}
+
+wostream & operator<< ( wostream & out, Pipe const & pipe )
+{
+	out << Pipe::OPEN_BRACKET 
+		<< pipe.GetStartKnotId() 
+		<< Pipe::SEPARATOR
+		<< pipe.GetEndKnotId() 
+		<< Pipe::CLOSE_BRACKET;
+	return out;
 }

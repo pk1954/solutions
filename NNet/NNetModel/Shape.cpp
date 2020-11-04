@@ -3,11 +3,14 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "scanner.h"
 #include "NNetColors.h"
 #include "shape.h"
 #include "debug.h"
 
 using std::move;
+using std::wcout;
+using std::wostream;
 
 Shape::Shape( ShapeType const type )
 	: m_type( type )
@@ -95,4 +98,15 @@ void Shape::CheckShape( ) const
 	AssertLimits<int>( (int)m_bSelected, 0, 1 );
 	AssertLimits<int>( (int)m_bMarked,   0, 1 );
 #endif
+}
+
+void Shape::Dump( ) const
+{
+	wcout << Scanner::COMMENT_SYMBOL << *this;
+}
+
+wostream & operator<< ( wostream & out, Shape const & shape )
+{
+	out << shape.m_identifier << L' ' << shape.m_type;
+	return out;
 }

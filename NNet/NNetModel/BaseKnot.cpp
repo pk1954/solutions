@@ -9,6 +9,8 @@
 #include "Pipe.h"
 #include "BaseKnot.h"
 
+using std::wcout;
+using std::endl;
 using std::find;
 using std::begin;
 using std::end;
@@ -29,6 +31,13 @@ bool BaseKnot::operator==( Shape const & rhs ) const
 	( IsCloseToZero( GetPosition () - baseKnotRhs.GetPosition () ) ) &&
 	( IsCloseToZero( GetExtension() - baseKnotRhs.GetExtension() ) );
 }
+
+void BaseKnot::Dump( ) const
+{
+	Shape::Dump();
+	wcout << endl << m_connections;
+}
+
 
 void BaseKnot::SetPosition( MicroMeterPoint const & newPos )
 {

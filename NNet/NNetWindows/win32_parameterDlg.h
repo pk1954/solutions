@@ -15,7 +15,7 @@ public:
 	ParameterDialog( );
 	~ParameterDialog( );
 
-	void Start( HWND const, NNetModelWriterInterface * const, Param * const );
+	void Start( HWND const, NNetModelCommands * const, Param * const );
 	void Stop( );
 
 private:
@@ -24,8 +24,8 @@ private:
 	static int   const VERT_SPACE { 16 };
 	static int   const HEIGHT     { 16 };
 
-	Param                    * m_pParams               { nullptr };
-	NNetModelWriterInterface * m_pModelWriterInterface { nullptr };
+	Param             * m_pParams   { nullptr };
+	NNetModelCommands * m_pCommands { nullptr };
 
 	HWND m_hwndPeakVoltage     { nullptr };
 	HWND m_hwndThreshold       { nullptr };     
@@ -47,4 +47,5 @@ private:
 	ParameterDialog & operator= ( ParameterDialog const & );  // noncopyable class 
 
 	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
+	virtual bool UserProc( UINT const, WPARAM const, LPARAM const );
 };

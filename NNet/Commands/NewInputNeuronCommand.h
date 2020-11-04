@@ -34,6 +34,6 @@ public:
 	}
 
 private:
-	unique_ptr<InputNeuron> m_upInputNeuron { nullptr } ;
+	unique_ptr<InputNeuron> m_upInputNeuron { nullptr };
 	ShapeId                 m_idInputNeuron { NO_SHAPE };
 };

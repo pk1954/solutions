@@ -21,12 +21,12 @@ public:
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		nmwi.Store2Model( move(m_upNeuron) );
+		m_idNeuron = nmwi.Add2Model( move(m_upNeuron) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upNeuron = nmwi.RemoveFromModel<Neuron>( m_upNeuron->GetId() );
+		m_upNeuron = nmwi.RemoveFromModel<Neuron>( m_idNeuron );
 	}
 
 	ShapeId const GetNeuronId( )
@@ -35,6 +35,7 @@ public:
 	}
 
 private:
-	unique_ptr<Neuron> m_upNeuron;
+	unique_ptr<Neuron> m_upNeuron { nullptr };
+	ShapeId            m_idNeuron { NO_SHAPE };
 };
 

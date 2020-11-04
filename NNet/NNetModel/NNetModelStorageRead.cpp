@@ -74,13 +74,13 @@ public:
         ShapeId   const idFromScript{ script.ScrReadLong() };
         ShapeType const shapeType   { static_cast<ShapeType::Value>(script.ScrReadInt( )) };
 
-        script.ScrReadSpecial( L'(' );
+        script.ScrReadSpecial( Shape::OPEN_BRACKET );
         unique_ptr<Shape> upShape;
         if ( shapeType.IsPipeType() )
             upShape = createPipe( script, idFromScript );
         else
             upShape = createBaseKnot( script, shapeType );
-        script.ScrReadSpecial( L')' );
+        script.ScrReadSpecial( Shape::CLOSE_BRACKET );
 
         if ( upShape )
             m_pModelWriterInterface->InsertAtModelSlot<Shape>( move(upShape), idFromScript );
@@ -91,8 +91,8 @@ private:
     unique_ptr<Pipe> createPipe( Script & script, ShapeId const id ) const
     {
         ShapeId const idStart { script.ScrReadLong() };
-        script.ScrReadSpecial( L'-' );
-        script.ScrReadSpecial( L'>' );
+        for ( int i = 0; i < Pipe::SEPARATOR.length( ); i++ )
+            script.ScrReadSpecial( Pipe::SEPARATOR[i] );
         ShapeId const idEnd { script.ScrReadLong() };
         if ( idStart == idEnd )
         {
@@ -115,7 +115,7 @@ private:
     unique_ptr<BaseKnot> createBaseKnot( Script & script, ShapeType const shapeType ) const 
     {
         MicroMeter      const xCoord { Cast2Float( script.ScrReadFloat() ) };
-        script.ScrReadSpecial( L'|' );
+        script.ScrReadSpecial( MicroMeterPoint::SEPARATOR );
         MicroMeter      const yCoord { Cast2Float( script.ScrReadFloat() ) };
         MicroMeterPoint const umPosition( xCoord, yCoord );
         switch ( shapeType.GetValue() )

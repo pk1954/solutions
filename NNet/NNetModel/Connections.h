@@ -4,8 +4,10 @@
 
 #pragma once
 
+#include "scanner.h"
 #include "PipeList.h"
 
+using std::endl;
 using std::unique_ptr;
 using std::make_unique;
 
@@ -78,6 +80,13 @@ public:
 	void Recalc( )
 	{
 		Apply2AllConnectedPipes( [&]( Pipe & pipe ) { pipe.Recalc( ); } );
+	}
+
+	friend wostream & operator<< ( wostream & out, Connections const & con )
+	{
+		out << Scanner::COMMENT_SYMBOL << L" in  " << con.m_incoming << endl;
+		out << Scanner::COMMENT_SYMBOL << L" out " << con.m_outgoing << endl;
+		return out;
 	}
 
 private:

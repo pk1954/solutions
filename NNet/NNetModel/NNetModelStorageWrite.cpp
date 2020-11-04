@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "scanner.h"
 #include <assert.h>
 #include "Signal.h"
 #include "Track.h"
@@ -49,19 +50,19 @@ void NNetModelStorage::writeHeader( wostream & out )
 {
     static int const BUF_SIZE { 128 };
 
-    out << L"# NNetModel" << endl;
-    out << L"# Created " << Util::GetCurrentDateAndTime() << endl;
+    out << Scanner::COMMENT_SYMBOL << L" NNetModel" << endl;
+    out << Scanner::COMMENT_SYMBOL << L" Created " << Util::GetCurrentDateAndTime() << endl;
 
     WCHAR  infoBuf[BUF_SIZE];
     DWORD  bufCharCount = BUF_SIZE;
 
     // Get and display the name of the computer.
     GetComputerName( infoBuf, &bufCharCount );
-    out << L"# Computer name: " << infoBuf << endl;
+    out << Scanner::COMMENT_SYMBOL << L" Computer name: " << infoBuf << endl;
 
     // Get and display the user name.
     GetUserName( infoBuf, &bufCharCount );
-    out << L"# User name: " << infoBuf << endl; 
+    out << Scanner::COMMENT_SYMBOL << L" User name: " << infoBuf << endl; 
     out << endl;
 
     out << L"Protocol version " << PROTOCOL_VERSION << endl;
@@ -158,11 +159,11 @@ void NNetModelStorage::writeDescription( wostream & out )
 
 void NNetModelStorage::writePipe( wostream & out, Pipe const & pipe )
 {
-    out << L" (" 
+    out << Pipe::OPEN_BRACKET 
         << getCompactIdVal( pipe.GetStartKnotId() ) 
-        << L"->" 
+        << Pipe::SEPARATOR
         << getCompactIdVal( pipe.GetEndKnotId() ) 
-        << L")";
+        << Pipe::CLOSE_BRACKET;
 }
 
 void NNetModelStorage::writeShape( wostream & out, Shape & shape )

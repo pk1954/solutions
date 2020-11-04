@@ -18,6 +18,8 @@ class NNetModel;
 
 using std::remove_pointer;
 using std::unique_ptr;
+using std::wostream;
+using std::wstring;
 
 using UPShape   = unique_ptr<Shape>;
 using ShapeCrit = function<bool(Shape const &)>;
@@ -36,6 +38,7 @@ public:
 	virtual ~Shape() { }
 
 	virtual void CheckShape() const;
+	virtual void Dump() const;
 
 	virtual bool operator==( Shape const & ) const;
 	
@@ -77,6 +80,11 @@ public:
 	static void SetParam( Param const * const pParam ) { m_pParameters = pParam; }
 
 	static bool TypeFits( ShapeType const type ) { return true; }  // every shape type is a Shape
+
+	inline static wchar_t const OPEN_BRACKET  { L'(' };
+	inline static wchar_t const CLOSE_BRACKET { L')' };
+
+	friend wostream & operator<< ( wostream &, Shape const & );
 
 protected:
 

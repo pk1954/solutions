@@ -39,6 +39,11 @@ public:
 #endif
 	}
 
+	void Dump( ) const
+	{
+		Apply2All( [&]( Shape const & shape ) { shape.Dump( ); } );
+	}
+
 	ShapeId const AddShape( UPShape upT )	
 	{
 		ShapeId idNewSlot;

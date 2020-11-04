@@ -9,6 +9,7 @@
 #include "debug.h"
 
 using std::function;
+using std::wostream;
 
 class ShapeType
 {
@@ -76,6 +77,8 @@ public:
 	}
 
 	Value GetValue() const { return m_value; }
+
+	friend wostream & operator<< ( wostream &, ShapeType const & shapeType );
 
 private:
 	Value m_value;

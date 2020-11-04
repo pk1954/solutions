@@ -49,6 +49,8 @@ public:
 #endif
 	}
 
+	void DumpModel( ) const;
+
 	bool const IsPipe( ShapeId const id ) const
 	{
 		return GetConstShape( id )->GetShapeType().IsPipeType();
@@ -63,6 +65,7 @@ public:
 	{	
 		if ( IsUndefined( id ) || ! m_Shapes.IsValidShapeId( id ) )
 		{
+			DumpModel();
 			m_Shapes.CallErrorHandler( id );  
 			return nullptr;
 		}

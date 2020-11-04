@@ -182,7 +182,7 @@ void NNetModelCommands::SetTriggerSound( ShapeId const id, SoundDescr const & so
 void NNetModelCommands::SetParameter( tParameter const param, float const fNewValue )
 {
 	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << GetParameterName( param ) << L" " << fNewValue << endl;
+		TraceStream( ) << __func__ << L" " << GetParameterName( param ) << L" " << fNewValue << endl;
 	m_pCmdStack->PushCommand( make_unique<SetParameterCommand>( SetParameterCommand( m_pParam, param, fNewValue ) ) );
 }
 

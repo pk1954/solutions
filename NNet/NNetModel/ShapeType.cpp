@@ -3,10 +3,12 @@
 // NNetModel
 
 #include "stdafx.h"
+#include <ostream>
 #include <unordered_map>
 #include "ShapeType.h"
 
 using std::unordered_map;
+using std::wstring;
 
 wchar_t const * ShapeType::GetName( ShapeType::Value const val )
 {
@@ -34,4 +36,11 @@ ShapeType::Value const ShapeType::GetTypeFromName( wchar_t const * const name )
 	};				  
 
 	return mapShape.at( name );
+}
+
+wostream & operator<< ( wostream & out, ShapeType const & shapeType )
+{
+	wstring const wstrName { ShapeType::GetName( shapeType.GetValue() ) };
+	out << wstrName;
+	return out;
 }

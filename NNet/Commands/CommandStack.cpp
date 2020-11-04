@@ -58,12 +58,12 @@ void CommandStack::pushNewCommand( unique_ptr<Command> pCmd )
 
 void CommandStack::PushCommand( unique_ptr<Command> pCmd )
 {
-//#ifdef _DEBUG
-//    NNetModel const & model { m_pModelInterFace->GetModel( ) };
-//    m_pModelInterFace->CheckModel();
-//    unique_ptr<NNetModel const> pModelSave1 { make_unique<NNetModel>( model ) };
-//    m_pModelInterFace->CheckModel();
-//#endif
+#ifdef _DEBUG
+    NNetModel const & model { m_pModelInterFace->GetModel( ) };
+    m_pModelInterFace->CheckModel();
+    unique_ptr<NNetModel const> pModelSave1 { make_unique<NNetModel>( model ) };
+    m_pModelInterFace->CheckModel();
+#endif
     clearRedoStack( );
     pCmd->Do( * m_pModelInterFace );
     m_pModelInterFace->CheckModel();
@@ -71,29 +71,29 @@ void CommandStack::PushCommand( unique_ptr<Command> pCmd )
     m_pModelInterFace->StaticModelChanged( );
     m_pObservable->NotifyAll( true );
 
-//#ifdef _DEBUG
-//    unique_ptr<NNetModel const> pModelSave2 { make_unique<NNetModel>( model ) };
-//    pModelSave2->CheckModel();
-//    m_pModelInterFace->CheckModel();
-//    UndoCommand();
-//    m_pModelInterFace->CheckModel();
-//    if ( !(model == * pModelSave1) )
-//    {
-//        int x = 42;
-//    }
-//    m_pModelInterFace->CheckModel();
-//    RedoCommand();
-//    m_pModelInterFace->CheckModel();
-//    if ( !(model == * pModelSave2) )
-//    {
-//        int x = 42;
-//    }
-//#endif
+#ifdef _DEBUG
+    unique_ptr<NNetModel const> pModelSave2 { make_unique<NNetModel>( model ) };
+    pModelSave2->CheckModel();
+    m_pModelInterFace->CheckModel();
+    UndoCommand();
+    m_pModelInterFace->CheckModel();
+    if ( !(model == * pModelSave1) )
+    {
+        int x = 42;
+    }
+    m_pModelInterFace->CheckModel();
+    RedoCommand();
+    m_pModelInterFace->CheckModel();
+    if ( !(model == * pModelSave2) )
+    {
+        int x = 42;
+    }
+#endif
 }
 
 bool CommandStack::UndoCommand( )
 {
-//    wcout << L"# CommandStack::UndoCommand " << L"index =" << m_iIndex << endl;
+//    wcout << Scanner::COMMENT_SYMBOL << L" CommandStack::UndoCommand " << L"index =" << m_iIndex << endl;
     if ( UndoStackEmpty() )
        return false;
     set2OlderCmd();
@@ -124,7 +124,7 @@ bool CommandStack::UndoCommand( )
 
 bool CommandStack::RedoCommand( )
 {
-//    wcout << L"# CommandStack::RedoCommand " << L"index =" << m_iIndex << endl;
+//    wcout << Scanner::COMMENT_SYMBOL << L" CommandStack::RedoCommand " << L"index =" << m_iIndex << endl;
     if ( RedoStackEmpty() ) 
         return false;
     if ( isOpenBracketCmd() )

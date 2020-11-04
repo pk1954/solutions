@@ -60,7 +60,7 @@ wchar_t Scanner::SkipSpace( )
       do 
          wchAct = m_inbuf.ReadNextChar( );
       while ( IS_ONE_OF( wszDelimiters, wchAct ) );
-      if ( wchAct == '#' )            // comment symbol              
+      if ( wchAct == COMMENT_SYMBOL )
       { 
          do                          // loop until end of line/file 
          {

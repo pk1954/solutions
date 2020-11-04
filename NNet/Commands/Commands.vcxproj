@@ -333,7 +333,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)NNetModel;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\Toolbox\runtimeCPP;$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)NNetModel;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

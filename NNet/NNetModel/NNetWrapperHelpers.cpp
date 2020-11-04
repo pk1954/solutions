@@ -23,10 +23,10 @@ MicroMeter ScrReadMicroMeter( Script & script )
 
 MicroMeterPoint ScrReadMicroMeterPoint( Script & script )
 {
-	script.ScrReadSpecial( '(' );
+	script.ScrReadSpecial( MicroMeterPoint::OPEN_BRACKET );
 	MicroMeter const x(ScrReadMicroMeter( script ));
-	script.ScrReadSpecial( '/' );
+	script.ScrReadSpecial( MicroMeterPoint::SEPARATOR );
 	MicroMeter const y(ScrReadMicroMeter( script ));
-	script.ScrReadSpecial( ')' );
+	script.ScrReadSpecial( MicroMeterPoint::CLOSE_BRACKET );
 	return MicroMeterPoint( x, y );
 }

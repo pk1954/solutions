@@ -28,6 +28,8 @@ enum class tTOKEN    // Return value of NextToken
 class Scanner
 {   
 public:
+    inline static wchar_t COMMENT_SYMBOL { L'#' };
+
     explicit Scanner( );
     void OpenInputFile( wstring const & );
     void CloseInputFile( );

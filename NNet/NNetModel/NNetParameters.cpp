@@ -15,7 +15,7 @@ float const Param::GetParameterValue( tParameter const param ) const
 		case tParameter::peakVoltage:	 return m_peakVoltage.GetValue();
 		case tParameter::refractPeriod:  return m_refractPeriod.GetValue();
 		case tParameter::timeResolution: return m_usResolution.GetValue();
-		case tParameter::signalLoss:     return 0.0f;  // not used, only for compaitibility reasons
+		case tParameter::signalLoss:     return 0.0f;  // no longer used, only for backward compatibility
 		default: assert( false );
 	}
 	return 0.f;

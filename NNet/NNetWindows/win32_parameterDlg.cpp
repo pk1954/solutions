@@ -8,7 +8,7 @@
 #include "Resource.h"
 #include "win32_stdDialogBox.h"
 #include "NNetParameters.h"
-#include "NNetModelWriterInterface.h"
+#include "NNetModelCommands.h"
 #include "win32_parameterDlg.h"
 
 using std::wstring;
@@ -20,7 +20,7 @@ ParameterDialog::ParameterDialog( )
 ParameterDialog::~ParameterDialog( )
 { }
 
-void ParameterDialog::resetParameter
+void ParameterDialog::resetParameter   // refresh edit field with data from model
 (
 	HWND       const hwndEditField,
 	tParameter const parameter
@@ -29,15 +29,16 @@ void ParameterDialog::resetParameter
 	StdDialogBox::SetParameterValue( hwndEditField, m_pParams->GetParameterValue( parameter ) );
 }
 
-void ParameterDialog::applyParameter
+void ParameterDialog::applyParameter  // read out edit field and write data to model
 (
 	HWND       const hwndEditField,
 	tParameter const parameter
 )
 {
-	float fValue { m_pParams->GetParameterValue( parameter ) }; 
-	if ( StdDialogBox::Evaluate( hwndEditField, fValue ) )
-		m_pModelWriterInterface->SetParam( parameter, fValue );
+	float const fOldValue { m_pParams->GetParameterValue( parameter ) }; 
+	float       fValue    { fOldValue }; 
+	if ( StdDialogBox::Evaluate( hwndEditField, fValue ) && (fValue != fOldValue) )
+		m_pCommands->SetParameter( parameter, fValue );
 }
 
 HWND ParameterDialog::createStaticField( HWND const hwndParent, wchar_t const * const text, int & iXpos, int const iYpos, int const iWidth )
@@ -73,7 +74,7 @@ HWND ParameterDialog::addParameter
 	return hwndEdit;
 }
 
-void ParameterDialog::resetParameters( )
+void ParameterDialog::resetParameters( )  // refresh edit fields with data from model
 {
 	resetParameter( m_hwndPeakVoltage,      tParameter::peakVoltage    );
 	resetParameter( m_hwndThreshold,        tParameter::threshold      );
@@ -83,7 +84,7 @@ void ParameterDialog::resetParameters( )
 	resetParameter( m_hwndPulseSpeed,       tParameter::pulseSpeed     );
 }
 
-void ParameterDialog::applyParameters( )
+void ParameterDialog::applyParameters( )  // read out edit field and write data to model
 {
 	applyParameter( m_hwndPeakVoltage,      tParameter::peakVoltage    );
 	applyParameter( m_hwndThreshold,        tParameter::threshold      );
@@ -101,16 +102,16 @@ HWND ParameterDialog::createButton( HWND const hwndParent, wchar_t const * const
 
 void ParameterDialog::Start
 ( 
-	HWND                       const hwndParent, 
-	NNetModelWriterInterface * const pModelWriterInterface,	
-	Param                    * const pParams 
+	HWND                const hwndParent, 
+	NNetModelCommands * const pCommands,	
+	Param             * const pParams 
 )
 {
 	HINSTANCE const hInstance { GetModuleHandle( nullptr ) };
 	HWND      const hwndDlg   { StartBaseDialog( hwndParent, MAKEINTRESOURCE( IDM_PARAM_WINDOW ), nullptr ) };
 
-	m_pModelWriterInterface = pModelWriterInterface;
-	m_pParams = pParams;
+	m_pCommands = pCommands;
+	m_pParams   = pParams;
 
 	int iYpos { 10 };
 	m_hwndPeakVoltage      = addParameter( hwndDlg, tParameter::peakVoltage,    iYpos ); 
@@ -126,8 +127,8 @@ void ParameterDialog::Start
 
 void ParameterDialog::Stop( )
 {
-	m_pModelWriterInterface = nullptr;
-	m_pParams               = nullptr;
+	m_pCommands = nullptr;
+	m_pParams   = nullptr;
 	DestroyWindow( );
 }
 
@@ -148,4 +149,15 @@ bool ParameterDialog::OnCommand( WPARAM const wParam, LPARAM const lParam, Pixel
 		break;
 	}
 	return BaseDialog::OnCommand( wParam, lParam );
+}
+
+bool ParameterDialog::UserProc( UINT const message, WPARAM const wParam, LPARAM const lParam )
+{
+	if ( message == WM_PAINT )
+	{
+		resetParameters( );
+		return false;
+	}
+
+	return BaseDialog::CommonMessageHandler( message, wParam, lParam );
 }

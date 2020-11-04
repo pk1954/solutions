@@ -38,6 +38,7 @@ public:
 
 	virtual bool operator==( Shape const & ) const override;
 
+	virtual void Dump         ( ) const;
 	virtual void CheckShape   ( ) const;
 	virtual void Prepare      ( );
  	virtual mV   GetNextOutput( ) const = 0;

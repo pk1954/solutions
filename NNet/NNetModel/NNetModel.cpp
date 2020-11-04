@@ -3,6 +3,7 @@
 // NNetModel
 
 #include "stdafx.h"
+#include "scanner.h"
 #include <vector>
 #include <unordered_map>
 #include "MoreTypes.h"
@@ -17,6 +18,8 @@
 
 using namespace std::chrono;
 using std::unordered_map;
+using std::wcout;
+using std::endl;
 
 bool NNetModel::operator==( NNetModel const & rhs ) const
 {
@@ -83,6 +86,7 @@ float NNetModel::SetParam
 	float fOldValue { m_pParam->GetParameterValue( param ) };
 	m_pParam->SetParameterValue( param, fNewValue );
 	RecalcAllShapes( );
+	StaticModelChanged( );
 	return fOldValue;
 }
 
@@ -150,4 +154,11 @@ ShapeId const NNetModel::FindShapeAt
 		idRes = m_Shapes.FindShapeAt( umPoint, [&]( Shape const & s ) { return s.IsPipe     ( ) && crit( s ); } );
 
 	return idRes;
+}
+
+void NNetModel::DumpModel( ) const
+{
+	wcout << Scanner::COMMENT_SYMBOL << L"------------ Dump start ------------" << endl;
+	m_Shapes.Dump();
+	wcout << Scanner::COMMENT_SYMBOL << L"------------ Dump end ------------" << endl;
 }
