@@ -87,7 +87,7 @@ tTOKEN Scanner::ScanName(
       wchAct = m_inbuf.ReadNextChar(  );
    } while ( isalnum( wchAct ) || ( wchAct == '_' ) || ( wchAct == ':' ) );
 
-   m_inbuf.SetReadAheadFlag( true );
+   m_inbuf.UnreadLastChar( );
 
    return tTOKEN::Name;
 }
@@ -242,7 +242,6 @@ wchar_t Scanner::ReadOneOf( wstring const & strValid )
 tTOKEN Scanner::NextToken( bool const fStartMarker )
 {
    wchar_t const wchAct = SkipSpace( );         // try to find new token 
-   m_inbuf.SetReadAheadFlag( false );
    
    if ( fStartMarker )
       m_inbuf.SetStartMarker( ); // mark start of token in input buffer  

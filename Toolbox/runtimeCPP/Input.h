@@ -23,7 +23,7 @@ public:
     ~InputBuffer( );
 
     void            SetStartMarker  ( );
-    void            SetReadAheadFlag( bool );
+    void            UnreadLastChar  ( );
     wchar_t         ReadNextChar    ( );
     bool            IsFloat         ( ) const;
     double          ReadFloat       ( );
@@ -43,7 +43,6 @@ private:
     int        m_iLineNr;        // actual line number  
     wchar_t  * m_pwchStart;      // pointer to start of current token 
     wchar_t  * m_pwchRead;       // pointer to next char in line 
-    bool       m_fReadAhead;     // If true, read ahead char has been read
     wifstream  m_ifstream;
 };
 

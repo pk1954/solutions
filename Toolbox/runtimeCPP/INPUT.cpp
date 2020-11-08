@@ -22,7 +22,6 @@ InputBuffer::InputBuffer( )
     m_pwchStart  = nullptr;
     m_pwchRead   = &m_wstrLine.front( );
     m_iLineNr    = 0;
-    m_fReadAhead = false;
 }                                                  // end OpenInputBuffer 
 
 InputBuffer::~InputBuffer( ) 
@@ -145,12 +144,12 @@ void InputBuffer::SetStartMarker( )
    m_pwchStart = m_pwchRead-1;
 }                                          
 
-// SetReadAheadFlag: If parameter is true, 
-//                   character after actual token has been read
+// UnreadLastChar:
 
-void InputBuffer::SetReadAheadFlag( bool const fValue )
+void InputBuffer::UnreadLastChar( )
 {
-   m_fReadAhead = fValue;
+    assert( m_pwchRead > &m_wstrLine.front( ) );
+    --m_pwchRead;
 }
 
 int InputBuffer::GetActStartPos( ) const
@@ -172,10 +171,7 @@ int InputBuffer::GetActEndPos( ) const
     assert( m_wstrLine[0] != L'\0' );
     assert( m_pwchRead > &m_wstrLine[0] );
 
-    int iEndPos = static_cast<int>(m_pwchRead - &m_wstrLine.front( ));
-    if ( m_fReadAhead )
-        iEndPos--;
-    return iEndPos;
+    return static_cast<int>(m_pwchRead - &m_wstrLine.front( ));
 }                  
 
 void InputBuffer::Close( )
