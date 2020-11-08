@@ -99,7 +99,7 @@ public:
 
 	friend wostream & operator << ( std::wostream & out, NamedType const & param )
 	{
-		out << L" " << param.GetValue();
+		out << param.GetValue();
 		return out;
 	}
 

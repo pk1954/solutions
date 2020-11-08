@@ -9,6 +9,8 @@
 #include "Command.h"
 #include "BaseKnot.h"
 
+using std::swap;
+
 class Connect2BaseKnotCommand : public Command
 {
 public:
@@ -27,9 +29,17 @@ public:
 	{
 		//std::wcout << L"*** Before Do Connect2BaseKnot(" << m_idSrc << L")" << endl; 
 		//nmwi.DumpModel();
-		m_pBaseKnotDst     = nmwi.GetShapePtr<BaseKnot *>( m_idDst );
-		m_upDstConnections = m_pBaseKnotDst->m_connections.Clone();
-		m_upBaseKnotSrc    = nmwi.RemoveFromModel<BaseKnot>(m_idSrc); 
+
+		if ( ! m_bInitialized )
+		{
+			if ( nmwi.IsKnot( m_idDst ) ) // if a Neuron is connected to a Knot, the Knot would survive
+				swap( m_idDst, m_idSrc ); // swap makes sure, that the Neuron survives
+			m_pBaseKnotDst     = nmwi.GetShapePtr<BaseKnot *>( m_idDst );
+			m_upDstConnections = m_pBaseKnotDst->m_connections.Clone();
+			m_bInitialized = true;
+		}
+
+		m_upBaseKnotSrc = nmwi.RemoveFromModel<BaseKnot>(m_idSrc); 
 		assert( m_upBaseKnotSrc );
 		m_pBaseKnotDst->AddConnections( m_upBaseKnotSrc.get() ); // double connections?
 		//std::wcout << L"*** After Do Connect2BaseKnot(" << m_idSrc << L")" << endl; 
@@ -46,10 +56,12 @@ public:
 	}
 
 private:
-	ShapeId const m_idSrc;
-	ShapeId const m_idDst; 
+	ShapeId m_idSrc;
+	ShapeId m_idDst; 
 
 	BaseKnot              * m_pBaseKnotDst     { nullptr };
 	unique_ptr<BaseKnot>    m_upBaseKnotSrc    { nullptr };
 	unique_ptr<Connections> m_upDstConnections { nullptr };
+
+	bool m_bInitialized { false };
 };

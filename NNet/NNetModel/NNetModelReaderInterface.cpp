@@ -102,7 +102,7 @@ bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId co
 			return (GetNrOfOutgoingConnections( idSrc ) + GetNrOfOutgoingConnections( idDst ) <= 1);
 
 		case ShapeType::Value::inputNeuron:
-			return false;
+			return (GetNrOfOutgoingConnections( idDst ) == 0);
 
 		default:
 			break;
@@ -110,15 +110,15 @@ bool const NNetModelReaderInterface::ConnectsTo( ShapeId const idSrc, ShapeId co
 		break;
 
 	case ShapeType::Value::neuron:
-		switch ( typeSrc.GetValue( ) )
+		switch ( typeDst.GetValue( ) )
 		{
 		case ShapeType::Value::pipe:
 			return true;
 
+		case ShapeType::Value::knot:
 		case ShapeType::Value::neuron:
 			return (GetNrOfOutgoingConnections( idSrc ) + GetNrOfOutgoingConnections( idDst ) <= 1);
 
-		case ShapeType::Value::knot:
 		case ShapeType::Value::inputNeuron:
 			return false;
 

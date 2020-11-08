@@ -51,11 +51,6 @@ public:
 
 	void DumpModel( ) const;
 
-	bool const IsPipe( ShapeId const id ) const
-	{
-		return GetConstShape( id )->GetShapeType().IsPipeType();
-	}
-
 	bool const IsShapeDefined( ShapeId const id ) const
 	{
 		return m_Shapes.GetAt( id ) == nullptr;

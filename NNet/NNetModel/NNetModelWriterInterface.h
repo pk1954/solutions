@@ -39,6 +39,12 @@ public:
         return pShape && pShape->IsPipe( );
     }
 
+    bool const IsKnot( ShapeId const id )
+    {
+        Shape * pShape { GetShapePtr<Shape *>( id ) };
+        return pShape && pShape->IsKnot( );
+    }
+
     void SelectBeepers();
     void SelectShape( ShapeId const, tBoolOp const );
     void MarkShape  ( ShapeId const, tBoolOp const );
