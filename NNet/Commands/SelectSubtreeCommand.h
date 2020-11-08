@@ -15,22 +15,21 @@ class SelectSubtreeCommand : public SelectionCommand
 public:
 	SelectSubtreeCommand
 	( 
-		NNetModelWriterInterface & model, 
-		ShapeId              const id, 
-		tBoolOp              const op 
+		ShapeId const id, 
+		tBoolOp const op 
 	)
-	  :	SelectionCommand( model),
-		m_pBaseKnot( model.GetShapePtr<BaseKnot *>( id ) ),
+	  :	m_idShape( id ),
 		m_op( op )
 	{ }
 
-	virtual void Do( NNetModelWriterInterface & model )
+	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
-		model.SelectSubtree( m_pBaseKnot, m_op );
+		SelectionCommand::Do( nmwi );
+		nmwi.SelectSubtree( nmwi.GetShapePtr<BaseKnot *>( m_idShape ), m_op );
 	}
 
 private:
-	BaseKnot    * m_pBaseKnot;
+	ShapeId const m_idShape;
 	tBoolOp const m_op;
 };
 

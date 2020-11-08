@@ -84,8 +84,9 @@ public:
 
 	friend wostream & operator<< ( wostream & out, Connections const & con )
 	{
-		out << Scanner::COMMENT_SYMBOL << L" in  " << con.m_incoming << endl;
-		out << Scanner::COMMENT_SYMBOL << L" out " << con.m_outgoing << endl;
+		out << L" " << con.m_incoming << L" " << con.m_outgoing;
+		//out << Scanner::COMMENT_SYMBOL << L" in  " << con.m_incoming << endl;
+		//out << Scanner::COMMENT_SYMBOL << L" out " << con.m_outgoing << endl;
 		return out;
 	}
 

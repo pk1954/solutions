@@ -11,14 +11,11 @@
 class AnalyzeAnomaliesCommand : public SelectionCommand
 {
 public:
-	AnalyzeAnomaliesCommand( NNetModelWriterInterface & model )
-		:	SelectionCommand( model)
-	{ }
-
-	virtual void Do( NNetModelWriterInterface & model ) 
+	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		model.SelectAllShapes( tBoolOp::opFalse );
-		if ( ModelAnalyzer::FindAnomaly( model ) )
-			ModelAnalyzer::SelectLoopShapes( model );
+		SelectionCommand::Do( nmwi );
+		nmwi.SelectAllShapes( tBoolOp::opFalse );
+		if ( ModelAnalyzer::FindAnomaly( nmwi ) )
+			ModelAnalyzer::SelectLoopShapes( nmwi );
 	}
 };

@@ -15,43 +15,45 @@ class InsertNeuronCommand : public Command
 public:
 	InsertNeuronCommand
 	( 
-		NNetModelWriterInterface & nmwi,
-		ShapeId            const   id, 
-		MicroMeterPoint    const & umSplitPoint 
+		ShapeId         const   idPipe, 
+		MicroMeterPoint const & umSplitPoint 
 	)
-	{ 
-		m_pPipe2Split = nmwi.GetShapePtr<Pipe *>( id );
-		m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr( );
-		m_upNeuron    = nmwi.NewBaseKnot<Neuron>( umSplitPoint );
-		m_upPipeNew   = nmwi.NewPipe( m_pStartKnot, m_upNeuron.get() );
-		m_upNeuron->m_connections.AddOutgoing( m_pPipe2Split );
-		m_upNeuron->m_connections.AddIncoming( m_upPipeNew.get() );
-	}
+	  :	m_idPipe(idPipe),
+		m_umSplitPoint(umSplitPoint)
+	{ }
 
 	~InsertNeuronCommand( ) {}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
+		if ( ! m_upNeuron )
+		{ 
+			m_pPipe2Split = nmwi.GetShapePtr<Pipe *>( m_idPipe );
+			m_pStartKnot  = m_pPipe2Split->GetStartKnotPtr( );
+			m_upNeuron    = make_unique<Neuron>( m_umSplitPoint );
+			m_upPipeNew   = make_unique<Pipe>( m_pStartKnot, m_upNeuron.get() );
+			m_upNeuron->m_connections.AddOutgoing( m_pPipe2Split );
+			m_upNeuron->m_connections.AddIncoming( m_upPipeNew.get() );
+		}
 		m_pStartKnot->m_connections.ReplaceOutgoing( m_pPipe2Split, m_upPipeNew.get() );
 		m_pPipe2Split->SetStartKnot( m_upNeuron.get() );
-		m_idNeuron  = nmwi.Add2Model( move(m_upNeuron) );
-		m_idPipeNew = nmwi.Add2Model( move(m_upPipeNew) );
+		nmwi.Push2Model( move(m_upNeuron) );
+		nmwi.Push2Model( move(m_upPipeNew) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upNeuron  = nmwi.RemoveFromModel<Neuron>( m_idNeuron  );
-		m_upPipeNew = nmwi.RemoveFromModel<Pipe>  ( m_idPipeNew );
-		m_pStartKnot->m_connections.ReplaceOutgoing( m_upPipeNew.get(), m_pPipe2Split );
+		m_upPipeNew = nmwi.PopFromModel<Pipe>  ();
+		m_upNeuron  = nmwi.PopFromModel<Neuron>();
 		m_pPipe2Split->SetStartKnot( m_pStartKnot );
+		m_pStartKnot->m_connections.ReplaceOutgoing( m_upPipeNew.get(), m_pPipe2Split );
 	}
 
 private:
-	Pipe     * m_pPipe2Split { nullptr };
-	BaseKnot * m_pStartKnot  { nullptr };
-
-	unique_ptr<Pipe>   m_upPipeNew { nullptr };
-	unique_ptr<Neuron> m_upNeuron  { nullptr };
-	ShapeId            m_idPipeNew { NO_SHAPE };
-	ShapeId            m_idNeuron  { NO_SHAPE };
+	Pipe             * m_pPipe2Split { nullptr };
+	BaseKnot         * m_pStartKnot  { nullptr };
+	unique_ptr<Pipe>   m_upPipeNew   { nullptr };
+	unique_ptr<Neuron> m_upNeuron    { nullptr };
+	ShapeId         const m_idPipe;
+	MicroMeterPoint const m_umSplitPoint; 
 };

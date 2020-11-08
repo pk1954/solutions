@@ -14,30 +14,35 @@ class Connect2BaseKnotCommand : public Command
 public:
 	Connect2BaseKnotCommand
 	( 
-		NNetModelWriterInterface & nmwi, 
-		ShapeId              const idSrc,
-		ShapeId              const idDst 
+		ShapeId const idSrc,
+		ShapeId const idDst 
 	)
 	  :	m_idSrc( idSrc ),
-		m_idDst( idDst ),
-		m_pBaseKnotDst( nmwi.GetShapePtr<BaseKnot *>( idDst ) )
-	{
-		m_upDstConnections = m_pBaseKnotDst->m_connections.Clone();
-	}
+		m_idDst( idDst )
+	{ }
 
 	~Connect2BaseKnotCommand( )	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi )
 	{
-		m_upBaseKnotSrc = nmwi.RemoveFromModel<BaseKnot>(m_idSrc); 
-		m_pBaseKnotDst->AddConnections( m_upBaseKnotSrc.get() );
+		//std::wcout << L"*** Before Do Connect2BaseKnot(" << m_idSrc << L")" << endl; 
+		//nmwi.DumpModel();
+		m_pBaseKnotDst     = nmwi.GetShapePtr<BaseKnot *>( m_idDst );
+		m_upDstConnections = m_pBaseKnotDst->m_connections.Clone();
+		m_upBaseKnotSrc    = nmwi.RemoveFromModel<BaseKnot>(m_idSrc); 
+		assert( m_upBaseKnotSrc );
+		m_pBaseKnotDst->AddConnections( m_upBaseKnotSrc.get() ); // double connections?
+		//std::wcout << L"*** After Do Connect2BaseKnot(" << m_idSrc << L")" << endl; 
+		//nmwi.DumpModel();
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi )
 	{
 		m_pBaseKnotDst->SetConnections( m_upDstConnections.get() );  // restore dst connections
 		m_upBaseKnotSrc->Reconnect( );
-		m_upBaseKnotSrc = nmwi.Store2Model<BaseKnot>( move( m_upBaseKnotSrc ) ); // reconnect src  
+		m_upBaseKnotSrc = nmwi.ReplaceInModel<BaseKnot,BaseKnot>( move( m_upBaseKnotSrc ) ); // reconnect src  
+		//std::wcout << L"*** After Undo Connect2BaseKnot" << endl; 
+		//nmwi.DumpModel();
 	}
 
 private:

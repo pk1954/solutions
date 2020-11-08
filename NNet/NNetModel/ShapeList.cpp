@@ -51,11 +51,12 @@ UPShape ShallowCopy( Shape const & shape )
 
 bool ShapeList::operator==( ShapeList const & other ) const
 {
-	size_t iMax { max( m_list.size(), other.m_list.size() ) };
-	for ( int i = 0; i < iMax; ++i )
+	if ( m_list.size() != other.m_list.size() )
+		return false;
+	for ( int i = 0; i < m_list.size(); ++i )
 	{
-		Shape const * pShape      { (i >=       m_list.size()) ? nullptr :       m_list[i].get() };
-		Shape const * pShapeOther { (i >= other.m_list.size()) ? nullptr : other.m_list[i].get() };
+		Shape const * pShape      {       m_list[i].get() };
+		Shape const * pShapeOther { other.m_list[i].get() };
 		if ( (pShape == nullptr) != (pShapeOther == nullptr) )
 		{
 			return false;
@@ -95,14 +96,16 @@ void ShapeList::LinkShape( Shape const & shapeSrc, function< Shape * (Shape cons
 
 void ShapeList::copy( const ShapeList & rhs )
 {
-	m_list.resize( Cast2Long(rhs.m_list.size()) );
-
 	rhs.CheckShapeList();
+
+	m_list.resize( Cast2Long(rhs.m_list.size()) );
 
 	for ( auto const & pShapeSrc : rhs.m_list )
 	{
 		if ( pShapeSrc )
-			SetShape( ShallowCopy( * pShapeSrc ), pShapeSrc->GetId() );
+		{
+			SetShape2Slot( pShapeSrc->GetId(), ShallowCopy( * pShapeSrc ) );
+		}
 	}
 
 	for ( auto const & pShapeSrc : rhs.m_list )

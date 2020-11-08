@@ -12,17 +12,6 @@
 class ClearBeepersCommand : public Command
 {
 public:
-	ClearBeepersCommand( NNetModelWriterInterface & model )
-	{
-		model.Apply2All<Neuron>
-			( 
-				[&]( Neuron & neuron ) 
-				{ 
-					if ( neuron.HasTriggerSound() )
-						m_beepers.push_back( Beeper{ & neuron, neuron.GetTriggerSound() } );
-				} 
-		);
-	}
 
 	void clearTriggerSound( Neuron * const pNeuron ) const
 	{
@@ -30,27 +19,39 @@ public:
 		pNeuron->SetTriggerSound( noSound );
 	}
 
-	void clearAll( NNetModelWriterInterface & model ) const
+	void clearAll( NNetModelWriterInterface & nmwi ) const
 	{
-		model.Apply2All<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
+		nmwi.Apply2All<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
-	void clearAllSelected( NNetModelWriterInterface & model ) const
+	void clearAllSelected( NNetModelWriterInterface & nmwi ) const
 	{
-		model.Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
+		nmwi.Apply2AllSelected<Neuron>( [&](Neuron & n) { clearTriggerSound( & n ); } );
 	}
 
-	virtual void Do( NNetModelWriterInterface & model ) 
+	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		if ( model.GetModel().GetShapes().AnyShapesSelected() )
-			clearAllSelected( model );
+		if ( ! m_bInitialized )
+		{
+			nmwi.Apply2All<Neuron>
+			( 
+				[&]( Neuron & neuron ) 
+				{ 
+					if ( neuron.HasTriggerSound() )
+						m_beepers.push_back( Beeper{ & neuron, neuron.GetTriggerSound() } );
+				} 
+			);
+			m_bInitialized = true;
+		}
+		if ( nmwi.GetModel().GetShapes().AnyShapesSelected() )
+			clearAllSelected( nmwi );
 		else
-			clearAll( model );
+			clearAll( nmwi );
 	}
 
-	virtual void Undo( NNetModelWriterInterface & model ) 
+	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		clearAll( model );
+		clearAll( nmwi );
 		for ( Beeper const & beeper : m_beepers )
 			beeper.m_pNeuron->SetTriggerSound( beeper.m_sound );
 	}
@@ -62,4 +63,5 @@ private:
 		SoundDescr m_sound;
 	};
 	vector<Beeper> m_beepers;
+	bool           m_bInitialized { false };
 };

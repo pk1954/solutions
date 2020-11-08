@@ -44,21 +44,54 @@ public:
 		Apply2All( [&]( Shape const & shape ) { shape.Dump( ); } );
 	}
 
-	ShapeId const AddShape( UPShape upT )	
+	ShapeId const IdNewSlot( )	
 	{
-		ShapeId idNewSlot;
-		if( upT )
+		return ShapeId( Cast2Long(m_list.size()) );
+	}
+
+
+	void Push( UPShape upShape )	
+	{
+		if ( upShape )
 		{
-			upT->IncCounter();
-			idNewSlot = ShapeId( Cast2Long(m_list.size()) );
-			upT->SetId( idNewSlot );
-			m_list.push_back( move(upT) );
+			upShape->SetId( IdNewSlot() );
+			upShape->IncCounter();
 		}
-		return idNewSlot;
+		m_list.push_back( move(upShape) );
 	}
 
 	template <typename T>
-	unique_ptr<T> ReplaceShape( unique_ptr<Shape> upT, ShapeId const id )	
+	unique_ptr<T> Pop( )
+	{
+		unique_ptr<T> upT { unique_ptr<T>( static_cast<T*>(m_list.back().release()) ) };
+		upT->DecCounter();
+		m_list.pop_back( );
+		return move( upT );
+	}
+
+	Shape * RemoveShape( ShapeId const id )	
+	{
+		assert( IsDefined( id ) );
+		assert( IsValidShapeId( id ) );
+
+		if ( GetAt( id ) )
+			GetAt( id )->DecCounter();
+
+		return m_list[id.GetValue()].release();
+	}
+
+	void SetShape2Slot( ShapeId const id, UPShape upShape )	 // only for special situations
+	{                                                        // read model from script
+		assert( IsDefined( id ) );                           // or copy model
+		assert( IsValidShapeId( id ) );
+		assert( IsEmptySlot( id ) );
+		assert( upShape );
+
+		upShape->IncCounter();
+		m_list[id.GetValue()] = move(upShape);
+	}
+
+	Shape * ReplaceShape( ShapeId const id, UPShape upT )	
 	{
 		assert( IsDefined( id ) );
 		assert( IsValidShapeId( id ) );
@@ -68,35 +101,14 @@ public:
 		if ( GetAt( id ) )
 			GetAt( id )->DecCounter();
 
-		unique_ptr<Shape> tmp = move(upT);
+		UPShape tmp = move(upT);
 		m_list[id.GetValue()].swap( tmp );
-		return unique_ptr<T>( static_cast<T*>(tmp.release()) );
-	}
-
-	template <typename T>
-	unique_ptr<T> SetShape( unique_ptr<T> upT, ShapeId const id )	
-	{
-		assert( IsDefined( id ) );
-		assert( IsValidShapeId( id ) );
-
-		if ( upT )
-			upT->IncCounter();
-		if ( GetAt( id ) )
-			GetAt( id )->DecCounter();
-
-		unique_ptr<Shape> tmp = move(upT);
-		m_list[id.GetValue()].swap( tmp );
-		return unique_ptr<T>( static_cast<T*>(tmp.release()) );
+		return tmp.release();
 	}
 
 	void Reset( )
 	{
 		m_list.clear();
-	}
-
-	void RemoveLast( )
-	{
-		m_list.pop_back( );
 	}
 
 	Shape * const GetAt( ShapeId const id ) const 
@@ -118,7 +130,12 @@ public:
 	{ 
 		return (0 <= id.GetValue()) && (id.GetValue() < Size()); 
 	}
-	
+
+	bool const IsEmptySlot( ShapeId const id ) const 
+	{ 
+		return GetAt( id ) == nullptr; 
+	}
+
 	bool const AnyShapesSelected( ) const
 	{
 		return Apply2AllB<Shape>( [&]( Shape const & shape ) { return shape.IsSelected(); } );

@@ -85,6 +85,8 @@ void NNetModelStorage::writeGlobalParameters( wostream & out )
 void NNetModelStorage::writeShapes( wostream & out )
 {
     m_CompactIds.resize( m_pModelReaderInterface->GetSizeOfShapeList() );
+    wcout << L"*** Before writeShapes ";
+    m_pModelReaderInterface->DumpModel();
     ShapeId idCompact( 0 );
     for ( int i = 0; i < m_CompactIds.size( ); ++i )
     {

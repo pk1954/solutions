@@ -15,21 +15,20 @@ class SetTriggerSoundCommand : public Command
 public:
 	SetTriggerSoundCommand
 	( 
-		NNetModelWriterInterface & model, 
-		ShapeId            const   id, 
-		SoundDescr         const & sound
+		ShapeId    const   id, 
+		SoundDescr const & sound
 	)
-	  : m_pNeuron( model.GetShapePtr<Neuron *>( id ) ),
+	  : m_idNeuron( id ),
 		m_sound( sound )
 	{ }
 
-	virtual void Do( NNetModelWriterInterface & model )
+	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
-		m_sound = m_pNeuron->SetTriggerSound( m_sound );
-		model.ClearModel( );
+		m_sound = nmwi.GetShapePtr<Neuron *>( m_idNeuron )->SetTriggerSound( m_sound );
+		nmwi.ClearModel( );
 	}
 
 private:
-	Neuron * const m_pNeuron;
-	SoundDescr     m_sound;
+	ShapeId const m_idNeuron;
+	SoundDescr    m_sound;
 };

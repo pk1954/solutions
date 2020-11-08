@@ -116,12 +116,8 @@ public:
 
 	void SelectSubtree( BaseKnot * const, tBoolOp const );
 
-	ShapeId const NewShapeListSlot( )
-	{
-		ShapeId idNewSlot { Cast2Long(GetSizeOfShapeList()) };
-		m_Shapes.AddShape( nullptr );
-		return idNewSlot;
-	}
+	template <typename T>
+	unique_ptr<T> PopFromModel( ) { return move(m_Shapes.Pop<T>()); }
 
 	void StaticModelChanged( );
 
@@ -132,33 +128,31 @@ public:
 
 	void SelectAllShapes( tBoolOp const op ) { m_Shapes.SelectAllShapes( op ); }
 
-	ShapeId Add2Model( UPShape up ) 
+	ShapeId const Push2Model( UPShape upShape ) 
 	{ 
-		return m_Shapes.AddShape( move(up) ); 
+		ShapeId idNewSlot { m_Shapes.IdNewSlot( ) };
+		m_Shapes.Push( move(upShape) ); 
+		return idNewSlot;
 	}
 
-	template <typename T>
-	unique_ptr<T> ReplaceInModel( unique_ptr<Shape> up ) 
-	{
-		ShapeId const id { up.get()->GetId() };
-		return move(m_Shapes.ReplaceShape( move(up), id )); 
-	}
-
-	template <typename T>
-	unique_ptr<T> Store2Model( unique_ptr<T> up ) 
-	{
-		ShapeId const id { up.get()->GetId() };
-		return move(m_Shapes.SetShape( move(up), id )); 
-	}
-
-	template <typename T>
-	unique_ptr<T> RemoveFromModel( ShapeId const id ) { return m_Shapes.SetShape( unique_ptr<T>(), id ); }
-
-	template <typename T>
-	unique_ptr<T> InsertAtModelSlot( unique_ptr<T> up, ShapeId const id )                       
+	template <typename OLD>
+	unique_ptr<OLD> RemoveFromModel( ShapeId const id ) 
 	{ 
-		up.get()->SetId( id );
-		return m_Shapes.SetShape( move(up), id );
+		Shape * pShape { m_Shapes.RemoveShape( id ) }; 
+		return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
+	}
+
+	template <typename NEW, typename OLD>
+	unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
+	{
+		ShapeId const id     { up.get()->GetId() };
+		Shape       * pShape { m_Shapes.ReplaceShape( id, move(up) ) }; 
+		return move( unique_ptr<OLD>( static_cast<OLD*>(pShape) ) );
+	}
+
+	void SetInModel( ShapeId const id, UPShape upShape )
+	{
+		m_Shapes.SetShape2Slot( id, move(upShape) );
 	}
 
 	ShapeList const & GetShapes( ) const { return m_Shapes; }

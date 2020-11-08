@@ -29,7 +29,6 @@ class NNetModelCommands
 public:
     void Initialize
     ( 
-        NNetModelReaderInterface * const,
         NNetModelWriterInterface * const,
         Param                    * const,
         CommandStack             * const,
@@ -80,7 +79,6 @@ private:
 
     bool                       m_bTrace                  { true };
     CommandStack             * m_pCmdStack               { nullptr };
-    NNetModelReaderInterface * m_pMRI                    { nullptr };
     NNetModelWriterInterface * m_pMWI                    { nullptr };
     NNetModelStorage         * m_pStorage                { nullptr };
     Param                    * m_pParam                  { nullptr };

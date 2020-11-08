@@ -12,28 +12,23 @@
 class NewInputNeuronCommand : public Command
 {
 public:
-	NewInputNeuronCommand
-	( 
-		NNetModelWriterInterface & nmwi, 
-		MicroMeterPoint    const & pos 
-	)
+	NewInputNeuronCommand( MicroMeterPoint const & pos )
 	{ 
-		m_upInputNeuron = nmwi.NewBaseKnot<InputNeuron>( pos );
+		m_upInputNeuron = make_unique<InputNeuron>( pos );
 	}
 
 	~NewInputNeuronCommand( ) {}
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_idInputNeuron = nmwi.Add2Model( move(m_upInputNeuron) );
+		nmwi.Push2Model( move(m_upInputNeuron) );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		m_upInputNeuron = nmwi.RemoveFromModel<InputNeuron>( m_idInputNeuron );
+		m_upInputNeuron = nmwi.PopFromModel<InputNeuron>( );
 	}
 
 private:
 	unique_ptr<InputNeuron> m_upInputNeuron { nullptr };
-	ShapeId                 m_idInputNeuron { NO_SHAPE };
 };

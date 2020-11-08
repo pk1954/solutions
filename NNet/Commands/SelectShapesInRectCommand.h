@@ -11,14 +11,21 @@
 class SelectShapesInRectCommand : public SelectionCommand
 {
 public:
-	SelectShapesInRectCommand( NNetModelWriterInterface & model, MicroMeterRect const & rect )
-	  :	SelectionCommand( model),
-		m_rect( rect )
+	SelectShapesInRectCommand( MicroMeterRect const & rect )
+	  :	m_rect( rect )
 	{ }
 
-	virtual void Do( NNetModelWriterInterface & model )
+	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
-		model.Apply2AllInRect<Shape>( m_rect, [&]( Shape & shape ) { shape.Select( tBoolOp::opTrue ); } );
+		SelectionCommand::Do( nmwi );
+		nmwi.Apply2AllInRect<Shape>
+		( 
+			m_rect, 
+			[&]( Shape & shape ) 
+			{ 
+				shape.Select( tBoolOp::opTrue ); 
+			} 
+		);
 	}
 
 private:

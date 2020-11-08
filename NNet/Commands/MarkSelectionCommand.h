@@ -16,14 +16,17 @@ using std::vector;
 class MarkSelectionCommand : public Command
 {
 public:
-	MarkSelectionCommand( NNetModelWriterInterface & nmwi, tBoolOp const op )
+	MarkSelectionCommand( tBoolOp const op )
 	  : m_op( op )
-	{
-		nmwi.Apply2AllSelected<Shape>( [&](Shape & s) { m_selectedShapeIds.push_back( s.GetId() ); } ); 
-	}
+	{ }
 
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
+		if ( ! m_bInitialized )
+		{
+			nmwi.Apply2AllSelected<Shape>( [&](Shape & s) { m_selectedShapeIds.push_back( s.GetId() ); } ); 
+			m_bInitialized = true;
+		}
 		nmwi.Apply2AllSelected<Shape>( [&](Shape & s) { s.Mark( m_op ); } );
 	}
 
@@ -36,5 +39,6 @@ public:
 private:
 	vector<ShapeId> m_selectedShapeIds;
 	tBoolOp const   m_op;
+	bool            m_bInitialized { false };
 };
 

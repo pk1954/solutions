@@ -14,9 +14,8 @@ using std::make_unique;
 
 class CopySelectionCommand : public Command
 {
-public:
-
-	CopySelectionCommand( NNetModelWriterInterface & nmwi )
+private:
+	void init( NNetModelWriterInterface & nmwi )
 	{ 
 		using SelShapesIndex = NamedType < int, struct SelShapesIndex_Parameter >;
 		using SSIndexVector  = vector<SelShapesIndex>;
@@ -24,7 +23,7 @@ public:
 		static SelShapesIndex const SSI_NULL( SelShapesIndex::NULL_VAL() );
 
 		size_t        sizeOfModel { nmwi.GetSizeOfShapeList() };
-		SSIndexVector indexList   ( sizeOfModel, SSI_NULL );      // indexes into m_copies
+		SSIndexVector indexList   ( sizeOfModel, SSI_NULL );      // indices into m_copies
 
 		auto dstFromSrc = [&](Shape const * pSrc )
 		{ 
@@ -55,27 +54,41 @@ public:
 			nmwi.GetModel().GetShapes().LinkShape( shapeSrc, dstFromSrc );
 			upShapeDst->SetId( idShapeCopy++ );
 		}
+		m_iSizeOfSelection = Cast2Int(m_copies.size());
 	}
 
+public:
 	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
-		nmwi.SelectAllShapes( tBoolOp::opFalse );  // deselect all
-		for ( auto & upShape : m_copies )  // add copies (which are selected)
+		if ( ! m_bInitialized )
 		{
-			nmwi.Add2Model( move(upShape) );
+			init( nmwi );
+			m_bInitialized = true;
 		}
-		m_copies.clear();
+		nmwi.SelectAllShapes( tBoolOp::opFalse );  // deselect all
+		for ( int i = 0; i < m_iSizeOfSelection; ++i )
+		{
+			nmwi.Push2Model( move(m_copies.back()) ); // add copies (which are already selected)
+			m_copies.pop_back();
+		}
+		assert( m_copies.empty() );
 	}
 
 	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
-		nmwi.Apply2AllSelected<Shape>([&](Shape & s) { m_copies.push_back( nmwi.RemoveFromModel<Shape>( s.GetId() ) ); } );
+		for ( int i = 0; i < m_iSizeOfSelection; ++i )
+		{
+			m_copies.push_back(nmwi.PopFromModel<Shape>( ));
+		}
 		nmwi.SelectAllShapes( tBoolOp::opFalse );
-		for ( auto & idShape : m_selectedShapeIds ) { nmwi.SelectShape( idShape, tBoolOp::opTrue ); };
+		for ( auto & idShape : m_selectedShapeIds ) 
+			{ nmwi.SelectShape( idShape, tBoolOp::opTrue ); }
 	}
 
 private:
+	int             m_iSizeOfSelection { 0 };
 	vector<UPShape> m_copies;
 	vector<ShapeId> m_selectedShapeIds;
+	bool            m_bInitialized { false };
 };
 

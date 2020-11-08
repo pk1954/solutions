@@ -14,21 +14,26 @@ using std::vector;
 class SelectionCommand : public Command
 {
 public:
-	SelectionCommand( NNetModelWriterInterface & model )
-	{ 
-		model.Apply2All<Shape>
-		( 
-			[&]( Shape & s )
-			{ 
-				if ( s.IsSelected() )
-					m_selectedShapes.push_back( & s );
-			} 
-		);
+
+	virtual void Do( NNetModelWriterInterface & nmwi ) 
+	{
+		if ( ! m_bInitialized )	
+		{ 
+			nmwi.Apply2All<Shape>
+			( 
+				[&]( Shape & s )
+				{ 
+					if ( s.IsSelected() )
+						m_selectedShapes.push_back( & s );
+				} 
+			);
+			m_bInitialized = true;
+		}
 	}
 
-	virtual void Undo( NNetModelWriterInterface & model ) 
+	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{
-		model.SelectAllShapes( tBoolOp::opFalse );
+		nmwi.SelectAllShapes( tBoolOp::opFalse );
 		for (Shape * const pShape : m_selectedShapes)    
 		{ 
 			if ( pShape )
@@ -38,5 +43,6 @@ public:
 
 protected:
 	vector<Shape *> m_selectedShapes;
+	bool            m_bInitialized { false };
 };
 

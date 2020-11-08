@@ -88,7 +88,6 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	);
 	m_modelCommands.Initialize
 	( 
-		& m_modelReaderInterface, 
 		& m_modelWriterInterface, 
 		& m_parameters, 
 		& m_cmdStack, 

@@ -15,21 +15,20 @@ class SelectShapeCommand : public SelectionCommand
 public:
 	SelectShapeCommand
 	( 
-		NNetModelWriterInterface & model, 
-		ShapeId              const id, 
-		tBoolOp              const op 
+		ShapeId const id, 
+		tBoolOp const op 
 	)
-	  :	SelectionCommand( model ),
-		m_pShape( model.GetShapePtr<Shape *>( id ) ),
+	  :	m_idShape( id ),
 		m_op( op )
 	{ }
 
-	virtual void Do( NNetModelWriterInterface & model )
+	virtual void Do( NNetModelWriterInterface & nmwi )
 	{ 
-		m_pShape->Select( m_op ); 
+		SelectionCommand::Do( nmwi );
+		nmwi.GetShapePtr<Shape *>( m_idShape )->Select( m_op ); 
 	}
 
 private:
-	Shape * m_pShape;
-	tBoolOp m_op;
+	ShapeId const m_idShape;
+	tBoolOp const m_op;
 };

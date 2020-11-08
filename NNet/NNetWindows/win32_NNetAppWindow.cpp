@@ -132,7 +132,7 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_monitorData    .Initialize( &m_staticModelObservable, &m_signalFactory );
 	m_model          .Initialize( &m_monitorData, &m_parameters, &m_staticModelObservable, &m_dynamicModelObservable, &m_modelTimeObservable );
 	m_modelStorage   .Initialize( &m_modelReaderInterface, &m_modelWriterInterface, &m_parameters, &m_unsavedChangesObservable, &m_script, m_pReadModelResult, &m_descWindow );
-	m_modelCommands  .Initialize( &m_modelReaderInterface, &m_modelWriterInterface, &m_parameters, &m_cmdStack, &m_modelStorage, &m_dynamicModelObservable );
+	m_modelCommands  .Initialize( &m_modelWriterInterface, &m_parameters, &m_cmdStack, &m_modelStorage, &m_dynamicModelObservable );
 	m_cmdStack       .Initialize( &m_modelWriterInterface, &m_commandStackObservable );
 	m_NNetColors     .Initialize( &m_blinkObservable );
 	m_sound          .Initialize( &m_soundOnObservable );

@@ -21,20 +21,25 @@ using std::unique_ptr;
 class DisconnectBaseKnotCommand : public Command
 {
 public:
-    DisconnectBaseKnotCommand( NNetModelWriterInterface &, ShapeId const, bool const );
+    DisconnectBaseKnotCommand( ShapeId const, bool const );
 
     ~DisconnectBaseKnotCommand( ) {}
 
     virtual void Do  ( NNetModelWriterInterface & );
     virtual void Undo( NNetModelWriterInterface & );
 
-
 private:
+    void init( NNetModelWriterInterface & );
+
     BaseKnot               * m_pBaseKnot;
     unique_ptr<BaseKnot>     m_upBaseKnot;
+
     vector<unique_ptr<Knot>> m_startKnots  { };
     vector<unique_ptr<Knot>> m_endKnots    { };
     vector<ShapeId>          m_idStartKnots{ };
     vector<ShapeId>          m_idEndKnots  { };
+
+    ShapeId            const m_idBaseKnot;
     bool                     m_bDelete; // true: delete BaseKnot, false: disconnect only
+    bool                     m_bInitialized { false };
 };

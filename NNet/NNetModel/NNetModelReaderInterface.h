@@ -21,6 +21,8 @@ public:
 	void Start( NNetModel * const pModel ) { m_pModel = pModel;	 }
 	void Stop ( )                          { m_pModel = nullptr; }
 
+	void DumpModel( ) const { m_pModel->DumpModel(); }
+
 	bool            const IsSelected                ( ShapeId const ) const;
 	ShapeType       const GetShapeType              ( ShapeId const ) const;
 	fHertz          const GetPulseFrequency         ( ShapeId const ) const;

@@ -75,20 +75,20 @@ public:
         ShapeType const shapeType   { static_cast<ShapeType::Value>(script.ScrReadInt( )) };
 
         script.ScrReadSpecial( Shape::OPEN_BRACKET );
-        unique_ptr<Shape> upShape;
-        if ( shapeType.IsPipeType() )
-            upShape = createPipe( script, idFromScript );
-        else
-            upShape = createBaseKnot( script, shapeType );
-        script.ScrReadSpecial( Shape::CLOSE_BRACKET );
-
+        UPShape upShape = shapeType.IsPipeType()
+                        ? createPipe( script )
+                        : createBaseKnot( script, shapeType );
         if ( upShape )
-            m_pModelWriterInterface->InsertAtModelSlot<Shape>( move(upShape), idFromScript );
+        {
+            upShape.get()->SetId( idFromScript );
+            m_pModelWriterInterface->SetInModel( idFromScript, move(upShape) );
+        }
+        script.ScrReadSpecial( Shape::CLOSE_BRACKET );
     }
 
 private:
 
-    unique_ptr<Pipe> createPipe( Script & script, ShapeId const id ) const
+    UPShape createPipe( Script & script ) const
     {
         ShapeId const idStart { script.ScrReadLong() };
         for ( int i = 0; i < Pipe::SEPARATOR.length( ); i++ )
@@ -97,7 +97,7 @@ private:
         if ( idStart == idEnd )
         {
             wcout << "+++ Pipe has identical start and end point" << endl;
-            wcout << "+++ " << id << L": " << idStart << L" -> " << idEnd << endl;
+            wcout << "+++ " << L": " << idStart << L" -> " << idEnd << endl;
             wcout << "+++ Pipe ignored" << endl;
             return nullptr;
         }
@@ -105,14 +105,14 @@ private:
         { 
             BaseKnot * const pKnotStart { m_pModelWriterInterface->GetShapePtr<BaseKnot *>( idStart ) };
             BaseKnot * const pKnotEnd   { m_pModelWriterInterface->GetShapePtr<BaseKnot *>( idEnd   ) };
-            unique_ptr<Pipe> upPipe     { m_pModelWriterInterface->NewPipe( pKnotStart, pKnotEnd ) };
+            unique_ptr<Pipe> upPipe { make_unique<Pipe>( pKnotStart, pKnotEnd ) };
             pKnotStart->m_connections.AddOutgoing( upPipe.get() );
             pKnotEnd  ->m_connections.AddIncoming( upPipe.get() );
             return move(upPipe);
         }
     }
 
-    unique_ptr<BaseKnot> createBaseKnot( Script & script, ShapeType const shapeType ) const 
+    UPShape createBaseKnot( Script & script, ShapeType const shapeType ) const 
     {
         MicroMeter      const xCoord { Cast2Float( script.ScrReadFloat() ) };
         script.ScrReadSpecial( MicroMeterPoint::SEPARATOR );

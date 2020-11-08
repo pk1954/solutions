@@ -14,24 +14,26 @@ class MoveBaseKnotCommand : public MoveCommand
 public:
 	MoveBaseKnotCommand
 	( 
-		NNetModelWriterInterface & model, 
-		ShapeId            const   id, 
-		MicroMeterPoint    const & delta 
+		ShapeId         const   id, 
+		MicroMeterPoint const & delta 
 	)
 	  : MoveCommand( delta ),
-		m_pBaseKnot( model.GetShapePtr<BaseKnot *>( id ) )
-	{
-		m_posBaseKnotOld = m_pBaseKnot->GetPosition();
-//		wcout << Scanner::COMMENT_SYMBOL << L" MoveBaseKnotCommand: old pos = " << m_posBaseKnotOld << endl; 
-	}
+		m_idBaseKnot( id )
+	{}
 
-	virtual void Do( NNetModelWriterInterface & model ) 
+	virtual void Do( NNetModelWriterInterface & nmwi ) 
 	{ 
+		if ( ! m_pBaseKnot )
+		{
+			m_pBaseKnot      = nmwi.GetShapePtr<BaseKnot *>( m_idBaseKnot );
+			m_posBaseKnotOld = m_pBaseKnot->GetPosition();
+			//		wcout << Scanner::COMMENT_SYMBOL << L" MoveBaseKnotCommand: old pos = " << m_posBaseKnotOld << endl; 
+		}
 		m_pBaseKnot->SetPosition( m_posBaseKnotOld + m_delta );
 //		wcout << Scanner::COMMENT_SYMBOL << L" MoveBaseKnotCommand.Do: pos = " << m_posBaseKnotOld + m_delta << endl; 
 	}
 
-	virtual void Undo( NNetModelWriterInterface & model ) 
+	virtual void Undo( NNetModelWriterInterface & nmwi ) 
 	{ 
 		m_pBaseKnot->SetPosition( m_posBaseKnotOld );
 //		wcout << Scanner::COMMENT_SYMBOL << L" MoveBaseKnotCommand.Undo: pos = " << m_posBaseKnotOld << endl;
@@ -39,10 +41,11 @@ public:
 
 	virtual ShapeId const GetMovedShape( ) const
 	{
-		return m_pBaseKnot->GetId( );
+		return m_idBaseKnot;
 	}
 
 private:
-	BaseKnot * const m_pBaseKnot;
+	ShapeId    const m_idBaseKnot;
+	BaseKnot       * m_pBaseKnot      { nullptr };
 	MicroMeterPoint  m_posBaseKnotOld { NP_NULL };
 };

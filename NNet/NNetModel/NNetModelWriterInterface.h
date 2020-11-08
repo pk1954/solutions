@@ -24,13 +24,13 @@ public:
 	void Start( NNetModel * const );
 	void Stop(); 
 
+    void DumpModel( ) const { m_pModel->DumpModel(); }
+
     void CreateInitialShapes();
 
-    NNetModel const & GetModel( ) const { return * m_pModel; }  // TODO: find better solution
+    NNetModel const & GetModel( )           const { return * m_pModel; }  // TODO: find better solution
     size_t    const   GetSizeOfShapeList( ) const { return m_pModel->GetSizeOfShapeList( ); }
 
-    unique_ptr<Pipe> NewPipe( Pipe const & );
-    unique_ptr<Pipe> NewPipe( BaseKnot * const, BaseKnot * const );
     Shape * const GetShape( ShapeId const );
 
     bool const IsPipe( ShapeId const id )
@@ -52,22 +52,6 @@ public:
     {
         Shape * const pShape { GetShape( id ) };
         return (pShape && HasType<T>( * pShape )) ? static_cast<T>( pShape ) : nullptr;
-    }
-
-    template <typename T> 
-    unique_ptr<T> NewBaseKnot( BaseKnot const & p ) 
-    { 
-        unique_ptr<T> upT { make_unique<T>( p.GetPosition() ) };
-        upT->SetId( newShapeListSlot( ) );
-        return move(upT);
-    }
-
-    template <typename T> 
-    unique_ptr<T> NewBaseKnot( MicroMeterPoint const & pos ) 
-    { 
-        unique_ptr<T> upT { make_unique<T>( pos ) };
-        upT->SetId( newShapeListSlot( ) );
-        return move(upT);
     }
 
     template <typename T>
@@ -109,33 +93,29 @@ public:
         m_pModel->SelectAllShapes( op ); 
     }
 
-    ShapeId const Add2Model( UPShape up ) 
+    ShapeId const Push2Model( UPShape up ) 
     { 
-        return m_pModel->Add2Model( move(up) ); 
+        return m_pModel->Push2Model( move(up) ); 
+    }
+
+    void SetInModel( ShapeId const id, UPShape upShape )
+    {
+        m_pModel->SetInModel( id, move(upShape) );
     }
 
     template <typename T>
-    unique_ptr<T> ReplaceInModel( unique_ptr<Shape> up ) 
-    { 
-        return m_pModel->ReplaceInModel<T>( move(up) ); 
-    }
+    unique_ptr<T> PopFromModel( ) { return m_pModel->PopFromModel<T>(); }
 
-    template <typename T>
-    unique_ptr<T> Store2Model( unique_ptr<T> up ) 
+    template <typename NEW, typename OLD>
+    unique_ptr<OLD> ReplaceInModel( unique_ptr<NEW> up ) 
     { 
-        return m_pModel->Store2Model<T>( move(up) ); 
+        return m_pModel->ReplaceInModel<NEW, OLD>( move(up) ); 
     }
 
     template <typename T>
     unique_ptr<T> RemoveFromModel( ShapeId const id ) 
     { 
         return m_pModel->RemoveFromModel<T>( id ); 
-    }
-
-    template <typename T>
-    void InsertAtModelSlot( unique_ptr<T> up, ShapeId const id ) 
-    { 
-        m_pModel->InsertAtModelSlot<T>( move(up), id ); 
     }
 
     MicroMeterPoint const OrthoVector( ShapeId const idPipe ) const
@@ -150,8 +130,6 @@ public:
     void ToggleStopOnTrigger( ShapeId const );
 
 private:
-
-    ShapeId const newShapeListSlot( );
 
     NNetModel * m_pModel { nullptr };
 }; 

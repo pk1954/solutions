@@ -35,7 +35,7 @@ bool BaseKnot::operator==( Shape const & rhs ) const
 void BaseKnot::Dump( ) const
 {
 	Shape::Dump();
-	wcout << endl << m_connections;
+	wcout << m_connections << endl;
 }
 
 
