@@ -442,7 +442,6 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDM_SCRIPT_DIALOG:
-//		m_computeThread.LockComputation( );
 		m_computeThread.StopComputation( );
 		ProcessNNetScript
 		( 
@@ -450,7 +449,6 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			& m_modelWriterInterface, 
 			ScriptFile::AskForFileName( L"in", L"Script files", tFileMode::read )
 		);
-//		m_computeThread.ReleaseComputationLock( );
 		break;
 
 	case IDM_SCRIPT_PROGRESS:

@@ -85,7 +85,7 @@ void DisconnectBaseKnotCommand::Undo( NNetModelWriterInterface & nmwi )
         return;
 
 //    wcout << L"DisconnectBaseKnotCommand " << L"Undo " << L"shapeId = " << m_pBaseKnot->GetId( ) << endl;
-    for ( int i = Cast2Int(m_startKnots.size()) - 1; i >= 0; --i )
+    for ( int i = Cast2Int(m_idEndKnots.size()) - 1; i >= 0; --i )
     {
         ShapeId idEndKnot { m_idEndKnots[i] };
         Knot  & knotEnd   { * nmwi.GetShapePtr<Knot *>(idEndKnot) };
