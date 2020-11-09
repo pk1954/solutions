@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <synchapi.h>
 #include <chrono>
 #include "util.h"
 #include "observable.h"

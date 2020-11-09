@@ -25,7 +25,7 @@ void DisconnectBaseKnotCommand::init( NNetModelWriterInterface & nmwi )
     if ( ! m_pBaseKnot )   // might have been deleted earlier
         return;
 
-    wcout << L"DisconnectBaseKnotCommand " << L" shapeId = " << m_pBaseKnot->GetId( ) << endl;
+//    wcout << L"DisconnectBaseKnotCommand " << L" shapeId = " << m_pBaseKnot->GetId( ) << endl;
     MicroMeterPoint umPos { m_pBaseKnot->GetPosition() };
     m_pBaseKnot->m_connections.Apply2AllInPipes
     ( 
