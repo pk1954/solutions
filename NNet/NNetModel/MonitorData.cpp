@@ -10,8 +10,6 @@
 using std::distance;
 using std::move;
 
-SignalId const SignalId::NULL_VAL { TrackNr::NULL_VAL(), SignalNr::NULL_VAL() };
-
 void MonitorData::Initialize
 ( 
 	Observable    * const pStaticModelObservable,
@@ -24,7 +22,6 @@ void MonitorData::Initialize
 
 void MonitorData::Reset( )
 {
-//	for ( Track & track: m_tracks ) { track.Clear(); };
 	m_tracks.clear();
 	m_pStaticModelObservable->NotifyAll( true );
 }

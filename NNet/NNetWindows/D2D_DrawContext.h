@@ -16,13 +16,13 @@ static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
 class D2D_DrawContext: public DrawContext
 {
 public:
-	D2D_DrawContext() {}
 
 	void Start( HWND const hwnd )
 	{
 		DrawContext::Initialize( );
 		m_graphics.Initialize( hwnd );
 		SetStdFontSize( STD_FONT_SIZE );
+		m_scale.Initialize( & m_graphics, L"m" );
 	}
 
 	void Stop( )
@@ -43,6 +43,7 @@ public:
 	void Resize( int const width, int const height )
 	{
 		m_graphics.Resize( width, height );
+		m_scale.SetClientRectSize( PIXEL(width), PIXEL(height) );
 	}
 
 	void SetStdFontSize( MicroMeter const & size )
@@ -104,15 +105,15 @@ public:
 		m_graphics.DrawTranspRect( m_coord.Convert2fPixelRect( umRect ), col );
 	}
 
+	void SetPixelSize( MicroMeter const s ) 
+	{
+		DrawContext::SetPixelSize( s );
+		m_scale.SetHorzPixelSize( s.GetValue() );
+	}
+
 	virtual void ShowScale( PixelRectSize const & pixRectSize ) const 
 	{
-		Scale::Display
-		( 
-			m_graphics, 
-			pixRectSize, 
-			m_coord.GetPixelSize().GetValue(), 
-			L"m" 
-		);
+		m_scale.DisplayStaticScale( );
 	}
 
 	virtual void DisplayText
@@ -128,4 +129,5 @@ public:
 
 private:
 	D2D_driver m_graphics;
+	Scale      m_scale;
 };

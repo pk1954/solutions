@@ -91,3 +91,14 @@ static fPixelRectSize Convert2fPixelRectSize( PixelRectSize const rectSize )
 {
 	return fPixelRectSize( Convert2fPIXEL( rectSize.GetX() ), Convert2fPIXEL( rectSize.GetY() ) );
 }
+
+static fPixelRect Convert2fPixelRect( PixelRect const & rect )
+{
+	return fPixelRect
+		   ( 
+			   Convert2fPIXEL( rect.GetLeft() ),
+			   Convert2fPIXEL( rect.GetTop() ),
+			   Convert2fPIXEL( rect.GetRight() ),
+			   Convert2fPIXEL( rect.GetBottom() )
+		   );
+}

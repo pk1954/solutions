@@ -6,6 +6,8 @@
 
 #include <vector>
 #include "D2D_DrawContext.h"
+#include "Scale.h"
+#include "Measurement.h"
 #include "MonitorData.h"
 #include "win32_baseWindow.h"
 #include "win32_NNetController.h"
@@ -17,6 +19,7 @@ class NNetModelReaderInterface;
 class MonitorWindow : public BaseWindow
 {
 public:
+
 	void Start
 	( 
 		HWND                     const, 
@@ -52,12 +55,10 @@ private:
 	virtual void OnPaint( );
 	virtual bool OnSize       ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel ( WPARAM const, LPARAM const );
-	virtual bool OnRButtonUp  ( WPARAM const, LPARAM const ) { return false; }
-	virtual bool OnRButtonDown( WPARAM const, LPARAM const ) { return false; }
-	virtual void OnLButtonDown( WPARAM const, LPARAM const ) {};
 	virtual void OnMouseMove  ( WPARAM const, LPARAM const );
 	virtual bool OnMouseLeave ( WPARAM const, LPARAM const );
 	virtual void OnLButtonUp  ( WPARAM const, LPARAM const );
+	virtual bool OnShow       ( WPARAM const, LPARAM const );
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
 	virtual void OnChar       ( WPARAM const, LPARAM const ) { };
 
@@ -67,16 +68,16 @@ private:
 	BeaconAnimation                * m_pBeaconAnimation { nullptr };
 	MonitorData                    * m_pMonitorData     { nullptr };  
 
-//	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
-	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), 0, HWND(0), 0L };
+	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };
 
-	D2D_driver m_graphics           { };
-	bool       m_bRuler             { true };
-	fMicroSecs m_fMicroSecsPerPixel { 100.0_MicroSecs };
-	float      m_fYvaluesPerPixel   { 0.2f };
-
-	SignalId m_idSigSelected      { };
-	TrackNr  m_trackNrHighlighted { TrackNr::NULL_VAL() };
-	PIXEL    m_pixLastY           { PIXEL::NULL_VAL() }; // last cursor position during selection 
-	PIXEL    m_pixMoveOffsetY     { 0_PIXEL };           // vertical offset when moving signal
+	D2D_driver  m_graphics           { };
+	fMicroSecs  m_fMicroSecsPerPixel { 100.0_MicroSecs };
+	float       m_fYvaluesPerPixel   { 0.2f };
+	SignalId    m_idSigSelected      { };
+	TrackNr     m_trackNrHighlighted { TrackNr::NULL_VAL() };
+	PixelPoint  m_pixLast            { PP_NULL };     // last cursor position during selection 
+	PIXEL       m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
+	bool        m_bShowScale         { false };
+	Measurement m_measurement;
+	Scale       m_scale;
 };

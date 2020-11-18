@@ -8,10 +8,6 @@
 #include "MoreTypes.h"
 #include "PixelTypes.h"
 
-MicroMeter const MINIMUM_PIXEL_SIZE =    0.1_MicroMeter;
-MicroMeter const DEFAULT_PIXEL_SIZE =    1.0_MicroMeter;  
-MicroMeter const MAXIMUM_PIXEL_SIZE = 2000.0_MicroMeter;  // 2 MilliMeter
-
 class PixelCoordsFp
 {
 public:
@@ -242,6 +238,10 @@ public:
 	}
 
 private:
+
+	inline static MicroMeter const MINIMUM_PIXEL_SIZE {    0.1_MicroMeter };
+	inline static MicroMeter const DEFAULT_PIXEL_SIZE {    1.0_MicroMeter };  
+	inline static MicroMeter const MAXIMUM_PIXEL_SIZE { 2000.0_MicroMeter };  // 2 MilliMeter
 
 	bool isValidPixelSize( MicroMeter const newSize ) const
 	{

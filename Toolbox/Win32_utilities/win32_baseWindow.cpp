@@ -76,6 +76,10 @@ bool BaseWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const
         OnPaint( );
         return false;
 
+    case WM_SHOWWINDOW :
+        OnShow( wParam, lParam );
+        return false;
+
     case WM_MOUSEMOVE:
         OnMouseMove( wParam, lParam );
         return false;

@@ -13,6 +13,7 @@
 #include "CircleType.h"
 
 using std::chrono::microseconds;
+using std::wstring;
 
 ////////////// fMicroSecs /////////////////////////////////////
 
@@ -100,6 +101,13 @@ static fMicroSecs const PulseDuration( fHertz const freq )
 		: fMicroSecs( 1e6f / freq.GetValue() );
 }
 
+static fHertz const Frequency( fMicroSecs const us )
+{
+	return (us.GetValue() == 0 )
+		? fHertz( (std::numeric_limits<float>::max)() )
+		: fHertz( 1e6f / us.GetValue() );
+}
+
 ////////////// MicroMeterPoint /////////////////////////////////////
 
 using MicroMeterPoint = PosType< MicroMeter >;
@@ -155,4 +163,30 @@ constexpr const meterPerSec operator"" _meterPerSec( const long double d )
 static MicroMeter CoveredDistance( meterPerSec const speed, fMicroSecs const time )
 {
 	return MicroMeter( speed.GetValue() * time.GetValue() );
+}
+
+////////////// Formatting /////////////////////////////////////
+
+static wstring Format2wstring( fMicroSecs const us )
+{
+	wstring wstrResult;
+	static int const BUFSIZE { 100 };
+	static wchar_t buffer[BUFSIZE];
+	if ( us > 1.e6_MicroSecs )  // more than one second
+	{
+		float seconds = us.GetValue() / 1000000.0f;
+		swprintf( buffer, BUFSIZE, L"%.2f s", seconds );
+	}
+	else if ( us > 1.e3_MicroSecs )  // more than one millisecond
+	{
+		float millisecs = us.GetValue() / 1000.0f;
+		swprintf( buffer, BUFSIZE, L"%.2f ms", millisecs );
+	}
+	else
+	{
+		float microsecs = us.GetValue();
+		swprintf( buffer, BUFSIZE, L"%.2f \u03BCs", microsecs );
+	}
+	wstrResult.assign( buffer );
+	return wstrResult;
 }

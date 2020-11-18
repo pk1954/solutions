@@ -5,11 +5,9 @@
 #pragma once
 
 #include <string> 
-#include <sstream> 
 #include "PixelTypes.h"
 
 using std::wstring;
-using std::wostringstream;
 
 class D2D_driver;
 
@@ -18,22 +16,37 @@ struct IDWriteTextFormat;
 class Scale
 {
 public:
-	static void Display
-	( 
-		D2D_driver    const &, 
-		PixelRectSize const &, 
-		float         const, 
-		wstring       const & 
-	);
+	void Initialize( D2D_driver * const, wstring const & );
 
+	void SetClientRectSize( PIXEL const, PIXEL const );
+	void SetHorzPixelSize( float const );
+
+	void DisplayStaticScale( ) const;
 private:
-	static COLORREF const SCALE_COLOR { RGB( 0, 0, 0 ) };  // CLR_BLACK
+	using LogUnits = float;
 
-	static wostringstream m_wBuffer;
+	inline static COLORREF const SCALE_COLOR { RGB( 0, 0, 0 ) };  // CLR_BLACK
 
-	static IDWriteTextFormat * m_pTextFormat;
+	fPIXEL m_fPixClientWidth { 0.0_fPIXEL };
+	fPIXEL m_fPixClientHeight{ 0.0_fPIXEL };
+	fPIXEL m_fPixVertPos     { 0.0_fPIXEL };
 
-	static void displayTicks      ( D2D_driver const &, fPixelPoint const, fPixelPoint const, float const, int const );
-	static void displayScaleNumber( D2D_driver const &, fPixelPoint const, float const, int const );
-	static void displayScaleText  ( D2D_driver const &, fPixelPoint const, float const, wstring const & );
+	D2D_driver        * m_pGraphics; 
+	IDWriteTextFormat * m_pTextFormat;
+	wstring             m_wstrLogUnit;
+	float               m_fHorzPixelSize { 1.0f };
+
+	// parameters for fixed scale
+
+	float       m_fIntegerPart { 0.0f };
+	int         m_iFirstDigit  { 0 };    
+	fPixelPoint m_fPixPntStart { fPP_NULL };
+	fPixelPoint m_fPixPntEnd   { fPP_NULL };
+
+	// private functions
+
+	void displayTicks      ( fPixelPoint const, fPixelPoint const, float const, int const ) const;
+	void displayScaleNumber( fPixelPoint const, float const, int const ) const;
+	void displayScaleText  ( fPixelPoint const, float const ) const;
+	void calcScaleParams();
 };

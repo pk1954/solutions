@@ -35,7 +35,8 @@ public:
     void DisplayText( PixelRect const &, std::wstring const &, D2D1::ColorF const, IDWriteTextFormat * = nullptr ) const;
     void EndFrame( );
     void ShutDown( );
-    void DrawTranspRect( fPixelRect const &, D2D1::ColorF const ) const;
+    void DrawTranspRect  ( fPixelRect const &, D2D1::ColorF const ) const;
+    void DrawGradientRect( fPixelRect const &, D2D1::ColorF const, D2D1::ColorF const ) const;
     void DrawLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, D2D1::ColorF const ) const;
     void DrawCircle( fPixelCircle const &, D2D1::ColorF const ) const;
     void DrawArrow( fPixelPoint const, fPixelPoint const, fPIXEL const, fPIXEL const, D2D1::ColorF const ) const;

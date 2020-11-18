@@ -36,20 +36,8 @@ public:
 
 	virtual void Trigger( )
 	{
-		static int const BUFSIZE { 100 };
-		wchar_t buffer[BUFSIZE];
 		fMicroSecs const time = m_pModelReaderInterface->GetSimulationTime( );
-		if ( time > 1.e6_MicroSecs )  // more than one second
-		{
-			float seconds = time.GetValue() / 1000000.0f;
-			swprintf( buffer, BUFSIZE, L"%.2f s", seconds );
-		}
-		else
-		{
-			float millisecs = time.GetValue() / 1000.0f;
-			swprintf( buffer, BUFSIZE, L"%.2f ms", millisecs );
-		}
-		m_wstring.assign( buffer );
+		m_wstring = Format2wstring( time );
 		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstring );
 	}
 

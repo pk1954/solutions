@@ -209,6 +209,42 @@ void D2D_driver::DrawTranspRect( fPixelRect const & rect, D2D1::ColorF const col
 	SafeRelease( & pBrush );
 }
 
+void D2D_driver::DrawGradientRect
+( 
+	fPixelRect   const & rect, 
+	D2D1::ColorF const   colF1,
+	D2D1::ColorF const   colF2 
+) const
+{
+	HRESULT hr;
+	ID2D1GradientStopCollection * pGradientStopColl = NULL;
+	D2D1_GRADIENT_STOP            gradientStops[2] { { 0.0f, colF1 }, { 1.0f, colF2 } };
+	hr = m_pRenderTarget->CreateGradientStopCollection(	gradientStops, 2, & pGradientStopColl );
+	assert( SUCCEEDED(hr) );
+
+	ID2D1LinearGradientBrush * m_pLinearGradientBrush;
+	hr = m_pRenderTarget->CreateLinearGradientBrush
+	(
+		D2D1::LinearGradientBrushProperties
+		( D2D1::Point2F(rect.GetLeft().GetValue(), 0), D2D1::Point2F(rect.GetRight().GetValue(), 0) ),
+		pGradientStopColl,
+		&m_pLinearGradientBrush
+	);
+	assert( SUCCEEDED(hr) );
+
+	D2D1_RECT_F const d2dRect 
+	{ 
+		rect.GetLeft  ().GetValue(), 
+		rect.GetTop   ().GetValue(), 
+		rect.GetRight ().GetValue(), 
+		rect.GetBottom().GetValue() 
+	};
+	m_pRenderTarget->FillRectangle( & d2dRect, m_pLinearGradientBrush );
+
+	SafeRelease( & m_pLinearGradientBrush );
+	SafeRelease( & pGradientStopColl );
+}
+
 void D2D_driver::DrawLine
 ( 
 	fPixelPoint  const & fpp1, 

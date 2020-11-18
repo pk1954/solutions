@@ -30,6 +30,9 @@ public:
 		signalNr.Set2Null(); 
 	}
 
+	bool IsNull() { return trackNr.IsNull() || signalNr.IsNull(); }
+	bool IsNotNull() { return trackNr.IsNotNull() && signalNr.IsNotNull(); }
+
 	auto operator== (const SignalId & other) const
 	{
 		return (trackNr == other.trackNr) && (signalNr == other.signalNr);
@@ -39,8 +42,6 @@ public:
 	{
 		return ! (*this == other);
 	}
-
-	static const SignalId NULL_VAL;
 
 	TrackNr  const GetTrackNr () const { return trackNr; }
 	SignalNr const GetSignalNr() const { return signalNr; }
@@ -55,3 +56,5 @@ private:
 	TrackNr  trackNr;
 	SignalNr signalNr;
 };
+
+inline static const SignalId SignalIdNull { TrackNr::NULL_VAL(), SignalNr::NULL_VAL() };

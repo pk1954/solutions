@@ -34,6 +34,7 @@ protected:
 	virtual bool OnRButtonDown       ( WPARAM const, LPARAM const ) { return false; };
 	virtual bool OnRButtonUp         ( WPARAM const, LPARAM const ) { return false; };
 	virtual bool OnSize              ( WPARAM const, LPARAM const ) { return false; };
+	virtual bool OnShow              ( WPARAM const, LPARAM const ) { return false; };
 	virtual bool OnMouseLeave        ( WPARAM const, LPARAM const ) { return false; };
 
 	virtual void OnPaint( ) = 0;
