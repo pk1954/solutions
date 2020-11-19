@@ -37,12 +37,12 @@ public:
 	virtual void Trigger( )
 	{
 		fMicroSecs const time = m_pModelReaderInterface->GetSimulationTime( );
-		m_wstring = Format2wstring( time );
-		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, m_wstring );
+		wstring wstrTime;
+		Format2wstring( time, wstrTime );
+		m_pStatusBar->DisplayInPart( m_iPartInStatusBar, wstrTime );
 	}
 
 private:
-	wstring                          m_wstring               { };
 	StatusBar                      * m_pStatusBar            { nullptr };
 	NNetModelReaderInterface const * m_pModelReaderInterface { nullptr };
 	int                              m_iPartInStatusBar      { -1 };

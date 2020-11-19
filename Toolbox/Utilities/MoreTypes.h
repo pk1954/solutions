@@ -167,4 +167,4 @@ static MicroMeter CoveredDistance( meterPerSec const speed, fMicroSecs const tim
 
 ////////////// Formatting /////////////////////////////////////
 
-wstring Format2wstring( fMicroSecs const );
+void Format2wstring( fMicroSecs const, wstring & );

@@ -78,3 +78,15 @@ void NNetModelWriterInterface::SelectBeepers()
 		} 
 	); 
 }
+
+void NNetModelWriterInterface::RemoveOrphans( )
+{
+	Apply2All<Knot>                              
+	(                                                        
+		[&]( Knot const & knot )                  
+		{
+			if ( knot.IsOrphanedKnot() )
+				m_pModel->RemoveFromModel<Knot>( knot.GetId() );
+		} 
+	); 
+}

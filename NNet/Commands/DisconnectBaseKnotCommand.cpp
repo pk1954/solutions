@@ -57,7 +57,10 @@ void DisconnectBaseKnotCommand::Do( NNetModelWriterInterface & nmwi )
     if ( ! m_bInitialized )
         init( nmwi );
 
-//    wcout << L"DisconnectBaseKnotCommand " << L"Do " << L"shapeId = " << m_pBaseKnot->GetId( ) << endl;
+    if ( ! m_pBaseKnot )   // might have been deleted earlier
+        return;
+
+    //    wcout << L"DisconnectBaseKnotCommand " << L"Do " << L"shapeId = " << m_pBaseKnot->GetId( ) << endl;
     for ( int i = 0; i < m_startKnots.size(); ++i )
     {
         unique_ptr<Knot> & upKnot  { m_startKnots[i] };

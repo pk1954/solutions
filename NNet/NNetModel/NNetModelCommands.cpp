@@ -111,6 +111,16 @@ void NNetModelCommands::DeleteSelection( )
 		TraceStream( ) << __func__ << L" " << endl;
 	m_pCmdStack->OpenSeries();
 	{
+		//m_pMWI->Apply2All<Shape>                   
+		//(                                                        
+		//	[&]( Shape const & s )
+		//	{
+		//		if ( s.IsSelected() )
+		//			deleteShape( s.GetId() );
+		//	} 
+		//); 
+
+
 		vector<ShapeId> list;                         // detour with secondary list is neccessary!
 		m_pMWI->Apply2All<Shape>                      // cannot delete shapes directly in Apply2All
 		(                                                        

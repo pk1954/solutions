@@ -135,6 +135,8 @@ public:
 
     void ToggleStopOnTrigger( ShapeId const );
 
+    void RemoveOrphans( );
+
 private:
 
     NNetModel * m_pModel { nullptr };

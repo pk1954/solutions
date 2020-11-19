@@ -143,8 +143,9 @@ void Measurement::DisplayDynamicScale
 		);
 
 		wostringstream wBuffer;
-
-		wBuffer << Format2wstring( usMeasured ) << endl;
+		wstring        wstrTime;
+		Format2wstring( usMeasured, wstrTime );
+		wBuffer << wstrTime << endl;
 		wBuffer << fixed << setprecision(2);
 		wBuffer << frequency << L" Hz";
 

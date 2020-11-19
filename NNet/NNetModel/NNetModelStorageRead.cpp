@@ -310,6 +310,7 @@ bool NNetModelStorage::readModel( )
 {
     if ( ProcessNNetScript( m_pScript, m_pModelWriterInterface, m_wstrPathOfNewModel ) )
     {
+        m_pModelWriterInterface->RemoveOrphans();
         m_pDescription->SetDescription( m_wstrDescription );
         m_wstrPathOfOpenModel = m_wstrPathOfNewModel;
         m_pModelWriterInterface->StaticModelChanged();

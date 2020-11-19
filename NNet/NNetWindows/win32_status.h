@@ -33,7 +33,7 @@ public:
 	int  NewPart( );
 	void LastPart( );
 
-	void DisplayInPart( int const, wstring const & );
+	void DisplayInPart( int const, wstring const );
 
 private:
 

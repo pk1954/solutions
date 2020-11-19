@@ -65,6 +65,7 @@ void CommandStack::PushCommand( unique_ptr<Command> pCmd )
     m_pModelInterFace->CheckModel();
 #endif
     clearRedoStack( );
+    assert( * pCmd );
     pCmd->Do( * m_pModelInterFace );
     m_pModelInterFace->CheckModel();
     pushNewCommand( move(pCmd) );

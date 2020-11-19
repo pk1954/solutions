@@ -31,7 +31,7 @@ public:
 private:
     void init( NNetModelWriterInterface & );
 
-    BaseKnot               * m_pBaseKnot;
+    BaseKnot               * m_pBaseKnot { nullptr };
     unique_ptr<BaseKnot>     m_upBaseKnot;
 
     vector<unique_ptr<Knot>> m_startKnots  { };
