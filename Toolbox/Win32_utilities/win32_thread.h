@@ -14,6 +14,8 @@ namespace Util
 {
 	HANDLE RunAsAsyncThread( unsigned int __stdcall ( void * ), void *, UINT * = nullptr );
 
+	static unsigned int __stdcall ThreadProc( void * );
+
 	class Thread
 	{
 	public:
@@ -59,6 +61,6 @@ namespace Util
 		Event   m_eventThreadStarter { };
 		wstring m_strThreadName { };
 
-		friend static unsigned int __stdcall ThreadProc( void * );
+		friend static unsigned int __stdcall Util::ThreadProc( void * );
 	};
 };

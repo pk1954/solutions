@@ -8,6 +8,8 @@
 
 using std::wstring;
 
+static INT_PTR CALLBACK dialogProc( HWND const,	UINT const, WPARAM const, LPARAM const );
+
 class StdDialogBox
 {
 public:

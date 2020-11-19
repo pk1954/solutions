@@ -49,11 +49,11 @@ void TextWindow::StartTextWindow
 	ReleaseDC( hwnd, hDC );
 	Util::MakeLayered( hwnd, true, 0, uiAlpha );
     SetWindowText( hwnd, szClass );
-
+	PixelRectSize pixRectSize { rect.GetSize() };
 	m_pTextWindowThread = new TextWindowThread
 	( 
 		m_hDC_Memory, 
-		PixelRectSize{ rect.GetSize() }, 
+		pixRectSize,
 		* this, 
 		szClass, 
 		bAsync 

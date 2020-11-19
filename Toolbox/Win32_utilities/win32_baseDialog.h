@@ -6,6 +6,8 @@
 
 #include "win32_rootWindow.h"
 
+static INT_PTR CALLBACK BaseDialogProc( HWND const, UINT const, WPARAM const, LPARAM const );
+
 class BaseDialog: public RootWindow
 {
 public:

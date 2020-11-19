@@ -16,7 +16,7 @@ HWND BaseWindow::StartBaseWindow
 )
 {
     HINSTANCE const hInstance = GetModuleHandle( nullptr );
-    WNDCLASSEX      wcex;
+    WNDCLASSEX      wcex {};
 
     assert( szClass != nullptr );
 

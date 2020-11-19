@@ -7,6 +7,8 @@
 #include "PixelTypes.h"
 #include "win32_rootWindow.h"
 
+static LRESULT CALLBACK BaseWndProc( HWND const, UINT const, WPARAM const, LPARAM const );
+
 class BaseWindow : public RootWindow
 {
 public:

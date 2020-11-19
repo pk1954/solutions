@@ -1,0 +1,477 @@
+NewNeuron (4453.6/-12578.8)
+NewInputNeuron (6088.03/-11152)
+MoveShape 3811 (-5.37451/-16.125)
+MoveShape 3811 (5.37451/-392.363)
+MoveShape 3811 (-123.621/-575.108)
+MoveShape 3811 (-279.492/-510.61)
+MoveShape 3811 (-521.36/-413.862)
+MoveShape 3811 (-569.734/-333.241)
+MoveShape 3811 (-483.736/-327.865)
+MoveShape 3811 (-64.4983/-48.373)
+AddOutgoing2Knot 3811 (4062.08/-13786.4)
+AddIncoming2Knot 3810 (4475.94/-12582.4)
+AddOutgoing2Pipe 3546 (1718.65/-13367.1)
+AddIncoming2Pipe 3819 (1681.02/-12974.8)
+MoveShape 3822 (37.6239/16.124)
+MoveShape 3822 (472.986/150.496)
+MoveShape 3822 (290.242/53.748)
+MoveShape 3822 (236.493/75.248)
+MoveShape 3822 (451.487/91.3721)
+MoveShape 3822 (16.1245/0)
+MoveShape 3822 (32.249/5.375)
+MoveShape 3822 (32.249/0)
+MoveShape 3822 (59.1233/5.375)
+MoveShape 3822 (5.375/0)
+MoveShape 3822 (220.369/5.375)
+MoveShape 3822 (42.9988/21.499)
+MoveShape 3822 (128.996/42.999)
+MoveShape 3822 (107.497/26.874)
+MoveShape 3822 (102.122/26.875)
+MoveShape 3822 (102.122/10.749)
+MoveShape 3822 (32.249/-5.375)
+MoveShape 3822 (5.375/0)
+MoveShape 3822 (5.37451/-5.37402)
+MoveShape 3822 (5.375/-32.249)
+MoveShape 3822 (0/-10.75)
+MoveShape 3822 (5.375/-5.375)
+MoveShape 3820 (-11.5808/0)
+MoveShape 3820 (-157.789/14.4766)
+MoveShape 3820 (-191.083/27.5039)
+MoveShape 3820 (-180.95/15.9238)
+MoveShape 3820 (-79.6182/7.23828)
+MoveShape 3820 (-21.7139/1.44727)
+MoveShape 3820 (-4.34302/0)
+MoveShape 3820 (-39.0852/-14.4756)
+MoveShape 3820 (-27.5044/-14.4766)
+MoveShape 3820 (-33.2949/-18.8184)
+MoveShape 3820 (-27.5044/-14.4766)
+MoveShape 3820 (-26.0569/-13.0283)
+MoveShape 3820 (-20.2664/-8.68555)
+MoveShape 3820 (-2.89526/-1.44727)
+MoveShape 3820 (-7.23804/-1.44824)
+MoveShape 3820 (-68.0371/-7.2373)
+MoveShape 3820 (-1.44775/0)
+MoveShape 3820 (-83.9609/23.1611)
+MoveShape 3820 (-1.44751/1.44727)
+MoveShape 3820 (-59.3516/28.9521)
+MoveShape 3820 (-14.4761/8.68555)
+MoveShape 3821 (5.79004/-4.34277)
+MoveShape 3821 (118.704/-52.1143)
+MoveShape 3821 (8.68555/-2.89453)
+MoveShape 3821 (63.6943/-8.68555)
+MoveShape 3821 (40.5332/-4.34277)
+MoveShape 3821 (14.4761/-2.89551)
+MoveShape 3821 (4.34277/-1.44727)
+MoveShape 3821 (5.79004/-2.89551)
+MoveShape 3821 (18.8188/-11.5811)
+MoveShape 3821 (2.89551/0)
+MoveShape 3821 (0/1.44824)
+MoveShape 3821 (-1.44775/2.89453)
+MoveShape 3821 (-1.44775/0)
+MoveShape 3821 (-121.599/10.1338)
+MoveShape 3821 (-96.9893/4.34277)
+MoveShape 3821 (-160.684/0)
+MoveShape 3821 (-20.2666/0)
+MoveShape 3810 (-7.23779/0)
+MoveShape 3810 (-17.3716/5.79004)
+MoveShape 3810 (-24.6089/7.23828)
+MoveShape 3810 (-5.79053/2.89551)
+MoveShape 3810 (-13.0283/4.34277)
+MoveShape 3810 (-18.8188/1.44727)
+MoveShape 3810 (-56.4565/2.89551)
+MoveShape 3810 (-8.68555/0)
+MoveShape 3810 (-7.23828/0)
+MoveShape 3810 (-49.2183/0)
+MoveShape 3810 (-47.771/-4.34277)
+MoveShape 3810 (-59.3516/-4.34277)
+MoveShape 3810 (-30.3994/-1.44824)
+MoveShape 3810 (-11.5811/-1.44727)
+MoveShape 3810 (-17.3711/0)
+MoveShape 3810 (-11.5808/1.44727)
+MoveShape 3810 (-4.34302/0)
+MoveShape 3810 (-7.23779/1.44824)
+Connect 3810 3821
+MoveShape 3821 (-1.44751/11.5811)
+MoveShape 3821 (-5.79053/167.922)
+MoveShape 3821 (0/17.3711)
+MoveShape 3821 (0/5.79102)
+MoveShape 3814 (-1.44775/-1.44727)
+MoveShape 3814 (-15.9233/-2.89551)
+MoveShape 3814 (-33.2949/-4.34277)
+MoveShape 3814 (-55.0088/-2.89453)
+MoveShape 3814 (-108.57/-4.34277)
+MoveShape 3814 (-110.018/0)
+MoveShape 3814 (-53.5615/0)
+MoveShape 3814 (-7.23779/0)
+MoveShape 3814 (0/-19.082)
+MoveShape 3814 (-57.2471/-324.398)
+MoveShape 3814 (-66.7881/-353.022)
+MoveShape 3814 (-6.3606/-63.6074)
+MoveShape 3814 (3.18018/-34.9844)
+MoveShape 3814 (9.54126/-38.165)
+MoveShape 3814 (12.7214/-38.1641)
+MoveShape 3814 (12.7217/-50.8867)
+MoveShape 3814 (3.18042/-12.7207)
+MoveShape 3814 (0/-3.18066)
+MoveShape 3814 (12.7214/-19.082)
+MoveShape 3814 (3.18042/-3.18066)
+MoveShape 3814 (6.3606/-6.36133)
+MoveShape 3814 (12.7217/-3.17969)
+MoveShape 3814 (3.18042/-3.18066)
+MoveShape 3814 (3.18018/0)
+MoveShape 3814 (3.18042/-3.18066)
+MoveShape 3814 (6.36084/-6.36035)
+MoveShape 3812 (-1.79932/0)
+MoveShape 3812 (-3.59888/0.299805)
+MoveShape 3812 (-2.69922/1.2002)
+MoveShape 3812 (-0.300049/0)
+MoveShape 3812 (-2.09937/1.49902)
+MoveShape 3812 (-1.19946/0.600586)
+MoveShape 3812 (-0.300049/0.299805)
+MoveShape 3812 (-0.599854/0.299805)
+MoveShape 3812 (-0.299805/0.299805)
+MoveShape 3812 (-0.599854/0.599609)
+MoveShape 3812 (-0.899658/1.5)
+MoveShape 3812 (-1.79956/1.79883)
+MoveShape 3812 (-1.79932/1.5)
+MoveShape 3812 (-0.300049/0)
+MoveShape 3812 (-0.299805/0)
+MoveShape 3812 (-0.899658/0)
+MoveShape 3812 (-4.19873/-1.5)
+MoveShape 3812 (-6.89795/-0.599609)
+MoveShape 3812 (-8.99731/1.7998)
+MoveShape 3812 (-0.899658/3.29883)
+MoveShape 3812 (11.9963/4.79883)
+MoveShape 3812 (23.093/2.99902)
+MoveShape 3812 (8.69727/1.49902)
+MoveShape 3812 (2.09937/0)
+MoveShape 3812 (2.69922/0)
+Connect 3812 3815
+MoveShape 3814 (-2.09937/2.99902)
+MoveShape 3814 (-15.2954/26.9922)
+MoveShape 3814 (-17.0947/25.792)
+MoveShape 3814 (-12.896/13.4961)
+MoveShape 3814 (0/-0.299805)
+MoveShape 3814 (-5.39844/-7.49805)
+MoveShape 3814 (-6.89795/-6.59766)
+MoveShape 3814 (-8.99731/-8.09766)
+MoveShape 3814 (-17.3945/-8.69727)
+MoveShape 3814 (-4.79858/-2.09961)
+MoveShape 3812 (0.599854/2.39844)
+MoveShape 3812 (16.4951/19.1943)
+MoveShape 3812 (13.196/8.69727)
+MoveShape 3812 (9.29688/11.9971)
+MoveShape 3812 (2.39941/4.79785)
+MoveShape 3812 (0.299805/0.900391)
+InsertNeuron 3815 (4109.07/-13521)
+MoveShape 3825 (0.300293/0)
+MoveShape 3825 (12.896/-4.49902)
+MoveShape 3825 (24.2925/-3.89844)
+MoveShape 3825 (9.89697/-1.5)
+AppendNeuron 3814
+AddIncoming2Pipe 3813 (4091.4/-13662.8)
+MoveShape 3830 (0/-0.65918)
+MoveShape 3830 (3.95337/-5.27051)
+MoveShape 3830 (0/-0.65918)
+MoveShape 3830 (1.31763/0)
+MoveShape 3830 (15.8137/-6.58887)
+MoveShape 3830 (10.5422/-4.6123)
+MoveShape 3830 (8.56592/-1.31836)
+MoveShape 3830 (17.1313/-4.6123)
+MoveShape 3830 (10.5425/-1.97656)
+MoveShape 3830 (6.58887/-0.658203)
+MoveShape 3830 (6.58887/-1.97754)
+MoveShape 3829 (4.6123/-5.92969)
+MoveShape 3829 (48.7583/-48.7588)
+MoveShape 3829 (79.7271/-54.0293)
+MoveShape 3829 (27.0146/-11.8604)
+MoveShape 3829 (0.65918/0)
+MoveShape 3829 (0/0.658203)
+MoveShape 3829 (7.90674/14.4961)
+MoveShape 3829 (0.658691/0)
+AppendInputNeuron 3829
+MoveShape 3828 (-1.97656/0.65918)
+MoveShape 3828 (-10.5425/12.5186)
+MoveShape 3828 (-3.29443/10.543)
+MoveShape 3828 (0/1.31738)
+SelectShapesInRect (3833.77/-13865.1) (4385.93/-13438.1)
+CopySelection
+MoveShape 3848 (-5.92969/0.658203)
+MoveShape 3848 (-29.6506/10.543)
+MoveShape 3848 (-43.4873/13.8369)
+MoveShape 3848 (-46.123/11.8604)
+MoveShape 3848 (-32.2861/2.63477)
+MoveShape 3848 (-29.6504/-0.658203)
+MoveShape 3848 (-48.7585/-3.9541)
+MoveShape 3848 (-34.9216/-3.29395)
+MoveShape 3848 (-1.97681/0)
+MoveShape 3848 (8.56567/0)
+MoveShape 3848 (42.1697/-0.65918)
+MoveShape 3848 (11.2012/0)
+MoveShape 3848 (1.31787/0)
+MoveShape 3848 (7.90674/0)
+MoveShape 3848 (19.1082/-1.31738)
+MoveShape 3848 (0.658936/0)
+MoveShape 3848 (38.875/-2.63574)
+MoveShape 3848 (32.9451/-3.95313)
+MoveShape 3848 (21.7437/-4.6123)
+MoveShape 3848 (21.7437/-4.6123)
+MoveShape 3848 (13.178/-2.63574)
+MoveShape 3848 (9.22461/-2.63574)
+MoveShape 3848 (12.519/-1.97656)
+MoveShape 3848 (9.22461/-1.31836)
+MoveShape 3848 (0/0.65918)
+MoveShape 3848 (-5.27124/13.1777)
+MoveSelection  (-0.658936/-0.65918)
+MoveSelection  (-19.7668/-1.31836)
+MoveSelection  (-27.0149/-0.658203)
+MoveSelection  (-36.2395/0)
+MoveSelection  (-52.053/0.658203)
+MoveSelection  (-33.604/0.65918)
+MoveSelection  (-40.1929/1.31836)
+MoveSelection  (-11.8601/0)
+MoveSelection  (-6.58887/0.658203)
+MoveSelection  (-11.2014/0)
+MoveSelection  (-4.6123/0)
+MoveSelection  (-0.658936/0)
+MoveSelection  (-5.92993/-1.31738)
+MoveSelection  (-25.6973/-12.5195)
+MoveSelection  (0/-0.658203)
+MoveSelection  (-0.658691/-1.97754)
+MoveSelection  (0/-0.658203)
+MoveSelection  (-1.31787/-3.9541)
+MoveSelection  (-3.29443/-3.95313)
+MoveSelection  (-11.2014/-4.6123)
+MoveSelection  (-6.58887/3.95313)
+MoveSelection  (-6.58911/3.9541)
+MoveSelection  (-5.27124/2.63574)
+MoveSelection  (-3.95337/1.31738)
+MoveSelection  (-9.88354/2.63574)
+MoveSelection  (-1.97656/0.65918)
+MoveSelection  (-0.658936/0)
+MoveSelection  (1.97656/0)
+MoveSelection  (0/-2.89551)
+MoveSelection  (-44.8757/-30.3994)
+MoveSelection  (-59.3516/-26.0566)
+MoveSelection  (-50.6663/-27.5049)
+MoveSelection  (-20.2664/-17.3711)
+MoveSelection  (-10.1331/-10.1328)
+MoveSelection  (0/-2.89551)
+MoveSelection  (0/-1.44727)
+MoveSelection  (111.797/-48.9111)
+MoveSelection  (279.492/-251.543)
+MoveSelection  (391.289/-321.415)
+MoveSelection  (181.669/-118.784)
+MoveSelection  (-41.9233/0)
+MoveSelection  (-419.238/69.873)
+MoveSelection  (-433.213/258.529)
+MoveSelection  (-90.8347/90.835)
+MoveSelection  (-6.9873/13.9746)
+MoveSelection  (0/6.9873)
+MoveSelection  (-6.9873/6.9873)
+MoveSelection  (-13.9746/27.9492)
+MoveSelection  (-27.9492/41.9238)
+MoveSelection  (-34.9365/27.9492)
+MoveSelection  (-13.9746/13.9746)
+MoveSelection  (-20.9617/13.9746)
+MoveShape 3850 (3.42627/5.99609)
+MoveShape 3850 (2.56958/71.9521)
+MoveShape 3850 (-11.1353/45.3984)
+MoveShape 3850 (-20.5579/36.832)
+MoveShape 3850 (-17.1313/23.9844)
+MoveShape 3850 (-7.70898/15.418)
+MoveShape 3850 (-2.56982/8.56543)
+MoveShape 3850 (-0.856445/6.85254)
+MoveShape 3850 (-0.856689/4.2832)
+MoveShape 3850 (0/0.856445)
+MoveShape 3850 (0/0.856445)
+MoveShape 3850 (0/0.856445)
+MoveShape 3850 (-0.856445/3.42676)
+Connect 3850 3822
+MoveShape 3850 (4.28296/-3.42578)
+MoveShape 3850 (53.1072/-49.6816)
+MoveShape 3850 (39.4021/-39.4023)
+MoveShape 3850 (21.4143/-21.4141)
+MoveShape 3850 (0.856689/0)
+AnalyzeLoops
+SelectAll tBoolOp::opFalse
+AnalyzeAnomalies
+MoveShape 42 (4.75/0.678589)
+MoveShape 42 (63.1064/2.03564)
+MoveShape 42 (23.75/0)
+MoveShape 42 (22.3926/-0.678528)
+MoveShape 42 (14.2495/-2.03571)
+MoveShape 42 (0.678711/-0.678589)
+MoveShape 42 (2.71436/0)
+MoveShape 42 (16.2856/0)
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+DeleteShape 3872
+DeleteShape 3874
+DeleteShape 183
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+SelectShapesInRect (-4502.49/-5978.86) (-4500.95/-5977.31)
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+AnalyzeAnomalies
+DeleteSelection
+Disconnect 4023
+MoveShape 4025 (2.05811/2.05762)
+MoveShape 4025 (21.0981/21.3555)
+MoveShape 4025 (16.4663/15.1807)
+MoveShape 4025 (4.63135/6.1748)
+MoveShape 4025 (-0.257324/0)
+MoveShape 4025 (-23.6709/-1.54395)
+MoveShape 4025 (-40.6519/1.28613)
+MoveShape 4025 (-23.4136/0)
+SelectShapesInRect (-6256.88/-9301.8) (-5740.25/-8949.11)
+MarkSelection 1
+MoveSelection  (-2.48389/-3.72559)
+MoveSelection  (-8.69336/-21.1123)
+MoveSelection  (-2.48389/-8.69336)
+MoveSelection  (-2.4834/-14.9023)
+MoveSelection  (-16.1445/3.72656)
+MoveSelection  (-122.947/31.0469)
+MoveSelection  (-49.6758/14.9023)
+MarkSelection 0
+SelectAll tBoolOp::opFalse
+MoveShape 1012 (1.2417/1.24121)
+MoveShape 1012 (27.3218/52.1602)
+MoveShape 1012 (13.6606/48.4336)
+MoveShape 1012 (4.96777/19.8701)
+MoveShape 1272 (9.93506/0)
+MoveShape 1272 (80.7231/-13.6602)
+SetTriggerSound 1017 1 400 100
+SelectAllBeepers 
+DeleteSelection
+SelectAllBeepers 
+SelectAll tBoolOp::opFalse
+SetTriggerSound 931 1 400 100
+SelectAllBeepers 
+SelectAll tBoolOp::opFalse
+ClearBeepers
+DeleteShape 1012
+DeleteShape 1333
+SelectShapesInRect (-4458.44/-8788.7) (-4387.41/-8787.09)
+MoveSelection  (-9.68701/0)
+SelectAll tBoolOp::opTrue
+SelectAll tBoolOp::opFalse
+SelectShape 1004 tBoolOp::opTrue
+SelectShape 1280 tBoolOp::opTrue
+SelectShape 1280 tBoolOp::opFalse
+SelectShape 1004 tBoolOp::opFalse
+SelectShapesInRect (-6460.37/-9211.69) (-5801.67/-8767.71)
+SelectAll tBoolOp::opFalse
+SelectSubtree 931 tBoolOp::opTrue
+MoveSelection  (69.166/32.2773)
+MoveSelection  (221.331/106.055)
+MoveSelection  (50.7217/36.8877)
+SelectAll tBoolOp::opFalse
+SetParameter PeakVoltage 10
+SetParameter Threshold 14
+SetParameter PulseWidth 1900
+SetParameter RefractoryPeriod 530
+SetParameter TimeResolution 100
+SetParameter PulseSpeed 60
+SetParameter PeakVoltage 10
+SetParameter Threshold 14
+SetParameter PulseWidth 1900
+SetParameter RefractoryPeriod 530
+SetParameter TimeResolution 110
+SetParameter PulseSpeed 60
+SetParameter PeakVoltage 10
+SetParameter Threshold 14
+SetParameter PulseWidth 1900
+SetParameter RefractoryPeriod 530
+SetParameter TimeResolution 110
+SetParameter PulseSpeed 61
+SetParameter PeakVoltage 10
+SetParameter Threshold 14
+SetParameter PulseWidth 1900
+SetParameter RefractoryPeriod 530
+SetParameter TimeResolution 110
+SetParameter PulseSpeed 61
+SetParameter PeakVoltage 10
+SetParameter Threshold 12
+SetParameter PulseWidth 1900
+SetParameter RefractoryPeriod 530
+SetParameter TimeResolution 110
+SetParameter PulseSpeed 61
+SetParameter PeakVoltage 11
+SetParameter Threshold 12
+SetParameter PulseWidth 1900
+SetParameter RefractoryPeriod 530
+SetParameter TimeResolution 110
+SetParameter PulseSpeed 61
+SetParameter PeakVoltage 10
+SetParameter Threshold 14
+SetParameter PulseWidth 1920
+SetParameter RefractoryPeriod 530
+SetParameter TimeResolution 110
+SetParameter PulseSpeed 60
+ToggleStopOnTrigger 958
+ToggleStopOnTrigger 931
+ToggleStopOnTrigger 958
+ToggleStopOnTrigger 931

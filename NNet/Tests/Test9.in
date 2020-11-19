@@ -1,0 +1,106 @@
+# Test9.in
+
+ToggleStopOnTrigger 1
+UndoCommand
+RedoCommand
+ToggleStopOnTrigger 3
+UndoCommand
+RedoCommand
+UndoCommand
+UndoCommand
+RedoCommand
+UndoCommand
+SelectShapesInRect (561.10|346.74)(720.46|475.62)
+SelectAll  tBoolOp::opFalse
+SetTriggerSound 3 1 1100 100
+UndoCommand
+UndoCommand
+UndoCommand
+RedoCommand
+RedoCommand
+RedoCommand
+MoveShape 0 (-5.22|1.74)
+MoveShape 0 (-10.45|4.35)
+MoveShape 0 (-9.58|3.48)
+MoveShape 0 (-9.58|2.61)
+MoveShape 0 (-9.58|2.61)
+MoveShape 0 (-11.32|1.74)
+MoveShape 0 (-13.06|2.61)
+MoveShape 0 (-11.32|0.87)
+MoveShape 0 (-5.22|0.00)
+MoveShape 0 (-2.61|0.87)
+MoveShape 0 (-3.48|0.87)
+MoveShape 0 (-1.74|0.87)
+MoveShape 0 (-0.87|0.00)
+MoveShape 0 (-0.87|0.00)
+MoveShape 0 (-1.74|0.00)
+MoveShape 0 (-3.48|0.87)
+MoveShape 0 (-2.61|0.87)
+MoveShape 0 (-2.61|0.87)
+MoveShape 0 (-0.87|0.00)
+MoveShape 0 (-2.61|0.00)
+MoveShape 0 (-2.61|0.87)
+MoveShape 0 (-5.22|0.87)
+MoveShape 0 (-3.48|0.00)
+MoveShape 0 (-0.87|0.00)
+MoveShape 0 (-2.61|0.00)
+MoveShape 0 (-0.87|0.87)
+MoveShape 0 (-0.87|0.00)
+SetPulseRate 0 45.00
+UndoCommand
+UndoCommand
+RedoCommand
+RedoCommand
+AddOutgoing2Pipe 6 (346.01|404.21)
+MoveShape 7 (-3.48|2.61)
+MoveShape 7 (-8.71|8.71)
+MoveShape 7 (-13.06|12.19)
+MoveShape 7 (-14.80|13.06)
+MoveShape 7 (-26.12|22.64)
+MoveShape 7 (-33.96|23.51)
+MoveShape 7 (-34.83|24.38)
+MoveShape 7 (-32.22|22.64)
+MoveShape 7 (-29.61|20.90)
+MoveShape 7 (-25.25|20.90)
+MoveShape 7 (-21.77|17.42)
+MoveShape 7 (-18.29|14.80)
+MoveShape 7 (-15.67|10.45)
+MoveShape 7 (-13.06|9.58)
+MoveShape 7 (-12.19|9.58)
+MoveShape 7 (-5.22|5.22)
+MoveShape 7 (-5.22|4.35)
+MoveShape 7 (-5.22|3.48)
+MoveShape 7 (-4.35|4.35)
+MoveShape 7 (-3.48|3.48)
+MoveShape 7 (-2.61|3.48)
+MoveShape 7 (-2.61|1.74)
+MoveShape 7 (-4.35|5.22)
+MoveShape 7 (-0.87|1.74)
+MoveShape 7 (-0.87|1.74)
+MoveShape 7 (-1.74|1.74)
+MoveShape 7 (-1.74|2.61)
+MoveShape 7 (0.00|0.87)
+MoveShape 7 (-0.87|1.74)
+AppendNeuron 7
+MoveShape 7 (0.00|1.74)
+MoveShape 7 (0.00|6.10)
+MoveShape 7 (0.00|6.10)
+MoveShape 7 (1.74|4.35)
+MoveShape 7 (3.48|4.35)
+MoveShape 7 (0.87|2.61)
+MoveShape 7 (1.74|0.87)
+MoveShape 7 (0.87|1.74)
+MoveShape 7 (1.74|0.87)
+MoveShape 7 (0.87|0.87)
+MoveShape 7 (-0.87|0.00)
+MoveShape 7 (-3.48|-4.35)
+MoveShape 7 (-1.74|-0.87)
+MoveShape 7 (-1.74|-1.74)
+MoveShape 7 (-2.61|-1.74)
+MoveShape 7 (-0.87|-1.74)
+MoveShape 7 (-1.74|-0.87)
+MoveShape 7 (-1.74|-0.87)
+MoveShape 7 (0.00|-0.87)
+MoveShape 8 (0.00|-0.87)
+MoveShape 8 (-16.55|64.44)
+Disconnect 0
