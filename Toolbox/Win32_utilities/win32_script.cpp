@@ -14,6 +14,7 @@
 #include "win32_stopwatch.h"
 #include "win32_script.h"
 
+using std::wcout;
 using std::vector;
 using std::wstring;
 using std::wostringstream;
@@ -48,7 +49,12 @@ ScriptFile::ScriptFile( )
         IID_IFileOpenDialog, 
         reinterpret_cast<void**>( & m_pFileDlgOpen )
     );
-    assert( SUCCEEDED(hr) );
+    if ( ! SUCCEEDED(hr) )
+    {
+        wcout << L"+++ ScriptFile constructor: CoCreateInstance( CLSID_FileOpenDialog ... ) failed." << endl;
+        wcout << L"+++ error code: " << hr << endl;
+        return;
+    }
 
     hr = CoCreateInstance
     (
@@ -57,7 +63,12 @@ ScriptFile::ScriptFile( )
         IID_IFileSaveDialog, 
         reinterpret_cast<void**>( & m_pFileDlgSave )
     );
-    assert( SUCCEEDED(hr) );
+    if ( ! SUCCEEDED(hr) )
+    {
+        wcout << L"+++ ScriptFile constructor: CoCreateInstance( CLSID_FileSaveDialog ... ) failed." << endl;
+        wcout << L"+++ error code: " << hr << endl;
+        return;
+    }
 
     hr = m_pFileDlgOpen->SetTitle( L"Open file" );
     assert( SUCCEEDED(hr) );
@@ -78,17 +89,25 @@ wstring ScriptFile::getResult( IFileDialog * const pFileDlg )
     wstring      wstrRes { };
     IShellItem * pItem   { nullptr };
     hr = pFileDlg->GetResult( & pItem );                        
-    if ( SUCCEEDED(hr) )
+    if ( ! SUCCEEDED(hr) )
     {
-        PWSTR pszPath { nullptr };
-        hr = pItem->GetDisplayName( SIGDN_FILESYSPATH, & pszPath ); 
-        if ( SUCCEEDED(hr) )
-        {
-            wstrRes = pszPath;
-            CoTaskMemFree( pszPath );
-        }
-        pItem->Release();
+        wcout << L"+++ AskForFileName: GetResult( & pItem ) failed." << endl;
+        wcout << L"+++ error code: " << hr << endl;
+        return wstrRes;
     }
+
+    PWSTR pszPath { nullptr };
+    hr = pItem->GetDisplayName( SIGDN_FILESYSPATH, & pszPath ); 
+    if ( ! SUCCEEDED(hr) )
+    {
+        wcout << L"+++ AskForFileName: GetDisplayName( SIGDN_FILESYSPATH, & pszPath ) failed." << endl;
+        wcout << L"+++ error code: " << hr << endl;
+        return wstrRes;
+    }
+
+    wstrRes = pszPath;
+    CoTaskMemFree( pszPath );
+    pItem->Release();
     return wstrRes;
 }
 
@@ -104,10 +123,28 @@ wstring const ScriptFile::AskForFileName
     IFileDialog     * pFileDlg { (mode == tFileMode::read) ? m_pFileDlgOpen : m_pFileDlgSave };
     wstring           wstrRes  { };
     HRESULT           hr;
-    hr = m_pFileDlgSave->SetDefaultExtension( extension.c_str() ); assert( SUCCEEDED(hr) );
-    hr = pFileDlg->SetFileTypes( 1, & rgSpec );                    assert( SUCCEEDED(hr) );
+    hr = m_pFileDlgSave->SetDefaultExtension( extension.c_str() );
+    if ( ! SUCCEEDED( hr ) )
+    {
+        wcout << L"+++ AskForFileName: SetDefaultExtension(\"" << extension.c_str() << L"\") failed." << endl;
+        wcout << L"+++ error code : " << hr << endl;
+        return wstrRes;
+    }
+    hr = pFileDlg->SetFileTypes( 1, & rgSpec );
+    if ( ! SUCCEEDED( hr ) )
+    {
+        wcout << L"+++ AskForFileName: SetFileTypes(1, {\"" << description.c_str() << L"\" , \"" << filter.c_str() << L"\" }) failed." << endl;
+        wcout << L"+++ error code : " << hr << endl;
+        return wstrRes;
+    }
     hr = pFileDlg->Show( NULL ); 
-    if ( SUCCEEDED(hr) )
-        wstrRes =  getResult( pFileDlg );
+    if ( ! SUCCEEDED( hr ) )
+    {
+        wcout << L"+++ AskForFileName: Show( NULL ) failed." << endl;
+        wcout << L"+++ error code: " << hr << endl;
+        return wstrRes;
+    }
+
+    wstrRes = getResult( pFileDlg );
     return wstrRes;
 }
