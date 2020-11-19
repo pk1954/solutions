@@ -167,26 +167,4 @@ static MicroMeter CoveredDistance( meterPerSec const speed, fMicroSecs const tim
 
 ////////////// Formatting /////////////////////////////////////
 
-static wstring Format2wstring( fMicroSecs const us )
-{
-	wstring wstrResult;
-	static int const BUFSIZE { 100 };
-	static wchar_t buffer[BUFSIZE];
-	if ( us > 1.e6_MicroSecs )  // more than one second
-	{
-		float seconds = us.GetValue() / 1000000.0f;
-		swprintf( buffer, BUFSIZE, L"%.2f s", seconds );
-	}
-	else if ( us > 1.e3_MicroSecs )  // more than one millisecond
-	{
-		float millisecs = us.GetValue() / 1000.0f;
-		swprintf( buffer, BUFSIZE, L"%.2f ms", millisecs );
-	}
-	else
-	{
-		float microsecs = us.GetValue();
-		swprintf( buffer, BUFSIZE, L"%.2f \u03BCs", microsecs );
-	}
-	wstrResult.assign( buffer );
-	return wstrResult;
-}
+wstring Format2wstring( fMicroSecs const );

@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include <locale>
-#include <iomanip>
 #include "win32_util.h"
 #include "win32_thread.h"
 #include "win32_util_resource.h"
