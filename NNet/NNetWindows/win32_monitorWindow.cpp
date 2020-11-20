@@ -214,8 +214,9 @@ void MonitorWindow::doPaint( ) const
 	float      const fPointsInWin { usInWin / usResolution };
 	fMicroSecs const usIncr       { (fPointsInWin > fPWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
 	fPIXEL     const fPHeight     { calcTrackHeight() };
+	fPIXEL     const fPXend       { fPWidth + Convert2fPIXEL( m_pixHorzOffset ) };
 
-	m_pMonitorData->Apply2AllSignals( [&]( SignalId const id ) { paintSignal( id, fPHeight, fPWidth, usIncr, usInWin ); } );
+	m_pMonitorData->Apply2AllSignals( [&]( SignalId const id ) { paintSignal( id, fPHeight, fPXend, usIncr, usInWin ); } );
 
 	if ( m_bShowScale )
 		m_scale.DisplayStaticScale( );
@@ -227,7 +228,7 @@ void MonitorWindow::doPaint( ) const
 		m_graphics.DrawTranspRect( fPixelRect( pos, size ), NNetColors::COL_BEACON );
 	}
 
-	m_measurement.DisplayDynamicScale( Convert2fPIXEL(pixPointCrsr.GetX()), m_fMicroSecsPerPixel );
+	m_measurement.DisplayDynamicScale( m_fMicroSecsPerPixel );
 }
 
 bool MonitorWindow::testSignal  // if signal is "better" than fPixBestDelta, update fPixBestDelta and return true, else false
@@ -410,6 +411,8 @@ void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 				m_measurement.MoveSelection( Convert2fPIXEL( pixCrsrPos.GetX() ) );
 			else if ( m_idSigSelected.GetSignalNr().IsNotNull() )
 				m_pixMoveOffsetY += pixCrsrPos.GetY() - m_pixLast.GetY();
+			if ( m_bHorizontalMove )
+				m_pixHorzOffset +=  pixCrsrPos.GetX() - m_pixLast.GetX();
 		}
 		m_pixLast = pixCrsrPos;
 		Trigger( );   // cause repaint

@@ -16,7 +16,7 @@ public:
 
 	void Initialize( D2D_driver * const );
 	void SetClientRectSize( PIXEL const, PIXEL const );
-	void DisplayDynamicScale( fPIXEL const, fMicroSecs const ) const;
+	void DisplayDynamicScale( fMicroSecs const ) const;
 	void MoveSelection( fPIXEL const );
 	bool Select( fPIXEL const );
 	void ResetLimits( );

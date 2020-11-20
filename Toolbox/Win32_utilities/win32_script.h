@@ -28,9 +28,12 @@ public:
 	static wstring const AskForFileName( wstring const, wstring const, tFileMode const );
 
 private:
-	static bool          m_bInitialized;
-	static IFileDialog * m_pFileDlgOpen;
-	static IFileDialog * m_pFileDlgSave;
+	static bool m_bInitialized;
 
-	static wstring getResult( IFileDialog * const );
+	static IFileDialog * createOpenDialog();
+	static IFileDialog * createSaveDialog();
+
+	static bool    const setFileTypes       ( IFileDialog *, wstring const, wstring const );
+	static bool    const setDefaultExtension( IFileDialog *, wstring const);
+	static wstring const getResult( IFileDialog * const );
 };

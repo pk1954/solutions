@@ -101,11 +101,7 @@ bool const Measurement::isCloseTo( fPIXEL const fPix1, fPIXEL const fPix2 ) cons
 	return fabs(fPix1.GetValue() - fPix2.GetValue() ) <= GRADIENT_WIDTH.GetValue();
 }
 
-void Measurement::DisplayDynamicScale
-( 
-	fPIXEL     const fPixPosCrsr,
-	fMicroSecs const fMicroSecsPerPixel
-) const
+void Measurement::DisplayDynamicScale( fMicroSecs const fMicroSecsPerPixel ) const
 {
 	if ( m_bActive )
 	{
