@@ -91,26 +91,12 @@ bool NNetController::HandleCommand( int const wmId, LPARAM const lParam, MicroMe
         FatalError::Happened( static_cast<long>(lParam), "unknown" );
     }
 
-    //try
-    //{
-        if ( processUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
-            return true;                        // but do not concern the model  
-    //}
-    //catch ( ... )
-    //{
-    //    FatalError::Happened( 2, "processUIcommand" );
-    //}
+    if ( processUIcommand( wmId, lParam ) ) // handle all commands that affect the UI
+        return true;                        // but do not concern the model  
 
-    //try
-    //{
-        m_pComputeThread->LockComputation( );
-        bRes = processModelCommand( wmId, lParam, umPoint );
-        m_pComputeThread->ReleaseComputationLock( );
-    //}
-    //catch ( ... )
-    //{
-    //    FatalError::Happened( 3, "processModelCommand" );
-    //}
+    m_pComputeThread->LockComputation( );
+    bRes = processModelCommand( wmId, lParam, umPoint );
+    m_pComputeThread->ReleaseComputationLock( );
 
     return bRes;
 }
@@ -330,6 +316,7 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDD_ATTACH2MONITOR:
         m_pMonitorWindow->AddSignal( m_pMainWindow->GetHighlightedShapeId() );
+        ::SendMessage( m_pWinManager->GetHWND( IDM_MONITOR_WINDOW ), WM_COMMAND, IDM_WINDOW_ON, 0 );
         break;
 
     case IDM_ANALYZE_LOOPS:

@@ -4,46 +4,9 @@
 
 #pragma once
 
+#include "win32_util_resource.h"
+
 // identifiers below 100 are reserved for win32_utilities
-#define IDS_APP_TITLE                   1
-#define IDD_ABOUTBOX                    2
-#define IDD_TIMESTAMP                   3
-
-#define IDM_ABOUT                       4
-#define IDM_EXIT                        5
-
-#define IDM_REFRESH                     6
-#define IDD_REFRESH_RATE_DIALOG         9
-
-#define IDM_SCRIPT_DIALOG              10
-
-#define IDM_WINDOW_ON                  20
-#define IDM_WINDOW_OFF                 21
-#define IDM_WINDOW_AUTO                22
-
-#define IDM_APPL_WINDOW                30
-#define IDM_MAIN_WINDOW                31
-#define IDM_STATUS_BAR                 32
-#define IDM_CONS_WINDOW                35
-#define IDM_MONITOR_WINDOW             38
-#define IDM_MINI_WINDOW                39
-
-#define IDM_UNDO                       60
-#define IDM_REDO                       61
-
-#define IDM_ZOOM_MODE                  70      
-#define IDM_ZOOM_IN                    73    
-#define IDM_ZOOM_OUT                   74    
-
-#define IDM_SIMU_MODE                  80
-#define IDM_FORWARD                    81
-#define IDM_RUN                        83
-#define IDM_STOP                       84
-#define IDM_MAX_SPEED                  87
-#define IDM_SIMULATION_SPEED           88
-
-#define IDM_MOVE                       90
-
 // application identifiers start at 100
 
 #define IDM_FATAL_ERROR     	 100
@@ -51,6 +14,11 @@
 #define IDC_NNET_SIMU_MAIN  	 102
 #define IDD_APPLY_PARAMETERS     105
 #define IDD_RESET_PARAMETERS     106
+
+#define IDM_SCRIPT_DIALOG        110
+#define IDM_UNDO                 115
+#define IDM_REDO                 116
+
 #define IDI_NNETSIMU			 120
 #define IDI_SMALL				 121
 #define IDC_NNETSIMU			 122
@@ -99,6 +67,7 @@
 #define IDM_PLUS                 191
 #define IDM_MINUS                192
 
+#define IDM_MONITOR_WINDOW       530
 #define IDD_ATTACH2MONITOR       540
 
 #define IDD_CONNECT              560
