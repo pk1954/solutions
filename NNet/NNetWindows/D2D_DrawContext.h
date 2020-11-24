@@ -11,7 +11,7 @@
 #include "ShapeId.h"
 #include "scale.h"
 
-static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
+inline static MicroMeter const STD_FONT_SIZE { 20._MicroMeter };
 
 class D2D_DrawContext: public DrawContext
 {

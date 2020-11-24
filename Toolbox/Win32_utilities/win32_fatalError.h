@@ -32,7 +32,7 @@ public:
 	static void Provoke( )
 	{
 		long long x = 5;
-		int * pi = (int *)(x);
+		int * pi = (int *)(x); //-V566
 		* pi = 23;
 	}
 

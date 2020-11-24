@@ -55,7 +55,7 @@ void DescriptionWindow::SetDescription( wstring const wstrDesc )
 bool DescriptionWindow::GetDescriptionLine( int const iLineNr, wstring & wstrDst ) const
 {
     static const int BUFLEN { 1024 };
-    wchar_t buffer[BUFLEN];
+    alignas(int) wchar_t buffer[BUFLEN];  // Edit_GetLine interpretes begin of buffer as int
     int iLineCount  = Edit_GetLineCount( m_hwndEdit );
     if ( iLineNr >= iLineCount )
         return false;

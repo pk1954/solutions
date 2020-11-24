@@ -15,8 +15,6 @@ public:
 
 	InputNeuron( MicroMeterPoint const );
 
-	InputNeuron( InputNeuron const & );   // copy constructor
-
 	virtual ~InputNeuron( );
 
 	virtual bool operator==( Shape const & ) const override;

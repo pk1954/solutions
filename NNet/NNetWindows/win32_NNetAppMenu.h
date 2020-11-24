@@ -17,7 +17,7 @@ class NNetAppMenu : public ObserverInterface
 {
 public:
 	NNetAppMenu();
-	virtual ~NNetAppMenu() {}
+	virtual ~NNetAppMenu();
 
 	void Start
 	( 

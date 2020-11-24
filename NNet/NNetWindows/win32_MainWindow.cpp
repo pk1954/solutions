@@ -229,7 +229,7 @@ void MainWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 		if ( m_ptLast.IsNotNull() )     // last cursor pos stored in m_ptLast
 		{
 			m_shapeSuperHighlighted = NO_SHAPE;
-			if ( IsDefined( m_shapeHighlighted ) )
+			if ( IsDefined( m_shapeHighlighted ) ) //-V1051
 			{
 				setSuperHighlightedShape( m_pModelReaderInterface->GetShapePos( m_shapeHighlighted ) );
 				m_pNNetCommands->MoveShape( m_shapeHighlighted, umCrsrPos - umLastPos );

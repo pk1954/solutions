@@ -26,8 +26,8 @@ public:
 	bool TrackingActive( )              { return m_bSelectedLeft || m_bSelectedRight; }
 
 private:
-	D2D_driver        * m_pGraphics; 
-	IDWriteTextFormat * m_pTextFormat;
+	D2D_driver        * m_pGraphics   { nullptr }; 
+	IDWriteTextFormat * m_pTextFormat { nullptr };
 
 	fPIXEL m_fPixClientWidth { fPIXEL::NULL_VAL() };
 	fPIXEL m_fPixClientHeight{ fPIXEL::NULL_VAL() };

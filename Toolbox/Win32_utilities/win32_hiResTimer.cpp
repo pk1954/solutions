@@ -41,7 +41,7 @@ microseconds HiResTimer::TicksToMicroseconds( Ticks const ticks ) const
 void HiResTimer::BusyWait( microseconds const us, Ticks & ticks )
 {
 	Ticks ticksToWait = MicroSecondsToTicks( us );
-	if ( ticks == Ticks( 0 ) ) 
+	if ( ticks == Ticks( 0 ) )  //-V1051
 		ticks = ReadHiResTimer( );
 	Ticks ticksTarget = ticks + ticksToWait;
 

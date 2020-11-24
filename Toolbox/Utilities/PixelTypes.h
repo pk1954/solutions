@@ -19,8 +19,8 @@ using PixelRectSize = SizeType   < PIXEL >;
 using PixelRect     = RectType   < PIXEL >;
 using PixelCircle   = CircleType < PIXEL >;
 
-static PixelPoint const PP_NULL( PixelPoint::NULL_VAL() );   // compiler generates call!
-static PixelPoint const PP_ZERO( PixelPoint::ZERO_VAL() );   // compiler generates call!
+inline static PixelPoint const PP_NULL( PixelPoint::NULL_VAL() );   // compiler generates call!
+inline static PixelPoint const PP_ZERO( PixelPoint::ZERO_VAL() );   // compiler generates call!
 
 constexpr PIXEL operator"" _PIXEL( unsigned long long ull )
 {
@@ -35,8 +35,8 @@ using fPixelRectSize = SizeType   < fPIXEL >;
 using fPixelRect     = RectType   < fPIXEL >;
 using fPixelCircle   = CircleType < fPIXEL >;
 
-static fPixelPoint const fPP_NULL( fPixelPoint::NULL_VAL() );   // compiler generates call!
-static fPixelPoint const fPP_ZERO( fPixelPoint::ZERO_VAL() );   // compiler generates call!
+inline static fPixelPoint const fPP_NULL( fPixelPoint::NULL_VAL() );   // compiler generates call!
+inline static fPixelPoint const fPP_ZERO( fPixelPoint::ZERO_VAL() );   // compiler generates call!
 
 constexpr fPIXEL operator"" _fPIXEL( long double ld )
 {

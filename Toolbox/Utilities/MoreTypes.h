@@ -42,7 +42,7 @@ constexpr const MicroMeter operator"" _MicroMeter( const long double d )
 	return MicroMeter( Cast2Float( d ) );
 }
 
-MicroMeter const MAX_MICRO_METER{ 1e7_MicroMeter };  // 10 meter
+inline MicroMeter const MAX_MICRO_METER{ 1e7_MicroMeter };  // 10 meter
 
 // static MicroMeter const MicroMeter_NULL( std::numeric_limits<float>::infinity() );
 																	   																	   
@@ -96,14 +96,14 @@ fHertz constexpr operator"" _fHertz( long double dl )
 
 static fMicroSecs const PulseDuration( fHertz const freq )
 {
-	return (freq.GetValue() == 0) 
+	return IsCloseToZero(freq.GetValue()) 
 		? fMicroSecs( (std::numeric_limits<float>::max)() )
 		: fMicroSecs( 1e6f / freq.GetValue() );
 }
 
 static fHertz const Frequency( fMicroSecs const us )
 {
-	return (us.GetValue() == 0 )
+	return IsCloseToZero(us.GetValue())
 		? fHertz( (std::numeric_limits<float>::max)() )
 		: fHertz( 1e6f / us.GetValue() );
 }
@@ -112,8 +112,8 @@ static fHertz const Frequency( fMicroSecs const us )
 
 using MicroMeterPoint = PosType< MicroMeter >;
 
-static MicroMeterPoint const NP_NULL( MicroMeterPoint::NULL_VAL() );   // compiler generates call!
-static MicroMeterPoint const NP_ZERO( MicroMeterPoint::ZERO_VAL() );   // compiler generates call!
+inline static MicroMeterPoint const NP_NULL( MicroMeterPoint::NULL_VAL() );   // compiler generates call!
+inline static MicroMeterPoint const NP_ZERO( MicroMeterPoint::ZERO_VAL() );   // compiler generates call!
 
 inline static MicroMeter Hypot( MicroMeterPoint const pt ) 
 { 

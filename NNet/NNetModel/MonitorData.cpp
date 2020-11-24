@@ -75,7 +75,7 @@ void MonitorData::AddSignal( ShapeId const idShape, TrackNr const trackNr )
 SignalId const MonitorData::MoveSignal(	SignalId const & id, TrackNr const trackNrNew )
 {
 	SignalId idNew { id };
-	if ( IsValid(id) && IsValid(trackNrNew) )
+	if ( IsValid(id) && IsValid(trackNrNew) ) //-V1051
 	{
 		unique_ptr<Signal> pSignal     { removeSignal( id ) };
 		SignalNr           signalNrNew { addSignal( trackNrNew, move(pSignal) ) };

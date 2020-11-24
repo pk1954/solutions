@@ -87,7 +87,7 @@ public:
 		assert( IsEmptySlot( id ) );
 		assert( upShape );
 
-		upShape->IncCounter();
+		upShape->IncCounter(); //-V522
 		m_list[id.GetValue()] = move(upShape);
 	}
 

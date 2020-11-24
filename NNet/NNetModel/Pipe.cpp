@@ -42,6 +42,16 @@ void Pipe::Dump( ) const
 	wcout << L' ' << * this << endl;
 }
 
+void Pipe::init( const Pipe & rhs )
+{
+	Shape::operator=( rhs );
+	m_pKnotStart = nullptr;
+	m_pKnotEnd   = nullptr;
+	m_width      = rhs.m_width;
+	m_potIndex   = rhs.m_potIndex;
+	m_potential  = rhs.m_potential;
+}
+
 bool Pipe::operator==( Shape const & rhs ) const 
 {
 	Pipe const & pipeRhs { static_cast<Pipe const &>(rhs) };

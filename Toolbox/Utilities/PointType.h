@@ -21,7 +21,7 @@ class PointType
 {
 public:
 
-	PointType( PointType const & src ) : m_x(src.m_x), m_y(src.m_y) {}
+//	PointType( PointType const & src ) : m_x(src.m_x), m_y(src.m_y) {}
 	PointType( BASE_TYPE const _b ) : m_x(_b), m_y(_b) {}
 	PointType( BASE_TYPE const _x, BASE_TYPE const _y ) : m_x(_x), m_y(_y) {}
 

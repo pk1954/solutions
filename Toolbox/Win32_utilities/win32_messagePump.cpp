@@ -36,9 +36,9 @@ int MessagePump::Run( )
 	MSG  msg;
 	BOOL bRet;
 
-	while ( bRet = GetMessage( &msg, nullptr, 0, 0 ) != 0 )    // Main message loop
+	while ( (bRet = GetMessage( &msg, nullptr, 0, 0 )) != 0 )    // Main message loop //-V559 //-V593
 	{
-		assert( bRet != -1 );
+		assert( bRet != -1 ); //-V547
 		if ( ! accelerator( msg ) )
 		{
 			(void)TranslateMessage( &msg );

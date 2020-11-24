@@ -21,6 +21,8 @@ public:
 
 	Neuron( Neuron const & );   // copy constructor
 
+	Neuron & operator=( Neuron const & ); // copy assignment operator
+
 	virtual ~Neuron();
 
 	static void SetSound( Sound * const pSound )
@@ -79,6 +81,8 @@ private:
 
 	inline static unsigned long m_counter { 0L };
 	inline static Sound       * m_pSound  { nullptr };
+
+	void init( const Neuron & );
 
 	friend static void CALLBACK BeepFunc( PTP_CALLBACK_INSTANCE, PVOID,	PTP_WORK );
 };

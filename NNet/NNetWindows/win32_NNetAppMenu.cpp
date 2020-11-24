@@ -26,6 +26,13 @@ NNetAppMenu::NNetAppMenu( )
     m_pOnOffAutoOpen( new OnOffPair( this, IDD_AUTO_OPEN_ON, IDD_AUTO_OPEN_OFF ) )
 { }
 
+NNetAppMenu::~NNetAppMenu( )
+{
+    delete m_pOnOffArrows;
+    delete m_pOnOffSound;
+    delete m_pOnOffAutoOpen;
+}
+
 void NNetAppMenu::Start
 ( 
 	HWND                  const hwndApp,

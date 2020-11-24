@@ -423,7 +423,7 @@ bool Script::ScrProcess
 )
 { 
     Scanner scan;          //lint -esym( 1414, scan )   Assigning address of auto variable 'scan' to member
-    m_pScanAct = & scan;   // This is save. m_pScanAct is set to nullptr, before leaving the scope of this function
+    m_pScanAct = & scan;   // This is save. m_pScanAct is set to nullptr, before leaving the scope of this function //-V506
 	m_bStop = false;
     try 
     {  

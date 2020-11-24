@@ -13,7 +13,7 @@ class NNetModel;
 
 using ShapeId = NamedType< long, struct ShapeIdParam >;
 
-ShapeId const NO_SHAPE( -1 );
+inline ShapeId const NO_SHAPE( -1 );
 
 static bool IsDefined( ShapeId const id ) 
 { 

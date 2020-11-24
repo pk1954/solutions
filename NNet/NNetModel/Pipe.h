@@ -24,6 +24,8 @@ public:
 
 	Pipe( Pipe const & );   // copy constructor
 
+	Pipe & operator=( Pipe const & ); // copy assignment operator
+
 	virtual ~Pipe();
 
 	virtual bool operator==( Shape const & ) const override;
@@ -70,11 +72,7 @@ public:
 		return false;
 	}
 
-	mV GetNextOutput( ) const 
-	{ 
-		return m_potential[ m_potIndex ]; 
-	}
-
+	mV GetNextOutput( ) const { return m_potential[ m_potIndex ]; }
 	mV GetVoltage( MicroMeterPoint const & ) const;
 
 	virtual void DrawExterior  ( DrawContext const &, tHighlightType const  = tHighlightType::normal ) const;
@@ -106,6 +104,8 @@ private:
 	MicroMeter       m_width      { PIPE_WIDTH };
 	size_t           m_potIndex   { 0 };
 	tPotentialVector m_potential  { };
+
+	void init( const Pipe & );
 
 	void dislocate( BaseKnot * const, MicroMeter const );
 };

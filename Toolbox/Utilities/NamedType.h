@@ -18,7 +18,7 @@ class NamedType
 public:
     NamedType( ) : m_value(0) {}
 		
-    constexpr NamedType( NamedType const & value ) : m_value(value.GetValue()) {}
+//    constexpr NamedType( NamedType const & value ) : m_value(value.GetValue()) {}
 
     constexpr explicit NamedType( BASE_TYPE const value ) : m_value(value) {}
 

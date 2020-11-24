@@ -59,11 +59,11 @@ void TriggerSoundDialog::onCommand( HWND const hDlg, WPARAM const wParam, LPARAM
 	{
 	case IDOK:
 		evaluate( hDlg );
-		EndDialog( hDlg, true );
+		EndDialog( hDlg, INT_PTR(true) );
 		break;
 
 	case IDCANCEL:
-		EndDialog( hDlg, false );
+		EndDialog( hDlg, INT_PTR(false) );
 		break;
 
 	case IDC_TRIGGER_SOUND_ON:
@@ -98,7 +98,7 @@ static INT_PTR CALLBACK dialogProc
 		CheckDlgButton     ( hDlg, IDC_TRIGGER_SOUND_ON,   pDlg->m_soundDesc.m_bOn ? BST_CHECKED : BST_UNCHECKED );
 		pDlg->handleOnOff( hDlg );
 		::SetWindowLongPtr( hDlg, DWLP_USER, reinterpret_cast<LONG_PTR>(pDlg) );
-		return true;
+		return INT_PTR(true);
 
 	case WM_COMMAND:
 		pDlg->onCommand( hDlg, wParam, lParam );
@@ -108,7 +108,7 @@ static INT_PTR CALLBACK dialogProc
 		break;
 	}
 
-	return false;
+	return INT_PTR(false);
 }
 
 void TriggerSoundDialog::Show( HWND const hwndParent )

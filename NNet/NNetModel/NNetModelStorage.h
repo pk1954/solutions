@@ -26,6 +26,8 @@ class NNetModelWriterInterface;
 class ReadModelResult
 {
 public:
+	virtual ~ReadModelResult() {};
+
 	enum class tResult
 	{
 		ok,

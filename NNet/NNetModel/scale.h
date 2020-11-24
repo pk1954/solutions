@@ -31,8 +31,8 @@ private:
 	fPIXEL m_fPixClientHeight{ 0.0_fPIXEL };
 	fPIXEL m_fPixVertPos     { 0.0_fPIXEL };
 
-	D2D_driver        * m_pGraphics; 
-	IDWriteTextFormat * m_pTextFormat;
+	D2D_driver        * m_pGraphics   { nullptr }; 
+	IDWriteTextFormat * m_pTextFormat { nullptr };
 	wstring             m_wstrLogUnit;
 	float               m_fHorzPixelSize { 1.0f };
 

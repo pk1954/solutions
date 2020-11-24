@@ -44,7 +44,7 @@ static INT_PTR CALLBACK BaseDialogProc
 	if ( message == WM_INITDIALOG )
 	{
 		SetUserDataPtr( hwnd, (LONG_PTR)lParam );
-		return true;
+		return INT_PTR(true);
 	}
 	else 
 	{
@@ -52,5 +52,5 @@ static INT_PTR CALLBACK BaseDialogProc
 			return pBaseDialog->UserProc( message, wParam, lParam );         // normal case
 	}
 
-	return false;
+	return INT_PTR(false);
 }

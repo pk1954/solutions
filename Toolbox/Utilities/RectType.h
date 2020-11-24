@@ -17,14 +17,14 @@ public:
 		* this = ZERO_VAL(); 
 	}
 
-    RectType( RectType const & rect ) :
-        m_Left  (rect.m_Left),
-        m_Bottom(rect.m_Bottom),
-        m_Right (rect.m_Right),
-        m_Top   (rect.m_Top)
-    {
-		assert( m_Bottom >= m_Top );
-    };
+  //  RectType( RectType const & rect ) :
+  //      m_Left  (rect.m_Left),
+  //      m_Bottom(rect.m_Bottom),
+  //      m_Right (rect.m_Right),
+  //      m_Top   (rect.m_Top)
+  //  {
+		//assert( m_Bottom >= m_Top );
+  //  };
 
     RectType
 	( 

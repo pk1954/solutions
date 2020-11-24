@@ -20,8 +20,6 @@ public:
 	  : BaseKnot( center, ShapeType::Value::knot, PIPE_WIDTH / 2 )
 	{ }
 
-	Knot( Knot const & );   // copy constructor
-
 	virtual ~Knot() {}
 
 	void CheckShape( ) const;

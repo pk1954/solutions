@@ -28,15 +28,13 @@ public:
 	    m_pTextBuffer = make_unique<Win32_TextBuffer>( hDC_Memory, pixSize );
 		if ( bAsync )
 			StartThread( strName, bAsync );
-		Trigger( );
+		PostThreadMsg( anyMessageWillDo );
 	}
 
 	virtual ~TextWindowThread()	{ }
 
 	virtual void Trigger( )
 	{
-		const unsigned int anyMessageWillDo = 42;
-
 		PostThreadMsg( anyMessageWillDo );
 	}
 
@@ -48,6 +46,8 @@ public:
 	}
 
 private:
+	const unsigned int anyMessageWillDo = 42;
+
 	TextWindow           & m_textWindow;
 	unique_ptr<TextBuffer> m_pTextBuffer;
     HDC                    m_hDC;

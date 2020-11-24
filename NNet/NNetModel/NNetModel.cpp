@@ -24,14 +24,14 @@ using std::endl;
 bool NNetModel::operator==( NNetModel const & rhs ) const
 {
 	return
-	(m_Shapes                  == m_Shapes                  ) &&
-	(m_timeStamp               == m_timeStamp               ) &&
-	(m_pParam                  == m_pParam                  ) &&
-	(m_pModelTimeObservable    == m_pModelTimeObservable    ) &&
-	(m_pStaticModelObservable  == m_pStaticModelObservable  ) &&
-	(m_pDynamicModelObservable == m_pDynamicModelObservable ) &&
-	(m_pMonitorData            == m_pMonitorData            ) &&
-	(m_enclosingRect           == m_enclosingRect           );
+	(m_Shapes                  == rhs.m_Shapes                  ) &&
+	(m_timeStamp               == rhs.m_timeStamp               ) &&
+	(m_pParam                  == rhs.m_pParam                  ) &&
+	(m_pModelTimeObservable    == rhs.m_pModelTimeObservable    ) &&
+	(m_pStaticModelObservable  == rhs.m_pStaticModelObservable  ) &&
+	(m_pDynamicModelObservable == rhs.m_pDynamicModelObservable ) &&
+	(m_pMonitorData            == rhs.m_pMonitorData            ) &&
+	(m_enclosingRect           == rhs.m_enclosingRect           );
 }
 
 void NNetModel::Initialize

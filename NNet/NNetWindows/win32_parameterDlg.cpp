@@ -37,7 +37,7 @@ void ParameterDialog::applyParameter  // read out edit field and write data to m
 {
 	float const fOldValue { m_pParams->GetParameterValue( parameter ) }; 
 	float       fValue    { fOldValue }; 
-	if ( StdDialogBox::Evaluate( hwndEditField, fValue ) && (fValue != fOldValue) )
+	if ( StdDialogBox::Evaluate( hwndEditField, fValue ) && ! IsCloseToZero(fValue - fOldValue) )
 		m_pCommands->SetParameter( parameter, fValue );
 }
 

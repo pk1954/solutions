@@ -36,16 +36,31 @@ Neuron::Neuron( MicroMeterPoint const upCenter, ShapeType const type )
 	Recalc();
 }
 
+void Neuron::init( const Neuron & rhs )
+{
+	m_bStopOnTrigger     = rhs.m_bStopOnTrigger;
+	m_timeSinceLastPulse = rhs.m_timeSinceLastPulse;
+	m_bTriggered         = rhs.m_bTriggered;
+	m_factorW            = rhs.m_factorW;
+	m_factorU            = rhs.m_factorU;
+	m_triggerSound       = rhs.m_triggerSound;
+	m_pTpWork = ( rhs.m_triggerSound.m_bOn  )
+		      ? CreateThreadpoolWork( BeepFunc, this, nullptr )
+		      : nullptr;
+}
+
 Neuron::Neuron( Neuron const & src ) :  // copy constructor
-	BaseKnot             ( src ),
-	m_bStopOnTrigger     ( src.m_bStopOnTrigger ),
-	m_timeSinceLastPulse ( src.m_timeSinceLastPulse ),
-    m_bTriggered         ( src.m_bTriggered ),
-	m_factorW            ( src.m_factorW ),
-	m_factorU            ( src.m_factorU ),
-	m_triggerSound       ( src.m_triggerSound ),
-	m_pTpWork            ( src.m_pTpWork )
-{ }
+	BaseKnot( src )
+{ 
+	init( src );
+}
+
+Neuron & Neuron::operator=( Neuron const & rhs )
+{
+	BaseKnot::operator=( rhs );
+	init( rhs );
+	return * this;
+}
 
 Neuron::~Neuron( ) { }
 
@@ -54,8 +69,8 @@ bool Neuron::operator==( Shape const & rhs ) const
 	Neuron const & neuronRhs { static_cast<Neuron const &>(rhs) };
 	return
 	( this->BaseKnot::operator== (neuronRhs) )                             &&
-	( m_factorW                  == neuronRhs.m_factorW )                  &&
-	( m_factorU                  == neuronRhs.m_factorU )                  &&
+	IsCloseToZero(m_factorW - neuronRhs.m_factorW)                         &&
+	IsCloseToZero(m_factorU - neuronRhs.m_factorU)                         &&
 	( m_triggerSound.m_bOn       == neuronRhs.m_triggerSound.m_bOn )       &&
 	( m_triggerSound.m_frequency == neuronRhs.m_triggerSound.m_frequency ) &&
 	( m_triggerSound.m_duration  == neuronRhs.m_triggerSound.m_duration );

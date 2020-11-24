@@ -29,12 +29,7 @@ static ShapeCrit const ShapeCritAlwaysTrue { [&]( Shape const & s) { return true
 class Shape
 {
 public:
-	Shape( ShapeType const );                    // constructor
-	Shape( Shape const & );                      // copy constructor
-	Shape( Shape&& )             noexcept;       // move constructor
-	Shape & operator= (Shape&& ) noexcept;       // move assignment
-	Shape & operator= (Shape const &) = delete;  // no assignment operator
-
+	Shape( ShapeType const );
 	virtual ~Shape() { }
 
 	virtual void CheckShape() const;

@@ -83,9 +83,10 @@ public:
 	virtual void Start( MessagePump & );
 	virtual void Stop( );
 
+	NNetAppWindow             ( NNetAppWindow const & ) = delete;  // noncopyable class 
+	NNetAppWindow & operator= ( NNetAppWindow const & ) = delete;  // noncopyable class 
+
 private:
-	NNetAppWindow             ( NNetAppWindow const & );  // noncopyable class 
-	NNetAppWindow & operator= ( NNetAppWindow const & );  // noncopyable class 
 
 	virtual bool OnCommand( WPARAM const, LPARAM const, PixelPoint const );
 	virtual bool OnSize   ( WPARAM const, LPARAM const );
