@@ -47,4 +47,6 @@ private:
     fMicroSecs     m_timeStart     { 0._MicroSecs };
     vector <float> m_data          { };
     ShapeId        m_SignalShapeId { NO_SHAPE };
+
+    //float const distSq( fMicroSecs const, float const, fMicroSecs const, float const );
 };

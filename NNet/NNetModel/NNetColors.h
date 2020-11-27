@@ -32,12 +32,13 @@ public:
 	void Initialize( Observable * const );
 
 	inline static D2D1::ColorF const COL_BLACK           { 0.0f, 0.0f, 0.0f, 1.0f };
+	inline static D2D1::ColorF const COL_RED             { 1.0f, 0.0f, 0.0f, 1.0f };
 
 	// colors for neuron/pipe boundary
 	inline static D2D1::ColorF const EXT_NORMAL          { 0.0f, 0.5f, 1.0f, 1.0f };
 	inline static D2D1::ColorF const EXT_MARKED          { 0.0f, 1.0f, 0.5f, 1.0f };
 	inline static D2D1::ColorF const EXT_HIGHLIGHT       { 0.0f, 0.8f, 0.8f, 1.0f };
-	inline static D2D1::ColorF const EXT_SUPER_HIGHLIGHT { 1.0f, 0.0f, 0.0f, 1.0f };
+	inline static D2D1::ColorF const EXT_SUPER_HIGHLIGHT { COL_RED };
 
 	// color used when neurons trigger
 	inline static D2D1::ColorF const INT_TRIGGER         { 1.0f, 1.0f, 0.0f, 1.0f };

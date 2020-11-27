@@ -49,6 +49,20 @@ void Signal::Notify( bool const bImmediate )
     m_data.push_back( voltage.GetValue() );
 }
 
+//float const Signal::distSq
+//(
+//    fMicroSecs const time1,
+//    float      const data1,
+//    fMicroSecs const time2,
+//    float      const data2
+//)
+//{
+//    fMicroSecs const fMicroSecsDelta { time1 - time2 };
+//    float      const deltaData { data1 - data2 };
+//    float      const deltaTime { fMicroSecsDelta.GetValue() };
+//    return deltaTime * deltaTime + deltaData * deltaData;
+//}
+
 void Signal::CheckSignal( ) 
 {
 #ifdef _DEBUG

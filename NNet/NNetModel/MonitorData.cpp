@@ -89,7 +89,7 @@ void MonitorData::DeleteTrack( TrackNr const trackNr )
 {
 	if ( IsValid( trackNr ) )
 	{
-		m_tracks.erase( getTrackC( trackNr ) );
+		m_tracks.erase( m_tracks.begin() + trackNr.GetValue() );
 		m_pStaticModelObservable->NotifyAll( true );
 	}
 }
@@ -103,7 +103,7 @@ void MonitorData::Apply2AllTracks( TrackFunc const & func ) const
 void MonitorData::Apply2AllSignalsInTrack( TrackNr const trackNr, SignalFunc const & func ) const
 {
 	if ( IsValid( trackNr ) )
-		getTrackC(trackNr)->Apply2AllSignals( func );
+		getTrackC(trackNr).Apply2AllSignals( func );
 }                        
 
 void MonitorData::Apply2AllSignals( function<void(SignalId const &)> const & func ) const
@@ -112,7 +112,7 @@ void MonitorData::Apply2AllSignals( function<void(SignalId const &)> const & fun
 	( 
 		[&]( TrackNr const trackNr )
 		{
-			getTrackC(trackNr)->Apply2AllSignals
+			getTrackC(trackNr).Apply2AllSignals
 			(
 				[&](SignalNr const & signalNr){	func( SignalId(trackNr, signalNr) ); }
 			);
@@ -123,7 +123,7 @@ void MonitorData::Apply2AllSignals( function<void(SignalId const &)> const & fun
 Signal const & MonitorData::GetSignal( SignalId const & id ) const
 {
 	assert( IsValid( id.GetTrackNr() ) );
-	return getTrackC( id.GetTrackNr() )->GetSignal( id.GetSignalNr() );
+	return getTrackC( id.GetTrackNr() ).GetSignal( id.GetSignalNr() );
 }
 
 bool const MonitorData::IsValid( TrackNr const trackNr ) const
@@ -133,7 +133,7 @@ bool const MonitorData::IsValid( TrackNr const trackNr ) const
 
 bool const MonitorData::IsValid( SignalId const & id ) const
 {
-	return IsValid(id.GetTrackNr()) && getTrackC(id.GetTrackNr())->IsValid(id.GetSignalNr());
+	return IsValid(id.GetTrackNr()) && getTrackC(id.GetTrackNr()).IsValid(id.GetSignalNr());
 }
 
 void MonitorData::CheckTracks( ) const
@@ -150,8 +150,8 @@ Track & MonitorData::getTrack( TrackNr const trackNr )
 	return m_tracks[trackNr.GetValue()]; 
 }
 
-vector<Track>::const_iterator const MonitorData::getTrackC( TrackNr const trackNr ) const 
-{ 
+Track const & MonitorData::getTrackC( TrackNr const trackNr ) const
+{
 	assert( IsValid( trackNr ) );
-	return m_tracks.begin() + trackNr.GetValue(); 
+	return m_tracks[trackNr.GetValue()]; 
 }

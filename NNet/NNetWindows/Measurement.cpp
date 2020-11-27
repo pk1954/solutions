@@ -35,8 +35,7 @@ void Measurement::SetClientRectSize( PIXEL const width, PIXEL const height )
 {
 	m_fPixClientWidth  = Convert2fPIXEL( width );
 	m_fPixClientHeight = Convert2fPIXEL( height );
-	if ( ! m_bLimitsMoved )
-		ResetLimits( );
+	ResetLimits( );
 }
 
 bool Measurement::Select( fPIXEL const fPix )

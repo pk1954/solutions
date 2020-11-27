@@ -45,8 +45,8 @@ public:
 	void Apply2AllSignals       ( function<void(SignalId const &)> const & ) const;
 
 private:
-	Track & getTrack ( TrackNr const );
-	vector<Track>::const_iterator const getTrackC( TrackNr const ) const;
+	Track       & getTrack ( TrackNr const );
+	Track const & getTrackC( TrackNr const ) const;
 	unique_ptr<Signal> removeSignal( SignalId const & );
 	SignalNr const addSignal( TrackNr const, unique_ptr<Signal> );
 

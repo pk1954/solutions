@@ -38,8 +38,6 @@ public:
 	void AddSignal( ShapeId const );
 	void InsertTrack( TrackNr const );
 
-	void SetHorizontalMove( bool const bMode ) { m_bHorizontalMove = bMode; }
-
 private:
 
 	SignalNr const findSignal      ( TrackNr const, PixelPoint const & ) const;
@@ -47,7 +45,6 @@ private:
 	fPIXEL   const getYvalue       ( Signal const &, fMicroSecs const ) const;
 	TrackNr  const findTrack       ( PIXEL const ) const;
 	TrackNr  const findPos4NewTrack( PIXEL const ) const;
-	bool           testSignal      ( Signal const &, fMicroSecs const, fPIXEL const, fPIXEL & ) const;
 
 	void doPaint( ) const;
 	void selectSignal( SignalId const & );
@@ -56,6 +53,7 @@ private:
 
 	virtual void OnPaint( );
 	virtual bool OnSize       ( WPARAM const, LPARAM const );
+	virtual bool OnSetCursor  ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel ( WPARAM const, LPARAM const );
 	virtual void OnMouseMove  ( WPARAM const, LPARAM const );
 	virtual bool OnMouseLeave ( WPARAM const, LPARAM const );
@@ -63,6 +61,9 @@ private:
 	virtual bool OnShow       ( WPARAM const, LPARAM const );
 	virtual bool OnCommand    ( WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL() );
 	virtual void OnChar       ( WPARAM const, LPARAM const ) { };
+
+	inline static HCURSOR m_hCrsrWE { nullptr };
+	inline static HCURSOR m_hCrsrNS { nullptr };
 
 	NNetController                 * m_pController      { nullptr };
 	Param                    const * m_pParams          { nullptr };
@@ -79,9 +80,7 @@ private:
 	TrackNr     m_trackNrHighlighted { TrackNr::NULL_VAL() };
 	PixelPoint  m_pixLast            { PP_NULL };     // last cursor position during selection 
 	PIXEL       m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
-	PIXEL       m_pixHorzOffset      { 0_PIXEL };     // horizontal offset
 	bool        m_bShowScale         { false };
-	bool        m_bHorizontalMove    { false };
 	Measurement m_measurement;
 	Scale       m_scale;
 };

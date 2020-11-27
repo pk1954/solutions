@@ -114,9 +114,8 @@ bool BaseWindow::UserProc( UINT const message, WPARAM const wParam, LPARAM const
             return true;   // message completely handled, do not pass over to default processing
         break;
 
-    //case WM_SETCURSOR:
-    //    OnSetCursor( wParam, lParam );
-    //    return true;
+    case WM_SETCURSOR:
+        return OnSetCursor( wParam, lParam );
 
     default:
         break;

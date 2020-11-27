@@ -124,6 +124,7 @@ public:
 	}
 
 	void Set2Null( ) { * this = NULL_VAL(); }
+	void Set2Zero( ) { * this = ZERO_VAL(); }
 
     bool IsNull   ( ) const { return * this == NULL_VAL(); };
     bool IsNotNull( ) const { return * this != NULL_VAL(); };
