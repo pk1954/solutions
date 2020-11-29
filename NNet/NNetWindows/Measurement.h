@@ -25,6 +25,9 @@ public:
 	bool IsActive( )                    { return m_bActive; }
 	bool TrackingActive( )              { return m_bSelectedLeft || m_bSelectedRight; }
 
+	bool IsClose2LeftLimit ( fPIXEL const ) const;
+	bool IsClose2RightLimit( fPIXEL const ) const;
+
 private:
 	D2D_driver        * m_pGraphics   { nullptr }; 
 	IDWriteTextFormat * m_pTextFormat { nullptr };
@@ -43,7 +46,9 @@ private:
 
 	inline static fPIXEL const GRADIENT_WIDTH { 10._fPIXEL };
 
-	bool const isCloseTo     ( fPIXEL const, fPIXEL const ) const;
-	void       emphasizedLine( fPIXEL const ) const;
-	void       verticalLine  ( fPIXEL const ) const;
+	void emphasizedLineLeft ( fPIXEL const ) const;
+	void emphasizedLineRight( fPIXEL const ) const;
+	void verticalLine       ( fPIXEL const ) const;
+	void measuringArea      ( ) const;
+	void textArea           ( fMicroSecs const ) const;
 };

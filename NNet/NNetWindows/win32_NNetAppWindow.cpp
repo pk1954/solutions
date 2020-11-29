@@ -478,6 +478,7 @@ bool NNetAppWindow::OnCommand( WPARAM const wParam, LPARAM const lParam, PixelPo
 			if ( bRes && m_modelStorage.AskModelFile() )
 			{
 //				m_computeThread.LockComputation( );  // will be restarted later
+				m_mainNNetWindow.Reset();
 				m_modelStorage.ReadAsync( );         // will trigger IDM_READ_MODEL_FINISHED when done
 			}
 		}

@@ -33,7 +33,7 @@ void MonitorWindow::Start
 	HWND hwnd = StartBaseWindow
 	( 
 		hwndParent,
-		CS_OWNDC | CS_HREDRAW | CS_VREDRAW, 
+		CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS, 
 		L"ClassMonitorWindow",
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
 		nullptr,
@@ -159,60 +159,38 @@ fPIXEL const MonitorWindow::calcTrackHeight( ) const
 	return Convert2fPIXEL( pixTrackHeight );
 }
 
-fPIXEL const MonitorWindow::getYvalue( Signal const & signal, fMicroSecs const time ) const
+void MonitorWindow::paintSignal( SignalId const & idSignal ) const
 {
-	float  const fDataPoint { signal.GetDataPoint( time ) };
-	fPIXEL const fPixYvalue { fDataPoint / m_fYvaluesPerPixel };
-	assert( fPixYvalue.GetValue() < 10000.0f );
-	return fPixYvalue;
-}
-
-void MonitorWindow::paintSignal
-( 
-	SignalId   const & idSignal, 
-	fPIXEL     const   fPixTrackHeight,
-	fPIXEL     const   fPixXend,
-	fMicroSecs const   usIncrement,
-	fMicroSecs const   usInWindow
-) const
-{
-	fPIXEL     const   fPixYoffset { fPixTrackHeight * Cast2Float(idSignal.GetTrackNr().GetValue()+1) };
-	Signal     const & signal      { m_pMonitorData->GetSignal( idSignal ) }; 
-	fMicroSecs const   usEnd       { m_pMRI->GetSimulationTime( ) };
-
-	fPIXEL const fPixYvalue { getYvalue( signal, usEnd ) };
-	if ( isnan(fPixYvalue.GetValue()) )
-		return;
-
-	fPIXEL fPixWidth { 1.0_fPIXEL };
-	fPIXEL fPixYoff  { fPixYoffset };
-
-	if ( idSignal == m_idSigSelected )  
-	{
-		fPixWidth = 3.0_fPIXEL;                          // emphasize selected signal                
-		fPixYoff += Convert2fPIXEL( m_pixMoveOffsetY );  // may have move offset
-	}
-
-	mV          const mVlimit    ( m_pParams->GetParameterValue( tParameter::threshold ) );
-	fPIXEL      const fPixYlimit { fPixYoff - fPIXEL(mVlimit.GetValue() / m_fYvaluesPerPixel) };
-	fMicroSecs  const timeStart  { max( usEnd - usInWindow, signal.GetStartTime() ) };
-	fPixelPoint       prevPoint  { fPixXend, fPixYvalue + fPixYoff };
+	fPIXEL      const   fPixWidth    { (idSignal == m_idSigSelected) ? 3.0_fPIXEL : 1.0_fPIXEL };  // emphasize selected signal 
+	fPIXEL      const   fPixYoff     { getSignalOffset( idSignal ) };
+	fMicroSecs  const   usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
+	fMicroSecs  const   usResolution { m_pParams->GetTimeResolution( ) };
+	float       const   fPointsInWin { usInWindow / usResolution };
+	fMicroSecs  const   usIncrement  { (fPointsInWin > m_fPixWinWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
+	fMicroSecs  const   usEnd        { m_pMRI->GetSimulationTime( ) };
+	mV          const   mVlimit      ( m_pParams->GetParameterValue( tParameter::threshold ) );
+	fPIXEL      const   fPixYlimit   { fPixYoff - yValue2fPIXEL(mVlimit.GetValue()) };
+	Signal      const & signal       { m_pMonitorData->GetSignal( idSignal ) }; 
+	fMicroSecs  const   timeStart    { max( usEnd - usInWindow, signal.GetStartTime() ) };
+	fPixelPoint         prevPoint    { m_fPixWinWidth, getYvalue(signal, usEnd) + fPixYoff };
 
 	for ( fMicroSecs time = usEnd - usIncrement; time >= timeStart; time -= usIncrement )
 	{
-		float       const fTicks   { (usEnd - time) / m_fMicroSecsPerPixel };
-		fPIXEL      const fPixX    { fPixXend - fPIXEL(fTicks) };
-		fPixelPoint const actPoint { fPixX, fPixYoff - getYvalue( signal, time ) };
+		fPixelPoint const actPoint 
+		{ 
+			fMicroSecs2fPIXEL( time ), 
+			fPixYoff - getYvalue( signal, time ) 
+		};
 
-		if ( (prevPoint.GetY() >= fPixYlimit) && (actPoint.GetY() >= fPixYlimit) )  // line is completely below threshhold
+		if ( (prevPoint.GetY() >= fPixYlimit) && (actPoint.GetY() >= fPixYlimit) )  // line is completely below threshold
 		{
 			m_graphics.DrawLine( prevPoint, actPoint, fPixWidth, NNetColors::COL_BLACK );
 		}
-		else if ( (prevPoint.GetY() < fPixYlimit) && (actPoint.GetY() < fPixYlimit) )  // line is completely above threshhold
+		else if ( (prevPoint.GetY() < fPixYlimit) && (actPoint.GetY() < fPixYlimit) )  // line is completely above threshold
 		{
 			m_graphics.DrawLine( prevPoint, actPoint, fPixWidth, NNetColors::COL_RED );
 		}
-		else // part of line is below threshhold. Interpolate at threshhold and split into two lines
+		else // part of line is below threshhold. Interpolate at threshold and split into two lines
 		{
 			fPixelPoint fPixDelta  { actPoint - prevPoint };
 			float       fSlope     { fPixDelta.GetX() / fPixDelta.GetY() };
@@ -239,27 +217,43 @@ void MonitorWindow::doPaint( ) const
 	if ( m_pMonitorData->NoTracks() )
 		return;
 
-	PixelPoint const pixPointCrsr { GetRelativeCrsrPosition( ) };
-	fPIXEL     const fPWidth      { Convert2fPIXEL( GetClientWindowWidth( ) ) };
-	fMicroSecs const usInWin      { m_fMicroSecsPerPixel * fPWidth.GetValue() };
-	fMicroSecs const usResolution { m_pParams->GetTimeResolution( ) };
-	float      const fPointsInWin { usInWin / usResolution };
-	fMicroSecs const usIncr       { (fPointsInWin > fPWidth.GetValue()) ? m_fMicroSecsPerPixel : usResolution };
-	fPIXEL     const fPHeight     { calcTrackHeight() };
-
-	m_pMonitorData->Apply2AllSignals( [&]( SignalId const id ) { paintSignal( id, fPHeight, fPWidth, usIncr, usInWin ); } );
+	m_pMonitorData->Apply2AllSignals( [&]( SignalId const id ) { paintSignal( id ); } );
 
 	if ( m_bShowScale )
 		m_scale.DisplayStaticScale( );
 
-	if ( m_trackNrHighlighted.IsNotNull() )  // paint background of selected track
-	{
-		fPixelPoint    const pos  {	0._fPIXEL, fPHeight * Cast2Float(m_trackNrHighlighted.GetValue()) };
-		fPixelRectSize const size {	fPWidth, fPHeight };
-		m_graphics.DrawTranspRect( fPixelRect( pos, size ), NNetColors::COL_BEACON );
-	}
+	//if ( m_trackNrHighlighted.IsNotNull() )  // paint background of selected track
+	//{
+	//	fPIXEL         const fPHeight { calcTrackHeight() };
+	//	fPixelPoint    const pos      {	0._fPIXEL, fPHeight * Cast2Float(m_trackNrHighlighted.GetValue()) };
+	//	fPixelRectSize const size     {	m_fPixWinWidth, fPHeight };
+	//	m_graphics.DrawTranspRect( fPixelRect( pos, size ), NNetColors::COL_BEACON );
+	//}
 
 	m_measurement.DisplayDynamicScale( m_fMicroSecsPerPixel );
+
+	if ( m_idSigSelected != SignalIdNull )
+		drawDiamond( m_idSigSelected );
+}
+
+void MonitorWindow::drawDiamond( SignalId const & idSignal ) const
+{
+	static D2D1::ColorF const COL_DIAMOND { 0.0f, 0.0f, 1.0f, 1.0f };
+
+	Signal     const & signal           { m_pMonitorData->GetSignal( idSignal ) };
+	PixelPoint const   pixPointCrsr     { GetRelativeCrsrPosition( ) };
+	fPIXEL     const   fPixCrsrX        { Convert2fPIXEL( pixPointCrsr.GetX() ) };
+	fMicroSecs const   usMax            { findNextMax( signal, fPixCrsrX ) };
+	fPIXEL     const   fPixMax          { fMicroSecs2fPIXEL( usMax ) };
+	fPIXEL     const   fPixSignalOffset { getSignalOffset( idSignal ) };
+	fPIXEL     const   fPixYvalue       { fPixSignalOffset - getYvalue( signal, usMax ) };
+
+	m_graphics.DrawDiamond
+	(
+		fPixelPoint( fPixMax, fPixYvalue ),
+		4.0_fPIXEL,
+		COL_DIAMOND
+	);
 }
 
 SignalNr const MonitorWindow::findSignal( TrackNr const trackNr, PixelPoint const & ptCrsr ) const
@@ -271,12 +265,9 @@ SignalNr const MonitorWindow::findSignal( TrackNr const trackNr, PixelPoint cons
 	if ( trackNr.IsNull() )
 		return signalNrRes;
 
-	fPIXEL      const fPixWidth       { Convert2fPIXEL( GetClientWindowWidth( ) ) };
-	fMicroSecs  const usInWindow      { m_fMicroSecsPerPixel * fPixWidth.GetValue() };
-	fMicroSecs  const usEnd           { m_pMRI->GetSimulationTime( ) };
-	fMicroSecs  const timeStart       { usEnd - usInWindow };
+	fMicroSecs  const timeStart       { fPIXEL2fMicroSecs( 0.0_fPIXEL ) };
 	fPixelPoint const fPixPtCrsr      { Convert2fPixelPoint( ptCrsr ) };
-	fMicroSecs  const umTime          { timeStart + m_fMicroSecsPerPixel * fPixPtCrsr.GetXvalue() };
+	fMicroSecs  const umTime          { fPIXEL2fMicroSecs( fPixPtCrsr.GetX() ) };
 	fPIXEL      const fPixTrackHeight { calcTrackHeight() };
 	fPIXEL      const fPixTrackBottom { fPixTrackHeight * static_cast<float>(trackNr.GetValue() + 1) };  
 	fPIXEL      const fPixCrsrY       { fPixTrackBottom - fPixPtCrsr.GetY() };  // vertical distance from crsr pos to zero line of track
@@ -391,6 +382,7 @@ bool MonitorWindow::OnSize( WPARAM const wParam, LPARAM const lParam )
 	m_graphics.Resize( width, height );
 	m_scale      .SetClientRectSize( PIXEL(width), PIXEL(height) );
 	m_measurement.SetClientRectSize( PIXEL(width), PIXEL(height) );
+	m_fPixWinWidth = Convert2fPIXEL( PIXEL(width) );
 	return true;
 }
 
@@ -462,6 +454,24 @@ bool MonitorWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam )
 //	HCURSOR hCrsrOld = SetCursor( m_hCrsrArrow );
 
 	return false;
+};
+
+void MonitorWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam ) 
+{
+	if ( m_idSigSelected == SignalIdNull )
+		return;
+
+	PixelPoint const pixCrsrPos { GetCrsrPosFromLparam( lParam ) };
+	fPIXEL     const fPixCrsrX  { Convert2fPIXEL( pixCrsrPos.GetX() ) };
+
+	if ( m_measurement.IsClose2LeftLimit( fPixCrsrX ) || m_measurement.IsClose2RightLimit( fPixCrsrX ) )
+	{
+		Signal const & signal    { m_pMonitorData->GetSignal( m_idSigSelected ) };
+		fMicroSecs const usMax   { findNextMax( signal, fPixCrsrX ) };
+		fPIXEL     const fPixMax { fMicroSecs2fPIXEL( usMax ) };
+		m_measurement.MoveSelection( fPixMax );
+		Trigger();  // cause repaint
+	}
 };
 
 void MonitorWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam ) 

@@ -42,8 +42,8 @@ bool Measurement::Select( fPIXEL const fPix )
 {
 	if ( m_bActive )
 	{
-		m_bSelectedLeft  = isCloseTo( fPix, m_fPixLeftLimit );
-		m_bSelectedRight = isCloseTo( fPix, m_fPixRightLimit );
+		m_bSelectedLeft  = IsClose2LeftLimit ( fPix );
+		m_bSelectedRight = IsClose2RightLimit( fPix );
 		if ( m_bSelectedLeft || m_bSelectedRight )
 			return true;
 	}
@@ -54,9 +54,9 @@ void Measurement::MoveSelection( fPIXEL const fPix )
 {
 	if ( m_bActive )
 	{
-		if ( m_bSelectedLeft )
+		if ( m_bSelectedLeft && (fPix < m_fPixRightLimit) )
 			m_fPixLeftLimit = fPix;
-		else if ( m_bSelectedRight )
+		else if ( m_bSelectedRight && (fPix > m_fPixLeftLimit) )
 			m_fPixRightLimit = fPix;
 		m_bLimitsMoved = true;
 	}
@@ -73,9 +73,22 @@ void Measurement::verticalLine( fPIXEL const fPixPosX ) const
 	);
 }
 
-void Measurement::emphasizedLine( fPIXEL const fPixPosX ) const
+void Measurement::emphasizedLineLeft( fPIXEL const fPixPosX ) const
 {
-	fPixelRect const rect1 
+	fPixelRect const rect
+	{ 
+		fPixPosX, 
+		0._fPIXEL, 
+		fPixPosX + GRADIENT_WIDTH, 
+		m_fPixClientHeight 
+	};
+
+	m_pGraphics->DrawGradientRect( rect, COL_STRONG, COL_WEAK   );
+}
+
+void Measurement::emphasizedLineRight( fPIXEL const fPixPosX ) const
+{
+	fPixelRect const rect
 	{ 
 		fPixPosX - GRADIENT_WIDTH, 
 		0._fPIXEL, 
@@ -83,70 +96,71 @@ void Measurement::emphasizedLine( fPIXEL const fPixPosX ) const
 		m_fPixClientHeight 
 	};
 
-	fPixelRect const rect2 
-	{ 
-		rect1.GetRight(), 
-		0._fPIXEL, 
-		fPixPosX + GRADIENT_WIDTH, 
-		m_fPixClientHeight 
-	};
-
-	m_pGraphics->DrawGradientRect( rect1, COL_WEAK,   COL_STRONG );
-	m_pGraphics->DrawGradientRect( rect2, COL_STRONG, COL_WEAK   );
+	m_pGraphics->DrawGradientRect( rect, COL_WEAK, COL_STRONG );
 }
 
-bool const Measurement::isCloseTo( fPIXEL const fPix1, fPIXEL const fPix2 ) const
+void Measurement::measuringArea( ) const
 {
-	return fabs(fPix1.GetValue() - fPix2.GetValue() ) <= GRADIENT_WIDTH.GetValue();
+	fPixelRect const rect
+	{ 
+		m_fPixLeftLimit + (m_bSelectedLeft ? GRADIENT_WIDTH : 0.0_fPIXEL), 
+		0._fPIXEL, 
+		m_fPixRightLimit - (m_bSelectedRight ? GRADIENT_WIDTH : 0.0_fPIXEL),
+		m_fPixClientHeight 
+	};
+	m_pGraphics->DrawTranspRect( rect, COL_WEAK );
+}
+
+void Measurement::textArea( fMicroSecs const fMicroSecsPerPixel ) const
+{
+	static COLORREF const COLOR        { RGB( 0, 0, 0 ) };  // CLR_BLACK
+	fPIXEL          const fPixDistance { m_fPixRightLimit - m_fPixLeftLimit };
+	fMicroSecs      const usMeasured   { fMicroSecsPerPixel * fPixDistance.GetValue() };
+	fHertz          const frequency    { Frequency( usMeasured) };
+
+	PIXEL posRight { Convert2PIXEL(m_fPixRightLimit - GRADIENT_WIDTH) };
+	PIXEL posTop   { Convert2PIXEL(GRADIENT_WIDTH) };
+
+	PixelRect pixRect
+	( 
+		posRight - 55_PIXEL, // left
+		posTop,              // top
+		posRight,            // right
+		posTop + 35_PIXEL    // bottom
+	);
+
+	wostringstream wBuffer;
+	wstring        wstrTime;
+	Format2wstring( usMeasured, wstrTime );
+	wBuffer << wstrTime << endl;
+	wBuffer << fixed << setprecision(2);
+	wBuffer << frequency << L" Hz";
+
+	static D2D1::ColorF const COL_BACKGROUND { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	m_pGraphics->DrawTranspRect( Convert2fPixelRect(pixRect), COL_BACKGROUND );
+	m_pGraphics->DisplayText   ( pixRect, wBuffer.str( ), COLOR, m_pTextFormat );
+}
+
+bool Measurement::IsClose2LeftLimit ( fPIXEL const fPix ) const 
+{ 
+	return (m_fPixLeftLimit <= fPix) && (fPix <= m_fPixLeftLimit + GRADIENT_WIDTH);
+}
+
+bool Measurement::IsClose2RightLimit( fPIXEL const fPix ) const 
+{ 
+	return (m_fPixRightLimit - GRADIENT_WIDTH <= fPix) && (fPix <= m_fPixRightLimit);
 }
 
 void Measurement::DisplayDynamicScale( fMicroSecs const fMicroSecsPerPixel ) const
 {
 	if ( m_bActive )
 	{
-		if ( m_bSelectedLeft )
-			emphasizedLine( m_fPixLeftLimit );
+		emphasizedLineLeft( m_fPixLeftLimit );
 		verticalLine( m_fPixLeftLimit );
-
-		fPixelRect const rect
-		{ 
-			m_fPixLeftLimit + (m_bSelectedLeft ? GRADIENT_WIDTH : 0.0_fPIXEL), 
-			0._fPIXEL, 
-			m_fPixRightLimit - (m_bSelectedRight ? GRADIENT_WIDTH : 0.0_fPIXEL),
-			m_fPixClientHeight 
-		};
-		m_pGraphics->DrawTranspRect( rect, COL_WEAK );
-
-		if ( m_bSelectedRight )
-			emphasizedLine( m_fPixRightLimit );
+		measuringArea( );
+		emphasizedLineRight( m_fPixRightLimit );
 		verticalLine( m_fPixRightLimit );
-
-		static COLORREF const COLOR        { RGB( 0, 0, 0 ) };  // CLR_BLACK
-		fPIXEL          const fPixDistance { m_fPixRightLimit - m_fPixLeftLimit };
-		fMicroSecs      const usMeasured   { fMicroSecsPerPixel * fPixDistance.GetValue() };
-		fHertz          const frequency    { Frequency( usMeasured) };
-
-		PIXEL posRight { Convert2PIXEL(m_fPixRightLimit - GRADIENT_WIDTH) };
-		PIXEL posTop   { Convert2PIXEL(GRADIENT_WIDTH) };
-
-		PixelRect pixRect
-		( 
-			posRight - 50_PIXEL, // left
-			posTop,              // top
-			posRight,            // right
-			posTop + 35_PIXEL    // bottom
-		);
-
-		wostringstream wBuffer;
-		wstring        wstrTime;
-		Format2wstring( usMeasured, wstrTime );
-		wBuffer << wstrTime << endl;
-		wBuffer << fixed << setprecision(2);
-		wBuffer << frequency << L" Hz";
-
-		static D2D1::ColorF const COL_BACKGROUND { 1.0f, 1.0f, 1.0f, 1.0f };
-
-		m_pGraphics->DrawTranspRect( Convert2fPixelRect(pixRect), COL_BACKGROUND );
-		m_pGraphics->DisplayText   ( pixRect, wBuffer.str( ), COLOR, m_pTextFormat );
+		textArea( fMicroSecsPerPixel );
 	}
 }

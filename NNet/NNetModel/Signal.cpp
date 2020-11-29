@@ -32,14 +32,25 @@ void Signal::SetSignalSource( ShapeId const id )
 
 float const Signal::GetDataPoint( fMicroSecs const time ) const
 {
-    if ( m_data.empty() )
-        return NAN;
-    fMicroSecs const timeTilStart { time - m_timeStart };
-    float      const fNrOfPoints  { timeTilStart / m_pParams->GetTimeResolution( ) };
-    unsigned int     uiIndex      { static_cast<unsigned int>( roundf( fNrOfPoints ) ) };
-    if ( uiIndex >= m_data.size() )
-        uiIndex = Cast2UnsignedInt( m_data.size() - 1 );
-    return m_data[ uiIndex ];
+    int index { time2index( time ) };
+    return ( index < 0 ) ? NAN : m_data[ index ];
+}
+
+fMicroSecs const Signal::FindNextMaximum( fMicroSecs const time ) const
+{
+    int index { time2index( time ) };
+    if ( index < 0 )
+        return fMicroSecs::NULL_VAL();
+    if ( (index > 0) && (m_data[index-1] > m_data[index]) ) // falling values, go left
+    {   
+        while ( (--index > 0) && (m_data[index-1] >= m_data[index]) );
+    }
+    else   // climbing values, go right
+    {
+        while ( (index < m_data.size() - 1) && (m_data[index] <= m_data[index+1]) )
+            ++index;
+    }
+    return index2time( index );
 }
 
 void Signal::Notify( bool const bImmediate )
@@ -48,20 +59,6 @@ void Signal::Notify( bool const bImmediate )
     mV     const   voltage { pNeuron ? pNeuron->GetVoltage() : 0.0_mV };
     m_data.push_back( voltage.GetValue() );
 }
-
-//float const Signal::distSq
-//(
-//    fMicroSecs const time1,
-//    float      const data1,
-//    fMicroSecs const time2,
-//    float      const data2
-//)
-//{
-//    fMicroSecs const fMicroSecsDelta { time1 - time2 };
-//    float      const deltaData { data1 - data2 };
-//    float      const deltaTime { fMicroSecsDelta.GetValue() };
-//    return deltaTime * deltaTime + deltaData * deltaData;
-//}
 
 void Signal::CheckSignal( ) 
 {
