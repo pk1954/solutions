@@ -136,10 +136,11 @@ void Measurement::textArea( fMicroSecs const fMicroSecsPerPixel ) const
 	wBuffer << fixed << setprecision(2);
 	wBuffer << frequency << L" Hz";
 
-	static D2D1::ColorF const COL_BACKGROUND { 1.0f, 1.0f, 1.0f, 1.0f };
+	static D2D1::ColorF const COLOR_TEXT     { D2D1::ColorF::Black }; 
+	static D2D1::ColorF const COL_BACKGROUND { D2D1::ColorF::White };
 
 	m_pGraphics->DrawTranspRect( Convert2fPixelRect(pixRect), COL_BACKGROUND );
-	m_pGraphics->DisplayText   ( pixRect, wBuffer.str( ), COLOR, m_pTextFormat );
+	m_pGraphics->DisplayText   ( pixRect, wBuffer.str( ), COLOR_TEXT, m_pTextFormat );
 }
 
 bool Measurement::IsClose2LeftLimit ( fPIXEL const fPix ) const 
