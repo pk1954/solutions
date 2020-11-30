@@ -1,5 +1,5 @@
 # NNetModel
-# Created Sat Nov 28 22:30:55 2020
+# Created Sun Nov 29 22:28:12 2020
 
 # Computer name: DESKTOP-D6AR9AH
 # User name: Peter
@@ -7,6 +7,7 @@
 Protocol version 1.6
 
 
+Description ""
 Description ""
 Description ""
 Description ""
@@ -927,8 +928,10 @@ TriggerSound 533 660 Hertz 100 msec
 TriggerSound 748 880 Hertz 100 msec 
 TriggerSound 755 1720 Hertz 100 msec 
 
-NrOfTracks 3
-Signal track 1 source shape 450
-Signal track 1 source shape 750
-Signal track 2 source shape 418
+NrOfTracks 5
+Signal track 0 source shape 865
+Signal track 2 source shape 748
+Signal track 3 source shape 450
+Signal track 3 source shape 750
+Signal track 4 source shape 418
 

@@ -161,7 +161,7 @@ fPIXEL const MonitorWindow::calcTrackHeight( ) const
 
 void MonitorWindow::paintSignal( SignalId const & idSignal ) const
 {
-	fPIXEL      const   fPixWidth    { (idSignal == m_idSigSelected) ? 3.0_fPIXEL : 1.0_fPIXEL };  // emphasize selected signal 
+	fPIXEL      const   fPixWidth    { (idSignal == m_idSigSelected) ? (m_bSignalLocked ? 3.0_fPIXEL : 2.0_fPIXEL) : 1.0_fPIXEL };  // emphasize selected signal 
 	fPIXEL      const   fPixYoff     { getSignalOffset( idSignal ) };
 	fMicroSecs  const   usInWindow   { m_fMicroSecsPerPixel * m_fPixWinWidth.GetValue() };
 	fMicroSecs  const   usResolution { m_pParams->GetTimeResolution( ) };
@@ -172,7 +172,7 @@ void MonitorWindow::paintSignal( SignalId const & idSignal ) const
 	fPIXEL      const   fPixYlimit   { fPixYoff - yValue2fPIXEL(mVlimit.GetValue()) };
 	Signal      const & signal       { m_pMonitorData->GetSignal( idSignal ) }; 
 	fMicroSecs  const   timeStart    { max( usEnd - usInWindow, signal.GetStartTime() ) };
-	fPixelPoint         prevPoint    { m_fPixWinWidth, getYvalue(signal, usEnd) + fPixYoff };
+	fPixelPoint         prevPoint    { m_fPixWinWidth, fPixYoff - getYvalue(signal, usEnd) };
 
 	for ( fMicroSecs time = usEnd - usIncrement; time >= timeStart; time -= usIncrement )
 	{
@@ -222,13 +222,13 @@ void MonitorWindow::doPaint( ) const
 	if ( m_bShowScale )
 		m_scale.DisplayStaticScale( );
 
-	//if ( m_trackNrHighlighted.IsNotNull() )  // paint background of selected track
-	//{
-	//	fPIXEL         const fPHeight { calcTrackHeight() };
-	//	fPixelPoint    const pos      {	0._fPIXEL, fPHeight * Cast2Float(m_trackNrHighlighted.GetValue()) };
-	//	fPixelRectSize const size     {	m_fPixWinWidth, fPHeight };
-	//	m_graphics.DrawTranspRect( fPixelRect( pos, size ), NNetColors::COL_BEACON );
-	//}
+	if ( m_trackNrHighlighted.IsNotNull() )  // paint background of selected track
+	{
+		fPIXEL         const fPHeight { calcTrackHeight() };
+		fPixelPoint    const pos      {	0._fPIXEL, fPHeight * Cast2Float(m_trackNrHighlighted.GetValue()) };
+		fPixelRectSize const size     {	m_fPixWinWidth, fPHeight };
+		m_graphics.DrawTranspRect( fPixelRect( pos, size ), NNetColors::COL_BEACON );
+	}
 
 	m_measurement.DisplayDynamicScale( m_fMicroSecsPerPixel );
 
@@ -238,15 +238,15 @@ void MonitorWindow::doPaint( ) const
 
 void MonitorWindow::drawDiamond( SignalId const & idSignal ) const
 {
-	static D2D1::ColorF const COL_DIAMOND { 0.0f, 0.0f, 1.0f, 1.0f };
+	static D2D1::ColorF const COL_DIAMOND { 0.0f, 1.0f, 0.0f, 1.0f };
 
-	Signal     const & signal           { m_pMonitorData->GetSignal( idSignal ) };
-	PixelPoint const   pixPointCrsr     { GetRelativeCrsrPosition( ) };
-	fPIXEL     const   fPixCrsrX        { Convert2fPIXEL( pixPointCrsr.GetX() ) };
-	fMicroSecs const   usMax            { findNextMax( signal, fPixCrsrX ) };
-	fPIXEL     const   fPixMax          { fMicroSecs2fPIXEL( usMax ) };
-	fPIXEL     const   fPixSignalOffset { getSignalOffset( idSignal ) };
-	fPIXEL     const   fPixYvalue       { fPixSignalOffset - getYvalue( signal, usMax ) };
+	Signal     const & signal       { m_pMonitorData->GetSignal( idSignal ) };
+	PixelPoint const   pixPointCrsr { GetRelativeCrsrPosition( ) };
+	fPIXEL     const   fPixCrsrX    { Convert2fPIXEL( pixPointCrsr.GetX() ) };
+	fMicroSecs const   usMax        { findNextMax( signal, fPixCrsrX ) };
+	fPIXEL     const   fPixMax      { fMicroSecs2fPIXEL( usMax ) };
+	fPIXEL     const   fPixYoff     { getSignalOffset( idSignal ) };
+	fPIXEL     const   fPixYvalue   { fPixYoff - getYvalue( signal, usMax ) };
 
 	m_graphics.DrawDiamond
 	(
@@ -260,6 +260,8 @@ SignalNr const MonitorWindow::findSignal( TrackNr const trackNr, PixelPoint cons
 {
 	SignalNr signalNrRes { SignalNr::NULL_VAL() };
 
+	if ( m_bSignalLocked )
+		return signalNrRes;
 	if ( m_pMonitorData->NoTracks() )
 		return signalNrRes;
 	if ( trackNr.IsNull() )
@@ -278,7 +280,6 @@ SignalNr const MonitorWindow::findSignal( TrackNr const trackNr, PixelPoint cons
 		[&](SignalNr const signalNr)
 		{
 			Signal const & signal { m_pMonitorData->GetSignal( SignalId(trackNr, signalNr) ) };
-
 			if ( umTime >= signal.GetStartTime() )
 			{
 				fPIXEL const fPixAmplitude { getYvalue( signal, umTime ) };
@@ -402,12 +403,16 @@ bool MonitorWindow::OnShow( WPARAM const wParam, LPARAM const lParam )
 
 void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 {
-	PixelPoint const pixCrsrPos   { GetCrsrPosFromLparam( lParam ) };
-	TrackNr    const trackNrFound { findTrack( pixCrsrPos.GetY() ) };
-	if ( trackNrFound != m_trackNrHighlighted )
+	PixelPoint const pixCrsrPos { GetCrsrPosFromLparam( lParam ) };
+
+	if ( ! m_measurement.TrackingActive() )
 	{
-		m_trackNrHighlighted = trackNrFound;
-		Trigger( );   // cause repaint
+		TrackNr const trackNrFound { findTrack( pixCrsrPos.GetY() ) };
+		if ( trackNrFound != m_trackNrHighlighted )
+		{
+			m_trackNrHighlighted = trackNrFound;
+			Trigger( );   // cause repaint
+		}
 	}
 		
 	if ( wParam & MK_LBUTTON )
@@ -421,7 +426,7 @@ void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 			}
 			else 
 			{
-				if ( m_idSigSelected.GetSignalNr().IsNotNull() )
+				if ( m_idSigSelected.GetSignalNr().IsNotNull() && ! m_bSignalLocked )
 				{
 					m_pixMoveOffsetY += pixCrsrPos.GetY() - m_pixLast.GetY();
 					SetCursor( m_hCrsrNS );
@@ -449,13 +454,6 @@ void MonitorWindow::OnMouseMove( WPARAM const wParam, LPARAM const lParam )
 	(void)TrackMouseEvent( & m_trackStruct );
 }
 
-bool MonitorWindow::OnSetCursor( WPARAM const wParam, LPARAM const lParam ) 
-{
-//	HCURSOR hCrsrOld = SetCursor( m_hCrsrArrow );
-
-	return false;
-};
-
 void MonitorWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lParam ) 
 {
 	if ( m_idSigSelected == SignalIdNull )
@@ -466,22 +464,31 @@ void MonitorWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lPar
 
 	if ( m_measurement.IsClose2LeftLimit( fPixCrsrX ) || m_measurement.IsClose2RightLimit( fPixCrsrX ) )
 	{
-		Signal const & signal    { m_pMonitorData->GetSignal( m_idSigSelected ) };
-		fMicroSecs const usMax   { findNextMax( signal, fPixCrsrX ) };
-		fPIXEL     const fPixMax { fMicroSecs2fPIXEL( usMax ) };
+		Signal     const & signal  { m_pMonitorData->GetSignal( m_idSigSelected ) };
+		fMicroSecs const   usMax   { findNextMax( signal, fPixCrsrX ) };
+		fPIXEL     const   fPixMax { fMicroSecs2fPIXEL( usMax ) };
 		m_measurement.MoveSelection( fPixMax );
 		Trigger();  // cause repaint
+	}
+	else
+	{
+		m_bSignalLocked = ! m_bSignalLocked;
 	}
 };
 
 void MonitorWindow::OnLButtonUp( WPARAM const wParam, LPARAM const lParam ) 
 {
-	if ( m_idSigSelected.GetTrackNr() != m_trackNrHighlighted )
+	if ( 
+		 (m_idSigSelected.GetTrackNr() != m_trackNrHighlighted) && 
+		 (! m_measurement.TrackingActive()) && 
+		 (! m_bSignalLocked) 
+	   )
 	{
 		m_idSigSelected = m_pMonitorData->MoveSignal( m_idSigSelected, m_trackNrHighlighted );
 	}
 	m_pixMoveOffsetY = 0_PIXEL;
 	m_pixLast.Set2Null();
+	Trigger();  // cause repaint
 };
 
 void MonitorWindow::OnMouseWheel( WPARAM const wParam, LPARAM const lParam )

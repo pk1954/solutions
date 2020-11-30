@@ -96,7 +96,6 @@ private:
 
 	virtual void OnPaint( );
 	virtual bool OnSize              ( WPARAM const, LPARAM const );
-	virtual bool OnSetCursor         ( WPARAM const, LPARAM const );
 	virtual void OnMouseWheel        ( WPARAM const, LPARAM const );
 	virtual void OnMouseMove         ( WPARAM const, LPARAM const );
 	virtual bool OnMouseLeave        ( WPARAM const, LPARAM const );
@@ -126,6 +125,7 @@ private:
 	PIXEL       m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal
 	fPIXEL      m_fPixWinWidth       { 0.0_fPIXEL };
 	bool        m_bShowScale         { false };
+	bool        m_bSignalLocked      { false };
 	Measurement m_measurement;
 	Scale       m_scale;
 };
