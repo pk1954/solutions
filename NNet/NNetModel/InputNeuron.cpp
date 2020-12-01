@@ -48,6 +48,15 @@ fHertz const InputNeuron::SetPulseFrequency( fHertz const freq )
 	return fOldValue;
 }
 
+bool InputNeuron::CompStep( )
+{
+	m_timeSinceLastPulse += m_pParameters->GetTimeResolution( );
+	bool bTrigger { m_timeSinceLastPulse >= m_pulseDuration };
+	if ( bTrigger )
+		m_timeSinceLastPulse = 0._MicroSecs;   
+	return m_bStopOnTrigger && bTrigger;
+}
+
 void InputNeuron::drawInputNeuron
 ( 
 	DrawContext   const & context,  

@@ -14,7 +14,6 @@
 #include "ShapeId.h"
 
 class DrawContext;
-class NNetModel;
 
 using std::remove_pointer;
 using std::unique_ptr;

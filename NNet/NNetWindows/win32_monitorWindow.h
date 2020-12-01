@@ -23,6 +23,7 @@ public:
 	void Start
 	( 
 		HWND                     const, 
+		Sound                  * const,
 		NNetController         * const,
 		NNetModelReaderInterface const &, 
 		Param                    const &,
@@ -108,6 +109,7 @@ private:
 	inline static HCURSOR m_hCrsrWE { nullptr };
 	inline static HCURSOR m_hCrsrNS { nullptr };
 
+	Sound                          * m_pSound           { nullptr };
 	NNetController                 * m_pController      { nullptr };
 	Param                    const * m_pParams          { nullptr };
 	NNetModelReaderInterface const * m_pMRI             { nullptr };

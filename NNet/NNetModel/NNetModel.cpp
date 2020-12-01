@@ -100,10 +100,10 @@ MicroMeterPoint const NNetModel::GetShapePos( ShapeId const id ) const
 bool NNetModel::Compute( )
 {
 	bool bStop {false };
+	incTimeStamp( );
 	m_Shapes.Apply2All( [&](Shape &s) { s.Prepare( ); } );
 	m_Shapes.Apply2All( [&](Shape &s) { if ( s.CompStep( ) ) bStop = true; } );
 	dynamicModelChanged();
-	incTimeStamp( );
 	return bStop;
 }
 

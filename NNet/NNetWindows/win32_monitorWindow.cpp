@@ -23,6 +23,7 @@ using std::find;
 void MonitorWindow::Start
 ( 
 	HWND                     const   hwndParent,
+	Sound                  * const   pSound,
 	NNetController         * const   pController,
 	NNetModelReaderInterface const & model,
 	Param                    const & params,
@@ -39,6 +40,7 @@ void MonitorWindow::Start
 		nullptr,
 		nullptr
 	);
+	m_pSound           =   pSound;
 	m_pController      =   pController;
 	m_pBeaconAnimation = & beaconAnimation;
 	m_pParams          = & params;
@@ -99,12 +101,14 @@ void MonitorWindow::AddSignal( ShapeId const id )
 	{
 		m_pMonitorData->InsertTrack( TrackNr(0) );
 		m_pMonitorData->AddSignal( id, TrackNr(0) );
+		m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
 	}
 }
 
 void MonitorWindow::InsertTrack( TrackNr const trackNr )
 {
 	m_pMonitorData->InsertTrack( trackNr );
+	m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
 }
 
 void MonitorWindow::selectSignal( SignalId const & idNew )
@@ -132,6 +136,7 @@ void MonitorWindow::selectSignal( SignalId const & idNew )
 void MonitorWindow::deselectSignal( )
 {
 	selectSignal( SignalIdNull );
+	m_pSound->Play( TEXT("DISAPPEAR_SOUND") ); 
 }
 
 TrackNr const MonitorWindow::findPos4NewTrack( PIXEL const pixCrsrPosY ) const
@@ -468,11 +473,13 @@ void MonitorWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lPar
 		fMicroSecs const   usMax   { findNextMax( signal, fPixCrsrX ) };
 		fPIXEL     const   fPixMax { fMicroSecs2fPIXEL( usMax ) };
 		m_measurement.MoveSelection( fPixMax );
+		m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
 		Trigger();  // cause repaint
 	}
 	else
 	{
 		m_bSignalLocked = ! m_bSignalLocked;
+		m_pSound->Play( m_bSignalLocked ? TEXT("SNAP_IN_SOUND") : TEXT("UNLOCK_SOUND") ); 
 	}
 };
 

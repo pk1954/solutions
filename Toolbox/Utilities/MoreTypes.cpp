@@ -28,7 +28,7 @@ void Format2wstring( fMicroSecs const us, wstring & wstr )
 	else
 	{
 		float microsecs = us.GetValue();
-		wstrBuffer << microsecs << L" << \u03BCs";
+		wstrBuffer << microsecs << L" \u03BCs";
 	}
 	wstr = wstrBuffer.str();
 }
