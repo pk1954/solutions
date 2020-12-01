@@ -28,8 +28,8 @@ public:
     CircleType const operator+= (POS_TYPE const a) { m_position += a.m_position; return * this; }
     CircleType const operator-= (POS_TYPE const a) { m_position -= a.m_position; return * this; }
 
-    CircleType const operator*= (float    const d) { m_radius *= d; return * this; }
-    CircleType const operator/= (float    const d) { m_radius /= d; return * this; }
+    CircleType const operator*= (float const d) { m_radius *= d; return * this; }
+    CircleType const operator/= (float const d) { m_radius /= d; return * this; }
 
     POS_TYPE  const & GetPosition() const { return m_position; }
     BASE_TYPE const & GetRadius  () const { return m_radius; }

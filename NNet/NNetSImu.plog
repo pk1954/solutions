@@ -1,0 +1,765 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Solution_Path">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="SolutionPath" type="xs:string" minOccurs="0" />
+                <xs:element name="SolutionVersion" type="xs:string" minOccurs="0" />
+                <xs:element name="PlogVersion" type="xs:unsignedInt" minOccurs="0" />
+                <xs:element name="ModificationDate" msdata:DateTimeMode="Utc" type="xs:dateTime" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="PVS-Studio_Analysis_Log">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="FavIcon" type="xs:boolean" minOccurs="0" msdata:Ordinal="0" />
+                <xs:element name="Level" type="xs:unsignedInt" minOccurs="0" msdata:Ordinal="1" />
+                <xs:element name="DefaultOrder" type="xs:int" minOccurs="0" msdata:Ordinal="2" />
+                <xs:element name="ErrorCode" type="xs:string" minOccurs="0" msdata:Ordinal="3" />
+                <xs:element name="Message" type="xs:string" msdata:Ordinal="4" />
+                <xs:element name="Project" type="xs:string" minOccurs="0" msdata:Ordinal="5" />
+                <xs:element name="ShortFile" type="xs:string" minOccurs="0" msdata:Ordinal="6" />
+                <xs:element name="Line" type="xs:int" msdata:Ordinal="7" />
+                <xs:element name="FalseAlarm" type="xs:boolean" minOccurs="0" msdata:Ordinal="8" />
+                <xs:element name="File" type="xs:string" msdata:Ordinal="9" />
+                <xs:element name="CodePrev" type="xs:unsignedInt" minOccurs="0" msdata:Ordinal="10" />
+                <xs:element name="CodeCurrent" type="xs:unsignedInt" minOccurs="0" msdata:Ordinal="11" />
+                <xs:element name="CodeNext" type="xs:unsignedInt" minOccurs="0" msdata:Ordinal="12" />
+                <xs:element name="TrialMessage" type="xs:boolean" minOccurs="0" msdata:Ordinal="13" />
+                <xs:element name="Analyzer" type="xs:int" minOccurs="0" msdata:Ordinal="14" />
+                <xs:element name="LineExtension" type="xs:string" minOccurs="0" msdata:Ordinal="15" />
+                <xs:element name="Retired" type="xs:boolean" default="false" minOccurs="0" msdata:Ordinal="16" />
+                <xs:element name="AnalyzedSourceFiles" type="xs:string" minOccurs="0" msdata:Ordinal="17" />
+                <xs:element name="CWECode" type="xs:string" minOccurs="0" msdata:Ordinal="18" />
+                <xs:element name="MISRA" type="xs:string" minOccurs="0" msdata:Ordinal="19" />
+                <xs:element name="Positions" msdata:DataType="ProgramVerificationSystems.PVSStudio.CommonTypes.SourceFilePositions, PVS-Studio-vs2019, Version=7.10.43305.2630, Culture=neutral, PublicKeyToken=null" type="xs:anyType" minOccurs="0" msdata:Ordinal="20" />
+              </xs:sequence>
+              <xs:attribute name="ErrorCodeNumeric" msdata:ReadOnly="true" msdata:Expression="IIF(LEN(ErrorCode) &lt; 2 OR (SUBSTRING(ErrorCode, 1, 1) &lt;&gt; 'V'), 0, CONVERT(SUBSTRING(ErrorCode, 2, LEN(ErrorCode) - 1), 'System.UInt32'))" type="xs:unsignedInt" use="prohibited" />
+              <xs:attribute name="CWECodeNumeric" msdata:ReadOnly="true" msdata:Expression="ISNULL(IIF(LEN(CWECode) &lt; 4 + 1 OR (SUBSTRING(CWECode, 1, 4) &lt;&gt; 'CWE-'), 4294967295, CONVERT(SUBSTRING(CWECode, 4 + 1, LEN(CWECode) - 4), 'System.UInt32')), 4294967295)" type="xs:unsignedInt" use="prohibited" />
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+      <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//PVS-Studio_Analysis_Log" />
+        <xs:field xpath="Line" />
+        <xs:field xpath="Message" />
+        <xs:field xpath="File" />
+      </xs:unique>
+    </xs:element>
+  </xs:schema>
+  <Solution_Path>
+    <SolutionPath>D:\SW-projects\Solutions\NNet\NNetSImu.sln</SolutionPath>
+    <SolutionVersion>16.0</SolutionVersion>
+    <PlogVersion>6</PlogVersion>
+    <ModificationDate>2020-11-22T13:09:51.3432208Z</ModificationDate>
+  </Solution_Path>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>1</DefaultOrder>
+    <ErrorCode>V122</ErrorCode>
+    <Message>Memsize type is used in the struct/class.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>Input.h</ShortFile>
+    <Line>44</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\Input.h</File>
+    <CodePrev>1852751770</CodePrev>
+    <CodeCurrent>2029627737</CodeCurrent>
+    <CodeNext>1405251323</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="44">D:\SW-projects\Solutions\Toolbox\runtimeCPP\Input.h</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>2</DefaultOrder>
+    <ErrorCode>V122</ErrorCode>
+    <Message>Memsize type is used in the struct/class.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>Input.h</ShortFile>
+    <Line>45</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\Input.h</File>
+    <CodePrev>2029627737</CodePrev>
+    <CodeCurrent>1405251323</CodeCurrent>
+    <CodeNext>42802989</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="45">D:\SW-projects\Solutions\Toolbox\runtimeCPP\Input.h</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>3</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>Input.h</ShortFile>
+    <Line>30</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\Input.h</File>
+    <CodePrev>9257625</CodePrev>
+    <CodeCurrent>1475854985</CodeCurrent>
+    <CodeNext>0</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="30">D:\SW-projects\Solutions\Toolbox\runtimeCPP\Input.h</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>4</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCANNER.H</ShortFile>
+    <Line>46</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCANNER.H</File>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>2270869060</CodeCurrent>
+    <CodeNext>3064605854</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="46">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCANNER.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>5</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCANNER.H</ShortFile>
+    <Line>74</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCANNER.H</File>
+    <CodePrev>27437235</CodePrev>
+    <CodeCurrent>184464917</CodeCurrent>
+    <CodeNext>11012117</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="74">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCANNER.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>6</DefaultOrder>
+    <ErrorCode>V122</ErrorCode>
+    <Message>Memsize type is used in the struct/class.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.H</ShortFile>
+    <Line>76</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.H</File>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>252948851</CodeCurrent>
+    <CodeNext>0</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="76">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>7</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.H</ShortFile>
+    <Line>33</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.H</File>
+    <CodePrev>1185490305</CodePrev>
+    <CodeCurrent>159163137</CodeCurrent>
+    <CodeNext>4261002004</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="33">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>8</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.H</ShortFile>
+    <Line>34</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.H</File>
+    <CodePrev>159163137</CodePrev>
+    <CodeCurrent>4261002004</CodeCurrent>
+    <CodeNext>40390273</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="34">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>9</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.H</ShortFile>
+    <Line>74</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.H</File>
+    <CodePrev>18603649</CodePrev>
+    <CodeCurrent>1858146347</CodeCurrent>
+    <CodeNext>0</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="74">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>10</DefaultOrder>
+    <ErrorCode>V122</ErrorCode>
+    <Message>Memsize type is used in the struct/class.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SYMTAB.H</ShortFile>
+    <Line>48</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</File>
+    <CodePrev>286105</CodePrev>
+    <CodeCurrent>3823957892</CodeCurrent>
+    <CodeNext>1283534656</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="48">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>11</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SYMTAB.H</ShortFile>
+    <Line>32</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</File>
+    <CodePrev>3776515215</CodePrev>
+    <CodeCurrent>1618867777</CodeCurrent>
+    <CodeNext>3322911747</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="32">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>12</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SYMTAB.H</ShortFile>
+    <Line>33</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</File>
+    <CodePrev>1618867777</CodePrev>
+    <CodeCurrent>3322911747</CodeCurrent>
+    <CodeNext>3842795664</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="33">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>13</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SYMTAB.H</ShortFile>
+    <Line>43</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</File>
+    <CodePrev>1498490216</CodePrev>
+    <CodeCurrent>1383716594</CodeCurrent>
+    <CodeNext>1306265032</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="43">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>14</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SYMTAB.H</ShortFile>
+    <Line>44</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</File>
+    <CodePrev>1383716594</CodePrev>
+    <CodeCurrent>1306265032</CodeCurrent>
+    <CodeNext>0</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="44">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>15</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SYMTAB.H</ShortFile>
+    <Line>49</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</File>
+    <CodePrev>3823957892</CodePrev>
+    <CodeCurrent>1283534656</CodeCurrent>
+    <CodeNext>1812247935</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="49">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>16</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SYMTAB.H</ShortFile>
+    <Line>50</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</File>
+    <CodePrev>1283534656</CodePrev>
+    <CodeCurrent>1812247935</CodeCurrent>
+    <CodeNext>1141454355</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="50">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>17</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SYMTAB.H</ShortFile>
+    <Line>61</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</File>
+    <CodePrev>307128985</CodePrev>
+    <CodeCurrent>2166661126</CodeCurrent>
+    <CodeNext>618509792</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="61">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>18</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SYMTAB.H</ShortFile>
+    <Line>62</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</File>
+    <CodePrev>2166661126</CodePrev>
+    <CodeCurrent>618509792</CodeCurrent>
+    <CodeNext>76705535</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="62">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SYMTAB.H</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>19</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.cpp</ShortFile>
+    <Line>106</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</File>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>1608406688</CodeCurrent>
+    <CodeNext>40</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+    <Positions>
+      <Position lines="106">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>20</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.cpp</ShortFile>
+    <Line>109</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</File>
+    <CodePrev>715661262</CodePrev>
+    <CodeCurrent>4047654717</CodeCurrent>
+    <CodeNext>4167228739</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+    <Positions>
+      <Position lines="109">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>21</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.cpp</ShortFile>
+    <Line>114</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</File>
+    <CodePrev>1012634995</CodePrev>
+    <CodeCurrent>184459287</CodeCurrent>
+    <CodeNext>0</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+    <Positions>
+      <Position lines="114">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>22</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.cpp</ShortFile>
+    <Line>146</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</File>
+    <CodePrev>123</CodePrev>
+    <CodeCurrent>795639244</CodeCurrent>
+    <CodeNext>487667</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+    <Positions>
+      <Position lines="146">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>23</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.cpp</ShortFile>
+    <Line>148</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</File>
+    <CodePrev>487667</CodePrev>
+    <CodeCurrent>2072742474</CodeCurrent>
+    <CodeNext>125</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+    <Positions>
+      <Position lines="148">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>24</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.cpp</ShortFile>
+    <Line>263</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</File>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>4074297187</CodeCurrent>
+    <CodeNext>123</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+    <Positions>
+      <Position lines="263">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>25</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.cpp</ShortFile>
+    <Line>266</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</File>
+    <CodePrev>1156429</CodePrev>
+    <CodeCurrent>366744398</CodeCurrent>
+    <CodeNext>704789</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+    <Positions>
+      <Position lines="266">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>26</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.cpp</ShortFile>
+    <Line>272</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</File>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>3110883737</CodeCurrent>
+    <CodeNext>123</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+    <Positions>
+      <Position lines="272">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>27</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.cpp</ShortFile>
+    <Line>275</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</File>
+    <CodePrev>578325</CodePrev>
+    <CodeCurrent>3557307697</CodeCurrent>
+    <CodeNext>0</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+    <Positions>
+      <Position lines="275">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>28</DefaultOrder>
+    <ErrorCode>V126</ErrorCode>
+    <Message>Be advised that the size of the type 'long' varies between LLP64/LP64 data models.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.cpp</ShortFile>
+    <Line>361</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</File>
+    <CodePrev>123</CodePrev>
+    <CodeCurrent>2642903335</CodeCurrent>
+    <CodeNext>0</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>1</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+    <Positions>
+      <Position lines="361">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>2</Level>
+    <DefaultOrder>29</DefaultOrder>
+    <ErrorCode>V506</ErrorCode>
+    <Message>Pointer to local variable 'scan' is stored outside the scope of this variable. Such a pointer will become invalid.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.cpp</ShortFile>
+    <Line>426</Line>
+    <FalseAlarm>true</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</File>
+    <CodePrev>4145172712</CodePrev>
+    <CodeCurrent>161255771</CodeCurrent>
+    <CodeNext>701645</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>4</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+    <CWECode>CWE-562</CWECode>
+    <Positions>
+      <Position lines="426">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>30</DefaultOrder>
+    <ErrorCode>V1020</ErrorCode>
+    <Message>The function exited without calling the 'scan.CloseInputFile' function. Check lines: 436, 430.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>SCRIPT.cpp</ShortFile>
+    <Line>436</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</File>
+    <CodePrev>92901</CodePrev>
+    <CodeCurrent>176909</CodeCurrent>
+    <CodeNext>0</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>4</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+    <CWECode>CWE-772</CWECode>
+    <Positions>
+      <Position lines="436,430">D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>3</Level>
+    <DefaultOrder>31</DefaultOrder>
+    <ErrorCode>V001</ErrorCode>
+    <Message>A code fragment cannot be analyzed.</Message>
+    <Project>runtimeCPP</Project>
+    <ShortFile>xutility</ShortFile>
+    <Line>3490</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File>C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xutility</File>
+    <CodePrev>1674625023</CodePrev>
+    <CodeCurrent>2995139345</CodeCurrent>
+    <CodeNext>973437877</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>0</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles>D:\SW-projects\Solutions\Toolbox\runtimeCPP\SCRIPT.cpp</AnalyzedSourceFiles>
+    <Positions>
+      <Position lines="3490,3761">C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xutility</Position>
+    </Positions>
+  </PVS-Studio_Analysis_Log>
+  <PVS-Studio_Analysis_Log>
+    <FavIcon>false</FavIcon>
+    <Level>1</Level>
+    <DefaultOrder>32</DefaultOrder>
+    <ErrorCode>Renew</ErrorCode>
+    <Message>Your license will expire in 29 days. Click 'Renew' to learn more or contact us at support@viva64.com. This is an information message. You can continue using the analyzer with your current license.</Message>
+    <Project />
+    <ShortFile />
+    <Line>0</Line>
+    <FalseAlarm>false</FalseAlarm>
+    <File />
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>0</CodeCurrent>
+    <CodeNext>0</CodeNext>
+    <TrialMessage>false</TrialMessage>
+    <Analyzer>0</Analyzer>
+    <Retired>false</Retired>
+    <AnalyzedSourceFiles />
+  </PVS-Studio_Analysis_Log>
+</NewDataSet>

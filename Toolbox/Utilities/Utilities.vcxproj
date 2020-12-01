@@ -23,6 +23,7 @@
     <ClInclude Include="CircleType.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="DisplayFunctor.h" />
+    <ClInclude Include="EllipseType.h" />
     <ClInclude Include="EnumArray.h" />
     <ClInclude Include="EventInterface.h" />
     <ClInclude Include="generationNr.h" />

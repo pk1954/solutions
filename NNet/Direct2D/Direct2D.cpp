@@ -79,6 +79,11 @@ void D2D_driver::Resize( int const iWidth, int const iHeight )
 	}
 }
 
+fPixelRectSize const D2D_driver::GetClRectSize( ) const 
+{ 
+	return Convert2fPixelRectSize(Util::GetClRectSize( m_hwnd ));
+}
+
 void D2D_driver::ShutDown( )
 {
 	discardResources( );
@@ -156,56 +161,20 @@ void D2D_driver::EndFrame( )
 	}
 }
 
-void D2D_driver::DrawTranspRect( fPixelRect const & rect, D2D1::ColorF const colF ) const
+void D2D_driver::DrawRectangle( fPixelRect const & rect, D2D1::ColorF const colF ) const
 {
-	fPIXEL const MIN_SIZE { 10._fPIXEL };
-
 	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
-	pBrush->SetOpacity( 0.5f );
-
-	if ( (rect.GetHeight( ) > MIN_SIZE) && (rect.GetWidth( ) > MIN_SIZE) )
-	{
-		m_pRenderTarget->FillRectangle
-		( 
-			D2D1_RECT_F
-			{ 
-				rect.GetLeft  ().GetValue(), 
-				rect.GetTop   ().GetValue(), 
-				rect.GetRight ().GetValue(), 
-				rect.GetBottom().GetValue() 
-			},
-			pBrush 
-		);
-	}
-	else
-	{
-		fPixelRectSize fClientSize { Convert2fPixelRectSize( Util::GetClRectSize( m_hwnd ) ) };
-
-		m_pRenderTarget->FillRectangle
-		( 
-			D2D1_RECT_F
-			{ 
-				0, 
-				0, 
-				rect.GetRight ().GetValue(), 
-				rect.GetBottom().GetValue() 
-			},
-			pBrush 
-		);
-
-		m_pRenderTarget->FillRectangle
-		( 
-			D2D1_RECT_F
-			{ 
-				rect.GetLeft().GetValue(), 
-				rect.GetTop ().GetValue(), 
-				fClientSize.GetXvalue(), 
-				fClientSize.GetYvalue() 
-			},
-			pBrush 
-		);
-	}
-
+	m_pRenderTarget->FillRectangle
+	( 
+		D2D1_RECT_F
+		{ 
+			rect.GetLeft  ().GetValue(), 
+			rect.GetTop   ().GetValue(), 
+			rect.GetRight ().GetValue(), 
+			rect.GetBottom().GetValue() 
+		},
+		pBrush 
+	);
 	SafeRelease( & pBrush );
 }
 
@@ -272,12 +241,21 @@ void D2D_driver::DrawCircle
 	D2D1::ColorF const   colF
 ) const
 {
+	DrawEllipse( fPixelEllipse { circle }, colF );
+}
+
+void D2D_driver::DrawEllipse
+(
+	fPixelEllipse const & fPE,
+	D2D1::ColorF  const   colF
+) const
+{
 	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
 	D2D1_ELLIPSE ellipse 
 	{ 
-		D2D1_POINT_2F{ circle.GetPosition().GetXvalue(), circle.GetPosition().GetYvalue() }, 
-		circle.GetRadius().GetValue(), 
-		circle.GetRadius().GetValue() 
+		D2D1_POINT_2F{ fPE.GetPosition().GetXvalue(), fPE.GetPosition().GetYvalue() }, 
+		fPE.GetRadiusX().GetValue(), 
+		fPE.GetRadiusY().GetValue() 
 	}; 
 	m_pRenderTarget->FillEllipse( & ellipse, pBrush	);
 	SafeRelease( & pBrush );

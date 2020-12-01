@@ -11,6 +11,7 @@
 #include "PointType.h"
 #include "RectType.h"
 #include "CircleType.h"
+#include "EllipseType.h"
 
 using std::chrono::microseconds;
 using std::wstring;
@@ -147,9 +148,10 @@ using MicroMeterRectSize = SizeType < MicroMeter >;
 
 MicroMeterPoint const MicroMeterRect::GetCenter( ) const { return ( GetStartPoint() + GetEndPoint() ) * 0.5f; }
 
-////////////// MicroMeterCircle /////////////////////////////////////
+////////////// MicroMeterCircle/Ellipse //////////////////////////
 
-using MicroMeterCircle = CircleType< MicroMeter >;
+using MicroMeterCircle  = CircleType< MicroMeter >;
+using MicroMeterEllipse = EllipseType< MicroMeter >;
 
 ////////////// meterPerSec /////////////////////////////////////
 

@@ -81,6 +81,19 @@ public:
 		);
 	}
 
+	virtual void DrawEllipse
+	(
+		MicroMeterEllipse const & umEllipse,
+		D2D1::ColorF      const   col  
+	) const
+	{
+		m_graphics.DrawEllipse
+		( 
+			m_coord.Convert2fPixelEllipse( umEllipse ), 
+			m_bNoColors ? NNetColors::COL_BLACK : col 
+		);
+	}
+
 	virtual void DrawArrow
 	( 
 		MicroMeterPoint const & umPos, 
@@ -100,9 +113,38 @@ public:
 		);
 	}
 
+	virtual void DrawRectangle( MicroMeterRect const & umRect, D2D1::ColorF col ) const 
+	{
+		m_graphics.DrawRectangle( m_coord.Convert2fPixelRect( umRect ), col );
+	}
+
 	virtual void DrawTranspRect( MicroMeterRect const & umRect, D2D1::ColorF col ) const 
 	{
-		m_graphics.DrawTranspRect( m_coord.Convert2fPixelRect( umRect ), col );
+		if ( IsTooSmall( umRect ) )
+		{
+			m_graphics.DrawRectangle
+			( 
+				fPixelRect
+				( 
+					fPP_ZERO,
+					m_coord.Convert2fPixelPos(umRect.GetEndPoint()) 
+				), 
+				col 
+			);
+			m_graphics.DrawRectangle
+			( 
+				fPixelRect
+				( 
+					m_coord.Convert2fPixelPos(umRect.GetStartPoint()), 
+					m_graphics.GetClRectSize() 
+				), 
+				col 
+			);
+		}
+		else
+		{
+			m_graphics.DrawRectangle( m_coord.Convert2fPixelRect( umRect ), col );
+		}
 	}
 
 	void SetPixelSize( MicroMeter const s ) 

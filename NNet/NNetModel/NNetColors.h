@@ -44,10 +44,10 @@ public:
 	inline static D2D1::ColorF const INT_TRIGGER         { 1.0f, 1.0f, 0.0f, 1.0f };
 
 	// SELECTION_RECT is used to select rectangular area, transparent
-	inline static D2D1::ColorF const SELECTION_RECT      { 1.0f, 0.0f, 0.0f, 0.5f };
+	inline static D2D1::ColorF const SELECTION_RECT      { 1.0f, 0.0f, 0.0f, 0.2f };
 
 	// POSITION_RECT is used in mini window to visualize position of main window area, transparent
-	inline static D2D1::ColorF const POSITION_RECT       { 0.9f, 0.3f, 0.2f, 0.7f };
+	inline static D2D1::ColorF const POSITION_RECT       { 0.9f, 0.3f, 0.2f, 0.4f };
 
 	// color of selected shapes
 	inline static D2D1::ColorF m_colSelected { INT_BLINK_KEY_1 };

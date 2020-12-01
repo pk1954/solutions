@@ -40,6 +40,11 @@ public:
 		return fPixelPoint( Convert2fPixel( np.GetX() ), Convert2fPixel( np.GetY() ) );
 	}
 
+	fPixelRectSize const Convert2fPixelRectSize( MicroMeterRectSize const np ) const
+	{ 
+		return fPixelRectSize( Convert2fPixel( np.GetX() ), Convert2fPixel( np.GetY() ) );
+	}
+
 	MicroMeterPoint const Convert2MicroMeterPointSize( fPixelPoint const pp ) const
 	{ 
 		return MicroMeterPoint( Convert2MicroMeter( pp.GetX() ), Convert2MicroMeter( pp.GetY() ) ); 
@@ -97,29 +102,47 @@ public:
 		return fPixelCircle
 		( 
 			Convert2fPixelPos( umCircle.GetPosition() ),
-			Convert2fPixel   ( umCircle.GetRadius  () )
+			Convert2fPixel   ( umCircle.GetRadius() )
+		);
+	}
+
+	fPixelEllipse const Convert2fPixelEllipse( MicroMeterEllipse const & umEllipse ) const
+	{
+		return fPixelEllipse
+		( 
+			Convert2fPixelPos( umEllipse.GetPosition() ),
+			Convert2fPixel   ( umEllipse.GetRadiusX() ),
+			Convert2fPixel   ( umEllipse.GetRadiusY() )
 		);
 	}
 
 	//////// transformations PIXEL <---> fPixel ////////
 
-
 	PixelRect const Convert2PixelRect( fPixelRect const & fPixRect ) const
 	{
 		return PixelRect
-		       (
-				   Convert2PixelPoint( fPixRect.GetStartPoint() ),
-				   Convert2PixelPoint( fPixRect.GetEndPoint  () )
-			   );
+		(
+			Convert2PixelPoint( fPixRect.GetStartPoint() ),
+			Convert2PixelPoint( fPixRect.GetEndPoint  () )
+		);
 	}
 
 	fPixelRect const Convert2fPixelRect( PixelRect const & rect ) const
 	{
 		return fPixelRect
-		       ( 
-				   Convert2fPixelPoint( rect.GetStartPoint() ), 
-				   Convert2fPixelPoint( rect.GetEndPoint  () ) 
-			   );
+		( 
+			Convert2fPixelPoint( rect.GetStartPoint() ), 
+			Convert2fPixelPoint( rect.GetEndPoint  () ) 
+		);
+	}
+
+	fPixelRectSize const Convert2fPixelRectSize( PixelRectSize const & siz ) const
+	{
+		return fPixelRectSize
+		( 
+			Convert2fPIXEL( siz.GetX() ), 
+			Convert2fPIXEL( siz.GetY() ) 
+		);
 	}
 
 	//////// transformations MicroMeter <---> PIXEL  ////////

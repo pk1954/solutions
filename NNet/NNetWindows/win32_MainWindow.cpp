@@ -366,7 +366,10 @@ void MainWindow::doPaint( )
 	DrawContext   & context { GetDrawContext() };
 
 	if ( m_rectSelection.IsNotEmpty( ) )
+	{
+//		context.DrawEllipse( MicroMeterEllipse(m_rectSelection), NNetColors::SELECTION_RECT );
 		context.DrawTranspRect( m_rectSelection, NNetColors::SELECTION_RECT );
+	}
 
 	if ( context.GetPixelSize() <= 5._MicroMeter )
 		DrawExteriorInRect( pixRect );

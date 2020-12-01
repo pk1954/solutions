@@ -10,6 +10,7 @@
 #include "PointType.h"
 #include "RectType.h"
 #include "CircleType.h"
+#include "EllipseType.h"
 
 /////////////////// PIXEL ///////////////////////////////////
 
@@ -18,6 +19,7 @@ using PixelPoint    = PosType    < PIXEL >;
 using PixelRectSize = SizeType   < PIXEL >;
 using PixelRect     = RectType   < PIXEL >;
 using PixelCircle   = CircleType < PIXEL >;
+using PixelEllipse  = EllipseType< PIXEL >;
 
 inline static PixelPoint const PP_NULL( PixelPoint::NULL_VAL() );   // compiler generates call!
 inline static PixelPoint const PP_ZERO( PixelPoint::ZERO_VAL() );   // compiler generates call!
@@ -34,6 +36,7 @@ using fPixelPoint    = PosType    < fPIXEL >;
 using fPixelRectSize = SizeType   < fPIXEL >;
 using fPixelRect     = RectType   < fPIXEL >;
 using fPixelCircle   = CircleType < fPIXEL >;
+using fPixelEllipse  = EllipseType < fPIXEL >;
 
 inline static fPixelPoint const fPP_NULL( fPixelPoint::NULL_VAL() );   // compiler generates call!
 inline static fPixelPoint const fPP_ZERO( fPixelPoint::ZERO_VAL() );   // compiler generates call!

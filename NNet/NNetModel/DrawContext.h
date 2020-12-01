@@ -33,9 +33,11 @@ public:
 		D2D1::ColorF    const
 	) const = 0;
 
-	virtual void DrawCircle    ( MicroMeterCircle const &, D2D1::ColorF const ) const = 0;
-	virtual void DrawTranspRect( MicroMeterRect   const &, D2D1::ColorF const ) const = 0;
-	virtual void ShowScale     ( PixelRectSize    const &                     ) const = 0;
+	virtual void DrawCircle    ( MicroMeterCircle  const &, D2D1::ColorF const ) const = 0;
+	virtual void DrawEllipse   ( MicroMeterEllipse const &, D2D1::ColorF const ) const = 0;
+	virtual void DrawRectangle ( MicroMeterRect    const &, D2D1::ColorF const ) const = 0;
+	virtual void DrawTranspRect( MicroMeterRect    const &, D2D1::ColorF const ) const = 0;
+	virtual void ShowScale     ( PixelRectSize     const &                     ) const = 0;
 	virtual void DisplayText
 	(
 		MicroMeterRect      const &,
@@ -57,6 +59,12 @@ public:
 	void Center        ( MicroMeterPoint const u, fPixelPoint const f ) { m_coord.Center( u, f ); }
 
 	void SetNoColors( bool const bMode ) { m_bNoColors = bMode; }
+
+	bool IsTooSmall( MicroMeterRect const & rect ) const
+	{
+		MicroMeter const umMin { m_coord.Convert2MicroMeter(10._fPIXEL) };
+		return (rect.GetHeight() < umMin) || (rect.GetWidth() < umMin);
+	}
 
 protected:
 	bool          m_bNoColors { false };

@@ -227,7 +227,7 @@ void MonitorWindow::doPaint( ) const
 		fPIXEL         const fPHeight { calcTrackHeight() };
 		fPixelPoint    const pos      {	0._fPIXEL, fPHeight * Cast2Float(m_trackNrHighlighted.GetValue()) };
 		fPixelRectSize const size     {	m_fPixWinWidth, fPHeight };
-		m_graphics.DrawTranspRect( fPixelRect( pos, size ), NNetColors::COL_BEACON );
+		m_graphics.DrawRectangle( fPixelRect( pos, size ), NNetColors::COL_BEACON );
 	}
 
 	m_measurement.DisplayDynamicScale( m_fMicroSecsPerPixel );

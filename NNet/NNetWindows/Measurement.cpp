@@ -14,7 +14,7 @@ using std::fixed;
 using std::endl;
 
 static D2D1::ColorF const COL_STRONG { 0.0f, 0.4f, 0.0f, 1.0f };
-static D2D1::ColorF const COL_WEAK   { 0.0f, 1.0f, 0.0f, 0.3f };
+static D2D1::ColorF const COL_WEAK   { 0.0f, 1.0f, 0.0f, 0.2f };
 
 void Measurement::Initialize( D2D_driver * const pGraphics )
 {
@@ -108,7 +108,7 @@ void Measurement::measuringArea( ) const
 		m_fPixRightLimit - (m_bSelectedRight ? GRADIENT_WIDTH : 0.0_fPIXEL),
 		m_fPixClientHeight 
 	};
-	m_pGraphics->DrawTranspRect( rect, COL_WEAK );
+	m_pGraphics->DrawRectangle( rect, COL_WEAK );
 }
 
 void Measurement::textArea( fMicroSecs const fMicroSecsPerPixel ) const
@@ -137,10 +137,10 @@ void Measurement::textArea( fMicroSecs const fMicroSecsPerPixel ) const
 	wBuffer << frequency << L" Hz";
 
 	static D2D1::ColorF const COLOR_TEXT     { D2D1::ColorF::Black }; 
-	static D2D1::ColorF const COL_BACKGROUND { D2D1::ColorF::White };
+	static D2D1::ColorF const COL_BACKGROUND { D2D1::ColorF::AntiqueWhite };
 
-	m_pGraphics->DrawTranspRect( Convert2fPixelRect(pixRect), COL_BACKGROUND );
-	m_pGraphics->DisplayText   ( pixRect, wBuffer.str( ), COLOR_TEXT, m_pTextFormat );
+	m_pGraphics->DrawRectangle( Convert2fPixelRect(pixRect), COL_BACKGROUND );
+	m_pGraphics->DisplayText( pixRect, wBuffer.str( ), COLOR_TEXT, m_pTextFormat );
 }
 
 bool Measurement::IsClose2LeftLimit ( fPIXEL const fPix ) const 
