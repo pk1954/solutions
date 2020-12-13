@@ -33,8 +33,10 @@ public:
 		D2D1::ColorF    const
 	) const = 0;
 
-	virtual void DrawCircle    ( MicroMeterCircle  const &, D2D1::ColorF const ) const = 0;
-	virtual void DrawEllipse   ( MicroMeterEllipse const &, D2D1::ColorF const ) const = 0;
+	virtual void DrawCircle    ( MicroMeterCircle  const &, D2D1::ColorF const, MicroMeter const ) const = 0;
+	virtual void DrawEllipse   ( MicroMeterEllipse const &, D2D1::ColorF const, MicroMeter const ) const = 0;
+	virtual void FillCircle    ( MicroMeterCircle  const &, D2D1::ColorF const ) const = 0;
+	virtual void FillEllipse   ( MicroMeterEllipse const &, D2D1::ColorF const ) const = 0;
 	virtual void DrawRectangle ( MicroMeterRect    const &, D2D1::ColorF const ) const = 0;
 	virtual void DrawTranspRect( MicroMeterRect    const &, D2D1::ColorF const ) const = 0;
 	virtual void ShowScale     ( PixelRectSize     const &                     ) const = 0;

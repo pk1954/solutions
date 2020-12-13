@@ -21,7 +21,6 @@ class PointType
 {
 public:
 
-//	PointType( PointType const & src ) : m_x(src.m_x), m_y(src.m_y) {}
 	PointType( BASE_TYPE const _b ) : m_x(_b), m_y(_b) {}
 	PointType( BASE_TYPE const _x, BASE_TYPE const _y ) : m_x(_x), m_y(_y) {}
 
@@ -142,6 +141,12 @@ public:
 		res /= i; 
 		return res; 
 	};
+
+	friend float const DistSquare( PointType const pntA, PointType const pntB )
+	{
+		PointType delta {pntA - pntB};
+		return delta.GetXvalue() * delta.GetXvalue() + delta.GetYvalue() * delta.GetYvalue();
+	}
 
 	friend BASE_TYPE const MaxAbsDelta(PointType const pnt) 
 	{

@@ -11,12 +11,12 @@
 void Knot::DrawExterior( DrawContext const & context, tHighlightType const type ) const
 {
 	MicroMeter const umRadius { (type == tHighlightType::normal) ? GetExtension( ) : 30.0_MicroMeter };
-	context.DrawCircle( MicroMeterCircle( GetPosition(), umRadius ), GetFrameColor( type )	);
+	context.FillCircle( MicroMeterCircle( GetPosition(), umRadius ), GetFrameColor( type )	);
 }
 
 void Knot::DrawInterior( DrawContext const & context ) const
 {
-	context.DrawCircle( GetCircle() * PIPE_INTERIOR, GetInteriorColor( ) );
+	context.FillCircle( GetCircle() * PIPE_INTERIOR, GetInteriorColor( ) );
 }
 
 void Knot::CheckShape( ) const

@@ -22,6 +22,9 @@ inline void SafeRelease( Interface **ppInterfaceToRelease )
     }
 }
 
+D2D1_POINT_2F convertD2D( fPixelPoint   const & );
+D2D1_ELLIPSE  convertD2D( fPixelEllipse const & );
+
 class D2D_driver
 {
 public:
@@ -38,8 +41,10 @@ public:
     void DrawRectangle   ( fPixelRect const &, D2D1::ColorF const ) const;
     void DrawGradientRect( fPixelRect const &, D2D1::ColorF const, D2D1::ColorF const ) const;
     void DrawLine( fPixelPoint const &, fPixelPoint const &, fPIXEL const, D2D1::ColorF const ) const;
-    void DrawCircle ( fPixelCircle  const &, D2D1::ColorF const ) const;
-    void DrawEllipse( fPixelEllipse const &, D2D1::ColorF const ) const;
+    void FillCircle ( fPixelCircle  const &, D2D1::ColorF const ) const;
+    void DrawCircle ( fPixelCircle  const &, D2D1::ColorF const, fPIXEL const ) const;
+    void FillEllipse( fPixelEllipse const &, D2D1::ColorF const ) const;
+    void DrawEllipse( fPixelEllipse const &, D2D1::ColorF const, fPIXEL const ) const;
     void DrawArrow( fPixelPoint const, fPixelPoint const, fPIXEL const, fPIXEL const, D2D1::ColorF const ) const;
     void DrawDiamond( fPixelPoint const, fPIXEL const, D2D1::ColorF const ) const;
     void Resize( int const, int const );
@@ -61,4 +66,7 @@ private:
     ID2D1SolidColorBrush * createBrush( D2D1::ColorF const ) const;
     void createResources( );
     void discardResources( );
+
+    friend D2D1_POINT_2F convertD2D( fPixelPoint   const & );
+    friend D2D1_ELLIPSE  convertD2D( fPixelEllipse const & );
 };

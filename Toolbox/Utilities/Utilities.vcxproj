@@ -31,7 +31,6 @@
     <ClInclude Include="Int24.h" />
     <ClInclude Include="LineType.h" />
     <ClInclude Include="LogarithmicTrackbar.h" />
-    <ClInclude Include="ModelInterface.h" />
     <ClInclude Include="MoreTypes.h" />
     <ClInclude Include="NamedType.h" />
     <ClInclude Include="observable.h" />

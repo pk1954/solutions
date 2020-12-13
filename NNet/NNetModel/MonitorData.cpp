@@ -1,6 +1,6 @@
 // MonitorData.cpp 
 //
-// NNetModel
+// NNetWindows
 
 #include "stdafx.h"
 #include "Track.h"
@@ -12,8 +12,8 @@ using std::move;
 
 void MonitorData::Initialize
 ( 
-	Observable    * const pStaticModelObservable,
-	SignalFactory * const pSignalFactory
+	Observable      * const pStaticModelObservable,
+	SignalFactory   * const pSignalFactory
 )
 {
 	m_pStaticModelObservable = pStaticModelObservable;
@@ -42,12 +42,12 @@ void MonitorData::InsertTrack( TrackNr const trackNr )
 	m_pStaticModelObservable->NotifyAll( true );
 }
 
-unique_ptr<Signal> MonitorData::removeSignal( SignalId const & id )
+unique_ptr<SignalInterface> MonitorData::removeSignal( SignalId const & id )
 { 
 	return getTrack( id.GetTrackNr() ).RemoveSignal( id.GetSignalNr() ); 
 };
 
-SignalNr const MonitorData::addSignal( TrackNr const trackNr, unique_ptr<Signal> pSignal )
+SignalNr const MonitorData::addSignal( TrackNr const trackNr, unique_ptr<SignalInterface> pSignal )
 {
 	return getTrack( trackNr ).AddSignal( move(pSignal) );
 }
@@ -61,13 +61,22 @@ void MonitorData::DeleteSignal( SignalId const & id )
 	}
 }
 
-void MonitorData::AddSignal( ShapeId const idShape, TrackNr const trackNr )
+void MonitorData::AddSignal( TrackNr const trackNr, ShapeId const idShape )
 {
 	if ( IsValid( trackNr ) )
 	{
-		unique_ptr<Signal> pSignal { m_pSignalFactory->MakeSignal() };
-		pSignal->SetSignalSource( idShape );
-		SignalNr signalNr { addSignal( trackNr, move(pSignal) ) };
+		unique_ptr<SingleSignal> upSignal { m_pSignalFactory->MakeSignal( idShape ) };
+		SignalNr signalNr { addSignal( trackNr, move(upSignal) ) };
+		m_pStaticModelObservable->NotifyAll( true );
+	}
+}
+
+void MonitorData::AddSignal( TrackNr const trackNr, MicroMeterCircle const & umCircle )
+{
+	if ( IsValid( trackNr ) )
+	{
+		unique_ptr<SumSignal> upSignal { m_pSignalFactory->MakeSignal( umCircle ) };
+		SignalNr signalNr { addSignal( trackNr, move(upSignal) ) };
 		m_pStaticModelObservable->NotifyAll( true );
 	}
 }
@@ -77,8 +86,8 @@ SignalId const MonitorData::MoveSignal(	SignalId const & id, TrackNr const track
 	SignalId idNew { id };
 	if ( IsValid(id) && IsValid(trackNrNew) ) //-V1051
 	{
-		unique_ptr<Signal> pSignal     { removeSignal( id ) };
-		SignalNr           signalNrNew { addSignal( trackNrNew, move(pSignal) ) };
+		unique_ptr<SignalInterface> pSignal     { removeSignal( id ) };
+		SignalNr                    signalNrNew { addSignal( trackNrNew, move(pSignal) ) };
 		idNew = SignalId( trackNrNew, signalNrNew );
 		m_pStaticModelObservable->NotifyAll( true );
 	}
@@ -92,6 +101,12 @@ void MonitorData::DeleteTrack( TrackNr const trackNr )
 		m_tracks.erase( m_tracks.begin() + trackNr.GetValue() );
 		m_pStaticModelObservable->NotifyAll( true );
 	}
+}
+
+void MonitorData::Animation( SignalId const& id, bool const bOn )
+{
+	if ( id.IsNotNull() )
+	GetSignal( id ).Animate( bOn );
 }
 
 void MonitorData::Apply2AllTracks( TrackFunc const & func ) const
@@ -120,7 +135,7 @@ void MonitorData::Apply2AllSignals( function<void(SignalId const &)> const & fun
 	);
 }                        
 
-Signal const & MonitorData::GetSignal( SignalId const & id ) const
+SignalInterface const & MonitorData::GetSignal( SignalId const & id ) const
 {
 	assert( IsValid( id.GetTrackNr() ) );
 	return getTrackC( id.GetTrackNr() ).GetSignal( id.GetSignalNr() );

@@ -95,7 +95,7 @@ void BaseKnot::drawCircle
 	MicroMeterCircle const   umCircle
 ) const
 {
-	context.DrawCircle( umCircle, colF );
+	context.FillCircle( umCircle, colF );
 }
 
 void BaseKnot::drawCircle
@@ -105,7 +105,7 @@ void BaseKnot::drawCircle
 	MicroMeter   const   umWidth
 ) const
 {
-	context.DrawCircle( MicroMeterCircle( GetPosition(), umWidth ),	colF );
+	context.FillCircle( MicroMeterCircle( GetPosition(), umWidth ),	colF );
 }
 
 BaseKnot const * Cast2BaseKnot( Shape const * shape )

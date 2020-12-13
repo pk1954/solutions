@@ -930,8 +930,8 @@ TriggerSound 748 880 Hertz 100 msec
 TriggerSound 755 1720 Hertz 100 msec 
 
 NrOfTracks 3
-Signal track 0 source shape 865
-Signal track 1 source shape 748
-Signal track 2 source shape 450
-Signal track 2 source shape 750
+Signal track 0 source "shape" 865
+Signal track 1 source "shape" 748
+Signal track 2 source "shape" 450
+Signal track 2 source "shape" 750
 

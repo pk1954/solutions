@@ -235,29 +235,45 @@ void D2D_driver::DrawLine
 	SafeRelease( & pBrush );
 }
 
-void D2D_driver::DrawCircle
+void D2D_driver::FillCircle
 (
 	fPixelCircle const & circle,
 	D2D1::ColorF const   colF
 ) const
 {
-	DrawEllipse( fPixelEllipse { circle }, colF );
+	FillEllipse( fPixelEllipse { circle }, colF );
 }
 
-void D2D_driver::DrawEllipse
+void D2D_driver::DrawCircle
+(
+	fPixelCircle const & circle,
+	D2D1::ColorF const   colF,
+	fPIXEL       const   fPixWidth
+) const
+{
+	DrawEllipse( fPixelEllipse { circle }, colF, fPixWidth );
+}
+
+void D2D_driver::FillEllipse
 (
 	fPixelEllipse const & fPE,
 	D2D1::ColorF  const   colF
 ) const
 {
 	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
-	D2D1_ELLIPSE ellipse 
-	{ 
-		D2D1_POINT_2F{ fPE.GetPosition().GetXvalue(), fPE.GetPosition().GetYvalue() }, 
-		fPE.GetRadiusX().GetValue(), 
-		fPE.GetRadiusY().GetValue() 
-	}; 
-	m_pRenderTarget->FillEllipse( & ellipse, pBrush	);
+	m_pRenderTarget->FillEllipse( convertD2D(fPE), pBrush	);
+	SafeRelease( & pBrush );
+}
+
+void D2D_driver::DrawEllipse
+(
+	fPixelEllipse const & fPE,
+	D2D1::ColorF  const   colF,
+	fPIXEL        const   fPixWidth
+) const
+{
+	ID2D1SolidColorBrush * pBrush { createBrush( colF ) };
+	m_pRenderTarget->DrawEllipse( convertD2D(fPE), pBrush, fPixWidth.GetValue(), nullptr );
 	SafeRelease( & pBrush );
 }
 
@@ -301,4 +317,19 @@ ID2D1SolidColorBrush * D2D_driver::createBrush( D2D1::ColorF const d2dCol ) cons
 	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush( d2dCol, & pBrush ); 
 	assert( hres == S_OK );
 	return pBrush;
+}
+
+D2D1_POINT_2F convertD2D( fPixelPoint const & fPP )
+{
+	return D2D1_POINT_2F{ fPP.GetXvalue(), fPP.GetYvalue() }; 
+}
+
+D2D1_ELLIPSE convertD2D( fPixelEllipse const & fPE )
+{
+	return D2D1_ELLIPSE
+	{ 
+		convertD2D(fPE.GetPosition()), 
+		fPE.GetRadiusX().GetValue(), 
+		fPE.GetRadiusY().GetValue() 
+	}; 
 }

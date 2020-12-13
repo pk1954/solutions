@@ -33,9 +33,6 @@
     <ClInclude Include="LogarithmicTrackbar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModelInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MoreTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>

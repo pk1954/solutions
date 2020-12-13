@@ -37,15 +37,20 @@ public:
     void SetPosition( POS_TYPE  const & newPos    ) { m_position = newPos; }
     void SetRadius  ( BASE_TYPE const   newRadius ) { m_radius   = newRadius; }
 
+    bool Includes( POS_TYPE const pos ) const
+    {
+        return DistSquare(pos, m_position) <= m_radius.GetValue() * m_radius.GetValue();
+    }
+
     static CircleType const & NULL_VAL() 
     { 
-        static CircleType res { CircleType( POS_TYPE::NULL_VAL, BASE_TYPE::NULL_VAL() ) }; 
+        static CircleType res { CircleType( POS_TYPE::NULL_VAL(), BASE_TYPE::NULL_VAL() ) }; 
         return res;
     };
 
     static CircleType const & ZERO_VAL() 
     { 
-        static PointType res { CircleType( POS_TYPE::ZERO_VAL, BASE_TYPE::ZERO_VAL() ) }; 
+        static PointType res { CircleType( POS_TYPE::ZERO_VAL(), BASE_TYPE::ZERO_VAL() ) }; 
         return res;
     };
 
@@ -70,6 +75,12 @@ public:
         res /= d; 
         return res; 
     };
+
+    friend wostream & operator<< ( wostream & out, CircleType const & param )
+    {
+        out << param.m_position << param.m_radius.GetValue();
+        return out;
+    }
 
 private:
     POS_TYPE  m_position;

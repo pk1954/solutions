@@ -123,6 +123,9 @@
     <ClInclude Include="AppendNeuronCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NewSumSignalCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommandStack.cpp">
