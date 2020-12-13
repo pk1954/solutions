@@ -69,6 +69,7 @@
 
 #define IDM_MONITOR_WINDOW       530
 #define IDD_ATTACH2MONITOR       540
+#define IDD_NEW_SENSOR           545
 
 #define IDD_CONNECT              560
 #define IDD_INSERT_NEURON        561

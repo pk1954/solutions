@@ -49,7 +49,6 @@ public:
 		return ShapeId( Cast2Long(m_list.size()) );
 	}
 
-
 	void Push( UPShape upShape )	
 	{
 		if ( upShape )

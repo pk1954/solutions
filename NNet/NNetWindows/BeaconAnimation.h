@@ -7,9 +7,10 @@
 #include "Observable.h"                   
 #include "MoreTypes.h"
 #include "ShapeId.h"
+#include "AnimationInterface.h"
 #include "win32_thread.h"
 
-class BeaconAnimation : public Util::Thread
+class BeaconAnimation : public Util::Thread, public AnimationInterface
 {
 public:
 	void Initialize( Observable * const pObservable )

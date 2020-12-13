@@ -160,7 +160,7 @@ void NNetWindow::AnimateBeacon( fPIXEL const fPixBeaconRadius )
 			MicroMeterCircle  const umCircle { umPos, umRadius };
 			D2D1::ColorF col { NNetColors::COL_BEACON };
 			col.a = 1.0f - fRelSize;
-			m_context.DrawCircle( umCircle, col );
+			m_context.FillCircle( umCircle, col );
 		}
 	}
 }

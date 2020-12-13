@@ -27,7 +27,6 @@ public:
 		NNetController         * const,
 		NNetModelReaderInterface const &, 
 		Param                    const &,
-		BeaconAnimation                &,
 		MonitorData                    &
 	);
 
@@ -69,12 +68,12 @@ private:
 		return fPixYvalue;
 	}
 
-	fPIXEL const getYvalue( Signal const & signal, fMicroSecs const time ) const
+	fPIXEL const getYvalue( SignalInterface const & signal, fMicroSecs const time ) const
 	{
 		return yValue2fPIXEL( signal.GetDataPoint( time ) );
 	}
 
-	fMicroSecs findNextMax( Signal const & signal, fPIXEL const fPixX ) const
+	fMicroSecs findNextMax( SignalInterface const & signal, fPIXEL const fPixX ) const
 	{
 		fMicroSecs const usParam { fPIXEL2fMicroSecs( fPixX ) };
 		fMicroSecs const usMax   { signal.FindNextMaximum( usParam ) };
@@ -113,7 +112,6 @@ private:
 	NNetController                 * m_pController      { nullptr };
 	Param                    const * m_pParams          { nullptr };
 	NNetModelReaderInterface const * m_pMRI             { nullptr };
-	BeaconAnimation                * m_pBeaconAnimation { nullptr };
 	MonitorData                    * m_pMonitorData     { nullptr };  
 
 	TRACKMOUSEEVENT m_trackStruct { sizeof(TRACKMOUSEEVENT), TME_LEAVE, HWND(0), 0L };

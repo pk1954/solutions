@@ -19,7 +19,7 @@ class MainWindow;
 class WinManager;
 class Preferences;
 class CommandStack;
-class Signal;
+class SignalInterface;
 class Param;
 class Sound;
 

@@ -9,6 +9,7 @@
 #include "SignalFactory.h"
 #include "MonitorData.h"
 #include "NNetError.h"
+#include "NNetWrapperHelpers.h"
 #include "NNetParameters.h"
 #include "InputNeuron.h"
 #include "win32_script.h"
@@ -248,9 +249,21 @@ public:
         script.ScrReadString( L"track" );
         TrackNr const trackNr { script.ScrReadInt() };
         script.ScrReadString( L"source" );
-        script.ScrReadString( L"shape" );
-        ShapeId const idShapeSignalSource { script.ScrReadLong () };
-        m_pModelWriterInterface->GetMonitorData()->AddSignal( idShapeSignalSource, trackNr );
+        wstring strSignalType { script.ScrReadString() };
+        if ( strSignalType == L"shape" )
+        {
+            ShapeId const idShapeSignalSource { script.ScrReadLong () };
+            m_pModelWriterInterface->GetMonitorData()->AddSignal( trackNr, idShapeSignalSource );
+        }
+        else if ( strSignalType == L"sum" )
+        {
+            MicroMeterCircle umCircle { ScrReadMicroMeterCircle( script ) };
+            m_pModelWriterInterface->GetMonitorData()->AddSignal( trackNr, umCircle );
+        }
+        else
+        {
+            ScriptErrorHandler::stringError( );
+        }
     }
 
 private:
@@ -288,7 +301,6 @@ void NNetModelStorage::prepareForReading( )
     ///// Legacy /////
     SymbolTable::ScrDefConst( L"pipeline", static_cast<unsigned long>(ShapeType::Value::pipe) );  // support older protocol version
                                                                                                   ///// end Legacy /////
-
     Apply2AllParameters
     ( 
         [&]( tParameter const & param ) 

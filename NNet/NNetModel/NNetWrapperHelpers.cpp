@@ -30,3 +30,10 @@ MicroMeterPoint ScrReadMicroMeterPoint( Script & script )
 	script.ScrReadSpecial( MicroMeterPoint::CLOSE_BRACKET );
 	return MicroMeterPoint( x, y );
 }
+
+MicroMeterCircle ScrReadMicroMeterCircle( Script & script )
+{
+	MicroMeterPoint umCenter { ScrReadMicroMeterPoint( script ) };
+	MicroMeter      umRadius { ScrReadMicroMeter( script ) };
+	return MicroMeterCircle( umCenter, umRadius );
+}

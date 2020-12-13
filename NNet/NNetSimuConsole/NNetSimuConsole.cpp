@@ -22,6 +22,14 @@ using std::endl;
 using std::string;
 using std::wofstream;
 
+class Animation : public AnimationInterface
+{
+public:
+	void Initialize( Observable * const p ) {}
+	void Start( ShapeId const id ) 	{}
+	void Stop( ) {}
+};
+
 class ConsReadModelResult : public ReadModelResult
 {
 public:
@@ -74,6 +82,7 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	CommandStack             m_cmdStack                 { };
 	MonitorData              m_monitorData              { };
 	SignalFactory            m_signalFactory            { };
+	Animation                m_animationDummy           { };
 	ReadModelResult        * m_pReadModelResult         { nullptr };
 
 	DefineUtilityWrapperFunctions( );
@@ -84,7 +93,9 @@ int main( int argc, char * argv [ ], char * envp [ ] )
 	( 
 		m_modelReaderInterface, 
 		m_parameters, 
-		m_dynamicModelObservable 
+		m_dynamicModelObservable,
+		m_animationDummy
+		
 	);
 	m_modelCommands.Initialize
 	( 

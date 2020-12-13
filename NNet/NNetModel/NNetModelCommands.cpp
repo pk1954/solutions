@@ -25,6 +25,7 @@
 #include "MoveSelectionCommand.h"
 #include "NewInputNeuronCommand.h"
 #include "NewNeuronCommand.h"
+#include "NewSumSignalCommand.h"
 #include "NNetModelStorage.h"
 #include "SelectAllBeepersCommand.h"
 #include "SelectAllCommand.h"
@@ -256,6 +257,13 @@ void NNetModelCommands::NewNeuron( MicroMeterPoint const & pos )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << pos << endl;
 	m_pCmdStack->PushCommand( make_unique<NewNeuronCommand>( pos ) );
+}
+
+void NNetModelCommands::NewSensor( MicroMeterPoint const & pos )
+{
+	if ( IsTraceOn( ) )
+		TraceStream( ) << __func__ << L" " << pos << endl;
+	m_pCmdStack->PushCommand( make_unique<NewSumSignalCommand>( pos ) );
 }
 
 void NNetModelCommands::NewInputNeuron( MicroMeterPoint const & pos )

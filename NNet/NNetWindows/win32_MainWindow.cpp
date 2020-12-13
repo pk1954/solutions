@@ -65,6 +65,7 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	{
 		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_NEURON,         L"New neuron" );
 		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_INPUT_NEURON,   L"New input neuron" );
+		AppendMenu( hPopupMenu, MF_STRING, IDD_NEW_SENSOR,         L"Create EEG sensor" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_SELECT_ALL_BEEPERS, L"Select all neurons with trigger sound" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,      L"Clear all trigger sounds" );
 	}
@@ -366,10 +367,7 @@ void MainWindow::doPaint( )
 	DrawContext   & context { GetDrawContext() };
 
 	if ( m_rectSelection.IsNotEmpty( ) )
-	{
-//		context.DrawEllipse( MicroMeterEllipse(m_rectSelection), NNetColors::SELECTION_RECT );
 		context.DrawTranspRect( m_rectSelection, NNetColors::SELECTION_RECT );
-	}
 
 	if ( context.GetPixelSize() <= 5._MicroMeter )
 		DrawExteriorInRect( pixRect );

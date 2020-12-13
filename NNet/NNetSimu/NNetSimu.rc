@@ -62,7 +62,7 @@ CAPTION "Notification when Neuron triggers"
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 FONT 8, "MS Shell Dlg"
 {
-    CONTROL "Acoustic Signal", -1,                     STATIC, SS_LEFT          | WS_CHILD  | WS_VISIBLE | WS_GROUP,                 26,  9,  90,  9 
+    CONTROL "Acoustic SignalInterface", -1,                     STATIC, SS_LEFT          | WS_CHILD  | WS_VISIBLE | WS_GROUP,                 26,  9,  90,  9 
     CONTROL "",                IDC_TRIGGER_SOUND_ON,   BUTTON, BS_AUTOCHECKBOX  | WS_CHILD  | WS_VISIBLE | WS_TABSTOP,               13,  8,  11, 12 
     CONTROL "&Frequency:",     -1,                     STATIC, SS_LEFT          | WS_CHILD  | WS_VISIBLE | WS_GROUP,                 36, 22,  36, 11 
     CONTROL "",                IDC_TRIGGER_SOUND_FREQ, EDIT,   ES_NUMBER        | WS_CHILD  | WS_VISIBLE | WS_BORDER  | WS_TABSTOP,  75, 21,  60, 14 

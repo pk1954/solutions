@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "scanner.h"
 #include <assert.h>
-#include "Signal.h"
+#include "SignalInterface.h"
 #include "Track.h"
 #include "MonitorData.h"
 #include "ModelDescription.h"
@@ -142,9 +142,10 @@ void NNetModelStorage::writeMonitorData( wostream & out )
     ( 
         [&]( SignalId const idSignal )
         {
-            Signal  const & signal  { pMonitorData->GetSignal( idSignal ) };
-            ShapeId const   idShape { signal.GetSignalSource() };
-            out << L"Signal track " << idSignal.GetTrackNr() << L" source shape " << idShape << endl; 
+            SignalInterface const & signal { pMonitorData->GetSignal( idSignal ) };
+            out << L"SignalInterface track " << idSignal.GetTrackNr() << L" source ";
+            signal.WriteSignalData( out );
+            out << endl; 
         }
     );
 }

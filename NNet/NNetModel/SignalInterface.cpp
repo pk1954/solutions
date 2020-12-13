@@ -1,11 +1,11 @@
-// Signal.cpp 
+// SignalInterface.cpp 
 //
 // NNetModel
 
 #include "stdafx.h"
-#include "Signal.h"
+#include "SignalInterface.h"
 
-Signal::Signal
+SignalInterface::SignalInterface
 ( 
     NNetModelReaderInterface const & modelReaderInterface,
     Param                    const & param,
@@ -18,25 +18,36 @@ Signal::Signal
     m_pObservable->RegisterObserver( this );
 }
 
-Signal::~Signal( )
+SignalInterface::~SignalInterface( )
 {
     m_pObservable->UnregisterObserver( this );
 }
 
-void Signal::SetSignalSource( ShapeId const id )
+int const SignalInterface::time2index( fMicroSecs const usParam ) const
 {
-    m_SignalShapeId = id;
-    m_data.clear();
-    m_timeStart = m_pModelReaderInterface->GetSimulationTime( );
+    fMicroSecs const timeTilStart { usParam - m_timeStart };
+    float      const fNrOfPoints  { timeTilStart / m_pParams->GetTimeResolution( ) };
+    int              index        { static_cast<int>( roundf( fNrOfPoints ) ) };
+    if ( index >= m_data.size() )
+        index = Cast2UnsignedInt( m_data.size() - 1 );
+    return index;
 }
 
-float const Signal::GetDataPoint( fMicroSecs const time ) const
+fMicroSecs const SignalInterface::index2time( int const index ) const
+{
+    float      const fNrOfPoints  { static_cast<float>( index ) };
+    fMicroSecs const timeTilStart { m_pParams->GetTimeResolution( ) * fNrOfPoints };
+    fMicroSecs const usResult     { timeTilStart + m_timeStart };
+    return usResult;
+}
+
+float const SignalInterface::GetDataPoint( fMicroSecs const time ) const
 {
     int index { time2index( time ) };
     return ( index < 0 ) ? NAN : m_data[ index ];
 }
 
-fMicroSecs const Signal::FindNextMaximum( fMicroSecs const time ) const
+fMicroSecs const SignalInterface::FindNextMaximum( fMicroSecs const time ) const
 {
     int index { time2index( time ) };
     if ( index < 0 )
@@ -53,22 +64,16 @@ fMicroSecs const Signal::FindNextMaximum( fMicroSecs const time ) const
     return index2time( index );
 }
 
-void Signal::Notify( bool const bImmediate )
+void SignalInterface::Notify( bool const bImmediate )
 {
-    Neuron const * pNeuron { m_pModelReaderInterface->GetConstShapePtr<Neuron const *>( m_SignalShapeId ) };
-    mV     const   voltage { pNeuron ? pNeuron->GetVoltage() : 0.0_mV };
-    m_data.push_back( voltage.GetValue() );
+    m_data.push_back( GetSignalValue() );
 }
 
-void Signal::CheckSignal( ) 
+void SignalInterface::CheckSignal( ) 
 {
 #ifdef _DEBUG
     assert( m_pModelReaderInterface );
     if ( (unsigned long long)m_pModelReaderInterface == 0xdddddddddddddddd )
-    {
-        int x = 42;
-    }
-    if ( ! m_pModelReaderInterface->IsValidShapeId( m_SignalShapeId ) )
     {
         int x = 42;
     }

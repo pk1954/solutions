@@ -13,7 +13,7 @@
 #include "NNetModelStorage.h"
 #include "ComputeThread.h"
 #include "CommandStack.h"
-#include "Signal.h"
+#include "SignalInterface.h"
 #include "AutoOpen.h"
 #include "win32_util.h"
 #include "win32_sound.h"
@@ -316,6 +316,11 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
 
     case IDD_ATTACH2MONITOR:
         m_pMonitorWindow->AddSignal( m_pMainWindow->GetHighlightedShapeId() );
+        ::SendMessage( m_pWinManager->GetHWND( IDM_MONITOR_WINDOW ), WM_COMMAND, IDM_WINDOW_ON, 0 );
+        break;
+
+    case IDD_NEW_SENSOR:
+        m_pModelCommands->NewSensor( umPoint );
         ::SendMessage( m_pWinManager->GetHWND( IDM_MONITOR_WINDOW ), WM_COMMAND, IDM_WINDOW_ON, 0 );
         break;
 

@@ -68,15 +68,43 @@ public:
 		);
 	}
 
-	virtual void DrawCircle
+	virtual void FillCircle
 	(
 		MicroMeterCircle const & umCircle,
 		D2D1::ColorF     const   col  
 	) const
 	{
+		m_graphics.FillCircle
+		( 
+			m_coord.Convert2fPixelCircle( umCircle ), 
+			m_bNoColors ? NNetColors::COL_BLACK : col 
+		);
+	}
+
+	virtual void DrawCircle
+	(
+		MicroMeterCircle const & umCircle,
+		D2D1::ColorF     const   col,
+		MicroMeter       const   umWidth
+	) const
+	{
 		m_graphics.DrawCircle
 		( 
 			m_coord.Convert2fPixelCircle( umCircle ), 
+			m_bNoColors ? NNetColors::COL_BLACK : col,
+			m_coord.Convert2fPixel( umWidth )
+		);
+	}
+
+	virtual void FillEllipse
+	(
+		MicroMeterEllipse const & umEllipse,
+		D2D1::ColorF      const   col  
+	) const
+	{
+		m_graphics.FillEllipse
+		( 
+			m_coord.Convert2fPixelEllipse( umEllipse ), 
 			m_bNoColors ? NNetColors::COL_BLACK : col 
 		);
 	}
@@ -84,13 +112,15 @@ public:
 	virtual void DrawEllipse
 	(
 		MicroMeterEllipse const & umEllipse,
-		D2D1::ColorF      const   col  
+		D2D1::ColorF     const   col,
+		MicroMeter       const   umWidth
 	) const
 	{
 		m_graphics.DrawEllipse
 		( 
 			m_coord.Convert2fPixelEllipse( umEllipse ), 
-			m_bNoColors ? NNetColors::COL_BLACK : col 
+			m_bNoColors ? NNetColors::COL_BLACK : col,
+			m_coord.Convert2fPixel( umWidth )
 		);
 	}
 

@@ -7,7 +7,7 @@
 #include <assert.h>
 #include "util.h"
 #include "scale.h"
-#include "Signal.h"
+#include "SignalInterface.h"
 #include "Track.h"
 #include "Resource.h"
 #include "BaseKnot.h"
@@ -27,7 +27,6 @@ void MonitorWindow::Start
 	NNetController         * const   pController,
 	NNetModelReaderInterface const & model,
 	Param                    const & params,
-	BeaconAnimation                & beaconAnimation,
 	MonitorData                    & monitorData  
 )
 {
@@ -42,7 +41,6 @@ void MonitorWindow::Start
 	);
 	m_pSound           =   pSound;
 	m_pController      =   pController;
-	m_pBeaconAnimation = & beaconAnimation;
 	m_pParams          = & params;
 	m_pMRI             = & model;
 	m_pMonitorData     = & monitorData;
@@ -66,7 +64,6 @@ void MonitorWindow::Reset( )
 void MonitorWindow::Stop( )
 {
 	Reset( );
-	m_pBeaconAnimation = nullptr;
 	m_pParams          = nullptr;
 	m_pMRI             = nullptr;
 	m_pMonitorData     = nullptr;
@@ -100,7 +97,7 @@ void MonitorWindow::AddSignal( ShapeId const id )
 	if ( m_pMRI->IsOfType<Neuron>( id ) )
 	{
 		m_pMonitorData->InsertTrack( TrackNr(0) );
-		m_pMonitorData->AddSignal( id, TrackNr(0) );
+		m_pMonitorData->AddSignal( TrackNr(0), id );
 		m_pSound->Play( TEXT("SNAP_IN_SOUND") ); 
 	}
 }
@@ -115,11 +112,11 @@ void MonitorWindow::selectSignal( SignalId const & idNew )
 {
 	if ( idNew != m_idSigSelected )
 	{
-		m_pBeaconAnimation->Stop( );
-		 
+		m_pMonitorData->Animation( m_idSigSelected, false );
+
 		if ( m_pMonitorData->IsValid( idNew ) )
 		{
-			m_pBeaconAnimation->Start( m_pMonitorData->GetSignal( idNew ).GetSignalSource() );
+			m_pMonitorData->Animation( idNew, true );
 			m_idSigSelected = idNew;
 		}
 		else
@@ -175,7 +172,7 @@ void MonitorWindow::paintSignal( SignalId const & idSignal ) const
 	fMicroSecs  const   usEnd        { m_pMRI->GetSimulationTime( ) };
 	mV          const   mVlimit      ( m_pParams->GetParameterValue( tParameter::threshold ) );
 	fPIXEL      const   fPixYlimit   { fPixYoff - yValue2fPIXEL(mVlimit.GetValue()) };
-	Signal      const & signal       { m_pMonitorData->GetSignal( idSignal ) }; 
+	SignalInterface      const & signal       { m_pMonitorData->GetSignal( idSignal ) }; 
 	fMicroSecs  const   timeStart    { max( usEnd - usInWindow, signal.GetStartTime() ) };
 	fPixelPoint         prevPoint    { m_fPixWinWidth, fPixYoff - getYvalue(signal, usEnd) };
 
@@ -245,13 +242,13 @@ void MonitorWindow::drawDiamond( SignalId const & idSignal ) const
 {
 	static D2D1::ColorF const COL_DIAMOND { 0.0f, 1.0f, 0.0f, 1.0f };
 
-	Signal     const & signal       { m_pMonitorData->GetSignal( idSignal ) };
-	PixelPoint const   pixPointCrsr { GetRelativeCrsrPosition( ) };
-	fPIXEL     const   fPixCrsrX    { Convert2fPIXEL( pixPointCrsr.GetX() ) };
-	fMicroSecs const   usMax        { findNextMax( signal, fPixCrsrX ) };
-	fPIXEL     const   fPixMax      { fMicroSecs2fPIXEL( usMax ) };
-	fPIXEL     const   fPixYoff     { getSignalOffset( idSignal ) };
-	fPIXEL     const   fPixYvalue   { fPixYoff - getYvalue( signal, usMax ) };
+	SignalInterface const & signal       { m_pMonitorData->GetSignal( idSignal ) };
+	PixelPoint      const   pixPointCrsr { GetRelativeCrsrPosition( ) };
+	fPIXEL          const   fPixCrsrX    { Convert2fPIXEL( pixPointCrsr.GetX() ) };
+	fMicroSecs      const   usMax        { findNextMax( signal, fPixCrsrX ) };
+	fPIXEL          const   fPixMax      { fMicroSecs2fPIXEL( usMax ) };
+	fPIXEL          const   fPixYoff     { getSignalOffset( idSignal ) };
+	fPIXEL          const   fPixYvalue   { fPixYoff - getYvalue( signal, usMax ) };
 
 	m_graphics.DrawDiamond
 	(
@@ -284,7 +281,7 @@ SignalNr const MonitorWindow::findSignal( TrackNr const trackNr, PixelPoint cons
 		trackNr,
 		[&](SignalNr const signalNr)
 		{
-			Signal const & signal { m_pMonitorData->GetSignal( SignalId(trackNr, signalNr) ) };
+			SignalInterface const & signal { m_pMonitorData->GetSignal( SignalId(trackNr, signalNr) ) };
 			if ( umTime >= signal.GetStartTime() )
 			{
 				fPIXEL const fPixAmplitude { getYvalue( signal, umTime ) };
@@ -399,10 +396,10 @@ bool MonitorWindow::OnShow( WPARAM const wParam, LPARAM const lParam )
 	{
 		m_measurement.ResetLimits( );
 		if ( m_idSigSelected != SignalIdNull )
-			m_pBeaconAnimation->Start( m_pMonitorData->GetSignal( m_idSigSelected ).GetSignalSource() );
+			m_pMonitorData->Animation( m_idSigSelected, true );
 	}
 	else 
-		m_pBeaconAnimation->Stop( );
+		m_pMonitorData->Animation( m_idSigSelected, false );
 	return false;
 }
 
@@ -469,7 +466,7 @@ void MonitorWindow::OnLeftButtonDblClick( WPARAM const wParam, LPARAM const lPar
 
 	if ( m_measurement.IsClose2LeftLimit( fPixCrsrX ) || m_measurement.IsClose2RightLimit( fPixCrsrX ) )
 	{
-		Signal     const & signal  { m_pMonitorData->GetSignal( m_idSigSelected ) };
+		SignalInterface     const & signal  { m_pMonitorData->GetSignal( m_idSigSelected ) };
 		fMicroSecs const   usMax   { findNextMax( signal, fPixCrsrX ) };
 		fPIXEL     const   fPixMax { fMicroSecs2fPIXEL( usMax ) };
 		m_measurement.MoveSelection( fPixMax );

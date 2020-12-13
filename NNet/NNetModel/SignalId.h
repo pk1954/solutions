@@ -30,8 +30,8 @@ public:
 		signalNr.Set2Null(); 
 	}
 
-	bool IsNull() { return trackNr.IsNull() || signalNr.IsNull(); }
-	bool IsNotNull() { return trackNr.IsNotNull() && signalNr.IsNotNull(); }
+	bool IsNull   () const { return trackNr.IsNull() || signalNr.IsNull(); }
+	bool IsNotNull() const { return trackNr.IsNotNull() && signalNr.IsNotNull(); }
 
 	auto operator== (const SignalId & other) const
 	{
