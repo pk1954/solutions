@@ -36,7 +36,6 @@ public:
 
 	// colors for neuron/pipe boundary
 	inline static D2D1::ColorF const EXT_NORMAL          { 0.0f, 0.5f, 1.0f, 1.0f };
-	inline static D2D1::ColorF const EXT_MARKED          { 0.0f, 1.0f, 0.5f, 1.0f };
 	inline static D2D1::ColorF const EXT_HIGHLIGHT       { 0.0f, 0.8f, 0.8f, 1.0f };
 	inline static D2D1::ColorF const EXT_SUPER_HIGHLIGHT { COL_RED };
 

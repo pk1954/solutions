@@ -45,24 +45,6 @@ private:
     wstring * m_pwstrDescription { nullptr };
 };
 
-class WrapMarkShape : public Script_Functor
-{
-public:
-    WrapMarkShape( NNetModelWriterInterface * const pNNetModel ) :
-        m_pModelWriterInterface( pNNetModel )
-    { };
-
-    virtual void operator() ( Script & script ) const
-    {   
-        ShapeId const idFromScript{ script.ScrReadLong() };
-        return m_pModelWriterInterface->MarkShape( idFromScript, tBoolOp::opTrue );
-    }
-
-private:
-
-    NNetModelWriterInterface * m_pModelWriterInterface;
-};
-
 class WrapCreateShape : public Script_Functor
 {
 public:
@@ -280,7 +262,6 @@ void NNetModelStorage::prepareForReading( )
     DEF_NNET_FUNC( NrOfShapes );
     DEF_NNET_FUNC( CreateShape );
     DEF_NNET_FUNC( ShapeParameter );
-    DEF_NNET_FUNC( MarkShape );
     DEF_NNET_FUNC( TriggerSound );
     DEF_NNET_FUNC( NrOfTracks );
     DEF_NNET_FUNC( Signal );

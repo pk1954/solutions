@@ -269,3 +269,5 @@ paket-files/
 __pycache__/
 *.pyc
 *.out
+/NNet/Moduls-1.pptx
+/NNet/Moduls-1.pdf

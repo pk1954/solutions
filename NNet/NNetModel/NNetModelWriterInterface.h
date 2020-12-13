@@ -47,7 +47,6 @@ public:
 
     void SelectBeepers();
     void SelectShape( ShapeId const, tBoolOp const );
-    void MarkShape  ( ShapeId const, tBoolOp const );
     void IncShapeList( long const );
     void SetShapeErrorHandler( ShapeErrorHandler * const );
 

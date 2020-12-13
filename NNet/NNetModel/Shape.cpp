@@ -21,8 +21,7 @@ bool Shape::operator==( Shape const & rhs ) const
 	return
 	( m_type       == rhs.m_type       ) &&
 	( m_identifier == rhs.m_identifier ) &&
-	( m_bSelected  == rhs.m_bSelected  ) &&
-	( m_bMarked    == rhs.m_bMarked    );
+	( m_bSelected  == rhs.m_bSelected  );
 }
 
 D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
@@ -35,9 +34,7 @@ D2D1::ColorF Shape::GetInteriorColor( mV const voltageInput ) const
 	{
 		mV    const peakVoltage    { mV(m_pParameters->GetParameterValue( tParameter::peakVoltage )) };
 		float const colorComponent { min( voltageInput / peakVoltage, 1.0f )};
-		return m_bMarked 
-			? D2D1::ColorF( colorComponent, 0.6f, 0.6f, 1.0f )
-		    : D2D1::ColorF( colorComponent, 0.0f, 0.0f, 1.0f );
+		return D2D1::ColorF( colorComponent, 0.0f, 0.0f, 1.0f );
 	}
 }
 
@@ -45,7 +42,7 @@ D2D1::ColorF Shape::GetFrameColor( tHighlightType const type ) const
 { 
 	if (type == tHighlightType::normal)
 	{
-		return m_bMarked ? NNetColors::EXT_MARKED : NNetColors::EXT_NORMAL;
+		return NNetColors::EXT_NORMAL;
 	}
 	else if (type == tHighlightType::highlighted)
 	{
@@ -67,7 +64,6 @@ void Shape::CheckShape( ) const
 #ifdef _DEBUG
 	m_type.Check();
 	AssertLimits<int>( (int)m_bSelected, 0, 1 );
-	AssertLimits<int>( (int)m_bMarked,   0, 1 );
 #endif
 }
 

@@ -56,8 +56,6 @@ long MainWindow::AddContextMenuEntries( HMENU const hPopupMenu )
 	{
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DESELECT_ALL,     L"Deselect all" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_COPY_SELECTION,   L"Copy selection" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_MARK_SELECTION,   L"Mark selection" );
-		AppendMenu( hPopupMenu, MF_STRING, IDM_UNMARK_SELECTION, L"Unmark selection" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_DELETE_SELECTION, L"Delete selected objects" );
 		AppendMenu( hPopupMenu, MF_STRING, IDM_CLEAR_BEEPERS,    L"Clear selected trigger sounds" );
 	}

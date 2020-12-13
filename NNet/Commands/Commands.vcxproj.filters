@@ -78,9 +78,6 @@
     <ClInclude Include="MoveBaseKnotCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MarkSelectionCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ToggleStopOnTriggerCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -19,7 +19,6 @@
 #include "DeletePipeCommand.h"
 #include "DisconnectBaseKnotCommand.h"
 #include "InsertNeuronCommand.h"
-#include "MarkSelectionCommand.h"
 #include "MoveBaseKnotCommand.h"
 #include "MovePipeCommand.h"
 #include "MoveSelectionCommand.h"
@@ -292,13 +291,6 @@ void NNetModelCommands::ClearBeepers( )
 	if ( IsTraceOn( ) )
 		TraceStream( ) << __func__ << L" " << endl;
 	m_pCmdStack->PushCommand( make_unique<ClearBeepersCommand>( ) );
-}
-
-void NNetModelCommands::MarkSelection( tBoolOp const op )
-{
-	if ( IsTraceOn( ) )
-		TraceStream( ) << __func__ << L" " << op << endl;
-	m_pCmdStack->PushCommand( make_unique<MarkSelectionCommand>( op ) );
 }
 
 ///////////////////// selection commands /////////////////////////////

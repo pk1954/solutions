@@ -49,11 +49,6 @@ void NNetModelWriterInterface::SetShapeErrorHandler( ShapeErrorHandler * const p
 	m_pModel->SetShapeErrorHandler( pHandler );
 }
 
-void NNetModelWriterInterface::MarkShape( ShapeId const idShape, tBoolOp const op ) 
-{ 
-	GetShapePtr<Shape *>( idShape )->Mark( op ); 
-}
-
 void NNetModelWriterInterface::SelectShape( ShapeId const idShape, tBoolOp const op ) 
 { 
 	GetShapePtr<Shape *>( idShape )->Select( op ); 

@@ -238,14 +238,6 @@ bool NNetController::processModelCommand( int const wmId, LPARAM const lParam, M
         m_pModelCommands->SelectAllBeepers( );
         break;
 
-    case IDM_MARK_SELECTION:
-        m_pModelCommands->MarkSelection( tBoolOp::opTrue );
-        break;
-
-    case IDM_UNMARK_SELECTION:
-        m_pModelCommands->MarkSelection( tBoolOp::opFalse );
-        break;
-
     case IDD_PULSE_RATE:
         pulseRateDlg( m_pMainWindow->GetHighlightedShapeId() );
         break;

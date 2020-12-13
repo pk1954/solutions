@@ -51,10 +51,7 @@ public:
 	virtual void Select( tBoolOp const op ) { ApplyOp( m_bSelected, op ); }
 	virtual void Clear ( )                  { m_mVinputBuffer = 0.0_mV; };
 
-	void Mark( tBoolOp const op ) { ApplyOp( m_bMarked, op ); }
-
 	bool IsSelected( ) const { return m_bSelected; }
-	bool IsMarked  ( ) const { return m_bMarked; }
 
 	bool            IsDefined   ( ) const { return ::IsDefined( m_identifier ); }
 	wchar_t const * GetName     ( ) const { return ShapeType::GetName( m_type.GetValue() ); }
@@ -98,7 +95,6 @@ private:
 	ShapeType m_type       { ShapeType::Value::undefined };
 	ShapeId   m_identifier { NO_SHAPE };
 	bool      m_bSelected  { false };
-	bool      m_bMarked    { false };
 };
 
 template <typename T> bool HasType( Shape const & shape ) 

@@ -240,16 +240,6 @@ public:
     }
 };
 
-class WrapMarkSelection: public Script_Functor
-{
-public:
-    virtual void operator() ( Script & script ) const
-    {
-        tBoolOp const op { ScrReadBoolOp( script ) };
-        m_pCommands->MarkSelection( op );
-    }
-};
-
 class WrapMoveSelection: public Script_Functor
 {
 public:
@@ -381,7 +371,6 @@ void DefineNNetWrappers( NNetModelCommands * const pCommands )
     DEF_FUNC(DeleteShape);        
     DEF_FUNC(Disconnect);         
     DEF_FUNC(InsertNeuron);       
-    DEF_FUNC(MarkSelection);      
     DEF_FUNC(MoveSelection);      
     DEF_FUNC(MoveShape);          
     DEF_FUNC(NewInputNeuron);     

@@ -51,7 +51,6 @@ public:
     void DeleteShape         ( ShapeId const );
     void Disconnect          ( ShapeId const );
     void InsertNeuron        ( ShapeId const, MicroMeterPoint const & );
-    void MarkSelection       ( tBoolOp const );
     void MoveSelection       ( MicroMeterPoint const & );
     void MoveShape           ( ShapeId const, MicroMeterPoint const & );
     void NewInputNeuron      ( MicroMeterPoint const & );

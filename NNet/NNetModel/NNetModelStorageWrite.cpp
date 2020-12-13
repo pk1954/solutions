@@ -192,10 +192,6 @@ void NNetModelStorage::writeShape( wostream & out, Shape & shape )
         }
         out << endl;
     }
-    if ( shape.IsMarked( ) )
-    {
-        out << L"MarkShape " << getCompactIdVal( shape.GetId() ) << endl;
-    }
 }
 
 void NNetModelStorage::writeModel( )
