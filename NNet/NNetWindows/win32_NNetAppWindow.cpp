@@ -92,8 +92,6 @@ NNetAppWindow::NNetAppWindow( )
 {
 	Stopwatch stopwatch;
 
-	m_hwndConsole = GetConsoleWindow( );
-//	BringWindowToTop( m_hwndConsole );
 	SwitchWcoutTo( L"main_trace.out" );
 
 	wcout << L"*** Application start at " << Util::GetCurrentDateAndTime() << endl;
@@ -204,7 +202,6 @@ void NNetAppWindow::Start( MessagePump & pump )
 	m_performanceWindow   .Start( m_hwndApp, & m_modelReaderInterface, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay );
 	m_monitorWindow       .Start( m_hwndApp, & m_sound, & m_NNetController,	m_modelReaderInterface, m_parameters, m_monitorData );
 
-	m_WinManager.AddWindow( L"IDM_CONS_WINDOW",    IDM_CONS_WINDOW,    m_hwndConsole,                  true,  true  );
 	m_WinManager.AddWindow( L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true  );
 	m_WinManager.AddWindow( L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_StatusBar.GetWindowHandle(),  false, false );
 	m_WinManager.AddWindow( L"IDM_CRSR_WINDOW",    IDM_CRSR_WINDOW,    m_crsrWindow,                   true,  false );

@@ -23,7 +23,7 @@ int APIENTRY wWinMain
     UNREFERENCED_PARAMETER( lpCmdLine );
     UNREFERENCED_PARAMETER( nCmdShow );
 
-	Util::StdOutConsole( );
+//	Util::StdOutConsole( );
 
 	NNetAppWindow App;
 
